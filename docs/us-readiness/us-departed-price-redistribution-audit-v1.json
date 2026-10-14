@@ -1,0 +1,154 @@
+{
+  "version": "US_DEPARTED_REDISTRIBUTION_AUDIT_V1",
+  "checkedAt": "2026-10-14",
+  "scope": "All acquired raw archives including vendor data, controls, code/readmes and catalog metadata; derived per-session panel; unsuccessful probes",
+  "sources": [
+    {
+      "source": "A",
+      "repository": "teddykoker/survivorship-free-spy",
+      "revision": "0bcc715e2dd37b7ecec65c549be843574120bd58",
+      "treeAccess": 0,
+      "rawRedistribution": "UNVERIFIED",
+      "derivedRedistribution": "UNVERIFIED",
+      "truncated": false,
+      "licensePaths": [],
+      "codeLicenseObservation": "No license file observed at pinned revision",
+      "decision": "DO_NOT_PUBLICLY_REDISTRIBUTE_RAW_OR_PER_SESSION_DERIVED_DATA",
+      "upstream": "Quandl WIKI adjusted fields plus Yahoo fallback; removed corporate-action columns"
+    },
+    {
+      "source": "B_catalog",
+      "repository": "omarkhursheed/finance-ml",
+      "revision": "ea45e03120d207f53ed3347ec0a0eb13e4506283",
+      "treeAccess": 0,
+      "rawRedistribution": "UNVERIFIED",
+      "derivedRedistribution": "UNVERIFIED",
+      "truncated": false,
+      "licensePaths": [],
+      "codeLicenseObservation": "No license file observed at pinned revision",
+      "decision": "DO_NOT_PUBLICLY_REDISTRIBUTE_RAW_OR_PER_SESSION_DERIVED_DATA",
+      "upstream": "Quandl/Nasdaq WIKI catalog metadata"
+    },
+    {
+      "source": "B_secondary",
+      "repository": "VermeirJellen/Securities_Master_Database",
+      "revision": "e17fb189c16629fc2abe8aa40f73cc9f0f2b8c87",
+      "treeAccess": 0,
+      "rawRedistribution": "UNVERIFIED",
+      "derivedRedistribution": "UNVERIFIED",
+      "truncated": false,
+      "licensePaths": [
+        "COPYING",
+        "COPYING.LESSER"
+      ],
+      "codeLicenseObservation": "COPYING GPL-3.0 and COPYING.LESSER LGPL-3.0; vendor catalog rights not established",
+      "decision": "DO_NOT_PUBLICLY_REDISTRIBUTE_RAW_OR_PER_SESSION_DERIVED_DATA",
+      "upstream": "Quandl/Nasdaq WIKI catalog metadata",
+      "licenseEvidence": [
+        {
+          "url": "https://github.com/VermeirJellen/Securities_Master_Database/blob/e17fb189c16629fc2abe8aa40f73cc9f0f2b8c87/COPYING.LESSER",
+          "sha256": "97628afebc60f026f5c2b25d7491c46a5c4ee61f693e7cfa07fbd2c03605979b"
+        }
+      ]
+    },
+    {
+      "source": "C",
+      "repository": "Acelogic/WayBackMachineStockScraper",
+      "revision": "154db4fff923f3b3c92618ad79aa30bdc5efabf2",
+      "treeAccess": 0,
+      "rawRedistribution": "UNVERIFIED",
+      "derivedRedistribution": "UNVERIFIED",
+      "truncated": false,
+      "licensePaths": [],
+      "codeLicenseObservation": "No license file observed at pinned revision",
+      "decision": "DO_NOT_PUBLICLY_REDISTRIBUTE_RAW_OR_PER_SESSION_DERIVED_DATA",
+      "upstream": "Archived Yahoo Finance via Internet Archive; no archived price acquired"
+    },
+    {
+      "source": "D",
+      "repository": "hackingthemarkets/candlestick-screener",
+      "revision": "2747eab3d310e79ce82a6d237f18ea6f4d0be6a3",
+      "treeAccess": 0,
+      "rawRedistribution": "UNVERIFIED",
+      "derivedRedistribution": "UNVERIFIED",
+      "truncated": false,
+      "licensePaths": [],
+      "codeLicenseObservation": "No license file observed at pinned revision",
+      "decision": "DO_NOT_PUBLICLY_REDISTRIBUTE_RAW_OR_PER_SESSION_DERIVED_DATA",
+      "upstream": "Yahoo Finance via yfinance"
+    },
+    {
+      "source": "E",
+      "repository": "IanLKaplan/pairs_trading",
+      "revision": "f256752a345a1fbd0f9dda78bfb82b2a0362a784",
+      "treeAccess": 0,
+      "rawRedistribution": "UNVERIFIED",
+      "derivedRedistribution": "UNVERIFIED",
+      "truncated": false,
+      "licensePaths": [
+        "LICENSE"
+      ],
+      "codeLicenseObservation": "Apache-2.0; no verified upstream Yahoo data redistribution grant",
+      "decision": "DO_NOT_PUBLICLY_REDISTRIBUTE_RAW_OR_PER_SESSION_DERIVED_DATA",
+      "upstream": "Yahoo Finance via yfinance; rounded close/default adjustment",
+      "licenseEvidence": [
+        {
+          "url": "https://github.com/IanLKaplan/pairs_trading/blob/f256752a345a1fbd0f9dda78bfb82b2a0362a784/LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "source": "F",
+      "repository": "jcwill415/Stock_Market_Data_Analysis",
+      "revision": "ace77714ab3ce825b77515693f8bd6ed729517df",
+      "treeAccess": 0,
+      "rawRedistribution": "UNVERIFIED",
+      "derivedRedistribution": "UNVERIFIED",
+      "truncated": false,
+      "licensePaths": [],
+      "codeLicenseObservation": "No license file observed at pinned revision",
+      "decision": "DO_NOT_PUBLICLY_REDISTRIBUTE_RAW_OR_PER_SESSION_DERIVED_DATA",
+      "upstream": "Yahoo Finance via pandas_datareader"
+    },
+    {
+      "source": "G",
+      "repository": "Stonks/tickers",
+      "revision": "30ab4744279f6d34d20a438ec98413db96a53f69",
+      "treeAccess": 0,
+      "rawRedistribution": "UNVERIFIED",
+      "derivedRedistribution": "UNVERIFIED",
+      "truncated": false,
+      "licensePaths": [],
+      "codeLicenseObservation": "No license file observed at pinned revision",
+      "decision": "DO_NOT_PUBLICLY_REDISTRIBUTE_RAW_OR_PER_SESSION_DERIVED_DATA",
+      "upstream": "Unspecified DATA_API_URL; upstream and adjustment unknown"
+    },
+    {
+      "source": "B_direct",
+      "url": "https://data.nasdaq.com/databases/WIKIP",
+      "rawRedistribution": "UNVERIFIED",
+      "derivedRedistribution": "UNVERIFIED",
+      "acquisition": "PROXY_CONNECT_403_ZERO_PRICE_ROWS",
+      "decision": "NO_PAYLOAD; owner must verify original vendor terms/data grant"
+    },
+    {
+      "source": "Stooq_probe",
+      "url": "https://stooq.com",
+      "rawRedistribution": "UNVERIFIED",
+      "derivedRedistribution": "UNVERIFIED",
+      "acquisition": "PROXY_CONNECT_403_ZERO_PRICE_ROWS",
+      "decision": "NO_PAYLOAD"
+    },
+    {
+      "source": "existing_sealed_Yahoo_controls",
+      "revision": "704d7db6d5b00def771aba5d2665d0846d6bc776",
+      "rawRedistribution": "UNVERIFIED",
+      "derivedRedistribution": "UNVERIFIED",
+      "decision": "NO_NEW_CONTROL_PRICE_PAYLOAD_PUBLISHED; only aggregate same-date validation facts retained"
+    }
+  ],
+  "aggregateFindings": "Historical measured counts, date bounds, quality statistics and provenance retained; not a substitute downloadable price database",
+  "reproducibility": "Exact artifacts verified locally; public reacquisition NOT_RETESTED and not guaranteed; workspace retention is ephemeral",
+  "remotePurge": "Branch rewrite cannot guarantee deletion of old GitHub commit objects, PR cached views, clones or CDN caches; owner must request GitHub Support review/removal"
+}

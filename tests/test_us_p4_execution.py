@@ -241,6 +241,10 @@ def test_workflow_manual_route_excludes_all_original_jobs_and_preserves_steps():
             value=block.split('    if:',1)[1].split('    runs-on:',1)[0].strip()
             return value.removeprefix('>-').removeprefix('|').strip()
         legacy=condition(body)
+        # On main the baseline already contains the merged P4 routing guard.
+        # Remove that exact guard from both sides; keep the legacy expression strict.
+        if legacy.startswith("!(inputs.us_p4_action == 'validate' || inputs.us_p4_action == 'execute')"):
+            legacy=legacy.split('&&',1)[1].strip()[1:-1]
         guarded=condition(after[name]).split('&&',1)[1].strip()
         assert re.sub(r'\s+','',guarded[1:-1])==re.sub(r'\s+','',legacy)
     trigger=text.split('on:\n',1)[1].split('permissions:',1)[0]
