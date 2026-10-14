@@ -1,0 +1,4608 @@
+{
+ "authorizes": "NOTHING",
+ "baseMainSha": "0a9fb1d96219f4402d9eb341cabbb616f786e52d",
+ "categories": {
+  "availability": {
+   "AVAILABLE_WITH_CAVEATS": "computable PIT with a disclosed approximation or unverified basis",
+   "NEEDS_SOURCE_OR_IDENTITY_VERIFICATION": "rests on a basis (share count, timing, identity) that is not yet verified",
+   "NOT_IMPLEMENTED": "a source exists or may exist but no derivation exists",
+   "READY_VERIFIED_PIT": "point-in-time, provenance verified, no survivorship conditioning (no historical US factor qualifies today)",
+   "SURVIVOR_CONDITIONED": "computable PIT, but only on names that survived to have a price panel",
+   "UNAVAILABLE": "no reachable PIT source"
+  },
+  "outcomeExposure": {
+   "DATA_QUALITY_BLOCKED": "a study could not be evaluated because of input integrity",
+   "EVIDENCE_AGAINST_SPECIFIC_HYPOTHESIS": "a pre-registered test's own failure criterion fired, scoped to that hypothesis",
+   "EXPLORATORY_INCONCLUSIVE": "read individually or as a sleeve; interval contains zero",
+   "NOT_TESTED": "no committed study related it to a later US return",
+   "PROSPECTIVELY_VALIDATED": "confirmed on signals dated after a registration (none in the US)",
+   "TESTED_OUTCOME_EXPOSED": "used in a study that read US outcomes; reuse on the same history is not independent"
+  }
+ },
+ "evidenceClass": "OUTCOME_BLIND_FACTOR_INVENTORY",
+ "factors": [
+  {
+   "adjustedPriceDependency": "REQUIRES the as-traded price; the sealed close is a total-return index, so the price is reconstructed (round-trip exact on synthetic series)",
+   "availability": {
+    "historical": "AVAILABLE_WITH_CAVEATS",
+    "prospective": "BLOCKED_PENDING_OWNER_APPROVAL: no persistent US daily price ledger runs on signal-history yet (owner-gated collector, docs/us-persistent-daily-collection-v1.md)"
+   },
+   "codePath": "pipeline/us_multifactor_inputs.py:value_yields",
+   "corporateActionAndShareCountDependencies": "numerator per-share figure uses a WEIGHTED-AVERAGE share count whose basis is not context-verified (SEC blocked); a split between filing and observation withholds the yield",
+   "dataSource": "sealed Finnhub PIT per-share field (finnhub_derive) / replay-v16 total-return close divided by the rebuilt dividend-split step",
+   "departedSecurityDependency": "needs a price panel for the name; 212 departed identities have none (survivor-conditioned history)",
+   "directionConvention": "higher = cheaper",
+   "economicMechanism": "risk compensation for distress/duration and mispricing correction of extrapolated expectations",
+   "family": "A_VALUATION",
+   "feasibility": "computable now with a disclosed reconstructed-price and share-basis caveat; a VERIFIED value family needs period-end share counts (SEC)",
+   "formula": "epsTtm / reconstructed as-traded close on the signal date",
+   "id": "A01",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "sector (book yield 25% of rank variance is sector)",
+    "profitability (bookYield vs roe -0.68)",
+    "momentum (-0.2)",
+    "share-count basis"
+   ],
+   "measuredCoverage": {
+    "allSectors": {
+     "denominator": "price- and identity-eligible S&P 500 member-dates on the 55 fixed sample dates (23,160; survivor-conditioned)",
+     "pointer": "/availabilityOverallPct/valueEarnings",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json",
+     "value": 69.054
+    },
+    "nonFinancial": {
+     "denominator": "eligible non-financial S&P 500 member-dates on the 55 fixed sample dates (18,469; survivor-conditioned)",
+     "pointer": "/availabilityNonFinancialPct/earningsYield/pct",
+     "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+     "value": 69.874
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "meanRho": 0.483,
+     "pair": [
+      "earningsYield",
+      "bookYield"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/bookYield/earningsYield",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    },
+    {
+     "meanRho": 0.433,
+     "pair": [
+      "earningsYield",
+      "fcfYield"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/earningsYield/fcfYield",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    },
+    {
+     "meanRho": -0.675,
+     "pair": [
+      "bookYield",
+      "roe"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/bookYield/roe",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    }
+   ],
+   "missingReasonCodes": [
+    "NO_VISIBLE_FILING",
+    "REPORT_STALE",
+    "NON_POSITIVE_NUMERATOR",
+    "SPLIT_BETWEEN_FILING_AND_OBSERVATION",
+    "NO_PRICE"
+   ],
+   "name": "earningsYield",
+   "outcomeExposure": {
+    "note": "read only as part of the production sleeve composite (sleeve percentile), H126, survivor-conditioned; every US 95% CI contains zero; excluded from the 31-feature model (price basis unresolved)",
+    "status": "EXPLORATORY_INCONCLUSIVE",
+    "studies": [
+     "four-factor-signal-attribution-audit-v1"
+    ]
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "filing acceptance (strict next day) and the signal-date close",
+   "sectorApplicability": "defined in all sectors; book yield is the conventional metric for banks, earnings/FCF yield is not comparable for them",
+   "uniqueVariation": {
+    "controlR2Mean": 0.353,
+    "medianNamesPerDate": 199.0,
+    "noiseFloorR2": 0.082,
+    "ownFamilyPeers": [
+     "bookYield",
+     "fcfYield"
+    ],
+    "ownFamilyR2": 0.32,
+    "pointer": "/uniqueVariationNonFinancial/earningsYield",
+    "sectorR2SameRows": 0.132,
+    "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+    "uniqueShareMean": 0.647
+   },
+   "units": "ratio (1/yr of price)"
+  },
+  {
+   "adjustedPriceDependency": "REQUIRES the as-traded price; the sealed close is a total-return index, so the price is reconstructed (round-trip exact on synthetic series)",
+   "availability": {
+    "historical": "AVAILABLE_WITH_CAVEATS",
+    "prospective": "BLOCKED_PENDING_OWNER_APPROVAL: no persistent US daily price ledger runs on signal-history yet (owner-gated collector, docs/us-persistent-daily-collection-v1.md)"
+   },
+   "codePath": "pipeline/us_multifactor_inputs.py:value_yields",
+   "corporateActionAndShareCountDependencies": "numerator per-share figure uses a WEIGHTED-AVERAGE share count whose basis is not context-verified (SEC blocked); a split between filing and observation withholds the yield",
+   "dataSource": "sealed Finnhub PIT per-share field (finnhub_derive) / replay-v16 total-return close divided by the rebuilt dividend-split step",
+   "departedSecurityDependency": "needs a price panel for the name; 212 departed identities have none (survivor-conditioned history)",
+   "directionConvention": "higher = cheaper",
+   "economicMechanism": "risk compensation for distress/duration and mispricing correction of extrapolated expectations",
+   "family": "A_VALUATION",
+   "feasibility": "computable now with a disclosed reconstructed-price and share-basis caveat; a VERIFIED value family needs period-end share counts (SEC)",
+   "formula": "bookValuePerShare / reconstructed as-traded close on the signal date",
+   "id": "A02",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "sector (book yield 25% of rank variance is sector)",
+    "profitability (bookYield vs roe -0.68)",
+    "momentum (-0.2)",
+    "share-count basis"
+   ],
+   "measuredCoverage": {
+    "allSectors": {
+     "denominator": "price- and identity-eligible S&P 500 member-dates on the 55 fixed sample dates (23,160; survivor-conditioned)",
+     "pointer": "/availabilityOverallPct/valueBook",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json",
+     "value": 73.411
+    },
+    "nonFinancial": {
+     "denominator": "eligible non-financial S&P 500 member-dates on the 55 fixed sample dates (18,469; survivor-conditioned)",
+     "pointer": "/availabilityNonFinancialPct/bookYield/pct",
+     "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+     "value": 74.942
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "meanRho": 0.483,
+     "pair": [
+      "earningsYield",
+      "bookYield"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/bookYield/earningsYield",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    },
+    {
+     "meanRho": 0.433,
+     "pair": [
+      "earningsYield",
+      "fcfYield"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/earningsYield/fcfYield",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    },
+    {
+     "meanRho": -0.675,
+     "pair": [
+      "bookYield",
+      "roe"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/bookYield/roe",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    }
+   ],
+   "missingReasonCodes": [
+    "NO_VISIBLE_FILING",
+    "REPORT_STALE",
+    "NON_POSITIVE_NUMERATOR",
+    "SPLIT_BETWEEN_FILING_AND_OBSERVATION",
+    "NO_PRICE"
+   ],
+   "name": "bookYield",
+   "outcomeExposure": {
+    "note": "read only as part of the production sleeve composite (sleeve percentile), H126, survivor-conditioned; every US 95% CI contains zero; excluded from the 31-feature model (price basis unresolved)",
+    "status": "EXPLORATORY_INCONCLUSIVE",
+    "studies": [
+     "four-factor-signal-attribution-audit-v1"
+    ]
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "filing acceptance (strict next day) and the signal-date close",
+   "sectorApplicability": "defined in all sectors; book yield is the conventional metric for banks, earnings/FCF yield is not comparable for them",
+   "uniqueVariation": {
+    "controlR2Mean": 0.666,
+    "medianNamesPerDate": 221.0,
+    "noiseFloorR2": 0.076,
+    "ownFamilyPeers": [
+     "earningsYield",
+     "fcfYield"
+    ],
+    "ownFamilyR2": 0.199,
+    "pointer": "/uniqueVariationNonFinancial/bookYield",
+    "sectorR2SameRows": 0.248,
+    "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+    "uniqueShareMean": 0.334
+   },
+   "units": "ratio (1/yr of price)"
+  },
+  {
+   "adjustedPriceDependency": "REQUIRES the as-traded price; the sealed close is a total-return index, so the price is reconstructed (round-trip exact on synthetic series)",
+   "availability": {
+    "historical": "AVAILABLE_WITH_CAVEATS",
+    "prospective": "BLOCKED_PENDING_OWNER_APPROVAL: no persistent US daily price ledger runs on signal-history yet (owner-gated collector, docs/us-persistent-daily-collection-v1.md)"
+   },
+   "codePath": "pipeline/us_multifactor_inputs.py:value_yields",
+   "corporateActionAndShareCountDependencies": "numerator per-share figure uses a WEIGHTED-AVERAGE share count whose basis is not context-verified (SEC blocked); a split between filing and observation withholds the yield",
+   "dataSource": "sealed Finnhub PIT per-share field (finnhub_derive) / replay-v16 total-return close divided by the rebuilt dividend-split step",
+   "departedSecurityDependency": "needs a price panel for the name; 212 departed identities have none (survivor-conditioned history)",
+   "directionConvention": "higher = cheaper",
+   "economicMechanism": "risk compensation for distress/duration and mispricing correction of extrapolated expectations",
+   "family": "A_VALUATION",
+   "feasibility": "computable now with a disclosed reconstructed-price and share-basis caveat; a VERIFIED value family needs period-end share counts (SEC)",
+   "formula": "fcfPerShare / reconstructed as-traded close on the signal date",
+   "id": "A03",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "sector (book yield 25% of rank variance is sector)",
+    "profitability (bookYield vs roe -0.68)",
+    "momentum (-0.2)",
+    "share-count basis"
+   ],
+   "measuredCoverage": {
+    "allSectors": {
+     "denominator": "price- and identity-eligible S&P 500 member-dates on the 55 fixed sample dates (23,160; survivor-conditioned)",
+     "pointer": "/availabilityOverallPct/valueFcf",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json",
+     "value": 66.481
+    },
+    "nonFinancial": {
+     "denominator": "eligible non-financial S&P 500 member-dates on the 55 fixed sample dates (18,469; survivor-conditioned)",
+     "pointer": "/availabilityNonFinancialPct/fcfYield/pct",
+     "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+     "value": 71.996
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "meanRho": 0.483,
+     "pair": [
+      "earningsYield",
+      "bookYield"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/bookYield/earningsYield",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    },
+    {
+     "meanRho": 0.433,
+     "pair": [
+      "earningsYield",
+      "fcfYield"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/earningsYield/fcfYield",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    },
+    {
+     "meanRho": -0.675,
+     "pair": [
+      "bookYield",
+      "roe"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/bookYield/roe",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    }
+   ],
+   "missingReasonCodes": [
+    "NO_VISIBLE_FILING",
+    "REPORT_STALE",
+    "NON_POSITIVE_NUMERATOR",
+    "SPLIT_BETWEEN_FILING_AND_OBSERVATION",
+    "NO_PRICE"
+   ],
+   "name": "fcfYield",
+   "outcomeExposure": {
+    "note": "read only as part of the production sleeve composite (sleeve percentile), H126, survivor-conditioned; every US 95% CI contains zero; excluded from the 31-feature model (price basis unresolved)",
+    "status": "EXPLORATORY_INCONCLUSIVE",
+    "studies": [
+     "four-factor-signal-attribution-audit-v1"
+    ]
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "filing acceptance (strict next day) and the signal-date close",
+   "sectorApplicability": "defined in all sectors; book yield is the conventional metric for banks, earnings/FCF yield is not comparable for them",
+   "uniqueVariation": {
+    "controlR2Mean": 0.341,
+    "medianNamesPerDate": 212.5,
+    "noiseFloorR2": 0.079,
+    "ownFamilyPeers": [
+     "earningsYield",
+     "bookYield"
+    ],
+    "ownFamilyR2": 0.187,
+    "pointer": "/uniqueVariationNonFinancial/fcfYield",
+    "sectorR2SameRows": 0.169,
+    "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+    "uniqueShareMean": 0.659
+   },
+   "units": "ratio (1/yr of price)"
+  },
+  {
+   "adjustedPriceDependency": "as-traded price",
+   "availability": {
+    "historical": "NOT_IMPLEMENTED",
+    "prospective": "NOT_IMPLEMENTED"
+   },
+   "codePath": "NOT_IMPLEMENTED",
+   "corporateActionAndShareCountDependencies": "needs verified shares outstanding",
+   "dataSource": "needs PIT market cap, debt and cash detail, D&A",
+   "departedSecurityDependency": "needs a price panel for the name; 212 departed identities have none (survivor-conditioned history)",
+   "directionConvention": "lower = cheaper",
+   "economicMechanism": "capital-structure-neutral valuation",
+   "family": "A_VALUATION",
+   "feasibility": "blocked: finnhub_derive.FLOWS has no D&A, the store has total liabilities only, and market cap needs verified shares",
+   "formula": "(market cap + net debt) / EBITDA TTM",
+   "id": "A04",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "leverage",
+    "sector"
+   ],
+   "measuredCoverage": {
+    "status": "UNMEASURED"
+   },
+   "measuredRedundancy": [
+    {
+     "status": "UNMEASURED"
+    }
+   ],
+   "missingReasonCodes": [
+    "NO_DEPRECIATION_CHAIN_IN_FINNHUB_DERIVE",
+    "NO_DEBT_OR_CASH_DETAIL",
+    "MARKET_CAP_PIT_UNRESOLVED"
+   ],
+   "name": "evToEbitda",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "n/a",
+   "publiclyObservableFrom": "n/a",
+   "sectorApplicability": "economically meaningful outside Financials and Real Estate; banks, insurers and REITs have no comparable operating line",
+   "uniqueVariation": null,
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "as-traded price",
+   "availability": {
+    "historical": "NEEDS_SOURCE_OR_IDENTITY_VERIFICATION",
+    "prospective": "NOT_IMPLEMENTED"
+   },
+   "codePath": "NOT_IMPLEMENTED",
+   "corporateActionAndShareCountDependencies": "needs verified shares outstanding",
+   "dataSource": "operating income TTM exists; EV does not",
+   "departedSecurityDependency": "needs a price panel for the name; 212 departed identities have none (survivor-conditioned history)",
+   "directionConvention": "lower = cheaper",
+   "economicMechanism": "capital-structure-neutral valuation",
+   "family": "A_VALUATION",
+   "feasibility": "blocked on verified market cap and net debt",
+   "formula": "(market cap + net debt) / operating income TTM",
+   "id": "A05",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "leverage"
+   ],
+   "measuredCoverage": {
+    "status": "UNMEASURED"
+   },
+   "measuredRedundancy": [
+    {
+     "status": "UNMEASURED"
+    }
+   ],
+   "missingReasonCodes": [
+    "MARKET_CAP_PIT_UNRESOLVED",
+    "NO_DEBT_OR_CASH_DETAIL"
+   ],
+   "name": "evToEbit",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "n/a",
+   "publiclyObservableFrom": "n/a",
+   "sectorApplicability": "economically meaningful outside Financials and Real Estate; banks, insurers and REITs have no comparable operating line",
+   "uniqueVariation": null,
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "as-traded price",
+   "availability": {
+    "historical": "NEEDS_SOURCE_OR_IDENTITY_VERIFICATION",
+    "prospective": "BLOCKED_PENDING_OWNER_APPROVAL: no persistent US daily price ledger runs on signal-history yet (owner-gated collector, docs/us-persistent-daily-collection-v1.md)"
+   },
+   "codePath": "NOT_IMPLEMENTED",
+   "corporateActionAndShareCountDependencies": "market-cap proxy rests on an unverified weighted-average share basis",
+   "dataSource": "revenue TTM (finnhub_derive) / share-count x as-traded close proxy",
+   "departedSecurityDependency": "needs a price panel for the name; 212 departed identities have none (survivor-conditioned history)",
+   "directionConvention": "higher = cheaper",
+   "economicMechanism": "valuation robust to negative earnings",
+   "family": "A_VALUATION",
+   "feasibility": "only with the market-cap PROXY as a declared sensitivity; never a primary value measure",
+   "formula": "revenue TTM / market cap",
+   "id": "A06",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "margin level",
+    "sector"
+   ],
+   "measuredCoverage": {
+    "marketCapProxy": {
+     "denominator": "eligible non-financial S&P 500 member-dates on the 55 fixed sample dates (18,469; survivor-conditioned)",
+     "pointer": "/overall/logMarketCapProxyPct",
+     "source": "docs/us-readiness/us-alpha-phase3-readiness-v1.json",
+     "value": 76.225
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "status": "UNMEASURED"
+    }
+   ],
+   "missingReasonCodes": [
+    "SHARES_NOT_STATED",
+    "SPLIT_BETWEEN_FILING_AND_OBSERVATION"
+   ],
+   "name": "salesYield",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "filing acceptance",
+   "sectorApplicability": "economically meaningful outside Financials and Real Estate; banks, insurers and REITs have no comparable operating line",
+   "uniqueVariation": null,
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "as A01-A03",
+   "availability": {
+    "historical": "AVAILABLE_WITH_CAVEATS",
+    "prospective": "BLOCKED_PENDING_OWNER_APPROVAL: no persistent US daily price ledger runs on signal-history yet (owner-gated collector, docs/us-persistent-daily-collection-v1.md)"
+   },
+   "codePath": "transform of A01-A03 using the dated S&P 500 snapshot sectors",
+   "corporateActionAndShareCountDependencies": "as A01-A03",
+   "dataSource": "data/research/us-capital-allocation-alpha-v1/sp500-snapshot-sectors.json.gz",
+   "departedSecurityDependency": "needs a price panel for the name; 212 departed identities have none (survivor-conditioned history)",
+   "directionConvention": "higher = cheaper than sector peers",
+   "economicMechanism": "removes sector-level valuation bets",
+   "family": "A_VALUATION",
+   "feasibility": "a design choice for A01-A03, not a separate hypothesis",
+   "formula": "within-sector percentile of A01-A03",
+   "id": "A07",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "sector history exists only for the 195 dated snapshots"
+   ],
+   "measuredCoverage": {
+    "note": "as A01-A03"
+   },
+   "measuredRedundancy": [
+    {
+     "note": "a normalisation of A01-A03, not new information"
+    }
+   ],
+   "missingReasonCodes": [
+    "as A01-A03",
+    "UNCLASSIFIED sector"
+   ],
+   "name": "sectorRelativeValuation",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "as A01-A03",
+   "sectorApplicability": "within-sector by construction",
+   "uniqueVariation": null,
+   "units": "percentile"
+  },
+  {
+   "adjustedPriceDependency": "as A01-A03",
+   "availability": {
+    "historical": "NOT_IMPLEMENTED",
+    "prospective": "NOT_IMPLEMENTED"
+   },
+   "codePath": "NOT_IMPLEMENTED",
+   "corporateActionAndShareCountDependencies": "as A01-A03",
+   "dataSource": "A01-A03 history",
+   "departedSecurityDependency": "needs a price panel for the name; 212 departed identities have none (survivor-conditioned history)",
+   "directionConvention": "positive = re-rated cheaper",
+   "economicMechanism": "re-rating",
+   "family": "A_VALUATION",
+   "feasibility": "derivable; low priority because its price leg duplicates momentum",
+   "formula": "change in A01-A03 over a trailing window",
+   "id": "A08",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "price momentum mechanically enters the change in a price-denominated yield"
+   ],
+   "measuredCoverage": {
+    "status": "UNMEASURED"
+   },
+   "measuredRedundancy": [
+    {
+     "note": "docs/us-alpha-research-design-v1.md candidate E: orthogonality to value and momentum is the open question"
+    }
+   ],
+   "missingReasonCodes": [
+    "as A01-A03"
+   ],
+   "name": "valuationChange",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "as A01-A03",
+   "sectorApplicability": "as A01-A03",
+   "uniqueVariation": null,
+   "units": "ratio change"
+  },
+  {
+   "adjustedPriceDependency": "n/a",
+   "availability": {
+    "historical": "UNAVAILABLE",
+    "prospective": "UNAVAILABLE"
+   },
+   "codePath": "NOT_IMPLEMENTED",
+   "corporateActionAndShareCountDependencies": "n/a",
+   "dataSource": "historical consensus",
+   "departedSecurityDependency": "n/a",
+   "directionConvention": "higher = cheaper",
+   "economicMechanism": "expectations-based value",
+   "family": "A_VALUATION",
+   "feasibility": "paid source (Finnhub historical estimates tier)",
+   "formula": "consensus forward EPS / price",
+   "id": "A09",
+   "identityRisk": "n/a",
+   "majorConfounders": [
+    "analyst coverage"
+   ],
+   "measuredCoverage": {
+    "status": "UNMEASURED"
+   },
+   "measuredRedundancy": [
+    {
+     "status": "UNMEASURED"
+    }
+   ],
+   "missingReasonCodes": [
+    "HISTORICAL_CONSENSUS_UNAVAILABLE"
+   ],
+   "name": "forwardEarningsYield",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "vintage-stamped consensus required",
+   "publiclyObservableFrom": "n/a",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": null,
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "BLOCKED_SOURCE: Finnhub financials-reported omits the balance sheet on filings first served from 2026-10-07; total assets unresolved (docs/us-finnhub-balance-sheet-coverage-ko.md, docs/us-total-assets-source-rescue-ko.md)"
+   },
+   "codePath": "pipeline/finnhub_derive.py:derive_fields (sealed PIT_FUNDAMENTALS_V1)",
+   "corporateActionAndShareCountDependencies": "none (dollar amounts from one filing chain)",
+   "dataSource": "Finnhub financials-reported (SEC XBRL as filed)",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "higher = more profitable",
+   "economicMechanism": "persistent profitability is under-priced / quality premium",
+   "family": "B_PROFITABILITY_QUALITY",
+   "feasibility": "computable now",
+   "formula": "net income TTM / equity (positive equity only)",
+   "id": "B01",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "sector",
+    "leverage (roe)",
+    "size"
+   ],
+   "measuredCoverage": {
+    "nonFinancial": {
+     "denominator": "eligible non-financial S&P 500 member-dates on the 55 fixed sample dates (18,469; survivor-conditioned)",
+     "pointer": "/availabilityNonFinancialPct/roe/pct",
+     "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+     "value": 87.958
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "meanRho": 0.345,
+     "pair": [
+      "roe",
+      "operatingMargin"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/operatingMargin/roe",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    },
+    {
+     "meanRho": 0.59,
+     "pair": [
+      "cashOperatingProfitability",
+      "roe"
+     ],
+     "pointer": "/orderingOverlapMeanSpearman/cashOperatingProfitability/roe",
+     "source": "docs/us-readiness/us-alpha-phase3-readiness-v1.json"
+    }
+   ],
+   "missingReasonCodes": [
+    "NO_VISIBLE_FILING",
+    "REPORT_STALE_OVER_180_DAYS",
+    "TTM_INCOMPLETE_CHAIN",
+    "DENOMINATOR_NON_POSITIVE"
+   ],
+   "name": "roe",
+   "outcomeExposure": {
+    "note": "inside the 31-feature US model (Ridge/HGBR, annual walk-forward, H126 rank target); model-level NO_MODEL_EVIDENCE, no per-feature reading was committed. Class C also covers positive-but-unstable patterns, so it is not evidence against the feature. Re-testing it on the same history is not a new hypothesis.",
+    "status": "TESTED_OUTCOME_EXPOSED",
+    "studies": [
+     "regional-alpha-model-v1",
+     "four-factor-signal-attribution-audit-v1"
+    ]
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": {
+    "controlR2Mean": 0.723,
+    "medianNamesPerDate": 219.5,
+    "noiseFloorR2": 0.075,
+    "ownFamilyPeers": [
+     "operatingProfitabilityToAssets",
+     "operatingMargin",
+     "profitMargin"
+    ],
+    "ownFamilyR2": 0.683,
+    "pointer": "/uniqueVariationNonFinancial/roe",
+    "sectorR2SameRows": 0.159,
+    "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+    "uniqueShareMean": 0.277
+   },
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "AVAILABLE_WITH_CAVEATS: income statement still served; prospective price ledger still needed for eligibility"
+   },
+   "codePath": "pipeline/finnhub_derive.py:derive_fields (sealed PIT_FUNDAMENTALS_V1)",
+   "corporateActionAndShareCountDependencies": "none (dollar amounts from one filing chain)",
+   "dataSource": "Finnhub financials-reported (SEC XBRL as filed)",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "higher = more profitable",
+   "economicMechanism": "persistent profitability is under-priced / quality premium",
+   "family": "B_PROFITABILITY_QUALITY",
+   "feasibility": "computable now",
+   "formula": "operating income TTM / revenue TTM",
+   "id": "B02",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "sector",
+    "leverage (roe)",
+    "size"
+   ],
+   "measuredCoverage": {
+    "nonFinancial": {
+     "denominator": "eligible non-financial S&P 500 member-dates on the 55 fixed sample dates (18,469; survivor-conditioned)",
+     "pointer": "/availabilityNonFinancialPct/operatingMargin/pct",
+     "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+     "value": 84.033
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "meanRho": 0.345,
+     "pair": [
+      "roe",
+      "operatingMargin"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/operatingMargin/roe",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    },
+    {
+     "meanRho": 0.59,
+     "pair": [
+      "cashOperatingProfitability",
+      "roe"
+     ],
+     "pointer": "/orderingOverlapMeanSpearman/cashOperatingProfitability/roe",
+     "source": "docs/us-readiness/us-alpha-phase3-readiness-v1.json"
+    }
+   ],
+   "missingReasonCodes": [
+    "NO_VISIBLE_FILING",
+    "REPORT_STALE_OVER_180_DAYS",
+    "TTM_INCOMPLETE_CHAIN",
+    "DENOMINATOR_NON_POSITIVE"
+   ],
+   "name": "operatingMargin",
+   "outcomeExposure": {
+    "note": "inside the 31-feature US model (Ridge/HGBR, annual walk-forward, H126 rank target); model-level NO_MODEL_EVIDENCE, no per-feature reading was committed. Class C also covers positive-but-unstable patterns, so it is not evidence against the feature. Re-testing it on the same history is not a new hypothesis.",
+    "status": "TESTED_OUTCOME_EXPOSED",
+    "studies": [
+     "regional-alpha-model-v1",
+     "four-factor-signal-attribution-audit-v1"
+    ]
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance",
+   "sectorApplicability": "economically meaningful outside Financials and Real Estate; banks, insurers and REITs have no comparable operating line",
+   "uniqueVariation": {
+    "controlR2Mean": 0.396,
+    "medianNamesPerDate": 198.5,
+    "noiseFloorR2": 0.084,
+    "ownFamilyPeers": [
+     "operatingProfitabilityToAssets",
+     "roe",
+     "profitMargin"
+    ],
+    "ownFamilyR2": 0.817,
+    "pointer": "/uniqueVariationNonFinancial/operatingMargin",
+    "sectorR2SameRows": 0.16,
+    "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+    "uniqueShareMean": 0.604
+   },
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "AVAILABLE_WITH_CAVEATS: income statement still served; prospective price ledger still needed for eligibility"
+   },
+   "codePath": "pipeline/finnhub_derive.py:derive_fields (sealed PIT_FUNDAMENTALS_V1)",
+   "corporateActionAndShareCountDependencies": "none (dollar amounts from one filing chain)",
+   "dataSource": "Finnhub financials-reported (SEC XBRL as filed)",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "higher = more profitable",
+   "economicMechanism": "persistent profitability is under-priced / quality premium",
+   "family": "B_PROFITABILITY_QUALITY",
+   "feasibility": "computable now",
+   "formula": "net income TTM / revenue TTM",
+   "id": "B03",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "sector",
+    "leverage (roe)",
+    "size"
+   ],
+   "measuredCoverage": {
+    "nonFinancial": {
+     "denominator": "eligible non-financial S&P 500 member-dates on the 55 fixed sample dates (18,469; survivor-conditioned)",
+     "pointer": "/availabilityNonFinancialPct/profitMargin/pct",
+     "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+     "value": 91.391
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "meanRho": 0.345,
+     "pair": [
+      "roe",
+      "operatingMargin"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/operatingMargin/roe",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    },
+    {
+     "meanRho": 0.59,
+     "pair": [
+      "cashOperatingProfitability",
+      "roe"
+     ],
+     "pointer": "/orderingOverlapMeanSpearman/cashOperatingProfitability/roe",
+     "source": "docs/us-readiness/us-alpha-phase3-readiness-v1.json"
+    }
+   ],
+   "missingReasonCodes": [
+    "NO_VISIBLE_FILING",
+    "REPORT_STALE_OVER_180_DAYS",
+    "TTM_INCOMPLETE_CHAIN",
+    "DENOMINATOR_NON_POSITIVE"
+   ],
+   "name": "profitMargin",
+   "outcomeExposure": {
+    "note": "inside the 31-feature US model (Ridge/HGBR, annual walk-forward, H126 rank target); model-level NO_MODEL_EVIDENCE, no per-feature reading was committed. Class C also covers positive-but-unstable patterns, so it is not evidence against the feature. Re-testing it on the same history is not a new hypothesis.",
+    "status": "TESTED_OUTCOME_EXPOSED",
+    "studies": [
+     "regional-alpha-model-v1",
+     "four-factor-signal-attribution-audit-v1"
+    ]
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance",
+   "sectorApplicability": "economically meaningful outside Financials and Real Estate; banks, insurers and REITs have no comparable operating line",
+   "uniqueVariation": {
+    "controlR2Mean": 0.461,
+    "medianNamesPerDate": 217.0,
+    "noiseFloorR2": 0.077,
+    "ownFamilyPeers": [
+     "operatingProfitabilityToAssets",
+     "roe",
+     "operatingMargin"
+    ],
+    "ownFamilyR2": 0.816,
+    "pointer": "/uniqueVariationNonFinancial/profitMargin",
+    "sectorR2SameRows": 0.172,
+    "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+    "uniqueShareMean": 0.539
+   },
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "BLOCKED_SOURCE: Finnhub financials-reported omits the balance sheet on filings first served from 2026-10-07; total assets unresolved (docs/us-finnhub-balance-sheet-coverage-ko.md, docs/us-total-assets-source-rescue-ko.md)"
+   },
+   "codePath": "pipeline/us_cash_profitability.py:features_as_of",
+   "corporateActionAndShareCountDependencies": "none",
+   "dataSource": "Finnhub financials-reported",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "higher = more profitable",
+   "economicMechanism": "accrual-based operating profitability (Novy-Marx / Ball et al. family)",
+   "family": "B_PROFITABILITY_QUALITY",
+   "feasibility": "computable now; P4 control",
+   "formula": "operating income TTM / total assets",
+   "id": "B04",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "sector",
+    "asset intensity"
+   ],
+   "measuredCoverage": {
+    "nonFinancial": {
+     "denominator": "eligible non-financial S&P 500 member-dates on the 55 fixed sample dates (18,469; survivor-conditioned)",
+     "pointer": "/overall/operatingProfitabilityToAssetsPct",
+     "source": "docs/us-readiness/us-alpha-phase3-readiness-v1.json",
+     "value": 84.645
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "meanRho": 0.771,
+     "pair": [
+      "cashOperatingProfitability",
+      "operatingProfitabilityToAssets"
+     ],
+     "pointer": "/orderingOverlapMeanSpearman/cashOperatingProfitability/operatingProfitabilityToAssets",
+     "source": "docs/us-readiness/us-alpha-phase3-readiness-v1.json"
+    }
+   ],
+   "missingReasonCodes": [
+    "OPERATING_INCOME_TTM_INCOMPLETE_CHAIN",
+    "REPORT_STALE_OVER_180_DAYS",
+    "NO_VISIBLE_FILING",
+    "ASSETS_NOT_STATED",
+    "ASSETS_NON_POSITIVE"
+   ],
+   "name": "operatingProfitabilityToAssets",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance",
+   "sectorApplicability": "economically meaningful outside Financials and Real Estate; banks, insurers and REITs have no comparable operating line",
+   "uniqueVariation": {
+    "controlR2Mean": 0.705,
+    "medianNamesPerDate": 199.0,
+    "noiseFloorR2": 0.082,
+    "ownFamilyPeers": [
+     "roe",
+     "operatingMargin",
+     "profitMargin"
+    ],
+    "ownFamilyR2": 0.718,
+    "pointer": "/uniqueVariationNonFinancial/operatingProfitabilityToAssets",
+    "sectorR2SameRows": 0.195,
+    "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+    "uniqueShareMean": 0.295
+   },
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "BLOCKED_SOURCE: Finnhub financials-reported omits the balance sheet on filings first served from 2026-10-07; total assets unresolved (docs/us-finnhub-balance-sheet-coverage-ko.md, docs/us-total-assets-source-rescue-ko.md)"
+   },
+   "codePath": "pipeline/us_cash_profitability.py:features_as_of (US_CASH_PROFITABILITY_CANDIDATE_V1)",
+   "corporateActionAndShareCountDependencies": "none",
+   "dataSource": "Finnhub financials-reported",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "higher = more cash profitable",
+   "economicMechanism": "cash earnings are harder to manage; investors overweight the accrual component",
+   "family": "B_PROFITABILITY_QUALITY",
+   "feasibility": "computable now historically; prospectively blocked on total assets",
+   "formula": "operating cash flow TTM / total assets",
+   "id": "B05",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "accrual operating profitability (rank rho 0.77)",
+    "book yield (-0.56)",
+    "sector (18% of rank variance)"
+   ],
+   "measuredCoverage": {
+    "nonFinancial": {
+     "denominator": "eligible non-financial S&P 500 member-dates on the 55 fixed sample dates (18,469; survivor-conditioned)",
+     "pointer": "/overall/cashOperatingProfitabilityPct",
+     "source": "docs/us-readiness/us-alpha-phase3-readiness-v1.json",
+     "value": 92.062
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "meanRho": 0.771,
+     "pair": [
+      "cashOperatingProfitability",
+      "operatingProfitabilityToAssets"
+     ],
+     "pointer": "/orderingOverlapMeanSpearman/cashOperatingProfitability/operatingProfitabilityToAssets",
+     "source": "docs/us-readiness/us-alpha-phase3-readiness-v1.json"
+    },
+    {
+     "meanRho": -0.361,
+     "pair": [
+      "cashOperatingProfitability",
+      "accrualsToAssets"
+     ],
+     "pointer": "/orderingOverlapMeanSpearman/cashOperatingProfitability/accrualsToAssets",
+     "source": "docs/us-readiness/us-alpha-phase3-readiness-v1.json"
+    },
+    {
+     "meanRho": -0.56,
+     "pair": [
+      "cashOperatingProfitability",
+      "bookYield"
+     ],
+     "pointer": "/orderingOverlapMeanSpearman/cashOperatingProfitability/bookYield",
+     "source": "docs/us-readiness/us-alpha-phase3-readiness-v1.json"
+    }
+   ],
+   "missingReasonCodes": [
+    "ASSETS_NON_POSITIVE",
+    "ASSETS_NOT_STATED",
+    "AVAILABLE",
+    "NO_VISIBLE_FILING",
+    "OCF_TTM_INCOMPLETE_CHAIN",
+    "REPORT_STALE_OVER_180_DAYS"
+   ],
+   "name": "cashOperatingProfitability",
+   "outcomeExposure": {
+    "note": "P3 synthetic calibration PASS; the one-shot exploratory P4 has not read an outcome",
+    "status": "NOT_TESTED",
+    "studies": [
+     "us-cash-profitability-signal-v1 (P4 frozen, not executed)"
+    ]
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance",
+   "sectorApplicability": "economically meaningful outside Financials and Real Estate; banks, insurers and REITs have no comparable operating line",
+   "uniqueVariation": {
+    "controlR2Mean": 0.7,
+    "medianNamesPerDate": 199.0,
+    "noiseFloorR2": 0.082,
+    "ownFamilyPeers": [
+     "accrualsToAssets"
+    ],
+    "ownFamilyR2": 0.132,
+    "pointer": "/uniqueVariationNonFinancial/cashOperatingProfitability",
+    "sectorR2SameRows": 0.225,
+    "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+    "uniqueShareMean": 0.3
+   },
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "BLOCKED_SOURCE: Finnhub financials-reported omits the balance sheet on filings first served from 2026-10-07; total assets unresolved (docs/us-finnhub-balance-sheet-coverage-ko.md, docs/us-total-assets-source-rescue-ko.md)"
+   },
+   "codePath": "pipeline/us_cash_profitability.py:features_as_of",
+   "corporateActionAndShareCountDependencies": "none",
+   "dataSource": "Finnhub financials-reported",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "higher = more accrual-heavy (lower earnings quality)",
+   "economicMechanism": "accrual anomaly (Sloan)",
+   "family": "B_PROFITABILITY_QUALITY",
+   "feasibility": "computable now",
+   "formula": "(net income TTM - operating cash flow TTM) / total assets",
+   "id": "B06",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "growth (accruals rise with expansion)",
+    "asset growth"
+   ],
+   "measuredCoverage": {
+    "nonFinancial": {
+     "denominator": "eligible non-financial S&P 500 member-dates on the 55 fixed sample dates (18,469; survivor-conditioned)",
+     "pointer": "/overall/accrualsToAssetsPct",
+     "source": "docs/us-readiness/us-alpha-phase3-readiness-v1.json",
+     "value": 91.662
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "meanRho": 0.136,
+     "pair": [
+      "accrualsToAssets",
+      "operatingProfitabilityToAssets"
+     ],
+     "pointer": "/orderingOverlapMeanSpearman/accrualsToAssets/operatingProfitabilityToAssets",
+     "source": "docs/us-readiness/us-alpha-phase3-readiness-v1.json"
+    }
+   ],
+   "missingReasonCodes": [
+    "ASSETS_NON_POSITIVE",
+    "ASSETS_NOT_STATED",
+    "AVAILABLE",
+    "NET_INCOME_TTM_INCOMPLETE_CHAIN",
+    "NO_VISIBLE_FILING",
+    "OCF_TTM_INCOMPLETE_CHAIN",
+    "REPORT_STALE_OVER_180_DAYS"
+   ],
+   "name": "accrualsToAssets",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance",
+   "sectorApplicability": "economically meaningful outside Financials and Real Estate; banks, insurers and REITs have no comparable operating line",
+   "uniqueVariation": {
+    "controlR2Mean": 0.286,
+    "medianNamesPerDate": 199.0,
+    "noiseFloorR2": 0.082,
+    "ownFamilyPeers": [
+     "cashOperatingProfitability"
+    ],
+    "ownFamilyR2": 0.132,
+    "pointer": "/uniqueVariationNonFinancial/accrualsToAssets",
+    "sectorR2SameRows": 0.11,
+    "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+    "uniqueShareMean": 0.714
+   },
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "AVAILABLE_WITH_CAVEATS: income and cash-flow statements still served"
+   },
+   "codePath": "pipeline/accounting_quality.py:derive_us_fields (ocfToNetIncomePct)",
+   "corporateActionAndShareCountDependencies": "none",
+   "dataSource": "Finnhub financials-reported",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "higher = more cash-backed earnings",
+   "economicMechanism": "earnings quality",
+   "family": "B_PROFITABILITY_QUALITY",
+   "feasibility": "computable now; redundant with B05/B06 by construction",
+   "formula": "OCF / NI (positive net income only)",
+   "id": "B07",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "undefined when NI <= 0, so the measured set is selected on profitability"
+   ],
+   "measuredCoverage": {
+    "note": "AGENTS.md v2.24 reports ocfToNetIncomePct on 97.39% / 87.00% of US FILINGS (store-level, not member-date); not measured on the weekly member-date grid"
+   },
+   "measuredRedundancy": [
+    {
+     "note": "same information as B05/B06 in ratio form; not measured on the grid"
+    }
+   ],
+   "missingReasonCodes": [
+    "NON_POSITIVE_NET_INCOME",
+    "TTM_INCOMPLETE_CHAIN"
+   ],
+   "name": "cashConversion",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance",
+   "sectorApplicability": "economically meaningful outside Financials and Real Estate; banks, insurers and REITs have no comparable operating line",
+   "uniqueVariation": null,
+   "units": "percent"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "AVAILABLE_WITH_CAVEATS: income and cash-flow statements still served"
+   },
+   "codePath": "pipeline/accounting_quality.py:derive_us_fields (fcfToNetIncomePct)",
+   "corporateActionAndShareCountDependencies": "none",
+   "dataSource": "Finnhub financials-reported",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "higher = more cash-backed earnings",
+   "economicMechanism": "earnings quality",
+   "family": "B_PROFITABILITY_QUALITY",
+   "feasibility": "computable now; redundant with B05/B06 by construction",
+   "formula": "FCF / NI (positive net income only)",
+   "id": "B08",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "undefined when NI <= 0, so the measured set is selected on profitability"
+   ],
+   "measuredCoverage": {
+    "note": "AGENTS.md v2.24 reports fcfToNetIncomePct on 97.39% / 87.00% of US FILINGS (store-level, not member-date); not measured on the weekly member-date grid"
+   },
+   "measuredRedundancy": [
+    {
+     "note": "same information as B05/B06 in ratio form; not measured on the grid"
+    }
+   ],
+   "missingReasonCodes": [
+    "NON_POSITIVE_NET_INCOME",
+    "TTM_INCOMPLETE_CHAIN"
+   ],
+   "name": "fcfToNetIncome",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance",
+   "sectorApplicability": "economically meaningful outside Financials and Real Estate; banks, insurers and REITs have no comparable operating line",
+   "uniqueVariation": null,
+   "units": "percent"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "AVAILABLE_WITH_CAVEATS"
+   },
+   "codePath": "pipeline/us_shareholder_distribution.py (PR #220 engine)",
+   "corporateActionAndShareCountDependencies": "none",
+   "dataSource": "Finnhub financials-reported",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "higher = less reinvestment need",
+   "economicMechanism": "capital intensity / cash confirmation",
+   "family": "B_PROFITABILITY_QUALITY",
+   "feasibility": "computable at lower coverage than B05 (strict exact-concept rule)",
+   "formula": "(OCF - capex) / OCF, OCF > 0",
+   "id": "B09",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "capex intensity"
+   ],
+   "measuredCoverage": {
+    "allSectors": {
+     "denominator": "price- and identity-eligible S&P 500 member-dates on the 55 fixed sample dates (23,160; survivor-conditioned)",
+     "pointer": "/availabilityOverallPct/cashFlow",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json",
+     "value": 51.248
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "meanRho": 0.478,
+     "pair": [
+      "fcfConversion",
+      "fcfYield"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/fcfConversion/fcfYield",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    }
+   ],
+   "missingReasonCodes": [
+    "EXACT_CONCEPT_NOT_REPORTED",
+    "AMBIGUOUS_ACCOUNTING"
+   ],
+   "name": "fcfConversion",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance",
+   "sectorApplicability": "economically meaningful outside Financials and Real Estate; banks, insurers and REITs have no comparable operating line",
+   "uniqueVariation": null,
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "NOT_IMPLEMENTED",
+    "prospective": "BLOCKED_SOURCE: Finnhub financials-reported omits the balance sheet on filings first served from 2026-10-07; total assets unresolved (docs/us-finnhub-balance-sheet-coverage-ko.md, docs/us-total-assets-source-rescue-ko.md)"
+   },
+   "codePath": "NOT_IMPLEMENTED",
+   "corporateActionAndShareCountDependencies": "none",
+   "dataSource": "raw XBRL may state GrossProfit / CostOfRevenue but finnhub_derive.FLOWS derives neither",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "higher = more profitable",
+   "economicMechanism": "Novy-Marx gross profitability",
+   "family": "B_PROFITABILITY_QUALITY",
+   "feasibility": "needs a new concept chain plus a raw-concept coverage audit; expected to overlap B04/B05 heavily",
+   "formula": "(revenue - COGS) TTM / total assets",
+   "id": "B10",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "B04/B05"
+   ],
+   "measuredCoverage": {
+    "status": "UNMEASURED"
+   },
+   "measuredRedundancy": [
+    {
+     "status": "UNMEASURED"
+    }
+   ],
+   "missingReasonCodes": [
+    "NO_GROSS_PROFIT_CHAIN"
+   ],
+   "name": "grossProfitability",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance",
+   "sectorApplicability": "economically meaningful outside Financials and Real Estate; banks, insurers and REITs have no comparable operating line",
+   "uniqueVariation": null,
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "NOT_IMPLEMENTED",
+    "prospective": "NOT_IMPLEMENTED"
+   },
+   "codePath": "NOT_IMPLEMENTED",
+   "corporateActionAndShareCountDependencies": "none",
+   "dataSource": "needs debt, cash, tax detail",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "higher = better",
+   "economicMechanism": "capital efficiency",
+   "family": "B_PROFITABILITY_QUALITY",
+   "feasibility": "blocked on line items the store does not derive",
+   "formula": "NOPAT / invested capital",
+   "id": "B11",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "B01/B04"
+   ],
+   "measuredCoverage": {
+    "status": "UNMEASURED"
+   },
+   "measuredRedundancy": [
+    {
+     "status": "UNMEASURED"
+    }
+   ],
+   "missingReasonCodes": [
+    "NO_DEBT_OR_CASH_DETAIL",
+    "NO_TAX_CHAIN"
+   ],
+   "name": "roic",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "n/a",
+   "publiclyObservableFrom": "n/a",
+   "sectorApplicability": "economically meaningful outside Financials and Real Estate; banks, insurers and REITs have no comparable operating line",
+   "uniqueVariation": null,
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "AVAILABLE_WITH_CAVEATS",
+    "prospective": "AVAILABLE_WITH_CAVEATS"
+   },
+   "codePath": "pipeline/accounting_quality.py:operating_margin_stability (function exists; not wired for US)",
+   "corporateActionAndShareCountDependencies": "none",
+   "dataSource": "sealed operatingMargin history",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "lower = more stable",
+   "economicMechanism": "earnings stability / quality",
+   "family": "B_PROFITABILITY_QUALITY",
+   "feasibility": "computable; coverage not yet measured on the grid",
+   "formula": "dispersion of the own last 4 operatingMargin readings",
+   "id": "B12",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "volatility",
+    "size"
+   ],
+   "measuredCoverage": {
+    "status": "UNMEASURED"
+   },
+   "measuredRedundancy": [
+    {
+     "status": "UNMEASURED"
+    }
+   ],
+   "missingReasonCodes": [
+    "FEWER_THAN_WINDOW_OWN_READINGS"
+   ],
+   "name": "operatingMarginStability",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance",
+   "sectorApplicability": "economically meaningful outside Financials and Real Estate; banks, insurers and REITs have no comparable operating line",
+   "uniqueVariation": null,
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "BLOCKED_SOURCE: Finnhub financials-reported omits the balance sheet on filings first served from 2026-10-07; total assets unresolved (docs/us-finnhub-balance-sheet-coverage-ko.md, docs/us-total-assets-source-rescue-ko.md)"
+   },
+   "codePath": "pipeline/finnhub_derive.py:derive_fields",
+   "corporateActionAndShareCountDependencies": "none",
+   "dataSource": "Finnhub financials-reported",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "higher = more levered",
+   "economicMechanism": "distress risk / balance-sheet resilience",
+   "family": "B_PROFITABILITY_QUALITY",
+   "feasibility": "computable now",
+   "formula": "total liabilities / equity",
+   "id": "B13",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "sector",
+    "buybacks shrink equity"
+   ],
+   "measuredCoverage": {
+    "nonFinancial": {
+     "denominator": "eligible non-financial S&P 500 member-dates on the 55 fixed sample dates (18,469; survivor-conditioned)",
+     "pointer": "/availabilityNonFinancialPct/debtToEquity/pct",
+     "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+     "value": 93.14
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "meanRho": 0.219,
+     "pair": [
+      "debtToEquity",
+      "earningsYield"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/debtToEquity/earningsYield",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    }
+   ],
+   "missingReasonCodes": [
+    "NO_VISIBLE_FILING",
+    "EQUITY_NON_POSITIVE"
+   ],
+   "name": "debtToEquity",
+   "outcomeExposure": {
+    "note": "inside the 31-feature US model (Ridge/HGBR, annual walk-forward, H126 rank target); model-level NO_MODEL_EVIDENCE, no per-feature reading was committed. Class C also covers positive-but-unstable patterns, so it is not evidence against the feature. Re-testing it on the same history is not a new hypothesis.",
+    "status": "TESTED_OUTCOME_EXPOSED",
+    "studies": [
+     "regional-alpha-model-v1",
+     "four-factor-signal-attribution-audit-v1"
+    ]
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance",
+   "sectorApplicability": "not comparable for Financials/Utilities/Real Estate (production masks them)",
+   "uniqueVariation": {
+    "controlR2Mean": 0.229,
+    "medianNamesPerDate": 199.0,
+    "noiseFloorR2": 0.082,
+    "ownFamilyPeers": [],
+    "ownFamilyR2": null,
+    "pointer": "/uniqueVariationNonFinancial/debtToEquity",
+    "sectorR2SameRows": 0.137,
+    "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+    "uniqueShareMean": 0.771
+   },
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "AVAILABLE_WITH_CAVEATS"
+   },
+   "codePath": "pipeline/finnhub_derive.py:derive_fields",
+   "corporateActionAndShareCountDependencies": "none",
+   "dataSource": "Finnhub financials-reported",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "higher = faster growth",
+   "economicMechanism": "slow incorporation of fundamental momentum",
+   "family": "C_GROWTH_CHANGE",
+   "feasibility": "computable now",
+   "formula": "net income TTM vs same stage a year earlier",
+   "id": "C01",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "base effects",
+    "price momentum"
+   ],
+   "measuredCoverage": {
+    "nonFinancial": {
+     "denominator": "eligible non-financial S&P 500 member-dates on the 55 fixed sample dates (18,469; survivor-conditioned)",
+     "pointer": "/availabilityNonFinancialPct/earningsGrowth/pct",
+     "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+     "value": 84.812
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "meanRho": 0.411,
+     "pair": [
+      "earningsGrowth",
+      "delta_roe"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/delta_roe/earningsGrowth",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    }
+   ],
+   "missingReasonCodes": [
+    "NO_PRIOR_YEAR_FILING",
+    "NON_POSITIVE_BASE"
+   ],
+   "name": "earningsGrowth",
+   "outcomeExposure": {
+    "note": "inside the 31-feature US model (Ridge/HGBR, annual walk-forward, H126 rank target); model-level NO_MODEL_EVIDENCE, no per-feature reading was committed. Class C also covers positive-but-unstable patterns, so it is not evidence against the feature. Re-testing it on the same history is not a new hypothesis.",
+    "status": "TESTED_OUTCOME_EXPOSED",
+    "studies": [
+     "regional-alpha-model-v1",
+     "four-factor-signal-attribution-audit-v1"
+    ]
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": {
+    "controlR2Mean": 0.239,
+    "medianNamesPerDate": 199.0,
+    "noiseFloorR2": 0.082,
+    "ownFamilyPeers": [
+     "revenueGrowthTTM",
+     "delta_roe",
+     "delta_operatingMargin"
+    ],
+    "ownFamilyR2": 0.294,
+    "pointer": "/uniqueVariationNonFinancial/earningsGrowth",
+    "sectorR2SameRows": 0.08,
+    "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+    "uniqueShareMean": 0.761
+   },
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "AVAILABLE_WITH_CAVEATS"
+   },
+   "codePath": "scripts/audit_us_factor_unique_variation.py:extra_accounting (finnhub_derive.trailing_twelve_months; one new ratio)",
+   "corporateActionAndShareCountDependencies": "none",
+   "dataSource": "Finnhub financials-reported",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "higher = faster growth",
+   "economicMechanism": "growth persistence vs extrapolation",
+   "family": "C_GROWTH_CHANGE",
+   "feasibility": "computable now (measurement-only definition; not a registered feature)",
+   "formula": "revenue TTM / revenue TTM same stage one year earlier - 1 (earlier TTM > 0)",
+   "id": "C02",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "M&A inflates revenue growth",
+    "earningsGrowth"
+   ],
+   "measuredCoverage": {
+    "nonFinancial": {
+     "denominator": "eligible non-financial S&P 500 member-dates on the 55 fixed sample dates (18,469; survivor-conditioned)",
+     "pointer": "/availabilityNonFinancialPct/revenueGrowthTTM/pct",
+     "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+     "value": 81.266
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "note": "see uniqueVariation"
+    }
+   ],
+   "missingReasonCodes": [
+    "REVENUE_TTM_INCOMPLETE_CHAIN",
+    "NON_POSITIVE_BASE",
+    "REPORT_STALE"
+   ],
+   "name": "revenueGrowthTTM",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance",
+   "sectorApplicability": "economically meaningful outside Financials and Real Estate; banks, insurers and REITs have no comparable operating line",
+   "uniqueVariation": {
+    "controlR2Mean": 0.405,
+    "medianNamesPerDate": 196.0,
+    "noiseFloorR2": 0.084,
+    "ownFamilyPeers": [
+     "earningsGrowth",
+     "delta_roe",
+     "delta_operatingMargin"
+    ],
+    "ownFamilyR2": 0.144,
+    "pointer": "/uniqueVariationNonFinancial/revenueGrowthTTM",
+    "sectorR2SameRows": 0.134,
+    "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+    "uniqueShareMean": 0.595
+   },
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "AVAILABLE_WITH_CAVEATS"
+   },
+   "codePath": "pipeline/fundamental_acceleration.py:resolve_filing_pair/compute_deltas",
+   "corporateActionAndShareCountDependencies": "none",
+   "dataSource": "Finnhub financials-reported",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "positive = improving",
+   "economicMechanism": "financial inflection / acceleration",
+   "family": "C_GROWTH_CHANGE",
+   "feasibility": "closed as a composite hypothesis; do not re-test the same composite",
+   "formula": "field at the current filing minus the field at the previous consecutive filing",
+   "id": "C03",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "earningsGrowth",
+    "seasonality"
+   ],
+   "measuredCoverage": {
+    "usFilingPairs": {
+     "denominator": "US signal name-dates (300,646)",
+     "pointer": "/coverage/byRegion/US/dataSufficientRatio",
+     "source": "docs/results/fundamental-acceleration-discovery-report.json",
+     "value": 0.8179
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "meanRho": 0.411,
+     "pair": [
+      "delta_roe",
+      "earningsGrowth"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/delta_roe/earningsGrowth",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    }
+   ],
+   "missingReasonCodes": [
+    "NOT_CONSECUTIVE",
+    "NO_PREVIOUS_FILING",
+    "NO_FILING_VISIBLE"
+   ],
+   "name": "delta_roe",
+   "outcomeExposure": {
+    "note": "pre-registered Case D on the composite of the four deltas: US standalone H126 IC -0.0056, 95% CI [-0.0295, +0.0183], on the survivor-conditioned sample. Against the stated composite hypothesis only, not against every change signal.",
+    "status": "EVIDENCE_AGAINST_SPECIFIC_HYPOTHESIS",
+    "studies": [
+     "fundamental-acceleration-discovery-v1",
+     "regional-alpha-model-v1"
+    ]
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance of the CURRENT filing",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": {
+    "controlR2Mean": 0.183,
+    "medianNamesPerDate": 198.0,
+    "noiseFloorR2": 0.084,
+    "ownFamilyPeers": [
+     "earningsGrowth",
+     "revenueGrowthTTM",
+     "delta_operatingMargin"
+    ],
+    "ownFamilyR2": 0.372,
+    "pointer": "/uniqueVariationNonFinancial/delta_roe",
+    "sectorR2SameRows": 0.068,
+    "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+    "uniqueShareMean": 0.817
+   },
+   "units": "ratio change"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "AVAILABLE_WITH_CAVEATS"
+   },
+   "codePath": "pipeline/fundamental_acceleration.py:resolve_filing_pair/compute_deltas",
+   "corporateActionAndShareCountDependencies": "none",
+   "dataSource": "Finnhub financials-reported",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "positive = improving",
+   "economicMechanism": "financial inflection / acceleration",
+   "family": "C_GROWTH_CHANGE",
+   "feasibility": "closed as a composite hypothesis; do not re-test the same composite",
+   "formula": "field at the current filing minus the field at the previous consecutive filing",
+   "id": "C04",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "earningsGrowth",
+    "seasonality"
+   ],
+   "measuredCoverage": {
+    "usFilingPairs": {
+     "denominator": "US signal name-dates (300,646)",
+     "pointer": "/coverage/byRegion/US/dataSufficientRatio",
+     "source": "docs/results/fundamental-acceleration-discovery-report.json",
+     "value": 0.8179
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "note": "see uniqueVariation where measured"
+    }
+   ],
+   "missingReasonCodes": [
+    "NOT_CONSECUTIVE",
+    "NO_PREVIOUS_FILING",
+    "NO_FILING_VISIBLE"
+   ],
+   "name": "delta_operatingMargin",
+   "outcomeExposure": {
+    "note": "pre-registered Case D on the composite of the four deltas: US standalone H126 IC -0.0056, 95% CI [-0.0295, +0.0183], on the survivor-conditioned sample. Against the stated composite hypothesis only, not against every change signal.",
+    "status": "EVIDENCE_AGAINST_SPECIFIC_HYPOTHESIS",
+    "studies": [
+     "fundamental-acceleration-discovery-v1",
+     "regional-alpha-model-v1"
+    ]
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance of the CURRENT filing",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": {
+    "controlR2Mean": 0.193,
+    "medianNamesPerDate": 195.0,
+    "noiseFloorR2": 0.086,
+    "ownFamilyPeers": [
+     "earningsGrowth",
+     "revenueGrowthTTM",
+     "delta_roe"
+    ],
+    "ownFamilyR2": 0.349,
+    "pointer": "/uniqueVariationNonFinancial/delta_operatingMargin",
+    "sectorR2SameRows": 0.071,
+    "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+    "uniqueShareMean": 0.807
+   },
+   "units": "ratio change"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "AVAILABLE_WITH_CAVEATS"
+   },
+   "codePath": "pipeline/fundamental_acceleration.py:resolve_filing_pair/compute_deltas",
+   "corporateActionAndShareCountDependencies": "none",
+   "dataSource": "Finnhub financials-reported",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "positive = improving",
+   "economicMechanism": "financial inflection / acceleration",
+   "family": "C_GROWTH_CHANGE",
+   "feasibility": "closed as a composite hypothesis; do not re-test the same composite",
+   "formula": "field at the current filing minus the field at the previous consecutive filing",
+   "id": "C05",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "earningsGrowth",
+    "seasonality"
+   ],
+   "measuredCoverage": {
+    "usFilingPairs": {
+     "denominator": "US signal name-dates (300,646)",
+     "pointer": "/coverage/byRegion/US/dataSufficientRatio",
+     "source": "docs/results/fundamental-acceleration-discovery-report.json",
+     "value": 0.8179
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "note": "see uniqueVariation where measured"
+    }
+   ],
+   "missingReasonCodes": [
+    "NOT_CONSECUTIVE",
+    "NO_PREVIOUS_FILING",
+    "NO_FILING_VISIBLE"
+   ],
+   "name": "delta_profitMargin",
+   "outcomeExposure": {
+    "note": "pre-registered Case D on the composite of the four deltas: US standalone H126 IC -0.0056, 95% CI [-0.0295, +0.0183], on the survivor-conditioned sample. Against the stated composite hypothesis only, not against every change signal.",
+    "status": "EVIDENCE_AGAINST_SPECIFIC_HYPOTHESIS",
+    "studies": [
+     "fundamental-acceleration-discovery-v1",
+     "regional-alpha-model-v1"
+    ]
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance of the CURRENT filing",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": null,
+   "units": "ratio change"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "AVAILABLE_WITH_CAVEATS"
+   },
+   "codePath": "pipeline/fundamental_acceleration.py:resolve_filing_pair/compute_deltas",
+   "corporateActionAndShareCountDependencies": "none",
+   "dataSource": "Finnhub financials-reported",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "positive = improving",
+   "economicMechanism": "financial inflection / acceleration",
+   "family": "C_GROWTH_CHANGE",
+   "feasibility": "closed as a composite hypothesis; do not re-test the same composite",
+   "formula": "field at the current filing minus the field at the previous consecutive filing",
+   "id": "C06",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "earningsGrowth",
+    "seasonality"
+   ],
+   "measuredCoverage": {
+    "usFilingPairs": {
+     "denominator": "US signal name-dates (300,646)",
+     "pointer": "/coverage/byRegion/US/dataSufficientRatio",
+     "source": "docs/results/fundamental-acceleration-discovery-report.json",
+     "value": 0.8179
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "note": "see uniqueVariation where measured"
+    }
+   ],
+   "missingReasonCodes": [
+    "NOT_CONSECUTIVE",
+    "NO_PREVIOUS_FILING",
+    "NO_FILING_VISIBLE"
+   ],
+   "name": "delta_earningsGrowth",
+   "outcomeExposure": {
+    "note": "pre-registered Case D on the composite of the four deltas: US standalone H126 IC -0.0056, 95% CI [-0.0295, +0.0183], on the survivor-conditioned sample. Against the stated composite hypothesis only, not against every change signal.",
+    "status": "EVIDENCE_AGAINST_SPECIFIC_HYPOTHESIS",
+    "studies": [
+     "fundamental-acceleration-discovery-v1",
+     "regional-alpha-model-v1"
+    ]
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance of the CURRENT filing",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": null,
+   "units": "ratio change"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "NOT_IMPLEMENTED",
+    "prospective": "AVAILABLE_WITH_CAVEATS"
+   },
+   "codePath": "NOT_IMPLEMENTED (derivable from finnhub_derive.trailing_twelve_months)",
+   "corporateActionAndShareCountDependencies": "none",
+   "dataSource": "Finnhub financials-reported",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "higher = faster",
+   "economicMechanism": "cash-flow momentum",
+   "family": "C_GROWTH_CHANGE",
+   "feasibility": "derivable; expected to overlap C01 and B05",
+   "formula": "OCF TTM vs same stage a year earlier",
+   "id": "C07",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "C01",
+    "B05"
+   ],
+   "measuredCoverage": {
+    "status": "UNMEASURED"
+   },
+   "measuredRedundancy": [
+    {
+     "status": "UNMEASURED"
+    }
+   ],
+   "missingReasonCodes": [
+    "NON_POSITIVE_BASE"
+   ],
+   "name": "operatingCashFlowGrowth",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance",
+   "sectorApplicability": "economically meaningful outside Financials and Real Estate; banks, insurers and REITs have no comparable operating line",
+   "uniqueVariation": null,
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "total-return close (correct for return features)",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "BLOCKED_PENDING_OWNER_APPROVAL: no persistent US daily price ledger runs on signal-history yet (owner-gated collector, docs/us-persistent-daily-collection-v1.md)"
+   },
+   "codePath": "pipeline/regional_alpha_features.py:price_features / weekly_breadth",
+   "corporateActionAndShareCountDependencies": "total-return index absorbs splits and dividends",
+   "dataSource": "replay-v16 sealed total-return closes",
+   "departedSecurityDependency": "needs a price panel for the name; 212 departed identities have none (survivor-conditioned history)",
+   "directionConvention": "higher = stronger trend",
+   "economicMechanism": "slow information diffusion / underreaction",
+   "family": "D_MOMENTUM_TREND",
+   "feasibility": "computable now; closed as a standalone discovery (31-feature model)",
+   "formula": "return from t-252 to t-21 sessions",
+   "id": "D01",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "market beta in up/down regimes",
+    "sector momentum"
+   ],
+   "measuredCoverage": {
+    "allSectors": {
+     "denominator": "price- and identity-eligible S&P 500 member-dates on the 55 fixed sample dates (23,160; survivor-conditioned)",
+     "pointer": "/availabilityOverallPct/priceMomentum",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json",
+     "value": 100.0
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "meanRho": 0.62,
+     "pair": [
+      "mom121",
+      "relative126"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/mom121/relative126",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    },
+    {
+     "meanRho": 0.706,
+     "pair": [
+      "high52Distance",
+      "relative126"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/high52Distance/relative126",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    },
+    {
+     "meanRho": 0.679,
+     "pair": [
+      "mom121",
+      "relativeStrengthBreadth52w"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/mom121/relativeStrengthBreadth52w",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    }
+   ],
+   "missingReasonCodes": [
+    "PRICE_HISTORY_INSUFFICIENT",
+    "NO_PRICE_PANEL"
+   ],
+   "name": "mom121",
+   "outcomeExposure": {
+    "note": "inside the 31-feature US model (Ridge/HGBR, annual walk-forward, H126 rank target); model-level NO_MODEL_EVIDENCE, no per-feature reading was committed. Class C also covers positive-but-unstable patterns, so it is not evidence against the feature. Re-testing it on the same history is not a new hypothesis.",
+    "status": "TESTED_OUTCOME_EXPOSED",
+    "studies": [
+     "regional-alpha-model-v1",
+     "four-factor-signal-attribution-audit-v1"
+    ]
+   },
+   "pitRequirements": "closes up to and including the signal date from the sealed replay-v16 total-return panel; a future price raises LookAheadError",
+   "publiclyObservableFrom": "signal-date close",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": {
+    "controlR2Mean": 0.372,
+    "medianNamesPerDate": 199.0,
+    "noiseFloorR2": 0.082,
+    "ownFamilyPeers": [
+     "relative126",
+     "high52Distance",
+     "relativeStrengthBreadth52w"
+    ],
+    "ownFamilyR2": 0.622,
+    "pointer": "/uniqueVariationNonFinancial/mom121",
+    "sectorR2SameRows": 0.167,
+    "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+    "uniqueShareMean": 0.628
+   },
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "total-return close (correct for return features)",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "BLOCKED_PENDING_OWNER_APPROVAL: no persistent US daily price ledger runs on signal-history yet (owner-gated collector, docs/us-persistent-daily-collection-v1.md)"
+   },
+   "codePath": "pipeline/regional_alpha_features.py:price_features / weekly_breadth",
+   "corporateActionAndShareCountDependencies": "total-return index absorbs splits and dividends",
+   "dataSource": "replay-v16 sealed total-return closes",
+   "departedSecurityDependency": "needs a price panel for the name; 212 departed identities have none (survivor-conditioned history)",
+   "directionConvention": "higher = stronger trend",
+   "economicMechanism": "slow information diffusion / underreaction",
+   "family": "D_MOMENTUM_TREND",
+   "feasibility": "computable now; closed as a standalone discovery (31-feature model)",
+   "formula": "126-session return minus SPY's",
+   "id": "D02",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "market beta in up/down regimes",
+    "sector momentum"
+   ],
+   "measuredCoverage": {
+    "allSectors": {
+     "denominator": "price- and identity-eligible S&P 500 member-dates on the 55 fixed sample dates (23,160; survivor-conditioned)",
+     "pointer": "/availabilityOverallPct/priceMomentum",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json",
+     "value": 100.0
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "meanRho": 0.62,
+     "pair": [
+      "mom121",
+      "relative126"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/mom121/relative126",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    },
+    {
+     "meanRho": 0.706,
+     "pair": [
+      "high52Distance",
+      "relative126"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/high52Distance/relative126",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    },
+    {
+     "meanRho": 0.679,
+     "pair": [
+      "mom121",
+      "relativeStrengthBreadth52w"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/mom121/relativeStrengthBreadth52w",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    }
+   ],
+   "missingReasonCodes": [
+    "PRICE_HISTORY_INSUFFICIENT",
+    "NO_PRICE_PANEL"
+   ],
+   "name": "relative126",
+   "outcomeExposure": {
+    "note": "inside the 31-feature US model (Ridge/HGBR, annual walk-forward, H126 rank target); model-level NO_MODEL_EVIDENCE, no per-feature reading was committed. Class C also covers positive-but-unstable patterns, so it is not evidence against the feature. Re-testing it on the same history is not a new hypothesis.",
+    "status": "TESTED_OUTCOME_EXPOSED",
+    "studies": [
+     "regional-alpha-model-v1"
+    ]
+   },
+   "pitRequirements": "closes up to and including the signal date from the sealed replay-v16 total-return panel; a future price raises LookAheadError",
+   "publiclyObservableFrom": "signal-date close",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": {
+    "controlR2Mean": 0.311,
+    "medianNamesPerDate": 199.0,
+    "noiseFloorR2": 0.082,
+    "ownFamilyPeers": [
+     "mom121",
+     "high52Distance",
+     "relativeStrengthBreadth52w"
+    ],
+    "ownFamilyR2": 0.627,
+    "pointer": "/uniqueVariationNonFinancial/relative126",
+    "sectorR2SameRows": 0.156,
+    "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+    "uniqueShareMean": 0.689
+   },
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "total-return close (correct for return features)",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "BLOCKED_PENDING_OWNER_APPROVAL: no persistent US daily price ledger runs on signal-history yet (owner-gated collector, docs/us-persistent-daily-collection-v1.md)"
+   },
+   "codePath": "pipeline/regional_alpha_features.py:price_features / weekly_breadth",
+   "corporateActionAndShareCountDependencies": "total-return index absorbs splits and dividends",
+   "dataSource": "replay-v16 sealed total-return closes",
+   "departedSecurityDependency": "needs a price panel for the name; 212 departed identities have none (survivor-conditioned history)",
+   "directionConvention": "higher = stronger trend",
+   "economicMechanism": "slow information diffusion / underreaction",
+   "family": "D_MOMENTUM_TREND",
+   "feasibility": "computable now; closed as a standalone discovery (31-feature model)",
+   "formula": "close / trailing 252-session high - 1",
+   "id": "D03",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "market beta in up/down regimes",
+    "sector momentum"
+   ],
+   "measuredCoverage": {
+    "allSectors": {
+     "denominator": "price- and identity-eligible S&P 500 member-dates on the 55 fixed sample dates (23,160; survivor-conditioned)",
+     "pointer": "/availabilityOverallPct/priceMomentum",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json",
+     "value": 100.0
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "meanRho": 0.62,
+     "pair": [
+      "mom121",
+      "relative126"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/mom121/relative126",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    },
+    {
+     "meanRho": 0.706,
+     "pair": [
+      "high52Distance",
+      "relative126"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/high52Distance/relative126",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    },
+    {
+     "meanRho": 0.679,
+     "pair": [
+      "mom121",
+      "relativeStrengthBreadth52w"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/mom121/relativeStrengthBreadth52w",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    }
+   ],
+   "missingReasonCodes": [
+    "PRICE_HISTORY_INSUFFICIENT",
+    "NO_PRICE_PANEL"
+   ],
+   "name": "high52Distance",
+   "outcomeExposure": {
+    "note": "inside the 31-feature US model (Ridge/HGBR, annual walk-forward, H126 rank target); model-level NO_MODEL_EVIDENCE, no per-feature reading was committed. Class C also covers positive-but-unstable patterns, so it is not evidence against the feature. Re-testing it on the same history is not a new hypothesis.",
+    "status": "TESTED_OUTCOME_EXPOSED",
+    "studies": [
+     "regional-alpha-model-v1"
+    ]
+   },
+   "pitRequirements": "closes up to and including the signal date from the sealed replay-v16 total-return panel; a future price raises LookAheadError",
+   "publiclyObservableFrom": "signal-date close",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": {
+    "controlR2Mean": 0.404,
+    "medianNamesPerDate": 199.0,
+    "noiseFloorR2": 0.082,
+    "ownFamilyPeers": [
+     "mom121",
+     "relative126",
+     "relativeStrengthBreadth52w"
+    ],
+    "ownFamilyR2": 0.614,
+    "pointer": "/uniqueVariationNonFinancial/high52Distance",
+    "sectorR2SameRows": 0.152,
+    "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+    "uniqueShareMean": 0.596
+   },
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "total-return close (correct for return features)",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "BLOCKED_PENDING_OWNER_APPROVAL: no persistent US daily price ledger runs on signal-history yet (owner-gated collector, docs/us-persistent-daily-collection-v1.md)"
+   },
+   "codePath": "pipeline/regional_alpha_features.py:price_features / weekly_breadth",
+   "corporateActionAndShareCountDependencies": "total-return index absorbs splits and dividends",
+   "dataSource": "replay-v16 sealed total-return closes",
+   "departedSecurityDependency": "needs a price panel for the name; 212 departed identities have none (survivor-conditioned history)",
+   "directionConvention": "higher = stronger trend",
+   "economicMechanism": "slow information diffusion / underreaction",
+   "family": "D_MOMENTUM_TREND",
+   "feasibility": "computable now; closed as a standalone discovery (31-feature model)",
+   "formula": "share of 52 completed weeks beating SPY",
+   "id": "D04",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "market beta in up/down regimes",
+    "sector momentum"
+   ],
+   "measuredCoverage": {
+    "allSectors": {
+     "denominator": "price- and identity-eligible S&P 500 member-dates on the 55 fixed sample dates (23,160; survivor-conditioned)",
+     "pointer": "/availabilityOverallPct/priceMomentum",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json",
+     "value": 100.0
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "meanRho": 0.62,
+     "pair": [
+      "mom121",
+      "relative126"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/mom121/relative126",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    },
+    {
+     "meanRho": 0.706,
+     "pair": [
+      "high52Distance",
+      "relative126"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/high52Distance/relative126",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    },
+    {
+     "meanRho": 0.679,
+     "pair": [
+      "mom121",
+      "relativeStrengthBreadth52w"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/mom121/relativeStrengthBreadth52w",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    }
+   ],
+   "missingReasonCodes": [
+    "PRICE_HISTORY_INSUFFICIENT",
+    "NO_PRICE_PANEL"
+   ],
+   "name": "relativeStrengthBreadth52w",
+   "outcomeExposure": {
+    "note": "inside the 31-feature US model (Ridge/HGBR, annual walk-forward, H126 rank target); model-level NO_MODEL_EVIDENCE, no per-feature reading was committed. Class C also covers positive-but-unstable patterns, so it is not evidence against the feature. Re-testing it on the same history is not a new hypothesis.",
+    "status": "TESTED_OUTCOME_EXPOSED",
+    "studies": [
+     "regional-alpha-model-v1"
+    ]
+   },
+   "pitRequirements": "closes up to and including the signal date from the sealed replay-v16 total-return panel; a future price raises LookAheadError",
+   "publiclyObservableFrom": "signal-date close",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": {
+    "controlR2Mean": 0.275,
+    "medianNamesPerDate": 199.0,
+    "noiseFloorR2": 0.082,
+    "ownFamilyPeers": [
+     "mom121",
+     "relative126",
+     "high52Distance"
+    ],
+    "ownFamilyR2": 0.498,
+    "pointer": "/uniqueVariationNonFinancial/relativeStrengthBreadth52w",
+    "sectorR2SameRows": 0.131,
+    "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+    "uniqueShareMean": 0.725
+   },
+   "units": "share"
+  },
+  {
+   "adjustedPriceDependency": "total-return close",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "BLOCKED_PENDING_OWNER_APPROVAL: no persistent US daily price ledger runs on signal-history yet (owner-gated collector, docs/us-persistent-daily-collection-v1.md)"
+   },
+   "codePath": "pipeline/regional_alpha_features.py:price_features",
+   "corporateActionAndShareCountDependencies": "total-return index",
+   "dataSource": "replay-v16",
+   "departedSecurityDependency": "needs a price panel for the name; 212 departed identities have none (survivor-conditioned history)",
+   "directionConvention": "higher = stronger",
+   "economicMechanism": "momentum/reversal at several horizons",
+   "family": "D_MOMENTUM_TREND",
+   "feasibility": "closed",
+   "formula": "21/63/126/252-session returns, ma200Distance, rsi14",
+   "id": "D05",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "D01-D04"
+   ],
+   "measuredCoverage": {
+    "note": "100% wherever a panel with 273+ sessions exists"
+   },
+   "measuredRedundancy": [
+    {
+     "note": "the nonlinear 31-feature model could already form acceleration/reversal from these"
+    }
+   ],
+   "missingReasonCodes": [
+    "PRICE_HISTORY_INSUFFICIENT"
+   ],
+   "name": "multiHorizonReturns",
+   "outcomeExposure": {
+    "note": "inside the 31-feature US model (Ridge/HGBR, annual walk-forward, H126 rank target); model-level NO_MODEL_EVIDENCE, no per-feature reading was committed. Class C also covers positive-but-unstable patterns, so it is not evidence against the feature. Re-testing it on the same history is not a new hypothesis.",
+    "status": "TESTED_OUTCOME_EXPOSED",
+    "studies": [
+     "regional-alpha-model-v1"
+    ]
+   },
+   "pitRequirements": "closes up to and including the signal date from the sealed replay-v16 total-return panel; a future price raises LookAheadError",
+   "publiclyObservableFrom": "signal-date close",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": null,
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "total-return close",
+   "availability": {
+    "historical": "AVAILABLE_WITH_CAVEATS",
+    "prospective": "BLOCKED_PENDING_OWNER_APPROVAL: no persistent US daily price ledger runs on signal-history yet (owner-gated collector, docs/us-persistent-daily-collection-v1.md)"
+   },
+   "codePath": "NOT_IMPLEMENTED (the 31-feature model excluded sector for lack of dated provenance; dated snapshot sectors now exist)",
+   "corporateActionAndShareCountDependencies": "total-return index",
+   "dataSource": "replay-v16 + sp500-snapshot-sectors (195 hash-verified snapshots)",
+   "departedSecurityDependency": "needs a price panel for the name; 212 departed identities have none (survivor-conditioned history); sector medians computed on survivors",
+   "directionConvention": "higher = beating sector",
+   "economicMechanism": "separates stock-specific from industry momentum",
+   "family": "D_MOMENTUM_TREND",
+   "feasibility": "derivable; a re-expression of closed momentum information rather than a new family",
+   "formula": "stock return minus its dated-sector median return",
+   "id": "D06",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "D02"
+   ],
+   "measuredCoverage": {
+    "status": "UNMEASURED"
+   },
+   "measuredRedundancy": [
+    {
+     "status": "UNMEASURED"
+    }
+   ],
+   "missingReasonCodes": [
+    "UNCLASSIFIED",
+    "sector stale up to 767 days between snapshots"
+   ],
+   "name": "sectorRelativeStrength",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "closes up to and including the signal date from the sealed replay-v16 total-return panel; a future price raises LookAheadError; sector from the latest snapshot strictly before the date",
+   "publiclyObservableFrom": "signal-date close",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": null,
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "total-return close",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "BLOCKED_PENDING_OWNER_APPROVAL: no persistent US daily price ledger runs on signal-history yet (owner-gated collector, docs/us-persistent-daily-collection-v1.md)"
+   },
+   "codePath": "pipeline/regional_alpha_features.py:price_features",
+   "corporateActionAndShareCountDependencies": "total-return index",
+   "dataSource": "replay-v16",
+   "departedSecurityDependency": "needs a price panel for the name; 212 departed identities have none (survivor-conditioned history) — departed names are disproportionately the high-risk ones",
+   "directionConvention": "higher = riskier",
+   "economicMechanism": "low-risk anomaly (leverage constraints, lottery demand)",
+   "family": "E_RISK_STABILITY",
+   "feasibility": "computable now; closed as standalone; useful as a control and risk input",
+   "formula": "252-session return volatility",
+   "id": "E01",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "size",
+    "sector",
+    "momentum crash risk"
+   ],
+   "measuredCoverage": {
+    "allSectors": {
+     "denominator": "price- and identity-eligible S&P 500 member-dates on the 55 fixed sample dates (23,160; survivor-conditioned)",
+     "pointer": "/availabilityOverallPct/priceRisk",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json",
+     "value": 100.0
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "meanRho": 0.71,
+     "pair": [
+      "vol252",
+      "beta252"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/beta252/vol252",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    },
+    {
+     "meanRho": -0.721,
+     "pair": [
+      "vol252",
+      "maxDD252"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/maxDD252/vol252",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    }
+   ],
+   "missingReasonCodes": [
+    "PRICE_HISTORY_INSUFFICIENT"
+   ],
+   "name": "vol252",
+   "outcomeExposure": {
+    "note": "inside the 31-feature US model (Ridge/HGBR, annual walk-forward, H126 rank target); model-level NO_MODEL_EVIDENCE, no per-feature reading was committed. Class C also covers positive-but-unstable patterns, so it is not evidence against the feature. Re-testing it on the same history is not a new hypothesis.",
+    "status": "TESTED_OUTCOME_EXPOSED",
+    "studies": [
+     "regional-alpha-model-v1",
+     "four-factor-signal-attribution-audit-v1"
+    ]
+   },
+   "pitRequirements": "closes up to and including the signal date from the sealed replay-v16 total-return panel; a future price raises LookAheadError",
+   "publiclyObservableFrom": "signal-date close",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": {
+    "controlR2Mean": 0.401,
+    "medianNamesPerDate": 199.0,
+    "noiseFloorR2": 0.082,
+    "ownFamilyPeers": [
+     "downsideVol252",
+     "beta252",
+     "maxDD252"
+    ],
+    "ownFamilyR2": 0.916,
+    "pointer": "/uniqueVariationNonFinancial/vol252",
+    "sectorR2SameRows": 0.303,
+    "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+    "uniqueShareMean": 0.599
+   },
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "total-return close",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "BLOCKED_PENDING_OWNER_APPROVAL: no persistent US daily price ledger runs on signal-history yet (owner-gated collector, docs/us-persistent-daily-collection-v1.md)"
+   },
+   "codePath": "pipeline/regional_alpha_features.py:price_features",
+   "corporateActionAndShareCountDependencies": "total-return index",
+   "dataSource": "replay-v16",
+   "departedSecurityDependency": "needs a price panel for the name; 212 departed identities have none (survivor-conditioned history) — departed names are disproportionately the high-risk ones",
+   "directionConvention": "higher = riskier",
+   "economicMechanism": "low-risk anomaly (leverage constraints, lottery demand)",
+   "family": "E_RISK_STABILITY",
+   "feasibility": "computable now; closed as standalone; useful as a control and risk input",
+   "formula": "252-session downside semideviation",
+   "id": "E02",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "size",
+    "sector",
+    "momentum crash risk"
+   ],
+   "measuredCoverage": {
+    "allSectors": {
+     "denominator": "price- and identity-eligible S&P 500 member-dates on the 55 fixed sample dates (23,160; survivor-conditioned)",
+     "pointer": "/availabilityOverallPct/priceRisk",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json",
+     "value": 100.0
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "meanRho": 0.71,
+     "pair": [
+      "vol252",
+      "beta252"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/beta252/vol252",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    },
+    {
+     "meanRho": -0.721,
+     "pair": [
+      "vol252",
+      "maxDD252"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/maxDD252/vol252",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    }
+   ],
+   "missingReasonCodes": [
+    "PRICE_HISTORY_INSUFFICIENT"
+   ],
+   "name": "downsideVol252",
+   "outcomeExposure": {
+    "note": "inside the 31-feature US model (Ridge/HGBR, annual walk-forward, H126 rank target); model-level NO_MODEL_EVIDENCE, no per-feature reading was committed. Class C also covers positive-but-unstable patterns, so it is not evidence against the feature. Re-testing it on the same history is not a new hypothesis.",
+    "status": "TESTED_OUTCOME_EXPOSED",
+    "studies": [
+     "regional-alpha-model-v1"
+    ]
+   },
+   "pitRequirements": "closes up to and including the signal date from the sealed replay-v16 total-return panel; a future price raises LookAheadError",
+   "publiclyObservableFrom": "signal-date close",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": {
+    "controlR2Mean": 0.407,
+    "medianNamesPerDate": 199.0,
+    "noiseFloorR2": 0.082,
+    "ownFamilyPeers": [
+     "vol252",
+     "beta252",
+     "maxDD252"
+    ],
+    "ownFamilyR2": 0.925,
+    "pointer": "/uniqueVariationNonFinancial/downsideVol252",
+    "sectorR2SameRows": 0.277,
+    "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+    "uniqueShareMean": 0.593
+   },
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "total-return close",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "BLOCKED_PENDING_OWNER_APPROVAL: no persistent US daily price ledger runs on signal-history yet (owner-gated collector, docs/us-persistent-daily-collection-v1.md)"
+   },
+   "codePath": "pipeline/regional_alpha_features.py:price_features",
+   "corporateActionAndShareCountDependencies": "total-return index",
+   "dataSource": "replay-v16",
+   "departedSecurityDependency": "needs a price panel for the name; 212 departed identities have none (survivor-conditioned history) — departed names are disproportionately the high-risk ones",
+   "directionConvention": "higher = riskier",
+   "economicMechanism": "low-risk anomaly (leverage constraints, lottery demand)",
+   "family": "E_RISK_STABILITY",
+   "feasibility": "computable now; closed as standalone; useful as a control and risk input",
+   "formula": "252-session beta to SPY",
+   "id": "E03",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "size",
+    "sector",
+    "momentum crash risk"
+   ],
+   "measuredCoverage": {
+    "allSectors": {
+     "denominator": "price- and identity-eligible S&P 500 member-dates on the 55 fixed sample dates (23,160; survivor-conditioned)",
+     "pointer": "/availabilityOverallPct/priceRisk",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json",
+     "value": 100.0
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "meanRho": 0.71,
+     "pair": [
+      "vol252",
+      "beta252"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/beta252/vol252",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    },
+    {
+     "meanRho": -0.721,
+     "pair": [
+      "vol252",
+      "maxDD252"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/maxDD252/vol252",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    }
+   ],
+   "missingReasonCodes": [
+    "PRICE_HISTORY_INSUFFICIENT"
+   ],
+   "name": "beta252",
+   "outcomeExposure": {
+    "note": "inside the 31-feature US model (Ridge/HGBR, annual walk-forward, H126 rank target); model-level NO_MODEL_EVIDENCE, no per-feature reading was committed. Class C also covers positive-but-unstable patterns, so it is not evidence against the feature. Re-testing it on the same history is not a new hypothesis.",
+    "status": "TESTED_OUTCOME_EXPOSED",
+    "studies": [
+     "regional-alpha-model-v1"
+    ]
+   },
+   "pitRequirements": "closes up to and including the signal date from the sealed replay-v16 total-return panel; a future price raises LookAheadError",
+   "publiclyObservableFrom": "signal-date close",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": {
+    "controlR2Mean": 0.555,
+    "medianNamesPerDate": 199.0,
+    "noiseFloorR2": 0.082,
+    "ownFamilyPeers": [
+     "vol252",
+     "downsideVol252",
+     "maxDD252"
+    ],
+    "ownFamilyR2": 0.556,
+    "pointer": "/uniqueVariationNonFinancial/beta252",
+    "sectorR2SameRows": 0.456,
+    "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+    "uniqueShareMean": 0.445
+   },
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "total-return close",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "BLOCKED_PENDING_OWNER_APPROVAL: no persistent US daily price ledger runs on signal-history yet (owner-gated collector, docs/us-persistent-daily-collection-v1.md)"
+   },
+   "codePath": "pipeline/regional_alpha_features.py:price_features",
+   "corporateActionAndShareCountDependencies": "total-return index",
+   "dataSource": "replay-v16",
+   "departedSecurityDependency": "needs a price panel for the name; 212 departed identities have none (survivor-conditioned history) — departed names are disproportionately the high-risk ones",
+   "directionConvention": "higher = riskier",
+   "economicMechanism": "low-risk anomaly (leverage constraints, lottery demand)",
+   "family": "E_RISK_STABILITY",
+   "feasibility": "computable now; closed as standalone; useful as a control and risk input",
+   "formula": "252-session maximum drawdown",
+   "id": "E04",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "size",
+    "sector",
+    "momentum crash risk"
+   ],
+   "measuredCoverage": {
+    "allSectors": {
+     "denominator": "price- and identity-eligible S&P 500 member-dates on the 55 fixed sample dates (23,160; survivor-conditioned)",
+     "pointer": "/availabilityOverallPct/priceRisk",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json",
+     "value": 100.0
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "meanRho": 0.71,
+     "pair": [
+      "vol252",
+      "beta252"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/beta252/vol252",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    },
+    {
+     "meanRho": -0.721,
+     "pair": [
+      "vol252",
+      "maxDD252"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/maxDD252/vol252",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    }
+   ],
+   "missingReasonCodes": [
+    "PRICE_HISTORY_INSUFFICIENT"
+   ],
+   "name": "maxDD252",
+   "outcomeExposure": {
+    "note": "inside the 31-feature US model (Ridge/HGBR, annual walk-forward, H126 rank target); model-level NO_MODEL_EVIDENCE, no per-feature reading was committed. Class C also covers positive-but-unstable patterns, so it is not evidence against the feature. Re-testing it on the same history is not a new hypothesis.",
+    "status": "TESTED_OUTCOME_EXPOSED",
+    "studies": [
+     "regional-alpha-model-v1"
+    ]
+   },
+   "pitRequirements": "closes up to and including the signal date from the sealed replay-v16 total-return panel; a future price raises LookAheadError",
+   "publiclyObservableFrom": "signal-date close",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": {
+    "controlR2Mean": 0.501,
+    "medianNamesPerDate": 199.0,
+    "noiseFloorR2": 0.082,
+    "ownFamilyPeers": [
+     "vol252",
+     "downsideVol252",
+     "beta252"
+    ],
+    "ownFamilyR2": 0.65,
+    "pointer": "/uniqueVariationNonFinancial/maxDD252",
+    "sectorR2SameRows": 0.207,
+    "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+    "uniqueShareMean": 0.499
+   },
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "as-traded price reconstructed",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "BLOCKED_PENDING_OWNER_APPROVAL: no persistent US daily price ledger runs on signal-history yet (owner-gated collector, docs/us-persistent-daily-collection-v1.md)"
+   },
+   "codePath": "scripts/audit_us_alpha_phase3_readiness.py:traded_value_median",
+   "corporateActionAndShareCountDependencies": "split inside window withholds",
+   "dataSource": "replay-v16 close x volume (reconstructed as-traded)",
+   "departedSecurityDependency": "needs a price panel for the name; 212 departed identities have none (survivor-conditioned history)",
+   "directionConvention": "higher = more liquid / larger",
+   "economicMechanism": "size/liquidity control and trading-cost input; not proposed as alpha",
+   "family": "E_RISK_STABILITY",
+   "feasibility": "computable now; primary size control",
+   "formula": "log median as-traded dollar volume over 63 sessions (withheld across a split)",
+   "id": "E05",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "market cap"
+   ],
+   "measuredCoverage": {
+    "nonFinancial": {
+     "denominator": "eligible non-financial S&P 500 member-dates on the 55 fixed sample dates (18,469; survivor-conditioned)",
+     "pointer": "/overall/logTradedValue63Pct",
+     "source": "docs/us-readiness/us-alpha-phase3-readiness-v1.json",
+     "value": 99.134
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "meanRho": 0.723,
+     "pair": [
+      "logTradedValue63",
+      "logMarketCapProxy"
+     ],
+     "pointer": "/sizeProxyAgreement",
+     "source": "docs/us-readiness/us-alpha-phase3-readiness-v1.json"
+    }
+   ],
+   "missingReasonCodes": [
+    "SPLIT_IN_WINDOW",
+    "INSUFFICIENT_SESSIONS"
+   ],
+   "name": "logTradedValue63",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "closes up to and including the signal date from the sealed replay-v16 total-return panel; a future price raises LookAheadError",
+   "publiclyObservableFrom": "signal-date close",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": {
+    "controlR2Mean": 0.204,
+    "medianNamesPerDate": 199.0,
+    "noiseFloorR2": 0.082,
+    "ownFamilyPeers": [],
+    "ownFamilyR2": null,
+    "pointer": "/uniqueVariationNonFinancial/logTradedValue63",
+    "sectorR2SameRows": 0.114,
+    "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+    "uniqueShareMean": 0.796
+   },
+   "units": "log USD"
+  },
+  {
+   "adjustedPriceDependency": "as-traded price reconstructed",
+   "availability": {
+    "historical": "NEEDS_SOURCE_OR_IDENTITY_VERIFICATION",
+    "prospective": "NEEDS_SOURCE_OR_IDENTITY_VERIFICATION"
+   },
+   "codePath": "pipeline/us_cash_profitability.py:market_cap_proxy",
+   "corporateActionAndShareCountDependencies": "weighted-average, not period-end, shares; split between filing and observation withholds",
+   "dataSource": "Finnhub share count + reconstructed price",
+   "departedSecurityDependency": "needs a price panel for the name; 212 departed identities have none (survivor-conditioned history)",
+   "directionConvention": "higher = larger",
+   "economicMechanism": "size",
+   "family": "E_RISK_STABILITY",
+   "feasibility": "sensitivity only; verified market cap needs period-end shares (SEC)",
+   "formula": "log(weighted-average shares x as-traded close)",
+   "id": "E06",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "share basis"
+   ],
+   "measuredCoverage": {
+    "nonFinancial": {
+     "denominator": "eligible non-financial S&P 500 member-dates on the 55 fixed sample dates (18,469; survivor-conditioned)",
+     "pointer": "/overall/logMarketCapProxyPct",
+     "source": "docs/us-readiness/us-alpha-phase3-readiness-v1.json",
+     "value": 76.225
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "note": "agrees with traded value at mean rank rho 0.72"
+    }
+   ],
+   "missingReasonCodes": [
+    "AVAILABLE",
+    "NO_VISIBLE_FILING",
+    "REPORT_STALE_OVER_180_DAYS",
+    "SHARES_NOT_STATED",
+    "SPLIT_BETWEEN_FILING_AND_OBSERVATION"
+   ],
+   "name": "logMarketCapProxy",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "filing acceptance + close",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": {
+    "controlR2Mean": 0.343,
+    "medianNamesPerDate": 192.5,
+    "noiseFloorR2": 0.085,
+    "ownFamilyPeers": [
+     "logTradedValue63"
+    ],
+    "ownFamilyR2": 0.52,
+    "pointer": "/uniqueVariationNonFinancial/logMarketCapProxy",
+    "sectorR2SameRows": 0.147,
+    "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+    "uniqueShareMean": 0.657
+   },
+   "units": "log USD"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "AVAILABLE_WITH_CAVEATS",
+    "prospective": "AVAILABLE_WITH_CAVEATS"
+   },
+   "codePath": "see B12",
+   "corporateActionAndShareCountDependencies": "none",
+   "dataSource": "sealed fundamentals",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "lower = more stable",
+   "economicMechanism": "quality / safety",
+   "family": "E_RISK_STABILITY",
+   "feasibility": "same as B12",
+   "formula": "dispersion of own TTM earnings/margins",
+   "id": "E07",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "vol252"
+   ],
+   "measuredCoverage": {
+    "status": "UNMEASURED"
+   },
+   "measuredRedundancy": [
+    {
+     "status": "UNMEASURED"
+    }
+   ],
+   "missingReasonCodes": [
+    "FEWER_THAN_WINDOW_OWN_READINGS"
+   ],
+   "name": "earningsStability",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance",
+   "sectorApplicability": "economically meaningful outside Financials and Real Estate; banks, insurers and REITs have no comparable operating line",
+   "uniqueVariation": null,
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "AVAILABLE_WITH_CAVEATS",
+    "prospective": "REGISTERED_PENDING_OWNER_APPROVAL (us-capital-allocation-alpha-v1, REGISTERED_AUTHORIZATION = None)"
+   },
+   "codePath": "pipeline/us_shareholder_distribution.py (US_SHAREHOLDER_DISTRIBUTION_V1)",
+   "corporateActionAndShareCountDependencies": "buybacks reduce shares; dilution cannot be verified (period-end shares 1.8% of filings)",
+   "dataSource": "Finnhub financials-reported, EXACT concepts only",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "higher = more cash returned",
+   "economicMechanism": "payout signals management confidence; buyback timing",
+   "family": "F_CAPITAL_ALLOCATION",
+   "feasibility": "computable at low, non-random coverage; an alias view (to 30.6%) stays blocked until SEC context verification",
+   "formula": "(common dividends + repurchases) TTM vs same stage a year earlier - 1",
+   "id": "F01",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "profitability (distributionToOCF vs roe 0.36)",
+    "low volatility"
+   ],
+   "measuredCoverage": {
+    "core4Joint": {
+     "denominator": "price- and identity-eligible S&P 500 member-dates on the 55 fixed sample dates (23,160; survivor-conditioned)",
+     "pointer": "/availabilityOverallPct/distributionCore4",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json",
+     "value": 21.511
+    },
+    "weeklyJointNote": "17.915% of all 359,526 weekly member-dates (docs/us-capital-allocation-phase2-v1.md, §1 row 3)"
+   },
+   "measuredRedundancy": [
+    {
+     "meanRho": 0.946,
+     "pair": [
+      "incrementalDistributionOverOCF",
+      "totalCashDistributionChangeYoY"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/incrementalDistributionOverOCF/totalCashDistributionChangeYoY",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    },
+    {
+     "meanRho": 0.359,
+     "pair": [
+      "distributionToOCF",
+      "roe"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/distributionToOCF/roe",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    }
+   ],
+   "missingReasonCodes": [
+    "CONCEPT_NOT_REPORTED",
+    "AMBIGUOUS_ACCOUNTING / RELATED_CONCEPT_IS_NOT_AN_ALIAS",
+    "MISSING_FISCAL_CHAIN"
+   ],
+   "name": "totalCashDistributionChangeYoY",
+   "outcomeExposure": {
+    "note": "measured set is non-random: lower volatility (0.451 vs 0.515 pct) and higher ROE (0.545 vs 0.489)",
+    "status": "NOT_TESTED",
+    "studies": [
+     "us-capital-allocation-alpha-v1 (prospective registration, no historical outcome read)"
+    ]
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance",
+   "sectorApplicability": "economically meaningful outside Financials and Real Estate; banks, insurers and REITs have no comparable operating line",
+   "uniqueVariation": null,
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "AVAILABLE_WITH_CAVEATS",
+    "prospective": "REGISTERED_PENDING_OWNER_APPROVAL (us-capital-allocation-alpha-v1, REGISTERED_AUTHORIZATION = None)"
+   },
+   "codePath": "pipeline/us_shareholder_distribution.py (US_SHAREHOLDER_DISTRIBUTION_V1)",
+   "corporateActionAndShareCountDependencies": "buybacks reduce shares; dilution cannot be verified (period-end shares 1.8% of filings)",
+   "dataSource": "Finnhub financials-reported, EXACT concepts only",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "higher = more cash returned",
+   "economicMechanism": "payout signals management confidence; buyback timing",
+   "family": "F_CAPITAL_ALLOCATION",
+   "feasibility": "computable at low, non-random coverage; an alias view (to 30.6%) stays blocked until SEC context verification",
+   "formula": "(common dividends + repurchases) TTM / positive OCF TTM",
+   "id": "F02",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "profitability (distributionToOCF vs roe 0.36)",
+    "low volatility"
+   ],
+   "measuredCoverage": {
+    "core4Joint": {
+     "denominator": "price- and identity-eligible S&P 500 member-dates on the 55 fixed sample dates (23,160; survivor-conditioned)",
+     "pointer": "/availabilityOverallPct/distributionCore4",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json",
+     "value": 21.511
+    },
+    "weeklyJointNote": "17.915% of all 359,526 weekly member-dates (docs/us-capital-allocation-phase2-v1.md, §1 row 3)"
+   },
+   "measuredRedundancy": [
+    {
+     "meanRho": 0.946,
+     "pair": [
+      "incrementalDistributionOverOCF",
+      "totalCashDistributionChangeYoY"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/incrementalDistributionOverOCF/totalCashDistributionChangeYoY",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    },
+    {
+     "meanRho": 0.359,
+     "pair": [
+      "distributionToOCF",
+      "roe"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/distributionToOCF/roe",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    }
+   ],
+   "missingReasonCodes": [
+    "CONCEPT_NOT_REPORTED",
+    "AMBIGUOUS_ACCOUNTING / RELATED_CONCEPT_IS_NOT_AN_ALIAS",
+    "MISSING_FISCAL_CHAIN"
+   ],
+   "name": "distributionToOCF",
+   "outcomeExposure": {
+    "note": "measured set is non-random: lower volatility (0.451 vs 0.515 pct) and higher ROE (0.545 vs 0.489)",
+    "status": "NOT_TESTED",
+    "studies": [
+     "us-capital-allocation-alpha-v1 (prospective registration, no historical outcome read)"
+    ]
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance",
+   "sectorApplicability": "economically meaningful outside Financials and Real Estate; banks, insurers and REITs have no comparable operating line",
+   "uniqueVariation": null,
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "AVAILABLE_WITH_CAVEATS",
+    "prospective": "REGISTERED_PENDING_OWNER_APPROVAL (us-capital-allocation-alpha-v1, REGISTERED_AUTHORIZATION = None)"
+   },
+   "codePath": "pipeline/us_shareholder_distribution.py (US_SHAREHOLDER_DISTRIBUTION_V1)",
+   "corporateActionAndShareCountDependencies": "buybacks reduce shares; dilution cannot be verified (period-end shares 1.8% of filings)",
+   "dataSource": "Finnhub financials-reported, EXACT concepts only",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "higher = more cash returned",
+   "economicMechanism": "payout signals management confidence; buyback timing",
+   "family": "F_CAPITAL_ALLOCATION",
+   "feasibility": "computable at low, non-random coverage; an alias view (to 30.6%) stays blocked until SEC context verification",
+   "formula": "year-on-year change in distributions / OCF",
+   "id": "F03",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "profitability (distributionToOCF vs roe 0.36)",
+    "low volatility"
+   ],
+   "measuredCoverage": {
+    "core4Joint": {
+     "denominator": "price- and identity-eligible S&P 500 member-dates on the 55 fixed sample dates (23,160; survivor-conditioned)",
+     "pointer": "/availabilityOverallPct/distributionCore4",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json",
+     "value": 21.511
+    },
+    "weeklyJointNote": "17.915% of all 359,526 weekly member-dates (docs/us-capital-allocation-phase2-v1.md, §1 row 3)"
+   },
+   "measuredRedundancy": [
+    {
+     "meanRho": 0.946,
+     "pair": [
+      "incrementalDistributionOverOCF",
+      "totalCashDistributionChangeYoY"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/incrementalDistributionOverOCF/totalCashDistributionChangeYoY",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    },
+    {
+     "meanRho": 0.359,
+     "pair": [
+      "distributionToOCF",
+      "roe"
+     ],
+     "pointer": "/featureRedundancy/pairwiseMeanRankCorrelation/distributionToOCF/roe",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json"
+    }
+   ],
+   "missingReasonCodes": [
+    "CONCEPT_NOT_REPORTED",
+    "AMBIGUOUS_ACCOUNTING / RELATED_CONCEPT_IS_NOT_AN_ALIAS",
+    "MISSING_FISCAL_CHAIN"
+   ],
+   "name": "incrementalDistributionOverOCF",
+   "outcomeExposure": {
+    "note": "measured set is non-random: lower volatility (0.451 vs 0.515 pct) and higher ROE (0.545 vs 0.489)",
+    "status": "NOT_TESTED",
+    "studies": [
+     "us-capital-allocation-alpha-v1 (prospective registration, no historical outcome read)"
+    ]
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance",
+   "sectorApplicability": "economically meaningful outside Financials and Real Estate; banks, insurers and REITs have no comparable operating line",
+   "uniqueVariation": null,
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "as-traded price reconstructed",
+   "availability": {
+    "historical": "AVAILABLE_WITH_CAVEATS",
+    "prospective": "BLOCKED_PENDING_OWNER_APPROVAL: no persistent US daily price ledger runs on signal-history yet (owner-gated collector, docs/us-persistent-daily-collection-v1.md)"
+   },
+   "codePath": "NOT_IMPLEMENTED (events exist: scripts/audit_us_multifactor_pit_readiness.py:load_events)",
+   "corporateActionAndShareCountDependencies": "split-adjust dividends to the as-traded basis",
+   "dataSource": "replay-v16 sealed corporate events (Yahoo actions) + reconstructed close",
+   "departedSecurityDependency": "needs a price panel for the name; 212 departed identities have none (survivor-conditioned history); departed names also lack dividend lineage",
+   "directionConvention": "higher = more income",
+   "economicMechanism": "income / value tilt",
+   "family": "F_CAPITAL_ALLOCATION",
+   "feasibility": "derivable from data already sealed; a generic dividend tag is NOT treated as common-share dividends",
+   "formula": "trailing 12-month dividends from sealed corporate events / as-traded close",
+   "id": "F04",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "value",
+    "low volatility",
+    "sector (utilities, staples)"
+   ],
+   "measuredCoverage": {
+    "status": "UNMEASURED"
+   },
+   "measuredRedundancy": [
+    {
+     "status": "UNMEASURED"
+    }
+   ],
+   "missingReasonCodes": [
+    "NO_PRICE_PANEL"
+   ],
+   "name": "dividendYield",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "closes up to and including the signal date from the sealed replay-v16 total-return panel; a future price raises LookAheadError",
+   "publiclyObservableFrom": "ex-date and signal-date close",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": null,
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "NEEDS_SOURCE_OR_IDENTITY_VERIFICATION",
+    "prospective": "NEEDS_SOURCE_OR_IDENTITY_VERIFICATION"
+   },
+   "codePath": "pipeline/accounting_quality.py:derive_us_fields (shareCountChangePct uses WEIGHTED-AVERAGE counts)",
+   "corporateActionAndShareCountDependencies": "splits must be neutralised",
+   "dataSource": "needs period-end / cover-page shares",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "negative = net buyback",
+   "economicMechanism": "issuance anomaly / dilution",
+   "family": "F_CAPITAL_ALLOCATION",
+   "feasibility": "blocked: weighted-average counts are not verified share-count change",
+   "formula": "period-end shares outstanding vs a year earlier",
+   "id": "F05",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "M&A share issuance"
+   ],
+   "measuredCoverage": {
+    "dilution": {
+     "denominator": "price- and identity-eligible S&P 500 member-dates on the 55 fixed sample dates (23,160; survivor-conditioned)",
+     "pointer": "/availabilityOverallPct/dilution",
+     "source": "docs/us-readiness/us-multifactor-pit-readiness-v1.json",
+     "value": 0.0
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "status": "UNMEASURED"
+    }
+   ],
+   "missingReasonCodes": [
+    "PERIOD_END_SHARES_NOT_STATED (SEC context blocked)"
+   ],
+   "name": "netShareCountChange",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": null,
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "as-traded price",
+   "availability": {
+    "historical": "NEEDS_SOURCE_OR_IDENTITY_VERIFICATION",
+    "prospective": "NEEDS_SOURCE_OR_IDENTITY_VERIFICATION"
+   },
+   "codePath": "NOT_IMPLEMENTED",
+   "corporateActionAndShareCountDependencies": "needs verified market cap",
+   "dataSource": "F01 components / market cap",
+   "departedSecurityDependency": "needs a price panel for the name; 212 departed identities have none (survivor-conditioned history)",
+   "directionConvention": "higher = more returned",
+   "economicMechanism": "payout yield (Boudoukh et al.)",
+   "family": "F_CAPITAL_ALLOCATION",
+   "feasibility": "blocked on market cap and issuance",
+   "formula": "(dividends + buybacks - issuance) / market cap",
+   "id": "F06",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "value"
+   ],
+   "measuredCoverage": {
+    "status": "UNMEASURED"
+   },
+   "measuredRedundancy": [
+    {
+     "status": "UNMEASURED"
+    }
+   ],
+   "missingReasonCodes": [
+    "MARKET_CAP_PIT_UNRESOLVED"
+   ],
+   "name": "netPayoutYield",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "n/a",
+   "sectorApplicability": "economically meaningful outside Financials and Real Estate; banks, insurers and REITs have no comparable operating line",
+   "uniqueVariation": null,
+   "units": "ratio"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "BLOCKED_SOURCE: Finnhub financials-reported omits the balance sheet on filings first served from 2026-10-07; total assets unresolved (docs/us-finnhub-balance-sheet-coverage-ko.md, docs/us-total-assets-source-rescue-ko.md)"
+   },
+   "codePath": "pipeline/accounting_quality.py:derive_us_fields (ACCOUNTING_QUALITY_V1), evaluated on the cash-profitability visibility rule",
+   "corporateActionAndShareCountDependencies": "M&A steps up assets without organic investment",
+   "dataSource": "Finnhub financials-reported balance sheet",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "higher = faster investment",
+   "economicMechanism": "investment factor: high asset growth predicts lower returns (empire building, q-theory)",
+   "family": "F_CAPITAL_ALLOCATION",
+   "feasibility": "computable now historically; prospectively blocked on total assets",
+   "formula": "total assets vs same stage a year earlier - 1",
+   "id": "F07",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "acquisitions",
+    "accruals",
+    "revenue growth"
+   ],
+   "measuredCoverage": {
+    "financialAndRealEstate": {
+     "denominator": "Financials and Real Estate member-dates on the 55 dates (4,684)",
+     "pointer": "/availabilityFinancialAndRealEstatePct/assetGrowthPct/pct",
+     "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+     "value": 86.059
+    },
+    "nonFinancial": {
+     "denominator": "eligible non-financial S&P 500 member-dates on the 55 fixed sample dates (18,469; survivor-conditioned)",
+     "pointer": "/availabilityNonFinancialPct/assetGrowthPct/pct",
+     "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+     "value": 92.03
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "note": "see uniqueVariation (ownFamily R2 vs capex intensity near zero)"
+    }
+   ],
+   "missingReasonCodes": [
+    "ASSETS_NOT_STATED",
+    "NO_PRIOR_SAME_STAGE_FILING",
+    "REPORT_STALE"
+   ],
+   "name": "assetGrowthPct",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance",
+   "sectorApplicability": "defined everywhere; a different economic meaning for banks (balance-sheet growth)",
+   "uniqueVariation": {
+    "controlR2Mean": 0.181,
+    "medianNamesPerDate": 199.0,
+    "noiseFloorR2": 0.082,
+    "ownFamilyPeers": [
+     "capexIntensityPct"
+    ],
+    "ownFamilyR2": 0.005,
+    "pointer": "/uniqueVariationNonFinancial/assetGrowthPct",
+    "sectorR2SameRows": 0.062,
+    "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+    "uniqueShareMean": 0.819
+   },
+   "units": "percent"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "AVAILABLE_WITH_CAVEATS"
+   },
+   "codePath": "pipeline/accounting_quality.py:derive_us_fields",
+   "corporateActionAndShareCountDependencies": "none",
+   "dataSource": "Finnhub financials-reported",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "higher = more reinvestment",
+   "economicMechanism": "reinvestment vs distribution",
+   "family": "F_CAPITAL_ALLOCATION",
+   "feasibility": "computable now",
+   "formula": "capex TTM / revenue TTM",
+   "id": "F08",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "sector (26% of rank variance)"
+   ],
+   "measuredCoverage": {
+    "nonFinancial": {
+     "denominator": "eligible non-financial S&P 500 member-dates on the 55 fixed sample dates (18,469; survivor-conditioned)",
+     "pointer": "/availabilityNonFinancialPct/capexIntensityPct/pct",
+     "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+     "value": 85.267
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "note": "see uniqueVariation"
+    }
+   ],
+   "missingReasonCodes": [
+    "CAPEX_CHAIN_INCOMPLETE",
+    "REVENUE_TTM_INCOMPLETE"
+   ],
+   "name": "capexIntensityPct",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance",
+   "sectorApplicability": "economically meaningful outside Financials and Real Estate; banks, insurers and REITs have no comparable operating line",
+   "uniqueVariation": {
+    "controlR2Mean": 0.329,
+    "medianNamesPerDate": 192.5,
+    "noiseFloorR2": 0.087,
+    "ownFamilyPeers": [
+     "assetGrowthPct"
+    ],
+    "ownFamilyR2": 0.005,
+    "pointer": "/uniqueVariationNonFinancial/capexIntensityPct",
+    "sectorR2SameRows": 0.26,
+    "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+    "uniqueShareMean": 0.671
+   },
+   "units": "percent"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "AVAILABLE_WITH_CAVEATS",
+    "prospective": "BLOCKED_SOURCE: Finnhub financials-reported omits the balance sheet on filings first served from 2026-10-07; total assets unresolved (docs/us-finnhub-balance-sheet-coverage-ko.md, docs/us-total-assets-source-rescue-ko.md)"
+   },
+   "codePath": "pipeline/accounting_quality.py:derive_us_fields",
+   "corporateActionAndShareCountDependencies": "M&A",
+   "dataSource": "Finnhub balance sheet",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "higher = levering up",
+   "economicMechanism": "external financing anomaly",
+   "family": "F_CAPITAL_ALLOCATION",
+   "feasibility": "computable; coverage not measured on the grid",
+   "formula": "total liabilities vs same stage a year earlier - 1",
+   "id": "F09",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "F07"
+   ],
+   "measuredCoverage": {
+    "status": "UNMEASURED"
+   },
+   "measuredRedundancy": [
+    {
+     "status": "UNMEASURED"
+    }
+   ],
+   "missingReasonCodes": [
+    "LIABILITIES_NOT_STATED",
+    "NO_PRIOR_SAME_STAGE_FILING"
+   ],
+   "name": "debtGrowthPct",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "SEC acceptance",
+   "sectorApplicability": "economically meaningful outside Financials and Real Estate; banks, insurers and REITs have no comparable operating line",
+   "uniqueVariation": null,
+   "units": "percent"
+  },
+  {
+   "adjustedPriceDependency": "n/a",
+   "availability": {
+    "historical": "UNAVAILABLE",
+    "prospective": "UNAVAILABLE"
+   },
+   "codePath": "NOT_IMPLEMENTED",
+   "corporateActionAndShareCountDependencies": "n/a",
+   "dataSource": "none reachable",
+   "departedSecurityDependency": "n/a",
+   "directionConvention": "n/a",
+   "economicMechanism": "expectation shocks / drift",
+   "family": "G_CATALYSTS_EVENTS",
+   "feasibility": "blocked: HISTORICAL_CONSENSUS_UNAVAILABLE (paid)",
+   "formula": "actual EPS - consensus at announcement",
+   "id": "G01",
+   "identityRisk": "n/a",
+   "majorConfounders": [
+    "momentum"
+   ],
+   "measuredCoverage": {
+    "status": "UNMEASURED"
+   },
+   "measuredRedundancy": [
+    {
+     "status": "UNMEASURED"
+    }
+   ],
+   "missingReasonCodes": [
+    "HISTORICAL_CONSENSUS_UNAVAILABLE (paid)"
+   ],
+   "name": "earningsSurpriseVsConsensus",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "vintage-stamped event feed required",
+   "publiclyObservableFrom": "n/a",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": null,
+   "units": "varies"
+  },
+  {
+   "adjustedPriceDependency": "n/a",
+   "availability": {
+    "historical": "UNAVAILABLE",
+    "prospective": "UNAVAILABLE"
+   },
+   "codePath": "NOT_IMPLEMENTED",
+   "corporateActionAndShareCountDependencies": "n/a",
+   "dataSource": "none reachable",
+   "departedSecurityDependency": "n/a",
+   "directionConvention": "n/a",
+   "economicMechanism": "expectation shocks / drift",
+   "family": "G_CATALYSTS_EVENTS",
+   "feasibility": "blocked: HISTORICAL_ESTIMATES_PAID_TIER",
+   "formula": "change in consensus over a trailing window",
+   "id": "G02",
+   "identityRisk": "n/a",
+   "majorConfounders": [
+    "momentum"
+   ],
+   "measuredCoverage": {
+    "status": "UNMEASURED"
+   },
+   "measuredRedundancy": [
+    {
+     "status": "UNMEASURED"
+    }
+   ],
+   "missingReasonCodes": [
+    "HISTORICAL_ESTIMATES_PAID_TIER"
+   ],
+   "name": "estimateRevisions",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "vintage-stamped event feed required",
+   "publiclyObservableFrom": "n/a",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": null,
+   "units": "varies"
+  },
+  {
+   "adjustedPriceDependency": "n/a",
+   "availability": {
+    "historical": "UNAVAILABLE",
+    "prospective": "UNAVAILABLE"
+   },
+   "codePath": "NOT_IMPLEMENTED",
+   "corporateActionAndShareCountDependencies": "n/a",
+   "dataSource": "none reachable",
+   "departedSecurityDependency": "n/a",
+   "directionConvention": "n/a",
+   "economicMechanism": "expectation shocks / drift",
+   "family": "G_CATALYSTS_EVENTS",
+   "feasibility": "blocked: SEC data.sec.gov blocked from Actions egress (HTTP 403, byte-identical across header sets)",
+   "formula": "8-K item events",
+   "id": "G03",
+   "identityRisk": "n/a",
+   "majorConfounders": [
+    "momentum"
+   ],
+   "measuredCoverage": {
+    "status": "UNMEASURED"
+   },
+   "measuredRedundancy": [
+    {
+     "status": "UNMEASURED"
+    }
+   ],
+   "missingReasonCodes": [
+    "SEC data.sec.gov blocked from Actions egress (HTTP 403, byte-identical across header sets)"
+   ],
+   "name": "corporateEvents8K",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "vintage-stamped event feed required",
+   "publiclyObservableFrom": "n/a",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": null,
+   "units": "varies"
+  },
+  {
+   "adjustedPriceDependency": "n/a",
+   "availability": {
+    "historical": "UNAVAILABLE",
+    "prospective": "UNAVAILABLE"
+   },
+   "codePath": "NOT_IMPLEMENTED",
+   "corporateActionAndShareCountDependencies": "n/a",
+   "dataSource": "none reachable",
+   "departedSecurityDependency": "n/a",
+   "directionConvention": "n/a",
+   "economicMechanism": "expectation shocks / drift",
+   "family": "G_CATALYSTS_EVENTS",
+   "feasibility": "blocked: no source in the repository",
+   "formula": "management guidance revisions",
+   "id": "G04",
+   "identityRisk": "n/a",
+   "majorConfounders": [
+    "momentum"
+   ],
+   "measuredCoverage": {
+    "status": "UNMEASURED"
+   },
+   "measuredRedundancy": [
+    {
+     "status": "UNMEASURED"
+    }
+   ],
+   "missingReasonCodes": [
+    "no source in the repository"
+   ],
+   "name": "guidanceChanges",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "vintage-stamped event feed required",
+   "publiclyObservableFrom": "n/a",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": null,
+   "units": "varies"
+  },
+  {
+   "adjustedPriceDependency": "none",
+   "availability": {
+    "historical": "AVAILABLE_WITH_CAVEATS",
+    "prospective": "AVAILABLE_WITH_CAVEATS"
+   },
+   "codePath": "NOT_IMPLEMENTED",
+   "corporateActionAndShareCountDependencies": "per-share basis",
+   "dataSource": "Finnhub financials-reported quarterly EPS chain",
+   "departedSecurityDependency": "needs the name's price panel for eligibility; departed names without a panel are absent",
+   "directionConvention": "higher = positive surprise",
+   "economicMechanism": "post-earnings-announcement drift",
+   "family": "G_CATALYSTS_EVENTS",
+   "feasibility": "derivable but measured LATE relative to the event; overlaps C01/C03",
+   "formula": "seasonal random-walk EPS surprise from filings (no consensus)",
+   "id": "G05",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "the announcement return is already in price momentum by acceptance date"
+   ],
+   "measuredCoverage": {
+    "status": "UNMEASURED"
+   },
+   "measuredRedundancy": [
+    {
+     "status": "UNMEASURED"
+    }
+   ],
+   "missingReasonCodes": [
+    "QUARTERLY_CHAIN_INCOMPLETE"
+   ],
+   "name": "standardizedUnexpectedEarnings",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "filing visible only strictly after max(availableFrom, acceptedDate) (SEC acceptance via Finnhub), latest visible period end, withheld when that period ended more than 180 days earlier; TTM is the finnhub_derive rollforward, never an annualisation",
+   "publiclyObservableFrom": "10-Q/10-K ACCEPTANCE, which lags the earnings announcement (8-K blocked)",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": null,
+   "units": "z-score"
+  },
+  {
+   "adjustedPriceDependency": "n/a",
+   "availability": {
+    "historical": "NEEDS_SOURCE_OR_IDENTITY_VERIFICATION",
+    "prospective": "NEEDS_SOURCE_OR_IDENTITY_VERIFICATION"
+   },
+   "codePath": "NOT_IMPLEMENTED",
+   "corporateActionAndShareCountDependencies": "n/a",
+   "dataSource": "research_specs/alpha-opportunity-model-v1-us-membership.json.gz (195 snapshots)",
+   "departedSecurityDependency": "departures are exactly the unpriced names",
+   "directionConvention": "n/a",
+   "economicMechanism": "index demand shocks",
+   "family": "G_CATALYSTS_EVENTS",
+   "feasibility": "blocked: event timing unknown to within the snapshot gap (median 54, max 767 days)",
+   "formula": "addition to / deletion from the S&P 500",
+   "id": "G06",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "size",
+    "momentum"
+   ],
+   "measuredCoverage": {
+    "snapshotAge": {
+     "denominator": "715 weekly signal dates",
+     "pointer": "/membershipSnapshotAge",
+     "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+     "value": {
+      "maxDays": 767,
+      "medianDays": 54.0,
+      "p90Days": 367.20000000000005,
+      "rule": "latest S&P 500 snapshot strictly before each of the weekly signal dates",
+      "weeks": 715,
+      "weeksOver180Days": 168,
+      "weeksOver365Days": 74,
+      "weeksOver45Days": 382,
+      "weeksOver90Days": 277,
+      "weeksWithoutSnapshot": 0
+     }
+    }
+   },
+   "measuredRedundancy": [
+    {
+     "status": "UNMEASURED"
+    }
+   ],
+   "missingReasonCodes": [
+    "SNAPSHOT_GAP"
+   ],
+   "name": "indexMembershipChange",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "snapshot usable the day after its commit",
+   "publiclyObservableFrom": "snapshot commit date, not announcement date",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": null,
+   "units": "event"
+  },
+  {
+   "adjustedPriceDependency": "n/a",
+   "availability": {
+    "historical": "UNAVAILABLE",
+    "prospective": "UNAVAILABLE"
+   },
+   "codePath": "NOT_IMPLEMENTED",
+   "corporateActionAndShareCountDependencies": "n/a",
+   "dataSource": "none reachable",
+   "departedSecurityDependency": "n/a",
+   "directionConvention": "n/a",
+   "economicMechanism": "informed trading / demand pressure",
+   "family": "H_OWNERSHIP_FLOW_SENTIMENT",
+   "feasibility": "blocked: SEC blocked; 13F is quarter-end holdings filed up to 45 days later, never contemporaneous",
+   "formula": "change in 13F-reported holders/shares",
+   "id": "H01",
+   "identityRisk": "n/a",
+   "majorConfounders": [
+    "size",
+    "momentum"
+   ],
+   "measuredCoverage": {
+    "status": "UNMEASURED"
+   },
+   "measuredRedundancy": [
+    {
+     "status": "UNMEASURED"
+    }
+   ],
+   "missingReasonCodes": [
+    "SEC blocked; 13F is quarter-end holdings filed up to 45 days later, never contemporaneous"
+   ],
+   "name": "institutional13FChange",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "filing/publication timestamp required",
+   "publiclyObservableFrom": "n/a",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": null,
+   "units": "varies"
+  },
+  {
+   "adjustedPriceDependency": "n/a",
+   "availability": {
+    "historical": "UNAVAILABLE",
+    "prospective": "UNAVAILABLE"
+   },
+   "codePath": "NOT_IMPLEMENTED",
+   "corporateActionAndShareCountDependencies": "n/a",
+   "dataSource": "none reachable",
+   "departedSecurityDependency": "n/a",
+   "directionConvention": "n/a",
+   "economicMechanism": "informed trading / demand pressure",
+   "family": "H_OWNERSHIP_FLOW_SENTIMENT",
+   "feasibility": "blocked: SEC blocked; no free alternate vendor",
+   "formula": "Form 4 net insider buying",
+   "id": "H02",
+   "identityRisk": "n/a",
+   "majorConfounders": [
+    "size",
+    "momentum"
+   ],
+   "measuredCoverage": {
+    "status": "UNMEASURED"
+   },
+   "measuredRedundancy": [
+    {
+     "status": "UNMEASURED"
+    }
+   ],
+   "missingReasonCodes": [
+    "SEC blocked; no free alternate vendor"
+   ],
+   "name": "insiderTransactions",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "filing/publication timestamp required",
+   "publiclyObservableFrom": "n/a",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": null,
+   "units": "varies"
+  },
+  {
+   "adjustedPriceDependency": "n/a",
+   "availability": {
+    "historical": "UNAVAILABLE",
+    "prospective": "UNAVAILABLE"
+   },
+   "codePath": "NOT_IMPLEMENTED",
+   "corporateActionAndShareCountDependencies": "n/a",
+   "dataSource": "none reachable",
+   "departedSecurityDependency": "n/a",
+   "directionConvention": "n/a",
+   "economicMechanism": "informed trading / demand pressure",
+   "family": "H_OWNERSHIP_FLOW_SENTIMENT",
+   "feasibility": "blocked: NOT_PROBED in this repository",
+   "formula": "short interest / float",
+   "id": "H03",
+   "identityRisk": "n/a",
+   "majorConfounders": [
+    "size",
+    "momentum"
+   ],
+   "measuredCoverage": {
+    "status": "UNMEASURED"
+   },
+   "measuredRedundancy": [
+    {
+     "status": "UNMEASURED"
+    }
+   ],
+   "missingReasonCodes": [
+    "NOT_PROBED in this repository"
+   ],
+   "name": "shortInterest",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "filing/publication timestamp required",
+   "publiclyObservableFrom": "n/a",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": null,
+   "units": "varies"
+  },
+  {
+   "adjustedPriceDependency": "n/a",
+   "availability": {
+    "historical": "UNAVAILABLE",
+    "prospective": "UNAVAILABLE"
+   },
+   "codePath": "NOT_IMPLEMENTED",
+   "corporateActionAndShareCountDependencies": "n/a",
+   "dataSource": "none reachable",
+   "departedSecurityDependency": "n/a",
+   "directionConvention": "n/a",
+   "economicMechanism": "informed trading / demand pressure",
+   "family": "H_OWNERSHIP_FLOW_SENTIMENT",
+   "feasibility": "blocked: no source",
+   "formula": "mutual fund / ETF flow pressure",
+   "id": "H04",
+   "identityRisk": "n/a",
+   "majorConfounders": [
+    "size",
+    "momentum"
+   ],
+   "measuredCoverage": {
+    "status": "UNMEASURED"
+   },
+   "measuredRedundancy": [
+    {
+     "status": "UNMEASURED"
+    }
+   ],
+   "missingReasonCodes": [
+    "no source"
+   ],
+   "name": "fundFlows",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "filing/publication timestamp required",
+   "publiclyObservableFrom": "n/a",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": null,
+   "units": "varies"
+  },
+  {
+   "adjustedPriceDependency": "n/a",
+   "availability": {
+    "historical": "UNAVAILABLE",
+    "prospective": "UNAVAILABLE"
+   },
+   "codePath": "NOT_IMPLEMENTED",
+   "corporateActionAndShareCountDependencies": "n/a",
+   "dataSource": "none reachable",
+   "departedSecurityDependency": "n/a",
+   "directionConvention": "n/a",
+   "economicMechanism": "informed trading / demand pressure",
+   "family": "H_OWNERSHIP_FLOW_SENTIMENT",
+   "feasibility": "blocked: no source; pipeline/sentiment.py is market-level price/breadth, not stock news",
+   "formula": "stock-level news or search sentiment",
+   "id": "H05",
+   "identityRisk": "n/a",
+   "majorConfounders": [
+    "size",
+    "momentum"
+   ],
+   "measuredCoverage": {
+    "status": "UNMEASURED"
+   },
+   "measuredRedundancy": [
+    {
+     "status": "UNMEASURED"
+    }
+   ],
+   "missingReasonCodes": [
+    "no source; pipeline/sentiment.py is market-level price/breadth, not stock news"
+   ],
+   "name": "newsSentiment",
+   "outcomeExposure": {
+    "note": "no committed study has related this characteristic to a later US return",
+    "status": "NOT_TESTED",
+    "studies": []
+   },
+   "pitRequirements": "filing/publication timestamp required",
+   "publiclyObservableFrom": "n/a",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": null,
+   "units": "varies"
+  },
+  {
+   "adjustedPriceDependency": "split-normalised volume",
+   "availability": {
+    "historical": "SURVIVOR_CONDITIONED",
+    "prospective": "BLOCKED_PENDING_OWNER_APPROVAL: no persistent US daily price ledger runs on signal-history yet (owner-gated collector, docs/us-persistent-daily-collection-v1.md)"
+   },
+   "codePath": "pipeline/regional_alpha_features.py:price_features",
+   "corporateActionAndShareCountDependencies": "split-normalised",
+   "dataSource": "replay-v16 split-normalised volume",
+   "departedSecurityDependency": "needs a price panel for the name; 212 departed identities have none (survivor-conditioned history)",
+   "directionConvention": "higher = abnormal attention",
+   "economicMechanism": "attention / volume anomalies",
+   "family": "H_OWNERSHIP_FLOW_SENTIMENT",
+   "feasibility": "closed inside the 31-feature model",
+   "formula": "5-session / 60-session volume ratio",
+   "id": "H06",
+   "identityRisk": "29 symbols were reused by a different issuer and 30 panel symbols do not carry the member's own history (v3 survivorship audit)",
+   "majorConfounders": [
+    "earnings dates"
+   ],
+   "measuredCoverage": {
+    "note": "wherever a panel exists"
+   },
+   "measuredRedundancy": [
+    {
+     "status": "UNMEASURED"
+    }
+   ],
+   "missingReasonCodes": [
+    "INSUFFICIENT_SESSIONS"
+   ],
+   "name": "volumeSurge5_60",
+   "outcomeExposure": {
+    "note": "inside the 31-feature US model (Ridge/HGBR, annual walk-forward, H126 rank target); model-level NO_MODEL_EVIDENCE, no per-feature reading was committed. Class C also covers positive-but-unstable patterns, so it is not evidence against the feature. Re-testing it on the same history is not a new hypothesis.",
+    "status": "TESTED_OUTCOME_EXPOSED",
+    "studies": [
+     "regional-alpha-model-v1"
+    ]
+   },
+   "pitRequirements": "closes up to and including the signal date from the sealed replay-v16 total-return panel; a future price raises LookAheadError",
+   "publiclyObservableFrom": "signal-date close",
+   "sectorApplicability": "all sectors",
+   "uniqueVariation": null,
+   "units": "ratio"
+  }
+ ],
+ "familyRedundancyReading": {
+  "highlyOverlappingAcrossFamilies": [
+   "roe",
+   "operatingProfitabilityToAssets",
+   "cashOperatingProfitability",
+   "bookYield"
+  ],
+  "mostDistinctComputable": [
+   "assetGrowthPct",
+   "delta_roe",
+   "delta_operatingMargin",
+   "logTradedValue63",
+   "debtToEquity",
+   "earningsGrowth",
+   "relativeStrengthBreadth52w",
+   "accrualsToAssets"
+  ],
+  "note": "R^2 of a feature's within-date rank on sector + one representative of every other family; uniqueShare = 1 - R^2. Pure-noise floor ~0.08.",
+  "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+  "withinFamilyDuplicates": [
+   "vol252 / downsideVol252 / beta252 / maxDD252",
+   "operatingMargin / profitMargin",
+   "relative126 / high52Distance / mom121",
+   "incrementalDistributionOverOCF / totalCashDistributionChangeYoY (rho 0.95)"
+  ]
+ },
+ "fitsModels": false,
+ "forwardPricesRead": false,
+ "id": "us-factor-inventory-v1",
+ "jointAttrition": {
+  "denominator": "eligible non-financial S&P 500 member-dates on the 55 fixed sample dates (18,469; survivor-conditioned)",
+  "pointer": "/jointAttritionNonFinancial",
+  "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+  "value": [
+   {
+    "addFamily": "MOMENTUM_TREND",
+    "jointPct": 100.0,
+    "jointPctByYear": {
+     "2013": 100.0,
+     "2014": 100.0,
+     "2015": 100.0,
+     "2016": 100.0,
+     "2017": 100.0,
+     "2018": 100.0,
+     "2019": 100.0,
+     "2020": 100.0,
+     "2021": 100.0,
+     "2022": 100.0,
+     "2023": 100.0,
+     "2024": 100.0,
+     "2025": 100.0,
+     "2026": 100.0
+    },
+    "namesPerDate": {
+     "dates": 55,
+     "datesBelow100": 0,
+     "median": 326.0,
+     "min": 266
+    },
+    "requires": "mom121"
+   },
+   {
+    "addFamily": "RISK",
+    "jointPct": 100.0,
+    "jointPctByYear": {
+     "2013": 100.0,
+     "2014": 100.0,
+     "2015": 100.0,
+     "2016": 100.0,
+     "2017": 100.0,
+     "2018": 100.0,
+     "2019": 100.0,
+     "2020": 100.0,
+     "2021": 100.0,
+     "2022": 100.0,
+     "2023": 100.0,
+     "2024": 100.0,
+     "2025": 100.0,
+     "2026": 100.0
+    },
+    "namesPerDate": {
+     "dates": 55,
+     "datesBelow100": 0,
+     "median": 326.0,
+     "min": 266
+    },
+    "requires": "vol252"
+   },
+   {
+    "addFamily": "SIZE_LIQUIDITY",
+    "jointPct": 99.134,
+    "jointPctByYear": {
+     "2013": 99.1,
+     "2014": 98.7,
+     "2015": 98.5,
+     "2016": 99.3,
+     "2017": 99.4,
+     "2018": 99.4,
+     "2019": 99.5,
+     "2020": 99.4,
+     "2021": 99.1,
+     "2022": 99.2,
+     "2023": 99.2,
+     "2024": 98.8,
+     "2025": 99.3,
+     "2026": 99.0
+    },
+    "namesPerDate": {
+     "dates": 55,
+     "datesBelow100": 0,
+     "median": 326.0,
+     "min": 263
+    },
+    "requires": "logTradedValue63"
+   },
+   {
+    "addFamily": "PROFITABILITY_ACCRUAL",
+    "jointPct": 83.93,
+    "jointPctByYear": {
+     "2013": 55.9,
+     "2014": 75.6,
+     "2015": 78.7,
+     "2016": 83.2,
+     "2017": 85.0,
+     "2018": 86.7,
+     "2019": 87.4,
+     "2020": 87.8,
+     "2021": 88.4,
+     "2022": 87.3,
+     "2023": 88.8,
+     "2024": 83.5,
+     "2025": 88.6,
+     "2026": 94.0
+    },
+    "namesPerDate": {
+     "dates": 55,
+     "datesBelow100": 1,
+     "median": 285.0,
+     "min": 22
+    },
+    "requires": "operatingProfitabilityToAssets"
+   },
+   {
+    "addFamily": "CASH_QUALITY",
+    "jointPct": 83.426,
+    "jointPctByYear": {
+     "2013": 55.2,
+     "2014": 73.8,
+     "2015": 76.9,
+     "2016": 82.0,
+     "2017": 84.4,
+     "2018": 86.3,
+     "2019": 87.3,
+     "2020": 87.7,
+     "2021": 88.1,
+     "2022": 87.3,
+     "2023": 88.7,
+     "2024": 83.5,
+     "2025": 88.4,
+     "2026": 93.8
+    },
+    "namesPerDate": {
+     "dates": 55,
+     "datesBelow100": 1,
+     "median": 285.0,
+     "min": 22
+    },
+    "requires": "cashOperatingProfitability"
+   },
+   {
+    "addFamily": "LEVERAGE",
+    "jointPct": 77.719,
+    "jointPctByYear": {
+     "2013": 52.7,
+     "2014": 70.8,
+     "2015": 74.0,
+     "2016": 77.5,
+     "2017": 80.0,
+     "2018": 80.7,
+     "2019": 80.7,
+     "2020": 81.8,
+     "2021": 82.4,
+     "2022": 79.7,
+     "2023": 80.6,
+     "2024": 76.5,
+     "2025": 81.0,
+     "2026": 86.3
+    },
+    "namesPerDate": {
+     "dates": 55,
+     "datesBelow100": 1,
+     "median": 263.0,
+     "min": 22
+    },
+    "requires": "debtToEquity"
+   },
+   {
+    "addFamily": "GROWTH_CHANGE",
+    "jointPct": 70.962,
+    "jointPctByYear": {
+     "2013": 3.0,
+     "2014": 50.6,
+     "2015": 70.8,
+     "2016": 75.7,
+     "2017": 77.9,
+     "2018": 78.9,
+     "2019": 80.3,
+     "2020": 79.9,
+     "2021": 80.8,
+     "2022": 78.3,
+     "2023": 77.6,
+     "2024": 71.9,
+     "2025": 72.9,
+     "2026": 80.7
+    },
+    "namesPerDate": {
+     "dates": 55,
+     "datesBelow100": 5,
+     "median": 261.0,
+     "min": 0
+    },
+    "requires": "earningsGrowth"
+   },
+   {
+    "addFamily": "INVESTMENT",
+    "jointPct": 70.93,
+    "jointPctByYear": {
+     "2013": 3.0,
+     "2014": 50.6,
+     "2015": 70.8,
+     "2016": 75.6,
+     "2017": 77.7,
+     "2018": 78.9,
+     "2019": 80.3,
+     "2020": 79.9,
+     "2021": 80.7,
+     "2022": 78.3,
+     "2023": 77.5,
+     "2024": 71.9,
+     "2025": 72.9,
+     "2026": 80.7
+    },
+    "namesPerDate": {
+     "dates": 55,
+     "datesBelow100": 5,
+     "median": 261.0,
+     "min": 0
+    },
+    "requires": "assetGrowthPct"
+   },
+   {
+    "addFamily": "VALUE_RECONSTRUCTED_PRICE",
+    "jointPct": 55.119,
+    "jointPctByYear": {
+     "2013": 2.4,
+     "2014": 39.0,
+     "2015": 54.1,
+     "2016": 55.0,
+     "2017": 57.1,
+     "2018": 58.8,
+     "2019": 60.9,
+     "2020": 58.5,
+     "2021": 62.0,
+     "2022": 65.2,
+     "2023": 62.4,
+     "2024": 58.8,
+     "2025": 59.8,
+     "2026": 66.1
+    },
+    "namesPerDate": {
+     "dates": 55,
+     "datesBelow100": 5,
+     "median": 198.0,
+     "min": 0
+    },
+    "requires": "earningsYield"
+   }
+  ]
+ },
+ "productionEffect": "NONE",
+ "readsLabels": false,
+ "readsReturns": false,
+ "references": {
+  "acceleration": {
+   "path": "docs/results/fundamental-acceleration-discovery-report.json",
+   "sha256": "2b8a3921e20f32b4e0690c9666c76287ede2730545d734198a5594c9e75efe55"
+  },
+  "benchmarkAlpha": {
+   "path": "docs/results/benchmark-alpha-report.json",
+   "sha256": "0dfe0d9b10bdc5784db6d036733f80c8c4fbeadb7c319f3e65c905569a5d9839"
+  },
+  "capalloc": {
+   "path": "docs/us-readiness/us-capital-allocation-feature-overlap-v1.json",
+   "sha256": "6da19f8db20da3e0ef14486da633de752a52ec88573888d844bc8b36a01b22e3"
+  },
+  "fourfactor": {
+   "path": "docs/results/four-factor-signal-attribution-audit-report.json",
+   "sha256": "d843950b5baee865cfc9bba7965ece9252a0212ef993e9e8ca8efea01cc4850d"
+  },
+  "h63": {
+   "path": "docs/us-readiness/us-h63-inference-calibration-v1-result.json",
+   "sha256": "a6c34275ab28dd75487a1d3848d311eb7fa2efeefc261f04794e7f8e5a7ae8d7"
+  },
+  "h63supplement": {
+   "path": "docs/us-readiness/us-h63-inference-calibration-v1-supplement-result.json",
+   "sha256": "1970a61a0a4f3d6741f8f57c99b6305e8b49092e25898b18015158a7829cfa23"
+  },
+  "integration": {
+   "path": "docs/us-readiness/us-factor-integration-readiness-v1.json",
+   "sha256": "a835f381f362f3aab189f76c4ecd98744cab0cbe73cc1d294cbeb631a8b53b97"
+  },
+  "multifactor": {
+   "path": "docs/us-readiness/us-multifactor-pit-readiness-v1.json",
+   "sha256": "b877ab50a3ceb38e6aaad6c936e78aa97e035bb3c37702db258f1fd4545b0fff"
+  },
+  "p4readiness": {
+   "path": "docs/us-readiness/us-cash-profitability-exploratory-readiness-v2.json",
+   "sha256": "425abfab9afbf019b46f1b7d887f8c722f17677c68c6cdef7135fb5dbace74d5"
+  },
+  "phase3": {
+   "path": "docs/us-readiness/us-alpha-phase3-readiness-v1.json",
+   "sha256": "3f2908cd2cd1dfd9cee213deb4e8cc94e1261d738091f84f2317d36c86735185"
+  },
+  "source": {
+   "path": "docs/us-readiness/us-source-readiness-v1.json",
+   "sha256": "e6d7d35d71baf0f4fab4ce8b6f5d92e138f5649f011d5bbc3dc389e89f23408f"
+  },
+  "survivorship": {
+   "path": "docs/results/alpha-opportunity-model-v3-survivorship-audit.json",
+   "sha256": "f0d9ed09880ffb75c6cc698dbb001e6f6879dee1991ede6ff6d365cc50f22902"
+  },
+  "unique": {
+   "path": "docs/us-readiness/us-factor-unique-variation-v1.json",
+   "sha256": "bd8cb65dcf2e332de784599a13470b1e29f36741a581241c553e8bf45af961a3"
+  },
+  "universe": {
+   "path": "docs/us-readiness/us-universe-coverage-gap-v1.json",
+   "sha256": "ce90f0be870c9bd60ac5ae2ad3b67df5e482be1c2074a2281a419f52f5860009"
+  }
+ },
+ "sharedLimitations": {
+  "identity": {
+   "cikAvailableFrom": "2023-04-13",
+   "panelSymbolNotMemberHistory": 30,
+   "source": "docs/results/alpha-opportunity-model-v3-survivorship-audit.json",
+   "tickerReuseDifferentIssuer": 29,
+   "verifiedRenames": 14
+  },
+  "liveVersusReplayFundamentals": "the live daily build reads Yahoo current-snapshot fundamentals (pipeline/fundamentals.py); PIT Finnhub fundamentals feed only the replay",
+  "membershipSnapshots": {
+   "denominator": "715 weekly signal dates",
+   "pointer": "/membershipSnapshotAge",
+   "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+   "value": {
+    "maxDays": 767,
+    "medianDays": 54.0,
+    "p90Days": 367.20000000000005,
+    "rule": "latest S&P 500 snapshot strictly before each of the weekly signal dates",
+    "weeks": 715,
+    "weeksOver180Days": 168,
+    "weeksOver365Days": 74,
+    "weeksOver45Days": 382,
+    "weeksOver90Days": 277,
+    "weeksWithoutSnapshot": 0
+   }
+  },
+  "prospectiveBlockers": [
+   "BLOCKED_PENDING_OWNER_APPROVAL: no persistent US daily price ledger runs on signal-history yet (owner-gated collector, docs/us-persistent-daily-collection-v1.md)",
+   "BLOCKED_SOURCE: Finnhub financials-reported omits the balance sheet on filings first served from 2026-10-07; total assets unresolved (docs/us-finnhub-balance-sheet-coverage-ko.md, docs/us-total-assets-source-rescue-ko.md)"
+  ],
+  "secAccess": "data.sec.gov / www.sec.gov answer HTTP 403 from Actions egress: period-end shares, 8-K, Form 4, 13F unreachable",
+  "staleFilingSensitivity": {
+   "denominator": "eligible non-financial S&P 500 member-dates on the 55 fixed sample dates (18,469; survivor-conditioned)",
+   "pointer": "/staleFilingSensitivity",
+   "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+   "value": {
+    "availablePctIfStaleRuleWere": {
+     "120": 89.193,
+     "150": 91.023,
+     "180": 92.062,
+     "90": 66.246
+    },
+    "cashStateCounts": {
+     "ASSETS_NON_POSITIVE": 7,
+     "ASSETS_NOT_STATED": 6,
+     "AVAILABLE": 17003,
+     "NO_VISIBLE_FILING": 104,
+     "OCF_TTM_INCOMPLETE_CHAIN": 928,
+     "REPORT_STALE_OVER_180_DAYS": 421
+    },
+    "feature": "cashOperatingProfitability",
+    "productionRuleDays": 180,
+    "reportAgeDaysAmongAvailable": {
+     "median": 86.0,
+     "p90": 96.0
+    }
+   }
+  },
+  "survivorship": {
+   "codexRecovery": "a separate effort is recovering departed-security prices; NOT assumed successful here (see roadmap dataQualityGate)",
+   "currentWithoutPanel": 0,
+   "departedMembers": 324,
+   "departedOnlyNoPanelPctByYear": {
+    "2013": 30.3231,
+    "2014": 28.4539,
+    "2015": 26.8223,
+    "2016": 22.4769,
+    "2017": 20.2126,
+    "2018": 17.7723,
+    "2019": 17.0297,
+    "2020": 12.9199,
+    "2021": 9.1203,
+    "2022": 8.6374,
+    "2023": 4.126,
+    "2024": 2.8715,
+    "2025": 1.7932,
+    "2026": 0.5374
+   },
+   "departedWithoutUsablePanel": 212,
+   "source": "docs/results/alpha-opportunity-model-v3-survivorship-audit.json",
+   "terminatedPanels": 0
+  }
+ },
+ "studyEvidenceLedger": [
+  {
+   "economicSignificance": "NOT_MEASURED (no portfolio, no costs)",
+   "features": "production sleeve percentiles: momentum, value, quality, lowvol",
+   "futureWorkIs": "NEW_EXPLORATION_ON_EXPOSED_HISTORY (not a replication)",
+   "horizon": "H126 primary; H21/H63/H252 descriptive",
+   "justified": "no US sleeve shows a rank relationship distinguishable from zero on this sample; CIs are about +/-0.04 to +/-0.07 wide",
+   "limitations": [
+    "sleeve composites, not individual inputs",
+    "27 effective independent dates at H126",
+    "survivor-conditioned",
+    "value on reconstructed basis"
+   ],
+   "method": "HAC (Newey-West), Holm over 4",
+   "notJustified": "that value, quality, momentum or low risk carry no information in the US",
+   "outcomesRead": true,
+   "period": "2013-2026 weekly signals",
+   "replay": "replay-v16",
+   "result": {
+    "lowvol": {
+     "ci95": [
+      -0.092544,
+      0.047459
+     ],
+     "effectiveIndependentDates": 27,
+     "meanIC": -0.022543
+    },
+    "momentum": {
+     "ci95": [
+      -0.030142,
+      0.061217
+     ],
+     "effectiveIndependentDates": 27,
+     "meanIC": 0.015537
+    },
+    "quality": {
+     "ci95": [
+      -0.049589,
+      0.016301
+     ],
+     "effectiveIndependentDates": 27,
+     "meanIC": -0.016644
+    },
+    "value": {
+     "ci95": [
+      -0.057473,
+      0.020035
+     ],
+     "effectiveIndependentDates": 27,
+     "meanIC": -0.018719
+    }
+   },
+   "resultSource": "docs/results/four-factor-signal-attribution-audit-report.json",
+   "status": "EXPLORATORY_INCONCLUSIVE",
+   "studyId": "four-factor-signal-attribution-audit-v1",
+   "survivorConditioned": true,
+   "target": "within-date Spearman rank IC vs SPY-relative return",
+   "terminalOutcomesHandled": "NO (no departed name has a panel)",
+   "universe": "replay-v16 S&P 500 point-in-time snapshots (priced members only) + KR top-120",
+   "untouchedValidation": false
+  },
+  {
+   "economicSignificance": "NOT_MEASURED (gross Top10 diagnostic only)",
+   "features": "31 price/trend/risk + fundamental level + fundamental change features (no valuation, no market cap, no sector)",
+   "futureWorkIs": "CLOSED for this feature set; any reuse is a new study",
+   "horizon": "H126",
+   "justified": "an ML re-ranking over those 31 features did not establish stable out-of-sample ordering",
+   "limitations": [
+    "per-feature and per-fold numbers not in the repository",
+    "one-shot budget spent",
+    "survivor-conditioned"
+   ],
+   "method": "Ridge + HGBR, date-level Spearman IC, HAC",
+   "notJustified": "evidence against any single feature; class C includes positive-but-unstable patterns",
+   "outcomesRead": true,
+   "period": "annual walk-forward fits 2016-2026",
+   "replay": "replay-v16",
+   "result": {
+    "classification": "NO_MODEL_EVIDENCE",
+    "evidence": "AGENTS.md v2.24 (Actions run 35826122755, job log); full 179MB artifact never committed"
+   },
+   "status": "TESTED_OUTCOME_EXPOSED",
+   "studyId": "regional-alpha-model-v1 (US leg)",
+   "survivorConditioned": true,
+   "target": "within-date percentile rank of 126D return minus SPY",
+   "terminalOutcomesHandled": "missing endpoints unmeasurable, never relabelled",
+   "universe": "dated S&P 500 CSV snapshots, priced members",
+   "untouchedValidation": false
+  },
+  {
+   "economicSignificance": "NOT_MEASURED",
+   "features": "sector-neutral composite of four consecutive-filing deltas",
+   "futureWorkIs": "re-testing the same composite is forbidden; a different change construct would be new exploration",
+   "horizon": "H126",
+   "justified": "the pre-registered acceleration composite failed its own routing on a clean-coverage US read (81.79%)",
+   "limitations": [
+    "survivor-conditioned",
+    "composite only"
+   ],
+   "method": "HAC, 2-hypothesis Holm",
+   "notJustified": "that all fundamental-change information is useless",
+   "outcomesRead": true,
+   "period": "2013-2026",
+   "replay": "replay-v16",
+   "result": {
+    "case": "D_NO_DISCOVERY_EVIDENCE",
+    "incrementalUS": {
+     "ci95": [
+      -0.02328,
+      0.017039
+     ],
+     "mean": -0.00312
+    },
+    "standaloneUS": {
+     "ci95": [
+      -0.029504,
+      0.018308
+     ],
+     "mean": -0.005598
+    }
+   },
+   "resultSource": "docs/results/fundamental-acceleration-discovery-report.json",
+   "status": "EVIDENCE_AGAINST_SPECIFIC_HYPOTHESIS",
+   "studyId": "fundamental-acceleration-discovery-v1 (US leg)",
+   "survivorConditioned": true,
+   "target": "rank IC, standalone and incremental to quality",
+   "terminalOutcomesHandled": "NO",
+   "universe": "S&P 500 priced members",
+   "untouchedValidation": false
+  },
+  {
+   "economicSignificance": "NOT_MEASURED",
+   "features": "inherited 31-feature family + benchmark outside option",
+   "futureWorkIs": "needs a repaired snapshot and a new version",
+   "horizon": "H21/H126",
+   "justified": "the US historical sample is survivor-conditioned by construction",
+   "limitations": [
+    "the US sample contains no failed or acquired company"
+   ],
+   "method": "Ridge/Logistic heads (design)",
+   "notJustified": "any direction or size of the survivorship bias",
+   "outcomesRead": false,
+   "period": "2013-2026",
+   "replay": "replay-v16",
+   "result": {
+    "v1": "US leg could only return DATA_INSUFFICIENT (whole-date voiding)",
+    "v2": "READY but never run; must not be run (survivor-only US sample)",
+    "v3": {
+     "defects": [
+      "MISSINGNESS_CONCENTRATED_IN_DEPARTED_MEMBERS",
+      "PANEL_SYMBOL_NOT_MEMBER_HISTORY",
+      "EXIT_IDENTITY_UNRESOLVED",
+      "NO_TERMINATED_SECURITY_IN_SAMPLE"
+     ],
+     "region": "US",
+     "survivorshipSafe": false
+    }
+   },
+   "resultSource": "docs/results/alpha-opportunity-model-v3-survivorship-audit.json",
+   "status": "DATA_QUALITY_BLOCKED",
+   "studyId": "alpha-opportunity-model-v1/v2/v3 (US leg)",
+   "survivorConditioned": true,
+   "target": "expected net alpha vs benchmark",
+   "terminalOutcomesHandled": "audited: 0 of 615 priced panels ever terminate",
+   "universe": "S&P 500 PIT snapshots",
+   "untouchedValidation": false
+  },
+  {
+   "economicSignificance": "MEASURED: the gross picks trail the matched index; costs add ~1.4pp/yr",
+   "features": "production four-factor alpha + calibration",
+   "futureWorkIs": "portfolio-construction lessons transfer; numbers do not",
+   "horizon": "21-session blocks, H126 calibration",
+   "justified": "the PRODUCTION ranking + construction did not beat its benchmark gross of costs; construction choices (turnover, caps, ties) are first-order",
+   "limitations": [
+    "KR and US pooled in one book: no US-only reading",
+    "calibration occupies two buckets, so ties decide the margin",
+    "survivor-conditioned US half"
+   ],
+   "method": "paired block bootstrap; selection-value decomposition",
+   "notJustified": "a US-specific conclusion, or that a better ranking could not beat the benchmark",
+   "outcomesRead": true,
+   "period": "155 x 21-session blocks",
+   "replay": "replay-v16",
+   "result": {
+    "combinedChampionGrossVsMatchedBenchmarkPp": -1.73,
+    "costDragPp": 1.463,
+    "decision": "BENCHMARK_NOT_BEATEN",
+    "note": "every ladder rung's paired interval contains zero except the confidence axis, separated in the WRONG direction (AGENTS v2.13)"
+   },
+   "resultSource": "docs/results/benchmark-alpha-report.json",
+   "status": "TESTED_OUTCOME_EXPOSED",
+   "studyId": "benchmark-relative-alpha-v1 and the replay-v16 portfolio-construction ladder (alpha-reliability, signal-persistence, switch-hurdle, alpha-risk-separation, dynamic-breadth, region-quota-removal, entry-selection-separation, lowvol-alpha-separation, alpha-calibration-resolution)",
+   "survivorConditioned": true,
+   "target": "net excess vs matched regional benchmark after realistic costs",
+   "terminalOutcomesHandled": "partial",
+   "universe": "COMBINED KR + US 5-name book",
+   "untouchedValidation": false
+  },
+  {
+   "economicSignificance": "the decision layer correctly defaulted to passive",
+   "features": "production alpha percentile + historical_calibration buckets",
+   "futureWorkIs": "the passive default is the correct baseline B0",
+   "horizon": "H126 calibration",
+   "justified": "the production US alpha percentile does not establish ordering under the calibration gate",
+   "limitations": [
+    "descriptive, outcome-exposed"
+   ],
+   "method": "historical_calibration.calibrate ordering gate",
+   "notJustified": "that no US ranking can",
+   "outcomesRead": true,
+   "period": "155 blocks + weekly replay",
+   "replay": "replay-v16",
+   "result": {
+    "usOrderingTStat": 0.61,
+    "usPath": "the rule never held a US stock; identical to SPY (docs/weekly-passive-first-v1.md)"
+   },
+   "status": "EXPLORATORY_INCONCLUSIVE",
+   "studyId": "weekly-passive-first-v1 (US sleeve) and operational calibration",
+   "survivorConditioned": true,
+   "target": "net edge vs SPY after switching costs",
+   "terminalOutcomesHandled": "SURVIVORSHIP_BIASED_PARTIAL",
+   "universe": "production long-term research sleeve",
+   "untouchedValidation": false
+  },
+  {
+   "economicSignificance": "NOT_MEASURED",
+   "features": "four exact-concept distribution features",
+   "futureWorkIs": "owner decision",
+   "horizon": "H126",
+   "justified": "nothing about returns yet",
+   "limitations": [
+    "17.9% weekly joint coverage, non-random",
+    "always selects 5 names (no expected-return hurdle)"
+   ],
+   "method": "registered; REGISTERED_AUTHORIZATION = None",
+   "notJustified": "any alpha claim",
+   "outcomesRead": false,
+   "period": "prospective only",
+   "replay": "n/a",
+   "result": {
+    "status": "REGISTERED_PENDING_OWNER_APPROVAL"
+   },
+   "status": "NOT_TESTED",
+   "studyId": "us-capital-allocation-alpha-v1",
+   "survivorConditioned": "n/a (prospective)",
+   "target": "rank IC and 5-name book vs SPY/QQQ (prospective)",
+   "terminalOutcomesHandled": "registered rule",
+   "universe": "S&P 500 non-financial",
+   "untouchedValidation": true
+  },
+  {
+   "economicSignificance": "NOT_MEASURED",
+   "features": "cashOperatingProfitability residualised on sector + 4 controls",
+   "futureWorkIs": "one-shot exploratory futility screen, owner-gated",
+   "horizon": "H63",
+   "justified": "the inference method keeps nominal coverage on synthetic data of this geometry",
+   "limitations": [
+    "331-371 names/date upper geometry uncalibrated",
+    "survivor-conditioned"
+   ],
+   "method": "CT_SN, one-sided 95%",
+   "notJustified": "anything about alpha",
+   "outcomesRead": false,
+   "period": "715 weekly signals, 692 matured cohorts",
+   "replay": "replay-v16",
+   "result": {
+    "P3": "PASS",
+    "P4": "BLOCKED",
+    "P4BlockedBy": [
+     "OWNER_AUTHORIZATION",
+     "DURABLE_ONE_SHOT_LOCK"
+    ],
+    "supplement": "SUPPLEMENT_PASS"
+   },
+   "resultSource": "docs/us-readiness/us-cash-profitability-exploratory-readiness-v2.json",
+   "status": "NOT_TESTED",
+   "studyId": "us-cash-profitability-signal-v1 (H63, P3/P4)",
+   "survivorConditioned": true,
+   "target": "return-unit residual-weighted spread",
+   "terminalOutcomesHandled": "UNRESOLVED cohort rule (0 unresolved on the survivor panel)",
+   "universe": "S&P 500 non-financial, priced",
+   "untouchedValidation": false
+  },
+  {
+   "economicSignificance": "n/a",
+   "features": "availability, reasons, redundancy",
+   "futureWorkIs": "measurement, reusable",
+   "horizon": "n/a",
+   "justified": "what exists, at what coverage, and how distinct",
+   "limitations": [
+    "55 fixed sample dates for redundancy"
+   ],
+   "method": "counts and within-date rank correlations",
+   "notJustified": "any predictive claim",
+   "outcomesRead": false,
+   "period": "2013-2026",
+   "replay": "replay-v16 + Finnhub 704d7db6",
+   "result": {
+    "reports": [
+     "docs/us-readiness/us-source-readiness-v1.json",
+     "docs/us-readiness/us-multifactor-pit-readiness-v1.json",
+     "docs/us-readiness/us-alpha-phase3-readiness-v1.json",
+     "docs/us-readiness/us-universe-coverage-gap-v1.json",
+     "docs/us-readiness/us-capital-allocation-feature-overlap-v1.json",
+     "docs/us-readiness/us-factor-unique-variation-v1.json"
+    ]
+   },
+   "status": "NOT_TESTED",
+   "studyId": "outcome-blind source and PIT readiness audits",
+   "survivorConditioned": true,
+   "target": "n/a",
+   "terminalOutcomesHandled": "n/a",
+   "universe": "S&P 500 PIT snapshots",
+   "untouchedValidation": "n/a"
+  }
+ ]
+}

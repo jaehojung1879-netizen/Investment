@@ -1,0 +1,470 @@
+{
+ "authorization": "NOT_AUTHORIZED",
+ "authorizes": "NOTHING",
+ "baseMainSha": "0a9fb1d96219f4402d9eb341cabbb616f786e52d",
+ "comparisons": {
+  "B0": "SPY held (passive default) / cash policy",
+  "B1": "pre-specified interpretable price-only score: equal-weight ranks of mom121 and -vol252",
+  "B2": "B1 plus family-balanced accounting families (equal weight per FAMILY, not per feature)",
+  "B3": "Ridge on exactly the B2 features (regional_alpha_model Ridge config), walk-forward; descriptive only",
+  "B4": "investable: production select_portfolio_by_scores, <=5 names, sector cap 2, zero names when no net-of-cost edge, realistic regional costs"
+ },
+ "dataQualityGate": {
+  "appliesBefore": "registration of any historical (development) experiment below",
+  "checks": [
+   {
+    "id": "DQ1_IDENTITY",
+    "rule": "every recovered panel is tied to the departed member by same-CIK, explicit '(Previously X)' or identical name at the switch; ticker-only matches are rejected; a reused ticker's later issuer is never joined"
+   },
+   {
+    "id": "DQ2_PROVENANCE",
+    "rule": "recovered panels are a NEW hashed input snapshot (new replay generation); replay-v16 and its manifest stay frozen"
+   },
+   {
+    "id": "DQ3_SAMPLE_SURVIVORSHIP",
+    "rule": "publish departed-only no-panel member-date share by year before and after recovery; no tolerance is chosen, the residual is reported"
+   },
+   {
+    "id": "DQ4_ENDPOINT_SURVIVORSHIP",
+    "rule": "every held or ranked name whose label window crosses its last session carries cited terminal economics or is UNRESOLVED; UNRESOLVED is never zero and never the last price"
+   },
+   {
+    "id": "DQ5_BOUNDING",
+    "rule": "every primary statistic is reported twice: unresolved dropped, and unresolved assigned the date's worst plausible outcome; a claim survives only if both readings agree in sign"
+   },
+   {
+    "id": "DQ6_EXPOSURE_LABEL",
+    "rule": "results on 2013-2026 are EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_US_HISTORY even with recovered names"
+   }
+  ],
+  "id": "US_SURVIVORSHIP_DQ_GATE_V1",
+  "routing": {
+   "FULL": "run development experiments on the repaired snapshot under DQ1-DQ6",
+   "INSUFFICIENT": "do not wait: historical results stay SURVIVOR_CONDITIONED development evidence and the program moves to prospective collection",
+   "PARTIAL": "run them with DQ5 bounding as the binding reading; publish which years remain unvouched"
+  }
+ },
+ "datasetAdmissionGate": {
+  "appliesBefore": "ANY forward-return reading for US-MF-1 (and US-MF-2/3 on a repaired snapshot)",
+  "checks": [
+   {
+    "id": "AD1_FROZEN_SNAPSHOT",
+    "measure": "manifest SHA-256 recorded; a second build reproduces it byte for byte",
+    "rule": "the admitted panel is one content-addressed input manifest (new replay generation); replay-v16, its manifest and #241's candidate files are read, never edited"
+   },
+   {
+    "id": "AD2_IDENTITY",
+    "measure": "per-identifier status ADMITTED / IDENTITY_HOLD / NAME_ONLY / NONE with counts that reproduce #241's 5 / 170 / 37 before any reclassification",
+    "rule": "a session is admitted only if its security is tied to the member issuer by filing CIK, explicit '(Previously X)' or identical name at the switch; identity holds and ticker-only matches stay out"
+   },
+   {
+    "id": "AD3_SINGLE_BASIS",
+    "measure": "per-session basis class published (public evidence gives it per identifier only: of 175 covered, D/F 59 / A-only 113 / E-only 3); zero rows combine bases",
+    "rule": "each feature and label reads ONE publisher basis per security; no splicing; back-adjusted-only or rounded-close-only sessions never feed as-traded features"
+   },
+   {
+    "id": "AD4_LINEAGE",
+    "measure": "count of admitted securities with event lineage; adjusted-vs-rebuilt level check per security",
+    "rule": "split and distribution events dated and cited for every admitted security; total-return labels use them once, never twice"
+   },
+   {
+    "id": "AD5_TERMINAL",
+    "measure": "share of label windows UNRESOLVED by year, computed from observation EXISTENCE only, before any return",
+    "rule": "every H63 window that runs past a security's last observation is UNRESOLVED unless a cited terminal consideration exists"
+   },
+   {
+    "id": "AD6_FUNDAMENTALS_LINK",
+    "measure": "per-identifier filing link status (currently 160 visible during membership, 41 none, 11 outside, 30 tickers with several CIKs)",
+    "rule": "a filing is used only if its CIK maps to the member issuer during membership"
+   },
+   {
+    "id": "AD7_RESIDUAL_SURVIVORSHIP",
+    "measure": "per-year residual shares; DQ5 dual reading becomes binding wherever a residual is non-zero",
+    "rule": "publish the remaining no-admitted-panel member-date share by year after AD2-AD6; 2024-2026 improvement is 0 and is stated"
+   },
+   {
+    "id": "AD8_NO_OUTCOME_ACCESS",
+    "measure": "counters zero and a spy test that fails on any outcome call",
+    "rule": "the admission build imports no label, return, model or portfolio module"
+   }
+  ],
+  "id": "US_MF1_DATASET_ADMISSION_V1",
+  "principle": "independent of whoever produced the candidate data; every check is outcome-free and measurable, and none chooses a tolerance from results",
+  "result": "ADMITTED_FOR_DEVELOPMENT_ONLY or NOT_ADMITTED; never PROSPECTIVE, never PROMOTION_ELIGIBLE"
+ },
+ "dependsOn": {
+  "codexDepartedPriceRecovery": {
+   "assumedVerdict": null,
+   "observedCandidateEvidence": {
+    "commit": "1e016bd9a4ff746a9b69958624182c6287301f51",
+    "headline": {
+     "denominator": "missing member sessions of the 212 no-panel identifiers",
+     "pointer": "/pr241Evidence/headline",
+     "source": "docs/us-readiness/us-factor-integration-readiness-v1.json",
+     "value": {
+      "missingMembershipSessionsBefore": 256402,
+      "readAs": "72.90% = candidate positive-close OBSERVATIONS on missing member sessions. It is not validated total-return coverage, not identity verification, not terminal economics, and not the end of survivorship bias",
+      "recoveredMembershipSessions": 186910
+     }
+    },
+    "integrationReadiness": "docs/us-readiness/us-factor-integration-readiness-v1.json",
+    "pullRequest": 241,
+    "state": "OPEN_DRAFT_NOT_MERGED",
+    "verdictStatus": "CANDIDATE_EVIDENCE_NOT_A_DATASET_VERDICT: no session is admitted until datasetAdmissionGate passes"
+   },
+   "possibleVerdicts": [
+    "FULL",
+    "PARTIAL",
+    "INSUFFICIENT"
+   ],
+   "rule": "no experiment below is registered until the recovery verdict is published and audited by dataQualityGate"
+  }
+ },
+ "evidenceTiers": {
+  "HISTORICAL_EXPLORATORY": {
+   "canSupport": "abandon-or-continue decisions and a bounded estimate of survivorship's effect",
+   "cannotSupport": "promotion, liveValidated, capital allocation",
+   "label": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_US_HISTORY",
+   "whyNotUnseen": [
+    "the 615 already-priced panels carry most member-dates (69.7% in 2013, >97% from 2024) and were read by the four-factor audit, the 31-feature model, fundamental acceleration, benchmark-alpha and weekly-passive-first",
+    "US-MF-1's families and horizon were chosen after those results were known",
+    "a repaired-names-only reading would be an outcome-defined subset (names that left the index), not a random holdout",
+    "the repair changes the sample, not the researcher's exposure to it"
+   ],
+   "window": "signals 2013-01 to the end of sealed prices"
+  },
+  "PROSPECTIVE_PAPER": {
+   "canSupport": "the only confirmatory evidence this program can produce",
+   "currentState": "NOT_STARTED: no US prospective receipt exists",
+   "label": "PROSPECTIVE_CONFIRMATORY",
+   "prerequisites": [
+    "persistent US daily price ledger (owner-gated)",
+    "a total-assets source (Finnhub balance sheet omitted since 2026-10-07)",
+    "weekly membership capture",
+    "append-only receipts before outcomes exist"
+   ],
+   "window": "signals dated after the merge that registers a frozen protocol"
+  },
+  "rule": "a repaired historical panel is never described as unseen, out-of-sample or holdout data"
+ },
+ "experiments": [
+  {
+   "baseline": "B1 (and B0 for the economic reading)",
+   "calibration": "REQUIRED before registration: the paired top-quintile difference is not the statistic P3 calibrated; reuse the US H63 engine on this exact statistic only",
+   "contributesToDecision": "directly: it is the ranking the <=5-name selector would consume, measured where the selector cuts",
+   "dataReadiness": "historical joint complete-case: 77.7% of non-financial member-dates through leverage, 55.1% once every family including reconstructed value is required (jointAttrition, which also requires earningsGrowth; the exact US-MF-1 set is not separately measured); 2013 is mostly dark; prospectively blocked on total assets and the daily price ledger",
+   "dataRecoveryDependency": "dataQualityGate routing",
+   "decisionReadings": [
+    "B4 vs B0 after costs (descriptive on history; primary only prospectively)",
+    "permutation null of B2 within the same construction (selection_null)",
+    "names held, turnover split into replaced vs retargeted, cost drag"
+   ],
+   "estimatedCost": {
+    "calibration": "~1 h on 4 workers (US H63 P3 measured ~58 min)",
+    "evaluation": "< 1 h",
+    "featureBuild": "ESTIMATE ~40-45 min single-threaded for all 715 weekly dates (MEASURED: 55 sample dates took 4.4-4.6 min, ~1.5 min of it loading; per-date part scaled 13x)",
+    "money": "0 (GitHub Actions)"
+   },
+   "exactTestAfterAdmission": {
+    "B1": "within-sector percentile of mean(rank(mom121), rank(-vol252))",
+    "B2": "within-sector percentile of the equal-weight mean of SIX family scores: price (= B1), cash quality rank(cashOperatingProfitability), accrual profitability rank(operatingProfitabilityToAssets), investment rank(-assetGrowthPct), leverage rank(-debtToEquity), value rank(earningsYield)",
+    "decisionObjective": "the 0-5-name book: B4 on B2 vs B4 on B1 vs SPY after realistic costs, zero names allowed, read descriptively on history and as the primary claim only prospectively",
+    "inference": "mean of D_t over dates; calendar-time attribution + CT_SN one-sided 95%; reported under both DQ5 readings",
+    "label": "total return from the close of the first session after the signal date over 63 sessions, minus SPY over the same window (SPY cancels in the statistic)",
+    "missing": "complete case on every family (no imputation, no zero); attrition by year published; value is missing wherever the basis cannot give an as-traded price",
+    "sample": "weekly signal dates (last US session of each completed week); S&P 500 members from the latest snapshot strictly before the date; Financials and Real Estate excluded; admitted sessions only",
+    "statistic": "D_t = [mean H63 excess of the B2 top quintile within each sector - sector-universe mean] - [same for B1], averaged across sectors with names-per-sector weights",
+    "verdicts": {
+     "INCONCLUSIVE": "otherwise",
+     "NOT_SUPPORTED": "upper bound <= 0 under either reading",
+     "SUPPORTED_DEVELOPMENT": "lower bound > 0 under both readings (development evidence only)"
+    }
+   },
+   "falsification": "upper one-sided 95% bound <= 0 under either DQ5 reading -> the accounting families do not improve the selection margin on this sample",
+   "forwardReturnReadingBlockedUntil": [
+    "datasetAdmissionGate = ADMITTED_FOR_DEVELOPMENT_ONLY",
+    "OD6 calibration of this exact statistic",
+    "owner registration and authorization"
+   ],
+   "horizon": {
+    "descriptive": [
+     "H21",
+     "H126",
+     "H252"
+    ],
+    "primary": "H63",
+    "why": "the only US horizon with a calibrated inference geometry (US_H63_INFERENCE_CALIBRATION_V1)"
+   },
+   "hypothesis": "Within S&P 500 non-financials, a fixed equal-weight composite of FAMILY representatives (cash quality, accrual profitability, investment [-asset growth], leverage [-D/E], value [earnings yield, reconstructed]) improves the H63 ordering of names beyond price-only information (B1), at the margin a <=5-name selector uses",
+   "id": "US-MF-1",
+   "method": "linear in returns, so calendar-time attribution + CT_SN; one-sided 95%",
+   "name": "Family-balanced multifactor selection value",
+   "ownerAuthorizationRequired": true,
+   "primaryOutcome": "mean over weekly signal dates of the top-quintile-minus-universe H63 excess of the B2 composite MINUS the same for B1, within sector, paired by date (return units)",
+   "priority": 1,
+   "requiredPitFields": [
+    "cashOperatingProfitability",
+    "operatingProfitabilityToAssets",
+    "assetGrowthPct",
+    "debtToEquity",
+    "earningsYield",
+    "mom121",
+    "vol252",
+    "logTradedValue63",
+    "sector"
+   ],
+   "whyNewInformation": "cash quality, investment and leverage were never related to US outcomes; asset growth is 82% unique of the other families; the 31-feature model had no value or investment"
+  },
+  {
+   "baseline": "B0 controls (sector + 4 control ranks)",
+   "calibration": "DONE for 150-330 names/date; 331-371 is uncalibrated and needs an explicit owner disposition",
+   "contributesToDecision": "indirectly: decides whether the cash family enters US-MF-1's composite on its own merit",
+   "dataReadiness": "historical 83.4% primary-complete, median 285 names/date; prospectively blocked on total assets",
+   "dataRecoveryDependency": "P4-v1 is frozen on replay-v16; a repaired snapshot would be a NEW version (P4-v2), never an edit of P4-v1",
+   "estimatedCost": {
+    "execution": "minutes once authorized (machinery merged in #240)",
+    "money": "0"
+   },
+   "falsification": "development upper bound <= 0 -> abandon before prospective collection",
+   "horizon": {
+    "primary": "H63"
+   },
+   "hypothesis": "OCF/assets residualised on sector, size, momentum, volatility and accrual profitability orders H63 SPY-relative returns",
+   "id": "US-MF-2",
+   "method": "CT_SN one-sided 95% (P3 PASS; supplement PASS 150-244)",
+   "name": "Cash-confirmed profitability H63 (existing P4 lineage)",
+   "ownerAuthorizationRequired": true,
+   "primaryOutcome": "as frozen in docs/us-readiness/us-cash-profitability-study-protocol-v1.json",
+   "priority": 2,
+   "requiredPitFields": [
+    "cashOperatingProfitability",
+    "logTradedValue63",
+    "mom121",
+    "vol252",
+    "operatingProfitabilityToAssets",
+    "sector"
+   ],
+   "resumeRule": {
+    "FULL_or_PARTIAL_recovery": "owner chooses: run P4-v1 as frozen, OR retire it unexecuted and register P4-v2 = identical definitions + repaired snapshot + DQ gate; never both (two looks at one hypothesis)",
+    "INSUFFICIENT_recovery": "run P4-v1 as frozen (its survivorship is disclosed; waiting buys nothing)"
+   },
+   "whyNewInformation": "never outcome-exposed in the US; but 70% of its rank is carried by the other families, so only the cash-vs-accrual residual is at stake"
+  },
+  {
+   "baseline": "B0 controls + accrual profitability",
+   "calibration": "covered by P3 only if names/date and control structure match the calibrated geometry; otherwise a targeted calibration",
+   "contributesToDecision": "supplies a candidate family for US-MF-1; standalone it is discovery only",
+   "dataReadiness": "historical 92.0% of non-financial member-dates; prospectively blocked on total assets (same blocker as US-MF-2)",
+   "dataRecoveryDependency": "dataQualityGate routing; acquisitions inflate asset growth, and acquired companies are exactly the departed names",
+   "estimatedCost": {
+    "evaluation": "< 1 h",
+    "featureBuild": "ESTIMATE ~40-45 min (same builder as US-MF-1)",
+    "money": "0"
+   },
+   "falsification": "upper bound <= 0 under either DQ5 reading",
+   "horizon": {
+    "descriptive": [
+     "H126",
+     "H252"
+    ],
+    "primary": "H63"
+   },
+   "hypothesis": "Firms growing assets fastest earn lower subsequent H63 SPY-relative returns than peers, beyond profitability, size and momentum",
+   "id": "US-MF-3",
+   "method": "CT_SN one-sided 95%",
+   "name": "Investment and payout policy (asset growth, capex intensity, distributions)",
+   "ownerAuthorizationRequired": true,
+   "primaryOutcome": "return-unit residual-weighted spread of -assetGrowthPct, the statistic form P3 calibrated",
+   "priority": 3,
+   "requiredPitFields": [
+    "assetGrowthPct",
+    "capexIntensityPct",
+    "operatingProfitabilityToAssets",
+    "logTradedValue63",
+    "mom121",
+    "vol252",
+    "sector"
+   ],
+   "whyNewInformation": "assetGrowthPct is the most distinct computable characteristic measured (unique share 0.82, own-family R2 with capex 0.005) and was never in any US study"
+  }
+ ],
+ "id": "us-multifactor-research-roadmap-v1",
+ "layers": {
+  "layer1": "factor discovery: raw IC (descriptive), partial rank association (descriptive), return-unit residual spread (primary), never pooled",
+  "layer2": "selection: expected excess from expanding calibration, uncertainty, <=5 names, zero allowed, sector/liquidity caps, costs, SPY/QQQ comparison"
+ },
+ "nextImplementationTask": {
+  "acceptanceCriteria": [
+   "reproduces #241 exactly before reclassifying: 212 identifiers, 186,910 covered and 69,492 missing member sessions, FULL/PARTIAL/NONE = 5/170/37",
+   "every session carries exactly one of ADMITTED, IDENTITY_HOLD, NAME_ONLY, BASIS_UNRESOLVED, NO_OBSERVATION; counts sum to 256,402",
+   "per-identifier basis classes reproduce 59 / 113 / 3 of the 175 covered identifiers; per-session basis counts are published for the first time",
+   "zero rows splice two publisher bases; a test feeds a spliced series and expects refusal",
+   "every H63 window that crosses a last observation without cited terminal consideration is UNRESOLVED; per-year UNRESOLVED shares published",
+   "filing-to-issuer link status for all 212 identifiers; no filing with a non-matching CIK is admitted",
+   "residual no-admitted-panel member-date share by year, 2013-2026, beside #241's before/after",
+   "label/return/model/portfolio counters all zero and a spy test proves it; two runs byte-identical",
+   "replay-v16, P4 files, #241 candidate files and sealed results byte-unchanged"
+  ],
+  "doesNotDo": [
+   "read a return",
+   "admit a price without AD2-AD6",
+   "register US-MF-1",
+   "run P4",
+   "Monte Carlo"
+  ],
+  "id": "US_DEPARTED_DATASET_ADMISSION_AUDIT_V1",
+  "startsAfter": "#241 is merged to main AND the owner restores the withheld candidate observations to durable, owner-controlled non-public storage (#241 publishes aggregate findings only); this task never copies, edits or republishes them",
+  "what": "outcome-blind per-identifier and per-session admission table built from #241's candidate panel, the sealed identity evidence and the pinned Finnhub filings, implementing AD1-AD8"
+ },
+ "notBuiltYet": [
+  "any new production model or selector",
+  "a fitted factor-weight search",
+  "EV/EBITDA, gross profitability, ROIC (no derivation or source)",
+  "13F, Form 4, short interest, consensus, 8-K (blocked)",
+  "a broader-than-S&P 500 universe",
+  "a new Monte Carlo campaign",
+  "any P4 authorization or lock",
+  "dashboards or UI"
+ ],
+ "ownerDecisions": [
+  {
+   "decision": "Which Codex recovery verdict triggers which route in dataQualityGate.routing (accept or amend the routing)",
+   "id": "OD1"
+  },
+  {
+   "decision": "P4: run P4-v1 as frozen, or retire it unexecuted for a P4-v2 on the repaired snapshot (US-MF-2.resumeRule)",
+   "id": "OD2"
+  },
+  {
+   "decision": "P4 upper geometry 331-371 names/date: require calibration or accept exploratory extrapolation",
+   "id": "OD3"
+  },
+  {
+   "decision": "Primary universe: S&P 500 non-financials (recommended) vs a broader liquid universe (needs new price, identity and fundamentals collection)",
+   "id": "OD4"
+  },
+  {
+   "decision": "Approve the persistent US daily price ledger and a total-assets source decision; without both, no US prospective evidence can accrue",
+   "id": "OD5"
+  },
+  {
+   "decision": "Authorize the targeted calibration of the US-MF-1 statistic (synthetic only; no outcome read)",
+   "id": "OD6"
+  },
+  {
+   "decision": "Merge or reject #241; only after it is on main can the dataset admission audit start and #242 be rebased onto main",
+   "id": "OD7"
+  },
+  {
+   "decision": "Confirm the redistribution/recurring-use rights of #241's public archives before any admitted panel is used beyond research",
+   "id": "OD8"
+  }
+ ],
+ "productionEffect": "NONE",
+ "readsReturns": false,
+ "references": {
+  "acceleration": {
+   "path": "docs/results/fundamental-acceleration-discovery-report.json",
+   "sha256": "2b8a3921e20f32b4e0690c9666c76287ede2730545d734198a5594c9e75efe55"
+  },
+  "benchmarkAlpha": {
+   "path": "docs/results/benchmark-alpha-report.json",
+   "sha256": "0dfe0d9b10bdc5784db6d036733f80c8c4fbeadb7c319f3e65c905569a5d9839"
+  },
+  "capalloc": {
+   "path": "docs/us-readiness/us-capital-allocation-feature-overlap-v1.json",
+   "sha256": "6da19f8db20da3e0ef14486da633de752a52ec88573888d844bc8b36a01b22e3"
+  },
+  "fourfactor": {
+   "path": "docs/results/four-factor-signal-attribution-audit-report.json",
+   "sha256": "d843950b5baee865cfc9bba7965ece9252a0212ef993e9e8ca8efea01cc4850d"
+  },
+  "h63": {
+   "path": "docs/us-readiness/us-h63-inference-calibration-v1-result.json",
+   "sha256": "a6c34275ab28dd75487a1d3848d311eb7fa2efeefc261f04794e7f8e5a7ae8d7"
+  },
+  "h63supplement": {
+   "path": "docs/us-readiness/us-h63-inference-calibration-v1-supplement-result.json",
+   "sha256": "1970a61a0a4f3d6741f8f57c99b6305e8b49092e25898b18015158a7829cfa23"
+  },
+  "integration": {
+   "path": "docs/us-readiness/us-factor-integration-readiness-v1.json",
+   "sha256": "a835f381f362f3aab189f76c4ecd98744cab0cbe73cc1d294cbeb631a8b53b97"
+  },
+  "multifactor": {
+   "path": "docs/us-readiness/us-multifactor-pit-readiness-v1.json",
+   "sha256": "b877ab50a3ceb38e6aaad6c936e78aa97e035bb3c37702db258f1fd4545b0fff"
+  },
+  "p4readiness": {
+   "path": "docs/us-readiness/us-cash-profitability-exploratory-readiness-v2.json",
+   "sha256": "425abfab9afbf019b46f1b7d887f8c722f17677c68c6cdef7135fb5dbace74d5"
+  },
+  "phase3": {
+   "path": "docs/us-readiness/us-alpha-phase3-readiness-v1.json",
+   "sha256": "3f2908cd2cd1dfd9cee213deb4e8cc94e1261d738091f84f2317d36c86735185"
+  },
+  "source": {
+   "path": "docs/us-readiness/us-source-readiness-v1.json",
+   "sha256": "e6d7d35d71baf0f4fab4ce8b6f5d92e138f5649f011d5bbc3dc389e89f23408f"
+  },
+  "survivorship": {
+   "path": "docs/results/alpha-opportunity-model-v3-survivorship-audit.json",
+   "sha256": "f0d9ed09880ffb75c6cc698dbb001e6f6879dee1991ede6ff6d365cc50f22902"
+  },
+  "unique": {
+   "path": "docs/us-readiness/us-factor-unique-variation-v1.json",
+   "sha256": "bd8cb65dcf2e332de784599a13470b1e29f36741a581241c553e8bf45af961a3"
+  },
+  "universe": {
+   "path": "docs/us-readiness/us-universe-coverage-gap-v1.json",
+   "sha256": "ce90f0be870c9bd60ac5ae2ad3b67df5e482be1c2074a2281a419f52f5860009"
+  }
+ },
+ "researchBudget": {
+  "multiplicity": "Holm across the three primary claims if all are executed; descriptive readings carry no verdict",
+  "noFeatureSearch": true,
+  "noNewMonteCarloUnlessAStatisticRequiresIt": true,
+  "noParameterSweeps": true,
+  "primaryClaimsTotal": 3
+ },
+ "status": "PROPOSED_NOT_REGISTERED",
+ "universeRecommendation": {
+  "expansionOptions": [
+   {
+    "denominator": "S&P 500 + Nasdaq-100 union symbols 2013-2026",
+    "pointer": "/summary/union",
+    "source": "docs/us-readiness/us-universe-coverage-gap-v1.json",
+    "value": {
+     "BLOCKED_PAID_SOURCE": 183,
+     "NEEDS_FUNDAMENTALS": 0,
+     "NEEDS_IDENTITY_REPAIR": 38,
+     "NEEDS_MEMBERSHIP_EVIDENCE": 0,
+     "NEEDS_PRICE_HISTORY": 58,
+     "NOT_EVALUABLE": 0,
+     "READY": 606,
+     "symbols": 885
+    }
+   }
+  ],
+  "notAutomatic": "a broader universe adds names, not independent dates: the four-factor audit's per-date IC variance is mostly common-factor exposure, so effective dates stay ~27 at H126",
+  "primary": "dated S&P 500 snapshot members, Financials and Real Estate excluded for accounting families, priced and identity-verified",
+  "snapshotCaveat": {
+   "denominator": "715 weekly signal dates",
+   "pointer": "/membershipSnapshotAge",
+   "source": "docs/us-readiness/us-factor-unique-variation-v1.json",
+   "value": {
+    "maxDays": 767,
+    "medianDays": 54.0,
+    "p90Days": 367.20000000000005,
+    "rule": "latest S&P 500 snapshot strictly before each of the weekly signal dates",
+    "weeks": 715,
+    "weeksOver180Days": 168,
+    "weeksOver365Days": 74,
+    "weeksOver45Days": 382,
+    "weeksOver90Days": 277,
+    "weeksWithoutSnapshot": 0
+   }
+  },
+  "why": "the only US universe with dated membership, PIT fundamentals for ~all members and (after recovery) bounded survivorship; a concentrated personal book needs liquid names"
+ }
+}

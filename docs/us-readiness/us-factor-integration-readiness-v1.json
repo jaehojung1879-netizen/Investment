@@ -1,0 +1,1461 @@
+{
+ "authorizes": "NOTHING",
+ "candidatePricesAdmitted": false,
+ "evidenceClass": "OUTCOME_BLIND_INTEGRATION_READINESS",
+ "factorMatrix": [
+  {
+   "family": "A_VALUATION",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "AS_TRADED_PRICE_AND_FUNDAMENTALS",
+   "historicalAvailabilityBeforeRepair": "AVAILABLE_WITH_CAVEATS",
+   "id": "A01",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "earningsYield",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "A_VALUATION",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "AS_TRADED_PRICE_AND_FUNDAMENTALS",
+   "historicalAvailabilityBeforeRepair": "AVAILABLE_WITH_CAVEATS",
+   "id": "A02",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "bookYield",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "A_VALUATION",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "AS_TRADED_PRICE_AND_FUNDAMENTALS",
+   "historicalAvailabilityBeforeRepair": "AVAILABLE_WITH_CAVEATS",
+   "id": "A03",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "fcfYield",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "A_VALUATION",
+   "featureRequires": [],
+   "group": "SOURCE_BLOCKED_OR_NOT_DERIVED",
+   "historicalAvailabilityBeforeRepair": "NOT_IMPLEMENTED",
+   "id": "A04",
+   "labelRequires": [],
+   "name": "evToEbitda",
+   "researchResumable": "NO_SOURCE_OR_DERIVATION"
+  },
+  {
+   "family": "A_VALUATION",
+   "featureRequires": [],
+   "group": "SOURCE_BLOCKED_OR_NOT_DERIVED",
+   "historicalAvailabilityBeforeRepair": "NEEDS_SOURCE_OR_IDENTITY_VERIFICATION",
+   "id": "A05",
+   "labelRequires": [],
+   "name": "evToEbit",
+   "researchResumable": "NO_SOURCE_OR_DERIVATION"
+  },
+  {
+   "family": "A_VALUATION",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "AS_TRADED_PRICE_AND_FUNDAMENTALS",
+   "historicalAvailabilityBeforeRepair": "NEEDS_SOURCE_OR_IDENTITY_VERIFICATION",
+   "id": "A06",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "salesYield",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "A_VALUATION",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "AS_TRADED_PRICE_AND_FUNDAMENTALS",
+   "historicalAvailabilityBeforeRepair": "AVAILABLE_WITH_CAVEATS",
+   "id": "A07",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "sectorRelativeValuation",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "A_VALUATION",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "AS_TRADED_PRICE_AND_FUNDAMENTALS",
+   "historicalAvailabilityBeforeRepair": "NOT_IMPLEMENTED",
+   "id": "A08",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "valuationChange",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "A_VALUATION",
+   "featureRequires": [],
+   "group": "SOURCE_BLOCKED_OR_NOT_DERIVED",
+   "historicalAvailabilityBeforeRepair": "UNAVAILABLE",
+   "id": "A09",
+   "labelRequires": [],
+   "name": "forwardEarningsYield",
+   "researchResumable": "NO_SOURCE_OR_DERIVATION"
+  },
+  {
+   "family": "B_PROFITABILITY_QUALITY",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "PIT_ACCOUNTING",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "B01",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "roe",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "B_PROFITABILITY_QUALITY",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "PIT_ACCOUNTING",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "B02",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "operatingMargin",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "B_PROFITABILITY_QUALITY",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "PIT_ACCOUNTING",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "B03",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "profitMargin",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "B_PROFITABILITY_QUALITY",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "PIT_ACCOUNTING",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "B04",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "operatingProfitabilityToAssets",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "B_PROFITABILITY_QUALITY",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "PIT_ACCOUNTING",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "B05",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "cashOperatingProfitability",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "B_PROFITABILITY_QUALITY",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "PIT_ACCOUNTING",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "B06",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "accrualsToAssets",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "B_PROFITABILITY_QUALITY",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "PIT_ACCOUNTING",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "B07",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "cashConversion",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "B_PROFITABILITY_QUALITY",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "PIT_ACCOUNTING",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "B08",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "fcfToNetIncome",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "B_PROFITABILITY_QUALITY",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "PIT_ACCOUNTING",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "B09",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "fcfConversion",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "B_PROFITABILITY_QUALITY",
+   "featureRequires": [],
+   "group": "SOURCE_BLOCKED_OR_NOT_DERIVED",
+   "historicalAvailabilityBeforeRepair": "NOT_IMPLEMENTED",
+   "id": "B10",
+   "labelRequires": [],
+   "name": "grossProfitability",
+   "researchResumable": "NO_SOURCE_OR_DERIVATION"
+  },
+  {
+   "family": "B_PROFITABILITY_QUALITY",
+   "featureRequires": [],
+   "group": "SOURCE_BLOCKED_OR_NOT_DERIVED",
+   "historicalAvailabilityBeforeRepair": "NOT_IMPLEMENTED",
+   "id": "B11",
+   "labelRequires": [],
+   "name": "roic",
+   "researchResumable": "NO_SOURCE_OR_DERIVATION"
+  },
+  {
+   "family": "B_PROFITABILITY_QUALITY",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "PIT_ACCOUNTING",
+   "historicalAvailabilityBeforeRepair": "AVAILABLE_WITH_CAVEATS",
+   "id": "B12",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "operatingMarginStability",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "B_PROFITABILITY_QUALITY",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "PIT_ACCOUNTING",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "B13",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "debtToEquity",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "C_GROWTH_CHANGE",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "PIT_ACCOUNTING",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "C01",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "earningsGrowth",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "C_GROWTH_CHANGE",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "PIT_ACCOUNTING",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "C02",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "revenueGrowthTTM",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "C_GROWTH_CHANGE",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "PIT_ACCOUNTING",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "C03",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "delta_roe",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "C_GROWTH_CHANGE",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "PIT_ACCOUNTING",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "C04",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "delta_operatingMargin",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "C_GROWTH_CHANGE",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "PIT_ACCOUNTING",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "C05",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "delta_profitMargin",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "C_GROWTH_CHANGE",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "PIT_ACCOUNTING",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "C06",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "delta_earningsGrowth",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "C_GROWTH_CHANGE",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "PIT_ACCOUNTING",
+   "historicalAvailabilityBeforeRepair": "NOT_IMPLEMENTED",
+   "id": "C07",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "operatingCashFlowGrowth",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "D_MOMENTUM_TREND",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "DATED_MEMBERSHIP"
+   ],
+   "group": "RETURN_PATH_PRICE",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "D01",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "mom121",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "D_MOMENTUM_TREND",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "DATED_MEMBERSHIP"
+   ],
+   "group": "RETURN_PATH_PRICE",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "D02",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "relative126",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "D_MOMENTUM_TREND",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "DATED_MEMBERSHIP"
+   ],
+   "group": "RETURN_PATH_PRICE",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "D03",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "high52Distance",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "D_MOMENTUM_TREND",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "DATED_MEMBERSHIP"
+   ],
+   "group": "RETURN_PATH_PRICE",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "D04",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "relativeStrengthBreadth52w",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "D_MOMENTUM_TREND",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "DATED_MEMBERSHIP"
+   ],
+   "group": "RETURN_PATH_PRICE",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "D05",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "multiHorizonReturns",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "D_MOMENTUM_TREND",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "DATED_MEMBERSHIP"
+   ],
+   "group": "RETURN_PATH_PRICE",
+   "historicalAvailabilityBeforeRepair": "AVAILABLE_WITH_CAVEATS",
+   "id": "D06",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "sectorRelativeStrength",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "E_RISK_STABILITY",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "DATED_MEMBERSHIP"
+   ],
+   "group": "RETURN_PATH_PRICE",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "E01",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "vol252",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "E_RISK_STABILITY",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "DATED_MEMBERSHIP"
+   ],
+   "group": "RETURN_PATH_PRICE",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "E02",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "downsideVol252",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "E_RISK_STABILITY",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "DATED_MEMBERSHIP"
+   ],
+   "group": "RETURN_PATH_PRICE",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "E03",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "beta252",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "E_RISK_STABILITY",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "DATED_MEMBERSHIP"
+   ],
+   "group": "RETURN_PATH_PRICE",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "E04",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "maxDD252",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "E_RISK_STABILITY",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "DATED_MEMBERSHIP"
+   ],
+   "group": "AS_TRADED_PRICE_OR_VOLUME",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "E05",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "logTradedValue63",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "E_RISK_STABILITY",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "AS_TRADED_PRICE_AND_FUNDAMENTALS",
+   "historicalAvailabilityBeforeRepair": "NEEDS_SOURCE_OR_IDENTITY_VERIFICATION",
+   "id": "E06",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "logMarketCapProxy",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "E_RISK_STABILITY",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "PIT_ACCOUNTING",
+   "historicalAvailabilityBeforeRepair": "AVAILABLE_WITH_CAVEATS",
+   "id": "E07",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "earningsStability",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "F_CAPITAL_ALLOCATION",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "PIT_ACCOUNTING",
+   "historicalAvailabilityBeforeRepair": "AVAILABLE_WITH_CAVEATS",
+   "id": "F01",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "totalCashDistributionChangeYoY",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "F_CAPITAL_ALLOCATION",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "PIT_ACCOUNTING",
+   "historicalAvailabilityBeforeRepair": "AVAILABLE_WITH_CAVEATS",
+   "id": "F02",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "distributionToOCF",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "F_CAPITAL_ALLOCATION",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "PIT_ACCOUNTING",
+   "historicalAvailabilityBeforeRepair": "AVAILABLE_WITH_CAVEATS",
+   "id": "F03",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "incrementalDistributionOverOCF",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "F_CAPITAL_ALLOCATION",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "DATED_MEMBERSHIP"
+   ],
+   "group": "AS_TRADED_PRICE_OR_VOLUME",
+   "historicalAvailabilityBeforeRepair": "AVAILABLE_WITH_CAVEATS",
+   "id": "F04",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "dividendYield",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "F_CAPITAL_ALLOCATION",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "SHARE_COUNT_CHANGE",
+   "historicalAvailabilityBeforeRepair": "NEEDS_SOURCE_OR_IDENTITY_VERIFICATION",
+   "id": "F05",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "netShareCountChange",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "F_CAPITAL_ALLOCATION",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "AS_TRADED_PRICE_AND_FUNDAMENTALS",
+   "historicalAvailabilityBeforeRepair": "NEEDS_SOURCE_OR_IDENTITY_VERIFICATION",
+   "id": "F06",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "netPayoutYield",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "F_CAPITAL_ALLOCATION",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "PIT_ACCOUNTING",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "F07",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "assetGrowthPct",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "F_CAPITAL_ALLOCATION",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "PIT_ACCOUNTING",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "F08",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "capexIntensityPct",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "F_CAPITAL_ALLOCATION",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "PIT_ACCOUNTING",
+   "historicalAvailabilityBeforeRepair": "AVAILABLE_WITH_CAVEATS",
+   "id": "F09",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "debtGrowthPct",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "G_CATALYSTS_EVENTS",
+   "featureRequires": [],
+   "group": "SOURCE_BLOCKED_OR_NOT_DERIVED",
+   "historicalAvailabilityBeforeRepair": "UNAVAILABLE",
+   "id": "G01",
+   "labelRequires": [],
+   "name": "earningsSurpriseVsConsensus",
+   "researchResumable": "NO_SOURCE_OR_DERIVATION"
+  },
+  {
+   "family": "G_CATALYSTS_EVENTS",
+   "featureRequires": [],
+   "group": "SOURCE_BLOCKED_OR_NOT_DERIVED",
+   "historicalAvailabilityBeforeRepair": "UNAVAILABLE",
+   "id": "G02",
+   "labelRequires": [],
+   "name": "estimateRevisions",
+   "researchResumable": "NO_SOURCE_OR_DERIVATION"
+  },
+  {
+   "family": "G_CATALYSTS_EVENTS",
+   "featureRequires": [],
+   "group": "SOURCE_BLOCKED_OR_NOT_DERIVED",
+   "historicalAvailabilityBeforeRepair": "UNAVAILABLE",
+   "id": "G03",
+   "labelRequires": [],
+   "name": "corporateEvents8K",
+   "researchResumable": "NO_SOURCE_OR_DERIVATION"
+  },
+  {
+   "family": "G_CATALYSTS_EVENTS",
+   "featureRequires": [],
+   "group": "SOURCE_BLOCKED_OR_NOT_DERIVED",
+   "historicalAvailabilityBeforeRepair": "UNAVAILABLE",
+   "id": "G04",
+   "labelRequires": [],
+   "name": "guidanceChanges",
+   "researchResumable": "NO_SOURCE_OR_DERIVATION"
+  },
+  {
+   "family": "G_CATALYSTS_EVENTS",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "group": "PIT_ACCOUNTING",
+   "historicalAvailabilityBeforeRepair": "AVAILABLE_WITH_CAVEATS",
+   "id": "G05",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "standardizedUnexpectedEarnings",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "G_CATALYSTS_EVENTS",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP"
+   ],
+   "group": "MEMBERSHIP_EVENT",
+   "historicalAvailabilityBeforeRepair": "NEEDS_SOURCE_OR_IDENTITY_VERIFICATION",
+   "id": "G06",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "indexMembershipChange",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  },
+  {
+   "family": "H_OWNERSHIP_FLOW_SENTIMENT",
+   "featureRequires": [],
+   "group": "SOURCE_BLOCKED_OR_NOT_DERIVED",
+   "historicalAvailabilityBeforeRepair": "UNAVAILABLE",
+   "id": "H01",
+   "labelRequires": [],
+   "name": "institutional13FChange",
+   "researchResumable": "NO_SOURCE_OR_DERIVATION"
+  },
+  {
+   "family": "H_OWNERSHIP_FLOW_SENTIMENT",
+   "featureRequires": [],
+   "group": "SOURCE_BLOCKED_OR_NOT_DERIVED",
+   "historicalAvailabilityBeforeRepair": "UNAVAILABLE",
+   "id": "H02",
+   "labelRequires": [],
+   "name": "insiderTransactions",
+   "researchResumable": "NO_SOURCE_OR_DERIVATION"
+  },
+  {
+   "family": "H_OWNERSHIP_FLOW_SENTIMENT",
+   "featureRequires": [],
+   "group": "SOURCE_BLOCKED_OR_NOT_DERIVED",
+   "historicalAvailabilityBeforeRepair": "UNAVAILABLE",
+   "id": "H03",
+   "labelRequires": [],
+   "name": "shortInterest",
+   "researchResumable": "NO_SOURCE_OR_DERIVATION"
+  },
+  {
+   "family": "H_OWNERSHIP_FLOW_SENTIMENT",
+   "featureRequires": [],
+   "group": "SOURCE_BLOCKED_OR_NOT_DERIVED",
+   "historicalAvailabilityBeforeRepair": "UNAVAILABLE",
+   "id": "H04",
+   "labelRequires": [],
+   "name": "fundFlows",
+   "researchResumable": "NO_SOURCE_OR_DERIVATION"
+  },
+  {
+   "family": "H_OWNERSHIP_FLOW_SENTIMENT",
+   "featureRequires": [],
+   "group": "SOURCE_BLOCKED_OR_NOT_DERIVED",
+   "historicalAvailabilityBeforeRepair": "UNAVAILABLE",
+   "id": "H05",
+   "labelRequires": [],
+   "name": "newsSentiment",
+   "researchResumable": "NO_SOURCE_OR_DERIVATION"
+  },
+  {
+   "family": "H_OWNERSHIP_FLOW_SENTIMENT",
+   "featureRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "DATED_MEMBERSHIP"
+   ],
+   "group": "AS_TRADED_PRICE_OR_VOLUME",
+   "historicalAvailabilityBeforeRepair": "SURVIVOR_CONDITIONED",
+   "id": "H06",
+   "labelRequires": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "TERMINAL_CONSIDERATION",
+    "DATED_MEMBERSHIP"
+   ],
+   "name": "volumeSurge5_60",
+   "researchResumable": "NO_UNTIL_DATASET_ADMISSION"
+  }
+ ],
+ "fitsModels": false,
+ "forwardPricesRead": false,
+ "groups": {
+  "AS_TRADED_PRICE_AND_FUNDAMENTALS": {
+   "factorIds": [
+    "A01",
+    "A02",
+    "A03",
+    "A06",
+    "A07",
+    "A08",
+    "E06",
+    "F06"
+   ],
+   "needs": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "why": "price-denominated value and size divide a filing figure by the as-traded close on the signal date"
+  },
+  "AS_TRADED_PRICE_OR_VOLUME": {
+   "factorIds": [
+    "E05",
+    "H06",
+    "F04"
+   ],
+   "needs": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "DATED_MEMBERSHIP"
+   ],
+   "why": "traded value, volume shock and dividend yield need the as-traded price/volume, rebuilt only from explicit events"
+  },
+  "MEMBERSHIP_EVENT": {
+   "factorIds": [
+    "G06"
+   ],
+   "needs": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP"
+   ],
+   "why": "an index event needs its effective date, which snapshots cannot give"
+  },
+  "PIT_ACCOUNTING": {
+   "factorIds": [
+    "B01",
+    "B02",
+    "B03",
+    "B04",
+    "B05",
+    "B06",
+    "B07",
+    "B08",
+    "B09",
+    "B12",
+    "B13",
+    "C01",
+    "C02",
+    "C03",
+    "C04",
+    "C05",
+    "C06",
+    "C07",
+    "E07",
+    "F01",
+    "F02",
+    "F03",
+    "F07",
+    "F08",
+    "F09",
+    "G05"
+   ],
+   "needs": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "why": "dollar amounts from one filing chain; price only for eligibility (a panel must exist on the signal date)"
+  },
+  "RETURN_PATH_PRICE": {
+   "factorIds": [
+    "D01",
+    "D02",
+    "D03",
+    "D04",
+    "D05",
+    "D06",
+    "E01",
+    "E02",
+    "E03",
+    "E04"
+   ],
+   "needs": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "DATED_MEMBERSHIP"
+   ],
+   "why": "momentum/risk read a continuous total-return-consistent close over >= 273 sessions; one basis per series, no splice"
+  },
+  "SHARE_COUNT_CHANGE": {
+   "factorIds": [
+    "F05"
+   ],
+   "needs": [
+    "HISTORICAL_SECURITY_IDENTITY",
+    "SPLIT_DIVIDEND_LINEAGE",
+    "DATED_MEMBERSHIP",
+    "PIT_FUNDAMENTALS"
+   ],
+   "why": "a share-count change is only meaningful after splits are neutralised, and needs period-end counts (SEC blocked)"
+  },
+  "SOURCE_BLOCKED_OR_NOT_DERIVED": {
+   "factorIds": [
+    "A04",
+    "A05",
+    "A09",
+    "B10",
+    "B11",
+    "G01",
+    "G02",
+    "G03",
+    "G04",
+    "H01",
+    "H02",
+    "H03",
+    "H04",
+    "H05"
+   ],
+   "needs": [],
+   "why": "no reachable source or derivation; the panel repair changes nothing for these"
+  }
+ },
+ "id": "us-factor-integration-readiness-v1",
+ "inputs": {
+  "fundamentalsCommit": "704d7db6d5b00def771aba5d2665d0846d6bc776",
+  "inventory": {
+   "path": "docs/us-readiness/us-factor-inventory-v1.json",
+   "sha256": "33553625c761ffe80215bb98d88fadcbcd1d919666a3a4a4ec433bedb0622d5c"
+  }
+ },
+ "labelRequirements": [
+  "HISTORICAL_SECURITY_IDENTITY",
+  "SPLIT_DIVIDEND_LINEAGE",
+  "TERMINAL_CONSIDERATION",
+  "DATED_MEMBERSHIP"
+ ],
+ "pr241Evidence": {
+  "annualWeeklyMemberDateMissingness": {
+   "2013": {
+    "beforePct": 30.3231,
+    "candidateAfterPct": 8.8923
+   },
+   "2014": {
+    "beforePct": 28.4539,
+    "candidateAfterPct": 2.8646
+   },
+   "2015": {
+    "beforePct": 26.8223,
+    "candidateAfterPct": 2.8258
+   },
+   "2016": {
+    "beforePct": 22.4769,
+    "candidateAfterPct": 1.5112
+   },
+   "2017": {
+    "beforePct": 20.2126,
+    "candidateAfterPct": 2.5447
+   },
+   "2018": {
+    "beforePct": 17.7723,
+    "candidateAfterPct": 8.0503
+   },
+   "2019": {
+    "beforePct": 17.0297,
+    "candidateAfterPct": 8.3168
+   },
+   "2020": {
+    "beforePct": 12.9199,
+    "candidateAfterPct": 4.8123
+   },
+   "2021": {
+    "beforePct": 9.1203,
+    "candidateAfterPct": 3.7357
+   },
+   "2022": {
+    "beforePct": 8.6374,
+    "candidateAfterPct": 3.2447
+   },
+   "2023": {
+    "beforePct": 4.126,
+    "candidateAfterPct": 3.1165
+   },
+   "2024": {
+    "beforePct": 2.8715,
+    "candidateAfterPct": 2.8715
+   },
+   "2025": {
+    "beforePct": 1.7932,
+    "candidateAfterPct": 1.7932
+   },
+   "2026": {
+    "beforePct": 0.5374,
+    "candidateAfterPct": 0.5374
+   }
+  },
+  "commit": "1e016bd9a4ff746a9b69958624182c6287301f51",
+  "coverageMeaning": "Qualified positive-close existence under historical issuer-name and strictly-earlier snapshot corroboration. Not total-return readiness. Sources/bases not concatenated. G unknown provider excluded. Partial includes any missing expected session. Weekly before exactly reproduces sealed NO_PANEL; after measures absent candidate observations, not a rewritten sealed audit.",
+  "headline": {
+   "missingMembershipSessionsBefore": 256402,
+   "readAs": "72.90% = candidate positive-close OBSERVATIONS on missing member sessions. It is not validated total-return coverage, not identity verification, not terminal economics, and not the end of survivorship bias",
+   "recoveredMembershipSessions": 186910
+  },
+  "licensing": "Raw and derived redistribution UNVERIFIED for every source. No third-party price payload is included in the proposed PR branch history. Original measured findings and checksums retained; durable owner-controlled non-public preservation is pending.",
+  "payload": "SANITIZED_NO_PRICE_PAYLOAD (raw archive and observation panel are not in this head)",
+  "pullRequest": 241,
+  "redistributionAudit": {
+   "aggregateFindings": "Historical measured counts, date bounds, quality statistics and provenance retained; not a substitute downloadable price database",
+   "reproducibility": "Exact artifacts verified locally; public reacquisition NOT_RETESTED and not guaranteed; workspace retention is ephemeral"
+  },
+  "report": {
+   "gitBlob": "2b29aed4a80693365da7cfbb2537d6730c5d9f34",
+   "path": "docs/us-readiness/us-departed-public-price-recovery-v1.json"
+  },
+  "state": "OPEN_DRAFT_NOT_MERGED",
+  "studyReady": false
+ },
+ "pr241FilesModified": false,
+ "readsLabels": false,
+ "readsReturns": false,
+ "requirementStatus": {
+  "DATED_MEMBERSHIP": {
+   "blocksAdmission": false,
+   "consequence": "usable for eligibility with a disclosed lag; never for index-event timing",
+   "measured": {
+    "snapshotAgeOnWeeklyDates": {
+     "maxDays": 767,
+     "medianDays": 54.0,
+     "p90Days": 367.20000000000005,
+     "rule": "latest S&P 500 snapshot strictly before each of the weekly signal dates",
+     "weeks": 715,
+     "weeksOver180Days": 168,
+     "weeksOver365Days": 74,
+     "weeksOver45Days": 382,
+     "weeksOver90Days": 277,
+     "weeksWithoutSnapshot": 0
+    },
+    "snapshots": {
+     "count": 195,
+     "first": "2012-12-27",
+     "gapsOver45Days": 21,
+     "last": "2026-09-05",
+     "maxGapDays": 769
+    }
+   },
+   "state": "SNAPSHOT_OBSERVED_NOT_EFFECTIVE_DATES"
+  },
+  "HISTORICAL_SECURITY_IDENTITY": {
+   "blocksAdmission": true,
+   "measured": {
+    "identityHolds": [
+     "AGN",
+     "BTU",
+     "CHK",
+     "CTRA",
+     "GCI",
+     "IGT",
+     "NE",
+     "S"
+    ],
+    "qualifiedCoverage": {
+     "FULL": 5,
+     "NONE": 37,
+     "PARTIAL": 170
+    },
+    "recycledSymbolsStillWithoutCoverage": [
+     "ACT",
+     "BTU",
+     "DV",
+     "LIFE",
+     "NE",
+     "PCS",
+     "S",
+     "SHLD"
+    ],
+    "sealedCategoryCounts": {
+     "ACQUIRED_OR_MERGED_TERMINATED": 1,
+     "DEPARTED_NO_PANEL_REASON_UNRESOLVED": 181,
+     "SAME_SECURITY_RENAME": 1,
+     "TICKER_REUSE_DIFFERENT_ISSUER": 29
+    }
+   },
+   "state": "CANDIDATE_NAME_CORROBORATED_NOT_PERMANENT_ID"
+  },
+  "PIT_FUNDAMENTALS": {
+   "blocksAdmission": true,
+   "consequence": "accounting families become computable for departed names once a filing CIK is tied to the member issuer",
+   "measured": {
+    "filingCikMultiplicity": {
+     "MULTIPLE_FILING_CIKS": 30,
+     "ONE_FILING_CIK": 141
+    },
+    "filingVisibility": {
+     "FILINGS_ONLY_OUTSIDE_MEMBERSHIP": 11,
+     "FILING_VISIBLE_DURING_MEMBERSHIP": 160,
+     "NO_FILINGS_IN_PINNED_STORE": 41
+    },
+    "identifiers": 212,
+    "meaning": "filings exist for most departed members because collection was keyed by ticker; they were unused only because no price panel existed. Member CIK is known only from 2023-04-13 snapshots, so most links rest on ticker plus dates",
+    "memberCikAgreement": {
+     "MEMBER_CIK_MATCHES_A_FILING_CIK": 22,
+     "NO_MEMBER_CIK_TO_COMPARE": 149
+    },
+    "source": "signal-history 704d7db6 ledger/fundamentals/us (Finnhub), blob-verified"
+   },
+   "state": "PRESENT_FOR_MOST_DEPARTED_TICKERS_ISSUER_LINK_UNVERIFIED"
+  },
+  "SPLIT_DIVIDEND_LINEAGE": {
+   "blocksAdmission": true,
+   "consequence": "back-adjusted-only and rounded-close-only series cannot yield an as-traded price, so price-denominated value, traded value and volume features stay missing for those identifiers even after identity is verified",
+   "measured": {
+    "corporateActionUnresolvedIdentifiers": 212,
+    "coveredIdentifiersByBasis": {
+     "byBasis": {
+      "BACK_ADJUSTED_ONLY_A_EVENTS_STRIPPED": {
+       "identifiers": 113,
+       "pct": 64.57
+      },
+      "HAS_ORIGINAL_OHLC_WITH_SEPARATE_ADJ_CLOSE_D_OR_F": {
+       "identifiers": 59,
+       "pct": 33.71
+      },
+      "ROUNDED_CLOSE_ONLY_E_NO_VOLUME": {
+       "identifiers": 3,
+       "pct": 1.71
+      }
+     },
+     "identifiers": 175,
+     "meaning": "an identifier is classed by the best basis #241 counted for it; a D/F identifier may still have A-only sessions, and D/F Close is a vendor series whose split basis must still be verified",
+     "sessionLevelBasisCounts": "UNMEASURED: needs the observation panel, which the sanitized #241 head does not publish",
+     "sourceBases": {
+      "A": "BACK_ADJUSTED_OHLCV_WIKI_FIRST_YAHOO_FALLBACK",
+      "D": "YAHOO_OHLC_WITH_SEPARATE_ADJ_CLOSE",
+      "E": "YFINANCE_CLOSE_ROUNDED_2DP_UNPINNED_ADJUSTMENT_DEFAULT",
+      "F": "YAHOO_OHLC_WITH_SEPARATE_ADJ_CLOSE"
+     }
+    }
+   },
+   "state": "UNRESOLVED_FOR_ALL_212"
+  },
+  "TERMINAL_CONSIDERATION": {
+   "blocksAdmission": true,
+   "consequence": "a forward window that runs past a name's last candidate observation has no resolved endpoint; it is UNRESOLVED, never zero",
+   "measured": {
+    "afterRepairImprovement2024to2026": "0 (no candidate observation after 2023-10-10)",
+    "identifiersWithEveryMemberSessionObserved": 5,
+    "identifiersWithQualifiedCoverage": 175,
+    "observationsReachLastMembershipSession": "UNMEASURED_FROM_PUBLIC_EVIDENCE: needs per-session dates, which the sanitized head does not publish",
+    "qualifiedObservationWindow": [
+     "2013-01-02",
+     "2023-03-27"
+    ],
+    "terminalConsiderationUnresolvedIdentifiers": 212
+   },
+   "state": "UNRESOLVED_FOR_ALL_212"
+  }
+ },
+ "requirements": {
+  "DATED_MEMBERSHIP": "which names were S&P 500 members on the signal date, from the latest snapshot strictly before it",
+  "HISTORICAL_SECURITY_IDENTITY": "the member's issuer and share class tied to every price and filing used, across renames and ticker reuse",
+  "PIT_FUNDAMENTALS": "filings visible strictly after max(availableFrom, acceptedDate), with the filing CIK matching the member issuer",
+  "SPLIT_DIVIDEND_LINEAGE": "dated split and distribution events with a declared price basis; no splicing of differently adjusted series",
+  "TERMINAL_CONSIDERATION": "what a holder received when trading ended (cash, stock, nothing), cited; never zero or last price by default"
+ }
+}
