@@ -5,6 +5,8 @@
 **기준:** `main` `0a9fb1d96219f4402d9eb341cabbb616f786e52d`(#240 병합). 입력은 signal-history `704d7db6`(Finnhub, blob 검증), replay-v16 봉인 매니페스트 `f0781292…`.
 **병행 작업:** 퇴출 미국 종목 가격 복구(Codex)는 건드리지 않았고 성공을 가정하지 않았다. 로드맵은 복구 판정이 FULL·PARTIAL·INSUFFICIENT 어느 쪽이어도 작동하도록 데이터 품질 관문으로 분기한다.
 
+> **후속(같은 PR):** 퇴출 종목 후보 가격 복구(#241)의 통합 준비 노트 — [`docs/us-factor-integration-readiness-v1-ko.md`](us-factor-integration-readiness-v1-ko.md). 72.90%는 후보 가격 *관측*이며 검증된 총수익률 커버리지나 생존 편향 제거가 아니다. US-MF-1은 데이터셋 승인 관문(`US_MF1_DATASET_ADMISSION_V1`)을 통과하기 전에는 어떤 미래 수익률도 읽지 않는다.
+
 | 산출물 | 경로 |
 |---|---|
 | 이 보고서 | `docs/us-factor-research-reboot-v1-ko.md` |

@@ -106,3 +106,50 @@ def test_builder_reads_no_price_return_or_model_module():
     imported = {a.name for n in ast.walk(tree) if isinstance(n, ast.Import) for a in n.names}
     imported |= {n.module or "" for n in ast.walk(tree) if isinstance(n, ast.ImportFrom)}
     assert imported <= {"__future__", "argparse", "hashlib", "json", "sys", "pathlib"}
+
+
+INTEGRATION = ROOT / "docs/us-readiness/us-factor-integration-readiness-v1.json"
+
+
+def _integration_script():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("integration_audit", ROOT / "scripts/audit_us_factor_integration_readiness.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_integration_groups_cover_every_inventory_factor_exactly_once():
+    module = _integration_script()
+    ids = [f["id"] for f in load(INVENTORY)["factors"]]
+    grouped = [fid for g in module.GROUPS.values() for fid in g["ids"]]
+    assert sorted(grouped) == sorted(ids) and len(grouped) == len(set(grouped))
+    for g in module.GROUPS.values():
+        assert set(g["needs"]) <= set(module.REQUIREMENTS)
+
+
+def test_integration_report_admits_nothing_and_every_return_reading_needs_terminal_and_lineage():
+    report = load(INTEGRATION)
+    assert report["candidatePricesAdmitted"] is False and report["pr241FilesModified"] is False
+    assert report["readsReturns"] is False and report["authorizes"] == "NOTHING"
+    assert {"TERMINAL_CONSIDERATION", "SPLIT_DIVIDEND_LINEAGE", "HISTORICAL_SECURITY_IDENTITY"} <= set(report["labelRequirements"])
+    for row in report["factorMatrix"]:
+        assert row["researchResumable"] != "YES"
+        if row["featureRequires"]:
+            assert row["labelRequires"] == report["labelRequirements"]
+    headline = report["pr241Evidence"]["headline"]
+    assert headline["recoveredMembershipSessions"] == 186910 and headline["missingMembershipSessionsBefore"] == 256402
+    basis = report["requirementStatus"]["SPLIT_DIVIDEND_LINEAGE"]["measured"]["recoveredSessionsByBasis"]
+    assert sum(v["sessions"] for v in basis["byBasis"].values()) == basis["sessions"] == 186910
+
+
+def test_roadmap_blocks_any_forward_return_reading_until_admission():
+    rm = load(ROADMAP)
+    gate = rm["datasetAdmissionGate"]
+    assert [c["id"][:3] for c in gate["checks"]] == ["AD%d" % i for i in range(1, 9)]
+    assert "never PROSPECTIVE" in gate["result"] and "never PROMOTION_ELIGIBLE" in gate["result"]
+    mf1 = next(e for e in rm["experiments"] if e["id"] == "US-MF-1")
+    assert mf1["forwardReturnReadingBlockedUntil"][0].startswith("datasetAdmissionGate")
+    assert "B1" in mf1["exactTestAfterAdmission"] and "B2" in mf1["exactTestAfterAdmission"]
+    assert rm["evidenceTiers"]["rule"].startswith("a repaired historical panel is never described as unseen")
+    assert rm["nextImplementationTask"]["startsAfter"].startswith("#241 is merged")

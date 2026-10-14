@@ -37,6 +37,7 @@ R = {
     "p4readiness": "docs/us-readiness/us-cash-profitability-exploratory-readiness-v2.json",
     "h63": "docs/us-readiness/us-h63-inference-calibration-v1-result.json",
     "h63supplement": "docs/us-readiness/us-h63-inference-calibration-v1-supplement-result.json",
+    "integration": "docs/us-readiness/us-factor-integration-readiness-v1.json",
 }
 _CACHE: dict[str, dict] = {}
 
@@ -614,8 +615,35 @@ def roadmap() -> dict:
     return {
         "id": "us-multifactor-research-roadmap-v1", "status": "PROPOSED_NOT_REGISTERED", "authorization": "NOT_AUTHORIZED", "authorizes": "NOTHING",
         "baseMainSha": BASE_MAIN, "productionEffect": "NONE", "readsReturns": False,
-        "dependsOn": {"codexDepartedPriceRecovery": {"assumedVerdict": None, "possibleVerdicts": ["FULL", "PARTIAL", "INSUFFICIENT"],
-                                                    "rule": "no experiment below is registered until the recovery verdict is published and audited by dataQualityGate"}},
+        "dependsOn": {"codexDepartedPriceRecovery": {
+            "assumedVerdict": None, "possibleVerdicts": ["FULL", "PARTIAL", "INSUFFICIENT"],
+            "rule": "no experiment below is registered until the recovery verdict is published and audited by dataQualityGate",
+            "observedCandidateEvidence": {
+                "pullRequest": get("integration", "/pr241Evidence/pullRequest"), "commit": get("integration", "/pr241Evidence/commit"),
+                "state": get("integration", "/pr241Evidence/state"), "headline": m("integration", "/pr241Evidence/headline", "missing member sessions of the 212 no-panel identifiers"),
+                "verdictStatus": "CANDIDATE_EVIDENCE_NOT_A_DATASET_VERDICT: no session is admitted until datasetAdmissionGate passes",
+                "integrationReadiness": R["integration"]}}},
+        "datasetAdmissionGate": {
+            "id": "US_MF1_DATASET_ADMISSION_V1", "appliesBefore": "ANY forward-return reading for US-MF-1 (and US-MF-2/3 on a repaired snapshot)",
+            "principle": "independent of whoever produced the candidate data; every check is outcome-free and measurable, and none chooses a tolerance from results",
+            "checks": [
+                {"id": "AD1_FROZEN_SNAPSHOT", "rule": "the admitted panel is one content-addressed input manifest (new replay generation); replay-v16, its manifest and #241's candidate files are read, never edited",
+                 "measure": "manifest SHA-256 recorded; a second build reproduces it byte for byte"},
+                {"id": "AD2_IDENTITY", "rule": "a session is admitted only if its security is tied to the member issuer by filing CIK, explicit '(Previously X)' or identical name at the switch; identity holds and ticker-only matches stay out",
+                 "measure": "per-identifier status ADMITTED / IDENTITY_HOLD / NAME_ONLY / NONE with counts that reproduce #241's 5 / 170 / 37 before any reclassification"},
+                {"id": "AD3_SINGLE_BASIS", "rule": "each feature and label reads ONE publisher basis per security; no splicing; back-adjusted-only or rounded-close-only sessions never feed as-traded features",
+                 "measure": "per-session basis class published (currently D/F 74,045 / A-only 95,157 / E-only 17,708 sessions); zero rows combine bases"},
+                {"id": "AD4_LINEAGE", "rule": "split and distribution events dated and cited for every admitted security; total-return labels use them once, never twice",
+                 "measure": "count of admitted securities with event lineage; adjusted-vs-rebuilt level check per security"},
+                {"id": "AD5_TERMINAL", "rule": "every H63 window that runs past a security's last observation is UNRESOLVED unless a cited terminal consideration exists",
+                 "measure": "share of label windows UNRESOLVED by year, computed from observation EXISTENCE only, before any return"},
+                {"id": "AD6_FUNDAMENTALS_LINK", "rule": "a filing is used only if its CIK maps to the member issuer during membership",
+                 "measure": "per-identifier filing link status (currently 160 visible during membership, 41 none, 11 outside, 30 tickers with several CIKs)"},
+                {"id": "AD7_RESIDUAL_SURVIVORSHIP", "rule": "publish the remaining no-admitted-panel member-date share by year after AD2-AD6; 2024-2026 improvement is 0 and is stated",
+                 "measure": "per-year residual shares; DQ5 dual reading becomes binding wherever a residual is non-zero"},
+                {"id": "AD8_NO_OUTCOME_ACCESS", "rule": "the admission build imports no label, return, model or portfolio module",
+                 "measure": "counters zero and a spy test that fails on any outcome call"}],
+            "result": "ADMITTED_FOR_DEVELOPMENT_ONLY or NOT_ADMITTED; never PROSPECTIVE, never PROMOTION_ELIGIBLE"},
         "dataQualityGate": {
             "id": "US_SURVIVORSHIP_DQ_GATE_V1", "appliesBefore": "registration of any historical (development) experiment below",
             "checks": [
@@ -658,6 +686,19 @@ def roadmap() -> dict:
                                   "names held, turnover split into replaced vs retargeted, cost drag"],
              "falsification": "upper one-sided 95% bound <= 0 under either DQ5 reading -> the accounting families do not improve the selection margin on this sample",
              "contributesToDecision": "directly: it is the ranking the <=5-name selector would consume, measured where the selector cuts",
+             "forwardReturnReadingBlockedUntil": ["datasetAdmissionGate = ADMITTED_FOR_DEVELOPMENT_ONLY", "OD6 calibration of this exact statistic", "owner registration and authorization"],
+             "exactTestAfterAdmission": {
+                 "sample": "weekly signal dates (last US session of each completed week); S&P 500 members from the latest snapshot strictly before the date; Financials and Real Estate excluded; admitted sessions only",
+                 "B1": "within-sector percentile of mean(rank(mom121), rank(-vol252))",
+                 "B2": "within-sector percentile of the equal-weight mean of SIX family scores: price (= B1), cash quality rank(cashOperatingProfitability), accrual profitability "
+                       "rank(operatingProfitabilityToAssets), investment rank(-assetGrowthPct), leverage rank(-debtToEquity), value rank(earningsYield)",
+                 "missing": "complete case on every family (no imputation, no zero); attrition by year published; value is missing wherever the basis cannot give an as-traded price",
+                 "label": "total return from the close of the first session after the signal date over 63 sessions, minus SPY over the same window (SPY cancels in the statistic)",
+                 "statistic": "D_t = [mean H63 excess of the B2 top quintile within each sector - sector-universe mean] - [same for B1], averaged across sectors with names-per-sector weights",
+                 "inference": "mean of D_t over dates; calendar-time attribution + CT_SN one-sided 95%; reported under both DQ5 readings",
+                 "verdicts": {"SUPPORTED_DEVELOPMENT": "lower bound > 0 under both readings (development evidence only)",
+                              "NOT_SUPPORTED": "upper bound <= 0 under either reading", "INCONCLUSIVE": "otherwise"},
+                 "decisionObjective": "the 0-5-name book: B4 on B2 vs B4 on B1 vs SPY after realistic costs, zero names allowed, read descriptively on history and as the primary claim only prospectively"},
              "ownerAuthorizationRequired": True,
              "estimatedCost": {"featureBuild": "ESTIMATE ~40-45 min single-threaded for all 715 weekly dates (MEASURED: 55 sample dates took 4.4-4.6 min, ~1.5 min of it loading; per-date part scaled 13x)",
                                "calibration": "~1 h on 4 workers (US H63 P3 measured ~58 min)", "evaluation": "< 1 h", "money": "0 (GitHub Actions)"}},
@@ -687,6 +728,34 @@ def roadmap() -> dict:
              "calibration": "covered by P3 only if names/date and control structure match the calibrated geometry; otherwise a targeted calibration",
              "falsification": "upper bound <= 0 under either DQ5 reading", "contributesToDecision": "supplies a candidate family for US-MF-1; standalone it is discovery only",
              "ownerAuthorizationRequired": True, "estimatedCost": {"featureBuild": "ESTIMATE ~40-45 min (same builder as US-MF-1)", "evaluation": "< 1 h", "money": "0"}}],
+        "evidenceTiers": {
+            "HISTORICAL_EXPLORATORY": {"window": "signals 2013-01 to the end of sealed prices", "label": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_US_HISTORY",
+                                       "whyNotUnseen": ["the 615 already-priced panels carry most member-dates (69.7% in 2013, >97% from 2024) and were read by the four-factor audit, the 31-feature model, "
+                                                        "fundamental acceleration, benchmark-alpha and weekly-passive-first",
+                                                        "US-MF-1's families and horizon were chosen after those results were known",
+                                                        "a repaired-names-only reading would be an outcome-defined subset (names that left the index), not a random holdout",
+                                                        "the repair changes the sample, not the researcher's exposure to it"],
+                                       "canSupport": "abandon-or-continue decisions and a bounded estimate of survivorship's effect", "cannotSupport": "promotion, liveValidated, capital allocation"},
+            "PROSPECTIVE_PAPER": {"window": "signals dated after the merge that registers a frozen protocol", "label": "PROSPECTIVE_CONFIRMATORY",
+                                  "prerequisites": ["persistent US daily price ledger (owner-gated)", "a total-assets source (Finnhub balance sheet omitted since 2026-10-07)",
+                                                    "weekly membership capture", "append-only receipts before outcomes exist"],
+                                  "currentState": "NOT_STARTED: no US prospective receipt exists", "canSupport": "the only confirmatory evidence this program can produce"},
+            "rule": "a repaired historical panel is never described as unseen, out-of-sample or holdout data"},
+        "nextImplementationTask": {
+            "id": "US_DEPARTED_DATASET_ADMISSION_AUDIT_V1",
+            "startsAfter": "#241 is merged to main (its candidate files must be on main; this task never copies or edits them)",
+            "what": "outcome-blind per-identifier and per-session admission table built from #241's candidate panel, the sealed identity evidence and the pinned Finnhub filings, implementing AD1-AD8",
+            "acceptanceCriteria": [
+                "reproduces #241 exactly before reclassifying: 212 identifiers, 186,910 covered and 69,492 missing member sessions, FULL/PARTIAL/NONE = 5/170/37",
+                "every session carries exactly one of ADMITTED, IDENTITY_HOLD, NAME_ONLY, BASIS_UNRESOLVED, NO_OBSERVATION; counts sum to 256,402",
+                "per-session basis class counts reproduce 74,045 / 95,157 / 17,708",
+                "zero rows splice two publisher bases; a test feeds a spliced series and expects refusal",
+                "every H63 window that crosses a last observation without cited terminal consideration is UNRESOLVED; per-year UNRESOLVED shares published",
+                "filing-to-issuer link status for all 212 identifiers; no filing with a non-matching CIK is admitted",
+                "residual no-admitted-panel member-date share by year, 2013-2026, beside #241's before/after",
+                "label/return/model/portfolio counters all zero and a spy test proves it; two runs byte-identical",
+                "replay-v16, P4 files, #241 candidate files and sealed results byte-unchanged"],
+            "doesNotDo": ["read a return", "admit a price without AD2-AD6", "register US-MF-1", "run P4", "Monte Carlo"]},
         "notBuiltYet": ["any new production model or selector", "a fitted factor-weight search", "EV/EBITDA, gross profitability, ROIC (no derivation or source)",
                         "13F, Form 4, short interest, consensus, 8-K (blocked)", "a broader-than-S&P 500 universe", "a new Monte Carlo campaign",
                         "any P4 authorization or lock", "dashboards or UI"],
@@ -696,7 +765,9 @@ def roadmap() -> dict:
             {"id": "OD3", "decision": "P4 upper geometry 331-371 names/date: require calibration or accept exploratory extrapolation"},
             {"id": "OD4", "decision": "Primary universe: S&P 500 non-financials (recommended) vs a broader liquid universe (needs new price, identity and fundamentals collection)"},
             {"id": "OD5", "decision": "Approve the persistent US daily price ledger and a total-assets source decision; without both, no US prospective evidence can accrue"},
-            {"id": "OD6", "decision": "Authorize the targeted calibration of the US-MF-1 statistic (synthetic only; no outcome read)"}],
+            {"id": "OD6", "decision": "Authorize the targeted calibration of the US-MF-1 statistic (synthetic only; no outcome read)"},
+            {"id": "OD7", "decision": "Merge or reject #241; only after it is on main can the dataset admission audit start and #242 be rebased onto main"},
+            {"id": "OD8", "decision": "Confirm the redistribution/recurring-use rights of #241's public archives before any admitted panel is used beyond research"}],
         "universeRecommendation": {
             "primary": "dated S&P 500 snapshot members, Financials and Real Estate excluded for accounting families, priced and identity-verified",
             "why": "the only US universe with dated membership, PIT fundamentals for ~all members and (after recovery) bounded survivorship; a concentrated personal book needs liquid names",
