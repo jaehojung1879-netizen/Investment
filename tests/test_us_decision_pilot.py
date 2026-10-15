@@ -170,9 +170,29 @@ def test_synthetic_real_runner_completes_even_when_economic_gate_unavailable():
     assert len(paths) == 10
 
 
-def test_pinned_contract_and_no_restricted_executor_imports():
+def synthetic_contract(root):
+    """CI tests hash enforcement without freezing today's operational files forever."""
+    import json
     from scripts import run_us_decision_pilot as S
-    protocol = S.verify_contract()
+    files = ('pipeline/us_decision_pilot.py', 'scripts/run_us_decision_pilot.py',
+             'pipeline/replay_inputs.py', 'AGENTS.md')
+    for name in files:
+        path = root / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text('synthetic ' + name)
+    protocol = {'id': P.STUDY, 'sourceScope': {'status': 'READ_ONLY_INPUT_REUSE_AUTHORIZED'},
+        'protectionSources': {'AGENTS.md': S.sha(root / 'AGENTS.md')},
+        'inputAndHelperHashes': {'pipeline/replay_inputs.py': S.sha(root / 'pipeline/replay_inputs.py')},
+        'coreCodeSha256': S.sha(root / files[0]), 'orchestrationCodeSha256': S.sha(root / files[1])}
+    path = root / S.PROTOCOL
+    path.parent.mkdir(parents=True)
+    path.write_text(json.dumps(protocol))
+    return root
+
+
+def test_pinned_contract_and_no_restricted_executor_imports(tmp_path):
+    from scripts import run_us_decision_pilot as S
+    protocol = S.verify_contract(synthetic_contract(tmp_path))
     assert protocol['sourceScope']['status'] == 'READ_ONLY_INPUT_REUSE_AUTHORIZED'
     code = S.Path(S.__file__).read_text()
     for forbidden in ('us_cash_profitability_exploratory', 'create_remote_lock', 'execute_study', 'signal-history/'):
@@ -208,12 +228,9 @@ def test_committed_real_results_are_aggregates_with_exact_sample_accounting():
         assert set(reading['scores']) == {'B1', 'B2', *P.FAMILIES, *('WITHOUT_' + f for f in P.FAMILIES)}
 
 
-def test_changed_source_hash_is_refused():
+def test_changed_source_hash_is_refused(tmp_path):
     from scripts import run_us_decision_pilot as S
-    original = S.sha
-    def corrupt(path):
-        return 'bad' if str(path).endswith('pipeline/replay_inputs.py') else original(path)
-    from unittest.mock import patch
-    with patch.object(S, 'sha', corrupt):
-        with pytest.raises(ValueError, match='PINNED_SOURCE_CHANGED:pipeline/replay_inputs.py'):
-            S.verify_contract()
+    root = synthetic_contract(tmp_path)
+    (root / 'pipeline/replay_inputs.py').write_text('tampered synthetic helper')
+    with pytest.raises(ValueError, match='PINNED_SOURCE_CHANGED:pipeline/replay_inputs.py'):
+        S.verify_contract(root)

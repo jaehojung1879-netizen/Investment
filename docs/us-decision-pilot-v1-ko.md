@@ -119,7 +119,7 @@ B2 다섯 군(가격·현금 영업수익성·발생주의 영업수익성·낮�
 
 자체 프로토콜은 코드·helper·구성원·섹터·신원 메타데이터 해시를 고정한다. 기존 연구에서는 신원 감사 메타데이터만 재사용했고 과거 성과·예측·결과는 읽지 않았다. 봉인 원자료/manifest/연구 결과·예산·잠금·production 파일은 변경하지 않았다. 원격 잠금 생성 0, production 변경 없음.
 
-전체 Git 이력이 있는 checkout과 requirements.txt/requirements-dev.txt 설치 환경에서 다음 명령으로 같은 고정 비교를 재현한다. Git 객체가 없으면 기존 GitHub 인증으로 해당 고정 입력 커밋을 fetch해야 한다. 새 데이터 수집이나 옛 연구 실행은 하지 않는다.
+방법 고정 커밋 `c124bf6`의 checkout(전체 Git 이력)과 requirements.txt/requirements-dev.txt 설치 환경에서 다음 명령으로 같은 고정 비교를 재현한다. Git 객체가 없으면 기존 GitHub 인증으로 해당 고정 입력 커밋을 fetch해야 한다. 새 데이터 수집이나 옛 연구 실행은 하지 않는다.
 
 ```bash
 git fetch --no-tags --filter=blob:none origin 704d7db6d5b00def771aba5d2665d0846d6bc776
@@ -133,4 +133,4 @@ python scripts/run_us_decision_pilot.py \
 
 출력 디렉터리는 없어야 한다. 원실행 출력은 `/workspace/us-decision-pilot-actual-v1`, 비공개 일간 전략 경로는 `/workspace/us-decision-pilot-private-paths-v1`에 있다. 공개 PR에는 집계 JSON·전략 지표·연도별 수익만 보존한다. 개별 주가·forward label·개별 보유 목록을 공개하지 않는다.
 
-합성 테스트는 실제 성과 증거가 아니다. CI는 합성 테스트, 집계 산출물의 산술 일관성·표본 회계·해시 및 기존 repository 검사를 검증하며 실제 역사 연구를 재실행하지 않는다. 최종 SHA의 전체 검사 상태는 동일 Draft PR #245 Checks와 최종 인계에 기록한다.
+합성 테스트는 실제 성과 증거가 아니다. 실제 재현 실행은 고정 checkout의 해시를 엄격히 검사한다. CI의 해시 검증 단위 테스트는 합성 디렉터리를 사용하므로 이후 정상적인 AGENTS/워크플로 변경을 역사 해시로 막지 않는다. CI는 합성 테스트, 집계 산출물의 산술 일관성·표본 회계·해시 및 기존 repository 검사를 검증하며 실제 역사 연구를 재실행하지 않는다. 최종 SHA의 전체 검사 상태는 동일 Draft PR #245 Checks와 최종 인계에 기록한다.
