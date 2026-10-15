@@ -177,3 +177,43 @@ def test_pinned_contract_and_no_restricted_executor_imports():
     code = S.Path(S.__file__).read_text()
     for forbidden in ('us_cash_profitability_exploratory', 'create_remote_lock', 'execute_study', 'signal-history/'):
         assert forbidden not in code
+
+
+def test_committed_real_results_are_aggregates_with_exact_sample_accounting():
+    import json
+    from scripts import run_us_decision_pilot as S
+    result = json.loads((S.ROOT / 'docs/us-decision-pilot-v1/result.json').read_text())
+    assert result['id'] == P.STUDY and result['evidenceClass'] == P.EVIDENCE
+    assert result['protocolSha256'] == S.sha(S.ROOT / S.PROTOCOL)
+    assert result['sealedStudyOutcomeReads'] == result['remoteLockWrites'] == 0
+    assert result['currentCandidates']['candidates'] == []
+    assert result['currentCandidates']['status'] == 'CURRENT_CANDIDATES_NOT_VERIFIED'
+    stages = ('IDENTITY_HOLD', 'SECTOR_EXCLUDED', 'NO_PRICE_PANEL', 'PRICE_HISTORY_INCOMPLETE',
+              'NO_PIT_FILINGS', 'CIK_UNVERIFIED_OR_MISMATCH', 'ACCOUNTING_INCOMPLETE_OR_STALE', 'COMPLETE_CASE')
+    for count in result['annualMissingness'].values():
+        assert sum(count.get(s, 0) for s in stages) == count['memberDates']
+    assert sum(c.get('usableSignalDates', 0) for c in result['annualMissingness'].values()) == sum(
+        w['status'] == 'SCORED' for w in result['weeklyAvailability'])
+    spy = result['strategies']['B0_SPY']
+    for name, row in result['strategies'].items():
+        if row['status'] == 'NOT_ESTIMABLE':
+            assert 'cagr' not in row and 'meanCash' not in row
+            continue
+        assert row['start'] == spy['start'] and row['end'] == spy['end']
+        assert row['annualizedCagrDifferenceVsSPY'] == pytest.approx(row['cagr'] - spy['cagr'])
+        assert np.prod([1 + r for r in row['yearlyReturns'].values()]) ** (252 / row['sessions']) - 1 == pytest.approx(row['cagr'])
+        assert 'FORCED' not in name or row['meanNames'] <= 5
+    for horizon, reading in result['selectionDiagnostics'].items():
+        assert sum(reading['statusCounts'].values()) == result['strategies']['B1_PRICE']['rebalanceDates']
+        assert set(reading['scores']) == {'B1', 'B2', *P.FAMILIES, *('WITHOUT_' + f for f in P.FAMILIES)}
+
+
+def test_changed_source_hash_is_refused():
+    from scripts import run_us_decision_pilot as S
+    original = S.sha
+    def corrupt(path):
+        return 'bad' if str(path).endswith('pipeline/replay_inputs.py') else original(path)
+    from unittest.mock import patch
+    with patch.object(S, 'sha', corrupt):
+        with pytest.raises(ValueError, match='PINNED_SOURCE_CHANGED:pipeline/replay_inputs.py'):
+            S.verify_contract()
