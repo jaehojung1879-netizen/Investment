@@ -12,7 +12,7 @@
 
 **최종 판정: NOT ESTIMABLE. 실제 전략 비교는 실행하지 않았다.** 따라서 “SPY를 이겼다/못 이겼다”, 순위가 틀렸다, 비용이 컸다, 관문이 보수적이었다는 결론도 내리지 않는다. 연도별 성과·회전율·비용·보유 수·현금 비중·연도별 결측률·H63/H126/H252 IC·상위 집단 스프레드·ablation은 모두 미측정이며 0으로 채우지 않았다.
 
-[실행 상태 JSON](results/us-decision-pilot-v1/result.json) / [전략별 CSV](results/us-decision-pilot-v1/strategy-metrics.csv) / [사전 고정 규칙](us-decision-pilot-v1-protocol.json). 이들은 실제 백테스트 결과로 포장한 합성 결과가 아니다. 계산하지 못한 항목은 JSON `null`, CSV 빈칸이다. 단 한 건의 새 비교 예산도 아직 소비하지 않았다.
+[실행 상태 JSON](us-decision-pilot-v1/result.json) / [전략별 CSV](us-decision-pilot-v1/strategy-metrics.csv) / [사전 고정 규칙](us-decision-pilot-v1-protocol.json). 이들은 실제 백테스트 결과로 포장한 합성 결과가 아니다. 계산하지 못한 항목은 JSON `null`, CSV 빈칸이다. 단 한 건의 새 비교 예산도 아직 소비하지 않았다.
 
 ## 2. 가장 유용했던 팩터
 

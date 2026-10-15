@@ -129,7 +129,7 @@ def test_refusal_reproduces_committed_output_and_never_fabricates_zero_returns()
     import csv
     import json
     from scripts import run_us_decision_pilot as S
-    path = S.ROOT / 'docs/results/us-decision-pilot-v1'
+    path = S.ROOT / 'docs/us-decision-pilot-v1'
     assert S.build() == json.loads((path / 'result.json').read_bytes())
     with (path / 'strategy-metrics.csv').open() as handle:
         rows = list(csv.DictReader(handle))
