@@ -82,7 +82,7 @@ def main(argv=None):
         json.dump(result, out, sort_keys=True, ensure_ascii=False, allow_nan=False, indent=2)
         out.write('\n')
     with args.csv.open('x', newline='') as out:
-        writer = csv.DictWriter(out, fieldnames=['strategy', 'status', *METRICS, 'reason'])
+        writer = csv.DictWriter(out, fieldnames=['strategy', 'status', *METRICS, 'reason'], lineterminator='\n')
         writer.writeheader()
         for strategy, row in result['strategies'].items():
             writer.writerow({'strategy': strategy, 'status': row['status'], **row['metrics'], 'reason': row['reason']})

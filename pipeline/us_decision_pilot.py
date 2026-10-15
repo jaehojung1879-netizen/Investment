@@ -29,16 +29,18 @@ def scores(rows: pd.DataFrame) -> pd.DataFrame:
         raise ValueError("DUPLICATE_SECURITY")
     if len(x) < MIN_NAMES:
         return x.iloc[:0]
-    rank = lambda field, sign=1: (sign * x[field]).rank(method="average", pct=True)
-    x["price"] = (rank("momentum252") + rank("vol252", -1)) / 2
-    x["cash"] = rank(ACCOUNTING[0])
-    x["accrual"] = rank(ACCOUNTING[1])
-    x["investment"] = rank(ACCOUNTING[2], -1)
-    x["leverage"] = rank(ACCOUNTING[3], -1)
-    x["B1"] = x["price"]
-    x["B2"] = x[list(FAMILIES)].mean(axis=1)
+    rank = lambda field, sign=1: (sign * x[field]).rank(method="average")
+    # Half/quarter integer ranks sum exactly; normalize ONCE so algebraic
+    # ties cannot become spurious orderings from floating-point cancellation.
+    raw = pd.DataFrame({"price": (rank("momentum252") + rank("vol252", -1)) / 2,
+        "cash": rank(ACCOUNTING[0]), "accrual": rank(ACCOUNTING[1]),
+        "investment": rank(ACCOUNTING[2], -1), "leverage": rank(ACCOUNTING[3], -1)})
     for family in FAMILIES:
-        x["WITHOUT_" + family] = x[[f for f in FAMILIES if f != family]].mean(axis=1)
+        x[family] = raw[family] / len(x)
+    x["B1"] = x["price"]
+    x["B2"] = raw[list(FAMILIES)].sum(axis=1) / (len(FAMILIES) * len(x))
+    for family in FAMILIES:
+        x["WITHOUT_" + family] = raw[[f for f in FAMILIES if f != family]].sum(axis=1) / (4 * len(x))
     return x
 
 
