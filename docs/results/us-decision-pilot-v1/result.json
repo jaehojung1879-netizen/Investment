@@ -1,0 +1,202 @@
+{
+  "annualMissingness": {
+    "reason": "NO_STUDY_INPUT_READ",
+    "status": "NOT_MEASURED",
+    "years": null
+  },
+  "currentCandidates": {
+    "candidates": [],
+    "requiredInputs": [
+      "current completed-session prices with action basis",
+      "current dated membership and sectors",
+      "strictly visible PIT filings",
+      "score-specific expected-net-excess evidence for investable candidates"
+    ],
+    "status": "CURRENT_CANDIDATES_NOT_VERIFIED"
+  },
+  "evidenceClass": "SURVIVOR_CONDITIONED_EXPLORATORY",
+  "executionState": "NOT_EXECUTED",
+  "gatedPortfolioAdditionalConstraint": "No verified PIT expected-net-excess calibration for B1/B2; a rank is not a return forecast; missing forecast is not a measured all-cash strategy",
+  "id": "US_DECISION_PILOT_V1",
+  "mostUsefulFactor": null,
+  "newComparisonBudgetConsumed": false,
+  "nextSingleAction": "Clarify whether the explicit existing-price/PIT use grant permits READ-ONLY replay-v16 price reuse; otherwise supply a legitimately independent permitted panel. Neither authorizes P4 or relaxes MF1 admission.",
+  "productionEffect": "NONE",
+  "promotionEligible": false,
+  "protocolSha256": "db6d845b935cd84ecad2c69cf8c37656757da81e1c76e1a80b85245642ff201f",
+  "publicPricePayloads": false,
+  "realOutcomeReads": 0,
+  "remoteLockWrites": 0,
+  "scopeResolution": {
+    "assumption": "Do not read replay-v16 price payloads or their exported copies until scope is clarified; no existing study execution, results or locks are consumed.",
+    "reason": "SEALED_INPUT_READ_SCOPE_UNRESOLVED",
+    "restriction": "기존 replay-v16, US-MF-1, P4 one-shot 연구의 봉인된 데이터·실행 잠금·결과를 절대 수정하거나 소비하지 않는다.",
+    "status": "PENDING_OWNER_CLARIFICATION",
+    "useGrant": "역사 데이터의 기존 가격과 이미 확보된 PIT 팩터를 사용할 수 있다."
+  },
+  "sealedResultReads": 0,
+  "selectionDiagnostics": {
+    "126": {
+      "ablation": null,
+      "incrementB2VsB1": null,
+      "rankIC": null,
+      "status": "NOT_ESTIMABLE",
+      "topGroupSpread": null
+    },
+    "252": {
+      "ablation": null,
+      "incrementB2VsB1": null,
+      "rankIC": null,
+      "status": "NOT_ESTIMABLE",
+      "topGroupSpread": null
+    },
+    "63": {
+      "ablation": null,
+      "incrementB2VsB1": null,
+      "rankIC": null,
+      "status": "NOT_ESTIMABLE",
+      "topGroupSpread": null
+    }
+  },
+  "sourceMetadataOnly": {
+    "benchmarkDerivativePath": "data/research/us-dual-benchmark-v1/spy-qqq-total-return.csv.gz",
+    "builtFrom": {
+      "n100tickersCommit": "ec99dfb8690820895d0a7546a7d9218336b96554",
+      "replayManifestSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+      "signalHistoryCommit": "704d7db6d5b00def771aba5d2665d0846d6bc776"
+    },
+    "declaredSha256NotPayloadVerified": "a82c64b96ef56e672373240d0b6df317dadbdee8c845bfaa9725b16bb9625b50",
+    "withheld": "Exported replay-v16 prices are not treated as an independent unsealed source"
+  },
+  "strategies": {
+    "B0_SPY": {
+      "metrics": {
+        "annualVolatility": null,
+        "annualizedCagrDifferenceVsSPY": null,
+        "cagr": null,
+        "mdd": null,
+        "meanCash": null,
+        "meanNames": null,
+        "sharpe": null,
+        "tradingCostInitialCapital": null,
+        "twoWayTurnover": null
+      },
+      "reason": "SEALED_INPUT_READ_SCOPE_UNRESOLVED",
+      "status": "NOT_ESTIMABLE",
+      "yearlyPerformance": null
+    },
+    "B1_PRICE": {
+      "metrics": {
+        "annualVolatility": null,
+        "annualizedCagrDifferenceVsSPY": null,
+        "cagr": null,
+        "mdd": null,
+        "meanCash": null,
+        "meanNames": null,
+        "sharpe": null,
+        "tradingCostInitialCapital": null,
+        "twoWayTurnover": null
+      },
+      "reason": "SEALED_INPUT_READ_SCOPE_UNRESOLVED",
+      "status": "NOT_ESTIMABLE",
+      "yearlyPerformance": null
+    },
+    "B2_MULTIFACTOR": {
+      "metrics": {
+        "annualVolatility": null,
+        "annualizedCagrDifferenceVsSPY": null,
+        "cagr": null,
+        "mdd": null,
+        "meanCash": null,
+        "meanNames": null,
+        "sharpe": null,
+        "tradingCostInitialCapital": null,
+        "twoWayTurnover": null
+      },
+      "reason": "SEALED_INPUT_READ_SCOPE_UNRESOLVED",
+      "status": "NOT_ESTIMABLE",
+      "yearlyPerformance": null
+    },
+    "B2_PLUS_VALUE": {
+      "metrics": {
+        "annualVolatility": null,
+        "annualizedCagrDifferenceVsSPY": null,
+        "cagr": null,
+        "mdd": null,
+        "meanCash": null,
+        "meanNames": null,
+        "sharpe": null,
+        "tradingCostInitialCapital": null,
+        "twoWayTurnover": null
+      },
+      "reason": "SEALED_INPUT_READ_SCOPE_UNRESOLVED",
+      "status": "NOT_ESTIMABLE",
+      "yearlyPerformance": null
+    },
+    "B3_GATED_MULTIFACTOR": {
+      "metrics": {
+        "annualVolatility": null,
+        "annualizedCagrDifferenceVsSPY": null,
+        "cagr": null,
+        "mdd": null,
+        "meanCash": null,
+        "meanNames": null,
+        "sharpe": null,
+        "tradingCostInitialCapital": null,
+        "twoWayTurnover": null
+      },
+      "reason": "SEALED_INPUT_READ_SCOPE_UNRESOLVED",
+      "status": "NOT_ESTIMABLE",
+      "yearlyPerformance": null
+    },
+    "B3_GATED_PRICE": {
+      "metrics": {
+        "annualVolatility": null,
+        "annualizedCagrDifferenceVsSPY": null,
+        "cagr": null,
+        "mdd": null,
+        "meanCash": null,
+        "meanNames": null,
+        "sharpe": null,
+        "tradingCostInitialCapital": null,
+        "twoWayTurnover": null
+      },
+      "reason": "SEALED_INPUT_READ_SCOPE_UNRESOLVED",
+      "status": "NOT_ESTIMABLE",
+      "yearlyPerformance": null
+    },
+    "FORCED_5_MULTIFACTOR_DIAGNOSTIC": {
+      "metrics": {
+        "annualVolatility": null,
+        "annualizedCagrDifferenceVsSPY": null,
+        "cagr": null,
+        "mdd": null,
+        "meanCash": null,
+        "meanNames": null,
+        "sharpe": null,
+        "tradingCostInitialCapital": null,
+        "twoWayTurnover": null
+      },
+      "reason": "SEALED_INPUT_READ_SCOPE_UNRESOLVED",
+      "status": "NOT_ESTIMABLE",
+      "yearlyPerformance": null
+    },
+    "FORCED_5_PRICE_DIAGNOSTIC": {
+      "metrics": {
+        "annualVolatility": null,
+        "annualizedCagrDifferenceVsSPY": null,
+        "cagr": null,
+        "mdd": null,
+        "meanCash": null,
+        "meanNames": null,
+        "sharpe": null,
+        "tradingCostInitialCapital": null,
+        "twoWayTurnover": null
+      },
+      "reason": "SEALED_INPUT_READ_SCOPE_UNRESOLVED",
+      "status": "NOT_ESTIMABLE",
+      "yearlyPerformance": null
+    }
+  },
+  "verdict": "NOT ESTIMABLE"
+}

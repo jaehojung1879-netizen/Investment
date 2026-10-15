@@ -1,0 +1,92 @@
+{
+  "id": "US_DECISION_PILOT_V1",
+  "evidenceClass": "SURVIVOR_CONDITIONED_EXPLORATORY",
+  "ownerRequestedComparisons": true,
+  "executionState": "NOT_EXECUTED_INPUT_READ_SCOPE_UNRESOLVED",
+  "sourceScope": {
+    "ownerUseGrant": "역사 데이터의 기존 가격과 이미 확보된 PIT 팩터를 사용할 수 있다.",
+    "ownerRestriction": "기존 replay-v16, US-MF-1, P4 one-shot 연구의 봉인된 데이터·실행 잠금·결과를 절대 수정하거나 소비하지 않는다.",
+    "conservativeApplication": "Do not read replay-v16 price payloads or their exported copies until scope is clarified; no existing study execution, results or locks are consumed.",
+    "notABlanketBudgetBan": "AGENTS.md v2.24 closes the existing 31-feature matrix, not every new accounting-quality axis.",
+    "newRecoveredPrices": "FORBIDDEN; US_MF1_DATASET_ADMISSION_V1 unchanged"
+  },
+  "freezeBeforeAnyRealOutcome": true,
+  "signalGrid": "Last US trading session of each completed week; 2013-01-04 through last complete week at permitted source cutoff. No outcome-based start/end selection.",
+  "execution": "First US session AFTER signal, at close; a cash anchor precedes the first fill. No same-close fill.",
+  "universe": "Dated S&P500 snapshot strictly before signal; verified issuer links only; exclude Financials/Real Estate and unclassified sectors. No current-survivor universe backfill.",
+  "completeCase": "Identical finite 252-session price history and all four accounting fields for EVERY score and ablation, selected before labels. At least 30 names.",
+  "B0": "SPY buy-and-hold on exactly the same start/end; verified total-return basis required for certified TR. A reconstructed index must be labelled as such, never as verified raw price return.",
+  "B1": {
+    "momentum": "close[t]/close[t-252]-1",
+    "volatility": "sample std of 252 daily returns x sqrt(252)",
+    "score": "0.5 rank(momentum252) + 0.5 rank(-vol252)",
+    "portfolio": "equal-weight top quintile, ceil(n/5), ticker tie-break"
+  },
+  "B2": {
+    "families": [
+      "price B1",
+      "rank(OCF_TTM/assets)",
+      "rank(operatingIncome_TTM/assets)",
+      "rank(-same-fiscal-stage assetGrowthPct)",
+      "rank(-debtToEquity)"
+    ],
+    "weights": "1/5 per family; no feature-count weighting",
+    "portfolio": "equal-weight top quintile, same complete cases as B1"
+  },
+  "filingVisibility": "CP.features_as_of: strictly after max(availableFrom,acceptedDate); 180-day period-end freshness; reuse proven fiscal-stage/TTM helpers; no imputation.",
+  "B2_PLUS_VALUE": "WITHHELD until historical price/share basis is independently reliable; no fabricated market cap.",
+  "B3": {
+    "constraints": "<=5 equal-weight names, sector<=2, no leverage; production select_portfolio_by_scores reused",
+    "economicGate": "Original net-excess gate requires a valid point-in-time expected-return estimate for THIS score. Rank alone is not expected return. No legacy model/calibration reused.",
+    "missingForecast": "NOT_ESTIMABLE; not an observed cash strategy and not 0% return",
+    "forcedDiagnostic": "Rank top <=5 with identical sector cap; explicitly FORCED_DIAGNOSTIC_NOT_INVESTABLE_EVIDENCE"
+  },
+  "costs": {
+    "source": "pipeline.benchmark_alpha.REALISTIC_COSTS[US]",
+    "commissionBps": 5.0,
+    "fullSpreadBps": 6.0,
+    "sellTaxBps": 0.3,
+    "buyBps": 8.0,
+    "sellBps": 8.3,
+    "cashRate": 0,
+    "costPayment": "self-financing; pay fees before setting post-trade weights; gross shadow path for drag"
+  },
+  "labels": {
+    "sessions": [
+      63,
+      126,
+      252
+    ],
+    "definition": "Entry next session close; exit entry index + H; no last-price payoff. Any absent cohort endpoint -> UNRESOLVED whole date, never delete an inconvenient name.",
+    "statistics": "Descriptive mean weekly rank IC, paired B2-B1 IC, top-minus-bottom quintile and top-minus-SPY; no p values, inference or OOS claim"
+  },
+  "ablation": "Leave out each of five B2 families, equal-weight remaining four, SAME original full complete-case set; no tuning.",
+  "metrics": [
+    "CAGR",
+    "annualized CAGR difference vs SPY (not statistical alpha)",
+    "MDD",
+    "annual volatility",
+    "Sharpe with explicit zero risk-free assumption",
+    "year returns",
+    "turnover",
+    "costs",
+    "mean holdings",
+    "mean cash",
+    "annual missingness"
+  ],
+  "currentCandidates": "CURRENT_CANDIDATES_NOT_VERIFIED unless prices, visible filings and dated membership all verified at current signal date; no stale historical picks promoted.",
+  "unresolved": "Missing signal is unavailable, not an explicit cash order. Missing held daily observation refuses path; no synthetic liquidation. Never reset/restart the equity curve to hide gaps.",
+  "publication": "Aggregate analytical results only; no third-party price payload, per-security forward labels, or prohibited sealed-study result reuse.",
+  "promotionEligible": false,
+  "productionEffect": "NONE",
+  "parameterSearch": false,
+  "coreCodeSha256": "9ca85ddba9c1dca88154f9b00b9640fcf0dd3e1b87b5e99d70a7147de3ea1760",
+  "protectionSources": {
+    "AGENTS.md": "3211c5ebb2ebd591eb01b9486fe8baf475bec5f1ad67b8ea7bc384d7cc0ae7f2",
+    "docs/regional-alpha-model-v1.md": "eb282623773549a530e26f250480a1fd7322a04d02b9be4c14fad3b62c927a36",
+    "docs/us-readiness/us-multifactor-research-roadmap-v1.json": "ebef3f0c359ea7f1791773e08b3a251ae183dd5941127513bc1dc3605fd3fa56",
+    "pipeline/us_cash_profitability_exploratory.py": "fdca85eecbfb7d36f60081822ee67857d95968a9505e1ea57cfb9609e032c032",
+    ".github/workflows/tests.yml": "92306a9cc7a538278e27887197f525c43f1fe6551303855c066c1e761ff0eb9a"
+  },
+  "orchestrationCodeSha256": "8dcdcd4d51eb1be21416e68b623d530d515d2f3f76508e4415f1a64651a97725"
+}
