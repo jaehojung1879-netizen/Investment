@@ -1,105 +1,102 @@
 {
   "filings": 1,
   "periodLengthByForm": {
-    "10-K": {
-      "year (316-400d)": 1
+    "10-Q": {
+      "three quarters (226-315d)": 1
     }
   },
   "filingsWithNoPeriodLength": 0,
   "filingsByFreq": {
-    "annual": 1
+    "quarterly": 1
   },
   "formsByFreq": {
-    "annual": {
-      "10-K": 1
+    "quarterly": {
+      "10-Q": 1
     }
   },
   "conceptsBySection": {
     "bs": 0,
-    "ic": 20,
-    "cf": 30
+    "ic": 18,
+    "cf": 29
   },
   "conceptsBySectionCollapsed": {
     "bs": 0,
-    "ic": 20,
-    "cf": 30
+    "ic": 18,
+    "cf": 29
   },
   "topConcepts": {
     "bs": [],
     "ic": [
-      "us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax",
+      "us-gaap_Revenues",
       "us-gaap_CostOfGoodsAndServicesSold",
       "us-gaap_GrossProfit",
-      "us-gaap_ResearchAndDevelopmentExpense",
-      "us-gaap_SellingGeneralAndAdministrativeExpense",
-      "us-gaap_OtherOperatingIncomeExpenseNet",
+      "us-gaap_GeneralAndAdministrativeExpense",
+      "us-gaap_AdvertisingExpense",
+      "dpz_RefranchisingGains",
+      "us-gaap_GainLossOnSaleOfOtherAssets",
       "us-gaap_OperatingIncomeLoss",
-      "us-gaap_InvestmentIncomeNet",
-      "us-gaap_InterestExpenseNonoperating",
-      "us-gaap_OtherNonoperatingIncomeExpense",
-      "us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments",
-      "us-gaap_IncomeTaxExpenseBenefit"
+      "dpz_OtherIncomeExpense",
+      "us-gaap_InvestmentIncomeInterest",
+      "us-gaap_InterestExpense",
+      "us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest"
     ],
     "cf": [
+      "dpz_RefranchisingGains",
+      "us-gaap_GainLossOnSaleOfOtherAssets",
       "us-gaap_NetIncomeLoss",
-      "us-gaap_DepreciationDepletionAndAmortization",
+      "us-gaap_DepreciationAndAmortization",
+      "us-gaap_GainLossOnSaleOfPropertyPlantEquipment",
+      "us-gaap_AmortizationOfFinancingCostsAndDiscounts",
+      "us-gaap_DeferredIncomeTaxExpenseBenefit",
       "us-gaap_ShareBasedCompensation",
-      "us-gaap_IncreaseDecreaseInReceivables",
-      "us-gaap_IncreaseDecreaseInInventories",
-      "us-gaap_IncreaseDecreaseInAccountsPayableAndAccruedLiabilities",
-      "us-gaap_IncreaseDecreaseInOtherCurrentLiabilities",
-      "us-gaap_IncreaseDecreaseInOtherNoncurrentLiabilities",
-      "us-gaap_OtherOperatingActivitiesCashFlowStatement",
-      "us-gaap_NetCashProvidedByUsedInOperatingActivities",
-      "us-gaap_PaymentsToAcquireAvailableForSaleSecuritiesDebt",
-      "us-gaap_PaymentsToAcquirePropertyPlantAndEquipment"
+      "dpz_ExcessTaxBenefitsFromEquityBasedCompensation",
+      "us-gaap_ProvisionForDoubtfulAccounts",
+      "us-gaap_UnrealizedGainLossOnInvestments",
+      "us-gaap_IncreaseDecreaseInOtherOperatingCapitalNet"
     ]
   },
   "topConceptsCollapsed": {
     "bs": [],
     "ic": [
-      "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "Revenues",
       "CostOfGoodsAndServicesSold",
       "GrossProfit",
-      "ResearchAndDevelopmentExpense",
-      "SellingGeneralAndAdministrativeExpense",
-      "OtherOperatingIncomeExpenseNet",
+      "GeneralAndAdministrativeExpense",
+      "AdvertisingExpense",
+      "dpz_RefranchisingGains",
+      "GainLossOnSaleOfOtherAssets",
       "OperatingIncomeLoss",
-      "InvestmentIncomeNet",
-      "InterestExpenseNonoperating",
-      "OtherNonoperatingIncomeExpense",
-      "IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments",
-      "IncomeTaxExpenseBenefit"
+      "dpz_OtherIncomeExpense",
+      "InvestmentIncomeInterest",
+      "InterestExpense",
+      "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest"
     ],
     "cf": [
+      "dpz_RefranchisingGains",
+      "GainLossOnSaleOfOtherAssets",
       "NetIncomeLoss",
-      "DepreciationDepletionAndAmortization",
+      "DepreciationAndAmortization",
+      "GainLossOnSaleOfPropertyPlantEquipment",
+      "AmortizationOfFinancingCostsAndDiscounts",
+      "DeferredIncomeTaxExpenseBenefit",
       "ShareBasedCompensation",
-      "IncreaseDecreaseInReceivables",
-      "IncreaseDecreaseInInventories",
-      "IncreaseDecreaseInAccountsPayableAndAccruedLiabilities",
-      "IncreaseDecreaseInOtherCurrentLiabilities",
-      "IncreaseDecreaseInOtherNoncurrentLiabilities",
-      "OtherOperatingActivitiesCashFlowStatement",
-      "NetCashProvidedByUsedInOperatingActivities",
-      "PaymentsToAcquireAvailableForSaleSecuritiesDebt",
-      "PaymentsToAcquirePropertyPlantAndEquipment"
+      "dpz_ExcessTaxBenefitsFromEquityBasedCompensation",
+      "ProvisionForDoubtfulAccounts",
+      "UnrealizedGainLossOnInvestments",
+      "IncreaseDecreaseInOtherOperatingCapitalNet"
     ]
   },
   "units": {
-    "usd": 46,
-    "usd/share": 2,
-    "shares": 2
+    "u_usd": 45,
+    "u_unitedstatesofamericadollarsshare": 2
   },
   "unitClasses": {
-    "currency": 46,
-    "perShare": 2,
-    "shares": 2
+    "currency": 45,
+    "unclassified": 2
   },
   "unitClassesResolved": {
-    "currency": 46,
-    "perShare": 2,
-    "shares": 2
+    "currency": 45,
+    "perShare": 2
   },
   "unclassifiedUnits": {}
 }
