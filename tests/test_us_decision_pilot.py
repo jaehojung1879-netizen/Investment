@@ -101,38 +101,79 @@ def test_no_source_or_sealed_study_access_in_core():
     assert 'SealedReader' not in code
 
 
-def test_refusal_opens_only_explicit_contracts_not_price_alias_or_results(monkeypatch):
-    import json
-    from pathlib import Path
+def test_vectorized_features_equal_prefix_core_and_ignore_future():
     from scripts import run_us_decision_pilot as S
-    protocol = json.loads((S.ROOT / S.PROTOCOL).read_bytes())
-    allowed = {S.ROOT / p for p in protocol['protectionSources']}
-    allowed.update(S.ROOT / p for p in (S.PROTOCOL, 'pipeline/us_decision_pilot.py',
-        'scripts/run_us_decision_pilot.py', 'data/research/us-dual-benchmark-v1/manifest.json'))
-    original = Path.read_bytes
-    reads = []
-    def tracked(path):
-        assert path in allowed, 'unexpected protected payload access: ' + str(path)
-        reads.append(path)
-        return original(path)
-    monkeypatch.setattr(Path, 'read_bytes', tracked)
-    result = S.build()
-    assert reads and result['realOutcomeReads'] == result['sealedResultReads'] == 0
-    assert result['newComparisonBudgetConsumed'] is False
-    assert result['currentCandidates']['candidates'] == []
-    assert result['currentCandidates']['status'] == 'CURRENT_CANDIDATES_NOT_VERIFIED'
-    assert all(v is None for s in result['strategies'].values() for v in s['metrics'].values())
-    assert result['annualMissingness']['years'] is None
+    index = pd.bdate_range('2000-01-03', periods=310)
+    close = pd.DataFrame({'A': np.exp(np.sin(np.arange(310) / 20) / 10 + np.arange(310) / 1000)}, index=index)
+    momentum, vol = S.price_matrix_features(close)
+    day = index[270]
+    expected = P.price_features(close.A, day)
+    assert momentum.at[day, 'A'] == pytest.approx(expected['momentum252'])
+    assert vol.at[day, 'A'] == pytest.approx(expected['vol252'])
+    close.loc[index > day] *= 100
+    assert S.price_matrix_features(close)[1].at[day, 'A'] == pytest.approx(vol.at[day, 'A'])
+    close.iloc[265, 0] = np.nan
+    assert pd.isna(S.price_matrix_features(close)[0].at[day, 'A'])
 
 
-def test_refusal_reproduces_committed_output_and_never_fabricates_zero_returns():
-    import csv
-    import json
+def test_accounting_cache_strict_visibility_freshness_and_future_insertion():
     from scripts import run_us_decision_pilot as S
-    path = S.ROOT / 'docs/us-decision-pilot-v1'
-    assert S.build() == json.loads((path / 'result.json').read_bytes())
-    with (path / 'strategy-metrics.csv').open() as handle:
-        rows = list(csv.DictReader(handle))
-    assert len(rows) == len(S.STRATEGIES)
-    assert all(r['status'] == 'NOT_ESTIMABLE' for r in rows)
-    assert all(r['cagr'] == '' and r['meanCash'] == '' for r in rows)
+    from test_us_alpha_phase3 import chain, filing, FF
+    rows = chain()
+    for row in rows:
+        row['cik'] = '123'
+        row['statements']['bs'].append({'concept': 'us-gaap_StockholdersEquity', 'unit': 'usd', 'value': 500})
+    cache = S.AccountingCache(rows)
+    actual, ciks = cache.at('2021-06-01')
+    assert actual['cashOperatingProfitability'] == pytest.approx(170 / 1100)
+    assert actual['debtToEquity'] == pytest.approx(600 / 500)
+    assert ciks == {'123'}
+    assert cache.at('2021-10-01')[0]['cashOperatingProfitability'] is None
+    # Going backwards after a stale query cannot poison a cached earlier reading.
+    assert cache.at('2021-06-01')[0] == actual
+    future = filing(2021, FF.Q2, assets=1, ocf=1e9)
+    assert S.AccountingCache(rows + [future]).at('2021-06-01')[0] == actual
+    assert cache.at('2021-05-10')[0]['reportEnd'] == '2020-12-31'
+    assert cache.at('2021-05-11')[0]['reportEnd'] == '2021-03-31'
+
+
+def test_contract_is_verified_before_any_source_or_outcome_read(monkeypatch):
+    from scripts import run_us_decision_pilot as S
+    calls = []
+    def refuse(root):
+        raise ValueError('PINNED_SOURCE_CHANGED')
+    monkeypatch.setattr(S, 'verify_contract', refuse)
+    monkeypatch.setattr(S, 'load_prices', lambda root: calls.append('price'))
+    monkeypatch.setattr(S, 'load_filings', lambda root: calls.append('filing'))
+    with pytest.raises(ValueError, match='PINNED_SOURCE_CHANGED'):
+        S.build()
+    assert calls == []
+
+
+def test_synthetic_real_runner_completes_even_when_economic_gate_unavailable():
+    from scripts import run_us_decision_pilot as S
+    dates = pd.bdate_range('2000-01-03', periods=280)
+    frame = P.scores(cross_section())
+    close = pd.DataFrame({t: np.exp(np.arange(280) * (i + 1) / 100000) for i, t in enumerate(frame.index)}, index=dates)
+    close['SPY'] = np.exp(np.arange(280) / 10000)
+    signals = {dates[i]: frame for i in range(0, 279, 20)}
+    strategies, labels, paths = S.evaluate(close, signals)
+    for name in ('B0_SPY', 'B1_PRICE', 'B2_MULTIFACTOR', 'FORCED_5_PRICE_DIAGNOSTIC', 'FORCED_5_MULTIFACTOR_DIAGNOSTIC'):
+        assert strategies[name]['status'] == 'ESTIMATED_DESCRIPTIVE'
+        assert paths[name].index[0] == dates[0]
+        assert paths[name].names.iloc[0] == 0
+    assert strategies['B3_GATED_PRICE']['status'] == 'NOT_ESTIMABLE'
+    assert 'cagr' not in strategies['B3_GATED_PRICE']
+    assert labels['252']['resolvedCohorts'] > 0
+    assert labels['252']['statusCounts']['NOT_MATURED'] > 0
+    assert labels['63']['scores']['B1']['meanRankIC'] is None  # truly constant signal
+    assert len(paths) == 10
+
+
+def test_pinned_contract_and_no_restricted_executor_imports():
+    from scripts import run_us_decision_pilot as S
+    protocol = S.verify_contract()
+    assert protocol['sourceScope']['status'] == 'READ_ONLY_INPUT_REUSE_AUTHORIZED'
+    code = S.Path(S.__file__).read_text()
+    for forbidden in ('us_cash_profitability_exploratory', 'create_remote_lock', 'execute_study', 'signal-history/'):
+        assert forbidden not in code

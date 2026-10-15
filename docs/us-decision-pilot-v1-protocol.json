@@ -2,12 +2,11 @@
   "id": "US_DECISION_PILOT_V1",
   "evidenceClass": "SURVIVOR_CONDITIONED_EXPLORATORY",
   "ownerRequestedComparisons": true,
-  "executionState": "NOT_EXECUTED_INPUT_READ_SCOPE_UNRESOLVED",
+  "executionState": "FROZEN_BEFORE_NEW_COMPARISON",
   "sourceScope": {
-    "ownerUseGrant": "역사 데이터의 기존 가격과 이미 확보된 PIT 팩터를 사용할 수 있다.",
-    "ownerRestriction": "기존 replay-v16, US-MF-1, P4 one-shot 연구의 봉인된 데이터·실행 잠금·결과를 절대 수정하거나 소비하지 않는다.",
-    "conservativeApplication": "Do not read replay-v16 price payloads or their exported copies until scope is clarified; no existing study execution, results or locks are consumed.",
-    "notABlanketBudgetBan": "AGENTS.md v2.24 closes the existing 31-feature matrix, not every new accounting-quality axis.",
+    "status": "READ_ONLY_INPUT_REUSE_AUTHORIZED",
+    "ownerUseGrant": "2026-10-15 owner follow-up explicitly authorizes read-only replay-v16 original price and PIT inputs and NEW US_DECISION_PILOT_V1 outcomes.",
+    "ownerRestriction": "No original inputs/manifests, sealed study results/budgets/locks or production may be consumed/changed; no P4 executor; no unverified recovered prices.",
     "newRecoveredPrices": "FORBIDDEN; US_MF1_DATASET_ADMISSION_V1 unchanged"
   },
   "freezeBeforeAnyRealOutcome": true,
@@ -80,7 +79,7 @@
   "promotionEligible": false,
   "productionEffect": "NONE",
   "parameterSearch": false,
-  "coreCodeSha256": "326741d6a692a2627d7cab206aab8cf84ecb816d9c1ae0e83664dfad87f71780",
+  "coreCodeSha256": "a82e5d362d6c7bc2f9a3fd24e4abf5502691866729e82fdcf0e0a144d65ed9e8",
   "protectionSources": {
     "AGENTS.md": "3211c5ebb2ebd591eb01b9486fe8baf475bec5f1ad67b8ea7bc384d7cc0ae7f2",
     "docs/regional-alpha-model-v1.md": "eb282623773549a530e26f250480a1fd7322a04d02b9be4c14fad3b62c927a36",
@@ -88,5 +87,24 @@
     "pipeline/us_cash_profitability_exploratory.py": "fdca85eecbfb7d36f60081822ee67857d95968a9505e1ea57cfb9609e032c032",
     ".github/workflows/tests.yml": "92306a9cc7a538278e27887197f525c43f1fe6551303855c066c1e761ff0eb9a"
   },
-  "orchestrationCodeSha256": "aac05e03f8e2151777b56bf2cab29219a58e82f35e8c5b59bc4c43c43025ff5a"
+  "orchestrationCodeSha256": "94dd81fac600b54fe23c8ae04ebbb9c5569b005ab9ff9fb8a753a73214581269",
+  "unavailableWeeklySignal": "HOLD_PREVIOUS_BOOK_SIGNAL_UNAVAILABLE, never fabricate a cash decision. Common start = first input-only scored date with next session; fixed end = source cutoff. Missing held/entry quotes refuse that path, unaffected strategies proceed; no NAV restart.",
+  "leverageDefinition": "Existing debtToEquity: total liabilities (stated or Assets minus Equity) / strictly positive equity, liabilities nonnegative; not interest-bearing debt.",
+  "issuerLink": "Dated snapshot CIK must match a strictly visible raw filing CIK; known reused/postdated identities excluded; existing verified rename and malformed-symbol mapping only.",
+  "inputAndHelperHashes": {
+    "pipeline/us_cash_profitability.py": "c4ff70f28b6ba25028e2b1fc63bae0f15469c0da66e8b4bfadad676cb27d42c3",
+    "pipeline/finnhub_derive.py": "2ceaf6a081a5fbbd893398a68e58006254da06492629d9e8824e0e835b848b56",
+    "pipeline/finnhub_fundamentals.py": "95b5090f1a306df5bc6231d952c42dfc85097a3a1f9f90a82bb4fa8af4f3a20d",
+    "pipeline/accounting_quality.py": "b65c54126ea45bc544d843d5f87b109e71ca7658a1d7a8f99cd435cdf9ea6ada",
+    "pipeline/replay_calendar.py": "56116f837e8ae3b9ca43c27c87b3be8bcf608172a761879a6b1284a39c9a3ab2",
+    "pipeline/us_dual_benchmark_data.py": "5b4fbb00a9753ea72392cf2daab6f29aa06cee5a816013679fd2605ff02cdce3",
+    "pipeline/replay_inputs.py": "dd77b249476b252ba585b1b836fd060a029b0c4d9c3b9a0847caf8be545a5a1d",
+    "pipeline/regional_alpha_features.py": "2fc5eb16d0438ca15763aeaf49e9226146a7ecf209680ae8f33fd42f57555132",
+    "pipeline/us_capital_allocation_coverage.py": "598a002abd4337133e4ab9c86d2fe3af98d36227d2561e264c6dcfe7e422a284",
+    "pipeline/kelly_portfolio.py": "6a4bd54be11e35e7348f64d0c99e7764635c4efcea62306da0b6ca81bfb3b06c",
+    "pipeline/benchmark_alpha.py": "9a2aeaeaf9fb92831a44df499e0a2dc420bd3dde45943a93e83281a7ac3445cf",
+    "research_specs/alpha-opportunity-model-v1-us-membership.json.gz": "397b27270255d7a14a36d075a3e2889129d9351d817420614c8ccd289d74c30f",
+    "data/research/us-capital-allocation-alpha-v1/sp500-snapshot-sectors.json.gz": "f49c15a0ebcd371c9a407118abb6ef350bba2060227ca40d61ba210fc4f81a74",
+    "docs/results/alpha-opportunity-model-v3-survivorship-audit.json": "f0d9ed09880ffb75c6cc698dbb001e6f6879dee1991ede6ff6d365cc50f22902"
+  }
 }

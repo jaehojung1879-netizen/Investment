@@ -79,7 +79,7 @@ def rebalance(weights: dict, target: dict, buy_rate: float, sell_rate: float):
     """Self-financing, no leverage: costs paid before assigning target weights."""
     if any(v < 0 or not np.isfinite(v) for v in target.values()) or sum(target.values()) > 1 + 1e-12:
         raise ValueError("INVALID_TARGET")
-    names = set(weights) | set(target)
+    names = sorted(set(weights) | set(target))
     cost = 0.0
     for _ in range(100):
         delta = {t: target.get(t, 0) * (1 - cost) - weights.get(t, 0) for t in names}
