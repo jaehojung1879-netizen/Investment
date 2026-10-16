@@ -212,4 +212,5 @@ owner의 별도 역사 outcome 접근 승인 순서가 필요하다. 현재 PR�
 검증: 합성 표적 26개, ruff, compileall, /tmp seed 생성 및 allow-seed 검증을 통과했다.
 실측 JSON의 10개 코드 hash, 443개 원 입력 참조와 연도/산업 합계의 원 분모 일치를 확인했다.
 Python 3.12.14·pandas 2.3.0·numpy 2.3.1·exchange-calendars 4.11.1에서 측정했다.
-필수 전체 suite 결과는 PR 본문에 기록하며, 기존 고비용 연구 workflow는 dispatch하지 않았다.
+필수 전체 pytest는 5,067 passed / 1 skipped / 4 xfailed로 완료했다(21분 38초, 1회).
+기존 고비용 연구 workflow는 dispatch하지 않았다. 기존 PR CI는 별도의 검증 결과다.
