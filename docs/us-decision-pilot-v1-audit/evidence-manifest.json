@@ -1,0 +1,132 @@
+{
+  "aggregateArithmeticChecked": {
+    "b2CostAnnualLogPp": -0.5369689886850049,
+    "b2MinusSpyAnnualLogPp": -3.4460532011403893,
+    "forcedB2IncrementalCostDragPp": 0.5780621786998452,
+    "forcedB2MinusBroadB2NetCagrPp": -4.177012857329787,
+    "spyCostRemovalAnnualLogPp": 0.02354198632966986,
+    "year2024B2MinusSpyLogPp": -12.106369328475195,
+    "year2024B2MinusSpyReturnPp": -14.239862889767352
+  },
+  "auditClass": "POST_OUTCOME_DOCUMENTATION_ONLY",
+  "baselineHead": "8241292e69c2d8913d4b3f061caa3b8874e9689b",
+  "claudeCalculationCodeAvailable": false,
+  "frozenFiles": {
+    "docs/us-decision-pilot-v1-protocol.json": "2800d4a81b73b8ced562ef864b23862c516c42736fc9042e9de092c6f0076b7e",
+    "docs/us-decision-pilot-v1/result.json": "4e5713dc3e7fa10ef6a83367ae47185a94005c46b9bd299d83f657f4bf65b8ed",
+    "docs/us-decision-pilot-v1/strategy-metrics.csv": "9c55fd9675c934ee465231b7e9c1a0391d52747b6c86f11d8157f19ff3ffda5c",
+    "docs/us-decision-pilot-v1/yearly-performance.csv": "f6d5fac80806cf2a3f815d62e57f478715a54bf483930c3538746919c3e47d48",
+    "pipeline/us_decision_pilot.py": "a82e5d362d6c7bc2f9a3fd24e4abf5502691866729e82fdcf0e0a144d65ed9e8",
+    "scripts/run_us_decision_pilot.py": "94dd81fac600b54fe23c8ae04ebbb9c5569b005ab9ff9fb8a753a73214581269"
+  },
+  "id": "US_DECISION_PILOT_V1_FORENSIC_DOCUMENTATION_V1",
+  "inputMetadataChecked": {
+    "counts": {
+      "collected20261007Through10": 618,
+      "emptyBalanceSheet": 618,
+      "june10QAllLateRecords": 481,
+      "june10QVisibleBeforeCutoff": 481,
+      "june30Exact10Q": 444,
+      "rawRecords": 34945,
+      "shards": 17,
+      "visibleStrictlyBeforeCutoff": 599
+    },
+    "criteria": "collectedAt date inclusive 2026-10-07..2026-10-10; visibility=max(availableFrom,acceptedDate) strictly before 2026-09-14; June means periodEnd starts 2026-06 and form exactly 10-Q; empty bs includes []/missing",
+    "reviewJune10QCount": 466,
+    "reviewJune10QCountStatus": "NOT_REPRODUCED_UNSPECIFIED_REVIEW_FILTER; explicit month filter yields 481, exact June 30 yields 444",
+    "sourceCommit": "704d7db6d5b00def771aba5d2665d0846d6bc776",
+    "sourceShardHashes": "../us-decision-pilot-v1/result.json#/inputs/fundamentalShards"
+  },
+  "missingAuditArtifacts": {
+    "checked": "PR review and issue/inline comments; identifiable filenames in /workspace and /tmp; no access assumed to other agent environments",
+    "consequence": "Review-reported findings preserved with attribution, not labelled independently verified. No replacement research result or gate waiver.",
+    "items": [
+      "Claude forensic calculation code",
+      "independent share-quantity simulator",
+      "2400-value comparison table",
+      "full-precision attribution intermediate aggregates",
+      "random seed and 1000-draw outputs",
+      "sensitivity input/output manifests",
+      "PARA source-series issuer evidence"
+    ],
+    "status": "NOT_OBTAINED"
+  },
+  "originalResearchResultsReplaced": false,
+  "partialVerifier": {
+    "author": "Codex documentation-only follow-up",
+    "isClaudeForensicCode": false,
+    "path": "docs/us-decision-pilot-v1-audit/verify_frozen_evidence.py",
+    "scope": "Frozen-byte checks, published-aggregate scalar arithmetic and optional input-only filing metadata; zero new strategy runs",
+    "sha256": "ab854652705ea2771be208b811923b46be13766267244a66a93de7acf77a483b"
+  },
+  "review": {
+    "archive": "docs/us-decision-pilot-v1-audit/review-5541660596.json",
+    "archiveSha256": "d3a689c7a6d67f0301c876b6779951682a167507c8bbf3f2310406a2583aed7a",
+    "bodySha256": "88a80d633de0add2cbc87c44559ba3b7493be74979d3ef709456779051e82f6a",
+    "commitId": "8241292e69c2d8913d4b3f061caa3b8874e9689b",
+    "id": 5541660596,
+    "postingAccount": "jaehojung1879-netizen",
+    "reportedAuditor": "Claude Opus, identified by owner; review signed Claude Code",
+    "state": "COMMENTED",
+    "submittedAt": "2026-10-16T00:46:58Z",
+    "url": "https://github.com/jaehojung1879-netizen/Investment/pull/245#pullrequestreview-5541660596"
+  },
+  "reviewOnlyNotIndependentlyReproduced": {
+    "byteIdenticalRerun": true,
+    "forcedRandomGross": {
+      "actualForcedB2GrossPercentile": 40,
+      "draws": 1000,
+      "meanCagrPct": 16.19,
+      "netDistribution": "NOT_PROVIDED",
+      "p5CagrPct": 3.2,
+      "p95CagrPct": 29.2
+    },
+    "illustrativeYearsFor2ppAtT2": 44,
+    "independentShareQuantityNavMaxDifference": 4e-14,
+    "missingNamesExcessNeededToReverseGapPpAnnual": 145,
+    "paraIdentityClaim": "Reviewer reports price series belongs to a different security; no issuer/security-series proof or calculation artifacts supplied",
+    "paraNeutralizedB2SelectionAnnualLogPp": 3.64,
+    "periodMemberMissingPct": 1.88,
+    "periodMissingTickers": 18,
+    "profitabilityRankCorrelation": 0.78,
+    "sectorAllocationAnnualLogPp": 2.09,
+    "sensitivityGapCagrPp": {
+      "end20260731": -3.09,
+      "hold20260724Book": -3.66
+    },
+    "sequentialAttributionAnnualLogPp": {
+      "b2Cost": -0.54,
+      "b2Selection": 4.12,
+      "completeCases": -0.75,
+      "equalWeightAvailableMembers": -5.92,
+      "excludeFinancialsRealEstate": -0.35,
+      "priceHistory": -0.03,
+      "spyCostRemoval": 0.02
+    },
+    "trackingErrorAnnualPct": 6.6,
+    "uncachedAccountingMismatches": 0,
+    "uncachedAccountingValuesChecked": 2400,
+    "withinSectorSelectionAnnualLogPp": 2.03,
+    "year2024EqualWeightVersusSpyLogPp": -10.4
+  },
+  "scope": "Documentation and evidence preservation; no new portfolio simulation, factor/label construction or retuning",
+  "unchangedBoundaries": [
+    "PIT rules",
+    "US_MF1_DATASET_ADMISSION_V1",
+    "P4 one-shot state",
+    "replay-v16 sealed inputs/results",
+    "production"
+  ],
+  "verdictUnchanged": "NOT BEATEN",
+  "weeklyCompleteCasesChecked": {
+    "2026-07-17": 321,
+    "2026-07-24": 284,
+    "2026-07-31": 194,
+    "2026-08-07": 70,
+    "2026-08-14": 50,
+    "2026-08-21": 41,
+    "2026-08-28": 29,
+    "2026-09-04": 14,
+    "2026-09-11": 9
+  }
+}
