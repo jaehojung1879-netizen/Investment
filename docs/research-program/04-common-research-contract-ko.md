@@ -34,6 +34,7 @@
 - **내부 검증:** 블록 교차검증, 각 블록 첫 진입일 이후 종료 라벨 퍼지 + H세션 엠바고.
 - **독 라벨 검사:** 컷오프 이후 종료 라벨을 모두 무작위 값으로 바꿔도 폴드 예측이 바이트 동일해야 한다(테스트 필수).
 - **스파이 검사:** 사전 라벨 관문에서 멈춘 실행은 라벨·적합·예측 함수 호출 카운터가 0이어야 하며, 해당 함수를 예외를 던지는 스파이로 바꿔도 통과해야 한다(AGENTS v2.32, v2.40).
+- **만기 최종성:** 라벨은 만기 세션이 최종 확정된 뒤에만 공개된다. KR은 최소 18:00 KST(`prospective_receipt_core.KR_CLOSE_FINAL_UTC`), US는 실제 XNYS 마감+60분(#246 `weekly-session-integrity-v1`, 조기 폐장·DST 반영). #247 `LabelReference`가 이를 검증하므로 직접 다시 구현하지 않는다.
 - **정정 누설:** 최초 공개본만. 이후 정정된 숫자로 과거 사건을 판정하지 않는다.
 - **발표 지연:** 미국 10-Q `acceptedDate`는 실적 발표일이 아니다. PEAD라고 부르지 않는다.
 
@@ -90,7 +91,19 @@
 | 같은 역사 재실행 | 결과 무관 금지(인프라 실패 시 정확 바이트 복구만) |
 | 지평 | 사전 고정한 1차 1개 + 기술 1개 |
 
-## 9. 실행·봉인 절차 (기존 패턴 재사용)
+## 9. 공통 연구 환경 v1(#247) 계약에 대응
+
+이 계약의 항목은 #247의 타입 위에서 구현한다. 같은 개념을 두 번 구현하지 않는다.
+
+| 이 계약 | #247 구현 |
+|---|---|
+| §2 PIT 공시 필터 | `filing_prefix`(기존 `kr_value_quality_catalyst.visible_filings` / `us_cash_profitability.visible_records` 호출) |
+| §3 라벨·만기·퍼지 | `LabelReference`, `Fold`(`label_deadline` ≤ `training_cutoff` < `evaluation_start`) |
+| §4 결측·보류 사유 | `Cell` 결측 어휘(`NO_SOURCE`, `NOT_PUBLIC`, `STALE`, `IDENTITY_UNRESOLVED`, `VINTAGE_UNRESOLVED`, `BASIS_UNRESOLVED` 등)를 그대로 쓰고, §4.3의 결과 보류 사유는 Label 계층의 `terminal_status`·`price_basis_status`로 기록 |
+| §6 벤치마크·현금 | `Economics`(시장별 벤치마크 고정, `blockers()`) |
+| §8·§9 실행 정체성 | `preview_manifest`(항상 `PREVIEW_ONLY`, 실행 권한 없음) → 실행 PR의 별도 승인·잠금 |
+
+## 10. 실행·봉인 절차 (기존 패턴 재사용)
 
 - 사양 파일은 `docs/research-program/specs/`에 둔다. **`research_specs/`와 `docs/results/`에 새 파일 추가 금지** — Phase C 등록이 폴더 전체를 보호 해시로 고정한다(`weekly-passive-first-v1.md`).
 - 결과는 `docs/research-program/results/`에 정확 바이트로 봉인.
@@ -99,7 +112,7 @@
 - 결과 판정(PASS/FAIL/INCONCLUSIVE/NO_EVIDENCE)은 프로세스 성공(exit 0). 인프라 오류만 비정상 종료.
 - 봉인 스크립트는 실제 하위 프로세스로 실행하는 테스트를 가진다(`__main__` 누락 무동작 사고 재발 방지, AGENTS v2.48).
 
-## 10. 무엇을 바꾸지 않는가
+## 11. 무엇을 바꾸지 않는가
 
 - 봉인된 KR Phase C 결과·사양·해시·잠금, `kr-market-risk-model-v1` 결과, 미국 #245 파일럿 결과·프로토콜, replay-v16 입력·매니페스트.
 - 운영 주간 추천(`weekly-passive-first-v1`), 사이트 데이터, production 선택기.

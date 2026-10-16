@@ -10,6 +10,15 @@
 4. **검증 명령(AGENTS 체크리스트):** `ruff check .` · `python -m compileall pipeline` · `pytest -q` · 시드 생성 · 아티팩트 검증. 실패를 숨기지 않는다.
 5. **커밋 금지 항목:** 개별 종목 가격·라벨 payload, 비공개 일간 경로, 자격 증명.
 6. **PR은 Draft.** `main`에 직접 병합 금지.
+7. **공통 연구 환경 v1(#247) 위에 짓는다.** 표본 키·계층·라벨 시간·경제적 전제는 `pipeline/experiment_workbench.py`의 `Key`, `Cell`, `Observation`, `sample_identity`, `filing_prefix`, `LabelReference`, `Fold`, `Economics`, `preview_manifest`를 쓴다. 입력 준비도는 `scripts/inspect_experiment_sources.py`를 **확장**하며 새 특징 행렬 엔진·새 키·새 비용 공식을 만들지 않는다. 이 타입에 필요한 필드가 없으면 `experiment_workbench.py`에 추가하는 별도 작은 PR로 처리하고 기존 테스트를 약화하지 않는다.
+
+## WP0 — 가격·벤치마크 수익 기준 admission (결과 없음, A1의 전제)
+
+- **목적:** #247 `Economics.blockers()`의 `RETURN_BASIS_MISMATCH`·`BENCHMARK_UNRESOLVED`를 미국 종목·SPY에 대해 해소하거나, 해소 불가를 확정해 A1을 `BLOCKED_OUTCOME_ECONOMICS`로 닫는다.
+- **방법:** 종목·SPY 양쪽 가격 레그에 같은 경제적 수익 정의(총수익, 배당 재투자 시점 규칙)를 고정하고, 외부 독립 원천과 **수준이 아니라 배당·분할 이벤트 목록과 일간 수익률 차이 분포**로 대조한다. KODEX 200 감사(`docs/weekly-decision/kodex200-benchmark-audit.md`)의 방식 재사용. 가격 수준·미래 수익·라벨을 열지 않는다는 점은 카운터로 증명(대조는 과거 일간 수익 동일성 검사이지 신호-결과 관계가 아님).
+- **판정(사전 고정):** 표본 종목의 연간 수익 차이 |Δ| ≤ 0.25%p 비율 ≥ 95% **그리고** SPY 연간 |Δ| ≤ 0.10%p → `VERIFIED`. 아니면 `UNRESOLVED`로 남기고 A1은 실행하지 않는다(문턱을 낮춰 재시도 금지).
+- **산출:** `docs/research-program/results/rp1-wp0-price-basis-admission-v1.json`.
+- 외부 원천에 접근할 수 없으면 `SOURCE_BLOCKED`로 기록하고 A1은 전향(A2)만 남긴다.
 
 ## WP1 — H252(KR·US)와 US H126 추론 보정 (결과 없음)
 
@@ -69,7 +78,7 @@
 
 ## WP5 — A0 Study A 측정성·MDE 사전검사 (결과 없음)
 
-- **입력:** 미국 WP2 규칙의 유니버스·재무(replay-v16 Finnhub PIT), KR Phase B 매트릭스(측정성만, KR은 A0까지만).
+- **입력:** 미국 WP2 규칙의 유니버스·재무(#247 `filing_prefix` 경유), KR Phase B 매트릭스(측정성만, KR은 A0까지만). `inspect_experiment_sources.py`의 census에 A-H1~H3 사건 필드를 추가하는 방식으로 구현하고, 결합 입력의 정의는 census와 같은 원천 커밋·허용 목록을 쓴다.
 - **계산:**
   1. A-H1~H3 사건 유병률(날짜별), 측정 가능 비율, 날짜당 S=1 종목 수, 층(업종×규모×수익 삼분위) 셀 크기 분포.
   2. 구별성: A-H1 플래그와 기존 연속 특징의 날짜 내 순위 상관.
@@ -82,13 +91,14 @@
 
 - `pipeline/prospective_receipt_core`를 그대로 사용(정규 JSON, 다이제스트, JSONL 원장, `PROSPECTIVE_PAPER`, 백데이트 금지 창, 18:00 KST 최종성).
 - 영수증 내용: 신호일, 지역, 종목, A-H1~H3 플래그, 입력 가용일, 층 키, 모델 버전, 사양 해시. **비중·매수 권고 없음.**
+- 영수증 키(date, region, ticker, modelVersion)와 #247 `Key`(market, signal_date, security_identity)는 별도 매핑 테이블로 연결한다. 기존 키·다이제스트를 다시 쓰지 않는다.
 - 결과 기록은 만기(H252 세션 후, 18:00 KST 이후) 이후 별도 파일로만.
 - 미국은 일간 가격 영속 수집 승인(소유자)과 재무상태표 소스 해결 전까지 `BLOCKED` 상태로 코드만 준비.
 - 첫 판정 시점은 문서 03 §A.7(36개월). 그 전에는 누적 수만 보고.
 
 ## WP7 — A1 미국 역사 단회 검정 (조건부, 결과 열람)
 
-- **진입 조건:** WP1에서 1차 지평 PASS, WP5에서 해당 가설 `PROCEED_TO_A1`, 소유자 승인.
+- **진입 조건:** WP0 `VERIFIED`, WP1에서 1차 지평 PASS, WP5에서 해당 가설 `PROCEED_TO_A1`, 소유자 승인. 라벨은 `LabelReference`, 폴드는 `Fold`로 만들고 `training_reason`이 `None`이 아닌 라벨은 학습에서 빠진 사유와 함께 집계한다.
 - 문서 03 §A.5 추정량, 두 생존 독해, 층 순열 귀무, Holm, 전·후반 안정성.
 - 모델은 A-M0만. A-M1은 A-M0 개발 지지 시 같은 실행 안에서 사전 고정 설정으로만(별도 실행 금지).
 - 일회성 잠금, 정확 바이트 봉인, WP4d와 같은 절차.
@@ -96,14 +106,15 @@
 ## 의존 관계와 순서
 
 ```
-WP1 (보정, 합성) ─────────────┐
-WP2 (US 신원 규칙) ── WP5 (A0) ┼── WP7 (A1, 조건부)
+WP0 (가격 기준 admission) ─────┐
+WP1 (보정, 합성) ─────────────┤
+WP2 (US 신원 규칙) ── WP5 (A0) ┴── WP7 (A1, 조건부)
 WP3 (ALFRED) ── Study B 기술통계(후순위)
 WP4a → WP4b → WP4c → WP4d (C1, 최우선 결과 실험)
 WP6 (KR 전향 기록) — 독립, 언제든
 ```
 
-권장 PR 순서: **WP4a+4b(동등성 증명 포함) → WP4c → 소유자 승인 후 WP4d**, 병행으로 WP1 → WP2 → WP5, 그리고 WP6.
+권장 PR 순서: **WP4a+4b(동등성 증명 포함) → WP4c → 소유자 승인 후 WP4d**, 병행으로 WP1 → WP2 → WP5 → WP0, 그리고 WP6. WP0은 A0가 `PROCEED_TO_A1` 가설을 하나라도 낼 때만 비용을 들일 가치가 있다.
 
 ## 완료 정의(각 WP 공통)
 
