@@ -1,8 +1,8 @@
 {
   "schemaVersion": "2.7.0",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
-  "buildCommitSha": "002b56434e3a",
-  "generatedAt": "2026-10-16T13:53:05.022911+00:00",
+  "buildCommitSha": "25bafbe65a93",
+  "generatedAt": "2026-10-16T23:31:30.893691+00:00",
   "marketAsOf": "2026-10-16",
   "macroRegime": "Transition/Low confidence",
   "holdingsByRegion": {
@@ -17,8 +17,8 @@
       "NUE",
       "KO",
       "GOOGL",
-      "GOOG",
-      "CF"
+      "CF",
+      "GOOG"
     ],
     "KR": [
       "078930.KS",
@@ -36,28 +36,28 @@
     ]
   },
   "modelPortfolioWeights": {
-    "TRV": 0.242547,
-    "HST": 0.153511,
-    "GOOG": 0.107006,
-    "078930.KS": 0.046053,
-    "033780.KS": 0.050884
+    "HST": 0.178616,
+    "ALL": 0.1378,
+    "NUE": 0.089592,
+    "078930.KS": 0.044654,
+    "033780.KS": 0.049338
   },
   "entryStatesByTicker": {
-    "TRV": "ACCUMULATE_GRADUALLY",
-    "MU": "WAIT_FOR_PULLBACK",
+    "TRV": "WAIT_FOR_PULLBACK",
+    "MU": "WATCH",
     "HST": "ACCUMULATE_GRADUALLY",
-    "ALL": "WATCH",
+    "ALL": "ACCUMULATE_GRADUALLY",
     "SPG": "WATCH",
-    "MO": "ACCUMULATE_GRADUALLY",
+    "MO": "WAIT_FOR_PULLBACK",
     "SWK": "WATCH",
     "NUE": "ACCUMULATE_GRADUALLY",
     "KO": "WAIT_FOR_PULLBACK",
-    "GOOGL": "ACCUMULATE_GRADUALLY",
-    "GOOG": "ACCUMULATE_GRADUALLY",
+    "GOOGL": "WATCH",
     "CF": "WATCH",
+    "GOOG": "WATCH",
     "MAR": "ACCUMULATE_GRADUALLY",
-    "GM": "ACCUMULATE_GRADUALLY",
-    "STT": "WATCH",
+    "GM": "WATCH",
+    "UNP": "WAIT_FOR_PULLBACK",
     "078930.KS": "WATCH",
     "402340.KS": "AVOID",
     "021240.KS": "WAIT_FOR_PULLBACK",
@@ -88,9 +88,9 @@
     "LIN": "EMERGING_OPPORTUNITY",
     "WM": "EMERGING_OPPORTUNITY",
     "CVS": "EMERGING_OPPORTUNITY",
-    "ABT": "EMERGING_OPPORTUNITY",
+    "AJG": "EMERGING_OPPORTUNITY",
     "KMB": "EMERGING_OPPORTUNITY",
-    "AJG": "EMERGING_OPPORTUNITY"
+    "TJX": "EMERGING_OPPORTUNITY"
   },
   "warningTiersByTicker": {
     "402340.KS": "CRITICAL_WARNING",
@@ -101,12 +101,12 @@
     "001450.KS": "WATCH",
     "002380.KS": "WATCH",
     "078930.KS": "WATCH",
+    "GOOG": "CRITICAL_WARNING",
+    "GOOGL": "ELEVATED_WARNING",
     "MU": "ELEVATED_WARNING",
-    "GOOGL": "WATCH",
-    "GOOG": "WATCH",
     "TRV": "WATCH",
     "KO": "WATCH",
-    "ALL": "WATCH",
+    "MO": "WATCH",
     "NUE": "WATCH",
     "HST": "WATCH"
   },
@@ -115,7 +115,7 @@
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-10-16T13:53:05.022911+00:00",
+    "validatedAt": "2026-10-16T23:31:30.893691+00:00",
     "errors": []
   }
 }
