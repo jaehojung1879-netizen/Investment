@@ -1,0 +1,952 @@
+{
+  "boundary": {
+    "blocksStudyA": false,
+    "blocksStudyB": false,
+    "changeAfterOutcomeAccessRequires": "a NEW study identity",
+    "isProductionModel": false,
+    "isProspective": false,
+    "isValidation": false,
+    "mayAddACandidateAfterOutcomes": false,
+    "mayChangeTheDecisionRuleAfterOutcomes": false,
+    "mayRerunTheKrStudy": false,
+    "mayTuneAThresholdWindowOrMultiplier": false
+  },
+  "decision": {
+    "appliedTo": "the PRIMARY reading (net of 1x US costs)",
+    "axes": [
+      {
+        "better": "HIGHER",
+        "metric": "netAnnualizedReturn"
+      },
+      {
+        "better": "HIGHER",
+        "metric": "maxDrawdown"
+      },
+      {
+        "better": "LOWER",
+        "metric": "reducedSessionShare"
+      }
+    ],
+    "axisBasis": "net of 1x repository costs over the full evaluation window",
+    "bandEpsilon": 1e-12,
+    "cagrAloneDecides": false,
+    "drawdownAloneDecides": false,
+    "economicReadingRole": "reported beside the decision; cannot change it",
+    "inheritedFrom": "kr-market-risk-model-v1",
+    "meaning": "a DEVELOPMENT nomination of an architecture for later Market x Industry x Stock integration and prospective receipts; never validation, never production",
+    "meaningfulDrawdownImprovement": 0.1,
+    "noSurvivor": "NO_CANDIDATE_NOMINATED_CONTROL_RETAINED",
+    "nonInferiorityDrawdownBand": 0.1,
+    "prospectiveFinalArchitecture": "the nominated candidate, otherwise C0 (the control) for both NO_CANDIDATE_NOMINATED_CONTROL_RETAINED and NO_UNAMBIGUOUS_NOMINATION_PARETO_TRADEOFF; all four candidates' multipliers are recorded in every receipt regardless",
+    "returnBand": 0.005,
+    "routes": [
+      "EFFICIENCY_ROUTE",
+      "PROTECTION_ROUTE"
+    ],
+    "severalSurvivors": "NO_UNAMBIGUOUS_NOMINATION_PARETO_TRADEOFF",
+    "steps": [
+      "PARETO: eliminate any candidate dominated by another candidate or by the passive reference",
+      "NON-INFERIORITY versus C0, both required: net annualized return >= C0's - 0.50 pp, and |maxDrawdown| <= 1.10 x |C0 maxDrawdown|",
+      "MEANINGFUL IMPROVEMENT versus C0, at least one: EFFICIENCY_ROUTE net annualized return >= C0's + 0.50 pp, or PROTECTION_ROUTE |maxDrawdown| <= 0.90 x |C0 maxDrawdown|",
+      "exactly one survivor is nominated; none keeps the control; several mutually non-dominated survivors are reported as a Pareto trade-off and none is nominated"
+    ],
+    "tieBreak": "NONE: survivors are mutually non-dominated, and ranking them (by return, simplicity or anything else) would silently prefer one hypothesis (fewer false alarms, less lateness, both) over another; every candidate stays in the prospective receipts either way",
+    "weightedUtility": "NONE"
+  },
+  "dependencyHashes": {
+    "data/kr-market-risk-anatomy-v1/sources/FRED_DGS10/normalized.csv": "db7dc41d9d40ad5608e0ead00086ec15f5969cf785aa378f05cda576a160bc92",
+    "data/kr-market-risk-anatomy-v1/sources/FRED_DGS3MO/normalized.csv": "7ce2bdbe2547e4fc16c18a36295871d16099d60f51f10edfc2cd8d42218dc06c",
+    "data/kr-market-risk-anatomy-v1/sources/FRED_VIXCLS/normalized.csv": "dd0ccfe0a13f5e72a842dc27d53733748f24fb380808a7b2fb9babb40caa00ef",
+    "docs/research-program/rp1-c1-us-exposure-ladder-replication.md": "7b11e876312eadf51ba353785bac3f7a69dcf24d73a86a770301efb54c587aaf",
+    "docs/results/kr-market-risk-model-v1-execution-started.json": "9d5e322ba54a0c7da3e467c72111ce955c365d650827282f9c9bf379c2ca307f",
+    "docs/results/kr-market-risk-model-v1-manifest.json": "81dc4408bf8f9f2464ce827b2783be2cf486e1ae232e3fec7b65a282114f8445",
+    "docs/results/kr-market-risk-model-v1-result.json": "2578bbfa245a6540235cc05e231441b4ebb4da165240a84e715756477a897c4b",
+    "pipeline/__init__.py": "187da1ad9a148da44035f9cf25f7cb094c45afe53d3f445ba62392797972dede",
+    "pipeline/accounting_quality.py": "b65c54126ea45bc544d843d5f87b109e71ca7658a1d7a8f99cd435cdf9ea6ada",
+    "pipeline/alpha_inference_calibration_v1.py": "87a6990fd6fc5217824ee00205ee247abe88006a2445d41b5a6086709f551186",
+    "pipeline/alpha_inference_calibration_v3.py": "5afa9a03dbfb5343be522d282a1b2050cbbd01722dc7b8eae1e6e06b55c2bf13",
+    "pipeline/alpha_inference_calibration_v4.py": "024231e1adeeb4d29ea047d187eb7eb5478fd21c442991bd1c8963d6a38cd601",
+    "pipeline/alpha_inference_mc_decision.py": "6d131e20e2bcc212247a95fce2c5f733faa7f1624991b364d9fea96b4962f61e",
+    "pipeline/alpha_opportunity_features.py": "62bfd05894b0f448e2d588f9395fb616c9d114a74503c1f663e20a84dfe0976e",
+    "pipeline/alpha_opportunity_model.py": "998c0b50d713a5c89ce1850bbae1b112215507fe6a38d992d7f1de158476ce83",
+    "pipeline/alpha_opportunity_spec.py": "3d7150c2f62dbd8184ed2f3885828e93c1ba64d8ffe3695b0b5716641734c58e",
+    "pipeline/alpha_opportunity_v2_evaluation.py": "e6f8a6f299945da36b39767a2dc7c7748a9bfee497e27a0d0ec05738bf235c62",
+    "pipeline/alpha_opportunity_v3_spec.py": "1c11c306f9f27a8e69b985d02bfb3bffaf691001c27ac49e6b21266dd315c162",
+    "pipeline/alpha_opportunity_v4_eligibility.py": "8c20c70b35dba244f0341459ee295ca836e0ec6782f3e4989197bc2a220ba204",
+    "pipeline/alpha_opportunity_v4_execution.py": "f6d9dfd3be1558249bb69a29a903e791443d071793b2f591a2e900d492c954ba",
+    "pipeline/alpha_opportunity_v5_evidence.py": "305fc463129a50e6048152d99fec5f238bbd4f526818fc840b0c8e2af486425d",
+    "pipeline/dart_derive.py": "c18be6391fd8e04118a8e13cb62ace5a20e641f1d67e1c185652ed88572bd457",
+    "pipeline/dart_fundamentals.py": "5faad514e864d199a1eb9db41fbb182ab9b4a73a0e7179e7f56ac99b387e579b",
+    "pipeline/dart_ownership_events.py": "fdb4280a7bebdfb324f4ee87c9ad2ac22d640cc0dced10c7fc0f1bcd59c461d8",
+    "pipeline/entry.py": "d9c8e33686a55114bfabb6b11c634ff0198461859ecdaf10dffc7e3c49a191a2",
+    "pipeline/evidence.py": "31e8f67184073395d67f44a165d74f4ed368e468b790e695dbdcc698de7d9e88",
+    "pipeline/finnhub_derive.py": "2ceaf6a081a5fbbd893398a68e58006254da06492629d9e8824e0e835b848b56",
+    "pipeline/finnhub_fundamentals.py": "95b5090f1a306df5bc6231d952c42dfc85097a3a1f9f90a82bb4fa8af4f3a20d",
+    "pipeline/fundamental_acceleration.py": "4aeb649a2a046d9cf11432a7ac5a18a1b6ff993a48f2d7216e3280d446aa02cf",
+    "pipeline/historical_calibration.py": "2c825613bc1a543a225159e421aa15a176a222ce61cac12937de4e8c33db5e11",
+    "pipeline/historical_outcomes.py": "9db74870fe015f26ee5c4ac4709a420d33ef28e5feaab2c4caeedd7e85555569",
+    "pipeline/historical_replay.py": "80ace61f2df0d48ee98349bc998b77f58d8c62a4e8aa01da7b3cdacf158266e9",
+    "pipeline/historical_store.py": "2751be8b5b79260f2038c9fb975cae58d49cb7868751c6658e363b48712016c0",
+    "pipeline/kelly_portfolio.py": "6a4bd54be11e35e7348f64d0c99e7764635c4efcea62306da0b6ca81bfb3b06c",
+    "pipeline/kr_concentrated_portfolio.py": "5059260c02e55dfde5b38b644ef2a66d0ff793dd2fb2e17609331dbb08571b64",
+    "pipeline/kr_factor_anatomy.py": "56b2ad6660ae5b02fb9f646f78f4db1e7040caeb108fcf7f3b10e45354fe3a5a",
+    "pipeline/kr_industry_anatomy.py": "02d3cf8be9b415699099674bbad6c500b6ad5e8468376589dc4f328adeb59886",
+    "pipeline/kr_industry_membership_v3.py": "c857dcdd9323bc0fed69b2212b8dcc1fca7527c8fb1a0b32d588c8bbc5fa65f5",
+    "pipeline/kr_market_risk_anatomy.py": "e97887dd5b0bbb15b37ed40473b1da8e40a8f3fea2125d9fb176fa94dac6e978",
+    "pipeline/kr_market_risk_anatomy_analysis.py": "8565be7de14d990619c4ca3789dc4a403c547790663f6cd4139f61e0d972f8c6",
+    "pipeline/kr_market_risk_model.py": "568ba9fe963881699e6abaa6d2d6c8a747583485e3436eda7620032facdca54a",
+    "pipeline/kr_market_risk_model_execution.py": "1cbc36f36b8b611a7c7d465237e0173ce3b0b33bce977285790ce9bc3d33c3af",
+    "pipeline/kr_market_risk_overlay.py": "983b3aab891a2af2f6d54b9b3d7ca29788651ba898b074da0506a40431ae4c07",
+    "pipeline/kr_market_risk_source_parse.py": "44b30dae50b02a94c1bc3ab0f2f004dd9e1fcffe5cefeca8b7e96e8db90b6f05",
+    "pipeline/kr_market_risk_sources.py": "40a3c70e6eeb5d4376485ab4dacfeb5551634b1ae3b1abf3c53ff3acce4693d5",
+    "pipeline/kr_market_value.py": "49306b8d14c4e8d681ae5846802c2ae82fa5727bb7a8adf356fa313217103c5e",
+    "pipeline/kr_model_overlay_portfolio.py": "b67495886aa63e10315d96ce8b30a023ee75adac6f5fec5a4fab7593b4f70343",
+    "pipeline/kr_model_portfolio_execution.py": "6128ba0af8bb517ac260a76a8b397e486a3225f206b706953dbf0390a5a7bb82",
+    "pipeline/kr_portfolio_diagnostics.py": "9f28a5ddf49a58c95db36d3a573b19e56fe7c86f98ad2ed01d96e8c09e6b5c34",
+    "pipeline/kr_repaired_accounting_snapshot.py": "b5b225e8a1d21b1516801c0ced1ef2164189867a457df1e0a51cd8ec95dd63ea",
+    "pipeline/kr_top120_regime_review.py": "43e4ab3438f1fb3765975866f1d948bbde4469dd59047d52049c9752d4f74a31",
+    "pipeline/kr_value_quality_catalyst.py": "1bfd62d1437dd9b574f1ab635836e7d7e69651dbbbaeedf29af84a90de17bb28",
+    "pipeline/krx_universe.py": "77008b8c0dcb9cd44b0b1182df94d2f0af62edb6f03b6a41082c04679101d6b8",
+    "pipeline/liquidity_attention.py": "208c989a70e2d276c040867496a127eda9ca82644012999a7253f7d47bb171a6",
+    "pipeline/longterm.py": "75702c4862545e0ceadbfc5db2585b89ffeadad21f43206b597e2982d171c5f6",
+    "pipeline/market_dates.py": "0182986bf731fd762a8004d5cf838ddfaaee656a2b19b8cfd6b47248c6281e4b",
+    "pipeline/pit_data.py": "64da89c602ac4b6c67411d0b5defa2909b65c1a7aad0958b32cb7f7dcd567dbf",
+    "pipeline/portfolio_validation.py": "a22c18fc31f47b1701ea4c426ff31dec48f3f367163bd1eb3e8cf75c1fadf2a5",
+    "pipeline/price_adjustment.py": "ebdde717be22277315186d5f302642cbc8a057fedee84192b7af14b15c405892",
+    "pipeline/probability_calibration.py": "7e06f855981c7c88dc8a595fd879d201892ca99bfbb4b1dcab1bebaf0e6f62f6",
+    "pipeline/provenance.py": "762a214d6d0a59cef35a1b4612b60e13e2f6197a0a289e97e2b1da1f496c8171",
+    "pipeline/regime.py": "b5634c109ac19ad6b0e13788f1ce9cde8f20f50019a82a8b4f65f9bc23200aca",
+    "pipeline/regional_alpha_features.py": "2fc5eb16d0438ca15763aeaf49e9226146a7ecf209680ae8f33fd42f57555132",
+    "pipeline/replay_calendar.py": "56116f837e8ae3b9ca43c27c87b3be8bcf608172a761879a6b1284a39c9a3ab2",
+    "pipeline/replay_determinism.py": "2233d8341d7be1b5123caecd3ebdb10aef67ecfac7b3c10c687795f66f397153",
+    "pipeline/replay_inputs.py": "dd77b249476b252ba585b1b836fd060a029b0c4d9c3b9a0847caf8be545a5a1d",
+    "pipeline/replay_valuation.py": "18e673a0721077af06b8ca9f774650c27fa58820a489b9ea639a9ccf02693bf3",
+    "pipeline/rp1_c1_us_exposure.py": "7f1717eeaeca38342e86b92bab498897b596ffe74ef2dd48dc106d962e7a83b4",
+    "pipeline/rp1_c1_us_exposure_spec.py": "c85dfa3196e82359dda0f09e7bea9f16e6697115007af622c07d7793013d84f1",
+    "pipeline/rp1_c1_us_sources.py": "2509c3ab87d4b988795c4d5e7120e5c9a7c410915cfec0f62e8deb3cea66b5f0",
+    "pipeline/sectors.py": "1cb470d676eeb24d5fa4976bf8fc0f71f808957f132c908158acb6422fde60ba",
+    "pipeline/selection_null.py": "b00e7419a8a620e284f3b5a15aafa66e9a8f776b81da027a766a72b3eecf5e17",
+    "research_specs/kr-market-risk-model-v1.json": "fa7484c690d125089d628654a86199a23ad95dcfeb9b1b0682bdc704588ae1b4",
+    "research_specs/kr-market-risk-model-v1.sha256": "194f65b655ae28c5861b17652be681b4c6647436af107d3fd81b0ecbc3666339",
+    "scripts/acquire_kr_market_risk_sources.py": "f0c31208a40f31cb4f3b7600256b789923e0aa3a32092d2d1d6f0dc25debe7cf",
+    "scripts/acquire_rp1_c1_us_sources.py": "389140e82e76cf21c2a0ca140d9b8112e44e8ffd4d5f4761ff7f1e2a2d20623d",
+    "scripts/build_rp1_c1_us_exposure_spec.py": "bfb8507016196893447ed79fb6e8f41d91073c3e17302463d5c8ffb65242c3aa",
+    "scripts/run_rp1_c1_us_exposure.py": "80ded0e6218875cb4cb53faa180b1512a42638c8ae06caf3f61679f1805b17b8"
+  },
+  "entryPoints": [
+    "pipeline/rp1_c1_us_exposure.py",
+    "pipeline/rp1_c1_us_sources.py",
+    "pipeline/rp1_c1_us_exposure_spec.py"
+  ],
+  "evaluation": {
+    "addedDiagnostics": {
+      "falseAlarmList": "every activation with date, target, H63 forward worst loss and status (FALSE_ALARM / FOLLOWED_BY_LARGE_LOSS / PENDING)",
+      "monthlyCvar": "mean of the worst ceil(0.05 x n) calendar-month returns, and the worst month",
+      "protectionByEpisode": "per >=15% reference episode: share of peak-to-trough sessions at a reduced target; UNPROTECTED when 0",
+      "sharpeOverCash": "economic reading only: annualised mean daily excess over the DTB3 interval return / its std (ddof 1) x sqrt(252)",
+      "status": "descriptive; frozen before any outcome; none enters the decision",
+      "subperiods": [
+        [
+          "PRE_KR_WINDOW",
+          "1993-02-01",
+          "2006-12-31"
+        ],
+        [
+          "KR_WINDOW",
+          "2007-01-01",
+          "2026-09-17"
+        ]
+      ],
+      "upDownMarketGap": "per year: sum over passive up days of (passive - candidate) and over passive down days of (candidate - passive); arithmetic"
+    },
+    "episodes": {
+      "algorithm": "kr_market_risk_anatomy.underwater_episodes on the reference over the evaluation window",
+      "namedDates": "NONE",
+      "primaryThreshold": 0.15,
+      "thresholds": [
+        0.1,
+        0.15,
+        0.2
+      ]
+    },
+    "falseAlarm": {
+      "definition": "an activation (target falls from 1.0) whose reference forward worst loss within H63 stays above -10%; unmatured windows are PENDING and excluded",
+      "horizon": 63,
+      "lossCut": -0.1
+    },
+    "halves": "split at the middle evaluation session; each half rebased; descriptive",
+    "metrics": {
+      "downside": [
+        "maxDrawdown",
+        "worstRollingReturnH63",
+        "worstRollingReturnH126",
+        "downsideVolatility",
+        "annualizedVolatility",
+        "episodeCapture",
+        "maxDrawdownRecoverySessions",
+        "sessionsToRegainPeakValue"
+      ],
+      "falseAlarm": [
+        "activations",
+        "falseAlarms",
+        "falseAlarmShare",
+        "reducedSessionsWithoutSubsequentLargeLoss",
+        "shareOfMaturedSessionsReducedWithoutSubsequentLargeLoss",
+        "pendingActivations"
+      ],
+      "implementation": [
+        "multiplierSwitches",
+        "tradedNotional",
+        "oneWayTurnover",
+        "annualizedOneWayTurnover",
+        "totalCostFractionOfNav",
+        "costDrag"
+      ],
+      "reboundReEntry": [
+        "reboundMissedH63",
+        "reboundMissedH126",
+        "sessionsUntilFullExposure",
+        "recoveryOpportunityCost"
+      ],
+      "returnParticipation": [
+        "cumulativeReturn",
+        "annualizedReturn",
+        "participation.upside",
+        "participation.downside",
+        "averageEquityWeight",
+        "targetShare",
+        "reducedSessionShare"
+      ],
+      "robustness": [
+        "halves",
+        "episodesByThreshold",
+        "calendarYears (descriptive only)"
+      ]
+    },
+    "overlap": "rolling and forward windows overlap; every such number is descriptive, no significance test, no multiplicity correction",
+    "reboundHorizons": [
+      63,
+      126
+    ],
+    "rollingLossHorizons": [
+      63,
+      126
+    ],
+    "window": {
+      "end": "2026-09-17",
+      "firstDecisionOnOrAfter": "1993-02-01",
+      "gridStart": "1990-01-01",
+      "reason": "first full month after SPY's listing so both readings share one window; the end is the sealed KR study's analysis end"
+    }
+  },
+  "evidenceStatement": "The rules were designed on outcome-exposed KR history and are applied unchanged to publicly known US index history; every number this study can produce is a frozen-rule replication, never validation and never a production signal.",
+  "inputs": {
+    "reusedKrFiles": {
+      "data/kr-market-risk-anatomy-v1/sources/FRED_DGS10/normalized.csv": "db7dc41d9d40ad5608e0ead00086ec15f5969cf785aa378f05cda576a160bc92",
+      "data/kr-market-risk-anatomy-v1/sources/FRED_DGS3MO/normalized.csv": "7ce2bdbe2547e4fc16c18a36295871d16099d60f51f10edfc2cd8d42218dc06c",
+      "data/kr-market-risk-anatomy-v1/sources/FRED_VIXCLS/normalized.csv": "dd0ccfe0a13f5e72a842dc27d53733748f24fb380808a7b2fb9babb40caa00ef"
+    },
+    "reusedRule": "the exact bytes the sealed KR spec pins; never re-acquired",
+    "usRegistry": {
+      "FRED_DTB3": {
+        "basis": "PERCENT_PER_YEAR_DISCOUNT_BASIS",
+        "fetch": "fred",
+        "instrument": "3-month Treasury bill secondary market rate, discount basis",
+        "lagClass": "FRED_DAILY_MARKET",
+        "positive": false,
+        "role": "US_CASH",
+        "symbol": "DTB3",
+        "unit": "percent",
+        "use": "the ECONOMIC reading's cash rate on the de-risked share; never a state input",
+        "vendor": "FRED",
+        "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+      },
+      "FRED_SP500": {
+        "basis": "PRICE_INDEX_LEVEL",
+        "fetch": "fred",
+        "instrument": "S&P 500 price index (FRED, licensed short history)",
+        "positive": true,
+        "role": "US_REFERENCE_CROSSCHECK",
+        "symbol": "SP500",
+        "unit": "index points",
+        "use": "instrument-identity cross-check of YAHOO_GSPC on identical dates only; never an input to a state or a path",
+        "vendor": "FRED",
+        "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+      },
+      "YAHOO_GSPC": {
+        "basis": "PRICE_INDEX_LEVEL",
+        "currency": "USD",
+        "fetch": "yahoo_chart",
+        "field": "close",
+        "instrument": "S&P 500 price index (vendor quote)",
+        "role": "US_REFERENCE",
+        "symbol": "^GSPC",
+        "unit": "index points",
+        "use": "the PRIMARY reading's asset and the FAST layer input, exactly as FDR_KS200 was for KR",
+        "vendor": "YAHOO_CHART",
+        "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+      },
+      "YAHOO_SPY": {
+        "basis": "VENDOR_ADJUSTED_CLOSE_TOTAL_RETURN_UNVERIFIED",
+        "currency": "USD",
+        "fetch": "yahoo_chart",
+        "field": "adjclose",
+        "instrument": "SPDR S&P 500 ETF Trust",
+        "role": "US_TOTAL_RETURN_ASSET",
+        "symbol": "SPY",
+        "unit": "USD",
+        "use": "the ECONOMIC reading's asset; the raw chart (close, adjclose, dividends) is retained for the post-lock basis diagnostic",
+        "vendor": "YAHOO_CHART",
+        "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+      }
+    },
+    "usSnapshot": {
+      "acquisition": "scripts/acquire_rp1_c1_us_sources.py (network + FRED_API_KEY); see lifecycle.blockers for why no workflow ships",
+      "directory": "data/rp1-c1-us-exposure/sources",
+      "files": {},
+      "status": "NOT_ACQUIRED"
+    }
+  },
+  "interpretation": {
+    "economicQuestions": [
+      "Does reducing exposure in high-risk states reduce MDD and monthly CVaR? (passive vs candidate, primary and economic readings)",
+      "How much up-market return was given up for the loss reduction? (upMarketCostPerYear against downMarketSavingPerYear, reboundMissedH63/H126, sessionsUntilFullExposure)",
+      "Did any candidate raise net annualised return, or only cut volatility and MDD? (net annualizedReturn vs passive; Sharpe over cash in the economic reading)",
+      "Which state errors happened? (falseAlarmList; UNPROTECTED episodes in protectionByEpisode)",
+      "Is it worth applying on top of a stock-selection book? Only a reading of THIS index result: the layer scales exposure, so its value on a book depends on that book's beta and correlation to the index; that is a separate study (see newHypotheses), not a conclusion of C1"
+    ],
+    "krSealed": "NO_CANDIDATE_NOMINATED_CONTROL_RETAINED (C1 dominated C0 on the axes; no meaningful improvement route)",
+    "neverConclude": [
+      "the rule predicts crises",
+      "the rule is validated",
+      "a threshold should be changed",
+      "the US result rescues or overturns the KR seal"
+    ],
+    "table": [
+      {
+        "programme": "the exposure layer is a risk-preference option, not a source of return. Default stays passive 1.0; C0 applies only under an explicit owner risk budget. No further threshold or rule search on these layers.",
+        "reading": "REPLICATED_CONTROL_RETAINED",
+        "us": "NO_CANDIDATE_NOMINATED_CONTROL_RETAINED"
+      },
+      {
+        "programme": "inconsistent across markets: no promotion; C0 and the US nominee are both carried into prospective receipts",
+        "reading": "NOT_REPLICATED_US_NOMINATION",
+        "us": "C1 | C2 | C3"
+      },
+      {
+        "programme": "no nomination in either market; the trade-off is published and every candidate stays in prospective receipts",
+        "reading": "NOT_REPLICATED_US_TRADEOFF",
+        "us": "NO_UNAMBIGUOUS_NOMINATION_PARETO_TRADEOFF"
+      },
+      {
+        "programme": "the rule does not protect in the US; no US exposure layer",
+        "reading": "NO_PROTECTION_IN_US",
+        "us": "C0 dominated by PASSIVE with no candidate reducing |MDD| below the passive path"
+      }
+    ]
+  },
+  "krSealed": {
+    "decision": "NO_CANDIDATE_NOMINATED_CONTROL_RETAINED",
+    "files": {
+      "docs/results/kr-market-risk-model-v1-execution-started.json": "9d5e322ba54a0c7da3e467c72111ce955c365d650827282f9c9bf379c2ca307f",
+      "docs/results/kr-market-risk-model-v1-manifest.json": "81dc4408bf8f9f2464ce827b2783be2cf486e1ae232e3fec7b65a282114f8445",
+      "docs/results/kr-market-risk-model-v1-result.json": "2578bbfa245a6540235cc05e231441b4ebb4da165240a84e715756477a897c4b",
+      "research_specs/kr-market-risk-model-v1.json": "fa7484c690d125089d628654a86199a23ad95dcfeb9b1b0682bdc704588ae1b4",
+      "research_specs/kr-market-risk-model-v1.sha256": "194f65b655ae28c5861b17652be681b4c6647436af107d3fd81b0ecbc3666339"
+    },
+    "rule": "never rerun, re-thresholded or reinterpreted; C1 imports its rules and reproduces its decision exactly (equivalence audit)",
+    "studyId": "kr-market-risk-model-v1"
+  },
+  "lifecycle": {
+    "blockers": [
+      {
+        "fact": "every workflow inventory layer (docs/workflow-inventory*.md) and both census tests (tests/test_workflow_inventory.py, tests/test_kr_alpha_atlas_price_repair_workflow_inventory.py) are hash-pinned by sealed Phase C specs. Any new .yml or .yaml file fails a pinned census test, and editing a pinned test fails the sealed Phase C amendment check. Neither the source workflow nor the WP4d execution workflow can be added without a versioned decision on that census.",
+        "id": "WORKFLOW_CENSUS_FROZEN",
+        "options": [
+          "owner runs the acquisition script outside Actions and commits the bytes (provenance: operator machine, recorded in audit.json)",
+          "a versioned census layer for post-Phase-C workflows, decided and recorded by the owner, before WP4d"
+        ],
+        "status": "OWNER_DECISION_REQUIRED"
+      },
+      {
+        "fact": "query1.finance.yahoo.com and api.stlouisfed.org answer CONNECT 403 here and no FRED_API_KEY is set; nothing was acquired",
+        "id": "US_SOURCES_UNREACHABLE_FROM_AUTHORING_SANDBOX",
+        "status": "ENVIRONMENT"
+      }
+    ],
+    "executionLock": "refs/tags/rp1-c1-us-exposure-ladder-replication-v1-execution-lock plus -<specSha256>; any ref under the prefix refuses",
+    "formalExecution": "WP4d, a separate change: workflow_dispatch on merged main, exact committed spec, owner authorization pinning spec and code hashes, readiness READY, equivalence EXACT, no result/marker/lock under the prefix, then an atomic lock ref, a marker, and only then the first US value read; one immutable result artifact and an exact-byte Draft seal PR (the kr-market-risk-model-v1 pattern)",
+    "markerPath": "docs/research-program/results/rp1-c1-us-exposure-ladder-replication-v1-execution-started.json",
+    "resultPath": "docs/research-program/results/rp1-c1-us-exposure-ladder-replication-v1-result.json",
+    "thisChange": "WP4a-WP4c: data foundation, calendar wrapper, KR equivalence, readiness, frozen spec. No US value read, no lock, no execution."
+  },
+  "model": {
+    "candidateOrder": [
+      "C0",
+      "C1",
+      "C2",
+      "C3"
+    ],
+    "candidates": {
+      "C0": {
+        "gating": false,
+        "hypothesis": "the existing SMA200 + Vol63 overlay: 1.0 / 0.7 / 0.4 by the FAST count; the control, unchanged",
+        "layers": [
+          "FAST"
+        ],
+        "name": "C0_EXISTING_BASELINE_CONTROL",
+        "preemption": false,
+        "table": [
+          {
+            "equityRiskMultiplier": 1.0,
+            "fast": 0,
+            "slow": 0,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 0.7,
+            "fast": 1,
+            "slow": 0,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 0.4,
+            "fast": 2,
+            "slow": 0,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 1.0,
+            "fast": 0,
+            "slow": 0,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 0.7,
+            "fast": 1,
+            "slow": 0,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 0.4,
+            "fast": 2,
+            "slow": 0,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 1.0,
+            "fast": 0,
+            "slow": 1,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 0.7,
+            "fast": 1,
+            "slow": 1,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 0.4,
+            "fast": 2,
+            "slow": 1,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 1.0,
+            "fast": 0,
+            "slow": 1,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 0.7,
+            "fast": 1,
+            "slow": 1,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 0.4,
+            "fast": 2,
+            "slow": 1,
+            "transition": 1
+          }
+        ]
+      },
+      "C1": {
+        "gating": true,
+        "hypothesis": "false alarms fall if a single FAST warning needs SLOW or TRANSITION confirmation; slow or transition stress alone never acts; a severe FAST break (both legs) acts without waiting",
+        "layers": [
+          "SLOW",
+          "TRANSITION",
+          "FAST"
+        ],
+        "name": "C1_CONFIRMATION_GATED",
+        "preemption": false,
+        "table": [
+          {
+            "equityRiskMultiplier": 1.0,
+            "fast": 0,
+            "slow": 0,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 1.0,
+            "fast": 1,
+            "slow": 0,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 0.4,
+            "fast": 2,
+            "slow": 0,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 1.0,
+            "fast": 0,
+            "slow": 0,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 0.7,
+            "fast": 1,
+            "slow": 0,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 0.4,
+            "fast": 2,
+            "slow": 0,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 1.0,
+            "fast": 0,
+            "slow": 1,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 0.7,
+            "fast": 1,
+            "slow": 1,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 0.4,
+            "fast": 2,
+            "slow": 1,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 1.0,
+            "fast": 0,
+            "slow": 1,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 0.7,
+            "fast": 1,
+            "slow": 1,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 0.4,
+            "fast": 2,
+            "slow": 1,
+            "transition": 1
+          }
+        ]
+      },
+      "C2": {
+        "gating": false,
+        "hypothesis": "lateness falls if SLOW and TRANSITION both adverse step the budget down one level before FAST breaks; slow alone is only an observation; once FAST deteriorates the reduction is stronger",
+        "layers": [
+          "SLOW",
+          "TRANSITION",
+          "FAST"
+        ],
+        "name": "C2_PREEMPTIVE_HIERARCHICAL",
+        "preemption": true,
+        "table": [
+          {
+            "equityRiskMultiplier": 1.0,
+            "fast": 0,
+            "slow": 0,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 0.7,
+            "fast": 1,
+            "slow": 0,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 0.4,
+            "fast": 2,
+            "slow": 0,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 1.0,
+            "fast": 0,
+            "slow": 0,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 0.7,
+            "fast": 1,
+            "slow": 0,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 0.4,
+            "fast": 2,
+            "slow": 0,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 1.0,
+            "fast": 0,
+            "slow": 1,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 0.7,
+            "fast": 1,
+            "slow": 1,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 0.4,
+            "fast": 2,
+            "slow": 1,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 0.7,
+            "fast": 0,
+            "slow": 1,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 0.4,
+            "fast": 1,
+            "slow": 1,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 0.4,
+            "fast": 2,
+            "slow": 1,
+            "transition": 1
+          }
+        ]
+      },
+      "C3": {
+        "gating": true,
+        "hypothesis": "agreement across independent layers balances early warning against false alarms: one isolated adverse family does nothing, two adverse families 0.7, three 0.4, and a severe FAST break is never diluted by benign slow data",
+        "layers": [
+          "SLOW",
+          "TRANSITION",
+          "FAST"
+        ],
+        "name": "C3_MULTI_LAYER_CONSENSUS",
+        "preemption": true,
+        "table": [
+          {
+            "equityRiskMultiplier": 1.0,
+            "fast": 0,
+            "slow": 0,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 1.0,
+            "fast": 1,
+            "slow": 0,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 0.4,
+            "fast": 2,
+            "slow": 0,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 1.0,
+            "fast": 0,
+            "slow": 0,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 0.7,
+            "fast": 1,
+            "slow": 0,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 0.4,
+            "fast": 2,
+            "slow": 0,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 1.0,
+            "fast": 0,
+            "slow": 1,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 0.7,
+            "fast": 1,
+            "slow": 1,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 0.4,
+            "fast": 2,
+            "slow": 1,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 0.7,
+            "fast": 0,
+            "slow": 1,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 0.4,
+            "fast": 1,
+            "slow": 1,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 0.4,
+            "fast": 2,
+            "slow": 1,
+            "transition": 1
+          }
+        ]
+      }
+    },
+    "control": "C0",
+    "decisionCadence": "calendar week-end XNYS session (a session whose next XNYS session lies in a later week)",
+    "differencesFromKr": [
+      {
+        "how": "passed as an argument to the identical sampling arithmetic",
+        "item": "exchange calendar",
+        "kr": "XKRX",
+        "us": "XNYS"
+      },
+      {
+        "item": "reference index / FAST input",
+        "kr": "FDR_KS200 (KOSPI 200 price index)",
+        "us": "YAHOO_GSPC (S&P 500 price index)"
+      },
+      {
+        "item": "SLOW and TRANSITION inputs",
+        "kr": "FRED DGS10, DGS3MO, VIXCLS",
+        "us": "the SAME retained bytes (no re-acquisition)"
+      },
+      {
+        "item": "transaction costs",
+        "kr": "buy 15bp / sell 45bp",
+        "us": "buy 8bp / sell 8.3bp from the US cost table"
+      },
+      {
+        "item": "evaluation window",
+        "kr": "2007-01-01 .. 2026-09-17",
+        "us": "1993-02-01 .. 2026-09-17 (end inherited)"
+      }
+    ],
+    "endDateInvariance": "a state at t is identical whether the data end at t or later (calendar-anchored sampling, known-at-t inputs, past-only percentiles)",
+    "execution": "signal at the decision-date close; trade at the close of the NEXT XNYS session",
+    "inheritedFrom": {
+      "modelVersion": "kr-market-risk-model-v1",
+      "rule": "every layer, threshold, window, lag, cadence, multiplier, missing-state rule and candidate mapping table is the sealed KR model's, imported",
+      "studyId": "kr-market-risk-model-v1"
+    },
+    "knownConsequences": [
+      "the 25% vol63 threshold is the KR constant; US index volatility is lower, so the FAST volatility leg fires less often in the US. It is reported, not adjusted",
+      "the TRANSITION percentile is the same VIX history; its weekly sampling dates move from XKRX to XNYS week-ends"
+    ],
+    "layers": {
+      "FAST": {
+        "definition": "count of adverse legs of the existing overlay: close < mean(last 200 closes); std63(ddof=1) x sqrt(252) > 0.25",
+        "implementation": "kr_market_risk_anatomy.overlay_state_from_window (literal replica of kr_market_risk_overlay.state_at)",
+        "input": "YAHOO_GSPC (S&P 500 price index)",
+        "trendWindow": 200,
+        "values": [
+          0,
+          1,
+          2
+        ],
+        "volThreshold": 0.25,
+        "volWindow": 63
+      },
+      "SLOW": {
+        "cadence": "M",
+        "definition": "1 if 10y-3m > 0 now and its minimum over the trailing 504 sessions was < 0, else 0",
+        "feature": "slow_resteepening_flag_10y3m",
+        "inputs": [
+          "FRED_DGS10",
+          "FRED_DGS3MO"
+        ],
+        "inversionLookbackSessions": 504,
+        "lagCalendarDays": 4,
+        "sampling": "calendar month-end XNYS session; carried to later sessions until the next month-end",
+        "spread": "DGS10 - DGS3MO on dates where both legs exist",
+        "staleCalendarDays": 14
+      },
+      "TRANSITION": {
+        "cadence": "W",
+        "excluded": {
+          "creditSpreads": "HY/IG OAS valid only from 2023-10; cannot drive a core model",
+          "policyEasingFlag": "not a layer input: a stress-state marker in the anatomy, would add a degree of freedom",
+          "usdkrw": "weak or wrong-signed in the anatomy; not a layer input",
+          "vixChange": "near 0.5 in the anatomy; not a layer input"
+        },
+        "expandingHistoryStart": "the first weekly XNYS session of the grid (1990-01-01 or later)",
+        "feature": "trans_vix_level",
+        "highPercentile": 0.8,
+        "input": "FRED_VIXCLS",
+        "lagCalendarDays": 4,
+        "minimumObservations": 156,
+        "staleCalendarDays": 14,
+        "state": "past-only expanding percentile of the known VIX level on calendar week-end XNYS sessions >= 0.80"
+      }
+    },
+    "levels": [
+      1.0,
+      0.7,
+      0.4
+    ],
+    "missingState": "a candidate's multiplier is defined only when every completion of the missing layers it reads gives the same answer; otherwise it HOLDS its previous target (no information, no action), counted per candidate; undefined on the first decision date is refused. Missing is never benign and never maximally adverse.",
+    "output": "equityRiskMultiplier in {1.0, 0.7, 0.4} on the US index exposure; never above 1.0",
+    "reEntry": "MEMORYLESS_STATE_MAPPING: the multiplier is a function of today's observable states only; normal exposure resumes on the first decision date whose state maps to 1.0. No trough, rebound threshold, minimum hold, hysteresis or future information.",
+    "structuralSwitches": {
+      "gating": "FAST == 1 reduces only when SLOW or TRANSITION is adverse",
+      "preemption": "SLOW and TRANSITION both adverse step the level down by one (floor 0.4)",
+      "severeFast": "FAST == 2 is 0.4 in every candidate"
+    }
+  },
+  "newHypotheses": [
+    {
+      "constraint": "its target rule must be fixed before any US or KR outcome of it is computed; never chosen from C1",
+      "id": "C1b-VOL-TARGET",
+      "literature": "Moreira-Muir 2017 for; Cederburg et al. 2020 and Barroso-Detzel against (out-of-sample and after costs)",
+      "question": "Does continuous inverse-volatility scaling (target = past-only expanding median of vol63, cap 1.0) beat the discrete C0 ladder on MDD at equal or smaller up-market cost?"
+    },
+    {
+      "constraint": "needs a frozen stock book from another study (e.g. Study A); C1 does not wait for it and it does not wait for C1",
+      "id": "C2-STOCK-BOOK-OVERLAY",
+      "question": "Holding the same 0-5 name book fixed, does the sealed market multiplier reduce the book's MDD/CVaR by more than the up-market cost, given the book's own beta to the index?"
+    },
+    {
+      "constraint": "one structural switch, pre-registered; never a tuned speed",
+      "id": "C1c-REENTRY-SPEED",
+      "question": "Is the cost of de-risking mostly late RE-ENTRY? A study fixing the entry rule and varying only re-entry (memoryless vs a one-step-per-week ramp back to 1.0)"
+    },
+    {
+      "constraint": "the only route to evidence; needs the US daily price collection approval (docs/us-persistent-daily-collection-v1.md)",
+      "id": "C1d-PROSPECTIVE-RECEIPTS-US",
+      "question": "Record every candidate's US multiplier weekly from a future date, evaluated only after maturity"
+    }
+  ],
+  "outcomeAccess": {
+    "inThisChange": "NONE_FOR_US",
+    "krSealedReproduction": "the equivalence audit reads the sealed KR study's retained bytes and compares with its sealed result; it opens no new outcome",
+    "verifyAndReadinessRequire": "usValueReads == stateComputationsOnValues == replayCallsOnValues == 0"
+  },
+  "phase": "PREREGISTRATION_AND_DATA_FOUNDATION_NO_OUTCOME_COMPUTED",
+  "portfolio": {
+    "buyCost": 0.0008,
+    "costSemantics": "repository US cost table (commission 5bp + half of a 6bp spread; sell adds 0.30bp); conservative for an ETF",
+    "costStress": [
+      1.0,
+      2.0,
+      3.0
+    ],
+    "economic": {
+      "asset": "YAHOO_SPY adjusted close",
+      "assetBasis": "VENDOR_ADJUSTED_CLOSE_TOTAL_RETURN_UNVERIFIED",
+      "cash": "FRED_DTB3",
+      "cashDefinition": "rate known at the previous session (FRED lag and staleness rules) / 100 x calendar days in the interval / 360; the discount yield is used as a simple money-market rate, an approximation stated as one",
+      "ifUnresolved": "when the SPY or DTB3 gate fails the economic reading is ECONOMIC_READING_UNRESOLVED and the primary reading still runs",
+      "role": "reported beside the primary reading; never enters the decision",
+      "targets": "identical to the primary reading's (computed from the price-index states)"
+    },
+    "grossPath": "the same decisions with zero cost",
+    "leverage": "NONE (multiplier <= 1.0)",
+    "noStockOrIndustrySelection": true,
+    "passiveReference": {
+      "id": "PASSIVE_FULL_EXPOSURE",
+      "multiplier": 1.0,
+      "role": "participation denominator and dominance reference; never nominated"
+    },
+    "primary": {
+      "asset": "YAHOO_GSPC, the SAME series the states are computed on",
+      "assetBasis": "PRICE_INDEX_NOT_TOTAL_RETURN_NOT_DIRECTLY_INVESTABLE",
+      "cash": "ZERO_USD_NOMINAL",
+      "conventionBias": "omitted dividends favour de-risking (the reduced share forgoes no dividend), zero cash yield disfavours it; directions stated, sizes not measured",
+      "dividends": "OMITTED_ON_BOTH_LEGS",
+      "why": "the exact sealed KR convention, so the replication differs from KR only in the market"
+    },
+    "rebalance": "only when the target changes; holdings drift otherwise",
+    "sellCost": 0.00083,
+    "start": "NAV 1 at the close of the first execution session holding the first target; the initial build is not a rebalance and is not charged",
+    "trade": "exactly to target x post-cost NAV at the execution-session close; costs paid from cash"
+  },
+  "preOutcomeRevisions": [],
+  "question": "When US market risk rises, does cutting S&P 500 exposure by the sealed KR rules reduce large losses by more than it costs in up-market return, re-entry delay, false alarms and trading? Does it raise long-run return, or only cut volatility and drawdown?",
+  "role": {
+    "doesNotOwn": [
+      "stock or industry selection",
+      "expected-return signals",
+      "Kelly sizing",
+      "any production weight"
+    ],
+    "independentOf": [
+      "Study A",
+      "Study B"
+    ],
+    "owns": "HOW MUCH US equity index exposure: one equityRiskMultiplier per weekly decision"
+  },
+  "scientificStatus": "FROZEN_RULE_REPLICATION_ON_PUBLICLY_KNOWN_US_HISTORY",
+  "sealedDataInputs": [
+    "data/kr-market-risk-anatomy-v1/sources/FRED_DGS10/normalized.csv",
+    "data/kr-market-risk-anatomy-v1/sources/FRED_DGS3MO/normalized.csv",
+    "data/kr-market-risk-anatomy-v1/sources/FRED_VIXCLS/normalized.csv",
+    "docs/research-program/rp1-c1-us-exposure-ladder-replication.md",
+    "docs/results/kr-market-risk-model-v1-execution-started.json",
+    "docs/results/kr-market-risk-model-v1-manifest.json",
+    "docs/results/kr-market-risk-model-v1-result.json",
+    "pipeline/kr_market_risk_overlay.py",
+    "research_specs/kr-market-risk-model-v1.json",
+    "research_specs/kr-market-risk-model-v1.sha256",
+    "scripts/acquire_kr_market_risk_sources.py",
+    "scripts/acquire_rp1_c1_us_sources.py",
+    "scripts/build_rp1_c1_us_exposure_spec.py",
+    "scripts/run_rp1_c1_us_exposure.py"
+  ],
+  "stopRules": {
+    "afterTheLock": [
+      "a failure consumes the study; no rerun, no retry with a changed input; the attempt artifact is preserved"
+    ],
+    "beforeTheLock": [
+      "spec digest, scientific digest or import closure differs -> refuse (rebuild only if no scientific block changes)",
+      "any sealed KR pin or reused KR source byte differs -> refuse",
+      "the KR equivalence audit is not EXACT -> refuse",
+      "US snapshot missing, identity failed, or the reference misses any XNYS session from FAST warm-up to the analysis end -> DATA_BLOCKED",
+      "vendor cross-check YAHOO_GSPC vs FRED_SP500 is CONFLICT or INSUFFICIENT_OVERLAP -> DATA_BLOCKED",
+      "any candidate determinable on < 99% of decision dates, or not on the first -> DATA_BLOCKED",
+      "a result, marker or execution lock already exists -> refuse"
+    ],
+    "economicReading": "an SPY or DTB3 gate failure marks only the economic reading UNRESOLVED; it never blocks or alters the primary reading",
+    "neverAfterAFailure": [
+      "lower a gate threshold",
+      "change the window",
+      "swap a vendor or splice two vendors",
+      "fill a missing session"
+    ]
+  },
+  "studyId": "rp1-c1-us-exposure-ladder-replication-v1"
+}
