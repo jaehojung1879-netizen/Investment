@@ -11,28 +11,28 @@
     "excludedPriorModelPortfolioOutcomes": 14
   },
   "validationStatus": {
-    "paperDays": 65,
-    "trackingDays": 65,
+    "paperDays": 66,
+    "trackingDays": 66,
     "maturedObservationDays": 0,
     "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
     "generationIsolated": true,
     "excludedPriorModelSignals": 9957,
     "excludedPriorModelOutcomes": 9891,
-    "signalsRecorded": 23778,
-    "uniqueDates": 44,
+    "signalsRecorded": 24397,
+    "uniqueDates": 45,
     "maturedUniqueDates": 0,
     "firstSignalDate": "2026-07-17",
-    "lastSignalDate": "2026-10-15",
+    "lastSignalDate": "2026-10-16",
     "maturedSignals": 0,
     "maturedByHorizon": {
-      "21": 11838,
-      "63": 0,
+      "21": 12456,
+      "63": 1,
       "126": 0,
       "252": 0
     },
-    "eligibleDates": 0,
+    "eligibleDates": 1,
     "regionIC": {},
-    "costAdjustedExcessReturn": null,
+    "costAdjustedExcessReturn": 0.0377,
     "MDD": null,
     "CVaR": null,
     "evidenceClass": "PROSPECTIVE_PAPER",
@@ -82,11 +82,25 @@
       }
     },
     "63": {
-      "n": 0,
+      "n": 1,
       "horizon": 63,
+      "rankIC": null,
+      "rankICMedian": null,
+      "rankICHitRatio": null,
       "crossSections": 0,
-      "eligibleDates": 0,
-      "regionIC": {}
+      "eligibleDates": 1,
+      "regionIC": {},
+      "meanExcess": 0.0387,
+      "meanExcessAfterCost": 0.0377,
+      "positiveHitRate": null,
+      "mdd": null,
+      "cvar95": null,
+      "byView": {
+        "NEGATIVE": {
+          "n": 1,
+          "meanFwd": 0.0796
+        }
+      }
     },
     "126": {
       "n": 0,
