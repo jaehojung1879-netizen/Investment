@@ -28,7 +28,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from zoneinfo import ZoneInfo
 
 import pandas as pd
@@ -37,6 +37,7 @@ from . import benchmark_alpha as BA
 from . import historical_calibration as HC
 from . import kelly_portfolio as KP
 from . import portfolio_validation as PV
+from . import prospective_receipt_core as PRC
 from . import replay_calendar as RC
 
 POLICY_VERSION = "weekly-passive-first-v1"
@@ -91,7 +92,7 @@ EXCLUSION_KO = {
     "NOT_IN_RESEARCH_SLEEVE": "리서치 슬리브(보유 후보 풀) 밖 — 관찰만",
     "SECTOR_NAME_LIMIT": "섹터당 2종목 한도",
     "REGION_NAME_LIMIT": "지역 한도",
-    "STALE_CANDIDATE_DATA": "이 종목 시세가 지역 기준 거래일보다 오래됨",
+    "STALE_CANDIDATE_DATA": "이 종목 시세일이 지역 기준 완료 거래일과 일치하지 않음",
 }
 
 
@@ -292,15 +293,25 @@ def decide(region: str, candidates: list[dict], calibration: dict | None, as_of:
 # --------------------------------------------------------------------------- #
 def last_completed_session(region: str, now: datetime) -> str:
     """The latest session of the region's exchange whose close + buffer has passed."""
-    tz, hour, minute = EXCHANGE_CLOSE[region]
+    import exchange_calendars as xc
+
+    if now.tzinfo is None or now.utcoffset() is None:
+        raise ValueError("timezone-aware decision timestamp required")
+    tz, _, _ = EXCHANGE_CLOSE[region]
     local = now.astimezone(ZoneInfo(tz))
     cal = "KR" if region == "KR" else "US"
     start = (local - pd.Timedelta(days=20)).strftime("%Y-%m-%d")
     days = RC.sessions(start, local.strftime("%Y-%m-%d"), cal)
-    cutoff = local.replace(hour=hour, minute=minute, second=0, microsecond=0) \
-        + pd.Timedelta(minutes=SETTLEMENT_BUFFER_MINUTES)
+    calendar = xc.get_calendar("XKRX" if region == "KR" else "XNYS",
+                               start="1990-01-01", end="2035-12-31")
     for day in reversed(list(days)):
-        if day.date() < local.date() or local >= cutoff:
+        # The pinned schedule includes early closes and delayed KRX sessions.
+        cutoff = calendar.session_close(day) + pd.Timedelta(minutes=SETTLEMENT_BUFFER_MINUTES)
+        if region == "KR":
+            # XKRX's future CSAT close can be missing from the pinned library.
+            # Reuse the repository's conservative 18:00 KST finality boundary.
+            cutoff = max(cutoff, day.tz_localize("UTC") + PRC.KR_CLOSE_FINAL_UTC)
+        if pd.Timestamp(now) >= cutoff:
             return day.strftime("%Y-%m-%d")
     raise ValueError("no completed session in the lookback window")
 
@@ -329,7 +340,20 @@ def session_on_or_before(region: str, date: str) -> str:
 
 def freshness(region: str, latest_observed: str | None, now: datetime) -> dict:
     expected = last_completed_session(region, now)
+    source_date = latest_observed
     if latest_observed is not None:
+        try:
+            date.fromisoformat(latest_observed)
+        except (ValueError, TypeError):
+            return {"status": "INVALID", "expectedSession": expected,
+                    "observedSession": None, "weekEnd": False,
+                    "reason": "OBSERVATION_DATE_INVALID"}
+        # Check the source label BEFORE holiday normalization: a future-dated
+        # Sunday row must not become a completed Friday observation.
+        if latest_observed > expected:
+            return {"status": "INVALID", "expectedSession": expected,
+                    "observedSession": latest_observed, "weekEnd": False,
+                    "reason": "OBSERVATION_AFTER_COMPLETED_SESSION"}
         latest_observed = session_on_or_before(region, latest_observed)
     if latest_observed is None:
         return {"status": "STALE", "expectedSession": expected, "observedSession": None,
@@ -337,6 +361,7 @@ def freshness(region: str, latest_observed: str | None, now: datetime) -> dict:
     stale = latest_observed < expected
     return {"status": "STALE" if stale else "FRESH", "expectedSession": expected,
             "observedSession": latest_observed,
+            "sourceDate": source_date,
             "weekEnd": is_week_end_session(region, latest_observed),
             "reason": "SOURCE_NOT_UPDATED" if stale else None}
 
@@ -410,6 +435,8 @@ def append_receipts(existing: list[dict], new: list[dict]) -> tuple[list[dict], 
             continue
         if receipt_digest(receipt) != receipt.get("digest"):
             raise ValueError(f"receipt digest mismatch: {receipt.get('receiptId')}")
+        if error := receipt_session_error(receipt):
+            raise ValueError(f"receipt session invalid: {error}")
         prior = known.get(receipt["receiptId"])
         if prior is None:
             appended.append(receipt)
@@ -423,10 +450,33 @@ def append_receipts(existing: list[dict], new: list[dict]) -> tuple[list[dict], 
                                  "unchanged": unchanged, "conflicts": conflicts}
 
 
+def receipt_session_error(receipt: dict) -> str | None:
+    """Read-only validity view, evaluated at the ORIGINAL creation timestamp.
+
+    Later passage of time cannot repair a premature final. No ledger bytes or
+    content digest are changed by this classification.
+    """
+    try:
+        region, day = receipt["region"], receipt["asOfDate"]
+        date.fromisoformat(day)
+        now = datetime.fromisoformat(receipt["generatedAt"].replace("Z", "+00:00"))
+        expected = last_completed_session(region, now)
+        if day > expected:
+            return "OBSERVATION_AFTER_COMPLETED_SESSION"
+        if session_on_or_before(region, day) != day:
+            return "NON_SESSION_RECEIPT"
+        if receipt.get("weekStatus") == "FINAL_WEEKLY" and not is_week_end_session(region, day):
+            return "FINAL_NOT_WEEK_END"
+    except (AttributeError, KeyError, TypeError, ValueError):
+        return "SESSION_METADATA_INVALID"
+    return None
+
+
 def latest_final(receipts: list[dict], region: str, before: str | None = None) -> dict | None:
     rows = [r for r in receipts if r.get("region") == region
             and r.get("policyVersion") == POLICY_VERSION
             and r.get("weekStatus") == "FINAL_WEEKLY"
+            and receipt_session_error(r) is None
             and (before is None or r.get("asOfDate") < before)]
     return max(rows, key=lambda r: r["asOfDate"]) if rows else None
 
@@ -563,13 +613,16 @@ EVIDENCE = {
 }
 
 
-def _candidate_session(region: str, detail: dict | None) -> str | None:
+def _candidate_session(region: str, detail: dict | None, completed: str) -> str | None:
     as_of = (detail or {}).get("asOf")
     if not as_of:
         return None
     try:
+        date.fromisoformat(as_of)
+        if as_of > completed:
+            return None
         return session_on_or_before(region, as_of)
-    except ValueError:
+    except (TypeError, ValueError):
         return None
 
 
@@ -585,6 +638,8 @@ def build(long_term: dict | None, calibration: dict | None, observed_sessions: d
     excluded individually and a stale region publishes no new decision.
     """
     now = now or datetime.now(timezone.utc)
+    if now.tzinfo is None or now.utcoffset() is None:
+        raise ValueError("timezone-aware decision timestamp required")
     generated = now.astimezone(timezone.utc).isoformat()
     names = names or {}
     details = details or {}
@@ -599,8 +654,9 @@ def build(long_term: dict | None, calibration: dict | None, observed_sessions: d
         fresh = freshness(region, observed_sessions.get(region), now)
         fresh["sessionEvidence"] = SESSION_EVIDENCE[region]
         last = latest_final(prior_receipts, region)
-        if fresh["status"] == "STALE":
-            regions[region] = {**base, "status": "STALE_DATA", "statusKo": STATUS_KO["STALE_DATA"],
+        if fresh["status"] != "FRESH":
+            status = "STALE_DATA" if fresh["status"] == "STALE" else "SOURCE_INCOMPLETE"
+            regions[region] = {**base, "status": status, "statusKo": STATUS_KO[status],
                                "freshness": fresh, "lastValidReceipt": last}
             continue
         observed = fresh["observedSession"]
@@ -614,7 +670,7 @@ def build(long_term: dict | None, calibration: dict | None, observed_sessions: d
         research = list(blob.get("researchTable") or [])
         watched = {r["ticker"] for r in research[:WATCHLIST_SIZE]}
         stale = {t for t in {c["ticker"] for c in candidates} | watched
-                 if (_candidate_session(region, details.get(t)) or "") < observed}
+                 if _candidate_session(region, details.get(t), observed) != observed}
         fresh["staleNames"] = sorted(stale)
         incomplete = []
         if not (calibration or {}).get("available"):

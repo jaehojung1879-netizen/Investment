@@ -123,7 +123,7 @@ def test_decision_is_deterministic():
 def test_freshness_uses_each_exchange_calendar_and_time_zone():
     # Friday 2026-10-09 is Hangul Day (KRX closed); the KR week ends Thursday.
     now = datetime(2026, 10, 10, 2, 0, tzinfo=timezone.utc)
-    kr = W.freshness("KR", "2026-10-09", now)
+    kr = W.freshness("KR", "2026-10-08", now)
     assert kr["observedSession"] == "2026-10-08" and kr["weekEnd"] is True and kr["status"] == "FRESH"
     # 16:30 New York on Friday is before close + buffer; 17:30 is after.
     assert W.last_completed_session("US", datetime(2026, 10, 9, 20, 30, tzinfo=timezone.utc)) == "2026-10-08"
@@ -134,7 +134,7 @@ def test_freshness_uses_each_exchange_calendar_and_time_zone():
 
 def test_stale_data_issues_no_new_decision_and_keeps_last_receipt():
     now = datetime(2026, 10, 10, 2, 0, tzinfo=timezone.utc)
-    prior = W.build_receipt(W.decide("US", [], None, "2026-10-02"), generated_at="x", inputs={},
+    prior = W.build_receipt(W.decide("US", [], None, "2026-10-02"), generated_at="2026-10-03T02:00:00Z", inputs={},
                             evidence=W.EVIDENCE, week_status="FINAL_WEEKLY")
     out = W.build({"regions": {}}, _calibration(), {"KR": "2026-10-08", "US": "2026-10-08"}, now=now,
                   prior_receipts=[prior])
@@ -155,10 +155,10 @@ def test_blocked_build_carries_no_holdings_or_weights():
 
 def test_receipts_are_append_only_and_never_overwritten():
     d = W.decide("KR", [], None, "2026-10-08")
-    first = W.build_receipt(d, generated_at="t1", inputs={}, evidence=W.EVIDENCE, week_status="FINAL_WEEKLY")
-    same = W.build_receipt(d, generated_at="t2", inputs={}, evidence=W.EVIDENCE, week_status="FINAL_WEEKLY")
+    first = W.build_receipt(d, generated_at="2026-10-10T02:00:00Z", inputs={}, evidence=W.EVIDENCE, week_status="FINAL_WEEKLY")
+    same = W.build_receipt(d, generated_at="2026-10-10T03:00:00Z", inputs={}, evidence=W.EVIDENCE, week_status="FINAL_WEEKLY")
     assert first["digest"] == same["digest"]  # generatedAt is not content
-    changed = W.build_receipt({**d, "statusKo": "edited"}, generated_at="t3", inputs={},
+    changed = W.build_receipt({**d, "statusKo": "edited"}, generated_at="2026-10-10T04:00:00Z", inputs={},
                               evidence=W.EVIDENCE, week_status="FINAL_WEEKLY")
     ledger, report = W.append_receipts([], [first])
     assert report["appended"] == [first["receiptId"]]
@@ -313,6 +313,6 @@ def test_session_rollover_across_dst_and_holidays():
     assert W.is_week_end_session("US", "2026-11-27") is True
     sat = datetime(2026, 11, 28, 2, 0, tzinfo=timezone.utc)
     assert W.freshness("US", "2026-11-25", sat)["status"] == "STALE"
-    # KR: 16:30 KST is the cut (15:30 close + 60 minutes), no DST.
-    assert W.last_completed_session("KR", datetime(2026, 10, 8, 7, 29, tzinfo=timezone.utc)) == "2026-10-07"
-    assert W.last_completed_session("KR", datetime(2026, 10, 8, 7, 31, tzinfo=timezone.utc)) == "2026-10-08"
+    # KR: conservative 18:00 KST finality, including delayed session variants.
+    assert W.last_completed_session("KR", datetime(2026, 10, 8, 8, 59, tzinfo=timezone.utc)) == "2026-10-07"
+    assert W.last_completed_session("KR", datetime(2026, 10, 8, 9, 0, tzinfo=timezone.utc)) == "2026-10-08"
