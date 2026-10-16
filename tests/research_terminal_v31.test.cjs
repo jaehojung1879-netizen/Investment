@@ -51,8 +51,17 @@ test('loader verifies complete tree before declaring not published; refusal-only
 });
 test('presentation and read-only audit do not alter scientific or publication code',()=>{
   const {execFileSync}=require('node:child_process');
-  for(const file of ['pipeline/current_champion_decisions.py','pipeline/kelly_portfolio.py','pipeline/weekly_decision.py','pipeline/weekly_publish.py','config.json','.github/workflows/tests.yml','.github/workflows/pages.yml','.github/workflows/ledger.yml'])
+  const {createHash}=require('node:crypto');
+  // Explicit owner session-safety fix; only these two replacement bytes change.
+  const safety=JSON.parse(fs.readFileSync(path.join(__dirname,'../docs/weekly-session-integrity-v1-pins.json')));
+  assert.deepEqual(Object.keys(safety.files).sort(),['pipeline/weekly_decision.py','pipeline/weekly_publish.py']);
+  for(const file of ['pipeline/current_champion_decisions.py','pipeline/kelly_portfolio.py','pipeline/weekly_decision.py','pipeline/weekly_publish.py','config.json','.github/workflows/tests.yml','.github/workflows/pages.yml','.github/workflows/ledger.yml']) {
+    if(safety.files[file]) {
+      assert.equal(createHash('sha256').update(fs.readFileSync(path.join(__dirname,'..',file))).digest('hex'),safety.files[file]);
+      continue;
+    }
     assert.deepEqual(fs.readFileSync(path.join(__dirname,'..',file)),execFileSync('git',['show',`${A.SOURCE_COMMIT}:${file}`]));
+  }
   const audit=fs.readFileSync(path.join(__dirname,'../scripts/audit_research_terminal_publication.cjs'),'utf8');
   assert.doesNotMatch(audit,/writeFile|appendFile|execFile|spawn|fetch\(|load_market_values|forward_return|pipeline\//);
 });

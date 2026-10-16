@@ -69,7 +69,8 @@ def receipt_history(receipts: list[dict], limit: int = 12) -> dict:
     out = {}
     for region in W.BENCHMARKS:
         rows = sorted((r for r in receipts if r.get("region") == region
-                       and r.get("weekStatus") == "FINAL_WEEKLY"),
+                       and r.get("weekStatus") == "FINAL_WEEKLY"
+                       and W.receipt_session_error(r) is None),
                       key=lambda r: r["asOfDate"], reverse=True)[:limit]
         out[region] = [{"asOfDate": r["asOfDate"], "status": r.get("status"),
                         "stockCount": r.get("stockCount"),
@@ -103,11 +104,26 @@ def build_from_site(site: dict, site_sha256: str, receipts: list[dict]) -> dict:
     recorded = {r.get("receiptId"): r for r in receipts}
     for region, blob in block["regions"].items():
         prior = recorded.get(blob.get("receiptId"))
+        if prior is not None and (error := W.receipt_session_error(prior)):
+            # A conflicting valid recomputation cannot overwrite the first
+            # receipt or republish its premature allocation as a valid final.
+            block["regions"][region] = {
+                "region": region, "benchmark": W.BENCHMARKS[region],
+                "status": "SOURCE_INCOMPLETE", "statusKo": W.STATUS_KO["SOURCE_INCOMPLETE"],
+                "holdings": [], "weights": {}, "watchlist": [], "freshness": blob.get("freshness"),
+                "invalidRecordedReceipt": {"receiptId": prior.get("receiptId"),
+                                           "digest": prior.get("digest"), "reason": error},
+            }
+            continue
         if prior is not None and prior.get("digest") != blob.get("digest"):
             block["regions"][region] = {**prior, "freshness": blob.get("freshness"),
                                         "publishedFrom": "RECORDED_RECEIPT",
                                         "laterRecomputationDigest": blob.get("digest")}
     block["receiptHistory"] = receipt_history(receipts)
+    block["receiptIntegrity"] = [
+        {"receiptId": r.get("receiptId"), "digest": r.get("digest"),
+         "status": "INVALID_SESSION", "reason": error}
+        for r in receipts if (error := W.receipt_session_error(r))]
     block["schema"] = SCHEMA
     block["unsafeReason"] = reason
     block["sourceArtifact"] = identity
@@ -151,6 +167,14 @@ def validate(block: dict) -> list[str]:
             if holdings or weights:
                 errors.append(f"inactive_with_weights:{region}")
             continue
+        if error := W.receipt_session_error(blob):
+            errors.append(f"receipt_session_invalid:{region}:{error}")
+        try:
+            now = datetime.fromisoformat(block["generatedAt"].replace("Z", "+00:00"))
+            if blob["asOfDate"] > W.last_completed_session(region, now):
+                errors.append(f"observation_after_completed_session:{region}")
+        except (KeyError, TypeError, ValueError):
+            errors.append(f"session_metadata_invalid:{region}")
         bench = W.BENCHMARKS[region]
         if blob.get("benchmark") != bench:
             errors.append(f"wrong_benchmark:{region}")

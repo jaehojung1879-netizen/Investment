@@ -60,6 +60,10 @@ def test_pages_staging_requires_only_existing_deployed_frontend_files(tmp_path):
 
 
 def test_sealed_build_publication_and_results_are_unchanged():
+    # The owner explicitly requested a session safety fix to these two files.
+    # Pin the reviewed replacement bytes; retain every scientific/result pin.
+    safety = json.loads((ROOT / "docs/weekly-session-integrity-v1-pins.json").read_text())
+    assert set(safety["files"]) == {"pipeline/weekly_decision.py", "pipeline/weekly_publish.py"}
     paths = ["pipeline/build.py", "pipeline/weekly_decision.py", "pipeline/weekly_publish.py",
              "pipeline/weekly_history.py", "pipeline/validate.py", ".github/workflows/pages.yml",
              ".github/workflows/tests.yml", "config.json",
@@ -67,14 +71,15 @@ def test_sealed_build_publication_and_results_are_unchanged():
              "docs/weekly-decision/weekly-passive-first-v1-replay-corrected-benchmark.json"]
     for path in paths:
         original = subprocess.check_output(["git", "show", f"8f45870cf8a0c41c5d32c3ec1296417de23c5db1:{path}"], cwd=ROOT)
-        if path == "pipeline/weekly_publish.py":
+        if path in safety["files"]:
             current = (ROOT / path).read_bytes()
-            start = current.index(b"    # Additive research namespace.")
-            end = current.index(b"    return 0\n", start)
-            # v3 authorizes a separate append-only namespace only. Every
-            # original P1 function/statement remains byte-identical outside it.
-            assert current[:start] + current[end:] == original
-            assert b"research-strategies" in current[start:end]
+            assert hashlib.sha256(current).hexdigest() == safety["files"][path]
+            if path == "pipeline/weekly_publish.py":
+                baseline = subprocess.check_output(["git", "show", f"{safety['baseCommit']}:{path}"], cwd=ROOT)
+                def research_namespace(raw):
+                    start = raw.index(b"    # Additive research namespace.")
+                    return raw[start:raw.index(b"    return 0\n", start)]
+                assert research_namespace(current) == research_namespace(baseline)
             continue
         if path == ".github/workflows/tests.yml":
             # The operational CI budget evolves independently of the terminal.
