@@ -75,9 +75,11 @@ def main(argv=None):
                     scopes[scope] = "MATCHED" if SP.verify_us_snapshot(spec, ROOT, args.snapshot, scope) else "NOT_FROZEN"
                 except (ValueError, OSError, KeyError):
                     scopes[scope] = "BLOCKED_HASH_MISMATCH"
+            cross = SP.cross_check_status(args.snapshot, SP.snapshot_audit(args.snapshot))
             emit({"status": "MATCHES_THE_FROZEN_PRIMARY" if pinned else "NOT_FROZEN", "scopes": scopes,
+                  "referenceCrossCheck": cross,
                   "files": len(SP.snapshot_files(args.snapshot)), "cashEconomicScientificSha256": spec["cashEconomicSpec"]["scientificSha256"]})
-            return 0 if pinned else 2
+            return 0 if pinned and cross["status"] == "CONSISTENT" else 2
         if args.mode == "dry-run":
             out = X.dry_run(args.output or "dry-run", ROOT, args.snapshot)
             emit(out)

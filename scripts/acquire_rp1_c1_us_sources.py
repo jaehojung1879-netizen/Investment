@@ -144,7 +144,7 @@ def main(argv=None):
     if changed:
         path.write_text(json.dumps(audit, indent=2, sort_keys=True) + "\n")
     failed = [sid for sid, r in audit["sources"].items() if r["status"] != "ACQUIRED"]
-    if all(audit["sources"].get(sid, {}).get("status") == "ACQUIRED" for sid in SRC.PRIMARY_IDS):
+    if all(audit["sources"].get(sid, {}).get("status") == "ACQUIRED" for sid in SRC.REQUIRED_IDS):
         R.prepare(out)
     print("acquired", len(audit["sources"]) - len(failed), "failed", failed)
     return 1 if failed else 0

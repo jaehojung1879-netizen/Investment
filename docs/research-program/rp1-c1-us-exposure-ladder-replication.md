@@ -103,9 +103,9 @@ Yahoo/S&P 원천은 재배포 제한, DTB3는 citation이 요청되는 public-do
 - Yahoo 일별 bar의 exchange-local 날짜를 기존 `timestamp + gmtoffset` 규칙으로 정한 뒤 UTC 정오로 표현한다. close, SPY adjclose, 구간 내 모든 기업행동 종류와 필드를 보존한다. 과거 adjusted close를 보정·재기준화하거나 다른 공급자와 이어 붙이지 않는다.
 - FRED는 구간 내 observation date/value와 id·units·frequency·계절조정 신원을 고정한다. 수집 시각·HTTP envelope·현재 quote 메타데이터·구간 밖 행/이벤트는 분석 해시에 넣지 않는다.
 - 구간 내 숫자는 반올림하지 않는 정확한 decimal 문자열로 맥락을 보존한다. 실제 모델이 읽는 CSV는 기존 parser의 float64 `repr`다. 둘 모두 해시로 고정하므로 float로 구분되지 않는 원천 정밀도 변경도 거부한다. 의미가 같은 숫자 표기만 정규화하고 허용 오차를 두지 않는다.
-- **전체 원자료 해시**는 감사용이다. 수집 시각·종료일 뒤 행 때문에 달라도 된다. **실제 사용 CSV/신원/기업행동/품질 맥락의 해시**는 모두 정확히 같아야 한다. PRIMARY는 GSPC/FRED 교차검증 입력만 정확히 검증한다. 원래 vendor 경제성은 SPY adjclose까지 정확히 검증하며, 변하면 그 경제성만 UNRESOLVED다. 새 CASH 경제성은 SPY `cash_input.json`(원종가·신원·모든 기업행동)과 DTB3를 별도로 고정한다. adjclose 변경을 원래 경제성에서 허용하거나 새 결과 계산에 사용하는 우회는 없다.
+- **전체 원자료 해시**는 감사용이다. 수집 시각·종료일 뒤 행 때문에 달라도 된다. **실제 사용 CSV/신원/기업행동/품질 맥락의 해시**는 모두 정확히 같아야 한다. PRIMARY는 YAHOO_GSPC와 기존 KR 봉인 입력만 영구 exact hash로 검증한다. FRED_SP500 전체 시계열 해시는 이동 창의 감사용이며 영구 동일성 조건이 아니다. 매 취득마다 원본에서 준비 파일을 다시 유도·대조하고 신원, XNYS 커버리지/연속 결측, 최소 250개 공통일과 기존 CONSISTENT/CONFLICT 기준으로 교차검증한다. 원래 vendor 경제성은 SPY adjclose까지 정확히 검증하며, 변하면 그 경제성만 UNRESOLVED다. 새 CASH 경제성은 SPY `cash_input.json`(원종가·신원·모든 기업행동)과 DTB3를 별도로 고정한다. adjclose 변경을 원래 경제성에서 허용하거나 새 결과 계산에 사용하는 우회는 없다.
 
-**한계:** 해시는 동일성을 검사할 뿐 보존하지 않는다. 공급자 접근 거부·과거 수정·라이선스 제한·과거 10년만 제공하는 FRED SP500의 이동 창 때문에 재취득이 불가능하거나 달라질 수 있다. 이때 잠금 전에 중단하고 원천 대체·자동 재동결·허용 오차·임계값 완화를 하지 않는다. 동일 원천의 미래 재현을 보장하지 않는다. 원천 artifact가 없으므로 90일 만료 의존도 없다.
+**한계:** 해시는 동일성을 검사할 뿐 보존하지 않는다. 공급자 접근 거부·과거 수정·라이선스 제한·과거 10년만 제공하는 FRED SP500의 이동 창 때문에 재취득이 불가능하거나 달라질 수 있다. 정상적으로 이동한 FRED 창은 새 교차검증을 통과하면 PRIMARY를 차단하지 않지만, 신원·공통일·불일치·커버리지 관문 실패는 차단한다. 이때 잠금 전에 중단하고 원천 대체·자동 재동결·허용 오차·임계값 완화를 하지 않는다. 동일 원천의 미래 재현을 보장하지 않는다. 원천 artifact가 없으므로 90일 만료 의존도 없다.
 
 ### 6.3 품질·동일성 관문
 
@@ -115,6 +115,10 @@ Yahoo/S&P 원천은 재배포 제한, DTB3는 citation이 요청되는 public-do
 
 새 CASH 정의는 #253의 `winner_inflection_execution.cash_reinvestment_close`를 **승인·잠금·마커 이후에만** 호출한다. `splitRatio × (P_t + D_t) / P_(t-1)`의 ex-date 종가 현금배당 재투자이며, Replay v11의 vendor 계수 전방 누적과 다르다. 기존 `DoubleCountRefused`를 재사용한다. 전체 보존 구간에 분할이 한 건이라도 있거나, 중복/결측/비양수 종가·배당 단위/세션 문제가 있으면 새 경제성은 UNRESOLVED다. 단위는 vendor의 USD/share 관례이며 독립 issuer 인증은 아니다. PRIMARY 실행은 원래 명세의 경제성 UNRESOLVED 조항에 따라 독립적이다.
 
+승인 후 vendor 진단은 `price_adjustment.to_total_return`을 재사용해 Yahoo adjclose와 Replay v11 vendor-equivalent 전방 계수를 비교한다. 현금배당 재투자와의 차이를 vendor 오류로 부르지 않는다. 이 진단 변경은 두 수익 정의나 scientific digest를 바꾸지 않는다. 실제 probe는 2004년 배당 이벤트의 날짜·건수·중복 여부만 공개하며, 다섯 날짜를 정규/특별배당으로 발행사 대조 인증하지 않는다.
+
+외부 SPY 총수익과 CASH_ECONOMIC의 경제적 대조는 시장 종가 대 NAV, 배당락일/지급일 재투자, USD·세전/세후·수수료·배당 단위·동일 기간을 먼저 맞춰야 한다. 현재 독립 발행사/외부 총수익 검증 계열은 취득·대조하지 않았다. Yahoo adjclose는 vendor 계수가 달라 CASH의 정답 계열이 아니며, 외부 총수익과 일치한다고 주장하지 않는다.
+
 Replay v16과 이중 벤치마크의 2011-01-03~2026-09-14 이력은 같은 Yahoo 계보이고 SPY 분배 이벤트가 봉인되지 않았다. 1993~2010을 보충하거나 원종가/배당 단일 반영의 독립 검증으로 사용할 수 없어, 새 CASH 입력과 연결하지 않는다. 기존 검증 함수·회귀만 재사용한다.
 
 ### 6.4 실행 순서와 사람이 할 일
@@ -122,7 +126,7 @@ Replay v16과 이중 벤치마크의 2011-01-03~2026-09-14 이력은 같은 Yaho
 1. **이 저장 변경 PR 병합:** 기존 호스트 workflow의 이 PR에 한정된 merged-main guard가 `freeze-sources` 경로를 자동 실행한다. 일반적인 재동결은 기존 `rp1_c1_action=freeze-sources` 수동 dispatch다. 신규 workflow·Settings 변경·신규 인증정보는 없다.
 2. **freeze-sources:** 기존 수집기 → 구간 정규화 → 준비도 READY → 분석 해시와 원자료 감사 해시·코드 해시 Manifest → spec pin을 담은 Draft PR 하나. 원천 artifact 업로드와 자동 병합은 없다. 소유자가 그 원천 PR을 검토·병합한다.
 3. **dry-run:** 원천 Manifest PR 병합 시 자동 실행한다(기존 수동 dispatch도 유지). 새로 취득하고 고정 입력 해시·준비도 READY·KR 동등성 EXACT를 확인한 후, 합성 값으로만 전체 평가·검증기를 돌린다. 잠금 없음.
-4. **소유자 승인:** `python scripts/run_rp1_c1_us_wp4d.py authorization-draft --owner <login>`의 정확한 pin과 저장 v2 확인 항목을 검토한다. 소유자가 확인 항목 7개를 직접 true로 바꿔 `docs/research-program/authorizations/rp1-c1-us-exposure-execution-authorization.json`을 검토된 PR로 커밋한다. 템플릿은 NOTHING만 승인한다.
+4. **소유자 승인:** `python scripts/run_rp1_c1_us_wp4d.py authorization-draft --owner <login>`의 정확한 pin과 저장 v2 확인 항목을 검토한다. 소유자가 별도 CASH 명세 검토를 포함한 확인 항목 8개를 직접 true로 바꿔 `docs/research-program/authorizations/rp1-c1-us-exposure-execution-authorization.json`을 검토된 PR로 커밋한다. 템플릿은 NOTHING만 승인한다.
 5. **별도 execute 승인/dispatch:** 먼저 소유자·main·첫 시도·커밋된 승인 파일 SHA/pin을 확인한 다음 재취득한다. 입력 해시 완전 일치 → 기존 준비도/동등성 관문 → 원자적 잠금 ref 2개 → 마커 → 실제 미국 값 평가 순서다. 잠금 후 실패는 연구를 소진하며 재시도하지 않는다. 이 저장 변경 PR과 freeze는 execute 승인이 아니다.
 
 소유자의 수작업은 PR 검토·병합과 명시적 실험 승인이다. Secret 등록·개인 PC 취득·추가 PAT·외부 저장소 설정을 요구하지 않는다. 실제 원천 재취득 관문이 실패하면 자동으로 우회하지 않는다.

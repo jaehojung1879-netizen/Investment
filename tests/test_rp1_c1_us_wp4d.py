@@ -487,6 +487,7 @@ def test_new_cash_definition_has_its_own_digest_and_original_science_is_unchange
     spec, _ = SP.load_spec(root)
     assert SP.scientific_digest(spec) == SP.ORIGINAL_SCIENTIFIC_SHA256
     assert spec["cashEconomicSpec"]["scientificSha256"] == SP.digest(spec["cashEconomicSpec"]["definition"])
+    assert spec["cashEconomicSpec"]["scientificSha256"] == "50f1bbbdf671eeb5616e30ffef0475ec7a01bd171480cbb740052a4b748fc3e5"
     assert spec["cashEconomicSpec"]["scientificSha256"] != SP.scientific_digest(spec)
     spec["cashEconomicSpec"]["definition"]["formula"] = "WRONG_FORMULA"
     path = root / SP.SPEC_PATH
@@ -510,6 +511,86 @@ def test_cash_admission_does_not_require_a_legacy_adjclose_array(frozen_world, t
     report = R.admission_report(frozen_world["snapshot"], snapshot, "1993-02-08")
     assert report["status"] == "EXACT_SCOPED_INPUT_MATCH"
     assert report["legacyVendorComparison"]["status"] == "UNRESOLVED_VENDOR_DIAGNOSTIC_UNAVAILABLE"
+
+
+@pytest.mark.parametrize("shift", [1, 5, 22])
+def test_fred_moving_window_is_freshly_checked_not_permanently_hashed(frozen_world, tmp_path, shift):
+    raw = synthetic_raw()
+    doc = json.loads(raw["FRED_SP500"]["observations.json"])
+    doc["observations"] = doc["observations"][shift:]
+    raw["FRED_SP500"]["observations.json"] = json.dumps(doc).encode()
+    snapshot = acquire_synthetic(tmp_path / "moved", raw)
+    assert R.fingerprints(snapshot) != frozen_world["manifest"]["analysisFiles"]
+    assert not any(n.startswith("FRED_SP500/") for n in R.scoped_fingerprints(snapshot, "PRIMARY"))
+    assert SP.verify_us_snapshot(frozen_world["spec"], frozen_world["root"], snapshot, "PRIMARY")
+    readiness = SP.readiness_audit(frozen_world["root"], snapshot_dir=snapshot, require_frozen=True)
+    assert readiness["decision"] == SP.DECISION_READY
+    cross = readiness["details"]["vendorCrossCheck"]
+    assert cross["status"] == "CONSISTENT" and cross["commonDates"] >= 250 and cross["freshIdentityVerified"]
+    report = R.admission_report(frozen_world["snapshot"], snapshot, "1993-02-08")
+    assert report["status"] == "EXACT_SCOPED_INPUT_MATCH"
+    assert all(c["status"] == "CONSISTENT" for c in report["referenceCrossChecks"])
+
+
+@pytest.mark.parametrize("change", ["identity", "conflict", "overlap", "coverage", "prepared_tamper"])
+def test_fresh_fred_crosscheck_failure_still_blocks_primary(frozen_world, tmp_path, change):
+    raw = synthetic_raw()
+    if change == "identity":
+        doc = json.loads(raw["FRED_SP500"]["series.json"])
+        doc["seriess"][0]["id"] = "NOT_SP500"
+        raw["FRED_SP500"]["series.json"] = json.dumps(doc).encode()
+    else:
+        doc = json.loads(raw["FRED_SP500"]["observations.json"])
+        if change == "conflict":
+            for row in doc["observations"]: row["value"] = str(float(row["value"]) * 1.5)
+        if change == "overlap": doc["observations"] = [r for r in doc["observations"] if r["date"] <= U.ANALYSIS_END][-249:]
+        if change == "coverage": del doc["observations"][100:110]
+        raw["FRED_SP500"]["observations.json"] = json.dumps(doc).encode()
+    snapshot = acquire_synthetic(tmp_path / "bad-crosscheck", raw)
+    if change == "prepared_tamper":
+        path = snapshot / "FRED_SP500/normalized.csv"
+        lines = path.read_text().splitlines()
+        lines[1] = lines[1].split(",")[0] + ",1.0"
+        path.write_text("\n".join(lines) + "\n")
+    assert SP.verify_us_snapshot(frozen_world["spec"], frozen_world["root"], snapshot, "PRIMARY")  # GSPC bytes remain unchanged
+    readiness = SP.readiness_audit(frozen_world["root"], snapshot_dir=snapshot, require_frozen=True)
+    assert readiness["decision"] == SP.DECISION_BLOCKED
+    status = readiness["details"]["vendorCrossCheck"]["status"]
+    assert status == {"identity": "IDENTITY_MISMATCH", "conflict": "CONFLICT", "overlap": "INSUFFICIENT_OVERLAP",
+                      "coverage": "CROSSCHECK_COVERAGE_FAILED", "prepared_tamper": "FRESH_CROSSCHECK_SOURCE_MISMATCH"}[change]
+    assert R.admission_report(frozen_world["snapshot"], snapshot, "1993-02-08")["status"] == "SCOPED_INPUT_NOT_READY"
+
+
+def test_fred_holiday_null_is_not_counted_as_a_missing_exchange_session(tmp_path):
+    raw = synthetic_raw()
+    doc = json.loads(raw["FRED_SP500"]["observations.json"])
+    doc["observations"].append({"date": "2018-12-25", "value": "."})
+    doc["observations"].sort(key=lambda r: r["date"])
+    raw["FRED_SP500"]["observations.json"] = json.dumps(doc).encode()
+    snapshot = acquire_synthetic(tmp_path / "holiday", raw)
+    assert SP.cross_check_status(snapshot, SP.snapshot_audit(snapshot))["status"] == "CONSISTENT"
+
+
+def test_spy_and_dtb3_changes_cannot_change_primary_results():
+    values = {k: s.loc[:"1996-12-31"] for k, s in X.synthetic_us_values().items()}
+    config = {**U.us_config(), "analysisEnd": "1996-12-31"}
+    baseline = U.evaluate(values, config)
+    for leg in ("asset", "cash"):
+        changed = {**values, leg: values[leg] * np.exp(np.linspace(0, .5, len(values[leg]))) if leg == "asset" else values[leg] + 5.}
+        result = U.evaluate(changed, config)
+        for key in ("passive", "candidates", "decision", "window"):
+            assert E.json_safe(result[key]) == E.json_safe(baseline[key]), (leg, key)
+        assert E.json_safe(result["economic"]) != E.json_safe(baseline["economic"])
+
+
+def test_five_distinct_dividend_dates_are_audited_not_deduplicated_or_classified():
+    days = SRC.xnys_sessions("2003-12-31", "2004-12-31")
+    dates = ["2004-01-02", "2004-03-19", "2004-06-18", "2004-09-17", "2004-12-17"]  # INVENTED fifth event, not source evidence
+    raw = chart("SPY", "ETF", days, np.full(len(days), 100.), dividends=[(stamps([d])[0], .5) for d in dates])
+    audit = SRC.cash_input_gate(raw, "2004-01-02", "2004-12-31")
+    assert audit["status"] == "CASH_INPUT_READY"
+    assert audit["dividend2004"]["eventDates"] == dates and audit["dividend2004"]["events"] == 5
+    assert audit["dividend2004"]["duplicateDates"] == 0 and "NOT_ISSUER_VERIFIED" in audit["dividend2004"]["classification"]
 
 
 def test_a_freeze_is_refused_once_an_authorization_is_committed(frozen_world, tmp_path):
@@ -624,7 +705,8 @@ def test_the_formal_execution_end_to_end_then_refuses_a_second_attempt(frozen_wo
     validation = json.loads((tmp_path / "run" / X.VALIDATION_FILE).read_text())
     assert validation["status"] == "CONSISTENT" and validation["checks"] > 200 and result["validationStatus"] == "CONSISTENT"
     assert set(result["candidates"]) == set(K.CANDIDATE_ORDER) and result["economicReadingStatus"] == "ECONOMIC_READING_READY"
-    assert result["spyBasisDiagnostic"]["maxAbsoluteDailyDifference"] < 1e-9 and result["spyBasisDiagnostic"]["exDividendSessions"] > 100
+    assert result["spyBasisDiagnostic"]["maxAbsoluteDailyDifference"] > 1e-9 and result["spyBasisDiagnostic"]["exDividendSessions"] > 100
+    assert result["spyBasisDiagnostic"]["comparison"] == "YAHOO_ADJCLOSE_VS_REPLAY_V11_VENDOR_EQUIVALENT_FORWARD_FACTOR"
     assert result["interpretation"]["reading"] in {"REPLICATED_CONTROL_RETAINED", "NOT_REPLICATED_US_NOMINATION", "NOT_REPLICATED_US_TRADEOFF"}
     report = (tmp_path / "run" / X.REPORT_FILE).read_text()
     for name in (K.PASSIVE,) + K.CANDIDATE_ORDER:
@@ -761,10 +843,19 @@ def test_the_interpretation_table_is_applied_mechanically():
     assert out["noProtectionInUs"] is True
 
 
-def test_the_spy_basis_diagnostic_reconciles_close_plus_dividend():
+def test_the_spy_basis_diagnostic_matches_replay_v11_not_cash_reinvestment():
+    from pipeline import price_adjustment as PA
     raw = synthetic_raw(end="1996-12-31")["YAHOO_SPY"]["chart.json"]
     out = X.spy_basis_diagnostic(raw, "1993-02-08", "1996-12-31")
+    assert out["maxAbsoluteDailyDifference"] > 1e-9  # this fixture's adjclose was built with CASH, not the vendor recipe
+    close, events = SRC.cash_components(raw)
+    actions = pd.DataFrame([{"date": pd.Timestamp(d), PA.DIVIDEND: dividend, PA.SPLIT: split} for d, dividend, split in events]).set_index("date")
+    forward, _ = PA.to_total_return(pd.DataFrame({"Close": close}), actions)
+    doc = json.loads(raw)
+    doc["chart"]["result"][0]["indicators"]["adjclose"][0]["adjclose"] = forward["Close"].tolist()
+    out = X.spy_basis_diagnostic(json.dumps(doc).encode(), "1993-02-08", "1996-12-31")
     assert out["sessions"] > 900 and out["maxAbsoluteDailyDifference"] < 1e-9 and out["exDividendSessions"] >= 15
+    assert out["comparison"] == "YAHOO_ADJCLOSE_VS_REPLAY_V11_VENDOR_EQUIVALENT_FORWARD_FACTOR"
 
 
 @pytest.mark.parametrize("change", ["price", "rate", "adjusted", "dividend", "split", "identity"])

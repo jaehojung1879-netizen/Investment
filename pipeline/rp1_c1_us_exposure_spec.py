@@ -335,7 +335,7 @@ def snapshot_audit(snapshot_dir):
         try:
             sources[sid] = json.loads((base / sid / "audit.json").read_text())
         except (OSError, ValueError):
-            if sid in SRC.PRIMARY_IDS:
+            if sid in SRC.REQUIRED_IDS:
                 return None
     return {"sources": sources}
 
@@ -477,8 +477,25 @@ def cross_check_status(snapshot_dir, audit):
     a, b = source_audit_for_gate(snapshot_dir, "YAHOO_GSPC", audit), source_audit_for_gate(snapshot_dir, "FRED_SP500", audit)
     if a is None or b is None:
         return {"status": "NOT_ACQUIRED"}
+    # Revalidate the FRESH vendor bytes, not their equality to yesterday's licensed moving window.
+    try:
+        files = R.build(Path(snapshot_dir).parent, only=SRC.CROSSCHECK_IDS)
+        expected = {n: data for n, data in files.items() if n.startswith("FRED_SP500/")}
+        if not expected or any((Path(snapshot_dir) / n).read_bytes() != data for n, data in expected.items()):
+            return {"status": "FRESH_CROSSCHECK_SOURCE_MISMATCH"}
+        identity = json.loads(files["FRED_SP500/audit.json"])["identity"]
+        if not a["identityOk"] or not b["identityOk"] or not SRC.identity_ok("FRED_SP500", identity):
+            return {"status": "IDENTITY_MISMATCH"}
+        coverage = SRC.coverage_gate(b["dates"], str(b["dates"].min().date()), U.ANALYSIS_END)
+        # FRED's '.' on an exchange holiday is not a missing XNYS quote; measure missingness on the exchange calendar.
+        if not b["dates"].is_unique or not b["dates"].is_monotonic_increasing \
+                or coverage["coverage"] < SRC.SESSION_COVERAGE or coverage["maxConsecutiveMissing"] > SRC.MAX_CONSECUTIVE_MISSING:
+            return {"status": "CROSSCHECK_COVERAGE_FAILED", "coverage": coverage}
+    except (OSError, ValueError, KeyError, IndexError):
+        return {"status": "FRESH_CROSSCHECK_SOURCE_INVALID"}
     read = lambda sid: AN.obs_series(P.read_normalized((Path(snapshot_dir) / sid / "normalized.csv").read_bytes()))
-    return {**SRC.cross_check(read("YAHOO_GSPC"), read("FRED_SP500")), "readsLevelsForEqualityOnly": True}
+    return {**SRC.cross_check(read("YAHOO_GSPC"), read("FRED_SP500")), "readsLevelsForEqualityOnly": True,
+            "freshIdentityVerified": True, "coverage": coverage, "fullSeriesHashRole": "AUDIT_ONLY_MOVING_WINDOW"}
 
 
 def economic_gates(snapshot_dir, audit, first_execution):

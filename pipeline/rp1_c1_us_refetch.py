@@ -37,6 +37,7 @@ def contract():
     return {"version": VERSION, "startInclusive": U.GRID_START, "endInclusive": U.ANALYSIS_END,
             "admissionVersion": "SCOPED_PRIMARY_VENDOR_AND_CASH_ECONOMIC_V1",
             "cashInput": "exact native close, identity, dates and all actions; adjclose excluded ONLY from the separately versioned cash economic input",
+            "referenceCrossCheck": "FRED_SP500 moving window is re-derived and freshly identity/coverage/CONSISTENT checked; its full-series hash is audit-only, never permanent PRIMARY equality",
             "requestBounds": {"yahooStartUtc": U.GRID_START,
                               "yahooEndExclusiveUtc": str((pd.Timestamp(U.ANALYSIS_END) + pd.Timedelta(days=1)).date()),
                               "fredObservationEndInclusive": U.ANALYSIS_END},
@@ -122,7 +123,7 @@ def build(raw_dir, only=None, *, cash_only=False):
         if only is not None and sid not in only:
             continue
         if original.get("sources", {}).get(sid, {}).get("status") != "ACQUIRED":
-            if sid in S.PRIMARY_IDS:
+            if sid in S.REQUIRED_IDS:
                 raise ValueError("SOURCE_NOT_ACQUIRED:" + sid)
             continue
         base = raw_dir / sid
@@ -301,9 +302,10 @@ def admission_report(first, second, first_execution):
         scopes[scope] = {"status": "BLOCKED_HASH_MISMATCH" if changed else "MATCHED", "changedFiles": changed,
                          "first": a, "second": b}
     cash = [SP.cash_economic_gates(p, SP.snapshot_audit(p), first_execution) for p in (first, second)]
+    cross = [SP.cross_check_status(p, SP.snapshot_audit(p)) for p in (first, second)]
     ready = scopes["PRIMARY"]["status"] == "MATCHED" and scopes["CASH_ECONOMIC"]["status"] == "MATCHED" \
-        and all(c["status"] == "CASH_ECONOMIC_READY" for c in cash)
+        and all(c["status"] == "CASH_ECONOMIC_READY" for c in cash) and all(c["status"] == "CONSISTENT" for c in cross)
     return {"status": "EXACT_SCOPED_INPUT_MATCH" if ready else "SCOPED_INPUT_NOT_READY", "scopes": scopes,
-            "legacyVendorComparison": legacy, "cashEconomicReadiness": cash,
+            "legacyVendorComparison": legacy, "cashEconomicReadiness": cash, "referenceCrossChecks": cross,
             "originalScientificSha256": SP.ORIGINAL_SCIENTIFIC_SHA256, "cashEconomicSpec": SP.cash_economic_spec(),
             "sourceArtifacts": 0, "lockClaims": 0, "strategyOutcomes": 0}

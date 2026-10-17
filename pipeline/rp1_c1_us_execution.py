@@ -317,28 +317,26 @@ def load_cash_values(root, snapshot_dir, values, counters, permit, lock, sha, *,
 
 
 def spy_basis_diagnostic(raw_chart, first_execution, analysis_end):
-    """The frozen post-lock basis diagnostic of the economic asset: the vendor's adjusted daily return against (close + dividend) / previous close - 1
-    on every evaluation session. Descriptive; it changes nothing in either reading."""
+    """Post-lock compatibility diagnostic: Yahoo adjclose versus Replay v11's vendor-equivalent forward factor.
+
+    This is NOT a cash-dividend reinvestment comparison or independent vendor certification. Neither economic definition is changed.
+    """
+    from . import price_adjustment as PA
     result = json.loads(raw_chart)["chart"]["result"][0]
     offset = int(result.get("meta", {}).get("gmtoffset", 0))
     dates = pd.DatetimeIndex([pd.Timestamp(int(t) + offset, unit="s").normalize() for t in result["timestamp"]])
-    close = pd.Series(result["indicators"]["quote"][0]["close"], index=dates, dtype=float)
+    close, events = SRC.cash_components(raw_chart)
     adj = pd.Series(result["indicators"]["adjclose"][0]["adjclose"], index=dates, dtype=float)
-    div = pd.Series(0.0, index=dates)
-    for e in ((result.get("events") or {}).get("dividends") or {}).values():
-        d = pd.Timestamp(int(e["date"]) + offset, unit="s").normalize()
-        if d in div.index:
-            div.loc[d] += float(e["amount"])
-    frame = pd.DataFrame({"close": close, "adj": adj, "div": div}).dropna()
-    frame = frame[(frame.index >= pd.Timestamp(first_execution)) & (frame.index <= pd.Timestamp(analysis_end))]
-    vendor = frame["adj"].pct_change()
-    rebuilt = (frame["close"] + frame["div"]) / frame["close"].shift(1) - 1.0
-    diff = (vendor - rebuilt).dropna()
+    actions = pd.DataFrame([{"date": pd.Timestamp(d), PA.DIVIDEND: dividend, PA.SPLIT: split} for d, dividend, split in events]).set_index("date")
+    forward, _ = PA.to_total_return(pd.DataFrame({"Close": close}), actions)
+    diff = (adj.pct_change() - forward["Close"].pct_change()).dropna()
+    diff = diff[(diff.index >= pd.Timestamp(first_execution)) & (diff.index <= pd.Timestamp(analysis_end))]
     years = len(diff) / K.ANNUALISATION
     return {"sessions": int(len(diff)), "maxAbsoluteDailyDifference": float(diff.abs().max()) if len(diff) else None,
             "sessionsAbove1bp": int((diff.abs() > 1e-4).sum()), "meanDailyDifferencePerYear": float(diff.sum() / years) if years else None,
-            "exDividendSessions": int((frame["div"] > 0).sum()),
-            "meaning": "how far the vendor's adjusted series departs from close-plus-cash-dividend reinvestment; descriptive, never a correction"}
+            "exDividendSessions": sum(first_execution <= d <= analysis_end for d, _, _ in events),
+            "comparison": "YAHOO_ADJCLOSE_VS_REPLAY_V11_VENDOR_EQUIVALENT_FORWARD_FACTOR",
+            "meaning": "vendor-factor compatibility only, not cash reinvestment or independent certification; descriptive, never a correction"}
 
 
 def interpretation(result):

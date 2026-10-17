@@ -75,7 +75,9 @@ SOURCES = {
                   "use": "the ECONOMIC reading's cash rate on the de-risked share; never a state input"},
 }
 ACQUIRED_IDS = tuple(SOURCES)
-PRIMARY_IDS = ("YAHOO_GSPC", "FRED_SP500")
+PRIMARY_IDS = ("YAHOO_GSPC",)  # exact strategy inputs; FRED's licensed moving window is never a path/state input
+CROSSCHECK_IDS = ("FRED_SP500",)
+REQUIRED_IDS = PRIMARY_IDS + CROSSCHECK_IDS
 CASH_BASIS = "RECONSTRUCTED_AS_TRADED_CASH_REINVEST_EX_CLOSE_V1"
 
 # ---- gates (inherited values; the US-specific choice is only WHICH window they apply to) ----------------------------------------------------
@@ -231,8 +233,8 @@ def yahoo_split_dates(raw):
 def corporate_action_gate(raw_chart, asset_dates, first_execution, analysis_end):
     """Dates-only check of the economic asset's corporate-action calendar: every dividend event inside the window falls on an XNYS session the asset
     quotes, and no split is reported (a split inside a back-adjusted series would need its own audit). Reports events per year. The cash amounts,
-    the closes and the adjusted closes are NOT read here; the basis reconciliation (adjusted return against close plus dividend) is the frozen
-    post-lock diagnostic."""
+    the closes and the adjusted closes are NOT read here; the post-lock vendor diagnostic compares adjusted return with Replay v11's
+    vendor-equivalent forward factor, not the separately defined cash-dividend reinvestment."""
     dividends = [d for d in yahoo_dividend_dates(raw_chart) if first_execution <= d <= analysis_end]
     splits = yahoo_split_dates(raw_chart)
     sessions = set(xnys_sessions(first_execution, analysis_end))
@@ -305,8 +307,12 @@ def cash_input_gate(raw_chart, first_execution, analysis_end):
         missing = coverage_gate(close.index, first_execution, analysis_end)["missingCount"]
         if missing:
             raise ValueError("CASH_ASSET_SESSION_MISSING")
+        dates_2004 = sorted(d for d, _, _ in events if d.startswith("2004-"))
         return {"status": "CASH_INPUT_READY", "reasons": [], "sessions": len(close), "firstDate": str(close.index[0].date()),
                 "lastDate": str(close.index[-1].date()), "dividendEvents": len(events), "splitEvents": 0,
+                "dividend2004": {"eventDates": dates_2004, "events": len(dates_2004), "uniqueDates": len(set(dates_2004)),
+                                 "duplicateDates": len(dates_2004) - len(set(dates_2004)),
+                                 "classification": "VENDOR_DATES_ONLY_REGULAR_VS_SPECIAL_NOT_ISSUER_VERIFIED"},
                 "unit": "VENDOR_DECLARED_USD_PER_SHARE_NO_SPLITS", "independentlyIssuerVerified": False}
     except (ValueError, KeyError, TypeError, IndexError) as error:
         reason = str(error) if isinstance(error, ValueError) and str(error).isupper() else "CASH_INPUT_SCHEMA_INVALID"
