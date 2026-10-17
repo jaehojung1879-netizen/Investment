@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 from dataclasses import asdict, dataclass
+from functools import lru_cache
 from pathlib import PurePosixPath
 import re
 
@@ -200,6 +201,17 @@ def filing_prefix(records, market, signal_date):
     return tuple(deepcopy(selected))
 
 
+@lru_cache(maxsize=4096)
+def _us_completed_at(stamp):
+    """Identical exchange-clock proof shared by one cross-section's labels.
+
+    Timestamp, including buffer/early-close differences, is the cache key.
+    Every LabelReference still validates its own identity, interval and basis.
+    """
+    from .us_daily_market_data import completed_sessions
+    return tuple(completed_sessions(stamp))
+
+
 @dataclass(frozen=True)
 class LabelReference:
     """Separate metadata only. No future price, return or winner value is held."""
@@ -233,8 +245,7 @@ class LabelReference:
             if _utc(self.maturity_at) < PRC.maturity_close_utc(entry, self.horizon_sessions):
                 raise ValueError("MATURITY_SESSION_NOT_FINAL")
         else:
-            from .us_daily_market_data import completed_sessions
-            if end not in completed_sessions(str(_utc(self.maturity_at))):
+            if end not in _us_completed_at(str(_utc(self.maturity_at))):
                 raise ValueError("MATURITY_SESSION_NOT_FINAL")
         if self.price_basis_status not in {"VERIFIED", "UNRESOLVED"}:
             raise ValueError("PRICE_BASIS_STATUS_REQUIRED")

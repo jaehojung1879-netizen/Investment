@@ -1,5 +1,7 @@
 # Winner & Inflection Discovery — Exploratory Program
 
+후속 US B/H126/2020 실행 경로와 단일 승인 절차는 [실행 안내](execution-ko.md), 고정 사양은 [execution-us-b-h126-2020-v1.json](execution-us-b-h126-2020-v1.json)에 있다. 아래는 #250에서 완료한 원천 준비 기록이며 재실측하지 않았다. 실제 역사 라벨 접근은 별도 승인 전까지 차단된다.
+
 독립적인 승자·실패 기업의 **상승 이전 상태 변화** 탐색 기반이다. Claude의 시장위험·ETF 노출 연구와 선후행 관계가 없다. main `0131a0d`에 병합된 #247을 재사용했고, 미병합 Draft #248의 Study A는 참고했다. 이 PR은 실제 미래 수익률·승자 라벨을 열거나 역사 모델을 학습하지 않는다. KR Phase C 및 다른 봉인의 명세·결과·잠금, 운영 정책은 수정하지 않았다.
 
 검토할 실행 계획은 [protocol-v1.json](protocol-v1.json), 입력 실측 원본은 [readiness.json](readiness.json)이다. 프로토콜의 `PREVIEW_REVIEW_REQUIRED`는 실행 승인이 아니다. 기존 KR 연구와 저장소의 공개 결과를 이미 접한 환경이므로, 나중의 역사 탐색도 독립 OOS 증거로 주장하지 않는다.
