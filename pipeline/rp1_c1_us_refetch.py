@@ -31,6 +31,9 @@ def sha(data):
 
 def contract():
     return {"version": VERSION, "startInclusive": U.GRID_START, "endInclusive": U.ANALYSIS_END,
+            "requestBounds": {"yahooStartUtc": U.GRID_START,
+                              "yahooEndExclusiveUtc": str((pd.Timestamp(U.ANALYSIS_END) + pd.Timedelta(days=1)).date()),
+                              "fredObservationEndInclusive": U.ANALYSIS_END},
             "calendar": "retain vendor dates, including off-calendar dates; no fill/sort/dedup/splice",
             "numbers": "exact decimal strings in bounded vendor context; existing parser float64 repr in normalized.csv; no rounding or rebasing",
             "dates": "exchange-local vendor bar date (timestamp + gmtoffset), canonical UTC noon; FRED observation date",

@@ -18,6 +18,7 @@ import importlib.util
 import json
 from pathlib import Path
 import sys
+import urllib.parse
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -37,13 +38,31 @@ def kr_transport():
     return module
 
 
+def fetch_yahoo_fixed(entry, transport):
+    """Reuse the sealed transport; its Yahoo helper ignores `today` and uses now.
+
+    Pin the REQUEST bounds too. No response value is corrected or re-based.
+    """
+    import pandas as pd
+    bounds = R.contract()["requestBounds"]
+    start = int(pd.Timestamp(bounds["yahooStartUtc"], tz="UTC").timestamp())
+    end = int(pd.Timestamp(bounds["yahooEndExclusiveUtc"], tz="UTC").timestamp())
+    symbol = urllib.parse.quote(entry["symbol"], safe="")
+    for host in transport.YAHOO_HOSTS:
+        url = f"{host}/v8/finance/chart/{symbol}?period1={start}&period2={end}&interval=1d&events=div%2Csplit&includePrePost=false"
+        status, raw, error = transport.get(url)
+        if status == 200 and raw:
+            return {"raw": {"chart.json": raw}, "status": {"chart": status}, "error": None, "host": host.split("//")[1]}
+    return {"raw": {}, "status": {"chart": status}, "error": error, "host": None}
+
+
 def acquire_one(sid, key, today, out, transport):
     entry = SRC.SOURCES[sid]
     record = {"id": sid, "symbol": entry["symbol"], "vendor": entry["vendor"], "instrument": entry["instrument"], "basis": entry["basis"],
               "unit": entry.get("unit"), "vintageClass": entry["vintageClass"], "rights": SRC.SOURCE_RIGHTS[sid]["class"],
               "fetchedAtUtc": datetime.now(timezone.utc).isoformat(), "status": "FAILED"}
     try:
-        got = transport.fetch_fred(entry, key, today) if entry["fetch"] == "fred" else transport.fetch_yahoo(entry, today)
+        got = transport.fetch_fred(entry, key, R.contract()["requestBounds"]["fredObservationEndInclusive"]) if entry["fetch"] == "fred" else fetch_yahoo_fixed(entry, transport)
     except Exception as error:  # a transport failure is recorded, never hidden or retried into another instrument
         record["error"] = type(error).__name__
         return record

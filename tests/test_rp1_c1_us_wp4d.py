@@ -220,8 +220,17 @@ def synthetic_raw(end="2026-10-02", seed=7):
 
 
 class FakeTransport:
+    YAHOO_HOSTS = ("https://fake",)
+
     def __init__(self, raw):
-        self.raw = raw
+        self.raw, self.urls = raw, []
+
+    def get(self, url):
+        import urllib.parse
+        self.urls.append(url)
+        symbol=urllib.parse.unquote(urllib.parse.urlparse(url).path.split("/")[-1])
+        sid=next(k for k,v in SRC.SOURCES.items() if v["symbol"]==symbol)
+        return 200,self.raw[sid]["chart.json"],None
 
     def fetch_fred(self, entry, key, today):
         return {"status": {"observations": 200}, "host": "fake", "error": None, "raw": self.raw[_sid(entry)]}
@@ -672,6 +681,8 @@ def test_decimal_context_has_no_rounding_or_global_float_rebase():
 def test_access_denial_publishes_no_source_and_does_not_prepare_inputs(tmp_path, monkeypatch, capsys):
     acquire = load_script("acquire_denied_rp1", "scripts/acquire_rp1_c1_us_sources.py")
     class Denied:
+        YAHOO_HOSTS = ("https://fake",)
+        def get(self, *_): return 403,b"","PRIVATE_SOURCE_SENTINEL"
         def fetch_fred(self, *_): return {"status": 403, "host": "fake", "raw": {}, "error": "PRIVATE_SOURCE_SENTINEL"}
         fetch_yahoo = fetch_fred
     acquire.kr_transport = Denied
@@ -703,3 +714,14 @@ def test_workflow_checks_owner_before_fetch_and_never_uploads_sources():
     for name in ("rp1-c1-freeze-sources", "rp1-c1-source-probe", "rp1-c1-dry-run", "rp1-c1-execute"):
         block = job_block(text, name)
         assert not any(t in block for t in ("openssl", "secret set", "snapshot.tar", "secrets.RP1_C1"))
+
+
+def test_yahoo_request_interval_is_frozen_not_the_current_clock():
+    import urllib.parse
+    acquire=load_script("fixed_request_rp1", "scripts/acquire_rp1_c1_us_sources.py")
+    transport=FakeTransport(synthetic_raw(end="1994-01-01"))
+    for _ in range(2): acquire.fetch_yahoo_fixed(SRC.SOURCES["YAHOO_GSPC"],transport)
+    assert transport.urls[0]==transport.urls[1]
+    query=urllib.parse.parse_qs(urllib.parse.urlparse(transport.urls[0]).query)
+    assert int(query["period1"][0])==int(pd.Timestamp(U.GRID_START,tz="UTC").timestamp())
+    assert int(query["period2"][0])==int(pd.Timestamp("2026-09-18",tz="UTC").timestamp())

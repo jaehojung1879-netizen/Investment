@@ -162,9 +162,11 @@ jobs:
           from pipeline import rp1_c1_us_refetch as R
           frozen = json.loads(Path('probe/freeze-preview.json').read_bytes())
           actual = R.fingerprints(Path(os.environ['RUNNER_TEMP']) / 'rp1-c1-refetch-check/analysis')
-          if actual != frozen['analysisFiles']:
+          differences = {p:{'expected':frozen['analysisFiles'].get(p),'actual':actual.get(p)} for p in sorted(set(actual)|set(frozen['analysisFiles'])) if actual.get(p)!=frozen['analysisFiles'].get(p)}
+          Path('probe/refetch.json').write_text(json.dumps({'status':'BLOCKED_HASH_MISMATCH' if differences else 'EXACT_BOUNDED_INPUT_MATCH','files':len(actual),'hashDifferences':differences,'sourceArtifacts':0,'lockClaims':0,'outcomes':0}))
+          if differences:
+              print('Changed input files (hashes only retained):', ', '.join(differences))
               raise SystemExit('REFETCH_ANALYSIS_HASH_MISMATCH')
-          Path('probe/refetch.json').write_text(json.dumps({'status':'EXACT_BOUNDED_INPUT_MATCH','files':len(actual),'sourceArtifacts':0,'lockClaims':0,'outcomes':0}))
           print('EXACT_BOUNDED_INPUT_MATCH; no source artifact or execution lock')
           PY_CHECK
       - uses: actions/upload-artifact@v4

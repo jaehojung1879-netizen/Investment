@@ -98,6 +98,7 @@ Yahoo/S&P 원천은 재배포 제한, DTB3는 citation이 요청되는 public-do
 
 정규화 계약은 원천 동결 전에 코드와 spec에 고정된다(`pipeline/rp1_c1_us_refetch.py`).
 
+- 공급자 요청 범위도 고정한다: Yahoo period1=1990-01-01 UTC, period2=2026-09-18 UTC(미포함), FRED observation_end=2026-09-17. 봉인된 KR transport의 Yahoo helper는 today 인자를 무시하고 현재 epoch를 사용하므로, US 수집기에서 같은 transport.get/host를 사용해 요청 범위만 고정한다. KR 파일은 수정하지 않는다.
 - 사용 구간은 기존 grid 시작 **1990-01-01부터 2026-09-17까지 포함**한다. 평가 시작 1993-02-01과 모든 워밍업/lag 규칙은 그대로다. 공급자 날짜를 보존하며 휴장일·중복·순서 오류를 채우거나 정렬/제거하지 않는다.
 - Yahoo 일별 bar의 exchange-local 날짜를 기존 `timestamp + gmtoffset` 규칙으로 정한 뒤 UTC 정오로 표현한다. close, SPY adjclose, 구간 내 모든 기업행동 종류와 필드를 보존한다. 과거 adjusted close를 보정·재기준화하거나 다른 공급자와 이어 붙이지 않는다.
 - FRED는 구간 내 observation date/value와 id·units·frequency·계절조정 신원을 고정한다. 수집 시각·HTTP envelope·현재 quote 메타데이터·구간 밖 행/이벤트는 분석 해시에 넣지 않는다.

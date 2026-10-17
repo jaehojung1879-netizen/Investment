@@ -57,7 +57,7 @@
     "data/kr-market-risk-anatomy-v1/sources/FRED_DGS10/normalized.csv": "db7dc41d9d40ad5608e0ead00086ec15f5969cf785aa378f05cda576a160bc92",
     "data/kr-market-risk-anatomy-v1/sources/FRED_DGS3MO/normalized.csv": "7ce2bdbe2547e4fc16c18a36295871d16099d60f51f10edfc2cd8d42218dc06c",
     "data/kr-market-risk-anatomy-v1/sources/FRED_VIXCLS/normalized.csv": "dd0ccfe0a13f5e72a842dc27d53733748f24fb380808a7b2fb9babb40caa00ef",
-    "docs/research-program/rp1-c1-us-exposure-ladder-replication.md": "1fd23f621993cf51f66724ce2a324403151bef75af84b5e6865110611dfb1848",
+    "docs/research-program/rp1-c1-us-exposure-ladder-replication.md": "c20d27654105829ffbb4a9ba9630532352376361863e9fd71a4a472abf4b9a25",
     "docs/results/kr-market-risk-model-v1-execution-started.json": "9d5e322ba54a0c7da3e467c72111ce955c365d650827282f9c9bf379c2ca307f",
     "docs/results/kr-market-risk-model-v1-manifest.json": "81dc4408bf8f9f2464ce827b2783be2cf486e1ae232e3fec7b65a282114f8445",
     "docs/results/kr-market-risk-model-v1-result.json": "2578bbfa245a6540235cc05e231441b4ebb4da165240a84e715756477a897c4b",
@@ -123,7 +123,7 @@
     "pipeline/replay_valuation.py": "18e673a0721077af06b8ca9f774650c27fa58820a489b9ea639a9ccf02693bf3",
     "pipeline/rp1_c1_us_exposure.py": "7f1717eeaeca38342e86b92bab498897b596ffe74ef2dd48dc106d962e7a83b4",
     "pipeline/rp1_c1_us_exposure_spec.py": "d7e625df85072c6e8bb804d195b2f63e2c943870bb7747ed09a391e2cbaa7e8e",
-    "pipeline/rp1_c1_us_refetch.py": "3cdb7fc25c0e25a99af8afa2e8fa71834c1e2e23119f9754da5a2ebeda47ee05",
+    "pipeline/rp1_c1_us_refetch.py": "11a931e12f7b1e9a5278290e060838cbb5644f41f5f9f1041a35dcfc574dbf96",
     "pipeline/rp1_c1_us_sources.py": "da95aadfdeeca435d527e7cb437438561ca661e380cbef528f24d3bd461a3253",
     "pipeline/sectors.py": "1cb470d676eeb24d5fa4976bf8fc0f71f808957f132c908158acb6422fde60ba",
     "pipeline/selection_null.py": "b00e7419a8a620e284f3b5a15aafa66e9a8f776b81da027a766a72b3eecf5e17",
@@ -131,7 +131,7 @@
     "research_specs/kr-market-risk-model-v1.json": "fa7484c690d125089d628654a86199a23ad95dcfeb9b1b0682bdc704588ae1b4",
     "research_specs/kr-market-risk-model-v1.sha256": "194f65b655ae28c5861b17652be681b4c6647436af107d3fd81b0ecbc3666339",
     "scripts/acquire_kr_market_risk_sources.py": "f0c31208a40f31cb4f3b7600256b789923e0aa3a32092d2d1d6f0dc25debe7cf",
-    "scripts/acquire_rp1_c1_us_sources.py": "b0c40929342b3d3134f60dbd9858730fc97562268f3f99e0f59c05002b75d9c8",
+    "scripts/acquire_rp1_c1_us_sources.py": "3bea30b1b69a30de0b175f9614511bf8e5c6c1ede685e4e50f484c87eef5738b",
     "scripts/build_rp1_c1_us_exposure_spec.py": "44fa9b70fa390e751f54c26eb41ce05359135565baef842653751e463259981f",
     "scripts/run_rp1_c1_us_exposure.py": "80ded0e6218875cb4cb53faa180b1512a42638c8ae06caf3f61679f1805b17b8"
   },
@@ -460,6 +460,11 @@
           "seasonal_adjustment_short"
         ],
         "numbers": "exact decimal strings in bounded vendor context; existing parser float64 repr in normalized.csv; no rounding or rebasing",
+        "requestBounds": {
+          "fredObservationEndInclusive": "2026-09-17",
+          "yahooEndExclusiveUtc": "2026-09-18",
+          "yahooStartUtc": "1990-01-01"
+        },
         "startInclusive": "1990-01-01",
         "version": "RP1_C1_HASH_REFETCH_V2",
         "yahooFields": [
