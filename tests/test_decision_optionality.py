@@ -75,6 +75,7 @@ def test_d1_removes_only_economic_entry_gate():
     current, forced = decide(f), decide(f, "FORCED_FIVE")
     assert current["stockCount"] == 0 and forced["stockCount"] == 5
     assert current["informationSha256"] == forced["informationSha256"]
+    assert "합성" in forced["selection"]["notAForecastKo"]
     f = replace(f, calibration=None)
     assert decide(f, "FORCED_FIVE")["stockCount"] == 0
     assert decide(f, "FORCED_FIVE")["forcedFiveShortfall"]

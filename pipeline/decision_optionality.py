@@ -131,6 +131,9 @@ def _select(candidates, scored, policy):
     detached = deepcopy(scored)
     selected, meta = KP.select_portfolio_by_scores(
         deepcopy(candidates), detached, deepcopy(W.SELECTION_CFG), method=f"{VERSION}:{policy}")
+    # KP's generic challenger prose describes historical OOS; that is not this input.
+    meta["scoreFormulaKo"] = "기존 점수와 고정된 비교군 관문을 합성 입력에 적용"
+    meta["notAForecastKo"] = "합성 의사결정 검증이며 실제 OOS 성과·투자 추천이 아닙니다."
     # Shared nested lists preserve ALL constraint reasons, outside the top-8 UI window.
     for row, audited in zip(scored, detached):
         row["exclusionCodes"] = list(audited["exclusionCodes"])
