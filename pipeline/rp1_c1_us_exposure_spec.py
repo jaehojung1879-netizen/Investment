@@ -1,6 +1,6 @@
 """rp1-c1-us-exposure-ladder-replication-v1 — the frozen preregistration, the outcome-free readiness and the KR-equivalence audit.
 
-This change computes no US outcome. Three modes exist and none of them reads a US price, return or rate VALUE:
+This change computes no US outcome. Verification/readiness do not evaluate US returns, states or portfolios. Source parsing/hashing and the registered pointwise vendor-level equality check are pre-lock data checks:
 
 * `verify`      — spec identity, import closure, every pin (the sealed KR spec and result, the reused KR source bytes, the US source-freeze manifest
                   when one is committed).
@@ -9,8 +9,8 @@ This change computes no US outcome. Three modes exist and none of them reads a U
 * `equivalence` — reproduces the SEALED KR decision from the retained KR bytes through the calendar-parameterised wrapper. It reads KR values the
                   sealed study already published and opens no new outcome; it proves the wrapper changed nothing but the calendar.
 
-The US raw bytes are never committed (`rp1_c1_us_sources.STORAGE`): they live in one encrypted Actions artifact and git carries a dates-and-hashes
-manifest under `docs/research-program/sources/`, which this spec pins. A snapshot directory (decrypted inside a runner, outside the repository) is
+The US raw bytes are never committed (`rp1_c1_us_sources.STORAGE`): they are reacquired transiently and git carries only a dates-and-hashes
+manifest under `docs/research-program/sources/`, which this spec pins. A snapshot directory (reacquired inside a runner, outside the repository) is
 verified file by file against that manifest before any gate reads it.
 
 The formal one-shot execution (owner authorization, durable lock, marker, US value reads) is `pipeline/rp1_c1_us_execution.py`, outside this sealed
@@ -33,6 +33,7 @@ from . import kr_market_risk_model_execution as E
 from . import kr_market_risk_source_parse as P
 from . import rp1_c1_us_exposure as U
 from . import rp1_c1_us_sources as SRC
+from . import rp1_c1_us_refetch as R
 from .kr_model_portfolio_execution import digest, file_hash, import_closure
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -57,6 +58,7 @@ DESIGN_FAILED = "DESIGN_CHECK_NOT_DETERMINABLE"
 MIN_DETERMINABLE_SHARE = SRC.S.FAMILY_FAST_COVERAGE        # 0.99, inherited exactly as the sealed KR readiness did
 EQUIVALENCE_TOLERANCE = 1e-12
 SCIENTIFIC_KEYS = ("model", "portfolio", "evaluation", "decision", "interpretation", "stopRules")
+ORIGINAL_SCIENTIFIC_SHA256 = "ad454ebbf2d7f0834b9de8ac136ba7842855d49146dbf1b123e1538fdc615252"
 
 
 @dataclass
@@ -206,6 +208,25 @@ def scientific_digest(spec):
     return digest({k: spec[k] for k in SCIENTIFIC_KEYS})
 
 
+def cash_economic_spec():
+    """A separately identified scientific definition, never a rewrite of C1's vendor-adjusted reading."""
+    definition = {"id": "rp1-c1-spy-cash-reinvestment-economic-v1", "parentScientificSha256": ORIGINAL_SCIENTIFIC_SHA256,
+        "returnBasis": SRC.CASH_BASIS, "inputBasis": "SPLIT_ADJUSTED_DIVIDEND_UNADJUSTED",
+        "formula": "splitRatio * (P_t + D_t) / P_(t-1); reinvest USD cash dividend at ex-date close; SPY splits MUST be absent",
+        "implementation": "pipeline.winner_inflection_execution.cash_reinvestment_close (PR253); no new return arithmetic",
+        "differenceFromReplayV11": "cash reinvestment is not the Replay v11 vendor factor P_t/P_(t-1) / (1-D_t/P_(t-1))",
+        "admission": "exact native close, dates, identity, ALL corporate actions and DTB3; any split, ambiguous unit, duplicate or missing session blocks this reading",
+        "vendorSeriesRole": "audit/legacy diagnostic only; never used to compute or admit this reading",
+        "unit": "vendor-declared USD per share; no splits in the full bounded history; not independently issuer certified",
+        "window": evaluation_definition()["window"], "costs": {"buy": U.US_BUY_COST, "sell": U.US_SELL_COST},
+        "cash": U.CASH_RATE_DEFINITION, "targets": "identical frozen PRIMARY targets; cannot enter PRIMARY decision",
+        "metrics": "reuse rp1_c1_us_exposure and its independent validator without changing any metric",
+        "sourceGateFailure": "UNRESOLVED for this reading only; PRIMARY remains independent",
+        "execution": "only after exact committed owner authorization, scoped hashes, all PRIMARY gates, atomic lock and marker",
+        "status": "SEPARATELY_VERSIONED_DESCRIPTIVE_ECONOMIC_READING_NOT_ORIGINAL_VENDOR_ECONOMIC"}
+    return {"definition": definition, "scientificSha256": digest(definition)}
+
+
 # =======================================================================================================================================
 # Pins
 # =======================================================================================================================================
@@ -236,9 +257,13 @@ def us_snapshot_pin(root=ROOT):
     manifest = json.loads((Path(root) / paths[0]).read_text())
     if manifest.get("studyId") != STUDY or manifest.get("storage") != SRC.STORAGE:
         raise ValueError("SOURCE_FREEZE_MANIFEST_IS_NOT_THIS_STUDYS")
+    if manifest.get("normalization") != {"contract": R.contract(), "codeHashes": R.code_pins(root)}:
+        raise ValueError("NORMALIZATION_CONTRACT_OR_CODE_CHANGED")
+    if manifest.get("cashEconomicSpec") != cash_economic_spec():
+        raise ValueError("SOURCE_FREEZE_CASH_ECONOMIC_SPEC_CHANGED")
     return {"storage": SRC.STORAGE, "status": "FROZEN", "manifestPath": paths[0], "manifestSha256": file_hash(Path(root) / paths[0]),
-            "freezeRunId": manifest["freezeRunId"], "artifactName": manifest["artifact"]["name"], "artifactId": manifest["artifact"]["id"],
-            "ciphertextSha256": manifest["ciphertextSha256"], "files": manifest["files"]}
+            "freezeRunId": manifest["freezeRunId"], "normalization": manifest["normalization"], "analysisFiles": manifest["analysisFiles"],
+            "scopedInputs": manifest["scopedInputs"]}
 
 
 def verify_kr_pins(spec, root=ROOT):
@@ -253,16 +278,21 @@ def verify_kr_pins(spec, root=ROOT):
     return True
 
 
-def verify_us_snapshot(spec, root=ROOT, snapshot_dir=None):
+def verify_us_snapshot(spec, root=ROOT, snapshot_dir=None, scope="PRIMARY"):
     """True when the spec pins a source freeze. The committed manifest must still hash to the pin; a snapshot directory, when given, must hold
-    exactly the manifest's files with exactly its hashes."""
+    exactly the bounded analysis bytes; raw response and collection-time differences are audit-only."""
     pin = spec["inputs"]["usSnapshot"]
     if pin["status"] != "FROZEN":
         return False
     if file_hash(Path(root) / pin["manifestPath"]) != pin["manifestSha256"]:
         raise ValueError("SOURCE_FREEZE_MANIFEST_CHANGED")
-    if snapshot_dir is not None and snapshot_files(snapshot_dir) != pin["files"]:
-        raise ValueError("US_SNAPSHOT_DIFFERS_FROM_THE_FROZEN_MANIFEST")
+    manifest = json.loads((Path(root) / pin["manifestPath"]).read_bytes())
+    if pin["scopedInputs"] != manifest.get("scopedInputs") or pin["analysisFiles"] != manifest.get("analysisFiles"):
+        raise ValueError("SOURCE_FREEZE_SCOPED_PINS_CHANGED")
+    if pin.get("normalization") != {"contract": R.contract(), "codeHashes": R.code_pins(root)}:
+        raise ValueError("NORMALIZATION_CONTRACT_OR_CODE_CHANGED")
+    if snapshot_dir is not None and R.scoped_fingerprints(snapshot_dir, scope) != pin["scopedInputs"][scope]:
+        raise ValueError("US_ANALYSIS_INPUT_DIFFERS_FROM_THE_FROZEN_MANIFEST:" + scope)
     return True
 
 
@@ -275,6 +305,8 @@ def load_spec(root=ROOT):
         raise ValueError("SPEC_IDENTITY_CHANGED")
     if scientific_digest(spec) != (root / SCIENTIFIC_SIDECAR).read_text().strip():
         raise ValueError("SCIENTIFIC_CONTENT_CHANGED")
+    if spec.get("cashEconomicSpec") != cash_economic_spec():
+        raise ValueError("SEPARATE_CASH_ECONOMIC_SPEC_CHANGED")
     expected = sorted(set(import_closure(spec["entryPoints"], root)) | set(spec["sealedDataInputs"]))
     if expected != sorted(spec["dependencyHashes"]):
         raise ValueError("IMPORT_CLOSURE_CHANGED")
@@ -295,8 +327,17 @@ def load_spec(root=ROOT):
 # Outcome-free readiness (dates only)
 # =======================================================================================================================================
 def snapshot_audit(snapshot_dir):
-    path = None if snapshot_dir is None else Path(snapshot_dir) / "audit.json"
-    return json.loads(path.read_text()) if path is not None and path.exists() else None
+    if snapshot_dir is None:
+        return None
+    base = Path(snapshot_dir)
+    sources = {}
+    for sid in SRC.ACQUIRED_IDS:
+        try:
+            sources[sid] = json.loads((base / sid / "audit.json").read_text())
+        except (OSError, ValueError):
+            if sid in SRC.REQUIRED_IDS:
+                return None
+    return {"sources": sources}
 
 
 def normalized_dates(path):
@@ -311,7 +352,10 @@ def source_audit_for_gate(snapshot_dir, sid, audit):
     record = (audit or {}).get("sources", {}).get(sid)
     if not record or record.get("status") != "ACQUIRED":
         return None
-    dates = normalized_dates(Path(snapshot_dir) / sid / "normalized.csv")
+    try:
+        dates = normalized_dates(Path(snapshot_dir) / sid / "normalized.csv")
+    except (OSError, ValueError, IndexError, StopIteration):
+        return None
     return {"status": "ACQUIRED", "dates": dates, "dropped": record.get("droppedRows", 0), "rows": record.get("rawRows", len(dates)),
             "identityOk": record.get("identityOk", False)}
 
@@ -335,8 +379,8 @@ def kr_input_dates(root=ROOT):
 
 
 def readiness_audit(root=ROOT, assume_complete_reference=False, snapshot_dir=None, require_frozen=False):
-    """DECISION_READY or DECISION_BLOCKED from identities and observation DATES alone, on the snapshot directory `snapshot_dir` (decrypted outside
-    the repository). With `require_frozen` (the formal path) the spec must pin a source freeze and the directory must match it file for file; without
+    """PRIMARY readiness from identities/dates; separate cash input sanity does not compute a return. The snapshot stays outside
+    the repository. With `require_frozen` (the formal path) the spec must pin a source freeze and the PRIMARY inputs must match exactly; without
     it (the outcome-free source probe and the freeze itself) an unpinned snapshot is gated and reported as UNPINNED. With `assume_complete_reference`
     (a design check only, never a gate) the US reference is taken to quote every XNYS session."""
     root = Path(root)
@@ -400,6 +444,24 @@ def readiness_audit(root=ROOT, assume_complete_reference=False, snapshot_dir=Non
             blockers.append("CALENDAR_TREATS_A_KNOWN_CLOSURE_AS_A_SESSION")
         economic = economic_gates(snapshot_dir, audit, first_execution)
         details["economicReading"] = economic
+        details["cashEconomicReading"] = cash_economic_gates(snapshot_dir, audit, first_execution)
+        out["scopedAdmission"] = {}
+        for scope in R.SCOPES:
+            matched = None
+            if require_frozen and spec is not None:
+                try:
+                    matched = verify_us_snapshot(spec, root, snapshot_dir, scope)
+                except (ValueError, OSError, KeyError):
+                    matched = False
+            out["scopedAdmission"][scope] = "UNPINNED" if matched is None else "MATCHED" if matched else "BLOCKED_HASH_MISMATCH"
+        for scope, key, unresolved in (("VENDOR_ECONOMIC", "economicReading", "ECONOMIC_READING_UNRESOLVED"),
+                                       ("CASH_ECONOMIC", "cashEconomicReading", "CASH_ECONOMIC_UNRESOLVED")):
+            if out["scopedAdmission"][scope] == "BLOCKED_HASH_MISMATCH":
+                details[key] = {**details[key], "status": unresolved, "hashAdmission": "BLOCKED_HASH_MISMATCH"}
+        if require_frozen and spec is not None and spec["inputs"]["usSnapshot"]["status"] == "FROZEN":
+            baseline = {n: h for n, h in spec["inputs"]["usSnapshot"]["analysisFiles"].items() if n.startswith("FRED_SP500/")}
+            cross = details["vendorCrossCheck"]
+            cross["frozenHashAudit"] = {"changed": baseline != cross.get("currentFiles"), "frozen": baseline, "strategyInput": False}
     for rel, code in ((RESULT_PATH, "RESULT"), (MARKER_PATH, "MARKER")):
         if (root / rel).exists():
             blockers.append("RP1_C1_" + code + "_ALREADY_COMMITTED")
@@ -419,8 +481,26 @@ def cross_check_status(snapshot_dir, audit):
     a, b = source_audit_for_gate(snapshot_dir, "YAHOO_GSPC", audit), source_audit_for_gate(snapshot_dir, "FRED_SP500", audit)
     if a is None or b is None:
         return {"status": "NOT_ACQUIRED"}
+    # Revalidate the FRESH vendor bytes, not their equality to yesterday's licensed moving window.
+    try:
+        files = R.build(Path(snapshot_dir).parent, only=SRC.CROSSCHECK_IDS)
+        expected = {n: data for n, data in files.items() if n.startswith("FRED_SP500/")}
+        if not expected or any((Path(snapshot_dir) / n).read_bytes() != data for n, data in expected.items()):
+            return {"status": "FRESH_CROSSCHECK_SOURCE_MISMATCH"}
+        identity = json.loads(files["FRED_SP500/audit.json"])["identity"]
+        if not a["identityOk"] or not b["identityOk"] or not SRC.identity_ok("FRED_SP500", identity):
+            return {"status": "IDENTITY_MISMATCH"}
+        coverage = SRC.coverage_gate(b["dates"], str(b["dates"].min().date()), U.ANALYSIS_END)
+        # FRED's '.' on an exchange holiday is not a missing XNYS quote; measure missingness on the exchange calendar.
+        if not b["dates"].is_unique or not b["dates"].is_monotonic_increasing \
+                or coverage["coverage"] < SRC.SESSION_COVERAGE or coverage["maxConsecutiveMissing"] > SRC.MAX_CONSECUTIVE_MISSING:
+            return {"status": "CROSSCHECK_COVERAGE_FAILED", "coverage": coverage}
+    except (OSError, ValueError, KeyError, IndexError):
+        return {"status": "FRESH_CROSSCHECK_SOURCE_INVALID"}
     read = lambda sid: AN.obs_series(P.read_normalized((Path(snapshot_dir) / sid / "normalized.csv").read_bytes()))
-    return {**SRC.cross_check(read("YAHOO_GSPC"), read("FRED_SP500")), "readsLevelsForEqualityOnly": True}
+    return {**SRC.cross_check(read("YAHOO_GSPC"), read("FRED_SP500")), "readsLevelsForEqualityOnly": True,
+            "freshIdentityVerified": True, "coverage": coverage, "fullSeriesHashRole": "AUDIT_ONLY_MOVING_WINDOW",
+            "currentFiles": {n: R.sha(data) for n, data in expected.items()}}
 
 
 def economic_gates(snapshot_dir, audit, first_execution):
@@ -439,6 +519,17 @@ def economic_gates(snapshot_dir, audit, first_execution):
     status = "ECONOMIC_READING_READY" if ok_a and ok_c and actions["ok"] else "ECONOMIC_READING_UNRESOLVED"
     return {"status": status, "asset": {"ok": ok_a, "reasons": reasons_a, **info_a}, "corporateActions": actions,
             "cash": {"ok": ok_c, "reasons": reasons_c, **info_c}}
+
+
+def cash_economic_gates(snapshot_dir, audit, first_execution):
+    path = Path(snapshot_dir) / "YAHOO_SPY/cash_input.json"
+    asset = SRC.cash_input_gate(path.read_bytes(), first_execution, U.ANALYSIS_END) if path.exists() else {"status": "CASH_INPUT_UNRESOLVED", "reasons": ["NOT_ACQUIRED"]}
+    cash = source_audit_for_gate(snapshot_dir, "FRED_DTB3", audit)
+    ok, reasons, info = SRC.cash_gate(cash["dates"], first_execution, U.ANALYSIS_END) if cash is not None else (False, ["NOT_ACQUIRED"], {})
+    ok = ok and bool(cash and cash["identityOk"])
+    return {"status": "CASH_ECONOMIC_READY" if asset["status"] == "CASH_INPUT_READY" and ok else "CASH_ECONOMIC_UNRESOLVED",
+            "specId": cash_economic_spec()["definition"]["id"], "scientificSha256": cash_economic_spec()["scientificSha256"],
+            "asset": asset, "cash": {"ok": ok, "reasons": reasons, **info}}
 
 
 # =======================================================================================================================================

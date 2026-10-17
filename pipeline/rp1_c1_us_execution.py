@@ -4,24 +4,22 @@ FROZEN_RULE_REPLICATION_ON_PUBLICLY_KNOWN_US_HISTORY. Nothing here changes a rul
 those are the frozen spec's (`rp1_c1_us_exposure_spec.load_spec` compares them on every load). This module is the harness around them and lives
 outside the spec's sealed closure, as the v4/v5 harnesses did; the owner's authorization pins every one of its files.
 
-Stages, each a separate manual dispatch of the host workflow (see `HOST_WORKFLOW`):
+Stages in the existing host workflow (see `HOST_WORKFLOW`); this storage migration also freezes on its reviewed merge:
 
-  freeze-sources  acquire the four US sources with the repository's acquirer, run the dates-only readiness on them, encrypt the snapshot, upload ONE
-                  artifact and open ONE Draft PR carrying only the dates-and-hashes manifest and the re-pinned spec. No value is read.
-  dry-run         decrypt and verify the pinned snapshot, run every pre-lock check, then run the whole evaluation, the validator and the report on
+  freeze-sources  acquire the four US sources with the repository's acquirer, run the dates-only readiness on bounded inputs and open ONE Draft PR carrying only the dates-and-hashes manifest and the re-pinned spec. No US outcome is computed.
+  dry-run         reacquire and verify the pinned bounded inputs, run every pre-lock check, then run the whole evaluation, the validator and the report on
                   INVENTED values over the real XNYS calendar. No lock, no US value.
   execute         the owner's dispatch on merged main with the exact committed authorization: pins, readiness READY, equivalence EXACT, then the
                   durable lock, the marker, and only then the first US value. A failure after the lock consumes the study; there is no retry.
 
 STORAGE AND RIGHTS. Three of the four US sources are licensed data whose terms do not permit redistribution (`rp1_c1_us_sources.SOURCE_RIGHTS`).
-Their bytes exist only inside a runner and inside one encrypted artifact; outputs carry aggregate statistics, never a daily price, level or NAV
+Their bytes exist only inside a runner until discarded; outputs carry aggregate statistics, never a daily price, level or NAV
 series.
 """
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 import json
-import os
 from pathlib import Path
 import subprocess
 
@@ -36,6 +34,7 @@ from . import rp1_c1_us_exposure as U
 from . import rp1_c1_us_exposure_spec as SP
 from . import rp1_c1_us_sources as SRC
 from . import rp1_c1_us_validator as V
+from . import rp1_c1_us_refetch as R
 from .kr_model_portfolio_execution import file_hash
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -44,17 +43,12 @@ HOST_WORKFLOW = ".github/workflows/seal-kr-factor-anatomy-v1.yml"
 AUTHORIZATION_DIR = "docs/research-program/authorizations"
 AUTHORIZATION_PATH = AUTHORIZATION_DIR + "/rp1-c1-us-exposure-execution-authorization.json"
 AUTHORIZATION_TEMPLATE_PATH = AUTHORIZATION_DIR + "/rp1-c1-us-exposure-execution-authorization.template.json"
-CONTRACT = "RP1_C1_US_EXPOSURE_FORMAL_EXECUTION_V1"
+CONTRACT = "RP1_C1_US_EXPOSURE_SCOPED_PRIMARY_AND_CASH_V1"
 AUTHORIZES = "ONE_FORMAL_EXECUTION"
 ACKNOWLEDGMENTS = ("frozenRuleReplicationNotValidation", "publiclyKnownUsHistory", "oneShotFailureAfterTheLockConsumesTheStudy",
-                   "noThresholdWindowRuleOrCandidateChangeAfterTheResult", "noProductionOrPortfolioChange", "licensedSourceBytesStayEncrypted",
-                   "economicReadingIsDescriptiveAndCannotChangeTheDecision")
+                   "noThresholdWindowRuleOrCandidateChangeAfterTheResult", "noProductionOrPortfolioChange", "licensedSourceBytesStayRunnerTemporaryAndNeverPublished",
+                   "economicReadingIsDescriptiveAndCannotChangeTheDecision", "separateCashEconomicSpecReviewed")
 HARNESS_FILES = ("pipeline/rp1_c1_us_execution.py", "pipeline/rp1_c1_us_validator.py", "scripts/run_rp1_c1_us_wp4d.py", HOST_WORKFLOW)
-SNAPSHOT_KEY_SECRET = "RP1_C1_SNAPSHOT_KEY"
-ENCRYPTION = ("openssl enc -aes-256-cbc -pbkdf2 -iter 600000 -md sha256 -salt over a deterministic tar of the snapshot directory; the key is the "
-              "repository secret " + SNAPSHOT_KEY_SECRET + "; integrity is the manifest's per-file SHA-256, checked after decryption")
-SNAPSHOT_RETENTION_DAYS = 90
-SNAPSHOT_ARTIFACT_PREFIX = "rp1-c1-us-sources-encrypted-"
 RESULTS_ARTIFACT_PREFIX = "rp1-c1-us-exposure-results-"
 ATTEMPT_ARTIFACT_PREFIX = "rp1-c1-us-exposure-attempt-"
 LOCK_PREFIX = "refs/tags/" + STUDY + "-execution-lock"
@@ -69,7 +63,7 @@ class Refused(ValueError):
 
 @dataclass
 class Counters:
-    """Every read of a US value or computation of an outcome is counted; verify, probe, freeze, dry-run and every refusal leave them at zero."""
+    """Strategy value loads and outcomes are counted; source hash/unit/sanity checks produce no outcome. Pre-lock modes leave these at zero."""
     usValueReads: int = 0
     evaluations: int = 0
     validations: int = 0
@@ -123,7 +117,8 @@ def current_pins(root=ROOT):
     if pin["status"] != "FROZEN":
         raise Refused("SOURCE_FREEZE_NOT_PINNED_BY_THE_SPEC")
     return {"specSha256": sha, "scientificSha256": SP.scientific_digest(spec),
-            "sourceFreeze": {k: pin[k] for k in ("manifestPath", "manifestSha256", "freezeRunId", "artifactName", "artifactId", "ciphertextSha256")},
+            "cashEconomicScientificSha256": spec["cashEconomicSpec"]["scientificSha256"],
+            "sourceFreeze": {k: pin[k] for k in ("manifestPath", "manifestSha256", "freezeRunId", "normalization", "analysisFiles", "scopedInputs")},
             "harness": harness_pins(root)}
 
 
@@ -255,74 +250,34 @@ def probe(root, snapshot_dir):
             "meaning": "a dates-only rehearsal of the formal gates on live vendor bytes; the bytes are discarded with the runner"}
 
 
-def freeze_manifest(root, snapshot_dir, *, run_id, commit_sha, artifact_name, artifact_id, tar_sha256, ciphertext_sha256):
-    """The committed record of one source freeze: per-file SHA-256 of the plaintext snapshot, the tar and ciphertext digests, the artifact identity,
-    the dates-only audit and the readiness that passed. It carries no value. Refused if the readiness is not READY or an authorization is committed
-    (an issued authorization pins the freeze it was given)."""
+def freeze_manifest(root, snapshot_dir, *, run_id, commit_sha):
+    """Bounded analysis digests plus audit-only full raw digests. No values."""
     root = Path(root)
     if (root / AUTHORIZATION_PATH).exists():
         raise Refused("AN_AUTHORIZATION_IS_COMMITTED_WITHDRAW_IT_BEFORE_A_NEW_FREEZE")
     readiness = SP.readiness_audit(root, snapshot_dir=snapshot_dir)
     if readiness["decision"] != SP.DECISION_READY:
         raise Refused("READINESS_NOT_READY: " + ";".join(readiness["blockers"]))
-    audit = SP.snapshot_audit(snapshot_dir)
-    return {"studyId": STUDY, "kind": "RP1_C1_US_SOURCE_FREEZE_MANIFEST_NO_VALUES", "storage": SRC.STORAGE, "encryption": ENCRYPTION,
-            "freezeRunId": str(run_id), "freezeCommitSha": commit_sha, "acquiredOn": audit.get("acquiredOn"),
-            "artifact": {"name": artifact_name, "id": str(artifact_id), "retentionDays": SNAPSHOT_RETENTION_DAYS},
-            "tarSha256": tar_sha256, "ciphertextSha256": ciphertext_sha256, "files": SP.snapshot_files(snapshot_dir), "rights": SRC.SOURCE_RIGHTS,
-            "audit": audit, "readiness": {k: readiness[k] for k in ("decision", "blockers", "checks", "details", "determinable", "decisionDates",
-                                                                     "firstDecisionDate", "lastExecutionDate", "counters")},
-            "statements": ["No price, level, rate or return appears in this file.",
-                           "The raw bytes exist only in the encrypted artifact named here; an expired artifact needs a new freeze, never a re-pin."]}
+    return {"studyId": STUDY, "kind": "RP1_C1_HASH_REFETCH_MANIFEST_NO_VALUES", "storage": SRC.STORAGE,
+            "freezeRunId": str(run_id), "freezeCommitSha": commit_sha, "sourceRegistry": SRC.SOURCES,
+            "normalization": {"contract": R.contract(), "codeHashes": R.code_pins(root)},
+            "analysisFiles": R.fingerprints(snapshot_dir), "rawFilesAuditOnly": R.provenance(snapshot_dir),
+            "scopedInputs": {s: R.scoped_fingerprints(snapshot_dir, s) for s in R.SCOPES},
+            "cashEconomicSpec": SP.cash_economic_spec(),
+            "observations": {sid: {"firstDate": record.get("firstDate"), "lastDate": record.get("lastDate"),
+                "validRows": record.get("validRows"), "identity": record.get("identity"),
+                "datesSha256": R.sha(R.encoded([str(d.date()) for d in SP.normalized_dates(Path(snapshot_dir) / sid / "normalized.csv")]))}
+                for sid, record in SP.snapshot_audit(snapshot_dir)["sources"].items()},
+            "rights": SRC.SOURCE_RIGHTS,
+            "readiness": {k: readiness[k] for k in ("decision", "blockers", "checks", "details", "determinable", "decisionDates",
+                                                       "firstDecisionDate", "firstExecutionDate", "lastExecutionDate", "counters")},
+            "statements": ["No source price, level, rate or return appears in this file.",
+                "Raw hashes are provenance only; EXACT bounded analysis hashes are the execution admission.",
+                "Re-fetch availability/equality is not guaranteed. A provider revision or access denial stops before the lock; no automatic re-pin."]}
 
 
 def freeze_manifest_path(run_id):
     return SP.SOURCE_FREEZE_DIR + "/" + SP.SOURCE_FREEZE_PREFIX + str(run_id) + ".json"
-
-
-def open_snapshot(zip_path, dest, spec, key, root=ROOT, openssl="openssl"):
-    """Downloaded artifact zip -> verified plaintext snapshot directory. Order: exactly one file in the zip; its SHA-256 equals the pinned ciphertext
-    digest; decrypt; the tar's SHA-256 equals the manifest's; extract regular files only (no links, no absolute or parent paths); every file's SHA-256
-    equals the manifest's. Reads no value. The key comes from the environment and is never written."""
-    import hashlib
-    import tarfile
-    import tempfile
-    import zipfile
-    pin = spec["inputs"]["usSnapshot"]
-    if pin["status"] != "FROZEN":
-        raise Refused("SOURCE_FREEZE_NOT_PINNED_BY_THE_SPEC")
-    if not key:
-        raise Refused("SNAPSHOT_KEY_SECRET_MISSING")
-    manifest = json.loads((Path(root) / pin["manifestPath"]).read_text())
-    with zipfile.ZipFile(zip_path) as archive:
-        names = archive.namelist()
-        if len(names) != 1:
-            raise Refused("ARTIFACT_MUST_HOLD_EXACTLY_ONE_FILE")
-        ciphertext = archive.read(names[0])
-    if hashlib.sha256(ciphertext).hexdigest() != pin["ciphertextSha256"]:
-        raise Refused("CIPHERTEXT_DIFFERS_FROM_THE_PIN")
-    with tempfile.TemporaryDirectory() as work:
-        enc, tar_path = Path(work) / "snapshot.tar.enc", Path(work) / "snapshot.tar"
-        enc.write_bytes(ciphertext)
-        subprocess.run([openssl, "enc", "-d", "-aes-256-cbc", "-pbkdf2", "-iter", "600000", "-md", "sha256", "-in", str(enc), "-out", str(tar_path),
-                        "-pass", "env:RP1_C1_OPEN_KEY"], check=True, env={**os.environ, "RP1_C1_OPEN_KEY": key}, capture_output=True)
-        if hashlib.sha256(tar_path.read_bytes()).hexdigest() != manifest["tarSha256"]:
-            raise Refused("TAR_DIFFERS_FROM_THE_MANIFEST")
-        target = Path(dest)
-        target.mkdir(parents=True, exist_ok=True)
-        with tarfile.open(tar_path) as tar:
-            for member in tar.getmembers():
-                name = Path(member.name)
-                if member.isdir():
-                    continue
-                if not member.isfile() or name.is_absolute() or ".." in name.parts:
-                    raise Refused("UNSAFE_MEMBER_IN_THE_SNAPSHOT: " + member.name)
-                out = target / name
-                out.parent.mkdir(parents=True, exist_ok=True)
-                out.write_bytes(tar.extractfile(member).read())
-    if SP.snapshot_files(dest) != pin["files"]:
-        raise Refused("US_SNAPSHOT_DIFFERS_FROM_THE_FROZEN_MANIFEST")
-    return {"status": "MATCHES_THE_FROZEN_MANIFEST", "files": len(pin["files"])}
 
 
 # =======================================================================================================================================
@@ -332,45 +287,56 @@ def _read(path):
     return AN.obs_series(P.read_normalized(Path(path).read_bytes()))
 
 
-def read_values(root, snapshot_dir):
+def read_values(root, snapshot_dir, economic=True):
     """The source values in the shape `rp1_c1_us_exposure.evaluate` takes. Called only by `load_values` (permit and lock) and by tests."""
     kr = Path(root) / SRC.KR_SNAPSHOT_DIR
     reference = _read(Path(snapshot_dir) / "YAHOO_GSPC" / "normalized.csv")
     return {"reference": reference[reference.index <= pd.Timestamp(U.ANALYSIS_END)],
             "spread": AN.derived_spread(_read(kr / SRC.REUSED["us10y"] / "normalized.csv"), _read(kr / SRC.REUSED["us3m"] / "normalized.csv")),
             "vix": _read(kr / SRC.REUSED["vix"] / "normalized.csv"),
-            "asset": _read(Path(snapshot_dir) / "YAHOO_SPY" / "normalized.csv"), "cash": _read(Path(snapshot_dir) / "FRED_DTB3" / "normalized.csv")}
+            "asset": _read(Path(snapshot_dir) / "YAHOO_SPY" / "normalized.csv") if economic else pd.Series(dtype=float),
+            "cash": _read(Path(snapshot_dir) / "FRED_DTB3" / "normalized.csv") if economic else pd.Series(dtype=float)}
 
 
-def load_values(root, snapshot_dir, counters, permit, lock, sha):
+def load_values(root, snapshot_dir, counters, permit, lock, sha, economic=True):
     _require(permit, lock, sha)
     counters.usValueReads += 1
-    return read_values(root, snapshot_dir)
+    return read_values(root, snapshot_dir, economic)
+
+
+def load_cash_values(root, snapshot_dir, values, counters, permit, lock, sha, *, basis="SPLIT_ADJUSTED_DIVIDEND_UNADJUSTED"):
+    _require(permit, lock, sha)
+    from .winner_inflection_execution import cash_reinvestment_close
+    spec, _ = SP.load_spec(root)
+    if not SP.verify_us_snapshot(spec, root, snapshot_dir, "CASH_ECONOMIC"):
+        raise ValueError("CASH_ECONOMIC_INPUT_NOT_FROZEN")
+    counters.usValueReads += 1
+    close, events = SRC.cash_components((Path(snapshot_dir) / "YAHOO_SPY/cash_input.json").read_bytes(), basis=basis)
+    # Existing #253 arithmetic; never reimplement Replay v11 or cash reinvestment here.
+    return {**values, "asset": cash_reinvestment_close(close, events), "cash": _read(Path(snapshot_dir) / "FRED_DTB3/normalized.csv")}
 
 
 def spy_basis_diagnostic(raw_chart, first_execution, analysis_end):
-    """The frozen post-lock basis diagnostic of the economic asset: the vendor's adjusted daily return against (close + dividend) / previous close - 1
-    on every evaluation session. Descriptive; it changes nothing in either reading."""
+    """Post-lock compatibility diagnostic: Yahoo adjclose versus Replay v11's vendor-equivalent forward factor.
+
+    This is NOT a cash-dividend reinvestment comparison or independent vendor certification. Neither economic definition is changed.
+    """
+    from . import price_adjustment as PA
     result = json.loads(raw_chart)["chart"]["result"][0]
     offset = int(result.get("meta", {}).get("gmtoffset", 0))
     dates = pd.DatetimeIndex([pd.Timestamp(int(t) + offset, unit="s").normalize() for t in result["timestamp"]])
-    close = pd.Series(result["indicators"]["quote"][0]["close"], index=dates, dtype=float)
+    close, events = SRC.cash_components(raw_chart)
     adj = pd.Series(result["indicators"]["adjclose"][0]["adjclose"], index=dates, dtype=float)
-    div = pd.Series(0.0, index=dates)
-    for e in ((result.get("events") or {}).get("dividends") or {}).values():
-        d = pd.Timestamp(int(e["date"]) + offset, unit="s").normalize()
-        if d in div.index:
-            div.loc[d] += float(e["amount"])
-    frame = pd.DataFrame({"close": close, "adj": adj, "div": div}).dropna()
-    frame = frame[(frame.index >= pd.Timestamp(first_execution)) & (frame.index <= pd.Timestamp(analysis_end))]
-    vendor = frame["adj"].pct_change()
-    rebuilt = (frame["close"] + frame["div"]) / frame["close"].shift(1) - 1.0
-    diff = (vendor - rebuilt).dropna()
+    actions = pd.DataFrame([{"date": pd.Timestamp(d), PA.DIVIDEND: dividend, PA.SPLIT: split} for d, dividend, split in events]).set_index("date")
+    forward, _ = PA.to_total_return(pd.DataFrame({"Close": close}), actions)
+    diff = (adj.pct_change() - forward["Close"].pct_change()).dropna()
+    diff = diff[(diff.index >= pd.Timestamp(first_execution)) & (diff.index <= pd.Timestamp(analysis_end))]
     years = len(diff) / K.ANNUALISATION
     return {"sessions": int(len(diff)), "maxAbsoluteDailyDifference": float(diff.abs().max()) if len(diff) else None,
             "sessionsAbove1bp": int((diff.abs() > 1e-4).sum()), "meanDailyDifferencePerYear": float(diff.sum() / years) if years else None,
-            "exDividendSessions": int((frame["div"] > 0).sum()),
-            "meaning": "how far the vendor's adjusted series departs from close-plus-cash-dividend reinvestment; descriptive, never a correction"}
+            "exDividendSessions": sum(first_execution <= d <= analysis_end for d, _, _ in events),
+            "comparison": "YAHOO_ADJCLOSE_VS_REPLAY_V11_VENDOR_EQUIVALENT_FORWARD_FACTOR",
+            "meaning": "vendor-factor compatibility only, not cash reinvestment or independent certification; descriptive, never a correction"}
 
 
 def interpretation(result):
@@ -395,6 +361,16 @@ def evaluate_and_validate(values, economic_ready, counters):
     counters.validations += 1
     validation = V.validate(values, config, result)
     return config, result, validation
+
+
+def cash_economic_result(values, primary_result, counters):
+    _, result, validation = evaluate_and_validate(values, True, counters)
+    for key in ("passive", "candidates", "decision", "window"):
+        if E.json_safe(result[key]) != E.json_safe(primary_result[key]):
+            raise ValueError("CASH_ECONOMIC_CHANGED_THE_FROZEN_PRIMARY")
+    if validation["status"] != "CONSISTENT":
+        raise ValueError("CASH_ECONOMIC_FAILED_INDEPENDENT_VALIDATION")
+    return {"status": "MEASURED", "spec": SP.cash_economic_spec(), "economic": result["economic"], "validation": validation}
 
 
 def comparison_rows(result, validation, reading):
@@ -445,18 +421,22 @@ def render_report(result, validation, meaning, stamp=None):
               f"{result['window']['sessions']} sessions, {result['window']['decisionDates']} weekly decisions.", "",
               f"Validator: **{validation['status']}** ({validation['checks']} independent checks, max |difference| "
               f"{validation['maxAbsoluteDifference']:.2e}, tolerance {validation['tolerance']:g}).", ""]
-    readings = [("primary", "Primary reading — S&P 500 price index, cash at 0% (the sealed KR convention)")]
+    readings = [("primary", "Primary reading — S&P 500 price index, cash at 0% (the sealed KR convention)", result, validation)]
     if result.get("economic"):
-        readings.append(("economic", "Economic reading — SPY total return, de-risked share earns DTB3"))
-    for key, title in readings:
+        readings.append(("economic", "Original economic reading — VENDOR adjusted-close SPY, de-risked share earns DTB3", result, validation))
+    if result.get("cashEconomic", {}).get("status") == "MEASURED":
+        cash = result["cashEconomic"]
+        readings.append(("economic", "Separate cash-reinvestment economic reading — " + cash["spec"]["definition"]["id"] +
+                         " / scientific SHA-256 " + cash["spec"]["scientificSha256"], {**result, "economic": cash["economic"]}, cash["validation"]))
+    for key, title, view, checks in readings:
         lines += [f"## {title}", "", "| strategy | CAGR | vs passive | MDD | monthly CVaR 5% | worst month | cost drag/yr | de-risked share | "
                   "up-market cost/yr | down-market saving/yr |", "|---|---|---|---|---|---|---|---|---|---|"]
-        for r in comparison_rows(result, validation, key):
+        for r in comparison_rows(view, checks, key):
             lines.append(f"| {r['strategy']} | {_pct(r['cagr'])} | {_pct(r['cagrMinusPassive'])} | {_pct(r['maxDrawdown'])} | {_pct(r['monthlyCvar5'])} | "
                          f"{_pct(r['worstMonth'])} | {_pct(r['costDrag'], 3)} | {_pct(r['reducedSessionShare'], 1)} | {_pct(r['upMarketCostPerYear'])} | "
                          f"{_pct(r['downMarketSavingPerYear'])} |")
         if key == "economic":
-            lines += ["", f"Cash only (DTB3): CAGR {_pct(result['economic']['cashOnly']['annualizedReturn'])}."]
+            lines += ["", f"Cash only (DTB3): CAGR {_pct(view['economic']['cashOnly']['annualizedReturn'])}."]
         lines.append("")
     lines += ["## Re-entry and regime errors (primary reading, reference episodes of at least 15%)", "",
               "| strategy | rebound missed H63 (mean) | rebound missed H126 (mean) | sessions to full exposure (median) | recovery opportunity cost (mean) | "
@@ -491,9 +471,10 @@ def execute(output, root, snapshot_dir, env, expected_sha, api=E.github_api, git
         equivalence = SP.equivalence_audit(root)
         if equivalence["status"] != "EXACT":
             raise Refused("KR_EQUIVALENCE_NOT_EXACT")
-    except Refused as error:
-        E.atomic_write(out / "gates-blocked.json", {"studyId": STUDY, "refusal": str(error), "lockClaimed": False, "counters": asdict(counters)})
-        raise
+    except (ValueError, OSError, KeyError) as error:
+        reason = str(error) if isinstance(error, Refused) else "INPUT_VERIFICATION_FAILED:" + type(error).__name__
+        E.atomic_write(out / "gates-blocked.json", {"studyId": STUDY, "refusal": reason, "lockClaimed": False, "counters": asdict(counters)})
+        raise Refused(reason) from None
     lock = claim_lock(permit, env, api, counters)
     marker = {"studyId": STUDY, "specSha256": sha, "authorizationSha256": permit.authorizationSha256, "lockRef": lock.ref, "studyLockRef": LOCK_PREFIX,
               "lockedMainSha": lock.mainSha, "usValueReadsBeforeThisMarker": counters.usValueReads}
@@ -501,17 +482,21 @@ def execute(output, root, snapshot_dir, env, expected_sha, api=E.github_api, git
         raise ValueError("VALUES_READ_BEFORE_THE_MARKER")
     counters.markerWrites += 1
     E.atomic_write(out / MARKER_FILE, marker, immutable=True)
-    values = load_values(root, snapshot_dir, counters, permit, lock, sha)
     economic_ready = readiness["details"]["economicReading"]["status"] == "ECONOMIC_READING_READY"
+    values = load_values(root, snapshot_dir, counters, permit, lock, sha, economic=economic_ready)
     config, result, validation = evaluate_and_validate(values, economic_ready, counters)
     window = result["window"]
     basis = spy_basis_diagnostic((Path(snapshot_dir) / "YAHOO_SPY" / "raw_chart.json").read_bytes(), window["firstExecutionDate"], U.ANALYSIS_END) \
         if economic_ready else None
     meaning = interpretation(result)
+    cash_ready = readiness["details"]["cashEconomicReading"]["status"] == "CASH_ECONOMIC_READY"
+    cash_result = cash_economic_result(load_cash_values(root, snapshot_dir, values, counters, permit, lock, sha), result, counters) if cash_ready else \
+        {"status": "UNRESOLVED", "spec": SP.cash_economic_spec(), "readiness": readiness["details"]["cashEconomicReading"]}
     document = {"studyId": STUDY, "scientificStatus": U.SCIENTIFIC_STATUS, "evidenceStatement": U.EVIDENCE_STATEMENT, "specSha256": sha,
                 "authorizationSha256": permit.authorizationSha256, "lockRef": lock.ref, "lockedMainSha": lock.mainSha,
                 "sourceFreeze": spec["inputs"]["usSnapshot"]["manifestSha256"], "config": config, **result,
                 "economicReadingStatus": readiness["details"]["economicReading"]["status"], "spyBasisDiagnostic": basis, "interpretation": meaning,
+                "cashEconomic": cash_result,
                 "validationStatus": validation["status"],
                 "statements": ["frozen-rule replication on publicly known US history; not validation, not prospective, not production",
                                "the primary asset is the S&P 500 price index with cash at zero, the sealed KR convention; the economic reading is "
@@ -525,7 +510,7 @@ def execute(output, root, snapshot_dir, env, expected_sha, api=E.github_api, git
     files[REPORT_FILE] = file_hash(out / REPORT_FILE)
     files[MARKER_FILE] = file_hash(out / MARKER_FILE)
     manifest = {"studyId": STUDY, "specSha256": sha, "authorizationSha256": permit.authorizationSha256, "counters": asdict(counters), "files": files,
-                "sourceFreeze": spec["inputs"]["usSnapshot"]}
+                "sourceFreeze": spec["inputs"]["usSnapshot"], "referenceCrossCheck": readiness["details"]["vendorCrossCheck"]}
     E.atomic_write(out / MANIFEST_FILE, E.json_safe(manifest), immutable=True)
     if validation["status"] != "CONSISTENT":
         raise ValueError("RESULT_FAILED_INDEPENDENT_VALIDATION_STUDY_CONSUMED")
@@ -563,6 +548,7 @@ def dry_run(output, root, snapshot_dir=None):
     real_reads = counters.usValueReads
     synthetic = Counters()
     config, result, validation = evaluate_and_validate(synthetic_us_values(), True, synthetic)
+    result["cashEconomic"] = cash_economic_result(synthetic_us_values(), result, synthetic)
     meaning = interpretation(result)
     (out / ("synthetic-" + REPORT_FILE)).write_text(render_report(result, validation, meaning, stamp=SYNTHETIC_STAMP))
     E.atomic_write(out / ("synthetic-" + VALIDATION_FILE), E.json_safe({"stamp": SYNTHETIC_STAMP, **validation}))

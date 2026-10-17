@@ -2,14 +2,15 @@
   "acknowledgments": {
     "economicReadingIsDescriptiveAndCannotChangeTheDecision": false,
     "frozenRuleReplicationNotValidation": false,
-    "licensedSourceBytesStayEncrypted": false,
+    "licensedSourceBytesStayRunnerTemporaryAndNeverPublished": false,
     "noProductionOrPortfolioChange": false,
     "noThresholdWindowRuleOrCandidateChangeAfterTheResult": false,
     "oneShotFailureAfterTheLockConsumesTheStudy": false,
-    "publiclyKnownUsHistory": false
+    "publiclyKnownUsHistory": false,
+    "separateCashEconomicSpecReviewed": false
   },
   "authorizes": "NOTHING",
-  "contract": "RP1_C1_US_EXPOSURE_FORMAL_EXECUTION_V1",
+  "contract": "RP1_C1_US_EXPOSURE_SCOPED_PRIMARY_AND_CASH_V1",
   "instructions": "NON_AUTHORIZING_TEMPLATE. After the source freeze is merged, `python scripts/run_rp1_c1_us_wp4d.py authorization-draft --owner <login>` prints the exact pins. The owner reviews them, sets every acknowledgment to true deliberately, commits the file at docs/research-program/authorizations/rp1-c1-us-exposure-execution-authorization.json through a reviewed PR, and types the SHA-256 of the committed bytes into the execute dispatch. Nothing else authorizes an execution.",
   "ownerLogin": "OWNER_APPROVAL_NOT_ISSUED",
   "pins": {},
