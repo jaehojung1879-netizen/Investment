@@ -2,14 +2,19 @@
 
 This change computes no US outcome. Three modes exist and none of them reads a US price, return or rate VALUE:
 
-* `verify`      — spec identity, import closure, every pin (the sealed KR spec and result, the reused KR source bytes, the US snapshot when present).
-* `readiness`   — the dates-only data-quality gates on the US snapshot and a presence proxy (every observed date carries 1.0) pushed through the
-                  frozen state machine on the XNYS calendar, so it shows WHERE each candidate is determinable, never WHAT its state is.
+* `verify`      — spec identity, import closure, every pin (the sealed KR spec and result, the reused KR source bytes, the US source-freeze manifest
+                  when one is committed).
+* `readiness`   — the dates-only data-quality gates on a US snapshot directory and a presence proxy (every observed date carries 1.0) pushed through
+                  the frozen state machine on the XNYS calendar, so it shows WHERE each candidate is determinable, never WHAT its state is.
 * `equivalence` — reproduces the SEALED KR decision from the retained KR bytes through the calendar-parameterised wrapper. It reads KR values the
                   sealed study already published and opens no new outcome; it proves the wrapper changed nothing but the calendar.
 
-The formal one-shot execution (permit, durable lock, marker, US value reads, sealing) is NOT here. It belongs to a separate change that must respect
-the existing approval and lock contract (see `lifecycle` in the spec).
+The US raw bytes are never committed (`rp1_c1_us_sources.STORAGE`): they live in one encrypted Actions artifact and git carries a dates-and-hashes
+manifest under `docs/research-program/sources/`, which this spec pins. A snapshot directory (decrypted inside a runner, outside the repository) is
+verified file by file against that manifest before any gate reads it.
+
+The formal one-shot execution (owner authorization, durable lock, marker, US value reads) is `pipeline/rp1_c1_us_execution.py`, outside this sealed
+closure as the v4/v5 harnesses were; the owner's authorization pins its file hashes.
 """
 from __future__ import annotations
 
@@ -39,6 +44,8 @@ SCIENTIFIC_SIDECAR = SPEC_DIR + "/" + STUDY + ".scientific.sha256"
 RESULT_PATH = RESULT_DIR + "/" + STUDY + "-result.json"
 MARKER_PATH = RESULT_DIR + "/" + STUDY + "-execution-started.json"
 EQUIVALENCE_PATH = RESULT_DIR + "/rp1-c1-kr-equivalence-v1.json"
+SOURCE_FREEZE_DIR = "docs/research-program/sources"
+SOURCE_FREEZE_PREFIX = "rp1-c1-us-source-freeze-"
 ENTRY_POINTS = ["pipeline/rp1_c1_us_exposure.py", "pipeline/rp1_c1_us_sources.py", "pipeline/rp1_c1_us_exposure_spec.py"]
 KR_SEALED = ("research_specs/kr-market-risk-model-v1.json", "research_specs/kr-market-risk-model-v1.sha256",
              "docs/results/kr-market-risk-model-v1-result.json", "docs/results/kr-market-risk-model-v1-manifest.json",
@@ -207,11 +214,31 @@ def kr_reused_files(root=ROOT):
             for sid in SRC.REUSED.values()}
 
 
-def us_snapshot_files(root=ROOT):
-    base = Path(root) / SRC.SNAPSHOT_DIR
-    if not (base / "audit.json").exists():
-        return {}
-    return {str(p.relative_to(root)): file_hash(p) for p in sorted(base.rglob("*")) if p.is_file()}
+def snapshot_files(snapshot_dir):
+    """{relative path inside the snapshot: sha256} for every file of a snapshot directory (raw bytes, normalized files, audit.json)."""
+    base = Path(snapshot_dir)
+    return {p.relative_to(base).as_posix(): file_hash(p) for p in sorted(base.rglob("*")) if p.is_file()}
+
+
+def freeze_manifest_paths(root=ROOT):
+    base = Path(root) / SOURCE_FREEZE_DIR
+    return sorted(str(p.relative_to(root)) for p in base.glob(SOURCE_FREEZE_PREFIX + "*.json")) if base.exists() else []
+
+
+def us_snapshot_pin(root=ROOT):
+    """The committed source-freeze manifest this spec pins, or an explicit NOT_FROZEN record. More than one committed manifest refuses: a later
+    freeze replaces the earlier manifest in the same change, it never sits beside it."""
+    paths = freeze_manifest_paths(root)
+    if len(paths) > 1:
+        raise ValueError("MORE_THAN_ONE_SOURCE_FREEZE_MANIFEST: " + ", ".join(paths))
+    if not paths:
+        return {"storage": SRC.STORAGE, "status": "NOT_FROZEN", "manifestPath": None}
+    manifest = json.loads((Path(root) / paths[0]).read_text())
+    if manifest.get("studyId") != STUDY or manifest.get("storage") != SRC.STORAGE:
+        raise ValueError("SOURCE_FREEZE_MANIFEST_IS_NOT_THIS_STUDYS")
+    return {"storage": SRC.STORAGE, "status": "FROZEN", "manifestPath": paths[0], "manifestSha256": file_hash(Path(root) / paths[0]),
+            "freezeRunId": manifest["freezeRunId"], "artifactName": manifest["artifact"]["name"], "artifactId": manifest["artifact"]["id"],
+            "ciphertextSha256": manifest["ciphertextSha256"], "files": manifest["files"]}
 
 
 def verify_kr_pins(spec, root=ROOT):
@@ -226,11 +253,17 @@ def verify_kr_pins(spec, root=ROOT):
     return True
 
 
-def verify_us_snapshot(spec, root=ROOT):
-    pinned = spec["inputs"]["usSnapshot"]["files"]
-    if pinned and us_snapshot_files(root) != pinned:
-        raise ValueError("US_SNAPSHOT_CHANGED")
-    return bool(pinned)
+def verify_us_snapshot(spec, root=ROOT, snapshot_dir=None):
+    """True when the spec pins a source freeze. The committed manifest must still hash to the pin; a snapshot directory, when given, must hold
+    exactly the manifest's files with exactly its hashes."""
+    pin = spec["inputs"]["usSnapshot"]
+    if pin["status"] != "FROZEN":
+        return False
+    if file_hash(Path(root) / pin["manifestPath"]) != pin["manifestSha256"]:
+        raise ValueError("SOURCE_FREEZE_MANIFEST_CHANGED")
+    if snapshot_dir is not None and snapshot_files(snapshot_dir) != pin["files"]:
+        raise ValueError("US_SNAPSHOT_DIFFERS_FROM_THE_FROZEN_MANIFEST")
+    return True
 
 
 def load_spec(root=ROOT):
@@ -261,9 +294,9 @@ def load_spec(root=ROOT):
 # =======================================================================================================================================
 # Outcome-free readiness (dates only)
 # =======================================================================================================================================
-def snapshot_audit(root=ROOT):
-    path = Path(root) / SRC.SNAPSHOT_DIR / "audit.json"
-    return json.loads(path.read_text()) if path.exists() else None
+def snapshot_audit(snapshot_dir):
+    path = None if snapshot_dir is None else Path(snapshot_dir) / "audit.json"
+    return json.loads(path.read_text()) if path is not None and path.exists() else None
 
 
 def normalized_dates(path):
@@ -274,11 +307,11 @@ def normalized_dates(path):
         return pd.DatetimeIndex([row[0] for row in reader])
 
 
-def source_audit_for_gate(root, sid, audit):
+def source_audit_for_gate(snapshot_dir, sid, audit):
     record = (audit or {}).get("sources", {}).get(sid)
     if not record or record.get("status") != "ACQUIRED":
         return None
-    dates = normalized_dates(Path(root) / SRC.SNAPSHOT_DIR / sid / "normalized.csv")
+    dates = normalized_dates(Path(snapshot_dir) / sid / "normalized.csv")
     return {"status": "ACQUIRED", "dates": dates, "dropped": record.get("droppedRows", 0), "rows": record.get("rawRows", len(dates)),
             "identityOk": record.get("identityOk", False)}
 
@@ -301,28 +334,42 @@ def kr_input_dates(root=ROOT):
     return {key: normalized_dates(base / sid / "normalized.csv") for key, sid in SRC.REUSED.items()}
 
 
-def readiness_audit(root=ROOT, assume_complete_reference=False):
-    """DECISION_READY or DECISION_BLOCKED from identities and observation DATES alone. With `assume_complete_reference` (a design check only, never
-    a gate) the US reference is taken to quote every XNYS session, so the SLOW/TRANSITION determinability of the retained FRED dates can be shown
-    before the US snapshot exists."""
+def readiness_audit(root=ROOT, assume_complete_reference=False, snapshot_dir=None, require_frozen=False):
+    """DECISION_READY or DECISION_BLOCKED from identities and observation DATES alone, on the snapshot directory `snapshot_dir` (decrypted outside
+    the repository). With `require_frozen` (the formal path) the spec must pin a source freeze and the directory must match it file for file; without
+    it (the outcome-free source probe and the freeze itself) an unpinned snapshot is gated and reported as UNPINNED. With `assume_complete_reference`
+    (a design check only, never a gate) the US reference is taken to quote every XNYS session."""
     root = Path(root)
     counters = Counters()
     blockers, checks, details = [], {}, {}
     out = {"studyId": STUDY, "mode": "readiness", "scientificStatus": U.SCIENTIFIC_STATUS, "basedOnAnyReturnResult": False}
+    spec = None
     try:
-        load_spec(root)
+        spec, _ = load_spec(root)
         checks["frozenSpecPinsAndImportClosure"] = True
     except (ValueError, KeyError, OSError) as error:
         checks["frozenSpecPinsAndImportClosure"], details["frozenSpecPinsAndImportClosure"] = False, str(error)
         blockers.append("FROZEN_IDENTITY_NOT_VERIFIED")
+    if spec is not None and snapshot_dir is not None and not assume_complete_reference:
+        try:   # a probe or a (re-)freeze gates a NEW candidate snapshot; only the formal path compares it with the pinned one
+            pinned = verify_us_snapshot(spec, root, snapshot_dir) if require_frozen else False
+            out["snapshotIdentity"] = "MATCHES_THE_FROZEN_MANIFEST" if pinned else "UNPINNED"
+        except ValueError as error:
+            out["snapshotIdentity"] = str(error)
+            blockers.append("SNAPSHOT_IDENTITY: " + str(error))
+        if require_frozen and out["snapshotIdentity"] != "MATCHES_THE_FROZEN_MANIFEST":
+            blockers.append("SOURCE_FREEZE_NOT_PINNED_BY_THE_SPEC")
+        if out["snapshotIdentity"] not in ("MATCHES_THE_FROZEN_MANIFEST", "UNPINNED"):
+            out.update(decision=DECISION_BLOCKED, blockers=blockers, checks=checks, details=details, counters=asdict(counters))
+            return out                                   # a snapshot that is not the frozen one is never read, not even for dates
     kr = kr_input_dates(root)
     spread_dates = kr["us10y"].intersection(kr["us3m"])
-    audit = snapshot_audit(root)
+    audit = snapshot_audit(snapshot_dir)
     if assume_complete_reference:
         reference_dates = U.market_sessions("US", U.GRID_START, U.ANALYSIS_END)
         out["referenceBasis"] = "ASSUMED_COMPLETE_XNYS_REFERENCE_DESIGN_CHECK_ONLY"
     else:
-        ref_audit = source_audit_for_gate(root, "YAHOO_GSPC", audit)
+        ref_audit = source_audit_for_gate(snapshot_dir, "YAHOO_GSPC", audit)
         if ref_audit is None:
             blockers.append("US_SOURCE_SNAPSHOT_NOT_ACQUIRED")
             out.update(decision=DECISION_BLOCKED, blockers=blockers, checks=checks, details=details, counters=asdict(counters))
@@ -342,11 +389,16 @@ def readiness_audit(root=ROOT, assume_complete_reference=False):
         checks["referenceGate"], details["referenceGate"] = ok, {"reasons": reasons, **info}
         if not ok:
             blockers.extend("REFERENCE: " + r for r in reasons)
-        cross = cross_check_status(root, audit)
+        cross = cross_check_status(snapshot_dir, audit)
         checks["vendorCrossCheck"], details["vendorCrossCheck"] = cross.get("status") == "CONSISTENT", cross
         if cross.get("status") != "CONSISTENT":
             blockers.append("VENDOR_CROSS_CHECK_" + str(cross.get("status")))
-        economic = economic_gates(root, audit, first_execution)
+        closures = SRC.calendar_closure_check(reference_dates)
+        details["calendarClosures"] = closures
+        checks["calendarClosures"] = not closures["closuresThatAreSessions"]
+        if closures["closuresThatAreSessions"]:
+            blockers.append("CALENDAR_TREATS_A_KNOWN_CLOSURE_AS_A_SESSION")
+        economic = economic_gates(snapshot_dir, audit, first_execution)
         details["economicReading"] = economic
     for rel, code in ((RESULT_PATH, "RESULT"), (MARKER_PATH, "MARKER")):
         if (root / rel).exists():
@@ -362,25 +414,31 @@ def readiness_audit(root=ROOT, assume_complete_reference=False):
     return out
 
 
-def cross_check_status(root, audit):
+def cross_check_status(snapshot_dir, audit):
     """The ONE pre-registered value read before the lock: index LEVELS of the two S&P 500 routes on identical dates, tested for equality."""
-    a, b = source_audit_for_gate(root, "YAHOO_GSPC", audit), source_audit_for_gate(root, "FRED_SP500", audit)
+    a, b = source_audit_for_gate(snapshot_dir, "YAHOO_GSPC", audit), source_audit_for_gate(snapshot_dir, "FRED_SP500", audit)
     if a is None or b is None:
         return {"status": "NOT_ACQUIRED"}
-    read = lambda sid: AN.obs_series(P.read_normalized((Path(root) / SRC.SNAPSHOT_DIR / sid / "normalized.csv").read_bytes()))
+    read = lambda sid: AN.obs_series(P.read_normalized((Path(snapshot_dir) / sid / "normalized.csv").read_bytes()))
     return {**SRC.cross_check(read("YAHOO_GSPC"), read("FRED_SP500")), "readsLevelsForEqualityOnly": True}
 
 
-def economic_gates(root, audit, first_execution):
-    asset = source_audit_for_gate(root, "YAHOO_SPY", audit)
+def economic_gates(snapshot_dir, audit, first_execution):
+    asset = source_audit_for_gate(snapshot_dir, "YAHOO_SPY", audit)
     ok_a, reasons_a, info_a = SRC.asset_gate(asset, first_execution, U.ANALYSIS_END)
-    cash = source_audit_for_gate(root, "FRED_DTB3", audit)
+    actions = {"ok": False, "reasons": ["NOT_ACQUIRED"]}
+    chart = None if asset is None else Path(snapshot_dir) / "YAHOO_SPY" / "raw_chart.json"
+    if chart is not None and chart.exists():
+        ok_x, reasons_x, info_x = SRC.corporate_action_gate(chart.read_bytes(), asset["dates"], first_execution, U.ANALYSIS_END)
+        actions = {"ok": ok_x, "reasons": reasons_x, **info_x}
+    cash = source_audit_for_gate(snapshot_dir, "FRED_DTB3", audit)
     if cash is None:
         ok_c, reasons_c, info_c = False, ["NOT_ACQUIRED"], {}
     else:
         ok_c, reasons_c, info_c = SRC.cash_gate(cash["dates"], first_execution, U.ANALYSIS_END)
-    status = "ECONOMIC_READING_READY" if ok_a and ok_c else "ECONOMIC_READING_UNRESOLVED"
-    return {"status": status, "asset": {"ok": ok_a, "reasons": reasons_a, **info_a}, "cash": {"ok": ok_c, "reasons": reasons_c, **info_c}}
+    status = "ECONOMIC_READING_READY" if ok_a and ok_c and actions["ok"] else "ECONOMIC_READING_UNRESOLVED"
+    return {"status": status, "asset": {"ok": ok_a, "reasons": reasons_a, **info_a}, "corporateActions": actions,
+            "cash": {"ok": ok_c, "reasons": reasons_c, **info_c}}
 
 
 # =======================================================================================================================================
@@ -470,6 +528,6 @@ def verify(root=ROOT):
     spec, sha = load_spec(root)
     counters = Counters()
     return {"studyId": STUDY, "mode": "verify", "status": "VERIFIED", "specSha256": sha, "scientificSha256": scientific_digest(spec),
-            "usSnapshotPinned": bool(spec["inputs"]["usSnapshot"]["files"]), "dependencyFiles": len(spec["dependencyHashes"]),
+            "usSnapshotPinned": spec["inputs"]["usSnapshot"]["status"] == "FROZEN", "dependencyFiles": len(spec["dependencyHashes"]),
             "counters": asdict(counters), "outcomeFree": counters.outcome_free(), "formalExecutionInThisChange": False}
 

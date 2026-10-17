@@ -236,9 +236,10 @@ def test_a_changed_scientific_section_is_refused(section):
     assert SP.scientific_digest(mutated) != SP.scientific_digest(spec)
 
 
-def test_the_spec_names_the_workflow_census_blocker_and_no_workflow_ships():
+def test_the_route_reuses_an_existing_workflow_and_no_workflow_file_is_added():
+    # WP4d replaced the WORKFLOW_CENSUS_FROZEN blocker with a route inside an existing, unpinned workflow (see tests/test_rp1_c1_us_wp4d.py).
     spec, _ = SP.load_spec(ROOT)
-    assert any(b["id"] == "WORKFLOW_CENSUS_FROZEN" for b in spec["lifecycle"]["blockers"])
+    assert spec["lifecycle"]["route"]["workflow"] == ".github/workflows/seal-kr-factor-anatomy-v1.yml"
     assert not [p for p in (ROOT / ".github/workflows").iterdir() if "rp1" in p.name]
     assert spec["boundary"]["blocksStudyA"] is False and spec["boundary"]["blocksStudyB"] is False
 

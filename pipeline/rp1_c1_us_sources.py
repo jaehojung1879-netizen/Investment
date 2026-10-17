@@ -6,6 +6,10 @@ cross-check, index LEVELS on identical dates to test that two routes quote the s
 Three of the C1 inputs are reused, not re-acquired: the exact FRED_VIXCLS, FRED_DGS10 and FRED_DGS3MO bytes that `kr-market-risk-anatomy-v1`
 retained and the sealed `kr-market-risk-model-v1` pinned. Every threshold is the sealed KR source contract's (`kr_market_risk_sources`), applied
 on the XNYS calendar instead of XKRX.
+
+STORAGE. None of the four newly acquired sources is committed to this public repository. Three are licensed data whose terms do not permit
+redistribution (S&P 500 index values via Yahoo and FRED; SPY via Yahoo); keeping DTB3 (public domain) in the same snapshot keeps one storage rule.
+The raw bytes live in one ENCRYPTED GitHub Actions artifact; git carries only the dates-and-hashes manifest (`SOURCE_RIGHTS`, `STORAGE`).
 """
 from __future__ import annotations
 
@@ -18,11 +22,38 @@ from . import kr_market_risk_source_parse as P
 from . import kr_market_risk_sources as S
 from . import replay_calendar as RC
 
-SNAPSHOT_DIR = "data/rp1-c1-us-exposure/sources"
 KR_SNAPSHOT_DIR = "data/kr-market-risk-anatomy-v1/sources"
 KR_SPEC_PATH = "research_specs/kr-market-risk-model-v1.json"
 
 REUSED = {"vix": "FRED_VIXCLS", "us10y": "FRED_DGS10", "us3m": "FRED_DGS3MO"}   # bytes pinned by the sealed KR spec
+
+# Where the newly acquired bytes may live. A summary of each provider's published terms as this study reads them, NOT legal advice; anything unclear
+# is treated as restricted. A restricted byte never enters git, a log or an unencrypted artifact; derived aggregate statistics may be published.
+STORAGE = "ENCRYPTED_ACTIONS_ARTIFACT_NEVER_COMMITTED"
+SOURCE_RIGHTS = {
+    "YAHOO_GSPC": {"class": "RESTRICTED_NO_REDISTRIBUTION", "owner": "S&P Dow Jones Indices (index); Yahoo (delivery)",
+                   "basis": "Yahoo's terms limit use to personal, non-commercial purposes and prohibit redistribution; the index values are S&P's"},
+    "FRED_SP500": {"class": "RESTRICTED_NO_REDISTRIBUTION", "owner": "S&P Dow Jones Indices LLC",
+                   "basis": "FRED marks the series as copyrighted by S&P Dow Jones Indices and prohibits reproduction without S&P's permission; FRED serves only "
+                            "about the last ten years"},
+    "YAHOO_SPY": {"class": "RESTRICTED_NO_REDISTRIBUTION", "owner": "Yahoo (delivery)", "basis": "Yahoo's terms (as YAHOO_GSPC)"},
+    "FRED_DTB3": {"class": "PUBLIC_DOMAIN_CITATION_REQUESTED", "owner": "Board of Governors of the Federal Reserve System (H.15)",
+                  "basis": "FRED marks H.15 rates public domain with citation requested; kept in the encrypted snapshot anyway so one storage rule applies"},
+}
+REUSED_RIGHTS = {
+    "FRED_VIXCLS": "Cboe-copyrighted series ALREADY committed by the sealed kr-market-risk-anatomy-v1 snapshot before this storage rule; reused in place, "
+                   "never copied again, never edited (it is a sealed byte)",
+    "FRED_DGS10": "public domain (H.15), committed by the sealed KR snapshot", "FRED_DGS3MO": "public domain (H.15), committed by the sealed KR snapshot"}
+
+# Metadata the vendor must state for a source to count as the registered instrument (identity only; no value is read). Case-insensitive.
+EXPECTED_IDENTITY = {"YAHOO_GSPC": {"instrumentType": "INDEX"}, "YAHOO_SPY": {"instrumentType": "ETF"},
+                     "FRED_SP500": {"unitsContains": "index", "frequencyStartsWith": "daily"},
+                     "FRED_DTB3": {"unitsContains": "percent", "frequencyStartsWith": "daily"}}
+
+# Full-day XNYS closures inside the window that a vendor could wrongly quote. They must not be XNYS sessions in the calendar package (tested), and a
+# reference row on one is reported in `offCalendarDates` (it is never used as a session).
+KNOWN_XNYS_CLOSURES = ("1994-04-27", "2001-09-11", "2001-09-12", "2001-09-13", "2001-09-14", "2004-06-11", "2007-01-02", "2012-10-29", "2012-10-30",
+                       "2018-12-05", "2025-01-09")
 
 SOURCES = {
     "YAHOO_GSPC": {"role": "US_REFERENCE", "vendor": "YAHOO_CHART", "symbol": "^GSPC", "instrument": "S&P 500 price index (vendor quote)",
@@ -90,11 +121,13 @@ def yahoo_dividend_dates(raw):
 
 
 def identity_ok(source_id, identity):
-    entry = SOURCES[source_id]
+    entry, expected = SOURCES[source_id], EXPECTED_IDENTITY[source_id]
     if entry["vendor"] == "YAHOO_CHART":
         return identity.get("symbol") == entry["symbol"] and identity.get("currency") == entry.get("currency") \
-            and identity.get("exchangeTimezoneName") == "America/New_York"
-    return identity.get("id") == entry["symbol"]
+            and identity.get("exchangeTimezoneName") == "America/New_York" \
+            and str(identity.get("instrumentType") or "").upper() == expected["instrumentType"]
+    return identity.get("id") == entry["symbol"] and expected["unitsContains"] in str(identity.get("units") or "").lower() \
+        and str(identity.get("frequency") or "").lower().startswith(expected["frequencyStartsWith"])
 
 
 # =======================================================================================================================================
@@ -182,3 +215,39 @@ def cross_check(values_a, values_b):
     """The inherited instrument-identity test on identical dates (S.vendor_cross_check). Reads two index LEVELS per common date to test equality;
     computes no return."""
     return S.vendor_cross_check(values_a, values_b)
+
+
+def yahoo_split_dates(raw):
+    """Split event dates in the chart's events block (dates only)."""
+    result = json.loads(raw)["chart"]["result"][0]
+    offset = int(result.get("meta", {}).get("gmtoffset", 0))
+    events = (result.get("events") or {}).get("splits") or {}
+    return sorted(pd.Timestamp(int(e["date"]) + offset, unit="s").strftime("%Y-%m-%d") for e in events.values())
+
+
+def corporate_action_gate(raw_chart, asset_dates, first_execution, analysis_end):
+    """Dates-only check of the economic asset's corporate-action calendar: every dividend event inside the window falls on an XNYS session the asset
+    quotes, and no split is reported (a split inside a back-adjusted series would need its own audit). Reports events per year. The cash amounts,
+    the closes and the adjusted closes are NOT read here; the basis reconciliation (adjusted return against close plus dividend) is the frozen
+    post-lock diagnostic."""
+    dividends = [d for d in yahoo_dividend_dates(raw_chart) if first_execution <= d <= analysis_end]
+    splits = yahoo_split_dates(raw_chart)
+    sessions = set(xnys_sessions(first_execution, analysis_end))
+    quoted = set(pd.DatetimeIndex(asset_dates))
+    off = [d for d in dividends if pd.Timestamp(d) not in sessions or pd.Timestamp(d) not in quoted]
+    per_year = {}
+    for d in dividends:
+        per_year[d[:4]] = per_year.get(d[:4], 0) + 1
+    reasons = (["DIVIDEND_EVENT_NOT_ON_A_QUOTED_XNYS_SESSION"] if off else []) + (["SPLIT_EVENT_REPORTED"] if splits else []) \
+        + (["NO_DIVIDEND_EVENT_IN_THE_WINDOW"] if not dividends else [])
+    return not reasons, reasons, {"dividendEvents": len(dividends), "dividendEventsByYear": dict(sorted(per_year.items())), "offSessionEvents": off[:20],
+                                  "splitEvents": splits}
+
+
+def calendar_closure_check(reference_dates):
+    """The registered full-day XNYS closures: none may be a calendar session; any reference row on one is listed (it would be off-calendar)."""
+    closures = pd.DatetimeIndex(KNOWN_XNYS_CLOSURES)
+    sessions = set(xnys_sessions(str(closures.min().date()), str(closures.max().date())))
+    quoted = set(pd.DatetimeIndex(reference_dates))
+    return {"closuresThatAreSessions": [str(d.date()) for d in closures if d in sessions],
+            "referenceRowsOnClosures": [str(d.date()) for d in closures if d in quoted]}
