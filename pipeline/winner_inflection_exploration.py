@@ -45,7 +45,7 @@ def validate_panel(observations):
     return digest
 
 
-def training_plan(observations, references, fold, *, horizon=126):
+def training_plan(observations, references, fold, *, horizon=126, identity_statuses=("VERIFIED_SECURITY",)):
     """Join METADATA only after the full universe exists; preserve exclusions.
 
     All models receive this same plan. Unresolved/departed samples remain in
@@ -53,6 +53,8 @@ def training_plan(observations, references, fold, *, horizon=126):
     """
     if horizon not in (126, 252):
         raise ValueError("HORIZON_NOT_ENABLED_IN_FIRST_EXPLORATION")
+    if identity_statuses not in (("VERIFIED_SECURITY",), ("VERIFIED_SECURITY", "PROVISIONAL")):
+        raise ValueError("EXPLICIT_IDENTITY_POLICY_REQUIRED")
     universe_sha = validate_panel(observations)
     ids = {o.key.sample_id for o in observations}
     if len({r.sample_id for r in references}) != len(references) or any(r.sample_id not in ids for r in references):
@@ -65,7 +67,7 @@ def training_plan(observations, references, fold, *, horizon=126):
         if reference and (reference.market != o.key.market or reference.horizon_sessions != horizon
                           or W._utc(reference.execution_at).tz_convert("Asia/Seoul" if o.key.market == "KR" else "America/New_York").date().isoformat() <= o.key.signal_date):
             raise ValueError("LABEL_SIGNAL_OR_MARKET_MISMATCH")
-        reason = ("IDENTITY_UNRESOLVED" if o.identity_status != "VERIFIED_SECURITY" else
+        reason = ("IDENTITY_UNRESOLVED" if o.identity_status not in identity_statuses else
                   "NOT_TRADABLE" if o.investable is not True else None)
         if reason:
             excluded[sid] = reason
@@ -81,7 +83,7 @@ def training_plan(observations, references, fold, *, horizon=126):
                 train.append(sid)
         else:
             excluded[sid] = "OUTSIDE_FOLD"
-    body = {"universeSha256": universe_sha, "horizon": horizon, "fold": asdict(fold),
+    body = {"universeSha256": universe_sha, "horizon": horizon, "fold": asdict(fold), "identityStatuses": list(identity_statuses),
             "training": sorted(train), "evaluation": sorted(evaluate), "excluded": dict(sorted(excluded.items()))}
     return {**body, "sha256": IF.digest(body)}
 
@@ -125,13 +127,39 @@ def compare_synthetic(observations, targets, fold, *, seed, horizon=126):
     train, evaluate = plan["training"], plan["evaluation"]
     if len(train) < 50 or not evaluate or not names:
         return {"status": "BLOCKED", "reason": "INSUFFICIENT_SYNTHETIC_SAMPLE", "planSha256": plan["sha256"]}
-    x, test = matrix(train), matrix(evaluate)
+    fitted = fit_prepared(matrix(train), matrix(evaluate), names,
+                          [outcomes[s].excess for s in train],
+                          {kind: [getattr(outcomes[s], kind) for s in train] for kind in ("winner", "big_loss")}, seed=seed)
+    if fitted["status"] == "BLOCKED":
+        return {**fitted, "planSha256": plan["sha256"]}
+    predictions, statuses = fitted["scores"], fitted["modelStatus"]
+    event = "financial.operatingPositiveCross"
+    if event in fitted["trainingFeatureNames"]:
+        predictions["event_rule"] = [None if v is None else float(v > 0) for sid in evaluate
+                                     for v in [{c.name: c.value for c in rows[sid].cells}.get(event)]]
+        statuses["event_rule"] = "SYNTHETIC_ONLY"
+    else:
+        statuses["event_rule"] = "BLOCKED_EVENT_NOT_MEASURED"
+    statuses["shallow_boosting"] = "NOT_IMPLEMENTED_REQUIRES_2000_ROWS_100_ISSUERS_AND_SEPARATE_SPEC"
+    return {"status": "SYNTHETIC_ONLY", "planSha256": plan["sha256"], "evaluationSampleIds": evaluate,
+            "trainingRows": len(train), "trainingFeatureNames": fitted["trainingFeatureNames"],
+            "scores": predictions, "modelStatus": statuses, "modelFits": fitted["modelFits"],
+            "productionPromotion": False, "probabilityCalibrated": False}
+
+
+def fit_prepared(x, test, names, excess, classes, *, seed, elastic_net=True, class_minimum=5):
+    """Shared numeric learner, with no source reader or authorization side effect.
+
+    The historical orchestrator must obtain its permit BEFORE loading values.
+    Synthetic callers retain their separate source-marker checks above.
+    """
+    x, test = np.asarray(x, dtype=float), np.asarray(test, dtype=float)
     # Drop wholly unmeasured columns from TRAINING only. An all-missing feature
     # must not quietly become a fabricated zero column.
     measured = ~np.isnan(x).all(axis=0)
     x, test = x[:, measured], test[:, measured]
     if not measured.any():
-        return {"status": "BLOCKED", "reason": "NO_MEASURABLE_TRAINING_FEATURE", "planSha256": plan["sha256"]}
+        return {"status": "BLOCKED", "reason": "NO_MEASURABLE_TRAINING_FEATURE"}
     from sklearn.impute import SimpleImputer
     from sklearn.linear_model import ElasticNet, LogisticRegression, Ridge
     from sklearn.pipeline import make_pipeline
@@ -142,35 +170,25 @@ def compare_synthetic(observations, targets, fold, *, seed, horizon=126):
         return make_pipeline(SimpleImputer(strategy="median", add_indicator=True), StandardScaler(), model)
 
     predictions, statuses, fits = {}, {}, 0
-    # One defined event, never a new weighted score over existing factors.
-    event = "financial.operatingPositiveCross"
-    if event in names and measured[names.index(event)]:
-        predictions["event_rule"] = [None if v is None else float(v > 0) for sid in evaluate
-                                     for v in [{c.name: c.value for c in rows[sid].cells}.get(event)]]
-        statuses["event_rule"] = "SYNTHETIC_ONLY"
-    else:
-        statuses["event_rule"] = "BLOCKED_EVENT_NOT_MEASURED"
-    for model_name, model in (("ridge", Ridge(alpha=1.0)), ("elastic_net", ElasticNet(alpha=0.01, l1_ratio=0.5, max_iter=5000, random_state=seed))):
-        fitted = learner(model).fit(x, [outcomes[s].excess for s in train])
+    models = [("ridge", Ridge(alpha=1.0))]
+    if elastic_net:
+        models.append(("elastic_net", ElasticNet(alpha=0.01, l1_ratio=0.5, max_iter=5000, random_state=seed)))
+    for model_name, model in models:
+        fitted = learner(model).fit(x, excess)
         predictions[model_name] = fitted.predict(test).tolist()
-        statuses[model_name] = "SYNTHETIC_ONLY"
+        statuses[model_name] = "FITTED_UNCALIBRATED"
         fits += 1
     for kind in ("winner", "big_loss"):
-        y = np.array([getattr(outcomes[s], kind) for s in train], dtype=int)
-        if min(np.count_nonzero(y), np.count_nonzero(1 - y)) < 5:
+        y = np.array(classes[kind], dtype=int)
+        if min(np.count_nonzero(y), np.count_nonzero(1 - y)) < class_minimum:
             statuses["logistic_" + kind] = "BLOCKED_INSUFFICIENT_CLASS_SUPPORT"
             continue
         model = learner(LogisticRegression(C=1.0, random_state=seed, max_iter=1000)).fit(x, y)
         predictions["logistic_" + kind] = model.predict_proba(test)[:, 1].tolist()
-        statuses["logistic_" + kind] = "SYNTHETIC_ONLY_UNCALIBRATED"
+        statuses["logistic_" + kind] = "FITTED_UNCALIBRATED"
         fits += 1
-    # Optional model stays a contract until the source/sample gate is met;
-    # no sweep/hyperparameter search is hidden in this rehearsal.
-    statuses["shallow_boosting"] = "NOT_IMPLEMENTED_REQUIRES_2000_ROWS_100_ISSUERS_AND_SEPARATE_SPEC"
-    return {"status": "SYNTHETIC_ONLY", "planSha256": plan["sha256"], "evaluationSampleIds": evaluate,
-            "trainingRows": len(train), "trainingFeatureNames": [n for n, keep in zip(names, measured) if keep],
-            "scores": predictions, "modelStatus": statuses, "modelFits": fits,
-            "productionPromotion": False, "probabilityCalibrated": False}
+    return {"status": "FITTED_UNCALIBRATED", "trainingFeatureNames": [n for n, keep in zip(names, measured) if keep],
+            "scores": predictions, "modelStatus": statuses, "modelFits": fits}
 
 
 def evaluation_gate(economics, references, *, as_of, maximum_positions=5):

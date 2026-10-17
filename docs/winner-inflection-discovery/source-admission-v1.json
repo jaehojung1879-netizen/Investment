@@ -1,0 +1,22 @@
+{
+  "specId": "wid-us-b-h126-2020-exploration-v1",
+  "scope": "SURVIVOR_CONDITIONED_PUBLIC_RECONSTRUCTION",
+  "basis": "RECONSTRUCTED_AS_TRADED_CASH_REINVEST_EX_CLOSE_V1",
+  "identityPolicy": "OWN_PANEL_AND_DATED_CIK_NO_REPAIR",
+  "acceptedIdentityCategories": ["CURRENT_MEMBER_OWN_PANEL", "REMOVED_FROM_INDEX_STILL_TRADING"],
+  "cashPolicy": "UNREMUNERATED_USD_NOMINAL",
+  "sizePolicy": "FILED_WEIGHTED_AVERAGE_SHARES_X_AS_TRADED_PRICE_PROXY",
+  "terminalPolicy": "RETAIN_UNRESOLVED_NO_LAST_QUOTE_OR_ZERO_SUBSTITUTION",
+  "allowRedistribution": false,
+  "productionPromotion": false,
+  "claims": {
+    "rights": {"status": "UNRESOLVED", "reviewer": null, "citations": [], "remaining": "document internal research/reuse permission for stock/SPY/actions, Finnhub filings, membership and industry sources; old acquisition/pilot approval is not this permission"},
+    "identity": {"status": "UNRESOLVED", "reviewer": null, "citations": [], "remaining": "review own-panel categories with dated member CIK and visible-filing CIK; ticker reuse/rename/ambiguous categories remain excluded with denominators"},
+    "membershipIndustry": {"status": "UNRESOLVED", "reviewer": null, "citations": [], "remaining": "accept dated community snapshots as conditional public reconstruction, not official timestamped S&P admission; no same-day or current-sector backfill"},
+    "returnBasis": {"status": "UNRESOLVED", "reviewer": null, "citations": [], "remaining": "verify stock/SPY recovered as-traded quotes, dividend currency/post-split share units and action coverage against source evidence; approve conditional reconstruction or supply validated replacement source in a separate spec, never relabel vendor adjustment as cash reinvestment"},
+    "terminal": {"status": "UNRESOLVED", "reviewer": null, "citations": [], "remaining": "approve retaining unknown consideration and missing held paths as unresolved; provide pinned CASH settlement evidence if supported; never zero/last quote or successor substitution"},
+    "size": {"status": "UNRESOLVED", "reviewer": null, "citations": [], "remaining": "accept filed weighted-average shares x as-traded price as conditional size proxy, including current-source/split checks; not verified capitalization"},
+    "vintage": {"status": "UNRESOLVED", "reviewer": null, "citations": [], "remaining": "accept retrospective market observations/public filing reconstruction with original date rules; collection in 2026 is not prospective observation in 2013-2020"}
+  },
+  "terminalSource": null
+}

@@ -49,6 +49,7 @@ def _state(records, market, as_of):
     index = (DD if market == "KR" else FD).index_filings(list(visible))
     key = (max(index, key=lambda k: (k[0], STAGES[market].index(k[1]))) if index else None) if market == "KR" else CP.current_key(index)
     out = {"period": None, "periodEnd": None, "availableFrom": None, "sourceIds": [],
+           "levels": dict.fromkeys(("operatingMargin", "ocfMargin")),
            "fields": dict.fromkeys(FLOW_FIELDS), "reasons": dict.fromkeys(FLOW_FIELDS, "NO_VISIBLE_FILING")}
     if key is None:
         return out
@@ -87,6 +88,9 @@ def _state(records, market, as_of):
 
     current = {a: ttm(key, a) for a in ACCOUNTS[market]}
     earlier = {a: ttm(prev, a) for a in ACCOUNTS[market]}
+    if current["revenue"] is not None and current["revenue"] > 0:
+        out["levels"] = {a + "Margin": current[a] / current["revenue"] if current[a] is not None else None
+                         for a in ("operating", "ocf")}
     # No changes across CFS/OFS, even when each TTM is separately compatible.
     basis_mixed = market == "KR" and not KQ._compatible(index, sorted(used))
 
@@ -116,6 +120,7 @@ def _state(records, market, as_of):
     if basis_mixed:
         out["fields"] = dict.fromkeys(FLOW_FIELDS)
         out["reasons"] = dict.fromkeys(FLOW_FIELDS, "STATEMENT_BASIS_UNRESOLVED")
+        out["levels"] = dict.fromkeys(out["levels"])
     current_record = index[key]
     out.update(period=list(key), periodEnd=(DF.period_end(*key) if market == "KR" else current_record["periodEnd"]),
                availableFrom=max((r["availableFrom"] if market == "KR" else CP.visible_day(r).isoformat()) for k, r in index.items() if k in used),
@@ -145,6 +150,7 @@ class FilingStates:
         if out["periodEnd"] and (dt.date.fromisoformat(date) - dt.date.fromisoformat(out["periodEnd"])).days > 180:
             out["fields"] = dict.fromkeys(FLOW_FIELDS)
             out["reasons"] = dict.fromkeys(FLOW_FIELDS, "REPORT_STALE_OVER_180_DAYS")
+            out["levels"] = dict.fromkeys(out["levels"])
         return out
 
 
