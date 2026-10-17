@@ -458,6 +458,10 @@ def readiness_audit(root=ROOT, assume_complete_reference=False, snapshot_dir=Non
                                        ("CASH_ECONOMIC", "cashEconomicReading", "CASH_ECONOMIC_UNRESOLVED")):
             if out["scopedAdmission"][scope] == "BLOCKED_HASH_MISMATCH":
                 details[key] = {**details[key], "status": unresolved, "hashAdmission": "BLOCKED_HASH_MISMATCH"}
+        if require_frozen and spec is not None and spec["inputs"]["usSnapshot"]["status"] == "FROZEN":
+            baseline = {n: h for n, h in spec["inputs"]["usSnapshot"]["analysisFiles"].items() if n.startswith("FRED_SP500/")}
+            cross = details["vendorCrossCheck"]
+            cross["frozenHashAudit"] = {"changed": baseline != cross.get("currentFiles"), "frozen": baseline, "strategyInput": False}
     for rel, code in ((RESULT_PATH, "RESULT"), (MARKER_PATH, "MARKER")):
         if (root / rel).exists():
             blockers.append("RP1_C1_" + code + "_ALREADY_COMMITTED")
@@ -495,7 +499,8 @@ def cross_check_status(snapshot_dir, audit):
         return {"status": "FRESH_CROSSCHECK_SOURCE_INVALID"}
     read = lambda sid: AN.obs_series(P.read_normalized((Path(snapshot_dir) / sid / "normalized.csv").read_bytes()))
     return {**SRC.cross_check(read("YAHOO_GSPC"), read("FRED_SP500")), "readsLevelsForEqualityOnly": True,
-            "freshIdentityVerified": True, "coverage": coverage, "fullSeriesHashRole": "AUDIT_ONLY_MOVING_WINDOW"}
+            "freshIdentityVerified": True, "coverage": coverage, "fullSeriesHashRole": "AUDIT_ONLY_MOVING_WINDOW",
+            "currentFiles": {n: R.sha(data) for n, data in expected.items()}}
 
 
 def economic_gates(snapshot_dir, audit, first_execution):

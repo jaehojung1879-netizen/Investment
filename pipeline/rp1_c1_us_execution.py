@@ -510,7 +510,7 @@ def execute(output, root, snapshot_dir, env, expected_sha, api=E.github_api, git
     files[REPORT_FILE] = file_hash(out / REPORT_FILE)
     files[MARKER_FILE] = file_hash(out / MARKER_FILE)
     manifest = {"studyId": STUDY, "specSha256": sha, "authorizationSha256": permit.authorizationSha256, "counters": asdict(counters), "files": files,
-                "sourceFreeze": spec["inputs"]["usSnapshot"]}
+                "sourceFreeze": spec["inputs"]["usSnapshot"], "referenceCrossCheck": readiness["details"]["vendorCrossCheck"]}
     E.atomic_write(out / MANIFEST_FILE, E.json_safe(manifest), immutable=True)
     if validation["status"] != "CONSISTENT":
         raise ValueError("RESULT_FAILED_INDEPENDENT_VALIDATION_STUDY_CONSUMED")

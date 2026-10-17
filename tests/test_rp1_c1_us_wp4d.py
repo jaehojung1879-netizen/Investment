@@ -527,6 +527,8 @@ def test_fred_moving_window_is_freshly_checked_not_permanently_hashed(frozen_wor
     assert readiness["decision"] == SP.DECISION_READY
     cross = readiness["details"]["vendorCrossCheck"]
     assert cross["status"] == "CONSISTENT" and cross["commonDates"] >= 250 and cross["freshIdentityVerified"]
+    assert cross["frozenHashAudit"]["changed"] and not cross["frozenHashAudit"]["strategyInput"]
+    assert cross["currentFiles"] != cross["frozenHashAudit"]["frozen"]
     report = R.admission_report(frozen_world["snapshot"], snapshot, "1993-02-08")
     assert report["status"] == "EXACT_SCOPED_INPUT_MATCH"
     assert all(c["status"] == "CONSISTENT" for c in report["referenceCrossChecks"])
@@ -713,6 +715,8 @@ def test_the_formal_execution_end_to_end_then_refuses_a_second_attempt(frozen_wo
         assert f"| {name} |" in report
     assert "CVaR" in report and "rebound missed" in report and "up-market cost" in report
     assert manifest["counters"]["lockClaims"] == 1 and manifest["counters"]["usValueReads"] == 2
+    assert manifest["referenceCrossCheck"]["status"] == "CONSISTENT"
+    assert not manifest["referenceCrossCheck"]["frozenHashAudit"]["changed"]
     assert result["cashEconomic"]["status"] == "MEASURED"
     assert result["cashEconomic"]["spec"]["scientificSha256"] != SP.scientific_digest(frozen_world["spec"])
     assert not any("close" in k.lower() or "nav" == k.lower() for k in _keys(result))      # aggregate statistics only
