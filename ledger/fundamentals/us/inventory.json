@@ -16,87 +16,90 @@
   },
   "conceptsBySection": {
     "bs": 0,
-    "ic": 18,
-    "cf": 29
+    "ic": 26,
+    "cf": 39
   },
   "conceptsBySectionCollapsed": {
     "bs": 0,
-    "ic": 18,
-    "cf": 29
+    "ic": 26,
+    "cf": 39
   },
   "topConcepts": {
     "bs": [],
     "ic": [
-      "us-gaap_Revenues",
-      "us-gaap_CostOfGoodsAndServicesSold",
-      "us-gaap_GrossProfit",
-      "us-gaap_GeneralAndAdministrativeExpense",
-      "us-gaap_AdvertisingExpense",
-      "dpz_RefranchisingGains",
-      "us-gaap_GainLossOnSaleOfOtherAssets",
+      "us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax",
+      "us-gaap_LaborAndRelatedExpense",
+      "us-gaap_OtherCostAndExpenseOperating",
+      "us-gaap_OperatingExpenses",
       "us-gaap_OperatingIncomeLoss",
-      "dpz_OtherIncomeExpense",
+      "us-gaap_DefinedBenefitPlanOtherCosts",
       "us-gaap_InvestmentIncomeInterest",
-      "us-gaap_InterestExpense",
-      "us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest"
+      "us-gaap_InterestExpenseNonoperating",
+      "us-gaap_GainLossOnInvestments",
+      "us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+      "us-gaap_IncomeTaxExpenseBenefit",
+      "us-gaap_ProfitLoss"
     ],
     "cf": [
-      "dpz_RefranchisingGains",
-      "us-gaap_GainLossOnSaleOfOtherAssets",
-      "us-gaap_NetIncomeLoss",
-      "us-gaap_DepreciationAndAmortization",
-      "us-gaap_GainLossOnSaleOfPropertyPlantEquipment",
-      "us-gaap_AmortizationOfFinancingCostsAndDiscounts",
-      "us-gaap_DeferredIncomeTaxExpenseBenefit",
+      "us-gaap_ProfitLoss",
+      "us-gaap_DepreciationDepletionAndAmortization",
+      "us-gaap_AmortizationOfIntangibleAssets",
+      "mrsh_LeasesRightOfUseAssetAmortization",
+      "us-gaap_BusinessCombinationContingentConsiderationArrangementsChangeInAmountOfContingentConsiderationLiability1",
+      "mrsh_ConsolidationGainLossAmount",
+      "mrsh_GainLossOnInvestmentsOperatingActivities",
+      "us-gaap_GainLossOnDispositionOfAssets1",
       "us-gaap_ShareBasedCompensation",
-      "dpz_ExcessTaxBenefitsFromEquityBasedCompensation",
-      "us-gaap_ProvisionForDoubtfulAccounts",
-      "us-gaap_UnrealizedGainLossOnInvestments",
-      "us-gaap_IncreaseDecreaseInOtherOperatingCapitalNet"
+      "us-gaap_IncreaseDecreaseInReceivables",
+      "us-gaap_IncreaseDecreaseInOtherNoncurrentAssets",
+      "us-gaap_IncreaseDecreaseInEmployeeRelatedLiabilities"
     ]
   },
   "topConceptsCollapsed": {
     "bs": [],
     "ic": [
-      "Revenues",
-      "CostOfGoodsAndServicesSold",
-      "GrossProfit",
-      "GeneralAndAdministrativeExpense",
-      "AdvertisingExpense",
-      "dpz_RefranchisingGains",
-      "GainLossOnSaleOfOtherAssets",
+      "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "LaborAndRelatedExpense",
+      "OtherCostAndExpenseOperating",
+      "OperatingExpenses",
       "OperatingIncomeLoss",
-      "dpz_OtherIncomeExpense",
+      "DefinedBenefitPlanOtherCosts",
       "InvestmentIncomeInterest",
-      "InterestExpense",
-      "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest"
+      "InterestExpenseNonoperating",
+      "GainLossOnInvestments",
+      "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+      "IncomeTaxExpenseBenefit",
+      "ProfitLoss"
     ],
     "cf": [
-      "dpz_RefranchisingGains",
-      "GainLossOnSaleOfOtherAssets",
-      "NetIncomeLoss",
-      "DepreciationAndAmortization",
-      "GainLossOnSaleOfPropertyPlantEquipment",
-      "AmortizationOfFinancingCostsAndDiscounts",
-      "DeferredIncomeTaxExpenseBenefit",
+      "ProfitLoss",
+      "DepreciationDepletionAndAmortization",
+      "AmortizationOfIntangibleAssets",
+      "mrsh_LeasesRightOfUseAssetAmortization",
+      "BusinessCombinationContingentConsiderationArrangementsChangeInAmountOfContingentConsiderationLiability1",
+      "mrsh_ConsolidationGainLossAmount",
+      "mrsh_GainLossOnInvestmentsOperatingActivities",
+      "GainLossOnDispositionOfAssets1",
       "ShareBasedCompensation",
-      "dpz_ExcessTaxBenefitsFromEquityBasedCompensation",
-      "ProvisionForDoubtfulAccounts",
-      "UnrealizedGainLossOnInvestments",
-      "IncreaseDecreaseInOtherOperatingCapitalNet"
+      "IncreaseDecreaseInReceivables",
+      "IncreaseDecreaseInOtherNoncurrentAssets",
+      "IncreaseDecreaseInEmployeeRelatedLiabilities"
     ]
   },
   "units": {
-    "u_usd": 45,
-    "u_unitedstatesofamericadollarsshare": 2
+    "usd": 61,
+    "usd/share": 2,
+    "shares": 2
   },
   "unitClasses": {
-    "currency": 45,
-    "unclassified": 2
+    "currency": 61,
+    "perShare": 2,
+    "shares": 2
   },
   "unitClassesResolved": {
-    "currency": 45,
-    "perShare": 2
+    "currency": 61,
+    "perShare": 2,
+    "shares": 2
   },
   "unclassifiedUnits": {}
 }
