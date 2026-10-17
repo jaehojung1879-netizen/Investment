@@ -290,6 +290,7 @@ def evaluate(decision, security_returns, *, execution_date, end_date, scope, cos
     if any(t not in security_returns or not CORE.finite(security_returns[t]) or security_returns[t] < -1 for t in required):
         raise ValueError("COMMON_RETURN_MASK_UNRESOLVED")
     legs = []
+    cost_policy = W.cost_breakdown(region, execution_date)
     for t in sorted(set(before) | set(target)):
         delta = target.get(t, 0) - before.get(t, 0)
         if abs(delta) <= 1e-12:
@@ -298,7 +299,11 @@ def evaluate(decision, security_returns, *, execution_date, end_date, scope, cos
         category = "ETF_LEG" if t == bench else "INITIAL_FUNDING" if not before else (
             "NAME_ENTRY_EXIT" if not before.get(t) or not target.get(t) else "WEIGHT_RETARGET")
         legs.append({"ticker": t, "side": side, "weightTraded": abs(delta), "date": execution_date,
-                     "category": category, "costFraction": abs(delta) * cost_multiplier * W.trade_cost_fraction(
+                     "category": category, "commissionBps": cost_policy["commissionBps"],
+                     "halfSpreadBps": cost_policy["spreadBps"] / 2,
+                     "sellTaxBps": (0.0 if side == "buy" else W.ETF_SELL_TAX_BPS[region]
+                                    if t == bench else cost_policy["sellTaxBps"]),
+                     "costFraction": abs(delta) * cost_multiplier * W.trade_cost_fraction(
                          region, execution_date, is_benchmark=t == bench, side=side)})
     # Reuse the existing accountant for the base-cost NAV (including its exact cost timing).
     from scripts.run_weekly_passive_first_replay import _leg_cost

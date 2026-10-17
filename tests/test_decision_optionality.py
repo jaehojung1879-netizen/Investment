@@ -153,6 +153,8 @@ def test_ledger_includes_etf_legs_and_target_restoration():
     assert ev["costFraction"] == pytest.approx(.15 * (.00083 + .0008))
     assert ev["oneWayTurnover"] == pytest.approx(.15)
     assert ev["nameTrades"] == 1
+    assert next(l for l in ev["legs"] if l["ticker"] == "SPY")["sellTaxBps"] == .3
+    assert next(l for l in ev["legs"] if l["ticker"] == "SYN0")["sellTaxBps"] == 0
     assert ev["grossReturn"] == pytest.approx(.032)
     assert ev["netReturn"] == pytest.approx((1 - .0002445) * 1.032 - 1)
     assert ev["etfOpportunityReturn"] == pytest.approx(.003)
@@ -164,6 +166,9 @@ def test_ledger_includes_etf_legs_and_target_restoration():
     assert retarget["replacementCostFraction"] == 0
     assert sum(retarget["costByCategory"].values()) == pytest.approx(retarget["costFraction"])
     assert next(l for l in retarget["legs"] if l["ticker"] == "SYN0")["category"] == "WEIGHT_RETARGET"
+    kr = decide(synthetic_frame(1, market="KR", before={"SYN0": .15, "069500.KS": .85}), "ETF")
+    sell = next(l for l in evaluate(kr)["legs"] if l["ticker"] == "SYN0")
+    assert sell["sellTaxBps"] == 20 and sell["commissionBps"] == 1.5 and sell["halfSpreadBps"] == 4
 
 
 @pytest.mark.parametrize("market,day,expected_sell", [("KR", "2018-06-04", .00355), ("KR", "2025-06-02", .00205),
