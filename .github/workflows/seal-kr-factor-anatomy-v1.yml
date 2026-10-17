@@ -30,6 +30,8 @@ on:
       - 'scripts/acquire_rp1_c1_us_sources.py'
       - 'scripts/run_rp1_c1_us_wp4d.py'
       - '.github/workflows/seal-kr-factor-anatomy-v1.yml'
+      - 'docs/research-program/sources/rp1-c1-us-source-freeze-*.json'
+      - 'docs/research-program/specs/rp1-c1-us-exposure-ladder-replication-v1*'
 permissions:
   contents: write
   pull-requests: write
@@ -237,7 +239,12 @@ jobs:
           gh pr create --draft --base main --head "$BRANCH" --title "Data: rp1-c1 US bounded input hash freeze ${GITHUB_RUN_ID}" --body-file pr-body.md
 
   rp1-c1-dry-run:
-    if: github.event_name == 'workflow_dispatch' && inputs.rp1_c1_action == 'dry-run'
+    # A reviewed source-freeze merge checks re-fetch and synthetic evaluation automatically; never execute.
+    if: >-
+      (github.event_name == 'workflow_dispatch' && inputs.rp1_c1_action == 'dry-run') ||
+      (github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true &&
+       github.event.pull_request.base.ref == 'main' && github.event.pull_request.head.repo.full_name == github.repository &&
+       startsWith(github.head_ref, 'research/rp1-c1-us-source-freeze-'))
     runs-on: ubuntu-latest
     timeout-minutes: 40
     permissions:

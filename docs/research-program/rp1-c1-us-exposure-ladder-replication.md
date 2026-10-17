@@ -116,7 +116,7 @@ Yahoo/S&P 원천은 재배포 제한, DTB3는 citation이 요청되는 public-do
 
 1. **이 저장 변경 PR 병합:** 기존 호스트 workflow의 이 PR에 한정된 merged-main guard가 `freeze-sources` 경로를 자동 실행한다. 일반적인 재동결은 기존 `rp1_c1_action=freeze-sources` 수동 dispatch다. 신규 workflow·Settings 변경·신규 인증정보는 없다.
 2. **freeze-sources:** 기존 수집기 → 구간 정규화 → 준비도 READY → 분석 해시와 원자료 감사 해시·코드 해시 Manifest → spec pin을 담은 Draft PR 하나. 원천 artifact 업로드와 자동 병합은 없다. 소유자가 그 원천 PR을 검토·병합한다.
-3. **dry-run:** 새로 취득하고 고정 입력 해시·준비도 READY·KR 동등성 EXACT를 확인한 후, 합성 값으로만 전체 평가·검증기를 돌린다. 잠금 없음.
+3. **dry-run:** 원천 Manifest PR 병합 시 자동 실행한다(기존 수동 dispatch도 유지). 새로 취득하고 고정 입력 해시·준비도 READY·KR 동등성 EXACT를 확인한 후, 합성 값으로만 전체 평가·검증기를 돌린다. 잠금 없음.
 4. **소유자 승인:** `python scripts/run_rp1_c1_us_wp4d.py authorization-draft --owner <login>`의 정확한 pin과 저장 v2 확인 항목을 검토한다. 소유자가 확인 항목 7개를 직접 true로 바꿔 `docs/research-program/authorizations/rp1-c1-us-exposure-execution-authorization.json`을 검토된 PR로 커밋한다. 템플릿은 NOTHING만 승인한다.
 5. **별도 execute 승인/dispatch:** 먼저 소유자·main·첫 시도·커밋된 승인 파일 SHA/pin을 확인한 다음 재취득한다. 입력 해시 완전 일치 → 기존 준비도/동등성 관문 → 원자적 잠금 ref 2개 → 마커 → 실제 미국 값 평가 순서다. 잠금 후 실패는 연구를 소진하며 재시도하지 않는다. 이 저장 변경 PR과 freeze는 execute 승인이 아니다.
 

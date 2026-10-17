@@ -694,6 +694,12 @@ def test_workflow_checks_owner_before_fetch_and_never_uploads_sources():
     text = HOST.read_text()
     block = job_block(text, "rp1-c1-execute")
     assert block.index(' authorization-check ') < block.index('python scripts/acquire_rp1_c1_us_sources.py')
+    assert "'closed'" not in block  # no PR merge can trigger the formal execute
+    dry = job_block(text, "rp1-c1-dry-run")
+    assert "github.event.pull_request.merged == true" in dry
+    assert "github.event.pull_request.base.ref == 'main'" in dry
+    assert "startsWith(github.head_ref, 'research/rp1-c1-us-source-freeze-')" in dry
+    assert "permissions:\n      contents: read" in dry
     for name in ("rp1-c1-freeze-sources", "rp1-c1-source-probe", "rp1-c1-dry-run", "rp1-c1-execute"):
         block = job_block(text, name)
         assert not any(t in block for t in ("openssl", "secret set", "snapshot.tar", "secrets.RP1_C1"))

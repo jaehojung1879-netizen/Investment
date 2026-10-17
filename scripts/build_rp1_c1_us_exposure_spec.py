@@ -57,7 +57,7 @@ def build(root=ROOT):
                       "actions": {"none": "the host's original job only; every rp1-c1 job is skipped",
                                   "freeze-sources": "manual, main only: acquire, bounded exact input hashes, dates-only readiness, open one Draft PR with "
                                                     "the manifest and the re-pinned spec",
-                                  "dry-run": "manual: re-fetch and verify exact bounded input hashes, run every pre-lock check, then the whole evaluation, validator "
+                                  "dry-run": "on reviewed source-freeze merge or manual dispatch: re-fetch and verify exact bounded input hashes, run every pre-lock check, then the whole evaluation, validator "
                                              "and report on INVENTED values over the real calendar; no lock, no US value",
                                   "execute": "manual, main only, the owner's dispatch: authorization, pins, readiness, equivalence, then the lock, the marker "
                                              "and only then the first US value"},

@@ -57,7 +57,7 @@
     "data/kr-market-risk-anatomy-v1/sources/FRED_DGS10/normalized.csv": "db7dc41d9d40ad5608e0ead00086ec15f5969cf785aa378f05cda576a160bc92",
     "data/kr-market-risk-anatomy-v1/sources/FRED_DGS3MO/normalized.csv": "7ce2bdbe2547e4fc16c18a36295871d16099d60f51f10edfc2cd8d42218dc06c",
     "data/kr-market-risk-anatomy-v1/sources/FRED_VIXCLS/normalized.csv": "dd0ccfe0a13f5e72a842dc27d53733748f24fb380808a7b2fb9babb40caa00ef",
-    "docs/research-program/rp1-c1-us-exposure-ladder-replication.md": "1bdfb8a5c2e071eed0b51a87e94dfefe5d2ffddc173d28fb1123c48cf3be0262",
+    "docs/research-program/rp1-c1-us-exposure-ladder-replication.md": "1fd23f621993cf51f66724ce2a324403151bef75af84b5e6865110611dfb1848",
     "docs/results/kr-market-risk-model-v1-execution-started.json": "9d5e322ba54a0c7da3e467c72111ce955c365d650827282f9c9bf379c2ca307f",
     "docs/results/kr-market-risk-model-v1-manifest.json": "81dc4408bf8f9f2464ce827b2783be2cf486e1ae232e3fec7b65a282114f8445",
     "docs/results/kr-market-risk-model-v1-result.json": "2578bbfa245a6540235cc05e231441b4ebb4da165240a84e715756477a897c4b",
@@ -132,7 +132,7 @@
     "research_specs/kr-market-risk-model-v1.sha256": "194f65b655ae28c5861b17652be681b4c6647436af107d3fd81b0ecbc3666339",
     "scripts/acquire_kr_market_risk_sources.py": "f0c31208a40f31cb4f3b7600256b789923e0aa3a32092d2d1d6f0dc25debe7cf",
     "scripts/acquire_rp1_c1_us_sources.py": "b0c40929342b3d3134f60dbd9858730fc97562268f3f99e0f59c05002b75d9c8",
-    "scripts/build_rp1_c1_us_exposure_spec.py": "e8089ab6756bf712bbf2ce3820aa7802ab58196e2327271804f303e4708e91aa",
+    "scripts/build_rp1_c1_us_exposure_spec.py": "44fa9b70fa390e751f54c26eb41ce05359135565baef842653751e463259981f",
     "scripts/run_rp1_c1_us_exposure.py": "80ded0e6218875cb4cb53faa180b1512a42638c8ae06caf3f61679f1805b17b8"
   },
   "entryPoints": [
@@ -427,7 +427,7 @@
     "resultPath": "docs/research-program/results/rp1-c1-us-exposure-ladder-replication-v1-result.json",
     "route": {
       "actions": {
-        "dry-run": "manual: re-fetch and verify exact bounded input hashes, run every pre-lock check, then the whole evaluation, validator and report on INVENTED values over the real calendar; no lock, no US value",
+        "dry-run": "on reviewed source-freeze merge or manual dispatch: re-fetch and verify exact bounded input hashes, run every pre-lock check, then the whole evaluation, validator and report on INVENTED values over the real calendar; no lock, no US value",
         "execute": "manual, main only, the owner's dispatch: authorization, pins, readiness, equivalence, then the lock, the marker and only then the first US value",
         "freeze-sources": "manual, main only: acquire, bounded exact input hashes, dates-only readiness, open one Draft PR with the manifest and the re-pinned spec",
         "none": "the host's original job only; every rp1-c1 job is skipped"
