@@ -1,0 +1,99 @@
+{
+  "id": "decision-optionality-v1",
+  "version": 1,
+  "baseMain": "a92b0808197fbc272b450ea631836fb613c47c84",
+  "status": "SYNTHETIC_ONLY_HISTORICAL_EXECUTION_NOT_AUTHORIZED",
+  "evidenceClass": "DESIGN_AFTER_PUBLIC_RESULT_EXPOSURE",
+  "productionPromotion": false,
+  "historicalExecutionAuthorized": false,
+  "principle": "Freeze discovery inputs; measure the policy's incremental value separately from the ranking's value.",
+  "scope": {
+    "marketsSeparate": ["KR", "US"],
+    "benchmarks": {"KR": "069500.KS", "US": "SPY"},
+    "observation": "Each region's completed weekly session; execution at the next own-exchange session close, never signal close.",
+    "constraints": "Import weekly_decision.SELECTION_CFG, NAME_WEIGHT and the production selector. Max 5, max 2 per sector, 15% target per stock, all residual in the regional ETF. No leverage, shorting or cash target.",
+    "permittedNow": ["source inspection", "already published aggregate evidence", "invented SYN securities and synthetic forecasts/returns", "unit and regression checks"],
+    "forbiddenNow": ["new historical outcomes or future-price reads", "historical model fitting or calibration", "vendor collection", "formal execution or lock refs", "production/receipt/workflow/sealed-spec edits"],
+    "runner": "No input-file or historical CLI. All decision/evaluation entry points reject scope other than SYNTHETIC before processing inputs. SYN identities required."
+  },
+  "sharedInputs": [
+    "same dated candidate universe including unpriceable and ineligible names",
+    "same immutable Observation/Key/sample_identity and source/data digests",
+    "same candidate ranking, risk, entry state, calibration and forecast information at each decision",
+    "same starting holdings for paired one-step attribution; each policy's own drifted holdings for full-path treatment effects",
+    "same prices, next-session calendar, return basis and cost schedule; no policy-specific outcome-validity mask"
+  ],
+  "experiments": {
+    "D1": {
+      "question": "Does optional entry improve net economics over filling five available slots?",
+      "arms": ["ETF", "CURRENT", "FORCED_FIVE"],
+      "primaryContrast": "CURRENT minus FORCED_FIVE",
+      "axis": "Remove only EXPECTED_NET_ADVANTAGE_NOT_POSITIVE from eligibility. Ranking, credit, sizing and other exclusions stay identical.",
+      "shortfall": "Never invent candidates or forecasts. Fewer than five structurally eligible names is a reported forced-arm shortfall, not a true five-name observation.",
+      "missingCalibration": "Missing/unusable calibration remains excluded in every arm. A separate raw-rank forced strategy would change information and is not this contrast.",
+      "refutation": "Nonpositive paired net gain, or fee savings fully offset by lost gross active return. Risk reduction alone is a tradeoff, not alpha."
+    },
+    "D2": {
+      "question": "What does the existing retention credit change, and are proposed swaps economically justified?",
+      "arms": ["CURRENT", "NO_CREDIT"],
+      "contrast": "CURRENT minus NO_CREDIT; descriptive replication/mechanism only, not a new confirmatory primary",
+      "axis": "Remove only incumbent retentionCreditPct from ranking, preserving eligibility and all production constraints.",
+      "marginalAudit": "For equal-weight entering/departing pairs on a common forward H126 horizon: entrant expected gross ETF excess - incumbent remaining expected gross ETF excess - dated sell(stock old)+buy(stock new). A conservative uncertainty deduction is radius_new+radius_old; no invented covariance or standard-error interpretation. Missing remaining forecast/radius => NOT_ESTIMABLE. ETF-relative excess already includes ETF opportunity cost; do not subtract it twice.",
+      "limitation": "Ranking credit is not an exact pairwise economic hurdle. This adapter audits proposed swaps but does not claim to implement an optimal switching solver. Unequal or unmatched legs are not estimable pairwise swaps.",
+      "refutation": "Retention loses gross selection value greater than fees saved, or rejected entrants outperform retained names net of costs on the frozen diagnostic horizon."
+    },
+    "D3": {
+      "question": "Should fresh purchase and liquidation have different boundaries?",
+      "arms": ["SYMMETRIC", "ASYMMETRIC"],
+      "primaryContrast": "ASYMMETRIC minus SYMMETRIC",
+      "sharedPrerequisite": "Independent as-of remaining gross ETF-excess forecast and uncertainty radius on common forward H126 for every candidate/held name, valid/invalid thesis evidence, common production ranking/structural eligibility. Not inferred by decaying the original purchase forecast.",
+      "buyBoth": "lower=remainingExpectedExcessPct-radiusPct > current full stock+ETF roundtrip switch cost",
+      "holdSymmetric": "valid thesis AND lower > same full entry switch cost",
+      "holdAsymmetric": "valid thesis AND lower > -(dated stock sell+ETF buy cost)",
+      "thesisInvalid": "Exit in both arms. Unknown thesis or missing required remaining forecasts blocks the paired decision without inventing a recommendation.",
+      "ranking": "Use identical production score and retention credit; relax only incumbent economic eligibility. Structural entry/risk/staleness restrictions remain. A valid thesis is necessary, not a guarantee of indefinite holding.",
+      "refutation": "Delayed exits deepen losses/MDD and net paired return is nonpositive; thesis validity by itself has no measured economic advantage."
+    },
+    "D4": {
+      "question": "Does avoiding pure weekly retargeting preserve value beyond fees?",
+      "arms": ["CURRENT", "EVENT_ONLY"],
+      "primaryContrast": "EVENT_ONLY minus CURRENT",
+      "axis": "When selected name set equals the incumbent name set, carry actual drifted weights and trade nothing. When names change, use unchanged current targets. No fixed holding expiry.",
+      "cap": "A drifted name above 15% still triggers cap restoration in both arms; this narrow cap repair is a safety constraint, not a new signal. EVENT_ONLY is not a general weight optimizer.",
+      "reasons": ["new entry", "hold", "thesis/eligibility exit", "replacement", "pure target restoration", "cap restoration"],
+      "holdingTime": "Report realized session-duration distribution and right-censored open spells. Fixed H126 liquidation is a separately versioned future diagnostic, not mixed into this one-axis contrast.",
+      "refutation": "Fees saved are outweighed by adverse drift exposure or net gain is absent; fewer trades alone does not support economic value."
+    }
+  },
+  "decisionContract": {
+    "actions": ["WAIT_ETF", "BUY", "HOLD", "REDUCE", "EXIT", "REPLACE"],
+    "required": ["decision timestamp", "as-of Observation keys and information hash", "pre-trade actual holdings", "expected ETF excess and uncertainty or explicit absence", "pre/post target weights", "next own-market trading session", "reason and non-estimability codes"],
+    "evaluationSeparate": ["actual dated execution costs and every ETF/stock leg", "actual ETF opportunity return on forgone exposure", "future regret"],
+    "replacement": "Deterministic identity-sorted matching of exits/entries is attribution only, never an optimal pairing. Equal-weight pairs permit marginal audit; unmatched legs remain BUY/EXIT. No entry+exit cost double-counting.",
+    "units": "forecasts/cost audit in percentage points per common H126; weights/realized returns/cost debits in fractions of pre-trade NAV",
+    "taxScope": "Existing regional dated securities transaction tax/regulatory proxy only. Investor-specific capital-gains, dividend and FX taxes are unmeasured, never silently zero. No after-personal-tax claim."
+  },
+  "evaluation": {
+    "primary": "Calendar-time annual arithmetic NET active-return difference of each paired policy contrast, separately by market; ETF baseline shown for every arm.",
+    "primaryFamily": ["D1", "D3", "D4"],
+    "D2Role": "Previously studied mechanism; descriptive only. No new historical rerun authority.",
+    "inference": "Historical execution requires an additional exact-data/code/hash authorization PR, fixed folds/window and outcome-blind MDE. Reuse alpha_inference_calibration_v4.calendar_time_sn_interval only after synthetic coverage calibration for the policy estimand/market. Holm alpha .05 across D1/D3/D4; unavailable slots remain p=1. Uncalibrated comparisons descriptive only. No IID weekly-overlap inference.",
+    "secondary": ["net excess vs SPY/069500.KS", "gross arithmetic selection vs compounding (selection_value.decompose_edge)", "daily NAV MDD/volatility/downside risk", "annual name trades and replacement rate", "replacement costs separated from retarget costs and initial funding", "0/1/2/3/4/5-name frequencies", "ETF weight and time-weighted waiting spells", "holding session durations and censored spells", "gross path difference and actual fee savings separately", "early-exit upside missed and late-exit loss diagnostics"],
+    "regret": "Frozen forward H126 from next-session execution, entrant/departing/ETF same prices and same outcome mask. Diagnostic only; no future data in decisions. Right-censored/unpriced stays missing. Report paired signed gains and losses, denominators and overlap; do not label all avoided trades unnecessary.",
+    "costStress": [1, 2, 3],
+    "costStressRule": "Rescore using identical fixed rules and the common stressed cost table in an authorized future executor; synthetic v1 runner validates actual leg scaling only.",
+    "attribution": "Freeze candidate/forecast tapes for every policy. Report benchmark -> eligible equal-weight -> sector-matched -> selected -> net, plus ETF-exposure contribution. Do not call an ETF-weight effect discovery skill or mix log pp and CAGR pp.",
+    "synthetic": "Hand-designed scenarios exercise positive and negative economics; no synthetic CAGR, p-value, calibrated model or real recommendation claim. Invented return evaluation is one-step only; historical NAV and inference are deliberately unimplemented."
+  },
+  "historyPrerequisites": [
+    "Do not reopen closed KR historical discovery or any sealed study under this ID; obtain explicit owner decision for any allowed policy-only reuse, otherwise prospective paper only.",
+    "Separate execution PR: exact protocol/code/dependency/input/sample hashes, approved markets/window/folds/horizon/seeds/missingness/sensitivity rules and compute budget; this PR merge is not authorization.",
+    "Approved signal-date forecast producer with calibration lineage, net/gross cost basis reconciliation and genuinely remaining common-horizon forecasts/uncertainty. Current 126-session purchase bucket is not remaining alpha.",
+    "Own-exchange weekly calendar and next-session fills, drifted share-count NAV, synchronized same masks and all fees including ETF legs; existing replay_valuation and portfolio_validation reused, not reimplemented.",
+    "Admitted security identities, departures, corporate actions, distributions, terminal consideration and benchmark return basis for BOTH stocks and ETF. US survivor-conditioned history and KR unresolved terminal economics remain blockers.",
+    "Reuse experiment_workbench Key/Observation/Source/LabelReference/Fold/Economics and preview_manifest; explicit result path and evidence class; preview never authorizes execution.",
+    "Outcome-blind MDE/coverage gate, trial register including null/failed attempts, one-shot atomic lock only after owner approval, exact-byte preservation, no thresholds selected after results.",
+    "No new workflow while the sealed workflow census is unresolved. Prospective collection/storage rights, bindings and separate append-only emitter must be approved before enabling."
+  ],
+  "versionPolicy": "Scientific rules fixed in a separate commit before running the new synthetic comparisons. Prior public historical evidence already known is declared, so this is not an untouched preregistration. Any result-informed scientific change gets a new version and a reason; implementation corrections preserve v1 rules and are logged."
+}
