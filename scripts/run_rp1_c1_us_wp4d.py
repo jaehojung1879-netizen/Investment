@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """WP4d of rp1-c1-us-exposure-ladder-replication-v1: probe | freeze-check | freeze-manifest | verify-snapshot | dry-run | authorization-draft | execute.
 
-Only `execute` can read a US value, and only after the owner's authorization, the readiness and equivalence gates and the durable lock (see
-`pipeline/rp1_c1_us_execution.py`). Every other mode is outcome-free. Snapshot directories are decrypted inside a runner, outside the repository;
+Only `execute` can compute US strategy outcomes, and only after the owner's authorization, the readiness and equivalence gates and the durable lock (see
+`pipeline/rp1_c1_us_execution.py`). Every other mode is outcome-free. Bounded analysis directories are reacquired inside a runner, outside the repository;
 their bytes are never printed.
 """
 from __future__ import annotations
@@ -32,19 +32,14 @@ def emit(document, path=None):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("mode", choices=["probe", "freeze-check", "freeze-manifest", "verify-snapshot", "dry-run", "authorization-draft", "execute",
-                                         "open-snapshot", "snapshot-pin", "encode-for-log"])
+                                         "freeze-preview", "authorization-check", "encode-for-log"])
     parser.add_argument("--snapshot")
     parser.add_argument("--output")
     parser.add_argument("--run-id")
     parser.add_argument("--commit")
-    parser.add_argument("--artifact-name")
-    parser.add_argument("--artifact-id")
-    parser.add_argument("--tar-sha256")
-    parser.add_argument("--ciphertext-sha256")
     parser.add_argument("--owner", default="")
     parser.add_argument("--authorization-sha256", default="")
     parser.add_argument("--file")
-    parser.add_argument("--zip")
     args = parser.parse_args(argv)
     try:
         if args.mode == "probe":
@@ -57,9 +52,11 @@ def main(argv=None):
             out = SP.readiness_audit(ROOT, snapshot_dir=args.snapshot)
             emit({k: out.get(k) for k in ("decision", "blockers", "checks", "determinable", "decisionDates", "snapshotIdentity", "counters")}, args.output)
             return 0 if out["decision"] == SP.DECISION_READY else 2
-        if args.mode == "freeze-manifest":
-            manifest = X.freeze_manifest(ROOT, args.snapshot, run_id=args.run_id, commit_sha=args.commit, artifact_name=args.artifact_name,
-                                         artifact_id=args.artifact_id, tar_sha256=args.tar_sha256, ciphertext_sha256=args.ciphertext_sha256)
+        if args.mode in ("freeze-manifest", "freeze-preview"):
+            manifest = X.freeze_manifest(ROOT, args.snapshot, run_id=args.run_id, commit_sha=args.commit)
+            if args.mode == "freeze-preview":
+                emit(manifest, args.output)
+                return 0
             for old in SP.freeze_manifest_paths(ROOT):
                 (ROOT / old).unlink()
             path = ROOT / X.freeze_manifest_path(args.run_id)
@@ -68,10 +65,21 @@ def main(argv=None):
             print(X.freeze_manifest_path(args.run_id))
             return 0
         if args.mode == "verify-snapshot":
+            if not args.snapshot:
+                raise X.Refused("SNAPSHOT_DIRECTORY_REQUIRED_FOR_HASH_VERIFICATION")
             spec, _ = SP.load_spec(ROOT)
             pinned = SP.verify_us_snapshot(spec, ROOT, args.snapshot)
-            emit({"status": "MATCHES_THE_FROZEN_MANIFEST" if pinned else "NOT_FROZEN", "files": len(SP.snapshot_files(args.snapshot))})
-            return 0 if pinned else 2
+            scopes = {}
+            for scope in X.R.SCOPES:
+                try:
+                    scopes[scope] = "MATCHED" if SP.verify_us_snapshot(spec, ROOT, args.snapshot, scope) else "NOT_FROZEN"
+                except (ValueError, OSError, KeyError):
+                    scopes[scope] = "BLOCKED_HASH_MISMATCH"
+            cross = SP.cross_check_status(args.snapshot, SP.snapshot_audit(args.snapshot))
+            emit({"status": "MATCHES_THE_FROZEN_PRIMARY" if pinned else "NOT_FROZEN", "scopes": scopes,
+                  "referenceCrossCheck": cross,
+                  "files": len(SP.snapshot_files(args.snapshot)), "cashEconomicScientificSha256": spec["cashEconomicSpec"]["scientificSha256"]})
+            return 0 if pinned and cross["status"] == "CONSISTENT" else 2
         if args.mode == "dry-run":
             out = X.dry_run(args.output or "dry-run", ROOT, args.snapshot)
             emit(out)
@@ -79,14 +87,9 @@ def main(argv=None):
         if args.mode == "authorization-draft":
             emit(X.authorization_draft(ROOT, args.owner), args.output)
             return 0
-        if args.mode == "snapshot-pin":
-            spec, _ = SP.load_spec(ROOT)
-            pin = spec["inputs"]["usSnapshot"]
-            print(pin["artifactId"] if pin["status"] == "FROZEN" else "NOT_FROZEN")
-            return 0
-        if args.mode == "open-snapshot":
-            spec, _ = SP.load_spec(ROOT)
-            emit(X.open_snapshot(args.zip, args.snapshot, spec, os.environ.get(X.SNAPSHOT_KEY_SECRET, ""), ROOT))
+        if args.mode == "authorization-check":
+            permit = X.authorize(ROOT, os.environ, args.authorization_sha256)
+            emit({"status": "OWNER_AUTHORIZATION_VERIFIED_NO_LOCK", "specSha256": permit.specSha256})
             return 0
         if args.mode == "execute":
             emit(X.execute(args.output or "run", ROOT, args.snapshot, os.environ, args.authorization_sha256))
@@ -96,8 +99,8 @@ def main(argv=None):
         print(base64.b64encode(gzip.compress(raw, mtime=0)).decode())
         print("END " + Path(args.file).name)
         return 0
-    except X.Refused as error:
-        print("REFUSED_BEFORE_THE_LOCK: " + str(error))
+    except (ValueError, OSError, KeyError) as error:
+        print("REFUSED_BEFORE_THE_LOCK: " + (str(error) if isinstance(error, X.Refused) else "INPUT_VERIFICATION_FAILED:" + type(error).__name__))
         return 2
 
 

@@ -8,7 +8,7 @@ DGS3MO) are NOT re-acquired: the C1 spec pins their sealed bytes. An ACQUIRED so
 ACQUIRED, at most MAX_ATTEMPTS times, and never substitutes a different instrument or splices two vendors.
 
 The output directory must lie OUTSIDE the repository: three of the four sources are licensed data that may not be redistributed, so their bytes never
-enter git (`rp1_c1_us_sources.STORAGE`). Inside Actions the freeze job encrypts the directory into one artifact; git carries only its manifest.
+enter git (`rp1_c1_us_sources.STORAGE`). Inside Actions only bounded analysis hashes enter the manifest; source bytes are discarded without upload.
 """
 from __future__ import annotations
 
@@ -18,11 +18,13 @@ import importlib.util
 import json
 from pathlib import Path
 import sys
+import urllib.parse
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from pipeline import kr_market_risk_source_parse as P  # noqa: E402
-from pipeline import rp1_c1_us_sources as SRC  # noqa: E402
+from pipeline import rp1_c1_us_sources as SRC
+from pipeline import rp1_c1_us_refetch as R  # noqa: E402
 
 MAX_ATTEMPTS = 3
 
@@ -36,17 +38,38 @@ def kr_transport():
     return module
 
 
+def fetch_yahoo_fixed(entry, transport):
+    """Reuse the sealed transport; its Yahoo helper ignores `today` and uses now.
+
+    Pin the REQUEST bounds too. No response value is corrected or re-based.
+    """
+    import pandas as pd
+    bounds = R.contract()["requestBounds"]
+    start = int(pd.Timestamp(bounds["yahooStartUtc"], tz="UTC").timestamp())
+    end = int(pd.Timestamp(bounds["yahooEndExclusiveUtc"], tz="UTC").timestamp())
+    symbol = urllib.parse.quote(entry["symbol"], safe="")
+    for host in transport.YAHOO_HOSTS:
+        url = f"{host}/v8/finance/chart/{symbol}?period1={start}&period2={end}&interval=1d&events=div%2Csplit&includePrePost=false"
+        status, raw, error = transport.get(url)
+        if status == 200 and raw:
+            return {"raw": {"chart.json": raw}, "status": {"chart": status}, "error": None, "host": host.split("//")[1],
+                    "requestSha256": R.sha(url.encode())}
+    return {"raw": {}, "status": {"chart": status}, "error": error, "host": None}
+
+
 def acquire_one(sid, key, today, out, transport):
     entry = SRC.SOURCES[sid]
     record = {"id": sid, "symbol": entry["symbol"], "vendor": entry["vendor"], "instrument": entry["instrument"], "basis": entry["basis"],
               "unit": entry.get("unit"), "vintageClass": entry["vintageClass"], "rights": SRC.SOURCE_RIGHTS[sid]["class"],
               "fetchedAtUtc": datetime.now(timezone.utc).isoformat(), "status": "FAILED"}
     try:
-        got = transport.fetch_fred(entry, key, today) if entry["fetch"] == "fred" else transport.fetch_yahoo(entry, today)
+        got = transport.fetch_fred(entry, key, R.contract()["requestBounds"]["fredObservationEndInclusive"]) if entry["fetch"] == "fred" else fetch_yahoo_fixed(entry, transport)
     except Exception as error:  # a transport failure is recorded, never hidden or retried into another instrument
-        record["error"] = type(error).__name__ + ": " + str(error)[:200]
+        record["error"] = type(error).__name__
         return record
     record.update(httpStatus=got["status"], host=got["host"], error=got["error"])
+    if got.get("requestSha256"):
+        record["requestSha256"] = got["requestSha256"]  # Yahoo URL only; never hash a FRED credential-bearing URL
     main_name = "observations.json" if entry["fetch"] == "fred" else "chart.json"
     raw_main = got["raw"].get(main_name)
     if not raw_main:
@@ -57,9 +80,10 @@ def acquire_one(sid, key, today, out, transport):
         total = len(json.loads(raw_main).get("observations", []))
         if got["raw"].get("series.json"):
             identity = P.fred_identity(got["raw"]["series.json"])
-    elif entry["field"] == "adjclose":
-        _, _, identity = P.parse_yahoo_chart(raw_main, "close", True)
-        rows, dropped = SRC.parse_yahoo_adjclose(raw_main)
+    elif sid == "YAHOO_SPY":
+        record.update(basis="SPLIT_ADJUSTED_DIVIDEND_UNADJUSTED", legacyRegisteredBasis=entry["basis"], normalizedField="close")
+        R.bounded_chart(raw_main, sid, include_adj=False)  # native schema is independent of optional vendor adjclose
+        rows, dropped, identity = P.parse_yahoo_chart(raw_main, "close", True)
         total = len(rows) + dropped
         extra["dividendEventDates"] = len(SRC.yahoo_dividend_dates(raw_main))
     else:
@@ -99,7 +123,7 @@ def main(argv=None):
         "statements": ["Raw vendor bytes are retained unchanged.", "No return, drawdown, state, episode or forward quantity was computed.",
                        "Rows that could not be parsed to a finite (or, for prices, positive) value were dropped and counted, never filled.",
                        "VIXCLS, DGS10 and DGS3MO are the sealed KR snapshot's bytes and were not re-acquired.",
-                       "Licensed bytes in this directory are never committed, logged or uploaded unencrypted.",
+                       "Licensed bytes in this directory are never committed, logged or uploaded.",
                        "An ACQUIRED source is immutable; only a source that is not ACQUIRED may be retried, at most %d times." % MAX_ATTEMPTS]}
     transport = kr_transport()
     changed = False
@@ -109,7 +133,10 @@ def main(argv=None):
         previous = audit["sources"].get(sid)
         if previous and (previous["status"] == "ACQUIRED" or previous.get("attempts", 1) >= MAX_ATTEMPTS):
             continue
-        record = acquire_one(sid, key, today, out, transport)
+        try:
+            record = acquire_one(sid, key, today, out, transport)
+        except (ValueError, KeyError, TypeError, IndexError) as error:
+            record = {"id": sid, "status": "FAILED", "error": type(error).__name__}
         record["attempts"] = (previous.get("attempts", 1) + 1) if previous else 1
         audit["sources"][sid] = record
         changed = True
@@ -117,9 +144,14 @@ def main(argv=None):
     if changed:
         path.write_text(json.dumps(audit, indent=2, sort_keys=True) + "\n")
     failed = [sid for sid, r in audit["sources"].items() if r["status"] != "ACQUIRED"]
+    if all(audit["sources"].get(sid, {}).get("status") == "ACQUIRED" for sid in SRC.REQUIRED_IDS):
+        R.prepare(out)
     print("acquired", len(audit["sources"]) - len(failed), "failed", failed)
     return 1 if failed else 0
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    try:
+        raise SystemExit(main())
+    except (ValueError, OSError, KeyError, TypeError) as error:
+        raise SystemExit("SOURCE_ACQUISITION_OR_NORMALIZATION_FAILED:" + type(error).__name__) from None

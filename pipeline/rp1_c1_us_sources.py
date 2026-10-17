@@ -1,7 +1,7 @@
 """rp1-c1-us-exposure-ladder-replication-v1 — source registry, parsing and the outcome-free data-quality gates.
 
-No return, drawdown, episode, state or forward quantity is computed here. The gates read observation DATES (and, for the one pre-registered vendor
-cross-check, index LEVELS on identical dates to test that two routes quote the same instrument), never a return.
+No return, drawdown, episode, state or forward quantity is computed here. Original gates read observation DATES (and, for the one pre-registered vendor
+cross-check, index LEVELS on identical dates to test that two routes quote the same instrument). The separate cash definition validates native price/action sanity and units, never a return.
 
 Three of the C1 inputs are reused, not re-acquired: the exact FRED_VIXCLS, FRED_DGS10 and FRED_DGS3MO bytes that `kr-market-risk-anatomy-v1`
 retained and the sealed `kr-market-risk-model-v1` pinned. Every threshold is the sealed KR source contract's (`kr_market_risk_sources`), applied
@@ -9,11 +9,12 @@ on the XNYS calendar instead of XKRX.
 
 STORAGE. None of the four newly acquired sources is committed to this public repository. Three are licensed data whose terms do not permit
 redistribution (S&P 500 index values via Yahoo and FRED; SPY via Yahoo); keeping DTB3 (public domain) in the same snapshot keeps one storage rule.
-The raw bytes live in one ENCRYPTED GitHub Actions artifact; git carries only the dates-and-hashes manifest (`SOURCE_RIGHTS`, `STORAGE`).
+The raw bytes live only in runner temporary storage and are discarded; git carries bounded analysis hashes and audit-only raw hashes. No raw artifact is uploaded.
 """
 from __future__ import annotations
 
 import json
+import math
 
 import pandas as pd
 
@@ -28,8 +29,8 @@ KR_SPEC_PATH = "research_specs/kr-market-risk-model-v1.json"
 REUSED = {"vix": "FRED_VIXCLS", "us10y": "FRED_DGS10", "us3m": "FRED_DGS3MO"}   # bytes pinned by the sealed KR spec
 
 # Where the newly acquired bytes may live. A summary of each provider's published terms as this study reads them, NOT legal advice; anything unclear
-# is treated as restricted. A restricted byte never enters git, a log or an unencrypted artifact; derived aggregate statistics may be published.
-STORAGE = "ENCRYPTED_ACTIONS_ARTIFACT_NEVER_COMMITTED"
+# is treated as restricted. A restricted byte never enters git, a log or any source artifact; derived aggregate statistics may be published.
+STORAGE = "HASH_PINNED_REFETCH_RUNNER_TEMP_ONLY"
 SOURCE_RIGHTS = {
     "YAHOO_GSPC": {"class": "RESTRICTED_NO_REDISTRIBUTION", "owner": "S&P Dow Jones Indices (index); Yahoo (delivery)",
                    "basis": "Yahoo's terms limit use to personal, non-commercial purposes and prohibit redistribution; the index values are S&P's"},
@@ -38,7 +39,7 @@ SOURCE_RIGHTS = {
                             "about the last ten years"},
     "YAHOO_SPY": {"class": "RESTRICTED_NO_REDISTRIBUTION", "owner": "Yahoo (delivery)", "basis": "Yahoo's terms (as YAHOO_GSPC)"},
     "FRED_DTB3": {"class": "PUBLIC_DOMAIN_CITATION_REQUESTED", "owner": "Board of Governors of the Federal Reserve System (H.15)",
-                  "basis": "FRED marks H.15 rates public domain with citation requested; kept in the encrypted snapshot anyway so one storage rule applies"},
+                  "basis": "FRED marks H.15 rates public domain with citation requested; also kept only in runner temporary storage so one storage rule applies"},
 }
 REUSED_RIGHTS = {
     "FRED_VIXCLS": "Cboe-copyrighted series ALREADY committed by the sealed kr-market-risk-anatomy-v1 snapshot before this storage rule; reused in place, "
@@ -74,6 +75,10 @@ SOURCES = {
                   "use": "the ECONOMIC reading's cash rate on the de-risked share; never a state input"},
 }
 ACQUIRED_IDS = tuple(SOURCES)
+PRIMARY_IDS = ("YAHOO_GSPC",)  # exact strategy inputs; FRED's licensed moving window is never a path/state input
+CROSSCHECK_IDS = ("FRED_SP500",)
+REQUIRED_IDS = PRIMARY_IDS + CROSSCHECK_IDS
+CASH_BASIS = "RECONSTRUCTED_AS_TRADED_CASH_REINVEST_EX_CLOSE_V1"
 
 # ---- gates (inherited values; the US-specific choice is only WHICH window they apply to) ----------------------------------------------------
 SESSION_COVERAGE = S.REFERENCE_SESSION_COVERAGE          # 0.99
@@ -228,8 +233,8 @@ def yahoo_split_dates(raw):
 def corporate_action_gate(raw_chart, asset_dates, first_execution, analysis_end):
     """Dates-only check of the economic asset's corporate-action calendar: every dividend event inside the window falls on an XNYS session the asset
     quotes, and no split is reported (a split inside a back-adjusted series would need its own audit). Reports events per year. The cash amounts,
-    the closes and the adjusted closes are NOT read here; the basis reconciliation (adjusted return against close plus dividend) is the frozen
-    post-lock diagnostic."""
+    the closes and the adjusted closes are NOT read here; the post-lock vendor diagnostic compares adjusted return with Replay v11's
+    vendor-equivalent forward factor, not the separately defined cash-dividend reinvestment."""
     dividends = [d for d in yahoo_dividend_dates(raw_chart) if first_execution <= d <= analysis_end]
     splits = yahoo_split_dates(raw_chart)
     sessions = set(xnys_sessions(first_execution, analysis_end))
@@ -251,3 +256,64 @@ def calendar_closure_check(reference_dates):
     quoted = set(pd.DatetimeIndex(reference_dates))
     return {"closuresThatAreSessions": [str(d.date()) for d in closures if d in sessions],
             "referenceRowsOnClosures": [str(d.date()) for d in closures if d in quoted]}
+
+
+def cash_components(raw_chart, *, basis="SPLIT_ADJUSTED_DIVIDEND_UNADJUSTED"):
+    """Validate native SPY inputs, not returns. No snapping, filling or split inference.
+
+    Yahoo's amount is declared USD per share under this vendor convention;
+    this is not independent issuer certification of that convention.
+    """
+    from .us_dual_benchmark_data import BASIS_RAW, DoubleCountRefused
+    if basis != BASIS_RAW:
+        raise DoubleCountRefused("CASH_REINVESTMENT_REQUIRES_DIVIDEND_UNADJUSTED_NATIVE_CLOSE")
+    result = json.loads(raw_chart)["chart"]["result"][0]
+    rows, dropped, identity = P.parse_yahoo_chart(raw_chart, "close", True)
+    if not identity_ok("YAHOO_SPY", identity):
+        raise ValueError("SPY_IDENTITY_OR_USD_SHARE_UNIT_UNRESOLVED")
+    if dropped or len(rows) != len(result.get("timestamp") or []) or not rows:
+        raise ValueError("NONPOSITIVE_OR_MISSING_NATIVE_CLOSE")
+    close = pd.Series([v for _, v in rows], index=pd.to_datetime([d for d, _ in rows]), dtype=float)
+    if not close.index.is_unique or not close.index.is_monotonic_increasing:
+        raise ValueError("DUPLICATE_OR_UNORDERED_NATIVE_SESSIONS")
+    if not close.index.equals(xnys_sessions(str(close.index[0].date()), str(close.index[-1].date()))):
+        raise ValueError("MISSING_OR_OFF_CALENDAR_NATIVE_SESSION")
+    events = result.get("events") or {}
+    if events.get("splits"):
+        raise ValueError("SPLIT_PRESENT_SHARE_UNIT_REQUIRES_SEPARATE_RECONCILIATION")
+    if any(k != "dividends" and v for k, v in events.items()):
+        raise ValueError("UNSUPPORTED_CORPORATE_ACTION")
+    offset = int(result["meta"].get("gmtoffset", 0))
+    dividends, seen = [], set()
+    for entry in (events.get("dividends") or {}).values():
+        day = pd.Timestamp(int(entry["date"]) + offset, unit="s").normalize()
+        if day in seen:
+            raise ValueError("DUPLICATE_DIVIDEND_EVENT")
+        seen.add(day)
+        if day not in close.index or close.index.get_loc(day) == 0:
+            raise ValueError("DIVIDEND_WITHOUT_NATIVE_PREVIOUS_SESSION")
+        amount = float(entry["amount"])
+        if entry.get("currency", "USD") != "USD" or not math.isfinite(amount) or not 0 < amount < close.iloc[close.index.get_loc(day) - 1]:
+            raise ValueError("DIVIDEND_AMOUNT_OR_USD_PER_SHARE_UNIT_INVALID")
+        dividends.append((str(day.date()), amount, 1.0))
+    if not dividends:
+        raise ValueError("SPY_DIVIDEND_CHAIN_ABSENT")
+    return close, dividends
+
+
+def cash_input_gate(raw_chart, first_execution, analysis_end):
+    try:
+        close, events = cash_components(raw_chart)
+        missing = coverage_gate(close.index, first_execution, analysis_end)["missingCount"]
+        if missing:
+            raise ValueError("CASH_ASSET_SESSION_MISSING")
+        dates_2004 = sorted(d for d, _, _ in events if d.startswith("2004-"))
+        return {"status": "CASH_INPUT_READY", "reasons": [], "sessions": len(close), "firstDate": str(close.index[0].date()),
+                "lastDate": str(close.index[-1].date()), "dividendEvents": len(events), "splitEvents": 0,
+                "dividend2004": {"eventDates": dates_2004, "events": len(dates_2004), "uniqueDates": len(set(dates_2004)),
+                                 "duplicateDates": len(dates_2004) - len(set(dates_2004)),
+                                 "classification": "VENDOR_DATES_ONLY_REGULAR_VS_SPECIAL_NOT_ISSUER_VERIFIED"},
+                "unit": "VENDOR_DECLARED_USD_PER_SHARE_NO_SPLITS", "independentlyIssuerVerified": False}
+    except (ValueError, KeyError, TypeError, IndexError) as error:
+        reason = str(error) if isinstance(error, ValueError) and str(error).isupper() else "CASH_INPUT_SCHEMA_INVALID"
+        return {"status": "CASH_INPUT_UNRESOLVED", "reasons": [reason]}

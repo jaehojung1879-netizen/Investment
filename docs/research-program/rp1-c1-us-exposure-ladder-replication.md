@@ -90,36 +90,46 @@
 - `rp1_c1_action` 기본값 `none`이면 원래 봉인 작업만 돈다. 원래 작업은 `if:` 한 줄 외에는 main과 바이트 단위로 같다(테스트).
 - 작업: `rp1-c1-source-probe`(이 PR 브랜치의 pull_request 전용, 날짜만 보는 리허설, 원본 미보관) · `freeze-sources`(main 전용) · `dry-run` · `execute`(소유자 1회).
 
-### 6.2 원천 저장 규칙 (라이선스)
+### 6.2 저장 v2 — Secret 없는 해시 재취득
 
-| 원천 | 권리 분류 | 저장 |
-|---|---|---|
-| YAHOO_GSPC, FRED_SP500, YAHOO_SPY | `RESTRICTED_NO_REDISTRIBUTION`(S&P 지수 저작권, Yahoo 개인·비상업 이용 조건) | 공개 Git·로그·비암호 산출물 금지 |
-| FRED_DTB3 | `PUBLIC_DOMAIN_CITATION_REQUESTED`(연준 H.15) | 규칙을 하나로 두려고 같은 암호화 스냅샷에 둔다 |
-| FRED_VIXCLS·DGS10·DGS3MO | 봉인된 KR 스냅샷에 이미 커밋됨(VIXCLS는 Cboe 저작권) | 다시 복사하지 않고 그 자리에서 재사용. 봉인 바이트라 수정하지 않는다 |
+`RP1_C1_HASH_REFETCH_V2`의 원래 C1 scientific digest(`ad454ebbf2d7f0834b9de8ac136ba7842855d49146dbf1b123e1538fdc615252`)와 C0~C3·기간·달력·비용·PRIMARY 판정은 그대로다. 원래 SPY adjusted-close 경제성 정의도 보존한다. 현금배당 재투자는 기존 명세 JSON의 `cashEconomicSpec`에 **별도 ID·정의·scientific digest**로 고정하며, 원래 경제성과 같다고 주장하지 않는다. 새 Secret, PAT, OpenSSL, 원천 artifact ID, 외부 저장소, 개인 PC가 필요 없다. 기존 `FRED_API_KEY`와 Actions `GITHUB_TOKEN`만 쓴다.
 
-- 새로 받은 원본 바이트는 **암호화된 Actions 산출물 하나**에만 존재한다(`openssl` AES-256-CBC, PBKDF2 60만 회, 저장소 비밀 `RP1_C1_SNAPSHOT_KEY`, 보존 90일).
-- Git에는 날짜·건수·해시만 담은 매니페스트(`docs/research-program/sources/rp1-c1-us-source-freeze-<runId>.json`)가 들어가고 사양이 그것을 고정한다.
-- 결과물은 집계 통계뿐이며 일별 가격·지수·NAV 계열은 공개하지 않는다.
-- 이 분류는 공급자가 공개한 조건을 읽은 요약이며 법률 자문이 아니다. 불명확하면 제한으로 다룬다.
+Yahoo/S&P 원천은 재배포 제한, DTB3는 citation이 요청되는 public-domain 자료다. 모두 runner 임시 디렉터리에만 취득하고 종료 후 폐기한다. **원자료·정규화 가격/금리·기업행동은 Git·로그·artifact에 올리지 않는다.** 기존 봉인 KR FRED 원천은 그대로 재사용한다. Git에는 출처·신원·날짜·건수·품질 상태·코드/내용 해시만 들어간다. 결과 artifact에는 승인 후 집계 통계만 들어간다.
 
-### 6.3 품질·동일성 관문 (결과 열람 전, 날짜만)
+정규화 계약은 원천 동결 전에 코드와 spec에 고정된다(`pipeline/rp1_c1_us_refetch.py`).
 
-- 기준 지수: XNYS 세션 누락 0, 위기 창 커버리지, 중복·무효행, 신원(심볼·통화·시간대·`instrumentType` INDEX). 등록된 XNYS 휴장일(2001-09-11~14, 2012-10-29·30 등)이 달력상 세션이 아닌지와 기준 지수 행이 그날에 없는지 확인한다.
-- 교차검증: `^GSPC`와 FRED SP500의 같은 날짜 수준(2016년 이후).
-- SPY 기업행동: 배당 이벤트 날짜가 SPY가 호가한 XNYS 세션에 있는지, 분할 이벤트가 없는지 확인한다(날짜만). 금액과 조정 종가를 종가+배당과 맞춰 보는 대조는 잠금 이후의 고정 진단(`spyBasisDiagnostic`)이다.
-- 현금: DTB3 단위 `Percent`, 빈도 `Daily`, 평가 세션마다 알려진 금리.
-- 실패 시 기준 지수·교차검증은 실행 차단, SPY·DTB3·기업행동은 경제적 독해만 `UNRESOLVED`(사전 고정 중단 기준 그대로).
+- 공급자 요청 범위도 고정한다: Yahoo period1=1990-01-01 UTC, period2=2026-09-18 UTC(미포함), FRED observation_end=2026-09-17. 봉인된 KR transport의 Yahoo helper는 today 인자를 무시하고 현재 epoch를 사용하므로, US 수집기에서 같은 transport.get/host를 사용해 요청 범위만 고정한다. KR 파일은 수정하지 않는다.
+- 사용 구간은 기존 grid 시작 **1990-01-01부터 2026-09-17까지 포함**한다. 평가 시작 1993-02-01과 모든 워밍업/lag 규칙은 그대로다. 공급자 날짜를 보존하며 휴장일·중복·순서 오류를 채우거나 정렬/제거하지 않는다.
+- Yahoo 일별 bar의 exchange-local 날짜를 기존 `timestamp + gmtoffset` 규칙으로 정한 뒤 UTC 정오로 표현한다. close, SPY adjclose, 구간 내 모든 기업행동 종류와 필드를 보존한다. 과거 adjusted close를 보정·재기준화하거나 다른 공급자와 이어 붙이지 않는다.
+- FRED는 구간 내 observation date/value와 id·units·frequency·계절조정 신원을 고정한다. 수집 시각·HTTP envelope·현재 quote 메타데이터·구간 밖 행/이벤트는 분석 해시에 넣지 않는다.
+- 구간 내 숫자는 반올림하지 않는 정확한 decimal 문자열로 맥락을 보존한다. 실제 모델이 읽는 CSV는 기존 parser의 float64 `repr`다. 둘 모두 해시로 고정하므로 float로 구분되지 않는 원천 정밀도 변경도 거부한다. 의미가 같은 숫자 표기만 정규화하고 허용 오차를 두지 않는다.
+- **전체 원자료 해시**는 감사용이다. 수집 시각·종료일 뒤 행 때문에 달라도 된다. **실제 사용 CSV/신원/기업행동/품질 맥락의 해시**는 모두 정확히 같아야 한다. PRIMARY는 YAHOO_GSPC와 기존 KR 봉인 입력만 영구 exact hash로 검증한다. FRED_SP500 전체 시계열 해시는 이동 창의 감사용이며 영구 동일성 조건이 아니다. 매 취득마다 원본에서 준비 파일을 다시 유도·대조하고 신원, XNYS 커버리지/연속 결측, 최소 250개 공통일과 기존 CONSISTENT/CONFLICT 기준으로 교차검증한다. 원래 vendor 경제성은 SPY adjclose까지 정확히 검증하며, 변하면 그 경제성만 UNRESOLVED다. 새 CASH 경제성은 SPY `cash_input.json`(원종가·신원·모든 기업행동)과 DTB3를 별도로 고정한다. adjclose 변경을 원래 경제성에서 허용하거나 새 결과 계산에 사용하는 우회는 없다.
+
+**한계:** 해시는 동일성을 검사할 뿐 보존하지 않는다. 공급자 접근 거부·과거 수정·라이선스 제한·과거 10년만 제공하는 FRED SP500의 이동 창 때문에 재취득이 불가능하거나 달라질 수 있다. 정상적으로 이동한 FRED 창은 새 교차검증을 통과하면 PRIMARY를 차단하지 않지만, 신원·공통일·불일치·커버리지 관문 실패는 차단한다. 이때 잠금 전에 중단하고 원천 대체·자동 재동결·허용 오차·임계값 완화를 하지 않는다. 동일 원천의 미래 재현을 보장하지 않는다. 원천 artifact가 없으므로 90일 만료 의존도 없다.
+
+### 6.3 품질·동일성 관문
+
+기존 날짜/신원/가용성 관문을 기간 절단된 동일 입력에 그대로 적용한다. PRIMARY 기준의 완전한 XNYS 세션·워밍업·후보 결정 가능성·Yahoo/FRED 동시점 지수 수준 교차 검증, ECONOMIC 기준의 SPY/DTB3/기업행동 관문은 완화하지 않는다. 해시는 raw 바이트에서 다시 만든 분석 입력과도 대조하여 오래되거나 변조된 준비 파일을 거부한다.
+
+새 브랜치의 PR CI는 실제 수집 → Secret 없는 freeze-preview → 두 번째 독립 취득에서 PRIMARY와 CASH 입력의 정확한 일치·가용성을 각각 검사한다. 원래 vendor 비교의 실패도 별도 JSON 상태로 계속 보고한다. artifact에는 메타데이터와 합성 dry-run만 보존한다. 실제 미국 수익률·state·후보 평가·정식 잠금은 만들지 않는다.
+
+새 CASH 정의는 #253의 `winner_inflection_execution.cash_reinvestment_close`를 **승인·잠금·마커 이후에만** 호출한다. `splitRatio × (P_t + D_t) / P_(t-1)`의 ex-date 종가 현금배당 재투자이며, Replay v11의 vendor 계수 전방 누적과 다르다. 기존 `DoubleCountRefused`를 재사용한다. 전체 보존 구간에 분할이 한 건이라도 있거나, 중복/결측/비양수 종가·배당 단위/세션 문제가 있으면 새 경제성은 UNRESOLVED다. 단위는 vendor의 USD/share 관례이며 독립 issuer 인증은 아니다. PRIMARY 실행은 원래 명세의 경제성 UNRESOLVED 조항에 따라 독립적이다.
+
+승인 후 vendor 진단은 `price_adjustment.to_total_return`을 재사용해 Yahoo adjclose와 Replay v11 vendor-equivalent 전방 계수를 비교한다. 현금배당 재투자와의 차이를 vendor 오류로 부르지 않는다. 이 진단 변경은 두 수익 정의나 scientific digest를 바꾸지 않는다. 실제 probe는 2004년 배당 이벤트의 날짜·건수·중복 여부만 공개하며, 다섯 날짜를 정규/특별배당으로 발행사 대조 인증하지 않는다.
+
+외부 SPY 총수익과 CASH_ECONOMIC의 경제적 대조는 시장 종가 대 NAV, 배당락일/지급일 재투자, USD·세전/세후·수수료·배당 단위·동일 기간을 먼저 맞춰야 한다. 현재 독립 발행사/외부 총수익 검증 계열은 취득·대조하지 않았다. Yahoo adjclose는 vendor 계수가 달라 CASH의 정답 계열이 아니며, 외부 총수익과 일치한다고 주장하지 않는다.
+
+Replay v16과 이중 벤치마크의 2011-01-03~2026-09-14 이력은 같은 Yahoo 계보이고 SPY 분배 이벤트가 봉인되지 않았다. 1993~2010을 보충하거나 원종가/배당 단일 반영의 독립 검증으로 사용할 수 없어, 새 CASH 입력과 연결하지 않는다. 기존 검증 함수·회귀만 재사용한다.
 
 ### 6.4 실행 순서와 사람이 할 일
 
-1. **소유자:** 저장소 비밀 `RP1_C1_SNAPSHOT_KEY`를 만든다(무작위 32바이트 이상). 없으면 동결·드라이런·실행이 모두 거부된다.
-2. 이 PR 병합 후 `rp1_c1_action=freeze-sources`로 main에서 실행한다. 준비도가 READY일 때만 암호화 산출물을 올리고 매니페스트와 다시 고정한 사양을 담은 Draft PR을 하나 연다. 그 PR을 검토하고 병합한다.
-3. `rp1_c1_action=dry-run`: 고정 스냅샷 복호화·해시 검증, 준비도 READY, 동등성 EXACT, 승인 상태를 확인하고 꾸며낸 값으로 전체 평가·검증기·보고서를 돌린다. 잠금 없음, 미국 값 열람 없음.
-4. **소유자 승인:** `python scripts/run_rp1_c1_us_wp4d.py authorization-draft --owner <login>`이 사양·과학 다이제스트·원천 동결·하네스 파일 해시를 출력한다. 소유자가 검토하고 확인 항목 7개를 직접 `true`로 바꿔 `docs/research-program/authorizations/rp1-c1-us-exposure-execution-authorization.json`으로 커밋한다(검토된 PR). 템플릿은 `NOTHING`만 승인한다.
-5. **소유자 실행:** main에서 `rp1_c1_action=execute`, `rp1_c1_authorization_sha256` = 커밋된 승인 파일의 SHA-256. 첫 시도, 소유자 계정, main 최신 커밋에서만 진행된다. 순서: 승인 → 스냅샷 해시 → 준비도 READY → 동등성 EXACT → **원자적 잠금 ref 2개** → 마커 → 첫 미국 값 열람 → 평가 → 독립 검증기 → 보고서.
-6. 잠금 이후 실패는 연구를 소진한다. 재시도하지 않는다. 결과는 산출물(90일)과 작업 로그(gzip+base64)에 함께 남는다.
-- 산출물이 만료되면 새 동결(새 매니페스트·사양 해시·승인)이 필요하다. 옛 고정 아래 다시 받는 일은 없다.
+1. **이 저장 변경 PR 병합:** 기존 호스트 workflow의 이 PR에 한정된 merged-main guard가 `freeze-sources` 경로를 자동 실행한다. 일반적인 재동결은 기존 `rp1_c1_action=freeze-sources` 수동 dispatch다. 신규 workflow·Settings 변경·신규 인증정보는 없다.
+2. **freeze-sources:** 기존 수집기 → 구간 정규화 → 준비도 READY → 분석 해시와 원자료 감사 해시·코드 해시 Manifest → spec pin을 담은 Draft PR 하나. 원천 artifact 업로드와 자동 병합은 없다. 소유자가 그 원천 PR을 검토·병합한다.
+3. **dry-run:** 원천 Manifest PR 병합 시 자동 실행한다(기존 수동 dispatch도 유지). 새로 취득하고 고정 입력 해시·준비도 READY·KR 동등성 EXACT를 확인한 후, 합성 값으로만 전체 평가·검증기를 돌린다. 잠금 없음.
+4. **소유자 승인:** `python scripts/run_rp1_c1_us_wp4d.py authorization-draft --owner <login>`의 정확한 pin과 저장 v2 확인 항목을 검토한다. 소유자가 별도 CASH 명세 검토를 포함한 확인 항목 8개를 직접 true로 바꿔 `docs/research-program/authorizations/rp1-c1-us-exposure-execution-authorization.json`을 검토된 PR로 커밋한다. 템플릿은 NOTHING만 승인한다.
+5. **별도 execute 승인/dispatch:** 먼저 소유자·main·첫 시도·커밋된 승인 파일 SHA/pin을 확인한 다음 재취득한다. 입력 해시 완전 일치 → 기존 준비도/동등성 관문 → 원자적 잠금 ref 2개 → 마커 → 실제 미국 값 평가 순서다. 잠금 후 실패는 연구를 소진하며 재시도하지 않는다. 이 저장 변경 PR과 freeze는 execute 승인이 아니다.
+
+소유자의 수작업은 PR 검토·병합과 명시적 실험 승인이다. Secret 등록·개인 PC 취득·추가 PAT·외부 저장소 설정을 요구하지 않는다. 실제 원천 재취득 관문이 실패하면 자동으로 우회하지 않는다.
 
 ### 6.5 독립 검증기와 비교 보고서
 

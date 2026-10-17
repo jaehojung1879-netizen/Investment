@@ -1,7 +1,7 @@
 """rp1-c1 WP4d: workflow route, storage rule, source freeze, owner authorization, one-shot lock, validator and report.
 
-Synthetic data only. The end-to-end test builds a synthetic snapshot through the REAL acquirer (fake transport), encrypts it with the real openssl
-command the workflow uses, freezes and pins it in a throwaway copy of the repository, authorizes it, and runs the formal execution against a fake
+Synthetic data only. The end-to-end test builds bounded synthetic inputs through the REAL acquirer (fake transport),
+freezes hashes and re-fetches them in a throwaway copy of the repository, authorizes it, and runs the formal execution against a fake
 GitHub API. It never touches a vendor, the real repository's files or a real lock."""
 from __future__ import annotations
 
@@ -13,8 +13,6 @@ from pathlib import Path
 import re
 import shutil
 import subprocess
-import tarfile
-import zipfile
 
 import numpy as np
 import pandas as pd
@@ -27,10 +25,10 @@ from pipeline import rp1_c1_us_exposure as U
 from pipeline import rp1_c1_us_exposure_spec as SP
 from pipeline import rp1_c1_us_sources as SRC
 from pipeline import rp1_c1_us_validator as V
+from pipeline import rp1_c1_us_refetch as R
 
 ROOT = Path(__file__).resolve().parents[1]
 HOST = ROOT / X.HOST_WORKFLOW
-KEY = "test-only-key-not-a-secret"
 
 
 def load_script(name, rel):
@@ -110,8 +108,13 @@ def test_secrets_and_permissions_are_scoped_and_no_input_reaches_a_shell():
     probe = job_block(text, "rp1-c1-source-probe")
     assert "permissions:\n      contents: read\n" in probe and "RP1_C1_SNAPSHOT_KEY" not in probe and "upload-artifact" in probe
     assert [u.strip() for u in re.findall(r"uses: actions/upload-artifact@v4\n(?:.*\n)*?\s+path: (.+)", probe)] == ["probe"]
+    assert "RP1_C1_SNAPSHOT_KEY" not in text and "openssl" not in text
     for name in ("rp1-c1-freeze-sources", "rp1-c1-dry-run", "rp1-c1-execute"):
-        assert "secrets.RP1_C1_SNAPSHOT_KEY" in job_block(text, name)
+        assert "secrets.FRED_API_KEY" in job_block(text, name)
+    freeze = job_block(text, "rp1-c1-freeze-sources")
+    assert "upload-artifact" not in freeze and "secrets." not in freeze.replace("secrets.FRED_API_KEY", "")
+    assert "github.event.pull_request.merged == true" in freeze and "github.event.pull_request.base.ref == 'main'" in freeze
+    assert "github.head_ref == 'research/rp1-c1-hash-refetch-v2'" in freeze
     execute = job_block(text, "rp1-c1-execute")
     assert "contents: write" in execute and "pull-requests" not in execute and "GITHUB_RUN_ATTEMPT" in execute
     assert "group: rp1-c1-us-exposure-ladder-replication-v1-single-attempt" in execute
@@ -121,7 +124,7 @@ def test_secrets_and_permissions_are_scoped_and_no_input_reaches_a_shell():
     for name in ("rp1-c1-freeze-sources", "rp1-c1-dry-run", "rp1-c1-execute"):
         block = job_block(text, name)
         for upload in re.findall(r"uses: actions/upload-artifact@v4\n(?:.*\n)*?\s+path: (.+)", block):
-            assert upload.strip() in ("encrypted/snapshot.tar.enc", "dry-run", "run")
+            assert upload.strip() in ("dry-run", "run")
 
 
 def test_the_acquirer_refuses_to_write_inside_the_repository():
@@ -217,8 +220,17 @@ def synthetic_raw(end="2026-10-02", seed=7):
 
 
 class FakeTransport:
+    YAHOO_HOSTS = ("https://fake",)
+
     def __init__(self, raw):
-        self.raw = raw
+        self.raw, self.urls = raw, []
+
+    def get(self, url):
+        import urllib.parse
+        self.urls.append(url)
+        symbol=urllib.parse.unquote(urllib.parse.urlparse(url).path.split("/")[-1])
+        sid=next(k for k,v in SRC.SOURCES.items() if v["symbol"]==symbol)
+        return 200,self.raw[sid]["chart.json"],None
 
     def fetch_fred(self, entry, key, today):
         return {"status": {"observations": 200}, "host": "fake", "error": None, "raw": self.raw[_sid(entry)]}
@@ -235,7 +247,7 @@ def acquire_synthetic(out, raw=None):
     acquire = load_script("acquire_rp1_syn", "scripts/acquire_rp1_c1_us_sources.py")
     acquire.kr_transport = lambda: FakeTransport(raw or synthetic_raw())
     assert acquire.main(["--output", str(out)]) == 0
-    return Path(out)
+    return Path(out) / "analysis"
 
 
 def mini_repo(tmp):
@@ -249,18 +261,6 @@ def mini_repo(tmp):
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / rel, target)
     return tmp
-
-
-def encrypt(snapshot, work):
-    tar_path, enc = work / "snapshot.tar", work / "snapshot.tar.enc"
-    subprocess.run(["tar", "--sort=name", "--mtime=1970-01-01 00:00:00Z", "--owner=0", "--group=0", "--numeric-owner", "-C", str(snapshot), "-cf",
-                    str(tar_path), "."], check=True)
-    subprocess.run(["openssl", "enc", "-aes-256-cbc", "-pbkdf2", "-iter", "600000", "-md", "sha256", "-salt", "-in", str(tar_path), "-out", str(enc),
-                    "-pass", "env:K"], check=True, env={"K": KEY, "PATH": "/usr/bin:/bin"})
-    archive = work / "artifact.zip"
-    with zipfile.ZipFile(archive, "w") as z:
-        z.write(enc, "snapshot.tar.enc")
-    return archive, hashlib.sha256(tar_path.read_bytes()).hexdigest(), hashlib.sha256(enc.read_bytes()).hexdigest()
 
 
 def write_spec(root):
@@ -315,19 +315,17 @@ def env_for(owner="owner", sha="a" * 40):
 
 @pytest.fixture(scope="module")
 def frozen_world(tmp_path_factory):
-    """Acquire synthetic bytes, gate them, encrypt them, freeze and pin them in a mini repository. Returns the pieces the tests need."""
+    """Acquire synthetic bytes, canonicalize, gate them, freeze and pin their hashes in a mini repository. Returns the pieces the tests need."""
     base = tmp_path_factory.mktemp("rp1-wp4d")
     root = mini_repo(base / "repo")
     snapshot = acquire_synthetic(base / "snapshot")
     probe = X.probe(root, snapshot)
-    archive, tar_sha, cipher_sha = encrypt(snapshot, base)
-    manifest = X.freeze_manifest(root, snapshot, run_id="111", commit_sha="a" * 40, artifact_name=X.SNAPSHOT_ARTIFACT_PREFIX + "111",
-                                 artifact_id="999", tar_sha256=tar_sha, ciphertext_sha256=cipher_sha)
+    manifest = X.freeze_manifest(root, snapshot, run_id="111", commit_sha="a" * 40)
     path = root / X.freeze_manifest_path("111")
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
     spec = write_spec(root)
-    return {"root": root, "snapshot": snapshot, "archive": archive, "probe": probe, "manifest": manifest, "spec": spec, "base": base}
+    return {"root": root, "snapshot": snapshot, "probe": probe, "manifest": manifest, "spec": spec, "base": base}
 
 
 def test_the_synthetic_live_bytes_pass_every_dates_only_gate(frozen_world):
@@ -343,62 +341,258 @@ def test_the_synthetic_live_bytes_pass_every_dates_only_gate(frozen_world):
 def test_the_manifest_carries_hashes_and_dates_never_a_value(frozen_world):
     manifest = frozen_world["manifest"]
     text = json.dumps(manifest)
-    assert manifest["storage"] == SRC.STORAGE and manifest["files"] == SP.snapshot_files(frozen_world["snapshot"])
+    assert manifest["storage"] == SRC.STORAGE and manifest["analysisFiles"] == R.fingerprints(frozen_world["snapshot"])
     leaked = {"close", "adjclose", "value", "timestamp", "indicators", "quote", "amount"} & set(_keys(manifest))
     assert not leaked, leaked
     assert '"observations": [' not in text and '"timestamp": [' not in text
     assert frozen_world["spec"]["inputs"]["usSnapshot"]["status"] == "FROZEN"
+    captured = json.loads((frozen_world["snapshot"].parent / "audit.json").read_bytes())["sources"]["YAHOO_SPY"]
+    assert captured["basis"] == "SPLIT_ADJUSTED_DIVIDEND_UNADJUSTED" and captured["normalizedField"] == "close"
+    assert captured["legacyRegisteredBasis"] == SRC.SOURCES["YAHOO_SPY"]["basis"]
 
 
-def test_a_new_candidate_snapshot_is_gated_without_the_old_pin_but_never_executes_under_it(frozen_world, tmp_path):
-    candidate = tmp_path / "candidate"
-    shutil.copytree(frozen_world["snapshot"], candidate)
-    (candidate / "audit.json").write_text((candidate / "audit.json").read_text() + "\n")          # a re-freeze's new bytes
-    probe = X.probe(frozen_world["root"], candidate)
-    assert probe["readiness"]["decision"] == SP.DECISION_READY and probe["readiness"]["snapshotIdentity"] == "UNPINNED"
-    formal = SP.readiness_audit(frozen_world["root"], snapshot_dir=candidate, require_frozen=True)
-    assert formal["decision"] == SP.DECISION_BLOCKED and any("US_SNAPSHOT_DIFFERS_FROM_THE_FROZEN_MANIFEST" in b for b in formal["blockers"])
+def test_new_fetch_metadata_is_not_an_analysis_input(frozen_world, tmp_path):
+    raw = tmp_path / "candidate"
+    shutil.copytree(frozen_world["snapshot"].parent, raw)
+    path = raw / "audit.json"
+    doc = json.loads(path.read_bytes())
+    doc["acquiredOn"] = "2099-12-31"
+    path.write_text(json.dumps(doc))
+    assert SP.verify_us_snapshot(frozen_world["spec"], frozen_world["root"], raw / "analysis")
 
 
-def test_open_snapshot_round_trips_and_refuses_a_changed_byte(frozen_world, tmp_path):
-    root, spec = frozen_world["root"], frozen_world["spec"]
-    out = X.open_snapshot(frozen_world["archive"], tmp_path / "open", spec, KEY, root)
-    assert out["status"] == "MATCHES_THE_FROZEN_MANIFEST" and SP.snapshot_files(tmp_path / "open") == spec["inputs"]["usSnapshot"]["files"]
-    with pytest.raises(X.Refused, match="SNAPSHOT_KEY_SECRET_MISSING"):
-        X.open_snapshot(frozen_world["archive"], tmp_path / "nokey", spec, "", root)
-    bad = tmp_path / "bad.zip"
-    with zipfile.ZipFile(frozen_world["archive"]) as z, zipfile.ZipFile(bad, "w") as w:
-        data = bytearray(z.read("snapshot.tar.enc"))
-        data[-1] ^= 1
-        w.writestr("snapshot.tar.enc", bytes(data))
-    with pytest.raises(X.Refused, match="CIPHERTEXT_DIFFERS_FROM_THE_PIN"):
-        X.open_snapshot(bad, tmp_path / "bad", spec, KEY, root)
+def test_refetch_round_trips_without_a_key_or_artifact(frozen_world, tmp_path):
+    second = acquire_synthetic(tmp_path / "refetched")
+    assert SP.verify_us_snapshot(frozen_world["spec"], frozen_world["root"], second)
+    assert R.fingerprints(second) == frozen_world["manifest"]["analysisFiles"]
 
 
-def test_unsafe_tar_members_are_refused(frozen_world, tmp_path):
-    work = tmp_path / "w"
-    work.mkdir()
-    tar_path = work / "evil.tar"
-    with tarfile.open(tar_path, "w") as tar:
-        info = tarfile.TarInfo("../escape.txt")
-        info.size = 1
-        import io
-        tar.addfile(info, io.BytesIO(b"x"))
-    enc = work / "evil.enc"
-    subprocess.run(["openssl", "enc", "-aes-256-cbc", "-pbkdf2", "-iter", "600000", "-md", "sha256", "-salt", "-in", str(tar_path), "-out", str(enc),
-                    "-pass", "env:K"], check=True, env={"K": KEY, "PATH": "/usr/bin:/bin"})
-    archive = work / "evil.zip"
-    with zipfile.ZipFile(archive, "w") as z:
-        z.write(enc, "snapshot.tar.enc")
-    spec = copy.deepcopy(frozen_world["spec"])
-    spec["inputs"]["usSnapshot"]["ciphertextSha256"] = hashlib.sha256(enc.read_bytes()).hexdigest()
-    manifest = dict(frozen_world["manifest"], tarSha256=hashlib.sha256(tar_path.read_bytes()).hexdigest())
-    root = tmp_path / "r"
-    (root / Path(spec["inputs"]["usSnapshot"]["manifestPath"]).parent).mkdir(parents=True)
-    (root / spec["inputs"]["usSnapshot"]["manifestPath"]).write_text(json.dumps(manifest))
-    with pytest.raises(X.Refused, match="UNSAFE_MEMBER"):
-        X.open_snapshot(archive, tmp_path / "out", spec, KEY, root)
-    assert not (tmp_path / "escape.txt").exists()
+def test_live_diagnostic_distinguishes_metadata_from_vendor_values(frozen_world, tmp_path):
+    raw = synthetic_raw()
+    doc = json.loads(raw["YAHOO_SPY"]["chart.json"])
+    doc["chart"]["result"][0]["meta"]["regularMarketTime"] = 1
+    raw["YAHOO_SPY"]["chart.json"] = json.dumps(doc, indent=3, sort_keys=True).encode()
+    second = acquire_synthetic(tmp_path / "metadata-only", raw)
+    report = R.compare_acquisitions(frozen_world["snapshot"], second)
+    assert report["status"] == "EXACT_BOUNDED_INPUT_MATCH" and not report["changedFiles"]
+    assert report["spy"]["sameRequestHash"] and report["spy"]["sameHost"]
+    assert report["spy"]["normalizationDeterministic"]
+    assert report["spy"]["otherMetadataKeysChanged"] == ["regularMarketTime"]
+
+
+def test_vendor_adjclose_drift_is_diagnosed_not_hidden(frozen_world, tmp_path):
+    raw = synthetic_raw()
+    doc = json.loads(raw["YAHOO_SPY"]["chart.json"])
+    doc["chart"]["result"][0]["indicators"]["adjclose"][0]["adjclose"][100] += .00001
+    raw["YAHOO_SPY"]["chart.json"] = json.dumps(doc).encode()
+    second = acquire_synthetic(tmp_path / "adjclose-drift", raw)
+    report = R.compare_acquisitions(frozen_world["snapshot"], second)
+    assert report["status"] == "BLOCKED_HASH_MISMATCH"
+    assert report["causeCodes"] == ["YAHOO_VENDOR_ADJCLOSE_VALUE_DRIFT"]
+    assert report["changedFiles"] == ["YAHOO_SPY/normalized.csv", "YAHOO_SPY/raw_chart.json"]
+    assert report["spy"]["fields"]["adjclose"]["changedCells"] == 1
+    for field in ("close", "dates", "timestamp", "actions.dividends"):
+        assert report["spy"]["fields"][field]["changedCells"] == 0
+    assert report["spy"]["adjacentAdjustedInputRatioEquality"]["changedPairs"] == 2
+    assert not report["spy"]["riskStateReferenceChanged"]
+    assert report["spy"]["normalizationDeterministic"]
+    assert report["sourceArtifacts"] == report["lockClaims"] == report["strategyOutcomes"] == 0
+    assert str(doc["chart"]["result"][0]["indicators"]["adjclose"][0]["adjclose"][100]) not in json.dumps(report)
+
+
+def test_even_a_uniform_adjustment_drift_remains_blocked(tmp_path):
+    raw = synthetic_raw()
+    doc = json.loads(raw["YAHOO_SPY"]["chart.json"])
+    adj = doc["chart"]["result"][0]["indicators"]["adjclose"][0]
+    adj["adjclose"] = list(range(1000, 1000 + len(adj["adjclose"])))
+    raw["YAHOO_SPY"]["chart.json"] = json.dumps(doc).encode()
+    first = acquire_synthetic(tmp_path / "first", raw)
+    adj["adjclose"] = [2 * v for v in adj["adjclose"]]
+    raw["YAHOO_SPY"]["chart.json"] = json.dumps(doc).encode()
+    second = acquire_synthetic(tmp_path / "second", raw)
+    report = R.compare_acquisitions(first, second)
+    assert report["status"] == "BLOCKED_HASH_MISMATCH"
+    assert report["spy"]["adjacentAdjustedInputRatioEquality"]["changedPairs"] == 0
+    assert report["spy"]["fields"]["adjclose"]["changedCells"] > 1000
+
+
+@pytest.mark.parametrize("change", ["split", "same_day_split", "duplicate_dividend", "missing_session", "zero_close", "dividend_unit", "currency"])
+def test_cash_input_gate_refuses_ambiguous_native_inputs(change):
+    days = pd.to_datetime(["2020-01-06", "2020-01-07", "2020-01-08"])
+    doc = json.loads(chart("SPY", "ETF", days, [100., 99., 100.], [90., 90., 91.], [(stamps([days[1]])[0], 1.)]))
+    row = doc["chart"]["result"][0]
+    if change in ("split", "same_day_split"):
+        row["events"]["splits"] = {"s": {"date": row["timestamp"][1], "numerator": 2, "denominator": 1, "splitRatio": "2:1"}}
+        if change == "split": row["events"].pop("dividends")
+    if change == "duplicate_dividend": row["events"]["dividends"]["duplicate"] = dict(next(iter(row["events"]["dividends"].values())))
+    if change == "missing_session":
+        for key in ("timestamp",): row[key].pop(1)
+        row["indicators"]["quote"][0]["close"].pop(1)
+        row["indicators"]["adjclose"][0]["adjclose"].pop(1)
+    if change == "zero_close": row["indicators"]["quote"][0]["close"][0] = 0.
+    if change == "dividend_unit": next(iter(row["events"]["dividends"].values()))["amount"] = 10000.
+    if change == "currency": row["meta"]["currency"] = "CAD"
+    raw = R.bounded_chart(json.dumps(doc).encode(), "YAHOO_SPY", include_adj=False)
+    assert SRC.cash_input_gate(raw, "2020-01-06", "2020-01-08")["status"] == "CASH_INPUT_UNRESOLVED"
+
+
+def test_cash_basis_keeps_the_existing_double_count_refusal():
+    from pipeline.us_dual_benchmark_data import DoubleCountRefused
+    with pytest.raises(DoubleCountRefused):
+        SRC.cash_components(b"{}", basis="TOTAL_RETURN_ADJUSTED")
+    with pytest.raises(ValueError, match="US_OUTCOME_ACCESS_WITHOUT_PERMIT"):
+        X.load_cash_values(ROOT, ROOT, {}, X.Counters(), None, None, "x")
+
+
+def test_primary_and_new_cash_run_when_vendor_adjclose_drift_is_unresolved(frozen_world, tmp_path, monkeypatch):
+    raw = synthetic_raw()
+    doc = json.loads(raw["YAHOO_SPY"]["chart.json"])
+    doc["chart"]["result"][0]["indicators"]["adjclose"][0]["adjclose"][100] += .00001
+    raw["YAHOO_SPY"]["chart.json"] = json.dumps(doc).encode()
+    snapshot = acquire_synthetic(tmp_path / "vendor-drift", raw)
+    root = frozen_world["root"]
+    readiness = SP.readiness_audit(root, snapshot_dir=snapshot, require_frozen=True)
+    assert readiness["decision"] == SP.DECISION_READY
+    assert readiness["details"]["economicReading"]["status"] == "ECONOMIC_READING_UNRESOLVED"
+    assert readiness["details"]["cashEconomicReading"]["status"] == "CASH_ECONOMIC_READY"
+    monkeypatch.setattr(X, "spy_basis_diagnostic", lambda *a: pytest.fail("unmatched vendor adjclose reached outcomes"))
+    sha = authorize_world(frozen_world)
+    api = FakeGitHub("a" * 40)
+    X.execute(tmp_path / "run", root, snapshot, env_for(), sha, api, fake_git(root))
+    result = json.loads((tmp_path / "run/result.json").read_bytes())
+    assert "economic" not in result and result["spyBasisDiagnostic"] is None
+    assert result["cashEconomic"]["status"] == "MEASURED"
+    assert result["cashEconomic"]["spec"]["scientificSha256"] == SP.cash_economic_spec()["scientificSha256"]
+
+
+def test_primary_snapshot_survives_optional_source_access_failure(tmp_path):
+    acquire = load_script("acquire_optional_denied", "scripts/acquire_rp1_c1_us_sources.py")
+    class OptionalDenied(FakeTransport):
+        def get(self, url):
+            return (403, b"", "HTTP 403") if "/SPY?" in url else super().get(url)
+        def fetch_fred(self, entry, key, today):
+            return {"status": {"observations": 403}, "host": "fake", "raw": {}, "error": "HTTP 403"} if entry["symbol"] == "DTB3" else super().fetch_fred(entry, key, today)
+    acquire.kr_transport = lambda: OptionalDenied(synthetic_raw())
+    out = tmp_path / "denied"
+    assert acquire.main(["--output", str(out)]) == 1
+    root = mini_repo(tmp_path / "repo")
+    readiness = SP.readiness_audit(root, snapshot_dir=out / "analysis")
+    assert readiness["decision"] == SP.DECISION_READY
+    assert readiness["details"]["economicReading"]["status"] == "ECONOMIC_READING_UNRESOLVED"
+    assert readiness["details"]["cashEconomicReading"]["status"] == "CASH_ECONOMIC_UNRESOLVED"
+
+
+def test_new_cash_definition_has_its_own_digest_and_original_science_is_unchanged(frozen_world):
+    root = frozen_world["root"]
+    spec, _ = SP.load_spec(root)
+    assert SP.scientific_digest(spec) == SP.ORIGINAL_SCIENTIFIC_SHA256
+    assert spec["cashEconomicSpec"]["scientificSha256"] == SP.digest(spec["cashEconomicSpec"]["definition"])
+    assert spec["cashEconomicSpec"]["scientificSha256"] == "50f1bbbdf671eeb5616e30ffef0475ec7a01bd171480cbb740052a4b748fc3e5"
+    assert spec["cashEconomicSpec"]["scientificSha256"] != SP.scientific_digest(spec)
+    spec["cashEconomicSpec"]["definition"]["formula"] = "WRONG_FORMULA"
+    path = root / SP.SPEC_PATH
+    try:
+        path.write_text(json.dumps(spec))
+        path.with_suffix(".sha256").write_text(SP.digest(spec))
+        with pytest.raises(ValueError, match="SEPARATE_CASH_ECONOMIC_SPEC_CHANGED"):
+            SP.load_spec(root)
+    finally:
+        write_spec(root)
+
+
+def test_cash_admission_does_not_require_a_legacy_adjclose_array(frozen_world, tmp_path):
+    raw = synthetic_raw()
+    doc = json.loads(raw["YAHOO_SPY"]["chart.json"])
+    doc["chart"]["result"][0]["indicators"].pop("adjclose")
+    raw["YAHOO_SPY"]["chart.json"] = json.dumps(doc).encode()
+    snapshot = acquire_synthetic(tmp_path / "no-adjusted", raw)
+    assert SP.verify_us_snapshot(frozen_world["spec"], frozen_world["root"], snapshot, "PRIMARY")
+    assert SP.verify_us_snapshot(frozen_world["spec"], frozen_world["root"], snapshot, "CASH_ECONOMIC")
+    report = R.admission_report(frozen_world["snapshot"], snapshot, "1993-02-08")
+    assert report["status"] == "EXACT_SCOPED_INPUT_MATCH"
+    assert report["legacyVendorComparison"]["status"] == "UNRESOLVED_VENDOR_DIAGNOSTIC_UNAVAILABLE"
+
+
+@pytest.mark.parametrize("shift", [1, 5, 22])
+def test_fred_moving_window_is_freshly_checked_not_permanently_hashed(frozen_world, tmp_path, shift):
+    raw = synthetic_raw()
+    doc = json.loads(raw["FRED_SP500"]["observations.json"])
+    doc["observations"] = doc["observations"][shift:]
+    raw["FRED_SP500"]["observations.json"] = json.dumps(doc).encode()
+    snapshot = acquire_synthetic(tmp_path / "moved", raw)
+    assert R.fingerprints(snapshot) != frozen_world["manifest"]["analysisFiles"]
+    assert not any(n.startswith("FRED_SP500/") for n in R.scoped_fingerprints(snapshot, "PRIMARY"))
+    assert SP.verify_us_snapshot(frozen_world["spec"], frozen_world["root"], snapshot, "PRIMARY")
+    readiness = SP.readiness_audit(frozen_world["root"], snapshot_dir=snapshot, require_frozen=True)
+    assert readiness["decision"] == SP.DECISION_READY
+    cross = readiness["details"]["vendorCrossCheck"]
+    assert cross["status"] == "CONSISTENT" and cross["commonDates"] >= 250 and cross["freshIdentityVerified"]
+    assert cross["frozenHashAudit"]["changed"] and not cross["frozenHashAudit"]["strategyInput"]
+    assert cross["currentFiles"] != cross["frozenHashAudit"]["frozen"]
+    report = R.admission_report(frozen_world["snapshot"], snapshot, "1993-02-08")
+    assert report["status"] == "EXACT_SCOPED_INPUT_MATCH"
+    assert all(c["status"] == "CONSISTENT" for c in report["referenceCrossChecks"])
+
+
+@pytest.mark.parametrize("change", ["identity", "conflict", "overlap", "coverage", "prepared_tamper"])
+def test_fresh_fred_crosscheck_failure_still_blocks_primary(frozen_world, tmp_path, change):
+    raw = synthetic_raw()
+    if change == "identity":
+        doc = json.loads(raw["FRED_SP500"]["series.json"])
+        doc["seriess"][0]["id"] = "NOT_SP500"
+        raw["FRED_SP500"]["series.json"] = json.dumps(doc).encode()
+    else:
+        doc = json.loads(raw["FRED_SP500"]["observations.json"])
+        if change == "conflict":
+            for row in doc["observations"]: row["value"] = str(float(row["value"]) * 1.5)
+        if change == "overlap": doc["observations"] = [r for r in doc["observations"] if r["date"] <= U.ANALYSIS_END][-249:]
+        if change == "coverage": del doc["observations"][100:110]
+        raw["FRED_SP500"]["observations.json"] = json.dumps(doc).encode()
+    snapshot = acquire_synthetic(tmp_path / "bad-crosscheck", raw)
+    if change == "prepared_tamper":
+        path = snapshot / "FRED_SP500/normalized.csv"
+        lines = path.read_text().splitlines()
+        lines[1] = lines[1].split(",")[0] + ",1.0"
+        path.write_text("\n".join(lines) + "\n")
+    assert SP.verify_us_snapshot(frozen_world["spec"], frozen_world["root"], snapshot, "PRIMARY")  # GSPC bytes remain unchanged
+    readiness = SP.readiness_audit(frozen_world["root"], snapshot_dir=snapshot, require_frozen=True)
+    assert readiness["decision"] == SP.DECISION_BLOCKED
+    status = readiness["details"]["vendorCrossCheck"]["status"]
+    assert status == {"identity": "IDENTITY_MISMATCH", "conflict": "CONFLICT", "overlap": "INSUFFICIENT_OVERLAP",
+                      "coverage": "CROSSCHECK_COVERAGE_FAILED", "prepared_tamper": "FRESH_CROSSCHECK_SOURCE_MISMATCH"}[change]
+    assert R.admission_report(frozen_world["snapshot"], snapshot, "1993-02-08")["status"] == "SCOPED_INPUT_NOT_READY"
+
+
+def test_fred_holiday_null_is_not_counted_as_a_missing_exchange_session(tmp_path):
+    raw = synthetic_raw()
+    doc = json.loads(raw["FRED_SP500"]["observations.json"])
+    doc["observations"].append({"date": "2018-12-25", "value": "."})
+    doc["observations"].sort(key=lambda r: r["date"])
+    raw["FRED_SP500"]["observations.json"] = json.dumps(doc).encode()
+    snapshot = acquire_synthetic(tmp_path / "holiday", raw)
+    assert SP.cross_check_status(snapshot, SP.snapshot_audit(snapshot))["status"] == "CONSISTENT"
+
+
+def test_spy_and_dtb3_changes_cannot_change_primary_results():
+    values = {k: s.loc[:"1996-12-31"] for k, s in X.synthetic_us_values().items()}
+    config = {**U.us_config(), "analysisEnd": "1996-12-31"}
+    baseline = U.evaluate(values, config)
+    for leg in ("asset", "cash"):
+        changed = {**values, leg: values[leg] * np.exp(np.linspace(0, .5, len(values[leg]))) if leg == "asset" else values[leg] + 5.}
+        result = U.evaluate(changed, config)
+        for key in ("passive", "candidates", "decision", "window"):
+            assert E.json_safe(result[key]) == E.json_safe(baseline[key]), (leg, key)
+        assert E.json_safe(result["economic"]) != E.json_safe(baseline["economic"])
+
+
+def test_five_distinct_dividend_dates_are_audited_not_deduplicated_or_classified():
+    days = SRC.xnys_sessions("2003-12-31", "2004-12-31")
+    dates = ["2004-01-02", "2004-03-19", "2004-06-18", "2004-09-17", "2004-12-17"]  # INVENTED fifth event, not source evidence
+    raw = chart("SPY", "ETF", days, np.full(len(days), 100.), dividends=[(stamps([d])[0], .5) for d in dates])
+    audit = SRC.cash_input_gate(raw, "2004-01-02", "2004-12-31")
+    assert audit["status"] == "CASH_INPUT_READY"
+    assert audit["dividend2004"]["eventDates"] == dates and audit["dividend2004"]["events"] == 5
+    assert audit["dividend2004"]["duplicateDates"] == 0 and "NOT_ISSUER_VERIFIED" in audit["dividend2004"]["classification"]
 
 
 def test_a_freeze_is_refused_once_an_authorization_is_committed(frozen_world, tmp_path):
@@ -407,8 +601,7 @@ def test_a_freeze_is_refused_once_an_authorization_is_committed(frozen_world, tm
     (root / X.AUTHORIZATION_PATH).write_text("{}")
     try:
         with pytest.raises(X.Refused, match="AN_AUTHORIZATION_IS_COMMITTED"):
-            X.freeze_manifest(root, frozen_world["snapshot"], run_id="2", commit_sha="b", artifact_name="n", artifact_id="1", tar_sha256="t",
-                              ciphertext_sha256="c")
+            X.freeze_manifest(root, frozen_world["snapshot"], run_id="2", commit_sha="b")
     finally:
         (root / X.AUTHORIZATION_PATH).unlink()
 
@@ -493,8 +686,7 @@ def test_values_cannot_be_read_without_permit_and_lock(frozen_world):
 
 def test_the_formal_execution_end_to_end_then_refuses_a_second_attempt(frozen_world, tmp_path):
     root = frozen_world["root"]
-    snapshot = tmp_path / "opened"
-    X.open_snapshot(frozen_world["archive"], snapshot, frozen_world["spec"], KEY, root)
+    snapshot = acquire_synthetic(tmp_path / "refetched")
     sha = authorize_world(frozen_world)
     api, order = FakeGitHub("a" * 40), []
     real_load = X.load_values
@@ -515,13 +707,18 @@ def test_the_formal_execution_end_to_end_then_refuses_a_second_attempt(frozen_wo
     validation = json.loads((tmp_path / "run" / X.VALIDATION_FILE).read_text())
     assert validation["status"] == "CONSISTENT" and validation["checks"] > 200 and result["validationStatus"] == "CONSISTENT"
     assert set(result["candidates"]) == set(K.CANDIDATE_ORDER) and result["economicReadingStatus"] == "ECONOMIC_READING_READY"
-    assert result["spyBasisDiagnostic"]["maxAbsoluteDailyDifference"] < 1e-9 and result["spyBasisDiagnostic"]["exDividendSessions"] > 100
+    assert result["spyBasisDiagnostic"]["maxAbsoluteDailyDifference"] > 1e-9 and result["spyBasisDiagnostic"]["exDividendSessions"] > 100
+    assert result["spyBasisDiagnostic"]["comparison"] == "YAHOO_ADJCLOSE_VS_REPLAY_V11_VENDOR_EQUIVALENT_FORWARD_FACTOR"
     assert result["interpretation"]["reading"] in {"REPLICATED_CONTROL_RETAINED", "NOT_REPLICATED_US_NOMINATION", "NOT_REPLICATED_US_TRADEOFF"}
     report = (tmp_path / "run" / X.REPORT_FILE).read_text()
     for name in (K.PASSIVE,) + K.CANDIDATE_ORDER:
         assert f"| {name} |" in report
     assert "CVaR" in report and "rebound missed" in report and "up-market cost" in report
-    assert manifest["counters"]["lockClaims"] == 1 and manifest["counters"]["usValueReads"] == 1
+    assert manifest["counters"]["lockClaims"] == 1 and manifest["counters"]["usValueReads"] == 2
+    assert manifest["referenceCrossCheck"]["status"] == "CONSISTENT"
+    assert not manifest["referenceCrossCheck"]["frozenHashAudit"]["changed"]
+    assert result["cashEconomic"]["status"] == "MEASURED"
+    assert result["cashEconomic"]["spec"]["scientificSha256"] != SP.scientific_digest(frozen_world["spec"])
     assert not any("close" in k.lower() or "nav" == k.lower() for k in _keys(result))      # aggregate statistics only
     with pytest.raises(X.Refused, match="EXECUTION_LOCK_ALREADY_EXISTS"):
         X.execute(tmp_path / "run2", root, snapshot, env_for(), sha, api, fake_git(root))
@@ -541,9 +738,10 @@ def _keys(value):
 
 def test_a_failed_readiness_refuses_before_the_lock(frozen_world, tmp_path):
     root = frozen_world["root"]
-    snapshot = tmp_path / "opened"
-    X.open_snapshot(frozen_world["archive"], snapshot, frozen_world["spec"], KEY, root)
-    first = sorted(snapshot.rglob("normalized.csv"))[0]
+    raw = tmp_path / "refetched"
+    shutil.copytree(frozen_world["snapshot"].parent, raw)
+    snapshot = raw / "analysis"
+    first = snapshot / "YAHOO_GSPC/normalized.csv"
     first.write_bytes(first.read_bytes() + b"\n")          # one added byte: the snapshot no longer matches the frozen manifest
     sha = authorize_world(frozen_world)
     api = FakeGitHub("a" * 40)
@@ -561,8 +759,9 @@ def test_the_dry_run_reads_no_value_and_claims_no_lock(frozen_world, tmp_path, m
 
     def fake_pipeline(values, economic_ready, counters):
         seen.append(values["reference"].index.min())
-        return {}, None, {"status": "CONSISTENT", "checks": 1}
+        return {}, {}, {"status": "CONSISTENT", "checks": 1}
     monkeypatch.setattr(X, "evaluate_and_validate", fake_pipeline)
+    monkeypatch.setattr(X, "cash_economic_result", lambda *args: {"status": "SYNTHETIC"})
     monkeypatch.setattr(X, "interpretation", lambda result: {"decisionStatus": "SYNTHETIC"})
     monkeypatch.setattr(X, "render_report", lambda *a, **k: "report")
     out = X.dry_run(tmp_path / "dry", frozen_world["root"], frozen_world["snapshot"])
@@ -648,7 +847,131 @@ def test_the_interpretation_table_is_applied_mechanically():
     assert out["noProtectionInUs"] is True
 
 
-def test_the_spy_basis_diagnostic_reconciles_close_plus_dividend():
+def test_the_spy_basis_diagnostic_matches_replay_v11_not_cash_reinvestment():
+    from pipeline import price_adjustment as PA
     raw = synthetic_raw(end="1996-12-31")["YAHOO_SPY"]["chart.json"]
     out = X.spy_basis_diagnostic(raw, "1993-02-08", "1996-12-31")
+    assert out["maxAbsoluteDailyDifference"] > 1e-9  # this fixture's adjclose was built with CASH, not the vendor recipe
+    close, events = SRC.cash_components(raw)
+    actions = pd.DataFrame([{"date": pd.Timestamp(d), PA.DIVIDEND: dividend, PA.SPLIT: split} for d, dividend, split in events]).set_index("date")
+    forward, _ = PA.to_total_return(pd.DataFrame({"Close": close}), actions)
+    doc = json.loads(raw)
+    doc["chart"]["result"][0]["indicators"]["adjclose"][0]["adjclose"] = forward["Close"].tolist()
+    out = X.spy_basis_diagnostic(json.dumps(doc).encode(), "1993-02-08", "1996-12-31")
     assert out["sessions"] > 900 and out["maxAbsoluteDailyDifference"] < 1e-9 and out["exDividendSessions"] >= 15
+    assert out["comparison"] == "YAHOO_ADJCLOSE_VS_REPLAY_V11_VENDOR_EQUIVALENT_FORWARD_FACTOR"
+
+
+@pytest.mark.parametrize("change", ["price", "rate", "adjusted", "dividend", "split", "identity"])
+def test_revisions_are_refused_by_their_own_economic_scope(frozen_world, tmp_path, change):
+    raw = synthetic_raw()
+    sid, file = ("FRED_DTB3", "observations.json") if change == "rate" else ("YAHOO_SPY", "chart.json")
+    doc = json.loads(raw[sid][file])
+    if change == "rate":
+        doc["observations"][0]["value"] = "99.000001"
+    else:
+        data = doc["chart"]["result"][0]
+        if change == "price": data["indicators"]["quote"][0]["close"][0] += .000001
+        if change == "adjusted": data["indicators"]["adjclose"][0]["adjclose"][0] += .000001
+        if change == "dividend": next(iter(data["events"]["dividends"].values()))["amount"] += .000001
+        if change == "split": data["events"]["splits"] = {"synthetic": {"date": data["timestamp"][10], "numerator": 2, "denominator": 1, "splitRatio": "2:1"}}
+        if change == "identity": data["meta"]["currency"] = "CAD"
+    raw[sid][file] = json.dumps(doc).encode()
+    snapshot = acquire_synthetic(tmp_path / "changed", raw)
+    assert SP.verify_us_snapshot(frozen_world["spec"], frozen_world["root"], snapshot, "PRIMARY")
+    with pytest.raises(ValueError, match="US_ANALYSIS_INPUT_DIFFERS"):
+        SP.verify_us_snapshot(frozen_world["spec"], frozen_world["root"], snapshot, "VENDOR_ECONOMIC")
+    if change == "adjusted":
+        assert SP.verify_us_snapshot(frozen_world["spec"], frozen_world["root"], snapshot, "CASH_ECONOMIC")
+    else:
+        with pytest.raises(ValueError, match="US_ANALYSIS_INPUT_DIFFERS"):
+            SP.verify_us_snapshot(frozen_world["spec"], frozen_world["root"], snapshot, "CASH_ECONOMIC")
+    report = R.admission_report(frozen_world["snapshot"], snapshot, "1993-02-08")
+    assert report["status"] == ("EXACT_SCOPED_INPUT_MATCH" if change == "adjusted" else "SCOPED_INPUT_NOT_READY")
+    assert report["legacyVendorComparison"]["status"] == "BLOCKED_HASH_MISMATCH"
+
+
+def test_appended_or_changed_after_end_rows_and_metadata_do_not_change_inputs(frozen_world, tmp_path):
+    raw = synthetic_raw()
+    for sid in ("YAHOO_GSPC", "YAHOO_SPY"):
+        doc = json.loads(raw[sid]["chart.json"])
+        data = doc["chart"]["result"][0]
+        data["meta"]["regularMarketTime"] = 9999999999
+        for i, t in enumerate(data["timestamp"]):
+            if R.local_day(t, OFFSET) > U.ANALYSIS_END:
+                data["indicators"]["quote"][0]["close"][i] *= 100
+                if sid == "YAHOO_SPY": data["indicators"]["adjclose"][0]["adjclose"][i] *= 200
+        if sid == "YAHOO_SPY":
+            t = stamps(["2026-10-01"])[0]
+            data["events"]["dividends"][str(t)] = {"date": t, "amount": 123456.789}
+            data["events"]["splits"] = {"future": {"date": t, "numerator": 2, "denominator": 1, "splitRatio": "2:1"}}
+        raw[sid]["chart.json"] = json.dumps(doc).encode()
+    for sid in ("FRED_DTB3", "FRED_SP500"):
+        doc = json.loads(raw[sid]["observations.json"])
+        doc["realtime_start"] = "2099-01-01"
+        doc["observations"].append({"date": "2026-10-05", "value": "99999.12345"})
+        raw[sid]["observations.json"] = json.dumps(doc).encode()
+    second = acquire_synthetic(tmp_path / "appended", raw)
+    assert R.provenance(second) != frozen_world["manifest"]["rawFilesAuditOnly"]
+    assert R.fingerprints(second) == frozen_world["manifest"]["analysisFiles"]
+    assert SP.verify_us_snapshot(frozen_world["spec"], frozen_world["root"], second)
+    # The actual series the unchanged engine receives are identical; no second
+    # historical evaluation or simulation is needed to prove this invariance.
+    left, right = X.read_values(frozen_world["root"], frozen_world["snapshot"]), X.read_values(frozen_world["root"], second)
+    for name in left:
+        pd.testing.assert_series_equal(left[name], right[name])
+
+
+def test_decimal_context_has_no_rounding_or_global_float_rebase():
+    assert R.number("1.2300") == R.number("1.23") == "1.23"
+    assert R.number("100.00000000000000000001") != R.number("100")
+    assert float(R.number("100.00000000000000000001")) == float(R.number("100"))
+
+
+def test_access_denial_publishes_no_source_and_does_not_prepare_inputs(tmp_path, monkeypatch, capsys):
+    acquire = load_script("acquire_denied_rp1", "scripts/acquire_rp1_c1_us_sources.py")
+    class Denied:
+        YAHOO_HOSTS = ("https://fake",)
+        def get(self, *_): return 403,b"","PRIVATE_SOURCE_SENTINEL"
+        def fetch_fred(self, *_): return {"status": 403, "host": "fake", "raw": {}, "error": "PRIVATE_SOURCE_SENTINEL"}
+        fetch_yahoo = fetch_fred
+    acquire.kr_transport = Denied
+    monkeypatch.setattr(R, "prepare", lambda *_: pytest.fail("prepared denied data"))
+    assert acquire.main(["--output", str(tmp_path / "denied")]) == 1
+    assert "PRIVATE_SOURCE_SENTINEL" not in capsys.readouterr().out
+    assert not (tmp_path / "denied/analysis").exists()
+
+
+def test_no_authorization_reaches_no_input_or_outcome_reader(frozen_world, tmp_path, monkeypatch):
+    monkeypatch.setattr(SP, "readiness_audit", lambda *_args, **_kwargs: pytest.fail("input read without authorization"))
+    monkeypatch.setattr(X, "load_values", lambda *_args: pytest.fail("outcome read without authorization"))
+    api = FakeGitHub("a" * 40)
+    with pytest.raises(X.Refused, match="NO_COMMITTED_OWNER_AUTHORIZATION"):
+        X.execute(tmp_path / "unapproved", frozen_world["root"], frozen_world["snapshot"], env_for(), "", api, fake_git(frozen_world["root"]))
+    assert not api.refs and not (tmp_path / "unapproved" / X.MARKER_FILE).exists()
+
+
+def test_workflow_checks_owner_before_fetch_and_never_uploads_sources():
+    text = HOST.read_text()
+    block = job_block(text, "rp1-c1-execute")
+    assert block.index(' authorization-check ') < block.index('python scripts/acquire_rp1_c1_us_sources.py')
+    assert "'closed'" not in block  # no PR merge can trigger the formal execute
+    dry = job_block(text, "rp1-c1-dry-run")
+    assert "github.event.pull_request.merged == true" in dry
+    assert "github.event.pull_request.base.ref == 'main'" in dry
+    assert "startsWith(github.head_ref, 'research/rp1-c1-us-source-freeze-')" in dry
+    assert "permissions:\n      contents: read" in dry
+    for name in ("rp1-c1-freeze-sources", "rp1-c1-source-probe", "rp1-c1-dry-run", "rp1-c1-execute"):
+        block = job_block(text, name)
+        assert not any(t in block for t in ("openssl", "secret set", "snapshot.tar", "secrets.RP1_C1"))
+
+
+def test_yahoo_request_interval_is_frozen_not_the_current_clock():
+    import urllib.parse
+    acquire=load_script("fixed_request_rp1", "scripts/acquire_rp1_c1_us_sources.py")
+    transport=FakeTransport(synthetic_raw(end="1994-01-01"))
+    for _ in range(2): acquire.fetch_yahoo_fixed(SRC.SOURCES["YAHOO_GSPC"],transport)
+    assert transport.urls[0]==transport.urls[1]
+    query=urllib.parse.parse_qs(urllib.parse.urlparse(transport.urls[0]).query)
+    assert int(query["period1"][0])==int(pd.Timestamp(U.GRID_START,tz="UTC").timestamp())
+    assert int(query["period2"][0])==int(pd.Timestamp("2026-09-18",tz="UTC").timestamp())
