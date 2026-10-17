@@ -9,7 +9,7 @@ on the XNYS calendar instead of XKRX.
 
 STORAGE. None of the four newly acquired sources is committed to this public repository. Three are licensed data whose terms do not permit
 redistribution (S&P 500 index values via Yahoo and FRED; SPY via Yahoo); keeping DTB3 (public domain) in the same snapshot keeps one storage rule.
-The raw bytes live in one ENCRYPTED GitHub Actions artifact; git carries only the dates-and-hashes manifest (`SOURCE_RIGHTS`, `STORAGE`).
+The raw bytes live only in runner temporary storage and are discarded; git carries bounded analysis hashes and audit-only raw hashes. No raw artifact is uploaded.
 """
 from __future__ import annotations
 
@@ -28,8 +28,8 @@ KR_SPEC_PATH = "research_specs/kr-market-risk-model-v1.json"
 REUSED = {"vix": "FRED_VIXCLS", "us10y": "FRED_DGS10", "us3m": "FRED_DGS3MO"}   # bytes pinned by the sealed KR spec
 
 # Where the newly acquired bytes may live. A summary of each provider's published terms as this study reads them, NOT legal advice; anything unclear
-# is treated as restricted. A restricted byte never enters git, a log or an unencrypted artifact; derived aggregate statistics may be published.
-STORAGE = "ENCRYPTED_ACTIONS_ARTIFACT_NEVER_COMMITTED"
+# is treated as restricted. A restricted byte never enters git, a log or any source artifact; derived aggregate statistics may be published.
+STORAGE = "HASH_PINNED_REFETCH_RUNNER_TEMP_ONLY"
 SOURCE_RIGHTS = {
     "YAHOO_GSPC": {"class": "RESTRICTED_NO_REDISTRIBUTION", "owner": "S&P Dow Jones Indices (index); Yahoo (delivery)",
                    "basis": "Yahoo's terms limit use to personal, non-commercial purposes and prohibit redistribution; the index values are S&P's"},
@@ -38,7 +38,7 @@ SOURCE_RIGHTS = {
                             "about the last ten years"},
     "YAHOO_SPY": {"class": "RESTRICTED_NO_REDISTRIBUTION", "owner": "Yahoo (delivery)", "basis": "Yahoo's terms (as YAHOO_GSPC)"},
     "FRED_DTB3": {"class": "PUBLIC_DOMAIN_CITATION_REQUESTED", "owner": "Board of Governors of the Federal Reserve System (H.15)",
-                  "basis": "FRED marks H.15 rates public domain with citation requested; kept in the encrypted snapshot anyway so one storage rule applies"},
+                  "basis": "FRED marks H.15 rates public domain with citation requested; also kept only in runner temporary storage so one storage rule applies"},
 }
 REUSED_RIGHTS = {
     "FRED_VIXCLS": "Cboe-copyrighted series ALREADY committed by the sealed kr-market-risk-anatomy-v1 snapshot before this storage rule; reused in place, "

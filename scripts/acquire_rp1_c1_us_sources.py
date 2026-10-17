@@ -8,7 +8,7 @@ DGS3MO) are NOT re-acquired: the C1 spec pins their sealed bytes. An ACQUIRED so
 ACQUIRED, at most MAX_ATTEMPTS times, and never substitutes a different instrument or splices two vendors.
 
 The output directory must lie OUTSIDE the repository: three of the four sources are licensed data that may not be redistributed, so their bytes never
-enter git (`rp1_c1_us_sources.STORAGE`). Inside Actions the freeze job encrypts the directory into one artifact; git carries only its manifest.
+enter git (`rp1_c1_us_sources.STORAGE`). Inside Actions only bounded analysis hashes enter the manifest; source bytes are discarded without upload.
 """
 from __future__ import annotations
 
@@ -22,7 +22,8 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from pipeline import kr_market_risk_source_parse as P  # noqa: E402
-from pipeline import rp1_c1_us_sources as SRC  # noqa: E402
+from pipeline import rp1_c1_us_sources as SRC
+from pipeline import rp1_c1_us_refetch as R  # noqa: E402
 
 MAX_ATTEMPTS = 3
 
@@ -44,7 +45,7 @@ def acquire_one(sid, key, today, out, transport):
     try:
         got = transport.fetch_fred(entry, key, today) if entry["fetch"] == "fred" else transport.fetch_yahoo(entry, today)
     except Exception as error:  # a transport failure is recorded, never hidden or retried into another instrument
-        record["error"] = type(error).__name__ + ": " + str(error)[:200]
+        record["error"] = type(error).__name__
         return record
     record.update(httpStatus=got["status"], host=got["host"], error=got["error"])
     main_name = "observations.json" if entry["fetch"] == "fred" else "chart.json"
@@ -99,7 +100,7 @@ def main(argv=None):
         "statements": ["Raw vendor bytes are retained unchanged.", "No return, drawdown, state, episode or forward quantity was computed.",
                        "Rows that could not be parsed to a finite (or, for prices, positive) value were dropped and counted, never filled.",
                        "VIXCLS, DGS10 and DGS3MO are the sealed KR snapshot's bytes and were not re-acquired.",
-                       "Licensed bytes in this directory are never committed, logged or uploaded unencrypted.",
+                       "Licensed bytes in this directory are never committed, logged or uploaded.",
                        "An ACQUIRED source is immutable; only a source that is not ACQUIRED may be retried, at most %d times." % MAX_ATTEMPTS]}
     transport = kr_transport()
     changed = False
@@ -117,9 +118,14 @@ def main(argv=None):
     if changed:
         path.write_text(json.dumps(audit, indent=2, sort_keys=True) + "\n")
     failed = [sid for sid, r in audit["sources"].items() if r["status"] != "ACQUIRED"]
+    if not failed and set(audit["sources"]) == set(SRC.ACQUIRED_IDS):
+        R.prepare(out)
     print("acquired", len(audit["sources"]) - len(failed), "failed", failed)
     return 1 if failed else 0
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    try:
+        raise SystemExit(main())
+    except (ValueError, OSError, KeyError, TypeError) as error:
+        raise SystemExit("SOURCE_ACQUISITION_OR_NORMALIZATION_FAILED:" + type(error).__name__) from None

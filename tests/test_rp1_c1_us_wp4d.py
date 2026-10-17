@@ -1,7 +1,7 @@
 """rp1-c1 WP4d: workflow route, storage rule, source freeze, owner authorization, one-shot lock, validator and report.
 
-Synthetic data only. The end-to-end test builds a synthetic snapshot through the REAL acquirer (fake transport), encrypts it with the real openssl
-command the workflow uses, freezes and pins it in a throwaway copy of the repository, authorizes it, and runs the formal execution against a fake
+Synthetic data only. The end-to-end test builds bounded synthetic inputs through the REAL acquirer (fake transport),
+freezes hashes and re-fetches them in a throwaway copy of the repository, authorizes it, and runs the formal execution against a fake
 GitHub API. It never touches a vendor, the real repository's files or a real lock."""
 from __future__ import annotations
 
@@ -13,8 +13,6 @@ from pathlib import Path
 import re
 import shutil
 import subprocess
-import tarfile
-import zipfile
 
 import numpy as np
 import pandas as pd
@@ -27,10 +25,10 @@ from pipeline import rp1_c1_us_exposure as U
 from pipeline import rp1_c1_us_exposure_spec as SP
 from pipeline import rp1_c1_us_sources as SRC
 from pipeline import rp1_c1_us_validator as V
+from pipeline import rp1_c1_us_refetch as R
 
 ROOT = Path(__file__).resolve().parents[1]
 HOST = ROOT / X.HOST_WORKFLOW
-KEY = "test-only-key-not-a-secret"
 
 
 def load_script(name, rel):
@@ -110,8 +108,13 @@ def test_secrets_and_permissions_are_scoped_and_no_input_reaches_a_shell():
     probe = job_block(text, "rp1-c1-source-probe")
     assert "permissions:\n      contents: read\n" in probe and "RP1_C1_SNAPSHOT_KEY" not in probe and "upload-artifact" in probe
     assert [u.strip() for u in re.findall(r"uses: actions/upload-artifact@v4\n(?:.*\n)*?\s+path: (.+)", probe)] == ["probe"]
+    assert "RP1_C1_SNAPSHOT_KEY" not in text and "openssl" not in text
     for name in ("rp1-c1-freeze-sources", "rp1-c1-dry-run", "rp1-c1-execute"):
-        assert "secrets.RP1_C1_SNAPSHOT_KEY" in job_block(text, name)
+        assert "secrets.FRED_API_KEY" in job_block(text, name)
+    freeze = job_block(text, "rp1-c1-freeze-sources")
+    assert "upload-artifact" not in freeze and "secrets." not in freeze.replace("secrets.FRED_API_KEY", "")
+    assert "github.event.pull_request.merged == true" in freeze and "github.event.pull_request.base.ref == 'main'" in freeze
+    assert "github.head_ref == 'research/rp1-c1-hash-refetch-v2'" in freeze
     execute = job_block(text, "rp1-c1-execute")
     assert "contents: write" in execute and "pull-requests" not in execute and "GITHUB_RUN_ATTEMPT" in execute
     assert "group: rp1-c1-us-exposure-ladder-replication-v1-single-attempt" in execute
@@ -121,7 +124,7 @@ def test_secrets_and_permissions_are_scoped_and_no_input_reaches_a_shell():
     for name in ("rp1-c1-freeze-sources", "rp1-c1-dry-run", "rp1-c1-execute"):
         block = job_block(text, name)
         for upload in re.findall(r"uses: actions/upload-artifact@v4\n(?:.*\n)*?\s+path: (.+)", block):
-            assert upload.strip() in ("encrypted/snapshot.tar.enc", "dry-run", "run")
+            assert upload.strip() in ("dry-run", "run")
 
 
 def test_the_acquirer_refuses_to_write_inside_the_repository():
@@ -235,7 +238,7 @@ def acquire_synthetic(out, raw=None):
     acquire = load_script("acquire_rp1_syn", "scripts/acquire_rp1_c1_us_sources.py")
     acquire.kr_transport = lambda: FakeTransport(raw or synthetic_raw())
     assert acquire.main(["--output", str(out)]) == 0
-    return Path(out)
+    return Path(out) / "analysis"
 
 
 def mini_repo(tmp):
@@ -249,18 +252,6 @@ def mini_repo(tmp):
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / rel, target)
     return tmp
-
-
-def encrypt(snapshot, work):
-    tar_path, enc = work / "snapshot.tar", work / "snapshot.tar.enc"
-    subprocess.run(["tar", "--sort=name", "--mtime=1970-01-01 00:00:00Z", "--owner=0", "--group=0", "--numeric-owner", "-C", str(snapshot), "-cf",
-                    str(tar_path), "."], check=True)
-    subprocess.run(["openssl", "enc", "-aes-256-cbc", "-pbkdf2", "-iter", "600000", "-md", "sha256", "-salt", "-in", str(tar_path), "-out", str(enc),
-                    "-pass", "env:K"], check=True, env={"K": KEY, "PATH": "/usr/bin:/bin"})
-    archive = work / "artifact.zip"
-    with zipfile.ZipFile(archive, "w") as z:
-        z.write(enc, "snapshot.tar.enc")
-    return archive, hashlib.sha256(tar_path.read_bytes()).hexdigest(), hashlib.sha256(enc.read_bytes()).hexdigest()
 
 
 def write_spec(root):
@@ -315,19 +306,17 @@ def env_for(owner="owner", sha="a" * 40):
 
 @pytest.fixture(scope="module")
 def frozen_world(tmp_path_factory):
-    """Acquire synthetic bytes, gate them, encrypt them, freeze and pin them in a mini repository. Returns the pieces the tests need."""
+    """Acquire synthetic bytes, canonicalize, gate them, freeze and pin their hashes in a mini repository. Returns the pieces the tests need."""
     base = tmp_path_factory.mktemp("rp1-wp4d")
     root = mini_repo(base / "repo")
     snapshot = acquire_synthetic(base / "snapshot")
     probe = X.probe(root, snapshot)
-    archive, tar_sha, cipher_sha = encrypt(snapshot, base)
-    manifest = X.freeze_manifest(root, snapshot, run_id="111", commit_sha="a" * 40, artifact_name=X.SNAPSHOT_ARTIFACT_PREFIX + "111",
-                                 artifact_id="999", tar_sha256=tar_sha, ciphertext_sha256=cipher_sha)
+    manifest = X.freeze_manifest(root, snapshot, run_id="111", commit_sha="a" * 40)
     path = root / X.freeze_manifest_path("111")
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
     spec = write_spec(root)
-    return {"root": root, "snapshot": snapshot, "archive": archive, "probe": probe, "manifest": manifest, "spec": spec, "base": base}
+    return {"root": root, "snapshot": snapshot, "probe": probe, "manifest": manifest, "spec": spec, "base": base}
 
 
 def test_the_synthetic_live_bytes_pass_every_dates_only_gate(frozen_world):
@@ -343,62 +332,27 @@ def test_the_synthetic_live_bytes_pass_every_dates_only_gate(frozen_world):
 def test_the_manifest_carries_hashes_and_dates_never_a_value(frozen_world):
     manifest = frozen_world["manifest"]
     text = json.dumps(manifest)
-    assert manifest["storage"] == SRC.STORAGE and manifest["files"] == SP.snapshot_files(frozen_world["snapshot"])
+    assert manifest["storage"] == SRC.STORAGE and manifest["analysisFiles"] == R.fingerprints(frozen_world["snapshot"])
     leaked = {"close", "adjclose", "value", "timestamp", "indicators", "quote", "amount"} & set(_keys(manifest))
     assert not leaked, leaked
     assert '"observations": [' not in text and '"timestamp": [' not in text
     assert frozen_world["spec"]["inputs"]["usSnapshot"]["status"] == "FROZEN"
 
 
-def test_a_new_candidate_snapshot_is_gated_without_the_old_pin_but_never_executes_under_it(frozen_world, tmp_path):
-    candidate = tmp_path / "candidate"
-    shutil.copytree(frozen_world["snapshot"], candidate)
-    (candidate / "audit.json").write_text((candidate / "audit.json").read_text() + "\n")          # a re-freeze's new bytes
-    probe = X.probe(frozen_world["root"], candidate)
-    assert probe["readiness"]["decision"] == SP.DECISION_READY and probe["readiness"]["snapshotIdentity"] == "UNPINNED"
-    formal = SP.readiness_audit(frozen_world["root"], snapshot_dir=candidate, require_frozen=True)
-    assert formal["decision"] == SP.DECISION_BLOCKED and any("US_SNAPSHOT_DIFFERS_FROM_THE_FROZEN_MANIFEST" in b for b in formal["blockers"])
+def test_new_fetch_metadata_is_not_an_analysis_input(frozen_world, tmp_path):
+    raw = tmp_path / "candidate"
+    shutil.copytree(frozen_world["snapshot"].parent, raw)
+    path = raw / "audit.json"
+    doc = json.loads(path.read_bytes())
+    doc["acquiredOn"] = "2099-12-31"
+    path.write_text(json.dumps(doc))
+    assert SP.verify_us_snapshot(frozen_world["spec"], frozen_world["root"], raw / "analysis")
 
 
-def test_open_snapshot_round_trips_and_refuses_a_changed_byte(frozen_world, tmp_path):
-    root, spec = frozen_world["root"], frozen_world["spec"]
-    out = X.open_snapshot(frozen_world["archive"], tmp_path / "open", spec, KEY, root)
-    assert out["status"] == "MATCHES_THE_FROZEN_MANIFEST" and SP.snapshot_files(tmp_path / "open") == spec["inputs"]["usSnapshot"]["files"]
-    with pytest.raises(X.Refused, match="SNAPSHOT_KEY_SECRET_MISSING"):
-        X.open_snapshot(frozen_world["archive"], tmp_path / "nokey", spec, "", root)
-    bad = tmp_path / "bad.zip"
-    with zipfile.ZipFile(frozen_world["archive"]) as z, zipfile.ZipFile(bad, "w") as w:
-        data = bytearray(z.read("snapshot.tar.enc"))
-        data[-1] ^= 1
-        w.writestr("snapshot.tar.enc", bytes(data))
-    with pytest.raises(X.Refused, match="CIPHERTEXT_DIFFERS_FROM_THE_PIN"):
-        X.open_snapshot(bad, tmp_path / "bad", spec, KEY, root)
-
-
-def test_unsafe_tar_members_are_refused(frozen_world, tmp_path):
-    work = tmp_path / "w"
-    work.mkdir()
-    tar_path = work / "evil.tar"
-    with tarfile.open(tar_path, "w") as tar:
-        info = tarfile.TarInfo("../escape.txt")
-        info.size = 1
-        import io
-        tar.addfile(info, io.BytesIO(b"x"))
-    enc = work / "evil.enc"
-    subprocess.run(["openssl", "enc", "-aes-256-cbc", "-pbkdf2", "-iter", "600000", "-md", "sha256", "-salt", "-in", str(tar_path), "-out", str(enc),
-                    "-pass", "env:K"], check=True, env={"K": KEY, "PATH": "/usr/bin:/bin"})
-    archive = work / "evil.zip"
-    with zipfile.ZipFile(archive, "w") as z:
-        z.write(enc, "snapshot.tar.enc")
-    spec = copy.deepcopy(frozen_world["spec"])
-    spec["inputs"]["usSnapshot"]["ciphertextSha256"] = hashlib.sha256(enc.read_bytes()).hexdigest()
-    manifest = dict(frozen_world["manifest"], tarSha256=hashlib.sha256(tar_path.read_bytes()).hexdigest())
-    root = tmp_path / "r"
-    (root / Path(spec["inputs"]["usSnapshot"]["manifestPath"]).parent).mkdir(parents=True)
-    (root / spec["inputs"]["usSnapshot"]["manifestPath"]).write_text(json.dumps(manifest))
-    with pytest.raises(X.Refused, match="UNSAFE_MEMBER"):
-        X.open_snapshot(archive, tmp_path / "out", spec, KEY, root)
-    assert not (tmp_path / "escape.txt").exists()
+def test_refetch_round_trips_without_a_key_or_artifact(frozen_world, tmp_path):
+    second = acquire_synthetic(tmp_path / "refetched")
+    assert SP.verify_us_snapshot(frozen_world["spec"], frozen_world["root"], second)
+    assert R.fingerprints(second) == frozen_world["manifest"]["analysisFiles"]
 
 
 def test_a_freeze_is_refused_once_an_authorization_is_committed(frozen_world, tmp_path):
@@ -407,8 +361,7 @@ def test_a_freeze_is_refused_once_an_authorization_is_committed(frozen_world, tm
     (root / X.AUTHORIZATION_PATH).write_text("{}")
     try:
         with pytest.raises(X.Refused, match="AN_AUTHORIZATION_IS_COMMITTED"):
-            X.freeze_manifest(root, frozen_world["snapshot"], run_id="2", commit_sha="b", artifact_name="n", artifact_id="1", tar_sha256="t",
-                              ciphertext_sha256="c")
+            X.freeze_manifest(root, frozen_world["snapshot"], run_id="2", commit_sha="b")
     finally:
         (root / X.AUTHORIZATION_PATH).unlink()
 
@@ -493,8 +446,7 @@ def test_values_cannot_be_read_without_permit_and_lock(frozen_world):
 
 def test_the_formal_execution_end_to_end_then_refuses_a_second_attempt(frozen_world, tmp_path):
     root = frozen_world["root"]
-    snapshot = tmp_path / "opened"
-    X.open_snapshot(frozen_world["archive"], snapshot, frozen_world["spec"], KEY, root)
+    snapshot = acquire_synthetic(tmp_path / "refetched")
     sha = authorize_world(frozen_world)
     api, order = FakeGitHub("a" * 40), []
     real_load = X.load_values
@@ -541,8 +493,9 @@ def _keys(value):
 
 def test_a_failed_readiness_refuses_before_the_lock(frozen_world, tmp_path):
     root = frozen_world["root"]
-    snapshot = tmp_path / "opened"
-    X.open_snapshot(frozen_world["archive"], snapshot, frozen_world["spec"], KEY, root)
+    raw = tmp_path / "refetched"
+    shutil.copytree(frozen_world["snapshot"].parent, raw)
+    snapshot = raw / "analysis"
     first = sorted(snapshot.rglob("normalized.csv"))[0]
     first.write_bytes(first.read_bytes() + b"\n")          # one added byte: the snapshot no longer matches the frozen manifest
     sha = authorize_world(frozen_world)
@@ -652,3 +605,95 @@ def test_the_spy_basis_diagnostic_reconciles_close_plus_dividend():
     raw = synthetic_raw(end="1996-12-31")["YAHOO_SPY"]["chart.json"]
     out = X.spy_basis_diagnostic(raw, "1993-02-08", "1996-12-31")
     assert out["sessions"] > 900 and out["maxAbsoluteDailyDifference"] < 1e-9 and out["exDividendSessions"] >= 15
+
+
+@pytest.mark.parametrize("change", ["price", "rate", "adjusted", "dividend", "split", "identity"])
+def test_any_bounded_value_or_action_revision_refuses_before_lock(frozen_world, tmp_path, change):
+    raw = synthetic_raw()
+    sid, file = ("FRED_DTB3", "observations.json") if change == "rate" else ("YAHOO_SPY", "chart.json")
+    doc = json.loads(raw[sid][file])
+    if change == "rate":
+        doc["observations"][0]["value"] = "99.000001"
+    else:
+        data = doc["chart"]["result"][0]
+        if change == "price": data["indicators"]["quote"][0]["close"][0] += .000001
+        if change == "adjusted": data["indicators"]["adjclose"][0]["adjclose"][0] += .000001
+        if change == "dividend": next(iter(data["events"]["dividends"].values()))["amount"] += .000001
+        if change == "split": data["events"]["splits"] = {"synthetic": {"date": data["timestamp"][10], "numerator": 2, "denominator": 1, "splitRatio": "2:1"}}
+        if change == "identity": data["meta"]["currency"] = "CAD"
+    raw[sid][file] = json.dumps(doc).encode()
+    snapshot = acquire_synthetic(tmp_path / "changed", raw)
+    with pytest.raises(ValueError, match="US_ANALYSIS_INPUT_DIFFERS"):
+        SP.verify_us_snapshot(frozen_world["spec"], frozen_world["root"], snapshot)
+    sha = authorize_world(frozen_world)
+    api = FakeGitHub("a" * 40)
+    with pytest.raises(X.Refused, match="READINESS_NOT_READY"):
+        X.execute(tmp_path / "blocked", frozen_world["root"], snapshot, env_for(), sha, api, fake_git(frozen_world["root"]))
+    assert not api.refs
+    assert json.loads((tmp_path / "blocked/gates-blocked.json").read_bytes())["counters"]["usValueReads"] == 0
+
+
+def test_appended_or_changed_after_end_rows_and_metadata_do_not_change_inputs(frozen_world, tmp_path):
+    raw = synthetic_raw()
+    for sid in ("YAHOO_GSPC", "YAHOO_SPY"):
+        doc = json.loads(raw[sid]["chart.json"])
+        data = doc["chart"]["result"][0]
+        data["meta"]["regularMarketTime"] = 9999999999
+        for i, t in enumerate(data["timestamp"]):
+            if R.local_day(t, OFFSET) > U.ANALYSIS_END:
+                data["indicators"]["quote"][0]["close"][i] *= 100
+                if sid == "YAHOO_SPY": data["indicators"]["adjclose"][0]["adjclose"][i] *= 200
+        if sid == "YAHOO_SPY":
+            t = stamps(["2026-10-01"])[0]
+            data["events"]["dividends"][str(t)] = {"date": t, "amount": 123456.789}
+        raw[sid]["chart.json"] = json.dumps(doc).encode()
+    for sid in ("FRED_DTB3", "FRED_SP500"):
+        doc = json.loads(raw[sid]["observations.json"])
+        doc["realtime_start"] = "2099-01-01"
+        doc["observations"].append({"date": "2026-10-05", "value": "99999.12345"})
+        raw[sid]["observations.json"] = json.dumps(doc).encode()
+    second = acquire_synthetic(tmp_path / "appended", raw)
+    assert R.provenance(second) != frozen_world["manifest"]["rawFilesAuditOnly"]
+    assert R.fingerprints(second) == frozen_world["manifest"]["analysisFiles"]
+    assert SP.verify_us_snapshot(frozen_world["spec"], frozen_world["root"], second)
+    # The actual series the unchanged engine receives are identical; no second
+    # historical evaluation or simulation is needed to prove this invariance.
+    left, right = X.read_values(frozen_world["root"], frozen_world["snapshot"]), X.read_values(frozen_world["root"], second)
+    for name in left:
+        pd.testing.assert_series_equal(left[name], right[name])
+
+
+def test_decimal_context_has_no_rounding_or_global_float_rebase():
+    assert R.number("1.2300") == R.number("1.23") == "1.23"
+    assert R.number("100.00000000000000000001") != R.number("100")
+    assert float(R.number("100.00000000000000000001")) == float(R.number("100"))
+
+
+def test_access_denial_publishes_no_source_and_does_not_prepare_inputs(tmp_path, monkeypatch, capsys):
+    acquire = load_script("acquire_denied_rp1", "scripts/acquire_rp1_c1_us_sources.py")
+    class Denied:
+        def fetch_fred(self, *_): return {"status": 403, "host": "fake", "raw": {}, "error": "PRIVATE_SOURCE_SENTINEL"}
+        fetch_yahoo = fetch_fred
+    acquire.kr_transport = Denied
+    monkeypatch.setattr(R, "prepare", lambda *_: pytest.fail("prepared denied data"))
+    assert acquire.main(["--output", str(tmp_path / "denied")]) == 1
+    assert "PRIVATE_SOURCE_SENTINEL" not in capsys.readouterr().out
+    assert not (tmp_path / "denied/analysis").exists()
+
+
+def test_no_authorization_reaches_no_input_or_outcome_reader(frozen_world, tmp_path, monkeypatch):
+    monkeypatch.setattr(SP, "readiness_audit", lambda *_args, **_kwargs: pytest.fail("input read without authorization"))
+    monkeypatch.setattr(X, "load_values", lambda *_args: pytest.fail("outcome read without authorization"))
+    api = FakeGitHub("a" * 40)
+    with pytest.raises(X.Refused, match="NO_COMMITTED_OWNER_AUTHORIZATION"):
+        X.execute(tmp_path / "unapproved", frozen_world["root"], frozen_world["snapshot"], env_for(), "", api, fake_git(frozen_world["root"]))
+    assert not api.refs and not (tmp_path / "unapproved" / X.MARKER_FILE).exists()
+
+
+def test_workflow_checks_owner_before_fetch_and_never_uploads_sources():
+    text = HOST.read_text()
+    block = job_block(text, "rp1-c1-execute")
+    assert block.index(' authorization-check ') < block.index('python scripts/acquire_rp1_c1_us_sources.py')
+    for name in ("rp1-c1-freeze-sources", "rp1-c1-source-probe", "rp1-c1-dry-run", "rp1-c1-execute"):
+        block = job_block(text, name)
+        assert not any(t in block for t in ("openssl", "secret set", "snapshot.tar", "secrets.RP1_C1"))

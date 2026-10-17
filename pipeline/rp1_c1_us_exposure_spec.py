@@ -1,6 +1,6 @@
 """rp1-c1-us-exposure-ladder-replication-v1 — the frozen preregistration, the outcome-free readiness and the KR-equivalence audit.
 
-This change computes no US outcome. Three modes exist and none of them reads a US price, return or rate VALUE:
+This change computes no US outcome. Verification/readiness do not evaluate US returns, states or portfolios. Source parsing/hashing and the registered pointwise vendor-level equality check are pre-lock data checks:
 
 * `verify`      — spec identity, import closure, every pin (the sealed KR spec and result, the reused KR source bytes, the US source-freeze manifest
                   when one is committed).
@@ -9,8 +9,8 @@ This change computes no US outcome. Three modes exist and none of them reads a U
 * `equivalence` — reproduces the SEALED KR decision from the retained KR bytes through the calendar-parameterised wrapper. It reads KR values the
                   sealed study already published and opens no new outcome; it proves the wrapper changed nothing but the calendar.
 
-The US raw bytes are never committed (`rp1_c1_us_sources.STORAGE`): they live in one encrypted Actions artifact and git carries a dates-and-hashes
-manifest under `docs/research-program/sources/`, which this spec pins. A snapshot directory (decrypted inside a runner, outside the repository) is
+The US raw bytes are never committed (`rp1_c1_us_sources.STORAGE`): they are reacquired transiently and git carries only a dates-and-hashes
+manifest under `docs/research-program/sources/`, which this spec pins. A snapshot directory (reacquired inside a runner, outside the repository) is
 verified file by file against that manifest before any gate reads it.
 
 The formal one-shot execution (owner authorization, durable lock, marker, US value reads) is `pipeline/rp1_c1_us_execution.py`, outside this sealed
@@ -33,6 +33,7 @@ from . import kr_market_risk_model_execution as E
 from . import kr_market_risk_source_parse as P
 from . import rp1_c1_us_exposure as U
 from . import rp1_c1_us_sources as SRC
+from . import rp1_c1_us_refetch as R
 from .kr_model_portfolio_execution import digest, file_hash, import_closure
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -236,9 +237,10 @@ def us_snapshot_pin(root=ROOT):
     manifest = json.loads((Path(root) / paths[0]).read_text())
     if manifest.get("studyId") != STUDY or manifest.get("storage") != SRC.STORAGE:
         raise ValueError("SOURCE_FREEZE_MANIFEST_IS_NOT_THIS_STUDYS")
+    if manifest.get("normalization") != {"contract": R.contract(), "codeHashes": R.code_pins(root)}:
+        raise ValueError("NORMALIZATION_CONTRACT_OR_CODE_CHANGED")
     return {"storage": SRC.STORAGE, "status": "FROZEN", "manifestPath": paths[0], "manifestSha256": file_hash(Path(root) / paths[0]),
-            "freezeRunId": manifest["freezeRunId"], "artifactName": manifest["artifact"]["name"], "artifactId": manifest["artifact"]["id"],
-            "ciphertextSha256": manifest["ciphertextSha256"], "files": manifest["files"]}
+            "freezeRunId": manifest["freezeRunId"], "normalization": manifest["normalization"], "analysisFiles": manifest["analysisFiles"]}
 
 
 def verify_kr_pins(spec, root=ROOT):
@@ -255,14 +257,16 @@ def verify_kr_pins(spec, root=ROOT):
 
 def verify_us_snapshot(spec, root=ROOT, snapshot_dir=None):
     """True when the spec pins a source freeze. The committed manifest must still hash to the pin; a snapshot directory, when given, must hold
-    exactly the manifest's files with exactly its hashes."""
+    exactly the bounded analysis bytes; raw response and collection-time differences are audit-only."""
     pin = spec["inputs"]["usSnapshot"]
     if pin["status"] != "FROZEN":
         return False
     if file_hash(Path(root) / pin["manifestPath"]) != pin["manifestSha256"]:
         raise ValueError("SOURCE_FREEZE_MANIFEST_CHANGED")
-    if snapshot_dir is not None and snapshot_files(snapshot_dir) != pin["files"]:
-        raise ValueError("US_SNAPSHOT_DIFFERS_FROM_THE_FROZEN_MANIFEST")
+    if pin.get("normalization") != {"contract": R.contract(), "codeHashes": R.code_pins(root)}:
+        raise ValueError("NORMALIZATION_CONTRACT_OR_CODE_CHANGED")
+    if snapshot_dir is not None and R.fingerprints(snapshot_dir) != pin["analysisFiles"]:
+        raise ValueError("US_ANALYSIS_INPUT_DIFFERS_FROM_THE_FROZEN_MANIFEST")
     return True
 
 
@@ -336,7 +340,7 @@ def kr_input_dates(root=ROOT):
 
 def readiness_audit(root=ROOT, assume_complete_reference=False, snapshot_dir=None, require_frozen=False):
     """DECISION_READY or DECISION_BLOCKED from identities and observation DATES alone, on the snapshot directory `snapshot_dir` (decrypted outside
-    the repository). With `require_frozen` (the formal path) the spec must pin a source freeze and the directory must match it file for file; without
+    the repository). With `require_frozen` (the formal path) the spec must pin a source freeze and the bounded analysis inputs must match exactly; without
     it (the outcome-free source probe and the freeze itself) an unpinned snapshot is gated and reported as UNPINNED. With `assume_complete_reference`
     (a design check only, never a gate) the US reference is taken to quote every XNYS session."""
     root = Path(root)

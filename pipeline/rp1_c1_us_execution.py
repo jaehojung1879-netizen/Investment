@@ -4,24 +4,22 @@ FROZEN_RULE_REPLICATION_ON_PUBLICLY_KNOWN_US_HISTORY. Nothing here changes a rul
 those are the frozen spec's (`rp1_c1_us_exposure_spec.load_spec` compares them on every load). This module is the harness around them and lives
 outside the spec's sealed closure, as the v4/v5 harnesses did; the owner's authorization pins every one of its files.
 
-Stages, each a separate manual dispatch of the host workflow (see `HOST_WORKFLOW`):
+Stages in the existing host workflow (see `HOST_WORKFLOW`); this storage migration also freezes on its reviewed merge:
 
-  freeze-sources  acquire the four US sources with the repository's acquirer, run the dates-only readiness on them, encrypt the snapshot, upload ONE
-                  artifact and open ONE Draft PR carrying only the dates-and-hashes manifest and the re-pinned spec. No value is read.
-  dry-run         decrypt and verify the pinned snapshot, run every pre-lock check, then run the whole evaluation, the validator and the report on
+  freeze-sources  acquire the four US sources with the repository's acquirer, run the dates-only readiness on bounded inputs and open ONE Draft PR carrying only the dates-and-hashes manifest and the re-pinned spec. No US outcome is computed.
+  dry-run         reacquire and verify the pinned bounded inputs, run every pre-lock check, then run the whole evaluation, the validator and the report on
                   INVENTED values over the real XNYS calendar. No lock, no US value.
   execute         the owner's dispatch on merged main with the exact committed authorization: pins, readiness READY, equivalence EXACT, then the
                   durable lock, the marker, and only then the first US value. A failure after the lock consumes the study; there is no retry.
 
 STORAGE AND RIGHTS. Three of the four US sources are licensed data whose terms do not permit redistribution (`rp1_c1_us_sources.SOURCE_RIGHTS`).
-Their bytes exist only inside a runner and inside one encrypted artifact; outputs carry aggregate statistics, never a daily price, level or NAV
+Their bytes exist only inside a runner until discarded; outputs carry aggregate statistics, never a daily price, level or NAV
 series.
 """
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 import json
-import os
 from pathlib import Path
 import subprocess
 
@@ -36,6 +34,7 @@ from . import rp1_c1_us_exposure as U
 from . import rp1_c1_us_exposure_spec as SP
 from . import rp1_c1_us_sources as SRC
 from . import rp1_c1_us_validator as V
+from . import rp1_c1_us_refetch as R
 from .kr_model_portfolio_execution import file_hash
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -44,17 +43,12 @@ HOST_WORKFLOW = ".github/workflows/seal-kr-factor-anatomy-v1.yml"
 AUTHORIZATION_DIR = "docs/research-program/authorizations"
 AUTHORIZATION_PATH = AUTHORIZATION_DIR + "/rp1-c1-us-exposure-execution-authorization.json"
 AUTHORIZATION_TEMPLATE_PATH = AUTHORIZATION_DIR + "/rp1-c1-us-exposure-execution-authorization.template.json"
-CONTRACT = "RP1_C1_US_EXPOSURE_FORMAL_EXECUTION_V1"
+CONTRACT = "RP1_C1_US_EXPOSURE_FORMAL_EXECUTION_HASH_REFETCH_V2"
 AUTHORIZES = "ONE_FORMAL_EXECUTION"
 ACKNOWLEDGMENTS = ("frozenRuleReplicationNotValidation", "publiclyKnownUsHistory", "oneShotFailureAfterTheLockConsumesTheStudy",
-                   "noThresholdWindowRuleOrCandidateChangeAfterTheResult", "noProductionOrPortfolioChange", "licensedSourceBytesStayEncrypted",
+                   "noThresholdWindowRuleOrCandidateChangeAfterTheResult", "noProductionOrPortfolioChange", "licensedSourceBytesStayRunnerTemporaryAndNeverPublished",
                    "economicReadingIsDescriptiveAndCannotChangeTheDecision")
 HARNESS_FILES = ("pipeline/rp1_c1_us_execution.py", "pipeline/rp1_c1_us_validator.py", "scripts/run_rp1_c1_us_wp4d.py", HOST_WORKFLOW)
-SNAPSHOT_KEY_SECRET = "RP1_C1_SNAPSHOT_KEY"
-ENCRYPTION = ("openssl enc -aes-256-cbc -pbkdf2 -iter 600000 -md sha256 -salt over a deterministic tar of the snapshot directory; the key is the "
-              "repository secret " + SNAPSHOT_KEY_SECRET + "; integrity is the manifest's per-file SHA-256, checked after decryption")
-SNAPSHOT_RETENTION_DAYS = 90
-SNAPSHOT_ARTIFACT_PREFIX = "rp1-c1-us-sources-encrypted-"
 RESULTS_ARTIFACT_PREFIX = "rp1-c1-us-exposure-results-"
 ATTEMPT_ARTIFACT_PREFIX = "rp1-c1-us-exposure-attempt-"
 LOCK_PREFIX = "refs/tags/" + STUDY + "-execution-lock"
@@ -123,7 +117,7 @@ def current_pins(root=ROOT):
     if pin["status"] != "FROZEN":
         raise Refused("SOURCE_FREEZE_NOT_PINNED_BY_THE_SPEC")
     return {"specSha256": sha, "scientificSha256": SP.scientific_digest(spec),
-            "sourceFreeze": {k: pin[k] for k in ("manifestPath", "manifestSha256", "freezeRunId", "artifactName", "artifactId", "ciphertextSha256")},
+            "sourceFreeze": {k: pin[k] for k in ("manifestPath", "manifestSha256", "freezeRunId", "normalization", "analysisFiles")},
             "harness": harness_pins(root)}
 
 
@@ -255,74 +249,32 @@ def probe(root, snapshot_dir):
             "meaning": "a dates-only rehearsal of the formal gates on live vendor bytes; the bytes are discarded with the runner"}
 
 
-def freeze_manifest(root, snapshot_dir, *, run_id, commit_sha, artifact_name, artifact_id, tar_sha256, ciphertext_sha256):
-    """The committed record of one source freeze: per-file SHA-256 of the plaintext snapshot, the tar and ciphertext digests, the artifact identity,
-    the dates-only audit and the readiness that passed. It carries no value. Refused if the readiness is not READY or an authorization is committed
-    (an issued authorization pins the freeze it was given)."""
+def freeze_manifest(root, snapshot_dir, *, run_id, commit_sha):
+    """Bounded analysis digests plus audit-only full raw digests. No values."""
     root = Path(root)
     if (root / AUTHORIZATION_PATH).exists():
         raise Refused("AN_AUTHORIZATION_IS_COMMITTED_WITHDRAW_IT_BEFORE_A_NEW_FREEZE")
     readiness = SP.readiness_audit(root, snapshot_dir=snapshot_dir)
     if readiness["decision"] != SP.DECISION_READY:
         raise Refused("READINESS_NOT_READY: " + ";".join(readiness["blockers"]))
-    audit = SP.snapshot_audit(snapshot_dir)
-    return {"studyId": STUDY, "kind": "RP1_C1_US_SOURCE_FREEZE_MANIFEST_NO_VALUES", "storage": SRC.STORAGE, "encryption": ENCRYPTION,
-            "freezeRunId": str(run_id), "freezeCommitSha": commit_sha, "acquiredOn": audit.get("acquiredOn"),
-            "artifact": {"name": artifact_name, "id": str(artifact_id), "retentionDays": SNAPSHOT_RETENTION_DAYS},
-            "tarSha256": tar_sha256, "ciphertextSha256": ciphertext_sha256, "files": SP.snapshot_files(snapshot_dir), "rights": SRC.SOURCE_RIGHTS,
-            "audit": audit, "readiness": {k: readiness[k] for k in ("decision", "blockers", "checks", "details", "determinable", "decisionDates",
-                                                                     "firstDecisionDate", "lastExecutionDate", "counters")},
-            "statements": ["No price, level, rate or return appears in this file.",
-                           "The raw bytes exist only in the encrypted artifact named here; an expired artifact needs a new freeze, never a re-pin."]}
+    return {"studyId": STUDY, "kind": "RP1_C1_HASH_REFETCH_MANIFEST_NO_VALUES", "storage": SRC.STORAGE,
+            "freezeRunId": str(run_id), "freezeCommitSha": commit_sha, "sourceRegistry": SRC.SOURCES,
+            "normalization": {"contract": R.contract(), "codeHashes": R.code_pins(root)},
+            "analysisFiles": R.fingerprints(snapshot_dir), "rawFilesAuditOnly": R.provenance(snapshot_dir),
+            "observations": {sid: {"firstDate": record.get("firstDate"), "lastDate": record.get("lastDate"),
+                "validRows": record.get("validRows"), "identity": record.get("identity"),
+                "datesSha256": R.sha(R.encoded([str(d.date()) for d in SP.normalized_dates(Path(snapshot_dir) / sid / "normalized.csv")]))}
+                for sid, record in SP.snapshot_audit(snapshot_dir)["sources"].items()},
+            "rights": SRC.SOURCE_RIGHTS,
+            "readiness": {k: readiness[k] for k in ("decision", "blockers", "checks", "details", "determinable", "decisionDates",
+                                                       "firstDecisionDate", "lastExecutionDate", "counters")},
+            "statements": ["No source price, level, rate or return appears in this file.",
+                "Raw hashes are provenance only; EXACT bounded analysis hashes are the execution admission.",
+                "Re-fetch availability/equality is not guaranteed. A provider revision or access denial stops before the lock; no automatic re-pin."]}
 
 
 def freeze_manifest_path(run_id):
     return SP.SOURCE_FREEZE_DIR + "/" + SP.SOURCE_FREEZE_PREFIX + str(run_id) + ".json"
-
-
-def open_snapshot(zip_path, dest, spec, key, root=ROOT, openssl="openssl"):
-    """Downloaded artifact zip -> verified plaintext snapshot directory. Order: exactly one file in the zip; its SHA-256 equals the pinned ciphertext
-    digest; decrypt; the tar's SHA-256 equals the manifest's; extract regular files only (no links, no absolute or parent paths); every file's SHA-256
-    equals the manifest's. Reads no value. The key comes from the environment and is never written."""
-    import hashlib
-    import tarfile
-    import tempfile
-    import zipfile
-    pin = spec["inputs"]["usSnapshot"]
-    if pin["status"] != "FROZEN":
-        raise Refused("SOURCE_FREEZE_NOT_PINNED_BY_THE_SPEC")
-    if not key:
-        raise Refused("SNAPSHOT_KEY_SECRET_MISSING")
-    manifest = json.loads((Path(root) / pin["manifestPath"]).read_text())
-    with zipfile.ZipFile(zip_path) as archive:
-        names = archive.namelist()
-        if len(names) != 1:
-            raise Refused("ARTIFACT_MUST_HOLD_EXACTLY_ONE_FILE")
-        ciphertext = archive.read(names[0])
-    if hashlib.sha256(ciphertext).hexdigest() != pin["ciphertextSha256"]:
-        raise Refused("CIPHERTEXT_DIFFERS_FROM_THE_PIN")
-    with tempfile.TemporaryDirectory() as work:
-        enc, tar_path = Path(work) / "snapshot.tar.enc", Path(work) / "snapshot.tar"
-        enc.write_bytes(ciphertext)
-        subprocess.run([openssl, "enc", "-d", "-aes-256-cbc", "-pbkdf2", "-iter", "600000", "-md", "sha256", "-in", str(enc), "-out", str(tar_path),
-                        "-pass", "env:RP1_C1_OPEN_KEY"], check=True, env={**os.environ, "RP1_C1_OPEN_KEY": key}, capture_output=True)
-        if hashlib.sha256(tar_path.read_bytes()).hexdigest() != manifest["tarSha256"]:
-            raise Refused("TAR_DIFFERS_FROM_THE_MANIFEST")
-        target = Path(dest)
-        target.mkdir(parents=True, exist_ok=True)
-        with tarfile.open(tar_path) as tar:
-            for member in tar.getmembers():
-                name = Path(member.name)
-                if member.isdir():
-                    continue
-                if not member.isfile() or name.is_absolute() or ".." in name.parts:
-                    raise Refused("UNSAFE_MEMBER_IN_THE_SNAPSHOT: " + member.name)
-                out = target / name
-                out.parent.mkdir(parents=True, exist_ok=True)
-                out.write_bytes(tar.extractfile(member).read())
-    if SP.snapshot_files(dest) != pin["files"]:
-        raise Refused("US_SNAPSHOT_DIFFERS_FROM_THE_FROZEN_MANIFEST")
-    return {"status": "MATCHES_THE_FROZEN_MANIFEST", "files": len(pin["files"])}
 
 
 # =======================================================================================================================================
@@ -491,9 +443,10 @@ def execute(output, root, snapshot_dir, env, expected_sha, api=E.github_api, git
         equivalence = SP.equivalence_audit(root)
         if equivalence["status"] != "EXACT":
             raise Refused("KR_EQUIVALENCE_NOT_EXACT")
-    except Refused as error:
-        E.atomic_write(out / "gates-blocked.json", {"studyId": STUDY, "refusal": str(error), "lockClaimed": False, "counters": asdict(counters)})
-        raise
+    except (ValueError, OSError, KeyError) as error:
+        reason = str(error) if isinstance(error, Refused) else "INPUT_VERIFICATION_FAILED:" + type(error).__name__
+        E.atomic_write(out / "gates-blocked.json", {"studyId": STUDY, "refusal": reason, "lockClaimed": False, "counters": asdict(counters)})
+        raise Refused(reason) from None
     lock = claim_lock(permit, env, api, counters)
     marker = {"studyId": STUDY, "specSha256": sha, "authorizationSha256": permit.authorizationSha256, "lockRef": lock.ref, "studyLockRef": LOCK_PREFIX,
               "lockedMainSha": lock.mainSha, "usValueReadsBeforeThisMarker": counters.usValueReads}
