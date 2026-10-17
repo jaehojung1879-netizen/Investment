@@ -1,0 +1,4847 @@
+{
+  "candidateMeaning": "input measurable, not verified identity / finalized shareholder-return labels / licensed execution",
+  "codeHashes": {
+    "pipeline/winner_inflection.py": "7c56538d31691ebc12bbe47149a880263d7f06e1565b0d901170bf667071feb4",
+    "scripts/inspect_winner_inflection_sources.py": "0871fa451e5879c715b694f2b8c90fdf5611875a5d4a5aed997d07c61e77a2e8"
+  },
+  "duplicatePriceKeys": 0,
+  "historicalExecutionAuthorized": false,
+  "inheritedAuditSha256": "56bbd57cbd263deee90427e6d36d835ff2df61525114ece77213096792c5cbc3",
+  "inheritedIdentityAudit": {
+    "KR": {
+      "issuers": 254,
+      "mappedSecurities": 254,
+      "retrospectiveIssuerBridge": true,
+      "terminalUnresolved": 22,
+      "terminalUnresolvedPctOfEverMembers": 8.462
+    },
+    "US": {
+      "cikMissing": 42,
+      "metadataMissingForMemberSymbols": [
+        "American Airlines Group",
+        "RVTY (Previously PKI)"
+      ],
+      "permanentShareClassIdVerified": false,
+      "renameMappingsNotApplied": 13,
+      "sourceCategories": {
+        "ACQUIRED_OR_MERGED_TERMINATED": 1,
+        "CURRENT_MEMBER_OWN_PANEL": 496,
+        "CURRENT_MEMBER_PANEL_LATE_START": 7,
+        "DEPARTED_NO_PANEL_REASON_UNRESOLVED": 181,
+        "PANEL_PARTIAL_OWN_HISTORY": 2,
+        "REMOVED_FROM_INDEX_STILL_TRADING": 97,
+        "SAME_SECURITY_RENAME": 14,
+        "TICKER_REUSE_DIFFERENT_ISSUER": 29
+      }
+    }
+  },
+  "labelReads": 0,
+  "mainBase": "0131a0dfe770ca5ae4d5a977e2caa4b50331fa3b",
+  "manifestSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+  "markets": {
+    "KR": {
+      "byIndustry": {
+        "AUTOS": {
+          "A": {
+            "count": 886,
+            "pct": 32.49
+          },
+          "ABC_tradable": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "B": {
+            "count": 890,
+            "pct": 32.637
+          },
+          "B_cash": {
+            "count": 894,
+            "pct": 32.783
+          },
+          "C": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "D_dependencyCeiling": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "E_dependencyCeiling": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "F_dependencyCeiling": {
+            "count": 886,
+            "pct": 32.49
+          },
+          "G_dependencyCeiling": {
+            "count": 887,
+            "pct": 32.527
+          },
+          "memberDates": 2727,
+          "path127": {
+            "count": 2556,
+            "pct": 93.729
+          },
+          "tradable": {
+            "count": 2720,
+            "pct": 99.743
+          }
+        },
+        "BASIC_MATERIALS": {
+          "A": {
+            "count": 1308,
+            "pct": 36.7
+          },
+          "ABC_tradable": {
+            "count": 16,
+            "pct": 0.449
+          },
+          "B": {
+            "count": 1420,
+            "pct": 39.843
+          },
+          "B_cash": {
+            "count": 1447,
+            "pct": 40.6
+          },
+          "C": {
+            "count": 959,
+            "pct": 26.908
+          },
+          "D_dependencyCeiling": {
+            "count": 20,
+            "pct": 0.561
+          },
+          "E_dependencyCeiling": {
+            "count": 959,
+            "pct": 26.908
+          },
+          "F_dependencyCeiling": {
+            "count": 1308,
+            "pct": 36.7
+          },
+          "G_dependencyCeiling": {
+            "count": 1422,
+            "pct": 39.899
+          },
+          "memberDates": 3564,
+          "path127": {
+            "count": 3381,
+            "pct": 94.865
+          },
+          "tradable": {
+            "count": 3564,
+            "pct": 100.0
+          }
+        },
+        "CAPITAL_GOODS_DEFENSE": {
+          "A": {
+            "count": 2091,
+            "pct": 33.813
+          },
+          "ABC_tradable": {
+            "count": 1902,
+            "pct": 30.757
+          },
+          "B": {
+            "count": 2865,
+            "pct": 46.329
+          },
+          "B_cash": {
+            "count": 3461,
+            "pct": 55.967
+          },
+          "C": {
+            "count": 5326,
+            "pct": 86.125
+          },
+          "D_dependencyCeiling": {
+            "count": 2818,
+            "pct": 45.569
+          },
+          "E_dependencyCeiling": {
+            "count": 5326,
+            "pct": 86.125
+          },
+          "F_dependencyCeiling": {
+            "count": 1932,
+            "pct": 31.242
+          },
+          "G_dependencyCeiling": {
+            "count": 3401,
+            "pct": 54.997
+          },
+          "memberDates": 6184,
+          "path127": {
+            "count": 5636,
+            "pct": 91.138
+          },
+          "tradable": {
+            "count": 6128,
+            "pct": 99.094
+          }
+        },
+        "CHEMICALS": {
+          "A": {
+            "count": 2744,
+            "pct": 35.813
+          },
+          "ABC_tradable": {
+            "count": 2585,
+            "pct": 33.738
+          },
+          "B": {
+            "count": 2895,
+            "pct": 37.784
+          },
+          "B_cash": {
+            "count": 3098,
+            "pct": 40.433
+          },
+          "C": {
+            "count": 7167,
+            "pct": 93.54
+          },
+          "D_dependencyCeiling": {
+            "count": 2776,
+            "pct": 36.231
+          },
+          "E_dependencyCeiling": {
+            "count": 7167,
+            "pct": 93.54
+          },
+          "F_dependencyCeiling": {
+            "count": 2698,
+            "pct": 35.213
+          },
+          "G_dependencyCeiling": {
+            "count": 2969,
+            "pct": 38.75
+          },
+          "memberDates": 7662,
+          "path127": {
+            "count": 7172,
+            "pct": 93.605
+          },
+          "tradable": {
+            "count": 7629,
+            "pct": 99.569
+          }
+        },
+        "COMMUNICATION_MEDIA_SOFTWARE": {
+          "A": {
+            "count": 3828,
+            "pct": 55.214
+          },
+          "ABC_tradable": {
+            "count": 3784,
+            "pct": 54.58
+          },
+          "B": {
+            "count": 4001,
+            "pct": 57.71
+          },
+          "B_cash": {
+            "count": 4001,
+            "pct": 57.71
+          },
+          "C": {
+            "count": 6436,
+            "pct": 92.831
+          },
+          "D_dependencyCeiling": {
+            "count": 3957,
+            "pct": 57.075
+          },
+          "E_dependencyCeiling": {
+            "count": 6436,
+            "pct": 92.831
+          },
+          "F_dependencyCeiling": {
+            "count": 3828,
+            "pct": 55.214
+          },
+          "G_dependencyCeiling": {
+            "count": 3957,
+            "pct": 57.075
+          },
+          "memberDates": 6933,
+          "path127": {
+            "count": 6436,
+            "pct": 92.831
+          },
+          "tradable": {
+            "count": 6924,
+            "pct": 99.87
+          }
+        },
+        "CONSTRUCTION_ENGINEERING": {
+          "A": {
+            "count": 1337,
+            "pct": 33.559
+          },
+          "ABC_tradable": {
+            "count": 293,
+            "pct": 7.354
+          },
+          "B": {
+            "count": 1454,
+            "pct": 36.496
+          },
+          "B_cash": {
+            "count": 1454,
+            "pct": 36.496
+          },
+          "C": {
+            "count": 2080,
+            "pct": 52.209
+          },
+          "D_dependencyCeiling": {
+            "count": 344,
+            "pct": 8.635
+          },
+          "E_dependencyCeiling": {
+            "count": 2080,
+            "pct": 52.209
+          },
+          "F_dependencyCeiling": {
+            "count": 1337,
+            "pct": 33.559
+          },
+          "G_dependencyCeiling": {
+            "count": 1434,
+            "pct": 35.994
+          },
+          "memberDates": 3984,
+          "path127": {
+            "count": 3647,
+            "pct": 91.541
+          },
+          "tradable": {
+            "count": 3967,
+            "pct": 99.573
+          }
+        },
+        "CONSUMER_RETAIL_SERVICES": {
+          "A": {
+            "count": 2333,
+            "pct": 27.655
+          },
+          "ABC_tradable": {
+            "count": 1705,
+            "pct": 20.211
+          },
+          "B": {
+            "count": 2345,
+            "pct": 27.798
+          },
+          "B_cash": {
+            "count": 2397,
+            "pct": 28.414
+          },
+          "C": {
+            "count": 7461,
+            "pct": 88.442
+          },
+          "D_dependencyCeiling": {
+            "count": 2064,
+            "pct": 24.467
+          },
+          "E_dependencyCeiling": {
+            "count": 7461,
+            "pct": 88.442
+          },
+          "F_dependencyCeiling": {
+            "count": 1978,
+            "pct": 23.447
+          },
+          "G_dependencyCeiling": {
+            "count": 2389,
+            "pct": 28.319
+          },
+          "memberDates": 8436,
+          "path127": {
+            "count": 7832,
+            "pct": 92.84
+          },
+          "tradable": {
+            "count": 8416,
+            "pct": 99.763
+          }
+        },
+        "ELECTRONICS_ELECTRICAL": {
+          "A": {
+            "count": 3116,
+            "pct": 37.197
+          },
+          "ABC_tradable": {
+            "count": 2879,
+            "pct": 34.368
+          },
+          "B": {
+            "count": 3468,
+            "pct": 41.399
+          },
+          "B_cash": {
+            "count": 3564,
+            "pct": 42.545
+          },
+          "C": {
+            "count": 7820,
+            "pct": 93.351
+          },
+          "D_dependencyCeiling": {
+            "count": 3384,
+            "pct": 40.396
+          },
+          "E_dependencyCeiling": {
+            "count": 7820,
+            "pct": 93.351
+          },
+          "F_dependencyCeiling": {
+            "count": 2961,
+            "pct": 35.347
+          },
+          "G_dependencyCeiling": {
+            "count": 3480,
+            "pct": 41.542
+          },
+          "memberDates": 8377,
+          "path127": {
+            "count": 7820,
+            "pct": 93.351
+          },
+          "tradable": {
+            "count": 8371,
+            "pct": 99.928
+          }
+        },
+        "ENERGY_UTILITIES": {
+          "A": {
+            "count": 1278,
+            "pct": 47.194
+          },
+          "ABC_tradable": {
+            "count": 74,
+            "pct": 2.733
+          },
+          "B": {
+            "count": 1752,
+            "pct": 64.697
+          },
+          "B_cash": {
+            "count": 1844,
+            "pct": 68.095
+          },
+          "C": {
+            "count": 96,
+            "pct": 3.545
+          },
+          "D_dependencyCeiling": {
+            "count": 92,
+            "pct": 3.397
+          },
+          "E_dependencyCeiling": {
+            "count": 96,
+            "pct": 3.545
+          },
+          "F_dependencyCeiling": {
+            "count": 1278,
+            "pct": 47.194
+          },
+          "G_dependencyCeiling": {
+            "count": 1815,
+            "pct": 67.024
+          },
+          "memberDates": 2708,
+          "path127": {
+            "count": 2601,
+            "pct": 96.049
+          },
+          "tradable": {
+            "count": 2707,
+            "pct": 99.963
+          }
+        },
+        "FINANCIALS": {
+          "A": {
+            "count": 1434,
+            "pct": 8.268
+          },
+          "ABC_tradable": {
+            "count": 1423,
+            "pct": 8.205
+          },
+          "B": {
+            "count": 2025,
+            "pct": 11.676
+          },
+          "B_cash": {
+            "count": 2149,
+            "pct": 12.39
+          },
+          "C": {
+            "count": 16662,
+            "pct": 96.068
+          },
+          "D_dependencyCeiling": {
+            "count": 2009,
+            "pct": 11.583
+          },
+          "E_dependencyCeiling": {
+            "count": 16662,
+            "pct": 96.068
+          },
+          "F_dependencyCeiling": {
+            "count": 1434,
+            "pct": 8.268
+          },
+          "G_dependencyCeiling": {
+            "count": 2106,
+            "pct": 12.143
+          },
+          "memberDates": 17344,
+          "path127": {
+            "count": 16662,
+            "pct": 96.068
+          },
+          "tradable": {
+            "count": 17340,
+            "pct": 99.977
+          }
+        },
+        "FOOD_BEVERAGE_TOBACCO": {
+          "A": {
+            "count": 1101,
+            "pct": 29.439
+          },
+          "ABC_tradable": {
+            "count": 112,
+            "pct": 2.995
+          },
+          "B": {
+            "count": 1192,
+            "pct": 31.872
+          },
+          "B_cash": {
+            "count": 1192,
+            "pct": 31.872
+          },
+          "C": {
+            "count": 1796,
+            "pct": 48.021
+          },
+          "D_dependencyCeiling": {
+            "count": 114,
+            "pct": 3.048
+          },
+          "E_dependencyCeiling": {
+            "count": 1796,
+            "pct": 48.021
+          },
+          "F_dependencyCeiling": {
+            "count": 1088,
+            "pct": 29.091
+          },
+          "G_dependencyCeiling": {
+            "count": 1192,
+            "pct": 31.872
+          },
+          "memberDates": 3740,
+          "path127": {
+            "count": 3447,
+            "pct": 92.166
+          },
+          "tradable": {
+            "count": 3724,
+            "pct": 99.572
+          }
+        },
+        "HEALTHCARE": {
+          "A": {
+            "count": 1538,
+            "pct": 46.805
+          },
+          "ABC_tradable": {
+            "count": 535,
+            "pct": 16.281
+          },
+          "B": {
+            "count": 1650,
+            "pct": 50.213
+          },
+          "B_cash": {
+            "count": 1650,
+            "pct": 50.213
+          },
+          "C": {
+            "count": 975,
+            "pct": 29.671
+          },
+          "D_dependencyCeiling": {
+            "count": 583,
+            "pct": 17.742
+          },
+          "E_dependencyCeiling": {
+            "count": 975,
+            "pct": 29.671
+          },
+          "F_dependencyCeiling": {
+            "count": 1538,
+            "pct": 46.805
+          },
+          "G_dependencyCeiling": {
+            "count": 1564,
+            "pct": 47.596
+          },
+          "memberDates": 3286,
+          "path127": {
+            "count": 2964,
+            "pct": 90.201
+          },
+          "tradable": {
+            "count": 3277,
+            "pct": 99.726
+          }
+        },
+        "HOLDINGS_BUSINESS_SERVICES": {
+          "A": {
+            "count": 334,
+            "pct": 11.045
+          },
+          "ABC_tradable": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "B": {
+            "count": 525,
+            "pct": 17.361
+          },
+          "B_cash": {
+            "count": 525,
+            "pct": 17.361
+          },
+          "C": {
+            "count": 1968,
+            "pct": 65.079
+          },
+          "D_dependencyCeiling": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "E_dependencyCeiling": {
+            "count": 1968,
+            "pct": 65.079
+          },
+          "F_dependencyCeiling": {
+            "count": 334,
+            "pct": 11.045
+          },
+          "G_dependencyCeiling": {
+            "count": 525,
+            "pct": 17.361
+          },
+          "memberDates": 3024,
+          "path127": {
+            "count": 2700,
+            "pct": 89.286
+          },
+          "tradable": {
+            "count": 3019,
+            "pct": 99.835
+          }
+        },
+        "TRANSPORT_LOGISTICS": {
+          "A": {
+            "count": 1200,
+            "pct": 38.548
+          },
+          "ABC_tradable": {
+            "count": 322,
+            "pct": 10.344
+          },
+          "B": {
+            "count": 967,
+            "pct": 31.063
+          },
+          "B_cash": {
+            "count": 967,
+            "pct": 31.063
+          },
+          "C": {
+            "count": 804,
+            "pct": 25.827
+          },
+          "D_dependencyCeiling": {
+            "count": 400,
+            "pct": 12.849
+          },
+          "E_dependencyCeiling": {
+            "count": 804,
+            "pct": 25.827
+          },
+          "F_dependencyCeiling": {
+            "count": 885,
+            "pct": 28.429
+          },
+          "G_dependencyCeiling": {
+            "count": 964,
+            "pct": 30.967
+          },
+          "memberDates": 3113,
+          "path127": {
+            "count": 2952,
+            "pct": 94.828
+          },
+          "tradable": {
+            "count": 3106,
+            "pct": 99.775
+          }
+        },
+        "UNRESOLVED": {
+          "A": {
+            "count": 639,
+            "pct": 13.897
+          },
+          "ABC_tradable": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "B": {
+            "count": 801,
+            "pct": 17.421
+          },
+          "B_cash": {
+            "count": 801,
+            "pct": 17.421
+          },
+          "C": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "D_dependencyCeiling": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "E_dependencyCeiling": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "F_dependencyCeiling": {
+            "count": 639,
+            "pct": 13.897
+          },
+          "G_dependencyCeiling": {
+            "count": 723,
+            "pct": 15.724
+          },
+          "memberDates": 4598,
+          "path127": {
+            "count": 4074,
+            "pct": 88.604
+          },
+          "tradable": {
+            "count": 4510,
+            "pct": 98.086
+          }
+        }
+      },
+      "byYear": {
+        "2013": {
+          "A": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "ABC_tradable": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "B": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "B_cash": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "C": {
+            "count": 2426,
+            "pct": 38.878
+          },
+          "D_dependencyCeiling": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "E_dependencyCeiling": {
+            "count": 2426,
+            "pct": 38.878
+          },
+          "F_dependencyCeiling": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "G_dependencyCeiling": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "memberDates": 6240,
+          "path127": {
+            "count": 3054,
+            "pct": 48.942
+          },
+          "tradable": {
+            "count": 6224,
+            "pct": 99.744
+          }
+        },
+        "2014": {
+          "A": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "ABC_tradable": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "B": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "B_cash": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "C": {
+            "count": 4955,
+            "pct": 79.407
+          },
+          "D_dependencyCeiling": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "E_dependencyCeiling": {
+            "count": 4955,
+            "pct": 79.407
+          },
+          "F_dependencyCeiling": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "G_dependencyCeiling": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "memberDates": 6240,
+          "path127": {
+            "count": 6097,
+            "pct": 97.708
+          },
+          "tradable": {
+            "count": 6205,
+            "pct": 99.439
+          }
+        },
+        "2015": {
+          "A": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "ABC_tradable": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "B": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "B_cash": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "C": {
+            "count": 4826,
+            "pct": 75.881
+          },
+          "D_dependencyCeiling": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "E_dependencyCeiling": {
+            "count": 4826,
+            "pct": 75.881
+          },
+          "F_dependencyCeiling": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "G_dependencyCeiling": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "memberDates": 6360,
+          "path127": {
+            "count": 6116,
+            "pct": 96.164
+          },
+          "tradable": {
+            "count": 6339,
+            "pct": 99.67
+          }
+        },
+        "2016": {
+          "A": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "ABC_tradable": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "B": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "B_cash": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "C": {
+            "count": 4768,
+            "pct": 76.41
+          },
+          "D_dependencyCeiling": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "E_dependencyCeiling": {
+            "count": 4768,
+            "pct": 76.41
+          },
+          "F_dependencyCeiling": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "G_dependencyCeiling": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "memberDates": 6240,
+          "path127": {
+            "count": 6041,
+            "pct": 96.811
+          },
+          "tradable": {
+            "count": 6227,
+            "pct": 99.792
+          }
+        },
+        "2017": {
+          "A": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "ABC_tradable": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "B": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "B_cash": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "C": {
+            "count": 4200,
+            "pct": 68.627
+          },
+          "D_dependencyCeiling": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "E_dependencyCeiling": {
+            "count": 4200,
+            "pct": 68.627
+          },
+          "F_dependencyCeiling": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "G_dependencyCeiling": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "memberDates": 6120,
+          "path127": {
+            "count": 5817,
+            "pct": 95.049
+          },
+          "tradable": {
+            "count": 6041,
+            "pct": 98.709
+          }
+        },
+        "2018": {
+          "A": {
+            "count": 1689,
+            "pct": 27.067
+          },
+          "ABC_tradable": {
+            "count": 881,
+            "pct": 14.119
+          },
+          "B": {
+            "count": 1732,
+            "pct": 27.756
+          },
+          "B_cash": {
+            "count": 1732,
+            "pct": 27.756
+          },
+          "C": {
+            "count": 4016,
+            "pct": 64.359
+          },
+          "D_dependencyCeiling": {
+            "count": 1038,
+            "pct": 16.635
+          },
+          "E_dependencyCeiling": {
+            "count": 4016,
+            "pct": 64.359
+          },
+          "F_dependencyCeiling": {
+            "count": 1541,
+            "pct": 24.696
+          },
+          "G_dependencyCeiling": {
+            "count": 1631,
+            "pct": 26.138
+          },
+          "memberDates": 6240,
+          "path127": {
+            "count": 5904,
+            "pct": 94.615
+          },
+          "tradable": {
+            "count": 6221,
+            "pct": 99.696
+          }
+        },
+        "2019": {
+          "A": {
+            "count": 2943,
+            "pct": 47.163
+          },
+          "ABC_tradable": {
+            "count": 1821,
+            "pct": 29.183
+          },
+          "B": {
+            "count": 3238,
+            "pct": 51.891
+          },
+          "B_cash": {
+            "count": 3258,
+            "pct": 52.212
+          },
+          "C": {
+            "count": 4316,
+            "pct": 69.167
+          },
+          "D_dependencyCeiling": {
+            "count": 2227,
+            "pct": 35.689
+          },
+          "E_dependencyCeiling": {
+            "count": 4316,
+            "pct": 69.167
+          },
+          "F_dependencyCeiling": {
+            "count": 2722,
+            "pct": 43.622
+          },
+          "G_dependencyCeiling": {
+            "count": 3212,
+            "pct": 51.474
+          },
+          "memberDates": 6240,
+          "path127": {
+            "count": 6136,
+            "pct": 98.333
+          },
+          "tradable": {
+            "count": 6228,
+            "pct": 99.808
+          }
+        },
+        "2020": {
+          "A": {
+            "count": 3322,
+            "pct": 52.233
+          },
+          "ABC_tradable": {
+            "count": 2181,
+            "pct": 34.292
+          },
+          "B": {
+            "count": 3434,
+            "pct": 53.994
+          },
+          "B_cash": {
+            "count": 3538,
+            "pct": 55.629
+          },
+          "C": {
+            "count": 4598,
+            "pct": 72.296
+          },
+          "D_dependencyCeiling": {
+            "count": 2398,
+            "pct": 37.704
+          },
+          "E_dependencyCeiling": {
+            "count": 4598,
+            "pct": 72.296
+          },
+          "F_dependencyCeiling": {
+            "count": 3153,
+            "pct": 49.575
+          },
+          "G_dependencyCeiling": {
+            "count": 3457,
+            "pct": 54.355
+          },
+          "memberDates": 6360,
+          "path127": {
+            "count": 6146,
+            "pct": 96.635
+          },
+          "tradable": {
+            "count": 6346,
+            "pct": 99.78
+          }
+        },
+        "2021": {
+          "A": {
+            "count": 3046,
+            "pct": 48.814
+          },
+          "ABC_tradable": {
+            "count": 2005,
+            "pct": 32.131
+          },
+          "B": {
+            "count": 3315,
+            "pct": 53.125
+          },
+          "B_cash": {
+            "count": 3498,
+            "pct": 56.058
+          },
+          "C": {
+            "count": 4438,
+            "pct": 71.122
+          },
+          "D_dependencyCeiling": {
+            "count": 2204,
+            "pct": 35.321
+          },
+          "E_dependencyCeiling": {
+            "count": 4438,
+            "pct": 71.122
+          },
+          "F_dependencyCeiling": {
+            "count": 2942,
+            "pct": 47.147
+          },
+          "G_dependencyCeiling": {
+            "count": 3364,
+            "pct": 53.91
+          },
+          "memberDates": 6240,
+          "path127": {
+            "count": 5855,
+            "pct": 93.83
+          },
+          "tradable": {
+            "count": 6217,
+            "pct": 99.631
+          }
+        },
+        "2022": {
+          "A": {
+            "count": 2841,
+            "pct": 45.529
+          },
+          "ABC_tradable": {
+            "count": 1832,
+            "pct": 29.359
+          },
+          "B": {
+            "count": 3266,
+            "pct": 52.34
+          },
+          "B_cash": {
+            "count": 3380,
+            "pct": 54.167
+          },
+          "C": {
+            "count": 4593,
+            "pct": 73.606
+          },
+          "D_dependencyCeiling": {
+            "count": 2172,
+            "pct": 34.808
+          },
+          "E_dependencyCeiling": {
+            "count": 4593,
+            "pct": 73.606
+          },
+          "F_dependencyCeiling": {
+            "count": 2719,
+            "pct": 43.574
+          },
+          "G_dependencyCeiling": {
+            "count": 3353,
+            "pct": 53.734
+          },
+          "memberDates": 6240,
+          "path127": {
+            "count": 6080,
+            "pct": 97.436
+          },
+          "tradable": {
+            "count": 6239,
+            "pct": 99.984
+          }
+        },
+        "2023": {
+          "A": {
+            "count": 3026,
+            "pct": 48.494
+          },
+          "ABC_tradable": {
+            "count": 1862,
+            "pct": 29.84
+          },
+          "B": {
+            "count": 3517,
+            "pct": 56.362
+          },
+          "B_cash": {
+            "count": 3618,
+            "pct": 57.981
+          },
+          "C": {
+            "count": 4585,
+            "pct": 73.478
+          },
+          "D_dependencyCeiling": {
+            "count": 2357,
+            "pct": 37.772
+          },
+          "E_dependencyCeiling": {
+            "count": 4585,
+            "pct": 73.478
+          },
+          "F_dependencyCeiling": {
+            "count": 2888,
+            "pct": 46.282
+          },
+          "G_dependencyCeiling": {
+            "count": 3577,
+            "pct": 57.324
+          },
+          "memberDates": 6240,
+          "path127": {
+            "count": 6165,
+            "pct": 98.798
+          },
+          "tradable": {
+            "count": 6223,
+            "pct": 99.728
+          }
+        },
+        "2024": {
+          "A": {
+            "count": 3204,
+            "pct": 51.346
+          },
+          "ABC_tradable": {
+            "count": 1832,
+            "pct": 29.359
+          },
+          "B": {
+            "count": 3562,
+            "pct": 57.083
+          },
+          "B_cash": {
+            "count": 3743,
+            "pct": 59.984
+          },
+          "C": {
+            "count": 4302,
+            "pct": 68.942
+          },
+          "D_dependencyCeiling": {
+            "count": 2108,
+            "pct": 33.782
+          },
+          "E_dependencyCeiling": {
+            "count": 4302,
+            "pct": 68.942
+          },
+          "F_dependencyCeiling": {
+            "count": 3101,
+            "pct": 49.696
+          },
+          "G_dependencyCeiling": {
+            "count": 3674,
+            "pct": 58.878
+          },
+          "memberDates": 6240,
+          "path127": {
+            "count": 6063,
+            "pct": 97.163
+          },
+          "tradable": {
+            "count": 6227,
+            "pct": 99.792
+          }
+        },
+        "2025": {
+          "A": {
+            "count": 2957,
+            "pct": 47.388
+          },
+          "ABC_tradable": {
+            "count": 1804,
+            "pct": 28.91
+          },
+          "B": {
+            "count": 3600,
+            "pct": 57.692
+          },
+          "B_cash": {
+            "count": 3901,
+            "pct": 62.516
+          },
+          "C": {
+            "count": 4325,
+            "pct": 69.311
+          },
+          "D_dependencyCeiling": {
+            "count": 2305,
+            "pct": 36.939
+          },
+          "E_dependencyCeiling": {
+            "count": 4325,
+            "pct": 69.311
+          },
+          "F_dependencyCeiling": {
+            "count": 2919,
+            "pct": 46.779
+          },
+          "G_dependencyCeiling": {
+            "count": 3854,
+            "pct": 61.763
+          },
+          "memberDates": 6240,
+          "path127": {
+            "count": 6121,
+            "pct": 98.093
+          },
+          "tradable": {
+            "count": 6231,
+            "pct": 99.856
+          }
+        },
+        "2026": {
+          "A": {
+            "count": 2139,
+            "pct": 48.176
+          },
+          "ABC_tradable": {
+            "count": 1412,
+            "pct": 31.802
+          },
+          "B": {
+            "count": 2586,
+            "pct": 58.243
+          },
+          "B_cash": {
+            "count": 2776,
+            "pct": 62.523
+          },
+          "C": {
+            "count": 3202,
+            "pct": 72.117
+          },
+          "D_dependencyCeiling": {
+            "count": 1752,
+            "pct": 39.459
+          },
+          "E_dependencyCeiling": {
+            "count": 3202,
+            "pct": 72.117
+          },
+          "F_dependencyCeiling": {
+            "count": 2139,
+            "pct": 48.176
+          },
+          "G_dependencyCeiling": {
+            "count": 2706,
+            "pct": 60.946
+          },
+          "memberDates": 4440,
+          "path127": {
+            "count": 4285,
+            "pct": 96.509
+          },
+          "tradable": {
+            "count": 4434,
+            "pct": 99.865
+          }
+        }
+      },
+      "filingInventory": {
+        "acceptedDateMissing": null,
+        "collectedAtMissing": 0,
+        "collectedAtRange": [
+          "2026-09-27T14:26:09Z",
+          "2026-09-28T10:23:14Z"
+        ],
+        "collectionCohorts": {},
+        "distinctIds": 9351,
+        "publicDateMissing": 0,
+        "publicDateRange": [
+          "2015-04-29",
+          "2026-09-16"
+        ],
+        "receiptDateMismatch": 2,
+        "rows": 9351,
+        "tickers": 250
+      },
+      "financialOnlyAt2026_10_16": {
+        "counts": {
+          "A": 51,
+          "B": 59
+        },
+        "priceLinked": false
+      },
+      "firstMeasurableDate": {
+        "A": "2018-05-04",
+        "B": "2018-05-04",
+        "C": "2013-07-05"
+      },
+      "latestPriceLinkedCandidatesH126AndH252": {
+        "A": {
+          "count": 51,
+          "pct": 42.5
+        },
+        "ABC_tradable": {
+          "count": 30,
+          "pct": 25.0
+        },
+        "B": {
+          "count": 59,
+          "pct": 49.167
+        },
+        "B_cash": {
+          "count": 63,
+          "pct": 52.5
+        },
+        "C": {
+          "count": 82,
+          "pct": 68.333
+        },
+        "D_dependencyCeiling": {
+          "count": 34,
+          "pct": 28.333
+        },
+        "E_dependencyCeiling": {
+          "count": 82,
+          "pct": 68.333
+        },
+        "F_dependencyCeiling": {
+          "count": 51,
+          "pct": 42.5
+        },
+        "G_dependencyCeiling": {
+          "count": 59,
+          "pct": 49.167
+        },
+        "date": "2026-09-11",
+        "memberDates": 120,
+        "path127": {
+          "count": 114,
+          "pct": 95.0
+        },
+        "tradable": {
+          "count": 120,
+          "pct": 100.0
+        }
+      },
+      "missingReasons": {
+        "A": {
+          "AVAILABLE": 25167,
+          "INCOMPLETE_CHAIN": 5324,
+          "INCOMPLETE_CHAIN+INCOMPLETE_CHAIN_OR_UNIT": 1789,
+          "INCOMPLETE_CHAIN_OR_UNIT": 7988,
+          "INCOMPLETE_CHAIN_OR_UNIT|NON_POSITIVE_GROWTH_BASE": 487,
+          "INCOMPLETE_CHAIN|INCOMPLETE_CHAIN+INCOMPLETE_CHAIN_OR_UNIT": 57,
+          "NON_POSITIVE_GROWTH_BASE": 2113,
+          "NO_FILING_STORE": 3400,
+          "NO_VISIBLE_FILING": 22966,
+          "REPORT_STALE_OVER_180_DAYS": 2502,
+          "STATEMENT_BASIS_UNRESOLVED": 13887
+        },
+        "B": {
+          "AVAILABLE": 28250,
+          "INCOMPLETE_CHAIN": 4132,
+          "INCOMPLETE_CHAIN+INCOMPLETE_CHAIN_OR_UNIT": 1834,
+          "INCOMPLETE_CHAIN_OR_UNIT": 8657,
+          "NON_POSITIVE_REVENUE": 52,
+          "NO_FILING_STORE": 3400,
+          "NO_VISIBLE_FILING": 22966,
+          "REPORT_STALE_OVER_180_DAYS": 2502,
+          "STATEMENT_BASIS_UNRESOLVED": 13887
+        },
+        "C": {
+          "AVAILABLE": 59550,
+          "INDUSTRY_UNRESOLVED": 4074,
+          "INSUFFICIENT_SAME_DATE_PEERS": 16256,
+          "OFFICIAL_TRADING_WINDOW_INCOMPLETE": 5574,
+          "UNCONFIRMED_CORPORATE_ACTION_IN_WINDOW": 13,
+          "UNEXPLAINED_PRICE_MOVE_IN_WINDOW": 213
+        }
+      },
+      "recentWeeklyCoverage": [
+        {
+          "A": {
+            "count": 63,
+            "pct": 52.5
+          },
+          "ABC_tradable": {
+            "count": 45,
+            "pct": 37.5
+          },
+          "B": {
+            "count": 73,
+            "pct": 60.833
+          },
+          "B_cash": {
+            "count": 78,
+            "pct": 65.0
+          },
+          "C": {
+            "count": 88,
+            "pct": 73.333
+          },
+          "D_dependencyCeiling": {
+            "count": 51,
+            "pct": 42.5
+          },
+          "E_dependencyCeiling": {
+            "count": 88,
+            "pct": 73.333
+          },
+          "F_dependencyCeiling": {
+            "count": 63,
+            "pct": 52.5
+          },
+          "G_dependencyCeiling": {
+            "count": 75,
+            "pct": 62.5
+          },
+          "date": "2026-07-24",
+          "memberDates": 120,
+          "path127": {
+            "count": 115,
+            "pct": 95.833
+          },
+          "tradable": {
+            "count": 120,
+            "pct": 100.0
+          }
+        },
+        {
+          "A": {
+            "count": 63,
+            "pct": 52.5
+          },
+          "ABC_tradable": {
+            "count": 40,
+            "pct": 33.333
+          },
+          "B": {
+            "count": 73,
+            "pct": 60.833
+          },
+          "B_cash": {
+            "count": 78,
+            "pct": 65.0
+          },
+          "C": {
+            "count": 81,
+            "pct": 67.5
+          },
+          "D_dependencyCeiling": {
+            "count": 45,
+            "pct": 37.5
+          },
+          "E_dependencyCeiling": {
+            "count": 81,
+            "pct": 67.5
+          },
+          "F_dependencyCeiling": {
+            "count": 63,
+            "pct": 52.5
+          },
+          "G_dependencyCeiling": {
+            "count": 73,
+            "pct": 60.833
+          },
+          "date": "2026-07-31",
+          "memberDates": 120,
+          "path127": {
+            "count": 113,
+            "pct": 94.167
+          },
+          "tradable": {
+            "count": 119,
+            "pct": 99.167
+          }
+        },
+        {
+          "A": {
+            "count": 63,
+            "pct": 52.5
+          },
+          "ABC_tradable": {
+            "count": 42,
+            "pct": 35.0
+          },
+          "B": {
+            "count": 72,
+            "pct": 60.0
+          },
+          "B_cash": {
+            "count": 77,
+            "pct": 64.167
+          },
+          "C": {
+            "count": 85,
+            "pct": 70.833
+          },
+          "D_dependencyCeiling": {
+            "count": 47,
+            "pct": 39.167
+          },
+          "E_dependencyCeiling": {
+            "count": 85,
+            "pct": 70.833
+          },
+          "F_dependencyCeiling": {
+            "count": 63,
+            "pct": 52.5
+          },
+          "G_dependencyCeiling": {
+            "count": 72,
+            "pct": 60.0
+          },
+          "date": "2026-08-07",
+          "memberDates": 120,
+          "path127": {
+            "count": 113,
+            "pct": 94.167
+          },
+          "tradable": {
+            "count": 119,
+            "pct": 99.167
+          }
+        },
+        {
+          "A": {
+            "count": 61,
+            "pct": 50.833
+          },
+          "ABC_tradable": {
+            "count": 41,
+            "pct": 34.167
+          },
+          "B": {
+            "count": 72,
+            "pct": 60.0
+          },
+          "B_cash": {
+            "count": 77,
+            "pct": 64.167
+          },
+          "C": {
+            "count": 85,
+            "pct": 70.833
+          },
+          "D_dependencyCeiling": {
+            "count": 47,
+            "pct": 39.167
+          },
+          "E_dependencyCeiling": {
+            "count": 85,
+            "pct": 70.833
+          },
+          "F_dependencyCeiling": {
+            "count": 61,
+            "pct": 50.833
+          },
+          "G_dependencyCeiling": {
+            "count": 72,
+            "pct": 60.0
+          },
+          "date": "2026-08-14",
+          "memberDates": 120,
+          "path127": {
+            "count": 113,
+            "pct": 94.167
+          },
+          "tradable": {
+            "count": 119,
+            "pct": 99.167
+          }
+        },
+        {
+          "A": {
+            "count": 53,
+            "pct": 44.167
+          },
+          "ABC_tradable": {
+            "count": 35,
+            "pct": 29.167
+          },
+          "B": {
+            "count": 61,
+            "pct": 50.833
+          },
+          "B_cash": {
+            "count": 65,
+            "pct": 54.167
+          },
+          "C": {
+            "count": 85,
+            "pct": 70.833
+          },
+          "D_dependencyCeiling": {
+            "count": 40,
+            "pct": 33.333
+          },
+          "E_dependencyCeiling": {
+            "count": 85,
+            "pct": 70.833
+          },
+          "F_dependencyCeiling": {
+            "count": 53,
+            "pct": 44.167
+          },
+          "G_dependencyCeiling": {
+            "count": 61,
+            "pct": 50.833
+          },
+          "date": "2026-08-21",
+          "memberDates": 120,
+          "path127": {
+            "count": 113,
+            "pct": 94.167
+          },
+          "tradable": {
+            "count": 119,
+            "pct": 99.167
+          }
+        },
+        {
+          "A": {
+            "count": 52,
+            "pct": 43.333
+          },
+          "ABC_tradable": {
+            "count": 34,
+            "pct": 28.333
+          },
+          "B": {
+            "count": 60,
+            "pct": 50.0
+          },
+          "B_cash": {
+            "count": 64,
+            "pct": 53.333
+          },
+          "C": {
+            "count": 85,
+            "pct": 70.833
+          },
+          "D_dependencyCeiling": {
+            "count": 39,
+            "pct": 32.5
+          },
+          "E_dependencyCeiling": {
+            "count": 85,
+            "pct": 70.833
+          },
+          "F_dependencyCeiling": {
+            "count": 52,
+            "pct": 43.333
+          },
+          "G_dependencyCeiling": {
+            "count": 60,
+            "pct": 50.0
+          },
+          "date": "2026-08-28",
+          "memberDates": 120,
+          "path127": {
+            "count": 113,
+            "pct": 94.167
+          },
+          "tradable": {
+            "count": 120,
+            "pct": 100.0
+          }
+        },
+        {
+          "A": {
+            "count": 51,
+            "pct": 42.5
+          },
+          "ABC_tradable": {
+            "count": 30,
+            "pct": 25.0
+          },
+          "B": {
+            "count": 59,
+            "pct": 49.167
+          },
+          "B_cash": {
+            "count": 63,
+            "pct": 52.5
+          },
+          "C": {
+            "count": 81,
+            "pct": 67.5
+          },
+          "D_dependencyCeiling": {
+            "count": 34,
+            "pct": 28.333
+          },
+          "E_dependencyCeiling": {
+            "count": 81,
+            "pct": 67.5
+          },
+          "F_dependencyCeiling": {
+            "count": 51,
+            "pct": 42.5
+          },
+          "G_dependencyCeiling": {
+            "count": 59,
+            "pct": 49.167
+          },
+          "date": "2026-09-04",
+          "memberDates": 120,
+          "path127": {
+            "count": 113,
+            "pct": 94.167
+          },
+          "tradable": {
+            "count": 120,
+            "pct": 100.0
+          }
+        },
+        {
+          "A": {
+            "count": 51,
+            "pct": 42.5
+          },
+          "ABC_tradable": {
+            "count": 30,
+            "pct": 25.0
+          },
+          "B": {
+            "count": 59,
+            "pct": 49.167
+          },
+          "B_cash": {
+            "count": 63,
+            "pct": 52.5
+          },
+          "C": {
+            "count": 82,
+            "pct": 68.333
+          },
+          "D_dependencyCeiling": {
+            "count": 34,
+            "pct": 28.333
+          },
+          "E_dependencyCeiling": {
+            "count": 82,
+            "pct": 68.333
+          },
+          "F_dependencyCeiling": {
+            "count": 51,
+            "pct": 42.5
+          },
+          "G_dependencyCeiling": {
+            "count": 59,
+            "pct": 49.167
+          },
+          "date": "2026-09-11",
+          "memberDates": 120,
+          "path127": {
+            "count": 114,
+            "pct": 95.0
+          },
+          "tradable": {
+            "count": 120,
+            "pct": 100.0
+          }
+        }
+      ],
+      "totals": {
+        "A": {
+          "count": 25167,
+          "pct": 29.373
+        },
+        "ABC_tradable": {
+          "count": 15630,
+          "pct": 18.242
+        },
+        "B": {
+          "count": 28250,
+          "pct": 32.972
+        },
+        "B_cash": {
+          "count": 29444,
+          "pct": 34.365
+        },
+        "C": {
+          "count": 59550,
+          "pct": 69.503
+        },
+        "D_dependencyCeiling": {
+          "count": 18561,
+          "pct": 21.663
+        },
+        "E_dependencyCeiling": {
+          "count": 59550,
+          "pct": 69.503
+        },
+        "F_dependencyCeiling": {
+          "count": 24124,
+          "pct": 28.156
+        },
+        "G_dependencyCeiling": {
+          "count": 28828,
+          "pct": 33.646
+        },
+        "memberDates": 85680,
+        "path127": {
+          "count": 79880,
+          "pct": 93.231
+        },
+        "tradable": {
+          "count": 85402,
+          "pct": 99.676
+        }
+      },
+      "weeklyCoverageSha256": "0d9ef5aaf6c19c2aa85411d753be68fd264042476a04e7d7d7bb667c37a7b4d5",
+      "weeklySignalRange": [
+        "2013-01-04",
+        "2026-09-11"
+      ],
+      "weeks": 714
+    },
+    "US": {
+      "byIndustry": {
+        "Communication Services": {
+          "A": {
+            "count": 3976,
+            "pct": 49.918
+          },
+          "ABC_tradable": {
+            "count": 3126,
+            "pct": 39.247
+          },
+          "B": {
+            "count": 4572,
+            "pct": 57.401
+          },
+          "B_cash": {
+            "count": 5390,
+            "pct": 67.671
+          },
+          "C": {
+            "count": 6208,
+            "pct": 77.941
+          },
+          "D_dependencyCeiling": {
+            "count": 3580,
+            "pct": 44.947
+          },
+          "E_dependencyCeiling": {
+            "count": 6208,
+            "pct": 77.941
+          },
+          "F_dependencyCeiling": {
+            "count": 3948,
+            "pct": 49.567
+          },
+          "G_dependencyCeiling": {
+            "count": 4398,
+            "pct": 55.217
+          },
+          "memberDates": 7965,
+          "path127": {
+            "count": 6208,
+            "pct": 77.941
+          },
+          "tradable": {
+            "count": 6246,
+            "pct": 78.418
+          }
+        },
+        "Consumer Discretionary": {
+          "A": {
+            "count": 23134,
+            "pct": 45.857
+          },
+          "ABC_tradable": {
+            "count": 21451,
+            "pct": 42.521
+          },
+          "B": {
+            "count": 28523,
+            "pct": 56.539
+          },
+          "B_cash": {
+            "count": 36359,
+            "pct": 72.072
+          },
+          "C": {
+            "count": 40451,
+            "pct": 80.184
+          },
+          "D_dependencyCeiling": {
+            "count": 26701,
+            "pct": 52.928
+          },
+          "E_dependencyCeiling": {
+            "count": 40451,
+            "pct": 80.184
+          },
+          "F_dependencyCeiling": {
+            "count": 22814,
+            "pct": 45.223
+          },
+          "G_dependencyCeiling": {
+            "count": 33676,
+            "pct": 66.754
+          },
+          "memberDates": 50448,
+          "path127": {
+            "count": 40451,
+            "pct": 80.184
+          },
+          "tradable": {
+            "count": 40601,
+            "pct": 80.481
+          }
+        },
+        "Consumer Staples": {
+          "A": {
+            "count": 15634,
+            "pct": 62.079
+          },
+          "ABC_tradable": {
+            "count": 14735,
+            "pct": 58.509
+          },
+          "B": {
+            "count": 18071,
+            "pct": 71.756
+          },
+          "B_cash": {
+            "count": 20651,
+            "pct": 82.0
+          },
+          "C": {
+            "count": 21652,
+            "pct": 85.975
+          },
+          "D_dependencyCeiling": {
+            "count": 16986,
+            "pct": 67.448
+          },
+          "E_dependencyCeiling": {
+            "count": 21652,
+            "pct": 85.975
+          },
+          "F_dependencyCeiling": {
+            "count": 15548,
+            "pct": 61.738
+          },
+          "G_dependencyCeiling": {
+            "count": 19566,
+            "pct": 77.692
+          },
+          "memberDates": 25184,
+          "path127": {
+            "count": 21652,
+            "pct": 85.975
+          },
+          "tradable": {
+            "count": 21687,
+            "pct": 86.114
+          }
+        },
+        "Energy": {
+          "A": {
+            "count": 4921,
+            "pct": 22.721
+          },
+          "ABC_tradable": {
+            "count": 4093,
+            "pct": 18.898
+          },
+          "B": {
+            "count": 7612,
+            "pct": 35.146
+          },
+          "B_cash": {
+            "count": 13808,
+            "pct": 63.755
+          },
+          "C": {
+            "count": 14504,
+            "pct": 66.968
+          },
+          "D_dependencyCeiling": {
+            "count": 6027,
+            "pct": 27.828
+          },
+          "E_dependencyCeiling": {
+            "count": 14504,
+            "pct": 66.968
+          },
+          "F_dependencyCeiling": {
+            "count": 4908,
+            "pct": 22.661
+          },
+          "G_dependencyCeiling": {
+            "count": 11206,
+            "pct": 51.741
+          },
+          "memberDates": 21658,
+          "path127": {
+            "count": 14504,
+            "pct": 66.968
+          },
+          "tradable": {
+            "count": 14516,
+            "pct": 67.024
+          }
+        },
+        "Financials": {
+          "A": {
+            "count": 9527,
+            "pct": 18.326
+          },
+          "ABC_tradable": {
+            "count": 8765,
+            "pct": 16.861
+          },
+          "B": {
+            "count": 11013,
+            "pct": 21.185
+          },
+          "B_cash": {
+            "count": 31058,
+            "pct": 59.744
+          },
+          "C": {
+            "count": 43391,
+            "pct": 83.468
+          },
+          "D_dependencyCeiling": {
+            "count": 10122,
+            "pct": 19.471
+          },
+          "E_dependencyCeiling": {
+            "count": 43391,
+            "pct": 83.468
+          },
+          "F_dependencyCeiling": {
+            "count": 9527,
+            "pct": 18.326
+          },
+          "G_dependencyCeiling": {
+            "count": 29647,
+            "pct": 57.03
+          },
+          "memberDates": 51985,
+          "path127": {
+            "count": 43391,
+            "pct": 83.468
+          },
+          "tradable": {
+            "count": 43463,
+            "pct": 83.607
+          }
+        },
+        "Health Care": {
+          "A": {
+            "count": 22166,
+            "pct": 52.334
+          },
+          "ABC_tradable": {
+            "count": 20437,
+            "pct": 48.252
+          },
+          "B": {
+            "count": 26299,
+            "pct": 62.092
+          },
+          "B_cash": {
+            "count": 32160,
+            "pct": 75.93
+          },
+          "C": {
+            "count": 34331,
+            "pct": 81.055
+          },
+          "D_dependencyCeiling": {
+            "count": 24152,
+            "pct": 57.023
+          },
+          "E_dependencyCeiling": {
+            "count": 34331,
+            "pct": 81.055
+          },
+          "F_dependencyCeiling": {
+            "count": 21916,
+            "pct": 51.744
+          },
+          "G_dependencyCeiling": {
+            "count": 29990,
+            "pct": 70.806
+          },
+          "memberDates": 42355,
+          "path127": {
+            "count": 34331,
+            "pct": 81.055
+          },
+          "tradable": {
+            "count": 34422,
+            "pct": 81.27
+          }
+        },
+        "Industrials": {
+          "A": {
+            "count": 27895,
+            "pct": 55.958
+          },
+          "ABC_tradable": {
+            "count": 26992,
+            "pct": 54.146
+          },
+          "B": {
+            "count": 31899,
+            "pct": 63.99
+          },
+          "B_cash": {
+            "count": 40900,
+            "pct": 82.046
+          },
+          "C": {
+            "count": 44064,
+            "pct": 88.393
+          },
+          "D_dependencyCeiling": {
+            "count": 30924,
+            "pct": 62.034
+          },
+          "E_dependencyCeiling": {
+            "count": 44064,
+            "pct": 88.393
+          },
+          "F_dependencyCeiling": {
+            "count": 27749,
+            "pct": 55.665
+          },
+          "G_dependencyCeiling": {
+            "count": 39832,
+            "pct": 79.904
+          },
+          "memberDates": 49850,
+          "path127": {
+            "count": 44064,
+            "pct": 88.393
+          },
+          "tradable": {
+            "count": 44256,
+            "pct": 88.778
+          }
+        },
+        "Information Technology": {
+          "A": {
+            "count": 31185,
+            "pct": 63.53
+          },
+          "ABC_tradable": {
+            "count": 29371,
+            "pct": 59.835
+          },
+          "B": {
+            "count": 36102,
+            "pct": 73.547
+          },
+          "B_cash": {
+            "count": 38204,
+            "pct": 77.829
+          },
+          "C": {
+            "count": 40969,
+            "pct": 83.462
+          },
+          "D_dependencyCeiling": {
+            "count": 33948,
+            "pct": 69.159
+          },
+          "E_dependencyCeiling": {
+            "count": 40969,
+            "pct": 83.462
+          },
+          "F_dependencyCeiling": {
+            "count": 31002,
+            "pct": 63.157
+          },
+          "G_dependencyCeiling": {
+            "count": 36029,
+            "pct": 73.398
+          },
+          "memberDates": 49087,
+          "path127": {
+            "count": 40969,
+            "pct": 83.462
+          },
+          "tradable": {
+            "count": 40991,
+            "pct": 83.507
+          }
+        },
+        "Materials": {
+          "A": {
+            "count": 7227,
+            "pct": 37.461
+          },
+          "ABC_tradable": {
+            "count": 6696,
+            "pct": 34.709
+          },
+          "B": {
+            "count": 9081,
+            "pct": 47.071
+          },
+          "B_cash": {
+            "count": 13450,
+            "pct": 69.718
+          },
+          "C": {
+            "count": 15848,
+            "pct": 82.148
+          },
+          "D_dependencyCeiling": {
+            "count": 8237,
+            "pct": 42.696
+          },
+          "E_dependencyCeiling": {
+            "count": 15848,
+            "pct": 82.148
+          },
+          "F_dependencyCeiling": {
+            "count": 7143,
+            "pct": 37.026
+          },
+          "G_dependencyCeiling": {
+            "count": 12606,
+            "pct": 65.343
+          },
+          "memberDates": 19292,
+          "path127": {
+            "count": 15848,
+            "pct": 82.148
+          },
+          "tradable": {
+            "count": 15873,
+            "pct": 82.278
+          }
+        },
+        "Real Estate": {
+          "A": {
+            "count": 6538,
+            "pct": 43.019
+          },
+          "ABC_tradable": {
+            "count": 6195,
+            "pct": 40.762
+          },
+          "B": {
+            "count": 7043,
+            "pct": 46.342
+          },
+          "B_cash": {
+            "count": 11180,
+            "pct": 73.562
+          },
+          "C": {
+            "count": 13310,
+            "pct": 87.577
+          },
+          "D_dependencyCeiling": {
+            "count": 6700,
+            "pct": 44.085
+          },
+          "E_dependencyCeiling": {
+            "count": 13310,
+            "pct": 87.577
+          },
+          "F_dependencyCeiling": {
+            "count": 6538,
+            "pct": 43.019
+          },
+          "G_dependencyCeiling": {
+            "count": 10206,
+            "pct": 67.154
+          },
+          "memberDates": 15198,
+          "path127": {
+            "count": 13310,
+            "pct": 87.577
+          },
+          "tradable": {
+            "count": 13343,
+            "pct": 87.794
+          }
+        },
+        "Telecommunication Services": {
+          "A": {
+            "count": 293,
+            "pct": 45.426
+          },
+          "ABC_tradable": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "B": {
+            "count": 313,
+            "pct": 48.527
+          },
+          "B_cash": {
+            "count": 313,
+            "pct": 48.527
+          },
+          "C": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "D_dependencyCeiling": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "E_dependencyCeiling": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "F_dependencyCeiling": {
+            "count": 293,
+            "pct": 45.426
+          },
+          "G_dependencyCeiling": {
+            "count": 283,
+            "pct": 43.876
+          },
+          "memberDates": 645,
+          "path127": {
+            "count": 346,
+            "pct": 53.643
+          },
+          "tradable": {
+            "count": 346,
+            "pct": 53.643
+          }
+        },
+        "UNRESOLVED": {
+          "A": {
+            "count": 1880,
+            "pct": 38.771
+          },
+          "ABC_tradable": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "B": {
+            "count": 2229,
+            "pct": 45.968
+          },
+          "B_cash": {
+            "count": 3113,
+            "pct": 64.199
+          },
+          "C": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "D_dependencyCeiling": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "E_dependencyCeiling": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "F_dependencyCeiling": {
+            "count": 1880,
+            "pct": 38.771
+          },
+          "G_dependencyCeiling": {
+            "count": 2998,
+            "pct": 61.827
+          },
+          "memberDates": 4849,
+          "path127": {
+            "count": 3931,
+            "pct": 81.068
+          },
+          "tradable": {
+            "count": 3937,
+            "pct": 81.192
+          }
+        },
+        "Utilities": {
+          "A": {
+            "count": 11664,
+            "pct": 55.516
+          },
+          "ABC_tradable": {
+            "count": 10981,
+            "pct": 52.266
+          },
+          "B": {
+            "count": 14331,
+            "pct": 68.21
+          },
+          "B_cash": {
+            "count": 14844,
+            "pct": 70.652
+          },
+          "C": {
+            "count": 19667,
+            "pct": 93.608
+          },
+          "D_dependencyCeiling": {
+            "count": 13715,
+            "pct": 65.278
+          },
+          "E_dependencyCeiling": {
+            "count": 19667,
+            "pct": 93.608
+          },
+          "F_dependencyCeiling": {
+            "count": 11441,
+            "pct": 54.455
+          },
+          "G_dependencyCeiling": {
+            "count": 14228,
+            "pct": 67.72
+          },
+          "memberDates": 21010,
+          "path127": {
+            "count": 19667,
+            "pct": 93.608
+          },
+          "tradable": {
+            "count": 19694,
+            "pct": 93.736
+          }
+        }
+      },
+      "byYear": {
+        "2013": {
+          "A": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "ABC_tradable": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "B": {
+            "count": 7230,
+            "pct": 27.808
+          },
+          "B_cash": {
+            "count": 9984,
+            "pct": 38.4
+          },
+          "C": {
+            "count": 17184,
+            "pct": 66.092
+          },
+          "D_dependencyCeiling": {
+            "count": 5744,
+            "pct": 22.092
+          },
+          "E_dependencyCeiling": {
+            "count": 17184,
+            "pct": 66.092
+          },
+          "F_dependencyCeiling": {
+            "count": 0,
+            "pct": 0.0
+          },
+          "G_dependencyCeiling": {
+            "count": 8366,
+            "pct": 32.177
+          },
+          "memberDates": 26000,
+          "path127": {
+            "count": 17410,
+            "pct": 66.962
+          },
+          "tradable": {
+            "count": 17456,
+            "pct": 67.138
+          }
+        },
+        "2014": {
+          "A": {
+            "count": 6136,
+            "pct": 23.594
+          },
+          "ABC_tradable": {
+            "count": 5194,
+            "pct": 19.972
+          },
+          "B": {
+            "count": 10927,
+            "pct": 42.016
+          },
+          "B_cash": {
+            "count": 15065,
+            "pct": 57.927
+          },
+          "C": {
+            "count": 17701,
+            "pct": 68.062
+          },
+          "D_dependencyCeiling": {
+            "count": 9507,
+            "pct": 36.556
+          },
+          "E_dependencyCeiling": {
+            "count": 17701,
+            "pct": 68.062
+          },
+          "F_dependencyCeiling": {
+            "count": 5926,
+            "pct": 22.786
+          },
+          "G_dependencyCeiling": {
+            "count": 13564,
+            "pct": 52.155
+          },
+          "memberDates": 26007,
+          "path127": {
+            "count": 17862,
+            "pct": 68.682
+          },
+          "tradable": {
+            "count": 17909,
+            "pct": 68.862
+          }
+        },
+        "2015": {
+          "A": {
+            "count": 11084,
+            "pct": 42.212
+          },
+          "ABC_tradable": {
+            "count": 9531,
+            "pct": 36.298
+          },
+          "B": {
+            "count": 11689,
+            "pct": 44.516
+          },
+          "B_cash": {
+            "count": 16109,
+            "pct": 61.349
+          },
+          "C": {
+            "count": 18367,
+            "pct": 69.948
+          },
+          "D_dependencyCeiling": {
+            "count": 10434,
+            "pct": 39.736
+          },
+          "E_dependencyCeiling": {
+            "count": 18367,
+            "pct": 69.948
+          },
+          "F_dependencyCeiling": {
+            "count": 10713,
+            "pct": 40.799
+          },
+          "G_dependencyCeiling": {
+            "count": 14695,
+            "pct": 55.964
+          },
+          "memberDates": 26258,
+          "path127": {
+            "count": 18473,
+            "pct": 70.352
+          },
+          "tradable": {
+            "count": 18473,
+            "pct": 70.352
+          }
+        },
+        "2016": {
+          "A": {
+            "count": 11735,
+            "pct": 44.896
+          },
+          "ABC_tradable": {
+            "count": 10495,
+            "pct": 40.152
+          },
+          "B": {
+            "count": 12696,
+            "pct": 48.573
+          },
+          "B_cash": {
+            "count": 17202,
+            "pct": 65.812
+          },
+          "C": {
+            "count": 19350,
+            "pct": 74.03
+          },
+          "D_dependencyCeiling": {
+            "count": 11459,
+            "pct": 43.84
+          },
+          "E_dependencyCeiling": {
+            "count": 19350,
+            "pct": 74.03
+          },
+          "F_dependencyCeiling": {
+            "count": 11493,
+            "pct": 43.97
+          },
+          "G_dependencyCeiling": {
+            "count": 15770,
+            "pct": 60.334
+          },
+          "memberDates": 26138,
+          "path127": {
+            "count": 19454,
+            "pct": 74.428
+          },
+          "tradable": {
+            "count": 19515,
+            "pct": 74.661
+          }
+        },
+        "2017": {
+          "A": {
+            "count": 12350,
+            "pct": 47.046
+          },
+          "ABC_tradable": {
+            "count": 11107,
+            "pct": 42.311
+          },
+          "B": {
+            "count": 13914,
+            "pct": 53.004
+          },
+          "B_cash": {
+            "count": 18350,
+            "pct": 69.902
+          },
+          "C": {
+            "count": 20015,
+            "pct": 76.245
+          },
+          "D_dependencyCeiling": {
+            "count": 12619,
+            "pct": 48.071
+          },
+          "E_dependencyCeiling": {
+            "count": 20015,
+            "pct": 76.245
+          },
+          "F_dependencyCeiling": {
+            "count": 12191,
+            "pct": 46.44
+          },
+          "G_dependencyCeiling": {
+            "count": 16888,
+            "pct": 64.333
+          },
+          "memberDates": 26251,
+          "path127": {
+            "count": 20205,
+            "pct": 76.968
+          },
+          "tradable": {
+            "count": 20250,
+            "pct": 77.14
+          }
+        },
+        "2018": {
+          "A": {
+            "count": 13638,
+            "pct": 51.935
+          },
+          "ABC_tradable": {
+            "count": 12371,
+            "pct": 47.11
+          },
+          "B": {
+            "count": 14793,
+            "pct": 56.333
+          },
+          "B_cash": {
+            "count": 19326,
+            "pct": 73.595
+          },
+          "C": {
+            "count": 20702,
+            "pct": 78.835
+          },
+          "D_dependencyCeiling": {
+            "count": 13479,
+            "pct": 51.329
+          },
+          "E_dependencyCeiling": {
+            "count": 20702,
+            "pct": 78.835
+          },
+          "F_dependencyCeiling": {
+            "count": 13542,
+            "pct": 51.569
+          },
+          "G_dependencyCeiling": {
+            "count": 17839,
+            "pct": 67.932
+          },
+          "memberDates": 26260,
+          "path127": {
+            "count": 20910,
+            "pct": 79.627
+          },
+          "tradable": {
+            "count": 20993,
+            "pct": 79.943
+          }
+        },
+        "2019": {
+          "A": {
+            "count": 13926,
+            "pct": 53.031
+          },
+          "ABC_tradable": {
+            "count": 12812,
+            "pct": 48.789
+          },
+          "B": {
+            "count": 14951,
+            "pct": 56.935
+          },
+          "B_cash": {
+            "count": 19755,
+            "pct": 75.228
+          },
+          "C": {
+            "count": 21040,
+            "pct": 80.122
+          },
+          "D_dependencyCeiling": {
+            "count": 13751,
+            "pct": 52.365
+          },
+          "E_dependencyCeiling": {
+            "count": 21040,
+            "pct": 80.122
+          },
+          "F_dependencyCeiling": {
+            "count": 13836,
+            "pct": 52.688
+          },
+          "G_dependencyCeiling": {
+            "count": 18399,
+            "pct": 70.065
+          },
+          "memberDates": 26260,
+          "path127": {
+            "count": 21248,
+            "pct": 80.914
+          },
+          "tradable": {
+            "count": 21300,
+            "pct": 81.112
+          }
+        },
+        "2020": {
+          "A": {
+            "count": 14996,
+            "pct": 56.028
+          },
+          "ABC_tradable": {
+            "count": 13874,
+            "pct": 51.836
+          },
+          "B": {
+            "count": 16550,
+            "pct": 61.834
+          },
+          "B_cash": {
+            "count": 22152,
+            "pct": 82.765
+          },
+          "C": {
+            "count": 22574,
+            "pct": 84.341
+          },
+          "D_dependencyCeiling": {
+            "count": 15294,
+            "pct": 57.142
+          },
+          "E_dependencyCeiling": {
+            "count": 22574,
+            "pct": 84.341
+          },
+          "F_dependencyCeiling": {
+            "count": 14937,
+            "pct": 55.808
+          },
+          "G_dependencyCeiling": {
+            "count": 20625,
+            "pct": 77.06
+          },
+          "memberDates": 26765,
+          "path127": {
+            "count": 22719,
+            "pct": 84.883
+          },
+          "tradable": {
+            "count": 22829,
+            "pct": 85.294
+          }
+        },
+        "2021": {
+          "A": {
+            "count": 15480,
+            "pct": 58.949
+          },
+          "ABC_tradable": {
+            "count": 14391,
+            "pct": 54.802
+          },
+          "B": {
+            "count": 17374,
+            "pct": 66.161
+          },
+          "B_cash": {
+            "count": 22856,
+            "pct": 87.037
+          },
+          "C": {
+            "count": 23282,
+            "pct": 88.66
+          },
+          "D_dependencyCeiling": {
+            "count": 16088,
+            "pct": 61.264
+          },
+          "E_dependencyCeiling": {
+            "count": 23282,
+            "pct": 88.66
+          },
+          "F_dependencyCeiling": {
+            "count": 15432,
+            "pct": 58.766
+          },
+          "G_dependencyCeiling": {
+            "count": 21292,
+            "pct": 81.081
+          },
+          "memberDates": 26260,
+          "path127": {
+            "count": 23386,
+            "pct": 89.056
+          },
+          "tradable": {
+            "count": 23418,
+            "pct": 89.177
+          }
+        },
+        "2022": {
+          "A": {
+            "count": 14699,
+            "pct": 55.979
+          },
+          "ABC_tradable": {
+            "count": 13710,
+            "pct": 52.213
+          },
+          "B": {
+            "count": 16885,
+            "pct": 64.304
+          },
+          "B_cash": {
+            "count": 22290,
+            "pct": 84.888
+          },
+          "C": {
+            "count": 23470,
+            "pct": 89.382
+          },
+          "D_dependencyCeiling": {
+            "count": 15601,
+            "pct": 59.414
+          },
+          "E_dependencyCeiling": {
+            "count": 23470,
+            "pct": 89.382
+          },
+          "F_dependencyCeiling": {
+            "count": 14655,
+            "pct": 55.812
+          },
+          "G_dependencyCeiling": {
+            "count": 20698,
+            "pct": 78.826
+          },
+          "memberDates": 26258,
+          "path127": {
+            "count": 23574,
+            "pct": 89.778
+          },
+          "tradable": {
+            "count": 23574,
+            "pct": 89.778
+          }
+        },
+        "2023": {
+          "A": {
+            "count": 14792,
+            "pct": 56.564
+          },
+          "ABC_tradable": {
+            "count": 12718,
+            "pct": 48.633
+          },
+          "B": {
+            "count": 16141,
+            "pct": 61.722
+          },
+          "B_cash": {
+            "count": 21283,
+            "pct": 81.385
+          },
+          "C": {
+            "count": 22209,
+            "pct": 84.926
+          },
+          "D_dependencyCeiling": {
+            "count": 13875,
+            "pct": 53.057
+          },
+          "E_dependencyCeiling": {
+            "count": 22209,
+            "pct": 84.926
+          },
+          "F_dependencyCeiling": {
+            "count": 14778,
+            "pct": 56.51
+          },
+          "G_dependencyCeiling": {
+            "count": 20320,
+            "pct": 77.703
+          },
+          "memberDates": 26151,
+          "path127": {
+            "count": 24648,
+            "pct": 94.253
+          },
+          "tradable": {
+            "count": 24700,
+            "pct": 94.451
+          }
+        },
+        "2024": {
+          "A": {
+            "count": 13273,
+            "pct": 50.749
+          },
+          "ABC_tradable": {
+            "count": 12868,
+            "pct": 49.201
+          },
+          "B": {
+            "count": 15262,
+            "pct": 58.354
+          },
+          "B_cash": {
+            "count": 19779,
+            "pct": 75.625
+          },
+          "C": {
+            "count": 24907,
+            "pct": 95.232
+          },
+          "D_dependencyCeiling": {
+            "count": 14793,
+            "pct": 56.561
+          },
+          "E_dependencyCeiling": {
+            "count": 24907,
+            "pct": 95.232
+          },
+          "F_dependencyCeiling": {
+            "count": 13273,
+            "pct": 50.749
+          },
+          "G_dependencyCeiling": {
+            "count": 19218,
+            "pct": 73.48
+          },
+          "memberDates": 26154,
+          "path127": {
+            "count": 25011,
+            "pct": 95.63
+          },
+          "tradable": {
+            "count": 25134,
+            "pct": 96.1
+          }
+        },
+        "2025": {
+          "A": {
+            "count": 13278,
+            "pct": 50.767
+          },
+          "ABC_tradable": {
+            "count": 13163,
+            "pct": 50.327
+          },
+          "B": {
+            "count": 15966,
+            "pct": 61.044
+          },
+          "B_cash": {
+            "count": 20639,
+            "pct": 78.91
+          },
+          "C": {
+            "count": 25321,
+            "pct": 96.811
+          },
+          "D_dependencyCeiling": {
+            "count": 15803,
+            "pct": 60.421
+          },
+          "E_dependencyCeiling": {
+            "count": 25321,
+            "pct": 96.811
+          },
+          "F_dependencyCeiling": {
+            "count": 13278,
+            "pct": 50.767
+          },
+          "G_dependencyCeiling": {
+            "count": 20440,
+            "pct": 78.149
+          },
+          "memberDates": 26155,
+          "path127": {
+            "count": 25425,
+            "pct": 97.209
+          },
+          "tradable": {
+            "count": 25426,
+            "pct": 97.213
+          }
+        },
+        "2026": {
+          "A": {
+            "count": 10653,
+            "pct": 57.246
+          },
+          "ABC_tradable": {
+            "count": 10608,
+            "pct": 57.005
+          },
+          "B": {
+            "count": 12710,
+            "pct": 68.3
+          },
+          "B_cash": {
+            "count": 16640,
+            "pct": 89.419
+          },
+          "C": {
+            "count": 18273,
+            "pct": 98.194
+          },
+          "D_dependencyCeiling": {
+            "count": 12645,
+            "pct": 67.951
+          },
+          "E_dependencyCeiling": {
+            "count": 18273,
+            "pct": 98.194
+          },
+          "F_dependencyCeiling": {
+            "count": 10653,
+            "pct": 57.246
+          },
+          "G_dependencyCeiling": {
+            "count": 16551,
+            "pct": 88.941
+          },
+          "memberDates": 18609,
+          "path127": {
+            "count": 18347,
+            "pct": 98.592
+          },
+          "tradable": {
+            "count": 18398,
+            "pct": 98.866
+          }
+        }
+      },
+      "filingInventory": {
+        "acceptedDateMissing": 1,
+        "collectedAtMissing": 0,
+        "collectedAtRange": [
+          "2026-09-13T20:48:39Z",
+          "2026-10-15T08:38:31Z"
+        ],
+        "collectionCohorts": {
+          "2026-09-13": {
+            "emptyBalanceSheet": 83,
+            "filings": 9074
+          },
+          "2026-09-14": {
+            "emptyBalanceSheet": 59,
+            "filings": 25253
+          },
+          "2026-10-07": {
+            "emptyBalanceSheet": 1,
+            "filings": 1
+          },
+          "2026-10-08": {
+            "emptyBalanceSheet": 588,
+            "filings": 588
+          },
+          "2026-10-09": {
+            "emptyBalanceSheet": 28,
+            "filings": 28
+          },
+          "2026-10-10": {
+            "emptyBalanceSheet": 1,
+            "filings": 1
+          },
+          "2026-10-11": {
+            "emptyBalanceSheet": 1,
+            "filings": 1
+          },
+          "2026-10-15": {
+            "emptyBalanceSheet": 1,
+            "filings": 1
+          }
+        },
+        "distinctIds": 34947,
+        "publicDateMissing": 0,
+        "publicDateRange": [
+          "2012-01-31",
+          "2026-10-13"
+        ],
+        "receiptDateMismatch": null,
+        "rows": 34947,
+        "tickers": 782
+      },
+      "financialOnlyAt2026_10_16": {
+        "counts": {
+          "A": 275,
+          "B": 355
+        },
+        "priceLinked": false
+      },
+      "firstMeasurableDate": {
+        "A": "2014-01-31",
+        "B": "2013-02-01",
+        "C": "2013-01-04"
+      },
+      "latestPriceLinkedCandidatesH126AndH252": {
+        "A": {
+          "count": 274,
+          "pct": 54.473
+        },
+        "ABC_tradable": {
+          "count": 274,
+          "pct": 54.473
+        },
+        "B": {
+          "count": 355,
+          "pct": 70.577
+        },
+        "B_cash": {
+          "count": 463,
+          "pct": 92.048
+        },
+        "C": {
+          "count": 499,
+          "pct": 99.205
+        },
+        "D_dependencyCeiling": {
+          "count": 355,
+          "pct": 70.577
+        },
+        "E_dependencyCeiling": {
+          "count": 499,
+          "pct": 99.205
+        },
+        "F_dependencyCeiling": {
+          "count": 274,
+          "pct": 54.473
+        },
+        "G_dependencyCeiling": {
+          "count": 463,
+          "pct": 92.048
+        },
+        "date": "2026-09-11",
+        "memberDates": 503,
+        "path127": {
+          "count": 501,
+          "pct": 99.602
+        },
+        "tradable": {
+          "count": 503,
+          "pct": 100.0
+        }
+      },
+      "missingReasons": {
+        "A": {
+          "AVAILABLE": 166040,
+          "INCOMPLETE_CHAIN": 44503,
+          "INCOMPLETE_CHAIN+INCOMPLETE_CHAIN_OR_UNIT": 1737,
+          "INCOMPLETE_CHAIN+INCOMPLETE_CHAIN_OR_UNIT+OPERATING_SUBTOTAL_NOT_STATED": 3789,
+          "INCOMPLETE_CHAIN+INCOMPLETE_CHAIN_OR_UNIT|INCOMPLETE_CHAIN+INCOMPLETE_CHAIN_OR_UNIT+OPERATING_SUBTOTAL_NOT_STATED": 195,
+          "INCOMPLETE_CHAIN+OPERATING_SUBTOTAL_NOT_STATED": 11691,
+          "INCOMPLETE_CHAIN_OR_UNIT": 5301,
+          "INCOMPLETE_CHAIN_OR_UNIT+OPERATING_SUBTOTAL_NOT_STATED": 13787,
+          "INCOMPLETE_CHAIN_OR_UNIT|INCOMPLETE_CHAIN_OR_UNIT+OPERATING_SUBTOTAL_NOT_STATED": 334,
+          "INCOMPLETE_CHAIN_OR_UNIT|NON_POSITIVE_GROWTH_BASE": 341,
+          "INCOMPLETE_CHAIN|INCOMPLETE_CHAIN+OPERATING_SUBTOTAL_NOT_STATED": 802,
+          "NON_POSITIVE_GROWTH_BASE": 10459,
+          "NON_POSITIVE_GROWTH_BASE|OPERATING_SUBTOTAL_NOT_STATED": 154,
+          "NO_FILING_STORE": 9191,
+          "NO_VISIBLE_FILING": 4043,
+          "OPERATING_SUBTOTAL_NOT_STATED": 57067,
+          "REPORT_STALE_OVER_180_DAYS": 30092
+        },
+        "B": {
+          "AVAILABLE": 197088,
+          "INCOMPLETE_CHAIN": 24885,
+          "INCOMPLETE_CHAIN+INCOMPLETE_CHAIN_OR_UNIT": 1707,
+          "INCOMPLETE_CHAIN+INCOMPLETE_CHAIN_OR_UNIT+OPERATING_SUBTOTAL_NOT_STATED": 3968,
+          "INCOMPLETE_CHAIN+OPERATING_SUBTOTAL_NOT_STATED": 12464,
+          "INCOMPLETE_CHAIN_OR_UNIT": 5868,
+          "INCOMPLETE_CHAIN_OR_UNIT+OPERATING_SUBTOTAL_NOT_STATED": 13899,
+          "NON_POSITIVE_REVENUE": 225,
+          "NON_POSITIVE_REVENUE|OPERATING_SUBTOTAL_NOT_STATED": 154,
+          "NO_FILING_STORE": 9191,
+          "NO_VISIBLE_FILING": 4043,
+          "OPERATING_SUBTOTAL_NOT_STATED": 55942,
+          "REPORT_STALE_OVER_180_DAYS": 30092
+        },
+        "C": {
+          "AVAILABLE": 294395,
+          "INDUSTRY_UNRESOLVED": 3931,
+          "INSUFFICIENT_SAME_DATE_PEERS": 346,
+          "NO_EXACT_TRADED_127_SESSION_WINDOW": 60854
+        }
+      },
+      "recentWeeklyCoverage": [
+        {
+          "A": {
+            "count": 293,
+            "pct": 58.25
+          },
+          "ABC_tradable": {
+            "count": 292,
+            "pct": 58.052
+          },
+          "B": {
+            "count": 354,
+            "pct": 70.378
+          },
+          "B_cash": {
+            "count": 463,
+            "pct": 92.048
+          },
+          "C": {
+            "count": 496,
+            "pct": 98.608
+          },
+          "D_dependencyCeiling": {
+            "count": 353,
+            "pct": 70.179
+          },
+          "E_dependencyCeiling": {
+            "count": 496,
+            "pct": 98.608
+          },
+          "F_dependencyCeiling": {
+            "count": 293,
+            "pct": 58.25
+          },
+          "G_dependencyCeiling": {
+            "count": 461,
+            "pct": 91.65
+          },
+          "date": "2026-07-24",
+          "memberDates": 503,
+          "path127": {
+            "count": 498,
+            "pct": 99.006
+          },
+          "tradable": {
+            "count": 501,
+            "pct": 99.602
+          }
+        },
+        {
+          "A": {
+            "count": 289,
+            "pct": 57.455
+          },
+          "ABC_tradable": {
+            "count": 288,
+            "pct": 57.256
+          },
+          "B": {
+            "count": 354,
+            "pct": 70.378
+          },
+          "B_cash": {
+            "count": 463,
+            "pct": 92.048
+          },
+          "C": {
+            "count": 496,
+            "pct": 98.608
+          },
+          "D_dependencyCeiling": {
+            "count": 353,
+            "pct": 70.179
+          },
+          "E_dependencyCeiling": {
+            "count": 496,
+            "pct": 98.608
+          },
+          "F_dependencyCeiling": {
+            "count": 289,
+            "pct": 57.455
+          },
+          "G_dependencyCeiling": {
+            "count": 461,
+            "pct": 91.65
+          },
+          "date": "2026-07-31",
+          "memberDates": 503,
+          "path127": {
+            "count": 498,
+            "pct": 99.006
+          },
+          "tradable": {
+            "count": 501,
+            "pct": 99.602
+          }
+        },
+        {
+          "A": {
+            "count": 278,
+            "pct": 55.378
+          },
+          "ABC_tradable": {
+            "count": 278,
+            "pct": 55.378
+          },
+          "B": {
+            "count": 353,
+            "pct": 70.319
+          },
+          "B_cash": {
+            "count": 462,
+            "pct": 92.032
+          },
+          "C": {
+            "count": 496,
+            "pct": 98.805
+          },
+          "D_dependencyCeiling": {
+            "count": 353,
+            "pct": 70.319
+          },
+          "E_dependencyCeiling": {
+            "count": 496,
+            "pct": 98.805
+          },
+          "F_dependencyCeiling": {
+            "count": 278,
+            "pct": 55.378
+          },
+          "G_dependencyCeiling": {
+            "count": 461,
+            "pct": 91.833
+          },
+          "date": "2026-08-07",
+          "memberDates": 502,
+          "path127": {
+            "count": 498,
+            "pct": 99.203
+          },
+          "tradable": {
+            "count": 501,
+            "pct": 99.801
+          }
+        },
+        {
+          "A": {
+            "count": 277,
+            "pct": 55.07
+          },
+          "ABC_tradable": {
+            "count": 277,
+            "pct": 55.07
+          },
+          "B": {
+            "count": 354,
+            "pct": 70.378
+          },
+          "B_cash": {
+            "count": 463,
+            "pct": 92.048
+          },
+          "C": {
+            "count": 497,
+            "pct": 98.807
+          },
+          "D_dependencyCeiling": {
+            "count": 354,
+            "pct": 70.378
+          },
+          "E_dependencyCeiling": {
+            "count": 497,
+            "pct": 98.807
+          },
+          "F_dependencyCeiling": {
+            "count": 277,
+            "pct": 55.07
+          },
+          "G_dependencyCeiling": {
+            "count": 462,
+            "pct": 91.849
+          },
+          "date": "2026-08-14",
+          "memberDates": 503,
+          "path127": {
+            "count": 499,
+            "pct": 99.205
+          },
+          "tradable": {
+            "count": 503,
+            "pct": 100.0
+          }
+        },
+        {
+          "A": {
+            "count": 277,
+            "pct": 55.07
+          },
+          "ABC_tradable": {
+            "count": 277,
+            "pct": 55.07
+          },
+          "B": {
+            "count": 355,
+            "pct": 70.577
+          },
+          "B_cash": {
+            "count": 463,
+            "pct": 92.048
+          },
+          "C": {
+            "count": 499,
+            "pct": 99.205
+          },
+          "D_dependencyCeiling": {
+            "count": 355,
+            "pct": 70.577
+          },
+          "E_dependencyCeiling": {
+            "count": 499,
+            "pct": 99.205
+          },
+          "F_dependencyCeiling": {
+            "count": 277,
+            "pct": 55.07
+          },
+          "G_dependencyCeiling": {
+            "count": 463,
+            "pct": 92.048
+          },
+          "date": "2026-08-21",
+          "memberDates": 503,
+          "path127": {
+            "count": 501,
+            "pct": 99.602
+          },
+          "tradable": {
+            "count": 503,
+            "pct": 100.0
+          }
+        },
+        {
+          "A": {
+            "count": 275,
+            "pct": 54.672
+          },
+          "ABC_tradable": {
+            "count": 275,
+            "pct": 54.672
+          },
+          "B": {
+            "count": 355,
+            "pct": 70.577
+          },
+          "B_cash": {
+            "count": 463,
+            "pct": 92.048
+          },
+          "C": {
+            "count": 499,
+            "pct": 99.205
+          },
+          "D_dependencyCeiling": {
+            "count": 355,
+            "pct": 70.577
+          },
+          "E_dependencyCeiling": {
+            "count": 499,
+            "pct": 99.205
+          },
+          "F_dependencyCeiling": {
+            "count": 275,
+            "pct": 54.672
+          },
+          "G_dependencyCeiling": {
+            "count": 463,
+            "pct": 92.048
+          },
+          "date": "2026-08-28",
+          "memberDates": 503,
+          "path127": {
+            "count": 501,
+            "pct": 99.602
+          },
+          "tradable": {
+            "count": 503,
+            "pct": 100.0
+          }
+        },
+        {
+          "A": {
+            "count": 275,
+            "pct": 54.672
+          },
+          "ABC_tradable": {
+            "count": 275,
+            "pct": 54.672
+          },
+          "B": {
+            "count": 355,
+            "pct": 70.577
+          },
+          "B_cash": {
+            "count": 463,
+            "pct": 92.048
+          },
+          "C": {
+            "count": 499,
+            "pct": 99.205
+          },
+          "D_dependencyCeiling": {
+            "count": 355,
+            "pct": 70.577
+          },
+          "E_dependencyCeiling": {
+            "count": 499,
+            "pct": 99.205
+          },
+          "F_dependencyCeiling": {
+            "count": 275,
+            "pct": 54.672
+          },
+          "G_dependencyCeiling": {
+            "count": 463,
+            "pct": 92.048
+          },
+          "date": "2026-09-04",
+          "memberDates": 503,
+          "path127": {
+            "count": 501,
+            "pct": 99.602
+          },
+          "tradable": {
+            "count": 503,
+            "pct": 100.0
+          }
+        },
+        {
+          "A": {
+            "count": 274,
+            "pct": 54.473
+          },
+          "ABC_tradable": {
+            "count": 274,
+            "pct": 54.473
+          },
+          "B": {
+            "count": 355,
+            "pct": 70.577
+          },
+          "B_cash": {
+            "count": 463,
+            "pct": 92.048
+          },
+          "C": {
+            "count": 499,
+            "pct": 99.205
+          },
+          "D_dependencyCeiling": {
+            "count": 355,
+            "pct": 70.577
+          },
+          "E_dependencyCeiling": {
+            "count": 499,
+            "pct": 99.205
+          },
+          "F_dependencyCeiling": {
+            "count": 274,
+            "pct": 54.473
+          },
+          "G_dependencyCeiling": {
+            "count": 463,
+            "pct": 92.048
+          },
+          "date": "2026-09-11",
+          "memberDates": 503,
+          "path127": {
+            "count": 501,
+            "pct": 99.602
+          },
+          "tradable": {
+            "count": 503,
+            "pct": 100.0
+          }
+        }
+      ],
+      "totals": {
+        "A": {
+          "count": 166040,
+          "pct": 46.183
+        },
+        "ABC_tradable": {
+          "count": 152842,
+          "pct": 42.512
+        },
+        "B": {
+          "count": 197088,
+          "pct": 54.819
+        },
+        "B_cash": {
+          "count": 261430,
+          "pct": 72.715
+        },
+        "C": {
+          "count": 294395,
+          "pct": 81.884
+        },
+        "D_dependencyCeiling": {
+          "count": 181092,
+          "pct": 50.37
+        },
+        "E_dependencyCeiling": {
+          "count": 294395,
+          "pct": 81.884
+        },
+        "F_dependencyCeiling": {
+          "count": 164707,
+          "pct": 45.812
+        },
+        "G_dependencyCeiling": {
+          "count": 244665,
+          "pct": 68.052
+        },
+        "memberDates": 359526,
+        "path127": {
+          "count": 298672,
+          "pct": 83.074
+        },
+        "tradable": {
+          "count": 299375,
+          "pct": 83.269
+        }
+      },
+      "weeklyCoverageSha256": "76aa468ac4bc74091f2849ce33478db2f37b071c52e396d7219332c030fa793b",
+      "weeklySignalRange": [
+        "2013-01-04",
+        "2026-09-11"
+      ],
+      "weeks": 715
+    }
+  },
+  "modelFits": 0,
+  "patternsDEFG": "dependency ceilings only; event timelines, lagged leader sets, valuation sequence and downside features not implemented",
+  "program": "WINNER_INFLECTION_EXPLORATORY_V1",
+  "sourceCommit": "1bf68f59cffa20239977e2cfaa0f35a07d0ec884",
+  "sources": {
+    "002b56434e3aa3e845798ec2ea7ca6d9267e3f7a:data/kr-industry-membership-foundation-v4/state/intervals.json.gz": {
+      "bytes": 6679,
+      "sha256": "01a7958608939b73b85f7b96457e6b6420bec1aaa78417526b98dbea3321aae0"
+    },
+    "002b56434e3aa3e845798ec2ea7ca6d9267e3f7a:data/research/us-capital-allocation-alpha-v1/sp500-snapshot-sectors.json.gz": {
+      "bytes": 73396,
+      "sha256": "f49c15a0ebcd371c9a407118abb6ef350bba2060227ca40d61ba210fc4f81a74"
+    },
+    "002b56434e3aa3e845798ec2ea7ca6d9267e3f7a:research_specs/alpha-opportunity-model-v1-us-membership.json.gz": {
+      "bytes": 15697,
+      "sha256": "397b27270255d7a14a36d075a3e2889129d9351d817420614c8ccd289d74c30f"
+    },
+    "002b56434e3aa3e845798ec2ea7ca6d9267e3f7a:research_specs/kr-industry-membership-foundation-v4/crosswalk.json": {
+      "bytes": 6417,
+      "sha256": "76166ad309d323240ffe749df74ac089f4693f30ef77231b8cd5ab85365826b5"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-candidate-merged/dart-2015.jsonl.gz": {
+      "bytes": 106386,
+      "sha256": "a7eeaf2d25dde7e7574f6991f4075962cc3fbeaaeec09fa0b86f7399571f6168"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-candidate-merged/dart-2016.jsonl.gz": {
+      "bytes": 135882,
+      "sha256": "a1032ae814df1a0fb10f7edc92881e2c2b44d3064e089d0210cfdbdf1ee3d0c6"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-candidate-merged/dart-2017.jsonl.gz": {
+      "bytes": 129038,
+      "sha256": "06a9acd533536e3aeddbbf31c9429c5aaf22db2e52d9eb515aa7fab3a1a3749a"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-candidate-merged/dart-2018.jsonl.gz": {
+      "bytes": 128983,
+      "sha256": "98278a45385b4b895055f3f5b35fa6c87d4f64ed8da97f69e1822f908ada89d3"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-candidate-merged/dart-2019.jsonl.gz": {
+      "bytes": 136143,
+      "sha256": "7d1f9decc7d8d683cde70db6a01578ae1bc68532a42535657e6575a2eb05e206"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-candidate-merged/dart-2020.jsonl.gz": {
+      "bytes": 136759,
+      "sha256": "073c38aae8c455c40b74cf962d89dac5dea5ae49131d1ccdac37f2fefe5527fe"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-candidate-merged/dart-2021.jsonl.gz": {
+      "bytes": 142543,
+      "sha256": "aca2af6575e8fa2a0f04c2213856e3746f999334ad50b6c480dece23dbaf81cb"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-candidate-merged/dart-2022.jsonl.gz": {
+      "bytes": 145334,
+      "sha256": "05d8e984985a5b2d2ad6a55782885f73aebef953e4d49f70a3ceef9c525c1080"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-candidate-merged/dart-2023.jsonl.gz": {
+      "bytes": 160815,
+      "sha256": "8c4752b966d7dd5ae6d4b594236bb924068c13446c85069c170eb159b23dcd78"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-candidate-merged/dart-2024.jsonl.gz": {
+      "bytes": 167655,
+      "sha256": "0e3f4ea1ad049861e98fcbf5d95e28eb91388b7b2205992dd6a03748ebd540c4"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-candidate-merged/dart-2025.jsonl.gz": {
+      "bytes": 166575,
+      "sha256": "312b0a559e60c554fe9a823207d8c1e986b7cccd8675e0ce11aff0c85483f215"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-candidate-merged/dart-2026.jsonl.gz": {
+      "bytes": 77467,
+      "sha256": "713ec8bc535bec018748e098f7a1b5737450d5e4c56ed2a0899510b7b3588c1c"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2011.jsonl.gz": {
+      "bytes": 53049,
+      "sha256": "023a2f3a0ce111a3e91d1565d39cc382607a44b75850b92899211931d026ea8c"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2012.jsonl.gz": {
+      "bytes": 2928651,
+      "sha256": "5e5fa041838be0c2c077fd8ee94dffe840db713f0e6213837b679ad3c34e7b27"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2013.jsonl.gz": {
+      "bytes": 3044151,
+      "sha256": "29135f2c7544bea499a15b0cfd49525260304bdf33e83815f621fdcadf9b0f95"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2014.jsonl.gz": {
+      "bytes": 2767114,
+      "sha256": "2216355dfd621570f463f7bd8901ae1fea17a004a5c710764f5addaf457b3177"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2015.jsonl.gz": {
+      "bytes": 2650151,
+      "sha256": "be5cf365cce7f14682ccba551a79d5064ebcbd70163c0c2fb0359a959f5c0648"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2016.jsonl.gz": {
+      "bytes": 2627403,
+      "sha256": "6c48667b143891e8ce28caf65fc5c8464c410de2064e3b7597c163e73150cd50"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2017.jsonl.gz": {
+      "bytes": 2640618,
+      "sha256": "6fe3dbc7a26715738e763d81ae2a0b65c9d26470a716bc5dcdba425ad5f5c6ba"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2018.jsonl.gz": {
+      "bytes": 2651552,
+      "sha256": "71a95470b3cadff59838cd7889e8c36fc63737aed54b710f3110cc0322029617"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2019.jsonl.gz": {
+      "bytes": 2973829,
+      "sha256": "4e5947ff06ab2cbc37d0afdd0a681dac66db63f4c67e72825347cc59dc4ed65d"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2020.jsonl.gz": {
+      "bytes": 2879778,
+      "sha256": "2b921e4bb1fdd8b47ded342c2234633ab2f3820db8e588b41fe8322a9919d11a"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2021.jsonl.gz": {
+      "bytes": 2874927,
+      "sha256": "89975f24adcdf9f4b1d3252b129994ca2cd182e72fc6855f1cd5d1f1f899c8f1"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2022.jsonl.gz": {
+      "bytes": 2813742,
+      "sha256": "5703add3cfa98fb7dca3beb8c79d9171a1d2106cc41b7b76abfda8e2408a8897"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2023.jsonl.gz": {
+      "bytes": 2580578,
+      "sha256": "c507b7bb846cd3ea4cc693a0ea91547e241404a9c71b51ef2bdd10ef13026221"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2024.jsonl.gz": {
+      "bytes": 2564238,
+      "sha256": "2dc6a3c770932e5a6995cc51ea2e9a0d08fc70e2e9372d47847f9c8570e06858"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2025.jsonl.gz": {
+      "bytes": 2530966,
+      "sha256": "49e91cedf1d27c3dfee8de66056dacaabbf56d04b84105ded30f6cf4b6fba9fa"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2026.jsonl.gz": {
+      "bytes": 1588871,
+      "sha256": "63b3732f1b8f5d3fa460ad43b3ab817e39e01d547c160fd7c2f7eb8fb9d6aa47"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2027.jsonl.gz": {
+      "bytes": 52283,
+      "sha256": "625df8ee283b85393b11d7ba2e80cd9b347d9486c8a6591c31280e1935a11d37"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/historical/replay-v16/inputs.json": {
+      "bytes": 204071,
+      "sha256": "d60ff99710baaf1417cb23d0b007e2d11766e7d76eb03c0d877e0d2495a929cd"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/prices/kr/krx-prices-2013.jsonl.gz": {
+      "bytes": 3282704,
+      "sha256": "2bce090e2005b0bfcbf8f89738bfc5047f4e025f866d09ec571902cde7fc189a"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/prices/kr/krx-prices-2014.jsonl.gz": {
+      "bytes": 3301074,
+      "sha256": "41e5057ad9648139c73728133d4e33fa5a41fed5a03e7b8862bcd425f8312217"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/prices/kr/krx-prices-2015.jsonl.gz": {
+      "bytes": 3390074,
+      "sha256": "12f38a419c642ff369d5b5c3219930bb308dd06784ba3ee8b0428e5ca4893f1b"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/prices/kr/krx-prices-2016.jsonl.gz": {
+      "bytes": 3439907,
+      "sha256": "3a5869f1c08f46eb81080da949040dc67cb56c2792b3e5645182a90ae7201e93"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/prices/kr/krx-prices-2017.jsonl.gz": {
+      "bytes": 3456214,
+      "sha256": "0116c32a63e2043d37ff05cb9e382570dc1c4d1bdbd40f252ef912725e4e8593"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/prices/kr/krx-prices-2018.jsonl.gz": {
+      "bytes": 3586079,
+      "sha256": "138e0a6d733ea94ce1334ec55dc040307f6b998f2e4c99b3b4b06e298c5f4717"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/prices/kr/krx-prices-2019.jsonl.gz": {
+      "bytes": 3684751,
+      "sha256": "8a9da28c176559f56645437b66b8fe1da78ed46b371cfc4f3b42a3e1743c09e6"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/prices/kr/krx-prices-2020.jsonl.gz": {
+      "bytes": 3807557,
+      "sha256": "e0c375dd826dc017ecef45bc88162e152bf68de8a194e0e0b67893bad1713164"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/prices/kr/krx-prices-2021.jsonl.gz": {
+      "bytes": 3929171,
+      "sha256": "29279d2360f230dcc6fe63b463a97281144061f7d0cee883759c82fadd2fbee1"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/prices/kr/krx-prices-2022.jsonl.gz": {
+      "bytes": 3951118,
+      "sha256": "986bc9255a1eb35584bd3dfd306d5489fdab2a6b73c96e99652f9f458c281684"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/prices/kr/krx-prices-2023.jsonl.gz": {
+      "bytes": 4054964,
+      "sha256": "c0291e6ae19e7cbfe5855f864f04618b46e933f9383e489b0a7753fdb66fe416"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/prices/kr/krx-prices-2024.jsonl.gz": {
+      "bytes": 4105356,
+      "sha256": "fb3ee2c5435130ff8fceca0ba66f32ce8a815a6ce3bb855b9c08cbfe34fc2808"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/prices/kr/krx-prices-2025.jsonl.gz": {
+      "bytes": 4123587,
+      "sha256": "d0bef0689a9181276eef7335d8323cfeaf1a166dc545a4b523f1f45508885773"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/prices/kr/krx-prices-2026.jsonl.gz": {
+      "bytes": 3052914,
+      "sha256": "ddce511008a41e8383daf261d1b1df09b987f8c72a007aafbfa25407081ad62e"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/01326ab6e47366beee7c9110f66734d0f9e871ff2c26cdbb2af05eac5679f86a.json.gz": {
+      "bytes": 784654,
+      "sha256": "162dbd84b8e8f1cacf1f3a999cb7efd7a89007d8ffe525d5a82298c1b51df0c6"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/027a2bc62220d4129bbfd18f2eb3ad56badafb7a625887c3d58522f2fddecb20.json.gz": {
+      "bytes": 567029,
+      "sha256": "360431bbe8dd5ca697297e55c6dacf60ba5bee80b9e989708f7fbf485a7d826f"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/04337448df105c46997816e9a367cc87ea7a54cdc35208bcfb77bffe65fc5e69.json.gz": {
+      "bytes": 728271,
+      "sha256": "4f4dc8546df76151cb65a673582644e37f346d5234e18f4f0e8e39ba548e6fc6"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/045dc0ee4d2a754c87b8b2490143a85e91ee4cc67b3ee51c360eea0af42328b3.json.gz": {
+      "bytes": 827095,
+      "sha256": "4cb80eaeb2f4dc7236c109ced2f58f8b20a1775fc875346d41a53e7cdd11e806"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/0669ea4541dd67587f6a5d968c40fd2d6ee42ec24973b7e3a9caa17adc003ef2.json.gz": {
+      "bytes": 731148,
+      "sha256": "d41637b9cee9e3c7274db825e752cf9431720688fea079878a7b85d3f18cfb7f"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/06c9627b8f5653e70af4dc48a1d765a78f73c2017e1bd33aea135e964aafc4ab.json.gz": {
+      "bytes": 795800,
+      "sha256": "e08ad2ce2e7a80d1918d40ae6e0989c79eb86bdaa78b40b0462826b1b3107616"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/07ab05bb2f1a9fe7f50cf3bf3132705ddc5bb075e95c4fc6abff28705e3b9f35.json.gz": {
+      "bytes": 699695,
+      "sha256": "bfdbf09590087d5deb5fdc163ccf29842200578ce3744f3973d71f608146c4ad"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/088814081dc02b38231d8af1b451de3dabdf703b167f930c598b1b8c6c4dedc1.json.gz": {
+      "bytes": 623291,
+      "sha256": "87474a677a3c613082ae5e763bafc5cafec8674e7100df912038f0e7ccaa90ac"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/098550bc84c88c3e23bb1e5e1be732496f51591baaaaba9e7e9ab2cdd2394dd1.json.gz": {
+      "bytes": 805719,
+      "sha256": "12656ef02b51d852fb096ce2e74377a316f5a78ee717366374edc60b57e321f1"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/0ede2a5208deffda5cf1409683a92ddfd3b5e9eb34cf3b0e95d2e6abf404bdb7.json.gz": {
+      "bytes": 761286,
+      "sha256": "fff929176b21a16ded4df3abacf479788f3e2a7359db3d13da8b8ffa516f6f28"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/116ca83bf47bdb4cb91e030dce6f388f222c2633d7b8a80f4c4fee9e9f49b0f7.json.gz": {
+      "bytes": 795526,
+      "sha256": "055cab69bbf5219c969cb049d27e6fc04cc298e090609804592bf7879841fd6d"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/137eae7f34fb842bb6d02d115caa7d81a234a84b4c9bdf163005bceb4f5336ea.json.gz": {
+      "bytes": 623201,
+      "sha256": "d9a32d182910f1bb8506795cae354d6f78938f3f67a3ccedfa572c994b2c7d11"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/14412ee242ca1629e3a46aa97768d95baee983ce2d84f79addaa2c91d5b53065.json.gz": {
+      "bytes": 669645,
+      "sha256": "977d3d0f14ad4e3265fbfbf4aed879eaeed9e803abafd4e7a2b5f5d2f5398bfc"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/19805c87e0cf705d0fb771208d1e86876db9f298ad4f5e7a66cb69aa9420d5cf.json.gz": {
+      "bytes": 729922,
+      "sha256": "38eca00ae30a97115e072b0bf5fed4757f04ea9d410bbe1fcb4d03438a271278"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/1a4bca6927d7ad6f5f1ab6d96682e12b70ceae164f4942c6a019ff33385374b6.json.gz": {
+      "bytes": 704346,
+      "sha256": "50ee95de680b62699752173b7e62e66ce21bca59e68485aa022a8523c6049b92"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/1a52504dc0ef3df8bcc77468e3046ed00f8574356d32cdb496eab0ff638803aa.json.gz": {
+      "bytes": 605322,
+      "sha256": "5022c8013a51e87a3b80eb65716c9b0d2710bde3f3eb5ab38ab8a3ef1bb28f70"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/1ad549219f236290ac88df3345974b55dc19b43372104313c6a97aed40397150.json.gz": {
+      "bytes": 548310,
+      "sha256": "1a6d5dd51ea9d6fd4970e34000079e319c010e6bc0443f0b1a512e2ee6635b2a"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/1dcfefd750ea81bd0d1db5c5b105a6d274c3ba49b11ddd77321088a76333f635.json.gz": {
+      "bytes": 684753,
+      "sha256": "9e481769dd2a314683c078a126813fb8ca6521ed5c0fcf000c0e3a344e1b7ef7"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/20d6bcb0bae6df8d8463e864982b18209586f86b1903b94ded35f1501c80b480.json.gz": {
+      "bytes": 717914,
+      "sha256": "078670f0bfe8c55ced10d309ed911d0ae06ce9da30aaed84c30cacae8b8ae589"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/21ee93ed798a762c480c15124150de5267dfe137b96dcaf87cf6c7e8fdfbcd34.json.gz": {
+      "bytes": 606166,
+      "sha256": "462ffaa681a2379fd6d13b3f9877c43d8162d4d7649be314058bc275bac6b56d"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/22b995c28f4bacfb5b851eb1658f3cd069f339b02daa80bbbfa57613200f15db.json.gz": {
+      "bytes": 739137,
+      "sha256": "dc35a741d7f719e67d09c3b1fba9ce794e17320c9862009793fe2108262428d6"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/22ba466da8a401068c1427c48df297d2a116ae24b2b2537bcd2828d9b0d2b99a.json.gz": {
+      "bytes": 686276,
+      "sha256": "301af197d7f7c598c91369202517bd6560aa411204554c4ebee9616f4d8c4126"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/25ce545a848f99f7d5f38c647b16b7d26fbe73f99a2c245628ca0244a1ab1784.json.gz": {
+      "bytes": 613563,
+      "sha256": "60a5648e88f82a1b14825389de98e7ba8ef19dc664df85737ac234b9553f74e0"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/260d35bb427419497e09ce2d9acdeeea27f63d510ad41e01d3753e505cc69562.json.gz": {
+      "bytes": 684480,
+      "sha256": "97fcc820188c93202e606fa586fb7c22ac87db66385c2621efdd79bc9db6a8dc"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/2721dc2dbf6ea1b8b35ec6d65b7a036c8bb601841962ac909d89c1138790c1a4.json.gz": {
+      "bytes": 563601,
+      "sha256": "4a02e218adc49247763fc79ac78785d45fbdd67043e004e3ba467b7132a2c3ae"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/2863e30bfa260ad59a4e2e97084c042fa1244cf8323d4698d4092c9a84a3f4fb.json.gz": {
+      "bytes": 747758,
+      "sha256": "9f4eb523be6f0890067e3104b8255ea680055a1f7f0a2725ab3a6b51d847a025"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/28be9793ccddae47e443f23a4aad76da33b2e6a84aaca612badb509fa64f9882.json.gz": {
+      "bytes": 624225,
+      "sha256": "4ca58c911549c4abdfad53c960e604c9c6b99b7819c23eaf0980799fa46d95d9"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/2a47234ea461447037de8bc163ad64e0c9691ca6b7ba4c15b21df1f662f3336f.json.gz": {
+      "bytes": 739492,
+      "sha256": "dfe186bd784e75d5e0ba423f6585073cb9b9772229bbfa2bb019b8b5239c3ea4"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/2a6423c835b4366dde87554f1e133792055d3c42a0e5ee8f5c8f984552c34686.json.gz": {
+      "bytes": 766455,
+      "sha256": "e6035932ec3b59653b06ca148168a1c6cf138fae9310bdfa6fcb9625e29e74ec"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/2ac9e7cc552d5a0f266c870485456e2041679b8b732a21a98084d26dbf9ca245.json.gz": {
+      "bytes": 674105,
+      "sha256": "671fb357d9a8490eb3fefd243cb1347c490243400e3a065f7af0b536bc6a8169"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/2b50913b494210bd585532497ed6c5de7331ba1ee162f0271f9b1f363202369a.json.gz": {
+      "bytes": 797882,
+      "sha256": "8802466ad41d62a69340aad7c23fb1fb6858bc164d27185a73cb74b3caece80f"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/2e7f312037de1899fbb93d287bdf46e9c91158009a71ba8a035f7db22c391e79.json.gz": {
+      "bytes": 759633,
+      "sha256": "0f9d17e7bbeeb94cfe9280982b3fbee441e7cfe0a07e71452325964833d68ab4"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/2f2d0c6e8b5eeda1ec880650154e11bde937c22a253f18747941f087c87400ae.json.gz": {
+      "bytes": 643727,
+      "sha256": "74e9107f7114a08f53c9c5738b6121e62f5dd667996dc0fbea962b4826537b8f"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/300457fb37569fcd3877f83a800dcfb85791636c7c989c069cd5706f9d69012a.json.gz": {
+      "bytes": 720355,
+      "sha256": "6676d22e00492a2da4f0cc88c8f7af7320ae14416da5a310d6b7cfaa9104893e"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/3131c1dad79d7e235c4df8a08e035a89ee0bd712144fb020c72bcc593c3a1acf.json.gz": {
+      "bytes": 684252,
+      "sha256": "13e34820cc1b22f285226677a01c710fb8907d749d244deb8c029b061b249dde"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/376ed512e18889f9acc4536352e2338808008304b9c84722f28f4d55b035efc5.json.gz": {
+      "bytes": 576056,
+      "sha256": "88c474eb41996ba55a49098cc598f599a7bcadd3e1b8e8c90e40d0f76e832cef"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/37720ebcdb2ba4fd9cbaba443ed9336132048cc71d3e095366a9a0b3442a7c9c.json.gz": {
+      "bytes": 635351,
+      "sha256": "047c5ac2f24bc3f8b27adad26bcd232190a9a525eea3eb171b1d014cd5afa149"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/3909e870c46f01de7bef4448ab4996d9701da572eeeac9d4c697651b8e525846.json.gz": {
+      "bytes": 659365,
+      "sha256": "c675f431a611356ffc369379f55bcb4d6a1d1b02cd65b85c03e3ec31d9b90c61"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/3ac492c58049a757cb95d8f6a30d989a18a53a29cf68ad850de6e7465ad91a3f.json.gz": {
+      "bytes": 663559,
+      "sha256": "42cdb904798dd3ce61e3a5227163ba7c5ed841a5ef46c6baef4d05a6419ca8eb"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/3c9e949c86b561819eee934baa1854cc63308330657bc5085e6c03efa127bacd.json.gz": {
+      "bytes": 387477,
+      "sha256": "36c4d8669fb23ff6f5f06502cfa8b974f8488d3e5282c093ae806c8964eab911"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/3d4c928e6086d68f73325573a9d5d47a7299ce6168b11a05d4ac99280007f9f1.json.gz": {
+      "bytes": 757839,
+      "sha256": "8a7438673efe4be5d9ad896747dada3e1584af72004a31931660f33c40e98ed3"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/3dbfdbb0a6870caa1ffd53a76c4fbb442799ec8be024f2828c9e768d82adf2d9.json.gz": {
+      "bytes": 668752,
+      "sha256": "04f70f10e0c90c411882b4a0fe238d1858f082f908b751785c2dc8f21dc6b944"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/3e4fd77582ef85440d5285b0bde9065818d70c4913e5cfbc7809aa9bc2793ffb.json.gz": {
+      "bytes": 524967,
+      "sha256": "2e6c1b45cf1ac672ffa92fc607cb7e248fd24302082b6e44efb532c4521425d3"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/4007b78ff065ab8904d1f7c8e2f72f3b46178edb2aa235716ba8c3db7885f997.json.gz": {
+      "bytes": 629832,
+      "sha256": "3c6c3215dc6d843d896c7721b741b464fca801dd3ae76a47d78ea558089efa4b"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/410aef5c762ad8405f58f7f45b406b23e837494cc074bfbf077cd66b3425c46d.json.gz": {
+      "bytes": 810747,
+      "sha256": "7f8a7c76dc99752157da64bf76b707673c06281d36788809eea9c470ea655043"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/41c20a0a57b6abd85cf19b37a006feec81e83486376e203ec81948b98c1a3500.json.gz": {
+      "bytes": 576255,
+      "sha256": "b44e08eca62c10562f15756124a2212f2a5120472140318148bf3a79f60a13ab"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/43c84b0275124233443e1004469816b7ec19456c8f82e4f465cff9075a3ff716.json.gz": {
+      "bytes": 725602,
+      "sha256": "8acf9c8a128156e63b7070c35c1743ea472ad5571b2e5abd523a5782ba618674"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/4617955154276001533470eb6776cb4d2dae63c479b4b83d540fd2645a8e0a8d.json.gz": {
+      "bytes": 752755,
+      "sha256": "9969aa3a4ef8059f59e84d5f2703c5bcb136e012f7927d17c811efcfaea5a09f"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/46e3f85691e168e9bee0525c7d2046dc4058a53a40b447da65f7c987e7a0fc85.json.gz": {
+      "bytes": 713540,
+      "sha256": "04f2f41c5961aad8704765a1de00129f01e1c5a99f8c77bb48e76d531282dbf9"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/47abe3cc9748458f2d393d24b93acc1ec4d774799f5a0056f9ab65ee52fee149.json.gz": {
+      "bytes": 683618,
+      "sha256": "3bc333bd5fdd13622376cff3a00cc0baa766abd7b950b8d9c5b5405bf71386eb"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/48db361f08aebaa659a8c9b8b2028c13cbd1f38885d990beb5533218045a4d08.json.gz": {
+      "bytes": 560262,
+      "sha256": "d64ea1ce6242c5a3648e81cb66f26b20cb65de6ba8347a7101aa6f97ff11b4cb"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/499bbf0ef2a6757f3b74d881e02d028fd9888c72829b62c32a9d23a22d3ec314.json.gz": {
+      "bytes": 814459,
+      "sha256": "204529bb24beb41b1b440bd2e1498ecdd985cb3dc10d0a32208f5490e8074882"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/49fb057f40c06c837c07d5492619a5885c0bc48b33e03c062949fc6956a3fe91.json.gz": {
+      "bytes": 676653,
+      "sha256": "278c7de7ec35d24147e9e687b96a4e34338ab05543d9ffa7545870f13bd66837"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/4c1a6246ffe64411902bb2cbbb619c1f08a2d8aec1b57dcde6e2ce939d2d74bc.json.gz": {
+      "bytes": 574612,
+      "sha256": "41bb2aca58823b97e88d10237ba4e7365d32b29d11edc867a0e71170155728d9"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/4d0d6136c77696e021792e3fb81b5a69c99df1d11f89054b0cfa932a373441c2.json.gz": {
+      "bytes": 750019,
+      "sha256": "6e6344917417c463c739ed81a798b72788e673e978754098cb552d368760c287"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/4d625cb5730720fa5927384c2944b6eb215f7110fc7ba9435ead1cd60adb4012.json.gz": {
+      "bytes": 678468,
+      "sha256": "19ddd0465c06f3df4a92e5f5aec6e8b0efc1b7f1ead73d5a9fe3b0bd628f98be"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/4d915bc4ef02d620d3b97c0fd3b2e605ef895585ab555fe816d5e04c70fcc086.json.gz": {
+      "bytes": 609206,
+      "sha256": "d96d4bc098e9c4563f6e8301cc2f6a54904646ab06e93ee47f40330245ca12d2"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/4e7731f718162564329a6a08179887f1e142b997704660825eb63419ef7626d2.json.gz": {
+      "bytes": 650784,
+      "sha256": "b1a502107eb65e961cfedc7e63d9e8ac69935250e70e608d09f56a4320eda7ad"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/4f1a2fdd75e1444b406e6d8002caebdd24b8f32da75e5b3ef630ee1e37125afc.json.gz": {
+      "bytes": 803551,
+      "sha256": "8d5c01f6e47bf045ad2a6bab890f1ad254cb2d7a8a1638b8f618f8e8220eec57"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/4f644854594a2f54dd8cbac9dba8fc53dc6cf95d3b5c1aa80f6f99cc03f65d63.json.gz": {
+      "bytes": 633408,
+      "sha256": "18f7cf0f56e10cbf0e6df4952cc14da97c2a401c050d26622af7de0ca73d3645"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/50e438454f4fa126cb5518433e2f01a7024d91d91414bceece6392b0eb9ed5e5.json.gz": {
+      "bytes": 762742,
+      "sha256": "7cf96e287b968d77b9a1dcba48df693ca9e9e98714452763dee3f4ca37d0128f"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/535990ab0785abc2c8f35819a41cb6add6c031a6ac1ac66ba81c414216d82efa.json.gz": {
+      "bytes": 681310,
+      "sha256": "b1ad3bf7282c347fd97c8dd110c41e4f47d0319a29001b2e30055abdcf283014"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/53ad6f3437460c5114835b28ae84bb3c1bd57e825106f22e837a16cd958afdf9.json.gz": {
+      "bytes": 706386,
+      "sha256": "d8eb9bc9231658874d815611119d745dfba8a74f6fa1e2c30d9189a92175e7aa"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/54a21773f10e1779cfc4f94751bd10962f348614ffd7813b33a65e8445f857c2.json.gz": {
+      "bytes": 722876,
+      "sha256": "24673b37f8899ff48eb9e5bf19854f703d43e10a9b3551413daad0f0f045b744"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/54a935ab821e3b4a21e74bd9b37548135c7ed388c667e1e850e07100d11f5d28.json.gz": {
+      "bytes": 713692,
+      "sha256": "2926a92a331c415412dd6ded8949436803d1afc0cc53fa9642d0d38683d7cb8a"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/5691deac70d3343791742f3f0ff56e34dee0d27b8366ed8f1c0a7c9025449d6a.json.gz": {
+      "bytes": 678986,
+      "sha256": "8ce6e9239f468696d7e974903ada87fe06d58991f5f0cc3f4e775276eace41f4"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/5724ff2feb7529c89c6d324223ddbf09bf029e3d58bba1aa1d50c6507d785193.json.gz": {
+      "bytes": 762296,
+      "sha256": "5f0e40d10d07cdb7a884e6a8755cae0be2ef10810d36848f36485d6a572065c9"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/5ca82a6820fb65c8ca33e2cc93e0c035880dbdffc49ed19bb493fecab65bf091.json.gz": {
+      "bytes": 761106,
+      "sha256": "940757faaed8d50631e72398c54941f5afb098317873bb114a2f497f1e3a206f"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/5d77f083c8bc1594333557a533c04465ac16cee3e5e8957da63fdc8688ef9c3c.json.gz": {
+      "bytes": 657484,
+      "sha256": "3b24e6f5df6d84548360ab5b1fea299ffc39ebe2cae682b216a8902a8c490eb5"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/5e981c5b050e9f1672d5276ec9c0666e22d4495f6b1e597e6ca7d8acbd379fc5.json.gz": {
+      "bytes": 687486,
+      "sha256": "30255e53dd5582d7bac263a09808a3008a0c354a5e009f0c48f467addfbc13ee"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/5ea447e2d8e9c1325854882e6a800ca48a7ae910310f881bdf3be7f87f8dfab9.json.gz": {
+      "bytes": 606562,
+      "sha256": "3da5c5c55150ad7f3fba65ad2fdf5a30d2bf2fff89f3a4c1bef34a533f79bf83"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/5f92782e87887b95c567c9cea76bb1ab67c65119c4357674c987bd69cdf3ede5.json.gz": {
+      "bytes": 560345,
+      "sha256": "6c37c27727486f7dc9f9ac2c18801ec3537abb23610b6e075d21cb4319ae4663"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/612c3545ea4fac714c8ed460a9f76ed515352e4d2471d7ed9689bf2e4531c00b.json.gz": {
+      "bytes": 748711,
+      "sha256": "dc236fa83d0ab69b15ce1cd5b224dfa740eb809741b66dd499fefb3f7181f6ee"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/62fe5d0a8b31125ad2a02c84cfcbd5a87acb76c5fc1621baffcc8e29192aa5cf.json.gz": {
+      "bytes": 700793,
+      "sha256": "bc86c77aa1e01282f810a8f92c69236be3daef0a2dce77be6d9f90b7fd167fc0"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/63f2307fb05380ff2372f0d772f16b1867bf13cf8efb33b4d1630dc9bfcf9df1.json.gz": {
+      "bytes": 735073,
+      "sha256": "a8c7aa25ad165330d77f1369d9820a5d3c9828c1117f57e8ff6973028bcc05f7"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/6462c92fc9d781472ae2736f32a4700262303baba2032f37e4e42b72a312ad3c.json.gz": {
+      "bytes": 723022,
+      "sha256": "a2dc09885d79a1b8b48546ee9d387a7f604e0e78d8843eb54bfb090fd1152e60"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/683a7fee46916eac5d820aae37bd0b382df179f21a5eb2244be22aa106eb1624.json.gz": {
+      "bytes": 684258,
+      "sha256": "953a828f91d347cee9106c73d0858f4622be71225d584520cf30f5112908614f"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/6a7ba996110f16c6452689395d0b9d3a8ed611a4bc15ebeb527cb2570d2464a5.json.gz": {
+      "bytes": 716064,
+      "sha256": "a9949303aab165feaa31b624ac7ad0a6399e5b951771f6f530f486dca94d549e"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/6f16583b1320f7399886e5448cd91eab8d84d86782d95f7b003b9cef9a5ee55a.json.gz": {
+      "bytes": 704350,
+      "sha256": "3f584d72cbdcb9aa39d371d433b951df45c96f9ad14b141d2872d379b4f731c8"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/70046fb57ccc79885755e360fcf0c1d53bcf2c4873c23145e3032cb07fa14c74.json.gz": {
+      "bytes": 726721,
+      "sha256": "5b970220cdc4de7f7210ec937bdfb9b7d1a5f910a2eee3e5c34c6cdc55d93bec"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/71333a935b82b78528d08a6acff9404203cc394a2ba907cbd993ce4c363a331e.json.gz": {
+      "bytes": 607879,
+      "sha256": "a86aa9a1b4525aea1cdfdcd62eb8fb12cda9d7a8d9c9618cbe5137f38e57ab61"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/724059d60b5e4d93917a8971d88943b13e4dc93006f0294339b94b13f218133e.json.gz": {
+      "bytes": 753052,
+      "sha256": "75c52caa1d8e27b0cf0d77d1330b5837036723bdf1c2536b739ddf3ccd2f2efb"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/7329e823ce97c9465bc7ce102bc0b728be02de41dcc6615bd0c880113964c43e.json.gz": {
+      "bytes": 743037,
+      "sha256": "f532fcb98d09bcfe4116c8ea786f6915375377e31a8f3ba85586db8f860614e8"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/7467b88d4dea398bad7fe9e02e48d8405f7de3864db8942a010a362e03746806.json.gz": {
+      "bytes": 630721,
+      "sha256": "66c942576e9ed8f2f5349a42df78531e2547ef8556c61b5c854153040487d54c"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/7482ebfa8674a548856c870d16ea9a646af02296dfe0378609fd3a8ecda7b22f.json.gz": {
+      "bytes": 714292,
+      "sha256": "150e555953ab8ade9ab39e4420395be86638cbaae810b1c2be7d8d4a77088a39"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/74c91a6afbcdd1bdb9aacfc3eb5fd520db40c31b3ade85c70b43c89091d93ac7.json.gz": {
+      "bytes": 732771,
+      "sha256": "75ef1979b53d590516794307fc0bf4d64cc51c0f429ed495677f6f11d4bac3ed"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/754aa88eef12def8c1a635eae788963b4c0d5b0adca457cfbc5ff674eeaa2a38.json.gz": {
+      "bytes": 805631,
+      "sha256": "97b3c12d4ec08a342dd1166807ec24be3acfc8590585c48cc59b880d9ead2314"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/75579cd8b76cd54d8fb25c4805ecb5e1a44728feb4d8c8c4032006da4ada25fc.json.gz": {
+      "bytes": 656492,
+      "sha256": "66ed8d7d388289cf2f5178c9c8c382c912fe2b74f8be26ea732ee3c27d065f13"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/7624100e876b0c1e62adeb7179af6087930e6f1cbfdc3aee6d0dbef9917f78e5.json.gz": {
+      "bytes": 618175,
+      "sha256": "3854291574d5f3b15112444941f9a285e4299bbe0f2166309d631496e13355b1"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/76a570ada006cd3fca7bb33a3e4c42c268e839f2a367a4633d65e1ac5d6ae429.json.gz": {
+      "bytes": 698140,
+      "sha256": "e3da9e1c641fd2fa494bf27767e02f88aefcbebd972610022c96ac57962dbe8c"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/780702bcbc054807bef14c70fd14b65f1c8478ea2ceb675738b7c79c193206f8.json.gz": {
+      "bytes": 806716,
+      "sha256": "88eea33ac95282ad8eba874477cad7f235eb80f9909a6100da952b9545782cd1"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/78548e3145abcf5df28e7879d7cbdff166c255d2bc835293d3c0e49c16155632.json.gz": {
+      "bytes": 702894,
+      "sha256": "165619bc3b2b55040bac075cfdd41dc8723d4a691bf26c1100279fe34efa3cab"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/7c402a157217447fc23b9e27d06e8f612c3015f14d31b8025d9770d19eeb74c6.json.gz": {
+      "bytes": 626217,
+      "sha256": "3fa32366eceb763141e2fd3ceb469992e4cccc22d8d5319117c63e009a88d999"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/7e132ad126cf5464e8eb4aa2335f51bb7a6eecda7ba3f9a53f701be02cc735ab.json.gz": {
+      "bytes": 633281,
+      "sha256": "55551f560ba9f4c84d0042f3bd6e5d04ad785dd7ef06573b33d10fbc086ab6ce"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/7f08a38b92dd0aba2140fda33191cf53213bd656e14cbd5096a32a64dea79793.json.gz": {
+      "bytes": 648267,
+      "sha256": "ff1cd08323a2d20932a72d60b759c3d83daab4ce15b5e0ec8e55300e241d6e19"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/800c37feb1b2afdde97fbdf244a89eb5b7e31f3530cfb2938bfd19c6573ca4fd.json.gz": {
+      "bytes": 664432,
+      "sha256": "52b886a8eb5c1a7c8da07ea8d8392dd3780e6a480b94d82b81b809224fc15998"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/801965186b2319161f96470b8a9459e982a1e8c58ce62ae031cb3693d6dbead6.json.gz": {
+      "bytes": 791101,
+      "sha256": "e9d7ff315b6a538d90b57a0ecb66b74af5ad848280928b7f32efe33dc04015c5"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/806312922dc3346088c97a172d3ee0bfcf1cbf241d95f6ee17ec096b233e6014.json.gz": {
+      "bytes": 723195,
+      "sha256": "3430ac19f7958ce383e24f3de74c4764d9199c1c096d6b4cbb10a97be80dbc13"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/82563fa21c75ccdc4f5783ba64b6c869be5b5e6559644085d324018ed69a3a43.json.gz": {
+      "bytes": 748380,
+      "sha256": "282bc4024a3e5de6333b662d0f17fecce76825f6b5493d8b1c193b77f39ba2df"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/82fad843c724cfaa8db55a485c66d3660057b2ed519e0a5b76ff00aeac6fce20.json.gz": {
+      "bytes": 608917,
+      "sha256": "4e7de00dc8450b9f80b538fb976449a45b9931e09ffe33ca6127b188c3fda6bc"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/8383f05d4745441101b63fcb760a6377c1966788a41b984b17fe6a35b9422417.json.gz": {
+      "bytes": 651886,
+      "sha256": "9192678f0f770ad51409cfa91fc8596c89405a4fe37983a43491a3e5b49b7e12"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/84ce8e51bdb9225b975d40fc9dd922214d61499522ee63d0dcd52cb7b7f52fd8.json.gz": {
+      "bytes": 685817,
+      "sha256": "41cf905235c3b5761e8445ecae7ddbe16ba0cb18f560568dedcfc17638b3bea1"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/8586126412e470d2d24e8c7aa8069606b90c9e353bf7575a48b9296a55540d51.json.gz": {
+      "bytes": 657467,
+      "sha256": "05f2049940a82e5df5a9fad677dee1621f6d328035893e766b279f896364ae04"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/85d0a69254de5596d0251836004df6636c42b9c3f531e9ed7c4d497b4d437d81.json.gz": {
+      "bytes": 559152,
+      "sha256": "d741d091e649a609b97a23ede86250fcbe0aedb82ebd795c84d2ff71b8aeb87d"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/8b09797191fe35a934bee7a24938105e3107de6d9fb73279f21e33c67ea36cbe.json.gz": {
+      "bytes": 646299,
+      "sha256": "9ad1d39c8440dc681b18b2414e32168b46bc65e653959fe060a67bec89abfa0d"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/8b5cf224af46025fd73267b277ce0cd333ad5a2695306219080cf8b73a295709.json.gz": {
+      "bytes": 636594,
+      "sha256": "a1a4c449fca26f5027ec944c2baef09f0632ad5e1f19a758644de927bdd20b77"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/8dd97cea2975b272473b92ebc4d97885267779e1ebb8ae0e4b65d84e40198e5c.json.gz": {
+      "bytes": 747677,
+      "sha256": "01b0740ee0d349cb4686cd996e20da2c56ec74fb2bbe8447fcec32ae618be085"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/8ead1cd707975f43f5b839c034cef572f7f37dde2da0f91deb14b619c16bb2ae.json.gz": {
+      "bytes": 684347,
+      "sha256": "fe55a3c6c2f896cc6ed21e1a5f655faec5a2ad3105109d3a44dd4c158721932f"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/92440e9a80e674c95d4c5481b74693cf5a40288c2dd165ccabe4e98146e1c85f.json.gz": {
+      "bytes": 605936,
+      "sha256": "3e68c20b61207db798544d6abc270984078901ec03a78562cceba30ac12ec6e7"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/929da5c634b3254798fcdf0d5135220de85ef815080042950e53bd59c9deb948.json.gz": {
+      "bytes": 616579,
+      "sha256": "8a093eebdb0f79de6e136fb0708825108276fd1bc6d3a06f535376342b9c1f97"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/934b37d579d2375abea684ce8e44adc4c151fdfc22159973e6dfabf0d2a7f378.json.gz": {
+      "bytes": 632535,
+      "sha256": "795f9e7996d713593e76a93ceed77f08cf343c0ba7a39ecf84877368be80eec4"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/9364a470ef5865976560ba41d312b734d9e6f59ca21dabfe2b66faf4164496cf.json.gz": {
+      "bytes": 796477,
+      "sha256": "b76079bf6b07d385d2d0123723ed8e9dc4dfac9b0e2958b2f869aff97b636dc8"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/94feb72c69e1e228cf064d15d7dcdf156c080bbca3ccf81c38e5b6cac7690949.json.gz": {
+      "bytes": 555070,
+      "sha256": "230066a1dd1331f682d33d2885bcc60f61a9f7139b2602c2b11448fa4d5f85fe"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/9574bdeb6868f72b5029e83ef772382b7c2ab17981c7cb816d8ac181ec45b798.json.gz": {
+      "bytes": 595175,
+      "sha256": "c4630b2a5bf78d76bacec9537c392f561cba41933eb6c8eb120dc2a60e3ac83c"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/968f09dcc429cfb8b089d9a043588456ff189d076db7d85786fe74232cbe3142.json.gz": {
+      "bytes": 711490,
+      "sha256": "81abd8e058864e21ddbaa7001f973abdd46d9045f3a75000598d770d2b47cc29"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/9714a92041d98fdc6a1c34067e016e2c0986bbb23bf81ad6cfb1c20f576e1e47.json.gz": {
+      "bytes": 711691,
+      "sha256": "c146473d5f18dcf3390615ab975e47f2f77e5ad05fd9f3f12698c7c2a9871166"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/9885533af93c6453c668d17b06e414a935c08a4e30363d0d9d95725b67b86e52.json.gz": {
+      "bytes": 646687,
+      "sha256": "bb4fccad61e38e98ff989bda4563a00c233c84272f765c7fd9999c626b2e3b26"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/988fcbb3e4196118a709b938e910b71fbd841d16a74b17078c01b4259fe6f22a.json.gz": {
+      "bytes": 775236,
+      "sha256": "6744cabef6110d53bcfb8b5579fd572057915592647f9a4cf14a12035cf80d05"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/9bfd66876a8b94fda11d29b5610247d24764fcfb44ce1625c045bc1eb9a06918.json.gz": {
+      "bytes": 785638,
+      "sha256": "e19b523192bb22dfbb512fbbcd465a5cfdff077af3989edf3efa100dca52d916"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/9c3e4a024943cff6fbf490cf523e1c23092b725570aa258d7b89dc13b5a271a3.json.gz": {
+      "bytes": 689844,
+      "sha256": "e16e05aef7dfcb0e22ca43c0621e209ad27443e862278dbab1b90a40f5c5c134"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/9d5c7eac6d6d2035e37bd56deeec3ebdd2c112adee7c74efc2c9fa740bdab863.json.gz": {
+      "bytes": 558251,
+      "sha256": "669817ffa0fd60c5e6afe78fec7bca9cafa6099e746c74853d36750f01b15200"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/9f930ad8e521277f77e4d3182c4bbd2b402b2a30d6dd08edc6766951704ecc0c.json.gz": {
+      "bytes": 770986,
+      "sha256": "65401369b21436bda09e479910bfd3375b19d4de9c18e986d36df6ec7b051756"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/a1e62e141e8eb6d33b7cedcb91d5bc657dedc8002a23972b2e9e899519076360.json.gz": {
+      "bytes": 774316,
+      "sha256": "e14b547563d4df6c0a3ee6f37b6814edb383a1bbf6043412185e7e6366c590c0"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/a7b7ae0a79ef2387a322f462f0aa74bcebe3b1f796cfc6a265461795e3045621.json.gz": {
+      "bytes": 579070,
+      "sha256": "543135082c31baf89ee570f6a617efde38d021c48e323abf6fce656b26645cb2"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/a7c05ea79bd185114836165fe5fd01555fba53c3789d25d01699ae3a777cbfa1.json.gz": {
+      "bytes": 713240,
+      "sha256": "82f86b74166bfe4151b31737eeb6bb6d46d5de952835f5e7147a63cc41a37402"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/a811d2bce3952249253914f92ed6aff03d9a4cf9675c8879cdfe9905ab71a666.json.gz": {
+      "bytes": 687636,
+      "sha256": "0b5ea5651e728b198b68bf3da69d900e1877f3fc528c10e017cd8e4f412a5342"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/aa0758c1f64a1a86f3d79bdb950742c569e02a32424663b877ebfe5241363484.json.gz": {
+      "bytes": 706120,
+      "sha256": "a139c1b7aaaa00033d7dfdf98179937401352829a9ada16e5c943bc2224e2193"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/ab7ca06d9c3bf92d4f0dc732cef2a8434dd6dc9f266b23047e9ece05ace6498c.json.gz": {
+      "bytes": 739401,
+      "sha256": "31728262e9429cc6a5b919db8761cfadabfd2e6eb37a499021acbade56930ed4"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/acdd4801ccdb6b2ceb2e5cc73501b42adbd80365731c58d218e9ac83eb83baa8.json.gz": {
+      "bytes": 591133,
+      "sha256": "8d88ea266b6cec9695d64959e28d9181d0b77448576cea886ed085f7ff6c869a"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/ad847ac515c38faaf931a45a9063508a8f8393eca48e00ce12ca1a9e2ab6a6a3.json.gz": {
+      "bytes": 692315,
+      "sha256": "c874fe50b4299d9732c9da759fd33173e9c2e8882c34383ed6784f0c793efa9a"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/ae4c3373ade40d0373a662825340e4437fabee4b0e8fe39ab55b2b8525f1d471.json.gz": {
+      "bytes": 757493,
+      "sha256": "0eea54c42b9cc539fc218bbab49883c5159a163e563f68cba6f199f88a97ee67"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/aefe3407d6cbdd762c7ca89902a43d5ac8174a2d89db78884d389466aa8e14c8.json.gz": {
+      "bytes": 610409,
+      "sha256": "0e0b8e1fb70416c0fb5ea5a222401e793e36f5df0abcd0f043b2c2eeff2926ce"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/afde5ea847164d8d14577528eb1c328e78bb46675f02308929ad309c8e0f25d5.json.gz": {
+      "bytes": 718848,
+      "sha256": "ee1b1fd764c36fee7fef5ecdd3057d0c653c27faae5e1dfb215981bd740c0251"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/b1a98a1ec600eecdef6810e61deedb1ca883dc1c3ca89bd7e0cd052943291a8d.json.gz": {
+      "bytes": 526400,
+      "sha256": "234ef5793301434ac839a29fd131994a8843a3d9c0370fe7a63fce2069b053d2"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/b3d04b78cb067b4d0bb2133cb3997daee50e6b8b22dabf96feafbe26d42acb56.json.gz": {
+      "bytes": 753553,
+      "sha256": "fb0d1dd3728dc0dea6e82612dc16cf4d13d22402660d3d9d078b621b292bb5bf"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/b55bac7d4f885fbd042eeb82b8b6bcd588f327a40ff200e86999c03c7b8ae7e3.json.gz": {
+      "bytes": 625177,
+      "sha256": "1ae8a2405c793ec1592649a4ce7e8b928baa8bde2a4010e01a40ebfc008051d2"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/b67651a8779e4161988e0d6a02b1918a754d558be689874422cfc1be1c2e5c74.json.gz": {
+      "bytes": 799883,
+      "sha256": "9856aa712b57cea27c4de354cd3b22f96f372857995c65f8f0ee167f23eef52b"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/b7bcd70f5654ebb4b6ed87866851aa0b9c2d8551c05ac7d121daf7643005d173.json.gz": {
+      "bytes": 766723,
+      "sha256": "594707913dd0a8b2ad44d16688b255b884708d3212259eb633f303ef3bc9648d"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/b8a52042309e7075ebcb1ff7beb02e8eff862bb7fc9740ee2f59c54dd87c03fa.json.gz": {
+      "bytes": 670757,
+      "sha256": "6febef53338dd8797678e5ed244362427dd7683e8096fd8c3771d8debbaade80"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/ba14ac241540f180ff10348ccad35544efca76647d069d6652a73a9d8a31e755.json.gz": {
+      "bytes": 688235,
+      "sha256": "ccf2010770955dfca7ca1abb07f968b9735cdbeb3d975c5ec579ab6bfbb0b9c7"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/bb0a4c8953dfd3ea6d563e51e6f7aeb6eb819e0ba2598582777bc7a5f8299cc1.json.gz": {
+      "bytes": 507512,
+      "sha256": "ef23b93bab9437c8a90fe093efb9246d1acd4a85c2f02873de47b1b0afe809bc"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/bc8690420b50794a4a72d90fde93b305d19e1463d556c461ba99cc4c48041eb0.json.gz": {
+      "bytes": 647246,
+      "sha256": "8494c26365317494cc738d12a9433428e4b555b6edd4b5fba5abb0d7fe2b1073"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/bd25aaa07b1b168856ddaf5fb82e219258e8e692781c83fb13a91187b55ab179.json.gz": {
+      "bytes": 394442,
+      "sha256": "e2db49eb3182be716a7da81bb9e04586bdad6d18ae800813c8b1a5978bc8e3fb"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/bd6818b801a67e9b4a656fc1766939e3dfa63d63a0b835bf03175830bdbf1c4a.json.gz": {
+      "bytes": 767140,
+      "sha256": "1f70dc0306591d0540f0c2e595f8ae5920dffe80c9fe2d1f41cc9cc1606904cf"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/be08b21c6e5cc7ee271fdc9e33646d54496f5e0886947d57e1ff32794c484b88.json.gz": {
+      "bytes": 607025,
+      "sha256": "a609992f432baadc43472bb019684c9e27c3d205ebedb2d62497d2b55e8eb84b"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/bf1ff253bcd4219159ec675cb0c58cb7f8f38bab5e40c54b425f47d88787deac.json.gz": {
+      "bytes": 618018,
+      "sha256": "43951d4dd706d5adbee5aecad1f320b837073111cef6784dcebece8efc0f8f81"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/bfdfc407f52ed908618043bea7a7178639e9361f18c22feea99d7085dea40836.json.gz": {
+      "bytes": 360988,
+      "sha256": "29e6a2b7430c1d3181935f1c4a5f9e0c937fa264f8dda37b4bc1ce536fb47ea1"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/c0fff35d66abcdb661822d9f4f31b05701d9f1b5dcb77decd938521f5e782a50.json.gz": {
+      "bytes": 596783,
+      "sha256": "080a62d58ff7b6b04a15718562f179f4eabd5a805f1413ec816e3175b2947316"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/c16bfdf35a4792c95e87707e5411bb336cb0679385441f63ff8ecb00dfa4919a.json.gz": {
+      "bytes": 749663,
+      "sha256": "2292e780917a1d8708f73370fd1afe551810e5f577853759d3c47aeb414042dd"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/c35940499443a37811a7dd320d4213fb1f9d8662a4226b5e882ab11295951b10.json.gz": {
+      "bytes": 685338,
+      "sha256": "6b33f7250f351f6cb80ef980b840325865a9246e358ed91c2b897fc0fc1ea814"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/c494ae1ef6b7514887ff771f1872d48eb8ed0f35f94d0af3c4e4d73d040e1df8.json.gz": {
+      "bytes": 546193,
+      "sha256": "877952fe40b760c590a91350e80c45c99c6d65dc427d60eb8bd9569af0f7eec7"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/c4f614870edb702d1d67f7527b46b74fbc3dd967a2dde981b0bfb42df8c5416b.json.gz": {
+      "bytes": 650383,
+      "sha256": "ff2ad7b4fd0a66b4dc80b922a857bcc4dfa713e5e69cdf33b87ed6a3cd60f6cf"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/c5040f984d0e000ff4840801b83816e3752041a4e2f45114f1c2c643b5104524.json.gz": {
+      "bytes": 682208,
+      "sha256": "3c5ac7f9406fda82757c856eec989e476d35820d391d10756dadf5c8bad68af1"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/c513a1a9e208223afc78637807475a2c3f77b954f0573d482505c7a285ad6939.json.gz": {
+      "bytes": 637703,
+      "sha256": "34b31dc18d0ca2a7d38f4ac7a199561a2b9e678091f81d0718502c2e6966c256"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/c6c1444b35b9cb5518ab444041673785a980704744c7a276844275e5b54b21ed.json.gz": {
+      "bytes": 626354,
+      "sha256": "c511ffd94a08e0a5301295fbbcf5ca176b06835146d2e088b80190cd3fde1715"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/c74bc1a0b68d6dbb16aba35435a6739073dff14882646778d9952d7cbf26535b.json.gz": {
+      "bytes": 657062,
+      "sha256": "54a4c3caf77d02b1f2a0a0e1aef62b6ed1a8f4d2f61286f756593bebde0b581f"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/cb0d773cb2467ddb3c129289353e9ab0cc29e8a299d9bb09f8f05d7dad27503e.json.gz": {
+      "bytes": 603790,
+      "sha256": "a0d248d2f6a33690be8b6cca053e0b67d871f660cec2b2b8abf3ba60e0da9335"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/cf476bd52e486fcf2544a727070da68efce2fb568224cd2b1d75d4b9cbb75a0b.json.gz": {
+      "bytes": 567141,
+      "sha256": "f8904094e2d4ff2a7157d7ae7e546403cef337424dbcfc0351e2d1e47218ce47"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/cf49b4516945c8aef4d6bc500c6974538a20a13aba2da595ad43742e979c2c25.json.gz": {
+      "bytes": 803206,
+      "sha256": "96f8330e79db0fb998363374198edfe22a2476fe220880ea1d729a79fcff45f2"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/d172b5657925ce6759c290d42df15f66295142a3224f8d56e0f43e9a0e933900.json.gz": {
+      "bytes": 587610,
+      "sha256": "9b5aed99977533e2ddbb24bbf74e2e48180f773f13256b174dda69060fcd0a8d"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/d3ccec42ccc0ffb1f16dd5da312ee8ff392688ba8647e9eaff9dee73652db38c.json.gz": {
+      "bytes": 720970,
+      "sha256": "039097fb88c4377ce0731e6bf53e935227ac67ea376c660e743d9076b067f7ce"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/d5ab4df0a5e4027f2aaf575ab1bcf77608c37f9eac31affdd9cf5854ffd34a72.json.gz": {
+      "bytes": 639936,
+      "sha256": "34208902b7662fc884e0097fa7d7babe0ad430a1161ef1fbeee3b8e56b88a7fa"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/d614750b7318147ff6927ac887d6edba0e126c94b62a0abcf47af9daaa8b729c.json.gz": {
+      "bytes": 564115,
+      "sha256": "4fc5b4b600635c877c4c035f18e318746eb1f43020fac77246b13704e357c519"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/d8a4d588f930600ec4332aeb0aa84ba2e02f046c011c92b42c8e8e5fe9bff836.json.gz": {
+      "bytes": 813230,
+      "sha256": "07ff96904cc4fee67873deb8331d3cac6f2ef2e3933c47a3303cb849ee8a1a12"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/d9c9be5ff7448932323f2a0ff7c3d2d3d0282b7126482ecb488c069e87f11eb4.json.gz": {
+      "bytes": 729994,
+      "sha256": "0e7c2b31474b9851893a806f0fb48d4d45d3d0dbd6cb120944db5e325e4873b4"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/de0e7e03e2ef061ee009c31aba3f0ebf1cde19a4390a3df95bdc3ef1bbda7821.json.gz": {
+      "bytes": 659920,
+      "sha256": "bad5723c2ce248c491aa563ff771c14c774881e79d6cbb6be4226c13189e267a"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/dfab471bd2b45672ffb3af818ecf84502a6c74d030b88d28f6bf35cc6122c61d.json.gz": {
+      "bytes": 683476,
+      "sha256": "f5e08c87ce05cf35b42b3e1c7cf0039ea60a11317428e486f950ca8d21910d71"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/e05545c9aac79258f56ab5825adb3db3005732cba94ddd5ba2d5324da1616fde.json.gz": {
+      "bytes": 714715,
+      "sha256": "856b98d603c5dfd94b0089075339fa72cc5100d681305efd9f698ac74826752e"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/e0e23d573c1e2b1dab2ffbc6b7d033def76950b124e4560788ec9ac006d304a9.json.gz": {
+      "bytes": 706108,
+      "sha256": "30db778f7f1f8be5f1d8bff12f52051c9e2f6ff721ba014745b645ad79df4f86"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/e3c1a8d3ec6759aace072b4f52beb05f13a4af0a4b39735fa467e98a52497fd2.json.gz": {
+      "bytes": 759914,
+      "sha256": "4a117dfa73af7ec4b466b14d345103ee6c6e1a0ecc32ae32d9b00d98f1c2604e"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/e3ee826164b4c6ab8d8de89bfa3f787a3840d9dc9ad68bc644099482337cbf5d.json.gz": {
+      "bytes": 634989,
+      "sha256": "c3f4c49b42e18284d059919be7b8bfd052911f96cb3df7631c56bc3140398bff"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/e49af6820c78fe84ac6e34f7b10aa90823e67a222bea39c59e1f99c3443c490d.json.gz": {
+      "bytes": 587678,
+      "sha256": "d0a27a062284eef9abd9b26f0baeb5968f7ad44fcd8671a94db1d82f3a502bee"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/e4ba54f98dc8faece8d1c1df893cd07f231bd8cc31c4e828cb5a3912b2811d9b.json.gz": {
+      "bytes": 685890,
+      "sha256": "1c3c382e62717d644f44a168d4d9309170ee3989501c17192c11c14f16899057"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/e5b2e44af330698b82b150b3ea884c900922acee7b1aa5ac08afbf816b6ff8af.json.gz": {
+      "bytes": 630816,
+      "sha256": "718ff7be8e604621af1f510cb61d1dfc66c275009829072f2ea9af3e00dd69d7"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/e6a67b13b4da02d75453beda9c759f3597ff165acf38769a7abbe02ffa14ae8a.json.gz": {
+      "bytes": 789348,
+      "sha256": "e30719e0f0c49cb055e262832d2e3a6fa63854cc53cae3c204b24af908fe8a49"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/e6feaac75b64100e82182991fda46f7b223a8c07e79355e362417d0bf74603aa.json.gz": {
+      "bytes": 730387,
+      "sha256": "538465054a919764f2fc0ff0f6f26c82acacd95c0f1a36371e4788dd5f26a45e"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/e902d56f6291192fa51e75f6fba6d8ac9c37307b9f6720e9ec0f415775b3e4c7.json.gz": {
+      "bytes": 676528,
+      "sha256": "88188e23653e72500823a1cc656c39ef6aa97469d33a3e7cb03754bf2614d645"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/e9092eec32f5a667d735d672a179100764a8a0836f020b9174db4f5f07ed0a3d.json.gz": {
+      "bytes": 546949,
+      "sha256": "d5c43be01f9878ed19ed8000225f7cecf515abb5b76d62acb0f56b07d5c08cca"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/eade0a0a25aa607c7b03e74b3bb83042a1a0751f5a2fe4a57a4058a16afca7a4.json.gz": {
+      "bytes": 671006,
+      "sha256": "0ef9f4920f608fc9d64db06dab8551d565899019efef9925a5f1df24a1031678"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/ec5cb1d7b72a82c6d423d7ad505679b1d198de29e071e4498814b619910f0b49.json.gz": {
+      "bytes": 712150,
+      "sha256": "e066b018647d98e2723ee5b4e95acd7d70452022a003c9673373413e8ba9f0b2"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/ec842e3e6c6d667353f15413e5b0b6ae8734d878e4e533731c4c579195f3b8a1.json.gz": {
+      "bytes": 714602,
+      "sha256": "f3bf6773ee887be55138b455982f608165396366ccfb718b1830844da542ce07"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/eea5511974d9f73ee830d31b85bccabf59f5f4d04c9f6d7b6fde8761bbf10239.json.gz": {
+      "bytes": 711377,
+      "sha256": "40702fb7ee163efcc9c32b249412c39557fe8bd3b02d97d433fc72fdb7bd4452"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/f19400f6c31eb042dcf0aed4456667de5ad8e94e73a8418d4570e300931683af.json.gz": {
+      "bytes": 697271,
+      "sha256": "8ce1748841e2702aaf777800731025fa1dfc72169c2343c6ee394b2f104de934"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/f2bc194f28aa680f9d48301ee300a8fa30483fad66f752ad4ff995b25dfe7359.json.gz": {
+      "bytes": 648824,
+      "sha256": "850baa2360cb6231fc13f9ddc63ad204c779961d40fb6f6bb93889f0968efb9a"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/f3cd4c65f7951c338f845d740e3f944b37bed9a4f4a66f8fd146be07c0fc4d49.json.gz": {
+      "bytes": 666934,
+      "sha256": "2bf177569dc69b732b7529f9c22fdaea620914b4a570d497c26854ee4b06c9a3"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/f83f2ce5830330ff5e1245e3ab6c2df473f73d0285cbe849df4a355613cdfe0e.json.gz": {
+      "bytes": 694241,
+      "sha256": "9084c776ea898232fd139ba9cd4fe0b6d2b751bb0542b4c2e9eab283604e7f9c"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/f8f3bfe2914de1a9382458869bdb96acf48178c372a603781cd18cfbe48eb2ae.json.gz": {
+      "bytes": 762400,
+      "sha256": "ff5126be12359ac28d0fdf60b868d86390fe58e0cf738b1cfd9ceae1e6f3ce50"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/f95dd68631ff27b36aa64a9896665d2b2b3b2f6fc396265942cf97cff4fde239.json.gz": {
+      "bytes": 837900,
+      "sha256": "cbf7e6b6c94a9cafcfee98e21a8d15d024732e718b02325d34b915bc157ee035"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/replay-inputs/objects/ff188d8997430db4a77313077ef305f3ed07f556c6b775a9005e224c62e09a4f.json.gz": {
+      "bytes": 599588,
+      "sha256": "b22429f7161e593399b1a598aba5815b4f10df30c802042558a531e9d1b0baf1"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2013.jsonl.gz": {
+      "bytes": 122015,
+      "sha256": "f7e7ecee7541480d3b8ee620c0fd6210a91d6e00b112fd2c41d0e9a8c816fdd2"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2014.jsonl.gz": {
+      "bytes": 122105,
+      "sha256": "03323a8b8b332823000bc881a0972ae2e9727681eab00a518c9ccdb80e65853a"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2015.jsonl.gz": {
+      "bytes": 122540,
+      "sha256": "b656c614a6ebe6ef4b32b26192f306ad6e15102697ae4167ae8534b640a882f2"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2016.jsonl.gz": {
+      "bytes": 123334,
+      "sha256": "bd80f18a025e7b50ee16373ac878e336b50b5a2f5ddd7ca9534527897a8d3e00"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2017.jsonl.gz": {
+      "bytes": 113266,
+      "sha256": "66dc58623f541f06d5e9bed7e90dfe54b080258048e1cd71262f90a8bd010679"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2018.jsonl.gz": {
+      "bytes": 124500,
+      "sha256": "d3def14c97af01bc0aa8292946525e65cc84f95af476f9f842105b3e855f0df1"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2019.jsonl.gz": {
+      "bytes": 125516,
+      "sha256": "b21f475aa8a8f93a7ef7129ac6acd6716e5496d6444372a1edc092849ebf387b"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2020.jsonl.gz": {
+      "bytes": 126598,
+      "sha256": "203e93b8341dd103edb1fc4e14788c9d6653b22370bbf86579b45bd9a11c0ecc"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2021.jsonl.gz": {
+      "bytes": 127421,
+      "sha256": "1a4d9840f2720f9a535e357674ac400296bfe4b1809589a80150a0a4c2b65d2f"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2022.jsonl.gz": {
+      "bytes": 127667,
+      "sha256": "10b50960277a30a7abff18ce49bb8dcef55d81eb2cfe11cdb29d6c998a48a3e2"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2023.jsonl.gz": {
+      "bytes": 128250,
+      "sha256": "0b32a51e604a8b3bead773ff643dd1b1fed27b324c5b0ce777fcd9aaa2ea0c7d"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2024.jsonl.gz": {
+      "bytes": 129301,
+      "sha256": "d80c25e887badc8ab92ebe314f54900c11862aeda75d742935ec33340133cd32"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2025.jsonl.gz": {
+      "bytes": 129805,
+      "sha256": "014672bd80e9cc9f7ce56983ca7ccf42d61ff2e5cbe861c5f28a8aa83d7039f5"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2026.jsonl.gz": {
+      "bytes": 97370,
+      "sha256": "ca6cb363fb42b70ca614a683d6c160f4af907bed3518bf478dc815cad8026032"
+    }
+  },
+  "status": "INPUT_READINESS_ONLY",
+  "strictExecutionReady": false,
+  "through": "2026-09-14",
+  "universe": {
+    "KR": "strict-prior monthly PIT Top120; not all KRX",
+    "US": "strict-prior historical S&P500 community snapshots; not all US"
+  }
+}
