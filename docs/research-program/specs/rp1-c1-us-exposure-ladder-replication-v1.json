@@ -57,7 +57,7 @@
     "data/kr-market-risk-anatomy-v1/sources/FRED_DGS10/normalized.csv": "db7dc41d9d40ad5608e0ead00086ec15f5969cf785aa378f05cda576a160bc92",
     "data/kr-market-risk-anatomy-v1/sources/FRED_DGS3MO/normalized.csv": "7ce2bdbe2547e4fc16c18a36295871d16099d60f51f10edfc2cd8d42218dc06c",
     "data/kr-market-risk-anatomy-v1/sources/FRED_VIXCLS/normalized.csv": "dd0ccfe0a13f5e72a842dc27d53733748f24fb380808a7b2fb9babb40caa00ef",
-    "docs/research-program/rp1-c1-us-exposure-ladder-replication.md": "7b11e876312eadf51ba353785bac3f7a69dcf24d73a86a770301efb54c587aaf",
+    "docs/research-program/rp1-c1-us-exposure-ladder-replication.md": "48a4ebe265f887c109c71ca0c28c3ce654b46ed8934670a213af07620ad89fe2",
     "docs/results/kr-market-risk-model-v1-execution-started.json": "9d5e322ba54a0c7da3e467c72111ce955c365d650827282f9c9bf379c2ca307f",
     "docs/results/kr-market-risk-model-v1-manifest.json": "81dc4408bf8f9f2464ce827b2783be2cf486e1ae232e3fec7b65a282114f8445",
     "docs/results/kr-market-risk-model-v1-result.json": "2578bbfa245a6540235cc05e231441b4ebb4da165240a84e715756477a897c4b",
@@ -122,15 +122,15 @@
     "pipeline/replay_inputs.py": "dd77b249476b252ba585b1b836fd060a029b0c4d9c3b9a0847caf8be545a5a1d",
     "pipeline/replay_valuation.py": "18e673a0721077af06b8ca9f774650c27fa58820a489b9ea639a9ccf02693bf3",
     "pipeline/rp1_c1_us_exposure.py": "7f1717eeaeca38342e86b92bab498897b596ffe74ef2dd48dc106d962e7a83b4",
-    "pipeline/rp1_c1_us_exposure_spec.py": "c85dfa3196e82359dda0f09e7bea9f16e6697115007af622c07d7793013d84f1",
-    "pipeline/rp1_c1_us_sources.py": "2509c3ab87d4b988795c4d5e7120e5c9a7c410915cfec0f62e8deb3cea66b5f0",
+    "pipeline/rp1_c1_us_exposure_spec.py": "cbd053da0e80a67948c825e4c7dd21ad52ef46c1380a2db98e1d45ea2ae3d760",
+    "pipeline/rp1_c1_us_sources.py": "7434d4ed37e71ca69a8dba3c975eee8065d046569b438584da31c183ee984272",
     "pipeline/sectors.py": "1cb470d676eeb24d5fa4976bf8fc0f71f808957f132c908158acb6422fde60ba",
     "pipeline/selection_null.py": "b00e7419a8a620e284f3b5a15aafa66e9a8f776b81da027a766a72b3eecf5e17",
     "research_specs/kr-market-risk-model-v1.json": "fa7484c690d125089d628654a86199a23ad95dcfeb9b1b0682bdc704588ae1b4",
     "research_specs/kr-market-risk-model-v1.sha256": "194f65b655ae28c5861b17652be681b4c6647436af107d3fd81b0ecbc3666339",
     "scripts/acquire_kr_market_risk_sources.py": "f0c31208a40f31cb4f3b7600256b789923e0aa3a32092d2d1d6f0dc25debe7cf",
-    "scripts/acquire_rp1_c1_us_sources.py": "389140e82e76cf21c2a0ca140d9b8112e44e8ffd4d5f4761ff7f1e2a2d20623d",
-    "scripts/build_rp1_c1_us_exposure_spec.py": "bfb8507016196893447ed79fb6e8f41d91073c3e17302463d5c8ffb65242c3aa",
+    "scripts/acquire_rp1_c1_us_sources.py": "20ced5bffb7f80f2e45785fce9d974e1114cc17b2fc8d8f6877e5662db97308b",
+    "scripts/build_rp1_c1_us_exposure_spec.py": "cdee5fa8b86850d6eda2a4dd2c8fb6227055a18fde07d2964a39f04d5ce0fd4b",
     "scripts/run_rp1_c1_us_exposure.py": "80ded0e6218875cb4cb53faa180b1512a42638c8ae06caf3f61679f1805b17b8"
   },
   "entryPoints": [
@@ -246,7 +246,28 @@
       "data/kr-market-risk-anatomy-v1/sources/FRED_DGS3MO/normalized.csv": "7ce2bdbe2547e4fc16c18a36295871d16099d60f51f10edfc2cd8d42218dc06c",
       "data/kr-market-risk-anatomy-v1/sources/FRED_VIXCLS/normalized.csv": "dd0ccfe0a13f5e72a842dc27d53733748f24fb380808a7b2fb9babb40caa00ef"
     },
+    "reusedRights": {
+      "FRED_DGS10": "public domain (H.15), committed by the sealed KR snapshot",
+      "FRED_DGS3MO": "public domain (H.15), committed by the sealed KR snapshot",
+      "FRED_VIXCLS": "Cboe-copyrighted series ALREADY committed by the sealed kr-market-risk-anatomy-v1 snapshot before this storage rule; reused in place, never copied again, never edited (it is a sealed byte)"
+    },
     "reusedRule": "the exact bytes the sealed KR spec pins; never re-acquired",
+    "usExpectedIdentity": {
+      "FRED_DTB3": {
+        "frequencyStartsWith": "daily",
+        "unitsContains": "percent"
+      },
+      "FRED_SP500": {
+        "frequencyStartsWith": "daily",
+        "unitsContains": "index"
+      },
+      "YAHOO_GSPC": {
+        "instrumentType": "INDEX"
+      },
+      "YAHOO_SPY": {
+        "instrumentType": "ETF"
+      }
+    },
     "usRegistry": {
       "FRED_DTB3": {
         "basis": "PERCENT_PER_YEAR_DISCOUNT_BASIS",
@@ -300,11 +321,33 @@
         "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
       }
     },
+    "usRights": {
+      "FRED_DTB3": {
+        "basis": "FRED marks H.15 rates public domain with citation requested; kept in the encrypted snapshot anyway so one storage rule applies",
+        "class": "PUBLIC_DOMAIN_CITATION_REQUESTED",
+        "owner": "Board of Governors of the Federal Reserve System (H.15)"
+      },
+      "FRED_SP500": {
+        "basis": "FRED marks the series as copyrighted by S&P Dow Jones Indices and prohibits reproduction without S&P's permission; FRED serves only about the last ten years",
+        "class": "RESTRICTED_NO_REDISTRIBUTION",
+        "owner": "S&P Dow Jones Indices LLC"
+      },
+      "YAHOO_GSPC": {
+        "basis": "Yahoo's terms limit use to personal, non-commercial purposes and prohibit redistribution; the index values are S&P's",
+        "class": "RESTRICTED_NO_REDISTRIBUTION",
+        "owner": "S&P Dow Jones Indices (index); Yahoo (delivery)"
+      },
+      "YAHOO_SPY": {
+        "basis": "Yahoo's terms (as YAHOO_GSPC)",
+        "class": "RESTRICTED_NO_REDISTRIBUTION",
+        "owner": "Yahoo (delivery)"
+      }
+    },
     "usSnapshot": {
-      "acquisition": "scripts/acquire_rp1_c1_us_sources.py (network + FRED_API_KEY); see lifecycle.blockers for why no workflow ships",
-      "directory": "data/rp1-c1-us-exposure/sources",
-      "files": {},
-      "status": "NOT_ACQUIRED"
+      "acquisition": "scripts/acquire_rp1_c1_us_sources.py inside the freeze job (see lifecycle.route); raw bytes never enter git, a log or an unencrypted artifact",
+      "manifestPath": null,
+      "status": "NOT_FROZEN",
+      "storage": "ENCRYPTED_ACTIONS_ARTIFACT_NEVER_COMMITTED"
     }
   },
   "interpretation": {
@@ -358,27 +401,39 @@
     "studyId": "kr-market-risk-model-v1"
   },
   "lifecycle": {
-    "blockers": [
+    "executionLock": "refs/tags/rp1-c1-us-exposure-ladder-replication-v1-execution-lock plus -<specSha256>; any ref under the prefix refuses",
+    "formalExecution": "workflow_dispatch of rp1_c1_action=execute on merged main by the owner, first attempt, with the exact committed authorization (docs/research-program/authorizations/rp1-c1-us-exposure-execution-authorization.json) whose SHA-256 is typed into the dispatch; the authorization pins this spec, its scientific digest, the source freeze and every harness file. Readiness READY and equivalence EXACT, no result, marker or lock, then an atomic lock ref, a marker, and only then the first US value read",
+    "infrastructureRevisions": [
       {
-        "fact": "every workflow inventory layer (docs/workflow-inventory*.md) and both census tests (tests/test_workflow_inventory.py, tests/test_kr_alpha_atlas_price_repair_workflow_inventory.py) are hash-pinned by sealed Phase C specs. Any new .yml or .yaml file fails a pinned census test, and editing a pinned test fails the sealed Phase C amendment check. Neither the source workflow nor the WP4d execution workflow can be added without a versioned decision on that census.",
-        "id": "WORKFLOW_CENSUS_FROZEN",
-        "options": [
-          "owner runs the acquisition script outside Actions and commits the bytes (provenance: operator machine, recorded in audit.json)",
-          "a versioned census layer for post-Phase-C workflows, decided and recorded by the owner, before WP4d"
-        ],
-        "status": "OWNER_DECISION_REQUIRED"
-      },
-      {
-        "fact": "query1.finance.yahoo.com and api.stlouisfed.org answer CONNECT 403 here and no FRED_API_KEY is set; nothing was acquired",
-        "id": "US_SOURCES_UNREACHABLE_FROM_AUTHORING_SANDBOX",
-        "status": "ENVIRONMENT"
+        "id": "STORAGE_AND_ROUTE_REVISION_1",
+        "madeBeforeAnyUsOutcome": true,
+        "now": "encrypted Actions artifact plus a committed dates-and-hashes manifest; jobs in an existing unpinned workflow behind an input",
+        "reason": "three of the four sources are licensed data whose terms do not permit redistribution from a public repository; a new workflow file would break the Phase C-pinned census",
+        "replaced": "US raw bytes committed under data/rp1-c1-us-exposure/sources and no execution route (blocked by the frozen census)",
+        "scientificDigestUnchanged": true
       }
     ],
-    "executionLock": "refs/tags/rp1-c1-us-exposure-ladder-replication-v1-execution-lock plus -<specSha256>; any ref under the prefix refuses",
-    "formalExecution": "WP4d, a separate change: workflow_dispatch on merged main, exact committed spec, owner authorization pinning spec and code hashes, readiness READY, equivalence EXACT, no result/marker/lock under the prefix, then an atomic lock ref, a marker, and only then the first US value read; one immutable result artifact and an exact-byte Draft seal PR (the kr-market-risk-model-v1 pattern)",
     "markerPath": "docs/research-program/results/rp1-c1-us-exposure-ladder-replication-v1-execution-started.json",
     "resultPath": "docs/research-program/results/rp1-c1-us-exposure-ladder-replication-v1-result.json",
-    "thisChange": "WP4a-WP4c: data foundation, calendar wrapper, KR equivalence, readiness, frozen spec. No US value read, no lock, no execution."
+    "route": {
+      "actions": {
+        "dry-run": "manual: decrypt and verify the pinned snapshot, run every pre-lock check, then the whole evaluation, validator and report on INVENTED values over the real calendar; no lock, no US value",
+        "execute": "manual, main only, the owner's dispatch: authorization, pins, readiness, equivalence, then the lock, the marker and only then the first US value",
+        "freeze-sources": "manual, main only: acquire, dates-only readiness, encrypt, upload one artifact, open one Draft PR with the manifest and the re-pinned spec",
+        "none": "the host's original job only; every rp1-c1 job is skipped"
+      },
+      "input": "rp1_c1_action",
+      "whyAHostWorkflow": "every workflow inventory layer and both census tests are byte-pinned by sealed Phase C specs, so a new workflow file cannot be added without breaking a seal; the jobs live in an existing, unpinned, spent workflow behind an explicit input whose default runs only that workflow's original job",
+      "workflow": ".github/workflows/seal-kr-factor-anatomy-v1.yml"
+    },
+    "storage": {
+      "encryption": "openssl enc -aes-256-cbc -pbkdf2 -iter 600000 -md sha256 -salt over a deterministic tar of the snapshot directory; the key is the repository secret RP1_C1_SNAPSHOT_KEY; integrity is the manifest's per-file SHA-256, checked after decryption",
+      "ifTheArtifactExpires": "a new freeze (new manifest, new spec digest, new authorization); never a re-acquisition under the old pin",
+      "retentionDays": 90,
+      "rule": "ENCRYPTED_ACTIONS_ARTIFACT_NEVER_COMMITTED",
+      "secret": "RP1_C1_SNAPSHOT_KEY"
+    },
+    "thisChange": "WP4a-WP4d machinery: data foundation, calendar wrapper, KR equivalence, readiness, frozen spec, source freeze, owner authorization, one-shot execution, independent validator and comparison report. Nothing here reads a US value outside the registered post-lock path."
   },
   "model": {
     "candidateOrder": [

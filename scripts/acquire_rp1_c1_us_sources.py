@@ -6,6 +6,9 @@ acquisition script (`scripts/acquire_kr_market_risk_sources.py`, loaded read-onl
 drawdown, state, episode or result table and never prints a price, rate or level. The three FRED series the KR study already retained (VIXCLS, DGS10,
 DGS3MO) are NOT re-acquired: the C1 spec pins their sealed bytes. An ACQUIRED source is immutable; a later run retries only a source that is not
 ACQUIRED, at most MAX_ATTEMPTS times, and never substitutes a different instrument or splices two vendors.
+
+The output directory must lie OUTSIDE the repository: three of the four sources are licensed data that may not be redistributed, so their bytes never
+enter git (`rp1_c1_us_sources.STORAGE`). Inside Actions the freeze job encrypts the directory into one artifact; git carries only its manifest.
 """
 from __future__ import annotations
 
@@ -21,7 +24,6 @@ sys.path.insert(0, str(ROOT))
 from pipeline import kr_market_risk_source_parse as P  # noqa: E402
 from pipeline import rp1_c1_us_sources as SRC  # noqa: E402
 
-OUT = ROOT / SRC.SNAPSHOT_DIR
 MAX_ATTEMPTS = 3
 
 
@@ -37,7 +39,8 @@ def kr_transport():
 def acquire_one(sid, key, today, out, transport):
     entry = SRC.SOURCES[sid]
     record = {"id": sid, "symbol": entry["symbol"], "vendor": entry["vendor"], "instrument": entry["instrument"], "basis": entry["basis"],
-              "unit": entry.get("unit"), "vintageClass": entry["vintageClass"], "fetchedAtUtc": datetime.now(timezone.utc).isoformat(), "status": "FAILED"}
+              "unit": entry.get("unit"), "vintageClass": entry["vintageClass"], "rights": SRC.SOURCE_RIGHTS[sid]["class"],
+              "fetchedAtUtc": datetime.now(timezone.utc).isoformat(), "status": "FAILED"}
     try:
         got = transport.fetch_fred(entry, key, today) if entry["fetch"] == "fred" else transport.fetch_yahoo(entry, today)
     except Exception as error:  # a transport failure is recorded, never hidden or retried into another instrument
@@ -79,13 +82,15 @@ def acquire_one(sid, key, today, out, transport):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", default=str(OUT))
+    parser.add_argument("--output", required=True, help="a directory OUTSIDE the repository")
     parser.add_argument("--only", nargs="*")
     args = parser.parse_args(argv)
     import os
     key = os.environ.get("FRED_API_KEY", "")
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    out = Path(args.output)
+    out = Path(args.output).resolve()
+    if out == ROOT or ROOT in out.parents:
+        raise SystemExit("REFUSED: the snapshot must be written outside the repository (licensed bytes never enter git)")
     out.mkdir(parents=True, exist_ok=True)
     path = out / "audit.json"
     audit = json.loads(path.read_text()) if path.exists() else {
@@ -94,6 +99,7 @@ def main(argv=None):
         "statements": ["Raw vendor bytes are retained unchanged.", "No return, drawdown, state, episode or forward quantity was computed.",
                        "Rows that could not be parsed to a finite (or, for prices, positive) value were dropped and counted, never filled.",
                        "VIXCLS, DGS10 and DGS3MO are the sealed KR snapshot's bytes and were not re-acquired.",
+                       "Licensed bytes in this directory are never committed, logged or uploaded unencrypted.",
                        "An ACQUIRED source is immutable; only a source that is not ACQUIRED may be retried, at most %d times." % MAX_ATTEMPTS]}
     transport = kr_transport()
     changed = False

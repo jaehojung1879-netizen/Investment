@@ -2,8 +2,9 @@
 """Write the frozen rp1-c1 preregistration, its SHA-256 sidecar and the scientific-content sidecar.
 
 Every scientific section is computed from module constants (and, where inherited, from the sealed KR modules), so `load_spec` can compare them on
-every load. The scientific sidecar pins those sections alone: acquiring the US snapshot later re-pins the inputs and the dependency map, and the
-builder refuses to write if that would change one scientific byte. `--check` rebuilds in memory and fails on any difference. No value is read."""
+every load. The scientific sidecar pins those sections alone: freezing the US sources later re-pins the inputs (the committed source-freeze manifest) and the
+dependency map, and the builder refuses to write if that would change one scientific byte. `--check` rebuilds in memory and fails on any difference.
+No value is read."""
 from __future__ import annotations
 
 import argparse
@@ -15,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from pipeline import rp1_c1_us_exposure as U  # noqa: E402
 from pipeline import rp1_c1_us_exposure_spec as SP  # noqa: E402
+from pipeline import rp1_c1_us_execution as X  # noqa: E402
 from pipeline import rp1_c1_us_sources as SRC  # noqa: E402
 
 DOC = "docs/research-program/rp1-c1-us-exposure-ladder-replication.md"
@@ -25,8 +27,9 @@ SCRIPTS = ["scripts/build_rp1_c1_us_exposure_spec.py", "scripts/run_rp1_c1_us_ex
 def build(root=ROOT):
     root = Path(root)
     reused = SP.kr_reused_files(root)
-    us_files = SP.us_snapshot_files(root)
-    sealed = sorted(set(SP.KR_SEALED) | set(reused) | set(us_files) | set(SCRIPTS) | {DOC, "pipeline/kr_market_risk_overlay.py"})
+    us_pin = SP.us_snapshot_pin(root)
+    manifest = {us_pin["manifestPath"]} if us_pin["manifestPath"] else set()
+    sealed = sorted(set(SP.KR_SEALED) | set(reused) | manifest | set(SCRIPTS) | {DOC, "pipeline/kr_market_risk_overlay.py"})
     spec = {
         "studyId": SP.STUDY, "scientificStatus": U.SCIENTIFIC_STATUS, "evidenceStatement": U.EVIDENCE_STATEMENT,
         "phase": "PREREGISTRATION_AND_DATA_FOUNDATION_NO_OUTCOME_COMPUTED",
@@ -39,29 +42,42 @@ def build(root=ROOT):
                      "rule": "never rerun, re-thresholded or reinterpreted; C1 imports its rules and reproduces its decision exactly (equivalence audit)"},
         "inputs": {
             "reusedKrFiles": reused, "reusedRule": "the exact bytes the sealed KR spec pins; never re-acquired",
-            "usRegistry": SRC.SOURCES,
-            "usSnapshot": {"directory": SRC.SNAPSHOT_DIR, "files": us_files, "status": "PINNED" if us_files else "NOT_ACQUIRED",
-                           "acquisition": "scripts/acquire_rp1_c1_us_sources.py (network + FRED_API_KEY); see lifecycle.blockers for why no workflow ships"}},
+            "usRegistry": SRC.SOURCES, "usRights": SRC.SOURCE_RIGHTS, "reusedRights": SRC.REUSED_RIGHTS, "usExpectedIdentity": SRC.EXPECTED_IDENTITY,
+            "usSnapshot": {**us_pin, "acquisition": "scripts/acquire_rp1_c1_us_sources.py inside the freeze job (see lifecycle.route); raw bytes never "
+                                                    "enter git, a log or an unencrypted artifact"}},
         "model": SP.model_definition(), "portfolio": SP.portfolio_definition(), "evaluation": SP.evaluation_definition(),
         "decision": SP.decision_definition(), "interpretation": SP.interpretation_definition(), "stopRules": SP.stop_rules(),
         "newHypotheses": SP.new_hypotheses(), "preOutcomeRevisions": [],
         "lifecycle": {
-            "thisChange": "WP4a-WP4c: data foundation, calendar wrapper, KR equivalence, readiness, frozen spec. No US value read, no lock, no execution.",
-            "formalExecution": "WP4d, a separate change: workflow_dispatch on merged main, exact committed spec, owner authorization pinning spec and code "
-                               "hashes, readiness READY, equivalence EXACT, no result/marker/lock under the prefix, then an atomic lock ref, a marker, and only "
-                               "then the first US value read; one immutable result artifact and an exact-byte Draft seal PR (the kr-market-risk-model-v1 pattern)",
+            "thisChange": "WP4a-WP4d machinery: data foundation, calendar wrapper, KR equivalence, readiness, frozen spec, source freeze, owner "
+                          "authorization, one-shot execution, independent validator and comparison report. Nothing here reads a US value outside the "
+                          "registered post-lock path.",
+            "route": {"workflow": X.HOST_WORKFLOW, "input": "rp1_c1_action",
+                      "actions": {"none": "the host's original job only; every rp1-c1 job is skipped",
+                                  "freeze-sources": "manual, main only: acquire, dates-only readiness, encrypt, upload one artifact, open one Draft PR with "
+                                                    "the manifest and the re-pinned spec",
+                                  "dry-run": "manual: decrypt and verify the pinned snapshot, run every pre-lock check, then the whole evaluation, validator "
+                                             "and report on INVENTED values over the real calendar; no lock, no US value",
+                                  "execute": "manual, main only, the owner's dispatch: authorization, pins, readiness, equivalence, then the lock, the marker "
+                                             "and only then the first US value"},
+                      "whyAHostWorkflow": "every workflow inventory layer and both census tests are byte-pinned by sealed Phase C specs, so a new "
+                                          "workflow file cannot be added without breaking a seal; the jobs live in an existing, unpinned, spent workflow "
+                                          "behind an explicit input whose default runs only that workflow's original job"},
+            "storage": {"rule": SRC.STORAGE, "encryption": X.ENCRYPTION, "secret": X.SNAPSHOT_KEY_SECRET,
+                        "retentionDays": X.SNAPSHOT_RETENTION_DAYS,
+                        "ifTheArtifactExpires": "a new freeze (new manifest, new spec digest, new authorization); never a re-acquisition under the old pin"},
+            "formalExecution": "workflow_dispatch of rp1_c1_action=execute on merged main by the owner, first attempt, with the exact committed "
+                               "authorization (" + X.AUTHORIZATION_PATH + ") whose SHA-256 is typed into the dispatch; the authorization pins this spec, "
+                               "its scientific digest, the source freeze and every harness file. Readiness READY and equivalence EXACT, no result, marker "
+                               "or lock, then an atomic lock ref, a marker, and only then the first US value read",
             "executionLock": "refs/tags/" + SP.STUDY + "-execution-lock plus -<specSha256>; any ref under the prefix refuses",
             "resultPath": SP.RESULT_PATH, "markerPath": SP.MARKER_PATH,
-            "blockers": [
-                {"id": "WORKFLOW_CENSUS_FROZEN", "status": "OWNER_DECISION_REQUIRED",
-                 "fact": "every workflow inventory layer (docs/workflow-inventory*.md) and both census tests (tests/test_workflow_inventory.py, "
-                         "tests/test_kr_alpha_atlas_price_repair_workflow_inventory.py) are hash-pinned by sealed Phase C specs. Any new .yml or .yaml file "
-                         "fails a pinned census test, and editing a pinned test fails the sealed Phase C amendment check. Neither the source workflow nor the "
-                         "WP4d execution workflow can be added without a versioned decision on that census.",
-                 "options": ["owner runs the acquisition script outside Actions and commits the bytes (provenance: operator machine, recorded in audit.json)",
-                             "a versioned census layer for post-Phase-C workflows, decided and recorded by the owner, before WP4d"]},
-                {"id": "US_SOURCES_UNREACHABLE_FROM_AUTHORING_SANDBOX", "status": "ENVIRONMENT",
-                 "fact": "query1.finance.yahoo.com and api.stlouisfed.org answer CONNECT 403 here and no FRED_API_KEY is set; nothing was acquired"}]},
+            "infrastructureRevisions": [
+                {"id": "STORAGE_AND_ROUTE_REVISION_1", "madeBeforeAnyUsOutcome": True, "scientificDigestUnchanged": True,
+                 "replaced": "US raw bytes committed under data/rp1-c1-us-exposure/sources and no execution route (blocked by the frozen census)",
+                 "reason": "three of the four sources are licensed data whose terms do not permit redistribution from a public repository; a new "
+                           "workflow file would break the Phase C-pinned census",
+                 "now": "encrypted Actions artifact plus a committed dates-and-hashes manifest; jobs in an existing unpinned workflow behind an input"}]},
         "outcomeAccess": {"inThisChange": "NONE_FOR_US", "krSealedReproduction": "the equivalence audit reads the sealed KR study's retained bytes and "
                                                                                  "compares with its sealed result; it opens no new outcome",
                           "verifyAndReadinessRequire": "usValueReads == stateComputationsOnValues == replayCallsOnValues == 0"},

@@ -2,8 +2,33 @@ name: Seal KR factor anatomy v1 result
 # TEMPORARY. Manual dispatch from merged main only. Downloads the exact formal result artifact INSIDE Actions, verifies its
 # archive SHA-256 before anything is extracted, then commits the exact bytes to a dedicated branch and opens ONE Draft PR.
 # It recomputes no statistic, never merges, and is deleted on the result-seal branch so no reusable sealing path remains.
+#
+# ALSO THE HOST OF THE rp1-c1 US EXPOSURE ROUTE (rp1-c1-us-exposure-ladder-replication-v1, WP4d). Every workflow inventory layer and both census tests
+# are byte-pinned by sealed Phase C specs, so a new workflow file cannot be added without breaking a seal; this spent, unpinned workflow carries the
+# route behind `rp1_c1_action`. Its default `none` runs ONLY the original seal job, exactly as before; every rp1-c1 job is skipped. See
+# pipeline/rp1_c1_us_execution.py and docs/research-program/rp1-c1-us-exposure-ladder-replication.md.
+#   freeze-sources  main only: acquire, dates-only readiness, encrypt, ONE encrypted artifact, ONE Draft PR with the manifest + re-pinned spec
+#   dry-run         decrypt + verify the pinned snapshot, every pre-lock check, then the whole pipeline on INVENTED values; no lock, no US value
+#   execute         the OWNER's one-shot on merged main with the committed authorization; failure after the lock consumes the study, never retry
+# The pull_request trigger runs only the outcome-free source probe, only on this route's authoring branch; licensed bytes never leave the runner.
 on:
   workflow_dispatch:
+    inputs:
+      rp1_c1_action:
+        description: "none = the original KR factor anatomy seal job only. rp1-c1 US route: freeze-sources / dry-run / execute (execute = owner one-shot)"
+        type: choice
+        options: [none, freeze-sources, dry-run, execute]
+        default: none
+      rp1_c1_authorization_sha256:
+        description: "execute only: SHA-256 of the committed owner authorization file; typed by the owner, never auto-filled"
+        type: string
+        default: ''
+  pull_request:
+    paths:
+      - 'pipeline/rp1_c1_us_*.py'
+      - 'scripts/acquire_rp1_c1_us_sources.py'
+      - 'scripts/run_rp1_c1_us_wp4d.py'
+      - '.github/workflows/seal-kr-factor-anatomy-v1.yml'
 permissions:
   contents: write
   pull-requests: write
@@ -13,6 +38,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   seal:
+    if: github.event_name == 'workflow_dispatch' && inputs.rp1_c1_action == 'none'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -91,3 +117,237 @@ jobs:
           sed -i 's/^          //' pr-body.md
           gh pr create --draft --base main --head "$SEAL_BRANCH" \
             --title "Research: seal KR factor anatomy v1 exploratory result" --body-file pr-body.md
+
+  rp1-c1-source-probe:
+    # Outcome-free rehearsal on live vendor bytes, ONLY on this route's authoring pull request. Acquires into the runner's temp directory (never the
+    # repository), runs the dates-only readiness and the synthetic dry run, and keeps only dates, counts, hashes and gate outcomes. Nothing raw is
+    # uploaded; the licensed bytes die with the runner. The job is red unless the readiness reads READY.
+    if: >-
+      github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository &&
+      github.head_ref == 'research/rp1-c1-wp4d-execution-readiness'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Acquire into the runner temp directory (dates-and-counts audit only is printed)
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: python scripts/acquire_rp1_c1_us_sources.py --output "$RUNNER_TEMP/rp1-c1-probe" || echo "ACQUISITION_INCOMPLETE (the probe reports which source)"
+      - name: Dates-only readiness on the live bytes, then the whole pipeline on invented values
+        run: |
+          set -euo pipefail
+          python scripts/run_rp1_c1_us_wp4d.py probe --snapshot "$RUNNER_TEMP/rp1-c1-probe" --output probe/probe.json
+          python scripts/run_rp1_c1_us_wp4d.py dry-run --snapshot "$RUNNER_TEMP/rp1-c1-probe" --output probe/dry-run
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rp1-c1-us-source-probe-${{ github.run_id }}
+          path: probe
+          retention-days: 30
+          if-no-files-found: ignore
+      - name: The readiness must read READY
+        run: python -c "import json,sys; d=json.load(open('probe/probe.json'))['readiness']; print(d['decision'], d['blockers']); sys.exit(d['decision'] != 'READY_FOR_RP1_C1_FORMAL_EXECUTION')"
+
+  rp1-c1-freeze-sources:
+    if: github.event_name == 'workflow_dispatch' && inputs.rp1_c1_action == 'freeze-sources'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    permissions:
+      contents: write        # push the freeze branch only
+      pull-requests: write   # open ONE Draft PR; nothing is merged
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SNAPSHOT: /tmp/rp1-c1-sources       # outside the repository; licensed bytes never enter git
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Main only, at the main tip, and the encryption key exists
+        env:
+          RP1_C1_SNAPSHOT_KEY: ${{ secrets.RP1_C1_SNAPSHOT_KEY }}
+        run: |
+          set -euo pipefail
+          [ "$GITHUB_REF" = "refs/heads/main" ] || { echo "MAIN_ONLY"; exit 1; }
+          git fetch -q origin main
+          [ "$(git rev-parse origin/main)" = "$GITHUB_SHA" ] || { echo "HEAD_IS_NOT_CURRENT_MAIN"; exit 1; }
+          [ -n "$RP1_C1_SNAPSHOT_KEY" ] || { echo "SNAPSHOT_KEY_SECRET_MISSING: the owner must create the repository secret RP1_C1_SNAPSHOT_KEY"; exit 1; }
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Acquire with the repository's acquirer (into the runner temp directory only)
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: python scripts/acquire_rp1_c1_us_sources.py --output "$SNAPSHOT"
+      - name: Dates-only readiness must read READY (nothing is uploaded otherwise)
+        run: python scripts/run_rp1_c1_us_wp4d.py freeze-check --snapshot "$SNAPSHOT" --output freeze/readiness.json
+      - name: Deterministic tar, encryption and a decryption round trip
+        env:
+          RP1_C1_SNAPSHOT_KEY: ${{ secrets.RP1_C1_SNAPSHOT_KEY }}
+        run: |
+          set -euo pipefail
+          mkdir -p encrypted
+          tar --sort=name --mtime='1970-01-01 00:00:00Z' --owner=0 --group=0 --numeric-owner -C "$SNAPSHOT" -cf "$RUNNER_TEMP/snapshot.tar" .
+          openssl enc -aes-256-cbc -pbkdf2 -iter 600000 -md sha256 -salt -in "$RUNNER_TEMP/snapshot.tar" -out encrypted/snapshot.tar.enc -pass env:RP1_C1_SNAPSHOT_KEY
+          openssl enc -d -aes-256-cbc -pbkdf2 -iter 600000 -md sha256 -in encrypted/snapshot.tar.enc -out "$RUNNER_TEMP/check.tar" -pass env:RP1_C1_SNAPSHOT_KEY
+          tar_sha="$(sha256sum "$RUNNER_TEMP/snapshot.tar" | cut -c1-64)"
+          [ "$(sha256sum "$RUNNER_TEMP/check.tar" | cut -c1-64)" = "$tar_sha" ] || { echo "ENCRYPTION_ROUND_TRIP_FAILED"; exit 1; }
+          echo "TAR_SHA256=$tar_sha" >> "$GITHUB_ENV"
+          echo "CIPHERTEXT_SHA256=$(sha256sum encrypted/snapshot.tar.enc | cut -c1-64)" >> "$GITHUB_ENV"
+          rm -f "$RUNNER_TEMP/snapshot.tar" "$RUNNER_TEMP/check.tar"
+      - uses: actions/upload-artifact@v4
+        id: upload
+        with:
+          name: rp1-c1-us-sources-encrypted-${{ github.run_id }}
+          path: encrypted/snapshot.tar.enc
+          retention-days: 90
+          if-no-files-found: error
+      - name: Manifest and re-pinned spec on a freeze branch, ONE Draft PR (neither file carries a value)
+        env:
+          ARTIFACT_ID: ${{ steps.upload.outputs.artifact-id }}
+        run: |
+          set -euo pipefail
+          BRANCH="research/rp1-c1-us-source-freeze-${GITHUB_RUN_ID}"
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then echo "FREEZE_BRANCH_EXISTS"; exit 1; fi
+          python scripts/run_rp1_c1_us_wp4d.py freeze-manifest --snapshot "$SNAPSHOT" --run-id "$GITHUB_RUN_ID" --commit "$GITHUB_SHA" \
+            --artifact-name "rp1-c1-us-sources-encrypted-${GITHUB_RUN_ID}" --artifact-id "$ARTIFACT_ID" --tar-sha256 "$TAR_SHA256" \
+            --ciphertext-sha256 "$CIPHERTEXT_SHA256"
+          python scripts/build_rp1_c1_us_exposure_spec.py
+          python scripts/run_rp1_c1_us_exposure.py verify
+          python scripts/run_rp1_c1_us_wp4d.py verify-snapshot --snapshot "$SNAPSHOT"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -q -b "$BRANCH"
+          git add -A docs/research-program/sources docs/research-program/specs
+          git commit -q -m "Data: rp1-c1 US source freeze ${GITHUB_RUN_ID} (manifest and re-pinned spec; raw bytes only in the encrypted artifact)"
+          git push origin "$BRANCH"
+          printf '%s\n' "**SOURCE FREEZE — NO US VALUE READ, NO OUTCOME COMPUTED**" "" \
+            "Freeze run ${GITHUB_RUN_ID} on main ${GITHUB_SHA}. Encrypted artifact rp1-c1-us-sources-encrypted-${GITHUB_RUN_ID} (id ${ARTIFACT_ID}, retention 90 days)." \
+            "Ciphertext SHA-256 ${CIPHERTEXT_SHA256}; tar SHA-256 ${TAR_SHA256}." "" \
+            "This PR adds only the dates-and-hashes manifest and the re-pinned spec (scientific digest unchanged). Licensed bytes never enter git." \
+            "After merge: the owner reviews the pins, commits the authorization, and dispatches execute. Draft; do not merge automatically." > pr-body.md
+          gh pr create --draft --base main --head "$BRANCH" --title "Data: rp1-c1 US source freeze ${GITHUB_RUN_ID}" --body-file pr-body.md
+
+  rp1-c1-dry-run:
+    if: github.event_name == 'workflow_dispatch' && inputs.rp1_c1_action == 'dry-run'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    permissions:
+      contents: read
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SNAPSHOT: /tmp/rp1-c1-sources       # outside the repository; licensed bytes never enter git
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Download, verify and decrypt the pinned snapshot (bytes are never printed)
+        env:
+          RP1_C1_SNAPSHOT_KEY: ${{ secrets.RP1_C1_SNAPSHOT_KEY }}
+        run: |
+          set -euo pipefail
+          ARTIFACT_ID="$(python scripts/run_rp1_c1_us_wp4d.py snapshot-pin)"
+          if [ "$ARTIFACT_ID" = "NOT_FROZEN" ]; then echo "NO_SOURCE_FREEZE_PINNED: the dry run covers the synthetic pipeline only"; exit 0; fi
+          curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}/zip" -o "$RUNNER_TEMP/snapshot.zip"
+          python scripts/run_rp1_c1_us_wp4d.py open-snapshot --zip "$RUNNER_TEMP/snapshot.zip" --snapshot "$SNAPSHOT"
+      - name: Every pre-lock check, then the whole pipeline on invented values (no lock, no US value)
+        run: |
+          set -euo pipefail
+          if [ -d "$SNAPSHOT" ]; then python scripts/run_rp1_c1_us_wp4d.py dry-run --snapshot "$SNAPSHOT" --output dry-run
+          else python scripts/run_rp1_c1_us_wp4d.py dry-run --output dry-run; fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rp1-c1-us-exposure-dry-run-${{ github.run_id }}
+          path: dry-run
+          retention-days: 30
+          if-no-files-found: ignore
+
+  rp1-c1-execute:
+    # The ONE formal execution. Never on pull_request; only the owner's manual dispatch of merged main with the committed authorization.
+    if: github.event_name == 'workflow_dispatch' && inputs.rp1_c1_action == 'execute'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    concurrency:
+      group: rp1-c1-us-exposure-ladder-replication-v1-single-attempt
+      cancel-in-progress: false
+    permissions:
+      contents: write      # ONLY to create the one-shot lock tags (git refs); nothing is pushed by this job
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SNAPSHOT: /tmp/rp1-c1-sources       # outside the repository; licensed bytes never enter git
+      AUTHORIZATION_SHA256: ${{ inputs.rp1_c1_authorization_sha256 }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Main only, first attempt, no earlier results artifact
+        run: |
+          set -euo pipefail
+          [ "$GITHUB_REF" = "refs/heads/main" ] || { echo "MAIN_ONLY"; exit 1; }
+          [ "$GITHUB_RUN_ATTEMPT" = "1" ] || { echo "FIRST_ATTEMPT_ONLY"; exit 1; }
+          earlier="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/actions/artifacts?per_page=100" \
+            --jq '.artifacts[] | select(.name | startswith("rp1-c1-us-exposure-results-")) | select(.expired | not) | .name')"
+          [ -z "$earlier" ] || { echo "RESULTS_ARTIFACT_ALREADY_EXISTS: $earlier"; exit 1; }
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Download, verify and decrypt the pinned snapshot (no value is read)
+        env:
+          RP1_C1_SNAPSHOT_KEY: ${{ secrets.RP1_C1_SNAPSHOT_KEY }}
+        run: |
+          set -euo pipefail
+          ARTIFACT_ID="$(python scripts/run_rp1_c1_us_wp4d.py snapshot-pin)"
+          [ "$ARTIFACT_ID" != "NOT_FROZEN" ] || { echo "SOURCE_FREEZE_NOT_PINNED"; exit 1; }
+          curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}/zip" -o "$RUNNER_TEMP/snapshot.zip"
+          python scripts/run_rp1_c1_us_wp4d.py open-snapshot --zip "$RUNNER_TEMP/snapshot.zip" --snapshot "$SNAPSHOT"
+      - name: Formal execution (authorization and gates before the lock, lock before the marker, marker before any US value)
+        id: execution
+        run: python scripts/run_rp1_c1_us_wp4d.py execute --snapshot "$SNAPSHOT" --output run --authorization-sha256 "$AUTHORIZATION_SHA256"
+      - name: Print the outputs for recovery without artifact storage (aggregate statistics only)
+        if: always()
+        run: |
+          for f in run/result.json run/validation.json run/manifest.json run/execution-started.json run/report.md run/gates-blocked.json; do
+            [ -f "$f" ] && python scripts/run_rp1_c1_us_wp4d.py encode-for-log --file "$f"; sha256sum "$f" 2>/dev/null || true
+          done
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.execution.outcome == 'success'
+        with:
+          name: rp1-c1-us-exposure-results-${{ github.run_id }}
+          path: run
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.execution.outcome != 'success'
+        with:
+          name: rp1-c1-us-exposure-attempt-${{ github.run_id }}
+          path: run
+          retention-days: 90
+          if-no-files-found: ignore
+      - name: Report whether the study was consumed (no retry either way)
+        if: always()
+        run: |
+          code=$(curl -s -o lock.json -w '%{http_code}' -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/git/matching-refs/tags/rp1-c1-us-exposure-ladder-replication-v1-execution-lock")
+          if [ "$code" = "200" ] && [ "$(python -c "import json; print(len(json.load(open('lock.json'))))")" != "0" ]; then
+            echo "## STUDY LOCKED: the one execution has been spent. DO NOT RETRY." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "## Stopped before the lock: nothing was spent." >> "$GITHUB_STEP_SUMMARY"
+          fi
