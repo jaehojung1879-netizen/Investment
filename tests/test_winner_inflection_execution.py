@@ -46,6 +46,7 @@ def prepared():
 def test_fixed_pilot_and_default_admission_read_no_outcomes(monkeypatch, capsys):
     monkeypatch.setattr(CLI, "load_permitted", lambda *_: pytest.fail("real source opened"))
     monkeypatch.setattr(A, "github", lambda *_: pytest.fail("approval/network called"))
+    monkeypatch.setattr(A, "source_preflight", lambda *_: {"status": "READY", "payloadReads": 0})
     assert CLI.main([]) == 0
     result = json.loads(capsys.readouterr().out)
     assert result["status"] == "BLOCKED"
@@ -66,6 +67,7 @@ def test_fake_permit_cannot_open_any_source(monkeypatch):
 
 @pytest.fixture
 def approval(tmp_path, monkeypatch):
+    monkeypatch.setattr(A, "source_preflight", lambda *_: {"status": "READY", "payloadReads": 0})
     repo = tmp_path / "repo"
     repo.mkdir()
     for name in A.CLOSURE:
@@ -567,3 +569,29 @@ def test_approved_loader_reconstructs_shared_cash_basis_on_invented_archive(appr
         assert data["prices"].SYN00.iloc[-1] == pytest.approx(101.)
         assert data["prices"].SPY.iloc[-1] == pytest.approx(202.)
         assert data["lineage"] and data["receipts"]
+
+
+def test_missing_source_objects_are_detected_without_opening_payloads(tmp_path, monkeypatch):
+    from scripts import inspect_experiment_sources as sources
+    subprocess.check_call(["git", "init", "-q", str(tmp_path)])
+    manifest = {"components": {"price/2020-01": ["a" * 64]}}
+    config = spec()
+    config["sourceManifestSha256"] = IF.digest(manifest)
+    class MetadataOnly:
+        def __init__(self, root): pass
+        def blob(self, commit, path):
+            assert path == sources.MANIFEST and commit == sources.SOURCE_COMMIT
+            return json.dumps(manifest).encode()
+        def component(self, *_): pytest.fail("outcome-bearing payload opened by preflight")
+    monkeypatch.setattr(sources, "Sources", MetadataOnly)
+    result = A.source_preflight(tmp_path, config)
+    assert result["status"] == "BLOCKED" and result["payloadReads"] == 0
+    assert result["missingObjects"] == result["requiredObjects"] == 15
+
+
+def test_lost_local_source_objects_block_before_owner_and_durable_claim(approval, monkeypatch):
+    repo, _, value, api, calls, claims, _ = approval
+    monkeypatch.setattr(A, "source_preflight", lambda *_: {"status": "BLOCKED", "missingObjects": 1, "payloadReads": 0})
+    with pytest.raises(ValueError, match="LOCAL_SOURCE_OBJECTS"):
+        A.authorize(value, repo, comment_id=1, now="2026-10-17T01:02:00Z", api=api)
+    assert not calls and not claims

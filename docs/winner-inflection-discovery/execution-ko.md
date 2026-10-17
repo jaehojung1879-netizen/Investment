@@ -25,7 +25,7 @@
 | size | 공시 가중평균 주식수×당시 거래 가격을 **규모 대용치**로 수용하는지. 가시 시점과 주식분할을 검사하며 실제 시총이라고 부르지 않는다. |
 | vintage | 2026년에 수집된 과거 자료의 공개일 재구성을 수용하는지. 2013~2020년에 실제 전향 수집한 자료라는 주장은 금지한다. |
 
-보존 원천은 signal-history `1bf68f59cffa20239977e2cfaa0f35a07d0ec884`, 메타데이터는 `002b56434e3aa3e845798ec2ea7ca6d9267e3f7a`로 고정했다. manifest SHA와 모든 읽은 Git/component SHA를 확인한다. 기존 `Sources`의 로컬 Git 허용 목록만 사용하고 네트워크 자동 fetch·외부 수집·새 구독을 하지 않는다. 로컬 객체가 없으면 중단한다. 가격/기업행동은 KR·범위 밖 종목도 포함하는 2011-01~2021-07 월간 객체 단위로 읽되 US 대상만 계산에 남긴다. 따라서 2021-07-06 이후 값도 같은 원본 객체 안에는 있으나 계산에는 쓰지 않는다. 공시는 2011~2021 회계연도 원본을 읽고 매 신호일 공개 prefix를 적용한다.
+보존 원천은 signal-history `1bf68f59cffa20239977e2cfaa0f35a07d0ec884`, 메타데이터는 `002b56434e3aa3e845798ec2ea7ca6d9267e3f7a`로 고정했다. manifest SHA와 모든 읽은 Git/component SHA를 확인한다. 기존 `Sources`의 로컬 Git 허용 목록만 사용하고 네트워크 자동 fetch·외부 수집·새 구독을 하지 않는다. **현재 로컬 partial clone에서는 필수 Git 객체 398개 중 254개가 없다.** `preview/admit/request`는 manifest와 `git cat-file --batch-check`의 객체 유형/크기만 확인하고 원천 본문을 열지 않는다. 소유자 댓글/시도 태그 생성 전에 동일 검사를 다시 적용하므로 캐시 결손으로 실행 승인을 소비하지 않는다. 필요한 보존 객체가 있는 실행 환경을 먼저 준비해야 하며 이번 PR에서는 가격 객체를 자동 복원하거나 수익률을 읽지 않았다. 가격/기업행동은 KR·범위 밖 종목도 포함하는 2011-01~2021-07 월간 객체 단위로 읽되 US 대상만 계산에 남긴다. 따라서 2021-07-06 이후 값도 같은 원본 객체 안에는 있으나 계산에는 쓰지 않는다. 공시는 2011~2021 회계연도 원본을 읽고 매 신호일 공개 prefix를 적용한다.
 
 **가격 기준에서 확인한 구현상 차이:** 기존 replay 조정 지수의 배당 계수는 `1/(1-D/P_prev)`다. 이는 현금 배당을 그날 종가에 재투자한 경제적 수익과 일반적으로 같지 않다. 기존 코드는 변경하지 않고 `as_traded_from_total_return`로 원래 가격을 복원한 다음 주식과 SPY 양쪽에 `split × (P_t + D_post_split)/P_prev`를 적용한다. 세전·배당락일 종가 재투자 기준이며 ETF 비용은 원천 가격에 내재한다. 가격 결측·거래량 0은 장벽으로 남기고 교차하는 창을 보류한다. SPY는 보존 벤치마크 종가에 따른 유동 ETF 체결 가정을 사용하며 거래량을 만들어내지 않는다. vendor 계열·SPY symbol·조정 recipe lineage가 다르면 가격 본문을 열기 전에 중단한다. 단순 조정식 일치만으로 원천 가격/배당의 경제적 검증이 끝났다고 보지 않는다.
 
@@ -43,7 +43,7 @@ python scripts/run_winner_inflection.py synthetic
 python scripts/run_winner_inflection.py admit --review /workspace/wid-inputs/review.json
 ```
 
-1. 근거 검토가 끝난 `review.json`으로 `admit`를 통과시킨다. 코드 commit/worktree는 깨끗해야 한다. 실제 outcome 파일을 검토 근거로 열지 않고 원천 메타데이터·단위·이용권을 먼저 확인한다.
+1. 근거 검토가 끝난 `review.json`과 필요한 로컬 보존 객체로 `admit`를 통과시킨다. 코드 commit/worktree는 깨끗해야 한다. 실제 outcome 파일을 검토 근거로 열지 않고 원천 메타데이터·단위·이용권을 먼저 확인한다.
 2. 다음 명령으로 검토할 **하나의 manifest**를 만든다. 차단 상태면 `approvalText`는 null이며 실행 승인 대상이 아니다.
 
 ```bash
@@ -72,4 +72,4 @@ python scripts/run_winner_inflection.py execute \
 
 합성 입력에서 다음 거래일/휴장/DST/조기 마감, 126거래일 만기, 공개 전 라벨 차단, proper-fit/보정 purge, 미래 가격·공시·라벨 오염 불변성, 신원/중복, 주식분할·배당·비용 계산, 종결 0과 결측의 구분, 동일 표본 비교, 별도 파일 계층, 소유자 승인·변경/재실행 차단을 검사한다. 실제 성과 수치는 이 문서에 없다. 실행 후 검증 가능한 지표만 출력하며 설명 가능한 실패도 탐색 결과로 기록한다.
 
-전체 회귀 1회는 5,205 passed / 1 skipped / 4 xfailed였다. 이후 보완한 관문을 포함한 실행기 전용 합성/승인 회귀 50개도 통과했다. 36개 가상 기업을 쓰는 CLI 리허설은 약 22.24초·최대 RSS 230.39MiB였으며 실제 데이터 비용 추정치나 연구 성과가 아니다. `ruff`, compileall, seed 생성/preview 검증, synthetic seed의 production 거부도 확인했다. 실제 역사 라벨 파생·학습은 0회다.
+전체 회귀 1회는 5,205 passed / 1 skipped / 4 xfailed였다. 이후 보완한 관문을 포함한 실행기·기존 WID/Workbench 합성/승인 회귀 111개도 통과했다. 36개 가상 기업을 쓰는 CLI 리허설은 약 22.24초·최대 RSS 230.39MiB였으며 실제 데이터 비용 추정치나 연구 성과가 아니다. `ruff`, compileall, seed 생성/preview 검증, synthetic seed의 production 거부도 확인했다. 실제 역사 라벨 파생·학습은 0회다.

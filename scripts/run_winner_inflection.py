@@ -181,10 +181,11 @@ def _main(argv=None):
     X.validate_spec(spec)
     review = json.loads(args.review.read_bytes())
     if args.mode in ("preview", "admit"):
-        print(json.dumps({"specId": spec["id"], "mode": args.mode, **A.admission(spec, review)}, ensure_ascii=False, sort_keys=True, indent=2))
-        return 0 if args.mode == "preview" else 2 if A.admission(spec, review)["status"] == "BLOCKED" else 0
+        result = A.preflight(ROOT, spec, review)
+        print(json.dumps({"specId": spec["id"], "mode": args.mode, **result}, ensure_ascii=False, sort_keys=True, indent=2))
+        return 0 if args.mode == "preview" else 2 if result["status"] == "BLOCKED" else 0
     if args.mode == "request":
-        prior = A.prior_attempts() if A.admission(spec, review)["status"] != "BLOCKED" else ()
+        prior = A.prior_attempts() if A.preflight(ROOT, spec, review)["status"] != "BLOCKED" else ()
         value = A.request(ROOT, spec, review, created_at=PRC.system_utc_now().isoformat(), run_root=args.run_root, prior_claims=prior)
         print(json.dumps({"request": value, "approvalText": "APPROVE WID_EXECUTION " + value["sha256"]
                           if value["admission"]["status"] != "BLOCKED" else None}, ensure_ascii=False, sort_keys=True, indent=2))

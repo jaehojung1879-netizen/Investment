@@ -9,6 +9,7 @@ from dataclasses import asdict, dataclass
 import hashlib
 import importlib.metadata
 import json
+import os
 from pathlib import Path
 import re
 import subprocess
@@ -103,6 +104,49 @@ def admission(spec, review):
             "unbiasedFullUniverseEvidence": False, "productionPromotion": False}
 
 
+def source_preflight(root, spec):
+    """Git object TYPE/SIZE only; no price/action/filing payload is opened.
+
+    Prevent consuming an owner permit on a known incomplete partial clone.
+    Only the already-pinned input manifest (hash/path metadata) is read.
+    """
+    from scripts import inspect_experiment_sources as S
+    try:
+        if spec["sourceCommit"] != S.SOURCE_COMMIT or spec["metadataCommit"] != S.CODE_BASE:
+            raise ValueError("SOURCE_COMMIT_OUTSIDE_FIXED_REUSE_SCOPE")
+        manifest = json.loads(S.Sources(root).blob(S.SOURCE_COMMIT, S.MANIFEST))
+        if IF.digest({k: v for k, v in manifest.items() if k != "sha256"}) != spec["sourceManifestSha256"]:
+            raise ValueError("SOURCE_MANIFEST_CHANGED")
+        lo, hi = spec["sourceWindow"]["priceStart"][:7], spec["sourceWindow"]["priceThrough"][:7]
+        refs = {ref for name, parts in manifest["components"].items() if
+                name in ("price/source", "benchmark/source", "corporate-events/source") or
+                name.startswith(("price/20", "benchmark/20", "corporate-events/20")) and lo <= name.split("/")[1] <= hi for ref in parts}
+        paths = {S.SOURCE_COMMIT + ":ledger/replay-inputs/objects/" + ref + ".json.gz" for ref in refs}
+        paths.update(S.SOURCE_COMMIT + f":ledger/fundamentals/us/finnhub-{year}.jsonl.gz"
+                     for year in range(2011, spec["sourceWindow"]["lastFilingFiscalYear"] + 1))
+        paths.update(S.CODE_BASE + ":" + p for p in (S.MEMBERS, S.SECTORS, S.US_IDENTITY))
+        ordered = sorted(paths)
+        lines = subprocess.check_output(["git", "cat-file", "--batch-check=%(objecttype) %(objectsize)"], cwd=root,
+            input="\n".join(ordered) + "\n", text=True, stderr=subprocess.DEVNULL,
+            env={**os.environ, "GIT_NO_LAZY_FETCH": "1"}).splitlines()
+        missing = [path for path, line in zip(ordered, lines) if not line.startswith("blob ")]
+        if len(lines) != len(ordered):
+            raise ValueError("INCOMPLETE_OBJECT_METADATA_RESPONSE")
+        return {"status": "BLOCKED" if missing else "READY", "requiredObjects": len(ordered),
+                "missingObjects": len(missing), "missingPathsSha256": IF.digest(missing),
+                "missingExamples": missing[:3], "payloadReads": 0}
+    except (OSError, ValueError, KeyError, subprocess.CalledProcessError) as error:
+        return {"status": "BLOCKED", "reason": "SOURCE_METADATA_UNAVAILABLE:" + type(error).__name__, "payloadReads": 0}
+
+
+def preflight(root, spec, review):
+    result, local = admission(spec, review), source_preflight(root, spec)
+    if local["status"] != "READY":
+        result["status"] = "BLOCKED"
+        result["reasons"] = sorted([*result["reasons"], "LOCAL_SOURCE_OBJECTS_NOT_READY"])
+    return {**result, "sourcePreflight": local}
+
+
 def runtime_versions():
     return {"python": sys.version.split()[0], **{p: importlib.metadata.version(p) for p in
         ("pandas", "numpy", "scipy", "scikit-learn", "exchange-calendars")}}
@@ -127,7 +171,7 @@ def request(root, spec, review, *, created_at, run_root, prior_claims=()):
     code = {p: file_sha(root / p) for p in CLOSURE}
     head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
     body = {"repository": REPOSITORY, "spec": spec, "specSha256": IF.digest(spec), "review": review,
-            "admission": admission(spec, review), "codeCommit": head, "codeHashes": code,
+            "admission": preflight(root, spec, review), "codeCommit": head, "codeHashes": code,
             "createdAt": created_at, "layout": asdict(layout), "runRoot": str(run_root),
             "runtime": runtime_versions(), "priorClaims": sorted(prior_claims),
             "actions": ["claim one new wid-exploration attempt tag", "read pinned source inputs including matured outcomes",
@@ -142,6 +186,10 @@ def verify_request(value, root, *, now):
         raise ValueError("REQUEST_DIGEST_OR_REPOSITORY_MISMATCH")
     if IF.digest(value["spec"]) != value["specSha256"] or admission(value["spec"], value["review"])["status"] != "ADMITTED_CONDITIONALLY":
         raise ValueError("SOURCE_ADMISSION_BLOCKED")
+    local = source_preflight(root, value["spec"])
+    if (local["status"] != "READY" or value["admission"]["status"] != "ADMITTED_CONDITIONALLY" or
+            value["admission"].get("sourcePreflight") != local):
+        raise ValueError("LOCAL_SOURCE_OBJECTS_NOT_READY_OR_CHANGED")
     age = P.utc(now) - P.utc(value["createdAt"])
     if not 0 <= age.total_seconds() <= 7 * 86400:
         raise ValueError("REQUEST_EXPIRED_OR_FUTURE_DATED")
