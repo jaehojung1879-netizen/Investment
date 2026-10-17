@@ -43,11 +43,11 @@ HOST_WORKFLOW = ".github/workflows/seal-kr-factor-anatomy-v1.yml"
 AUTHORIZATION_DIR = "docs/research-program/authorizations"
 AUTHORIZATION_PATH = AUTHORIZATION_DIR + "/rp1-c1-us-exposure-execution-authorization.json"
 AUTHORIZATION_TEMPLATE_PATH = AUTHORIZATION_DIR + "/rp1-c1-us-exposure-execution-authorization.template.json"
-CONTRACT = "RP1_C1_US_EXPOSURE_FORMAL_EXECUTION_HASH_REFETCH_V2"
+CONTRACT = "RP1_C1_US_EXPOSURE_SCOPED_PRIMARY_AND_CASH_V1"
 AUTHORIZES = "ONE_FORMAL_EXECUTION"
 ACKNOWLEDGMENTS = ("frozenRuleReplicationNotValidation", "publiclyKnownUsHistory", "oneShotFailureAfterTheLockConsumesTheStudy",
                    "noThresholdWindowRuleOrCandidateChangeAfterTheResult", "noProductionOrPortfolioChange", "licensedSourceBytesStayRunnerTemporaryAndNeverPublished",
-                   "economicReadingIsDescriptiveAndCannotChangeTheDecision")
+                   "economicReadingIsDescriptiveAndCannotChangeTheDecision", "separateCashEconomicSpecReviewed")
 HARNESS_FILES = ("pipeline/rp1_c1_us_execution.py", "pipeline/rp1_c1_us_validator.py", "scripts/run_rp1_c1_us_wp4d.py", HOST_WORKFLOW)
 RESULTS_ARTIFACT_PREFIX = "rp1-c1-us-exposure-results-"
 ATTEMPT_ARTIFACT_PREFIX = "rp1-c1-us-exposure-attempt-"
@@ -63,7 +63,7 @@ class Refused(ValueError):
 
 @dataclass
 class Counters:
-    """Every read of a US value or computation of an outcome is counted; verify, probe, freeze, dry-run and every refusal leave them at zero."""
+    """Strategy value loads and outcomes are counted; source hash/unit/sanity checks produce no outcome. Pre-lock modes leave these at zero."""
     usValueReads: int = 0
     evaluations: int = 0
     validations: int = 0
@@ -117,7 +117,8 @@ def current_pins(root=ROOT):
     if pin["status"] != "FROZEN":
         raise Refused("SOURCE_FREEZE_NOT_PINNED_BY_THE_SPEC")
     return {"specSha256": sha, "scientificSha256": SP.scientific_digest(spec),
-            "sourceFreeze": {k: pin[k] for k in ("manifestPath", "manifestSha256", "freezeRunId", "normalization", "analysisFiles")},
+            "cashEconomicScientificSha256": spec["cashEconomicSpec"]["scientificSha256"],
+            "sourceFreeze": {k: pin[k] for k in ("manifestPath", "manifestSha256", "freezeRunId", "normalization", "analysisFiles", "scopedInputs")},
             "harness": harness_pins(root)}
 
 
@@ -261,13 +262,15 @@ def freeze_manifest(root, snapshot_dir, *, run_id, commit_sha):
             "freezeRunId": str(run_id), "freezeCommitSha": commit_sha, "sourceRegistry": SRC.SOURCES,
             "normalization": {"contract": R.contract(), "codeHashes": R.code_pins(root)},
             "analysisFiles": R.fingerprints(snapshot_dir), "rawFilesAuditOnly": R.provenance(snapshot_dir),
+            "scopedInputs": {s: R.scoped_fingerprints(snapshot_dir, s) for s in R.SCOPES},
+            "cashEconomicSpec": SP.cash_economic_spec(),
             "observations": {sid: {"firstDate": record.get("firstDate"), "lastDate": record.get("lastDate"),
                 "validRows": record.get("validRows"), "identity": record.get("identity"),
                 "datesSha256": R.sha(R.encoded([str(d.date()) for d in SP.normalized_dates(Path(snapshot_dir) / sid / "normalized.csv")]))}
                 for sid, record in SP.snapshot_audit(snapshot_dir)["sources"].items()},
             "rights": SRC.SOURCE_RIGHTS,
             "readiness": {k: readiness[k] for k in ("decision", "blockers", "checks", "details", "determinable", "decisionDates",
-                                                       "firstDecisionDate", "lastExecutionDate", "counters")},
+                                                       "firstDecisionDate", "firstExecutionDate", "lastExecutionDate", "counters")},
             "statements": ["No source price, level, rate or return appears in this file.",
                 "Raw hashes are provenance only; EXACT bounded analysis hashes are the execution admission.",
                 "Re-fetch availability/equality is not guaranteed. A provider revision or access denial stops before the lock; no automatic re-pin."]}
@@ -284,20 +287,33 @@ def _read(path):
     return AN.obs_series(P.read_normalized(Path(path).read_bytes()))
 
 
-def read_values(root, snapshot_dir):
+def read_values(root, snapshot_dir, economic=True):
     """The source values in the shape `rp1_c1_us_exposure.evaluate` takes. Called only by `load_values` (permit and lock) and by tests."""
     kr = Path(root) / SRC.KR_SNAPSHOT_DIR
     reference = _read(Path(snapshot_dir) / "YAHOO_GSPC" / "normalized.csv")
     return {"reference": reference[reference.index <= pd.Timestamp(U.ANALYSIS_END)],
             "spread": AN.derived_spread(_read(kr / SRC.REUSED["us10y"] / "normalized.csv"), _read(kr / SRC.REUSED["us3m"] / "normalized.csv")),
             "vix": _read(kr / SRC.REUSED["vix"] / "normalized.csv"),
-            "asset": _read(Path(snapshot_dir) / "YAHOO_SPY" / "normalized.csv"), "cash": _read(Path(snapshot_dir) / "FRED_DTB3" / "normalized.csv")}
+            "asset": _read(Path(snapshot_dir) / "YAHOO_SPY" / "normalized.csv") if economic else pd.Series(dtype=float),
+            "cash": _read(Path(snapshot_dir) / "FRED_DTB3" / "normalized.csv") if economic else pd.Series(dtype=float)}
 
 
-def load_values(root, snapshot_dir, counters, permit, lock, sha):
+def load_values(root, snapshot_dir, counters, permit, lock, sha, economic=True):
     _require(permit, lock, sha)
     counters.usValueReads += 1
-    return read_values(root, snapshot_dir)
+    return read_values(root, snapshot_dir, economic)
+
+
+def load_cash_values(root, snapshot_dir, values, counters, permit, lock, sha, *, basis="SPLIT_ADJUSTED_DIVIDEND_UNADJUSTED"):
+    _require(permit, lock, sha)
+    from .winner_inflection_execution import cash_reinvestment_close
+    spec, _ = SP.load_spec(root)
+    if not SP.verify_us_snapshot(spec, root, snapshot_dir, "CASH_ECONOMIC"):
+        raise ValueError("CASH_ECONOMIC_INPUT_NOT_FROZEN")
+    counters.usValueReads += 1
+    close, events = SRC.cash_components((Path(snapshot_dir) / "YAHOO_SPY/cash_input.json").read_bytes(), basis=basis)
+    # Existing #253 arithmetic; never reimplement Replay v11 or cash reinvestment here.
+    return {**values, "asset": cash_reinvestment_close(close, events), "cash": _read(Path(snapshot_dir) / "FRED_DTB3/normalized.csv")}
 
 
 def spy_basis_diagnostic(raw_chart, first_execution, analysis_end):
@@ -349,6 +365,16 @@ def evaluate_and_validate(values, economic_ready, counters):
     return config, result, validation
 
 
+def cash_economic_result(values, primary_result, counters):
+    _, result, validation = evaluate_and_validate(values, True, counters)
+    for key in ("passive", "candidates", "decision", "window"):
+        if E.json_safe(result[key]) != E.json_safe(primary_result[key]):
+            raise ValueError("CASH_ECONOMIC_CHANGED_THE_FROZEN_PRIMARY")
+    if validation["status"] != "CONSISTENT":
+        raise ValueError("CASH_ECONOMIC_FAILED_INDEPENDENT_VALIDATION")
+    return {"status": "MEASURED", "spec": SP.cash_economic_spec(), "economic": result["economic"], "validation": validation}
+
+
 def comparison_rows(result, validation, reading):
     """PASSIVE and C0..C3 on the same economic measures, from the published result (the validator's independent values back each number)."""
     rows, base = [], (result["passive"] if reading == "primary" else result["economic"]["passive"])
@@ -397,18 +423,22 @@ def render_report(result, validation, meaning, stamp=None):
               f"{result['window']['sessions']} sessions, {result['window']['decisionDates']} weekly decisions.", "",
               f"Validator: **{validation['status']}** ({validation['checks']} independent checks, max |difference| "
               f"{validation['maxAbsoluteDifference']:.2e}, tolerance {validation['tolerance']:g}).", ""]
-    readings = [("primary", "Primary reading — S&P 500 price index, cash at 0% (the sealed KR convention)")]
+    readings = [("primary", "Primary reading — S&P 500 price index, cash at 0% (the sealed KR convention)", result, validation)]
     if result.get("economic"):
-        readings.append(("economic", "Economic reading — SPY total return, de-risked share earns DTB3"))
-    for key, title in readings:
+        readings.append(("economic", "Original economic reading — VENDOR adjusted-close SPY, de-risked share earns DTB3", result, validation))
+    if result.get("cashEconomic", {}).get("status") == "MEASURED":
+        cash = result["cashEconomic"]
+        readings.append(("economic", "Separate cash-reinvestment economic reading — " + cash["spec"]["definition"]["id"] +
+                         " / scientific SHA-256 " + cash["spec"]["scientificSha256"], {**result, "economic": cash["economic"]}, cash["validation"]))
+    for key, title, view, checks in readings:
         lines += [f"## {title}", "", "| strategy | CAGR | vs passive | MDD | monthly CVaR 5% | worst month | cost drag/yr | de-risked share | "
                   "up-market cost/yr | down-market saving/yr |", "|---|---|---|---|---|---|---|---|---|---|"]
-        for r in comparison_rows(result, validation, key):
+        for r in comparison_rows(view, checks, key):
             lines.append(f"| {r['strategy']} | {_pct(r['cagr'])} | {_pct(r['cagrMinusPassive'])} | {_pct(r['maxDrawdown'])} | {_pct(r['monthlyCvar5'])} | "
                          f"{_pct(r['worstMonth'])} | {_pct(r['costDrag'], 3)} | {_pct(r['reducedSessionShare'], 1)} | {_pct(r['upMarketCostPerYear'])} | "
                          f"{_pct(r['downMarketSavingPerYear'])} |")
         if key == "economic":
-            lines += ["", f"Cash only (DTB3): CAGR {_pct(result['economic']['cashOnly']['annualizedReturn'])}."]
+            lines += ["", f"Cash only (DTB3): CAGR {_pct(view['economic']['cashOnly']['annualizedReturn'])}."]
         lines.append("")
     lines += ["## Re-entry and regime errors (primary reading, reference episodes of at least 15%)", "",
               "| strategy | rebound missed H63 (mean) | rebound missed H126 (mean) | sessions to full exposure (median) | recovery opportunity cost (mean) | "
@@ -454,17 +484,21 @@ def execute(output, root, snapshot_dir, env, expected_sha, api=E.github_api, git
         raise ValueError("VALUES_READ_BEFORE_THE_MARKER")
     counters.markerWrites += 1
     E.atomic_write(out / MARKER_FILE, marker, immutable=True)
-    values = load_values(root, snapshot_dir, counters, permit, lock, sha)
     economic_ready = readiness["details"]["economicReading"]["status"] == "ECONOMIC_READING_READY"
+    values = load_values(root, snapshot_dir, counters, permit, lock, sha, economic=economic_ready)
     config, result, validation = evaluate_and_validate(values, economic_ready, counters)
     window = result["window"]
     basis = spy_basis_diagnostic((Path(snapshot_dir) / "YAHOO_SPY" / "raw_chart.json").read_bytes(), window["firstExecutionDate"], U.ANALYSIS_END) \
         if economic_ready else None
     meaning = interpretation(result)
+    cash_ready = readiness["details"]["cashEconomicReading"]["status"] == "CASH_ECONOMIC_READY"
+    cash_result = cash_economic_result(load_cash_values(root, snapshot_dir, values, counters, permit, lock, sha), result, counters) if cash_ready else \
+        {"status": "UNRESOLVED", "spec": SP.cash_economic_spec(), "readiness": readiness["details"]["cashEconomicReading"]}
     document = {"studyId": STUDY, "scientificStatus": U.SCIENTIFIC_STATUS, "evidenceStatement": U.EVIDENCE_STATEMENT, "specSha256": sha,
                 "authorizationSha256": permit.authorizationSha256, "lockRef": lock.ref, "lockedMainSha": lock.mainSha,
                 "sourceFreeze": spec["inputs"]["usSnapshot"]["manifestSha256"], "config": config, **result,
                 "economicReadingStatus": readiness["details"]["economicReading"]["status"], "spyBasisDiagnostic": basis, "interpretation": meaning,
+                "cashEconomic": cash_result,
                 "validationStatus": validation["status"],
                 "statements": ["frozen-rule replication on publicly known US history; not validation, not prospective, not production",
                                "the primary asset is the S&P 500 price index with cash at zero, the sealed KR convention; the economic reading is "
@@ -516,6 +550,7 @@ def dry_run(output, root, snapshot_dir=None):
     real_reads = counters.usValueReads
     synthetic = Counters()
     config, result, validation = evaluate_and_validate(synthetic_us_values(), True, synthetic)
+    result["cashEconomic"] = cash_economic_result(synthetic_us_values(), result, synthetic)
     meaning = interpretation(result)
     (out / ("synthetic-" + REPORT_FILE)).write_text(render_report(result, validation, meaning, stamp=SYNTHETIC_STAMP))
     E.atomic_write(out / ("synthetic-" + VALIDATION_FILE), E.json_safe({"stamp": SYNTHETIC_STAMP, **validation}))

@@ -80,9 +80,10 @@ def acquire_one(sid, key, today, out, transport):
         total = len(json.loads(raw_main).get("observations", []))
         if got["raw"].get("series.json"):
             identity = P.fred_identity(got["raw"]["series.json"])
-    elif entry["field"] == "adjclose":
-        _, _, identity = P.parse_yahoo_chart(raw_main, "close", True)
-        rows, dropped = SRC.parse_yahoo_adjclose(raw_main)
+    elif sid == "YAHOO_SPY":
+        record.update(basis="SPLIT_ADJUSTED_DIVIDEND_UNADJUSTED", legacyRegisteredBasis=entry["basis"], normalizedField="close")
+        R.bounded_chart(raw_main, sid, include_adj=False)  # native schema is independent of optional vendor adjclose
+        rows, dropped, identity = P.parse_yahoo_chart(raw_main, "close", True)
         total = len(rows) + dropped
         extra["dividendEventDates"] = len(SRC.yahoo_dividend_dates(raw_main))
     else:
@@ -132,7 +133,10 @@ def main(argv=None):
         previous = audit["sources"].get(sid)
         if previous and (previous["status"] == "ACQUIRED" or previous.get("attempts", 1) >= MAX_ATTEMPTS):
             continue
-        record = acquire_one(sid, key, today, out, transport)
+        try:
+            record = acquire_one(sid, key, today, out, transport)
+        except (ValueError, KeyError, TypeError, IndexError) as error:
+            record = {"id": sid, "status": "FAILED", "error": type(error).__name__}
         record["attempts"] = (previous.get("attempts", 1) + 1) if previous else 1
         audit["sources"][sid] = record
         changed = True
@@ -140,7 +144,7 @@ def main(argv=None):
     if changed:
         path.write_text(json.dumps(audit, indent=2, sort_keys=True) + "\n")
     failed = [sid for sid, r in audit["sources"].items() if r["status"] != "ACQUIRED"]
-    if not failed and set(audit["sources"]) == set(SRC.ACQUIRED_IDS):
+    if all(audit["sources"].get(sid, {}).get("status") == "ACQUIRED" for sid in SRC.PRIMARY_IDS):
         R.prepare(out)
     print("acquired", len(audit["sources"]) - len(failed), "failed", failed)
     return 1 if failed else 0

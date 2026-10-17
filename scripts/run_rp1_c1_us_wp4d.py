@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """WP4d of rp1-c1-us-exposure-ladder-replication-v1: probe | freeze-check | freeze-manifest | verify-snapshot | dry-run | authorization-draft | execute.
 
-Only `execute` can read a US value, and only after the owner's authorization, the readiness and equivalence gates and the durable lock (see
+Only `execute` can compute US strategy outcomes, and only after the owner's authorization, the readiness and equivalence gates and the durable lock (see
 `pipeline/rp1_c1_us_execution.py`). Every other mode is outcome-free. Bounded analysis directories are reacquired inside a runner, outside the repository;
 their bytes are never printed.
 """
@@ -65,9 +65,18 @@ def main(argv=None):
             print(X.freeze_manifest_path(args.run_id))
             return 0
         if args.mode == "verify-snapshot":
+            if not args.snapshot:
+                raise X.Refused("SNAPSHOT_DIRECTORY_REQUIRED_FOR_HASH_VERIFICATION")
             spec, _ = SP.load_spec(ROOT)
             pinned = SP.verify_us_snapshot(spec, ROOT, args.snapshot)
-            emit({"status": "MATCHES_THE_FROZEN_MANIFEST" if pinned else "NOT_FROZEN", "files": len(SP.snapshot_files(args.snapshot))})
+            scopes = {}
+            for scope in X.R.SCOPES:
+                try:
+                    scopes[scope] = "MATCHED" if SP.verify_us_snapshot(spec, ROOT, args.snapshot, scope) else "NOT_FROZEN"
+                except (ValueError, OSError, KeyError):
+                    scopes[scope] = "BLOCKED_HASH_MISMATCH"
+            emit({"status": "MATCHES_THE_FROZEN_PRIMARY" if pinned else "NOT_FROZEN", "scopes": scopes,
+                  "files": len(SP.snapshot_files(args.snapshot)), "cashEconomicScientificSha256": spec["cashEconomicSpec"]["scientificSha256"]})
             return 0 if pinned else 2
         if args.mode == "dry-run":
             out = X.dry_run(args.output or "dry-run", ROOT, args.snapshot)

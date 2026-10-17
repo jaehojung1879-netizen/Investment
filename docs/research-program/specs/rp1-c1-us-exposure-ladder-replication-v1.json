@@ -11,6 +11,37 @@
     "mayRerunTheKrStudy": false,
     "mayTuneAThresholdWindowOrMultiplier": false
   },
+  "cashEconomicSpec": {
+    "definition": {
+      "admission": "exact native close, dates, identity, ALL corporate actions and DTB3; any split, ambiguous unit, duplicate or missing session blocks this reading",
+      "cash": "rate known at the previous session (FRED lag and staleness rules) / 100 x calendar days in the interval / 360; the discount yield is used as a simple money-market rate, an approximation stated as one",
+      "costs": {
+        "buy": 0.0008,
+        "sell": 0.00083
+      },
+      "differenceFromReplayV11": "cash reinvestment is not the Replay v11 vendor factor P_t/P_(t-1) / (1-D_t/P_(t-1))",
+      "execution": "only after exact committed owner authorization, scoped hashes, all PRIMARY gates, atomic lock and marker",
+      "formula": "splitRatio * (P_t + D_t) / P_(t-1); reinvest USD cash dividend at ex-date close; SPY splits MUST be absent",
+      "id": "rp1-c1-spy-cash-reinvestment-economic-v1",
+      "implementation": "pipeline.winner_inflection_execution.cash_reinvestment_close (PR253); no new return arithmetic",
+      "inputBasis": "SPLIT_ADJUSTED_DIVIDEND_UNADJUSTED",
+      "metrics": "reuse rp1_c1_us_exposure and its independent validator without changing any metric",
+      "parentScientificSha256": "ad454ebbf2d7f0834b9de8ac136ba7842855d49146dbf1b123e1538fdc615252",
+      "returnBasis": "RECONSTRUCTED_AS_TRADED_CASH_REINVEST_EX_CLOSE_V1",
+      "sourceGateFailure": "UNRESOLVED for this reading only; PRIMARY remains independent",
+      "status": "SEPARATELY_VERSIONED_DESCRIPTIVE_ECONOMIC_READING_NOT_ORIGINAL_VENDOR_ECONOMIC",
+      "targets": "identical frozen PRIMARY targets; cannot enter PRIMARY decision",
+      "unit": "vendor-declared USD per share; no splits in the full bounded history; not independently issuer certified",
+      "vendorSeriesRole": "audit/legacy diagnostic only; never used to compute or admit this reading",
+      "window": {
+        "end": "2026-09-17",
+        "firstDecisionOnOrAfter": "1993-02-01",
+        "gridStart": "1990-01-01",
+        "reason": "first full month after SPY's listing so both readings share one window; the end is the sealed KR study's analysis end"
+      }
+    },
+    "scientificSha256": "50f1bbbdf671eeb5616e30ffef0475ec7a01bd171480cbb740052a4b748fc3e5"
+  },
   "decision": {
     "appliedTo": "the PRIMARY reading (net of 1x US costs)",
     "axes": [
@@ -57,7 +88,7 @@
     "data/kr-market-risk-anatomy-v1/sources/FRED_DGS10/normalized.csv": "db7dc41d9d40ad5608e0ead00086ec15f5969cf785aa378f05cda576a160bc92",
     "data/kr-market-risk-anatomy-v1/sources/FRED_DGS3MO/normalized.csv": "7ce2bdbe2547e4fc16c18a36295871d16099d60f51f10edfc2cd8d42218dc06c",
     "data/kr-market-risk-anatomy-v1/sources/FRED_VIXCLS/normalized.csv": "dd0ccfe0a13f5e72a842dc27d53733748f24fb380808a7b2fb9babb40caa00ef",
-    "docs/research-program/rp1-c1-us-exposure-ladder-replication.md": "c20d27654105829ffbb4a9ba9630532352376361863e9fd71a4a472abf4b9a25",
+    "docs/research-program/rp1-c1-us-exposure-ladder-replication.md": "adffdd45f8ab94f33bea3a8cbd37beae07153b06c82bbfb45c7a0095149f9663",
     "docs/results/kr-market-risk-model-v1-execution-started.json": "9d5e322ba54a0c7da3e467c72111ce955c365d650827282f9c9bf379c2ca307f",
     "docs/results/kr-market-risk-model-v1-manifest.json": "81dc4408bf8f9f2464ce827b2783be2cf486e1ae232e3fec7b65a282114f8445",
     "docs/results/kr-market-risk-model-v1-result.json": "2578bbfa245a6540235cc05e231441b4ebb4da165240a84e715756477a897c4b",
@@ -114,6 +145,7 @@
     "pipeline/portfolio_validation.py": "a22c18fc31f47b1701ea4c426ff31dec48f3f367163bd1eb3e8cf75c1fadf2a5",
     "pipeline/price_adjustment.py": "ebdde717be22277315186d5f302642cbc8a057fedee84192b7af14b15c405892",
     "pipeline/probability_calibration.py": "7e06f855981c7c88dc8a595fd879d201892ca99bfbb4b1dcab1bebaf0e6f62f6",
+    "pipeline/prospective_receipt_core.py": "0f5344b09e28a4b9e9df5839bb6fc11f8ace70a4c71c01c6915ae753857ef90f",
     "pipeline/provenance.py": "762a214d6d0a59cef35a1b4612b60e13e2f6197a0a289e97e2b1da1f496c8171",
     "pipeline/regime.py": "b5634c109ac19ad6b0e13788f1ce9cde8f20f50019a82a8b4f65f9bc23200aca",
     "pipeline/regional_alpha_features.py": "2fc5eb16d0438ca15763aeaf49e9226146a7ecf209680ae8f33fd42f57555132",
@@ -122,17 +154,19 @@
     "pipeline/replay_inputs.py": "dd77b249476b252ba585b1b836fd060a029b0c4d9c3b9a0847caf8be545a5a1d",
     "pipeline/replay_valuation.py": "18e673a0721077af06b8ca9f774650c27fa58820a489b9ea639a9ccf02693bf3",
     "pipeline/rp1_c1_us_exposure.py": "7f1717eeaeca38342e86b92bab498897b596ffe74ef2dd48dc106d962e7a83b4",
-    "pipeline/rp1_c1_us_exposure_spec.py": "d7e625df85072c6e8bb804d195b2f63e2c943870bb7747ed09a391e2cbaa7e8e",
-    "pipeline/rp1_c1_us_refetch.py": "da35543b742d1fcc598147bc6a0d7098ae9062f03efc3c7297025c933cbdaf70",
-    "pipeline/rp1_c1_us_sources.py": "da95aadfdeeca435d527e7cb437438561ca661e380cbef528f24d3bd461a3253",
+    "pipeline/rp1_c1_us_exposure_spec.py": "d2e249436c2e869bb5b987fc4adcc8e447392362129c7aea749751de8e3fceb9",
+    "pipeline/rp1_c1_us_refetch.py": "5aaee1b9860c55bb4827b2296b22c55cf065dccd844e27037dc5a5f0d256e3ac",
+    "pipeline/rp1_c1_us_sources.py": "311fbf0492307a44e2582d450022e6fe23a31f1d6d1e2ae2816c72da811ab6a9",
     "pipeline/sectors.py": "1cb470d676eeb24d5fa4976bf8fc0f71f808957f132c908158acb6422fde60ba",
     "pipeline/selection_null.py": "b00e7419a8a620e284f3b5a15aafa66e9a8f776b81da027a766a72b3eecf5e17",
+    "pipeline/us_dual_benchmark_data.py": "5b4fbb00a9753ea72392cf2daab6f29aa06cee5a816013679fd2605ff02cdce3",
+    "pipeline/winner_inflection_execution.py": "efbc6f7f61f83c4e8d4f2543bdf7ead42970e44ce140a64f2842f9e547e78b7d",
     "requirements.txt": "b874e2c2c8bd5f4b0bc01b99f988d37d13c9d5018e7fb09992a6cdde6e94edb8",
     "research_specs/kr-market-risk-model-v1.json": "fa7484c690d125089d628654a86199a23ad95dcfeb9b1b0682bdc704588ae1b4",
     "research_specs/kr-market-risk-model-v1.sha256": "194f65b655ae28c5861b17652be681b4c6647436af107d3fd81b0ecbc3666339",
     "scripts/acquire_kr_market_risk_sources.py": "f0c31208a40f31cb4f3b7600256b789923e0aa3a32092d2d1d6f0dc25debe7cf",
-    "scripts/acquire_rp1_c1_us_sources.py": "e909ca08727c070b48ad4919a82ab1d1a6488d4eb7fad3f0cb9e7e5cfc3492ff",
-    "scripts/build_rp1_c1_us_exposure_spec.py": "44fa9b70fa390e751f54c26eb41ce05359135565baef842653751e463259981f",
+    "scripts/acquire_rp1_c1_us_sources.py": "40d0e5b59d93368358cffb33b9c9e0440756137832f9858276729bba639d7db7",
+    "scripts/build_rp1_c1_us_exposure_spec.py": "80db21a00264069e4ba9768bf85022eb44937fb67c53d7edc35f1aad0d4d8603",
     "scripts/run_rp1_c1_us_exposure.py": "80ded0e6218875cb4cb53faa180b1512a42638c8ae06caf3f61679f1805b17b8"
   },
   "entryPoints": [
@@ -421,6 +455,13 @@
         "reason": "no Settings, extra credential or external storage dependency; reject re-fetch drift instead of claiming retained-byte reproducibility",
         "replaced": "encrypted artifact storage and key setup",
         "scientificDigestUnchanged": true
+      },
+      {
+        "id": "SCOPED_PRIMARY_VENDOR_AND_CASH_ECONOMIC_V1",
+        "madeBeforeAnyUsOutcome": true,
+        "originalScientificSha256": "ad454ebbf2d7f0834b9de8ac136ba7842855d49146dbf1b123e1538fdc615252",
+        "rule": "original C1 PRIMARY and vendor economic definitions unchanged; cash reinvestment is a NEW separately digested definition; each scope admits only its own exact inputs; no mismatched vendor-adjclose outcome is computed",
+        "separateCashEconomicScientificSha256": "50f1bbbdf671eeb5616e30ffef0475ec7a01bd171480cbb740052a4b748fc3e5"
       }
     ],
     "markerPath": "docs/research-program/results/rp1-c1-us-exposure-ladder-replication-v1-execution-started.json",
@@ -440,8 +481,10 @@
       "analysisHashes": "exact byte equality over bounded observations and action/identity context; no tolerance",
       "limitation": "re-fetch does not preserve bytes or guarantee availability. Revision or access denial stops before the lock; no automatic re-pin",
       "normalization": {
+        "admissionVersion": "SCOPED_PRIMARY_VENDOR_AND_CASH_ECONOMIC_V1",
         "afterEnd": "append-only data excluded; revisions to ANY bounded input, including adjusted close, refuse even if caused by a later action",
         "calendar": "retain vendor dates, including off-calendar dates; no fill/sort/dedup/splice",
+        "cashInput": "exact native close, identity, dates and all actions; adjclose excluded ONLY from the separately versioned cash economic input",
         "dates": "exchange-local vendor bar date (timestamp + gmtoffset), canonical UTC noon; FRED observation date",
         "endInclusive": "2026-09-17",
         "excluded": [
@@ -478,7 +521,7 @@
       "rule": "HASH_PINNED_REFETCH_RUNNER_TEMP_ONLY",
       "version": "RP1_C1_HASH_REFETCH_V2"
     },
-    "thisChange": "WP4a-WP4d machinery: data foundation, calendar wrapper, KR equivalence, readiness, frozen spec, source freeze, owner authorization, one-shot execution, independent validator and comparison report. Nothing here reads a US value outside the registered post-lock path."
+    "thisChange": "WP4a-WP4d machinery: data foundation, calendar wrapper, KR equivalence, readiness, frozen spec, source freeze, owner authorization, one-shot execution, independent validator and comparison report. Nothing here computes a US outcome outside the registered post-lock path; input-quality checks compute no outcome."
   },
   "model": {
     "candidateOrder": [
@@ -1021,8 +1064,13 @@
     "docs/results/kr-market-risk-model-v1-result.json",
     "pipeline/kr_market_risk_overlay.py",
     "pipeline/kr_market_risk_source_parse.py",
+    "pipeline/price_adjustment.py",
+    "pipeline/prospective_receipt_core.py",
+    "pipeline/replay_calendar.py",
     "pipeline/rp1_c1_us_refetch.py",
     "pipeline/rp1_c1_us_sources.py",
+    "pipeline/us_dual_benchmark_data.py",
+    "pipeline/winner_inflection_execution.py",
     "requirements.txt",
     "research_specs/kr-market-risk-model-v1.json",
     "research_specs/kr-market-risk-model-v1.sha256",

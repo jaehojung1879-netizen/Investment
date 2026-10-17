@@ -47,12 +47,13 @@ def build(root=ROOT):
             "usSnapshot": {**us_pin, "acquisition": "scripts/acquire_rp1_c1_us_sources.py inside the freeze job (see lifecycle.route); raw bytes never "
                                                     "enter git, a log or any source artifact; re-fetch must match exact bounded inputs"}},
         "model": SP.model_definition(), "portfolio": SP.portfolio_definition(), "evaluation": SP.evaluation_definition(),
+        "cashEconomicSpec": SP.cash_economic_spec(),
         "decision": SP.decision_definition(), "interpretation": SP.interpretation_definition(), "stopRules": SP.stop_rules(),
         "newHypotheses": SP.new_hypotheses(), "preOutcomeRevisions": [],
         "lifecycle": {
             "thisChange": "WP4a-WP4d machinery: data foundation, calendar wrapper, KR equivalence, readiness, frozen spec, source freeze, owner "
-                          "authorization, one-shot execution, independent validator and comparison report. Nothing here reads a US value outside the "
-                          "registered post-lock path.",
+                          "authorization, one-shot execution, independent validator and comparison report. Nothing here computes a US outcome outside the "
+                          "registered post-lock path; input-quality checks compute no outcome.",
             "route": {"workflow": X.HOST_WORKFLOW, "input": "rp1_c1_action",
                       "actions": {"none": "the host's original job only; every rp1-c1 job is skipped",
                                   "freeze-sources": "manual, main only: acquire, bounded exact input hashes, dates-only readiness, open one Draft PR with "
@@ -83,7 +84,12 @@ def build(root=ROOT):
                 {"id": R.VERSION, "madeBeforeAnyUsOutcome": True, "scientificDigestUnchanged": True,
                  "replaced": "encrypted artifact storage and key setup",
                  "reason": "no Settings, extra credential or external storage dependency; reject re-fetch drift instead of claiming retained-byte reproducibility",
-                 "now": "runner-temporary raw data; pinned bounded canonical inputs and code hashes; original response hashes audit-only"}]},
+                 "now": "runner-temporary raw data; pinned bounded canonical inputs and code hashes; original response hashes audit-only"},
+                {"id": "SCOPED_PRIMARY_VENDOR_AND_CASH_ECONOMIC_V1", "madeBeforeAnyUsOutcome": True,
+                 "originalScientificSha256": SP.ORIGINAL_SCIENTIFIC_SHA256,
+                 "separateCashEconomicScientificSha256": SP.cash_economic_spec()["scientificSha256"],
+                 "rule": "original C1 PRIMARY and vendor economic definitions unchanged; cash reinvestment is a NEW separately digested definition; "
+                         "each scope admits only its own exact inputs; no mismatched vendor-adjclose outcome is computed"}]},
         "outcomeAccess": {"inThisChange": "NONE_FOR_US", "krSealedReproduction": "the equivalence audit reads the sealed KR study's retained bytes and "
                                                                                  "compares with its sealed result; it opens no new outcome",
                           "verifyAndReadinessRequire": "usValueReads == stateComputationsOnValues == replayCallsOnValues == 0"},

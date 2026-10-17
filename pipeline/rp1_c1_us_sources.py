@@ -1,7 +1,7 @@
 """rp1-c1-us-exposure-ladder-replication-v1 — source registry, parsing and the outcome-free data-quality gates.
 
-No return, drawdown, episode, state or forward quantity is computed here. The gates read observation DATES (and, for the one pre-registered vendor
-cross-check, index LEVELS on identical dates to test that two routes quote the same instrument), never a return.
+No return, drawdown, episode, state or forward quantity is computed here. Original gates read observation DATES (and, for the one pre-registered vendor
+cross-check, index LEVELS on identical dates to test that two routes quote the same instrument). The separate cash definition validates native price/action sanity and units, never a return.
 
 Three of the C1 inputs are reused, not re-acquired: the exact FRED_VIXCLS, FRED_DGS10 and FRED_DGS3MO bytes that `kr-market-risk-anatomy-v1`
 retained and the sealed `kr-market-risk-model-v1` pinned. Every threshold is the sealed KR source contract's (`kr_market_risk_sources`), applied
@@ -14,6 +14,7 @@ The raw bytes live only in runner temporary storage and are discarded; git carri
 from __future__ import annotations
 
 import json
+import math
 
 import pandas as pd
 
@@ -74,6 +75,8 @@ SOURCES = {
                   "use": "the ECONOMIC reading's cash rate on the de-risked share; never a state input"},
 }
 ACQUIRED_IDS = tuple(SOURCES)
+PRIMARY_IDS = ("YAHOO_GSPC", "FRED_SP500")
+CASH_BASIS = "RECONSTRUCTED_AS_TRADED_CASH_REINVEST_EX_CLOSE_V1"
 
 # ---- gates (inherited values; the US-specific choice is only WHICH window they apply to) ----------------------------------------------------
 SESSION_COVERAGE = S.REFERENCE_SESSION_COVERAGE          # 0.99
@@ -251,3 +254,60 @@ def calendar_closure_check(reference_dates):
     quoted = set(pd.DatetimeIndex(reference_dates))
     return {"closuresThatAreSessions": [str(d.date()) for d in closures if d in sessions],
             "referenceRowsOnClosures": [str(d.date()) for d in closures if d in quoted]}
+
+
+def cash_components(raw_chart, *, basis="SPLIT_ADJUSTED_DIVIDEND_UNADJUSTED"):
+    """Validate native SPY inputs, not returns. No snapping, filling or split inference.
+
+    Yahoo's amount is declared USD per share under this vendor convention;
+    this is not independent issuer certification of that convention.
+    """
+    from .us_dual_benchmark_data import BASIS_RAW, DoubleCountRefused
+    if basis != BASIS_RAW:
+        raise DoubleCountRefused("CASH_REINVESTMENT_REQUIRES_DIVIDEND_UNADJUSTED_NATIVE_CLOSE")
+    result = json.loads(raw_chart)["chart"]["result"][0]
+    rows, dropped, identity = P.parse_yahoo_chart(raw_chart, "close", True)
+    if not identity_ok("YAHOO_SPY", identity):
+        raise ValueError("SPY_IDENTITY_OR_USD_SHARE_UNIT_UNRESOLVED")
+    if dropped or len(rows) != len(result.get("timestamp") or []) or not rows:
+        raise ValueError("NONPOSITIVE_OR_MISSING_NATIVE_CLOSE")
+    close = pd.Series([v for _, v in rows], index=pd.to_datetime([d for d, _ in rows]), dtype=float)
+    if not close.index.is_unique or not close.index.is_monotonic_increasing:
+        raise ValueError("DUPLICATE_OR_UNORDERED_NATIVE_SESSIONS")
+    if not close.index.equals(xnys_sessions(str(close.index[0].date()), str(close.index[-1].date()))):
+        raise ValueError("MISSING_OR_OFF_CALENDAR_NATIVE_SESSION")
+    events = result.get("events") or {}
+    if events.get("splits"):
+        raise ValueError("SPLIT_PRESENT_SHARE_UNIT_REQUIRES_SEPARATE_RECONCILIATION")
+    if any(k != "dividends" and v for k, v in events.items()):
+        raise ValueError("UNSUPPORTED_CORPORATE_ACTION")
+    offset = int(result["meta"].get("gmtoffset", 0))
+    dividends, seen = [], set()
+    for entry in (events.get("dividends") or {}).values():
+        day = pd.Timestamp(int(entry["date"]) + offset, unit="s").normalize()
+        if day in seen:
+            raise ValueError("DUPLICATE_DIVIDEND_EVENT")
+        seen.add(day)
+        if day not in close.index or close.index.get_loc(day) == 0:
+            raise ValueError("DIVIDEND_WITHOUT_NATIVE_PREVIOUS_SESSION")
+        amount = float(entry["amount"])
+        if entry.get("currency", "USD") != "USD" or not math.isfinite(amount) or not 0 < amount < close.iloc[close.index.get_loc(day) - 1]:
+            raise ValueError("DIVIDEND_AMOUNT_OR_USD_PER_SHARE_UNIT_INVALID")
+        dividends.append((str(day.date()), amount, 1.0))
+    if not dividends:
+        raise ValueError("SPY_DIVIDEND_CHAIN_ABSENT")
+    return close, dividends
+
+
+def cash_input_gate(raw_chart, first_execution, analysis_end):
+    try:
+        close, events = cash_components(raw_chart)
+        missing = coverage_gate(close.index, first_execution, analysis_end)["missingCount"]
+        if missing:
+            raise ValueError("CASH_ASSET_SESSION_MISSING")
+        return {"status": "CASH_INPUT_READY", "reasons": [], "sessions": len(close), "firstDate": str(close.index[0].date()),
+                "lastDate": str(close.index[-1].date()), "dividendEvents": len(events), "splitEvents": 0,
+                "unit": "VENDOR_DECLARED_USD_PER_SHARE_NO_SPLITS", "independentlyIssuerVerified": False}
+    except (ValueError, KeyError, TypeError, IndexError) as error:
+        reason = str(error) if isinstance(error, ValueError) and str(error).isupper() else "CASH_INPUT_SCHEMA_INVALID"
+        return {"status": "CASH_INPUT_UNRESOLVED", "reasons": [reason]}

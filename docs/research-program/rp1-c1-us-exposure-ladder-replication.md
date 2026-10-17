@@ -92,7 +92,7 @@
 
 ### 6.2 저장 v2 — Secret 없는 해시 재취득
 
-`RP1_C1_HASH_REFETCH_V2`는 저장/전송 방식만 바꾼다. 기존 C0~C3, 분석 구간, 달력, 비용, 평가·판정과 scientific digest는 그대로다. 새 Secret, PAT, OpenSSL, 원천 artifact ID, 외부 저장소, 개인 PC가 필요 없다. 기존 `FRED_API_KEY`와 Actions `GITHUB_TOKEN`만 쓴다.
+`RP1_C1_HASH_REFETCH_V2`의 원래 C1 scientific digest(`ad454ebbf2d7f0834b9de8ac136ba7842855d49146dbf1b123e1538fdc615252`)와 C0~C3·기간·달력·비용·PRIMARY 판정은 그대로다. 원래 SPY adjusted-close 경제성 정의도 보존한다. 현금배당 재투자는 기존 명세 JSON의 `cashEconomicSpec`에 **별도 ID·정의·scientific digest**로 고정하며, 원래 경제성과 같다고 주장하지 않는다. 새 Secret, PAT, OpenSSL, 원천 artifact ID, 외부 저장소, 개인 PC가 필요 없다. 기존 `FRED_API_KEY`와 Actions `GITHUB_TOKEN`만 쓴다.
 
 Yahoo/S&P 원천은 재배포 제한, DTB3는 citation이 요청되는 public-domain 자료다. 모두 runner 임시 디렉터리에만 취득하고 종료 후 폐기한다. **원자료·정규화 가격/금리·기업행동은 Git·로그·artifact에 올리지 않는다.** 기존 봉인 KR FRED 원천은 그대로 재사용한다. Git에는 출처·신원·날짜·건수·품질 상태·코드/내용 해시만 들어간다. 결과 artifact에는 승인 후 집계 통계만 들어간다.
 
@@ -103,7 +103,7 @@ Yahoo/S&P 원천은 재배포 제한, DTB3는 citation이 요청되는 public-do
 - Yahoo 일별 bar의 exchange-local 날짜를 기존 `timestamp + gmtoffset` 규칙으로 정한 뒤 UTC 정오로 표현한다. close, SPY adjclose, 구간 내 모든 기업행동 종류와 필드를 보존한다. 과거 adjusted close를 보정·재기준화하거나 다른 공급자와 이어 붙이지 않는다.
 - FRED는 구간 내 observation date/value와 id·units·frequency·계절조정 신원을 고정한다. 수집 시각·HTTP envelope·현재 quote 메타데이터·구간 밖 행/이벤트는 분석 해시에 넣지 않는다.
 - 구간 내 숫자는 반올림하지 않는 정확한 decimal 문자열로 맥락을 보존한다. 실제 모델이 읽는 CSV는 기존 parser의 float64 `repr`다. 둘 모두 해시로 고정하므로 float로 구분되지 않는 원천 정밀도 변경도 거부한다. 의미가 같은 숫자 표기만 정규화하고 허용 오차를 두지 않는다.
-- **전체 원자료 해시**는 감사용이다. 수집 시각·종료일 뒤 행 때문에 달라도 된다. **실제 사용 CSV/신원/기업행동/품질 맥락의 해시**는 모두 정확히 같아야 한다. 공급자가 나중 배당 때문에 과거 adjclose를 수정해도 과거 입력이 바뀌었으므로 거부한다.
+- **전체 원자료 해시**는 감사용이다. 수집 시각·종료일 뒤 행 때문에 달라도 된다. **실제 사용 CSV/신원/기업행동/품질 맥락의 해시**는 모두 정확히 같아야 한다. PRIMARY는 GSPC/FRED 교차검증 입력만 정확히 검증한다. 원래 vendor 경제성은 SPY adjclose까지 정확히 검증하며, 변하면 그 경제성만 UNRESOLVED다. 새 CASH 경제성은 SPY `cash_input.json`(원종가·신원·모든 기업행동)과 DTB3를 별도로 고정한다. adjclose 변경을 원래 경제성에서 허용하거나 새 결과 계산에 사용하는 우회는 없다.
 
 **한계:** 해시는 동일성을 검사할 뿐 보존하지 않는다. 공급자 접근 거부·과거 수정·라이선스 제한·과거 10년만 제공하는 FRED SP500의 이동 창 때문에 재취득이 불가능하거나 달라질 수 있다. 이때 잠금 전에 중단하고 원천 대체·자동 재동결·허용 오차·임계값 완화를 하지 않는다. 동일 원천의 미래 재현을 보장하지 않는다. 원천 artifact가 없으므로 90일 만료 의존도 없다.
 
@@ -111,7 +111,11 @@ Yahoo/S&P 원천은 재배포 제한, DTB3는 citation이 요청되는 public-do
 
 기존 날짜/신원/가용성 관문을 기간 절단된 동일 입력에 그대로 적용한다. PRIMARY 기준의 완전한 XNYS 세션·워밍업·후보 결정 가능성·Yahoo/FRED 동시점 지수 수준 교차 검증, ECONOMIC 기준의 SPY/DTB3/기업행동 관문은 완화하지 않는다. 해시는 raw 바이트에서 다시 만든 분석 입력과도 대조하여 오래되거나 변조된 준비 파일을 거부한다.
 
-새 브랜치의 PR CI는 실제 수집 → Secret 없는 freeze-preview → 두 번째 독립 취득의 분석 해시 완전 일치를 검사한다. artifact에는 메타데이터와 합성 dry-run만 보존한다. 실제 미국 수익률·state·후보 평가·정식 잠금은 만들지 않는다.
+새 브랜치의 PR CI는 실제 수집 → Secret 없는 freeze-preview → 두 번째 독립 취득에서 PRIMARY와 CASH 입력의 정확한 일치·가용성을 각각 검사한다. 원래 vendor 비교의 실패도 별도 JSON 상태로 계속 보고한다. artifact에는 메타데이터와 합성 dry-run만 보존한다. 실제 미국 수익률·state·후보 평가·정식 잠금은 만들지 않는다.
+
+새 CASH 정의는 #253의 `winner_inflection_execution.cash_reinvestment_close`를 **승인·잠금·마커 이후에만** 호출한다. `splitRatio × (P_t + D_t) / P_(t-1)`의 ex-date 종가 현금배당 재투자이며, Replay v11의 vendor 계수 전방 누적과 다르다. 기존 `DoubleCountRefused`를 재사용한다. 전체 보존 구간에 분할이 한 건이라도 있거나, 중복/결측/비양수 종가·배당 단위/세션 문제가 있으면 새 경제성은 UNRESOLVED다. 단위는 vendor의 USD/share 관례이며 독립 issuer 인증은 아니다. PRIMARY 실행은 원래 명세의 경제성 UNRESOLVED 조항에 따라 독립적이다.
+
+Replay v16과 이중 벤치마크의 2011-01-03~2026-09-14 이력은 같은 Yahoo 계보이고 SPY 분배 이벤트가 봉인되지 않았다. 1993~2010을 보충하거나 원종가/배당 단일 반영의 독립 검증으로 사용할 수 없어, 새 CASH 입력과 연결하지 않는다. 기존 검증 함수·회귀만 재사용한다.
 
 ### 6.4 실행 순서와 사람이 할 일
 
