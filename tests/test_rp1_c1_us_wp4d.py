@@ -364,6 +364,55 @@ def test_refetch_round_trips_without_a_key_or_artifact(frozen_world, tmp_path):
     assert R.fingerprints(second) == frozen_world["manifest"]["analysisFiles"]
 
 
+def test_live_diagnostic_distinguishes_metadata_from_vendor_values(frozen_world, tmp_path):
+    raw = synthetic_raw()
+    doc = json.loads(raw["YAHOO_SPY"]["chart.json"])
+    doc["chart"]["result"][0]["meta"]["regularMarketTime"] = 1
+    raw["YAHOO_SPY"]["chart.json"] = json.dumps(doc, indent=3, sort_keys=True).encode()
+    second = acquire_synthetic(tmp_path / "metadata-only", raw)
+    report = R.compare_acquisitions(frozen_world["snapshot"], second)
+    assert report["status"] == "EXACT_BOUNDED_INPUT_MATCH" and not report["changedFiles"]
+    assert report["spy"]["sameRequestHash"] and report["spy"]["sameHost"]
+    assert report["spy"]["normalizationDeterministic"]
+    assert report["spy"]["otherMetadataKeysChanged"] == ["regularMarketTime"]
+
+
+def test_vendor_adjclose_drift_is_diagnosed_not_hidden(frozen_world, tmp_path):
+    raw = synthetic_raw()
+    doc = json.loads(raw["YAHOO_SPY"]["chart.json"])
+    doc["chart"]["result"][0]["indicators"]["adjclose"][0]["adjclose"][100] += .00001
+    raw["YAHOO_SPY"]["chart.json"] = json.dumps(doc).encode()
+    second = acquire_synthetic(tmp_path / "adjclose-drift", raw)
+    report = R.compare_acquisitions(frozen_world["snapshot"], second)
+    assert report["status"] == "BLOCKED_HASH_MISMATCH"
+    assert report["causeCodes"] == ["YAHOO_VENDOR_ADJCLOSE_VALUE_DRIFT"]
+    assert report["changedFiles"] == ["YAHOO_SPY/normalized.csv", "YAHOO_SPY/raw_chart.json"]
+    assert report["spy"]["fields"]["adjclose"]["changedCells"] == 1
+    for field in ("close", "dates", "timestamp", "actions.dividends"):
+        assert report["spy"]["fields"][field]["changedCells"] == 0
+    assert report["spy"]["adjacentAdjustedInputRatioEquality"]["changedPairs"] == 2
+    assert not report["spy"]["riskStateReferenceChanged"]
+    assert report["spy"]["normalizationDeterministic"]
+    assert report["sourceArtifacts"] == report["lockClaims"] == report["strategyOutcomes"] == 0
+    assert str(doc["chart"]["result"][0]["indicators"]["adjclose"][0]["adjclose"][100]) not in json.dumps(report)
+
+
+def test_even_a_uniform_adjustment_drift_remains_blocked(tmp_path):
+    raw = synthetic_raw()
+    doc = json.loads(raw["YAHOO_SPY"]["chart.json"])
+    adj = doc["chart"]["result"][0]["indicators"]["adjclose"][0]
+    adj["adjclose"] = list(range(1000, 1000 + len(adj["adjclose"])))
+    raw["YAHOO_SPY"]["chart.json"] = json.dumps(doc).encode()
+    first = acquire_synthetic(tmp_path / "first", raw)
+    adj["adjclose"] = [2 * v for v in adj["adjclose"]]
+    raw["YAHOO_SPY"]["chart.json"] = json.dumps(doc).encode()
+    second = acquire_synthetic(tmp_path / "second", raw)
+    report = R.compare_acquisitions(first, second)
+    assert report["status"] == "BLOCKED_HASH_MISMATCH"
+    assert report["spy"]["adjacentAdjustedInputRatioEquality"]["changedPairs"] == 0
+    assert report["spy"]["fields"]["adjclose"]["changedCells"] > 1000
+
+
 def test_a_freeze_is_refused_once_an_authorization_is_committed(frozen_world, tmp_path):
     root = frozen_world["root"]
     (root / X.AUTHORIZATION_PATH).parent.mkdir(parents=True, exist_ok=True)

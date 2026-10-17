@@ -157,26 +157,18 @@ jobs:
             --run-id "$GITHUB_RUN_ID" --commit "$GITHUB_SHA" --output probe/freeze-preview.json
           python scripts/acquire_rp1_c1_us_sources.py --output "$RUNNER_TEMP/rp1-c1-refetch-check"
           python - <<'PY_CHECK'
-          import csv, json, os
-          from itertools import zip_longest
+          import json, os
           from pathlib import Path
           from pipeline import rp1_c1_us_refetch as R
           frozen = json.loads(Path('probe/freeze-preview.json').read_bytes())
-          actual = R.fingerprints(Path(os.environ['RUNNER_TEMP']) / 'rp1-c1-refetch-check/analysis')
-          differences = {p:{'expected':frozen['analysisFiles'].get(p),'actual':actual.get(p)} for p in sorted(set(actual)|set(frozen['analysisFiles'])) if actual.get(p)!=frozen['analysisFiles'].get(p)}
-          changed_cells = {}
-          for name in differences:
-              if not name.endswith('/normalized.csv'):
-                  continue
-              first = Path(os.environ['RUNNER_TEMP']) / 'rp1-c1-probe/analysis' / name
-              second = Path(os.environ['RUNNER_TEMP']) / 'rp1-c1-refetch-check/analysis' / name
-              with first.open() as a, second.open() as b:
-                  left, right = list(csv.DictReader(a)), list(csv.DictReader(b))
-              pairs = list(zip_longest(left, right, fillvalue={}))
-              changed_cells[name] = {'firstRows':len(left),'secondRows':len(right),'dateRowsChanged':sum(x.get('date')!=y.get('date') for x,y in pairs),'valueRowsChanged':sum(x.get('value')!=y.get('value') for x,y in pairs)}
-          Path('probe/refetch.json').write_text(json.dumps({'status':'BLOCKED_HASH_MISMATCH' if differences else 'EXACT_BOUNDED_INPUT_MATCH','files':len(actual),'hashDifferences':differences,'changedCells':changed_cells,'sourceArtifacts':0,'lockClaims':0,'outcomes':0}))
-          if differences:
-              print('Changed input files (hashes only retained):', ', '.join(differences))
+          report = R.compare_acquisitions(Path(os.environ['RUNNER_TEMP']) / 'rp1-c1-probe/analysis',
+                                          Path(os.environ['RUNNER_TEMP']) / 'rp1-c1-refetch-check/analysis')
+          if report['analysisFiles']['first'] != frozen['analysisFiles']:
+              raise SystemExit('FREEZE_PREVIEW_INPUT_CHANGED')
+          text = json.dumps(report, sort_keys=True, indent=2)
+          Path('probe/refetch.json').write_text(text + '\n')
+          print(text)  # dates, counts, field names and hashes ONLY; never source values
+          if report['status'] != 'EXACT_BOUNDED_INPUT_MATCH':
               raise SystemExit('REFETCH_ANALYSIS_HASH_MISMATCH')
           print('EXACT_BOUNDED_INPUT_MATCH; no source artifact or execution lock')
           PY_CHECK

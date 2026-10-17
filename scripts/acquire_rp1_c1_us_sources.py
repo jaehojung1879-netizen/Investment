@@ -52,7 +52,8 @@ def fetch_yahoo_fixed(entry, transport):
         url = f"{host}/v8/finance/chart/{symbol}?period1={start}&period2={end}&interval=1d&events=div%2Csplit&includePrePost=false"
         status, raw, error = transport.get(url)
         if status == 200 and raw:
-            return {"raw": {"chart.json": raw}, "status": {"chart": status}, "error": None, "host": host.split("//")[1]}
+            return {"raw": {"chart.json": raw}, "status": {"chart": status}, "error": None, "host": host.split("//")[1],
+                    "requestSha256": R.sha(url.encode())}
     return {"raw": {}, "status": {"chart": status}, "error": error, "host": None}
 
 
@@ -67,6 +68,8 @@ def acquire_one(sid, key, today, out, transport):
         record["error"] = type(error).__name__
         return record
     record.update(httpStatus=got["status"], host=got["host"], error=got["error"])
+    if got.get("requestSha256"):
+        record["requestSha256"] = got["requestSha256"]  # Yahoo URL only; never hash a FRED credential-bearing URL
     main_name = "observations.json" if entry["fetch"] == "fred" else "chart.json"
     raw_main = got["raw"].get(main_name)
     if not raw_main:

@@ -6,7 +6,9 @@ SEPARATE digests. Re-fetch can prove equality, never guarantee availability.
 from __future__ import annotations
 
 from decimal import Decimal, InvalidOperation
+from fractions import Fraction
 import hashlib
+from itertools import zip_longest
 import json
 from pathlib import Path
 
@@ -166,3 +168,86 @@ def fingerprints(snapshot):
 def provenance(snapshot):
     base = Path(snapshot).parent
     return {p.relative_to(base).as_posix(): sha(p.read_bytes()) for p in sorted(base.glob("*/raw_*.json")) if p.is_file()}
+
+
+def _changes(left, right):
+    """Dates/counts/hashes only. Values remain in memory, never in the report."""
+    changed = [(a[0] if a else b[0]) for a, b in zip_longest(left, right) if a != b]
+    return {"firstRows": len(left), "secondRows": len(right), "changedCells": len(changed),
+            "firstChangedDate": min(changed) if changed else None, "lastChangedDate": max(changed) if changed else None,
+            "firstSha256": sha(encoded(left)), "secondSha256": sha(encoded(right))}
+
+
+def _spy_fields(raw):
+    # Inspect vendor values BEFORE canonicalization; Decimal comparisons are exact.
+    result = json.loads(raw, parse_float=Decimal)["chart"]["result"][0]
+    offset = int(result["meta"].get("gmtoffset", 0))
+    stamps = result["timestamp"]
+    keep = [(i, local_day(t, offset)) for i, t in enumerate(stamps) if inside(local_day(t, offset))]
+    close = result["indicators"]["quote"][0]["close"]
+    adj = result["indicators"]["adjclose"][0]["adjclose"]
+    fields = {"dates": [(d, d) for _, d in keep], "timestamp": [(d, str(stamps[i])) for i, d in keep],
+              "close": [(d, number(close[i])) for i, d in keep], "adjclose": [(d, number(adj[i])) for i, d in keep]}
+    canonical = json.loads(bounded_chart(raw, "YAHOO_SPY"))["chart"]["result"][0]
+    for kind, events in canonical.get("events", {}).items():
+        fields["actions." + kind] = sorted((local_day(r["date"], 0), encoded({k: v for k, v in r.items() if k != "date"}).decode())
+                                                 for r in events.values())
+    return fields, result["meta"]
+
+
+def compare_acquisitions(first, second):
+    """Input-quality diagnosis, NOT an outcome/strategy evaluation or a bypass.
+
+    Exact cross-products test whether adjacent input ratios changed, without
+    computing/publishing any return series, state, exposure or portfolio.
+    A vendor adjclose revision remains BLOCKED even if it is a constant scale.
+    """
+    first, second = Path(first), Path(second)
+    hashes = [fingerprints(p) for p in (first, second)]
+    differences = sorted(k for k in set(hashes[0]) | set(hashes[1]) if hashes[0].get(k) != hashes[1].get(k))
+    raw = [(p.parent / "YAHOO_SPY/raw_chart.json").read_bytes() for p in (first, second)]
+    fields, metas = zip(*[_spy_fields(r) for r in raw])
+    comparisons = {k: _changes(fields[0].get(k, []), fields[1].get(k, [])) for k in sorted(set(fields[0]) | set(fields[1]))}
+    # Fractions avoid Decimal context rounding AND floating point tolerances.
+    ratios = {"comparedPairs": 0, "changedPairs": 0, "uncomparablePairs": 0, "firstChangedDate": None, "lastChangedDate": None}
+    if fields[0]["dates"] == fields[1]["dates"]:
+        a, b = fields[0]["adjclose"], fields[1]["adjclose"]
+        changed = []
+        for i in range(1, len(a)):
+            if a[i][0] < U.EVALUATION_START:
+                continue
+            values = [a[i][1], b[i - 1][1], b[i][1], a[i - 1][1]]
+            if any(v is None or not Decimal(v).is_finite() or Decimal(v) <= 0 for v in values):
+                ratios["uncomparablePairs"] += 1
+                continue
+            ratios["comparedPairs"] += 1
+            if Fraction(values[0]) * Fraction(values[1]) != Fraction(values[2]) * Fraction(values[3]):
+                changed.append(a[i][0])
+        ratios.update(changedPairs=len(changed), firstChangedDate=min(changed) if changed else None, lastChangedDate=max(changed) if changed else None)
+    else:
+        ratios = {"status": "UNRESOLVED_DIFFERENT_DATES"}
+    audits = [json.loads((p.parent / "audit.json").read_bytes())["sources"]["YAHOO_SPY"] for p in (first, second)]
+    identities = [{k: m.get(k) for k in ("symbol", "currency", "instrumentType", "exchangeTimezoneName")} for m in metas]
+    identity_keys = set(identities[0])
+    deterministic = all(build(p.parent) == build(p.parent) for p in (first, second))
+    economic = any(v["changedCells"] for k, v in comparisons.items() if k != "timestamp")
+    causes = []
+    if comparisons["adjclose"]["changedCells"]:
+        causes.append("YAHOO_VENDOR_ADJCLOSE_VALUE_DRIFT")
+    if any(v["changedCells"] for k, v in comparisons.items() if k not in ("adjclose", "timestamp")) or identities[0] != identities[1]:
+        causes.append("OTHER_VENDOR_ECONOMIC_OR_IDENTITY_DRIFT")
+    if differences and not economic and identities[0] == identities[1]:
+        causes.append("NON_ECONOMIC_OR_OTHER_SOURCE_DIFFERENCE_REQUIRES_REVIEW")
+    return {"status": "BLOCKED_HASH_MISMATCH" if differences else "EXACT_BOUNDED_INPUT_MATCH", "causeCodes": causes,
+            "analysisFiles": {"first": hashes[0], "second": hashes[1]}, "changedFiles": differences,
+            "spy": {"requestBounds": contract()["requestBounds"], "sameRequestHash": audits[0].get("requestSha256") == audits[1].get("requestSha256")
+                        if all(a.get("requestSha256") for a in audits) else None,
+                    "sameHost": audits[0].get("host") == audits[1].get("host"), "identitySame": identities[0] == identities[1],
+                    "observedPeriods": [{"firstDate": f["dates"][0][0], "lastDate": f["dates"][-1][0]} for f in fields],
+                    "fields": comparisons, "adjacentAdjustedInputRatioEquality": ratios,
+                    "otherMetadataKeysChanged": sorted(k for k in set(metas[0]) | set(metas[1]) if k not in identity_keys and metas[0].get(k) != metas[1].get(k)),
+                    "normalizationDeterministic": deterministic,
+                    "riskStateReferenceChanged": any(k.startswith("YAHOO_GSPC/") for k in differences),
+                    "riskStateReusedMacroInputs": "SEALED_KR_BYTES_NOT_REACQUIRED",
+                    "impact": "SPY adjclose is the investable return leg, not the risk-state input; changed adjacent ratios are economically relevant inputs"},
+            "sourceArtifacts": 0, "lockClaims": 0, "strategyOutcomes": 0}
