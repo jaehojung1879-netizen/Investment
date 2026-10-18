@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "tasks": [
+    {
+      "id": "synthetic-example",
+      "issue": 1,
+      "track": "A",
+      "priority": 1,
+      "dependencies": [],
+      "agent": "codex",
+      "risk": "LOW",
+      "kind": "a2_preview",
+      "acceptance": [
+        "synthetic only"
+      ],
+      "resources": [
+        "synthetic-example"
+      ],
+      "gates": {
+        "formal_execute": false,
+        "spec_change": false,
+        "spending": false,
+        "production_change": false,
+        "merge_main": false,
+        "licensed_persistence": false,
+        "external_acquisition": false,
+        "sealed_write": false,
+        "permission_change": false,
+        "secret_change": false,
+        "live_promotion": false,
+        "outcome_access": false,
+        "live_receipts": false
+      },
+      "status": "READY",
+      "claim": null,
+      "pr": null,
+      "head_sha": null,
+      "run_id": null,
+      "ci": "UNRUN",
+      "repairs": 0,
+      "history": [],
+      "scope_sha256": "b6e084b4593937ef8a525cbe5e75e4e1217fea392bdfbb5154422050edfa7529"
+    }
+  ],
+  "events": {}
+}
