@@ -54,6 +54,13 @@ def test_growth_cross_without_positive_cash_never_emits_event(cash):
     assert A.FilingHistory("SYN", rows).at("2020-02-02")["flag"] is False
 
 
+def test_first_observed_positive_growth_cannot_be_imputed_to_no_event():
+    rows=[annual(2017,90),annual(2018,110)]
+    out=A.FilingHistory('SYN',rows).at('2019-02-02')
+    assert out['growth']>0 and out['flag'] is None
+    assert out['reason']=='EVENT_HISTORY_UNRESOLVED'
+
+
 def test_original_filing_future_mutation_and_pretax_fallback_cannot_create_event():
     rows = [annual(2017, 100), annual(2018, 90), annual(2019, 110)]
     baseline = A.FilingHistory("SYN", rows).at("2020-02-02")

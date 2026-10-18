@@ -55,7 +55,7 @@ class FilingHistory:
 
     def prefix_state(self, n):
         if n == 0:
-            return {"growth": None, "eventDate": None, "periodEnd": None, "currentKey": None,
+            return {"growth": None, "eventDate": None, "uncertainEventDate": None, "periodEnd": None, "currentKey": None,
                     "fields": {}, "deltas": {}, "sourceIds": [], "publicDay": None, "reason": "NO_VISIBLE_FILING"}
         if n in self.cache:
             return self.cache[n]
@@ -81,6 +81,7 @@ class FilingHistory:
         if key is not None:
             if not index[key].get("periodEnd") or index[key]["periodEnd"] > CP.visible_day(index[key]).isoformat():
                 state["reason"] = "REPORT_PERIOD_AFTER_PUBLICATION"
+                state["uncertainEventDate"] = available
                 self.cache[n] = state
                 return state
             op = exact_operating_ttm(index, key)
@@ -90,6 +91,11 @@ class FilingHistory:
             # missing, never a fabricated percentage or an absolute denominator.
             growth = op / prior - 1 if finite(op) and finite(prior) and prior > 0 else None
             state.update(growth=growth, periodEnd=index[key].get("periodEnd"))
+            known_false = ((growth is not None and growth <= 0) or
+                           (previous["growth"] is not None and previous["growth"] > 0) or
+                           (finite(cash) and cash <= 0))
+            if not known_false and (growth is None or previous["growth"] is None or not finite(cash)):
+                state["uncertainEventDate"] = available
             if finite(op) and finite(prior) and prior <= 0:
                 state["reason"] = "NON_POSITIVE_YOY_BASE"
             if growth is not None and finite(cash):
@@ -121,6 +127,9 @@ class FilingHistory:
             return result
         event = state["eventDate"]
         result["flag"] = bool(event and 0 <= (dt.date.fromisoformat(day) - dt.date.fromisoformat(event)).days <= 26 * 7)
+        unknown = state["uncertainEventDate"]
+        if not result["flag"] and unknown and 0 <= (dt.date.fromisoformat(day) - dt.date.fromisoformat(unknown)).days <= 26 * 7:
+            result.update(flag=None, reason="EVENT_HISTORY_UNRESOLVED")
         return result
 
 
