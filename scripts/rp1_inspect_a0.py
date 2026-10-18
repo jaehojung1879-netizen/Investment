@@ -228,6 +228,9 @@ def inspect(repo, *, admission, root=ROOT):
     inputs = load_inputs(repo, spec)
     rows, details = observations(inputs, spec, wp2)
     report = A.measure(rows, missing_details=details)
+    members = inputs[4]
+    departed = {t for snapshot in members for t in snapshot["members"] if t not in members[-1]["members"]}
+    report["populationAudit"] = A.population_audit(rows, departed)
     report.update(formalA0Measurement=True, mainAdmission=admission, predecessorPins=PINS,
         wp1Calibration=wp1["result"]["claims"]["US_H252"], sourceReceipts=inputs[0].receipts,
         wp2Mask=wp2["weeklyCompatibility"]["sampleIdentity"],

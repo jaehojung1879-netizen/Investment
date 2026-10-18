@@ -251,6 +251,32 @@ def terciles(values):
     return {k: 0 if v <= a else 1 if v <= b else 2 for k, v in known.items()}
 
 
+def population_audit(observations, departed_symbols):
+    """Retrospective WP2 departure attribution only; never an event input.
+
+    Departure means absence from the last PRESERVED index snapshot, not
+    delisting. Identity holds remain in each group's full denominator.
+    """
+    groups = defaultdict(lambda: {"population": 0, "eligible": 0,
+        "hypotheses": {h: Counter() for h in HYPOTHESES}})
+    for row in observations:
+        cells = {c.name: c.value for c in row.cells}
+        labels = ("identity:" + row.identity_status,
+                  "index:EXITED" if row.ticker in departed_symbols else "index:LAST_PRESERVED_SNAPSHOT_MEMBER")
+        for label in labels:
+            group = groups[label]
+            group["population"] += 1
+            if row.investable is not True:
+                continue
+            group["eligible"] += 1
+            for h in HYPOTHESES:
+                flag = cells.get("financial." + h.replace("-", "_"))
+                group["hypotheses"][h].update(measured=int(flag is not None),
+                    missing=int(flag is None), events=int(flag == 1))
+    return {"definition": "WP2: not in last preserved snapshot; not proof of delisting; retrospective audit only",
+            "groups": {key: value for key, value in sorted(groups.items())}}
+
+
 def measure(observations, *, missing_details=None):
     """Common Observation/Cell inputs only; target tables cannot be passed in."""
     population_sha = WE.validate_panel(observations)

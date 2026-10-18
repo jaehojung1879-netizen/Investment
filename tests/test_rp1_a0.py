@@ -166,6 +166,27 @@ def test_population_missing_and_strata_reconcile_without_outcomes():
         A.measure(rows+[rows[0]])
 
 
+def test_population_audit_keeps_departed_missing_and_identity_holds_in_denominator():
+    rows = [observation(ticker="OLD"), observation(ticker="CURRENT", flags=(None, None, None)),
+            observation(ticker="PARA", eligible=False)]
+    before = A.measure(rows)
+    audit = A.population_audit(rows, {"OLD", "PARA"})
+    groups = audit["groups"]
+    assert groups["index:EXITED"]["population"] == 2
+    assert groups["index:EXITED"]["eligible"] == 1
+    assert groups["identity:UNRESOLVED"]["population"] == 1
+    assert groups["identity:UNRESOLVED"]["eligible"] == 0
+    for prefix in ("index:", "identity:"):
+        selected = [v for k, v in groups.items() if k.startswith(prefix)]
+        assert sum(v["population"] for v in selected) == 3
+        assert sum(v["eligible"] for v in selected) == 2
+        for h in A.HYPOTHESES:
+            for group in selected:
+                counts = group["hypotheses"][h]
+                assert counts["measured"] + counts["missing"] == group["eligible"]
+    assert A.measure(rows) == before  # retrospective attribution cannot select the event population
+
+
 def test_rank_biserial_ties_and_unidentified_binary_groups():
     assert A.rank_biserial([0,0,1,1],[1,2,3,4]) == 1
     assert A.rank_biserial([1,1,0,0],[1,2,3,4]) == -1
