@@ -81,3 +81,33 @@
 - **추가 재현:** `reproduce` 모드로 모든 DGP의 H252/78주와 H126/78주 셀을 같은 시드로 재계산할 수 있다.
 - **개발용 smoke:** 다른 시드와 최대 50회 반복만 허용한다. 판정에 쓰지 않으며 커밋하지 않는다.
 - **재실행 금지:** 결과가 나온 뒤에는 재시드, 재실행, 반복 수 변경, 임계값 변경, 셀 변경을 하지 않는다. 이런 변경에는 새 프로토콜 식별자가 필요하다.
+
+## 7. 정식 결과 (사양 `c4270baa…`, 시드 20261018, R = 8,000)
+
+- **결과 파일:** `docs/research-program/results/rp1-inference-calibration-v1-result.json`, sha256 `19a78059e7db002f30e9b7cd3935672a0f3d88a10d7be8a88f1f6d30aa4e8664`.
+- **실행 환경:** 로컬 실행 1회. Python 3.13.16, numpy 2.3.1, scipy 1.16.0, BLAS 스레드 1개, 4 worker, 1,922초.
+- **셀 결과:** 42셀 중 PASS 30, INCONCLUSIVE 9, FAIL 3.
+  - PASS가 아닌 셀은 모두 **78주** 깊이 시나리오다.
+  - FAIL 3셀은 공통 충격이 강한 PERSISTENT_SHARED_HEAVY의 H126·H252, 그리고 heavy-tailed 지속 예측변수 DGP의 H252다. 셋 모두 dateMean·selectedMean의 `MATERIAL_UNDERCOVERAGE`였다.
+  - 전체 `primaryStatus`는 깊이 시나리오를 포함한 연언이므로 FAIL이다. 이는 주장 판정이 아니다.
+
+| 주장 | 실제 깊이 | 비중첩 창 | 실제 깊이 판정 | 312주 | 78주 |
+|---|---|---|---|---|---|
+| KR H252 | 660주 | 13.1 | **CALIBRATED_FOR_PRIMARY_INFERENCE** (6/6 PASS) | PASS | FAIL |
+| US H126 | 688주 | 27.3 | **CALIBRATED_FOR_PRIMARY_INFERENCE** (6/6 PASS) | PASS | FAIL |
+| US H252 | 662주 | 13.1 | **CALIBRATED_FOR_PRIMARY_INFERENCE** (6/6 PASS) | PASS | FAIL |
+
+- **실제 깊이에서의 수치** (6 DGP × 5 통계):
+  - 최소 coverage: 0.9650 (KR H252), 0.9696 (US H126), 0.9670 (US H252). 명목 0.975보다 약간 낮지만 0.95 바닥은 Clopper–Pearson PASS 하한으로 넘는다. 최소 PASS 하한은 0.9607이다.
+  - 최대 positive false positive: 0.018.
+- **Study A 분기:** KR = H252, US = H252. 두 시장 모두 H252를 주 검정 지평으로 쓸 수 있다. US는 H126도 보정되었다.
+- **78주의 의미:** 짧은 표본(약 1.5년)에서는 이 구간으로 6·12개월 주장을 판정할 수 없다. 전향적 검증은 312주에 근접해야 주 추론이 가능하다.
+
+### A0 MDE 함의 (기술적, 판정에 쓰지 않음)
+
+- **MDE 배수:** 실제 깊이에서 MDE80은 추정치 표준편차의 **4.10–4.33배**다 (보정된 97.5% SN 구간, 80% 검정력). 분산을 아는 경우의 기준값 3.08배보다 약 35–40% 크다. 하한 기준 반폭은 약 2.5–2.8 SD다.
+- **A0 계약:**
+  - MDE₈₀ ≈ 4.3 × SD(추정치)로 계산한다. 보수적으로 통계·DGP 최대값을 쓴다.
+  - A0 목표 "MDE ≤ 4pp/년"을 만족하려면 연환산 추정치 SD가 약 **0.92pp/년 이하** (4 ÷ 4.33)여야 한다.
+  - 03 문서의 예시 SE 2.3pp라면 MDE는 약 9.9pp/년이다. 정규근사 6.5pp보다 크다.
+  - SD(추정치)는 실제 데이터에서 보정된 SN 구간의 반폭으로 역산한다 (SD ≈ 반폭 / 2.7). 보정되지 않은 HAC/정규 SE로 대신하면 MDE를 과소평가한다.
