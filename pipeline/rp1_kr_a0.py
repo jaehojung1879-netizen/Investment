@@ -25,7 +25,8 @@ COMPARATORS = ("C13_fundamentalAcceleration",)
 class Filings:
     market = "KR"
     retention_reasons = ("AVAILABLE", "INCOMPLETE_TTM_CHAIN", "NON_POSITIVE_YOY_BASE",
-                         "OPERATING_INCOME_NOT_STATED", "OPERATING_CASH_FLOW_NOT_STATED")
+                         "OPERATING_INCOME_NOT_STATED", "OPERATING_CASH_FLOW_NOT_STATED",
+                         "OPERATING_INCOME_VALUE_UNRESOLVED", "OPERATING_CASH_FLOW_VALUE_UNRESOLVED")
     index = staticmethod(DD.index_filings)
     period_end = staticmethod(lambda key: DF.period_end(*key))
 
@@ -58,27 +59,41 @@ class Filings:
                 return None
             value = DD.trailing_twelve_months(index, *k, account)[0]
             if not A.finite(value):
-                failure.append("OPERATING_INCOME_NOT_STATED" if account == "영업이익" else "OPERATING_CASH_FLOW_NOT_STATED")
+                prefix = "OPERATING_INCOME" if account == "영업이익" else "OPERATING_CASH_FLOW"
+                failure.append(prefix+("_NOT_STATED" if any(account not in index[d].get("accounts",{}) for d in deps)
+                                       else "_VALUE_UNRESOLVED"))
                 return None
             return float(value)
         values = (ttm(key, "영업이익"), ttm((key[0]-1, key[1]), "영업이익"), ttm(key, "영업활동현금흐름"))
         if all(d in index for d in used) and not KQ._compatible(index, sorted(used)):
             return None, None, None, "STATEMENT_BASIS_CONFLICT"
         priority = ("REPORT_PERIOD_AFTER_PUBLICATION", "STATEMENT_BASIS_CONFLICT", "INCOMPLETE_TTM_CHAIN",
-                    "OPERATING_INCOME_NOT_STATED", "OPERATING_CASH_FLOW_NOT_STATED")
+                    "OPERATING_INCOME_NOT_STATED", "OPERATING_CASH_FLOW_NOT_STATED",
+                    "OPERATING_INCOME_VALUE_UNRESOLVED", "OPERATING_CASH_FLOW_VALUE_UNRESOLVED")
         return (*values, next((r for r in priority if r in failure), "AVAILABLE"))
 
     @staticmethod
     def fields(index, key):
         # Same DART fields and FA delta/composite as C13. Never call its closed
         # discovery/evaluation modules. Incompatible TTM bases withhold controls.
-        prior = WI.previous_period(key, "KR")
         deps = [key] if key[1] == DD.ANNUAL else [key, (key[0]-1, DD.ANNUAL), (key[0]-1, key[1])]
         if not KQ._compatible(index, deps):
             return {}
-        if prior in index and index[prior].get("fsDiv") != index[key].get("fsDiv"):
+        fields = DD.derive_fields(index, *key)[0]
+        prior = (key[0]-1,key[1])
+        prior_deps = [prior] if key[1]==DD.ANNUAL else [prior,(key[0]-2,DD.ANNUAL),(key[0]-2,key[1])]
+        if not KQ._compatible(index, deps+prior_deps):
+            fields.pop("earningsGrowth",None)
+        return fields
+
+    @classmethod
+    def deltas(cls, index, key, ticker, public):
+        previous = WI.previous_period(key,"KR")
+        if previous not in index or index[previous].get("fsDiv")!=index[key].get("fsDiv"):
             return {}
-        return DD.derive_fields(index, *key)[0]
+        current = A.PIT.FundamentalRecord(ticker,f"{key[0]}-{key[1]}",public,cls.fields(index,key))
+        old = A.PIT.FundamentalRecord(ticker,f"{previous[0]}-{previous[1]}",index[previous]["availableFrom"],cls.fields(index,previous))
+        return A.FA.compute_deltas(current,old)
 
 
 def eligibility(rows, day):

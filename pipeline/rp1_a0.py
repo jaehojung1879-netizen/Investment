@@ -123,7 +123,9 @@ class FilingHistory:
             # not silently turned into a quarter-on-quarter delta.
             fields = adapter.fields(index, key) if adapter else FD.derive_fields(index, *key)[0]
             state["fields"] = fields
-            if previous["currentKey"] == WI.previous_period(key, adapter.market if adapter else "US"):
+            if adapter:
+                state["deltas"] = adapter.deltas(index, key, self.ticker, public)
+            elif previous["currentKey"] == WI.previous_period(key, "US"):
                 cur = PIT.FundamentalRecord(self.ticker, f"{key[0]}-{key[1]}", public, fields)
                 old_key = previous["currentKey"]
                 old = PIT.FundamentalRecord(self.ticker, f"{old_key[0]}-{old_key[1]}", previous["publicDay"], previous["fields"])

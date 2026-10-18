@@ -212,3 +212,17 @@ def test_kr_adapter_end_to_end_synthetic_population_and_strata(monkeypatch):
     identity=K.stratum_identities(rows)
     assert all(identity[o.key.sample_id]['A-H2'].count('|')==1 for o in rows)
     assert all(identity[o.key.sample_id]['A-H1'].count('|')==2 for o in rows)
+
+
+def test_kr_c13_uses_latest_visible_correction_and_exact_previous_period():
+    def q3(year,op):
+        row=annual(year,op,public=f'{year}-11-01');row['reportCode']='11014'
+        for name,v in [('영업이익',op),('매출액',75)]:row['accounts'][name]['amounts']['thstrm_add_amount']=v
+        return row
+    rows=[annual(2017,100),q3(2018,60),annual(2018,90),q3(2019,70),annual(2019,110)]
+    before=history(rows).at('2020-02-02')
+    assert before['deltas']['operatingMargin']==pytest.approx(.1)
+    correction=annual(2019,140,public='2020-03-01')
+    after=history(rows+[correction]).at('2020-03-02')
+    assert after['deltas']['operatingMargin']==pytest.approx(.4)
+    assert history(rows+[correction]).at('2020-02-02')==before
