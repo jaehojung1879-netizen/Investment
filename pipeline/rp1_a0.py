@@ -75,6 +75,9 @@ class FilingHistory:
                 first_public.setdefault(next(iter(keys)), record)
         index = FD.index_filings(list(first_public.values()))
         key = CP.current_key(index)
+        if sorted(str(r.get("id")) for r in index.values()) == previous["sourceIds"]:
+            self.cache[n] = previous
+            return previous  # an ignored restatement cannot restart a 26-week clock
         state = {**previous, "growth": None, "periodEnd": None, "currentKey": key,
                  "fields": {}, "deltas": {}, "publicDay": max((CP.visible_day(r).isoformat() for r in index.values()), default=public),
                  "sourceIds": sorted(str(r.get("id")) for r in index.values()),
@@ -260,7 +263,7 @@ def measure(observations, *, missing_details=None):
     missing = {h: Counter() for h in HYPOTHESES}
     eligibility_reasons = Counter(o.eligibility_reason for o in observations if o.investable is not True)
     identity_statuses = Counter(o.identity_status for o in observations)
-    daily, correlations = [], []
+    daily, correlations, correlation_counts = [], [], []
     strata = {h: Counter() for h in HYPOTHESES}
     for day, members in sorted(dates.items()):
         eligible = [o for o in members if o.investable is True]
@@ -285,14 +288,24 @@ def measure(observations, *, missing_details=None):
                     missing[h][detail or (cell.missing_reason if cell else "NO_SOURCE")] += 1
             record["hypotheses"][h] = {"measured": len(measured), "events": len(events) if measured else None,
                 "prevalence": len(events) / len(measured) if measured else None}
+            date_strata = Counter()
             for o in measured:
                 sid = o.key.sample_id
                 components = (o.industry_id, sizes.get(sid)) + (() if h == "A-H2" else (momentum.get(sid),))
                 label = "|".join(str(x) for x in components) if all(x is not None for x in components) else "STRATUM_UNRESOLVED"
-                strata[h][label + (":S1" if value(o, name) == 1 else ":S0")] += 1
+                cell_key = label + (":S1" if value(o, name) == 1 else ":S0")
+                strata[h][cell_key] += 1
+                date_strata[cell_key] += 1
+            record["hypotheses"][h]["strata"] = dict(sorted(date_strata.items()))
         flags = [value(o, "financial.A_H1") for o in eligible]
         correlations.append({"date": day, **{name: rank_biserial(flags, [value(o, "financial." + name) for o in eligible])
                                            for name in COMPARATORS}})
+        denominators = {"date": day}
+        for name in COMPARATORS:
+            pairs = [(f, value(o, "financial." + name)) for f, o in zip(flags, eligible)
+                     if f is not None and finite(value(o, "financial." + name))]
+            denominators[name] = {"pairs": len(pairs), "S1": sum(f == 1 for f, _ in pairs), "S0": sum(f == 0 for f, _ in pairs)}
+        correlation_counts.append(denominators)
         daily.append(record)
     hypotheses = {}
     for h, counts in aggregate.items():
@@ -315,7 +328,8 @@ def measure(observations, *, missing_details=None):
                     "reason": "No outcome-free identified economic-scale variance of the registered contrast; synthetic units do not supply it."}}
     return {"status": "A0_INPUT_MEASUREMENT", "populationSha256": population_sha, "hypotheses": hypotheses,
         "eligibilityReasons": dict(sorted(eligibility_reasons.items())), "identityStatusCensus": dict(sorted(identity_statuses.items())),
-        "byDate": daily, "h1RankBiserialByDate": correlations, "primaryHorizon": 252,
+        "byDate": daily, "h1RankBiserialByDate": correlations, "h1CorrelationDenominatorsByDate": correlation_counts,
+        "primaryHorizon": 252,
         "contractClarifications": ["The document specifies datewise |rho| <= 0.70 but no cross-date correlation aggregation rule; no invented PASS or DROP.",
             "Non-positive operating-income growth bases are withheld, following the existing growth adapter; no unapproved loss-base percentage convention.",
             "Synthetic standardized power is not a monetary MDE; actual event geometry alone cannot identify outcome variance."],

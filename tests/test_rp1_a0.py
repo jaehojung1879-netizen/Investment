@@ -59,6 +59,9 @@ def test_first_observed_positive_growth_cannot_be_imputed_to_no_event():
     out=A.FilingHistory('SYN',rows).at('2019-02-02')
     assert out['growth']>0 and out['flag'] is None
     assert out['reason']=='EVENT_HISTORY_UNRESOLVED'
+    ignored=annual(2018,999999,public='2019-03-01')
+    same=A.FilingHistory('SYN',rows+[ignored]).at('2019-03-02')
+    assert same['uncertainEventDate']==out['uncertainEventDate']
 
 
 def test_original_filing_future_mutation_and_pretax_fallback_cannot_create_event():
@@ -152,10 +155,12 @@ def test_population_missing_and_strata_reconcile_without_outcomes():
         assert x["population"] == 32 and x["eligible"] == 31 and x["measured"] == 30 and x["events"] == 10
         assert sum(x["missing"].values()) + x["measured"] == x["eligible"]
         assert sum(x["strata"].values()) == x["measured"]
+        assert sum(report['byDate'][0]['hypotheses'][h]['strata'].values())==x['measured']
         assert x["mde"]["status"] == "MDE_UNRESOLVED"
         assert x["verdict"] != "PROCEED_TO_A1"
     assert all(k.count('|')==1 for k in report["hypotheses"]["A-H2"]["strata"])
     assert all(k.count('|')==2 for k in report["hypotheses"]["A-H1"]["strata"])
+    assert report['h1CorrelationDenominatorsByDate'][0]['earningsGrowth']=={'pairs':30,'S1':10,'S0':20}
     assert json.dumps(A.measure(list(reversed(rows))),sort_keys=True) == json.dumps(report,sort_keys=True)
     with pytest.raises(ValueError,match="DUPLICATE"):
         A.measure(rows+[rows[0]])
