@@ -1,4 +1,5 @@
 """Invented A0 inputs only; no actual population/price/label execution."""
+import hashlib
 import json
 
 import pandas as pd
@@ -341,3 +342,32 @@ def test_size_proxy_uses_existing_as_traded_inverse_and_withholds_split_window()
     inside=[(str(days[140].date()),0.0,2.0)]
     assert A.PastPrices(frames,days,{'SYN':events['SYN']+inside}).features('SYN',day)['size63'] is None
     assert A.PastPrices(frames,days).features('SYN',day)['size63'] is None  # unknown actions, not zero
+
+
+def test_committed_a0_input_receipt_is_immutable_and_reconciled_without_outcomes():
+    # Historical INPUT measurement, not an outcome fixture or a requirement
+    # that future implementations equal the code that produced this receipt.
+    path = S.ROOT / "docs/research-program/results/rp1-a0-measurability-v1.json"
+    raw = path.read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == "2ae0314a4dc710d8f47afb149332678b34346f90e2fa4bc4e615f37bee063a04"
+    report = json.loads(raw)
+    S.U.scan_output(report)
+    assert report["formalA0Measurement"] is True and report["historicalExecutionAuthorized"] is False
+    assert report["a1Admission"] == "NO_GO" and report["primaryHorizon"] == 252
+    assert all(value == 0 for value in report["accessCounters"].values())
+    assert report["predecessorPins"] == S.PINS
+    _, _, wp2 = S.contracts()
+    assert report["wp2Mask"] == wp2["weeklyCompatibility"]["sampleIdentity"]
+    admission = report["mainAdmission"]
+    assert admission["status"] == "ADMITTED" and not admission["blockers"]
+    assert admission["mainTestsRun"]["head_sha"] == admission["mainSha"]
+    assert admission["mainTestsRun"]["status"] == "completed"
+    assert admission["mainTestsRun"]["conclusion"] == "success"
+    for name, result in report["hypotheses"].items():
+        assert result["measured"] + sum(result["missing"].values()) == result["eligible"]
+        assert sum(result["strata"].values()) == result["measured"]
+        assert sum(day["population"] for day in report["byDate"]) == result["population"]
+        assert sum(day["eligible"] for day in report["byDate"]) == result["eligible"]
+        assert sum(day["hypotheses"][name]["measured"] for day in report["byDate"]) == result["measured"]
+        assert result["verdict"] == "PROSPECTIVE_ONLY" and result["gates"]["measurability"] is False
+        assert result["mde"]["status"] == "MDE_UNRESOLVED" and result["mde"]["annualPercentagePoints"] is None
