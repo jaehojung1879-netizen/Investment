@@ -1,15 +1,20 @@
 #!/usr/bin/env python3
-"""us-tiingo-price-recovery-pilot-v1: preview (default) | --run | --from-raw RUN_DIR | --build-plan.
+"""us-tiingo-price-recovery-pilot-v1: preview (default) | --check-connectivity | --run | --build-plan.
 
-Windows, from the repository root (asks for the Tiingo token without echoing it; nothing else to type):
+GitHub Codespaces (browser) or any Linux/macOS shell, from the repository root:
 
-    py -3 scripts\\run_us_tiingo_recovery_pilot.py --run
+    python3 scripts/run_us_tiingo_recovery_pilot.py --check-connectivity     # no token, no data, nothing written
+    python3 scripts/run_us_tiingo_recovery_pilot.py --run                    # asks for the token without echoing it
 
-Preview makes no request and writes nothing. --run asks Tiingo, SEC EDGAR and OpenFIGI once each per planned request (hard
-budgets, no retries, a 401/403/429/5xx or a network refusal stops that source), keeps the raw answers in a private folder OUTSIDE
-every git checkout, and writes the aggregate report (counts and dates only) to docs/us-readiness/. The token is read from
-TIINGO_API_TOKEN or a hidden prompt, travels only in the Authorization header and is never written anywhere; every written file is
-scanned for it. Data stays NOT_ADMITTED whatever the report says.
+Windows: `py -3 scripts\\run_us_tiingo_recovery_pilot.py --run`.
+
+Tiingo's Terms of Use 1.6(a) forbid a Starter account from keeping Tiingo Data in any persistent storage, logs or backups and 1.6(c)
+extend that to Derived Products. So --run keeps every provider answer in this process's memory only and never writes one; it writes
+exactly one file, the CONNECTION record (calls, authentication accepted, rate limited, stops), which names no security and carries
+no Tiingo Data. Everything computed from the answers is discarded when the process ends unless the owner passes
+--retention-authorization with Tiingo's written permission for derived aggregates; --show-transient-summary prints the counts to
+the terminal only. The token comes from TIINGO_API_TOKEN or a hidden prompt, travels only in the Authorization header and is never
+written. Data stays NOT_ADMITTED whatever happens.
 """
 from __future__ import annotations
 
@@ -33,16 +38,6 @@ EVIDENCE_PILOT = "docs/us-readiness/us-price-evidence-pilot-v1.json"
 
 
 # ---- environment -----------------------------------------------------------------------------------------------------------------
-def inside_git_checkout(path):
-    path = Path(path).resolve()
-    return any((p / ".git").exists() for p in [path, *path.parents])
-
-
-def default_private_dir():
-    base = os.environ.get("LOCALAPPDATA")
-    return (Path(base) / "InvestmentPrivate" if base else Path.home() / ".investment-private") / P.STUDY
-
-
 def read_token(environ=os.environ, prompt=getpass.getpass):
     token = (environ.get("TIINGO_API_TOKEN") or environ.get("TIINGO_API_KEY") or "").strip()
     if not token:
@@ -128,51 +123,24 @@ def render_markdown(report):
     return "\n".join(lines)
 
 
-def check_report_writable(report_root, force):
-    """Checked before any request, so a refused overwrite never spends a provider call."""
-    for path in (report_root / P.REPORT_JSON, report_root / P.REPORT_MD):
-        if path.exists() and not force:
-            raise P.Refused("REPORT_EXISTS_USE_FORCE_TO_REPLACE: " + str(path))
-
-
-def write_outputs(report, token, force, report_root=ROOT):
-    P.scan_report(report)
-    text = json.dumps(report, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
-    markdown = render_markdown(report)
-    check_report_writable(report_root, force)
-    if token and (token in text or token in markdown):
-        raise P.Refused("TOKEN_WOULD_BE_WRITTEN")
-    (report_root / P.REPORT_JSON).parent.mkdir(parents=True, exist_ok=True)
-    (report_root / P.REPORT_JSON).write_text(text, encoding="utf-8")
-    (report_root / P.REPORT_MD).write_text(markdown, encoding="utf-8")
-
-
-def save_run(run_dir, session, answers, run_meta, token):
-    index = {key: {"status": status, "sha256": P.digest(raw)} for key, (status, raw) in answers.items()}
-    text = json.dumps({"studyId": P.STUDY, "run": run_meta, "records": session.records, "stopped": session.stopped, "answers": index},
-                      indent=2, sort_keys=True) + "\n"
+def write_json(path, document, token):
+    text = json.dumps(document, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
     if token and token in text:
         raise P.Refused("TOKEN_WOULD_BE_WRITTEN")
-    (run_dir / "run.json").write_text(text, encoding="utf-8")
-    for path in (run_dir / "objects").iterdir():
-        if token and token.encode() in path.read_bytes():
-            path.unlink()
-            raise P.Refused("TOKEN_FOUND_IN_A_PROVIDER_ANSWER_DELETED")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8")
 
 
-def load_run(run_dir):
-    run_dir = Path(run_dir)
-    doc = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
-    answers = {}
-    for key, item in doc["answers"].items():
-        raw = (run_dir / "objects" / (item["sha256"] + ".bin")).read_bytes()
-        if P.digest(raw) != item["sha256"]:
-            raise P.Refused("PRIVATE_OBJECT_CHANGED: " + key)
-        answers[key] = (item["status"], raw)
-    return doc, answers
+def transient_summary(report):
+    """Printed to the terminal, never written. 1.6(c): the owner should not copy it into a file, chat or note."""
+    q = report["questions"]
+    return {"retentionClass": "TRANSIENT_DISPLAY_ONLY_DO_NOT_SAVE", "decision": q["7_decision"],
+            "identitiesWithTiingoPriceRows": q["1_identitiesWithTiingoPriceRows"],
+            "newlyRecoverableSessions": [q["2_newlyRecoverableSessionsVsExistingMissing"]["lower"], q["2_newlyRecoverableSessionsVsExistingMissing"]["upper"]],
+            "identity": q["3_identity"]}
 
 
-def preview(plan, private_dir):
+def preview(plan):
     requests = [{"source": "tiingoMedia", "url": P.TIINGO_SUPPORTED_TICKERS}]
     for e in plan["identities"]:
         requests += [{"source": "tiingo", "url": P.tiingo_meta_url(e["auditIdentifier"])},
@@ -180,19 +148,20 @@ def preview(plan, private_dir):
     return {"mode": "PREVIEW_NO_REQUEST_MADE", "identities": [(e["auditIdentifier"], e["stratum"], e["pilotDisposition"]) for e in plan["identities"]],
             "tiingoRequests": len([r for r in requests if r["source"] == "tiingo"]), "firstRequests": requests[:3],
             "alsoRequested": ["SEC cik-lookup-data.txt + submissions for candidate CIKs (contact User-Agent from git user.email)",
-                              "OpenFIGI ticker mapping (2 requests, no key)", "Tiingo public pricing/documentation pages (no token)"],
-            "budgets": P.BUDGET, "pacingSeconds": P.PACING_SECONDS, "privateRawFolder": str(private_dir),
-            "reportFiles": [P.REPORT_JSON, P.REPORT_MD], "token": "TIINGO_API_TOKEN or a hidden prompt; never written",
-            "next": "add --run to make the requests"}
+                              "OpenFIGI ticker mapping (2 requests, no key)"],
+            "budgets": P.BUDGET, "pacingSeconds": P.PACING_SECONDS, "licence": P.LICENCE,
+            "writes": {"always": P.ACCESS_JSON, "onlyWithRetentionAuthorization": [P.REPORT_JSON, P.REPORT_MD], "never": "any provider response"},
+            "token": "TIINGO_API_TOKEN or a hidden prompt; never written", "next": "--check-connectivity first, then --run"}
 
 
 def main(argv=None, *, fetch=urllib_fetch, environ=os.environ, prompt=getpass.getpass, sleep=time.sleep, clock=time.time):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--run", action="store_true", help="make the requests (default: preview only)")
-    parser.add_argument("--from-raw", type=Path, help="rebuild the report from a stored private run folder, no request")
-    parser.add_argument("--private-dir", type=Path, default=None, help="raw answers folder (default: %%LOCALAPPDATA%%\\InvestmentPrivate)")
+    parser.add_argument("--check-connectivity", action="store_true", help="one unauthenticated request per host; no token, no data, no file")
+    parser.add_argument("--show-transient-summary", action="store_true", help="print the derived counts to the terminal only (never written)")
+    parser.add_argument("--retention-authorization", type=Path, help="Tiingo's written permission to keep derived aggregates (JSON)")
     parser.add_argument("--existing-session-table", type=Path, help="#243 private session table, for exact new-session counts")
-    parser.add_argument("--force", action="store_true", help="replace an existing report")
+    parser.add_argument("--force", action="store_true", help="replace existing output files")
     parser.add_argument("--build-plan", action="store_true", help="repository maintenance: rebuild the committed plan")
     parser.add_argument("--report-root", type=Path, default=ROOT, help=argparse.SUPPRESS)
     args = parser.parse_args(argv)
@@ -203,37 +172,47 @@ def main(argv=None, *, fetch=urllib_fetch, environ=os.environ, prompt=getpass.ge
         print(P.digest(text.encode()))
         return 0
     plan = load_plan()
-    private_dir = (args.private_dir or default_private_dir()).resolve()
-    if inside_git_checkout(private_dir):
-        raise P.Refused("PRIVATE_FOLDER_MUST_BE_OUTSIDE_EVERY_GIT_CHECKOUT: " + str(private_dir))
-    existing = P.load_existing_table(args.existing_session_table) if args.existing_session_table else None
-    if args.run or args.from_raw:
-        check_report_writable(args.report_root, args.force)
-
-    if args.from_raw:
-        doc, answers = load_run(args.from_raw)
-        report = P.analyze(plan, answers, doc["records"], doc["stopped"], existing_table=existing, run_meta=doc["run"])
-        write_outputs(report, None, args.force, args.report_root)
-        print(json.dumps({"decision": report["questions"]["7_decision"], "liveProviderResponse": report["liveProviderResponse"]}))
+    if args.check_connectivity:
+        session = P.Session(fetch, sleep=sleep, clock=clock)
+        print(json.dumps({"mode": "CONNECTIVITY_ONLY_NO_TOKEN_NO_DATA_NOTHING_WRITTEN", "hosts": P.check_connectivity(session)}, indent=2))
         return 0
     if not args.run:
-        print(json.dumps(preview(plan, private_dir), indent=2))
+        print(json.dumps(preview(plan), indent=2))
         return 0
 
+    # Everything that can refuse is decided before the first request, so a refusal never spends a provider call.
+    authorization = None
+    if args.retention_authorization:
+        authorization = P.validate_retention_authorization(json.loads(args.retention_authorization.read_text(encoding="utf-8")))
+    outputs = [args.report_root / P.ACCESS_JSON] + ([args.report_root / P.REPORT_JSON, args.report_root / P.REPORT_MD] if authorization else [])
+    for path in outputs:
+        if path.exists() and not args.force:
+            raise P.Refused("OUTPUT_EXISTS_USE_FORCE_TO_REPLACE: " + str(path))
+    existing = P.load_existing_table(args.existing_session_table) if args.existing_session_table else None
     token = read_token(environ, prompt)
+
     started = time.strftime("%Y-%m-%dT%H-%M-%SZ", time.gmtime(clock()))
-    run_dir = private_dir / ("run-" + started)
-    if run_dir.exists():
-        raise P.Refused("RUN_FOLDER_EXISTS")
-    session = P.Session(fetch, run_dir / "objects", token=token, sec_user_agent=sec_user_agent(environ), sleep=sleep, clock=clock)
-    run_meta = {"startedAtUtc": started, "planSha256": P.digest(P.canonical(plan)), "privateRunFolderName": run_dir.name,
-                "secContactUserAgent": "PRESENT" if session.sec_user_agent else "ABSENT_SEC_NOT_RUN"}
-    answers = P.acquire(plan, session)
-    save_run(run_dir, session, answers, run_meta, token)
+    session = P.Session(fetch, token=token, sec_user_agent=sec_user_agent(environ), sleep=sleep, clock=clock)
+    run_meta = {"startedAtUtc": started, "planSha256": P.digest(P.canonical(plan)),
+                "secContactUserAgent": "PRESENT" if session.sec_user_agent else "ABSENT_SEC_NOT_RUN",
+                "derivedRetention": "AUTHORIZED_IN_WRITING" if authorization else "NOT_AUTHORIZED_DISCARDED_AT_EXIT"}
+    answers = P.acquire(plan, session)                     # in memory only
     report = P.analyze(plan, answers, session.records, session.stopped, existing_table=existing, run_meta=run_meta)
-    write_outputs(report, token, args.force, args.report_root)
-    print(json.dumps({"decision": report["questions"]["7_decision"], "liveProviderResponse": report["liveProviderResponse"],
-                      "stoppedSources": session.stopped, "report": P.REPORT_MD, "privateRunFolder": str(run_dir)}, indent=2))
+    write_json(args.report_root / P.ACCESS_JSON, P.access_summary(plan, session.records, session.stopped, run_meta), token)
+    if authorization:
+        report["retentionAuthorization"] = authorization
+        P.scan_report(report)
+        markdown = render_markdown(report)
+        if token in markdown:
+            raise P.Refused("TOKEN_WOULD_BE_WRITTEN")
+        write_json(args.report_root / P.REPORT_JSON, report, token)
+        (args.report_root / P.REPORT_MD).write_text(markdown, encoding="utf-8")
+    out = {"access": P.ACCESS_JSON, "liveProviderResponse": report["liveProviderResponse"], "stoppedSources": session.stopped,
+           "derived": "WRITTEN_UNDER_AUTHORIZATION" if authorization else "DISCARDED_NOT_WRITTEN_STARTER_TOS_1_6"}
+    if args.show_transient_summary:
+        out["transient"] = transient_summary(report)
+    print(json.dumps(out, indent=2))
+    del answers, report                                     # nothing outlives the process
     blocked = {"ACCESS_BLOCKED_BEFORE_PROVIDER", "AUTH_REJECTED", "ACCESS_FORBIDDEN"}
     return 2 if session.stopped.get("tiingo") in blocked else 0
 

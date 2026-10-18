@@ -13,6 +13,14 @@ The provider is reached through an injected `fetch` so every failure mode is tes
 Endpoint shapes, field names and plan limits are NOT verified from official documentation in the authoring environment (every
 official host was unreachable from it). They are the shapes public client libraries use, and each run validates the response
 schema it actually receives and stops on anything else rather than guessing.
+
+LICENCE (amendment 1). Tiingo's Terms of Use section 1.6(a) forbids a Starter or trial account from keeping Tiingo Data in any
+persistent or durable storage (local devices, databases, logs, queues, backups) and allows processing only in volatile memory or a
+temporary non-persistent cache cleared before the job or session ends; 1.6(c) applies the same limits to Derived Products. So:
+no provider response is ever written anywhere (it lives in this process's memory and nowhere else), nothing computed from one is
+written unless the owner holds written permission for it (`validate_retention_authorization`), and the only record that is
+always written is about the CONNECTION -- calls made, whether authentication was accepted, whether a limit was hit -- which says
+nothing about any security. Historical price retention on a Starter account is therefore NO-GO by licence, whatever a run finds.
 """
 from __future__ import annotations
 
@@ -36,22 +44,38 @@ STUDY = "us-tiingo-price-recovery-pilot-v1"
 PLAN_PATH = "docs/us-readiness/us-tiingo-price-recovery-pilot-v1-plan.json"
 REPORT_JSON = "docs/us-readiness/us-tiingo-price-recovery-pilot-v1-report.json"
 REPORT_MD = "docs/us-readiness/us-tiingo-price-recovery-pilot-v1-report.md"
+ACCESS_JSON = "docs/us-readiness/us-tiingo-price-recovery-pilot-v1-access.json"   # connection metadata only, always written
 ADMISSION = "NOT_ADMITTED"
 # The private session table of us-departed-dataset-admission-audit-v1 (#243): canonical JSON rows, gzip-compressed.
 EXISTING_SESSION_TABLE_SHA256 = "14d96bda6680a51f939d49f1abce276e86687fe91e766f3ab15f9c7d8cd76248"
 
 TIINGO = "https://api.tiingo.com"
 TIINGO_SUPPORTED_TICKERS = "https://apimedia.tiingo.com/docs/tiingo/daily/supported_tickers.zip"
-TIINGO_DOCUMENT_PAGES = {"pricing": "https://www.tiingo.com/about/pricing", "endOfDayDocumentation": "https://www.tiingo.com/documentation/end-of-day"}
+TIINGO_CONNECTIVITY = "https://api.tiingo.com/"
 SEC_CIK_LOOKUP = "https://www.sec.gov/Archives/edgar/cik-lookup-data.txt"
 SEC_SUBMISSIONS = "https://data.sec.gov/submissions/CIK{cik:0>10}.json"
 OPENFIGI = "https://api.openfigi.com/v3/mapping"
 
 # Hard per-run budgets and pacing. The free limits are not verified, so the budget is set far below every figure seen in secondary
 # sources and a run never retries: one refusal ends that source for the run.
-BUDGET = {"tiingo": 42, "tiingoMedia": 1, "tiingoDocs": 2, "sec": 30, "openfigi": 2}
-PACING_SECONDS = {"tiingo": 2.0, "tiingoMedia": 0.0, "tiingoDocs": 1.0, "sec": 0.25, "openfigi": 3.0}
-MAX_BYTES = {"tiingo": 8 << 20, "tiingoMedia": 32 << 20, "tiingoDocs": 4 << 20, "sec": 160 << 20, "openfigi": 1 << 20}
+BUDGET = {"tiingo": 42, "tiingoMedia": 1, "sec": 30, "openfigi": 2, "connectivity": 3}
+PACING_SECONDS = {"tiingo": 2.0, "tiingoMedia": 0.0, "sec": 0.25, "openfigi": 3.0, "connectivity": 0.0}
+MAX_BYTES = {"tiingo": 8 << 20, "tiingoMedia": 32 << 20, "sec": 160 << 20, "openfigi": 1 << 20, "connectivity": 1 << 20}
+TIINGO_SOURCES = ("tiingo", "tiingoMedia")
+LICENCE = {
+    "provider": "Tiingo", "plan": "STARTER (free)", "termsUrl": "https://app.tiingo.com/tos/",
+    "sections": {"1.6(a)": "Starter/trial: no Tiingo Data in persistent or durable storage (local devices, databases, logs, queues, "
+                           "backups, disaster recovery); processing only in volatile memory or a temporary non-persistent cache, "
+                           "removed when the calculation completes and before the process, job or session ends.",
+                 "1.6(c)": "Derived Products: the same limits; computed and held only transiently, never persisted."},
+    "textSource": "OWNER_CITED_SECTIONS_SUMMARISED_FROM_A_SEARCH_INDEX_OF_THE_PAGE_NOT_VERBATIM; the page itself was unreachable from "
+                  "the authoring environment; the owner must read the live clause text",
+    "rawResponseRetention": "PROHIBITED_NEVER_WRITTEN",
+    "derivedResultRetention": "PROHIBITED_UNLESS_WRITTEN_PERMISSION",
+    "connectionMetadataRetention": "WRITTEN_SAYS_NOTHING_ABOUT_ANY_SECURITY",
+    "historicalPriceRetentionVerdict": "NO_GO_STARTER_PROHIBITS_PERSISTENT_STORAGE",
+}
+RETENTION_SCOPE = "DERIVED_AGGREGATE_COUNTS_AND_DATES"
 TIMEOUT_SECONDS = 30
 STOP_STATUSES = {401: "AUTH_REJECTED", 403: "ACCESS_FORBIDDEN", 429: "RATE_LIMITED"}
 OPENFIGI_JOBS_PER_REQUEST = 10
@@ -191,11 +215,11 @@ def expected_sessions(entry, calendar):
 class Session:
     """One run's requests. `fetch(method, url, headers, body, timeout) -> (status, headers, bytes)`; raises NetworkBlocked."""
 
-    def __init__(self, fetch, raw_dir, *, token=None, sec_user_agent=None, sleep=time.sleep, clock=time.time):
-        self.fetch, self.raw_dir, self.token, self.sec_user_agent = fetch, Path(raw_dir), token, sec_user_agent
+    def __init__(self, fetch, *, token=None, sec_user_agent=None, sleep=time.sleep, clock=time.time):
+        """Answers live in this object's memory only; there is no path, cache or directory to put one in."""
+        self.fetch, self.token, self.sec_user_agent = fetch, token, sec_user_agent
         self.sleep, self.clock = sleep, clock
         self.calls, self.stopped, self.records = Counter(), {}, []
-        self.raw_dir.mkdir(parents=True, exist_ok=True)
 
     def request(self, source, purpose, url, *, method="GET", body=None):
         if source in self.stopped:
@@ -229,22 +253,16 @@ class Session:
             self.stopped[source] = "TRANSPORT_ERROR"
             self.records.append(record)
             return None
-        kept = {k: v for k, v in (response_headers or {}).items()
-                if k.lower() in ("content-type", "date") or "ratelimit" in k.lower() or "retry-after" in k.lower()}
-        record.update(status=status, bytes=len(raw), responseHeaders=kept)
+        names = sorted(k for k in (response_headers or {}) if "ratelimit" in k.lower() or "retry-after" in k.lower())
+        record.update(status=status, rateLimitHeaderNames=names)
         if len(raw) > MAX_BYTES[source]:
             record["outcome"] = "BYTE_BUDGET_EXCEEDED"
             self.stopped[source] = "BYTE_BUDGET_EXCEEDED"
         elif status in STOP_STATUSES or status >= 500:
             record["outcome"] = STOP_STATUSES.get(status, "PROVIDER_ERROR")
-            record["bodySha256"] = digest(raw)
             self.stopped[source] = record["outcome"]
         else:
             record["outcome"] = "ANSWERED"
-            record["sha256"] = digest(raw)
-            path = self.raw_dir / (record["sha256"] + ".bin")
-            if not path.exists():
-                path.write_bytes(raw)
         self.records.append(record)
         return (status, raw) if record["outcome"] == "ANSWERED" else None
 
@@ -282,9 +300,21 @@ def acquire(plan, session):
     for start in range(0, len(tickers), OPENFIGI_JOBS_PER_REQUEST):
         jobs = [{"idType": "TICKER", "idValue": t, "exchCode": "US"} for t in tickers[start:start + OPENFIGI_JOBS_PER_REQUEST]]
         ask(f"openfigi:{start}", "openfigi", "TICKER_MAPPING", OPENFIGI, method="POST", body=json.dumps(jobs).encode())
-    for name, url in TIINGO_DOCUMENT_PAGES.items():
-        ask(f"tiingo:docs:{name}", "tiingoDocs", "PUBLIC_TERMS_PAGE_CAPTURE_FOR_OWNER_REVIEW", url)
     return answers
+
+
+def check_connectivity(session):
+    """No token, no data: one unauthenticated request per host. Any HTTP answer means the host is reachable."""
+    out = {}
+    for host, url in (("tiingo", TIINGO_CONNECTIVITY), ("sec", "https://www.sec.gov/"), ("openfigi", "https://api.openfigi.com/")):
+        before = len(session.records)
+        session.stopped.pop("connectivity", None)
+        session.request("connectivity", "REACHABILITY_" + host.upper(), url)
+        record = session.records[before] if len(session.records) > before else {}
+        out[host] = ("BLOCKED_BEFORE_PROVIDER" if record.get("outcome") == "ACCESS_BLOCKED_BEFORE_PROVIDER" else
+                     "TRANSPORT_ERROR" if record.get("outcome") == "TRANSPORT_ERROR" else
+                     f"REACHABLE_HTTP_{record.get('status')}" if record.get("status") is not None else "NOT_ASKED")
+    return out
 
 
 # =======================================================================================================================================
@@ -577,30 +607,44 @@ def analyze(plan, answers, records, stopped, *, existing_table=None, run_meta=No
             "identity": identity, "sessions": comparison, "terminal": terminal_state(entry, meta, comparison),
             "corporateActionLineage": "SINGLE_VENDOR_EVENT_FIELDS_UNVERIFIED" if comparison["tiingoSessionsInWindow"] else "UNRESOLVED_NO_OBSERVATION",
             "admission": ADMISSION})
-    pages = {}
-    for name in TIINGO_DOCUMENT_PAGES:
-        if f"tiingo:docs:{name}" in answers:
-            status, raw = answers[f"tiingo:docs:{name}"]
-            pages[name] = {"status": status, "sha256": digest(raw), "termsExcerpts": terms_excerpts(raw), "interpretation": "NONE_OWNER_REVIEW_REQUIRED"}
     report = summarize(plan, identities, records, stopped, errors, existing_table is not None, run_meta or {})
-    report["tiingoPublicPages"] = pages
+    report["retentionClass"] = "DERIVED_TRANSIENT_ONLY_UNLESS_WRITTEN_PERMISSION"
     return report
 
 
-TERMS_KEYWORDS = ("redistribut", "personal", "commercial", "internal use", "store", "cache", "display", "requests per", "unique symbols")
+def access_summary(plan, records, stopped, run_meta):
+    """The only thing a run always writes. Connection facts only: for Tiingo it does not say which ticker answered or how, so it
+    carries no Tiingo Data and nothing derived from it; SEC and OpenFIGI outcomes are counted because their answers are not Tiingo's."""
+    tiingo = [r for r in records if r["source"] in TIINGO_SOURCES]
+    statuses = {r.get("status") for r in tiingo if r.get("status") is not None}
+    # Only the token-bearing API answers say anything about authentication; the public ticker list needs no token.
+    authed = {r.get("status") for r in tiingo if r["source"] == "tiingo" and r.get("status") is not None}
+    summary = {
+        "studyId": STUDY, "version": VERSION, "planSha256": digest(canonical(plan)), "run": run_meta, "licence": LICENCE,
+        "retentionClass": "CONNECTION_METADATA_ONLY",
+        "tiingo": {"calls": len(tiingo), "reachable": bool(statuses), "authenticationAccepted": bool(authed - {401, 403}) if authed else None,
+                   "rateLimited": 429 in statuses, "stopped": {s: stopped[s] for s in TIINGO_SOURCES if s in stopped},
+                   "rateLimitHeaderNames": sorted({n for r in tiingo for n in r.get("rateLimitHeaderNames", [])})},
+        "otherSources": {s: {"calls": sum(r["source"] == s for r in records), "outcomes": dict(Counter(r.get("outcome") for r in records if r["source"] == s)),
+                             "stopped": stopped.get(s)} for s in ("sec", "openfigi")},
+        "liveProviderResponse": "TESTED" if any(x < 500 and x not in STOP_STATUSES for x in authed) else "NOT_TESTED",
+        "statements": ["No Tiingo response, value, date, ticker outcome or anything computed from them is in this file.",
+                       "Every identity stays NOT_ADMITTED; Starter historical price retention is NO_GO by licence."]}
+    return summary
 
 
-def terms_excerpts(raw, limit=12):
-    """Sentences of a public page that mention use, storage or limits, for the owner to read. Nothing is interpreted."""
-    text = re.sub(r"<script.*?</script>|<style.*?</style>", " ", raw.decode("utf-8", "replace"), flags=re.S | re.I)
-    text = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", text))
-    out = []
-    for sentence in re.split(r"(?<=[.!?])\s+", text):
-        if any(k in sentence.lower() for k in TERMS_KEYWORDS) and sentence.strip()[:280] not in out:
-            out.append(sentence.strip()[:280])
-        if len(out) >= limit:
-            break
-    return out
+def validate_retention_authorization(doc):
+    """Written permission from Tiingo for keeping DERIVED aggregates. Raw responses have no authorisation path at all."""
+    required = ("provider", "scope", "grantedBy", "evidenceReference", "grantedOn", "plan")
+    if not isinstance(doc, dict) or any(not str(doc.get(k) or "").strip() for k in required):
+        raise Refused("RETENTION_AUTHORIZATION_INCOMPLETE: needs " + ", ".join(required))
+    if str(doc["provider"]).lower() != "tiingo" or doc["scope"] != RETENTION_SCOPE:
+        raise Refused("RETENTION_AUTHORIZATION_WRONG_PROVIDER_OR_SCOPE")
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(doc["grantedOn"])):
+        raise Refused("RETENTION_AUTHORIZATION_DATE_INVALID")
+    if doc.get("coversRawResponses"):
+        raise Refused("RAW_RESPONSE_RETENTION_IS_NEVER_SUPPORTED_BY_THIS_TOOL")
+    return {k: doc[k] for k in required}
 
 
 def summarize(plan, identities, records, stopped, errors, exact, run_meta):
@@ -658,7 +702,9 @@ def summarize(plan, identities, records, stopped, errors, exact, run_meta):
         "identities": identities,
         "statements": ["Counts and dates only: no price level, adjusted value, dividend amount, split ratio, return or label appears in this file.",
                        "Every identity is NOT_ADMITTED; no replay, sealed dataset, C1, WP1 or WP2 input changed.",
-                       "Rights to store or redistribute Tiingo data are NOT_VERIFIED; raw bytes stay outside every git checkout."]}
+                       "Tiingo Starter forbids persisting Tiingo Data and Derived Products (ToS 1.6(a),(c)); this report exists on disk only "
+                       "under a written retention authorisation, and no raw response is ever written."],
+        "licence": LICENCE}
 
 
 def plan_hold(plan, ticker):
@@ -671,7 +717,7 @@ DECISION_RULE = ("Pre-registered before any request. STOP_SOURCE_NOT_REACHABLE_O
                  "EXPAND_TO_212_FREE_TIER_FEASIBILITY: at least 8 of the 15 have rows and unexplained adjustment steps are at most "
                  "0.1% of observed sessions. Otherwise LIMITED_VALUE_REVIEW_BEFORE_EXPANSION. No branch admits data.")
 PRE_ADMISSION_CHECKLIST = [
-    "Owner confirms Tiingo terms permit private local storage for personal research (redistribution stays forbidden in public PRs).",
+    "A source whose licence permits durable private storage of historical prices for personal research (Tiingo Starter does not: ToS 1.6(a),(c)).",
     "Per-identity issuer/share-class link to a CIK from an official source dated inside the membership window.",
     "As-traded close definition confirmed from the provider's official documentation and cross-checked on the FULL controls.",
     "Dated split and dividend chain reconciled against a second source; adjusted series rebuilt from raw closes and events.",
@@ -681,6 +727,9 @@ PRE_ADMISSION_CHECKLIST = [
     "WP0 return-basis check (|annual delta| thresholds) re-run on the admitted revision; never on pilot data.",
 ]
 NEXT_SOURCE_TABLE = [
+    {"ifMeasured": "the licence forbids keeping the data (Tiingo Starter, ToS 1.6)", "reviewFirst": "WRITTEN_STORAGE_TERMS_BEFORE_ANY_VENDOR",
+     "why": "coverage is worthless to a historical study that cannot keep it; ask Tiingo whether a paid plan allows personal durable storage, "
+            "and get EODHD's storage clause in writing, before collecting anything"},
     {"ifMeasured": "Tiingo has no rows for most NONE targets (delisted coverage thin)", "reviewFirst": "EODHD",
      "why": "delisted US tickers are a stated product feature; free tier and terms NOT_VERIFIED; costs a key and a paid plan likely"},
     {"ifMeasured": "Tiingo rows exist but identity stays unresolved", "reviewFirst": "SEC_EDGAR_EVIDENCE",
