@@ -121,6 +121,7 @@ def load_inputs(repo):
 def observations(inputs):
     source,manifest,members,frames,bars,filings,identities,intervals,crosswalk,_,calendar,dates,_ = inputs
     histories = {t:A.FilingHistory(t,rows,adapter=K.Filings()) for t,rows in filings.items()}
+    observed_by_id={str(r['id']):r.get('collectedAt') for rows in filings.values() for r in rows}
     past = A.PastPrices(frames,calendar,benchmark='069500.KS')
     universe_hash = RI.digest({p:v for p,v in source.receipts.items() if 'universe/kr/' in p})
     filing_hash = RI.digest({p:v for p,v in source.receipts.items() if 'fundamentals/kr-' in p})
@@ -176,8 +177,11 @@ def observations(inputs):
             # KR final-close timestamp, including delayed-opening days; never
             # the US executor's XNYS clock.
             at=(pd.Timestamp(day)+K.CORE.KR_CLOSE_FINAL_UTC).tz_localize('UTC').isoformat()
+            observed_stamps=[observed_by_id.get(i) for i in state['sourceIds']]
+            observed_at=max(observed_stamps) if observed_stamps and all(observed_stamps) else None
             fsrc=W.Source(S.SOURCE_COMMIT+':KR-visible-filings:'+RI.digest(state['sourceIds']),
-                RI.digest({**input_context,'filingReceipts':filing_hash,'sourceIds':state['sourceIds']}),'PUBLIC_RECONSTRUCTION',None,'NOT_RETAINED')
+                RI.digest({**input_context,'filingReceipts':filing_hash,'sourceIds':state['sourceIds']}),'PUBLIC_RECONSTRUCTION',
+                observed_at,None if observed_at else 'NOT_RETAINED')
             financial_at=(pd.Timestamp(state['publicDay'])+pd.Timedelta(days=1)).tz_localize('Asia/Seoul').isoformat() if state['publicDay'] else None
             cells=tuple(W.Cell(n,v,'KRW' if n=='risk.marketCap' else 'ratio',
                         (financial_at if n=='financial.A_H1' else at) if v is not None else None,
