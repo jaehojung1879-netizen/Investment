@@ -232,6 +232,9 @@ def inspect(repo, *, admission, root=ROOT):
     departed = {t for snapshot in members for t in snapshot["members"] if t not in members[-1]["members"]}
     report["populationAudit"] = A.population_audit(rows, departed)
     report.update(formalA0Measurement=True, mainAdmission=admission, predecessorPins=PINS,
+        signalGrid="WP2_WEEKLY_COMPATIBILITY_COMPLETED_XNYS_WEEK", evaluationYears=spec["years"],
+        measurabilityDenominator="WP2_R_B_ELIGIBLE_WEEKLY_MEMBER_OBSERVATIONS",
+        prevalenceDenominator="MEASURED_WP2_R_B_ELIGIBLE_WEEKLY_MEMBER_OBSERVATIONS",
         wp1Calibration=wp1["result"]["claims"]["US_H252"], sourceReceipts=inputs[0].receipts,
         wp2Mask=wp2["weeklyCompatibility"]["sampleIdentity"],
         codeHashes={p: hashlib.sha256((Path(root) / p).read_bytes()).hexdigest() for p in (
