@@ -49,6 +49,10 @@ def validate_contracts(root=ROOT):
     if hashlib.sha256((root / US_RESULT).read_bytes()).hexdigest() != US_SHA:
         raise ValueError('US_A0_GOLDEN_CHANGED')
     spec = json.loads((root / SPEC).read_bytes())
+    if spec['id']!='rp1-kr-a0-measurability-v1' or spec['gates']!={
+        'prevalence':[.03,.50],'measurabilityMin':.60,'signalPositiveNamesPerKRDateMin':5,
+        'H1CorrelationAbsMax':.70,'MDE80AnnualPercentagePointsMax':4}:
+        raise ValueError('ORIGINAL_A0_GATES_CHANGED')
     for path, sha in spec['originalContractHashes'].items():
         if hashlib.sha256((root / path).read_bytes()).hexdigest() != sha:
             raise ValueError('ORIGINAL_KR_CONTRACT_CHANGED:' + path)
@@ -215,13 +219,14 @@ def inspect(repo, *, main_admission, root=ROOT):
         recordingPrerequisites=['KR_SOURCE_INTEGRITY_AND_STORAGE_RIGHTS','ORIGINAL_A2_REGISTRATION_AND_AUTHORIZATION',
                                'CURRENT_PIT_INPUTS_WITH_OBSERVED_AT','PREVIEW_ONLY_INTERFACE_NOT_A_LEDGER_WRITER'])
     filing_rows=[r for rs in inputs[5].values() for r in rs]
+    observed=sorted(r['collectedAt'] for r in filing_rows if r.get('collectedAt'))
     report['sourceAvailability']={'filingRecords':len(filing_rows),'filingTickers':len(inputs[5]),
         'accountPresenceRecords':{name:sum(name in r.get('accounts',{}) for r in filing_rows)
                                   for name in ('영업이익','영업활동현금흐름','매출액')},
         'statementBasisRecords':dict(sorted(Counter(r.get('fsDiv','UNKNOWN') for r in filing_rows).items())),
         'filingPublicRange':[min(r['availableFrom'] for r in filing_rows),max(r['availableFrom'] for r in filing_rows)],
-        'filingObservedRange':[min(r['collectedAt'] for r in filing_rows if r.get('collectedAt')),
-                               max(r['collectedAt'] for r in filing_rows if r.get('collectedAt'))],
+        'filingObservedRange':[observed[0],observed[-1]] if observed else None,
+        'filingObservedAtMissing':len(filing_rows)-len(observed),
         'reconstructionIsProspective':False,'priceLinkedThrough':report['byDate'][-1]['date'],
         'industryEvidence':'PARTIALLY_RECONSTRUCTED_V4','identityEvidence':'RETROSPECTIVE_ISSUER_BRIDGE_NOT_SECURITY_VERIFICATION',
         'liquidityBasis':B.TRADING_VALUE_BASIS_PROXY}
