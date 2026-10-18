@@ -57,6 +57,12 @@ def api(path):
     return json.loads(subprocess.check_output(["gh", "api", "repos/jaehojung1879-netizen/Investment/" + path]))
 
 
+def financial_available_at(public_day):
+    # Calendar next day, then localize: adding 24 hours to an already localized
+    # midnight would yield 23:00/01:00 across the US DST boundary.
+    return (pd.Timestamp(public_day) + pd.Timedelta(days=1)).tz_localize("America/New_York").isoformat()
+
+
 def main_admission(root=ROOT, github=api):
     blockers = []
     for number in (256, 257):
@@ -86,11 +92,26 @@ def load_inputs(repo, spec):
     manifest = json.loads(source.blob(S.S.SOURCE_COMMIT, S.S.MANIFEST))
     if manifest["sha256"] != S.S.MANIFEST_SHA or RI.digest({k: v for k, v in manifest.items() if k != "sha256"}) != S.S.MANIFEST_SHA:
         raise ValueError("REPLAY_MANIFEST_CHANGED")
-    source.allowed_objects = {ref for name, refs in manifest["components"].items()
-        if name.startswith(("price/20", "benchmark/20")) for ref in refs}
-    prices, frames = defaultdict(set), defaultdict(dict)
+    roles = ("price/20", "benchmark/20", "corporate-events/20")
+    source.allowed_objects = {ref for name, refs in manifest["components"].items() if name.startswith(roles) for ref in refs}
+    lineage = {}
+    for role in ("price/source", "benchmark/source", "corporate-events/source"):
+        refs = manifest["components"].get(role, [])
+        if len(refs) != 1:
+            raise ValueError("UNRESOLVED_SOURCE_LINEAGE:" + role)
+        source.allowed_objects.update(refs)
+        lineage[role] = source.component(refs[0])
+    price_line = [r for r in lineage["price/source"] if r.get("region") == "US"]
+    spy_line = [r for r in lineage["benchmark/source"] if r.get("region") == "US" and r.get("ticker") == "SPY"]
+    if (len(price_line) != 1 or price_line[0].get("vendor") != "YAHOO_UNADJUSTED_WITH_ACTIONS" or
+        price_line[0].get("distributions") != "YAHOO_ACTIONS" or len(spy_line) != 1 or
+        spy_line[0].get("source") != "yahoo" or spy_line[0].get("symbol") != "SPY" or
+        lineage["corporate-events/source"] != [{"adjustment": "as-traded-forward-total-return-v1", "anchor": "FIRST_OBSERVED_SESSION",
+            "basis": "AS_TRADED_CLOSE_WITH_FORWARD_ACCUMULATED_TOTAL_RETURN", "vendor": "YAHOO_UNADJUSTED_WITH_ACTIONS"}]):
+        raise ValueError("STOCK_SPY_ACTION_RECIPE_LINEAGE_MISMATCH")
+    prices, frames, events = defaultdict(set), defaultdict(dict), defaultdict(list)
     for name, refs in sorted(manifest["components"].items()):
-        if not name.startswith(("price/20", "benchmark/20")):
+        if not name.startswith(roles):
             continue
         for ref in refs:
             rows = source.component(ref)
@@ -98,6 +119,13 @@ def load_inputs(repo, spec):
                 U.presence(rows, manifest["through"], prices)
             for row in rows:
                 t, d = row["ticker"], row["date"]
+                if name.startswith("corporate-events/20"):
+                    if t.endswith((".KS", ".KQ")) or d > "2025-12-31":
+                        continue
+                    if row.get("applied") is False:
+                        raise ValueError("REFUSED_CORPORATE_ACTION_IN_SOURCE")
+                    events[t].append((d, row.get("dividend", 0), row.get("split", 1)))
+                    continue
                 if (t == "SPY") != name.startswith("benchmark/20"):
                     continue  # SPY only from its pinned benchmark leg
                 if t.endswith((".KS", ".KQ")) or d > "2025-12-31":
@@ -118,11 +146,11 @@ def load_inputs(repo, spec):
             filings[row["ticker"]].append(row)
     calendar = S.S.RC.sessions("2011-01-01", "2026-01-10", "US")
     dates = [str(d.date()) for d in calendar.to_series().groupby(calendar.to_period("W")).max() if d.year in spec["years"]]
-    return source, manifest, frames, prices, members, sectors, evidence, filings, calendar, dates
+    return source, manifest, frames, prices, members, sectors, evidence, filings, calendar, dates, events
 
 
 def observations(inputs, spec, wp2):
-    source, manifest, frames, prices, members, sectors, evidence, filings, calendar, dates = inputs
+    source, manifest, frames, prices, members, sectors, evidence, filings, calendar, dates, events = inputs
     # Re-run only the WP2 census, never mutate its frozen measurement. Its
     # sample and eligibility-mask chains must match before any signal is built.
     check = U.measure(members, sectors, evidence, prices, [r for rows in filings.values() for r in rows], dates, spec,
@@ -132,7 +160,7 @@ def observations(inputs, spec, wp2):
     _, malformed, _, ambiguous = U.identity_maps(members, evidence, prices, manifest["through"])
     membership, industry = S.S.RAF.MembershipSnapshots(members), U.C.SectorBook(sectors)
     histories = {t: A.FilingHistory(t, rows) for t, rows in filings.items()}
-    past = A.PastPrices(frames, calendar)
+    past = A.PastPrices(frames, calendar, events)
     provenance = S.S.W.Source(reference=S.S.SOURCE_COMMIT + ":" + S.S.MANIFEST, sha256=S.S.MANIFEST_SHA,
         vintage="PUBLIC_RECONSTRUCTION", observed_at=None, observation_gap="NOT_RETAINED")
     universe_source = S.S.W.Source(reference=S.S.CODE_BASE + ":" + S.S.MEMBERS,
@@ -174,9 +202,10 @@ def observations(inputs, spec, wp2):
             filing_context = {**input_context, "visibleSourceIds": state.get("sourceIds", [])}
             filing_source = S.S.W.Source(reference=S.S.SOURCE_COMMIT + ":A0-visible-derived-input-set:" + RI.digest(state.get("sourceIds", [])),
                 sha256=RI.digest(filing_context), vintage="PUBLIC_RECONSTRUCTION", observed_at=None, observation_gap="NOT_RETAINED")
-            financial_at = ((pd.Timestamp(state["publicDay"], tz="America/New_York") + pd.Timedelta(days=1)).isoformat()
-                if state.get("publicDay") else None)
-            cells = tuple(S.S.W.Cell(name=k, value=v, unit="input-state-or-ratio",
+            financial_at = financial_available_at(state["publicDay"]) if state.get("publicDay") else None
+            cells = tuple(S.S.W.Cell(name=k, value=v,
+                unit="USD" if k == "risk.size63" else "binary" if k in ("financial.A_H1", "financial.A_H2", "financial.A_H3") else
+                     "zscore" if k == "financial.accelerationComposite" else "ratio",
                 available_at=(financial_at if k.startswith("financial.") and k not in ("financial.A_H2", "financial.A_H3", "financial.accelerationComposite")
                               else WI_CLOCK.close_at(day, final=False)) if v is not None else None,
                 source=filing_source if k.startswith("financial.") else provenance,
@@ -206,7 +235,8 @@ def inspect(repo, *, admission, root=ROOT):
         wp2Mask=wp2["weeklyCompatibility"]["sampleIdentity"],
         codeHashes={p: hashlib.sha256((Path(root) / p).read_bytes()).hexdigest() for p in (
             "pipeline/rp1_a0.py", "scripts/rp1_inspect_a0.py", "pipeline/experiment_workbench.py",
-            "pipeline/finnhub_derive.py", "pipeline/fundamental_acceleration.py", "pipeline/fundamental_acceleration_seal.py")},
+            "pipeline/finnhub_derive.py", "pipeline/fundamental_acceleration.py", "pipeline/fundamental_acceleration_seal.py",
+            "pipeline/us_multifactor_inputs.py")},
         rawInputPriceBasis="INHERITED_REPLAY_BASIS_NOT_WP0_VERIFIED")
     U.scan_output(report)
     return report

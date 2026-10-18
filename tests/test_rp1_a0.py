@@ -201,6 +201,13 @@ def test_main_admission_never_passes_open_pr_or_stale_success():
     assert len(result['blockers'])==3
 
 
+@pytest.mark.parametrize('day',['2020-03-08','2020-11-01'])
+def test_financial_calendar_next_day_midnight_is_stable_across_dst(day):
+    at=pd.Timestamp(S.financial_available_at(day))
+    assert at.hour==0
+    assert at.date()==(pd.Timestamp(day)+pd.Timedelta(days=1)).date()
+
+
 def test_existing_contracts_and_population_bytes_remain_pinned():
     _,wp1,wp2=S.contracts()
     assert wp1['result']['studyABranch']['US']=='H252'
@@ -240,7 +247,7 @@ def test_actual_adapter_rebuilds_same_wp2_mask_using_only_synthetic_inputs():
     spec=json.loads((S.ROOT/D.SPEC).read_bytes())
     check=U.measure(members,industry,evidence,prices,[r for group in filings.values() for r in group],dates,spec,through='2020-03-20')
     receipts={B.CODE_BASE+':'+B.MEMBERS:{'sha256':'a'*64}, B.CODE_BASE+':'+B.SECTORS:{'sha256':'b'*64}}
-    inputs=(SimpleNamespace(receipts=receipts),{'through':'2020-03-20'},frames,prices,members,industry,evidence,filings,calendar,dates)
+    inputs=(SimpleNamespace(receipts=receipts),{'through':'2020-03-20'},frames,prices,members,industry,evidence,filings,calendar,dates,{})
     rows,details=S.observations(inputs,spec,{'weeklyCompatibility':{'sampleIdentity':check['sampleIdentity']}})
     assert len(rows)==32
     assert sum(r.investable is True for r in rows)==30
@@ -255,3 +262,22 @@ def test_actual_adapter_rebuilds_same_wp2_mask_using_only_synthetic_inputs():
     bad={'weeklyCompatibility':{'sampleIdentity':{}}}
     with pytest.raises(ValueError,match='POPULATION_OR_HOLD_MASK_CHANGED'):
         S.observations(inputs,spec,bad)
+
+
+def test_size_proxy_uses_existing_as_traded_inverse_and_withholds_split_window():
+    days=RC.sessions('2019-01-01','2020-01-01','US')
+    native=pd.DataFrame({'Close':100.0,'Volume':10.0},index=days)
+    # Build the exact existing vendor-forward recipe with a cash dividend.
+    dividend_day=str(days[80].date())
+    events={'SYN':[(dividend_day,1.0,1.0)]}
+    quote=native.copy()
+    quote.loc[quote.index>=dividend_day,'Close']=100/(1-1/100)
+    frames={'SYN':quote,'SPY':native}
+    day=str(days[150].date())
+    value=A.PastPrices(frames,days,events).features('SYN',day)['size63']
+    assert value==pytest.approx(1000)
+    future=[(str(days[200].date()),0.0,2.0)]
+    assert A.PastPrices(frames,days,{'SYN':events['SYN']+future}).features('SYN',day)['size63']==value
+    inside=[(str(days[140].date()),0.0,2.0)]
+    assert A.PastPrices(frames,days,{'SYN':events['SYN']+inside}).features('SYN',day)['size63'] is None
+    assert A.PastPrices(frames,days).features('SYN',day)['size63'] is None  # unknown actions, not zero

@@ -20,6 +20,7 @@ from . import fundamental_acceleration as FA
 from . import fundamental_acceleration_seal as FAS
 from . import pit_data as PIT
 from . import us_cash_profitability as CP
+from . import us_multifactor_inputs as MI
 from . import winner_inflection as WI
 from . import winner_inflection_exploration as WE
 
@@ -135,8 +136,9 @@ class FilingHistory:
 
 class PastPrices:
     """Use the existing PIT view to enforce end <= signal at every lookup."""
-    def __init__(self, frames, calendar):
+    def __init__(self, frames, calendar, events=None):
         self.frames, self.calendar = frames, calendar
+        self.events = events
         self.forward_reads = 0
 
     def window(self, ticker, day, length):
@@ -155,10 +157,21 @@ class PastPrices:
             stock = None
         relative = (float(stock.Close.iloc[-1] / stock.Close.iloc[0] - spy.Close.iloc[-1] / spy.Close.iloc[0])
                     if stock is not None and spy is not None else None)
-        recent = self.window(ticker, day, 63)
         size = None
-        if recent is not None and "Volume" in recent and np.isfinite(recent.Volume).all() and (recent.Volume > 0).all():
-            size = float((recent.Close * recent.Volume).median())
+        # Same proxy as the existing phase-3 readiness audit: median AS-TRADED
+        # dollars over 63 sessions, withheld across a split. Multiplying the
+        # replay total-return index by volume would rank a different quantity.
+        stamps = self.calendar[self.calendar <= pd.Timestamp(day)][-63:]
+        if self.events is not None and ticker in self.frames and len(stamps) == 63:
+            own = self.frames[ticker].loc[:day].dropna(subset=["Close"])
+            events = [e for e in self.events.get(ticker, ()) if e[0] <= day]
+            split_inside = any(stamps[0] < pd.Timestamp(e[0]) <= stamps[-1] and e[2] and e[2] != 1 for e in events)
+            if not split_inside and "Volume" in own and np.isfinite(own.Close).all() and (own.Close > 0).all():
+                native = pd.Series(MI.as_traded_from_total_return(own.index, own.Close.to_numpy(), events), index=own.index)
+                values = native.reindex(stamps) * own.Volume.reindex(stamps)
+                values = values[np.isfinite(values) & (values > 0)]
+                if len(values) >= 63 // 2:  # inherited ADV_SESSIONS // 2
+                    size = float(values.median())
         return {"relative126": relative, "size63": size,
                 "basis": "INHERITED_REPLAY_RECONSTRUCTED_BASIS_NOT_WP0_VERIFIED"}
 
