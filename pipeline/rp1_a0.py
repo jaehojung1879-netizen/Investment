@@ -37,6 +37,8 @@ def exact_operating_ttm(index, key):
     deps = [key] if stage == "FY" else [key, (year - 1, "FY"), (year - 1, stage)]
     if any(k not in index for k in deps):
         return None
+    if any(not index[k].get("periodEnd") or index[k]["periodEnd"] > CP.visible_day(index[k]).isoformat() for k in deps):
+        return None
     if any(FD.amount(index[k], "ic", ("OperatingIncomeLoss",)) is None for k in deps):
         return None
     return FD.trailing_twelve_months(index, *key, "operatingIncome")[0]
@@ -62,12 +64,25 @@ class FilingHistory:
         available = (dt.date.fromisoformat(public) + dt.timedelta(days=1)).isoformat()
         prefix = W.filing_prefix(self.records, "US", available)
         assert all(CP.visible_day(r).isoformat() <= public for r in prefix)
-        index = FD.index_filings(list(prefix))  # original filing per fiscal stage
+        # FD's legacy earliest-availableFrom rule predates acceptedDate. Keep
+        # the first actually public row per period before calling that builder;
+        # a later amendment with a backdated vendor date cannot replace it.
+        first_public = {}
+        for record in sorted(prefix, key=lambda r: (CP.visible_day(r), str(r.get("availableFrom")), str(r.get("id")))):
+            keys = FD.index_filings([record])
+            if keys:
+                first_public.setdefault(next(iter(keys)), record)
+        index = FD.index_filings(list(first_public.values()))
         key = CP.current_key(index)
         state = {**previous, "growth": None, "periodEnd": None, "currentKey": key,
-                 "fields": {}, "deltas": {}, "publicDay": public, "sourceIds": [str(r.get("id")) for r in prefix],
+                 "fields": {}, "deltas": {}, "publicDay": max((CP.visible_day(r).isoformat() for r in index.values()), default=public),
+                 "sourceIds": sorted(str(r.get("id")) for r in index.values()),
                  "reason": "INCOMPLETE_TTM_CHAIN"}
         if key is not None:
+            if not index[key].get("periodEnd") or index[key]["periodEnd"] > CP.visible_day(index[key]).isoformat():
+                state["reason"] = "REPORT_PERIOD_AFTER_PUBLICATION"
+                self.cache[n] = state
+                return state
             op = exact_operating_ttm(index, key)
             prior = exact_operating_ttm(index, (key[0] - 1, key[1]))
             cash = FD.trailing_twelve_months(index, *key, "operatingCashFlow")[0]
@@ -127,6 +142,8 @@ class PastPrices:
 
     def features(self, ticker, day):
         stock, spy = self.window(ticker, day, 127), self.window("SPY", day, 127)
+        if stock is not None and ("Volume" not in stock or not np.isfinite(stock.Volume).all() or not (stock.Volume > 0).all()):
+            stock = None
         relative = (float(stock.Close.iloc[-1] / stock.Close.iloc[0] - spy.Close.iloc[-1] / spy.Close.iloc[0])
                     if stock is not None and spy is not None else None)
         recent = self.window(ticker, day, 63)

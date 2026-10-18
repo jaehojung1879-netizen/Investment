@@ -204,6 +204,9 @@ def inspect(repo, *, admission, root=ROOT):
     report.update(formalA0Measurement=True, mainAdmission=admission, predecessorPins=PINS,
         wp1Calibration=wp1["result"]["claims"]["US_H252"], sourceReceipts=inputs[0].receipts,
         wp2Mask=wp2["weeklyCompatibility"]["sampleIdentity"],
+        codeHashes={p: hashlib.sha256((Path(root) / p).read_bytes()).hexdigest() for p in (
+            "pipeline/rp1_a0.py", "scripts/rp1_inspect_a0.py", "pipeline/experiment_workbench.py",
+            "pipeline/finnhub_derive.py", "pipeline/fundamental_acceleration.py", "pipeline/fundamental_acceleration_seal.py")},
         rawInputPriceBasis="INHERITED_REPLAY_BASIS_NOT_WP0_VERIFIED")
     U.scan_output(report)
     return report

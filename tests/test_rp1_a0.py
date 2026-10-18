@@ -61,6 +61,11 @@ def test_original_filing_future_mutation_and_pretax_fallback_cannot_create_event
     amended = annual(2019, -999999, public="2020-02-03")
     assert A.FilingHistory("SYN", rows + [future, amended]).at("2020-02-02") == baseline
     assert A.FilingHistory("SYN", rows + [amended]).at("2020-02-04")["growth"] == baseline["growth"]
+    amended['availableFrom']='2020-01-01'
+    corrected=A.FilingHistory('SYN',rows+[amended]).at('2020-02-04')
+    assert corrected['growth']==baseline['growth']
+    assert corrected['fields']==baseline['fields']
+    assert corrected['publicDay']==baseline['publicDay']
     rows[-1]["statements"]["ic"][0]["concept"] = "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest"
     assert A.FilingHistory("SYN", rows).at("2020-02-02")["flag"] is None
 
@@ -70,6 +75,14 @@ def test_nonpositive_base_and_missing_ttm_are_missing_not_zero():
     out = A.FilingHistory("SYN", rows).at("2020-02-02")
     assert out["flag"] is None and out["reason"] == "NON_POSITIVE_YOY_BASE"
     assert A.FilingHistory("SYN", []).at("2020-02-02")["flag"] is None
+
+
+def test_report_period_after_publication_is_never_a_visible_financial_observation():
+    rows=[annual(2017,100),annual(2018,90),annual(2019,110)]
+    rows[-1]['periodEnd']='2020-12-31'
+    out=A.FilingHistory('SYN',rows).at('2020-02-02')
+    assert out['flag'] is None and out['reason']=='REPORT_PERIOD_AFTER_PUBLICATION'
+    assert out['fields']=={}
 
 
 def test_past_price_prefix_and_benchmark_relative_sign_are_exact():
@@ -84,6 +97,9 @@ def test_past_price_prefix_and_benchmark_relative_sign_are_exact():
     assert A.h2(True, baseline["relative126"]) is True
     assert A.h2(True, -0.01) is False
     assert A.h2(None, 1) is None and A.h2(True, None) is None
+    frames['SYN'].loc[days[240],'Volume']=0
+    assert A.PastPrices(frames,days).features('SYN',day)['relative126'] is None
+    frames['SYN'].loc[days[240],'Volume']=100
     frames["SYN"].loc[day, "Close"] = None
     assert A.PastPrices(frames, days).features("SYN", day)["relative126"] is None
 
