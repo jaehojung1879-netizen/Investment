@@ -275,3 +275,26 @@ def test_registered_holdings_industry_is_not_a_portfolio_guard_bypass():
     bad=deepcopy(report);bad['hypotheses']['A-H1']['strata']={'HOLDINGS_BUSINESS_SERVICES|0|0:S1':{'nav':1}}
     with pytest.raises(ValueError,match='INVALID_REGISTERED_KR_STRATUM'):
         S.CORE_SCAN(bad)
+
+
+def test_committed_kr_measurement_receipt_is_exact_and_reconciles():
+    path=S.ROOT/'docs/research-program/results/rp1-kr-a0-measurability-v1.json'
+    raw=path.read_bytes()
+    assert hashlib.sha256(raw).hexdigest()=='5f20f8d9ba4278282fea9537e47e79b8af9228e31cd7e4b2e225634d9a2f39b3'
+    report=json.loads(raw)
+    S.CORE_SCAN(report)
+    assert len(report['byDate'])==714
+    assert sum(d['population'] for d in report['byDate'])==85680
+    assert sum(d['eligible'] for d in report['byDate'])==50462
+    assert sum(report['eligibilityReasons'].values())+50462==85680
+    for h,r in report['hypotheses'].items():
+        assert r['measured']+sum(r['missing'].values())==r['eligible']
+        assert sum(r['strata'].values())==r['measured']
+        assert sum(d['hypotheses'][h]['measured'] for d in report['byDate'])==r['measured']
+        assert r['verdict']=='PROSPECTIVE_ONLY' and r['gates']['measurability'] is False
+        assert r['mde']['status']=='MDE_UNRESOLVED'
+    assert report['diagnostics']['LATEST_52_WEEKS']['dates']==52
+    assert report['latest52IsFormalGate'] is False and report['a1Admission']=='GOVERNANCE_CLOSED'
+    assert report['resultAccessSpies']['forbiddenAccessCalls']==0
+    assert all(x==0 for x in report['accessCounters'].values())
+    assert hashlib.sha256((S.ROOT/S.US_RESULT).read_bytes()).hexdigest()==S.US_SHA
