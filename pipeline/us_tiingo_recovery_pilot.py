@@ -20,6 +20,7 @@ from collections import Counter
 from datetime import date
 import gzip
 import hashlib
+import inspect
 import io
 import json
 import math
@@ -169,7 +170,7 @@ def build_plan(inventory, expected_by_ticker, calendar, prior_ciks, provenance):
             raise ValueError("EXPECTED_SESSIONS_DO_NOT_REPRODUCE_THE_PUBLISHED_AUDIT: " + item["auditIdentifier"])
         entries.append(plan_entry(item, stratum, reason, expected, calendar, prior_ciks))
     return {"studyId": STUDY, "version": VERSION, "status": "PRE_REGISTERED_BEFORE_ANY_PROVIDER_REQUEST", "admission": ADMISSION,
-            "provenance": provenance, "selectionRule": select_pilot.__doc__.strip(), "calendar": {"name": "XNYS", "sessions": list(calendar)},
+            "provenance": provenance, "selectionRule": inspect.cleandoc(select_pilot.__doc__), "calendar": {"name": "XNYS", "sessions": list(calendar)},
             "identities": entries, "outcomesRead": 0, "returnsComputed": 0}
 
 

@@ -318,7 +318,7 @@ def test_the_public_report_refuses_price_like_keys():
 
 
 def test_the_engine_and_cli_use_the_standard_library_only():
-    allowed = {"__future__", "argparse", "collections", "csv", "datetime", "getpass", "gzip", "hashlib", "io", "json", "math", "os", "pathlib",
+    allowed = {"__future__", "argparse", "collections", "csv", "datetime", "getpass", "gzip", "hashlib", "inspect", "io", "json", "math", "os", "pathlib",
                "re", "subprocess", "sys", "time", "urllib", "zipfile", "importlib", "pipeline"}
     for rel in ("pipeline/us_tiingo_recovery_pilot.py", "pipeline/us_departed_price_recovery.py", "scripts/run_us_tiingo_recovery_pilot.py"):
         tree = ast.parse((ROOT / rel).read_text(encoding="utf-8"))
