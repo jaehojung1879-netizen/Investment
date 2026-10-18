@@ -256,10 +256,18 @@ def mini_repo(tmp):
     files = set(spec["dependencyHashes"]) | set(X.HARNESS_FILES) | {SP.SPEC_PATH, str(Path(SP.SPEC_PATH).with_suffix(".sha256")), SP.SCIENTIFIC_SIDECAR,
                                                                    E.RESULT_PATH, "research_specs/kr-market-risk-model-v1.sha256", SP.EQUIVALENCE_PATH}
     files |= {E.SNAPSHOT_DIR + "/" + sid + "/normalized.csv" for sid in E.SOURCES.values()}
+    # A synthetic world is the repository just BEFORE a freeze. The real committed source-freeze manifest (pinned by the spec once a freeze PR
+    # lands) is never copied: the world freezes its own synthetic bytes, and two manifests side by side are exactly what `us_snapshot_pin`
+    # refuses. The spec copied from a frozen main pins that real manifest, so it is rebuilt here by the real builder, which re-pins NOT_FROZEN.
+    files = {rel for rel in files if rel not in SP.freeze_manifest_paths(ROOT)}
     for rel in files:
         target = tmp / rel
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / rel, target)
+    assert SP.freeze_manifest_paths(tmp) == []
+    if json.loads((tmp / SP.SPEC_PATH).read_text())["inputs"]["usSnapshot"]["status"] != "NOT_FROZEN":
+        write_spec(tmp)
+    assert SP.load_spec(tmp)[0]["inputs"]["usSnapshot"]["status"] == "NOT_FROZEN"
     return tmp
 
 
@@ -324,6 +332,7 @@ def frozen_world(tmp_path_factory):
     path = root / X.freeze_manifest_path("111")
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
+    assert SP.freeze_manifest_paths(root) == [X.freeze_manifest_path("111")]
     spec = write_spec(root)
     return {"root": root, "snapshot": snapshot, "probe": probe, "manifest": manifest, "spec": spec, "base": base}
 
