@@ -233,7 +233,7 @@ def test_outcome_spies_do_not_fire_for_signal_measurement(monkeypatch):
 def test_actual_adapter_rebuilds_same_wp2_mask_using_only_synthetic_inputs():
     from collections import defaultdict
     from types import SimpleNamespace
-    from pipeline import rp1_us_universe as U
+    from scripts import rp1_us_universe as U
     from scripts import inspect_experiment_sources as B
     from scripts import rp1_inspect_us_universe as D
     tickers=[f'S{i}' for i in range(15)]+['PARA']

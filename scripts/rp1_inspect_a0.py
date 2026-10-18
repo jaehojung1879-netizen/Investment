@@ -21,7 +21,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from pipeline import rp1_a0 as A  # noqa: E402
-from pipeline import rp1_us_universe as U  # noqa: E402
+from scripts import rp1_us_universe as U  # noqa: E402
 from pipeline import replay_inputs as RI  # noqa: E402
 from pipeline import winner_inflection_execution as WI_CLOCK  # noqa: E402
 from scripts import rp1_inspect_us_universe as S  # noqa: E402
@@ -47,9 +47,7 @@ def contracts(root=ROOT):
         raise ValueError("WP1_H252_NOT_CALIBRATED")
     if wp2["daily"]["selection"]["selectedRule"] != "R-b":
         raise ValueError("WP2_RULE_CHANGED")
-    for path, expected in wp2["codeHashes"].items():
-        if hashlib.sha256((root / path).read_bytes()).hexdigest() != expected:
-            raise ValueError("WP2_RECONSTRUCTION_CODE_CHANGED:" + path)
+    S.verify_historical_code(wp2, root)
     return spec, wp1, wp2
 
 
