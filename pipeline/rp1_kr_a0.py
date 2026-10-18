@@ -55,7 +55,8 @@ class Filings:
                 failure.append("REPORT_PERIOD_AFTER_PUBLICATION")
                 return None
             if not KQ._compatible(index, deps):
-                failure.append("STATEMENT_BASIS_CONFLICT")
+                failure.append("STATEMENT_BASIS_UNRESOLVED" if any(index[d].get("fsDiv") not in ("CFS","OFS") for d in deps)
+                               else "STATEMENT_BASIS_CONFLICT")
                 return None
             value = DD.trailing_twelve_months(index, *k, account)[0]
             if not A.finite(value):
@@ -66,8 +67,9 @@ class Filings:
             return float(value)
         values = (ttm(key, "영업이익"), ttm((key[0]-1, key[1]), "영업이익"), ttm(key, "영업활동현금흐름"))
         if all(d in index for d in used) and not KQ._compatible(index, sorted(used)):
-            return None, None, None, "STATEMENT_BASIS_CONFLICT"
-        priority = ("REPORT_PERIOD_AFTER_PUBLICATION", "STATEMENT_BASIS_CONFLICT", "INCOMPLETE_TTM_CHAIN",
+            return None, None, None, ("STATEMENT_BASIS_UNRESOLVED" if any(index[d].get("fsDiv") not in ("CFS","OFS") for d in used)
+                                     else "STATEMENT_BASIS_CONFLICT")
+        priority = ("REPORT_PERIOD_AFTER_PUBLICATION", "STATEMENT_BASIS_UNRESOLVED", "STATEMENT_BASIS_CONFLICT", "INCOMPLETE_TTM_CHAIN",
                     "OPERATING_INCOME_NOT_STATED", "OPERATING_CASH_FLOW_NOT_STATED",
                     "OPERATING_INCOME_VALUE_UNRESOLVED", "OPERATING_CASH_FLOW_VALUE_UNRESOLVED")
         return (*values, next((r for r in priority if r in failure), "AVAILABLE"))

@@ -227,7 +227,7 @@ def inspect(repo, *, main_admission, root=ROOT):
     report['sourceAvailability']={'filingRecords':len(filing_rows),'filingTickers':len(inputs[5]),
         'accountPresenceRecords':{name:sum(name in r.get('accounts',{}) for r in filing_rows)
                                   for name in ('영업이익','영업활동현금흐름','매출액')},
-        'statementBasisRecords':dict(sorted(Counter(r.get('fsDiv','UNKNOWN') for r in filing_rows).items())),
+        'statementBasisRecords':dict(sorted(Counter(r.get('fsDiv') or 'UNKNOWN' for r in filing_rows).items())),
         'filingPublicRange':[min(r['availableFrom'] for r in filing_rows),max(r['availableFrom'] for r in filing_rows)],
         'filingObservedRange':[observed[0],observed[-1]] if observed else None,
         'filingObservedAtMissing':len(filing_rows)-len(observed),
