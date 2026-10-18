@@ -238,3 +238,24 @@ def test_raw_allowlist_and_unmeasured_denominators_remain_explicit():
     assert h['measured']==0 and h['missing']=={'INCOMPLETE_CHAIN':1}
     assert h['prevalence'] is None and report['byDate'][0]['hypotheses']['A-H1']['events'] is None
     assert K.diagnostics(report)['LATEST_52_WEEKS']['hypotheses']['A-H1']['events'] is None
+
+
+def test_whole_kr_report_reconciles_and_scans_without_real_sources(monkeypatch):
+    from types import SimpleNamespace
+    row=kr_row(flag=None)
+    fake=(SimpleNamespace(receipts={}),None,None,None,None,{'SYN.KS':[annual(2019,10)]},
+          None,None,None,{'terminalSecurities':['SYN.KS']},None,None,0)
+    monkeypatch.setattr(S,'validate_contracts',lambda root:json.loads((S.ROOT/S.SPEC).read_bytes()))
+    monkeypatch.setattr(S,'load_inputs',lambda repo:fake)
+    monkeypatch.setattr(S,'observations',lambda data:([row],{row.key.sample_id:dict.fromkeys(A.HYPOTHESES,'NO_VISIBLE_FILING')},{}))
+    result=S.guarded_inspect(S.ROOT,main_admission={'status':'ADMITTED'})
+    S.US.U.scan_output(result)
+    assert result['historicalInferenceEligibility']=='GOVERNANCE_CLOSED'
+    assert result['sourceAvailability']['filingObservedRange'] is None
+    assert result['sourceAvailability']['filingObservedAtMissing']==1
+    assert result['populationAudit']['groups']['terminal:KNOWN_TERMINAL']['population']==1
+    assert result['resultAccessSpies']['forbiddenAccessCalls']==0
+    assert len(result['resultAccessSpies']['calls'])==11
+    h=result['hypotheses']['A-H1']
+    assert h['measured']+sum(h['missing'].values())==h['eligible']
+    assert result['latest52IsFormalGate'] is False
