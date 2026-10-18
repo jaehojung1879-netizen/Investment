@@ -14,13 +14,14 @@ Endpoint shapes, field names and plan limits are NOT verified from official docu
 official host was unreachable from it). They are the shapes public client libraries use, and each run validates the response
 schema it actually receives and stops on anything else rather than guessing.
 
-LICENCE (amendment 1). Tiingo's Terms of Use section 1.6(a) forbids a Starter or trial account from keeping Tiingo Data in any
+LICENCE (amendments 1-2). Tiingo's Terms of Use section 1.6(a) forbids a Starter or trial account from keeping Tiingo Data in any
 persistent or durable storage (local devices, databases, logs, queues, backups) and allows processing only in volatile memory or a
-temporary non-persistent cache cleared before the job or session ends; 1.6(c) applies the same limits to Derived Products. So:
-no provider response is ever written anywhere (it lives in this process's memory and nowhere else), nothing computed from one is
-written unless the owner holds written permission for it (`validate_retention_authorization`), and the only record that is
-always written is about the CONNECTION -- calls made, whether authentication was accepted, whether a limit was hit -- which says
-nothing about any security. Historical price retention on a Starter account is therefore NO-GO by licence, whatever a run finds.
+temporary non-persistent cache cleared before the job or session ends; 1.6(c) applies the same limits to Derived Products. Starter
+and Power have no separate exception agreement (those are offered to Start-up, Enterprise and Institutional plans), so no file a
+user can write is evidence of permission and this free pilot has NO retention path for anything computed from a response: no
+provider response and no derived result is ever written anywhere. The only record written is about the CONNECTION -- calls made,
+whether authentication was accepted, whether a limit was hit -- which says nothing about any security. A paid-plan retention path
+is a separate, future piece of work. Historical price retention on a Starter account is NO-GO by licence, whatever a run finds.
 """
 from __future__ import annotations
 
@@ -42,8 +43,6 @@ from pipeline import us_departed_price_recovery as R
 VERSION = "US_TIINGO_PRICE_RECOVERY_PILOT_V1"
 STUDY = "us-tiingo-price-recovery-pilot-v1"
 PLAN_PATH = "docs/us-readiness/us-tiingo-price-recovery-pilot-v1-plan.json"
-REPORT_JSON = "docs/us-readiness/us-tiingo-price-recovery-pilot-v1-report.json"
-REPORT_MD = "docs/us-readiness/us-tiingo-price-recovery-pilot-v1-report.md"
 ACCESS_JSON = "docs/us-readiness/us-tiingo-price-recovery-pilot-v1-access.json"   # connection metadata only, always written
 ADMISSION = "NOT_ADMITTED"
 # The private session table of us-departed-dataset-admission-audit-v1 (#243): canonical JSON rows, gzip-compressed.
@@ -71,11 +70,14 @@ LICENCE = {
     "textSource": "OWNER_CITED_SECTIONS_SUMMARISED_FROM_A_SEARCH_INDEX_OF_THE_PAGE_NOT_VERBATIM; the page itself was unreachable from "
                   "the authoring environment; the owner must read the live clause text",
     "rawResponseRetention": "PROHIBITED_NEVER_WRITTEN",
-    "derivedResultRetention": "PROHIBITED_UNLESS_WRITTEN_PERMISSION",
+    "derivedResultRetention": "PROHIBITED_NO_PATH_IN_THIS_FREE_PILOT",
+    "exceptionAgreements": "NONE_FOR_STARTER_OR_POWER (offered to Start-up, Enterprise, Institutional; owner-confirmed from the live terms)",
+    "paidPowerPlan": "persistence only while an eligible paid plan is active and only as that plan permits; all Tiingo Data must be "
+                     "deleted from every system, backups and logs included, on expiry, cancellation, termination or downgrade",
     "connectionMetadataRetention": "WRITTEN_SAYS_NOTHING_ABOUT_ANY_SECURITY",
     "historicalPriceRetentionVerdict": "NO_GO_STARTER_PROHIBITS_PERSISTENT_STORAGE",
 }
-RETENTION_SCOPE = "DERIVED_AGGREGATE_COUNTS_AND_DATES"
+
 TIMEOUT_SECONDS = 30
 STOP_STATUSES = {401: "AUTH_REJECTED", 403: "ACCESS_FORBIDDEN", 429: "RATE_LIMITED"}
 OPENFIGI_JOBS_PER_REQUEST = 10
@@ -608,7 +610,7 @@ def analyze(plan, answers, records, stopped, *, existing_table=None, run_meta=No
             "corporateActionLineage": "SINGLE_VENDOR_EVENT_FIELDS_UNVERIFIED" if comparison["tiingoSessionsInWindow"] else "UNRESOLVED_NO_OBSERVATION",
             "admission": ADMISSION})
     report = summarize(plan, identities, records, stopped, errors, existing_table is not None, run_meta or {})
-    report["retentionClass"] = "DERIVED_TRANSIENT_ONLY_UNLESS_WRITTEN_PERMISSION"
+    report["retentionClass"] = "DERIVED_TRANSIENT_ONLY_NEVER_WRITTEN"
     return report
 
 
@@ -631,20 +633,6 @@ def access_summary(plan, records, stopped, run_meta):
         "statements": ["No Tiingo response, value, date, ticker outcome or anything computed from them is in this file.",
                        "Every identity stays NOT_ADMITTED; Starter historical price retention is NO_GO by licence."]}
     return summary
-
-
-def validate_retention_authorization(doc):
-    """Written permission from Tiingo for keeping DERIVED aggregates. Raw responses have no authorisation path at all."""
-    required = ("provider", "scope", "grantedBy", "evidenceReference", "grantedOn", "plan")
-    if not isinstance(doc, dict) or any(not str(doc.get(k) or "").strip() for k in required):
-        raise Refused("RETENTION_AUTHORIZATION_INCOMPLETE: needs " + ", ".join(required))
-    if str(doc["provider"]).lower() != "tiingo" or doc["scope"] != RETENTION_SCOPE:
-        raise Refused("RETENTION_AUTHORIZATION_WRONG_PROVIDER_OR_SCOPE")
-    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(doc["grantedOn"])):
-        raise Refused("RETENTION_AUTHORIZATION_DATE_INVALID")
-    if doc.get("coversRawResponses"):
-        raise Refused("RAW_RESPONSE_RETENTION_IS_NEVER_SUPPORTED_BY_THIS_TOOL")
-    return {k: doc[k] for k in required}
 
 
 def summarize(plan, identities, records, stopped, errors, exact, run_meta):
@@ -702,8 +690,8 @@ def summarize(plan, identities, records, stopped, errors, exact, run_meta):
         "identities": identities,
         "statements": ["Counts and dates only: no price level, adjusted value, dividend amount, split ratio, return or label appears in this file.",
                        "Every identity is NOT_ADMITTED; no replay, sealed dataset, C1, WP1 or WP2 input changed.",
-                       "Tiingo Starter forbids persisting Tiingo Data and Derived Products (ToS 1.6(a),(c)); this report exists on disk only "
-                       "under a written retention authorisation, and no raw response is ever written."],
+                       "Tiingo Starter forbids persisting Tiingo Data and Derived Products (ToS 1.6(a),(c)); this structure is held in "
+                       "memory and never written."],
         "licence": LICENCE}
 
 
@@ -728,8 +716,8 @@ PRE_ADMISSION_CHECKLIST = [
 ]
 NEXT_SOURCE_TABLE = [
     {"ifMeasured": "the licence forbids keeping the data (Tiingo Starter, ToS 1.6)", "reviewFirst": "WRITTEN_STORAGE_TERMS_BEFORE_ANY_VENDOR",
-     "why": "coverage is worthless to a historical study that cannot keep it; ask Tiingo whether a paid plan allows personal durable storage, "
-            "and get EODHD's storage clause in writing, before collecting anything"},
+     "why": "coverage is worthless to a historical study that cannot keep it; Tiingo Power keeps data only while subscribed and must "
+            "delete it on cancellation, so get EODHD's storage clause in writing before collecting anything"},
     {"ifMeasured": "Tiingo has no rows for most NONE targets (delisted coverage thin)", "reviewFirst": "EODHD",
      "why": "delisted US tickers are a stated product feature; free tier and terms NOT_VERIFIED; costs a key and a paid plan likely"},
     {"ifMeasured": "Tiingo rows exist but identity stays unresolved", "reviewFirst": "SEC_EDGAR_EVIDENCE",

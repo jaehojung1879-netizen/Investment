@@ -1,35 +1,52 @@
-# 미국 Tiingo 역사 가격 복구 파일럿 v1 (개정 1: Starter 라이선스·브라우저 실행)
+# 미국 Tiingo 역사 가격 복구 파일럿 v1 (개정 2: Starter 라이선스 확정)
 
-**판정: Tiingo 무료(Starter) 계정으로 역사 가격을 보존하는 경로는 NO-GO다.** 무료 계정은 메모리 안에서만 쓰는 임시 조회만 허용한다. 보존 가능한 역사 가격에는 다른 원천이나, 저장을 서면으로 허용받은 유료 플랜이 필요하다.
+**판정: Tiingo Starter(무료)로 역사 가격을 보존하는 경로는 NO-GO다.**
+- 무료 계정은 메모리 안에서만 쓰는 임시 조회만 할 수 있다.
+- 보존 가능한 역사 데이터에는 다른 원천이 필요하다.
+- Power(유료)는 구독 기간에만 보관할 수 있고, 구독이 끝나면 삭제해야 한다(§7).
 
 **도구 상태:**
-- 메모리 전용 실행으로 개정했고, 오프라인 합성 테스트를 마쳤다.
+- 메모리 전용 실행이며, 결과 보존 옵션(`--retention-authorization`)은 **제거**했다.
+- 오프라인 합성 테스트를 마쳤다.
 - 실제 Tiingo 응답은 NOT_TESTED이고, 모든 데이터는 NOT_ADMITTED다.
 - 사전 고정한 20개 종목과 판정 규칙은 바꾸지 않았다(계획 파일 바이트 동일).
 - 수익률·라벨·CAGR·IC를 계산하지 않는다.
 - replay-v16·봉인 데이터셋·C1·WP1·WP2의 파일을 바꾸지 않는다.
 
-## 0. 이용 약관 판정 (개정 1의 근거)
+## 0. 이용 약관 판정
 
-- **조항 원문 미확인:** 약관은 [Tiingo Terms of Use](https://app.tiingo.com/tos/)다. 이 작성 환경에서는 그 페이지에 직접 접근하지 못했다(DNS 실패·프록시 CONNECT 403). 아래 요약은 소유자가 지정한 조항(1.6(a), 1.6(c))을 검색 색인으로 확인한 것이며 **원문 인용이 아니다.** 소유자가 원문을 직접 읽어 확인해야 한다.
-  - **1.6(a):** Starter와 체험 플랜은 Tiingo Data를 영구·지속 저장소에 보관하지 못한다. 저장소에는 로컬 장치, 데이터베이스, 로그, 큐, 백업, 재해 복구 시스템이 모두 포함된다. 처리는 휘발성 메모리나 비영속 임시 캐시에서만 할 수 있고, 계산이 끝나면, 늦어도 프로세스·작업·세션이 끝나기 전에 지워야 한다.
-  - **1.6(c):** 파생물(Derived Products)도 같은 제한을 받는다. 계산과 일시 보유만 할 수 있고 영구 저장은 금지된다.
-- **결론:**
-  - 기존 CLI는 원자료를 `%LOCALAPPDATA%` 아래 파일로 보관했다. 이 구조는 1.6(a)에 어긋나므로 **삭제했다.** 이전 버전으로 실제 Tiingo를 호출한 적은 없으므로 지울 원자료도 없다.
-  - 기존 보고서의 종목별 세션 수, 날짜, 이름 일치, 배당·분할 횟수는 Tiingo 응답에서 계산한 파생물이다. 따라서 1.6(c)상 **서면 허가 없이는 기록하지 않는다(fail-closed).**
-  - Starter 계정으로 212개 결손을 메운 결과를 연구 데이터로 남기는 일은 약관상 불가능하다. **따라서 Tiingo Starter를 역사 연구 원천으로 쓰는 것은 NO-GO다.** 실행 결과와 관계없이 이 판정은 바뀌지 않는다.
+**근거와 그 한계:**
+- 약관은 [Tiingo Terms of Use](https://app.tiingo.com/tos/)이며, 소유자가 원문을 직접 확인했다.
+- 이 작성 환경에서는 그 페이지를 열 수 없었다(DNS 실패·프록시 CONNECT 403). 그래서 아래 내용은 두 가지를 근거로 한다.
+  - **소유자가 확인한 사실:** 아래 표의 '확인 출처'가 소유자인 행.
+  - **검색 색인에 노출된 약관 문장:** 원문 일부로 보이지만 페이지를 직접 열람하지 못했으므로, 인용은 아래 문구 수준으로만 한다.
+
+| 조항 | 내용 | 확인 출처 |
+|---|---|---|
+| 1.6(a) Starter·체험 | Tiingo Data를 영구·지속 저장소(로컬 장치, DB, 로그, 큐, 백업, 재해 복구)에 보관 금지. 처리는 휘발성 메모리나 비영속 임시 캐시에서만 하며, 계산 직후, 늦어도 프로세스·작업·세션이 끝나기 전에 영구 삭제 | 소유자 + 검색 색인 |
+| 1.6(c) 파생물 | Derived Products도 같은 제한. 계산·일시 보유만 가능하고 영구 저장 금지 | 소유자 + 검색 색인 |
+| 유료 플랜(Power 등) | Starter·체험이 아닌 유료 플랜이 **유효한 동안만**, 그 플랜이 허용하는 범위에서 저장 가능 | 소유자 + 검색 색인("solely to the extent permitted by that Paid Plan") |
+| 종료 시 | 유료 플랜이 만료·해지·종료되거나 Starter·체험으로 내려가면, 원본을 모든 시스템(운영 시스템, 로컬 저장소, 로그, 큐, 아카이브, 백업, 재해 복구, 법정 보존 시스템)에서 즉시 영구 삭제 | 소유자 + 검색 색인 |
+| 예외 계약 | 다른 보존 기간은 별도 서면 계약으로만 가능. **Starter와 Power에는 제공되지 않으며**, Start-up·Enterprise·Institutional이 대상 | 소유자 |
+
+**도구에 미치는 결론:**
+1. **원본 저장 제거:** 원본 응답을 파일로 두던 첫 설계는 1.6(a) 위반이라 삭제했다(개정 1). 실제 호출은 한 번도 하지 않았으므로 지울 원자료는 없다.
+2. **보존 옵션 제거:** 개정 1의 `--retention-authorization`은 사용자가 쓴 임의의 JSON을 "공급자 허가"로 받아들일 수 있었다. 그러나 Starter에는 예외 계약 자체가 없으므로, 그런 파일은 허가의 증거가 될 수 없다. 이 옵션과 파생 보고서 쓰기 경로를 **완전히 제거했다**(개정 2).
+   - 이제 옵션을 주면 argparse가 거부한다.
+   - 허가처럼 보이는 파일이 저장소에 있어도 아무 영향이 없다. 두 가지 모두 테스트로 확인했다.
+3. **유료 경로는 별도 과제:** Power나 상위 계약을 위한 보존 경로는 별도 개발 과제로 남긴다. 그 과제는 구독 유효 기간 확인, 종료 시 삭제 절차, 원본과 파생물의 구분을 설계해야 한다(§7).
+4. **판정:** Starter로 212개 결손을 메운 결과를 연구 데이터로 남기는 것은 약관상 불가능하다. **NO-GO.**
 
 ### 무엇을 남기고 무엇을 버리는가
 
 | 분류 | 예 | 처리 |
 |---|---|---|
-| 원본 응답 | meta·가격 JSON, `supported_tickers.zip` | 프로세스 메모리에만 존재한다. 디스크·로그·캐시에 쓰는 코드 경로가 없다(`Session`에 디렉터리 인자가 없다) |
-| 파생 결과 | 종목별 세션 수·날짜·신원 판정·배당분할 횟수·판정 | 기본은 종료 시 폐기한다. `--show-transient-summary`를 주면 화면에만 출력한다. Tiingo의 서면 허가 파일(`--retention-authorization`)이 있을 때만 보고서로 쓴다 |
+| 원본 응답 | meta·가격 JSON, `supported_tickers.zip` | 프로세스 메모리에만 존재. 디스크·로그·캐시에 쓰는 코드 경로가 없다(`Session`에 디렉터리 인자 없음) |
+| 파생 결과 | 종목별 세션 수·날짜·신원 판정·배당분할 횟수·판정 | 종료 시 폐기. `--show-transient-summary`를 주면 몇 개 수치를 화면에만 출력. **쓰는 경로가 없다** |
 | 연결 기록 | 호출 수, 도달 여부, 인증 수락 여부, 429 여부, 중단 사유, 한도 헤더 **이름** | 항상 `docs/us-readiness/us-tiingo-price-recovery-pilot-v1-access.json`에 쓴다. 어떤 종목이 응답했는지, 무엇을 받았는지는 담지 않는다 |
-| SEC·OpenFIGI 응답 | 이름·CIK·FIGI | Tiingo Data가 아니지만 같은 메모리 전용 경로를 쓴다. 결과 횟수만 연결 기록에 넣는다 |
+| SEC·OpenFIGI 응답 | 이름·CIK·FIGI | 같은 메모리 전용 경로를 쓴다. 결과 횟수만 연결 기록에 남긴다 |
 
-- **화면 출력의 위험:** 터미널 스크롤백, 녹화, 복사도 "저장"이 될 수 있다. 그래서 화면 요약은 기본으로 꺼져 있다. 켜더라도 내용을 파일·채팅·메모에 옮기지 않아야 한다.
-- **허가 파일의 조건:** 허가 파일에는 provider·plan·scope(`DERIVED_AGGREGATE_COUNTS_AND_DATES`)·허가자·증빙 번호·허가일이 모두 있어야 한다. 하나라도 비거나 형식이 틀리면 **첫 요청 전에** 거부한다. 원자료 보관(`coversRawResponses`)은 어떤 허가로도 이 도구에서 열리지 않는다.
+터미널 스크롤백, 녹화, 복사도 "저장"이 될 수 있다. 그래서 화면 요약은 기본으로 꺼져 있으며, 켜더라도 내용을 파일·채팅·메모에 옮기지 않아야 한다.
 
 ## 1. 기존 작업 확인 (#241–#244)
 
@@ -56,7 +73,7 @@
 | 무료 EOD 범위·호출 한도 | NOT_VERIFIED. 2차 출처는 시간당 50회·일 1,000회·월 500종목 등 서로 다른 값을 적고 있어 쓰지 않는다 | 응답 상태, `ratelimit`/`retry-after` 계열 헤더 이름, 429 발생 여부(연결 기록에 남는 것은 헤더 이름과 429 여부뿐) |
 | 상장폐지·재사용 ticker | NOT_VERIFIED | `supported_tickers.zip`의 ticker별 행 수와 기간. 같은 ticker가 회원 기간 안에 2번 이상 있으면 HOLD |
 | 원종가·수정종가·현금배당·분할 정의 | NOT_VERIFIED(공개 클라이언트 라이브러리의 필드명 `close/adjClose/divCash/splitFactor` 기준) | 필드 존재 여부. 수정 계수(`adjClose/close`) 변화가 배당·분할일과 일치하는지 수 |
-| 개인 연구 저장·재배포 제한 | **Starter는 영구 저장 금지**(약관 1.6(a), 파생물 1.6(c), §0) | 측정하지 않는다. 약관 페이지도 더 이상 받아 오지 않는다 |
+| 개인 연구 저장·재배포 제한 | **Starter는 원본·파생물 영구 저장 금지, 예외 계약 없음**(§0) | 측정하지 않는다. 약관 페이지도 받아 오지 않는다 |
 | 영구 종목 식별자 | NOT_VERIFIED | meta 응답에 `perma*`·FIGI·CIK·ISIN·CUSIP 필드가 있는지 |
 | SEC EDGAR | NOT_VERIFIED(공정 접근·User-Agent 조건) | `cik-lookup-data.txt`의 과거 이름–CIK, `submissions`의 현재·과거 이름과 사용 기간. 연락처 User-Agent는 이 저장소의 `git config user.email`에서 만들고, 없으면 SEC는 NOT_RUN |
 | OpenFIGI | NOT_VERIFIED(키 없는 한도) | 키 없이 2회 요청(10개씩). 상장폐지 종목은 보통 매핑되지 않을 수 있으며 그것도 결과로 기록 |
@@ -146,8 +163,8 @@ Windows에서는 `py -3 scripts\run_us_tiingo_recovery_pilot.py --run`으로 동
 
   - 재시도는 없다. 401/403/429/5xx, 접근 차단, 시간 초과가 나면 그 출처를 즉시 멈춘다.
   - 실행 시간은 약 2~4분이다.
-- **쓰는 파일:** 연결 기록 1개(`…-access.json`)만 쓴다. 파생 보고서 두 개는 서면 허가 파일이 있을 때만 쓴다.
-- **종료 코드:** 0 완료 / 2 Tiingo 인증 거부·접근 차단 / 3 사전 거부(토큰 없음, 출력 파일 존재, 허가 파일 결함).
+- **쓰는 파일:** 연결 기록 1개(`…-access.json`)만 쓴다. 파생 결과를 보존하는 옵션은 이 무료 파일럿에 없다.
+- **종료 코드:** 0 완료 / 2 Tiingo 인증 거부·접근 차단 / 3 사전 거부(토큰 없음, 연결 기록이 이미 있음).
 
 ### Codespaces 제약
 
@@ -166,46 +183,46 @@ Windows에서는 `py -3 scripts\run_us_tiingo_recovery_pilot.py --run`으로 동
 - `EXPAND_TO_212_FREE_TIER_FEASIBILITY`: 15개 중 8개 이상에 행이 있고, 설명되지 않는 조정 단계가 관측 세션의 0.1% 이하
 - `LIMITED_VALUE_REVIEW_BEFORE_EXPANSION`: 그 밖의 경우
 
-이 규칙과 8개 질문 계산은 그대로 메모리에서 수행한다. 바뀐 것은 결과를 남기는 방식뿐이다.
+이 규칙과 8개 질문은 그대로 메모리에서 계산한다. 결과를 남기는 방식만 바뀌었다.
 
-**확대 조건:** Starter에서는 판정이 EXPAND여도 **212개 확대는 하지 않는다.** 결과를 남길 수 없는 확대는 연구 결손을 줄이지 못하기 때문이다. 확대는 아래 두 조건이 모두 있을 때만 한다.
+- **Starter:** 판정이 EXPAND여도 212개 확대는 하지 않는다. 남길 수 없는 결과는 연구 결손을 줄이지 못한다.
+- **중단 조건:** STOP 판정이 나오거나 보관 가능한 원천이 없으면 중단한다. 문턱을 낮춰 재실행하지 않는다.
 
-1. 보관을 허용하는 원천을 확보했다. Tiingo 유료 플랜이면 서면 확인이 필요하고, 다른 공급자면 저장 조항이 필요하다.
-2. 그 원천에 대해 같은 계획과 같은 규칙으로 다시 실행했다.
+## 7. 비용 대비 지속 가능한 복구 방안 비교
 
-**중단 조건:** STOP 판정, 또는 서면 허가 불가 답변이다. 문턱을 낮춰 재실행하지 않는다.
+질문은 하나다. **역사 연구 결손을 줄이려면 결과를 계속 보관할 수 있어야 하는데, 어떤 원천이 그 권리를 주는가.**
 
-## 7. 대체 공급자 비교 (보관 권한이 최우선 기준)
-
-출처가 2차 자료인 값은 그렇게 표시한다. 어느 공급자도 이 환경에서 공식 약관 원문을 직접 읽지 못했다.
-
-| 공급자 | 역사 데이터 보관 권한 | 가격 | 상장폐지 커버리지 | 근거·상태 |
+| 방안 | 보관 권리 | 비용 | 상장폐지·결손 커버리지 | 판정 |
 |---|---|---|---|---|
-| Tiingo Starter | **금지**(1.6(a), (c)) | 무료 | 미측정 | 약관 조항(검색 색인 요약) |
-| Tiingo 유료(Power) | **미확인**: 1.6이 Starter·체험에만 적용되는지 서면 확인 필요 | 약 $30/월(2차 출처, 공식 미확인) | 미측정 | 지원팀 질문 §8 |
-| EODHD 개인 플랜 | **미확인**: 저장·보관 조항을 찾지 못함 | EOD All World $19.99/월 또는 $199/년. 무료는 하루 20회, 최근 1년 | 미국 상장폐지 심볼 60,191개 목록 제공. 2018년 이전 상장폐지는 EOD만 제공. ticker 재사용 시 새 회사가 반환될 수 있음 | EODHD 가격표·문서(검색 요약) |
-| QuantConnect | **미확인**: 데이터는 플랫폼 안에서만 쓰는 구조로 알려짐. 로컬 보관 불가로 간주 | 연구 계정 무료(미확인) | 미측정 | 대조용으로만 검토 |
-| SEC EDGAR | 미국 정부 공개 자료로 보관 가능성이 높으나 **가격이 아님** | 무료 | 해당 없음(신원·종결대가 증거) | 신원·종결대가 관문용 |
+| Tiingo Starter | **금지**(원본·파생물), 예외 계약 없음 | 무료 | 미측정 | **NO-GO** |
+| Tiingo Power | 구독 **유효 기간에만** 허용 범위 안에서 가능. 해지·만료·하향 시 원본 전부 삭제 의무 | 약 $30/월(2차 출처, 공식 미확인) → 보관을 유지하려면 계속 지불(약 $360/년+) | 미측정 | **조건부**: 구독을 유지하는 동안만 쓸 수 있는 "임대" 데이터. 해지하면 연구 입력이 사라진다. 파생물의 해지 후 보존은 미확인 |
+| Start-up·Enterprise·Institutional + 예외 계약 | 서면 계약으로 다른 보존 기간 가능 | 견적 필요(미확인, 개인 연구에는 과다 가능성) | 미측정 | 비용 대비 비현실적일 가능성이 높다 |
+| EODHD 개인 플랜 | **미확인**: 저장 조항을 찾지 못함 | EOD All World $19.99/월 또는 $199/년. 무료는 하루 20회, 최근 1년 | 미국 상장폐지 심볼 60,191개 목록. 2018년 이전 상장폐지는 EOD만 제공. ticker 재사용 시 새 회사가 반환될 위험 | 저장 조항을 서면으로 받기 전에는 보류. 받으면 가장 유력한 유료 후보 |
+| QuantConnect | 플랫폼 안에서만 쓰는 구조로 알려짐(미확인) | 연구 계정 무료(미확인) | 미측정 | 로컬 보관이 필요한 이 연구에는 부적합. 교차 대조용으로만 검토 |
+| **기존 #241 후보 + SEC EDGAR 증거** | 후보: 공개 아카이브에서 이미 확보한 186,910세션, 재배포 권리는 UNVERIFIED. SEC: 미국 정부 공개 자료 | **추가 비용 0** | 175/212 식별자에 후보 가격 있음. 2024–2026 개선 0, NONE 37 | **가장 저렴한 지속 경로.** 새 가격을 사지 않고, 이미 있는 후보를 신원·종결대가 증거로 admission하는 데 집중 |
 
-**추천 순서:**
+**가장 비용이 적은 지속 가능한 복구 방안(권장):**
 
-1. Tiingo 지원팀에 §8 질문을 보내 유료 플랜의 보관 허용 여부를 서면으로 받는다. 답이 오기 전에는 비용이 들지 않는다.
-2. 동시에 EODHD 약관의 저장 조항을 서면으로 확인한다. EODHD는 상장폐지 커버리지를 제품으로 명시한다는 장점이 있지만, 2018년 이전 상장폐지는 EOD만 제공한다. ticker 재사용 함정도 직접 경고하고 있어, 신원 관문(§4)은 그대로 필요하다.
-3. 어느 쪽이든 결제는 소유자만 결정한다. 보관 권한이 확인되기 전에는 아무것도 수집하지 않는다.
+1. **(무료) 기존 후보를 먼저 살린다.** #243에서 이미 확보한 186,910세션이 admission을 0세션도 통과하지 못한 이유는 가격이 없어서가 아니다. 신원·기준·lineage 증거가 없어서다. SEC EDGAR의 이름 이력·CIK·8-K 합병 문서로 그 관문을 채우면 새 가격 없이도 결손이 줄어든다.
+   - 단, SEC 접근은 이 환경에서 막혀 있어 Codespaces나 소유자 PC가 필요하다.
+   - 기존 후보 원천의 저장 권리도 소유자가 확인해야 한다(#241 재배포 감사 UNVERIFIED).
+2. **(유료, 서면 확인 후) 남는 결손만 EODHD로 보충한다.** 대상은 NONE 37개와 2024–2026 구간이다. 저장 조항이 서면으로 확인되면 연 $199 수준에서 영구 보관 가능한 원천이 될 수 있다. 확인 전에는 결제하지 않는다.
+3. **(조건부) Tiingo Power는 단기 교차 검증용으로만 쓴다.** 예: 한 달 구독으로 대조군 가격 정의를 맞춰 본다. 구독이 끝나면 원본을 삭제해야 하므로, 장기 연구 입력으로 쓰면 해지 시점에 데이터셋이 깨진다.
 
-## 8. Tiingo 지원팀에 보낼 질문 (영문, 그대로 복사)
+## 8. 남은 확인 질문 (영문, 그대로 복사)
 
-1. Section 1.6(a) prohibits persistent storage for Starter and trial plans. Does the same prohibition apply to the paid Power (individual) plan? Specifically, may a Power subscriber keep end-of-day history, including delisted US tickers, on a personal computer for private, non-commercial research that is never redistributed?
-2. If storage is permitted on a paid plan, must the stored data be deleted when the subscription ends or is downgraded to Starter?
-3. Section 1.6(c): is an internal count of trading days for which a ticker has an end-of-day record (no prices, no values) a "Derived Product"? May a Starter user keep such coverage counts, and the dates of the first and last available record?
-4. Is ticker metadata from `/tiingo/daily/{ticker}` and `supported_tickers.zip` (name, exchange, start date, end date) "Tiingo Data" under Section 1.6(a)?
-5. Are application logs that contain only HTTP status codes and request counts, and no data, acceptable under Section 1.6(a)?
-6. Do you serve end-of-day history for delisted US equities under their historical tickers? How do you distinguish a reused ticker, and is a permanent security identifier (for example `permaTicker`) available through the API on the Starter or Power plan?
-7. What are the current Starter limits (requests per hour, requests per day, unique symbols per month)?
+Tiingo에는 아래만 남는다. 앞서 묻던 Starter 저장 여부와 예외 계약 여부는 소유자 확인으로 해결되었다.
+
+1. On a Power plan, are Derived Products (for example internal counts of trading days with an end-of-day record, with no prices) also subject to deletion when the subscription ends, or may they be kept?
+2. Do you serve end-of-day history for delisted US equities under their historical tickers, and is a permanent security identifier (for example `permaTicker`) available on the Power plan?
+
+EODHD에는 이것을 묻는다.
+
+3. For an individual EOD All World subscription, may a subscriber keep downloaded end-of-day history, including delisted US tickers, on a personal computer for private, non-commercial research indefinitely, including after the subscription ends? Is there any deletion obligation on cancellation?
 
 ## 9. WP0/A1 편입 전 필요한 검증
 
-1. 개인 연구용 영구 보관을 허용하는 원천을 서면으로 확인한다. Tiingo Starter는 해당하지 않는다(1.6(a), (c)).
+1. 개인 연구용 영구 보관을 허용하는 원천을 서면으로 확인한다. Tiingo Starter는 해당하지 않고, Power는 구독 기간 한정이다.
 2. 회원 기간 안의 날짜로 공식 출처에서 issuer·share class–CIK 연결을 확인한다.
 3. 공식 문서로 원거래 종가 정의를 확인하고 FULL 대조군에서 교차 확인한다.
 4. 날짜가 붙은 분할·배당 사슬을 2번째 출처와 대조하고, 원종가와 이벤트로 수정 시계열을 재구성한다.
@@ -216,46 +233,41 @@ Windows에서는 `py -3 scripts\run_us_tiingo_recovery_pilot.py --run`으로 동
 
 ## 10. 소유자의 최소 행동과 자동화 범위
 
-- **최소 행동(권장, 무료):**
-  1. §8 질문을 Tiingo 지원팀에 보낸다.
-  2. 답을 받으면 저에게 전달한다.
-  - 이것만으로 "유료 Tiingo로 보존 가능한가"가 결정된다.
-- **선택(무료, 결과는 남지 않음):**
-  - Codespaces에서 `--check-connectivity` 후 `--run`을 실행한다.
-  - 연결 기록(`…-access.json`)은 남기거나 커밋해도 된다. 여기에는 인증이 받아들여졌는지, 한도에 걸렸는지만 들어 있다.
-  - 커버리지 수치는 `--show-transient-summary`로 화면에서만 볼 수 있으며 저장하면 안 된다. 연구 결손을 줄이는 결과는 아니다.
-- **Claude(자동):**
-  - 지원팀 답이 "유료 보관 허용"이면, 같은 20개 계획을 그 플랜용 보관 경로와 admission 관문으로 확장하는 설계를 만든다.
-  - 답이 "불허"이면, EODHD 약관을 확인하는 단계로 넘어간다.
-  - SEC 신원·종결대가 증거 수집은 언제든 자동화할 수 있다. 단, 이 환경에서는 SEC가 차단되어 Codespaces나 소유자 PC가 필요하다.
-- **자동화 불가:** 토큰 입력, 약관 판단, 지원팀 문의, 결제, 연구 편입 승인은 소유자만 할 수 있다. GitHub Secret이나 Settings는 바꾸지 않는다.
+- **최소 행동(무료):**
+  1. 이 PR(#259)을 NO-GO 기록과 메모리 전용 도구로 병합한다.
+  2. EODHD에 §8의 질문 3을 보낸다.
+  - 실제 `--run`은 할 필요가 없다. 결과를 남길 수 없으므로 연구 결손에는 영향이 없다.
+- **Claude(자동, 소유자 승인 후):**
+  - 무료 경로인 §7-1의 "SEC 증거로 기존 후보 admission" 설계를 시작한다. 실제 수집은 SEC에 접근 가능한 환경(Codespaces 또는 소유자 PC)이 필요하다.
+  - EODHD가 저장을 허용한다고 답하면, 같은 20개 계획으로 별도 유료 경로 PR을 설계한다. 그 설계에는 구독·보관·삭제 정책을 포함한다.
+- **자동화 불가:** 토큰 입력, 약관 판단, 공급자 문의, 결제, 연구 편입 승인은 소유자만 할 수 있다. GitHub Secret이나 Settings는 바꾸지 않는다.
 
 ## 11. 검증
 
-- **오프라인 합성 테스트:** `tests/test_us_tiingo_recovery_pilot.py` 29개. 실제 토큰이나 시세는 쓰지 않았다.
+- **오프라인 합성 테스트:** `tests/test_us_tiingo_recovery_pilot.py` 25개. 실제 토큰이나 시세는 쓰지 않았다.
   - **라이선스:**
-    - 기본 실행은 연결 기록 1개만 쓴다.
-    - 그 파일에는 종목명·세션·날짜·이름이 없다.
+    - 실행은 연결 기록 1개만 쓴다. 그 파일에는 종목명·세션·날짜·이름이 없다.
+    - `--retention-authorization`을 주면 argparse가 거부하고, 요청은 0회다.
+    - 허가처럼 보이는 JSON 파일이 있어도 아무 영향이 없다.
+    - 코드에 보존·원자료 경로 문자열이 없다.
     - 응답 바이트가 어떤 파일에도 없다.
-    - `--private-dir`·`--from-raw`가 없다.
     - 화면 요약은 파일로 쓰이지 않는다.
-    - 결함 있는 허가 파일은 요청 전에 거부된다.
     - 연결 확인은 토큰 없이 실행되고 아무 파일도 쓰지 않는다.
-  - **기존 항목 유지:**
+  - **분석(메모리 안에서 검사):**
+    - 8개 질문과 판정 계산
+    - HOLD·이름·기간·중복 상장
+    - SEC 과거 이름 날짜 조건·CIK 충돌
+    - 조정 계수와 이벤트 대조
+    - 세션 표 SHA 대조
+    - 가격 키 누출 거부
+  - **전송:**
     - 401/403/429/503 즉시 중단·무재시도
     - 차단 1회 후 중단
     - 404·깨진 JSON 기록
     - 상한·간격 준수
     - SEC 연락처 없으면 미실행
-    - 토큰 미기록
-    - 출력 덮어쓰기는 요청 전에 거부
-    - 행 검증
-    - 조정 계수와 이벤트 대조
-    - HOLD·이름·기간·중복 상장
-    - SEC 과거 이름 날짜 조건·CIK 충돌
-    - 세션 표 SHA 대조
-    - 가격 키 누출 거부
-    - 표준 라이브러리 전용
-    - 계획 재현
+    - 토큰은 헤더로만 보냄
+    - 연결 기록 덮어쓰기는 요청 전에 거부
+  - **기타:** 표준 라이브러리 전용, 계획 재현.
 - **사전 고정 계획:** 계획 파일은 개정 전과 바이트 동일하다.
 - **실제 Tiingo 응답:** NOT_TESTED. 이 환경의 연결 확인 결과는 세 호스트 모두 `BLOCKED_BEFORE_PROVIDER`다.

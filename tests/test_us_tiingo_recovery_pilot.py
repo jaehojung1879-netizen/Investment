@@ -90,35 +90,31 @@ class Fake:
         return value
 
 
-AUTHORIZATION = {"provider": "Tiingo", "plan": "SYNTHETIC_TEST_PLAN", "scope": P.RETENTION_SCOPE, "grantedBy": "synthetic fixture",
-                 "evidenceReference": "TEST-0000", "grantedOn": "2026-10-18"}
+ENV = {"TIINGO_API_TOKEN": TOKEN, "SEC_USER_AGENT": "Synthetic test contact@example.invalid"}
 
 
-def run(tmp_path, fake, *args, environ=None, authorized=True):
-    """A synthetic run. `authorized` writes a synthetic retention authorisation so the derived report can be inspected; the
-    default production path (no authorisation) is tested on its own below."""
-    environ = {"TIINGO_API_TOKEN": TOKEN, "SEC_USER_AGENT": "Synthetic test contact@example.invalid"} if environ is None else environ
-    extra = []
-    if authorized:
-        auth = tmp_path / "auth" / "retention.json"
-        auth.parent.mkdir(parents=True, exist_ok=True)
-        auth.write_text(json.dumps(AUTHORIZATION))
-        extra = ["--retention-authorization", str(auth)]
-    code = CLI.main(["--run", "--report-root", str(tmp_path / "repo"), *extra, *args],
-                    fetch=fake, environ=environ, prompt=lambda _: "", sleep=lambda s: None, clock=lambda: 1_790_000_000.0)
-    access = json.loads((tmp_path / "repo" / P.ACCESS_JSON).read_text())
-    report = json.loads((tmp_path / "repo" / P.REPORT_JSON).read_text()) if authorized else None
-    return code, (report if authorized else access)
+def run(tmp_path, fake, *args, environ=None):
+    """The real CLI path: memory only, writes the connection record and nothing else."""
+    code = CLI.main(["--run", "--report-root", str(tmp_path / "repo"), *args], fetch=fake, environ=ENV if environ is None else environ,
+                    prompt=lambda _: "", sleep=lambda s: None, clock=lambda: 1_790_000_000.0)
+    return code, json.loads((tmp_path / "repo" / P.ACCESS_JSON).read_text())
+
+
+def analyze_world(fake, *, sec_user_agent="Synthetic test contact@example.invalid"):
+    """The derived analysis the CLI computes and discards, inspected in memory (it is never written)."""
+    session = P.Session(fake, token=TOKEN, sec_user_agent=sec_user_agent, sleep=lambda s: None, clock=lambda: 1_790_000_000.0)
+    answers = P.acquire(PLAN, session)
+    return P.analyze(PLAN, answers, session.records, session.stopped, run_meta={})
 
 
 def written_files(tmp_path):
     return sorted(p for p in tmp_path.rglob("*") if p.is_file())
 
 
-# ---- licence: nothing from a Tiingo answer is ever persisted without written permission ------------------------------------------
-def test_the_default_run_writes_only_connection_metadata(tmp_path, capsys):
+# ---- licence: nothing from a Tiingo answer is ever persisted --------------------------------------------------------------------
+def test_the_run_writes_only_connection_metadata(tmp_path, capsys):
     fake = Fake(world())
-    code, access = run(tmp_path, fake, authorized=False)
+    code, access = run(tmp_path, fake)
     assert code == 0 and written_files(tmp_path) == [tmp_path / "repo" / P.ACCESS_JSON]
     text = (tmp_path / "repo" / P.ACCESS_JSON).read_text()
     for plan_ticker in (e["auditIdentifier"] for e in PLAN["identities"]):
@@ -128,42 +124,43 @@ def test_the_default_run_writes_only_connection_metadata(tmp_path, capsys):
     assert access["tiingo"] == {"calls": 41, "reachable": True, "authenticationAccepted": True, "rateLimited": False, "stopped": {},
                                 "rateLimitHeaderNames": ["X-RateLimit-Remaining"]}
     assert access["licence"]["historicalPriceRetentionVerdict"] == "NO_GO_STARTER_PROHIBITS_PERSISTENT_STORAGE"
+    assert access["licence"]["derivedResultRetention"] == "PROHIBITED_NO_PATH_IN_THIS_FREE_PILOT"
     out = json.loads(capsys.readouterr().out)
     assert out["derived"] == "DISCARDED_NOT_WRITTEN_STARTER_TOS_1_6" and "transient" not in out
     assert TOKEN not in text
 
 
-def test_no_provider_answer_byte_reaches_disk(tmp_path):
+def test_there_is_no_retention_option_and_a_permission_file_changes_nothing(tmp_path):
     fake = Fake(world())
-    run(tmp_path, fake, authorized=True)
+    with pytest.raises(SystemExit) as exit_info:                         # argparse rejects the removed option
+        CLI.main(["--run", "--report-root", str(tmp_path / "repo"), "--retention-authorization", "x.json"], fetch=fake, environ=ENV)
+    assert exit_info.value.code == 2 and fake.calls == [] and written_files(tmp_path) == []
+    permission = tmp_path / "repo" / "docs" / "tiingo-permission.json"   # an arbitrary file is never read as provider permission
+    permission.parent.mkdir(parents=True)
+    permission.write_text(json.dumps({"provider": "Tiingo", "scope": "EVERYTHING", "grantedBy": "anyone"}))
+    run(tmp_path, Fake(world()))
+    assert written_files(tmp_path) == sorted([permission, tmp_path / "repo" / P.ACCESS_JSON])
+    source = (ROOT / "scripts/run_us_tiingo_recovery_pilot.py").read_text() + (ROOT / "pipeline/us_tiingo_recovery_pilot.py").read_text()
+    for removed in ("retention_authorization", "retention-authorization", "REPORT_JSON", "REPORT_MD", "--private-dir", "--from-raw", "write_bytes"):
+        assert removed not in source, removed
+
+
+def test_no_provider_answer_byte_reaches_disk(tmp_path):
+    run(tmp_path, Fake(world()))
     bodies = [v[2] for v in world().values() if isinstance(v, tuple) and len(v[2]) > 64]
     for path in written_files(tmp_path):
         content = path.read_bytes()
         for body in bodies:
             assert body not in content and body[:64] not in content, path
-    assert "raw_dir" not in P.Session.__init__.__code__.co_varnames and "write_bytes" not in (ROOT / "pipeline/us_tiingo_recovery_pilot.py").read_text()
-    assert "--private-dir" not in (ROOT / "scripts/run_us_tiingo_recovery_pilot.py").read_text()
-    assert "--from-raw" not in (ROOT / "scripts/run_us_tiingo_recovery_pilot.py").read_text()
+    assert "raw_dir" not in P.Session.__init__.__code__.co_varnames
 
 
 def test_the_transient_summary_is_printed_and_never_written(tmp_path, capsys):
-    run(tmp_path, Fake(world()), "--show-transient-summary", authorized=False)
+    run(tmp_path, Fake(world()), "--show-transient-summary")
     out = json.loads(capsys.readouterr().out)
     assert out["transient"]["retentionClass"] == "TRANSIENT_DISPLAY_ONLY_DO_NOT_SAVE"
     assert out["transient"]["decision"] == "EXPAND_TO_212_FREE_TIER_FEASIBILITY"
     assert written_files(tmp_path) == [tmp_path / "repo" / P.ACCESS_JSON]
-
-
-@pytest.mark.parametrize("change", [{"scope": "EVERYTHING"}, {"provider": "eodhd"}, {"grantedOn": "soon"}, {"evidenceReference": ""},
-                                    {"coversRawResponses": True}])
-def test_an_invalid_retention_authorization_refuses_before_any_request(tmp_path, change):
-    auth = tmp_path / "retention.json"
-    auth.write_text(json.dumps({**AUTHORIZATION, **change}))
-    fake = Fake(world())
-    with pytest.raises(P.Refused, match="RETENTION_AUTHORIZATION|RAW_RESPONSE_RETENTION"):
-        CLI.main(["--run", "--report-root", str(tmp_path / "repo"), "--retention-authorization", str(auth)],
-                 fetch=fake, environ={"TIINGO_API_TOKEN": TOKEN}, prompt=lambda _: "")
-    assert fake.calls == [] and not (tmp_path / "repo").exists()
 
 
 def test_connectivity_check_uses_no_token_and_writes_nothing(tmp_path, capsys):
@@ -186,22 +183,21 @@ def test_preview_makes_no_request_and_writes_nothing(tmp_path, capsys):
     assert CLI.main(["--report-root", str(tmp_path / "repo")], fetch=fake, environ={}) == 0
     assert fake.calls == [] and written_files(tmp_path) == []
     out = json.loads(capsys.readouterr().out)
-    assert out["mode"] == "PREVIEW_NO_REQUEST_MADE" and out["writes"]["never"] == "any provider response"
+    assert out["mode"] == "PREVIEW_NO_REQUEST_MADE" and out["writes"] == {"always": P.ACCESS_JSON,
+                                                                          "never": "any provider response or anything computed from one"}
 
 
-def test_an_authorized_run_reports_counts_only_and_never_writes_the_token(tmp_path):
+def test_the_in_memory_analysis_answers_the_registered_questions_and_the_token_travels_only_in_a_header(tmp_path):
     fake = Fake(world())
-    code, report = run(tmp_path, fake)
-    assert code == 0 and report["liveProviderResponse"] == "TESTED" and report["admission"] == "NOT_ADMITTED"
-    assert report["retentionAuthorization"]["evidenceReference"] == "TEST-0000"
+    report = analyze_world(fake)
+    assert report["liveProviderResponse"] == "TESTED" and report["admission"] == "NOT_ADMITTED"
+    assert report["retentionClass"] == "DERIVED_TRANSIENT_ONLY_NEVER_WRITTEN"
     for call in fake.calls:
         assert TOKEN not in call["url"]
         if "api.tiingo.com" in call["url"]:
             assert call["headers"]["Authorization"] == "Token " + TOKEN
         else:
             assert "Authorization" not in call["headers"]
-    for path in written_files(tmp_path):
-        assert TOKEN.encode() not in path.read_bytes(), path
     q = report["questions"]
     assert q["1_identitiesWithTiingoPriceRows"] == 20 and q["7_decision"] == "EXPAND_TO_212_FREE_TIER_FEASIBILITY"
     by = {i["auditIdentifier"]: i for i in report["identities"]}
@@ -213,45 +209,42 @@ def test_an_authorized_run_reports_counts_only_and_never_writes_the_token(tmp_pa
     assert by["DAY"]["sessions"]["sessionsFrom2024"] == 521
     assert by["ANDV"]["sessions"]["adjustmentStepsExplainedByEvent"] == 1 and by["ANDV"]["sessions"]["adjustmentStepsUnexplained"] == 0
     P.scan_report(report)
-    markdown = (tmp_path / "repo" / P.REPORT_MD).read_text(encoding="utf-8")
-    assert "NOT_ADMITTED" in markdown and TOKEN not in markdown
+    code, _ = run(tmp_path, Fake(world()))
+    assert code == 0 and all(TOKEN.encode() not in p.read_bytes() for p in written_files(tmp_path))
 
 
 @pytest.mark.parametrize("status,outcome", [(401, "AUTH_REJECTED"), (403, "ACCESS_FORBIDDEN"), (429, "RATE_LIMITED"), (503, "PROVIDER_ERROR")])
 def test_a_refusal_stops_the_source_without_retry(tmp_path, status, outcome):
     first = PLAN["identities"][0]
-    responses = world(override={P.tiingo_meta_url(first["auditIdentifier"]): (status, {"Retry-After": "3600"}, b'{"detail":"refused"}')})
-    fake = Fake(responses)
-    code, report = run(tmp_path, fake)
-    tiingo_calls = [c for c in fake.calls if c["url"].startswith(P.TIINGO)]
-    assert len(tiingo_calls) == 1 and report["stoppedSources"]["tiingo"] == outcome
+    override = {P.tiingo_meta_url(first["auditIdentifier"]): (status, {"Retry-After": "3600"}, b'{"detail":"refused"}')}
+    fake = Fake(world(override=override))
+    report = analyze_world(fake)
+    assert len([c for c in fake.calls if c["url"].startswith(P.TIINGO)]) == 1 and report["stoppedSources"]["tiingo"] == outcome
     assert report["questions"]["7_decision"] == "STOP_SOURCE_NOT_REACHABLE_OR_REFUSED" and report["liveProviderResponse"] == "NOT_TESTED"
-    access = json.loads((tmp_path / "repo" / P.ACCESS_JSON).read_text())
+    code, access = run(tmp_path, Fake(world(override=override)))
     assert access["tiingo"]["rateLimited"] == (status == 429)
-    assert access["tiingo"]["authenticationAccepted"] == (status not in (401, 403))
+    assert access["tiingo"]["authenticationAccepted"] == (status not in (401, 403)) and access["liveProviderResponse"] == "NOT_TESTED"
     assert code == (2 if status in (401, 403) else 0)
 
 
 def test_a_network_block_is_reported_and_never_bypassed(tmp_path):
     def blocked(method, url, headers, body):
         raise P.NetworkBlocked("OSError: Tunnel connection failed: 403 Forbidden")
-    fake = Fake({}, default=None)
-    fake.responses = {u: blocked for u in world()} | {P.OPENFIGI: blocked}
-    fake.default = blocked
-    code, report = run(tmp_path, fake)
-    assert code == 2 and set(report["stoppedSources"].values()) == {"ACCESS_BLOCKED_BEFORE_PROVIDER"}
+    fake = Fake({}, default=blocked)
+    report = analyze_world(fake)
+    assert set(report["stoppedSources"].values()) == {"ACCESS_BLOCKED_BEFORE_PROVIDER"}
     assert all(n == 1 for n in report["calls"].values())          # one attempt per source, then stop
     assert report["questions"]["1_identitiesWithTiingoPriceRows"] == 0
-    access = json.loads((tmp_path / "repo" / P.ACCESS_JSON).read_text())
-    assert access["tiingo"]["reachable"] is False and access["liveProviderResponse"] == "NOT_TESTED"
+    code, access = run(tmp_path, Fake({}, default=blocked))
+    assert code == 2 and access["tiingo"]["reachable"] is False and access["liveProviderResponse"] == "NOT_TESTED"
 
 
-def test_not_found_and_malformed_answers_are_recorded_per_identity(tmp_path):
+def test_not_found_and_malformed_answers_are_recorded_per_identity():
     a, b = PLAN["identities"][0], PLAN["identities"][1]
     responses = world(override={P.tiingo_meta_url(a["auditIdentifier"]): (404, {}, b'{"detail":"Not found."}'),
                                 P.tiingo_prices_url(a["auditIdentifier"], a["expectedPricingWindow"]["first"], a["expectedPricingWindow"]["last"]): (404, {}, b"{}"),
                                 P.tiingo_prices_url(b["auditIdentifier"], b["expectedPricingWindow"]["first"], b["expectedPricingWindow"]["last"]): (200, {}, b"<html>oops")})
-    _, report = run(tmp_path, Fake(responses))
+    report = analyze_world(Fake(responses))
     by = {i["auditIdentifier"]: i for i in report["identities"]}
     assert by[a["auditIdentifier"]]["identity"]["state"] == "NO_TIINGO_RESPONSE"
     assert by[b["auditIdentifier"]]["tiingoPriceResponse"] == "NOT_ANSWERED" and report["parseErrors"]
@@ -268,10 +261,12 @@ def test_budgets_and_pacing_are_respected():
 
 
 def test_sec_is_skipped_without_a_contact_user_agent(tmp_path, monkeypatch):
-    monkeypatch.setattr(CLI, "sec_user_agent", lambda environ: None)
     fake = Fake(world())
-    _, report = run(tmp_path, fake, environ={"TIINGO_API_TOKEN": TOKEN})
+    report = analyze_world(fake, sec_user_agent=None)
     assert not any("sec.gov" in c["url"] for c in fake.calls) and report["stoppedSources"]["sec"] == "NOT_RUN_NO_CONTACT_USER_AGENT"
+    monkeypatch.setattr(CLI, "sec_user_agent", lambda environ: None)
+    _, access = run(tmp_path, Fake(world()), environ={"TIINGO_API_TOKEN": TOKEN})
+    assert access["otherSources"]["sec"]["stopped"] == "NOT_RUN_NO_CONTACT_USER_AGENT"
 
 
 def test_no_token_refuses_before_any_request(tmp_path):
@@ -281,13 +276,13 @@ def test_no_token_refuses_before_any_request(tmp_path):
     assert fake.calls == [] and written_files(tmp_path) == []
 
 
-def test_existing_outputs_are_not_replaced_without_force_before_any_request(tmp_path):
-    run(tmp_path, Fake(world()), authorized=False)
+def test_an_existing_connection_record_is_not_replaced_without_force_before_any_request(tmp_path):
+    run(tmp_path, Fake(world()))
     again = Fake(world())
     with pytest.raises(P.Refused, match="OUTPUT_EXISTS"):
-        run(tmp_path, again, authorized=False)
+        run(tmp_path, again)
     assert again.calls == []
-    assert run(tmp_path, Fake(world()), "--force", authorized=False)[0] == 0
+    assert run(tmp_path, Fake(world()), "--force")[0] == 0
 
 
 # ---- parsing --------------------------------------------------------------------------------------------------------------------
