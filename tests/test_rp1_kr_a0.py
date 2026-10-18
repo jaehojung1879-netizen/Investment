@@ -260,3 +260,18 @@ def test_whole_kr_report_reconciles_and_scans_without_real_sources(monkeypatch):
     h=result['hypotheses']['A-H1']
     assert h['measured']+sum(h['missing'].values())==h['eligible']
     assert result['latest52IsFormalGate'] is False
+
+
+def test_registered_holdings_industry_is_not_a_portfolio_guard_bypass():
+    from dataclasses import replace
+    row=replace(kr_row(),industry_id='HOLDINGS_BUSINESS_SERVICES')
+    report=A.measure([row],market='KR',comparators=K.COMPARATORS,size_field='risk.marketCap')
+    before=CORE.canonical(report)
+    S.CORE_SCAN(report)
+    assert CORE.canonical(report)==before  # retain exact taxonomy, no renaming in result
+    bad=deepcopy(report);bad['holdings']={'SYN':1}
+    with pytest.raises(ValueError,match='FORBIDDEN_OUTPUT_KEY'):
+        S.CORE_SCAN(bad)
+    bad=deepcopy(report);bad['hypotheses']['A-H1']['strata']={'HOLDINGS_BUSINESS_SERVICES|0|0:S1':{'nav':1}}
+    with pytest.raises(ValueError,match='INVALID_REGISTERED_KR_STRATUM'):
+        S.CORE_SCAN(bad)

@@ -7,9 +7,11 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter, defaultdict
+from copy import deepcopy
 import hashlib
 import json
 from pathlib import Path
+import re
 import subprocess
 import sys
 from unittest.mock import patch
@@ -242,9 +244,22 @@ def inspect(repo, *, main_admission, root=ROOT):
 
 
 def CORE_SCAN(report):
-    # The inherited measurement has diagnostic field names that the broad
-    # receipt-only scanner disallows; the existing input census scanner applies.
-    US.U.scan_output(report)
+    # The registered KRX taxonomy has HOLDINGS_BUSINESS_SERVICES. This is an
+    # industry in a counted stratum, not a portfolio's holdings. Only that exact
+    # code + registered terciles + S0/S1 in the two known strata containers is
+    # projected for the existing scanner. The report itself is never changed.
+    checked=deepcopy(report)
+    containers=[(h,checked.get('hypotheses',{}).get(h,{})) for h in A.HYPOTHESES]
+    containers += [(h,d.get('hypotheses',{}).get(h,{})) for d in checked.get('byDate',[]) for h in A.HYPOTHESES]
+    for h,entry in containers:
+        strata=entry.get('strata',{})
+        for label in list(strata):
+            if label.startswith('HOLDINGS_BUSINESS_SERVICES'):
+                pattern=r'HOLDINGS_BUSINESS_SERVICES\|[012]'+(r'' if h=='A-H2' else r'\|[012]')+r':S[01]'
+                if not re.fullmatch(pattern,label) or type(strata[label]) is not int or strata[label]<0:
+                    raise ValueError('INVALID_REGISTERED_KR_STRATUM')
+                strata[label.replace('HOLDINGS_BUSINESS_SERVICES','REGISTERED_KR_INDUSTRY')]=strata.pop(label)
+    US.U.scan_output(checked)
 
 
 def guarded_inspect(repo, *, main_admission, root=ROOT):
