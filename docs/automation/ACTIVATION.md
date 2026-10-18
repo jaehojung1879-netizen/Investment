@@ -53,7 +53,9 @@ is not equivalent to a subscription-backed cloud Routine.
 
 ## Owner steps, in order
 
-1. Review this Draft PR and policy; resolve access through existing approved
+1. Review this Draft PR and policy. If approved, the owner merges it through the
+   normal protected PR review process before selecting main for native tasks;
+   agents never merge. Resolve access through existing approved
    native integrations. Confirm read Issues/PRs/checks, write task branch and
    Draft PR, and read-only Claude review permissions **without changing them in
    this task**. Review branch protection and the last five Tests start/end times

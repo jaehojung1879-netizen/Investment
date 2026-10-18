@@ -204,3 +204,13 @@ def test_unchanged_head_and_stale_review_cannot_rerun_ci():
     q = started(q, claim, 'b' * 40, 2)
     with pytest.raises(ValueError):
         apply(q, event('review', claim=claim, head_sha='a' * 40, reviewer='claude', verdict='APPROVED'))
+
+
+@pytest.mark.parametrize('field', ['issue', 'scope_sha256', 'pr'])
+def test_duplicate_work_identity_is_rejected(field):
+    q = queue(task('a'), task('b', 2))
+    if field == 'pr':
+        q['tasks'][0]['pr'] = 10
+    q['tasks'][1][field] = q['tasks'][0][field]
+    with pytest.raises(ValueError, match='duplicate'):
+        validate(q)

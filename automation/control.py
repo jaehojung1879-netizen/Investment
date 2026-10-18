@@ -34,6 +34,13 @@ def validate(q):
     ids = [t['id'] for t in q['tasks']]
     if len(ids) != len(set(ids)):
         raise ValueError('duplicate task')
+    for field in ('issue', 'scope_sha256'):
+        values = [t[field] for t in q['tasks']]
+        if len(values) != len(set(values)):
+            raise ValueError('duplicate Issue or specification')
+    prs = [t['pr'] for t in q['tasks'] if t['pr'] is not None]
+    if len(prs) != len(set(prs)):
+        raise ValueError('duplicate PR')
     active = []
     for t in q['tasks']:
         if set(t) != {'id', 'issue', 'track', 'priority', 'dependencies', 'agent', 'risk', 'kind',

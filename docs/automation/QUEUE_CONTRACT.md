@@ -30,7 +30,7 @@ Changed payload with the same ID is rejected. No free-text result payloads.
    workers in the two-slot limit and reserve their resources. A local fixture is
    never the live queue. No implicit empty-state fallback.
 2. Fetch the one queue ref, validate its schema, owner gates, dependency graph and
-   slot/resource invariants. Unknown types or cycles fail closed.
+   slot/resource invariants. Duplicate Issue/specification/PR identities, unknown types or cycles fail closed.
 3. Service existing RUNNING/CI_WAIT/REVIEW work. CI_WAIT means monitor the existing
    run, not rerun. REVIEW means request one exact-head read-only independent review
    (persist the handoff receipt in the Issue; dedupe by PR/head/reviewer).
