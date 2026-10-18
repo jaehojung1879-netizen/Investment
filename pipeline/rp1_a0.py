@@ -47,11 +47,13 @@ def exact_operating_ttm(index, key):
 
 class FilingHistory:
     """Lazy public-event prefixes, never deriving a future filing for a date."""
-    def __init__(self, ticker, records):
+    def __init__(self, ticker, records, *, adapter=None):
         self.ticker = ticker
-        self.records = sorted((r for r in records if CP.visible_day(r)),
-            key=lambda r: (CP.visible_day(r), str(r.get("availableFrom")), str(r.get("id"))))
-        self.days = sorted({CP.visible_day(r).isoformat() for r in self.records})
+        self.adapter = adapter
+        visible = adapter.visible_day if adapter else CP.visible_day
+        self.records = sorted((r for r in records if visible(r)),
+            key=lambda r: (visible(r), str(r.get("availableFrom")), str(r.get("id"))))
+        self.days = sorted({visible(r).isoformat() for r in self.records})
         self.cache = {}
 
     def prefix_state(self, n):
@@ -63,38 +65,48 @@ class FilingHistory:
         previous = self.prefix_state(n - 1)
         public = self.days[n - 1]
         available = (dt.date.fromisoformat(public) + dt.timedelta(days=1)).isoformat()
-        prefix = W.filing_prefix(self.records, "US", available)
-        assert all(CP.visible_day(r).isoformat() <= public for r in prefix)
+        adapter = self.adapter
+        visible = adapter.visible_day if adapter else CP.visible_day
+        prefix = W.filing_prefix(self.records, adapter.market if adapter else "US", available)
+        assert all(visible(r).isoformat() <= public for r in prefix)
         # FD's legacy earliest-availableFrom rule predates acceptedDate. Keep
         # the first actually public row per period before calling that builder;
         # a later amendment with a backdated vendor date cannot replace it.
         first_public = {}
-        for record in sorted(prefix, key=lambda r: (CP.visible_day(r), str(r.get("availableFrom")), str(r.get("id")))):
-            keys = FD.index_filings([record])
+        for record in sorted(prefix, key=lambda r: (visible(r), str(r.get("availableFrom")), str(r.get("id")))):
+            keys = adapter.index([record]) if adapter else FD.index_filings([record])
             if keys:
                 first_public.setdefault(next(iter(keys)), record)
-        index = FD.index_filings(list(first_public.values()))
-        key = CP.current_key(index)
+        # KR keeps its existing receipt-dated visible index: a correction can
+        # affect its own public date, never an earlier signal. US keeps the
+        # original first-actually-public-per-period rule exactly.
+        index = adapter.index(list(prefix)) if adapter else FD.index_filings(list(first_public.values()))
+        key = adapter.current_key(index) if adapter else CP.current_key(index)
         if sorted(str(r.get("id")) for r in index.values()) == previous["sourceIds"]:
             self.cache[n] = previous
             return previous  # an ignored restatement cannot restart a 26-week clock
         state = {**previous, "growth": None, "periodEnd": None, "currentKey": key,
-                 "fields": {}, "deltas": {}, "publicDay": max((CP.visible_day(r).isoformat() for r in index.values()), default=public),
+                 "fields": {}, "deltas": {}, "publicDay": max((visible(r).isoformat() for r in index.values()), default=public),
                  "sourceIds": sorted(str(r.get("id")) for r in index.values()),
                  "reason": "INCOMPLETE_TTM_CHAIN"}
         if key is not None:
-            if not index[key].get("periodEnd") or index[key]["periodEnd"] > CP.visible_day(index[key]).isoformat():
+            end = adapter.period_end(key) if adapter else index[key].get("periodEnd")
+            if not end or end > visible(index[key]).isoformat():
                 state["reason"] = "REPORT_PERIOD_AFTER_PUBLICATION"
                 state["uncertainEventDate"] = available
                 self.cache[n] = state
                 return state
-            op = exact_operating_ttm(index, key)
-            prior = exact_operating_ttm(index, (key[0] - 1, key[1]))
-            cash = FD.trailing_twelve_months(index, *key, "operatingCashFlow")[0]
+            if adapter:
+                op, prior, cash, reason = adapter.values(index, key)
+                state["reason"] = reason
+            else:
+                op = exact_operating_ttm(index, key)
+                prior = exact_operating_ttm(index, (key[0] - 1, key[1]))
+                cash = FD.trailing_twelve_months(index, *key, "operatingCashFlow")[0]
             # The same positive growth-base rule used by #250; a loss base is
             # missing, never a fabricated percentage or an absolute denominator.
             growth = op / prior - 1 if finite(op) and finite(prior) and prior > 0 else None
-            state.update(growth=growth, periodEnd=index[key].get("periodEnd"))
+            state.update(growth=growth, periodEnd=end)
             known_false = ((growth is not None and growth <= 0) or
                            (previous["growth"] is not None and previous["growth"] > 0) or
                            (finite(cash) and cash <= 0))
@@ -109,9 +121,9 @@ class FilingHistory:
             # Continuous controls use the existing first-public FD derivation
             # and FA delta arithmetic. A nonconsecutive public predecessor is
             # not silently turned into a quarter-on-quarter delta.
-            fields = FD.derive_fields(index, *key)[0]
+            fields = adapter.fields(index, key) if adapter else FD.derive_fields(index, *key)[0]
             state["fields"] = fields
-            if previous["currentKey"] == WI.previous_period(key, "US"):
+            if previous["currentKey"] == WI.previous_period(key, adapter.market if adapter else "US"):
                 cur = PIT.FundamentalRecord(self.ticker, f"{key[0]}-{key[1]}", public, fields)
                 old_key = previous["currentKey"]
                 old = PIT.FundamentalRecord(self.ticker, f"{old_key[0]}-{old_key[1]}", previous["publicDay"], previous["fields"])
@@ -133,7 +145,8 @@ class FilingHistory:
         # filing with an incomplete TTM chain cannot erase that known event;
         # it still withholds its own missing continuous controls. Invalid
         # publication periods and stale reports remain blocked above/below.
-        if active and end and state["reason"] in ("AVAILABLE", "INCOMPLETE_TTM_CHAIN", "NON_POSITIVE_YOY_BASE"):
+        retained = self.adapter.retention_reasons if self.adapter else ("AVAILABLE", "INCOMPLETE_TTM_CHAIN", "NON_POSITIVE_YOY_BASE")
+        if active and end and state["reason"] in retained:
             return {**result, "flag": True, "reason": ("AVAILABLE" if state["reason"] == "AVAILABLE"
                                                        else "KNOWN_EVENT_IN_26_WEEK_RETENTION")}
         if state["reason"] != "AVAILABLE":
@@ -147,8 +160,9 @@ class FilingHistory:
 
 class PastPrices:
     """Use the existing PIT view to enforce end <= signal at every lookup."""
-    def __init__(self, frames, calendar, events=None):
+    def __init__(self, frames, calendar, events=None, *, benchmark="SPY"):
         self.frames, self.calendar = frames, calendar
+        self.benchmark = benchmark
         self.events = events
         self.forward_reads = 0
 
@@ -163,7 +177,7 @@ class PastPrices:
         return frame
 
     def features(self, ticker, day):
-        stock, spy = self.window(ticker, day, 127), self.window("SPY", day, 127)
+        stock, spy = self.window(ticker, day, 127), self.window(self.benchmark, day, 127)
         if stock is not None and ("Volume" not in stock or not np.isfinite(stock.Volume).all() or not (stock.Volume > 0).all()):
             stock = None
         relative = (float(stock.Close.iloc[-1] / stock.Close.iloc[0] - spy.Close.iloc[-1] / spy.Close.iloc[0])
@@ -192,7 +206,7 @@ def h2(h1, relative):
     return bool(h1 and relative > 0) if h1 is not None and finite(relative) else None
 
 
-def h3(rows):
+def h3(rows, *, size_field="size63"):
     """Sector leaders = top 3 by prior 63-session traded value; no new factor.
 
     Missing peer/leader inputs and a tied top-3 boundary abstain. Removing the
@@ -204,11 +218,11 @@ def h3(rows):
             groups[row["sector"]].append(row)
     leaders, reasons = {}, {}
     for sector, group in groups.items():
-        if len(group) < 3 or any(not finite(r.get("size63")) or not finite(r.get("relative126")) for r in group):
+        if len(group) < 3 or any(not finite(r.get(size_field)) or not finite(r.get("relative126")) for r in group):
             reasons[sector] = "INDUSTRY_PEER_INPUT_UNRESOLVED"
             continue
-        ordered = sorted(group, key=lambda r: (-r["size63"], r["ticker"]))
-        if len(ordered) > 3 and ordered[2]["size63"] == ordered[3]["size63"]:
+        ordered = sorted(group, key=lambda r: (-r[size_field], r["ticker"]))
+        if len(ordered) > 3 and ordered[2][size_field] == ordered[3][size_field]:
             reasons[sector] = "LEADER_BOUNDARY_TIE_UNRESOLVED"
             continue
         leaders[sector] = float(np.mean([r["relative126"] for r in ordered[:3]]))
@@ -227,9 +241,9 @@ def h3(rows):
     return output
 
 
-def acceleration_controls(rows):
+def acceleration_controls(rows, *, market="US"):
     """Existing composite definition; no discovery/result module imported."""
-    frame = pd.DataFrame([{**r, "region": "US", "dataSufficient": sum(finite(r.get(k)) for k in (
+    frame = pd.DataFrame([{**r, "region": market, "dataSufficient": sum(finite(r.get(k)) for k in (
         "deltaRoe", "deltaOperatingMargin", "deltaProfitMargin", "deltaEarningsGrowth")) >= FA.MIN_PRIMARY_FIELDS} for r in rows])
     if frame.empty:
         return {}
@@ -285,12 +299,12 @@ def population_audit(observations, departed_symbols):
             "groups": {key: value for key, value in sorted(groups.items())}}
 
 
-def measure(observations, *, missing_details=None):
+def measure(observations, *, missing_details=None, market="US", comparators=COMPARATORS, size_field="risk.size63"):
     """Common Observation/Cell inputs only; target tables cannot be passed in."""
     population_sha = WE.validate_panel(observations)
     dates = defaultdict(list)
     for row in observations:
-        if row.key.market != "US" or row.identity_status not in ("PROVISIONAL", "UNRESOLVED"):
+        if market not in ("KR", "US") or row.key.market != market or row.identity_status not in ("PROVISIONAL", "UNRESOLVED"):
             raise ValueError("WP2_PROVISIONAL_POPULATION_REQUIRED")
         dates[row.key.signal_date].append(row)
     aggregate = {h: Counter() for h in HYPOTHESES}
@@ -305,7 +319,7 @@ def measure(observations, *, missing_details=None):
         def value(o, name):
             cell = cells[o.key.sample_id].get(name)
             return cell.value if cell else None
-        sizes = terciles({o.key.sample_id: value(o, "risk.size63") for o in eligible})
+        sizes = terciles({o.key.sample_id: value(o, size_field) for o in eligible})
         momentum = terciles({o.key.sample_id: value(o, "price.relative126") for o in eligible})
         record = {"date": day, "population": len(members), "eligible": len(eligible), "hypotheses": {}}
         for h in HYPOTHESES:
@@ -333,9 +347,9 @@ def measure(observations, *, missing_details=None):
             record["hypotheses"][h]["strata"] = dict(sorted(date_strata.items()))
         flags = [value(o, "financial.A_H1") for o in eligible]
         correlations.append({"date": day, **{name: rank_biserial(flags, [value(o, "financial." + name) for o in eligible])
-                                           for name in COMPARATORS}})
+                                           for name in comparators}})
         denominators = {"date": day}
-        for name in COMPARATORS:
+        for name in comparators:
             pairs = [(f, value(o, "financial." + name)) for f, o in zip(flags, eligible)
                      if f is not None and finite(value(o, "financial." + name))]
             denominators[name] = {"pairs": len(pairs), "S1": sum(f == 1 for f, _ in pairs), "S0": sum(f == 0 for f, _ in pairs)}
@@ -349,7 +363,7 @@ def measure(observations, *, missing_details=None):
         event_counts = [d["hypotheses"][h]["events"] for d in daily]
         gates = {"prevalence": None if prevalence is None else .03 <= prevalence <= .50,
                  "measurability": None if coverage is None else coverage >= .60,
-                 "namesPerDate": None if not event_counts or any(n is None for n in event_counts) else min(event_counts) >= 10,
+                 "namesPerDate": None if not event_counts or any(n is None for n in event_counts) else min(event_counts) >= (5 if market == "KR" else 10),
                  "mde": None}
         # Per-date correlations are exposed without inventing an unregistered
         # averaging/maximum rule. That aggregation needs an explicit contract.
