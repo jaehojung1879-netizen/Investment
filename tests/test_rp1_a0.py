@@ -48,6 +48,20 @@ def test_event_26_weeks_and_report_staleness_are_separate_guards():
     assert A.FilingHistory("SYN", records).at("2020-07-01")["reason"] == "REPORT_STALE_OVER_180_DAYS"
 
 
+def test_known_event_survives_fresh_incomplete_quarter_without_inventing_missing_controls():
+    records = [annual(2017, 100), annual(2018, 90), annual(2019, 110)]
+    quarter = {**annual(2020, 30, public="2020-05-01"), "id": "SYN-2020-Q1", "form": "10-Q",
+               "periodDays": 91, "periodEnd": "2020-03-31"}
+    history = A.FilingHistory("SYN", records + [quarter])
+    before = history.at("2020-02-02")
+    active = history.at("2020-05-02")
+    assert active["currentKey"] == (2020, "Q1")
+    assert active["growth"] is None  # prior-year Q1 rollforward dependency is absent
+    assert active["flag"] is True and active["eventDate"] == before["eventDate"]
+    assert active["reason"] == "KNOWN_EVENT_IN_26_WEEK_RETENTION"
+    assert history.at("2020-08-03")["flag"] is None  # expired known event; incomplete new chain
+
+
 @pytest.mark.parametrize("cash", [0, -10])
 def test_growth_cross_without_positive_cash_never_emits_event(cash):
     rows = [annual(2017, 100), annual(2018, 90), annual(2019, 110, cash=cash)]

@@ -127,10 +127,18 @@ class FilingHistory:
         end = state["periodEnd"]
         if end and (dt.date.fromisoformat(day) - dt.date.fromisoformat(end)).days > 180:
             return {**result, "fields": {}, "deltas": {}, "reason": "REPORT_STALE_OVER_180_DAYS"}
+        event = state["eventDate"]
+        active = bool(event and 0 <= (dt.date.fromisoformat(day) - dt.date.fromisoformat(event)).days <= 26 * 7)
+        # Once observed, the registered event lasts 26 weeks. A later fresh
+        # filing with an incomplete TTM chain cannot erase that known event;
+        # it still withholds its own missing continuous controls. Invalid
+        # publication periods and stale reports remain blocked above/below.
+        if active and end and state["reason"] in ("AVAILABLE", "INCOMPLETE_TTM_CHAIN", "NON_POSITIVE_YOY_BASE"):
+            return {**result, "flag": True, "reason": ("AVAILABLE" if state["reason"] == "AVAILABLE"
+                                                       else "KNOWN_EVENT_IN_26_WEEK_RETENTION")}
         if state["reason"] != "AVAILABLE":
             return result
-        event = state["eventDate"]
-        result["flag"] = bool(event and 0 <= (dt.date.fromisoformat(day) - dt.date.fromisoformat(event)).days <= 26 * 7)
+        result["flag"] = active
         unknown = state["uncertainEventDate"]
         if not result["flag"] and unknown and 0 <= (dt.date.fromisoformat(day) - dt.date.fromisoformat(unknown)).days <= 26 * 7:
             result.update(flag=None, reason="EVENT_HISTORY_UNRESOLVED")
