@@ -1,0 +1,13 @@
+{
+  "allowedLogicDelta": "relative pipeline imports changed to equivalent absolute pipeline imports only; complete normalized AST equality required",
+  "censusAndSourcePolicy": "Sources, validate_spec and inspect AST unchanged; every original report code hash verified from its historical Git commit; live helpers unchanged.",
+  "contract": "RP1_WP2_RESEARCH_CODE_LAYOUT_V1",
+  "frozenMeasurementSha256": "aaee82e7abff173333711d90163255a8e051d0243947b0327347522bb56b89b2",
+  "frozenSpecFileSha256": "94e8375b8f5681874313c567e71ea7abb9405d50105e3c0e41feb95af8995261",
+  "historicalCodeCommit": "8b43d6ee55829b4db57a3b65cdb345b3523329d7",
+  "originalModulePath": "pipeline/rp1_us_universe.py",
+  "reason": "Keep research-only identity imports outside the production pipeline directory; sealed isolation guards unchanged.",
+  "relocatedModulePath": "scripts/rp1_us_universe.py",
+  "relocatedModuleSha256": "330b9dde976da89f7db38130f658dc1acea35f83c234c7bcd1d30d7b4e197ea6",
+  "scientificChange": false
+}
