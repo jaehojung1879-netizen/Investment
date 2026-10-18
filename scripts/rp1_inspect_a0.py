@@ -70,7 +70,8 @@ def main_admission(root=ROOT, github=api):
     sha = github("git/ref/heads/main")["object"]["sha"]
     runs = github("actions/workflows/tests.yml/runs?branch=main&per_page=20")["workflow_runs"]
     matching = [r for r in runs if r["head_sha"] == sha and r.get("event") == "push"]
-    if not matching or matching[0].get("conclusion") != "success":
+    tested = matching[0] if matching else None
+    if not tested or tested.get("status") != "completed" or tested.get("conclusion") != "success":
         blockers.append("CURRENT_MAIN_TESTS_NOT_SUCCESS")
     if not blockers:
         for path, expected in PINS.items():
@@ -82,7 +83,8 @@ def main_admission(root=ROOT, github=api):
                 continue
             if hashlib.sha256(raw).hexdigest() != expected:
                 blockers.append("MAIN_PREDECESSOR_BYTES_CHANGED:" + path)
-    return {"status": "ADMITTED" if not blockers else "BLOCKED_PRECONDITIONS", "mainSha": sha, "blockers": blockers}
+    return {"status": "ADMITTED" if not blockers else "BLOCKED_PRECONDITIONS", "mainSha": sha, "blockers": blockers,
+            "mainTestsRun": {k: tested.get(k) for k in ("id", "head_sha", "event", "status", "conclusion")} if tested else None}
 
 
 def load_inputs(repo, spec):

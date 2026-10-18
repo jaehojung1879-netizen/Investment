@@ -248,6 +248,26 @@ def test_financial_calendar_next_day_midnight_is_stable_across_dst(day):
     assert at.date()==(pd.Timestamp(day)+pd.Timedelta(days=1)).date()
 
 
+@pytest.mark.parametrize("status,expected", [("completed", "ADMITTED"), ("in_progress", "BLOCKED_PRECONDITIONS")])
+def test_admission_pins_the_final_workflow_run_instead_of_a_successful_job(monkeypatch, status, expected):
+    sha = "a" * 40
+    def github(path):
+        if path.startswith("pulls/"):
+            return {"merged": True}
+        if path.startswith("git/"):
+            return {"object": {"sha": sha}}
+        return {"workflow_runs": [{"id": 123, "head_sha": sha, "event": "push",
+                                   "status": status, "conclusion": "success"}]}
+    def git_blob(args, **kwargs):
+        assert args[:3] == ["git", "cat-file", "blob"]
+        return (S.ROOT / args[-1].split(":", 1)[1]).read_bytes()
+    monkeypatch.setattr(S.subprocess, "check_output", git_blob)
+    result = S.main_admission(github=github)
+    assert result["status"] == expected
+    assert result["mainTestsRun"]["id"] == 123
+    assert result["mainTestsRun"]["status"] == status
+
+
 def test_existing_contracts_and_population_bytes_remain_pinned():
     _,wp1,wp2=S.contracts()
     assert wp1['result']['studyABranch']['US']=='H252'
