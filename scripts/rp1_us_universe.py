@@ -10,11 +10,11 @@ from dataclasses import dataclass
 import hashlib
 import math
 
-from . import alpha_opportunity_v3_identity as ID
-from . import experiment_workbench as W
-from . import regional_alpha_features as RAF
-from . import us_capital_allocation_coverage as C
-from . import us_cash_profitability as CP
+from pipeline import alpha_opportunity_v3_identity as ID
+from pipeline import experiment_workbench as W
+from pipeline import regional_alpha_features as RAF
+from pipeline import us_capital_allocation_coverage as C
+from pipeline import us_cash_profitability as CP
 
 VERSION = "RP1_WP2_US_UNIVERSE_IDENTITY_V1"
 RULES = ("R-a", "R-b")

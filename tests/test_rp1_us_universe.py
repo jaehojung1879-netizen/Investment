@@ -9,7 +9,7 @@ import subprocess
 import pytest
 
 from pipeline import experiment_workbench as W
-from pipeline import rp1_us_universe as U
+from scripts import rp1_us_universe as U
 from scripts import rp1_inspect_us_universe as S
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -253,13 +253,13 @@ def test_spec_preserves_wp2_fifty_percent_and_never_authorizes_execution():
         S.validate_spec(fixed)
 
 
-def test_committed_measurement_uses_current_code_and_zero_outcome_counters():
+def test_committed_measurement_historical_code_and_equivalent_relocated_reader():
     path = ROOT / "docs/research-program/results/rp1-wp2-us-universe-v1.json"
     report = json.loads(path.read_bytes())
     U.scan_output(report)
     assert report["specSha256"] == S.S.RI.digest(spec())
-    for name, expected in report["codeHashes"].items():
-        assert hashlib.sha256((ROOT / name).read_bytes()).hexdigest() == expected
+    layout = S.verify_historical_code(report)
+    assert layout["scientificChange"] is False
     assert report["daily"]["selection"] == U.select(spec()["years"], report["daily"]["byYear"])
     assert len(report["daily"]["byYear"]) == 13
     assert report["accessCounters"]["outcomeReads"] == 0
