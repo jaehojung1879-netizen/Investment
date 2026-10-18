@@ -132,7 +132,7 @@ def diagnostics(report):
             out[name]["hypotheses"][h] = {"eligible": eligible, "measured": measured,
                 "missing": eligible-measured,
                 "measurability": measured/eligible if eligible else None,
-                "events": sum(n or 0 for n in counts), "datesUnmeasured": sum(n is None for n in counts),
+                "events": sum(n or 0 for n in counts) if measured else None, "datesUnmeasured": sum(n is None for n in counts),
                 "datesWithAtLeastFiveSignals": sum(n is not None and n >= 5 for n in counts),
                 "minKnownSignals": min((n for n in counts if n is not None), default=None),
                 "medianKnownSignals": float(pd.Series([n for n in counts if n is not None]).median()) if measured else None}
@@ -142,8 +142,9 @@ def diagnostics(report):
 def peer_diagnostics(observations):
     days = {}
     for row in observations:
+        days.setdefault(row.key.signal_date, [])
         if row.investable is True:
-            days.setdefault(row.key.signal_date, []).append(row)
+            days[row.key.signal_date].append(row)
     result = []
     for day, rows in sorted(days.items()):
         cells = {o.key.sample_id:{c.name:c.value for c in o.cells} for o in rows}

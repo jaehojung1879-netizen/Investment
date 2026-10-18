@@ -226,3 +226,15 @@ def test_kr_c13_uses_latest_visible_correction_and_exact_previous_period():
     after=history(rows+[correction]).at('2020-03-02')
     assert after['deltas']['operatingMargin']==pytest.approx(.4)
     assert history(rows+[correction]).at('2020-02-02')==before
+
+
+def test_raw_allowlist_and_unmeasured_denominators_remain_explicit():
+    reader=S.S.Sources(S.ROOT)
+    with pytest.raises(ValueError,match='OUTSIDE_RAW_INPUT_ALLOWLIST'):
+        reader.blob(S.S.SOURCE_COMMIT,'ledger/outcomes.jsonl')
+    row=kr_row(flag=None)
+    report=A.measure([row],market='KR',comparators=K.COMPARATORS,size_field='risk.marketCap')
+    h=report['hypotheses']['A-H1']
+    assert h['measured']==0 and h['missing']=={'INCOMPLETE_CHAIN':1}
+    assert h['prevalence'] is None and report['byDate'][0]['hypotheses']['A-H1']['events'] is None
+    assert K.diagnostics(report)['LATEST_52_WEEKS']['hypotheses']['A-H1']['events'] is None
