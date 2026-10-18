@@ -94,9 +94,22 @@ def save_done(store: Path, done: set[str]) -> None:
         json.dumps(sorted(done), indent=0) + "\n", encoding="utf-8")
 
 
+# An empty answer for a weekday is final only once KRX has had time to publish
+# it. The endpoint serves a session after its close, so "no rows" for today or
+# yesterday can mean "not published yet" and not "the exchange was shut". Marking
+# that done would make a real session permanently absent.
+SETTLE_DAYS = 3
+
+
+def is_settled(requested: str, as_of: dt.date, settle_days: int = SETTLE_DAYS) -> bool:
+    return (as_of - dt.date.fromisoformat(requested)).days > settle_days
+
+
 def collect(store: Path, targets: list[str], *, auth_key: str, base: str,
             keep: set[str] | None, max_calls: int, max_minutes: float,
-            pace: float, log=print) -> dict:
+            pace: float, log=print, as_of: dt.date | None = None,
+            settle_days: int = SETTLE_DAYS) -> dict:
+    as_of = as_of or dt.date.today()
     store.mkdir(parents=True, exist_ok=True)
     done = load_done(store)
     pending = [d for d in targets if d not in done]
@@ -119,6 +132,7 @@ def collect(store: Path, targets: list[str], *, auth_key: str, base: str,
     fresh: dict[int, list[dict]] = {}
     sessions: list[str] = []
     closed: list[str] = []
+    provisional: list[str] = []
     bars_written = 0
     stopped: str | None = None
 
@@ -148,6 +162,11 @@ def collect(store: Path, targets: list[str], *, auth_key: str, base: str,
             stopped = f"{requested}: {error}"
             break
         if not bars:
+            if not is_settled(requested, as_of, settle_days):
+                # Possibly unpublished, not closed: leave it pending so the
+                # next run asks again.
+                provisional.append(requested)
+                continue
             closed.append(requested)
             done.add(requested)
             continue
@@ -176,7 +195,7 @@ def collect(store: Path, targets: list[str], *, auth_key: str, base: str,
     if stopped:
         log(f"중단: {stopped}")
     return {"sessions": sessions, "bars": bars_written, "calls": calls,
-            "closed": closed, "written": written, "remaining": remaining,
+            "closed": closed, "provisional": provisional, "written": written, "remaining": remaining,
             "stopped": stopped}
 
 
