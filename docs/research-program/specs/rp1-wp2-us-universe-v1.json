@@ -1,0 +1,76 @@
+{
+  "id": "RP1_WP2_US_UNIVERSE_IDENTITY_V1",
+  "status": "OUTCOME_BLIND_POPULATION_MEASUREMENT",
+  "years": [
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "primaryGrid": "ALL_XNYS_SESSIONS",
+  "secondaryGrid": "COMPLETED_XNYS_WEEKS_FOR_CENSUS_COMPATIBILITY",
+  "denominator": "ALL_STRICT_PRIOR_SP500_SNAPSHOT_MEMBER_DAYS_BEFORE_EXCLUSIONS",
+  "threshold": {
+    "numerator": 1,
+    "denominator": 2,
+    "everyYearRequired": true,
+    "tieBreak": "R-a"
+  },
+  "commonAdmission": [
+    "CANONICAL_NONFINANCIAL_SECTOR",
+    "EXACT_SESSION_POSITIVE_FINITE_CLOSE_PRESENT",
+    "NO_KNOWN_IDENTITY_CONFLICT",
+    "NO_DUPLICATE_PRICING_IDENTITY"
+  ],
+  "R-a": "#245 identity join: evidence-backed malformed/rename mapping, known ambiguous identities withheld, same snapshot CIK must match an already-public filing CIK. No accounting completeness or lookback feature gate: those belong to WP5.",
+  "R-b": "replay-v16 exact membership-symbol to price-panel join, no retrospective rename splice, no historical CIK requirement; provisional ticker identity, with common known-conflict admission. Not verified security identity.",
+  "knownConflictAdmission": "v3 PANEL_POSTDATES_MEMBERSHIP / TICKER_REUSE_DIFFERENT_ISSUER / unresolved malformed symbols, plus PARA independently documented by #245 audit before this measurement. Kept in denominator and reported separately from legacy raw joins.",
+  "knownSuspectSymbols": {
+    "PARA": "SUPPLIER_SECURITY_ID_AND_ISSUER_UNVERIFIED_PER_245_AUDIT"
+  },
+  "pricePresenceOnly": true,
+  "financialProjection": [
+    "ticker",
+    "id",
+    "cik",
+    "availableFrom",
+    "acceptedDate"
+  ],
+  "eligibilityDoesNotCertify": [
+    "CONTINUOUS_MEMBERSHIP_BETWEEN_SNAPSHOTS",
+    "SECURITY_ID_OF_PRICE_VENDOR",
+    "TERMINAL_CONSIDERATION",
+    "ECONOMIC_PRICE_BASIS",
+    "FINANCIAL_MEASURABILITY",
+    "A0_PASS",
+    "HISTORICAL_EXECUTION_AUTHORIZATION"
+  ],
+  "missingYearDecision": "DATA_INSUFFICIENT",
+  "historicalExecutionAuthorized": false,
+  "mainBase": "7bc4998cafe7fd2575c97cab3be89382b2702dbd",
+  "protectedTreeSha256": {
+    "research_specs": "658c6dad409cff5097d364defdc8ee89b30db384f9c14f1bd376a2bad32b1a6f",
+    "docs/results": "c75dce9018f693aab4cc0166625388b8ee39cba673dd7569b9e8fe77b5d97709",
+    ".github/workflows": "fa92a9ad26333709607480458a5d17df4ab0ad74747a7e089f4d1e7aff5014b7",
+    "data/replay-policies": "a0a5d9325396ff815c96c48014d5ccb412eaf1a959a8541da802e3799b50564c"
+  },
+  "protectedC1FileSha256": {
+    "pipeline/rp1_c1_us_exposure.py": "7f1717eeaeca38342e86b92bab498897b596ffe74ef2dd48dc106d962e7a83b4",
+    "pipeline/rp1_c1_us_validator.py": "9d434932d494f7d8835cd4b6a1b86f4d3f62e60cfe85e28e1b642bcb06444e19",
+    "pipeline/rp1_c1_us_refetch.py": "dff4e5d493ca2f4dcfcb388172ac949de3549001972d25936b2ec7b9f6e34db1",
+    "pipeline/rp1_c1_us_exposure_spec.py": "28f4152a040d5b53aa1b3e2789ca01249feae737f2c8731d1010cc2f4709d1ee",
+    "pipeline/rp1_c1_us_execution.py": "3790c0ee359dd14cf93ffee82d714af374b724569e8b26620d1596d3283102e0",
+    "pipeline/rp1_c1_us_sources.py": "6927bdfe61abd7f95294de50df89e3393f81f5a531ffb28b9eb3aaa41ee5adf5",
+    "docs/research-program/specs/rp1-c1-us-exposure-ladder-replication-v1.json": "6a37b8dae1c062212e7523642a5af95754257a9c7de64c5fdbdcceef1d58885e",
+    "docs/research-program/results/rp1-c1-kr-equivalence-v1.json": "1b3a1faa2a4ab61fbddc97fd707f9bf22b477e18345ddf1bca86691d182c3840"
+  }
+}
