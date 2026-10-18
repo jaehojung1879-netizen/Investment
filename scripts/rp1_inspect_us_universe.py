@@ -7,6 +7,7 @@ outcome store, result file, lock, training or production import is used.
 from __future__ import annotations
 
 import argparse
+import ast
 from collections import defaultdict
 import hashlib
 import json
@@ -17,16 +18,69 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from pipeline import rp1_us_universe as U  # noqa: E402
+from scripts import rp1_us_universe as U  # noqa: E402
 from scripts import inspect_experiment_sources as S  # noqa: E402
 
 SPEC = "docs/research-program/specs/rp1-wp2-us-universe-v1.json"
 SPEC_DIGEST = "d61199584fac4599f6ab9efe08d79f7fc7489478773b67616984f41ed4a9963d"
 EVIDENCE = "research_specs/alpha-opportunity-model-v3-us-identity-evidence.json.gz"
-CODE = ("pipeline/rp1_us_universe.py", "scripts/rp1_inspect_us_universe.py")
+CODE = ("scripts/rp1_us_universe.py", "scripts/rp1_inspect_us_universe.py")
 HELPERS = ("scripts/inspect_experiment_sources.py", "pipeline/experiment_workbench.py",
            "pipeline/alpha_opportunity_v3_identity.py", "pipeline/us_capital_allocation_coverage.py",
            "pipeline/us_cash_profitability.py", "pipeline/regional_alpha_features.py", "pipeline/replay_calendar.py")
+HISTORICAL_CODE_COMMIT = "8b43d6ee55829b4db57a3b65cdb345b3523329d7"
+LAYOUT = "docs/research-program/specs/rp1-wp2-code-layout-v1.json"
+
+
+def historical_code(root, path):
+    return subprocess.check_output(["git", "cat-file", "blob", HISTORICAL_CODE_COMMIT + ":" + path],
+        cwd=root, env={**os.environ, "GIT_NO_LAZY_FETCH": "1"})
+
+
+def verify_historical_code(report, root=ROOT):
+    """A frozen report pins the code THAT RAN, not its later file location.
+
+    Keep every historical hash, require unchanged live helpers, and prove the
+    relocated reader differs ONLY by equivalent absolute pipeline imports.
+    This is separation from production, never a weaker import guard.
+    """
+    root = Path(root)
+    layout = json.loads((root / LAYOUT).read_bytes())
+    if layout["historicalCodeCommit"] != HISTORICAL_CODE_COMMIT or layout["scientificChange"] is not False:
+        raise ValueError("HISTORICAL_CODE_COMMIT_CHANGED")
+    result_path = "docs/research-program/results/rp1-wp2-us-universe-v1.json"
+    for path, field in ((SPEC, "frozenSpecFileSha256"), (result_path, "frozenMeasurementSha256")):
+        original_hash = hashlib.sha256(historical_code(root, path)).hexdigest()
+        if hashlib.sha256((root / path).read_bytes()).hexdigest() != original_hash or layout[field] != original_hash:
+            raise ValueError("FROZEN_WP2_ARTIFACT_CHANGED:" + path)
+    if json.loads((root / result_path).read_bytes()) != report:
+        raise ValueError("FOREIGN_MEASUREMENT_METADATA")
+    for path, expected in report["codeHashes"].items():
+        raw = historical_code(root, path)
+        if hashlib.sha256(raw).hexdigest() != expected:
+            raise ValueError("HISTORICAL_CODE_BYTES_CHANGED:" + path)
+        if path not in {"pipeline/rp1_us_universe.py", "scripts/rp1_inspect_us_universe.py"}:
+            if hashlib.sha256((root / path).read_bytes()).hexdigest() != expected:
+                raise ValueError("WP2_LIVE_HELPER_CHANGED:" + path)
+    original = ast.parse(historical_code(root, "pipeline/rp1_us_universe.py"))
+    for node in ast.walk(original):
+        if isinstance(node, ast.ImportFrom) and node.level == 1 and node.module is None:
+            node.level, node.module = 0, "pipeline"
+    moved = root / "scripts/rp1_us_universe.py"
+    if (root / "pipeline/rp1_us_universe.py").exists():
+        raise ValueError("RESEARCH_READER_STILL_IN_PRODUCTION_DIRECTORY")
+    if ast.dump(original, include_attributes=False) != ast.dump(ast.parse(moved.read_bytes()), include_attributes=False):
+        raise ValueError("RELOCATED_RESEARCH_LOGIC_CHANGED")
+    if hashlib.sha256(moved.read_bytes()).hexdigest() != layout["relocatedModuleSha256"]:
+        raise ValueError("RELOCATED_CODE_VERSION_CHANGED")
+    old_cli = ast.parse(historical_code(root, "scripts/rp1_inspect_us_universe.py"))
+    new_cli = ast.parse((root / "scripts/rp1_inspect_us_universe.py").read_bytes())
+    for name in ("Sources", "validate_spec", "inspect"):
+        old = next(n for n in old_cli.body if isinstance(n, (ast.ClassDef, ast.FunctionDef)) and n.name == name)
+        new = next(n for n in new_cli.body if isinstance(n, (ast.ClassDef, ast.FunctionDef)) and n.name == name)
+        if ast.dump(old, include_attributes=False) != ast.dump(new, include_attributes=False):
+            raise ValueError("WP2_CENSUS_OR_SOURCE_POLICY_CHANGED:" + name)
+    return layout
 
 
 class Sources(S.Sources):
@@ -112,8 +166,13 @@ def main(argv=None):
     parser.add_argument("--repo", type=Path, default=ROOT)
     args = parser.parse_args(argv)
     # Preview must not even read the spec, source repository or results.
-    report = inspect(args.repo, json.loads((ROOT / SPEC).read_bytes())) if args.inspect else {
-        "program": U.VERSION, "status": "PREVIEW_ONLY", "sourceReads": 0, "historicalExecutionAuthorized": False}
+    if args.inspect:
+        frozen = json.loads((ROOT / "docs/research-program/results/rp1-wp2-us-universe-v1.json").read_bytes())
+        layout = verify_historical_code(frozen, ROOT)
+        report = inspect(args.repo, json.loads((ROOT / SPEC).read_bytes()))
+        report["implementationLayout"] = layout
+    else:
+        report = {"program": U.VERSION, "status": "PREVIEW_ONLY", "sourceReads": 0, "historicalExecutionAuthorized": False}
     print(json.dumps(report, sort_keys=True, ensure_ascii=False, allow_nan=False, indent=2))
     return 0
 
