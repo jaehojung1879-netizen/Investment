@@ -1,0 +1,38 @@
+name: Investment Auto-merge eligibility trigger
+
+# Trusted-base assessment. This workflow NEVER checks out, imports or runs PR code.
+# It runs only after this workflow has been merged into the protected default branch.
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, ready_for_review, converted_to_draft, labeled, unlabeled, edited]
+  pull_request_review:
+    types: [submitted, dismissed]
+
+permissions:
+  contents: read
+  pull-requests: read
+  checks: write
+
+concurrency:
+  group: engineering-eligibility-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  assess:
+    if: github.event.pull_request.base.ref == 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out TRUSTED main, never the PR
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - name: Re-fetch latest PR and post fail-closed eligibility check on PR HEAD
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python scripts/engineering_pr_gate.py
