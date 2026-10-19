@@ -114,3 +114,33 @@ def test_adverse_fast_with_unavailable_return_is_adverse():
     r = B.build_preview(s, SIGNAL)
     assert r["trailing24mReturn"] is None
     assert r["adverse"] == (True if r["fast"] == 2 else None)
+
+
+def _redigest(r):
+    r = dict(r)
+    r.pop("receiptSha256", None)
+    r["receiptSha256"] = B.P.receipt_digest(r)
+    return r
+
+
+@pytest.mark.parametrize("field,value", [
+    ("adverse", True), ("adverse", None), ("fast", 2), ("fast", 7), ("fast", True),
+    ("trailing24mReturn", -0.2), ("trailing24mReturn", -1.5),
+    ("baseSessionDate", None), ("baseSessionDate", "2030-01-01"), ("baseSessionDate", "garbage"),
+    ("unavailableReasons", ["FAST_DATA_INSUFFICIENT"]), ("unavailableReasons", "x"), ("unavailableReasons", ["MADE_UP"]),
+    ("signalDate", "2026-10-17"), ("signalDate", "bad"), ("definition", "other"), ("studyId", "other"),
+    ("schemaVersion", 2), ("inputIdentity", "short"),
+])
+def test_digest_recomputed_tampering_is_rejected(field, value):
+    good = B.build_preview(_close(), SIGNAL)
+    assert B.validate_preview(good)
+    bad = _redigest({**good, field: value})
+    with pytest.raises((ValueError, TypeError)):
+        B.validate_preview(bad)
+
+
+def test_unavailable_signal_close_receipt_stays_valid_and_cannot_claim_a_state():
+    r = B.build_preview(_close().iloc[:-1], SIGNAL)
+    assert r["adverse"] is None and B.validate_preview(r)
+    with pytest.raises(ValueError):
+        B.validate_preview(_redigest({**r, "adverse": False}))

@@ -96,7 +96,54 @@ def validate_preview(receipt):
     if receipt["receiptSha256"] != P.receipt_digest(receipt):
         raise ValueError("PREVIEW_DIGEST_MISMATCH")
     P.scan_for_outcome_keys(receipt)
-    if receipt["adverse"] is False and receipt["unavailableReasons"]:
-        raise ValueError("NOT_ADVERSE_CLAIMED_WITH_A_MISSING_LEG")
     json.dumps(receipt, allow_nan=False)
+    _check_consistency(receipt)
     return True
+
+
+KNOWN_REASONS = ("SIGNAL_DATE_CLOSE_UNAVAILABLE", "FAST_DATA_INSUFFICIENT", "TRAILING_24M_BASE_UNAVAILABLE")
+
+
+def _is_num(v):
+    return isinstance(v, (int, float)) and not isinstance(v, bool) and np.isfinite(v)
+
+
+def _check_consistency(r):
+    """A recomputed digest proves the bytes, not the logic. Re-derive every dependent field from the receipt's own legs."""
+    if r["schemaVersion"] != SCHEMA_VERSION or r["studyId"] != STUDY or r["definition"] != DEFINITION:
+        raise ValueError("PREVIEW_IDENTITY_OR_DEFINITION_MISMATCH")
+    if not (isinstance(r["inputIdentity"], str) and len(r["inputIdentity"]) == 64):
+        raise ValueError("PREVIEW_INPUT_IDENTITY_MALFORMED")
+    try:
+        day = pd.Timestamp(r["signalDate"])
+    except (ValueError, TypeError) as exc:
+        raise ValueError("PREVIEW_SIGNAL_DATE_MALFORMED") from exc
+    if str(day.date()) != r["signalDate"] or not P.is_weekly_decision_session(day):
+        raise ValueError("PREVIEW_SIGNAL_DATE_NOT_A_WEEKLY_DECISION_SESSION")
+    fast, ret, base = r["fast"], r["trailing24mReturn"], r["baseSessionDate"]
+    if fast is not None and (isinstance(fast, bool) or fast not in (0, 1, 2)):
+        raise ValueError("PREVIEW_FAST_OUT_OF_DOMAIN")
+    if ret is not None and (not _is_num(ret) or ret <= -1.0):
+        raise ValueError("PREVIEW_RETURN_MALFORMED")
+    if (ret is None) != (base is None):
+        raise ValueError("PREVIEW_RETURN_AND_BASE_DISAGREE")
+    if base is not None:
+        try:
+            b = pd.Timestamp(base)
+        except (ValueError, TypeError) as exc:
+            raise ValueError("PREVIEW_BASE_DATE_MALFORMED") from exc
+        if str(b.date()) != base or b > day - pd.DateOffset(months=LOOKBACK_MONTHS):
+            raise ValueError("PREVIEW_BASE_DATE_OUT_OF_RANGE")
+    reasons = r["unavailableReasons"]
+    if not isinstance(reasons, list) or any(x not in KNOWN_REASONS for x in reasons) or len(set(reasons)) != len(reasons):
+        raise ValueError("PREVIEW_REASONS_MALFORMED")
+    if "SIGNAL_DATE_CLOSE_UNAVAILABLE" in reasons:
+        if reasons != ["SIGNAL_DATE_CLOSE_UNAVAILABLE"] or fast is not None or ret is not None or r["adverse"] is not None:
+            raise ValueError("PREVIEW_UNAVAILABLE_SIGNAL_INCONSISTENT")
+        return
+    if (fast is None) != ("FAST_DATA_INSUFFICIENT" in reasons) or (ret is None) != ("TRAILING_24M_BASE_UNAVAILABLE" in reasons):
+        raise ValueError("PREVIEW_REASONS_DISAGREE_WITH_LEGS")
+    legs = [fast == 2 if fast is not None else None, ret < 0 if ret is not None else None]
+    expected = True if any(v is True for v in legs) else (None if any(v is None for v in legs) else False)
+    if r["adverse"] is not expected:
+        raise ValueError("PREVIEW_ADVERSE_DISAGREES_WITH_LEGS")
