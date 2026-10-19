@@ -19,7 +19,7 @@ permissions:
   checks: write
 
 concurrency:
-  group: gate-\${{ github.event.pull_request.number || github.event.check_run.id || github.event.workflow_run.id || github.run_id }}
+  group: gate-${{ github.event.pull_request.number || github.event.check_run.id || github.event.workflow_run.id || github.run_id }}
   cancel-in-progress: true
 
 jobs:
@@ -47,5 +47,5 @@ jobs:
           python-version: "3.11"
       - name: Fetch PR on exact SHA and post fail-closed machine check
         env:
-          GITHUB_TOKEN: \${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: python scripts/engineering_pr_gate.py
