@@ -10,7 +10,9 @@ reports the undetermined cell instead of inventing a held value. Multipliers des
 """
 from __future__ import annotations
 
+import datetime as dt
 import json
+from numbers import Real
 
 import pandas as pd
 
@@ -26,10 +28,16 @@ REQUIRED = ("schemaVersion", "studyId", "evidenceClass", "region", "signalDate",
             "ledgerWritten", "modelVersion")
 
 
-def _state(value, layer):
-    if value is None or (isinstance(value, float) and value != value):
+def _state(value, layer, *, allow_nan=False):
+    if value is None:
         return None
-    if int(value) != value or int(value) not in K.STATE_VALUES[layer.upper()]:
+    if isinstance(value, bool) or not isinstance(value, Real):
+        raise ValueError("STATE_OUTSIDE_FROZEN_DOMAIN: " + layer)
+    # The builder retains its existing NaN -> JSON null normalization. Received
+    # receipts must already be finite JSON states or explicit null.
+    if allow_nan and value != value:
+        return None
+    if value not in K.STATE_VALUES[layer.upper()]:
         raise ValueError("STATE_OUTSIDE_FROZEN_DOMAIN: " + layer)
     return int(value)
 
@@ -38,7 +46,7 @@ def build_preview(signal_date, slow, transition, fast):
     day = pd.Timestamp(signal_date).normalize()
     if not P.is_weekly_decision_session(day):
         raise ValueError("SIGNAL_DATE_IS_NOT_A_WEEKLY_DECISION_SESSION")
-    layers = {k: _state(v, k) for k, v in zip(LAYER_KEYS, (slow, transition, fast))}
+    layers = {k: _state(v, k, allow_nan=True) for k, v in zip(LAYER_KEYS, (slow, transition, fast))}
     mult = {c: K.multiplier(c, layers["slow"], layers["transition"], layers["fast"]) for c in K.CANDIDATE_ORDER}
     receipt = {"schemaVersion": SCHEMA_VERSION, "studyId": STUDY, "evidenceClass": EVIDENCE_CLASS, "region": REGION,
                "signalDate": str(day.date()), "layers": layers, "multipliers": mult,
@@ -51,18 +59,70 @@ def build_preview(signal_date, slow, transition, fast):
 
 
 def validate_preview(receipt):
-    missing = [k for k in REQUIRED + ("receiptSha256",) if k not in receipt]
+    """Validate an external preview independently of its producer/digest.
+
+    A digest detects accidental alteration; it is not authentication and cannot
+    establish agreement with the frozen model or the original observations.
+    """
+    if not isinstance(receipt, dict):
+        raise ValueError("PREVIEW_MUST_BE_AN_OBJECT")
+    fields = REQUIRED + ("receiptSha256",)
+    missing = [k for k in fields if k not in receipt]
     if missing:
         raise ValueError("PREVIEW_FIELD_MISSING: " + ",".join(missing))
-    if receipt["evidenceClass"] != EVIDENCE_CLASS or receipt["ledgerWritten"] is not False or receipt["region"] != REGION:
+    if set(receipt) != set(fields):
+        raise ValueError("PREVIEW_FIELD_SET_CHANGED")
+    if (not isinstance(receipt["schemaVersion"], int) or isinstance(receipt["schemaVersion"], bool)
+            or receipt["schemaVersion"] != SCHEMA_VERSION):
+        raise ValueError("PREVIEW_SCHEMA_VERSION_CHANGED")
+    if not isinstance(receipt["studyId"], str) or receipt["studyId"] != STUDY:
+        raise ValueError("PREVIEW_STUDY_ID_CHANGED")
+    if not isinstance(receipt["modelVersion"], str) or receipt["modelVersion"] != K.MODEL_VERSION:
+        raise ValueError("PREVIEW_MODEL_VERSION_CHANGED")
+    if (not isinstance(receipt["evidenceClass"], str) or receipt["evidenceClass"] != EVIDENCE_CLASS
+            or receipt["ledgerWritten"] is not False
+            or not isinstance(receipt["region"], str) or receipt["region"] != REGION):
         raise ValueError("PREVIEW_MUST_NOT_CLAIM_LEDGER_EVIDENCE")
-    if receipt["receiptSha256"] != P.receipt_digest(receipt):
-        raise ValueError("PREVIEW_DIGEST_MISMATCH")
-    if set(receipt["multipliers"]) != set(K.CANDIDATE_ORDER):
+
+    signal = receipt["signalDate"]
+    if not isinstance(signal, str):
+        raise ValueError("SIGNAL_DATE_MUST_BE_AN_ISO_DATE")
+    try:
+        day = dt.date.fromisoformat(signal)
+    except ValueError as exc:
+        raise ValueError("SIGNAL_DATE_MUST_BE_AN_ISO_DATE") from exc
+    if day.isoformat() != signal:
+        raise ValueError("SIGNAL_DATE_MUST_BE_AN_ISO_DATE")
+    if not P.is_weekly_decision_session(pd.Timestamp(day)):
+        raise ValueError("SIGNAL_DATE_IS_NOT_A_WEEKLY_DECISION_SESSION")
+
+    layers = receipt["layers"]
+    if not isinstance(layers, dict) or set(layers) != set(LAYER_KEYS):
+        raise ValueError("LAYER_SET_CHANGED")
+    states = {layer: _state(layers[layer], layer) for layer in LAYER_KEYS}
+    actual = receipt["multipliers"]
+    if not isinstance(actual, dict) or set(actual) != set(K.CANDIDATE_ORDER):
         raise ValueError("CANDIDATE_SET_CHANGED")
-    for c, m in receipt["multipliers"].items():
-        if m is not None and m not in K.LEVELS:
+    for c, m in actual.items():
+        if m is not None and (isinstance(m, bool) or not isinstance(m, (int, float)) or m not in K.LEVELS):
             raise ValueError("MULTIPLIER_OUTSIDE_FROZEN_LEVELS: " + c)
+    undetermined = receipt["undeterminedCandidates"]
+    if not isinstance(undetermined, list) or any(not isinstance(c, str) for c in undetermined):
+        raise ValueError("UNDETERMINED_CANDIDATES_INVALID")
+    # Strict schema/type checks precede canonicalization: malformed containers,
+    # non-finite numbers and non-JSON scalars must produce a validation error.
+    try:
+        json.dumps(receipt, allow_nan=False)
+    except (TypeError, ValueError, OverflowError) as exc:
+        raise ValueError("PREVIEW_MUST_BE_FINITE_JSON") from exc
+    if not P.is_sha256(receipt["receiptSha256"]) or receipt["receiptSha256"] != P.receipt_digest(receipt):
+        raise ValueError("PREVIEW_DIGEST_MISMATCH")
+
+    expected = {c: K.multiplier(c, states["slow"], states["transition"], states["fast"])
+                for c in K.CANDIDATE_ORDER}
+    if actual != expected:
+        raise ValueError("MULTIPLIERS_DISAGREE_WITH_FROZEN_MODEL")
+    if undetermined != [c for c in K.CANDIDATE_ORDER if expected[c] is None]:
+        raise ValueError("UNDETERMINED_CANDIDATES_DISAGREE_WITH_FROZEN_MODEL")
     P.scan_for_outcome_keys(receipt)
-    json.dumps(receipt, allow_nan=False)
     return True
