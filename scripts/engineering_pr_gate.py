@@ -18,6 +18,9 @@ AI_AUDIT_NAME = "Investment Independent AI Audit"
 AI_AUDIT_TITLE = "INDEPENDENT_DIFF_AUDIT_PASSED"
 LABEL = "auto-merge:engineering"
 TEST_CHECK_NAME = "pytest"
+# The only workflow whose `pytest` job is evidence. Any workflow can name a job
+# `pytest`, so the check is bound to its check suite's workflow file.
+TESTS_WORKFLOW_PATH = ".github/workflows/tests.yml"
 GITHUB_ACTIONS_APP_ID = 15368
 # Deliberately DISARMED. Pin the real externally authenticated review App ID
 # only through a separately reviewed, owner-authorized policy change.
@@ -27,6 +30,9 @@ MAX_LINES = 350
 ALLOW_SOURCE = re.compile(r"^scripts/devtools/[A-Za-z0-9_/-]+\.py$")
 ALLOW_TEST = re.compile(r"^tests/test_devtools_[A-Za-z0-9_]+\.py$")
 ALLOW_DOC = re.compile(r"^docs/devtools/[A-Za-z0-9_/-]+\.md$")
+# Regular blobs only. A symlink (120000) at an allowlisted path can point at
+# content outside the allowlist, and a submodule (160000) has no reviewable text.
+REGULAR_FILE_MODES = {"100644", "100755"}
 
 
 def audit_external_id(pr_number: int, sha: str) -> str:
@@ -74,19 +80,89 @@ def audit_evidence_reasons(
     return reasons
 
 
-def ci_evidence_reasons(checks: list[dict]) -> list[str]:
-    """The same exact-head PR SHA must have successful GitHub Actions pytest."""
+def impersonation_reasons(checks: list[dict], trusted_app_id: int | None) -> list[str]:
+    """A gate check name claimed by an unexpected App is a forgery signal.
+
+    The selection below ignores such checks, but a Ruleset whose required check
+    is configured with "any source" would not, so their presence blocks.
+    """
+    reasons = []
+    for c in checks:
+        app = (c.get("app") or {}).get("id")
+        name = c.get("name")
+        if name == AI_AUDIT_NAME and app != trusted_app_id:
+            reasons.append("AI_AUDIT_CHECK_CLAIMED_BY_UNPINNED_APP")
+        elif name in (NAME, TEST_CHECK_NAME) and app != GITHUB_ACTIONS_APP_ID:
+            reasons.append(f"CHECK_NAME_CLAIMED_BY_NON_ACTIONS_APP:{name}")
+    return sorted(set(reasons))
+
+
+def ci_evidence_reasons(
+    checks: list[dict], sha: str | None = None, runs: list[dict] | None = None
+) -> list[str]:
+    """The exact head must have a successful pytest from the Tests workflow.
+
+    `runs` are the GitHub Actions workflow runs on the head SHA. Every Actions
+    `pytest` check must belong to a Tests run triggered by `pull_request` on
+    this SHA; a `pytest` job from any other workflow is refused, not ignored.
+    """
+    actions_pytest = [
+        c for c in checks
+        if c.get("name") == TEST_CHECK_NAME
+        and (c.get("app") or {}).get("id") == GITHUB_ACTIONS_APP_ID
+    ]
     run = _latest(checks, TEST_CHECK_NAME, GITHUB_ACTIONS_APP_ID)
     if run is None:
         return ["CURRENT_HEAD_PYTEST_ABSENT"]
+    reasons = []
     if run.get("status") != "completed" or run.get("conclusion") != "success":
-        return ["CURRENT_HEAD_PYTEST_NOT_SUCCESSFUL"]
-    return []
+        reasons.append("CURRENT_HEAD_PYTEST_NOT_SUCCESSFUL")
+    trusted_suites = {
+        r.get("check_suite_id") for r in (runs or [])
+        if r.get("path") == TESTS_WORKFLOW_PATH
+        and r.get("event") == "pull_request"
+        and isinstance(sha, str) and r.get("head_sha") == sha
+        and type(r.get("check_suite_id")) is int
+    }
+    for c in actions_pytest:
+        if (c.get("check_suite") or {}).get("id") not in trusted_suites:
+            reasons.append("PYTEST_CHECK_NOT_FROM_TESTS_WORKFLOW")
+            break
+    return reasons
+
+
+def file_mode_reasons(files: list[dict], modes: dict[str, str] | None) -> list[str]:
+    """Every changed path must be a regular blob at the head commit."""
+    if modes is None:
+        return ["FILE_MODES_UNVERIFIED"]
+    return [
+        f"NON_REGULAR_FILE:{f.get('filename')}"
+        for f in files
+        if modes.get(f.get("filename")) not in REGULAR_FILE_MODES
+    ]
+
+
+def shared_head_reasons(number: int, sha: str, head_prs: list[dict] | None) -> list[str]:
+    """Check runs attach to a SHA, not to a PR.
+
+    If two open PRs share one head, a green eligibility check computed for one
+    satisfies the other's required check (e.g. one without the opt-in label).
+    """
+    if head_prs is None:
+        return ["HEAD_SHA_PR_ASSOCIATION_UNVERIFIED"]
+    others = {
+        p.get("number") for p in head_prs
+        if p.get("state") == "open" and (p.get("head") or {}).get("sha") == sha
+    } - {number}
+    return ["HEAD_SHA_SHARED_WITH_ANOTHER_OPEN_PR"] if others else []
 
 
 def eligibility_reasons(
     pr: dict, files: list[dict], checks: list[dict],
     *, trusted_app_id: int | None = TRUSTED_AI_AUDITOR_APP_ID,
+    runs: list[dict] | None = None,
+    modes: dict[str, str] | None = None,
+    head_prs: list[dict] | None = None,
 ) -> list[str]:
     """Narrow allowlist plus independently authenticated AI audit and CI."""
     reasons: list[str] = []
@@ -106,6 +182,10 @@ def eligibility_reasons(
 
     if not files or len(files) > MAX_FILES:
         reasons.append("CHANGED_FILES_OUTSIDE_1_TO_8")
+    # The file listing is paginated and capped by GitHub; it must account for
+    # every file the PR itself says it changes.
+    if type(pr.get("changed_files")) is not int or pr["changed_files"] != len(files):
+        reasons.append("CHANGED_FILE_LIST_INCOMPLETE")
     if any(type(f.get("changes")) is not int or f["changes"] < 0 for f in files):
         reasons.append("UNVERIFIABLE_CHANGE_COUNT")
     elif sum(f["changes"] for f in files) > MAX_LINES:
@@ -130,12 +210,15 @@ def eligibility_reasons(
             reasons.append(f"PATH_REQUIRES_OWNER_APPROVAL:{name}")
     if not (has_source and has_test):
         reasons.append("REQUIRE_DEVTOOLS_SOURCE_AND_TEST")
+    reasons.extend(file_mode_reasons(files, modes))
 
     if not isinstance(number, int) or not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{40}", sha):
         reasons.append("INVALID_PR_OR_HEAD_SHA")
     else:
         reasons.extend(audit_evidence_reasons(number, sha, checks, trusted_app_id))
-    reasons.extend(ci_evidence_reasons(checks))
+        reasons.extend(shared_head_reasons(number, sha, head_prs))
+    reasons.extend(impersonation_reasons(checks, trusted_app_id))
+    reasons.extend(ci_evidence_reasons(checks, sha, runs))
     return reasons
 
 
@@ -173,52 +256,119 @@ def paginate(endpoint: str, token: str) -> list[dict]:
     raise ValueError("PAGINATION_LIMIT_REACHED_FAIL_CLOSED")
 
 
-def get_head_checks(repo_path: str, sha: str, token: str) -> list[dict]:
-    """Never accept a partial API page or status from another commit."""
-    payload = api("GET", repo_path + f"/commits/{sha}/check-runs?per_page=100", token)
-    runs = payload.get("check_runs")
-    count = payload.get("total_count")
-    if (not isinstance(runs, list) or type(count) is not int
-            or count != len(runs)):
+def paginate_envelope(endpoint: str, key: str, token: str) -> list[dict]:
+    """Collect an {total_count, <key>: [...]} listing; never a partial one."""
+    items: list[dict] = []
+    total = None
+    for page in range(1, 12):
+        sep = "&" if "?" in endpoint else "?"
+        payload = api("GET", endpoint + sep + f"per_page=100&page={page}", token)
+        batch = payload.get(key) if isinstance(payload, dict) else None
+        count = payload.get("total_count") if isinstance(payload, dict) else None
+        if not isinstance(batch, list) or type(count) is not int:
+            raise ValueError("CHECK_RUN_RESULTS_INCOMPLETE")
+        if total is None:
+            total = count
+        elif count != total:
+            raise ValueError("LISTING_CHANGED_DURING_PAGINATION")
+        items.extend(batch)
+        if len(items) >= total or not batch:
+            break
+    if total is None or len(items) != total:
         raise ValueError("CHECK_RUN_RESULTS_INCOMPLETE")
+    return items
+
+
+def get_head_checks(repo_path: str, sha: str, token: str) -> list[dict]:
+    """Never accept a partial API page or status from another commit.
+
+    `filter=all`: the endpoint's default `filter=latest` selects by
+    completed_at, so a queued re-run (completed_at=None) could be hidden behind
+    the older success it replaces. The gate orders by check-run id itself.
+    """
+    runs = paginate_envelope(
+        repo_path + f"/commits/{sha}/check-runs?filter=all", "check_runs", token
+    )
     if any(x.get("head_sha") != sha for x in runs):
         raise ValueError("CHECK_RUN_HEAD_SHA_MISMATCH")
     return runs
 
 
-def pr_number_from_event(event: dict) -> int:
+def get_head_workflow_runs(repo_path: str, sha: str, token: str) -> list[dict]:
+    runs = paginate_envelope(
+        repo_path + f"/actions/runs?head_sha={sha}", "workflow_runs", token
+    )
+    if any(x.get("head_sha") != sha for x in runs):
+        raise ValueError("WORKFLOW_RUN_HEAD_SHA_MISMATCH")
+    return runs
+
+
+def get_file_modes(repo_path: str, sha: str, paths: list[str], token: str) -> dict[str, str]:
+    """Git modes of `paths` at commit `sha`, by walking non-recursive trees."""
+    trees: dict[str, dict[str, dict]] = {}
+
+    def tree(directory: str, tree_sha: str) -> dict[str, dict]:
+        if directory not in trees:
+            payload = api("GET", repo_path + f"/git/trees/{tree_sha}", token)
+            if payload.get("truncated") is not False or not isinstance(payload.get("tree"), list):
+                raise ValueError("GIT_TREE_INCOMPLETE")
+            trees[directory] = {e.get("path"): e for e in payload["tree"]}
+        return trees[directory]
+
+    commit = api("GET", repo_path + f"/git/commits/{sha}", token)
+    root = (commit.get("tree") or {}).get("sha")
+    if commit.get("sha") != sha or not isinstance(root, str):
+        raise ValueError("GIT_COMMIT_UNRESOLVED")
+    modes: dict[str, str] = {}
+    for path in paths:
+        parts = path.split("/")
+        entries = tree("", root)
+        directory = ""
+        for segment in parts[:-1]:
+            entry = entries.get(segment)
+            if entry is None or entry.get("type") != "tree":
+                break
+            directory = directory + "/" + segment
+            entries = tree(directory, entry["sha"])
+        else:
+            entry = entries.get(parts[-1])
+            if entry is not None and entry.get("type") == "blob":
+                modes[path] = entry.get("mode")
+    return modes
+
+
+def pr_number_from_event(event: dict, repository: str) -> int:
     direct = (event.get("pull_request") or {}).get("number")
     if isinstance(direct, int):
         return direct
     payload = event.get("workflow_run") or event.get("check_run") or {}
-    numbers = {x.get("number") for x in (payload.get("pull_requests") or [])}
+    # `pull_requests` can list PRs of OTHER repositories that share the head;
+    # their numbers mean a different PR here.
+    suffix = "/repos/" + repository
+    numbers = {
+        x.get("number") for x in (payload.get("pull_requests") or [])
+        if str(((x.get("base") or {}).get("repo") or {}).get("url", "")).endswith(suffix)
+    }
     if len(numbers) != 1 or not all(isinstance(x, int) for x in numbers):
         raise ValueError("EVENT_PR_ID_UNRESOLVED_OR_AMBIGUOUS")
     return next(iter(numbers))
 
 
-def main() -> int:
-    token = os.environ["GITHUB_TOKEN"]
-    repository = os.environ["GITHUB_REPOSITORY"]
-    with open(os.environ["GITHUB_EVENT_PATH"], encoding="utf-8") as stream:
-        event = json.load(stream)
-    number = pr_number_from_event(event)
-    base_path = "/repos/" + repository
-    pr_path = base_path + f"/pulls/{number}"
-    pr = api("GET", pr_path, token)
-    if (pr.get("base") or {}).get("repo", {}).get("full_name") != repository:
-        raise ValueError("REPOSITORY_MISMATCH")
-    files = paginate(pr_path + "/files", token)
-    sha = pr["head"]["sha"]
-    checks = get_head_checks(base_path, sha, token)
-    reasons = eligibility_reasons(pr, files, checks)
-    # If the PR was updated after inspection, do not post a green assertion.
-    refreshed = api("GET", pr_path, token)
-    if refreshed["head"]["sha"] != sha:
-        reasons.append("HEAD_SHA_CHANGED_DURING_ASSESSMENT")
+def pr_fingerprint(pr: dict) -> tuple:
+    """Everything eligibility reads from the PR record itself."""
+    return (
+        (pr.get("head") or {}).get("sha"),
+        pr.get("state"),
+        pr.get("draft"),
+        (pr.get("base") or {}).get("ref"),
+        pr.get("changed_files"),
+        tuple(sorted(str(x.get("name")) for x in pr.get("labels", []))),
+    )
 
+
+def post_check(base_path: str, token: str, number: int, sha: str, reasons: list[str]) -> dict:
     if reasons:
-        summary = "Not eligible; NO MERGE.\\n" + "\\n".join("- " + s for s in reasons)
+        summary = "Not eligible; NO MERGE.\n" + "\n".join("- " + s for s in reasons)
     else:
         summary = (
             "NARROW DEVTOOLS CANDIDATE, NOT A MERGE AUTHORIZATION. "
@@ -227,9 +377,10 @@ def main() -> int:
             "The repository auto-merge feature must stay OFF until a negative-test "
             "pilot and owner acceptance verify those rules."
         )
-    created = api("POST", base_path + "/check-runs", token, {
+    return api("POST", base_path + "/check-runs", token, {
         "name": NAME,
         "head_sha": sha,
+        "external_id": f"investment-eligibility:v1:pr:{number}:sha:{sha}",
         "status": "completed",
         "conclusion": "failure" if reasons else "success",
         "output": {
@@ -237,6 +388,44 @@ def main() -> int:
             "summary": summary[:65000],
         },
     })
+
+
+def main() -> int:
+    token = os.environ["GITHUB_TOKEN"]
+    repository = os.environ["GITHUB_REPOSITORY"]
+    with open(os.environ["GITHUB_EVENT_PATH"], encoding="utf-8") as stream:
+        event = json.load(stream)
+    number = pr_number_from_event(event, repository)
+    base_path = "/repos/" + repository
+    pr_path = base_path + f"/pulls/{number}"
+    pr = api("GET", pr_path, token)
+    if ((pr.get("base") or {}).get("repo") or {}).get("full_name") != repository:
+        raise ValueError("REPOSITORY_MISMATCH")
+    sha = pr["head"]["sha"]
+    if not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{40}", sha):
+        raise ValueError("INVALID_HEAD_SHA")
+    try:
+        files = paginate(pr_path + "/files", token)
+        checks = get_head_checks(base_path, sha, token)
+        runs = get_head_workflow_runs(base_path, sha, token)
+        modes = get_file_modes(
+            base_path, sha,
+            [f["filename"] for f in files if isinstance(f.get("filename"), str)], token,
+        )
+        head_prs = paginate(base_path + f"/commits/{sha}/pulls", token)
+        reasons = eligibility_reasons(
+            pr, files, checks, runs=runs, modes=modes, head_prs=head_prs
+        )
+        # If the PR changed after inspection, do not post a green assertion.
+        refreshed = api("GET", pr_path, token)
+        if pr_fingerprint(refreshed) != pr_fingerprint(pr):
+            reasons.append("PR_CHANGED_DURING_ASSESSMENT")
+    except Exception as exc:
+        # A crash must not leave an EARLIER green check as the latest result on
+        # this SHA. Overwrite it with a failure, then still fail the job.
+        post_check(base_path, token, number, sha, [f"GATE_ERROR_FAILED_CLOSED:{type(exc).__name__}"])
+        raise
+    created = post_check(base_path, token, number, sha, reasons)
     print(json.dumps({
         "pr": number,
         "head": sha,
