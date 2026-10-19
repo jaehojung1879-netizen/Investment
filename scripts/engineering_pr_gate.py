@@ -12,7 +12,6 @@ import os
 import re
 import sys
 import urllib.request
-from datetime import datetime
 
 NAME = "Investment Auto-merge eligibility"
 AI_AUDIT_NAME = "Investment Independent AI Audit"
@@ -94,7 +93,7 @@ def eligibility_reasons(
         reasons.append("PR_MUST_BE_OPEN_AND_READY_NOT_DRAFT")
     if base.get("ref") != "main":
         reasons.append("BASE_MUST_BE_MAIN")
-    if head.get("repo", {}).get("full_name") != repo.get("full_name"):
+    if (head.get("repo") or {}).get("full_name") != repo.get("full_name"):
         reasons.append("CROSS_REPOSITORY_PR_NOT_ADMITTED")
     if LABEL not in {x.get("name") for x in pr.get("labels", [])}:
         reasons.append("ENGINEERING_OPT_IN_LABEL_ABSENT")
@@ -177,14 +176,23 @@ def get_head_checks(repo_path: str, sha: str, token: str) -> list[dict]:
     return runs
 
 
+def pr_number_from_event(event: dict) -> int:
+    direct = (event.get("pull_request") or {}).get("number")
+    if isinstance(direct, int):
+        return direct
+    payload = event.get("workflow_run") or event.get("check_run") or {}
+    numbers = {x.get("number") for x in (payload.get("pull_requests") or [])}
+    if len(numbers) != 1 or not all(isinstance(x, int) for x in numbers):
+        raise ValueError("EVENT_PR_ID_UNRESOLVED_OR_AMBIGUOUS")
+    return next(iter(numbers))
+
+
 def main() -> int:
     token = os.environ["GITHUB_TOKEN"]
     repository = os.environ["GITHUB_REPOSITORY"]
     with open(os.environ["GITHUB_EVENT_PATH"], encoding="utf-8") as stream:
         event = json.load(stream)
-    number = (event.get("pull_request") or {}).get("number")
-    if not isinstance(number, int):
-        raise ValueError("MISSING_PR_NUMBER")
+    number = pr_number_from_event(event)
     base_path = "/repos/" + repository
     pr_path = base_path + f"/pulls/{number}"
     pr = api("GET", pr_path, token)
