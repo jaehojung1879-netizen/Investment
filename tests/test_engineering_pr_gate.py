@@ -185,3 +185,31 @@ def test_paginated_or_wrong_sha_checks_fail_closed(monkeypatch):
     )
     with pytest.raises(ValueError, match="HEAD_SHA_MISMATCH"):
         G.get_head_checks("/repos/example/Investment", HEAD, "token")
+
+
+def test_queued_reviewer_check_blocks_older_pass():
+    c = checks()
+    c.append({"name": G.AI_AUDIT_NAME, "app": {"id": AUDITOR_ID},
+              "head_sha": HEAD, "status": "queued", "conclusion": None,
+              "started_at": None, "id": 9})
+    assert "INDEPENDENT_AI_AUDIT_NOT_SUCCESSFUL" in codes(c=c)
+
+
+def test_queued_pytest_check_blocks_older_pass():
+    c = checks()
+    c.append({"name": "pytest", "app": {"id": G.GITHUB_ACTIONS_APP_ID},
+              "head_sha": HEAD, "status": "queued", "conclusion": None,
+              "started_at": None, "id": 10})
+    assert "CURRENT_HEAD_PYTEST_NOT_SUCCESSFUL" in codes(c=c)
+
+
+def test_missing_diff_change_count_blocks_eligibility():
+    f = files()
+    f[0].pop("changes")
+    assert "UNVERIFIABLE_CHANGE_COUNT" in codes(f=f)
+
+
+def test_missing_api_count_blocks_eligibility(monkeypatch):
+    monkeypatch.setattr(G, "api", lambda *_: {"check_runs": [{"head_sha": HEAD}]})
+    with pytest.raises(ValueError, match="INCOMPLETE"):
+        G.get_head_checks("/repos/example/Investment", HEAD, "token")
