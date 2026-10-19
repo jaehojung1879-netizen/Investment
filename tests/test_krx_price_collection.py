@@ -11,6 +11,8 @@ Nothing touches the network; `call` is replaced.
 from __future__ import annotations
 
 import sys
+
+import pytest
 from pathlib import Path
 
 
@@ -137,11 +139,12 @@ def test_no_universe_and_no_all_issues_refuses(tmp_path, monkeypatch, capsys):
 
 # ---------------------------------------------------------------- the store
 
-def test_sessions_are_dated_by_what_krx_served(tmp_path, monkeypatch):
-    _collect(tmp_path, ["2013-01-02"],
-             {"20130102": _session(["000001"], "2013-01-03")}, monkeypatch)
-    rows = HS.read_jsonl(tmp_path / "krx-prices-2013.jsonl.gz")
-    assert {r["date"] for r in rows} == {"2013-01-03"}
+def test_daily_prices_refuse_another_served_session(tmp_path, monkeypatch):
+    result = _collect(tmp_path, ["2013-01-02"],
+                      {"20130102": _session(["000001"], "2013-01-03")}, monkeypatch)
+    assert result["stopped"] == "2013-01-02: SERVED_DATE_MISMATCH_OR_MISSING"
+    assert CP.load_done(tmp_path) == set()
+    assert not list(tmp_path.glob("krx-prices-*.jsonl.gz"))
 
 
 def test_a_rerun_that_collects_nothing_new_writes_no_bytes(tmp_path, monkeypatch):
@@ -154,8 +157,8 @@ def test_a_rerun_that_collects_nothing_new_writes_no_bytes(tmp_path, monkeypatch
 
 
 def test_rows_are_sharded_by_the_year_they_describe(tmp_path, monkeypatch):
-    _collect(tmp_path, ["2013-12-31", "2014-01-02"],
-             {"20131231": _session(["000001"], "2013-12-31"),
+    _collect(tmp_path, ["2013-12-30", "2014-01-02"],
+             {"20131230": _session(["000001"], "2013-12-30"),
               "20140102": _session(["000001"], "2014-01-02")}, monkeypatch)
     assert sorted(p.name for p in tmp_path.glob("krx-prices-*.jsonl.gz")) == [
         "krx-prices-2013.jsonl.gz", "krx-prices-2014.jsonl.gz"]
@@ -178,9 +181,12 @@ def test_a_second_run_resumes_where_the_budget_stopped(tmp_path, monkeypatch):
     assert second["asked"] == ["20130103"] and second["remaining"] == 0
 
 
-def test_a_corrupt_done_file_is_read_as_nothing_done(tmp_path):
-    (tmp_path / CP.DONE_NAME).write_text("{not json", encoding="utf-8")
-    assert CP.load_done(tmp_path) == set()
+def test_a_corrupt_done_file_refuses_without_reset_or_recollection(tmp_path):
+    path = tmp_path / CP.DONE_NAME
+    path.write_text("{not json", encoding="utf-8")
+    with pytest.raises(ValueError, match="INVALID_DONE_FILE"):
+        CP.load_done(tmp_path)
+    assert path.read_text() == "{not json"
 
 
 def test_no_key_refuses_to_run(tmp_path, monkeypatch, capsys):

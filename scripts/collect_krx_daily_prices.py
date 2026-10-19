@@ -14,10 +14,11 @@ the same subscribed key — lists what TRADED on a date, so a name that delisted
 in 2014 is in the 2013 responses like any other. Its rows carry
 `TDD_OPNPRC/HGPRC/LWPRC/CLSPRC`, `ACC_TRDVOL` and `LIST_SHRS`.
 
-WHAT IT COSTS. One call per weekday. 2013-01-01 to today is about 3,570
-weekdays, roughly 24 minutes at the default pacing, and the days the exchange
-was shut answer with no rows and are marked done — a fact about the calendar,
-which will not change on a retry. Weekends are never asked at all.
+WHAT IT COSTS. At most one call per candidate weekday per run; calendar-proven
+closures consume no requests. Empty open sessions remain pending for a later
+budgeted run. Closed dates are decided
+by the pinned KR exchange calendar, never by an empty response or its age.
+An empty open session remains pending on every run. Weekends are not requested.
 
 WHAT IT WRITES, AND THE ONE POLICY IT APPLIES. Raw as-traded bars under
 `<store>/krx-prices-YYYY.jsonl.gz`, one row per issue per session, carrying
@@ -44,9 +45,11 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import json
+import math
 import os
 import sys
 import time
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -55,6 +58,7 @@ sys.path.insert(0, str(ROOT))
 from pipeline import historical_store as HS  # noqa: E402
 from pipeline import krx_prices as KP  # noqa: E402
 from pipeline import krx_universe as KU  # noqa: E402
+from pipeline import replay_calendar as RC  # noqa: E402
 
 from collect_krx_universe_snapshots import (AUTH_HEADER, DEFAULT_BASE,  # noqa: E402,F401
                                             ENDPOINT, Refused, call)
@@ -84,34 +88,67 @@ def load_done(store: Path) -> set[str]:
         return set()
     try:
         raw = json.loads(path.read_text(encoding="utf-8"))
-    except (ValueError, OSError):
-        return set()
-    return {str(d) for d in raw} if isinstance(raw, list) else set()
+    except (ValueError, OSError) as exc:
+        raise ValueError("INVALID_DONE_FILE: manual inspection required") from exc
+    if not isinstance(raw, list) or any(not isinstance(d, str) for d in raw):
+        raise ValueError("INVALID_DONE_FILE: expected ISO date list")
+    for day in raw:
+        if dt.date.fromisoformat(day).isoformat() != day:
+            raise ValueError("INVALID_DONE_FILE: noncanonical date")
+    if len(raw) != len(set(raw)):
+        raise ValueError("INVALID_DONE_FILE: duplicate dates")
+    return set(raw)
 
 
 def save_done(store: Path, done: set[str]) -> None:
-    (store / DONE_NAME).write_text(
-        json.dumps(sorted(done), indent=0) + "\n", encoding="utf-8")
+    # A failed/interrupted write must not destroy the prior retry checkpoint.
+    with tempfile.TemporaryDirectory(dir=store, prefix=".krx-done-") as temp:
+        path = Path(temp) / DONE_NAME
+        path.write_text(json.dumps(sorted(done), indent=0) + "\n", encoding="utf-8")
+        path.replace(store / DONE_NAME)
 
 
-# An empty answer for a weekday is final only once KRX has had time to publish
-# it. The endpoint serves a session after its close, so "no rows" for today or
-# yesterday can mean "not published yet" and not "the exchange was shut". Marking
-# that done would make a real session permanently absent.
-SETTLE_DAYS = 3
+def daily_bars(payload: dict, requested: str) -> tuple[list[dict], str | None]:
+    """Strict daily boundary around the unchanged, sealed general parser.
+
+    Monthly universe collection can roll a holiday forward. Daily prices cannot:
+    every returned row must explicitly describe the requested session.
+    """
+    bars, error = KP.parse_bars(payload)
+    if error:
+        return [], error
+    key = next(k for k in KU.ROWS_KEYS if k in payload)
+    raw = payload[key]
+    if not raw:
+        return [], None
+    if len(bars) != len(raw):
+        return [], "INVALID_DAILY_ROWS: partial, duplicate or unparseable rows"
+    for row in raw:
+        stamps = [str(row[k]).strip() for k in KU.DATE_KEYS if row.get(k) not in (None, "")]
+        if not stamps or any(stamp != requested.replace("-", "") for stamp in stamps):
+            return [], "SERVED_DATE_MISMATCH_OR_MISSING"
+    if any(not math.isfinite(bar["close"]) or bar["close"] <= 0 for bar in bars):
+        return [], "INVALID_DAILY_CLOSE"
+    return bars, None
 
 
-def is_settled(requested: str, as_of: dt.date, settle_days: int = SETTLE_DAYS) -> bool:
-    return (as_of - dt.date.fromisoformat(requested)).days > settle_days
+def today_kr() -> dt.date:
+    return dt.datetime.now(dt.timezone(dt.timedelta(hours=9))).date()
 
 
 def collect(store: Path, targets: list[str], *, auth_key: str, base: str,
             keep: set[str] | None, max_calls: int, max_minutes: float,
-            pace: float, log=print, as_of: dt.date | None = None,
-            settle_days: int = SETTLE_DAYS) -> dict:
-    as_of = as_of or dt.date.today()
-    store.mkdir(parents=True, exist_ok=True)
+            pace: float, log=print, as_of: dt.date | None = None) -> dict:
+    as_of = as_of or today_kr()
+    targets = list(dict.fromkeys(targets))
+    for day in targets:
+        if dt.date.fromisoformat(day).isoformat() != day:
+            raise ValueError("NONCANONICAL_TARGET_DATE")
+    # Unknown/out-of-range calendar evidence refuses before any call or write.
+    open_dates = (set(RC.sessions(min(targets), max(targets), "KR").strftime("%Y-%m-%d"))
+                  if targets else set())
     done = load_done(store)
+    initial_done = set(done)
     pending = [d for d in targets if d not in done]
 
     shards: dict[int, list[dict]] = {}
@@ -121,6 +158,13 @@ def collect(store: Path, targets: list[str], *, auth_key: str, base: str,
         except ValueError:
             continue
         shards[year] = HS.read_jsonl(path)
+
+    stored_dates = {row.get("date") for rows in shards.values() for row in rows}
+    unsupported = sorted((set(targets) & done & open_dates) - stored_dates)
+    if unsupported:
+        # Do not remove or repair legacy markers/data automatically.
+        raise ValueError("DONE_WITHOUT_SESSION_ROWS: manual inspection required: " + ",".join(unsupported))
+    store.mkdir(parents=True, exist_ok=True)
 
     log(f"수집 대상 {len(targets)}거래일(후보) · 이미 완료 "
         f"{len(targets) - len(pending)}일 · 남은 {len(pending)}일")
@@ -137,6 +181,13 @@ def collect(store: Path, targets: list[str], *, auth_key: str, base: str,
     stopped: str | None = None
 
     for requested in pending:
+        if requested > as_of.isoformat():
+            provisional.append(requested)
+            continue
+        if requested not in open_dates:
+            closed.append(requested)
+            done.add(requested)
+            continue
         if calls >= max_calls:
             stopped = f"콜 예산 {max_calls} 소진"
             break
@@ -145,6 +196,10 @@ def collect(store: Path, targets: list[str], *, auth_key: str, base: str,
             break
         if pace and calls:
             time.sleep(pace)
+            if (time.monotonic() - started) / 60.0 >= max_minutes:
+                stopped = f"시간 예산 {max_minutes}분 소진"
+                break
+        calls += 1
         try:
             payload = call(base, ENDPOINT,
                            {"basDd": requested.replace("-", "")}, auth_key)
@@ -155,24 +210,22 @@ def collect(store: Path, targets: list[str], *, auth_key: str, base: str,
             log(f"  {requested}: 거절됨 — {exc}")
             stopped = f"{requested}에서 거절: {exc}"
             break
-        calls += 1
-        bars, error = KP.parse_bars(payload)
+        bars, error = daily_bars(payload, requested)
         if error:
             log(f"  {requested}: 응답을 읽을 수 없음 — {error}")
             stopped = f"{requested}: {error}"
             break
         if not bars:
-            if not is_settled(requested, as_of, settle_days):
-                # Possibly unpublished, not closed: leave it pending so the
-                # next run asks again.
-                provisional.append(requested)
-                continue
-            closed.append(requested)
-            done.add(requested)
+            # A normal session stays pending forever if the source stays empty.
+            # Its age is never evidence that the exchange was closed.
+            provisional.append(requested)
             continue
 
-        served = KU.served_date(payload, requested)
+        served = requested  # every row's explicit served date was verified
         rows = KP.bar_rows(served, bars, keep)
+        if not rows:
+            provisional.append(requested)
+            continue
         fresh.setdefault(KP.shard_year(served), []).extend(rows)
         bars_written += len(rows)
         done.add(requested)
@@ -185,9 +238,16 @@ def collect(store: Path, targets: list[str], *, auth_key: str, base: str,
     for year, rows in sorted(fresh.items()):
         merged = shards.get(year, []) + rows
         path = store / f"krx-prices-{year}.jsonl.gz"
-        if HS.write_shard(path, merged):
-            written.append(path.name)
-    save_done(store, done)
+        # Stage through the unchanged canonical writer. Failure leaves the old
+        # shard intact; no done checkpoint is committed until all shards land.
+        with tempfile.TemporaryDirectory(dir=store, prefix=".krx-shard-") as temp:
+            staged = Path(temp) / path.name
+            HS.write_shard(staged, merged)
+            if not path.exists() or path.read_bytes() != staged.read_bytes():
+                staged.replace(path)
+                written.append(path.name)
+    if done != initial_done:
+        save_done(store, done)
 
     remaining = len([d for d in targets if d not in done])
     log(f"\n{len(sessions)}세션 · {bars_written}행 · {calls}콜 · 휴장 "
@@ -232,12 +292,14 @@ def main(argv=None) -> int:
                   f"수집하거나 --all-issues를 쓰십시오.")
             return 2
 
-    end = args.end or dt.date.today().isoformat()
+    end = args.end or today_kr().isoformat()
     targets = KP.calendar_days(args.start, end)
     result = collect(Path(args.store), targets, auth_key=auth_key,
                      base=args.base, keep=keep, max_calls=args.max_calls,
                      max_minutes=args.max_minutes, pace=args.pace)
-    return 1 if result["stopped"] and not result["sessions"] else 0
+    # Preserve useful partial collection, but never report all-empty sessions
+    # as a successful completed run. No immediate retry or workflow dispatch.
+    return 1 if not result["sessions"] and (result["stopped"] or result["provisional"]) else 0
 
 
 if __name__ == "__main__":
