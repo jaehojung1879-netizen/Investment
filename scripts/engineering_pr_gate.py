@@ -42,7 +42,13 @@ def _latest(checks: list[dict], name: str, app_id: int) -> dict | None:
     ]
     if not matching:
         return None
-    return max(matching, key=lambda c: (c.get("started_at") or "", c.get("id") or 0))
+    # A queued replacement check may have started_at=None. Ordering by
+    # started_at would incorrectly prefer an older SUCCESS over the new
+    # pending check. GitHub check-run IDs identify creation order.
+    # Unverifiable IDs must not resurrect an earlier passing check.
+    if any(type(c.get("id")) is not int or c["id"] <= 0 for c in matching):
+        return None
+    return max(matching, key=lambda c: c["id"])
 
 
 def audit_evidence_reasons(
@@ -100,7 +106,9 @@ def eligibility_reasons(
 
     if not files or len(files) > MAX_FILES:
         reasons.append("CHANGED_FILES_OUTSIDE_1_TO_8")
-    if sum((f.get("changes") or 0) for f in files) > MAX_LINES:
+    if any(type(f.get("changes")) is not int or f["changes"] < 0 for f in files):
+        reasons.append("UNVERIFIABLE_CHANGE_COUNT")
+    elif sum(f["changes"] for f in files) > MAX_LINES:
         reasons.append("DIFF_TOO_LARGE_FOR_AUTOMERGE")
     has_source = has_test = False
     for f in files:
@@ -169,7 +177,9 @@ def get_head_checks(repo_path: str, sha: str, token: str) -> list[dict]:
     """Never accept a partial API page or status from another commit."""
     payload = api("GET", repo_path + f"/commits/{sha}/check-runs?per_page=100", token)
     runs = payload.get("check_runs")
-    if not isinstance(runs, list) or payload.get("total_count", 0) > len(runs):
+    count = payload.get("total_count")
+    if (not isinstance(runs, list) or type(count) is not int
+            or count != len(runs)):
         raise ValueError("CHECK_RUN_RESULTS_INCOMPLETE")
     if any(x.get("head_sha") != sha for x in runs):
         raise ValueError("CHECK_RUN_HEAD_SHA_MISMATCH")
