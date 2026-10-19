@@ -382,10 +382,13 @@ def test_file_modes_walk_trees_and_refuse_truncation(monkeypatch):
 class FakeGitHub:
     """Synthetic API for main(): records every POST; no network."""
 
-    def __init__(self, *, fail_on=None, mutate_pr=None):
+    def __init__(self, *, fail_on=None, mutate_pr=None, check_runs=None, pr_fields=None, shared=None):
         self.posts = []
         self.fail_on = fail_on
         self.mutate_pr = mutate_pr
+        self.check_runs = checks() if check_runs is None else check_runs
+        self.pr_fields = pr_fields or {}
+        self.shared = shared or []
         self.pr_reads = 0
 
     def __call__(self, method, endpoint, token, body=None):
@@ -398,17 +401,18 @@ class FakeGitHub:
             self.pr_reads += 1
             record = pr(base={"ref": "main", "repo": {"full_name": REPO}},
                         head={"sha": HEAD, "repo": {"full_name": REPO}})
+            record.update(self.pr_fields)
             if self.mutate_pr and self.pr_reads > 1:
                 record.update(self.mutate_pr)
             return record
         if "/pulls/42/files" in endpoint:
             return files()
         if "/check-runs" in endpoint:
-            return {"total_count": 2, "check_runs": checks()}
+            return {"total_count": len(self.check_runs), "check_runs": self.check_runs}
         if "/actions/runs" in endpoint:
             return {"total_count": 1, "workflow_runs": runs()}
         if "/commits/" + HEAD + "/pulls" in endpoint:
-            return head_prs()
+            return head_prs() + self.shared
         if "/git/commits/" in endpoint:
             return {"sha": HEAD, "tree": {"sha": "root"}}
         if "/git/trees/" in endpoint:
@@ -435,7 +439,7 @@ def _run_main(monkeypatch, tmp_path, fake):
 def test_main_end_to_end_posts_exact_head_check_without_merge(monkeypatch, tmp_path):
     fake = FakeGitHub()
     _run_main(monkeypatch, tmp_path, fake)
-    assert G.main(["--pr", "42"]) == 0
+    assert G.main(["--pr", "42", "--mode", "final"]) == 0
     assert len(fake.posts) == 1
     endpoint, body = fake.posts[0]
     assert endpoint == f"/repos/{REPO}/check-runs"
@@ -448,7 +452,7 @@ def test_production_main_stays_blocked_with_disarmed_auditor(monkeypatch, tmp_pa
     _run_main(monkeypatch, tmp_path, fake)
     monkeypatch.setattr(G.eligibility_reasons, "__kwdefaults__",
                         dict(G.eligibility_reasons.__kwdefaults__, trusted_app_id=None))
-    assert G.main(["--pr", "42"]) == 0
+    assert G.main(["--pr", "42", "--mode", "final"]) == 0
     body = fake.posts[0][1]
     assert body["conclusion"] == "failure"
     assert "INDEPENDENT_AI_AUDITOR_NOT_CONFIGURED" in body["output"]["summary"]
@@ -462,7 +466,7 @@ def test_production_main_stays_blocked_with_disarmed_auditor(monkeypatch, tmp_pa
 def test_pr_changed_during_assessment_posts_failure(monkeypatch, tmp_path, mutation):
     fake = FakeGitHub(mutate_pr=mutation)
     _run_main(monkeypatch, tmp_path, fake)
-    G.main(["--pr", "42"])
+    G.main(["--pr", "42", "--mode", "final"])
     body = fake.posts[-1][1]
     assert body["conclusion"] == "failure" and body["head_sha"] == HEAD
     assert "PR_CHANGED_DURING_ASSESSMENT" in body["output"]["summary"]
@@ -475,7 +479,7 @@ def test_api_error_overwrites_an_earlier_green_with_failure(monkeypatch, tmp_pat
     fake = FakeGitHub(fail_on=outage)
     _run_main(monkeypatch, tmp_path, fake)
     with pytest.raises(OSError):
-        G.main(["--pr", "42"])
+        G.main(["--pr", "42", "--mode", "final"])
     endpoint, body = fake.posts[-1]
     assert body["conclusion"] == "failure" and body["head_sha"] == HEAD
     assert "GATE_ERROR_FAILED_CLOSED:OSError" in body["output"]["summary"]
@@ -567,8 +571,139 @@ def test_script_is_stdlib_only_and_runs_without_repository_imports():
     assert "ModuleNotFoundError" not in out.stderr
 
 
-@pytest.mark.parametrize("argv", [[], ["--pr", "0"], ["--pr", "-1"], ["--pr", "x"]])
+@pytest.mark.parametrize("argv", [[], ["--pr", "0", "--mode", "final"], ["--pr", "-1", "--mode", "final"],
+                                  ["--pr", "x", "--mode", "final"], ["--pr", "42"], ["--pr", "42", "--mode", "merge"]])
 def test_main_requires_a_positive_pr_number(monkeypatch, argv):
     monkeypatch.setattr(G, "api", lambda *_: pytest.fail("no API call before the PR is known"))
     with pytest.raises((SystemExit, ValueError)):
         G.main(argv)
+
+
+# ---- Bootstrap order: preflight -> independent review -> final ----------------
+# Requiring the audit's success before the review could run made a first audit
+# impossible. Preflight carries every guard except that one and can never post
+# a green eligibility check; only final, after the App-signed audit, can.
+
+AUDIT = 1  # index of the audit check in checks()
+
+
+def no_audit():
+    return [c for i, c in enumerate(checks()) if i != AUDIT]
+
+
+def preflight(**kw):
+    return G.preflight_reasons(pr(changed_files=len(kw.get("f", files()))), kw.get("f", files()),
+                               kw.get("c", checks()), trusted_app_id=AUDITOR_ID, runs=runs(),
+                               modes=modes_for(kw.get("f", files())), head_prs=head_prs())
+
+
+def test_first_audit_absence_permits_review_start_but_never_merge_eligibility():
+    assert preflight(c=no_audit()) == []
+    assert "PINNED_APP_AI_AUDIT_ABSENT" in codes(c=no_audit())
+    assert G.final_eligibility_reasons is G.eligibility_reasons
+
+
+@pytest.mark.parametrize("mutation, final_reason", [
+    ({"conclusion": "failure"}, "INDEPENDENT_AI_AUDIT_NOT_SUCCESSFUL"),
+    ({"status": "in_progress", "conclusion": None}, "INDEPENDENT_AI_AUDIT_NOT_SUCCESSFUL"),
+    ({"external_id": G.audit_external_id(43, HEAD)}, "INDEPENDENT_AI_AUDIT_PR_OR_SHA_MISMATCH"),
+    ({"external_id": G.audit_external_id(42, "0" * 40)}, "INDEPENDENT_AI_AUDIT_PR_OR_SHA_MISMATCH"),
+])
+def test_bad_audit_is_irrelevant_to_preflight_and_fatal_to_final(mutation, final_reason):
+    c = checks()
+    c[AUDIT].update(mutation)
+    assert preflight(c=c) == []
+    assert final_reason in codes(c=c)
+
+
+def test_audit_from_wrong_app_blocks_preflight_too():
+    c = checks()
+    c[AUDIT]["app"] = {"id": 111}
+    assert "GATE_CHECK_CLAIMED_BY_UNPINNED_APP:" + G.AI_AUDIT_NAME in preflight(c=c)
+
+
+@pytest.mark.parametrize("path", ["pipeline/kr_market_risk_model.py", ".github/workflows/tests.yml",
+                                  "scripts/engineering_pr_gate.py", "AGENTS.md"])
+def test_blocked_paths_fail_preflight_so_no_review_is_spent(path):
+    f = files() + [{"filename": path, "status": "modified", "patch": "@@", "changes": 1}]
+    assert any(r.startswith("PATH_REQUIRES_OWNER_APPROVAL") for r in preflight(f=f))
+
+
+def test_preflight_has_every_final_guard_except_the_audit_itself():
+    # Whatever final refuses for a reason other than the audit, preflight refuses too.
+    cases = [dict(p=pr(labels=[])), dict(p=pr(draft=True)), dict(r=[]), dict(h=head_prs() + [
+        {"number": 43, "state": "open", "head": {"sha": HEAD}}]), dict(m=None)]
+    audit_codes = {"PINNED_APP_AI_AUDIT_ABSENT", "INDEPENDENT_AI_AUDIT_NOT_SUCCESSFUL",
+                   "INDEPENDENT_AI_AUDIT_PR_OR_SHA_MISMATCH", "INDEPENDENT_AI_AUDIT_CONTRACT_NOT_CONFIRMED",
+                   "INDEPENDENT_AI_AUDIT_REPORT_URL_ABSENT", "INDEPENDENT_AI_AUDITOR_NOT_CONFIGURED",
+                   "GITHUB_ACTIONS_IS_NOT_AN_INDEPENDENT_AI_AUDITOR"}
+    for case in cases:
+        final = codes(**case)
+        p_ = case.get("p", pr())
+        f_ = files()
+        pre = G.preflight_reasons(dict(p_, changed_files=len(f_)), f_, checks(), trusted_app_id=AUDITOR_ID,
+                                  runs=case.get("r", runs()), modes=case.get("m", modes_for(f_)),
+                                  head_prs=case.get("h", head_prs()))
+        assert set(final) - audit_codes == set(pre), case
+
+
+def test_post_check_refuses_a_success_outside_final():
+    with pytest.raises(AssertionError, match="ONLY_FINAL"):
+        G.post_check("/repos/x", "t", 42, HEAD, [])
+
+
+def test_main_preflight_without_audit_posts_nothing_and_exits_zero(monkeypatch, tmp_path):
+    fake = FakeGitHub(check_runs=no_audit())
+    _run_main(monkeypatch, tmp_path, fake)
+    assert G.main(["--pr", "42", "--mode", "preflight"]) == 0
+    assert fake.posts == []  # no green eligibility exists before the audit
+
+
+def test_main_final_without_audit_posts_failure(monkeypatch, tmp_path):
+    fake = FakeGitHub(check_runs=no_audit())
+    _run_main(monkeypatch, tmp_path, fake)
+    assert G.main(["--pr", "42", "--mode", "final"]) == 0
+    body = fake.posts[-1][1]
+    assert body["conclusion"] == "failure" and "PINNED_APP_AI_AUDIT_ABSENT" in body["output"]["summary"]
+
+
+@pytest.mark.parametrize("change", [
+    dict(pr_fields={"labels": []}),                                            # opt-in label removed
+    dict(shared=[{"number": 43, "state": "open", "head": {"sha": HEAD}}]),     # head newly shared
+    dict(pr_fields={"draft": True}),                                           # back to Draft
+])
+def test_stale_success_is_overwritten_by_the_next_preflight_after_metadata_change(monkeypatch, tmp_path, change):
+    # Same SHA, so GitHub keeps the earlier green check attached to it: the
+    # runner's next poll must replace it with a failure.
+    first = FakeGitHub()
+    _run_main(monkeypatch, tmp_path, first)
+    assert G.main(["--pr", "42", "--mode", "final"]) == 0
+    assert first.posts[-1][1]["conclusion"] == "success"
+    later = FakeGitHub(**change)
+    _run_main(monkeypatch, tmp_path, later)
+    assert G.main(["--pr", "42", "--mode", "preflight"]) == 3
+    endpoint, body = later.posts[-1]
+    assert body["conclusion"] == "failure" and body["head_sha"] == HEAD
+
+
+def test_final_on_a_new_head_cannot_reuse_the_old_heads_audit(monkeypatch, tmp_path):
+    new_head = "a" * 40
+    old = checks()
+    stale = [dict(c, head_sha=new_head) for c in old]  # the API returns the new head's checks
+    stale[AUDIT]["external_id"] = G.audit_external_id(42, HEAD)  # audit was for the old head
+    fake = FakeGitHub(check_runs=stale, pr_fields={"head": {"sha": new_head, "repo": {"full_name": REPO}}})
+    _run_main(monkeypatch, tmp_path, fake)
+    monkeypatch.setattr(G, "get_file_modes", lambda *_: modes_for(files()))
+    monkeypatch.setattr(G, "get_head_workflow_runs", lambda *_: [dict(runs()[0], head_sha=new_head)])
+    fake_prs = [{"number": 42, "state": "open", "head": {"sha": new_head}}]
+    original = fake.__call__
+
+    def routed(method, endpoint, token, body=None):
+        if endpoint.endswith(f"/commits/{new_head}/pulls?per_page=100&page=1"):
+            return fake_prs
+        return original(method, endpoint, token, body)
+    monkeypatch.setattr(G, "api", routed)
+    assert G.main(["--pr", "42", "--mode", "final"]) == 0
+    body = fake.posts[-1][1]
+    assert body["head_sha"] == new_head and body["conclusion"] == "failure"
+    assert "INDEPENDENT_AI_AUDIT_PR_OR_SHA_MISMATCH" in body["output"]["summary"]

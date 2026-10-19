@@ -10,7 +10,11 @@ posted as GitHub Actions can be forged by any PR that edits a workflow, and the
 sealed research census freezes `.github/workflows`. The auditor App's runner
 (outside this repository) fetches this file from a trusted `main` commit, runs
 it with an installation token, and the eligibility check it posts is signed by
-the App: `python3 engineering_pr_gate.py --pr <N>`.
+the App:
+
+    python3 engineering_pr_gate.py --pr <N> --mode preflight   # exit 0: review may start
+    (independent review; App posts Investment Independent AI Audit on the exact head)
+    python3 engineering_pr_gate.py --pr <N> --mode final       # re-fetches everything
 """
 from __future__ import annotations
 
@@ -166,14 +170,19 @@ def shared_head_reasons(number: int, sha: str, head_prs: list[dict] | None) -> l
     return ["HEAD_SHA_SHARED_WITH_ANOTHER_OPEN_PR"] if others else []
 
 
-def eligibility_reasons(
+def preflight_reasons(
     pr: dict, files: list[dict], checks: list[dict],
     *, trusted_app_id: int | None = TRUSTED_AI_AUDITOR_APP_ID,
     runs: list[dict] | None = None,
     modes: dict[str, str] | None = None,
     head_prs: list[dict] | None = None,
 ) -> list[str]:
-    """Narrow allowlist plus independently authenticated AI audit and CI."""
+    """Every guard EXCEPT the audit's own success: may this PR be reviewed?
+
+    The independent review can only run after this passes, so requiring its
+    result here would make a first audit impossible. Passing preflight is
+    never merge eligibility, and `main` cannot post a success for it.
+    """
     reasons: list[str] = []
     head = pr.get("head") or {}
     base = pr.get("base") or {}
@@ -224,11 +233,29 @@ def eligibility_reasons(
     if not isinstance(number, int) or not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{40}", sha):
         reasons.append("INVALID_PR_OR_HEAD_SHA")
     else:
-        reasons.extend(audit_evidence_reasons(number, sha, checks, trusted_app_id))
         reasons.extend(shared_head_reasons(number, sha, head_prs))
     reasons.extend(impersonation_reasons(checks, trusted_app_id))
     reasons.extend(ci_evidence_reasons(checks, sha, runs))
     return reasons
+
+
+def eligibility_reasons(
+    pr: dict, files: list[dict], checks: list[dict],
+    *, trusted_app_id: int | None = TRUSTED_AI_AUDITOR_APP_ID,
+    runs: list[dict] | None = None,
+    modes: dict[str, str] | None = None,
+    head_prs: list[dict] | None = None,
+) -> list[str]:
+    """Final eligibility: every preflight guard plus the pinned App's audit."""
+    reasons = preflight_reasons(pr, files, checks, trusted_app_id=trusted_app_id,
+                                runs=runs, modes=modes, head_prs=head_prs)
+    sha, number = (pr.get("head") or {}).get("sha"), pr.get("number")
+    if isinstance(number, int) and isinstance(sha, str) and re.fullmatch(r"[0-9a-f]{40}", sha):
+        reasons.extend(audit_evidence_reasons(number, sha, checks, trusted_app_id))
+    return reasons
+
+
+final_eligibility_reasons = eligibility_reasons
 
 
 def api(method: str, endpoint: str, token: str, body: dict | None = None):
@@ -358,7 +385,10 @@ def pr_fingerprint(pr: dict) -> tuple:
     )
 
 
-def post_check(base_path: str, token: str, number: int, sha: str, reasons: list[str]) -> dict:
+def post_check(base_path: str, token: str, number: int, sha: str, reasons: list[str],
+               *, allow_success: bool = False) -> dict:
+    if not reasons and not allow_success:
+        raise AssertionError("ONLY_FINAL_ELIGIBILITY_MAY_POST_SUCCESS")
     if reasons:
         summary = "Not eligible; NO MERGE.\n" + "\n".join("- " + s for s in reasons)
     else:
@@ -385,7 +415,13 @@ def post_check(base_path: str, token: str, number: int, sha: str, reasons: list[
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--pr", type=int, required=True)
-    number = parser.parse_args(argv).pr
+    # preflight: may the independent review start? Posts a FAILURE when it is
+    # blocked (so a stale green cannot outlive a label removal or a newly
+    # shared head) and never posts a success. final: after the App-signed
+    # audit exists for this exact PR and head, the only mode that can.
+    parser.add_argument("--mode", choices=("preflight", "final"), required=True)
+    args = parser.parse_args(argv)
+    number, final = args.pr, args.mode == "final"
     if number <= 0:
         raise ValueError("INVALID_PR_NUMBER")
     # An installation token of the pinned auditor App, never a PAT or the
@@ -409,9 +445,8 @@ def main(argv: list[str] | None = None) -> int:
             [f["filename"] for f in files if isinstance(f.get("filename"), str)], token,
         )
         head_prs = paginate(base_path + f"/commits/{sha}/pulls", token)
-        reasons = eligibility_reasons(
-            pr, files, checks, runs=runs, modes=modes, head_prs=head_prs
-        )
+        evaluate = eligibility_reasons if final else preflight_reasons
+        reasons = evaluate(pr, files, checks, runs=runs, modes=modes, head_prs=head_prs)
         # If the PR changed after inspection, do not post a green assertion.
         refreshed = api("GET", pr_path, token)
         if pr_fingerprint(refreshed) != pr_fingerprint(pr):
@@ -421,15 +456,19 @@ def main(argv: list[str] | None = None) -> int:
         # this SHA. Overwrite it with a failure, then still fail the job.
         post_check(base_path, token, number, sha, [f"GATE_ERROR_FAILED_CLOSED:{type(exc).__name__}"])
         raise
-    created = post_check(base_path, token, number, sha, reasons)
+    created = post_check(base_path, token, number, sha, reasons, allow_success=final) if (final or reasons) else {}
     print(json.dumps({
         "pr": number,
         "head": sha,
-        "eligibility": not reasons,
+        "mode": args.mode,
+        "passed": not reasons,
+        "eligibility": final and not reasons,
         "reasons": reasons,
         "check_run_id": created.get("id"),
     }, ensure_ascii=False))
-    return 0  # Independent posted check carries the denial status.
+    # Final: the posted check carries the verdict. Preflight: 3 tells the
+    # runner not to start a review; nothing green was posted either way.
+    return 0 if final or not reasons else 3
 
 
 if __name__ == "__main__":

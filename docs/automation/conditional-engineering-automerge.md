@@ -111,12 +111,37 @@ So `scripts/engineering_pr_gate.py` is a policy script. The auditor App's runner
 outside this repository:
 
 - fetches the script from a trusted `main` commit (by commit SHA, never from
-  the PR) and runs `python3 engineering_pr_gate.py --pr <N>` with the App's
-  installation token; it never checks out, installs from or runs PR code;
+  the PR) and runs it with the App's installation token; it never checks out,
+  installs from or runs PR code;
 - serializes evaluations per PR (newest wins), since a stale evaluation that
   posts last would otherwise decide the latest check;
-- posts `Investment Auto-merge eligibility` as the App, and only for an
-  eligible PR proceeds to the AI review and `Investment Independent AI Audit`.
+- runs, in this order, aborting on the first failure:
+  1. `--pr <N> --mode preflight`: every guard except the audit's own success
+     (allowlist, modes, file count, PR/head binding, shared head, CI provenance,
+     forged gate names). Exit 0 means the review may start. A blocked
+     preflight posts a FAILURE eligibility check (overwriting any stale green
+     on that SHA); a passing one posts nothing. Preflight can never post a
+     success (`post_check` refuses it).
+  2. the independent diff review of the exact head;
+  3. the App posts `Investment Independent AI Audit` on that head with the
+     PR/head-bound `external_id`;
+  4. `--pr <N> --mode final`: re-fetches the PR, files, checks and runs and
+     recomputes every preflight guard plus the audit evidence, then posts the
+     App-signed `Investment Auto-merge eligibility` (the only success path).
+
+An earlier revision ran the full eligibility (which requires the audit's
+success) before the review, so a first audit could never be produced. This was
+found by review on 2026-10-20 and fixed by the split above; tests pin that the
+first-audit-absent state passes preflight and fails final.
+
+**Polling TOCTOU (residual, not closed by code).** Checks attach to a SHA,
+while the opt-in label, Draft state and other open PRs on the same head can
+change without the SHA changing. A green final check therefore stays attached
+until the runner's next poll, whose preflight then overwrites it with a
+failure (tested for label removal, return to Draft and a newly shared head).
+Between polls (up to the polling interval) a merge could rely on the stale
+green. Native auto-merge must stay OFF until the owner accepts that window or
+the runner reacts to PR events instead of polling.
 
 The script itself: fetches current PR/files and exact-head check runs through
 the GitHub API (`filter=all`, fully paginated); partial pages, wrong SHA,
