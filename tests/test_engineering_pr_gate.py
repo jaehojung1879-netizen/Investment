@@ -1,8 +1,6 @@
 """Synthetic-only safety tests for the trusted engineering merge eligibility check."""
 from __future__ import annotations
 
-from copy import deepcopy
-
 import pytest
 
 from scripts.engineering_pr_gate import eligibility_reasons
