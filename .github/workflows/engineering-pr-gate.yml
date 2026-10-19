@@ -1,12 +1,17 @@
 name: Investment Auto-merge eligibility trigger
 
-# Trusted-base assessment. This workflow NEVER checks out, imports or runs PR code.
-# It runs only after this workflow has been merged into the protected default branch.
+# Trusted-main machine check. NEVER check out or execute PR contents.
+# This workflow is inactive until its reviewed PR lands on protected main.
 on:
   pull_request_target:
     types: [opened, reopened, synchronize, ready_for_review, converted_to_draft, labeled, unlabeled, edited]
   pull_request_review:
     types: [submitted, dismissed]
+  workflow_run:
+    workflows: [Tests]
+    types: [completed]
+  check_run:
+    types: [completed]
 
 permissions:
   contents: read
@@ -14,16 +19,24 @@ permissions:
   checks: write
 
 concurrency:
-  group: engineering-eligibility-${{ github.event.pull_request.number }}
+  group: gate-\${{ github.event.pull_request.number || github.event.check_run.id || github.event.workflow_run.id || github.run_id }}
   cancel-in-progress: true
 
 jobs:
   assess:
-    if: github.event.pull_request.base.ref == 'main'
+    if: >-
+      (github.event_name == 'pull_request_target' &&
+       github.event.pull_request.base.ref == 'main') ||
+      (github.event_name == 'pull_request_review' &&
+       github.event.pull_request.base.ref == 'main') ||
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.event == 'pull_request') ||
+      (github.event_name == 'check_run' &&
+       github.event.check_run.name == 'Investment Independent AI Audit')
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Check out TRUSTED main, never the PR
+      - name: Check out trusted main, never the PR
         uses: actions/checkout@v5
         with:
           ref: main
@@ -32,7 +45,7 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: "3.11"
-      - name: Re-fetch latest PR and post fail-closed eligibility check on PR HEAD
+      - name: Fetch PR on exact SHA and post fail-closed machine check
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: \${{ github.token }}
         run: python scripts/engineering_pr_gate.py
