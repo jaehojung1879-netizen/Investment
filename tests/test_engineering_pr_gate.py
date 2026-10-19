@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import copy
 import inspect
-import json
 import pathlib
 import subprocess
 import sys
@@ -19,7 +18,6 @@ AUDITOR_ID = 900123  # Fake external GitHub App identity, used ONLY in tests.
 TESTS_SUITE = 7001
 REPO = "example/Investment"
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-GATE_WORKFLOW = ROOT / ".github/workflows/engineering-pr-gate.yml"
 
 
 def pr(**overrides):
@@ -201,33 +199,6 @@ def test_no_pytest_or_incomplete_pytest_refused():
     assert "CURRENT_HEAD_PYTEST_NOT_SUCCESSFUL" in codes(c=c)
 
 
-def _ref(number, repo=REPO):
-    return {"number": number, "base": {"repo": {"url": "https://api.github.com/repos/" + repo}}}
-
-
-def test_gitub_event_recovery_exactly_one_pr():
-    assert G.pr_number_from_event({"pull_request": {"number": 42}}, REPO) == 42
-    assert G.pr_number_from_event({"workflow_run": {"pull_requests": [_ref(42)]}}, REPO) == 42
-    assert G.pr_number_from_event({"check_run": {"pull_requests": [_ref(42)]}}, REPO) == 42
-    with pytest.raises(ValueError, match="UNRESOLVED_OR_AMBIGUOUS"):
-        G.pr_number_from_event({"workflow_run": {"pull_requests": []}}, REPO)
-    with pytest.raises(ValueError, match="UNRESOLVED_OR_AMBIGUOUS"):
-        G.pr_number_from_event({"check_run": {"pull_requests": [_ref(42), _ref(43)]}}, REPO)
-
-
-def test_event_pr_number_from_another_repository_is_not_this_repos_pr():
-    # GitHub lists PRs of other repositories sharing the head; their number 7
-    # is an unrelated PR here.
-    event = {"check_run": {"pull_requests": [_ref(7, "fork/Investment")]}}
-    with pytest.raises(ValueError, match="UNRESOLVED_OR_AMBIGUOUS"):
-        G.pr_number_from_event(event, REPO)
-    mixed = {"check_run": {"pull_requests": [_ref(7, "fork/Investment"), _ref(42)]}}
-    assert G.pr_number_from_event(mixed, REPO) == 42
-    unattributed = {"workflow_run": {"pull_requests": [{"number": 42}]}}
-    with pytest.raises(ValueError, match="UNRESOLVED_OR_AMBIGUOUS"):
-        G.pr_number_from_event(unattributed, REPO)
-
-
 def test_paginated_or_wrong_sha_checks_fail_closed(monkeypatch):
     monkeypatch.setattr(G, "api", lambda *_: {"total_count": 101, "check_runs": [{}]})
     with pytest.raises(ValueError, match="INCOMPLETE"):
@@ -296,8 +267,8 @@ def test_missing_api_count_blocks_eligibility(monkeypatch):
 
 # ---- Independent audit (second reviewer) additions -------------------------
 
-@pytest.mark.parametrize("name", [G.AI_AUDIT_NAME])
-def test_audit_name_claimed_by_github_actions_blocks_even_with_real_audit(name):
+@pytest.mark.parametrize("name", [G.AI_AUDIT_NAME, G.NAME])
+def test_gate_check_name_claimed_by_github_actions_blocks_even_with_real_audit(name):
     # A PR workflow (or devtools test code running with a write token) can post
     # a check named like the auditor's. A Ruleset set to "any source" would
     # accept it, so its presence blocks rather than being silently skipped.
@@ -306,14 +277,21 @@ def test_audit_name_claimed_by_github_actions_blocks_even_with_real_audit(name):
                      "external_id": G.audit_external_id(42, HEAD),
                      "output": {"title": G.AI_AUDIT_TITLE},
                      "details_url": "https://forged.example"}]
-    assert "AI_AUDIT_CHECK_CLAIMED_BY_UNPINNED_APP" in codes(c=c)
+    # Eligibility is App-signed too, so a GitHub Actions "eligibility" check is
+    # exactly the forgery a workflow-editing PR would post.
+    assert f"GATE_CHECK_CLAIMED_BY_UNPINNED_APP:{name}" in codes(c=c)
 
 
-@pytest.mark.parametrize("name", [G.NAME, G.TEST_CHECK_NAME])
-def test_eligibility_or_pytest_name_from_another_app_blocks(name):
-    c = checks() + [{"name": name, "app": {"id": 31337}, "head_sha": HEAD,
+def test_pytest_name_from_another_app_blocks():
+    c = checks() + [{"name": "pytest", "app": {"id": 31337}, "head_sha": HEAD,
                      "status": "completed", "conclusion": "success", "id": 51}]
-    assert f"CHECK_NAME_CLAIMED_BY_NON_ACTIONS_APP:{name}" in codes(c=c)
+    assert "CHECK_NAME_CLAIMED_BY_NON_ACTIONS_APP:pytest" in codes(c=c)
+
+
+def test_earlier_app_signed_eligibility_is_not_a_forgery_signal():
+    c = checks() + [{"name": G.NAME, "app": {"id": AUDITOR_ID}, "head_sha": HEAD,
+                     "status": "completed", "conclusion": "failure", "id": 52}]
+    assert codes(c=c) == []
 
 
 def test_pytest_job_from_another_workflow_is_not_ci_evidence():
@@ -446,11 +424,8 @@ class FakeGitHub:
 
 
 def _run_main(monkeypatch, tmp_path, fake):
-    event = tmp_path / "event.json"
-    event.write_text(json.dumps({"pull_request": {"number": 42}}))
     monkeypatch.setenv("GITHUB_TOKEN", "synthetic")
     monkeypatch.setenv("GITHUB_REPOSITORY", REPO)
-    monkeypatch.setenv("GITHUB_EVENT_PATH", str(event))
     monkeypatch.setattr(G, "api", fake)
     monkeypatch.setattr(G, "TRUSTED_AI_AUDITOR_APP_ID", AUDITOR_ID)
     monkeypatch.setattr(G.eligibility_reasons, "__kwdefaults__",
@@ -460,7 +435,7 @@ def _run_main(monkeypatch, tmp_path, fake):
 def test_main_end_to_end_posts_exact_head_check_without_merge(monkeypatch, tmp_path):
     fake = FakeGitHub()
     _run_main(monkeypatch, tmp_path, fake)
-    assert G.main() == 0
+    assert G.main(["--pr", "42"]) == 0
     assert len(fake.posts) == 1
     endpoint, body = fake.posts[0]
     assert endpoint == f"/repos/{REPO}/check-runs"
@@ -473,7 +448,7 @@ def test_production_main_stays_blocked_with_disarmed_auditor(monkeypatch, tmp_pa
     _run_main(monkeypatch, tmp_path, fake)
     monkeypatch.setattr(G.eligibility_reasons, "__kwdefaults__",
                         dict(G.eligibility_reasons.__kwdefaults__, trusted_app_id=None))
-    assert G.main() == 0
+    assert G.main(["--pr", "42"]) == 0
     body = fake.posts[0][1]
     assert body["conclusion"] == "failure"
     assert "INDEPENDENT_AI_AUDITOR_NOT_CONFIGURED" in body["output"]["summary"]
@@ -487,7 +462,7 @@ def test_production_main_stays_blocked_with_disarmed_auditor(monkeypatch, tmp_pa
 def test_pr_changed_during_assessment_posts_failure(monkeypatch, tmp_path, mutation):
     fake = FakeGitHub(mutate_pr=mutation)
     _run_main(monkeypatch, tmp_path, fake)
-    G.main()
+    G.main(["--pr", "42"])
     body = fake.posts[-1][1]
     assert body["conclusion"] == "failure" and body["head_sha"] == HEAD
     assert "PR_CHANGED_DURING_ASSESSMENT" in body["output"]["summary"]
@@ -500,7 +475,7 @@ def test_api_error_overwrites_an_earlier_green_with_failure(monkeypatch, tmp_pat
     fake = FakeGitHub(fail_on=outage)
     _run_main(monkeypatch, tmp_path, fake)
     with pytest.raises(OSError):
-        G.main()
+        G.main(["--pr", "42"])
     endpoint, body = fake.posts[-1]
     assert body["conclusion"] == "failure" and body["head_sha"] == HEAD
     assert "GATE_ERROR_FAILED_CLOSED:OSError" in body["output"]["summary"]
@@ -551,37 +526,6 @@ def _top_permissions(text):
     return perms
 
 
-def test_gate_workflow_uses_only_default_branch_triggers():
-    triggers = _triggers(GATE_WORKFLOW.read_text())
-    assert triggers == {"pull_request_target", "workflow_run", "check_run"}
-    assert not triggers & set(PR_CODE_TRIGGERS)
-
-
-def test_gate_workflow_least_privilege_pinned_and_never_checks_out_pr():
-    text = GATE_WORKFLOW.read_text()
-    assert _top_permissions(text) == {"actions": "read", "checks": "write",
-                                      "contents": "read", "pull-requests": "read"}
-    # Exactly one job-free permissions block.
-    assert len(re.findall(r"^\s*permissions:", text, re.M)) == 1
-    uses = re.findall(r"^\s*(?:- )?uses:\s*(\S+)", text, re.M)
-    assert len(uses) == 1 and re.fullmatch(r"actions/checkout@[0-9a-f]{40}", uses[0])
-    assert re.search(r"^\s+ref: main$", text, re.M)
-    assert re.search(r"^\s+persist-credentials: false$", text, re.M)
-    for forbidden in ("github.event.pull_request.head", "refs/pull", "head_ref",
-                      "pip install", "setup-python"):
-        assert forbidden not in text
-
-
-def test_gate_concurrency_is_one_queue_per_pr_for_every_trigger():
-    text = GATE_WORKFLOW.read_text()
-    group = text[text.index("concurrency:"):text.index("cancel-in-progress")]
-    for expr in ("github.event.pull_request.number",
-                 "github.event.workflow_run.pull_requests[0].number",
-                 "github.event.check_run.pull_requests[0].number"):
-        assert expr in group
-    assert "check_run.id" not in group and "workflow_run.id" not in group
-
-
 def test_no_pr_executing_workflow_can_forge_check_runs_or_statuses():
     # Devtools tests are allowlisted and RUN in the Tests workflow. If any
     # workflow running PR code held checks/statuses write, that code could post
@@ -593,9 +537,18 @@ def test_no_pr_executing_workflow_can_forge_check_runs_or_statuses():
         runs_pr_code = bool(_triggers(text) & set(PR_CODE_TRIGGERS))
         if runs_pr_code and not re.search(r"^permissions:", text, re.M):
             offenders.append(f"{path.name}: no top-level permissions (repository default applies)")
-        if grants and (runs_pr_code or path != GATE_WORKFLOW):
+        if grants:
             offenders.append(f"{path.name}: {grants.group(0).strip()}")
     assert offenders == []
+
+
+def test_gate_is_not_an_actions_workflow_of_this_repository():
+    # An Actions-posted eligibility check is forgeable by any PR that edits a
+    # workflow, and the sealed research census freezes `.github/workflows`.
+    # The auditor App runs this script from trusted main instead.
+    for path in sorted((ROOT / ".github/workflows").glob("*.y*ml")):
+        assert "engineering_pr_gate" not in path.read_text(), path.name
+        assert "engineering-pr-gate" not in path.name
 
 
 def test_trigger_reader_sees_pull_request_in_both_forms():
@@ -605,10 +558,17 @@ def test_trigger_reader_sees_pull_request_in_both_forms():
 
 
 def test_script_is_stdlib_only_and_runs_without_repository_imports():
-    # The workflow sparse-checks-out this single file and runs bare python3.
+    # The auditor runner fetches this single file from trusted main and runs bare python3.
     imports = re.findall(r"^(?:from|import) ([a-z_.]+)", inspect.getsource(G), re.M)
-    assert set(imports) <= {"__future__", "json", "os", "re", "sys", "urllib.request"}
+    assert set(imports) <= {"__future__", "argparse", "json", "os", "re", "sys", "urllib.request"}
     out = subprocess.run([sys.executable, "-I", "-c",
                           "import runpy; runpy.run_path(%r)" % str(ROOT / "scripts/engineering_pr_gate.py")],
                          capture_output=True, text=True, env={"PATH": ""})
     assert "ModuleNotFoundError" not in out.stderr
+
+
+@pytest.mark.parametrize("argv", [[], ["--pr", "0"], ["--pr", "-1"], ["--pr", "x"]])
+def test_main_requires_a_positive_pr_number(monkeypatch, argv):
+    monkeypatch.setattr(G, "api", lambda *_: pytest.fail("no API call before the PR is known"))
+    with pytest.raises((SystemExit, ValueError)):
+        G.main(argv)

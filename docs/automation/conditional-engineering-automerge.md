@@ -18,8 +18,9 @@ no shortcut approval, no execution of sealed research, no live trading.
 - All current PRs #259 and #262–#266 are research/collector work, NOT
   eligible for the initial devtools-only auto-merge pilot.
 - Safety PR #267 is a Draft and cannot be merged under the pilot.
-- The newly proposed independent AI gate is NOT running on main. This
-  workflow first has to land through the protected PR route.
+- The newly proposed independent AI gate is NOT running anywhere. The policy
+  script first has to land through the protected PR route, and the auditor
+  App that runs it does not exist yet.
 
 ## Design: AI-independent review without a second human GitHub account
 
@@ -49,14 +50,14 @@ Its audit/check contract must be reviewed and demonstrated before trusting it:
    - HTTPS details_url showing inspectable independent review evidence.
 4. A negative verdict, missing output, old SHA, other PR identity, another App,
    pending result, or changed head MUST fail closed.
-5. The trusted-main checker re-fetches the PR and its check runs directly
+5. The trusted-main policy script (run by the App) re-fetches the PR and its check runs directly
    through GitHub API. Author-written PR comments or attestations are not
    considered.
 6. The same SHA must also have a successful GitHub Actions pytest check.
 7. A **separately enforced GitHub Ruleset** must require all three checks
    on protected main: pytest, Investment Independent AI Audit (correct pinned
-   App integration), and Investment Auto-merge eligibility (GitHub Actions).
-   The trusted-main checker itself CANNOT replace native branch protection.
+   App integration), and Investment Auto-merge eligibility (also the pinned
+   App). The policy script itself CANNOT replace native branch protection.
 
 IMPORTANT: a check signed by an App establishes its GitHub principal and the
 reported verdict; it does not mathematically prove that the App used a
@@ -85,32 +86,45 @@ All of the following are required:
 - Branch rules must independently enforce checks and review policy.
 
 A success from this classifier is **NOT an instruction to merge**. The
-workflow posts a machine check; it has no pull-requests:write permissions
+runner posts a machine check; it has no pull-requests:write permissions
 and never calls a merge API.
 
-## Trusted workflow security
+## Trusted execution: the auditor App runs the policy, no workflow here
 
-.github/workflows/engineering-pr-gate.yml:
+There is deliberately **no GitHub Actions workflow** for this gate. An earlier
+revision added `.github/workflows/engineering-pr-gate.yml`; it was removed
+(2026-10-19, owner decision) for two independent reasons:
 
-- Uses pull_request_target, workflow_run (Tests completion) and the
-  independent AI App's check_run completion to re-evaluate. All three run the
-  workflow file from the default branch. `pull_request_review` was REMOVED:
-  for a same-repository PR it runs the workflow definition from the PR's merge
-  ref (author-controlled) while holding this file's `checks: write` token, and
-  reviews are not an eligibility input.
-- Checks out only trusted main, sparse (the gate script alone), with the
-  checkout action pinned by commit and no dependency install. It never checks
-  out, installs dependencies from, or runs code from the PR.
-- Fetches current PR/files and exact-head check runs through GitHub API
-  (`filter=all`, fully paginated); partial pages, wrong SHA, unauthorized App
-  ID, or processing errors cannot produce a passing check run. A processing
-  error after the head SHA is known posts a FAILURE check before the job
-  fails, so an earlier green check can never remain the latest result.
-- One concurrency queue per PR for every trigger (newest evaluation wins).
-- Uses least possible permissions: actions:read, contents:read,
-  pull-requests:read, checks:write. No workflow grants merge permissions.
-- A missing or failed gate check must be BLOCKING once the rule is enabled.
-  Before activation, no automation may interpret a non-required check as safe.
+1. The sealed research census freezes the workflows directory: the sealed
+   spec `docs/research-program/specs/rp1-wp2-us-universe-v1.json` pins
+   `protectedTreeSha256[".github/workflows"]`, and
+   `tests/test_rp1_c1_us_wp4d.py` forbids any new workflow file and any edit to
+   the workflow inventory. The first Tests run on this PR to complete (run
+   39236581286) failed exactly those five tests. Landing a workflow would mean
+   re-opening a sealed study, which is not done.
+2. A check posted as GitHub Actions is forgeable by any same-repository PR
+   that edits a workflow (it runs its own definition on `pull_request` and can
+   request `checks: write`). An eligibility check signed by the pinned App is
+   not.
+
+So `scripts/engineering_pr_gate.py` is a policy script. The auditor App's runner,
+outside this repository:
+
+- fetches the script from a trusted `main` commit (by commit SHA, never from
+  the PR) and runs `python3 engineering_pr_gate.py --pr <N>` with the App's
+  installation token; it never checks out, installs from or runs PR code;
+- serializes evaluations per PR (newest wins), since a stale evaluation that
+  posts last would otherwise decide the latest check;
+- posts `Investment Auto-merge eligibility` as the App, and only for an
+  eligible PR proceeds to the AI review and `Investment Independent AI Audit`.
+
+The script itself: fetches current PR/files and exact-head check runs through
+the GitHub API (`filter=all`, fully paginated); partial pages, wrong SHA,
+unauthorized App ID, or processing errors cannot produce a passing check run.
+A processing error after the head SHA is known posts a FAILURE check before the
+process fails, so an earlier green check can never remain the latest result.
+A missing or failed gate check must be BLOCKING once the rule is enabled.
+Before activation, no automation may interpret a non-required check as safe.
 
 ## Independent second-reviewer audit (2026-10-19)
 
@@ -120,15 +134,15 @@ negative test that fails when the fix is reverted (mutation-checked):
 
 | # | Bypass | Fix |
 |---|---|---|
-| 1 | `pull_request_review` trigger ran the PR's own copy of this workflow with `checks: write` | trigger removed; test pins the trigger set |
+| 1 | `pull_request_review` trigger ran the PR's own copy of the gate workflow with `checks: write` | trigger removed; later the whole workflow was removed (see above) |
 | 2 | check-runs endpoint defaults to `filter=latest` (by completed_at): a queued re-run could be hidden behind the older success | `filter=all`, full envelope pagination, refuse a listing that changes mid-walk |
 | 3 | check runs attach to a SHA, not a PR: a second open PR with the same head inherits the first PR's green eligibility (e.g. without the opt-in label) | `HEAD_SHA_SHARED_WITH_ANOTHER_OPEN_PR` |
 | 4 | any workflow can name a job `pytest`; the latest Actions `pytest` won regardless of workflow | the pytest check must belong to a `Tests` (`.github/workflows/tests.yml`) run on `pull_request` for this exact head; any other Actions `pytest` on the head blocks |
-| 5 | a gate check name claimed by an unexpected App was silently ignored, which is only safe if every Ruleset entry pins its source | `AI_AUDIT_CHECK_CLAIMED_BY_UNPINNED_APP`, `CHECK_NAME_CLAIMED_BY_NON_ACTIONS_APP` |
-| 6 | concurrency grouped by event id: a slow run that read an older state (label present) could post success after a newer failure | one queue per PR for all triggers |
+| 5 | a gate check name claimed by an unexpected App was silently ignored, which is only safe if every Ruleset entry pins its source | `GATE_CHECK_CLAIMED_BY_UNPINNED_APP` (audit and eligibility must be the pinned App), `CHECK_NAME_CLAIMED_BY_NON_ACTIONS_APP` (pytest) |
+| 6 | concurrency grouped by event id: a slow run that read an older state (label present) could post success after a newer failure | fixed in the workflow, then moved to the runner contract: serialize per PR |
 | 7 | only the head SHA was re-read before posting; label removal / draft / file-count changes during assessment were missed | full PR fingerprint recheck → `PR_CHANGED_DURING_ASSESSMENT` |
 | 8 | a crash posted nothing, leaving an earlier success as the latest eligibility on the SHA | failure check posted on any error, then the job fails |
-| 9 | `workflow_run`/`check_run` `pull_requests` can list PRs of other repositories; their number names a different PR here | entries are filtered to this repository's base |
+| 9 | `workflow_run`/`check_run` `pull_requests` can list PRs of other repositories; their number names a different PR here | fixed, then made moot: the runner passes `--pr` explicitly, no event payload is read |
 | 10 | a symlink (mode 120000) or submodule at an allowlisted path | git-tree modes must be regular blobs |
 | 11 | file listing could be short of `changed_files` | `CHANGED_FILE_LIST_INCOMPLETE` |
 | 12 | check summary printed literal `\n` | real line breaks |
@@ -139,22 +153,20 @@ A repository-wide test also asserts that no workflow which runs PR code
 tests run inside `Tests`; if that token could write checks, test code could
 post a green eligibility or `pytest` as GitHub Actions.
 
-### Residual limitation that code here cannot close
+### Residual limitation
 
-`Investment Auto-merge eligibility` and `pytest` are both posted by the GitHub
-Actions App. A same-repository PR that EDITS a workflow runs its own
-definition on `pull_request` and may request `checks: write` there, so it can
-post a green check under either name after this gate posted its failure. The
-gate refuses every `.github/**` change, but it cannot stop a check posted
-after it ran, and a Ruleset cannot tell two Actions checks apart. Therefore:
+`pytest` is still posted by the GitHub Actions App, and a PR that EDITS a
+workflow can post a green `pytest` under that name after Tests failed. The
+script refuses every `.github/**` change and blocks on any Actions `pytest`
+outside the Tests run, but it cannot stop a check posted after it ran.
+Therefore:
 
-- The ONLY check a PR cannot forge is the pinned auditor App's. The auditor
-  must itself refuse any PR outside the devtools allowlist (in particular any
-  `.github/**`, `scripts/engineering_pr_gate.py` or `AGENTS.md` change) and
-  must recompute eligibility from trusted main before it posts success. The
-  eligibility check is defense in depth, not the anchor.
-- Native approvals must stay at 1 until that auditor behaviour is
-  demonstrated on a synthetic PR that edits a workflow to forge both checks.
+- The App-signed checks are the anchor. The runner must post eligibility and
+  audit only after this script passes, so a workflow-editing PR always gets an
+  App failure that a Ruleset requiring the App's checks will enforce.
+- Native approvals must stay at 1 until that behaviour is demonstrated on a
+  synthetic PR that edits a workflow to forge `pytest` and an Actions-signed
+  eligibility check.
 
 ## Mandatory bootstrap steps; current owner review still required
 
@@ -192,10 +204,11 @@ After the safety code lands under protected main:
    same head; a symlink at an allowlisted path; and a PR that edits a
    workflow to post forged `pytest` and eligibility checks (must stay
    blocked by the auditor App's check).
-3. Confirm the trust checker runs from main and posts the correct check to
-   the exact PR head; verify no checkout of PR code and no PR merge.
-4. Add both the named external AI audit check (pinned App integration) and
-   the trusted eligibility check (GitHub Actions) as REQUIRED status checks.
+3. Confirm the runner executes the script from a trusted main commit and
+   posts the correct App-signed checks to the exact PR head; verify no
+   checkout of PR code and no PR merge.
+4. Add the external AI audit check and the eligibility check (both with the
+   pinned App as source) plus pytest (GitHub Actions) as REQUIRED status checks.
 5. Verify absence or failure of either check actually blocks a test PR
    even when other tests pass. Do not rely on configuration screenshots alone.
 6. Only after that, the owner MAY lower native approval count from 1 to 0.

@@ -1,12 +1,20 @@
-"""Fail-closed engineering PR gate, designed for a trusted-main workflow.
+"""Fail-closed engineering PR eligibility policy, run by the independent auditor.
 
 This script never merges, approves, checks out, or executes pull-request code.
 Native GitHub branch protection and independently produced AI audit evidence
 are REQUIRED before allowing any unattended merge. The independent auditor
 must be a separate pinned GitHub App, not an author-controlled PR comment.
+
+It is deliberately NOT a GitHub Actions workflow of this repository. A check
+posted as GitHub Actions can be forged by any PR that edits a workflow, and the
+sealed research census freezes `.github/workflows`. The auditor App's runner
+(outside this repository) fetches this file from a trusted `main` commit, runs
+it with an installation token, and the eligibility check it posts is signed by
+the App: `python3 engineering_pr_gate.py --pr <N>`.
 """
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import re
@@ -90,9 +98,10 @@ def impersonation_reasons(checks: list[dict], trusted_app_id: int | None) -> lis
     for c in checks:
         app = (c.get("app") or {}).get("id")
         name = c.get("name")
-        if name == AI_AUDIT_NAME and app != trusted_app_id:
-            reasons.append("AI_AUDIT_CHECK_CLAIMED_BY_UNPINNED_APP")
-        elif name in (NAME, TEST_CHECK_NAME) and app != GITHUB_ACTIONS_APP_ID:
+        # Both gate checks are posted by the pinned auditor App; pytest by Actions.
+        if name in (AI_AUDIT_NAME, NAME) and app != trusted_app_id:
+            reasons.append(f"GATE_CHECK_CLAIMED_BY_UNPINNED_APP:{name}")
+        elif name == TEST_CHECK_NAME and app != GITHUB_ACTIONS_APP_ID:
             reasons.append(f"CHECK_NAME_CLAIMED_BY_NON_ACTIONS_APP:{name}")
     return sorted(set(reasons))
 
@@ -337,23 +346,6 @@ def get_file_modes(repo_path: str, sha: str, paths: list[str], token: str) -> di
     return modes
 
 
-def pr_number_from_event(event: dict, repository: str) -> int:
-    direct = (event.get("pull_request") or {}).get("number")
-    if isinstance(direct, int):
-        return direct
-    payload = event.get("workflow_run") or event.get("check_run") or {}
-    # `pull_requests` can list PRs of OTHER repositories that share the head;
-    # their numbers mean a different PR here.
-    suffix = "/repos/" + repository
-    numbers = {
-        x.get("number") for x in (payload.get("pull_requests") or [])
-        if str(((x.get("base") or {}).get("repo") or {}).get("url", "")).endswith(suffix)
-    }
-    if len(numbers) != 1 or not all(isinstance(x, int) for x in numbers):
-        raise ValueError("EVENT_PR_ID_UNRESOLVED_OR_AMBIGUOUS")
-    return next(iter(numbers))
-
-
 def pr_fingerprint(pr: dict) -> tuple:
     """Everything eligibility reads from the PR record itself."""
     return (
@@ -390,12 +382,16 @@ def post_check(base_path: str, token: str, number: int, sha: str, reasons: list[
     })
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument("--pr", type=int, required=True)
+    number = parser.parse_args(argv).pr
+    if number <= 0:
+        raise ValueError("INVALID_PR_NUMBER")
+    # An installation token of the pinned auditor App, never a PAT or the
+    # GITHUB_TOKEN of a workflow in this repository.
     token = os.environ["GITHUB_TOKEN"]
     repository = os.environ["GITHUB_REPOSITORY"]
-    with open(os.environ["GITHUB_EVENT_PATH"], encoding="utf-8") as stream:
-        event = json.load(stream)
-    number = pr_number_from_event(event, repository)
     base_path = "/repos/" + repository
     pr_path = base_path + f"/pulls/{number}"
     pr = api("GET", pr_path, token)
