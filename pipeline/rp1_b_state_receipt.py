@@ -21,6 +21,7 @@ import pandas as pd
 
 from . import kr_market_risk_model as K
 from . import prospective_receipt_core as P
+from . import replay_calendar as RC
 
 STUDY = "rp1-b-h1-state-receipt-preview-v1"
 SCHEMA_VERSION = 1
@@ -33,14 +34,18 @@ REQUIRED = ("schemaVersion", "studyId", "evidenceClass", "definition", "signalDa
 
 def series_identity(close):
     s = pd.Series(close, dtype=float)
-    rows = [[str(pd.Timestamp(d).date()), float(v)] for d, v in s.items()]
+    rows = [[str(pd.Timestamp(d).date()), float(v) if np.isfinite(v) else None] for d, v in s.items()]
     return hashlib.sha256(P.canonical(rows)).hexdigest()
 
 
 def observe(close, signal_date):
     """State at `signal_date` from closes dated on or before it. Data after the signal date is a refusal, never silently dropped."""
-    s = pd.Series(close, dtype=float).sort_index()
+    s = pd.Series(close, dtype=float)
     s.index = pd.DatetimeIndex(s.index)
+    if not s.index.is_monotonic_increasing:
+        raise ValueError("TIMESTAMPS_NOT_MONOTONIC")
+    if s.index.has_duplicates:
+        raise ValueError("DUPLICATE_TIMESTAMPS")
     day = pd.Timestamp(signal_date).normalize()
     if len(s) and s.index[-1] > day:
         raise ValueError("DATA_AFTER_SIGNAL_DATE")
@@ -54,9 +59,14 @@ def observe(close, signal_date):
     if fast is None:
         reasons.append("FAST_DATA_INSUFFICIENT")
     target = day - pd.DateOffset(months=LOOKBACK_MONTHS)
-    eligible = s.loc[:target].dropna()
+    # The sealed definition names no staleness tolerance. The base is the last KR exchange session on or before the target date
+    # (holidays resolve through the calendar); the series must carry that exact session with a valid close, otherwise the leg is unavailable.
+    cal = pd.DatetimeIndex(RC.sessions(str((target - pd.Timedelta(days=15)).date()), str(target.date()), "KR"))
+    expected = cal[-1] if len(cal) else None
+    valid = s[np.isfinite(s) & (s > 0)]
+    eligible = valid.loc[expected:expected] if expected is not None else valid.iloc[:0]
     ret, base = None, None
-    if len(eligible) == 0 or (target - eligible.index[-1]).days > 14:
+    if len(eligible) == 0:
         reasons.append("TRAILING_24M_BASE_UNAVAILABLE")
     else:
         base, ret = eligible.index[-1], float(s.iloc[-1] / eligible.iloc[-1] - 1.0)

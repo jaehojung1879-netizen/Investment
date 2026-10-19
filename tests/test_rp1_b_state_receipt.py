@@ -76,3 +76,41 @@ def test_preview_cannot_claim_ledger_evidence_or_carry_outcome_keys():
 def test_module_never_writes_a_ledger():
     src = open(B.__file__, encoding="utf-8").read()
     assert "P.append" not in src and "open(" not in src
+
+
+def _with_gap(series, start, end):
+    return series.drop(series.loc[start:end].index)
+
+
+def test_stale_base_is_unavailable_not_tolerated():
+    s = _close()
+    base = pd.Timestamp(SIGNAL) - pd.DateOffset(months=24)
+    exp = pd.DatetimeIndex(RC.sessions(str((base - pd.Timedelta(days=15)).date()), str(base.date()), "KR"))[-1]
+    s = s.drop(exp) if exp in s.index else s
+    r = B.build_preview(s, SIGNAL)
+    assert "TRAILING_24M_BASE_UNAVAILABLE" in r["unavailableReasons"] and r["trailing24mReturn"] is None
+
+
+def test_duplicate_and_nonmonotonic_timestamps_are_refused():
+    s = _close()
+    with pytest.raises(ValueError, match="DUPLICATE"):
+        B.build_preview(pd.concat([s, s.iloc[-1:]]), SIGNAL)
+    with pytest.raises(ValueError, match="NOT_MONOTONIC"):
+        B.build_preview(s.iloc[::-1], SIGNAL)
+
+
+def test_invalid_close_on_signal_or_base_date():
+    s = _close()
+    bad = s.copy(); bad.iloc[-1] = float("nan")
+    assert "SIGNAL_DATE_CLOSE_UNAVAILABLE" in B.build_preview(bad, SIGNAL)["unavailableReasons"]
+    base = pd.Timestamp(SIGNAL) - pd.DateOffset(months=24)
+    exp = pd.DatetimeIndex(RC.sessions(str((base - pd.Timedelta(days=15)).date()), str(base.date()), "KR"))[-1]
+    bad2 = s.copy(); bad2.loc[exp] = -1.0
+    assert B.build_preview(bad2, SIGNAL)["trailing24mReturn"] is None
+
+
+def test_adverse_fast_with_unavailable_return_is_adverse():
+    s = _close(shock=(10, 0.8)).loc["2025-06-01":]
+    r = B.build_preview(s, SIGNAL)
+    assert r["trailing24mReturn"] is None
+    assert r["adverse"] == (True if r["fast"] == 2 else None)
