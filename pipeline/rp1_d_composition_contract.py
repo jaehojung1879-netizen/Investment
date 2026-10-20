@@ -21,11 +21,23 @@ MAX_NAMES = 5
 DEFAULT_POLICY = "EXISTING_PASSIVE_ETF_POLICY"
 REGIONS = ("KR", "US")
 FORBIDDEN_KEYS = ("weight", "weights", "order", "orders", "recommendation", "targetWeight", "notional", "shares")
+_FORBIDDEN_NORMALISED = frozenset(k.lower() for k in FORBIDDEN_KEYS)
 A_REQUIRED = ("validated", "calibrated", "expectedNetExcessPct", "uncertaintyPct", "roundTripCostPct", "candidates")
 
 
 def _num(v):
     return isinstance(v, (int, float)) and not isinstance(v, bool) and v == v and abs(v) != float("inf")
+
+
+def clean_tickers(cands):
+    """Non-empty stripped string tickers, de-duplicated, input order kept. Anything else is dropped, never coerced with str()."""
+    if not isinstance(cands, list):
+        return []
+    out = []
+    for t in cands:
+        if isinstance(t, str) and t.strip() and t.strip() not in out:
+            out.append(t.strip())
+    return out
 
 
 def qualify_a(a, region):
@@ -41,10 +53,13 @@ def qualify_a(a, region):
         reasons.append("A_NOT_CALIBRATED")
     if not all(_num(a[k]) for k in ("expectedNetExcessPct", "uncertaintyPct", "roundTripCostPct")):
         reasons.append("A_NUMERIC_FIELD_UNAVAILABLE")
+    elif a["uncertaintyPct"] <= 0:
+        reasons.append("A_UNCERTAINTY_NOT_POSITIVE")
+    elif a["roundTripCostPct"] < 0:
+        reasons.append("A_ROUND_TRIP_COST_NEGATIVE")
     elif a["expectedNetExcessPct"] - a["roundTripCostPct"] <= 0:
         reasons.append("A_EDGE_NOT_ABOVE_ROUND_TRIP_COST")
-    cands = a["candidates"]
-    if not isinstance(cands, list) or not cands:
+    if not clean_tickers(a["candidates"]):
         reasons.append("A_NO_CANDIDATES")
     return not reasons, reasons
 
@@ -57,7 +72,7 @@ def compose(a_by_region=None, b=None, c=None):
         ok, why = qualify_a(a_by_region.get(r), r)
         regions[r] = {"aEligible": ok, "reasons": why}
         if ok:
-            pool.extend((r, str(t)) for t in a_by_region[r]["candidates"])
+            pool.extend((r, t) for t in clean_tickers(a_by_region[r]["candidates"]))
     # Cross-region cap is on the total number of names; the order is the input order, no score is invented here.
     candidates = [{"region": r, "ticker": t} for r, t in pool[:MAX_NAMES]]
     truncated = len(pool) > MAX_NAMES
@@ -82,7 +97,7 @@ def assert_no_allocation(obj):
     def walk(x):
         if isinstance(x, dict):
             for k, v in x.items():
-                if k in FORBIDDEN_KEYS:
+                if isinstance(k, str) and k.replace("_", "").lower() in _FORBIDDEN_NORMALISED:
                     raise ValueError("ALLOCATION_KEY_FORBIDDEN: " + k)
                 walk(v)
         elif isinstance(x, list):

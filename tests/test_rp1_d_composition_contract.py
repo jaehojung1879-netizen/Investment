@@ -52,3 +52,33 @@ def test_allocation_keys_are_refused():
     o2["activeNames"] = ["AAA"]
     with pytest.raises(ValueError):
         D.assert_no_allocation(o2)
+
+
+def _h(**kw):
+    base = {"validated": True, "calibrated": True, "expectedNetExcessPct": 5.0, "uncertaintyPct": 1.0,
+            "roundTripCostPct": 1.0, "candidates": ["A"]}
+    base.update(kw)
+    return base
+
+
+def test_duplicates_removed_and_malformed_tickers_dropped():
+    out = D.compose({"KR": _h(candidates=["A", "A", " A ", None, "", 5, {"x": 1}, "  ", "B"])})
+    assert [c["ticker"] for c in out["shadowCandidates"]] == ["A", "B"]
+
+
+def test_only_malformed_candidates_is_unqualified():
+    ok, why = D.qualify_a(_h(candidates=[None, "", 5]), "KR")
+    assert not ok and "A_NO_CANDIDATES" in why
+
+
+def test_nonpositive_uncertainty_and_negative_cost_rejected():
+    assert "A_UNCERTAINTY_NOT_POSITIVE" in D.qualify_a(_h(uncertaintyPct=-1), "KR")[1]
+    assert "A_UNCERTAINTY_NOT_POSITIVE" in D.qualify_a(_h(uncertaintyPct=0), "KR")[1]
+    assert "A_ROUND_TRIP_COST_NEGATIVE" in D.qualify_a(_h(roundTripCostPct=-50), "KR")[1]
+
+
+def test_allocation_key_scan_is_case_and_underscore_insensitive():
+    import pytest
+    for k in ("Weight", "target_weight", "ORDERS"):
+        with pytest.raises(ValueError):
+            D.assert_no_allocation({"activeNames": [], "productionAffected": False, "x": {k: 1}})
