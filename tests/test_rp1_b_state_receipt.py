@@ -144,3 +144,11 @@ def test_unavailable_signal_close_receipt_stays_valid_and_cannot_claim_a_state()
     assert r["adverse"] is None and B.validate_preview(r)
     with pytest.raises(ValueError):
         B.validate_preview(_redigest({**r, "adverse": False}))
+
+
+@pytest.mark.parametrize("base", ["2024-01-02", "2024-09-05", "2024-09-10"])
+def test_base_date_must_be_the_defined_session_not_merely_before_the_target(base):
+    good = B.build_preview(_close(), SIGNAL)
+    assert good["baseSessionDate"] == "2024-09-11"
+    with pytest.raises(ValueError, match="NOT_THE_DEFINED_SESSION"):
+        B.validate_preview(_redigest({**good, "baseSessionDate": base}))

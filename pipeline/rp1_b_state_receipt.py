@@ -58,11 +58,9 @@ def observe(close, signal_date):
     fast = None if not np.isfinite(fast) else int(fast)
     if fast is None:
         reasons.append("FAST_DATA_INSUFFICIENT")
-    target = day - pd.DateOffset(months=LOOKBACK_MONTHS)
     # The sealed definition names no staleness tolerance. The base is the last KR exchange session on or before the target date
     # (holidays resolve through the calendar); the series must carry that exact session with a valid close, otherwise the leg is unavailable.
-    cal = pd.DatetimeIndex(RC.sessions(str((target - pd.Timedelta(days=15)).date()), str(target.date()), "KR"))
-    expected = cal[-1] if len(cal) else None
+    expected = expected_base_session(day)
     valid = s[np.isfinite(s) & (s > 0)]
     eligible = valid.loc[expected:expected] if expected is not None else valid.iloc[:0]
     ret, base = None, None
@@ -104,6 +102,13 @@ def validate_preview(receipt):
 KNOWN_REASONS = ("SIGNAL_DATE_CLOSE_UNAVAILABLE", "FAST_DATA_INSUFFICIENT", "TRAILING_24M_BASE_UNAVAILABLE")
 
 
+def expected_base_session(day):
+    """The one base session the definition allows: last KR exchange session on or before the 24-month target. Depends on the date alone."""
+    target = day - pd.DateOffset(months=LOOKBACK_MONTHS)
+    cal = pd.DatetimeIndex(RC.sessions(str((target - pd.Timedelta(days=15)).date()), str(target.date()), "KR"))
+    return cal[-1] if len(cal) else None
+
+
 def _is_num(v):
     return isinstance(v, (int, float)) and not isinstance(v, bool) and np.isfinite(v)
 
@@ -134,6 +139,8 @@ def _check_consistency(r):
             raise ValueError("PREVIEW_BASE_DATE_MALFORMED") from exc
         if str(b.date()) != base or b > day - pd.DateOffset(months=LOOKBACK_MONTHS):
             raise ValueError("PREVIEW_BASE_DATE_OUT_OF_RANGE")
+        if b != expected_base_session(day):
+            raise ValueError("PREVIEW_BASE_DATE_NOT_THE_DEFINED_SESSION")
     reasons = r["unavailableReasons"]
     if not isinstance(reasons, list) or any(x not in KNOWN_REASONS for x in reasons) or len(set(reasons)) != len(reasons):
         raise ValueError("PREVIEW_REASONS_MALFORMED")
