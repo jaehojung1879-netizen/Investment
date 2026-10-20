@@ -10,6 +10,14 @@ Gates (all must hold for A to be listed as a candidate for a SEPARATE economic v
   - B: contributes context only. No multiplier unless a conditional effect was validated AND shown incremental to C.
   - C: contributes a region rule only when an owner-approved interpretation exists. It is applied once to one fixed book, never stacked on B.
 Currencies are never summed: candidates are reported per region.
+
+Economic input contract (UNRESOLVED, fail-closed). 04 sec.7 and README sec.D state the gate as "calibrated expected net excess >
+round-trip cost (stock + ETF sell)" without saying what "net" removes. With gross benchmark-relative excess G = E[R_i - R_b] and
+round-trip cost C (the benchmark leg is charged nothing), the economic gate is G - C > 0. A value that is ALREADY net of C, run
+through "value - C > 0", is charged twice (G > 2C); a gross value tested against 0 is charged never. No upstream producer of this
+field exists anywhere in the repository (Track A publishes no calibrated expected excess), so no definition can be confirmed:
+while EXPECTED_EXCESS_DEFINITION is UNRESOLVED every A record is ineligible and the passive default holds. Each record must still
+declare its cost basis and registered benchmark, so a future producer cannot be misread in either direction.
 """
 from __future__ import annotations
 
@@ -22,7 +30,29 @@ DEFAULT_POLICY = "EXISTING_PASSIVE_ETF_POLICY"
 REGIONS = ("KR", "US")
 FORBIDDEN_KEYS = ("weight", "weights", "order", "orders", "recommendation", "targetWeight", "notional", "shares")
 _FORBIDDEN_NORMALISED = frozenset(k.lower() for k in FORBIDDEN_KEYS)
-A_REQUIRED = ("validated", "calibrated", "expectedNetExcessPct", "uncertaintyPct", "roundTripCostPct", "candidates")
+A_REQUIRED = ("validated", "calibrated", "expectedNetExcessPct", "uncertaintyPct", "roundTripCostPct", "candidates",
+              "excessCostBasis", "benchmark")
+# 04 sec.6 primary benchmarks; the excess must be relative to exactly these.
+REGISTERED_BENCHMARKS = {"KR": "069500.KS", "US": "SPY"}
+GROSS, NET = "GROSS_OF_ROUND_TRIP_COST", "NET_OF_ROUND_TRIP_COST"
+COST_BASES = (GROSS, NET)
+# Owner decision required (PR #265). SINGLE_COST_DEDUCTION is the only resolution this code can apply; anything else is a change.
+EXPECTED_EXCESS_DEFINITION = "UNRESOLVED"
+RESOLVED_DEFINITIONS = ("SINGLE_COST_DEDUCTION",)
+UPSTREAM_PRODUCER = None
+
+
+def edge_after_cost(value, cost, basis):
+    """Benchmark-relative expected edge with the round-trip cost charged exactly once, or None if the basis is unknown."""
+    if not (_num(value) and _num(cost)) or basis not in COST_BASES:
+        return None
+    return value - cost if basis == GROSS else value
+
+
+def economic_input_contract():
+    return {"expectedExcessDefinition": EXPECTED_EXCESS_DEFINITION, "upstreamProducer": UPSTREAM_PRODUCER,
+            "gateWhenResolved": "BENCHMARK_RELATIVE_EDGE_AFTER_ONE_ROUND_TRIP_COST_GT_0", "costBases": list(COST_BASES),
+            "registeredBenchmarks": dict(REGISTERED_BENCHMARKS)}
 
 
 def _num(v):
@@ -47,6 +77,12 @@ def qualify_a(a, region):
     reasons = [f"A_FIELD_MISSING:{k}" for k in A_REQUIRED if k not in a]
     if reasons:
         return False, reasons
+    if EXPECTED_EXCESS_DEFINITION not in RESOLVED_DEFINITIONS:
+        reasons.append("A_EXPECTED_EXCESS_DEFINITION_UNRESOLVED")
+    if a["excessCostBasis"] not in COST_BASES:
+        reasons.append("A_EXCESS_COST_BASIS_UNDECLARED")
+    if a["benchmark"] != REGISTERED_BENCHMARKS.get(region):
+        reasons.append("A_BENCHMARK_NOT_REGISTERED")
     if a["validated"] is not True:
         reasons.append("A_NOT_VALIDATED")
     if a["calibrated"] is not True:
@@ -57,7 +93,8 @@ def qualify_a(a, region):
         reasons.append("A_UNCERTAINTY_NOT_POSITIVE")
     elif a["roundTripCostPct"] < 0:
         reasons.append("A_ROUND_TRIP_COST_NEGATIVE")
-    elif a["expectedNetExcessPct"] - a["roundTripCostPct"] <= 0:
+    elif a["excessCostBasis"] in COST_BASES and not edge_after_cost(
+            a["expectedNetExcessPct"], a["roundTripCostPct"], a["excessCostBasis"]) > 0:
         reasons.append("A_EDGE_NOT_ABOVE_ROUND_TRIP_COST")
     if not clean_tickers(a["candidates"]):
         reasons.append("A_NO_CANDIDATES")
@@ -88,7 +125,8 @@ def compose(a_by_region=None, b=None, c=None):
         reasons.append("DEFAULT_PASSIVE_ETF_POLICY_RETAINED")
     out = {"studyId": STUDY, "evidenceClass": EVIDENCE_CLASS, "defaultPolicy": DEFAULT_POLICY, "status": status,
            "activeNames": [], "shadowCandidates": candidates, "candidatesTruncatedAtMax": truncated, "regions": regions,
-           "b": b_ctx, "c": c_ctx, "reasons": reasons, "productionAffected": False}
+           "b": b_ctx, "c": c_ctx, "reasons": reasons, "economicInputContract": economic_input_contract(),
+           "productionAffected": False}
     assert_no_allocation(out)
     return out
 
