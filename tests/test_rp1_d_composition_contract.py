@@ -3,9 +3,13 @@ import pytest
 from pipeline import rp1_d_composition_contract as D
 
 
+KR2, US2 = ["005930.KS", "000660.KS"], ["AAPL", "MSFT"]
+
+
 def _a(region="KR", **kw):
     base = {"validated": True, "calibrated": True, "expectedNetExcessPct": 5.0, "uncertaintyPct": 2.0, "roundTripCostPct": 1.0,
-            "candidates": ["AAA", "BBB"], "excessCostBasis": D.GROSS, "benchmark": D.REGISTERED_BENCHMARKS[region]}
+            "candidates": KR2 if region == "KR" else US2, "excessCostBasis": D.GROSS,
+            "benchmark": D.REGISTERED_BENCHMARKS[region]}
     base.update(kw)
     return base
 
@@ -39,8 +43,8 @@ def test_missing_field_is_unqualified_not_zero():
 
 
 def test_qualified_a_lists_candidates_without_weights(resolved):
-    o = D.compose({"KR": _a(), "US": _a("US", candidates=["X", "Y", "Z", "W"])}, b={"adverse": True}, c={"ownerApprovedInterpretation": True})
-    assert o["status"].startswith("CANDIDATES_ELIGIBLE") and len(o["shadowCandidates"]) == D.MAX_NAMES and o["candidatesTruncatedAtMax"]
+    o = D.compose({"KR": _a(), "US": _a("US", candidates=["AAPL", "MSFT", "NVDA"])}, b={"adverse": True})
+    assert o["status"].startswith("CANDIDATES_ELIGIBLE") and len(o["shadowCandidates"]) == D.MAX_NAMES
     assert o["activeNames"] == [] and o["b"]["used"] is False and o["c"]["used"] is False
     assert {c["region"] for c in o["shadowCandidates"]} == {"KR", "US"}
 
@@ -62,19 +66,36 @@ def test_allocation_keys_are_refused():
 
 def _h(**kw):
     base = {"validated": True, "calibrated": True, "expectedNetExcessPct": 5.0, "uncertaintyPct": 1.0,
-            "roundTripCostPct": 1.0, "candidates": ["A"], "excessCostBasis": D.GROSS, "benchmark": "069500.KS"}
+            "roundTripCostPct": 1.0, "candidates": ["005930.KS"], "excessCostBasis": D.GROSS, "benchmark": "069500.KS"}
     base.update(kw)
     return base
 
 
-def test_duplicates_removed_and_malformed_tickers_dropped(resolved):
-    out = D.compose({"KR": _h(candidates=["A", "A", " A ", None, "", 5, {"x": 1}, "  ", "B"])})
-    assert [c["ticker"] for c in out["shadowCandidates"]] == ["A", "B"]
+def test_duplicates_removed_and_counted(resolved):
+    out = D.compose({"KR": _h(candidates=["005930.KS", "005930.KS", "000660.KS", "005930.KS"])})
+    assert [c["ticker"] for c in out["shadowCandidates"]] == ["000660.KS", "005930.KS"]
+    assert out["regions"]["KR"]["duplicatesRemoved"] == 2
 
 
-def test_only_malformed_candidates_is_unqualified():
-    ok, why = D.qualify_a(_h(candidates=[None, "", 5]), "KR")
-    assert not ok and "A_NO_CANDIDATES" in why
+@pytest.mark.parametrize("bad", [None, "", "  ", " 005930.KS", "005930.KS ", 5, 5.0, True, {"x": 1}, ["005930.KS"],
+                                 "5930.KS", "005930", "005930.KQ", "005930.ks", "None"])
+def test_one_malformed_kr_identifier_voids_the_record_and_is_never_repaired(bad, resolved):
+    ok, why = D.qualify_a(_h(candidates=["000660.KS", bad]), "KR")
+    assert not ok and "A_CANDIDATE_IDENTIFIER_INVALID" in why
+    assert D.compose({"KR": _h(candidates=["000660.KS", bad])})["shadowCandidates"] == []
+
+
+@pytest.mark.parametrize("bad", ["aapl", "AAPL ", "", "123", "TOOLONGNAME", "005930.KS", None])
+def test_us_identifier_rules_are_region_specific(bad, resolved):
+    rec = dict(_h(candidates=["AAPL", bad]), benchmark="SPY")
+    assert "A_CANDIDATE_IDENTIFIER_INVALID" in D.qualify_a(rec, "US")[1]
+    assert D.qualify_a(dict(_h(candidates=["AAPL", "BRK-B", "BF.B"]), benchmark="SPY"), "US")[0] is True
+
+
+def test_non_list_candidates_are_invalid_not_iterated(resolved):
+    for bad in ("005930.KS", ("005930.KS",), {"005930.KS"}, None):
+        assert "A_CANDIDATE_IDENTIFIER_INVALID" in D.qualify_a(_h(candidates=bad), "KR")[1]
+    assert "A_NO_CANDIDATES" in D.qualify_a(_h(candidates=[]), "KR")[1]
 
 
 def test_nonpositive_uncertainty_and_negative_cost_rejected():
@@ -159,3 +180,75 @@ def test_economic_contract_record_carries_no_allocation_or_outcome():
     D.assert_no_allocation(out)
     assert set(out["economicInputContract"]) == {"expectedExcessDefinition", "upstreamProducer", "gateWhenResolved",
                                                  "costBases", "registeredBenchmarks"}
+
+
+# ---- Second #265 audit round: cap, region order, approval provenance, nested keys ----
+
+def _kr(n):
+    return [f"{i:06d}.KS" for i in range(1, n + 1)]
+
+
+def test_cost_at_or_above_100_pct_is_out_of_domain(resolved):
+    for cost in (100.0, 150.0, 1e9):
+        assert "A_ROUND_TRIP_COST_OUT_OF_DOMAIN" in D.qualify_a(_h(roundTripCostPct=cost, expectedNetExcessPct=1e12), "KR")[1]
+    assert D.qualify_a(_h(roundTripCostPct=99.9, expectedNetExcessPct=200.0), "KR")[0] is True
+
+
+@pytest.mark.parametrize("value", [float("inf"), float("-inf"), float("nan"), True, "1.0", None])
+def test_non_finite_or_non_numeric_uncertainty_and_cost_rejected(value, resolved):
+    for field in ("uncertaintyPct", "roundTripCostPct"):
+        assert "A_NUMERIC_FIELD_UNAVAILABLE" in D.qualify_a(_h(**{field: value}), "KR")[1]
+
+
+def test_more_names_than_cap_is_blocked_not_cut_by_input_or_region_order(resolved):
+    # Pre-fix: KR 5 + US 1 returned 5 KR names and no US name, because the pool was cut in input order.
+    out = D.compose({"KR": _h(candidates=_kr(5)), "US": dict(_h(candidates=["AAPL"]), benchmark="SPY")})
+    assert out["status"] == "BLOCKED_CAP_SELECTION_RULE_UNRESOLVED" and out["shadowCandidates"] == []
+    assert out["eligibleNameCount"] == 6 and out["capSelectionRule"] == "UNRESOLVED"
+    assert "DEFAULT_PASSIVE_ETF_POLICY_RETAINED" in out["reasons"]
+    one_region = D.compose({"KR": _h(candidates=_kr(6))})
+    assert one_region["status"] == "BLOCKED_CAP_SELECTION_RULE_UNRESOLVED" and one_region["shadowCandidates"] == []
+
+
+def test_listing_within_cap_is_independent_of_input_and_region_order(resolved):
+    kr, us = _h(candidates=["000660.KS", "005930.KS"]), dict(_h(candidates=["MSFT", "AAPL", "NVDA"]), benchmark="SPY")
+    first = D.compose({"KR": kr, "US": us})
+    swapped = D.compose({"US": dict(us, candidates=list(reversed(us["candidates"]))),
+                         "KR": dict(kr, candidates=list(reversed(kr["candidates"])))})
+    assert first["shadowCandidates"] == swapped["shadowCandidates"]
+    assert [c["ticker"] for c in first["shadowCandidates"]] == ["000660.KS", "005930.KS", "AAPL", "MSFT", "NVDA"]
+    assert first["candidatesListingIsNotARanking"] is True
+
+
+@pytest.mark.parametrize("c", [{"ownerApprovedInterpretation": True}, {"ownerApprovedInterpretation": "yes"},
+                               {"ownerApprovedInterpretation": True, "ownerApprovalArtifactSha256": "0" * 64},
+                               {"ownerApprovalArtifactSha256": "f" * 64}])
+def test_caller_cannot_assert_owner_approval(c):
+    out = D.compose(c=c)["c"]
+    assert out["approved"] is False and "appliedOnceToFixedBook" not in out
+    assert "C_OWNER_APPROVAL_PROVENANCE_UNRESOLVED" in out["reasons"]
+    if "ownerApprovedInterpretation" in c:
+        assert "C_SELF_ASSERTED_APPROVAL_IGNORED" in out["reasons"]
+
+
+def test_only_a_registered_artifact_digest_approves_c(monkeypatch):
+    digest = "a" * 64
+    monkeypatch.setattr(D, "OWNER_APPROVED_C_ARTIFACTS", frozenset({digest}))  # SYNTHETIC registry
+    assert D.compose(c={"ownerApprovalArtifactSha256": digest})["c"]["approved"] is True
+    assert D.OWNER_APPROVED_C_ARTIFACTS == frozenset({digest})
+    monkeypatch.undo()
+    assert D.OWNER_APPROVED_C_ARTIFACTS == frozenset()
+
+
+@pytest.mark.parametrize("payload", [{"x": ({"weight": 1},)}, {"x": {"kr-weight": 1}}, {"x": {"allocation": 1}},
+                                     {"x": {"Target Weights": 1}}, {"x": [{"qty": 3}]}, {"x": {frozenset(): 1, "positionSize": 2}},
+                                     {"x": [[{"deep": {"KRW_Notional": 1}}]]}, {"x": {"Buy": 1}}, {"x": {"order.qty": 1}},
+                                     {"x": {"targetAllocationPct": 0.2}}])
+def test_nested_allocation_and_order_fields_are_refused(payload):
+    with pytest.raises(ValueError, match="ALLOCATION_KEY_FORBIDDEN"):
+        D.assert_no_allocation({"activeNames": [], "productionAffected": False, **payload})
+
+
+def test_scan_allows_the_contracts_own_keys():
+    for out in (D.compose(), D.compose(c={"ownerApprovedInterpretation": True}), D.compose(b={"adverse": False})):
+        assert D.assert_no_allocation(out) is True
