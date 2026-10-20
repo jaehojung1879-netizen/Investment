@@ -74,6 +74,15 @@ def test_resigned_layer_substitution_is_rejected_when_mapping_disagrees():
         C.validate_preview(r)
 
 
+@pytest.mark.parametrize("layer", ["slow", "transition", "fast"])
+def test_resigned_float_state_is_not_a_second_canonical_form(layer):
+    r = C.build_preview(SIGNAL, 1, 1, 1)
+    r['layers'][layer] = 1.0
+    _resign(r)
+    with pytest.raises(ValueError, match="STATE_NOT_CANONICAL_INTEGER"):
+        C.validate_preview(r)
+
+
 def test_resigned_undetermined_substitution_is_rejected():
     r = C.build_preview(SIGNAL, None, None, 1)
     r['undeterminedCandidates'] = []
