@@ -252,3 +252,21 @@ def test_nested_allocation_and_order_fields_are_refused(payload):
 def test_scan_allows_the_contracts_own_keys():
     for out in (D.compose(), D.compose(c={"ownerApprovedInterpretation": True}), D.compose(b={"adverse": False})):
         assert D.assert_no_allocation(out) is True
+
+
+def test_unicode_digits_are_not_a_kr_identifier():
+    assert D.inspect_tickers(["٠٠٥٩٣٠.KS"], "KR")[0] == []
+    assert D.inspect_tickers(["005930.KS"], "KR")[0] == ["005930.KS"]
+
+
+@pytest.mark.parametrize("bad", ["x", [], 5, ("a",)])
+def test_non_mapping_a_input_fails_closed(bad):
+    out = D.compose(a_by_region=bad)
+    assert out["shadowCandidates"] == [] and out["activeNames"] == []
+    assert "A_INPUT_NOT_A_MAPPING" in out["reasons"]
+
+
+@pytest.mark.parametrize("adv", [{"weight": 1}, float("nan"), {1, 2}, "free text"])
+def test_untrusted_b_content_is_not_copied_or_fatal(adv):
+    out = D.compose(b={"adverse": adv})
+    assert out["b"]["observedState"] == "UNRECOGNISED_INPUT_IGNORED"
