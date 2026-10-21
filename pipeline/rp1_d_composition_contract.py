@@ -39,7 +39,7 @@ _FORBIDDEN_NORMALISED = frozenset(k.lower() for k in FORBIDDEN_KEYS)
 # A key CONTAINING one of these is an allocation or order field whatever its prefix ("krWeight", "target weights").
 _FORBIDDEN_FRAGMENTS = ("weight", "allocation", "notional", "recommend", "quantity", "qty")
 # Candidate identifiers in the form the repository's PIT universes use. Anything else is refused, never repaired.
-TICKER_PATTERNS = {"KR": re.compile(r"\d{6}\.KS"), "US": re.compile(r"[A-Z][A-Z0-9]{0,5}(?:[.-][A-Z]{1,2})?")}
+TICKER_PATTERNS = {"KR": re.compile(r"[0-9]{6}\.KS"), "US": re.compile(r"[A-Z][A-Z0-9]{0,5}(?:[.-][A-Z]{1,2})?")}
 # A percentage cost of 100% or more of the traded notional is outside the quantity's domain.
 MAX_ROUND_TRIP_COST_PCT = 100.0
 # No ranking or allocation rule exists that may choose WHICH names fill the 5-name cap (README sec.D, 04 sec.7). Until the owner
@@ -152,10 +152,19 @@ def c_approval(c):
     return out
 
 
+def _observed_state(b):
+    """B context is reported only as None/bool; any other caller content is dropped, never copied into the record."""
+    v = b.get("adverse") if isinstance(b, dict) else None
+    return v if v is None or isinstance(v, bool) else "UNRECOGNISED_INPUT_IGNORED"
+
+
 def compose(a_by_region=None, b=None, c=None):
     """Shadow composition. Always returns passive default unless Track A qualifies a region; never emits a weight."""
-    a_by_region = a_by_region or {}
+    malformed_a = a_by_region is not None and not isinstance(a_by_region, dict)
+    a_by_region = {} if malformed_a else (a_by_region or {})
     regions, reasons, pool = {}, [], {}
+    if malformed_a:
+        reasons.append("A_INPUT_NOT_A_MAPPING")
     for r in REGIONS:
         ok, why = qualify_a(a_by_region.get(r), r)
         regions[r] = {"aEligible": ok, "reasons": why}
@@ -179,7 +188,7 @@ def compose(a_by_region=None, b=None, c=None):
         status = "BLOCKED_NO_VALIDATED_SELECTION_INPUT"
         reasons.append("DEFAULT_PASSIVE_ETF_POLICY_RETAINED")
     b_ctx = {"used": False, "role": "CONTEXT_ONLY",
-             "observedState": b.get("adverse") if isinstance(b, dict) else None}
+             "observedState": _observed_state(b)}
     out = {"studyId": STUDY, "evidenceClass": EVIDENCE_CLASS, "defaultPolicy": DEFAULT_POLICY, "status": status,
            "activeNames": [], "shadowCandidates": candidates, "eligibleNameCount": eligible_names,
            "capSelectionRule": CAP_SELECTION_RULE, "candidatesListingIsNotARanking": True, "regions": regions,
