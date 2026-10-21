@@ -1,0 +1,495 @@
+{
+ "accessCounters": {
+  "forwardPriceReads": 0,
+  "labelReads": 0,
+  "modelFits": 0,
+  "outcomeReads": 0,
+  "priceReads": 0
+ },
+ "countOnlyBounds": {
+  "basisRelabelXbrlAsCFS": {
+   "eligible": 52975,
+   "measured": 19555,
+   "rate": 0.36913638508730534
+  },
+  "note": "Bounds on what a data repair could recover. Never measurements, never gate inputs.",
+  "visibleAtStatutoryDeadlineLookAheadUpperBound": {
+   "eligible": 52975,
+   "measured": 22265,
+   "rate": 0.4202925908447381
+  }
+ },
+ "id": "rp1-kr-a0-missingness-audit-v1",
+ "inputs": "pinned DART filing records + PIT universe membership (ticker/rank/name) + committed industry/identity; no price",
+ "measurementResultSha256": "5f20f8d9ba4278282fea9537e47e79b8af9228e31cd7e4b2e225634d9a2f39b3",
+ "publishedScale": {
+  "byYear": {
+   "2013": {
+    "A-H1": 0,
+    "A-H2": 0,
+    "A-H3": 2655,
+    "eligible": 3212
+   },
+   "2014": {
+    "A-H1": 0,
+    "A-H2": 0,
+    "A-H3": 2190,
+    "eligible": 4200
+   },
+   "2015": {
+    "A-H1": 0,
+    "A-H2": 0,
+    "A-H3": 546,
+    "eligible": 4121
+   },
+   "2016": {
+    "A-H1": 0,
+    "A-H2": 0,
+    "A-H3": 800,
+    "eligible": 4169
+   },
+   "2017": {
+    "A-H1": 0,
+    "A-H2": 0,
+    "A-H3": 1191,
+    "eligible": 3551
+   },
+   "2018": {
+    "A-H1": 578,
+    "A-H2": 558,
+    "A-H3": 294,
+    "eligible": 3092
+   },
+   "2019": {
+    "A-H1": 2418,
+    "A-H2": 2404,
+    "A-H3": 2187,
+    "eligible": 3715
+   },
+   "2020": {
+    "A-H1": 2960,
+    "A-H2": 2927,
+    "A-H3": 2049,
+    "eligible": 4133
+   },
+   "2021": {
+    "A-H1": 2535,
+    "A-H2": 2506,
+    "A-H3": 203,
+    "eligible": 3815
+   },
+   "2022": {
+    "A-H1": 2319,
+    "A-H2": 2307,
+    "A-H3": 821,
+    "eligible": 4061
+   },
+   "2023": {
+    "A-H1": 2355,
+    "A-H2": 2341,
+    "A-H3": 2624,
+    "eligible": 3568
+   },
+   "2024": {
+    "A-H1": 2294,
+    "A-H2": 2285,
+    "A-H3": 61,
+    "eligible": 3253
+   },
+   "2025": {
+    "A-H1": 2171,
+    "A-H2": 2151,
+    "A-H3": 1260,
+    "eligible": 3329
+   },
+   "2026": {
+    "A-H1": 1516,
+    "A-H2": 1491,
+    "A-H3": 1274,
+    "eligible": 2243
+   }
+  },
+  "h3Propagation": {
+   "cleanDatesFullyMeasured": true,
+   "datesWithEligible": 702,
+   "datesWithheld": 455,
+   "eligibleCellsOnSingleNameVetoDates": 16405,
+   "eligibleCellsOnWithheldDates": 32307,
+   "measuredOnWithheldDates": 0,
+   "missingMarketCapCells": 0,
+   "missingPerWithheldDate": {
+    "1": 234,
+    "2": 121,
+    "3": 49,
+    "4": 39,
+    "5": 7,
+    "6": 5
+   },
+   "missingWindowCells": 844,
+   "singleNameVetoDates": 234
+  },
+  "historyDepth": {
+   "darkEligible": 19253,
+   "darkMeasuredH1H2": 0,
+   "darkShare": 0.3815346201101819,
+   "darkYears": [
+    "2013",
+    "2014",
+    "2015",
+    "2016",
+    "2017"
+   ],
+   "fullPeriodCeilingIfEvery2018PlusCellMeasured": 0.6184653798898181,
+   "required2018PlusRateFor60Pct": 0.9701432279150244
+  }
+ },
+ "reconstructedH1NonPriceScale": {
+  "byYear": {
+   "2013": {
+    "eligible": 4260,
+    "measured": 0,
+    "missing": {
+     "NO_VISIBLE_FILING": 4260
+    }
+   },
+   "2014": {
+    "eligible": 4345,
+    "measured": 0,
+    "missing": {
+     "NO_VISIBLE_FILING": 4345
+    }
+   },
+   "2015": {
+    "eligible": 4274,
+    "measured": 0,
+    "missing": {
+     "INCOMPLETE_TTM_CHAIN": 2598,
+     "NO_VISIBLE_FILING": 1676
+    }
+   },
+   "2016": {
+    "eligible": 4254,
+    "measured": 0,
+    "missing": {
+     "INCOMPLETE_TTM_CHAIN": 1652,
+     "NO_VISIBLE_FILING": 5,
+     "REPORT_STALE_OVER_180_DAYS": 217,
+     "STATEMENT_BASIS_UNRESOLVED": 2380
+    }
+   },
+   "2017": {
+    "eligible": 3768,
+    "measured": 0,
+    "missing": {
+     "EVENT_HISTORY_UNRESOLVED": 317,
+     "INCOMPLETE_TTM_CHAIN": 323,
+     "NON_POSITIVE_YOY_BASE": 31,
+     "NO_VISIBLE_FILING": 31,
+     "OPERATING_CASH_FLOW_NOT_STATED": 18,
+     "OPERATING_INCOME_NOT_STATED": 31,
+     "REPORT_STALE_OVER_180_DAYS": 207,
+     "STATEMENT_BASIS_UNRESOLVED": 2810
+    }
+   },
+   "2018": {
+    "eligible": 3219,
+    "measured": 616,
+    "missing": {
+     "EVENT_HISTORY_UNRESOLVED": 841,
+     "INCOMPLETE_TTM_CHAIN": 367,
+     "NON_POSITIVE_YOY_BASE": 130,
+     "NO_VISIBLE_FILING": 19,
+     "OPERATING_CASH_FLOW_NOT_STATED": 124,
+     "OPERATING_INCOME_NOT_STATED": 144,
+     "OPERATING_INCOME_VALUE_UNRESOLVED": 13,
+     "REPORT_STALE_OVER_180_DAYS": 287,
+     "STATEMENT_BASIS_UNRESOLVED": 678
+    }
+   },
+   "2019": {
+    "eligible": 3795,
+    "measured": 2488,
+    "missing": {
+     "EVENT_HISTORY_UNRESOLVED": 235,
+     "INCOMPLETE_TTM_CHAIN": 371,
+     "NON_POSITIVE_YOY_BASE": 139,
+     "OPERATING_CASH_FLOW_NOT_STATED": 165,
+     "OPERATING_INCOME_NOT_STATED": 226,
+     "REPORT_STALE_OVER_180_DAYS": 171
+    }
+   },
+   "2020": {
+    "eligible": 4259,
+    "measured": 3023,
+    "missing": {
+     "EVENT_HISTORY_UNRESOLVED": 118,
+     "INCOMPLETE_TTM_CHAIN": 375,
+     "NON_POSITIVE_YOY_BASE": 220,
+     "NO_VISIBLE_FILING": 9,
+     "OPERATING_CASH_FLOW_NOT_STATED": 149,
+     "OPERATING_INCOME_NOT_STATED": 223,
+     "REPORT_STALE_OVER_180_DAYS": 109,
+     "STATEMENT_BASIS_CONFLICT": 33
+    }
+   },
+   "2021": {
+    "eligible": 4026,
+    "measured": 2604,
+    "missing": {
+     "EVENT_HISTORY_UNRESOLVED": 98,
+     "INCOMPLETE_TTM_CHAIN": 454,
+     "NON_POSITIVE_YOY_BASE": 290,
+     "NO_VISIBLE_FILING": 46,
+     "OPERATING_CASH_FLOW_NOT_STATED": 104,
+     "OPERATING_INCOME_NOT_STATED": 275,
+     "REPORT_STALE_OVER_180_DAYS": 103,
+     "STATEMENT_BASIS_CONFLICT": 52
+    }
+   },
+   "2022": {
+    "eligible": 4095,
+    "measured": 2328,
+    "missing": {
+     "EVENT_HISTORY_UNRESOLVED": 324,
+     "INCOMPLETE_TTM_CHAIN": 673,
+     "NON_POSITIVE_YOY_BASE": 260,
+     "OPERATING_CASH_FLOW_NOT_STATED": 127,
+     "OPERATING_INCOME_NOT_STATED": 219,
+     "REPORT_STALE_OVER_180_DAYS": 135,
+     "STATEMENT_BASIS_CONFLICT": 29
+    }
+   },
+   "2023": {
+    "eligible": 3624,
+    "measured": 2390,
+    "missing": {
+     "EVENT_HISTORY_UNRESOLVED": 173,
+     "INCOMPLETE_TTM_CHAIN": 300,
+     "NON_POSITIVE_YOY_BASE": 269,
+     "NO_VISIBLE_FILING": 4,
+     "OPERATING_CASH_FLOW_NOT_STATED": 126,
+     "OPERATING_INCOME_NOT_STATED": 215,
+     "REPORT_STALE_OVER_180_DAYS": 106,
+     "STATEMENT_BASIS_CONFLICT": 41
+    }
+   },
+   "2024": {
+    "eligible": 3307,
+    "measured": 2325,
+    "missing": {
+     "EVENT_HISTORY_UNRESOLVED": 136,
+     "INCOMPLETE_TTM_CHAIN": 161,
+     "NON_POSITIVE_YOY_BASE": 253,
+     "NO_VISIBLE_FILING": 17,
+     "OPERATING_CASH_FLOW_NOT_STATED": 56,
+     "OPERATING_INCOME_NOT_STATED": 264,
+     "REPORT_STALE_OVER_180_DAYS": 51,
+     "STATEMENT_BASIS_CONFLICT": 44
+    }
+   },
+   "2025": {
+    "eligible": 3394,
+    "measured": 2200,
+    "missing": {
+     "EVENT_HISTORY_UNRESOLVED": 170,
+     "INCOMPLETE_TTM_CHAIN": 302,
+     "NON_POSITIVE_YOY_BASE": 186,
+     "NO_VISIBLE_FILING": 2,
+     "OPERATING_CASH_FLOW_NOT_STATED": 10,
+     "OPERATING_INCOME_NOT_STATED": 388,
+     "REPORT_STALE_OVER_180_DAYS": 110,
+     "STATEMENT_BASIS_CONFLICT": 26
+    }
+   },
+   "2026": {
+    "eligible": 2355,
+    "measured": 1575,
+    "missing": {
+     "EVENT_HISTORY_UNRESOLVED": 186,
+     "INCOMPLETE_TTM_CHAIN": 53,
+     "NON_POSITIVE_YOY_BASE": 181,
+     "OPERATING_INCOME_NOT_STATED": 236,
+     "REPORT_STALE_OVER_180_DAYS": 68,
+     "STATEMENT_BASIS_CONFLICT": 56
+    }
+   }
+  },
+  "eligible": 52975,
+  "measured": 19549,
+  "nonPriceExclusions": {
+   "DEFINITIONALLY_EXCLUDED_FINANCIAL": 17344,
+   "IDENTITY_UNRESOLVED": 2360,
+   "INDUSTRY_BELOW_MIN_MEMBERS": 9555,
+   "INDUSTRY_UNCLASSIFIED": 3291,
+   "PREFERRED_SHARE": 155
+  },
+  "rate": 0.36902312411514865,
+  "terminalSecurityPrimaryReasons": {
+   "INDUSTRY_UNCLASSIFIED": 3291
+  },
+  "vintageAttribution": {
+   "INCOMPLETE_TTM_CHAIN:NO_LATER_VINTAGE": 5414,
+   "INCOMPLETE_TTM_CHAIN:STORED_ONLY_AS_LATER_VINTAGE": 2215,
+   "NO_VISIBLE_FILING:NO_LATER_VINTAGE": 10411,
+   "NO_VISIBLE_FILING:STORED_ONLY_AS_LATER_VINTAGE": 3,
+   "REPORT_STALE_OVER_180_DAYS:NO_LATER_VINTAGE": 140,
+   "REPORT_STALE_OVER_180_DAYS:STORED_ONLY_AS_LATER_VINTAGE": 1424
+  }
+ },
+ "role": "INDEPENDENT_POST_MEASUREMENT_AUDIT_NO_GATE_NO_VERDICT_CHANGE",
+ "sourceReceipts": {
+  "002b56434e3aa3e845798ec2ea7ca6d9267e3f7a:data/kr-industry-membership-foundation-v1/identity-inventory.json": {
+   "bytes": 237457,
+   "sha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc"
+  },
+  "002b56434e3aa3e845798ec2ea7ca6d9267e3f7a:data/kr-industry-membership-foundation-v1/identity-provenance.json": {
+   "bytes": 88799,
+   "sha256": "3f5d031b80c16e965a8111455aa51ab84affc92948c7895112ab8f90b182a5fa"
+  },
+  "002b56434e3aa3e845798ec2ea7ca6d9267e3f7a:data/kr-industry-membership-foundation-v4/state/intervals.json.gz": {
+   "bytes": 6679,
+   "sha256": "01a7958608939b73b85f7b96457e6b6420bec1aaa78417526b98dbea3321aae0"
+  },
+  "002b56434e3aa3e845798ec2ea7ca6d9267e3f7a:research_specs/kr-industry-membership-foundation-v4/crosswalk.json": {
+   "bytes": 6417,
+   "sha256": "76166ad309d323240ffe749df74ac089f4693f30ef77231b8cd5ab85365826b5"
+  },
+  "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-candidate-merged/dart-2015.jsonl.gz": {
+   "bytes": 106386,
+   "sha256": "a7eeaf2d25dde7e7574f6991f4075962cc3fbeaaeec09fa0b86f7399571f6168"
+  },
+  "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-candidate-merged/dart-2016.jsonl.gz": {
+   "bytes": 135882,
+   "sha256": "a1032ae814df1a0fb10f7edc92881e2c2b44d3064e089d0210cfdbdf1ee3d0c6"
+  },
+  "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-candidate-merged/dart-2017.jsonl.gz": {
+   "bytes": 129038,
+   "sha256": "06a9acd533536e3aeddbbf31c9429c5aaf22db2e52d9eb515aa7fab3a1a3749a"
+  },
+  "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-candidate-merged/dart-2018.jsonl.gz": {
+   "bytes": 128983,
+   "sha256": "98278a45385b4b895055f3f5b35fa6c87d4f64ed8da97f69e1822f908ada89d3"
+  },
+  "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-candidate-merged/dart-2019.jsonl.gz": {
+   "bytes": 136143,
+   "sha256": "7d1f9decc7d8d683cde70db6a01578ae1bc68532a42535657e6575a2eb05e206"
+  },
+  "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-candidate-merged/dart-2020.jsonl.gz": {
+   "bytes": 136759,
+   "sha256": "073c38aae8c455c40b74cf962d89dac5dea5ae49131d1ccdac37f2fefe5527fe"
+  },
+  "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-candidate-merged/dart-2021.jsonl.gz": {
+   "bytes": 142543,
+   "sha256": "aca2af6575e8fa2a0f04c2213856e3746f999334ad50b6c480dece23dbaf81cb"
+  },
+  "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-candidate-merged/dart-2022.jsonl.gz": {
+   "bytes": 145334,
+   "sha256": "05d8e984985a5b2d2ad6a55782885f73aebef953e4d49f70a3ceef9c525c1080"
+  },
+  "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-candidate-merged/dart-2023.jsonl.gz": {
+   "bytes": 160815,
+   "sha256": "8c4752b966d7dd5ae6d4b594236bb924068c13446c85069c170eb159b23dcd78"
+  },
+  "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-candidate-merged/dart-2024.jsonl.gz": {
+   "bytes": 167655,
+   "sha256": "0e3f4ea1ad049861e98fcbf5d95e28eb91388b7b2205992dd6a03748ebd540c4"
+  },
+  "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-candidate-merged/dart-2025.jsonl.gz": {
+   "bytes": 166575,
+   "sha256": "312b0a559e60c554fe9a823207d8c1e986b7cccd8675e0ce11aff0c85483f215"
+  },
+  "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-candidate-merged/dart-2026.jsonl.gz": {
+   "bytes": 77467,
+   "sha256": "713ec8bc535bec018748e098f7a1b5737450d5e4c56ed2a0899510b7b3588c1c"
+  },
+  "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2013.jsonl.gz": {
+   "bytes": 122015,
+   "sha256": "f7e7ecee7541480d3b8ee620c0fd6210a91d6e00b112fd2c41d0e9a8c816fdd2"
+  },
+  "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2014.jsonl.gz": {
+   "bytes": 122105,
+   "sha256": "03323a8b8b332823000bc881a0972ae2e9727681eab00a518c9ccdb80e65853a"
+  },
+  "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2015.jsonl.gz": {
+   "bytes": 122540,
+   "sha256": "b656c614a6ebe6ef4b32b26192f306ad6e15102697ae4167ae8534b640a882f2"
+  },
+  "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2016.jsonl.gz": {
+   "bytes": 123334,
+   "sha256": "bd80f18a025e7b50ee16373ac878e336b50b5a2f5ddd7ca9534527897a8d3e00"
+  },
+  "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2017.jsonl.gz": {
+   "bytes": 113266,
+   "sha256": "66dc58623f541f06d5e9bed7e90dfe54b080258048e1cd71262f90a8bd010679"
+  },
+  "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2018.jsonl.gz": {
+   "bytes": 124500,
+   "sha256": "d3def14c97af01bc0aa8292946525e65cc84f95af476f9f842105b3e855f0df1"
+  },
+  "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2019.jsonl.gz": {
+   "bytes": 125516,
+   "sha256": "b21f475aa8a8f93a7ef7129ac6acd6716e5496d6444372a1edc092849ebf387b"
+  },
+  "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2020.jsonl.gz": {
+   "bytes": 126598,
+   "sha256": "203e93b8341dd103edb1fc4e14788c9d6653b22370bbf86579b45bd9a11c0ecc"
+  },
+  "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2021.jsonl.gz": {
+   "bytes": 127421,
+   "sha256": "1a4d9840f2720f9a535e357674ac400296bfe4b1809589a80150a0a4c2b65d2f"
+  },
+  "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2022.jsonl.gz": {
+   "bytes": 127667,
+   "sha256": "10b50960277a30a7abff18ce49bb8dcef55d81eb2cfe11cdb29d6c998a48a3e2"
+  },
+  "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2023.jsonl.gz": {
+   "bytes": 128250,
+   "sha256": "0b32a51e604a8b3bead773ff643dd1b1fed27b324c5b0ce777fcd9aaa2ea0c7d"
+  },
+  "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2024.jsonl.gz": {
+   "bytes": 129301,
+   "sha256": "d80c25e887badc8ab92ebe314f54900c11862aeda75d742935ec33340133cd32"
+  },
+  "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2025.jsonl.gz": {
+   "bytes": 129805,
+   "sha256": "014672bd80e9cc9f7ce56983ca7ccf42d61ff2e5cbe861c5f28a8aa83d7039f5"
+  },
+  "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/universe/kr/krx-universe-2026.jsonl.gz": {
+   "bytes": 97370,
+   "sha256": "ca6cb363fb42b70ca614a683d6c160f4af907bed3518bf478dc815cad8026032"
+  }
+ },
+ "storeFacts": {
+  "invalidReceiptDateRecords": [
+   {
+    "availableFrom": "2015-05-15",
+    "id": "005300.KS:2015:11013",
+    "receiptNos": [
+     "20150514005420"
+    ],
+    "source": "DART:fnlttXbrl.xml:ORIGINAL"
+   },
+   {
+    "availableFrom": "2015-08-17",
+    "id": "019170.KS:2015:11012",
+    "receiptNos": [
+     "20150814000051"
+    ],
+    "source": "DART:fnlttXbrl.xml:ORIGINAL"
+   }
+  ],
+  "oneReceiptPerRecord": true,
+  "records": 9351,
+  "recordsAfterStatutoryDeadline": 2643,
+  "recordsMoreThan7DaysAfterDeadline": 766,
+  "unknownBasisRecords": 525,
+  "xbrlOriginalPeriods": {
+   "2015:11012": 175,
+   "2015:11013": 175,
+   "2015:11014": 175
+  },
+  "xbrlOriginalRecords": 525,
+  "xbrlOriginalWithFsDiv": 0,
+  "xbrlOriginalWithOperatingIncome": 0
+ }
+}
