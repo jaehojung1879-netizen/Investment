@@ -34,6 +34,19 @@ shards name the only tickers that can ever enter the cross-section, so those
 are what is kept. `--all-issues` turns the filter off; the call count is
 identical either way.
 
+WHAT A RESPONSE MUST SATISFY BEFORE ANYTHING IS STORED. `bar_value_errors` is
+the numeric contract of every field, not only the close: no NaN/Infinity, no
+negative or fractional volume, no non-positive or fractional share count, and
+on a traded row no zero or out-of-range price. A suspended issue (volume 0) may
+print a zero range. An unstated field stays None. One violating issue in the
+response refuses the whole day: nothing is written and `done` does not advance.
+
+WHAT `done` DOES NOT PROVE. It means a valid response with kept rows was
+stored, not that every listed name was in it. `completeness_receipts` compares
+each date with the prior membership snapshot and reports missing members as
+UNRESOLVED; `--diagnose` runs the same check over an existing store with no
+API key, no call and no write.
+
 Usage:
     KRX_API_KEY=... python scripts/collect_krx_daily_prices.py <store>
         --universe <membership shard dir>
@@ -44,6 +57,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import hashlib
 import json
 import math
 import os
@@ -129,17 +143,169 @@ def daily_bars(payload: dict, requested: str) -> tuple[list[dict], str | None]:
             return [], "SERVED_DATE_MISMATCH_OR_MISSING"
     if any(not math.isfinite(bar["close"]) or bar["close"] <= 0 for bar in bars):
         return [], "INVALID_DAILY_CLOSE"
-    # An absent secondary field stays None (never 0). A present one must be a
-    # finite number in its domain, or the whole day is refused: a NaN written
-    # to the store is non-standard JSON and a corrupt liquidity input.
-    for bar in bars:
-        for field in ("open", "high", "low", "volume", "listedShares"):
-            value = bar[field]
-            if value is None:
-                continue
-            if not math.isfinite(value) or value < 0:
-                return [], "INVALID_DAILY_FIELD"
+    invalid = [(bar["code"], errors) for bar in bars if (errors := bar_value_errors(bar))]
+    if invalid:
+        code, errors = invalid[0]
+        return [], (f"INVALID_DAILY_VALUE: {len(invalid)} issue(s), first {code}: "
+                    + ",".join(errors))
     return bars, None
+
+
+BAR_FIELDS = ("open", "high", "low", "close", "volume", "listedShares")
+
+
+def bar_value_errors(bar: dict) -> list[str]:
+    """The numeric contract of one parsed bar, checked at the collector boundary.
+
+    `parse_number` (sealed, shared with the monthly universe) turns "NaN" and
+    "Infinity" into floats, and `historical_store.encode` writes them as bare
+    NaN/Infinity tokens, so the only place to refuse them is here.
+
+    None means KRX printed nothing for the field and is kept as None: absence is
+    not repaired into 0. A zero volume is a suspended issue, which KRX still
+    lists with its last close, so on such a row a zero open/high/low is not an
+    error and the range is not checked. On any other row these are an invalid
+    response, not a value to store: a zero, negative or out-of-range price, a
+    negative or fractional volume, or a non-positive or fractional share count.
+    """
+    errors = [f"NONFINITE:{field}" for field in BAR_FIELDS
+              if bar.get(field) is not None
+              and (not isinstance(bar[field], float) or not math.isfinite(bar[field]))]
+    if errors:
+        return errors
+    volume, shares = bar.get("volume"), bar.get("listedShares")
+    if volume is not None and volume < 0:
+        errors.append("NEGATIVE:volume")
+    elif volume is not None and not volume.is_integer():
+        errors.append("NON_INTEGRAL:volume")
+    if shares is not None and shares <= 0:
+        errors.append("NOT_POSITIVE:listedShares")
+    elif shares is not None and not shares.is_integer():
+        errors.append("NON_INTEGRAL:listedShares")
+    for field in ("open", "high", "low"):
+        value = bar.get(field)
+        if value is not None and value < 0:
+            errors.append(f"NEGATIVE:{field}")
+        elif value == 0 and volume != 0:
+            errors.append(f"ZERO_PRICE_ON_ROW_NOT_KNOWN_SUSPENDED:{field}")
+    if errors or volume == 0:
+        return errors
+    low, high = bar.get("low"), bar.get("high")
+    if low is not None and high is not None and low > high:
+        errors.append("OHLC_INCONSISTENT:low>high")
+    for field in ("open", "close"):
+        value = bar.get(field)
+        if value is not None and ((low is not None and value < low)
+                                  or (high is not None and value > high)):
+            errors.append(f"OHLC_INCONSISTENT:{field}_outside_range")
+    return errors
+
+
+def assert_storable(rows: list[dict]) -> None:
+    """Last guard before any shard is staged: standard JSON only, no NaN/Infinity."""
+    for row in rows:
+        try:
+            json.dumps(row, ensure_ascii=False, default=str, allow_nan=False)
+        except ValueError as exc:
+            raise ValueError("NONFINITE_NUMERIC_IN_FRESH_ROW: " + str(row.get("id"))) from exc
+
+
+def membership_snapshots(universe: Path) -> dict[str, set[str]]:
+    """{snapshot date: tickers KRX listed in it}, from the membership shards."""
+    snapshots: dict[str, set[str]] = {}
+    for path in sorted(universe.glob("krx-universe-*.jsonl.gz")):
+        for row in HS.read_jsonl(path):
+            if row.get("date") and row.get("ticker"):
+                snapshots.setdefault(str(row["date"]), set()).add(row["ticker"])
+    return snapshots
+
+
+def completeness_receipts(rows_by_date: dict[str, set[str]], dates: list[str],
+                          snapshots: dict[str, set[str]]) -> list[dict]:
+    """Stored tickers on each date against the latest membership snapshot before it.
+
+    A completed date proves only that the response carried at least one kept
+    row. This compares it with the names KRX itself listed on the most recent
+    snapshot on or before that date. KRX keeps a suspended issue in the daily
+    response, so a snapshot member missing from a day is either an exit between
+    the snapshot and that day, or a gap in the response. The store holds no
+    listing evidence that tells those apart, so any missing member makes the
+    date UNRESOLVED. Members also listed in the next snapshot are reported
+    separately, because they were listed on both sides of the date. No count
+    threshold exists and nothing is filled. COMPLETE is relative to the prior
+    snapshot only: a name that listed after it is not checked.
+    """
+    ordered = sorted(snapshots)
+    receipts = []
+    for day in sorted(dates):
+        prior = [s for s in ordered if s <= day]
+        later = [s for s in ordered if s > day]
+        stored = rows_by_date.get(day, set())
+        receipt = {"date": day, "storedTickers": len(stored),
+                   "pitSnapshotDate": prior[-1] if prior else None,
+                   "nextPitSnapshotDate": later[0] if later else None}
+        if not prior:
+            receipts.append({**receipt, "status": "UNRESOLVED_NO_PRIOR_PIT_SNAPSHOT"})
+            continue
+        missing = snapshots[prior[-1]] - stored
+        both_sides = missing & snapshots[later[0]] if later else set()
+        receipts.append({**receipt, "pitSnapshotTickers": len(snapshots[prior[-1]]),
+                         "missingListedBeforeAndAfter": sorted(both_sides),
+                         "missingExitUnknown": sorted(missing - both_sides),
+                         "status": ("UNRESOLVED_PIT_MEMBERS_ABSENT" if missing
+                                    else "COMPLETE_AGAINST_PRIOR_PIT_SNAPSHOT")})
+    return receipts
+
+
+def keep_digest(keep: set[str] | None) -> str | None:
+    if keep is None:
+        return None
+    return hashlib.sha256("\n".join(sorted(keep)).encode("utf-8")).hexdigest()
+
+
+def diagnose(store: Path, universe: Path | None) -> dict:
+    """Read-only completeness diagnosis of an existing store. Calls nothing, writes nothing."""
+    done = load_done(store)
+    rows = [row for path in sorted(store.glob("krx-prices-*.jsonl.gz"))
+            for row in HS.read_jsonl(path)]
+    rows_by_date: dict[str, set[str]] = {}
+    nonfinite: dict[str, int] = {}
+    undated = 0
+    for row in rows:
+        try:
+            day = dt.date.fromisoformat(str(row.get("date"))).isoformat()
+        except ValueError:
+            undated += 1
+            continue
+        rows_by_date.setdefault(day, set()).add(row.get("ticker"))
+        for field in BAR_FIELDS:
+            value = row.get(field)
+            if isinstance(value, float) and not math.isfinite(value):
+                nonfinite[field] = nonfinite.get(field, 0) + 1
+    dates = sorted(done | set(rows_by_date))
+    open_dates = (set(RC.sessions(dates[0], dates[-1], "KR").strftime("%Y-%m-%d"))
+                  if dates else set())
+    done_open = sorted(done & open_dates)
+    snapshots = membership_snapshots(universe) if universe else {}
+    receipts = completeness_receipts(rows_by_date, done_open, snapshots)
+    by_status: dict[str, int] = {}
+    for receipt in receipts:
+        by_status[receipt["status"]] = by_status.get(receipt["status"], 0) + 1
+    keep = set().union(*snapshots.values()) if snapshots else None
+    anomalies = {
+        "doneOpenSessionWithoutRows": sorted(set(done_open) - set(rows_by_date)),
+        "rowsWithoutDone": sorted(set(rows_by_date) - done),
+        "rowsOnClosedDates": sorted(set(rows_by_date) - open_dates),
+        "storedNonfiniteValuesByField": dict(sorted(nonfinite.items())),
+        "rowsWithoutValidDate": undated,
+    }
+    complete = (bool(receipts) and set(by_status) == {"COMPLETE_AGAINST_PRIOR_PIT_SNAPSHOT"}
+                and not any(anomalies.values()))
+    return {"status": "COMPLETE_AGAINST_PRIOR_PIT_SNAPSHOT" if complete else "UNRESOLVED",
+            "doneDates": len(done), "doneOpenSessions": len(done_open),
+            "membershipSnapshots": len(snapshots), "membershipKeepSha256": keep_digest(keep),
+            "receiptsByStatus": dict(sorted(by_status.items())), "anomalies": anomalies,
+            "receipts": receipts}
 
 
 def today_kr() -> dt.date:
@@ -148,7 +314,8 @@ def today_kr() -> dt.date:
 
 def collect(store: Path, targets: list[str], *, auth_key: str, base: str,
             keep: set[str] | None, max_calls: int, max_minutes: float,
-            pace: float, log=print, as_of: dt.date | None = None) -> dict:
+            pace: float, log=print, as_of: dt.date | None = None,
+            snapshots: dict[str, set[str]] | None = None) -> dict:
     as_of = as_of or today_kr()
     targets = list(dict.fromkeys(targets))
     for day in targets:
@@ -244,6 +411,8 @@ def collect(store: Path, targets: list[str], *, auth_key: str, base: str,
             log(f"  {served}: {len(rows)}종목 "
                 f"(누적 {len(sessions)}세션, {calls}콜, {bars_written}행)")
 
+    for rows in fresh.values():
+        assert_storable(rows)  # raises before any shard or checkpoint is touched
     written: list[str] = []
     for year, rows in sorted(fresh.items()):
         merged = shards.get(year, []) + rows
@@ -260,13 +429,23 @@ def collect(store: Path, targets: list[str], *, auth_key: str, base: str,
         save_done(store, done)
 
     remaining = len([d for d in targets if d not in done])
+    # `done` still means "a valid response with kept rows was stored". Whether
+    # that response held every snapshot member is reported, never assumed.
+    by_date: dict[str, set[str]] = {}
+    for rows in fresh.values():
+        for row in rows:
+            by_date.setdefault(row["date"], set()).add(row["ticker"])
+    receipts = completeness_receipts(by_date, sessions, snapshots or {})
+    unresolved = [r["date"] for r in receipts if r["status"] != "COMPLETE_AGAINST_PRIOR_PIT_SNAPSHOT"]
     log(f"\n{len(sessions)}세션 · {bars_written}행 · {calls}콜 · 휴장 "
-        f"{len(closed)}일 · 샤드 {len(written)}개 기록 · 남은 {remaining}일")
+        f"{len(closed)}일 · 샤드 {len(written)}개 기록 · 남은 {remaining}일 · "
+        f"완전성 UNRESOLVED {len(unresolved)}일")
     if stopped:
         log(f"중단: {stopped}")
     return {"sessions": sessions, "bars": bars_written, "calls": calls,
             "closed": closed, "provisional": provisional, "written": written, "remaining": remaining,
-            "stopped": stopped}
+            "stopped": stopped, "keepSha256": keep_digest(keep),
+            "completeness": receipts, "completenessUnresolved": unresolved}
 
 
 def main(argv=None) -> int:
@@ -282,7 +461,14 @@ def main(argv=None) -> int:
     parser.add_argument("--max-minutes", type=float, default=300.0)
     parser.add_argument("--pace", type=float, default=0.4)
     parser.add_argument("--base", default=DEFAULT_BASE)
+    parser.add_argument("--diagnose", action="store_true",
+                        help="API 호출·쓰기 없이 기존 저장소의 완전성만 진단해 JSON으로 출력")
     args = parser.parse_args(argv)
+
+    if args.diagnose:
+        report = diagnose(Path(args.store), Path(args.universe) if args.universe else None)
+        print(json.dumps(report, ensure_ascii=False, indent=1, allow_nan=False))
+        return 0
 
     auth_key = (os.environ.get("KRX_API_KEY") or "").strip()
     if not auth_key:
@@ -304,9 +490,10 @@ def main(argv=None) -> int:
 
     end = args.end or today_kr().isoformat()
     targets = KP.calendar_days(args.start, end)
+    snapshots = membership_snapshots(Path(args.universe)) if args.universe else None
     result = collect(Path(args.store), targets, auth_key=auth_key,
                      base=args.base, keep=keep, max_calls=args.max_calls,
-                     max_minutes=args.max_minutes, pace=args.pace)
+                     max_minutes=args.max_minutes, pace=args.pace, snapshots=snapshots)
     # Preserve useful partial collection, but never report all-empty sessions
     # as a successful completed run. No immediate retry or workflow dispatch.
     return 1 if not result["sessions"] and (result["stopped"] or result["provisional"]) else 0

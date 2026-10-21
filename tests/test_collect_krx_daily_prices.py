@@ -329,3 +329,171 @@ def test_absent_secondary_field_stays_none_not_zero_and_day_completes(tmp_path, 
     assert error is None and bars[0]["volume"] is None
     result, _ = _answer(tmp_path, monkeypatch, ["2026-10-15"], payload)
     assert CKP.load_done(tmp_path) == {"2026-10-15"}
+
+
+# --------------------------------------------------------------------------- #
+# Numeric domain of every stored field (audit comment 6318346502, Finding A)
+# --------------------------------------------------------------------------- #
+FIELD_KEYS = {"open": "TDD_OPNPRC", "high": "TDD_HGPRC", "low": "TDD_LWPRC",
+              "volume": "ACC_TRDVOL", "listedShares": "LIST_SHRS"}
+
+
+@pytest.mark.parametrize("field,raw", [
+    (f, v) for f in FIELD_KEYS for v in ("NaN", "nan", "Infinity", "-Infinity", "1e400")
+] + [("volume", "-5"), ("volume", "1.5"), ("listedShares", "0"), ("listedShares", "-1"),
+     ("listedShares", "10.5"), ("open", "-1"), ("high", "-1"), ("low", "-1"),
+     ("open", "0"), ("high", "900"), ("low", "1100"), ("open", "1200")])
+def test_invalid_secondary_field_never_stores_or_advances_done(tmp_path, monkeypatch, field, raw):
+    payload = _payload()
+    payload["OutBlock_1"][0][FIELD_KEYS[field]] = raw
+    result, _ = _answer(tmp_path, monkeypatch, ["2026-10-15"], payload)
+    assert result["stopped"] and "INVALID_DAILY_VALUE" in result["stopped"]
+    assert CKP.load_done(tmp_path) == set()
+    assert not list(tmp_path.glob("*.jsonl.gz"))
+
+
+def test_a_bad_issue_outside_keep_still_refuses_the_whole_response(tmp_path, monkeypatch):
+    from copy import deepcopy
+    payload = _payload()
+    other = deepcopy(payload["OutBlock_1"][0])
+    other.update(ISU_CD="000001", ACC_TRDVOL="NaN")
+    payload["OutBlock_1"].append(other)
+    result, _ = _answer(tmp_path, monkeypatch, ["2026-10-15"], payload, keep={"005930.KS"})
+    assert result["stopped"] and CKP.load_done(tmp_path) == set()
+    assert not list(tmp_path.glob("*.jsonl.gz"))
+
+
+def test_suspended_issue_with_zero_volume_and_zero_range_is_stored(tmp_path, monkeypatch):
+    payload = _payload()
+    payload["OutBlock_1"][0].update(ACC_TRDVOL="0", TDD_OPNPRC="0", TDD_HGPRC="0", TDD_LWPRC="0")
+    result, _ = _answer(tmp_path, monkeypatch, ["2026-10-15"], payload)
+    assert result["stopped"] is None and CKP.load_done(tmp_path) == {"2026-10-15"}
+    row, = CKP.HS.read_jsonl(tmp_path / "krx-prices-2026.jsonl.gz")
+    assert (row["volume"], row["open"], row["close"]) == (0.0, 0.0, 1000.0)
+
+
+@pytest.mark.parametrize("key", ["TDD_OPNPRC", "TDD_HGPRC", "TDD_LWPRC", "ACC_TRDVOL", "LIST_SHRS"])
+def test_unstated_field_is_kept_as_none_never_zero(tmp_path, monkeypatch, key):
+    payload = _payload()
+    payload["OutBlock_1"][0][key] = "-"
+    result, _ = _answer(tmp_path, monkeypatch, ["2026-10-15"], payload)
+    assert result["stopped"] is None and CKP.load_done(tmp_path) == {"2026-10-15"}
+    row, = CKP.HS.read_jsonl(tmp_path / "krx-prices-2026.jsonl.gz")
+    field = {v: k for k, v in FIELD_KEYS.items()}[key]
+    assert row[field] is None
+
+
+def test_zero_price_with_unstated_volume_is_not_assumed_suspended(tmp_path, monkeypatch):
+    payload = _payload()
+    payload["OutBlock_1"][0].update(ACC_TRDVOL="-", TDD_OPNPRC="0")
+    result, _ = _answer(tmp_path, monkeypatch, ["2026-10-15"], payload)
+    assert "ZERO_PRICE_ON_ROW_NOT_KNOWN_SUSPENDED:open" in result["stopped"]
+    assert CKP.load_done(tmp_path) == set()
+
+
+def test_stored_shard_is_standard_json(tmp_path, monkeypatch):
+    import gzip
+    import json
+    _answer(tmp_path, monkeypatch, ["2026-10-15"], _payload())
+    for line in gzip.open(tmp_path / "krx-prices-2026.jsonl.gz").read().decode().splitlines():
+        json.loads(line, parse_constant=lambda c: pytest.fail(f"nonstandard token {c}"))
+
+
+def test_storage_guard_refuses_nonfinite_rows_before_any_write(tmp_path, monkeypatch):
+    # Defence in depth: even if a bar slipped past validation, nothing is staged.
+    monkeypatch.setattr(CKP, "bar_value_errors", lambda bar: [])
+    payload = _payload()
+    payload["OutBlock_1"][0]["ACC_TRDVOL"] = "NaN"
+    with pytest.raises(ValueError, match="NONFINITE_NUMERIC_IN_FRESH_ROW"):
+        _answer(tmp_path, monkeypatch, ["2026-10-15"], payload)
+    assert list(tmp_path.iterdir()) == []
+
+
+# --------------------------------------------------------------------------- #
+# Cross-section completeness (Finding B): reported, never assumed, never gated on a count
+# --------------------------------------------------------------------------- #
+def _universe(tmp_path, snapshots):
+    rows = [{"id": f"krx-universe:{d}:{t}", "date": d, "region": "KR", "ticker": t, "rank": i + 1}
+            for d, tickers in snapshots.items() for i, t in enumerate(sorted(tickers))]
+    path = tmp_path / "universe"
+    path.mkdir()
+    CKP.HS.write_shard(path / "krx-universe-2026.jsonl.gz", rows)
+    return path
+
+
+def test_partial_response_completes_the_date_but_is_reported_unresolved(tmp_path, monkeypatch):
+    store = tmp_path / "store"
+    store.mkdir()
+    universe = _universe(tmp_path, {"2026-10-01": {"005930.KS", "000660.KS"},
+                                    "2026-11-02": {"005930.KS", "000660.KS"}})
+    snapshots = CKP.membership_snapshots(universe)
+    result, _ = _answer(store, monkeypatch, ["2026-10-15"], _payload(), snapshots=snapshots)
+    assert CKP.load_done(store) == {"2026-10-15"}
+    receipt, = result["completeness"]
+    assert receipt["status"] == "UNRESOLVED_PIT_MEMBERS_ABSENT"
+    assert receipt["missingListedBeforeAndAfter"] == ["000660.KS"]
+    assert result["completenessUnresolved"] == ["2026-10-15"]
+    report = CKP.diagnose(store, universe)
+    assert report["status"] == "UNRESOLVED"
+    assert report["receiptsByStatus"] == {"UNRESOLVED_PIT_MEMBERS_ABSENT": 1}
+
+
+def test_full_cross_section_is_complete_only_against_the_prior_snapshot(tmp_path, monkeypatch):
+    from copy import deepcopy
+    store = tmp_path / "store"
+    store.mkdir()
+    universe = _universe(tmp_path, {"2026-10-01": {"005930.KS", "000660.KS"}})
+    payload = _payload()
+    other = deepcopy(payload["OutBlock_1"][0])
+    other["ISU_CD"] = "000660"
+    payload["OutBlock_1"].append(other)
+    result, _ = _answer(store, monkeypatch, ["2026-10-15"], payload,
+                        snapshots=CKP.membership_snapshots(universe))
+    assert result["completeness"][0]["status"] == "COMPLETE_AGAINST_PRIOR_PIT_SNAPSHOT"
+    report = CKP.diagnose(store, universe)
+    assert report["status"] == "COMPLETE_AGAINST_PRIOR_PIT_SNAPSHOT"
+    assert report["membershipKeepSha256"] == CKP.keep_digest({"005930.KS", "000660.KS"})
+
+
+def test_missing_member_without_a_later_snapshot_is_exit_unknown(tmp_path):
+    receipts = CKP.completeness_receipts({"2026-10-15": {"005930.KS"}}, ["2026-10-15"],
+                                         {"2026-10-01": {"005930.KS", "000660.KS"}})
+    assert receipts[0]["missingExitUnknown"] == ["000660.KS"]
+    assert receipts[0]["missingListedBeforeAndAfter"] == []
+    assert receipts[0]["status"] == "UNRESOLVED_PIT_MEMBERS_ABSENT"
+
+
+def test_no_prior_snapshot_or_no_universe_is_unresolved(tmp_path, monkeypatch):
+    receipts = CKP.completeness_receipts({"2026-10-15": {"005930.KS"}}, ["2026-10-15"],
+                                         {"2026-11-02": {"005930.KS"}})
+    assert receipts[0]["status"] == "UNRESOLVED_NO_PRIOR_PIT_SNAPSHOT"
+    result, _ = _answer(tmp_path, monkeypatch, ["2026-10-15"], _payload())
+    assert result["completeness"][0]["status"] == "UNRESOLVED_NO_PRIOR_PIT_SNAPSHOT"
+    assert CKP.diagnose(tmp_path, None)["status"] == "UNRESOLVED"
+
+
+def test_diagnosis_is_read_only_and_reports_legacy_anomalies(tmp_path, monkeypatch):
+    def forbidden(*a, **k):
+        pytest.fail("diagnosis must not call KRX")
+    monkeypatch.setattr(CKP, "call", forbidden)
+    rows = [{"id": "krx-price:2026-10-14:005930", "date": "2026-10-14", "region": "KR",
+             "ticker": "005930.KS", "close": 1000.0, "volume": float("nan")},
+            {"id": "krx-price:undated", "date": None, "region": "KR", "ticker": "005930.KS"}]
+    CKP.HS.write_shard(tmp_path / "krx-prices-2026.jsonl.gz", rows)
+    (tmp_path / CKP.DONE_NAME).write_text('["2026-10-15"]\n')
+    before = {p.name: p.read_bytes() for p in tmp_path.iterdir()}
+    report = CKP.diagnose(tmp_path, None)
+    assert {p.name: p.read_bytes() for p in tmp_path.iterdir()} == before
+    assert report["status"] == "UNRESOLVED"
+    assert report["anomalies"]["doneOpenSessionWithoutRows"] == ["2026-10-15"]
+    assert report["anomalies"]["rowsWithoutDone"] == ["2026-10-14"]
+    assert report["anomalies"]["storedNonfiniteValuesByField"] == {"volume": 1}
+    assert report["anomalies"]["rowsWithoutValidDate"] == 1
+
+
+def test_diagnose_cli_needs_no_key_and_writes_nothing(tmp_path, monkeypatch, capsys):
+    import json
+    monkeypatch.delenv("KRX_API_KEY", raising=False)
+    assert CKP.main([str(tmp_path), "--diagnose"]) == 0
+    assert json.loads(capsys.readouterr().out)["status"] == "UNRESOLVED"
+    assert list(tmp_path.iterdir()) == []
