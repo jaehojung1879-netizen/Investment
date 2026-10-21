@@ -129,6 +129,16 @@ def daily_bars(payload: dict, requested: str) -> tuple[list[dict], str | None]:
             return [], "SERVED_DATE_MISMATCH_OR_MISSING"
     if any(not math.isfinite(bar["close"]) or bar["close"] <= 0 for bar in bars):
         return [], "INVALID_DAILY_CLOSE"
+    # An absent secondary field stays None (never 0). A present one must be a
+    # finite number in its domain, or the whole day is refused: a NaN written
+    # to the store is non-standard JSON and a corrupt liquidity input.
+    for bar in bars:
+        for field in ("open", "high", "low", "volume", "listedShares"):
+            value = bar[field]
+            if value is None:
+                continue
+            if not math.isfinite(value) or value < 0:
+                return [], "INVALID_DAILY_FIELD"
     return bars, None
 
 

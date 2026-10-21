@@ -106,7 +106,7 @@ def test_future_session_is_not_called_or_completed(tmp_path, monkeypatch):
     assert CKP.load_done(tmp_path) == set()
 
 
-@pytest.mark.parametrize("mutation", ["missing_date", "invalid_date", "mixed_dates", "conflicting_alias", "duplicate", "invalid_close", "not_a_row", "nan_close", "zero_close"])
+@pytest.mark.parametrize("mutation", ["missing_date", "invalid_date", "mixed_dates", "conflicting_alias", "duplicate", "invalid_close", "not_a_row", "nan_close", "zero_close", "nan_volume", "inf_open", "neginf_high", "inf_shares", "negative_volume", "negative_low"])
 def test_invalid_or_mixed_daily_response_never_advances_done(tmp_path, monkeypatch, mutation):
     from copy import deepcopy
     payload = _payload()
@@ -121,6 +121,12 @@ def test_invalid_or_mixed_daily_response_never_advances_done(tmp_path, monkeypat
     elif mutation == "invalid_close": row["TDD_CLSPRC"] = "-"
     elif mutation == "nan_close": row["TDD_CLSPRC"] = "NaN"
     elif mutation == "zero_close": row["TDD_CLSPRC"] = "0"
+    elif mutation == "nan_volume": row["ACC_TRDVOL"] = "NaN"
+    elif mutation == "inf_open": row["TDD_OPNPRC"] = "Infinity"
+    elif mutation == "neginf_high": row["TDD_HGPRC"] = "-Infinity"
+    elif mutation == "inf_shares": row["LIST_SHRS"] = "inf"
+    elif mutation == "negative_volume": row["ACC_TRDVOL"] = "-5"
+    elif mutation == "negative_low": row["TDD_LWPRC"] = "-1"
     elif mutation == "not_a_row": payload["OutBlock_1"].append(None)
     result, _ = _answer(tmp_path, monkeypatch, ["2026-10-15"], payload)
     assert result["stopped"]
@@ -314,3 +320,12 @@ def test_cli_and_collector_default_to_the_same_kr_date(tmp_path, monkeypatch):
     assert CKP.main([str(tmp_path), "--all-issues", "--start", "2026-10-19", "--pace", "0"]) == 1
     assert asked == ["20261019"]
     assert CKP.load_done(tmp_path) == set()
+
+
+def test_absent_secondary_field_stays_none_not_zero_and_day_completes(tmp_path, monkeypatch):
+    payload = _payload()
+    payload["OutBlock_1"][0]["ACC_TRDVOL"] = "-"
+    bars, error = CKP.daily_bars(payload, "2026-10-15")
+    assert error is None and bars[0]["volume"] is None
+    result, _ = _answer(tmp_path, monkeypatch, ["2026-10-15"], payload)
+    assert CKP.load_done(tmp_path) == {"2026-10-15"}
