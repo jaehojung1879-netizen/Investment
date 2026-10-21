@@ -1,0 +1,28 @@
+{
+  "A1": "GOVERNANCE_CLOSED",
+  "A2": "H252 / first assessment36 months, unchanged; preview only, no actual ledger writer or authorization",
+  "H1": "First public TTM operating-income YoY growth nonpositive -> positive with positive TTM OCF; 26 calendar weeks retention; source receipt + next day; same basis; no imputation",
+  "H2": "H1 and trailing 126 KR-session excess over 069500.KS positive; no prior-movement stratum for H2",
+  "H3": "Original KRX industry; top3 current market cap; mean prior126 excess sector upper tercile; own <= sector median; full peer and cross-industry completeness, no replacement",
+  "diagnosticOnly": "Last52 weeks and annual rates are not new acceptance gates; cross-date correlation aggregation undefined; real monetary MDE unresolved",
+  "gates": {
+    "H1CorrelationAbsMax": 0.7,
+    "MDE80AnnualPercentagePointsMax": 4,
+    "measurabilityMin": 0.6,
+    "prevalence": [
+      0.03,
+      0.5
+    ],
+    "signalPositiveNamesPerKRDateMin": 5
+  },
+  "id": "rp1-kr-a0-measurability-v1",
+  "manifestSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+  "originalContractHashes": {
+    "docs/research-program/03-studies-abc-ko.md": "f56d63b99ff157eddc7ec99134786032ed3122e067b5b88a9f82f9e987101684",
+    "docs/research-program/04-common-research-contract-ko.md": "b515b75567f342cf34a2f659d4150165e31363b90a8dd321bd7cb0d8fd7e207c",
+    "docs/research-program/06-engineering-handoff-ko.md": "86f8a6a04861cb2b345e467355e86831de155cf0b962c53c4cd50fbe56d57da3"
+  },
+  "role": "INPUT_ONLY_NO_HISTORICAL_INFERENCE",
+  "sourceCommit": "1bf68f59cffa20239977e2cfaa0f35a07d0ec884",
+  "universe": "Strict prior PIT KRX Top120; nonfinancial; inherited H2 common share, exact session, 20 traded sessions, median 60-session KRW value >= 1e9, known industry with >=5 eligible peers; unresolved issuer held, remaining identities PROVISIONAL"
+}
