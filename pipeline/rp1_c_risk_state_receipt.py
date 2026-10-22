@@ -99,6 +99,10 @@ def validate_preview(receipt):
     layers = receipt["layers"]
     if not isinstance(layers, dict) or set(layers) != set(LAYER_KEYS):
         raise ValueError("LAYER_SET_CHANGED")
+    for layer in LAYER_KEYS:
+        # One risk state, one byte form: the builder emits int, so 1.0 would be a second valid digest.
+        if layers[layer] is not None and (isinstance(layers[layer], bool) or not isinstance(layers[layer], int)):
+            raise ValueError("STATE_NOT_CANONICAL_INT: " + layer)
     states = {layer: _state(layers[layer], layer) for layer in LAYER_KEYS}
     actual = receipt["multipliers"]
     if not isinstance(actual, dict) or set(actual) != set(K.CANDIDATE_ORDER):

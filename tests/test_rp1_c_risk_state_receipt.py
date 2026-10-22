@@ -274,3 +274,11 @@ def test_normal_builder_outputs_are_byte_equivalent_to_requested_head():
         before = legacy['build_preview'](SIGNAL, *states)
         after = C.build_preview(SIGNAL, *states)
         assert C.P.canonical(before) == C.P.canonical(after)
+
+
+def test_resigned_float_layer_state_is_rejected_as_non_canonical():
+    r = C.build_preview(SIGNAL, 0, 0, 1)
+    r['layers']['slow'] = 0.0
+    _resign(r)
+    with pytest.raises(ValueError, match="STATE_NOT_CANONICAL_INT"):
+        C.validate_preview(r)
