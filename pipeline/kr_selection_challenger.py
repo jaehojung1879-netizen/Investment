@@ -586,8 +586,9 @@ def deepen_history(root=ROOT) -> None:
     _git(*args, "origin", "+refs/heads/main:" + MAIN_REF, root=root)
 
 
-def registration_from_git(root=ROOT) -> dict:
-    """The commit on main's first-parent history that added the registered spec, and its commit time.
+def registration_from_git(root=ROOT, spec_path=SPEC_PATH) -> dict:
+    """The commit on main's first-parent history that added the registered spec (``spec_path``; another study passes its own), and its
+    commit time.
 
     Read from ``origin/main``, never from HEAD: a branch that adds the spec without being merged has no such commit on main and is refused
     (``SPEC_NOT_ON_MAIN``). The running checkout must also contain that commit, so code from a branch cut before the registration cannot
@@ -596,7 +597,7 @@ def registration_from_git(root=ROOT) -> dict:
     if _git("rev-parse", "--verify", "--quiet", MAIN_REF, root=root).returncode != 0:
         raise ValueError("SPEC_MERGE_TIME_UNKNOWN: no " + MAIN_REF)
     found = _git("log", "--first-parent", "--diff-merges=first-parent", "--diff-filter=A", "--no-renames", "--name-only",
-                 "--format=%H %cI", MAIN_REF, "--", SPEC_PATH, root=root)
+                 "--format=%H %cI", MAIN_REF, "--", spec_path, root=root)
     lines = [line.split(" ") for line in found.stdout.splitlines() if re.match(r"^[0-9a-f]{40} \d{4}-\d{2}-\d{2}T", line)]
     if found.returncode != 0:
         raise ValueError("SPEC_MERGE_TIME_UNKNOWN")
