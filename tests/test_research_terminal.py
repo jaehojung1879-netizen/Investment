@@ -63,8 +63,7 @@ def test_sealed_build_publication_and_results_are_unchanged():
     # The owner explicitly requested a session safety fix to these two files.
     # Pin the reviewed replacement bytes; retain every scientific/result pin.
     safety = json.loads((ROOT / "docs/weekly-session-integrity-v1-pins.json").read_text())
-    assert set(safety["files"]) == {"pipeline/weekly_decision.py", "pipeline/weekly_publish.py",
-                                   ".github/workflows/ledger.yml"}  # #273 post-finality run
+    assert set(safety["files"]) == {"pipeline/weekly_decision.py", "pipeline/weekly_publish.py"}
     paths = ["pipeline/build.py", "pipeline/weekly_decision.py", "pipeline/weekly_publish.py",
              "pipeline/weekly_history.py", "pipeline/validate.py", ".github/workflows/pages.yml",
              ".github/workflows/tests.yml", "config.json",
