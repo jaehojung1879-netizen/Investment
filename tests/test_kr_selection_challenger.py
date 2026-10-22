@@ -417,3 +417,43 @@ def test_merge_time_is_the_first_parent_commit_that_added_the_spec(tmp_path):
     git("checkout", "-q", "main")
     git("merge", "-q", "--no-ff", "study", "-m", "merge", date="2026-10-27T03:00:00+00:00")
     assert pd.Timestamp(C.merged_at_from_git(tmp_path)) == pd.Timestamp("2026-10-27T03:00:00+00:00")
+
+
+@pytest.mark.parametrize("clock,site_kwargs,expected", [
+    # Saturday run (the cron's real start, ~04:30 UTC): Friday's final session is recorded.
+    ("2026-10-31T04:35:00Z", {"generated": "2026-10-31T04:30:00+00:00"}, "RECORDED"),
+    # A delayed weekday run inside the KRX session: the artifact speaks for an unfinished session, nothing is recorded.
+    ("2026-11-03T04:35:00Z", {"generated": "2026-11-03T04:30:00+00:00", "session": "2026-11-03"}, "SKIPPED"),
+])
+def test_actual_recording_path_through_the_paper_ledger_step(tmp_path, monkeypatch, clock, site_kwargs, expected):
+    """End to end through scripts/update_ledger.main, the LIVE pathway, the real spec and code-hash check; only the merge time,
+    the writer's clock and the vendor download are replaced."""
+    import importlib
+    update = importlib.import_module("scripts.update_ledger")
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: (_ for _ in ()).throw(OSError("offline")))
+    monkeypatch.setattr(C, "merged_at_from_git", lambda *a: MERGED)
+    monkeypatch.setattr(CORE, "system_utc_now", lambda: pd.Timestamp(clock))
+    data = site(**site_kwargs)
+    data["modelVersion"] = "m"
+    path = tmp_path / "site.json"
+    path.write_text(json.dumps(data))
+    ledger = tmp_path / "ledger"
+    ledger.mkdir()
+    study = ledger / "research-strategies" / C.STUDY
+    weekly_before = sorted(p.name for p in ledger.iterdir())
+    assert update.main([str(path), str(ledger)]) == 0
+    status = json.loads((study / "publication-status.json").read_text())
+    assert status["status"] == "ASSESSED" and status["productionEffect"] == "NONE"
+    receipts = (study / "receipts.jsonl").read_text().splitlines() if (study / "receipts.jsonl").exists() else []
+    assert len(receipts) == (1 if expected == "RECORDED" else 0)
+    if receipts:
+        row = json.loads(receipts[0])
+        C.validate_receipt(row, pathway=C.LIVE)
+        assert (row["signalDate"], row["executionDate"], row["evidenceClass"]) == ("2026-10-30", "2026-11-02", "PROSPECTIVE_PAPER")
+        # The same window again is idempotent: no second receipt, the first is unchanged.
+        first = (study / "receipts.jsonl").read_bytes()
+        assert update.main([str(path), str(ledger)]) == 0
+        assert (study / "receipts.jsonl").read_bytes() == first
+    # Nothing outside its own namespace is written by the challenger (the paper ledger writes its own files).
+    assert {p.name for p in (ledger / "research-strategies").iterdir()} == {C.STUDY}
+    assert "weekly-decisions" not in weekly_before + [p.name for p in ledger.iterdir()]
