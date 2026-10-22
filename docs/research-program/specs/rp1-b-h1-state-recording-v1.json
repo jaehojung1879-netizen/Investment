@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "studyId": "rp1-b-h1-state-recording-v1",
+  "status": "DISABLED_PENDING_REGISTRATION",
+  "purpose": "MARKET_OBSERVED_STATE_ONLY",
+  "definition": "B-H1: FAST == 2 OR trailing 24-calendar-month index return < 0",
+  "previewModule": "pipeline/rp1_b_state_receipt.py",
+  "calendarVersion": "xkrx-xnys-4.11.1-v2-kr-2026-closures",
+  "signalSchedule": "LAST_KRX_SESSION_OF_ISO_WEEK",
+  "finality": "18:00 Asia/Seoul inclusive; next KRX session 09:00 Asia/Seoul exclusive",
+  "prospectiveBoundary": "Signal session strictly after the KST date of the authorizing main merge",
+  "missingObservationHandling": "Calendar gaps are explicit NaN positions for the existing FAST function, never filled prices; 24m return still requires its exact base and signal closes",
+  "registeredAuthorization": null,
+  "sourceAdmission": null,
+  "liveLedgerPath": null,
+  "evaluationStatus": "NOT_IMPLEMENTED_NOT_AUTHORIZED",
+  "blockers": [
+    "OWNER_MAIN_MERGE_AUTHORIZATION_NOT_REGISTERED",
+    "LIVE_INDEX_IDENTITY_PRICE_BASIS_AND_AVAILABILITY_EVIDENCE_NOT_ADMITTED",
+    "SOURCE_AND_DERIVED_STATE_STORAGE_PUBLICATION_RIGHTS_UNCONFIRMED",
+    "LIVE_LEDGER_LOCATION_AND_TRUSTED_CHECKPOINT_PERSISTENCE_UNREGISTERED",
+    "INCOMPLETE_INPUT_RECEIPT_ADMISSION_POLICY_UNREGISTERED",
+    "H63_BLOCK_ORIGIN_SPREAD_SAMPLE_AND_EVALUATION_SCHEDULE_UNREGISTERED"
+  ]
+}
