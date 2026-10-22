@@ -33,7 +33,7 @@ def site(n=50, *, generated=EVENING, session=SESSION, **edit):
     for i in range(n):
         t = f"{100000 + i:06d}.KS"
         rows.append({"ticker": t, "sector": SECTORS[i % len(SECTORS)], "alpha": 0.01 * i,
-                     "risk": {"downsideVolPct": 10.0 + i}})
+                     "risk": {"downsideVolPct": 10.0 + i}, "mom12_1Pct": 5.0})
         details[t] = {"asOf": session, "lastClose": 1000.0 + i, "ma200": 900.0 if i % 3 else 1100.0, "pct52wHigh": 60.0 + i / 2}
     out = {"generatedAt": generated, "provenance": {"dataMode": "live", "buildCommitSha": "a" * 40, "modelVersion": "m"},
            "indices": [{"symbol": "^KS11", "asOf": session}], "details": details,
@@ -404,29 +404,51 @@ def test_paper_ledger_step_runs_the_challenger_and_a_failure_never_costs_it(tmp_
     assert not list((ROOT / ".github/workflows").glob("*challenger*"))
 
 
-def test_merge_time_is_the_first_parent_commit_that_added_the_spec(tmp_path):
-    import subprocess
+def _git_env(home, date=None):
+    env = {"GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t", "GIT_COMMITTER_NAME": "t", "GIT_COMMITTER_EMAIL": "t@t",
+           "PATH": "/usr/bin:/bin", "HOME": str(home)}
+    if date:
+        env.update(GIT_AUTHOR_DATE=date, GIT_COMMITTER_DATE=date)
+    return env
 
-    def git(*args, date=None):
-        env = {"GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t", "GIT_COMMITTER_NAME": "t", "GIT_COMMITTER_EMAIL": "t@t",
-               "PATH": "/usr/bin:/bin", "HOME": str(tmp_path)}
-        if date:
-            env.update(GIT_AUTHOR_DATE=date, GIT_COMMITTER_DATE=date)
-        subprocess.run(["git", *args], cwd=tmp_path, env=env, check=True, capture_output=True)
-    git("init", "-q", "-b", "main")
-    (tmp_path / "README").write_text("x")
-    git("add", "README")
-    git("commit", "-qm", "base", date="2026-10-20T00:00:00+00:00")
+
+def test_merge_time_is_the_first_parent_commit_on_main_that_added_the_spec(tmp_path):
+    """Read from origin/main, never from HEAD. A branch that adds the spec is not a registration until it is merged; a checkout that
+    predates the merge cannot record under it."""
+    import subprocess
+    origin, clone = tmp_path / "origin", tmp_path / "clone"
+
+    def git(cwd, *args, date=None):
+        return subprocess.run(["git", *args], cwd=cwd, env=_git_env(tmp_path, date), check=True, capture_output=True,
+                              text=True).stdout.strip()
+    origin.mkdir()
+    git(origin, "init", "-q", "-b", "main")
+    (origin / "README").write_text("x")
+    git(origin, "add", "README")
+    git(origin, "commit", "-qm", "base", date="2026-10-20T00:00:00+00:00")
+    git(origin, "checkout", "-qb", "study")
+    (origin / C.SPEC_PATH).parent.mkdir(parents=True)
+    (origin / C.SPEC_PATH).write_text("{}")
+    git(origin, "add", C.SPEC_PATH)
+    git(origin, "commit", "-qm", "spec", date="2026-10-21T00:00:00+00:00")      # authored on the branch, not merged
+    git(tmp_path, "clone", "-q", "--no-local", str(origin), str(clone))
+    git(clone, "checkout", "-q", "study")                                        # running the unmerged branch itself
+    with pytest.raises(ValueError, match="SPEC_NOT_ON_MAIN"):
+        C.merged_at_from_git(clone)
+    git(origin, "checkout", "-q", "main")
+    git(origin, "merge", "-q", "--no-ff", "study", "-m", "merge", date="2026-10-27T03:00:00+00:00")
+    merge = git(origin, "rev-parse", "HEAD")
+    # The clone's HEAD is still the branch tip, which does not contain the merge commit.
+    with pytest.raises(ValueError, match="RUNNING_CODE_DOES_NOT_CONTAIN_REGISTRATION"):
+        C.merged_at_from_git(clone)
+    git(clone, "checkout", "-q", "-B", "main", "origin/main")
+    found = C.registration_from_git(clone)
+    assert found == {"commitSha": merge, "mergedAtUtc": "2026-10-27T03:00:00+00:00"}
+    # Without an origin/main at all the recorder refuses rather than guessing from HEAD.
+    git(clone, "remote", "remove", "origin")
+    git(clone, "update-ref", "-d", C.MAIN_REF)
     with pytest.raises(ValueError, match="SPEC_MERGE_TIME_UNKNOWN"):
-        C.merged_at_from_git(tmp_path)
-    git("checkout", "-qb", "study")
-    (tmp_path / C.SPEC_PATH).parent.mkdir(parents=True)
-    (tmp_path / C.SPEC_PATH).write_text("{}")
-    git("add", C.SPEC_PATH)
-    git("commit", "-qm", "spec", date="2026-10-21T00:00:00+00:00")       # authored on the branch
-    git("checkout", "-q", "main")
-    git("merge", "-q", "--no-ff", "study", "-m", "merge", date="2026-10-27T03:00:00+00:00")
-    assert pd.Timestamp(C.merged_at_from_git(tmp_path)) == pd.Timestamp("2026-10-27T03:00:00+00:00")
+        C.merged_at_from_git(clone)
 
 
 @pytest.mark.parametrize("clock,site_kwargs,expected", [
@@ -652,3 +674,112 @@ def test_a_non_zero_research_exit_is_a_workflow_warning_and_never_the_ledgers_ex
         assert update.main([str(path), str(ledger)]) == 0
         out = capsys.readouterr().out
         assert ("::warning::kr-selection-challenger-v1 research steps exited 1" in out) is warned
+
+
+# --------------------------------------------------------------------------- #
+# Regression tests for the independent-audit P1 findings
+# --------------------------------------------------------------------------- #
+def test_a_downside_volatility_without_a_full_252_session_window_is_never_ranked():
+    """longterm.downside_vol_252 answers from 60 closes; the same row's mom12_1Pct (>= 273 closes) is the proof the window was full."""
+    from pipeline import features as F
+    from pipeline import longterm as LT
+    close = pd.Series(100.0 * np.exp(np.cumsum(np.random.default_rng(3).normal(0, 0.02, 60))))
+    assert LT.downside_vol_252(close) is not None and LT.momentum_12_1(close) is None       # the gap the recorder closes
+    frame = pd.DataFrame({"Open": close, "High": close, "Low": close, "Close": close, "Volume": 1.0},
+                         index=pd.DatetimeIndex(RC.sessions("2026-07-01", "2026-12-31", "KR")[:60]))
+    feat = F.build_features(frame)
+    assert feat["price_52w_high"].isna().all() and feat["ma200"].isna().all()                  # these two cannot be short
+    s = site()
+    rows = s["longTerm"]["regions"]["KR"]["validationCrossSection"]
+    short = {rows[0]["ticker"], rows[1]["ticker"]}                                             # the two lowest downside vols
+    for row in rows[:2]:
+        row["mom12_1Pct"] = None
+    r = receipt(s)
+    assert not short & {x["ticker"] for x in r["books"]["CH_LOWVOL"]["slots"]}
+    assert r["books"]["CH_LOWVOL"]["excluded"]["FEATURE_WINDOW_INCOMPLETE"] == 2
+
+
+@pytest.mark.parametrize("missing_in,expected_short", [
+    ("h126", ["h126"]), ("model", ["versusExistingModel"]), ("both", ["h126", "versusExistingModel"]),
+])
+def test_supported_needs_every_series_within_the_none_budget_never_two_outcomes(missing_in, expected_short):
+    """H252 complete on 104 receipts; the H126 series, the CTRL_MODEL5 pairs, or both, valid on only TWO receipts. The old gate read the
+    H252 count alone and called this SUPPORTED."""
+    rng = np.random.default_rng(1)
+    values = list(0.06 + 0.01 * rng.standard_normal(104))
+    receipts, outcomes = _ledger(104, values)
+    for o in outcomes:
+        i = int(o["receiptSha256"], 16)
+        if i < 2:
+            continue
+        if missing_in in ("h126", "both") and o["horizonSessions"] == 126:
+            o["books"]["CH_LOWVOL"]["netExcessReturn"] = None
+        if missing_in in ("model", "both") and o["horizonSessions"] == 252:
+            o["books"]["CTRL_MODEL5"]["netExcessReturn"] = None
+    out = C.assess(receipts, outcomes, SPEC, path_metrics=GOOD_PATH)["challengers"]["CH_LOWVOL"]
+    assert out["verdict"] == "INCONCLUSIVE_DATA" and out["primary"]["seriesShortOfCohort"] == expected_short
+    assert out["primary"]["n"] == 104                                       # the H252 series alone would have passed
+    # Exactly at the budget (10 None in each series) the verdict is still decided.
+    receipts, outcomes = _ledger(104, values, missing=set(range(10)))
+    assert C.assess(receipts, outcomes, SPEC, path_metrics=GOOD_PATH)["challengers"]["CH_LOWVOL"]["verdict"] == "SUPPORTED"
+
+
+def test_an_undefined_risk_metric_is_inconclusive_not_a_crash():
+    receipts, outcomes = _ledger(104, [0.06] * 52 + [0.07] * 52)
+    for bad in ({"sharpe": None}, {"maxDrawdown": None}, {"sharpe": float("nan")}):
+        paths = {**GOOD_PATH, "CH_LOWVOL": {**GOOD_PATH["CH_LOWVOL"], **bad}}
+        assert C.assess(receipts, outcomes, SPEC, path_metrics=paths)["challengers"]["CH_LOWVOL"]["verdict"] == "INCONCLUSIVE_DATA"
+
+
+def test_a_failed_vendor_download_is_deferred_and_regraded_never_a_permanent_none():
+    r = receipt()
+    a = r["books"]["CH_LOWVOL"]["slots"][0]["ticker"]
+    frames, maturity = _frames(r, 126, growth={C.BENCHMARK: 0.10})
+    at_maturity = _after(maturity)
+    window_closed = pd.Timestamp(str(CORE.maturity_session(r["executionDate"], 126 + C.OUTCOME_RETRY_SESSIONS).date())) \
+        .tz_localize("UTC") + pd.Timedelta(hours=10)
+    # 1. An empty download (vendor outage): deferred, not BENCHMARK_UNPRICED for ever.
+    out = C.build_outcome(r, horizon=126, frames={}, now_utc=at_maturity, pathway=C.SYNTHETIC)
+    assert out["resolution"] == "DEFERRED" and out["unresolved"] == ["BENCHMARK_UNPRICED"]
+    with pytest.raises(ValueError, match="OUTCOME_DEFERRED_IS_NEVER_A_RECORD"):
+        C.validate_outcome(out, pathway=C.SYNTHETIC)
+    # 2. A partial download (one held name missing): deferred too.
+    partial = {t: f for t, f in frames.items() if t != a}
+    out = C.build_outcome(r, horizon=126, frames=partial, now_utc=at_maturity, pathway=C.SYNTHETIC)
+    assert out["resolution"] == "DEFERRED" and out["unresolved"] == [f"{a}:NAME_OUTCOME_MISSING:NO_VENDOR_FRAME"]
+    # 3. The next run's full download resolves it.
+    out = C.build_outcome(r, horizon=126, frames=frames, now_utc=at_maturity, pathway=C.SYNTHETIC)
+    assert out["resolution"] == "FINAL" and out["books"]["CH_LOWVOL"]["netExcessReturn"] is not None
+    # 4. Still missing once the retry window is final (a delisting): written, labelled, and counted as None.
+    out = C.build_outcome(r, horizon=126, frames=partial, now_utc=window_closed, pathway=C.SYNTHETIC)
+    assert out["resolution"] == "FINAL_UNRESOLVED_AFTER_RETRY" and out["books"]["CH_LOWVOL"]["netExcessReturn"] is None
+    C.validate_outcome(out, pathway=C.SYNTHETIC)
+    # 5. A halt at maturity is retried the same way, and becomes TERMINAL_ECONOMICS_UNRESOLVED only after the window.
+    halted = {t: f.copy() for t, f in frames.items()}
+    halted[a].iloc[-1, halted[a].columns.get_loc("Volume")] = 0.0
+    assert C.build_outcome(r, horizon=126, frames=halted, now_utc=at_maturity, pathway=C.SYNTHETIC)["resolution"] == "DEFERRED"
+    late = C.build_outcome(r, horizon=126, frames=halted, now_utc=window_closed, pathway=C.SYNTHETIC)
+    assert late["names"][a]["state"] == "TERMINAL_ECONOMICS_UNRESOLVED" and late["resolution"] == "FINAL_UNRESOLVED_AFTER_RETRY"
+
+
+def test_the_outcome_step_writes_nothing_on_an_outage_and_grades_on_the_next_run(tmp_path, monkeypatch):
+    import importlib
+    script = importlib.import_module("scripts.record_kr_selection_challenger")
+    study = tmp_path / "study"
+    live = C.build_receipt(site(), "b" * 64, pathway=C.LIVE, created_at_utc=EVENING, now_utc=EVENING, merged_at_utc=MERGED,
+                           code_identity={"commitSha": "c" * 40, "files": {"x": "d" * 64}}, spec=SPEC, spec_digest="e" * 64)
+    C.append_receipt(study / script.RECEIPTS, live, pathway=C.LIVE)
+    frames, maturity = _frames(live, 126, growth={C.BENCHMARK: 0.05})
+    monkeypatch.setattr(CORE, "system_utc_now", lambda: _after(maturity))
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: {})
+    assert script.outcomes(study) == 0
+    status = json.loads((study / "publication-status.outcomes.json").read_text())
+    assert status["status"] == "DEFERRED" and status["written"] == [] and status["deferred"][0][2] == ["BENCHMARK_UNPRICED"]
+    assert not (study / script.OUTCOMES).exists() or not (study / script.OUTCOMES).read_text().strip()
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: frames)
+    assert script.outcomes(study) == 0
+    rows = C.read_outcomes(study / script.OUTCOMES, pathway=C.LIVE)
+    assert [(o["horizonSessions"], o["resolution"]) for o in rows] == [(126, "FINAL")]
+    before = (study / script.OUTCOMES).read_bytes()
+    assert script.outcomes(study) == 0 and (study / script.OUTCOMES).read_bytes() == before      # never graded twice
+    assert (study / script.RECEIPTS).read_bytes() == CORE.canonical(live) + b"\n"               # the receipt never moves

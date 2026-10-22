@@ -22,13 +22,14 @@
       "role": "CHALLENGER",
       "feature": "risk.downsideVolPct of longTerm.regions.KR.validationCrossSection (252-session semi-deviation of negative daily returns, annualized, longterm.downside_vol_252)",
       "order": "ASCENDING",
-      "requires": "finite and positive"
+      "requires": "finite and positive, and the same row's mom12_1Pct finite: longterm.downside_vol_252 returns a value from as few as 20 negative returns, while mom12_1Pct exists only when the same close series holds >= 273 closes (longterm.MIN_HISTORY), which proves the registered 252-session window is full. Otherwise FEATURE_WINDOW_INCOMPLETE (excluded from this book only)"
     },
     "CH_HIGH52": {
       "role": "CHALLENGER",
       "feature": "details[ticker].pct52wHigh (close / 252-session max close x 100, features.price_52w_high)",
       "order": "DESCENDING",
-      "requires": "finite in (0, 100.5]; details lastClose > details ma200 (a name whose 200-day average is undetermined is excluded, never assumed above)"
+      "requires": "finite in (0, 100.5]; details lastClose > details ma200 (a name whose 200-day average is undetermined is excluded, never assumed above)",
+      "windowNote": "features.price_52w_high and ma200 are rolling(252) / rolling(200) means with full min_periods, and both are model feature columns, so details asOf == signal session already implies a full window on that session. The window counts vendor rows, not exchange sessions: a session the vendor omitted lengthens it, a production definition this study inherits and does not change"
     },
     "CTRL_MODEL5": {
       "role": "CONTROL_EXISTING_MODEL",
@@ -81,7 +82,8 @@
     "notExecutable": "a name SUSPENDED (zero volume) at the execution session cannot be bought; its slot is held in 069500.KS",
     "unresolved": "a name with no vendor frame, no row or an invalid close at execution, or that did not trade on the maturity session itself, makes that book's cohort outcome None (NAME_OUTCOME_MISSING or TERMINAL_ECONOMICS_UNRESOLVED); it is never marked at an earlier close, dropped or renormalised",
     "netExcess": "book return - 069500.KS return - stock legs (buy at execution, sell at maturity) - ETF legs of benchmark-held slots + the ETF control's own round trip",
-    "costs": "pipeline.weekly_decision.trade_cost_fraction('KR', date, ...): commission + half spread per leg, dated statutory sell tax on stock sells, no tax on ETF sells (benchmark_alpha.REALISTIC_COSTS)"
+    "costs": "pipeline.weekly_decision.trade_cost_fraction('KR', date, ...): commission + half spread per leg, dated statutory sell tax on stock sells, no tax on ETF sells (benchmark_alpha.REALISTIC_COSTS)",
+    "retry": "An outcome whose benchmark is unpriced or with any held name unresolved (no vendor frame, no row, an invalid close, or no trade on the maturity session) is DEFERRED: nothing is written and every later run regrades it from a fresh download until the (horizon + 5)-th KR session after execution is final. Only then is a still-unresolved outcome written (resolution FINAL_UNRESOLVED_AFTER_RETRY, with the reasons) and counted as None. A transient vendor failure therefore never becomes a permanent None, and a delisting or unresolved terminal consideration still does"
   },
   "assessment": {
     "interim": "No outcome statistic is published before a registered check. Turnover (a signal-time fact) is reported at any time.",
@@ -102,7 +104,7 @@
         "rebalanceEveryReceipts": 4,
         "endReceipt": 104
       },
-      "rule": "on the first 104 receipts, once all are graded at H252 and H126: SUPPORTED only if (1) the one-sided 98.75% (Bonferroni over two challengers) Newey-West lower bound of mean H252 net excess vs 069500.KS is above 0, (2) the mean H126 net excess is above 0, (3) the mean H252 net excess vs CTRL_MODEL5 is above 0, and (4) the 4-weekly rebalanced daily paper path has Sharpe >= 069500.KS and |max drawdown| <= 1.25 x 069500.KS over the same sessions; NOT_SUPPORTED otherwise; INCONCLUSIVE_DATA if more than 10 outcomes are None or the risk path is incomplete"
+      "rule": "on the first 104 receipts, once all are graded at H252 and H126: SUPPORTED only if (1) the one-sided 98.75% (Bonferroni over two challengers) Newey-West lower bound of mean H252 net excess vs 069500.KS is above 0, (2) the mean H126 net excess is above 0, (3) the mean H252 net excess vs CTRL_MODEL5 is above 0, and (4) the 4-weekly rebalanced daily paper path has Sharpe >= 069500.KS and |max drawdown| <= 1.25 x 069500.KS over the same sessions; NOT_SUPPORTED otherwise; INCONCLUSIVE_DATA if more than 10 outcomes are None in ANY series a check reads (the H252 series, the H126 series, or the paired H252 comparison with CTRL_MODEL5, each counted on its own valid pairs) or the risk path is incomplete or its Sharpe or drawdown is undefined"
     },
     "inference": "kelly_portfolio._newey_west_stats on the receipt-dated series (Bartlett HAC, lag from the horizon in observations of this series); overlapping weekly cohorts are never counted as independent",
     "afterVerdict": "A SUPPORTED verdict is development evidence for one owner decision, never an automatic promotion. STOPPED_HARM or NOT_SUPPORTED closes this version; recording may continue for the record but no rule is changed to rescue it."
@@ -110,8 +112,8 @@
   "turnover": "names replaced per weekly receipt and per path rebalance, as a share of five slots (weights retargeted are not turnover here)",
   "productionEffect": "NONE",
   "codeFileHashes": {
-    "pipeline/kr_selection_challenger.py": "db5c85bbc211d82663f62b6ba76477e836fd1af53d11cbe3549749f78715145a",
+    "pipeline/kr_selection_challenger.py": "41daa8891b2f4dbdb04aa2473edf45bb69ead6929aac18ad2024144e9f98316f",
     "pipeline/kr_bar_integrity.py": "91b50cc2f24939ee880cd6c1db67738d95522053c1edb99b2715a3a347168e12",
-    "scripts/record_kr_selection_challenger.py": "12eae3c42bb9a5e79386dae305a34458f263fed58f01cf1da4312b0ecba1d587"
+    "scripts/record_kr_selection_challenger.py": "e6c8c6b82f37a38c4cc49db7071384a1a5436530e40a62bfa92b1ac2ca4f8dbd"
   }
 }

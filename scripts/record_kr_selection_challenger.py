@@ -98,13 +98,18 @@ def outcomes(directory: Path) -> int:
     tickers = sorted({C.BENCHMARK} | {s["ticker"] for r, _ in due for b in C.BOOKS for s in r["books"][b]["slots"]})
     start = min(r["executionDate"] for r, _ in due)
     frames = fetch_prices(tickers, start)
-    written = []
+    written, deferred = [], []
     with path.open("ab") as stream:
         for receipt, horizon in sorted(due, key=lambda x: (x[0]["signalDate"], x[1])):
             row = C.build_outcome(receipt, horizon=horizon, frames=frames, now_utc=now, pathway=C.LIVE)
+            if row["resolution"] == "DEFERRED":   # a later run regrades it from a fresh download; nothing is written now
+                deferred.append([receipt["signalDate"], horizon, row["unresolved"], row["retryUntilSession"]])
+                continue
+            C.validate_outcome(row, pathway=C.LIVE)
             stream.write(CORE.canonical(row) + b"\n")
-            written.append([receipt["signalDate"], horizon, row["status"]])
-    _status(directory, action="outcomes", status="GRADED", written=written)
+            written.append([receipt["signalDate"], horizon, row["status"], row["resolution"]])
+    _status(directory, action="outcomes", status="GRADED" if not deferred else ("PARTIALLY_DEFERRED" if written else "DEFERRED"),
+            written=written, deferred=deferred, vendorFrames=len(frames))
     return 0
 
 

@@ -130,6 +130,10 @@ def universe_rows(site: dict, session: str) -> tuple[list[dict], dict]:
         ma200 = _number(detail.get("ma200"))
         rows.append({"ticker": ticker, "sector": str(item.get("sector") or "UNCLASSIFIED"), "signalClose": close,
                      "downsideVolPct": _number((item.get("risk") or {}).get("downsideVolPct")),
+                     # longterm.downside_vol_252 answers from as few as 20 negative returns, so a name with three months of history would
+                     # carry a "252-session" value. mom12_1Pct is computed from the SAME close series only when it holds >= 273 closes
+                     # (longterm.MIN_HISTORY), so its presence proves the 252-return window was full.
+                     "downsideWindowFull": _number(item.get("mom12_1Pct")) is not None,
                      "pct52wHigh": _number(detail.get("pct52wHigh")),
                      "aboveMA200": None if ma200 is None or ma200 <= 0 else close > ma200,
                      "alpha": _number(item.get("alpha"))})
@@ -138,12 +142,15 @@ def universe_rows(site: dict, session: str) -> tuple[list[dict], dict]:
 
 def _book_candidates(book: str, rows: list[dict]) -> tuple[list[tuple], dict]:
     """(sort key, row) pairs for one book and its own exclusion counts."""
-    out, excluded = [], {"FEATURE_MISSING": 0, "BELOW_200_DAY_AVERAGE": 0, "MA200_UNDETERMINED": 0}
+    out, excluded = [], {"FEATURE_MISSING": 0, "FEATURE_WINDOW_INCOMPLETE": 0, "BELOW_200_DAY_AVERAGE": 0, "MA200_UNDETERMINED": 0}
     for row in rows:
         if book == "CH_LOWVOL":
             value = row["downsideVolPct"]
             if value is None or value <= 0:
                 excluded["FEATURE_MISSING"] += 1
+                continue
+            if not row["downsideWindowFull"]:
+                excluded["FEATURE_WINDOW_INCOMPLETE"] += 1
                 continue
             out.append(((value, row["ticker"]), row, value))
         elif book == "CH_HIGH52":
@@ -339,12 +346,42 @@ def build_outcome(receipt: dict, *, horizon: int, frames: dict, now_utc, pathway
         record.update({"status": "COMPLETE", "benchmarkReturn": bench, "names": names,
                        "books": {book: book_result(receipt["books"][book], names, execution=execution, maturity=maturity)
                                  for book in BOOKS}})
+    record.update(resolution(record, now_utc))
     record["recordSha256"] = hashlib.sha256(CORE.canonical(record)).hexdigest()
     return record
 
 
+# A vendor download can fail for a day (an empty or partial response, a benchmark that did not come back) and a held name can be halted
+# for a week. Neither may become a permanent None the day the horizon matures: such a record is DEFERRED and regraded from a fresh download
+# by every later run until the (horizon + OUTCOME_RETRY_SESSIONS)-th session after execution is final. Only then is what is still unresolved
+# (in practice a delisting or an unresolved terminal consideration) written, labelled as such, and counted as None by the assessment.
+OUTCOME_RETRY_SESSIONS = 5
+RESOLVED_NAME_STATES = ("PRICED", NOT_EXECUTABLE)
+
+
+def unresolved_reasons(record: dict) -> list[str]:
+    if record.get("status") == "BENCHMARK_UNPRICED":
+        return ["BENCHMARK_UNPRICED"]
+    return sorted(f"{t}:{n['state']}:{n.get('integrityState', '')}".rstrip(":") for t, n in (record.get("names") or {}).items()
+                  if n["state"] not in RESOLVED_NAME_STATES)
+
+
+def resolution(record: dict, now_utc) -> dict:
+    """``FINAL`` (everything resolved), ``DEFERRED`` (something unresolved inside the retry window: do not write) or
+    ``FINAL_UNRESOLVED_AFTER_RETRY`` (still unresolved once the window has closed)."""
+    reasons = unresolved_reasons(record)
+    if not reasons:
+        return {"resolution": "FINAL"}
+    closes = CORE.maturity_session(record["executionDate"], record["horizonSessions"] + OUTCOME_RETRY_SESSIONS)
+    if not CORE.has_matured(record["executionDate"], record["horizonSessions"] + OUTCOME_RETRY_SESSIONS, now_utc):
+        return {"resolution": "DEFERRED", "unresolved": reasons, "retryUntilSession": str(closes.date())}
+    return {"resolution": "FINAL_UNRESOLVED_AFTER_RETRY", "unresolved": reasons, "retryUntilSession": str(closes.date())}
+
+
 def validate_outcome(record: dict, *, pathway: str) -> None:
     expected = CORE.OUTCOME_EVIDENCE_CLASS if pathway == LIVE else "SYNTHETIC_FIXTURE"
+    if record.get("resolution") == "DEFERRED":
+        raise ValueError("OUTCOME_DEFERRED_IS_NEVER_A_RECORD")
     if record.get("studyId") != STUDY or record.get("evidenceClass") != expected:
         raise ValueError("OUTCOME_PATHWAY_MISMATCH")
     body = {k: v for k, v in record.items() if k != "recordSha256"}
@@ -429,20 +466,34 @@ def assess(receipts: list[dict], outcomes: list[dict], spec: dict, *, path_metri
                       "h126MeanAboveZero": short["mean"] is not None and short["mean"] > 0,
                       "beatsExistingModelOnMean": versus["mean"] is not None and versus["mean"] > 0,
                       "riskNoWorseThanBenchmark": _risk_ok(path_metrics, book, primary)}
-            if len(cohort) - ci["n"] > primary["maxIncompleteReceipts"] or checks["riskNoWorseThanBenchmark"] is None:
+            short_of = _incomplete(len(cohort), {"h252": ci, "h126": short, "versusExistingModel": versus},
+                                   primary["maxIncompleteReceipts"])
+            if short_of or checks["riskNoWorseThanBenchmark"] is None:
                 result = "INCONCLUSIVE_DATA"
             else:
                 result = "SUPPORTED" if all(checks.values()) else "NOT_SUPPORTED"
-            verdict.update({"verdict": result, "primary": {**ci, "checks": checks, "h126": short, "versusExistingModel": versus}})
+            verdict.update({"verdict": result, "primary": {**ci, "checks": checks, "h126": short, "versusExistingModel": versus,
+                                                           "seriesShortOfCohort": short_of}})
         out["challengers"][book] = verdict
     return out
 
 
+def _incomplete(cohort: int, series: dict, max_incomplete: int) -> list[str]:
+    """Names of the series whose valid (paired, where a comparison) observations fall more than ``max_incomplete`` short of the cohort.
+    The registered None budget applies to EVERY series a check reads, not only the first: a mean or a comparison computed on two outcomes
+    out of 104 is not the registered statistic."""
+    return sorted(name for name, ci in series.items() if cohort - ci["n"] > max_incomplete)
+
+
 def _risk_ok(path_metrics, book, primary):
+    """True/False on the registered risk condition, None when it cannot be evaluated (an incomplete path or an undefined metric)."""
     if not path_metrics or (path_metrics.get(book) or {}).get("status") != "COMPLETE" or \
             (path_metrics.get("CTRL_ETF") or {}).get("status") != "COMPLETE":
         return None
     mine, etf = path_metrics[book], path_metrics["CTRL_ETF"]
+    values = [mine.get("sharpe"), etf.get("sharpe"), mine.get("maxDrawdown"), etf.get("maxDrawdown")]
+    if any(v is None or not math.isfinite(v) for v in values):
+        return None
     return mine["sharpe"] >= etf["sharpe"] and abs(mine["maxDrawdown"]) <= primary["maxDrawdownMultiple"] * abs(etf["maxDrawdown"])
 
 
@@ -523,24 +574,44 @@ def _git(*args, root=ROOT):
 DEEPEN_COMMITS = 2000
 
 
+MAIN_REF = "refs/remotes/origin/main"
+
+
 def deepen_history(root=ROOT) -> None:
-    """Give a shallow checkout of main enough history to find the spec's commit. Never shortens anything; a failed fetch is ignored."""
+    """Refresh ``origin/main`` and give a shallow checkout enough of its history to find the spec's commit. ``--deepen`` never shortens
+    anything; a failed fetch is ignored (the lookup below then refuses or, on a shallow root, can only answer LATER)."""
+    args = ["fetch", "--no-tags", "--quiet"]
     if _git("rev-parse", "--is-shallow-repository", root=root).stdout.strip() == "true":
-        _git("fetch", "--no-tags", "--quiet", "--deepen=" + str(DEEPEN_COMMITS), "origin", "main", root=root)
+        args.append("--deepen=" + str(DEEPEN_COMMITS))
+    _git(*args, "origin", "+refs/heads/main:" + MAIN_REF, root=root)
+
+
+def registration_from_git(root=ROOT) -> dict:
+    """The commit on main's first-parent history that added the registered spec, and its commit time.
+
+    Read from ``origin/main``, never from HEAD: a branch that adds the spec without being merged has no such commit on main and is refused
+    (``SPEC_NOT_ON_MAIN``). The running checkout must also contain that commit, so code from a branch cut before the registration cannot
+    record under it (``RUNNING_CODE_DOES_NOT_CONTAIN_REGISTRATION``)."""
+    deepen_history(root)
+    if _git("rev-parse", "--verify", "--quiet", MAIN_REF, root=root).returncode != 0:
+        raise ValueError("SPEC_MERGE_TIME_UNKNOWN: no " + MAIN_REF)
+    found = _git("log", "--first-parent", "--diff-merges=first-parent", "--diff-filter=A", "--no-renames", "--name-only",
+                 "--format=%H %cI", MAIN_REF, "--", SPEC_PATH, root=root)
+    lines = [line.split(" ") for line in found.stdout.splitlines() if re.match(r"^[0-9a-f]{40} \d{4}-\d{2}-\d{2}T", line)]
+    if found.returncode != 0:
+        raise ValueError("SPEC_MERGE_TIME_UNKNOWN")
+    if not lines:
+        raise ValueError("SPEC_NOT_ON_MAIN")
+    commit, merged = lines[-1]
+    if _git("merge-base", "--is-ancestor", commit, "HEAD", root=root).returncode != 0:
+        raise ValueError("RUNNING_CODE_DOES_NOT_CONTAIN_REGISTRATION: " + commit)
+    return {"commitSha": commit, "mergedAtUtc": merged}
 
 
 def merged_at_from_git(root=ROOT) -> str:
-    """Commit time of the first-parent commit that added the registered spec. Refuses when git cannot say.
-
-    The ledger workflow checks out main at depth 1, so a shallow clone is first deepened (``deepen_history``). If that fetch fails, the
-    shallow root reads as adding every file and its date is the answer: an error that can only make eligibility LATER, never earlier."""
-    deepen_history(root)
-    found = _git("log", "--first-parent", "--diff-merges=first-parent", "--diff-filter=A", "--no-renames", "--name-only",
-                 "--format=%cI", "--", SPEC_PATH, root=root)
-    lines = [line for line in found.stdout.splitlines() if re.match(r"^\d{4}-\d{2}-\d{2}T", line)]
-    if found.returncode != 0 or not lines:
-        raise ValueError("SPEC_MERGE_TIME_UNKNOWN")
-    return lines[-1]
+    """Commit time of the first-parent commit on ``origin/main`` that added the registered spec (``registration_from_git``). The LIVE
+    recorder is the only caller; synthetic fixtures pass a merge time explicitly and never reach git."""
+    return registration_from_git(root)["mergedAtUtc"]
 
 
 def live_code_identity(spec: dict, root=ROOT) -> dict:
