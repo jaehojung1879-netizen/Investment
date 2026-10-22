@@ -424,6 +424,10 @@ def test_merge_time_is_the_first_parent_commit_that_added_the_spec(tmp_path):
 @pytest.mark.parametrize("clock,site_kwargs,expected", [
     # Saturday run (the cron's real start, ~04:30 UTC): Friday's final session is recorded.
     ("2026-10-31T04:35:00Z", {"generated": "2026-10-31T04:30:00+00:00"}, "RECORDED"),
+    # The same run when the build takes two hours (run 39722662150 on 2026-10-22: 04:29 start, 06:24 artifact): still inside the window.
+    ("2026-10-31T06:27:00Z", {"generated": "2026-10-31T06:24:43+00:00"}, "RECORDED"),
+    # Saturday wrote nothing (failed run): Sunday's run is the backup and records the same Friday.
+    ("2026-11-01T04:35:00Z", {"generated": "2026-11-01T04:30:00+00:00"}, "RECORDED"),
     # A delayed weekday run inside the KRX session: the artifact speaks for an unfinished session, nothing is recorded.
     ("2026-11-03T04:35:00Z", {"generated": "2026-11-03T04:30:00+00:00", "session": "2026-11-03"}, "SKIPPED"),
 ])
