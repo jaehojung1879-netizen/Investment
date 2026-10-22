@@ -1,0 +1,116 @@
+{
+  "studyId": "kr-selection-challenger-v1",
+  "status": "PREREGISTERED_PROSPECTIVE_PAPER",
+  "evidenceClass": "PROSPECTIVE_PAPER",
+  "objective": "Find whether a simple, fixed KR stock-selection rule earns a higher risk-adjusted return net of costs than holding 069500.KS over 6-12 months, measured ONLY on signals recorded at the close they describe.",
+  "registrationStatement": [
+    "Pre-registered before any signal of this study exists. Merging the change that adds this file is the authorization; the first eligible signal session is the first KR weekly decision session strictly after the KST date of that merge and not before firstEligibleSignalSessionFloor.",
+    "Every rule, horizon, cost, metric and decision threshold below is fixed here. A changed rule is a new study version with its own ledger; this one is never edited, rescored or restarted.",
+    "No result exists. Until the registered checks run, nothing may be described as predictive, and no book enters the official weekly decision, an order or a production weight."
+  ],
+  "historicalEvidenceStatement": [
+    "The information is not new. Low downside volatility (registry F02/F01) and proximity to the 52-week high (registry A11) are families the closed KR historical programme (kr-alpha-atlas, Phase D: zero nominations) already measured with inconclusive readings; the KR lowvol sleeve was the one regional reading that cleared zero on its own (v2.21, secondary, not a finding).",
+    "The KR historical sample is spent and is NOT re-read by this study. What is new is the evidence: a prospective sample that did not exist when either hypothesis was formed.",
+    "The existing production ranking (longterm four-sleeve alpha) is the control, not a candidate: its KR ordering is not established (weekly-passive-first-v1 disclosure: rank-IC t 0.68) and the official KR decision is expected to hold 069500.KS."
+  ],
+  "hypotheses": {
+    "CH_LOWVOL": "Low-volatility anomaly: leverage-constrained investors overpay for volatile names, so the least downside-volatile large KR names earn more per unit of risk than the index.",
+    "CH_HIGH52": "Anchoring to the 52-week high delays the reaction to good news, so large KR names trading closest to their 52-week high while above their 200-day average keep outperforming."
+  },
+  "books": {
+    "CH_LOWVOL": {
+      "role": "CHALLENGER",
+      "feature": "risk.downsideVolPct of longTerm.regions.KR.validationCrossSection (252-session semi-deviation of negative daily returns, annualized, longterm.downside_vol_252)",
+      "order": "ASCENDING",
+      "requires": "finite and positive"
+    },
+    "CH_HIGH52": {
+      "role": "CHALLENGER",
+      "feature": "details[ticker].pct52wHigh (close / 252-session max close x 100, features.price_52w_high)",
+      "order": "DESCENDING",
+      "requires": "finite in (0, 100.5]; details lastClose > details ma200 (a name whose 200-day average is undetermined is excluded, never assumed above)"
+    },
+    "CTRL_MODEL5": {
+      "role": "CONTROL_EXISTING_MODEL",
+      "feature": "alpha of longTerm.regions.KR.validationCrossSection (production four-sleeve composite x evidence coverage)",
+      "order": "DESCENDING",
+      "requires": "finite"
+    },
+    "CTRL_ETF": {
+      "role": "CONTROL_PASSIVE",
+      "holding": "069500.KS"
+    }
+  },
+  "universe": {
+    "source": "longTerm.regions.KR.validationCrossSection of the validated production artifact data/site-data.json built by ledger.yml (production-eligible names: dataInsufficient excluded by longterm.build). The same rows feed every book.",
+    "rowRules": [
+      "ticker matches NNNNNN.KS or NNNNNN.KQ",
+      "first occurrence of a ticker only",
+      "details[ticker].asOf equals the signal session",
+      "details[ticker].lastClose finite and positive"
+    ],
+    "missingRule": "A missing, non-finite or out-of-range feature excludes the name from that book only and is counted by reason. Nothing is imputed, carried forward or replaced with 0.",
+    "survivorship": "The universe is the one the production build resolves at the signal date. Prospectively that is point-in-time by construction; a later delisting is graded through the outcome rules, never by dropping the name."
+  },
+  "construction": {
+    "slots": 5,
+    "slotFraction": 0.2,
+    "maxNamesPerSector": 2,
+    "minEligibleNames": 30,
+    "tieBreak": "ticker ascending",
+    "fallback": "069500.KS",
+    "weighting": "EQUAL_SLOTS",
+    "thinCrossSection": "fewer than minEligibleNames eligible names: the book holds no name and all five slots are 069500.KS (status THIN_CROSS_SECTION)"
+  },
+  "schedule": {
+    "signalSessions": "KR weekly decision sessions: a KR session whose next KR session falls in a later ISO week (prospective_receipt_core.is_weekly_decision_session)",
+    "firstEligibleSignalSessionFloor": "2026-10-30",
+    "artifactRule": "the artifact's ^KS11 session equals the last KR session that was final (18:00 KST) at the artifact's generatedAt",
+    "receiptWindow": "created by the writer's own clock after 18:00 KST of the signal session and before 09:00 KST of the next KR session (prospective_receipt_core.check_timing)",
+    "execution": "close of the next KR session after the signal session (session 0)",
+    "runner": ".github/workflows/ledger.yml, after the weekly decision step, continue-on-error"
+  },
+  "horizonsSessions": [
+    126,
+    252
+  ],
+  "outcomeDefinition": {
+    "priceBasis": "vendor adjusted close (pipeline.datafeed.fetch_prices, auto_adjust) for every name and for 069500.KS, from one download at grading time, aligned to the pinned KRX calendar by pipeline.kr_bar_integrity",
+    "nameReturn": "close at the maturity session (horizon sessions after execution) / close at the execution session - 1",
+    "notExecutable": "a name SUSPENDED (zero volume) at the execution session cannot be bought; its slot is held in 069500.KS",
+    "unresolved": "a name with no vendor frame, no row or an invalid close at execution, or that did not trade on the maturity session itself, makes that book's cohort outcome None (NAME_OUTCOME_MISSING or TERMINAL_ECONOMICS_UNRESOLVED); it is never marked at an earlier close, dropped or renormalised",
+    "netExcess": "book return - 069500.KS return - stock legs (buy at execution, sell at maturity) - ETF legs of benchmark-held slots + the ETF control's own round trip",
+    "costs": "pipeline.weekly_decision.trade_cost_fraction('KR', date, ...): commission + half spread per leg, dated statutory sell tax on stock sells, no tax on ETF sells (benchmark_alpha.REALISTIC_COSTS)"
+  },
+  "assessment": {
+    "interim": "No outcome statistic is published before a registered check. Turnover (a signal-time fact) is reported at any time.",
+    "harmCheck": {
+      "cohortReceipts": 52,
+      "horizonSessions": 126,
+      "z": 1.96,
+      "maxIncompleteReceipts": 5,
+      "rule": "on the first 52 receipts, once all are graded at H126: STOPPED_HARM if the Newey-West 95% upper bound of mean net excess vs 069500.KS is below 0; INCONCLUSIVE_DATA if more than 5 outcomes are None"
+    },
+    "primary": {
+      "cohortReceipts": 104,
+      "horizonSessions": 252,
+      "z": 2.2414,
+      "maxIncompleteReceipts": 10,
+      "maxDrawdownMultiple": 1.25,
+      "riskPath": {
+        "rebalanceEveryReceipts": 4,
+        "endReceipt": 104
+      },
+      "rule": "on the first 104 receipts, once all are graded at H252 and H126: SUPPORTED only if (1) the one-sided 98.75% (Bonferroni over two challengers) Newey-West lower bound of mean H252 net excess vs 069500.KS is above 0, (2) the mean H126 net excess is above 0, (3) the mean H252 net excess vs CTRL_MODEL5 is above 0, and (4) the 4-weekly rebalanced daily paper path has Sharpe >= 069500.KS and |max drawdown| <= 1.25 x 069500.KS over the same sessions; NOT_SUPPORTED otherwise; INCONCLUSIVE_DATA if more than 10 outcomes are None or the risk path is incomplete"
+    },
+    "inference": "kelly_portfolio._newey_west_stats on the receipt-dated series (Bartlett HAC, lag from the horizon in observations of this series); overlapping weekly cohorts are never counted as independent",
+    "afterVerdict": "A SUPPORTED verdict is development evidence for one owner decision, never an automatic promotion. STOPPED_HARM or NOT_SUPPORTED closes this version; recording may continue for the record but no rule is changed to rescue it."
+  },
+  "turnover": "names replaced per weekly receipt and per path rebalance, as a share of five slots (weights retargeted are not turnover here)",
+  "productionEffect": "NONE",
+  "codeFileHashes": {
+    "pipeline/kr_selection_challenger.py": "a7057839c6ff3680220abafa4cb7ee10a662b02b4da9dc2c0601ce5010a986ef",
+    "pipeline/kr_bar_integrity.py": "91b50cc2f24939ee880cd6c1db67738d95522053c1edb99b2715a3a347168e12",
+    "scripts/record_kr_selection_challenger.py": "c6270fa33c8fdaa4a9edffa03a1565aa3dffdd5471612331348453f936282399"
+  }
+}
