@@ -118,6 +118,16 @@ def main(argv=None) -> int:
         challenger.run_all(Path(argv[0]), ledger_dir / "research-strategies" / challenger.C.STUDY)
     except Exception as exc:  # noqa: BLE001 - research must never block the ledger
         print(f"kr-selection-challenger skipped: {type(exc).__name__}: {exc}")
+        # Machine-readable: an unrecorded signal must be visible to a reader, not only in the job log.
+        try:
+            study = ledger_dir / "research-strategies" / "kr-selection-challenger-v1"
+            study.mkdir(parents=True, exist_ok=True)
+            (study / "publication-status.json").write_text(json.dumps(
+                {"schema": "KR_SELECTION_CHALLENGER_STATUS_V2", "studyId": "kr-selection-challenger-v1", "productionEffect": "NONE",
+                 "status": "STEP_FAILED", "failedSteps": ["hook"], "signalRecordState": "NOT_ATTEMPTED",
+                 "error": f"{type(exc).__name__}: {exc}"}, sort_keys=True) + "\n", encoding="utf-8")
+        except Exception:  # noqa: BLE001
+            pass
     return 0
 
 
