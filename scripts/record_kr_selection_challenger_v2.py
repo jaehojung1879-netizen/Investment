@@ -108,24 +108,39 @@ def outcomes(ledger_dir: Path) -> int:
     now = CORE.system_utc_now()
     due = [(r, h) for r in receipts for h in r["horizonsSessions"]
            if (r["receiptSha256"], h) not in graded and CORE.has_matured(r["executionDate"], h, now)]
+    pending_path = directory / V1S.PENDING
+    previous = json.loads(pending_path.read_text(encoding="utf-8")).get("pending", []) if pending_path.exists() else []
     if not due:
+        _write_pending(directory, [])
         _status(directory, action="outcomes", status="NOTHING_MATURED", receipts=len(receipts), graded=len(existing))
         return 0
     tickers = sorted({C.BENCHMARK} | {s["ticker"] for r, _ in due for b in C.BOOKS for s in r["books"][b]["slots"]})
     frames = fetch_prices(tickers, min(r["executionDate"] for r, _ in due))
-    written, deferred = [], []
+    written, deferred, pending = [], [], []
     with path.open("ab") as stream:
         for receipt, horizon in sorted(due, key=lambda x: (x[0]["signalDate"], x[1])):
             row = C.build_outcome(receipt, horizon=horizon, frames=frames, now_utc=now, pathway=C.LIVE)
             if row["resolution"] == "DEFERRED":   # a later run regrades it from a fresh download; nothing is written now
                 deferred.append([receipt["signalDate"], horizon, row["unresolved"], row["retryUntilSession"]])
+                pending.append(row)
                 continue
             C.validate_outcome(row, pathway=C.LIVE)
             stream.write(CORE.canonical(row) + b"\n")
             written.append([receipt["signalDate"], horizon, row["status"], row["resolution"]])
+    entries = C.V1.pending_entries(previous, pending, now)
+    _write_pending(directory, entries)
     _status(directory, action="outcomes", status="GRADED" if not deferred else ("PARTIALLY_DEFERRED" if written else "DEFERRED"),
-            written=written, deferred=deferred, vendorFrames=len(frames))
+            written=written, deferred=deferred, vendorFrames=len(frames),
+            providerPending=sum(C.V1.PROVIDER in p["unresolvedClasses"] for p in entries))
     return 0
+
+
+def _write_pending(directory: Path, entries: list[dict]) -> None:
+    """The retryable state of outcomes not yet written (v1's format); rewritten each run, outside the ledgers, never evidence."""
+    payload = {"schema": "KR_SELECTION_CHALLENGER_OUTCOME_PENDING_V1", "studyId": C.STUDY, "evidence": False,
+               "productionEffect": "NONE", "pending": entries}
+    directory.mkdir(parents=True, exist_ok=True)
+    (directory / V1S.PENDING).write_text(json.dumps(payload, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
 
 
 def assess(ledger_dir: Path) -> int:

@@ -1,5 +1,6 @@
 """kr-selection-challenger-v2-accounting with invented inputs only: no market download, no real ledger, no outcome of any real signal."""
 import gzip
+import hashlib
 import json
 from pathlib import Path
 
@@ -396,7 +397,7 @@ def test_registration_is_read_from_main_for_this_studys_spec(tmp_path):
     git(origin, "merge", "-q", "--no-ff", "study", "-m", "merge", date="2026-10-28T03:00:00+00:00")
     git(clone, "fetch", "-q", "origin")
     git(clone, "checkout", "-q", "-B", "main", "origin/main")
-    assert C.merged_at_from_git(clone) == "2026-10-28T03:00:00+00:00"
+    assert pd.Timestamp(C.merged_at_from_git(clone)) == pd.Timestamp("2026-10-28T03:00:00+00:00")   # git >= 2.55 spells UTC "Z"
 
 
 def test_a_stale_download_is_not_a_collected_name_and_writes_no_receipt():
@@ -480,3 +481,39 @@ def test_a_vendor_outage_defers_the_outcome_and_the_next_run_grades_it(tmp_path,
                           pathway=C.LIVE)
     with pytest.raises(ValueError, match="OUTCOME_DEFERRED_IS_NEVER_A_RECORD"):
         C.validate_outcome(out, pathway=C.LIVE)
+
+
+def test_a_seven_session_provider_outage_stays_pending_and_is_graded_on_recovery(tmp_path, monkeypatch):
+    """D0 is the maturity session; the vendor serves nothing from D0 to D6 (past the +5 window) and recovers on D7. The old rule wrote
+    a permanent None on D6; v1's provider/economic split keeps it pending and grades it on D7."""
+    import importlib
+    script = importlib.import_module("scripts.record_kr_selection_challenger_v2")
+    ledger = _ledger_dir(tmp_path)
+    study = script.study_dir(ledger)
+    live = C.build_receipt(site(), "b" * 64, pathway=C.LIVE, created_at_utc=EVENING, now_utc=EVENING, merged_at_utc=MERGED,
+                           code_identity={"commitSha": "c" * 40, "files": {"x": "d" * 64}}, spec=SPEC, spec_digest="e" * 64,
+                           accounting=accounting(), store_identity=STORE, frames=frames())
+    C.append_receipt(study / script.RECEIPTS, live, pathway=C.LIVE)
+    maturity = str(CORE.maturity_session(live["executionDate"], 126).date())
+    fr = {t: bars(RC.sessions(live["executionDate"], maturity, "KR"))
+          for t in {s["ticker"] for b in C.BOOKS for s in live["books"][b]["slots"]} | {C.BENCHMARK}}
+
+    def at(day):
+        return pd.Timestamp(str(CORE.maturity_session(live["executionDate"], 126 + day).date())).tz_localize("UTC") + pd.Timedelta(hours=10)
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: {})
+    for day in range(7):
+        monkeypatch.setattr(CORE, "system_utc_now", lambda d=day: at(d))
+        assert script.outcomes(ledger) == 0
+        pending = json.loads((study / "outcome-pending.json").read_text())["pending"]
+        assert [p["attempts"] for p in pending] == [day + 1] and pending[0]["unresolvedClasses"] == ["PROVIDER_DATA_UNAVAILABLE"]
+        assert C.read_outcomes(study / script.OUTCOMES, pathway=C.LIVE) == []
+    late = C.build_outcome(live, horizon=126, frames={}, now_utc=at(6), pathway=C.LIVE)
+    forced = {**late, "resolution": "FINAL_UNRESOLVED_AFTER_RETRY"}
+    forced["recordSha256"] = hashlib.sha256(CORE.canonical({k: v for k, v in forced.items() if k != "recordSha256"})).hexdigest()
+    with pytest.raises(ValueError, match="OUTCOME_PROVIDER_GAP_IS_NEVER_FINAL"):
+        C.validate_outcome(forced, pathway=C.LIVE)
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: fr)
+    monkeypatch.setattr(CORE, "system_utc_now", lambda: at(7))
+    assert script.outcomes(ledger) == 0
+    assert [o["resolution"] for o in C.read_outcomes(study / script.OUTCOMES, pathway=C.LIVE)] == ["FINAL"]
+    assert json.loads((study / "outcome-pending.json").read_text())["pending"] == []

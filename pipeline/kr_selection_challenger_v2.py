@@ -336,7 +336,7 @@ def build_outcome(receipt: dict, *, horizon: int, frames: dict, now_utc, pathway
         record.update({"status": "COMPLETE", "benchmarkReturn": bench, "names": names,
                        "books": {book: V1.book_result(receipt["books"][book], names, execution=execution, maturity=maturity)
                                  for book in BOOKS}})
-    record.update(V1.resolution(record, now_utc))      # v1's retry rule: a transient vendor failure is DEFERRED, never a permanent None
+    record.update(V1.resolution(record, now_utc))      # v1's rule: a provider gap is DEFERRED at any date; only a served halt finalizes
     record["recordSha256"] = hashlib.sha256(CORE.canonical(record)).hexdigest()
     return record
 
@@ -345,6 +345,9 @@ def validate_outcome(record: dict, *, pathway: str) -> None:
     expected = CORE.OUTCOME_EVIDENCE_CLASS if pathway == LIVE else "SYNTHETIC_FIXTURE"
     if record.get("resolution") == "DEFERRED":
         raise ValueError("OUTCOME_DEFERRED_IS_NEVER_A_RECORD")
+    if record.get("resolution") == "FINAL_UNRESOLVED_AFTER_RETRY" and \
+            any(V1.reason_class(r) == V1.PROVIDER for r in record.get("unresolved") or []):
+        raise ValueError("OUTCOME_PROVIDER_GAP_IS_NEVER_FINAL")
     if record.get("studyId") != STUDY or record.get("evidenceClass") != expected:
         raise ValueError("OUTCOME_PATHWAY_MISMATCH")
     if hashlib.sha256(CORE.canonical({k: v for k, v in record.items() if k != "recordSha256"})).hexdigest() != record.get("recordSha256"):

@@ -28,13 +28,65 @@ MERGED = "2026-10-26T03:00:00+00:00"
 SECTORS = ["Tech", "Fin", "Energy", "Health", "Ind", "Mat", "Util", "Cons"]
 
 
+_STEPS = np.abs(np.random.default_rng(7).normal(0, 1, 126)) + 0.1   # one multiset of daily moves shared by every invented name
+
+
+def bars_for(ticker, session=SESSION, *, history=280, drop=(), holiday_rows=()):
+    """An invented vendor frame ending at ``session``. The last 252 log moves are a fixed symmetric multiset scaled by the name's index,
+    so downside volatility rises with the index; names with index % 3 == 0 rise then fall back (below their 200-day average), the
+    others fall then recover (above it). ``drop`` removes KRX sessions (a vendor gap); ``holiday_rows`` adds rows on closed days."""
+    i = int(ticker[:6]) - 100000
+    days = RC.sessions(str((pd.Timestamp(session) - pd.Timedelta(days=1500)).date()), session, "KR")[-history:]
+    steps = np.sort(np.concatenate([_STEPS, -_STEPS]))
+    if i % 3 == 0:
+        steps = steps[::-1]
+    walk = np.concatenate([np.zeros(max(history - len(steps), 0)), 0.004 * (1 + 0.04 * i) * steps])[-history:]
+    close = (1000.0 + i) * np.exp(np.cumsum(walk))
+    frame = pd.DataFrame({"Open": close, "High": close, "Low": close, "Close": close, "Volume": 1e5}, index=pd.DatetimeIndex(days))
+    frame = frame.drop(index=[pd.Timestamp(d) for d in drop])
+    for day in holiday_rows:
+        frame.loc[pd.Timestamp(day)] = frame.iloc[-2]
+    return frame.sort_index()
+
+
+def production_features(frame):
+    """The artifact's own values, computed exactly as the production build computes them on the vendor ROWS it was given."""
+    from pipeline import features as F
+    from pipeline import longterm as LT
+    from pipeline import risk as RISK
+    detail = RISK.diagnose("x", F.build_features(frame))
+    dv = LT.downside_vol_252(frame["Close"])
+    return {"downsideVolPct": round(dv * 100, 1) if dv is not None else None, "lastClose": detail["lastClose"],
+            "ma200": detail["ma200"], "pct52wHigh": detail["pct52wHigh"]}
+
+
+_FEATURES = {}
+
+
+def _features(ticker, session):
+    key = (ticker, session)
+    if key not in _FEATURES:
+        _FEATURES[key] = production_features(bars_for(ticker, session))
+    return _FEATURES[key]
+
+
+def fetch_for(session=SESSION, overrides=None):
+    """A stand-in for the vendor download: fixture frames for every requested name (``overrides`` replaces some)."""
+    def fetch(tickers, start, **_):
+        out = {t: bars_for(t, session) for t in tickers}
+        out.update({t: f for t, f in (overrides or {}).items() if t in out})
+        return {t: f for t, f in out.items() if f is not None}
+    return fetch
+
+
 def site(n=50, *, generated=EVENING, session=SESSION, **edit):
     rows, details = [], {}
     for i in range(n):
         t = f"{100000 + i:06d}.KS"
+        f = _features(t, session)
         rows.append({"ticker": t, "sector": SECTORS[i % len(SECTORS)], "alpha": 0.01 * i,
-                     "risk": {"downsideVolPct": 10.0 + i}, "mom12_1Pct": 5.0})
-        details[t] = {"asOf": session, "lastClose": 1000.0 + i, "ma200": 900.0 if i % 3 else 1100.0, "pct52wHigh": 60.0 + i / 2}
+                     "risk": {"downsideVolPct": f["downsideVolPct"]}, "mom12_1Pct": 5.0})
+        details[t] = {"asOf": session, "lastClose": f["lastClose"], "ma200": f["ma200"], "pct52wHigh": f["pct52wHigh"]}
     out = {"generatedAt": generated, "provenance": {"dataMode": "live", "buildCommitSha": "a" * 40, "modelVersion": "m"},
            "indices": [{"symbol": "^KS11", "asOf": session}], "details": details,
            "longTerm": {"regions": {"KR": {"validationCrossSection": rows, "picks": [{"ticker": rows[-1]["ticker"]}]}}}}
@@ -42,11 +94,17 @@ def site(n=50, *, generated=EVENING, session=SESSION, **edit):
     return out
 
 
-def receipt(s=None, *, created=EVENING, merged=MERGED):
+def receipt(s=None, *, created=EVENING, merged=MERGED, overrides=None):
     s = s or site()
+    session = s["indices"][0]["asOf"]
     return C.build_receipt(s, "b" * 64, pathway=C.SYNTHETIC, created_at_utc=created, now_utc=created, merged_at_utc=merged,
                            code_identity={"commitSha": "c" * 40, "files": {"pipeline/kr_selection_challenger.py": "d" * 64}},
-                           spec=SPEC, spec_digest="e" * 64)
+                           spec=SPEC, spec_digest="e" * 64, fetch_bars=fetch_for(session, overrides))
+
+
+def make_books(s, session=SESSION, overrides=None):
+    rows, _ = C.universe_rows(s, session)
+    return C.build_books(s, session, SPEC, bars=fetch_for(session, overrides)(C.verification_tickers(rows), None))
 
 
 # --------------------------------------------------------------------------- #
@@ -77,7 +135,7 @@ def test_a_changed_code_file_refuses_the_spec(tmp_path):
 # Books from signal-time facts only
 # --------------------------------------------------------------------------- #
 def test_books_follow_the_registered_order_and_sector_cap():
-    books, universe = C.build_books(site(), SESSION, SPEC)
+    books, universe = make_books(site())
     assert universe["crossSectionNames"] == 50
     low = [s["ticker"] for s in books["CH_LOWVOL"]["slots"]]
     assert low == ["100000.KS", "100001.KS", "100002.KS", "100003.KS", "100004.KS"]
@@ -95,7 +153,7 @@ def test_sector_cap_skips_to_the_next_name_in_rank_order():
     s = site()
     for row in s["longTerm"]["regions"]["KR"]["validationCrossSection"][:3]:
         row["sector"] = "Same"
-    low = C.build_books(s, SESSION, SPEC)[0]["CH_LOWVOL"]["slots"]
+    low = make_books(s)[0]["CH_LOWVOL"]["slots"]
     assert [x["ticker"] for x in low] == ["100000.KS", "100001.KS", "100003.KS", "100004.KS", "100005.KS"]
 
 
@@ -105,7 +163,7 @@ def test_missing_values_exclude_a_name_from_its_book_only_and_are_counted():
     s["details"]["100001.KS"]["asOf"] = "2026-10-29"                  # stale quote
     s["details"]["100002.KS"]["ma200"] = None                         # 200-day average undetermined
     s["longTerm"]["regions"]["KR"]["validationCrossSection"][3]["alpha"] = True   # a bool is not a number
-    books, universe = C.build_books(s, SESSION, SPEC)
+    books, universe = make_books(s)
     assert universe["excluded"]["QUOTE_NOT_ON_SIGNAL_SESSION"] == 1
     assert books["CH_LOWVOL"]["excluded"]["FEATURE_MISSING"] == 1
     assert books["CH_HIGH52"]["excluded"]["MA200_UNDETERMINED"] == 1
@@ -114,7 +172,7 @@ def test_missing_values_exclude_a_name_from_its_book_only_and_are_counted():
 
 
 def test_a_thin_cross_section_holds_the_benchmark_only():
-    books, _ = C.build_books(site(n=29), SESSION, SPEC)
+    books, _ = make_books(site(n=29))
     assert all(b["status"] == "THIN_CROSS_SECTION" and not b["slots"] and b["fallbackSlots"] == 5 for b in books.values())
 
 
@@ -388,7 +446,7 @@ def test_paper_ledger_step_runs_the_challenger_and_a_failure_never_costs_it(tmp_
     script = importlib.import_module("scripts.record_kr_selection_challenger")
     accounting = importlib.import_module("scripts.record_kr_selection_challenger_v2")
     seen = []
-    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: (_ for _ in ()).throw(OSError("offline")))
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", fetch_for())
     monkeypatch.setattr(script, "run_all", lambda site_path, directory: seen.append(directory) or 0)
     monkeypatch.setattr(accounting, "run_all", lambda *a: 0)       # its own test; the real one would run git against this repository
     data = site()
@@ -443,7 +501,9 @@ def test_merge_time_is_the_first_parent_commit_on_main_that_added_the_spec(tmp_p
         C.merged_at_from_git(clone)
     git(clone, "checkout", "-q", "-B", "main", "origin/main")
     found = C.registration_from_git(clone)
-    assert found == {"commitSha": merge, "mergedAtUtc": "2026-10-27T03:00:00+00:00"}
+    # git renders a UTC commit time as "Z" or "+00:00" depending on its version; the instant is what is registered.
+    assert found["commitSha"] == merge
+    assert pd.Timestamp(found["mergedAtUtc"]) == pd.Timestamp("2026-10-27T03:00:00+00:00")
     # Without an origin/main at all the recorder refuses rather than guessing from HEAD.
     git(clone, "remote", "remove", "origin")
     git(clone, "update-ref", "-d", C.MAIN_REF)
@@ -466,7 +526,7 @@ def test_actual_recording_path_through_the_paper_ledger_step(tmp_path, monkeypat
     the writer's clock and the vendor download are replaced."""
     import importlib
     update = importlib.import_module("scripts.update_ledger")
-    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: (_ for _ in ()).throw(OSError("offline")))
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", fetch_for())
     monkeypatch.setattr(importlib.import_module("scripts.record_kr_selection_challenger_v2"), "run_all", lambda *a: 0)  # its own tests
     monkeypatch.setattr(C, "merged_at_from_git", lambda *a: MERGED)
     monkeypatch.setattr(CORE, "system_utc_now", lambda: pd.Timestamp(clock))
@@ -503,7 +563,7 @@ def test_research_namespace_leaves_the_paper_ledger_and_weekly_receipts_byte_ide
     import importlib
     update = importlib.import_module("scripts.update_ledger")
     script = importlib.import_module("scripts.record_kr_selection_challenger")
-    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: (_ for _ in ()).throw(OSError("offline")))
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", fetch_for())
     monkeypatch.setattr(importlib.import_module("scripts.record_kr_selection_challenger_v2"), "run_all", lambda *a: 0)
     monkeypatch.setattr(C, "merged_at_from_git", lambda *a: MERGED)
     monkeypatch.setattr(CORE, "system_utc_now", lambda: pd.Timestamp("2026-10-31T04:35:00Z"))
@@ -571,7 +631,7 @@ def test_finding_the_merge_time_never_shortens_history(tmp_path):
 def _run_all(tmp_path, monkeypatch, clock, **site_kwargs):
     import importlib
     script = importlib.import_module("scripts.record_kr_selection_challenger")
-    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: (_ for _ in ()).throw(OSError("offline")))
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", fetch_for())
     monkeypatch.setattr(C, "merged_at_from_git", lambda *a: MERGED)
     monkeypatch.setattr(CORE, "system_utc_now", lambda: pd.Timestamp(clock))
     path = tmp_path / "site.json"
@@ -622,7 +682,7 @@ def test_timing_boundaries_write_a_machine_readable_state(tmp_path, monkeypatch,
 def test_a_merge_on_the_signal_date_makes_the_first_signal_ineligible(tmp_path, monkeypatch):
     import importlib
     script = importlib.import_module("scripts.record_kr_selection_challenger")
-    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: (_ for _ in ()).throw(OSError("offline")))
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", fetch_for())
     monkeypatch.setattr(C, "merged_at_from_git", lambda *a: "2026-10-30T01:00:00+00:00")     # 10:00 KST on the signal date
     monkeypatch.setattr(CORE, "system_utc_now", lambda: pd.Timestamp("2026-10-31T04:35:00Z"))
     path = tmp_path / "site.json"
@@ -636,7 +696,7 @@ def test_a_hook_failure_in_the_paper_ledger_step_leaves_a_machine_readable_statu
     import importlib
     update = importlib.import_module("scripts.update_ledger")
     script = importlib.import_module("scripts.record_kr_selection_challenger")
-    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: (_ for _ in ()).throw(OSError("offline")))
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", fetch_for())
     monkeypatch.setattr(script, "run_all", lambda *a: (_ for _ in ()).throw(RuntimeError("boom")))
     data = site()
     data["modelVersion"] = "m"
@@ -654,6 +714,7 @@ def test_a_missing_price_collection_never_stops_the_signal_record(tmp_path, monk
     first = (study / "receipts.jsonl").read_bytes()
     # Rerun later in the window with the vendor refusing: the receipt bytes are unchanged and nothing is added.
     monkeypatch.setattr(CORE, "system_utc_now", lambda: pd.Timestamp("2026-11-01T04:35:00Z"))
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: (_ for _ in ()).throw(OSError("offline")))
     script.run_all(tmp_path / "site.json", study)
     assert (study / "receipts.jsonl").read_bytes() == first
 
@@ -662,7 +723,7 @@ def test_a_non_zero_research_exit_is_a_workflow_warning_and_never_the_ledgers_ex
     import importlib
     update = importlib.import_module("scripts.update_ledger")
     script = importlib.import_module("scripts.record_kr_selection_challenger")
-    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: (_ for _ in ()).throw(OSError("offline")))
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", fetch_for())
     data = site()
     data["modelVersion"] = "m"
     path = tmp_path / "site.json"
@@ -679,24 +740,97 @@ def test_a_non_zero_research_exit_is_a_workflow_warning_and_never_the_ledgers_ex
 # --------------------------------------------------------------------------- #
 # Regression tests for the independent-audit P1 findings
 # --------------------------------------------------------------------------- #
-def test_a_downside_volatility_without_a_full_252_session_window_is_never_ranked():
-    """longterm.downside_vol_252 answers from 60 closes; the same row's mom12_1Pct (>= 273 closes) is the proof the window was full."""
-    from pipeline import features as F
+def _with_vendor_frames(frames: dict, s=None):
+    """The artifact the production build would publish if the vendor had returned ``frames`` for those names."""
+    s = s or site()
+    rows = {r["ticker"]: r for r in s["longTerm"]["regions"]["KR"]["validationCrossSection"]}
+    for t, frame in frames.items():
+        f = production_features(frame)
+        rows[t]["risk"]["downsideVolPct"] = f["downsideVolPct"]
+        s["details"][t].update({"lastClose": f["lastClose"], "ma200": f["ma200"], "pct52wHigh": f["pct52wHigh"]})
+    return s
+
+
+def test_a_feature_window_missing_one_or_two_krx_sessions_is_never_ranked():
+    """The audit counterexample: 338 and 339 vendor rows (so mom12_1Pct exists and the old guard passed) with one or two KRX sessions
+    absent inside the last year. Production computes all three features over the rows it got, so each 252-row window spans 253-254
+    sessions. Both names would be ranked first in CH_LOWVOL and among the first in CH_HIGH52; neither is."""
     from pipeline import longterm as LT
-    close = pd.Series(100.0 * np.exp(np.cumsum(np.random.default_rng(3).normal(0, 0.02, 60))))
-    assert LT.downside_vol_252(close) is not None and LT.momentum_12_1(close) is None       # the gap the recorder closes
-    frame = pd.DataFrame({"Open": close, "High": close, "Low": close, "Close": close, "Volume": 1.0},
-                         index=pd.DatetimeIndex(RC.sessions("2026-07-01", "2026-12-31", "KR")[:60]))
-    feat = F.build_features(frame)
-    assert feat["price_52w_high"].isna().all() and feat["ma200"].isna().all()                  # these two cannot be short
-    s = site()
-    rows = s["longTerm"]["regions"]["KR"]["validationCrossSection"]
-    short = {rows[0]["ticker"], rows[1]["ticker"]}                                             # the two lowest downside vols
-    for row in rows[:2]:
-        row["mom12_1Pct"] = None
-    r = receipt(s)
-    assert not short & {x["ticker"] for x in r["books"]["CH_LOWVOL"]["slots"]}
+    days = RC.sessions("2025-11-01", SESSION, "KR")
+    gaps = {"100001.KS": [days[-120]], "100002.KS": [days[-60], days[-200]]}
+    gapped = {t: bars_for(t, history=340, drop=d) for t, d in gaps.items()}
+    for frame in gapped.values():
+        assert len(frame) >= 330 and LT.momentum_12_1(frame["Close"]) is not None      # the mom12_1Pct guard reads it as full
+    s = _with_vendor_frames(gapped)
+    r = receipt(s, overrides=gapped)
+    for book in C.CHALLENGERS:
+        assert not set(gaps) & {x["ticker"] for x in r["books"][book]["slots"]}
+        assert r["books"][book]["excluded"]["FEATURE_WINDOW_INCOMPLETE"] == 2
+    # The same names with complete calendars are ranked: the exclusion is the gap, not the name.
+    full = {t: bars_for(t, history=340) for t in gaps}
+    r = receipt(_with_vendor_frames(full), overrides=full)
+    assert set(gaps) <= {x["ticker"] for x in r["books"]["CH_LOWVOL"]["slots"]}
+    assert set(gaps) <= {x["ticker"] for x in r["books"]["CH_HIGH52"]["slots"]}
+    assert r["universe"]["featureVerification"]["basis"] == C.FEATURE_BARS_BASIS
+
+
+def test_a_short_history_is_never_ranked():
+    """longterm.downside_vol_252 answers from as few as 20 negative returns; 60 sessions are not a 252-session window."""
+    short = {t: bars_for(t, history=60) for t in ("100000.KS", "100003.KS")}      # index % 3 == 0: the last 60 moves are falls
+    s = _with_vendor_frames(short)
+    assert all(s["longTerm"]["regions"]["KR"]["validationCrossSection"][i]["risk"]["downsideVolPct"] for i in (0, 3))
+    r = receipt(s, overrides=short)
+    assert not set(short) & {x["ticker"] for x in r["books"]["CH_LOWVOL"]["slots"]}
     assert r["books"]["CH_LOWVOL"]["excluded"]["FEATURE_WINDOW_INCOMPLETE"] == 2
+
+
+def test_a_vendor_row_on_a_closed_day_inside_the_window_is_never_ranked():
+    """2026-10-09 is a KRX holiday: a row dated on it was inside production's 252-row window and is not a session."""
+    odd = {"100001.KS": bars_for("100001.KS", holiday_rows=["2026-10-09"])}
+    r = receipt(_with_vendor_frames(odd), overrides=odd)
+    for book in C.CHALLENGERS:
+        assert "100001.KS" not in {x["ticker"] for x in r["books"][book]["slots"]}
+        assert r["books"][book]["excluded"]["FEATURE_WINDOW_INCOMPLETE"] == 1
+
+
+@pytest.mark.parametrize("field,delta,books", [
+    ("downsideVolPct", 0.2, ["CH_LOWVOL"]), ("pct52wHigh", -0.3, ["CH_HIGH52"]), ("ma200", 5.0, ["CH_HIGH52"]),
+    ("lastClose", 1.0, ["CH_LOWVOL", "CH_HIGH52"]),
+])
+def test_an_artifact_value_the_verified_frame_does_not_reproduce_is_never_ranked(field, delta, books):
+    s = site()
+    row = s["longTerm"]["regions"]["KR"]["validationCrossSection"][1]
+    if field == "downsideVolPct":
+        row["risk"][field] += delta
+    else:
+        s["details"]["100001.KS"][field] += delta
+    r = receipt(s)
+    for book in books:
+        assert "100001.KS" not in {x["ticker"] for x in r["books"][book]["slots"]}
+        assert r["books"][book]["excluded"]["FEATURE_VALUE_MISMATCH"] == 1
+    # Inside the artifact's own rounding the same value is reproduced.
+    assert C._close_enough(6.3, 6.349999, 0.05) and not C._close_enough(6.3, 6.36, 0.05)
+
+
+def test_a_partial_verification_download_refuses_the_receipt_rather_than_shrinking_the_book():
+    with pytest.raises(ValueError, match="PRICE_FETCH_INCOMPLETE: 1 of"):
+        receipt(overrides={"100001.KS": None})
+
+
+def test_a_vendor_refusal_at_record_time_is_refused_and_a_later_run_in_the_window_records(tmp_path, monkeypatch):
+    import importlib
+    script = importlib.import_module("scripts.record_kr_selection_challenger")
+    monkeypatch.setattr(C, "merged_at_from_git", lambda *a: MERGED)
+    monkeypatch.setattr(CORE, "system_utc_now", lambda: pd.Timestamp("2026-10-31T04:35:00Z"))
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: (_ for _ in ()).throw(OSError("offline")))
+    path = tmp_path / "site.json"
+    path.write_text(json.dumps(site(generated="2026-10-31T04:30:00+00:00")))
+    study = tmp_path / "study"
+    assert script.record(path, study) == 1
+    state = json.loads((study / "publication-status.record.json").read_text())
+    assert state["status"] == "REFUSED" and state["reason"].startswith("PRICE_FETCH_INCOMPLETE") and not (study / "receipts.jsonl").exists()
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", fetch_for())
+    assert script.record(path, study) == 0 and len((study / "receipts.jsonl").read_text().splitlines()) == 1
 
 
 @pytest.mark.parametrize("missing_in,expected_short", [
@@ -750,16 +884,74 @@ def test_a_failed_vendor_download_is_deferred_and_regraded_never_a_permanent_non
     # 3. The next run's full download resolves it.
     out = C.build_outcome(r, horizon=126, frames=frames, now_utc=at_maturity, pathway=C.SYNTHETIC)
     assert out["resolution"] == "FINAL" and out["books"]["CH_LOWVOL"]["netExcessReturn"] is not None
-    # 4. Still missing once the retry window is final (a delisting): written, labelled, and counted as None.
+    # 4. Still missing after the retry window: an empty or partial Yahoo answer is not a delisting. It stays DEFERRED, never written.
     out = C.build_outcome(r, horizon=126, frames=partial, now_utc=window_closed, pathway=C.SYNTHETIC)
-    assert out["resolution"] == "FINAL_UNRESOLVED_AFTER_RETRY" and out["books"]["CH_LOWVOL"]["netExcessReturn"] is None
-    C.validate_outcome(out, pathway=C.SYNTHETIC)
+    assert out["resolution"] == "DEFERRED" and out["unresolvedClasses"] == [C.PROVIDER] and out["retryUntilSession"] is None
+    forced = {**out, "resolution": "FINAL_UNRESOLVED_AFTER_RETRY"}
+    forced["recordSha256"] = hashlib.sha256(CORE.canonical({k: v for k, v in forced.items() if k != "recordSha256"})).hexdigest()
+    with pytest.raises(ValueError, match="OUTCOME_PROVIDER_GAP_IS_NEVER_FINAL"):
+        C.validate_outcome(forced, pathway=C.SYNTHETIC)
     # 5. A halt at maturity is retried the same way, and becomes TERMINAL_ECONOMICS_UNRESOLVED only after the window.
     halted = {t: f.copy() for t, f in frames.items()}
     halted[a].iloc[-1, halted[a].columns.get_loc("Volume")] = 0.0
     assert C.build_outcome(r, horizon=126, frames=halted, now_utc=at_maturity, pathway=C.SYNTHETIC)["resolution"] == "DEFERRED"
     late = C.build_outcome(r, horizon=126, frames=halted, now_utc=window_closed, pathway=C.SYNTHETIC)
     assert late["names"][a]["state"] == "TERMINAL_ECONOMICS_UNRESOLVED" and late["resolution"] == "FINAL_UNRESOLVED_AFTER_RETRY"
+    assert late["unresolvedClasses"] == [C.ECONOMIC] and late["books"]["CH_LOWVOL"]["netExcessReturn"] is None
+    C.validate_outcome(late, pathway=C.SYNTHETIC)
+    # 6. A halt plus a provider gap is still a provider gap: nothing is final until the provider answers.
+    both = {t: f for t, f in halted.items() if t != r["books"]["CH_LOWVOL"]["slots"][1]["ticker"]}
+    assert C.build_outcome(r, horizon=126, frames=both, now_utc=window_closed, pathway=C.SYNTHETIC)["resolution"] == "DEFERRED"
+
+
+def _session_after(execution, sessions):
+    return pd.Timestamp(str(CORE.maturity_session(execution, sessions).date())).tz_localize("UTC") + pd.Timedelta(hours=10)
+
+
+@pytest.mark.parametrize("outage", ["empty", "benchmark_only", "truncated"])
+def test_a_seven_session_provider_outage_is_regraded_on_recovery(outage):
+    """D0 is the maturity session. The vendor fails from D0 to D6 (one session past the old +5 window), then serves on D7. Under the
+    old rule D6 wrote a permanent None; now every attempt is DEFERRED and D7 grades it."""
+    r = receipt()
+    frames, maturity = _frames(r, 126, growth={C.BENCHMARK: 0.10})
+    held = r["books"]["CH_LOWVOL"]["slots"][0]["ticker"]
+    bad = {"empty": {}, "benchmark_only": {C.BENCHMARK: frames[C.BENCHMARK]},
+           "truncated": {**frames, held: frames[held].iloc[:-10]}}[outage]     # Yahoo's partial answer: the series stops early
+    for day in range(7):
+        out = C.build_outcome(r, horizon=126, frames=bad, now_utc=_session_after(r["executionDate"], 126 + day), pathway=C.SYNTHETIC)
+        assert out["resolution"] == "DEFERRED" and C.PROVIDER in out["unresolvedClasses"], day
+    out = C.build_outcome(r, horizon=126, frames=frames, now_utc=_session_after(r["executionDate"], 126 + 7), pathway=C.SYNTHETIC)
+    assert out["resolution"] == "FINAL" and out["books"]["CH_LOWVOL"]["netExcessReturn"] is not None
+
+
+def test_the_outcome_step_keeps_a_retryable_pending_state_and_never_rewrites_a_written_outcome(tmp_path, monkeypatch):
+    import importlib
+    script = importlib.import_module("scripts.record_kr_selection_challenger")
+    study = tmp_path / "study"
+    live = C.build_receipt(site(), "b" * 64, pathway=C.LIVE, created_at_utc=EVENING, now_utc=EVENING, merged_at_utc=MERGED,
+                           code_identity={"commitSha": "c" * 40, "files": {"x": "d" * 64}}, spec=SPEC, spec_digest="e" * 64,
+                           fetch_bars=fetch_for())
+    C.append_receipt(study / script.RECEIPTS, live, pathway=C.LIVE)
+    frames, _ = _frames(live, 126, growth={C.BENCHMARK: 0.05})
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: {})
+    for day in range(7):                                                     # D0..D6: the vendor serves nothing
+        monkeypatch.setattr(CORE, "system_utc_now", lambda d=day: _session_after(live["executionDate"], 126 + d))
+        assert script.outcomes(study) == 0
+        pending = json.loads((study / script.PENDING).read_text())
+        assert pending["evidence"] is False and [p["attempts"] for p in pending["pending"]] == [day + 1]
+        assert pending["pending"][0]["unresolvedClasses"] == [C.PROVIDER]
+        assert not (study / script.OUTCOMES).exists() or not (study / script.OUTCOMES).read_text().strip()
+    first_seen = pending["pending"][0]["firstDeferredAtUtc"]
+    assert first_seen.startswith(str(CORE.maturity_session(live["executionDate"], 126).date()))
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: frames)
+    monkeypatch.setattr(CORE, "system_utc_now", lambda: _session_after(live["executionDate"], 133))   # D7: recovered
+    assert script.outcomes(study) == 0
+    rows = C.read_outcomes(study / script.OUTCOMES, pathway=C.LIVE)
+    assert [(o["horizonSessions"], o["resolution"]) for o in rows] == [(126, "FINAL")]
+    assert json.loads((study / script.PENDING).read_text())["pending"] == []
+    written = (study / script.OUTCOMES).read_bytes()
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: {})        # a later outage never touches it
+    assert script.outcomes(study) == 0 and (study / script.OUTCOMES).read_bytes() == written
 
 
 def test_the_outcome_step_writes_nothing_on_an_outage_and_grades_on_the_next_run(tmp_path, monkeypatch):
@@ -767,7 +959,8 @@ def test_the_outcome_step_writes_nothing_on_an_outage_and_grades_on_the_next_run
     script = importlib.import_module("scripts.record_kr_selection_challenger")
     study = tmp_path / "study"
     live = C.build_receipt(site(), "b" * 64, pathway=C.LIVE, created_at_utc=EVENING, now_utc=EVENING, merged_at_utc=MERGED,
-                           code_identity={"commitSha": "c" * 40, "files": {"x": "d" * 64}}, spec=SPEC, spec_digest="e" * 64)
+                           code_identity={"commitSha": "c" * 40, "files": {"x": "d" * 64}}, spec=SPEC, spec_digest="e" * 64,
+                           fetch_bars=fetch_for())
     C.append_receipt(study / script.RECEIPTS, live, pathway=C.LIVE)
     frames, maturity = _frames(live, 126, growth={C.BENCHMARK: 0.05})
     monkeypatch.setattr(CORE, "system_utc_now", lambda: _after(maturity))

@@ -31,6 +31,7 @@ import pandas as pd
 
 from . import kelly_portfolio as KP
 from . import kr_bar_integrity as BI
+from . import longterm as LT
 from . import prospective_receipt_core as CORE
 from . import weekly_decision as W
 from . import weekly_publish as P
@@ -50,6 +51,8 @@ KEY_FIELDS = ("studyId", "signalDate")
 NOT_EXECUTABLE = "NOT_EXECUTABLE_HELD_AS_BENCHMARK"
 EXCLUSION_CODES = ("TICKER_INVALID", "DUPLICATE_TICKER", "QUOTE_NOT_ON_SIGNAL_SESSION", "SIGNAL_CLOSE_MISSING", "FEATURE_MISSING",
                    "BELOW_200_DAY_AVERAGE", "MA200_UNDETERMINED")
+BOOK_EXCLUSION_CODES = ("FEATURE_MISSING", "FEATURE_WINDOW_INCOMPLETE", "FEATURE_VALUE_MISMATCH", "BELOW_200_DAY_AVERAGE",
+                        "MA200_UNDETERMINED")
 
 
 # --------------------------------------------------------------------------- #
@@ -105,6 +108,97 @@ def signal_session(site: dict) -> str:
     return observed
 
 
+# --------------------------------------------------------------------------- #
+# Feature windows proven on the exchange calendar
+# --------------------------------------------------------------------------- #
+# The artifact's features are computed over vendor ROWS: longterm.downside_vol_252 takes the last 252 returns of close.dropna() and
+# features.price_52w_high / ma200 are rolling(252) / rolling(200) over whatever rows the vendor returned. A history with 330 rows and one or
+# two KRX sessions missing inside the last year therefore carries a "252-session" value spanning 253-254 sessions, and nothing in the
+# artifact says so. A name enters a challenger book only if a fresh vendor download, aligned to the pinned KRX calendar by
+# kr_bar_integrity, shows every session of the window traded with no off-calendar row inside it AND reproduces the artifact's own values
+# (to the artifact's rounding). Anything that cannot be proven is excluded from that book, never repaired.
+FEATURE_WINDOW_CLOSES = {"CH_LOWVOL": 253, "CH_HIGH52": 252}      # 252 returns; rolling(252) max (the 200-day mean sits inside it)
+FEATURE_HALF_UNIT = {"downsideVolPct": 0.05, "pct52wHigh": 0.05, "ma200": 0.005, "lastClose": 0.005}  # longterm / risk.diagnose rounding
+FEATURE_BARS_BASIS = "VENDOR_AUTO_ADJUSTED_BARS_ON_THE_KRX_CALENDAR"
+
+
+def _feature_window(session: str) -> list:
+    days = BI.sessions_between(pd.Timestamp(session) - pd.Timedelta(days=800), session)
+    if len(days) == 0 or str(pd.Timestamp(days[-1]).date()) != session:
+        raise ValueError("SIGNAL_SESSION_NOT_ON_CALENDAR: " + session)
+    return list(days[-FEATURE_WINDOW_CLOSES["CH_LOWVOL"]:])
+
+
+def feature_bars_start(session: str) -> str:
+    """First calendar day the verification download must cover (with a margin so a vendor row before the window is visible)."""
+    return str((pd.Timestamp(_feature_window(session)[0]) - pd.Timedelta(days=10)).date())
+
+
+def _close_enough(artifact, computed, half_unit) -> bool:
+    return artifact is not None and computed is not None and math.isfinite(computed) and \
+        abs(float(artifact) - float(computed)) <= half_unit + 1e-9 * max(1.0, abs(float(computed)))
+
+
+def verify_feature_window(row: dict, frame, session: str) -> dict:
+    """``{book: None | exclusion code}`` for the two challenger books, from one vendor frame of this name."""
+    window = _feature_window(session)
+    out = {"CH_LOWVOL": "FEATURE_WINDOW_INCOMPLETE", "CH_HIGH52": "FEATURE_WINDOW_INCOMPLETE"}
+    if frame is None or not len(frame):
+        return out
+    raw = frame.copy()
+    index = pd.DatetimeIndex(pd.to_datetime(raw.index))
+    raw.index = (index.tz_localize(None) if index.tz is not None else index).normalize()
+    raw = raw[raw.index <= pd.Timestamp(session)]          # a row after the signal close is not what the artifact saw
+    aligned = BI.calendar_frame(raw, start=window[0], end=session)
+    if aligned.attrs.get("offCalendarRows"):              # a vendor row on a closed day sits inside the production window
+        return out
+    closes = aligned["Close"]
+    identity = _close_enough(row["signalClose"], BI.traded_close(aligned, session), FEATURE_HALF_UNIT["lastClose"])
+    for book, n in FEATURE_WINDOW_CLOSES.items():
+        if not BI.window_complete(aligned, session, n):
+            continue
+        out[book] = "FEATURE_VALUE_MISMATCH"
+        if not identity:
+            continue
+        last = closes.iloc[-n:]
+        if book == "CH_LOWVOL":
+            dv = LT.downside_vol_252(last)
+            if dv is not None and _close_enough(row["downsideVolPct"], dv * 100.0, FEATURE_HALF_UNIT["downsideVolPct"]):
+                out[book] = None
+        else:
+            pct = float(last.iloc[-1] / last.max() * 100.0)
+            ma200 = float(last.iloc[-200:].mean())
+            if _close_enough(row["pct52wHigh"], pct, FEATURE_HALF_UNIT["pct52wHigh"]) and \
+                    _close_enough(row["ma200"], ma200, FEATURE_HALF_UNIT["ma200"]):
+                out[book] = None
+    return out
+
+
+def verification_tickers(rows: list[dict]) -> list[str]:
+    """Names a challenger book could rank (their feature is present): each needs a vendor frame."""
+    need = []
+    for row in rows:
+        lowvol = row["downsideVolPct"] is not None and row["downsideVolPct"] > 0
+        high52 = row["pct52wHigh"] is not None and 0 < row["pct52wHigh"] <= 100.5 and row["aboveMA200"]
+        if lowvol or high52:
+            need.append(row["ticker"])
+    return need
+
+
+def attach_feature_checks(rows: list[dict], bars: dict, session: str) -> dict:
+    """Stamp ``featureCheck`` on every row; refuse (no receipt) if a name that needs proof has no vendor frame at all, because a book
+    must never be formed on whichever names a partial download happened to return."""
+    need = verification_tickers(rows)
+    absent = sorted(t for t in need if bars.get(t) is None or not len(bars.get(t)))
+    if absent:
+        raise ValueError("PRICE_FETCH_INCOMPLETE: %d of %d names unserved (%s)" % (len(absent), len(need), ",".join(absent[:5])))
+    for row in rows:
+        row["featureCheck"] = verify_feature_window(row, bars.get(row["ticker"]), session) if row["ticker"] in need else \
+            {"CH_LOWVOL": "FEATURE_MISSING", "CH_HIGH52": "FEATURE_MISSING"}
+    return {"basis": FEATURE_BARS_BASIS, "windowCloses": dict(FEATURE_WINDOW_CLOSES), "framesChecked": len(need),
+            "windowStart": str(pd.Timestamp(_feature_window(session)[0]).date())}
+
+
 def universe_rows(site: dict, session: str) -> tuple[list[dict], dict]:
     """The production-eligible KR cross-section with the facts each book needs, and exclusion counts. Missing is never imputed."""
     blob = ((site.get("longTerm") or {}).get("regions") or {}).get("KR") or {}
@@ -130,11 +224,7 @@ def universe_rows(site: dict, session: str) -> tuple[list[dict], dict]:
         ma200 = _number(detail.get("ma200"))
         rows.append({"ticker": ticker, "sector": str(item.get("sector") or "UNCLASSIFIED"), "signalClose": close,
                      "downsideVolPct": _number((item.get("risk") or {}).get("downsideVolPct")),
-                     # longterm.downside_vol_252 answers from as few as 20 negative returns, so a name with three months of history would
-                     # carry a "252-session" value. mom12_1Pct is computed from the SAME close series only when it holds >= 273 closes
-                     # (longterm.MIN_HISTORY), so its presence proves the 252-return window was full.
-                     "downsideWindowFull": _number(item.get("mom12_1Pct")) is not None,
-                     "pct52wHigh": _number(detail.get("pct52wHigh")),
+                     "pct52wHigh": _number(detail.get("pct52wHigh")), "ma200": ma200,
                      "aboveMA200": None if ma200 is None or ma200 <= 0 else close > ma200,
                      "alpha": _number(item.get("alpha"))})
     return sorted(rows, key=lambda r: r["ticker"]), excluded
@@ -142,15 +232,16 @@ def universe_rows(site: dict, session: str) -> tuple[list[dict], dict]:
 
 def _book_candidates(book: str, rows: list[dict]) -> tuple[list[tuple], dict]:
     """(sort key, row) pairs for one book and its own exclusion counts."""
-    out, excluded = [], {"FEATURE_MISSING": 0, "FEATURE_WINDOW_INCOMPLETE": 0, "BELOW_200_DAY_AVERAGE": 0, "MA200_UNDETERMINED": 0}
+    out, excluded = [], {code: 0 for code in BOOK_EXCLUSION_CODES}
     for row in rows:
+        check = (row.get("featureCheck") or {}).get(book, "FEATURE_WINDOW_INCOMPLETE") if book in CHALLENGERS else None
         if book == "CH_LOWVOL":
             value = row["downsideVolPct"]
             if value is None or value <= 0:
                 excluded["FEATURE_MISSING"] += 1
                 continue
-            if not row["downsideWindowFull"]:
-                excluded["FEATURE_WINDOW_INCOMPLETE"] += 1
+            if check is not None:
+                excluded[check] += 1
                 continue
             out.append(((value, row["ticker"]), row, value))
         elif book == "CH_HIGH52":
@@ -163,6 +254,9 @@ def _book_candidates(book: str, rows: list[dict]) -> tuple[list[tuple], dict]:
                 continue
             if not row["aboveMA200"]:
                 excluded["BELOW_200_DAY_AVERAGE"] += 1
+                continue
+            if check is not None:
+                excluded[check] += 1
                 continue
             out.append(((-value, row["ticker"]), row, value))
         elif book == "CTRL_MODEL5":
@@ -194,10 +288,12 @@ def build_book(book: str, rows: list[dict], construction: dict) -> dict:
     return {**base, "status": "BOOK_FORMED", "slots": slots, "fallbackSlots": slots_n - len(slots)}
 
 
-def build_books(site: dict, session: str, spec: dict) -> tuple[dict, dict]:
+def build_books(site: dict, session: str, spec: dict, *, bars: dict) -> tuple[dict, dict]:
+    """``bars[ticker]`` is a vendor OHLCV frame covering ``feature_bars_start(session)`` to the signal session."""
     rows, excluded = universe_rows(site, session)
+    verification = attach_feature_checks(rows, bars, session)
     books = {book: build_book(book, rows, spec["construction"]) for book in BOOKS}
-    return books, {"crossSectionNames": len(rows), "excluded": excluded}
+    return books, {"crossSectionNames": len(rows), "excluded": excluded, "featureVerification": verification}
 
 
 # --------------------------------------------------------------------------- #
@@ -226,7 +322,8 @@ def validate_receipt(receipt: dict, *, pathway: str) -> None:
 
 
 def build_receipt(site: dict, site_sha256: str, *, pathway: str, created_at_utc, now_utc, merged_at_utc, code_identity: dict,
-                  spec: dict, spec_digest: str) -> dict:
+                  spec: dict, spec_digest: str, fetch_bars) -> dict:
+    """``fetch_bars(tickers, start)`` returns vendor frames; it is called only once the timing checks have passed."""
     if pathway not in EVIDENCE_CLASS_BY_PATHWAY:
         raise ValueError("UNKNOWN_PATHWAY")
     if (reason := P.unsafe_reason(site)) is not None or (site.get("meta") or {}).get("syntheticData"):
@@ -240,7 +337,9 @@ def build_receipt(site: dict, site_sha256: str, *, pathway: str, created_at_utc,
     if session < floor:
         raise ValueError("SIGNAL_BEFORE_REGISTERED_FLOOR: " + floor)
     execution = CORE.check_timing(signal_date=session, created_at_utc=created_at_utc, now_utc=now_utc, merged_at_utc=merged_at_utc)
-    books, universe = build_books(site, session, spec)
+    rows, _ = universe_rows(site, session)
+    bars = fetch_bars(verification_tickers(rows), feature_bars_start(session))
+    books, universe = build_books(site, session, spec, bars=bars)
     picks = ((site.get("longTerm") or {}).get("regions") or {}).get("KR", {}).get("picks") or []
     provenance = site.get("provenance") or {}
     receipt = {
@@ -351,12 +450,22 @@ def build_outcome(receipt: dict, *, horizon: int, frames: dict, now_utc, pathway
     return record
 
 
-# A vendor download can fail for a day (an empty or partial response, a benchmark that did not come back) and a held name can be halted
-# for a week. Neither may become a permanent None the day the horizon matures: such a record is DEFERRED and regraded from a fresh download
-# by every later run until the (horizon + OUTCOME_RETRY_SESSIONS)-th session after execution is final. Only then is what is still unresolved
-# (in practice a delisting or an unresolved terminal consideration) written, labelled as such, and counted as None by the assessment.
+# Two different things can leave an outcome unresolved, and they have opposite answers.
+#
+#   PROVIDER_DATA_UNAVAILABLE  the vendor did not serve what the record needs: an empty or partial download (no frame for the benchmark
+#                              or a held name), a session with no row, an invalid close. An empty Yahoo answer is NOT evidence of a
+#                              delisting and a frame that stops early is NOT evidence of a terminal event: these reasons are retried by
+#                              every later run for as long as they persist and are NEVER written as an outcome. The pending state lives
+#                              outside the append-only ledgers (``outcome-pending.json``) and is not evidence.
+#   ECONOMIC_UNRESOLVED        the vendor served the maturity session and it says the name did not trade (zero volume): a halt or an
+#                              unresolved terminal consideration. It is retried until the (horizon + OUTCOME_RETRY_SESSIONS)-th session
+#                              after execution is final and then written (FINAL_UNRESOLVED_AFTER_RETRY) and counted as None.
+#
+# An outcome with ANY provider reason stays DEFERRED whatever the date. Closing a cohort that a provider never serves needs an independent
+# source for the terminal event, which is an owner decision, not a recorder default.
 OUTCOME_RETRY_SESSIONS = 5
 RESOLVED_NAME_STATES = ("PRICED", NOT_EXECUTABLE)
+PROVIDER, ECONOMIC = "PROVIDER_DATA_UNAVAILABLE", "ECONOMIC_UNRESOLVED"
 
 
 def unresolved_reasons(record: dict) -> list[str]:
@@ -366,27 +475,55 @@ def unresolved_reasons(record: dict) -> list[str]:
                   if n["state"] not in RESOLVED_NAME_STATES)
 
 
+def reason_class(reason: str) -> str:
+    """ECONOMIC only for a served maturity session that says the name did not trade; every other gap is the provider's."""
+    return ECONOMIC if reason.split(":")[1:2] == ["TERMINAL_ECONOMICS_UNRESOLVED"] and reason.endswith(":SUSPENDED") else PROVIDER
+
+
 def resolution(record: dict, now_utc) -> dict:
-    """``FINAL`` (everything resolved), ``DEFERRED`` (something unresolved inside the retry window: do not write) or
-    ``FINAL_UNRESOLVED_AFTER_RETRY`` (still unresolved once the window has closed)."""
+    """``FINAL`` (everything resolved), ``DEFERRED`` (do not write: a provider gap at any date, or an economic gap inside the retry
+    window) or ``FINAL_UNRESOLVED_AFTER_RETRY`` (only economic gaps remain and the window has closed)."""
     reasons = unresolved_reasons(record)
     if not reasons:
         return {"resolution": "FINAL"}
+    classes = sorted({reason_class(r) for r in reasons})
     closes = CORE.maturity_session(record["executionDate"], record["horizonSessions"] + OUTCOME_RETRY_SESSIONS)
-    if not CORE.has_matured(record["executionDate"], record["horizonSessions"] + OUTCOME_RETRY_SESSIONS, now_utc):
-        return {"resolution": "DEFERRED", "unresolved": reasons, "retryUntilSession": str(closes.date())}
-    return {"resolution": "FINAL_UNRESOLVED_AFTER_RETRY", "unresolved": reasons, "retryUntilSession": str(closes.date())}
+    window_closed = CORE.has_matured(record["executionDate"], record["horizonSessions"] + OUTCOME_RETRY_SESSIONS, now_utc)
+    if PROVIDER in classes or not window_closed:
+        return {"resolution": "DEFERRED", "unresolved": reasons, "unresolvedClasses": classes,
+                "retryUntilSession": None if PROVIDER in classes else str(closes.date())}
+    return {"resolution": "FINAL_UNRESOLVED_AFTER_RETRY", "unresolved": reasons, "unresolvedClasses": classes,
+            "retryUntilSession": str(closes.date())}
 
 
 def validate_outcome(record: dict, *, pathway: str) -> None:
     expected = CORE.OUTCOME_EVIDENCE_CLASS if pathway == LIVE else "SYNTHETIC_FIXTURE"
     if record.get("resolution") == "DEFERRED":
         raise ValueError("OUTCOME_DEFERRED_IS_NEVER_A_RECORD")
+    if record.get("resolution") == "FINAL_UNRESOLVED_AFTER_RETRY" and \
+            any(reason_class(r) == PROVIDER for r in record.get("unresolved") or []):
+        raise ValueError("OUTCOME_PROVIDER_GAP_IS_NEVER_FINAL")
     if record.get("studyId") != STUDY or record.get("evidenceClass") != expected:
         raise ValueError("OUTCOME_PATHWAY_MISMATCH")
     body = {k: v for k, v in record.items() if k != "recordSha256"}
     if hashlib.sha256(CORE.canonical(body)).hexdigest() != record.get("recordSha256"):
         raise ValueError("OUTCOME_DIGEST_MISMATCH")
+
+
+def pending_entries(previous: list[dict], deferred: list[dict], now_utc) -> list[dict]:
+    """The retryable state of every outcome not yet written, carrying ``firstDeferredAtUtc`` and the attempt count across runs. A
+    status file, rewritten each run; never read as an outcome."""
+    before = {(p["receiptSha256"], p["horizonSessions"]): p for p in previous}
+    out = []
+    for row in deferred:
+        key = (row["receiptSha256"], row["horizonSessions"])
+        old = before.get(key) or {}
+        out.append({"receiptSha256": key[0], "horizonSessions": key[1], "signalDate": row["signalDate"],
+                    "maturitySession": row["maturitySession"], "unresolved": row["unresolved"],
+                    "unresolvedClasses": row["unresolvedClasses"], "retryUntilSession": row["retryUntilSession"],
+                    "firstDeferredAtUtc": old.get("firstDeferredAtUtc") or str(CORE.utc(now_utc).isoformat()),
+                    "lastAttemptAtUtc": str(CORE.utc(now_utc).isoformat()), "attempts": int(old.get("attempts") or 0) + 1})
+    return sorted(out, key=lambda p: (p["signalDate"], p["horizonSessions"]))
 
 
 def read_outcomes(path, *, pathway: str) -> list[dict]:

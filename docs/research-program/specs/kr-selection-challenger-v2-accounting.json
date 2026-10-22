@@ -90,7 +90,7 @@
     "unresolved": "a name with no vendor frame, no row or an invalid close at execution, or that did not trade on the maturity session itself, makes that book's cohort outcome None (NAME_OUTCOME_MISSING or TERMINAL_ECONOMICS_UNRESOLVED); it is never marked at an earlier close, dropped or renormalised",
     "netExcess": "book return - 069500.KS return - stock legs (buy at execution, sell at maturity) - ETF legs of benchmark-held slots + the ETF control's own round trip",
     "costs": "pipeline.weekly_decision.trade_cost_fraction('KR', date, ...): commission + half spread per leg, dated statutory sell tax on stock sells, no tax on ETF sells (benchmark_alpha.REALISTIC_COSTS)",
-    "retry": "as kr-selection-challenger-v1: an outcome whose benchmark is unpriced or with any held name unresolved is DEFERRED (nothing written, regraded from a fresh download) until the (horizon + 5)-th KR session after execution is final; only then is a still-unresolved outcome written as FINAL_UNRESOLVED_AFTER_RETRY and counted as None"
+    "retry": "as kr-selection-challenger-v1 (pipeline.kr_selection_challenger.resolution, called, not copied): a PROVIDER_DATA_UNAVAILABLE gap (benchmark unpriced, or a held name with no vendor frame, no row or an invalid close: an empty or partial download) is DEFERRED at any date, never written, regraded by every later run and kept in outcome-pending.json outside the ledgers; only an ECONOMIC_UNRESOLVED name (the served maturity session shows zero volume) is written as FINAL_UNRESOLVED_AFTER_RETRY once the (horizon + 5)-th KR session after execution is final, and counted as None. Closing a cohort the provider never serves is an owner decision"
   },
   "assessment": {
     "interim": "No outcome statistic is published before a registered check. Turnover (a signal-time fact) is reported at any time.",
@@ -119,7 +119,7 @@
   "turnover": "names replaced per weekly receipt and per path rebalance, as a share of five slots (weights retargeted are not turnover here)",
   "productionEffect": "NONE",
   "codeFileHashes": {
-    "pipeline/kr_selection_challenger_v2.py": "f839ba3dc736caf5362b9ec8bca0b8279b8d346528e1b8c8b15829893572343c",
-    "scripts/record_kr_selection_challenger_v2.py": "4f67ae7d53fe44f015609c3684a93a6c5b187bc537fcd585cd7a5f01e8a21578"
+    "pipeline/kr_selection_challenger_v2.py": "6c5e8538687e90d8a99ceaf0f49bc32b38ee8ff3203964d1661789e4de04e574",
+    "scripts/record_kr_selection_challenger_v2.py": "524126391affdf97591c2257fde3e55abde4b4b5cfa479bbf65db09c9a13d1a8"
   }
 }
