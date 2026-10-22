@@ -221,7 +221,7 @@ def test_every_region_unfinished_re_emits_the_publication_byte_for_byte(tmp_path
 
 def test_evening_run_publishes_both_regions_from_finished_sessions(tmp_path):
     ledger, paths = _ledger(tmp_path, _at(SATURDAY, kr="2026-10-16", us="2026-10-16"))
-    site = _at("2026-10-21T09:20:00Z", kr="2026-10-21", us="2026-10-20")  # 18:20 KST cron
+    site = _at("2026-10-21T09:20:00Z", kr="2026-10-21", us="2026-10-20")  # 18:20 KST, after finality
     assert P.unfinished_sessions(site) == {}
     assert _run(tmp_path, site, paths) == 0
     latest = _latest(paths[1])
@@ -242,18 +242,19 @@ def test_evening_run_delayed_into_the_nyse_session_still_publishes_kr(tmp_path):
     assert not [r for r in _receipts(paths[2]) if r["region"] == "US" and r["asOfDate"] > "2026-10-19"]
 
 
-def test_a_carry_never_outlives_the_page_freshness_bound(tmp_path):
-    monday = "2026-10-19T09:20:00Z"
-    ledger, paths = _ledger(tmp_path, _at(monday, kr="2026-10-19", us="2026-10-16"))
+def test_a_weekend_final_is_carried_through_the_week_and_never_beyond_a_cycle(tmp_path):
+    ledger, paths = _ledger(tmp_path, _at(SATURDAY, kr="2026-10-16", us="2026-10-16"))
     chain = paths[:1] + [ledger / "latest.json", ledger / "receipts.jsonl", ledger / "publication-status.json"]
-    built = _latest(ledger / "latest.json")["generatedAt"]
-    # Chained intraday carries keep the ORIGINAL publication time of the KR block.
-    for day, us in (("20", "19"), ("21", "20"), ("22", "21")):
-        assert _run(tmp_path, _at(f"2026-10-{day}T04:40:00Z", kr=f"2026-10-{day}", us=f"2026-10-{us}"),
-                    chain) == 0
-        assert _latest(ledger / "latest.json")["deferredRegions"]["KR"]["carriedFromGeneratedAt"] == built
-    # More than three days after it was built the old KR block is not shown as current.
-    assert _run(tmp_path, _at("2026-10-23T04:40:00Z", kr="2026-10-23", us="2026-10-22"), paths) == 0
+    final = _latest(ledger / "latest.json")
+    # Every weekday run lands inside the KRX session: KR keeps Friday's FINAL, US publishes.
+    for day, us in (("19", "16"), ("20", "19"), ("21", "20"), ("22", "21"), ("23", "22")):
+        assert _run(tmp_path, _at(f"2026-10-{day}T04:40:00Z", kr=f"2026-10-{day}", us=f"2026-10-{us}"), chain) == 0
+        latest = _latest(ledger / "latest.json")
+        assert latest["regions"]["KR"] == final["regions"]["KR"]
+        assert latest["deferredRegions"]["KR"]["carriedFromGeneratedAt"] == final["generatedAt"]
+        assert latest["regions"]["US"]["asOfDate"] == f"2026-10-{us}"
+    # If the weekend publication then fails, the block is refused once it is older than a cycle.
+    assert _run(tmp_path, _at("2026-10-26T04:40:00Z", kr="2026-10-26", us="2026-10-23"), paths) == 0
     latest = _latest(paths[1])
     assert latest["regions"]["KR"]["status"] == "SOURCE_INCOMPLETE"
     assert "deferredRegions" not in latest and P.validate(latest) == []
@@ -273,17 +274,6 @@ def test_research_namespace_waits_for_a_build_with_no_session_in_progress(tmp_pa
     assert len(calls) == 1
     assert _run(tmp_path, _at("2026-10-21T09:20:00Z", kr="2026-10-21"), paths) == 0
     assert len(calls) == 2
-
-
-def test_ledger_workflow_adds_a_post_finality_weekday_run_without_a_second_paper_append():
-    import re
-    text = (Path(__file__).resolve().parents[1] / ".github/workflows/ledger.yml").read_text()
-    crons = re.findall(r'cron: "([^"]+)"', text)
-    assert crons == ["10 0 * * *", "20 9 * * 1-5"]
-    # 09:20 UTC is after the 18:00 KST (09:00 UTC) KRX finality.
-    assert W.last_completed_session("KR", datetime.fromisoformat("2026-10-21T09:20:00+00:00")) == "2026-10-21"
-    step = text.split("- name: Append signals + refresh outcomes", 1)[1].split("- name:", 1)[0]
-    assert "if: github.event.schedule != '20 9 * * 1-5'" in step
 
 
 @pytest.mark.parametrize("generated,kr,status,week", [
@@ -313,7 +303,7 @@ def test_friday_intraday_build_cannot_write_a_premature_final(tmp_path):
     assert _run(tmp_path, _at("2026-10-23T04:44:48Z", kr="2026-10-23", us="2026-10-22"), chain) == 0
     assert not [r for r in _receipts(ledger / "receipts.jsonl")
                 if r["region"] == "KR" and r["asOfDate"] == "2026-10-23"]
-    # Friday 18:20 KST: the KRX week-end session is final and its FINAL is recorded.
+    # A run after 18:00 KST (manual dispatch or a delayed start) records the KR FINAL; Saturday's does not duplicate it.
     assert _run(tmp_path, _at("2026-10-23T09:20:00Z", kr="2026-10-23", us="2026-10-22"), chain) == 0
     saturday = _at("2026-10-24T04:35:00Z", kr="2026-10-23", us="2026-10-23")
     assert _run(tmp_path, saturday, paths) == 0

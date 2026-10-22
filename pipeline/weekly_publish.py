@@ -84,9 +84,11 @@ def unfinished_sessions(site: dict) -> dict:
     return out
 
 
-# A carried region block may stay on the page at most as long as the site keeps
-# any publication (app.js MAX_AGE_MS); a region deferred for longer is refused.
-CARRY_MAX_AGE = timedelta(days=3)
+# A carried block is at most one weekly cycle old. The scheduled run lands inside
+# the KRX session on every weekday, so the KR block published on the weekend
+# (Friday's FINAL) is carried Monday to Friday; one older than a cycle plus a
+# day means the weekend publication itself failed, and the region refuses.
+CARRY_MAX_AGE = timedelta(days=8)
 
 
 def _prior_publication(receipts_in: Path) -> dict | None:
