@@ -6,6 +6,7 @@
 - **실행:** `scripts/update_ledger.py`(ledger.yml의 paper-ledger 단계)가 자기 작업 뒤 `run_all`을 호출한다. 예외는 잡아서 paper ledger에 영향을 주지 않는다. workflow 파일은 바꾸지 않았다(`.github/workflows` 트리는 `rp1-wp2-us-universe-v1`이 hash로 고정).
 - **예상 주기:** 00:10 cron은 실제로 04:30 UTC 전후(평일 KRX 장중)에 시작하므로 평일 실행은 기록하지 않는다. 토요일 실행이 금요일 세션을 기록하고, 일요일 실행이 같은 기록 창의 예비다.
 - **기록 위치:** signal-history `ledger/research-strategies/kr-selection-challenger-v1/` (`receipts.jsonl`, `outcomes.jsonl`, `assessment.json`, `publication-status.json`)
+- **실행 상태:** 단계마다 `publication-status.<record|outcomes|assess>.json`을 따로 쓰고, `publication-status.json`은 그 셋을 모은 집계다(`failedSteps`, `signalRecordState`). 뒤 단계가 성공해도 앞 단계의 거부나 예외는 남는다. 연구 단계가 0이 아닌 코드로 끝나거나 예외가 새면 `update_ledger.py`가 workflow 경고를 남기지만, paper ledger의 종료 코드는 바뀌지 않는다.
 
 결과는 아직 없다. 이 연구의 어떤 장부도 공식 주간 판단, 주문, 실거래 비중에 들어가지 않는다(`productionEffect: NONE`).
 

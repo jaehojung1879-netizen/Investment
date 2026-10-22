@@ -115,9 +115,12 @@ def main(argv=None) -> int:
     # session's receipt window, and a refusal never costs the paper ledger its day.
     try:
         from scripts import record_kr_selection_challenger as challenger
-        challenger.run_all(Path(argv[0]), ledger_dir / "research-strategies" / challenger.C.STUDY)
+        code = challenger.run_all(Path(argv[0]), ledger_dir / "research-strategies" / challenger.C.STUDY)
+        if code:
+            # Visible in the Actions run as a warning; the paper ledger's own exit code is unchanged.
+            print(f"::warning::kr-selection-challenger-v1 research steps exited {code}; see its publication-status.json")
     except Exception as exc:  # noqa: BLE001 - research must never block the ledger
-        print(f"kr-selection-challenger skipped: {type(exc).__name__}: {exc}")
+        print(f"::warning::kr-selection-challenger-v1 hook raised (paper ledger unaffected): {type(exc).__name__}: {exc}")
         # Machine-readable: an unrecorded signal must be visible to a reader, not only in the job log.
         try:
             study = ledger_dir / "research-strategies" / "kr-selection-challenger-v1"

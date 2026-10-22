@@ -622,3 +622,21 @@ def test_a_missing_price_collection_never_stops_the_signal_record(tmp_path, monk
     monkeypatch.setattr(CORE, "system_utc_now", lambda: pd.Timestamp("2026-11-01T04:35:00Z"))
     script.run_all(tmp_path / "site.json", study)
     assert (study / "receipts.jsonl").read_bytes() == first
+
+
+def test_a_non_zero_research_exit_is_a_workflow_warning_and_never_the_ledgers_exit(tmp_path, monkeypatch, capsys):
+    import importlib
+    update = importlib.import_module("scripts.update_ledger")
+    script = importlib.import_module("scripts.record_kr_selection_challenger")
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: (_ for _ in ()).throw(OSError("offline")))
+    data = site()
+    data["modelVersion"] = "m"
+    path = tmp_path / "site.json"
+    path.write_text(json.dumps(data))
+    ledger = tmp_path / "ledger"
+    ledger.mkdir()
+    for code, warned in ((0, False), (1, True)):
+        monkeypatch.setattr(script, "run_all", lambda *a, _c=code: _c)
+        assert update.main([str(path), str(ledger)]) == 0
+        out = capsys.readouterr().out
+        assert ("::warning::kr-selection-challenger-v1 research steps exited 1" in out) is warned
