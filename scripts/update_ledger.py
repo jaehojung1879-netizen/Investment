@@ -118,6 +118,12 @@ def main(argv=None) -> int:
         challenger.run_all(Path(argv[0]), ledger_dir / "research-strategies" / challenger.C.STUDY)
     except Exception as exc:  # noqa: BLE001 - research must never block the ledger
         print(f"kr-selection-challenger skipped: {type(exc).__name__}: {exc}")
+    # kr-selection-challenger-v2-accounting: the same discipline, PIT DART accounting books.
+    try:
+        from scripts import record_kr_selection_challenger_v2 as accounting_challenger
+        accounting_challenger.run_all(Path(argv[0]), ledger_dir)
+    except Exception as exc:  # noqa: BLE001 - research must never block the ledger
+        print(f"kr-selection-challenger-v2 skipped: {type(exc).__name__}: {exc}")
     return 0
 
 

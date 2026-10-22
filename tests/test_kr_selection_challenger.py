@@ -431,6 +431,7 @@ def test_actual_recording_path_through_the_paper_ledger_step(tmp_path, monkeypat
     import importlib
     update = importlib.import_module("scripts.update_ledger")
     monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: (_ for _ in ()).throw(OSError("offline")))
+    monkeypatch.setattr(importlib.import_module("scripts.record_kr_selection_challenger_v2"), "run_all", lambda *a: 0)  # its own tests
     monkeypatch.setattr(C, "merged_at_from_git", lambda *a: MERGED)
     monkeypatch.setattr(CORE, "system_utc_now", lambda: pd.Timestamp(clock))
     data = site(**site_kwargs)
@@ -466,6 +467,7 @@ def test_research_namespace_leaves_the_paper_ledger_and_weekly_receipts_byte_ide
     update = importlib.import_module("scripts.update_ledger")
     script = importlib.import_module("scripts.record_kr_selection_challenger")
     monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: (_ for _ in ()).throw(OSError("offline")))
+    monkeypatch.setattr(importlib.import_module("scripts.record_kr_selection_challenger_v2"), "run_all", lambda *a: 0)
     monkeypatch.setattr(C, "merged_at_from_git", lambda *a: MERGED)
     monkeypatch.setattr(CORE, "system_utc_now", lambda: pd.Timestamp("2026-10-31T04:35:00Z"))
     data = site(generated="2026-10-31T04:30:00+00:00")
