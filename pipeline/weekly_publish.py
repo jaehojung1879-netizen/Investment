@@ -26,7 +26,7 @@ import hashlib
 import json
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from . import weekly_decision as W
@@ -84,17 +84,61 @@ def unfinished_sessions(site: dict) -> dict:
     return out
 
 
+# A carried region block may stay on the page at most as long as the site keeps
+# any publication (app.js MAX_AGE_MS); a region deferred for longer is refused.
+CARRY_MAX_AGE = timedelta(days=3)
+
+
+def _prior_publication(receipts_in: Path) -> dict | None:
+    prior = {"latest": receipts_in.parent / "latest.json",
+             "status": receipts_in.parent / "publication-status.json"}
+    if not receipts_in.exists() or not all(p.exists() for p in prior.values()):
+        return None
+    return prior
+
+
+def carried_regions(site: dict, receipts_in: Path) -> tuple[dict, dict]:
+    """Regions to keep exactly as last published while the others publish.
+
+    A run can land inside one region's session and after another's finality
+    (00:10 UTC cron starting 04:30 UTC: KRX open, NYSE final). Each region's
+    decision reads only its own sleeve, tape, quotes and receipts, so the
+    finished region publishes and the unfinished one keeps its previous block.
+    Returns ``(prior region blocks, deferral record)``; both empty when every
+    region is unfinished (``defer_publication`` handles that) or nothing is.
+    """
+    pending = unfinished_sessions(site)
+    prior = _prior_publication(receipts_in)
+    if not pending or prior is None or set(pending) >= set(W.BENCHMARKS):
+        return {}, {}
+    latest = json.loads(prior["latest"].read_text(encoding="utf-8"))
+    now = datetime.fromisoformat(str(site["generatedAt"]).replace("Z", "+00:00"))
+    blocks, record = {}, {}
+    for region, session in sorted(pending.items()):
+        blob = (latest.get("regions") or {}).get(region)
+        since = ((latest.get("deferredRegions") or {}).get(region) or {}).get(
+            "carriedFromGeneratedAt") or latest.get("generatedAt")
+        try:
+            fresh = now - datetime.fromisoformat(str(since).replace("Z", "+00:00")) <= CARRY_MAX_AGE
+        except ValueError:
+            fresh = False
+        if blob is None or latest.get("blocked") or not fresh:
+            continue  # nothing current to keep: the region refuses as before
+        blocks[region] = blob
+        record[region] = {"unfinishedSession": session, "carriedFromGeneratedAt": since}
+    return blocks, record
+
+
 def defer_publication(site: dict, receipts_in: Path, out_path: Path, receipts_out: Path,
                       status_path: Path | None) -> bool:
-    """Re-emit the previous publication byte for byte while a session is unfinished.
+    """Re-emit the previous publication byte for byte while every session is unfinished.
 
     Only when the previous latest.json, receipts and status sit beside
     ``receipts_in`` (the ledger layout); otherwise the normal refusal path runs.
     """
     pending = unfinished_sessions(site)
-    prior = {"latest": receipts_in.parent / "latest.json",
-             "status": receipts_in.parent / "publication-status.json"}
-    if not pending or not receipts_in.exists() or not all(p.exists() for p in prior.values()):
+    prior = _prior_publication(receipts_in)
+    if not pending or prior is None or not set(pending) >= set(W.BENCHMARKS):
         return False
     for source, target in ((prior["latest"], out_path), (receipts_in, receipts_out),
                            (prior["status"], status_path)):
@@ -266,6 +310,8 @@ def write_status(path: Path | None, *, status: str, site: dict | None, errors: l
         "runId": os.environ.get("GITHUB_RUN_ID"), "errors": errors,
         "regions": {r: b.get("status") for r, b in ((block or {}).get("regions") or {}).items()},
     }
+    if (block or {}).get("deferredRegions"):
+        payload["deferredRegions"] = block["deferredRegions"]
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
 
@@ -283,8 +329,12 @@ def main(argv=None) -> int:
         site = json.loads(raw)
         if defer_publication(site, receipts_in, out_path, receipts_out, status_path):
             return 0
+        carried, deferred = carried_regions(site, receipts_in)
         receipts = _read_jsonl(receipts_in)
         block = build_from_site(site, hashlib.sha256(raw).hexdigest(), receipts)
+        block["regions"].update(carried)
+        if deferred:
+            block["deferredRegions"] = deferred
     except Exception as exc:  # noqa: BLE001 - the refusal itself must be published
         write_status(status_path, status="FAILED", site=site, errors=[f"{type(exc).__name__}: {exc}"])
         raise
@@ -297,7 +347,8 @@ def main(argv=None) -> int:
     out_path.write_text(json.dumps(block, ensure_ascii=False, sort_keys=True, allow_nan=False) + "\n",
                         encoding="utf-8")
     new = [] if block.get("blocked") else [
-        blob for blob in block["regions"].values() if blob.get("receiptId")]
+        blob for region, blob in block["regions"].items()
+        if blob.get("receiptId") and region not in carried]
     merged, report = W.append_receipts(receipts, new)
     receipts_out.parent.mkdir(parents=True, exist_ok=True)
     receipts_out.write_text("".join(json.dumps(r, ensure_ascii=False, sort_keys=True) + "\n"
@@ -309,6 +360,13 @@ def main(argv=None) -> int:
     for conflict in report["conflicts"]:
         print(f"notice: kept the first receipt for {conflict['receiptId']}; a later, different "
               "payload for the same week was refused")
+    if deferred:
+        print(json.dumps({"deferred": "SESSION_NOT_FINAL", "regions": deferred},
+                         ensure_ascii=False, sort_keys=True))
+    if unfinished_sessions(site):
+        # The research namespace reads both regions of one build, so it waits
+        # for a build in which no region is mid-session.
+        return 0
     # Additive research namespace. The existing workflow stages `git add ledger`;
     # no byte-pinned workflow, official P1 receipt or weekly output is changed.
     # Explicitly recognize its ledger layout; standalone callers keep their

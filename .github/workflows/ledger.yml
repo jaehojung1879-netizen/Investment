@@ -7,6 +7,11 @@ name: Append paper-signal ledger
 on:
   schedule:
     - cron: "10 0 * * *"   # after the 23:20 UTC production build
+    # Weekdays 18:20 KST, after the 18:00 KST KRX finality. GitHub starts the
+    # 00:10 run 4-5 hours late (inside the KRX session), so without this run a
+    # weekday KR decision is never built from a finished session (#273). It
+    # writes only the weekly decision; the paper ledger keeps one run a day.
+    - cron: "20 9 * * 1-5"
   workflow_dispatch:
 
 permissions:
@@ -96,6 +101,7 @@ jobs:
           fi
 
       - name: Append signals + refresh outcomes
+        if: github.event.schedule != '20 9 * * 1-5'
         run: python scripts/update_ledger.py data/site-data.json ledger-work/ledger
 
       # weekly-passive-first-v1: per-region 0-5 stocks / benchmark fallback,

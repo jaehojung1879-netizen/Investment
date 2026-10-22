@@ -174,22 +174,116 @@ def _run(tmp_path, site, paths):
 
 
 SATURDAY = "2026-10-17T04:35:17Z"   # previous publication: Friday 10-16 is final
+EVENING = "2026-10-20T09:20:00Z"    # previous publication: the 18:20 KST weekday run
 
 
-def test_2026_10_21_delayed_run_is_reproduced_and_deferred(tmp_path, capsys):
+def _latest(path):
+    return json.loads(Path(path).read_text())
+
+
+def _receipts(path):
+    return [json.loads(line) for line in Path(path).read_text().splitlines() if line.strip()]
+
+
+def test_2026_10_21_delayed_run_is_reproduced_and_only_kr_is_deferred(tmp_path, capsys):
     site = _at("2026-10-21T04:54:14.404960+00:00", kr="2026-10-21")  # 13:54 KST
     fresh = W.freshness("KR", "2026-10-21", datetime.fromisoformat(site["generatedAt"]))
     assert (fresh["status"], fresh["reason"]) == ("INVALID", "OBSERVATION_AFTER_COMPLETED_SESSION")
     assert (fresh["expectedSession"], fresh["observedSession"]) == ("2026-10-20", "2026-10-21")
     assert P.build_from_site(site, "sha", [])["regions"]["KR"]["status"] == "SOURCE_INCOMPLETE"
     assert P.unfinished_sessions(site) == {"KR": "2026-10-21"}
-    ledger, paths = _ledger(tmp_path, _at(SATURDAY, kr="2026-10-16", us="2026-10-16"))
+    ledger, paths = _ledger(tmp_path, _at(EVENING, kr="2026-10-20", us="2026-10-19"))
+    prior = _latest(ledger / "latest.json")
     capsys.readouterr()
     assert _run(tmp_path, site, paths) == 0
+    latest = _latest(paths[1])
+    # KR keeps exactly what was published; NYSE 10-20 is final and publishes.
+    assert latest["regions"]["KR"] == prior["regions"]["KR"]
+    us = latest["regions"]["US"]
+    assert us["asOfDate"] == us["freshness"]["expectedSession"] == "2026-10-20"
+    assert latest["deferredRegions"] == {"KR": {"unfinishedSession": "2026-10-21",
+                                                "carriedFromGeneratedAt": prior["generatedAt"]}}
+    assert P.validate(latest) == []
+    assert not [r for r in _receipts(paths[2]) if r["region"] == "KR" and r["asOfDate"] > "2026-10-20"]
+    status = _latest(paths[3])
+    assert status["status"] == "PUBLISHED" and status["deferredRegions"] == latest["deferredRegions"]
+    assert '"deferred": "SESSION_NOT_FINAL"' in capsys.readouterr().out
+
+
+def test_every_region_unfinished_re_emits_the_publication_byte_for_byte(tmp_path, monkeypatch):
+    ledger, paths = _ledger(tmp_path, _at(SATURDAY, kr="2026-10-16", us="2026-10-16"))
+    monkeypatch.setattr(P, "unfinished_sessions", lambda site: {"KR": "2026-10-21", "US": "2026-10-21"})
+    assert _run(tmp_path, _at("2026-10-21T04:54:14Z", kr="2026-10-21", us="2026-10-21"), paths) == 0
     for name, written in (("latest.json", paths[1]), ("receipts.jsonl", paths[2]),
                           ("publication-status.json", paths[3])):
         assert written.read_bytes() == (ledger / name).read_bytes()
-    assert json.loads(capsys.readouterr().out)["unfinishedSessions"] == {"KR": "2026-10-21"}
+
+
+def test_evening_run_publishes_both_regions_from_finished_sessions(tmp_path):
+    ledger, paths = _ledger(tmp_path, _at(SATURDAY, kr="2026-10-16", us="2026-10-16"))
+    site = _at("2026-10-21T09:20:00Z", kr="2026-10-21", us="2026-10-20")  # 18:20 KST cron
+    assert P.unfinished_sessions(site) == {}
+    assert _run(tmp_path, site, paths) == 0
+    latest = _latest(paths[1])
+    assert "deferredRegions" not in latest
+    assert {r: b["asOfDate"] for r, b in latest["regions"].items()} == {"KR": "2026-10-21", "US": "2026-10-20"}
+
+
+def test_evening_run_delayed_into_the_nyse_session_still_publishes_kr(tmp_path):
+    ledger, paths = _ledger(tmp_path, _at(EVENING, kr="2026-10-20", us="2026-10-19"))
+    prior = _latest(ledger / "latest.json")
+    site = _at("2026-10-21T15:00:00Z", kr="2026-10-21", us="2026-10-21")  # 11:00 New York
+    assert _run(tmp_path, site, paths) == 0
+    latest = _latest(paths[1])
+    kr = latest["regions"]["KR"]
+    assert kr["asOfDate"] == kr["freshness"]["observedSession"] == "2026-10-21"
+    assert latest["regions"]["US"] == prior["regions"]["US"]
+    assert set(latest["deferredRegions"]) == {"US"}
+    assert not [r for r in _receipts(paths[2]) if r["region"] == "US" and r["asOfDate"] > "2026-10-19"]
+
+
+def test_a_carry_never_outlives_the_page_freshness_bound(tmp_path):
+    monday = "2026-10-19T09:20:00Z"
+    ledger, paths = _ledger(tmp_path, _at(monday, kr="2026-10-19", us="2026-10-16"))
+    chain = paths[:1] + [ledger / "latest.json", ledger / "receipts.jsonl", ledger / "publication-status.json"]
+    built = _latest(ledger / "latest.json")["generatedAt"]
+    # Chained intraday carries keep the ORIGINAL publication time of the KR block.
+    for day, us in (("20", "19"), ("21", "20"), ("22", "21")):
+        assert _run(tmp_path, _at(f"2026-10-{day}T04:40:00Z", kr=f"2026-10-{day}", us=f"2026-10-{us}"),
+                    chain) == 0
+        assert _latest(ledger / "latest.json")["deferredRegions"]["KR"]["carriedFromGeneratedAt"] == built
+    # More than three days after it was built the old KR block is not shown as current.
+    assert _run(tmp_path, _at("2026-10-23T04:40:00Z", kr="2026-10-23", us="2026-10-22"), paths) == 0
+    latest = _latest(paths[1])
+    assert latest["regions"]["KR"]["status"] == "SOURCE_INCOMPLETE"
+    assert "deferredRegions" not in latest and P.validate(latest) == []
+
+
+def test_research_namespace_waits_for_a_build_with_no_session_in_progress(tmp_path, monkeypatch):
+    from pipeline import current_champion_decisions as C
+    calls = []
+    monkeypatch.setattr(C, "publish", lambda *a, **k: calls.append(a))
+    weekly = tmp_path / "ledger" / "weekly-decisions"
+    weekly.mkdir(parents=True)
+    paths = [weekly / "receipts.jsonl", weekly / "latest.json", weekly / "receipts.jsonl",
+             weekly / "publication-status.json"]
+    assert _run(tmp_path, _at(SATURDAY, kr="2026-10-16", us="2026-10-16"), paths) == 0
+    assert len(calls) == 1
+    assert _run(tmp_path, _at("2026-10-21T04:54:14Z", kr="2026-10-21"), paths) == 0
+    assert len(calls) == 1
+    assert _run(tmp_path, _at("2026-10-21T09:20:00Z", kr="2026-10-21"), paths) == 0
+    assert len(calls) == 2
+
+
+def test_ledger_workflow_adds_a_post_finality_weekday_run_without_a_second_paper_append():
+    import re
+    text = (Path(__file__).resolve().parents[1] / ".github/workflows/ledger.yml").read_text()
+    crons = re.findall(r'cron: "([^"]+)"', text)
+    assert crons == ["10 0 * * *", "20 9 * * 1-5"]
+    # 09:20 UTC is after the 18:00 KST (09:00 UTC) KRX finality.
+    assert W.last_completed_session("KR", datetime.fromisoformat("2026-10-21T09:20:00+00:00")) == "2026-10-21"
+    step = text.split("- name: Append signals + refresh outcomes", 1)[1].split("- name:", 1)[0]
+    assert "if: github.event.schedule != '20 9 * * 1-5'" in step
 
 
 @pytest.mark.parametrize("generated,kr,status,week", [
@@ -215,15 +309,19 @@ def test_any_build_between_open_and_finality_waits(generated):
 
 def test_friday_intraday_build_cannot_write_a_premature_final(tmp_path):
     ledger, paths = _ledger(tmp_path, _at(SATURDAY, kr="2026-10-16", us="2026-10-16"))
-    before = (ledger / "receipts.jsonl").read_bytes()
-    assert _run(tmp_path, _at("2026-10-23T04:44:48Z", kr="2026-10-23", us="2026-10-22"), paths) == 0
-    assert paths[2].read_bytes() == before
+    chain = paths[:1] + [ledger / "latest.json", ledger / "receipts.jsonl", ledger / "publication-status.json"]
+    assert _run(tmp_path, _at("2026-10-23T04:44:48Z", kr="2026-10-23", us="2026-10-22"), chain) == 0
+    assert not [r for r in _receipts(ledger / "receipts.jsonl")
+                if r["region"] == "KR" and r["asOfDate"] == "2026-10-23"]
+    # Friday 18:20 KST: the KRX week-end session is final and its FINAL is recorded.
+    assert _run(tmp_path, _at("2026-10-23T09:20:00Z", kr="2026-10-23", us="2026-10-22"), chain) == 0
     saturday = _at("2026-10-24T04:35:00Z", kr="2026-10-23", us="2026-10-23")
     assert _run(tmp_path, saturday, paths) == 0
-    finals = [json.loads(line) for line in paths[2].read_text().splitlines()]
-    kr = [r for r in finals if r["region"] == "KR" and r["asOfDate"] == "2026-10-23"]
-    assert len(kr) == 1 and kr[0]["weekStatus"] == "FINAL_WEEKLY"
-    assert W.receipt_session_error(kr[0]) is None
+    finals = _receipts(paths[2])
+    for region in ("KR", "US"):
+        rows = [r for r in finals if r["region"] == region and r["asOfDate"] == "2026-10-23"]
+        assert len(rows) == 1 and rows[0]["weekStatus"] == "FINAL_WEEKLY"
+        assert W.receipt_session_error(rows[0]) is None
 
 
 def test_holiday_run_publishes_and_holiday_dated_row_is_not_a_session(tmp_path):
