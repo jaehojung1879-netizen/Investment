@@ -1,8 +1,8 @@
 {
   "schemaVersion": "2.7.0",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
-  "buildCommitSha": "2097c2dc546c",
-  "generatedAt": "2026-10-22T06:28:10.714086+00:00",
+  "buildCommitSha": "7b0dbad53c46",
+  "generatedAt": "2026-10-22T10:08:20.481939+00:00",
   "marketAsOf": "2026-10-22",
   "macroRegime": "Reflation",
   "holdingsByRegion": {
@@ -12,8 +12,8 @@
       "TRV",
       "SPG",
       "ALL",
-      "MO",
       "SWK",
+      "MO",
       "MAR",
       "KO",
       "PRU",
@@ -31,16 +31,16 @@
       "000660.KS",
       "028670.KS",
       "005935.KS",
-      "036460.KS",
+      "032640.KS",
       "033780.KS"
     ]
   },
   "modelPortfolioWeights": {
-    "SWK": 0.179883,
-    "SPG": 0.265276,
-    "PRU": 0.155454,
-    "078930.KS": 0.058416,
-    "001450.KS": 0.040971
+    "SWK": 0.154198,
+    "SPG": 0.227398,
+    "PRU": 0.133257,
+    "078930.KS": 0.050178,
+    "001450.KS": 0.034969
   },
   "entryStatesByTicker": {
     "MU": "WAIT_FOR_PULLBACK",
@@ -48,16 +48,16 @@
     "TRV": "WAIT_FOR_PULLBACK",
     "SPG": "WATCH",
     "ALL": "WAIT_FOR_PULLBACK",
-    "MO": "WAIT_FOR_PULLBACK",
     "SWK": "ACCUMULATE_GRADUALLY",
+    "MO": "WAIT_FOR_PULLBACK",
     "MAR": "WAIT_FOR_PULLBACK",
     "KO": "WAIT_FOR_PULLBACK",
     "PRU": "WATCH",
     "NUE": "WAIT_FOR_PULLBACK",
     "GOOGL": "WATCH",
+    "GM": "AVOID",
     "GOOG": "AVOID",
     "HLT": "WAIT_FOR_PULLBACK",
-    "BRK-B": "WAIT_FOR_PULLBACK",
     "078930.KS": "WATCH",
     "005490.KS": "AVOID",
     "021240.KS": "WAIT_FOR_PULLBACK",
@@ -68,9 +68,9 @@
     "000660.KS": "AVOID",
     "028670.KS": "WAIT_FOR_PULLBACK",
     "005935.KS": "WATCH",
-    "036460.KS": "WAIT_FOR_PULLBACK",
-    "033780.KS": "WAIT_FOR_PULLBACK",
     "032640.KS": "AVOID",
+    "033780.KS": "WAIT_FOR_PULLBACK",
+    "036460.KS": "WAIT_FOR_PULLBACK",
     "009540.KS": "AVOID",
     "088350.KS": "AVOID"
   },
@@ -79,8 +79,8 @@
     "068270.KS": "EMERGING_OPPORTUNITY",
     "011200.KS": "EMERGING_OPPORTUNITY",
     "033780.KS": "EMERGING_OPPORTUNITY",
-    "028670.KS": "EMERGING_OPPORTUNITY",
     "018880.KS": "EMERGING_OPPORTUNITY",
+    "028670.KS": "EMERGING_OPPORTUNITY",
     "271560.KS": "EMERGING_OPPORTUNITY",
     "207940.KS": "WATCH",
     "FITB": "EMERGING_OPPORTUNITY",
@@ -95,11 +95,11 @@
   "warningTiersByTicker": {
     "402340.KS": "CRITICAL_WARNING",
     "000660.KS": "ELEVATED_WARNING",
-    "005935.KS": "ELEVATED_WARNING",
+    "005935.KS": "WATCH",
     "078930.KS": "WATCH",
     "005490.KS": "WATCH",
     "034730.KS": "WATCH",
-    "036460.KS": "WATCH",
+    "032640.KS": "CRITICAL_WARNING",
     "001450.KS": "WATCH",
     "MU": "CRITICAL_WARNING",
     "GOOGL": "WATCH",
@@ -115,7 +115,7 @@
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-10-22T06:28:10.714086+00:00",
+    "validatedAt": "2026-10-22T10:08:20.481939+00:00",
     "errors": []
   }
 }
