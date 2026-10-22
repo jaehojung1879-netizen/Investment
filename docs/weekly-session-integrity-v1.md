@@ -97,3 +97,36 @@ ruff, compileall, /tmp의 합성 seed 생성·allow-seed 검증과 production �
 - 금요일 장중 빌드는 보류되어 조기 FINAL이 생기지 않는다. 주말 실행이 금요일 FINAL을 기록한다.
 - 보류일에는 같은 실행의 연구 namespace(champion) 게시도 건너뛴다.
 - `weekly_publish.py`의 새 hash만 pins 파일에 반영했다. `weekly_decision.py`, workflow, 연구 결과는 그대로다.
+
+## 후속 2: 지역별 보류 (#273)
+
+#274 이후에도 평일 KR 판단은 게시되지 않았다.
+- 실제 시작 시각이 매일 04:10~04:45 UTC라 평일 빌드는 항상 KRX 장중이었고, 보류만 반복되었다.
+- 같은 시각 NYSE 직전 세션은 최종인데도 미국 판단까지 함께 보류되었다.
+- `pages.yml`의 예약 실행도 2~9시간 늦게 시작했다(23:20 → 01:16~02:56, 08:15 → 13:14~17:53 UTC). 따라서 특정 시각 창에 의존하는 해법은 쓸 수 없다.
+
+### 변경
+
+- **지역별 보류.** 진행 중 세션이 있는 지역만 직전 게시 블록을 그대로 유지하고, 그 지역 receipt는 기록하지 않는다.
+  - 최종인 지역은 정상 게시한다. 지역 판단은 그 지역의 sleeve·지수 행·종목 시세·receipt만 읽는다(`weekly_decision.build`, `longterm.build`은 region-first).
+  - `latest.json`과 `publication-status.json`에 `deferredRegions`(`unfinishedSession`, `carriedFromGeneratedAt`)를 남긴다.
+  - 모든 지역이 진행 중이면 #274처럼 바이트 그대로 재출력한다.
+- **유지 기간 상한: 처음 만들어진 시각부터 8일(주간 1주기 + 1일).**
+  - 평일 실행은 모두 KRX 장중이므로, 주말 실행이 기록한 금요일 FINAL이 월~금 동안 유지된다.
+  - 주간 판단은 다음 주간 마감 세션까지 유효하다. 1주기를 넘겼다면 주말 게시 자체가 실패한 것이므로 `SOURCE_INCOMPLETE`로 거부한다.
+  - 연쇄 보류로 `generatedAt`이 갱신되어도 이 기준은 처음 시각을 따른다.
+- **연구 namespace(champion).** 두 지역을 함께 읽으므로, 진행 중 세션이 하나도 없는 빌드에서만 게시한다. 차단 블록은 바이트 그대로다.
+
+### 운영 결과
+
+| 실행 | KR | US |
+|---|---|---|
+| 00:10 cron (실제 04:30 전후) 평일 | 유지 | 게시 |
+| 토·일 | 금요일 FINAL 기록·게시 | 금요일 FINAL 기록·게시 |
+| 18:00 KST 이후 실행(수동 dispatch 또는 지연 시작) | 당일 게시 | 게시. NYSE 장중이면 유지 |
+
+### 열지 못한 것
+
+`ledger.yml`에 18:20 KST 평일 cron을 추가하면 평일 KR 미리보기도 완성 세션으로 게시할 수 있다. 그러나 `.github/workflows` 트리 hash가 봉인된 `rp1-wp2-us-universe-v1` 명세(`protectedTreeSha256`)에 고정되어 있다. 그 명세의 digest는 봉인된 결과 파일이 다시 고정한다. 따라서 workflow를 바꾸는 것은 소유자 결정 사항이며, 이 변경에는 포함하지 않았다.
+
+pin 유지보수로 `weekly_publish.py` hash만 갱신했다. 18:00 KST 최종성, freshness 판정, 정책·digest 함수, 기존 receipt, workflow와 연구 결과는 그대로다.
