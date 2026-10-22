@@ -1,112 +1,112 @@
 {
-  "filings": 2,
+  "filings": 10,
   "periodLengthByForm": {
     "10-K": {
       "year (316-400d)": 1
     },
     "10-Q": {
-      "three quarters (226-315d)": 1
+      "three quarters (226-315d)": 9
     }
   },
   "filingsWithNoPeriodLength": 0,
   "filingsByFreq": {
-    "annual": 1,
-    "quarterly": 1
+    "quarterly": 9,
+    "annual": 1
   },
   "formsByFreq": {
     "annual": {
       "10-K": 1
     },
     "quarterly": {
-      "10-Q": 1
+      "10-Q": 9
     }
   },
   "conceptsBySection": {
     "bs": 0,
-    "ic": 44,
-    "cf": 59
+    "ic": 84,
+    "cf": 131
   },
   "conceptsBySectionCollapsed": {
     "bs": 0,
-    "ic": 44,
-    "cf": 59
+    "ic": 84,
+    "cf": 131
   },
   "topConcepts": {
     "bs": [],
     "ic": [
-      "us-gaap_Revenues",
-      "us-gaap_InterestExpense",
       "us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
       "us-gaap_IncomeTaxExpenseBenefit",
-      "us-gaap_NetIncomeLoss",
-      "us-gaap_WeightedAverageNumberOfSharesOutstandingBasic",
-      "us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
       "us-gaap_EarningsPerShareBasic",
       "us-gaap_EarningsPerShareDiluted",
-      "us-gaap_OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent",
+      "us-gaap_NetIncomeLoss",
+      "us-gaap_SellingGeneralAndAdministrativeExpense",
+      "us-gaap_OperatingIncomeLoss",
+      "us-gaap_NonoperatingIncomeExpense",
       "us-gaap_ComprehensiveIncomeNetOfTax",
-      "us-gaap_CostOfGoodsAndServicesSold"
+      "us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax",
+      "us-gaap_CostOfGoodsAndServicesSold",
+      "us-gaap_CostsAndExpenses"
     ],
     "cf": [
       "us-gaap_NetCashProvidedByUsedInOperatingActivities",
-      "us-gaap_PaymentsForProceedsFromOtherInvestingActivities",
       "us-gaap_NetCashProvidedByUsedInInvestingActivities",
-      "us-gaap_PaymentsForRepurchaseOfCommonStock",
-      "us-gaap_RepaymentsOfDebt",
       "us-gaap_NetCashProvidedByUsedInFinancingActivities",
+      "us-gaap_PaymentsForRepurchaseOfCommonStock",
+      "us-gaap_ProceedsFromPaymentsForOtherFinancingActivities",
       "us-gaap_CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
-      "us-gaap_InterestPaidNet",
-      "us-gaap_IncomeLossFromContinuingOperationsIncludingPortionAttributableToNoncontrollingInterest",
-      "acn_DepreciationAmortizationAndOther",
+      "us-gaap_DepreciationDepletionAndAmortization",
       "us-gaap_ShareBasedCompensation",
-      "us-gaap_IncreaseDecreaseInDeferredIncomeTaxes"
+      "us-gaap_ProfitLoss",
+      "us-gaap_PaymentsToAcquirePropertyPlantAndEquipment",
+      "us-gaap_PaymentsForProceedsFromOtherInvestingActivities",
+      "us-gaap_EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents"
     ]
   },
   "topConceptsCollapsed": {
     "bs": [],
     "ic": [
-      "Revenues",
-      "InterestExpense",
       "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
       "IncomeTaxExpenseBenefit",
-      "NetIncomeLoss",
-      "WeightedAverageNumberOfSharesOutstandingBasic",
-      "WeightedAverageNumberOfDilutedSharesOutstanding",
       "EarningsPerShareBasic",
       "EarningsPerShareDiluted",
-      "OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent",
+      "NetIncomeLoss",
+      "SellingGeneralAndAdministrativeExpense",
+      "OperatingIncomeLoss",
+      "NonoperatingIncomeExpense",
       "ComprehensiveIncomeNetOfTax",
-      "CostOfGoodsAndServicesSold"
+      "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "CostOfGoodsAndServicesSold",
+      "CostsAndExpenses"
     ],
     "cf": [
       "NetCashProvidedByUsedInOperatingActivities",
-      "PaymentsForProceedsFromOtherInvestingActivities",
       "NetCashProvidedByUsedInInvestingActivities",
-      "PaymentsForRepurchaseOfCommonStock",
-      "RepaymentsOfDebt",
       "NetCashProvidedByUsedInFinancingActivities",
+      "PaymentsForRepurchaseOfCommonStock",
+      "ProceedsFromPaymentsForOtherFinancingActivities",
       "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
-      "InterestPaidNet",
-      "IncomeLossFromContinuingOperationsIncludingPortionAttributableToNoncontrollingInterest",
-      "acn_DepreciationAmortizationAndOther",
+      "DepreciationDepletionAndAmortization",
       "ShareBasedCompensation",
-      "IncreaseDecreaseInDeferredIncomeTaxes"
+      "ProfitLoss",
+      "PaymentsToAcquirePropertyPlantAndEquipment",
+      "PaymentsForProceedsFromOtherInvestingActivities",
+      "EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents"
     ]
   },
   "units": {
-    "usd": 113,
-    "usd/share": 5,
-    "shares": 4
+    "usd": 520,
+    "usd/share": 27,
+    "shares": 12
   },
   "unitClasses": {
-    "currency": 113,
-    "perShare": 5,
-    "shares": 4
+    "currency": 520,
+    "perShare": 27,
+    "shares": 12
   },
   "unitClassesResolved": {
-    "currency": 113,
-    "perShare": 5,
-    "shares": 4
+    "currency": 520,
+    "perShare": 27,
+    "shares": 12
   },
   "unclassifiedUnits": {}
 }
