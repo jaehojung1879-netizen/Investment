@@ -148,6 +148,32 @@ def test_liquidity_reads_the_calendar_not_the_rows():
     assert C.liquidity(None, SESSION) == (None, None)
 
 
+def test_liquidity_evidence_tells_a_holiday_row_a_missing_session_and_a_halt_apart():
+    full = bars()
+    holiday = pd.DataFrame({"Open": 1e4, "High": 1e4, "Low": 1e4, "Close": 1e4, "Volume": 1e6}, index=pd.DatetimeIndex(["2026-10-09"]))
+    assert len(RC.sessions("2026-10-09", "2026-10-09", "KR")) == 0                      # Hangul Day: KRX closed
+    e = C.liquidity_evidence(pd.concat([full, holiday]).sort_index(), SESSION)
+    assert e["offCalendarRows"] == 1 and e["basis"] == "ALL_60_TRADED" and e["medianTradedValue60Krw"] == 1e10   # dropped, not a session
+    gap = full.drop(full.index[-30])
+    e = C.liquidity_evidence(gap, SESSION)
+    assert e["states"]["SESSION_MISSING"] == 1 and e["basis"] == "NOT_ALL_60_TRADED" and e["medianTradedValue60Krw"] is None
+    assert e["positiveVolumeSessions20"] == 20
+    halted = full.copy()
+    halted.loc[halted.index[-3], "Volume"] = 0
+    e = C.liquidity_evidence(halted, SESSION)
+    assert e["states"]["SUSPENDED"] == 1 and e["positiveVolumeSessions20"] == 19
+    assert C.liquidity_evidence(None, SESSION)["basis"] == "NO_VENDOR_FRAME"
+    assert C.liquidity_evidence(full.iloc[-10:], SESSION)["basis"] == "NOT_ALL_60_TRADED"           # 50 sessions with no row
+    # The receipt carries every name's evidence and a cross-section summary.
+    fr = frames()
+    fr[ticker(1)], fr[ticker(2)] = gap, halted
+    r = receipt(fr=fr)
+    summary = r["liquidityDiagnostics"]["summary"]
+    assert summary["names"] == len(r["signal"]) and summary["median60Measured"] == summary["names"] - 2 - summary["noVendorFrame"]
+    assert summary["sessionStates60"]["SESSION_MISSING"] == 1 and summary["sessionStates60"]["SUSPENDED"] == 1
+    assert r["liquidityDiagnostics"]["names"][ticker(2)]["positiveVolumeSessions20"] == 19
+
+
 def test_missing_accounting_blocks_every_book_instead_of_ranking_on_what_is_left():
     acc = {t: rows[:1] for t, rows in accounting().items()}                           # FY2024 only: no prior OCF anywhere
     r = receipt(acc=acc)
@@ -272,6 +298,12 @@ def test_actual_recording_path_through_the_paper_ledger_step(tmp_path, monkeypat
     study = ledger / "research-strategies" / C.STUDY
     rows = (study / "receipts.jsonl").read_text().splitlines() if (study / "receipts.jsonl").exists() else []
     assert len(rows) == expected
+    status = json.loads((study / "publication-status.json").read_text())
+    assert {k: v["status"] for k, v in status["steps"].items()} == {
+        "record": "RECORDED" if expected else "SKIPPED", "outcomes": "NOTHING_MATURED", "assess": "ASSESSED"}
+    assert status["failedSteps"] == [] and status["status"] == "OK"
+    if expected:
+        assert status["steps"]["record"]["liquidity"]["names"] == len(json.loads(rows[0])["signal"])
     if expected:
         row = json.loads(rows[0])
         C.validate_receipt(row, pathway=C.LIVE)
@@ -283,3 +315,50 @@ def test_actual_recording_path_through_the_paper_ledger_step(tmp_path, monkeypat
     else:
         assert not calls                                                       # an intraday run downloads nothing for the challenger
     assert {p.name for p in (ledger / "research-strategies").iterdir()} == {C.STUDY}
+
+
+def test_a_refused_record_stays_visible_after_assess_and_the_ledger_is_not_blocked(tmp_path, monkeypatch, capsys):
+    """The accounting store is missing: record refuses (an exception inside the step), outcomes and assess still run, the one status file
+    keeps the refusal, the paper-ledger step returns 0 and warns."""
+    import importlib
+    update = importlib.import_module("scripts.update_ledger")
+    monkeypatch.setattr(importlib.import_module("scripts.record_kr_selection_challenger"), "run_all", lambda *a: 0)
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: (_ for _ in ()).throw(OSError("offline")))
+    monkeypatch.setattr(C, "merged_at_from_git", lambda *a: MERGED)
+    monkeypatch.setattr(CORE, "system_utc_now", lambda: pd.Timestamp(SATURDAY))
+    data = site(generated="2026-10-31T04:30:00+00:00")
+    data["modelVersion"] = "m"
+    path = tmp_path / "site.json"
+    path.write_text(json.dumps(data))
+    ledger = tmp_path / "ledger"
+    ledger.mkdir()
+    assert update.main([str(path), str(ledger)]) == 0
+    status = json.loads((ledger / "research-strategies" / C.STUDY / "publication-status.json").read_text())
+    assert status["failedSteps"] == ["record"] and status["status"] == "STEP_FAILED" and status["signalRecordState"] == "REFUSED"
+    assert status["steps"]["record"]["reason"].startswith("ACCOUNTING_STORE_MISSING")
+    assert status["steps"]["assess"]["status"] == "ASSESSED"
+    assert "::warning::kr-selection-challenger-v2-accounting research steps exited 1" in capsys.readouterr().out
+
+
+def test_a_step_exception_is_persisted_and_an_escaped_hook_exception_is_a_status(tmp_path, monkeypatch):
+    import importlib
+    script = importlib.import_module("scripts.record_kr_selection_challenger_v2")
+    update = importlib.import_module("scripts.update_ledger")
+    monkeypatch.setattr(script, "outcomes", lambda *a: (_ for _ in ()).throw(OSError("vendor down")))
+    monkeypatch.setattr(CORE, "system_utc_now", lambda: pd.Timestamp(SATURDAY))
+    path = tmp_path / "site.json"
+    path.write_text(json.dumps(site(generated="2026-11-03T04:30:00+00:00", session="2026-11-03")))
+    ledger = tmp_path / "ledger"
+    assert script.run_all(path, ledger) == 1
+    status = json.loads((ledger / "research-strategies" / C.STUDY / "publication-status.json").read_text())
+    assert status["failedSteps"] == ["outcomes"] and status["steps"]["outcomes"]["error"] == "OSError: vendor down"
+    assert status["steps"]["assess"]["status"] == "ASSESSED"
+    monkeypatch.setattr(importlib.import_module("scripts.record_kr_selection_challenger"), "run_all", lambda *a: 0)
+    monkeypatch.setattr(script, "run_all", lambda *a: (_ for _ in ()).throw(RuntimeError("boom")))
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: (_ for _ in ()).throw(OSError("offline")))
+    data = site()
+    data["modelVersion"] = "m"
+    path.write_text(json.dumps(data))
+    assert update.main([str(path), str(ledger)]) == 0
+    hook = json.loads((ledger / "research-strategies" / C.STUDY / "publication-status.json").read_text())
+    assert hook["status"] == "STEP_FAILED" and hook["failedSteps"] == ["hook"] and hook["error"] == "RuntimeError: boom"

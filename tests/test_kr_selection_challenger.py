@@ -12,6 +12,14 @@ from pipeline import kr_selection_challenger as C
 from pipeline import prospective_receipt_core as CORE
 from pipeline import replay_calendar as RC
 
+
+@pytest.fixture(autouse=True)
+def _accounting_challenger_isolated(monkeypatch):
+    """The paper-ledger step also runs kr-selection-challenger-v2-accounting. It has its own tests; here it must never run git against this
+    checkout or download anything."""
+    from scripts import record_kr_selection_challenger_v2 as accounting
+    monkeypatch.setattr(accounting, "run_all", lambda *a: 0)
+
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = json.loads((ROOT / C.SPEC_PATH).read_text())
 SESSION = "2026-10-30"                      # Friday: a weekly decision session
@@ -367,11 +375,11 @@ def test_live_recorder_fails_closed_without_a_registered_merge(tmp_path, monkeyp
     monkeypatch.setattr(C, "merged_at_from_git", lambda *a: (_ for _ in ()).throw(ValueError("SPEC_MERGE_TIME_UNKNOWN")))
     assert script.main(["record", str(path), str(tmp_path / "study")]) == 1
     status = json.loads((tmp_path / "study/publication-status.json").read_text())
-    assert status["status"] == "REFUSED" and not (tmp_path / "study/receipts.jsonl").exists()
+    assert status["signalRecordState"] == "REFUSED" and status["status"] == "STEP_FAILED" and not (tmp_path / "study/receipts.jsonl").exists()
     monkeypatch.setattr(C, "merged_at_from_git", lambda *a: MERGED)
     monkeypatch.setattr(CORE, "system_utc_now", lambda: pd.Timestamp("2026-10-30T05:00:00Z"))
     assert script.main(["record", str(path), str(tmp_path / "study")]) == 0       # not this run's turn: quiet skip
-    assert json.loads((tmp_path / "study/publication-status.json").read_text())["status"] == "SKIPPED"
+    assert json.loads((tmp_path / "study/publication-status.json").read_text())["signalRecordState"] == "SKIPPED"
 
 
 def test_paper_ledger_step_runs_the_challenger_and_a_failure_never_costs_it(tmp_path, monkeypatch):
@@ -450,7 +458,8 @@ def test_actual_recording_path_through_the_paper_ledger_step(tmp_path, monkeypat
     weekly_before = sorted(p.name for p in ledger.iterdir())
     assert update.main([str(path), str(ledger)]) == 0
     status = json.loads((study / "publication-status.json").read_text())
-    assert status["status"] == "ASSESSED" and status["productionEffect"] == "NONE"
+    assert status["steps"]["assess"]["status"] == "ASSESSED" and status["productionEffect"] == "NONE"
+    assert status["signalRecordState"] == expected and status["status"] == "OK"
     receipts = (study / "receipts.jsonl").read_text().splitlines() if (study / "receipts.jsonl").exists() else []
     assert len(receipts) == (1 if expected == "RECORDED" else 0)
     if receipts:
@@ -532,3 +541,114 @@ def test_finding_the_merge_time_never_shortens_history(tmp_path):
     assert pd.Timestamp(C.merged_at_from_git(clone)) == pd.Timestamp("2026-10-27T03:00:00+00:00")
     assert subprocess.run(["git", "cat-file", "-e", old + "^{commit}"], cwd=clone).returncode == 0      # the old commit is still there
     assert subprocess.run(["git", "merge-base", "--is-ancestor", old, "HEAD"], cwd=clone).returncode == 0
+
+
+# --------------------------------------------------------------------------- #
+# Publication status: a later step never hides an earlier refusal
+# --------------------------------------------------------------------------- #
+def _run_all(tmp_path, monkeypatch, clock, **site_kwargs):
+    import importlib
+    script = importlib.import_module("scripts.record_kr_selection_challenger")
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: (_ for _ in ()).throw(OSError("offline")))
+    monkeypatch.setattr(C, "merged_at_from_git", lambda *a: MERGED)
+    monkeypatch.setattr(CORE, "system_utc_now", lambda: pd.Timestamp(clock))
+    path = tmp_path / "site.json"
+    path.write_text(json.dumps(site(**site_kwargs)))
+    study = tmp_path / "study"
+    return script, script.run_all(path, study), study
+
+
+def _status(study):
+    return json.loads((study / "publication-status.json").read_text())
+
+
+def test_a_refused_record_survives_the_later_steps(tmp_path, monkeypatch):
+    # Signal 2026-10-30 is after the merge date but this clock is before the registered floor is irrelevant: use an unsafe artifact.
+    script, code, study = _run_all(tmp_path, monkeypatch, "2026-10-31T04:35:00Z", generated="2026-10-31T04:30:00+00:00",
+                                   provenance={"dataMode": "synthetic", "buildCommitSha": "a" * 40, "modelVersion": "m"})
+    status = _status(study)
+    assert code == 1 and status["status"] == "STEP_FAILED" and "record" in status["failedSteps"]
+    assert status["signalRecordState"] == "REFUSED" and status["signalRecordReason"]
+    assert status["steps"]["outcomes"]["status"] == "NOTHING_MATURED" and status["steps"]["assess"]["status"] == "ASSESSED"
+    assert json.loads((study / "publication-status.record.json").read_text())["status"] == "REFUSED"
+    assert not (study / "receipts.jsonl").exists()
+
+
+def test_a_step_exception_is_persisted_not_only_printed(tmp_path, monkeypatch):
+    script, _, study = _run_all(tmp_path, monkeypatch, "2026-10-31T04:35:00Z", generated="2026-10-31T04:30:00+00:00")
+    monkeypatch.setattr(script, "outcomes", lambda directory: (_ for _ in ()).throw(OSError("vendor refused")))
+    assert script.run_all(tmp_path / "site.json", study) == 1
+    status = _status(study)
+    assert status["failedSteps"] == ["outcomes"] and status["steps"]["outcomes"]["error"] == "OSError: vendor refused"
+    assert status["signalRecordState"] == "SKIPPED"           # the earlier step's own answer is kept (already recorded)
+    assert len((study / "receipts.jsonl").read_text().splitlines()) == 1
+
+
+@pytest.mark.parametrize("clock,state,reason", [
+    ("2026-10-30T09:30:00Z", "RECORDED", None),                                       # first signal session, 18:30 KST
+    ("2026-10-30T08:59:00Z", "SKIPPED", "ARTIFACT_NOT_BUILT_ON_A_FINAL_SESSION"),     # before 18:00 KST
+    ("2026-11-02T00:30:00Z", "SKIPPED", "RECEIPT_CREATED_AFTER_EXECUTION_OPEN_BACKDATED"),   # next day 09:30 KST: window closed
+])
+def test_timing_boundaries_write_a_machine_readable_state(tmp_path, monkeypatch, clock, state, reason):
+    script, _, study = _run_all(tmp_path, monkeypatch, clock, generated=clock.replace("Z", "+00:00"))
+    status = _status(study)
+    assert status["signalRecordState"] == state and status["status"] == "OK"
+    assert (status["signalRecordReason"] or "").startswith(reason or "")
+    assert (study / "receipts.jsonl").exists() == (state == "RECORDED")
+
+
+def test_a_merge_on_the_signal_date_makes_the_first_signal_ineligible(tmp_path, monkeypatch):
+    import importlib
+    script = importlib.import_module("scripts.record_kr_selection_challenger")
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: (_ for _ in ()).throw(OSError("offline")))
+    monkeypatch.setattr(C, "merged_at_from_git", lambda *a: "2026-10-30T01:00:00+00:00")     # 10:00 KST on the signal date
+    monkeypatch.setattr(CORE, "system_utc_now", lambda: pd.Timestamp("2026-10-31T04:35:00Z"))
+    path = tmp_path / "site.json"
+    path.write_text(json.dumps(site(generated="2026-10-31T04:30:00+00:00")))
+    script.run_all(path, tmp_path / "study")
+    status = _status(tmp_path / "study")
+    assert status["signalRecordState"] == "SKIPPED" and "SIGNAL_BEFORE_PROSPECTIVE_ELIGIBILITY" in status["signalRecordReason"]
+
+
+def test_a_hook_failure_in_the_paper_ledger_step_leaves_a_machine_readable_status(tmp_path, monkeypatch):
+    import importlib
+    update = importlib.import_module("scripts.update_ledger")
+    script = importlib.import_module("scripts.record_kr_selection_challenger")
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: (_ for _ in ()).throw(OSError("offline")))
+    monkeypatch.setattr(script, "run_all", lambda *a: (_ for _ in ()).throw(RuntimeError("boom")))
+    data = site()
+    data["modelVersion"] = "m"
+    path = tmp_path / "site.json"
+    path.write_text(json.dumps(data))
+    ledger = tmp_path / "ledger"
+    ledger.mkdir()
+    assert update.main([str(path), str(ledger)]) == 0                   # research failure is not a production failure
+    status = json.loads((ledger / "research-strategies" / C.STUDY / "publication-status.json").read_text())
+    assert status["status"] == "STEP_FAILED" and status["signalRecordState"] == "NOT_ATTEMPTED" and "boom" in status["error"]
+
+
+def test_a_missing_price_collection_never_stops_the_signal_record(tmp_path, monkeypatch):
+    script, _, study = _run_all(tmp_path, monkeypatch, "2026-10-31T04:35:00Z", generated="2026-10-31T04:30:00+00:00")
+    first = (study / "receipts.jsonl").read_bytes()
+    # Rerun later in the window with the vendor refusing: the receipt bytes are unchanged and nothing is added.
+    monkeypatch.setattr(CORE, "system_utc_now", lambda: pd.Timestamp("2026-11-01T04:35:00Z"))
+    script.run_all(tmp_path / "site.json", study)
+    assert (study / "receipts.jsonl").read_bytes() == first
+
+
+def test_a_non_zero_research_exit_is_a_workflow_warning_and_never_the_ledgers_exit(tmp_path, monkeypatch, capsys):
+    import importlib
+    update = importlib.import_module("scripts.update_ledger")
+    script = importlib.import_module("scripts.record_kr_selection_challenger")
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: (_ for _ in ()).throw(OSError("offline")))
+    data = site()
+    data["modelVersion"] = "m"
+    path = tmp_path / "site.json"
+    path.write_text(json.dumps(data))
+    ledger = tmp_path / "ledger"
+    ledger.mkdir()
+    for code, warned in ((0, False), (1, True)):
+        monkeypatch.setattr(script, "run_all", lambda *a, _c=code: _c)
+        assert update.main([str(path), str(ledger)]) == 0
+        out = capsys.readouterr().out
+        assert ("::warning::kr-selection-challenger-v1 research steps exited 1" in out) is warned

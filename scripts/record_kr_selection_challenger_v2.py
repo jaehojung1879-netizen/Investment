@@ -7,7 +7,8 @@
 ``scripts/update_ledger.py`` calls ``run_all`` after v1's recorder. ``<ledger-dir>`` is the signal-history ``ledger/`` directory: the canonical DART
 store is read from ``fundamentals/kr-canonical-v2`` inside it and this study writes only ``research-strategies/<study>/``. The rules for when a
 receipt is written are v1's (a finished weekly decision session, inside its receipt window, after the registered merge); additionally a run
-whose vendor download priced fewer than half of the names writes nothing, so a later run in the same window can retry.
+whose vendor download priced fewer than half of the names writes nothing, so a later run in the same window can retry. Status files follow
+v1's contract: one per step plus an aggregate, so a later step never hides an earlier refusal.
 """
 from __future__ import annotations
 
@@ -35,11 +36,25 @@ def study_dir(ledger_dir: Path) -> Path:
 
 
 def _status(directory: Path, **fields) -> None:
-    payload = {"schema": "KR_SELECTION_CHALLENGER_STATUS_V1", "studyId": C.STUDY, "runId": os.environ.get("GITHUB_RUN_ID"),
+    """v1's status contract for this study: each step owns ``publication-status.<action>.json`` and ``publication-status.json`` is the
+    aggregate rebuilt from all of them, so a later step never overwrites an earlier step's refusal or failure."""
+    action = fields["action"]
+    payload = {"schema": "KR_SELECTION_CHALLENGER_STATUS_V2", "studyId": C.STUDY, "runId": os.environ.get("GITHUB_RUN_ID"),
                "attemptedAt": str(CORE.system_utc_now().isoformat()), "productionEffect": "NONE", **fields}
     directory.mkdir(parents=True, exist_ok=True)
-    (directory / STATUS).write_text(json.dumps(payload, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
-    print(json.dumps(payload, ensure_ascii=False, sort_keys=True))
+    text = json.dumps(payload, ensure_ascii=False, sort_keys=True) + "\n"
+    (directory / f"publication-status.{action}.json").write_text(text, encoding="utf-8")
+    steps = {name: json.loads((directory / f"publication-status.{name}.json").read_text(encoding="utf-8"))
+             for name in V1S.STEPS if (directory / f"publication-status.{name}.json").exists()}
+    failed = sorted(n for n, v in steps.items() if v.get("status") in V1S.FAILED)
+    record_step = steps.get("record", {})
+    aggregate = {"schema": "KR_SELECTION_CHALLENGER_STATUS_V2", "studyId": C.STUDY, "productionEffect": "NONE",
+                 "runId": os.environ.get("GITHUB_RUN_ID"), "attemptedAt": payload["attemptedAt"],
+                 "status": "STEP_FAILED" if failed else "OK", "failedSteps": failed,
+                 "signalRecordState": record_step.get("status", "NOT_ATTEMPTED"), "signalRecordReason": record_step.get("reason"),
+                 "steps": steps}
+    (directory / STATUS).write_text(json.dumps(aggregate, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
+    print(text, end="")
 
 
 def _universe(site: dict) -> list[str]:
@@ -77,6 +92,7 @@ def record(site_path: Path, ledger_dir: Path) -> int:
     books = {b: [s["ticker"] for s in receipt["books"][b]["slots"]] for b in C.BOOKS}
     _status(directory, action="record", status="RECORDED", signalDate=receipt["signalDate"], executionDate=receipt["executionDate"],
             receiptSha256=receipt["receiptSha256"], books=books, readiness=receipt["readiness"]["ready"],
+            liquidity=receipt["liquidityDiagnostics"]["summary"],
             accountingNewestAvailableFrom=receipt["accountingStore"]["newestAvailableFrom"])
     return 0
 
@@ -132,13 +148,15 @@ def assess(ledger_dir: Path) -> int:
 
 
 def run_all(site_path: Path, ledger_dir: Path) -> int:
-    """record, then outcomes, then assess; each runs even if an earlier one failed. Called by scripts/update_ledger.py."""
+    """record, then outcomes, then assess; each runs even if an earlier one failed, and a step that raised is persisted as EXCEPTION.
+    Called by scripts/update_ledger.py."""
     codes = []
-    for step in (lambda: record(site_path, ledger_dir), lambda: outcomes(ledger_dir), lambda: assess(ledger_dir)):
+    for name, step in zip(V1S.STEPS, (lambda: record(site_path, ledger_dir), lambda: outcomes(ledger_dir), lambda: assess(ledger_dir))):
         try:
             codes.append(step())
         except Exception as exc:  # noqa: BLE001 - one step's failure is reported, not fatal to the next
             print(f"kr-selection-challenger-v2 step failed: {type(exc).__name__}: {exc}")
+            _status(study_dir(ledger_dir), action=name, status="EXCEPTION", error=f"{type(exc).__name__}: {exc}")
             codes.append(1)
     return max(codes)
 

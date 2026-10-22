@@ -95,27 +95,58 @@ def is_common_share(ticker: str) -> bool:
     return bool(V1.TICKER.match(ticker)) and ticker[5] == "0"
 
 
+def liquidity_evidence(frame, session: str) -> dict:
+    """The liquidity facts of one name on the exchange calendar ending at ``session``, with the session states behind them.
+
+    ``positiveVolumeSessions20`` counts traded sessions among the last 20; ``medianTradedValue60Krw`` is the median close x volume over the last
+    60 and exists only when all 60 traded. ``states`` tallies those 60 sessions (``SESSION_MISSING`` = an open session with no vendor row,
+    ``SUSPENDED`` = a row with zero volume) and ``offCalendarRows`` the vendor rows dated on a closed day, which are dropped, not sessions."""
+    if frame is None:
+        return {"positiveVolumeSessions20": None, "medianTradedValue60Krw": None, "basis": "NO_VENDOR_FRAME"}
+    end = pd.Timestamp(session)
+    aligned = BI.calendar_frame(frame, start=end - pd.Timedelta(days=130), end=end)
+    if session not in {str(d.date()) for d in aligned.index} or len(aligned) < LIQUIDITY_SESSIONS:
+        return {"positiveVolumeSessions20": None, "medianTradedValue60Krw": None, "basis": "CALENDAR_WINDOW_SHORT"}
+    last = aligned.iloc[-LIQUIDITY_SESSIONS:]
+    traded = last["state"].isin(["VALID", "RANGE_UNRESOLVED"]) & (last["Volume"] > 0)
+    window = BI.summary(last)
+    out = {"positiveVolumeSessions20": int(traded.iloc[-20:].sum()), "medianTradedValue60Krw": None,
+           "states": {k: v for k, v in window["states"].items() if v}, "offCalendarRows": int(aligned.attrs.get("offCalendarRows") or 0),
+           "basis": "ALL_60_TRADED" if traded.all() else "NOT_ALL_60_TRADED"}
+    if traded.all():
+        out["medianTradedValue60Krw"] = float(statistics.median((last["Close"] * last["Volume"]).tolist()))
+    return out
+
+
 def liquidity(frame, session: str) -> tuple[int | None, float | None]:
     """(traded sessions among the last 20, median close x volume over the last 60) on the exchange calendar ending at ``session``.
 
     A missing, suspended or invalid session is not a traded one; the median exists only when all 60 sessions traded."""
-    if frame is None:
-        return None, None
-    end = pd.Timestamp(session)
-    start = end - pd.Timedelta(days=130)
-    aligned = BI.calendar_frame(frame, start=start, end=end)
-    if session not in {str(d.date()) for d in aligned.index} or len(aligned) < LIQUIDITY_SESSIONS:
-        return None, None
-    last = aligned.iloc[-LIQUIDITY_SESSIONS:]
-    traded = last["state"].isin(["VALID", "RANGE_UNRESOLVED"]) & (last["Volume"] > 0)
-    sessions20 = int(traded.iloc[-20:].sum())
-    if not traded.all():
-        return sessions20, None
-    return sessions20, float(statistics.median((last["Close"] * last["Volume"]).tolist()))
+    e = liquidity_evidence(frame, session)
+    return e["positiveVolumeSessions20"], e["medianTradedValue60Krw"]
 
 
-def signal_rows(site: dict, session: str, accounting: dict, frames: dict) -> tuple[list[dict], dict]:
-    """``kr_alpha_signal_v2`` input rows for the production KR cross-section, and the production alpha by ticker for the control book."""
+def liquidity_summary(evidence: dict) -> dict:
+    """Counts over the cross-section: who had bars, who traded all 20, who has a 60-session median, who clears the floor, and the session
+    states behind the misses. Missing data is counted, never filled."""
+    rows = list(evidence.values())
+    states, off = {}, 0
+    for e in rows:
+        for state, n in (e.get("states") or {}).items():
+            states[state] = states.get(state, 0) + int(n)
+        off += int(e.get("offCalendarRows") or 0)
+    floor = S2.MIN_MEDIAN_TRADED_VALUE_KRW
+    return {"names": len(rows), "noVendorFrame": sum(e["basis"] == "NO_VENDOR_FRAME" for e in rows),
+            "calendarWindowShort": sum(e["basis"] == "CALENDAR_WINDOW_SHORT" for e in rows),
+            "traded20of20": sum(e["positiveVolumeSessions20"] == 20 for e in rows),
+            "median60Measured": sum(e["medianTradedValue60Krw"] is not None for e in rows),
+            "aboveMedianFloor": sum((e["medianTradedValue60Krw"] or 0) >= floor for e in rows),
+            "minMedianTradedValueKrw": floor, "sessionStates60": dict(sorted(states.items())), "offCalendarRowsDropped": off}
+
+
+def signal_rows(site: dict, session: str, accounting: dict, frames: dict, liquidity_out: dict | None = None) -> tuple[list[dict], dict]:
+    """``kr_alpha_signal_v2`` input rows for the production KR cross-section, and the production alpha by ticker for the control book.
+    ``liquidity_out``, when given, receives each name's ``liquidity_evidence``."""
     blob = ((site.get("longTerm") or {}).get("regions") or {}).get("KR") or {}
     details = site.get("details") or {}
     rows, alpha, seen = [], {}, set()
@@ -129,7 +160,10 @@ def signal_rows(site: dict, session: str, accounting: dict, frames: dict) -> tup
         cap = V1._number(item.get("marketCap"))
         ni, ocf, assets = values.get("netIncomeTtm"), values.get("ocfTtm"), values.get("assets")
         prior = values.get("priorOcfTtm")
-        sessions20, traded = liquidity(frames.get(ticker), session)
+        evidence = liquidity_evidence(frames.get(ticker), session)
+        sessions20, traded = evidence["positiveVolumeSessions20"], evidence["medianTradedValue60Krw"]
+        if liquidity_out is not None:
+            liquidity_out[ticker] = evidence
         rows.append({
             "ticker": ticker, "industry": item.get("sector") or None, "isPreferredShare": not is_common_share(ticker),
             "priceAsOf": detail.get("asOf") if detail.get("asOf") == session else None,
@@ -189,7 +223,7 @@ def build_books(site: dict, session: str, records: list[dict], alpha: dict, spec
 # Receipts
 # --------------------------------------------------------------------------- #
 REQUIRED = ("schemaVersion", "studyId", "pathway", "specSha256", "designDigest", "codeIdentity", "authorization", "signalDate",
-            "executionDate", "createdAtUtc", "sourceArtifact", "accountingStore", "coverage", "readiness", "books", "benchmark",
+            "executionDate", "createdAtUtc", "sourceArtifact", "accountingStore", "coverage", "readiness", "liquidityDiagnostics", "books", "benchmark",
             "horizonsSessions", "researchOnly", "productionEffect", "evidenceClass", "receiptSha256")
 
 
@@ -225,7 +259,8 @@ def build_receipt(site: dict, site_sha256: str, *, pathway: str, created_at_utc,
     if session < floor:
         raise ValueError("SIGNAL_BEFORE_REGISTERED_FLOOR: " + floor)
     execution = CORE.check_timing(signal_date=session, created_at_utc=created_at_utc, now_utc=now_utc, merged_at_utc=merged_at_utc)
-    rows, alpha = signal_rows(site, session, accounting, frames)
+    evidence = {}
+    rows, alpha = signal_rows(site, session, accounting, frames, evidence)
     universe = len(rows)
     priced = sum(1 for r in rows if r["medianTradedValue60Krw"] is not None or r["positiveVolumeSessions20"] is not None)
     if universe and priced / universe < MIN_PRICED_SHARE:
@@ -246,6 +281,7 @@ def build_receipt(site: dict, site_sha256: str, *, pathway: str, created_at_utc,
         "accountingStore": dict(store_identity), "coverage": S2.coverage(records), "readiness": readiness,
         "signal": [{k: r[k] for k in ("ticker", "industry", "state", "ineligibility", "valuePercentile", "confirmationFlags")}
                    for r in records],
+        "liquidityDiagnostics": {"summary": liquidity_summary(evidence), "names": dict(sorted(evidence.items()))},
         "books": books, "benchmark": BENCHMARK, "horizonsSessions": list(spec["horizonsSessions"]),
         "researchOnly": True, "productionEffect": "NONE", "evidenceClass": EVIDENCE_CLASS_BY_PATHWAY[pathway],
     }

@@ -7,7 +7,7 @@
 ``scripts/update_ledger.py`` (the paper-ledger step of ledger.yml) calls ``run_all`` after its own work. ``record`` appends one receipt for the KR weekly decision session the artifact speaks for, if this run is inside that session's receipt
 window (after its 18:00 KST finality, before the next open). Any other run writes nothing and says why; a later run in the same window
 finds the receipt already recorded. ``outcomes`` grades every receipt whose horizon has matured and is not yet graded, from a fresh vendor
-download. ``assess`` applies the registered rule. Each writes ``publication-status.json`` beside the ledgers; the exit code is 0 unless the
+download. ``assess`` applies the registered rule. Each writes ``publication-status.<action>.json`` and the aggregate ``publication-status.json`` beside the ledgers; the exit code is 0 unless the
 recorder itself failed.
 """
 from __future__ import annotations
@@ -31,12 +31,33 @@ QUIET = ("NOT_A_WEEKLY_DECISION_SESSION", "RECEIPT_CREATED_AFTER_EXECUTION_OPEN_
          "SIGNAL_BEFORE_REGISTERED_FLOOR")
 
 
+STEPS = ("record", "outcomes", "assess")
+FAILED = ("REFUSED", "EXCEPTION")
+
+
 def _status(directory: Path, **fields) -> None:
-    payload = {"schema": "KR_SELECTION_CHALLENGER_STATUS_V1", "studyId": C.STUDY, "runId": os.environ.get("GITHUB_RUN_ID"),
+    """One file per step plus an aggregate. A later step can never overwrite an earlier step's refusal or failure: each
+    step owns ``publication-status.<action>.json`` and ``publication-status.json`` is rebuilt from all of them."""
+    action = fields["action"]
+    payload = {"schema": "KR_SELECTION_CHALLENGER_STATUS_V2", "studyId": C.STUDY, "runId": os.environ.get("GITHUB_RUN_ID"),
                "attemptedAt": str(CORE.system_utc_now().isoformat()), "productionEffect": "NONE", **fields}
     directory.mkdir(parents=True, exist_ok=True)
-    (directory / STATUS).write_text(json.dumps(payload, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
-    print(json.dumps(payload, ensure_ascii=False, sort_keys=True))
+    text = json.dumps(payload, ensure_ascii=False, sort_keys=True) + "\n"
+    (directory / f"publication-status.{action}.json").write_text(text, encoding="utf-8")
+    steps = {}
+    for name in STEPS:
+        path = directory / f"publication-status.{name}.json"
+        if path.exists():
+            steps[name] = json.loads(path.read_text(encoding="utf-8"))
+    failed = sorted(n for n, v in steps.items() if v.get("status") in FAILED)
+    record_step = steps.get("record", {})
+    aggregate = {"schema": "KR_SELECTION_CHALLENGER_STATUS_V2", "studyId": C.STUDY, "productionEffect": "NONE",
+                 "runId": os.environ.get("GITHUB_RUN_ID"), "attemptedAt": payload["attemptedAt"],
+                 "status": "STEP_FAILED" if failed else "OK", "failedSteps": failed,
+                 "signalRecordState": record_step.get("status", "NOT_ATTEMPTED"), "signalRecordReason": record_step.get("reason"),
+                 "steps": steps}
+    (directory / STATUS).write_text(json.dumps(aggregate, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
+    print(text, end="")
 
 
 def record(site_path: Path, directory: Path) -> int:
@@ -112,11 +133,12 @@ def assess(directory: Path) -> int:
 def run_all(site_path: Path, directory: Path) -> int:
     """record, then outcomes, then assess; each runs even if an earlier one failed. Called by scripts/update_ledger.py."""
     codes = []
-    for step in (lambda: record(site_path, directory), lambda: outcomes(directory), lambda: assess(directory)):
+    for name, step in zip(STEPS, (lambda: record(site_path, directory), lambda: outcomes(directory), lambda: assess(directory))):
         try:
             codes.append(step())
         except Exception as exc:  # noqa: BLE001 - one step's failure is reported, not fatal to the next
             print(f"kr-selection-challenger step failed: {type(exc).__name__}: {exc}")
+            _status(directory, action=name, status="EXCEPTION", error=f"{type(exc).__name__}: {exc}")
             codes.append(1)
     return max(codes)
 
