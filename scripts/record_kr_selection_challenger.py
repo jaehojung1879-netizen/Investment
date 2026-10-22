@@ -25,6 +25,7 @@ from pipeline import kr_selection_challenger as C  # noqa: E402
 from pipeline import prospective_receipt_core as CORE  # noqa: E402
 
 RECEIPTS, OUTCOMES, ASSESSMENT, STATUS = "receipts.jsonl", "outcomes.jsonl", "assessment.json", "publication-status.json"
+PENDING = "outcome-pending.json"   # retryable state of outcomes not yet written; rewritten each run, never evidence
 # A refusal that only means "not this run's turn" is not a failure.
 QUIET = ("NOT_A_WEEKLY_DECISION_SESSION", "RECEIPT_CREATED_AFTER_EXECUTION_OPEN_BACKDATED", "RECEIPT_CREATED_BEFORE_SIGNAL_CLOSE",
          "ARTIFACT_NOT_BUILT_ON_A_FINAL_SESSION", "RECEIPT_ALREADY_EXISTS", "SIGNAL_BEFORE_PROSPECTIVE_ELIGIBILITY",
@@ -60,15 +61,30 @@ def _status(directory: Path, **fields) -> None:
     print(text, end="")
 
 
+def _fetch_bars(tickers, start):
+    """The feature-window proof's vendor download (the production build's own call: auto-adjusted). A refusal is a REFUSED record."""
+    from pipeline.datafeed import fetch_prices
+
+    try:
+        return fetch_prices(list(tickers), start)
+    except Exception as exc:  # noqa: BLE001 - any vendor failure means the windows cannot be proven this run
+        raise ValueError(f"PRICE_FETCH_INCOMPLETE: {type(exc).__name__}: {exc}") from exc
+
+
 def record(site_path: Path, directory: Path) -> int:
     raw = site_path.read_bytes()
     site = json.loads(raw)
     spec = C.load_spec()
     try:
         now = CORE.system_utc_now()
+        recorded = {r["signalDate"] for r in C.read_receipts(directory / RECEIPTS, pathway=C.LIVE)} \
+            if (directory / RECEIPTS).exists() else set()
+        session = C.signal_session(site)
+        if session in recorded:   # checked before any download: a later run in the same window has nothing to prove
+            raise ValueError("RECEIPT_ALREADY_EXISTS: " + session)
         receipt = C.build_receipt(site, hashlib.sha256(raw).hexdigest(), pathway=C.LIVE, created_at_utc=now, now_utc=now,
                                   merged_at_utc=C.merged_at_from_git(), code_identity=C.live_code_identity(spec), spec=spec,
-                                  spec_digest=C.spec_sha256())
+                                  spec_digest=C.spec_sha256(), fetch_bars=_fetch_bars)
         C.append_receipt(directory / RECEIPTS, receipt, pathway=C.LIVE)
     except ValueError as exc:
         reason = str(exc)
@@ -92,25 +108,38 @@ def outcomes(directory: Path) -> int:
     now = CORE.system_utc_now()
     due = [(r, h) for r in receipts for h in r["horizonsSessions"]
            if (r["receiptSha256"], h) not in graded and CORE.has_matured(r["executionDate"], h, now)]
+    previous = json.loads((directory / PENDING).read_text(encoding="utf-8")).get("pending", []) if (directory / PENDING).exists() else []
     if not due:
+        _write_pending(directory, [])
         _status(directory, action="outcomes", status="NOTHING_MATURED", receipts=len(receipts), graded=len(existing))
         return 0
     tickers = sorted({C.BENCHMARK} | {s["ticker"] for r, _ in due for b in C.BOOKS for s in r["books"][b]["slots"]})
     start = min(r["executionDate"] for r, _ in due)
     frames = fetch_prices(tickers, start)
-    written, deferred = [], []
+    written, deferred, pending = [], [], []
     with path.open("ab") as stream:
         for receipt, horizon in sorted(due, key=lambda x: (x[0]["signalDate"], x[1])):
             row = C.build_outcome(receipt, horizon=horizon, frames=frames, now_utc=now, pathway=C.LIVE)
             if row["resolution"] == "DEFERRED":   # a later run regrades it from a fresh download; nothing is written now
                 deferred.append([receipt["signalDate"], horizon, row["unresolved"], row["retryUntilSession"]])
+                pending.append(row)
                 continue
             C.validate_outcome(row, pathway=C.LIVE)
             stream.write(CORE.canonical(row) + b"\n")
             written.append([receipt["signalDate"], horizon, row["status"], row["resolution"]])
+    entries = C.pending_entries(previous, pending, now)
+    _write_pending(directory, entries)
     _status(directory, action="outcomes", status="GRADED" if not deferred else ("PARTIALLY_DEFERRED" if written else "DEFERRED"),
-            written=written, deferred=deferred, vendorFrames=len(frames))
+            written=written, deferred=deferred, vendorFrames=len(frames),
+            providerPending=sum(C.PROVIDER in p["unresolvedClasses"] for p in entries))
     return 0
+
+
+def _write_pending(directory: Path, entries: list[dict]) -> None:
+    payload = {"schema": "KR_SELECTION_CHALLENGER_OUTCOME_PENDING_V1", "studyId": C.STUDY, "evidence": False,
+               "productionEffect": "NONE", "pending": entries}
+    directory.mkdir(parents=True, exist_ok=True)
+    (directory / PENDING).write_text(json.dumps(payload, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
 
 
 def assess(directory: Path) -> int:

@@ -22,14 +22,14 @@
       "role": "CHALLENGER",
       "feature": "risk.downsideVolPct of longTerm.regions.KR.validationCrossSection (252-session semi-deviation of negative daily returns, annualized, longterm.downside_vol_252)",
       "order": "ASCENDING",
-      "requires": "finite and positive, and the same row's mom12_1Pct finite: longterm.downside_vol_252 returns a value from as few as 20 negative returns, while mom12_1Pct exists only when the same close series holds >= 273 closes (longterm.MIN_HISTORY), which proves the registered 252-session window is full. Otherwise FEATURE_WINDOW_INCOMPLETE (excluded from this book only)"
+      "requires": "finite and positive, and the 252-return window proven on the exchange calendar: A fresh vendor download at record time (pipeline.datafeed.fetch_prices, auto_adjust, the production build's own call), aligned to the pinned KRX calendar by pipeline.kr_bar_integrity, must show every one of the window's sessions traded (253 closes for CH_LOWVOL, 252 for CH_HIGH52, the 200-day mean inside it) with no vendor row on a closed day inside it, AND must reproduce the artifact's own lastClose, feature and (CH_HIGH52) ma200 to the artifact's rounding. A missing, suspended or off-calendar session in the window is FEATURE_WINDOW_INCOMPLETE; a value the frame does not reproduce is FEATURE_VALUE_MISMATCH; both exclude the name from that book only. A name that needs this proof and has no vendor frame refuses the whole receipt (PRICE_FETCH_INCOMPLETE): a book is never formed on whichever names a partial download returned"
     },
     "CH_HIGH52": {
       "role": "CHALLENGER",
       "feature": "details[ticker].pct52wHigh (close / 252-session max close x 100, features.price_52w_high)",
       "order": "DESCENDING",
-      "requires": "finite in (0, 100.5]; details lastClose > details ma200 (a name whose 200-day average is undetermined is excluded, never assumed above)",
-      "windowNote": "features.price_52w_high and ma200 are rolling(252) / rolling(200) means with full min_periods, and both are model feature columns, so details asOf == signal session already implies a full window on that session. The window counts vendor rows, not exchange sessions: a session the vendor omitted lengthens it, a production definition this study inherits and does not change"
+      "requires": "finite in (0, 100.5]; details lastClose > details ma200 (a name whose 200-day average is undetermined is excluded, never assumed above); and the 252-session window proven on the exchange calendar (see CH_LOWVOL.requires)",
+      "windowNote": "features.price_52w_high and ma200 are rolling(252) / rolling(200) over vendor ROWS, so a history with a KRX session missing inside the last year carries a value spanning more than 252 sessions; the calendar proof above excludes it rather than adopting the production definition's row count"
     },
     "CTRL_MODEL5": {
       "role": "CONTROL_EXISTING_MODEL",
@@ -83,7 +83,7 @@
     "unresolved": "a name with no vendor frame, no row or an invalid close at execution, or that did not trade on the maturity session itself, makes that book's cohort outcome None (NAME_OUTCOME_MISSING or TERMINAL_ECONOMICS_UNRESOLVED); it is never marked at an earlier close, dropped or renormalised",
     "netExcess": "book return - 069500.KS return - stock legs (buy at execution, sell at maturity) - ETF legs of benchmark-held slots + the ETF control's own round trip",
     "costs": "pipeline.weekly_decision.trade_cost_fraction('KR', date, ...): commission + half spread per leg, dated statutory sell tax on stock sells, no tax on ETF sells (benchmark_alpha.REALISTIC_COSTS)",
-    "retry": "An outcome whose benchmark is unpriced or with any held name unresolved (no vendor frame, no row, an invalid close, or no trade on the maturity session) is DEFERRED: nothing is written and every later run regrades it from a fresh download until the (horizon + 5)-th KR session after execution is final. Only then is a still-unresolved outcome written (resolution FINAL_UNRESOLVED_AFTER_RETRY, with the reasons) and counted as None. A transient vendor failure therefore never becomes a permanent None, and a delisting or unresolved terminal consideration still does"
+    "retry": "Two classes. PROVIDER_DATA_UNAVAILABLE (the benchmark or a held name has no vendor frame, a session with no row, or an invalid close: an empty or partial download) is DEFERRED at any date: nothing is written, every later run regrades it from a fresh download, and its retryable state is kept in outcome-pending.json, outside the append-only ledgers and never evidence. An empty or partial vendor answer is never read as a delisting or a terminal event. ECONOMIC_UNRESOLVED (the vendor served the maturity session and it shows zero volume) is DEFERRED until the (horizon + 5)-th KR session after execution is final and then written (FINAL_UNRESOLVED_AFTER_RETRY, with the reasons) and counted as None. A cohort containing a receipt the provider never serves stays ungraded; closing it needs an independent source for the terminal event, which is an owner decision and not a recorder default"
   },
   "assessment": {
     "interim": "No outcome statistic is published before a registered check. Turnover (a signal-time fact) is reported at any time.",
@@ -112,8 +112,8 @@
   "turnover": "names replaced per weekly receipt and per path rebalance, as a share of five slots (weights retargeted are not turnover here)",
   "productionEffect": "NONE",
   "codeFileHashes": {
-    "pipeline/kr_selection_challenger.py": "56ec489e6537b884dff2ac316e5e4bd635d65142402399fc9a58aebcae04ce9e",
+    "pipeline/kr_selection_challenger.py": "678a310ea38dd0df2ecf3a9db8eb5b819a53f8a7f58975b5f4b5a16d7dded5a2",
     "pipeline/kr_bar_integrity.py": "91b50cc2f24939ee880cd6c1db67738d95522053c1edb99b2715a3a347168e12",
-    "scripts/record_kr_selection_challenger.py": "e6c8c6b82f37a38c4cc49db7071384a1a5436530e40a62bfa92b1ac2ca4f8dbd"
+    "scripts/record_kr_selection_challenger.py": "a02058c67ca35b9e11423a21ca226293935ac884235d49e9e25fa2b920a63c5d"
   }
 }
