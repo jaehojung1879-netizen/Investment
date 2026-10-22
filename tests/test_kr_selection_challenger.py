@@ -490,3 +490,39 @@ def test_research_namespace_leaves_the_paper_ledger_and_weekly_receipts_byte_ide
     outside = {k: v for k, v in with_hook.items() if k not in ours}
     assert outside == without
     assert outside["weekly-decisions/receipts.jsonl"] == b'{"receiptId":"existing"}\n'
+
+
+def test_finding_the_merge_time_never_shortens_history(tmp_path):
+    """CI checks out main in full and then fetches pinned commits at depth 1, so the repository reports shallow while main is complete.
+    A ``--shallow-since`` deepen cut main back to its date there and removed a 2026-09 commit another test proves ancestry against."""
+    import subprocess
+    env = {"GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t", "GIT_COMMITTER_NAME": "t", "GIT_COMMITTER_EMAIL": "t@t",
+           "PATH": "/usr/bin:/bin", "HOME": str(tmp_path)}
+
+    def git(cwd, *args, date=None):
+        e = dict(env, **({"GIT_AUTHOR_DATE": date, "GIT_COMMITTER_DATE": date} if date else {}))
+        return subprocess.run(["git", *args], cwd=cwd, env=e, check=True, capture_output=True, text=True).stdout.strip()
+    origin = tmp_path / "origin"
+    origin.mkdir()
+    git(origin, "init", "-q", "-b", "main")
+    (origin / "a").write_text("a")
+    git(origin, "add", "a")
+    git(origin, "commit", "-qm", "old", date="2026-09-01T00:00:00+00:00")
+    old = git(origin, "rev-parse", "HEAD")
+    (origin / C.SPEC_PATH).parent.mkdir(parents=True)
+    (origin / C.SPEC_PATH).write_text("{}")
+    git(origin, "add", C.SPEC_PATH)
+    git(origin, "commit", "-qm", "spec", date="2026-10-27T03:00:00+00:00")
+    git(origin, "checkout", "-q", "--orphan", "other")
+    (origin / "b").write_text("b")
+    git(origin, "add", "b")
+    git(origin, "commit", "-qm", "other", date="2026-10-28T00:00:00+00:00")
+    git(origin, "commit", "-q", "--allow-empty", "-m", "other2", date="2026-10-29T00:00:00+00:00")
+    git(origin, "checkout", "-q", "main")
+    clone = tmp_path / "clone"
+    git(tmp_path, "clone", "-q", "--no-local", str(origin), str(clone))                       # full main
+    git(clone, "fetch", "-q", "--depth=1", "origin", "other")                                 # ... and now "shallow"
+    assert git(clone, "rev-parse", "--is-shallow-repository") == "true"
+    assert pd.Timestamp(C.merged_at_from_git(clone)) == pd.Timestamp("2026-10-27T03:00:00+00:00")
+    assert subprocess.run(["git", "cat-file", "-e", old + "^{commit}"], cwd=clone).returncode == 0      # the old commit is still there
+    assert subprocess.run(["git", "merge-base", "--is-ancestor", old, "HEAD"], cwd=clone).returncode == 0
