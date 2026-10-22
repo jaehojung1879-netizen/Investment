@@ -138,3 +138,128 @@ def test_safety_fix_preserves_all_investment_policy_and_digest_functions():
     def policies(source):
         return {n.name: ast.dump(n) for n in ast.parse(source).body if isinstance(n, ast.FunctionDef) and n.name in names}
     assert policies(original) == policies(current) and len(policies(current)) == len(names)
+
+
+# --------------------------------------------------------------------------- #
+# Delayed scheduled runs (#273): a build inside an unfinished session is
+# deferred, never published, and the freshness gate itself is unchanged.
+# --------------------------------------------------------------------------- #
+import json  # noqa: E402
+
+
+def _at(generated, kr=None, us="2026-10-20"):
+    site = _site(generatedAt=generated, indices=[{"symbol": "^KS11", "asOf": kr},
+                                                 {"symbol": "^GSPC", "asOf": us}])
+    site["details"] = {"A": {"region": "KR", "asOf": kr}, "X": {"region": "US", "asOf": us}}
+    return site
+
+
+def _ledger(tmp_path, site):
+    """A previous publication in the ledger layout, then the paths a run writes."""
+    ledger = tmp_path / "prior"
+    ledger.mkdir()
+    path = tmp_path / "site.json"
+    path.write_text(json.dumps(site))
+    assert P.main([str(path), str(ledger / "receipts.jsonl"), str(ledger / "latest.json"),
+                   str(ledger / "receipts.jsonl"), str(ledger / "publication-status.json")]) == 0
+    out = tmp_path / "out"
+    return ledger, [ledger / "receipts.jsonl", out / "latest.json", out / "receipts.jsonl",
+                    out / "publication-status.json"]
+
+
+def _run(tmp_path, site, paths):
+    path = tmp_path / "site.json"
+    path.write_text(json.dumps(site))
+    return P.main([str(path)] + [str(p) for p in paths])
+
+
+SATURDAY = "2026-10-17T04:35:17Z"   # previous publication: Friday 10-16 is final
+
+
+def test_2026_10_21_delayed_run_is_reproduced_and_deferred(tmp_path, capsys):
+    site = _at("2026-10-21T04:54:14.404960+00:00", kr="2026-10-21")  # 13:54 KST
+    fresh = W.freshness("KR", "2026-10-21", datetime.fromisoformat(site["generatedAt"]))
+    assert (fresh["status"], fresh["reason"]) == ("INVALID", "OBSERVATION_AFTER_COMPLETED_SESSION")
+    assert (fresh["expectedSession"], fresh["observedSession"]) == ("2026-10-20", "2026-10-21")
+    assert P.build_from_site(site, "sha", [])["regions"]["KR"]["status"] == "SOURCE_INCOMPLETE"
+    assert P.unfinished_sessions(site) == {"KR": "2026-10-21"}
+    ledger, paths = _ledger(tmp_path, _at(SATURDAY, kr="2026-10-16", us="2026-10-16"))
+    capsys.readouterr()
+    assert _run(tmp_path, site, paths) == 0
+    for name, written in (("latest.json", paths[1]), ("receipts.jsonl", paths[2]),
+                          ("publication-status.json", paths[3])):
+        assert written.read_bytes() == (ledger / name).read_bytes()
+    assert json.loads(capsys.readouterr().out)["unfinishedSessions"] == {"KR": "2026-10-21"}
+
+
+@pytest.mark.parametrize("generated,kr,status,week", [
+    ("2026-10-21T09:00:00Z", "2026-10-21", "FRESH", "INTRA_WEEK_PREVIEW"),  # 18:00 KST finality
+    ("2026-10-21T11:30:00Z", "2026-10-21", "FRESH", "INTRA_WEEK_PREVIEW"),  # delayed past finality
+    ("2026-10-21T00:10:00Z", "2026-10-20", "FRESH", "INTRA_WEEK_PREVIEW"),  # on time, no new row yet
+])
+def test_completed_session_runs_publish_normally(tmp_path, generated, kr, status, week):
+    site = _at(generated, kr=kr)
+    assert P.unfinished_sessions(site) == {}
+    ledger, paths = _ledger(tmp_path, _at(SATURDAY, kr="2026-10-16", us="2026-10-16"))
+    assert _run(tmp_path, site, paths) == 0
+    blob = json.loads(paths[1].read_text())["regions"]["KR"]
+    assert blob["freshness"]["status"] == status and blob["weekStatus"] == week
+    assert blob["asOfDate"] == blob["freshness"]["expectedSession"] == kr
+    assert json.loads(paths[3].read_text())["siteGeneratedAt"] == generated
+
+
+@pytest.mark.parametrize("generated", ["2026-10-21T00:10:00Z", "2026-10-21T08:59:59Z"])
+def test_any_build_between_open_and_finality_waits(generated):
+    assert P.unfinished_sessions(_at(generated, kr="2026-10-21")) == {"KR": "2026-10-21"}
+
+
+def test_friday_intraday_build_cannot_write_a_premature_final(tmp_path):
+    ledger, paths = _ledger(tmp_path, _at(SATURDAY, kr="2026-10-16", us="2026-10-16"))
+    before = (ledger / "receipts.jsonl").read_bytes()
+    assert _run(tmp_path, _at("2026-10-23T04:44:48Z", kr="2026-10-23", us="2026-10-22"), paths) == 0
+    assert paths[2].read_bytes() == before
+    saturday = _at("2026-10-24T04:35:00Z", kr="2026-10-23", us="2026-10-23")
+    assert _run(tmp_path, saturday, paths) == 0
+    finals = [json.loads(line) for line in paths[2].read_text().splitlines()]
+    kr = [r for r in finals if r["region"] == "KR" and r["asOfDate"] == "2026-10-23"]
+    assert len(kr) == 1 and kr[0]["weekStatus"] == "FINAL_WEEKLY"
+    assert W.receipt_session_error(kr[0]) is None
+
+
+def test_holiday_run_publishes_and_holiday_dated_row_is_not_a_session(tmp_path):
+    # Hangul Day (Friday 2026-10-09): Thursday is the week-end session.
+    site = _at("2026-10-09T04:54:00Z", kr="2026-10-08", us="2026-10-08")
+    assert P.unfinished_sessions(site) == {}
+    blob = P.build_from_site(site, "sha", [])["regions"]["KR"]
+    assert blob["asOfDate"] == "2026-10-08" and blob["weekStatus"] == "FINAL_WEEKLY"
+    labelled = _at("2026-10-09T04:54:00Z", kr="2026-10-09", us="2026-10-08")
+    assert P.unfinished_sessions(labelled) == {}
+    assert P.build_from_site(labelled, "sha", [])["regions"]["KR"]["status"] == "SOURCE_INCOMPLETE"
+
+
+@pytest.mark.parametrize("generated,kr", [
+    ("2026-10-21T04:54:14Z", "2026-10-22"),   # future-dated row
+    ("2026-10-20T23:30:00Z", "2026-10-21"),   # 08:30 KST: today's row before the open
+])
+def test_rows_that_are_not_a_session_in_progress_still_refuse(tmp_path, generated, kr):
+    site = _at(generated, kr=kr)
+    assert P.unfinished_sessions(site) == {}
+    ledger, paths = _ledger(tmp_path, _at(SATURDAY, kr="2026-10-16", us="2026-10-16"))
+    assert _run(tmp_path, site, paths) == 0
+    blob = json.loads(paths[1].read_text())["regions"]["KR"]
+    assert blob["status"] == "SOURCE_INCOMPLETE" and blob["freshness"]["status"] == "INVALID"
+    assert not blob["weights"] and "receiptId" not in blob
+
+
+def test_without_a_previous_publication_the_refusal_path_is_unchanged(tmp_path):
+    site = tmp_path / "site.json"
+    site.write_text(json.dumps(_at("2026-10-21T04:54:14Z", kr="2026-10-21")))
+    out = tmp_path / "out"
+    assert P.main([str(site), str(out / "r.jsonl"), str(out / "latest.json"), str(out / "r.jsonl"),
+                   str(out / "status.json")]) == 0
+    assert json.loads((out / "latest.json").read_text())["regions"]["KR"]["status"] == "SOURCE_INCOMPLETE"
+
+
+def test_us_session_in_progress_is_deferred_too():
+    site = _at("2026-10-21T15:00:00Z", kr="2026-10-21", us="2026-10-21")  # 11:00 New York
+    assert P.unfinished_sessions(site) == {"US": "2026-10-21"}

@@ -53,6 +53,59 @@ def observed_sessions(site: dict) -> dict:
     return out
 
 
+def unfinished_sessions(site: dict) -> dict:
+    """Regions whose index tape carries a session that has opened but is not final.
+
+    A scheduled run can start hours late (2026-10-21: cron 00:10 UTC, build at
+    13:54 KST) and then builds site-data inside the KRX session. Its tape row,
+    quotes and features for that session are unfinished, so nothing from the
+    build may be published. ``freshness`` still classifies the row as INVALID;
+    this only lets the publisher wait for a run after finality instead of
+    replacing the last publication. A row dated on a closed day, or before its
+    session opened, is not a session in progress and stays INVALID.
+    """
+    import exchange_calendars as xc
+    import pandas as pd
+
+    now = datetime.fromisoformat(str(site["generatedAt"]).replace("Z", "+00:00"))
+    out = {}
+    for region, observed in observed_sessions(site).items():
+        try:
+            if observed <= W.last_completed_session(region, now):
+                continue
+            if W.session_on_or_before(region, observed) != observed:
+                continue
+            calendar = xc.get_calendar("XKRX" if region == "KR" else "XNYS",
+                                       start="1990-01-01", end="2035-12-31")
+            if pd.Timestamp(now) >= calendar.session_open(pd.Timestamp(observed)):
+                out[region] = observed
+        except (TypeError, ValueError, KeyError, LookupError):
+            continue  # unknown session evidence is not a reason to wait
+    return out
+
+
+def defer_publication(site: dict, receipts_in: Path, out_path: Path, receipts_out: Path,
+                      status_path: Path | None) -> bool:
+    """Re-emit the previous publication byte for byte while a session is unfinished.
+
+    Only when the previous latest.json, receipts and status sit beside
+    ``receipts_in`` (the ledger layout); otherwise the normal refusal path runs.
+    """
+    pending = unfinished_sessions(site)
+    prior = {"latest": receipts_in.parent / "latest.json",
+             "status": receipts_in.parent / "publication-status.json"}
+    if not pending or not receipts_in.exists() or not all(p.exists() for p in prior.values()):
+        return False
+    for source, target in ((prior["latest"], out_path), (receipts_in, receipts_out),
+                           (prior["status"], status_path)):
+        if target is not None and source.resolve() != target.resolve():
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(source.read_bytes())
+    print(json.dumps({"deferred": "SESSION_NOT_FINAL", "siteGeneratedAt": site.get("generatedAt"),
+                      "unfinishedSessions": pending}, ensure_ascii=False, sort_keys=True))
+    return True
+
+
 def unsafe_reason(site: dict) -> str | None:
     if site.get("recommendationsBlocked"):
         return "RECOMMENDATIONS_BLOCKED"
@@ -228,6 +281,8 @@ def main(argv=None) -> int:
     try:
         raw = site_path.read_bytes()
         site = json.loads(raw)
+        if defer_publication(site, receipts_in, out_path, receipts_out, status_path):
+            return 0
         receipts = _read_jsonl(receipts_in)
         block = build_from_site(site, hashlib.sha256(raw).hexdigest(), receipts)
     except Exception as exc:  # noqa: BLE001 - the refusal itself must be published
