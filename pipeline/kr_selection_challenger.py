@@ -3,7 +3,7 @@
 What is new is the evidence, not the information. The two challengers rank KR names on information families the closed historical
 programme already measured with inconclusive readings (low downside volatility; proximity to the 52-week high). The historical sample is
 spent and nothing here re-reads it: every number this study will ever use is recorded at the close it describes and graded only after its
-horizon has matured. The frozen design is ``research_specs/kr-selection-challenger-v1.json``; this module refuses to run if the code it
+horizon has matured. The frozen design is ``docs/research-program/specs/kr-selection-challenger-v1.json``; this module refuses to run if the code it
 pins has changed.
 
 Books, all built from ONE validated production artifact (``data/site-data.json``) on ONE weekly KR decision session:
@@ -37,7 +37,7 @@ from . import weekly_publish as P
 
 ROOT = Path(__file__).resolve().parents[1]
 STUDY = "kr-selection-challenger-v1"
-SPEC_PATH = "research_specs/kr-selection-challenger-v1.json"
+SPEC_PATH = "docs/research-program/specs/kr-selection-challenger-v1.json"
 SCHEMA_VERSION = 1
 LIVE, SYNTHETIC = "LIVE", "SYNTHETIC_FIXTURE"
 EVIDENCE_CLASS_BY_PATHWAY = {LIVE: CORE.EVIDENCE_CLASS, SYNTHETIC: "SYNTHETIC_FIXTURE"}
@@ -517,9 +517,17 @@ def _git(*args, root=ROOT):
     return subprocess.run(["git", *args], cwd=root, capture_output=True, text=True, check=False)
 
 
+# The spec cannot predate this date, so history since then always contains the commit that added it.
+HISTORY_SINCE = "2026-10-15"
+
+
 def merged_at_from_git(root=ROOT) -> str:
-    """Commit time of the first-parent commit that added the registered spec. Refuses when git cannot say (a shallow history that predates
-    nothing errs LATER, never earlier, so it can only delay eligibility)."""
+    """Commit time of the first-parent commit that added the registered spec. Refuses when git cannot say.
+
+    The ledger workflow checks out main at depth 1, so a shallow clone is first deepened to ``HISTORY_SINCE``. If that fetch fails, the
+    shallow root reads as adding every file and its date is the answer: an error that can only make eligibility LATER, never earlier."""
+    if _git("rev-parse", "--is-shallow-repository", root=root).stdout.strip() == "true":
+        _git("fetch", "--no-tags", "--quiet", "--shallow-since=" + HISTORY_SINCE, "origin", "main", root=root)
     found = _git("log", "--first-parent", "--diff-merges=first-parent", "--diff-filter=A", "--no-renames", "--name-only",
                  "--format=%cI", "--", SPEC_PATH, root=root)
     lines = [line for line in found.stdout.splitlines() if re.match(r"^\d{4}-\d{2}-\d{2}T", line)]

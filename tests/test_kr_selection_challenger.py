@@ -374,15 +374,24 @@ def test_live_recorder_fails_closed_without_a_registered_merge(tmp_path, monkeyp
     assert json.loads((tmp_path / "study/publication-status.json").read_text())["status"] == "SKIPPED"
 
 
-def test_ledger_workflow_records_after_the_weekly_decision_and_never_blocks_it():
-    text = (ROOT / ".github/workflows/ledger.yml").read_text()
-    step = text.split("- name: KR selection challenger receipts", 1)[1].split("- name:", 1)[0]
-    assert "continue-on-error: true" in step and "--shallow-since=" in step
-    assert "scripts/record_kr_selection_challenger.py record data/site-data.json" in step
-    assert "ledger/research-strategies/kr-selection-challenger-v1" in step
-    order = [text.index(n) for n in ("Weekly decision and append-only receipts", "KR selection challenger receipts",
-                                     "Commit & push to signal-history")]
-    assert order == sorted(order)
+def test_paper_ledger_step_runs_the_challenger_and_a_failure_never_costs_it(tmp_path, monkeypatch):
+    import importlib
+    update = importlib.import_module("scripts.update_ledger")
+    script = importlib.import_module("scripts.record_kr_selection_challenger")
+    seen = []
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: (_ for _ in ()).throw(OSError("offline")))
+    monkeypatch.setattr(script, "run_all", lambda site_path, directory: seen.append(directory) or 0)
+    data = site()
+    data["modelVersion"] = "m"
+    path = tmp_path / "site.json"
+    path.write_text(json.dumps(data))
+    ledger = tmp_path / "ledger"
+    ledger.mkdir()
+    assert update.main([str(path), str(ledger)]) == 0
+    assert seen == [ledger / "research-strategies" / C.STUDY]
+    monkeypatch.setattr(script, "run_all", lambda *a: (_ for _ in ()).throw(RuntimeError("boom")))
+    assert update.main([str(path), str(ledger)]) == 0
+    assert not list((ROOT / ".github/workflows").glob("*challenger*"))
 
 
 def test_merge_time_is_the_first_parent_commit_that_added_the_spec(tmp_path):
@@ -401,7 +410,7 @@ def test_merge_time_is_the_first_parent_commit_that_added_the_spec(tmp_path):
     with pytest.raises(ValueError, match="SPEC_MERGE_TIME_UNKNOWN"):
         C.merged_at_from_git(tmp_path)
     git("checkout", "-qb", "study")
-    (tmp_path / "research_specs").mkdir()
+    (tmp_path / C.SPEC_PATH).parent.mkdir(parents=True)
     (tmp_path / C.SPEC_PATH).write_text("{}")
     git("add", C.SPEC_PATH)
     git("commit", "-qm", "spec", date="2026-10-21T00:00:00+00:00")       # authored on the branch

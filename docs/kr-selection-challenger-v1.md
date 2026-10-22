@@ -1,9 +1,10 @@
 # kr-selection-challenger-v1 — 한국 종목선택 전향 Challenger (사전등록)
 
 - **상태:** `PREREGISTERED_PROSPECTIVE_PAPER`
-- **고정 명세:** `research_specs/kr-selection-challenger-v1.json`
+- **고정 명세:** `docs/research-program/specs/kr-selection-challenger-v1.json`
 - **구현:** `pipeline/kr_selection_challenger.py`, `pipeline/kr_bar_integrity.py`, `scripts/record_kr_selection_challenger.py`
-- **실행:** `.github/workflows/ledger.yml`의 `KR selection challenger receipts` 단계(continue-on-error)
+- **실행:** `scripts/update_ledger.py`(ledger.yml의 paper-ledger 단계)가 자기 작업 뒤 `run_all`을 호출한다. 예외는 잡아서 paper ledger에 영향을 주지 않는다. workflow 파일은 바꾸지 않았다(`.github/workflows` 트리는 `rp1-wp2-us-universe-v1`이 hash로 고정).
+- **예상 주기:** 00:10 cron은 실제로 04:30 UTC 전후(평일 KRX 장중)에 시작하므로 평일 실행은 기록하지 않는다. 토요일 실행이 금요일 세션을 기록하고, 일요일 실행이 같은 기록 창의 예비다.
 - **기록 위치:** signal-history `ledger/research-strategies/kr-selection-challenger-v1/` (`receipts.jsonl`, `outcomes.jsonl`, `assessment.json`, `publication-status.json`)
 
 결과는 아직 없다. 이 연구의 어떤 장부도 공식 주간 판단, 주문, 실거래 비중에 들어가지 않는다(`productionEffect: NONE`).

@@ -109,6 +109,15 @@ def main(argv=None) -> int:
               f"{excluded_outcomes + excluded_portfolios} prior-generation rows excluded from summary")
     except Exception as exc:  # pragma: no cover - network dependent
         print(f"outcome refresh skipped (network/data): {exc}")
+
+    # kr-selection-challenger-v1: pre-registered prospective PAPER receipts in their
+    # own research namespace beside this ledger. It records only inside a KR weekly
+    # session's receipt window, and a refusal never costs the paper ledger its day.
+    try:
+        from scripts import record_kr_selection_challenger as challenger
+        challenger.run_all(Path(argv[0]), ledger_dir / "research-strategies" / challenger.C.STUDY)
+    except Exception as exc:  # noqa: BLE001 - research must never block the ledger
+        print(f"kr-selection-challenger skipped: {type(exc).__name__}: {exc}")
     return 0
 
 

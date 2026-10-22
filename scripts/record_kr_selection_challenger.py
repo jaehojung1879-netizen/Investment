@@ -4,7 +4,7 @@
     python scripts/record_kr_selection_challenger.py outcomes <study-dir>
     python scripts/record_kr_selection_challenger.py assess   <study-dir>
 
-``record`` appends one receipt for the KR weekly decision session the artifact speaks for, if this run is inside that session's receipt
+``scripts/update_ledger.py`` (the paper-ledger step of ledger.yml) calls ``run_all`` after its own work. ``record`` appends one receipt for the KR weekly decision session the artifact speaks for, if this run is inside that session's receipt
 window (after its 18:00 KST finality, before the next open). Any other run writes nothing and says why; a later run in the same window
 finds the receipt already recorded. ``outcomes`` grades every receipt whose horizon has matured and is not yet graded, from a fresh vendor
 download. ``assess`` applies the registered rule. Each writes ``publication-status.json`` beside the ledgers; the exit code is 0 unless the
@@ -107,6 +107,18 @@ def assess(directory: Path) -> int:
     _status(directory, action="assess", status="ASSESSED",
             verdicts={b: v["verdict"] for b, v in report["challengers"].items()}, receipts=len(receipts))
     return 0
+
+
+def run_all(site_path: Path, directory: Path) -> int:
+    """record, then outcomes, then assess; each runs even if an earlier one failed. Called by scripts/update_ledger.py."""
+    codes = []
+    for step in (lambda: record(site_path, directory), lambda: outcomes(directory), lambda: assess(directory)):
+        try:
+            codes.append(step())
+        except Exception as exc:  # noqa: BLE001 - one step's failure is reported, not fatal to the next
+            print(f"kr-selection-challenger step failed: {type(exc).__name__}: {exc}")
+            codes.append(1)
+    return max(codes)
 
 
 def main(argv=None) -> int:

@@ -129,21 +129,6 @@ jobs:
             exit 1
           fi
 
-      # kr-selection-challenger-v1: pre-registered PROSPECTIVE PAPER receipts in the
-      # research namespace (no order, no production weight, never read by the weekly
-      # decision). Only a run inside a KR weekly session's receipt window writes; the
-      # merge time of the registered spec is read from main's history, deepened here.
-      - name: KR selection challenger receipts
-        continue-on-error: true
-        run: |
-          git fetch --no-tags --shallow-since=2026-10-15 origin main || true
-          dir=ledger-work/ledger/research-strategies/kr-selection-challenger-v1
-          rc=0
-          python scripts/record_kr_selection_challenger.py record data/site-data.json "$dir" || rc=1
-          python scripts/record_kr_selection_challenger.py outcomes "$dir" || rc=1
-          python scripts/record_kr_selection_challenger.py assess "$dir" || rc=1
-          exit $rc
-
       - name: Commit & push to signal-history
         run: |
           cd ledger-work

@@ -42,7 +42,7 @@
     }
   },
   "universe": {
-    "source": "longTerm.regions.KR.validationCrossSection of the validated production artifact data/site-data.json built by ledger.yml (production-eligible names: dataInsufficient excluded by longterm.build). The same rows feed every book.",
+    "source": "longTerm.regions.KR.validationCrossSection of the validated production artifact data/site-data.json built by .github/workflows/ledger.yml (production-eligible names: dataInsufficient excluded by longterm.build). The same rows feed every book.",
     "rowRules": [
       "ticker matches NNNNNN.KS or NNNNNN.KQ",
       "first occurrence of a ticker only",
@@ -68,7 +68,8 @@
     "artifactRule": "the artifact's ^KS11 session equals the last KR session that was final (18:00 KST) at the artifact's generatedAt",
     "receiptWindow": "created by the writer's own clock after 18:00 KST of the signal session and before 09:00 KST of the next KR session (prospective_receipt_core.check_timing)",
     "execution": "close of the next KR session after the signal session (session 0)",
-    "runner": ".github/workflows/ledger.yml, after the weekly decision step, continue-on-error"
+    "runner": "scripts/update_ledger.py (the paper-ledger step of .github/workflows/ledger.yml) calls scripts/record_kr_selection_challenger.run_all after its own work; any refusal is caught and never costs the paper ledger. No workflow file is changed (.github/workflows is tree-pinned by rp1-wp2-us-universe-v1).",
+    "expectedCadence": "The 00:10 UTC cron starts about 04:30 UTC, inside the KRX session on weekdays, so weekday runs skip (ARTIFACT_NOT_BUILT_ON_A_FINAL_SESSION) and the Saturday run records Friday's session; Sunday's run is the backup inside the same window."
   },
   "horizonsSessions": [
     126,
@@ -109,8 +110,8 @@
   "turnover": "names replaced per weekly receipt and per path rebalance, as a share of five slots (weights retargeted are not turnover here)",
   "productionEffect": "NONE",
   "codeFileHashes": {
-    "pipeline/kr_selection_challenger.py": "a7057839c6ff3680220abafa4cb7ee10a662b02b4da9dc2c0601ce5010a986ef",
+    "pipeline/kr_selection_challenger.py": "66634d904f097467a32f567b4b405584c70dfc84e43c23bbae5610f51f100b17",
     "pipeline/kr_bar_integrity.py": "91b50cc2f24939ee880cd6c1db67738d95522053c1edb99b2715a3a347168e12",
-    "scripts/record_kr_selection_challenger.py": "c6270fa33c8fdaa4a9edffa03a1565aa3dffdd5471612331348453f936282399"
+    "scripts/record_kr_selection_challenger.py": "c6e4c7fa1b318d5bda749d2794eea5750292d7b9923da25772b527f348b57557"
   }
 }
