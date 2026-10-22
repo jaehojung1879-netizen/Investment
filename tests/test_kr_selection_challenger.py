@@ -378,9 +378,11 @@ def test_paper_ledger_step_runs_the_challenger_and_a_failure_never_costs_it(tmp_
     import importlib
     update = importlib.import_module("scripts.update_ledger")
     script = importlib.import_module("scripts.record_kr_selection_challenger")
+    accounting = importlib.import_module("scripts.record_kr_selection_challenger_v2")
     seen = []
     monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: (_ for _ in ()).throw(OSError("offline")))
     monkeypatch.setattr(script, "run_all", lambda site_path, directory: seen.append(directory) or 0)
+    monkeypatch.setattr(accounting, "run_all", lambda *a: 0)       # its own test; the real one would run git against this repository
     data = site()
     data["modelVersion"] = "m"
     path = tmp_path / "site.json"

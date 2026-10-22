@@ -352,8 +352,7 @@ def assess(receipts: list[dict], outcomes: list[dict], spec: dict, *, path_metri
 # --------------------------------------------------------------------------- #
 def merged_at_from_git(root=ROOT) -> str:
     """As v1: the first-parent commit that added THIS study's spec, after deepening a shallow clone; refuses when git cannot say."""
-    if V1._git("rev-parse", "--is-shallow-repository", root=root).stdout.strip() == "true":
-        V1._git("fetch", "--no-tags", "--quiet", "--shallow-since=" + V1.HISTORY_SINCE, "origin", "main", root=root)
+    V1.deepen_history(root)
     found = V1._git("log", "--first-parent", "--diff-merges=first-parent", "--diff-filter=A", "--no-renames", "--name-only",
                     "--format=%cI", "--", SPEC_PATH, root=root)
     lines = [line for line in found.stdout.splitlines() if len(line) > 10 and line[:4].isdigit() and line[10] == "T"]
