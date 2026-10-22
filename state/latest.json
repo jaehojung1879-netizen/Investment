@@ -2,7 +2,7 @@
   "schemaVersion": "2.7.0",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
   "buildCommitSha": "7b0dbad53c46",
-  "generatedAt": "2026-10-22T10:08:20.481939+00:00",
+  "generatedAt": "2026-10-22T10:49:44.026513+00:00",
   "marketAsOf": "2026-10-22",
   "macroRegime": "Reflation",
   "holdingsByRegion": {
@@ -15,10 +15,10 @@
       "SWK",
       "MO",
       "MAR",
-      "KO",
       "PRU",
+      "KO",
       "NUE",
-      "GOOGL"
+      "GM"
     ],
     "KR": [
       "078930.KS",
@@ -51,11 +51,11 @@
     "SWK": "ACCUMULATE_GRADUALLY",
     "MO": "WAIT_FOR_PULLBACK",
     "MAR": "WAIT_FOR_PULLBACK",
-    "KO": "WAIT_FOR_PULLBACK",
     "PRU": "WATCH",
+    "KO": "WAIT_FOR_PULLBACK",
     "NUE": "WAIT_FOR_PULLBACK",
-    "GOOGL": "WATCH",
     "GM": "AVOID",
+    "GOOGL": "WATCH",
     "GOOG": "AVOID",
     "HLT": "WAIT_FOR_PULLBACK",
     "078930.KS": "WATCH",
@@ -101,8 +101,8 @@
     "034730.KS": "WATCH",
     "032640.KS": "CRITICAL_WARNING",
     "001450.KS": "WATCH",
+    "GM": "CRITICAL_WARNING",
     "MU": "CRITICAL_WARNING",
-    "GOOGL": "WATCH",
     "PRU": "WATCH",
     "NUE": "ELEVATED_WARNING",
     "MO": "WATCH",
@@ -115,7 +115,7 @@
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-10-22T10:08:20.481939+00:00",
+    "validatedAt": "2026-10-22T10:49:44.026513+00:00",
     "errors": []
   }
 }
