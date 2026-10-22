@@ -74,6 +74,8 @@ FAST는 같은 고정 지수의 추세·변동성, TRANSITION/SLOW는 원 시장
 
 지금은 결합 검증 `BLOCKED_NO_VALIDATED_SELECTION_INPUT`이다. 이 계약은 주문·권고·비중·production 결정을 생성하지 않는다.
 
+**D v2 (#282, 별도 버전):** 위 0~5종목은 v1 계약의 범위이지 소유자의 최종 목표가 아니다. [D v2 사전등록 설계](rp1-d-v2-endogenous-breadth-ko.md)는 종목 수 N을 지역 ETF 대비 비용 차감 후 복리 판단의 **결과**로 둔다(N=0·10 초과 허용, 고정 Top-N 없음). v1·weekly-passive-first-v1·A/B/C 봉인은 바꾸지 않는다. 엔진은 승인된 A 생산자와 소유자 숫자가 등록될 때까지 비활성이다.
+
 ## 실행 큐 — 즉시 구현 PR은 최대 두 개
 
 | 순서 / 담당 | 최소 범위와 독립성 | 완료·중단 조건 / 비용 추정 |
