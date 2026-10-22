@@ -77,3 +77,23 @@ naive 시각, 원본 불변·중복 append, 무효 final 재발행 차단과 동
 보호 검사 수정 후 실패 범위 및 주간 회귀를 합친 최종 78개를 재검증했다.
 ruff, compileall, /tmp의 합성 seed 생성·allow-seed 검증과 production 거부도 확인했다.
 비용이 큰 전체 suite를 같은 이유로 다시 실행하지 않았다. 최종 PR의 기존 CI는 별도 결과다.
+
+## 후속: 지연된 예약 실행의 게시 보류 (#273)
+
+`Append paper-signal ledger`의 cron은 00:10 UTC지만, 2026-10-11 이후 실제 시작은 04:30~07:00 UTC
+(13:30~16:00 KST)였다. 평일 빌드는 KRX 장중에 만들어져 `^KS11`·종목 시세에 미완성 당일 행이 들어간다.
+기존 게이트는 이를 `OBSERVATION_AFTER_COMPLETED_SESSION`(INVALID)으로 정확히 거부했다. 그러나
+그 결과를 `SOURCE_INCOMPLETE`로 게시해 마지막 정상 게시를 덮어썼다. 2026-10-21 실행이 재현 사례다
+(expected 2026-10-20, observed 2026-10-21).
+
+`weekly_publish.unfinished_sessions`는 지역 지수 행이 이미 개장했지만 아직 최종이 아닌 세션을 가리키는지
+판정한다. KR 최종성 기준은 18:00 KST 그대로다. 해당하면 `main`은 이전 `latest.json`·receipts·
+`publication-status.json`을 바이트 그대로 다시 내보낸다. 그래서 그 빌드에서는 아무것도 게시하거나 기록하지 않고,
+최종성 이후 실행이 정상 게시한다.
+
+- `freshness`·`build_from_site`·`validate`는 바꾸지 않았다.
+- 휴장일 날짜 행·개장 전 당일 행·미래 날짜 행은 진행 중 세션이 아니므로 기존대로 INVALID다.
+- 이전 게시 파일이 없으면 기존 거부 경로를 쓴다.
+- 금요일 장중 빌드는 보류되어 조기 FINAL이 생기지 않는다. 주말 실행이 금요일 FINAL을 기록한다.
+- 보류일에는 같은 실행의 연구 namespace(champion) 게시도 건너뛴다.
+- `weekly_publish.py`의 새 hash만 pins 파일에 반영했다. `weekly_decision.py`, workflow, 연구 결과는 그대로다.
