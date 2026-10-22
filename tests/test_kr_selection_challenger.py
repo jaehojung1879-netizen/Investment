@@ -433,7 +433,9 @@ def test_merge_time_is_the_first_parent_commit_on_main_that_added_the_spec(tmp_p
         C.merged_at_from_git(clone)
     git(clone, "checkout", "-q", "-B", "main", "origin/main")
     found = C.registration_from_git(clone)
-    assert found == {"commitSha": merge, "mergedAtUtc": "2026-10-27T03:00:00+00:00"}
+    # git renders a UTC commit time as "Z" or "+00:00" depending on its version; the instant is what is registered.
+    assert found["commitSha"] == merge
+    assert pd.Timestamp(found["mergedAtUtc"]) == pd.Timestamp("2026-10-27T03:00:00+00:00")
     # Without an origin/main at all the recorder refuses rather than guessing from HEAD.
     git(clone, "remote", "remove", "origin")
     git(clone, "update-ref", "-d", C.MAIN_REF)
