@@ -362,3 +362,121 @@ def test_a_step_exception_is_persisted_and_an_escaped_hook_exception_is_a_status
     assert update.main([str(path), str(ledger)]) == 0
     hook = json.loads((ledger / "research-strategies" / C.STUDY / "publication-status.json").read_text())
     assert hook["status"] == "STEP_FAILED" and hook["failedSteps"] == ["hook"] and hook["error"] == "RuntimeError: boom"
+
+
+# --------------------------------------------------------------------------- #
+# Regression tests for the independent-audit P1 findings
+# --------------------------------------------------------------------------- #
+def test_registration_is_read_from_main_for_this_studys_spec(tmp_path):
+    import subprocess
+
+    def git(cwd, *args, date=None):
+        env = {"GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t", "GIT_COMMITTER_NAME": "t", "GIT_COMMITTER_EMAIL": "t@t",
+               "PATH": "/usr/bin:/bin", "HOME": str(tmp_path), **({"GIT_AUTHOR_DATE": date, "GIT_COMMITTER_DATE": date} if date else {})}
+        return subprocess.run(["git", *args], cwd=cwd, env=env, check=True, capture_output=True, text=True).stdout.strip()
+    origin, clone = tmp_path / "origin", tmp_path / "clone"
+    origin.mkdir()
+    git(origin, "init", "-q", "-b", "main")
+    (origin / "README").write_text("x")
+    git(origin, "add", "README")
+    git(origin, "commit", "-qm", "base", date="2026-10-20T00:00:00+00:00")
+    (origin / V1.SPEC_PATH).parent.mkdir(parents=True, exist_ok=True)
+    (origin / V1.SPEC_PATH).write_text("{}")
+    git(origin, "add", ".")
+    git(origin, "commit", "-qm", "v1 registered on main", date="2026-10-20T06:00:00+00:00")   # another study's spec IS on main
+    git(origin, "checkout", "-qb", "study")
+    (origin / C.SPEC_PATH).write_text("{}")
+    git(origin, "add", ".")
+    git(origin, "commit", "-qm", "v2 spec", date="2026-10-21T00:00:00+00:00")
+    git(tmp_path, "clone", "-q", "--no-local", str(origin), str(clone))
+    git(clone, "checkout", "-q", "study")
+    with pytest.raises(ValueError, match="SPEC_NOT_ON_MAIN"):
+        C.merged_at_from_git(clone)
+    git(origin, "checkout", "-q", "main")
+    git(origin, "merge", "-q", "--no-ff", "study", "-m", "merge", date="2026-10-28T03:00:00+00:00")
+    git(clone, "fetch", "-q", "origin")
+    git(clone, "checkout", "-q", "-B", "main", "origin/main")
+    assert C.merged_at_from_git(clone) == "2026-10-28T03:00:00+00:00"
+
+
+def test_a_stale_download_is_not_a_collected_name_and_writes_no_receipt():
+    """Frames that exist but stop before the signal session (the vendor has not served Friday yet) are not a collection."""
+    stale = {ticker(i): bars(RC.sessions("2026-05-01", "2026-10-29", "KR")) for i in range(48)}
+    e = C.liquidity_evidence(stale[ticker(0)], SESSION)
+    assert e["signalSessionRow"] is False and e["states"]["SESSION_MISSING"] == 1 and e["medianTradedValue60Krw"] is None
+    with pytest.raises(ValueError, match="PRICE_FETCH_INCOMPLETE: 0 of 48 names have a vendor row on the signal session"):
+        receipt(fr=stale)
+    half = {**stale, **{ticker(i): bars() for i in range(24)}}
+    r = receipt(fr=half)                                                    # exactly half collected: recorded, the rest excluded
+    assert r["liquidityDiagnostics"]["summary"]["signalSessionRowPresent"] == 24
+    assert all("NOT_TRADED_EVERY_SESSION_20" in x["ineligibility"] or "BELOW_LIQUIDITY_FLOOR" in x["ineligibility"]
+               for x in r["signal"] if x["ticker"] in {ticker(i) for i in range(24, 48)})
+
+
+def test_traded_value_is_the_as_traded_close_times_volume_and_is_fetched_unadjusted(tmp_path, monkeypatch):
+    """A split is consistent in close and volume and cancels; a dividend-adjusted close would scale earlier sessions down."""
+    days = RC.sessions("2026-05-01", SESSION, "KR")
+    traded = bars(days, volume=1e6, close=1e4)
+    split = traded.copy()
+    split.loc[split.index[:30], "Close"] *= 2.0
+    split.loc[split.index[:30], "Volume"] /= 2.0                          # a 2:1 split mid-window, on the vendor's consistent basis
+    assert C.liquidity_evidence(split, SESSION)["medianTradedValue60Krw"] == C.liquidity_evidence(traded, SESSION)["medianTradedValue60Krw"]
+    adjusted = traded.copy()
+    adjusted.loc[adjusted.index[:-10], "Close"] *= 0.97                     # what a dividend-adjusted close looks like before an ex-date
+    assert C.liquidity_evidence(adjusted, SESSION)["medianTradedValue60Krw"] < 1e10
+    assert C.LIQUIDITY_FETCH == {"auto_adjust": False} and receipt()["liquidityDiagnostics"]["summary"]["tradedValueBasis"] == \
+        "AS_TRADED_CLOSE_X_VOLUME_SPLIT_CONSISTENT_NOT_DIVIDEND_ADJUSTED"
+    import importlib
+    script = importlib.import_module("scripts.record_kr_selection_challenger_v2")
+    seen = []
+
+    def fake_fetch(tickers, start, **kw):
+        seen.append(kw)
+        return frames()
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", fake_fetch)
+    monkeypatch.setattr(C, "merged_at_from_git", lambda *a: MERGED)
+    monkeypatch.setattr(CORE, "system_utc_now", lambda: pd.Timestamp(SATURDAY))
+    path = tmp_path / "site.json"
+    path.write_text(json.dumps(site(generated="2026-10-31T04:30:00+00:00")))
+    assert script.record(path, _ledger_dir(tmp_path)) == 0
+    assert seen == [{"auto_adjust": False}]
+
+
+def test_every_series_including_the_mechanism_control_must_be_within_the_none_budget():
+    rng = np.random.default_rng(3)
+    values = list(0.06 + 0.01 * rng.standard_normal(104))
+    receipts, outcomes = _ledger(104, values, unconfirmed=0.0)
+    for o in outcomes:
+        if int(o["receiptSha256"], 16) >= 2 and o["horizonSessions"] == 252:
+            o["books"]["CTRL_CHEAP_UNCONFIRMED"]["netExcessReturn"] = None     # the mechanism pairs valid on two receipts only
+    out = C.assess(receipts, outcomes, SPEC, path_metrics=GOOD)["challengers"]["CH_VALUE_CONFIRMED"]
+    assert out["verdict"] == "INCONCLUSIVE_DATA" and out["primary"]["seriesShortOfCohort"] == ["versusUnconfirmedCheap"]
+    bad = {**GOOD, "CH_VALUE_CONFIRMED": {"status": "COMPLETE", "sharpe": None, "maxDrawdown": -0.2}}
+    receipts, outcomes = _ledger(104, values, unconfirmed=0.0)
+    assert C.assess(receipts, outcomes, SPEC, path_metrics=bad)["challengers"]["CH_VALUE_CONFIRMED"]["verdict"] == "INCONCLUSIVE_DATA"
+
+
+def test_a_vendor_outage_defers_the_outcome_and_the_next_run_grades_it(tmp_path, monkeypatch):
+    import importlib
+    script = importlib.import_module("scripts.record_kr_selection_challenger_v2")
+    ledger = _ledger_dir(tmp_path)
+    study = script.study_dir(ledger)
+    live = C.build_receipt(site(), "b" * 64, pathway=C.LIVE, created_at_utc=EVENING, now_utc=EVENING, merged_at_utc=MERGED,
+                           code_identity={"commitSha": "c" * 40, "files": {"x": "d" * 64}}, spec=SPEC, spec_digest="e" * 64,
+                           accounting=accounting(), store_identity=STORE, frames=frames())
+    C.append_receipt(study / script.RECEIPTS, live, pathway=C.LIVE)
+    maturity = str(CORE.maturity_session(live["executionDate"], 126).date())
+    days = RC.sessions(live["executionDate"], maturity, "KR")
+    fr = {t: bars(days) for t in {s["ticker"] for b in C.BOOKS for s in live["books"][b]["slots"]} | {C.BENCHMARK}}
+    monkeypatch.setattr(CORE, "system_utc_now", lambda: pd.Timestamp(maturity).tz_localize("UTC") + pd.Timedelta(hours=10))
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: {})
+    assert script.outcomes(ledger) == 0
+    assert json.loads((study / "publication-status.outcomes.json").read_text())["status"] == "DEFERRED"
+    assert C.read_outcomes(study / script.OUTCOMES, pathway=C.LIVE) == []
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: fr)
+    assert script.outcomes(ledger) == 0
+    assert [o["resolution"] for o in C.read_outcomes(study / script.OUTCOMES, pathway=C.LIVE)] == ["FINAL"]
+    out = C.build_outcome(live, horizon=126, frames={}, now_utc=pd.Timestamp(maturity).tz_localize("UTC") + pd.Timedelta(hours=10),
+                          pathway=C.LIVE)
+    with pytest.raises(ValueError, match="OUTCOME_DEFERRED_IS_NEVER_A_RECORD"):
+        C.validate_outcome(out, pathway=C.LIVE)

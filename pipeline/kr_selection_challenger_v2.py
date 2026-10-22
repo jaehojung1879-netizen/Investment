@@ -46,7 +46,9 @@ BENCHMARK = V1.BENCHMARK
 SLOTS = V1.SLOTS
 STORE = "fundamentals/kr-canonical-v2"
 LIQUIDITY_SESSIONS = 60
-MIN_PRICED_SHARE = 0.5     # fewer vendor frames than this means the download failed: no receipt, the next run in the window retries
+MIN_PRICED_SHARE = 0.5     # fewer names with a signal-session row than this means the download failed: no receipt, the next run retries
+LIQUIDITY_FETCH = {"auto_adjust": False}   # as-traded close (split-consistent, not dividend-adjusted) x volume = KRW traded
+TRADED_VALUE_BASIS = "AS_TRADED_CLOSE_X_VOLUME_SPLIT_CONSISTENT_NOT_DIVIDEND_ADJUSTED"
 KEY_FIELDS = V1.KEY_FIELDS
 
 
@@ -100,19 +102,25 @@ def liquidity_evidence(frame, session: str) -> dict:
 
     ``positiveVolumeSessions20`` counts traded sessions among the last 20; ``medianTradedValue60Krw`` is the median close x volume over the last
     60 and exists only when all 60 traded. ``states`` tallies those 60 sessions (``SESSION_MISSING`` = an open session with no vendor row,
-    ``SUSPENDED`` = a row with zero volume) and ``offCalendarRows`` the vendor rows dated on a closed day, which are dropped, not sessions."""
+    ``SUSPENDED`` = a row with zero volume) and ``offCalendarRows`` the vendor rows dated on a closed day, which are dropped, not sessions.
+    ``signalSessionRow`` says whether the vendor delivered a row for the signal session itself: a frame that stops earlier is a stale or
+    truncated download, never a collected name.
+
+    Traded value is the KRW actually traded: the close AS TRADED times the volume, both on the vendor's split-consistent basis, so a split
+    cancels in the product. The frames must therefore come from ``fetch_prices(..., auto_adjust=False)``: a dividend-adjusted close would
+    scale every earlier session's value down by the accumulated dividend factor while the volume stays as traded."""
     if frame is None:
-        return {"positiveVolumeSessions20": None, "medianTradedValue60Krw": None, "basis": "NO_VENDOR_FRAME"}
+        return {"positiveVolumeSessions20": None, "medianTradedValue60Krw": None, "basis": "NO_VENDOR_FRAME", "signalSessionRow": False}
     end = pd.Timestamp(session)
     aligned = BI.calendar_frame(frame, start=end - pd.Timedelta(days=130), end=end)
     if session not in {str(d.date()) for d in aligned.index} or len(aligned) < LIQUIDITY_SESSIONS:
-        return {"positiveVolumeSessions20": None, "medianTradedValue60Krw": None, "basis": "CALENDAR_WINDOW_SHORT"}
+        return {"positiveVolumeSessions20": None, "medianTradedValue60Krw": None, "basis": "CALENDAR_WINDOW_SHORT", "signalSessionRow": False}
     last = aligned.iloc[-LIQUIDITY_SESSIONS:]
     traded = last["state"].isin(["VALID", "RANGE_UNRESOLVED"]) & (last["Volume"] > 0)
     window = BI.summary(last)
     out = {"positiveVolumeSessions20": int(traded.iloc[-20:].sum()), "medianTradedValue60Krw": None,
            "states": {k: v for k, v in window["states"].items() if v}, "offCalendarRows": int(aligned.attrs.get("offCalendarRows") or 0),
-           "basis": "ALL_60_TRADED" if traded.all() else "NOT_ALL_60_TRADED"}
+           "basis": "ALL_60_TRADED" if traded.all() else "NOT_ALL_60_TRADED", "signalSessionRow": last["state"].iloc[-1] != "SESSION_MISSING"}
     if traded.all():
         out["medianTradedValue60Krw"] = float(statistics.median((last["Close"] * last["Volume"]).tolist()))
     return out
@@ -136,7 +144,9 @@ def liquidity_summary(evidence: dict) -> dict:
             states[state] = states.get(state, 0) + int(n)
         off += int(e.get("offCalendarRows") or 0)
     floor = S2.MIN_MEDIAN_TRADED_VALUE_KRW
-    return {"names": len(rows), "noVendorFrame": sum(e["basis"] == "NO_VENDOR_FRAME" for e in rows),
+    return {"names": len(rows), "tradedValueBasis": TRADED_VALUE_BASIS,
+            "signalSessionRowPresent": sum(bool(e.get("signalSessionRow")) for e in rows),
+            "noVendorFrame": sum(e["basis"] == "NO_VENDOR_FRAME" for e in rows),
             "calendarWindowShort": sum(e["basis"] == "CALENDAR_WINDOW_SHORT" for e in rows),
             "traded20of20": sum(e["positiveVolumeSessions20"] == 20 for e in rows),
             "median60Measured": sum(e["medianTradedValue60Krw"] is not None for e in rows),
@@ -262,9 +272,11 @@ def build_receipt(site: dict, site_sha256: str, *, pathway: str, created_at_utc,
     evidence = {}
     rows, alpha = signal_rows(site, session, accounting, frames, evidence)
     universe = len(rows)
-    priced = sum(1 for r in rows if r["medianTradedValue60Krw"] is not None or r["positiveVolumeSessions20"] is not None)
-    if universe and priced / universe < MIN_PRICED_SHARE:
-        raise ValueError("PRICE_FETCH_INCOMPLETE: %d of %d names have bars" % (priced, universe))
+    # A name counts as collected only if the vendor delivered its signal-session row: a frame that exists but stops earlier is a stale
+    # download, and counting it would let a run that never saw the signal session pass the download check.
+    collected = sum(1 for e in evidence.values() if e.get("signalSessionRow"))
+    if universe and collected / universe < MIN_PRICED_SHARE:
+        raise ValueError("PRICE_FETCH_INCOMPLETE: %d of %d names have a vendor row on the signal session" % (collected, universe))
     records = S2.cross_section(rows, session)
     books, readiness = build_books(site, session, records, alpha, spec)
     provenance = site.get("provenance") or {}
@@ -324,12 +336,15 @@ def build_outcome(receipt: dict, *, horizon: int, frames: dict, now_utc, pathway
         record.update({"status": "COMPLETE", "benchmarkReturn": bench, "names": names,
                        "books": {book: V1.book_result(receipt["books"][book], names, execution=execution, maturity=maturity)
                                  for book in BOOKS}})
+    record.update(V1.resolution(record, now_utc))      # v1's retry rule: a transient vendor failure is DEFERRED, never a permanent None
     record["recordSha256"] = hashlib.sha256(CORE.canonical(record)).hexdigest()
     return record
 
 
 def validate_outcome(record: dict, *, pathway: str) -> None:
     expected = CORE.OUTCOME_EVIDENCE_CLASS if pathway == LIVE else "SYNTHETIC_FIXTURE"
+    if record.get("resolution") == "DEFERRED":
+        raise ValueError("OUTCOME_DEFERRED_IS_NEVER_A_RECORD")
     if record.get("studyId") != STUDY or record.get("evidenceClass") != expected:
         raise ValueError("OUTCOME_PATHWAY_MISMATCH")
     if hashlib.sha256(CORE.canonical({k: v for k, v in record.items() if k != "recordSha256"})).hexdigest() != record.get("recordSha256"):
@@ -373,12 +388,14 @@ def assess(receipts: list[dict], outcomes: list[dict], spec: dict, *, path_metri
                   "beatsExistingModelOnMean": model["mean"] is not None and model["mean"] > 0,
                   "beatsUnconfirmedCheapOnMean": mechanism["mean"] is not None and mechanism["mean"] > 0,
                   "riskNoWorseThanBenchmark": V1._risk_ok(path_metrics, book, primary)}
-        if len(cohort) - ci["n"] > primary["maxIncompleteReceipts"] or checks["riskNoWorseThanBenchmark"] is None:
+        short_of = V1._incomplete(len(cohort), {"h252": ci, "h126": short, "versusExistingModel": model,
+                                                "versusUnconfirmedCheap": mechanism}, primary["maxIncompleteReceipts"])
+        if short_of or checks["riskNoWorseThanBenchmark"] is None:
             result = "INCONCLUSIVE_DATA"
         else:
             result = "SUPPORTED" if all(checks.values()) else "NOT_SUPPORTED"
         verdict.update({"verdict": result, "primary": {**ci, "checks": checks, "h126": short, "versusExistingModel": model,
-                                                       "versusUnconfirmedCheap": mechanism}})
+                                                       "versusUnconfirmedCheap": mechanism, "seriesShortOfCohort": short_of}})
     out["challengers"][book] = verdict
     return out
 
@@ -387,14 +404,9 @@ def assess(receipts: list[dict], outcomes: list[dict], spec: dict, *, path_metri
 # LIVE identity
 # --------------------------------------------------------------------------- #
 def merged_at_from_git(root=ROOT) -> str:
-    """As v1: the first-parent commit that added THIS study's spec, after deepening a shallow clone; refuses when git cannot say."""
-    V1.deepen_history(root)
-    found = V1._git("log", "--first-parent", "--diff-merges=first-parent", "--diff-filter=A", "--no-renames", "--name-only",
-                    "--format=%cI", "--", SPEC_PATH, root=root)
-    lines = [line for line in found.stdout.splitlines() if len(line) > 10 and line[:4].isdigit() and line[10] == "T"]
-    if found.returncode != 0 or not lines:
-        raise ValueError("SPEC_MERGE_TIME_UNKNOWN")
-    return lines[-1]
+    """v1's main-only check for THIS study's spec: the first-parent commit on origin/main that added it, never a commit on HEAD's branch, and
+    the running checkout must contain it (``kr_selection_challenger.registration_from_git``)."""
+    return V1.registration_from_git(root, SPEC_PATH)["mergedAtUtc"]
 
 
 def live_code_identity(spec: dict, root=ROOT) -> dict:

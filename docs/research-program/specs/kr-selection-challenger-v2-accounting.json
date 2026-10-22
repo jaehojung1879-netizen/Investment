@@ -58,8 +58,8 @@
     "marketCap": "production validationCrossSection marketCap (Yahoo snapshot at the build, a stated proxy for the KRX issue cap)",
     "industry": "production sector (Yahoo), a stated proxy for the registered KRX industry; fewer than 5 eligible names in a sector makes them INELIGIBLE, never ranked against the market",
     "preferredShares": "a six-digit code not ending in 0 is a preferred class and INELIGIBLE (stated heuristic; unknown is never assumed common)",
-    "liquidity": "vendor daily bars (datafeed.fetch_prices) aligned to the KRX calendar by kr_bar_integrity: traded on all 20 latest sessions and median close x volume over the latest 60 sessions >= 1,000,000,000 KRW (kr_alpha_signal_v2 constants); a missing, suspended or invalid session is not traded",
-    "downloadFailure": "if fewer than half of the names receive bars, no receipt is written and a later run in the same window retries"
+    "liquidity": "vendor daily bars (datafeed.fetch_prices) aligned to the KRX calendar by kr_bar_integrity: traded on all 20 latest sessions and median close x volume over the latest 60 sessions >= 1,000,000,000 KRW (kr_alpha_signal_v2 constants); a missing, suspended or invalid session is not traded; traded value is the close AS TRADED (fetch_prices auto_adjust=False: split-consistent, not dividend-adjusted) x volume, so a split cancels in the product and no dividend factor scales earlier sessions",
+    "downloadFailure": "a name counts as collected only if the vendor delivered its signal-session row; if fewer than half of the names are collected, no receipt is written and a later run in the same window retries. Missing sessions are never interpolated"
   },
   "construction": {
     "slots": 5,
@@ -89,7 +89,8 @@
     "notExecutable": "a name SUSPENDED (zero volume) at the execution session cannot be bought; its slot is held in 069500.KS",
     "unresolved": "a name with no vendor frame, no row or an invalid close at execution, or that did not trade on the maturity session itself, makes that book's cohort outcome None (NAME_OUTCOME_MISSING or TERMINAL_ECONOMICS_UNRESOLVED); it is never marked at an earlier close, dropped or renormalised",
     "netExcess": "book return - 069500.KS return - stock legs (buy at execution, sell at maturity) - ETF legs of benchmark-held slots + the ETF control's own round trip",
-    "costs": "pipeline.weekly_decision.trade_cost_fraction('KR', date, ...): commission + half spread per leg, dated statutory sell tax on stock sells, no tax on ETF sells (benchmark_alpha.REALISTIC_COSTS)"
+    "costs": "pipeline.weekly_decision.trade_cost_fraction('KR', date, ...): commission + half spread per leg, dated statutory sell tax on stock sells, no tax on ETF sells (benchmark_alpha.REALISTIC_COSTS)",
+    "retry": "as kr-selection-challenger-v1: an outcome whose benchmark is unpriced or with any held name unresolved is DEFERRED (nothing written, regraded from a fresh download) until the (horizon + 5)-th KR session after execution is final; only then is a still-unresolved outcome written as FINAL_UNRESOLVED_AFTER_RETRY and counted as None"
   },
   "assessment": {
     "interim": "No outcome statistic is published before a registered check. Turnover (a signal-time fact) is reported at any time.",
@@ -110,7 +111,7 @@
         "rebalanceEveryReceipts": 4,
         "endReceipt": 104
       },
-      "rule": "on the first 104 receipts, once all are graded at H252 and H126: SUPPORTED only if (1) the one-sided 97.5% Newey-West lower bound of mean H252 net excess vs 069500.KS is above 0, (2) the mean H126 net excess is above 0, (3) the mean H252 net excess vs CTRL_MODEL5 is above 0, (4) the mean H252 net excess vs CTRL_CHEAP_UNCONFIRMED is above 0, and (5) the 4-weekly rebalanced daily paper path has Sharpe >= 069500.KS and |max drawdown| <= 1.25 x 069500.KS over the same sessions; NOT_SUPPORTED otherwise; INCONCLUSIVE_DATA if more than 10 outcomes are None or the risk path is incomplete"
+      "rule": "on the first 104 receipts, once all are graded at H252 and H126: SUPPORTED only if (1) the one-sided 97.5% Newey-West lower bound of mean H252 net excess vs 069500.KS is above 0, (2) the mean H126 net excess is above 0, (3) the mean H252 net excess vs CTRL_MODEL5 is above 0, (4) the mean H252 net excess vs CTRL_CHEAP_UNCONFIRMED is above 0, and (5) the 4-weekly rebalanced daily paper path has Sharpe >= 069500.KS and |max drawdown| <= 1.25 x 069500.KS over the same sessions; NOT_SUPPORTED otherwise; INCONCLUSIVE_DATA if more than 10 outcomes are None in ANY series a check reads (H252, H126, and the paired H252 comparisons with CTRL_MODEL5 and CTRL_CHEAP_UNCONFIRMED, each counted on its own valid pairs) or the risk path is incomplete or its Sharpe or drawdown is undefined"
     },
     "inference": "kelly_portfolio._newey_west_stats on the receipt-dated series (Bartlett HAC, lag from the horizon in observations of this series); overlapping weekly cohorts are never counted as independent",
     "afterVerdict": "A SUPPORTED verdict is development evidence for one owner decision, never an automatic promotion. STOPPED_HARM or NOT_SUPPORTED closes this version; recording may continue for the record but no rule is changed to rescue it."
@@ -118,7 +119,7 @@
   "turnover": "names replaced per weekly receipt and per path rebalance, as a share of five slots (weights retargeted are not turnover here)",
   "productionEffect": "NONE",
   "codeFileHashes": {
-    "pipeline/kr_selection_challenger_v2.py": "0fc7d4079ad214c328cece87d8f32520d5422c4a1c340a180122381800c19a30",
-    "scripts/record_kr_selection_challenger_v2.py": "2c491e416aef0ba97b941605f459c41e33fba7185661acff55e2803aa9fb93ff"
+    "pipeline/kr_selection_challenger_v2.py": "f839ba3dc736caf5362b9ec8bca0b8279b8d346528e1b8c8b15829893572343c",
+    "scripts/record_kr_selection_challenger_v2.py": "4f67ae7d53fe44f015609c3684a93a6c5b187bc537fcd585cd7a5f01e8a21578"
   }
 }

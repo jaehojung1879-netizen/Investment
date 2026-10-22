@@ -78,7 +78,7 @@ def record(site_path: Path, ledger_dir: Path) -> int:
         accounting, store = C.load_accounting(ledger_dir)
         from pipeline.datafeed import fetch_prices
         start = str((pd.Timestamp(session) - pd.Timedelta(days=150)).date())
-        frames = fetch_prices(_universe(site), start)
+        frames = fetch_prices(_universe(site), start, **C.LIQUIDITY_FETCH)   # as-traded close: see liquidity_evidence
         receipt = C.build_receipt(site, hashlib.sha256(raw).hexdigest(), pathway=C.LIVE, created_at_utc=now, now_utc=now,
                                   merged_at_utc=merged, code_identity=C.live_code_identity(spec), spec=spec,
                                   spec_digest=C.spec_sha256(), accounting=accounting, store_identity=store, frames=frames)
@@ -113,13 +113,18 @@ def outcomes(ledger_dir: Path) -> int:
         return 0
     tickers = sorted({C.BENCHMARK} | {s["ticker"] for r, _ in due for b in C.BOOKS for s in r["books"][b]["slots"]})
     frames = fetch_prices(tickers, min(r["executionDate"] for r, _ in due))
-    written = []
+    written, deferred = [], []
     with path.open("ab") as stream:
         for receipt, horizon in sorted(due, key=lambda x: (x[0]["signalDate"], x[1])):
             row = C.build_outcome(receipt, horizon=horizon, frames=frames, now_utc=now, pathway=C.LIVE)
+            if row["resolution"] == "DEFERRED":   # a later run regrades it from a fresh download; nothing is written now
+                deferred.append([receipt["signalDate"], horizon, row["unresolved"], row["retryUntilSession"]])
+                continue
+            C.validate_outcome(row, pathway=C.LIVE)
             stream.write(CORE.canonical(row) + b"\n")
-            written.append([receipt["signalDate"], horizon, row["status"]])
-    _status(directory, action="outcomes", status="GRADED", written=written)
+            written.append([receipt["signalDate"], horizon, row["status"], row["resolution"]])
+    _status(directory, action="outcomes", status="GRADED" if not deferred else ("PARTIALLY_DEFERRED" if written else "DEFERRED"),
+            written=written, deferred=deferred, vendorFrames=len(frames))
     return 0
 
 
