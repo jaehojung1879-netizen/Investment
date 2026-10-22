@@ -457,3 +457,34 @@ def test_actual_recording_path_through_the_paper_ledger_step(tmp_path, monkeypat
     # Nothing outside its own namespace is written by the challenger (the paper ledger writes its own files).
     assert {p.name for p in (ledger / "research-strategies").iterdir()} == {C.STUDY}
     assert "weekly-decisions" not in weekly_before + [p.name for p in ledger.iterdir()]
+
+
+def test_research_namespace_leaves_the_paper_ledger_and_weekly_receipts_byte_identical(tmp_path, monkeypatch):
+    """The same Saturday run with the challenger hook and with it stubbed out: every file outside the challenger's own directory is
+    byte-identical, and pre-existing weekly-decisions receipts are never touched."""
+    import importlib
+    update = importlib.import_module("scripts.update_ledger")
+    script = importlib.import_module("scripts.record_kr_selection_challenger")
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: (_ for _ in ()).throw(OSError("offline")))
+    monkeypatch.setattr(C, "merged_at_from_git", lambda *a: MERGED)
+    monkeypatch.setattr(CORE, "system_utc_now", lambda: pd.Timestamp("2026-10-31T04:35:00Z"))
+    data = site(generated="2026-10-31T04:30:00+00:00")
+    data["modelVersion"] = "m"
+    path = tmp_path / "site.json"
+    path.write_text(json.dumps(data))
+
+    def run(name, hook):
+        ledger = tmp_path / name / "ledger"
+        (ledger / "weekly-decisions").mkdir(parents=True)
+        (ledger / "weekly-decisions" / "receipts.jsonl").write_text('{"receiptId":"existing"}\n')
+        with monkeypatch.context() as m:
+            if not hook:
+                m.setattr(script, "run_all", lambda *a: 0)
+            assert update.main([str(path), str(ledger)]) == 0
+        return {str(p.relative_to(ledger)): p.read_bytes() for p in ledger.rglob("*") if p.is_file()}
+    with_hook, without = run("with", True), run("without", False)
+    ours = {k for k in with_hook if k.startswith("research-strategies/" + C.STUDY + "/")}
+    assert ours and "research-strategies/" + C.STUDY + "/receipts.jsonl" in ours
+    outside = {k: v for k, v in with_hook.items() if k not in ours}
+    assert outside == without
+    assert outside["weekly-decisions/receipts.jsonl"] == b'{"receiptId":"existing"}\n'
