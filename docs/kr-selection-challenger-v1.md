@@ -116,6 +116,7 @@
   - 생산 빌드와 공유하는 도우미는 동작으로 고정한다. 대상은 KR 거래비용, 세션 확정 시각과 `^KS11`, Newey-West, `downside_vol_252`, 2026-10-01~2029-12-31 KRX 달력이다. 고정된 합성 입력에 대한 출력을 해시한 값이 `conformanceDigest`다. 그 모듈의 무관한 수정은 영향이 없고, 이 연구가 쓰는 계산이 바뀌면 LIVE의 record·outcomes·assess가 `SCIENTIFIC_DEPENDENCY_CHANGED`로 거부한다.
   - 정당한 변경(KRX 달력 정정 포함)은 새 연구 버전으로 등록한다. 이 버전을 다시 고정하지 않는다. 합성 fixture는 계약을 읽지 않는다.
   - 계약 밖에 두는 것: 생산 artifact 자체(`CTRL_MODEL5`는 정의상 생산 모델이며 `modelVersion`으로 기록된다)와 저장소 공통 안전 관문 `weekly_publish.unsafe_reason`.
+- **거래량을 모르는 세션은 거래 세션이 아니다.** 거래량이 없거나 NaN·±무한대·음수인 행은 OHLC가 그럴듯해도 `VOLUME_INVALID`로 분류하고 종가를 버린다(소유자 감사 2026-10-23, #277 comment 6359555396). 이전에는 이런 행이 `VALID`로 통과해 관측 창과 outcome의 거래 세션으로 셌다. 벤더가 0이라고 밝힌 정지(`SUSPENDED`)와는 구분한다. 만기의 `VOLUME_INVALID`는 공급자 미확보로 보류되고 경제적 미해결로 확정되지 않는다. 리밸런스의 `VOLUME_INVALID`는 실행 불가 대체가 아니라 `INCOMPLETE`다.
 - **아직 남은 비P1 지적.**
   - 실행일 거래량 0을 정지로 보는 규칙은 벤더의 주장에 의존한다(감사 지적 2).
   - 허용된 None은 평균에서 빠지므로, 그것이 상장폐지라면 생존편향 방향으로 작용할 수 있다(감사 지적 4).
