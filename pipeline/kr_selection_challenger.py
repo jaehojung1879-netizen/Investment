@@ -810,13 +810,20 @@ def paper_path(receipts: list[dict], frames: dict, book: str, *, every: int, end
             previous, holdings = held, new
         values.append(nav)
     series = pd.Series(values, index=days)
-    daily = series.pct_change().dropna()
+    # The book is 1.0 BEFORE the opening trade on the first execution session; ``values`` holds the post-cost close. Measuring returns and
+    # drawdown from that pre-trade 1.0 puts the opening cost into the risk path exactly once, as it already is in the annual return
+    # (series[-1] is the wealth of 1.0 invested): the first daily return is series[1] / 1.0 - 1, not series[1] / series[0] - 1, so the
+    # number of daily returns, and with it the annualisation, is unchanged.
+    base = series.copy()
+    base.iloc[0] = 1.0
+    daily = base.pct_change().dropna()
     years = len(daily) / 252.0
     vol = float(daily.std(ddof=1) * math.sqrt(252)) if len(daily) > 1 else None
     annual = float(series.iloc[-1] ** (1 / years) - 1) if years > 0 else None
+    peak = series.cummax().clip(lower=1.0)
     return {"status": "COMPLETE", "sessions": len(series), "annualReturn": annual, "annualVolatility": vol,
             "sharpe": annual / vol if annual is not None and vol else None,
-            "maxDrawdown": float((series / series.cummax() - 1).min()),
+            "maxDrawdown": float((series / peak - 1).min()),
             "rebalanceNameReplacement": sum(replaced) / len(replaced) if replaced else None}
 
 

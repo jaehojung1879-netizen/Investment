@@ -528,6 +528,53 @@ def test_paper_path_marks_daily_and_charges_rebalances():
     assert C.paper_path(receipts[:8], frames, "CH_LOWVOL", every=4, end_receipt=8)["status"] == "ACCUMULATING"
 
 
+def _flat(days, start=100.0, end=100.0):
+    close = np.linspace(start, end, len(days))
+    return pd.DataFrame({"Open": close, "High": close, "Low": close, "Close": close, "Volume": 1.0}, index=pd.DatetimeIndex(days))
+
+
+def test_the_opening_trade_cost_is_a_loss_in_the_risk_path_not_only_in_the_return():
+    """One opening purchase with positive fees and no later turnover (every > end_receipt), on flat prices. The book starts at 1.0
+    before that trade, so the fee is a drawdown and a negative first daily return, not a step hidden before the first observation."""
+    receipts = _path_receipts(9)
+    days = RC.sessions(receipts[0]["executionDate"], receipts[8]["executionDate"], "KR")
+    entry = receipts[0]["executionDate"]
+    frames = {"000001.KS": _flat(days), "000002.KS": _flat(days), C.BENCHMARK: _flat(days)}
+    stock_cost = 0.2 * C._leg(entry, is_benchmark=False, side="buy") + 0.8 * C._leg(entry, is_benchmark=True, side="buy")
+    etf_cost = C._leg(entry, is_benchmark=True, side="buy")
+    assert stock_cost > 0 and etf_cost > 0
+    for book, cost in (("CH_LOWVOL", stock_cost), ("CTRL_ETF", etf_cost)):     # each book against its own opening fee
+        path = C.paper_path(receipts, frames, book, every=9, end_receipt=8)
+        assert path["status"] == "COMPLETE" and path["rebalanceNameReplacement"] is None
+        assert path["maxDrawdown"] == pytest.approx(-cost, rel=1e-12)
+        assert path["annualReturn"] == pytest.approx((1 - cost) ** (252 / (len(days) - 1)) - 1, rel=1e-12)
+        returns = [-cost] + [0.0] * (len(days) - 2)                             # the opening loss, then nothing moves
+        assert path["annualVolatility"] == pytest.approx(float(np.std(returns, ddof=1) * np.sqrt(252)), rel=1e-9)
+        assert path["annualVolatility"] > 0 and path["sharpe"] < 0
+
+
+def test_the_opening_cost_enters_volatility_once_on_moving_prices():
+    """An ETF-only book on a rising benchmark: the risk path must equal the hand-built net-of-cost path from a pre-trade 1.0, with the
+    fee charged exactly once (the annual return and every daily return agree with that one NAV path)."""
+    receipts = _path_receipts(9)
+    days = RC.sessions(receipts[0]["executionDate"], receipts[8]["executionDate"], "KR")
+    bench = _flat(days, 100.0, 112.0)
+    frames = {"000001.KS": _flat(days), "000002.KS": _flat(days), C.BENCHMARK: bench}
+    path = C.paper_path(receipts, frames, "CTRL_ETF", every=9, end_receipt=8)
+    cost = C._leg(receipts[0]["executionDate"], is_benchmark=True, side="buy")
+    price = bench["Close"].to_numpy()
+    nav = np.concatenate([[1.0], (1 - cost) * price / price[0]])               # pre-trade 1.0, then the post-cost marked book
+    daily = nav[2:] / np.concatenate([[1.0], nav[2:-1]]) - 1                   # first return from 1.0 to the first full day
+    assert len(daily) == len(days) - 1
+    assert path["annualReturn"] == pytest.approx(nav[-1] ** (252 / len(daily)) - 1, rel=1e-12)
+    assert path["annualVolatility"] == pytest.approx(float(np.std(daily, ddof=1) * np.sqrt(252)), rel=1e-9)
+    assert path["sharpe"] == pytest.approx(path["annualReturn"] / path["annualVolatility"], rel=1e-12)
+    assert path["maxDrawdown"] == pytest.approx(-cost, rel=1e-12)              # the only fall below the pre-trade 1.0
+    no_fee = (price[-1] / price[0]) ** (252 / len(daily)) - 1
+    assert path["annualReturn"] < no_fee                                       # charged, and only once
+    assert path["annualReturn"] == pytest.approx((1 + no_fee) * (1 - cost) ** (252 / len(daily)) - 1, rel=1e-12)
+
+
 def test_a_name_suspended_on_a_rebalance_session_is_held_as_the_benchmark_in_the_risk_path():
     """The cohort outcome holds a name suspended at execution in 069500.KS (NOT_EXECUTABLE_HELD_AS_BENCHMARK). The risk path must do the
     same, or one halt on a rebalance date makes the whole primary risk check INCONCLUSIVE_DATA while the outcomes call it measured."""
