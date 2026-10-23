@@ -65,9 +65,9 @@ def _universe(site: dict) -> list[str]:
 def record(site_path: Path, ledger_dir: Path) -> int:
     raw = site_path.read_bytes()
     site = json.loads(raw)
-    spec = C.load_spec()
     directory = study_dir(ledger_dir)
     try:
+        spec = C.load_spec()      # the study's own files AND its scientific dependencies, or no receipt
         now = CORE.system_utc_now()
         # Every refusal that needs no data comes first, so a run that cannot record downloads nothing.
         session = C.V1.signal_session(site)
@@ -100,6 +100,7 @@ def record(site_path: Path, ledger_dir: Path) -> int:
 def outcomes(ledger_dir: Path) -> int:
     from pipeline.datafeed import fetch_prices
 
+    C.load_spec()   # grading uses the registered costs, calendar and resolution rules; a moved dependency refuses
     directory = study_dir(ledger_dir)
     receipts = C.read_receipts(directory / RECEIPTS, pathway=C.LIVE)
     path = directory / OUTCOMES

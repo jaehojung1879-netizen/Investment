@@ -63,7 +63,39 @@ def load_spec(root=ROOT, *, verify_code=True) -> dict:
         for rel, pinned in sorted(spec["codeFileHashes"].items()):
             if V1.file_sha256(Path(root) / rel) != pinned:
                 raise ValueError("CODE_CHANGED_SINCE_REGISTRATION: " + rel)
+        verify_scientific_dependencies(spec, root)
     return spec
+
+
+# Scientific dependency contract (v1's discipline, kr_selection_challenger.verify_scientific_dependencies). v2's rules run through v1's
+# outcome, resolution, risk-path and interval code, the receipt core, kr_alpha_signal_v2 and the accounting derivation; those are pinned by
+# bytes (all research-owned; S2, VQ and dart_derive are byte-pinned by sealed studies already). The production helpers v1 calls, and the
+# accounting derivation's own behaviour on a fixed synthetic filing set, are pinned by behaviour.
+SCIENTIFIC_FILES = ("pipeline/kr_selection_challenger.py", "pipeline/kr_bar_integrity.py", "scripts/record_kr_selection_challenger.py",
+                    "pipeline/prospective_receipt_core.py", "pipeline/kr_alpha_signal_v2.py", "pipeline/kr_value_quality_catalyst.py",
+                    "pipeline/dart_derive.py")
+
+
+def _probe_filing(year, available, *, assets, liabilities, ni, ocf):
+    accounts = {"자산총계": {"amounts": {"thstrm_amount": assets}, "statement": "BS"},
+                "부채총계": {"amounts": {"thstrm_amount": liabilities}, "statement": "BS"},
+                "당기순이익": {"amounts": {"thstrm_amount": ni}, "statement": "CIS"},
+                "영업활동현금흐름": {"amounts": {"thstrm_amount": ocf}, "statement": "CF"}}
+    return {"id": f"999990.KS:{year}:11011", "ticker": "999990.KS", "fiscalYear": year, "reportCode": "11011", "availableFrom": available,
+            "receiptNos": [available.replace("-", "") + "000001"], "fsDiv": "CFS", "accounts": accounts}
+
+
+def conformance_values() -> dict:
+    records = [_probe_filing(2024, "2025-03-14", assets=2e12, liabilities=1e12, ni=4e10, ocf=6e10),
+               _probe_filing(2025, "2026-03-16", assets=2.2e12, liabilities=1.3e12, ni=-3e10, ocf=8e10)]
+    accounting = {date: VQ.accounting_values(records, date) for date in ("2025-03-13", "2025-06-30", "2026-03-16", "2026-10-30")}
+    ratios = [VQ.ratio(*pair) for pair in ((1.0, 2.0), (1.0, 0.5), (None, 2.0), (float("nan"), 3.0), (-4.0, 8.0))]
+    return V1._rounded({"v1": V1.conformance_values(), "accountingValues": accounting, "ratio": ratios,
+                        "minMedianTradedValueKrw": S2.MIN_MEDIAN_TRADED_VALUE_KRW})
+
+
+def verify_scientific_dependencies(spec: dict, root=ROOT) -> None:
+    V1.verify_scientific_dependencies(spec, root, files=SCIENTIFIC_FILES, values=conformance_values())
 
 
 def spec_sha256(root=ROOT) -> str:
@@ -258,6 +290,8 @@ def build_receipt(site: dict, site_sha256: str, *, pathway: str, created_at_utc,
                   spec: dict, spec_digest: str, accounting: dict, store_identity: dict, frames: dict) -> dict:
     if pathway not in EVIDENCE_CLASS_BY_PATHWAY:
         raise ValueError("UNKNOWN_PATHWAY")
+    if pathway == LIVE:      # a LIVE receipt is written only under the registered rules, whoever calls this
+        verify_scientific_dependencies(spec)
     if (reason := P.unsafe_reason(site)) is not None or (site.get("meta") or {}).get("syntheticData"):
         raise ValueError("UNSAFE_ARTIFACT: " + str(reason or "SEED_OR_SYNTHETIC_ARTIFACT"))
     if not CORE.is_sha256(site_sha256) or not CORE.is_sha256(spec_digest):
@@ -283,7 +317,8 @@ def build_receipt(site: dict, site_sha256: str, *, pathway: str, created_at_utc,
     receipt = {
         "schemaVersion": SCHEMA_VERSION, "studyId": STUDY, "pathway": pathway, "specSha256": spec_digest,
         "designDigest": S2.design_digest(),
-        "codeIdentity": {"commitSha": code_identity["commitSha"], "files": dict(sorted(code_identity["files"].items()))},
+        "codeIdentity": {"commitSha": code_identity["commitSha"], "files": dict(sorted(code_identity["files"].items())),
+                         **{k: code_identity[k] for k in ("conformanceDigest", "calendarVersion") if k in code_identity}},
         "authorization": {"basis": "MERGE_OF_THE_REGISTERED_SPEC", "mergedAtUtc": str(CORE.utc(merged_at_utc).isoformat()),
                           "firstProspectiveSession": str(CORE.first_prospective_session(merged_at_utc).date()), "registeredFloor": floor},
         "signalDate": session, "executionDate": str(execution.date()), "createdAtUtc": str(CORE.utc(created_at_utc).isoformat()),

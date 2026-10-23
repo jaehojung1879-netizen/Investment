@@ -89,13 +89,66 @@ def test_spec_pins_code_and_registers_the_mechanism_check():
 
 
 def test_a_changed_code_file_refuses_the_spec(tmp_path):
-    for rel in [C.SPEC_PATH, *SPEC["codeFileHashes"]]:
+    for rel in [C.SPEC_PATH, *SPEC["codeFileHashes"], *C.SCIENTIFIC_FILES]:
         (tmp_path / rel).parent.mkdir(parents=True, exist_ok=True)
         (tmp_path / rel).write_bytes((ROOT / rel).read_bytes())
     C.load_spec(tmp_path)
     (tmp_path / "pipeline/kr_selection_challenger_v2.py").write_text("# edited\n")
     with pytest.raises(ValueError, match="CODE_CHANGED_SINCE_REGISTRATION"):
         C.load_spec(tmp_path)
+
+
+def test_the_spec_pins_v2s_scientific_dependencies():
+    deps = SPEC["scientificDependencies"]
+    assert set(deps["fileHashes"]) == set(C.SCIENTIFIC_FILES)
+    assert {"pipeline/kr_selection_challenger.py", "pipeline/kr_alpha_signal_v2.py", "pipeline/kr_value_quality_catalyst.py"} <= set(deps["fileHashes"])
+    assert deps["conformanceDigest"] == V1.conformance_digest(C.conformance_values())
+
+
+@pytest.mark.parametrize("rel", ["pipeline/kr_alpha_signal_v2.py", "pipeline/kr_value_quality_catalyst.py", "pipeline/kr_selection_challenger.py",
+                                 "pipeline/dart_derive.py"])
+def test_an_upstream_rule_file_edit_refuses_v2_while_v2s_own_files_are_unchanged(tmp_path, rel):
+    """S2's design, the accounting derivation or v1's outcome code changing under the same v2 studyId is refused."""
+    for f in [C.SPEC_PATH, *SPEC["codeFileHashes"], *C.SCIENTIFIC_FILES]:
+        (tmp_path / f).parent.mkdir(parents=True, exist_ok=True)
+        (tmp_path / f).write_bytes((ROOT / f).read_bytes())
+    C.load_spec(tmp_path)
+    (tmp_path / rel).write_text((tmp_path / rel).read_text() + "\n# a changed rule\n")
+    with pytest.raises(ValueError, match="SCIENTIFIC_DEPENDENCY_CHANGED: " + rel):
+        C.load_spec(tmp_path)
+
+
+@pytest.mark.parametrize("patch", [
+    lambda m: m.setattr(C.VQ, "ratio", lambda n, d, _f=C.VQ.ratio: None if _f(n, d) is None else _f(n, d) * 1.1),
+    lambda m: m.setattr(C.VQ, "accounting_values", lambda r, d, _f=C.VQ.accounting_values: ({}, {"status": "NO_VISIBLE_FILING"})),
+    lambda m: m.setattr(C.S2, "MIN_MEDIAN_TRADED_VALUE_KRW", C.S2.MIN_MEDIAN_TRADED_VALUE_KRW * 2),
+    lambda m: m.setattr(V1.W, "trade_cost_fraction", lambda *a, _f=V1.W.trade_cost_fraction, **k: _f(*a, **k) + 1e-4),
+])
+def test_a_changed_behaviour_upstream_refuses_the_live_v2_spec(monkeypatch, patch):
+    C.load_spec()
+    patch(monkeypatch)
+    with pytest.raises(ValueError, match="SCIENTIFIC_DEPENDENCY_CHANGED: conformance"):
+        C.load_spec()
+
+
+def test_the_live_v2_recorder_refuses_under_a_moved_dependency_and_fixtures_stay_isolated(tmp_path, monkeypatch):
+    import importlib
+    script = importlib.import_module("scripts.record_kr_selection_challenger_v2")
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", lambda *a, **k: frames())
+    monkeypatch.setattr(C, "merged_at_from_git", lambda *a: MERGED)
+    monkeypatch.setattr(CORE, "system_utc_now", lambda: pd.Timestamp(SATURDAY))
+    monkeypatch.setattr(C.VQ, "ratio", lambda n, d, _f=C.VQ.ratio: None if _f(n, d) is None else _f(n, d) * 2)
+    path = tmp_path / "site.json"
+    path.write_text(json.dumps(site(generated="2026-10-31T04:30:00+00:00")))
+    ledger = _ledger_dir(tmp_path)
+    assert script.record(path, ledger) == 1
+    study = script.study_dir(ledger)
+    state = json.loads((study / "publication-status.record.json").read_text())
+    assert state["status"] == "REFUSED" and state["reason"] == "SCIENTIFIC_DEPENDENCY_CHANGED: conformance"
+    assert not (study / script.RECEIPTS).exists()
+    with pytest.raises(ValueError, match="SCIENTIFIC_DEPENDENCY_CHANGED"):
+        script.outcomes(ledger)
+    assert receipt()["pathway"] == C.SYNTHETIC                                  # fixtures never read the contract
 
 
 # --------------------------------------------------------------------------- #

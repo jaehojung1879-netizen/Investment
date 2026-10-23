@@ -70,5 +70,6 @@ v1은 가격 정보(저변동성, 52주 고가)만 쓴다. 현재 생산 빌드�
   - 배당 조정 종가를 쓰면 과거 세션의 거래대금이 배당 누적 계수만큼 작아진다.
   - 영수증의 `liquidityDiagnostics.summary.tradedValueBasis`에 이 기준을 기록한다.
 - **결측 관문:** H252, H126, `CTRL_MODEL5`·`CTRL_CHEAP_UNCONFIRMED`와의 짝 비교 각각에 결측 10개 허용을 적용한다.
+- **과학적 의존성 계약:** v2의 규칙은 v1의 outcome·재시도·위험 경로·구간 코드, receipt core, `kr_alpha_signal_v2`, 회계 파생(`kr_value_quality_catalyst`, `dart_derive`)을 거친다. 이 파일들은 바이트로 고정한다. v1이 부르는 생산 도우미와, 고정된 합성 공시 한 쌍에 대한 회계 파생의 출력은 동작으로 고정한다(`conformanceDigest`). LIVE의 record·outcomes·assess는 변경을 `SCIENTIFIC_DEPENDENCY_CHANGED`로 거부한다. v1 파일이 바뀌는 경우를 포함해 정당한 변경은 새 연구 버전으로 등록한다(소유자 감사 2026-10-23).
 - **outcome 재시도:** v1과 같다(`resolution`을 호출한다). 빈·부분 응답 같은 공급자 미확보는 날짜와 무관하게 기록하지 않고 다시 채점하며, 재시도 상태는 `outcome-pending.json`에 남긴다. 벤더가 만기 세션을 제공했는데 거래량이 0인 경제적 미해결만 (만기 + 5)세션 뒤 None으로 기록한다. 공급자가 끝내 제공하지 않는 코호트를 닫는 규칙은 소유자 승인 사항이다.
 - **DART 가용일:** 그대로다. `availableFrom`이 신호일보다 엄격히 이전이어야 하고, 접수번호 날짜가 일치해야 한다.
