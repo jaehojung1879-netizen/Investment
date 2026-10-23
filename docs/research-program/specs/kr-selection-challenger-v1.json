@@ -103,6 +103,7 @@
       "riskPath": {
         "rebalanceEveryReceipts": 4,
         "endReceipt": 104,
+        "navBasis": "the book is 1.0 before the opening trade on the first execution session; daily returns and drawdown are measured from that pre-trade 1.0, so the opening cost is a loss in Sharpe and max drawdown exactly as it is in the annual return, charged once; the first daily return runs from the pre-trade 1.0 to the second session close, so the count of daily returns and the annualisation are unchanged",
         "notExecutable": "a newly chosen name SUSPENDED (served row, zero volume) on a rebalance session is held as 069500.KS for that period, the same rule as outcomeDefinition.notExecutable, with the same legs charged; a missing row or invalid close on a rebalance session, or a held name without a traded close on any marking day, makes the path INCOMPLETE"
       },
       "rule": "on the first 104 receipts, once all are graded at H252 and H126: SUPPORTED only if (1) the one-sided 98.75% (Bonferroni over two challengers) Newey-West lower bound of mean H252 net excess vs 069500.KS is above 0, (2) the mean H126 net excess is above 0, (3) the mean H252 net excess vs CTRL_MODEL5 is above 0, and (4) the 4-weekly rebalanced daily paper path has Sharpe >= 069500.KS and |max drawdown| <= 1.25 x 069500.KS over the same sessions; NOT_SUPPORTED otherwise; INCONCLUSIVE_DATA if more than 10 outcomes are None in ANY series a check reads (the H252 series, the H126 series, or the paired H252 comparison with CTRL_MODEL5, each counted on its own valid pairs) or the risk path is incomplete or its Sharpe or drawdown is undefined"
@@ -113,7 +114,7 @@
   "turnover": "names replaced per weekly receipt and per path rebalance, as a share of five slots (weights retargeted are not turnover here)",
   "productionEffect": "NONE",
   "codeFileHashes": {
-    "pipeline/kr_selection_challenger.py": "8af45c2cdeb4809d96051ccee002cd630bf857b0e9a8edd15844a909e670c20d",
+    "pipeline/kr_selection_challenger.py": "7f4c3311a9fb872c007a6afc354417a93d16417d4dc5c4fa48d8edfbb42e08e9",
     "pipeline/kr_bar_integrity.py": "2e82916eff3096a65556e461177a4372f1edcbff5ac72614f5af80b168166e14",
     "scripts/record_kr_selection_challenger.py": "a78fc9c5824ac2190ce4878ad6fc0eb7033c74a25af878a0c49605c77a2f8284"
   },
