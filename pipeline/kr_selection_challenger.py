@@ -430,6 +430,47 @@ def build_receipt(site: dict, site_sha256: str, *, pathway: str, created_at_utc,
     return receipt
 
 
+# A LIVE receipt's createdAtUtc is the writer's clock at the moment of writing, not at the start of the run. Book construction downloads
+# vendor bars and can take minutes; a run that passed the window check at 08:59 KST and finished at 09:01 would otherwise append a
+# receipt stamped 08:59 after the execution session opened. The early check (build_receipt) stays, so a run that is already late
+# downloads nothing; this is the final one.
+WINDOW_CLOSED_DURING_RECORDING = "RECEIPT_WINDOW_CLOSED_DURING_RECORDING"
+
+
+def finalize_receipt(receipt: dict, *, now_utc, merged_at_utc, validate) -> dict:
+    """Restamp ``createdAtUtc`` with ``now_utc``, re-check the registered window at that instant and recompute the digest."""
+    out = {k: v for k, v in receipt.items() if k != "receiptSha256"}
+    out["createdAtUtc"] = str(CORE.utc(now_utc).isoformat())
+    try:
+        execution = CORE.check_timing(signal_date=out["signalDate"], created_at_utc=now_utc, now_utc=now_utc, merged_at_utc=merged_at_utc)
+    except ValueError as exc:
+        raise ValueError(f"{WINDOW_CLOSED_DURING_RECORDING}: {exc}") from exc
+    if str(execution.date()) != out["executionDate"]:
+        raise ValueError(WINDOW_CLOSED_DURING_RECORDING + ": EXECUTION_SESSION_MOVED")
+    out["receiptSha256"] = CORE.receipt_digest(out)
+    validate(out)
+    return out
+
+
+def append_live_receipt(path, receipt: dict, *, merged_at_utc, clock, validate, key_fields=KEY_FIELDS) -> dict:
+    """Finalize with a fresh clock, then append; the append's own validation reads the clock once more for THIS row, immediately before
+    the bytes are written, and refuses if the window closed in between. Existing rows are only validated, never rewritten."""
+    final = finalize_receipt(receipt, now_utc=clock(), merged_at_utc=merged_at_utc, validate=validate)
+
+    def gate(row):
+        if row is final:
+            at_write = clock()
+            if CORE.utc(row["createdAtUtc"]) > CORE.utc(at_write):
+                raise ValueError(WINDOW_CLOSED_DURING_RECORDING + ": CLOCK_WENT_BACKWARDS")
+            try:
+                CORE.check_timing(signal_date=row["signalDate"], created_at_utc=at_write, now_utc=at_write, merged_at_utc=merged_at_utc)
+            except ValueError as exc:
+                raise ValueError(f"{WINDOW_CLOSED_DURING_RECORDING}: {exc}") from exc
+        validate(row)
+    CORE.append(path, final, validate=gate, key_fields=key_fields)
+    return final
+
+
 def append_receipt(path, receipt, *, pathway: str) -> str:
     return CORE.append(path, receipt, validate=lambda r: validate_receipt(r, pathway=pathway), key_fields=KEY_FIELDS)
 

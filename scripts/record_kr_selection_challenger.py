@@ -82,10 +82,13 @@ def record(site_path: Path, directory: Path) -> int:
         session = C.signal_session(site)
         if session in recorded:   # checked before any download: a later run in the same window has nothing to prove
             raise ValueError("RECEIPT_ALREADY_EXISTS: " + session)
+        merged = C.merged_at_from_git()
         receipt = C.build_receipt(site, hashlib.sha256(raw).hexdigest(), pathway=C.LIVE, created_at_utc=now, now_utc=now,
-                                  merged_at_utc=C.merged_at_from_git(), code_identity=C.live_code_identity(spec), spec=spec,
+                                  merged_at_utc=merged, code_identity=C.live_code_identity(spec), spec=spec,
                                   spec_digest=C.spec_sha256(), fetch_bars=_fetch_bars)
-        C.append_receipt(directory / RECEIPTS, receipt, pathway=C.LIVE)
+        # The download above can take minutes: the stamp and the window are decided by the clock at the write, not at the start.
+        receipt = C.append_live_receipt(directory / RECEIPTS, receipt, merged_at_utc=merged, clock=CORE.system_utc_now,
+                                        validate=lambda r: C.validate_receipt(r, pathway=C.LIVE))
     except ValueError as exc:
         reason = str(exc)
         quiet = any(reason.startswith(code) for code in QUIET)
