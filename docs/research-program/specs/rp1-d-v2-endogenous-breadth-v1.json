@@ -48,7 +48,7 @@
       "no outcome/realised field anywhere in the forecast input",
       "decisionCutoffAt is a timezone-aware instant inside the registered window: after the decision session's close is final (weekly_decision.last_completed_session: close + settlement buffer, KR no earlier than 18:00 KST) and before the next exchange session opens",
       "every availableAt is a timezone-aware instant at or before decisionCutoffAt; a date-only, naive or malformed availability is refused, and one such row voids the region record",
-      "risk model provenance, checked before any name is gated: lastObservationSession <= decisionSession, computedAt a timezone-aware instant at or before decisionCutoffAt and after lastObservationSession's close was final, sourceDigestSha256 of the exact return panel, producerSha256, and contentSha256 recomputed over the matrix and its provenance; a real record also needs producerSha256 in REGISTERED_RISK_MODEL_PRODUCERS (empty today)",
+      "risk model provenance, checked before any name is gated: lastObservationSession <= decisionSession, computedAt a timezone-aware instant at or before decisionCutoffAt and after lastObservationSession's close was final, sourceDigestSha256 of the exact return panel, producerSha256, and contentSha256 recomputed over the matrix and its provenance (a value that is not canonical JSON, such as NaN, Inf or a non-string key, is refused, never raised); a real record also needs producerSha256 in REGISTERED_RISK_MODEL_PRODUCERS (empty today)",
       "past-only active covariance and benchmark covariance for every gated name, finite, symmetric, PSD"
     ],
     "name": [

@@ -137,7 +137,7 @@ def decision_window_error(region, decision_session, cutoff):
     from . import weekly_decision as W
     try:
         completed = W.last_completed_session(region, cutoff)
-    except ValueError:
+    except (ValueError, OverflowError):      # an instant the pinned calendar cannot place is refused, never raised
         return "DECISION_CUTOFF_OUTSIDE_THE_CALENDAR"
     if completed < decision_session:
         return "DECISION_CUTOFF_BEFORE_THE_SESSION_CLOSE_IS_FINAL"
@@ -227,7 +227,12 @@ def _risk_provenance(record, region, session, cutoff, synthetic):
         raise Refused("RISK_MODEL_PROVENANCE_MISSING")
     if not all(_hex64(risk[k]) for k in ("sourceDigestSha256", "producerSha256", "contentSha256")):
         raise Refused("RISK_MODEL_PROVENANCE_MALFORMED")
-    if risk["contentSha256"] != risk_model_content_sha256(risk):
+    try:
+        digest = risk_model_content_sha256(risk)
+    except (ValueError, TypeError, OverflowError, RecursionError) as error:
+        # NaN/Inf, a non-string key or a non-JSON value cannot be canonicalised: a refusal, never an uncaught exception
+        raise Refused("RISK_MODEL_NOT_CANONICAL_JSON") from error
+    if risk["contentSha256"] != digest:
         raise Refused("RISK_MODEL_CONTENT_DIGEST_MISMATCH")
     if not synthetic and risk["producerSha256"] not in REGISTERED_RISK_MODEL_PRODUCERS:
         raise Refused("RISK_MODEL_PRODUCER_NOT_REGISTERED")
@@ -241,7 +246,7 @@ def _risk_provenance(record, region, session, cutoff, synthetic):
         raise Refused("RISK_MODEL_COMPUTED_AFTER_DECISION_CUTOFF")
     try:
         final = W.last_completed_session(region, computed)
-    except ValueError:
+    except (ValueError, OverflowError):
         final = None
     if final is None or final < last:
         raise Refused("RISK_MODEL_COMPUTED_BEFORE_ITS_LAST_OBSERVATION_WAS_FINAL")

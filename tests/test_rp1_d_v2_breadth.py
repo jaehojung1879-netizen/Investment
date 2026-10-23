@@ -297,6 +297,58 @@ def test_editing_a_sealed_risk_model_breaks_its_digest(edit):
     assert run(rec)["reasons"] == ["RISK_MODEL_CONTENT_DIGEST_MISMATCH"]
 
 
+@pytest.mark.parametrize("bad", [float("nan"), float("inf"), -float("inf")])
+@pytest.mark.parametrize("where", ["matrix", "benchmarkCovariance"])
+@pytest.mark.parametrize("digest", ["stale", "format_only"])
+def test_non_finite_risk_model_values_are_refused_not_raised(bad, where, digest):
+    rec = record(strong(2))
+    if where == "matrix":
+        rec["riskModel"]["matrix"][0][0] = bad
+    else:
+        rec["riskModel"]["benchmarkCovariance"][tick("KR", 0)] = bad
+    if digest == "format_only":
+        rec["riskModel"]["contentSha256"] = "c" * 64          # a well-formed digest is enough to reach canonicalisation
+    out = run(rec)
+    assert out["activeCount"] == 0 and out["etfFraction"] == 1.0 and out["shadowFractions"] == {}
+    assert out["reasons"] == ["RISK_MODEL_NOT_CANONICAL_JSON"]
+
+
+@pytest.mark.parametrize("change", [
+    {"matrix": object()}, {"benchmarkCovariance": {1: 0.0, "a": 0.0}}, {"tickers": [{"nested": float("nan")}]},
+    {"observations": float("inf")}])
+def test_non_json_risk_model_values_are_refused_not_raised(change):
+    rec = record(strong(2))
+    rec["riskModel"].update(change)
+    out = run(rec)
+    assert out["activeCount"] == 0 and out["reasons"] == ["RISK_MODEL_NOT_CANONICAL_JSON"]
+
+
+@pytest.mark.parametrize("cutoff", ["0001-01-01T00:00:00+00:00", "9999-12-31T23:59:59+00:00", "2099-01-01T00:00:00+00:00"])
+def test_a_cutoff_the_calendar_cannot_place_is_refused_not_raised(cutoff):
+    out = run(record(strong(2), decisionCutoffAt=cutoff))
+    assert out["activeCount"] == 0 and out["reasons"] == ["DECISION_CUTOFF_OUTSIDE_THE_CALENDAR"]
+
+
+def test_a_risk_model_computed_at_an_unplaceable_instant_is_refused_not_raised():
+    rec = reseal(record(strong(2)), computedAt="0001-01-01T00:00:00+00:00")
+    assert run(rec)["reasons"] == ["RISK_MODEL_COMPUTED_BEFORE_ITS_LAST_OBSERVATION_WAS_FINAL"]
+
+
+def test_malformed_records_never_escape_the_refusal_boundary():
+    """A seeded sweep of malformed values at every record and risk-model key: decide_region returns the ETF default, never raises."""
+    junk = [None, "", "x", 0, -1, 1e308, float("nan"), float("inf"), [], {}, [float("nan")], {"k": float("inf")}, object(),
+            "2026-10-16", "0001-01-01T00:00:00+00:00", "9999-12-31T23:59:59+00:00"]
+    rng = random.Random(20261023)
+    base = record(strong(3))
+    for _ in range(400):
+        rec = record(strong(3))
+        target = rec if rng.random() < 0.4 else rec["riskModel"] if rng.random() < 0.6 else rec["names"][rng.randrange(3)]
+        keys = sorted(base if target is rec else base["riskModel"] if target is rec["riskModel"] else base["names"][0])
+        target[rng.choice(keys)] = rng.choice(junk)
+        out = run(rec)
+        assert out["productionAffected"] is False and (out["activeCount"] == 0 or out["status"] == "SYNTHETIC_SHADOW_BOOK")
+
+
 def test_provenance_is_checked_even_when_no_name_passes():
     rec = reseal(record(strong(3, gross=0.0)), lastObservationSession="2026-10-19")
     assert run(rec)["reasons"] == ["RISK_MODEL_OBSERVATIONS_AFTER_DECISION_SESSION"]
