@@ -820,6 +820,92 @@ def test_timing_boundaries_write_a_machine_readable_state(tmp_path, monkeypatch,
     assert (study / "receipts.jsonl").exists() == (state == "RECORDED")
 
 
+class _AdvancingClock:
+    """The writer's clock for one record() run: ``start`` until the vendor download, ``after`` from then on."""
+
+    def __init__(self, start, after):
+        self.now, self.after, self.reads = pd.Timestamp(start), pd.Timestamp(after), []
+
+    def __call__(self):
+        self.reads.append(self.now)
+        return self.now
+
+    def fetch(self, tickers, start, **_):
+        out = fetch_for()(tickers, start)
+        self.now = self.after                          # the download took this long
+        return out
+
+
+OPEN = "2026-11-02T00:00:00Z"                           # 09:00 KST on the execution session of signal 2026-10-30
+
+
+@pytest.mark.parametrize("finished,recorded", [
+    ("2026-11-01T23:59:30Z", True),                     # (a) download done at 08:59:30 KST: inside the window
+    (OPEN, False),                                      # (b) done exactly at the open: the window is closed
+    ("2026-11-02T00:01:00Z", False),                    # (c) done at 09:01 KST
+])
+def test_the_receipt_window_is_decided_by_the_clock_at_the_write_not_at_the_start(tmp_path, monkeypatch, finished, recorded):
+    import importlib
+    script = importlib.import_module("scripts.record_kr_selection_challenger")
+    clock = _AdvancingClock("2026-11-01T23:59:00Z", finished)          # every run starts at 08:59 KST, before the open
+    monkeypatch.setattr(CORE, "system_utc_now", clock)
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", clock.fetch)
+    monkeypatch.setattr(C, "merged_at_from_git", lambda *a: MERGED)
+    path = tmp_path / "site.json"
+    path.write_text(json.dumps(site(generated="2026-10-31T04:30:00+00:00")))
+    study = tmp_path / "study"
+    code = script.record(path, study)
+    state = json.loads((study / "publication-status.record.json").read_text())
+    if recorded:
+        assert code == 0 and state["status"] == "RECORDED"
+        (row,) = C.read_receipts(study / "receipts.jsonl", pathway=C.LIVE)
+        assert pd.Timestamp(row["createdAtUtc"]) == pd.Timestamp(finished)           # the final clock, not the start
+        assert row["receiptSha256"] == CORE.receipt_digest(row) == state["receiptSha256"]
+    else:
+        assert code == 1 and state["status"] == "REFUSED"
+        assert state["reason"].startswith(C.WINDOW_CLOSED_DURING_RECORDING + ": RECEIPT_CREATED_AFTER_EXECUTION_OPEN_BACKDATED")
+        assert not (study / "receipts.jsonl").exists()
+    assert clock.reads[0] == pd.Timestamp("2026-11-01T23:59:00Z") and clock.reads[-1] == pd.Timestamp(finished)
+
+
+def test_a_late_attempt_never_touches_an_existing_receipt(tmp_path, monkeypatch):
+    """(d) A receipt written in the window; later attempts (finished late, or started late) leave its bytes as they are."""
+    import importlib
+    script = importlib.import_module("scripts.record_kr_selection_challenger")
+    monkeypatch.setattr(C, "merged_at_from_git", lambda *a: MERGED)
+    path = tmp_path / "site.json"
+    path.write_text(json.dumps(site(generated="2026-10-31T04:30:00+00:00")))
+    study = tmp_path / "study"
+    first = _AdvancingClock("2026-10-31T04:35:00Z", "2026-10-31T04:40:00Z")
+    monkeypatch.setattr(CORE, "system_utc_now", first)
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", first.fetch)
+    assert script.record(path, study) == 0
+    before = (study / "receipts.jsonl").read_bytes()
+    for start, end in (("2026-11-01T23:59:00Z", "2026-11-02T00:01:00Z"), ("2026-11-02T00:05:00Z", "2026-11-02T00:06:00Z")):
+        late = _AdvancingClock(start, end)
+        monkeypatch.setattr(CORE, "system_utc_now", late)
+        monkeypatch.setattr("pipeline.datafeed.fetch_prices", late.fetch)
+        assert script.record(path, study) == 0                      # already recorded: quiet, and no download at all
+        assert (study / "receipts.jsonl").read_bytes() == before and late.reads and late.now == pd.Timestamp(start)
+
+
+def test_the_append_gate_rereads_the_clock_for_the_new_row_only():
+    """Finalization and the write are adjacent; if the clock still moves past the open between them, the write is refused, and the
+    rows already in the ledger are validated, never re-timed."""
+    r = receipt(created="2026-11-01T23:59:00+00:00")
+    times = iter([pd.Timestamp("2026-11-01T23:59:58Z"), pd.Timestamp(OPEN)])
+    import tempfile
+    with tempfile.TemporaryDirectory() as d:
+        path = Path(d) / "receipts.jsonl"
+        with pytest.raises(ValueError, match=C.WINDOW_CLOSED_DURING_RECORDING):
+            C.append_live_receipt(path, r, merged_at_utc=MERGED, clock=lambda: next(times),
+                                  validate=lambda x: C.validate_receipt(x, pathway=C.SYNTHETIC))
+        assert not path.exists()
+        ok = C.append_live_receipt(path, r, merged_at_utc=MERGED, clock=lambda: pd.Timestamp("2026-11-01T23:59:58Z"),
+                                   validate=lambda x: C.validate_receipt(x, pathway=C.SYNTHETIC))
+        assert pd.Timestamp(ok["createdAtUtc"]) == pd.Timestamp("2026-11-01T23:59:58Z") and ok["receiptSha256"] == CORE.receipt_digest(ok)
+
+
 def test_a_merge_on_the_signal_date_makes_the_first_signal_ineligible(tmp_path, monkeypatch):
     import importlib
     script = importlib.import_module("scripts.record_kr_selection_challenger")

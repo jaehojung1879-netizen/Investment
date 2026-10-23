@@ -67,7 +67,7 @@
     "signalSessions": "KR weekly decision sessions: a KR session whose next KR session falls in a later ISO week (prospective_receipt_core.is_weekly_decision_session)",
     "firstEligibleSignalSessionFloor": "2026-10-30",
     "artifactRule": "the artifact's ^KS11 session equals the last KR session that was final (18:00 KST) at the artifact's generatedAt",
-    "receiptWindow": "created by the writer's own clock after 18:00 KST of the signal session and before 09:00 KST of the next KR session (prospective_receipt_core.check_timing)",
+    "receiptWindow": "created by the writer's own clock after 18:00 KST of the signal session and before 09:00 KST of the next KR session (prospective_receipt_core.check_timing). The window is checked when the run starts (a late run downloads nothing) and again after every download and book is built: createdAtUtc is restamped with the clock at that moment, the digest recomputed, and the append's own validation reads the clock once more immediately before the bytes are written. A window that closes during recording is RECEIPT_WINDOW_CLOSED_DURING_RECORDING (REFUSED, nothing appended); an exactly-09:00 write is outside the window",
     "execution": "close of the next KR session after the signal session (session 0)",
     "runner": "scripts/update_ledger.py (the paper-ledger step of .github/workflows/ledger.yml) calls scripts/record_kr_selection_challenger.run_all after its own work; any refusal is caught and never costs the paper ledger. No workflow file is changed (.github/workflows is tree-pinned by rp1-wp2-us-universe-v1).",
     "expectedCadence": "The 00:10 UTC cron starts about 04:30 UTC, inside the KRX session on weekdays, so weekday runs skip (ARTIFACT_NOT_BUILT_ON_A_FINAL_SESSION) and the Saturday run records Friday's session; Sunday's run is the backup inside the same window."
@@ -113,9 +113,9 @@
   "turnover": "names replaced per weekly receipt and per path rebalance, as a share of five slots (weights retargeted are not turnover here)",
   "productionEffect": "NONE",
   "codeFileHashes": {
-    "pipeline/kr_selection_challenger.py": "1467a078e56c436d08a4118af62ce2d4d55cbab557065f90c5fbe036169a69b4",
+    "pipeline/kr_selection_challenger.py": "8af45c2cdeb4809d96051ccee002cd630bf857b0e9a8edd15844a909e670c20d",
     "pipeline/kr_bar_integrity.py": "2e82916eff3096a65556e461177a4372f1edcbff5ac72614f5af80b168166e14",
-    "scripts/record_kr_selection_challenger.py": "7cfe55a07f9b2d36bc9ba519b37df005144ef092c09a9d5c5947b98549d20012"
+    "scripts/record_kr_selection_challenger.py": "a78fc9c5824ac2190ce4878ad6fc0eb7033c74a25af878a0c49605c77a2f8284"
   },
   "scientificDependencies": {
     "contract": "Rules this study calls outside its own files are frozen too. Research-owned rule modules called directly are pinned by bytes (fileHashes). Production helpers shared with the live build are pinned by behaviour: conformanceDigest hashes their outputs on fixed synthetic probes (pipeline.kr_selection_challenger.conformance_values: KR trade_cost_fraction on dated legs 2026-2029, SESSION_EVIDENCE and last_completed_session finality, kelly_portfolio._newey_west_stats at both horizons, longterm.downside_vol_252, and the pinned KRX calendar 2026-10-01..2029-12-31). LIVE record, outcomes and assess refuse SCIENTIFIC_DEPENDENCY_CHANGED; a legitimate change to any of them (including a KRX calendar correction) is a new study version, never a re-pin of this one. Outside the contract by design: the production artifact (CTRL_MODEL5 is the production model, recorded by modelVersion) and weekly_publish.unsafe_reason (the repository-wide artifact safety gate)",
