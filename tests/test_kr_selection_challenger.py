@@ -414,6 +414,41 @@ def test_paper_path_marks_daily_and_charges_rebalances():
     assert C.paper_path(receipts[:8], frames, "CH_LOWVOL", every=4, end_receipt=8)["status"] == "ACCUMULATING"
 
 
+def test_a_name_suspended_on_a_rebalance_session_is_held_as_the_benchmark_in_the_risk_path():
+    """The cohort outcome holds a name suspended at execution in 069500.KS (NOT_EXECUTABLE_HELD_AS_BENCHMARK). The risk path must do the
+    same, or one halt on a rebalance date makes the whole primary risk check INCONCLUSIVE_DATA while the outcomes call it measured."""
+    receipts = _path_receipts(9)
+    days = RC.sessions(receipts[0]["executionDate"], receipts[8]["executionDate"], "KR")
+    flat = pd.DataFrame({"Open": 100.0, "High": 100.0, "Low": 100.0, "Close": 100.0, "Volume": 1.0}, index=pd.DatetimeIndex(days))
+    bench = flat.copy()
+    for col in ("Open", "High", "Low", "Close"):
+        bench[col] = np.linspace(100.0, 110.0, len(days))
+    entry = pd.Timestamp(receipts[4]["executionDate"])                      # 000002.KS is chosen for receipts 4-7
+    halted = flat.copy()
+    halted.loc[entry, "Volume"] = 0.0                                       # a served row: the name did not trade
+    frames = {"000001.KS": flat, "000002.KS": halted, C.BENCHMARK: bench}
+    path = C.paper_path(receipts, frames, "CH_LOWVOL", every=4, end_receipt=8)
+    assert path["status"] == "COMPLETE"
+    # Identical to a receipt that never chose the name: the slot sits in 069500.KS for the period, with the same legs charged.
+    as_benchmark = [{**r, "books": {b: {"slots": [], "fallbackSlots": 5} for b in C.BOOKS}} if 4 <= i < 8 else r
+                    for i, r in enumerate(receipts)]
+    same = C.paper_path(as_benchmark, frames, "CH_LOWVOL", every=4, end_receipt=8)
+    assert {k: path[k] for k in ("annualReturn", "maxDrawdown", "sharpe", "sessions")} == \
+        {k: same[k] for k in ("annualReturn", "maxDrawdown", "sharpe", "sessions")}
+    # And it is the cohort outcome's own reading of that session.
+    span = BI.calendar_frame(halted, start=str(entry.date()), end=str(days[-1].date()))
+    assert C.name_outcome(span, str(entry.date()), str(days[-1].date()), 0.0)["state"] == C.NOT_EXECUTABLE
+    # Still fail closed: a missing row or an invalid close on the rebalance session, and a halt of a name already held.
+    missing = flat.drop(entry)
+    assert C.paper_path(receipts, {**frames, "000002.KS": missing}, "CH_LOWVOL", every=4, end_receipt=8)["status"] == "INCOMPLETE"
+    invalid = flat.copy()
+    invalid.loc[entry, "Close"] = 0.0
+    assert C.paper_path(receipts, {**frames, "000002.KS": invalid}, "CH_LOWVOL", every=4, end_receipt=8)["status"] == "INCOMPLETE"
+    held_halt = flat.copy()
+    held_halt.loc[pd.Timestamp(receipts[2]["executionDate"]), "Volume"] = 0.0   # 000001.KS, bought at receipt 0, halted later
+    assert C.paper_path(receipts, {**frames, "000001.KS": held_halt}, "CH_LOWVOL", every=4, end_receipt=8)["status"] == "INCOMPLETE"
+
+
 # --------------------------------------------------------------------------- #
 # Recorder and workflow
 # --------------------------------------------------------------------------- #

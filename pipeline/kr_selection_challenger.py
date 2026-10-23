@@ -637,10 +637,16 @@ def _risk_ok(path_metrics, book, primary):
 # --------------------------------------------------------------------------- #
 # Risk path: rebalanced every k-th receipt, marked daily, costs on names traded
 # --------------------------------------------------------------------------- #
+def _session_state(frame, day):
+    day = pd.Timestamp(day).normalize()
+    return None if frame is None or day not in frame.index else str(frame.loc[day, "state"])
+
+
 def paper_path(receipts: list[dict], frames: dict, book: str, *, every: int, end_receipt: int) -> dict:
     """Daily NAV of one book rebalanced to equal slots at receipts 0, k, 2k, ... (< ``end_receipt``) and held, drifting, until the next,
     through the execution session of receipt ``end_receipt``. Any held name without a traded close on a day it must be marked makes the path
-    INCOMPLETE: it is never carried at an earlier price. ``book="CTRL_ETF"`` is 069500.KS alone."""
+    INCOMPLETE: it is never carried at an earlier price. A newly chosen name suspended on a rebalance session is held as 069500.KS for
+    that period, the same rule as the cohort outcome. ``book="CTRL_ETF"`` is 069500.KS alone."""
     receipts = sorted(receipts, key=lambda r: r["signalDate"])
     if len(receipts) <= end_receipt:
         return {"status": "ACCUMULATING"}
@@ -665,11 +671,18 @@ def paper_path(receipts: list[dict], frames: dict, book: str, *, every: int, end
             receipt = rebalance[day]
             names = [BENCHMARK] if book == "CTRL_ETF" else [s["ticker"] for s in receipt["books"][book]["slots"]]
             fallback = 0 if book == "CTRL_ETF" else receipt["books"][book]["fallbackSlots"]
+            date = str(day.date())
+            # A chosen name SUSPENDED on the execution session cannot be bought: its slot is held in 069500.KS, exactly as name_outcome /
+            # book_result treat it (NOT_EXECUTABLE_HELD_AS_BENCHMARK). Only a served zero-volume row qualifies; a missing row or an
+            # invalid close stays INCOMPLETE below, and a name already held that cannot be marked has already stopped the path above.
+            suspended = [t for t in names if t != BENCHMARK and t not in holdings and BI.traded_close(aligned.get(t), day) is None
+                         and _session_state(aligned.get(t), day) == "SUSPENDED"]
+            fallback += len(suspended)
+            names = [t for t in names if t not in suspended]
             target = {t: 0.2 for t in names} if book != "CTRL_ETF" else {BENCHMARK: 1.0}
             if fallback:
                 target[BENCHMARK] = target.get(BENCHMARK, 0.0) + 0.2 * fallback
             current = {t: u * c / nav for t, (u, c) in holdings.items()} if holdings else {}
-            date = str(day.date())
             cost = 0.0
             for t in set(target) | set(current):
                 delta = target.get(t, 0.0) - current.get(t, 0.0)
