@@ -592,3 +592,16 @@ def test_the_risk_path_holds_a_name_suspended_at_rebalance_in_the_benchmark_for_
     assert (path["annualReturn"], path["maxDrawdown"]) == (same["annualReturn"], same["maxDrawdown"])
     gap = {**frames, "000002.KS": flat.drop(entry)}
     assert V1.paper_path(receipts, gap, "CH_VALUE_CONFIRMED", every=4, end_receipt=8)["status"] == "INCOMPLETE"
+
+
+def test_an_unknown_volume_is_never_a_traded_liquidity_session():
+    """kr_bar_integrity's VOLUME_INVALID (missing / NaN / inf volume) is not a traded session: the 60-session median does not exist and
+    the state is tallied, not hidden; a stated zero is still SUSPENDED."""
+    days = RC.sessions("2026-05-01", SESSION, "KR")
+    frame = bars(days).astype({"Volume": object})
+    frame.loc[days[-5], "Volume"] = float("nan")
+    frame.loc[days[-6], "Volume"] = None
+    frame.loc[days[-7], "Volume"] = 0.0
+    e = C.liquidity_evidence(frame, SESSION)
+    assert e["states"]["VOLUME_INVALID"] == 2 and e["states"]["SUSPENDED"] == 1
+    assert e["medianTradedValue60Krw"] is None and e["positiveVolumeSessions20"] == 17 and e["basis"] == "NOT_ALL_60_TRADED"
