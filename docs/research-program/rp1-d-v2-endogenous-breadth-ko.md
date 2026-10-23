@@ -57,7 +57,7 @@ maximise  w'·α_cons  −  C4'·v  −  (λ/100)·( w'·c_b  +  ½ w'·S·w )
    - 결과·실현수익 필드가 입력 어디에도 없음
    - `decisionCutoffAt`은 시간대가 명시된 시각이어야 하며, 결정 세션의 종가가 확정된 뒤(`weekly_decision.last_completed_session`: 종가 + 정산 버퍼, KR은 18:00 KST 이후)부터 다음 거래 세션 개장 전까지의 창 안에 있어야 한다
    - 모든 `availableAt`은 시간대가 명시된 시각이며 `decisionCutoffAt` 이하여야 한다. 날짜만 있는 값, 시간대 없는 값, 형식 오류는 거부한다 (같은 날짜라는 사실만으로는 결정 시각 이전에 존재했음을 증명하지 못한다). 한 행이라도 위반하면 지역 기록 전체를 무효화
-   - 위험모형의 시간적 출처를 종목 심사 전에 확인한다: `lastObservationSession ≤ decisionSession`, `computedAt`은 시간대가 명시된 시각으로 `decisionCutoffAt` 이하이면서 마지막 관측 세션의 종가 확정 이후, `sourceDigestSha256`·`producerSha256`·`contentSha256` 필수, `contentSha256`은 행렬과 출처를 다시 해시해 일치해야 한다. NaN·Inf·문자열이 아닌 키처럼 정규 JSON으로 직렬화할 수 없는 값은 예외가 아니라 거부로 처리한다. 실제 기록은 `producerSha256`이 `REGISTERED_RISK_MODEL_PRODUCERS`(현재 비어 있음)에 있어야 한다. 다이제스트는 봉인 후 변경이 없었음을 증명할 뿐 날짜의 진실성은 증명하지 않으며, 그것은 등록된 생산자만 보증한다
+   - 위험모형의 시간적 출처를 종목 심사 전에 확인한다: `lastObservationSession ≤ decisionSession`, `computedAt`은 시간대가 명시된 시각으로 `decisionCutoffAt` 이하이면서 마지막 관측 세션의 종가 확정 이후, `sourceDigestSha256`·`producerSha256`·`contentSha256` 필수, `contentSha256`은 행렬과 출처를 다시 해시해 일치해야 한다. NaN·Inf·문자열이 아닌 키처럼 정규 JSON으로 직렬화할 수 없는 값은 예외가 아니라 거부로 처리한다. 행렬과 `c_b`의 각 원소는 float 변환 전에 실수이며 |x| ≤ 1e150(부동소수점 오버플로 방지용 수치 한계이지 경제적 기준이 아님)인지 검사하고, 티커는 문자열이어야 한다. 위반은 `RISK_MODEL_MALFORMED` 거부다. 실제 기록은 `producerSha256`이 `REGISTERED_RISK_MODEL_PRODUCERS`(현재 비어 있음)에 있어야 한다. 다이제스트는 봉인 후 변경이 없었음을 증명할 뿐 날짜의 진실성은 증명하지 않으며, 그것은 등록된 생산자만 보증한다
    - 과거 전용 위험모형이 관문을 통과한 모든 종목을 덮고, 대칭이며 PSD
 3. **종목 단위 관문:**
    - 식별자가 유효하고 ETF·QQQ가 아님

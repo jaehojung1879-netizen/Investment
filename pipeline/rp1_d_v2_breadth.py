@@ -60,6 +60,7 @@ RISK_PROVENANCE_KEYS = ("lastObservationSession", "computedAt", "sourceDigestSha
 # A forecast input that carries any of these is mixing outcomes into a decision and is refused whole.
 OUTCOME_FRAGMENTS = ("realized", "realised", "forward", "outcome", "matured", "futurereturn", "label")
 ZERO = 1e-9
+MAX_ABS_RISK_VALUE = 1e150
 CHECK_TOLERANCE = 1e-7
 
 
@@ -288,24 +289,41 @@ def check_owner_parameters(p):
 # ---------------------------------------------------------------------------------------------------------------------------------
 # Gates
 # ---------------------------------------------------------------------------------------------------------------------------------
+def _numeric(v):
+    """A finite real number that float arithmetic on a covariance cannot overflow. The bound is numerical safety, not economics:
+    |x| <= 1e150 keeps every quadratic form w'Sw (w in [0, 1]) and every eigenvalue far inside the float range."""
+    return _finite(v) and abs(v) <= MAX_ABS_RISK_VALUE
+
+
 def _risk_model(record, names):
+    """The supplied covariance, validated element by element in plain Python BEFORE any float conversion, so a malformed payload
+    (nested lists, unhashable tickers, integers beyond float range, NaN/Inf) is a refusal and never an exception."""
     risk = record.get("riskModel")
     if not isinstance(risk, dict) or not isinstance(risk.get("tickers"), list):
         raise Refused("RISK_MODEL_UNAVAILABLE")
-    idx = {t: i for i, t in enumerate(risk["tickers"])}
-    if len(idx) != len(risk["tickers"]) or any(t not in idx for t in names):
-        raise Refused("RISK_MODEL_DOES_NOT_COVER_GATED_NAMES")
-    try:
-        full = np.array(risk["matrix"], dtype=float)
-        cb_map = risk["benchmarkCovariance"]
-        cb = np.array([float(cb_map[t]) for t in names])
-    except (KeyError, TypeError, ValueError) as error:
-        raise Refused("RISK_MODEL_MALFORMED") from error
-    if full.shape != (len(idx), len(idx)) or not np.isfinite(full).all() or not np.isfinite(cb).all():
+    tickers = risk["tickers"]
+    if not all(isinstance(t, str) for t in tickers):
         raise Refused("RISK_MODEL_MALFORMED")
+    idx = {t: i for i, t in enumerate(tickers)}
+    if len(idx) != len(tickers) or any(t not in idx for t in names):
+        raise Refused("RISK_MODEL_DOES_NOT_COVER_GATED_NAMES")
+    matrix, cb_map = risk.get("matrix"), risk.get("benchmarkCovariance")
+    n = len(tickers)
+    if (not isinstance(matrix, list) or len(matrix) != n
+            or not all(isinstance(r, list) and len(r) == n and all(_numeric(x) for x in r) for r in matrix)
+            or not isinstance(cb_map, dict) or not all(t in cb_map and _numeric(cb_map[t]) for t in names)):
+        raise Refused("RISK_MODEL_MALFORMED")
+    full = np.array([[float(x) for x in r] for r in matrix], dtype=float).reshape(n, n)
+    cb = np.array([float(cb_map[t]) for t in names], dtype=float)
     sel = [idx[t] for t in names]
     s = full[np.ix_(sel, sel)]
-    if not np.allclose(s, s.T, atol=1e-10) or (len(s) and np.linalg.eigvalsh((s + s.T) / 2).min() < -1e-9):
+    if not np.allclose(s, s.T, atol=1e-10):
+        raise Refused("RISK_MODEL_NOT_SYMMETRIC_PSD")
+    try:
+        smallest = np.linalg.eigvalsh((s + s.T) / 2).min() if len(s) else 0.0
+    except np.linalg.LinAlgError as error:
+        raise Refused("RISK_MODEL_NOT_SYMMETRIC_PSD") from error
+    if not np.isfinite(smallest) or smallest < -1e-9:
         raise Refused("RISK_MODEL_NOT_SYMMETRIC_PSD")
     if risk.get("horizonSessions") != record.get("horizonSessions"):
         raise Refused("RISK_MODEL_HORIZON_MISMATCH")

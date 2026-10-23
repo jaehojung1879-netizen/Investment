@@ -349,6 +349,65 @@ def test_malformed_records_never_escape_the_refusal_boundary():
         assert out["productionAffected"] is False and (out["activeCount"] == 0 or out["status"] == "SYNTHETIC_SHADOW_BOOK")
 
 
+@pytest.mark.parametrize("where", ["matrix", "benchmarkCovariance"])
+@pytest.mark.parametrize("bad", [10 ** 400, -10 ** 400, 1e151, True, "1.0", None, [1.0]])
+def test_out_of_range_or_non_numeric_risk_values_with_a_fresh_digest_are_refused(where, bad):
+    """Freshly sealed (the digest is valid) and every name passes the edge screen, so only _risk_model can stop it."""
+    rec = record(strong(3))
+    if where == "matrix":
+        rec["riskModel"]["matrix"][1][1] = bad
+    else:
+        rec["riskModel"]["benchmarkCovariance"][tick("KR", 1)] = bad
+    rec["riskModel"] = D.seal_risk_model(rec["riskModel"])
+    out = run(rec)
+    assert out["passingNames"] == 3 and out["activeCount"] == 0 and out["etfFraction"] == 1.0 and out["shadowFractions"] == {}
+    assert out["reasons"] == ["RISK_MODEL_MALFORMED"]
+
+
+@pytest.mark.parametrize("change", [
+    {"tickers": [[1], tick("KR", 1), tick("KR", 2)]}, {"tickers": [{}, tick("KR", 1), tick("KR", 2)]},
+    {"matrix": [[196.0, 0.0, 0.0], [0.0, 196.0], [0.0, 0.0, 196.0]]}, {"matrix": [[196.0, 0.0, 0.0]]},
+    {"matrix": [[[196.0], 0.0, 0.0], [0.0, 196.0, 0.0], [0.0, 0.0, 196.0]]}, {"benchmarkCovariance": [0.0, 0.0, 0.0]}])
+def test_structurally_malformed_risk_models_with_a_fresh_digest_are_refused(change):
+    rec = reseal(record(strong(3)), **change)
+    out = run(rec)
+    assert out["activeCount"] == 0 and out["etfFraction"] == 1.0 and out["reasons"] == ["RISK_MODEL_MALFORMED"]
+
+
+def test_resealed_element_level_sweep_never_escapes_the_refusal_boundary():
+    """Every element of the matrix, c_b, tickers, provenance and name rows replaced by seeded junk, then sealed again so the digest
+    passes and the value reaches the numeric code. decide_region must always return, never raise."""
+    junk = [None, "", "x", 0, -1, True, 1e308, -1e308, 10 ** 400, -10 ** 400, float("nan"), float("inf"), [], {}, [[]],
+            [1, 2], {"k": 1}, "1.0", "2026-10-16", [{}], [None]]
+    rng = random.Random(20261023)
+    for _ in range(1500):
+        rec = record(strong(3))
+        model, value, u = rec["riskModel"], rng.choice(junk), rng.random()
+        if u < 0.25:
+            model["matrix"][rng.randrange(3)][rng.randrange(3)] = value
+        elif u < 0.4:
+            model["benchmarkCovariance"][tick("KR", rng.randrange(3))] = value
+        elif u < 0.5:
+            model["tickers"][rng.randrange(3)] = value
+        elif u < 0.6:
+            model[rng.choice(sorted(model))] = value
+        elif u < 0.65:
+            model["matrix"][rng.randrange(3)] = value
+        else:
+            name = rec["names"][rng.randrange(3)]
+            key = rng.choice(sorted(name))
+            if key == "costLegsPct" and rng.random() < 0.5:
+                name[key][rng.choice(sorted(name[key]))] = value
+            else:
+                name[key] = value
+        try:
+            rec["riskModel"] = D.seal_risk_model(model)
+        except (ValueError, TypeError):
+            pass                                              # not canonical JSON: the stale digest path is tested above
+        out = run(rec)
+        assert out["productionAffected"] is False and (out["activeCount"] == 0 or out["status"] == "SYNTHETIC_SHADOW_BOOK")
+
+
 def test_provenance_is_checked_even_when_no_name_passes():
     rec = reseal(record(strong(3, gross=0.0)), lastObservationSession="2026-10-19")
     assert run(rec)["reasons"] == ["RISK_MODEL_OBSERVATIONS_AFTER_DECISION_SESSION"]
