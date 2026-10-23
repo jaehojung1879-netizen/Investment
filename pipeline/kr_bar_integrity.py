@@ -14,6 +14,8 @@ module is the reader for forward records (``kr_selection_challenger``). It works
 
     VALID                        a traded session whose fields are consistent;
     SUSPENDED                    zero volume: not a session the name traded (KRX carries the last close forward, Yahoo repeats it);
+    VOLUME_INVALID               the volume is missing, non-finite or negative: whether the name traded is unknown, so the session is
+                                 missing (never read as traded, and never as a suspension either, which is a fact the vendor stated);
     RANGE_UNRESOLVED             traded, close valid, but open/high/low zero, non-finite or inconsistent with the close: the range is set
                                  missing and the close is kept;
     CLOSE_INVALID                the close is missing, non-finite or not positive: the whole session is missing;
@@ -29,7 +31,8 @@ import pandas as pd
 
 from . import replay_calendar as RC
 
-STATES = ("VALID", "SUSPENDED", "RANGE_UNRESOLVED", "CLOSE_INVALID", "SESSION_MISSING")
+STATES = ("VALID", "SUSPENDED", "RANGE_UNRESOLVED", "CLOSE_INVALID", "VOLUME_INVALID", "SESSION_MISSING")
+NO_CLOSE_STATES = ("SUSPENDED", "CLOSE_INVALID", "VOLUME_INVALID", "SESSION_MISSING")
 PRICE_FIELDS = ("Open", "High", "Low")
 REL_TOLERANCE = 1e-9
 
@@ -47,8 +50,8 @@ def classify_row(open_, high, low, close, volume):
     close, volume = _number(close), _number(volume)
     if close is None or close <= 0:
         return "CLOSE_INVALID"
-    if volume is not None and volume < 0:
-        return "CLOSE_INVALID"  # a negative volume makes the whole row untrustworthy
+    if volume is None or volume < 0:      # None covers a missing field, NaN and +/-inf (_number maps non-finite to None)
+        return "VOLUME_INVALID"
     if volume == 0:
         return "SUSPENDED"
     prices = [_number(v) for v in (open_, high, low)]
@@ -92,10 +95,10 @@ def calendar_frame(frame: pd.DataFrame, *, start=None, end=None, calendar="KR") 
     for col in ("Open", "High", "Low", "Close", "Volume"):
         values = pd.to_numeric(aligned[col], errors="coerce") if col in aligned else pd.Series(float("nan"), index=days)
         out[col] = values.where(values.map(lambda v: math.isfinite(v)))
-    bad_range = out["state"].isin(["RANGE_UNRESOLVED", "SUSPENDED", "CLOSE_INVALID", "SESSION_MISSING"])
+    bad_range = out["state"].isin(["RANGE_UNRESOLVED", *NO_CLOSE_STATES])
     for col in PRICE_FIELDS:
         out.loc[bad_range, col] = float("nan")
-    no_close = out["state"].isin(["SUSPENDED", "CLOSE_INVALID", "SESSION_MISSING"])
+    no_close = out["state"].isin(list(NO_CLOSE_STATES))
     out.loc[no_close, "Close"] = float("nan")
     out.attrs["offCalendarRows"] = off
     return out

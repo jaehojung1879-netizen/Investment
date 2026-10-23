@@ -378,11 +378,59 @@ def test_a_traded_row_with_a_zero_range_keeps_its_close_only():
     ((0, 0, 0, 100, 0), "SUSPENDED"),
     ((100, 99, 101, 100, 10), "RANGE_UNRESOLVED"),    # low above high
     ((100, 101, 99, float("nan"), 10), "CLOSE_INVALID"),
-    ((100, 101, 99, 100, -1), "CLOSE_INVALID"),
+    ((100, 101, 99, 100, -1), "VOLUME_INVALID"),
+    ((100, 101, 99, 100, None), "VOLUME_INVALID"),
+    ((100, 101, 99, 100, float("nan")), "VOLUME_INVALID"),
+    ((100, 101, 99, 100, float("inf")), "VOLUME_INVALID"),
+    ((100, 101, 99, 100, float("-inf")), "VOLUME_INVALID"),
+    ((100, 101, 99, 100, "n/a"), "VOLUME_INVALID"),
     ((100, float("inf"), 99, 100, 10), "RANGE_UNRESOLVED"),
 ])
 def test_row_states(row, state):
     assert BI.classify_row(*row) == state
+
+
+@pytest.mark.parametrize("volume,state", [
+    (None, "VOLUME_INVALID"), (float("nan"), "VOLUME_INVALID"), (float("inf"), "VOLUME_INVALID"), (float("-inf"), "VOLUME_INVALID"),
+    (-5.0, "VOLUME_INVALID"), (0.0, "SUSPENDED"),
+])
+def test_an_unknown_or_invalid_volume_is_never_a_traded_session(volume, state):
+    """Plausible OHLC with a volume nobody stated is not evidence the name traded; a stated zero stays a suspension."""
+    days = RC.sessions("2026-06-01", "2026-10-30", "KR")
+    frame = pd.DataFrame({"Open": 100.0, "High": 101.0, "Low": 99.0, "Close": 100.0, "Volume": 1e5}, index=pd.DatetimeIndex(days))
+    frame["Volume"] = frame["Volume"].astype(object)
+    hole = days[-3]
+    frame.loc[hole, "Volume"] = volume
+    aligned = BI.calendar_frame(frame)
+    assert aligned.loc[hole, "state"] == state
+    assert BI.traded_close(aligned, hole) is None and pd.isna(aligned.loc[hole, "Close"])
+    assert not BI.window_complete(aligned, days[-1], 20) and BI.window_complete(aligned, days[-4], 20)
+    assert BI.summary(aligned)["states"][state] == 1
+    # The same row with no Volume column at all.
+    if volume is None:
+        assert BI.calendar_frame(frame.drop(columns="Volume")).loc[hole, "state"] == "VOLUME_INVALID"
+
+
+def test_an_unknown_volume_is_a_provider_gap_in_outcomes_and_the_risk_path():
+    """At maturity it is never TERMINAL_ECONOMICS_UNRESOLVED (that needs a stated zero) and never final; at a rebalance it is never
+    the NOT_EXECUTABLE fallback (that needs a stated suspension) and stops the path."""
+    r = receipt()
+    a = r["books"]["CH_LOWVOL"]["slots"][0]["ticker"]
+    frames, maturity = _frames(r, 126, growth={C.BENCHMARK: 0.10})
+    frames[a] = frames[a].astype({"Volume": object})
+    frames[a].iloc[-1, frames[a].columns.get_loc("Volume")] = float("nan")
+    window_closed = pd.Timestamp(str(CORE.maturity_session(r["executionDate"], 126 + C.OUTCOME_RETRY_SESSIONS + 3).date())) \
+        .tz_localize("UTC") + pd.Timedelta(hours=10)
+    out = C.build_outcome(r, horizon=126, frames=frames, now_utc=window_closed, pathway=C.SYNTHETIC)
+    assert out["names"][a]["integrityState"] == "VOLUME_INVALID" and out["names"][a]["state"] == "NAME_OUTCOME_MISSING"
+    assert out["resolution"] == "DEFERRED" and out["unresolvedClasses"] == [C.PROVIDER]
+    receipts = _path_receipts(9)
+    days = RC.sessions(receipts[0]["executionDate"], receipts[8]["executionDate"], "KR")
+    flat = pd.DataFrame({"Open": 100.0, "High": 100.0, "Low": 100.0, "Close": 100.0, "Volume": 1.0}, index=pd.DatetimeIndex(days))
+    unknown = flat.astype({"Volume": object})
+    unknown.loc[pd.Timestamp(receipts[4]["executionDate"]), "Volume"] = None
+    path = C.paper_path(receipts, {"000001.KS": flat, "000002.KS": unknown, C.BENCHMARK: flat}, "CH_LOWVOL", every=4, end_receipt=8)
+    assert path["status"] == "INCOMPLETE" and path["ticker"] == "000002.KS"
 
 
 def test_calendar_alignment_marks_missing_sessions_instead_of_stretching_windows():
