@@ -22,6 +22,8 @@ from pipeline import risk as RISK
 ROOT = Path(__file__).resolve().parents[1]
 SERIES = {"Treasury_10Y": "DGS10", "Treasury_2Y": "DGS2", "HY_Spread": "BAMLH0A0HYM2", "IG_Spread": "BAMLC0A0CM",
           "Headline_CPI": "CPIAUCSL"}
+# Invented coverage thresholds that exercise the gate. NOT a proposal for the owner's numbers (R.COVERAGE_POLICY stays None).
+POLICY = {"maxStalenessDays": 7, "minOverlapObservations": 252, "latestAllowedTrainingStart": "2012-12-31"}
 
 
 def _xml(series_id, start="2011-01-03", n=40, step=1):
@@ -49,12 +51,12 @@ class FakeFred:
                     owner.hits.append(sid)
                     queue = owner.script.get(sid, [("ok", "2011-01-03")])
                     action = queue.pop(0) if len(queue) > 1 else queue[0]
-                kind, arg = action
+                kind, arg, n = (*action, 40)[:3]
                 if kind == "hang":
                     time.sleep(arg)
                     kind, arg = "ok", "2011-01-03"
                 if kind == "ok":
-                    body, code = _xml(sid, arg), 200
+                    body, code = _xml(sid, arg, n), 200
                 else:
                     body = (f'<error code="{kind}" message="{arg}"/>' if arg is not None else f'<error code="{kind}"/>').encode()
                     code = kind
@@ -170,10 +172,34 @@ def test_disabled_is_not_degraded_and_never_claims_fred():
 
 # --- short history / training window ------------------------------------------------------------------------------------------------
 def test_short_history_series_is_named_as_the_training_start_limit(fake):
-    server = fake({"BAMLH0A0HYM2": [("ok", "2023-09-18")], "BAMLC0A0CM": [("ok", "2023-09-18")]})
+    long = ("ok", "2011-01-03", 4100)                                     # through 2026
+    server = fake({"DGS10": [long], "DGS2": [long], "CPIAUCSL": [long],
+                   "BAMLH0A0HYM2": [("ok", "2023-09-18", 700)], "BAMLC0A0CM": [("ok", "2023-09-18", 700)]})
+    _, avail = fetch(server)
+    ml = avail["mlMacroSeries"]
+    assert ml["overlapVerified"] and ml["allPresentFrom"] == "2023-09-18" and ml["limitingSeries"] == ["HY_Spread", "IG_Spread"]
+
+
+def test_non_overlapping_series_have_no_all_present_date(fake):
+    server = fake({"BAMLH0A0HYM2": [("ok", "2023-09-18")], "BAMLC0A0CM": [("ok", "2023-09-18")]})   # others end 2011-02
+    _, avail = fetch(server)
+    ml = avail["mlMacroSeries"]
+    assert avail["status"] == R.FULL and ml["overlapVerified"] is False and ml["allPresentFrom"] is None and ml["limitingSeries"] == []
+
+
+def test_a_missing_ml_series_leaves_no_all_present_date(fake):
+    server = fake({"DGS2": [(500, None)]})
+    _, avail = fetch(server, provider_failures_before_stop=99)
+    assert avail["mlMacroSeries"]["missing"] == ["Treasury_2Y"] and avail["mlMacroSeries"]["allPresentFrom"] is None
+
+
+def test_a_one_observation_series_counts_as_fetched_but_never_as_usable(fake):
+    server = fake({"BAMLC0A0CM": [("ok", "2026-09-14", 1)]})
     macro, avail = fetch(server)
-    assert avail["mlMacroSeries"]["allPresentFrom"] == "2023-09-18"
-    assert avail["mlMacroSeries"]["limitingSeries"] == ["HY_Spread", "IG_Spread"]
+    assert avail["status"] == R.FULL and avail["series"]["IG_Spread"]["validObservations"] == 1
+    assert avail["mlMacroSeries"]["overlapVerified"] is False                     # other series end 2011: no common day
+    ok, reasons = R.ml_input_coverage(avail, "2026-09-14", {"A": "2011-02-01"}, POLICY, macro)
+    assert ok is False and "ML_MACRO_SERIES_DO_NOT_OVERLAP" in reasons
 
 
 def _price(days, seed=1):
@@ -212,21 +238,64 @@ def _build(macro):
     return data, F.feature_columns(data)
 
 
+def _avail(macro):
+    """The availability record a FULL fetch of `macro` would produce (spans read from the frame, every series OK)."""
+    records = {}
+    for name in SERIES:
+        s = macro[name].dropna()
+        records[name] = {"status": R.OK, "firstValidDate": str(s.index.min().date()), "lastValidDate": str(s.index.max().date()),
+                         "validObservations": int(len(s))}
+    return R.availability(records, SERIES)
+
+
 def test_feature_change_is_detected_and_never_carries_the_registered_version():
-    days = pd.bdate_range("2019-01-02", periods=600)
+    days = pd.bdate_range("2011-01-03", "2026-09-14")
     reference = R.reference_feature_columns(SERIES)
-    full_data, full_cols = _build(_macro(days))
+    full = _macro(days)
+    _, full_cols = _build(full)
     none_data, none_cols = _build(None)
-    avail_full = {"status": R.FULL, "dataDegraded": False}
-    avail_down = {"status": R.UNAVAILABLE, "dataDegraded": True}
-    normal = R.model_identity("mv", full_cols, reference, _macro(days), avail_full, {"A": "2019-03-01"})
-    down = R.model_identity("mv", none_cols, reference, None, avail_down, {"A": "2019-02-01"})
-    assert normal["variant"] == R.REGISTERED and normal["effectiveModelId"] == "mv" and normal["constantPlaceholders"] == {}
-    assert down["variant"] == R.DEGRADED and down["effectiveModelId"] != "mv" and down["effectiveModelId"].startswith("mv#degraded-")
+    normal = R.model_identity("mv", full_cols, reference, full, _avail(full), {"A": "2011-04-01"}, as_of="2026-09-14",
+                              coverage_policy=POLICY)
+    down = R.model_identity("mv", none_cols, reference, None, {"status": R.UNAVAILABLE, "dataDegraded": True}, {"A": "2011-02-01"},
+                            as_of="2026-09-14", coverage_policy=POLICY)
+    assert normal["variant"] == R.REGISTERED and normal["effectiveModelId"] == "mv" and normal["coverageVerified"] is True
+    assert down["variant"] == R.DEGRADED and down["effectiveModelId"].startswith("mv#degraded-")
     assert down["featureSetSha256"] != normal["featureSetSha256"] == normal["registeredFeatureSetSha256"]
     assert down["constantPlaceholders"] == {"Treasury_10Y": 3.0, "Yield_Curve": 0.5}
     assert set(down["missingFeatures"]) == {"Treasury_2Y", "HY_Spread", "IG_Spread"}      # CPI is never an ML input
     assert (none_data["Treasury_10Y"] == 3.0).all() and (none_data["Yield_Curve"] == 0.5).all()   # what features.py inserts today
+
+
+def test_matching_names_without_a_registered_coverage_policy_are_unverified_not_registered():
+    days = pd.bdate_range("2011-01-03", "2026-09-14")
+    full = _macro(days)
+    _, cols = _build(full)
+    assert R.COVERAGE_POLICY is None
+    identity = R.model_identity("mv", cols, R.reference_feature_columns(SERIES), full, _avail(full), {"A": "2011-04-01"}, as_of="2026-09-14")
+    assert identity["variant"] == R.UNVERIFIED and identity["effectiveModelId"].startswith("mv#unverified-")
+    assert identity["coverageVerified"] is None and identity["coverageReasons"] == ["COVERAGE_POLICY_UNSET"]
+    assert R.recording_decision(identity)["action"] == "HOLD"
+
+
+@pytest.mark.parametrize("case,reason", [("truncated", "TRAINING_START_LATER_THAN_REGISTERED_WINDOW"), ("stale", "ML_MACRO_SERIES_STALE"),
+                                         ("short_overlap", "ML_MACRO_OVERLAP_TOO_SHORT"), ("unmeasured", "TRAINING_START_UNMEASURED")])
+def test_same_columns_but_unusable_coverage_is_degraded(case, reason):
+    days = pd.bdate_range("2011-01-03", "2026-09-14")
+    macro = _macro(days, late_start="2023-09-18" if case in ("truncated", "short_overlap") else None)
+    _, cols = _build(macro)
+    starts = {"truncated": {"A": "2023-09-19"}, "short_overlap": {"A": "2023-09-19"}, "unmeasured": {}}.get(case, {"A": "2011-04-01"})
+    as_of = "2026-10-22" if case == "stale" else "2026-09-14"
+    policy = {**POLICY, "minOverlapObservations": 5000} if case == "short_overlap" else POLICY
+    identity = R.model_identity("mv", cols, R.reference_feature_columns(SERIES), macro, _avail(macro), starts, as_of=as_of,
+                                coverage_policy=policy)
+    assert identity["featureSetSha256"] == identity["registeredFeatureSetSha256"]          # identical column names ...
+    assert identity["variant"] == R.DEGRADED and reason in identity["coverageReasons"]       # ... and still not the registered model
+    assert identity["effectiveModelId"] != "mv" and R.recording_decision(identity)["action"] == "HOLD"
+
+
+def test_coverage_policy_must_be_complete():
+    with pytest.raises(ValueError):
+        R.ml_input_coverage({"mlMacroSeries": {"missing": [], "overlapVerified": True}}, "2026-09-14", {}, {"maxStalenessDays": 7})
 
 
 def test_reference_feature_set_matches_the_full_production_config():
@@ -239,10 +308,11 @@ def test_reference_feature_set_matches_the_full_production_config():
 
 
 def test_same_feature_set_with_degraded_regime_inputs_is_still_not_recorded_as_normal():
-    days = pd.bdate_range("2019-01-02", periods=600)
+    days = pd.bdate_range("2011-01-03", "2026-09-14")
     _, cols = _build(_macro(days))
     identity = R.model_identity("mv", cols, R.reference_feature_columns(SERIES), _macro(days),
-                                {"status": R.PARTIAL, "dataDegraded": True})
+                                {"status": R.PARTIAL, "dataDegraded": True}, {"A": "2011-04-01"}, as_of="2026-09-14",
+                                coverage_policy=POLICY)
     assert identity["variant"] == R.DEGRADED and R.recording_decision(identity)["action"] == "HOLD"
 
 
@@ -264,6 +334,10 @@ def test_provenance_rules_refuse_a_fred_claim_without_series_and_a_degraded_mode
            "dataDegraded": False, "shortTermModelIdentity": {"variant": R.DEGRADED, "registeredModelVersion": "mv", "effectiveModelId": "mv"}}
     assert set(R.provenance_errors(bad)) == {"DATA_SOURCE_CLAIMS_FRED_BUT_FETCH_WAS_NOT_FULL", "DATA_SOURCE_CLAIMS_FRED_WITH_ZERO_SERIES",
                                             "DATA_DEGRADED_FLAG_INCONSISTENT", "DEGRADED_MODEL_RECORDED_UNDER_REGISTERED_VERSION"}
+    claimed = {"macroAvailability": {"status": R.FULL, "fetched": 5, "dataDegraded": False,
+                                     "mlMacroSeries": {"missing": ["IG_Spread"], "overlapVerified": False, "allPresentFrom": "2011-01-03"}},
+               "dataSource": "x + FRED (macro)", "dataDegraded": False}
+    assert R.provenance_errors(claimed) == ["ALL_PRESENT_FROM_WITHOUT_VERIFIED_OVERLAP"]
     good = {"macroAvailability": avail, "dataSource": R.data_source_label({**avail, "requested": 27}), "dataDegraded": True,
             "shortTermModelIdentity": {"variant": R.DEGRADED, "registeredModelVersion": "mv", "effectiveModelId": "mv#degraded-x"}}
     assert R.provenance_errors(good) == [] and R.provenance_errors({}) == ["MACRO_AVAILABILITY_MISSING"]

@@ -47,7 +47,11 @@ PROVIDER_LEVEL = RETRYABLE                      # a failure that says something 
 FULL, PARTIAL, UNAVAILABLE, DISABLED = "FULL", "PARTIAL", "UNAVAILABLE", "DISABLED"
 # features.py inserts these constants when the macro column is absent (lines 116-121 at main 7b0dbad). Mirrored, never applied here.
 MACRO_PLACEHOLDERS = {"Treasury_10Y": 3.0, "Yield_Curve": 0.5}
-REGISTERED, DEGRADED = "REGISTERED_FEATURE_SET", "DEGRADED_FEATURE_SET"
+REGISTERED, DEGRADED, UNVERIFIED = "REGISTERED_FEATURE_SET", "DEGRADED_FEATURE_SET", "COVERAGE_UNVERIFIED"
+# A request that succeeded is not a usable training input: the series must also be fresh, overlap, and leave the registered training
+# window intact. The thresholds are owner policy (docs/fred-resilience-model-identity-v1.md O7). None = unset: nothing can be REGISTERED.
+COVERAGE_POLICY_KEYS = ("maxStalenessDays", "minOverlapObservations", "latestAllowedTrainingStart")
+COVERAGE_POLICY = None
 # Owner decision (docs/fred-resilience-model-identity-v1.md). None = unset: a degraded model is never recorded.
 DEGRADED_POLICY = None
 POLICY_OPTIONS = ("HOLD_SHORT_TERM_ML_AND_REGIME_SIGNALS", "RECORD_AS_SEPARATE_VARIANT", "REUSE_LAST_REGISTERED_MODEL")
@@ -171,12 +175,18 @@ def availability(records, series_map, *, disabled=False, elapsed=0.0, policy=Non
     status = DISABLED if disabled else FULL if names and not failed else UNAVAILABLE if not fetched else PARTIAL
     ml_requested = [n for n in names if n in ML_MACRO_COLS]
     ml_fetched = [n for n in ml_requested if n in fetched]
+    missing = [n for n in ml_requested if n not in ml_fetched]
     starts = {n: records[n]["firstValidDate"] for n in ml_fetched}
-    common = max(starts.values()) if starts else None
+    ends = {n: records[n]["lastValidDate"] for n in ml_fetched}
+    latest_start, earliest_end = (max(starts.values()), min(ends.values())) if starts else (None, None)
+    # A date on which ALL requested ML inputs exist only when none is missing and their valid spans overlap. Otherwise there is none.
+    overlap = bool(starts) and not missing and latest_start <= earliest_end
     return {"schema": SCHEMA, "provider": PROVIDER, "status": status, "dataDegraded": status != FULL, "requested": len(names),
             "fetched": len(fetched), "failedSeries": failed, "series": {n: records.get(n) for n in names},
-            "mlMacroSeries": {"requested": ml_requested, "fetched": ml_fetched, "missing": [n for n in ml_requested if n not in ml_fetched],
-                              "allPresentFrom": common, "limitingSeries": sorted(n for n, d in starts.items() if d == common)},
+            "mlMacroSeries": {"requested": ml_requested, "fetched": ml_fetched, "missing": missing, "overlapVerified": overlap,
+                              "allPresentFrom": latest_start if overlap else None, "allPresentThrough": earliest_end if overlap else None,
+                              "limitingSeries": sorted(n for n, d in starts.items() if d == latest_start) if overlap else [],
+                              "stalestSeries": sorted(n for n, d in ends.items() if d == earliest_end) if overlap else []},
             "elapsedSeconds": round(float(elapsed), 3), "requestPolicy": policy}
 
 
@@ -204,6 +214,9 @@ def provenance_errors(meta):
         errors.append("DATA_SOURCE_CLAIMS_FRED_WITH_ZERO_SERIES")
     if bool(meta.get("dataDegraded")) != bool(avail.get("dataDegraded")):
         errors.append("DATA_DEGRADED_FLAG_INCONSISTENT")
+    ml = avail.get("mlMacroSeries") or {}
+    if ml.get("allPresentFrom") is not None and (ml.get("missing") or not ml.get("overlapVerified")):
+        errors.append("ALL_PRESENT_FROM_WITHOUT_VERIFIED_OVERLAP")
     identity = meta.get("shortTermModelIdentity")
     if isinstance(identity, dict) and identity.get("variant") != REGISTERED and identity.get("effectiveModelId") == identity.get("registeredModelVersion"):
         errors.append("DEGRADED_MODEL_RECORDED_UNDER_REGISTERED_VERSION")
@@ -244,13 +257,56 @@ def training_start(data, feature_cols, target_col):
     return None if frame.empty else str(pd.Timestamp(frame.index.min()).date())
 
 
-def model_identity(model_version, feature_cols, reference_cols, macro, avail, training_starts=None):
+def ml_input_coverage(avail, as_of, training_starts=None, policy=COVERAGE_POLICY, macro=None):
+    """Whether the fetched ML macro inputs are USABLE as the registered model's training input on `as_of`, not merely fetched.
+    (verified, reasons). Unset policy -> (None, [...]): coverage is unverified, never assumed."""
+    reasons = []
+    ml = avail.get("mlMacroSeries") or {}
+    if ml.get("missing"):
+        reasons.append("ML_MACRO_SERIES_MISSING")
+    if not ml.get("overlapVerified"):
+        reasons.append("ML_MACRO_SERIES_DO_NOT_OVERLAP")
+    if policy is None:
+        return None, reasons + ["COVERAGE_POLICY_UNSET"]
+    if not isinstance(policy, dict) or set(policy) != set(COVERAGE_POLICY_KEYS):
+        raise ValueError("COVERAGE_POLICY_INCOMPLETE")
+    through = ml.get("allPresentThrough")
+    if through is None or (pd.Timestamp(as_of) - pd.Timestamp(through)).days > policy["maxStalenessDays"]:
+        reasons.append("ML_MACRO_SERIES_STALE")
+    if ml.get("overlapVerified") and isinstance(macro, pd.DataFrame):
+        cols = [c for c in ml.get("fetched", []) if c in macro.columns]
+        if int(macro[cols].dropna().shape[0]) < policy["minOverlapObservations"]:
+            reasons.append("ML_MACRO_OVERLAP_TOO_SHORT")
+    elif ml.get("overlapVerified"):
+        reasons.append("ML_MACRO_OVERLAP_UNMEASURED")
+    starts = [d for d in (training_starts or {}).values() if d]
+    if not starts:
+        reasons.append("TRAINING_START_UNMEASURED")
+    elif max(starts) > policy["latestAllowedTrainingStart"]:
+        reasons.append("TRAINING_START_LATER_THAN_REGISTERED_WINDOW")
+    return not reasons, reasons
+
+
+def model_identity(model_version, feature_cols, reference_cols, macro, avail, training_starts=None, *, as_of=None,
+                   coverage_policy=COVERAGE_POLICY):
+    """REGISTERED only when the feature names match, nothing was filled with a constant, the fetch was FULL AND the inputs are verified
+    usable (fresh, overlapping, registered training window). Matching names alone are never enough."""
     digest, reference = feature_set_digest(feature_cols), feature_set_digest(reference_cols)
     placeholders = macro_placeholders(macro)
-    registered = digest == reference and not placeholders and avail.get("status") == FULL
+    same_inputs = digest == reference and not placeholders and avail.get("status") == FULL
+    coverage, coverage_reasons = ml_input_coverage(avail, as_of, training_starts, coverage_policy, macro) if same_inputs else (False, [])
+    known_gap = [r for r in coverage_reasons if r != "COVERAGE_POLICY_UNSET"]
+    if not same_inputs or coverage is False or known_gap:
+        variant = DEGRADED
+    elif coverage is None:
+        variant = UNVERIFIED         # same inputs, but nobody has registered what "usable" means: not the registered model either
+    else:
+        variant = REGISTERED
+    suffix = {REGISTERED: None, UNVERIFIED: "unverified", DEGRADED: "degraded"}[variant]
     starts = sorted(d for d in (training_starts or {}).values() if d)
-    return {"schema": IDENTITY_SCHEMA, "registeredModelVersion": model_version, "variant": REGISTERED if registered else DEGRADED,
-            "effectiveModelId": model_version if registered else f"{model_version}#degraded-{digest[:12]}",
+    return {"schema": IDENTITY_SCHEMA, "registeredModelVersion": model_version, "variant": variant,
+            "effectiveModelId": model_version if variant == REGISTERED else f"{model_version}#{suffix}-{digest[:12]}",
+            "coverageVerified": coverage, "coverageReasons": coverage_reasons, "asOf": as_of,
             "featureSetSha256": digest, "registeredFeatureSetSha256": reference, "featureCount": len(feature_cols),
             "registeredFeatureCount": len(reference_cols), "missingFeatures": sorted(set(reference_cols) - set(feature_cols)),
             "constantPlaceholders": placeholders, "macroStatus": avail.get("status"),
