@@ -594,6 +594,28 @@ def test_the_risk_path_holds_a_name_suspended_at_rebalance_in_the_benchmark_for_
     assert V1.paper_path(receipts, gap, "CH_VALUE_CONFIRMED", every=4, end_receipt=8)["status"] == "INCOMPLETE"
 
 
+def test_the_v2_risk_path_counts_the_opening_cost_in_drawdown_and_volatility():
+    """v2's assessment reads V1.paper_path: one opening purchase with positive fees and no later turnover on flat prices is a real
+    loss in Sharpe and max drawdown for each v2 book and for the ETF control, each against its own opening fee, charged once."""
+    sessions = [d for d in RC.sessions("2026-10-30", "2027-03-31", "KR") if CORE.is_weekly_decision_session(d)][:9]
+    receipts = [{"signalDate": str(d.date()), "executionDate": str(CORE.next_kr_session(d).date()),
+                 "books": {b: {"slots": [{"ticker": "000001.KS"}], "fallbackSlots": 4} for b in C.BOOKS}} for d in sessions]
+    days = RC.sessions(receipts[0]["executionDate"], receipts[8]["executionDate"], "KR")
+    flat = pd.DataFrame({"Open": 100.0, "High": 100.0, "Low": 100.0, "Close": 100.0, "Volume": 1.0}, index=pd.DatetimeIndex(days))
+    frames = {"000001.KS": flat, C.BENCHMARK: flat}
+    entry = receipts[0]["executionDate"]
+    leg = lambda bench: V1._leg(entry, is_benchmark=bench, side="buy")   # noqa: E731
+    for book in [b for b in C.BOOKS if b != "CTRL_ETF"] + ["CTRL_ETF"]:
+        cost = leg(True) if book == "CTRL_ETF" else 0.2 * leg(False) + 0.8 * leg(True)
+        path = V1.paper_path(receipts, frames, book, every=9, end_receipt=8)
+        assert path["status"] == "COMPLETE" and cost > 0
+        assert path["maxDrawdown"] == pytest.approx(-cost, rel=1e-12)
+        assert path["annualReturn"] == pytest.approx((1 - cost) ** (252 / (len(days) - 1)) - 1, rel=1e-12)
+        assert path["annualVolatility"] == pytest.approx(
+            float(np.std([-cost] + [0.0] * (len(days) - 2), ddof=1) * np.sqrt(252)), rel=1e-9)
+        assert path["sharpe"] < 0
+
+
 def test_an_unknown_volume_is_never_a_traded_liquidity_session():
     """kr_bar_integrity's VOLUME_INVALID (missing / NaN / inf volume) is not a traded session: the 60-session median does not exist and
     the state is tallied, not hidden; a stated zero is still SUSPENDED."""

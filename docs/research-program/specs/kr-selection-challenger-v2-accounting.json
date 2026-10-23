@@ -110,6 +110,7 @@
       "riskPath": {
         "rebalanceEveryReceipts": 4,
         "endReceipt": 104,
+        "navBasis": "as kr-selection-challenger-v1 riskPath.navBasis (the same paper_path, called, not copied): risk is measured from the pre-trade NAV of 1.0, so the opening cost enters Sharpe and max drawdown once, as it does the annual return",
         "notExecutable": "as kr-selection-challenger-v1 (pipeline.kr_selection_challenger.paper_path, called, not copied): a newly chosen name SUSPENDED (served row, zero volume) on a rebalance session is held as 069500.KS for that period, the same rule as the cohort outcome; a missing row or invalid close on a rebalance session, or a held name without a traded close on any marking day, makes the path INCOMPLETE"
       },
       "rule": "on the first 104 receipts, once all are graded at H252 and H126: SUPPORTED only if (1) the one-sided 97.5% Newey-West lower bound of mean H252 net excess vs 069500.KS is above 0, (2) the mean H126 net excess is above 0, (3) the mean H252 net excess vs CTRL_MODEL5 is above 0, (4) the mean H252 net excess vs CTRL_CHEAP_UNCONFIRMED is above 0, and (5) the 4-weekly rebalanced daily paper path has Sharpe >= 069500.KS and |max drawdown| <= 1.25 x 069500.KS over the same sessions; NOT_SUPPORTED otherwise; INCONCLUSIVE_DATA if more than 10 outcomes are None in ANY series a check reads (H252, H126, and the paired H252 comparisons with CTRL_MODEL5 and CTRL_CHEAP_UNCONFIRMED, each counted on its own valid pairs) or the risk path is incomplete or its Sharpe or drawdown is undefined"
@@ -126,7 +127,7 @@
   "scientificDependencies": {
     "contract": "As kr-selection-challenger-v1. v2's rules run through v1's outcome, resolution, risk-path and interval code, the receipt core, kr_alpha_signal_v2 and the accounting derivation; those files are pinned by bytes (fileHashes). The production helpers v1 calls (pipeline.kr_selection_challenger.conformance_values) and the accounting derivation's behaviour on a fixed synthetic filing pair (kr_value_quality_catalyst.accounting_values at four dates, ratio, S2.MIN_MEDIAN_TRADED_VALUE_KRW) are pinned by behaviour (conformanceDigest, pipeline.kr_selection_challenger_v2.conformance_values). LIVE record, outcomes and assess refuse SCIENTIFIC_DEPENDENCY_CHANGED; a legitimate change to any of them, including a change to v1's own files, is a new study version, never a re-pin of this one. Outside the contract by design: the production artifact (CTRL_MODEL5) and weekly_publish.unsafe_reason",
     "fileHashes": {
-      "pipeline/kr_selection_challenger.py": "8af45c2cdeb4809d96051ccee002cd630bf857b0e9a8edd15844a909e670c20d",
+      "pipeline/kr_selection_challenger.py": "7f4c3311a9fb872c007a6afc354417a93d16417d4dc5c4fa48d8edfbb42e08e9",
       "pipeline/kr_bar_integrity.py": "2e82916eff3096a65556e461177a4372f1edcbff5ac72614f5af80b168166e14",
       "scripts/record_kr_selection_challenger.py": "a78fc9c5824ac2190ce4878ad6fc0eb7033c74a25af878a0c49605c77a2f8284",
       "pipeline/prospective_receipt_core.py": "0f5344b09e28a4b9e9df5839bb6fc11f8ace70a4c71c01c6915ae753857ef90f",
