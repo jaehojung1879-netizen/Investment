@@ -109,7 +109,8 @@
       "maxDrawdownMultiple": 1.25,
       "riskPath": {
         "rebalanceEveryReceipts": 4,
-        "endReceipt": 104
+        "endReceipt": 104,
+        "notExecutable": "as kr-selection-challenger-v1 (pipeline.kr_selection_challenger.paper_path, called, not copied): a newly chosen name SUSPENDED (served row, zero volume) on a rebalance session is held as 069500.KS for that period, the same rule as the cohort outcome; a missing row or invalid close on a rebalance session, or a held name without a traded close on any marking day, makes the path INCOMPLETE"
       },
       "rule": "on the first 104 receipts, once all are graded at H252 and H126: SUPPORTED only if (1) the one-sided 97.5% Newey-West lower bound of mean H252 net excess vs 069500.KS is above 0, (2) the mean H126 net excess is above 0, (3) the mean H252 net excess vs CTRL_MODEL5 is above 0, (4) the mean H252 net excess vs CTRL_CHEAP_UNCONFIRMED is above 0, and (5) the 4-weekly rebalanced daily paper path has Sharpe >= 069500.KS and |max drawdown| <= 1.25 x 069500.KS over the same sessions; NOT_SUPPORTED otherwise; INCONCLUSIVE_DATA if more than 10 outcomes are None in ANY series a check reads (H252, H126, and the paired H252 comparisons with CTRL_MODEL5 and CTRL_CHEAP_UNCONFIRMED, each counted on its own valid pairs) or the risk path is incomplete or its Sharpe or drawdown is undefined"
     },

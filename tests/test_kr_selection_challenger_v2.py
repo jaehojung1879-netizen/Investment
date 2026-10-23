@@ -517,3 +517,25 @@ def test_a_seven_session_provider_outage_stays_pending_and_is_graded_on_recovery
     assert script.outcomes(ledger) == 0
     assert [o["resolution"] for o in C.read_outcomes(study / script.OUTCOMES, pathway=C.LIVE)] == ["FINAL"]
     assert json.loads((study / "outcome-pending.json").read_text())["pending"] == []
+
+
+def test_the_risk_path_holds_a_name_suspended_at_rebalance_in_the_benchmark_for_v2_books():
+    """v2's assessment uses V1.paper_path: a chosen name with a served zero-volume row on a rebalance session is held as 069500.KS, the
+    same reading as the cohort outcome; a missing row on that session still makes the path INCOMPLETE."""
+    sessions = [d for d in RC.sessions("2026-10-30", "2027-03-31", "KR") if CORE.is_weekly_decision_session(d)][:9]
+    receipts = [{"signalDate": str(d.date()), "executionDate": str(CORE.next_kr_session(d).date()),
+                 "books": {b: {"slots": [{"ticker": ["000001.KS", "000002.KS"][i // 4 % 2]}], "fallbackSlots": 4} for b in C.BOOKS}}
+                for i, d in enumerate(sessions)]
+    days = RC.sessions(receipts[0]["executionDate"], receipts[8]["executionDate"], "KR")
+    flat = pd.DataFrame({"Open": 100.0, "High": 100.0, "Low": 100.0, "Close": 100.0, "Volume": 1.0}, index=pd.DatetimeIndex(days))
+    entry = pd.Timestamp(receipts[4]["executionDate"])
+    halted = flat.copy()
+    halted.loc[entry, "Volume"] = 0.0
+    frames = {"000001.KS": flat, "000002.KS": halted, C.BENCHMARK: flat}
+    path = V1.paper_path(receipts, frames, "CH_VALUE_CONFIRMED", every=4, end_receipt=8)
+    assert path["status"] == "COMPLETE"
+    same = V1.paper_path([{**r, "books": {b: {"slots": [], "fallbackSlots": 5} for b in C.BOOKS}} if 4 <= i < 8 else r
+                          for i, r in enumerate(receipts)], frames, "CH_VALUE_CONFIRMED", every=4, end_receipt=8)
+    assert (path["annualReturn"], path["maxDrawdown"]) == (same["annualReturn"], same["maxDrawdown"])
+    gap = {**frames, "000002.KS": flat.drop(entry)}
+    assert V1.paper_path(receipts, gap, "CH_VALUE_CONFIRMED", every=4, end_receipt=8)["status"] == "INCOMPLETE"
