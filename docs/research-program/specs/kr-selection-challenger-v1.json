@@ -102,7 +102,8 @@
       "maxDrawdownMultiple": 1.25,
       "riskPath": {
         "rebalanceEveryReceipts": 4,
-        "endReceipt": 104
+        "endReceipt": 104,
+        "notExecutable": "a newly chosen name SUSPENDED (served row, zero volume) on a rebalance session is held as 069500.KS for that period, the same rule as outcomeDefinition.notExecutable, with the same legs charged; a missing row or invalid close on a rebalance session, or a held name without a traded close on any marking day, makes the path INCOMPLETE"
       },
       "rule": "on the first 104 receipts, once all are graded at H252 and H126: SUPPORTED only if (1) the one-sided 98.75% (Bonferroni over two challengers) Newey-West lower bound of mean H252 net excess vs 069500.KS is above 0, (2) the mean H126 net excess is above 0, (3) the mean H252 net excess vs CTRL_MODEL5 is above 0, and (4) the 4-weekly rebalanced daily paper path has Sharpe >= 069500.KS and |max drawdown| <= 1.25 x 069500.KS over the same sessions; NOT_SUPPORTED otherwise; INCONCLUSIVE_DATA if more than 10 outcomes are None in ANY series a check reads (the H252 series, the H126 series, or the paired H252 comparison with CTRL_MODEL5, each counted on its own valid pairs) or the risk path is incomplete or its Sharpe or drawdown is undefined"
     },
@@ -112,7 +113,7 @@
   "turnover": "names replaced per weekly receipt and per path rebalance, as a share of five slots (weights retargeted are not turnover here)",
   "productionEffect": "NONE",
   "codeFileHashes": {
-    "pipeline/kr_selection_challenger.py": "678a310ea38dd0df2ecf3a9db8eb5b819a53f8a7f58975b5f4b5a16d7dded5a2",
+    "pipeline/kr_selection_challenger.py": "5d22545c545b8479480d8740072121171b0f88ff81222d65bb763e4467054c16",
     "pipeline/kr_bar_integrity.py": "91b50cc2f24939ee880cd6c1db67738d95522053c1edb99b2715a3a347168e12",
     "scripts/record_kr_selection_challenger.py": "a02058c67ca35b9e11423a21ca226293935ac884235d49e9e25fa2b920a63c5d"
   }
