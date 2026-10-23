@@ -74,7 +74,7 @@
     "signalSessions": "KR weekly decision sessions: a KR session whose next KR session falls in a later ISO week (prospective_receipt_core.is_weekly_decision_session)",
     "firstEligibleSignalSessionFloor": "2026-10-30",
     "artifactRule": "the artifact's ^KS11 session equals the last KR session that was final (18:00 KST) at the artifact's generatedAt",
-    "receiptWindow": "created by the writer's own clock after 18:00 KST of the signal session and before 09:00 KST of the next KR session (prospective_receipt_core.check_timing)",
+    "receiptWindow": "created by the writer's own clock after 18:00 KST of the signal session and before 09:00 KST of the next KR session (prospective_receipt_core.check_timing); as kr-selection-challenger-v1, the window is checked when the run starts and again after every download, createdAtUtc is the clock at the write (pipeline.kr_selection_challenger.append_live_receipt) and a window that closes during recording is RECEIPT_WINDOW_CLOSED_DURING_RECORDING (REFUSED, nothing appended)",
     "execution": "close of the next KR session after the signal session (session 0)",
     "runner": "scripts/update_ledger.py (the paper-ledger step of .github/workflows/ledger.yml) calls scripts/record_kr_selection_challenger_v2.run_all after v1's recorder; any refusal is caught and never costs the paper ledger. No workflow file is changed.",
     "expectedCadence": "The 00:10 UTC cron starts about 04:30 UTC, inside the KRX session on weekdays, so weekday runs skip (ARTIFACT_NOT_BUILT_ON_A_FINAL_SESSION) and the Saturday run records Friday's session; Sunday's run is the backup inside the same window."
@@ -121,14 +121,14 @@
   "productionEffect": "NONE",
   "codeFileHashes": {
     "pipeline/kr_selection_challenger_v2.py": "2a40b7246a49542259a9b9931519373a22d28c327fa1ce41c5b8afe510c805f5",
-    "scripts/record_kr_selection_challenger_v2.py": "5f0ee070461630d0b95759d0d1a8dfdb6995d10c60949512c93c7dca25848e3c"
+    "scripts/record_kr_selection_challenger_v2.py": "9b0a38b16f84ddbc07dbbd7a32cf3b9b16ac6de20263bec4ecdd846bb93521ee"
   },
   "scientificDependencies": {
     "contract": "As kr-selection-challenger-v1. v2's rules run through v1's outcome, resolution, risk-path and interval code, the receipt core, kr_alpha_signal_v2 and the accounting derivation; those files are pinned by bytes (fileHashes). The production helpers v1 calls (pipeline.kr_selection_challenger.conformance_values) and the accounting derivation's behaviour on a fixed synthetic filing pair (kr_value_quality_catalyst.accounting_values at four dates, ratio, S2.MIN_MEDIAN_TRADED_VALUE_KRW) are pinned by behaviour (conformanceDigest, pipeline.kr_selection_challenger_v2.conformance_values). LIVE record, outcomes and assess refuse SCIENTIFIC_DEPENDENCY_CHANGED; a legitimate change to any of them, including a change to v1's own files, is a new study version, never a re-pin of this one. Outside the contract by design: the production artifact (CTRL_MODEL5) and weekly_publish.unsafe_reason",
     "fileHashes": {
-      "pipeline/kr_selection_challenger.py": "1467a078e56c436d08a4118af62ce2d4d55cbab557065f90c5fbe036169a69b4",
+      "pipeline/kr_selection_challenger.py": "8af45c2cdeb4809d96051ccee002cd630bf857b0e9a8edd15844a909e670c20d",
       "pipeline/kr_bar_integrity.py": "2e82916eff3096a65556e461177a4372f1edcbff5ac72614f5af80b168166e14",
-      "scripts/record_kr_selection_challenger.py": "7cfe55a07f9b2d36bc9ba519b37df005144ef092c09a9d5c5947b98549d20012",
+      "scripts/record_kr_selection_challenger.py": "a78fc9c5824ac2190ce4878ad6fc0eb7033c74a25af878a0c49605c77a2f8284",
       "pipeline/prospective_receipt_core.py": "0f5344b09e28a4b9e9df5839bb6fc11f8ace70a4c71c01c6915ae753857ef90f",
       "pipeline/kr_alpha_signal_v2.py": "0bb7bec4f6774244f949697e0309021d63c8b39c477a91f7731a73cc27245b1e",
       "pipeline/kr_value_quality_catalyst.py": "1bfd62d1437dd9b574f1ab635836e7d7e69651dbbbaeedf29af84a90de17bb28",

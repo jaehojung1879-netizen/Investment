@@ -605,3 +605,36 @@ def test_an_unknown_volume_is_never_a_traded_liquidity_session():
     e = C.liquidity_evidence(frame, SESSION)
     assert e["states"]["VOLUME_INVALID"] == 2 and e["states"]["SUSPENDED"] == 1
     assert e["medianTradedValue60Krw"] is None and e["positiveVolumeSessions20"] == 17 and e["basis"] == "NOT_ALL_60_TRADED"
+
+
+@pytest.mark.parametrize("finished,recorded", [
+    ("2026-11-01T23:59:30Z", True), ("2026-11-02T00:00:00Z", False), ("2026-11-02T00:01:00Z", False),
+])
+def test_the_v2_receipt_window_is_decided_by_the_clock_at_the_write(tmp_path, monkeypatch, finished, recorded):
+    """A run that starts at 08:59 KST on the execution session's morning and finishes its downloads at 08:59:30, exactly 09:00 or 09:01."""
+    import importlib
+    script = importlib.import_module("scripts.record_kr_selection_challenger_v2")
+    state = {"now": pd.Timestamp("2026-11-01T23:59:00Z")}
+
+    def fetch(tickers, start, **kw):
+        state["now"] = pd.Timestamp(finished)
+        return frames()
+    monkeypatch.setattr(CORE, "system_utc_now", lambda: state["now"])
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", fetch)
+    monkeypatch.setattr(C, "merged_at_from_git", lambda *a: MERGED)
+    path = tmp_path / "site.json"
+    path.write_text(json.dumps(site(generated="2026-10-31T04:30:00+00:00")))
+    ledger = _ledger_dir(tmp_path)
+    study = script.study_dir(ledger)
+    code = script.record(path, ledger)
+    status = json.loads((study / "publication-status.record.json").read_text())
+    if recorded:
+        assert code == 0 and status["status"] == "RECORDED"
+        (row,) = C.read_receipts(study / script.RECEIPTS, pathway=C.LIVE)
+        assert pd.Timestamp(row["createdAtUtc"]) == pd.Timestamp(finished) and row["receiptSha256"] == CORE.receipt_digest(row)
+        before = (study / script.RECEIPTS).read_bytes()
+        state["now"] = pd.Timestamp("2026-11-01T23:59:50Z")            # a later attempt in or after the window changes nothing
+        assert script.record(path, ledger) == 0 and (study / script.RECEIPTS).read_bytes() == before
+    else:
+        assert code == 1 and status["status"] == "REFUSED"
+        assert status["reason"].startswith(V1.WINDOW_CLOSED_DURING_RECORDING) and not (study / script.RECEIPTS).exists()

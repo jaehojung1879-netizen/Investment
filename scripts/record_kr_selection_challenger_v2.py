@@ -82,7 +82,9 @@ def record(site_path: Path, ledger_dir: Path) -> int:
         receipt = C.build_receipt(site, hashlib.sha256(raw).hexdigest(), pathway=C.LIVE, created_at_utc=now, now_utc=now,
                                   merged_at_utc=merged, code_identity=C.live_code_identity(spec), spec=spec,
                                   spec_digest=C.spec_sha256(), accounting=accounting, store_identity=store, frames=frames)
-        C.append_receipt(directory / RECEIPTS, receipt, pathway=C.LIVE)
+        # The downloads above can take minutes: v1's final-clock gate decides the stamp and the window at the write.
+        receipt = C.V1.append_live_receipt(directory / RECEIPTS, receipt, merged_at_utc=merged, clock=CORE.system_utc_now,
+                                           validate=lambda r: C.validate_receipt(r, pathway=C.LIVE))
     except ValueError as exc:
         reason = str(exc)
         quiet = any(reason.startswith(code) for code in QUIET)
