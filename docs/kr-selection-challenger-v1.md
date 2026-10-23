@@ -111,6 +111,11 @@
   - 공급자 사유가 하나라도 섞인 기록은 최종 기록이 될 수 없다(`OUTCOME_PROVIDER_GAP_IS_NEVER_FINAL`). 이미 기록된 receipt와 outcome은 바뀌지 않는다.
   - 남는 결정: 공급자가 끝내 제공하지 않는 종목이 있으면 그 코호트는 채점되지 않은 채 남는다. 독립 출처로 종결을 확인해 닫는 규칙은 연구 규칙 변경이므로 소유자 승인 사항이다.
 - **위험 경로의 실행 불가 처리.** 리밸런스 세션에 새로 고른 종목이 정지(행은 있고 거래량 0)면 그 기간 그 슬롯은 069500.KS로 보유한다. 코호트 outcome의 `NOT_EXECUTABLE_HELD_AS_BENCHMARK`와 같은 규칙이고 거래비용도 같게 부과한다. 이전에는 이 경우 경로 전체가 `INCOMPLETE`가 되어 위험 조건 하나 때문에 1차 판정이 `INCONCLUSIVE_DATA`로 갈 수 있었다(소유자 감사 2026-10-23). 행 누락·무효 종가, 이미 보유한 종목의 미거래는 그대로 `INCOMPLETE`다.
+- **과학적 의존성 계약.** 규칙은 이 연구의 세 파일에만 있지 않다. 그래서 의존성도 함께 고정한다(소유자 감사 2026-10-23, #278 comment 6355563725).
+  - 직접 호출하는 연구용 규칙 모듈(`prospective_receipt_core`)은 바이트로 고정한다(`scientificDependencies.fileHashes`).
+  - 생산 빌드와 공유하는 도우미는 동작으로 고정한다. 대상은 KR 거래비용, 세션 확정 시각과 `^KS11`, Newey-West, `downside_vol_252`, 2026-10-01~2029-12-31 KRX 달력이다. 고정된 합성 입력에 대한 출력을 해시한 값이 `conformanceDigest`다. 그 모듈의 무관한 수정은 영향이 없고, 이 연구가 쓰는 계산이 바뀌면 LIVE의 record·outcomes·assess가 `SCIENTIFIC_DEPENDENCY_CHANGED`로 거부한다.
+  - 정당한 변경(KRX 달력 정정 포함)은 새 연구 버전으로 등록한다. 이 버전을 다시 고정하지 않는다. 합성 fixture는 계약을 읽지 않는다.
+  - 계약 밖에 두는 것: 생산 artifact 자체(`CTRL_MODEL5`는 정의상 생산 모델이며 `modelVersion`으로 기록된다)와 저장소 공통 안전 관문 `weekly_publish.unsafe_reason`.
 - **아직 남은 비P1 지적.**
   - 실행일 거래량 0을 정지로 보는 규칙은 벤더의 주장에 의존한다(감사 지적 2).
   - 허용된 None은 평균에서 빠지므로, 그것이 상장폐지라면 생존편향 방향으로 작용할 수 있다(감사 지적 4).

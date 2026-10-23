@@ -74,8 +74,8 @@ def _fetch_bars(tickers, start):
 def record(site_path: Path, directory: Path) -> int:
     raw = site_path.read_bytes()
     site = json.loads(raw)
-    spec = C.load_spec()
     try:
+        spec = C.load_spec()      # the study's own files AND its scientific dependencies, or no receipt
         now = CORE.system_utc_now()
         recorded = {r["signalDate"] for r in C.read_receipts(directory / RECEIPTS, pathway=C.LIVE)} \
             if (directory / RECEIPTS).exists() else set()
@@ -101,6 +101,7 @@ def record(site_path: Path, directory: Path) -> int:
 def outcomes(directory: Path) -> int:
     from pipeline.datafeed import fetch_prices
 
+    C.load_spec()   # grading uses the registered costs, calendar and resolution rules; a moved dependency refuses
     receipts = C.read_receipts(directory / RECEIPTS, pathway=C.LIVE)
     path = directory / OUTCOMES
     existing = C.read_outcomes(path, pathway=C.LIVE)

@@ -113,8 +113,15 @@
   "turnover": "names replaced per weekly receipt and per path rebalance, as a share of five slots (weights retargeted are not turnover here)",
   "productionEffect": "NONE",
   "codeFileHashes": {
-    "pipeline/kr_selection_challenger.py": "5d22545c545b8479480d8740072121171b0f88ff81222d65bb763e4467054c16",
+    "pipeline/kr_selection_challenger.py": "1467a078e56c436d08a4118af62ce2d4d55cbab557065f90c5fbe036169a69b4",
     "pipeline/kr_bar_integrity.py": "91b50cc2f24939ee880cd6c1db67738d95522053c1edb99b2715a3a347168e12",
-    "scripts/record_kr_selection_challenger.py": "a02058c67ca35b9e11423a21ca226293935ac884235d49e9e25fa2b920a63c5d"
+    "scripts/record_kr_selection_challenger.py": "7cfe55a07f9b2d36bc9ba519b37df005144ef092c09a9d5c5947b98549d20012"
+  },
+  "scientificDependencies": {
+    "contract": "Rules this study calls outside its own files are frozen too. Research-owned rule modules called directly are pinned by bytes (fileHashes). Production helpers shared with the live build are pinned by behaviour: conformanceDigest hashes their outputs on fixed synthetic probes (pipeline.kr_selection_challenger.conformance_values: KR trade_cost_fraction on dated legs 2026-2029, SESSION_EVIDENCE and last_completed_session finality, kelly_portfolio._newey_west_stats at both horizons, longterm.downside_vol_252, and the pinned KRX calendar 2026-10-01..2029-12-31). LIVE record, outcomes and assess refuse SCIENTIFIC_DEPENDENCY_CHANGED; a legitimate change to any of them (including a KRX calendar correction) is a new study version, never a re-pin of this one. Outside the contract by design: the production artifact (CTRL_MODEL5 is the production model, recorded by modelVersion) and weekly_publish.unsafe_reason (the repository-wide artifact safety gate)",
+    "fileHashes": {
+      "pipeline/prospective_receipt_core.py": "0f5344b09e28a4b9e9df5839bb6fc11f8ace70a4c71c01c6915ae753857ef90f"
+    },
+    "conformanceDigest": "ac5964dc018834d788d61ff9fbe1594d2265d01f64192c797f45755fef14c0e6"
   }
 }

@@ -114,13 +114,71 @@ def test_spec_pins_every_code_file_and_the_registered_rules():
 
 
 def test_a_changed_code_file_refuses_the_spec(tmp_path):
-    for rel in [C.SPEC_PATH, *SPEC["codeFileHashes"]]:
+    for rel in [C.SPEC_PATH, *SPEC["codeFileHashes"], *C.SCIENTIFIC_FILES]:
         (tmp_path / rel).parent.mkdir(parents=True, exist_ok=True)
         (tmp_path / rel).write_bytes((ROOT / rel).read_bytes())
     C.load_spec(tmp_path)
     (tmp_path / "pipeline/kr_selection_challenger.py").write_text("# edited\n")
     with pytest.raises(ValueError, match="CODE_CHANGED_SINCE_REGISTRATION"):
         C.load_spec(tmp_path)
+
+
+def _copy_study(tmp_path):
+    for rel in [C.SPEC_PATH, *SPEC["codeFileHashes"], *C.SCIENTIFIC_FILES]:
+        (tmp_path / rel).parent.mkdir(parents=True, exist_ok=True)
+        (tmp_path / rel).write_bytes((ROOT / rel).read_bytes())
+
+
+def test_the_spec_pins_its_scientific_dependencies_by_bytes_and_behaviour():
+    deps = SPEC["scientificDependencies"]
+    assert set(deps["fileHashes"]) == set(C.SCIENTIFIC_FILES)
+    assert deps["conformanceDigest"] == C.conformance_digest()                      # the registered behaviour is today's
+    assert C.conformance_digest() == C.conformance_digest()                         # deterministic
+
+
+def test_an_edited_scientific_dependency_file_refuses_the_spec(tmp_path):
+    _copy_study(tmp_path)
+    C.load_spec(tmp_path)
+    path = tmp_path / "pipeline/prospective_receipt_core.py"
+    path.write_text(path.read_text() + "\n# edited\n")
+    with pytest.raises(ValueError, match="SCIENTIFIC_DEPENDENCY_CHANGED: pipeline/prospective_receipt_core.py"):
+        C.load_spec(tmp_path)
+
+
+@pytest.mark.parametrize("target,patch", [
+    ("trade_cost", lambda m: m.setattr(C.W, "trade_cost_fraction", lambda *a, _f=C.W.trade_cost_fraction, **k: _f(*a, **k) + 1e-4)),
+    ("newey_west", lambda m: m.setattr(C.KP, "_newey_west_stats", lambda s, h, _f=C.KP._newey_west_stats: {**_f(s, h), "hacLag": 1})),
+    ("downside_vol", lambda m: m.setattr(C.LT, "downside_vol_252", lambda c, _f=C.LT.downside_vol_252: (_f(c) or 0.0) * 1.01)),
+    ("calendar", lambda m: m.setattr(C.RC, "sessions", lambda a, b, r="COMMON", _f=C.RC.sessions: _f(a, b, r)[1:])),
+    ("finality", lambda m: m.setattr(C.W, "SESSION_EVIDENCE", {**C.W.SESSION_EVIDENCE, "KR": "^KS200"})),
+])
+def test_a_changed_production_helper_refuses_the_live_spec_without_touching_the_studys_files(monkeypatch, target, patch):
+    """The study's own files and the pinned files are byte-identical; only a helper's behaviour moved."""
+    C.load_spec()
+    patch(monkeypatch)
+    with pytest.raises(ValueError, match="SCIENTIFIC_DEPENDENCY_CHANGED: conformance"):
+        C.load_spec()
+
+
+def test_the_live_recorder_refuses_under_a_moved_dependency_and_synthetic_fixtures_stay_isolated(tmp_path, monkeypatch):
+    import importlib
+    script = importlib.import_module("scripts.record_kr_selection_challenger")
+    monkeypatch.setattr("pipeline.datafeed.fetch_prices", fetch_for())
+    monkeypatch.setattr(C, "merged_at_from_git", lambda *a: MERGED)
+    monkeypatch.setattr(CORE, "system_utc_now", lambda: pd.Timestamp("2026-10-31T04:35:00Z"))
+    monkeypatch.setattr(C.W, "trade_cost_fraction", lambda *a, _f=C.W.trade_cost_fraction, **k: _f(*a, **k) * 2)
+    path = tmp_path / "site.json"
+    path.write_text(json.dumps(site(generated="2026-10-31T04:30:00+00:00")))
+    study = tmp_path / "study"
+    assert script.run_all(path, study) == 1
+    status = json.loads((study / "publication-status.json").read_text())
+    assert status["signalRecordState"] == "REFUSED" and status["signalRecordReason"] == "SCIENTIFIC_DEPENDENCY_CHANGED: conformance"
+    assert {"record", "outcomes", "assess"} <= set(status["failedSteps"]) and not (study / "receipts.jsonl").exists()
+    with pytest.raises(ValueError, match="SCIENTIFIC_DEPENDENCY_CHANGED"):        # LIVE receipts check whoever calls them
+        C.build_receipt(site(), "b" * 64, pathway=C.LIVE, created_at_utc=EVENING, now_utc=EVENING, merged_at_utc=MERGED,
+                        code_identity={"commitSha": "c" * 40, "files": {"x": "d" * 64}}, spec=SPEC, spec_digest="e" * 64,
+                        fetch_bars=fetch_for())
+    assert receipt()["pathway"] == C.SYNTHETIC                                      # fixtures never read the contract
 
 
 # --------------------------------------------------------------------------- #

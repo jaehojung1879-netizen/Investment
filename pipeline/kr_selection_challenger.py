@@ -33,6 +33,7 @@ from . import kelly_portfolio as KP
 from . import kr_bar_integrity as BI
 from . import longterm as LT
 from . import prospective_receipt_core as CORE
+from . import replay_calendar as RC
 from . import weekly_decision as W
 from . import weekly_publish as P
 
@@ -72,7 +73,71 @@ def load_spec(root=ROOT, *, verify_code=True) -> dict:
         for rel, pinned in sorted(spec["codeFileHashes"].items()):
             if file_sha256(Path(root) / rel) != pinned:
                 raise ValueError("CODE_CHANGED_SINCE_REGISTRATION: " + rel)
+        verify_scientific_dependencies(spec, root)
     return spec
+
+
+# --------------------------------------------------------------------------- #
+# Scientific dependency contract
+# --------------------------------------------------------------------------- #
+# The study's rules do not live only in its own files. Two kinds of dependency carry them, and each is frozen the way it can be:
+#   * research-owned rule modules called directly are pinned by BYTES (``SCIENTIFIC_FILES``);
+#   * production helpers that also serve the live build (weekly_decision costs and session finality, kelly_portfolio's Newey-West, the
+#     longterm downside-volatility definition, the pinned KRX calendar) are pinned by BEHAVIOUR: their outputs on fixed synthetic probes
+#     are hashed into ``conformanceDigest``. An unrelated edit to those modules changes nothing; a change to what this study computes
+#     with them refuses the LIVE spec, and a changed rule is a new study version.
+# Outside the contract by design: the production artifact itself (its alpha is CTRL_MODEL5 by definition, recorded by modelVersion) and
+# weekly_publish.unsafe_reason (the repository-wide artifact safety gate).
+SCIENTIFIC_FILES = ("pipeline/prospective_receipt_core.py",)
+CONFORMANCE_CALENDAR_SPAN = ("2026-10-01", "2029-12-31")   # every session the registered cohorts can execute, mature or retry on
+
+
+def _rounded(value):
+    if isinstance(value, float):
+        return None if not math.isfinite(value) else float(f"{value:.10g}")   # far above platform noise, far below any rule change
+    if isinstance(value, dict):
+        return {str(k): _rounded(v) for k, v in sorted(value.items())}
+    if isinstance(value, (list, tuple)):
+        return [_rounded(v) for v in value]
+    if hasattr(value, "item"):
+        return _rounded(value.item())
+    return value
+
+
+def conformance_values() -> dict:
+    """Outputs of every production helper this study's rules call, on fixed synthetic inputs. No market data is read."""
+    cost_days = ("2026-11-02", "2027-01-04", "2027-07-01", "2028-01-03", "2028-07-03", "2029-01-02", "2029-10-01")
+    costs = {f"{d}:{'ETF' if b else 'STOCK'}:{side}": W.trade_cost_fraction("KR", d, is_benchmark=b, side=side)
+             for d in cost_days for b in (False, True) for side in ("buy", "sell")}
+    instants = ("2026-10-30T08:59:00+00:00", "2026-10-30T09:00:00+00:00", "2026-10-31T04:30:00+00:00", "2026-11-02T00:30:00+00:00")
+    finality = {t: str(W.last_completed_session("KR", datetime.fromisoformat(t))) for t in instants}
+    weeks = pd.date_range("2026-11-06", periods=104, freq="7D")
+    series = pd.Series([0.01 * math.sin(i / 3.0) + 0.002 * ((i * 37) % 11 - 5) for i in range(104)], index=weeks)
+    newey = {str(h): {k: v for k, v in KP._newey_west_stats(series, h).items() if isinstance(v, (int, float)) or v is None}
+             for h in (126, 252)}
+    close = pd.Series([100.0 * math.exp(0.01 * math.sin(i / 5.0) + 0.0003 * i) for i in range(300)])
+    downside = {"full": LT.downside_vol_252(close), "short": LT.downside_vol_252(close.iloc[:15])}
+    days = RC.sessions(*CONFORMANCE_CALENDAR_SPAN, "KR")
+    calendar = {"sessions": len(days), "sha256": hashlib.sha256(",".join(str(d.date()) for d in days).encode()).hexdigest()}
+    return _rounded({"tradeCostFraction": costs, "sessionEvidence": W.SESSION_EVIDENCE["KR"], "lastCompletedSession": finality,
+                     "neweyWest": newey, "downsideVol252": downside, "krCalendar": calendar})
+
+
+def conformance_digest(values: dict | None = None) -> str:
+    return hashlib.sha256(CORE.canonical(values if values is not None else conformance_values())).hexdigest()
+
+
+def verify_scientific_dependencies(spec: dict, root=ROOT, *, files=SCIENTIFIC_FILES, values=None) -> None:
+    """Refuse when a rule-bearing dependency moved: a pinned file's bytes, the pinned set itself, or a probed behaviour."""
+    deps = spec.get("scientificDependencies") or {}
+    pinned = deps.get("fileHashes") or {}
+    if set(pinned) != set(files):
+        raise ValueError("SCIENTIFIC_DEPENDENCY_SET_CHANGED")
+    for rel in sorted(pinned):
+        if file_sha256(Path(root) / rel) != pinned[rel]:
+            raise ValueError("SCIENTIFIC_DEPENDENCY_CHANGED: " + rel)
+    if conformance_digest(values) != deps.get("conformanceDigest"):
+        raise ValueError("SCIENTIFIC_DEPENDENCY_CHANGED: conformance")
 
 
 def spec_sha256(root=ROOT) -> str:
@@ -326,6 +391,8 @@ def build_receipt(site: dict, site_sha256: str, *, pathway: str, created_at_utc,
     """``fetch_bars(tickers, start)`` returns vendor frames; it is called only once the timing checks have passed."""
     if pathway not in EVIDENCE_CLASS_BY_PATHWAY:
         raise ValueError("UNKNOWN_PATHWAY")
+    if pathway == LIVE:      # a LIVE receipt is written only under the registered rules, whoever calls this
+        verify_scientific_dependencies(spec)
     if (reason := P.unsafe_reason(site)) is not None or (site.get("meta") or {}).get("syntheticData"):
         raise ValueError("UNSAFE_ARTIFACT: " + str(reason or "SEED_OR_SYNTHETIC_ARTIFACT"))
     if not CORE.is_sha256(site_sha256) or not CORE.is_sha256(spec_digest):
@@ -344,7 +411,8 @@ def build_receipt(site: dict, site_sha256: str, *, pathway: str, created_at_utc,
     provenance = site.get("provenance") or {}
     receipt = {
         "schemaVersion": SCHEMA_VERSION, "studyId": STUDY, "pathway": pathway, "specSha256": spec_digest,
-        "codeIdentity": {"commitSha": code_identity["commitSha"], "files": dict(sorted(code_identity["files"].items()))},
+        "codeIdentity": {"commitSha": code_identity["commitSha"], "files": dict(sorted(code_identity["files"].items())),
+                         **{k: code_identity[k] for k in ("conformanceDigest", "calendarVersion") if k in code_identity}},
         "authorization": {"basis": "MERGE_OF_THE_REGISTERED_SPEC", "mergedAtUtc": str(CORE.utc(merged_at_utc).isoformat()),
                           "firstProspectiveSession": str(CORE.first_prospective_session(merged_at_utc).date()),
                           "registeredFloor": floor},
@@ -769,4 +837,6 @@ def live_code_identity(spec: dict, root=ROOT) -> dict:
     head = _git("rev-parse", "HEAD", root=root).stdout.strip()
     if not CORE.is_git_sha(head):
         raise ValueError("CODE_COMMIT_UNKNOWN")
-    return {"commitSha": head, "files": {rel: file_sha256(Path(root) / rel) for rel in sorted(spec["codeFileHashes"])}}
+    deps = spec["scientificDependencies"]
+    return {"commitSha": head, "files": {rel: file_sha256(Path(root) / rel) for rel in sorted({*spec["codeFileHashes"], *deps["fileHashes"]})},
+            "conformanceDigest": deps["conformanceDigest"], "calendarVersion": RC.CALENDAR_VERSION}
