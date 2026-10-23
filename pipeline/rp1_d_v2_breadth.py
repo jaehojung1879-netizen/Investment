@@ -20,6 +20,8 @@ stamped. No function here reads a realised return, writes a receipt, an order or
 """
 from __future__ import annotations
 
+from datetime import datetime
+import hashlib
 import json
 import math
 from pathlib import Path
@@ -50,6 +52,11 @@ REGISTERED_A_ADMISSIONS = frozenset()
 OWNER_PARAMETERS = None
 # SHA-256 of owner-approved C interpretations usable on a v2 book. Empty, as in v1.
 OWNER_APPROVED_C_ARTIFACTS = frozenset()
+# SHA-256 digests of admitted risk-model producers. Empty: no real risk model is admitted. A digest proves a matrix was not edited after
+# it was sealed; only a registered producer makes its stated dates trustworthy.
+REGISTERED_RISK_MODEL_PRODUCERS = frozenset()
+RISK_MODEL_ESTIMATOR = "LEDOIT_WOLF_DAILY_ACTIVE_PAST_ONLY"
+RISK_PROVENANCE_KEYS = ("lastObservationSession", "computedAt", "sourceDigestSha256", "producerSha256", "contentSha256")
 # A forecast input that carries any of these is mixing outcomes into a decision and is refused whole.
 OUTCOME_FRAGMENTS = ("realized", "realised", "forward", "outcome", "matured", "futurereturn", "label")
 ZERO = 1e-9
@@ -106,25 +113,138 @@ def liquidity_cap_fraction(median_traded_value, sleeve_capital, participation):
     return min(1.0, participation * median_traded_value / sleeve_capital)
 
 
-def active_covariance(stock_returns, etf_returns, decision_session, horizon):
+def _instant(value):
+    """A timezone-aware ISO-8601 instant, or None. A date alone, a naive timestamp or a malformed string is never an instant."""
+    if not isinstance(value, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d{1,6})?)?(Z|[+-]\d{2}:\d{2})", value):
+        return None
+    try:
+        stamp = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return stamp if stamp.utcoffset() is not None else None
+
+
+def _session_text(value):
+    return value if isinstance(value, str) and re.fullmatch(r"\d{4}-\d{2}-\d{2}", value) else None
+
+
+def decision_window_error(region, decision_session, cutoff):
+    """The registered conservative cutoff rule. A decision about `decision_session` is fixed at `cutoff` only if that session's close
+    has become final (weekly_decision.last_completed_session: close + settlement buffer, KR no earlier than 18:00 KST) and the next
+    exchange session has not opened. Inside that window nothing after the decision session's close has traded. None when it holds."""
+    import exchange_calendars as xc
+    import pandas as pd
+    from . import weekly_decision as W
+    try:
+        completed = W.last_completed_session(region, cutoff)
+    except ValueError:
+        return "DECISION_CUTOFF_OUTSIDE_THE_CALENDAR"
+    if completed < decision_session:
+        return "DECISION_CUTOFF_BEFORE_THE_SESSION_CLOSE_IS_FINAL"
+    if completed > decision_session:
+        return "DECISION_CUTOFF_AFTER_A_LATER_SESSION"
+    calendar = xc.get_calendar("XKRX" if region == "KR" else "XNYS", start="1990-01-01", end="2035-12-31")
+    following = calendar.sessions_in_range(pd.Timestamp(decision_session) + pd.Timedelta(days=1),
+                                           pd.Timestamp(decision_session) + pd.Timedelta(days=21))
+    if not len(following):
+        return "DECISION_CUTOFF_OUTSIDE_THE_CALENDAR"
+    if pd.Timestamp(cutoff) >= calendar.session_open(following[0]):
+        return "DECISION_CUTOFF_AT_OR_AFTER_THE_NEXT_OPEN"
+    return None
+
+
+def _canonical(obj):
+    return json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=True, allow_nan=False).encode()
+
+
+def risk_model_content_sha256(model):
+    """Digest of everything in a risk model except the digest itself: tickers, matrix, c_b, horizon, estimator and provenance."""
+    return hashlib.sha256(_canonical({k: v for k, v in model.items() if k != "contentSha256"})).hexdigest()
+
+
+def seal_risk_model(model):
+    """Return a copy with `contentSha256` set; any later edit to a matrix entry or a provenance date breaks it."""
+    out = {k: v for k, v in model.items() if k != "contentSha256"}
+    out["contentSha256"] = risk_model_content_sha256(out)
+    return out
+
+
+def producer_sha256():
+    """Digest of this module's bytes: the producer identity a real risk model built by `active_covariance` would carry."""
+    return hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+
+
+def active_covariance(stock_returns, etf_returns, decision_session, horizon, *, region, computed_at):
     """Past-only risk model: Ledoit-Wolf shrinkage of daily ACTIVE returns (stock - ETF), and the active/ETF covariance, both scaled to
-    H sessions and pp^2. Inputs are pandas objects indexed by session; any row after the decision session is refused, not dropped."""
+    H sessions and pp^2. Inputs are pandas objects indexed by session; any row after the decision session is refused, not dropped.
+    The result is sealed with its provenance: the last session it read, the instant it was computed (which must be after that session
+    closed), a digest of the exact return panel used, the producer digest and a content digest."""
     import pandas as pd
     from sklearn.covariance import LedoitWolf
+    from . import weekly_decision as W
+    if region not in REGIONS:
+        raise ValueError("UNKNOWN_REGION")
+    computed = _instant(computed_at)
+    if computed is None:
+        raise Refused("RISK_MODEL_COMPUTED_AT_NOT_A_TIMEZONE_AWARE_INSTANT")
     cut = pd.Timestamp(decision_session)
     if stock_returns.index.max() > cut or etf_returns.index.max() > cut:
         raise Refused("RISK_MODEL_INPUT_AFTER_DECISION_SESSION")
     frame = stock_returns.join(etf_returns.rename("__etf__"), how="inner").dropna()
     if len(frame) < 2 * frame.shape[1]:
         raise Refused("RISK_MODEL_HISTORY_TOO_SHORT")
+    last = frame.index.max().strftime("%Y-%m-%d")
+    if W.last_completed_session(region, computed) < last:
+        raise Refused("RISK_MODEL_COMPUTED_BEFORE_ITS_LAST_OBSERVATION_WAS_FINAL")
+    source = {"columns": [str(c) for c in frame.columns], "index": [d.strftime("%Y-%m-%d") for d in frame.index],
+              "values": [[float(x) for x in r] for r in frame.to_numpy()]}
     etf = frame.pop("__etf__")
     active = frame.sub(etf, axis=0)
     tickers = sorted(active.columns)
     active = active[tickers]
     s = LedoitWolf().fit(active.to_numpy()).covariance_ * horizon * 1e4
     cb = np.array([np.cov(active[t].to_numpy(), etf.to_numpy())[0, 1] for t in tickers]) * horizon * 1e4
-    return {"tickers": tickers, "matrix": s.tolist(), "benchmarkCovariance": dict(zip(tickers, cb.tolist())),
-            "estimator": "LEDOIT_WOLF_DAILY_ACTIVE_PAST_ONLY", "observations": int(len(active)), "horizonSessions": horizon}
+    return seal_risk_model({
+        "tickers": tickers, "matrix": s.tolist(), "benchmarkCovariance": dict(zip(tickers, cb.tolist())),
+        "estimator": RISK_MODEL_ESTIMATOR, "observations": int(len(active)), "horizonSessions": horizon,
+        "lastObservationSession": last, "computedAt": computed_at,
+        "sourceDigestSha256": hashlib.sha256(_canonical(source)).hexdigest(), "producerSha256": producer_sha256()})
+
+
+def _hex64(v):
+    return isinstance(v, str) and re.fullmatch(r"[0-9a-f]{64}", v) is not None
+
+
+def _risk_provenance(record, region, session, cutoff, synthetic):
+    """Temporal provenance of a supplied risk model, checked in the decision path before any name is gated. A matrix that does not
+    say what it read and when, says it read past the decision session, was computed after the cutoff, or was edited after sealing is
+    refused whole. A real record additionally needs a registered producer: the digest proves integrity, not the truth of its dates."""
+    from . import weekly_decision as W
+    risk = record.get("riskModel")
+    if not isinstance(risk, dict):
+        raise Refused("RISK_MODEL_UNAVAILABLE")
+    if any(k not in risk for k in RISK_PROVENANCE_KEYS):
+        raise Refused("RISK_MODEL_PROVENANCE_MISSING")
+    if not all(_hex64(risk[k]) for k in ("sourceDigestSha256", "producerSha256", "contentSha256")):
+        raise Refused("RISK_MODEL_PROVENANCE_MALFORMED")
+    if risk["contentSha256"] != risk_model_content_sha256(risk):
+        raise Refused("RISK_MODEL_CONTENT_DIGEST_MISMATCH")
+    if not synthetic and risk["producerSha256"] not in REGISTERED_RISK_MODEL_PRODUCERS:
+        raise Refused("RISK_MODEL_PRODUCER_NOT_REGISTERED")
+    last = _session_text(risk["lastObservationSession"])
+    computed = _instant(risk["computedAt"])
+    if last is None or computed is None:
+        raise Refused("RISK_MODEL_UNDATED")
+    if last > session:
+        raise Refused("RISK_MODEL_OBSERVATIONS_AFTER_DECISION_SESSION")
+    if computed > cutoff:
+        raise Refused("RISK_MODEL_COMPUTED_AFTER_DECISION_CUTOFF")
+    try:
+        final = W.last_completed_session(region, computed)
+    except ValueError:
+        final = None
+    if final is None or final < last:
+        raise Refused("RISK_MODEL_COMPUTED_BEFORE_ITS_LAST_OBSERVATION_WAS_FINAL")
 
 
 def _outcome_key(k):
@@ -225,18 +345,28 @@ def _validate_record(record, region):
         raise Refused("BENCHMARK_NOT_THE_REGIONAL_ETF")
     if record.get("horizonSessions") not in HORIZONS:
         raise Refused("HORIZON_NOT_REGISTERED")
-    session = record.get("decisionSession")
-    if not isinstance(session, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", session):
+    session = _session_text(record.get("decisionSession"))
+    if session is None:
         raise Refused("DECISION_SESSION_UNDATED")
+    cutoff = _instant(record.get("decisionCutoffAt"))
+    if cutoff is None:
+        raise Refused("DECISION_CUTOFF_NOT_A_TIMEZONE_AWARE_INSTANT")
+    window = decision_window_error(region, session, cutoff)
+    if window:
+        raise Refused(window)
     names = record.get("names")
     if not isinstance(names, list):
         raise Refused("NAMES_NOT_A_LIST")
     for row in names:
         if not isinstance(row, dict):
             raise Refused("NAME_ROW_MALFORMED")
-        available = row.get("availableAt")
-        if not isinstance(available, str) or available > session:
-            raise Refused("LOOK_AHEAD_OR_UNDATED_AVAILABILITY")   # leakage in one row voids the record
+        available = _instant(row.get("availableAt"))
+        if available is None:
+            # a date alone cannot show the forecast existed before the decision instant; leakage in one row voids the record
+            raise Refused("AVAILABILITY_NOT_A_TIMEZONE_AWARE_INSTANT")
+        if available > cutoff:
+            raise Refused("LOOK_AHEAD_AVAILABLE_AFTER_DECISION_CUTOFF")
+    _risk_provenance(record, region, session, cutoff, record.get("evidenceClass") == SYNTHETIC)
     tickers = [r.get("ticker") for r in names]
     if len(tickers) != len(set(map(str, tickers))):
         raise Refused("DUPLICATE_NAME")

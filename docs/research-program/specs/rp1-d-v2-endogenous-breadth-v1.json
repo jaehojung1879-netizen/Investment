@@ -46,7 +46,9 @@
       "owner parameters registered (OWNER_PARAMETERS is None today)",
       "benchmark equals the regional ETF; horizon in {126, 252} and equal to the owner's registered horizon",
       "no outcome/realised field anywhere in the forecast input",
-      "no name available after the decision session (look-ahead voids the region record)",
+      "decisionCutoffAt is a timezone-aware instant inside the registered window: after the decision session's close is final (weekly_decision.last_completed_session: close + settlement buffer, KR no earlier than 18:00 KST) and before the next exchange session opens",
+      "every availableAt is a timezone-aware instant at or before decisionCutoffAt; a date-only, naive or malformed availability is refused, and one such row voids the region record",
+      "risk model provenance, checked before any name is gated: lastObservationSession <= decisionSession, computedAt a timezone-aware instant at or before decisionCutoffAt and after lastObservationSession's close was final, sourceDigestSha256 of the exact return panel, producerSha256, and contentSha256 recomputed over the matrix and its provenance; a real record also needs producerSha256 in REGISTERED_RISK_MODEL_PRODUCERS (empty today)",
       "past-only active covariance and benchmark covariance for every gated name, finite, symmetric, PSD"
     ],
     "name": [
@@ -66,7 +68,7 @@
     "minimumPosition": "positions below minPositionFraction are removed one at a time (smallest first, ticker tie-break) and the problem re-solved",
     "determinism": "names sorted by ticker before solving; identical inputs give identical outputs; input order cannot change the result",
     "verification": "solver success, every constraint re-checked at 1e-7, and objective >= the ETF-only objective (0); otherwise the region falls back to the ETF",
-    "riskModel": "pipeline.rp1_d_v2_breadth.active_covariance: Ledoit-Wolf shrinkage of PAST-ONLY daily active returns (stock minus regional ETF), scaled by H, plus the stock-active/ETF covariance vector c_b; refuses any observation dated after the decision session",
+    "riskModel": "pipeline.rp1_d_v2_breadth.active_covariance: Ledoit-Wolf shrinkage of PAST-ONLY daily active returns (stock minus regional ETF), scaled by H, plus the stock-active/ETF covariance vector c_b; refuses any observation dated after the decision session; the result is sealed with lastObservationSession, computedAt, sourceDigestSha256, producerSha256 (this module's bytes) and contentSha256. A digest proves integrity after sealing, not the truth of the stated dates; that comes only from a registered producer.",
     "overlays": "B is context only (used = false). C is applied only through a registered owner interpretation (none exists), once, to the finished regional stock+ETF book as a multiplier m; never to stocks and the book twice, never combined with B."
   },
   "ownerDecisionsRequired": {

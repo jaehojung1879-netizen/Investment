@@ -16,6 +16,10 @@ from pipeline import rp1_d_v2_breadth as D
 
 ROOT = Path(__file__).resolve().parents[1]
 SESSION = "2026-10-16"
+# Friday 2026-10-16: the close is final (KR no earlier than 18:00 KST, US 17:00 ET) and the next open is Monday 2026-10-19.
+CUTOFF = {"KR": "2026-10-16T19:00:00+09:00", "US": "2026-10-16T20:00:00-04:00"}
+AVAILABLE = {"KR": "2026-10-16T18:30:00+09:00", "US": "2026-10-16T19:30:00-04:00"}
+COMPUTED = {"KR": "2026-10-16T18:45:00+09:00", "US": "2026-10-16T19:45:00-04:00"}
 LEGS = {"etfSell": 0.06, "stockBuy": 0.06, "stockSell": 0.26, "etfBuy": 0.06}      # C4 = 0.44
 P = {"horizonSessions": 126, "uncertaintyMultiplierZ": 1.0, "edgeHurdlePct": 0.0, "riskAversionLambda": 2.0,
      "maxTrackingErrorPct": "NOT_USED", "maxNameFraction": 0.08, "maxSectorFraction": 1.0, "maxActiveFraction": 1.0,
@@ -27,23 +31,35 @@ def tick(region, i):
 
 
 def row(region, i, gross=6.0, se=1.0, sector=None, **kw):
-    r = {"ticker": tick(region, i), "signalSession": SESSION, "availableAt": SESSION, "excessBasis": D.EXCESS_BASIS,
+    r = {"ticker": tick(region, i), "signalSession": SESSION, "availableAt": AVAILABLE[region], "excessBasis": D.EXCESS_BASIS,
          "grossExcessPct": gross, "standardErrorPct": se, "costLegsPct": dict(LEGS), "sector": sector or f"SEC{i}",
          "liquidityCapFraction": 1.0}
     r.update(kw)
     return r
 
 
-def risk(tickers, var=196.0, corr=None, cb=0.0):
+def risk(tickers, var=196.0, corr=None, cb=0.0, region="KR", **provenance):
     n = len(tickers)
     c = np.eye(n) if corr is None else np.array(corr, dtype=float)
     s = c * var
-    return {"tickers": list(tickers), "matrix": s.tolist(), "benchmarkCovariance": {t: cb for t in tickers}, "horizonSessions": 126}
+    model = {"tickers": list(tickers), "matrix": s.tolist(), "benchmarkCovariance": {t: cb for t in tickers}, "horizonSessions": 126,
+             "estimator": D.RISK_MODEL_ESTIMATOR, "lastObservationSession": SESSION, "computedAt": COMPUTED[region],
+             "sourceDigestSha256": "a" * 64, "producerSha256": "b" * 64}
+    model.update(provenance)
+    return D.seal_risk_model(model)
+
+
+def reseal(rec, **change):
+    """Edit a fixture's risk model and seal it again, so a test reaches the check after the digest."""
+    rec["riskModel"].update(change)
+    rec["riskModel"] = D.seal_risk_model(rec["riskModel"])
+    return rec
 
 
 def record(rows, region="KR", **kw):
     rec = {"evidenceClass": D.SYNTHETIC, "region": region, "benchmark": D.REGIONAL_ETF[region], "horizonSessions": 126,
-           "decisionSession": SESSION, "names": rows, "riskModel": risk([r["ticker"] for r in rows if isinstance(r, dict)])}
+           "decisionSession": SESSION, "decisionCutoffAt": CUTOFF[region], "names": rows,
+           "riskModel": risk([r["ticker"] for r in rows if isinstance(r, dict)], region=region)}
     rec.update(kw)
     return rec
 
@@ -180,7 +196,7 @@ def test_active_fraction_never_exceeds_one_and_no_leverage():
 def test_benchmark_covariance_enters_the_growth_objective():
     base = run(record(strong(1)), maxNameFraction=1.0)["activeFraction"]
     rec = record(strong(1))
-    rec["riskModel"]["benchmarkCovariance"] = {tick("KR", 0): 150.0}
+    reseal(rec, benchmarkCovariance={tick("KR", 0): 150.0})
     assert run(rec, maxNameFraction=1.0)["activeFraction"] < base
 
 
@@ -197,11 +213,93 @@ def test_stale_and_missing_forecasts_are_excluded_never_carried():
     assert list(out["shadowFractions"]) == [tick("KR", 4)]
 
 
-def test_look_ahead_voids_the_region():
-    rows = strong(5)
-    rows[2]["availableAt"] = "2026-10-19"
-    out = run(record(rows))
-    assert out["activeCount"] == 0 and out["reasons"] == ["LOOK_AHEAD_OR_UNDATED_AVAILABILITY"]
+@pytest.mark.parametrize("region,available,reason", [
+    ("KR", "2026-10-16T18:59:59+09:00", None),                                    # before the cutoff
+    ("KR", "2026-10-16T19:00:00+09:00", None),                                    # at the cutoff
+    ("KR", "2026-10-16T10:00:00Z", None),                                         # 19:00 KST written in UTC: the same instant
+    ("KR", "2026-10-16T19:00:01+09:00", "LOOK_AHEAD_AVAILABLE_AFTER_DECISION_CUTOFF"),
+    ("KR", "2026-10-16T12:00:00+01:00", "LOOK_AHEAD_AVAILABLE_AFTER_DECISION_CUTOFF"),  # 19:00 KST + 1 h in another offset
+    ("KR", "2026-10-19T08:00:00+09:00", "LOOK_AHEAD_AVAILABLE_AFTER_DECISION_CUTOFF"),
+    ("US", "2026-10-16T19:59:00-04:00", None),
+    ("US", "2026-10-17T00:00:00Z", None),                                         # 20:00 EDT
+    ("US", "2026-10-16T21:00:00-04:00", "LOOK_AHEAD_AVAILABLE_AFTER_DECISION_CUTOFF"),
+    ("KR", "2026-10-16", "AVAILABILITY_NOT_A_TIMEZONE_AWARE_INSTANT"),             # the old date-only form: ambiguous, refused
+    ("KR", "2026-10-15", "AVAILABILITY_NOT_A_TIMEZONE_AWARE_INSTANT"),             # even an earlier bare date proves no instant
+    ("KR", "2026-10-16T18:30:00", "AVAILABILITY_NOT_A_TIMEZONE_AWARE_INSTANT"),    # naive timestamp
+    ("KR", "2026-10-16 18:30:00+09:00", "AVAILABILITY_NOT_A_TIMEZONE_AWARE_INSTANT"),
+    ("KR", "2026-13-16T18:30:00+09:00", "AVAILABILITY_NOT_A_TIMEZONE_AWARE_INSTANT"),
+    ("KR", "yesterday", "AVAILABILITY_NOT_A_TIMEZONE_AWARE_INSTANT"),
+    ("KR", None, "AVAILABILITY_NOT_A_TIMEZONE_AWARE_INSTANT")])
+def test_availability_is_an_instant_compared_with_the_decision_cutoff(region, available, reason):
+    rows = strong(3, region)
+    rows[1]["availableAt"] = available
+    out = run(record(rows, region), region)
+    if reason is None:
+        assert out["status"] == "SYNTHETIC_SHADOW_BOOK" and out["activeCount"] == 3
+    else:
+        assert out["activeCount"] == 0 and out["reasons"] == [reason]       # leakage in one row voids the whole region
+
+
+@pytest.mark.parametrize("region,cutoff,reason", [
+    ("KR", "2026-10-16T18:00:00+09:00", None),                                    # KR finality boundary
+    ("KR", "2026-10-19T08:59:59+09:00", None),                                    # last instant before Monday's open
+    ("KR", "2026-10-16T17:59:59+09:00", "DECISION_CUTOFF_BEFORE_THE_SESSION_CLOSE_IS_FINAL"),
+    ("KR", "2026-10-16T12:00:00+09:00", "DECISION_CUTOFF_BEFORE_THE_SESSION_CLOSE_IS_FINAL"),
+    ("KR", "2026-10-19T09:00:00+09:00", "DECISION_CUTOFF_AT_OR_AFTER_THE_NEXT_OPEN"),
+    ("KR", "2026-10-20T09:00:00+09:00", "DECISION_CUTOFF_AFTER_A_LATER_SESSION"),
+    ("US", "2026-10-16T17:00:00-04:00", None),                                    # close + settlement buffer
+    ("US", "2026-10-16T16:59:59-04:00", "DECISION_CUTOFF_BEFORE_THE_SESSION_CLOSE_IS_FINAL"),
+    ("US", "2026-10-19T13:30:00Z", "DECISION_CUTOFF_AT_OR_AFTER_THE_NEXT_OPEN"),   # 09:30 EDT Monday
+    ("KR", "2026-10-16", "DECISION_CUTOFF_NOT_A_TIMEZONE_AWARE_INSTANT"),
+    ("KR", "2026-10-16T19:00:00", "DECISION_CUTOFF_NOT_A_TIMEZONE_AWARE_INSTANT"),
+    ("KR", "not-a-time", "DECISION_CUTOFF_NOT_A_TIMEZONE_AWARE_INSTANT"),
+    ("KR", None, "DECISION_CUTOFF_NOT_A_TIMEZONE_AWARE_INSTANT")])
+def test_decision_cutoff_lies_between_the_final_close_and_the_next_open(region, cutoff, reason):
+    rows = strong(2, region, availableAt="2026-10-16T08:00:00Z")
+    rec = record(rows, region, decisionCutoffAt=cutoff)
+    rec["riskModel"] = risk([r["ticker"] for r in rows], region=region, computedAt="2026-10-16T09:00:00Z" if region == "KR"
+                            else "2026-10-16T21:00:00Z")
+    out = run(rec, region)
+    if reason is None:
+        assert out["status"] == "SYNTHETIC_SHADOW_BOOK"
+    else:
+        assert out["activeCount"] == 0 and out["reasons"] == [reason]
+
+
+@pytest.mark.parametrize("change,reason", [
+    ({"lastObservationSession": "2026-10-19"}, "RISK_MODEL_OBSERVATIONS_AFTER_DECISION_SESSION"),
+    ({"lastObservationSession": None}, "RISK_MODEL_UNDATED"),
+    ({"lastObservationSession": "unknown"}, "RISK_MODEL_UNDATED"),
+    ({"computedAt": "2026-10-16"}, "RISK_MODEL_UNDATED"),
+    ({"computedAt": "2026-10-16T18:45:00"}, "RISK_MODEL_UNDATED"),
+    ({"computedAt": "2026-10-16T19:00:01+09:00"}, "RISK_MODEL_COMPUTED_AFTER_DECISION_CUTOFF"),
+    ({"computedAt": "2026-10-16T14:00:00+09:00"}, "RISK_MODEL_COMPUTED_BEFORE_ITS_LAST_OBSERVATION_WAS_FINAL"),
+    ({"sourceDigestSha256": "not-a-digest"}, "RISK_MODEL_PROVENANCE_MALFORMED")])
+def test_a_valid_psd_matrix_with_future_or_unknown_provenance_is_refused(change, reason):
+    rec = reseal(record(strong(3)), **change)       # sealed honestly, so only the stated provenance can refuse it
+    assert np.linalg.eigvalsh(np.array(rec["riskModel"]["matrix"])).min() > 0
+    out = run(rec)
+    assert out["activeCount"] == 0 and out["reasons"] == [reason]
+
+
+@pytest.mark.parametrize("key", D.RISK_PROVENANCE_KEYS)
+def test_risk_model_without_provenance_is_refused(key):
+    rec = record(strong(3))
+    del rec["riskModel"][key]
+    assert run(rec)["reasons"] == ["RISK_MODEL_PROVENANCE_MISSING"]
+
+
+@pytest.mark.parametrize("edit", [{"lastObservationSession": "2026-10-15"}, {"computedAt": "2026-10-16T18:40:00+09:00"},
+                                  {"matrix": (np.eye(3) * 100.0).tolist()}, {"benchmarkCovariance": {}}])
+def test_editing_a_sealed_risk_model_breaks_its_digest(edit):
+    rec = record(strong(3))
+    rec["riskModel"].update(edit)                    # edited after sealing, digest left stale
+    assert run(rec)["reasons"] == ["RISK_MODEL_CONTENT_DIGEST_MISMATCH"]
+
+
+def test_provenance_is_checked_even_when_no_name_passes():
+    rec = reseal(record(strong(3, gross=0.0)), lastObservationSession="2026-10-19")
+    assert run(rec)["reasons"] == ["RISK_MODEL_OBSERVATIONS_AFTER_DECISION_SESSION"]
 
 
 @pytest.mark.parametrize("key", ["realizedReturnPct", "forward_excess", "outcome", "maturedExcess", "label"])
@@ -216,7 +314,7 @@ def test_outcome_fields_are_refused(key):
 def test_passive_instruments_are_not_active_names(region, ticker):
     rows = [row(region, 0, ticker=ticker), row(region, 1)]
     rec = record(rows, region)
-    rec["riskModel"] = risk([ticker, tick(region, 1)])
+    rec["riskModel"] = risk([ticker, tick(region, 1)], region=region)
     out = run(rec, region)
     assert out["excluded"][ticker] == ["PASSIVE_INSTRUMENT_IS_NOT_AN_ACTIVE_NAME"] and ticker not in out["shadowFractions"]
     assert out["separateComparisons"] == list(D.SEPARATE_COMPARISONS.get(region, ()))
@@ -238,10 +336,10 @@ def test_risk_model_must_cover_and_be_psd():
     rec["riskModel"] = risk([tick("KR", 0), tick("KR", 1)])
     assert run(rec)["reasons"] == ["RISK_MODEL_DOES_NOT_COVER_GATED_NAMES"]
     rec = record(strong(2))
-    rec["riskModel"]["matrix"] = [[1.0, 5.0], [5.0, 1.0]]
+    reseal(rec, matrix=[[1.0, 5.0], [5.0, 1.0]])
     assert run(rec)["reasons"] == ["RISK_MODEL_NOT_SYMMETRIC_PSD"]
     rec = record(strong(2))
-    rec["riskModel"]["horizonSessions"] = 252
+    reseal(rec, horizonSessions=252)
     assert run(rec)["reasons"] == ["RISK_MODEL_HORIZON_MISMATCH"]
 
 
@@ -274,6 +372,8 @@ def test_valid_evidence_registered_later_activates_a_shadow_record_only(monkeypa
     rec = record(strong(4), evidenceClass="PROSPECTIVE_FORECAST", admissionSha256=digest)
     assert D.decide_region(rec, "KR")["reasons"] == ["OWNER_PARAMETERS_UNSET_OR_INCOMPLETE"]
     monkeypatch.setattr(D, "OWNER_PARAMETERS", dict(P))
+    assert D.decide_region(rec, "KR")["reasons"] == ["RISK_MODEL_PRODUCER_NOT_REGISTERED"]
+    monkeypatch.setattr(D, "REGISTERED_RISK_MODEL_PRODUCERS", frozenset({rec["riskModel"]["producerSha256"]}))
     out = D.decide_region(rec, "KR")
     assert out["status"] == "PROSPECTIVE_SHADOW_BOOK" and out["activeCount"] == 4 and out["productionAffected"] is False
     assert "stamp" not in out
@@ -320,11 +420,34 @@ def test_active_covariance_is_past_only_and_psd():
     rng = np.random.default_rng(3)
     stocks = pd.DataFrame(rng.normal(0, 0.02, (len(days), 3)), index=days, columns=["B", "A", "C"])
     etf = pd.Series(rng.normal(0, 0.01, len(days)), index=days)
-    out = D.active_covariance(stocks, etf, SESSION, 126)
+    out = D.active_covariance(stocks, etf, SESSION, 126, region="KR", computed_at=COMPUTED["KR"])
     assert out["tickers"] == ["A", "B", "C"] and np.linalg.eigvalsh(np.array(out["matrix"])).min() > 0
+    assert out["lastObservationSession"] == SESSION and out["computedAt"] == COMPUTED["KR"]
+    assert out["producerSha256"] == D.producer_sha256() and out["contentSha256"] == D.risk_model_content_sha256(out)
+    again = D.active_covariance(stocks, etf, SESSION, 126, region="KR", computed_at=COMPUTED["KR"])
+    assert again == out                                                         # deterministic, including every digest
+    shifted = stocks.copy()
+    shifted.iloc[0, 0] += 1e-6
+    assert D.active_covariance(shifted, etf, SESSION, 126, region="KR", computed_at=COMPUTED["KR"])["sourceDigestSha256"] != \
+        out["sourceDigestSha256"]
     late = pd.concat([etf, pd.Series([0.0], index=[pd.Timestamp("2026-10-19")])])
     with pytest.raises(D.Refused, match="AFTER_DECISION_SESSION"):
-        D.active_covariance(stocks, late, SESSION, 126)
+        D.active_covariance(stocks, late, SESSION, 126, region="KR", computed_at=COMPUTED["KR"])
+    with pytest.raises(D.Refused, match="COMPUTED_BEFORE_ITS_LAST_OBSERVATION_WAS_FINAL"):
+        D.active_covariance(stocks, etf, SESSION, 126, region="KR", computed_at="2026-10-16T14:00:00+09:00")
+    for bad in ("2026-10-16", "2026-10-16T18:45:00", None):
+        with pytest.raises(D.Refused, match="COMPUTED_AT_NOT_A_TIMEZONE_AWARE_INSTANT"):
+            D.active_covariance(stocks, etf, SESSION, 126, region="KR", computed_at=bad)
+
+
+def test_a_produced_risk_model_passes_the_decision_path():
+    days = pd.bdate_range("2025-01-01", SESSION)
+    rng = np.random.default_rng(5)
+    names = [tick("KR", i) for i in range(3)]
+    stocks = pd.DataFrame(rng.normal(0, 0.02, (len(days), 3)), index=days, columns=names)
+    etf = pd.Series(rng.normal(0, 0.01, len(days)), index=days)
+    rec = record(strong(3), riskModel=D.active_covariance(stocks, etf, SESSION, 126, region="KR", computed_at=COMPUTED["KR"]))
+    assert run(rec)["status"] == "SYNTHETIC_SHADOW_BOOK"
 
 
 def test_liquidity_cap_fraction():
