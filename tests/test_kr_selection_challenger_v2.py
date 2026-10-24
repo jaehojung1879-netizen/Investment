@@ -13,6 +13,15 @@ from pipeline import kr_selection_challenger_v2 as C
 from pipeline import prospective_receipt_core as CORE
 from pipeline import replay_calendar as RC
 
+
+@pytest.fixture(autouse=True)
+def _track_b_isolated(monkeypatch):
+    """The paper-ledger step also runs Track B (rp1-b-h1-state-v1) in a child process that reads the clock, git and the vendor. It has its
+    own tests; here it must never run."""
+    from scripts import record_rp1_b_h1_state as track_b
+    monkeypatch.setattr(track_b, "run_isolated", lambda *a, **k: 0)
+
+
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = json.loads((ROOT / C.SPEC_PATH).read_text())
 SESSION = "2026-10-30"
