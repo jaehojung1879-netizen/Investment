@@ -1,0 +1,658 @@
+{
+  "schema": "KR_STORED_DEMERGER_SOURCE_INVENTORY_V3",
+  "status": "BLOCKED",
+  "codeSha256": "7d247fceb4fe64c329047fb048b44b9a4ae614c16481704e7058b2edc437ea05",
+  "sectionCount": 46,
+  "sourceScope": "Only already stored annual company-summary/share sections, not all DART filings or complete corporate-action history.",
+  "findings": [
+    {
+      "ticker": "009830.KS",
+      "entry": "2022-10-19",
+      "exit": "2023-04-19",
+      "status": "BLOCKED_DISTRIBUTED_SECURITY_ECONOMICS",
+      "finding": "The ratio mention located in FY2019 concerns subsidiary Hanwha Global Asset/Q CELLS, not this parent's 2023 Galleria entitlement. No substitution.",
+      "required": [
+        "parent-to-distributed-security entitlement and unit/record/delivery dates",
+        "cash-in-lieu settlement",
+        "452260 executable quotes and distributions for the required interval",
+        "explicit valuation policy during suspensions"
+      ]
+    },
+    {
+      "ticker": "012450.KS",
+      "entry": "2024-04-30",
+      "exit": "2024-11-07",
+      "status": "BLOCKED_DISTRIBUTED_SECURITY_ECONOMICS",
+      "finding": "Stored annual sections corroborate the demerger, but do not establish complete rights. Parent share-count contraction and vendor factor are not shareholder consideration.",
+      "required": [
+        "exact 489790 entitlement, parent cancellation and units",
+        "record/delivery and cash-in-lieu settlement",
+        "distributed-security marks and distributions",
+        "explicit valuation policy during suspensions"
+      ]
+    }
+  ],
+  "manifests": {
+    "data/kr-industry-membership-foundation-v2/acquired-dart/annual/batch-06/manifest-originals.json": {
+      "sha256": "2026895ab1d456bdbf3b03099ebffc9f72bd66dc98f11c49f8e7f7f81d784a9c",
+      "archive": "data/kr-industry-membership-foundation-v2/acquired-dart/annual/batch-06/originals.json.gz",
+      "archiveSha256": "27bcfb4632859474dee341e6f4fc201f365cd78e0baa502dc4cb2c7a415e0934"
+    },
+    "data/kr-industry-membership-foundation-v2/acquired-dart/annual/batch-12/manifest-originals.json": {
+      "sha256": "333bd8acfeef4655784fcc4486988683fbfdddda120c1315424a2f544ef06d82",
+      "archive": "data/kr-industry-membership-foundation-v2/acquired-dart/annual/batch-12/originals.json.gz",
+      "archiveSha256": "9538b87ed5cb3ab6e6191b343d2da9ac8e7e47db1677204b1529372d54ff85e8"
+    }
+  },
+  "sections": [
+    {
+      "ticker": "012450.KS",
+      "fiscalYear": 2013,
+      "receipts": [
+        "20140331002670"
+      ],
+      "sectionSha256": "eb03f8cd2b2d2f1dc6bb72c7ddf15557738dd2ee9f0ee774492953649f10724c",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20140331002670&dcmNo=4116041&eleId=4&offset=12735&length=33155&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 6929,
+      "mentions": []
+    },
+    {
+      "ticker": "012450.KS",
+      "fiscalYear": 2013,
+      "receipts": [
+        "20140331002670"
+      ],
+      "sectionSha256": "45ddc4efd6c68903a6525ff8df02161707a41c98f71872ba3cb4dc9fc52b255a",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20140331002670&dcmNo=4116041&eleId=10&offset=94541&length=216633&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 36716,
+      "mentions": []
+    },
+    {
+      "ticker": "012450.KS",
+      "fiscalYear": 2014,
+      "receipts": [
+        "20150331002696"
+      ],
+      "sectionSha256": "c3cc48d87913b1a7db41d7a6caa49e6009d6cd30dfd21a483bf55aedbd1d085d",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20150331002696&dcmNo=4555545&eleId=4&offset=13848&length=34319&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 6686,
+      "mentions": []
+    },
+    {
+      "ticker": "012450.KS",
+      "fiscalYear": 2014,
+      "receipts": [
+        "20150331002696"
+      ],
+      "sectionSha256": "91c89ff1ee4ca1cf30256d5459a6861b0e994729b01c2e69d9447970c9f7cf3c",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20150331002696&dcmNo=4555545&eleId=10&offset=96409&length=216627&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 35401,
+      "mentions": []
+    },
+    {
+      "ticker": "012450.KS",
+      "fiscalYear": 2015,
+      "receipts": [
+        "20160330003473"
+      ],
+      "sectionSha256": "8e6e874c0beab220661529ebd759e533289383fca01a3beeba4eebe379e79098",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330003473&dcmNo=5025776&eleId=4&offset=13869&length=77509&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 15998,
+      "mentions": []
+    },
+    {
+      "ticker": "012450.KS",
+      "fiscalYear": 2015,
+      "receipts": [
+        "20160330003473"
+      ],
+      "sectionSha256": "0c76b574407037fcc8b4b5d24f3bb83a350f246b17a03a1f484f8c6a6ca5f179",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330003473&dcmNo=5025776&eleId=10&offset=125973&length=210335&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 34576,
+      "mentions": []
+    },
+    {
+      "ticker": "012450.KS",
+      "fiscalYear": 2016,
+      "receipts": [
+        "20170331003924"
+      ],
+      "sectionSha256": "bcd8640fc60ed6ab4b5cbfbbb891879fa2dc47e012526d087450aa53a745750a",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20170331003924&dcmNo=5537282&eleId=4&offset=13845&length=85946&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 16140,
+      "mentions": []
+    },
+    {
+      "ticker": "012450.KS",
+      "fiscalYear": 2016,
+      "receipts": [
+        "20170331003924"
+      ],
+      "sectionSha256": "c0e2469396c3bb831e240814f9ee90031fdb4180f7138350063d2f5928ac835f",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20170331003924&dcmNo=5537282&eleId=10&offset=146057&length=214379&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 38532,
+      "mentions": []
+    },
+    {
+      "ticker": "012450.KS",
+      "fiscalYear": 2017,
+      "receipts": [
+        "20180402004533"
+      ],
+      "sectionSha256": "4f6e88c420c6956748d74f1421975880100990996b5675b40b440a8acd90f940",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20180402004533&dcmNo=6058212&eleId=4&offset=13828&length=107481&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 20455,
+      "mentions": []
+    },
+    {
+      "ticker": "012450.KS",
+      "fiscalYear": 2017,
+      "receipts": [
+        "20180402004533"
+      ],
+      "sectionSha256": "93271e9699d8d061b342ccb49b319c2e3a73264b0a5253f57e8b273c431a53e1",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20180402004533&dcmNo=6058212&eleId=10&offset=185690&length=240854&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 43697,
+      "mentions": []
+    },
+    {
+      "ticker": "012450.KS",
+      "fiscalYear": 2018,
+      "receipts": [
+        "20190329003444"
+      ],
+      "sectionSha256": "8ce3026111db872c552ad0422028c90af46ecad78bc796fd620c7845ad527ac4",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20190329003444&dcmNo=6591769&eleId=4&offset=13917&length=116697&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 23362,
+      "mentions": []
+    },
+    {
+      "ticker": "012450.KS",
+      "fiscalYear": 2018,
+      "receipts": [
+        "20190329003444"
+      ],
+      "sectionSha256": "98a3354cab746acef3438e374c71ea9ef121e634233fc23f504106fd97f4f98c",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20190329003444&dcmNo=6591769&eleId=10&offset=201028&length=312060&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 59643,
+      "mentions": []
+    },
+    {
+      "ticker": "012450.KS",
+      "fiscalYear": 2019,
+      "receipts": [
+        "20200330004485"
+      ],
+      "sectionSha256": "65a4120cf770b5e777de2165a6e94c10eb897dea161c38ebb996e429b6c6a927",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20200330004485&dcmNo=7206523&eleId=4&offset=13921&length=133039&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 25863,
+      "mentions": []
+    },
+    {
+      "ticker": "012450.KS",
+      "fiscalYear": 2019,
+      "receipts": [
+        "20200330004485"
+      ],
+      "sectionSha256": "1037ffce7449f1a97845bde38b62f72522b38ff1c1681f65a6740758b8e8d4e4",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20200330004485&dcmNo=7206523&eleId=10&offset=224502&length=353710&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 70459,
+      "mentions": []
+    },
+    {
+      "ticker": "012450.KS",
+      "fiscalYear": 2020,
+      "receipts": [
+        "20210319000790"
+      ],
+      "sectionSha256": "b41030e1cd0c36965d9c47059fcc670e684aa25c09f110df305d8f51a9ea4c3d",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20210319000790&dcmNo=7898250&eleId=4&offset=14187&length=147776&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 28022,
+      "mentions": []
+    },
+    {
+      "ticker": "012450.KS",
+      "fiscalYear": 2020,
+      "receipts": [
+        "20210319000790"
+      ],
+      "sectionSha256": "9f1f34a2b746c3176ac2108f3ef103cf2aae37f1e77072197101baf0071aa216",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20210319000790&dcmNo=7898250&eleId=11&offset=249922&length=388740&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 79069,
+      "mentions": []
+    },
+    {
+      "ticker": "012450.KS",
+      "fiscalYear": 2021,
+      "receipts": [
+        "20220318000602"
+      ],
+      "sectionSha256": "56556f0242124753f0907fe1f5ad2f812d4247df5c76afc03584a20d3f0b93b3",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20220318000602&dcmNo=8476903&eleId=4&offset=5473&length=67265&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 9082,
+      "mentions": []
+    },
+    {
+      "ticker": "012450.KS",
+      "fiscalYear": 2021,
+      "receipts": [
+        "20220318000602"
+      ],
+      "sectionSha256": "b1c5634559b24d622e4a3c25ba36bd486e4ff992f880b0c036b9bcf01ddafcc2",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20220318000602&dcmNo=8476903&eleId=10&offset=157211&length=22055&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 2909,
+      "mentions": []
+    },
+    {
+      "ticker": "012450.KS",
+      "fiscalYear": 2022,
+      "receipts": [
+        "20230320000962"
+      ],
+      "sectionSha256": "f59832a5bbc7afdc456e9c599d09667fb396c55b142ea97ff5b2315dc9fc37de",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20230320000962&dcmNo=9077065&eleId=4&offset=5424&length=59836&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 7905,
+      "mentions": []
+    },
+    {
+      "ticker": "012450.KS",
+      "fiscalYear": 2022,
+      "receipts": [
+        "20230320000962"
+      ],
+      "sectionSha256": "adf9749db10258325d4453b71d8b64e4564e7ecff881869e009c7e414e9bb822",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20230320000962&dcmNo=9077065&eleId=10&offset=148586&length=23768&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 3614,
+      "mentions": []
+    },
+    {
+      "ticker": "012450.KS",
+      "fiscalYear": 2023,
+      "receipts": [
+        "20240318000952"
+      ],
+      "sectionSha256": "71ec6a5211a2487b4064d0030b20cc49629c99e8e43cb77e815e131e106722d1",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20240318000952&dcmNo=9728441&eleId=4&offset=5648&length=61909&dtd=dart4.xsd"
+      ],
+      "charactersSearched": 8253,
+      "mentions": []
+    },
+    {
+      "ticker": "012450.KS",
+      "fiscalYear": 2023,
+      "receipts": [
+        "20240318000952"
+      ],
+      "sectionSha256": "84df0b118a021cc01db968d6f70a8b8a4c1b779f188886c73c832827bd58536f",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20240318000952&dcmNo=9728441&eleId=10&offset=167227&length=24397&dtd=dart4.xsd"
+      ],
+      "charactersSearched": 3208,
+      "mentions": []
+    },
+    {
+      "ticker": "012450.KS",
+      "fiscalYear": 2024,
+      "receipts": [
+        "20250317000990"
+      ],
+      "sectionSha256": "cca15157127ce474741f32fe24848e7913ab8c13d349ef7bc93d29bb8bc213d5",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20250317000990&dcmNo=10416889&eleId=4&offset=6290&length=76929&dtd=dart4.xsd"
+      ],
+      "charactersSearched": 10520,
+      "mentions": []
+    },
+    {
+      "ticker": "012450.KS",
+      "fiscalYear": 2024,
+      "receipts": [
+        "20250317000990"
+      ],
+      "sectionSha256": "cac765fec443d5a702c16ac4d3471031adb531c252bd8fca1398716be3b1475c",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20250317000990&dcmNo=10416889&eleId=10&offset=188751&length=27164&dtd=dart4.xsd"
+      ],
+      "charactersSearched": 3778,
+      "mentions": []
+    },
+    {
+      "ticker": "012450.KS",
+      "fiscalYear": 2025,
+      "receipts": [
+        "20260316001112"
+      ],
+      "sectionSha256": "a9dd523c846bab238766bc7e19a8b1da603cc2eae6010cd8d29e8c9494af914b",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260316001112&dcmNo=11127188&eleId=4&offset=6188&length=64197&dtd=dart4.xsd"
+      ],
+      "charactersSearched": 8253,
+      "mentions": []
+    },
+    {
+      "ticker": "012450.KS",
+      "fiscalYear": 2025,
+      "receipts": [
+        "20260316001112"
+      ],
+      "sectionSha256": "abc36621d3c546082280d07c4ee8ef74ae5f85f3550b4ae4e61873daad79b066",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260316001112&dcmNo=11127188&eleId=10&offset=187069&length=24206&dtd=dart4.xsd"
+      ],
+      "charactersSearched": 3094,
+      "mentions": []
+    },
+    {
+      "ticker": "009830.KS",
+      "fiscalYear": 2013,
+      "receipts": [
+        "20140331002978"
+      ],
+      "sectionSha256": "604c5702e34f71bf971aaa7eda75ccf390f433a0968fe71426c264e8a2daa58f",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20140331002978&dcmNo=4117753&eleId=4&offset=12761&length=119078&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 22446,
+      "mentions": []
+    },
+    {
+      "ticker": "009830.KS",
+      "fiscalYear": 2013,
+      "receipts": [
+        "20140331002978"
+      ],
+      "sectionSha256": "959800f2a9088226518ac3e3ac16e811a1e4a639fd30a636f4080ba1cdf49d19",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20140331002978&dcmNo=4117753&eleId=10&offset=170424&length=489288&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 70927,
+      "mentions": []
+    },
+    {
+      "ticker": "009830.KS",
+      "fiscalYear": 2014,
+      "receipts": [
+        "20150331004529"
+      ],
+      "sectionSha256": "2365cf598246ec7c79f8116dc6656ce2e27b0613473831b87f67a76156ea9c5c",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20150331004529&dcmNo=4564354&eleId=4&offset=11519&length=139794&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 25860,
+      "mentions": []
+    },
+    {
+      "ticker": "009830.KS",
+      "fiscalYear": 2014,
+      "receipts": [
+        "20150331004529"
+      ],
+      "sectionSha256": "1897d4bdb5370f4568e5f9ef16b7a1a694aaaf8c14b00109ebec649236042ded",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20150331004529&dcmNo=4564354&eleId=10&offset=208295&length=306222&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 47258,
+      "mentions": []
+    },
+    {
+      "ticker": "009830.KS",
+      "fiscalYear": 2016,
+      "receipts": [
+        "20170331004684"
+      ],
+      "sectionSha256": "0613159a869caa4a32128843bae7ce65bdb3263e75e5052acf794ae0a7005ae6",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20170331004684&dcmNo=5541223&eleId=4&offset=11521&length=167642&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 29630,
+      "mentions": []
+    },
+    {
+      "ticker": "009830.KS",
+      "fiscalYear": 2016,
+      "receipts": [
+        "20170331004684"
+      ],
+      "sectionSha256": "0bdb012b4413d3bcacfa60675d9f48099c6d1e8e9152ed052241c5305f2577bc",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20170331004684&dcmNo=5541223&eleId=10&offset=256075&length=223810&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 40641,
+      "mentions": []
+    },
+    {
+      "ticker": "009830.KS",
+      "fiscalYear": 2017,
+      "receipts": [
+        "20180330002761"
+      ],
+      "sectionSha256": "4fec12d9cda29b634173e246bb1fdf40aabe875eefeee5dd578f8c2100197a53",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20180330002761&dcmNo=6037622&eleId=4&offset=11773&length=242155&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 46635,
+      "mentions": []
+    },
+    {
+      "ticker": "009830.KS",
+      "fiscalYear": 2017,
+      "receipts": [
+        "20180330002761"
+      ],
+      "sectionSha256": "0663c2fd80a265fec54054837138a38056257ffe89d08ee748647ebd47769003",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20180330002761&dcmNo=6037622&eleId=10&offset=331986&length=234999&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 42114,
+      "mentions": []
+    },
+    {
+      "ticker": "009830.KS",
+      "fiscalYear": 2018,
+      "receipts": [
+        "20190329004259"
+      ],
+      "sectionSha256": "45a19161c5b2c69db6c447213176f02ef0e762ac9cf26451cfa93f76facb256c",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20190329004259&dcmNo=6594826&eleId=4&offset=13916&length=267995&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 52280,
+      "mentions": []
+    },
+    {
+      "ticker": "009830.KS",
+      "fiscalYear": 2018,
+      "receipts": [
+        "20190329004259"
+      ],
+      "sectionSha256": "8cfb7f8235af85bfd66483eb3982e43eec59ca6fbd69a605a840026f969b8ebd",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20190329004259&dcmNo=6594826&eleId=10&offset=360185&length=286404&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 50120,
+      "mentions": []
+    },
+    {
+      "ticker": "009830.KS",
+      "fiscalYear": 2019,
+      "receipts": [
+        "20200330004311"
+      ],
+      "sectionSha256": "7a74b93f62640c3e520debc1e56be52eca756f6ce944697ef589f41b3536355a",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20200330004311&dcmNo=7205349&eleId=4&offset=13878&length=269082&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 48543,
+      "mentions": []
+    },
+    {
+      "ticker": "009830.KS",
+      "fiscalYear": 2019,
+      "receipts": [
+        "20200330004311"
+      ],
+      "sectionSha256": "54b6d629a013aaafc0f6f7998ea1dac2f762df98c77c62976c02699353f6a9a8",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20200330004311&dcmNo=7205349&eleId=10&offset=359088&length=277784&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 45402,
+      "mentions": [
+        {
+          "term": "분할비율",
+          "excerpt": " 가공 및 태양광 사업 부문을 단순 인적 분할하여 한화큐셀앤드첨단소재㈜를 설립하고, 분할회사의 상호를 한화글로벌에셋㈜로 변경 - 분할목적 : 사업 특성에 맞는 신속하고 전문적인 의사결정이 가능한 사업 체계 구축 - 분할비율: 분할존속부문과 분할대상부문의 순자산가액 비율 (존속회사:신설회사 = 0.6392187:0.3607813) - 이사회 결의일(결정일): 2019년 7월 30일 - 분할기일: 2019년 9월 1일 다. 한화큐셀앤드첨단소재(주) [신설법인] 1) 합병계약 - 합병 방법: 한화케미칼㈜가 한화큐셀앤드첨단소재㈜를 흡수합병 - 흡수합병 목적: 경영효율성 제고 및 사업경쟁력 강화 - 합병비율: 무증자 합병 (한화케미칼㈜ : 한화큐셀앤드첨단소재㈜ = 1:0) - 이사회 결의일(결정일): 2019년 9월 10일 - 합병기일: 2020년 1월 1일 2) 영업양수도 계약 - 방법 : 한화큐셀앤드첨단소재(주)가 태광후지킨(주)의 고압탱크사"
+        }
+      ]
+    },
+    {
+      "ticker": "009830.KS",
+      "fiscalYear": 2021,
+      "receipts": [
+        "20220315001240"
+      ],
+      "sectionSha256": "71f7df68bf5092db248f4fd0e4724d436217728c4cf0951b688946b77aae93b8",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20220315001240&dcmNo=8462413&eleId=4&offset=14378&length=102134&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 13597,
+      "mentions": []
+    },
+    {
+      "ticker": "009830.KS",
+      "fiscalYear": 2021,
+      "receipts": [
+        "20220315001240"
+      ],
+      "sectionSha256": "056ec496e00e130be4d81555ec432c804b647aed4bdb69c19d196b6209064558",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20220315001240&dcmNo=8462413&eleId=10&offset=204389&length=848&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 344,
+      "mentions": []
+    },
+    {
+      "ticker": "009830.KS",
+      "fiscalYear": 2022,
+      "receipts": [
+        "20230315001436"
+      ],
+      "sectionSha256": "ea7bf44a60a13899ccdc2e9f15c3ba48a4fb9c1df70422c0bdff64b9b12efac8",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20230315001436&dcmNo=9061739&eleId=4&offset=5387&length=85022&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 11199,
+      "mentions": []
+    },
+    {
+      "ticker": "009830.KS",
+      "fiscalYear": 2022,
+      "receipts": [
+        "20230315001436"
+      ],
+      "sectionSha256": "ac8b7f41fc488e7760ab7c1306481f6156438d8eb97df960c95d4cb1e189a92f",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20230315001436&dcmNo=9061739&eleId=10&offset=189574&length=543&dtd=dart3.xsd"
+      ],
+      "charactersSearched": 340,
+      "mentions": []
+    },
+    {
+      "ticker": "009830.KS",
+      "fiscalYear": 2023,
+      "receipts": [
+        "20240318000918"
+      ],
+      "sectionSha256": "44ba045483977957ce2d7025b42fd7cd994b801553af21e9be4c1de45962972b",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20240318000918&dcmNo=9728176&eleId=4&offset=9383&length=92241&dtd=dart4.xsd"
+      ],
+      "charactersSearched": 13970,
+      "mentions": []
+    },
+    {
+      "ticker": "009830.KS",
+      "fiscalYear": 2023,
+      "receipts": [
+        "20240318000918"
+      ],
+      "sectionSha256": "413a1284d4246004fedc4083c19cdc64dc7094ede4456f785c4d9c76b13d1b19",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20240318000918&dcmNo=9728176&eleId=10&offset=325213&length=452&dtd=dart4.xsd"
+      ],
+      "charactersSearched": 299,
+      "mentions": []
+    },
+    {
+      "ticker": "009830.KS",
+      "fiscalYear": 2024,
+      "receipts": [
+        "20250317001024"
+      ],
+      "sectionSha256": "3304a39b7571d9a524a5dd1806738672af56ded16aad78c416d6283a451dd909",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20250317001024&dcmNo=10417052&eleId=4&offset=6232&length=80088&dtd=dart4.xsd"
+      ],
+      "charactersSearched": 10832,
+      "mentions": []
+    },
+    {
+      "ticker": "009830.KS",
+      "fiscalYear": 2024,
+      "receipts": [
+        "20250317001024"
+      ],
+      "sectionSha256": "b53b295e3acbdcceac61e933e360dc1ef06a014ea9dceb3f7c31bc45a6a1979c",
+      "urls": [
+        "https://dart.fss.or.kr/report/viewer.do?rcpNo=20250317001024&dcmNo=10417052&eleId=10&offset=280494&length=2156&dtd=dart4.xsd"
+      ],
+      "charactersSearched": 1768,
+      "mentions": []
+    }
+  ],
+  "entitlementCertified": false,
+  "newReturnCalculations": 0,
+  "quoteReads": 0,
+  "formalStudyExecution": false,
+  "originalResultsChanged": false,
+  "strategyPathStatus": "UNCHANGED_INCOMPLETE_NO_CAGR_SHARPE_MDD"
+}
