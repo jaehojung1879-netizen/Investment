@@ -1,0 +1,11 @@
+{
+  "review": "KR_DISCOVERY_INDEPENDENT_MEASUREMENT_REVIEW_V2",
+  "originalHead": "347d186f91b775e6d9cb65fdcd0d99e9687fe331",
+  "scope": "Post-result audit; original spec/code/results unchanged. No selector, threshold, horizon or missing-leg policy optimized.",
+  "cases": ["002790.KS", "090430.KS", "009830.KS", "012450.KS", "006800.KS"],
+  "caseRule": "All actual full-sample H126 INTRADAY blocked legs, not a return-selected subset.",
+  "pureSplitRule": "2015 vendor 10:1 action must match official KRX listed-share ratio; reconstruct endpoint with raw quotes and split. Missing halt marks still forbid daily risk statistics.",
+  "miraeRule": "Use only the preserved source repair and raw quotes in the actual 2025 holding interval; the unvalued 2018 right cannot invalidate a later separate holding interval, and no window crossing it may pass.",
+  "hanwhaRule": "Noninteger split-like factors plus stored issuer demerger disclosure require complete distributed-security entitlement economics. Never treat parent-only factor as completed shareholder wealth.",
+  "metrics": "Independently reconcile every existing complete NAV and paired comparison; preserve every blocked path. No new strategy performance table or promoted hypothesis."
+}
