@@ -3,9 +3,11 @@ import base64
 import gzip
 import json
 from pathlib import Path
+import subprocess
 
 import pytest
 from .source_inventory import BASE, inspect, sha
+from .. import run as R
 
 
 def fixture(root, *, corrupt_archive=False, corrupt_section=False):
@@ -40,3 +42,11 @@ def test_unrelated_ratio_is_visible_but_never_becomes_entitlement(tmp_path):
 def test_missing_archives_do_not_generate_a_successful_source_review(tmp_path):
     with pytest.raises(ValueError, match="REQUIRED_STORED_ISSUER_SOURCES_MISSING"):
         inspect(tmp_path)
+
+
+def test_every_original_manifest_artifact_is_tracked_not_only_present_locally():
+    manifest = json.loads((R.HERE / "results/manifest.json").read_bytes())
+    for name in manifest["filesSha256"]:
+        path = str((R.HERE / name).relative_to(R.ROOT))
+        tracked = subprocess.check_output(["git", "ls-files", "--", path], cwd=R.ROOT, text=True).strip()
+        assert tracked == path, "MANIFEST_ARTIFACT_NOT_COMMITTED:" + path
