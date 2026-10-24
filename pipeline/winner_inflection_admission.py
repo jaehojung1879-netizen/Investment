@@ -25,6 +25,7 @@ OWNER = "jaehojung1879-netizen"
 SPEC_PATH = "docs/winner-inflection-discovery/execution-us-b-h126-2020-v1.json"
 REVIEW_PATH = "docs/winner-inflection-discovery/source-admission-v1.json"
 CLOSURE = ("pipeline/winner_inflection_admission.py", "pipeline/winner_inflection_local_git.py", "pipeline/winner_inflection_execution.py",
+           "pipeline/winner_inflection_filing_review.py",
            "scripts/run_winner_inflection.py", "pipeline/winner_inflection.py", "pipeline/winner_inflection_exploration.py",
            "pipeline/experiment_workbench.py", "pipeline/us_decision_pilot.py", "pipeline/us_multifactor_inputs.py",
            "pipeline/price_adjustment.py", "pipeline/benchmark_alpha.py", "pipeline/replay_calendar.py",

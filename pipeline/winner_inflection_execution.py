@@ -98,48 +98,11 @@ def cash_reinvestment_close(raw_close, events):
     return out
 
 
-def reviewed_filings(records):
-    """WID requires BOTH public/acceptance dates; missing evidence never falls back.
-
-    The shared historical helpers retain their own contracts. Reject only this
-    filing, preserving the security and every universe denominator.
-    """
-    accepted, rejected = [], []
-    for record in records:
-        dates = [CP._day(record.get(k)) for k in ("availableFrom", "acceptedDate")]
-        if any(d is None for d in dates):
-            rejected.append({"id": record.get("id"), "ticker": record.get("ticker"),
-                             "reason": "BOTH_PUBLICATION_AND_ACCEPTANCE_DATES_REQUIRED"})
-        else:
-            accepted.append(record)
-    return accepted, rejected
-
-
-def normalized_cik(value):
-    """A missing/malformed identifier is never a shared issuer identity."""
-    import re
-    text = str(value) if value is not None and not isinstance(value, bool) else ""
-    return text.lstrip("0") if re.fullmatch(r"[0-9]{1,10}", text) and int(text) > 0 else None
-
-
-def require_spy_action_history(events, start, through):
-    """Necessary condition for this fixed SPY cash-reinvestment reconstruction.
-
-    The pinned multi-year SPY index has no preserved distributions. Inverting
-    it with an empty event list returns the index unchanged, NOT native prices.
-    One event is not proof of complete history, currency or share units; those
-    remain independent source-admission requirements.
-    """
-    if not any(start <= day <= through and PRC.finite(dividend) and dividend > 0
-               for day, dividend, _ in events):
-        raise ValueError("SPY_NATIVE_RECONSTRUCTION_REQUIRES_DISTRIBUTION_HISTORY")
-
-
 def observations(data, spec):
     """Full PIT universe first. No endpoint/maturity or target enters features."""
     source = data["source"]
     prices, as_traded = data["prices"], data["asTraded"]
-    caches = {t: I.FilingStates(reviewed_filings(records)[0], "US") for t, records in data["filings"].items()}
+    caches = {t: I.FilingStates(records, "US") for t, records in data["filings"].items()}
     calendar_end = str((pd.Timestamp(spec["signalEnd"]) + pd.Timedelta(days=15)).date())
     calendar = RC.sessions(spec["inputStart"], calendar_end, "US")
     grid = calendar.to_series().groupby(calendar.to_period("W")).max()
@@ -163,7 +126,7 @@ def observations(data, spec):
         for ticker in membership["members"]:
             meta = data["identity"].get(ticker, {})
             sector_row = ((sector or {}).get("rows") or {}).get(ticker, {})
-            cik = normalized_cik(sector_row.get("cik"))
+            cik = str(sector_row.get("cik", "")).lstrip("0")
             cache = caches.get(ticker)
             n = bisect_left(cache.days, day) if cache else 0
             if (ticker, n) not in control_cache:
@@ -174,11 +137,11 @@ def observations(data, spec):
                 index = FD.index_filings(visible)
                 key = CP.current_key(index)
                 shares, _, share_record = CP.carried_share_count(index, key) if key is not None else (None, None, None)
-                control_cache[ticker, n] = ({normalized_cik(r.get("cik")) for r in visible}, shares,
+                control_cache[ticker, n] = ({str(r.get("cik", "")).lstrip("0") for r in visible}, shares,
                                            CP.visible_day(share_record).isoformat() if share_record else day)
             filing_ciks, shares, share_day = control_cache[ticker, n]
             category = meta.get("sp500IdentityCategory")
-            identity_ok = bool(cik and filing_ciks == {cik} and normalized_cik(meta.get("cik")) == cik
+            identity_ok = bool(cik and filing_ciks == {cik} and str(meta.get("cik", "")).lstrip("0") == cik
                                and category in spec["acceptedIdentityCategories"])
             identity = "US:CIK:" + cik + ":" + ticker if identity_ok else "UNRESOLVED:" + ticker
             state = caches[ticker].at(day) if ticker in caches else {"fields": {}, "levels": {}, "availableFrom": None, "sourceIds": []}
@@ -668,7 +631,6 @@ def execute(data, spec, *, checkpoint=None):
                 "returnInterpretation": spec["returnInterpretation"],
                 "fullUniverseReturnEffect": {"status": "UNRESOLVED", "reason": "conditional own-panel scope and excluded identities cannot identify the full market effect"},
                 "inputBasisProblems": data.get("basisProblems", {}),
-                "withheldFilingMetadata": [r for records in data["filings"].values() for r in reviewed_filings(records)[1]],
                 "scope": "SURVIVOR_CONDITIONED_PUBLIC_RECONSTRUCTION", "folds": reports, "modelFits": fits,
                 "universeReasons": dict(Counter(r.eligibility_reason or "ELIGIBLE" for r in rows)), "universeSha256": E.validate_panel(rows),
                 "unbiasedFullUniverseEvidence": False, "independentOosEvidence": False, "productionPromotion": False}}

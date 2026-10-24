@@ -17,7 +17,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from pipeline import winner_inflection_admission as A  # noqa: E402
-from pipeline import winner_inflection_execution as X  # noqa: E402
+from pipeline import winner_inflection_filing_review as F  # noqa: E402
 from scripts import inspect_experiment_sources as S  # noqa: E402
 
 
@@ -41,7 +41,7 @@ def inspect(root):
                 if row["ticker"] == "SPY" and start <= row["date"] <= through:
                     spy_events.append((row["date"], row.get("dividend", 0), row.get("split", 1)))
     try:
-        X.require_spy_action_history(spy_events, start, through)
+        F.require_spy_action_history(spy_events, start, through)
         necessary_gate = "PRESENT_NOT_COMPLETENESS_CERTIFIED"
     except ValueError as error:
         necessary_gate = str(error)
@@ -51,7 +51,7 @@ def inspect(root):
     admitted = [r for r in identities if r.get("sp500IdentityCategory") in spec["acceptedIdentityCategories"]]
     bad_sectors = [{"date": snap["date"], "ticker": ticker, "value": row.get("cik")}
                    for snap in sectors for ticker, row in snap.get("rows", {}).items()
-                   if row.get("cik") is not None and X.normalized_cik(row["cik"]) is None]
+                   if row.get("cik") is not None and F.normalized_cik(row["cik"]) is None]
     return {
         "schema": "WID_UNRESOLVED_SOURCE_EVIDENCE_V3", "status": "BLOCKED",
         "sourceCommit": S.SOURCE_COMMIT, "metadataCommit": S.CODE_BASE,
@@ -61,7 +61,7 @@ def inspect(root):
                    "required": "Source-specific stock/SPY/actions, Finnhub and community metadata rights evidence covering this internal historical use; no Tiingo retention workaround."},
         "identity": {"status": "UNRESOLVED", "metadataRows": len(identities),
                      "categories": dict(sorted(category_counts.items())), "inScopeCategoryRows": len(admitted),
-                     "inScopeMissingOrMalformedCik": sum(X.normalized_cik(r.get("cik")) is None for r in admitted),
+                     "inScopeMissingOrMalformedCik": sum(F.normalized_cik(r.get("cik")) is None for r in admitted),
                      "malformedDatedCik": bad_sectors,
                      "required": "Dated issuer AND share-class provenance of each admitted price panel. Matching issuer CIKs cannot certify which security produced the prices.",
                      "fix": "Missing, zero and malformed CIKs fail closed; no ticker or issuer substitution. The 2023 malformed source row is outside this fixed 2020 signal window."},

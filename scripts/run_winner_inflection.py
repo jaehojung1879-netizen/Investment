@@ -27,6 +27,7 @@ from pipeline import replay_inputs as RI  # noqa: E402
 from pipeline import us_multifactor_inputs as MI  # noqa: E402
 from pipeline import winner_inflection_admission as A  # noqa: E402
 from pipeline import winner_inflection_execution as X  # noqa: E402
+from pipeline import winner_inflection_filing_review as F  # noqa: E402
 from scripts import inspect_experiment_sources as S  # noqa: E402
 
 
@@ -89,7 +90,7 @@ def load_permitted(root, spec, review, permit):
     prices, volume = frame(quotes), frame(volumes)
     if "SPY" not in prices:
         raise ValueError("SPY_INPUT_MISSING")
-    X.require_spy_action_history(events["SPY"], start, through)
+    F.require_spy_action_history(events["SPY"], start, through)
     raw_columns = {}
     for ticker in prices:
         own = prices[ticker].dropna()
@@ -127,10 +128,10 @@ def load_permitted(root, spec, review, permit):
             raise ValueError("TERMINAL_SOURCE_CHANGED")
         terminal = json.loads(path.read_bytes())
     source_evidence = W.Source("git:raw-input-bundle:" + S.SOURCE_COMMIT, RI.digest(source.receipts), S.SOURCE_COMMIT, None, "NOT_RETAINED")
-    return {"source": source_evidence, "asOf": evidence["authorizedAt"], "prices": prices, "volumes": volume, "asTraded": as_traded,
+    return F.prepare_inputs({"source": source_evidence, "asOf": evidence["authorizedAt"], "prices": prices, "volumes": volume, "asTraded": as_traded,
             "events": events, "filings": grouped, "identity": {r["symbol"]: r for r in identity},
             "membership": membership, "industries": industries, "terminal": terminal, "receipts": source.receipts, "lineage": lineage,
-            "vendorPrices": vendor_prices, "basisProblems": basis_problems}
+            "vendorPrices": vendor_prices, "basisProblems": basis_problems})
 
 
 def save(root, layers):
@@ -167,7 +168,8 @@ def _main(argv=None):
             resource.setrlimit(resource.RLIMIT_AS, (spec["resourceBudget"]["addressSpaceGiB"] * 1024 ** 3,) * 2)
             data = load_permitted(ROOT, spec, value["review"], permit)
             A.append_record(run_root / "source-receipts.json", data["receipts"])
-            layers = X.execute(data, spec, checkpoint=lambda layer, key, value: A.append_record(run_root / layer / (key + ".json"), value))
+            A.append_record(run_root / "withheld-filing-metadata.json", data["withheldFilingMetadata"])
+            layers = F.execute(data, spec, checkpoint=lambda layer, key, value: A.append_record(run_root / layer / (key + ".json"), value))
             A.append_record(run_root / "attempt-completed.json", A.journal_record(value, status=layers["evaluation"]["status"],
                 reason="fixed approved execution completed", result_informed=spec["resultInformed"]))
             print(json.dumps(layers["evaluation"], ensure_ascii=False, sort_keys=True, allow_nan=False))
@@ -193,7 +195,7 @@ def _main(argv=None):
         return 0 if value["admission"]["status"] != "BLOCKED" else 2
     # Synthetic rehearsal never invokes source IO, GitHub or authorization.
     data, synthetic_spec = X.synthetic_fixture(spec)
-    layers = X.execute(data, synthetic_spec)
+    layers = F.execute(data, synthetic_spec)
     print(json.dumps({"evidenceClass": "SYNTHETIC_FIXTURE", **layers["evaluation"]}, ensure_ascii=False, sort_keys=True, allow_nan=False))
     return 0 if layers["evaluation"]["status"] != "BLOCKED" else 2
 

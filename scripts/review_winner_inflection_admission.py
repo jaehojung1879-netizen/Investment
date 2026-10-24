@@ -19,6 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from pipeline import winner_inflection_admission as A  # noqa: E402
 from pipeline import winner_inflection_execution as X  # noqa: E402
+from pipeline import winner_inflection_filing_review as F  # noqa: E402
 from pipeline import us_cash_profitability as CP  # noqa: E402
 from scripts import inspect_experiment_sources as S  # noqa: E402
 
@@ -30,7 +31,7 @@ def audit():
     source = S.Sources(ROOT)
     spec = json.loads((ROOT / A.SPEC_PATH).read_bytes())
     records = [r for y in range(2011, 2022) for r in source.rows(f"ledger/fundamentals/us/finnhub-{y}.jsonl.gz")]
-    good, withheld = X.reviewed_filings(records)
+    good, withheld = F.reviewed_filings(records)
     members = source.json(S.MEMBERS)
     sectors = source.json(S.SECTORS)
     identities = list(csv.DictReader(io.StringIO(gzip.decompress(source.local(S.US_IDENTITY)).decode())))

@@ -1,0 +1,66 @@
+{
+  "scope": "POST_REVIEW_SYNTHETIC_AND_METADATA_VALIDATION_ONLY",
+  "runtime": {
+    "python": "3.12.14",
+    "pandas": "2.3.0",
+    "numpy": "2.3.1",
+    "scipy": "1.16.0",
+    "scikit-learn": "1.7.0",
+    "exchange-calendars": "4.11.1"
+  },
+  "codeHashes": {
+    "pipeline/winner_inflection_execution.py": "efbc6f7f61f83c4e8d4f2543bdf7ead42970e44ce140a64f2842f9e547e78b7d",
+    "pipeline/winner_inflection_filing_review.py": "a456f39faf3813536e5c853410e5049bc75946bf860b58792e30bb4db2e8d21c",
+    "pipeline/winner_inflection_admission.py": "efb169cfa0c6d3e363f71a74a6e075a982f70971e08f5126e19faf9c646ab475",
+    "scripts/run_winner_inflection.py": "b6fda875cbce6866048939bbbc91e08029bc595af36b23dbe65ae48d0edf42ea",
+    "scripts/inspect_wid_filing_dates.py": "9bcfb80786fba2734879ccd7c7d1119d28b1cb94c901d50a8f6dfe342752b45e",
+    "scripts/inspect_wid_blockers.py": "e1a37613aadbe18250642e9825abc24a67c71bcb3b669158ced1b8725667663d",
+    "scripts/review_winner_inflection_admission.py": "42e92a9d99140ff8e255e241882180d787ea85c2302e5a98d5d19b5cb4dd07ac"
+  },
+  "tests": [
+    {
+      "command": "python -m pytest -q tests/test_winner_inflection_source_review.py tests/test_winner_inflection_local_git.py tests/test_winner_inflection_execution.py tests/test_winner_inflection.py tests/test_experiment_workbench.py",
+      "passed": 147,
+      "warnings": "44 SciPy L-BFGS deprecation warnings"
+    },
+    {
+      "command": "python -m pytest -q tests/test_rp1_c1_us_wp4d.py tests/test_rp1_c1_us_exposure.py -k \"not test_kr_equivalence_is_exact_against_the_sealed_result\"",
+      "passed": 100,
+      "skipped": 1,
+      "deselected": 1,
+      "exclusionReason": "Do not recompute retained real sealed KR study outputs."
+    }
+  ],
+  "ruff": "PASS",
+  "compileall": "PASS",
+  "temporarySyntheticSeedAndValidation": "PASS",
+  "c1SharedDependencyMatchesMainAndSeal": true,
+  "c1SealSourceAuthorizationDocumentsChanged": false,
+  "preflight": {
+    "mode": "preview",
+    "modelFits": 0,
+    "outcomeReads": 0,
+    "productionPromotion": false,
+    "reasons": [
+      "SOURCE_REVIEW_UNRESOLVED:identity",
+      "SOURCE_REVIEW_UNRESOLVED:returnBasis",
+      "SOURCE_REVIEW_UNRESOLVED:rights"
+    ],
+    "reviewSha256": "6179a3de9c80fa69e74d96ecc7982cd368b9ffab83ba0c1be8d3e7c467c2b01b",
+    "sourcePreflight": {
+      "missingExamples": [],
+      "missingObjects": 0,
+      "missingPathsSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "payloadReads": 0,
+      "requiredObjects": 398,
+      "status": "READY"
+    },
+    "specId": "wid-us-b-h126-2020-exploration-v1",
+    "status": "BLOCKED",
+    "unbiasedFullUniverseEvidence": false
+  },
+  "newRealOutcomeReads": 0,
+  "formalWidExecution": false,
+  "ownerApprovalCreated": false,
+  "mainMerged": false
+}
