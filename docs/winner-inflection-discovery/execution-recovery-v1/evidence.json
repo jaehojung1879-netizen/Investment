@@ -1,0 +1,255 @@
+{
+  "baseMain": "591f182955ab85bc527ddedc41c2d77d1fd24eaa",
+  "collectedAtUtc": "2026-10-24T04:41:18.831351+00:00",
+  "evidence": {
+    "before-preview.json": {
+      "mode": "preview",
+      "modelFits": 0,
+      "outcomeReads": 0,
+      "productionPromotion": false,
+      "reasons": [
+        "LOCAL_SOURCE_OBJECTS_NOT_READY",
+        "SOURCE_REVIEW_UNRESOLVED:identity",
+        "SOURCE_REVIEW_UNRESOLVED:membershipIndustry",
+        "SOURCE_REVIEW_UNRESOLVED:returnBasis",
+        "SOURCE_REVIEW_UNRESOLVED:rights",
+        "SOURCE_REVIEW_UNRESOLVED:size",
+        "SOURCE_REVIEW_UNRESOLVED:terminal",
+        "SOURCE_REVIEW_UNRESOLVED:vintage"
+      ],
+      "reviewSha256": "794e13ea07116c99ade87db84914afae33be9b8ceda25d89192dbcf6c76bd5a9",
+      "sourcePreflight": {
+        "payloadReads": 0,
+        "reason": "SOURCE_METADATA_UNAVAILABLE:CalledProcessError",
+        "status": "BLOCKED"
+      },
+      "specId": "wid-us-b-h126-2020-exploration-v1",
+      "status": "BLOCKED",
+      "unbiasedFullUniverseEvidence": false
+    },
+    "final-preview.json": {
+      "mode": "preview",
+      "modelFits": 0,
+      "outcomeReads": 0,
+      "productionPromotion": false,
+      "reasons": [
+        "SOURCE_REVIEW_UNRESOLVED:identity",
+        "SOURCE_REVIEW_UNRESOLVED:membershipIndustry",
+        "SOURCE_REVIEW_UNRESOLVED:returnBasis",
+        "SOURCE_REVIEW_UNRESOLVED:rights",
+        "SOURCE_REVIEW_UNRESOLVED:size",
+        "SOURCE_REVIEW_UNRESOLVED:terminal",
+        "SOURCE_REVIEW_UNRESOLVED:vintage"
+      ],
+      "reviewSha256": "794e13ea07116c99ade87db84914afae33be9b8ceda25d89192dbcf6c76bd5a9",
+      "sourcePreflight": {
+        "missingExamples": [],
+        "missingObjects": 0,
+        "missingPathsSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "payloadReads": 0,
+        "requiredObjects": 398,
+        "status": "READY"
+      },
+      "specId": "wid-us-b-h126-2020-exploration-v1",
+      "status": "BLOCKED",
+      "unbiasedFullUniverseEvidence": false
+    },
+    "final-source-inventory.json": {
+      "mode": "inspect",
+      "sourceCommit": "1bf68f59cffa20239977e2cfaa0f35a07d0ec884",
+      "metadataCommit": "002b56434e3aa3e845798ec2ea7ca6d9267e3f7a",
+      "outcomeReads": 0,
+      "modelFits": 0,
+      "networkRequests": 0,
+      "executionAuthorized": false,
+      "sourcePreflight": {
+        "status": "READY",
+        "requiredObjects": 398,
+        "missingObjects": 0,
+        "missingPathsSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "missingExamples": [],
+        "payloadReads": 0
+      }
+    },
+    "real-metadata-only-recovery.json": {
+      "mode": "restore-metadata",
+      "sourceCommit": "1bf68f59cffa20239977e2cfaa0f35a07d0ec884",
+      "metadataCommit": "002b56434e3aa3e845798ec2ea7ca6d9267e3f7a",
+      "outcomeReads": 0,
+      "modelFits": 0,
+      "networkRequests": 0,
+      "executionAuthorized": false,
+      "recovery": {
+        "commits": 2,
+        "trees": 202,
+        "manifestBlobs": 1,
+        "marketPayloadBlobsCopied": 0,
+        "packBytes": 658294,
+        "networkRequests": 0,
+        "authorizationGranted": false,
+        "outcomeReads": 0,
+        "modelFits": 0
+      },
+      "sourcePreflight": {
+        "status": "BLOCKED",
+        "requiredObjects": 398,
+        "missingObjects": 398,
+        "missingPathsSha256": "b937619e65c3b7343a865b028aed4d64557f32b4d2e18fb998d57e847142870d",
+        "missingExamples": [
+          "002b56434e3aa3e845798ec2ea7ca6d9267e3f7a:data/research/us-capital-allocation-alpha-v1/sp500-snapshot-sectors.json.gz",
+          "002b56434e3aa3e845798ec2ea7ca6d9267e3f7a:data/research/us-dual-benchmark-v1/us-universe-coverage-manifest.csv.gz",
+          "002b56434e3aa3e845798ec2ea7ca6d9267e3f7a:research_specs/alpha-opportunity-model-v1-us-membership.json.gz"
+        ],
+        "payloadReads": 0
+      }
+    },
+    "preexisting-cache-metadata-recovery.json": {
+      "mode": "inspect",
+      "sourceCommit": "1bf68f59cffa20239977e2cfaa0f35a07d0ec884",
+      "metadataCommit": "002b56434e3aa3e845798ec2ea7ca6d9267e3f7a",
+      "outcomeReads": 0,
+      "modelFits": 0,
+      "networkRequests": 0,
+      "executionAuthorized": false,
+      "sourcePreflight": {
+        "status": "READY",
+        "requiredObjects": 398,
+        "missingObjects": 0,
+        "missingPathsSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "missingExamples": [],
+        "payloadReads": 0
+      }
+    },
+    "observed-recovery-pack-inventory.json": {
+      "pack-5721004d1224330fa805e5be842159275569a87a.idx": {
+        "objectsByType": {
+          "commit": 2,
+          "tree": 31
+        },
+        "packedBytes": 47876
+      },
+      "pack-33e6ca79500dcd3c4c8ad79e6154254f60e1d2b6.idx": {
+        "objectsByType": {
+          "blob": 10928,
+          "tree": 183
+        },
+        "packedBytes": 3346152611
+      }
+    },
+    "operational-source-metadata.json": {
+      "signalHistory": "38ea768eab6d58cf0a4963ddf177959ad5977aae",
+      "checkedAt": "2026-10-24T04:34:15.188501+00:00",
+      "state/latest.json": {
+        "generatedAt": "2026-10-24T04:17:14.640119+00:00",
+        "buildCommitSha": "591f182955ab",
+        "marketAsOf": "2026-10-23",
+        "dataMode": "live",
+        "seed": false,
+        "stale": false,
+        "productionValidation": {
+          "passed": true,
+          "validatedAt": "2026-10-24T04:17:14.640119+00:00",
+          "errors": []
+        }
+      },
+      "ledger/weekly-decisions/publication-status.json": {
+        "attemptedAt": "2026-10-23T04:58:48.828306+00:00",
+        "siteGeneratedAt": "2026-10-23T04:56:07.531948+00:00",
+        "status": "PUBLISHED",
+        "regions": {
+          "KR": "SOURCE_INCOMPLETE",
+          "US": "PASSIVE_NO_DEFENSIBLE_EDGE"
+        },
+        "deferredRegions": {
+          "KR": {
+            "carriedFromGeneratedAt": "2026-10-21T04:54:14.404960+00:00",
+            "unfinishedSession": "2026-10-23"
+          }
+        },
+        "runId": "39901067398"
+      },
+      "ledger/fundamentals/kr/manifest.json": {
+        "updatedAt": "2026-10-23T08:54:33Z",
+        "thisRun": {
+          "calls": 232,
+          "recordsWritten": 0,
+          "shardsChanged": 0,
+          "stopReason": "WORK_LIST_EXHAUSTED",
+          "statuses": {
+            "013": 232
+          },
+          "refused": {
+            "NO_CORP_CODE": 144,
+            "EMPTY_RESPONSE": 232
+          },
+          "noCorpCodeTickers": [
+            "005385.KS",
+            "005387.KS",
+            "005935.KS"
+          ],
+          "fsDiv": {},
+          "amountFieldsSeen": {}
+        }
+      },
+      "ledger/fundamentals/kr-canonical-v2/dart-2026.jsonl.gz": {
+        "records": 483,
+        "tickers": 242,
+        "maxAvailableFrom": "2026-09-16",
+        "sha256": "713ec8bc535bec018748e098f7a1b5737450d5e4c56ed2a0899510b7b3588c1c"
+      },
+      "ledger/research-strategies/kr-selection-challenger-v1/publication-status.json": {
+        "error": "HTTP Error 404: Not Found",
+        "interpretation": "No status at this pinned snapshot; pre-first-eligible absence is not itself a defect."
+      },
+      "ledger/research-strategies/kr-selection-challenger-v2-accounting/publication-status.json": {
+        "error": "HTTP Error 404: Not Found",
+        "interpretation": "No status at this pinned snapshot; pre-first-eligible absence is not itself a defect."
+      }
+    }
+  },
+  "validation": {
+    "targetedSyntheticTestsPassed": 118,
+    "globalRuff": "PASS",
+    "compileallPipelineScripts": "PASS",
+    "temporarySeedValidation": "PASS",
+    "formalHistoricalExecutions": 0,
+    "newRealLabelComputations": 0,
+    "sealedStudyReruns": 0
+  },
+  "oldPrHeads": {
+    "250": "7d26507979043ffd793caa9d60257bcfbdd260d3",
+    "253": "65f6eea010ae1e403c599c7d4898bc6ceefc0fca",
+    "259": "d9ff6dc056f5ed95b4c8b584ce63038b34f75186"
+  },
+  "ci": {
+    "baseMain": {
+      "run": 40058393739,
+      "conclusion": "success"
+    },
+    "250": {
+      "run": 38982117107,
+      "conclusion": "success",
+      "otherWorkflow38982117076": "skipped"
+    },
+    "253": {
+      "run": 39004310097,
+      "conclusion": "success"
+    },
+    "thisBranch": "NOT_YET_RUN"
+  },
+  "accessLimits": {
+    "githubApi": "Forbidden",
+    "pr241ExpectedPrivateDirectoryExists": false,
+    "pr241DeletedPublicCommitsRequested": false,
+    "tiingoRun": false
+  },
+  "correction": "The initial filtered Git recovery received a later broad 3.35GB pack as well as metadata. This is NOT claimed metadata-only. The original preflight did not fetch in the isolated promisor test. The new local-donor metadata tool transferred 658294 bytes with no market payload, and the old pre-task packs plus that metadata independently satisfied all 398 requirements.",
+  "preexistingCacheProof": {
+    "marketPacksUsed": [
+      "pack-29383b9edda092d917c4e7992c3acde058999857",
+      "pack-ebf8a6b2bc2ad7446166222745fd37a18eea3d21"
+    ],
+    "broadPack33e6ca7Excluded": true,
+    "method": "New bare directory uses only symlinks to these pre-task pack/idx files plus the new metadata-only pack. Local source inventory found 398/398 present."
+  }
+}

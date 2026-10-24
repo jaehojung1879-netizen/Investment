@@ -1,0 +1,30 @@
+{
+  "sourceCodeCommit": "fb60528dd7b28b0d574f9bf8a2040e62615f160e",
+  "command": "python scripts/review_winner_inflection_admission.py (no --materialize-review)",
+  "disposableWorktree": true,
+  "artifacts": [
+    {
+      "file": "docs/winner-inflection-discovery/admission-review-v2/source-audit.json",
+      "reproducedSha256": "cb894fecb4935c2a06b784ebceee1727c1aabb079e4e94459a742a6044a14977",
+      "committedSha256": "cb894fecb4935c2a06b784ebceee1727c1aabb079e4e94459a742a6044a14977",
+      "byteIdentical": true
+    },
+    {
+      "file": "docs/winner-inflection-discovery/admission-review-v2/review.json",
+      "reproducedSha256": "20eb67a4ebca03e8590c46e64d35b51f098f2536e5652e406a57af45bf736017",
+      "committedSha256": "20eb67a4ebca03e8590c46e64d35b51f098f2536e5652e406a57af45bf736017",
+      "byteIdentical": true
+    },
+    {
+      "file": "docs/winner-inflection-discovery/admission-review-v2/preflight.json",
+      "reproducedSha256": "66eaf008b63155d1b4d03cbb78ee50b89d59d2ce88a665f76773dc8b829ccc5f",
+      "committedSha256": "66eaf008b63155d1b4d03cbb78ee50b89d59d2ce88a665f76773dc8b829ccc5f",
+      "byteIdentical": true
+    }
+  ],
+  "realOutcomeReads": 0,
+  "pricePanelReads": 0,
+  "modelFits": 0,
+  "sourcePersistence": false,
+  "ownerAuthorization": false
+}

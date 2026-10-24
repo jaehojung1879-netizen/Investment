@@ -1,0 +1,21 @@
+{
+  "status": "BLOCKED",
+  "reasons": [
+    "SOURCE_REVIEW_UNRESOLVED:identity",
+    "SOURCE_REVIEW_UNRESOLVED:returnBasis",
+    "SOURCE_REVIEW_UNRESOLVED:rights"
+  ],
+  "reviewSha256": "6179a3de9c80fa69e74d96ecc7982cd368b9ffab83ba0c1be8d3e7c467c2b01b",
+  "outcomeReads": 0,
+  "modelFits": 0,
+  "unbiasedFullUniverseEvidence": false,
+  "productionPromotion": false,
+  "sourcePreflight": {
+    "status": "READY",
+    "requiredObjects": 398,
+    "missingObjects": 0,
+    "missingPathsSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "missingExamples": [],
+    "payloadReads": 0
+  }
+}
