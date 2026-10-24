@@ -121,17 +121,30 @@ def main(argv=None) -> int:
             print(f"::warning::kr-selection-challenger-v1 research steps exited {code}; see its publication-status.json")
     except Exception as exc:  # noqa: BLE001 - research must never block the ledger
         print(f"::warning::kr-selection-challenger-v1 hook raised (paper ledger unaffected): {type(exc).__name__}: {exc}")
-        # Machine-readable: an unrecorded signal must be visible to a reader, not only in the job log.
-        try:
-            study = ledger_dir / "research-strategies" / "kr-selection-challenger-v1"
-            study.mkdir(parents=True, exist_ok=True)
-            (study / "publication-status.json").write_text(json.dumps(
-                {"schema": "KR_SELECTION_CHALLENGER_STATUS_V2", "studyId": "kr-selection-challenger-v1", "productionEffect": "NONE",
-                 "status": "STEP_FAILED", "failedSteps": ["hook"], "signalRecordState": "NOT_ATTEMPTED",
-                 "error": f"{type(exc).__name__}: {exc}"}, sort_keys=True) + "\n", encoding="utf-8")
-        except Exception:  # noqa: BLE001
-            pass
+        _hook_failed(ledger_dir, "kr-selection-challenger-v1", exc)
+    # kr-selection-challenger-v2-accounting: the same discipline, PIT DART accounting books.
+    try:
+        from scripts import record_kr_selection_challenger_v2 as accounting_challenger
+        code = accounting_challenger.run_all(Path(argv[0]), ledger_dir)
+        if code:
+            print(f"::warning::kr-selection-challenger-v2-accounting research steps exited {code}; see its publication-status.json")
+    except Exception as exc:  # noqa: BLE001 - research must never block the ledger
+        print(f"::warning::kr-selection-challenger-v2-accounting hook raised (paper ledger unaffected): {type(exc).__name__}: {exc}")
+        _hook_failed(ledger_dir, "kr-selection-challenger-v2-accounting", exc)
     return 0
+
+
+def _hook_failed(ledger_dir: Path, study: str, exc: Exception) -> None:
+    """Machine-readable: an unrecorded signal must be visible to a reader, not only in the job log."""
+    try:
+        directory = ledger_dir / "research-strategies" / study
+        directory.mkdir(parents=True, exist_ok=True)
+        (directory / "publication-status.json").write_text(json.dumps(
+            {"schema": "KR_SELECTION_CHALLENGER_STATUS_V2", "studyId": study, "productionEffect": "NONE",
+             "status": "STEP_FAILED", "failedSteps": ["hook"], "signalRecordState": "NOT_ATTEMPTED",
+             "error": f"{type(exc).__name__}: {exc}"}, sort_keys=True) + "\n", encoding="utf-8")
+    except Exception:  # noqa: BLE001
+        pass
 
 
 if __name__ == "__main__":

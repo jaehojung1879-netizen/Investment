@@ -12,6 +12,14 @@ from pipeline import kr_selection_challenger as C
 from pipeline import prospective_receipt_core as CORE
 from pipeline import replay_calendar as RC
 
+
+@pytest.fixture(autouse=True)
+def _accounting_challenger_isolated(monkeypatch):
+    """The paper-ledger step also runs kr-selection-challenger-v2-accounting. It has its own tests; here it must never run git against this
+    checkout or download anything."""
+    from scripts import record_kr_selection_challenger_v2 as accounting
+    monkeypatch.setattr(accounting, "run_all", lambda *a: 0)
+
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = json.loads((ROOT / C.SPEC_PATH).read_text())
 SESSION = "2026-10-30"                      # Friday: a weekly decision session
@@ -624,9 +632,11 @@ def test_paper_ledger_step_runs_the_challenger_and_a_failure_never_costs_it(tmp_
     import importlib
     update = importlib.import_module("scripts.update_ledger")
     script = importlib.import_module("scripts.record_kr_selection_challenger")
+    accounting = importlib.import_module("scripts.record_kr_selection_challenger_v2")
     seen = []
     monkeypatch.setattr("pipeline.datafeed.fetch_prices", fetch_for())
     monkeypatch.setattr(script, "run_all", lambda site_path, directory: seen.append(directory) or 0)
+    monkeypatch.setattr(accounting, "run_all", lambda *a: 0)       # its own test; the real one would run git against this repository
     data = site()
     data["modelVersion"] = "m"
     path = tmp_path / "site.json"
@@ -705,6 +715,7 @@ def test_actual_recording_path_through_the_paper_ledger_step(tmp_path, monkeypat
     import importlib
     update = importlib.import_module("scripts.update_ledger")
     monkeypatch.setattr("pipeline.datafeed.fetch_prices", fetch_for())
+    monkeypatch.setattr(importlib.import_module("scripts.record_kr_selection_challenger_v2"), "run_all", lambda *a: 0)  # its own tests
     monkeypatch.setattr(C, "merged_at_from_git", lambda *a: MERGED)
     monkeypatch.setattr(CORE, "system_utc_now", lambda: pd.Timestamp(clock))
     data = site(**site_kwargs)
@@ -741,6 +752,7 @@ def test_research_namespace_leaves_the_paper_ledger_and_weekly_receipts_byte_ide
     update = importlib.import_module("scripts.update_ledger")
     script = importlib.import_module("scripts.record_kr_selection_challenger")
     monkeypatch.setattr("pipeline.datafeed.fetch_prices", fetch_for())
+    monkeypatch.setattr(importlib.import_module("scripts.record_kr_selection_challenger_v2"), "run_all", lambda *a: 0)
     monkeypatch.setattr(C, "merged_at_from_git", lambda *a: MERGED)
     monkeypatch.setattr(CORE, "system_utc_now", lambda: pd.Timestamp("2026-10-31T04:35:00Z"))
     data = site(generated="2026-10-31T04:30:00+00:00")
