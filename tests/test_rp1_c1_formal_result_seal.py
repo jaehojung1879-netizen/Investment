@@ -26,3 +26,10 @@ def test_archived_c1_formal_result_matches_original_artifact():
         "resultDecision": "NO_CANDIDATE_NOMINATED_CONTROL_RETAINED",
         "interpretation": "REPLICATED_CONTROL_RETAINED",
     }
+
+
+def test_verification_cannot_be_optimized_away():
+    """Every invariant is an explicit check, so `python -O` verifies exactly what a normal run does."""
+    completed = subprocess.run([sys.executable, "-O", str(VERIFY)], cwd=ROOT, check=True, capture_output=True, text=True)
+    assert json.loads(completed.stdout)["status"] == "VERIFIED_EXACT_ARTIFACT_BYTES"
+    assert "assert " not in VERIFY.read_text(encoding="utf-8")
