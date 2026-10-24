@@ -1,0 +1,116 @@
+{
+  "studyId": "rp1-d-v2-endogenous-breadth-v1",
+  "status": "PREREGISTERED_DESIGN_INACTIVE_NO_ALLOCATION",
+  "issue": "https://github.com/jaehojung1879-netizen/Investment/issues/282",
+  "authorizes": "NOTHING",
+  "productionEffect": "NONE",
+  "supersedes": [],
+  "doesNotModify": [
+    "pipeline/rp1_d_composition_contract.py (rp1-d-composition-contract-v1, MAX_NAMES=5, unchanged)",
+    "pipeline/weekly_decision.py and docs/weekly-decision/weekly-passive-first-v1.json (0-5 per region, unchanged)",
+    "every sealed A/B/C study, the frozen C0/C1 rules and their results",
+    "docs/research-program/04-common-research-contract-ko.md and AGENTS.md (hash-pinned by sealed specs)"
+  ],
+  "objective": {
+    "statement": "Maximise expected long-run compounded wealth of each region's equity sleeve, after costs, against holding the region's passive ETF. The number of individual stocks N is an OUTPUT of that decision, never an input: N = 0 (ETF only), 1, 2, 5, 10 and more than 10 are all admissible. Ten is not a cap or a target.",
+    "competingAsset": {"KR": "069500.KS", "US": "SPY"},
+    "competingAssetExpectedExcessPct": 0.0,
+    "separateComparisonsNotCandidates": {"US": ["QQQ"]},
+    "separateComparisonRule": "QQQ stays a separate descriptive passive-vs-passive comparison (pipeline/us_spy_qqq_comparison.py). It is neither the benchmark, an active name, nor the ETF residual.",
+    "growthApproximation": "E[log W] ~ E[R_b] + w'alpha - (1/2) Var(R_b + w'a) = const + w'alpha - w'c_b - (1/2) w'S w, all over the forecast horizon H. With a fractional-Kelly risk aversion lambda >= 1 applied to every variance term: maximise w'alpha_cons - C'v - (lambda/100) (w'c_b + (1/2) w'S w) in percentage-point units. lambda = 1 is the growth-optimal second-order point; lambda > 1 is more conservative.",
+    "forbidden": [
+      "choosing N, z, h, lambda or any cap from realised historical returns",
+      "a fixed Top-N, a fixed per-region slot count, or filling slots",
+      "treating a forecast point estimate as a validated expected return",
+      "summing KRW and USD sleeves without a registered FX and capital-allocation definition"
+    ]
+  },
+  "quantities": {
+    "G": "grossExcessPct: E[R_stock,total - R_ETF,total] over H sessions, same region, same next-session-close entry, percentage points of the switched principal. The ONLY accepted basis is GROSS_VS_REGIONAL_ETF_TOTAL_RETURN.",
+    "SE": "standardErrorPct: the producer's calibrated forecast standard error of G, same units and horizon.",
+    "C4": "four-leg incremental switching cost, percentage points of the switched principal: etfSell + stockBuy + stockSell + etfBuy. Each leg is commission + half spread, sells add the dated sell tax/fee (KR domestic equity ETF tax 0). Equals weekly_decision.cost_breakdown switchCostPct when built from the same schedule.",
+    "N": "net expected excess = G - C4. Costs are deducted exactly once, here. A producer value declared NET is refused, never re-deducted.",
+    "alphaCons": "uncertainty-adjusted gross edge = G - z * SE",
+    "riskBudget": "lambda, maxTrackingErrorPct, maxNameFraction, maxSectorFraction, maxActiveFraction, minPositionFraction, liquidity participation: separate owner constraints, never folded into alpha"
+  },
+  "costRule": {
+    "newOrIncreased": "a fraction added above the current holding pays C4 (it will revert to the ETF at the horizon).",
+    "retainedIncumbent": "a fraction kept up to the current holding pays 0 in the decision: keeping and exiting both pay legs 3+4, now or at the horizon, so they cannot change the comparison.",
+    "exit": "decision-irrelevant for the same reason; the realised legs are still reported.",
+    "stress": "N_k = G - k * C4 for k in {1, 2, 3}; never k times an already-net value.",
+    "consequence": "a retained name needs alphaCons > h, a new one needs alphaCons - C4 > h: hysteresis that follows from cost accounting, not from a tuned band."
+  },
+  "gates": {
+    "region": [
+      "admission: forecast producer digest registered in REGISTERED_A_ADMISSIONS (empty today) or explicit SYNTHETIC_FIXTURE mode",
+      "owner parameters registered (OWNER_PARAMETERS is None today)",
+      "benchmark equals the regional ETF; horizon in {126, 252} and equal to the owner's registered horizon",
+      "no outcome/realised field anywhere in the forecast input",
+      "decisionCutoffAt is a timezone-aware instant inside the registered window: after the decision session's close is final (weekly_decision.last_completed_session: close + settlement buffer, KR no earlier than 18:00 KST) and before the next exchange session opens",
+      "every availableAt is a timezone-aware instant at or before decisionCutoffAt; a date-only, naive or malformed availability is refused, and one such row voids the region record",
+      "risk model provenance, checked before any name is gated: lastObservationSession <= decisionSession, computedAt a timezone-aware instant at or before decisionCutoffAt and after lastObservationSession's close was final, sourceDigestSha256 of the exact return panel, producerSha256, and contentSha256 recomputed over the matrix and its provenance (a value that is not canonical JSON, such as NaN, Inf or a non-string key, is refused, never raised); a real record also needs producerSha256 in REGISTERED_RISK_MODEL_PRODUCERS (empty today)",
+      "past-only active covariance and benchmark covariance for every gated name: string tickers, an n x n list of real numbers with |x| <= 1e150 (float-overflow safety, not an economic bound) validated before any float conversion, symmetric, PSD; anything else is RISK_MODEL_MALFORMED, never an exception"
+    ],
+    "name": [
+      "identifier valid for the region and not the regional ETF itself",
+      "signalSession equals the decision session (stale forecasts are excluded, never carried)",
+      "finite G, SE > 0, all four cost legs present, finite, 0 <= leg < 100",
+      "sector present; liquidity cap present and in (0, 1]",
+      "basis GROSS_VS_REGIONAL_ETF_TOTAL_RETURN",
+      "new: alphaCons - C4 > h ; incumbent keep: alphaCons > h"
+    ],
+    "noEdgeRefusal": "If no name passes, or the optimum holds nothing, the region holds its ETF at 100% (N = 0). This is a normal decision, not an error."
+  },
+  "method": {
+    "universe": "finite: the region's PIT research universe (KR PIT Top120, US PIT S&P 500 members) intersected with names the admitted producer forecast on the decision session",
+    "solver": "scipy.optimize.minimize SLSQP on the gated names only, variables split into keep u_i in [0, w0_i] (cost 0) and add v_i >= 0 (cost C4_i); w_i = u_i + v_i",
+    "constraints": "w_i <= min(maxNameFraction, liquidityCap_i); sector sums <= maxSectorFraction; sum w <= maxActiveFraction <= 1; sqrt(w'S w) <= maxTrackingErrorPct when registered; ETF fraction = 1 - sum w >= 0; no leverage, no shorting",
+    "minimumPosition": "positions below minPositionFraction are removed one at a time (smallest first, ticker tie-break) and the problem re-solved",
+    "determinism": "names sorted by ticker before solving; identical inputs give identical outputs; input order cannot change the result",
+    "verification": "solver success, every constraint re-checked at 1e-7, and objective >= the ETF-only objective (0); otherwise the region falls back to the ETF",
+    "riskModel": "pipeline.rp1_d_v2_breadth.active_covariance: Ledoit-Wolf shrinkage of PAST-ONLY daily active returns (stock minus regional ETF), scaled by H, plus the stock-active/ETF covariance vector c_b; refuses any observation dated after the decision session; the result is sealed with lastObservationSession, computedAt, sourceDigestSha256, producerSha256 (this module's bytes) and contentSha256. A digest proves integrity after sealing, not the truth of the stated dates; that comes only from a registered producer.",
+    "overlays": "B is context only (used = false). C is applied only through a registered owner interpretation (none exists), once, to the finished regional stock+ETF book as a multiplier m; never to stocks and the book twice, never combined with B."
+  },
+  "ownerDecisionsRequired": {
+    "horizonSessions": null,
+    "uncertaintyMultiplierZ": null,
+    "edgeHurdlePct": null,
+    "riskAversionLambda": null,
+    "maxTrackingErrorPct": null,
+    "maxNameFraction": null,
+    "maxSectorFraction": null,
+    "maxActiveFraction": null,
+    "minPositionFraction": null,
+    "liquidityParticipation": null,
+    "regionalCapitalAndFx": null,
+    "note": "Every number is the owner's, recorded before any prospective outcome is read. Until all are registered the engine is inactive for real inputs."
+  },
+  "upstreamPrerequisites": [
+    "A: an admitted per-name forecast producer of G and calibrated SE at the registered horizon, with spec/code/input digests, PIT signal/available timestamps and an out-of-sample calibration record. None exists today (US A1 NO_GO, KR A2 not authorised, A0 PROSPECTIVE_ONLY).",
+    "risk model inputs: past-only daily total-return closes for every forecast name and the regional ETF on the decision session",
+    "liquidity: past-only median traded value per name plus the owner's capital and participation",
+    "dated cost schedule (benchmark_alpha.REALISTIC_COSTS via weekly_decision.trade_cost_fraction)",
+    "dated sector classification for the sector constraint",
+    "owner parameters above"
+  ],
+  "validation": {
+    "historical": "NONE in this version. No historical N, parameter or rule is chosen from realised returns; already-exposed history is not reused as new out-of-sample evidence.",
+    "prospective": "append-only weekly shadow receipts per region of the v2 decision AND, on the same forecasts, the ETF-only book and the v1 0-5 rule; evaluated only at maturity on non-overlapping H-session blocks; paired net excess vs ETF with a published interval; the minimum block count before any reading is an owner number registered before the first receipt.",
+    "promotion": "never automatic; an owner decision after the prospective reading"
+  },
+  "syntheticTestMatrix": [
+    "N = 0 when no qualified A (ETF default)",
+    "N = 1, 2, 5, 10 and 11+ from forecasts alone",
+    "11+ names that the legacy v1 cap would block",
+    "enough names but poor net edge -> N = 0",
+    "correlated stock concentration reduced by the active covariance",
+    "sector constraint binding",
+    "cost stress 1x/2x/3x lowers N; extreme cost -> N = 0",
+    "stale, missing and look-ahead forecasts",
+    "NET basis refused (no double charge)",
+    "unapproved C overlay and B context-only",
+    "region FX unresolved for any cross-region total",
+    "valid evidence registered later activates a SHADOW record only, productionAffected false",
+    "no outcome field accepted; deterministic and order-invariant"
+  ]
+}
