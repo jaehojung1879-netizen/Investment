@@ -524,6 +524,7 @@ def test_outcome_evaluation_is_blocked_and_computes_nothing(tmp_path):
 def test_run_all_writes_every_step_and_an_aggregate(tmp_path, monkeypatch):
     monkeypatch.setattr(CORE, "system_utc_now", lambda: pd.Timestamp("2026-11-03T04:35:00Z"))
     monkeypatch.setattr(B, "registration_merged_at", lambda *a: MERGED)       # never git against this checkout from a test
+    ledger_repo(tmp_path)
     assert script.run_all(tmp_path) == 0
     aggregate = json.loads((tmp_path / script.STATUS).read_text())
     assert aggregate["status"] == "OK" and aggregate["signalRecordState"] == "SKIPPED"
@@ -665,6 +666,7 @@ def test_a_missed_first_week_is_reported_with_zero_receipts(tmp_path):
 
 
 def test_a_missed_first_week_with_no_attempt_at_all(tmp_path):
+    ledger_repo(tmp_path)
     assert script.coverage(tmp_path, clock=clock_of("2026-11-09T04:35:00+00:00"), merged_at=MERGED) == 0
     report = json.loads((tmp_path / script.COVERAGE).read_text())
     assert [m["signalDate"] for m in report["missedSessions"]] == [SIGNAL, NEXT_SIGNAL]
@@ -678,3 +680,50 @@ def test_an_unregistered_spec_has_nothing_due(tmp_path, monkeypatch):
     report = json.loads((tmp_path / script.COVERAGE).read_text())
     assert report["registration"] == "NOT_REGISTERED" and report["dueSessions"] == 0 and report["reason"] == "SPEC_NOT_ON_MAIN"
     assert status(tmp_path, "coverage")["status"] == "NOT_REGISTERED"
+
+
+# --------------------------------------------------------------------------- #
+# Independent re-audit #285 (2026-10-24): zero-row coverage must verify history too
+# --------------------------------------------------------------------------- #
+@pytest.mark.parametrize("cut", ["emptied", "deleted"])
+def test_coverage_refuses_a_working_ledger_cut_to_zero_rows_after_a_commit(tmp_path, cut):
+    assert record(tmp_path, calm(), SAT) == 0                         # one receipt, committed by the workflow step
+    if cut == "emptied":
+        (tmp_path / script.RECEIPTS).write_bytes(b"")
+    else:
+        (tmp_path / script.RECEIPTS).unlink()
+    assert receipts(tmp_path) == []                                   # the rows alone look like a ledger that never started
+    assert script.coverage(tmp_path, clock=clock_of("2026-11-09T04:35:00+00:00"), merged_at=MERGED) == 1
+    report = json.loads((tmp_path / script.COVERAGE).read_text())
+    assert report["integrity"] == "FAILED" and report["registration"] is None and "missedSessions" not in report
+    assert report["reason"].startswith("LEDGER_INTEGRITY_FAILED: LEDGER_TAIL_REWRITTEN")
+    assert status(tmp_path, "coverage")["status"] == "REFUSED"
+
+
+def test_coverage_refuses_a_committed_cut_to_zero_rows_and_a_tampered_row(tmp_path):
+    assert record(tmp_path, calm(), SAT) == 0
+    (tmp_path / script.RECEIPTS).write_bytes(b"")
+    commit_ledger(tmp_path, "empty the ledger")
+    assert script.coverage(tmp_path, clock=clock_of("2026-11-09T04:35:00+00:00"), merged_at=MERGED) == 1
+    assert json.loads((tmp_path / script.COVERAGE).read_text())["reason"].startswith(
+        "LEDGER_INTEGRITY_FAILED: LEDGER_HISTORY_NOT_APPEND_ONLY")
+    other = tmp_path / "other"
+    assert record(other, calm(), SAT) == 0
+    row = json.loads((other / script.RECEIPTS).read_text())
+    row["state"]["adverse"] = True
+    _rewrite(other / script.RECEIPTS, [row])
+    assert script.coverage(other, clock=clock_of("2026-11-09T04:35:00+00:00")) == 1
+    assert json.loads((other / script.COVERAGE).read_text())["integrity"] == "FAILED"
+
+
+def test_a_registered_zero_row_coverage_outside_git_is_refused_not_reported(tmp_path):
+    assert script.coverage(tmp_path, clock=clock_of("2026-11-09T04:35:00+00:00"), merged_at=MERGED) == 1
+    report = json.loads((tmp_path / script.COVERAGE).read_text())
+    assert report["integrity"] == "FAILED" and "LEDGER_ANCHOR_UNAVAILABLE" in report["reason"]
+
+
+def test_a_clean_coverage_report_says_what_it_verified(tmp_path):
+    assert record(tmp_path, calm(), SAT) == 0
+    assert script.coverage(tmp_path, clock=clock_of("2026-11-09T04:35:00+00:00")) == 0
+    report = json.loads((tmp_path / script.COVERAGE).read_text())
+    assert report["integrity"] == "VERIFIED" and report["ledgerAnchor"]["committedReceipts"] == 1

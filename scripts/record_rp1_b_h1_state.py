@@ -145,13 +145,19 @@ def record(directory: Path, *, clock=None, fetch=None, merged_at=None, code_iden
 def coverage(directory: Path, *, clock=None, merged_at=None) -> int:
     """Written on every run, receipts or not: a first eligible week that closed with only DEFERRED attempts (or none) is MISSED from the
     moment its window closes, not from whenever a later week first records. The registration comes from the first receipt when one exists,
-    otherwise from git (main-only, fail closed); an unregistered spec has nothing due."""
+    otherwise from git (main-only, fail closed); an unregistered spec has nothing due.
+
+    Every REGISTERED report is preceded by the same history verification the record step runs, zero rows included: a working ledger that
+    was emptied or deleted after a receipt was committed must not read as weeks that were merely missed. A failure publishes
+    LEDGER_INTEGRITY_FAILED, never a normal report."""
     clock = clock or CORE.system_utc_now
     spec = B.load_spec()
-    receipts = B.read_receipts(directory / RECEIPTS, pathway=B.LIVE)
+    path = directory / RECEIPTS
+    try:
+        receipts = B.read_receipts(path, pathway=B.LIVE)
+    except ValueError as exc:
+        return _integrity_failed(directory, exc)
     if receipts:
-        B.verify_row_anchors(receipts, directory / RECEIPTS)
-        B.ledger_anchor(directory / RECEIPTS)
         merged, floor = receipts[0]["authorization"]["mergedAtUtc"], receipts[0]["authorization"]["registeredFloor"]
     else:
         floor = spec["schedule"]["firstEligibleSignalSessionFloor"]
@@ -162,14 +168,27 @@ def coverage(directory: Path, *, clock=None, merged_at=None) -> int:
                                         "missedSessions": []})
             _status(directory, action="coverage", status="NOT_REGISTERED", reason=str(exc))
             return 0
+    try:
+        B.verify_row_anchors(receipts, path)
+        anchor = B.ledger_anchor(path)
+    except ValueError as exc:
+        return _integrity_failed(directory, exc)
     report = B.coverage(receipts, read_attempts(directory), merged_at_utc=merged, floor=floor, now_utc=clock(),
                         horizon=spec["outcomeEvaluation"]["horizonSessions"],
                         min_blocks=spec["outcomeEvaluation"]["inheritedFixed"]["minNonOverlappingBlocksPerState"])
-    report["registration"] = "REGISTERED"
+    report.update({"registration": "REGISTERED", "integrity": "VERIFIED", "ledgerAnchor": anchor})
     _write_coverage(directory, report)
     _status(directory, action="coverage", status="REPORTED", recorded=report["recordedSessions"], due=report["dueSessions"],
             missed=len(report["missedSessions"]), inferenceStatus=report["blockGeometry"]["inferenceStatus"])
     return 0
+
+
+def _integrity_failed(directory: Path, exc: Exception) -> int:
+    """No session counts are published from a ledger whose history does not verify; the previous coverage.json is replaced, not kept."""
+    reason = "LEDGER_INTEGRITY_FAILED: " + str(exc)
+    _write_coverage(directory, {"registration": None, "integrity": "FAILED", "reason": reason})
+    _status(directory, action="coverage", status=B.REFUSED, reason=reason)
+    return 1
 
 
 def _write_coverage(directory: Path, report: dict) -> None:
