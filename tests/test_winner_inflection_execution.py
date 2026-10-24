@@ -584,6 +584,7 @@ def test_missing_source_objects_are_detected_without_opening_payloads(tmp_path, 
             return json.dumps(manifest).encode()
         def component(self, *_): pytest.fail("outcome-bearing payload opened by preflight")
     monkeypatch.setattr(sources, "Sources", MetadataOnly)
+    monkeypatch.setattr(A, "object_type", lambda *_: "commit")  # This test isolates missing payloads, not commit bindings.
     result = A.source_preflight(tmp_path, config)
     assert result["status"] == "BLOCKED" and result["payloadReads"] == 0
     assert result["missingObjects"] == result["requiredObjects"] == 15

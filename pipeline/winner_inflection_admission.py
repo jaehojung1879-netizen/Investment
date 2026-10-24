@@ -18,12 +18,13 @@ import sys
 from . import industry_foundation as IF
 from . import prospective_receipt_core as P
 from .winner_inflection_exploration import RunLayout, trial_record
+from .winner_inflection_local_git import local_view, object_type
 
 REPOSITORY = "jaehojung1879-netizen/Investment"
 OWNER = "jaehojung1879-netizen"
 SPEC_PATH = "docs/winner-inflection-discovery/execution-us-b-h126-2020-v1.json"
 REVIEW_PATH = "docs/winner-inflection-discovery/source-admission-v1.json"
-CLOSURE = ("pipeline/winner_inflection_admission.py", "pipeline/winner_inflection_execution.py",
+CLOSURE = ("pipeline/winner_inflection_admission.py", "pipeline/winner_inflection_local_git.py", "pipeline/winner_inflection_execution.py",
            "scripts/run_winner_inflection.py", "pipeline/winner_inflection.py", "pipeline/winner_inflection_exploration.py",
            "pipeline/experiment_workbench.py", "pipeline/us_decision_pilot.py", "pipeline/us_multifactor_inputs.py",
            "pipeline/price_adjustment.py", "pipeline/benchmark_alpha.py", "pipeline/replay_calendar.py",
@@ -105,6 +106,19 @@ def admission(spec, review):
 
 
 def source_preflight(root, spec):
+    """Inspect through a remote-free local view, including partial-clone inputs."""
+    try:
+        with local_view(root) as view:
+            missing = [c for c in sorted({spec["sourceCommit"], spec["metadataCommit"]}) if object_type(view, c) != "commit"]
+            if missing:
+                return {"status": "BLOCKED", "reason": "PINNED_COMMIT_METADATA_MISSING",
+                        "missingCommits": missing, "payloadReads": 0}
+            return _source_preflight_local(view, spec)
+    except (OSError, ValueError, KeyError, subprocess.CalledProcessError) as error:
+        return {"status": "BLOCKED", "reason": "SOURCE_METADATA_UNAVAILABLE:" + type(error).__name__, "payloadReads": 0}
+
+
+def _source_preflight_local(root, spec):
     """Git object TYPE/SIZE only; no price/action/filing payload is opened.
 
     Prevent consuming an owner permit on a known incomplete partial clone.
