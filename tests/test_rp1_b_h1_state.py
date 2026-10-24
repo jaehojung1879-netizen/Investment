@@ -1,6 +1,7 @@
 """rp1-b-h1-state-v1: Track B's weekly prospective market-state receipts. Every price below is invented; no test reads the network or git."""
 import importlib
 import json
+import subprocess
 
 import numpy as np
 import pandas as pd
@@ -56,9 +57,39 @@ def clock_of(*instants):
     return clock
 
 
-def record(directory, frame, *instants, package=PACKAGE, merged=MERGED, fetch=None):
+SYNTHETIC_ANCHOR = {"basis": B.SYNTHETIC_ANCHOR, "repositoryHeadSha": None, "committedReceipts": 0, "committedTipSha256": None,
+                    "historyVersionsChecked": 0}
+
+
+def git(cwd, *args):
+    env = {"GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t", "GIT_COMMITTER_NAME": "t", "GIT_COMMITTER_EMAIL": "t@t",
+           "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(cwd)}
+    return subprocess.run(["git", *args], cwd=cwd, env=env, check=True, capture_output=True, text=True).stdout.strip()
+
+
+def ledger_repo(directory):
+    """The study directory as the signal-history worktree the ledger workflow commits to."""
+    directory.mkdir(parents=True, exist_ok=True)
+    if not (directory / ".git").exists():
+        git(directory, "init", "-q", "-b", "signal-history")
+        git(directory, "commit", "-q", "--allow-empty", "-m", "base")
+
+
+def commit_ledger(directory, message="ledger"):
+    if (directory / script.RECEIPTS).exists():
+        git(directory, "add", script.RECEIPTS)
+    git(directory, "commit", "-q", "--allow-empty", "-m", message)
+
+
+def record(directory, frame, *instants, package=PACKAGE, merged=MERGED, fetch=None, repo=True):
+    """One LIVE run against a git-backed ledger, followed by the workflow's commit of whatever it appended."""
+    if repo:
+        ledger_repo(directory)
     fetch = fetch or (lambda start: (frame, package))
-    return script.record(directory, clock=clock_of(*instants), fetch=fetch, merged_at=merged, code_identity=IDENTITY)
+    code = script.record(directory, clock=clock_of(*instants), fetch=fetch, merged_at=merged, code_identity=IDENTITY)
+    if repo:
+        commit_ledger(directory)
+    return code
 
 
 def status(directory, step="record"):
@@ -299,6 +330,7 @@ def test_a_retry_after_a_provider_failure_records_once(tmp_path):
         if len(calls) == 1:
             raise ConnectionError("cache unreachable")
         return calm(), PACKAGE
+    ledger_repo(tmp_path)
     assert script.record(tmp_path, clock=clock_of(SAT), fetch=flaky, merged_at=MERGED, code_identity=IDENTITY) == 0
     assert status(tmp_path)["status"] == "DEFERRED" and status(tmp_path)["reason"].startswith("PROVIDER_FETCH_FAILED: ConnectionError")
     assert script.record(tmp_path, clock=clock_of(SUN), fetch=flaky, merged_at=MERGED, code_identity=IDENTITY) == 0
@@ -366,7 +398,7 @@ def test_no_outcome_key_and_no_live_class_for_a_fixture():
     frame = calm()
     receipt = B.build_receipt(frame, pathway=B.SYNTHETIC, signal_date=SIGNAL, created_at_utc=SAT, now_utc=SAT, fetched_at_utc=SAT,
                               merged_at_utc=MERGED, spec=B.load_spec(verify_code=False), spec_digest="c" * 64, code_identity=IDENTITY,
-                              vendor_package=PACKAGE, previous_receipt_sha256=None)
+                              vendor_package=PACKAGE, previous_receipt_sha256=None, ledger_anchor=SYNTHETIC_ANCHOR)
     CORE.scan_for_outcome_keys(receipt)
     assert receipt["evidenceClass"] == "SYNTHETIC_FIXTURE"
     with pytest.raises(ValueError, match="PATHWAY_MISMATCH"):
@@ -408,6 +440,7 @@ def test_duplicate_vendor_dates_and_a_changed_package_are_refused(tmp_path):
 
 def test_unknown_registration_refuses(tmp_path, monkeypatch):
     monkeypatch.setattr(B, "registration_merged_at", lambda *a: (_ for _ in ()).throw(ValueError("SPEC_NOT_ON_MAIN")))
+    ledger_repo(tmp_path)
     assert script.record(tmp_path, clock=clock_of(SAT), fetch=lambda s: (calm(), PACKAGE), code_identity=IDENTITY) == 1
     assert status(tmp_path)["reason"] == "SPEC_NOT_ON_MAIN" and status(tmp_path)["status"] == "REFUSED"
 
@@ -490,6 +523,7 @@ def test_outcome_evaluation_is_blocked_and_computes_nothing(tmp_path):
 # --------------------------------------------------------------------------- #
 def test_run_all_writes_every_step_and_an_aggregate(tmp_path, monkeypatch):
     monkeypatch.setattr(CORE, "system_utc_now", lambda: pd.Timestamp("2026-11-03T04:35:00Z"))
+    monkeypatch.setattr(B, "registration_merged_at", lambda *a: MERGED)       # never git against this checkout from a test
     assert script.run_all(tmp_path) == 0
     aggregate = json.loads((tmp_path / script.STATUS).read_text())
     assert aggregate["status"] == "OK" and aggregate["signalRecordState"] == "SKIPPED"
@@ -498,6 +532,7 @@ def test_run_all_writes_every_step_and_an_aggregate(tmp_path, monkeypatch):
 
 def test_a_failing_step_is_visible_and_does_not_stop_the_next(tmp_path, monkeypatch):
     monkeypatch.setattr(script, "record", lambda directory: (_ for _ in ()).throw(RuntimeError("boom")))
+    monkeypatch.setattr(B, "registration_merged_at", lambda *a: (_ for _ in ()).throw(ValueError("SPEC_NOT_ON_MAIN")))
     assert script.run_all(tmp_path) == 1
     aggregate = json.loads((tmp_path / script.STATUS).read_text())
     assert aggregate["status"] == "STEP_FAILED" and aggregate["failedSteps"] == ["record"]
@@ -543,3 +578,103 @@ def test_the_isolated_child_really_runs_the_cli(tmp_path):
     assert REAL_RUN_ISOLATED(study, timeout=300, command=command) == 0
     assert status(study, "outcomes")["status"] == "BLOCKED_OUTCOME_CONTRACT_NOT_REGISTERED"
     assert sorted(p.name for p in tmp_path.iterdir()) == ["study"]
+
+
+# --------------------------------------------------------------------------- #
+# Independent audit #285 (2026-10-24): the tail of the chain, and a missed first week
+# --------------------------------------------------------------------------- #
+def test_a_committed_deletion_of_the_last_row_is_refused_before_the_next_append(tmp_path):
+    rows = _two_weeks(tmp_path)
+    _rewrite(tmp_path / script.RECEIPTS, rows[:-1])              # the chain of the surviving row is intact ...
+    assert [r["signalDate"] for r in receipts(tmp_path)] == [SIGNAL]
+    commit_ledger(tmp_path, "drop the last receipt")
+    before = (tmp_path / script.RECEIPTS).read_bytes()
+    assert record(tmp_path, bars(end="2026-11-13"), "2026-11-14T04:35:00+00:00") == 1      # ... but committed history is not
+    assert status(tmp_path)["reason"].startswith("LEDGER_INTEGRITY_FAILED: LEDGER_HISTORY_NOT_APPEND_ONLY")
+    assert (tmp_path / script.RECEIPTS).read_bytes() == before
+
+
+def test_an_uncommitted_cut_of_the_tail_is_refused(tmp_path):
+    rows = _two_weeks(tmp_path)
+    _rewrite(tmp_path / script.RECEIPTS, rows[:-1])
+    with pytest.raises(ValueError, match="LEDGER_TAIL_REWRITTEN"):
+        B.ledger_anchor(tmp_path / script.RECEIPTS)
+    assert record(tmp_path, bars(end="2026-11-13"), "2026-11-14T04:35:00+00:00") == 1
+    assert status(tmp_path)["reason"].startswith("LEDGER_INTEGRITY_FAILED: LEDGER_TAIL_REWRITTEN")
+    # The workflow then commits the cut with everything else; from then on the committed history itself refuses it.
+    with pytest.raises(ValueError, match="LEDGER_HISTORY_NOT_APPEND_ONLY"):
+        B.ledger_anchor(tmp_path / script.RECEIPTS)
+
+
+def test_a_history_rewrite_that_drops_a_row_is_refused_through_the_later_anchors(tmp_path):
+    rows = _two_weeks(tmp_path)
+    record(tmp_path, bars(end="2026-11-13"), "2026-11-14T04:35:00+00:00")
+    rows = [json.loads(line) for line in (tmp_path / script.RECEIPTS).read_text().splitlines()]
+    # Rewrite history so the second receipt never existed: an orphan branch holding row 1, then a re-chained, re-digested row 3.
+    forged = dict(rows[2], previousReceiptSha256=rows[0]["receiptSha256"])
+    forged["ledgerAnchor"] = dict(forged["ledgerAnchor"], committedReceipts=1, committedTipSha256=rows[0]["receiptSha256"])
+    forged["receiptSha256"] = CORE.receipt_digest(forged)
+    git(tmp_path, "checkout", "-q", "--orphan", "rewritten")
+    _rewrite(tmp_path / script.RECEIPTS, rows[:1])
+    commit_ledger(tmp_path, "row 1")
+    _rewrite(tmp_path / script.RECEIPTS, [rows[0], forged])
+    commit_ledger(tmp_path, "row 3")
+    assert [r["signalDate"] for r in receipts(tmp_path)] == [SIGNAL, "2026-11-13"]          # the chain alone is fooled
+    with pytest.raises(ValueError, match="LEDGER_ANCHOR_COMMIT_NOT_IN_HISTORY"):
+        B.verify_row_anchors(receipts(tmp_path), tmp_path / script.RECEIPTS)
+    assert record(tmp_path, bars(end="2026-11-20"), "2026-11-21T04:35:00+00:00") == 1
+    assert status(tmp_path)["reason"].startswith("LEDGER_INTEGRITY_FAILED: LEDGER_ANCHOR_COMMIT_NOT_IN_HISTORY")
+
+
+def test_each_receipt_names_the_committed_prefix_it_was_appended_to(tmp_path):
+    rows = _two_weeks(tmp_path)
+    assert [r["ledgerAnchor"]["committedReceipts"] for r in rows] == [0, 1]
+    assert rows[1]["ledgerAnchor"]["committedTipSha256"] == rows[0]["receiptSha256"]
+    assert all(r["ledgerAnchor"]["basis"] == "GIT_COMMITTED_LEDGER" for r in rows)
+    B.verify_row_anchors(rows, tmp_path / script.RECEIPTS)
+    bad = json.loads(json.dumps(rows))
+    bad[1]["ledgerAnchor"]["committedTipSha256"] = "d" * 64
+    bad[1]["receiptSha256"] = CORE.receipt_digest(bad[1])
+    with pytest.raises(ValueError, match="LEDGER_ANCHOR_INCONSISTENT"):
+        B.verify_chain(bad)
+
+
+def test_a_live_receipt_needs_a_git_backed_ledger(tmp_path):
+    assert record(tmp_path, calm(), SAT, repo=False) == 1
+    assert status(tmp_path)["reason"].startswith("LEDGER_INTEGRITY_FAILED: LEDGER_ANCHOR_UNAVAILABLE")
+    assert not (tmp_path / script.RECEIPTS).exists()
+    synthetic = B.build_receipt(calm(), pathway=B.SYNTHETIC, signal_date=SIGNAL, created_at_utc=SAT, now_utc=SAT, fetched_at_utc=SAT,
+                                merged_at_utc=MERGED, spec=B.load_spec(verify_code=False), spec_digest="c" * 64, code_identity=IDENTITY,
+                                vendor_package=PACKAGE, previous_receipt_sha256=None, ledger_anchor=SYNTHETIC_ANCHOR)
+    live = dict(synthetic, pathway=B.LIVE, evidenceClass="PROSPECTIVE_PAPER")
+    live["receiptSha256"] = CORE.receipt_digest(live)
+    with pytest.raises(ValueError, match="RECEIPT_LEDGER_ANCHOR_NOT_GIT"):
+        B.validate_receipt(live, pathway=B.LIVE)
+
+
+def test_a_missed_first_week_is_reported_with_zero_receipts(tmp_path):
+    assert record(tmp_path, bars(end="2026-10-29"), SUN) == 0                        # only a DEFERRED attempt
+    assert script.coverage(tmp_path, clock=clock_of("2026-11-01T23:00:00+00:00"), merged_at=MERGED) == 0
+    report = json.loads((tmp_path / script.COVERAGE).read_text())
+    assert report["registration"] == "REGISTERED" and report["dueSessions"] == 0     # the window is still open: not missed yet
+    assert script.coverage(tmp_path, clock=clock_of("2026-11-02T00:00:00+00:00"), merged_at=MERGED) == 0
+    report = json.loads((tmp_path / script.COVERAGE).read_text())
+    assert (report["dueSessions"], report["recordedSessions"]) == (1, 0)
+    assert report["missedSessions"] == [{"signalDate": SIGNAL, "lastAttempt": ["DEFERRED", "SIGNAL_SESSION_CLOSE_UNAVAILABLE"]}]
+    assert status(tmp_path, "coverage")["missed"] == 1
+
+
+def test_a_missed_first_week_with_no_attempt_at_all(tmp_path):
+    assert script.coverage(tmp_path, clock=clock_of("2026-11-09T04:35:00+00:00"), merged_at=MERGED) == 0
+    report = json.loads((tmp_path / script.COVERAGE).read_text())
+    assert [m["signalDate"] for m in report["missedSessions"]] == [SIGNAL, NEXT_SIGNAL]
+    assert all(m["lastAttempt"] == ["NO_ATTEMPT_RECORDED", None] for m in report["missedSessions"])
+    assert report["blockGeometry"]["inferenceStatus"] == "DESCRIPTIVE_ONLY_INSUFFICIENT_STATE_BLOCKS"
+
+
+def test_an_unregistered_spec_has_nothing_due(tmp_path, monkeypatch):
+    monkeypatch.setattr(B, "registration_merged_at", lambda *a: (_ for _ in ()).throw(ValueError("SPEC_NOT_ON_MAIN")))
+    assert script.coverage(tmp_path, clock=clock_of("2026-11-09T04:35:00+00:00")) == 0
+    report = json.loads((tmp_path / script.COVERAGE).read_text())
+    assert report["registration"] == "NOT_REGISTERED" and report["dueSessions"] == 0 and report["reason"] == "SPEC_NOT_ON_MAIN"
+    assert status(tmp_path, "coverage")["status"] == "NOT_REGISTERED"

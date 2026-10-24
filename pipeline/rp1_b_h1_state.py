@@ -15,7 +15,9 @@ An attempt ends in exactly one of: RECORDED (one receipt appended), SKIPPED (not
 receipt needs; nothing written, a later run in the window retries) or REFUSED (an integrity failure; nothing written). A missing leg is never
 benign: before the last 24 hours of the receipt window a provider gap is DEFERRED, inside them it is recorded as an undetermined leg with its
 reason, and `adverse` is None unless the determined leg alone is adverse. Receipts are hash-chained (`previousReceiptSha256`), so a deleted,
-reordered or inserted row breaks every later row.
+reordered or inserted row breaks every later row. A chain alone cannot see its own TAIL being cut, so each LIVE receipt is also anchored to the
+committed signal-history git history it was appended to (`ledgerAnchor`): every committed version of the ledger must be a byte prefix of the
+next and of the working file, and every receipt's anchor commit must still be an ancestor of HEAD holding exactly the rows it claims.
 
 Outcome evaluation (the H63 momentum spread by state) is a SEPARATE contract that is not registered: `outcome_gate` refuses, and nothing in this
 module reads a forward price, a stock cross-section or a return after the signal session.
@@ -25,6 +27,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import subprocess
 from pathlib import Path
 
 import numpy as np
@@ -284,13 +287,13 @@ def observe(frame, signal_date, *, start=None) -> dict:
 REQUIRED = ("schemaVersion", "studyId", "hypothesisId", "stateClass", "definition", "pathway", "evidenceClass", "researchOnly",
             "productionEffect", "specSha256", "codeIdentity", "authorization", "signalDate", "executionDate", "signalSessionFinalAtUtc",
             "createdAtUtc", "source", "inputIdentity", "state", "undeterminedReasons", "undeterminedDetail", "previousReceiptSha256",
-            "receiptSha256")
+            "ledgerAnchor", "receiptSha256")
 STATE_KEYS = ("fast", "fastTrendAdverse", "fastVolAdverse", "vol63", "fastLegAdverse", "trailing24mReturn", "baseSessionDate",
               "target24mDate", "returnLegAdverse", "adverse")
 
 
 def build_receipt(frame, *, pathway: str, signal_date: str, created_at_utc, now_utc, fetched_at_utc, merged_at_utc, spec: dict,
-                  spec_digest: str, code_identity: dict, vendor_package: str, previous_receipt_sha256) -> dict:
+                  spec_digest: str, code_identity: dict, vendor_package: str, previous_receipt_sha256, ledger_anchor: dict) -> dict:
     """One receipt for ``signal_date`` from the frame the vendor served at ``fetched_at_utc``, or AttemptStop."""
     if pathway not in EVIDENCE_CLASS_BY_PATHWAY:
         raise ValueError("UNKNOWN_PATHWAY")
@@ -327,7 +330,7 @@ def build_receipt(frame, *, pathway: str, signal_date: str, created_at_utc, now_
                    "fetchedAtUtc": str(fetched.isoformat()), **seen["served"]},
         "inputIdentity": seen["inputIdentity"], "state": seen["state"],
         "undeterminedReasons": seen["undeterminedReasons"], "undeterminedDetail": seen["detail"],
-        "previousReceiptSha256": previous_receipt_sha256,
+        "previousReceiptSha256": previous_receipt_sha256, "ledgerAnchor": dict(ledger_anchor),
     }
     receipt["receiptSha256"] = CORE.receipt_digest(receipt)
     validate_receipt(receipt, pathway=pathway)
@@ -360,8 +363,27 @@ def validate_receipt(receipt: dict, *, pathway: str) -> None:
         raise ValueError("RECEIPT_CHAIN_FIELD_MALFORMED")
     if not CORE.is_sha256(receipt["inputIdentity"]) or not CORE.is_sha256(receipt["specSha256"]):
         raise ValueError("RECEIPT_IDENTITY_MALFORMED")
+    _check_anchor(receipt["ledgerAnchor"], pathway)
     _check_timing(receipt)
     _check_state(receipt)
+
+
+ANCHOR_KEYS = ("basis", "repositoryHeadSha", "committedReceipts", "committedTipSha256", "historyVersionsChecked")
+GIT_ANCHOR, SYNTHETIC_ANCHOR = "GIT_COMMITTED_LEDGER", "SYNTHETIC_NO_GIT"
+
+
+def _check_anchor(anchor, pathway: str) -> None:
+    if not isinstance(anchor, dict) or set(anchor) != set(ANCHOR_KEYS):
+        raise ValueError("RECEIPT_LEDGER_ANCHOR_MALFORMED")
+    count, tip, head = anchor["committedReceipts"], anchor["committedTipSha256"], anchor["repositoryHeadSha"]
+    if isinstance(count, bool) or not isinstance(count, int) or count < 0 or (count == 0) != (tip is None) \
+            or (tip is not None and not CORE.is_sha256(tip)):
+        raise ValueError("RECEIPT_LEDGER_ANCHOR_MALFORMED")
+    if anchor["basis"] == GIT_ANCHOR:
+        if not CORE.is_git_sha(head) or not isinstance(anchor["historyVersionsChecked"], int):
+            raise ValueError("RECEIPT_LEDGER_ANCHOR_MALFORMED")
+    elif anchor["basis"] != SYNTHETIC_ANCHOR or pathway == LIVE or head is not None:
+        raise ValueError("RECEIPT_LEDGER_ANCHOR_NOT_GIT")    # a LIVE receipt is always anchored to committed git history
 
 
 def _check_timing(r: dict) -> None:
@@ -429,6 +451,12 @@ def verify_chain(rows: list[dict]) -> None:
         if row["previousReceiptSha256"] != previous:
             raise ValueError("LEDGER_CHAIN_BROKEN at " + str(row.get("signalDate")))
         previous = row["receiptSha256"]
+    committed = 0
+    for i, row in enumerate(rows):                           # a row may only name a committed prefix of the rows before it
+        count, tip = row["ledgerAnchor"]["committedReceipts"], row["ledgerAnchor"]["committedTipSha256"]
+        if count > i or count < committed or (count and rows[count - 1]["receiptSha256"] != tip):
+            raise ValueError("LEDGER_ANCHOR_INCONSISTENT at " + str(row.get("signalDate")))
+        committed = count
     dates = [row["signalDate"] for row in rows]
     if dates != sorted(set(dates)):
         raise ValueError("LEDGER_ORDER_BROKEN")
@@ -444,6 +472,76 @@ def read_receipts(path, *, pathway: str) -> list[dict]:
         raise ValueError("LEDGER_ROW_NOT_JSON: " + str(exc)) from exc
     verify_chain(rows)
     return rows
+
+
+# --------------------------------------------------------------------------- #
+# Git anchor: the committed signal-history ledger is the independent checkpoint a hash chain lacks
+# --------------------------------------------------------------------------- #
+def _git(cwd, *args):
+    return subprocess.run(["git", "-C", str(cwd), *args], capture_output=True, check=False)
+
+
+def _repository(path: Path):
+    probe = path.parent
+    while not probe.exists():
+        probe = probe.parent
+    top = _git(probe, "rev-parse", "--show-toplevel")
+    if top.returncode != 0:
+        raise ValueError("LEDGER_ANCHOR_UNAVAILABLE: the ledger is not inside a git repository")
+    root = Path(top.stdout.decode().strip()).resolve()
+    return root, path.resolve().relative_to(root).as_posix()
+
+
+def _committed(root: Path, commit: str, rel: str):
+    shown = _git(root, "show", f"{commit}:{rel}")
+    return shown.stdout if shown.returncode == 0 else None
+
+
+def ledger_anchor(path) -> dict:
+    """Verify the ledger against its own committed history and return the anchor a new receipt carries.
+
+    Every version of the file that git history holds must be a byte prefix of the next one and of the working file. A committed truncation,
+    a rewritten row or an uncommitted cut of the tail is refused. The one rewrite this cannot see is a history rewrite (force push) that
+    removes the LAST row and every trace of it; that leaves the Actions job log (which prints each receiptSha256) as the only record."""
+    path = Path(path)
+    root, rel = _repository(path)
+    head = _git(root, "rev-parse", "--verify", "HEAD^{commit}")
+    if head.returncode != 0:
+        raise ValueError("LEDGER_ANCHOR_UNAVAILABLE: the ledger repository has no commit")
+    commits = _git(root, "log", "--format=%H", "--reverse", "HEAD", "--", rel).stdout.decode().split()
+    previous = b""
+    for commit in commits:
+        content = _committed(root, commit, rel)
+        if content is None or not content.startswith(previous):
+            raise ValueError("LEDGER_HISTORY_NOT_APPEND_ONLY at commit " + commit)
+        previous = content
+    current = path.read_bytes() if path.exists() else b""
+    if not current.startswith(previous):
+        raise ValueError("LEDGER_TAIL_REWRITTEN: the working ledger does not extend its last committed version")
+    rows = [json.loads(line) for line in previous.decode("utf-8").splitlines() if line.strip()]
+    return {"basis": GIT_ANCHOR, "repositoryHeadSha": head.stdout.decode().strip(), "committedReceipts": len(rows),
+            "committedTipSha256": rows[-1]["receiptSha256"] if rows else None, "historyVersionsChecked": len(commits)}
+
+
+def verify_row_anchors(rows: list[dict], path) -> None:
+    """Each LIVE receipt's anchor commit must still be in HEAD's history and hold exactly the rows it claims, byte for byte. A history
+    rewrite that drops or edits an earlier row therefore has to rewrite every later receipt too, and then their anchors point outside it."""
+    if not rows:
+        return
+    root, rel = _repository(Path(path))
+    lines = [CORE.canonical(row) + b"\n" for row in rows]
+    for row in rows:
+        anchor = row["ledgerAnchor"]
+        if anchor["basis"] != GIT_ANCHOR:
+            raise ValueError("LEDGER_ANCHOR_NOT_GIT at " + row["signalDate"])
+        commit = anchor["repositoryHeadSha"]
+        if _git(root, "cat-file", "-e", commit + "^{commit}").returncode != 0:
+            raise ValueError("LEDGER_ANCHOR_COMMIT_UNAVAILABLE at " + row["signalDate"])
+        if _git(root, "merge-base", "--is-ancestor", commit, "HEAD").returncode != 0:
+            raise ValueError("LEDGER_ANCHOR_COMMIT_NOT_IN_HISTORY at " + row["signalDate"])
+        content = _committed(root, commit, rel)
+        if (content or b"") != b"".join(lines[:anchor["committedReceipts"]]):
+            raise ValueError("LEDGER_ANCHOR_CONTENT_MISMATCH at " + row["signalDate"])
 
 
 def last_digest(rows: list[dict]):

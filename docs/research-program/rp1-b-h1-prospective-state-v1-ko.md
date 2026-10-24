@@ -54,6 +54,7 @@
 | 미래 데이터 | 신호 세션 뒤 날짜의 행이 하나라도 있으면 `REFUSED`. 조용히 버리지 않는다 |
 | 중복 | 같은 `(studyId, signalDate)`는 다시 쓰지 않는다(`SKIPPED`). 다운로드 전에 확인한다. vendor 중복 날짜는 `REFUSED` |
 | 원장 | append-only JSONL이다. 행마다 SHA-256 digest와 `previousReceiptSha256` 체인을 둔다. 읽을 때마다 아래 항목을 모든 행에서 다시 도출하고 검증한다. 하나라도 어긋나면 원장 전체를 거부하고 이후 추가도 거부한다 |
+| 꼬리 고정 | 체인은 마지막 행이 잘린 것을 스스로 알 수 없다. 그래서 LIVE 영수증마다 `ledgerAnchor`(추가 당시 signal-history HEAD, 그 커밋이 담은 영수증 수, 마지막 digest)를 둔다. 추가 전과 coverage 실행마다 두 가지를 확인한다. git 이력의 모든 `receipts.jsonl` 판이 다음 판과 작업 파일의 바이트 접두사여야 하고(커밋된 절단 `LEDGER_HISTORY_NOT_APPEND_ONLY`, 커밋 전 절단 `LEDGER_TAIL_REWRITTEN`), 모든 영수증의 anchor 커밋이 HEAD의 조상이면서 주장한 행을 정확히 담아야 한다(`LEDGER_ANCHOR_COMMIT_NOT_IN_HISTORY`). git 밖의 원장에는 LIVE 영수증을 쓸 수 없다 |
 | 공급자 장애 | 아래 표 |
 | 독립성 | Track A·C·봉인 연구의 영수증과 별도 원장이다. 공유하는 것은 `prospective_receipt_core`뿐이다 |
 
@@ -77,11 +78,13 @@
 - 체결 세션
 - 기록 창
 
+**탐지 한계:** 마지막 영수증과 그것을 담은 모든 커밋을 force push로 지우는 이력 재작성은 저장소 혼자서는 알아낼 수 없다. 그 뒤에 그 영수증을 anchor로 삼은 영수증이 아직 없는 경우다. 이때 독립 기록은 기록 실행의 Actions job log(`receiptSha256` 출력)뿐이다. 새 저장소·App·외부 저장소는 도입하지 않았다. ledger workflow의 `git fetch origin signal-history`는 depth 1 checkout에서도 브랜치 이력 전체를 가져온다(2026-10-24 측정: 693커밋, main 커밋만 shallow).
+
 **공급자 장애 처리**
 
 | 경우 | 처리 |
 |---|---|
-| 다운로드 실패, 빈 응답, 신호 세션 종가 미제공 | `DEFERRED`. 창이 닫히면 그 주는 `MISSED`이며 사후에 채우지 않는다 |
+| 다운로드 실패, 빈 응답, 신호 세션 종가 미제공 | `DEFERRED`. 창이 닫히면 그 주는 `MISSED`이며 사후에 채우지 않는다. `coverage.json`은 영수증이 0개여도 매 실행 쓴다(등록 시각은 첫 영수증, 없으면 git main에서 읽는다). 첫 주가 누락되어도 창이 닫히는 즉시 마지막 시도 사유(없으면 `NO_ATTEMPT_RECORDED`)와 함께 보고된다 |
 | 창 안 구멍 또는 달력 외 행 | 다음 개장까지 24시간 넘게 남았으면 `DEFERRED`. 24시간 이내면 해당 다리를 미판정 사유와 함께 기록한다 |
 
 ### 실행 경로

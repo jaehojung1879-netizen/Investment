@@ -96,6 +96,8 @@ def record(directory: Path, *, clock=None, fetch=None, merged_at=None, code_iden
         signal = window["signalDate"]
         try:
             receipts = B.read_receipts(directory / RECEIPTS, pathway=B.LIVE)
+            B.verify_row_anchors(receipts, directory / RECEIPTS)    # every receipt still sits in committed history as it claims
+            anchor = B.ledger_anchor(directory / RECEIPTS)          # and the working ledger extends every committed version
         except ValueError as exc:
             raise B.AttemptStop(B.REFUSED, "LEDGER_INTEGRITY_FAILED: " + str(exc)) from exc
         if signal in {r["signalDate"] for r in receipts}:      # before any download: a later run in the same window has nothing to do
@@ -119,7 +121,8 @@ def record(directory: Path, *, clock=None, fetch=None, merged_at=None, code_iden
             raise B.AttemptStop(B.REFUSED, "RECEIPT_WINDOW_CLOSED_DURING_RECORDING: download ended " + str(CORE.utc(fetched).isoformat()))
         receipt = B.build_receipt(frame, pathway=B.LIVE, signal_date=signal, created_at_utc=fetched, now_utc=fetched, fetched_at_utc=fetched,
                                   merged_at_utc=merged, spec=spec, spec_digest=B.spec_sha256(), code_identity=identity,
-                                  vendor_package=package, previous_receipt_sha256=B.last_digest(receipts))
+                                  vendor_package=package, previous_receipt_sha256=B.last_digest(receipts),
+                                  ledger_anchor=anchor)
         try:
             receipt = B.append_live_receipt(directory / RECEIPTS, receipt, merged_at_utc=merged, clock=clock)
         except ValueError as exc:
@@ -139,22 +142,40 @@ def record(directory: Path, *, clock=None, fetch=None, merged_at=None, code_iden
     return 0
 
 
-def coverage(directory: Path, *, clock=None) -> int:
+def coverage(directory: Path, *, clock=None, merged_at=None) -> int:
+    """Written on every run, receipts or not: a first eligible week that closed with only DEFERRED attempts (or none) is MISSED from the
+    moment its window closes, not from whenever a later week first records. The registration comes from the first receipt when one exists,
+    otherwise from git (main-only, fail closed); an unregistered spec has nothing due."""
     clock = clock or CORE.system_utc_now
     spec = B.load_spec()
     receipts = B.read_receipts(directory / RECEIPTS, pathway=B.LIVE)
-    if not receipts:
-        _status(directory, action="coverage", status="NOT_STARTED", attempts=len(read_attempts(directory)))
-        return 0
-    auth = receipts[0]["authorization"]
-    report = B.coverage(receipts, read_attempts(directory), merged_at_utc=auth["mergedAtUtc"], floor=auth["registeredFloor"], now_utc=clock(),
+    if receipts:
+        B.verify_row_anchors(receipts, directory / RECEIPTS)
+        B.ledger_anchor(directory / RECEIPTS)
+        merged, floor = receipts[0]["authorization"]["mergedAtUtc"], receipts[0]["authorization"]["registeredFloor"]
+    else:
+        floor = spec["schedule"]["firstEligibleSignalSessionFloor"]
+        try:
+            merged = merged_at if merged_at is not None else B.registration_merged_at()
+        except ValueError as exc:
+            _write_coverage(directory, {"registration": "NOT_REGISTERED", "reason": str(exc), "dueSessions": 0, "recordedSessions": 0,
+                                        "missedSessions": []})
+            _status(directory, action="coverage", status="NOT_REGISTERED", reason=str(exc))
+            return 0
+    report = B.coverage(receipts, read_attempts(directory), merged_at_utc=merged, floor=floor, now_utc=clock(),
                         horizon=spec["outcomeEvaluation"]["horizonSessions"],
                         min_blocks=spec["outcomeEvaluation"]["inheritedFixed"]["minNonOverlappingBlocksPerState"])
-    report.update({"schema": "RP1_B_H1_STATE_COVERAGE_V1", "studyId": B.STUDY, "evidence": False, "productionEffect": "NONE"})
-    (directory / COVERAGE).write_text(json.dumps(report, ensure_ascii=False, sort_keys=True, allow_nan=False) + "\n", encoding="utf-8")
+    report["registration"] = "REGISTERED"
+    _write_coverage(directory, report)
     _status(directory, action="coverage", status="REPORTED", recorded=report["recordedSessions"], due=report["dueSessions"],
             missed=len(report["missedSessions"]), inferenceStatus=report["blockGeometry"]["inferenceStatus"])
     return 0
+
+
+def _write_coverage(directory: Path, report: dict) -> None:
+    report = {**report, "schema": "RP1_B_H1_STATE_COVERAGE_V1", "studyId": B.STUDY, "evidence": False, "productionEffect": "NONE"}
+    directory.mkdir(parents=True, exist_ok=True)
+    (directory / COVERAGE).write_text(json.dumps(report, ensure_ascii=False, sort_keys=True, allow_nan=False) + "\n", encoding="utf-8")
 
 
 def outcomes(directory: Path) -> int:

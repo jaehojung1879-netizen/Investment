@@ -56,13 +56,15 @@
     "SKIPPED": "not this run's turn: outside a weekly decision session's window, before the floor or the first prospective session, or already recorded",
     "DEFERRED": "the provider has not served what the receipt needs (fetch failure, empty response, no traded signal-session close, or a window hole before the final attempt); nothing written, logged in attempts.jsonl, retried by a later run in the window",
     "REFUSED": "an integrity failure (moved code or dependency, unregistered spec, broken ledger chain, rows after the signal session, duplicate dates, changed vendor package, a window that closed during recording); nothing written, logged, workflow warning",
-    "MISSED": "a weekly decision session whose window closed with no receipt; reported by coverage.json with its last attempt, never back-filled"
+    "MISSED": "a weekly decision session whose window closed with no receipt; coverage.json is written on every run, with or without receipts (registration from the first receipt, else from git, main-only), and lists it with its last attempt or NO_ATTEMPT_RECORDED from the moment its window closes; never back-filled"
   },
   "ledger": {
     "location": "signal-history ledger/research-strategies/rp1-b-h1-state-v1/",
     "receipts": "receipts.jsonl: canonical JSON Lines (prospective_receipt_core.canonical), one row per (studyId, signalDate), strictly increasing signal dates, one spec digest per ledger, receiptSha256 over every other field",
-    "chain": "previousReceiptSha256 names the previous row's receiptSha256 (null for the first), so a deleted, reordered or inserted row is refused; every read re-validates every row's digest AND re-derives its legs, adverse state, base session, sessions and window from the calendar",
-    "independence": "separate from Track A (kr-selection-challenger-v1/v2), Track C and every sealed study's receipts; shares only prospective_receipt_core"
+    "chain": "previousReceiptSha256 names the previous row's receiptSha256 (null for the first), so a deleted, reordered or inserted row is refused; every read re-validates every row's digest AND re-derives its legs, adverse state, base session, sessions and window from the calendar. A chain cannot see its own tail being cut, so the tail is anchored separately (gitAnchor).",
+    "independence": "separate from Track A (kr-selection-challenger-v1/v2), Track C and every sealed study's receipts; shares only prospective_receipt_core",
+    "gitAnchor": "Every LIVE receipt carries ledgerAnchor: the signal-history HEAD it was appended to, how many receipts that commit held and the digest of the last one. Before any append (and in every coverage run) rp1_b_h1_state.ledger_anchor requires every version of receipts.jsonl in git history to be a byte prefix of the next and of the working file (a committed truncation is LEDGER_HISTORY_NOT_APPEND_ONLY, an uncommitted cut LEDGER_TAIL_REWRITTEN), and verify_row_anchors requires every receipt's anchor commit to still be an ancestor of HEAD holding exactly the rows it claims (a rewritten history is LEDGER_ANCHOR_COMMIT_NOT_IN_HISTORY or LEDGER_ANCHOR_CONTENT_MISMATCH). A ledger outside a git repository cannot hold a LIVE receipt (LEDGER_ANCHOR_UNAVAILABLE). The ledger workflow's 'git fetch origin signal-history' fetches the branch's full history even from a depth-1 checkout (measured 2026-10-24: 693 commits, only main's commit shallow).",
+    "knownLimit": "The one rewrite the repository cannot detect by itself is a history rewrite (force push) that removes the LAST receipt and every commit that held it, before any later receipt anchored to it exists. The Actions job log of the recording run (which prints receiptSha256) is then the only independent record; no new repository, App or external store is introduced to close it."
   },
   "outcomeEvaluation": {
     "status": "BLOCKED_OUTCOME_CONTRACT_NOT_REGISTERED",
@@ -125,8 +127,8 @@
   },
   "productionEffect": "NONE",
   "codeFileHashes": {
-    "pipeline/rp1_b_h1_state.py": "42b2639147f07201bf10025451e241537fdfc24988422b99ff11c606f021adbd",
-    "scripts/record_rp1_b_h1_state.py": "f1b388d0e73ec4d006b19393e9a7b04971317fcb89666918d0ee4075a8892ba4"
+    "pipeline/rp1_b_h1_state.py": "619fdf76457fc4b181fc40e661f0217fdb2f5fa58ca5ff276cce97494fd88882",
+    "scripts/record_rp1_b_h1_state.py": "dd49bdd92e3b766b5e57f6c158e777211da20c26017d0337cb8435089bf2caa7"
   },
   "scientificDependencies": {
     "contract": "Research-owned modules this study calls are pinned by BYTES (fileHashes): prospective_receipt_core (receipt core), rp1_b_state_receipt (the #264 preview's leg arithmetic), kr_bar_integrity (calendar alignment and volume/close integrity) and kr_selection_challenger (main-only registration, code identity, write-time clock gate). The sealed FAST function, its thresholds and the pinned KRX calendar 2026-10-01..2031-12-31 are pinned by BEHAVIOUR (conformanceDigest over rp1_b_h1_state.conformance_values on fixed synthetic probes). LIVE record, coverage and outcomes refuse SCIENTIFIC_DEPENDENCY_CHANGED; a legitimate change is a new study version.",
