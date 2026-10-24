@@ -57,7 +57,7 @@ FAST는 같은 고정 지수의 추세·변동성, TRANSITION/SLOW는 원 시장
 - PRIMARY의 ^GSPC/KR exact hash 유지. FRED_SP500 이동 창은 신원·최소 250공통일·일관성을 매번 검사. SPY vendor와 CASH/DTB3는 별도 scope, 불일치는 해당 경제성 `UNRESOLVED`. PRIMARY 통과는 비투자가능 가격지수의 결과이지 ETF 경제성 검증 완료가 아니다.
 - **정식 승인 파일·결과·마커 없음, 원격 `rp1-c1` 잠금 ref 없음.** 과거 재취득 성공이 미래 동일성을 보장하지 않는다. Secret/Settings/외부 저장소 추가 0건.
 
-남은 절차는 [기존 §6.4](rp1-c1-us-exposure-ladder-replication.md#64-실행-순서와-사람이-할-일)만 사용한다.
+남은 절차는 [기존 §6.4](rp1-c1-us-exposure-ladder-replication.md#64-실행-순서와-사람이-할-일)만 사용한다. 현재 pin·dry-run 증거·결과 열람 전 소유자 결정 기록·승인 절차는 [소유자 승인 패킷](rp1-c1-us-owner-execution-packet-ko.md)에 모았다. 승인 파일 초안의 확인사항 8개는 소유자가 직접 바꾸기 전까지 `false`다(동결 사양·실행기 변경 없음).
 
 1. 기존 `seal-kr-factor-anatomy-v1.yml` / `main` / `rp1_c1_action=dry-run`: 최신 재취득·hash·readiness·동등성·합성 검사. 이번에는 dispatch하지 않았다.
 2. `authorization-draft --owner <login>`의 exact pin과 별도 CASH 정의·권리·보존 한계를 소유자가 검토하고 기존 형식 승인 파일 PR을 커밋·병합. 템플릿은 승인 아님.

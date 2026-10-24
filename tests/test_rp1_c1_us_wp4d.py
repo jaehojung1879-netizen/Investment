@@ -144,7 +144,24 @@ def test_every_new_source_has_a_rights_class_and_restricted_ones_are_never_commi
 def test_the_committed_template_authorizes_nothing():
     committed = json.loads((ROOT / X.AUTHORIZATION_TEMPLATE_PATH).read_text())
     assert committed == X.authorization_template() and committed["authorizes"] == "NOTHING"
-    assert not (ROOT / X.AUTHORIZATION_PATH).exists()
+
+
+def test_a_committed_authorization_is_the_generated_draft_with_only_the_owner_acknowledgments_set():
+    # Lifecycle-independent. Before the owner's approval PR there is no file, and no result or marker either. Once it is committed it must be
+    # exactly `authorization-draft` for its owner on the current bytes, differing only in the eight acknowledgment booleans the owner sets
+    # (still false means `authorize` refuses it). A harness, spec or freeze edit after approval, or any other hand edit, fails here as well as
+    # at dispatch. After the one execution is sealed the pins are history and only the contract is checked.
+    path = ROOT / X.AUTHORIZATION_PATH
+    if not path.exists():
+        assert not (ROOT / SP.RESULT_PATH).exists() and not (ROOT / SP.MARKER_PATH).exists()
+        return
+    auth = json.loads(path.read_text())
+    assert auth["contract"] == X.CONTRACT and auth["studyId"] == X.STUDY and auth["authorizes"] == X.AUTHORIZES
+    assert set(auth["acknowledgments"]) == set(X.ACKNOWLEDGMENTS) and all(type(v) is bool for v in auth["acknowledgments"].values())
+    if not (ROOT / SP.RESULT_PATH).exists():
+        draft = X.authorization_draft(ROOT, auth["ownerLogin"])
+        assert {k: v for k, v in auth.items() if k != "acknowledgments"} == {k: v for k, v in draft.items() if k != "acknowledgments"}
+        assert X.authorization_status(ROOT)["status"] in ("ISSUED_PINS_MATCH", "INCOMPLETE")
 
 
 def test_the_spec_records_the_route_storage_and_rights_and_the_scientific_digest_is_unchanged():
