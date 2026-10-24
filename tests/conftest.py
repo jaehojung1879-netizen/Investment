@@ -1,8 +1,5 @@
 import sys
 from pathlib import Path
-
-import pytest
-
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 
@@ -25,14 +22,6 @@ SUPERSEDED_BY_NATIVE_ECOS_CLOSURE = {
     "tests/test_alpha_opportunity.py::test_execution_blocked_before_inputs",
     "tests/test_alpha_opportunity.py::test_cli_validation_only_deterministic",
 }
-
-
-@pytest.fixture(autouse=True)
-def _track_b_hook_offline(monkeypatch):
-    """scripts/update_ledger.py runs Track B's recorder (rp1-b-h1-state-v1) in a child process that reads the writer's clock, git and the
-    vendor. Tests of other studies call update_ledger.main and must not depend on the weekday they run on or reach the network, so the hook
-    is a no-op here; tests/test_rp1_b_h1_state.py keeps the real function and exercises it explicitly."""
-    monkeypatch.setattr("scripts.record_rp1_b_h1_state.run_isolated", lambda *args, **kwargs: 0)
 
 
 def pytest_collection_modifyitems(config, items):

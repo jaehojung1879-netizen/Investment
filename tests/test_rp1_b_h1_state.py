@@ -12,7 +12,7 @@ from pipeline import rp1_b_h1_state as B
 from pipeline import rp1_b_state_receipt as PREVIEW
 
 script = importlib.import_module("scripts.record_rp1_b_h1_state")
-REAL_RUN_ISOLATED = script.run_isolated        # tests/conftest.py stubs the hook for every other test; captured before it does
+REAL_RUN_ISOLATED = script.run_isolated        # the real hook; tests below patch it explicitly where the paper ledger calls it
 
 SIGNAL = "2026-10-30"                           # a Friday weekly decision session; next session Monday 2026-11-02
 NEXT_SIGNAL = "2026-11-06"
