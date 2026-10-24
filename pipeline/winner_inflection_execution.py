@@ -98,11 +98,28 @@ def cash_reinvestment_close(raw_close, events):
     return out
 
 
+def reviewed_filings(records):
+    """WID requires BOTH public/acceptance dates; missing evidence never falls back.
+
+    The shared historical helpers retain their own contracts. Reject only this
+    filing, preserving the security and every universe denominator.
+    """
+    accepted, rejected = [], []
+    for record in records:
+        dates = [CP._day(record.get(k)) for k in ("availableFrom", "acceptedDate")]
+        if any(d is None for d in dates):
+            rejected.append({"id": record.get("id"), "ticker": record.get("ticker"),
+                             "reason": "BOTH_PUBLICATION_AND_ACCEPTANCE_DATES_REQUIRED"})
+        else:
+            accepted.append(record)
+    return accepted, rejected
+
+
 def observations(data, spec):
     """Full PIT universe first. No endpoint/maturity or target enters features."""
     source = data["source"]
     prices, as_traded = data["prices"], data["asTraded"]
-    caches = {t: I.FilingStates(records, "US") for t, records in data["filings"].items()}
+    caches = {t: I.FilingStates(reviewed_filings(records)[0], "US") for t, records in data["filings"].items()}
     calendar_end = str((pd.Timestamp(spec["signalEnd"]) + pd.Timedelta(days=15)).date())
     calendar = RC.sessions(spec["inputStart"], calendar_end, "US")
     grid = calendar.to_series().groupby(calendar.to_period("W")).max()
@@ -631,6 +648,7 @@ def execute(data, spec, *, checkpoint=None):
                 "returnInterpretation": spec["returnInterpretation"],
                 "fullUniverseReturnEffect": {"status": "UNRESOLVED", "reason": "conditional own-panel scope and excluded identities cannot identify the full market effect"},
                 "inputBasisProblems": data.get("basisProblems", {}),
+                "withheldFilingMetadata": [r for records in data["filings"].values() for r in reviewed_filings(records)[1]],
                 "scope": "SURVIVOR_CONDITIONED_PUBLIC_RECONSTRUCTION", "folds": reports, "modelFits": fits,
                 "universeReasons": dict(Counter(r.eligibility_reason or "ELIGIBLE" for r in rows)), "universeSha256": E.validate_panel(rows),
                 "unbiasedFullUniverseEvidence": False, "independentOosEvidence": False, "productionPromotion": False}}

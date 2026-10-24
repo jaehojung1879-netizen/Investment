@@ -1,0 +1,84 @@
+{
+  "specId": "wid-us-b-h126-2020-exploration-v1",
+  "scope": "SURVIVOR_CONDITIONED_PUBLIC_RECONSTRUCTION",
+  "basis": "RECONSTRUCTED_AS_TRADED_CASH_REINVEST_EX_CLOSE_V1",
+  "identityPolicy": "OWN_PANEL_AND_DATED_CIK_NO_REPAIR",
+  "acceptedIdentityCategories": [
+    "CURRENT_MEMBER_OWN_PANEL",
+    "REMOVED_FROM_INDEX_STILL_TRADING"
+  ],
+  "cashPolicy": "UNREMUNERATED_USD_NOMINAL",
+  "sizePolicy": "FILED_WEIGHTED_AVERAGE_SHARES_X_AS_TRADED_PRICE_PROXY",
+  "terminalPolicy": "RETAIN_UNRESOLVED_NO_LAST_QUOTE_OR_ZERO_SUBSTITUTION",
+  "allowRedistribution": false,
+  "productionPromotion": false,
+  "claims": {
+    "rights": {
+      "status": "UNRESOLVED",
+      "reviewer": null,
+      "citations": [],
+      "remaining": "document internal research/reuse permission for stock/SPY/actions, Finnhub filings, membership and industry sources; old acquisition/pilot approval is not this permission"
+    },
+    "identity": {
+      "status": "UNRESOLVED",
+      "reviewer": null,
+      "citations": [],
+      "remaining": "review own-panel categories with dated member CIK and visible-filing CIK; ticker reuse/rename/ambiguous categories remain excluded with denominators"
+    },
+    "membershipIndustry": {
+      "status": "REVIEWED_ACCEPTED",
+      "reviewer": "Codex technical review; not owner execution authorization",
+      "citations": [
+        {
+          "reference": "/workspace/wid-inputs/evidence/wid-codex-technical-review-v2-cb894fecb4935c2a06b784ebceee1727c1aabb079e4e94459a742a6044a14977.json",
+          "sha256": "cb894fecb4935c2a06b784ebceee1727c1aabb079e4e94459a742a6044a14977"
+        }
+      ],
+      "remaining": "Full execution still requires owner approval and unresolved claims; no broad empirical certification.",
+      "reviewedScope": "Retrospective public reconstruction only. Unknown/finer labels are excluded by the fixed allowlist; no official historical index-membership or PIT sector certification."
+    },
+    "returnBasis": {
+      "status": "UNRESOLVED",
+      "reviewer": null,
+      "citations": [],
+      "remaining": "verify stock/SPY recovered as-traded quotes, dividend currency/post-split share units and action coverage against source evidence; approve conditional reconstruction or supply validated replacement source in a separate spec, never relabel vendor adjustment as cash reinvestment"
+    },
+    "terminal": {
+      "status": "REVIEWED_ACCEPTED",
+      "reviewer": "Codex technical review; not owner execution authorization",
+      "citations": [
+        {
+          "reference": "/workspace/wid-inputs/evidence/wid-codex-technical-review-v2-cb894fecb4935c2a06b784ebceee1727c1aabb079e4e94459a742a6044a14977.json",
+          "sha256": "cb894fecb4935c2a06b784ebceee1727c1aabb079e4e94459a742a6044a14977"
+        }
+      ],
+      "remaining": "Full execution still requires owner approval and unresolved claims; no broad empirical certification.",
+      "reviewedScope": "Accept only the fixed fail-closed policy: missing/late/stock-swap consideration remains unresolved; verified cash needs exact identity/currency/share basis. No terminal economic values certified by this review."
+    },
+    "size": {
+      "status": "REVIEWED_ACCEPTED",
+      "reviewer": "Codex technical review; not owner execution authorization",
+      "citations": [
+        {
+          "reference": "/workspace/wid-inputs/evidence/wid-codex-technical-review-v2-cb894fecb4935c2a06b784ebceee1727c1aabb079e4e94459a742a6044a14977.json",
+          "sha256": "cb894fecb4935c2a06b784ebceee1727c1aabb079e4e94459a742a6044a14977"
+        }
+      ],
+      "remaining": "Full execution still requires owner approval and unresolved claims; no broad empirical certification.",
+      "reviewedScope": "Filed weighted-average shares times recovered as-traded quote is a ranking PROXY only; split gaps abstain. Price/action truth remains blocked by returnBasis."
+    },
+    "vintage": {
+      "status": "REVIEWED_ACCEPTED",
+      "reviewer": "Codex technical review; not owner execution authorization",
+      "citations": [
+        {
+          "reference": "/workspace/wid-inputs/evidence/wid-codex-technical-review-v2-cb894fecb4935c2a06b784ebceee1727c1aabb079e4e94459a742a6044a14977.json",
+          "sha256": "cb894fecb4935c2a06b784ebceee1727c1aabb079e4e94459a742a6044a14977"
+        }
+      ],
+      "remaining": "Full execution still requires owner approval and unresolved claims; no broad empirical certification.",
+      "reviewedScope": "Retrospective 2026 collection; strict max(publication,acceptance)<signal and 180-day age gate. No claim of contemporaneous observations or unamended vintage."
+    }
+  },
+  "terminalSource": null
+}
