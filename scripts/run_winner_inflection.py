@@ -89,6 +89,7 @@ def load_permitted(root, spec, review, permit):
     prices, volume = frame(quotes), frame(volumes)
     if "SPY" not in prices:
         raise ValueError("SPY_INPUT_MISSING")
+    X.require_spy_action_history(events["SPY"], start, through)
     raw_columns = {}
     for ticker in prices:
         own = prices[ticker].dropna()

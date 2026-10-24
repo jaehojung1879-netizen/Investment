@@ -52,3 +52,41 @@ def test_partial_technical_review_cannot_resolve_rights_identity_or_returns(tmp_
     assert result["status"] == "BLOCKED" and result["outcomeReads"] == result["modelFits"] == 0
     evidence.write_bytes(raw + b"\nTAMPER")
     assert any("UNVERIFIED" in r for r in A.admission(spec, review)["reasons"])
+
+
+@pytest.mark.parametrize("value", [None, "None", "", "0", "0000000000", True, "4343243243432434", "1.0"])
+def test_missing_or_malformed_cik_never_becomes_an_identity(value):
+    assert X.normalized_cik(value) is None
+
+
+def test_valid_cik_padding_is_normalized_without_guessing():
+    assert X.normalized_cik("0000320193") == X.normalized_cik(320193) == "320193"
+
+
+def test_three_missing_ciks_do_not_certify_a_common_issuer():
+    spec = json.loads((ROOT / A.SPEC_PATH).read_bytes())
+    data, config = X.synthetic_fixture(spec)
+    ticker = sorted(data["filings"])[0]
+    data["identity"][ticker]["cik"] = None
+    for r in data["filings"][ticker]:
+        r["cik"] = None
+    for snapshot in data["industries"].snapshots:
+        snapshot["rows"][ticker]["cik"] = None
+    rows = [r for r in X.observations(data, config) if r.ticker == ticker]
+    assert rows and all(r.identity_status == "UNRESOLVED" and not r.investable for r in rows)
+
+
+def test_empty_spy_actions_cannot_relabel_a_total_return_index_as_native():
+    import pandas as pd
+    from pipeline import us_multifactor_inputs as MI
+    dates = pd.to_datetime(["2020-01-06", "2020-01-07"])
+    # This is the actual algorithmic failure mode, on entirely invented values.
+    index = [100., 102.]
+    recovered = MI.as_traded_from_total_return(dates, index, [])
+    assert list(recovered) == index  # algebraic identity does NOT certify raw prices
+    with pytest.raises(ValueError, match="REQUIRES_DISTRIBUTION_HISTORY"):
+        X.require_spy_action_history([], "2011-01-01", "2021-07-06")
+    for events in [[("2022-01-03", 1., 1.)], [("2020-01-07", 0., 2.)], [("2020-01-07", float("nan"), 1.)]]:
+        with pytest.raises(ValueError, match="REQUIRES_DISTRIBUTION_HISTORY"):
+            X.require_spy_action_history(events, "2011-01-01", "2021-07-06")
+    X.require_spy_action_history([("2020-01-07", 1., 1.)], "2011-01-01", "2021-07-06")

@@ -524,7 +524,8 @@ def test_insufficient_class_support_blocks_before_any_numeric_fit(prepared, monk
 
 
 @pytest.mark.parametrize("duplicate_identity", [False, True])
-def test_approved_loader_reconstructs_shared_cash_basis_on_invented_archive(approval, monkeypatch, duplicate_identity):
+@pytest.mark.parametrize("spy_actions", [False, True])
+def test_approved_loader_reconstructs_shared_cash_basis_on_invented_archive(approval, monkeypatch, duplicate_identity, spy_actions):
     import gzip
     repo, review, _, api, *_ = approval
     manifest = {"components": {"price/source": ["price-meta"], "benchmark/source": ["spy-meta"],
@@ -552,7 +553,9 @@ def test_approved_loader_reconstructs_shared_cash_basis_on_invented_archive(appr
             if ref == "quotes": return [{"ticker": "SYN00", "date": d, "Close": p, "Volume": 1e6}
                 for d, p in (("2013-01-07", 100.), ("2013-01-08", 100 * 99 / 98))]
             if ref == "spy": return [{"ticker": "SPY", "date": d, "Close": p} for d, p in (("2013-01-07", 200.), ("2013-01-08", 202.))]
-            if ref == "actions": return [{"ticker": "SYN00", "date": "2013-01-08", "dividend": 2., "split": 1., "applied": True}]
+            if ref == "actions": return [
+                {"ticker": "SYN00", "date": "2013-01-08", "dividend": 2., "split": 1., "applied": True}
+            ] + ([{"ticker": "SPY", "date": "2013-01-08", "dividend": 1., "split": 1., "applied": True}] if spy_actions else [])
             pytest.fail("unadmitted source object")
         def rows(self, path): return []
         def local(self, path):
@@ -560,14 +563,18 @@ def test_approved_loader_reconstructs_shared_cash_basis_on_invented_archive(appr
             row = 'SYN00,7000000,CURRENT_MEMBER_OWN_PANEL\n'
             return gzip.compress(('symbol,cik,sp500IdentityCategory\n' + row * (2 if duplicate_identity else 1)).encode())
     monkeypatch.setattr(CLI.S, "Sources", FakeSources)
-    if duplicate_identity:
+    if not spy_actions:
+        with pytest.raises(ValueError, match="SPY_NATIVE_RECONSTRUCTION_REQUIRES_DISTRIBUTION_HISTORY"):
+            CLI.load_permitted(repo, config, review, permit)
+    elif duplicate_identity:
         with pytest.raises(ValueError, match="DUPLICATE_SOURCE_IDENTITY_SYMBOL"):
             CLI.load_permitted(repo, config, review, permit)
     else:
         data = CLI.load_permitted(repo, config, review, permit)
         assert data["asTraded"].SYN00.iloc[-1] == pytest.approx(99.)
         assert data["prices"].SYN00.iloc[-1] == pytest.approx(101.)
-        assert data["prices"].SPY.iloc[-1] == pytest.approx(202.)
+        assert data["asTraded"].SPY.iloc[-1] == pytest.approx(200.99)
+        assert data["prices"].SPY.iloc[-1] == pytest.approx(201.99)
         assert data["lineage"] and data["receipts"]
 
 

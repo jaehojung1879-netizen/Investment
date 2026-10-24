@@ -115,6 +115,26 @@ def reviewed_filings(records):
     return accepted, rejected
 
 
+def normalized_cik(value):
+    """A missing/malformed identifier is never a shared issuer identity."""
+    import re
+    text = str(value) if value is not None and not isinstance(value, bool) else ""
+    return text.lstrip("0") if re.fullmatch(r"[0-9]{1,10}", text) and int(text) > 0 else None
+
+
+def require_spy_action_history(events, start, through):
+    """Necessary condition for this fixed SPY cash-reinvestment reconstruction.
+
+    The pinned multi-year SPY index has no preserved distributions. Inverting
+    it with an empty event list returns the index unchanged, NOT native prices.
+    One event is not proof of complete history, currency or share units; those
+    remain independent source-admission requirements.
+    """
+    if not any(start <= day <= through and PRC.finite(dividend) and dividend > 0
+               for day, dividend, _ in events):
+        raise ValueError("SPY_NATIVE_RECONSTRUCTION_REQUIRES_DISTRIBUTION_HISTORY")
+
+
 def observations(data, spec):
     """Full PIT universe first. No endpoint/maturity or target enters features."""
     source = data["source"]
@@ -143,7 +163,7 @@ def observations(data, spec):
         for ticker in membership["members"]:
             meta = data["identity"].get(ticker, {})
             sector_row = ((sector or {}).get("rows") or {}).get(ticker, {})
-            cik = str(sector_row.get("cik", "")).lstrip("0")
+            cik = normalized_cik(sector_row.get("cik"))
             cache = caches.get(ticker)
             n = bisect_left(cache.days, day) if cache else 0
             if (ticker, n) not in control_cache:
@@ -154,11 +174,11 @@ def observations(data, spec):
                 index = FD.index_filings(visible)
                 key = CP.current_key(index)
                 shares, _, share_record = CP.carried_share_count(index, key) if key is not None else (None, None, None)
-                control_cache[ticker, n] = ({str(r.get("cik", "")).lstrip("0") for r in visible}, shares,
+                control_cache[ticker, n] = ({normalized_cik(r.get("cik")) for r in visible}, shares,
                                            CP.visible_day(share_record).isoformat() if share_record else day)
             filing_ciks, shares, share_day = control_cache[ticker, n]
             category = meta.get("sp500IdentityCategory")
-            identity_ok = bool(cik and filing_ciks == {cik} and str(meta.get("cik", "")).lstrip("0") == cik
+            identity_ok = bool(cik and filing_ciks == {cik} and normalized_cik(meta.get("cik")) == cik
                                and category in spec["acceptedIdentityCategories"])
             identity = "US:CIK:" + cik + ":" + ticker if identity_ok else "UNRESOLVED:" + ticker
             state = caches[ticker].at(day) if ticker in caches else {"fields": {}, "levels": {}, "availableFrom": None, "sourceIds": []}
