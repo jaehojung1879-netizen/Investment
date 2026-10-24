@@ -1,0 +1,130 @@
+{
+  "acknowledgments": {
+    "economicReadingIsDescriptiveAndCannotChangeTheDecision": false,
+    "frozenRuleReplicationNotValidation": false,
+    "licensedSourceBytesStayRunnerTemporaryAndNeverPublished": false,
+    "noProductionOrPortfolioChange": false,
+    "noThresholdWindowRuleOrCandidateChangeAfterTheResult": false,
+    "oneShotFailureAfterTheLockConsumesTheStudy": false,
+    "publiclyKnownUsHistory": false,
+    "separateCashEconomicSpecReviewed": false
+  },
+  "authorizes": "ONE_FORMAL_EXECUTION",
+  "contract": "RP1_C1_US_EXPOSURE_SCOPED_PRIMARY_AND_CASH_V1",
+  "instructions": "DRAFT. It authorizes nothing until the owner sets every acknowledgment to true and commits it at docs/research-program/authorizations/rp1-c1-us-exposure-execution-authorization.json",
+  "ownerLogin": "jaehojung1879-netizen",
+  "pins": {
+    "cashEconomicScientificSha256": "50f1bbbdf671eeb5616e30ffef0475ec7a01bd171480cbb740052a4b748fc3e5",
+    "harness": {
+      ".github/workflows/seal-kr-factor-anatomy-v1.yml": "dcf93e3d19f0372ad7fd6d29efee6fd7f932156bf6095789e6601e0693e5edcf",
+      "pipeline/rp1_c1_us_execution.py": "3790c0ee359dd14cf93ffee82d714af374b724569e8b26620d1596d3283102e0",
+      "pipeline/rp1_c1_us_validator.py": "9d434932d494f7d8835cd4b6a1b86f4d3f62e60cfe85e28e1b642bcb06444e19",
+      "scripts/run_rp1_c1_us_wp4d.py": "d2f14e8c7b682188e63673d88fa44166e9bccf0a62bba729a779b795b0ffd5d7"
+    },
+    "scientificSha256": "ad454ebbf2d7f0834b9de8ac136ba7842855d49146dbf1b123e1538fdc615252",
+    "sourceFreeze": {
+      "analysisFiles": {
+        "FRED_DTB3/audit.json": "225f73fe466ba3ebc7f73bde72400a791b130868fa5c763f580b155053e476e3",
+        "FRED_DTB3/normalized.csv": "17749d8dce44117bd02be8e6ccde36428482516551c6b75d72de2978adc4eb73",
+        "FRED_DTB3/raw_observations.json": "8632cfc579835dd24afa5bd991578cf5ebaeea70a67dc5742906b46f055acfe1",
+        "FRED_DTB3/raw_series.json": "0e7a88f7b63ca7ad22f74e36914a4cb7fee32f71103f1d0b8b8bb6469a87e5ec",
+        "FRED_SP500/audit.json": "89b421887df5a33ea8eb215e3c9cf909f2826624e82c2839d05dda93eb8d7f58",
+        "FRED_SP500/normalized.csv": "8a59872f7bd9dbb0fb905765c6e390ff559a6ef248020f8c818d76a2892f4543",
+        "FRED_SP500/raw_observations.json": "198df63538388eee8f59112d6cddff0b8aa4579f820359b6c14b988875712bbb",
+        "FRED_SP500/raw_series.json": "d21867d635df63c4444d5766997e490e19d9484a1d9771e8fee044e25c3eba09",
+        "YAHOO_GSPC/audit.json": "58338aa6e801ba66fbf8c64562a24194bfaf878b22aee04842806be75cae393e",
+        "YAHOO_GSPC/normalized.csv": "de1ec758a8a40582348ccb689136b44ef880db8fb4a0080cf098f69492d8781b",
+        "YAHOO_GSPC/raw_chart.json": "50f1cb8c73804d85f497ce91b08b9702eb3165ebefe04a5f6dd1ed49b1373b12",
+        "YAHOO_SPY/audit.json": "c04feda1cefc93547302fb59df4164ba406f4bdb90291901401e7e41f8fd29a3",
+        "YAHOO_SPY/cash_input.json": "169a690661277a7a66ee45e4e2669a21262818613f833968cbec62da8870468d",
+        "YAHOO_SPY/normalized.csv": "9a2335f049b66cd9744f0831c138c9f1c87a9471d23facf592c9f77e92067e9c",
+        "YAHOO_SPY/raw_chart.json": "fceb842cc7944166b08e9df8728d13b7de7b205a7588ab927681b31e81d75d78",
+        "audit.json": "691d3af9b956e764d6465f0d59e808e260ad80e01de406d14a1c78985df2247b",
+        "normalization.json": "80fde337c0c3862f7a36d10c900932e74e1e1569f39df432bc275474f9c97db6"
+      },
+      "freezeRunId": "39080239146",
+      "manifestPath": "docs/research-program/sources/rp1-c1-us-source-freeze-39080239146.json",
+      "manifestSha256": "de23b67b75ad3d33b3ca1d62d98a42d9e7c8f103e347df4759dd7140472f1ed0",
+      "normalization": {
+        "codeHashes": {
+          "pipeline/kr_market_risk_source_parse.py": "44b30dae50b02a94c1bc3ab0f2f004dd9e1fcffe5cefeca8b7e96e8db90b6f05",
+          "pipeline/price_adjustment.py": "ebdde717be22277315186d5f302642cbc8a057fedee84192b7af14b15c405892",
+          "pipeline/prospective_receipt_core.py": "0f5344b09e28a4b9e9df5839bb6fc11f8ace70a4c71c01c6915ae753857ef90f",
+          "pipeline/replay_calendar.py": "56116f837e8ae3b9ca43c27c87b3be8bcf608172a761879a6b1284a39c9a3ab2",
+          "pipeline/rp1_c1_us_refetch.py": "dff4e5d493ca2f4dcfcb388172ac949de3549001972d25936b2ec7b9f6e34db1",
+          "pipeline/rp1_c1_us_sources.py": "6927bdfe61abd7f95294de50df89e3393f81f5a531ffb28b9eb3aaa41ee5adf5",
+          "pipeline/us_dual_benchmark_data.py": "5b4fbb00a9753ea72392cf2daab6f29aa06cee5a816013679fd2605ff02cdce3",
+          "pipeline/winner_inflection_execution.py": "efbc6f7f61f83c4e8d4f2543bdf7ead42970e44ce140a64f2842f9e547e78b7d",
+          "requirements.txt": "b874e2c2c8bd5f4b0bc01b99f988d37d13c9d5018e7fb09992a6cdde6e94edb8",
+          "scripts/acquire_kr_market_risk_sources.py": "f0c31208a40f31cb4f3b7600256b789923e0aa3a32092d2d1d6f0dc25debe7cf",
+          "scripts/acquire_rp1_c1_us_sources.py": "7cbe2dfa269276e488f30332d92645e00fb64c3b20c3c7a7098a6ceed0b596ce"
+        },
+        "contract": {
+          "admissionVersion": "SCOPED_PRIMARY_VENDOR_AND_CASH_ECONOMIC_V1",
+          "afterEnd": "append-only data excluded; revisions to ANY bounded input, including adjusted close, refuse even if caused by a later action",
+          "calendar": "retain vendor dates, including off-calendar dates; no fill/sort/dedup/splice",
+          "cashInput": "exact native close, identity, dates and all actions; adjclose excluded ONLY from the separately versioned cash economic input",
+          "dates": "exchange-local vendor bar date (timestamp + gmtoffset), canonical UTC noon; FRED observation date",
+          "endInclusive": "2026-09-17",
+          "excluded": [
+            "fetch time",
+            "HTTP envelope",
+            "current quote metadata",
+            "outside-window rows/actions",
+            "unused OHLCV"
+          ],
+          "fredFields": [
+            "date",
+            "value",
+            "id",
+            "units",
+            "frequency",
+            "seasonal_adjustment_short"
+          ],
+          "numbers": "exact decimal strings in bounded vendor context; existing parser float64 repr in normalized.csv; no rounding or rebasing",
+          "referenceCrossCheck": "FRED_SP500 moving window is re-derived and freshly identity/coverage/CONSISTENT checked; its full-series hash is audit-only, never permanent PRIMARY equality",
+          "requestBounds": {
+            "fredObservationEndInclusive": "2026-09-17",
+            "yahooEndExclusiveUtc": "2026-09-18",
+            "yahooStartUtc": "1990-01-01"
+          },
+          "startInclusive": "1990-01-01",
+          "version": "RP1_C1_HASH_REFETCH_V2",
+          "yahooFields": [
+            "close",
+            "SPY adjclose",
+            "all corporate-action types and fields within the bounded dates"
+          ]
+        }
+      },
+      "scopedInputs": {
+        "CASH_ECONOMIC": {
+          "FRED_DTB3/audit.json": "225f73fe466ba3ebc7f73bde72400a791b130868fa5c763f580b155053e476e3",
+          "FRED_DTB3/normalized.csv": "17749d8dce44117bd02be8e6ccde36428482516551c6b75d72de2978adc4eb73",
+          "FRED_DTB3/raw_observations.json": "8632cfc579835dd24afa5bd991578cf5ebaeea70a67dc5742906b46f055acfe1",
+          "FRED_DTB3/raw_series.json": "0e7a88f7b63ca7ad22f74e36914a4cb7fee32f71103f1d0b8b8bb6469a87e5ec",
+          "YAHOO_SPY/cash_input.json": "169a690661277a7a66ee45e4e2669a21262818613f833968cbec62da8870468d",
+          "normalization.json": "80fde337c0c3862f7a36d10c900932e74e1e1569f39df432bc275474f9c97db6"
+        },
+        "PRIMARY": {
+          "YAHOO_GSPC/audit.json": "58338aa6e801ba66fbf8c64562a24194bfaf878b22aee04842806be75cae393e",
+          "YAHOO_GSPC/normalized.csv": "de1ec758a8a40582348ccb689136b44ef880db8fb4a0080cf098f69492d8781b",
+          "YAHOO_GSPC/raw_chart.json": "50f1cb8c73804d85f497ce91b08b9702eb3165ebefe04a5f6dd1ed49b1373b12",
+          "normalization.json": "80fde337c0c3862f7a36d10c900932e74e1e1569f39df432bc275474f9c97db6"
+        },
+        "VENDOR_ECONOMIC": {
+          "FRED_DTB3/audit.json": "225f73fe466ba3ebc7f73bde72400a791b130868fa5c763f580b155053e476e3",
+          "FRED_DTB3/normalized.csv": "17749d8dce44117bd02be8e6ccde36428482516551c6b75d72de2978adc4eb73",
+          "FRED_DTB3/raw_observations.json": "8632cfc579835dd24afa5bd991578cf5ebaeea70a67dc5742906b46f055acfe1",
+          "FRED_DTB3/raw_series.json": "0e7a88f7b63ca7ad22f74e36914a4cb7fee32f71103f1d0b8b8bb6469a87e5ec",
+          "YAHOO_SPY/audit.json": "c04feda1cefc93547302fb59df4164ba406f4bdb90291901401e7e41f8fd29a3",
+          "YAHOO_SPY/normalized.csv": "9a2335f049b66cd9744f0831c138c9f1c87a9471d23facf592c9f77e92067e9c",
+          "YAHOO_SPY/raw_chart.json": "fceb842cc7944166b08e9df8728d13b7de7b205a7588ab927681b31e81d75d78",
+          "normalization.json": "80fde337c0c3862f7a36d10c900932e74e1e1569f39df432bc275474f9c97db6"
+        }
+      }
+    },
+    "specSha256": "4106709c48690a230e6ee07c782a5ea2d3374b3e8780bf31ecbdad97b0a00127"
+  },
+  "studyId": "rp1-c1-us-exposure-ladder-replication-v1"
+}
