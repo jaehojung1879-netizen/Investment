@@ -2,17 +2,17 @@
   "study": "historical-alpha-discovery-v1",
   "evidenceClass": "EXPLORATORY_ON_PREVIOUSLY_EXPOSED_HISTORY",
   "filesSha256": {
-    "README.md": "f3cc2f2cd3bb2038a71cf4450fb26e2b8c3ccca690ef6fe7d7aae5d16a244210",
+    "README.md": "a618bdae5869dd8383767f5757b57611e2bbee34f41528989d2c5cd0f2ac9e36",
     "__init__.py": "635e469f1e8c6ac77d9f0b524dc747ecee156d305ee5164ed7d00920a306a588",
-    "analysis.ipynb": "51cd1aa9e8154c78701b76f126678698da827b412fe48150641d9f80f5e695c6",
+    "analysis.ipynb": "878abd93ad99699465fb47894cf78d8d017f94b02cfeba9485d907eeb2e737c9",
     "diagnostics.py": "57b75e405211bb7f1933adab79176ff7e786617b777f65ab0e5c698d8a9d818c",
-    "results/blocks.json": "07753ac062ffb1b76a075b54ddeffde96db6125f389795a149c6a260733c3c02",
+    "results/blocks.json": "74c282ee5e9bc07afc67b47604c03a731edf6c69a604080c8542e0cd0cbcd5d9",
     "results/coverage.json": "471590a5a1f6910ccc90667c7a2575d5754937341b5e7fb2802f224b3531b5c1",
     "results/diagnostics/annual-path-returns.csv": "24299631db2bae83c470372feef58085cb64079aa5686da746503ff89319ecbc",
     "results/diagnostics/date-balanced-ic.csv": "dd5139fec3fa7316fb2227b972d573fa35361f4aeaeec18af69f9bbc2eea1a37",
     "results/diagnostics/diagnostics.json": "9a0065be8de8970408054addf7f123ead31d19bd2a4a925bb845a473786515b7",
     "results/diagnostics/forward-labels.csv": "a25f560e41a71998be0335d649fc540afcb234386691f99eeb94f3a5a42d2239",
-    "results/execution-log.json": "10c581abe136d09975ec18836873ed2680386a1b7d7c882c977bd93e647c59d4",
+    "results/execution-log.json": "1046fee54b43086c835003c8b068b837cad96db0a608430457f00d39d5092d1a",
     "results/measured-control.png": "e00ba653b110f212123b038a2e434a2c1702e310534df9bfdff0961927aae1ce",
     "results/nav-DEVELOPMENT_THROUGH_2019-EX_POST_CONTINUING_NAME_CONDITIONAL-126-1-ETF.csv": "9330c4f45c2085bef7b1b097a64749b94c398e58c56f19f59166d67475900abb",
     "results/nav-DEVELOPMENT_THROUGH_2019-EX_POST_CONTINUING_NAME_CONDITIONAL-126-1-OVERNIGHT.csv": "9e5864acf8dd871eb7cf1c294f2eefd10fc7562966f664135264347d62fbefe9",
@@ -44,23 +44,27 @@
     "results/nav-FULL-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-126-2-ETF.csv": "a770d2b2214ee1f9ca95f081b3d001e6a062fbcba0724adea2b8f14e965da31a",
     "results/nav-FULL-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-252-1-ETF.csv": "3bedf36636b73d61c8ddafe936202a60f0ad0ca42f551fdd8ae3fc17211259db",
     "results/nav-FULL-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-252-2-ETF.csv": "a770d2b2214ee1f9ca95f081b3d001e6a062fbcba0724adea2b8f14e965da31a",
-    "results/portfolio-summary.csv": "ddb88984f832bd9a8fa5616f0b7930e13ffa401876c875aff47d0b00e11b858a",
+    "results/portfolio-summary.csv": "760820b5501f752be3322476c71fa7cd91738389e4d4699a001286fc7a33ec25",
     "results/signal-features.csv": "e3f77105561d66932f2eb47234ecbe7259371746b4c037b634b96dbb7fb97aff",
-    "results/summary.json": "85a1d647f7ee4facaff0bfbe01f98f54ad85607f23ad3a7e89d8f753869897bc",
-    "run.py": "ea4209a1890114e7b7cd3b30fa49ecede5d863dada20b1eb3267ae246d0ef7b9",
+    "results/summary.json": "808634f4699289e8ca2fa81f334130937e91b2425581676daae97f48c8278ef0",
+    "results/trade-decomposition.csv": "35061668dc3848da39aae0b815670ca86b19a518b21dd7dd46ddb8b022b3119f",
+    "run.py": "688573d3c8e565a55369e916511941718316a48b6017355c012b2d100003ca6e",
     "spec.json": "540f9cac43e098326218cd55028c42f1abe5d62d22a0860de2c988666d126b0a",
-    "test_discovery.py": "44704039b3633939350891cb6d78a40977a1e08fba6ae0b47e8934ebfc33b74d"
+    "tables.py": "5496a9b9aadcba0961440eb132fec215e8c3dc2019291a02e98ba02c21287303",
+    "test_discovery.py": "7506009d025e17f4aa1929da98c60b9de1d18e28d9e1947b758139f573e4643f"
   },
   "oldStudyRerun": false,
   "mainMerged": false,
   "liveReceiptOrOrderWritten": false,
   "validation": {
-    "syntheticTestsPassed": 18,
+    "syntheticTestsPassed": 19,
     "globalRuff": "PASS",
     "compileall": "PASS",
     "temporarySeedAndValidation": "PASS",
     "notebookTopToBottom": "PASS",
     "figureVisuallyInspected": true,
-    "fullPytest": "NOT_RUN_USER_FORBIDS_SEALED_REAL_DATA_RECALCULATION"
-  }
+    "fullPytest": "NOT_RUN_USER_FORBIDS_SEALED_REAL_DATA_RECALCULATION",
+    "remoteCi": "NOT_RUN_0_BRANCH_WORKFLOW_RUNS_NO_PR"
+  },
+  "draftPr": "NOT_CREATED_GITHUB_GRAPHQL_FORBIDDEN"
 }

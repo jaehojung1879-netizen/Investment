@@ -279,7 +279,7 @@ def block_path(
         total[-1] -= asset * ratios[-1] * sell
         costs["entryFraction"] += fallback - asset
         costs["exitFraction"] += asset * ratios[-1] * sell
-        costs["grossTurnover"] += asset * (1 + ratios[-1])
+        costs["grossTurnover"] += asset * (float(charge_entry) + ratios[-1] * float(charge_exit))
     return (None if failures else total), failures, costs
 
 

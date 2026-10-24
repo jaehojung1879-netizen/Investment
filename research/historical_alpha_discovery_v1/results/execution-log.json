@@ -61,9 +61,20 @@
     "maximumIndependentCompoundReconciliationGap": 8.02439892311213e-10
   },
   "repairsAfterFirstExecution": [
-    "Formatting only in run.py; no signal, selection, horizon, cost or path-validity rule changed.",
+    "Formatting and passive ETF trade-turnover diagnostic fix in run.py; no signal, selection, horizon, return, cost charge or path-validity rule changed.",
     "Post-execution diagnostics separately reported. Missing FY2014 accounting shard classified ABSENT rather than treated as zero."
   ],
   "oldSealedExecutorsCalled": false,
-  "fullPytestNotRun": "Contains real-data sealed KR equivalence recalculation; user prohibits old study reruns."
+  "fullPytestNotRun": "Contains real-data sealed KR equivalence recalculation; user prohibits old study reruns.",
+  "finalMetadataCorrection": {
+    "passiveEtfTurnoverCorrectedBlocks": 280,
+    "allReturnRiskSelectionsCostsAndComparisonsUnchanged": true,
+    "codeSha256": "688573d3c8e565a55369e916511941718316a48b6017355c012b2d100003ca6e",
+    "runtime": {
+      "python": "3.12.14",
+      "numpy": "2.3.1",
+      "pandas": "2.3.0",
+      "exchangeCalendars": "4.11.1"
+    }
+  }
 }

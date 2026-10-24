@@ -30,8 +30,8 @@
   따로 계산한다. 개발 경계를 걸친 블록은 분리 비교에서 제외한다.
   역사에 이미 노출됐으므로 이 구분을 독립 확증으로 부르지 않는다.
 
-명세·코드는 신규 결과 계산 전에 `dc73bae`에서 고정했다. 이후 run.py 변경은
-포맷뿐이며 pinned 런타임 재실행의 금융 결과 차이는 **0**이었다.
+명세·코드는 신규 결과 계산 전에 `dc73bae`에서 고정했다. 이후 run.py 변경은 포맷과 passive ETF 중간 블록의 회전율 집계 수정뿐이며
+선택·수익률·비용·경로 판정은 바꾸지 않았다. pinned 런타임 재실행의 금융 결과 차이는 **0**이었다.
 별도 `diagnostics.py`는 실행 후 기술 진단이며 선택·기간·수익 판정 규칙을 바꾸지 않는다.
 
 ## 결과
@@ -118,12 +118,14 @@ git fetch --depth=1 origin a0a31895699aacaf3f8f30401b348703e39088b7
 # Optional post-execution diagnostics, after results exist at the default study path:
 .venv-discovery/bin/python -m research.historical_alpha_discovery_v1.run
 .venv-discovery/bin/python -m research.historical_alpha_discovery_v1.diagnostics
+.venv-discovery/bin/python -m research.historical_alpha_discovery_v1.tables
 ```
 
 실행 노트북은 `analysis.ipynb`. 저장된 결과·그림·독립 복리 대조 30개를 포함하며
-위에서 아래까지 오류 없이 실행했다. 최초 런타임과 pinned 패키지 재실행의 금융 차이는 0,
+위에서 아래까지 오류 없이 실행했다. 노트북 재실행에는 nbformat 5.11.1, nbclient 0.11.0,
+ipykernel 7.4.0, matplotlib 3.10.8을 별도 설치한다. 최초 런타임과 pinned 패키지 재실행의 금융 차이는 0,
 30개 완성 NAV의 독립 복리 대조 최대 오차는 8.1e-10 미만이다.
-합성 테스트 18개, 전역 ruff, compileall, 별도 /tmp seed 생성·검증을 통과했다.
+합성 테스트 19개, 전역 ruff, compileall, 별도 /tmp seed 생성·검증을 통과했다.
 **전체 pytest는 실행하지 않았다:** 실제 봉인 KR 결과를 재계산하는 기존 테스트가 있어
 이번 지시의 봉인 연구 재실행 금지와 충돌한다. 원 테스트와 워크플로는 변경하지 않았다.
 GitHub CI 상태는 실제 원격 HEAD의 결과로 별도 확인해야 하며 로컬 통과를 대체하지 않는다.

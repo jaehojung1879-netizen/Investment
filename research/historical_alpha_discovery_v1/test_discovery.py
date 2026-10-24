@@ -110,6 +110,13 @@ def test_passive_etf_does_not_pay_rebalance_fees():
     assert first[-1] * last[-1] == pytest.approx(whole[-1])
 
 
+def test_passive_etf_mid_block_has_no_trade_turnover():
+    m, _, _ = fixture()
+    p, failures, costs = R.block_path(m, [], "ETF", 200, 300, {}, charge_entry=False, charge_exit=False)
+    assert not failures and p[-1] > 1
+    assert costs == {"entryFraction": 0.0, "exitFraction": 0.0, "grossTurnover": 0.0}
+
+
 def test_capacity_uses_actual_compounded_notional_and_raw_value():
     m, _, _ = fixture()
     row = {"ticker": "TEST.KS", "median60": 1e9}
