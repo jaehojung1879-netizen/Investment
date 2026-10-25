@@ -3,6 +3,10 @@
 **상태:** `DESIGN_PROPOSAL_ONLY / OUTCOME_EXPOSED / NOT_APPROVED / NO_EXECUTION`  
 **범위:** 지수 노출층의 신규 탐색 연구. 기존 `kr-market-risk-model-v1` / `rp1-c1-us-exposure-ladder-replication-v1` 사양·실행·봉인·태그·원본·운영 포트폴리오를 **변경하지 않음**.
 
+**Stage 1 구현:** [Market Research 프로그램](market-research-program-v1-ko.md)과 [기계 제안 명세](proposals/market-research-c1c-v1.json)를
+추가했다. 아래 원 제안의 20세션·0%·2×2는 바꾸지 않았다. `market_research_c1c`의 순수 함수/합성 검사만 있으며,
+새 역사 실행 경로는 없다. 구현·데이터 가용성·경험적 지지는 별도 상태이며 Claude 독립 감사를 기다린다.
+
 ## 1. 이번 질문과 근거
 
 2026-10-24 미국 정식 일회성 C1 결과의 관찰:

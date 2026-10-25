@@ -1,0 +1,43 @@
+{
+  "observedAtUtc": "2026-10-25T00:19:00.913268+00:00",
+  "main": "b589d658eedd3c47f555df20db86f37792ee3358",
+  "mainRegistrationMergedAtUtc": "2026-10-24T23:17:54Z",
+  "signalHistoryHead": "d646a69cfc8befdf2b2ad26179c486c13d1faebd",
+  "firstEligibleSignal": "2026-10-30",
+  "receiptWindowKst": [
+    "2026-10-30T18:00:00+09:00",
+    "2026-11-02T09:00:00+09:00 exclusive"
+  ],
+  "observations": [
+    {
+      "file": "publication-status.json",
+      "url": "https://raw.githubusercontent.com/jaehojung1879-netizen/Investment/d646a69cfc8befdf2b2ad26179c486c13d1faebd/ledger/research-strategies/rp1-b-h1-state-v1/publication-status.json",
+      "httpStatus": 404
+    },
+    {
+      "file": "coverage.json",
+      "url": "https://raw.githubusercontent.com/jaehojung1879-netizen/Investment/d646a69cfc8befdf2b2ad26179c486c13d1faebd/ledger/research-strategies/rp1-b-h1-state-v1/coverage.json",
+      "httpStatus": 404
+    },
+    {
+      "file": "publication-status.record.json",
+      "url": "https://raw.githubusercontent.com/jaehojung1879-netizen/Investment/d646a69cfc8befdf2b2ad26179c486c13d1faebd/ledger/research-strategies/rp1-b-h1-state-v1/publication-status.record.json",
+      "httpStatus": 404
+    },
+    {
+      "file": "publication-status.outcomes.json",
+      "url": "https://raw.githubusercontent.com/jaehojung1879-netizen/Investment/d646a69cfc8befdf2b2ad26179c486c13d1faebd/ledger/research-strategies/rp1-b-h1-state-v1/publication-status.outcomes.json",
+      "httpStatus": 404
+    },
+    {
+      "file": "receipts.jsonl",
+      "url": "https://raw.githubusercontent.com/jaehojung1879-netizen/Investment/d646a69cfc8befdf2b2ad26179c486c13d1faebd/ledger/research-strategies/rp1-b-h1-state-v1/receipts.jsonl",
+      "httpStatus": 404
+    }
+  ],
+  "assessment": "REGISTERED_BEFORE_FIRST_SIGNAL; LIVE_WRITER_NOT_YET_OBSERVED",
+  "sourceDownloadVerified": false,
+  "stateReceiptCreated": false,
+  "B1OutcomeGate": "BLOCKED_OUTCOME_CONTRACT_NOT_REGISTERED",
+  "B2": "BLOCKED_NO_SUPPORTED_STUDY_A_P_EQUALS_1"
+}
