@@ -65,11 +65,82 @@ def excluding(weights, removed, *, scope, minimum=5):
     return {k: w / total for k, w in kept.items()}
 
 
-def common_ids(base, alternative, targets, *, scope):
-    """Paired evaluation population; predictions must already have been frozen."""
+def paired_population_receipt(base, alternative, targets, *, scope,
+                              intended_by_block, missing_reasons=None):
+    """Conservative signal-frozen paired outcome admission; synthetic only.
+
+    A block with any missing outcome or forecast is entirely blocked. This
+    prevents a survivor-only intersection from silently entering a paired test.
+    """
     _synthetic(scope)
-    return tuple(sorted(k for k in targets if _finite(targets[k])
-                        and _finite(base.get(k)) and _finite(alternative.get(k))))
+    if not isinstance(intended_by_block, dict) or not intended_by_block:
+        raise ValueError("INTENDED_SIGNAL_POPULATION_REQUIRED")
+    if not all(isinstance(x, dict) for x in (base, alternative, targets)):
+        raise ValueError("PAIRED_INPUTS_MUST_BE_DICTS")
+    missing_reasons = {} if missing_reasons is None else missing_reasons
+    if not isinstance(missing_reasons, dict):
+        raise ValueError("INVALID_MISSING_REASONS")
+    reasons = {"UNKNOWN_TERMINAL_ECONOMICS", "SOURCE_OUTAGE",
+               "OUTCOME_NOT_MATURED", "RETURN_BASIS_UNRESOLVED",
+               "CORPORATE_ACTION_UNRESOLVED"}
+    ids = []
+    for block, members in intended_by_block.items():
+        if not isinstance(block, str) or not block or not isinstance(members, (list, tuple)) or not members:
+            raise ValueError("INVALID_SIGNAL_BLOCK")
+        if any(not isinstance(x, str) or not x for x in members) or len(set(members)) != len(members):
+            raise ValueError("INVALID_SIGNAL_MEMBERS")
+        ids.extend(members)
+    if len(set(ids)) != len(ids):
+        raise ValueError("DUPLICATE_MEMBER_ACROSS_BLOCKS")
+    if any(set(d) - set(ids) for d in (base, alternative, targets, missing_reasons)):
+        raise ValueError("POST_SIGNAL_SURVIVOR_ADDITION")
+    if any(r not in reasons for r in missing_reasons.values()):
+        raise ValueError("UNKNOWN_OUTCOME_MISSING_REASON")
+    blocks, accepted, missing_total = {}, [], 0
+    for block, members in sorted(intended_by_block.items()):
+        missing = {}
+        for x in members:
+            value = targets.get(x)
+            if not _finite(value) or value < -1:
+                missing[x] = missing_reasons.get(x, "UNDOCUMENTED_MISSING_OUTCOME")
+            elif x in missing_reasons:
+                raise ValueError("CONTRADICTORY_OUTCOME_MISSING_REASON")
+            elif not _finite(base.get(x)):
+                missing[x] = "BASE_FORECAST_MISSING"
+            elif not _finite(alternative.get(x)):
+                missing[x] = "ALT_FORECAST_MISSING"
+        missing_total += len(missing)
+        if not missing:
+            accepted.extend(members)
+        blocks[block] = {
+            "intendedIds": tuple(sorted(members)),
+            "status": "BLOCKED" if missing else "COMPLETE",
+            "missing": {x: missing[x] for x in sorted(missing)},
+        }
+    ready = missing_total == 0
+    return {
+        "status": "COMPLETE" if ready else "BLOCKED_INCOMPLETE_INTENDED_POPULATION",
+        "evidenceClass": "SYNTHETIC_CONTRACT_ONLY",
+        "intendedIds": tuple(sorted(ids)),
+        "intendedCount": len(ids), "missingCount": missing_total,
+        "completeBlockCount": sum(x["status"] == "COMPLETE" for x in blocks.values()),
+        "blockedBlockCount": sum(x["status"] == "BLOCKED" for x in blocks.values()),
+        "coverage": len(accepted) / len(ids),
+        "commonIds": tuple(sorted(accepted)) if ready else (),
+        "inferentialComparisonAllowed": ready,
+        "blocks": blocks,
+    }
+
+
+def common_ids(base, alternative, targets, *, scope, intended_by_block=None,
+               missing_reasons=None):
+    """No silent intersection: require complete signal-frozen paired population."""
+    receipt = paired_population_receipt(
+        base, alternative, targets, scope=scope,
+        intended_by_block=intended_by_block, missing_reasons=missing_reasons)
+    if not receipt["inferentialComparisonAllowed"]:
+        raise ValueError("BLOCKED_INCOMPLETE_INTENDED_POPULATION")
+    return receipt["commonIds"]
 
 
 def training_ids(rows, test_start, *, scope, embargo=21):

@@ -61,9 +61,58 @@ class IndustryContractTests(unittest.TestCase):
         self.assertAlmostEqual(sum(c.excluding(w, {"SYN:0"}, **S).values()), 1)
 
     def test_paired_population_cannot_reward_missing_alternative(self):
-        ids = c.common_ids({"a": 1, "b": 2, "c": 3}, {"a": 1, "c": None},
-                           {"a": .1, "b": .9, "c": .2}, **S)
-        self.assertEqual(ids, ("a",))
+        frozen = {"SYN:DATE1": ("a", "b", "c")}
+        args = ({"a": 1, "b": 2, "c": 3},
+                {"a": 1, "c": None}, {"a": .1, "b": .9, "c": .2})
+        receipt = c.paired_population_receipt(*args, intended_by_block=frozen, **S)
+        self.assertEqual(receipt["status"], "BLOCKED_INCOMPLETE_INTENDED_POPULATION")
+        self.assertEqual(receipt["missingCount"], 2)
+        self.assertEqual(receipt["commonIds"], ())
+        self.assertFalse(receipt["inferentialComparisonAllowed"])
+        with self.assertRaisesRegex(ValueError, "BLOCKED_INCOMPLETE"):
+            c.common_ids(*args, intended_by_block=frozen, **S)
+
+    def test_terminal_missing_does_not_promote_survivor_only_winners(self):
+        cohort = {"SYN:INDUSTRY": ("winner", "terminal")}
+        receipt = c.paired_population_receipt(
+            {"winner": 1, "terminal": -1}, {"winner": 2, "terminal": -1},
+            {"winner": .8, "terminal": None}, intended_by_block=cohort,
+            missing_reasons={"terminal": "UNKNOWN_TERMINAL_ECONOMICS"}, **S)
+        self.assertEqual(receipt["blockedBlockCount"], 1)
+        self.assertEqual(receipt["coverage"], 0)
+        self.assertEqual(receipt["blocks"]["SYN:INDUSTRY"]["missing"]["terminal"],
+                         "UNKNOWN_TERMINAL_ECONOMICS")
+
+    def test_missing_outcome_reason_and_intended_denominator_preserved(self):
+        receipt = c.paired_population_receipt(
+            {"a": 1, "b": 1}, {"a": 1, "b": 1}, {"a": .2},
+            intended_by_block={"SYN:ONE": ("a", "b")},
+            missing_reasons={"b": "SOURCE_OUTAGE"}, **S)
+        self.assertEqual(receipt["intendedCount"], 2)
+        self.assertEqual(receipt["missingCount"], 1)
+        self.assertEqual(receipt["commonIds"], ())
+        self.assertEqual(receipt["blocks"]["SYN:ONE"]["missing"], {"b": "SOURCE_OUTAGE"})
+
+    def test_complete_population_allows_exact_frozen_ids(self):
+        a, b, targets = {"a": 1, "b": 2}, {"a": 2, "b": 3}, {"a": 0, "b": -.5}
+        frozen = {"SYN:ONE": ("b", "a")}
+        self.assertEqual(c.common_ids(a, b, targets, intended_by_block=frozen, **S),
+                         ("a", "b"))
+        r = c.paired_population_receipt(a, b, targets, intended_by_block=frozen, **S)
+        self.assertEqual(r["coverage"], 1)
+        self.assertTrue(r["inferentialComparisonAllowed"])
+
+    def test_post_signal_addition_and_unregistered_denominator_refused(self):
+        with self.assertRaisesRegex(ValueError, "INTENDED_SIGNAL"):
+            c.common_ids({"a": 1}, {"a": 1}, {"a": .1}, **S)
+        with self.assertRaisesRegex(ValueError, "POST_SIGNAL"):
+            c.common_ids({"a": 1, "survivor": 1}, {"a": 1}, {"a": .1},
+                         intended_by_block={"SYN:ONE": ("a",)}, **S)
+        with self.assertRaisesRegex(ValueError, "CONTRADICTORY"):
+            c.paired_population_receipt(
+                {"a": 1}, {"a": 1}, {"a": .1},
+                intended_by_block={"SYN:ONE": ("a",)},
+                missing_reasons={"a": "SOURCE_OUTAGE"}, **S)
 
     def test_future_maturity_and_embargo_block_training(self):
         rows = [dict(id="safe", signal=1, entry=2, exit=278),
