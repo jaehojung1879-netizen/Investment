@@ -8,12 +8,21 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import pytest
 
 from pipeline import ledger as LG
 from pipeline import longterm as LT
 from pipeline import provenance as PV
 from pipeline import regime as RG
 from pipeline.validate import validate
+
+
+@pytest.fixture(autouse=True)
+def _track_b_isolated(monkeypatch):
+    """The paper-ledger step also runs Track B (rp1-b-h1-state-v1) in a child process that reads the clock, git and the vendor. It has its
+    own tests; here it must never run."""
+    from scripts import record_rp1_b_h1_state as track_b
+    monkeypatch.setattr(track_b, "run_isolated", lambda *a, **k: 0)
 
 
 ROOT = Path(__file__).resolve().parents[1]
