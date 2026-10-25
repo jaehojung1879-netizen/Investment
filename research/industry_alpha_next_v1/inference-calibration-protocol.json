@@ -1,0 +1,168 @@
+{
+ "schema": "INDUSTRY_INFERENCE_CALIBRATION_PROTOCOL_V1",
+ "studyId": "industry-alpha-kr-next-v1-inference-calibration-v1",
+ "status": "FROZEN_BEFORE_FORMAL_RUN",
+ "evidenceClass": "SYNTHETIC_ONLY_NO_MARKET_DATA",
+ "purpose": "Measure the type I error and power of the registered H1 inference (moving-block bootstrap of the per-date paired OOF loss differential) and of pre-declared alternatives, on synthetic industry panels whose H126/H252 labels overlap exactly as on the KR calendar. The registered test, threshold and support rule are NOT changed by this protocol or its result.",
+ "registeredTest": {
+  "function": "research.industry_alpha_next_v1.evaluate.moving_block_bootstrap_p",
+  "bootstrap": {
+   "draws": 1999,
+   "seed": 1879,
+   "blockSignals": 12
+  },
+  "supportRule": "MIN_NONOVERLAPPING_H252_BLOCKS = 8 (test dates // 12)",
+  "note": "The calibration measures the bootstrap p itself. The registered procedure additionally sets p = 1 below the support rule; that is reported separately as testDates / supportBlocks."
+ },
+ "pipeline": {
+  "calledUnchanged": [
+   "evaluate.admit",
+   "evaluate.oof_predictions",
+   "evaluate.loss_differential",
+   "evaluate.h1_columns",
+   "evaluate.support_blocks",
+   "evaluate.moving_block_bootstrap_p"
+  ],
+  "calendar": "pipeline.replay_calendar.sessions(KR)",
+  "signalRule": "LAST_KR_SESSION_OF_EACH_CALENDAR_MONTH (the real rule is the last v4 weekly-grid date of each month; at month resolution these coincide or differ by <= 4 sessions)",
+  "maturity": "a label is MATURED only if entry + H sessions <= the last simulated session; others are NOT_MATURED and removed by evaluate.admit like the real pipeline",
+  "attrition": "MCAR presence per industry-date with probability 0.75 over 13 industries: Binomial(13, 0.75) gives median 10 and P(< 8) = 0.080, against the real 1,343 eligible industry-dates with median 10, min 6, max 12 and 11 of 141 dates below 8; dates below MIN_INDUSTRIES_PER_DATE = 8 are dropped by evaluate.admit"
+ },
+ "tested": {
+  "slot": "KR_H{126,252}_PROFIT",
+  "block": "PROFIT",
+  "plantedColumn": "MEDIAN_netIncomeToAssets",
+  "baseColumns": "evaluate.h1_columns('PROFIT')[0] (10 columns)",
+  "altColumns": "evaluate.h1_columns('PROFIT')[1] (12 columns)"
+ },
+ "world": {
+  "calendarStart": "2001-01-02",
+  "calendarEnd": "2026-09-14",
+  "industries": 13,
+  "presenceProbability": 0.75,
+  "marketDailyVol": 0.012,
+  "idioDailyVol": 0.008,
+  "betaLow": 0.7,
+  "betaHigh": 1.3,
+  "plantedRho": 0.95,
+  "regimeStayProbability": 0.995,
+  "highVolMultiplier": 2.0,
+  "features": "REL_MOM_126 and DOWNSIDE_VOL_126 from simulated past returns; BREADTH from past relative-return signs plus AR(1) 0.8 noise; PROFIT level = planted AR(1) 0.95 monthly, PROFIT change = level minus level 12 months earlier plus AR(1) 0.5 noise; CASH AR(1) 0.95 and its 12-month change; VALUE AR(1) 0.97; HHI AR(1) 0.98; TOP1 = 0.8 HHI + 0.6 AR(1) 0.98; LOG_CONSTITUENT_COUNT AR(1) 0.99; MEDIAN_LOG_ADV60 AR(1) 0.95. Industry daily return = beta x market + idiosyncratic + kappa x planted (the planted value of the previous month, i.e. the value known at the prior month-end signal). Benchmark = equal mean of the 14 industries. Target = forward simple return over (entry, entry + H] minus the benchmark's."
+ },
+ "dgps": {
+  "N1_GAUSS_CONST": {
+   "ic": 0,
+   "shocks": "GAUSSIAN",
+   "volRegime": false,
+   "betaLoading": 0
+  },
+  "N2_T4_VOL_REGIME": {
+   "ic": 0,
+   "shocks": "STUDENT_T4",
+   "volRegime": true,
+   "betaLoading": 0
+  },
+  "N3_T4_REGIME_BETA_LOADED": {
+   "ic": 0,
+   "shocks": "STUDENT_T4",
+   "volRegime": true,
+   "betaLoading": 0.7
+  },
+  "P05_T4_VOL_REGIME": {
+   "ic": 0.05,
+   "shocks": "STUDENT_T4",
+   "volRegime": true,
+   "betaLoading": 0
+  },
+  "P10_T4_VOL_REGIME": {
+   "ic": 0.1,
+   "shocks": "STUDENT_T4",
+   "volRegime": true,
+   "betaLoading": 0
+  },
+  "P20_T4_VOL_REGIME": {
+   "ic": 0.2,
+   "shocks": "STUDENT_T4",
+   "volRegime": true,
+   "betaLoading": 0
+  }
+ },
+ "dgpNotes": {
+  "N3": "Null with zero market drift but the tested column loaded 0.7 on industry beta: under date-centring it has zero unconditional predictive value, yet in any realised market path it lines up with the market's move over the horizon, so its loss differential inherits the market path's persistence. This is the realistic false-positive danger for an industry model.",
+  "effectSize": "ic is the intended cross-sectional correlation of the planted column with the H-session forward relative return, via effect_kappa(); the realised value is measured and published per cell (meanRealisedIC)."
+ },
+ "horizons": [
+  126,
+  252
+ ],
+ "lengths": {
+  "KR": {
+   "firstSignalMonth": "2015-01",
+   "note": "the KR v4 membership start; reproduces the real 58 (H126) / 40 (H252) test signals"
+  },
+  "LONG": {
+   "firstSignalMonth": "2002-01",
+   "note": "a 25-year history, to show what support a valid test needs"
+  }
+ },
+ "replicates": {
+  "KR": 1000,
+  "LONG": 400
+ },
+ "seeds": {
+  "formal": 20261026,
+  "development": 99173
+ },
+ "seedStreams": "numpy SeedSequence([seed, cellIndex, replicateIndex]); bootstrap draws inside C0-C2 use the registered fixed seed 1879, as registered",
+ "alphas": [
+  0.05,
+  0.001388888888888889
+ ],
+ "alphaNotes": "0.05 one-sided is the primary level. 0.05/36 is the first Holm step of the registered 36-slot family and is descriptive only (Monte Carlo too coarse to classify).",
+ "candidates": {
+  "C0_REGISTERED_MBB": "evaluate.moving_block_bootstrap_p, unchanged (non-circular moving blocks of 12, null-centred at the sample mean, 1999 draws, seed 1879, +1 corrected)",
+  "C1_CIRCULAR_BB": "C0 with one change: circular blocks, so every observation is equally likely to be drawn (same block, draws, seed, centring)",
+  "C2_STUDENTIZED_CBB": "C1 with one more change: bootstrap the HAC t (Bartlett, lag = block - 1) of the mean instead of the mean",
+  "C3_NW_HAC_NORMAL": "Newey-West t, Bartlett lag = H/21 months (6 or 12), standard normal reference: the conventional textbook choice",
+  "C4_FIXED_B_KVB": "Kiefer-Vogelsang-Bunzel t (Bartlett, bandwidth = n) against its fixed-b limit critical value",
+  "C5_SELF_NORMALIZED": "Lobato (2001) / Shao (2010) self-normalised t against its limit critical value; same normaliser family as the repository's sealed v4 calendar_time_sn_interval",
+  "C6_BATCH_MEANS_T": "Ibragimov-Mueller batch means: contiguous non-overlapping batches of H/21 months (earliest remainder dropped), one-sided Student t with q - 1 df; undefined (never rejects) when q < 2"
+ },
+ "criticalValues": {
+  "source": "inference_calibration.limit_critical_values(paths=200000, length=2000, seed=20261025), computed before this protocol was frozen; pure mathematics, no data. Check: P(SN^2 > 66.57) = 0.02539, reproducing the repository's sealed v4 constant (nominal 0.025); KVB 95% = 3.778 against the published 3.764. Holm-first-step (1 - 0.05/36) quantiles rest on about 278 exceedances and are descriptive only.",
+  "kvb": {
+   "0.05": 3.7780734141733885,
+   "0.001388888888888889": 9.038815311772966
+  },
+  "sn": {
+   "0.05": 5.34300266196523,
+   "0.001388888888888889": 12.782815201694925
+  },
+  "kvbOneSided99": 6.123644089073375,
+  "snOneSided99": 8.660140521913405
+ },
+ "decisionRule": {
+  "primaryAlpha": 0.05,
+  "sizeCeiling": 0.075,
+  "sizeCeilingReason": "1.5x nominal. A ceiling of exactly 0.05 can never be passed by an exactly-sized test with finite replicates; the repository's sealed v4 calibration tolerated a 2.5pp coverage shortfall on a 97.5% interval (2x nominal). 0.075 is stricter than that analogue.",
+  "powerFloor": 0.8,
+  "passAlpha": 0.025,
+  "failAlpha": 0.05,
+  "monteCarloClassifier": "pipeline.alpha_inference_mc_decision.classify_metric (exact one-sided Clopper-Pearson; CEILING for null cells, FLOOR for power cells); size state per (length, horizon) = combine_states over N1, N2, N3",
+  "selection": "Within each (length, horizon): candidates whose size state is PASS are size-valid; the recommended candidate is the size-valid one with the highest power in primaryPowerDgp; ties broken by tieOrder. recommendedPowerAdequate is true only if that power >= powerFloor. If no candidate is size-valid the reading is NO_SIZE_VALID_TEST. A KR-length reading is decisive for the KR study; LONG is context only.",
+  "primaryPowerDgp": "P10_T4_VOL_REGIME",
+  "tieOrder": [
+   "C5_SELF_NORMALIZED",
+   "C4_FIXED_B_KVB",
+   "C6_BATCH_MEANS_T",
+   "C2_STUDENTIZED_CBB",
+   "C1_CIRCULAR_BB",
+   "C3_NW_HAC_NORMAL",
+   "C0_REGISTERED_MBB"
+  ],
+  "tieOrderReason": "fewest tuning choices first: SN and KVB have none beyond the statistic; batch means fixes one length; the bootstraps fix a block and a seed; NW fixes a lag and relies on a normal limit",
+  "outOfScope": "No candidate may be adopted by this protocol. Adoption needs a new spec hash and owner authorization; the 36-slot Holm family, support rule and thresholds stay as registered."
+ },
+ "developmentDisclosure": "Before freezing, the author ran (a) the owner's null_calibration.py proxy grid and an IID check of C0 (published in PR #290 comment 6394428322: C0 anti-conservative), and (b) DEVELOPMENT smokes of this module with seed 99173 and at most a few replicates per cell, to time and debug the code. No formal-seed replicate existed before the freeze commit; no candidate, threshold, DGP or effect size was changed after a development smoke showed a rejection rate.",
+ "frozenDigest": "18122139306e2e556524215edeaa2836be01d36622a9e5771cfd08f6522810b4"
+}
