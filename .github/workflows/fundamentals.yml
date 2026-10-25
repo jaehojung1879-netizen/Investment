@@ -57,7 +57,7 @@ on:
       target:
         description: "KR 전용 — auto=재무제표 후 주식수까지 / statements / shares / raw-statements=PIT 유니버스 원본행 재수집 / raw-probe-2015=2015 분기 가용성 탐침(전 분기, 원본 XBRL 포함) / raw-xbrl-2015=2015 분기 원본 XBRL 수집(CANDIDATE_UNCONFIRMED)"
         type: choice
-        options: ["auto", "statements", "shares", "raw-statements", "raw-probe-2015", "raw-xbrl-2015"]
+        options: ["auto", "statements", "shares", "raw-statements", "raw-probe-2015", "raw-xbrl-2015", "wc-originals-68"]
         default: "auto"
       raw_years:
         description: "raw-statements 전용 — 수집 연도 우선순위 (비우면 2015,2016,2024,2025,2023,2017..2022,2026)"
@@ -91,7 +91,7 @@ concurrency:
 
 jobs:
   kr:
-    if: github.event_name == 'schedule' || ((inputs.region == 'both' || inputs.region == 'kr') && !startsWith(inputs.target, 'raw-'))
+    if: github.event_name == 'schedule' || ((inputs.region == 'both' || inputs.region == 'kr') && !startsWith(inputs.target, 'raw-') && inputs.target != 'wc-originals-68')
     runs-on: ubuntu-latest
     timeout-minutes: 330
     steps:
@@ -288,6 +288,98 @@ jobs:
             cat us-semantics.log 2>/dev/null || echo '측정 출력 없음'
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
+
+
+  # Manual, opt-in original DART XBRL recovery for fixed Stock-KR WC68.
+  # This is NOT a scheduled collection and NEVER alters any ledger, model or
+  # sealed research. Original ZIP bytes live only in runner temporary storage.
+  # The public route requires NO DART secret. Incomplete source recovery is
+  # a research result (0..68), not an absent-source verdict or a CI failure.
+  kr-wc68-original:
+    if: github.event_name == 'workflow_dispatch' && inputs.region == 'kr' && inputs.target == 'wc-originals-68' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code and pinned Git histories
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Fetch pinned source objects
+        run: |
+          set -euo pipefail
+          git fetch origin signal-history
+          for sha in 1bf68f59cffa20239977e2cfaa0f35a07d0ec884 b589d658eedd3c47f555df20db86f37792ee3358; do
+            git cat-file -e "$sha^{commit}"
+          done
+
+      - name: Install research dependencies
+        run: |
+          python -m pip install -r requirements.txt
+
+      - name: Collect and inspect fixed original receipts
+        run: |
+          set -euo pipefail
+          # Exit 3 explicitly means INCOMPLETE SOURCE; never silently turn
+          # zero eligible facts into "validated" or "source absent".
+          set +e
+          python -m research.stock_working_capital_v1.xbrl_recovery \
+            --collect --output "$RUNNER_TEMP/wc68-originals"
+          collect_exit=$?
+          set -e
+          if [ "$collect_exit" != 0 ] && [ "$collect_exit" != 3 ]; then
+            echo "::error::DART recovery infrastructure failure ($collect_exit)"
+            exit "$collect_exit"
+          fi
+          python - "$RUNNER_TEMP/wc68-originals/manifest.json" <<'PY'
+          import json, pathlib, sys
+          manifest = json.loads(pathlib.Path(sys.argv[1]).read_text())
+          assert manifest["fixedReceipts"] == 68
+          assert manifest["newHistoricalLabelsRead"] == 0
+          # Public artifact contains counts/digests only, NEVER XBRL ZIPs.
+          output = {
+              "evidenceClass": "SOURCE_ONLY_NOT_ADMISSION",
+              "requested": manifest["fixedReceipts"],
+              "attemptedHttpRequests": manifest["publicRequestsAttempted"],
+              "statusCounts": manifest["statusCounts"],
+              "originalPackageCount": manifest["statusCounts"].get(
+                  "ACQUIRED_UNVERIFIED_ORIGINAL_XBRL_ZIP", 0),
+              "historicalOutcomesRead": 0,
+              "allReceiptsVerified": False,
+              "originalBytesPersisted": False,
+              "sourceAdmissionAuthorized": False,
+          }
+          pathlib.Path("wc68-source-summary.json").write_text(
+              json.dumps(output, ensure_ascii=False, indent=2) + "\n")
+          print(json.dumps(output, ensure_ascii=False))
+          PY
+          set +e
+          python -m research.stock_working_capital_v1.pit_join --inspect \
+            --packages "$RUNNER_TEMP/wc68-originals" \
+            --output "$RUNNER_TEMP/wc68-measurement"
+          inspect_exit=$?
+          set -e
+          if [ "$inspect_exit" != 0 ] && [ "$inspect_exit" != 3 ]; then
+            echo "::warning::Input-only inspection unavailable (exit $inspect_exit)"
+          fi
+          # Do not upload the raw directory, including its objects/*.zip.
+          if [ -f "$RUNNER_TEMP/wc68-measurement/coverage.json" ]; then
+            cp "$RUNNER_TEMP/wc68-measurement/coverage.json" wc68-input-coverage.json
+          fi
+
+      - name: Upload source-only diagnostics (NO original ZIP)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wc68-source-only-diagnostics
+          path: |
+            wc68-source-summary.json
+            wc68-input-coverage.json
+          retention-days: 14
+          if-no-files-found: warn
 
   # READ-ONLY diagnostic: why do the filings Finnhub first served from 2026-10-07 have no balance sheet? (docs/us-finnhub-balance-sheet-probe-ko.md)
   #
