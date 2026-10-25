@@ -36,4 +36,4 @@ def test_null_calibration_reports_no_source_access_and_is_reproducible():
 ])
 def test_invalid_calibration_parameters_fail_closed(kw):
     with pytest.raises(ValueError, match="INVALID_"):
-        C.calibrate(replications=3, draws=19, **kw)
+        C.calibrate(**({"replications": 3, "draws": 19} | kw))
