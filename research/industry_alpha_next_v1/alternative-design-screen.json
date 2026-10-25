@@ -1,0 +1,144 @@
+{
+ "cells": {
+  "KR_H126_N1_GAUSS_CONST": {
+   "medianMonths": 123.0,
+   "nwClopperPearson95": [
+    0.026884625615141773,
+    0.0701887954953422
+   ],
+   "nwRejectRate": 0.045,
+   "nwRejectRateHolmFirstStep": 0.005,
+   "replicates": 400,
+   "snRejectRate": 0.045
+  },
+  "KR_H126_N2_T4_VOL_REGIME": {
+   "medianMonths": 123.0,
+   "nwClopperPearson95": [
+    0.05958241574856726,
+    0.11675384278483415
+   ],
+   "nwRejectRate": 0.085,
+   "nwRejectRateHolmFirstStep": 0.005,
+   "replicates": 400,
+   "snRejectRate": 0.055
+  },
+  "KR_H126_N3_T4_REGIME_BETA_LOADED": {
+   "medianMonths": 124.0,
+   "nwClopperPearson95": [
+    0.0681067155231008,
+    0.12806064599502015
+   ],
+   "nwRejectRate": 0.095,
+   "nwRejectRateHolmFirstStep": 0.005,
+   "replicates": 400,
+   "snRejectRate": 0.07
+  },
+  "KR_H126_P05_T4_VOL_REGIME": {
+   "medianMonths": 123.0,
+   "nwClopperPearson95": [
+    0.1413108285244591,
+    0.2185411298668713
+   ],
+   "nwRejectRate": 0.1775,
+   "nwRejectRateHolmFirstStep": 0.02,
+   "replicates": 400,
+   "snRejectRate": 0.1275
+  },
+  "KR_H126_P10_T4_VOL_REGIME": {
+   "medianMonths": 123.0,
+   "nwClopperPearson95": [
+    0.34920615283288176,
+    0.4473221601861238
+   ],
+   "nwRejectRate": 0.3975,
+   "nwRejectRateHolmFirstStep": 0.055,
+   "replicates": 400,
+   "snRejectRate": 0.3075
+  },
+  "KR_H126_P20_T4_VOL_REGIME": {
+   "medianMonths": 123.0,
+   "nwClopperPearson95": [
+    0.8302931324205225,
+    0.8991495353349428
+   ],
+   "nwRejectRate": 0.8675,
+   "nwRejectRateHolmFirstStep": 0.3675,
+   "replicates": 400,
+   "snRejectRate": 0.6675
+  },
+  "KR_H252_N1_GAUSS_CONST": {
+   "medianMonths": 118.0,
+   "nwClopperPearson95": [
+    0.04908910142887544,
+    0.10246429058218622
+   ],
+   "nwRejectRate": 0.0725,
+   "nwRejectRateHolmFirstStep": 0.0075,
+   "replicates": 400,
+   "snRejectRate": 0.0625
+  },
+  "KR_H252_N2_T4_VOL_REGIME": {
+   "medianMonths": 118.0,
+   "nwClopperPearson95": [
+    0.032788424577153724,
+    0.07913463048694427
+   ],
+   "nwRejectRate": 0.0525,
+   "nwRejectRateHolmFirstStep": 0.0,
+   "replicates": 400,
+   "snRejectRate": 0.045
+  },
+  "KR_H252_N3_T4_REGIME_BETA_LOADED": {
+   "medianMonths": 118.0,
+   "nwClopperPearson95": [
+    0.08981820473352149,
+    0.1559393632449834
+   ],
+   "nwRejectRate": 0.12,
+   "nwRejectRateHolmFirstStep": 0.0025,
+   "replicates": 400,
+   "snRejectRate": 0.08
+  },
+  "KR_H252_P05_T4_VOL_REGIME": {
+   "medianMonths": 118.0,
+   "nwClopperPearson95": [
+    0.08762468318514298,
+    0.1531732468490809
+   ],
+   "nwRejectRate": 0.1175,
+   "nwRejectRateHolmFirstStep": 0.0075,
+   "replicates": 400,
+   "snRejectRate": 0.0925
+  },
+  "KR_H252_P10_T4_VOL_REGIME": {
+   "medianMonths": 118.0,
+   "nwClopperPearson95": [
+    0.20596188087007386,
+    0.29281923696933165
+   ],
+   "nwRejectRate": 0.2475,
+   "nwRejectRateHolmFirstStep": 0.0325,
+   "replicates": 400,
+   "snRejectRate": 0.1975
+  },
+  "KR_H252_P20_T4_VOL_REGIME": {
+   "medianMonths": 118.0,
+   "nwClopperPearson95": [
+    0.5223821714280461,
+    0.6215372032894608
+   ],
+   "nwRejectRate": 0.5725,
+   "nwRejectRateHolmFirstStep": 0.1725,
+   "replicates": 400,
+   "snRejectRate": 0.4425
+  }
+ },
+ "comparatorFrozenResult": "inference-calibration-result.json (registered C0 power at IC 0.10: H126 15.2%, H252 14.1%)",
+ "design": "CALENDAR_TIME_FIT_FREE_RESIDUAL_RANK_SPREAD",
+ "evidenceClass": "SYNTHETIC_DESIGN_SCREEN_NOT_A_FORMAL_CALIBRATION",
+ "historicalOutcomesRead": 0,
+ "nwLag": 4,
+ "schema": "INDUSTRY_ALTERNATIVE_DESIGN_SCREEN_V1",
+ "seed": 99180,
+ "worlds": "the frozen calibration's world and DGPs, KR length, kappa matched to the H126/H252 cell"
+}

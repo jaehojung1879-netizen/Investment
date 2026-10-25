@@ -1,0 +1,1317 @@
+{
+ "evidenceClass": "SOURCE_RECOVERY_NO_OUTCOME",
+ "historicalOutcomesRead": 0,
+ "inputs": {
+  "dartRawBlobSha1": {
+   "ledger/fundamentals/kr-raw/raw-2015.jsonl.gz": "6eccdea904b11874d660713588c4f8716cb4e17d",
+   "ledger/fundamentals/kr-raw/raw-2016.jsonl.gz": "f2181663c3c8406b9ecd49b701b5cf6701678f9a",
+   "ledger/fundamentals/kr-raw/raw-2017.jsonl.gz": "776700836f969504dcc916f5778050af4b92d571",
+   "ledger/fundamentals/kr-raw/raw-2018.jsonl.gz": "5c8f58157da2bb7012861e330bbb7e2729092876",
+   "ledger/fundamentals/kr-raw/raw-2019.jsonl.gz": "5ac63676a6a4308b4bfbaab3b4ae934930f57a5a",
+   "ledger/fundamentals/kr-raw/raw-2020.jsonl.gz": "b60633709b72eabf063d7315c32d772fb2e3a06b",
+   "ledger/fundamentals/kr-raw/raw-2021.jsonl.gz": "4bac1077ea51b41c5be271e2631cdee4752fc08b",
+   "ledger/fundamentals/kr-raw/raw-2022.jsonl.gz": "b11bf883a460442e31bd44258f7d7ec56976df84",
+   "ledger/fundamentals/kr-raw/raw-2023.jsonl.gz": "b4222012c3b538c798926a2ea2f84dc0bdd57103",
+   "ledger/fundamentals/kr-raw/raw-2024.jsonl.gz": "d3c1ff49c5be2091c9412ec85a1754a797acfbee",
+   "ledger/fundamentals/kr-raw/raw-2025.jsonl.gz": "969bf26d93991eb7c1a094c654058644cfbe607e",
+   "ledger/fundamentals/kr-raw/raw-2026.jsonl.gz": "8acc570969a0fdfd477bf562d8464ec98313fde4",
+   "ledger/kr-corporate-actions/document-fetch-state.json": "f20fa37c34af021efcaa4112c254401b990c300b"
+  },
+  "dartRawCommit": "d646a69cfc8befdf2b2ad26179c486c13d1faebd",
+  "kr22Inventory": {
+   "classificationObservations": {
+    "path": "data/kr-industry-membership-foundation-v1/classification-observations.json",
+    "sha256": "874d62c27eb700cb261d08f65ddd20c720bfed4cb29fece133c05270eaab047b"
+   },
+   "corporateActions": {
+    "path": "data/kr-terminal-corporate-actions.json",
+    "sha256": "4e67620afddfb4cd5849e857da78a91f643f00c0b24466e3e1517a108d156077"
+   },
+   "crosswalk": {
+    "path": "research_specs/kr-industry-membership-foundation-v4/crosswalk.json",
+    "sha256": "76166ad309d323240ffe749df74ac089f4693f30ef77231b8cd5ab85365826b5"
+   },
+   "dividendLineage": {
+    "path": "docs/results/kr-dividend-amount-lineage-v2.json",
+    "sha256": "2c3c7d93159b1959f1358d0f4df0a78e14035ad916d53e8fa3356155c311e621"
+   },
+   "inputVerification": {
+    "path": "research/industry_alpha_next_v1/input-verification.json",
+    "sha256": "1920f44ade1ca9d3e3abd9fbc91c9e6c27254cc7301a4090e6faa6b42f228428"
+   },
+   "reconstruction": {
+    "path": "docs/results/kr-terminal-action-reconstruction-v2.json",
+    "sha256": "b1d2dcb0a8064139e601c4efab51a44e1323f93910ae70228054338a90629017"
+   },
+   "retainedTerminalDocuments": {
+    "path": "data/kr-industry-membership-foundation-v1/retained-terminal-documents.jsonl.gz",
+    "sha256": "98c1475f888cb07b5c8865b8902516e463bd934281d1f4744a7aba4b4d687071"
+   },
+   "top120": {
+    "path": "data/kr-industry-membership-foundation-v1/top120-inputs.json",
+    "sha256": "d7c464973ad029bf08886c4bdf2517d1b3ece04cce87bcc63706f1230ed53cd0"
+   },
+   "v4Audit": {
+    "path": "data/kr-industry-membership-foundation-v4/state/audit.json.gz",
+    "sha256": "4135846f16dcf59fe4ff89ab83b3b5aec288dea20fed36172b17abf768d44036"
+   }
+  },
+  "universeCommit": "4ea107ed0cde289f0a049a65ff13d2441a786710"
+ },
+ "networkUsed": false,
+ "pricesRead": 0,
+ "requests": [
+  {
+   "annualReportReceiptsHeldInRepository": {},
+   "code": "000030.KS",
+   "dartCorpCode": "00254045",
+   "failedTerminalReceiptsToRetry": [
+    "20180619000369",
+    "20180920000544",
+    "20181108000137",
+    "20181121000025",
+    "20181126000101"
+   ],
+   "fiscalYearsNeedingListJsonQuery": [
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018
+   ],
+   "industryFiscalYearsNeeded": [
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018
+   ],
+   "labelWindowCrossesTermination": {
+    "H126": 7,
+    "H252": 14
+   },
+   "listJsonQuery": {
+    "bgn_de": "20130101",
+    "corp_code": "00254045",
+    "end_de": "20191231",
+    "pblntf_detail_ty": "A001"
+   },
+   "name": "우리은행",
+   "needs": [
+    "OWN_PERIODIC_FILING_INDUSTRY_STATEMENT_PER_FISCAL_YEAR",
+    "FINAL_CONSIDERATION_TERMS",
+    "SEALED_DATED_EX_DATE_RULE_WITH_SOURCE"
+   ],
+   "studyWindowMemberMonths": 49
+  },
+  {
+   "annualReportReceiptsHeldInRepository": {},
+   "code": "000060.KS",
+   "dartCorpCode": "00117744",
+   "failedTerminalReceiptsToRetry": [],
+   "fiscalYearsNeedingListJsonQuery": [
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022
+   ],
+   "industryFiscalYearsNeeded": [
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022
+   ],
+   "labelWindowCrossesTermination": {
+    "H126": 7,
+    "H252": 13
+   },
+   "listJsonQuery": {
+    "bgn_de": "20130101",
+    "corp_code": "00117744",
+    "end_de": "20231231",
+    "pblntf_detail_ty": "A001"
+   },
+   "name": "메리츠화재",
+   "needs": [
+    "OWN_PERIODIC_FILING_INDUSTRY_STATEMENT_PER_FISCAL_YEAR",
+    "EXECUTION_CONFIRMATION_DOCUMENT",
+    "SEALED_DATED_EX_DATE_RULE_WITH_SOURCE",
+    "DOCUMENTED_NEW_SHARE_COUNT_TO_RECONCILE_OBSERVED_ISSUANCE"
+   ],
+   "studyWindowMemberMonths": 67
+  },
+  {
+   "annualReportReceiptsHeldInRepository": {},
+   "code": "000830.KS",
+   "dartCorpCode": "00126229",
+   "failedTerminalReceiptsToRetry": [
+    "20150608000391",
+    "20150612000428",
+    "20150619000462"
+   ],
+   "fiscalYearsNeedingListJsonQuery": [
+    2013,
+    2014
+   ],
+   "industryFiscalYearsNeeded": [
+    2013,
+    2014
+   ],
+   "labelWindowCrossesTermination": {
+    "H126": 7,
+    "H252": 9
+   },
+   "listJsonQuery": {
+    "bgn_de": "20130101",
+    "corp_code": "00126229",
+    "end_de": "20151231",
+    "pblntf_detail_ty": "A001"
+   },
+   "name": "삼성물산",
+   "needs": [
+    "OWN_PERIODIC_FILING_INDUSTRY_STATEMENT_PER_FISCAL_YEAR",
+    "FINAL_CONSIDERATION_TERMS",
+    "EXECUTION_CONFIRMATION_DOCUMENT",
+    "SEALED_DATED_EX_DATE_RULE_WITH_SOURCE"
+   ],
+   "studyWindowMemberMonths": 9
+  },
+  {
+   "annualReportReceiptsHeldInRepository": {},
+   "code": "002550.KS",
+   "dartCorpCode": "00120216",
+   "failedTerminalReceiptsToRetry": [
+    "20170516000224",
+    "20170525000022",
+    "20170530000327"
+   ],
+   "fiscalYearsNeedingListJsonQuery": [
+    2013,
+    2014,
+    2015,
+    2016
+   ],
+   "industryFiscalYearsNeeded": [
+    2013,
+    2014,
+    2015,
+    2016
+   ],
+   "labelWindowCrossesTermination": {
+    "H126": 5,
+    "H252": 7
+   },
+   "listJsonQuery": {
+    "bgn_de": "20130101",
+    "corp_code": "00120216",
+    "end_de": "20171231",
+    "pblntf_detail_ty": "A001"
+   },
+   "name": "KB손해보험",
+   "needs": [
+    "OWN_PERIODIC_FILING_INDUSTRY_STATEMENT_PER_FISCAL_YEAR",
+    "FINAL_CONSIDERATION_TERMS",
+    "EXECUTION_CONFIRMATION_DOCUMENT",
+    "SEALED_DATED_EX_DATE_RULE_WITH_SOURCE"
+   ],
+   "studyWindowMemberMonths": 14
+  },
+  {
+   "annualReportReceiptsHeldInRepository": {
+    "2015": "20160331000294",
+    "2016": "20170331003728",
+    "2017": "20180402003717",
+    "2018": "20190401004206",
+    "2019": "20200330004513",
+    "2020": "20210317001029",
+    "2021": "20220816001988",
+    "2022": "20230321001494",
+    "2023": "20240327001183"
+   },
+   "code": "003410.KS",
+   "dartCorpCode": "00138224",
+   "failedTerminalReceiptsToRetry": [
+    "20240425000313"
+   ],
+   "fiscalYearsNeedingListJsonQuery": [],
+   "industryFiscalYearsNeeded": [
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023
+   ],
+   "labelWindowCrossesTermination": {
+    "H126": 8,
+    "H252": 14
+   },
+   "listJsonQuery": null,
+   "name": "쌍용C&E",
+   "needs": [
+    "OWN_PERIODIC_FILING_INDUSTRY_STATEMENT_PER_FISCAL_YEAR",
+    "EXECUTION_CONFIRMATION_DOCUMENT",
+    "SEALED_DATED_EX_DATE_RULE_WITH_SOURCE"
+   ],
+   "studyWindowMemberMonths": 80
+  },
+  {
+   "annualReportReceiptsHeldInRepository": {},
+   "code": "003450.KS",
+   "dartCorpCode": "00164876",
+   "failedTerminalReceiptsToRetry": [
+    "20160901000273",
+    "20160902000474",
+    "20161103000360"
+   ],
+   "fiscalYearsNeedingListJsonQuery": [
+    2013,
+    2014,
+    2015
+   ],
+   "industryFiscalYearsNeeded": [
+    2013,
+    2014,
+    2015
+   ],
+   "labelWindowCrossesTermination": {
+    "H126": 2,
+    "H252": 3
+   },
+   "listJsonQuery": {
+    "bgn_de": "20130101",
+    "corp_code": "00164876",
+    "end_de": "20161231",
+    "pblntf_detail_ty": "A001"
+   },
+   "name": "현대증권",
+   "needs": [
+    "OWN_PERIODIC_FILING_INDUSTRY_STATEMENT_PER_FISCAL_YEAR",
+    "FINAL_CONSIDERATION_TERMS",
+    "EXECUTION_CONFIRMATION_DOCUMENT",
+    "SEALED_DATED_EX_DATE_RULE_WITH_SOURCE"
+   ],
+   "studyWindowMemberMonths": 11
+  },
+  {
+   "annualReportReceiptsHeldInRepository": {},
+   "code": "003600.KS",
+   "dartCorpCode": "00144155",
+   "failedTerminalReceiptsToRetry": [
+    "20150430001586",
+    "20150513003281",
+    "20150521000438",
+    "20150528000580",
+    "20150528000709",
+    "20150721800301",
+    "20150805800334"
+   ],
+   "fiscalYearsNeedingListJsonQuery": [
+    2013,
+    2014
+   ],
+   "industryFiscalYearsNeeded": [
+    2013,
+    2014
+   ],
+   "labelWindowCrossesTermination": {
+    "H126": 7,
+    "H252": 8
+   },
+   "listJsonQuery": {
+    "bgn_de": "20130101",
+    "corp_code": "00144155",
+    "end_de": "20151231",
+    "pblntf_detail_ty": "A001"
+   },
+   "name": "SK",
+   "needs": [
+    "OWN_PERIODIC_FILING_INDUSTRY_STATEMENT_PER_FISCAL_YEAR",
+    "FINAL_CONSIDERATION_TERMS",
+    "EXECUTION_CONFIRMATION_DOCUMENT",
+    "SEALED_DATED_EX_DATE_RULE_WITH_SOURCE"
+   ],
+   "studyWindowMemberMonths": 8
+  },
+  {
+   "annualReportReceiptsHeldInRepository": {},
+   "code": "008560.KS",
+   "dartCorpCode": "00163682",
+   "failedTerminalReceiptsToRetry": [],
+   "fiscalYearsNeedingListJsonQuery": [
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022
+   ],
+   "industryFiscalYearsNeeded": [
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022
+   ],
+   "labelWindowCrossesTermination": {
+    "H126": 7,
+    "H252": 13
+   },
+   "listJsonQuery": {
+    "bgn_de": "20130101",
+    "corp_code": "00163682",
+    "end_de": "20231231",
+    "pblntf_detail_ty": "A001"
+   },
+   "name": "메리츠증권",
+   "needs": [
+    "OWN_PERIODIC_FILING_INDUSTRY_STATEMENT_PER_FISCAL_YEAR",
+    "EXECUTION_CONFIRMATION_DOCUMENT",
+    "SEALED_DATED_EX_DATE_RULE_WITH_SOURCE",
+    "DOCUMENTED_NEW_SHARE_COUNT_TO_RECONCILE_OBSERVED_ISSUANCE"
+   ],
+   "studyWindowMemberMonths": 89
+  },
+  {
+   "annualReportReceiptsHeldInRepository": {},
+   "code": "010520.KS",
+   "dartCorpCode": "00164469",
+   "failedTerminalReceiptsToRetry": [
+    "20150417000066",
+    "20150417800108",
+    "20150429000977"
+   ],
+   "fiscalYearsNeedingListJsonQuery": [
+    2013,
+    2014
+   ],
+   "industryFiscalYearsNeeded": [
+    2013,
+    2014
+   ],
+   "labelWindowCrossesTermination": {
+    "H126": 2,
+    "H252": 2
+   },
+   "listJsonQuery": {
+    "bgn_de": "20130101",
+    "corp_code": "00164469",
+    "end_de": "20151231",
+    "pblntf_detail_ty": "A001"
+   },
+   "name": "현대하이스코",
+   "needs": [
+    "OWN_PERIODIC_FILING_INDUSTRY_STATEMENT_PER_FISCAL_YEAR",
+    "FINAL_CONSIDERATION_TERMS",
+    "EXECUTION_CONFIRMATION_DOCUMENT",
+    "SEALED_DATED_EX_DATE_RULE_WITH_SOURCE"
+   ],
+   "studyWindowMemberMonths": 2
+  },
+  {
+   "annualReportReceiptsHeldInRepository": {
+    "2015": "20160330004326",
+    "2016": "20170331005355",
+    "2017": "20180622000144",
+    "2018": "20190401005226",
+    "2019": "20200330002364",
+    "2020": "20210312001202",
+    "2021": "20220315000376",
+    "2022": "20230320000896",
+    "2023": "20240315000753",
+    "2024": "20250711000373"
+   },
+   "code": "010620.KS",
+   "dartCorpCode": "00164609",
+   "failedTerminalReceiptsToRetry": [],
+   "fiscalYearsNeedingListJsonQuery": [
+    2013,
+    2014
+   ],
+   "industryFiscalYearsNeeded": [
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+   ],
+   "labelWindowCrossesTermination": {
+    "H126": 7,
+    "H252": 14
+   },
+   "listJsonQuery": {
+    "bgn_de": "20130101",
+    "corp_code": "00164609",
+    "end_de": "20251231",
+    "pblntf_detail_ty": "A001"
+   },
+   "name": "HD현대미포",
+   "needs": [
+    "OWN_PERIODIC_FILING_INDUSTRY_STATEMENT_PER_FISCAL_YEAR",
+    "SEALED_DATED_EX_DATE_RULE_WITH_SOURCE"
+   ],
+   "studyWindowMemberMonths": 89
+  },
+  {
+   "annualReportReceiptsHeldInRepository": {
+    "2016": "20170330000584",
+    "2017": "20180330003082",
+    "2018": "20190401001908",
+    "2019": "20200330003794",
+    "2020": "20210706000401"
+   },
+   "code": "012510.KS",
+   "dartCorpCode": "00172291",
+   "failedTerminalReceiptsToRetry": [
+    "20260429000294",
+    "20260515100001"
+   ],
+   "fiscalYearsNeedingListJsonQuery": [],
+   "industryFiscalYearsNeeded": [
+    2016,
+    2017,
+    2018,
+    2019,
+    2020
+   ],
+   "labelWindowCrossesTermination": {
+    "H126": 0,
+    "H252": 0
+   },
+   "listJsonQuery": null,
+   "name": "더존비즈온",
+   "needs": [
+    "OWN_PERIODIC_FILING_INDUSTRY_STATEMENT_PER_FISCAL_YEAR",
+    "EXECUTION_CONFIRMATION_DOCUMENT",
+    "SEALED_DATED_EX_DATE_RULE_WITH_SOURCE"
+   ],
+   "studyWindowMemberMonths": 28
+  },
+  {
+   "annualReportReceiptsHeldInRepository": {},
+   "code": "037620.KS",
+   "dartCorpCode": "00311030",
+   "failedTerminalReceiptsToRetry": [
+    "20160919000325",
+    "20161014000405"
+   ],
+   "fiscalYearsNeedingListJsonQuery": [
+    2013,
+    2014,
+    2015,
+    2016
+   ],
+   "industryFiscalYearsNeeded": [
+    2013,
+    2014,
+    2015,
+    2016
+   ],
+   "labelWindowCrossesTermination": {
+    "H126": 7,
+    "H252": 13
+   },
+   "listJsonQuery": {
+    "bgn_de": "20130101",
+    "corp_code": "00311030",
+    "end_de": "20171231",
+    "pblntf_detail_ty": "A001"
+   },
+   "name": "미래에셋증권",
+   "needs": [
+    "OWN_PERIODIC_FILING_INDUSTRY_STATEMENT_PER_FISCAL_YEAR",
+    "FINAL_CONSIDERATION_TERMS",
+    "EXECUTION_CONFIRMATION_DOCUMENT",
+    "SEALED_DATED_EX_DATE_RULE_WITH_SOURCE"
+   ],
+   "studyWindowMemberMonths": 21
+  },
+  {
+   "annualReportReceiptsHeldInRepository": {
+    "2015": "20160330003767",
+    "2016": "20170331004778",
+    "2017": "20180329001146",
+    "2018": "20190329003895",
+    "2019": "20200330004246",
+    "2020": "20210317001247",
+    "2021": "20220311001112",
+    "2022": "20230317000838"
+   },
+   "code": "042670.KS",
+   "dartCorpCode": "00344287",
+   "failedTerminalReceiptsToRetry": [],
+   "fiscalYearsNeedingListJsonQuery": [
+    2013,
+    2014
+   ],
+   "industryFiscalYearsNeeded": [
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022
+   ],
+   "labelWindowCrossesTermination": {
+    "H126": 0,
+    "H252": 0
+   },
+   "listJsonQuery": {
+    "bgn_de": "20130101",
+    "corp_code": "00344287",
+    "end_de": "20231231",
+    "pblntf_detail_ty": "A001"
+   },
+   "name": "HD현대인프라코어",
+   "needs": [
+    "OWN_PERIODIC_FILING_INDUSTRY_STATEMENT_PER_FISCAL_YEAR",
+    "SEALED_DATED_EX_DATE_RULE_WITH_SOURCE"
+   ],
+   "studyWindowMemberMonths": 34
+  },
+  {
+   "annualReportReceiptsHeldInRepository": {},
+   "code": "057050.KS",
+   "dartCorpCode": "00412597",
+   "failedTerminalReceiptsToRetry": [],
+   "fiscalYearsNeedingListJsonQuery": [
+    2013,
+    2014
+   ],
+   "industryFiscalYearsNeeded": [
+    2013,
+    2014
+   ],
+   "labelWindowCrossesTermination": {
+    "H126": 0,
+    "H252": 0
+   },
+   "listJsonQuery": {
+    "bgn_de": "20130101",
+    "corp_code": "00412597",
+    "end_de": "20151231",
+    "pblntf_detail_ty": "A001"
+   },
+   "name": "현대홈쇼핑",
+   "needs": [
+    "OWN_PERIODIC_FILING_INDUSTRY_STATEMENT_PER_FISCAL_YEAR",
+    "EXECUTION_CONFIRMATION_DOCUMENT",
+    "SEALED_DATED_EX_DATE_RULE_WITH_SOURCE",
+    "DOCUMENTED_NEW_SHARE_COUNT_TO_RECONCILE_OBSERVED_ISSUANCE"
+   ],
+   "studyWindowMemberMonths": 1
+  },
+  {
+   "annualReportReceiptsHeldInRepository": {},
+   "code": "079440.KS",
+   "dartCorpCode": "00176792",
+   "failedTerminalReceiptsToRetry": [
+    "20191119000180",
+    "20191204000479"
+   ],
+   "fiscalYearsNeedingListJsonQuery": [
+    2015,
+    2016,
+    2017,
+    2018,
+    2019
+   ],
+   "industryFiscalYearsNeeded": [
+    2015,
+    2016,
+    2017,
+    2018,
+    2019
+   ],
+   "labelWindowCrossesTermination": {
+    "H126": 7,
+    "H252": 14
+   },
+   "listJsonQuery": {
+    "bgn_de": "20150101",
+    "corp_code": "00176792",
+    "end_de": "20201231",
+    "pblntf_detail_ty": "A001"
+   },
+   "name": "오렌지라이프",
+   "needs": [
+    "OWN_PERIODIC_FILING_INDUSTRY_STATEMENT_PER_FISCAL_YEAR",
+    "FINAL_CONSIDERATION_TERMS",
+    "EXECUTION_CONFIRMATION_DOCUMENT",
+    "SEALED_DATED_EX_DATE_RULE_WITH_SOURCE"
+   ],
+   "studyWindowMemberMonths": 32
+  },
+  {
+   "annualReportReceiptsHeldInRepository": {},
+   "code": "117930.KS",
+   "dartCorpCode": "00790501",
+   "failedTerminalReceiptsToRetry": [
+    "20161017000354",
+    "20170102000404",
+    "20170103000011",
+    "20170106000714"
+   ],
+   "fiscalYearsNeedingListJsonQuery": [
+    2013,
+    2014
+   ],
+   "industryFiscalYearsNeeded": [
+    2013,
+    2014
+   ],
+   "labelWindowCrossesTermination": {
+    "H126": 0,
+    "H252": 0
+   },
+   "listJsonQuery": {
+    "bgn_de": "20130101",
+    "corp_code": "00790501",
+    "end_de": "20151231",
+    "pblntf_detail_ty": "A001"
+   },
+   "name": "한진해운",
+   "needs": [
+    "OWN_PERIODIC_FILING_INDUSTRY_STATEMENT_PER_FISCAL_YEAR",
+    "FINAL_CONSIDERATION_TERMS",
+    "EXECUTION_CONFIRMATION_DOCUMENT",
+    "SEALED_DATED_EX_DATE_RULE_WITH_SOURCE"
+   ],
+   "studyWindowMemberMonths": 1
+  }
+ ],
+ "rules": {
+  "adjusted": "RECONCILED_WITHIN_DOCUMENTED_APPRAISAL_ADJUSTMENT",
+  "adjustmentTolerance": 0.001,
+  "admissionNote": "Execution evidence is a candidate for review; no foundation file is edited.",
+  "exact": "EXACT_COUNT_RECONCILED",
+  "partial": "ISSUANCE_OBSERVED_COUNT_NOT_IN_RETAINED_DOCUMENTS"
+ },
+ "schema": "KR22_SOURCE_RECOVERY_V1",
+ "securities": [
+  {
+   "code": "000030.KS",
+   "executionEvidence": {
+    "status": "NOT_APPLICABLE_NO_DOCUMENTED_STOCK_RATIO"
+   },
+   "gatesAfter": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": true,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "gatesBefore": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": true,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "name": "우리은행",
+   "studyWindowMemberMonths": 49
+  },
+  {
+   "code": "000060.KS",
+   "executionEvidence": {
+    "documentedNewShares": null,
+    "effectiveDate": "2023-02-01",
+    "impliedOldSharesExchanged": 36874104.573632866,
+    "observedIncrease": 46672948.0,
+    "ratio": 1.2657378,
+    "sharesAfter": 174244770.0,
+    "sharesBefore": 127571822.0,
+    "snapshotAfter": "2023-03-02",
+    "snapshotBefore": "2023-01-02",
+    "status": "ISSUANCE_OBSERVED_COUNT_NOT_IN_RETAINED_DOCUMENTS",
+    "successor": "138040.KS",
+    "successorNewListing": false,
+    "successorResolvedHere": false
+   },
+   "gatesAfter": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "gatesBefore": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "name": "메리츠화재",
+   "studyWindowMemberMonths": 67
+  },
+  {
+   "code": "000830.KS",
+   "executionEvidence": {
+    "status": "NOT_APPLICABLE_NO_DOCUMENTED_STOCK_RATIO"
+   },
+   "gatesAfter": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "gatesBefore": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "name": "삼성물산",
+   "studyWindowMemberMonths": 9
+  },
+  {
+   "code": "001300.KS",
+   "executionEvidence": {
+    "documentedNewShares": 23206189,
+    "effectiveDate": "2014-07-01",
+    "impliedOldSharesExchanged": 52437653.11891451,
+    "observedIncrease": 23206189.0,
+    "ratio": 0.4425482,
+    "sharesAfter": 68764530.0,
+    "sharesBefore": 45558341.0,
+    "snapshotAfter": "2014-08-01",
+    "snapshotBefore": "2014-06-02",
+    "status": "EXACT_COUNT_RECONCILED",
+    "successor": "006400.KS",
+    "successorNewListing": false,
+    "successorResolvedHere": false
+   },
+   "gatesAfter": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": true,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "gatesBefore": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "name": "제일모직",
+   "studyWindowMemberMonths": 0
+  },
+  {
+   "code": "002550.KS",
+   "executionEvidence": {
+    "status": "NOT_APPLICABLE_NO_DOCUMENTED_STOCK_RATIO"
+   },
+   "gatesAfter": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "gatesBefore": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "name": "KB손해보험",
+   "studyWindowMemberMonths": 14
+  },
+  {
+   "code": "003410.KS",
+   "executionEvidence": {
+    "status": "NOT_APPLICABLE_NO_DOCUMENTED_STOCK_RATIO"
+   },
+   "gatesAfter": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "gatesBefore": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "name": "쌍용C&E",
+   "studyWindowMemberMonths": 80
+  },
+  {
+   "code": "003450.KS",
+   "executionEvidence": {
+    "status": "NOT_APPLICABLE_NO_DOCUMENTED_STOCK_RATIO"
+   },
+   "gatesAfter": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "gatesBefore": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "name": "현대증권",
+   "studyWindowMemberMonths": 11
+  },
+  {
+   "code": "003600.KS",
+   "executionEvidence": {
+    "status": "NOT_APPLICABLE_NO_DOCUMENTED_STOCK_RATIO"
+   },
+   "gatesAfter": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "gatesBefore": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "name": "SK",
+   "studyWindowMemberMonths": 8
+  },
+  {
+   "code": "004940.KS",
+   "executionEvidence": {
+    "documentedNewShares": 46844299,
+    "effectiveDate": "2013-04-05",
+    "impliedOldSharesExchanged": 247290553.45979682,
+    "observedIncrease": 46844299.0,
+    "ratio": 0.1894302,
+    "sharesAfter": 289894062.0,
+    "sharesBefore": 243049763.0,
+    "snapshotAfter": "2013-05-02",
+    "snapshotBefore": "2013-04-01",
+    "status": "EXACT_COUNT_RECONCILED",
+    "successor": "086790.KS",
+    "successorNewListing": false,
+    "successorResolvedHere": false
+   },
+   "gatesAfter": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": true,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "gatesBefore": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "name": "외환은행",
+   "studyWindowMemberMonths": 0
+  },
+  {
+   "code": "008560.KS",
+   "executionEvidence": {
+    "documentedNewShares": null,
+    "effectiveDate": "2023-04-05",
+    "impliedOldSharesExchanged": 211363885.50680727,
+    "observedIncrease": 33973088.0,
+    "ratio": 0.1607327,
+    "sharesAfter": 208217858.0,
+    "sharesBefore": 174244770.0,
+    "snapshotAfter": "2023-05-02",
+    "snapshotBefore": "2023-04-03",
+    "status": "ISSUANCE_OBSERVED_COUNT_NOT_IN_RETAINED_DOCUMENTS",
+    "successor": "138040.KS",
+    "successorNewListing": false,
+    "successorResolvedHere": false
+   },
+   "gatesAfter": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "gatesBefore": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "name": "메리츠증권",
+   "studyWindowMemberMonths": 89
+  },
+  {
+   "code": "010520.KS",
+   "executionEvidence": {
+    "status": "NOT_APPLICABLE_NO_DOCUMENTED_STOCK_RATIO"
+   },
+   "gatesAfter": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "gatesBefore": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "name": "현대하이스코",
+   "studyWindowMemberMonths": 2
+  },
+  {
+   "code": "010620.KS",
+   "executionEvidence": {
+    "documentedNewShares": 16189618,
+    "effectiveDate": "2025-12-01",
+    "impliedOldSharesExchanged": 39880578.32854497,
+    "observedIncrease": 16188109.0,
+    "ratio": 0.4059146,
+    "relativeGap": -9.32078817424846e-05,
+    "sharesAfter": 104961225.0,
+    "sharesBefore": 88773116.0,
+    "snapshotAfter": "2026-01-02",
+    "snapshotBefore": "2025-11-03",
+    "status": "RECONCILED_WITHIN_DOCUMENTED_APPRAISAL_ADJUSTMENT",
+    "successor": "329180.KS",
+    "successorNewListing": false,
+    "successorResolvedHere": false
+   },
+   "gatesAfter": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": true,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "gatesBefore": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "name": "HD현대미포",
+   "studyWindowMemberMonths": 89
+  },
+  {
+   "code": "011160.KS",
+   "executionEvidence": {
+    "status": "NOT_APPLICABLE_NO_DOCUMENTED_STOCK_RATIO"
+   },
+   "gatesAfter": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "gatesBefore": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "name": "두산건설",
+   "studyWindowMemberMonths": 0
+  },
+  {
+   "code": "012510.KS",
+   "executionEvidence": {
+    "status": "NOT_APPLICABLE_NO_DOCUMENTED_STOCK_RATIO"
+   },
+   "gatesAfter": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "gatesBefore": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "name": "더존비즈온",
+   "studyWindowMemberMonths": 28
+  },
+  {
+   "code": "037620.KS",
+   "executionEvidence": {
+    "status": "NOT_APPLICABLE_NO_DOCUMENTED_STOCK_RATIO"
+   },
+   "gatesAfter": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "gatesBefore": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "name": "미래에셋증권",
+   "studyWindowMemberMonths": 21
+  },
+  {
+   "code": "042670.KS",
+   "executionEvidence": {
+    "documentedNewShares": 30626144,
+    "effectiveDate": "2026-01-01",
+    "impliedOldSharesExchanged": 188791840.9429077,
+    "observedIncrease": 30616505.0,
+    "ratio": 0.1621707,
+    "relativeGap": -0.0003147311003304889,
+    "sharesAfter": 47974118.0,
+    "sharesBefore": 17357613.0,
+    "snapshotAfter": "2026-02-02",
+    "snapshotBefore": "2025-12-01",
+    "status": "RECONCILED_WITHIN_DOCUMENTED_APPRAISAL_ADJUSTMENT",
+    "successor": "267270.KS",
+    "successorNewListing": false,
+    "successorResolvedHere": true
+   },
+   "gatesAfter": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": true,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "gatesBefore": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "name": "HD현대인프라코어",
+   "studyWindowMemberMonths": 34
+  },
+  {
+   "code": "053000.KS",
+   "executionEvidence": {
+    "documentedNewShares": 676278371,
+    "effectiveDate": "2014-11-01",
+    "impliedOldSharesExchanged": 676278371.0,
+    "observedIncrease": 676278371.0,
+    "ratio": 1.0,
+    "sharesAfter": 676278371.0,
+    "sharesBefore": 0.0,
+    "snapshotAfter": "2014-12-01",
+    "snapshotBefore": null,
+    "status": "EXACT_COUNT_RECONCILED",
+    "successor": "000030.KS",
+    "successorNewListing": true,
+    "successorResolvedHere": false
+   },
+   "gatesAfter": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": true,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "gatesBefore": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "name": "우리금융",
+   "studyWindowMemberMonths": 0
+  },
+  {
+   "code": "057050.KS",
+   "executionEvidence": {
+    "documentedNewShares": null,
+    "effectiveDate": "2026-06-30",
+    "impliedOldSharesExchanged": 4324751.96252885,
+    "observedIncrease": 27492898.0,
+    "ratio": 6.357104,
+    "sharesAfter": 183397199.0,
+    "sharesBefore": 155904301.0,
+    "snapshotAfter": "2026-08-03",
+    "snapshotBefore": "2026-06-01",
+    "status": "ISSUANCE_OBSERVED_COUNT_NOT_IN_RETAINED_DOCUMENTS",
+    "successor": "005440.KS",
+    "successorNewListing": false,
+    "successorResolvedHere": false
+   },
+   "gatesAfter": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "gatesBefore": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "name": "현대홈쇼핑",
+   "studyWindowMemberMonths": 1
+  },
+  {
+   "code": "067250.KS",
+   "executionEvidence": {
+    "status": "NOT_APPLICABLE_NO_DOCUMENTED_STOCK_RATIO"
+   },
+   "gatesAfter": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "gatesBefore": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "name": "STX조선해양",
+   "studyWindowMemberMonths": 0
+  },
+  {
+   "code": "079440.KS",
+   "executionEvidence": {
+    "status": "NOT_APPLICABLE_NO_DOCUMENTED_STOCK_RATIO"
+   },
+   "gatesAfter": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "gatesBefore": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "name": "오렌지라이프",
+   "studyWindowMemberMonths": 32
+  },
+  {
+   "code": "115390.KS",
+   "executionEvidence": {
+    "status": "NOT_APPLICABLE_NO_DOCUMENTED_STOCK_RATIO"
+   },
+   "gatesAfter": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "gatesBefore": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "name": "락앤락",
+   "studyWindowMemberMonths": 0
+  },
+  {
+   "code": "117930.KS",
+   "executionEvidence": {
+    "status": "NOT_APPLICABLE_NO_DOCUMENTED_STOCK_RATIO"
+   },
+   "gatesAfter": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "gatesBefore": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "name": "한진해운",
+   "studyWindowMemberMonths": 1
+  }
+ ],
+ "summary": {
+  "annualReceiptsHeld": 32,
+  "crossingMemberMonthsWithCompleteTerminalEconomics": {
+   "H126": {
+    "gatesAfter": 7,
+    "gatesBefore": 0
+   },
+   "H252": {
+    "gatesAfter": 14,
+    "gatesBefore": 0
+   }
+  },
+  "denominator": 22,
+  "eligibleForIndustryTotalReturnLabel": {
+   "after": 0,
+   "before": 0
+  },
+  "exDateSemanticsResolved": {
+   "after": 0,
+   "before": 0
+  },
+  "executionConfirmed": {
+   "after": 6,
+   "before": 1
+  },
+  "executionEvidenceStatus": {
+   "EXACT_COUNT_RECONCILED": 3,
+   "ISSUANCE_OBSERVED_COUNT_NOT_IN_RETAINED_DOCUMENTS": 3,
+   "NOT_APPLICABLE_NO_DOCUMENTED_STOCK_RATIO": 14,
+   "RECONCILED_WITHIN_DOCUMENTED_APPRAISAL_ADJUSTMENT": 2
+  },
+  "failedTerminalReceiptsToRetryInWindow": 35,
+  "fiscalYearsNeedingListJsonQuery": 56,
+  "inWindowSecurities": 16,
+  "inWindowWithAnnualReceiptsHeld": 4,
+  "industryAdmitted": {
+   "after": 0,
+   "before": 0
+  },
+  "terminalConsiderationResolved": {
+   "after": 11,
+   "before": 10
+  },
+  "terminalEconomicsComplete": {
+   "after": 5,
+   "afterIncludingPartialIssuanceEvidence": 8,
+   "before": 0
+  }
+ }
+}
