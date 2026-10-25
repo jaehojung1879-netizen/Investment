@@ -55,5 +55,25 @@ python -m research.industry_alpha_next_v1.source_audit > /tmp/industry-alpha-met
 로컬 ruff/pytest 실행 파일은 설치되지 않아 ruff 및 전체 저장소 검사는 미실행이다.
 기존 자동 CI의 상태는 별도로 확인하며 로컬 합성 통과로 대체하지 않는다.
 
-`contracts.py`는 미래 구현의 작은 합성 수용 기준이다. 실제 데이터 연결,
-학습기, 예측 발행기, 결과 실행 CLI, workflow, 승인 우회 플래그는 제공하지 않는다.
+`contracts.py`는 미래 구현의 작은 합성 수용 기준이다.
+
+## 측정 준비 코드 (2026-10-25 추가, `PREPARED_NOT_AUTHORIZED`)
+
+| 파일 | 역할 |
+| --- | --- |
+| `study.py` | 연구 ID `industry-alpha-kr-next-v1`의 모든 수치·블록·소유자 결정 항목·결과 전 수정 이력. `spec_sha256()`로 고정 |
+| `panel.py` | 봉인 산업 anatomy의 소속·동결 코호트·과거전용 특징·산업 타깃을 **import해 그대로** 호출. 월말 신호, 선도/후발 분할, 시장 문맥, 후발 바스켓 타깃, 코호트 제외 감사만 추가 |
+| `evaluate.py` | 연도별 확장 walk-forward, label exit < 첫 test 신호 − 21세션, 훈련-only 대치·표준화, 날짜 중심화 타깃, 동일 행 paired 손실 차이, moving-block bootstrap, 36슬롯 Holm, 순차 게이트 |
+| `inputs.py` | 모든 실입력을 git 객체에서 읽고 기존 pin과 대조: v4 소속(main), KRX 유니버스(`signal-history@4ea107ed`), replay-v16 가격, 수리된 회계(`fb6e8374`) |
+| `input_check.py` | **라벨 없는** 실입력 검증. 개수·커버리지·달력 지원만 출력 |
+| `run_study.py` | `synthetic` / `verify-inputs` / `execute`. `execute`는 승인 파일·코드·입력 해시·소유자 결정·main Actions·일회 잠금을 모두 통과해야 하며 지금은 거부 |
+
+```bash
+python -m research.industry_alpha_next_v1.run_study synthetic        # 합성 세계 전체 파이프라인
+python -m research.industry_alpha_next_v1.run_study verify-inputs --output research/industry_alpha_next_v1/input-verification.json
+python -m pytest -q research/industry_alpha_next_v1/
+```
+
+`verify-inputs`는 과거 가격으로 과거전용 특징을 만들지만 미래 수익을 계산하지 않는다. 결과는
+`input-verification.json`(개수만)이며 승인 판단은 [approval-packet.md](approval-packet.md)에 있다.
+테스트는 `verify-inputs`가 결과 함수에 들어가면 실패하도록 spy를 건다.

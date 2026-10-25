@@ -1,0 +1,219 @@
+{
+ "calendarSupport": {
+  "H126": {
+   "firstMaturable": "2015-01-30",
+   "lastMaturable": "2026-02-27",
+   "maturableSignals": 130,
+   "requiredBlocks": 8,
+   "supportBlocks": 4,
+   "supportReading": "STRUCTURALLY_INSUFFICIENT_SUPPORT_UNDER_REGISTERED_RULE",
+   "testSignals": 58,
+   "testYears": [
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  "H252": {
+   "firstMaturable": "2015-01-30",
+   "lastMaturable": "2025-08-29",
+   "maturableSignals": 124,
+   "requiredBlocks": 8,
+   "supportBlocks": 3,
+   "supportReading": "STRUCTURALLY_INSUFFICIENT_SUPPORT_UNDER_REGISTERED_RULE",
+   "testSignals": 40,
+   "testYears": [
+    "2022",
+    "2023",
+    "2024",
+    "2025"
+   ]
+  }
+ },
+ "cohortExclusion": {
+  "byYearTerminalLaterMemberDates": {
+   "2015": 69,
+   "2016": 48,
+   "2017": 64,
+   "2018": 81,
+   "2019": 71,
+   "2020": 51,
+   "2021": 45,
+   "2022": 48,
+   "2023": 32,
+   "2024": 19,
+   "2025": 12,
+   "2026": 0
+  },
+  "byYearUnclassifiedCapShare": {
+   "2015": 0.0317,
+   "2016": 0.0185,
+   "2017": 0.0216,
+   "2018": 0.0232,
+   "2019": 0.0176,
+   "2020": 0.0111,
+   "2021": 0.0093,
+   "2022": 0.011,
+   "2023": 0.0084,
+   "2024": 0.008,
+   "2025": 0.0079,
+   "2026": 0.003
+  },
+  "datesWithAnyUnclassifiedMember": 141,
+  "inEligibleCohortCapShareMean": 0.8766,
+  "inEligibleCohortCapShareMin": 0.8165,
+  "memberDates": 16920,
+  "terminalLaterCapShareMean": 0.0104,
+  "terminalLaterClassifiedMemberDates": 0,
+  "terminalLaterMemberDates": 540,
+  "unclassifiedCapShareMax": 0.0401,
+  "unclassifiedCapShareMean": 0.0145,
+  "unclassifiedMemberDates": 794
+ },
+ "evidenceClass": "LABEL_FREE_INPUT_VERIFICATION",
+ "featureCoverage": {
+  "blockCompleteShareByYear": {
+   "BREADTH": {
+    "2015": 0.9032,
+    "2016": 0.9683,
+    "2017": 0.8455,
+    "2018": 0.8835,
+    "2019": 0.9603,
+    "2020": 0.9853,
+    "2021": 0.7073,
+    "2022": 0.881,
+    "2023": 0.9717,
+    "2024": 0.8172,
+    "2025": 0.875,
+    "2026": 0.918
+   },
+   "CASH": {
+    "2015": 0.0,
+    "2016": 0.0,
+    "2017": 0.0732,
+    "2018": 0.5534,
+    "2019": 0.8254,
+    "2020": 0.8824,
+    "2021": 0.7642,
+    "2022": 0.8254,
+    "2023": 0.8868,
+    "2024": 0.871,
+    "2025": 0.8958,
+    "2026": 1.0
+   },
+   "CONCENTRATION": {
+    "2015": 1.0,
+    "2016": 1.0,
+    "2017": 1.0,
+    "2018": 1.0,
+    "2019": 1.0,
+    "2020": 1.0,
+    "2021": 1.0,
+    "2022": 1.0,
+    "2023": 1.0,
+    "2024": 1.0,
+    "2025": 1.0,
+    "2026": 1.0
+   },
+   "MOM": {
+    "2015": 0.9032,
+    "2016": 0.9683,
+    "2017": 0.8455,
+    "2018": 0.8835,
+    "2019": 0.9603,
+    "2020": 0.9853,
+    "2021": 0.7073,
+    "2022": 0.881,
+    "2023": 0.9717,
+    "2024": 0.8172,
+    "2025": 0.875,
+    "2026": 0.918
+   },
+   "PROFIT": {
+    "2015": 0.0,
+    "2016": 0.0,
+    "2017": 0.0732,
+    "2018": 0.5922,
+    "2019": 0.9048,
+    "2020": 0.8971,
+    "2021": 0.8049,
+    "2022": 0.8413,
+    "2023": 0.8868,
+    "2024": 0.871,
+    "2025": 0.8958,
+    "2026": 1.0
+   },
+   "VALUE": {
+    "2015": 0.0,
+    "2016": 0.6508,
+    "2017": 0.9024,
+    "2018": 0.8835,
+    "2019": 0.9048,
+    "2020": 0.9118,
+    "2021": 0.9024,
+    "2022": 0.9048,
+    "2023": 0.9057,
+    "2024": 1.0,
+    "2025": 1.0,
+    "2026": 1.0
+   }
+  },
+  "finiteIndustryDates": {
+   "BREADTH_ABOVE_MA_126": 1201,
+   "BREADTH_X_MKT_TREND": 1201,
+   "DOWNSIDE_VOL_126": 1201,
+   "EX_LEADER_MOM_126": 949,
+   "HHI": 1343,
+   "LAGGARD_BREADTH_126": 949,
+   "LAGGARD_MOM_126": 949,
+   "LEADER_GAP_63": 1002,
+   "LOG_CONSTITUENT_COUNT": 1343,
+   "LOG_INDUSTRY_CAP": 1343,
+   "MEDIAN_LOG_ADV60": 1343,
+   "MEDIAN_bookToMarketProxy": 1093,
+   "MEDIAN_netIncomeImprovementToAssets": 833,
+   "MEDIAN_netIncomeToAssets": 949,
+   "MEDIAN_ocfImprovementToAssets": 810,
+   "MEDIAN_ocfToAssets": 941,
+   "MKT_ABOVE_SMA200": 1343,
+   "MKT_RET_126": 1343,
+   "MKT_VOL_126": 1343,
+   "MOM_X_MKT_TREND": 1201,
+   "REL_MOM_126": 1201,
+   "TOP1_CAP_SHARE": 1343
+  }
+ },
+ "findings": [
+  "classified cohorts omit 794 of 16920 PIT member-dates (mean snapshot-cap share 1.5%); every date with an unclassified member: 141 of 141",
+  "later-terminated securities: 540 member-dates, 0 of them classified (i.e. in a cohort)",
+  "H126: 58 test signals in 6 test years -> 4 support blocks vs 8 required: STRUCTURALLY_INSUFFICIENT_SUPPORT_UNDER_REGISTERED_RULE",
+  "H252: 40 test signals in 4 test years -> 3 support blocks vs 8 required: STRUCTURALLY_INSUFFICIENT_SUPPORT_UNDER_REGISTERED_RULE"
+ ],
+ "industryDates": {
+  "datesWithAtLeastMinIndustries": 130,
+  "diffusionEligibleIndustryDates": 1059,
+  "eligible": 1343,
+  "eligiblePerDateMax": 12,
+  "eligiblePerDateMedian": 10.0,
+  "eligiblePerDateMin": 6,
+  "ineligibleBelowMinimumMembers": 631,
+  "total": 1974
+ },
+ "inputIdentitySha256": "006cebe6228143b1247ec4b5b1ec1ba933b6dbe445dd0299f80c9d992dacc39a",
+ "outcomeCalls": 0,
+ "signals": {
+  "count": 141,
+  "first": "2015-01-30",
+  "last": "2026-09-11",
+  "membersPerSignal": [
+   120
+  ],
+  "rule": "LAST_V4_WEEKLY_GRID_DATE_OF_EACH_CALENDAR_MONTH"
+ },
+ "specSha256": "77c4ba7dc2d72515b79a439f22016c7c6cc1ef902278620fe2f02cc27820998f",
+ "status": "PREPARED_NOT_AUTHORIZED",
+ "studyId": "industry-alpha-kr-next-v1"
+}
