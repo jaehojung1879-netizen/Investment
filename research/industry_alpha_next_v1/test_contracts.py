@@ -60,59 +60,78 @@ class IndustryContractTests(unittest.TestCase):
         self.assertEqual(len(c.excluding(w, {"SYN:0"}, **S)), 5)
         self.assertAlmostEqual(sum(c.excluding(w, {"SYN:0"}, **S).values()), 1)
 
-    def test_paired_population_cannot_reward_missing_alternative(self):
-        frozen = {"SYN:DATE1": ("a", "b", "c")}
-        args = ({"a": 1, "b": 2, "c": 3},
-                {"a": 1, "c": None}, {"a": .1, "b": .9, "c": .2})
-        receipt = c.paired_population_receipt(*args, intended_by_block=frozen, **S)
-        self.assertEqual(receipt["status"], "BLOCKED_INCOMPLETE_INTENDED_POPULATION")
-        self.assertEqual(receipt["missingCount"], 2)
-        self.assertEqual(receipt["commonIds"], ())
-        self.assertFalse(receipt["inferentialComparisonAllowed"])
-        with self.assertRaisesRegex(ValueError, "BLOCKED_INCOMPLETE"):
-            c.common_ids(*args, intended_by_block=frozen, **S)
+    def receipt(self, base, alt, targets, blocks, reasons=None, minimum=1, unmatured=()):
+        return c.paired_population_receipt(
+            base, alt, targets, intended_by_block=blocks,
+            sealed_intended_sha256=c.intended_digest(blocks),
+            minimum_complete_blocks=minimum, not_matured_blocks=unmatured,
+            missing_reasons=reasons, **S)
 
-    def test_terminal_missing_does_not_promote_survivor_only_winners(self):
-        cohort = {"SYN:INDUSTRY": ("winner", "terminal")}
-        receipt = c.paired_population_receipt(
-            {"winner": 1, "terminal": -1}, {"winner": 2, "terminal": -1},
-            {"winner": .8, "terminal": None}, intended_by_block=cohort,
-            missing_reasons={"terminal": "UNKNOWN_TERMINAL_ECONOMICS"}, **S)
-        self.assertEqual(receipt["blockedBlockCount"], 1)
-        self.assertEqual(receipt["coverage"], 0)
-        self.assertEqual(receipt["blocks"]["SYN:INDUSTRY"]["missing"]["terminal"],
-                         "UNKNOWN_TERMINAL_ECONOMICS")
+    def test_same_member_recurs_across_dates(self):
+        blocks = {"D1": ("a",), "D2": ("a",)}
+        k = {("D1", "a"): 1, ("D2", "a"): 2}
+        r = self.receipt(k, k, {("D1", "a"): .1, ("D2", "a"): .2}, blocks, minimum=2)
+        self.assertEqual(r["commonIds"], (("D1", "a"), ("D2", "a")))
+        with self.assertRaisesRegex(ValueError, "INVALID_SIGNAL_MEMBERS"):
+            self.receipt(k, k, {}, {"D1": ("a", "a")})
 
-    def test_missing_outcome_reason_and_intended_denominator_preserved(self):
-        receipt = c.paired_population_receipt(
-            {"a": 1, "b": 1}, {"a": 1, "b": 1}, {"a": .2},
-            intended_by_block={"SYN:ONE": ("a", "b")},
-            missing_reasons={"b": "SOURCE_OUTAGE"}, **S)
-        self.assertEqual(receipt["intendedCount"], 2)
-        self.assertEqual(receipt["missingCount"], 1)
-        self.assertEqual(receipt["commonIds"], ())
-        self.assertEqual(receipt["blocks"]["SYN:ONE"]["missing"], {"b": "SOURCE_OUTAGE"})
+    def test_missing_alternative_blocks_only_its_block(self):
+        blocks = {"D1": ("a", "b"), "D2": ("a",)}
+        base = {("D1", "a"): 1, ("D1", "b"): 2, ("D2", "a"): 3}
+        alt = {("D1", "a"): 1, ("D2", "a"): 3}
+        tg = {("D1", "a"): .1, ("D1", "b"): .9, ("D2", "a"): .2}
+        r = self.receipt(base, alt, tg, blocks)
+        self.assertEqual(r["status"], "PARTIAL_BLOCKS_REPORTED")
+        self.assertEqual((r["completeBlockCount"], r["blockedBlockCount"]), (1, 1))
+        self.assertEqual(r["commonIds"], (("D2", "a"),))
+        self.assertEqual(r["blocks"]["D1"]["missing"], {"b": ("ALT_FORECAST_MISSING",)})
+        with self.assertRaisesRegex(ValueError, "INSUFFICIENT"):
+            c.common_ids(base, alt, tg, intended_by_block=blocks,
+                         sealed_intended_sha256=c.intended_digest(blocks),
+                         minimum_complete_blocks=2, **S)
 
-    def test_complete_population_allows_exact_frozen_ids(self):
-        a, b, targets = {"a": 1, "b": 2}, {"a": 2, "b": 3}, {"a": 0, "b": -.5}
-        frozen = {"SYN:ONE": ("b", "a")}
-        self.assertEqual(c.common_ids(a, b, targets, intended_by_block=frozen, **S),
-                         ("a", "b"))
-        r = c.paired_population_receipt(a, b, targets, intended_by_block=frozen, **S)
-        self.assertEqual(r["coverage"], 1)
-        self.assertTrue(r["inferentialComparisonAllowed"])
+    def test_terminal_missing_blocks_whole_block_and_is_counted(self):
+        blocks = {"I": ("winner", "terminal")}
+        k = {("I", "winner"): 1, ("I", "terminal"): -1}
+        r = self.receipt(k, k, {("I", "winner"): .8, ("I", "terminal"): None}, blocks,
+                         reasons={("I", "terminal"): ["UNKNOWN_TERMINAL_ECONOMICS", "TRADING_HALT"]})
+        self.assertEqual(r["status"], "BLOCKED_INSUFFICIENT_COMPLETE_BLOCKS")
+        self.assertEqual(r["commonIds"], ())
+        self.assertEqual(r["terminalMissingCount"], 1)
+        self.assertEqual(r["missingByReason"], {"TRADING_HALT": 1, "UNKNOWN_TERMINAL_ECONOMICS": 1})
 
-    def test_post_signal_addition_and_unregistered_denominator_refused(self):
+    def test_survivor_only_intended_cohort_fails_sealed_digest(self):
+        sealed = c.intended_digest({"I": ("winner", "terminal")})
+        survivors = {"I": ("winner",)}
+        k = {("I", "winner"): 1}
+        with self.assertRaisesRegex(ValueError, "DIGEST_MISMATCH"):
+            c.paired_population_receipt(k, k, {("I", "winner"): .8}, intended_by_block=survivors,
+                                        sealed_intended_sha256=sealed, minimum_complete_blocks=1, **S)
+
+    def test_unmatured_block_is_calendar_decided_not_missing(self):
+        blocks = {"D1": ("a",), "D2": ("a",)}
+        k = {("D1", "a"): 1}
+        r = self.receipt(k, k, {("D1", "a"): .1}, blocks, unmatured=("D2",))
+        self.assertEqual((r["notMaturedBlockCount"], r["missingCount"]), (1, 0))
+        self.assertEqual(r["status"], "COMPLETE")
+        self.assertEqual(r["evaluatedMemberCoverage"], 1)
+        with self.assertRaisesRegex(ValueError, "UNKNOWN_NOT_MATURED"):
+            self.receipt(k, k, {}, blocks, unmatured=("D9",))
+
+    def test_post_signal_addition_contradiction_and_params_refused(self):
+        b = {"I": ("a",)}
+        k = {("I", "a"): 1}
         with self.assertRaisesRegex(ValueError, "INTENDED_SIGNAL"):
-            c.common_ids({"a": 1}, {"a": 1}, {"a": .1}, **S)
+            c.common_ids(k, k, {("I", "a"): .1}, intended_by_block=None,
+                         sealed_intended_sha256="x", minimum_complete_blocks=1, **S)
         with self.assertRaisesRegex(ValueError, "POST_SIGNAL"):
-            c.common_ids({"a": 1, "survivor": 1}, {"a": 1}, {"a": .1},
-                         intended_by_block={"SYN:ONE": ("a",)}, **S)
+            self.receipt({("I", "a"): 1, ("I", "s"): 1}, k, {("I", "a"): .1}, b)
         with self.assertRaisesRegex(ValueError, "CONTRADICTORY"):
-            c.paired_population_receipt(
-                {"a": 1}, {"a": 1}, {"a": .1},
-                intended_by_block={"SYN:ONE": ("a",)},
-                missing_reasons={"a": "SOURCE_OUTAGE"}, **S)
+            self.receipt(k, k, {("I", "a"): .1}, b, reasons={("I", "a"): "SOURCE_OUTAGE"})
+        with self.assertRaisesRegex(ValueError, "MINIMUM_COMPLETE"):
+            self.receipt(k, k, {("I", "a"): .1}, b, minimum=0)
+        with self.assertRaisesRegex(ValueError, "UNKNOWN_OUTCOME_MISSING_REASON"):
+            self.receipt(k, k, {}, b, reasons={("I", "a"): "MADE_UP"})
 
     def test_future_maturity_and_embargo_block_training(self):
         rows = [dict(id="safe", signal=1, entry=2, exit=278),
@@ -125,8 +144,26 @@ class IndustryContractTests(unittest.TestCase):
         self.assertLess(c.simple_excess(.3, .4, **S), 0)
 
     def test_costs_can_erase_positive_gross_increment(self):
-        self.assertLess(c.paired_net_delta(.10, .11, .001, .02, **S), 0)
-        self.assertIsNone(c.paired_net_delta(.10, .11, None, .02, **S))
+        b = {"I": ("a",)}
+        k = {("I", "a"): 1}
+        r = self.receipt(k, k, {("I", "a"): .1}, b)
+        self.assertLess(c.paired_net_delta(r, ("I", "a"), .10, .11, .001, .02, **S), 0)
+        self.assertIsNone(c.paired_net_delta(r, ("I", "a"), .10, .11, None, .02, **S))
+
+    def test_paired_net_requires_approved_receipt_and_member(self):
+        b = {"I": ("a", "b")}
+        k = {("I", "a"): 1, ("I", "b"): 1}
+        ok = self.receipt(k, k, {("I", "a"): .1, ("I", "b"): .1}, b)
+        with self.assertRaisesRegex(ValueError, "ID_NOT_IN_APPROVED"):
+            c.paired_net_delta(ok, ("I", "zz"), .1, .1, 0, 0, **S)
+        forged = dict(ok, commonIds=(("I", "zz"),))
+        with self.assertRaisesRegex(ValueError, "APPROVED_RECEIPT"):
+            c.paired_net_delta(forged, ("I", "zz"), .1, .1, 0, 0, **S)
+        blocked = self.receipt(k, k, {("I", "a"): .1}, b)
+        with self.assertRaisesRegex(ValueError, "APPROVED_RECEIPT"):
+            c.paired_net_delta(blocked, ("I", "a"), .1, .1, 0, 0, **S)
+        with self.assertRaisesRegex(ValueError, "APPROVED_RECEIPT"):
+            c.paired_net_delta(None, ("I", "a"), .1, .1, 0, 0, **S)
 
     def test_leaders_and_laggards_must_be_disjoint_nonempty(self):
         self.assertIsNone(c.leader_gap({"a": .2}, {"a"}, **S))

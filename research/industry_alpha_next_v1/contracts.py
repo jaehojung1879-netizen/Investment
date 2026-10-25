@@ -5,6 +5,8 @@ They are not an investment model or an authorization mechanism.
 """
 from __future__ import annotations
 
+import hashlib
+import json
 import math
 from datetime import datetime
 
@@ -65,81 +67,134 @@ def excluding(weights, removed, *, scope, minimum=5):
     return {k: w / total for k, w in kept.items()}
 
 
-def paired_population_receipt(base, alternative, targets, *, scope,
-                              intended_by_block, missing_reasons=None):
-    """Conservative signal-frozen paired outcome admission; synthetic only.
+MISSING_REASONS = frozenset({
+    "UNKNOWN_TERMINAL_ECONOMICS", "SOURCE_OUTAGE", "RETURN_BASIS_UNRESOLVED",
+    "CORPORATE_ACTION_UNRESOLVED", "IDENTITY_UNRESOLVED",
+    "INDUSTRY_UNCLASSIFIED", "TRADING_HALT"})
+TERMINAL_REASONS = frozenset({"UNKNOWN_TERMINAL_ECONOMICS"})
 
-    A block with any missing outcome or forecast is entirely blocked. This
-    prevents a survivor-only intersection from silently entering a paired test.
+
+def intended_digest(intended_by_block):
+    """SHA-256 of the signal-time cohort; seal it BEFORE any outcome is read."""
+    canon = {b: sorted(m) for b, m in sorted(intended_by_block.items())}
+    return hashlib.sha256(json.dumps(canon, sort_keys=True, separators=(",", ":"))
+                          .encode()).hexdigest()
+
+
+def _reasons(value):
+    seq = (value,) if isinstance(value, str) else value
+    if not isinstance(seq, (list, tuple)) or not seq or any(r not in MISSING_REASONS for r in seq):
+        raise ValueError("UNKNOWN_OUTCOME_MISSING_REASON")
+    return tuple(sorted(set(seq)))
+
+
+def _receipt_sha(receipt):
+    body = {k: v for k, v in receipt.items() if k != "receiptSha256"}
+    return hashlib.sha256(json.dumps(body, sort_keys=True, default=list,
+                                     separators=(",", ":")).encode()).hexdigest()
+
+
+def paired_population_receipt(base, alternative, targets, *, scope,
+                              intended_by_block, sealed_intended_sha256,
+                              minimum_complete_blocks, not_matured_blocks=(),
+                              missing_reasons=None):
+    """Signal-frozen paired admission, BLOCK-scoped; synthetic only.
+
+    Records are keyed by (block, member): the same security legitimately recurs
+    on every signal date, duplicates are rejected only inside one block.
+    The intended cohort must match a digest sealed before outcomes. A block with
+    any missing outcome/forecast is blocked as a whole and reported by reason;
+    other complete blocks remain admissible only if their count reaches the
+    pre-registered minimum. Blocks not yet matured are decided by the calendar
+    (``not_matured_blocks``), never by the presence of an outcome. Rule (b) of
+    audit R3; the study-wide alternative awaits owner confirmation.
     """
     _synthetic(scope)
     if not isinstance(intended_by_block, dict) or not intended_by_block:
         raise ValueError("INTENDED_SIGNAL_POPULATION_REQUIRED")
     if not all(isinstance(x, dict) for x in (base, alternative, targets)):
         raise ValueError("PAIRED_INPUTS_MUST_BE_DICTS")
+    if isinstance(minimum_complete_blocks, bool) or not isinstance(minimum_complete_blocks, int) \
+            or minimum_complete_blocks < 1:
+        raise ValueError("MINIMUM_COMPLETE_BLOCKS_REQUIRED")
     missing_reasons = {} if missing_reasons is None else missing_reasons
     if not isinstance(missing_reasons, dict):
         raise ValueError("INVALID_MISSING_REASONS")
-    reasons = {"UNKNOWN_TERMINAL_ECONOMICS", "SOURCE_OUTAGE",
-               "OUTCOME_NOT_MATURED", "RETURN_BASIS_UNRESOLVED",
-               "CORPORATE_ACTION_UNRESOLVED"}
-    ids = []
+    keys = []
     for block, members in intended_by_block.items():
         if not isinstance(block, str) or not block or not isinstance(members, (list, tuple)) or not members:
             raise ValueError("INVALID_SIGNAL_BLOCK")
         if any(not isinstance(x, str) or not x for x in members) or len(set(members)) != len(members):
             raise ValueError("INVALID_SIGNAL_MEMBERS")
-        ids.extend(members)
-    if len(set(ids)) != len(ids):
-        raise ValueError("DUPLICATE_MEMBER_ACROSS_BLOCKS")
-    if any(set(d) - set(ids) for d in (base, alternative, targets, missing_reasons)):
+        keys.extend((block, m) for m in members)
+    if intended_digest(intended_by_block) != sealed_intended_sha256:
+        raise ValueError("INTENDED_COHORT_DIGEST_MISMATCH")
+    unmatured = set(not_matured_blocks)
+    if unmatured - set(intended_by_block):
+        raise ValueError("UNKNOWN_NOT_MATURED_BLOCK")
+    universe = set(keys)
+    if any(set(d) - universe for d in (base, alternative, targets, missing_reasons)):
         raise ValueError("POST_SIGNAL_SURVIVOR_ADDITION")
-    if any(r not in reasons for r in missing_reasons.values()):
-        raise ValueError("UNKNOWN_OUTCOME_MISSING_REASON")
-    blocks, accepted, missing_total = {}, [], 0
+    parsed = {k: _reasons(v) for k, v in missing_reasons.items()}
+    blocks, accepted = {}, []
+    by_reason, missing_total, terminal_missing = {}, 0, 0
     for block, members in sorted(intended_by_block.items()):
+        if block in unmatured:
+            blocks[block] = {"intendedIds": tuple(sorted(members)),
+                             "status": "NOT_MATURED_BY_CALENDAR", "missing": {}}
+            continue
         missing = {}
-        for x in members:
-            value = targets.get(x)
+        for m in members:
+            k, value = (block, m), targets.get((block, m))
             if not _finite(value) or value < -1:
-                missing[x] = missing_reasons.get(x, "UNDOCUMENTED_MISSING_OUTCOME")
-            elif x in missing_reasons:
+                missing[m] = parsed.get(k, ("UNDOCUMENTED_MISSING_OUTCOME",))
+            elif k in parsed:
                 raise ValueError("CONTRADICTORY_OUTCOME_MISSING_REASON")
-            elif not _finite(base.get(x)):
-                missing[x] = "BASE_FORECAST_MISSING"
-            elif not _finite(alternative.get(x)):
-                missing[x] = "ALT_FORECAST_MISSING"
-        missing_total += len(missing)
+            elif not _finite(base.get(k)):
+                missing[m] = ("BASE_FORECAST_MISSING",)
+            elif not _finite(alternative.get(k)):
+                missing[m] = ("ALT_FORECAST_MISSING",)
+        for rs in missing.values():
+            missing_total += 1
+            terminal_missing += bool(TERMINAL_REASONS & set(rs))
+            for r in rs:
+                by_reason[r] = by_reason.get(r, 0) + 1
         if not missing:
-            accepted.extend(members)
-        blocks[block] = {
-            "intendedIds": tuple(sorted(members)),
-            "status": "BLOCKED" if missing else "COMPLETE",
-            "missing": {x: missing[x] for x in sorted(missing)},
-        }
-    ready = missing_total == 0
-    return {
-        "status": "COMPLETE" if ready else "BLOCKED_INCOMPLETE_INTENDED_POPULATION",
+            accepted.extend((block, m) for m in members)
+        blocks[block] = {"intendedIds": tuple(sorted(members)),
+                         "status": "BLOCKED" if missing else "COMPLETE",
+                         "missing": {m: missing[m] for m in sorted(missing)}}
+    complete = sum(x["status"] == "COMPLETE" for x in blocks.values())
+    blocked = sum(x["status"] == "BLOCKED" for x in blocks.values())
+    ready = complete >= minimum_complete_blocks
+    receipt = {
+        "status": ("COMPLETE" if ready and not blocked else
+                   "PARTIAL_BLOCKS_REPORTED" if ready else "BLOCKED_INSUFFICIENT_COMPLETE_BLOCKS"),
         "evidenceClass": "SYNTHETIC_CONTRACT_ONLY",
-        "intendedIds": tuple(sorted(ids)),
-        "intendedCount": len(ids), "missingCount": missing_total,
-        "completeBlockCount": sum(x["status"] == "COMPLETE" for x in blocks.values()),
-        "blockedBlockCount": sum(x["status"] == "BLOCKED" for x in blocks.values()),
-        "coverage": len(accepted) / len(ids),
+        "admissionRule": "BLOCK_SCOPED_MINIMUM_COMPLETE_BLOCKS",
+        "intendedCohortSha256": sealed_intended_sha256,
+        "intendedBlockCount": len(blocks), "intendedMemberCount": len(keys),
+        "notMaturedBlockCount": len(unmatured),
+        "completeBlockCount": complete, "blockedBlockCount": blocked,
+        "minimumCompleteBlocks": minimum_complete_blocks,
+        "missingCount": missing_total, "terminalMissingCount": terminal_missing,
+        "missingByReason": dict(sorted(by_reason.items())),
+        "evaluatedMemberCoverage": (len(accepted) / sum(len(intended_by_block[b]) for b in blocks
+                                                       if b not in unmatured)
+                                    if len(unmatured) < len(blocks) else None),
         "commonIds": tuple(sorted(accepted)) if ready else (),
         "inferentialComparisonAllowed": ready,
         "blocks": blocks,
     }
+    receipt["receiptSha256"] = _receipt_sha(receipt)
+    return receipt
 
 
-def common_ids(base, alternative, targets, *, scope, intended_by_block=None,
-               missing_reasons=None):
-    """No silent intersection: require complete signal-frozen paired population."""
-    receipt = paired_population_receipt(
-        base, alternative, targets, scope=scope,
-        intended_by_block=intended_by_block, missing_reasons=missing_reasons)
+def common_ids(*args, **kwargs):
+    """No silent intersection: only an approved receipt yields (block, member) ids."""
+    receipt = paired_population_receipt(*args, **kwargs)
     if not receipt["inferentialComparisonAllowed"]:
-        raise ValueError("BLOCKED_INCOMPLETE_INTENDED_POPULATION")
+        raise ValueError("BLOCKED_INSUFFICIENT_COMPLETE_BLOCKS")
     return receipt["commonIds"]
 
 
@@ -158,8 +213,14 @@ def simple_excess(industry, market, *, scope):
     return industry - market
 
 
-def paired_net_delta(gross_base, gross_alt, cost_base, cost_alt, *, scope):
+def paired_net_delta(receipt, key, gross_base, gross_alt, cost_base, cost_alt, *, scope):
+    """Net paired increment for ONE (block, member) id of an approved receipt."""
     _synthetic(scope)
+    if (not isinstance(receipt, dict) or not receipt.get("inferentialComparisonAllowed")
+            or receipt.get("receiptSha256") != _receipt_sha(receipt)):
+        raise ValueError("APPROVED_RECEIPT_REQUIRED")
+    if tuple(key) not in receipt["commonIds"]:
+        raise ValueError("ID_NOT_IN_APPROVED_RECEIPT")
     values = (gross_base, gross_alt, cost_base, cost_alt)
     if not all(_finite(v) for v in values):
         return None
