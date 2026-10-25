@@ -77,3 +77,23 @@ python -m pytest -q research/industry_alpha_next_v1/
 `verify-inputs`는 과거 가격으로 과거전용 특징을 만들지만 미래 수익을 계산하지 않는다. 결과는
 `input-verification.json`(개수만)이며 승인 판단은 [approval-packet.md](approval-packet.md)에 있다.
 테스트는 `verify-inputs`가 결과 함수에 들어가면 실패하도록 spy를 건다.
+
+## 추론 보정과 종결 22종목 복구율 (2026-10-25 추가, 합성·원천 전용)
+
+| 파일 | 역할 |
+| --- | --- |
+| `inference_calibration.py` | 등록 평가기 전체(`admit` → `oof_predictions` → `loss_differential`)를 KR 달력·H126/H252 중첩 라벨·결측이 있는 합성 산업 패널에 그대로 돌려, 등록 MBB(C0)와 사전 선언 대안 C1~C6의 제1종 오류·검정력을 잰다 |
+| `inference-calibration-protocol.json` | 후보·DGP·효과 크기·seed·반복 수·판정 규칙을 정식 실행 **전에** 동결(digest `defdd9b1…`, 커밋 `a07d178`) |
+| `inference-calibration-result.json` | 정식 실행 1회의 결과(16,800 replicates, seed 20261026) |
+| `inference_mechanism_diagnostic.py` / `inference-mechanism-diagnostic.json` | 결과를 **본 뒤** 작성한 사후 진단(development seed). 동결 판정을 바꾸지 않는다 |
+| `kr22_recovery.py` / `kr22-recovery.json` | 종결 22종목의 산업·종결 대가·배당 복구 현황을 커밋된 원천만으로 집계. 가격·결과·네트워크를 읽지 않는다 |
+
+```bash
+python -m research.industry_alpha_next_v1.inference_calibration critical-values
+python -m research.industry_alpha_next_v1.inference_calibration formal --workers 4 --output /tmp/result.json   # 약 26분
+python -m research.industry_alpha_next_v1.inference_mechanism_diagnostic --output /tmp/mech.json
+python -m research.industry_alpha_next_v1.kr22_recovery --output /tmp/kr22.json
+```
+
+결과 해석과 다음 단계는 [approval-packet.md](approval-packet.md) §7에 있다.
+

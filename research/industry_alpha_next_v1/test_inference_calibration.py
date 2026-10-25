@@ -117,3 +117,21 @@ def test_heavy_tailed_worlds_never_produce_a_nonfinite_feature_or_matured_target
         assert np.isfinite(frame[cols].to_numpy(float)).all()
         matured = frame["cwStatus"].eq("MATURED")
         assert np.isfinite(frame.loc[matured, "cwRelative"].to_numpy(float)).all()
+
+
+def test_mechanism_diagnostic_is_labelled_post_hoc_and_its_fold_split_is_exact():
+    from . import inference_mechanism_diagnostic as M
+    share, reject, k = M.fold_structure([1.0, 1.0, -1.0, -1.0], ["2021", "2021", "2022", "2022"])
+    assert share == 1.0 and k == 2 and reject is False
+    out = json.loads((C.HERE / "inference-mechanism-diagnostic.json").read_text())
+    assert out["writtenAfterFormalResultWasRead"] is True and out["changesFrozenVerdict"] is False
+    assert out["seed"] == C.load_protocol()["seeds"]["development"]
+
+
+def test_committed_formal_result_matches_the_frozen_protocol():
+    result = json.loads(C.RESULT_PATH.read_text())
+    p = C.load_protocol(formal=True)
+    assert result["evidenceClass"] == "SYNTHETIC_CALIBRATION_FORMAL" and result["seed"] == p["seeds"]["formal"]
+    assert result["protocolDigest"] == p["frozenDigest"] and result["replicateLimit"] is None
+    assert result["codeSha256"]["evaluate.py"] == __import__("hashlib").sha256((C.HERE / "evaluate.py").read_bytes()).hexdigest()
+    assert len(result["cells"]) == 24 and result["historicalOutcomesRead"] == 0
