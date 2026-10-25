@@ -392,7 +392,8 @@ def verify_design(root=ROOT):
             raise ValueError("EXISTING_STUDY_CHANGED:" + name)
     closure = ["pipeline/market_research_c1c.py", "scripts/check_market_research.py", PROTOCOL,
                "docs/research-program/proposals/market-research-preserved-sha256.json",
-               "tests/test_market_research_c1c.py"]
+               "tests/test_market_research_c1c.py",
+               "pipeline/market_research_reentry_structure.py", "tests/test_market_research_reentry_structure.py"]
     return {**program_readiness(), "status": "BLOCKED_PENDING_INDEPENDENT_AUDIT_AND_OWNER_APPROVAL",
             "designStructure": "VERIFIED", "protocolSha256": digest(protocol), "preservedFiles": len(pins["files"]),
             "codeHashes": {p: hashlib.sha256((root / p).read_bytes()).hexdigest() for p in closure},
