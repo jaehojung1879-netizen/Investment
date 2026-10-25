@@ -1,0 +1,25 @@
+{
+  "existingFiscalYearCounts": {
+    "2015": 525
+  },
+  "existingOriginalRecords": 525,
+  "existingReportCodeCounts": {
+    "11012": 175,
+    "11013": 175,
+    "11014": 175
+  },
+  "fixedOriginalTargets": 68,
+  "newHistoricalOutcomesRead": 0,
+  "originalFinancialFactsVerified": 0,
+  "originalZipBytesRecovered": 0,
+  "sameReceiptMetadataCount": 0,
+  "sameReceiptNos": [],
+  "scope": "Existing original-XBRL ledger only; NOT proof that every external archive was searched",
+  "source": {
+    "codeSha256": "4fc2911ee090e5bcea8bb48e942530bb912e30bdbe3021d3ab4efe1b9f3a17f3",
+    "commit": "9d89baaa710453e20bcf918e86e42d85430e4eb6",
+    "path": "ledger/fundamentals/kr-xbrl-original/dart-xbrl-2015.jsonl.gz",
+    "sha256": "889e4d42d2cf62d13477a8c67fddfd5d13e2dfd30ba1f8e4adf7733aab0bd195"
+  },
+  "verdict": "METADATA_INTERSECTION_NOT_ORIGINAL_BYTE_OR_NUMERIC_ADMISSION"
+}
