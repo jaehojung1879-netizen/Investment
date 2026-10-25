@@ -1,0 +1,1291 @@
+{
+ "evidenceClass": "SOURCE_INVENTORY_NO_OUTCOME",
+ "historicalOutcomesRead": 0,
+ "inputs": {
+  "classificationObservations": {
+   "path": "data/kr-industry-membership-foundation-v1/classification-observations.json",
+   "sha256": "874d62c27eb700cb261d08f65ddd20c720bfed4cb29fece133c05270eaab047b"
+  },
+  "corporateActions": {
+   "path": "data/kr-terminal-corporate-actions.json",
+   "sha256": "4e67620afddfb4cd5849e857da78a91f643f00c0b24466e3e1517a108d156077"
+  },
+  "crosswalk": {
+   "path": "research_specs/kr-industry-membership-foundation-v4/crosswalk.json",
+   "sha256": "76166ad309d323240ffe749df74ac089f4693f30ef77231b8cd5ab85365826b5"
+  },
+  "dividendLineage": {
+   "path": "docs/results/kr-dividend-amount-lineage-v2.json",
+   "sha256": "2c3c7d93159b1959f1358d0f4df0a78e14035ad916d53e8fa3356155c311e621"
+  },
+  "inputVerification": {
+   "path": "research/industry_alpha_next_v1/input-verification.json",
+   "sha256": "1920f44ade1ca9d3e3abd9fbc91c9e6c27254cc7301a4090e6faa6b42f228428"
+  },
+  "reconstruction": {
+   "path": "docs/results/kr-terminal-action-reconstruction-v2.json",
+   "sha256": "b1d2dcb0a8064139e601c4efab51a44e1323f93910ae70228054338a90629017"
+  },
+  "retainedTerminalDocuments": {
+   "path": "data/kr-industry-membership-foundation-v1/retained-terminal-documents.jsonl.gz",
+   "sha256": "98c1475f888cb07b5c8865b8902516e463bd934281d1f4744a7aba4b4d687071"
+  },
+  "top120": {
+   "path": "data/kr-industry-membership-foundation-v1/top120-inputs.json",
+   "sha256": "d7c464973ad029bf08886c4bdf2517d1b3ece04cce87bcc63706f1230ed53cd0"
+  },
+  "v4Audit": {
+   "path": "data/kr-industry-membership-foundation-v4/state/audit.json.gz",
+   "sha256": "4135846f16dcf59fe4ff89ab83b3b5aec288dea20fed36172b17abf768d44036"
+  }
+ },
+ "networkUsed": false,
+ "pricesRead": 0,
+ "schema": "KR22_INDUSTRY_RECOVERY_INVENTORY_V1",
+ "securities": [
+  {
+   "code": "000030.KS",
+   "distributions": {
+    "dartAmountLineageEntries": 11,
+    "dividendLineageResolved": "READY",
+    "exDateSemanticsResolved": "BLOCKED",
+    "yahooEventsKnown": 0
+   },
+   "industry": {
+    "admitted": false,
+    "candidateWithCrosswalkGroup": false,
+    "candidates": [
+     {
+      "crosswalkGroup": null,
+      "quote": "회사명 | ㈜우리은행(Woori Bank) | ... 주요사업 | 은행업",
+      "receiptNo": "20180619000302",
+      "rule": "MAIN_BUSINESS_ROW_NAMING_THE_SECURITY_ITSELF",
+      "statedText": "은행업"
+     }
+    ],
+    "v4Reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+    "v4Status": "UNKNOWN"
+   },
+   "labelWindowCrossesTermination": {
+    "H126": 7,
+    "H252": 14
+   },
+   "lastTradingDate": "2019-02-12",
+   "name": "우리은행",
+   "studyWindowMemberMonths": 49,
+   "terminal": {
+    "actionType": "SHARE_TRANSFER",
+    "amendmentChainStatus": "BLOCKED",
+    "completeness": {
+     "amendmentChainResolved": "BLOCKED",
+     "effectiveDateResolved": "READY",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "BLOCKED",
+     "terminationTypeResolved": "READY"
+    },
+    "consideration": [
+     {
+      "cashAmount": null,
+      "sharesPerOldShare": null,
+      "successorSecurity": "316140.KS",
+      "type": "SUCCESSOR_SHARES"
+     }
+    ],
+    "considerationDocumented": false,
+    "effectiveDate": "2019-01-11",
+    "executionConfirmed": true,
+    "executionStatus": "CONFIRMED_BY_INDEPENDENT_COMPLETION_EVIDENCE",
+    "failedReceipts": 5,
+    "successorSecurity": "316140.KS",
+    "unresolvedFields": [
+     "finalEconomicTerms"
+    ]
+   }
+  },
+  {
+   "code": "000060.KS",
+   "distributions": {
+    "dartAmountLineageEntries": 9,
+    "dividendLineageResolved": "READY",
+    "exDateSemanticsResolved": "BLOCKED",
+    "yahooEventsKnown": 0
+   },
+   "industry": {
+    "admitted": false,
+    "candidateWithCrosswalkGroup": false,
+    "candidates": [],
+    "v4Reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+    "v4Status": "UNKNOWN"
+   },
+   "labelWindowCrossesTermination": {
+    "H126": 7,
+    "H252": 13
+   },
+   "lastTradingDate": "2023-02-20",
+   "name": "메리츠화재",
+   "studyWindowMemberMonths": 67,
+   "terminal": {
+    "actionType": "SHARE_EXCHANGE",
+    "amendmentChainStatus": "READY",
+    "completeness": {
+     "amendmentChainResolved": "READY",
+     "effectiveDateResolved": "READY",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "READY",
+     "terminationTypeResolved": "READY"
+    },
+    "consideration": [
+     {
+      "cashAmount": null,
+      "sharesPerOldShare": 1.2657378,
+      "successorSecurity": "138040.KS",
+      "type": "SUCCESSOR_SHARES"
+     }
+    ],
+    "considerationDocumented": true,
+    "effectiveDate": "2023-02-01",
+    "executionConfirmed": false,
+    "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
+    "failedReceipts": 0,
+    "successorSecurity": "138040.KS",
+    "unresolvedFields": [
+     "executionConfirmation"
+    ]
+   }
+  },
+  {
+   "code": "000830.KS",
+   "distributions": {
+    "dartAmountLineageEntries": 0,
+    "dividendLineageResolved": "BLOCKED",
+    "exDateSemanticsResolved": "BLOCKED",
+    "yahooEventsKnown": 0
+   },
+   "industry": {
+    "admitted": false,
+    "candidateWithCrosswalkGroup": false,
+    "candidates": [],
+    "v4Reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+    "v4Status": "UNKNOWN"
+   },
+   "labelWindowCrossesTermination": {
+    "H126": 7,
+    "H252": 9
+   },
+   "lastTradingDate": "2015-09-14",
+   "name": "삼성물산",
+   "studyWindowMemberMonths": 9,
+   "terminal": {
+    "actionType": "MERGER_STOCK",
+    "amendmentChainStatus": "BLOCKED",
+    "completeness": {
+     "amendmentChainResolved": "BLOCKED",
+     "effectiveDateResolved": "BLOCKED",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "BLOCKED",
+     "terminationTypeResolved": "READY"
+    },
+    "consideration": [
+     {
+      "cashAmount": null,
+      "sharesPerOldShare": null,
+      "successorSecurity": "028260.KS",
+      "type": "SUCCESSOR_SHARES"
+     }
+    ],
+    "considerationDocumented": false,
+    "effectiveDate": null,
+    "executionConfirmed": false,
+    "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
+    "failedReceipts": 3,
+    "successorSecurity": "028260.KS",
+    "unresolvedFields": [
+     "executionConfirmation",
+     "finalEconomicTerms"
+    ]
+   }
+  },
+  {
+   "code": "001300.KS",
+   "distributions": {
+    "dartAmountLineageEntries": 0,
+    "dividendLineageResolved": "BLOCKED",
+    "exDateSemanticsResolved": "BLOCKED",
+    "yahooEventsKnown": 0
+   },
+   "industry": {
+    "admitted": false,
+    "candidateWithCrosswalkGroup": false,
+    "candidates": [],
+    "v4Reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+    "v4Status": "UNKNOWN"
+   },
+   "labelWindowCrossesTermination": {
+    "H126": 0,
+    "H252": 0
+   },
+   "lastTradingDate": "2014-07-14",
+   "name": "제일모직",
+   "studyWindowMemberMonths": 0,
+   "terminal": {
+    "actionType": "MERGER_STOCK",
+    "amendmentChainStatus": "READY",
+    "completeness": {
+     "amendmentChainResolved": "READY",
+     "effectiveDateResolved": "READY",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "READY",
+     "terminationTypeResolved": "READY"
+    },
+    "consideration": [
+     {
+      "cashAmount": null,
+      "sharesPerOldShare": 0.4425482,
+      "successorSecurity": "006400.KS",
+      "type": "SUCCESSOR_SHARES"
+     }
+    ],
+    "considerationDocumented": true,
+    "effectiveDate": "2014-07-01",
+    "executionConfirmed": false,
+    "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
+    "failedReceipts": 0,
+    "successorSecurity": "006400.KS",
+    "unresolvedFields": [
+     "executionConfirmation"
+    ]
+   }
+  },
+  {
+   "code": "002550.KS",
+   "distributions": {
+    "dartAmountLineageEntries": 9,
+    "dividendLineageResolved": "READY",
+    "exDateSemanticsResolved": "BLOCKED",
+    "yahooEventsKnown": 0
+   },
+   "industry": {
+    "admitted": false,
+    "candidateWithCrosswalkGroup": false,
+    "candidates": [],
+    "v4Reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+    "v4Status": "UNKNOWN"
+   },
+   "labelWindowCrossesTermination": {
+    "H126": 5,
+    "H252": 7
+   },
+   "lastTradingDate": "2017-07-20",
+   "name": "KB손해보험",
+   "studyWindowMemberMonths": 14,
+   "terminal": {
+    "actionType": "SHARE_EXCHANGE",
+    "amendmentChainStatus": "BLOCKED",
+    "completeness": {
+     "amendmentChainResolved": "BLOCKED",
+     "effectiveDateResolved": "BLOCKED",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "BLOCKED",
+     "terminationTypeResolved": "READY"
+    },
+    "consideration": [],
+    "considerationDocumented": false,
+    "effectiveDate": null,
+    "executionConfirmed": false,
+    "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
+    "failedReceipts": 3,
+    "successorSecurity": null,
+    "unresolvedFields": [
+     "executionConfirmation",
+     "finalEconomicTerms"
+    ]
+   }
+  },
+  {
+   "code": "003410.KS",
+   "distributions": {
+    "dartAmountLineageEntries": 12,
+    "dividendLineageResolved": "READY",
+    "exDateSemanticsResolved": "BLOCKED",
+    "yahooEventsKnown": 0
+   },
+   "industry": {
+    "admitted": false,
+    "candidateWithCrosswalkGroup": false,
+    "candidates": [],
+    "v4Reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+    "v4Status": "UNKNOWN"
+   },
+   "labelWindowCrossesTermination": {
+    "H126": 8,
+    "H252": 14
+   },
+   "lastTradingDate": "2024-07-08",
+   "name": "쌍용C&E",
+   "studyWindowMemberMonths": 80,
+   "terminal": {
+    "actionType": "CASH_SHARE_EXCHANGE",
+    "amendmentChainStatus": "BLOCKED",
+    "completeness": {
+     "amendmentChainResolved": "BLOCKED",
+     "effectiveDateResolved": "READY",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "READY",
+     "terminationTypeResolved": "READY"
+    },
+    "consideration": [
+     {
+      "cashAmount": 7000.0,
+      "sharesPerOldShare": null,
+      "successorSecurity": null,
+      "type": "CASH"
+     }
+    ],
+    "considerationDocumented": true,
+    "effectiveDate": "2024-06-25",
+    "executionConfirmed": false,
+    "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
+    "failedReceipts": 1,
+    "successorSecurity": null,
+    "unresolvedFields": [
+     "executionConfirmation"
+    ]
+   }
+  },
+  {
+   "code": "003450.KS",
+   "distributions": {
+    "dartAmountLineageEntries": 10,
+    "dividendLineageResolved": "READY",
+    "exDateSemanticsResolved": "BLOCKED",
+    "yahooEventsKnown": 0
+   },
+   "industry": {
+    "admitted": false,
+    "candidateWithCrosswalkGroup": false,
+    "candidates": [],
+    "v4Reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+    "v4Status": "UNKNOWN"
+   },
+   "labelWindowCrossesTermination": {
+    "H126": 2,
+    "H252": 3
+   },
+   "lastTradingDate": "2016-10-31",
+   "name": "현대증권",
+   "studyWindowMemberMonths": 11,
+   "terminal": {
+    "actionType": "SHARE_EXCHANGE",
+    "amendmentChainStatus": "BLOCKED",
+    "completeness": {
+     "amendmentChainResolved": "BLOCKED",
+     "effectiveDateResolved": "BLOCKED",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "BLOCKED",
+     "terminationTypeResolved": "READY"
+    },
+    "consideration": [],
+    "considerationDocumented": false,
+    "effectiveDate": null,
+    "executionConfirmed": false,
+    "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
+    "failedReceipts": 3,
+    "successorSecurity": null,
+    "unresolvedFields": [
+     "executionConfirmation",
+     "finalEconomicTerms"
+    ]
+   }
+  },
+  {
+   "code": "003600.KS",
+   "distributions": {
+    "dartAmountLineageEntries": 0,
+    "dividendLineageResolved": "BLOCKED",
+    "exDateSemanticsResolved": "BLOCKED",
+    "yahooEventsKnown": 0
+   },
+   "industry": {
+    "admitted": false,
+    "candidateWithCrosswalkGroup": false,
+    "candidates": [],
+    "v4Reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+    "v4Status": "UNKNOWN"
+   },
+   "labelWindowCrossesTermination": {
+    "H126": 7,
+    "H252": 8
+   },
+   "lastTradingDate": "2015-08-13",
+   "name": "SK",
+   "studyWindowMemberMonths": 8,
+   "terminal": {
+    "actionType": "MERGER_STOCK",
+    "amendmentChainStatus": "BLOCKED",
+    "completeness": {
+     "amendmentChainResolved": "BLOCKED",
+     "effectiveDateResolved": "BLOCKED",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "BLOCKED",
+     "terminationTypeResolved": "READY"
+    },
+    "consideration": [
+     {
+      "cashAmount": null,
+      "sharesPerOldShare": null,
+      "successorSecurity": "034730.KS",
+      "type": "SUCCESSOR_SHARES"
+     }
+    ],
+    "considerationDocumented": false,
+    "effectiveDate": null,
+    "executionConfirmed": false,
+    "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
+    "failedReceipts": 7,
+    "successorSecurity": "034730.KS",
+    "unresolvedFields": [
+     "executionConfirmation",
+     "finalEconomicTerms"
+    ]
+   }
+  },
+  {
+   "code": "004940.KS",
+   "distributions": {
+    "dartAmountLineageEntries": 8,
+    "dividendLineageResolved": "READY",
+    "exDateSemanticsResolved": "BLOCKED",
+    "yahooEventsKnown": 0
+   },
+   "industry": {
+    "admitted": false,
+    "candidateWithCrosswalkGroup": false,
+    "candidates": [],
+    "v4Reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+    "v4Status": "UNKNOWN"
+   },
+   "labelWindowCrossesTermination": {
+    "H126": 0,
+    "H252": 0
+   },
+   "lastTradingDate": "2013-04-25",
+   "name": "외환은행",
+   "studyWindowMemberMonths": 0,
+   "terminal": {
+    "actionType": "SHARE_EXCHANGE",
+    "amendmentChainStatus": "READY",
+    "completeness": {
+     "amendmentChainResolved": "READY",
+     "effectiveDateResolved": "READY",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "READY",
+     "terminationTypeResolved": "READY"
+    },
+    "consideration": [
+     {
+      "cashAmount": null,
+      "sharesPerOldShare": 0.1894302,
+      "successorSecurity": "086790.KS",
+      "type": "SUCCESSOR_SHARES"
+     }
+    ],
+    "considerationDocumented": true,
+    "effectiveDate": "2013-04-05",
+    "executionConfirmed": false,
+    "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
+    "failedReceipts": 0,
+    "successorSecurity": "086790.KS",
+    "unresolvedFields": [
+     "executionConfirmation"
+    ]
+   }
+  },
+  {
+   "code": "008560.KS",
+   "distributions": {
+    "dartAmountLineageEntries": 14,
+    "dividendLineageResolved": "READY",
+    "exDateSemanticsResolved": "BLOCKED",
+    "yahooEventsKnown": 0
+   },
+   "industry": {
+    "admitted": false,
+    "candidateWithCrosswalkGroup": false,
+    "candidates": [],
+    "v4Reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+    "v4Status": "UNKNOWN"
+   },
+   "labelWindowCrossesTermination": {
+    "H126": 7,
+    "H252": 13
+   },
+   "lastTradingDate": "2023-04-24",
+   "name": "메리츠증권",
+   "studyWindowMemberMonths": 89,
+   "terminal": {
+    "actionType": "SHARE_EXCHANGE",
+    "amendmentChainStatus": "READY",
+    "completeness": {
+     "amendmentChainResolved": "READY",
+     "effectiveDateResolved": "READY",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "READY",
+     "terminationTypeResolved": "READY"
+    },
+    "consideration": [
+     {
+      "cashAmount": null,
+      "sharesPerOldShare": 0.1607327,
+      "successorSecurity": "138040.KS",
+      "type": "SUCCESSOR_SHARES"
+     }
+    ],
+    "considerationDocumented": true,
+    "effectiveDate": "2023-04-05",
+    "executionConfirmed": false,
+    "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
+    "failedReceipts": 0,
+    "successorSecurity": "138040.KS",
+    "unresolvedFields": [
+     "executionConfirmation"
+    ]
+   }
+  },
+  {
+   "code": "010520.KS",
+   "distributions": {
+    "dartAmountLineageEntries": 0,
+    "dividendLineageResolved": "BLOCKED",
+    "exDateSemanticsResolved": "BLOCKED",
+    "yahooEventsKnown": 0
+   },
+   "industry": {
+    "admitted": false,
+    "candidateWithCrosswalkGroup": false,
+    "candidates": [],
+    "v4Reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+    "v4Status": "UNKNOWN"
+   },
+   "labelWindowCrossesTermination": {
+    "H126": 2,
+    "H252": 2
+   },
+   "lastTradingDate": "2015-07-14",
+   "name": "현대하이스코",
+   "studyWindowMemberMonths": 2,
+   "terminal": {
+    "actionType": "MERGER_STOCK",
+    "amendmentChainStatus": "BLOCKED",
+    "completeness": {
+     "amendmentChainResolved": "BLOCKED",
+     "effectiveDateResolved": "BLOCKED",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "BLOCKED",
+     "terminationTypeResolved": "READY"
+    },
+    "consideration": [
+     {
+      "cashAmount": null,
+      "sharesPerOldShare": null,
+      "successorSecurity": "004020.KS",
+      "type": "SUCCESSOR_SHARES"
+     }
+    ],
+    "considerationDocumented": false,
+    "effectiveDate": null,
+    "executionConfirmed": false,
+    "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
+    "failedReceipts": 3,
+    "successorSecurity": "004020.KS",
+    "unresolvedFields": [
+     "executionConfirmation",
+     "finalEconomicTerms"
+    ]
+   }
+  },
+  {
+   "code": "010620.KS",
+   "distributions": {
+    "dartAmountLineageEntries": 3,
+    "dividendLineageResolved": "READY",
+    "exDateSemanticsResolved": "BLOCKED",
+    "yahooEventsKnown": 0
+   },
+   "industry": {
+    "admitted": false,
+    "candidateWithCrosswalkGroup": false,
+    "candidates": [],
+    "v4Reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+    "v4Status": "UNKNOWN"
+   },
+   "labelWindowCrossesTermination": {
+    "H126": 7,
+    "H252": 14
+   },
+   "lastTradingDate": "2025-12-12",
+   "name": "HD현대미포",
+   "studyWindowMemberMonths": 89,
+   "terminal": {
+    "actionType": "MERGER_STOCK",
+    "amendmentChainStatus": "READY",
+    "completeness": {
+     "amendmentChainResolved": "READY",
+     "effectiveDateResolved": "READY",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "READY",
+     "terminationTypeResolved": "READY"
+    },
+    "consideration": [
+     {
+      "cashAmount": null,
+      "sharesPerOldShare": 0.4059146,
+      "successorSecurity": "329180.KS",
+      "type": "SUCCESSOR_SHARES"
+     }
+    ],
+    "considerationDocumented": true,
+    "effectiveDate": "2025-12-01",
+    "executionConfirmed": false,
+    "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
+    "failedReceipts": 0,
+    "successorSecurity": "329180.KS",
+    "unresolvedFields": [
+     "executionConfirmation"
+    ]
+   }
+  },
+  {
+   "code": "011160.KS",
+   "distributions": {
+    "dartAmountLineageEntries": 1,
+    "dividendLineageResolved": "READY",
+    "exDateSemanticsResolved": "BLOCKED",
+    "yahooEventsKnown": 0
+   },
+   "industry": {
+    "admitted": false,
+    "candidateWithCrosswalkGroup": false,
+    "candidates": [
+     {
+      "crosswalkGroup": null,
+      "quote": "| 두산건설(주) | 종합 건설업 | <registration no.> |",
+      "receiptNo": "20191213000001",
+      "rule": "GROUP_AFFILIATE_TABLE_ROW_NAMING_THE_SECURITY",
+      "statedText": "종합 건설업"
+     },
+     {
+      "crosswalkGroup": null,
+      "quote": "| 두산건설(주) | 종합 건설업 | <registration no.> |",
+      "receiptNo": "20191213000002",
+      "rule": "GROUP_AFFILIATE_TABLE_ROW_NAMING_THE_SECURITY",
+      "statedText": "종합 건설업"
+     },
+     {
+      "crosswalkGroup": null,
+      "quote": "회사명 | 두산건설 주식회사 | ... 주요사업 | 분할대상부문을 제외한 사업&cr;(신설회사로 이전되지 않는 건설사업, 부동산 임대사업 등)",
+      "receiptNo": "20200615000291",
+      "rule": "MAIN_BUSINESS_ROW_NAMING_THE_SECURITY_ITSELF",
+      "statedText": "분할대상부문을 제외한 사업&cr;(신설회사로 이전되지 않는 건설사업, 부동산 임대사업 등)"
+     }
+    ],
+    "v4Reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+    "v4Status": "UNKNOWN"
+   },
+   "labelWindowCrossesTermination": {
+    "H126": 0,
+    "H252": 0
+   },
+   "lastTradingDate": "2020-03-23",
+   "name": "두산건설",
+   "studyWindowMemberMonths": 0,
+   "terminal": {
+    "actionType": "SHARE_EXCHANGE",
+    "amendmentChainStatus": "BLOCKED",
+    "completeness": {
+     "amendmentChainResolved": "BLOCKED",
+     "effectiveDateResolved": "BLOCKED",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "BLOCKED",
+     "terminationTypeResolved": "READY"
+    },
+    "consideration": [
+     {
+      "cashAmount": null,
+      "sharesPerOldShare": null,
+      "successorSecurity": "034020.KS",
+      "type": "SUCCESSOR_SHARES"
+     }
+    ],
+    "considerationDocumented": false,
+    "effectiveDate": null,
+    "executionConfirmed": false,
+    "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
+    "failedReceipts": 3,
+    "successorSecurity": "034020.KS",
+    "unresolvedFields": [
+     "executionConfirmation",
+     "finalEconomicTerms"
+    ]
+   }
+  },
+  {
+   "code": "012510.KS",
+   "distributions": {
+    "dartAmountLineageEntries": 17,
+    "dividendLineageResolved": "READY",
+    "exDateSemanticsResolved": "BLOCKED",
+    "yahooEventsKnown": 0
+   },
+   "industry": {
+    "admitted": false,
+    "candidateWithCrosswalkGroup": true,
+    "candidates": [
+     {
+      "codeShapedCandidates": [
+       "J58222"
+      ],
+      "crosswalkGroup": "COMMUNICATION_MEDIA_SOFTWARE",
+      "fiscalYear": 2015,
+      "quote": "및유지관리등에대한부담,전문인력채용에대한부담없이기업의중요한정보를보호할수있는서비스를제공하고있습니다.(나)공시대상사업부문의구분한국표준산업분류:응용소프트웨어개발및공급업(J58222)대분류중분류소분류세분류세세분류J출판,영상,방송통신및정보서비스업58출판업582소프트웨어개발및공급업5822시스템·응용소프트웨어개발및공급업58222응용소프트웨어개발및공급업(2)시장점유율&nb",
+      "receiptNo": "20160516001451",
+      "rule": "KSIC_GROUP_LABEL_IN_THE_SECURITYS_OWN_PERIODIC_FILING",
+      "statedText": "소프트웨어개발및공급업"
+     }
+    ],
+    "v4Reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+    "v4Status": "UNKNOWN"
+   },
+   "labelWindowCrossesTermination": {
+    "H126": 0,
+    "H252": 0
+   },
+   "lastTradingDate": "2026-07-14",
+   "name": "더존비즈온",
+   "studyWindowMemberMonths": 28,
+   "terminal": {
+    "actionType": "CASH_SHARE_EXCHANGE",
+    "amendmentChainStatus": "READY",
+    "completeness": {
+     "amendmentChainResolved": "READY",
+     "effectiveDateResolved": "READY",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "READY",
+     "terminationTypeResolved": "READY"
+    },
+    "consideration": [
+     {
+      "cashAmount": 120000.0,
+      "sharesPerOldShare": null,
+      "successorSecurity": null,
+      "type": "CASH"
+     }
+    ],
+    "considerationDocumented": true,
+    "effectiveDate": "2026-06-30",
+    "executionConfirmed": false,
+    "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
+    "failedReceipts": 2,
+    "successorSecurity": null,
+    "unresolvedFields": [
+     "executionConfirmation"
+    ]
+   }
+  },
+  {
+   "code": "037620.KS",
+   "distributions": {
+    "dartAmountLineageEntries": 1,
+    "dividendLineageResolved": "READY",
+    "exDateSemanticsResolved": "BLOCKED",
+    "yahooEventsKnown": 0
+   },
+   "industry": {
+    "admitted": false,
+    "candidateWithCrosswalkGroup": false,
+    "candidates": [],
+    "v4Reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+    "v4Status": "UNKNOWN"
+   },
+   "labelWindowCrossesTermination": {
+    "H126": 7,
+    "H252": 13
+   },
+   "lastTradingDate": "2017-01-19",
+   "name": "미래에셋증권",
+   "studyWindowMemberMonths": 21,
+   "terminal": {
+    "actionType": "MERGER_STOCK",
+    "amendmentChainStatus": "BLOCKED",
+    "completeness": {
+     "amendmentChainResolved": "BLOCKED",
+     "effectiveDateResolved": "BLOCKED",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "BLOCKED",
+     "terminationTypeResolved": "READY"
+    },
+    "consideration": [
+     {
+      "cashAmount": null,
+      "sharesPerOldShare": null,
+      "successorSecurity": "006800.KS",
+      "type": "SUCCESSOR_SHARES"
+     }
+    ],
+    "considerationDocumented": false,
+    "effectiveDate": null,
+    "executionConfirmed": false,
+    "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
+    "failedReceipts": 2,
+    "successorSecurity": "006800.KS",
+    "unresolvedFields": [
+     "executionConfirmation",
+     "finalEconomicTerms"
+    ]
+   }
+  },
+  {
+   "code": "042670.KS",
+   "distributions": {
+    "dartAmountLineageEntries": 3,
+    "dividendLineageResolved": "READY",
+    "exDateSemanticsResolved": "BLOCKED",
+    "yahooEventsKnown": 0
+   },
+   "industry": {
+    "admitted": false,
+    "candidateWithCrosswalkGroup": false,
+    "candidates": [],
+    "v4Reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+    "v4Status": "UNKNOWN"
+   },
+   "labelWindowCrossesTermination": {
+    "H126": 0,
+    "H252": 0
+   },
+   "lastTradingDate": "2026-01-23",
+   "name": "HD현대인프라코어",
+   "studyWindowMemberMonths": 34,
+   "terminal": {
+    "actionType": "MERGER_STOCK",
+    "amendmentChainStatus": "READY",
+    "completeness": {
+     "amendmentChainResolved": "READY",
+     "effectiveDateResolved": "READY",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "BLOCKED",
+     "terminationTypeResolved": "READY"
+    },
+    "consideration": [
+     {
+      "cashAmount": null,
+      "sharesPerOldShare": 0.1621707,
+      "successorSecurity": null,
+      "type": "SUCCESSOR_SHARES"
+     }
+    ],
+    "considerationDocumented": true,
+    "effectiveDate": "2026-01-01",
+    "executionConfirmed": false,
+    "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
+    "failedReceipts": 0,
+    "successorSecurity": null,
+    "unresolvedFields": [
+     "executionConfirmation"
+    ]
+   }
+  },
+  {
+   "code": "053000.KS",
+   "distributions": {
+    "dartAmountLineageEntries": 0,
+    "dividendLineageResolved": "BLOCKED",
+    "exDateSemanticsResolved": "BLOCKED",
+    "yahooEventsKnown": 0
+   },
+   "industry": {
+    "admitted": false,
+    "candidateWithCrosswalkGroup": false,
+    "candidates": [
+     {
+      "crosswalkGroup": null,
+      "quote": "회사명 | 우리금융지주 주식회사 | ... 주요사업 | 금융지주업",
+      "receiptNo": "20140728800281",
+      "rule": "MAIN_BUSINESS_ROW_NAMING_THE_SECURITY_ITSELF",
+      "statedText": "금융지주업"
+     },
+     {
+      "crosswalkGroup": null,
+      "quote": "회사명 | 우리금융지주 주식회사 | ... 주요사업 | 금융지주업",
+      "receiptNo": "20140814801243",
+      "rule": "MAIN_BUSINESS_ROW_NAMING_THE_SECURITY_ITSELF",
+      "statedText": "금융지주업"
+     }
+    ],
+    "v4Reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+    "v4Status": "UNKNOWN"
+   },
+   "labelWindowCrossesTermination": {
+    "H126": 0,
+    "H252": 0
+   },
+   "lastTradingDate": "2014-11-18",
+   "name": "우리금융",
+   "studyWindowMemberMonths": 0,
+   "terminal": {
+    "actionType": "MERGER_STOCK",
+    "amendmentChainStatus": "READY",
+    "completeness": {
+     "amendmentChainResolved": "READY",
+     "effectiveDateResolved": "READY",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "READY",
+     "terminationTypeResolved": "READY"
+    },
+    "consideration": [
+     {
+      "cashAmount": null,
+      "sharesPerOldShare": 1.0,
+      "successorSecurity": "000030.KS",
+      "type": "SUCCESSOR_SHARES"
+     }
+    ],
+    "considerationDocumented": true,
+    "effectiveDate": "2014-11-01",
+    "executionConfirmed": false,
+    "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
+    "failedReceipts": 0,
+    "successorSecurity": "000030.KS",
+    "unresolvedFields": [
+     "executionConfirmation"
+    ]
+   }
+  },
+  {
+   "code": "057050.KS",
+   "distributions": {
+    "dartAmountLineageEntries": 9,
+    "dividendLineageResolved": "READY",
+    "exDateSemanticsResolved": "BLOCKED",
+    "yahooEventsKnown": 0
+   },
+   "industry": {
+    "admitted": false,
+    "candidateWithCrosswalkGroup": false,
+    "candidates": [
+     {
+      "crosswalkGroup": null,
+      "quote": "회사명 | (주)현대홈쇼핑HYUNDAI HOME SHOPPING NETWORK CORPORATION | ... 주요사업 | TV/데이터 홈쇼핑, 인터넷 쇼핑몰, 오프라인 사업 등을 포함한 홈쇼핑사업부문",
+      "receiptNo": "20260805000215",
+      "rule": "MAIN_BUSINESS_ROW_NAMING_THE_SECURITY_ITSELF",
+      "statedText": "TV/데이터 홈쇼핑, 인터넷 쇼핑몰, 오프라인 사업 등을 포함한 홈쇼핑사업부문"
+     }
+    ],
+    "v4Reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+    "v4Status": "UNKNOWN"
+   },
+   "labelWindowCrossesTermination": {
+    "H126": 0,
+    "H252": 0
+   },
+   "lastTradingDate": "2026-07-16",
+   "name": "현대홈쇼핑",
+   "studyWindowMemberMonths": 1,
+   "terminal": {
+    "actionType": "SHARE_EXCHANGE",
+    "amendmentChainStatus": "READY",
+    "completeness": {
+     "amendmentChainResolved": "READY",
+     "effectiveDateResolved": "READY",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "READY",
+     "terminationTypeResolved": "READY"
+    },
+    "consideration": [
+     {
+      "cashAmount": null,
+      "sharesPerOldShare": 6.357104,
+      "successorSecurity": "005440.KS",
+      "type": "SUCCESSOR_SHARES"
+     }
+    ],
+    "considerationDocumented": true,
+    "effectiveDate": "2026-06-30",
+    "executionConfirmed": false,
+    "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
+    "failedReceipts": 0,
+    "successorSecurity": "005440.KS",
+    "unresolvedFields": [
+     "executionConfirmation"
+    ]
+   }
+  },
+  {
+   "code": "067250.KS",
+   "distributions": {
+    "dartAmountLineageEntries": 0,
+    "dividendLineageResolved": "BLOCKED",
+    "exDateSemanticsResolved": "BLOCKED",
+    "yahooEventsKnown": 0
+   },
+   "industry": {
+    "admitted": false,
+    "candidateWithCrosswalkGroup": false,
+    "candidates": [],
+    "v4Reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+    "v4Status": "UNKNOWN"
+   },
+   "labelWindowCrossesTermination": {
+    "H126": 0,
+    "H252": 0
+   },
+   "lastTradingDate": "2014-04-14",
+   "name": "STX조선해양",
+   "studyWindowMemberMonths": 0,
+   "terminal": {
+    "actionType": "TERMINATION_TYPE_UNRESOLVED",
+    "amendmentChainStatus": "BLOCKED",
+    "completeness": {
+     "amendmentChainResolved": "BLOCKED",
+     "effectiveDateResolved": "BLOCKED",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "BLOCKED",
+     "terminationTypeResolved": "BLOCKED"
+    },
+    "consideration": [],
+    "considerationDocumented": false,
+    "effectiveDate": null,
+    "executionConfirmed": false,
+    "executionStatus": "UNRESOLVED",
+    "failedReceipts": 0,
+    "successorSecurity": null,
+    "unresolvedFields": []
+   }
+  },
+  {
+   "code": "079440.KS",
+   "distributions": {
+    "dartAmountLineageEntries": 4,
+    "dividendLineageResolved": "READY",
+    "exDateSemanticsResolved": "BLOCKED",
+    "yahooEventsKnown": 0
+   },
+   "industry": {
+    "admitted": false,
+    "candidateWithCrosswalkGroup": false,
+    "candidates": [],
+    "v4Reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+    "v4Status": "UNKNOWN"
+   },
+   "labelWindowCrossesTermination": {
+    "H126": 7,
+    "H252": 14
+   },
+   "lastTradingDate": "2020-02-13",
+   "name": "오렌지라이프",
+   "studyWindowMemberMonths": 32,
+   "terminal": {
+    "actionType": "SHARE_EXCHANGE",
+    "amendmentChainStatus": "BLOCKED",
+    "completeness": {
+     "amendmentChainResolved": "BLOCKED",
+     "effectiveDateResolved": "BLOCKED",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "BLOCKED",
+     "terminationTypeResolved": "READY"
+    },
+    "consideration": [],
+    "considerationDocumented": false,
+    "effectiveDate": null,
+    "executionConfirmed": false,
+    "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
+    "failedReceipts": 2,
+    "successorSecurity": null,
+    "unresolvedFields": [
+     "executionConfirmation",
+     "finalEconomicTerms"
+    ]
+   }
+  },
+  {
+   "code": "115390.KS",
+   "distributions": {
+    "dartAmountLineageEntries": 5,
+    "dividendLineageResolved": "READY",
+    "exDateSemanticsResolved": "BLOCKED",
+    "yahooEventsKnown": 0
+   },
+   "industry": {
+    "admitted": false,
+    "candidateWithCrosswalkGroup": false,
+    "candidates": [],
+    "v4Reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+    "v4Status": "UNKNOWN"
+   },
+   "labelWindowCrossesTermination": {
+    "H126": 0,
+    "H252": 0
+   },
+   "lastTradingDate": "2024-12-06",
+   "name": "락앤락",
+   "studyWindowMemberMonths": 0,
+   "terminal": {
+    "actionType": "CASH_SHARE_EXCHANGE",
+    "amendmentChainStatus": "READY",
+    "completeness": {
+     "amendmentChainResolved": "READY",
+     "effectiveDateResolved": "READY",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "READY",
+     "terminationTypeResolved": "READY"
+    },
+    "consideration": [
+     {
+      "cashAmount": 8750.0,
+      "sharesPerOldShare": null,
+      "successorSecurity": null,
+      "type": "CASH"
+     }
+    ],
+    "considerationDocumented": true,
+    "effectiveDate": "2024-11-22",
+    "executionConfirmed": false,
+    "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
+    "failedReceipts": 0,
+    "successorSecurity": null,
+    "unresolvedFields": [
+     "executionConfirmation"
+    ]
+   }
+  },
+  {
+   "code": "117930.KS",
+   "distributions": {
+    "dartAmountLineageEntries": 0,
+    "dividendLineageResolved": "BLOCKED",
+    "exDateSemanticsResolved": "BLOCKED",
+    "yahooEventsKnown": 0
+   },
+   "industry": {
+    "admitted": false,
+    "candidateWithCrosswalkGroup": false,
+    "candidates": [],
+    "v4Reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+    "v4Status": "UNKNOWN"
+   },
+   "labelWindowCrossesTermination": {
+    "H126": 0,
+    "H252": 0
+   },
+   "lastTradingDate": "2017-03-06",
+   "name": "한진해운",
+   "studyWindowMemberMonths": 1,
+   "terminal": {
+    "actionType": "TERMINATION_TYPE_UNRESOLVED",
+    "amendmentChainStatus": "BLOCKED",
+    "completeness": {
+     "amendmentChainResolved": "BLOCKED",
+     "effectiveDateResolved": "BLOCKED",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "BLOCKED",
+     "terminationTypeResolved": "BLOCKED"
+    },
+    "consideration": [],
+    "considerationDocumented": false,
+    "effectiveDate": null,
+    "executionConfirmed": false,
+    "executionStatus": "UNRESOLVED",
+    "failedReceipts": 4,
+    "successorSecurity": null,
+    "unresolvedFields": []
+   }
+  }
+ ],
+ "summary": {
+  "crossingMemberMonths": {
+   "H126": {
+    "total": 73,
+    "withConsiderationReady": 29,
+    "withConsiderationReadyAndExecutionConfirmed": 0
+   },
+   "H252": {
+    "total": 124,
+    "withConsiderationReady": 54,
+    "withConsiderationReadyAndExecutionConfirmed": 0
+   }
+  },
+  "distributions": {
+   "dividendLineageReady": 15,
+   "exDateSemanticsReady": 0,
+   "yahooEventsKnownAny": 0
+  },
+  "eligibleForIndustryTotalReturnLabelToday": 0,
+  "eligibleIfEveryIndustryCandidateWereAdmittedAndExDateRuleSealed": 0,
+  "gateCounts": {
+   "exDateSemanticsResolved": 0,
+   "executionConfirmed": 1,
+   "industryAdmitted": 0,
+   "terminalConsiderationResolved": 10
+  },
+  "inStudyWindow": 16,
+  "inStudyWindowGates": {
+   "considerationDocumented": {
+    "memberMonths": 388,
+    "securities": 7
+   },
+   "dividendLineageReady": {
+    "memberMonths": 515,
+    "securities": 12
+   },
+   "exDateSemanticsResolved": {
+    "memberMonths": 0,
+    "securities": 0
+   },
+   "executionConfirmed": {
+    "memberMonths": 49,
+    "securities": 1
+   },
+   "industryAdmitted": {
+    "memberMonths": 0,
+    "securities": 0
+   },
+   "terminalConsiderationResolved": {
+    "memberMonths": 354,
+    "securities": 6
+   }
+  },
+  "industry": {
+   "admitted": 0,
+   "candidatesByRule": {
+    "GROUP_AFFILIATE_TABLE_ROW_NAMING_THE_SECURITY": 2,
+    "KSIC_GROUP_LABEL_IN_THE_SECURITYS_OWN_PERIODIC_FILING": 1,
+    "MAIN_BUSINESS_ROW_NAMING_THE_SECURITY_ITSELF": 5
+   },
+   "inWindowMemberMonthsWithAnyCandidate": 78,
+   "inWindowWithAnyCandidate": 3,
+   "v4Classified": 0,
+   "withAnySelfStatementCandidate": 5,
+   "withCandidateMappedToCrosswalkGroup": 1
+  },
+  "securities": 22,
+  "studyWindowMemberMonths": 535,
+  "studyWindowMemberMonthsCrossCheck": 540,
+  "terminal": {
+   "actionTypes": {
+    "CASH_SHARE_EXCHANGE": 3,
+    "MERGER_STOCK": 8,
+    "SHARE_EXCHANGE": 8,
+    "SHARE_TRANSFER": 1,
+    "TERMINATION_TYPE_UNRESOLVED": 2
+   },
+   "amendmentChainReady": 10,
+   "considerationDocumented": 11,
+   "considerationResolvedReady": 10,
+   "effectiveDateDocumented": 12,
+   "executionConfirmed": 1,
+   "failedReceiptsTotal": 38,
+   "terminalActionChainReady": 0,
+   "typeResolved": 20,
+   "withFailedReceipts": 12
+  }
+ }
+}
