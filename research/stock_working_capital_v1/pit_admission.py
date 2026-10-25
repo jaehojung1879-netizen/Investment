@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 
 from . import features as F
 from . import pit_filing_evidence as E
+from . import age_policy as AP
 
 
 class TopSnapshots:
@@ -147,10 +148,11 @@ def industry_on(ticker, signal, intervals, events, crosswalk):
 
 class Crosswalk:
     def __init__(self, *, snapshots, filings, originals, intervals, events, crosswalk,
-                 terminal, trading, sessions, packages=None):
+                 terminal, trading, sessions, packages=None, fiscal_age_policy=None):
         self.snapshots, self.originals, self.intervals = snapshots, originals, intervals
         self.events, self.crosswalk, self.terminal, self.trading = events, crosswalk, terminal, trading
         self.sessions, self.packages = sessions, packages or {}
+        self.fiscal_age_policy = fiscal_age_policy or AP.pending_policy()
         self.filings = defaultdict(list)
         for r in filings:
             self.filings[r["ticker"]].append(r)
@@ -159,7 +161,7 @@ class Crosswalk:
     def _metadata(self, record, signal):
         if record is None:
             return None, ["MISSING_ANNUAL_LEG"]
-        key = (record["id"], record["availableFrom"], tuple(record.get("receiptNos", [])))
+        key = (record["id"], record["availableFrom"], tuple(record.get("receiptNos", [])), signal)
         if key not in self.metadata_cache:
             self.metadata_cache[key] = filing_metadata(record, self.originals, signal)
         return self.metadata_cache[key]
@@ -186,7 +188,7 @@ class Crosswalk:
             current, prior, pair_issues = choose_pair(self.filings.get(ticker, []), signal)
             pair = None
             if current is not None and prior is not None:
-                key = (current["id"], current["availableFrom"], prior["id"], prior["availableFrom"])
+                key = (current["id"], current["availableFrom"], prior["id"], prior["availableFrom"], signal)
                 if key not in self.pair_cache:
                     self.pair_cache[key] = F.annual_pair(current, prior, signal)
                 pair = self.pair_cache[key]
@@ -212,6 +214,8 @@ class Crosswalk:
                 and industry["issuerBridgeAvailableFrom"] < industry.get("noticeDate", ""))
             trade = self.trading.get((signal, ticker), "MISSING_SIGNAL_SESSION_BAR")
             base = set(cohort["reasons"] + pair_issues + identity_issues)
+            if not self.fiscal_age_policy["admissionEnabled"]:
+                base.add("FISCAL_AGE_POLICY_NOT_PREREGISTERED")
             base.update("CURRENT:" + x for x in ci)
             base.update("PREVIOUS:" + x for x in pi)
             if industry["reason"]:
@@ -230,6 +234,8 @@ class Crosswalk:
                    "knownTerminalExPostAuditOnly": end is not None, "endedBySignal": ended,
                    "eventDue": current is not None and first_friday_after(current["availableFrom"], self.sessions) == signal,
                    "currentFiscalYear": current.get("fiscalYear") if current else None,
+                   "pairAsOf": pair["asOf"] if pair else None,
+                   "fiscalAgePolicyStatus": self.fiscal_age_policy["status"],
                    "filingReceipts": [r.get("receiptNos") if r else None for r in (prior, current)],
                    "filingAvailableFrom": [r.get("availableFrom") if r else None for r in (prior, current)],
                    "filingRecordDigests": pair["filingDigests"] if pair else None,
@@ -241,17 +247,21 @@ class Crosswalk:
                 issues.update("CURRENT:" + x for x in cf["reasons"])
                 issues.update("PREVIOUS:" + x for x in pf["reasons"])
                 comparable = cf["ready"] and pf["ready"]
+                age_days = (F.day(signal) - F.day(cf["end"])).days if cf["ready"] else None
                 if comparable:
                     if (F.day(pf["end"]) + timedelta(days=1)).isoformat() != cf["start"]:
                         issues.add("FISCAL_WINDOWS_NOT_ADJACENT")
                         comparable = False
-                    if (F.day(signal) - F.day(cf["end"])).days > 550:
+                    if age_days > self.fiscal_age_policy["referenceDays"]:
                         issues.add("STALE_VERIFIED_FISCAL_WINDOW")
-                        comparable = False
                 ready = candidate["value"] is not None and not issues
                 out["signals"][name] = {"inputReadable": candidate["value"] is not None,
                     "inputCandidateSha256": F.digest(candidate) if candidate["value"] is not None else None,
                     "originalFinancialFactsMatched": cf["ready"] and pf["ready"],
+                    "originalFinancialSourceDigests": [pf.get("sourceSha256"), cf.get("sourceSha256")],
+                    "verifiedFiscalWindows": [{k: f[k] for k in ("start", "end")} for f in (pf, cf)],
+                    "fiscalAgeDays": age_days,
+                    "legacyFreshnessReferencePassed": age_days is not None and age_days <= self.fiscal_age_policy["referenceDays"],
                     "fiscalWindowsComparable": comparable, "inputAdmitted": ready,
                     "value": candidate["value"] if ready else None, "reasons": sorted(issues)}
             rows.append(out)

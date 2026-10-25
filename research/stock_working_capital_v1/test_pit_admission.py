@@ -12,6 +12,7 @@ from . import features as F
 from . import pit_admission as A
 from . import pit_filing_evidence as E
 from . import pit_join as J
+from . import age_policy as AP
 from .test_study import filing
 
 
@@ -92,7 +93,7 @@ def worker(*, real_packages=True, terminal=None, records=None, originals=None, b
     return A.Crosswalk(snapshots=A.TopSnapshots(universe(), sessions(), expected=3), filings=records,
                        originals=originals, intervals={}, events={"123456.KS": [event]},
                        crosswalk={"mapping": {"실험산업": "SYN_INDUSTRY"}}, terminal=terminal or {},
-                       trading=bars, sessions=sessions(), packages=packs)
+                       trading=bars, sessions=sessions(), packages=packs, fiscal_age_policy=AP.synthetic_policy())
 
 
 def test_monthly_asof_membership_is_not_called_exact_daily_ranking():
@@ -449,5 +450,12 @@ def test_committed_input_receipts_preserve_all_intended_names_and_original_code_
     assert report["coverage"]["unidentifiedRankSlots"] == 0
     assert report["coverage"]["knownTerminalMemberDatesAuditOnly"] == 1725
     for name, expected in report["codeSha256"].items():
-        assert E.sha((Path(__file__).parent / name).read_bytes()) == expected
+        # v1 remains an immutable receipt of8df; current revised code receives
+        # a NEW v2 receipt, never rewrite v1 or weaken its old hash assertion.
+        import os
+        import subprocess
+        old = subprocess.check_output(["git", "cat-file", "blob", "8df7f7965231e8e18310c821d3d4b7c5c3d8b04a:"
+                                       + "research/stock_working_capital_v1/" + name],
+                                      cwd=Path(__file__).resolve().parents[2], env={**os.environ, "GIT_NO_LAZY_FETCH": "1"})
+        assert E.sha(old) == expected
     assert all(r["inputAdmitted"] == 0 for r in report["coverage"]["signals"].values())

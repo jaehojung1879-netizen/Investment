@@ -123,10 +123,14 @@ def original_financial_facts(record, metadata, package, field):
     raw = package["raw"]
     if sha(raw) != package.get("sha256"):
         raise ValueError("ORIGINAL_PACKAGE_DIGEST_MISMATCH")
-    url = urlparse(package["url"])
-    if (url.scheme != "https" or url.netloc != "opendart.fss.or.kr" or url.path != "/api/fnlttXbrl.xml"
-            or parse_qs(url.query) != {"rcept_no": [metadata["receipt"]], "reprt_code": ["11011"]}):
-        raise ValueError("ORIGINAL_PACKAGE_RECEIPT_MISMATCH")
+    if package.get("route") == "DART_PUBLIC_ATTACHMENT":
+        from .xbrl_recovery import validate_public_provenance
+        validate_public_provenance(metadata, package)
+    else:
+        url = urlparse(package["url"])
+        if (url.scheme != "https" or url.netloc != "opendart.fss.or.kr" or url.path != "/api/fnlttXbrl.xml"
+                or parse_qs(url.query) != {"rcept_no": [metadata["receipt"]], "reprt_code": ["11011"]}):
+            raise ValueError("ORIGINAL_PACKAGE_RECEIPT_MISMATCH")
     roots = []
     with zipfile.ZipFile(io.BytesIO(raw)) as z:
         infos = z.infolist()

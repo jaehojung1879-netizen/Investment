@@ -24,6 +24,7 @@ from pipeline import kr_industry_membership_v3 as V3
 from . import features as F
 from . import pit_admission as A
 from . import pit_filing_evidence as E
+from . import age_policy as AP
 
 ROOT = Path(__file__).resolve().parents[2]
 RAW_COMMIT = "1bf68f59cffa20239977e2cfaa0f35a07d0ec884"
@@ -192,7 +193,7 @@ def source_demand(cohorts, rows):
             "warning": "No request made. Do not lower sample minima or remove other intended names to execute this coverage-selected subset."}
 
 
-def inspect(source):
+def inspect(source, packages=None):
     calendar = xc.get_calendar("XKRX", start="2015-01-01", end="2026-01-31")
     sessions = [str(s.date()) for s in calendar.sessions]
     signals = [s for s in sessions if "2017-01-01" <= s <= "2025-08-29" and F.day(s).weekday() == 4]
@@ -223,12 +224,13 @@ def inspect(source):
     worker = A.Crosswalk(snapshots=snapshots, filings=filings, originals=originals,
                          intervals=source.json(INTERVALS), events=events, crosswalk=source.json(CROSSWALK),
                          terminal=terminal, trading=trading, sessions=sessions)
+    worker.packages = packages or {}
     cohorts, rows = [], []
     for s in signals:
         c, r = worker.on(s)
         cohorts.append(c)
         rows.extend(r)
-    report = {"schema": "STOCK_WC_PIT_JOIN_V1", "status": "INPUT_JOIN_MEASURED_ADMISSION_BLOCKED",
+    report = {"schema": "STOCK_WC_PIT_JOIN_V2", "status": "INPUT_JOIN_MEASURED_ADMISSION_BLOCKED",
               "diagnosticOnly": True, "notANewSignalSchedule": True, "signalRange": [signals[0], signals[-1]],
               "scope": "All Friday KRX sessions as coverage grid; eventDue marks the original proposed per-issuer annual event.",
               "sourceCommits": {"raw": RAW_COMMIT, "evidence": EVIDENCE_COMMIT},
@@ -240,7 +242,8 @@ def inspect(source):
                                            [r for r in rows if r["signal"][:4] == str(y)]) for y in range(2017, 2026)},
               "originalSourceEvidence": original_diagnostics, "industrySourceEvidence": event_diagnostics,
               "historicalReturnLabelsRead": 0, "historicalReturnCalculations": 0, "modelFits": 0,
-              "originalFinancialPackagesAvailable": 0,
+              "originalFinancialPackagesAvailable": len(packages or {}),
+              "fiscalAgePolicy": AP.pending_policy(),
               "sourceDemandSummary": {k: v for k, v in source_demand(cohorts, rows).items() if k != "requests"},
               "limits": ["Monthly Top120 carry-forward is not the exact same-session daily market-cap ranking.",
                          "Original listing/main metadata is not certification of original financial values or a 12-month fiscal start.",
@@ -277,10 +280,14 @@ def verify_measurement(directory):
         c = by_date[r["signal"]]
         members = {m["ticker"]: m for m in c["members"]}
         m = members[r["ticker"]]
+        if r.get("pairAsOf") is not None and r["pairAsOf"] != r["signal"]:
+            raise ValueError("CACHED_PAIR_ASOF_DIFFERS_FROM_SIGNAL")
         if (r["intendedSha256"] != c["intendedSha256"] or r["snapshotDate"] != c["snapshotDate"]
                 or r["rankAtSnapshot"] != m["rank"]):
             raise ValueError("ROW_NOT_BOUND_TO_INTENDED_COHORT")
         for s in r["signals"].values():
+            if s["inputAdmitted"] and report.get("fiscalAgePolicy", {}).get("admissionEnabled") is False:
+                raise ValueError("UNREGISTERED_FISCAL_AGE_POLICY_CANNOT_ADMIT_INPUTS")
             if not s["inputAdmitted"] and s["value"] is not None:
                 raise ValueError("BLOCKED_INPUT_MUST_NOT_EXPOSE_SIGNAL_VALUE")
             if s["inputAdmitted"] and (s["reasons"] or not s["inputReadable"]
@@ -301,9 +308,10 @@ def main(argv=None):
     p.add_argument("--inspect", action="store_true")
     p.add_argument("--output", type=Path)
     p.add_argument("--verify", type=Path)
+    p.add_argument("--packages", type=Path, help="Read-only original-source recovery manifest directory")
     args = p.parse_args(argv)
     if args.verify:
-        if args.inspect or args.output:
+        if args.inspect or args.output or args.packages:
             p.error("--verify cannot be combined with measurement")
         print(json.dumps(verify_measurement(args.verify)))
         return 0
@@ -313,7 +321,13 @@ def main(argv=None):
     if args.output is None or args.output.exists():
         p.error("--output must be a NEW directory; never overwrite prior receipts")
     try:
-        report, cohorts, rows = inspect(PinnedInputs(ROOT))
+        packages = None
+        if args.packages:
+            from .xbrl_recovery import load_packages
+            packages = load_packages(args.packages)
+        report, cohorts, rows = inspect(PinnedInputs(ROOT), packages)
+        if args.packages:
+            report["originalRecoveryManifestSha256"] = E.sha((args.packages / "manifest.json").read_bytes())
         if not cohorts or report["coverage"]["expectedMemberDates"] == 0:
             raise ValueError("EMPTY_INTENDED_POPULATION_NOT_A_SUCCESS")
         args.output.mkdir(parents=True, exist_ok=False)
@@ -325,7 +339,8 @@ def main(argv=None):
         (args.output / "source-demand.json").write_bytes(demand)
         report["outputSha256"]["source-demand.json"] = E.sha(demand)
         report["codeSha256"] = {n: E.sha((Path(__file__).parent / n).read_bytes()) for n in (
-            "features.py", "pit_filing_evidence.py", "pit_admission.py", "pit_join.py")}
+            "features.py", "pit_filing_evidence.py", "pit_admission.py", "pit_join.py", "age_policy.py",
+            "fiscal-age-decision-v1.json", "xbrl_recovery.py")}
         (args.output / "coverage.json").write_text(json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2) + "\n")
     except (ValueError, KeyError, OSError, RuntimeError) as exc:
         print(json.dumps({"status": "SOURCE_OR_INFRASTRUCTURE_ERROR", "error": str(exc), "historicalReturnLabelsRead": 0}))

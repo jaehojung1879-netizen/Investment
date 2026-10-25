@@ -1,0 +1,37 @@
+{
+  "studyId": "stock-working-capital-v1",
+  "status": "OWNER_DECISION_REQUIRED_BEFORE_OUTCOMES",
+  "selectedPolicy": null,
+  "legacyDiagnosticReferenceDays": 550,
+  "legacyReferenceIsPreregistered": false,
+  "reason": "550 was a software freshness constant in an unexecuted proposal, not a scientifically registered or owner-approved cutoff. No new return labels were read to prepare these options.",
+  "options": [
+    {
+      "id": "NEXT_ANNUAL_DEADLINE",
+      "recommended": true,
+      "rule": "Use verified fiscal end; advance by one full fiscal year, then the applicable 90-calendar-day annual-report deadline. After that expected next report is missing, abstain instead of carrying the old annual. No extra grace or inferred January-December start.",
+      "basis": "Annual reporting cadence plus submission deadline. Repository dart_fundamentals.filing_deadline uses the annual March deadline; Capital Markets Act Article159 is the proposed external basis, whose historical applicability must be checked before registration.",
+      "advantage": "Explains expiry as a missing expected disclosure rather than an optimized number of days.",
+      "limitation": "Need verified fiscal window and dated legal exceptions/extensions; declaration month alone insufficient. This session has not fetched the official legal text."
+    },
+    {
+      "id": "FIXED_550_DAYS",
+      "recommended": false,
+      "rule": "Verified fiscal end to signal, inclusive550 days; stale when age>550.",
+      "basis": "Retains the existing diagnostic reference. Roughly one year plus six months, but the additional grace has no established scientific justification.",
+      "advantage": "Reproduces the legacy software boundary.",
+      "limitation": "May retain an annual after the next filing was due. Existing implementation is not evidence of predictive validity."
+    },
+    {
+      "id": "FIXED_365_DAYS",
+      "recommended": false,
+      "rule": "Verified fiscal end to signal, inclusive365 days.",
+      "basis": "Simple conservative annual age bound, independent of returns.",
+      "advantage": "Rejects old annuals early.",
+      "limitation": "Creates an expected gap between year end and next publication, and leap-year boundary differences. No performance justification."
+    }
+  ],
+  "selectionProcedure": "Owner and non-author reviewer fix one policy, applicable fiscal/calendar/legal exceptions, protocol/code/source digests and support criteria before any outcome access. Do not choose by returns, fit, alpha, CAGR or a favorable cohort. Input-coverage comparisons are diagnostics only.",
+  "executionAuthorized": false,
+  "inputAdmissionWhilePending": false
+}
