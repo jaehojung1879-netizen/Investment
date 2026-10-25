@@ -162,3 +162,12 @@ def test_holm_and_family_fail_closed_on_invalid_pvalues(invalid):
     family = E.family({"KR_H126_MOM": {"p": invalid}})
     assert family["KR_H126_MOM"]["p"] == 1.0
     assert family["KR_H126_MOM"]["reject"] is False
+
+
+def test_infinite_training_features_cannot_silently_empty_the_forecast():
+    f = world(months=80)
+    f.loc[f.index[: len(f) // 2 + 5], "REL_MOM_126"] = np.inf    # more than half of the training column is +inf
+    A_, B_ = E.design(f, f, ["REL_MOM_126"])
+    assert np.isfinite(A_).all() and np.isfinite(B_).all()
+    pred, _ = E.oof_predictions(f, ["REL_MOM_126"], "cwRelative", SESSIONS, 126)
+    assert pred.notna().sum() > 0 and np.isfinite(pred.dropna()).all()

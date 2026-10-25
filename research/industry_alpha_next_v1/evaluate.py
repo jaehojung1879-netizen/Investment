@@ -58,7 +58,7 @@ def design(train, test, columns):
     """Median-impute, add missing indicators for columns missing anywhere in TRAIN, standardise on TRAIN."""
     Xtr = train.reindex(columns=list(columns)).apply(pd.to_numeric, errors="coerce").to_numpy(float)
     Xte = test.reindex(columns=list(columns)).apply(pd.to_numeric, errors="coerce").to_numpy(float)
-    med = np.array([np.nanmedian(c) if np.isfinite(c).any() else 0.0 for c in Xtr.T])
+    med = np.array([np.median(c[np.isfinite(c)]) if np.isfinite(c).any() else 0.0 for c in Xtr.T])  # +/-inf is missing too
     flag = np.array([~np.isfinite(c).all() for c in Xtr.T], bool)
     def fill(X):
         miss = ~np.isfinite(X)
