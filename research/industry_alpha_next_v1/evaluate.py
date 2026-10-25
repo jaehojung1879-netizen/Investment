@@ -135,6 +135,8 @@ def moving_block_bootstrap_p(d, *, block=S.BOOTSTRAP["blockSignals"], draws=S.BO
     n = len(x)
     if n == 0:
         return 1.0
+    if not np.isfinite(x).all():
+        raise ValueError("NONFINITE_BOOTSTRAP_DIFFERENTIAL")
     observed = x.mean()
     z = x - observed
     rng = np.random.default_rng(seed)
@@ -155,7 +157,15 @@ def support_blocks(test_dates):
 
 def holm(pvalues, alpha=S.HOLM_ALPHA):
     """{slot: p} -> {slot: {'p','pHolm','reject'}}. Blocked or missing slots must be passed as p = 1."""
-    items = sorted(pvalues.items(), key=lambda kv: (kv[1], kv[0]))
+    # A NaN p-value must never be ranked ahead of valid hypotheses or become a discovery.
+    clean = {}
+    for key, raw in pvalues.items():
+        try:
+            p = float(raw)
+        except (TypeError, ValueError, OverflowError):
+            p = 1.0
+        clean[key] = p if math.isfinite(p) and 0.0 <= p <= 1.0 else 1.0
+    items = sorted(clean.items(), key=lambda kv: (kv[1], kv[0]))
     m, running, out, stop = len(items), 0.0, {}, False
     for i, (k, p) in enumerate(items):
         adj = min(1.0, (m - i) * p)
@@ -182,8 +192,11 @@ def admit(frame, target, status_col):
     """Paired population: rows whose target resolved, on dates with at least MIN_INDUSTRIES_PER_DATE such rows.
     Returns (admitted frame, attrition report by reason). Rows are removed for BOTH models alike."""
     status = frame[status_col].fillna("UNKNOWN")
-    finite = pd.to_numeric(frame[target], errors="coerce").notna() & status.eq("MATURED")
-    reasons = status[~finite].value_counts().to_dict()
+    target_values = pd.to_numeric(frame[target], errors="coerce").to_numpy(dtype=float)
+    numeric_finite = pd.Series(np.isfinite(target_values), index=frame.index)
+    finite = numeric_finite & status.eq("MATURED")
+    reasons = status.mask(status.eq("MATURED") & ~numeric_finite, "MATURED_BUT_NONFINITE_TARGET")
+    reasons = reasons[~finite].value_counts().to_dict()
     kept = frame[finite]
     per_date = kept.groupby("date").size()
     thin = per_date[per_date < S.MIN_INDUSTRIES_PER_DATE].index
@@ -202,6 +215,8 @@ def contrast(frame, base_cols, alt_cols, target, status_col, sessions, horizon):
     pb, info = oof_predictions(pop, base_cols, target, sessions, horizon)
     pa, _ = oof_predictions(pop, alt_cols, target, sessions, horizon)
     d = loss_differential(pop, target, pb, pa)
+    if not np.isfinite(d.to_numpy(dtype=float)).all():
+        return out | {"status": "NONFINITE_LOSS_DIFFERENTIAL", "p": 1.0}
     blocks = support_blocks(d.index)
     out.update(folds=info, testDates=int(len(d)), supportBlocks=blocks,
                meanLossReduction=float(d.mean()) if len(d) else None,
@@ -251,7 +266,7 @@ def h2_slots(frame, sessions, horizon, *, gate_open, res):
 
 def family(results_by_slot):
     """Single 36-slot Holm family. Any registered slot without a result (US, H3, blocked) enters as p = 1."""
-    pvals = {s["id"]: float(results_by_slot.get(s["id"], {}).get("p", 1.0)) for s in S.slots()}
+    pvals = {s["id"]: results_by_slot.get(s["id"], {}).get("p", 1.0) for s in S.slots()}
     return holm(pvals)
 
 
