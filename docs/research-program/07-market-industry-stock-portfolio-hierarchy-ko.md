@@ -2,7 +2,7 @@
 
 **상태:** `DOCS_ONLY_GOVERNANCE`, `OUTCOME_BLIND_FOR_FUTURE_STUDIES`. 이 문서는 연구를 **어느 계층에서 관리하는지**만 정한다. 기존 연구 ID, 명세, 봉인, 실행 잠금, 원장, 결과, 운영 모델(`weekly-passive-first-v1`)은 하나도 바꾸지 않는다. 새로 이름 붙인 비교·연구는 모두 **제안(PROPOSED, 미등록)**이며 실행 권한이 없다.
 
-**확인 기준:** 2026-10-24, `main` `b589d658eedd3c47f555df20db86f37792ee3358`(#285 병합). 열린 PR #259, #280, #283, #284, #286, #287, #288, #289를 읽었다. 2026-10-25 개정: 이후 열린 Industry 설계 PR #290(`833ae8ff`)을 반영했다(§2.2, §5.1, §5.4, §8.1, §9). 이 문서를 쓰면서 역사 결과·라벨·모델 적합을 새로 계산하지 않았다. #288의 보관 바이트는 해시 대조(5개 모두 README와 일치)와 #289가 인용한 수치 확인에만 썼다.
+**확인 기준:** 2026-10-24, `main` `b589d658eedd3c47f555df20db86f37792ee3358`(#285 병합). 열린 PR #259, #280, #283, #284, #286, #287, #288, #289를 읽었다. 2026-10-25 개정: 이후 열린 Industry 설계 PR #290(`833ae8ff`)을 반영했다(§2.2, §5.1, §5.4, §8.1, §9). 같은 날 #289 head `7ed5d12`와 #290 head `64b2827`을 정확한 head 기준으로 재감사해 상태를 갱신했다(§2.1, §2.2, §8.1, §9). 이 문서를 쓰면서 역사 결과·라벨·모델 적합을 새로 계산하지 않았다. #288의 보관 바이트는 해시 대조(5개 모두 README와 일치)와 #289가 인용한 수치 확인에만 썼다.
 
 ## 0. 먼저 숨기지 않을 사실
 
@@ -46,7 +46,9 @@
 | C 위험상태 영수증 preview | #266 | preview | 실제 원장 기록 아님 | **C** |
 | US C1 동결 복제 | `rp1-c1-us-exposure-ladder-replication-v1` (#249~#258, #281) | CONSUMED 2026-10-24 (run 40082205870) | `REPLICATED_CONTROL_RETAINED`, 지명 없음 | **C** |
 | US C1 결과 보관 | #288 | DRAFT | 5개 원본 해시 일치(이번 확인) | **C** |
-| C1c 비대칭 매도·빠른 재진입 설계 | #289 | DRAFT | 설계만, 결과 노출 후 제안 | **C**(새 ID 필요) |
+| C1c 비대칭 매도·빠른 재진입 설계 | #289 (head `7ed5d12`) | DRAFT, 합성 구현만 | 재감사: `DESIGN_NOT_READY_FOR_OWNER_APPROVAL` 유지. B2·B4·B6 해소. B1(대조군 C1)·B3(원 구조 스위치 미등록)·B5·B7 남음 | **C**(새 ID 필요) |
+| └ 원 C1c-REENTRY-SPEED(주당 한 단계 복귀) | C1 문서 §7, #289 `market_research_reentry_structure` | 결과 전 목록, 미등록 | 합성 함수만 있음. 어느 가족에도 들어가 있지 않음 | **C** |
+| └ 20세션 돌파 재진입 | #289 S2/S3 | **결과 노출 후 제안**, 미등록 | 원 C1c와 다른 가설. 구조상 FAST=2 반등은 앞당길 수 없음(24칸 진리표) | **C** |
 | FRED 견고성·모델 신원 | #284 | DRAFT | 입력 인프라. 결선은 소유자 결정 | B/C 입력 |
 | 후속 후보(미등록) | C1b-VOL-TARGET, C1c-REENTRY-SPEED, C1d-PROSPECTIVE-RECEIPTS-US | 목록만 | C1 문서 §7, 결과 전 열거 | **C** |
 
@@ -61,7 +63,7 @@
 | 통합 포트폴리오 산업층 | `kr-integrated-alpha-portfolio-v1` | CONSUMED | 산업층 `DEVELOPMENT_SUPPORTED`. 다만 2025년 이후·전기전자 산업 집중. 패시브 미달 |
 | US 산업 | — | **없음** | SEC 접수 시점 SIC는 날짜가 있는 공식 대안이지만 수집·CIK 매핑 미구축. GICS History는 라이선스 미확인 |
 | KRICS | — | 전향 단서만 | 2026-09-22 발표. 과거 소급 불가 |
-| Industry Alpha 다음 연구 설계 | #290 (`industry-alpha-kr/us-next-v1` 예약명, 미활성) | DRAFT, `EXECUTION_DISABLED` | 증거 감사와 설계만 있음. 새 결과 없음. KR 역사 실행은 §5.1 단일 예외 계약 대상이며 현재 미승인 |
+| Industry Alpha 다음 연구 설계 | #290 (head `64b2827`, `industry-alpha-kr/us-next-v1` 예약명, 미활성) | DRAFT, `EXECUTION_DISABLED` | 증거 감사와 설계만 있음. 새 결과 없음. 쌍 입장 계약 재감사: `B1_PARTIALLY_RESOLVED`(R1~R5). KR 역사 실행은 §5.1 단일 예외 계약 대상이며 현재 미승인 |
 
 **산업층의 공백:** 독립 산업 연구가 하나(KR 해부)뿐이고, 그것도 결과 노출 탐색이다. 산업 판단의 **전향 영수증이 없고**, US는 날짜가 있는 산업 소속 자체가 없다. 그동안 산업 정보는 종목 연구(Phase C H 계열, A-H3, 산업 내 해부)와 포트폴리오 연구(통합 v1 D)의 **입력으로만** 쓰였다. 이것이 이 문서가 바로잡는 "소외"다.
 
@@ -275,8 +277,8 @@ Study ID, 사전등록, 원장, 봉인, 실행 잠금, 통계 가족, 판정 규
 
 | 영역 | 대상 | 감사 문서 | 원칙 |
 |---|---|---|---|
-| Market | #289(C1c), #288(C1 보관), #284(FRED), 향후 C 영수증 | `audits/pr289-market-c1c-independent-audit-ko.md` | 상태 누설·재진입 hindsight·대조군 선택·노출 대 타이밍 |
-| Industry | **#290**(`833ae8ff`, 2026-10-25 Draft, 독립 감사 미수행) 및 이후 산업 연구 PR | `audits/industry-layer-pr-audit-checklist-ko.md` | 분류 PIT·코호트·종결·시장 성분 분리 |
+| Market | #289(C1c, 재감사 head `7ed5d12`), #288(C1 보관), #284(FRED), 향후 C 영수증 | `audits/pr289-market-c1c-independent-audit-ko.md` | 상태 누설·재진입 hindsight·대조군 선택·노출 대 타이밍 |
+| Industry | **#290**(쌍 입장 계약 감사 head `64b2827`; 원천·PIT·사전등록 감사는 미수행) 및 이후 산업 연구 PR | `audits/industry-layer-pr-audit-checklist-ko.md`, `audits/pr290-industry-paired-admission-audit-ko.md` | 분류 PIT·코호트·종결·시장 성분 분리 |
 
 - **작성자와 감사자는 다른 에이전트다.** 같은 PR에서 감사자가 구현하지 않는다.
 - **두 영역 감사는 서로의 결론을 근거로 쓰지 않는다.** 예를 들어 Market 감사가 "산업 연구가 상태를 층화하니 괜찮다"고 판정하지 않는다.
@@ -304,8 +306,8 @@ Study ID, 사전등록, 원장, 봉인, 실행 잠금, 통계 가족, 판정 규
 | 계층 | 진행 단계 | 차단 요건 | 현재 실증 결과 | 다음 실행할 연구 | 담당 |
 |---|---|---|---|---|---|
 | **Market-B** (조건부) | KR ④ 진입(상태만), US ① | 성과 계약 미등록, B-H2는 지지된 A 신호 필요, US 상태 영수증 없음 | 상태 기하만 측정(53블록 = 불리 24 + 기타 29). **성과 증거 없음** | B-H1 성과 계약 등록(전향, 결과 전) | 구현: Claude(#285 계열) / 감사: Market 감사자 / 승인: 소유자 |
-| **Market-C** (노출) | KR ③ 완료, US ③ 완료, ④ 미착수 | 전향 영수증 없음, C1c는 설계 결함(감사 B1~B7), 사용자 위험 예산 미정 | KR·US 모두 `CONTROL_RETAINED`. 낙폭 감소와 수익 손실의 교환. **알파 아님** | #288 병합 결정 → C1d US/KR C 전향 영수증 → (승인 시) C1c 새 ID 탐색 | 구현: Codex(#289) / 감사: Claude Market / 승인: 소유자 |
-| **Industry** | KR ①·③ 기술(노출), US 없음 | KR 분류 `INSUFFICIENT_V4`, 종결 22종목 미분류, US 날짜 있는 분류 없음, 산업 전향 영수증 없음 | 탐색 기술통계뿐. 검정된 산업 신호 **없음**. 통합 v1 산업층 지지는 2025년 이후·산업 집중 #290 독립 Industry 감사 → I-2 US SIC 기반(결과 없음) ∥ I-1 KR 전향 산업 영수증 설계. KR 역사 실행은 §5.1 예외 결정 전까지 없음 | 구현: Codex(#290) / 감사: Claude Industry(Market 감사와 분리) / 승인: 소유자 |
+| **Market-C** (노출) | KR ③ 완료, US ③ 완료, ④ 미착수 | 전향 영수증 없음, C1c 재감사 미해소 B1·B3·B5·B7, 사용자 위험 예산 미정 | KR·US 모두 `CONTROL_RETAINED`. 낙폭 감소와 수익 손실의 교환. **알파 아님** | #288 병합 결정 → C1d US/KR C 전향 영수증 → (승인 시) C1c 새 ID 탐색 | 구현: Codex(#289) / 감사: Claude Market / 승인: 소유자 |
+| **Industry** | KR ①·③ 기술(노출), US 없음 | KR 분류 `INSUFFICIENT_V4`, 종결 22종목 미분류, US 날짜 있는 분류 없음, 산업 전향 영수증 없음 | 탐색 기술통계뿐. 검정된 산업 신호 **없음**. 통합 v1 산업층 지지는 2025년 이후·산업 집중 | #290 감사 R1~R5 해소(쌍 키·intended 봉인 digest·결측 범위 결정) → I-2 US SIC 기반(결과 없음) ∥ I-1 KR 전향 산업 영수증 설계. KR 역사 실행은 §5.1 예외 결정 전까지 없음 | 구현: Codex(#290) / 감사: Claude Industry(Market 감사와 분리) / 승인: 소유자 |
 | **Stock** | KR ③ 종료·④ 진행, US ②(A1 NO_GO) | US 권리·신원·수익 기준(#287), KR 역사 종료, MDE 미해결 | KR 지명 **0**, #286 **NO STABLE ADDED ALPHA**, US A1 `NO_GO`. 산업 내 해부의 가치 계열은 기술적으로 견고하나 미검정 | KR Challenger v1/v2·A2 전향 운영, #287 차단 해소 | 구현: Codex(#286, #287), Claude(#277, #278) / 감사: 상호 교차 / 승인: 소유자 |
 | **Portfolio** | ②(계약·shadow), KR 통합 ③ 소진 | 자격 있는 Stock/Industry 입력 없음, D v2 소유자 수치 null, Market-C 해석 승인 없음 | ETF 100% 유지. KR 통합 v1 D는 전체 기간 패시브 미달 | #280 병합, §7 비교 계약 등록 설계, D v2 소유자 결정 | 구현: Claude(#280, #283) / 감사: Codex 또는 별도 Claude 세션 / 승인: 소유자 |
 

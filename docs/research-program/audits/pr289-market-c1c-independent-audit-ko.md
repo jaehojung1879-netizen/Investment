@@ -105,6 +105,27 @@ C1 표를 그대로 읽으면 다음과 같다.
 - **N3 — 소유자 지시의 A~D 분해:** 지시한 방향과 맞는다. 다만 연속 역변동성 목표는 이미 결과 전 목록에 있는 `C1b-VOL-TARGET`으로 연결한다. 현금·단기 국채 역할은 별도 연구로 두고 이 PR에서 구현하지 않는다.
 - **N4 — 봉인 불변 검사:** Codex 구현 시 `kr_market_risk_model.py`와 C1 사양·원천 동결 파일의 바이트 동일성을 테스트로 고정한다. 이름 접두사가 아니라 정확한 파일 목록으로 한다(v2.44 교훈).
 
+## 재감사 — head `7ed5d1293e244417ef948bf30fd7d58eaaead998` (2026-10-25)
+
+- 별도 worktree에서 확인했다. `scripts/check_market_research.py verify`는 `designStructure: VERIFIED`, 보존 파일 94개, `realNumericValueReads: 0`이다.
+- `tests/test_market_research_c1c.py` + `tests/test_market_research_reentry_structure.py`: **66 passed**. 역사 값은 읽지 않았다.
+- **판정: `DESIGN_NOT_READY_FOR_OWNER_APPROVAL` 유지.** B2·B4·B6 및 N2·N4는 해소됐거나 대부분 해소됐다. B1·B3·B5·B7과 N1은 남아 있다.
+
+| 항목 | 상태 | 근거 |
+|---|---|---|
+| B1 대조군 선택 | **미해소** | 명세 `control: C1_CONFIRMATION_GATED` 그대로다. C0는 "진단 참조"다. 대조군 선택이 결과 노출 후라는 기록도, C0 위 2×2도 없다 |
+| B2 구조적 무작동 칸 | **해소(구조)** | `symbolic_breakout_cells`의 24칸 진리표 테스트가 S2의 차이를 FAST=1 ∧ (SLOW ∨ TRANSITION) ∧ 돌파로 한정한다. FAST=2에서는 S2 차이가 0임을 증명한다. 남은 일: 이 결과로 **H2가 FAST=2 반등을 앞당길 수 없다**는 결론을 제안 문서 본문에 적을 것. 대조와 달라지는 주간 판단 횟수는 아직 없다 |
+| B3 원 C1c와의 분리 | **부분 해소** | 코드에서 `C1c-REENTRY-SPEED-ORIGINAL-STRUCTURAL`(주당 한 단계)과 `POST_C1_RESULT_20_SESSION_BREAKOUT_SEPARATE`를 분리했다. 그러나 (i) 새 모듈이 제안 명세 JSON·프로그램 문서·`verify`의 `codeHashes`에 등록되지 않았다. (ii) 2×2의 S2는 여전히 20세션 돌파이고 studyId는 `rp1-c1c-…`다. 원 구조 스위치는 어떤 가족에도 들어가 있지 않다. (iii) `ORIGINAL_RUNG_GRID`에 0.0이 없어 S1/S3의 0% 경로와 결합할 수 없다(`0.0` 입력은 거부된다). 결합 의도가 없다면 그렇게 적을 것 |
+| B4 판정·가족 | **대부분 해소** | 주 대비 3개(S1−S0, S2−S0, S3−S1−S2+S0), 연율 log-growth, C.6 허용치를 screen으로 명시했다. B 가족과 섞지 않았다. 남은 일: KR·US 판정 불일치 시 규칙(C.7 "승격 없음")을 명시할 것 |
+| B5 0%·현금 기준 | **부분 해소** | US 가격지수·현금 0%와 SPY+DTB3를 분리했다. KR 15/45bp 대 ETF 5.5bp를 구분했다. 남은 일: 판정 독해를 하나로 고정할 것, 두 독해의 판정이 다르면 `BASIS_DEPENDENT`로 기록할 것 |
+| B6 타이밍 대 베타 | **해소(주장 금지 방식)** | STATIC_40/70·PASSIVE·C0를 함께 보고한다. 평균 노출을 사후 기술량으로 규정하고 타이밍 알파 주장을 금지했다. 다만 제안 문서 §3.5의 "가능한 경우 … 무작위 달력"은 남아 있으니, 삭제하거나 고정할 것 |
+| B7 KR 이중 노출·전향 경로 | **부분 해소** | 결과는 모두 `OUTCOME_EXPOSED_EXPLORATORY`다. 그러나 KR이 판정 시장으로 남아 있다. 모든 arm의 전향 영수증(C1d형)과 첫 판정 시점이 명세에 없다 |
+| N1 키릴 문자 | **미해소** | 제안 문서의 `BLOСKED`(U+0421)가 그대로 있다 |
+| N2 래치 | 해소 | 기억 없음(memoryless)으로 고정했다. 다음 주에 조건이 사라지면 원 지도를 따른다 |
+| N4 봉인 불변 | 해소 | 94개 파일 SHA 보존 목록과 `verify`가 있다 |
+
+- **원 Study B/C와 결과 노출 후 돌파 가설의 구분:** 코드 상수로는 분리됐다. 그러나 등록 문서와 명세는 아직 돌파를 "C1c"의 S2로 부른다. 07 문서는 둘을 다른 가설로 기록한다. 원 구조 스위치는 결과 전 목록에 있었고, 20세션 돌파는 결과 노출 후 제안이다.
+
 ## 감사자가 확인하지 않은 것
 
 - Codex 구현 코드(아직 없음).
