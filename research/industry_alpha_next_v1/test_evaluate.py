@@ -130,3 +130,35 @@ def test_date_weights_sum_to_one_per_date():
     w = E.date_weights(["a", "a", "b"])
     assert w.tolist() == [0.5, 0.5, 1.0]
     assert pd.Series(w).groupby(["a", "a", "b"]).sum().tolist() == [1.0, 1.0]
+
+
+def test_matured_nonfinite_target_is_excluded_and_reported():
+    f = world(months=40)
+    f.loc[f.index[0], "cwRelative"] = np.inf
+    f.loc[f.index[1], "cwRelative"] = -np.inf
+    f.loc[f.index[2], "cwRelative"] = np.nan
+    admitted, attrition = E.admit(f, "cwRelative", "cwStatus")
+    assert attrition["unresolvedRowsByReason"]["MATURED_BUT_NONFINITE_TARGET"] == 3
+    assert np.isfinite(admitted["cwRelative"].to_numpy(dtype=float)).all()
+
+
+def test_invalid_loss_differential_never_enters_inference(monkeypatch):
+    f = world(months=140)
+    monkeypatch.setattr(E, "loss_differential", lambda *_: pd.Series([np.nan], index=["2013-01-31"]))
+    result = E.contrast(f, *E.h1_columns("MOM"), "cwRelative", "cwStatus", SESSIONS, 126)
+    assert result["status"] == "NONFINITE_LOSS_DIFFERENTIAL" and result["p"] == 1.0
+
+
+@pytest.mark.parametrize("invalid", [np.nan, np.inf, -np.inf])
+def test_bootstrap_rejects_nonfinite_differentials(invalid):
+    with pytest.raises(ValueError, match="NONFINITE_BOOTSTRAP_DIFFERENTIAL"):
+        E.moving_block_bootstrap_p([0.1, invalid, 0.2])
+
+
+@pytest.mark.parametrize("invalid", [np.nan, np.inf, -np.inf, -0.2, 1.2, None, "bad"])
+def test_holm_and_family_fail_closed_on_invalid_pvalues(invalid):
+    answer = E.holm({"bad": invalid, "good": 0.0001})
+    assert answer["bad"]["p"] == 1.0 and answer["bad"]["reject"] is False
+    family = E.family({"KR_H126_MOM": {"p": invalid}})
+    assert family["KR_H126_MOM"]["p"] == 1.0
+    assert family["KR_H126_MOM"]["reject"] is False
