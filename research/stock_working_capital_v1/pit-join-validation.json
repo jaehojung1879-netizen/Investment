@@ -1,0 +1,33 @@
+{
+  "c1DependencySha256": "efbc6f7f61f83c4e8d4f2543bdf7ead42970e44ce140a64f2842f9e547e78b7d",
+  "compile": "compileall pipeline and stock_working_capital_v1 PASS",
+  "formalStudyExecutions": 0,
+  "fullLocalPytest": "NOT RUN; includes existing sealed real-data equivalence recalculation, user forbids rerunning sealed research",
+  "githubCI": "Previous 0524bd3 run40154773748 SUCCESS directly observed; new exact-head CI must be checked after push",
+  "historicalModelFits": 0,
+  "independentReview": "REQUIRED; not self-approved; next reviewer Claude",
+  "lint": "ruff check . PASS",
+  "mainObserved": "b589d658eedd3c47f555df20db86f37792ee3358",
+  "measurementCliExitCode": 3,
+  "measurementStatus": "INPUT_JOIN_MEASURED_ADMISSION_BLOCKED",
+  "newHistoricalLabelReads": 0,
+  "newHistoricalReturnCalculations": 0,
+  "originalKrResultFilesPreserved": 50,
+  "originalWcFilesChanged": false,
+  "outputAndCodeSha256": {
+    "pit-join-README-ko.md": "10bdccaf1db4fe34305b1fc3011398bf958ecf33cd70d192a77cea5898932f56",
+    "pit-join-plan.json": "36c95ba9b452ea038fb3b5bba673168808111efeed029e921dc38704319e9bc5",
+    "pit_admission.py": "65182dbc33ca325b26010a4ce150bc0423661b4a168813684f9ff9d1168f696f",
+    "pit_filing_evidence.py": "da3a89caa92bb8bd6ccaa24356cd7ae84ac7351c0cc07801a1008eb54282b97a",
+    "pit_join.py": "8f1a68c4aa27af7aeb5c1d94175a4173041de44249cf7d86f3f6604e28a86264",
+    "pit_measurement_v1/cohorts.jsonl.gz": "6b23451e56e28ce3225af47be38448bec0d635acf53a46d2361417e661490dfb",
+    "pit_measurement_v1/coverage.json": "cd795d96277b251e6b2b2d4119281d829418ce1605518fd6ee79f2c86eca12f1",
+    "pit_measurement_v1/rows.jsonl.gz": "7e658e1b164b5724a0d2fd4b29591d0e7978e5f666cea3f09d021e139ff0ee86",
+    "pit_measurement_v1/source-demand.json": "a021c60d3031a07d5d31d96ace899e770ab1ec02a7cd80ac1a56cfa154e8a9fc",
+    "test_pit_admission.py": "cebd993e84ed31f6f837e4c8efc42f45d6d6b81b4e32898d3b38ee3178d813e7"
+  },
+  "parentPr286Head": "0524bd3758fb39575bc8c93ee5c543f4d04cc8ba",
+  "scopedTests": "128 passed (71 original WC tests plus 57 new PIT tests including committed receipt validation)",
+  "seed": "temporary /tmp/wc-pit-seed generation and --allow-seed validator PASS",
+  "status": "AUTHOR_VALIDATION_ONLY"
+}
