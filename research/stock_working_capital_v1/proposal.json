@@ -1,0 +1,81 @@
+{
+  "studyId": "stock-working-capital-v1",
+  "status": "PROPOSED_NOT_REGISTERED_NOT_AUTHORIZED",
+  "evidenceGrade": "EXPLORATORY_ON_PREVIOUSLY_EXPOSED_HISTORY",
+  "historicalExecutionEnabled": false,
+  "promotionEligible": false,
+  "sourceCommit": "1bf68f59cffa20239977e2cfaa0f35a07d0ec884",
+  "inputCutoffExclusive": "2026-08-31",
+  "scope": {
+    "implementation": "KR exact-concept annual statement input recovery and synthetic comparison rehearsals",
+    "KR": "FY2016-2024 candidate pairs; prospective FY2025 inputs counted separately; signal-close PIT Top120 intersection NOT YET MEASURED",
+    "US": "Raw concept-presence census only; no new US financial signal values or WID extension",
+    "signalScheduleProposed": "Each issuer-year: first Friday KRX session strictly after annual publication, next exchange session open entry. Holiday Friday has no new signal; following Friday remains eligible. Calendar/source cohort must be sealed before label access.",
+    "outcomeAsOfProposed": "2026-08-31 18:00:00 Asia/Seoul",
+    "horizons": [126, 252],
+    "maturity": "Next exchange-session open through Hth session close; unobservable or unresolved outcomes retain intended denominators and block that comparison. Calendar determines maturity, not provider emptiness. No complete-block stitching or last-price terminal substitution."
+  },
+  "hypotheses": [
+    {
+      "id": "WC1",
+      "name": "collection_discipline",
+      "formula": "tradeReceivables(prev separately published FY)/sales(prev FY) - tradeReceivables(current FY)/sales(current FY)",
+      "expectedDirection": 1,
+      "economicQuestion": "Does less cash tied up in customer credit predict additional net stock-relative performance, beyond sales growth, level profitability, aggregate accruals, value and momentum?",
+      "refutations": ["Sales denominator growth alone", "factoring/writeoffs/M&A rather than collection", "gross/net/combined-receivables ambiguity"],
+      "sourceConcepts": ["dart_ShortTermTradeReceivable", "ifrs-full_CurrentTradeReceivables"],
+      "neverSubstitute": "TradeAndOtherCurrentReceivables, noncurrent receivables or latest-filed comparative columns"
+    },
+    {
+      "id": "WC2",
+      "name": "inventory_discipline",
+      "formula": "inventories(prev separately published FY)/sales(prev FY) - inventories(current FY)/sales(current FY)",
+      "expectedDirection": 1,
+      "economicQuestion": "Does inventory build relative to revenue contain demand/obsolescence information absent from aggregate NI-OCF accruals and profitability?",
+      "refutations": ["Stockouts instead of efficiency", "write-downs or disposals", "industry cycle and inflation rather than stock selection"],
+      "sourceConcepts": ["ifrs_Inventories", "ifrs-full_Inventories"],
+      "neverSubstitute": "Inventory components, costs of goods sold inferred from revenue or missing inventory as zero"
+    }
+  ],
+  "inputRules": [
+    "Both annual filings separately visible strictly before signal date; no comparative-column backfill.",
+    "Same issuer and CFS/OFS basis, consecutive fiscal years, one exact concept and KRW undimensioned row per leg.",
+    "Taxonomy concept change abstains, including ifrs to ifrs-full; no outcome-driven mapping expansion.",
+    "Raw annual label does not prove twelve-month duration or original unamended vintage: separate source qualification required.",
+    "Signal pair, universe, industry/size controls, source SHA and calendar must be pre-label sealed; SHA is an integrity check, not authority.",
+    "Each intended name/date remains in coverage denominator, with independent nonexclusive missing reasons."
+  ],
+  "comparisonPlan": {
+    "baselines": ["constant prediction", "existing momentum, book/earnings valuation, operating profitability, aggregate accruals, log size, log ADV, sales growth, focal working-capital level and industry-date controls"],
+    "augmentation": "One WC signal per comparison. No two-signal weighted composite or hyperparameter search.",
+    "models": "Fixed Ridge alpha=1 only after simple signal and constant baseline; train-only imputer/scaler. No nonlinear model unless separate future version.",
+    "splitProposed": "Expanding training; evaluate chronological calendar years 2020-2025; realized label close strictly before evaluation-year start minus 21 exchange sessions. First years may be blocked by training minima.",
+    "minimumTrainingProposed": {"rows": 500, "distinctIssuers": 50, "years": 3},
+    "minimumPerDateComparisonProposed": {"validPairs": 30, "industryPeers": 5},
+    "missingOutcomes": "Whole intended date comparison blocked. No use of realized availability to select membership. Report all blocked dates and missing reasons; do not claim full-population effect from complete cases.",
+    "targets": ["net shareholder stock return minus matched ETF net return", "stock minus leave-one-out same-industry return on identical cost/basis/date rules"],
+    "benchmarks": {"KR": "069500.KS", "US": ["SPY", "QQQ"]},
+    "concentrationSensitivity": ["exclude signal years 2025-2026", "exclude dated signal top-two market-cap names", "exclude fixed semiconductor/electronics taxonomy labels before outcomes"],
+    "sizes": "Dated size groups; no reconstructed shares proxy silently called certified market capitalization",
+    "costsKRProposed": {"commissionBpsPerSide": 1.5, "halfSpreadBpsPerSide": 10, "stockSellTax": "dated kr_sell_tax_bps(exit), ETF stock transaction tax 0", "sensitivityMultiplier": 2},
+    "costsUSProposed": {"buyBps": 8, "sellBps": 8.3, "sensitivityMultiplier": 2},
+    "distributions": "Gross distributions/reinvested delivered rights on both legs, net explicit trading costs/tax; not personal after-dividend-tax wealth. Complete distribution/actions ledger and execution cash timing required.",
+    "portfolioProposed": "Separate later adapter: at most 5 stocks, equal 20% slots with ETF fallback, capacity from raw contemporaneous price/volume; ETF-only and baseline-versus-augmented paired books; 50m KRW research NAV and 1% median60-session turnover cap. Not D or a production risk budget.",
+    "statisticalFamily": "Reserve 12 signal-horizon-region/benchmark contrasts (2 signals x 2 horizons x KR/SPY/QQQ); unexecuted/blocked tests assigned p=1 if reporting a family correction. Industry target/ablation/sensitivities descriptive, never alternate primary discoveries.",
+    "uncertainty": "Year-cluster and horizon-length block resampling, Holm .05 across fixed family; count valid pairs and independent blocks separately for every contrast; no finite inferential CI or SUPPORTED if fewer than 10 independent blocks. Normal MDE planning optimistic; disclose available years and achieved sample, never post-hoc power as proof.",
+    "smallSample": "FY2016-2024 gives at most 9 annual signal-year clusters before further loss. Inferential minimum may be unreachable. Approved pilot can report descriptive effects and exclusion rates, not a reliable alpha finding or independent OOS.",
+    "downside": "Loss-tail classification and portfolio MDD/CVaR/turnover/concentration only after valid complete shareholder paths exist; no incomplete-path CAGR/Sharpe."
+  },
+  "executionBlockers": [
+    "Independent pre-label audit of the new question, fixed sample, statistical family, calendars/costs and own-level/sales-growth controls",
+    "KR annual fiscal duration and first-filing/amendment vintage verification; identity/M&A/factoring/write-down comparability",
+    "Signal-date PIT universe/industry/size intersection, intended-cohort/source/calendar seal and source-rights evidence",
+    "Complete stock/ETF distribution, split/demerger/terminal and halt mark economics; #286 unresolved rights remain unresolved",
+    "A new real source-admission/owner authorization/durable single-attempt execution adapter; current code offers NO historical label loader",
+    "Owner approval on exact audited HEAD, spec/source/runtime/code hashes and permitted outcomes; approval alone cannot fix missing sources",
+    "US rights, issuer/share-class identity and stock/SPY total-return basis remain BLOCKED under #287"
+  ],
+  "stopConditions": ["Any unapproved outcome access", "source/contract/code or intended-cohort digest drift", "rights/identity/return-basis failure", "failure to preserve original sealed files/results", "unexplained coverage attrition or favorable outcome substitution"],
+  "independentReview": "REQUIRED_NOT_PERFORMED; synthetic tests are AUTHOR_VALIDATION_ONLY",
+  "productionChanges": false
+}

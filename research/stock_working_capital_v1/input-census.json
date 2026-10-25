@@ -1,0 +1,795 @@
+{
+  "codeSha256": {
+    "census.py": "4736bb506383beecfd34e3afc1da438249165c4a5b054fd37624d443b42a904a",
+    "features.py": "104c675d7865b261f583c8295f5482760e82c0f95869b351e82045f2cda22d3f"
+  },
+  "historicalOutcomesRead": 0,
+  "inputAvailabilityCutoffExclusive": "2026-08-31",
+  "modelFits": 0,
+  "regions": {
+    "KR": {
+      "distinctInputMeasurableTickers": {
+        "collection_discipline": 114,
+        "inventory_discipline": 209
+      },
+      "limits": [
+        "Raw issuer pairs are NOT signal-date PIT Top120 members or valid outcomes.",
+        "Missing reason counts overlap. Denominator includes unobservable annual issuers.",
+        "Rows absent from the raw annual store are outside this filing denominator, not assumed absent disclosures.",
+        "Annual fiscal duration/end dates, amendments, issuer transitions/M&A and actions still need qualification.",
+        "Retrospective September 2026 collection is not an original-vintage certificate."
+      ],
+      "rawDistinctTickers": 246,
+      "sourceAdmittedHistoricalPairs": 0,
+      "years": [
+        {
+          "annualFilings": 175,
+          "annualIssuers": 175,
+          "exactConceptReadableAnnualFilings": {
+            "inventory": 170,
+            "receivables": 7,
+            "sales": 168
+          },
+          "fiscalYear": 2015,
+          "rawFilings": 175,
+          "signals": {
+            "collection_discipline": {
+              "annualIssuerPairDenominator": 175,
+              "coverage": 0.0,
+              "earliestNextCalendarDayAvailability": null,
+              "inputMeasurablePairs": 0,
+              "missingByReasonNonexclusive": {
+                "MISSING_OR_AMBIGUOUS_PRIOR_OR_CURRENT_ANNUAL": 175
+              }
+            },
+            "inventory_discipline": {
+              "annualIssuerPairDenominator": 175,
+              "coverage": 0.0,
+              "earliestNextCalendarDayAvailability": null,
+              "inputMeasurablePairs": 0,
+              "missingByReasonNonexclusive": {
+                "MISSING_OR_AMBIGUOUS_PRIOR_OR_CURRENT_ANNUAL": 175
+              }
+            }
+          }
+        },
+        {
+          "annualFilings": 175,
+          "annualIssuers": 175,
+          "exactConceptReadableAnnualFilings": {
+            "inventory": 172,
+            "receivables": 5,
+            "sales": 167
+          },
+          "fiscalYear": 2016,
+          "rawFilings": 700,
+          "signals": {
+            "collection_discipline": {
+              "annualIssuerPairDenominator": 175,
+              "coverage": 0.02857142857142857,
+              "earliestNextCalendarDayAvailability": "2017-04-01",
+              "inputMeasurablePairs": 5,
+              "missingByReasonNonexclusive": {
+                "CURRENT:MISSING_CONCEPT:receivables": 169,
+                "CURRENT:MISSING_CONCEPT:sales": 8,
+                "MISSING_OR_AMBIGUOUS_PRIOR_OR_CURRENT_ANNUAL": 1,
+                "PREVIOUS:MISSING_CONCEPT:receivables": 167,
+                "PREVIOUS:MISSING_CONCEPT:sales": 7,
+                "STATEMENT_BASIS_CHANGED": 2
+              }
+            },
+            "inventory_discipline": {
+              "annualIssuerPairDenominator": 175,
+              "coverage": 0.92,
+              "earliestNextCalendarDayAvailability": "2017-03-25",
+              "inputMeasurablePairs": 161,
+              "missingByReasonNonexclusive": {
+                "CURRENT:MISSING_CONCEPT:inventory": 3,
+                "CURRENT:MISSING_CONCEPT:sales": 8,
+                "MISSING_OR_AMBIGUOUS_PRIOR_OR_CURRENT_ANNUAL": 1,
+                "PREVIOUS:MISSING_CONCEPT:inventory": 5,
+                "PREVIOUS:MISSING_CONCEPT:sales": 7,
+                "STATEMENT_BASIS_CHANGED": 2
+              }
+            }
+          }
+        },
+        {
+          "annualFilings": 183,
+          "annualIssuers": 183,
+          "exactConceptReadableAnnualFilings": {
+            "inventory": 180,
+            "receivables": 88,
+            "sales": 180
+          },
+          "fiscalYear": 2017,
+          "rawFilings": 721,
+          "signals": {
+            "collection_discipline": {
+              "annualIssuerPairDenominator": 183,
+              "coverage": 0.0273224043715847,
+              "earliestNextCalendarDayAvailability": "2018-03-10",
+              "inputMeasurablePairs": 5,
+              "missingByReasonNonexclusive": {
+                "CONCEPT_BASIS_CHANGED:sales": 1,
+                "CURRENT:MISSING_CONCEPT:receivables": 88,
+                "CURRENT:MISSING_CONCEPT:sales": 3,
+                "MISSING_OR_AMBIGUOUS_PRIOR_OR_CURRENT_ANNUAL": 9,
+                "PREVIOUS:MISSING_CONCEPT:receivables": 169,
+                "PREVIOUS:MISSING_CONCEPT:sales": 7,
+                "STATEMENT_BASIS_CHANGED": 1
+              }
+            },
+            "inventory_discipline": {
+              "annualIssuerPairDenominator": 183,
+              "coverage": 0.8797814207650273,
+              "earliestNextCalendarDayAvailability": "2018-03-10",
+              "inputMeasurablePairs": 161,
+              "missingByReasonNonexclusive": {
+                "CONCEPT_BASIS_CHANGED:inventory": 1,
+                "CONCEPT_BASIS_CHANGED:sales": 1,
+                "CURRENT:MISSING_CONCEPT:inventory": 3,
+                "CURRENT:MISSING_CONCEPT:sales": 3,
+                "MISSING_OR_AMBIGUOUS_PRIOR_OR_CURRENT_ANNUAL": 9,
+                "PREVIOUS:MISSING_CONCEPT:inventory": 3,
+                "PREVIOUS:MISSING_CONCEPT:sales": 7,
+                "STATEMENT_BASIS_CHANGED": 1
+              }
+            }
+          }
+        },
+        {
+          "annualFilings": 188,
+          "annualIssuers": 188,
+          "exactConceptReadableAnnualFilings": {
+            "inventory": 186,
+            "receivables": 90,
+            "sales": 184
+          },
+          "fiscalYear": 2018,
+          "rawFilings": 745,
+          "signals": {
+            "collection_discipline": {
+              "annualIssuerPairDenominator": 188,
+              "coverage": 0.4095744680851064,
+              "earliestNextCalendarDayAvailability": "2019-03-29",
+              "inputMeasurablePairs": 77,
+              "missingByReasonNonexclusive": {
+                "CONCEPT_BASIS_CHANGED:sales": 4,
+                "CURRENT:MISSING_CONCEPT:receivables": 95,
+                "CURRENT:MISSING_CONCEPT:sales": 3,
+                "MISSING_OR_AMBIGUOUS_PRIOR_OR_CURRENT_ANNUAL": 5,
+                "PREVIOUS:MISSING_CONCEPT:receivables": 95,
+                "PREVIOUS:MISSING_CONCEPT:sales": 3,
+                "STATEMENT_BASIS_CHANGED": 3
+              }
+            },
+            "inventory_discipline": {
+              "annualIssuerPairDenominator": 188,
+              "coverage": 0.9095744680851063,
+              "earliestNextCalendarDayAvailability": "2019-03-29",
+              "inputMeasurablePairs": 171,
+              "missingByReasonNonexclusive": {
+                "CONCEPT_BASIS_CHANGED:inventory": 3,
+                "CONCEPT_BASIS_CHANGED:sales": 4,
+                "CURRENT:MISSING_CONCEPT:inventory": 2,
+                "CURRENT:MISSING_CONCEPT:sales": 3,
+                "MISSING_OR_AMBIGUOUS_PRIOR_OR_CURRENT_ANNUAL": 5,
+                "PREVIOUS:MISSING_CONCEPT:inventory": 3,
+                "PREVIOUS:MISSING_CONCEPT:sales": 3,
+                "STATEMENT_BASIS_CHANGED": 3
+              }
+            }
+          }
+        },
+        {
+          "annualFilings": 193,
+          "annualIssuers": 193,
+          "exactConceptReadableAnnualFilings": {
+            "inventory": 191,
+            "receivables": 94,
+            "sales": 189
+          },
+          "fiscalYear": 2019,
+          "rawFilings": 759,
+          "signals": {
+            "collection_discipline": {
+              "annualIssuerPairDenominator": 193,
+              "coverage": 0.025906735751295335,
+              "earliestNextCalendarDayAvailability": "2020-04-17",
+              "inputMeasurablePairs": 5,
+              "missingByReasonNonexclusive": {
+                "CONCEPT_BASIS_CHANGED:sales": 177,
+                "CURRENT:MISSING_CONCEPT:receivables": 96,
+                "CURRENT:MISSING_CONCEPT:sales": 4,
+                "MISSING_OR_AMBIGUOUS_PRIOR_OR_CURRENT_ANNUAL": 5,
+                "PREVIOUS:MISSING_CONCEPT:receivables": 98,
+                "PREVIOUS:MISSING_CONCEPT:sales": 4,
+                "STATEMENT_BASIS_CHANGED": 2
+              }
+            },
+            "inventory_discipline": {
+              "annualIssuerPairDenominator": 193,
+              "coverage": 0.025906735751295335,
+              "earliestNextCalendarDayAvailability": "2020-04-15",
+              "inputMeasurablePairs": 5,
+              "missingByReasonNonexclusive": {
+                "CONCEPT_BASIS_CHANGED:inventory": 181,
+                "CONCEPT_BASIS_CHANGED:sales": 177,
+                "CURRENT:MISSING_CONCEPT:inventory": 2,
+                "CURRENT:MISSING_CONCEPT:sales": 4,
+                "MISSING_OR_AMBIGUOUS_PRIOR_OR_CURRENT_ANNUAL": 5,
+                "PREVIOUS:MISSING_CONCEPT:inventory": 2,
+                "PREVIOUS:MISSING_CONCEPT:sales": 4,
+                "STATEMENT_BASIS_CHANGED": 2
+              }
+            }
+          }
+        },
+        {
+          "annualFilings": 199,
+          "annualIssuers": 199,
+          "exactConceptReadableAnnualFilings": {
+            "inventory": 197,
+            "receivables": 96,
+            "sales": 196
+          },
+          "fiscalYear": 2020,
+          "rawFilings": 782,
+          "signals": {
+            "collection_discipline": {
+              "annualIssuerPairDenominator": 199,
+              "coverage": 0.457286432160804,
+              "earliestNextCalendarDayAvailability": "2021-03-05",
+              "inputMeasurablePairs": 91,
+              "missingByReasonNonexclusive": {
+                "CURRENT:MISSING_CONCEPT:receivables": 99,
+                "CURRENT:MISSING_CONCEPT:sales": 3,
+                "MISSING_OR_AMBIGUOUS_PRIOR_OR_CURRENT_ANNUAL": 6,
+                "PREVIOUS:MISSING_CONCEPT:receivables": 99,
+                "PREVIOUS:MISSING_CONCEPT:sales": 4,
+                "STATEMENT_BASIS_CHANGED": 2
+              }
+            },
+            "inventory_discipline": {
+              "annualIssuerPairDenominator": 199,
+              "coverage": 0.9346733668341709,
+              "earliestNextCalendarDayAvailability": "2021-03-05",
+              "inputMeasurablePairs": 186,
+              "missingByReasonNonexclusive": {
+                "CURRENT:MISSING_CONCEPT:inventory": 2,
+                "CURRENT:MISSING_CONCEPT:sales": 3,
+                "MISSING_OR_AMBIGUOUS_PRIOR_OR_CURRENT_ANNUAL": 6,
+                "PREVIOUS:MISSING_CONCEPT:inventory": 2,
+                "PREVIOUS:MISSING_CONCEPT:sales": 4,
+                "STATEMENT_BASIS_CHANGED": 2
+              }
+            }
+          }
+        },
+        {
+          "annualFilings": 206,
+          "annualIssuers": 206,
+          "exactConceptReadableAnnualFilings": {
+            "inventory": 202,
+            "receivables": 101,
+            "sales": 201
+          },
+          "fiscalYear": 2021,
+          "rawFilings": 815,
+          "signals": {
+            "collection_discipline": {
+              "annualIssuerPairDenominator": 206,
+              "coverage": 0.45145631067961167,
+              "earliestNextCalendarDayAvailability": "2022-02-23",
+              "inputMeasurablePairs": 93,
+              "missingByReasonNonexclusive": {
+                "CURRENT:MISSING_CONCEPT:receivables": 104,
+                "CURRENT:MISSING_CONCEPT:sales": 3,
+                "MISSING_OR_AMBIGUOUS_PRIOR_OR_CURRENT_ANNUAL": 7,
+                "PREVIOUS:MISSING_CONCEPT:receivables": 103,
+                "PREVIOUS:MISSING_CONCEPT:sales": 3
+              }
+            },
+            "inventory_discipline": {
+              "annualIssuerPairDenominator": 206,
+              "coverage": 0.941747572815534,
+              "earliestNextCalendarDayAvailability": "2022-02-23",
+              "inputMeasurablePairs": 194,
+              "missingByReasonNonexclusive": {
+                "CURRENT:MISSING_CONCEPT:inventory": 2,
+                "CURRENT:MISSING_CONCEPT:sales": 3,
+                "MISSING_OR_AMBIGUOUS_PRIOR_OR_CURRENT_ANNUAL": 7,
+                "PREVIOUS:MISSING_CONCEPT:inventory": 2,
+                "PREVIOUS:MISSING_CONCEPT:sales": 3
+              }
+            }
+          }
+        },
+        {
+          "annualFilings": 207,
+          "annualIssuers": 207,
+          "exactConceptReadableAnnualFilings": {
+            "inventory": 203,
+            "receivables": 103,
+            "sales": 201
+          },
+          "fiscalYear": 2022,
+          "rawFilings": 825,
+          "signals": {
+            "collection_discipline": {
+              "annualIssuerPairDenominator": 207,
+              "coverage": 0.47342995169082125,
+              "earliestNextCalendarDayAvailability": "2023-02-23",
+              "inputMeasurablePairs": 98,
+              "missingByReasonNonexclusive": {
+                "CURRENT:MISSING_CONCEPT:receivables": 104,
+                "CURRENT:MISSING_CONCEPT:sales": 6,
+                "MISSING_OR_AMBIGUOUS_PRIOR_OR_CURRENT_ANNUAL": 1,
+                "PREVIOUS:MISSING_CONCEPT:receivables": 105,
+                "PREVIOUS:MISSING_CONCEPT:sales": 5,
+                "STATEMENT_BASIS_CHANGED": 1
+              }
+            },
+            "inventory_discipline": {
+              "annualIssuerPairDenominator": 207,
+              "coverage": 0.9516908212560387,
+              "earliestNextCalendarDayAvailability": "2023-02-23",
+              "inputMeasurablePairs": 197,
+              "missingByReasonNonexclusive": {
+                "CURRENT:MISSING_CONCEPT:inventory": 4,
+                "CURRENT:MISSING_CONCEPT:sales": 6,
+                "MISSING_OR_AMBIGUOUS_PRIOR_OR_CURRENT_ANNUAL": 1,
+                "PREVIOUS:MISSING_CONCEPT:inventory": 4,
+                "PREVIOUS:MISSING_CONCEPT:sales": 5,
+                "STATEMENT_BASIS_CHANGED": 1
+              }
+            }
+          }
+        },
+        {
+          "annualFilings": 238,
+          "annualIssuers": 238,
+          "exactConceptReadableAnnualFilings": {
+            "inventory": 200,
+            "receivables": 105,
+            "sales": 216
+          },
+          "fiscalYear": 2023,
+          "rawFilings": 890,
+          "signals": {
+            "collection_discipline": {
+              "annualIssuerPairDenominator": 238,
+              "coverage": 0.18487394957983194,
+              "earliestNextCalendarDayAvailability": "2024-03-07",
+              "inputMeasurablePairs": 44,
+              "missingByReasonNonexclusive": {
+                "CONCEPT_BASIS_CHANGED:receivables": 49,
+                "CURRENT:MISSING_CONCEPT:receivables": 105,
+                "CURRENT:MISSING_CONCEPT:sales": 2,
+                "CURRENT:UNIT_OR_DIMENSION_UNRESOLVED:sales": 1,
+                "MISSING_OR_AMBIGUOUS_PRIOR_OR_CURRENT_ANNUAL": 31,
+                "PREVIOUS:MISSING_CONCEPT:receivables": 104,
+                "PREVIOUS:MISSING_CONCEPT:sales": 6,
+                "STATEMENT_BASIS_CHANGED": 1
+              }
+            },
+            "inventory_discipline": {
+              "annualIssuerPairDenominator": 238,
+              "coverage": 0.8025210084033614,
+              "earliestNextCalendarDayAvailability": "2024-02-29",
+              "inputMeasurablePairs": 191,
+              "missingByReasonNonexclusive": {
+                "CURRENT:MISSING_CONCEPT:inventory": 10,
+                "CURRENT:MISSING_CONCEPT:sales": 2,
+                "CURRENT:UNIT_OR_DIMENSION_UNRESOLVED:inventory": 1,
+                "CURRENT:UNIT_OR_DIMENSION_UNRESOLVED:sales": 1,
+                "MISSING_OR_AMBIGUOUS_PRIOR_OR_CURRENT_ANNUAL": 31,
+                "PREVIOUS:MISSING_CONCEPT:inventory": 4,
+                "PREVIOUS:MISSING_CONCEPT:sales": 6,
+                "STATEMENT_BASIS_CHANGED": 1
+              }
+            }
+          }
+        },
+        {
+          "annualFilings": 242,
+          "annualIssuers": 242,
+          "exactConceptReadableAnnualFilings": {
+            "inventory": 207,
+            "receivables": 107,
+            "sales": 221
+          },
+          "fiscalYear": 2024,
+          "rawFilings": 961,
+          "signals": {
+            "collection_discipline": {
+              "annualIssuerPairDenominator": 242,
+              "coverage": 0.29338842975206614,
+              "earliestNextCalendarDayAvailability": "2025-03-12",
+              "inputMeasurablePairs": 71,
+              "missingByReasonNonexclusive": {
+                "CONCEPT_BASIS_CHANGED:receivables": 32,
+                "CURRENT:MISSING_CONCEPT:receivables": 131,
+                "CURRENT:MISSING_CONCEPT:sales": 20,
+                "CURRENT:UNIT_OR_DIMENSION_UNRESOLVED:sales": 1,
+                "MISSING_OR_AMBIGUOUS_PRIOR_OR_CURRENT_ANNUAL": 4,
+                "PREVIOUS:MISSING_CONCEPT:receivables": 133,
+                "PREVIOUS:MISSING_CONCEPT:sales": 21,
+                "PREVIOUS:UNIT_OR_DIMENSION_UNRESOLVED:sales": 1,
+                "STATEMENT_BASIS_CHANGED": 1
+              }
+            },
+            "inventory_discipline": {
+              "annualIssuerPairDenominator": 242,
+              "coverage": 0.8099173553719008,
+              "earliestNextCalendarDayAvailability": "2025-03-07",
+              "inputMeasurablePairs": 196,
+              "missingByReasonNonexclusive": {
+                "CURRENT:MISSING_CONCEPT:inventory": 32,
+                "CURRENT:MISSING_CONCEPT:sales": 20,
+                "CURRENT:UNIT_OR_DIMENSION_UNRESOLVED:inventory": 1,
+                "CURRENT:UNIT_OR_DIMENSION_UNRESOLVED:sales": 1,
+                "MISSING_OR_AMBIGUOUS_PRIOR_OR_CURRENT_ANNUAL": 4,
+                "PREVIOUS:MISSING_CONCEPT:inventory": 37,
+                "PREVIOUS:MISSING_CONCEPT:sales": 21,
+                "PREVIOUS:UNIT_OR_DIMENSION_UNRESOLVED:inventory": 1,
+                "PREVIOUS:UNIT_OR_DIMENSION_UNRESOLVED:sales": 1,
+                "STATEMENT_BASIS_CHANGED": 1
+              }
+            }
+          }
+        },
+        {
+          "annualFilings": 242,
+          "annualIssuers": 242,
+          "exactConceptReadableAnnualFilings": {
+            "inventory": 207,
+            "receivables": 107,
+            "sales": 217
+          },
+          "fiscalYear": 2025,
+          "rawFilings": 970,
+          "signals": {
+            "collection_discipline": {
+              "annualIssuerPairDenominator": 242,
+              "coverage": 0.40082644628099173,
+              "earliestNextCalendarDayAvailability": "2026-03-10",
+              "inputMeasurablePairs": 97,
+              "missingByReasonNonexclusive": {
+                "CONCEPT_BASIS_CHANGED:receivables": 6,
+                "CURRENT:MISSING_CONCEPT:receivables": 132,
+                "CURRENT:MISSING_CONCEPT:sales": 23,
+                "CURRENT:UNIT_OR_DIMENSION_UNRESOLVED:sales": 1,
+                "MISSING_OR_AMBIGUOUS_PRIOR_OR_CURRENT_ANNUAL": 3,
+                "PREVIOUS:MISSING_CONCEPT:receivables": 133,
+                "PREVIOUS:MISSING_CONCEPT:sales": 20,
+                "PREVIOUS:UNIT_OR_DIMENSION_UNRESOLVED:sales": 1,
+                "STATEMENT_BASIS_CHANGED": 4
+              }
+            },
+            "inventory_discipline": {
+              "annualIssuerPairDenominator": 242,
+              "coverage": 0.8305785123966942,
+              "earliestNextCalendarDayAvailability": "2026-03-06",
+              "inputMeasurablePairs": 201,
+              "missingByReasonNonexclusive": {
+                "CURRENT:MISSING_CONCEPT:inventory": 33,
+                "CURRENT:MISSING_CONCEPT:sales": 23,
+                "CURRENT:UNIT_OR_DIMENSION_UNRESOLVED:inventory": 1,
+                "CURRENT:UNIT_OR_DIMENSION_UNRESOLVED:sales": 1,
+                "MISSING_OR_AMBIGUOUS_PRIOR_OR_CURRENT_ANNUAL": 3,
+                "PREVIOUS:MISSING_CONCEPT:inventory": 34,
+                "PREVIOUS:MISSING_CONCEPT:sales": 20,
+                "PREVIOUS:UNIT_OR_DIMENSION_UNRESOLVED:inventory": 1,
+                "PREVIOUS:UNIT_OR_DIMENSION_UNRESOLVED:sales": 1,
+                "STATEMENT_BASIS_CHANGED": 4
+              }
+            }
+          }
+        }
+      ]
+    },
+    "US": {
+      "limits": [
+        "Presence is not permission, statement context validation or current/previous comparable-window coverage.",
+        "No US feature values, security prices, labels, models or WID execution.",
+        "The old inventory's not-collected claim applies to derived fields, not the complete preserved Finnhub response."
+      ],
+      "rawDistinctTickers": 778,
+      "sourceAdmittedHistoricalPairs": 0,
+      "status": "BLOCKED_RIGHTS_IDENTITY_RETURN_BASIS",
+      "years": [
+        {
+          "exactConceptPresenceNotQualified": {
+            "inventory": 1,
+            "receivables": 0
+          },
+          "fiscalShard": 2011,
+          "formCounts": {
+            "10-K": 29,
+            "10-Q": 3
+          },
+          "rawFilings": 32
+        },
+        {
+          "exactConceptPresenceNotQualified": {
+            "inventory": 19,
+            "receivables": 22
+          },
+          "fiscalShard": 2012,
+          "formCounts": {
+            "10-K": 666,
+            "10-Q": 1765
+          },
+          "rawFilings": 2431
+        },
+        {
+          "exactConceptPresenceNotQualified": {
+            "inventory": 559,
+            "receivables": 554
+          },
+          "fiscalShard": 2013,
+          "formCounts": {
+            "10-K": 632,
+            "10-Q": 1763
+          },
+          "rawFilings": 2395
+        },
+        {
+          "exactConceptPresenceNotQualified": {
+            "inventory": 924,
+            "receivables": 858
+          },
+          "fiscalShard": 2014,
+          "formCounts": {
+            "10-K": 564,
+            "10-Q": 1706
+          },
+          "rawFilings": 2270
+        },
+        {
+          "exactConceptPresenceNotQualified": {
+            "inventory": 971,
+            "receivables": 943
+          },
+          "fiscalShard": 2015,
+          "formCounts": {
+            "10-K": 580,
+            "10-Q": 1715
+          },
+          "rawFilings": 2295
+        },
+        {
+          "exactConceptPresenceNotQualified": {
+            "inventory": 1034,
+            "receivables": 1031
+          },
+          "fiscalShard": 2016,
+          "formCounts": {
+            "10-K": 577,
+            "10-Q": 1740
+          },
+          "rawFilings": 2317
+        },
+        {
+          "exactConceptPresenceNotQualified": {
+            "inventory": 1103,
+            "receivables": 1098
+          },
+          "fiscalShard": 2017,
+          "formCounts": {
+            "10-K": 592,
+            "10-Q": 1765
+          },
+          "rawFilings": 2357
+        },
+        {
+          "exactConceptPresenceNotQualified": {
+            "inventory": 1145,
+            "receivables": 1138
+          },
+          "fiscalShard": 2018,
+          "formCounts": {
+            "10-K": 596,
+            "10-Q": 1783
+          },
+          "rawFilings": 2379
+        },
+        {
+          "exactConceptPresenceNotQualified": {
+            "inventory": 948,
+            "receivables": 942
+          },
+          "fiscalShard": 2019,
+          "formCounts": {
+            "10-K": 612,
+            "10-Q": 1862
+          },
+          "rawFilings": 2474
+        },
+        {
+          "exactConceptPresenceNotQualified": {
+            "inventory": 1134,
+            "receivables": 1171
+          },
+          "fiscalShard": 2020,
+          "formCounts": {
+            "10-K": 621,
+            "10-Q": 1866
+          },
+          "rawFilings": 2487
+        },
+        {
+          "exactConceptPresenceNotQualified": {
+            "inventory": 1133,
+            "receivables": 1181
+          },
+          "fiscalShard": 2021,
+          "formCounts": {
+            "10-K": 625,
+            "10-Q": 1878
+          },
+          "rawFilings": 2503
+        },
+        {
+          "exactConceptPresenceNotQualified": {
+            "inventory": 1217,
+            "receivables": 1273
+          },
+          "fiscalShard": 2022,
+          "formCounts": {
+            "10-K": 607,
+            "10-Q": 1846
+          },
+          "rawFilings": 2453
+        },
+        {
+          "exactConceptPresenceNotQualified": {
+            "inventory": 1174,
+            "receivables": 1218
+          },
+          "fiscalShard": 2023,
+          "formCounts": {
+            "10-K": 566,
+            "10-Q": 1768
+          },
+          "rawFilings": 2334
+        },
+        {
+          "exactConceptPresenceNotQualified": {
+            "inventory": 1204,
+            "receivables": 1238
+          },
+          "fiscalShard": 2024,
+          "formCounts": {
+            "10-K": 596,
+            "10-Q": 1746
+          },
+          "rawFilings": 2342
+        },
+        {
+          "exactConceptPresenceNotQualified": {
+            "inventory": 1208,
+            "receivables": 1258
+          },
+          "fiscalShard": 2025,
+          "formCounts": {
+            "10-K": 602,
+            "10-Q": 1813
+          },
+          "rawFilings": 2415
+        }
+      ]
+    }
+  },
+  "sourceCommit": "1bf68f59cffa20239977e2cfaa0f35a07d0ec884",
+  "sourceReceipts": {
+    "ledger/fundamentals/kr-raw/raw-2015.jsonl.gz": {
+      "bytes": 1341111,
+      "sha256": "252784fb8b05b657ccb97e9d2c550051dd9e37389fd4c6595dcc91848801d2d0"
+    },
+    "ledger/fundamentals/kr-raw/raw-2016.jsonl.gz": {
+      "bytes": 5798417,
+      "sha256": "cc9b198d59ccd9c763e7ee0880c3ef55dddc0ffd8baa9d36e7cd436dcf358892"
+    },
+    "ledger/fundamentals/kr-raw/raw-2017.jsonl.gz": {
+      "bytes": 5187318,
+      "sha256": "bce3db5c4d0192e8de8c4c14a7991892c953d49757cdf1ef20391114889bbbf0"
+    },
+    "ledger/fundamentals/kr-raw/raw-2018.jsonl.gz": {
+      "bytes": 5266466,
+      "sha256": "c1fb20b00dc0e920a13c94af531dc36e591d381e5e82013dcf7633ffdfa3915c"
+    },
+    "ledger/fundamentals/kr-raw/raw-2019.jsonl.gz": {
+      "bytes": 5397572,
+      "sha256": "1558de8ce1ae5efe050c67ce69e81ff1c2b3967758bdc54ff18895308550870a"
+    },
+    "ledger/fundamentals/kr-raw/raw-2020.jsonl.gz": {
+      "bytes": 5448806,
+      "sha256": "351eb6b0fdf564b23a3ba7e075399101c71b1d8272bdf5147c1ff882930d0837"
+    },
+    "ledger/fundamentals/kr-raw/raw-2021.jsonl.gz": {
+      "bytes": 5591741,
+      "sha256": "8bbd6233e448257d04c9d54002589518d1378e9f39218b5c93c16760d7834118"
+    },
+    "ledger/fundamentals/kr-raw/raw-2022.jsonl.gz": {
+      "bytes": 5703846,
+      "sha256": "93a889893b2db4da23958d8d76addeda843e631ce20aa5c46cd77eaf5072ac76"
+    },
+    "ledger/fundamentals/kr-raw/raw-2023.jsonl.gz": {
+      "bytes": 6464552,
+      "sha256": "16e18691cfaaa6c82cc6a19bcc8cef49611b944e30a1b62f6977224dd7c47609"
+    },
+    "ledger/fundamentals/kr-raw/raw-2024.jsonl.gz": {
+      "bytes": 7347208,
+      "sha256": "1f9e1a3151cb87682355dd659d4bf2cabe9b3ce9c9f7dfa9c1bf098599260b76"
+    },
+    "ledger/fundamentals/kr-raw/raw-2025.jsonl.gz": {
+      "bytes": 7477983,
+      "sha256": "4db660424914659e52973d94c2237c1a4ffa1aa53ecc6faf92c5466e76c9434e"
+    },
+    "ledger/fundamentals/us/finnhub-2011.jsonl.gz": {
+      "bytes": 53049,
+      "sha256": "023a2f3a0ce111a3e91d1565d39cc382607a44b75850b92899211931d026ea8c"
+    },
+    "ledger/fundamentals/us/finnhub-2012.jsonl.gz": {
+      "bytes": 2928651,
+      "sha256": "5e5fa041838be0c2c077fd8ee94dffe840db713f0e6213837b679ad3c34e7b27"
+    },
+    "ledger/fundamentals/us/finnhub-2013.jsonl.gz": {
+      "bytes": 3044151,
+      "sha256": "29135f2c7544bea499a15b0cfd49525260304bdf33e83815f621fdcadf9b0f95"
+    },
+    "ledger/fundamentals/us/finnhub-2014.jsonl.gz": {
+      "bytes": 2767114,
+      "sha256": "2216355dfd621570f463f7bd8901ae1fea17a004a5c710764f5addaf457b3177"
+    },
+    "ledger/fundamentals/us/finnhub-2015.jsonl.gz": {
+      "bytes": 2650151,
+      "sha256": "be5cf365cce7f14682ccba551a79d5064ebcbd70163c0c2fb0359a959f5c0648"
+    },
+    "ledger/fundamentals/us/finnhub-2016.jsonl.gz": {
+      "bytes": 2627403,
+      "sha256": "6c48667b143891e8ce28caf65fc5c8464c410de2064e3b7597c163e73150cd50"
+    },
+    "ledger/fundamentals/us/finnhub-2017.jsonl.gz": {
+      "bytes": 2640618,
+      "sha256": "6fe3dbc7a26715738e763d81ae2a0b65c9d26470a716bc5dcdba425ad5f5c6ba"
+    },
+    "ledger/fundamentals/us/finnhub-2018.jsonl.gz": {
+      "bytes": 2651552,
+      "sha256": "71a95470b3cadff59838cd7889e8c36fc63737aed54b710f3110cc0322029617"
+    },
+    "ledger/fundamentals/us/finnhub-2019.jsonl.gz": {
+      "bytes": 2973829,
+      "sha256": "4e5947ff06ab2cbc37d0afdd0a681dac66db63f4c67e72825347cc59dc4ed65d"
+    },
+    "ledger/fundamentals/us/finnhub-2020.jsonl.gz": {
+      "bytes": 2879778,
+      "sha256": "2b921e4bb1fdd8b47ded342c2234633ab2f3820db8e588b41fe8322a9919d11a"
+    },
+    "ledger/fundamentals/us/finnhub-2021.jsonl.gz": {
+      "bytes": 2874927,
+      "sha256": "89975f24adcdf9f4b1d3252b129994ca2cd182e72fc6855f1cd5d1f1f899c8f1"
+    },
+    "ledger/fundamentals/us/finnhub-2022.jsonl.gz": {
+      "bytes": 2813742,
+      "sha256": "5703add3cfa98fb7dca3beb8c79d9171a1d2106cc41b7b76abfda8e2408a8897"
+    },
+    "ledger/fundamentals/us/finnhub-2023.jsonl.gz": {
+      "bytes": 2580578,
+      "sha256": "c507b7bb846cd3ea4cc693a0ea91547e241404a9c71b51ef2bdd10ef13026221"
+    },
+    "ledger/fundamentals/us/finnhub-2024.jsonl.gz": {
+      "bytes": 2564238,
+      "sha256": "2dc6a3c770932e5a6995cc51ea2e9a0d08fc70e2e9372d47847f9c8570e06858"
+    },
+    "ledger/fundamentals/us/finnhub-2025.jsonl.gz": {
+      "bytes": 2530966,
+      "sha256": "49e91cedf1d27c3dfee8de66056dacaabbf56d04b84105ded30f6cf4b6fba9fa"
+    }
+  },
+  "status": "INPUT_MEASUREMENT_ONLY",
+  "study": "stock-working-capital-v1"
+}

@@ -1,0 +1,25 @@
+{
+  "baseMainObserved": "b589d658eedd3c47f555df20db86f37792ee3358",
+  "c1DependencySha256": "efbc6f7f61f83c4e8d4f2543bdf7ead42970e44ce140a64f2842f9e547e78b7d",
+  "codeSha256": {
+    "census.py": "4736bb506383beecfd34e3afc1da438249165c4a5b054fd37624d443b42a904a",
+    "design_checks.py": "7033dc163db2a65ee74eb403d139b97fb76fbf05878975fbbc309ac32ecc80ec",
+    "features.py": "104c675d7865b261f583c8295f5482760e82c0f95869b351e82045f2cda22d3f",
+    "input-census.json": "6bcaf131956a7b88960d2cb00892c94f0696dc464104f15ddf43608733a73fbc",
+    "proposal.json": "3db6a7babe2f689968e3f11578bdee1fcacb306c16743be0193058fbdb6e5436",
+    "test_study.py": "cf088f3dfcf0eecbc765f76da1368891f4de3ee1321483808bc00ce55bea29df"
+  },
+  "compile": "pipeline and new research module PASS",
+  "fullLocalPytest": "NOT RUN: includes sealed real-data equivalence recalculations; only scoped synthetic and byte-preservation tests run",
+  "githubCI": "New exact-head CI must be observed after push; prior #286 40092778032 SUCCESS at4fc, #287 40093000540 SUCCESS ate671",
+  "historicalOutcomesRead": 0,
+  "issue292ClaimPost": "Post https://api.github.com/repos/jaehojung1879-netizen/Investment/issues/292/comments: Forbidden; one attempt, no retries; local claim retained",
+  "newModelFitsOnHistoricalData": 0,
+  "oldStudiesRerun": false,
+  "originalKRManifestFilesPreserved": 50,
+  "previousPr286Head": "4fcfaf6a3581c3fb2d9b88cb56faef1a71be05aa",
+  "ruff": "All checks passed",
+  "scopedSyntheticTests": "71 passed",
+  "seed": "temporary /tmp path PASS; production site-data unchanged",
+  "status": "AUTHOR_VALIDATION_ONLY"
+}
