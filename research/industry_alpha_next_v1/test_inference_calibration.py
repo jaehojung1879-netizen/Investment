@@ -104,3 +104,16 @@ def test_replicate_is_deterministic_and_summary_classifies():
     assert r1 == r2 and r1["testDates"] > 0
     s = C.summarise_cell(P, cell, [r1, r2])
     assert s["candidates"]["C0_REGISTERED_MBB"]["0.05"]["sizeDecision"] in ("PASS", "FAIL", "INCONCLUSIVE")
+
+
+@pytest.mark.parametrize("dgp", ["N2_T4_VOL_REGIME", "N3_T4_REGIME_BETA_LOADED", "P20_T4_VOL_REGIME"])
+def test_heavy_tailed_worlds_never_produce_a_nonfinite_feature_or_matured_target(dgp):
+    """Regression: a simple-return model with t4 shocks crossed -100% and produced NaN wealth."""
+    P = protocol()
+    for r in range(3):
+        rng = np.random.default_rng(np.random.SeedSequence([P["seeds"]["development"], 7, r]))
+        frame, _ = C.simulate_world(rng, P["dgps"][dgp], P["world"], 252, "2002-01")
+        cols = list(E.h1_columns("PROFIT")[1])
+        assert np.isfinite(frame[cols].to_numpy(float)).all()
+        matured = frame["cwStatus"].eq("MATURED")
+        assert np.isfinite(frame.loc[matured, "cwRelative"].to_numpy(float)).all()

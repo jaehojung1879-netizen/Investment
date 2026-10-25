@@ -295,9 +295,12 @@ def simulate_world(rng, dgp, world, horizon, first_month):
     # Drift on session s uses the planted value of the month BEFORE s's month (known at the prior month-end signal).
     prior = np.clip(m_of - 1, 0, None)
     drift = kappa * planted[prior]
-    returns = beta[None, :] * market[:, None] + idio + drift
+    # The factor model is in LOG returns, so a heavy-tailed shock can never take a price below zero (a simple-return
+    # model with t4 shocks produced r <= -1 and NaN wealth; found before any formal result was read).
+    log_returns = beta[None, :] * market[:, None] + idio + drift
+    returns = np.expm1(log_returns)
     bench = returns.mean(axis=1)
-    wealth = np.vstack([np.zeros(G), np.cumsum(np.log1p(returns), axis=0)])
+    wealth = np.vstack([np.zeros(G), np.cumsum(log_returns, axis=0)])
     bwealth = np.concatenate([[0.0], np.cumsum(np.log1p(bench))])
     present = rng.random((len(signals), G)) < world["presenceProbability"]
     rows = []

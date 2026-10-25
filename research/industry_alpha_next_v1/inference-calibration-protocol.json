@@ -47,7 +47,7 @@
   "plantedRho": 0.95,
   "regimeStayProbability": 0.995,
   "highVolMultiplier": 2.0,
-  "features": "REL_MOM_126 and DOWNSIDE_VOL_126 from simulated past returns; BREADTH from past relative-return signs plus AR(1) 0.8 noise; PROFIT level = planted AR(1) 0.95 monthly, PROFIT change = level minus level 12 months earlier plus AR(1) 0.5 noise; CASH AR(1) 0.95 and its 12-month change; VALUE AR(1) 0.97; HHI AR(1) 0.98; TOP1 = 0.8 HHI + 0.6 AR(1) 0.98; LOG_CONSTITUENT_COUNT AR(1) 0.99; MEDIAN_LOG_ADV60 AR(1) 0.95. Industry daily return = beta x market + idiosyncratic + kappa x planted (the planted value of the previous month, i.e. the value known at the prior month-end signal). Benchmark = equal mean of the 14 industries. Target = forward simple return over (entry, entry + H] minus the benchmark's."
+  "features": "REL_MOM_126 and DOWNSIDE_VOL_126 from simulated past returns; BREADTH from past relative-return signs plus AR(1) 0.8 noise; PROFIT level = planted AR(1) 0.95 monthly, PROFIT change = level minus level 12 months earlier plus AR(1) 0.5 noise; CASH AR(1) 0.95 and its 12-month change; VALUE AR(1) 0.97; HHI AR(1) 0.98; TOP1 = 0.8 HHI + 0.6 AR(1) 0.98; LOG_CONSTITUENT_COUNT AR(1) 0.99; MEDIAN_LOG_ADV60 AR(1) 0.95. Industry daily LOG return = beta x market + idiosyncratic + kappa x planted (the planted value of the previous month, i.e. the value known at the prior month-end signal). Benchmark = equal mean of the 14 industries. Target = forward simple return over (entry, entry + H] minus the benchmark's."
  },
  "dgps": {
   "N1_GAUSS_CONST": {
@@ -164,5 +164,16 @@
   "outOfScope": "No candidate may be adopted by this protocol. Adoption needs a new spec hash and owner authorization; the 36-slot Holm family, support rule and thresholds stay as registered."
  },
  "developmentDisclosure": "Before freezing, the author ran (a) the owner's null_calibration.py proxy grid and an IID check of C0 (published in PR #290 comment 6394428322: C0 anti-conservative), and (b) DEVELOPMENT smokes of this module with seed 99173 and at most a few replicates per cell, to time and debug the code. No formal-seed replicate existed before the freeze commit; no candidate, threshold, DGP or effect size was changed after a development smoke showed a rejection rate.",
- "frozenDigest": "18122139306e2e556524215edeaa2836be01d36622a9e5771cfd08f6522810b4"
+ "frozenDigest": "defdd9b1de9583fb9b3ad8ec5d4d0f190eb617e7d80bb46e5aa7f3a94e761b54",
+ "preFormalRevisions": [
+  {
+   "id": "R1-LOG-RETURN-FACTOR-MODEL",
+   "frozenDigestBefore": "18122139306e2e556524215edeaa2836be01d36622a9e5771cfd08f6522810b4",
+   "freezeCommitBefore": "44bd1e5",
+   "defect": "The first frozen generator added t4 shocks to SIMPLE daily returns; in the high-volatility regime a draw below -100% made log1p undefined and propagated NaN into wealth, features and targets.",
+   "discovery": "RuntimeWarning in the first formal run's log, seconds after start. The run was killed; it never wrote a result file and no rejection rate, power or summary of the formal seed was produced or read.",
+   "change": "The factor model is now in log returns (simple returns = expm1), so prices stay positive. Nothing else changed: candidates, DGPs, effect sizes, lengths, seeds, replicate counts and the decision rule are identical.",
+   "seedPolicy": "The formal seed is kept: no formal-seed output existed, so keeping it is not a re-draw."
+  }
+ ]
 }
