@@ -1,0 +1,50 @@
+{
+  "studyId": "rp1-c1c-prospective-design-v2",
+  "status": "PROPOSED_NOT_REGISTERED_NOT_AUTHORIZED",
+  "primaryControl": "C0",
+  "auxiliaryControl": "C1",
+  "selectControlFromResults": false,
+  "families": [
+    "C1c-REENTRY-SPEED-ORIGINAL-STRUCTURAL",
+    "POST_C1_RESULT_20_SESSION_BREAKOUT_SEPARATE"
+  ],
+  "arms": [
+    "BASE",
+    "HARD_EXIT",
+    "REENTRY",
+    "COMBINED"
+  ],
+  "horizons": [
+    126,
+    252
+  ],
+  "originalGrid": [
+    0.4,
+    0.7,
+    1.0
+  ],
+  "newHardExitInteractionGrid": [
+    0.0,
+    0.4,
+    0.7,
+    1.0
+  ],
+  "structuralContrast": "MEMORYLESS_VS_ONE_RUNG_WEEKLY_NOT_A_BREAKOUT",
+  "breakoutContrast": "POST_OUTCOME_SEPARATE_20_SESSION_PRICE_HYPOTHESIS",
+  "primaryReading": "C1_PRIMARY_REPLICA_DIAGNOSTIC_ONLY",
+  "investabilityRequires": "ETF_CASH_ECONOMIC_WITH_INDEPENDENT_SOURCE_ADMISSION",
+  "marketDisagreement": "NO_PROMOTION",
+  "basisDisagreement": "BASIS_DEPENDENT_NO_PROMOTION",
+  "pastEvidence": {
+    "KR": "OUTCOME_EXPOSED_DEVELOPMENT_ONLY",
+    "US": "OUTCOME_EXPOSED_EXPLORATORY"
+  },
+  "firstSignalNotBefore": "2026-10-30",
+  "minimumMaturedWeeklyDecisions": 52,
+  "proposedMinimumNonoverlappingBlocks": 8,
+  "supportStatus": "NEW_PROPOSED_FLOOR_NOT_POWER_GUARANTEE_OWNER_REVIEW_REQUIRED",
+  "inference": "NO_PVALUE_OR_SUPPORTED_VERDICT_WITHOUT_REGISTERED_CALIBRATION",
+  "historicalExecutionEnabled": false,
+  "liveWriterEnabled": false,
+  "productionAllowed": false
+}

@@ -19,6 +19,8 @@ from pipeline import market_research_c1c as C  # noqa: E402
 from pipeline import kr_market_risk_model as K  # noqa: E402
 from pipeline import replay_calendar as RC  # noqa: E402
 from pipeline import rp1_c1_us_exposure as U  # noqa: E402
+from pipeline import market_research_c1c_contract as V  # noqa: E402
+from pipeline import market_research_c1c_diagnostics as D  # noqa: E402
 
 
 def fixture(market):
@@ -85,15 +87,71 @@ def clean(value):
     return value
 
 
+def synthetic_v2(market):
+    """Small invented fixture only; all controls/families/bases/costs, no file input."""
+    close, plan, states = fixture(market)
+    plan = plan.iloc[:8].copy()
+    close = close.loc[:plan.executionDate.iloc[-1]].copy()
+    panel = V.panel_targets(close, states, plan, market)
+    prices = close.loc[plan.executionDate.iloc[0]:]
+    results, matched, contrasts = {}, {}, {}
+    for basis in ("C1_PRIMARY_REPLICA", "ETF_CASH_ECONOMIC"):
+        economic = basis == "ETF_CASH_ECONOMIC"
+        identity = {"evidenceClass": C.SYNTHETIC,
+            "instrument": ("SPY" if market == "US" else "069500.KS") if economic else ("SP500_PRICE_INDEX" if market == "US" else "KS200_PRICE_INDEX"),
+            "returnBasis": "TOTAL_RETURN" if economic else "PRICE_INDEX", "currency": "USD" if market == "US" else "KRW",
+            "cashBasis": "DTB3_PRIOR_KNOWN_ACT360" if economic and market == "US" else "ZERO",
+            "sourceStatus": "SYNTHETIC_HASH_VERIFIED", "rightsStatus": "SYNTHETIC_ALLOWED",
+            "reconciliationStatus": "SYNTHETIC_PASS", "sourceSha256": hashlib.sha256(close.to_csv().encode()).hexdigest()}
+        V.synthetic_basis_check(market, basis, identity)
+        cash = pd.Series(0.0, index=prices.index)
+        if economic and market == "US":
+            # Invent the observations, reuse the real lag/staleness and actual
+            # calendar-day convention rather than labelling a per-session
+            # constant as ACT/360 (weekends must accrue three days).
+            rates = pd.Series(3.0, index=pd.date_range(close.index[0] - pd.Timedelta(days=35), close.index[-1], freq="D"))
+            cash = U.cash_interval_returns(rates, close.index).reindex(prices.index)
+        for cell in V.cell_ids():
+            selected = [row["cells"][cell]["target"] for row in panel]
+            for stress in (1, 2, 3):
+                path = C.replay(prices, plan, selected, cash, market, basis, stress, evidence_class=C.SYNTHETIC)
+                results[f"{basis}/x{stress}/{cell}"] = {"fundedNetReturn": float(path.nav.iloc[-1] - 1),
+                    "netAnnualLogGrowth": float(np.log(path.nav.iloc[-1]) * 252 / (len(path) - 1)),
+                    "entryFee": float(path.entryFee.sum()), "liquidationFee": float(path.liquidationFee.sum())}
+            if economic and cell.startswith(f"C0/{V.FAMILIES[0]}/"):
+                matched[cell] = D.synthetic_diagnostics(prices, plan, selected, cash, market, basis, 1,
+                    evidence_class=C.SYNTHETIC, episodes=({"episodeId": "FIXED_INVENTED_WINDOW_NOT_FITTED",
+                        "startDate": str(prices.index[2].date()), "troughDate": str(prices.index[10].date()),
+                        "endDate": str(prices.index[20].date())},))
+        for stress in (1, 2, 3):
+            contrasts[f"{basis}/x{stress}"] = V.family_contrasts({cell: results[f"{basis}/x{stress}/{cell}"]["netAnnualLogGrowth"]
+                                                              for cell in V.cell_ids()})
+    signal = "2026-10-30"
+    receipt = V.synthetic_receipt(market=market, signal_date=signal, created_at=C.final_at(signal, market).isoformat(),
+        authorizing_merge_at="2026-10-26T00:00:00Z", layers={"slow": 0, "transition": 0, "fast": 1},
+        breakout=True, source_sha256="1" * 64)
+    return {"status": "SYNTHETIC_PREPARATION_ONLY", "market": market, "evidenceClass": C.SYNTHETIC,
+        "empiricalSupport": "NOT_TESTED", "sourceAdmitted": False, "productionAllowed": False,
+        "historicalOutcomeExecutions": 0, "contract": V.contract(), "panel": panel,
+        "allCellsBasesCosts": results, "pairedFamilyContrasts": contrasts, "matchedExposureSmokeChecks": matched,
+        "prospectiveDraft": V.prospective_schedule(market, "2026-10-26T00:00:00Z"),
+        "receipt": receipt, "receiptValidation": V.validate_synthetic_receipts([receipt])}
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("mode", nargs="?", default="verify", choices=("verify", "synthetic"))
+    parser.add_argument("mode", nargs="?", default="verify", choices=("verify", "synthetic", "synthetic-v2"))
     parser.add_argument("--market", choices=("KR", "US"), default="US")
     args = parser.parse_args(argv)
     try:
         design = C.verify_design(ROOT)
-        result = design if args.mode == "verify" else {"status": "SYNTHETIC_TEST_ONLY",
-            "historicalExecutionEnabled": False, "productionEffect": "NONE", "synthetic": synthetic(args.market)}
+        if args.mode == "verify":
+            result = design
+        elif args.mode == "synthetic-v2":
+            result = synthetic_v2(args.market)
+        else:
+            result = {"status": "SYNTHETIC_TEST_ONLY", "historicalExecutionEnabled": False,
+                "productionEffect": "NONE", "synthetic": synthetic(args.market)}
         print(json.dumps(clean(result), ensure_ascii=False, sort_keys=True, allow_nan=False))
         return 0
     except (ValueError, OSError, KeyError) as error:

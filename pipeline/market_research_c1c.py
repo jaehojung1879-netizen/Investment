@@ -32,6 +32,7 @@ ARMS = {"S0": (False, False), "S1": (True, False), "S2": (False, True), "S3": (T
 LOOKBACK = 20
 ROOT = Path(__file__).resolve().parents[1]
 PROTOCOL = "docs/research-program/proposals/market-research-c1c-v1.json"
+PROTOCOL_V2 = "docs/research-program/proposals/market-research-c1c-v2.json"
 SYNTHETIC = "SYNTHETIC_FIXTURE"
 
 
@@ -378,6 +379,8 @@ def program_readiness():
 
 
 def verify_design(root=ROOT):
+    from . import market_research_c1c_contract as V
+
     root = Path(root)
     protocol = json.loads((root / PROTOCOL).read_bytes())
     expected = {"studyId": STUDY, "control": "C1_CONFIRMATION_GATED", "armCount": 4,
@@ -390,12 +393,19 @@ def verify_design(root=ROOT):
     for name, sha in pins["files"].items():
         if hashlib.sha256((root / name).read_bytes()).hexdigest() != sha:
             raise ValueError("EXISTING_STUDY_CHANGED:" + name)
+    proposal_v2 = json.loads((root / PROTOCOL_V2).read_bytes())
+    if P.canonical(proposal_v2) != P.canonical(V.contract()):
+        raise ValueError("V2_PROPOSAL_IMPLEMENTATION_MISMATCH")
     closure = ["pipeline/market_research_c1c.py", "scripts/check_market_research.py", PROTOCOL,
                "docs/research-program/proposals/market-research-preserved-sha256.json",
                "tests/test_market_research_c1c.py",
-               "pipeline/market_research_reentry_structure.py", "tests/test_market_research_reentry_structure.py"]
+               "pipeline/market_research_reentry_structure.py", "tests/test_market_research_reentry_structure.py",
+               "pipeline/market_research_c1c_contract.py", "tests/test_market_research_c1c_contract.py",
+               "pipeline/market_research_c1c_diagnostics.py", "tests/test_market_research_c1c_diagnostics.py", PROTOCOL_V2]
     return {**program_readiness(), "status": "BLOCKED_PENDING_INDEPENDENT_AUDIT_AND_OWNER_APPROVAL",
             "designStructure": "VERIFIED", "protocolSha256": digest(protocol), "preservedFiles": len(pins["files"]),
+            "legacyC1OnlyProposal": "EXPOSED_DESIGN_RECORD_NOT_EXECUTABLE_REGISTRATION",
+            "proposedV2": {"contractSha256": V.contract_digest(), **proposal_v2},
             "codeHashes": {p: hashlib.sha256((root / p).read_bytes()).hexdigest() for p in closure},
             "codeCommit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip(),
             "worktreeClean": not subprocess.check_output(["git", "status", "--porcelain"], cwd=root, text=True).strip(),
