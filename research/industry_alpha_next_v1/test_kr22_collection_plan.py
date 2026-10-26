@@ -38,7 +38,10 @@ LIST_ROWS = [{"corp_code": "00000001", "rcept_no": "20160330000009", "rcept_dt":
              {"corp_code": "00000001", "rcept_no": "20150331000011", "rcept_dt": "20150331", "report_nm": "사업보고서 (2014.12)"}]
 
 
-def fake(documents=None, list_status="000", rows=LIST_ROWS):
+LISTING_ROWS = [{"corp_code": "00000001", "rcept_no": "20160215000002", "rcept_dt": "20160215", "report_nm": "현금ㆍ현물배당결정"}]
+
+
+def fake(documents=None, list_status="000", rows=LIST_ROWS, listing=LISTING_ROWS):
     documents = documents or {"20170331000001": doc_zip("00000001", "사업보고서", ANNUAL_BODY),
                               "20160330000009": doc_zip("00000001", "사업보고서", ANNUAL_BODY),
                               "20160215000002": doc_zip("00000001", "현금ㆍ현물배당결정", DIVIDEND_BODY)}
@@ -46,7 +49,9 @@ def fake(documents=None, list_status="000", rows=LIST_ROWS):
 
     def list_page(params, page):
         called.append(("list", page))
-        return {"status": list_status, "page_no": page, "page_count": 100, "total_count": len(rows), "total_page": 1, "list": rows}
+        # The annual query names a report type; the dividend listing confirmation asks one issuer on one day.
+        got = rows if "pblntf_detail_ty" in params else listing
+        return {"status": list_status, "page_no": page, "page_count": 100, "total_count": len(got), "total_page": 1, "list": got}
 
     def document(receipt):
         called.append(("doc", receipt))
@@ -103,12 +108,16 @@ def test_collect_verify_extract_round_trip_and_viewer_route_is_never_called(tmp_
     assert rows["20160330000009"]["industryCandidates"][0]["reportedLabel"] == "제1차철강제조업"
 
 
+def _doc(m):
+    return [e for e in m["entries"] if e["kind"].startswith("DOCUMENT_")][-1]
+
+
 @pytest.mark.parametrize("mutate,problem", [
-    (lambda out, m: (out / m["entries"][-1]["file"]).write_bytes(b"PKtampered"), "SHA256_MISMATCH"),
-    (lambda out, m: m["entries"].append(dict(m["entries"][-1])), "DUPLICATE_FILE"),
-    (lambda out, m: m["entries"][-1].update(receiptNo="20160215099999"), "RECEIPT_NOT_IN_PLAN"),
+    (lambda out, m: (out / _doc(m)["file"]).write_bytes(b"PKtampered"), "SHA256_MISMATCH"),
+    (lambda out, m: m["entries"].append(dict(_doc(m))), "DUPLICATE_FILE"),
+    (lambda out, m: _doc(m).update(receiptNo="20160215099999"), "RECEIPT_NOT_IN_PLAN"),
     (lambda out, m: m.update(planSha256="0" * 64), "PLAN_DIGEST_MISMATCH"),
-    (lambda out, m: m["entries"][-1].update(retrievedAt="2016-01-01T00:00:00+00:00"), "RECEIPT_DATED_AFTER_RETRIEVAL"),
+    (lambda out, m: _doc(m).update(retrievedAt="2016-01-01T00:00:00+00:00"), "RECEIPT_DATED_AFTER_RETRIEVAL"),
 ])
 def test_verifier_refuses_tampering(tmp_path, mutate, problem):
     out, manifest, _ = run(tmp_path)
@@ -235,3 +244,130 @@ def test_acquisition_effect_never_admits_from_a_candidate_and_needs_direct_ex_da
     rows[1]["exDateSource"] = "DIRECT"
     assert C.acquisition_effect(REPORT, rows)["gatesAfter"]["exDateSemanticsResolved"] == 1
     assert C.acquisition_effect(REPORT)["gatesAfter"] == C.acquisition_effect(REPORT)["gatesBefore"]
+
+
+# --------------------------------------------------------------------------- #
+# KRX exchange-filing forms, the layout 119 of 141 real dividend decisions use
+# --------------------------------------------------------------------------- #
+def xforms_zip(name="LIG손해보험", date="2016.02.15", title="현금ㆍ현물 배당 결정", member="/20160215000002.xml",
+               enc="cp949", members=None):
+    html = ('<html><head><meta content="text/html; charset=euc-kr" http-equiv="Content-Type"/><STYLE> .xforms * '
+            '{ font-family: 돋움체;} </STYLE></head><body><div class="xforms"><div class="xforms_title">'
+            f'{name}/{title}/({date})</div>{title}{DIVIDEND_BODY}</div></body></html>')
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
+        for m in members or [member]:
+            z.writestr(m, html.encode(enc))
+    return buf.getvalue()
+
+
+def xforms_run(tmp_path, listing=LISTING_ROWS, **kw):
+    docs = {"20170331000001": doc_zip("00000001", "사업보고서", ANNUAL_BODY),
+            "20160330000009": doc_zip("00000001", "사업보고서", ANNUAL_BODY),
+            "20160215000002": xforms_zip(**kw)}
+    out = tmp_path / "x"
+    lp, doc, _ = fake(documents=docs, listing=listing)
+    C.collect(MINI, out, list_page=lp, document=doc, max_calls=50, now=lambda: "2026-10-26T00:00:00+00:00")
+    return out
+
+
+def test_a_headerless_exchange_form_is_proven_by_the_listing_not_by_the_filer_name(tmp_path):
+    # cp949 bytes, a `/<receipt>.xml` member and a filer name that is not today's name: all as served by DART.
+    out = xforms_run(tmp_path)
+    assert C.verify(MINI, out) == []
+    [row] = [r for r in C.extract(MINI, out) if r["receiptNo"] == "20160215000002"]
+    assert row["recordDate"] == "2015-12-31" and row["exDate"] is None and row["exDateSource"] is None
+
+
+@pytest.mark.parametrize("kw,problem", [
+    ({"listing": []}, "LISTING_DOES_NOT_CONFIRM_RECEIPT"),
+    ({"listing": [dict(LISTING_ROWS[0], rcept_no="20160215000099")]}, "LISTING_DOES_NOT_CONFIRM_RECEIPT"),
+    ({"listing": [dict(LISTING_ROWS[0], report_nm="주주총회소집결의")]}, "LISTING_DOES_NOT_CONFIRM_RECEIPT"),
+    ({"listing": [dict(LISTING_ROWS[0], corp_code="00000009")]}, "LISTING_ROW_OUTSIDE_QUERY"),
+    ({"listing": [dict(LISTING_ROWS[0], rcept_dt="20160216")]}, "LISTING_ROW_OUTSIDE_QUERY"),
+    ({"member": "/20160215000099.xml"}, "DOCUMENT_MEMBER_NOT_THIS_RECEIPT"),
+    ({"date": "2016.02.16"}, "DOCUMENT_HEADING_DATE_DIFFERS_FROM_RECEIPT"),
+    ({"title": "주주총회소집결의"}, "DOCUMENT_NAME_DIFFERS_FROM_KIND"),
+    ({"members": ["20160215000002.xml", "extra.xml"]}, "DOCUMENT_ISSUER_DIFFERS_FROM_PLAN"),
+])
+def test_a_headerless_form_without_complete_evidence_is_refused(tmp_path, kw, problem):
+    out = xforms_run(tmp_path, **kw)
+    assert any(p.startswith(problem) for p in C.verify(MINI, out)), C.verify(MINI, out)
+    with pytest.raises(ValueError, match="ACQUISITION_NOT_VERIFIED"):
+        C.extract(MINI, out)
+
+
+def test_a_headerless_form_with_no_listing_at_all_is_not_proven(tmp_path):
+    out = xforms_run(tmp_path)
+    m = json.loads((out / "manifest.json").read_text())
+    m["entries"] = [e for e in m["entries"] if e["kind"] != "LISTING_CONFIRMATION"]
+    (out / "manifest.json").write_text(json.dumps(m))
+    assert "ISSUER_NOT_PROVEN_NO_HEADER_NO_LISTING: 20160215000002" in C.verify(MINI, out)
+
+
+def test_confirm_listings_completes_an_existing_acquisition_without_refetching_documents(tmp_path):
+    out = xforms_run(tmp_path)
+    m = json.loads((out / "manifest.json").read_text())
+    m["entries"] = [e for e in m["entries"] if e["kind"] != "LISTING_CONFIRMATION"]
+    (out / "manifest.json").write_text(json.dumps(m))
+    for f in (out / "raw").glob("listing-*"):
+        f.unlink()
+    lp, _, called = fake()
+    m = C.confirm_listings(MINI, out, list_page=lp, max_calls=5, now=lambda: "2026-10-26T00:00:00+00:00")
+    assert m["listingStop"] == "COMPLETE" and called == [("list", 1)] and C.verify(MINI, out) == []
+    C.confirm_listings(MINI, out, list_page=lp, max_calls=5)        # already confirmed: nothing is asked again
+    assert called == [("list", 1)]
+    with pytest.raises(ValueError, match="MANIFEST_NOT_FOR_THIS_PLAN"):
+        C.confirm_listings(dict(MINI, planSha256="0" * 64), out, list_page=lp, max_calls=5)
+
+
+def _zip(entries):
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
+        for info, data in entries:
+            z.writestr(info, data)
+    return buf.getvalue()
+
+
+def test_only_a_single_leading_slash_before_one_component_is_read_as_relative():
+    assert C.safe_member_name("/20160215000002.xml") == "20160215000002.xml"
+    assert C.safe_member_name("dir/a.xml") == "dir/a.xml"
+    for name in ["/a/b.xml", "//a.xml", "/", "", "../a.xml", "a/../../b.xml", "./a.xml", "a//b.xml", "\\a.xml",
+                 "a\\..\\b.xml", "C:a.xml", "a.xml:stream", "a\x00.xml", "/..", "/."]:
+        with pytest.raises(ValueError, match="UNSAFE_ZIP_MEMBER"):
+            C.safe_member_name(name)
+
+
+def test_malicious_archives_are_refused_and_never_extracted(tmp_path, monkeypatch):
+    link = zipfile.ZipInfo("a.xml")
+    link.external_attr = (0o120777 << 16)
+    cases = {
+        "SYMLINK_ZIP_MEMBER": _zip([(link, b"/etc/passwd")]),
+        "DUPLICATE_ZIP_MEMBER": _zip([("/a.xml", b"x"), ("a.xml", b"y")]),
+        "ZIP_COMPRESSION_RATIO_EXCEEDED": _zip([("a.xml", b"\0" * (4 << 20))]),
+        "UNSAFE_ZIP_MEMBER": _zip([("/a/../../etc/passwd", b"x")]),
+        "TOO_MANY_ZIP_MEMBERS": _zip([(f"m{i}.xml", b"x") for i in range(C.MAX_ZIP_MEMBERS + 1)]),
+        "UNDECODABLE_ZIP_MEMBER": _zip([("a.xml", b"\xff\xfe\xfa\xfb" * 10)]),
+    }
+    for problem, raw in cases.items():
+        with pytest.raises(ValueError, match=problem):
+            C.zip_members(raw)
+    # zipfile clears the encryption bit on write, so it is set in both headers directly.
+    raw = bytearray(_zip([("b.xml", b"x")]))
+    for sig, at in ((b"PK\x03\x04", 6), (b"PK\x01\x02", 8)):
+        i = raw.index(sig) + at
+        raw[i] |= 0x1
+    with pytest.raises(ValueError, match="ENCRYPTED_ZIP_MEMBER"):
+        C.zip_members(bytes(raw))
+    monkeypatch.setattr(C, "MAX_TOTAL_BYTES", 10)
+    with pytest.raises(ValueError, match="UNSAFE_ZIP_MEMBER"):
+        C.zip_members(_zip([("a.xml", b"123456"), ("b.xml", b"123456")]))
+    # Nothing was written anywhere by reading any of them.
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_cp949_and_utf8_members_decode_to_the_same_text():
+    for enc in ("cp949", "utf-8"):
+        [m] = C.zip_members(xforms_zip(enc=enc))
+        assert m["encoding"] == enc and m["filename"] == "20160215000002.xml" and m["storedName"] == "/20160215000002.xml"
+        assert C.xforms_heading(m["text"]) == ("LIG손해보험", "현금ㆍ현물 배당 결정", "2016-02-15")

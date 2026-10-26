@@ -202,28 +202,125 @@ def load_collection(directory, plan=None):
     return manifest, objects
 
 
-def verify_record(target, record, objects):
-    """Identity, date, amendment and node checks for one served receipt. Returns (verdict, reasons)."""
+NOTICE_NODE = "정정신고(보고)"
+DATE = r"(\d{4})\s*[-.년/]\s*(\d{1,2})\s*[-.월/]\s*(\d{1,2})"
+
+
+def _squash(text):
+    return re.sub(r"\s+", "", text or "")
+
+
+def _report_key(name):
+    """A report name compared across sources: no amendment marker, whitespace or punctuation (DART writes the same
+    form as `주식교환.이전 결정`, `주식교환,이전결정` and `주식교환ㆍ이전결정` in different places)."""
+    return re.sub(r"[\s.,ㆍ·()\[\]\-]", "", AMENDMENT.sub("", (name or "").strip()))
+
+
+def _form_key(name):
+    """The filing form alone (`주요사항보고서`), i.e. the report key without its trailing (sub-type)."""
+    return _report_key(re.sub(r"\s*\([^()]*\)\s*$", "", AMENDMENT.sub("", (name or "").strip())))
+
+
+def _names_this_report(stated, report_name):
+    """A stated name refers to this report if it is the full report name or, as DART's viewer title and many
+    correction notices write it, the bare form name without the sub-type. The sub-type is then fixed by the
+    original-filing link, which always matches the full name."""
+    return bool(stated) and _report_key(stated) in {_report_key(report_name), _form_key(report_name)}
+
+
+def _iso(m):
+    return "%s-%02d-%02d" % (m.group(1), int(m.group(2)), int(m.group(3))) if m else None
+
+
+def correction_notice(html):
+    """What the 정정신고(보고) node itself states. Every absent field is None; nothing is inferred."""
+    structure = DP.document_structure(html)
+    body = re.sub(r"\s+", " ", structure["text"].replace("&nbsp;", " ")).strip()
+    head = re.search(r"정\s*정\s*신\s*고\s*\(\s*보\s*고\s*\)\s*-?\s*" + DATE, body)
+    target = re.search(r"정정대상\s*공시서류\s*[:：]\s*(.+?)\s*2\s*\.\s*정정대상", body)
+    first = re.search(r"최초\s*제출일\s*[:：]\s*" + DATE, body)
+    reason = re.search(r"정정\s*사유\s*[:：]\s*([^\s0-9]+)", body)
+    return {"noticeDate": _iso(head), "targetReport": target.group(1).strip() if target else None,
+            "firstSubmissionDate": _iso(first), "statedReason": reason.group(1) if reason else None,
+            "hasCorrectionTable": any(r["isCorrectionTable"] for r in structure["rows"])}
+
+
+def load_index(plan, root=IN.ROOT):
+    """The disclosure index at the plan's pinned signal-history commit, refused unless its blob hash is the plan's."""
+    blobs = IN.git_blobs(plan["inputs"]["signalHistoryCommit"], [P.DISCLOSURES], root)
+    if IN.blob_sha1(blobs[P.DISCLOSURES]) != plan["inputs"]["blobSha1"][P.DISCLOSURES]:
+        raise ValueError("DISCLOSURE_INDEX_CHANGED")
+    return [json.loads(x) for x in gzip.decompress(blobs[P.DISCLOSURES]).decode().splitlines() if x.strip()]
+
+
+def link_original(target, notice, index):
+    """The one original (non-amendment) filing of the same issuer whose receipt date is the notice's stated first
+    submission date and whose report name is this amendment's full report name. None unless exactly one matches."""
+    hits = [r["receiptNo"] for r in index
+            if r["corpCode"] == target["corpCode"] and not r.get("isAmendment")
+            and r["receiptDate"] == notice["firstSubmissionDate"]
+            and _report_key(r["reportName"]) == _report_key(target["reportName"])]
+    return hits[0] if len(hits) == 1 else None
+
+
+def verify_record(target, record, objects, index):
+    """Identity, date and amendment checks for one served receipt. Returns (verdict, reasons, link).
+
+    The public viewer's <title> is `filer/report/date` and carries no amendment marker on real filings, so the
+    marker is never read from it. An amendment is proven by its own 정정신고(보고) node: that node belongs to this
+    receipt, its body states this receipt's date, names this report as the corrected filing, states the corrected
+    filing's first-submission date and carries a 정정전/정정후 table, and that date and name resolve to exactly one
+    original filing of the same issuer in the pinned disclosure index."""
     if record["status"] != "SERVED":
-        return "NOT_SERVED", [record["status"]]
+        return "NOT_SERVED", [record["status"]], None
     reasons = []
     main = objects.get(record["responses"][0].get("sha256"))
     if main is None:
-        return "REFUSED", ["MAIN_OBJECT_MISSING"]
+        return "REFUSED", ["MAIN_OBJECT_MISSING"], None
     text = main.decode("utf-8")
-    title = (re.search(r"<title>(.*?)</title>", text, re.S) or [None, ""])[1]
     if text.count("openCorpInfoNew('%s'," % target["corpCode"]) != 1:
         reasons.append("ISSUER_IDENTITY_NOT_UNIQUE_IN_MAIN")
-    if target["receiptDate"].replace("-", ".") not in title:
-        reasons.append("RECEIPT_DATE_NOT_IN_TITLE")
-    if target["amendmentMarker"] and "[" + target["amendmentMarker"] + "]" not in title:
-        reasons.append("AMENDMENT_MARKER_NOT_IN_TITLE")
     for n in record["nodes"]:
         if n["node"]["rcpNo"] != target["receiptNo"]:
             reasons.append("FOREIGN_RECEIPT_NODE")
         if n["sha256"] not in objects:
             reasons.append("NODE_OBJECT_MISSING")
-    return ("VERIFIED" if not reasons else "REFUSED"), reasons
+    title = [x.strip() for x in (re.search(r"<title>(.*?)</title>", text, re.S) or [None, ""])[1].split("/")]
+    if len(title) != 3:
+        reasons.append("TITLE_UNPARSEABLE")
+    else:
+        if not _names_this_report(title[1], target["reportName"]):
+            reasons.append("TITLE_REPORT_NAME_DIFFERS")
+        if title[2] != target["receiptDate"].replace("-", "."):
+            reasons.append("TITLE_DATE_DIFFERS_FROM_RECEIPT_DATE")
+    link = None
+    if target["amendmentMarker"]:
+        notices = [n for n in record["nodes"] if _squash(n["node"].get("text")) == NOTICE_NODE]
+        if len(notices) != 1 or notices[0]["sha256"] not in objects:
+            reasons.append("AMENDMENT_NOTICE_NODE_MISSING")
+        else:
+            notice = correction_notice(objects[notices[0]["sha256"]].decode("utf-8"))
+            original = link_original(target, notice, index) if notice["firstSubmissionDate"] else None
+            # An attachment correction names the corrected attachment (평가의견서, 이사회 의사록), not the report.
+            # That is accepted for [첨부정정] only; a [기재정정] must name this report.
+            if _names_this_report(notice["targetReport"], target["reportName"]):
+                kind = "THIS_REPORT"
+            elif target["amendmentMarker"] == "첨부정정" and notice["targetReport"]:
+                kind = "ATTACHMENT_OF_THIS_REPORT"
+            else:
+                kind = None
+            link = {**notice, "noticeTargetKind": kind, "originalReceiptNo": original}
+            if notice["noticeDate"] != target["receiptDate"]:
+                reasons.append("NOTICE_DATE_DIFFERS_FROM_RECEIPT_DATE")
+            if kind is None:
+                reasons.append("NOTICE_TARGET_DIFFERS_FROM_REPORT")
+            if notice["firstSubmissionDate"] is None or notice["firstSubmissionDate"] > target["receiptDate"]:
+                reasons.append("NOTICE_FIRST_SUBMISSION_NOT_STATED_OR_LATER")
+            if not notice["hasCorrectionTable"]:
+                reasons.append("NOTICE_HAS_NO_CORRECTION_TABLE")
+            if original is None:
+                reasons.append("ORIGINAL_FILING_NOT_UNIQUELY_LINKED")
+    return ("VERIFIED" if not reasons else "REFUSED"), reasons, link
 
 
 def extract_candidates(record, objects):
@@ -243,19 +340,20 @@ def extract_candidates(record, objects):
     return {"correctionRows": corrections, "fieldCandidates": fields, "adopted": False}
 
 
-def verify_and_extract(directory, plan=None):
+def verify_and_extract(directory, plan=None, index=None):
     plan = plan or load_plan()
     manifest, objects = load_collection(directory, plan)
+    index = load_index(plan) if index is None else index
     targets = {t["receiptNo"]: t for t in plan["targets"]}
     out = []
     for record in manifest["records"]:
         if record["receiptNo"] not in targets:
             raise ValueError("RECEIPT_NOT_IN_PLAN: " + record["receiptNo"])
         t = targets[record["receiptNo"]]
-        verdict, reasons = verify_record(t, record, objects)
+        verdict, reasons, link = verify_record(t, record, objects, index)
         row = {"receiptNo": t["receiptNo"], "ticker": t["ticker"], "reportName": t["reportName"],
                "priorReviewCategory": t["priorReviewCategory"], "collectionStatus": record["status"],
-               "verification": verdict, "reasons": reasons}
+               "verification": verdict, "reasons": reasons, "amendmentLink": link}
         if verdict == "VERIFIED":
             row.update(extract_candidates(record, objects))
         out.append(row)

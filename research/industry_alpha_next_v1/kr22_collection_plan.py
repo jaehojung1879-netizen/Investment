@@ -55,6 +55,10 @@ REFUSAL_STATUSES = {"010", "011", "012", "020", "021", "100", "101", "800", "900
 DOCUMENT_ABSENT_STATUS = "014"   # document.xml: file not served
 MAX_ZIP_MEMBERS = 64
 MAX_MEMBER_BYTES = 64 << 20
+MAX_TOTAL_BYTES = 256 << 20
+# Served dividend decisions compress 4.5x-7.7x (141 real documents); a ratio past this is a bomb, not a filing.
+MAX_COMPRESSION_RATIO = 100
+UNSAFE_NAME_CHARS = re.compile(r"[\\\x00-\x1f:]")
 ANNUAL_NAME = re.compile(r"^사업보고서\s*\((\d{4})\.(\d{2})\)$")
 
 
@@ -139,29 +143,78 @@ def dart_status(raw):
     return m.group(1).decode() if m else None
 
 
+def safe_member_name(name):
+    """The member's name as a relative path, or ValueError. DART serves some document ZIPs with a single member named
+    `/<receipt>.xml` (22 of 141 real dividend decisions). That one leading slash is read as relative ONLY when what
+    follows is a single path component; every other absolute form, a backslash, a drive or stream colon, a control
+    character, an empty, `.` or `..` component stays refused. Nothing is ever extracted to disk."""
+    rest = name[1:] if name.startswith("/") and "/" not in name[1:] else name
+    parts = rest.split("/")
+    if (not rest or rest.startswith("/") or UNSAFE_NAME_CHARS.search(rest)
+            or any(p in ("", ".", "..") for p in parts)):
+        raise ValueError("UNSAFE_ZIP_MEMBER: " + name)
+    return rest
+
+
 def zip_members(raw):
-    """Decoded members of a document.xml ZIP. Refuses traversal, too many members and oversized members."""
+    """Decoded members of a document.xml ZIP, read in memory. Refuses unsafe names, duplicates after normalisation,
+    symlinks, encryption, too many members, oversized members, oversized totals and compression bombs."""
     if not raw.startswith(b"PK"):
         raise ValueError("NOT_A_ZIP")
-    out = []
+    out, names, total = [], set(), 0
     with zipfile.ZipFile(io.BytesIO(raw)) as z:
         infos = z.infolist()
         if len(infos) > MAX_ZIP_MEMBERS:
             raise ValueError("TOO_MANY_ZIP_MEMBERS")
         for info in infos:
-            name = info.filename
-            if name.startswith(("/", "\\")) or ".." in Path(name).parts or info.file_size > MAX_MEMBER_BYTES:
-                raise ValueError("UNSAFE_ZIP_MEMBER: " + name)
+            name = safe_member_name(info.filename)
+            if name in names:
+                raise ValueError("DUPLICATE_ZIP_MEMBER: " + name)
+            names.add(name)
+            if (info.external_attr >> 16) & 0o170000 == 0o120000:
+                raise ValueError("SYMLINK_ZIP_MEMBER: " + name)
+            if info.flag_bits & 0x1:
+                raise ValueError("ENCRYPTED_ZIP_MEMBER: " + name)
+            total += info.file_size
+            if info.file_size > MAX_MEMBER_BYTES or total > MAX_TOTAL_BYTES:
+                raise ValueError("UNSAFE_ZIP_MEMBER: " + info.filename)
+            if info.file_size > MAX_COMPRESSION_RATIO * max(info.compress_size, 1):
+                raise ValueError("ZIP_COMPRESSION_RATIO_EXCEEDED: " + name)
             data = z.read(info)
+            if len(data) != info.file_size:
+                raise ValueError("ZIP_MEMBER_SIZE_DIFFERS: " + name)
             for enc in ("utf-8", "cp949"):
                 try:
-                    out.append({"filename": name, "sha256": hashlib.sha256(data).hexdigest(), "text": data.decode(enc)})
+                    text = data.decode(enc)
                     break
                 except UnicodeDecodeError:
                     continue
             else:
                 raise ValueError("UNDECODABLE_ZIP_MEMBER: " + name)
+            out.append({"filename": name, "storedName": info.filename, "sha256": hashlib.sha256(data).hexdigest(),
+                        "encoding": enc, "text": text})
     return out
+
+
+# KRX exchange filings (receipts with an 8 in the 9th digit) are served as an HTML form with no DART header: no corp
+# code, stock code or receipt number appears anywhere in the document (119 of 141 real dividend decisions).
+XFORMS_HEADING = re.compile(r"^\s*([^/]{1,40}?)\s*/\s*([^/]{1,40}?)\s*/\s*\(\s*(\d{4})\.(\d{2})\.(\d{2})\s*\)")
+
+
+def xforms_heading(text):
+    """(filer name at filing, form title, heading date) of a KRX exchange-filing form, or None."""
+    if 'class="xforms"' not in text:
+        return None
+    m = XFORMS_HEADING.match(flat(re.sub(r"<style.*?</style>", " ", text, flags=re.S | re.I)))
+    if not m:
+        return None
+    return m.group(1), m.group(2), "%s-%s-%s" % (m.group(3), m.group(4), m.group(5))
+
+
+def listing_query(req):
+    """The list.json query that must list a dividend-decision receipt: its issuer, on its receipt date."""
+    day = req["receiptDate"].replace("-", "")
+    return {"corp_code": req["corpCode"], "bgn_de": day, "end_de": day}
 
 
 def header(text):
@@ -334,6 +387,56 @@ def collect(plan, out_dir, *, list_page, document, max_calls, now=None, pause=0.
     manifest = {"contract": MANIFEST_CONTRACT, "planSha256": plan["planSha256"], "calls": calls, "stop": stop,
                 "entries": entries}
     (out / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=1, sort_keys=True) + "\n")
+    if stop == "COMPLETE":
+        manifest = confirm_listings(plan, out, list_page=list_page, max_calls=max_calls - calls, now=now, pause=pause)
+    return manifest
+
+
+def confirm_listings(plan, out_dir, *, list_page, max_calls, now=None, pause=0.0):
+    """Ask OpenDART's list.json, for every dividend-decision receipt the acquisition holds, whether that issuer filed
+    that receipt on that day. This is the only issuer evidence a KRX exchange-filing form can have: the form names
+    the filer as it was called on the day (LIG손해보험, 현대증권, 아이엔지생명) and carries no code at all. Raw pages
+    are appended to the existing manifest; an already-confirmed receipt is not asked again."""
+    out = Path(out_dir)
+    manifest = json.loads((out / "manifest.json").read_text())
+    if manifest.get("planSha256") != plan["planSha256"]:
+        raise ValueError("MANIFEST_NOT_FOR_THIS_PLAN")
+    now = now or (lambda: dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat())
+    planned = {r["receiptNo"]: r for r in plan["requests"] if r["kind"] == "DOCUMENT_DIVIDEND_DECISION"}
+    held = [e["receiptNo"] for e in manifest["entries"] if e.get("kind") == "DOCUMENT_DIVIDEND_DECISION"]
+    done = {e["receiptNo"] for e in manifest["entries"] if e.get("kind") == "LISTING_CONFIRMATION"}
+    calls, stop = 0, "COMPLETE"
+    try:
+        for receipt in held:
+            if receipt in done:
+                continue
+            req = planned[receipt]
+
+            def fetch_page(page, req=req, receipt=receipt):
+                nonlocal calls
+                if calls >= max_calls:
+                    raise BudgetExhausted(f"{calls} listing calls")
+                calls += 1
+                time.sleep(pause)
+                payload = list_page(listing_query(req), page)
+                status = str(payload.get("status"))
+                if status in REFUSAL_STATUSES:
+                    raise Refused(f"list.json {receipt}: {status}")
+                raw, name = canonical(payload), f"listing-{receipt}-p{page}.json"
+                if (out / "raw" / name).exists():
+                    raise ValueError("DUPLICATE_RAW_NAME: " + name)
+                (out / "raw" / name).write_bytes(raw)
+                manifest["entries"].append({"kind": "LISTING_CONFIRMATION", "receiptNo": receipt, "corpCode": req["corpCode"],
+                                            "code": req["code"], "page": page, "query": listing_query(req),
+                                            "status": "DART_" + status, "file": "raw/" + name,
+                                            "sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw), "retrievedAt": now()})
+                return payload
+            KCA.fetch_all_pages(fetch_page)
+    except (Refused, BudgetExhausted, KCA.PaginationError) as exc:
+        stop = f"{type(exc).__name__}: {exc}"
+    manifest["listingCalls"] = manifest.get("listingCalls", 0) + calls
+    manifest["listingStop"] = stop
+    (out / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=1, sort_keys=True) + "\n")
     return manifest
 
 
@@ -357,7 +460,8 @@ def verify(plan, out_dir):
         problems.append("PLAN_DIGEST_MISMATCH")
     planned = {r["receiptNo"]: r for r in plan["requests"] if "receiptNo" in r and r["kind"] != "VIEWER_ROUTE_REQUIRED"}
     lists = {r["corpCode"]: r for r in plan["requests"] if r["kind"] == "LIST_A001"}
-    listed_rows, seen_files, seen_receipts = {}, set(), set()
+    listed_rows, seen_files, seen_receipts, confirmations = {}, set(), set(), {}
+    documents = []
     for e in manifest.get("entries", []):
         path = out / e.get("file", "")
         if e.get("file") in seen_files:
@@ -370,6 +474,23 @@ def verify(plan, out_dir):
         raw = path.read_bytes()
         if hashlib.sha256(raw).hexdigest() != e.get("sha256"):
             problems.append("SHA256_MISMATCH: " + e["file"])
+            continue
+        if e["kind"] == "LISTING_CONFIRMATION":
+            req = planned.get(e.get("receiptNo"))
+            payload = json.loads(raw)
+            if req is None or req["kind"] != "DOCUMENT_DIVIDEND_DECISION" or e.get("query") != listing_query(req) \
+                    or e.get("corpCode") != req["corpCode"]:
+                problems.append("LISTING_NOT_IN_PLAN: " + e["file"])
+                continue
+            if e.get("status") != "DART_" + str(payload.get("status")):
+                problems.append("STATUS_DOES_NOT_MATCH_BYTES: " + e["file"])
+                continue
+            for row in payload.get("list") or []:
+                if row.get("corp_code") != req["corpCode"] or str(row.get("rcept_dt")) != req["receiptDate"].replace("-", ""):
+                    problems.append("LISTING_ROW_OUTSIDE_QUERY: " + str(row.get("rcept_no")))
+                    break
+            else:
+                confirmations.setdefault(e["receiptNo"], []).extend(payload.get("list") or [])
             continue
         if e["kind"] == "LIST_A001":
             req = lists.get(e.get("corpCode"))
@@ -410,12 +531,42 @@ def verify(plan, out_dir):
         except (ValueError, zipfile.BadZipFile) as exc:
             problems.append(f"ZIP_REFUSED: {receipt}: {exc}")
             continue
-        heads = [header(m["text"]) for m in members if m["filename"].lower().endswith(".xml")]
-        if not heads or any(c != e["corpCode"] for c, _ in heads):
+        documents.append((e, members))
+    # Issuer checks run after every listing page is read, whatever the manifest order.
+    for e, members in documents:
+        problems.extend(document_identity(e, members, planned.get(e["receiptNo"]), confirmations.get(e["receiptNo"])))
+    return problems
+
+
+def document_identity(entry, members, req, listing):
+    """Issuer and form checks for one held document. A DART-header document must name the planned corp code in
+    every XML member. A header-less KRX form is accepted only as the single member `<receipt>.xml`, with a heading
+    dated on the receipt date, naming a form of the planned kind, and with list.json confirming that the planned
+    issuer filed exactly this receipt, of that kind, on that day. The filer name in the heading is reported, never
+    matched: it is the name on the day, and issuers rename."""
+    receipt, problems = entry["receiptNo"], []
+    xml = [m for m in members if m["filename"].lower().endswith(".xml")]
+    heads = [header(m["text"]) for m in xml]
+    if heads and all(c is not None for c, _ in heads):
+        if any(c != entry["corpCode"] for c, _ in heads):
             problems.append("DOCUMENT_ISSUER_DIFFERS_FROM_PLAN: " + receipt)
-        main_name = heads[0][1] if heads else None
-        if not main_name or not any(k in main_name for k in EXPECTED_DOCUMENT_NAME[e["kind"]]):
+        if not any(k in (heads[0][1] or "") for k in EXPECTED_DOCUMENT_NAME[entry["kind"]]):
             problems.append("DOCUMENT_NAME_DIFFERS_FROM_KIND: " + receipt)
+        return problems
+    form = xforms_heading(xml[0]["text"]) if len(xml) == 1 and len(members) == 1 else None
+    if entry["kind"] != "DOCUMENT_DIVIDEND_DECISION" or form is None:
+        return ["DOCUMENT_ISSUER_DIFFERS_FROM_PLAN: " + receipt]
+    if members[0]["filename"] != receipt + ".xml":
+        problems.append("DOCUMENT_MEMBER_NOT_THIS_RECEIPT: " + receipt)
+    if req is None or form[2] != req.get("receiptDate"):
+        problems.append("DOCUMENT_HEADING_DATE_DIFFERS_FROM_RECEIPT: " + receipt)
+    if not any(k in form[1] for k in EXPECTED_DOCUMENT_NAME[entry["kind"]]):
+        problems.append("DOCUMENT_NAME_DIFFERS_FROM_KIND: " + receipt)
+    hits = [r for r in listing or [] if r.get("rcept_no") == receipt]
+    if listing is None:
+        problems.append("ISSUER_NOT_PROVEN_NO_HEADER_NO_LISTING: " + receipt)
+    elif len(hits) != 1 or "배당결정" not in re.sub(r"[\sㆍ·]", "", str(hits[0].get("report_nm"))):
+        problems.append("LISTING_DOES_NOT_CONFIRM_RECEIPT: " + receipt)
     return problems
 
 

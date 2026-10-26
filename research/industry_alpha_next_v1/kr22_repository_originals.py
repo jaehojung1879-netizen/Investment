@@ -241,7 +241,11 @@ def main(argv=None):
     b.add_argument("--output", default=str(REPORT))
     c = sub.add_parser("collect-remaining")
     c.add_argument("--output", required=True)
-    c.add_argument("--max-calls", type=int, default=200)
+    # 141 documents plus one list.json confirmation each (the exchange forms carry no issuer code).
+    c.add_argument("--max-calls", type=int, default=400)
+    k = sub.add_parser("confirm-remaining")
+    k.add_argument("--input", required=True)
+    k.add_argument("--max-calls", type=int, default=200)
     for name in ("verify-remaining", "extract-remaining"):
         sub.add_parser(name).add_argument("--input", required=True)
     args = ap.parse_args(argv)
@@ -261,17 +265,24 @@ def main(argv=None):
         sys.stdout.write(json.dumps({"effect": P.acquisition_effect(report, rows), "rows": rows}, ensure_ascii=False,
                                     indent=1) + "\n")
         return 0
-    import os  # pragma: no cover - network
+    import os
     key = os.environ.get("DART_API_KEY")
     if not key:
         sys.stderr.write("DART_API_KEY is required; refusing to start.\n")
         return 2
     plan = P.load_plan(REMAINING_PLAN)
-    manifest = P.collect(plan, args.output, *P._dart_callers(key), max_calls=args.max_calls, pause=0.3)
-    problems = P.verify(plan, args.output)
-    sys.stdout.write(json.dumps({"stop": manifest["stop"], "calls": manifest["calls"], "entries": len(manifest["entries"]),
-                                 "verifyProblems": problems}, ensure_ascii=False) + "\n")
-    return 0 if manifest["stop"] == "COMPLETE" and not problems else 3
+    list_page, document = P._dart_callers(key)
+    if args.cmd == "confirm-remaining":
+        manifest = P.confirm_listings(plan, args.input, list_page=list_page, max_calls=args.max_calls, pause=0.3)
+        stop, directory = manifest["listingStop"], args.input
+    else:
+        # `collect` takes its two callers as keyword-only arguments; passing them positionally raised TypeError.
+        manifest = P.collect(plan, args.output, list_page=list_page, document=document, max_calls=args.max_calls, pause=0.3)
+        stop, directory = (manifest.get("listingStop") if manifest["stop"] == "COMPLETE" else manifest["stop"]), args.output
+    problems = P.verify(plan, directory)
+    sys.stdout.write(json.dumps({"stop": stop, "calls": manifest["calls"], "listingCalls": manifest.get("listingCalls", 0),
+                                 "entries": len(manifest["entries"]), "verifyProblems": problems}, ensure_ascii=False) + "\n")
+    return 0 if stop == "COMPLETE" and not problems else 3
 
 
 if __name__ == "__main__":
