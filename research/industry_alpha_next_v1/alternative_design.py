@@ -75,8 +75,11 @@ def centred_rank_weights(values):
     return w / s if s > 0 else w
 
 
-def calendar_time_series(frame, signal_col, controls, holding_months):
-    """Monthly calendar-time spread return: mean over the K live cohorts of sum_i w_{i,cohort} * r_{i,month}."""
+def calendar_time_series(frame, signal_col, controls, holding_months, leg_adjust=None):
+    """Monthly calendar-time spread return: mean over the K live cohorts of sum_i w_{i,cohort} * r_{i,month}.
+
+    `leg_adjust(month, cohort, industries, weights, month_returns)`, when given, returns an additive change to one
+    cohort's leg (used by `inclusion_bound` to place unclassified names); None leaves the series unchanged."""
     pop = frame[frame["cwStatus"].eq("MATURED")]
     dates = sorted(pop["date"].unique())
     weights, returns = {}, {}
@@ -107,7 +110,10 @@ def calendar_time_series(frame, signal_col, controls, holding_months):
             s = np.abs(wc).sum()
             if s == 0:
                 continue
-            legs.append(float((wc / s) @ np.array([returns[d][g] for g in common])))
+            leg = float((wc / s) @ np.array([returns[d][g] for g in common]))
+            if leg_adjust is not None:
+                leg += leg_adjust(d, cohort, common, wc / s, returns[d])
+            legs.append(leg)
         if legs:
             series.append(float(np.mean(legs)))
     return np.asarray(series)

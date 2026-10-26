@@ -97,3 +97,23 @@ python -m research.industry_alpha_next_v1.kr22_recovery --output /tmp/kr22.json
 
 결과 해석과 다음 단계는 [approval-packet.md](approval-packet.md) §7에 있다.
 
+
+## 원천 복구·수집 계획·경제성 설계 (2026-10-25~26 추가, 합성·원천 전용, 역사 결과 0)
+
+| 파일 | 역할 |
+| --- | --- |
+| `kr22_source_recovery.py` / `kr22-source-recovery.json` | 승계 회사 상장주식수와 공시 신주 수를 대조한 실행 확인, 16종목 요청 목록 |
+| `kr22_collection_plan.py` / `kr22-collection-plan.json` | 그 요청 목록을 digest로 고정한 수집 계획, 실패하면 닫는 수집기(DART 키 필요, 이 세션 미실행), 네트워크 없는 검증기, 산업·배당 진술 추출기 |
+| `alternative_design.py` / `alternative-design-screen.json` | 적합 없는 달력시간 산업 순위 스프레드의 크기·검정력 스크린 |
+| `inclusion_bound.py` / `inclusion-bound-screen.json` | 분류되지 않은 종결 종목을 버리지 않고 가장 불리한 산업에 넣는 포함 규칙: 실측 노출(구성원·시가총액만)과 합성 검정력 |
+| `industry_economics.py` / `industry-economics-screen.json` | 롱온리 산업 기울기의 비용 차감 순능동, 시장·모멘텀 분해, 회전율·집중 |
+| `industry-economics-prereg-draft.md` | 경제성 설계와 전향 독립 표본 사전등록 초안(미등록) |
+
+```bash
+python -m research.industry_alpha_next_v1.kr22_collection_plan build-plan     # 저장소 바이트만
+python -m research.industry_alpha_next_v1.kr22_collection_plan verify --input <수집 디렉터리>
+python -m research.industry_alpha_next_v1.inclusion_bound --output /tmp/bound.json        # 약 15분
+python -m research.industry_alpha_next_v1.industry_economics --output /tmp/econ.json      # 약 4분
+```
+
+해석과 승인 필요사항은 [approval-packet.md](approval-packet.md) §8–§9에 있다.
