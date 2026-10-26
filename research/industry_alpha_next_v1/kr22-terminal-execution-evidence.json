@@ -1,0 +1,181 @@
+{
+ "evidenceClass": "SOURCE_EVIDENCE_CANDIDATE_NOT_ADOPTED",
+ "historicalOutcomesRead": 0,
+ "note": "Facts are what each acquirer's own 증권발행실적보고서(합병등) states; the issuer header is checked against the acquirer corp code. Ratios are the repository's existing human-reviewed values; nothing here enters data/kr-terminal-corporate-actions.json.",
+ "rawBytesCommitted": false,
+ "retrievedOn": "2026-10-26",
+ "rows": [
+  {
+   "acquirerCorpCode": "00149655",
+   "actionType": "MERGER_STOCK",
+   "cashConsiderationStated": "교부금 지급은 없습니다",
+   "dateLabel": "합병기일",
+   "deliveryOrListingDate": "2015-09-14",
+   "effectiveDate": "2015-09-01",
+   "executionReport": {
+    "issuerHeaderCorpCodes": [
+     "00149655"
+    ],
+    "issuerHeaderIsAcquirer": true,
+    "receiptNo": "20150902000259",
+    "reportName": "증권발행실적보고서(합병등)",
+    "route": "OPENDART_DOCUMENT_XML",
+    "sha256": "979c693761415464c3ed26e8511c4a86f2fd09cf80ad96ea4b6092cd40daa91e"
+   },
+   "oldSecurity": "000830.KS",
+   "plannedDateEqualsEffective": true,
+   "reviewedRatio": {
+    "commonShareRatio": "0.3500885",
+    "decisionReceiptNo": "20150526800025",
+    "plannedDate": "2015-09-01",
+    "ratioQuote": "(1) 제일모직주식회사 보통주식: 삼성물산주식회사 보통주식 = 1 : 0.3500885 (2) 제일모직주식회사 우선주식: 삼성물산주식회사 우선주식 = 1 : 0.3500885",
+    "source": "data/kr-terminal-document-review.json"
+   },
+   "successorSecurity": "028260.KS"
+  },
+  {
+   "acquirerCorpCode": "00688996",
+   "actionType": "SHARE_EXCHANGE",
+   "cashConsiderationStated": "교부금은 없습니다",
+   "dateLabel": "주식교환일",
+   "delistingDate": "2017-07-21",
+   "deliveryOrListingDate": "2017-07-20",
+   "effectiveDate": "2017-07-07",
+   "executionReport": {
+    "issuerHeaderCorpCodes": [
+     "00688996"
+    ],
+    "issuerHeaderIsAcquirer": true,
+    "receiptNo": "20170707000432",
+    "reportName": "증권발행실적보고서(합병등)",
+    "route": "OPENDART_DOCUMENT_XML",
+    "sha256": "b7d5d05d60827f2f60da9ba32f4d0ed6354e495f9979ffda53f463a675caef4d"
+   },
+   "oldSecurity": "002550.KS",
+   "plannedDateEqualsEffective": false,
+   "reviewedRatio": {
+    "commonShareRatio": "0.5728700",
+    "decisionReceiptNo": "20170414002322",
+    "plannedDate": "2017년 07월 03일",
+    "ratioQuote": "㈜KB금융지주 : ㈜KB손해보험 = 1 : 0.5728700",
+    "source": "data/kr-terminal-document-review.json"
+   },
+   "successorSecurity": "105560.KS"
+  },
+  {
+   "acquirerCorpCode": "00688996",
+   "actionType": "SHARE_EXCHANGE",
+   "cashConsiderationStated": "교부금 지급은 없습니다",
+   "dateLabel": "주식교환일",
+   "delistingDate": "2016-11-01",
+   "deliveryOrListingDate": "2016-10-31",
+   "effectiveDate": "2016-10-19",
+   "executionReport": {
+    "issuerHeaderCorpCodes": [
+     "00688996"
+    ],
+    "issuerHeaderIsAcquirer": true,
+    "receiptNo": "20161019000169",
+    "reportName": "증권발행실적보고서(합병등)",
+    "route": "OPENDART_DOCUMENT_XML",
+    "sha256": "31b4e1887cd1f6d11b3833a88d4768c5499c69ec034bdfc563690972f69ee290"
+   },
+   "oldSecurity": "003450.KS",
+   "plannedDateEqualsEffective": false,
+   "reviewedRatio": {
+    "commonShareRatio": "0.1907312",
+    "decisionReceiptNo": "20160802000289",
+    "plannedDate": "2016년 11월 09일",
+    "ratioQuote": "㈜KB금융지주 : 현대증권㈜ = 1 : 0. 1907312",
+    "source": "data/kr-terminal-document-review.json"
+   },
+   "successorSecurity": "105560.KS"
+  },
+  {
+   "acquirerCorpCode": "00181712",
+   "actionType": "MERGER_STOCK",
+   "cashConsiderationStated": "교부금 지급은 없습니다",
+   "dateLabel": "합병기일",
+   "deliveryOrListingDate": "2015-08-14",
+   "effectiveDate": "2015-08-01",
+   "executionReport": {
+    "issuerHeaderCorpCodes": [
+     "00181712"
+    ],
+    "issuerHeaderIsAcquirer": true,
+    "receiptNo": "20150803000495",
+    "reportName": "증권발행실적보고서(합병등)",
+    "route": "OPENDART_DOCUMENT_XML",
+    "sha256": "bed803f6485aca8a64325a67cba8093c7d8cb55e191e72aa95cc65e12cc55619"
+   },
+   "oldSecurity": "003600.KS",
+   "plannedDateEqualsEffective": true,
+   "reviewedRatio": {
+    "commonShareRatio": "0.7367839",
+    "decisionReceiptNo": "20150420800024",
+    "plannedDate": "2015-08-01",
+    "ratioQuote": "(1) 에스케이씨앤씨 주식회사 보통주식 :SK 주식회사 보통주식 = 1 : 0.7367839 (2) 에스케이씨앤씨 주식회사 우선주식 :SK 주식회사 우선주식 = 1 : 1.1102438",
+    "source": "data/kr-terminal-document-review.json"
+   },
+   "successorSecurity": "034730.KS"
+  },
+  {
+   "acquirerCorpCode": "00111722",
+   "actionType": "MERGER_STOCK",
+   "cashConsiderationStated": "교부금을 지급하지 않습니다",
+   "dateLabel": "합병기일",
+   "deliveryOrListingDate": "2017-01-19",
+   "effectiveDate": "2016-12-29",
+   "executionReport": {
+    "issuerHeaderCorpCodes": [
+     "00111722"
+    ],
+    "issuerHeaderIsAcquirer": true,
+    "receiptNo": "20161230000437",
+    "reportName": "증권발행실적보고서(합병등)",
+    "route": "OPENDART_DOCUMENT_XML",
+    "sha256": "3d5681b5b4a456a205f263430cc73ab9f3a231f62143c218e0da45b896223140"
+   },
+   "oldSecurity": "037620.KS",
+   "plannedDateEqualsEffective": false,
+   "reviewedRatio": {
+    "commonShareRatio": "2.9716317",
+    "decisionReceiptNo": "20160513004518",
+    "plannedDate": "2016년 11월 01일",
+    "ratioQuote": "기명식 보통주식 미래에셋대우 주식회사 : 미래에셋증권 주식회사 = 1 : 2.9716317",
+    "source": "data/kr-terminal-document-review.json"
+   },
+   "successorSecurity": "006800.KS"
+  },
+  {
+   "acquirerCorpCode": "00382199",
+   "actionType": "SHARE_EXCHANGE",
+   "cashConsiderationStated": "교부금의 지급은 없습니다",
+   "dateLabel": "주식교환일",
+   "delistingDate": "2020-02-14",
+   "deliveryOrListingDate": "2020-02-07",
+   "effectiveDate": "2020-01-28",
+   "executionReport": {
+    "issuerHeaderCorpCodes": [
+     "00382199"
+    ],
+    "issuerHeaderIsAcquirer": true,
+    "receiptNo": "20200129000273",
+    "reportName": "증권발행실적보고서(합병등)",
+    "route": "OPENDART_DOCUMENT_XML",
+    "sha256": "4f3ea47db78c5f64cad907f078123df3e836055cad7d95b226621f56ed6ae54d"
+   },
+   "oldSecurity": "079440.KS",
+   "plannedDateEqualsEffective": true,
+   "reviewedRatio": {
+    "commonShareRatio": "0.6601483",
+    "decisionReceiptNo": "20191114002655",
+    "plannedDate": "2020년 01월 28일",
+    "ratioQuote": "(주)신한금융지주회사 : 오렌지라이프생명보험(주) = 1 : 0.6601483",
+    "source": "data/kr-terminal-document-review.json"
+   },
+   "successorSecurity": "055550.KS"
+  }
+ ],
+ "schema": "KR22_TERMINAL_EXECUTION_EVIDENCE_V1"
+}

@@ -1,0 +1,825 @@
+{
+ "contract": "KR22_CANDIDATE_ELIGIBILITY_V1",
+ "evidenceClass": "CANDIDATE_UNDER_OPEN_PROPOSALS_NOT_ADOPTED",
+ "frozenGatesChanged": false,
+ "historicalOutcomesRead": 0,
+ "pricesRead": 0,
+ "proposals": [
+  "A",
+  "B_PRIME",
+  "E",
+  "T"
+ ],
+ "securities": [
+  {
+   "code": "000030.KS",
+   "crossingLabels": {
+    "126": 7,
+    "252": 14
+   },
+   "dividendEventsVerified": 6,
+   "exDateAmbiguousLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "exDateCandidateE": true,
+   "frozenGates": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": true,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "inStudyWindow": true,
+   "industryCandidate": null,
+   "nonCrossingLabels": {
+    "126": 42,
+    "252": 35
+   },
+   "terminalEconomicsComplete": {
+    "candidateT": true,
+    "frozen": false
+   },
+   "totalReturnLabelCandidate": {
+    "A_Bprime_E": false,
+    "A_E": false
+   }
+  },
+  {
+   "code": "000060.KS",
+   "crossingLabels": {
+    "126": 7,
+    "252": 13
+   },
+   "dividendEventsVerified": 10,
+   "exDateAmbiguousLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "exDateCandidateE": true,
+   "frozenGates": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "inStudyWindow": true,
+   "industryCandidate": null,
+   "nonCrossingLabels": {
+    "126": 60,
+    "252": 54
+   },
+   "terminalEconomicsComplete": {
+    "candidateT": false,
+    "frozen": false
+   },
+   "totalReturnLabelCandidate": {
+    "A_Bprime_E": false,
+    "A_E": false
+   }
+  },
+  {
+   "code": "000830.KS",
+   "crossingLabels": {
+    "126": 7,
+    "252": 9
+   },
+   "dividendEventsVerified": 3,
+   "exDateAmbiguousLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "exDateCandidateE": true,
+   "frozenGates": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "inStudyWindow": true,
+   "industryCandidate": null,
+   "nonCrossingLabels": {
+    "126": 2,
+    "252": 0
+   },
+   "terminalEconomicsComplete": {
+    "candidateT": true,
+    "frozen": false
+   },
+   "totalReturnLabelCandidate": {
+    "A_Bprime_E": false,
+    "A_E": false
+   }
+  },
+  {
+   "code": "001300.KS",
+   "crossingLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "dividendEventsVerified": 0,
+   "exDateAmbiguousLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "exDateCandidateE": false,
+   "frozenGates": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": true,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "inStudyWindow": false,
+   "industryCandidate": null,
+   "nonCrossingLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "terminalEconomicsComplete": {
+    "candidateT": true,
+    "frozen": true
+   },
+   "totalReturnLabelCandidate": {
+    "A_Bprime_E": false,
+    "A_E": false
+   }
+  },
+  {
+   "code": "002550.KS",
+   "crossingLabels": {
+    "126": 5,
+    "252": 7
+   },
+   "dividendEventsVerified": 5,
+   "exDateAmbiguousLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "exDateCandidateE": true,
+   "frozenGates": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "inStudyWindow": true,
+   "industryCandidate": null,
+   "nonCrossingLabels": {
+    "126": 9,
+    "252": 7
+   },
+   "terminalEconomicsComplete": {
+    "candidateT": true,
+    "frozen": false
+   },
+   "totalReturnLabelCandidate": {
+    "A_Bprime_E": false,
+    "A_E": false
+   }
+  },
+  {
+   "code": "003410.KS",
+   "crossingLabels": {
+    "126": 8,
+    "252": 14
+   },
+   "dividendEventsVerified": 28,
+   "exDateAmbiguousLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "exDateCandidateE": true,
+   "frozenGates": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "inStudyWindow": true,
+   "industryCandidate": null,
+   "nonCrossingLabels": {
+    "126": 72,
+    "252": 66
+   },
+   "terminalEconomicsComplete": {
+    "candidateT": false,
+    "frozen": false
+   },
+   "totalReturnLabelCandidate": {
+    "A_Bprime_E": false,
+    "A_E": false
+   }
+  },
+  {
+   "code": "003450.KS",
+   "crossingLabels": {
+    "126": 2,
+    "252": 3
+   },
+   "dividendEventsVerified": 5,
+   "exDateAmbiguousLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "exDateCandidateE": true,
+   "frozenGates": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "inStudyWindow": true,
+   "industryCandidate": null,
+   "nonCrossingLabels": {
+    "126": 9,
+    "252": 8
+   },
+   "terminalEconomicsComplete": {
+    "candidateT": true,
+    "frozen": false
+   },
+   "totalReturnLabelCandidate": {
+    "A_Bprime_E": false,
+    "A_E": false
+   }
+  },
+  {
+   "code": "003600.KS",
+   "crossingLabels": {
+    "126": 7,
+    "252": 8
+   },
+   "dividendEventsVerified": 13,
+   "exDateAmbiguousLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "exDateCandidateE": true,
+   "frozenGates": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "inStudyWindow": true,
+   "industryCandidate": null,
+   "nonCrossingLabels": {
+    "126": 1,
+    "252": 0
+   },
+   "terminalEconomicsComplete": {
+    "candidateT": true,
+    "frozen": false
+   },
+   "totalReturnLabelCandidate": {
+    "A_Bprime_E": false,
+    "A_E": false
+   }
+  },
+  {
+   "code": "004940.KS",
+   "crossingLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "dividendEventsVerified": 0,
+   "exDateAmbiguousLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "exDateCandidateE": false,
+   "frozenGates": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": true,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "inStudyWindow": false,
+   "industryCandidate": null,
+   "nonCrossingLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "terminalEconomicsComplete": {
+    "candidateT": true,
+    "frozen": true
+   },
+   "totalReturnLabelCandidate": {
+    "A_Bprime_E": false,
+    "A_E": false
+   }
+  },
+  {
+   "code": "008560.KS",
+   "crossingLabels": {
+    "126": 7,
+    "252": 13
+   },
+   "dividendEventsVerified": 11,
+   "exDateAmbiguousLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "exDateCandidateE": true,
+   "frozenGates": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "inStudyWindow": true,
+   "industryCandidate": null,
+   "nonCrossingLabels": {
+    "126": 82,
+    "252": 76
+   },
+   "terminalEconomicsComplete": {
+    "candidateT": false,
+    "frozen": false
+   },
+   "totalReturnLabelCandidate": {
+    "A_Bprime_E": false,
+    "A_E": false
+   }
+  },
+  {
+   "code": "010520.KS",
+   "crossingLabels": {
+    "126": 2,
+    "252": 2
+   },
+   "dividendEventsVerified": 3,
+   "exDateAmbiguousLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "exDateCandidateE": true,
+   "frozenGates": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "inStudyWindow": true,
+   "industryCandidate": null,
+   "nonCrossingLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "terminalEconomicsComplete": {
+    "candidateT": false,
+    "frozen": false
+   },
+   "totalReturnLabelCandidate": {
+    "A_Bprime_E": false,
+    "A_E": false
+   }
+  },
+  {
+   "code": "010620.KS",
+   "crossingLabels": {
+    "126": 7,
+    "252": 14
+   },
+   "dividendEventsVerified": 7,
+   "exDateAmbiguousLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "exDateCandidateE": true,
+   "frozenGates": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": true,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "inStudyWindow": true,
+   "industryCandidate": null,
+   "nonCrossingLabels": {
+    "126": 82,
+    "252": 75
+   },
+   "terminalEconomicsComplete": {
+    "candidateT": true,
+    "frozen": true
+   },
+   "totalReturnLabelCandidate": {
+    "A_Bprime_E": false,
+    "A_E": false
+   }
+  },
+  {
+   "code": "011160.KS",
+   "crossingLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "dividendEventsVerified": 0,
+   "exDateAmbiguousLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "exDateCandidateE": false,
+   "frozenGates": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "inStudyWindow": false,
+   "industryCandidate": null,
+   "nonCrossingLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "terminalEconomicsComplete": {
+    "candidateT": false,
+    "frozen": false
+   },
+   "totalReturnLabelCandidate": {
+    "A_Bprime_E": false,
+    "A_E": false
+   }
+  },
+  {
+   "code": "012510.KS",
+   "crossingLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "dividendEventsVerified": 16,
+   "exDateAmbiguousLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "exDateCandidateE": true,
+   "frozenGates": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "inStudyWindow": true,
+   "industryCandidate": "A",
+   "nonCrossingLabels": {
+    "126": 28,
+    "252": 28
+   },
+   "terminalEconomicsComplete": {
+    "candidateT": false,
+    "frozen": false
+   },
+   "totalReturnLabelCandidate": {
+    "A_Bprime_E": true,
+    "A_E": true
+   }
+  },
+  {
+   "code": "037620.KS",
+   "crossingLabels": {
+    "126": 7,
+    "252": 13
+   },
+   "dividendEventsVerified": 4,
+   "exDateAmbiguousLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "exDateCandidateE": true,
+   "frozenGates": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "inStudyWindow": true,
+   "industryCandidate": null,
+   "nonCrossingLabels": {
+    "126": 14,
+    "252": 8
+   },
+   "terminalEconomicsComplete": {
+    "candidateT": true,
+    "frozen": false
+   },
+   "totalReturnLabelCandidate": {
+    "A_Bprime_E": false,
+    "A_E": false
+   }
+  },
+  {
+   "code": "042670.KS",
+   "crossingLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "dividendEventsVerified": 4,
+   "exDateAmbiguousLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "exDateCandidateE": true,
+   "frozenGates": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": true,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "inStudyWindow": true,
+   "industryCandidate": "B_PRIME",
+   "nonCrossingLabels": {
+    "126": 34,
+    "252": 34
+   },
+   "terminalEconomicsComplete": {
+    "candidateT": true,
+    "frozen": true
+   },
+   "totalReturnLabelCandidate": {
+    "A_Bprime_E": true,
+    "A_E": false
+   }
+  },
+  {
+   "code": "053000.KS",
+   "crossingLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "dividendEventsVerified": 0,
+   "exDateAmbiguousLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "exDateCandidateE": false,
+   "frozenGates": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": true,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "inStudyWindow": false,
+   "industryCandidate": null,
+   "nonCrossingLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "terminalEconomicsComplete": {
+    "candidateT": true,
+    "frozen": true
+   },
+   "totalReturnLabelCandidate": {
+    "A_Bprime_E": false,
+    "A_E": false
+   }
+  },
+  {
+   "code": "057050.KS",
+   "crossingLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "dividendEventsVerified": 20,
+   "exDateAmbiguousLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "exDateCandidateE": true,
+   "frozenGates": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "inStudyWindow": true,
+   "industryCandidate": null,
+   "nonCrossingLabels": {
+    "126": 1,
+    "252": 1
+   },
+   "terminalEconomicsComplete": {
+    "candidateT": false,
+    "frozen": false
+   },
+   "totalReturnLabelCandidate": {
+    "A_Bprime_E": false,
+    "A_E": false
+   }
+  },
+  {
+   "code": "067250.KS",
+   "crossingLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "dividendEventsVerified": 0,
+   "exDateAmbiguousLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "exDateCandidateE": false,
+   "frozenGates": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "inStudyWindow": false,
+   "industryCandidate": null,
+   "nonCrossingLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "terminalEconomicsComplete": {
+    "candidateT": false,
+    "frozen": false
+   },
+   "totalReturnLabelCandidate": {
+    "A_Bprime_E": false,
+    "A_E": false
+   }
+  },
+  {
+   "code": "079440.KS",
+   "crossingLabels": {
+    "126": 7,
+    "252": 14
+   },
+   "dividendEventsVerified": 6,
+   "exDateAmbiguousLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "exDateCandidateE": true,
+   "frozenGates": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "inStudyWindow": true,
+   "industryCandidate": null,
+   "nonCrossingLabels": {
+    "126": 25,
+    "252": 18
+   },
+   "terminalEconomicsComplete": {
+    "candidateT": true,
+    "frozen": false
+   },
+   "totalReturnLabelCandidate": {
+    "A_Bprime_E": false,
+    "A_E": false
+   }
+  },
+  {
+   "code": "115390.KS",
+   "crossingLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "dividendEventsVerified": 0,
+   "exDateAmbiguousLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "exDateCandidateE": false,
+   "frozenGates": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": true
+   },
+   "inStudyWindow": false,
+   "industryCandidate": null,
+   "nonCrossingLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "terminalEconomicsComplete": {
+    "candidateT": false,
+    "frozen": false
+   },
+   "totalReturnLabelCandidate": {
+    "A_Bprime_E": false,
+    "A_E": false
+   }
+  },
+  {
+   "code": "117930.KS",
+   "crossingLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "dividendEventsVerified": 0,
+   "exDateAmbiguousLabels": {
+    "126": 0,
+    "252": 0
+   },
+   "exDateCandidateE": false,
+   "frozenGates": {
+    "exDateSemanticsResolved": false,
+    "executionConfirmed": false,
+    "industryAdmitted": false,
+    "terminalConsiderationResolved": false
+   },
+   "inStudyWindow": true,
+   "industryCandidate": null,
+   "nonCrossingLabels": {
+    "126": 1,
+    "252": 1
+   },
+   "terminalEconomicsComplete": {
+    "candidateT": false,
+    "frozen": false
+   },
+   "totalReturnLabelCandidate": {
+    "A_Bprime_E": false,
+    "A_E": false
+   }
+  }
+ ],
+ "summary": {
+  "crossingLabelsWithCompleteTerminalEconomics": {
+   "H126": {
+    "candidateT": 49,
+    "frozen": 7,
+    "total": 73
+   },
+   "H252": {
+    "candidateT": 82,
+    "frozen": 14,
+    "total": 124
+   }
+  },
+  "denominator": 22,
+  "eligibleMemberMonths": {
+   "candidateA_Bprime_E": {
+    "H126": 62,
+    "H252": 62
+   },
+   "candidateA_E": {
+    "H126": 28,
+    "H252": 28
+   },
+   "frozen": {
+    "H126": 0,
+    "H252": 0
+   }
+  },
+  "exDate": {
+   "ambiguousLabels": {
+    "H126": 0,
+    "H252": 0
+   },
+   "candidateE": 15,
+   "frozen": 0,
+   "labelsChecked": {
+    "H126": 461,
+    "H252": 410
+   },
+   "securitiesWithoutVerifiedDividendDecision": [
+    "117930.KS"
+   ]
+  },
+  "inStudyWindow": 16,
+  "industryEligible": {
+   "candidateA": 1,
+   "candidateA_Bprime": 2,
+   "frozen": 0
+  },
+  "studyWindowTop120MemberMonths": 16800,
+  "terminalEconomicsComplete": {
+   "candidateT": 12,
+   "frozen": 5,
+   "securities": [
+    "000030.KS",
+    "000830.KS",
+    "001300.KS",
+    "002550.KS",
+    "003450.KS",
+    "003600.KS",
+    "004940.KS",
+    "010620.KS",
+    "037620.KS",
+    "042670.KS",
+    "053000.KS",
+    "079440.KS"
+   ]
+  },
+  "terminated22StudyWindowMemberMonths": 535,
+  "totalReturnLabelEligible": {
+   "candidateA_Bprime_E": 2,
+   "candidateA_E": 1,
+   "frozen": 0,
+   "securities": {
+    "A_Bprime_E": [
+     "012510.KS",
+     "042670.KS"
+    ],
+    "A_E": [
+     "012510.KS"
+    ]
+   }
+  }
+ }
+}
