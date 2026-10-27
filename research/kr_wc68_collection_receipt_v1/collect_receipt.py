@@ -12,6 +12,7 @@ directory and are never committed; the receipt records receipt number, route, SH
 Usage:
   DART_API_KEY=... python -I collect_receipt.py collect <plan.json.gz> <new output dir>
   python -I collect_receipt.py receipt <plan.json.gz> <output dir> <receipt.json>
+  DART_API_KEY=... python -I collect_receipt.py verify <receipt.json>     # re-fetch in memory, compare SHA-256
 """
 from __future__ import annotations
 
@@ -127,6 +128,30 @@ def receipt(plan_path, out_dir, receipt_path):
     return doc
 
 
+def verify(receipt_path, key, pause=0.5):
+    """Hash-anchored re-acquisition: fetch each receipt again in memory and compare with the committed SHA-256.
+    The route is byte-deterministic (re-fetches on 2026-10-27 matched exactly), so a verifier needs the key, not the
+    bytes; nothing is written to disk and nothing needs to be redistributed."""
+    doc = json.loads(Path(receipt_path).read_text())
+    if doc.get("planSha256") != PLAN_SHA256:
+        raise ValueError("RECEIPT_NOT_FOR_THE_PINNED_PLAN")
+    result = {"match": 0, "differ": [], "transportError": []}
+    for r in doc["rows"]:
+        query = urllib.parse.urlencode({"crtfc_key": key, "rcept_no": r["receipt"], "reprt_code": ANNUAL})
+        try:
+            with urllib.request.urlopen(API + "?" + query, timeout=60) as resp:
+                raw = resp.read(MAX_BYTES + 1)
+        except OSError as exc:            # never print the URL: it carries the key
+            result["transportError"].append([r["receipt"], type(exc).__name__])
+            continue
+        if hashlib.sha256(raw).hexdigest() == r["sha256"]:
+            result["match"] += 1
+        else:
+            result["differ"].append(r["receipt"])
+        time.sleep(pause)
+    return result
+
+
 def main(argv):
     if argv[0] == "collect":
         key = os.environ.get("DART_API_KEY")
@@ -134,6 +159,11 @@ def main(argv):
             raise SystemExit("DART_API_KEY is required")
         entries = collect(argv[1], argv[2], key)
         print(json.dumps({"entries": len(entries), "zip": sum(e["bytes"] > 0 for e in entries)}))
+    elif argv[0] == "verify":
+        key = os.environ.get("DART_API_KEY")
+        if not key:
+            raise SystemExit("DART_API_KEY is required")
+        print(json.dumps(verify(argv[1], key)))
     elif argv[0] == "receipt":
         print(json.dumps(receipt(argv[1], argv[2], argv[3])["statusCounts"]))
 
