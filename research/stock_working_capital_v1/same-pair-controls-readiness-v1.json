@@ -1,0 +1,104 @@
+{
+  "attributionConvention": "NUMERATOR_FIRST_AT_PRIOR_SALES_THEN_DENOMINATOR_AT_CURRENT_BALANCE",
+  "historicalOutcomesRead": 0,
+  "measurementSha256": {
+    "cohorts.jsonl.gz": "6b23451e56e28ce3225af47be38448bec0d635acf53a46d2361417e661490dfb",
+    "coverage.json": "50a2bc6fcd49dfdb1c3a7b758739af37ab107cacecbca9a273c03b2a28d740dc",
+    "rows.jsonl.gz": "ac53b611e0df160e3846931530532b037e5f3ceef0589de93a8564ea1ca7a766"
+  },
+  "memberDates": 51360,
+  "modelFits": 0,
+  "panelSha256": "4e37077c55f8cc02f4e4b29f0f7af8dd9e0efe1fd1dc9bab3d85751c436b2148",
+  "samplingNote": "Weekly member-date repeats are not independent annual evidence. Source-only diagnostics, no return or forecast evaluation.",
+  "schema": "STOCK_WC_SAME_PAIR_CONTROLS_V1",
+  "signals": {
+    "collection_discipline": {
+      "denominator": 51360,
+      "distinctPositiveWithNoNumeratorImprovementPairs": 65,
+      "distinctRawAnnualPairs": 252,
+      "missingReasonsNonexclusive": {
+        "CONCEPT_BASIS_CHANGED:receivables": 2065,
+        "CONCEPT_BASIS_CHANGED:sales": 3668,
+        "CURRENT:MISSING_CONCEPT:receivables": 20816,
+        "CURRENT:MISSING_CONCEPT:sales": 933,
+        "CURRENT:UNIT_OR_DIMENSION_UNRESOLVED:sales": 72,
+        "MISSING_OR_AMBIGUOUS_CONSECUTIVE_PRIOR_ANNUAL": 3708,
+        "NO_VISIBLE_ANNUAL": 10539,
+        "PREVIOUS:MISSING_CONCEPT:receivables": 22856,
+        "PREVIOUS:MISSING_CONCEPT:sales": 1163,
+        "PREVIOUS:UNIT_OR_DIMENSION_UNRESOLVED:sales": 22,
+        "STATEMENT_BASIS_CHANGED": 129
+      },
+      "positiveIntensityChangesWithNoNumeratorImprovement": 2358,
+      "rawControlPairsReadable": 9589,
+      "sourceAdmittedPairs": 0
+    },
+    "inventory_discipline": {
+      "denominator": 51360,
+      "distinctPositiveWithNoNumeratorImprovementPairs": 132,
+      "distinctRawAnnualPairs": 775,
+      "missingReasonsNonexclusive": {
+        "CONCEPT_BASIS_CHANGED:inventory": 3886,
+        "CONCEPT_BASIS_CHANGED:sales": 3668,
+        "CURRENT:MISSING_CONCEPT:inventory": 1106,
+        "CURRENT:MISSING_CONCEPT:sales": 933,
+        "CURRENT:UNIT_OR_DIMENSION_UNRESOLVED:inventory": 72,
+        "CURRENT:UNIT_OR_DIMENSION_UNRESOLVED:sales": 72,
+        "MISSING_OR_AMBIGUOUS_CONSECUTIVE_PRIOR_ANNUAL": 3708,
+        "NO_VISIBLE_ANNUAL": 10539,
+        "PREVIOUS:MISSING_CONCEPT:inventory": 1131,
+        "PREVIOUS:MISSING_CONCEPT:sales": 1163,
+        "PREVIOUS:UNIT_OR_DIMENSION_UNRESOLVED:inventory": 22,
+        "PREVIOUS:UNIT_OR_DIMENSION_UNRESOLVED:sales": 22,
+        "STATEMENT_BASIS_CHANGED": 129
+      },
+      "positiveIntensityChangesWithNoNumeratorImprovement": 5438,
+      "rawControlPairsReadable": 31282,
+      "sourceAdmittedPairs": 0
+    }
+  },
+  "sourceAdmitted": false,
+  "sourceReceipts": {
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-raw/raw-2015.jsonl.gz": {
+      "bytes": 1341111,
+      "sha256": "252784fb8b05b657ccb97e9d2c550051dd9e37389fd4c6595dcc91848801d2d0"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-raw/raw-2016.jsonl.gz": {
+      "bytes": 5798417,
+      "sha256": "cc9b198d59ccd9c763e7ee0880c3ef55dddc0ffd8baa9d36e7cd436dcf358892"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-raw/raw-2017.jsonl.gz": {
+      "bytes": 5187318,
+      "sha256": "bce3db5c4d0192e8de8c4c14a7991892c953d49757cdf1ef20391114889bbbf0"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-raw/raw-2018.jsonl.gz": {
+      "bytes": 5266466,
+      "sha256": "c1fb20b00dc0e920a13c94af531dc36e591d381e5e82013dcf7633ffdfa3915c"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-raw/raw-2019.jsonl.gz": {
+      "bytes": 5397572,
+      "sha256": "1558de8ce1ae5efe050c67ce69e81ff1c2b3967758bdc54ff18895308550870a"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-raw/raw-2020.jsonl.gz": {
+      "bytes": 5448806,
+      "sha256": "351eb6b0fdf564b23a3ba7e075399101c71b1d8272bdf5147c1ff882930d0837"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-raw/raw-2021.jsonl.gz": {
+      "bytes": 5591741,
+      "sha256": "8bbd6233e448257d04c9d54002589518d1378e9f39218b5c93c16760d7834118"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-raw/raw-2022.jsonl.gz": {
+      "bytes": 5703846,
+      "sha256": "93a889893b2db4da23958d8d76addeda843e631ce20aa5c46cd77eaf5072ac76"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-raw/raw-2023.jsonl.gz": {
+      "bytes": 6464552,
+      "sha256": "16e18691cfaaa6c82cc6a19bcc8cef49611b944e30a1b62f6977224dd7c47609"
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/kr-raw/raw-2024.jsonl.gz": {
+      "bytes": 7347208,
+      "sha256": "1f9e1a3151cb87682355dd659d4bf2cabe9b3ce9c9f7dfa9c1bf098599260b76"
+    }
+  },
+  "status": "INPUT_DIAGNOSTICS_ONLY"
+}

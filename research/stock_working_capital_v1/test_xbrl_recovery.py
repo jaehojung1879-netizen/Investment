@@ -192,4 +192,18 @@ def test_regenerated_v2_receipts_and_measured_source_counts_are_consistent():
         assert quality["signals"][s]["researchEligibleObservations"] == 0  # pending F2, not silent550 approval
     for name, expected in report["codeSha256"].items():
         assert E.sha((root / name).read_bytes()) == expected
-    assert quality["sourceReceipts"]["codeSha256"] == E.sha(Path(Q.__file__).read_bytes())
+    # A retained old receipt identifies its producer, never a later repaired
+    # reader. Preserve its bytes/hash; the v3 diagnostic below pins current code.
+    import os
+    import subprocess
+    producer = subprocess.check_output([
+        "git", "cat-file", "blob",
+        "a5fef4a6d5c767056441d14e8e6aa8388f5507e9:research/stock_working_capital_v1/source_quality.py",
+    ], cwd=root.parents[1], env={**os.environ, "GIT_NO_LAZY_FETCH": "1"})
+    assert quality["sourceReceipts"]["codeSha256"] == E.sha(producer)
+    current = json.loads((root / "xbrl_recovery_v3/source-quality-v3.json").read_text())
+    assert current["sourceReceipts"]["codeSha256"] == E.sha(Path(Q.__file__).read_bytes())
+    assert current["sourceReceipts"]["acquisitionManifestSha256"] == report["originalRecoveryManifestSha256"]
+    assert current["sourceReceipts"]["measurementCoverageSha256"] == E.sha((root / "pit_measurement_v2/coverage.json").read_bytes())
+    assert current["signals"] == quality["signals"]
+    assert current["originalPackagesAcquiredUnverified"] == 0  # earlier blocked attempt, not API collection
