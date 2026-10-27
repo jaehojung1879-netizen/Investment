@@ -401,7 +401,8 @@ def verify_design(root=ROOT):
                "tests/test_market_research_c1c.py",
                "pipeline/market_research_reentry_structure.py", "tests/test_market_research_reentry_structure.py",
                "pipeline/market_research_c1c_contract.py", "tests/test_market_research_c1c_contract.py",
-               "pipeline/market_research_c1c_diagnostics.py", "tests/test_market_research_c1c_diagnostics.py", PROTOCOL_V2]
+               "pipeline/market_research_c1c_diagnostics.py", "tests/test_market_research_c1c_diagnostics.py",
+               "pipeline/market_research_c1c_decisions.py", "tests/test_market_research_c1c_decisions.py", PROTOCOL_V2]
     return {**program_readiness(), "status": "BLOCKED_PENDING_INDEPENDENT_AUDIT_AND_OWNER_APPROVAL",
             "designStructure": "VERIFIED", "protocolSha256": digest(protocol), "preservedFiles": len(pins["files"]),
             "legacyC1OnlyProposal": "EXPOSED_DESIGN_RECORD_NOT_EXECUTABLE_REGISTRATION",

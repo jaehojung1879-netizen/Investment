@@ -14,6 +14,7 @@ from . import market_research_c1c as C
 from . import market_research_reentry_structure as R
 from . import prospective_receipt_core as P
 from . import replay_calendar as RC
+from . import market_research_c1c_decisions as Q
 
 STUDY = 'rp1-c1c-prospective-design-v2'
 CONTROLS = ('C0', 'C1')
@@ -42,6 +43,8 @@ def contract():
         'proposedMinimumNonoverlappingBlocks': MIN_NONOVERLAPPING,
         'supportStatus': 'NEW_PROPOSED_FLOOR_NOT_POWER_GUARANTEE_OWNER_REVIEW_REQUIRED',
         'inference': 'NO_PVALUE_OR_SUPPORTED_VERDICT_WITHOUT_REGISTERED_CALIBRATION',
+        'descriptiveDecisionPolicy': Q.decision_policy(),
+        'krEconomicCash': 'ZERO_RATE_OPPORTUNITY_COST_SCENARIO_NOT_ACTUAL_SHORT_RATE_OR_CASH_SOURCE_ADMISSION',
         'historicalExecutionEnabled': False, 'liveWriterEnabled': False, 'productionAllowed': False}
 
 
@@ -50,7 +53,7 @@ def contract_digest():
 
 
 def implementation_digest():
-    paths = [Path(m.__file__) for m in (C, R, K, P, RC, C.U)] + [Path(__file__)]
+    paths = [Path(m.__file__) for m in (C, R, K, P, RC, C.U, Q)] + [Path(__file__)]
     return C.digest({p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in paths})
 
 

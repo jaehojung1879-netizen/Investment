@@ -104,9 +104,13 @@ def _summary(path):
     implementation = K.implementation_cost(path)
     initial = float(path.attrs.get("entryNotionalFraction", 0.0))
     final = float(path.attrs.get("exitNotionalFraction", 0.0))
+    intervals = path.dailyReturn.iloc[1:].to_numpy(float)
+    tail = np.sort(intervals)[:max(1, int(np.ceil(.05 * len(intervals))))]
     return {"valuationIntervals": len(path) - 1, "netCumulativeReturn": float(path.nav.iloc[-1] - 1),
             "netAnnualLogGrowth": float(np.log(path.nav.iloc[-1]) * 252 / (len(path) - 1)),
             "fundedMaxDrawdown": float(K.max_drawdown(np.r_[1.0, path.nav.to_numpy()])["maxDrawdown"]),
+            "dailyCvar95Loss": max(0.0, float(-tail.mean())),
+            "annualizedVolatility": float(np.std(intervals, ddof=1) * np.sqrt(252)) if len(intervals) > 1 else None,
             "meanIntervalExposure": _mean_exposure(path), "switches": implementation["multiplierSwitches"],
             "switchNotionalSumOfPreTradeNavFractions": implementation["tradedNotional"],
             "lifecycleOneWayTurnover": (implementation["tradedNotional"] + initial + final) / 2,
@@ -196,7 +200,26 @@ def _episode_rows(path, passive, episodes, market):
             "returnConvention": "CLOSE_TO_CLOSE_AFTER_PHASE_START; EXECUTION_CLOSE_RETURN_BELONGS_TO_PRIOR_HOLDING"}
 
 
-def synthetic_diagnostics(close, plan, selected, cash_returns, market, basis, stress, *, evidence_class, episodes=()):
+def _cash_basis(cash, market, basis, declared):
+    if basis == "C1_PRIMARY_REPLICA":
+        expected = "ZERO_CASH_NONINVESTABLE_INDEX_DIAGNOSTIC"
+    elif market == "KR":
+        expected = "KR_ZERO_RATE_OPPORTUNITY_COST_SCENARIO"
+    else:
+        expected = "US_UNSPECIFIED_SYNTHETIC_CASH_SCENARIO"
+    declared = expected if declared is None else declared
+    if basis == "C1_PRIMARY_REPLICA" and not (cash == 0).all():
+        raise ValueError("PRIMARY_REPLICA_REQUIRES_ZERO_CASH")
+    allowed = {expected}
+    if basis == "ETF_CASH_ECONOMIC":
+        allowed.add("KR_UNVERIFIED_DAILY_RATE_SENSITIVITY_SCENARIO" if market == "KR" else
+                    "US_SYNTHETIC_DTB3_PRIOR_KNOWN_ACT360")
+    if declared not in allowed or ("ZERO" in declared and not (cash == 0).all()):
+        raise ValueError("CASH_BASIS_OR_ZERO_RATE_SCENARIO_MISMATCH")
+    return declared
+
+
+def synthetic_diagnostics(close, plan, selected, cash_returns, market, basis, stress, *, evidence_class, episodes=(), cash_basis=None, cell_id=None):
     """Same-basis dynamic/static/passive paths and fixed-window diagnostics.
 
     No historical data option is exposed. An ETF basis here is invented ETF-TR
@@ -204,6 +227,7 @@ def synthetic_diagnostics(close, plan, selected, cash_returns, market, basis, st
     SPY/069500.KS identity, distributions, cash yields and rights.
     """
     selected, cash = _inputs(close, plan, selected, cash_returns, market, basis, stress, evidence_class)
+    cash_basis = _cash_basis(cash, market, basis, cash_basis)
 
     def replay(values):
         with np.errstate(over="ignore", divide="ignore", invalid="ignore"):
@@ -219,10 +243,25 @@ def synthetic_diagnostics(close, plan, selected, cash_returns, market, basis, st
     if not candidate.index.equals(static.index) or not candidate.index.equals(passive.index):
         raise ValueError("COMMON_VALUATION_CALENDAR_REQUIRED")
     summaries = {"candidate": _summary(candidate), "matchedStatic": _summary(static), "passive": _summary(passive)}
+    buy, sell = C.cost_rates(market, basis)
+    comparison = {"market": market, "basis": basis, "valuationIntervals": len(candidate) - 1,
+                  "calendarSha256": C.digest([str(d.date()) for d in candidate.index]),
+                  "assetSha256": C.digest([float(v) for v in close.reindex(candidate.index)]),
+                  "cashSha256": C.digest([float(v) for v in cash.reindex(candidate.index)]),
+                  "startDate": str(candidate.index[0].date()), "endDate": str(candidate.index[-1].date()),
+                  "costStress": stress, "buyCost": buy, "sellCost": sell, "cashBasis": cash_basis,
+                  "returnConvention": ("FUNDED_NET_ETF_TR_SAME_CLOSE_WITH_LIQUIDATION" if basis == "ETF_CASH_ECONOMIC"
+                                       else "NONINVESTABLE_PRICE_INDEX_UNFUNDED_START_NO_LIQUIDATION")}
     return {"market": market, "basis": basis, "costStress": stress, "evidenceClass": evidence_class,
+            "cellId": cell_id,
             "basisMeaning": "NONINVESTABLE_PRICE_INDEX_ZERO_CASH_DIAGNOSTIC" if basis == "C1_PRIMARY_REPLICA"
             else "SYNTHETIC_ETF_TOTAL_RETURN_CASH_ECONOMICS_NOT_VENDOR_PROOF",
             "historicalExecutionEnabled": False, "productionAllowed": False, "timingAlphaEstablished": False,
+            "comparisonBasis": comparison,
+            "cashInterpretation": {"basis": cash_basis, "sourceAdmitted": False,
+                "zeroCashIsActualShortRate": False, "cashManagementFeesAndTaxesAdmitted": False,
+                "meaning": "KR_ZERO_IS_OPPORTUNITY_COST_SCENARIO_NOT_ACTUAL_DEPOSIT_OR_BILL_RETURN" if market == "KR"
+                           else "SYNTHETIC_CASH_ARITHMETIC_NOT_PUBLICATION_OR_RIGHTS_PROOF"},
             "exposureMatch": match, "summaries": summaries,
             "candidateMinusMatchedStaticNetAnnualLogGrowth": summaries["candidate"]["netAnnualLogGrowth"] - summaries["matchedStatic"]["netAnnualLogGrowth"],
             "arithmeticAttribution": C.arithmetic_decomposition(candidate, close, cash),

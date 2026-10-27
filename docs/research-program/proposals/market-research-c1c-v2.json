@@ -44,6 +44,62 @@
   "proposedMinimumNonoverlappingBlocks": 8,
   "supportStatus": "NEW_PROPOSED_FLOOR_NOT_POWER_GUARANTEE_OWNER_REVIEW_REQUIRED",
   "inference": "NO_PVALUE_OR_SUPPORTED_VERDICT_WITHOUT_REGISTERED_CALIBRATION",
+  "descriptiveDecisionPolicy": {
+    "policyId": "C1C_V2_DESCRIPTIVE_DOMINANCE_PROPOSAL_V1",
+    "status": "PROPOSED_NOT_REGISTERED_NOT_AUTHORIZED",
+    "controlSelection": "C0_PRIMARY_C1_AUXILIARY_NEVER_RESULT_SELECTED",
+    "decisionMetrics": {
+      "netAnnualLogGrowth": 1,
+      "fundedMaxDrawdown": 1,
+      "dailyCvar95Loss": -1
+    },
+    "numericalEqualityTolerance": 1e-10,
+    "improved": "NO_DECISION_METRIC_WORSE_AND_AT_LEAST_ONE_STRICTLY_BETTER_AGAINST_BOTH_FIXED_COMPARATORS",
+    "notImproved": "NO_DECISION_METRIC_BETTER_AGAINST_EITHER_FIXED_COMPARATOR",
+    "tradeOff": "MIXED_METRIC_DIRECTIONS_OR_DISAGREEING_FIXED_COMPARATORS",
+    "inconclusive": "MISSING_INVALID_INCOMPLETE_UNMATURED_OR_UNEQUAL_COMPARISON_BASIS",
+    "fixedComparators": [
+      "SAME_FAMILY_C0_BASE",
+      "OWN_MEAN_INTERVAL_EXPOSURE_MATCHED_EX_POST_STATIC"
+    ],
+    "reentryComparisons": [
+      {
+        "family": "C1c-REENTRY-SPEED-ORIGINAL-STRUCTURAL",
+        "pairedComparisons": [
+          "REENTRY_MINUS_BASE",
+          "COMBINED_MINUS_HARD_EXIT"
+        ],
+        "mechanicalDirection": "NO_FASTER_THAN_MATCHED_MEMORYLESS_DESIRED_TARGET",
+        "desiredEconomicDirection": "NET_GROWTH_NOT_LOWER_AND_DOWNSIDE_RISK_NOT_WORSE",
+        "interpretation": "SLOWER_ONE_RUNG_REENTRY_MAY_AVOID_WHIPSAW_BUT_MISS_REBOUND"
+      },
+      {
+        "family": "POST_C1_RESULT_20_SESSION_BREAKOUT_SEPARATE",
+        "pairedComparisons": [
+          "REENTRY_MINUS_BASE",
+          "COMBINED_MINUS_HARD_EXIT"
+        ],
+        "mechanicalDirection": "FASTER_ONLY_WHEN_FAST_1_AND_STRICT_PRIOR_20_CLOSE_BREAKOUT",
+        "desiredEconomicDirection": "NET_GROWTH_NOT_LOWER_AND_DOWNSIDE_RISK_NOT_WORSE",
+        "interpretation": "POST_OUTCOME_NEW_PRICE_HYPOTHESIS_MAY_RECOVER_REBOUND_BUT_INCREASE_WHIPSAW"
+      }
+    ],
+    "returnInterpretation": "NET_GEOMETRIC_GROWTH_NOT_ARITHMETIC_SELECTION_ALPHA",
+    "tailRiskDefinition": "MAX_ZERO_NEGATIVE_MEAN_OF_WORST_CEIL_5_PERCENT_DAILY_NET_INTERVAL_RETURNS",
+    "tailEntryConvention": "FUNDED_ENTRY_IS_IN_CUMULATIVE_RETURN_AND_DRAWDOWN_NOT_A_TIME_INTERVAL",
+    "nonDecisionDiagnostics": [
+      "volatility",
+      "turnover",
+      "lossAvoidance",
+      "reboundOpportunityCost",
+      "arithmeticAttribution"
+    ],
+    "significanceOrPowerEstablished": false,
+    "minimumResearchSupportEstablished": false,
+    "ownerAuthorization": false,
+    "promotionAllowed": false
+  },
+  "krEconomicCash": "ZERO_RATE_OPPORTUNITY_COST_SCENARIO_NOT_ACTUAL_SHORT_RATE_OR_CASH_SOURCE_ADMISSION",
   "historicalExecutionEnabled": false,
   "liveWriterEnabled": false,
   "productionAllowed": false

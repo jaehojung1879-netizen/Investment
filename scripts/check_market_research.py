@@ -21,6 +21,7 @@ from pipeline import replay_calendar as RC  # noqa: E402
 from pipeline import rp1_c1_us_exposure as U  # noqa: E402
 from pipeline import market_research_c1c_contract as V  # noqa: E402
 from pipeline import market_research_c1c_diagnostics as D  # noqa: E402
+from pipeline import market_research_c1c_decisions as Q  # noqa: E402
 
 
 def fixture(market):
@@ -118,14 +119,19 @@ def synthetic_v2(market):
                 results[f"{basis}/x{stress}/{cell}"] = {"fundedNetReturn": float(path.nav.iloc[-1] - 1),
                     "netAnnualLogGrowth": float(np.log(path.nav.iloc[-1]) * 252 / (len(path) - 1)),
                     "entryFee": float(path.entryFee.sum()), "liquidationFee": float(path.liquidationFee.sum())}
-            if economic and cell.startswith(f"C0/{V.FAMILIES[0]}/"):
+            if economic and cell.startswith("C0/"):
                 matched[cell] = D.synthetic_diagnostics(prices, plan, selected, cash, market, basis, 1,
+                    cell_id=cell,
+                    cash_basis="US_SYNTHETIC_DTB3_PRIOR_KNOWN_ACT360" if market == "US" else None,
                     evidence_class=C.SYNTHETIC, episodes=({"episodeId": "FIXED_INVENTED_WINDOW_NOT_FITTED",
                         "startDate": str(prices.index[2].date()), "troughDate": str(prices.index[10].date()),
                         "endDate": str(prices.index[20].date())},))
         for stress in (1, 2, 3):
             contrasts[f"{basis}/x{stress}"] = V.family_contrasts({cell: results[f"{basis}/x{stress}/{cell}"]["netAnnualLogGrowth"]
                                                               for cell in V.cell_ids()})
+    support = {"windowMatured": True, "intendedIntervals": len(prices) - 1, "observedIntervals": len(prices) - 1}
+    readouts = {cell: Q.synthetic_readout(diagnostics, matched["/".join(cell.split("/")[:-1]) + "/BASE"], support=support)
+                for cell, diagnostics in matched.items() if not cell.endswith("/BASE")}
     signal = "2026-10-30"
     receipt = V.synthetic_receipt(market=market, signal_date=signal, created_at=C.final_at(signal, market).isoformat(),
         authorizing_merge_at="2026-10-26T00:00:00Z", layers={"slow": 0, "transition": 0, "fast": 1},
@@ -134,6 +140,8 @@ def synthetic_v2(market):
         "empiricalSupport": "NOT_TESTED", "sourceAdmitted": False, "productionAllowed": False,
         "historicalOutcomeExecutions": 0, "contract": V.contract(), "panel": panel,
         "allCellsBasesCosts": results, "pairedFamilyContrasts": contrasts, "matchedExposureSmokeChecks": matched,
+        "c0FixedDescriptiveReadouts": readouts,
+        "c0ReentryDirectionReadouts": Q.synthetic_reentry_contrasts(matched, support=support),
         "prospectiveDraft": V.prospective_schedule(market, "2026-10-26T00:00:00Z"),
         "receipt": receipt, "receiptValidation": V.validate_synthetic_receipts([receipt])}
 
