@@ -83,15 +83,18 @@ def inspect_zip(raw, corp_code, period_end_month):
         instances = [i for i in infos if i.filename.lower().endswith(".xbrl") and "/" not in i.filename
                      and "\\" not in i.filename]
         doc = z.read(instances[0]).decode("utf-8", "replace") if len(instances) == 1 else ""
-    year, month = period_end_month.split("-")
-    ends = set(re.findall(r"<(?:xbrli:)?endDate>\s*(\d{4}-\d{2})-\d{2}\s*</", doc))
-    instants = set(re.findall(r"<(?:xbrli:)?instant>\s*(\d{4}-\d{2})-\d{2}\s*</", doc))
+    periods = sorted(set(re.findall(r"<(?:xbrli:)?(?:endDate|instant)>\s*(\d{4}-\d{2})-\d{2}\s*</", doc)))
     identifiers = set(re.findall(r"<(?:xbrli:)?identifier[^>]*>\s*([^<\s]+)\s*</", doc))
+    # A later fiscal year's package also contains this year's contexts as comparatives, so "the period is present" would
+    # accept the wrong filing; the LATEST period in the instance must be the planned fiscal year end.
+    ifrs = sorted({m.group(1) + "=" + m.group(2).rsplit("/", 1)[-1] for m in re.finditer(r'xmlns:(ifrs[\w-]*)="([^"]+)"', doc)})
     return {"isZip": True, "members": len(names), "instanceFiles": len(instances),
             "instanceNamedForCorpCode": bool(instances) and instances[0].filename.startswith(corp_code + "_"),
             "entityIdentifierIsCorpCode": identifiers == {corp_code},
             "entityIdentifiers": sorted(identifiers)[:3],
-            "fiscalPeriodEndPresent": f"{year}-{month}" in ends | instants,
+            "latestPeriodMonth": periods[-1] if periods else None,
+            "latestPeriodEqualsFiscalEnd": bool(periods) and periods[-1] == period_end_month,
+            "ifrsNamespaces": ifrs,
             "backslashMemberNames": sum("\\" in n for n in names)}
 
 
@@ -107,7 +110,7 @@ def receipt(plan_path, out_dir, receipt_path):
             raise ValueError("RAW_CHANGED: " + e["receipt"])
         checks = inspect_zip(raw, t["corpCode"], t["periodEndMonth"])
         ok = checks.get("isZip") and checks.get("instanceNamedForCorpCode") and checks.get("entityIdentifierIsCorpCode") \
-            and checks.get("fiscalPeriodEndPresent")
+            and checks.get("latestPeriodEqualsFiscalEnd")
         rows.append({"receipt": e["receipt"], "corpCode": t["corpCode"], "ticker": t["ticker"],
                      "fiscalYear": t["fiscalYear"], "periodEndMonth": t["periodEndMonth"],
                      "availableFrom": t["availableFrom"], "route": "OPENDART_FNLTTXBRL_API",
