@@ -15,7 +15,7 @@ from . import market_research_reentry_structure as R
 TOLERANCE = 1e-10  # floating equality only; never a fitted economic hurdle
 MATCH_TOLERANCE = 1e-12
 _METRICS = {"netAnnualLogGrowth": 1, "fundedMaxDrawdown": 1, "dailyCvar95Loss": -1}
-_BASIS_KEYS = {"market", "basis", "valuationIntervals", "calendarSha256", "assetSha256", "cashSha256",
+_BASIS_KEYS = {"market", "basis", "valuationIntervals", "calendarSha256", "planSha256", "assetSha256", "cashSha256",
                "startDate", "endDate", "costStress", "buyCost", "sellCost", "returnConvention", "cashBasis"}
 
 
@@ -65,7 +65,7 @@ def _basis_valid(value):
             or not isinstance(value["basis"], str) or value["basis"] not in ("C1_PRIMARY_REPLICA", "ETF_CASH_ECONOMIC")
             or not isinstance(value["cashBasis"], str)):
         return False
-    for key in ("calendarSha256", "assetSha256", "cashSha256"):
+    for key in ("calendarSha256", "planSha256", "assetSha256", "cashSha256"):
         sha = value[key]
         if not isinstance(sha, str) or len(sha) != 64 or any(c not in "0123456789abcdef" for c in sha):
             return False

@@ -15,7 +15,7 @@ def report(values=None, static=None):
     return {"evidenceClass": "SYNTHETIC_FIXTURE", "market": "KR", "basis": "ETF_CASH_ECONOMIC",
             "cellId": "C0/C1c-REENTRY-SPEED-ORIGINAL-STRUCTURAL/BASE",
             "comparisonBasis": {"market": "KR", "basis": "ETF_CASH_ECONOMIC", "valuationIntervals": 126,
-                "calendarSha256": "1" * 64, "assetSha256": "2" * 64, "cashSha256": "3" * 64,
+                "calendarSha256": "1" * 64, "assetSha256": "2" * 64, "cashSha256": "3" * 64, "planSha256": "4" * 64,
                 "startDate": "2030-01-02", "endDate": "2030-07-02", "costStress": 1,
                 "buyCost": .00055, "sellCost": .00055,
                 "returnConvention": "FUNDED_NET_ETF_TR_SAME_CLOSE_WITH_LIQUIDATION",
@@ -65,7 +65,7 @@ def test_missing_or_impossible_measurements_abstain(fault):
     assert Q.synthetic_readout(report(candidate), report(), support=support())["verdict"] == "INCONCLUSIVE"
 
 
-@pytest.mark.parametrize("key", ["calendarSha256", "assetSha256", "cashSha256", "startDate", "endDate", "costStress", "buyCost", "cashBasis", "returnConvention"])
+@pytest.mark.parametrize("key", ["calendarSha256", "planSha256", "assetSha256", "cashSha256", "startDate", "endDate", "costStress", "buyCost", "cashBasis", "returnConvention"])
 def test_comparison_basis_cannot_change_between_candidate_and_control(key):
     control = report(); control["comparisonBasis"][key] = "DIFFERENT"
     out = Q.synthetic_readout(report(), control, support=support())
@@ -170,3 +170,32 @@ def test_reentry_contrasts_change_only_one_axis_and_preserve_both_families():
     first = next(iter(reports)); reports[first]["cellId"] = "C1/forged/BASE"
     with pytest.raises(ValueError, match="SAME_IDENTITY"):
         Q.synthetic_reentry_contrasts(reports, support=support())
+
+
+def test_same_prices_with_different_decision_schedules_are_not_a_paired_comparison():
+    from tests.test_market_research_c1c_diagnostics import fixture
+    from pipeline import market_research_c1c as C
+    from pipeline import market_research_c1c_diagnostics as D
+    close, plan, cash = fixture("KR")
+    sparse = plan.iloc[::2].copy()
+    family = "C0/C1c-REENTRY-SPEED-ORIGINAL-STRUCTURAL/"
+    def diagnostic(schedule, arm):
+        return D.synthetic_diagnostics(close, schedule, [.7] * len(schedule), cash, "KR",
+            "ETF_CASH_ECONOMIC", 1, evidence_class=C.SYNTHETIC, cell_id=family + arm)
+    a, b = diagnostic(plan, "REENTRY"), diagnostic(sparse, "BASE")
+    n = len(close) - 1
+    out = Q.synthetic_readout(a, b, support={"windowMatured": True, "intendedIntervals": n, "observedIntervals": n})
+    assert out["verdict"] == "INCONCLUSIVE"
+    assert "COMPARISON_BASIS_MISMATCH" in out["reasons"]
+
+
+def test_integer_valued_cost_stress_is_canonical_in_diagnostics_and_readout():
+    from tests.test_market_research_c1c_diagnostics import fixture
+    from pipeline import market_research_c1c as C
+    from pipeline import market_research_c1c_diagnostics as D
+    close, plan, cash = fixture("KR")
+    r = D.synthetic_diagnostics(close, plan, [.7] * len(plan), cash, "KR", "ETF_CASH_ECONOMIC", 1.0,
+        evidence_class=C.SYNTHETIC, cell_id="C0/C1c-REENTRY-SPEED-ORIGINAL-STRUCTURAL/BASE")
+    n = len(close) - 1
+    assert Q.synthetic_readout(r, r, support={"windowMatured": True, "intendedIntervals": n,
+        "observedIntervals": n})["verdict"] == "NOT_IMPROVED"

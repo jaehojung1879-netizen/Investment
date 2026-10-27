@@ -227,6 +227,7 @@ def synthetic_diagnostics(close, plan, selected, cash_returns, market, basis, st
     SPY/069500.KS identity, distributions, cash yields and rights.
     """
     selected, cash = _inputs(close, plan, selected, cash_returns, market, basis, stress, evidence_class)
+    stress = int(stress)  # validated integer-valued grid; canonical report type
     cash_basis = _cash_basis(cash, market, basis, cash_basis)
 
     def replay(values):
@@ -246,6 +247,9 @@ def synthetic_diagnostics(close, plan, selected, cash_returns, market, basis, st
     buy, sell = C.cost_rates(market, basis)
     comparison = {"market": market, "basis": basis, "valuationIntervals": len(candidate) - 1,
                   "calendarSha256": C.digest([str(d.date()) for d in candidate.index]),
+                  "planSha256": C.digest([
+                      {"decisionDate": pd.Timestamp(d).isoformat(), "executionDate": pd.Timestamp(e).isoformat()}
+                      for d, e in zip(plan.decisionDate, plan.executionDate)]),
                   "assetSha256": C.digest([float(v) for v in close.reindex(candidate.index)]),
                   "cashSha256": C.digest([float(v) for v in cash.reindex(candidate.index)]),
                   "startDate": str(candidate.index[0].date()), "endDate": str(candidate.index[-1].date()),
