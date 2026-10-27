@@ -1,4 +1,7 @@
-"""Invented diagnostics only; no source reader or historical outcome access."""
+"""Internal metric arithmetic only; public input authority is tested separately.
+
+These small report fixtures test proposed numeric policy, not authentication.
+"""
 from copy import deepcopy
 
 import pytest
@@ -37,7 +40,7 @@ def support(**kw):
     (summary(.04, -.09, .019), "TRADE_OFF"),
 ])
 def test_fixed_direction_rule_does_not_select_one_favorable_metric(candidate, verdict):
-    out = Q.synthetic_readout(report(candidate), report(), support=support())
+    out = Q._summary_readout(report(candidate), report(), support=support())
     assert out["verdict"] == verdict
     assert out["againstC0Base"]["verdict"] == verdict
     assert out["againstEqualExposureStatic"]["verdict"] == verdict
@@ -46,7 +49,7 @@ def test_fixed_direction_rule_does_not_select_one_favorable_metric(candidate, ve
 
 
 def test_beating_c0_without_beating_equal_exposure_static_is_not_improved():
-    out = Q.synthetic_readout(report(summary(.06), static=summary(.07)), report(), support=support())
+    out = Q._summary_readout(report(summary(.06), static=summary(.07)), report(), support=support())
     assert out["againstC0Base"]["verdict"] == "IMPROVED"
     assert out["againstEqualExposureStatic"]["verdict"] == "NOT_IMPROVED"
     assert out["verdict"] == "TRADE_OFF"
@@ -62,13 +65,13 @@ def test_missing_or_impossible_measurements_abstain(fault):
     if fault == "bool": candidate["fundedMaxDrawdown"] = True
     if fault == "negative_tail": candidate["dailyCvar95Loss"] = -.01
     if fault == "positive_drawdown": candidate["fundedMaxDrawdown"] = .01
-    assert Q.synthetic_readout(report(candidate), report(), support=support())["verdict"] == "INCONCLUSIVE"
+    assert Q._summary_readout(report(candidate), report(), support=support())["verdict"] == "INCONCLUSIVE"
 
 
 @pytest.mark.parametrize("key", ["calendarSha256", "planSha256", "assetSha256", "cashSha256", "startDate", "endDate", "costStress", "buyCost", "cashBasis", "returnConvention"])
 def test_comparison_basis_cannot_change_between_candidate_and_control(key):
     control = report(); control["comparisonBasis"][key] = "DIFFERENT"
-    out = Q.synthetic_readout(report(), control, support=support())
+    out = Q._summary_readout(report(), control, support=support())
     assert out["verdict"] == "INCONCLUSIVE" and "COMPARISON_BASIS_MISMATCH" in out["reasons"]
 
 
@@ -76,12 +79,12 @@ def test_comparison_basis_cannot_change_between_candidate_and_control(key):
                                           ("observedIntervals", 125), ("intendedIntervals", True)])
 def test_unmatured_or_incomplete_cohort_does_not_read_as_failure(field, value):
     s = support(); s[field] = value
-    assert Q.synthetic_readout(report(), report(), support=s)["verdict"] == "INCONCLUSIVE"
+    assert Q._summary_readout(report(), report(), support=s)["verdict"] == "INCONCLUSIVE"
 
 
 def test_numerical_equality_tolerance_is_fixed_and_not_an_economic_threshold():
     small = summary(.05 + 1e-12)
-    assert Q.synthetic_readout(report(small), report(), support=support())["verdict"] == "NOT_IMPROVED"
+    assert Q._summary_readout(report(small), report(), support=support())["verdict"] == "NOT_IMPROVED"
     assert Q.decision_policy()["numericalEqualityTolerance"] == 1e-10
     assert Q.decision_policy()["status"] == "PROPOSED_NOT_REGISTERED_NOT_AUTHORIZED"
 
@@ -89,10 +92,10 @@ def test_numerical_equality_tolerance_is_fixed_and_not_an_economic_threshold():
 def test_foreign_evidence_and_forged_static_match_do_not_get_verdict():
     r = report(); r["evidenceClass"] = "ACTUAL_HISTORY"
     with pytest.raises(ValueError, match="SYNTHETIC"):
-        Q.synthetic_readout(r, report(), support=support())
+        Q._summary_readout(r, report(), support=support())
     for changed in ({"matched": False}, {"residual": .1}, {"tolerance": 1.}, {"matched": 1}):
         r = report(); r["exposureMatch"].update(changed)
-        assert Q.synthetic_readout(r, report(), support=support())["verdict"] == "INCONCLUSIVE"
+        assert Q._summary_readout(r, report(), support=support())["verdict"] == "INCONCLUSIVE"
 
 
 def test_family_directions_cannot_turn_slow_structural_reentry_into_breakout():
@@ -108,7 +111,7 @@ def test_family_directions_cannot_turn_slow_structural_reentry_into_breakout():
 def test_inputs_are_immutable():
     a, b, s = report(), report(), support()
     original = deepcopy((a, b, s))
-    Q.synthetic_readout(a, b, support=s)
+    Q._summary_readout(a, b, support=s)
     assert (a, b, s) == original
 
 
@@ -116,7 +119,7 @@ def test_inputs_are_immutable():
                                           ("assetSha256", "x" * 64), ("buyCost", float("nan"))])
 def test_both_basis_contracts_are_validated_not_only_dict_equality(field, value):
     a, b = report(), report(); b["comparisonBasis"][field] = value
-    assert Q.synthetic_readout(a, b, support=support())["verdict"] == "INCONCLUSIVE"
+    assert Q._summary_readout(a, b, support=support())["verdict"] == "INCONCLUSIVE"
 
 
 def test_diagnostic_replay_supplies_bound_complete_metrics_and_cash_semantics():
@@ -128,7 +131,7 @@ def test_diagnostic_replay_supplies_bound_complete_metrics_and_cash_semantics():
     r = D.synthetic_diagnostics(close, plan, targets, cash, "KR", "ETF_CASH_ECONOMIC", 1, evidence_class=C.SYNTHETIC,
                                 cell_id="C0/C1c-REENTRY-SPEED-ORIGINAL-STRUCTURAL/BASE")
     n = len(close) - 1
-    out = Q.synthetic_readout(r, r, support={"windowMatured": True, "intendedIntervals": n, "observedIntervals": n})
+    out = Q._summary_readout(r, r, support={"windowMatured": True, "intendedIntervals": n, "observedIntervals": n})
     assert out["verdict"] == "NOT_IMPROVED"
     assert r["comparisonBasis"]["cashBasis"] == "KR_ZERO_RATE_OPPORTUNITY_COST_SCENARIO"
     assert r["summaries"]["candidate"]["dailyCvar95Loss"] >= 0
@@ -149,7 +152,7 @@ def test_diagnostic_replay_supplies_bound_complete_metrics_and_cash_semantics():
                                      "C0/C1c-REENTRY-SPEED-ORIGINAL-STRUCTURAL/REENTRY"])
 def test_control_identity_family_and_c0_role_are_fixed(cell_id):
     a, b = report(), report(); b["cellId"] = cell_id
-    assert Q.synthetic_readout(a, b, support=support())["verdict"] == "INCONCLUSIVE"
+    assert Q._summary_readout(a, b, support=support())["verdict"] == "INCONCLUSIVE"
 
 
 def test_reentry_contrasts_change_only_one_axis_and_preserve_both_families():
@@ -159,17 +162,17 @@ def test_reentry_contrasts_change_only_one_axis_and_preserve_both_families():
         for arm, value in (("BASE", .05), ("HARD_EXIT", .08), ("REENTRY", .06), ("COMBINED", .07)):
             key = f"C0/{family}/{arm}"
             reports[key] = report(summary(value)); reports[key]["cellId"] = key
-    out = Q.synthetic_reentry_contrasts(reports, support=support())
+    out = Q._summary_reentry_contrasts(reports, support=support())
     assert len(out) == 4
     for key, item in out.items():
         assert item["onlyChangedAxis"] == "REENTRY_RULE" and not item["nominationAllowed"]
         assert item["verdict"] == ("IMPROVED" if key.endswith("REENTRY_MINUS_BASE") else "NOT_IMPROVED")
     partial = dict(reports); partial.pop(next(iter(partial)))
     with pytest.raises(ValueError, match="COMPLETE_EIGHT"):
-        Q.synthetic_reentry_contrasts(partial, support=support())
+        Q._summary_reentry_contrasts(partial, support=support())
     first = next(iter(reports)); reports[first]["cellId"] = "C1/forged/BASE"
     with pytest.raises(ValueError, match="SAME_IDENTITY"):
-        Q.synthetic_reentry_contrasts(reports, support=support())
+        Q._summary_reentry_contrasts(reports, support=support())
 
 
 def test_same_prices_with_different_decision_schedules_are_not_a_paired_comparison():
@@ -184,7 +187,7 @@ def test_same_prices_with_different_decision_schedules_are_not_a_paired_comparis
             "ETF_CASH_ECONOMIC", 1, evidence_class=C.SYNTHETIC, cell_id=family + arm)
     a, b = diagnostic(plan, "REENTRY"), diagnostic(sparse, "BASE")
     n = len(close) - 1
-    out = Q.synthetic_readout(a, b, support={"windowMatured": True, "intendedIntervals": n, "observedIntervals": n})
+    out = Q._summary_readout(a, b, support={"windowMatured": True, "intendedIntervals": n, "observedIntervals": n})
     assert out["verdict"] == "INCONCLUSIVE"
     assert "COMPARISON_BASIS_MISMATCH" in out["reasons"]
 
@@ -197,5 +200,5 @@ def test_integer_valued_cost_stress_is_canonical_in_diagnostics_and_readout():
     r = D.synthetic_diagnostics(close, plan, [.7] * len(plan), cash, "KR", "ETF_CASH_ECONOMIC", 1.0,
         evidence_class=C.SYNTHETIC, cell_id="C0/C1c-REENTRY-SPEED-ORIGINAL-STRUCTURAL/BASE")
     n = len(close) - 1
-    assert Q.synthetic_readout(r, r, support={"windowMatured": True, "intendedIntervals": n,
+    assert Q._summary_readout(r, r, support={"windowMatured": True, "intendedIntervals": n,
         "observedIntervals": n})["verdict"] == "NOT_IMPROVED"

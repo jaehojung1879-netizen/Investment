@@ -7,8 +7,11 @@ It neither registers a hypothesis nor authorizes source use, execution or trades
 from __future__ import annotations
 
 import math
+from copy import deepcopy
 from numbers import Real
 from datetime import date
+
+import pandas as pd
 
 from . import market_research_reentry_structure as R
 
@@ -133,8 +136,8 @@ def _equivalent(candidate, control, support, *, control_arm="BASE"):
     return reasons
 
 
-def synthetic_readout(candidate_report, c0_base_report, *, support):
-    """Compare one fixed C0 cell to C0 BASE and its own ex-post static control.
+def _summary_readout(candidate_report, c0_base_report, *, support, rejection=None):
+    """Internal arithmetic over reconstructed reports, not report authentication.
 
     Both arguments must be generated on the same complete invented valuation
     window. Counts establish fixture completeness only. Weekly support, independent
@@ -145,6 +148,8 @@ def synthetic_readout(candidate_report, c0_base_report, *, support):
            for r in (candidate_report, c0_base_report)):
         raise ValueError("SYNTHETIC_READOUT_ONLY")
     reasons = _equivalent(candidate_report, c0_base_report, support)
+    if rejection:
+        reasons.append(rejection)
     first = second = {"verdict": "INCONCLUSIVE"}
     if not reasons:
         metrics = _summaries(candidate_report)
@@ -159,13 +164,13 @@ def synthetic_readout(candidate_report, c0_base_report, *, support):
             "status": "SYNTHETIC_DESCRIPTIVE_ONLY_PROPOSED_POLICY", "primaryControl": "C0",
             "staticComparatorMeaning": "EX_POST_FULL_PATH_MEAN_EXPOSURE_MATCH_NOT_A_TRADABLE_FORECAST",
             "interpretation": "RISK_RETURN_DOMINANCE_NOT_STATISTICAL_ALPHA_OR_ARITHMETIC_SELECTION",
-            "arithmeticAttribution": candidate_report.get("arithmeticAttribution"),
+            "arithmeticAttribution": None if rejection else candidate_report.get("arithmeticAttribution"),
             "statisticalAlphaEstablished": False, "minimumResearchSupportEstablished": False,
             "ownerAuthorization": False, "sourceAdmitted": False, "promotionAllowed": False}
 
 
-def synthetic_reentry_contrasts(reports, *, support):
-    """All four fixed one-axis C0 contrasts; no favorable family/control choice."""
+def _summary_reentry_contrasts(reports, *, support, rejection=None):
+    """Internal arithmetic over the complete reconstructed C0 report set."""
     families = (R.STRUCTURAL_HYPOTHESIS, R.BREAKOUT_HYPOTHESIS)
     expected = {f"C0/{family}/{arm}" for family in families for arm in ("BASE", "HARD_EXIT", "REENTRY", "COMBINED")}
     if not isinstance(reports, dict) or set(reports) != expected:
@@ -178,11 +183,78 @@ def synthetic_reentry_contrasts(reports, *, support):
         for changed, baseline in (("REENTRY", "BASE"), ("COMBINED", "HARD_EXIT")):
             a, b = (reports[f"C0/{family}/{arm}"] for arm in (changed, baseline))
             reasons = _equivalent(a, b, support, control_arm=baseline)
+            if rejection:
+                reasons.append(rejection)
             comparison = ({"verdict": "INCONCLUSIVE"} if reasons else
                           _compare(_summaries(a).get("candidate"), _summaries(b).get("candidate")))
             result[f"C0/{family}/{changed}_MINUS_{baseline}"] = {
-                **comparison, "reasons": reasons, "onlyChangedAxis": "REENTRY_RULE",
-                "hardExitMatched": baseline == "HARD_EXIT", "controlRole": "C0_PRIMARY",
+                **comparison, "reasons": reasons, "onlyChangedAxis": None if rejection else "REENTRY_RULE",
+                "hardExitMatched": None if rejection else baseline == "HARD_EXIT", "controlRole": "C0_PRIMARY",
                 "direction": "NET_GROWTH_NOT_LOWER_AND_DOWNSIDE_RISK_NOT_WORSE",
                 "statisticalAlphaEstablished": False, "nominationAllowed": False}
     return result
+
+
+_UNVERIFIED = "UNVERIFIED_REPORT_MAPPING_REQUIRES_PRIMITIVE_RECONSTRUCTION"
+
+
+def synthetic_readout(candidate_report, c0_base_report, *, support):
+    """Legacy summary input abstains: caller metrics/identity are not evidence.
+
+    Use synthetic_from_inputs to reconstruct targets, paths and comparators.
+    Re-signing a submitted summary cannot make its assertions authoritative.
+    """
+    return _summary_readout(candidate_report, c0_base_report, support=support, rejection=_UNVERIFIED)
+
+
+def synthetic_reentry_contrasts(reports, *, support):
+    """Legacy report mappings cannot establish the one-axis policy contrast."""
+    return _summary_reentry_contrasts(reports, support=support, rejection=_UNVERIFIED)
+
+
+def synthetic_from_inputs(close, states, plan, cash_returns, market, basis, stress, *,
+                          evidence_class, support, cash_basis=None, episodes=()):
+    """Reconstruct all fixed C0 policy cells from complete invented primitives.
+
+    No submitted target, cell label, metric, exposure-match flag or report digest
+    participates in a verdict. State domains/publication times and prior-close
+    breakout semantics are checked by the existing policy engine. The same
+    replay regenerates candidate, passive and full-path exposure-matched static
+    comparators, then internal arithmetic compares the fixed policy cells.
+
+    This establishes fixture consistency only. Caller-invented states are not
+    source-authenticated market states; no source, historical execution,
+    statistical support, economic materiality or promotion is authorized here.
+    """
+    from . import market_research_c1c as C
+    from . import market_research_c1c_contract as V
+    from . import market_research_c1c_diagnostics as D
+
+    if evidence_class != C.SYNTHETIC:
+        raise ValueError("SYNTHETIC_PRIMITIVE_READOUT_ONLY")
+    if (not isinstance(close, pd.Series) or not isinstance(cash_returns, pd.Series)
+            or not isinstance(states, pd.DataFrame) or not isinstance(plan, pd.DataFrame)):
+        raise ValueError("INVENTED_PRIMITIVE_TYPES_REQUIRED")
+    close, states, plan, cash = (v.copy(deep=True) for v in (close, states, plan, cash_returns))
+    if isinstance(episodes, (str, bytes, dict)):
+        raise ValueError("FIXED_EPISODE_SEQUENCE_REQUIRED")
+    try:
+        episodes = deepcopy(tuple(episodes))
+    except TypeError as exc:
+        raise ValueError("FIXED_EPISODE_SEQUENCE_REQUIRED") from exc
+    support = deepcopy(support)
+    panel = V.panel_targets(close, states, plan, market)
+    prices = close.loc[plan.executionDate.iloc[0]:]
+    reports = {}
+    for cell in V.cell_ids():
+        if cell.startswith("C0/"):
+            selected = [row["cells"][cell]["target"] for row in panel]
+            reports[cell] = D.synthetic_diagnostics(prices, plan, selected, cash, market, basis, stress,
+                evidence_class=C.SYNTHETIC, cell_id=cell, cash_basis=cash_basis, episodes=episodes)
+    readouts = {cell: _summary_readout(r, reports[cell.rsplit("/", 1)[0] + "/BASE"], support=support)
+                for cell, r in reports.items() if not cell.endswith("/BASE")}
+    return {"inputAuthority": "RECOMPUTED_INVENTED_PRIMITIVES_NOT_SOURCE_ADMISSION",
+            "evidenceClass": C.SYNTHETIC, "panel": panel, "diagnostics": reports,
+            "readouts": readouts, "reentryContrasts": _summary_reentry_contrasts(reports, support=support),
+            "stateProvenance": "CALLER_INVENTED_STATES_NOT_AUTHENTICATED_MARKET_SIGNALS",
+            "sourceAdmitted": False, "historicalExecutionEnabled": False, "promotionAllowed": False}
