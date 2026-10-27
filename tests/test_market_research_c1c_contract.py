@@ -97,6 +97,27 @@ def test_market_and_basis_disagreement_stop_promotion():
     assert not V.cross_market_verdict(both)['promotionAllowed']
 
 
+@pytest.mark.parametrize('verdict,status', [
+    ('TRADE_OFF', 'DESCRIPTIVE_TRADE_OFF_NO_PROMOTION'),
+    ('INCONCLUSIVE', 'INCONCLUSIVE_SUPPORT_OR_BASIS_NO_PROMOTION'),
+])
+def test_complete_descriptive_domain_reaches_cross_market_readout(verdict, status):
+    readings = {m: {'DIAGNOSTIC': verdict, 'ECONOMIC': verdict} for m in ('KR', 'US')}
+    assert V.cross_market_verdict(readings) == {
+        'status': status, 'promotionAllowed': False, 'scientificApproval': False}
+
+
+def test_incomplete_support_is_not_misreported_as_cross_market_disagreement():
+    readings = {m: {'DIAGNOSTIC': 'IMPROVED', 'ECONOMIC': 'IMPROVED'} for m in ('KR', 'US')}
+    readings['KR']['ECONOMIC'] = 'INCONCLUSIVE'
+    assert V.cross_market_verdict(readings)['status'] == 'INCONCLUSIVE_SUPPORT_OR_BASIS_NO_PROMOTION'
+    readings['US']['DIAGNOSTIC'] = 'BLOCKED'
+    assert V.cross_market_verdict(readings)['status'] == 'BLOCKED_SOURCE_OR_SUPPORT'
+    readings['US']['DIAGNOSTIC'] = 'UNREGISTERED'
+    with pytest.raises(ValueError, match='UNKNOWN_DESCRIPTIVE_VERDICT'):
+        V.cross_market_verdict(readings)
+
+
 def receipt(market='KR',signal='2026-10-30',previous=None):
     return V.synthetic_receipt(market=market,signal_date=signal,created_at=C.final_at(signal,market).isoformat(),
         authorizing_merge_at='2026-10-26T00:00:00Z',layers={'slow':0,'transition':0,'fast':1},breakout=True,

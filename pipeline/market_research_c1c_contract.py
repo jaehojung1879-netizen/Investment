@@ -188,14 +188,18 @@ def cross_market_verdict(readings):
     if set(readings) != {'KR', 'US'} or any(set(v) != {'DIAGNOSTIC', 'ECONOMIC'} for v in readings.values()):
         raise ValueError('COMPLETE_KR_US_TWO_BASIS_READINGS_REQUIRED')
     values = [v for market in readings.values() for v in market.values()]
-    if any(v not in ('IMPROVED', 'NOT_IMPROVED', 'BLOCKED') for v in values):
+    if any(v not in ('IMPROVED', 'NOT_IMPROVED', 'TRADE_OFF', 'INCONCLUSIVE', 'BLOCKED') for v in values):
         raise ValueError('UNKNOWN_DESCRIPTIVE_VERDICT')
     if 'BLOCKED' in values:
         state = 'BLOCKED_SOURCE_OR_SUPPORT'
+    elif 'INCONCLUSIVE' in values:
+        state = 'INCONCLUSIVE_SUPPORT_OR_BASIS_NO_PROMOTION'
     elif any(v['DIAGNOSTIC'] != v['ECONOMIC'] for v in readings.values()):
         state = 'BASIS_DEPENDENT_NO_PROMOTION'
     elif readings['KR']['DIAGNOSTIC'] != readings['US']['DIAGNOSTIC']:
         state = 'MARKET_DISAGREEMENT_NO_PROMOTION'
+    elif 'TRADE_OFF' in values:
+        state = 'DESCRIPTIVE_TRADE_OFF_NO_PROMOTION'
     else:
         state = 'DESCRIPTIVE_AGREEMENT_ONLY'
     return {'status': state, 'promotionAllowed': False, 'scientificApproval': False}
