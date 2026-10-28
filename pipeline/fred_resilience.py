@@ -270,9 +270,24 @@ def ml_input_coverage(avail, as_of, training_starts=None, policy=COVERAGE_POLICY
         return None, reasons + ["COVERAGE_POLICY_UNSET"]
     if not isinstance(policy, dict) or set(policy) != set(COVERAGE_POLICY_KEYS):
         raise ValueError("COVERAGE_POLICY_INCOMPLETE")
-    through = ml.get("allPresentThrough")
-    if through is None or (pd.Timestamp(as_of) - pd.Timestamp(through)).days > policy["maxStalenessDays"]:
+    # A missing/NaT decision date previously bypassed the staleness check.
+    try:
+        as_of_ts = pd.to_datetime(as_of, errors="coerce", utc=True)
+        through_ts = pd.to_datetime(ml.get("allPresentThrough"), errors="coerce", utc=True)
+    except (TypeError, ValueError, OverflowError):
+        as_of_ts, through_ts = None, None
+    as_of_valid = isinstance(as_of_ts, pd.Timestamp) and not pd.isna(as_of_ts)
+    through_valid = isinstance(through_ts, pd.Timestamp) and not pd.isna(through_ts)
+    if not as_of_valid:
+        reasons.append("AS_OF_UNSET" if as_of is None else "AS_OF_INVALID")
+    if not through_valid:
         reasons.append("ML_MACRO_SERIES_STALE")
+    if as_of_valid and through_valid:
+        age_days = (as_of_ts - through_ts).total_seconds() / 86400
+        if age_days < 0:
+            reasons.append("ML_MACRO_SERIES_FUTURE")
+        elif age_days > policy["maxStalenessDays"]:
+            reasons.append("ML_MACRO_SERIES_STALE")
     if ml.get("overlapVerified") and isinstance(macro, pd.DataFrame):
         cols = [c for c in ml.get("fetched", []) if c in macro.columns]
         if int(macro[cols].dropna().shape[0]) < policy["minOverlapObservations"]:

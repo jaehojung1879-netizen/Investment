@@ -293,6 +293,35 @@ def test_same_columns_but_unusable_coverage_is_degraded(case, reason):
     assert identity["effectiveModelId"] != "mv" and R.recording_decision(identity)["action"] == "HOLD"
 
 
+@pytest.mark.parametrize("bad_as_of,reason", [
+    (None, "AS_OF_UNSET"), ("NaT", "AS_OF_INVALID"), (pd.NaT, "AS_OF_INVALID"),
+    ("not-a-date", "AS_OF_INVALID"),
+])
+def test_unset_or_invalid_decision_date_cannot_reuse_registered_model(bad_as_of, reason):
+    days = pd.bdate_range("2011-01-03", "2026-09-14")
+    macro = _macro(days)
+    _, cols = _build(macro)
+    identity = R.model_identity("mv", cols, R.reference_feature_columns(SERIES), macro,
+                                _avail(macro), {"A": "2011-04-01"}, as_of=bad_as_of,
+                                coverage_policy=POLICY)
+    assert identity["variant"] == R.DEGRADED
+    assert reason in identity["coverageReasons"]
+    assert identity["effectiveModelId"] != "mv"
+    assert R.recording_decision(identity)["action"] == "HOLD"
+
+
+def test_future_last_macro_observation_cannot_be_registered():
+    days = pd.bdate_range("2011-01-03", "2026-09-14")
+    macro = _macro(days)
+    _, cols = _build(macro)
+    identity = R.model_identity("mv", cols, R.reference_feature_columns(SERIES), macro,
+                                _avail(macro), {"A": "2011-04-01"}, as_of="2026-09-11",
+                                coverage_policy=POLICY)
+    assert identity["variant"] == R.DEGRADED
+    assert "ML_MACRO_SERIES_FUTURE" in identity["coverageReasons"]
+    assert R.recording_decision(identity)["action"] == "HOLD"
+
+
 def test_coverage_policy_must_be_complete():
     with pytest.raises(ValueError):
         R.ml_input_coverage({"mlMacroSeries": {"missing": [], "overlapVerified": True}}, "2026-09-14", {}, {"maxStalenessDays": 7})
