@@ -51,6 +51,28 @@ def reviewed_filings(records):
                 key: record[key] for key in ("availableFrom", "acceptedDate")}} if changes else record)
     return accepted, rejected
 
+
+def reviewed_filing_shard(records, fiscal_year):
+    """Require the stated fiscal identity, not the storage writer's fallback.
+
+    Finnhub storage falls back to periodEnd when a vendor fiscal year is
+    unusable. That preserves bytes, but cannot authorize indexing e.g. 1215 as
+    a reported fiscal year. Do not infer a replacement or remove the issuer.
+    Noncalendar fiscal labels remain valid when they match their own shard.
+    """
+    accepted, rejected = reviewed_filings(records)
+    kept = []
+    for record in accepted:
+        year = record.get("fiscalYear")
+        if type(year) is not int or year != fiscal_year:
+            rejected.append({"id": record.get("id"), "ticker": record.get("ticker"),
+                             "reason": "FISCAL_YEAR_SHARD_IDENTITY_UNPROVEN",
+                             "expectedFiscalYear": fiscal_year, "reportedFiscalYear": year})
+        else:
+            kept.append(record)
+    return kept, rejected
+
+
 def normalized_cik(value):
     """A missing/malformed identifier is never a shared issuer identity."""
     import re

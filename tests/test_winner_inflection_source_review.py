@@ -12,6 +12,75 @@ from pipeline import winner_inflection_filing_review as F
 ROOT = Path(__file__).resolve().parents[1]
 
 
+@pytest.mark.parametrize("year", [1215, None, "2015", True])
+def test_fiscal_year_fallback_cannot_be_used_as_verified_filing_identity(year):
+    record = {"id": "SYN|accession", "ticker": "SYN", "fiscalYear": year,
+              "periodStart": "2015-01-01", "periodEnd": "2015-12-31",
+              "availableFrom": "2016-02-22", "acceptedDate": "2016-02-22 08:35:20"}
+    before = deepcopy(record)
+    good, withheld = F.reviewed_filing_shard([record], 2015)
+    assert not good
+    assert withheld == [{"id": record["id"], "ticker": "SYN",
+                         "reason": "FISCAL_YEAR_SHARD_IDENTITY_UNPROVEN",
+                         "expectedFiscalYear": 2015, "reportedFiscalYear": year}]
+    assert record == before
+
+
+def test_fiscal_shard_review_keeps_noncalendar_fiscal_labels_and_date_refusals():
+    record = {"id": "SYN|valid", "ticker": "SYN", "fiscalYear": 2011,
+              "periodStart": "2011-11-01", "periodEnd": "2012-01-31",
+              "availableFrom": "2012-03-05", "acceptedDate": "2012-03-05 16:06:48"}
+    missing_date = {**record, "id": "SYN|missing", "acceptedDate": None}
+    good, withheld = F.reviewed_filing_shard([record, missing_date], 2011)
+    assert good == [record]
+    assert [r["id"] for r in withheld] == ["SYN|missing"]
+    assert withheld[0]["reason"] == "BOTH_PUBLICATION_AND_ACCEPTANCE_DATES_REQUIRED"
+
+
+def test_withheld_fiscal_metadata_survives_preparation_without_deleting_security():
+    spec = json.loads((ROOT / A.SPEC_PATH).read_bytes())
+    data, _ = X.synthetic_fixture(spec)
+    ticker = sorted(data["filings"])[0]
+    good, withheld = F.reviewed_filing_shard([{**data["filings"][ticker][0], "fiscalYear": 1215}], 2015)
+    data["filings"][ticker] = good
+    data["withheldFilingMetadata"] = withheld
+    prepared = F.prepare_inputs(data)
+    assert ticker in prepared["filings"] and not prepared["filings"][ticker]
+    assert prepared["withheldFilingMetadata"] == withheld
+    assert prepared["membership"].snapshots == data["membership"].snapshots
+    assert F.prepare_inputs(prepared)["withheldFilingMetadata"] == withheld
+
+
+def test_metadata_funnel_keeps_departed_names_and_strict_signal_day_boundary(monkeypatch):
+    from scripts.inspect_wid_filing_dates import identity_census
+    from pipeline.regional_alpha_features import MembershipSnapshots
+    spec = json.loads((ROOT / A.SPEC_PATH).read_bytes())
+    spec.update(inputStart="2020-01-01", signalEnd="2020-01-10")
+    names = ["GOOD", "DEPARTED", "UNKNOWN_CIK", "NO_FILING", "MISMATCH", "EXCLUDED_INDUSTRY"]
+    members = MembershipSnapshots([{"date": "2019-12-31", "members": names}])
+    sectors = MembershipSnapshots([{"date": "2019-12-31", "rows": {
+        t: {"cik": None if t == "UNKNOWN_CIK" else "123", "sector": "Financials" if t == "EXCLUDED_INDUSTRY" else "Industrials"}
+        for t in names}}])
+    identities = [{"symbol": t, "cik": "124" if t == "MISMATCH" else "123",
+                   "sp500IdentityCategory": "DEPARTED_NO_PANEL_REASON_UNRESOLVED" if t == "DEPARTED" else "CURRENT_MEMBER_OWN_PANEL"}
+                  for t in names]
+    filings = [{"ticker": t, "cik": "123", "availableFrom": "2020-01-03" if t == "GOOD" else "2020-01-01",
+                "acceptedDate": "2020-01-03" if t == "GOOD" else "2020-01-01"} for t in names if t != "NO_FILING"]
+    monkeypatch.setattr(X, "observations", lambda *a: pytest.fail("no real observation/quote builder"))
+    monkeypatch.setattr(X, "execute", lambda *a, **k: pytest.fail("no executor"))
+    r = identity_census(spec, members, sectors, identities, filings)
+    assert r["weeklyDates"] == 2 and r["enumeratedMemberDates"] == 12
+    assert sum(r["firstMetadataReason"].values()) == 12
+    assert r["firstMetadataReason"]["CONDITIONAL_SCOPE_EXCLUDED:DEPARTED_NO_PANEL_REASON_UNRESOLVED"] == 2
+    assert r["firstMetadataReason"]["NO_STRICTLY_VISIBLE_FILING"] == 3
+    assert r["firstMetadataReason"]["PROVISIONAL_ISSUER_ONLY_NOT_SECURITY_ADMISSION"] == 1
+    assert r["securityShareClassVerified"] is r["comparableTotalReturnVerified"] is None
+    assert r["admittedMemberDates"] == 0
+    assert identity_census(spec, members, sectors, identities[::-1], filings[::-1]) == r
+    with pytest.raises(ValueError, match="DUPLICATE_SOURCE_IDENTITY_SYMBOL"):
+        identity_census(spec, members, sectors, identities + identities[:1], filings)
+
+
 @pytest.mark.parametrize("missing", ["availableFrom", "acceptedDate"])
 def test_wid_requires_both_dates_without_changing_shared_legacy_helper(missing):
     record = {"id": "SYNTHETIC", "ticker": "SYN", "availableFrom": "2020-01-01", "acceptedDate": "2020-01-02"}

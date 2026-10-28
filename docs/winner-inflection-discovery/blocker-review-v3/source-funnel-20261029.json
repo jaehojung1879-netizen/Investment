@@ -1,0 +1,228 @@
+{
+  "schema": "WID_OUTCOME_BLIND_SOURCE_FUNNEL_20261029",
+  "status": "BLOCKED",
+  "sourceCommit": "1bf68f59cffa20239977e2cfaa0f35a07d0ec884",
+  "metadataCommit": "002b56434e3aa3e845798ec2ea7ca6d9267e3f7a",
+  "specSha256": "e1d008b09b3ee99c17ac782dfb9393334aba29104244b385abd7841fe3941ca6",
+  "objectPreflight": {
+    "status": "READY",
+    "requiredObjects": 398,
+    "missingObjects": 0,
+    "missingPathsSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "missingExamples": [],
+    "payloadReads": 0
+  },
+  "filings": {
+    "records": 23940,
+    "tickers": 753,
+    "bothDatesFullyValid": 23939,
+    "withheld": [
+      {
+        "id": "TFC|0000092230-14-000014",
+        "ticker": "TFC",
+        "reason": "BOTH_PUBLICATION_AND_ACCEPTANCE_DATES_REQUIRED"
+      }
+    ],
+    "differentReviewedDays": 2258
+  },
+  "fiscalShardReview": {
+    "retained": 23935,
+    "retainedTickers": 753,
+    "withheld": [
+      {
+        "id": "TFC|0000092230-14-000014",
+        "ticker": "TFC",
+        "reason": "BOTH_PUBLICATION_AND_ACCEPTANCE_DATES_REQUIRED"
+      },
+      {
+        "id": "IPG|0000051644-16-000056",
+        "ticker": "IPG",
+        "reason": "FISCAL_YEAR_SHARD_IDENTITY_UNPROVEN",
+        "expectedFiscalYear": 2015,
+        "reportedFiscalYear": 1215
+      },
+      {
+        "id": "IPG|0000051644-17-000007",
+        "ticker": "IPG",
+        "reason": "FISCAL_YEAR_SHARD_IDENTITY_UNPROVEN",
+        "expectedFiscalYear": 2016,
+        "reportedFiscalYear": 1216
+      },
+      {
+        "id": "IPG|0000051644-18-000019",
+        "ticker": "IPG",
+        "reason": "FISCAL_YEAR_SHARD_IDENTITY_UNPROVEN",
+        "expectedFiscalYear": 2017,
+        "reportedFiscalYear": 1217
+      },
+      {
+        "id": "IPG|0000051644-19-000009",
+        "ticker": "IPG",
+        "reason": "FISCAL_YEAR_SHARD_IDENTITY_UNPROVEN",
+        "expectedFiscalYear": 2018,
+        "reportedFiscalYear": 1218
+      }
+    ],
+    "rawRecordsMutated": false,
+    "fiscalYearInferredOrRepaired": false
+  },
+  "universeFunnel": {
+    "enumeratedMemberDates": 209939,
+    "weeklyDates": 418,
+    "unknownUniverseDates": [],
+    "firstMetadataReason": {
+      "CONDITIONAL_SCOPE_EXCLUDED:ACQUIRED_OR_MERGED_TERMINATED": 384,
+      "CONDITIONAL_SCOPE_EXCLUDED:CURRENT_MEMBER_PANEL_LATE_START": 2011,
+      "CONDITIONAL_SCOPE_EXCLUDED:DEPARTED_NO_PANEL_REASON_UNRESOLVED": 40103,
+      "CONDITIONAL_SCOPE_EXCLUDED:PANEL_PARTIAL_OWN_HISTORY": 754,
+      "CONDITIONAL_SCOPE_EXCLUDED:SAME_SECURITY_RENAME": 3399,
+      "CONDITIONAL_SCOPE_EXCLUDED:TICKER_REUSE_DIFFERENT_ISSUER": 5618,
+      "DATED_ISSUER_CIK_UNRESOLVED": 157670
+    },
+    "enumeratedRowSha256": "09240317db65c101aaaa3d46ced5e6017947ad06e4cfb004f298b0a686426542",
+    "rights": "UNRESOLVED",
+    "securityShareClassVerified": null,
+    "comparableTotalReturnVerified": null,
+    "admittedMemberDates": 0,
+    "limitation": "Zero admitted is the closed review gate, not zero economically eligible names. Unverified source quantities are null. All scoped-out/terminal/reused names remain in the enumerated denominator."
+  },
+  "identityInventory": {
+    "status": "UNRESOLVED",
+    "metadataRows": 885,
+    "categories": {
+      "": 58,
+      "ACQUIRED_OR_MERGED_TERMINATED": 1,
+      "CURRENT_MEMBER_OWN_PANEL": 496,
+      "CURRENT_MEMBER_PANEL_LATE_START": 7,
+      "DEPARTED_NO_PANEL_REASON_UNRESOLVED": 181,
+      "PANEL_PARTIAL_OWN_HISTORY": 2,
+      "REMOVED_FROM_INDEX_STILL_TRADING": 97,
+      "SAME_SECURITY_RENAME": 14,
+      "TICKER_REUSE_DIFFERENT_ISSUER": 29
+    },
+    "inScopeCategoryRows": 593,
+    "inScopeMissingOrMalformedCik": 0,
+    "malformedDatedCik": [
+      {
+        "date": "2023-08-03",
+        "ticker": "AOS",
+        "value": "4343243243432434"
+      }
+    ],
+    "required": "Dated issuer AND share-class provenance of each admitted price panel. Matching issuer CIKs cannot certify which security produced the prices.",
+    "fix": "Missing, zero and malformed CIKs fail closed; no ticker or issuer substitution. The 2023 malformed source row is outside this fixed 2020 signal window."
+  },
+  "returns": {
+    "status": "UNRESOLVED",
+    "monthlyActionComponents": 127,
+    "spyActionRows": 0,
+    "spyDividendRows": 0,
+    "necessaryReconstructionGate": "SPY_NATIVE_RECONSTRUCTION_REQUIRES_DISTRIBUTION_HISTORY",
+    "required": "Native stock/SPY quote provenance, currency/share units, complete distributions and actions with independent evidence. Existing index plus missing SPY actions cannot be inverted into native prices.",
+    "fix": "Loader rejects missing SPY distribution history before native-price reconstruction. Presence of one event is necessary, never sufficient proof of completeness."
+  },
+  "rights": {
+    "status": "UNRESOLVED",
+    "termsRetrieved": [
+      {
+        "source": "yahoo",
+        "url": "https://legal.yahoo.com/us/en/yahoo/terms/otos/index.html",
+        "status": 200,
+        "finalUrl": "https://legal.yahoo.com/us/en/yahoo/terms/otos/index.html",
+        "sha256": "4bcdd5402dcb56638165e1566de0c6a980b31a42eb3ab7ff092e1f9dacb2a257",
+        "bytes": 167945
+      },
+      {
+        "source": "finnhub",
+        "url": "https://finnhub.io/terms-of-service",
+        "status": 200,
+        "finalUrl": "https://finnhub.io/terms-of-service",
+        "sha256": "24ce22b3a68b4597b0f3f9fa43506d6320c068d7ab07faa2c483ca9ccd1c1f8c",
+        "bytes": 15739
+      }
+    ],
+    "finding": "Current Yahoo terms require express prior permission for automated collection; Finnhub states personal-use limits and written approval for redistribution or sharing derived results. No applicable retained account entitlement or historical retention/reuse grant was found. Public accessibility and code licenses are insufficient; current terms do not establish original-collection entitlement. No new price/fundamental vendor requests made.",
+    "termsQuotes": {
+      "yahoo": "access or collect data ... using any automated means ... without our express, prior permission.",
+      "finnhub": "All plan listed on Finnhub website is strictly for personal use unless explicitly stated otherwise."
+    }
+  },
+  "externalReviewEvidence": {
+    "committedReportSha256": "cb894fecb4935c2a06b784ebceee1727c1aabb079e4e94459a742a6044a14977",
+    "allCitationsPinCommittedReport": true,
+    "locallyByteVerified": false,
+    "portableFromGitAlone": false,
+    "limitation": "Absolute external evidence references need explicit authorized materialization. Local availability never implies clean-environment availability; admission remains BLOCKED without exact bytes."
+  },
+  "sourceReceipts": {
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2011.jsonl.gz": {
+      "sha256": "023a2f3a0ce111a3e91d1565d39cc382607a44b75850b92899211931d026ea8c",
+      "bytes": 53049
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2012.jsonl.gz": {
+      "sha256": "5e5fa041838be0c2c077fd8ee94dffe840db713f0e6213837b679ad3c34e7b27",
+      "bytes": 2928651
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2013.jsonl.gz": {
+      "sha256": "29135f2c7544bea499a15b0cfd49525260304bdf33e83815f621fdcadf9b0f95",
+      "bytes": 3044151
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2014.jsonl.gz": {
+      "sha256": "2216355dfd621570f463f7bd8901ae1fea17a004a5c710764f5addaf457b3177",
+      "bytes": 2767114
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2015.jsonl.gz": {
+      "sha256": "be5cf365cce7f14682ccba551a79d5064ebcbd70163c0c2fb0359a959f5c0648",
+      "bytes": 2650151
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2016.jsonl.gz": {
+      "sha256": "6c48667b143891e8ce28caf65fc5c8464c410de2064e3b7597c163e73150cd50",
+      "bytes": 2627403
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2017.jsonl.gz": {
+      "sha256": "6fe3dbc7a26715738e763d81ae2a0b65c9d26470a716bc5dcdba425ad5f5c6ba",
+      "bytes": 2640618
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2018.jsonl.gz": {
+      "sha256": "71a95470b3cadff59838cd7889e8c36fc63737aed54b710f3110cc0322029617",
+      "bytes": 2651552
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2019.jsonl.gz": {
+      "sha256": "4e5947ff06ab2cbc37d0afdd0a681dac66db63f4c67e72825347cc59dc4ed65d",
+      "bytes": 2973829
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2020.jsonl.gz": {
+      "sha256": "2b921e4bb1fdd8b47ded342c2234633ab2f3820db8e588b41fe8322a9919d11a",
+      "bytes": 2879778
+    },
+    "1bf68f59cffa20239977e2cfaa0f35a07d0ec884:ledger/fundamentals/us/finnhub-2021.jsonl.gz": {
+      "sha256": "89975f24adcdf9f4b1d3252b129994ca2cd182e72fc6855f1cd5d1f1f899c8f1",
+      "bytes": 2874927
+    },
+    "002b56434e3aa3e845798ec2ea7ca6d9267e3f7a:data/research/us-dual-benchmark-v1/us-universe-coverage-manifest.csv.gz": {
+      "sha256": "b1f5fbbafeb4f7dd4b50534cd86e9942233ae3d5f94922970a7c854569c5bfb1",
+      "bytes": 14174
+    },
+    "002b56434e3aa3e845798ec2ea7ca6d9267e3f7a:research_specs/alpha-opportunity-model-v1-us-membership.json.gz": {
+      "sha256": "397b27270255d7a14a36d075a3e2889129d9351d817420614c8ccd289d74c30f",
+      "bytes": 15697
+    },
+    "002b56434e3aa3e845798ec2ea7ca6d9267e3f7a:data/research/us-capital-allocation-alpha-v1/sp500-snapshot-sectors.json.gz": {
+      "sha256": "f49c15a0ebcd371c9a407118abb6ef350bba2060227ca40d61ba210fc4f81a74",
+      "bytes": 73396
+    }
+  },
+  "fullCensusCommand": "python scripts/inspect_wid_filing_dates.py --inspect",
+  "outcomeReads": 0,
+  "quotePayloadReads": 0,
+  "modelFits": 0,
+  "executionAuthorization": false,
+  "productionEffect": "NONE",
+  "authorValidationOnly": true,
+  "codeHashes": {
+    "pipeline/winner_inflection_filing_review.py": "269e0e870d568e323f3cf94e1e3283b8bab1a6019683b0c0fd244df5139c3321",
+    "scripts/inspect_wid_filing_dates.py": "73945a4a645652c2ed716c06af0beba7aa28bc0e96d88caefeb4ab084fbff630",
+    "scripts/run_winner_inflection.py": "d7a479bed9c5f45676d03ae804ab960204ccb5ab68eb1c5aea4f6896adf62858",
+    "tests/test_winner_inflection_source_review.py": "c522632be73e11f0d076e805d34278b6e14c06d40786482ca429c71345b8aa13"
+  }
+}

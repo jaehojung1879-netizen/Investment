@@ -110,8 +110,14 @@ def load_permitted(root, spec, review, permit):
         raise ValueError("SPY_CASH_RETURN_BASIS_UNRESOLVED:" + basis_problems["SPY"])
     prices = pd.DataFrame(economic_columns)
     grouped = defaultdict(list)
+    withheld = []
     for year in range(2011, spec["sourceWindow"]["lastFilingFiscalYear"] + 1):
-        for row in source.rows(f"ledger/fundamentals/us/finnhub-{year}.jsonl.gz"):
+        records = source.rows(f"ledger/fundamentals/us/finnhub-{year}.jsonl.gz")
+        for row in records:
+            grouped.setdefault(row["ticker"], [])  # preserve a wholly withheld issuer
+        accepted, rejected = F.reviewed_filing_shard(records, year)
+        withheld.extend(rejected)
+        for row in accepted:
             grouped[row["ticker"]].append(row)
     identity = list(csv.DictReader(io.StringIO(gzip.decompress(source.local(S.US_IDENTITY)).decode())))
     if len({r["symbol"] for r in identity}) != len(identity):
@@ -129,7 +135,8 @@ def load_permitted(root, spec, review, permit):
         terminal = json.loads(path.read_bytes())
     source_evidence = W.Source("git:raw-input-bundle:" + S.SOURCE_COMMIT, RI.digest(source.receipts), S.SOURCE_COMMIT, None, "NOT_RETAINED")
     return F.prepare_inputs({"source": source_evidence, "asOf": evidence["authorizedAt"], "prices": prices, "volumes": volume, "asTraded": as_traded,
-            "events": events, "filings": grouped, "identity": {r["symbol"]: r for r in identity},
+            "events": events, "filings": grouped, "withheldFilingMetadata": withheld,
+            "identity": {r["symbol"]: r for r in identity},
             "membership": membership, "industries": industries, "terminal": terminal, "receipts": source.receipts, "lineage": lineage,
             "vendorPrices": vendor_prices, "basisProblems": basis_problems})
 
