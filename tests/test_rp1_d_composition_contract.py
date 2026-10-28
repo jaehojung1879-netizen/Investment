@@ -270,3 +270,43 @@ def test_non_mapping_a_input_fails_closed(bad):
 def test_untrusted_b_content_is_not_copied_or_fatal(adv):
     out = D.compose(b={"adverse": adv})
     assert out["b"]["observedState"] == "UNRECOGNISED_INPUT_IGNORED"
+
+
+@pytest.mark.parametrize("definition", ["UNRESOLVED", "SINGLE_COST_DEDUCTION"])
+@pytest.mark.parametrize("field", ["expectedNetExcessPct", "uncertaintyPct", "roundTripCostPct"])
+@pytest.mark.parametrize("basis", D.COST_BASES)
+@pytest.mark.parametrize("value", [10**400, -(10**400)])
+def test_unrepresentable_json_integer_retains_passive_default(monkeypatch, definition, field, basis, value):
+    # Reproduced on main: GROSS expected excess 10**400 raised OverflowError,
+    # even while the definition was UNRESOLVED. No empirical return is read.
+    monkeypatch.setattr(D, "EXPECTED_EXCESS_DEFINITION", definition)
+    out = D.compose({"KR": _h(excessCostBasis=basis, **{field: value})})
+    assert "A_NUMERIC_FIELD_UNAVAILABLE" in out["regions"]["KR"]["reasons"]
+    assert out["status"] == "BLOCKED_NO_VALIDATED_SELECTION_INPUT"
+    assert out["defaultPolicy"] == D.DEFAULT_POLICY
+    assert out["shadowCandidates"] == out["activeNames"] == []
+    assert out["productionAffected"] is False
+
+
+@pytest.mark.parametrize("a", [None, {"KR": {"A-H1": True}}, {"KR": _h()}])
+def test_actual_b_c_preview_interfaces_cannot_activate_a_book(a):
+    import numpy as np
+    import pandas as pd
+
+    from pipeline import rp1_b_state_receipt as B
+    from pipeline import rp1_c_risk_state_receipt as C
+
+    # Invented falling index, sufficient past-only data, no receipt or outcome writer.
+    dates = pd.bdate_range("2023-01-02", "2026-10-16")
+    b = B.build_preview(pd.Series(np.linspace(200.0, 100.0, len(dates)), index=dates), "2026-10-16")
+    c = C.build_preview("2026-10-16", slow=0, transition=0, fast=2)
+    assert b["adverse"] is True
+    assert b["ledgerWritten"] is c["ledgerWritten"] is False
+    out = D.compose(a, b=b, c=c)
+    assert out["status"] == "BLOCKED_NO_VALIDATED_SELECTION_INPUT"
+    assert out["defaultPolicy"] == D.DEFAULT_POLICY
+    assert out["activeNames"] == out["shadowCandidates"] == []
+    assert out["b"]["observedState"] is True and out["b"]["used"] is False
+    assert out["c"]["approved"] is out["c"]["used"] is False
+    assert out["productionAffected"] is False
+    assert D.assert_no_allocation(out)

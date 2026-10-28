@@ -1,0 +1,143 @@
+{
+  "studyId": "rp1-b-h1-state-v1",
+  "track": "B",
+  "hypothesisId": "B-H1",
+  "status": "PREREGISTERED_PROSPECTIVE_STATE_RECORD",
+  "evidenceClass": "PROSPECTIVE_PAPER",
+  "objective": "Record, on every KR weekly decision session from registration onward, the B-H1 market state that was observable at that session's close, before the next session opens, so that a future state-conditional comparison can be made on a sample that did not exist when B-H1 was written.",
+  "registrationStatement": [
+    "Merging the change that adds this file is the authorization to record STATE receipts. The first eligible signal session is the first KR weekly decision session strictly after the KST date of that merge and not before firstEligibleSignalSessionFloor.",
+    "This spec registers state observation ONLY. It does not register the H63 outcome evaluation of B-H1 (outcomeEvaluation.status), which needs its own registered contract before the first receipt's H63 maturity session closes; until then nothing reads a forward price or a stock cross-section.",
+    "A changed definition, source, window, threshold or recording rule is a new study version with its own ledger; this spec and its ledger are never edited, rescored or restarted."
+  ],
+  "historicalEvidenceStatement": [
+    "B-H1 was written in docs/research-program/03-studies-abc-ko.md (B.3) from Daniel-Moskowitz 2016, before any KR outcome of it was read. The README B diagnostic counted only state geometry (296 adverse / 418 other weekly states, 53 H63 blocks) from the retained FDR_KS200 index levels and computed no momentum spread, price label or inference.",
+    "KR historical alpha research is closed (Phase D). Nothing here re-reads, re-tests or re-optimizes it; the historical block count is not a GO for historical inference."
+  ],
+  "stateDefinition": {
+    "definition": "B-H1: FAST == 2 OR trailing 24-calendar-month index return < 0",
+    "origin": "docs/research-program/03-studies-abc-ko.md B.2 (MARKET_OBSERVED FAST, sealed KR definition) and B.3 (B-H1); rp1_b_state_receipt.DEFINITION (#264 preview), byte-identical",
+    "fast": "kr_market_risk_model.fast_states (sealed kr-market-risk-model-v1 FAST: close below the mean of the last 200 closes, plus annualised 63-session volatility above 25%), on the 201 KRX sessions ending at the signal session",
+    "trailing24mReturn": "close(signal session) / close(base) - 1, where base is the last KRX session on or before the signal date minus 24 calendar months, from the pinned calendar; the exact session must carry a traded close (no staleness tolerance; rp1_b_state_receipt.observe)",
+    "combination": "adverse is True if either determined leg is adverse (FAST == 2, or return < 0); None if neither determined leg is adverse and a leg is undetermined; False only when both legs are determined and benign. A missing leg is never benign.",
+    "unchanged": "No window, threshold, lag, lookback or horizon differs from 03-studies-abc-ko.md B-H1 or the sealed FAST. The only additions are integrity rules that can remove a leg, never add one."
+  },
+  "reference": {
+    "sourceId": "FDR_KS200",
+    "instrument": "KOSPI 200 price index",
+    "route": "FinanceDataReader.DataReader('KS200') -> KrxIndexReaderCache (yearly CSV files of FinanceData/fdr_krx_data_cache)",
+    "vendorPackage": "finance-datareader==0.9.110",
+    "whyThisSource": "the sealed FAST input of kr-market-risk-model-v1 (inputs.sources.reference = FDR_KS200) and the series the README B diagnostic used; same instrument, same route, already pinned in requirements.txt",
+    "fallback": "none. Another vendor or another instrument is never substituted when this one fails (benchmark acquisition invariants v2.8); a failure is DEFERRED and, if the window closes, a missed week",
+    "rightsAndStorage": "the receipt stores no vendor rows: only derived state values, the served date range and row count, and SHA-256 identities of the served rows and of the calendar-aligned window",
+    "knownRouteBehaviour": "the route reads one CSV per calendar year and silently skips a year that fails to download, so a transient failure can return a shortened series with no error; the calendar alignment below turns that into window holes rather than a shorter window"
+  },
+  "integrity": {
+    "calendar": "the served frame is aligned to the pinned KRX calendar (pipeline.kr_bar_integrity.calendar_frame): a session with no row is SESSION_MISSING, a row with a missing, non-finite or negative volume is VOLUME_INVALID, zero volume is SUSPENDED, an invalid close is CLOSE_INVALID; none of them carries a close and nothing is filled, carried or interpolated",
+    "signalSession": "the signal session itself must carry a traded close; otherwise the attempt is DEFERRED (the provider has not served it yet) and no receipt is written",
+    "afterSignal": "any served row dated after the signal session REFUSES the attempt (nothing can trade between the signal close and the next open); it is never silently dropped",
+    "duplicates": "duplicate served dates REFUSE the attempt",
+    "offCalendarRows": "a served row on a day the calendar says was closed, inside the 201-session FAST window, removes the FAST leg (FAST_WINDOW_OFF_CALENDAR_ROW); one after the expected 24-month base session and on or before the 24-month target date removes the return leg (TRAILING_24M_BASE_OFF_CALENDAR_ROW)",
+    "windowHoles": "a FAST window session without a traded close removes the FAST leg (FAST_DATA_INSUFFICIENT); a base session without a traded close removes the return leg (TRAILING_24M_BASE_UNAVAILABLE)"
+  },
+  "schedule": {
+    "signalSessions": "KR weekly decision sessions: a KR session whose next KR session falls in a later ISO week (prospective_receipt_core.is_weekly_decision_session)",
+    "sessionChoice": "decided by the writer's own clock alone: the latest KR session whose close was final (18:00 KST) at the moment of the run; no site artifact is read",
+    "firstEligibleSignalSessionFloor": "2026-10-30",
+    "receiptWindow": "created by the writer's own clock after 18:00 KST of the signal session and before 09:00 KST of the next KR session (prospective_receipt_core.check_timing). createdAtUtc is restamped with the clock after the download and checked again immediately before the bytes are written (kr_selection_challenger.append_live_receipt); a window that closes during recording is REFUSED and nothing is appended; exactly 09:00 KST is outside",
+    "finalAttemptHours": 24,
+    "providerGapRule": "a leg removed by an integrity rule is DEFERRED while the next KR open is more than finalAttemptHours away and recorded as undetermined, with its reason, inside the last finalAttemptHours; a missing signal-session close is never recorded",
+    "runner": "scripts/update_ledger.py (the paper-ledger step of .github/workflows/ledger.yml) calls scripts/record_rp1_b_h1_state.run_isolated after Track A's recorders. It runs in a child process with a 600-second timeout; a refusal, exception, crash or timeout is written to this study's own publication-status files and a workflow warning, and never costs the paper ledger, Track A or the commit step. No workflow file is changed (.github/workflows is tree-pinned by rp1-wp2-us-universe-v1).",
+    "expectedCadence": "The 00:10 UTC cron starts about 04:30 UTC. The Saturday run records Friday's session when the provider is complete (it defers a provider gap, the next open being ~43.5 hours away); the Sunday run (~19.5 hours before Monday's open) is the final attempt. Weekday runs fall outside any window and skip.",
+    "dependsOn": "the ledger workflow's build and validation steps must succeed for scripts/update_ledger.py to run; a day on which they fail records nothing for any study"
+  },
+  "attemptClasses": {
+    "RECORDED": "one receipt appended",
+    "SKIPPED": "not this run's turn: outside a weekly decision session's window, before the floor or the first prospective session, or already recorded",
+    "DEFERRED": "the provider has not served what the receipt needs (fetch failure, empty response, no traded signal-session close, or a window hole before the final attempt); nothing written, logged in attempts.jsonl, retried by a later run in the window",
+    "REFUSED": "an integrity failure (moved code or dependency, unregistered spec, broken ledger chain, rows after the signal session, duplicate dates, changed vendor package, a window that closed during recording); nothing written, logged, workflow warning",
+    "MISSED": "a weekly decision session whose window closed with no receipt; coverage.json is written on every run, with or without receipts (registration from the first receipt, else from git, main-only), and lists it with its last attempt or NO_ATTEMPT_RECORDED from the moment its window closes; never back-filled"
+  },
+  "ledger": {
+    "location": "signal-history ledger/research-strategies/rp1-b-h1-state-v1/",
+    "receipts": "receipts.jsonl: canonical JSON Lines (prospective_receipt_core.canonical), one row per (studyId, signalDate), strictly increasing signal dates, one spec digest per ledger, receiptSha256 over every other field",
+    "chain": "previousReceiptSha256 names the previous row's receiptSha256 (null for the first), so a deleted, reordered or inserted row is refused; every read re-validates every row's digest AND re-derives its legs, adverse state, base session, sessions and window from the calendar. A chain cannot see its own tail being cut, so the tail is anchored separately (gitAnchor).",
+    "independence": "separate from Track A (kr-selection-challenger-v1/v2), Track C and every sealed study's receipts; shares only prospective_receipt_core",
+    "gitAnchor": "Every LIVE receipt carries ledgerAnchor: the signal-history HEAD it was appended to, how many receipts that commit held and the digest of the last one. Before any append, and before every REGISTERED coverage report including one over zero rows (a failure publishes LEDGER_INTEGRITY_FAILED and no session counts), rp1_b_h1_state.ledger_anchor requires every version of receipts.jsonl in git history to be a byte prefix of the next and of the working file (a committed truncation is LEDGER_HISTORY_NOT_APPEND_ONLY, an uncommitted cut LEDGER_TAIL_REWRITTEN), and verify_row_anchors requires every receipt's anchor commit to still be an ancestor of HEAD holding exactly the rows it claims (a rewritten history is LEDGER_ANCHOR_COMMIT_NOT_IN_HISTORY or LEDGER_ANCHOR_CONTENT_MISMATCH). A ledger outside a git repository cannot hold a LIVE receipt (LEDGER_ANCHOR_UNAVAILABLE). The ledger workflow's 'git fetch origin signal-history' fetches the branch's full history even from a depth-1 checkout (measured 2026-10-24: 693 commits, only main's commit shallow).",
+    "knownLimit": "The one rewrite the repository cannot detect by itself is a history rewrite (force push) that removes the LAST receipt and every commit that held it, before any later receipt anchored to it exists. The Actions job log of the recording run (which prints receiptSha256) is then the only independent record; no new repository, App or external store is introduced to close it."
+  },
+  "outcomeEvaluation": {
+    "status": "BLOCKED_OUTCOME_CONTRACT_NOT_REGISTERED",
+    "registeredContract": null,
+    "horizonSessions": 63,
+    "separation": "state is fixed in the receipt at the signal session; an outcome is a separate record, built only after its maturity session is final (prospective_receipt_core.has_matured), and never rewrites a receipt",
+    "inheritedFixed": {
+      "statistic": "B-H1: the H63 value of the 12-1 momentum top-minus-bottom spread is lower in the adverse state than in the other state (03-studies-abc-ko.md B.3)",
+      "signal": "the existing 12-1 momentum (an already measured feature, not a new discovery)",
+      "minNonOverlappingBlocksPerState": 6,
+      "insufficient": "a state with fewer than 6 matured non-overlapping H63 blocks is DESCRIPTIVE_ONLY_INSUFFICIENT_STATE_BLOCKS and keeps p = 1 in the Study B Holm family (B-H1, B-H2)",
+      "multiplicity": "Holm alpha = 0.05 over B-H1 and B-H2; B-H2 is p = 1 until a supported Study A signal exists",
+      "missingState": "an undetermined or unobserved state is neither adverse nor other and is never pooled into either"
+    },
+    "blockGeometryConvention": "INHERITED_README_B_DIAGNOSTIC_PENDING_OUTCOME_REGISTRATION: blocks of 63 KR sessions from the first eligible execution session, each carrying the state of the last weekly decision session before its entry; coverage.json reports it on signal-time facts only",
+    "openDecisions": [
+      {
+        "id": "D1_ELIGIBLE_POPULATION",
+        "question": "which KR names form the momentum cross-section on a signal date",
+        "recommendation": "the PIT KRX Top120 snapshot strictly before the signal date (ledger/universe/kr), common shares, with the H2 contract exclusions Study A already uses (preferred, untraded, median traded value below 1 billion KRW, unclassified industry); fixed at the signal date, outcome availability looked at only afterwards"
+      },
+      {
+        "id": "D2_MOMENTUM_DEFINITION",
+        "question": "the exact 12-1 momentum",
+        "recommendation": "longterm.momentum_12_1 (close 21 sessions back / close 252 sessions back - 1) evaluated on a window proven on the KRX calendar, as kr-selection-challenger-v1 proves its feature windows; a name without a complete window is excluded from that date, never imputed"
+      },
+      {
+        "id": "D3_SPREAD_CONSTRUCTION",
+        "question": "top-minus-bottom groups and weights",
+        "recommendation": "equal-weighted top and bottom terciles of the eligible cross-section (about 40 names per side on 120, enough that one name moves a side by 2.5%), ties by ticker; gross of costs, since a long-short spread of the same population is not an investable book here"
+      },
+      {
+        "id": "D4_RETURN_BASIS_AND_TERMINATIONS",
+        "question": "price basis of the H63 return and names that stop trading",
+        "recommendation": "the same vendor adjusted close on both sides from one download at grading time, aligned by kr_bar_integrity; a name without a traded close at the maturity session follows the common contract's two readings (excluded, and assigned the worst plausible value) and the claim needs both signs to agree"
+      },
+      {
+        "id": "D5_BLOCK_ORIGIN",
+        "question": "the non-overlapping block origin and the state assigned to a block",
+        "recommendation": "confirm blockGeometryConvention as written (the README diagnostic's convention), before the first H63 maturity"
+      },
+      {
+        "id": "D6_INFERENCE",
+        "question": "which interval decides the claim",
+        "recommendation": "KR H63 is NOT calibrated (rp1-inference-calibration-v1 calibrated KR H252, alpha-inference-calibration-v4/v5 KR H21/H126). Either register a KR H63 calibration cell before the first evaluation, or declare B-H1's prospective result DESCRIPTIVE ONLY; do not borrow another horizon's calibration"
+      },
+      {
+        "id": "D7_MISSING_WEEKS",
+        "question": "how a missed or undetermined weekly state enters a block",
+        "recommendation": "UNOBSERVED / undetermined blocks are counted and published, never assigned to a state; a state cell needs 6 blocks of its own"
+      },
+      {
+        "id": "D8_FIRST_EVALUATION",
+        "question": "when the first state-conditional comparison may be read",
+        "recommendation": "only when both states hold at least 6 matured blocks (at least about 12 blocks, roughly 3 years of weekly receipts); no interim outcome statistic before that"
+      }
+    ],
+    "deadline": "the outcome contract (a new spec, e.g. rp1-b-h1-outcome-v1, referencing this one by digest) must be merged before the first receipt's H63 maturity session closes; decisions D1-D3 are best fixed before the first receipt so a later version can also snapshot the signal-time cross-section",
+    "forbidden": "re-running or re-optimizing the closed KR history, choosing a definition after an outcome is visible, pooling PROSPECTIVE_PAPER with historical evidence, claiming crisis prediction"
+  },
+  "productionEffect": "NONE",
+  "codeFileHashes": {
+    "pipeline/rp1_b_h1_state.py": "619fdf76457fc4b181fc40e661f0217fdb2f5fa58ca5ff276cce97494fd88882",
+    "scripts/record_rp1_b_h1_state.py": "b2ea64167b6bb3874113111fb861a718ba38817bdc22ba71033840414f6a9933"
+  },
+  "scientificDependencies": {
+    "contract": "Research-owned modules this study calls are pinned by BYTES (fileHashes): prospective_receipt_core (receipt core), rp1_b_state_receipt (the #264 preview's leg arithmetic), kr_bar_integrity (calendar alignment and volume/close integrity) and kr_selection_challenger (main-only registration, code identity, write-time clock gate). The sealed FAST function, its thresholds and the pinned KRX calendar 2026-10-01..2031-12-31 are pinned by BEHAVIOUR (conformanceDigest over rp1_b_h1_state.conformance_values on fixed synthetic probes). LIVE record, coverage and outcomes refuse SCIENTIFIC_DEPENDENCY_CHANGED; a legitimate change is a new study version.",
+    "fileHashes": {
+      "pipeline/prospective_receipt_core.py": "0f5344b09e28a4b9e9df5839bb6fc11f8ace70a4c71c01c6915ae753857ef90f",
+      "pipeline/rp1_b_state_receipt.py": "96f1ce31f273857a4b0c255ee64433f41b70f9624a4521aabd416c07c4154655",
+      "pipeline/kr_bar_integrity.py": "2e82916eff3096a65556e461177a4372f1edcbff5ac72614f5af80b168166e14",
+      "pipeline/kr_selection_challenger.py": "7f4c3311a9fb872c007a6afc354417a93d16417d4dc5c4fa48d8edfbb42e08e9"
+    },
+    "conformanceDigest": "4339240e5ffaaa91e9968fabba5b84babda990fb4e689833dc3a3cb2dd388ba9"
+  }
+}
