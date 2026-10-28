@@ -1,0 +1,3647 @@
+{
+ "checkedOn": "2026-10-27",
+ "defect": "pipeline.kr_corporate_action_events.candidate_disclosures sets receiptDate from the receipt number prefix (receipt_date(rcept_no)), not rcept_dt",
+ "evidenceClass": "OFFICIAL_LISTING_CHECK_NOT_A_GATE_CHANGE",
+ "index": {
+  "blobSha1": "0b22866c2535f2821164ae2141ae65549076f11a",
+  "path": "ledger/kr-corporate-actions/kr-corporate-actions-disclosures.jsonl.gz",
+  "signalHistoryCommit": "d646a69cfc8befdf2b2ad26179c486c13d1faebd"
+ },
+ "listJsonCalls": 190,
+ "rows": [
+  {
+   "corpCode": "00375302",
+   "differs": false,
+   "indexReceiptDate": "2013-01-22",
+   "officialRceptDt": "2013-01-22",
+   "receiptNo": "20130122800232",
+   "ticker": "053000.KS"
+  },
+  {
+   "corpCode": "00375302",
+   "differs": false,
+   "indexReceiptDate": "2013-01-23",
+   "officialRceptDt": "2013-01-23",
+   "receiptNo": "20130123800232",
+   "ticker": "053000.KS"
+  },
+  {
+   "corpCode": "00158909",
+   "differs": false,
+   "indexReceiptDate": "2013-01-28",
+   "officialRceptDt": "2013-01-28",
+   "receiptNo": "20130128800003",
+   "ticker": "004940.KS"
+  },
+  {
+   "corpCode": "00126229",
+   "differs": false,
+   "indexReceiptDate": "2013-01-28",
+   "officialRceptDt": "2013-01-28",
+   "receiptNo": "20130128800380",
+   "ticker": "000830.KS"
+  },
+  {
+   "corpCode": "00148328",
+   "differs": false,
+   "indexReceiptDate": "2013-01-30",
+   "officialRceptDt": "2013-01-30",
+   "receiptNo": "20130130800397",
+   "ticker": "001300.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2013-02-01",
+   "officialRceptDt": "2013-02-01",
+   "receiptNo": "20130201800530",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2013-02-04",
+   "officialRceptDt": "2013-02-04",
+   "receiptNo": "20130204000135",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2013-02-04",
+   "officialRceptDt": "2013-02-04",
+   "receiptNo": "20130204800145",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2013-02-04",
+   "officialRceptDt": "2013-02-04",
+   "receiptNo": "20130204800149",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2013-02-05",
+   "officialRceptDt": "2013-02-05",
+   "receiptNo": "20130205800119",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2013-02-05",
+   "officialRceptDt": "2013-02-05",
+   "receiptNo": "20130205800268",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00375302",
+   "differs": false,
+   "indexReceiptDate": "2013-02-07",
+   "officialRceptDt": "2013-02-07",
+   "receiptNo": "20130207800515",
+   "ticker": "053000.KS"
+  },
+  {
+   "corpCode": "00561866",
+   "differs": false,
+   "indexReceiptDate": "2013-02-07",
+   "officialRceptDt": "2013-02-07",
+   "receiptNo": "20130207800646",
+   "ticker": "115390.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2013-02-08",
+   "officialRceptDt": "2013-02-08",
+   "receiptNo": "20130208800135",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00164609",
+   "differs": false,
+   "indexReceiptDate": "2013-02-08",
+   "officialRceptDt": "2013-02-08",
+   "receiptNo": "20130208800247",
+   "ticker": "010620.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2013-02-12",
+   "officialRceptDt": "2013-02-12",
+   "receiptNo": "20130212800032",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00164469",
+   "differs": false,
+   "indexReceiptDate": "2013-02-18",
+   "officialRceptDt": "2013-02-18",
+   "receiptNo": "20130218800223",
+   "ticker": "010520.KS"
+  },
+  {
+   "corpCode": "00375302",
+   "differs": false,
+   "indexReceiptDate": "2013-02-25",
+   "officialRceptDt": "2013-02-25",
+   "receiptNo": "20130225800510",
+   "ticker": "053000.KS"
+  },
+  {
+   "corpCode": "00375302",
+   "differs": false,
+   "indexReceiptDate": "2013-02-25",
+   "officialRceptDt": "2013-02-25",
+   "receiptNo": "20130225800514",
+   "ticker": "053000.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2013-02-26",
+   "officialRceptDt": "2013-02-26",
+   "receiptNo": "20130226800101",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00375302",
+   "differs": false,
+   "indexReceiptDate": "2013-02-28",
+   "officialRceptDt": "2013-02-28",
+   "receiptNo": "20130228800525",
+   "ticker": "053000.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2013-02-28",
+   "officialRceptDt": "2013-02-28",
+   "receiptNo": "20130228800538",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00158909",
+   "differs": false,
+   "indexReceiptDate": "2013-03-05",
+   "officialRceptDt": "2013-03-05",
+   "receiptNo": "20130305800710",
+   "ticker": "004940.KS"
+  },
+  {
+   "corpCode": "00158909",
+   "differs": false,
+   "indexReceiptDate": "2013-03-06",
+   "officialRceptDt": "2013-03-06",
+   "receiptNo": "20130306800785",
+   "ticker": "004940.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2013-03-08",
+   "officialRceptDt": "2013-03-08",
+   "receiptNo": "20130308000467",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2013-03-08",
+   "officialRceptDt": "2013-03-08",
+   "receiptNo": "20130308800830",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00117744",
+   "differs": false,
+   "indexReceiptDate": "2013-04-24",
+   "officialRceptDt": "2013-04-24",
+   "receiptNo": "20130424800282",
+   "ticker": "000060.KS"
+  },
+  {
+   "corpCode": "00120216",
+   "differs": false,
+   "indexReceiptDate": "2013-04-24",
+   "officialRceptDt": "2013-04-24",
+   "receiptNo": "20130424800332",
+   "ticker": "002550.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2013-05-09",
+   "officialRceptDt": "2013-05-09",
+   "receiptNo": "20130509800409",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00163682",
+   "differs": false,
+   "indexReceiptDate": "2013-05-21",
+   "officialRceptDt": "2013-05-21",
+   "receiptNo": "20130521800361",
+   "ticker": "008560.KS"
+  },
+  {
+   "corpCode": "00311030",
+   "differs": false,
+   "indexReceiptDate": "2013-05-22",
+   "officialRceptDt": "2013-05-22",
+   "receiptNo": "20130522800161",
+   "ticker": "037620.KS"
+  },
+  {
+   "corpCode": "00164876",
+   "differs": false,
+   "indexReceiptDate": "2013-05-23",
+   "officialRceptDt": "2013-05-23",
+   "receiptNo": "20130523800272",
+   "ticker": "003450.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2013-05-27",
+   "officialRceptDt": "2013-05-27",
+   "receiptNo": "20130527800097",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00148328",
+   "differs": false,
+   "indexReceiptDate": "2013-06-25",
+   "officialRceptDt": "2013-06-25",
+   "receiptNo": "20130625000227",
+   "ticker": "001300.KS"
+  },
+  {
+   "corpCode": "00148328",
+   "differs": false,
+   "indexReceiptDate": "2013-06-25",
+   "officialRceptDt": "2013-06-25",
+   "receiptNo": "20130625800347",
+   "ticker": "001300.KS"
+  },
+  {
+   "corpCode": "00109453",
+   "differs": false,
+   "indexReceiptDate": "2013-07-02",
+   "officialRceptDt": "2013-07-02",
+   "receiptNo": "20130702800320",
+   "ticker": "067250.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2013-07-26",
+   "officialRceptDt": "2013-07-26",
+   "receiptNo": "20130726800004",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00375302",
+   "differs": false,
+   "indexReceiptDate": "2013-08-27",
+   "officialRceptDt": "2013-08-27",
+   "receiptNo": "20130827800393",
+   "ticker": "053000.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2013-09-05",
+   "officialRceptDt": "2013-09-05",
+   "receiptNo": "20130905000163",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2013-09-05",
+   "officialRceptDt": "2013-09-05",
+   "receiptNo": "20130905800261",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2013-09-05",
+   "officialRceptDt": "2013-09-05",
+   "receiptNo": "20130905800262",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00148328",
+   "differs": false,
+   "indexReceiptDate": "2013-09-23",
+   "officialRceptDt": "2013-09-23",
+   "receiptNo": "20130923000004",
+   "ticker": "001300.KS"
+  },
+  {
+   "corpCode": "00148328",
+   "differs": false,
+   "indexReceiptDate": "2013-09-23",
+   "officialRceptDt": "2013-09-23",
+   "receiptNo": "20130923000009",
+   "ticker": "001300.KS"
+  },
+  {
+   "corpCode": "00148328",
+   "differs": false,
+   "indexReceiptDate": "2013-09-23",
+   "officialRceptDt": "2013-09-23",
+   "receiptNo": "20130923800016",
+   "ticker": "001300.KS"
+  },
+  {
+   "corpCode": "00164469",
+   "differs": false,
+   "indexReceiptDate": "2013-10-17",
+   "officialRceptDt": "2013-10-17",
+   "receiptNo": "20131017800074",
+   "ticker": "010520.KS"
+  },
+  {
+   "corpCode": "00164469",
+   "differs": false,
+   "indexReceiptDate": "2013-10-31",
+   "officialRceptDt": "2013-10-31",
+   "receiptNo": "20131031800162",
+   "ticker": "010520.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2013-11-01",
+   "officialRceptDt": "2013-11-01",
+   "receiptNo": "20131101000265",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2013-11-01",
+   "officialRceptDt": "2013-11-01",
+   "receiptNo": "20131101800321",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2013-11-01",
+   "officialRceptDt": "2013-11-01",
+   "receiptNo": "20131101800370",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2013-11-29",
+   "officialRceptDt": "2013-11-29",
+   "receiptNo": "20131129801025",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00148328",
+   "differs": false,
+   "indexReceiptDate": "2013-12-02",
+   "officialRceptDt": "2013-12-02",
+   "receiptNo": "20131202000453",
+   "ticker": "001300.KS"
+  },
+  {
+   "corpCode": "00375302",
+   "differs": false,
+   "indexReceiptDate": "2013-12-06",
+   "officialRceptDt": "2013-12-06",
+   "receiptNo": "20131206800432",
+   "ticker": "053000.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2013-12-11",
+   "officialRceptDt": "2013-12-11",
+   "receiptNo": "20131211800491",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2013-12-13",
+   "officialRceptDt": "2013-12-13",
+   "receiptNo": "20131213000281",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2013-12-13",
+   "officialRceptDt": "2013-12-13",
+   "receiptNo": "20131213800909",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2013-12-13",
+   "officialRceptDt": "2013-12-13",
+   "receiptNo": "20131213800927",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2013-12-16",
+   "officialRceptDt": "2013-12-16",
+   "receiptNo": "20131216800436",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00158909",
+   "differs": false,
+   "indexReceiptDate": "2013-12-24",
+   "officialRceptDt": "2013-12-24",
+   "receiptNo": "20131224700423",
+   "ticker": "004940.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2013-12-26",
+   "officialRceptDt": "2013-12-26",
+   "receiptNo": "20131226000374",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2013-12-26",
+   "officialRceptDt": "2013-12-26",
+   "receiptNo": "20131226800428",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2013-12-31",
+   "officialRceptDt": "2013-12-31",
+   "receiptNo": "20131231000486",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2013-12-31",
+   "officialRceptDt": "2013-12-31",
+   "receiptNo": "20131231000497",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2013-12-31",
+   "officialRceptDt": "2013-12-31",
+   "receiptNo": "20131231800602",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2013-12-31",
+   "officialRceptDt": "2013-12-31",
+   "receiptNo": "20131231800611",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2014-01-03",
+   "officialRceptDt": "2014-01-03",
+   "receiptNo": "20140103000256",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2014-01-03",
+   "officialRceptDt": "2014-01-03",
+   "receiptNo": "20140103800380",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00148328",
+   "differs": false,
+   "indexReceiptDate": "2014-01-06",
+   "officialRceptDt": "2014-01-06",
+   "receiptNo": "20140106000443",
+   "ticker": "001300.KS"
+  },
+  {
+   "corpCode": "00148328",
+   "differs": false,
+   "indexReceiptDate": "2014-01-06",
+   "officialRceptDt": "2014-01-06",
+   "receiptNo": "20140106800520",
+   "ticker": "001300.KS"
+  },
+  {
+   "corpCode": "00375302",
+   "differs": false,
+   "indexReceiptDate": "2014-01-07",
+   "officialRceptDt": "2014-01-07",
+   "receiptNo": "20140107800002",
+   "ticker": "053000.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2014-01-20",
+   "officialRceptDt": "2014-01-20",
+   "receiptNo": "20140120000322",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00120216",
+   "differs": false,
+   "indexReceiptDate": "2014-01-24",
+   "officialRceptDt": "2014-01-24",
+   "receiptNo": "20140124800170",
+   "ticker": "002550.KS"
+  },
+  {
+   "corpCode": "00126229",
+   "differs": false,
+   "indexReceiptDate": "2014-01-24",
+   "officialRceptDt": "2014-01-24",
+   "receiptNo": "20140124800281",
+   "ticker": "000830.KS"
+  },
+  {
+   "corpCode": "00117744",
+   "differs": false,
+   "indexReceiptDate": "2014-01-27",
+   "officialRceptDt": "2014-01-27",
+   "receiptNo": "20140127800328",
+   "ticker": "000060.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2014-01-27",
+   "officialRceptDt": "2014-01-27",
+   "receiptNo": "20140127800392",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00148328",
+   "differs": false,
+   "indexReceiptDate": "2014-01-28",
+   "officialRceptDt": "2014-01-28",
+   "receiptNo": "20140128800458",
+   "ticker": "001300.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2014-02-04",
+   "officialRceptDt": "2014-02-04",
+   "receiptNo": "20140204800004",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2014-02-04",
+   "officialRceptDt": "2014-02-04",
+   "receiptNo": "20140204800298",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00158909",
+   "differs": false,
+   "indexReceiptDate": "2014-02-05",
+   "officialRceptDt": "2014-02-05",
+   "receiptNo": "20140205700499",
+   "ticker": "004940.KS"
+  },
+  {
+   "corpCode": "00561866",
+   "differs": false,
+   "indexReceiptDate": "2014-02-05",
+   "officialRceptDt": "2014-02-05",
+   "receiptNo": "20140205800072",
+   "ticker": "115390.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2014-02-05",
+   "officialRceptDt": "2014-02-05",
+   "receiptNo": "20140205800308",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00375302",
+   "differs": false,
+   "indexReceiptDate": "2014-02-06",
+   "officialRceptDt": "2014-02-06",
+   "receiptNo": "20140206800521",
+   "ticker": "053000.KS"
+  },
+  {
+   "corpCode": "00164609",
+   "differs": false,
+   "indexReceiptDate": "2014-02-06",
+   "officialRceptDt": "2014-02-06",
+   "receiptNo": "20140206800697",
+   "ticker": "010620.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2014-02-06",
+   "officialRceptDt": "2014-02-06",
+   "receiptNo": "20140206800721",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2014-02-07",
+   "officialRceptDt": "2014-02-07",
+   "receiptNo": "20140207800009",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2014-02-12",
+   "officialRceptDt": "2014-02-12",
+   "receiptNo": "20140212800044",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2014-02-14",
+   "officialRceptDt": "2014-02-14",
+   "receiptNo": "20140214000611",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00158909",
+   "differs": false,
+   "indexReceiptDate": "2014-02-19",
+   "officialRceptDt": "2014-02-19",
+   "receiptNo": "20140219700457",
+   "ticker": "004940.KS"
+  },
+  {
+   "corpCode": "00164469",
+   "differs": false,
+   "indexReceiptDate": "2014-02-21",
+   "officialRceptDt": "2014-02-21",
+   "receiptNo": "20140221800499",
+   "ticker": "010520.KS"
+  },
+  {
+   "corpCode": "00311030",
+   "differs": false,
+   "indexReceiptDate": "2014-02-25",
+   "officialRceptDt": "2014-02-25",
+   "receiptNo": "20140225800473",
+   "ticker": "037620.KS"
+  },
+  {
+   "corpCode": "00375302",
+   "differs": false,
+   "indexReceiptDate": "2014-02-26",
+   "officialRceptDt": "2014-02-26",
+   "receiptNo": "20140226800336",
+   "ticker": "053000.KS"
+  },
+  {
+   "corpCode": "00164876",
+   "differs": false,
+   "indexReceiptDate": "2014-02-26",
+   "officialRceptDt": "2014-02-26",
+   "receiptNo": "20140226800394",
+   "ticker": "003450.KS"
+  },
+  {
+   "corpCode": "00561866",
+   "differs": false,
+   "indexReceiptDate": "2014-02-26",
+   "officialRceptDt": "2014-02-26",
+   "receiptNo": "20140226800425",
+   "ticker": "115390.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2014-02-28",
+   "officialRceptDt": "2014-02-28",
+   "receiptNo": "20140228800151",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00163682",
+   "differs": false,
+   "indexReceiptDate": "2014-03-04",
+   "officialRceptDt": "2014-03-04",
+   "receiptNo": "20140304800662",
+   "ticker": "008560.KS"
+  },
+  {
+   "corpCode": "00158909",
+   "differs": false,
+   "indexReceiptDate": "2014-03-05",
+   "officialRceptDt": "2014-03-05",
+   "receiptNo": "20140305700467",
+   "ticker": "004940.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2014-03-13",
+   "officialRceptDt": "2014-03-13",
+   "receiptNo": "20140313801642",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2014-03-14",
+   "officialRceptDt": "2014-03-14",
+   "receiptNo": "20140314000622",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2014-03-14",
+   "officialRceptDt": "2014-03-14",
+   "receiptNo": "20140314801393",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00158909",
+   "differs": false,
+   "indexReceiptDate": "2014-03-20",
+   "officialRceptDt": "2014-03-20",
+   "receiptNo": "20140320700935",
+   "ticker": "004940.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2014-03-24",
+   "officialRceptDt": "2014-03-24",
+   "receiptNo": "20140324801012",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2014-03-25",
+   "officialRceptDt": "2014-03-25",
+   "receiptNo": "20140325800821",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2014-03-26",
+   "officialRceptDt": "2014-03-26",
+   "receiptNo": "20140326000250",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2014-03-27",
+   "officialRceptDt": "2014-03-27",
+   "receiptNo": "20140327800617",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00148328",
+   "differs": false,
+   "indexReceiptDate": "2014-03-31",
+   "officialRceptDt": "2014-03-31",
+   "receiptNo": "20140331001355",
+   "ticker": "001300.KS"
+  },
+  {
+   "corpCode": "00148328",
+   "differs": false,
+   "indexReceiptDate": "2014-03-31",
+   "officialRceptDt": "2014-03-31",
+   "receiptNo": "20140331800032",
+   "ticker": "001300.KS"
+  },
+  {
+   "corpCode": "00148328",
+   "differs": false,
+   "indexReceiptDate": "2014-03-31",
+   "officialRceptDt": "2014-03-31",
+   "receiptNo": "20140331800112",
+   "ticker": "001300.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2014-04-01",
+   "officialRceptDt": "2014-04-01",
+   "receiptNo": "20140401002020",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00164876",
+   "differs": false,
+   "indexReceiptDate": "2014-04-01",
+   "officialRceptDt": "2014-04-01",
+   "receiptNo": "20140401800704",
+   "ticker": "003450.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2014-04-01",
+   "officialRceptDt": "2014-04-01",
+   "receiptNo": "20140401800799",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00158909",
+   "differs": false,
+   "indexReceiptDate": "2014-04-02",
+   "officialRceptDt": "2014-04-02",
+   "receiptNo": "20140402700528",
+   "ticker": "004940.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2014-04-03",
+   "officialRceptDt": "2014-04-03",
+   "receiptNo": "20140403800411",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2014-04-04",
+   "officialRceptDt": "2014-04-04",
+   "receiptNo": "20140404001741",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2014-04-10",
+   "officialRceptDt": "2014-04-10",
+   "receiptNo": "20140410000951",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00158909",
+   "differs": false,
+   "indexReceiptDate": "2014-04-16",
+   "officialRceptDt": "2014-04-16",
+   "receiptNo": "20140416700190",
+   "ticker": "004940.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2014-04-30",
+   "officialRceptDt": "2014-04-30",
+   "receiptNo": "20140430001351",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00158909",
+   "differs": false,
+   "indexReceiptDate": "2014-04-30",
+   "officialRceptDt": "2014-04-30",
+   "receiptNo": "20140430700422",
+   "ticker": "004940.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2014-04-30",
+   "officialRceptDt": "2014-04-30",
+   "receiptNo": "20140430800495",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00158909",
+   "differs": false,
+   "indexReceiptDate": "2014-05-22",
+   "officialRceptDt": "2014-05-22",
+   "receiptNo": "20140522700172",
+   "ticker": "004940.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2014-06-02",
+   "officialRceptDt": "2014-06-02",
+   "receiptNo": "20140602000864",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2014-06-02",
+   "officialRceptDt": "2014-06-02",
+   "receiptNo": "20140602800412",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2014-06-05",
+   "officialRceptDt": "2014-06-05",
+   "receiptNo": "20140605000391",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2014-06-05",
+   "officialRceptDt": "2014-06-05",
+   "receiptNo": "20140605800459",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00158909",
+   "differs": false,
+   "indexReceiptDate": "2014-06-27",
+   "officialRceptDt": "2014-06-27",
+   "receiptNo": "20140627700411",
+   "ticker": "004940.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2014-07-01",
+   "officialRceptDt": "2014-07-01",
+   "receiptNo": "20140701000120",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00158909",
+   "differs": false,
+   "indexReceiptDate": "2014-07-17",
+   "officialRceptDt": "2014-07-17",
+   "receiptNo": "20140717700245",
+   "ticker": "004940.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2014-07-25",
+   "officialRceptDt": "2014-07-25",
+   "receiptNo": "20140725800002",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00254045",
+   "differs": false,
+   "indexReceiptDate": "2014-07-28",
+   "officialRceptDt": "2014-07-28",
+   "receiptNo": "20140728000271",
+   "ticker": "000030.KS"
+  },
+  {
+   "corpCode": "00375302",
+   "differs": false,
+   "indexReceiptDate": "2014-07-28",
+   "officialRceptDt": "2014-07-28",
+   "receiptNo": "20140728000280",
+   "ticker": "053000.KS"
+  },
+  {
+   "corpCode": "00254045",
+   "differs": false,
+   "indexReceiptDate": "2014-07-28",
+   "officialRceptDt": "2014-07-28",
+   "receiptNo": "20140728700346",
+   "ticker": "000030.KS"
+  },
+  {
+   "corpCode": "00375302",
+   "differs": false,
+   "indexReceiptDate": "2014-07-28",
+   "officialRceptDt": "2014-07-28",
+   "receiptNo": "20140728800260",
+   "ticker": "053000.KS"
+  },
+  {
+   "corpCode": "00375302",
+   "differs": false,
+   "indexReceiptDate": "2014-07-28",
+   "officialRceptDt": "2014-07-28",
+   "receiptNo": "20140728800281",
+   "ticker": "053000.KS"
+  },
+  {
+   "corpCode": "00375302",
+   "differs": false,
+   "indexReceiptDate": "2014-08-14",
+   "officialRceptDt": "2014-08-14",
+   "receiptNo": "20140814001580",
+   "ticker": "053000.KS"
+  },
+  {
+   "corpCode": "00254045",
+   "differs": false,
+   "indexReceiptDate": "2014-08-14",
+   "officialRceptDt": "2014-08-14",
+   "receiptNo": "20140814001621",
+   "ticker": "000030.KS"
+  },
+  {
+   "corpCode": "00254045",
+   "differs": false,
+   "indexReceiptDate": "2014-08-14",
+   "officialRceptDt": "2014-08-14",
+   "receiptNo": "20140814701269",
+   "ticker": "000030.KS"
+  },
+  {
+   "corpCode": "00375302",
+   "differs": false,
+   "indexReceiptDate": "2014-08-14",
+   "officialRceptDt": "2014-08-14",
+   "receiptNo": "20140814801243",
+   "ticker": "053000.KS"
+  },
+  {
+   "corpCode": "00375302",
+   "differs": false,
+   "indexReceiptDate": "2014-08-14",
+   "officialRceptDt": "2014-08-14",
+   "receiptNo": "20140814801247",
+   "ticker": "053000.KS"
+  },
+  {
+   "corpCode": "00254045",
+   "differs": false,
+   "indexReceiptDate": "2014-08-28",
+   "officialRceptDt": "2014-08-28",
+   "receiptNo": "20140828000542",
+   "ticker": "000030.KS"
+  },
+  {
+   "corpCode": "00375302",
+   "differs": false,
+   "indexReceiptDate": "2014-08-28",
+   "officialRceptDt": "2014-08-28",
+   "receiptNo": "20140828000548",
+   "ticker": "053000.KS"
+  },
+  {
+   "corpCode": "00254045",
+   "differs": false,
+   "indexReceiptDate": "2014-09-11",
+   "officialRceptDt": "2014-09-11",
+   "receiptNo": "20140911000015",
+   "ticker": "000030.KS"
+  },
+  {
+   "corpCode": "00375302",
+   "differs": false,
+   "indexReceiptDate": "2014-09-11",
+   "officialRceptDt": "2014-09-11",
+   "receiptNo": "20140911000016",
+   "ticker": "053000.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2014-10-21",
+   "officialRceptDt": "2014-10-21",
+   "receiptNo": "20141021800397",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2014-10-22",
+   "officialRceptDt": "2014-10-22",
+   "receiptNo": "20141022000166",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00158909",
+   "differs": false,
+   "indexReceiptDate": "2014-10-29",
+   "officialRceptDt": "2014-10-29",
+   "receiptNo": "20141029700037",
+   "ticker": "004940.KS"
+  },
+  {
+   "corpCode": "00158909",
+   "differs": false,
+   "indexReceiptDate": "2014-10-30",
+   "officialRceptDt": "2014-10-30",
+   "receiptNo": "20141030001675",
+   "ticker": "004940.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2014-10-31",
+   "officialRceptDt": "2014-10-31",
+   "receiptNo": "20141031800642",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2014-11-03",
+   "officialRceptDt": "2014-11-03",
+   "receiptNo": "20141103002406",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00163682",
+   "differs": false,
+   "indexReceiptDate": "2014-12-29",
+   "officialRceptDt": "2014-12-29",
+   "receiptNo": "20141229800182",
+   "ticker": "008560.KS"
+  },
+  {
+   "corpCode": "00163682",
+   "differs": false,
+   "indexReceiptDate": "2014-12-29",
+   "officialRceptDt": "2014-12-29",
+   "receiptNo": "20141229800627",
+   "ticker": "008560.KS"
+  },
+  {
+   "corpCode": "00158909",
+   "differs": false,
+   "indexReceiptDate": "2014-12-30",
+   "officialRceptDt": "2014-12-30",
+   "receiptNo": "20141230000515",
+   "ticker": "004940.KS"
+  },
+  {
+   "corpCode": "00163682",
+   "differs": false,
+   "indexReceiptDate": "2014-12-30",
+   "officialRceptDt": "2014-12-30",
+   "receiptNo": "20141230000629",
+   "ticker": "008560.KS"
+  },
+  {
+   "corpCode": "00158909",
+   "differs": false,
+   "indexReceiptDate": "2014-12-30",
+   "officialRceptDt": "2014-12-30",
+   "receiptNo": "20141230700026",
+   "ticker": "004940.KS"
+  },
+  {
+   "corpCode": "00117744",
+   "differs": false,
+   "indexReceiptDate": "2015-01-28",
+   "officialRceptDt": "2015-01-28",
+   "receiptNo": "20150128800587",
+   "ticker": "000060.KS"
+  },
+  {
+   "corpCode": "00158909",
+   "differs": false,
+   "indexReceiptDate": "2015-01-29",
+   "officialRceptDt": "2015-01-29",
+   "receiptNo": "20150129700625",
+   "ticker": "004940.KS"
+  },
+  {
+   "corpCode": "00126229",
+   "differs": false,
+   "indexReceiptDate": "2015-01-29",
+   "officialRceptDt": "2015-01-29",
+   "receiptNo": "20150129800289",
+   "ticker": "000830.KS"
+  },
+  {
+   "corpCode": "00158909",
+   "differs": false,
+   "indexReceiptDate": "2015-01-30",
+   "officialRceptDt": "2015-01-30",
+   "receiptNo": "20150130000252",
+   "ticker": "004940.KS"
+  },
+  {
+   "corpCode": "00120216",
+   "differs": false,
+   "indexReceiptDate": "2015-02-02",
+   "officialRceptDt": "2015-02-02",
+   "receiptNo": "20150202800355",
+   "ticker": "002550.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2015-02-05",
+   "officialRceptDt": "2015-02-05",
+   "receiptNo": "20150205800526",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00163682",
+   "differs": false,
+   "indexReceiptDate": "2015-02-05",
+   "officialRceptDt": "2015-02-05",
+   "receiptNo": "20150205800735",
+   "ticker": "008560.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2015-02-06",
+   "officialRceptDt": "2015-02-06",
+   "receiptNo": "20150206800028",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00561866",
+   "differs": false,
+   "indexReceiptDate": "2015-02-06",
+   "officialRceptDt": "2015-02-06",
+   "receiptNo": "20150206800245",
+   "ticker": "115390.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2015-02-09",
+   "officialRceptDt": "2015-02-09",
+   "receiptNo": "20150209800133",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2015-02-11",
+   "officialRceptDt": "2015-02-11",
+   "receiptNo": "20150211800443",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00164876",
+   "differs": false,
+   "indexReceiptDate": "2015-02-24",
+   "officialRceptDt": "2015-02-24",
+   "receiptNo": "20150224800606",
+   "ticker": "003450.KS"
+  },
+  {
+   "corpCode": "00158909",
+   "differs": false,
+   "indexReceiptDate": "2015-02-27",
+   "officialRceptDt": "2015-02-27",
+   "receiptNo": "20150227001318",
+   "ticker": "004940.KS"
+  },
+  {
+   "corpCode": "00158909",
+   "differs": false,
+   "indexReceiptDate": "2015-02-27",
+   "officialRceptDt": "2015-02-27",
+   "receiptNo": "20150227701062",
+   "ticker": "004940.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2015-02-27",
+   "officialRceptDt": "2015-02-27",
+   "receiptNo": "20150227800076",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00164469",
+   "differs": false,
+   "indexReceiptDate": "2015-02-27",
+   "officialRceptDt": "2015-02-27",
+   "receiptNo": "20150227800930",
+   "ticker": "010520.KS"
+  },
+  {
+   "corpCode": "00254045",
+   "differs": false,
+   "indexReceiptDate": "2015-03-06",
+   "officialRceptDt": "2015-03-06",
+   "receiptNo": "20150306800144",
+   "ticker": "000030.KS"
+  },
+  {
+   "corpCode": "00311030",
+   "differs": false,
+   "indexReceiptDate": "2015-03-11",
+   "officialRceptDt": "2015-03-11",
+   "receiptNo": "20150311800914",
+   "ticker": "037620.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2015-03-20",
+   "officialRceptDt": "2015-03-20",
+   "receiptNo": "20150320802190",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2015-03-20",
+   "officialRceptDt": "2015-03-20",
+   "receiptNo": "20150320802407",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00163682",
+   "differs": false,
+   "indexReceiptDate": "2015-03-24",
+   "officialRceptDt": "2015-03-24",
+   "receiptNo": "20150324000035",
+   "ticker": "008560.KS"
+  },
+  {
+   "corpCode": "00163682",
+   "differs": false,
+   "indexReceiptDate": "2015-03-24",
+   "officialRceptDt": "2015-03-24",
+   "receiptNo": "20150324800308",
+   "ticker": "008560.KS"
+  },
+  {
+   "corpCode": "00163682",
+   "differs": false,
+   "indexReceiptDate": "2015-03-24",
+   "officialRceptDt": "2015-03-24",
+   "receiptNo": "20150324800313",
+   "ticker": "008560.KS"
+  },
+  {
+   "corpCode": "00163682",
+   "differs": false,
+   "indexReceiptDate": "2015-04-02",
+   "officialRceptDt": "2015-04-02",
+   "receiptNo": "20150402000462",
+   "ticker": "008560.KS"
+  },
+  {
+   "corpCode": "00164469",
+   "differs": false,
+   "indexReceiptDate": "2015-04-08",
+   "officialRceptDt": "2015-04-08",
+   "receiptNo": "20150408000796",
+   "ticker": "010520.KS"
+  },
+  {
+   "corpCode": "00164469",
+   "differs": false,
+   "indexReceiptDate": "2015-04-08",
+   "officialRceptDt": "2015-04-08",
+   "receiptNo": "20150408800141",
+   "ticker": "010520.KS"
+  },
+  {
+   "corpCode": "00163682",
+   "differs": false,
+   "indexReceiptDate": "2015-04-10",
+   "officialRceptDt": "2015-04-10",
+   "receiptNo": "20150410000987",
+   "ticker": "008560.KS"
+  },
+  {
+   "corpCode": "00163682",
+   "differs": false,
+   "indexReceiptDate": "2015-04-14",
+   "officialRceptDt": "2015-04-14",
+   "receiptNo": "20150414000501",
+   "ticker": "008560.KS"
+  },
+  {
+   "corpCode": "00164469",
+   "differs": false,
+   "indexReceiptDate": "2015-04-17",
+   "officialRceptDt": "2015-04-17",
+   "receiptNo": "20150417000066",
+   "ticker": "010520.KS"
+  },
+  {
+   "corpCode": "00164469",
+   "differs": false,
+   "indexReceiptDate": "2015-04-17",
+   "officialRceptDt": "2015-04-17",
+   "receiptNo": "20150417800108",
+   "ticker": "010520.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2015-04-20",
+   "officialRceptDt": "2015-04-20",
+   "receiptNo": "20150420000235",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2015-04-20",
+   "officialRceptDt": "2015-04-20",
+   "receiptNo": "20150420800024",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00164469",
+   "differs": false,
+   "indexReceiptDate": "2015-04-29",
+   "officialRceptDt": "2015-04-29",
+   "receiptNo": "20150429000977",
+   "ticker": "010520.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2015-04-30",
+   "officialRceptDt": "2015-04-30",
+   "receiptNo": "20150430001586",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2015-05-13",
+   "officialRceptDt": "2015-05-13",
+   "receiptNo": "20150513003281",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2015-05-21",
+   "officialRceptDt": "2015-05-21",
+   "receiptNo": "20150521000438",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00126229",
+   "differs": false,
+   "indexReceiptDate": "2015-05-26",
+   "officialRceptDt": "2015-05-26",
+   "receiptNo": "20150526000622",
+   "ticker": "000830.KS"
+  },
+  {
+   "corpCode": "00126229",
+   "differs": false,
+   "indexReceiptDate": "2015-05-26",
+   "officialRceptDt": "2015-05-26",
+   "receiptNo": "20150526800025",
+   "ticker": "000830.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2015-05-28",
+   "officialRceptDt": "2015-05-28",
+   "receiptNo": "20150528000580",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2015-05-28",
+   "officialRceptDt": "2015-05-28",
+   "receiptNo": "20150528000709",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2015-06-01",
+   "officialRceptDt": "2015-06-01",
+   "receiptNo": "20150601800621",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00126229",
+   "differs": false,
+   "indexReceiptDate": "2015-06-08",
+   "officialRceptDt": "2015-06-08",
+   "receiptNo": "20150608000391",
+   "ticker": "000830.KS"
+  },
+  {
+   "corpCode": "00126229",
+   "differs": false,
+   "indexReceiptDate": "2015-06-12",
+   "officialRceptDt": "2015-06-12",
+   "receiptNo": "20150612000428",
+   "ticker": "000830.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2015-06-15",
+   "officialRceptDt": "2015-06-15",
+   "receiptNo": "20150615800084",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00126229",
+   "differs": false,
+   "indexReceiptDate": "2015-06-19",
+   "officialRceptDt": "2015-06-19",
+   "receiptNo": "20150619000462",
+   "ticker": "000830.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2015-06-30",
+   "officialRceptDt": "2015-06-30",
+   "receiptNo": "20150630800739",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00158909",
+   "differs": false,
+   "indexReceiptDate": "2015-07-10",
+   "officialRceptDt": "2015-07-10",
+   "receiptNo": "20150710000643",
+   "ticker": "004940.KS"
+  },
+  {
+   "corpCode": "00158909",
+   "differs": false,
+   "indexReceiptDate": "2015-07-10",
+   "officialRceptDt": "2015-07-10",
+   "receiptNo": "20150710700717",
+   "ticker": "004940.KS"
+  },
+  {
+   "corpCode": "00126229",
+   "differs": false,
+   "indexReceiptDate": "2015-07-20",
+   "officialRceptDt": "2015-07-20",
+   "receiptNo": "20150720000426",
+   "ticker": "000830.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2015-07-21",
+   "officialRceptDt": "2015-07-21",
+   "receiptNo": "20150721800301",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2015-07-21",
+   "officialRceptDt": "2015-07-21",
+   "receiptNo": "20150721800305",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2015-07-23",
+   "officialRceptDt": "2015-07-23",
+   "receiptNo": "20150723800492",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00254045",
+   "differs": false,
+   "indexReceiptDate": "2015-07-29",
+   "officialRceptDt": "2015-07-29",
+   "receiptNo": "20150729800239",
+   "ticker": "000030.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2015-07-30",
+   "officialRceptDt": "2015-07-30",
+   "receiptNo": "20150730800418",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2015-07-30",
+   "officialRceptDt": "2015-07-30",
+   "receiptNo": "20150730800431",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00144155",
+   "differs": false,
+   "indexReceiptDate": "2015-08-05",
+   "officialRceptDt": "2015-08-05",
+   "receiptNo": "20150805800334",
+   "ticker": "003600.KS"
+  },
+  {
+   "corpCode": "00126229",
+   "differs": false,
+   "indexReceiptDate": "2015-08-24",
+   "officialRceptDt": "2015-08-24",
+   "receiptNo": "20150824000341",
+   "ticker": "000830.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2015-10-08",
+   "officialRceptDt": "2015-10-08",
+   "receiptNo": "20151008800281",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2015-11-10",
+   "officialRceptDt": "2015-11-10",
+   "receiptNo": "20151110800156",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2016-01-25",
+   "officialRceptDt": "2016-01-25",
+   "receiptNo": "20160125800065",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00117744",
+   "differs": false,
+   "indexReceiptDate": "2016-01-29",
+   "officialRceptDt": "2016-01-29",
+   "receiptNo": "20160129800790",
+   "ticker": "000060.KS"
+  },
+  {
+   "corpCode": "00120216",
+   "differs": false,
+   "indexReceiptDate": "2016-02-03",
+   "officialRceptDt": "2016-02-03",
+   "receiptNo": "20160203800715",
+   "ticker": "002550.KS"
+  },
+  {
+   "corpCode": "00163682",
+   "differs": false,
+   "indexReceiptDate": "2016-02-04",
+   "officialRceptDt": "2016-02-04",
+   "receiptNo": "20160204800797",
+   "ticker": "008560.KS"
+  },
+  {
+   "corpCode": "00561866",
+   "differs": false,
+   "indexReceiptDate": "2016-02-05",
+   "officialRceptDt": "2016-02-05",
+   "receiptNo": "20160205800897",
+   "ticker": "115390.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2016-02-11",
+   "officialRceptDt": "2016-02-11",
+   "receiptNo": "20160211800250",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2016-03-02",
+   "officialRceptDt": "2016-03-02",
+   "receiptNo": "20160302000411",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2016-03-02",
+   "officialRceptDt": "2016-03-02",
+   "receiptNo": "20160302000508",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2016-03-02",
+   "officialRceptDt": "2016-03-02",
+   "receiptNo": "20160302800683",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00164876",
+   "differs": false,
+   "indexReceiptDate": "2016-03-02",
+   "officialRceptDt": "2016-03-02",
+   "receiptNo": "20160302800829",
+   "ticker": "003450.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2016-03-03",
+   "officialRceptDt": "2016-03-03",
+   "receiptNo": "20160303000604",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00254045",
+   "differs": false,
+   "indexReceiptDate": "2016-03-04",
+   "officialRceptDt": "2016-03-04",
+   "receiptNo": "20160304800585",
+   "ticker": "000030.KS"
+  },
+  {
+   "corpCode": "00311030",
+   "differs": false,
+   "indexReceiptDate": "2016-03-10",
+   "officialRceptDt": "2016-03-10",
+   "receiptNo": "20160310801748",
+   "ticker": "037620.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2016-04-29",
+   "officialRceptDt": "2016-04-29",
+   "receiptNo": "20160429001553",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2016-05-10",
+   "officialRceptDt": "2016-05-10",
+   "receiptNo": "20160510002217",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00311030",
+   "differs": false,
+   "indexReceiptDate": "2016-05-13",
+   "officialRceptDt": "2016-05-13",
+   "receiptNo": "20160513004518",
+   "ticker": "037620.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2016-06-08",
+   "officialRceptDt": "2016-06-08",
+   "receiptNo": "20160608000397",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2016-06-08",
+   "officialRceptDt": "2016-06-08",
+   "receiptNo": "20160608000446",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2016-06-08",
+   "officialRceptDt": "2016-06-08",
+   "receiptNo": "20160608000484",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2016-06-08",
+   "officialRceptDt": "2016-06-08",
+   "receiptNo": "20160608000508",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2016-06-10",
+   "officialRceptDt": "2016-06-10",
+   "receiptNo": "20160610800316",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2016-06-24",
+   "officialRceptDt": "2016-06-24",
+   "receiptNo": "20160624000974",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2016-07-01",
+   "officialRceptDt": "2016-07-01",
+   "receiptNo": "20160701000267",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2016-07-14",
+   "officialRceptDt": "2016-07-14",
+   "receiptNo": "20160714000248",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2016-07-29",
+   "officialRceptDt": "2016-07-29",
+   "receiptNo": "20160729000310",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00164876",
+   "differs": false,
+   "indexReceiptDate": "2016-08-02",
+   "officialRceptDt": "2016-08-02",
+   "receiptNo": "20160802000289",
+   "ticker": "003450.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2016-08-17",
+   "officialRceptDt": "2016-08-17",
+   "receiptNo": "20160817000124",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00164876",
+   "differs": false,
+   "indexReceiptDate": "2016-09-01",
+   "officialRceptDt": "2016-09-01",
+   "receiptNo": "20160901000273",
+   "ticker": "003450.KS"
+  },
+  {
+   "corpCode": "00164876",
+   "differs": false,
+   "indexReceiptDate": "2016-09-02",
+   "officialRceptDt": "2016-09-02",
+   "receiptNo": "20160902000474",
+   "ticker": "003450.KS"
+  },
+  {
+   "corpCode": "00311030",
+   "differs": false,
+   "indexReceiptDate": "2016-09-19",
+   "officialRceptDt": "2016-09-19",
+   "receiptNo": "20160919000325",
+   "ticker": "037620.KS"
+  },
+  {
+   "corpCode": "00311030",
+   "differs": false,
+   "indexReceiptDate": "2016-10-14",
+   "officialRceptDt": "2016-10-14",
+   "receiptNo": "20161014000405",
+   "ticker": "037620.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2016-10-17",
+   "officialRceptDt": "2016-10-17",
+   "receiptNo": "20161017000354",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2016-10-21",
+   "officialRceptDt": "2016-10-21",
+   "receiptNo": "20161021800283",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00164876",
+   "differs": false,
+   "indexReceiptDate": "2016-11-01",
+   "officialRceptDt": "2016-11-01",
+   "receiptNo": "20161101000429",
+   "ticker": "003450.KS"
+  },
+  {
+   "corpCode": "00164876",
+   "differs": false,
+   "indexReceiptDate": "2016-11-03",
+   "officialRceptDt": "2016-11-03",
+   "receiptNo": "20161103000360",
+   "ticker": "003450.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2016-11-03",
+   "officialRceptDt": "2016-11-03",
+   "receiptNo": "20161103000421",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00163682",
+   "differs": false,
+   "indexReceiptDate": "2016-11-16",
+   "officialRceptDt": "2016-11-16",
+   "receiptNo": "20161116000182",
+   "ticker": "008560.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2016-11-21",
+   "officialRceptDt": "2016-11-21",
+   "receiptNo": "20161121000238",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2016-11-22",
+   "officialRceptDt": "2016-11-22",
+   "receiptNo": "20161122000002",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2016-12-01",
+   "officialRceptDt": "2016-12-01",
+   "receiptNo": "20161201800060",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2016-12-16",
+   "officialRceptDt": "2016-12-16",
+   "receiptNo": "20161216801087",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2016-12-16",
+   "officialRceptDt": "2016-12-16",
+   "receiptNo": "20161216801096",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2017-01-02",
+   "officialRceptDt": "2017-01-02",
+   "receiptNo": "20170102000404",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2017-01-03",
+   "officialRceptDt": "2017-01-03",
+   "receiptNo": "20170103000011",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00790501",
+   "differs": false,
+   "indexReceiptDate": "2017-01-06",
+   "officialRceptDt": "2017-01-06",
+   "receiptNo": "20170106000714",
+   "ticker": "117930.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2017-02-01",
+   "officialRceptDt": "2017-02-01",
+   "receiptNo": "20170201800062",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00120216",
+   "differs": false,
+   "indexReceiptDate": "2017-02-01",
+   "officialRceptDt": "2017-02-01",
+   "receiptNo": "20170201800595",
+   "ticker": "002550.KS"
+  },
+  {
+   "corpCode": "00163682",
+   "differs": true,
+   "indexReceiptDate": "2017-02-02",
+   "officialRceptDt": "2017-02-03",
+   "receiptNo": "20170202000378",
+   "ticker": "008560.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2017-02-07",
+   "officialRceptDt": "2017-02-07",
+   "receiptNo": "20170207800380",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00163682",
+   "differs": false,
+   "indexReceiptDate": "2017-02-08",
+   "officialRceptDt": "2017-02-08",
+   "receiptNo": "20170208800510",
+   "ticker": "008560.KS"
+  },
+  {
+   "corpCode": "00117744",
+   "differs": false,
+   "indexReceiptDate": "2017-02-08",
+   "officialRceptDt": "2017-02-08",
+   "receiptNo": "20170208800552",
+   "ticker": "000060.KS"
+  },
+  {
+   "corpCode": "00561866",
+   "differs": false,
+   "indexReceiptDate": "2017-02-09",
+   "officialRceptDt": "2017-02-09",
+   "receiptNo": "20170209800091",
+   "ticker": "115390.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2017-02-09",
+   "officialRceptDt": "2017-02-09",
+   "receiptNo": "20170209801325",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2017-02-22",
+   "officialRceptDt": "2017-02-22",
+   "receiptNo": "20170222000347",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00254045",
+   "differs": false,
+   "indexReceiptDate": "2017-03-03",
+   "officialRceptDt": "2017-03-03",
+   "receiptNo": "20170303800520",
+   "ticker": "000030.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2017-03-07",
+   "officialRceptDt": "2017-03-07",
+   "receiptNo": "20170307000310",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00120216",
+   "differs": false,
+   "indexReceiptDate": "2017-04-14",
+   "officialRceptDt": "2017-04-14",
+   "receiptNo": "20170414002322",
+   "ticker": "002550.KS"
+  },
+  {
+   "corpCode": "00120216",
+   "differs": false,
+   "indexReceiptDate": "2017-04-17",
+   "officialRceptDt": "2017-04-17",
+   "receiptNo": "20170417000001",
+   "ticker": "002550.KS"
+  },
+  {
+   "corpCode": "00120216",
+   "differs": false,
+   "indexReceiptDate": "2017-04-17",
+   "officialRceptDt": "2017-04-17",
+   "receiptNo": "20170417000002",
+   "ticker": "002550.KS"
+  },
+  {
+   "corpCode": "00120216",
+   "differs": false,
+   "indexReceiptDate": "2017-04-20",
+   "officialRceptDt": "2017-04-20",
+   "receiptNo": "20170420000107",
+   "ticker": "002550.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2017-04-28",
+   "officialRceptDt": "2017-04-28",
+   "receiptNo": "20170428001553",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00120216",
+   "differs": false,
+   "indexReceiptDate": "2017-05-16",
+   "officialRceptDt": "2017-05-16",
+   "receiptNo": "20170516000224",
+   "ticker": "002550.KS"
+  },
+  {
+   "corpCode": "00120216",
+   "differs": false,
+   "indexReceiptDate": "2017-05-19",
+   "officialRceptDt": "2017-05-19",
+   "receiptNo": "20170519000102",
+   "ticker": "002550.KS"
+  },
+  {
+   "corpCode": "00120216",
+   "differs": false,
+   "indexReceiptDate": "2017-05-25",
+   "officialRceptDt": "2017-05-25",
+   "receiptNo": "20170525000022",
+   "ticker": "002550.KS"
+  },
+  {
+   "corpCode": "00120216",
+   "differs": false,
+   "indexReceiptDate": "2017-05-30",
+   "officialRceptDt": "2017-05-30",
+   "receiptNo": "20170530000327",
+   "ticker": "002550.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2017-07-04",
+   "officialRceptDt": "2017-07-04",
+   "receiptNo": "20170704800513",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00254045",
+   "differs": false,
+   "indexReceiptDate": "2017-07-28",
+   "officialRceptDt": "2017-07-28",
+   "receiptNo": "20170728800149",
+   "ticker": "000030.KS"
+  },
+  {
+   "corpCode": "00176792",
+   "differs": false,
+   "indexReceiptDate": "2017-08-18",
+   "officialRceptDt": "2017-08-18",
+   "receiptNo": "20170818800233",
+   "ticker": "079440.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2017-09-01",
+   "officialRceptDt": "2017-09-01",
+   "receiptNo": "20170901800228",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2017-09-01",
+   "officialRceptDt": "2017-09-01",
+   "receiptNo": "20170901800233",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2017-09-01",
+   "officialRceptDt": "2017-09-01",
+   "receiptNo": "20170901800238",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2017-09-01",
+   "officialRceptDt": "2017-09-01",
+   "receiptNo": "20170901800241",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2017-10-10",
+   "officialRceptDt": "2017-10-10",
+   "receiptNo": "20171010800470",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2017-10-13",
+   "officialRceptDt": "2017-10-13",
+   "receiptNo": "20171013000701",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2017-10-13",
+   "officialRceptDt": "2017-10-13",
+   "receiptNo": "20171013000763",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2017-10-31",
+   "officialRceptDt": "2017-10-31",
+   "receiptNo": "20171031800711",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2017-12-14",
+   "officialRceptDt": "2017-12-14",
+   "receiptNo": "20171214801090",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2018-01-24",
+   "officialRceptDt": "2018-01-24",
+   "receiptNo": "20180124800063",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00117744",
+   "differs": false,
+   "indexReceiptDate": "2018-01-26",
+   "officialRceptDt": "2018-01-26",
+   "receiptNo": "20180126800465",
+   "ticker": "000060.KS"
+  },
+  {
+   "corpCode": "00163682",
+   "differs": false,
+   "indexReceiptDate": "2018-02-01",
+   "officialRceptDt": "2018-02-01",
+   "receiptNo": "20180201800535",
+   "ticker": "008560.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2018-02-07",
+   "officialRceptDt": "2018-02-07",
+   "receiptNo": "20180207800932",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00176792",
+   "differs": false,
+   "indexReceiptDate": "2018-02-08",
+   "officialRceptDt": "2018-02-08",
+   "receiptNo": "20180208801069",
+   "ticker": "079440.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2018-02-08",
+   "officialRceptDt": "2018-02-08",
+   "receiptNo": "20180208801240",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00561866",
+   "differs": false,
+   "indexReceiptDate": "2018-02-14",
+   "officialRceptDt": "2018-02-14",
+   "receiptNo": "20180214801222",
+   "ticker": "115390.KS"
+  },
+  {
+   "corpCode": "00254045",
+   "differs": false,
+   "indexReceiptDate": "2018-03-02",
+   "officialRceptDt": "2018-03-02",
+   "receiptNo": "20180302800408",
+   "ticker": "000030.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2018-04-25",
+   "officialRceptDt": "2018-04-25",
+   "receiptNo": "20180425800824",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00254045",
+   "differs": false,
+   "indexReceiptDate": "2018-06-19",
+   "officialRceptDt": "2018-06-19",
+   "receiptNo": "20180619000302",
+   "ticker": "000030.KS"
+  },
+  {
+   "corpCode": "00254045",
+   "differs": true,
+   "indexReceiptDate": "2018-06-19",
+   "officialRceptDt": "2018-06-20",
+   "receiptNo": "20180619000369",
+   "ticker": "000030.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2018-07-24",
+   "officialRceptDt": "2018-07-24",
+   "receiptNo": "20180724800205",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00176792",
+   "differs": false,
+   "indexReceiptDate": "2018-08-13",
+   "officialRceptDt": "2018-08-13",
+   "receiptNo": "20180813800158",
+   "ticker": "079440.KS"
+  },
+  {
+   "corpCode": "00254045",
+   "differs": false,
+   "indexReceiptDate": "2018-09-20",
+   "officialRceptDt": "2018-09-20",
+   "receiptNo": "20180920000544",
+   "ticker": "000030.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2018-10-31",
+   "officialRceptDt": "2018-10-31",
+   "receiptNo": "20181031800389",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00254045",
+   "differs": false,
+   "indexReceiptDate": "2018-11-08",
+   "officialRceptDt": "2018-11-08",
+   "receiptNo": "20181108000137",
+   "ticker": "000030.KS"
+  },
+  {
+   "corpCode": "00254045",
+   "differs": false,
+   "indexReceiptDate": "2018-11-21",
+   "officialRceptDt": "2018-11-21",
+   "receiptNo": "20181121000025",
+   "ticker": "000030.KS"
+  },
+  {
+   "corpCode": "00254045",
+   "differs": false,
+   "indexReceiptDate": "2018-11-26",
+   "officialRceptDt": "2018-11-26",
+   "receiptNo": "20181126000101",
+   "ticker": "000030.KS"
+  },
+  {
+   "corpCode": "00254045",
+   "differs": false,
+   "indexReceiptDate": "2019-01-11",
+   "officialRceptDt": "2019-01-11",
+   "receiptNo": "20190111000457",
+   "ticker": "000030.KS"
+  },
+  {
+   "corpCode": "00117744",
+   "differs": false,
+   "indexReceiptDate": "2019-01-28",
+   "officialRceptDt": "2019-01-28",
+   "receiptNo": "20190128800585",
+   "ticker": "000060.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2019-01-29",
+   "officialRceptDt": "2019-01-29",
+   "receiptNo": "20190129800143",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00163682",
+   "differs": false,
+   "indexReceiptDate": "2019-01-29",
+   "officialRceptDt": "2019-01-29",
+   "receiptNo": "20190129800711",
+   "ticker": "008560.KS"
+  },
+  {
+   "corpCode": "00164609",
+   "differs": false,
+   "indexReceiptDate": "2019-01-31",
+   "officialRceptDt": "2019-01-31",
+   "receiptNo": "20190131800416",
+   "ticker": "010620.KS"
+  },
+  {
+   "corpCode": "00176792",
+   "differs": false,
+   "indexReceiptDate": "2019-02-11",
+   "officialRceptDt": "2019-02-11",
+   "receiptNo": "20190211801121",
+   "ticker": "079440.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2019-02-12",
+   "officialRceptDt": "2019-02-12",
+   "receiptNo": "20190212800745",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2019-02-14",
+   "officialRceptDt": "2019-02-14",
+   "receiptNo": "20190214800434",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00561866",
+   "differs": false,
+   "indexReceiptDate": "2019-02-14",
+   "officialRceptDt": "2019-02-14",
+   "receiptNo": "20190214801297",
+   "ticker": "115390.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2019-04-16",
+   "officialRceptDt": "2019-04-16",
+   "receiptNo": "20190416800311",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00561866",
+   "differs": false,
+   "indexReceiptDate": "2019-05-29",
+   "officialRceptDt": "2019-05-29",
+   "receiptNo": "20190529800635",
+   "ticker": "115390.KS"
+  },
+  {
+   "corpCode": "00561866",
+   "differs": false,
+   "indexReceiptDate": "2019-05-29",
+   "officialRceptDt": "2019-05-29",
+   "receiptNo": "20190529800641",
+   "ticker": "115390.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2019-07-10",
+   "officialRceptDt": "2019-07-10",
+   "receiptNo": "20190710800737",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2019-07-26",
+   "officialRceptDt": "2019-07-26",
+   "receiptNo": "20190726800294",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2019-08-06",
+   "officialRceptDt": "2019-08-06",
+   "receiptNo": "20190806800250",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00176792",
+   "differs": false,
+   "indexReceiptDate": "2019-08-12",
+   "officialRceptDt": "2019-08-12",
+   "receiptNo": "20190812800253",
+   "ticker": "079440.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2019-10-25",
+   "officialRceptDt": "2019-10-25",
+   "receiptNo": "20191025800168",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2019-10-30",
+   "officialRceptDt": "2019-10-30",
+   "receiptNo": "20191030000356",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00176792",
+   "differs": false,
+   "indexReceiptDate": "2019-11-14",
+   "officialRceptDt": "2019-11-14",
+   "receiptNo": "20191114002655",
+   "ticker": "079440.KS"
+  },
+  {
+   "corpCode": "00176792",
+   "differs": false,
+   "indexReceiptDate": "2019-11-19",
+   "officialRceptDt": "2019-11-19",
+   "receiptNo": "20191119000180",
+   "ticker": "079440.KS"
+  },
+  {
+   "corpCode": "00176792",
+   "differs": false,
+   "indexReceiptDate": "2019-12-04",
+   "officialRceptDt": "2019-12-04",
+   "receiptNo": "20191204000479",
+   "ticker": "079440.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2019-12-05",
+   "officialRceptDt": "2019-12-05",
+   "receiptNo": "20191205000311",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2019-12-12",
+   "officialRceptDt": "2019-12-12",
+   "receiptNo": "20191212000291",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2019-12-13",
+   "officialRceptDt": "2019-12-13",
+   "receiptNo": "20191213000001",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2019-12-13",
+   "officialRceptDt": "2019-12-13",
+   "receiptNo": "20191213000002",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2019-12-16",
+   "officialRceptDt": "2019-12-16",
+   "receiptNo": "20191216000287",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2019-12-24",
+   "officialRceptDt": "2019-12-24",
+   "receiptNo": "20191224000172",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2020-01-06",
+   "officialRceptDt": "2020-01-06",
+   "receiptNo": "20200106000315",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2020-01-21",
+   "officialRceptDt": "2020-01-21",
+   "receiptNo": "20200121800573",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00163682",
+   "differs": false,
+   "indexReceiptDate": "2020-01-29",
+   "officialRceptDt": "2020-01-29",
+   "receiptNo": "20200129800447",
+   "ticker": "008560.KS"
+  },
+  {
+   "corpCode": "00117744",
+   "differs": false,
+   "indexReceiptDate": "2020-01-30",
+   "officialRceptDt": "2020-01-30",
+   "receiptNo": "20200130800430",
+   "ticker": "000060.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2020-02-03",
+   "officialRceptDt": "2020-02-03",
+   "receiptNo": "20200203800156",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2020-02-04",
+   "officialRceptDt": "2020-02-04",
+   "receiptNo": "20200204000309",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00176792",
+   "differs": false,
+   "indexReceiptDate": "2020-02-04",
+   "officialRceptDt": "2020-02-04",
+   "receiptNo": "20200204800570",
+   "ticker": "079440.KS"
+  },
+  {
+   "corpCode": "00164609",
+   "differs": false,
+   "indexReceiptDate": "2020-02-06",
+   "officialRceptDt": "2020-02-06",
+   "receiptNo": "20200206800322",
+   "ticker": "010620.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2020-02-10",
+   "officialRceptDt": "2020-02-10",
+   "receiptNo": "20200210801182",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2020-02-10",
+   "officialRceptDt": "2020-02-10",
+   "receiptNo": "20200210801198",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2020-02-12",
+   "officialRceptDt": "2020-02-12",
+   "receiptNo": "20200212800948",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2020-04-20",
+   "officialRceptDt": "2020-04-20",
+   "receiptNo": "20200420800655",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2020-06-15",
+   "officialRceptDt": "2020-06-15",
+   "receiptNo": "20200615000290",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2020-06-15",
+   "officialRceptDt": "2020-06-15",
+   "receiptNo": "20200615000291",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2020-07-07",
+   "officialRceptDt": "2020-07-07",
+   "receiptNo": "20200707000019",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2020-08-12",
+   "officialRceptDt": "2020-08-12",
+   "receiptNo": "20200812800554",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2020-10-20",
+   "officialRceptDt": "2020-10-20",
+   "receiptNo": "20201020800406",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2020-11-02",
+   "officialRceptDt": "2020-11-02",
+   "receiptNo": "20201102000410",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00102760",
+   "differs": false,
+   "indexReceiptDate": "2020-11-02",
+   "officialRceptDt": "2020-11-02",
+   "receiptNo": "20201102000411",
+   "ticker": "011160.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2020-12-01",
+   "officialRceptDt": "2020-12-01",
+   "receiptNo": "20201201000311",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00176792",
+   "differs": false,
+   "indexReceiptDate": "2020-12-23",
+   "officialRceptDt": "2020-12-23",
+   "receiptNo": "20201223000694",
+   "ticker": "079440.KS"
+  },
+  {
+   "corpCode": "00163682",
+   "differs": false,
+   "indexReceiptDate": "2021-02-01",
+   "officialRceptDt": "2021-02-01",
+   "receiptNo": "20210201800630",
+   "ticker": "008560.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2021-02-02",
+   "officialRceptDt": "2021-02-02",
+   "receiptNo": "20210202800049",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00117744",
+   "differs": false,
+   "indexReceiptDate": "2021-02-05",
+   "officialRceptDt": "2021-02-05",
+   "receiptNo": "20210205800606",
+   "ticker": "000060.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2021-02-05",
+   "officialRceptDt": "2021-02-05",
+   "receiptNo": "20210205800944",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2021-02-05",
+   "officialRceptDt": "2021-02-05",
+   "receiptNo": "20210205800987",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2021-02-09",
+   "officialRceptDt": "2021-02-09",
+   "receiptNo": "20210209801234",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2021-03-19",
+   "officialRceptDt": "2021-03-19",
+   "receiptNo": "20210319001379",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2021-04-06",
+   "officialRceptDt": "2021-04-06",
+   "receiptNo": "20210406002330",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2021-04-15",
+   "officialRceptDt": "2021-04-15",
+   "receiptNo": "20210415000503",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2021-04-16",
+   "officialRceptDt": "2021-04-16",
+   "receiptNo": "20210416000544",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2021-04-20",
+   "officialRceptDt": "2021-04-20",
+   "receiptNo": "20210420000360",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2021-04-21",
+   "officialRceptDt": "2021-04-21",
+   "receiptNo": "20210421800500",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2021-04-27",
+   "officialRceptDt": "2021-04-27",
+   "receiptNo": "20210427000333",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2021-08-11",
+   "officialRceptDt": "2021-08-11",
+   "receiptNo": "20210811800200",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2021-11-10",
+   "officialRceptDt": "2021-11-10",
+   "receiptNo": "20211110800440",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00163682",
+   "differs": false,
+   "indexReceiptDate": "2022-01-27",
+   "officialRceptDt": "2022-01-27",
+   "receiptNo": "20220127800709",
+   "ticker": "008560.KS"
+  },
+  {
+   "corpCode": "00117744",
+   "differs": false,
+   "indexReceiptDate": "2022-02-07",
+   "officialRceptDt": "2022-02-07",
+   "receiptNo": "20220207800753",
+   "ticker": "000060.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2022-02-08",
+   "officialRceptDt": "2022-02-08",
+   "receiptNo": "20220208800269",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2022-02-08",
+   "officialRceptDt": "2022-02-08",
+   "receiptNo": "20220208800824",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2022-02-09",
+   "officialRceptDt": "2022-02-09",
+   "receiptNo": "20220209800907",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2022-02-10",
+   "officialRceptDt": "2022-02-10",
+   "receiptNo": "20220210800530",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2022-04-20",
+   "officialRceptDt": "2022-04-20",
+   "receiptNo": "20220420800372",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2022-05-31",
+   "officialRceptDt": "2022-05-31",
+   "receiptNo": "20220531800056",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2022-08-10",
+   "officialRceptDt": "2022-08-10",
+   "receiptNo": "20220810800480",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2022-08-11",
+   "officialRceptDt": "2022-08-11",
+   "receiptNo": "20220811800571",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00561866",
+   "differs": false,
+   "indexReceiptDate": "2022-10-11",
+   "officialRceptDt": "2022-10-11",
+   "receiptNo": "20221011800392",
+   "ticker": "115390.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2022-11-09",
+   "officialRceptDt": "2022-11-09",
+   "receiptNo": "20221109800262",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00117744",
+   "differs": false,
+   "indexReceiptDate": "2022-11-21",
+   "officialRceptDt": "2022-11-21",
+   "receiptNo": "20221121000152",
+   "ticker": "000060.KS"
+  },
+  {
+   "corpCode": "00163682",
+   "differs": false,
+   "indexReceiptDate": "2022-11-21",
+   "officialRceptDt": "2022-11-21",
+   "receiptNo": "20221121000158",
+   "ticker": "008560.KS"
+  },
+  {
+   "corpCode": "00117744",
+   "differs": false,
+   "indexReceiptDate": "2022-12-05",
+   "officialRceptDt": "2022-12-05",
+   "receiptNo": "20221205000271",
+   "ticker": "000060.KS"
+  },
+  {
+   "corpCode": "00163682",
+   "differs": false,
+   "indexReceiptDate": "2022-12-05",
+   "officialRceptDt": "2022-12-05",
+   "receiptNo": "20221205000275",
+   "ticker": "008560.KS"
+  },
+  {
+   "corpCode": "00163682",
+   "differs": false,
+   "indexReceiptDate": "2023-02-02",
+   "officialRceptDt": "2023-02-02",
+   "receiptNo": "20230202800579",
+   "ticker": "008560.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2023-02-03",
+   "officialRceptDt": "2023-02-03",
+   "receiptNo": "20230203800170",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2023-02-03",
+   "officialRceptDt": "2023-02-03",
+   "receiptNo": "20230203800663",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2023-02-07",
+   "officialRceptDt": "2023-02-07",
+   "receiptNo": "20230207800623",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2023-02-07",
+   "officialRceptDt": "2023-02-07",
+   "receiptNo": "20230207800840",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2023-02-10",
+   "officialRceptDt": "2023-02-10",
+   "receiptNo": "20230210800515",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00561866",
+   "differs": false,
+   "indexReceiptDate": "2023-02-15",
+   "officialRceptDt": "2023-02-15",
+   "receiptNo": "20230215801013",
+   "ticker": "115390.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2023-04-20",
+   "officialRceptDt": "2023-04-20",
+   "receiptNo": "20230420800498",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2023-07-26",
+   "officialRceptDt": "2023-07-26",
+   "receiptNo": "20230726800352",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2023-10-17",
+   "officialRceptDt": "2023-10-17",
+   "receiptNo": "20231017800264",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2023-10-23",
+   "officialRceptDt": "2023-10-23",
+   "receiptNo": "20231023000179",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2024-02-02",
+   "officialRceptDt": "2024-02-02",
+   "receiptNo": "20240202800624",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2024-02-05",
+   "officialRceptDt": "2024-02-05",
+   "receiptNo": "20240205000007",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2024-02-05",
+   "officialRceptDt": "2024-02-05",
+   "receiptNo": "20240205000008",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2024-02-06",
+   "officialRceptDt": "2024-02-06",
+   "receiptNo": "20240206800110",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2024-02-06",
+   "officialRceptDt": "2024-02-06",
+   "receiptNo": "20240206800869",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2024-02-07",
+   "officialRceptDt": "2024-02-07",
+   "receiptNo": "20240207801103",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2024-02-19",
+   "officialRceptDt": "2024-02-19",
+   "receiptNo": "20240219001823",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2024-02-19",
+   "officialRceptDt": "2024-02-19",
+   "receiptNo": "20240219001836",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2024-03-08",
+   "officialRceptDt": "2024-03-08",
+   "receiptNo": "20240308000152",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2024-04-03",
+   "officialRceptDt": "2024-04-03",
+   "receiptNo": "20240403000014",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2024-04-03",
+   "officialRceptDt": "2024-04-03",
+   "receiptNo": "20240403000016",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00561866",
+   "differs": false,
+   "indexReceiptDate": "2024-04-18",
+   "officialRceptDt": "2024-04-18",
+   "receiptNo": "20240418000003",
+   "ticker": "115390.KS"
+  },
+  {
+   "corpCode": "00561866",
+   "differs": false,
+   "indexReceiptDate": "2024-04-18",
+   "officialRceptDt": "2024-04-18",
+   "receiptNo": "20240418000004",
+   "ticker": "115390.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2024-04-23",
+   "officialRceptDt": "2024-04-23",
+   "receiptNo": "20240423000168",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2024-04-24",
+   "officialRceptDt": "2024-04-24",
+   "receiptNo": "20240424000085",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2024-04-25",
+   "officialRceptDt": "2024-04-25",
+   "receiptNo": "20240425000313",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00561866",
+   "differs": false,
+   "indexReceiptDate": "2024-05-16",
+   "officialRceptDt": "2024-05-16",
+   "receiptNo": "20240516000002",
+   "ticker": "115390.KS"
+  },
+  {
+   "corpCode": "00561866",
+   "differs": false,
+   "indexReceiptDate": "2024-05-16",
+   "officialRceptDt": "2024-05-16",
+   "receiptNo": "20240516000004",
+   "ticker": "115390.KS"
+  },
+  {
+   "corpCode": "00561866",
+   "differs": false,
+   "indexReceiptDate": "2024-05-17",
+   "officialRceptDt": "2024-05-17",
+   "receiptNo": "20240517000420",
+   "ticker": "115390.KS"
+  },
+  {
+   "corpCode": "00561866",
+   "differs": false,
+   "indexReceiptDate": "2024-06-10",
+   "officialRceptDt": "2024-06-10",
+   "receiptNo": "20240610000291",
+   "ticker": "115390.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2024-06-19",
+   "officialRceptDt": "2024-06-19",
+   "receiptNo": "20240619800649",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00561866",
+   "differs": false,
+   "indexReceiptDate": "2024-08-30",
+   "officialRceptDt": "2024-08-30",
+   "receiptNo": "20240830002126",
+   "ticker": "115390.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2024-10-22",
+   "officialRceptDt": "2024-10-22",
+   "receiptNo": "20241022800373",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00561866",
+   "differs": false,
+   "indexReceiptDate": "2024-12-24",
+   "officialRceptDt": "2024-12-24",
+   "receiptNo": "20241224000570",
+   "ticker": "115390.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2025-02-04",
+   "officialRceptDt": "2025-02-04",
+   "receiptNo": "20250204800477",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00164609",
+   "differs": false,
+   "indexReceiptDate": "2025-02-05",
+   "officialRceptDt": "2025-02-05",
+   "receiptNo": "20250205800653",
+   "ticker": "010620.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2025-02-06",
+   "officialRceptDt": "2025-02-06",
+   "receiptNo": "20250206800076",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2025-02-07",
+   "officialRceptDt": "2025-02-07",
+   "receiptNo": "20250207800672",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2025-02-28",
+   "officialRceptDt": "2025-02-28",
+   "receiptNo": "20250228800088",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2025-03-31",
+   "officialRceptDt": "2025-03-31",
+   "receiptNo": "20250331804043",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2025-07-01",
+   "officialRceptDt": "2025-07-01",
+   "receiptNo": "20250701000231",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00344287",
+   "differs": false,
+   "indexReceiptDate": "2025-07-11",
+   "officialRceptDt": "2025-07-11",
+   "receiptNo": "20250711000213",
+   "ticker": "042670.KS"
+  },
+  {
+   "corpCode": "00164609",
+   "differs": false,
+   "indexReceiptDate": "2025-07-30",
+   "officialRceptDt": "2025-07-30",
+   "receiptNo": "20250730800478",
+   "ticker": "010620.KS"
+  },
+  {
+   "corpCode": "00164609",
+   "differs": false,
+   "indexReceiptDate": "2025-07-31",
+   "officialRceptDt": "2025-07-31",
+   "receiptNo": "20250731800111",
+   "ticker": "010620.KS"
+  },
+  {
+   "corpCode": "00164609",
+   "differs": false,
+   "indexReceiptDate": "2025-08-27",
+   "officialRceptDt": "2025-08-27",
+   "receiptNo": "20250827000428",
+   "ticker": "010620.KS"
+  },
+  {
+   "corpCode": "00138224",
+   "differs": false,
+   "indexReceiptDate": "2025-10-27",
+   "officialRceptDt": "2025-10-27",
+   "receiptNo": "20251027000344",
+   "ticker": "003410.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2026-02-04",
+   "officialRceptDt": "2026-02-04",
+   "receiptNo": "20260204800094",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2026-02-09",
+   "officialRceptDt": "2026-02-09",
+   "receiptNo": "20260209800697",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2026-02-11",
+   "officialRceptDt": "2026-02-11",
+   "receiptNo": "20260211000381",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2026-02-11",
+   "officialRceptDt": "2026-02-11",
+   "receiptNo": "20260211800225",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2026-02-11",
+   "officialRceptDt": "2026-02-11",
+   "receiptNo": "20260211800453",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2026-02-23",
+   "officialRceptDt": "2026-02-23",
+   "receiptNo": "20260223000008",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2026-02-23",
+   "officialRceptDt": "2026-02-23",
+   "receiptNo": "20260223000011",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2026-03-26",
+   "officialRceptDt": "2026-03-26",
+   "receiptNo": "20260326001203",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2026-03-27",
+   "officialRceptDt": "2026-03-27",
+   "receiptNo": "20260327000008",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2026-03-27",
+   "officialRceptDt": "2026-03-27",
+   "receiptNo": "20260327000009",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2026-04-15",
+   "officialRceptDt": "2026-04-15",
+   "receiptNo": "20260415000010",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2026-04-24",
+   "officialRceptDt": "2026-04-24",
+   "receiptNo": "20260424000738",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2026-04-27",
+   "officialRceptDt": "2026-04-27",
+   "receiptNo": "20260427000630",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2026-04-29",
+   "officialRceptDt": "2026-04-29",
+   "receiptNo": "20260429000294",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2026-05-11",
+   "officialRceptDt": "2026-05-11",
+   "receiptNo": "20260511000724",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2026-05-15",
+   "officialRceptDt": "2026-05-15",
+   "receiptNo": "20260515100001",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00172291",
+   "differs": false,
+   "indexReceiptDate": "2026-05-19",
+   "officialRceptDt": "2026-05-19",
+   "receiptNo": "20260519000237",
+   "ticker": "012510.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2026-05-22",
+   "officialRceptDt": "2026-05-22",
+   "receiptNo": "20260522000254",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2026-08-05",
+   "officialRceptDt": "2026-08-05",
+   "receiptNo": "20260805000212",
+   "ticker": "057050.KS"
+  },
+  {
+   "corpCode": "00412597",
+   "differs": false,
+   "indexReceiptDate": "2026-08-05",
+   "officialRceptDt": "2026-08-05",
+   "receiptNo": "20260805000215",
+   "ticker": "057050.KS"
+  }
+ ],
+ "schema": "KR_CORPORATE_ACTION_INDEX_RCEPT_DT_OVERLAY_V1",
+ "source": "opendart.fss.or.kr/api/list.json rcept_dt, queried by corp_code per receipt year",
+ "summary": {
+  "differingRows": [
+   {
+    "corpCode": "00163682",
+    "differs": true,
+    "indexReceiptDate": "2017-02-02",
+    "officialRceptDt": "2017-02-03",
+    "receiptNo": "20170202000378",
+    "ticker": "008560.KS"
+   },
+   {
+    "corpCode": "00254045",
+    "differs": true,
+    "indexReceiptDate": "2018-06-19",
+    "officialRceptDt": "2018-06-20",
+    "receiptNo": "20180619000369",
+    "ticker": "000030.KS"
+   }
+  ],
+  "differs": 2,
+  "direction": "index date one day EARLIER than official in every differing row",
+  "officiallyListed": 451,
+  "rows": 451
+ }
+}
