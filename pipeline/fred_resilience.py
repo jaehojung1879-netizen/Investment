@@ -288,6 +288,17 @@ def ml_input_coverage(avail, as_of, training_starts=None, policy=COVERAGE_POLICY
             reasons.append("ML_MACRO_SERIES_FUTURE")
         elif age_days > policy["maxStalenessDays"]:
             reasons.append("ML_MACRO_SERIES_STALE")
+    # allPresentThrough is the MINIMUM series end. It cannot reveal a future
+    # tail in only one series; inspect actual non-missing observation dates too.
+    if as_of_valid and isinstance(macro, pd.DataFrame):
+        try:
+            observed = pd.to_datetime(macro.index[macro.notna().any(axis=1)], errors="coerce", utc=True)
+            if observed.isna().any():
+                reasons.append("ML_MACRO_OBSERVATION_DATES_INVALID")
+            elif (observed > as_of_ts).any() and "ML_MACRO_SERIES_FUTURE" not in reasons:
+                reasons.append("ML_MACRO_SERIES_FUTURE")
+        except (TypeError, ValueError, OverflowError):
+            reasons.append("ML_MACRO_OBSERVATION_DATES_INVALID")
     if ml.get("overlapVerified") and isinstance(macro, pd.DataFrame):
         cols = [c for c in ml.get("fetched", []) if c in macro.columns]
         if int(macro[cols].dropna().shape[0]) < policy["minOverlapObservations"]:

@@ -322,6 +322,35 @@ def test_future_last_macro_observation_cannot_be_registered():
     assert R.recording_decision(identity)["action"] == "HOLD"
 
 
+@pytest.mark.parametrize("future_series", ["Treasury_10Y", "Treasury_2Y", "HY_Spread", "IG_Spread"])
+def test_future_tail_in_only_one_series_cannot_hide_behind_the_common_end(future_series):
+    days = pd.bdate_range("2011-01-03", "2026-09-14")
+    macro = _macro(days)
+    macro.loc[pd.Timestamp("2026-09-15"), future_series] = 2.0
+    avail = _avail(macro)
+    assert avail["mlMacroSeries"]["allPresentThrough"] == "2026-09-14"
+    _, cols = _build(macro)
+    identity = R.model_identity("mv", cols, R.reference_feature_columns(SERIES), macro,
+                                avail, {"A": "2011-04-01"}, as_of="2026-09-14",
+                                coverage_policy=POLICY)
+    assert identity["variant"] == R.DEGRADED
+    assert "ML_MACRO_SERIES_FUTURE" in identity["coverageReasons"]
+    assert identity["effectiveModelId"] != "mv"
+    assert R.recording_decision(identity)["action"] == "HOLD"
+
+
+def test_an_empty_future_index_row_is_not_a_future_observation():
+    days = pd.bdate_range("2011-01-03", "2026-09-14")
+    macro = _macro(days)
+    macro.loc[pd.Timestamp("2026-09-15")] = np.nan
+    _, cols = _build(macro)
+    identity = R.model_identity("mv", cols, R.reference_feature_columns(SERIES), macro,
+                                _avail(macro), {"A": "2011-04-01"}, as_of="2026-09-14",
+                                coverage_policy=POLICY)
+    assert identity["variant"] == R.REGISTERED
+    assert identity["coverageReasons"] == []
+
+
 def test_coverage_policy_must_be_complete():
     with pytest.raises(ValueError):
         R.ml_input_coverage({"mlMacroSeries": {"missing": [], "overlapVerified": True}}, "2026-09-14", {}, {"maxStalenessDays": 7})
