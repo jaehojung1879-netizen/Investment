@@ -31,6 +31,9 @@ import zipfile
 from pathlib import Path
 
 PLAN_SHA256 = "2c73067ced7c59a2b23a693b5db6aca37f45d69c478c2f789df877126f738766"
+# The exact audited 68-row public metadata receipt, not a re-generated self-claim.
+# Future collections require a new audited receipt digest/version.
+RECEIPT_SHA256 = "432341a8fc989df92fd3dd9b280ab711173fd386bc4b632ea1db33181153e213"
 API = "https://opendart.fss.or.kr/api/fnlttXbrl.xml"
 ANNUAL = "11011"
 MAX_BYTES = 64 << 20
@@ -131,13 +134,32 @@ def receipt(plan_path, out_dir, receipt_path):
     return doc
 
 
+def load_pinned_receipt(receipt_path):
+    """Verify the exact audited fixed-68 evidence BEFORE making authenticated API requests.
+
+    A matching planSha256 field alone is caller-controlled; it cannot authenticate a
+    substituted, partial or duplicate row set, or the row-level expected digests.
+    """
+    raw = Path(receipt_path).read_bytes()
+    if hashlib.sha256(raw).hexdigest() != RECEIPT_SHA256:
+        raise ValueError("RECEIPT_BYTES_NOT_THE_AUDITED_FIXED68_SNAPSHOT")
+    doc = json.loads(raw)
+    rows = doc.get("rows")
+    if (doc.get("planSha256") != PLAN_SHA256 or doc.get("route") != "OPENDART_FNLTTXBRL_API"
+            or not isinstance(rows, list) or len(rows) != 68
+            or len({row["receipt"] for row in rows}) != 68
+            or any(row.get("status") != "ACQUIRED_IDENTITY_CHECKED_VALUES_UNVERIFIED" for row in rows)):
+        raise ValueError("PINNED_RECEIPT_STRUCTURE_INVALID")
+    return doc
+
+
 def verify(receipt_path, key, pause=0.5):
-    """Hash-anchored re-acquisition: fetch each receipt again in memory and compare with the committed SHA-256.
-    The route is byte-deterministic (re-fetches on 2026-10-27 matched exactly), so a verifier needs the key, not the
-    bytes; nothing is written to disk and nothing needs to be redistributed."""
-    doc = json.loads(Path(receipt_path).read_text())
-    if doc.get("planSha256") != PLAN_SHA256:
-        raise ValueError("RECEIPT_NOT_FOR_THE_PINNED_PLAN")
+    """Re-fetch the EXACT audited 68 original packages in memory; never accept a self-reported receipt.
+
+    Fail closed on partial requests, network errors and any content-hash mismatch.
+    No raw ZIP bytes or credentials are written to the repository or printed.
+    """
+    doc = load_pinned_receipt(receipt_path)
     result = {"match": 0, "differ": [], "transportError": []}
     for r in doc["rows"]:
         query = urllib.parse.urlencode({"crtfc_key": key, "rcept_no": r["receipt"], "reprt_code": ANNUAL})
@@ -152,6 +174,10 @@ def verify(receipt_path, key, pause=0.5):
         else:
             result["differ"].append(r["receipt"])
         time.sleep(pause)
+    if result["match"] != 68 or result["differ"] or result["transportError"]:
+        raise ValueError("FIXED68_REACQUISITION_INCOMPLETE_OR_MISMATCH: "
+                         f"matched={result['match']} different={len(result['differ'])} "
+                         f"transportErrors={len(result['transportError'])}")
     return result
 
 
