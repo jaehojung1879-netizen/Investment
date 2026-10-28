@@ -69,7 +69,11 @@ def package(record, *, start=None, end=None, currency="KRW", corp=None, member="
            f'<xbrli:measure>{unit_prefix}:{currency}</xbrli:measure></xbrli:unit>{facts}{extra}</xbrli:xbrl>')
     b = io.BytesIO()
     with zipfile.ZipFile(b, "w", zipfile.ZIP_DEFLATED) as z:
-        z.writestr("instance.xbrl", xml)
+        # A synthetic original's digest must not depend on a two-second ZIP
+        # wall-clock boundary between the paired termination-control builds.
+        info = zipfile.ZipInfo("instance.xbrl", date_time=(2024, 1, 1, 0, 0, 0))
+        info.compress_type = zipfile.ZIP_DEFLATED
+        z.writestr(info, xml)
     raw = b.getvalue()
     receipt = record["receiptNos"][0]
     return {"raw": raw, "sha256": E.sha(raw),

@@ -195,13 +195,24 @@ def load_acquisition(directory, receipt_path, *, plan_path=PLAN):
 
 
 
-def verify_fact_candidates(records, packages, targets):
+def verify_fact_candidates(records, packages, targets, *, numeric_verifier='legacy-v1'):
     """Validate raw API amounts against original facts, never infer absent facts.
 
     Counts are distinct receipt/basis/concept matches, not admitted signal rows.
-    Source concepts, Decimal KRW amounts and annual windows are all decided by
-    the existing pinned comparator. No new taxonomy equivalence is introduced.
+    The selected, explicitly hashed reader keeps the same source concepts,
+    Decimal KRW amounts and annual windows. V2 selects a proven statement basis;
+    it does not change the legacy cohort comparator or infer taxonomy equivalence.
     """
+    if numeric_verifier == 'legacy-v1':
+        verify = E.original_financial_facts
+        verifier_identity = {'version': 'legacy-v1', 'moduleSha256': E.sha(Path(E.__file__).read_bytes()),
+                             'cohortVerifierChanged': False, 'sourceAdmissionAuthorized': False}
+    elif numeric_verifier == 'mixed-basis-v2':
+        from . import numeric_verifier_v2 as V2
+        verifier_identity = V2.identity()
+        verify = V2.original_financial_facts
+    else:
+        raise ValueError('UNKNOWN_NUMERIC_VERIFIER_VERSION')
     targets = {t['receipt']: t for t in targets}
     matches, failures, seen = {}, [], set()
     for record in records:
@@ -224,7 +235,7 @@ def verify_fact_candidates(records, packages, targets):
             try:
                 if issues:
                     raise ValueError(','.join(issues))
-                result = E.original_financial_facts(record, target, packages[receipt], field)
+                result = verify(record, target, packages[receipt], field)
                 if not result['ready']:
                     raise ValueError('ORIGINAL_FACTS_NOT_READY')
                 for fact in ('sales', field):
@@ -246,13 +257,14 @@ def verify_fact_candidates(records, packages, targets):
                                  'reason': str(exc)})
     facts = [matches[k] for k in sorted(matches)]
     return {'status': 'ORIGINAL_RAW_AMOUNT_MATCHES_NOT_RESEARCH_ADMISSION',
+            'numericVerifier': {**verifier_identity, 'acquisitionPlanSha256': PLAN_SHA256},
             'verifiedFinancialFactCount': len(facts), 'facts': facts,
             'matchedReceiptCount': len({x['receipt'] for x in facts}), 'failures': failures,
             'originalTaxonomyEquivalenceInferred': False, 'fiscalAgePolicySelected': None,
             'historicalOutcomesRead': 0, 'sourceAdmissionAuthorized': False}
 
 
-def inspect_to_directory(acquisition, receipt, output):
+def inspect_to_directory(acquisition, receipt, output, *, numeric_verifier='legacy-v1'):
     """Feed actual rehashed packages to the unchanged fixed-cohort PIT comparator."""
     from . import pit_join as J
     output = Path(output)
@@ -264,7 +276,9 @@ def inspect_to_directory(acquisition, receipt, output):
     records = (r for year in range(2015, 2025)
                for r in source.rows(f'ledger/fundamentals/kr-raw/raw-{year}.jsonl.gz')
                if r.get('reportCode') == '11011')
-    report['originalSourceFactAudit'] = verify_fact_candidates(records, packages, _targets(PLAN))
+    report['originalSourceFactAudit'] = verify_fact_candidates(records, packages, _targets(PLAN), numeric_verifier=numeric_verifier)
+    report['cohortNumericVerifier'] = 'legacy-v1'
+    report['numericAuditIsSeparateFromCohortAdmission'] = True
     if report['coverage']['expectedMemberDates'] != 51360:
         raise ValueError('FIXED_51360_DENOMINATOR_CHANGED')
     if report['fiscalAgePolicy']['admissionEnabled']:
@@ -295,10 +309,14 @@ def main(argv=None):
     parser.add_argument('--acquisition', type=Path, required=True)
     parser.add_argument('--receipt', type=Path, required=True)
     parser.add_argument('--output', type=Path)
+    parser.add_argument('--numeric-verifier', choices=('legacy-v1', 'mixed-basis-v2'), default='legacy-v1',
+                        help='Opt-in original-number audit version only; the fixed cohort/admission verifier is unchanged.')
     args = parser.parse_args(argv)
     try:
+        if args.numeric_verifier != 'legacy-v1' and args.output is None:
+            raise ValueError('NUMERIC_AUDIT_VERSION_REQUIRES_NEW_OUTPUT')
         if args.output:
-            report = inspect_to_directory(args.acquisition, args.receipt, args.output)
+            report = inspect_to_directory(args.acquisition, args.receipt, args.output, numeric_verifier=args.numeric_verifier)
             summary = {'status': report['status'], 'coverage': report['coverage'],
                        'originalRecoveryReceiptSha256': report['originalRecoveryReceiptSha256']}
         else:

@@ -1,5 +1,17 @@
 # 고정68 OpenDART 원본 검증 인계
 
+## 2026-10-29: 별도 수치검증 버전, 원 수집 계획 보존
+
+`numeric_verifier_v2`는 혼합 CFS/OFS ZIP에서 요청한 기준을 선택하는 별도 버전이다. 기존 `pit_filing_evidence.py`, CODE8, 계획 SHA `2c73067c…`, 원 영수증과 과거 측정은 그대로다. 기본 경로도 `legacy-v1`이다. 명시적으로 선택한 수치 감사만 `mixed-basis-v2`를 사용하며 원본 ZIP을 수정하지 않는다.
+
+```bash
+python -m research.stock_working_capital_v1.opendart_recovery --acquisition /private/original-wc68 --receipt /private/receipt.json --output /private/new-wc68-numeric-v2 --numeric-verifier mixed-basis-v2
+```
+
+`originalSourceFactAudit.numericVerifier`는 선택 버전·새 모듈 SHA·기존 모듈 SHA·원 수집 계획 SHA를 기록한다. `cohortNumericVerifier: legacy-v1` 및 `numericAuditIsSeparateFromCohortAdmission: true`를 함께 기록한다. 새 수치 일치가 기존 PIT cohort의 검증·F2 선택·연구 적격 증가를 의미하지 않는다. 단위·금액·개념·발행인·기간의 비교 산식은 기존 리더와 같고, 공식 QName/유일 context/발행인/명시적 축을 검증한 반대 기준만 건너뛴다.
+
+현재 Codex에는 실제 68 ZIP이 없다. 수치 증가량은 미측정이며 기존 보고 32사실을 재인증하지 않았다. 이번 버전은 원본 보유 환경에서 기존 비공개 바이트로 실행할 준비만 제공한다. 재다운로드·새 키·Public 원본/전체 facts 게시·역사 성과 실행은 하지 않는다. 이전 인계 내용은 당시 기록으로 아래에 보존한다.
+
 공개 #294 영수증(9921cb76ec7eb7ddc0744a5025b7dfadeab6244f)은 고정 계획의 68개 신원과 모두 일치한다. 68개 SHA는 서로 다르며 총 14,350,491바이트를 선언한다. 이는 수집자 기록 검증이며, 현재 Codex가 원본을 재해시한 숫자는 0/68이다. 기존 공개첨부 HTTP200 빈본문 실패와 공식 API 원본 취득을 구분한다.
 
 가장 먼저 Claude의 원본 임시 디렉터리를 소유자가 승인한 비공개 지속 보존 위치로 옮기고 manifest.json, 68개 receipt.bin, 공개 receipt.json의 정확한 바이트를 함께 보존해야 한다. Public Git에 원본을 넣지 않는다. 이 코드는 키나 새 수집을 요구하지 않고 로컬 바이트만 읽는다.
