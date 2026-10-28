@@ -26,6 +26,7 @@ declare its cost basis and registered benchmark, so a future producer cannot be 
 from __future__ import annotations
 
 import json
+import math
 import re
 
 STUDY = "rp1-d-composition-contract-v1"
@@ -73,7 +74,14 @@ def economic_input_contract():
 
 
 def _num(v):
-    return isinstance(v, (int, float)) and not isinstance(v, bool) and v == v and abs(v) != float("inf")
+    if not isinstance(v, (int, float)) or isinstance(v, bool):
+        return False
+    try:
+        return math.isfinite(v)
+    except OverflowError:
+        # JSON integers can exceed the float domain used by edge_after_cost.
+        # Refuse them before arithmetic, including while the definition is unresolved.
+        return False
 
 
 def inspect_tickers(cands, region=None):

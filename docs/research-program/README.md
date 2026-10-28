@@ -57,7 +57,7 @@ FAST는 같은 고정 지수의 추세·변동성, TRANSITION/SLOW는 원 시장
 - PRIMARY의 ^GSPC/KR exact hash 유지. FRED_SP500 이동 창은 신원·최소 250공통일·일관성을 매번 검사. SPY vendor와 CASH/DTB3는 별도 scope, 불일치는 해당 경제성 `UNRESOLVED`. PRIMARY 통과는 비투자가능 가격지수의 결과이지 ETF 경제성 검증 완료가 아니다.
 - **정식 승인 파일·결과·마커 없음, 원격 `rp1-c1` 잠금 ref 없음.** 과거 재취득 성공이 미래 동일성을 보장하지 않는다. Secret/Settings/외부 저장소 추가 0건.
 
-남은 절차는 [기존 §6.4](rp1-c1-us-exposure-ladder-replication.md#64-실행-순서와-사람이-할-일)만 사용한다.
+남은 절차는 [기존 §6.4](rp1-c1-us-exposure-ladder-replication.md#64-실행-순서와-사람이-할-일)만 사용한다. 현재 pin·dry-run 증거·결과 열람 전 소유자 결정 기록·승인 절차는 [소유자 승인 패킷](rp1-c1-us-owner-execution-packet-ko.md)에 모았다. 승인 파일 초안의 확인사항 8개는 소유자가 직접 바꾸기 전까지 `false`다(동결 사양·실행기 변경 없음).
 
 1. 기존 `seal-kr-factor-anatomy-v1.yml` / `main` / `rp1_c1_action=dry-run`: 최신 재취득·hash·readiness·동등성·합성 검사. 이번에는 dispatch하지 않았다.
 2. `authorization-draft --owner <login>`의 exact pin과 별도 CASH 정의·권리·보존 한계를 소유자가 검토하고 기존 형식 승인 파일 PR을 커밋·병합. 템플릿은 승인 아님.
@@ -73,6 +73,8 @@ FAST는 같은 고정 지수의 추세·변동성, TRANSITION/SLOW는 원 시장
 - **나중의 검증:** 같은 날짜·같은 적격 모집단·같은 종목 책으로 ETF → A 책 → 검증된 B 조건부 기능 → C overlay를 한 요소씩 비교한다. ETF/현금 대안, 산술 선택/복리, gross/net·1/2/3배 비용, 교체/재조정 회전율, 하락 위험·상승 미참여·재진입을 분리한다. 종결 대가·수익 기준 미해결은 `UNRESOLVED`, 0 수익 대체 금지. 이미 노출된 역사를 독립 OOS로 재사용하지 않는다.
 
 지금은 결합 검증 `BLOCKED_NO_VALIDATED_SELECTION_INPUT`이다. 이 계약은 주문·권고·비중·production 결정을 생성하지 않는다.
+
+**D v2 (#282, 별도 버전):** 위 0~5종목은 v1 계약의 범위이지 소유자의 최종 목표가 아니다. [D v2 사전등록 설계](rp1-d-v2-endogenous-breadth-ko.md)는 종목 수 N을 지역 ETF 대비 비용 차감 후 복리 판단의 **결과**로 둔다(N=0·10 초과 허용, 고정 Top-N 없음). v1·weekly-passive-first-v1·A/B/C 봉인은 바꾸지 않는다. 엔진은 승인된 A 생산자와 소유자 숫자가 등록될 때까지 비활성이다.
 
 ## 실행 큐 — 즉시 구현 PR은 최대 두 개
 

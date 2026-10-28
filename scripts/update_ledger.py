@@ -109,7 +109,53 @@ def main(argv=None) -> int:
               f"{excluded_outcomes + excluded_portfolios} prior-generation rows excluded from summary")
     except Exception as exc:  # pragma: no cover - network dependent
         print(f"outcome refresh skipped (network/data): {exc}")
+
+    # kr-selection-challenger-v1: pre-registered prospective PAPER receipts in their
+    # own research namespace beside this ledger. It records only inside a KR weekly
+    # session's receipt window, and a refusal never costs the paper ledger its day.
+    try:
+        from scripts import record_kr_selection_challenger as challenger
+        code = challenger.run_all(Path(argv[0]), ledger_dir / "research-strategies" / challenger.C.STUDY)
+        if code:
+            # Visible in the Actions run as a warning; the paper ledger's own exit code is unchanged.
+            print(f"::warning::kr-selection-challenger-v1 research steps exited {code}; see its publication-status.json")
+    except Exception as exc:  # noqa: BLE001 - research must never block the ledger
+        print(f"::warning::kr-selection-challenger-v1 hook raised (paper ledger unaffected): {type(exc).__name__}: {exc}")
+        _hook_failed(ledger_dir, "kr-selection-challenger-v1", exc)
+    # kr-selection-challenger-v2-accounting: the same discipline, PIT DART accounting books.
+    try:
+        from scripts import record_kr_selection_challenger_v2 as accounting_challenger
+        code = accounting_challenger.run_all(Path(argv[0]), ledger_dir)
+        if code:
+            print(f"::warning::kr-selection-challenger-v2-accounting research steps exited {code}; see its publication-status.json")
+    except Exception as exc:  # noqa: BLE001 - research must never block the ledger
+        print(f"::warning::kr-selection-challenger-v2-accounting hook raised (paper ledger unaffected): {type(exc).__name__}: {exc}")
+        _hook_failed(ledger_dir, "kr-selection-challenger-v2-accounting", exc)
+    # rp1-b-h1-state-v1: Track B's weekly market-state receipts in their own namespace. It reads no
+    # artifact and runs in a child process with a timeout, so a hung vendor read or a crash can never
+    # hold up or fail the paper ledger, Track A or the commit step; its own status files say what happened.
+    try:
+        from scripts import record_rp1_b_h1_state as track_b
+        code = track_b.run_isolated(ledger_dir / "research-strategies" / track_b.B.STUDY)
+        if code:
+            print(f"::warning::rp1-b-h1-state-v1 research steps exited {code}; see its publication-status.json")
+    except Exception as exc:  # noqa: BLE001 - research must never block the ledger
+        print(f"::warning::rp1-b-h1-state-v1 hook raised (paper ledger unaffected): {type(exc).__name__}: {exc}")
+        _hook_failed(ledger_dir, "rp1-b-h1-state-v1", exc)
     return 0
+
+
+def _hook_failed(ledger_dir: Path, study: str, exc: Exception) -> None:
+    """Machine-readable: an unrecorded signal must be visible to a reader, not only in the job log."""
+    try:
+        directory = ledger_dir / "research-strategies" / study
+        directory.mkdir(parents=True, exist_ok=True)
+        (directory / "publication-status.json").write_text(json.dumps(
+            {"schema": "KR_SELECTION_CHALLENGER_STATUS_V2", "studyId": study, "productionEffect": "NONE",
+             "status": "STEP_FAILED", "failedSteps": ["hook"], "signalRecordState": "NOT_ATTEMPTED",
+             "error": f"{type(exc).__name__}: {exc}"}, sort_keys=True) + "\n", encoding="utf-8")
+    except Exception:  # noqa: BLE001
+        pass
 
 
 if __name__ == "__main__":
