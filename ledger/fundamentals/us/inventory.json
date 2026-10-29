@@ -1,124 +1,115 @@
 {
-  "filings": 19,
+  "filings": 58,
   "periodLengthByForm": {
-    "10-K": {
-      "year (316-400d)": 1
-    },
     "10-Q": {
-      "three quarters (226-315d)": 18
+      "three quarters (226-315d)": 55,
+      "quarter (46-135d)": 2,
+      "half (136-225d)": 1
     }
   },
   "filingsWithNoPeriodLength": 0,
   "filingsByFreq": {
-    "quarterly": 18,
-    "annual": 1
+    "quarterly": 58
   },
   "formsByFreq": {
-    "annual": {
-      "10-K": 1
-    },
     "quarterly": {
-      "10-Q": 18
+      "10-Q": 58
     }
   },
   "conceptsBySection": {
     "bs": 0,
-    "ic": 186,
-    "cf": 332
+    "ic": 345,
+    "cf": 587
   },
   "conceptsBySectionCollapsed": {
     "bs": 0,
-    "ic": 186,
-    "cf": 332
+    "ic": 345,
+    "cf": 587
   },
   "topConcepts": {
     "bs": [],
     "ic": [
-      "us-gaap_EarningsPerShareBasic",
-      "us-gaap_EarningsPerShareDiluted",
       "us-gaap_IncomeTaxExpenseBenefit",
+      "us-gaap_EarningsPerShareDiluted",
+      "us-gaap_EarningsPerShareBasic",
       "us-gaap_ComprehensiveIncomeNetOfTax",
       "us-gaap_NetIncomeLoss",
+      "us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
       "us-gaap_WeightedAverageNumberOfSharesOutstandingBasic",
       "us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
-      "us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
-      "us-gaap_ProfitLoss",
       "us-gaap_OperatingIncomeLoss",
-      "us-gaap_NetIncomeLossAttributableToNoncontrollingInterest",
-      "us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax"
+      "us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax",
+      "us-gaap_OtherNonoperatingIncomeExpense",
+      "us-gaap_ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest"
     ],
     "cf": [
+      "us-gaap_NetCashProvidedByUsedInOperatingActivities",
       "us-gaap_NetCashProvidedByUsedInInvestingActivities",
       "us-gaap_NetCashProvidedByUsedInFinancingActivities",
-      "us-gaap_NetCashProvidedByUsedInOperatingActivities",
       "us-gaap_CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
       "us-gaap_ShareBasedCompensation",
-      "us-gaap_ProfitLoss",
-      "us-gaap_PaymentsForRepurchaseOfCommonStock",
-      "us-gaap_PaymentsForProceedsFromOtherInvestingActivities",
-      "us-gaap_DeferredIncomeTaxExpenseBenefit",
       "us-gaap_ProceedsFromPaymentsForOtherFinancingActivities",
-      "us-gaap_InterestPaidNet",
-      "us-gaap_PaymentsToAcquirePropertyPlantAndEquipment"
+      "us-gaap_PaymentsForRepurchaseOfCommonStock",
+      "us-gaap_ProfitLoss",
+      "us-gaap_PaymentsForProceedsFromOtherInvestingActivities",
+      "us-gaap_PaymentsToAcquirePropertyPlantAndEquipment",
+      "us-gaap_IncreaseDecreaseInInventories",
+      "us-gaap_EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents"
     ]
   },
   "topConceptsCollapsed": {
     "bs": [],
     "ic": [
-      "EarningsPerShareBasic",
-      "EarningsPerShareDiluted",
       "IncomeTaxExpenseBenefit",
+      "EarningsPerShareDiluted",
+      "EarningsPerShareBasic",
       "ComprehensiveIncomeNetOfTax",
       "NetIncomeLoss",
+      "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
       "WeightedAverageNumberOfSharesOutstandingBasic",
       "WeightedAverageNumberOfDilutedSharesOutstanding",
-      "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
-      "ProfitLoss",
       "OperatingIncomeLoss",
-      "NetIncomeLossAttributableToNoncontrollingInterest",
-      "RevenueFromContractWithCustomerExcludingAssessedTax"
+      "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "OtherNonoperatingIncomeExpense",
+      "ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest"
     ],
     "cf": [
+      "NetCashProvidedByUsedInOperatingActivities",
       "NetCashProvidedByUsedInInvestingActivities",
       "NetCashProvidedByUsedInFinancingActivities",
-      "NetCashProvidedByUsedInOperatingActivities",
       "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
       "ShareBasedCompensation",
-      "ProfitLoss",
-      "PaymentsForRepurchaseOfCommonStock",
-      "PaymentsForProceedsFromOtherInvestingActivities",
-      "DeferredIncomeTaxExpenseBenefit",
       "ProceedsFromPaymentsForOtherFinancingActivities",
-      "InterestPaidNet",
-      "PaymentsToAcquirePropertyPlantAndEquipment"
+      "PaymentsForRepurchaseOfCommonStock",
+      "ProfitLoss",
+      "PaymentsForProceedsFromOtherInvestingActivities",
+      "PaymentsToAcquirePropertyPlantAndEquipment",
+      "IncreaseDecreaseInInventories",
+      "EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents"
     ]
   },
   "units": {
-    "usd": 1010,
-    "u_usd": 117,
-    "unit_standard_usd_pr0anx89ckmq053qzdbrfg": 46,
-    "usd/share": 43,
-    "shares": 22,
-    "unit_standard_shares_vqbvrqd-pkoly4deib0jjw": 3,
-    "u_usdollarshare": 3,
-    "unit_divide_usd_shares_3c5f7gclmu-mdu4s6vlibg": 2,
-    "u_unitedstatesofamericadollarsshare": 2,
-    "u_shares": 2,
-    "number": 2
+    "usd": 3096,
+    "u_usd": 379,
+    "usd/share": 123,
+    "shares": 79,
+    "unit_standard_usd_bbtvqpk2ukqc35jjxduuqa": 50,
+    "u_shares": 14,
+    "u_unitedstatesofamericadollarsshare": 14,
+    "u_usdollarshare": 2,
+    "unit_divide_usd_shares_rbxwysa1nuy_zqns1q1vga": 2,
+    "unit_standard_shares_tz2rcb6rwesyosvtycvdqq": 2
   },
   "unitClasses": {
-    "currency": 1173,
-    "perShare": 45,
-    "shares": 27,
-    "unclassified": 7
+    "currency": 3525,
+    "perShare": 125,
+    "shares": 95,
+    "unclassified": 16
   },
   "unitClassesResolved": {
-    "currency": 1173,
-    "perShare": 50,
-    "shares": 27,
-    "unclassified": 2
+    "currency": 3525,
+    "perShare": 141,
+    "shares": 95
   },
-  "unclassifiedUnits": {
-    "number": 2
-  }
+  "unclassifiedUnits": {}
 }
