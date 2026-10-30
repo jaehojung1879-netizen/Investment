@@ -3,6 +3,7 @@ from copy import deepcopy
 import math
 
 import numpy as np
+import pandas as pd
 import pytest
 
 from pipeline import market_research_c1c as C
