@@ -132,3 +132,23 @@ def test_reports_not_mutated():
     old_a, old_b = deepcopy(a), deepcopy(b)
     compare(a, b)
     assert a == old_a and b == old_b
+
+
+def test_cli_from_an_unrelated_directory_without_pythonpath(tmp_path):
+    import json
+    from pathlib import Path
+    import subprocess
+    import sys
+
+    a, b = pair()
+    before, after = tmp_path / "previous.json", tmp_path / "current.json"
+    before.write_text(json.dumps(a), encoding="utf-8")
+    after.write_text(json.dumps(b), encoding="utf-8")
+    script = Path(__file__).resolve().parents[1] / "scripts" / "compare_daily_decision_reports.py"
+    run = subprocess.run([sys.executable, str(script), "--before", str(before), "--after", str(after)],
+                         cwd=tmp_path, capture_output=True, text=True, check=True)
+    result = json.loads(run.stdout)
+    assert result["schema"] == "READ_ONLY_DAILY_DECISION_DELTA_V1"
+    assert result["status"] == "REPORTED_FIELDS_CHANGED"
+    assert a == json.loads(before.read_text(encoding="utf-8"))
+    assert b == json.loads(after.read_text(encoding="utf-8"))

@@ -4,8 +4,11 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+import sys
 
-from pipeline.daily_decision_delta import compare
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from pipeline.daily_decision_delta import compare  # noqa: E402
 
 MAX_FILE_BYTES = 4 * 1024 * 1024
 
