@@ -25,13 +25,14 @@ _BASIS_KEYS = {"market", "basis", "valuationIntervals", "calendarSha256", "planS
 def decision_policy():
     comparisons = ["REENTRY_MINUS_BASE", "COMBINED_MINUS_HARD_EXIT"]
     direction = "NET_GROWTH_NOT_LOWER_AND_DOWNSIDE_RISK_NOT_WORSE"
-    return {"policyId": "C1C_V2_DESCRIPTIVE_DOMINANCE_PROPOSAL_V1",
+    return {"policyId": "C1C_V2_DESCRIPTIVE_SIGNS_PROPOSAL_V2",
             "status": "PROPOSED_NOT_REGISTERED_NOT_AUTHORIZED",
             "controlSelection": "C0_PRIMARY_C1_AUXILIARY_NEVER_RESULT_SELECTED",
             "decisionMetrics": dict(_METRICS), "numericalEqualityTolerance": TOLERANCE,
-            "improved": "NO_DECISION_METRIC_WORSE_AND_AT_LEAST_ONE_STRICTLY_BETTER_AGAINST_BOTH_FIXED_COMPARATORS",
-            "notImproved": "NO_DECISION_METRIC_BETTER_AGAINST_EITHER_FIXED_COMPARATOR",
-            "tradeOff": "MIXED_METRIC_DIRECTIONS_OR_DISAGREEING_FIXED_COMPARATORS",
+            "verdictWhenComplete": "DESCRIPTIVE_SIGN_ONLY",
+            "numericalRelations": ["NONNEGATIVE_WITH_POSITIVE", "NONPOSITIVE_WITH_NEGATIVE",
+                                   "MIXED_SIGNS", "NUMERICALLY_EQUAL", "DISAGREEING_FIXED_COMPARATORS"],
+            "economicMaterialityRegistered": False, "economicTolerances": None, "economicVerdict": None,
             "inconclusive": "MISSING_INVALID_INCOMPLETE_UNMATURED_OR_UNEQUAL_COMPARISON_BASIS",
             "fixedComparators": ["SAME_FAMILY_C0_BASE", "OWN_MEAN_INTERVAL_EXPOSURE_MATCHED_EX_POST_STATIC"],
             "reentryComparisons": [
@@ -100,8 +101,11 @@ def _compare(candidate, comparator):
     signed = {k: direction * (candidate[k] - comparator[k]) for k, direction in _METRICS.items()}
     better = [k for k, v in signed.items() if v > TOLERANCE]
     worse = [k for k, v in signed.items() if v < -TOLERANCE]
-    verdict = "TRADE_OFF" if better and worse else "IMPROVED" if better else "NOT_IMPROVED"
-    return {"verdict": verdict, "signedImprovement": signed, "betterMetrics": better, "worseMetrics": worse}
+    relation = ("MIXED_SIGNS" if better and worse else "NONNEGATIVE_WITH_POSITIVE" if better else
+                "NONPOSITIVE_WITH_NEGATIVE" if worse else "NUMERICALLY_EQUAL")
+    return {"verdict": "DESCRIPTIVE_SIGN_ONLY", "numericalRelation": relation,
+            "signedImprovement": signed, "betterMetrics": better, "worseMetrics": worse,
+            "economicMaterialityRegistered": False, "economicVerdict": None}
 
 
 def _equivalent(candidate, control, support, *, control_arm="BASE"):
@@ -133,6 +137,11 @@ def _equivalent(candidate, control, support, *, control_arm="BASE"):
             or not _number(match.get("residual")) or abs(match["residual"]) > MATCH_TOLERANCE
             or match.get("tolerance") != MATCH_TOLERANCE):
         reasons.append("FIXED_EXPOSURE_MATCH_NOT_ESTABLISHED")
+    means = [_summaries(candidate).get(k, {}) for k in ("candidate", "matchedStatic")]
+    means = [s.get("meanIntervalExposure") if isinstance(s, dict) else None for s in means]
+    if (any(not _number(v) or not 0 <= v <= 1 for v in means)
+            or abs(means[0] - means[1]) > MATCH_TOLERANCE):
+        reasons.append("DIRECT_MEAN_EXPOSURE_MATCH_REQUIRED")
     return reasons
 
 
@@ -156,10 +165,12 @@ def _summary_readout(candidate_report, c0_base_report, *, support, rejection=Non
         first = _compare(metrics.get("candidate"), _summaries(c0_base_report).get("candidate"))
         second = _compare(metrics.get("candidate"), metrics.get("matchedStatic"))
     pair = (first["verdict"], second["verdict"])
-    verdict = ("INCONCLUSIVE" if "INCONCLUSIVE" in pair else
-               "IMPROVED" if pair == ("IMPROVED", "IMPROVED") else
-               "NOT_IMPROVED" if pair == ("NOT_IMPROVED", "NOT_IMPROVED") else "TRADE_OFF")
+    verdict = "INCONCLUSIVE" if "INCONCLUSIVE" in pair else "DESCRIPTIVE_SIGN_ONLY"
+    relations = (first.get("numericalRelation"), second.get("numericalRelation"))
+    relation = (None if verdict == "INCONCLUSIVE" else relations[0] if relations[0] == relations[1]
+                else "DISAGREEING_FIXED_COMPARATORS")
     return {"verdict": verdict, "reasons": reasons, "againstC0Base": first,
+            "numericalRelation": relation, "economicMaterialityRegistered": False, "economicVerdict": None,
             "againstEqualExposureStatic": second, "policy": decision_policy(),
             "status": "SYNTHETIC_DESCRIPTIVE_ONLY_PROPOSED_POLICY", "primaryControl": "C0",
             "staticComparatorMeaning": "EX_POST_FULL_PATH_MEAN_EXPOSURE_MATCH_NOT_A_TRADABLE_FORECAST",
@@ -286,7 +297,7 @@ def synthetic_reentry_contrasts(reports, *, support):
 
 def synthetic_from_inputs(close, states, plan, cash_returns, market, basis, stress, *,
                           evidence_class, support, cash_basis=None, episodes=()):
-    """Reconstruct all fixed C0 policy cells from complete invented primitives.
+    """Reconstruct all sixteen C0/C1 policy cells from complete invented primitives.
 
     No submitted target, cell label, metric, exposure-match flag or report digest
     participates in a verdict. State domains/publication times and prior-close

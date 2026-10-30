@@ -23,8 +23,9 @@ python -m pytest -q tests/test_market_research_c1c.py tests/test_market_research
 수치 독해 추가안(`market_research_c1c_decisions`)은 **미등록 제안**이다. net 연간
 log-growth↑, funded MDD↑(덜 음수), 일간 순수익 최악 ceil(5%×interval 수)의 평균 손실↓를
 고정 비교한다. 같은 가족 C0 BASE와 자기 평균 interval 노출을 맞춘 사후 정적 대조군에
-모두 Pareto 우세면 `IMPROVED`, 양쪽 모두 개선 지표가 없으면 `NOT_IMPROVED`, 방향/대조군
-엇갈림은 `TRADE_OFF`, 결측·미성숙·기간/자산/현금/비용 불일치는 `INCONCLUSIVE`다. 1e-10은
+완전한 비교는 `DESCRIPTIVE_SIGN_ONLY`이며 수치 방향·동등·상충은 별도
+`numericalRelation`으로 보존한다. 경제 판정은 null이다. 결측·미성숙·기간/자산/현금/비용
+불일치는 `INCONCLUSIVE`다. 이전 `IMPROVED`/`NOT_IMPROVED` 경제적 오독 경로는 제거했다. 1e-10은
 수치 동등성 허용치로 경제적 허들·유의수준이 아니다. geometric 성장과 arithmetic attribution을
 함께 보존하며 통계적 알파·검정력·독립 감사·소유자 승인·실제 성과를 의미하지 않는다.
 두 가족 모두 `REENTRY−BASE`, `COMBINED−HARD_EXIT`를 비교해 매도 규칙을 같게 고정한다.

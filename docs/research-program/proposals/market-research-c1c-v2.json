@@ -45,7 +45,7 @@
   "supportStatus": "NEW_PROPOSED_FLOOR_NOT_POWER_GUARANTEE_OWNER_REVIEW_REQUIRED",
   "inference": "NO_PVALUE_OR_SUPPORTED_VERDICT_WITHOUT_REGISTERED_CALIBRATION",
   "descriptiveDecisionPolicy": {
-    "policyId": "C1C_V2_DESCRIPTIVE_DOMINANCE_PROPOSAL_V1",
+    "policyId": "C1C_V2_DESCRIPTIVE_SIGNS_PROPOSAL_V2",
     "status": "PROPOSED_NOT_REGISTERED_NOT_AUTHORIZED",
     "controlSelection": "C0_PRIMARY_C1_AUXILIARY_NEVER_RESULT_SELECTED",
     "decisionMetrics": {
@@ -54,9 +54,17 @@
       "dailyCvar95Loss": -1
     },
     "numericalEqualityTolerance": 1e-10,
-    "improved": "NO_DECISION_METRIC_WORSE_AND_AT_LEAST_ONE_STRICTLY_BETTER_AGAINST_BOTH_FIXED_COMPARATORS",
-    "notImproved": "NO_DECISION_METRIC_BETTER_AGAINST_EITHER_FIXED_COMPARATOR",
-    "tradeOff": "MIXED_METRIC_DIRECTIONS_OR_DISAGREEING_FIXED_COMPARATORS",
+    "verdictWhenComplete": "DESCRIPTIVE_SIGN_ONLY",
+    "numericalRelations": [
+      "NONNEGATIVE_WITH_POSITIVE",
+      "NONPOSITIVE_WITH_NEGATIVE",
+      "MIXED_SIGNS",
+      "NUMERICALLY_EQUAL",
+      "DISAGREEING_FIXED_COMPARATORS"
+    ],
+    "economicMaterialityRegistered": false,
+    "economicTolerances": null,
+    "economicVerdict": null,
     "inconclusive": "MISSING_INVALID_INCOMPLETE_UNMATURED_OR_UNEQUAL_COMPARISON_BASIS",
     "fixedComparators": [
       "SAME_FAMILY_C0_BASE",
@@ -98,6 +106,54 @@
     "minimumResearchSupportEstablished": false,
     "ownerAuthorization": false,
     "promotionAllowed": false
+  },
+  "economicExperimentProposal": {
+    "status": "NO_GO_UNREGISTERED_SOURCE_AND_ECONOMIC_DEPENDENCIES",
+    "market": "KR",
+    "benchmark": "069500.KS",
+    "currency": "KRW",
+    "primaryHorizonSessions": 126,
+    "secondaryHorizonSessions": 252,
+    "primaryContrast": "C0/C1c-REENTRY-SPEED-ORIGINAL-STRUCTURAL/REENTRY_MINUS_BASE",
+    "otherCells": "ALL_RETAINED_SECONDARY_DESCRIPTIVE_C1_AUXILIARY_BREAKOUT_SEPARATE_POST_OUTCOME_FAMILY",
+    "window": {
+      "start": "2012-01-02",
+      "end": "2026-09-14",
+      "meaning": "RETAINED_DATE_INTERSECTION_PROPOSAL_NOT_SOURCE_ADMISSION"
+    },
+    "sampleClass": "OUTCOME_EXPOSED_DEVELOPMENT_NOT_INDEPENDENT_OOS",
+    "calendar": "XKRX_FIXED_WEEK_ENDS_NEXT_SESSION_CLOSE",
+    "signalBasis": "FROZEN_KS200_DGS10_DGS3MO_VIX_RULES_WITH_VERIFIED_KNOWN_AT_REQUIRED",
+    "pairedBasisTargets": "SAME_SIGNAL_PRICE_AND_STATE_TARGETS_FOR_INDEX_DIAGNOSTIC_AND_ETF_VALUATION",
+    "signalFinality": "MAX_SESSION_CLOSE_PLUS_1H_AND_18_00_KST",
+    "horizonOrigin": "EXECUTION_CLOSE_POSITION_PLUS_H_SESSIONS",
+    "policyMemory": "CHRONOLOGICAL_PRE_WINDOW_STATE_NOT_RESET_USING_FUTURE_OUTCOMES",
+    "valuation": "FUNDED_ENTRY_AND_FINAL_LIQUIDATION_IDENTICAL_FOR_ALL_ARMS_AND_PASSIVE",
+    "costStress": [
+      1,
+      2,
+      3
+    ],
+    "buyCost": 0.00055,
+    "sellCost": 0.00055,
+    "staticControl": "OWN_REALIZED_MEAN_INTERVAL_EXPOSURE_MATCHED_EX_POST_NOT_TRADABLE_OR_BETA_MATCHED",
+    "missingness": "KEEP_FIXED_COHORT_DENOMINATORS_BLOCK_INCOMPLETE_ASSET_CASH_OR_TERMINAL_PATHS_NO_FILL",
+    "stateMissingness": "FROZEN_DOMAIN_COMPLETION_ELSE_PREVIOUS_TARGET_FIRST_UNDETERMINED_BLOCKED",
+    "metricUnits": {
+      "growth": "EXPM1_ANNUAL_LOG_GROWTH_THEN_CAGR_PP_DIFFERENCE",
+      "drawdown": "FUNDED_MDD_NEGATIVE_LEVEL_HIGHER_IS_BETTER",
+      "tail": "DAILY_CVAR95_NONNEGATIVE_LOSS_LOWER_IS_BETTER"
+    },
+    "economicTolerances": null,
+    "inferenceAndMultiplicityCalibration": null,
+    "sourceRights": null,
+    "actualPublicationAndVintageProof": null,
+    "etfCorporateActionAndDistributionAdmission": null,
+    "actualCashReturnAdmission": null,
+    "cashZeroMeaning": "OPPORTUNITY_COST_SCENARIO_ONLY_NOT_INVESTABLE_CASH",
+    "firstEvaluationAndSupportRegistration": null,
+    "executionPacket": null,
+    "historicalExecutionAuthorized": false
   },
   "krEconomicCash": "ZERO_RATE_OPPORTUNITY_COST_SCENARIO_NOT_ACTUAL_SHORT_RATE_OR_CASH_SOURCE_ADMISSION",
   "historicalExecutionEnabled": false,

@@ -44,6 +44,35 @@ def contract():
         'supportStatus': 'NEW_PROPOSED_FLOOR_NOT_POWER_GUARANTEE_OWNER_REVIEW_REQUIRED',
         'inference': 'NO_PVALUE_OR_SUPPORTED_VERDICT_WITHOUT_REGISTERED_CALIBRATION',
         'descriptiveDecisionPolicy': Q.decision_policy(),
+        'economicExperimentProposal': {
+            'status': 'NO_GO_UNREGISTERED_SOURCE_AND_ECONOMIC_DEPENDENCIES',
+            'market': 'KR', 'benchmark': '069500.KS', 'currency': 'KRW',
+            'primaryHorizonSessions': 126, 'secondaryHorizonSessions': 252,
+            'primaryContrast': f'C0/{R.STRUCTURAL_HYPOTHESIS}/REENTRY_MINUS_BASE',
+            'otherCells': 'ALL_RETAINED_SECONDARY_DESCRIPTIVE_C1_AUXILIARY_BREAKOUT_SEPARATE_POST_OUTCOME_FAMILY',
+            'window': {'start': '2012-01-02', 'end': '2026-09-14',
+                       'meaning': 'RETAINED_DATE_INTERSECTION_PROPOSAL_NOT_SOURCE_ADMISSION'},
+            'sampleClass': 'OUTCOME_EXPOSED_DEVELOPMENT_NOT_INDEPENDENT_OOS',
+            'calendar': 'XKRX_FIXED_WEEK_ENDS_NEXT_SESSION_CLOSE',
+            'signalBasis': 'FROZEN_KS200_DGS10_DGS3MO_VIX_RULES_WITH_VERIFIED_KNOWN_AT_REQUIRED',
+            'pairedBasisTargets': 'SAME_SIGNAL_PRICE_AND_STATE_TARGETS_FOR_INDEX_DIAGNOSTIC_AND_ETF_VALUATION',
+            'signalFinality': 'MAX_SESSION_CLOSE_PLUS_1H_AND_18_00_KST',
+            'horizonOrigin': 'EXECUTION_CLOSE_POSITION_PLUS_H_SESSIONS',
+            'policyMemory': 'CHRONOLOGICAL_PRE_WINDOW_STATE_NOT_RESET_USING_FUTURE_OUTCOMES',
+            'valuation': 'FUNDED_ENTRY_AND_FINAL_LIQUIDATION_IDENTICAL_FOR_ALL_ARMS_AND_PASSIVE',
+            'costStress': [1, 2, 3], 'buyCost': .00055, 'sellCost': .00055,
+            'staticControl': 'OWN_REALIZED_MEAN_INTERVAL_EXPOSURE_MATCHED_EX_POST_NOT_TRADABLE_OR_BETA_MATCHED',
+            'missingness': 'KEEP_FIXED_COHORT_DENOMINATORS_BLOCK_INCOMPLETE_ASSET_CASH_OR_TERMINAL_PATHS_NO_FILL',
+            'stateMissingness': 'FROZEN_DOMAIN_COMPLETION_ELSE_PREVIOUS_TARGET_FIRST_UNDETERMINED_BLOCKED',
+            'metricUnits': {'growth': 'EXPM1_ANNUAL_LOG_GROWTH_THEN_CAGR_PP_DIFFERENCE',
+                            'drawdown': 'FUNDED_MDD_NEGATIVE_LEVEL_HIGHER_IS_BETTER',
+                            'tail': 'DAILY_CVAR95_NONNEGATIVE_LOSS_LOWER_IS_BETTER'},
+            'economicTolerances': None, 'inferenceAndMultiplicityCalibration': None,
+            'sourceRights': None, 'actualPublicationAndVintageProof': None,
+            'etfCorporateActionAndDistributionAdmission': None, 'actualCashReturnAdmission': None,
+            'cashZeroMeaning': 'OPPORTUNITY_COST_SCENARIO_ONLY_NOT_INVESTABLE_CASH',
+            'firstEvaluationAndSupportRegistration': None,
+            'executionPacket': None, 'historicalExecutionAuthorized': False},
         'krEconomicCash': 'ZERO_RATE_OPPORTUNITY_COST_SCENARIO_NOT_ACTUAL_SHORT_RATE_OR_CASH_SOURCE_ADMISSION',
         'historicalExecutionEnabled': False, 'liveWriterEnabled': False, 'productionAllowed': False}
 
@@ -188,12 +217,14 @@ def cross_market_verdict(readings):
     if set(readings) != {'KR', 'US'} or any(set(v) != {'DIAGNOSTIC', 'ECONOMIC'} for v in readings.values()):
         raise ValueError('COMPLETE_KR_US_TWO_BASIS_READINGS_REQUIRED')
     values = [v for market in readings.values() for v in market.values()]
-    if any(v not in ('IMPROVED', 'NOT_IMPROVED', 'TRADE_OFF', 'INCONCLUSIVE', 'BLOCKED') for v in values):
+    if any(v not in ('IMPROVED', 'NOT_IMPROVED', 'TRADE_OFF', 'DESCRIPTIVE_SIGN_ONLY', 'INCONCLUSIVE', 'BLOCKED') for v in values):
         raise ValueError('UNKNOWN_DESCRIPTIVE_VERDICT')
     if 'BLOCKED' in values:
         state = 'BLOCKED_SOURCE_OR_SUPPORT'
     elif 'INCONCLUSIVE' in values:
         state = 'INCONCLUSIVE_SUPPORT_OR_BASIS_NO_PROMOTION'
+    elif 'DESCRIPTIVE_SIGN_ONLY' in values:
+        state = 'DESCRIPTIVE_SIGNS_ONLY_NO_ECONOMIC_DECISION'
     elif any(v['DIAGNOSTIC'] != v['ECONOMIC'] for v in readings.values()):
         state = 'BASIS_DEPENDENT_NO_PROMOTION'
     elif readings['KR']['DIAGNOSTIC'] != readings['US']['DIAGNOSTIC']:

@@ -8,6 +8,7 @@ import pytest
 from pipeline import market_research_c1c as C
 from pipeline import market_research_c1c_contract as V
 from pipeline import market_research_c1c_decisions as Q
+from pipeline import market_research_c1c_diagnostics as D
 from tests.test_market_research_c1c_input_readouts import inputs
 
 
@@ -96,3 +97,40 @@ def test_no_actual_market_history_accepted_for_auxiliary():
     kw["evidence_class"] = "ACTUAL_HISTORY"
     with pytest.raises(ValueError, match="SYNTHETIC"):
         Q.synthetic_from_inputs(**kw)
+
+
+@pytest.mark.parametrize('market,basis,stress', [
+    ('KR', 'ETF_CASH_ECONOMIC', 1), ('US', 'ETF_CASH_ECONOMIC', 3),
+    ('KR', 'C1_PRIMARY_REPLICA', 2),
+])
+def test_all_sixteen_reports_receive_reconstructed_targets_not_submitted_summaries(monkeypatch, market, basis, stress):
+    kw = inputs(market)
+    kw.update(basis=basis, stress=stress)
+    original = D.synthetic_diagnostics
+    calls = {}
+    def spy(close, plan, selected, *args, **kwargs):
+        calls[kwargs['cell_id']] = list(selected)
+        return original(close, plan, selected, *args, **kwargs)
+    monkeypatch.setattr(D, 'synthetic_diagnostics', spy)
+    result = Q.synthetic_from_inputs(**kw)
+    assert set(calls) == set(V.cell_ids())
+    for cell, targets in calls.items():
+        assert targets == [row['cells'][cell]['target'] for row in result['panel']]
+    assert len(result['auxiliaryC1VsC0']) == 8
+    assert all(r['verdict'] == 'DESCRIPTIVE_SIGN_ONLY' for r in result['readouts'].values())
+    assert not result['historicalExecutionEnabled'] and not result['sourceAdmitted']
+
+
+def test_cagr_pp_conversion_and_downside_signs_use_distinct_units():
+    result = Q.synthetic_from_inputs(**inputs())
+    reports = {**result['diagnostics'], **result['auxiliaryC1Diagnostics']}
+    c1 = next(k for k in reports if k.startswith('C1/'))
+    a = reports[c1]['summaries']['candidate']
+    b = reports[c1.replace('C1/', 'C0/', 1)]['summaries']['candidate']
+    a.update(netAnnualLogGrowth=math.log1p(.12), fundedMaxDrawdown=-.08, dailyCvar95Loss=.01)
+    b.update(netAnnualLogGrowth=math.log1p(.10), fundedMaxDrawdown=-.10, dailyCvar95Loss=.02)
+    effects = Q._auxiliary_c1_vs_c0(reports, inputs()['support'])[c1]['effects']
+    assert effects['netCagrDifferencePp'] == pytest.approx(2.0)
+    assert effects['netCagrDifferencePp'] != pytest.approx(100 * (math.log1p(.12) - math.log1p(.10)))
+    assert effects['fundedDrawdownImprovementPp'] == pytest.approx(2.0)
+    assert effects['dailyCvarReductionPp'] == pytest.approx(1.0)

@@ -98,6 +98,7 @@ def test_market_and_basis_disagreement_stop_promotion():
 
 
 @pytest.mark.parametrize('verdict,status', [
+    ('DESCRIPTIVE_SIGN_ONLY', 'DESCRIPTIVE_SIGNS_ONLY_NO_ECONOMIC_DECISION'),
     ('TRADE_OFF', 'DESCRIPTIVE_TRADE_OFF_NO_PROMOTION'),
     ('INCONCLUSIVE', 'INCONCLUSIVE_SUPPORT_OR_BASIS_NO_PROMOTION'),
 ])
@@ -116,6 +117,22 @@ def test_incomplete_support_is_not_misreported_as_cross_market_disagreement():
     readings['US']['DIAGNOSTIC'] = 'UNREGISTERED'
     with pytest.raises(ValueError, match='UNKNOWN_DESCRIPTIVE_VERDICT'):
         V.cross_market_verdict(readings)
+
+
+def test_economic_contract_is_one_fixed_proposal_with_unresolved_gates():
+    p = V.contract()['economicExperimentProposal']
+    assert p['status'].startswith('NO_GO')
+    assert (p['market'], p['benchmark'], p['currency']) == ('KR', '069500.KS', 'KRW')
+    assert (p['primaryHorizonSessions'], p['secondaryHorizonSessions']) == (126, 252)
+    assert p['primaryContrast'] == f'C0/{V.FAMILIES[0]}/REENTRY_MINUS_BASE'
+    assert p['costStress'] == [1, 2, 3]
+    assert p['buyCost'] == p['sellCost'] == .00055
+    assert p['calendar'] == 'XKRX_FIXED_WEEK_ENDS_NEXT_SESSION_CLOSE'
+    for gate in ('economicTolerances', 'inferenceAndMultiplicityCalibration', 'sourceRights',
+                 'actualPublicationAndVintageProof', 'etfCorporateActionAndDistributionAdmission',
+                 'actualCashReturnAdmission', 'firstEvaluationAndSupportRegistration', 'executionPacket'):
+        assert p[gate] is None
+    assert not p['historicalExecutionAuthorized']
 
 
 def receipt(market='KR',signal='2026-10-30',previous=None):

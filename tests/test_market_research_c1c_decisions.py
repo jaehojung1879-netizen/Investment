@@ -11,7 +11,7 @@ from pipeline import market_research_c1c_decisions as Q
 
 def summary(ret=.05, dd=-.10, tail=.02):
     return {"netAnnualLogGrowth": ret, "fundedMaxDrawdown": dd,
-            "dailyCvar95Loss": tail, "valuationIntervals": 126}
+            "dailyCvar95Loss": tail, "valuationIntervals": 126, "meanIntervalExposure": .7}
 
 
 def report(values=None, static=None):
@@ -32,27 +32,30 @@ def support(**kw):
     return dict(windowMatured=True, intendedIntervals=126, observedIntervals=126, **kw)
 
 
-@pytest.mark.parametrize("candidate, verdict", [
-    (summary(.06, -.09, .019), "IMPROVED"),
-    (summary(.05, -.10, .02), "NOT_IMPROVED"),
-    (summary(.04, -.11, .03), "NOT_IMPROVED"),
-    (summary(.06, -.11, .019), "TRADE_OFF"),
-    (summary(.04, -.09, .019), "TRADE_OFF"),
+@pytest.mark.parametrize("candidate, relation", [
+    (summary(.06, -.09, .019), "NONNEGATIVE_WITH_POSITIVE"),
+    (summary(.05, -.10, .02), "NUMERICALLY_EQUAL"),
+    (summary(.04, -.11, .03), "NONPOSITIVE_WITH_NEGATIVE"),
+    (summary(.06, -.11, .019), "MIXED_SIGNS"),
+    (summary(.04, -.09, .019), "MIXED_SIGNS"),
 ])
-def test_fixed_direction_rule_does_not_select_one_favorable_metric(candidate, verdict):
+def test_fixed_direction_rule_does_not_select_one_favorable_metric(candidate, relation):
     out = Q._summary_readout(report(candidate), report(), support=support())
-    assert out["verdict"] == verdict
-    assert out["againstC0Base"]["verdict"] == verdict
-    assert out["againstEqualExposureStatic"]["verdict"] == verdict
+    assert out["verdict"] == "DESCRIPTIVE_SIGN_ONLY"
+    assert out["againstC0Base"]["numericalRelation"] == relation
+    assert out["againstEqualExposureStatic"]["numericalRelation"] == relation
+    assert out["numericalRelation"] == relation
+    assert out["economicVerdict"] is None and not out["economicMaterialityRegistered"]
     assert not out["statisticalAlphaEstablished"] and not out["promotionAllowed"]
     assert not out["ownerAuthorization"] and not out["minimumResearchSupportEstablished"]
 
 
-def test_beating_c0_without_beating_equal_exposure_static_is_not_improved():
+def test_disagreeing_comparators_remain_explicit_descriptive_signs():
     out = Q._summary_readout(report(summary(.06), static=summary(.07)), report(), support=support())
-    assert out["againstC0Base"]["verdict"] == "IMPROVED"
-    assert out["againstEqualExposureStatic"]["verdict"] == "NOT_IMPROVED"
-    assert out["verdict"] == "TRADE_OFF"
+    assert out["againstC0Base"]["numericalRelation"] == "NONNEGATIVE_WITH_POSITIVE"
+    assert out["againstEqualExposureStatic"]["numericalRelation"] == "NONPOSITIVE_WITH_NEGATIVE"
+    assert out["numericalRelation"] == "DISAGREEING_FIXED_COMPARATORS"
+    assert out["verdict"] == "DESCRIPTIVE_SIGN_ONLY"
     assert out["staticComparatorMeaning"].startswith("EX_POST")
 
 
@@ -84,7 +87,7 @@ def test_unmatured_or_incomplete_cohort_does_not_read_as_failure(field, value):
 
 def test_numerical_equality_tolerance_is_fixed_and_not_an_economic_threshold():
     small = summary(.05 + 1e-12)
-    assert Q._summary_readout(report(small), report(), support=support())["verdict"] == "NOT_IMPROVED"
+    assert Q._summary_readout(report(small), report(), support=support())["numericalRelation"] == "NUMERICALLY_EQUAL"
     assert Q.decision_policy()["numericalEqualityTolerance"] == 1e-10
     assert Q.decision_policy()["status"] == "PROPOSED_NOT_REGISTERED_NOT_AUTHORIZED"
 
@@ -132,7 +135,7 @@ def test_diagnostic_replay_supplies_bound_complete_metrics_and_cash_semantics():
                                 cell_id="C0/C1c-REENTRY-SPEED-ORIGINAL-STRUCTURAL/BASE")
     n = len(close) - 1
     out = Q._summary_readout(r, r, support={"windowMatured": True, "intendedIntervals": n, "observedIntervals": n})
-    assert out["verdict"] == "NOT_IMPROVED"
+    assert out["verdict"] == "DESCRIPTIVE_SIGN_ONLY"
     assert r["comparisonBasis"]["cashBasis"] == "KR_ZERO_RATE_OPPORTUNITY_COST_SCENARIO"
     assert r["summaries"]["candidate"]["dailyCvar95Loss"] >= 0
     assert not r["cashInterpretation"]["zeroCashIsActualShortRate"]
@@ -166,7 +169,8 @@ def test_reentry_contrasts_change_only_one_axis_and_preserve_both_families():
     assert len(out) == 4
     for key, item in out.items():
         assert item["onlyChangedAxis"] == "REENTRY_RULE" and not item["nominationAllowed"]
-        assert item["verdict"] == ("IMPROVED" if key.endswith("REENTRY_MINUS_BASE") else "NOT_IMPROVED")
+        assert item["verdict"] == "DESCRIPTIVE_SIGN_ONLY"
+        assert item["numericalRelation"] == ("NONNEGATIVE_WITH_POSITIVE" if key.endswith("REENTRY_MINUS_BASE") else "NONPOSITIVE_WITH_NEGATIVE")
     partial = dict(reports); partial.pop(next(iter(partial)))
     with pytest.raises(ValueError, match="COMPLETE_EIGHT"):
         Q._summary_reentry_contrasts(partial, support=support())
@@ -201,4 +205,24 @@ def test_integer_valued_cost_stress_is_canonical_in_diagnostics_and_readout():
         evidence_class=C.SYNTHETIC, cell_id="C0/C1c-REENTRY-SPEED-ORIGINAL-STRUCTURAL/BASE")
     n = len(close) - 1
     assert Q._summary_readout(r, r, support={"windowMatured": True, "intendedIntervals": n,
-        "observedIntervals": n})["verdict"] == "NOT_IMPROVED"
+        "observedIntervals": n})["verdict"] == "DESCRIPTIVE_SIGN_ONLY"
+
+
+@pytest.mark.parametrize("delta", [-1e-8, 0.0, 1e-8])
+def test_unregistered_tiny_differences_are_signs_not_economic_verdicts(delta):
+    out = Q._compare(summary(.05 + delta), summary())
+    assert out["verdict"] == "DESCRIPTIVE_SIGN_ONLY"
+    assert out["economicMaterialityRegistered"] is False
+    assert out["economicVerdict"] is None
+    assert out["signedImprovement"]["netAnnualLogGrowth"] == pytest.approx(delta)
+
+
+def test_internal_summary_rechecks_static_means_despite_resigned_match_flag():
+    from pipeline import market_research_c1c as C
+    a, b = report(), report()
+    a["summaries"]["candidate"]["meanIntervalExposure"] = .7292
+    a["summaries"]["matchedStatic"]["meanIntervalExposure"] = 1.0
+    a["reportSha256"] = C.digest(a)
+    out = Q._summary_readout(a, b, support=support())
+    assert out["verdict"] == "INCONCLUSIVE"
+    assert "DIRECT_MEAN_EXPOSURE_MATCH_REQUIRED" in out["reasons"]

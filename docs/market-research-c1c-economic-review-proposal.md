@@ -35,9 +35,11 @@ These numbers are provenance for review, **not defaults adopted by C1c**:
 
 ## Proposed separation of conclusions
 
-Keep three separate statements. The existing `IMPROVED` is **numerical
-dominance under a proposed descriptive policy**; `1e-10` is floating equality
-only. Neither that label nor a green CI establishes either remaining statement:
+Keep three separate statements. The earlier `IMPROVED`/`NOT_IMPROVED` labels
+are replaced by **`DESCRIPTIVE_SIGN_ONLY`**. Separate `numericalRelation` and
+signed differences retain direction, equality and comparator disagreement;
+`economicVerdict` is null. `1e-10` is floating equality only. No complete
+synthetic readout can emit an economic-success label or adopt a hurdle:
 
 - **Economic materiality: unregistered.** Before any supported economic verdict,
   fix the metric units, return and downside non-inferiority margins, at least one
@@ -95,3 +97,58 @@ Initial broad discovery searches incidentally returned existing result snippets;
 they were not used to choose a margin or recommendation. This rule review is
 not represented as outcome-blind confirmation. No historical performance was
 executed or recalculated.
+
+## One bounded next experiment — executable design, historical execution NO-GO
+
+`market_research_c1c_contract.contract()['economicExperimentProposal']` is the
+machine-checked **unregistered proposal**, not an execution packet. Its minimal
+primary question is KR C0 structural `REENTRY - BASE`, H126; H252 is secondary.
+Keep every other arm, the eight same-arm C1-minus-C0 contrasts and the separate
+post-outcome breakout family as descriptive comparisons. The proposed fixed
+window is the retained 2012-01-02 to 2026-09-14 date intersection, not a newly
+untouched sample. All of it remains outcome-exposed development.
+
+Use fixed XKRX weekly decision ends, finality at the later of close+1h and
+18:00 KST, next-session **close** execution, and maturity at execution-position+H.
+Carry causal pre-window policy memory; do not initialize from future outcomes.
+Signals retain KS200 and the original spread/VIX rules; the economic valuation
+uses069500 ETF returns. Both readings must use the same signal-price/state
+targets, rather than regenerate a favorable signal from an adjusted ETF series.
+ETF, candidate and matched-exposure paths share funded entry, terminal
+liquidation and 5.5bp buy/5.5bp sell at 1x/2x/3x costs. Report net ETF-relative
+returns, CAGR pp (convert each log-growth with `expm1` first), negative-level
+funded MDD and nonnegative daily CVaR95 loss separately. Mean-exposure matching
+is an ex-post diagnostic, not beta equality or tradable timing evidence.
+Asset/cash/action gaps block a fixed cohort; never drop it after outcomes or
+fill it with zero. State gaps keep the existing domain-completion/hold rule.
+
+Retained inputs below were **byte-hash checked only** in this continuation;
+no historical states, target weights or returns were computed:
+
+| Retained evidence | SHA256 | What it does not establish |
+|---|---|---|
+| `data/kr-market-risk-anatomy-v1/sources/FDR_KS200/normalized.csv` | `729a94b81dd45d1c5d1ab2ff692ec249bd5c9c4f24598d648d7f88010f193478` | Price-index bytes are not ETF distributions, vendor rights or actual publication proof. |
+| `.../FRED_DGS10/normalized.csv` | `db7dc41d9d40ad5608e0ead00086ec15f5969cf785aa378f05cda576a160bc92` | Observation dates and inherited four-day lag/14-day staleness are not release/vintage authentication. |
+| `.../FRED_DGS3MO/normalized.csv` | `7ce2bdbe2547e4fc16c18a36295871d16099d60f51f10edfc2cd8d42218dc06c` | Treasury yield observations are not a tradable KRW cash-return path. |
+| `.../FRED_VIXCLS/normalized.csv` | `dd0ccfe0a13f5e72a842dc27d53733748f24fb380808a7b2fb9babb40caa00ef` | Source rights and actual prior-known timestamps still need scoped evidence. |
+| `docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json` | `58580c4370ec2c5afa124f849afbc4fa7b5c879012e75ebbd48ee7c7a0e659a9` | Corrected retained069500 cash-distribution chain is not new C1c rights/action/timestamp admission; original sealed benchmark/results remain unchanged. |
+
+US SPY/DTB3 evidence is separately listed in the existing
+[`rp1-c1-us-source-freeze-39080239146.json`](research-program/sources/rp1-c1-us-source-freeze-39080239146.json).
+Its identity/hash manifest and prior-known ACT/360 discount-yield approximation
+are not a new source licence, independently issuer-certified actions, current
+raw-byte possession or authorization to rerun C1. US is not silently pooled into
+the primary KR experiment. No admitted actual KR cash-return source is supplied;
+zero cash remains only an opportunity-cost sensitivity scenario.
+
+**Dependencies before execution:** scoped use/retention rights; actual
+release/vintage and state-input known-at proof; complete ETF distributions,
+splits and return-basis reconciliation; actual cash convention/source or an
+explicitly registered scenario-only interpretation; immutable code/input
+closure; economic margins and zero/MDD boundary policy; a calibrated
+dependence/multiplicity/first-look design. These fields remain null, not zero,
+and power is unestimated. The existing52-week/eight-block proposal does not
+resolve them. Only then can a new exact-hash owner authorization be requested.
+Until then **historical execution NO-GO**; the next valid command is the existing
+`python scripts/check_market_research.py verify` plus synthetic tests. No new
+historical runner, locks, permits or live receipts are created here.
