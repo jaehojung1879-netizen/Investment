@@ -134,3 +134,15 @@ def test_cagr_pp_conversion_and_downside_signs_use_distinct_units():
     assert effects['netCagrDifferencePp'] != pytest.approx(100 * (math.log1p(.12) - math.log1p(.10)))
     assert effects['fundedDrawdownImprovementPp'] == pytest.approx(2.0)
     assert effects['dailyCvarReductionPp'] == pytest.approx(1.0)
+
+
+def test_existing_reproduction_cli_exposes_the_eight_reconstructed_auxiliaries():
+    from scripts import check_market_research as CLI
+    result = CLI.synthetic_v2('KR')
+    expected = {k for k in V.cell_ids() if k.startswith('C1/')}
+    assert set(result['auxiliaryC1Diagnostics']) == set(result['auxiliaryC1VsC0']) == expected
+    assert len(result['allCellsBasesCosts']) == 16 * 2 * 3
+    assert len(result['c0FixedDescriptiveReadouts']) == 6
+    assert all(x['verdict'] == 'DESCRIPTIVE_SIGN_ONLY' for x in result['c0FixedDescriptiveReadouts'].values())
+    assert all(x['status'] == 'SYNTHETIC_DESCRIPTIVE_EFFECT_SIZES_ONLY' for x in result['auxiliaryC1VsC0'].values())
+    assert result['sourceAdmitted'] is False and result['historicalOutcomeExecutions'] == 0

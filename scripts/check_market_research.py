@@ -94,7 +94,7 @@ def synthetic_v2(market):
     close = close.loc[:plan.executionDate.iloc[-1]].copy()
     panel = V.panel_targets(close, states, plan, market)
     prices = close.loc[plan.executionDate.iloc[0]:]
-    results, matched, contrasts, readouts, reentry = {}, {}, {}, {}, {}
+    results, matched, contrasts, readouts, reentry, auxiliary, auxiliary_contrasts = {}, {}, {}, {}, {}, {}, {}
     for basis in ("C1_PRIMARY_REPLICA", "ETF_CASH_ECONOMIC"):
         economic = basis == "ETF_CASH_ECONOMIC"
         identity = {"evidenceClass": C.SYNTHETIC,
@@ -127,6 +127,7 @@ def synthetic_v2(market):
                     "startDate": str(prices.index[2].date()), "troughDate": str(prices.index[10].date()),
                     "endDate": str(prices.index[20].date())},))
             matched, readouts, reentry = (reconstructed[k] for k in ("diagnostics", "readouts", "reentryContrasts"))
+            auxiliary, auxiliary_contrasts = (reconstructed[k] for k in ("auxiliaryC1Diagnostics", "auxiliaryC1VsC0"))
         for stress in (1, 2, 3):
             contrasts[f"{basis}/x{stress}"] = V.family_contrasts({cell: results[f"{basis}/x{stress}/{cell}"]["netAnnualLogGrowth"]
                                                               for cell in V.cell_ids()})
@@ -140,6 +141,7 @@ def synthetic_v2(market):
         "allCellsBasesCosts": results, "pairedFamilyContrasts": contrasts, "matchedExposureSmokeChecks": matched,
         "c0FixedDescriptiveReadouts": readouts,
         "c0ReentryDirectionReadouts": reentry,
+        "auxiliaryC1Diagnostics": auxiliary, "auxiliaryC1VsC0": auxiliary_contrasts,
         "prospectiveDraft": V.prospective_schedule(market, "2026-10-26T00:00:00Z"),
         "receipt": receipt, "receiptValidation": V.validate_synthetic_receipts([receipt])}
 
