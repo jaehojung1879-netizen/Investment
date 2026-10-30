@@ -41,3 +41,24 @@ receipt linkage and calendar maturity checks, with no return recalculation.
 
 No native GitHub approval, model promotion, stock trade, paid source, historical
 execution authorization or production allocation is produced by this command.
+
+
+## What changed since the previous report? (read-only comparison)
+
+Once two independent `report.json` outputs exist, compare them **without
+fetching sources, recomputing returns or writing ledger entries**:
+
+```sh
+python scripts/compare_daily_decision_reports.py \
+  --before /tmp/investment-daily-20261030/report.json \
+  --after /tmp/investment-daily-20261031/report.json
+```
+
+The command prints JSON listing changes in regional observed/final sessions,
+freshness, policy status, paper receipt counts (including `null`/UNKNOWN vs
+actual zero), latest recording attempts, stored matured outcome counts and
+source-path read/missing totals. It requires later report time and locally
+declared source commit timestamps not after the report. The input reports
+are **not independently source-re-attested by this diff**, and a changed
+reported count is *not* a verified new signal, alpha, approval or recommendation.
+The comparator never generates a new trade or investment nomination.
