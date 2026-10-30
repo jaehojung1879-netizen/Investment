@@ -195,6 +195,78 @@ def _summary_reentry_contrasts(reports, *, support, rejection=None):
     return result
 
 
+def _auxiliary_c1_vs_c0(reports, support):
+    """Paired C1-minus-C0 fixture effect sizes; never an economic verdict.
+
+    This private function only consumes complete primitive-reconstructed reports.
+    Each family/arm is compared to the same family/arm under C0 on an identical
+    funded valuation calendar. The signs are informational, not selection rules.
+    """
+    from . import market_research_c1c_contract as V
+
+    if not isinstance(reports, dict) or set(reports) != set(V.cell_ids()):
+        raise ValueError("COMPLETE_SIXTEEN_CELL_POPULATION_REQUIRED")
+    result = {}
+    for family in V.FAMILIES:
+        for arm in V.ARMS:
+            c1_key, c0_key = f"C1/{family}/{arm}", f"C0/{family}/{arm}"
+            c1, c0 = reports[c1_key], reports[c0_key]
+            reasons = []
+            if (c1.get("evidenceClass") != "SYNTHETIC_FIXTURE"
+                    or c0.get("evidenceClass") != "SYNTHETIC_FIXTURE"
+                    or c1.get("cellId") != c1_key or c0.get("cellId") != c0_key):
+                reasons.append("RECONSTRUCTED_SYNTHETIC_CELL_ID_REQUIRED")
+            b1, b0 = c1.get("comparisonBasis"), c0.get("comparisonBasis")
+            if not _basis_valid(b1) or b1 != b0:
+                reasons.append("COMMON_COMPLETE_COMPARISON_BASIS_REQUIRED")
+            else:
+                n = b1["valuationIntervals"]
+                if (not isinstance(support, dict) or support.get("windowMatured") is not True
+                        or type(support.get("intendedIntervals")) is not int
+                        or type(support.get("observedIntervals")) is not int
+                        or support["intendedIntervals"] != n or support["observedIntervals"] != n):
+                    reasons.append("MATURE_COMPLETE_INTENDED_WINDOW_REQUIRED")
+            s1, s0 = _summaries(c1), _summaries(c0)
+            a, b = s1.get("candidate"), s0.get("candidate")
+            if (not _metrics(a) or not _metrics(b)
+                    or not isinstance(b1, dict)
+                    or any(type(s.get("valuationIntervals")) is not int
+                           or s["valuationIntervals"] != b1.get("valuationIntervals")
+                           for s in (a or {}, b or {}))):
+                reasons.append("COMPLETE_FINITE_COMMON_METRICS_REQUIRED")
+            for report in (c1, c0):
+                summaries = _summaries(report)
+                candidate, static = summaries.get("candidate", {}), summaries.get("matchedStatic", {})
+                v = candidate.get("meanIntervalExposure") if isinstance(candidate, dict) else None
+                w = static.get("meanIntervalExposure") if isinstance(static, dict) else None
+                if (not _number(v) or not _number(w) or not 0 <= v <= 1
+                        or not 0 <= w <= 1 or abs(v - w) > MATCH_TOLERANCE):
+                    reasons.append("DIRECT_MEAN_EXPOSURE_MATCH_REQUIRED")
+                    break
+            deltas = None
+            if not reasons:
+                try:
+                    deltas = {
+                        "netCagrDifferencePp": 100 * (math.expm1(a["netAnnualLogGrowth"]) - math.expm1(b["netAnnualLogGrowth"])),
+                        "fundedDrawdownImprovementPp": 100 * (a["fundedMaxDrawdown"] - b["fundedMaxDrawdown"]),
+                        "dailyCvarReductionPp": 100 * (b["dailyCvar95Loss"] - a["dailyCvar95Loss"]),
+                        "meanIntervalExposureDifference": a["meanIntervalExposure"] - b["meanIntervalExposure"],
+                    }
+                except (OverflowError, ValueError):
+                    deltas = None
+                if deltas is None or not all(_number(v) for v in deltas.values()):
+                    reasons.append("FINITE_ECONOMIC_EFFECT_SIZE_REQUIRED")
+                    deltas = None
+            result[c1_key] = {
+                "status": "INCONCLUSIVE" if reasons else "SYNTHETIC_DESCRIPTIVE_EFFECT_SIZES_ONLY",
+                "comparedWith": c0_key, "reasons": reasons, "effects": deltas,
+                "positiveEffectsConvention": "POSITIVE_CAGR_DRAWDOWN_CVAR_VALUES_FAVOR_C1_NOT_A_VERDICT",
+                "role": "C1_AUXILIARY_C0_PRIMARY", "economicMaterialityRegistered": False,
+                "inferenceEstablished": False, "sourceAdmitted": False, "promotionAllowed": False,
+            }
+    return result
+
+
 _UNVERIFIED = "UNVERIFIED_REPORT_MAPPING_REQUIRES_PRIMITIVE_RECONSTRUCTION"
 
 
@@ -247,14 +319,17 @@ def synthetic_from_inputs(close, states, plan, cash_returns, market, basis, stre
     prices = close.loc[plan.executionDate.iloc[0]:]
     reports = {}
     for cell in V.cell_ids():
-        if cell.startswith("C0/"):
-            selected = [row["cells"][cell]["target"] for row in panel]
-            reports[cell] = D.synthetic_diagnostics(prices, plan, selected, cash, market, basis, stress,
-                evidence_class=C.SYNTHETIC, cell_id=cell, cash_basis=cash_basis, episodes=episodes)
-    readouts = {cell: _summary_readout(r, reports[cell.rsplit("/", 1)[0] + "/BASE"], support=support)
-                for cell, r in reports.items() if not cell.endswith("/BASE")}
+        selected = [row["cells"][cell]["target"] for row in panel]
+        reports[cell] = D.synthetic_diagnostics(prices, plan, selected, cash, market, basis, stress,
+            evidence_class=C.SYNTHETIC, cell_id=cell, cash_basis=cash_basis, episodes=episodes)
+    primary = {key: value for key, value in reports.items() if key.startswith("C0/")}
+    auxiliary = {key: value for key, value in reports.items() if key.startswith("C1/")}
+    readouts = {cell: _summary_readout(r, primary[cell.rsplit("/", 1)[0] + "/BASE"], support=support)
+                for cell, r in primary.items() if not cell.endswith("/BASE")}
     return {"inputAuthority": "RECOMPUTED_INVENTED_PRIMITIVES_NOT_SOURCE_ADMISSION",
-            "evidenceClass": C.SYNTHETIC, "panel": panel, "diagnostics": reports,
-            "readouts": readouts, "reentryContrasts": _summary_reentry_contrasts(reports, support=support),
+            "evidenceClass": C.SYNTHETIC, "panel": panel, "diagnostics": primary,
+            "readouts": readouts, "reentryContrasts": _summary_reentry_contrasts(primary, support=support),
+            "auxiliaryC1Diagnostics": auxiliary,
+            "auxiliaryC1VsC0": _auxiliary_c1_vs_c0(reports, support),
             "stateProvenance": "CALLER_INVENTED_STATES_NOT_AUTHENTICATED_MARKET_SIGNALS",
             "sourceAdmitted": False, "historicalExecutionEnabled": False, "promotionAllowed": False}
