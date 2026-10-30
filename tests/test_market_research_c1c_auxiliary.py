@@ -96,3 +96,77 @@ def test_no_actual_market_history_accepted_for_auxiliary():
     kw["evidence_class"] = "ACTUAL_HISTORY"
     with pytest.raises(ValueError, match="SYNTHETIC"):
         Q.synthetic_from_inputs(**kw)
+
+
+@pytest.mark.parametrize("market", ["KR", "US"])
+@pytest.mark.parametrize("direction", [1, -1])
+def test_actual_policy_divergence_in_ascending_and_descending_invented_prices(market, direction):
+    """C0=.7 and C1=1.0 when FAST=1 has no SLOW/TRANSITION confirmation."""
+    kw = inputs(market)
+    n = len(kw["close"])
+    kw["close"] = pd.Series(100 * np.exp(direction * .002 * np.arange(n)), index=kw["close"].index)
+    kw["states"]["slow"] = 0
+    kw["states"]["transition"] = 0
+    kw["states"]["fast"] = 1
+    kw["stress"] = 0
+    output = Q.synthetic_from_inputs(**kw)
+    family = V.FAMILIES[0]
+    c0_key = f"C0/{family}/BASE"
+    c1_key = f"C1/{family}/BASE"
+    assert [row["cells"][c0_key]["target"] for row in output["panel"]] == [.7] * len(kw["plan"])
+    assert [row["cells"][c1_key]["target"] for row in output["panel"]] == [1.] * len(kw["plan"])
+    contrast = output["auxiliaryC1VsC0"][c1_key]
+    assert contrast["status"] == "SYNTHETIC_DESCRIPTIVE_EFFECT_SIZES_ONLY"
+    assert contrast["effects"]["netCagrDifferencePp"] * direction > 0.01
+    assert contrast["effects"]["meanIntervalExposureDifference"] > 0
+    if direction < 0:
+        assert contrast["effects"]["fundedDrawdownImprovementPp"] < 0
+        assert contrast["effects"]["dailyCvarReductionPp"] < 0
+    assert "NOT_CAUSAL_TIMING_ALPHA" in contrast["matchedStaticContextMeaning"]
+    assert not contrast["promotionAllowed"]
+
+
+@pytest.mark.parametrize("market", ["KR", "US"])
+def test_nonzero_effect_signs_against_independent_hand_calculated_constants(market):
+    """Check pp conversion and directions with constants independent of the implementation."""
+    kw = inputs(market)
+    output = Q.synthetic_from_inputs(**kw)
+    reports = deepcopy({**output["diagnostics"], **output["auxiliaryC1Diagnostics"]})
+    family = V.FAMILIES[0]
+    c0 = reports[f"C0/{family}/BASE"]["summaries"]
+    c1 = reports[f"C1/{family}/BASE"]["summaries"]
+    for name, candidate, static, exposure in (
+        ("C0", (1.08, -.30, .08), (1.07, -.28, .075), .6),
+        ("C1", (1.05, -.20, .05), (1.04, -.19, .04), .4),
+    ):
+        pair = c0 if name == "C0" else c1
+        for title, metrics in (("candidate", candidate), ("matchedStatic", static)):
+            r = pair[title]
+            r["netAnnualLogGrowth"] = math.log(metrics[0])
+            r["fundedMaxDrawdown"] = metrics[1]
+            r["dailyCvar95Loss"] = metrics[2]
+            r["meanIntervalExposure"] = exposure
+    item = Q._auxiliary_c1_vs_c0(reports, kw["support"])[f"C1/{family}/BASE"]
+    assert item["status"] == "SYNTHETIC_DESCRIPTIVE_EFFECT_SIZES_ONLY"
+    actual = item["effects"]
+    assert actual["netCagrDifferencePp"] == pytest.approx(-3.0, abs=1e-10)
+    assert actual["fundedDrawdownImprovementPp"] == pytest.approx(10.0, abs=1e-10)
+    assert actual["dailyCvarReductionPp"] == pytest.approx(3.0, abs=1e-10)
+    assert actual["meanIntervalExposureDifference"] == pytest.approx(-.2, abs=1e-12)
+    stat = item["ownMatchedStaticExcessDifferencesPp"]
+    assert stat["netCagrExcessDifferencePp"] == pytest.approx(0.0, abs=1e-10)
+    assert stat["fundedDrawdownExcessDifferencePp"] == pytest.approx(1.0, abs=1e-10)
+    assert stat["dailyCvarReductionExcessDifferencePp"] == pytest.approx(-.5, abs=1e-10)
+    assert not item["economicMaterialityRegistered"] and not item["inferenceEstablished"]
+
+
+def test_static_metric_tampering_does_not_allow_adjusted_context():
+    result = Q.synthetic_from_inputs(**inputs())
+    reports = deepcopy({**result["diagnostics"], **result["auxiliaryC1Diagnostics"]})
+    key = next(k for k in reports if k.startswith("C1/"))
+    reports[key]["summaries"]["matchedStatic"]["dailyCvar95Loss"] = float("nan")
+    output = Q._auxiliary_c1_vs_c0(reports, inputs()["support"])[key]
+    assert "COMPLETE_FINITE_MATCHED_STATIC_METRICS_REQUIRED" in output["reasons"]
+    assert output["effects"] is None
+    assert output["ownMatchedStaticExcessDifferencesPp"] is None
+    assert output["status"] == "INCONCLUSIVE"

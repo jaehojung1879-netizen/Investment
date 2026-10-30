@@ -234,6 +234,7 @@ def _auxiliary_c1_vs_c0(reports, support):
                            or s["valuationIntervals"] != b1.get("valuationIntervals")
                            for s in (a or {}, b or {}))):
                 reasons.append("COMPLETE_FINITE_COMMON_METRICS_REQUIRED")
+            static_c1, static_c0 = s1.get("matchedStatic"), s0.get("matchedStatic")
             for report in (c1, c0):
                 summaries = _summaries(report)
                 candidate, static = summaries.get("candidate", {}), summaries.get("matchedStatic", {})
@@ -243,24 +244,49 @@ def _auxiliary_c1_vs_c0(reports, support):
                         or not 0 <= w <= 1 or abs(v - w) > MATCH_TOLERANCE):
                     reasons.append("DIRECT_MEAN_EXPOSURE_MATCH_REQUIRED")
                     break
-            deltas = None
+            if (not _metrics(static_c1) or not _metrics(static_c0)
+                    or not isinstance(b1, dict)
+                    or any(type(s.get("valuationIntervals")) is not int
+                           or s["valuationIntervals"] != b1.get("valuationIntervals")
+                           for s in (static_c1 or {}, static_c0 or {}))):
+                reasons.append("COMPLETE_FINITE_MATCHED_STATIC_METRICS_REQUIRED")
+            deltas = matched_static_context = None
             if not reasons:
                 try:
+                    def cagr(v):
+                        return math.expm1(v["netAnnualLogGrowth"])
                     deltas = {
-                        "netCagrDifferencePp": 100 * (math.expm1(a["netAnnualLogGrowth"]) - math.expm1(b["netAnnualLogGrowth"])),
+                        "netCagrDifferencePp": 100 * (cagr(a) - cagr(b)),
                         "fundedDrawdownImprovementPp": 100 * (a["fundedMaxDrawdown"] - b["fundedMaxDrawdown"]),
                         "dailyCvarReductionPp": 100 * (b["dailyCvar95Loss"] - a["dailyCvar95Loss"]),
                         "meanIntervalExposureDifference": a["meanIntervalExposure"] - b["meanIntervalExposure"],
                     }
+                    # A difference of two separate ex-post static-relative effects.
+                    # Not a causal timing estimate, exposure-neutral strategy, or beta match.
+                    matched_static_context = {
+                        "netCagrExcessDifferencePp":
+                            100 * ((cagr(a) - cagr(static_c1)) - (cagr(b) - cagr(static_c0))),
+                        "fundedDrawdownExcessDifferencePp":
+                            100 * ((a["fundedMaxDrawdown"] - static_c1["fundedMaxDrawdown"])
+                                   - (b["fundedMaxDrawdown"] - static_c0["fundedMaxDrawdown"])),
+                        "dailyCvarReductionExcessDifferencePp":
+                            100 * ((static_c1["dailyCvar95Loss"] - a["dailyCvar95Loss"])
+                                   - (static_c0["dailyCvar95Loss"] - b["dailyCvar95Loss"])),
+                    }
                 except (OverflowError, ValueError):
-                    deltas = None
-                if deltas is None or not all(_number(v) for v in deltas.values()):
+                    deltas = matched_static_context = None
+                if (deltas is None or matched_static_context is None
+                        or not all(_number(v) for v in (*deltas.values(), *matched_static_context.values()))):
                     reasons.append("FINITE_ECONOMIC_EFFECT_SIZE_REQUIRED")
-                    deltas = None
+                    deltas = matched_static_context = None
             result[c1_key] = {
                 "status": "INCONCLUSIVE" if reasons else "SYNTHETIC_DESCRIPTIVE_EFFECT_SIZES_ONLY",
                 "comparedWith": c0_key, "reasons": reasons, "effects": deltas,
-                "positiveEffectsConvention": "POSITIVE_CAGR_DRAWDOWN_CVAR_VALUES_FAVOR_C1_NOT_A_VERDICT",
+                "ownMatchedStaticExcessDifferencesPp": matched_static_context,
+                "positiveEffectsConvention": "POSITIVE_DESCRIBES_C1_MINUS_C0_DIRECTION_ONLY_NOT_ECONOMIC_SUPERIORITY",
+                "matchedStaticContextMeaning": (
+                    "DIFFERENCE_OF_TWO_EX_POST_OWN_MEAN_EXPOSURE_MATCHED_STATIC_RELATIVE_EFFECTS"
+                    "_NOT_CAUSAL_TIMING_ALPHA_NOT_BETA_MATCHED_NOT_TRADABLE"),
                 "role": "C1_AUXILIARY_C0_PRIMARY", "economicMaterialityRegistered": False,
                 "inferenceEstablished": False, "sourceAdmitted": False, "promotionAllowed": False,
             }
