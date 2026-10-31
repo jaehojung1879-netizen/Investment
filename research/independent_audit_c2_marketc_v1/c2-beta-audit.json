@@ -41,7 +41,7 @@
    "INTERIOR_EXCLUDING_BOOKENDS": 1.9399095797532415
   },
   "published3xUnitBetaEdgeUpperPp": -1.470084,
-  "reading": "The -1.470pp bound is against a unit-beta 069500 path. Against the C2 book's own estimated exposure the 3x point estimate stays positive. The two readings use different, unregistered comparators; neither is a supported verdict."
+  "reading": "ILLUSTRATION ONLY. The -1.470pp bound is against a unit-beta 069500 path. Against the C2 book's own annual-row exposure the 3x point estimate stays positive. This is not executable alpha, not a confidence interval and does not separate stock selection from defensive style, timing or cash. Neither comparator is registered; the original fixed C2 method is unchanged."
  },
  "downYearReading": {
   "downYears": 5,
@@ -56,6 +56,27 @@
   "reading": "With beta < 1 a down benchmark year produces positive excess mechanically, (1 - beta) x |R_m|; the 5/5 down-year and 2/9 up-year counts are the signature of the exposure, not separate evidence of selection or timing."
  },
  "evidenceClass": "POST_OUTCOME_READ_ONLY_RE_READING_OF_PUBLISHED_AGGREGATES",
+ "leaveOneYearOutBeta": {
+  "byOmittedYear": {
+   "2013": 0.587917427657781,
+   "2014": 0.5967571173103707,
+   "2015": 0.58378846501895,
+   "2016": 0.5792471049181251,
+   "2017": 0.5795254117458408,
+   "2018": 0.5934116586825872,
+   "2019": 0.5807352282698086,
+   "2020": 0.5830327235674359,
+   "2021": 0.5860270273828495,
+   "2022": 0.573699459492232,
+   "2023": 0.58686388784856,
+   "2024": 0.5866142438340969,
+   "2025": 0.3824181429759614,
+   "2026": 0.6892840866731962
+  },
+  "max": 0.6892840866731962,
+  "min": 0.3824181429759614,
+  "reading": "Beta from 14 published annual/partial-year returns is a SENSITIVITY reading, not a verified daily exposure: one year moves it from 0.38 to 0.69."
+ },
  "limitations": [
   "14 annual rows, two bookend partial years, 2025/2026 high leverage; no daily C2 path is published.",
   "Arithmetic annual regression vs CAGR-based bounds: magnitudes are approximate and not additive.",

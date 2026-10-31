@@ -240,9 +240,10 @@ def support_summary(sup):
 def full_grid_counterfactual(sup, protocol, *, crit, reps, seed):
     """POST-GATE DIAGNOSTIC, NOT A DECISION INPUT (added after the frozen gate result was read).
 
-    Asks whether ANY data repair could rescue the question: every one of the 14 industries is measured on every one of
-    the 610 dates (synthetic persistent feature and controls, AR(1) phi 0.98), H126, K2, IID noise. Repairs to
-    terminal economics, KSIC or ex-dates can only remove industry-dates from the real support, so this is a ceiling."""
+    A generous SPECIFIED-DGP SCENARIO, not a mathematical upper bound: every one of the 14 industries is measured on every
+    one of the 610 dates, with synthetic AR(1) (phi 0.98) feature and controls in place of the real ones, H126, K2, IID
+    noise. It replaces the real feature/control processes, so it does not bound the real noncentrality, cross-sectional
+    dependence or test calibration, and it says nothing about other hypotheses. The registered K2 cell alone decides."""
     rng = np.random.default_rng(seed)
     n_dates, n_ind = sup["finite"].shape
     wide = {c: pd.DataFrame(ar1_panel(rng, n_dates, n_ind, 0.98))
@@ -252,7 +253,7 @@ def full_grid_counterfactual(sup, protocol, *, crit, reps, seed):
             "usable": np.ones(n_dates, bool)}
     cell = run_cell(full, protocol, horizon="H126", design="K2", noise_kind="IID_NORMAL", crit=crit, rng=rng, reps=reps)
     cell["minimumDetectableRhoAtPowerFloor"] = minimum_detectable(cell, protocol["decisionRule"]["powerFloor"])
-    cell["status"] = "POST_GATE_DIAGNOSTIC_CEILING_NOT_A_DECISION_INPUT"
+    cell["status"] = "POST_GATE_SPECIFIED_DGP_SCENARIO_NOT_A_BOUND_NOT_A_DECISION_INPUT"
     return cell
 
 
@@ -270,12 +271,12 @@ def run(protocol, frame, *, reps=None, crit=None):
     decision = decide(cells, protocol)
     for c in cells:
         c["minimumDetectableRhoAtPowerFloor"] = minimum_detectable(c, protocol["decisionRule"]["powerFloor"])
-    ceiling = full_grid_counterfactual(sup, protocol, crit=crit, reps=max(reps // 2, 1), seed=protocol["seed"] + 1)
+    scenario = full_grid_counterfactual(sup, protocol, crit=crit, reps=max(reps // 2, 1), seed=protocol["seed"] + 1)
     return {"studyId": protocol["studyId"], "stage": protocol["stage"],
             "outcomeAccess": "NONE: input columns only, synthetic labels",
             "protocolSha256": sha256(PROTOCOL_PATH), "panelSha256": sha256(ROOT / protocol["panel"]),
             "replications": reps, "primaryAlpha": PRIMARY_ALPHA, "snOneSidedCritical": crit, "support": support_summary(sup),
-            "cells": cells, "decision": decision, "fullCoverageCeiling": ceiling}
+            "cells": cells, "decision": decision, "fullCoverageScenario": scenario}
 
 
 def main(argv=None):

@@ -62,6 +62,10 @@ def audit(src, rf):
         pred_win = (f["intercept"] + (f["beta"] - 1) * p0[sel]) > 0
         f["yearsWhereFittedBetaAloneAndInterceptPredictTheObservedWinLossSign"] = int((pred_win == (c2[sel] > p0[sel])).sum())
         fits[name] = f
+    loo = {}
+    for i in range(len(rows)):
+        keep = np.arange(len(rows)) != i
+        loo[str(year[i])] = ols(c2[keep], p0[keep])["beta"]
     down = p0 < 0
     beta_only = fits["ALL_14_ROWS"]["beta"]
     obs = src["observed"]
@@ -73,6 +77,9 @@ def audit(src, rf):
                           "meanPctPerYear2013_2026": rf},
         "publishedExposureBound": src["exposureBound"]["absoluteBetaUpperBound"],
         "annualRowRegression_C2_on_069500": fits,
+        "leaveOneYearOutBeta": {"byOmittedYear": loo, "min": min(loo.values()), "max": max(loo.values()),
+                                "reading": "Beta from 14 published annual/partial-year returns is a SENSITIVITY reading, "
+                                           "not a verified daily exposure: one year moves it from 0.38 to 0.69."},
         "c2StockLegBetaImplied": {
             "averageEtfWeightPct": obs["C2"]["averageBenchmarkWeightPct"],
             "stockLegBetaIfEtfBetaIsOne": (beta_only - obs["C2"]["averageBenchmarkWeightPct"] / 100)
@@ -89,9 +96,10 @@ def audit(src, rf):
             "extraCostDragAt3xPpApprox": 2 * obs["C2"]["annualizedCostDragPct"],
             "jensenAlphaAfter3xApproxPp": {k: v["jensenAlphaPpPerYear"] - 2 * obs["C2"]["annualizedCostDragPct"]
                                            for k, v in fits.items()},
-            "reading": "The -1.470pp bound is against a unit-beta 069500 path. Against the C2 book's own estimated exposure "
-                       "the 3x point estimate stays positive. The two readings use different, unregistered comparators; neither "
-                       "is a supported verdict."},
+            "reading": "ILLUSTRATION ONLY. The -1.470pp bound is against a unit-beta 069500 path. Against the C2 book's own "
+                       "annual-row exposure the 3x point estimate stays positive. This is not executable alpha, not a "
+                       "confidence interval and does not separate stock selection from defensive style, timing or cash. "
+                       "Neither comparator is registered; the original fixed C2 method is unchanged."},
         "limitations": [
             "14 annual rows, two bookend partial years, 2025/2026 high leverage; no daily C2 path is published.",
             "Arithmetic annual regression vs CAGR-based bounds: magnitudes are approximate and not additive.",

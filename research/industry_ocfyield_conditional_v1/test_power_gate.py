@@ -109,4 +109,4 @@ def test_committed_result_matches_protocol_and_panel_hashes():
     assert r["protocolSha256"] == G.sha256(G.PROTOCOL_PATH)
     assert r["panelSha256"] == G.sha256(G.ROOT / G.load_protocol()["panel"])
     assert r["decision"]["verdict"] == "NO_GO"
-    assert r["fullCoverageCeiling"]["status"] == "POST_GATE_DIAGNOSTIC_CEILING_NOT_A_DECISION_INPUT"
+    assert r["fullCoverageScenario"]["status"] == "POST_GATE_SPECIFIED_DGP_SCENARIO_NOT_A_BOUND_NOT_A_DECISION_INPUT"
