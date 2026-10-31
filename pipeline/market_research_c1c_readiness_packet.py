@@ -76,15 +76,26 @@ def _need(status, smallest, evidence=None):
     return {"status": status, "smallestMissingEvidence": smallest, "evidence": list(evidence or [])}
 
 
+def _resolves(item):
+    """A pointer counts only when the named file exists under the repository root and its bytes hash to the recorded digest."""
+    if not (isinstance(item, dict) and item.get("path") and len(str(item.get("sha256", ""))) == 64):
+        return False
+    target = (ROOT / str(item["path"])).resolve()
+    try:
+        target.relative_to(ROOT.resolve())
+    except ValueError:
+        return False
+    return target.is_file() and EVIDENCE.sha256(target) == item["sha256"]
+
+
 def _has_evidence(entry):
     items = entry.get("evidence")
-    return bool(items) and all(isinstance(i, dict) and i.get("path") and len(str(i.get("sha256", ""))) == 64 for i in items)
+    return bool(items) and all(_resolves(i) for i in items)
 
 
 def _has_owner_decision(entry):
     """A RIGHTS entry is VERIFIED only with a recorded owner decision ({path, sha256}); an observation of the terms is never a grant."""
-    record = entry.get("ownerDecision")
-    return isinstance(record, dict) and bool(record.get("path")) and len(str(record.get("sha256", ""))) == 64
+    return _resolves(entry.get("ownerDecision"))
 
 
 def prerequisites():

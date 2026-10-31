@@ -149,9 +149,9 @@ def test_ready_is_reachable_only_when_every_source_prerequisite_is_verified():
         for dimension in ("rights", "pitVintage", "investability"):
             if item[dimension]["status"] != "NOT_APPLICABLE_SIGNAL_ONLY":
                 item[dimension]["status"] = P.VERIFIED
-                item[dimension]["evidence"] = [{"path": "retained/evidence.json", "sha256": "b" * 64}]
+                item[dimension]["evidence"] = [_real(P.RESOLUTION_JSON)]
                 if dimension == "rights":
-                    item[dimension]["ownerDecision"] = {"path": "owner/decision.json", "sha256": "d" * 64}
+                    item[dimension]["ownerDecision"] = _real("docs/research-program/proposals/market-research-c1c-source-evidence-v1.json")
     assert P.readiness_status(prereqs, readings)[0] == "SOURCE_BLOCKED"       # the funded-investor reading is still blocked
     readings["F_FUNDED_INVESTOR"]["status"] = "CONSTRUCTIBLE_AND_VERIFIED"
     assert P.readiness_status(prereqs, readings) == ("READY_FOR_OWNER_SCOPE_REVIEW", [])
@@ -160,15 +160,19 @@ def test_ready_is_reachable_only_when_every_source_prerequisite_is_verified():
     assert status == "SOURCE_BLOCKED" and any("rights:CHECKSUM_MATCH" in b for b in blockers)
 
 
+def _real(rel):
+    return {"path": rel, "sha256": P.EVIDENCE.sha256(P.ROOT / rel)}
+
+
 def _all_verified():
     prereqs = copy.deepcopy(P.prerequisites())
     for item in prereqs:
         for dimension in ("rights", "pitVintage", "investability"):
             if item[dimension]["status"] != "NOT_APPLICABLE_SIGNAL_ONLY":
                 item[dimension]["status"] = P.VERIFIED
-                item[dimension]["evidence"] = [{"path": "retained/evidence.json", "sha256": "b" * 64}]
+                item[dimension]["evidence"] = [_real(P.RESOLUTION_JSON)]
                 if dimension == "rights":
-                    item[dimension]["ownerDecision"] = {"path": "owner/decision.json", "sha256": "d" * 64}
+                    item[dimension]["ownerDecision"] = _real("docs/research-program/proposals/market-research-c1c-source-evidence-v1.json")
     readings = copy.deepcopy(_committed()["accountingReadings"])
     readings["F_FUNDED_INVESTOR"]["status"] = "CONSTRUCTIBLE_AND_VERIFIED"
     return prereqs, readings
@@ -223,3 +227,15 @@ def test_packet_module_runs_no_strategy_replay_and_imports_only_the_registered_c
     assert imported <= {"__future__", "hashlib", "json", "pathlib", ".market_research_c1c_contract", ".market_research_c1c_source_evidence"}
     source = Path(P.__file__).read_text()
     assert "replay(" not in source and "market_research_c1c import" not in source
+
+
+def test_an_evidence_or_owner_decision_pointer_must_resolve_to_retained_bytes():
+    prereqs, readings = _all_verified()
+    assert P.readiness_status(prereqs, readings)[0] == "READY_FOR_OWNER_SCOPE_REVIEW"
+    for field in ("evidence", "ownerDecision"):
+        for bad in ({"path": "docs/does-not-exist.json", "sha256": "f" * 64},
+                    {"path": P.RESOLUTION_JSON, "sha256": "f" * 64},                  # exists, wrong digest
+                    {"path": "../outside.json", "sha256": "f" * 64}):                 # escapes the repository
+            trial = copy.deepcopy(prereqs)
+            trial[0]["rights"][field] = [bad] if field == "evidence" else bad
+            assert P.readiness_status(trial, readings)[0] == "SOURCE_BLOCKED", (field, bad)

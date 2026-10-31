@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import json
 import re
+from pathlib import Path
 
 import pandas as pd
 
@@ -72,17 +73,28 @@ def record_date_rule_holds(record, sessions):
     return bool(len(month_sessions) and month_sessions[-1] == record and record.month in (1, 4, 7, 10))
 
 
-def classify_event(event, source=None):
-    """Per-event status. VERIFIED needs an official per-event source with exact payment date AND taxable base; nothing derived counts."""
+def classify_event(event, source=None, root=S.ROOT):
+    """Per-event status. VERIFIED needs an official per-event source with exact payment date AND taxable base; nothing derived counts.
+
+    `source.retainedPath` must name a retained file under `root` whose bytes hash to `source.sha256`; a shape-valid source that points at
+    nothing is refused. That ties the claim to bytes; it still cannot prove the document is genuine, so the source remains a human-reviewed
+    record and `origin` stays a declaration."""
     if source is not None:
-        required = ("documentIdentifier", "url", "retrievedAtUtc", "sha256", "paymentDate", "taxableBasePerUnit", "origin")
-        missing = [k for k in required if not source.get(k)]
+        required = ("documentIdentifier", "url", "retrievedAtUtc", "sha256", "retainedPath", "paymentDate", "taxableBasePerUnit", "cashPerUnit", "origin")
+        missing = [k for k in required if source.get(k) in (None, "", 0)]
         if missing:
             raise ValueError("EVENT_SOURCE_INCOMPLETE:" + ",".join(missing))
         if source["origin"] != "OFFICIAL_PER_EVENT_DOCUMENT":
             raise ValueError("EVENT_SOURCE_NOT_AN_OFFICIAL_PER_EVENT_DOCUMENT:" + str(source["origin"]))
         if not re.fullmatch(r"[0-9a-f]{64}", str(source["sha256"])):
             raise ValueError("EVENT_SOURCE_HASH_INVALID")
+        target = (Path(root) / str(source["retainedPath"])).resolve()
+        try:
+            target.relative_to(Path(root).resolve())
+        except ValueError:
+            raise ValueError("EVENT_SOURCE_RETAINED_PATH_OUTSIDE_REPOSITORY") from None
+        if not target.is_file() or S.sha256(target) != source["sha256"]:
+            raise ValueError("EVENT_SOURCE_BYTES_NOT_RETAINED_OR_HASH_DIFFERS")
         if pd.Timestamp(source["paymentDate"]) <= pd.Timestamp(event["record"]):
             raise ValueError("EVENT_PAYMENT_NOT_AFTER_RECORD_DATE")
         if float(source["cashPerUnit"]) != float(event["cash"]):
@@ -154,10 +166,10 @@ def rights_matrix(flags):
         {"input": "069500 issuer price and distribution files (KODEX)",
          "term": {"url": "https://www.samsungfund.com/etf/main.do", "retrievedOn": RETRIEVED_ON, "bytesSha256": "d6042e12c4ae76c5a407e8a61b516ad1f1253553b82e66adb16d8b61612f44e8",
                   "quote": "본 웹사이트의 자료를 사전 허가없이 무단으로 사용하거나 데이터베이스화 할 경우, 민형사상 법적 책임을 질 수 있습니다."},
-         "researchUse": "NOT_ADDRESSED_IN_THE_NOTICE_PRIOR_PERMISSION_REFERENCED",
+         "researchUse": "EXPLICITLY_RESTRICTED_WITHOUT_PRIOR_PERMISSION_(USE_OR_DATABASING)",
          "retention": "EXPLICITLY_RESTRICTED_WITHOUT_PRIOR_PERMISSION", "redistribution": "EXPLICITLY_RESTRICTED_WITHOUT_PRIOR_PERMISSION",
          "repositoryRetainsCoveredData": True, "permissionDocumentRetained": False,
-         "note": "the retained issuer files were captured under an internal benchmark-audit authorisation label, which is not a licence from the issuer; "
+         "note": "the notice restricts use as well as databasing ('사용하거나 데이터베이스화'); no research-use exception is stated. The retained issuer files were captured under an internal benchmark-audit authorisation label, which is not a licence from the issuer; "
                  "the notice also says the index and yield information is supplied to the issuer by KOSCOM and the administrator"},
         {"input": "KS200 index levels",
          "term": {"url": "https://data.krx.co.kr/contents/MDC/INFO/informationController/MDCINFO003.cmd", "retrievedOn": RETRIEVED_ON,
@@ -183,7 +195,7 @@ def rights_matrix(flags):
                  "mentioned a 2024 ban on caching FRED content; that sentence was NOT found in the page text read, so it is not relied on either way. The Cboe policy "
                  "addresses Cboe's Data Recipients; whether a research user of FRED-served VIXCLS is one is not established"},
         {"input": "Treasury 10y and 3m (FRED DGS10, DGS3MO; origin Board H.15)",
-         "term": {"url": "https://www.federalreserve.gov/disclaimer.htm", "retrievedOn": RETRIEVED_ON, "bytesSha256": "6fd9c6703a144d763e72ed70bc9378f7a855dbb1ad12c46197c3e3161b5d3e3e",
+         "term": {"url": "https://www.federalreserve.gov/disclaimer.htm", "retrievedOn": RETRIEVED_ON, "bytesSha256": "6fd9c6703a144d763e72ed70bc9378f7a855dbb1ad12c46197c3e3161b5d3e3e", "bytesNote": "a retrieval-time observation; a later independent fetch hashed differently (dynamic page) while the quoted sentence was unchanged",
                   "quote": "Unless otherwise indicated, information on Board's website is in the public domain and may be copied and distributed without permission. "
                            "Please cite to the Board as the source of the information."},
          "retainedSeriesNotesContainCopyright": {"DGS10": flags["FRED_DGS10"], "DGS3MO": flags["FRED_DGS3MO"]},

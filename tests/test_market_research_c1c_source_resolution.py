@@ -10,6 +10,9 @@ from pipeline import market_research_c1c_source_evidence as S
 from pipeline import market_research_c1c_source_resolution as R
 
 
+ANCHOR = "docs/research-program/proposals/market-research-c1c-source-evidence-v1.json"   # any retained file stands in for a retained document
+
+
 def _committed():
     return json.loads(R.OUTPUT.read_text())
 
@@ -21,7 +24,7 @@ def _chain():
 
 def _valid_source(event, **override):
     source = {"documentIdentifier": "KRX-DISCLOSURE-SYNTHETIC-0001", "url": "https://example.invalid/disclosure/1", "retrievedAtUtc": "2026-10-31T00:00:00Z",
-              "sha256": "c" * 64, "paymentDate": str((pd.Timestamp(event["record"]) + pd.Timedelta(days=4)).date()), "taxableBasePerUnit": 100.0,
+              "sha256": R.S.sha256(R.S.ROOT / ANCHOR), "retainedPath": ANCHOR, "paymentDate": str((pd.Timestamp(event["record"]) + pd.Timedelta(days=4)).date()), "taxableBasePerUnit": 100.0,
               "cashPerUnit": event["cash"], "origin": "OFFICIAL_PER_EVENT_DOCUMENT"}
     source.update(override)
     return source
@@ -54,7 +57,7 @@ def test_a_verified_status_needs_an_official_per_event_document_with_exact_date_
     event = _event()
     assert R.classify_event(event) == "PARTIAL_RULE_BOUNDED"
     assert R.classify_event(event, _valid_source(event)) == "VERIFIED"           # the gate is not vacuous
-    for missing in ("documentIdentifier", "url", "retrievedAtUtc", "sha256", "paymentDate", "taxableBasePerUnit", "origin"):
+    for missing in ("documentIdentifier", "url", "retrievedAtUtc", "sha256", "retainedPath", "paymentDate", "taxableBasePerUnit", "cashPerUnit", "origin"):
         with pytest.raises(ValueError, match="EVENT_SOURCE_INCOMPLETE:" + missing):
             R.classify_event(event, _valid_source(event, **{missing: None}))
 
@@ -66,6 +69,9 @@ def test_a_verified_status_needs_an_official_per_event_document_with_exact_date_
     ({"paymentDate": "2018-04-30"}, "PAYMENT_NOT_AFTER_RECORD_DATE"),
     ({"paymentDate": "2018-04-20"}, "PAYMENT_NOT_AFTER_RECORD_DATE"),
     ({"cashPerUnit": 150.0}, "CASH_DISAGREES_WITH_CHAIN"),
+    ({"sha256": "c" * 64}, "BYTES_NOT_RETAINED_OR_HASH_DIFFERS"),             # shape-valid hash that matches no retained bytes
+    ({"retainedPath": "docs/does-not-exist.pdf", "sha256": "c" * 64}, "BYTES_NOT_RETAINED_OR_HASH_DIFFERS"),
+    ({"retainedPath": "../outside.pdf"}, "RETAINED_PATH_OUTSIDE_REPOSITORY"),
 ])
 def test_unsupported_dates_inferred_origins_and_mismatched_cash_never_become_verified(override, error):
     event = _event()
@@ -125,7 +131,7 @@ def test_no_rights_entry_is_a_grant_and_the_explicit_restrictions_are_reported()
     assert "GRANTED" not in text and '"VERIFIED"' not in text
     by = {m["input"].split(" ")[0]: m for m in matrix}
     issuer = matrix[0]
-    assert issuer["retention"] == "EXPLICITLY_RESTRICTED_WITHOUT_PRIOR_PERMISSION" and issuer["repositoryRetainsCoveredData"] is True
+    assert issuer["researchUse"].startswith("EXPLICITLY_RESTRICTED") and issuer["retention"] == "EXPLICITLY_RESTRICTED_WITHOUT_PRIOR_PERMISSION" and issuer["repositoryRetainsCoveredData"] is True
     assert issuer["permissionDocumentRetained"] is False and "데이터베이스화" in issuer["term"]["quote"]
     assert "KRX" in json.dumps(by["KS200"], ensure_ascii=False) and "자동화" in matrix[1]["term"]["quote"]
     assert matrix[2]["researchUse"].startswith("THIRD_PARTY_OWNER_PERMISSION_REQUIRED") and matrix[2]["term"]["bytesSha256"] is None

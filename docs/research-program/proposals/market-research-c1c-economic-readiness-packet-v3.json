@@ -119,7 +119,7 @@
    },
    {
     "path": "pipeline/market_research_c1c_source_resolution.py",
-    "sha256": "1821adb8d0787eb7f5bd6513b1185557820ccaf7305928cfb0544ebfbcd100f7"
+    "sha256": "2c162f0298f473cac067cfa0a7b2da1778f10ddbd90eb818ba0527d11aa8d8b9"
    },
    {
     "path": "docs/research-program/proposals/market-research-c1c-v2.json",
@@ -178,7 +178,7 @@
   },
   "sourceResolutionJson": {
    "path": "docs/research-program/proposals/market-research-c1c-source-resolution-v1.json",
-   "sha256": "0f52d18e32e826d6be2ea7ebe208326ea17eae87dcc54fb56363a8296da46656"
+   "sha256": "a2f78ecebde7f9c1bf7a895bbb659e464e55067dd83e010cce6e59c5ddbcb5e1"
   }
  },
  "ownerDecisionsUnresolved": [
@@ -187,7 +187,7 @@
   "TOTAL_RETURN: accept ex-date-close gross reinvestment as the funded ETF basis with the documented payment-timing bound, or require pay-date reinvestment (needs 26 further payment dates), and pre-tax versus after-tax",
   "CRITERIA: economic tolerances, inference and multiplicity, first evaluation and support, exact-hash execution packet"
  ],
- "packetSha256": "0cfec254701bfe0ac1e93b00f0c81ced177e87c7db39786537d62f036a5cb620",
+ "packetSha256": "ac96b4c0531ee30ecd66bc4d88e7ed6fae44b359bcf49940da247b8c56c75cba",
  "signConvention": "pp/yr per 10pp of mean ETF-weight gap; effect of registered -> funded/after-tax/interest-bearing basis on (more-exposed minus less-exposed arm); negative = the registered basis flatters the more-exposed arm",
  "smallestNextStep": "ONE owner action: obtain Samsung Asset Management's written permission for research use and retention of the KODEX 200 price and distribution data, or decide the research cannot use it. It gates both readings, because the corrected index is built from the issuer's closes. Cboe's permission for VIX and the KS200 upstream follow; the cash convention is a separate decision for reading F.",
  "sourceBlockers": [
@@ -223,7 +223,7 @@
     "evidence": [
      {
       "path": "docs/research-program/proposals/market-research-c1c-source-resolution-v1.json",
-      "sha256": "0f52d18e32e826d6be2ea7ebe208326ea17eae87dcc54fb56363a8296da46656"
+      "sha256": "a2f78ecebde7f9c1bf7a895bbb659e464e55067dd83e010cce6e59c5ddbcb5e1"
      }
     ],
     "smallestMissingEvidence": "the upstream behind the FinanceDataReader route, and written terms from the index owner (KRX) or an authorised vendor permitting internal research use and retention of daily KOSPI 200 closes; the KRX site terms prohibit copying and automated collection without prior permission",
@@ -248,7 +248,7 @@
     "evidence": [
      {
       "path": "docs/research-program/proposals/market-research-c1c-source-resolution-v1.json",
-      "sha256": "0f52d18e32e826d6be2ea7ebe208326ea17eae87dcc54fb56363a8296da46656"
+      "sha256": "a2f78ecebde7f9c1bf7a895bbb659e464e55067dd83e010cce6e59c5ddbcb5e1"
      }
     ],
     "smallestMissingEvidence": "Cboe's written permission for research use and retention of VIX values: FRED's terms say third-party series (notes containing 'Copyright', which VIXCLS's do) need the data owner's permission beyond personal use and that FRED cannot grant it",
@@ -273,7 +273,7 @@
     "evidence": [
      {
       "path": "docs/research-program/proposals/market-research-c1c-source-resolution-v1.json",
-      "sha256": "0f52d18e32e826d6be2ea7ebe208326ea17eae87dcc54fb56363a8296da46656"
+      "sha256": "a2f78ecebde7f9c1bf7a895bbb659e464e55067dd83e010cce6e59c5ddbcb5e1"
      }
     ],
     "smallestMissingEvidence": "the Board statement (public domain unless otherwise indicated, cite the Board) is recorded with its page hash and the series notes carry no 'Copyright' marker; the FRED API terms bytes are not retained (the host refuses this environment) and the owner has not recorded a decision",
@@ -292,7 +292,7 @@
     "evidence": [
      {
       "path": "docs/research-program/proposals/market-research-c1c-source-resolution-v1.json",
-      "sha256": "0f52d18e32e826d6be2ea7ebe208326ea17eae87dcc54fb56363a8296da46656"
+      "sha256": "a2f78ecebde7f9c1bf7a895bbb659e464e55067dd83e010cce6e59c5ddbcb5e1"
      }
     ],
     "smallestMissingEvidence": "an official per-event document (the exchange disclosure) with the exact payment date and taxable base for each of the 26 events; the trust deed's payment rule bounds the lag for 24 of them (2 are record-date-rule only); the issuer endpoints serve a recent window only",
@@ -303,7 +303,7 @@
     "evidence": [
      {
       "path": "docs/research-program/proposals/market-research-c1c-source-resolution-v1.json",
-      "sha256": "0f52d18e32e826d6be2ea7ebe208326ea17eae87dcc54fb56363a8296da46656"
+      "sha256": "a2f78ecebde7f9c1bf7a895bbb659e464e55067dd83e010cce6e59c5ddbcb5e1"
      }
     ],
     "smallestMissingEvidence": "the issuer's written permission for research use and retention of the price and distribution files: the KODEX site states that using or databasing its data without prior permission may carry civil and criminal liability, and the repository retains such files",
@@ -317,7 +317,7 @@
     "evidence": [
      {
       "path": "docs/research-program/proposals/market-research-c1c-source-resolution-v1.json",
-      "sha256": "0f52d18e32e826d6be2ea7ebe208326ea17eae87dcc54fb56363a8296da46656"
+      "sha256": "a2f78ecebde7f9c1bf7a895bbb659e464e55067dd83e010cce6e59c5ddbcb5e1"
      }
     ],
     "smallestMissingEvidence": "an owner-named investable KRW instrument or rate with a dated source; the BOK base rate is not one, and the registered ZERO cash is an opportunity-cost scenario only; a listed bond ETF would need the same per-event distribution evidence this packet cannot yet obtain",

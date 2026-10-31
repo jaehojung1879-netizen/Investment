@@ -477,11 +477,11 @@
  "rightsTerms": [
   {
    "input": "069500 issuer price and distribution files (KODEX)",
-   "note": "the retained issuer files were captured under an internal benchmark-audit authorisation label, which is not a licence from the issuer; the notice also says the index and yield information is supplied to the issuer by KOSCOM and the administrator",
+   "note": "the notice restricts use as well as databasing ('사용하거나 데이터베이스화'); no research-use exception is stated. The retained issuer files were captured under an internal benchmark-audit authorisation label, which is not a licence from the issuer; the notice also says the index and yield information is supplied to the issuer by KOSCOM and the administrator",
    "permissionDocumentRetained": false,
    "redistribution": "EXPLICITLY_RESTRICTED_WITHOUT_PRIOR_PERMISSION",
    "repositoryRetainsCoveredData": true,
-   "researchUse": "NOT_ADDRESSED_IN_THE_NOTICE_PRIOR_PERMISSION_REFERENCED",
+   "researchUse": "EXPLICITLY_RESTRICTED_WITHOUT_PRIOR_PERMISSION_(USE_OR_DATABASING)",
    "retention": "EXPLICITLY_RESTRICTED_WITHOUT_PRIOR_PERMISSION",
    "term": {
     "bytesSha256": "d6042e12c4ae76c5a407e8a61b516ad1f1253553b82e66adb16d8b61612f44e8",
@@ -534,6 +534,7 @@
    },
    "retention": "PUBLIC_DOMAIN_PER_PUBLISHER_STATEMENT_FOR_BOARD_PUBLISHED_INFORMATION",
    "term": {
+    "bytesNote": "a retrieval-time observation; a later independent fetch hashed differently (dynamic page) while the quoted sentence was unchanged",
     "bytesSha256": "6fd9c6703a144d763e72ed70bc9378f7a855dbb1ad12c46197c3e3161b5d3e3e",
     "quote": "Unless otherwise indicated, information on Board's website is in the public domain and may be copied and distributed without permission. Please cite to the Board as the source of the information.",
     "retrievedOn": "2026-10-31",
