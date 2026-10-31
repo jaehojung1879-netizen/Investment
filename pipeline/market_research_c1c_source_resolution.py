@@ -9,9 +9,12 @@ population or sealed file, and grants no source right. Two kinds of content are 
   RECOMPUTED CHECKS      statements that follow from the retained chain and are re-derived on every build (record dates against
                          the deed's rule, the rule-bounded timing interval, the per-event table).
 
-A per-event status is VERIFIED only with an official per-event source object that carries the exact payment date AND the taxable
-base, a document identifier, a URL, a retrieval time and the sha256 of the retrieved bytes. A rule, a uniform lag, or the gross
-cash amount can never produce it. Today no event qualifies.
+This module NEVER emits a source-verified status. `classify_event` can return at most SHAPE_VALID_UNVERIFIED for a caller-supplied
+source: a well-formed object whose URL is on an allow-listed official host and whose retained bytes hash to the stated digest. That
+proves structure and a file hash only, not that the bytes are the official document or that the stated date and base are in them;
+promotion to a verified state needs a human-reviewed record of the content (or independently authenticated extraction) that this
+code does not model. A rule, a uniform lag or the gross cash amount can never produce even the shape-valid state. Today no event
+has a source at all.
 """
 from __future__ import annotations
 
@@ -73,12 +76,22 @@ def record_date_rule_holds(record, sessions):
     return bool(len(month_sessions) and month_sessions[-1] == record and record.month in (1, 4, 7, 10))
 
 
-def classify_event(event, source=None, root=S.ROOT):
-    """Per-event status. VERIFIED needs an official per-event source with exact payment date AND taxable base; nothing derived counts.
+OFFICIAL_HOSTS = ("samsungfund.com", "kind.krx.co.kr", "data.krx.co.kr", "opendart.fss.or.kr", "dart.fss.or.kr")
+SHAPE_VALID = "SHAPE_VALID_UNVERIFIED"
 
-    `source.retainedPath` must name a retained file under `root` whose bytes hash to `source.sha256`; a shape-valid source that points at
-    nothing is refused. That ties the claim to bytes; it still cannot prove the document is genuine, so the source remains a human-reviewed
-    record and `origin` stays a declaration."""
+
+def _official_https(url):
+    match = re.fullmatch(r"https://([a-z0-9.-]+)(?::443)?(?:/\S*)?", str(url))
+    host = match.group(1) if match else ""
+    return any(host == h or host.endswith("." + h) for h in OFFICIAL_HOSTS)
+
+
+def classify_event(event, source=None, root=S.ROOT):
+    """Per-event status. Returns SHAPE_VALID_UNVERIFIED (never a verified state) for a well-formed source; nothing derived counts.
+
+    Checks structure only: official-host https URL, retained file under `root` whose bytes hash to `source.sha256`, payment after the
+    record date, cash equal to the chain. `origin` is a declaration and the bytes are not parsed, so this cannot show that the document
+    is the official one or that it states the date and base. Do not connect it to automated source admission."""
     if source is not None:
         required = ("documentIdentifier", "url", "retrievedAtUtc", "sha256", "retainedPath", "paymentDate", "taxableBasePerUnit", "cashPerUnit", "origin")
         missing = [k for k in required if source.get(k) in (None, "", 0)]
@@ -88,6 +101,8 @@ def classify_event(event, source=None, root=S.ROOT):
             raise ValueError("EVENT_SOURCE_NOT_AN_OFFICIAL_PER_EVENT_DOCUMENT:" + str(source["origin"]))
         if not re.fullmatch(r"[0-9a-f]{64}", str(source["sha256"])):
             raise ValueError("EVENT_SOURCE_HASH_INVALID")
+        if not _official_https(source["url"]):
+            raise ValueError("EVENT_SOURCE_URL_NOT_AN_ALLOW_LISTED_OFFICIAL_HTTPS_HOST")
         target = (Path(root) / str(source["retainedPath"])).resolve()
         try:
             target.relative_to(Path(root).resolve())
@@ -99,7 +114,7 @@ def classify_event(event, source=None, root=S.ROOT):
             raise ValueError("EVENT_PAYMENT_NOT_AFTER_RECORD_DATE")
         if float(source["cashPerUnit"]) != float(event["cash"]):
             raise ValueError("EVENT_SOURCE_CASH_DISAGREES_WITH_CHAIN")
-        return "VERIFIED"
+        return SHAPE_VALID
     if not event["recordDateRuleHolds"]:
         return "UNRESOLVED"
     return "PARTIAL_RULE_BOUNDED" if pd.Timestamp(event["record"]) >= RULE_READ_FROM else "PARTIAL_RECORD_RULE_ONLY"
@@ -254,7 +269,8 @@ def build():
         "studyId": STUDY, "evidenceClass": "OFFICIAL_SOURCE_OBSERVATIONS_AND_OFFLINE_CHECKS_NO_STRATEGY_RETURN",
         "inputs": {"source-evidence": S.sha256(S.ROOT / "docs/research-program/proposals/market-research-c1c-source-evidence-v1.json"), **S.PINS},
         "events": {"population": int(len(chain)), "officialPaymentDates": int(len(official)), "unresolved": len(table),
-                   "verifiedCount": sum(1 for r in table if r["status"] == "VERIFIED"),
+                   "verifiedCount": 0,   # this module has no verified state; see the module docstring
+                   "shapeValidUnverifiedCount": sum(1 for r in table if r["status"] == SHAPE_VALID),
                    "partialRuleBounded": sum(1 for r in table if r["status"] == "PARTIAL_RULE_BOUNDED"),
                    "partialRecordRuleOnly": sum(1 for r in table if r["status"] == "PARTIAL_RECORD_RULE_ONLY"),
                    "unresolvedNoRule": sum(1 for r in table if r["status"] == "UNRESOLVED"),

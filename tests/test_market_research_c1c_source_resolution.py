@@ -10,7 +10,7 @@ from pipeline import market_research_c1c_source_evidence as S
 from pipeline import market_research_c1c_source_resolution as R
 
 
-ANCHOR = "docs/research-program/proposals/market-research-c1c-source-evidence-v1.json"   # any retained file stands in for a retained document
+ANCHOR = "retained/document.bin"   # written under a temporary root by the fixture
 
 
 def _committed():
@@ -22,9 +22,18 @@ def _chain():
     return quotes, chain, endpoint, S.load_official_payments()
 
 
+@pytest.fixture(autouse=True)
+def _retained(tmp_path, monkeypatch):
+    (tmp_path / "retained").mkdir()
+    (tmp_path / ANCHOR).write_bytes(b"synthetic retained bytes")
+    original = R.classify_event
+    monkeypatch.setattr(R, "classify_event", lambda event, source=None, root=tmp_path: original(event, source, root))
+    return tmp_path
+
+
 def _valid_source(event, **override):
-    source = {"documentIdentifier": "KRX-DISCLOSURE-SYNTHETIC-0001", "url": "https://example.invalid/disclosure/1", "retrievedAtUtc": "2026-10-31T00:00:00Z",
-              "sha256": R.S.sha256(R.S.ROOT / ANCHOR), "retainedPath": ANCHOR, "paymentDate": str((pd.Timestamp(event["record"]) + pd.Timedelta(days=4)).date()), "taxableBasePerUnit": 100.0,
+    source = {"documentIdentifier": "SYNTHETIC-0001", "url": "https://kind.krx.co.kr/disclosure/1", "retrievedAtUtc": "2026-10-31T00:00:00Z",
+              "sha256": __import__("hashlib").sha256(b"synthetic retained bytes").hexdigest(), "retainedPath": ANCHOR, "paymentDate": str((pd.Timestamp(event["record"]) + pd.Timedelta(days=4)).date()), "taxableBasePerUnit": 100.0,
               "cashPerUnit": event["cash"], "origin": "OFFICIAL_PER_EVENT_DOCUMENT"}
     source.update(override)
     return source
@@ -53,13 +62,38 @@ def test_all_46_record_dates_obey_the_deeds_last_session_of_jan_apr_jul_oct_rule
     assert not R.record_date_rule_holds(pd.Timestamp("2018-05-31"), quotes.index)   # last session, wrong month
 
 
-def test_a_verified_status_needs_an_official_per_event_document_with_exact_date_and_taxable_base():
+def test_a_well_formed_source_is_at_most_shape_valid_unverified_never_verified():
     event = _event()
     assert R.classify_event(event) == "PARTIAL_RULE_BOUNDED"
-    assert R.classify_event(event, _valid_source(event)) == "VERIFIED"           # the gate is not vacuous
+    assert R.classify_event(event, _valid_source(event)) == "SHAPE_VALID_UNVERIFIED"   # the structural gate is not vacuous
+    assert "VERIFIED" not in {R.classify_event(event, _valid_source(event)), R.classify_event(event)}
     for missing in ("documentIdentifier", "url", "retrievedAtUtc", "sha256", "retainedPath", "paymentDate", "taxableBasePerUnit", "cashPerUnit", "origin"):
         with pytest.raises(ValueError, match="EVENT_SOURCE_INCOMPLETE:" + missing):
             R.classify_event(event, _valid_source(event, **{missing: None}))
+
+
+@pytest.mark.parametrize("override", [
+    {"url": "https://example.invalid/disclosure/1"},
+    {"url": "http://kind.krx.co.kr/disclosure/1"},
+    {"url": "https://kind.krx.co.kr.evil.example/disclosure/1"},
+    {"url": "https://notsamsungfund.com/x"},
+])
+def test_a_url_off_the_official_https_allow_list_is_refused(override):
+    event = _event()
+    with pytest.raises(ValueError, match="URL_NOT_AN_ALLOW_LISTED_OFFICIAL_HTTPS_HOST"):
+        R.classify_event(event, _valid_source(event, **override))
+
+
+def test_the_reviewed_counterexample_can_never_become_source_verified():
+    """example.invalid plus the hash of an unrelated retained repository file, as in the review of 0d3696f."""
+    event = _event()
+    unrelated = "docs/research-program/proposals/market-research-c1c-source-evidence-v1.json"
+    counter = _valid_source(event, url="https://example.invalid/disclosure/1", retainedPath=unrelated, sha256=R.S.sha256(R.S.ROOT / unrelated))
+    with pytest.raises(ValueError):                                                # real repository root: file exists, host is not official
+        R.classify_event(event, counter, R.S.ROOT)
+    on_official_host = dict(counter, url="https://kind.krx.co.kr/disclosure/1")
+    assert R.classify_event(event, on_official_host, R.S.ROOT) == "SHAPE_VALID_UNVERIFIED"   # structure only: still not a verification
+    assert R.classify_event(event, on_official_host, R.S.ROOT) != "VERIFIED"  # noqa
 
 
 @pytest.mark.parametrize("override,error", [
@@ -179,4 +213,4 @@ def test_committed_events_block_is_internally_consistent():
     events = _committed()["events"]
     assert events["verifiedCount"] + events["partialRuleBounded"] + events["partialRecordRuleOnly"] + events["unresolvedNoRule"] == events["unresolved"] == 26
     assert events["population"] - events["officialPaymentDates"] == events["unresolved"]
-    assert (events["verifiedCount"], events["partialRuleBounded"], events["partialRecordRuleOnly"]) == (0, 24, 2)
+    assert (events["verifiedCount"], events["shapeValidUnverifiedCount"], events["partialRuleBounded"], events["partialRecordRuleOnly"]) == (0, 0, 24, 2)
