@@ -147,9 +147,77 @@ def region_calibration(report):
             'directC2ConvictionRankingTest': False}
 
 
+def calendar_context(candidate, passive):
+    """Post-hoc signs of published annual aggregates, never a trading signal."""
+    cy, py, excess = (candidate['calendarYearReturnPct'], passive['calendarYearReturnPct'],
+                      candidate['excessByCalendarYearPp'])
+    first, last = int(passive['startDate'][:4]), int(passive['endDate'][:4])
+    if set(cy) != set(py) or set(py) != set(excess) or set(py) != {str(y) for y in range(first, last+1)}:
+        raise ValueError('NONCOMMON_OR_MISSING_CALENDAR_YEARS')
+    rows = []
+    eps = D('.0005')  # Source annual returns are rounded to three decimal percentage points.
+    for year in sorted(py):
+        stock, bench, active = number(cy, year), number(py, year), number(excess, year)
+        if abs(stock-bench-active) > 3*eps:
+            raise ValueError('INCONSISTENT_PUBLISHED_ANNUAL_EXCESS')
+        direction = 'UP' if bench > eps else 'DOWN' if bench < -eps else 'UNDETERMINED'
+        rows.append({'year': year, 'passiveReturnPct': float(bench), 'c2ReturnPct': float(stock),
+                     'recordedExcessPp': float(active), 'benchmarkDirection': direction,
+                     # The source rounds the candidate's annual return BEFORE
+                     # subtracting the raw passive return, then rounds again.
+                     'outperformed': True if active > 2*eps else False if active < -2*eps else None,
+                     'isWindowBookendYear': int(year) in {first, last}})
+
+    def counts(selected):
+        return {direction: {'years': len(group := [r for r in selected if r['benchmarkDirection'] == direction]),
+                            'wins': sum(r['outperformed'] is True for r in group),
+                            'losses': sum(r['outperformed'] is False for r in group),
+                            'unresolvedByRounding': sum(r['outperformed'] is None for r in group)}
+                for direction in ('UP', 'DOWN', 'UNDETERMINED')}
+    return {'sourcePointers': ['/regions/KR/paths/P0/calendarYearReturnPct',
+                               '/regions/KR/paths/C2/calendarYearReturnPct',
+                               '/regions/KR/paths/C2/excessByCalendarYearPp'],
+            'rows': rows, 'allYears': counts(rows),
+            'interiorYearsExcludingWindowBookends': counts([r for r in rows if not r['isWindowBookendYear']]),
+            'directionIsExPostOutcomeContext': True, 'betaMatchedSelectionAlpha': None,
+            'costBasis': 'PUBLISHED_1X_MODELED_COSTS_ONLY',
+            'interpretation': 'Post-hoc association only. Realized window direction is not known at selection time; these counts prove neither timing skill nor a causal beta explanation. Bookend windows are not full calendar years.'}
+
+
+def exposure_bound(candidate, passive):
+    """Cauchy-Schwarz bound, not a fitted beta or a risk-free excess-return beta."""
+    sigma, benchmark = number(candidate, 'annualizedVolatilityPct'), number(passive, 'annualizedVolatilityPct')
+    eps = D('.0005')
+    if sigma < 0 or benchmark < 0:
+        raise ValueError('INVALID_VOLATILITY')
+    bound = (sigma+eps)/(benchmark-eps) if benchmark > eps else None
+    return {'definition': 'ABS_SAMPLE_RAW_DAILY_NET_RETURN_BETA_LE_SIGMA_RATIO',
+            'absoluteBetaUpperBound': outward(bound) if bound is not None else None,
+            'unitBetaFeasibleOnRecordedBasis': bound >= 1 if bound is not None else None,
+            'estimatedBeta': None, 'selectionAlpha': None,
+            'sourcePointer': '/regions/KR/paths/{C2,P0}/annualizedVolatilityPct',
+            'interpretation': 'Common daily net-return calendar and identical sample-volatility convention. Includes adverse volatility rounding. A bound is not an estimated beta, cash-adjusted beta, timing skill or causal selection attribution.'}
+
+
+def extended_analysis(corrected, original):
+    result = analyze(corrected, original)
+    result['id'] = 'c2-aggregate-falsification-v2'
+    paths = corrected['regions']['KR']['paths']
+    c2, c1 = paths['C2'], paths['C1']
+    result['publishedCalendarContext'] = calendar_context(c2, paths['P0'])
+    result['exposureBound'] = exposure_bound(c2, paths['P0'])
+    result['fallbackReplacement'] = {
+        'arithmeticActiveNetDifferencePpPerYear': float(number(c2, 'arithmeticActiveReturnPpPerYear')-number(c1, 'arithmeticActiveReturnPpPerYear')),
+        'geometricMinusArithmeticDifferencePp': float(number(c2, 'geometricMinusArithmeticPp')-number(c1, 'geometricMinusArithmeticPp')),
+        'isolatedGrossResidualAssetEffect': None, 'causalSelectionEffect': None,
+        'interpretation': 'Same recorded starting stock targets; replacement of residual cash with ETF includes cost/drift/compounding interactions. It is not new stock selection.'}
+    return result
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, help='new JSON file only; defaults to stdout')
+    parser.add_argument('--calendar-context', action='store_true', help='opt-in aggregate diagnostic v2; v1/default remains unchanged')
     args = parser.parse_args(argv)
     docs, provenance = {}, {}
     for key, (path, digest) in SOURCES.items():
@@ -163,7 +231,7 @@ def main(argv=None):
     if (docs['corrected']['specSha256'] != SOURCES['spec'][1]
             or docs['corrected']['benchmarkBasisProtocolSha256'] != SOURCES['basisProtocol'][1]):
         raise ValueError('SOURCE_CONTRACT_MISMATCH')
-    result = analyze(docs['corrected'], docs['original'])
+    result = (extended_analysis if args.calendar_context else analyze)(docs['corrected'], docs['original'])
     result['sources'] = provenance
     text = json.dumps(result, indent=2, ensure_ascii=False, sort_keys=True, allow_nan=False)+'\n'
     if args.output:

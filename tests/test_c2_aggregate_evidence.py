@@ -1,6 +1,7 @@
 """Invented cost schedules and published scalar fixtures; no outcome engine."""
 from copy import deepcopy
 from decimal import Decimal
+import hashlib
 import json
 import math
 
@@ -113,8 +114,83 @@ def test_real_aggregate_reproduction_is_deterministic_and_cannot_overwrite(tmp_p
     assert actual['historicalLedgerReads'] == actual['valuationCalls'] == actual['modelFits'] == 0
     assert actual['recordedExcessCagrPp'] == 1.752
     assert actual['costBounds'][1]['edgeUpperPp'] < 0
+    assert hashlib.sha256(output.read_bytes()).hexdigest() == '9141dea7364bbd3fc37ba5d3e9d4bbf1682ba67ad27faa893dc96e1471b14cdc'
     again = tmp_path/'again.json'
     A.main(['--output', str(again)])
     assert output.read_bytes() == again.read_bytes()
     with pytest.raises(FileExistsError):
         A.main(['--output', str(output)])
+
+
+def annual_fixture():
+    passive = {'startDate': '2017-01-03', 'endDate': '2019-09-30',
+               'calendarYearReturnPct': {'2017': 10., '2018': -10., '2019': 0.}}
+    candidate = {'calendarYearReturnPct': {'2017': 5., '2018': 0., '2019': .0004},
+                 'excessByCalendarYearPp': {'2017': -5., '2018': 10., '2019': .0004}}
+    return candidate, passive
+
+
+def test_annual_direction_is_post_hoc_and_rounded_zero_abstains():
+    candidate, passive = annual_fixture()
+    result = A.calendar_context(candidate, passive)
+    assert result['allYears']['UP']['losses'] == 1
+    assert result['allYears']['DOWN']['wins'] == 1
+    assert result['allYears']['UNDETERMINED']['unresolvedByRounding'] == 1
+    assert result['rows'][2]['outperformed'] is None
+    assert result['directionIsExPostOutcomeContext'] is True
+    assert result['betaMatchedSelectionAlpha'] is None
+    assert result['interiorYearsExcludingWindowBookends']['DOWN']['years'] == 1
+
+
+def test_annual_context_refuses_dropped_year_or_inconsistent_excess():
+    candidate, passive = annual_fixture()
+    del candidate['excessByCalendarYearPp']['2018']
+    with pytest.raises(ValueError, match='NONCOMMON_OR_MISSING_CALENDAR_YEARS'):
+        A.calendar_context(candidate, passive)
+    candidate, passive = annual_fixture()
+    candidate['excessByCalendarYearPp']['2018'] = -5.
+    with pytest.raises(ValueError, match='INCONSISTENT_PUBLISHED_ANNUAL_EXCESS'):
+        A.calendar_context(candidate, passive)
+
+
+def test_double_rounded_source_excess_cannot_turn_raw_tie_into_win():
+    # Source E=round(round(C_raw,3)-B_raw,3): equal .0005 can publish E=.001.
+    candidate, passive = annual_fixture()
+    passive['calendarYearReturnPct']['2019'] = .001
+    candidate['calendarYearReturnPct']['2019'] = .001
+    candidate['excessByCalendarYearPp']['2019'] = .001
+    row = A.calendar_context(candidate, passive)['rows'][2]
+    assert row['outperformed'] is None
+
+
+def test_same_marginal_volatility_can_have_different_beta_and_no_identified_alpha():
+    # Invented demeaned daily returns: .5*x vs an orthogonal vector, same sigma.
+    x, a, b = [.01, -.01, .01, -.01], [.005, -.005, .005, -.005], [.005, .005, -.005, -.005]
+    beta = lambda y: sum(u*v for u, v in zip(x, y))/sum(u*u for u in x)
+    assert beta(a) == .5 and beta(b) == 0
+    bound = A.exposure_bound({'annualizedVolatilityPct': 10.}, {'annualizedVolatilityPct': 20.})
+    assert bound['absoluteBetaUpperBound'] >= max(abs(beta(a)), abs(beta(b)))
+    assert bound['unitBetaFeasibleOnRecordedBasis'] is False
+    assert bound['estimatedBeta'] is bound['selectionAlpha'] is None
+    absent = A.exposure_bound({'annualizedVolatilityPct': 0}, {'annualizedVolatilityPct': 0})
+    assert absent['absoluteBetaUpperBound'] is None
+
+
+def test_real_v2_context_keeps_v1_result_immutable_and_direction_nonpredictive(tmp_path):
+    original = A.ROOT/'research/c2_aggregate_evidence_v1/result.json'
+    before = original.read_bytes()
+    output = tmp_path/'v2.json'
+    A.main(['--calendar-context', '--output', str(output)])
+    result = json.loads(output.read_text())
+    context = result['publishedCalendarContext']
+    assert result['id'] == 'c2-aggregate-falsification-v2'
+    assert context['allYears']['DOWN'] == {'years': 5, 'wins': 5, 'losses': 0, 'unresolvedByRounding': 0}
+    assert context['allYears']['UP'] == {'years': 9, 'wins': 2, 'losses': 7, 'unresolvedByRounding': 0}
+    assert context['interiorYearsExcludingWindowBookends']['UP']['wins'] == 1
+    assert context['interiorYearsExcludingWindowBookends']['UP']['years'] == 7
+    assert result['fallbackReplacement']['arithmeticActiveNetDifferencePpPerYear'] == 4.202
+    assert result['fallbackReplacement']['geometricMinusArithmeticDifferencePp'] == -.34
+    assert result['fallbackReplacement']['causalSelectionEffect'] is None
+    assert result['exposureBound']['absoluteBetaUpperBound'] < .762
+    assert result['exposureBound']['unitBetaFeasibleOnRecordedBasis'] is False
+    assert original.read_bytes() == before
