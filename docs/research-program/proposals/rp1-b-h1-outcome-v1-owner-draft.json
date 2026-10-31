@@ -1,0 +1,81 @@
+{
+  "studyId": "rp1-b-h1-outcome-v1",
+  "status": "OWNER_REVIEW_DRAFT_NOT_REGISTERED",
+  "registration": null,
+  "productionEffect": "NONE",
+  "liveEvaluatorImplemented": false,
+  "stateSpecPath": "docs/research-program/specs/rp1-b-h1-state-v1.json",
+  "stateSpecSha256": "eb480513e2e89b5c10b265c3ddfeeb41987a37b0451481a0408c400ba98784af",
+  "decisions": [
+    {
+      "id": "D1_ELIGIBLE_POPULATION",
+      "recommendedDefinition": "Latest preserved PIT KRX Top120 membership snapshot with snapshot date and original availability strictly before the signal's KST date, from `ledger/universe/kr`; no current membership or rank-121 replacement. Apply Study A's actual `rp1_kr_a0.eligibility`: common share explicitly verified, issuer identity present, exclude FINANCIALS, price as of signal, all 20 KRX sessions ending at signal traded, median traded value over 60 KRX sessions ending at signal ≥ KRW 1bn, dated industry group with ≥5 otherwise eligible members including the name itself. Compute group counts before momentum-window exclusions. Publish every exclusion and denominator.",
+      "ownerReview": "Approve full Study A inheritance: the short D1 description omitted its financial/identity/five-member rules. Official traded value or a separately approved named basis is required; do not silently use a close×volume proxy.",
+      "ownerApproval": null
+    },
+    {
+      "id": "D2_MOMENTUM_DEFINITION",
+      "recommendedDefinition": "Call unchanged `longterm.momentum_12_1` on **273 complete consecutive pinned KRX sessions ending at the signal** (`MIN_HISTORY=273`): literal `close.iloc[-21] / close.iloc[-252] - 1`. With signal at index 0 these endpoints are t−20 and t−251. Prove all 273 slots first; the function's `dropna()` must never compress a window. Exclude a name with any untraded/invalid/missing session; never fill or replace.",
+      "ownerReview": "Approve literal existing function, not a newly shifted t−21/t−252 formula. Preserve the existing `datafeed.fetch_prices` default: Yahoo auto-adjusted Close as served at signal time, including only then-known actions; no later dividend/action revisions in features. Archive that signal vintage or mark selection unavailable.",
+      "ownerApproval": null
+    },
+    {
+      "id": "D3_SPREAD_CONSTRUCTION",
+      "recommendedDefinition": "Rank eligible finite momenta descending, ticker ascending for ties. For N names use k=floor(N/3); first k are long, last k short, middle unused; k=0 means unavailable. Freeze IDs and weights before any outcome join. Each side is equal-weighted at entry and held without rebalance for H63; S_b=mean(R_long)−mean(R_short), gross, KRW, no funding/borrow assumptions or investability claim. Estimand Δ=mean(S_other)−mean(S_adverse), so B-H1 predicts Δ>0. Each block has equal weight.",
+      "ownerReview": "Approve rounding/tie policy and this gross research comparison. No production short book, benchmark substitution, fitted signal or ranking by future priceability.",
+      "ownerApproval": null
+    },
+    {
+      "id": "D4_RETURN_BASIS_AND_TERMINATIONS",
+      "recommendedDefinition": "R_i=TR_i(maturity close)/TR_i(entry close)−1, same named vendor and one timestamped batch manifest for all selected names at the single evaluation. Proposed source: Yahoo Finance chart close + split/dividend events via pinned `yfinance==0.2.65`; gross cash dividends reinvested ex-date, splits once, no dividend double count. Adjustment/event reconciliation and source-use permission are explicit prerequisites; `Adj Close` alone does not prove total return. Preserve batch hash, symbol/issuer mapping, events, basis, entry/exit sessions and exact endpoint evidence. No fallback vendor. Suspended/absent/invalid volume or close at entry or maturity is unpriced; no next traded day, carry, zero, ETF return, exclusion or renormalization. Delisting requires cited dated cash/share consideration: cash earns zero KRW interest from payment to maturity, share exchanges follow the verified ratio and successor dividends/valuation through the same maturity; unresolved economics or dividend basis withhold the paired block and the primary state comparison (p=1).",
+      "ownerReview": "**Explicit change to the D4 recommendation:** the common §4 two-reading imputation is written for a US S=1 vs S=0 signal, not this four-way signed state/leg contrast. It cannot certify a held portfolio with unresolved consideration under AGENTS. Recommend the stricter missing-selected-name gate; no invented “plausible” bounds or favorable sign claim. Vendor rights/TR certification remain evidence blockers, not owner-waivable data facts.",
+      "ownerApproval": null
+    },
+    {
+      "id": "D5_BLOCK_ORIGIN",
+      "recommendedDefinition": "Confirm existing geometry: origin **2026-11-02**, entries at KRX positions 0,63,126,…; each maturity at entry+63. The shared endpoint is a valuation boundary, not an overlapping daily return. Assign the last **scheduled** weekly signal strictly before entry. Use precisely its immutable LIVE receipt. Missing state or selection does not restart, shift or fill the block. Entry/exit are next-session and maturity closes, never signal close.",
+      "ownerReview": "Approve pending geometry unchanged. No annual/calendar reorigin, nearest available receipt or later favorable state.",
+      "ownerApproval": null
+    },
+    {
+      "id": "D6_INFERENCE",
+      "recommendedDefinition": "**DESCRIPTIVE_ONLY_UNCALIBRATED_KR_H63; p_B-H1=1.** Keep Holm α=.05 family (B-H1,B-H2); B-H2 remains p=1 here. Six blocks per state is necessary, not calibration. No CI/p-value/support claim from H21/H126/H252 or US H63. One independent synthetic-only H63 **state-contrast** calibration would be needed for inference; merely adding a horizon to v4's rank-weighted-spread cells does not calibrate this estimator.",
+      "ownerReview": "Approve descriptive-only for this version. The feasibility smoke below is not formal calibration; any inferential successor needs a separately frozen/approved protocol before outcomes, never an outcome-driven upgrade.",
+      "ownerApproval": null
+    },
+    {
+      "id": "D7_MISSING_WEEKS",
+      "recommendedDefinition": "No receipt for exact scheduled week → `unobserved`; receipt with adverse=None → `undetermined`. Neither enters either state. Count and retain all such blocks on the original schedule. No backfill, forward-fill, neighboring state, post-signal input or recomputation. Selection-evidence absence is separately `SELECTION_EVIDENCE_UNAVAILABLE`, not a fabricated state or survivor universe.",
+      "ownerReview": "Approve missingness accounting separately from the minimum six blocks and outcome-priceability gate.",
+      "ownerApproval": null
+    },
+    {
+      "id": "D8_FIRST_EVALUATION",
+      "recommendedDefinition": "One finite prospective schedule, blocks 1–20. At each maturity, after 09:00 UTC, a metadata-only readiness check counts authenticated states; no outcome values. From block 12 onward choose the first boundary at which both compared states have ≥6 matured blocks **with already authenticated signal-time selections**. At that one boundary obtain outcomes once and publish descriptive state means and Δ only if all selected economics are resolved. No interim returns, effect-dependent stopping or subsequent re-look in v1. If readiness never qualifies, close at block 20 (2031-12-16 09:00 UTC) as descriptive/insufficient, p=1, with no outcome download. If outcome basis/priceability blocks that single look, close blocked; no favorable-block substitution.",
+      "ownerReview": "Approve one-look stopping rule and 20-block cap. The earliest possible 6+6 boundary is **2029-11-23 09:00 UTC** (block 12), not the first maturity. Unknown state proportions and missing selections can delay or prevent it.",
+      "ownerApproval": null
+    }
+  ],
+  "firstSignalDate": "2026-10-30",
+  "firstExecutionDate": "2026-11-02",
+  "firstMaturitySession": "2027-02-02",
+  "registrationDeadlineExclusiveUtc": "2027-02-02T09:00:00Z",
+  "minNonOverlappingBlocksPerState": 6,
+  "earliestPossibleComparisonUtc": "2029-11-23T09:00:00Z",
+  "lastReadinessCheckUtc": "2031-12-16T09:00:00Z",
+  "maxBlocks": 20,
+  "inferenceStatus": "DESCRIPTIVE_ONLY_UNCALIBRATED_KR_H63",
+  "holm": {
+    "alpha": 0.05,
+    "family": [
+      "B-H1",
+      "B-H2"
+    ],
+    "unavailableP": 1
+  },
+  "readinessDoesNotReadOutcomes": true,
+  "singleLookOnly": true,
+  "formalCalibrationApproved": false,
+  "formalCalibrationExecuted": false,
+  "approvalRule": "Approval of this draft is not registration. A separately approved spec/code package must be merged before the exclusive deadline. No live evaluator in this package."
+}

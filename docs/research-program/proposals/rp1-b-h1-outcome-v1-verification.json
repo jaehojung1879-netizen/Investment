@@ -1,0 +1,335 @@
+{
+  "anchorAncestry": "VERIFIED",
+  "anchorContent": "ZERO_PRIOR_RECEIPTS_VERIFIED",
+  "appendOnlyHistory": "VERIFIED_AT_OBSERVED_HEAD",
+  "baseMainCommit": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+  "checks": {
+    "artifactValidation": "pipeline.validate.validate: no nonproduction errors; production rejects seed with 3 errors",
+    "compileall": "python -m compileall -q pipeline: PASS",
+    "existingStateAndPreviewTests": {
+      "command": "python -m pytest -q tests/test_rp1_b_h1_state.py tests/test_rp1_b_state_receipt.py",
+      "note": "Passed together with 22 then-current new tests (118 total); final new suite has 24 tests.",
+      "passed": 96
+    },
+    "fullSuite": "NOT_RUN: scope excludes sealed market-outcome reads",
+    "newAdversarialTests": {
+      "command": "python -m pytest -q tests/test_rp1_b_h1_outcome_draft.py",
+      "passed": 24
+    },
+    "ruff": "ruff 0.15.8 check .: PASS",
+    "seedGeneration": "scripts/make_seed.py: PASS; generated synthetic artifact excluded from changes"
+  },
+  "developmentCorrection": "Initial smoke took the first 12 weekly predictors. Corrected to floor(k*63/5) at each block entry, with the same development seed and 48-replicate budget; both diagnostics preserved. No formal run or calibration claim.",
+  "firstMaturityFinalAtUtc": "2027-02-02T09:00:00+00:00",
+  "firstReceiptCommit": "3532d92f06673f008a4e880fe9e320ce848f9b9c",
+  "formalCalibrations": 0,
+  "frozenCodeAndScientificDependencies": "VERIFIED_BY_REGISTERED_LOAD_SPEC",
+  "historicalExecutions": 0,
+  "initialDevelopmentSmoke": {
+    "calibrated": false,
+    "cells": [
+      {
+        "coverageCount": 47,
+        "dgp": "IID_SHARED",
+        "maxAttributionIdentityError": 1.1102230246251565e-15,
+        "medianIntervalWidthSyntheticUnits": 5.719220948054328,
+        "pattern": "ALTERNATING",
+        "positiveFalsePositiveCount": 1,
+        "replicates": 48,
+        "undefinedCount": 0
+      },
+      {
+        "coverageCount": 47,
+        "dgp": "IID_SHARED",
+        "maxAttributionIdentityError": 9.992007221626409e-16,
+        "medianIntervalWidthSyntheticUnits": 5.024397759445241,
+        "pattern": "CLUSTERED",
+        "positiveFalsePositiveCount": 1,
+        "replicates": 48,
+        "undefinedCount": 0
+      },
+      {
+        "coverageCount": 48,
+        "dgp": "WEAK_SERIAL",
+        "maxAttributionIdentityError": 1.1102230246251565e-15,
+        "medianIntervalWidthSyntheticUnits": 6.401483521039225,
+        "pattern": "ALTERNATING",
+        "positiveFalsePositiveCount": 0,
+        "replicates": 48,
+        "undefinedCount": 0
+      },
+      {
+        "coverageCount": 43,
+        "dgp": "WEAK_SERIAL",
+        "maxAttributionIdentityError": 1.3322676295501878e-15,
+        "medianIntervalWidthSyntheticUnits": 6.940020488314302,
+        "pattern": "CLUSTERED",
+        "positiveFalsePositiveCount": 5,
+        "replicates": 48,
+        "undefinedCount": 0
+      },
+      {
+        "coverageCount": 47,
+        "dgp": "PERSISTENT_SERIAL",
+        "maxAttributionIdentityError": 1.3322676295501878e-15,
+        "medianIntervalWidthSyntheticUnits": 7.303658518110289,
+        "pattern": "ALTERNATING",
+        "positiveFalsePositiveCount": 0,
+        "replicates": 48,
+        "undefinedCount": 0
+      },
+      {
+        "coverageCount": 45,
+        "dgp": "PERSISTENT_SERIAL",
+        "maxAttributionIdentityError": 2.6645352591003757e-15,
+        "medianIntervalWidthSyntheticUnits": 8.02142710330615,
+        "pattern": "CLUSTERED",
+        "positiveFalsePositiveCount": 2,
+        "replicates": 48,
+        "undefinedCount": 0
+      },
+      {
+        "coverageCount": 45,
+        "dgp": "PERSISTENT_SHARED_HEAVY",
+        "maxAttributionIdentityError": 8.326672684688674e-16,
+        "medianIntervalWidthSyntheticUnits": 3.577970548121373,
+        "pattern": "ALTERNATING",
+        "positiveFalsePositiveCount": 1,
+        "replicates": 48,
+        "undefinedCount": 0
+      },
+      {
+        "coverageCount": 47,
+        "dgp": "PERSISTENT_SHARED_HEAVY",
+        "maxAttributionIdentityError": 6.661338147750939e-16,
+        "medianIntervalWidthSyntheticUnits": 3.5666714637395147,
+        "pattern": "CLUSTERED",
+        "positiveFalsePositiveCount": 0,
+        "replicates": 48,
+        "undefinedCount": 0
+      },
+      {
+        "coverageCount": 46,
+        "dgp": "PERSISTENT_SERIAL_PERSISTENT_PREDICTORS",
+        "maxAttributionIdentityError": 1.7763568394002505e-15,
+        "medianIntervalWidthSyntheticUnits": 8.905046845585492,
+        "pattern": "ALTERNATING",
+        "positiveFalsePositiveCount": 1,
+        "replicates": 48,
+        "undefinedCount": 0
+      },
+      {
+        "coverageCount": 47,
+        "dgp": "PERSISTENT_SERIAL_PERSISTENT_PREDICTORS",
+        "maxAttributionIdentityError": 1.5543122344752192e-15,
+        "medianIntervalWidthSyntheticUnits": 7.783193779579747,
+        "pattern": "CLUSTERED",
+        "positiveFalsePositiveCount": 1,
+        "replicates": 48,
+        "undefinedCount": 0
+      },
+      {
+        "coverageCount": 48,
+        "dgp": "PERSISTENT_SHARED_HEAVY_TAILED_PERSISTENT_PREDICTORS",
+        "maxAttributionIdentityError": 8.326672684688674e-16,
+        "medianIntervalWidthSyntheticUnits": 3.8019340315775274,
+        "pattern": "ALTERNATING",
+        "positiveFalsePositiveCount": 0,
+        "replicates": 48,
+        "undefinedCount": 0
+      },
+      {
+        "coverageCount": 48,
+        "dgp": "PERSISTENT_SHARED_HEAVY_TAILED_PERSISTENT_PREDICTORS",
+        "maxAttributionIdentityError": 8.881784197001252e-16,
+        "medianIntervalWidthSyntheticUnits": 3.8415541967110016,
+        "pattern": "CLUSTERED",
+        "positiveFalsePositiveCount": 0,
+        "replicates": 48,
+        "undefinedCount": 0
+      }
+    ],
+    "limitation": "Additive synthetic returns, independent synthetic scores, exogenous balanced states only. Does not calibrate original momentum, compounded total returns, endogenous states, imbalance or selection missingness.",
+    "liveGate": {
+      "computed": false,
+      "productionEffect": "NONE",
+      "status": "BLOCKED_OUTCOME_CONTRACT_NOT_REGISTERED"
+    },
+    "marketOutcomeReads": 0,
+    "replicatesPerCell": 48,
+    "seed": 2026103101,
+    "status": "DEVELOPMENT_SMOKE_NOT_CALIBRATION"
+  },
+  "limitations": [
+    "Force-push of all receipt history cannot be excluded by repo-local proof; original Actions digest log is the independent witness.",
+    "Synthetic development smoke is not approved calibration.",
+    "No LIVE outcome evaluator implemented; no end-to-end future registration claim.",
+    "No real selection evidence feasibility was established.",
+    "Full repository pytest suite not run: includes sealed market-result reads outside this outcome-blind scope; targeted B-H1 suites run instead."
+  ],
+  "marketOutcomeReads": 0,
+  "observedSignalHistoryHead": "187aeeda839dd4863bf9432eabb1595581bc7782",
+  "originalReceiptWritten": false,
+  "outcomeGate": {
+    "computed": false,
+    "horizonSessions": 63,
+    "openDecisions": [
+      "D1_ELIGIBLE_POPULATION",
+      "D2_MOMENTUM_DEFINITION",
+      "D3_SPREAD_CONSTRUCTION",
+      "D4_RETURN_BASIS_AND_TERMINATIONS",
+      "D5_BLOCK_ORIGIN",
+      "D6_INFERENCE",
+      "D7_MISSING_WEEKS",
+      "D8_FIRST_EVALUATION"
+    ],
+    "status": "BLOCKED_OUTCOME_CONTRACT_NOT_REGISTERED"
+  },
+  "realStockCrossSectionsRead": 0,
+  "receiptFileSha256": "3e3ba8e13e5f9ee84e775af5857d948012a8b7ddf12a9466fce6b63f97765ede",
+  "receiptGitBlobSha": "5c780aa981df61ce28d1eda262207f8cc4e5605d",
+  "receiptHistoryVersionsChecked": 1,
+  "receiptSha256": "9ab0fd5625cc62d072be5e595512fb5123bdb2088060b3cd5c9fb153e2aeb354",
+  "receiptValidation": "REGISTERED_VALIDATOR_PASSED",
+  "runtime": {
+    "python": "3.12.14"
+  },
+  "scope": "Only new B-H1 draft/probe/test files. No PR289, MarketC, industry, workflow, registered spec or receipt changes.",
+  "smoke": {
+    "calibrated": false,
+    "cells": [
+      {
+        "coverageCount": 46,
+        "dgp": "IID_SHARED",
+        "maxAttributionIdentityError": 1.2212453270876722e-15,
+        "medianIntervalWidthSyntheticUnits": 5.767775354122142,
+        "pattern": "ALTERNATING",
+        "positiveFalsePositiveCount": 1,
+        "replicates": 48,
+        "undefinedCount": 0
+      },
+      {
+        "coverageCount": 48,
+        "dgp": "IID_SHARED",
+        "maxAttributionIdentityError": 9.992007221626409e-16,
+        "medianIntervalWidthSyntheticUnits": 5.813359137814407,
+        "pattern": "CLUSTERED",
+        "positiveFalsePositiveCount": 0,
+        "replicates": 48,
+        "undefinedCount": 0
+      },
+      {
+        "coverageCount": 46,
+        "dgp": "WEAK_SERIAL",
+        "maxAttributionIdentityError": 1.3322676295501878e-15,
+        "medianIntervalWidthSyntheticUnits": 6.573349797790673,
+        "pattern": "ALTERNATING",
+        "positiveFalsePositiveCount": 1,
+        "replicates": 48,
+        "undefinedCount": 0
+      },
+      {
+        "coverageCount": 47,
+        "dgp": "WEAK_SERIAL",
+        "maxAttributionIdentityError": 1.2212453270876722e-15,
+        "medianIntervalWidthSyntheticUnits": 6.824753422752737,
+        "pattern": "CLUSTERED",
+        "positiveFalsePositiveCount": 1,
+        "replicates": 48,
+        "undefinedCount": 0
+      },
+      {
+        "coverageCount": 47,
+        "dgp": "PERSISTENT_SERIAL",
+        "maxAttributionIdentityError": 1.7763568394002505e-15,
+        "medianIntervalWidthSyntheticUnits": 7.81999004754473,
+        "pattern": "ALTERNATING",
+        "positiveFalsePositiveCount": 1,
+        "replicates": 48,
+        "undefinedCount": 0
+      },
+      {
+        "coverageCount": 48,
+        "dgp": "PERSISTENT_SERIAL",
+        "maxAttributionIdentityError": 1.3322676295501878e-15,
+        "medianIntervalWidthSyntheticUnits": 8.521253801714654,
+        "pattern": "CLUSTERED",
+        "positiveFalsePositiveCount": 0,
+        "replicates": 48,
+        "undefinedCount": 0
+      },
+      {
+        "coverageCount": 46,
+        "dgp": "PERSISTENT_SHARED_HEAVY",
+        "maxAttributionIdentityError": 9.992007221626409e-16,
+        "medianIntervalWidthSyntheticUnits": 3.7422720810043866,
+        "pattern": "ALTERNATING",
+        "positiveFalsePositiveCount": 1,
+        "replicates": 48,
+        "undefinedCount": 0
+      },
+      {
+        "coverageCount": 47,
+        "dgp": "PERSISTENT_SHARED_HEAVY",
+        "maxAttributionIdentityError": 1.1102230246251565e-15,
+        "medianIntervalWidthSyntheticUnits": 4.248243027433376,
+        "pattern": "CLUSTERED",
+        "positiveFalsePositiveCount": 1,
+        "replicates": 48,
+        "undefinedCount": 0
+      },
+      {
+        "coverageCount": 47,
+        "dgp": "PERSISTENT_SERIAL_PERSISTENT_PREDICTORS",
+        "maxAttributionIdentityError": 1.7763568394002505e-15,
+        "medianIntervalWidthSyntheticUnits": 8.221074245062105,
+        "pattern": "ALTERNATING",
+        "positiveFalsePositiveCount": 1,
+        "replicates": 48,
+        "undefinedCount": 0
+      },
+      {
+        "coverageCount": 47,
+        "dgp": "PERSISTENT_SERIAL_PERSISTENT_PREDICTORS",
+        "maxAttributionIdentityError": 1.3322676295501878e-15,
+        "medianIntervalWidthSyntheticUnits": 8.828569571567137,
+        "pattern": "CLUSTERED",
+        "positiveFalsePositiveCount": 0,
+        "replicates": 48,
+        "undefinedCount": 0
+      },
+      {
+        "coverageCount": 48,
+        "dgp": "PERSISTENT_SHARED_HEAVY_TAILED_PERSISTENT_PREDICTORS",
+        "maxAttributionIdentityError": 7.771561172376096e-16,
+        "medianIntervalWidthSyntheticUnits": 3.4534619103437456,
+        "pattern": "ALTERNATING",
+        "positiveFalsePositiveCount": 0,
+        "replicates": 48,
+        "undefinedCount": 0
+      },
+      {
+        "coverageCount": 46,
+        "dgp": "PERSISTENT_SHARED_HEAVY_TAILED_PERSISTENT_PREDICTORS",
+        "maxAttributionIdentityError": 1.1102230246251565e-15,
+        "medianIntervalWidthSyntheticUnits": 3.401205088663284,
+        "pattern": "CLUSTERED",
+        "positiveFalsePositiveCount": 0,
+        "replicates": 48,
+        "undefinedCount": 0
+      }
+    ],
+    "limitation": "Additive synthetic returns, independent synthetic scores, exogenous balanced states only. Does not calibrate original momentum, compounded total returns, endogenous states, imbalance or selection missingness.",
+    "liveGate": {
+      "computed": false,
+      "productionEffect": "NONE",
+      "status": "BLOCKED_OUTCOME_CONTRACT_NOT_REGISTERED"
+    },
+    "marketOutcomeReads": 0,
+    "replicatesPerCell": 48,
+    "seed": 2026103101,
+    "status": "DEVELOPMENT_SMOKE_NOT_CALIBRATION"
+  },
+  "stateSpecSha256": "eb480513e2e89b5c10b265c3ddfeeb41987a37b0451481a0408c400ba98784af",
+  "status": "AUTHOR_VERIFICATION_NOT_OWNER_APPROVAL"
+}
