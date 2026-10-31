@@ -1,15 +1,18 @@
-# Claude Code: Investment project entry point
+# Claude Code: Investment repository short entrypoint
 
-Read [AGENTS.md](AGENTS.md) for the active short contract. It is a
-mandatory summary, **not** permission to ignore the archived historical rules.
+**Binding full study invariants:** [AGENTS.md](AGENTS.md). This file is
+historically hash-pinned by sealed research and must stay unchanged.
 
-For any specific frozen or registered study, also read its own spec and the
-matching section in
-[docs/invariants/archive/AGENTS-full-20261031.md](docs/invariants/archive/AGENTS-full-20261031.md).
-
-The goal is credible 6–12 month risk-adjusted **net** alpha. Current operating
-fall-back is KR KODEX 200 / US SPY. Legacy Kelly weights, paper experiments
-and C0/C1 Market C outputs are research only, not investment approval.
-
-Read-only independent audits must not push, merge, run historical returns or
-change sealed results. State exact HEAD, CI and scientific limitations.
+Core reminders:
+- Goal: 6–12 month risk-adjusted net alpha; the KR 069500.KS / US SPY
+  ETF-first weekly policy is today's default, not the end of research.
+- Current paper Kelly/CHAMPION and C0/C1 Market C outputs are exploratory,
+  not current authorized portfolio weights or proof of investable alpha.
+- No synthetic/stale data promoted, no future information, no unregistered
+  economic margins, no sealed-result/ledger/workflow edits without authorization.
+- For a named study, read its relevant versioned section in AGENTS.md and the
+  original frozen specification. Do not silently discard any section.
+- Protect exact-head CI, independent review, source rights, cost/accounting,
+  provenance and observed vs report-as-of dates.
+- Separate actual observed study receipts from live production decisions.
+  See docs/portfolio-d-evidence-boundary.md.
