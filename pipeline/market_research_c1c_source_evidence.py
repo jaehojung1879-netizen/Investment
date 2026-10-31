@@ -157,15 +157,21 @@ def timing_sensitivity(price, chain, official):
     common = {str(lag): {"signedPpPerYear": round(float(grid[:, k].sum() * scale), 5),
                          "sumOfAbsolutePpPerYear": round(float(np.abs(grid[:, k]).sum() * scale), 5)}
               for k, lag in enumerate(LAGS_SESSIONS_AFTER_EX)}
-    return {"unit": "percentage points per year per 100% ETF weight", "knownOfficialEvents": int(len(known)),
-            "unresolvedEvents": int(len(unknown)),
-            "knownEventsFixedAtObservedDatesPpPerYear": round(float(known_total * scale), 5),
-            "mixedLagSignedInterval": {"lowerPpPerYear": round(float(lower * scale), 5), "upperPpPerYear": round(float(upper * scale), 5)},
-            "boundOnAbsoluteEffectPpPerYear": round(float(max(abs(lower), abs(upper)) * scale), 5),
-            "sumOfPerEventWorstAbsolute": round(float((np.abs(known_total) + np.abs(grid).max(axis=1).sum()) * scale), 5),
-            "lagRangeSessionsAfterEx": [LAGS_SESSIONS_AFTER_EX[0], LAGS_SESSIONS_AFTER_EX[-1]],
-            "lagRangeStatus": "ASSUMPTION_FOR_THE_UNRESOLVED_EVENTS_OBSERVED_LAG_IS_3_ON_ALL_20_OFFICIAL",
-            "commonLagScenarioNotABound": common}
+    return {"unit": "percentage points per year per 100% ETF weight",
+            "commonLagScenario": {"status": "SCENARIO_NOT_A_BOUND", "byLagSessionsAfterEx": common,
+                                  "note": "one lag for every unresolved event; max over lags of the summed absolute effect is NOT an "
+                                          "upper bound when events can have different lags"},
+            "mixedLagScenarioWith20Known": {
+                "status": "CONDITIONAL_FIRST_ORDER_RANGE_NOT_A_UNIVERSAL_FUNDING_BOUND_NOT_SOURCE_ADMITTED_PAYMENT_DATES",
+                "knownOfficialEvents": int(len(known)), "unresolvedEvents": int(len(unknown)),
+                "knownEventsFixedAtObservedDatesPpPerYear": round(float(known_total * scale), 5),
+                "signedInterval": {"lowerPpPerYear": round(float(lower * scale), 5), "upperPpPerYear": round(float(upper * scale), 5)},
+                "boundOnAbsoluteEffectPpPerYear": round(float(max(abs(lower), abs(upper)) * scale), 5),
+                "perEventTriangleEnvelopePpPerYear": round(float((np.abs(known_total) + np.abs(grid).max(axis=1).sum()) * scale), 5),
+                "lagRangeSessionsAfterEx": [LAGS_SESSIONS_AFTER_EX[0], LAGS_SESSIONS_AFTER_EX[-1]],
+                "conditions": ["each unresolved lag lies independently in the stated range (an assumption: all 20 observed are 3)",
+                               "first-order per-event approximation (see exactFundedComparison for its size)",
+                               "zero return on cash while awaiting payment"]}}
 
 
 def _funded_scenario(price, chain, official, quotes, assumed_lag):
@@ -283,7 +289,7 @@ def contrast_coefficients(timing, tax, cash):
             "zeroCashVersusBokProxy": round(cash_effect, 4),
             "zeroCashVersusBokProxyMinusHaircut": round(haircut, 4),
             "distributionTaxAtAssumedRate": round(tax_effect, 4),
-            "paymentTimingMixedLagBoundAbs": round(timing["boundOnAbsoluteEffectPpPerYear"] * 0.10, 5),
+            "paymentTimingMixedLagScenarioAbs": round(timing["mixedLagScenarioWith20Known"]["boundOnAbsoluteEffectPpPerYear"] * 0.10, 5),
             "status": "UNVERIFIED_SENSITIVITY_NOT_A_CORRECTION",
             "note": "cash and tax act in opposite directions; none of these is applied to any path"}
 

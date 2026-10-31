@@ -62,11 +62,12 @@ def test_timing_sensitivity_is_zero_on_a_flat_price_and_signed_on_a_trend():
     chain = pd.DataFrame({"ex": [sessions[20]], "record": [sessions[21]], "cash": [100.0]})
     flat = pd.Series(10_000.0, index=sessions)
     t = S.timing_sensitivity(flat, chain, _no_official())
-    assert t["boundOnAbsoluteEffectPpPerYear"] == 0.0 and t["unresolvedEvents"] == 1
+    assert t["mixedLagScenarioWith20Known"]["boundOnAbsoluteEffectPpPerYear"] == 0.0 and t["mixedLagScenarioWith20Known"]["unresolvedEvents"] == 1
     rising = pd.Series(10_000.0 * 1.001 ** np.arange(60), index=sessions)
     t = S.timing_sensitivity(rising, chain, _no_official())
-    assert t["mixedLagSignedInterval"]["lowerPpPerYear"] > 0
-    assert t["boundOnAbsoluteEffectPpPerYear"] == t["mixedLagSignedInterval"]["upperPpPerYear"]
+    m = t["mixedLagScenarioWith20Known"]
+    assert m["signedInterval"]["lowerPpPerYear"] > 0
+    assert m["boundOnAbsoluteEffectPpPerYear"] == m["signedInterval"]["upperPpPerYear"]
 
 
 def test_mixed_lag_bound_exceeds_the_common_lag_figure_when_events_peak_at_different_lags():
@@ -79,11 +80,13 @@ def test_mixed_lag_bound_exceeds_the_common_lag_figure_when_events_peak_at_diffe
     chain = pd.DataFrame({"ex": [sessions[ex_a], sessions[ex_b]], "record": [sessions[ex_a + 1], sessions[ex_b + 1]],
                           "cash": [100.0, 100.0]})
     t = S.timing_sensitivity(price, chain, _no_official())
-    common = max(v["sumOfAbsolutePpPerYear"] for v in t["commonLagScenarioNotABound"].values())
-    assert t["sumOfPerEventWorstAbsolute"] == pytest.approx(2 * common, rel=1e-6)
-    assert t["boundOnAbsoluteEffectPpPerYear"] == pytest.approx(2 * common, rel=1e-6)
-    assert t["boundOnAbsoluteEffectPpPerYear"] > common
-    assert t["commonLagScenarioNotABound"]  # the scenario table is present but named as not a bound
+    common = max(v["sumOfAbsolutePpPerYear"] for v in t["commonLagScenario"]["byLagSessionsAfterEx"].values())
+    m = t["mixedLagScenarioWith20Known"]
+    assert m["perEventTriangleEnvelopePpPerYear"] == pytest.approx(2 * common, rel=1e-6)
+    assert m["boundOnAbsoluteEffectPpPerYear"] == pytest.approx(2 * common, rel=1e-6)
+    assert m["boundOnAbsoluteEffectPpPerYear"] > common
+    assert t["commonLagScenario"]["status"] == "SCENARIO_NOT_A_BOUND"
+    assert "NOT_A_UNIVERSAL_FUNDING_BOUND" in m["status"] and "NOT_SOURCE_ADMITTED" in m["status"]
 
 
 def test_known_official_events_are_fixed_at_their_paid_date_and_only_the_rest_are_bounded():
@@ -95,9 +98,10 @@ def test_known_official_events_are_fixed_at_their_paid_date_and_only_the_rest_ar
     official = pd.DataFrame({"record": [sessions[11]], "pay": [sessions[13]], "cash": [100.0], "taxBase": [100.0]})
     t = S.timing_sensitivity(price, chain, official)
     years = S.years_between(sessions[0], sessions[-1])
-    assert (t["knownOfficialEvents"], t["unresolvedEvents"]) == (1, 1)
-    assert t["knownEventsFixedAtObservedDatesPpPerYear"] == pytest.approx(100.0 / 10_000.0 * 0.03 / years * 100, rel=1e-3)
-    assert t["boundOnAbsoluteEffectPpPerYear"] > t["knownEventsFixedAtObservedDatesPpPerYear"]
+    m = t["mixedLagScenarioWith20Known"]
+    assert (m["knownOfficialEvents"], m["unresolvedEvents"]) == (1, 1)
+    assert m["knownEventsFixedAtObservedDatesPpPerYear"] == pytest.approx(100.0 / 10_000.0 * 0.03 / years * 100, rel=1e-3)
+    assert m["boundOnAbsoluteEffectPpPerYear"] > m["knownEventsFixedAtObservedDatesPpPerYear"]
 
 
 def test_exact_funded_comparison_validates_path_a_and_is_zero_on_a_flat_price():

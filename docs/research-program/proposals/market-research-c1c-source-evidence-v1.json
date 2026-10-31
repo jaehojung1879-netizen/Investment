@@ -26,7 +26,7 @@
   "contrastPer10ppExposureGap": {
    "distributionTaxAtAssumedRate": -0.0302,
    "note": "cash and tax act in opposite directions; none of these is applied to any path",
-   "paymentTimingMixedLagBoundAbs": 0.00231,
+   "paymentTimingMixedLagScenarioAbs": 0.00231,
    "status": "UNVERIFIED_SENSITIVITY_NOT_A_CORRECTION",
    "unit": "pp/yr per 10pp of mean ETF-weight gap between two arms; positive favours the MORE-EXPOSED arm",
    "zeroCashVersusBokProxy": 0.2048,
@@ -90,59 +90,70 @@
    "status": "SCENARIOS_NOT_A_BOUND_MIXED_LAGS_NOT_ENUMERATED"
   },
   "paymentTiming": {
-   "boundOnAbsoluteEffectPpPerYear": 0.02312,
-   "commonLagScenarioNotABound": {
-    "10": {
-     "signedPpPerYear": -0.00955,
-     "sumOfAbsolutePpPerYear": 0.03191
+   "commonLagScenario": {
+    "byLagSessionsAfterEx": {
+     "10": {
+      "signedPpPerYear": -0.00955,
+      "sumOfAbsolutePpPerYear": 0.03191
+     },
+     "2": {
+      "signedPpPerYear": -0.00346,
+      "sumOfAbsolutePpPerYear": 0.01006
+     },
+     "3": {
+      "signedPpPerYear": -0.00076,
+      "sumOfAbsolutePpPerYear": 0.01243
+     },
+     "4": {
+      "signedPpPerYear": -0.00088,
+      "sumOfAbsolutePpPerYear": 0.01734
+     },
+     "5": {
+      "signedPpPerYear": -0.00275,
+      "sumOfAbsolutePpPerYear": 0.01906
+     },
+     "6": {
+      "signedPpPerYear": -0.00244,
+      "sumOfAbsolutePpPerYear": 0.02491
+     },
+     "7": {
+      "signedPpPerYear": -0.00361,
+      "sumOfAbsolutePpPerYear": 0.02498
+     },
+     "8": {
+      "signedPpPerYear": -0.00498,
+      "sumOfAbsolutePpPerYear": 0.02518
+     },
+     "9": {
+      "signedPpPerYear": -0.00937,
+      "sumOfAbsolutePpPerYear": 0.03136
+     }
     },
-    "2": {
-     "signedPpPerYear": -0.00346,
-     "sumOfAbsolutePpPerYear": 0.01006
-    },
-    "3": {
-     "signedPpPerYear": -0.00076,
-     "sumOfAbsolutePpPerYear": 0.01243
-    },
-    "4": {
-     "signedPpPerYear": -0.00088,
-     "sumOfAbsolutePpPerYear": 0.01734
-    },
-    "5": {
-     "signedPpPerYear": -0.00275,
-     "sumOfAbsolutePpPerYear": 0.01906
-    },
-    "6": {
-     "signedPpPerYear": -0.00244,
-     "sumOfAbsolutePpPerYear": 0.02491
-    },
-    "7": {
-     "signedPpPerYear": -0.00361,
-     "sumOfAbsolutePpPerYear": 0.02498
-    },
-    "8": {
-     "signedPpPerYear": -0.00498,
-     "sumOfAbsolutePpPerYear": 0.02518
-    },
-    "9": {
-     "signedPpPerYear": -0.00937,
-     "sumOfAbsolutePpPerYear": 0.03136
-    }
+    "note": "one lag for every unresolved event; max over lags of the summed absolute effect is NOT an upper bound when events can have different lags",
+    "status": "SCENARIO_NOT_A_BOUND"
    },
-   "knownEventsFixedAtObservedDatesPpPerYear": 0.00819,
-   "knownOfficialEvents": 20,
-   "lagRangeSessionsAfterEx": [
-    2,
-    10
-   ],
-   "lagRangeStatus": "ASSUMPTION_FOR_THE_UNRESOLVED_EVENTS_OBSERVED_LAG_IS_3_ON_ALL_20_OFFICIAL",
-   "mixedLagSignedInterval": {
-    "lowerPpPerYear": -0.01597,
-    "upperPpPerYear": 0.02312
+   "mixedLagScenarioWith20Known": {
+    "boundOnAbsoluteEffectPpPerYear": 0.02312,
+    "conditions": [
+     "each unresolved lag lies independently in the stated range (an assumption: all 20 observed are 3)",
+     "first-order per-event approximation (see exactFundedComparison for its size)",
+     "zero return on cash while awaiting payment"
+    ],
+    "knownEventsFixedAtObservedDatesPpPerYear": 0.00819,
+    "knownOfficialEvents": 20,
+    "lagRangeSessionsAfterEx": [
+     2,
+     10
+    ],
+    "perEventTriangleEnvelopePpPerYear": 0.0451,
+    "signedInterval": {
+     "lowerPpPerYear": -0.01597,
+     "upperPpPerYear": 0.02312
+    },
+    "status": "CONDITIONAL_FIRST_ORDER_RANGE_NOT_A_UNIVERSAL_FUNDING_BOUND_NOT_SOURCE_ADMITTED_PAYMENT_DATES",
+    "unresolvedEvents": 26
    },
-   "sumOfPerEventWorstAbsolute": 0.0451,
-   "unit": "percentage points per year per 100% ETF weight",
-   "unresolvedEvents": 26
+   "unit": "percentage points per year per 100% ETF weight"
   }
  },
  "confirmedSourceFacts": {
