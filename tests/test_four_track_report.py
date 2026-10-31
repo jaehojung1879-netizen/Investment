@@ -29,4 +29,8 @@ def test_reproduction_is_byte_identical_and_does_not_write_research(tmp_path):
             capture_output=True, text=True, timeout=60, check=True)
     for name in ['report.json', 'report.md', 'report.html']:
         assert (outputs[0] / name).read_bytes() == (outputs[1] / name).read_bytes()
+    summary = next(line for line in (outputs[0] / 'report.md').read_text().splitlines()
+                   if line.startswith('|한국 종목 Alpha|'))
+    assert 'H126 장중 − 모멘텀 유효쌍 평균:' in summary
+    assert 'H126 장중 − ETF 유효쌍 평균:' in summary
     assert subprocess.check_output(['git', 'status', '--porcelain'], cwd=ROOT) == before

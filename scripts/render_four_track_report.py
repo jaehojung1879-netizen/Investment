@@ -49,8 +49,10 @@ def main(argv=None):
              '기존 불변 결과 읽기 전용. 보고서 DONE·CI 성공은 과학적 승인이나 투자 적격이 아니다.', '',
              '| 트랙 | 증거 등급 | 자료 / 연구 | 대표 관측 |', '|---|---|---|---|']
     for track in report['tracks']:
+        summary_metrics = [track['metrics'][i] for i in ([0, 2] if track['id'] in {'kr', 'industry'} else [0])]
+        summary = '; '.join(m['label']+': '+m['display'] for m in summary_metrics)
         lines.append('|'+ '|'.join(md(v) for v in [track['title'], track['evidenceClass'],
-            track['reportStatus']+' / '+track['researchStatus'], track['metrics'][0]['display']])+'|')
+            track['reportStatus']+' / '+track['researchStatus'], summary])+'|')
     for t in report['tracks']:
         lines.extend(['', f"## {t['title']} — PR #{t['pr']}", '', t['hypothesis'], '',
                       f"비교 기준: {t['benchmark']} · 투자 적격 미확인", ''])
