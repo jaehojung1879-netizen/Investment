@@ -26,68 +26,134 @@
   "contrastPer10ppExposureGap": {
    "distributionTaxAtAssumedRate": -0.0302,
    "note": "cash and tax act in opposite directions; none of these is applied to any path",
-   "paymentTimingWorstCaseAbs": 0.00567,
+   "paymentTimingMixedLagBoundAbs": 0.00231,
    "status": "UNVERIFIED_SENSITIVITY_NOT_A_CORRECTION",
    "unit": "pp/yr per 10pp of mean ETF-weight gap between two arms; positive favours the MORE-EXPOSED arm",
    "zeroCashVersusBokProxy": 0.2048,
    "zeroCashVersusBokProxyMinusHaircut": 0.1548
   },
-  "paymentTiming": {
-   "byLagSessionsAfterEx": {
+  "exactFundedComparison": {
+   "approximationErrorPpPerYear": -0.01385,
+   "byCommonLag": {
     "10": {
-     "largestSingleEventPp": 0.09501,
-     "signedPpPerYear": 0.0048,
-     "sumOfAbsolutePpPerYear": 0.05632
+     "approximationErrorPpPerYear": 0.00462,
+     "exactPpPerYear": 0.00326,
+     "firstOrderPpPerYear": -0.00136
     },
     "2": {
-     "largestSingleEventPp": 0.03973,
-     "signedPpPerYear": 0.00165,
-     "sumOfAbsolutePpPerYear": 0.02161
+     "approximationErrorPpPerYear": -0.00852,
+     "exactPpPerYear": -0.00379,
+     "firstOrderPpPerYear": 0.00473
     },
     "3": {
-     "largestSingleEventPp": 0.0534,
-     "signedPpPerYear": 0.00743,
-     "sumOfAbsolutePpPerYear": 0.02526
+     "approximationErrorPpPerYear": -0.01385,
+     "exactPpPerYear": -0.00641,
+     "firstOrderPpPerYear": 0.00743
     },
     "4": {
-     "largestSingleEventPp": 0.07736,
-     "signedPpPerYear": 0.00774,
-     "sumOfAbsolutePpPerYear": 0.03532
+     "approximationErrorPpPerYear": -0.01336,
+     "exactPpPerYear": -0.00604,
+     "firstOrderPpPerYear": 0.00732
     },
     "5": {
-     "largestSingleEventPp": 0.0645,
-     "signedPpPerYear": 0.00676,
-     "sumOfAbsolutePpPerYear": 0.03709
+     "approximationErrorPpPerYear": -0.00961,
+     "exactPpPerYear": -0.00416,
+     "firstOrderPpPerYear": 0.00545
     },
     "6": {
-     "largestSingleEventPp": 0.09068,
-     "signedPpPerYear": 0.00844,
-     "sumOfAbsolutePpPerYear": 0.04562
+     "approximationErrorPpPerYear": -0.00983,
+     "exactPpPerYear": -0.00407,
+     "firstOrderPpPerYear": 0.00576
     },
     "7": {
-     "largestSingleEventPp": 0.08115,
-     "signedPpPerYear": 0.00692,
-     "sumOfAbsolutePpPerYear": 0.04569
+     "approximationErrorPpPerYear": -0.00756,
+     "exactPpPerYear": -0.00298,
+     "firstOrderPpPerYear": 0.00458
     },
     "8": {
-     "largestSingleEventPp": 0.09925,
-     "signedPpPerYear": 0.00851,
-     "sumOfAbsolutePpPerYear": 0.04819
+     "approximationErrorPpPerYear": -0.00468,
+     "exactPpPerYear": -0.00147,
+     "firstOrderPpPerYear": 0.00321
     },
     "9": {
-     "largestSingleEventPp": 0.10401,
-     "signedPpPerYear": 0.00161,
-     "sumOfAbsolutePpPerYear": 0.05674
+     "approximationErrorPpPerYear": 0.00428,
+     "exactPpPerYear": 0.0031,
+     "firstOrderPpPerYear": -0.00118
     }
    },
+   "exactPpPerYear": -0.00641,
+   "firstOrderPpPerYear": 0.00743,
+   "largestAbsoluteApproximationErrorPpPerYear": 0.01385,
+   "largestAbsoluteExactEffectPpPerYear": 0.00641,
+   "pathAReproducesCorrectedIndexRelativeResidual": 4.441e-16,
+   "scenario": "official payment dates where known, 3 sessions after ex otherwise",
+   "status": "SCENARIOS_NOT_A_BOUND_MIXED_LAGS_NOT_ENUMERATED"
+  },
+  "paymentTiming": {
+   "boundOnAbsoluteEffectPpPerYear": 0.02312,
+   "commonLagScenarioNotABound": {
+    "10": {
+     "signedPpPerYear": -0.00955,
+     "sumOfAbsolutePpPerYear": 0.03191
+    },
+    "2": {
+     "signedPpPerYear": -0.00346,
+     "sumOfAbsolutePpPerYear": 0.01006
+    },
+    "3": {
+     "signedPpPerYear": -0.00076,
+     "sumOfAbsolutePpPerYear": 0.01243
+    },
+    "4": {
+     "signedPpPerYear": -0.00088,
+     "sumOfAbsolutePpPerYear": 0.01734
+    },
+    "5": {
+     "signedPpPerYear": -0.00275,
+     "sumOfAbsolutePpPerYear": 0.01906
+    },
+    "6": {
+     "signedPpPerYear": -0.00244,
+     "sumOfAbsolutePpPerYear": 0.02491
+    },
+    "7": {
+     "signedPpPerYear": -0.00361,
+     "sumOfAbsolutePpPerYear": 0.02498
+    },
+    "8": {
+     "signedPpPerYear": -0.00498,
+     "sumOfAbsolutePpPerYear": 0.02518
+    },
+    "9": {
+     "signedPpPerYear": -0.00937,
+     "sumOfAbsolutePpPerYear": 0.03136
+    }
+   },
+   "knownEventsFixedAtObservedDatesPpPerYear": 0.00819,
+   "knownOfficialEvents": 20,
+   "lagRangeSessionsAfterEx": [
+    2,
+    10
+   ],
+   "lagRangeStatus": "ASSUMPTION_FOR_THE_UNRESOLVED_EVENTS_OBSERVED_LAG_IS_3_ON_ALL_20_OFFICIAL",
+   "mixedLagSignedInterval": {
+    "lowerPpPerYear": -0.01597,
+    "upperPpPerYear": 0.02312
+   },
+   "sumOfPerEventWorstAbsolute": 0.0451,
    "unit": "percentage points per year per 100% ETF weight",
-   "worstCaseSumOfAbsoluteAcrossLags": 0.05674
+   "unresolvedEvents": 26
   }
  },
  "confirmedSourceFacts": {
   "asTradedPriceReconstruction": {
-   "agreementWithIssuerAsTradedCloseOnAllSessions": "RECORDED_AT_BUILD_TIME_BY_test_issuer_close_cross_check",
    "endpointRawQuote": 105410.0,
+   "issuerAsTradedCloseCrossCheck": {
+    "maxAbsRelativeDifference": 0.0,
+    "sessions": 3612,
+    "status": "RECORDED_AT_BUILD_NOT_RECOMPUTED_IN_CI_WITHOUT_XLRD",
+    "tool": "xlrd"
+   },
    "method": "invert the once-only gross reinvestment from the corrected index and the 46 cash amounts, anchored on the official raw endpoint quote",
    "sessions": 3612
   },
@@ -149,11 +215,17 @@
   "taxBasis": {
    "assumedStatutoryRatePct": 15.4,
    "coverage": "only the issuer's 20 most recent distributions state a taxable base; the other 26 are UNKNOWN, not zero",
+   "coverageSpan": {
+    "firstExDate": "2021-10-28",
+    "lastExDate": "2026-07-30",
+    "years": 4.882
+   },
    "dragAtAssumedStatutoryRatePpPerYear": 0.3017,
    "dragPpPerYearPerOnePointOfTaxRate": 0.01959,
    "grossYieldPpPerYear": 1.9833,
    "rateStatus": "UNVERIFIED_ASSUMPTION_NOT_RETAINED_FROM_AN_OFFICIAL_SOURCE_IN_THIS_REPOSITORY",
    "records": 20,
+   "scope": "the drag is measured over that sub-period only, not the 2012-2026 history, and is not a validated investor tax treatment",
    "taxableBaseYieldPpPerYear": 1.959,
    "taxableShareOfCash": {
     "max": 1.0,
@@ -165,8 +237,11 @@
  },
  "evidenceClass": "RETAINED_SOURCE_READ_ONLY_NO_STRATEGY_RETURN",
  "inputs": {
+  "data/bok-policy-rates.json": "a7edf0e532c7b54da9d962ebf12ff2552c90c783439fef99d7c761c5b9ea69ff",
+  "data/kr-market-risk-anatomy-v1/sources/FDR_KS200/normalized.csv": "729a94b81dd45d1c5d1ab2ff692ec249bd5c9c4f24598d648d7f88010f193478",
   "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json": "58580c4370ec2c5afa124f849afbc4fa7b5c879012e75ebbd48ee7c7a0e659a9",
-  "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-dividends.json": "3f23e3a8ce9c34506e1316bc8b6263c85cfa78086c3725743e02a3d653eeb0df"
+  "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-dividends.json": "3f23e3a8ce9c34506e1316bc8b6263c85cfa78086c3725743e02a3d653eeb0df",
+  "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-standard.xls": "cbdd7a0ce340228ddcfc714de637c512f73c2d691d84ae59a28cfb406d8437b9"
  },
  "missingHistoricalEvidence": [
   "26 of 46 distributions have no official payment date (first: ex 2012-04-27, record 2012-04-30); the retained annual reports list the record date only (지급기준일), and the issuer API serves the 20 most recent",

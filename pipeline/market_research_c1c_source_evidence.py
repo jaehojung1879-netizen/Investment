@@ -35,7 +35,17 @@ PINS = {
         "58580c4370ec2c5afa124f849afbc4fa7b5c879012e75ebbd48ee7c7a0e659a9",
     "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-dividends.json":
         "3f23e3a8ce9c34506e1316bc8b6263c85cfa78086c3725743e02a3d653eeb0df",
+    "data/bok-policy-rates.json": "a7edf0e532c7b54da9d962ebf12ff2552c90c783439fef99d7c761c5b9ea69ff",
+    "data/kr-market-risk-anatomy-v1/sources/FDR_KS200/normalized.csv":
+        "729a94b81dd45d1c5d1ab2ff692ec249bd5c9c4f24598d648d7f88010f193478",
+    "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-standard.xls":
+        "cbdd7a0ce340228ddcfc714de637c512f73c2d691d84ae59a28cfb406d8437b9",
 }
+# Measured once at build time with xlrd (not a CI dependency): the as-traded close rebuilt from the corrected index and the 46
+# cash amounts against the issuer's own close, every session. Recomputed by a test only where xlrd is installed, and read by
+# nothing that gates admission.
+RECORDED_ISSUER_CLOSE_CROSS_CHECK = {"sessions": 3612, "maxAbsRelativeDifference": 0.0, "tool": "xlrd",
+                                     "status": "RECORDED_AT_BUILD_NOT_RECOMPUTED_IN_CI_WITHOUT_XLRD"}
 STUDY_WINDOW = ("2012-01-02", "2026-09-14")
 LAGS_SESSIONS_AFTER_EX = tuple(range(2, 11))
 STATUTORY_TAX_RATE_PCT = 15.4  # NOT retained from an official source in this repository; a stated assumption only
@@ -46,7 +56,7 @@ def sha256(path):
 
 
 def verify_pins():
-    """The two JSON inputs are pinned by exact bytes; a moved file raises rather than being re-read silently."""
+    """Every input file is pinned by exact bytes; a moved file raises rather than being re-read silently."""
     for rel in PINS:
         if sha256(ROOT / rel) != PINS[rel]:
             raise ValueError("SOURCE_EVIDENCE_INPUT_CHANGED:" + rel)
@@ -120,26 +130,92 @@ def years_between(a, b):
     return (pd.Timestamp(b) - pd.Timestamp(a)).days / 365.25
 
 
-def timing_sensitivity(price, chain):
-    """Value of buying at the payment-date close instead of reinvesting at the ex-date close, per 100% ETF weight, pp/yr.
+def _timing_term(price, ex, cash, lag):
+    """First-order value of buying at the close `lag` sessions after the ex-date instead of at the ex-date close."""
+    sessions = price.index
+    i = sessions.get_loc(ex)
+    j = min(i + lag, len(sessions) - 1)
+    return cash / price.iloc[i] * (price.iloc[j] / price.iloc[i] - 1.0)
 
-    Equals sum_i (D_i / P_ex_i) * (P_{ex_i + L} / P_{ex_i} - 1). The ETF's own prices only. `L` is NOT inferred for the
-    unresolved records; every L from 2 to 10 sessions is shown, with a sign-agnostic worst case."""
+
+def timing_sensitivity(price, chain, official):
+    """Payment-timing effect per 100% ETF weight, pp/yr: the 20 official payments FIXED at their observed dates, the unresolved
+    26 bounded EVENT BY EVENT over `LAGS_SESSIONS_AFTER_EX`.
+
+    The bound is the mixed-lag envelope: the total lies in [known + sum_i min_L d_i(L), known + sum_i max_L d_i(L)]. The
+    common-lag figure (one L for every unresolved event) is reported as a SCENARIO only: max_L sum_i |d_i(L)| is not an upper
+    bound when different events can have different lags. The lag range itself is an assumption for the 26: all 20 observed
+    payments are exactly 3 sessions after the ex-date, nothing retained shows the earlier ones were paid on the same rule."""
     sessions = price.index
     years = years_between(sessions[0], sessions[-1])
-    out = {}
+    paid = chain.merge(official[["record", "pay"]], on="record", how="left")
+    known, unknown = paid[paid.pay.notna()], paid[paid.pay.isna()]
+    known_total = sum(_timing_term(price, r.ex, r.cash, sessions.get_loc(r.pay) - sessions.get_loc(r.ex)) for r in known.itertuples())
+    grid = np.array([[_timing_term(price, r.ex, r.cash, lag) for lag in LAGS_SESSIONS_AFTER_EX] for r in unknown.itertuples()])
+    lower, upper = known_total + grid.min(axis=1).sum(), known_total + grid.max(axis=1).sum()
+    scale = 100 / years
+    common = {str(lag): {"signedPpPerYear": round(float(grid[:, k].sum() * scale), 5),
+                         "sumOfAbsolutePpPerYear": round(float(np.abs(grid[:, k]).sum() * scale), 5)}
+              for k, lag in enumerate(LAGS_SESSIONS_AFTER_EX)}
+    return {"unit": "percentage points per year per 100% ETF weight", "knownOfficialEvents": int(len(known)),
+            "unresolvedEvents": int(len(unknown)),
+            "knownEventsFixedAtObservedDatesPpPerYear": round(float(known_total * scale), 5),
+            "mixedLagSignedInterval": {"lowerPpPerYear": round(float(lower * scale), 5), "upperPpPerYear": round(float(upper * scale), 5)},
+            "boundOnAbsoluteEffectPpPerYear": round(float(max(abs(lower), abs(upper)) * scale), 5),
+            "sumOfPerEventWorstAbsolute": round(float((np.abs(known_total) + np.abs(grid).max(axis=1).sum()) * scale), 5),
+            "lagRangeSessionsAfterEx": [LAGS_SESSIONS_AFTER_EX[0], LAGS_SESSIONS_AFTER_EX[-1]],
+            "lagRangeStatus": "ASSUMPTION_FOR_THE_UNRESOLVED_EVENTS_OBSERVED_LAG_IS_3_ON_ALL_20_OFFICIAL",
+            "commonLagScenarioNotABound": common}
+
+
+def _funded_scenario(price, chain, official, quotes, assumed_lag):
+    sessions = price.index
+    years = years_between(sessions[0], sessions[-1])
+    paid = chain.merge(official[["record", "pay"]], on="record", how="left")
+    last = len(sessions) - 1
+    schedule, lags = {}, []
+    for r in paid.itertuples():
+        i = sessions.get_loc(r.ex)
+        j = sessions.get_loc(r.pay) if pd.notna(r.pay) else min(i + assumed_lag, last)
+        schedule[i] = (r.cash, j)
+        lags.append(j - i)
+    units_a = units_b = 1.0
+    buys = {}
+    for i in range(len(sessions)):
+        if i in buys:
+            units_b += buys.pop(i) / price.iloc[i]
+        if i in schedule:
+            cash, pay_i = schedule[i]
+            units_a += cash * units_a / price.iloc[i]
+            buys[pay_i] = buys.get(pay_i, 0.0) + cash * units_b
+    value_a, value_b = units_a * price.iloc[-1], units_b * price.iloc[-1] + sum(buys.values())
+    identity = value_a / price.iloc[0] / (quotes.iloc[-1] / quotes.iloc[0]) - 1.0
+    exact = ((value_b / value_a) ** (1 / years) - 1) * 100
+    first_order = sum(_timing_term(price, r.ex, r.cash, lag) for r, lag in zip(paid.itertuples(), lags)) / years * 100
+    return exact, first_order, identity
+
+
+def exact_funded_comparison(price, chain, official, quotes, assumed_lag=3):
+    """Exact share-level comparison on the ETF alone, with no first-order approximation: reinvest each distribution at the
+    ex-date close (A, the corrected index) versus hold it as cash earning nothing until the payment-date close (B).
+
+    Official events use their real payment date, the unresolved ones `assumed_lag` (one common lag per scenario). SCENARIOS, not
+    bounds: the first-order sum used in `timing_sensitivity` omits the compounding of the delayed units, and the size of that
+    omission is shown for every common lag. Path A reproducing the corrected index validates the simulation itself."""
+    exact, first_order, identity = _funded_scenario(price, chain, official, quotes, assumed_lag)
+    by_lag = {}
     for lag in LAGS_SESSIONS_AFTER_EX:
-        terms = []
-        for ex, cash in zip(chain.ex, chain.cash):
-            i = sessions.get_loc(ex)
-            j = min(i + lag, len(sessions) - 1)
-            terms.append(cash / price.iloc[i] * (price.iloc[j] / price.iloc[i] - 1.0))
-        terms = np.array(terms)
-        out[str(lag)] = {"signedPpPerYear": round(float(terms.sum() / years * 100), 5),
-                         "sumOfAbsolutePpPerYear": round(float(np.abs(terms).sum() / years * 100), 5),
-                         "largestSingleEventPp": round(float(np.abs(terms).max() * 100), 5)}
-    return {"unit": "percentage points per year per 100% ETF weight", "byLagSessionsAfterEx": out,
-            "worstCaseSumOfAbsoluteAcrossLags": max(v["sumOfAbsolutePpPerYear"] for v in out.values())}
+        e, f, _ = _funded_scenario(price, chain, official, quotes, lag)
+        by_lag[str(lag)] = {"exactPpPerYear": round(float(e), 5), "firstOrderPpPerYear": round(float(f), 5),
+                            "approximationErrorPpPerYear": round(float(e - f), 5)}
+    return {"scenario": f"official payment dates where known, {assumed_lag} sessions after ex otherwise",
+            "exactPpPerYear": round(float(exact), 5), "firstOrderPpPerYear": round(float(first_order), 5),
+            "approximationErrorPpPerYear": round(float(exact - first_order), 5),
+            "byCommonLag": by_lag,
+            "largestAbsoluteApproximationErrorPpPerYear": max(abs(v["approximationErrorPpPerYear"]) for v in by_lag.values()),
+            "largestAbsoluteExactEffectPpPerYear": max(abs(v["exactPpPerYear"]) for v in by_lag.values()),
+            "pathAReproducesCorrectedIndexRelativeResidual": float(f"{identity:.3e}"),
+            "status": "SCENARIOS_NOT_A_BOUND_MIXED_LAGS_NOT_ENUMERATED"}
 
 
 def tax_basis(price, chain, official):
@@ -159,6 +235,9 @@ def tax_basis(price, chain, official):
             "assumedStatutoryRatePct": STATUTORY_TAX_RATE_PCT,
             "rateStatus": "UNVERIFIED_ASSUMPTION_NOT_RETAINED_FROM_AN_OFFICIAL_SOURCE_IN_THIS_REPOSITORY",
             "coverage": "only the issuer's 20 most recent distributions state a taxable base; the other 26 are UNKNOWN, not zero",
+            "coverageSpan": {"firstExDate": str(matched.ex.iloc[0].date()), "lastExDate": str(matched.ex.iloc[-1].date()),
+                             "years": round(float(span), 3)},
+            "scope": "the drag is measured over that sub-period only, not the 2012-2026 history, and is not a validated investor tax treatment",
             "unit": "percentage points per year per 100% ETF weight"}
 
 
@@ -204,7 +283,7 @@ def contrast_coefficients(timing, tax, cash):
             "zeroCashVersusBokProxy": round(cash_effect, 4),
             "zeroCashVersusBokProxyMinusHaircut": round(haircut, 4),
             "distributionTaxAtAssumedRate": round(tax_effect, 4),
-            "paymentTimingWorstCaseAbs": round(timing["worstCaseSumOfAbsoluteAcrossLags"] * 0.10, 5),
+            "paymentTimingMixedLagBoundAbs": round(timing["boundOnAbsoluteEffectPpPerYear"] * 0.10, 5),
             "status": "UNVERIFIED_SENSITIVITY_NOT_A_CORRECTION",
             "note": "cash and tax act in opposite directions; none of these is applied to any path"}
 
@@ -230,7 +309,8 @@ def evidence():
     events = json.loads((ROOT / "data/bok-policy-rates.json").read_text())["events"]
     window = quotes.index[(quotes.index >= STUDY_WINDOW[0]) & (quotes.index <= STUDY_WINDOW[1])]
     facts = payment_facts(quotes, chain, official)
-    timing = timing_sensitivity(price, chain)
+    timing = timing_sensitivity(price, chain, official)
+    funded = exact_funded_comparison(price, chain, official, quotes)
     tax = tax_basis(price, chain, official)
     cash = cash_sensitivity(events, window)
     return {
@@ -241,12 +321,12 @@ def evidence():
             "asTradedPriceReconstruction": {
                 "method": "invert the once-only gross reinvestment from the corrected index and the 46 cash amounts, anchored on the official raw endpoint quote",
                 "sessions": int(len(price)), "endpointRawQuote": endpoint,
-                "agreementWithIssuerAsTradedCloseOnAllSessions": "RECORDED_AT_BUILD_TIME_BY_test_issuer_close_cross_check",
+                "issuerAsTradedCloseCrossCheck": RECORDED_ISSUER_CLOSE_CROSS_CHECK,
             },
             "taxBasis": tax,
             "ks200Reconciliation": ks200_reconciliation(quotes, ks),
         },
-        "approximateAccounting": {"paymentTiming": timing, "cash": cash,
+        "approximateAccounting": {"paymentTiming": timing, "exactFundedComparison": funded, "cash": cash,
                                   "contrastPer10ppExposureGap": contrast_coefficients(timing, tax, cash)},
         "missingHistoricalEvidence": [
             f"{facts['paymentDateUnresolved']} of {facts['records']} distributions have no official payment date "

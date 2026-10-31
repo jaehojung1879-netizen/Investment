@@ -53,15 +53,72 @@ def test_official_cash_disagreeing_with_the_chain_is_flagged_not_merged():
     assert S.payment_facts(tr, chain, official)["officialCashEqualsChainCash"] is False
 
 
+def _no_official():
+    return pd.DataFrame({"record": pd.to_datetime([]), "pay": pd.to_datetime([]), "cash": [], "taxBase": []})
+
+
 def test_timing_sensitivity_is_zero_on_a_flat_price_and_signed_on_a_trend():
     sessions = pd.bdate_range("2020-01-01", periods=60)
-    chain = pd.DataFrame({"ex": [sessions[20]], "cash": [100.0]})
+    chain = pd.DataFrame({"ex": [sessions[20]], "record": [sessions[21]], "cash": [100.0]})
     flat = pd.Series(10_000.0, index=sessions)
-    assert S.timing_sensitivity(flat, chain)["byLagSessionsAfterEx"]["3"]["signedPpPerYear"] == 0.0
+    t = S.timing_sensitivity(flat, chain, _no_official())
+    assert t["boundOnAbsoluteEffectPpPerYear"] == 0.0 and t["unresolvedEvents"] == 1
     rising = pd.Series(10_000.0 * 1.001 ** np.arange(60), index=sessions)
-    t = S.timing_sensitivity(rising, chain)["byLagSessionsAfterEx"]
-    assert t["3"]["signedPpPerYear"] > 0 and t["10"]["signedPpPerYear"] > t["3"]["signedPpPerYear"]
-    assert t["3"]["sumOfAbsolutePpPerYear"] == pytest.approx(t["3"]["signedPpPerYear"])
+    t = S.timing_sensitivity(rising, chain, _no_official())
+    assert t["mixedLagSignedInterval"]["lowerPpPerYear"] > 0
+    assert t["boundOnAbsoluteEffectPpPerYear"] == t["mixedLagSignedInterval"]["upperPpPerYear"]
+
+
+def test_mixed_lag_bound_exceeds_the_common_lag_figure_when_events_peak_at_different_lags():
+    """Event A is most affected at lag 2 and event B at lag 4: max_L sum|d| understates what mixed lags can reach."""
+    sessions = pd.bdate_range("2020-01-01", periods=60)
+    price = pd.Series(10_000.0, index=sessions)
+    ex_a, ex_b = 10, 30
+    price.iloc[ex_a + 2] = 10_500.0   # A: +5% two sessions after ex, flat otherwise
+    price.iloc[ex_b + 4] = 10_500.0   # B: +5% four sessions after ex, flat otherwise
+    chain = pd.DataFrame({"ex": [sessions[ex_a], sessions[ex_b]], "record": [sessions[ex_a + 1], sessions[ex_b + 1]],
+                          "cash": [100.0, 100.0]})
+    t = S.timing_sensitivity(price, chain, _no_official())
+    common = max(v["sumOfAbsolutePpPerYear"] for v in t["commonLagScenarioNotABound"].values())
+    assert t["sumOfPerEventWorstAbsolute"] == pytest.approx(2 * common, rel=1e-6)
+    assert t["boundOnAbsoluteEffectPpPerYear"] == pytest.approx(2 * common, rel=1e-6)
+    assert t["boundOnAbsoluteEffectPpPerYear"] > common
+    assert t["commonLagScenarioNotABound"]  # the scenario table is present but named as not a bound
+
+
+def test_known_official_events_are_fixed_at_their_paid_date_and_only_the_rest_are_bounded():
+    sessions = pd.bdate_range("2020-01-01", periods=60)
+    price = pd.Series(10_000.0, index=sessions)
+    price.iloc[10 + 3] = 10_300.0
+    price.iloc[30 + 6] = 12_000.0
+    chain = pd.DataFrame({"ex": [sessions[10], sessions[30]], "record": [sessions[11], sessions[31]], "cash": [100.0, 100.0]})
+    official = pd.DataFrame({"record": [sessions[11]], "pay": [sessions[13]], "cash": [100.0], "taxBase": [100.0]})
+    t = S.timing_sensitivity(price, chain, official)
+    years = S.years_between(sessions[0], sessions[-1])
+    assert (t["knownOfficialEvents"], t["unresolvedEvents"]) == (1, 1)
+    assert t["knownEventsFixedAtObservedDatesPpPerYear"] == pytest.approx(100.0 / 10_000.0 * 0.03 / years * 100, rel=1e-3)
+    assert t["boundOnAbsoluteEffectPpPerYear"] > t["knownEventsFixedAtObservedDatesPpPerYear"]
+
+
+def test_exact_funded_comparison_validates_path_a_and_is_zero_on_a_flat_price():
+    raw, tr, chain = _synthetic()
+    official = pd.DataFrame({"record": chain.record, "pay": [tr.index[i + 3] for i in (15, 35, 50)],
+                             "cash": chain.cash, "taxBase": chain.cash})
+    out = S.exact_funded_comparison(raw, chain, official, tr)
+    assert abs(out["pathAReproducesCorrectedIndexRelativeResidual"]) < 1e-12
+    assert out["status"].startswith("SCENARIOS_NOT_A_BOUND")
+    sessions = raw.index
+    flat = pd.Series(10_000.0, index=sessions)
+    flat_tr = pd.Series(np.nan, index=sessions)
+    level, vals = 1.0, []
+    for i in range(len(sessions)):
+        if i:
+            hit = [c for e, c in zip(chain.ex, chain.cash) if e == sessions[i]]
+            level *= (10_000.0 + (hit[0] if hit else 0.0)) / 10_000.0
+        vals.append(level)
+    flat_tr[:] = vals
+    zero = S.exact_funded_comparison(flat, chain, official, flat_tr)
+    assert zero["exactPpPerYear"] == pytest.approx(0.0, abs=1e-9)
 
 
 def test_tax_basis_full_taxable_base_has_share_one_and_scales_with_the_rate():
@@ -92,6 +149,13 @@ def test_admission_is_fail_closed_and_cannot_be_ready_from_code_alone():
     assert "PAYMENT_DATE_UNRESOLVED:26_OF_46" in S.admission(base)["reasons"]
     base["confirmedSourceFacts"]["distributions"]["officialCashEqualsChainCash"] = False
     assert "OFFICIAL_CASH_DISAGREES_WITH_CHAIN" in S.admission(base)["reasons"]
+
+
+def test_every_input_file_is_pinned_and_present():
+    assert len(S.PINS) == 5
+    for rel, digest in S.PINS.items():
+        assert S.sha256(S.ROOT / rel) == digest, rel
+    assert set(json.loads(S.OUTPUT.read_text())["inputs"]) == set(S.PINS)
 
 
 def test_pinned_inputs_and_real_counts():
@@ -138,7 +202,10 @@ def test_reconstructed_price_equals_the_issuers_own_close_on_every_session():
     issuer = pd.Series({pd.to_datetime(sheet.cell_value(r, 0)): sheet.cell_value(r, 1) for r in range(4, sheet.nrows)})
     joined = pd.concat({"rebuilt": price, "issuer": issuer}, axis=1).dropna()
     assert len(joined) == len(price) == 3612
-    assert float(((joined.rebuilt / joined.issuer) - 1).abs().max()) < 1e-9
+    worst = float(((joined.rebuilt / joined.issuer) - 1).abs().max())
+    assert worst < 1e-9
+    assert S.RECORDED_ISSUER_CLOSE_CROSS_CHECK["sessions"] == len(joined)
+    assert S.RECORDED_ISSUER_CLOSE_CROSS_CHECK["maxAbsRelativeDifference"] == pytest.approx(worst, abs=1e-9)
 
 
 def test_module_imports_no_strategy_selection_or_replay_code():
