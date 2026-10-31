@@ -1,0 +1,184 @@
+{
+ "admission": {
+  "etfDistributionFunding": "BLOCKED",
+  "historicalExecution": "BLOCKED",
+  "reasons": [
+   "PAYMENT_DATE_UNRESOLVED:26_OF_46",
+   "OWNER_DECISION_UNRECORDED:RIGHTS",
+   "OWNER_DECISION_UNRECORDED:CASH",
+   "OWNER_DECISION_UNRECORDED:TOTAL_RETURN",
+   "OWNER_DECISION_UNRECORDED:CRITERIA"
+  ]
+ },
+ "approximateAccounting": {
+  "cash": {
+   "fileVerifiedThrough": "2026-09-07",
+   "meanRatePctPerYear": {
+    "PROXY": 2.0483,
+    "PROXY_MINUS_HAIRCUT": 1.5483,
+    "ZERO": 0.0
+   },
+   "series": "BOK_POLICY_RATE_PROXY",
+   "sessionsCarriedFromLastVerified": 5,
+   "status": "FROZEN_PROXY_NOT_AN_INVESTABLE_DEPOSIT_OR_BILL_INDEX",
+   "unit": "percentage points per year per 100% cash weight"
+  },
+  "contrastPer10ppExposureGap": {
+   "distributionTaxAtAssumedRate": -0.0302,
+   "note": "cash and tax act in opposite directions; none of these is applied to any path",
+   "paymentTimingWorstCaseAbs": 0.00567,
+   "status": "UNVERIFIED_SENSITIVITY_NOT_A_CORRECTION",
+   "unit": "pp/yr per 10pp of mean ETF-weight gap between two arms; positive favours the MORE-EXPOSED arm",
+   "zeroCashVersusBokProxy": 0.2048,
+   "zeroCashVersusBokProxyMinusHaircut": 0.1548
+  },
+  "paymentTiming": {
+   "byLagSessionsAfterEx": {
+    "10": {
+     "largestSingleEventPp": 0.09501,
+     "signedPpPerYear": 0.0048,
+     "sumOfAbsolutePpPerYear": 0.05632
+    },
+    "2": {
+     "largestSingleEventPp": 0.03973,
+     "signedPpPerYear": 0.00165,
+     "sumOfAbsolutePpPerYear": 0.02161
+    },
+    "3": {
+     "largestSingleEventPp": 0.0534,
+     "signedPpPerYear": 0.00743,
+     "sumOfAbsolutePpPerYear": 0.02526
+    },
+    "4": {
+     "largestSingleEventPp": 0.07736,
+     "signedPpPerYear": 0.00774,
+     "sumOfAbsolutePpPerYear": 0.03532
+    },
+    "5": {
+     "largestSingleEventPp": 0.0645,
+     "signedPpPerYear": 0.00676,
+     "sumOfAbsolutePpPerYear": 0.03709
+    },
+    "6": {
+     "largestSingleEventPp": 0.09068,
+     "signedPpPerYear": 0.00844,
+     "sumOfAbsolutePpPerYear": 0.04562
+    },
+    "7": {
+     "largestSingleEventPp": 0.08115,
+     "signedPpPerYear": 0.00692,
+     "sumOfAbsolutePpPerYear": 0.04569
+    },
+    "8": {
+     "largestSingleEventPp": 0.09925,
+     "signedPpPerYear": 0.00851,
+     "sumOfAbsolutePpPerYear": 0.04819
+    },
+    "9": {
+     "largestSingleEventPp": 0.10401,
+     "signedPpPerYear": 0.00161,
+     "sumOfAbsolutePpPerYear": 0.05674
+    }
+   },
+   "unit": "percentage points per year per 100% ETF weight",
+   "worstCaseSumOfAbsoluteAcrossLags": 0.05674
+  }
+ },
+ "confirmedSourceFacts": {
+  "asTradedPriceReconstruction": {
+   "agreementWithIssuerAsTradedCloseOnAllSessions": "RECORDED_AT_BUILD_TIME_BY_test_issuer_close_cross_check",
+   "endpointRawQuote": 105410.0,
+   "method": "invert the once-only gross reinvestment from the corrected index and the 46 cash amounts, anchored on the official raw endpoint quote",
+   "sessions": 3612
+  },
+  "distributions": {
+   "exDateIsSessionAndRecordIsNextSession": true,
+   "firstOfficialExDate": "2021-10-28",
+   "firstUnresolved": {
+    "exDate": "2012-04-27",
+    "recordDate": "2012-04-30"
+   },
+   "lastUnresolvedExDate": "2021-07-29",
+   "officialCashEqualsChainCash": true,
+   "officialPaymentDate": 20,
+   "paymentCalendarDaysAfterRecord": {
+    "max": 7,
+    "min": 2
+   },
+   "paymentDateUnresolved": 26,
+   "paymentSessionsAfterEx": [
+    3
+   ],
+   "paymentSessionsAfterRecord": [
+    2
+   ],
+   "records": 46,
+   "unresolvedExDatesByYear": {
+    "2012": 2,
+    "2013": 2,
+    "2014": 2,
+    "2015": 2,
+    "2016": 2,
+    "2017": 3,
+    "2018": 3,
+    "2019": 3,
+    "2020": 4,
+    "2021": 3
+   }
+  },
+  "ks200Reconciliation": {
+   "annualExcessOfTotalReturnOverKs200PricePp": {
+    "2013": 0.974,
+    "2014": 1.059,
+    "2015": 1.387,
+    "2016": 2.021,
+    "2017": 2.205,
+    "2018": 2.005,
+    "2019": 2.265,
+    "2020": 3.018,
+    "2021": 1.74,
+    "2022": 2.002,
+    "2023": 1.864,
+    "2024": 1.849,
+    "2025": 3.539,
+    "2026": 0.999
+   },
+   "mean2017to2024": 2.119,
+   "meaning": "a gross total-return index should exceed the price index by about the distribution yield; no unexplained accrual is visible in this series (the replay-v16 069500 series applies each distribution about twice)"
+  },
+  "taxBasis": {
+   "assumedStatutoryRatePct": 15.4,
+   "coverage": "only the issuer's 20 most recent distributions state a taxable base; the other 26 are UNKNOWN, not zero",
+   "dragAtAssumedStatutoryRatePpPerYear": 0.3017,
+   "dragPpPerYearPerOnePointOfTaxRate": 0.01959,
+   "grossYieldPpPerYear": 1.9833,
+   "rateStatus": "UNVERIFIED_ASSUMPTION_NOT_RETAINED_FROM_AN_OFFICIAL_SOURCE_IN_THIS_REPOSITORY",
+   "records": 20,
+   "taxableBaseYieldPpPerYear": 1.959,
+   "taxableShareOfCash": {
+    "max": 1.0,
+    "mean": 0.9807,
+    "min": 0.8239
+   },
+   "unit": "percentage points per year per 100% ETF weight"
+  }
+ },
+ "evidenceClass": "RETAINED_SOURCE_READ_ONLY_NO_STRATEGY_RETURN",
+ "inputs": {
+  "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json": "58580c4370ec2c5afa124f849afbc4fa7b5c879012e75ebbd48ee7c7a0e659a9",
+  "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-dividends.json": "3f23e3a8ce9c34506e1316bc8b6263c85cfa78086c3725743e02a3d653eeb0df"
+ },
+ "missingHistoricalEvidence": [
+  "26 of 46 distributions have no official payment date (first: ex 2012-04-27, record 2012-04-30); the retained annual reports list the record date only (지급기준일), and the issuer API serves the 20 most recent",
+  "taxable base for the 26 earlier distributions",
+  "any investable KRW cash-return series with dated source evidence (retained ECOS evidence covers the base rate 722Y001/0101000 and 3-year Treasuries only, status REVISED_HISTORY, no release vintage)",
+  "release/vintage evidence for KS200, VIX and DGS inputs beyond the single 2012-01-03 H.15 release"
+ ],
+ "ownerOnlyDecisions": [
+  "RIGHTS: retention and downstream research use of the KODEX/Samsung Asset Management distribution and quote files, of the FRED-served series (VIXCLS carries a Cboe 'reprinted with permission' notice that is not a downstream grant) and of the KS200 series; HTTP 200 or a retained checksum is not permission",
+  "CASH: which investable KRW cash return (or the registered ZERO scenario) the economic reading uses; the BOK base rate is a non-investable proxy",
+  "TOTAL_RETURN: accept ex-date-close gross reinvestment as the funded ETF basis with the documented payment-timing bound, or require pay-date reinvestment (needs 26 further payment dates), and pre-tax versus after-tax",
+  "CRITERIA: economic tolerances, inference and multiplicity, first evaluation and support, exact-hash execution packet"
+ ],
+ "studyId": "market-research-c1c-source-evidence-v1"
+}
