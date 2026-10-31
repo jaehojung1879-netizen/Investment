@@ -1,0 +1,670 @@
+{
+ "cells": [
+  {
+   "byRho": {
+    "0": {
+     "liberalNeweyWestRejection": 0.085,
+     "meanPerDateSd": 0.408233790338157,
+     "meanStatistic": 0.0007411413397529915,
+     "registeredSnRejection": 0.046,
+     "sdOfDateMean": 0.10536086566527592
+    },
+    "0.05": {
+     "liberalNeweyWestRejection": 0.188,
+     "meanPerDateSd": 0.4076644563423945,
+     "meanStatistic": 0.05596825654319702,
+     "registeredSnRejection": 0.106,
+     "sdOfDateMean": 0.1009504667592292
+    },
+    "0.1": {
+     "liberalNeweyWestRejection": 0.3715,
+     "meanPerDateSd": 0.4025913411801687,
+     "meanStatistic": 0.11666332054859313,
+     "registeredSnRejection": 0.2295,
+     "sdOfDateMean": 0.10226631508922714
+    },
+    "0.136": {
+     "liberalNeweyWestRejection": 0.5205,
+     "meanPerDateSd": 0.3974047648017581,
+     "meanStatistic": 0.15487927591733672,
+     "registeredSnRejection": 0.333,
+     "sdOfDateMean": 0.09673504819460423
+    },
+    "0.2": {
+     "liberalNeweyWestRejection": 0.7585,
+     "meanPerDateSd": 0.389256897938373,
+     "meanStatistic": 0.22499379914091702,
+     "registeredSnRejection": 0.527,
+     "sdOfDateMean": 0.0983413384662158
+    },
+    "0.3": {
+     "liberalNeweyWestRejection": 0.9595,
+     "meanPerDateSd": 0.3634497890750964,
+     "meanStatistic": 0.3402195890013828,
+     "registeredSnRejection": 0.8355,
+     "sdOfDateMean": 0.09139236195519218
+    },
+    "0.4": {
+     "liberalNeweyWestRejection": 0.9985,
+     "meanPerDateSd": 0.3299603316332441,
+     "meanStatistic": 0.44769681530204114,
+     "registeredSnRejection": 0.9615,
+     "sdOfDateMean": 0.08180046324678078
+    },
+    "0.5": {
+     "liberalNeweyWestRejection": 1.0,
+     "meanPerDateSd": 0.28407146128249866,
+     "meanStatistic": 0.5536603686100572,
+     "registeredSnRejection": 0.9965,
+     "sdOfDateMean": 0.06936239855752434
+    }
+   },
+   "design": "K2",
+   "effectiveIndependentDatesUnderNull": 15.01271493438007,
+   "horizon": "H126",
+   "meanCrossSection": 9.098445595854923,
+   "meanResidualDf": 5.098445595854923,
+   "minimumDetectableRhoAtPowerFloor": 0.3,
+   "noise": "IID_NORMAL",
+   "usableDates": 193
+  },
+  {
+   "byRho": {
+    "0": {
+     "liberalNeweyWestRejection": 0.086,
+     "meanPerDateSd": 0.407504460246937,
+     "meanStatistic": 0.0011198667261094154,
+     "registeredSnRejection": 0.0455,
+     "sdOfDateMean": 0.10248995620880795
+    },
+    "0.05": {
+     "liberalNeweyWestRejection": 0.203,
+     "meanPerDateSd": 0.40762162848494304,
+     "meanStatistic": 0.05665809369867297,
+     "registeredSnRejection": 0.1205,
+     "sdOfDateMean": 0.10313641529644449
+    },
+    "0.1": {
+     "liberalNeweyWestRejection": 0.362,
+     "meanPerDateSd": 0.40570860459914837,
+     "meanStatistic": 0.11451598587951284,
+     "registeredSnRejection": 0.2195,
+     "sdOfDateMean": 0.10039555504406178
+    },
+    "0.136": {
+     "liberalNeweyWestRejection": 0.525,
+     "meanPerDateSd": 0.3992651224829302,
+     "meanStatistic": 0.15629473060103774,
+     "registeredSnRejection": 0.33,
+     "sdOfDateMean": 0.10229207882620715
+    },
+    "0.2": {
+     "liberalNeweyWestRejection": 0.7565,
+     "meanPerDateSd": 0.3887671059433292,
+     "meanStatistic": 0.2282653508096974,
+     "registeredSnRejection": 0.5435,
+     "sdOfDateMean": 0.09861564313145298
+    },
+    "0.3": {
+     "liberalNeweyWestRejection": 0.9675,
+     "meanPerDateSd": 0.36230818711795126,
+     "meanStatistic": 0.34212420171414754,
+     "registeredSnRejection": 0.843,
+     "sdOfDateMean": 0.09186393747315053
+    },
+    "0.4": {
+     "liberalNeweyWestRejection": 0.9985,
+     "meanPerDateSd": 0.32801995054952815,
+     "meanStatistic": 0.4510008985121864,
+     "registeredSnRejection": 0.959,
+     "sdOfDateMean": 0.08238245147284766
+    },
+    "0.5": {
+     "liberalNeweyWestRejection": 0.9995,
+     "meanPerDateSd": 0.2825578850593654,
+     "meanStatistic": 0.5593278493364846,
+     "registeredSnRejection": 0.996,
+     "sdOfDateMean": 0.07126720961794542
+    }
+   },
+   "design": "K2",
+   "effectiveIndependentDatesUnderNull": 15.808916951895418,
+   "horizon": "H126",
+   "meanCrossSection": 9.098445595854923,
+   "meanResidualDf": 5.098445595854923,
+   "minimumDetectableRhoAtPowerFloor": 0.3,
+   "noise": "T4",
+   "usableDates": 193
+  },
+  {
+   "byRho": {
+    "0": {
+     "liberalNeweyWestRejection": 0.086,
+     "meanPerDateSd": 0.4484839478217907,
+     "meanStatistic": 0.001727669980829402,
+     "registeredSnRejection": 0.045,
+     "sdOfDateMean": 0.10899046797345112
+    },
+    "0.05": {
+     "liberalNeweyWestRejection": 0.1955,
+     "meanPerDateSd": 0.44744402674847794,
+     "meanStatistic": 0.062143515610841034,
+     "registeredSnRejection": 0.108,
+     "sdOfDateMean": 0.10941227757466655
+    },
+    "0.1": {
+     "liberalNeweyWestRejection": 0.3565,
+     "meanPerDateSd": 0.4446773832852983,
+     "meanStatistic": 0.12016884362792185,
+     "registeredSnRejection": 0.2155,
+     "sdOfDateMean": 0.10581509588009018
+    },
+    "0.136": {
+     "liberalNeweyWestRejection": 0.5185,
+     "meanPerDateSd": 0.4377252205737097,
+     "meanStatistic": 0.1645695195876346,
+     "registeredSnRejection": 0.326,
+     "sdOfDateMean": 0.10411279033959495
+    },
+    "0.2": {
+     "liberalNeweyWestRejection": 0.765,
+     "meanPerDateSd": 0.42598274086094456,
+     "meanStatistic": 0.24131004426542882,
+     "registeredSnRejection": 0.538,
+     "sdOfDateMean": 0.10268542703161734
+    },
+    "0.3": {
+     "liberalNeweyWestRejection": 0.975,
+     "meanPerDateSd": 0.39326801092380304,
+     "meanStatistic": 0.36157986294142286,
+     "registeredSnRejection": 0.8455,
+     "sdOfDateMean": 0.09306814734902977
+    },
+    "0.4": {
+     "liberalNeweyWestRejection": 0.997,
+     "meanPerDateSd": 0.3510781405410546,
+     "meanStatistic": 0.4789479435222369,
+     "registeredSnRejection": 0.964,
+     "sdOfDateMean": 0.0838974195518124
+    },
+    "0.5": {
+     "liberalNeweyWestRejection": 1.0,
+     "meanPerDateSd": 0.293847420464931,
+     "meanStatistic": 0.5915808375985646,
+     "registeredSnRejection": 0.9965,
+     "sdOfDateMean": 0.06881446781169442
+    }
+   },
+   "design": "K3",
+   "effectiveIndependentDatesUnderNull": 16.93233187379945,
+   "horizon": "H126",
+   "meanCrossSection": 9.098445595854923,
+   "meanResidualDf": 4.098445595854923,
+   "minimumDetectableRhoAtPowerFloor": 0.3,
+   "noise": "IID_NORMAL",
+   "usableDates": 193
+  },
+  {
+   "byRho": {
+    "0": {
+     "liberalNeweyWestRejection": 0.071,
+     "meanPerDateSd": 0.4496703559679625,
+     "meanStatistic": -0.0013244644637093474,
+     "registeredSnRejection": 0.0385,
+     "sdOfDateMean": 0.1043388841246811
+    },
+    "0.05": {
+     "liberalNeweyWestRejection": 0.1925,
+     "meanPerDateSd": 0.4480296629305367,
+     "meanStatistic": 0.06130870760593436,
+     "registeredSnRejection": 0.11,
+     "sdOfDateMean": 0.10701147810610172
+    },
+    "0.1": {
+     "liberalNeweyWestRejection": 0.385,
+     "meanPerDateSd": 0.4409209741425173,
+     "meanStatistic": 0.12249656351326908,
+     "registeredSnRejection": 0.236,
+     "sdOfDateMean": 0.10657716434343299
+    },
+    "0.136": {
+     "liberalNeweyWestRejection": 0.529,
+     "meanPerDateSd": 0.43662195820915484,
+     "meanStatistic": 0.1676228448332526,
+     "registeredSnRejection": 0.3265,
+     "sdOfDateMean": 0.10277004365581677
+    },
+    "0.2": {
+     "liberalNeweyWestRejection": 0.782,
+     "meanPerDateSd": 0.42323285201487126,
+     "meanStatistic": 0.24556254199414632,
+     "registeredSnRejection": 0.572,
+     "sdOfDateMean": 0.10060897476704156
+    },
+    "0.3": {
+     "liberalNeweyWestRejection": 0.9745,
+     "meanPerDateSd": 0.3906395553739661,
+     "meanStatistic": 0.3718635311740314,
+     "registeredSnRejection": 0.8605,
+     "sdOfDateMean": 0.09221708513293207
+    },
+    "0.4": {
+     "liberalNeweyWestRejection": 0.999,
+     "meanPerDateSd": 0.34804015091987545,
+     "meanStatistic": 0.4868173088630889,
+     "registeredSnRejection": 0.967,
+     "sdOfDateMean": 0.08168462621198239
+    },
+    "0.5": {
+     "liberalNeweyWestRejection": 1.0,
+     "meanPerDateSd": 0.29369389314195127,
+     "meanStatistic": 0.596313417369104,
+     "registeredSnRejection": 0.998,
+     "sdOfDateMean": 0.06942840004507995
+    }
+   },
+   "design": "K3",
+   "effectiveIndependentDatesUnderNull": 18.573602239226073,
+   "horizon": "H126",
+   "meanCrossSection": 9.098445595854923,
+   "meanResidualDf": 4.098445595854923,
+   "minimumDetectableRhoAtPowerFloor": 0.3,
+   "noise": "T4",
+   "usableDates": 193
+  },
+  {
+   "byRho": {
+    "0": {
+     "liberalNeweyWestRejection": 0.1215,
+     "meanPerDateSd": 0.40708195193812535,
+     "meanStatistic": 0.0012926600133747665,
+     "registeredSnRejection": 0.062,
+     "sdOfDateMean": 0.13058990444525564
+    },
+    "0.05": {
+     "liberalNeweyWestRejection": 0.204,
+     "meanPerDateSd": 0.4076990204617323,
+     "meanStatistic": 0.056802711865226514,
+     "registeredSnRejection": 0.108,
+     "sdOfDateMean": 0.12874596077009154
+    },
+    "0.1": {
+     "liberalNeweyWestRejection": 0.3505,
+     "meanPerDateSd": 0.40356537010641336,
+     "meanStatistic": 0.11286859289250557,
+     "registeredSnRejection": 0.191,
+     "sdOfDateMean": 0.1258844883007769
+    },
+    "0.136": {
+     "liberalNeweyWestRejection": 0.431,
+     "meanPerDateSd": 0.400378829836096,
+     "meanStatistic": 0.14926747626216252,
+     "registeredSnRejection": 0.2535,
+     "sdOfDateMean": 0.1241648195528739
+    },
+    "0.2": {
+     "liberalNeweyWestRejection": 0.6725,
+     "meanPerDateSd": 0.3885865796535258,
+     "meanStatistic": 0.22815790491814772,
+     "registeredSnRejection": 0.455,
+     "sdOfDateMean": 0.12155370327848561
+    },
+    "0.3": {
+     "liberalNeweyWestRejection": 0.885,
+     "meanPerDateSd": 0.36426778393335857,
+     "meanStatistic": 0.3335123752288848,
+     "registeredSnRejection": 0.704,
+     "sdOfDateMean": 0.1141423177934777
+    },
+    "0.4": {
+     "liberalNeweyWestRejection": 0.985,
+     "meanPerDateSd": 0.3275695115695939,
+     "meanStatistic": 0.45030744310750864,
+     "registeredSnRejection": 0.904,
+     "sdOfDateMean": 0.10124963292053424
+    },
+    "0.5": {
+     "liberalNeweyWestRejection": 0.9985,
+     "meanPerDateSd": 0.284174993247743,
+     "meanStatistic": 0.5560808054402636,
+     "registeredSnRejection": 0.9765,
+     "sdOfDateMean": 0.09024055545940089
+    }
+   },
+   "design": "K2",
+   "effectiveIndependentDatesUnderNull": 9.717274885019524,
+   "horizon": "H252",
+   "meanCrossSection": 9.121693121693122,
+   "meanResidualDf": 5.121693121693122,
+   "minimumDetectableRhoAtPowerFloor": 0.4,
+   "noise": "IID_NORMAL",
+   "usableDates": 189
+  },
+  {
+   "byRho": {
+    "0": {
+     "liberalNeweyWestRejection": 0.1255,
+     "meanPerDateSd": 0.40743261757084215,
+     "meanStatistic": 0.0026815003016669257,
+     "registeredSnRejection": 0.056,
+     "sdOfDateMean": 0.12993076350270114
+    },
+    "0.05": {
+     "liberalNeweyWestRejection": 0.2185,
+     "meanPerDateSd": 0.4052230007237619,
+     "meanStatistic": 0.05927399055394858,
+     "registeredSnRejection": 0.122,
+     "sdOfDateMean": 0.1262059398976256
+    },
+    "0.1": {
+     "liberalNeweyWestRejection": 0.356,
+     "meanPerDateSd": 0.40193123491949145,
+     "meanStatistic": 0.11543447274508842,
+     "registeredSnRejection": 0.202,
+     "sdOfDateMean": 0.12683945052036985
+    },
+    "0.136": {
+     "liberalNeweyWestRejection": 0.4635,
+     "meanPerDateSd": 0.3992706213202446,
+     "meanStatistic": 0.15637479358757764,
+     "registeredSnRejection": 0.285,
+     "sdOfDateMean": 0.12730611917511045
+    },
+    "0.2": {
+     "liberalNeweyWestRejection": 0.675,
+     "meanPerDateSd": 0.3873712651243303,
+     "meanStatistic": 0.22737366289745015,
+     "registeredSnRejection": 0.46,
+     "sdOfDateMean": 0.12337507253151876
+    },
+    "0.3": {
+     "liberalNeweyWestRejection": 0.896,
+     "meanPerDateSd": 0.36188387731522664,
+     "meanStatistic": 0.34185314921302834,
+     "registeredSnRejection": 0.7125,
+     "sdOfDateMean": 0.11511393442357692
+    },
+    "0.4": {
+     "liberalNeweyWestRejection": 0.982,
+     "meanPerDateSd": 0.3301074679143611,
+     "meanStatistic": 0.44831740695630384,
+     "registeredSnRejection": 0.895,
+     "sdOfDateMean": 0.10274818307046217
+    },
+    "0.5": {
+     "liberalNeweyWestRejection": 0.998,
+     "meanPerDateSd": 0.28117447412318747,
+     "meanStatistic": 0.5599365366830478,
+     "registeredSnRejection": 0.98,
+     "sdOfDateMean": 0.09009813809955357
+    }
+   },
+   "design": "K2",
+   "effectiveIndependentDatesUnderNull": 9.833035503399847,
+   "horizon": "H252",
+   "meanCrossSection": 9.121693121693122,
+   "meanResidualDf": 5.121693121693122,
+   "minimumDetectableRhoAtPowerFloor": 0.4,
+   "noise": "T4",
+   "usableDates": 189
+  },
+  {
+   "byRho": {
+    "0": {
+     "liberalNeweyWestRejection": 0.128,
+     "meanPerDateSd": 0.4468873947812734,
+     "meanStatistic": 0.004232583522660478,
+     "registeredSnRejection": 0.064,
+     "sdOfDateMean": 0.1334870779589209
+    },
+    "0.05": {
+     "liberalNeweyWestRejection": 0.2285,
+     "meanPerDateSd": 0.4464898281584013,
+     "meanStatistic": 0.06393167280176357,
+     "registeredSnRejection": 0.123,
+     "sdOfDateMean": 0.13527890356744618
+    },
+    "0.1": {
+     "liberalNeweyWestRejection": 0.3515,
+     "meanPerDateSd": 0.44231152810570784,
+     "meanStatistic": 0.1187716623318656,
+     "registeredSnRejection": 0.2005,
+     "sdOfDateMean": 0.13018272881791698
+    },
+    "0.136": {
+     "liberalNeweyWestRejection": 0.488,
+     "meanPerDateSd": 0.43487770305906975,
+     "meanStatistic": 0.16941582321314363,
+     "registeredSnRejection": 0.3035,
+     "sdOfDateMean": 0.12668436586333795
+    },
+    "0.2": {
+     "liberalNeweyWestRejection": 0.6905,
+     "meanPerDateSd": 0.4232720578120758,
+     "meanStatistic": 0.24166513569114237,
+     "registeredSnRejection": 0.464,
+     "sdOfDateMean": 0.12314131244295698
+    },
+    "0.3": {
+     "liberalNeweyWestRejection": 0.902,
+     "meanPerDateSd": 0.39475832112257936,
+     "meanStatistic": 0.3592176737183501,
+     "registeredSnRejection": 0.7255,
+     "sdOfDateMean": 0.11656030998454442
+    },
+    "0.4": {
+     "liberalNeweyWestRejection": 0.988,
+     "meanPerDateSd": 0.34902928659307364,
+     "meanStatistic": 0.4792563660392449,
+     "registeredSnRejection": 0.9125,
+     "sdOfDateMean": 0.10425249783967994
+    },
+    "0.5": {
+     "liberalNeweyWestRejection": 1.0,
+     "meanPerDateSd": 0.29557787705613886,
+     "meanStatistic": 0.590432144894804,
+     "registeredSnRejection": 0.982,
+     "sdOfDateMean": 0.08823463436622876
+    }
+   },
+   "design": "K3",
+   "effectiveIndependentDatesUnderNull": 11.207732496913895,
+   "horizon": "H252",
+   "meanCrossSection": 9.121693121693122,
+   "meanResidualDf": 4.121693121693122,
+   "minimumDetectableRhoAtPowerFloor": 0.4,
+   "noise": "IID_NORMAL",
+   "usableDates": 189
+  },
+  {
+   "byRho": {
+    "0": {
+     "liberalNeweyWestRejection": 0.1045,
+     "meanPerDateSd": 0.44853194336470564,
+     "meanStatistic": -0.0006927910900196152,
+     "registeredSnRejection": 0.0525,
+     "sdOfDateMean": 0.13331547082656772
+    },
+    "0.05": {
+     "liberalNeweyWestRejection": 0.22,
+     "meanPerDateSd": 0.4444415905114593,
+     "meanStatistic": 0.06121821971422526,
+     "registeredSnRejection": 0.12,
+     "sdOfDateMean": 0.13361643765792172
+    },
+    "0.1": {
+     "liberalNeweyWestRejection": 0.3525,
+     "meanPerDateSd": 0.44040992289300357,
+     "meanStatistic": 0.12248805062175415,
+     "registeredSnRejection": 0.2065,
+     "sdOfDateMean": 0.13136365530326216
+    },
+    "0.136": {
+     "liberalNeweyWestRejection": 0.483,
+     "meanPerDateSd": 0.4355197788320896,
+     "meanStatistic": 0.16806306538256865,
+     "registeredSnRejection": 0.2775,
+     "sdOfDateMean": 0.12679497985281907
+    },
+    "0.2": {
+     "liberalNeweyWestRejection": 0.6825,
+     "meanPerDateSd": 0.4229214669875055,
+     "meanStatistic": 0.24567770787065837,
+     "registeredSnRejection": 0.4645,
+     "sdOfDateMean": 0.12403792799980899
+    },
+    "0.3": {
+     "liberalNeweyWestRejection": 0.919,
+     "meanPerDateSd": 0.3902009187743565,
+     "meanStatistic": 0.36513699099318325,
+     "registeredSnRejection": 0.7295,
+     "sdOfDateMean": 0.1147475429227547
+    },
+    "0.4": {
+     "liberalNeweyWestRejection": 0.986,
+     "meanPerDateSd": 0.3495733947606823,
+     "meanStatistic": 0.4785680886104137,
+     "registeredSnRejection": 0.9185,
+     "sdOfDateMean": 0.10190991592177567
+    },
+    "0.5": {
+     "liberalNeweyWestRejection": 1.0,
+     "meanPerDateSd": 0.29239657077654874,
+     "meanStatistic": 0.5943534572053462,
+     "registeredSnRejection": 0.988,
+     "sdOfDateMean": 0.08403708186803724
+    }
+   },
+   "design": "K3",
+   "effectiveIndependentDatesUnderNull": 11.319458567712893,
+   "horizon": "H252",
+   "meanCrossSection": 9.121693121693122,
+   "meanResidualDf": 4.121693121693122,
+   "minimumDetectableRhoAtPowerFloor": 0.4,
+   "noise": "T4",
+   "usableDates": 189
+  }
+ ],
+ "decision": {
+  "powerFloor": 0.8,
+  "primaryPowerAtMeaningfulRho": 0.2295,
+  "sizeByCell": {
+   "H126|K2|IID_NORMAL": 0.046,
+   "H126|K2|T4": 0.0455,
+   "H126|K3|IID_NORMAL": 0.045,
+   "H126|K3|T4": 0.0385,
+   "H252|K2|IID_NORMAL": 0.062,
+   "H252|K2|T4": 0.056,
+   "H252|K3|IID_NORMAL": 0.064,
+   "H252|K3|T4": 0.0525
+  },
+  "sizeCeiling": 0.0375,
+  "sizeWithinCeiling": false,
+  "verdict": "NO_GO"
+ },
+ "fullCoverageScenario": {
+  "byRho": {
+   "0": {
+    "liberalNeweyWestRejection": 0.069,
+    "meanPerDateSd": 0.3020456265702764,
+    "meanStatistic": 0.0012395201423494374,
+    "registeredSnRejection": 0.028,
+    "sdOfDateMean": 0.05278117456300866
+   },
+   "0.05": {
+    "liberalNeweyWestRejection": 0.292,
+    "meanPerDateSd": 0.2995156089520202,
+    "meanStatistic": 0.052654072161167395,
+    "registeredSnRejection": 0.157,
+    "sdOfDateMean": 0.05056840241431828
+   },
+   "0.1": {
+    "liberalNeweyWestRejection": 0.661,
+    "meanPerDateSd": 0.2979230450063186,
+    "meanStatistic": 0.10738663517960244,
+    "registeredSnRejection": 0.395,
+    "sdOfDateMean": 0.05155090516765555
+   },
+   "0.136": {
+    "liberalNeweyWestRejection": 0.875,
+    "meanPerDateSd": 0.2945492186538239,
+    "meanStatistic": 0.14392626979088924,
+    "registeredSnRejection": 0.613,
+    "sdOfDateMean": 0.051015747643779086
+   },
+   "0.2": {
+    "liberalNeweyWestRejection": 0.991,
+    "meanPerDateSd": 0.28713216756567095,
+    "meanStatistic": 0.21052502464325487,
+    "registeredSnRejection": 0.883,
+    "sdOfDateMean": 0.049210632815974355
+   },
+   "0.3": {
+    "liberalNeweyWestRejection": 1.0,
+    "meanPerDateSd": 0.2689495202152802,
+    "meanStatistic": 0.31968952297750425,
+    "registeredSnRejection": 0.992,
+    "sdOfDateMean": 0.04535975048863505
+   },
+   "0.4": {
+    "liberalNeweyWestRejection": 1.0,
+    "meanPerDateSd": 0.2442989281614675,
+    "meanStatistic": 0.42259475414564646,
+    "registeredSnRejection": 1.0,
+    "sdOfDateMean": 0.041746351068984895
+   },
+   "0.5": {
+    "liberalNeweyWestRejection": 1.0,
+    "meanPerDateSd": 0.21327868617199472,
+    "meanStatistic": 0.5300595280219149,
+    "registeredSnRejection": 1.0,
+    "sdOfDateMean": 0.037593054651302506
+   }
+  },
+  "design": "K2",
+  "effectiveIndependentDatesUnderNull": 32.74816746034208,
+  "horizon": "H126",
+  "meanCrossSection": 14.0,
+  "meanResidualDf": 10.0,
+  "minimumDetectableRhoAtPowerFloor": 0.2,
+  "noise": "IID_NORMAL",
+  "status": "POST_GATE_SPECIFIED_DGP_SCENARIO_NOT_A_BOUND_NOT_A_DECISION_INPUT",
+  "usableDates": 585
+ },
+ "outcomeAccess": "NONE: input columns only, synthetic labels",
+ "panelSha256": "97a489faf73585880be3a9e647d3f6718e6beca74af68ad5e6d7870ccc59be0d",
+ "primaryAlpha": 0.025,
+ "protocolSha256": "e20414abaf90502c5aa627d1168896f769a4294f6fe54c23d67f242dba9d6973",
+ "replications": 2000,
+ "snOneSidedCritical": 6.695509287814688,
+ "stage": "OUTCOME_FREE_POWER_AND_FEASIBILITY_GATE",
+ "studyId": "industry-ocfyield-conditional-v1",
+ "support": {
+  "crossSectionOnUsableDates": {
+   "max": 11,
+   "median": 9.0,
+   "min": 8
+  },
+  "datesMeetingMinCrossSection": 193,
+  "gridDates": 610,
+  "industries": 14,
+  "industryDates": 8540,
+  "jointFiniteIndustryDates": 3613,
+  "usableDatesByYear": {
+   "2017": 11,
+   "2018": 2,
+   "2019": 43,
+   "2020": 53,
+   "2021": 11,
+   "2022": 42,
+   "2023": 21,
+   "2025": 10
+  },
+  "yearsWithZeroUsableDates": [
+   2015,
+   2016,
+   2024,
+   2026
+  ]
+ }
+}
