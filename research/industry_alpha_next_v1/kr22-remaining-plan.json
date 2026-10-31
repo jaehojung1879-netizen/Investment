@@ -1,0 +1,1191 @@
+{
+ "contract": "KR22_DART_COLLECTION_PLAN_V1",
+ "counts": {
+  "DOCUMENT_ANNUAL": 0,
+  "DOCUMENT_DIVIDEND_DECISION": 141,
+  "LIST_A001": 0,
+  "VIEWER_ROUTE_REQUIRED": 0
+ },
+ "denominator": 22,
+ "evidenceClass": "SOURCE_REQUEST_PLAN_NOT_EVIDENCE",
+ "fiscalYearSlots": 0,
+ "historicalOutcomesRead": 0,
+ "inWindowSecurities": [
+  "000030.KS",
+  "000060.KS",
+  "000830.KS",
+  "002550.KS",
+  "003410.KS",
+  "003450.KS",
+  "003600.KS",
+  "008560.KS",
+  "010520.KS",
+  "010620.KS",
+  "012510.KS",
+  "037620.KS",
+  "042670.KS",
+  "057050.KS",
+  "079440.KS",
+  "117930.KS"
+ ],
+ "inputs": {
+  "blobSha1": {
+   "ledger/kr-corporate-actions/document-fetch-state.json": "f20fa37c34af021efcaa4112c254401b990c300b",
+   "ledger/kr-corporate-actions/kr-corporate-actions-disclosures.jsonl.gz": "0b22866c2535f2821164ae2141ae65549076f11a"
+  },
+  "kr22SourceRecoverySha256": "e4aa62c9d8ea5b1988e0222c367c4f9f14c7d227c0c580c0d8f864931c2834fc",
+  "signalHistoryCommit": "d646a69cfc8befdf2b2ad26179c486c13d1faebd"
+ },
+ "networkUsed": false,
+ "outOfWindowSecuritiesNotRequested": [
+  "001300.KS",
+  "004940.KS",
+  "011160.KS",
+  "053000.KS",
+  "067250.KS",
+  "115390.KS"
+ ],
+ "planSha256": "6eb1f93a8667667fe51da64e467af488cf56ddbcca5e352029ace9c7904256e1",
+ "pricesRead": 0,
+ "reducedFrom": {
+  "droppedAsAlreadyHeld": [
+   "LIST_A001",
+   "DOCUMENT_ANNUAL"
+  ],
+  "droppedNoCollector": [
+   "VIEWER_ROUTE_REQUIRED"
+  ],
+  "planSha256": "00c72389ab2f45747495e40333f9b67dca7ebf55ae76477477dd7714030b518b",
+  "reconciliation": "KR22_REPOSITORY_ORIGINALS_RECONCILIATION_V1"
+ },
+ "requests": [
+  {
+   "code": "000030.KS",
+   "corpCode": "00254045",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2015-03-06",
+   "receiptNo": "20150306800144"
+  },
+  {
+   "code": "000030.KS",
+   "corpCode": "00254045",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2015-07-29",
+   "receiptNo": "20150729800239"
+  },
+  {
+   "code": "000030.KS",
+   "corpCode": "00254045",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2016-03-04",
+   "receiptNo": "20160304800585"
+  },
+  {
+   "code": "000030.KS",
+   "corpCode": "00254045",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2017-03-03",
+   "receiptNo": "20170303800520"
+  },
+  {
+   "code": "000030.KS",
+   "corpCode": "00254045",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2017-07-28",
+   "receiptNo": "20170728800149"
+  },
+  {
+   "code": "000030.KS",
+   "corpCode": "00254045",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2018-03-02",
+   "receiptNo": "20180302800408"
+  },
+  {
+   "code": "000060.KS",
+   "corpCode": "00117744",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2013-04-24",
+   "receiptNo": "20130424800282"
+  },
+  {
+   "code": "000060.KS",
+   "corpCode": "00117744",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2014-01-27",
+   "receiptNo": "20140127800328"
+  },
+  {
+   "code": "000060.KS",
+   "corpCode": "00117744",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2015-01-28",
+   "receiptNo": "20150128800587"
+  },
+  {
+   "code": "000060.KS",
+   "corpCode": "00117744",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2016-01-29",
+   "receiptNo": "20160129800790"
+  },
+  {
+   "code": "000060.KS",
+   "corpCode": "00117744",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2017-02-08",
+   "receiptNo": "20170208800552"
+  },
+  {
+   "code": "000060.KS",
+   "corpCode": "00117744",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2018-01-26",
+   "receiptNo": "20180126800465"
+  },
+  {
+   "code": "000060.KS",
+   "corpCode": "00117744",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2019-01-28",
+   "receiptNo": "20190128800585"
+  },
+  {
+   "code": "000060.KS",
+   "corpCode": "00117744",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2020-01-30",
+   "receiptNo": "20200130800430"
+  },
+  {
+   "code": "000060.KS",
+   "corpCode": "00117744",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2021-02-05",
+   "receiptNo": "20210205800606"
+  },
+  {
+   "code": "000060.KS",
+   "corpCode": "00117744",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2022-02-07",
+   "receiptNo": "20220207800753"
+  },
+  {
+   "code": "000830.KS",
+   "corpCode": "00126229",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2013-01-28",
+   "receiptNo": "20130128800380"
+  },
+  {
+   "code": "000830.KS",
+   "corpCode": "00126229",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2014-01-24",
+   "receiptNo": "20140124800281"
+  },
+  {
+   "code": "000830.KS",
+   "corpCode": "00126229",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2015-01-29",
+   "receiptNo": "20150129800289"
+  },
+  {
+   "code": "002550.KS",
+   "corpCode": "00120216",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2013-04-24",
+   "receiptNo": "20130424800332"
+  },
+  {
+   "code": "002550.KS",
+   "corpCode": "00120216",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2014-01-24",
+   "receiptNo": "20140124800170"
+  },
+  {
+   "code": "002550.KS",
+   "corpCode": "00120216",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2015-02-02",
+   "receiptNo": "20150202800355"
+  },
+  {
+   "code": "002550.KS",
+   "corpCode": "00120216",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2016-02-03",
+   "receiptNo": "20160203800715"
+  },
+  {
+   "code": "002550.KS",
+   "corpCode": "00120216",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2017-02-01",
+   "receiptNo": "20170201800595"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2017-02-09",
+   "receiptNo": "20170209801325"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2017-07-04",
+   "receiptNo": "20170704800513"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2017-10-10",
+   "receiptNo": "20171010800470"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2018-02-08",
+   "receiptNo": "20180208801240"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2018-04-25",
+   "receiptNo": "20180425800824"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2018-07-24",
+   "receiptNo": "20180724800205"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2018-10-31",
+   "receiptNo": "20181031800389"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2019-02-14",
+   "receiptNo": "20190214800434"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2019-04-16",
+   "receiptNo": "20190416800311"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2019-08-06",
+   "receiptNo": "20190806800250"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2019-10-25",
+   "receiptNo": "20191025800168"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2020-02-12",
+   "receiptNo": "20200212800948"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2020-04-20",
+   "receiptNo": "20200420800655"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2020-08-12",
+   "receiptNo": "20200812800554"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2020-10-20",
+   "receiptNo": "20201020800406"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2021-02-09",
+   "receiptNo": "20210209801234"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2021-04-21",
+   "receiptNo": "20210421800500"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2021-08-11",
+   "receiptNo": "20210811800200"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2021-11-10",
+   "receiptNo": "20211110800440"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2022-02-10",
+   "receiptNo": "20220210800530"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2022-04-20",
+   "receiptNo": "20220420800372"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2022-08-10",
+   "receiptNo": "20220810800480"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2022-11-09",
+   "receiptNo": "20221109800262"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2023-02-10",
+   "receiptNo": "20230210800515"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2023-04-20",
+   "receiptNo": "20230420800498"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2023-07-26",
+   "receiptNo": "20230726800352"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2023-10-17",
+   "receiptNo": "20231017800264"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2024-02-07",
+   "receiptNo": "20240207801103"
+  },
+  {
+   "code": "003450.KS",
+   "corpCode": "00164876",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2013-05-23",
+   "receiptNo": "20130523800272"
+  },
+  {
+   "code": "003450.KS",
+   "corpCode": "00164876",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2014-02-26",
+   "receiptNo": "20140226800394"
+  },
+  {
+   "code": "003450.KS",
+   "corpCode": "00164876",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2014-04-01",
+   "receiptNo": "20140401800704"
+  },
+  {
+   "code": "003450.KS",
+   "corpCode": "00164876",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2015-02-24",
+   "receiptNo": "20150224800606"
+  },
+  {
+   "code": "003450.KS",
+   "corpCode": "00164876",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2016-03-02",
+   "receiptNo": "20160302800829"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2013-02-01",
+   "receiptNo": "20130201800530"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2013-02-05",
+   "receiptNo": "20130205800119"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2013-02-05",
+   "receiptNo": "20130205800268"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2013-02-08",
+   "receiptNo": "20130208800135"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2013-07-26",
+   "receiptNo": "20130726800004"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2014-02-04",
+   "receiptNo": "20140204800004"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2014-02-04",
+   "receiptNo": "20140204800298"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2014-02-06",
+   "receiptNo": "20140206800721"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2014-02-07",
+   "receiptNo": "20140207800009"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2014-07-25",
+   "receiptNo": "20140725800002"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2015-02-05",
+   "receiptNo": "20150205800526"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2015-02-06",
+   "receiptNo": "20150206800028"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2015-07-23",
+   "receiptNo": "20150723800492"
+  },
+  {
+   "code": "008560.KS",
+   "corpCode": "00163682",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2013-05-21",
+   "receiptNo": "20130521800361"
+  },
+  {
+   "code": "008560.KS",
+   "corpCode": "00163682",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2014-03-04",
+   "receiptNo": "20140304800662"
+  },
+  {
+   "code": "008560.KS",
+   "corpCode": "00163682",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2015-02-05",
+   "receiptNo": "20150205800735"
+  },
+  {
+   "code": "008560.KS",
+   "corpCode": "00163682",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2016-02-04",
+   "receiptNo": "20160204800797"
+  },
+  {
+   "code": "008560.KS",
+   "corpCode": "00163682",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2017-02-08",
+   "receiptNo": "20170208800510"
+  },
+  {
+   "code": "008560.KS",
+   "corpCode": "00163682",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2018-02-01",
+   "receiptNo": "20180201800535"
+  },
+  {
+   "code": "008560.KS",
+   "corpCode": "00163682",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2019-01-29",
+   "receiptNo": "20190129800711"
+  },
+  {
+   "code": "008560.KS",
+   "corpCode": "00163682",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2020-01-29",
+   "receiptNo": "20200129800447"
+  },
+  {
+   "code": "008560.KS",
+   "corpCode": "00163682",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2021-02-01",
+   "receiptNo": "20210201800630"
+  },
+  {
+   "code": "008560.KS",
+   "corpCode": "00163682",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2022-01-27",
+   "receiptNo": "20220127800709"
+  },
+  {
+   "code": "008560.KS",
+   "corpCode": "00163682",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2023-02-02",
+   "receiptNo": "20230202800579"
+  },
+  {
+   "code": "010520.KS",
+   "corpCode": "00164469",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2013-02-18",
+   "receiptNo": "20130218800223"
+  },
+  {
+   "code": "010520.KS",
+   "corpCode": "00164469",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2014-02-21",
+   "receiptNo": "20140221800499"
+  },
+  {
+   "code": "010520.KS",
+   "corpCode": "00164469",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2015-02-27",
+   "receiptNo": "20150227800930"
+  },
+  {
+   "code": "010620.KS",
+   "corpCode": "00164609",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2013-02-08",
+   "receiptNo": "20130208800247"
+  },
+  {
+   "code": "010620.KS",
+   "corpCode": "00164609",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2014-02-06",
+   "receiptNo": "20140206800697"
+  },
+  {
+   "code": "010620.KS",
+   "corpCode": "00164609",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2019-01-31",
+   "receiptNo": "20190131800416"
+  },
+  {
+   "code": "010620.KS",
+   "corpCode": "00164609",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2020-02-06",
+   "receiptNo": "20200206800322"
+  },
+  {
+   "code": "010620.KS",
+   "corpCode": "00164609",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2025-02-05",
+   "receiptNo": "20250205800653"
+  },
+  {
+   "code": "010620.KS",
+   "corpCode": "00164609",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2025-07-30",
+   "receiptNo": "20250730800478"
+  },
+  {
+   "code": "010620.KS",
+   "corpCode": "00164609",
+   "isAmendment": true,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2025-07-31",
+   "receiptNo": "20250731800111"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2013-02-12",
+   "receiptNo": "20130212800032"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "isAmendment": true,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2013-02-26",
+   "receiptNo": "20130226800101"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2014-02-12",
+   "receiptNo": "20140212800044"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2015-02-09",
+   "receiptNo": "20150209800133"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2016-01-25",
+   "receiptNo": "20160125800065"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2017-02-01",
+   "receiptNo": "20170201800062"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2018-01-24",
+   "receiptNo": "20180124800063"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2019-01-29",
+   "receiptNo": "20190129800143"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2020-02-03",
+   "receiptNo": "20200203800156"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2021-02-02",
+   "receiptNo": "20210202800049"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2022-02-09",
+   "receiptNo": "20220209800907"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2023-02-03",
+   "receiptNo": "20230203800170"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2024-02-06",
+   "receiptNo": "20240206800110"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2025-02-06",
+   "receiptNo": "20250206800076"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "isAmendment": true,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2025-03-31",
+   "receiptNo": "20250331804043"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2026-02-04",
+   "receiptNo": "20260204800094"
+  },
+  {
+   "code": "037620.KS",
+   "corpCode": "00311030",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2013-05-22",
+   "receiptNo": "20130522800161"
+  },
+  {
+   "code": "037620.KS",
+   "corpCode": "00311030",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2014-02-25",
+   "receiptNo": "20140225800473"
+  },
+  {
+   "code": "037620.KS",
+   "corpCode": "00311030",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2015-03-11",
+   "receiptNo": "20150311800914"
+  },
+  {
+   "code": "037620.KS",
+   "corpCode": "00311030",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2016-03-10",
+   "receiptNo": "20160310801748"
+  },
+  {
+   "code": "042670.KS",
+   "corpCode": "00344287",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2023-02-03",
+   "receiptNo": "20230203800663"
+  },
+  {
+   "code": "042670.KS",
+   "corpCode": "00344287",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2024-02-02",
+   "receiptNo": "20240202800624"
+  },
+  {
+   "code": "042670.KS",
+   "corpCode": "00344287",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2025-02-04",
+   "receiptNo": "20250204800477"
+  },
+  {
+   "code": "042670.KS",
+   "corpCode": "00344287",
+   "isAmendment": true,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2025-02-28",
+   "receiptNo": "20250228800088"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2013-02-28",
+   "receiptNo": "20130228800538"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2014-02-05",
+   "receiptNo": "20140205800308"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2015-02-11",
+   "receiptNo": "20150211800443"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2016-02-11",
+   "receiptNo": "20160211800250"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2017-02-07",
+   "receiptNo": "20170207800380"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2018-02-07",
+   "receiptNo": "20180207800932"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2019-02-12",
+   "receiptNo": "20190212800745"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2020-02-10",
+   "receiptNo": "20200210801182"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2020-02-10",
+   "receiptNo": "20200210801198"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2021-02-05",
+   "receiptNo": "20210205800944"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2021-02-05",
+   "receiptNo": "20210205800987"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2022-02-08",
+   "receiptNo": "20220208800269"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2022-02-08",
+   "receiptNo": "20220208800824"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2023-02-07",
+   "receiptNo": "20230207800623"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2023-02-07",
+   "receiptNo": "20230207800840"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2024-02-06",
+   "receiptNo": "20240206800869"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2025-02-07",
+   "receiptNo": "20250207800672"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2026-02-09",
+   "receiptNo": "20260209800697"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2026-02-11",
+   "receiptNo": "20260211800225"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2026-02-11",
+   "receiptNo": "20260211800453"
+  },
+  {
+   "code": "079440.KS",
+   "corpCode": "00176792",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2017-08-18",
+   "receiptNo": "20170818800233"
+  },
+  {
+   "code": "079440.KS",
+   "corpCode": "00176792",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2018-02-08",
+   "receiptNo": "20180208801069"
+  },
+  {
+   "code": "079440.KS",
+   "corpCode": "00176792",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2018-08-13",
+   "receiptNo": "20180813800158"
+  },
+  {
+   "code": "079440.KS",
+   "corpCode": "00176792",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2019-02-11",
+   "receiptNo": "20190211801121"
+  },
+  {
+   "code": "079440.KS",
+   "corpCode": "00176792",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2019-08-12",
+   "receiptNo": "20190812800253"
+  },
+  {
+   "code": "079440.KS",
+   "corpCode": "00176792",
+   "isAmendment": false,
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptDate": "2020-02-04",
+   "receiptNo": "20200204800570"
+  }
+ ]
+}

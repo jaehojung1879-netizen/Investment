@@ -1,0 +1,418 @@
+{
+  "schema": "INDUSTRY_ALPHA_AUDIT_PROVENANCE_V1",
+  "auditedAtUTC": "2026-10-24T23:54:04Z",
+  "auditedMain": "b589d658eedd3c47f555df20db86f37792ee3358",
+  "sourceAccess": "GitHub connector; local sparse copy because git clone proxy unavailable",
+  "sourceFiles": [
+    {
+      "path": "AGENTS.md",
+      "gitBlobSha": "d8a1a9020cceef45475cee2d58ad1349a304050e",
+      "bytes": 258682,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/AGENTS.md"
+    },
+    {
+      "path": "docs/kr-alpha-atlas-executive-summary-ko.md",
+      "gitBlobSha": "ea64ef39efe190bdfe1770348e8ae8d3dccd1271",
+      "bytes": 5492,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/docs/kr-alpha-atlas-executive-summary-ko.md"
+    },
+    {
+      "path": "docs/kr-alpha-atlas-methodology.md",
+      "gitBlobSha": "80b749b0027463b72d3d140695b4ab54a3c93267",
+      "bytes": 16202,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/docs/kr-alpha-atlas-methodology.md"
+    },
+    {
+      "path": "docs/kr-alpha-atlas-phase-c-interpretation-ko.md",
+      "gitBlobSha": "9f73316bd905d1626afd7cc3c4f15547463b7846",
+      "bytes": 10144,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/docs/kr-alpha-atlas-phase-c-interpretation-ko.md"
+    },
+    {
+      "path": "docs/kr-alpha-atlas-phase-c-v4-reproducibility-ko.md",
+      "gitBlobSha": "34db543d91791a298030fc18354cbddf8e2c6f22",
+      "bytes": 7581,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/docs/kr-alpha-atlas-phase-c-v4-reproducibility-ko.md"
+    },
+    {
+      "path": "docs/kr-industry-membership-foundation-v1-openapi.md",
+      "gitBlobSha": "0ad7f8fdac3cd595b0e1e1c8ae4daf482452f5f2",
+      "bytes": 6331,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/docs/kr-industry-membership-foundation-v1-openapi.md"
+    },
+    {
+      "path": "docs/kr-industry-membership-foundation-v1.md",
+      "gitBlobSha": "c2684c99d13dfba13a04c3507bd4df94884bb0a0",
+      "bytes": 16669,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/docs/kr-industry-membership-foundation-v1.md"
+    },
+    {
+      "path": "docs/kr-industry-membership-foundation-v2.md",
+      "gitBlobSha": "d3017f996a0117271939f52524b3e49774e083b6",
+      "bytes": 4025,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/docs/kr-industry-membership-foundation-v2.md"
+    },
+    {
+      "path": "docs/kr-industry-membership-foundation-v3.md",
+      "gitBlobSha": "3b5869ff534498e441eebb1f779f5c5d43a9658c",
+      "bytes": 7069,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/docs/kr-industry-membership-foundation-v3.md"
+    },
+    {
+      "path": "docs/kr-industry-membership-foundation-v4.md",
+      "gitBlobSha": "8f7901922a0175fa90d97c4c843a3d0c0739463e",
+      "bytes": 4427,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/docs/kr-industry-membership-foundation-v4.md"
+    },
+    {
+      "path": "docs/kr-industry-opportunity-anatomy-v1-design.md",
+      "gitBlobSha": "d4b70a86d443b60357789edb75e334b64740be11",
+      "bytes": 7614,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/docs/kr-industry-opportunity-anatomy-v1-design.md"
+    },
+    {
+      "path": "docs/kr-industry-opportunity-anatomy-v1-result-seal.md",
+      "gitBlobSha": "f8bca18c174a1bbe03b721a8c8f3d50d5048c051",
+      "bytes": 2438,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/docs/kr-industry-opportunity-anatomy-v1-result-seal.md"
+    },
+    {
+      "path": "docs/kr-stock-within-industry-anatomy-v1-design.md",
+      "gitBlobSha": "ba314855bce103ef80c33faf7a0c2faeafa90a2f",
+      "bytes": 10489,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/docs/kr-stock-within-industry-anatomy-v1-design.md"
+    },
+    {
+      "path": "docs/kr-stock-within-industry-anatomy-v1-result-seal.md",
+      "gitBlobSha": "322bc98385f7959e7d5d15c37adb47e98fa6b2e8",
+      "bytes": 2781,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/docs/kr-stock-within-industry-anatomy-v1-result-seal.md"
+    },
+    {
+      "path": "docs/market-industry-stock-data-foundation-v1.md",
+      "gitBlobSha": "74ebb85e09c9e016ae884489a1efcf8ea71ed54c",
+      "bytes": 25543,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/docs/market-industry-stock-data-foundation-v1.md"
+    },
+    {
+      "path": "docs/results/kr-industry-opportunity-anatomy-v1-report.md",
+      "gitBlobSha": "593998d660e4c824cabe75f1a07e8792bdaecde0",
+      "bytes": 21488,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/docs/results/kr-industry-opportunity-anatomy-v1-report.md"
+    },
+    {
+      "path": "docs/results/kr-stock-within-industry-anatomy-v1-report.md",
+      "gitBlobSha": "9232108629db493dba3c2133114282d6c9f78fd3",
+      "bytes": 22881,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/docs/results/kr-stock-within-industry-anatomy-v1-report.md"
+    },
+    {
+      "path": "docs/kr-alpha-research-final-development-assessment.md",
+      "gitBlobSha": "893fe2c0cdd567a892b6e8b838e09389301a22b8",
+      "bytes": 9601,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/docs/kr-alpha-research-final-development-assessment.md"
+    },
+    {
+      "path": "docs/kr-integrated-alpha-portfolio-v1-postoutcome-concentration-audit.md",
+      "gitBlobSha": "ee4a335de169d57ea077e214f851fa72dbb3a21d",
+      "bytes": 32831,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/docs/kr-integrated-alpha-portfolio-v1-postoutcome-concentration-audit.md"
+    },
+    {
+      "path": "docs/weekly-decision/kodex200-benchmark-audit.md",
+      "gitBlobSha": "bbd5b12f7a4d0067076032c5bf1bab7847b35af2",
+      "bytes": 6986,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/docs/weekly-decision/kodex200-benchmark-audit.md"
+    },
+    {
+      "path": "scripts/acquire_us_sp500_snapshot_sectors.py",
+      "gitBlobSha": "be1a219d18745f79c3e3f2c1fcfd69df5dbdb586",
+      "bytes": 5060,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/scripts/acquire_us_sp500_snapshot_sectors.py"
+    },
+    {
+      "path": "pipeline/sectors.py",
+      "gitBlobSha": "4abec8c8ab5677f46ae78e73f21dca44bbdc39f5",
+      "bytes": 4930,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/pipeline/sectors.py"
+    },
+    {
+      "path": "pipeline/industry_foundation.py",
+      "gitBlobSha": "7a6d9d7d7f67e8496dab351e98b3c071d29c3027",
+      "bytes": 15525,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/pipeline/industry_foundation.py"
+    },
+    {
+      "path": "docs/research-program/README.md",
+      "gitBlobSha": "a256909fce14460982cb5dd4e17be656d3036508",
+      "bytes": 19383,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/docs/research-program/README.md"
+    },
+    {
+      "path": "docs/research-program/02-data-availability-matrix-ko.md",
+      "gitBlobSha": "4ec7289ec7d9f5de265b3de9379eda35cb0320bf",
+      "bytes": 12133,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/docs/research-program/02-data-availability-matrix-ko.md"
+    },
+    {
+      "path": "data/kr-industry-membership-foundation-v4/state/audit.json.gz",
+      "gitBlobSha": "18e43da9c5a9a23da34e31863fe6a383dec067f4",
+      "bytes": 2101,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/data/kr-industry-membership-foundation-v4/state/audit.json.gz"
+    },
+    {
+      "path": "data/kr-industry-membership-foundation-v3/state/audit.json.gz",
+      "gitBlobSha": "1a3a8b8e1df3b4bdb040e64ada01d6469b48ee6a",
+      "bytes": 1353,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/data/kr-industry-membership-foundation-v3/state/audit.json.gz"
+    },
+    {
+      "path": "data/research/us-capital-allocation-alpha-v1/sp500-snapshot-sectors.json.gz",
+      "gitBlobSha": "1b044865149f20fa8997d6093e7356e36e2847e1",
+      "bytes": 73396,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/data/research/us-capital-allocation-alpha-v1/sp500-snapshot-sectors.json.gz"
+    },
+    {
+      "path": "docs/results/kr-industry-opportunity-anatomy-v1-result.json",
+      "gitBlobSha": "40db5f76a952e16a02ee987fefac146d0ccd25c6",
+      "bytes": 1155199,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/docs/results/kr-industry-opportunity-anatomy-v1-result.json"
+    },
+    {
+      "path": "docs/results/kr-stock-within-industry-anatomy-v1-result.json",
+      "gitBlobSha": "8bb62c631940e9d5ce41818d04bf7d58a7ceefca",
+      "bytes": 2072305,
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/b589d658eedd3c47f555df20db86f37792ee3358/docs/results/kr-stock-within-industry-anatomy-v1-result.json"
+    }
+  ],
+  "protectedPRs": [
+    {
+      "number": 286,
+      "head": "4fcfaf6a3581c3fb2d9b88cb56faef1a71be05aa",
+      "state": "open",
+      "draft": true,
+      "files": [
+        "research/historical_alpha_discovery_v1/README.md",
+        "research/historical_alpha_discovery_v1/__init__.py",
+        "research/historical_alpha_discovery_v1/analysis.ipynb",
+        "research/historical_alpha_discovery_v1/diagnostics.py",
+        "research/historical_alpha_discovery_v1/results/blocks.json",
+        "research/historical_alpha_discovery_v1/results/coverage.json",
+        "research/historical_alpha_discovery_v1/results/diagnostics/annual-path-returns.csv",
+        "research/historical_alpha_discovery_v1/results/diagnostics/date-balanced-ic.csv",
+        "research/historical_alpha_discovery_v1/results/diagnostics/diagnostics.json",
+        "research/historical_alpha_discovery_v1/results/diagnostics/forward-labels.csv",
+        "research/historical_alpha_discovery_v1/results/execution-log.json",
+        "research/historical_alpha_discovery_v1/results/manifest.json",
+        "research/historical_alpha_discovery_v1/results/measured-control.png",
+        "research/historical_alpha_discovery_v1/results/nav-DEVELOPMENT_THROUGH_2019-EX_POST_CONTINUING_NAME_CONDITIONAL-126-1-ETF.csv",
+        "research/historical_alpha_discovery_v1/results/nav-DEVELOPMENT_THROUGH_2019-EX_POST_CONTINUING_NAME_CONDITIONAL-126-1-OVERNIGHT.csv",
+        "research/historical_alpha_discovery_v1/results/nav-DEVELOPMENT_THROUGH_2019-EX_POST_CONTINUING_NAME_CONDITIONAL-126-2-ETF.csv",
+        "research/historical_alpha_discovery_v1/results/nav-DEVELOPMENT_THROUGH_2019-EX_POST_CONTINUING_NAME_CONDITIONAL-126-2-OVERNIGHT.csv",
+        "research/historical_alpha_discovery_v1/results/nav-DEVELOPMENT_THROUGH_2019-EX_POST_CONTINUING_NAME_CONDITIONAL-252-1-ETF.csv",
+        "research/historical_alpha_discovery_v1/results/nav-DEVELOPMENT_THROUGH_2019-EX_POST_CONTINUING_NAME_CONDITIONAL-252-2-ETF.csv",
+        "research/historical_alpha_discovery_v1/results/nav-DEVELOPMENT_THROUGH_2019-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-126-1-ETF.csv",
+        "research/historical_alpha_discovery_v1/results/nav-DEVELOPMENT_THROUGH_2019-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-126-2-ETF.csv",
+        "research/historical_alpha_discovery_v1/results/nav-DEVELOPMENT_THROUGH_2019-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-252-1-ETF.csv",
+        "research/historical_alpha_discovery_v1/results/nav-DEVELOPMENT_THROUGH_2019-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-252-2-ETF.csv",
+        "research/historical_alpha_discovery_v1/results/nav-EVALUATION_2020_AFTER_EMBARGO-EX_POST_CONTINUING_NAME_CONDITIONAL-126-1-ETF.csv",
+        "research/historical_alpha_discovery_v1/results/nav-EVALUATION_2020_AFTER_EMBARGO-EX_POST_CONTINUING_NAME_CONDITIONAL-126-2-ETF.csv",
+        "research/historical_alpha_discovery_v1/results/nav-EVALUATION_2020_AFTER_EMBARGO-EX_POST_CONTINUING_NAME_CONDITIONAL-252-1-ETF.csv",
+        "research/historical_alpha_discovery_v1/results/nav-EVALUATION_2020_AFTER_EMBARGO-EX_POST_CONTINUING_NAME_CONDITIONAL-252-1-OVERNIGHT.csv",
+        "research/historical_alpha_discovery_v1/results/nav-EVALUATION_2020_AFTER_EMBARGO-EX_POST_CONTINUING_NAME_CONDITIONAL-252-2-ETF.csv",
+        "research/historical_alpha_discovery_v1/results/nav-EVALUATION_2020_AFTER_EMBARGO-EX_POST_CONTINUING_NAME_CONDITIONAL-252-2-OVERNIGHT.csv",
+        "research/historical_alpha_discovery_v1/results/nav-EVALUATION_2020_AFTER_EMBARGO-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-126-1-ETF.csv",
+        "research/historical_alpha_discovery_v1/results/nav-EVALUATION_2020_AFTER_EMBARGO-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-126-2-ETF.csv",
+        "research/historical_alpha_discovery_v1/results/nav-EVALUATION_2020_AFTER_EMBARGO-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-252-1-ETF.csv",
+        "research/historical_alpha_discovery_v1/results/nav-EVALUATION_2020_AFTER_EMBARGO-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-252-1-OVERNIGHT.csv",
+        "research/historical_alpha_discovery_v1/results/nav-EVALUATION_2020_AFTER_EMBARGO-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-252-2-ETF.csv",
+        "research/historical_alpha_discovery_v1/results/nav-EVALUATION_2020_AFTER_EMBARGO-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-252-2-OVERNIGHT.csv",
+        "research/historical_alpha_discovery_v1/results/nav-FULL-EX_POST_CONTINUING_NAME_CONDITIONAL-126-1-ETF.csv",
+        "research/historical_alpha_discovery_v1/results/nav-FULL-EX_POST_CONTINUING_NAME_CONDITIONAL-126-2-ETF.csv",
+        "research/historical_alpha_discovery_v1/results/nav-FULL-EX_POST_CONTINUING_NAME_CONDITIONAL-252-1-ETF.csv",
+        "research/historical_alpha_discovery_v1/results/nav-FULL-EX_POST_CONTINUING_NAME_CONDITIONAL-252-2-ETF.csv",
+        "research/historical_alpha_discovery_v1/results/nav-FULL-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-126-1-ETF.csv",
+        "research/historical_alpha_discovery_v1/results/nav-FULL-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-126-2-ETF.csv",
+        "research/historical_alpha_discovery_v1/results/nav-FULL-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-252-1-ETF.csv",
+        "research/historical_alpha_discovery_v1/results/nav-FULL-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-252-2-ETF.csv",
+        "research/historical_alpha_discovery_v1/results/portfolio-summary.csv",
+        "research/historical_alpha_discovery_v1/results/signal-features.csv",
+        "research/historical_alpha_discovery_v1/results/summary.json",
+        "research/historical_alpha_discovery_v1/results/trade-decomposition.csv",
+        "research/historical_alpha_discovery_v1/review_v2/README-ko.md",
+        "research/historical_alpha_discovery_v1/review_v2/__init__.py",
+        "research/historical_alpha_discovery_v1/review_v2/audit-result.json",
+        "research/historical_alpha_discovery_v1/review_v2/audit.py",
+        "research/historical_alpha_discovery_v1/review_v2/plan.json",
+        "research/historical_alpha_discovery_v1/review_v2/test_audit.py",
+        "research/historical_alpha_discovery_v1/review_v3/README-ko.md",
+        "research/historical_alpha_discovery_v1/review_v3/__init__.py",
+        "research/historical_alpha_discovery_v1/review_v3/source-inventory.json",
+        "research/historical_alpha_discovery_v1/review_v3/source_inventory.py",
+        "research/historical_alpha_discovery_v1/review_v3/test_source_inventory.py",
+        "research/historical_alpha_discovery_v1/run.py",
+        "research/historical_alpha_discovery_v1/spec.json",
+        "research/historical_alpha_discovery_v1/tables.py",
+        "research/historical_alpha_discovery_v1/test_discovery.py"
+      ]
+    },
+    {
+      "number": 287,
+      "head": "e671104fbd8901b451f3662d54a356eca6e30d51",
+      "state": "open",
+      "draft": true,
+      "files": [
+        "docs/winner-inflection-discovery/admission-review-v2/README-ko.md",
+        "docs/winner-inflection-discovery/admission-review-v2/preflight.json",
+        "docs/winner-inflection-discovery/admission-review-v2/review.json",
+        "docs/winner-inflection-discovery/admission-review-v2/source-audit.json",
+        "docs/winner-inflection-discovery/blocker-review-v3/README-ko.md",
+        "docs/winner-inflection-discovery/blocker-review-v3/metadata.json",
+        "docs/winner-inflection-discovery/blocker-review-v3/pit-boundary-evidence.json",
+        "docs/winner-inflection-discovery/blocker-review-v3/regression-evidence.json",
+        "docs/winner-inflection-discovery/blocker-review-v3/v2-byte-reproduction.json",
+        "docs/winner-inflection-discovery/blocker-review-v3/validation.json",
+        "docs/winner-inflection-discovery/execution-recovery-v1/evidence.json",
+        "docs/winner-inflection-discovery/execution-recovery-v1/report-ko.md",
+        "pipeline/winner_inflection_admission.py",
+        "pipeline/winner_inflection_filing_review.py",
+        "pipeline/winner_inflection_local_git.py",
+        "scripts/inspect_wid_blockers.py",
+        "scripts/inspect_wid_filing_dates.py",
+        "scripts/prepare_winner_inflection_git.py",
+        "scripts/review_winner_inflection_admission.py",
+        "scripts/run_winner_inflection.py",
+        "tests/test_winner_inflection_execution.py",
+        "tests/test_winner_inflection_local_git.py",
+        "tests/test_winner_inflection_source_review.py"
+      ]
+    }
+  ],
+  "phaseD": {
+    "pr": 217,
+    "merged": true,
+    "mergedAt": "2026-10-10T09:58:46Z",
+    "mergeSha": "6a40238db1210667b16c515fa36a374293a559d4"
+  },
+  "recentPRs": [
+    {
+      "number": 289,
+      "title": "research(C1c): design asymmetric hard-exit × fast-reentry experiment (no execution)",
+      "head": "e0a88afd999e2c0bc0afb5eeb39587c498ad067e",
+      "state": "open",
+      "draft": true,
+      "merged": false
+    },
+    {
+      "number": 288,
+      "title": "research(C1): archive exact one-shot US result bytes and hash-verification receipt (run 40082205870)",
+      "head": "e88624f820164548a8a786138692f47948d0a5c2",
+      "state": "open",
+      "draft": true,
+      "merged": false
+    },
+    {
+      "number": 287,
+      "title": "research(US): WID historical execution Git recovery and conditional source admission",
+      "head": "e671104fbd8901b451f3662d54a356eca6e30d51",
+      "state": "open",
+      "draft": true,
+      "merged": false
+    },
+    {
+      "number": 286,
+      "title": "research(KR): historical intraday alpha discovery and source-backed measurement audit",
+      "head": "4fcfaf6a3581c3fb2d9b88cb56faef1a71be05aa",
+      "state": "open",
+      "draft": true,
+      "merged": false
+    },
+    {
+      "number": 285,
+      "title": "research(KR): Track B prospective B-H1 market-state receipts (rp1-b-h1-state-v1)",
+      "head": "411463995fc1d6044d7101c4d9973d4345d9c607",
+      "state": "closed",
+      "draft": false,
+      "merged": true
+    },
+    {
+      "number": 284,
+      "title": "fix(fred): bounded FRED fetch, availability record and short-term ML model identity (inactive, wiring needs owner decision)",
+      "head": "69065d59cf334345d922f98a9193f69be08998b2",
+      "state": "open",
+      "draft": true,
+      "merged": false
+    },
+    {
+      "number": 283,
+      "title": "research(D v2): preregister endogenous 0–10+ stock count against the regional ETF (inactive)",
+      "head": "d27d5cecce6635ae3aee3978c83713873576e736",
+      "state": "open",
+      "draft": true,
+      "merged": false
+    },
+    {
+      "number": 281,
+      "title": "rp1-c1: owner authorization PR for the US C1 one-shot (8 acknowledgments false until the owner sets them)",
+      "head": "bf9b05b9e7692aa6c0b05e61c0b3a4989c1105c9",
+      "state": "closed",
+      "draft": false,
+      "merged": true
+    },
+    {
+      "number": 280,
+      "title": "Track D: evidence-qualified readiness and numeric passive-fallback fix",
+      "head": "17ddd028443d0e5edda82645f7361be60395b312",
+      "state": "open",
+      "draft": true,
+      "merged": false
+    },
+    {
+      "number": 278,
+      "title": "research(KR): prospective accounting challenger — PIT DART value with business confirmation (kr-selection-challenger-v2-accounting)",
+      "head": "3f4f912f744e94553f45ce37b9e9e66a310f345e",
+      "state": "closed",
+      "draft": false,
+      "merged": true
+    },
+    {
+      "number": 277,
+      "title": "research(KR): pre-registered prospective stock-selection challenger (kr-selection-challenger-v1) + fail-closed bar integrity",
+      "head": "8cb596cb8031406c1e169802157f59fa00fc42cc",
+      "state": "closed",
+      "draft": false,
+      "merged": true
+    },
+    {
+      "number": 276,
+      "title": "fix(weekly): publish each region from its own finished session (#273)",
+      "head": "8ff38676cbbb107c88c703385d37156dfd901598",
+      "state": "closed",
+      "draft": false,
+      "merged": true
+    },
+    {
+      "number": 275,
+      "title": "Track C #266 follow-up: reject non-int stored layer state in receipt validator",
+      "head": "55dfef80346dd3ab8ed957a5faea7cf1189d82f2",
+      "state": "closed",
+      "draft": true,
+      "merged": true
+    }
+  ],
+  "sourceSchemaCrosscheck": {
+    "url": "https://github.com/datasets/s-and-p-500-companies/blob/1271ae092ab591aaa98d0fb5950e5144f4d1ad73/data/constituents.csv",
+    "purpose": "Header/label-level inspection of already pinned snapshot only",
+    "outcomeDataAccessed": false,
+    "sha256": "229813df5d0b5ce742d9664700b7bd2b3a7c2e0996ee33dc652d0827f508c35d",
+    "rows": 502,
+    "distinctLabels": 123,
+    "hashMatchesPinnedSnapshot": true
+  },
+  "limits": [
+    "Existing result SHA confirmed, no sealed experiment rerun",
+    "No full original Actions archive/issuer entitlement audit",
+    "No new historical targets/fits/return comparisons",
+    "Independent audit not performed or claimed"
+  ]
+}

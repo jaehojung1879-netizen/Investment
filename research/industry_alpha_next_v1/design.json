@@ -1,0 +1,339 @@
+{
+  "schema": "INDUSTRY_ALPHA_NEXT_DESIGN_V1",
+  "status": "DESIGN_DRAFT",
+  "executionEnabled": false,
+  "historicalRunner": null,
+  "authorization": null,
+  "independentAudit": null,
+  "reservedStudyIds": [
+    "industry-alpha-kr-next-v1",
+    "industry-alpha-us-next-v1"
+  ],
+  "auditedMain": "b589d658eedd3c47f555df20db86f37792ee3358",
+  "authoredOnUTC": "2026-10-25",
+  "evidenceClass": "DESIGN_AND_SYNTHETIC_SOFTWARE_VALIDATION_ONLY",
+  "historicalEvidenceClass": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_HISTORY",
+  "krAtlasClosurePreserved": true,
+  "forbiddenReruns": [
+    "kr-industry-opportunity-anatomy-v1",
+    "kr-stock-within-industry-anatomy-v1",
+    "kr-alpha-atlas-phase-c-v1"
+  ],
+  "unmodifiedPRs": [
+    286,
+    287
+  ],
+  "sourceRecoveryOnly": true,
+  "actualHistoricalWindow": null,
+  "actualBenchmarkInputManifest": null,
+  "primaryHypothesisSlots": [
+    {
+      "id": "KR_H126_MOM",
+      "region": "KR",
+      "horizonSessions": 126,
+      "family": "H1",
+      "contrast": "MOM",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "KR_H126_BREADTH",
+      "region": "KR",
+      "horizonSessions": 126,
+      "family": "H1",
+      "contrast": "BREADTH",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "KR_H126_PROFIT",
+      "region": "KR",
+      "horizonSessions": 126,
+      "family": "H1",
+      "contrast": "PROFIT",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "KR_H126_CASH",
+      "region": "KR",
+      "horizonSessions": 126,
+      "family": "H1",
+      "contrast": "CASH",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "KR_H126_VALUE",
+      "region": "KR",
+      "horizonSessions": 126,
+      "family": "H1",
+      "contrast": "VALUE",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "KR_H126_CONCENTRATION",
+      "region": "KR",
+      "horizonSessions": 126,
+      "family": "H1",
+      "contrast": "CONCENTRATION",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "KR_H126_MARKET_CONTEXT",
+      "region": "KR",
+      "horizonSessions": 126,
+      "family": "H2",
+      "contrast": "MARKET_CONTEXT",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "KR_H126_LEADER_DIFFUSION",
+      "region": "KR",
+      "horizonSessions": 126,
+      "family": "H2",
+      "contrast": "LEADER_DIFFUSION",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "KR_H126_STOCK_NET_INCREMENT",
+      "region": "KR",
+      "horizonSessions": 126,
+      "family": "H3",
+      "contrast": "STOCK_NET_INCREMENT",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "KR_H252_MOM",
+      "region": "KR",
+      "horizonSessions": 252,
+      "family": "H1",
+      "contrast": "MOM",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "KR_H252_BREADTH",
+      "region": "KR",
+      "horizonSessions": 252,
+      "family": "H1",
+      "contrast": "BREADTH",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "KR_H252_PROFIT",
+      "region": "KR",
+      "horizonSessions": 252,
+      "family": "H1",
+      "contrast": "PROFIT",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "KR_H252_CASH",
+      "region": "KR",
+      "horizonSessions": 252,
+      "family": "H1",
+      "contrast": "CASH",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "KR_H252_VALUE",
+      "region": "KR",
+      "horizonSessions": 252,
+      "family": "H1",
+      "contrast": "VALUE",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "KR_H252_CONCENTRATION",
+      "region": "KR",
+      "horizonSessions": 252,
+      "family": "H1",
+      "contrast": "CONCENTRATION",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "KR_H252_MARKET_CONTEXT",
+      "region": "KR",
+      "horizonSessions": 252,
+      "family": "H2",
+      "contrast": "MARKET_CONTEXT",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "KR_H252_LEADER_DIFFUSION",
+      "region": "KR",
+      "horizonSessions": 252,
+      "family": "H2",
+      "contrast": "LEADER_DIFFUSION",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "KR_H252_STOCK_NET_INCREMENT",
+      "region": "KR",
+      "horizonSessions": 252,
+      "family": "H3",
+      "contrast": "STOCK_NET_INCREMENT",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "US_H126_MOM",
+      "region": "US",
+      "horizonSessions": 126,
+      "family": "H1",
+      "contrast": "MOM",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "US_H126_BREADTH",
+      "region": "US",
+      "horizonSessions": 126,
+      "family": "H1",
+      "contrast": "BREADTH",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "US_H126_PROFIT",
+      "region": "US",
+      "horizonSessions": 126,
+      "family": "H1",
+      "contrast": "PROFIT",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "US_H126_CASH",
+      "region": "US",
+      "horizonSessions": 126,
+      "family": "H1",
+      "contrast": "CASH",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "US_H126_VALUE",
+      "region": "US",
+      "horizonSessions": 126,
+      "family": "H1",
+      "contrast": "VALUE",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "US_H126_CONCENTRATION",
+      "region": "US",
+      "horizonSessions": 126,
+      "family": "H1",
+      "contrast": "CONCENTRATION",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "US_H126_MARKET_CONTEXT",
+      "region": "US",
+      "horizonSessions": 126,
+      "family": "H2",
+      "contrast": "MARKET_CONTEXT",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "US_H126_LEADER_DIFFUSION",
+      "region": "US",
+      "horizonSessions": 126,
+      "family": "H2",
+      "contrast": "LEADER_DIFFUSION",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "US_H126_STOCK_NET_INCREMENT",
+      "region": "US",
+      "horizonSessions": 126,
+      "family": "H3",
+      "contrast": "STOCK_NET_INCREMENT",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "US_H252_MOM",
+      "region": "US",
+      "horizonSessions": 252,
+      "family": "H1",
+      "contrast": "MOM",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "US_H252_BREADTH",
+      "region": "US",
+      "horizonSessions": 252,
+      "family": "H1",
+      "contrast": "BREADTH",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "US_H252_PROFIT",
+      "region": "US",
+      "horizonSessions": 252,
+      "family": "H1",
+      "contrast": "PROFIT",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "US_H252_CASH",
+      "region": "US",
+      "horizonSessions": 252,
+      "family": "H1",
+      "contrast": "CASH",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "US_H252_VALUE",
+      "region": "US",
+      "horizonSessions": 252,
+      "family": "H1",
+      "contrast": "VALUE",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "US_H252_CONCENTRATION",
+      "region": "US",
+      "horizonSessions": 252,
+      "family": "H1",
+      "contrast": "CONCENTRATION",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "US_H252_MARKET_CONTEXT",
+      "region": "US",
+      "horizonSessions": 252,
+      "family": "H2",
+      "contrast": "MARKET_CONTEXT",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "US_H252_LEADER_DIFFUSION",
+      "region": "US",
+      "horizonSessions": 252,
+      "family": "H2",
+      "contrast": "LEADER_DIFFUSION",
+      "unavailablePValue": 1
+    },
+    {
+      "id": "US_H252_STOCK_NET_INCREMENT",
+      "region": "US",
+      "horizonSessions": 252,
+      "family": "H3",
+      "contrast": "STOCK_NET_INCREMENT",
+      "unavailablePValue": 1
+    }
+  ],
+  "multiplicity": {
+    "method": "HOLM",
+    "alpha": 0.05,
+    "slots": 36,
+    "blockedSlotsPreserved": true
+  },
+  "requiredExecutionGates": [
+    "NEW_STUDY_ID",
+    "IMMUTABLE_PREREGISTRATION",
+    "KR_CLOSURE_EXCEPTION_IF_KR_HISTORY",
+    "SOURCE_RIGHTS",
+    "PIT_TAXONOMY_AND_IDENTITY",
+    "CORPORATE_ACTION_AND_DISTRIBUTION_BASIS",
+    "BENCHMARK_RECONCILIATION",
+    "SAME_POPULATION_AND_COSTS",
+    "INDEPENDENT_AUDIT",
+    "EXACT_HASH_OWNER_AUTHORIZATION",
+    "REVIEWED_EXECUTOR_AND_ONE_SHOT_LOCK"
+  ],
+  "newPaidSubscriptions": false
+}

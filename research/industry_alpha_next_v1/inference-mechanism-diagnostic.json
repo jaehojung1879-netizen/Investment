@@ -1,0 +1,178 @@
+{
+ "cells": {
+  "N1_GAUSS_CONST_KR_H126": {
+   "boundaryNullRejectionByCandidate": {
+    "C0_REGISTERED_MBB": 0.1575,
+    "C1_CIRCULAR_BB": 0.16,
+    "C2_STUDENTIZED_CBB": 0.0775,
+    "C3_NW_HAC_NORMAL": 0.155,
+    "C4_FIXED_B_KVB": 0.1,
+    "C5_SELF_NORMALIZED": 0.1,
+    "C6_BATCH_MEANS_T": 0.105
+   },
+   "boundaryNullRejectionTestYearClusterT": 0.0825,
+   "dgp": "N1_GAUSS_CONST",
+   "meanOfMeanLossDifferential": -6.874205858906722e-05,
+   "medianHacT": -0.8239946747546909,
+   "registeredRejectionAsIs": 0.035,
+   "registeredRejectionOnZeroTrueMeanSeries": 0.1575,
+   "replicates": 400,
+   "shareOfReplicatesWithNegativeMean": 0.7275,
+   "testYears": 6,
+   "varianceShareOfTestYearMeans": 0.27266090849843083
+  },
+  "N1_GAUSS_CONST_KR_H252": {
+   "boundaryNullRejectionByCandidate": {
+    "C0_REGISTERED_MBB": 0.205,
+    "C1_CIRCULAR_BB": 0.1775,
+    "C2_STUDENTIZED_CBB": 0.1125,
+    "C3_NW_HAC_NORMAL": 0.185,
+    "C4_FIXED_B_KVB": 0.105,
+    "C5_SELF_NORMALIZED": 0.105,
+    "C6_BATCH_MEANS_T": 0.0875
+   },
+   "boundaryNullRejectionTestYearClusterT": 0.0875,
+   "dgp": "N1_GAUSS_CONST",
+   "meanOfMeanLossDifferential": -0.0002022998486585864,
+   "medianHacT": -0.8156236723416306,
+   "registeredRejectionAsIs": 0.0775,
+   "registeredRejectionOnZeroTrueMeanSeries": 0.205,
+   "replicates": 400,
+   "shareOfReplicatesWithNegativeMean": 0.68,
+   "testYears": 4,
+   "varianceShareOfTestYearMeans": 0.32486308115648865
+  },
+  "N1_GAUSS_CONST_LONG_H126": {
+   "boundaryNullRejectionByCandidate": {
+    "C0_REGISTERED_MBB": 0.08,
+    "C1_CIRCULAR_BB": 0.0825,
+    "C2_STUDENTIZED_CBB": 0.0575,
+    "C3_NW_HAC_NORMAL": 0.0825,
+    "C4_FIXED_B_KVB": 0.05,
+    "C5_SELF_NORMALIZED": 0.05,
+    "C6_BATCH_MEANS_T": 0.0725
+   },
+   "boundaryNullRejectionTestYearClusterT": 0.055,
+   "dgp": "N1_GAUSS_CONST",
+   "meanOfMeanLossDifferential": -4.3019346593478767e-05,
+   "medianHacT": -1.1422553770121495,
+   "registeredRejectionAsIs": 0.01,
+   "registeredRejectionOnZeroTrueMeanSeries": 0.08,
+   "replicates": 400,
+   "shareOfReplicatesWithNegativeMean": 0.8675,
+   "testYears": 19,
+   "varianceShareOfTestYearMeans": 0.30129568387218164
+  },
+  "N1_GAUSS_CONST_LONG_H252": {
+   "boundaryNullRejectionByCandidate": {
+    "C0_REGISTERED_MBB": 0.1075,
+    "C1_CIRCULAR_BB": 0.1175,
+    "C2_STUDENTIZED_CBB": 0.075,
+    "C3_NW_HAC_NORMAL": 0.105,
+    "C4_FIXED_B_KVB": 0.0625,
+    "C5_SELF_NORMALIZED": 0.0625,
+    "C6_BATCH_MEANS_T": 0.1
+   },
+   "boundaryNullRejectionTestYearClusterT": 0.085,
+   "dgp": "N1_GAUSS_CONST",
+   "meanOfMeanLossDifferential": -0.00013901808030744703,
+   "medianHacT": -1.1627972804226654,
+   "registeredRejectionAsIs": 0.0125,
+   "registeredRejectionOnZeroTrueMeanSeries": 0.1075,
+   "replicates": 400,
+   "shareOfReplicatesWithNegativeMean": 0.8325,
+   "testYears": 17,
+   "varianceShareOfTestYearMeans": 0.40465223778832327
+  },
+  "N2_T4_VOL_REGIME_KR_H126": {
+   "boundaryNullRejectionByCandidate": {
+    "C0_REGISTERED_MBB": 0.1825,
+    "C1_CIRCULAR_BB": 0.165,
+    "C2_STUDENTIZED_CBB": 0.125,
+    "C3_NW_HAC_NORMAL": 0.1625,
+    "C4_FIXED_B_KVB": 0.125,
+    "C5_SELF_NORMALIZED": 0.125,
+    "C6_BATCH_MEANS_T": 0.1375
+   },
+   "boundaryNullRejectionTestYearClusterT": 0.1,
+   "dgp": "N2_T4_VOL_REGIME",
+   "meanOfMeanLossDifferential": -0.00019539594828741597,
+   "medianHacT": -0.796258752056527,
+   "registeredRejectionAsIs": 0.0525,
+   "registeredRejectionOnZeroTrueMeanSeries": 0.1825,
+   "replicates": 400,
+   "shareOfReplicatesWithNegativeMean": 0.7375,
+   "testYears": 6,
+   "varianceShareOfTestYearMeans": 0.26391614370642985
+  },
+  "N2_T4_VOL_REGIME_KR_H252": {
+   "boundaryNullRejectionByCandidate": {
+    "C0_REGISTERED_MBB": 0.3075,
+    "C1_CIRCULAR_BB": 0.3075,
+    "C2_STUDENTIZED_CBB": 0.1825,
+    "C3_NW_HAC_NORMAL": 0.3025,
+    "C4_FIXED_B_KVB": 0.195,
+    "C5_SELF_NORMALIZED": 0.195,
+    "C6_BATCH_MEANS_T": 0.15
+   },
+   "boundaryNullRejectionTestYearClusterT": 0.17,
+   "dgp": "N2_T4_VOL_REGIME",
+   "meanOfMeanLossDifferential": -0.0007028500706536393,
+   "medianHacT": -0.7949832755871701,
+   "registeredRejectionAsIs": 0.105,
+   "registeredRejectionOnZeroTrueMeanSeries": 0.3075,
+   "replicates": 400,
+   "shareOfReplicatesWithNegativeMean": 0.7025,
+   "testYears": 4,
+   "varianceShareOfTestYearMeans": 0.32563695504465995
+  },
+  "N2_T4_VOL_REGIME_LONG_H126": {
+   "boundaryNullRejectionByCandidate": {
+    "C0_REGISTERED_MBB": 0.07,
+    "C1_CIRCULAR_BB": 0.07,
+    "C2_STUDENTIZED_CBB": 0.0475,
+    "C3_NW_HAC_NORMAL": 0.0725,
+    "C4_FIXED_B_KVB": 0.0475,
+    "C5_SELF_NORMALIZED": 0.0475,
+    "C6_BATCH_MEANS_T": 0.0625
+   },
+   "boundaryNullRejectionTestYearClusterT": 0.0575,
+   "dgp": "N2_T4_VOL_REGIME",
+   "meanOfMeanLossDifferential": -0.00012206721911564446,
+   "medianHacT": -1.2289327949173061,
+   "registeredRejectionAsIs": 0.0,
+   "registeredRejectionOnZeroTrueMeanSeries": 0.07,
+   "replicates": 400,
+   "shareOfReplicatesWithNegativeMean": 0.875,
+   "testYears": 19,
+   "varianceShareOfTestYearMeans": 0.3056196906679353
+  },
+  "N2_T4_VOL_REGIME_LONG_H252": {
+   "boundaryNullRejectionByCandidate": {
+    "C0_REGISTERED_MBB": 0.13,
+    "C1_CIRCULAR_BB": 0.125,
+    "C2_STUDENTIZED_CBB": 0.07,
+    "C3_NW_HAC_NORMAL": 0.1175,
+    "C4_FIXED_B_KVB": 0.07,
+    "C5_SELF_NORMALIZED": 0.07,
+    "C6_BATCH_MEANS_T": 0.1175
+   },
+   "boundaryNullRejectionTestYearClusterT": 0.105,
+   "dgp": "N2_T4_VOL_REGIME",
+   "meanOfMeanLossDifferential": -0.0004212597731045295,
+   "medianHacT": -1.1996782944463305,
+   "registeredRejectionAsIs": 0.005,
+   "registeredRejectionOnZeroTrueMeanSeries": 0.13,
+   "replicates": 400,
+   "shareOfReplicatesWithNegativeMean": 0.8225,
+   "testYears": 17,
+   "varianceShareOfTestYearMeans": 0.39380573205205655
+  }
+ },
+ "changesFrozenVerdict": false,
+ "evidenceClass": "POST_HOC_SYNTHETIC_MECHANISM_DIAGNOSTIC_DEVELOPMENT_SEED",
+ "historicalOutcomesRead": 0,
+ "schema": "INDUSTRY_INFERENCE_MECHANISM_DIAGNOSTIC_V1",
+ "seed": 99173,
+ "writtenAfterFormalResultWasRead": true
+}

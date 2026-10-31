@@ -1,0 +1,82 @@
+{
+ "assumptions": {
+  "boundIgnoresRankEffect": true,
+  "idiosyncraticMonthly": 0.08,
+  "shareIfPlaced": 0.14,
+  "terminalEventsAtMinus100Pct": 11,
+  "unknownPerDate": 4
+ },
+ "evidenceClass": "SYNTHETIC_DESIGN_SCREEN_NOT_A_FORMAL_CALIBRATION",
+ "historicalOutcomesRead": 0,
+ "realExposure": {
+  "byYear": {
+   "2015": 69,
+   "2016": 48,
+   "2017": 64,
+   "2018": 81,
+   "2019": 71,
+   "2020": 51,
+   "2021": 45,
+   "2022": 48,
+   "2023": 32,
+   "2024": 19,
+   "2025": 12
+  },
+  "capShareMaxIfPlaced": {
+   "max": 0.3985,
+   "p50": 0.1092,
+   "p90": 0.2536
+  },
+  "datesWithUnclassifiedTerminated": 132,
+  "ewShareMaxIfPlaced": {
+   "max": 0.1667,
+   "min": 0.125
+  },
+  "memberMonths": 540,
+  "perDate": {
+   "max": 8,
+   "median": 4.0,
+   "min": 1
+  },
+  "securities": 16,
+  "signalDates": 141
+ },
+ "rejectionRates": {
+  "KR_H126_N1_GAUSS_CONST": {
+   "BOUND_ALL": 0.0,
+   "BOUND_ALL_TERMINAL_RESOLVED": 0.0,
+   "BOUND_K2": 0.0,
+   "BOUND_K3": 0.0,
+   "DROP": 0.0233,
+   "TRUE": 0.0333
+  },
+  "KR_H126_N2_T4_VOL_REGIME": {
+   "BOUND_ALL": 0.0,
+   "BOUND_ALL_TERMINAL_RESOLVED": 0.0,
+   "BOUND_K2": 0.0033,
+   "BOUND_K3": 0.0,
+   "DROP": 0.0367,
+   "TRUE": 0.0367
+  },
+  "KR_H126_P10_T4_VOL_REGIME": {
+   "BOUND_ALL": 0.0,
+   "BOUND_ALL_TERMINAL_RESOLVED": 0.0,
+   "BOUND_K2": 0.0367,
+   "BOUND_K3": 0.0,
+   "DROP": 0.2367,
+   "TRUE": 0.22
+  },
+  "KR_H126_P20_T4_VOL_REGIME": {
+   "BOUND_ALL": 0.0,
+   "BOUND_ALL_TERMINAL_RESOLVED": 0.0,
+   "BOUND_K2": 0.23,
+   "BOUND_K3": 0.0833,
+   "DROP": 0.66,
+   "TRUE": 0.6533
+  }
+ },
+ "replicates": 300,
+ "schema": "INDUSTRY_INCLUSION_BOUND_SCREEN_V1",
+ "seed": 99184,
+ "test": "SN one-sided 5% (frozen critical value), calendar-time spread"
+}

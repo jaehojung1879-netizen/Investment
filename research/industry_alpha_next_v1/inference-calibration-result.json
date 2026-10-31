@@ -1,0 +1,4604 @@
+{
+ "cells": [
+  {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.00345997616532931,
+       0.015702049176074682
+      ],
+      "n": 1000,
+      "rate": 0.008,
+      "rejections": 8,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.040823351125630736,
+       0.06987400557706737
+      ],
+      "n": 1000,
+      "rate": 0.054,
+      "rejections": 54,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C1_CIRCULAR_BB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.00162541951756276,
+       0.011629470559812147
+      ],
+      "n": 1000,
+      "rate": 0.005,
+      "rejections": 5,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0287276252858908,
+       0.0540726968193685
+      ],
+      "n": 1000,
+      "rate": 0.04,
+      "rejections": 40,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C2_STUDENTIZED_CBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       2.5317487491294045e-05,
+       0.005558924279826672
+      ],
+      "n": 1000,
+      "rate": 0.001,
+      "rejections": 1,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.02115817197020863,
+       0.043715085006238906
+      ],
+      "n": 1000,
+      "rate": 0.031,
+      "rejections": 31,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C3_NW_HAC_NORMAL": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       2.5317487491294045e-05,
+       0.005558924279826672
+      ],
+      "n": 1000,
+      "rate": 0.001,
+      "rejections": 1,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0203304856831096,
+       0.042551402470029046
+      ],
+      "n": 1000,
+      "rate": 0.03,
+      "rejections": 30,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C4_FIXED_B_KVB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.003682083896865671
+      ],
+      "n": 1000,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.01225826797240633,
+       0.03072003268260911
+      ],
+      "n": 1000,
+      "rate": 0.02,
+      "rejections": 20,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C5_SELF_NORMALIZED": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.003682083896865671
+      ],
+      "n": 1000,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.01225826797240633,
+       0.03072003268260911
+      ],
+      "n": 1000,
+      "rate": 0.02,
+      "rejections": 20,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C6_BATCH_MEANS_T": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.003682083896865671
+      ],
+      "n": 1000,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.013837414172073865,
+       0.03311966451498779
+      ],
+      "n": 1000,
+      "rate": 0.022,
+      "rejections": 22,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    }
+   },
+   "cell": {
+    "dgp": "N1_GAUSS_CONST",
+    "horizon": 126,
+    "index": 0,
+    "length": "KR",
+    "replicates": 1000
+   },
+   "isNull": true,
+   "meanRealisedIC": 0.0008112364213634244,
+   "medianSupportBlocks": 4.0,
+   "medianTestDates": 55.0,
+   "replicatesRun": 1000
+  },
+  {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.002818858759620525,
+       0.014369194978918632
+      ],
+      "n": 1000,
+      "rate": 0.007,
+      "rejections": 7,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0373353976046618,
+       0.06539048791549364
+      ],
+      "n": 1000,
+      "rate": 0.05,
+      "rejections": 50,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C1_CIRCULAR_BB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0010909079877259714,
+       0.010209664683929871
+      ],
+      "n": 1000,
+      "rate": 0.004,
+      "rejections": 4,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.02618270884373733,
+       0.05064112305992485
+      ],
+      "n": 1000,
+      "rate": 0.037,
+      "rejections": 37,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C2_STUDENTIZED_CBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.00024230111687723185,
+       0.007205838911457497
+      ],
+      "n": 1000,
+      "rate": 0.002,
+      "rejections": 2,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.013045192290387683,
+       0.0319223351804155
+      ],
+      "n": 1000,
+      "rate": 0.021,
+      "rejections": 21,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C3_NW_HAC_NORMAL": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       2.5317487491294045e-05,
+       0.005558924279826672
+      ],
+      "n": 1000,
+      "rate": 0.001,
+      "rejections": 1,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.025338914929837725,
+       0.04949291171801237
+      ],
+      "n": 1000,
+      "rate": 0.036,
+      "rejections": 36,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C4_FIXED_B_KVB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.003682083896865671
+      ],
+      "n": 1000,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.017866905925249706,
+       0.03904174680597016
+      ],
+      "n": 1000,
+      "rate": 0.027,
+      "rejections": 27,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C5_SELF_NORMALIZED": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.003682083896865671
+      ],
+      "n": 1000,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.017866905925249706,
+       0.03904174680597016
+      ],
+      "n": 1000,
+      "rate": 0.027,
+      "rejections": 27,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C6_BATCH_MEANS_T": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.003682083896865671
+      ],
+      "n": 1000,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.017866905925249706,
+       0.03904174680597016
+      ],
+      "n": 1000,
+      "rate": 0.027,
+      "rejections": 27,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    }
+   },
+   "cell": {
+    "dgp": "N2_T4_VOL_REGIME",
+    "horizon": 126,
+    "index": 1,
+    "length": "KR",
+    "replicates": 1000
+   },
+   "isNull": true,
+   "meanRealisedIC": 0.0030771016362199886,
+   "medianSupportBlocks": 4.0,
+   "medianTestDates": 55.0,
+   "replicatesRun": 1000
+  },
+  {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.006939617502851474,
+       0.022127803636778486
+      ],
+      "n": 1000,
+      "rate": 0.013,
+      "rejections": 13,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0373353976046618,
+       0.06539048791549364
+      ],
+      "n": 1000,
+      "rate": 0.05,
+      "rejections": 50,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C1_CIRCULAR_BB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.00345997616532931,
+       0.015702049176074682
+      ],
+      "n": 1000,
+      "rate": 0.008,
+      "rejections": 8,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.027028815982983928,
+       0.05178710362196412
+      ],
+      "n": 1000,
+      "rate": 0.038,
+      "rejections": 38,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C2_STUDENTIZED_CBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       2.5317487491294045e-05,
+       0.005558924279826672
+      ],
+      "n": 1000,
+      "rate": 0.001,
+      "rejections": 1,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.014634582325176757,
+       0.03431233761285437
+      ],
+      "n": 1000,
+      "rate": 0.023,
+      "rejections": 23,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C3_NW_HAC_NORMAL": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.00162541951756276,
+       0.011629470559812147
+      ],
+      "n": 1000,
+      "rate": 0.005,
+      "rejections": 5,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.023658648107596745,
+       0.04718943861570743
+      ],
+      "n": 1000,
+      "rate": 0.034,
+      "rejections": 34,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C4_FIXED_B_KVB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.003682083896865671
+      ],
+      "n": 1000,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.007674501565020781,
+       0.023378156010314503
+      ],
+      "n": 1000,
+      "rate": 0.014,
+      "rejections": 14,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C5_SELF_NORMALIZED": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.003682083896865671
+      ],
+      "n": 1000,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.007674501565020781,
+       0.023378156010314503
+      ],
+      "n": 1000,
+      "rate": 0.014,
+      "rejections": 14,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C6_BATCH_MEANS_T": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.003682083896865671
+      ],
+      "n": 1000,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0203304856831096,
+       0.042551402470029046
+      ],
+      "n": 1000,
+      "rate": 0.03,
+      "rejections": 30,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    }
+   },
+   "cell": {
+    "dgp": "N3_T4_REGIME_BETA_LOADED",
+    "horizon": 126,
+    "index": 2,
+    "length": "KR",
+    "replicates": 1000
+   },
+   "isNull": true,
+   "meanRealisedIC": 0.00016667040858525927,
+   "medianSupportBlocks": 4.0,
+   "medianTestDates": 54.0,
+   "replicatesRun": 1000
+  },
+  {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.011477036993100945,
+       0.0295124016250978
+      ],
+      "n": 1000,
+      "rate": 0.019,
+      "rejections": 19,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0558646482498975,
+       0.08871644088678735
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.071,
+      "rejections": 71,
+      "undefined": 0
+     }
+    },
+    "C1_CIRCULAR_BB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.002818858759620525,
+       0.014369194978918632
+      ],
+      "n": 1000,
+      "rate": 0.007,
+      "rejections": 7,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.05140856601891848,
+       0.08320605046140273
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.066,
+      "rejections": 66,
+      "undefined": 0
+     }
+    },
+    "C2_STUDENTIZED_CBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       2.5317487491294045e-05,
+       0.005558924279826672
+      ],
+      "n": 1000,
+      "rate": 0.001,
+      "rejections": 1,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.023658648107596745,
+       0.04718943861570743
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.034,
+      "rejections": 34,
+      "undefined": 0
+     }
+    },
+    "C3_NW_HAC_NORMAL": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.00162541951756276,
+       0.011629470559812147
+      ],
+      "n": 1000,
+      "rate": 0.005,
+      "rejections": 5,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.04697787554108023,
+       0.07767077404912358
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.061,
+      "rejections": 61,
+      "undefined": 0
+     }
+    },
+    "C4_FIXED_B_KVB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.003682083896865671
+      ],
+      "n": 1000,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.013045192290387683,
+       0.0319223351804155
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.021,
+      "rejections": 21,
+      "undefined": 0
+     }
+    },
+    "C5_SELF_NORMALIZED": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.003682083896865671
+      ],
+      "n": 1000,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.013045192290387683,
+       0.0319223351804155
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.021,
+      "rejections": 21,
+      "undefined": 0
+     }
+    },
+    "C6_BATCH_MEANS_T": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.003682083896865671
+      ],
+      "n": 1000,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.02115817197020863,
+       0.043715085006238906
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.031,
+      "rejections": 31,
+      "undefined": 0
+     }
+    }
+   },
+   "cell": {
+    "dgp": "P05_T4_VOL_REGIME",
+    "horizon": 126,
+    "index": 3,
+    "length": "KR",
+    "replicates": 1000
+   },
+   "isNull": false,
+   "meanRealisedIC": 0.05207785438857781,
+   "medianSupportBlocks": 4.0,
+   "medianTestDates": 55.0,
+   "replicatesRun": 1000
+  },
+  {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0373353976046618,
+       0.06539048791549364
+      ],
+      "n": 1000,
+      "rate": 0.05,
+      "rejections": 50,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.13029825032498193,
+       0.17577246873311264
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.152,
+      "rejections": 152,
+      "undefined": 0
+     }
+    },
+    "C1_CIRCULAR_BB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.02958016853403611,
+       0.05521245931529931
+      ],
+      "n": 1000,
+      "rate": 0.041,
+      "rejections": 41,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.12187864287589151,
+       0.16624715659672165
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.143,
+      "rejections": 143,
+      "undefined": 0
+     }
+    },
+    "C2_STUDENTIZED_CBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.004123395660342473,
+       0.017015783069894586
+      ],
+      "n": 1000,
+      "rate": 0.009,
+      "rejections": 9,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0748084451778555,
+       0.11163577251831963
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.092,
+      "rejections": 92,
+      "undefined": 0
+     }
+    },
+    "C3_NW_HAC_NORMAL": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.022822383349459584,
+       0.046033981817023194
+      ],
+      "n": 1000,
+      "rate": 0.033,
+      "rejections": 33,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.11441905042651314,
+       0.15775591555121932
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.135,
+      "rejections": 135,
+      "undefined": 0
+     }
+    },
+    "C4_FIXED_B_KVB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.00162541951756276,
+       0.011629470559812147
+      ],
+      "n": 1000,
+      "rate": 0.005,
+      "rejections": 5,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.07026848607137864,
+       0.1062078579570212
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.087,
+      "rejections": 87,
+      "undefined": 0
+     }
+    },
+    "C5_SELF_NORMALIZED": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.00162541951756276,
+       0.011629470559812147
+      ],
+      "n": 1000,
+      "rate": 0.005,
+      "rejections": 5,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.07026848607137864,
+       0.1062078579570212
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.087,
+      "rejections": 87,
+      "undefined": 0
+     }
+    },
+    "C6_BATCH_MEANS_T": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0010909079877259714,
+       0.010209664683929871
+      ],
+      "n": 1000,
+      "rate": 0.004,
+      "rejections": 4,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.08302011391180233,
+       0.12136682351196837
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.101,
+      "rejections": 101,
+      "undefined": 0
+     }
+    }
+   },
+   "cell": {
+    "dgp": "P10_T4_VOL_REGIME",
+    "horizon": 126,
+    "index": 4,
+    "length": "KR",
+    "replicates": 1000
+   },
+   "isNull": false,
+   "meanRealisedIC": 0.10343011515195091,
+   "medianSupportBlocks": 4.0,
+   "medianTestDates": 55.0,
+   "replicatesRun": 1000
+  },
+  {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.12655273282842225,
+       0.1715424382951766
+      ],
+      "n": 1000,
+      "rate": 0.148,
+      "rejections": 148,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.33215748153610175,
+       0.39265779696845476
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.362,
+      "rejections": 362,
+      "undefined": 0
+     }
+    },
+    "C1_CIRCULAR_BB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.11907849738135583,
+       0.16306571520095475
+      ],
+      "n": 1000,
+      "rate": 0.14,
+      "rejections": 140,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.3204161241513656,
+       0.38047019125597564
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.35,
+      "rejections": 350,
+      "undefined": 0
+     }
+    },
+    "C2_STUDENTIZED_CBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.02618270884373733,
+       0.05064112305992485
+      ],
+      "n": 1000,
+      "rate": 0.037,
+      "rejections": 37,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.22343040626468022,
+       0.2780500062237557
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.25,
+      "rejections": 250,
+      "undefined": 0
+     }
+    },
+    "C3_NW_HAC_NORMAL": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.08393546004048681,
+       0.12244515106555802
+      ],
+      "n": 1000,
+      "rate": 0.102,
+      "rejections": 102,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.3194385977329679,
+       0.3794536391460523
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.349,
+      "rejections": 349,
+      "undefined": 0
+     }
+    },
+    "C4_FIXED_B_KVB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.010701947929414703,
+       0.028299041249019177
+      ],
+      "n": 1000,
+      "rate": 0.018,
+      "rejections": 18,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.2023287298710311,
+       0.2552831775215668
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.228,
+      "rejections": 228,
+      "undefined": 0
+     }
+    },
+    "C5_SELF_NORMALIZED": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.010701947929414703,
+       0.028299041249019177
+      ],
+      "n": 1000,
+      "rate": 0.018,
+      "rejections": 18,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.2023287298710311,
+       0.2552831775215668
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.228,
+      "rejections": 228,
+      "undefined": 0
+     }
+    },
+    "C6_BATCH_MEANS_T": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.007674501565020781,
+       0.023378156010314503
+      ],
+      "n": 1000,
+      "rate": 0.014,
+      "rejections": 14,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.2639658854305837,
+       0.3212644330584589
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.292,
+      "rejections": 292,
+      "undefined": 0
+     }
+    }
+   },
+   "cell": {
+    "dgp": "P20_T4_VOL_REGIME",
+    "horizon": 126,
+    "index": 5,
+    "length": "KR",
+    "replicates": 1000
+   },
+   "isNull": false,
+   "meanRealisedIC": 0.20760002883180304,
+   "medianSupportBlocks": 4.0,
+   "medianTestDates": 55.0,
+   "replicatesRun": 1000
+  },
+  {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.024497527894758727,
+       0.04834238161422171
+      ],
+      "n": 1000,
+      "rate": 0.035,
+      "rejections": 35,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.08027750545100512,
+       0.11812845443123612
+      ],
+      "n": 1000,
+      "rate": 0.098,
+      "rejections": 98,
+      "sizeDecision": "FAIL",
+      "undefined": 0
+     }
+    },
+    "C1_CIRCULAR_BB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.017866905925249706,
+       0.03904174680597016
+      ],
+      "n": 1000,
+      "rate": 0.027,
+      "rejections": 27,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.06664893180887893,
+       0.10185329675537573
+      ],
+      "n": 1000,
+      "rate": 0.083,
+      "rejections": 83,
+      "sizeDecision": "INCONCLUSIVE",
+      "undefined": 0
+     }
+    },
+    "C2_STUDENTIZED_CBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.002818858759620525,
+       0.014369194978918632
+      ],
+      "n": 1000,
+      "rate": 0.007,
+      "rejections": 7,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0287276252858908,
+       0.0540726968193685
+      ],
+      "n": 1000,
+      "rate": 0.04,
+      "rejections": 40,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C3_NW_HAC_NORMAL": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.011477036993100945,
+       0.0295124016250978
+      ],
+      "n": 1000,
+      "rate": 0.019,
+      "rejections": 19,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.06845727877099017,
+       0.10403198577837723
+      ],
+      "n": 1000,
+      "rate": 0.085,
+      "rejections": 85,
+      "sizeDecision": "INCONCLUSIVE",
+      "undefined": 0
+     }
+    },
+    "C4_FIXED_B_KVB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.00024230111687723185,
+       0.007205838911457497
+      ],
+      "n": 1000,
+      "rate": 0.002,
+      "rejections": 2,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.019505937324384624,
+       0.041384719116401916
+      ],
+      "n": 1000,
+      "rate": 0.029,
+      "rejections": 29,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C5_SELF_NORMALIZED": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.00024230111687723185,
+       0.007205838911457497
+      ],
+      "n": 1000,
+      "rate": 0.002,
+      "rejections": 2,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.019505937324384624,
+       0.041384719116401916
+      ],
+      "n": 1000,
+      "rate": 0.029,
+      "rejections": 29,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C6_BATCH_MEANS_T": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.003682083896865671
+      ],
+      "n": 1000,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.022822383349459584,
+       0.046033981817023194
+      ],
+      "n": 1000,
+      "rate": 0.033,
+      "rejections": 33,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    }
+   },
+   "cell": {
+    "dgp": "N1_GAUSS_CONST",
+    "horizon": 252,
+    "index": 6,
+    "length": "KR",
+    "replicates": 1000
+   },
+   "isNull": true,
+   "meanRealisedIC": -0.005478118953137564,
+   "medianSupportBlocks": 3.0,
+   "medianTestDates": 41.0,
+   "replicatesRun": 1000
+  },
+  {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.017866905925249706,
+       0.03904174680597016
+      ],
+      "n": 1000,
+      "rate": 0.027,
+      "rejections": 27,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0675527419705832,
+       0.10294299899173502
+      ],
+      "n": 1000,
+      "rate": 0.084,
+      "rejections": 84,
+      "sizeDecision": "INCONCLUSIVE",
+      "undefined": 0
+     }
+    },
+    "C1_CIRCULAR_BB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.010701947929414703,
+       0.028299041249019177
+      ],
+      "n": 1000,
+      "rate": 0.018,
+      "rejections": 18,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.05140856601891848,
+       0.08320605046140273
+      ],
+      "n": 1000,
+      "rate": 0.066,
+      "rejections": 66,
+      "sizeDecision": "INCONCLUSIVE",
+      "undefined": 0
+     }
+    },
+    "C2_STUDENTIZED_CBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.00024230111687723185,
+       0.007205838911457497
+      ],
+      "n": 1000,
+      "rate": 0.002,
+      "rejections": 2,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0312911704560926,
+       0.05748625796197233
+      ],
+      "n": 1000,
+      "rate": 0.043,
+      "rejections": 43,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C3_NW_HAC_NORMAL": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.007674501565020781,
+       0.023378156010314503
+      ],
+      "n": 1000,
+      "rate": 0.014,
+      "rejections": 14,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.05318809976040196,
+       0.08541305019143103
+      ],
+      "n": 1000,
+      "rate": 0.068,
+      "rejections": 68,
+      "sizeDecision": "INCONCLUSIVE",
+      "undefined": 0
+     }
+    },
+    "C4_FIXED_B_KVB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0006190999316495713,
+       0.008742023238478303
+      ],
+      "n": 1000,
+      "rate": 0.003,
+      "rejections": 3,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.025338914929837725,
+       0.04949291171801237
+      ],
+      "n": 1000,
+      "rate": 0.036,
+      "rejections": 36,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C5_SELF_NORMALIZED": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0006190999316495713,
+       0.008742023238478303
+      ],
+      "n": 1000,
+      "rate": 0.003,
+      "rejections": 3,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.025338914929837725,
+       0.04949291171801237
+      ],
+      "n": 1000,
+      "rate": 0.036,
+      "rejections": 36,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C6_BATCH_MEANS_T": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.003682083896865671
+      ],
+      "n": 1000,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.018684686195537575,
+       0.04021488737384331
+      ],
+      "n": 1000,
+      "rate": 0.028,
+      "rejections": 28,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    }
+   },
+   "cell": {
+    "dgp": "N2_T4_VOL_REGIME",
+    "horizon": 252,
+    "index": 7,
+    "length": "KR",
+    "replicates": 1000
+   },
+   "isNull": true,
+   "meanRealisedIC": 0.005165839893024856,
+   "medianSupportBlocks": 3.0,
+   "medianTestDates": 41.0,
+   "replicatesRun": 1000
+  },
+  {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.02198884960564243,
+       0.044875902835009286
+      ],
+      "n": 1000,
+      "rate": 0.032,
+      "rejections": 32,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.08210533435558,
+       0.12028793651869264
+      ],
+      "n": 1000,
+      "rate": 0.1,
+      "rejections": 100,
+      "sizeDecision": "FAIL",
+      "undefined": 0
+     }
+    },
+    "C1_CIRCULAR_BB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.01705278634562943,
+       0.037865122478921445
+      ],
+      "n": 1000,
+      "rate": 0.026,
+      "rejections": 26,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0738991299424797,
+       0.11055149410186922
+      ],
+      "n": 1000,
+      "rate": 0.091,
+      "rejections": 91,
+      "sizeDecision": "FAIL",
+      "undefined": 0
+     }
+    },
+    "C2_STUDENTIZED_CBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.00162541951756276,
+       0.011629470559812147
+      ],
+      "n": 1000,
+      "rate": 0.005,
+      "rejections": 5,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.034735062266795964,
+       0.062012630693305135
+      ],
+      "n": 1000,
+      "rate": 0.047,
+      "rejections": 47,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C3_NW_HAC_NORMAL": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.013045192290387683,
+       0.0319223351804155
+      ],
+      "n": 1000,
+      "rate": 0.021,
+      "rejections": 21,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.07936447182936388,
+       0.11704784398028706
+      ],
+      "n": 1000,
+      "rate": 0.097,
+      "rejections": 97,
+      "sizeDecision": "FAIL",
+      "undefined": 0
+     }
+    },
+    "C4_FIXED_B_KVB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.00162541951756276,
+       0.011629470559812147
+      ],
+      "n": 1000,
+      "rate": 0.005,
+      "rejections": 5,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.02618270884373733,
+       0.05064112305992485
+      ],
+      "n": 1000,
+      "rate": 0.037,
+      "rejections": 37,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C5_SELF_NORMALIZED": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.00162541951756276,
+       0.011629470559812147
+      ],
+      "n": 1000,
+      "rate": 0.005,
+      "rejections": 5,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.02618270884373733,
+       0.05064112305992485
+      ],
+      "n": 1000,
+      "rate": 0.037,
+      "rejections": 37,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C6_BATCH_MEANS_T": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       2.5317487491294045e-05,
+       0.005558924279826672
+      ],
+      "n": 1000,
+      "rate": 0.001,
+      "rejections": 1,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.024497527894758727,
+       0.04834238161422171
+      ],
+      "n": 1000,
+      "rate": 0.035,
+      "rejections": 35,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    }
+   },
+   "cell": {
+    "dgp": "N3_T4_REGIME_BETA_LOADED",
+    "horizon": 252,
+    "index": 8,
+    "length": "KR",
+    "replicates": 1000
+   },
+   "isNull": true,
+   "meanRealisedIC": -0.002548587014517594,
+   "medianSupportBlocks": 3.0,
+   "medianTestDates": 41.0,
+   "replicatesRun": 1000
+  },
+  {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0338714985476779,
+       0.06088355271374263
+      ],
+      "n": 1000,
+      "rate": 0.046,
+      "rejections": 46,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.08943903298240025,
+       0.1289037608799979
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.108,
+      "rejections": 108,
+      "undefined": 0
+     }
+    },
+    "C1_CIRCULAR_BB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.027877148795336412,
+       0.05293093578544508
+      ],
+      "n": 1000,
+      "rate": 0.039,
+      "rejections": 39,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0811911289469688,
+       0.11920848268620646
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.099,
+      "rejections": 99,
+      "undefined": 0
+     }
+    },
+    "C2_STUDENTIZED_CBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.006939617502851474,
+       0.022127803636778486
+      ],
+      "n": 1000,
+      "rate": 0.013,
+      "rejections": 13,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0443328602528207,
+       0.0743364953823516
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.058,
+      "rejections": 58,
+      "undefined": 0
+     }
+    },
+    "C3_NW_HAC_NORMAL": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.022822383349459584,
+       0.046033981817023194
+      ],
+      "n": 1000,
+      "rate": 0.033,
+      "rejections": 33,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.08393546004048681,
+       0.12244515106555802
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.102,
+      "rejections": 102,
+      "undefined": 0
+     }
+    },
+    "C4_FIXED_B_KVB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0010909079877259714,
+       0.010209664683929871
+      ],
+      "n": 1000,
+      "rate": 0.004,
+      "rejections": 4,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.036467059172047823,
+       0.06426605314016964
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.049,
+      "rejections": 49,
+      "undefined": 0
+     }
+    },
+    "C5_SELF_NORMALIZED": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0010909079877259714,
+       0.010209664683929871
+      ],
+      "n": 1000,
+      "rate": 0.004,
+      "rejections": 4,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.036467059172047823,
+       0.06426605314016964
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.049,
+      "rejections": 49,
+      "undefined": 0
+     }
+    },
+    "C6_BATCH_MEANS_T": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.003682083896865671
+      ],
+      "n": 1000,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.027028815982983928,
+       0.05178710362196412
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.038,
+      "rejections": 38,
+      "undefined": 0
+     }
+    }
+   },
+   "cell": {
+    "dgp": "P05_T4_VOL_REGIME",
+    "horizon": 252,
+    "index": 9,
+    "length": "KR",
+    "replicates": 1000
+   },
+   "isNull": false,
+   "meanRealisedIC": 0.0516322857608463,
+   "medianSupportBlocks": 3.0,
+   "medianTestDates": 41.0,
+   "replicatesRun": 1000
+  },
+  {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.05140856601891848,
+       0.08320605046140273
+      ],
+      "n": 1000,
+      "rate": 0.066,
+      "rejections": 66,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.12001151279686956,
+       0.1641265589516087
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.141,
+      "rejections": 141,
+      "undefined": 0
+     }
+    },
+    "C1_CIRCULAR_BB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.04345358193695858,
+       0.07322272946066224
+      ],
+      "n": 1000,
+      "rate": 0.057,
+      "rejections": 57,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.11069846103121972,
+       0.15350117040015687
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.131,
+      "rejections": 131,
+      "undefined": 0
+     }
+    },
+    "C2_STUDENTIZED_CBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.002818858759620525,
+       0.014369194978918632
+      ],
+      "n": 1000,
+      "rate": 0.007,
+      "rejections": 7,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0558646482498975,
+       0.08871644088678735
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.071,
+      "rejections": 71,
+      "undefined": 0
+     }
+    },
+    "C3_NW_HAC_NORMAL": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.03043470626314002,
+       0.05635029157574476
+      ],
+      "n": 1000,
+      "rate": 0.042,
+      "rejections": 42,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.11907849738135583,
+       0.16306571520095475
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.14,
+      "rejections": 140,
+      "undefined": 0
+     }
+    },
+    "C4_FIXED_B_KVB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.00162541951756276,
+       0.011629470559812147
+      ],
+      "n": 1000,
+      "rate": 0.005,
+      "rejections": 5,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.05140856601891848,
+       0.08320605046140273
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.066,
+      "rejections": 66,
+      "undefined": 0
+     }
+    },
+    "C5_SELF_NORMALIZED": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.00162541951756276,
+       0.011629470559812147
+      ],
+      "n": 1000,
+      "rate": 0.005,
+      "rejections": 5,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.05140856601891848,
+       0.08320605046140273
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.066,
+      "rejections": 66,
+      "undefined": 0
+     }
+    },
+    "C6_BATCH_MEANS_T": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       2.5317487491294045e-05,
+       0.005558924279826672
+      ],
+      "n": 1000,
+      "rate": 0.001,
+      "rejections": 1,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.02958016853403611,
+       0.05521245931529931
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.041,
+      "rejections": 41,
+      "undefined": 0
+     }
+    }
+   },
+   "cell": {
+    "dgp": "P10_T4_VOL_REGIME",
+    "horizon": 252,
+    "index": 10,
+    "length": "KR",
+    "replicates": 1000
+   },
+   "isNull": false,
+   "meanRealisedIC": 0.09922638921716452,
+   "medianSupportBlocks": 3.0,
+   "medianTestDates": 41.0,
+   "replicatesRun": 1000
+  },
+  {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.13874499242735946,
+       0.18527085868256274
+      ],
+      "n": 1000,
+      "rate": 0.161,
+      "rejections": 161,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.3018678360768294,
+       0.36113103773118427
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.331,
+      "rejections": 331,
+      "undefined": 0
+     }
+    },
+    "C1_CIRCULAR_BB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.12187864287589151,
+       0.16624715659672165
+      ],
+      "n": 1000,
+      "rate": 0.143,
+      "rejections": 143,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.28240130538824093,
+       0.3407161813762114
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.311,
+      "rejections": 311,
+      "undefined": 0
+     }
+    },
+    "C2_STUDENTIZED_CBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.01624253569688223,
+       0.03668482305192304
+      ],
+      "n": 1000,
+      "rate": 0.025,
+      "rejections": 25,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.1500463682386287,
+       0.19789660809270473
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.173,
+      "rejections": 173,
+      "undefined": 0
+     }
+    },
+    "C3_NW_HAC_NORMAL": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.09680595526975852,
+       0.13748675054956372
+      ],
+      "n": 1000,
+      "rate": 0.116,
+      "rejections": 116,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.28045803172733574,
+       0.33867132471628764
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.309,
+      "rejections": 309,
+      "undefined": 0
+     }
+    },
+    "C4_FIXED_B_KVB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.009933512592716538,
+       0.027079496864851366
+      ],
+      "n": 1000,
+      "rate": 0.017,
+      "rejections": 17,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.15099005847602553,
+       0.19894685799303657
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.174,
+      "rejections": 174,
+      "undefined": 0
+     }
+    },
+    "C5_SELF_NORMALIZED": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.009933512592716538,
+       0.027079496864851366
+      ],
+      "n": 1000,
+      "rate": 0.017,
+      "rejections": 17,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.15099005847602553,
+       0.19894685799303657
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.174,
+      "rejections": 174,
+      "undefined": 0
+     }
+    },
+    "C6_BATCH_MEANS_T": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0010909079877259714,
+       0.010209664683929871
+      ],
+      "n": 1000,
+      "rate": 0.004,
+      "rejections": 4,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.10420311919524627,
+       0.14603982497054735
+      ],
+      "n": 1000,
+      "powerDecision": "FAIL",
+      "rate": 0.124,
+      "rejections": 124,
+      "undefined": 0
+     }
+    }
+   },
+   "cell": {
+    "dgp": "P20_T4_VOL_REGIME",
+    "horizon": 252,
+    "index": 11,
+    "length": "KR",
+    "replicates": 1000
+   },
+   "isNull": false,
+   "meanRealisedIC": 0.20068410060244202,
+   "medianSupportBlocks": 3.0,
+   "medianTestDates": 41.0,
+   "replicatesRun": 1000
+  },
+  {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       6.32925169048572e-05,
+       0.013849769962013272
+      ],
+      "n": 400,
+      "rate": 0.0025,
+      "rejections": 1,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C1_CIRCULAR_BB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0006060978093221481,
+       0.017944144605585428
+      ],
+      "n": 400,
+      "rate": 0.005,
+      "rejections": 2,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C2_STUDENTIZED_CBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       6.32925169048572e-05,
+       0.013849769962013272
+      ],
+      "n": 400,
+      "rate": 0.0025,
+      "rejections": 1,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C3_NW_HAC_NORMAL": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       6.32925169048572e-05,
+       0.013849769962013272
+      ],
+      "n": 400,
+      "rate": 0.0025,
+      "rejections": 1,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C4_FIXED_B_KVB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C5_SELF_NORMALIZED": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C6_BATCH_MEANS_T": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       6.32925169048572e-05,
+       0.013849769962013272
+      ],
+      "n": 400,
+      "rate": 0.0025,
+      "rejections": 1,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    }
+   },
+   "cell": {
+    "dgp": "N1_GAUSS_CONST",
+    "horizon": 126,
+    "index": 12,
+    "length": "LONG",
+    "replicates": 400
+   },
+   "isNull": true,
+   "meanRealisedIC": 0.0008336816803772218,
+   "medianSupportBlocks": 16.0,
+   "medianTestDates": 197.0,
+   "replicatesRun": 400
+  },
+  {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       6.32925169048572e-05,
+       0.013849769962013272
+      ],
+      "n": 400,
+      "rate": 0.0025,
+      "rejections": 1,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C1_CIRCULAR_BB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       6.32925169048572e-05,
+       0.013849769962013272
+      ],
+      "n": 400,
+      "rate": 0.0025,
+      "rejections": 1,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C2_STUDENTIZED_CBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       6.32925169048572e-05,
+       0.013849769962013272
+      ],
+      "n": 400,
+      "rate": 0.0025,
+      "rejections": 1,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C3_NW_HAC_NORMAL": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       6.32925169048572e-05,
+       0.013849769962013272
+      ],
+      "n": 400,
+      "rate": 0.0025,
+      "rejections": 1,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C4_FIXED_B_KVB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C5_SELF_NORMALIZED": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C6_BATCH_MEANS_T": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       6.32925169048572e-05,
+       0.013849769962013272
+      ],
+      "n": 400,
+      "rate": 0.0025,
+      "rejections": 1,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    }
+   },
+   "cell": {
+    "dgp": "N2_T4_VOL_REGIME",
+    "horizon": 126,
+    "index": 13,
+    "length": "LONG",
+    "replicates": 400
+   },
+   "isNull": true,
+   "meanRealisedIC": -0.0004616638682822798,
+   "medianSupportBlocks": 16.0,
+   "medianTestDates": 197.0,
+   "replicatesRun": 400
+  },
+  {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0015493589499056574,
+       0.0217606685144171
+      ],
+      "n": 400,
+      "rate": 0.0075,
+      "rejections": 3,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C1_CIRCULAR_BB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0015493589499056574,
+       0.0217606685144171
+      ],
+      "n": 400,
+      "rate": 0.0075,
+      "rejections": 3,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C2_STUDENTIZED_CBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.002731195971242955,
+       0.02540480090733625
+      ],
+      "n": 400,
+      "rate": 0.01,
+      "rejections": 4,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C3_NW_HAC_NORMAL": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0015493589499056574,
+       0.0217606685144171
+      ],
+      "n": 400,
+      "rate": 0.0075,
+      "rejections": 3,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C4_FIXED_B_KVB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       6.32925169048572e-05,
+       0.013849769962013272
+      ],
+      "n": 400,
+      "rate": 0.0025,
+      "rejections": 1,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C5_SELF_NORMALIZED": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       6.32925169048572e-05,
+       0.013849769962013272
+      ],
+      "n": 400,
+      "rate": 0.0025,
+      "rejections": 1,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C6_BATCH_MEANS_T": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.002731195971242955,
+       0.02540480090733625
+      ],
+      "n": 400,
+      "rate": 0.01,
+      "rejections": 4,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    }
+   },
+   "cell": {
+    "dgp": "N3_T4_REGIME_BETA_LOADED",
+    "horizon": 126,
+    "index": 14,
+    "length": "LONG",
+    "replicates": 400
+   },
+   "isNull": true,
+   "meanRealisedIC": 0.0020631006575856196,
+   "medianSupportBlocks": 16.0,
+   "medianTestDates": 197.0,
+   "replicatesRun": 400
+  },
+  {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.004070835844599722,
+       0.028928343785286817
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.0125,
+      "rejections": 5,
+      "undefined": 0
+     }
+    },
+    "C1_CIRCULAR_BB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.005524109504580661,
+       0.032361294480775016
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.015,
+      "rejections": 6,
+      "undefined": 0
+     }
+    },
+    "C2_STUDENTIZED_CBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.005524109504580661,
+       0.032361294480775016
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.015,
+      "rejections": 6,
+      "undefined": 0
+     }
+    },
+    "C3_NW_HAC_NORMAL": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.010338850958683777,
+       0.04228103003667281
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.0225,
+      "rejections": 9,
+      "undefined": 0
+     }
+    },
+    "C4_FIXED_B_KVB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0015493589499056574,
+       0.0217606685144171
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.0075,
+      "rejections": 3,
+      "undefined": 0
+     }
+    },
+    "C5_SELF_NORMALIZED": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0015493589499056574,
+       0.0217606685144171
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.0075,
+      "rejections": 3,
+      "undefined": 0
+     }
+    },
+    "C6_BATCH_MEANS_T": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.00867317036911831,
+       0.03902627671162005
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.02,
+      "rejections": 8,
+      "undefined": 0
+     }
+    }
+   },
+   "cell": {
+    "dgp": "P05_T4_VOL_REGIME",
+    "horizon": 126,
+    "index": 15,
+    "length": "LONG",
+    "replicates": 400
+   },
+   "isNull": false,
+   "meanRealisedIC": 0.051625698171018364,
+   "medianSupportBlocks": 16.0,
+   "medianTestDates": 196.0,
+   "replicatesRun": 400
+  },
+  {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0006060978093221481,
+       0.017944144605585428
+      ],
+      "n": 400,
+      "rate": 0.005,
+      "rejections": 2,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.07456469504023835,
+       0.1364781195820351
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.1025,
+      "rejections": 41,
+      "undefined": 0
+     }
+    },
+    "C1_CIRCULAR_BB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.07672858733080384,
+       0.13927305343181182
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.105,
+      "rejections": 42,
+      "undefined": 0
+     }
+    },
+    "C2_STUDENTIZED_CBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.05958241574856726,
+       0.11675384278483415
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.085,
+      "rejections": 34,
+      "undefined": 0
+     }
+    },
+    "C3_NW_HAC_NORMAL": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0006060978093221481,
+       0.017944144605585428
+      ],
+      "n": 400,
+      "rate": 0.005,
+      "rejections": 2,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.08543574724338866,
+       0.15040266262311577
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.115,
+      "rejections": 46,
+      "undefined": 0
+     }
+    },
+    "C4_FIXED_B_KVB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.05117167960466879,
+       0.1053376386138461
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.075,
+      "rejections": 30,
+      "undefined": 0
+     }
+    },
+    "C5_SELF_NORMALIZED": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.05117167960466879,
+       0.1053376386138461
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.075,
+      "rejections": 30,
+      "undefined": 0
+     }
+    },
+    "C6_BATCH_MEANS_T": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0810721625410635,
+       0.14484758604993742
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.11,
+      "rejections": 44,
+      "undefined": 0
+     }
+    }
+   },
+   "cell": {
+    "dgp": "P10_T4_VOL_REGIME",
+    "horizon": 126,
+    "index": 16,
+    "length": "LONG",
+    "replicates": 400
+   },
+   "isNull": false,
+   "meanRealisedIC": 0.10505356443636014,
+   "medianSupportBlocks": 16.0,
+   "medianTestDates": 197.0,
+   "replicatesRun": 400
+  },
+  {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.11870223230902682,
+       0.19153913512115653
+      ],
+      "n": 400,
+      "rate": 0.1525,
+      "rejections": 61,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.5400323307561228,
+       0.6386259520030062
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.59,
+      "rejections": 236,
+      "undefined": 0
+     }
+    },
+    "C1_CIRCULAR_BB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.11421808448897146,
+       0.1861018432133672
+      ],
+      "n": 400,
+      "rate": 0.1475,
+      "rejections": 59,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.542558863877036,
+       0.6410621070895297
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.5925,
+      "rejections": 237,
+      "undefined": 0
+     }
+    },
+    "C2_STUDENTIZED_CBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.06596594259068848,
+       0.1252433130966568
+      ],
+      "n": 400,
+      "rate": 0.0925,
+      "rejections": 37,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.47478253293699,
+       0.5748449488377447
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.525,
+      "rejections": 210,
+      "undefined": 0
+     }
+    },
+    "C3_NW_HAC_NORMAL": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.17572731523043958,
+       0.2585482860820247
+      ],
+      "n": 400,
+      "rate": 0.215,
+      "rejections": 86,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.5678952745697583,
+       0.665352362954488
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.6175,
+      "rejections": 247,
+      "undefined": 0
+     }
+    },
+    "C4_FIXED_B_KVB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.019264466585879915,
+       0.05802726168241613
+      ],
+      "n": 400,
+      "rate": 0.035,
+      "rejections": 14,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.3613740479969938,
+       0.4599676692438773
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.41,
+      "rejections": 164,
+      "undefined": 0
+     }
+    },
+    "C5_SELF_NORMALIZED": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.019264466585879915,
+       0.05802726168241613
+      ],
+      "n": 400,
+      "rate": 0.035,
+      "rejections": 14,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.3613740479969938,
+       0.4599676692438773
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.41,
+      "rejections": 164,
+      "undefined": 0
+     }
+    },
+    "C6_BATCH_MEANS_T": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.11870223230902682,
+       0.19153913512115653
+      ],
+      "n": 400,
+      "rate": 0.1525,
+      "rejections": 61,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.5375070746892483,
+       0.636188516408217
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.5875,
+      "rejections": 235,
+      "undefined": 0
+     }
+    }
+   },
+   "cell": {
+    "dgp": "P20_T4_VOL_REGIME",
+    "horizon": 126,
+    "index": 17,
+    "length": "LONG",
+    "replicates": 400
+   },
+   "isNull": false,
+   "meanRealisedIC": 0.21128486364443552,
+   "medianSupportBlocks": 16.0,
+   "medianTestDates": 197.0,
+   "replicatesRun": 400
+  },
+  {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0006060978093221481,
+       0.017944144605585428
+      ],
+      "n": 400,
+      "rate": 0.005,
+      "rejections": 2,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.004070835844599722,
+       0.028928343785286817
+      ],
+      "n": 400,
+      "rate": 0.0125,
+      "rejections": 5,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C1_CIRCULAR_BB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       6.32925169048572e-05,
+       0.013849769962013272
+      ],
+      "n": 400,
+      "rate": 0.0025,
+      "rejections": 1,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.002731195971242955,
+       0.02540480090733625
+      ],
+      "n": 400,
+      "rate": 0.01,
+      "rejections": 4,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C2_STUDENTIZED_CBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.002731195971242955,
+       0.02540480090733625
+      ],
+      "n": 400,
+      "rate": 0.01,
+      "rejections": 4,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C3_NW_HAC_NORMAL": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       6.32925169048572e-05,
+       0.013849769962013272
+      ],
+      "n": 400,
+      "rate": 0.0025,
+      "rejections": 1,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.002731195971242955,
+       0.02540480090733625
+      ],
+      "n": 400,
+      "rate": 0.01,
+      "rejections": 4,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C4_FIXED_B_KVB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       6.32925169048572e-05,
+       0.013849769962013272
+      ],
+      "n": 400,
+      "rate": 0.0025,
+      "rejections": 1,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.002731195971242955,
+       0.02540480090733625
+      ],
+      "n": 400,
+      "rate": 0.01,
+      "rejections": 4,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C5_SELF_NORMALIZED": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       6.32925169048572e-05,
+       0.013849769962013272
+      ],
+      "n": 400,
+      "rate": 0.0025,
+      "rejections": 1,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.002731195971242955,
+       0.02540480090733625
+      ],
+      "n": 400,
+      "rate": 0.01,
+      "rejections": 4,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C6_BATCH_MEANS_T": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       6.32925169048572e-05,
+       0.013849769962013272
+      ],
+      "n": 400,
+      "rate": 0.0025,
+      "rejections": 1,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0015493589499056574,
+       0.0217606685144171
+      ],
+      "n": 400,
+      "rate": 0.0075,
+      "rejections": 3,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    }
+   },
+   "cell": {
+    "dgp": "N1_GAUSS_CONST",
+    "horizon": 252,
+    "index": 18,
+    "length": "LONG",
+    "replicates": 400
+   },
+   "isNull": true,
+   "meanRealisedIC": -0.0028085627751592832,
+   "medianSupportBlocks": 15.0,
+   "medianTestDates": 184.0,
+   "replicatesRun": 400
+  },
+  {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0015493589499056574,
+       0.0217606685144171
+      ],
+      "n": 400,
+      "rate": 0.0075,
+      "rejections": 3,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C1_CIRCULAR_BB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0015493589499056574,
+       0.0217606685144171
+      ],
+      "n": 400,
+      "rate": 0.0075,
+      "rejections": 3,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C2_STUDENTIZED_CBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0006060978093221481,
+       0.017944144605585428
+      ],
+      "n": 400,
+      "rate": 0.005,
+      "rejections": 2,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C3_NW_HAC_NORMAL": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.002731195971242955,
+       0.02540480090733625
+      ],
+      "n": 400,
+      "rate": 0.01,
+      "rejections": 4,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C4_FIXED_B_KVB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       6.32925169048572e-05,
+       0.013849769962013272
+      ],
+      "n": 400,
+      "rate": 0.0025,
+      "rejections": 1,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C5_SELF_NORMALIZED": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       6.32925169048572e-05,
+       0.013849769962013272
+      ],
+      "n": 400,
+      "rate": 0.0025,
+      "rejections": 1,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C6_BATCH_MEANS_T": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0006060978093221481,
+       0.017944144605585428
+      ],
+      "n": 400,
+      "rate": 0.005,
+      "rejections": 2,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    }
+   },
+   "cell": {
+    "dgp": "N2_T4_VOL_REGIME",
+    "horizon": 252,
+    "index": 19,
+    "length": "LONG",
+    "replicates": 400
+   },
+   "isNull": true,
+   "meanRealisedIC": -0.0006105304409321059,
+   "medianSupportBlocks": 15.0,
+   "medianTestDates": 184.0,
+   "replicatesRun": 400
+  },
+  {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.00867317036911831,
+       0.03902627671162005
+      ],
+      "n": 400,
+      "rate": 0.02,
+      "rejections": 8,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C1_CIRCULAR_BB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.002731195971242955,
+       0.02540480090733625
+      ],
+      "n": 400,
+      "rate": 0.01,
+      "rejections": 4,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C2_STUDENTIZED_CBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.0006060978093221481,
+       0.017944144605585428
+      ],
+      "n": 400,
+      "rate": 0.005,
+      "rejections": 2,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C3_NW_HAC_NORMAL": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.004070835844599722,
+       0.028928343785286817
+      ],
+      "n": 400,
+      "rate": 0.0125,
+      "rejections": 5,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C4_FIXED_B_KVB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.002731195971242955,
+       0.02540480090733625
+      ],
+      "n": 400,
+      "rate": 0.01,
+      "rejections": 4,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C5_SELF_NORMALIZED": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.002731195971242955,
+       0.02540480090733625
+      ],
+      "n": 400,
+      "rate": 0.01,
+      "rejections": 4,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    },
+    "C6_BATCH_MEANS_T": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.002731195971242955,
+       0.02540480090733625
+      ],
+      "n": 400,
+      "rate": 0.01,
+      "rejections": 4,
+      "sizeDecision": "PASS",
+      "undefined": 0
+     }
+    }
+   },
+   "cell": {
+    "dgp": "N3_T4_REGIME_BETA_LOADED",
+    "horizon": 252,
+    "index": 20,
+    "length": "LONG",
+    "replicates": 400
+   },
+   "isNull": true,
+   "meanRealisedIC": -0.003881285973420424,
+   "medianSupportBlocks": 15.0,
+   "medianTestDates": 185.0,
+   "replicatesRun": 400
+  },
+  {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.013806130234203186,
+       0.04867154890808907
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.0275,
+      "rejections": 11,
+      "undefined": 0
+     }
+    },
+    "C1_CIRCULAR_BB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.012052120113185938,
+       0.045494279298780006
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.025,
+      "rejections": 10,
+      "undefined": 0
+     }
+    },
+    "C2_STUDENTIZED_CBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.00867317036911831,
+       0.03902627671162005
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.02,
+      "rejections": 8,
+      "undefined": 0
+     }
+    },
+    "C3_NW_HAC_NORMAL": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.012052120113185938,
+       0.045494279298780006
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.025,
+      "rejections": 10,
+      "undefined": 0
+     }
+    },
+    "C4_FIXED_B_KVB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.00867317036911831,
+       0.03902627671162005
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.02,
+      "rejections": 8,
+      "undefined": 0
+     }
+    },
+    "C5_SELF_NORMALIZED": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.00867317036911831,
+       0.03902627671162005
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.02,
+      "rejections": 8,
+      "undefined": 0
+     }
+    },
+    "C6_BATCH_MEANS_T": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.005524109504580661,
+       0.032361294480775016
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.015,
+      "rejections": 6,
+      "undefined": 0
+     }
+    }
+   },
+   "cell": {
+    "dgp": "P05_T4_VOL_REGIME",
+    "horizon": 252,
+    "index": 21,
+    "length": "LONG",
+    "replicates": 400
+   },
+   "isNull": false,
+   "meanRealisedIC": 0.05071079553271104,
+   "medianSupportBlocks": 15.0,
+   "medianTestDates": 184.0,
+   "replicatesRun": 400
+  },
+  {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.05117167960466879,
+       0.1053376386138461
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.075,
+      "rejections": 30,
+      "undefined": 0
+     }
+    },
+    "C1_CIRCULAR_BB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.038817749104425814,
+       0.08796242340489667
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.06,
+      "rejections": 24,
+      "undefined": 0
+     }
+    },
+    "C2_STUDENTIZED_CBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       6.32925169048572e-05,
+       0.013849769962013272
+      ],
+      "n": 400,
+      "rate": 0.0025,
+      "rejections": 1,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.030805241143265938,
+       0.07616697275514255
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.05,
+      "rejections": 20,
+      "undefined": 0
+     }
+    },
+    "C3_NW_HAC_NORMAL": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       6.32925169048572e-05,
+       0.013849769962013272
+      ],
+      "n": 400,
+      "rate": 0.0025,
+      "rejections": 1,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.04085145700955508,
+       0.0908823695513088
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.0625,
+      "rejections": 25,
+      "undefined": 0
+     }
+    },
+    "C4_FIXED_B_KVB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.021137674784348935,
+       0.06109697662390072
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.0375,
+      "rejections": 15,
+      "undefined": 0
+     }
+    },
+    "C5_SELF_NORMALIZED": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.021137674784348935,
+       0.06109697662390072
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.0375,
+      "rejections": 15,
+      "undefined": 0
+     }
+    },
+    "C6_BATCH_MEANS_T": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.0,
+       0.00917980458366526
+      ],
+      "n": 400,
+      "rate": 0.0,
+      "rejections": 0,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.04289600138479843,
+       0.0937920198964955
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.065,
+      "rejections": 26,
+      "undefined": 0
+     }
+    }
+   },
+   "cell": {
+    "dgp": "P10_T4_VOL_REGIME",
+    "horizon": 252,
+    "index": 22,
+    "length": "LONG",
+    "replicates": 400
+   },
+   "isNull": false,
+   "meanRealisedIC": 0.09591285879289355,
+   "medianSupportBlocks": 15.0,
+   "medianTestDates": 184.0,
+   "replicatesRun": 400
+  },
+  {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.04289600138479843,
+       0.0937920198964955
+      ],
+      "n": 400,
+      "rate": 0.065,
+      "rejections": 26,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.3249684520259271,
+       0.4219333707645541
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.3725,
+      "rejections": 149,
+      "undefined": 0
+     }
+    },
+    "C1_CIRCULAR_BB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.04289600138479843,
+       0.0937920198964955
+      ],
+      "n": 400,
+      "rate": 0.065,
+      "rejections": 26,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.3370707652145406,
+       0.43464424447395766
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.385,
+      "rejections": 154,
+      "undefined": 0
+     }
+    },
+    "C2_STUDENTIZED_CBB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.012052120113185938,
+       0.045494279298780006
+      ],
+      "n": 400,
+      "rate": 0.025,
+      "rejections": 10,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.2769043915324992,
+       0.370746209426733
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.3225,
+      "rejections": 129,
+      "undefined": 0
+     }
+    },
+    "C3_NW_HAC_NORMAL": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.061703545763249774,
+       0.11959014333036548
+      ],
+      "n": 400,
+      "rate": 0.0875,
+      "rejections": 35,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.33464763704551204,
+       0.4321047254302417
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.3825,
+      "rejections": 153,
+      "undefined": 0
+     }
+    },
+    "C4_FIXED_B_KVB": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.002731195971242955,
+       0.02540480090733625
+      ],
+      "n": 400,
+      "rate": 0.01,
+      "rejections": 4,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.18499319400028733,
+       0.2691298510543072
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.225,
+      "rejections": 90,
+      "undefined": 0
+     }
+    },
+    "C5_SELF_NORMALIZED": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.002731195971242955,
+       0.02540480090733625
+      ],
+      "n": 400,
+      "rate": 0.01,
+      "rejections": 4,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.18499319400028733,
+       0.2691298510543072
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.225,
+      "rejections": 90,
+      "undefined": 0
+     }
+    },
+    "C6_BATCH_MEANS_T": {
+     "0.001388888888888889": {
+      "clopperPearson95": [
+       0.019264466585879915,
+       0.05802726168241613
+      ],
+      "n": 400,
+      "rate": 0.035,
+      "rejections": 14,
+      "undefined": 0
+     },
+     "0.05": {
+      "clopperPearson95": [
+       0.2816849912893938,
+       0.37589059923254836
+      ],
+      "n": 400,
+      "powerDecision": "FAIL",
+      "rate": 0.3275,
+      "rejections": 131,
+      "undefined": 0
+     }
+    }
+   },
+   "cell": {
+    "dgp": "P20_T4_VOL_REGIME",
+    "horizon": 252,
+    "index": 23,
+    "length": "LONG",
+    "replicates": 400
+   },
+   "isNull": false,
+   "meanRealisedIC": 0.20144110375136706,
+   "medianSupportBlocks": 15.0,
+   "medianTestDates": 184.0,
+   "replicatesRun": 400
+  }
+ ],
+ "codeSha256": {
+  "evaluate.py": "3bf1781c7a0e19bd9ce57d33edaa95f10e4bcbb60a964e18a613e5aa41e01240",
+  "inference_calibration.py": "8e3e9c0a3c2fff472764793c5ed13e1ae8d16ace7b8104bc0ef8966a514c5ec1",
+  "study.py": "a61f66caf2997c90049feecc8627735fc06061996bc661d29821aba738cb7141"
+ },
+ "elapsedSeconds": 1555.7,
+ "evidenceClass": "SYNTHETIC_CALIBRATION_FORMAL",
+ "historicalOutcomesRead": 0,
+ "protocolDigest": "defdd9b1de9583fb9b3ad8ec5d4d0f190eb617e7d80bb46e5aa7f3a94e761b54",
+ "registeredTestChanged": false,
+ "replicateLimit": null,
+ "schema": "INDUSTRY_INFERENCE_CALIBRATION_RESULT_V1",
+ "seed": 20261026,
+ "verdicts": {
+  "KR_H126": {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.071,
+      "P10_T4_VOL_REGIME": 0.152,
+      "P20_T4_VOL_REGIME": 0.362
+     },
+     "primaryPower": 0.152,
+     "sizeState": "PASS",
+     "worstNullRate": 0.054
+    },
+    "C1_CIRCULAR_BB": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.066,
+      "P10_T4_VOL_REGIME": 0.143,
+      "P20_T4_VOL_REGIME": 0.35
+     },
+     "primaryPower": 0.143,
+     "sizeState": "PASS",
+     "worstNullRate": 0.04
+    },
+    "C2_STUDENTIZED_CBB": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.034,
+      "P10_T4_VOL_REGIME": 0.092,
+      "P20_T4_VOL_REGIME": 0.25
+     },
+     "primaryPower": 0.092,
+     "sizeState": "PASS",
+     "worstNullRate": 0.031
+    },
+    "C3_NW_HAC_NORMAL": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.061,
+      "P10_T4_VOL_REGIME": 0.135,
+      "P20_T4_VOL_REGIME": 0.349
+     },
+     "primaryPower": 0.135,
+     "sizeState": "PASS",
+     "worstNullRate": 0.036
+    },
+    "C4_FIXED_B_KVB": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.021,
+      "P10_T4_VOL_REGIME": 0.087,
+      "P20_T4_VOL_REGIME": 0.228
+     },
+     "primaryPower": 0.087,
+     "sizeState": "PASS",
+     "worstNullRate": 0.027
+    },
+    "C5_SELF_NORMALIZED": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.021,
+      "P10_T4_VOL_REGIME": 0.087,
+      "P20_T4_VOL_REGIME": 0.228
+     },
+     "primaryPower": 0.087,
+     "sizeState": "PASS",
+     "worstNullRate": 0.027
+    },
+    "C6_BATCH_MEANS_T": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.031,
+      "P10_T4_VOL_REGIME": 0.101,
+      "P20_T4_VOL_REGIME": 0.292
+     },
+     "primaryPower": 0.101,
+     "sizeState": "PASS",
+     "worstNullRate": 0.03
+    }
+   },
+   "recommended": "C0_REGISTERED_MBB",
+   "recommendedPowerAdequate": false,
+   "sizeValid": [
+    "C0_REGISTERED_MBB",
+    "C1_CIRCULAR_BB",
+    "C2_STUDENTIZED_CBB",
+    "C3_NW_HAC_NORMAL",
+    "C4_FIXED_B_KVB",
+    "C5_SELF_NORMALIZED",
+    "C6_BATCH_MEANS_T"
+   ]
+  },
+  "KR_H252": {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.108,
+      "P10_T4_VOL_REGIME": 0.141,
+      "P20_T4_VOL_REGIME": 0.331
+     },
+     "primaryPower": 0.141,
+     "sizeState": "FAIL",
+     "worstNullRate": 0.1
+    },
+    "C1_CIRCULAR_BB": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.099,
+      "P10_T4_VOL_REGIME": 0.131,
+      "P20_T4_VOL_REGIME": 0.311
+     },
+     "primaryPower": 0.131,
+     "sizeState": "FAIL",
+     "worstNullRate": 0.091
+    },
+    "C2_STUDENTIZED_CBB": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.058,
+      "P10_T4_VOL_REGIME": 0.071,
+      "P20_T4_VOL_REGIME": 0.173
+     },
+     "primaryPower": 0.071,
+     "sizeState": "PASS",
+     "worstNullRate": 0.047
+    },
+    "C3_NW_HAC_NORMAL": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.102,
+      "P10_T4_VOL_REGIME": 0.14,
+      "P20_T4_VOL_REGIME": 0.309
+     },
+     "primaryPower": 0.14,
+     "sizeState": "FAIL",
+     "worstNullRate": 0.097
+    },
+    "C4_FIXED_B_KVB": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.049,
+      "P10_T4_VOL_REGIME": 0.066,
+      "P20_T4_VOL_REGIME": 0.174
+     },
+     "primaryPower": 0.066,
+     "sizeState": "PASS",
+     "worstNullRate": 0.037
+    },
+    "C5_SELF_NORMALIZED": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.049,
+      "P10_T4_VOL_REGIME": 0.066,
+      "P20_T4_VOL_REGIME": 0.174
+     },
+     "primaryPower": 0.066,
+     "sizeState": "PASS",
+     "worstNullRate": 0.037
+    },
+    "C6_BATCH_MEANS_T": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.038,
+      "P10_T4_VOL_REGIME": 0.041,
+      "P20_T4_VOL_REGIME": 0.124
+     },
+     "primaryPower": 0.041,
+     "sizeState": "PASS",
+     "worstNullRate": 0.035
+    }
+   },
+   "recommended": "C2_STUDENTIZED_CBB",
+   "recommendedPowerAdequate": false,
+   "sizeValid": [
+    "C2_STUDENTIZED_CBB",
+    "C4_FIXED_B_KVB",
+    "C5_SELF_NORMALIZED",
+    "C6_BATCH_MEANS_T"
+   ]
+  },
+  "LONG_H126": {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.0125,
+      "P10_T4_VOL_REGIME": 0.1025,
+      "P20_T4_VOL_REGIME": 0.59
+     },
+     "primaryPower": 0.1025,
+     "sizeState": "PASS",
+     "worstNullRate": 0.0075
+    },
+    "C1_CIRCULAR_BB": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.015,
+      "P10_T4_VOL_REGIME": 0.105,
+      "P20_T4_VOL_REGIME": 0.5925
+     },
+     "primaryPower": 0.105,
+     "sizeState": "PASS",
+     "worstNullRate": 0.0075
+    },
+    "C2_STUDENTIZED_CBB": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.015,
+      "P10_T4_VOL_REGIME": 0.085,
+      "P20_T4_VOL_REGIME": 0.525
+     },
+     "primaryPower": 0.085,
+     "sizeState": "PASS",
+     "worstNullRate": 0.01
+    },
+    "C3_NW_HAC_NORMAL": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.0225,
+      "P10_T4_VOL_REGIME": 0.115,
+      "P20_T4_VOL_REGIME": 0.6175
+     },
+     "primaryPower": 0.115,
+     "sizeState": "PASS",
+     "worstNullRate": 0.0075
+    },
+    "C4_FIXED_B_KVB": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.0075,
+      "P10_T4_VOL_REGIME": 0.075,
+      "P20_T4_VOL_REGIME": 0.41
+     },
+     "primaryPower": 0.075,
+     "sizeState": "PASS",
+     "worstNullRate": 0.0025
+    },
+    "C5_SELF_NORMALIZED": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.0075,
+      "P10_T4_VOL_REGIME": 0.075,
+      "P20_T4_VOL_REGIME": 0.41
+     },
+     "primaryPower": 0.075,
+     "sizeState": "PASS",
+     "worstNullRate": 0.0025
+    },
+    "C6_BATCH_MEANS_T": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.02,
+      "P10_T4_VOL_REGIME": 0.11,
+      "P20_T4_VOL_REGIME": 0.5875
+     },
+     "primaryPower": 0.11,
+     "sizeState": "PASS",
+     "worstNullRate": 0.01
+    }
+   },
+   "recommended": "C3_NW_HAC_NORMAL",
+   "recommendedPowerAdequate": false,
+   "sizeValid": [
+    "C0_REGISTERED_MBB",
+    "C1_CIRCULAR_BB",
+    "C2_STUDENTIZED_CBB",
+    "C3_NW_HAC_NORMAL",
+    "C4_FIXED_B_KVB",
+    "C5_SELF_NORMALIZED",
+    "C6_BATCH_MEANS_T"
+   ]
+  },
+  "LONG_H252": {
+   "candidates": {
+    "C0_REGISTERED_MBB": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.0275,
+      "P10_T4_VOL_REGIME": 0.075,
+      "P20_T4_VOL_REGIME": 0.3725
+     },
+     "primaryPower": 0.075,
+     "sizeState": "PASS",
+     "worstNullRate": 0.02
+    },
+    "C1_CIRCULAR_BB": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.025,
+      "P10_T4_VOL_REGIME": 0.06,
+      "P20_T4_VOL_REGIME": 0.385
+     },
+     "primaryPower": 0.06,
+     "sizeState": "PASS",
+     "worstNullRate": 0.01
+    },
+    "C2_STUDENTIZED_CBB": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.02,
+      "P10_T4_VOL_REGIME": 0.05,
+      "P20_T4_VOL_REGIME": 0.3225
+     },
+     "primaryPower": 0.05,
+     "sizeState": "PASS",
+     "worstNullRate": 0.01
+    },
+    "C3_NW_HAC_NORMAL": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.025,
+      "P10_T4_VOL_REGIME": 0.0625,
+      "P20_T4_VOL_REGIME": 0.3825
+     },
+     "primaryPower": 0.0625,
+     "sizeState": "PASS",
+     "worstNullRate": 0.0125
+    },
+    "C4_FIXED_B_KVB": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.02,
+      "P10_T4_VOL_REGIME": 0.0375,
+      "P20_T4_VOL_REGIME": 0.225
+     },
+     "primaryPower": 0.0375,
+     "sizeState": "PASS",
+     "worstNullRate": 0.01
+    },
+    "C5_SELF_NORMALIZED": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.02,
+      "P10_T4_VOL_REGIME": 0.0375,
+      "P20_T4_VOL_REGIME": 0.225
+     },
+     "primaryPower": 0.0375,
+     "sizeState": "PASS",
+     "worstNullRate": 0.01
+    },
+    "C6_BATCH_MEANS_T": {
+     "powerByDgp": {
+      "P05_T4_VOL_REGIME": 0.015,
+      "P10_T4_VOL_REGIME": 0.065,
+      "P20_T4_VOL_REGIME": 0.3275
+     },
+     "primaryPower": 0.065,
+     "sizeState": "PASS",
+     "worstNullRate": 0.01
+    }
+   },
+   "recommended": "C0_REGISTERED_MBB",
+   "recommendedPowerAdequate": false,
+   "sizeValid": [
+    "C0_REGISTERED_MBB",
+    "C1_CIRCULAR_BB",
+    "C2_STUDENTIZED_CBB",
+    "C3_NW_HAC_NORMAL",
+    "C4_FIXED_B_KVB",
+    "C5_SELF_NORMALIZED",
+    "C6_BATCH_MEANS_T"
+   ]
+  }
+ }
+}

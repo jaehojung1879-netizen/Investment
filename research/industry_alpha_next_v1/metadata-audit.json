@@ -1,0 +1,2842 @@
+{
+  "auditedMain": "b589d658eedd3c47f555df20db86f37792ee3358",
+  "evidenceClass": "SOURCE_METADATA_AND_EXISTING_SEAL_HASHES_ONLY",
+  "executionCapability": "NONE; this file does not construct or evaluate any historical target",
+  "kr": {
+    "annual": {
+      "2015": {
+        "classified": 5952,
+        "coveragePct": 93.58490566037736,
+        "denominator": 6360
+      },
+      "2016": {
+        "classified": 5925,
+        "coveragePct": 94.95192307692307,
+        "denominator": 6240
+      },
+      "2017": {
+        "classified": 5746,
+        "coveragePct": 93.88888888888889,
+        "denominator": 6120
+      },
+      "2018": {
+        "classified": 5789,
+        "coveragePct": 92.7724358974359,
+        "denominator": 6240
+      },
+      "2019": {
+        "classified": 5832,
+        "coveragePct": 93.46153846153847,
+        "denominator": 6240
+      },
+      "2020": {
+        "classified": 6043,
+        "coveragePct": 95.01572327044026,
+        "denominator": 6360
+      },
+      "2021": {
+        "classified": 5971,
+        "coveragePct": 95.68910256410257,
+        "denominator": 6240
+      },
+      "2022": {
+        "classified": 5980,
+        "coveragePct": 95.83333333333334,
+        "denominator": 6240
+      },
+      "2023": {
+        "classified": 6015,
+        "coveragePct": 96.39423076923077,
+        "denominator": 6240
+      },
+      "2024": {
+        "classified": 6054,
+        "coveragePct": 97.01923076923077,
+        "denominator": 6240
+      },
+      "2025": {
+        "classified": 6084,
+        "coveragePct": 97.5,
+        "denominator": 6240
+      },
+      "2026": {
+        "classified": 4365,
+        "coveragePct": 98.3108108108108,
+        "denominator": 4440
+      }
+    },
+    "classified": 69756,
+    "decision": "DATA_FOUNDATION_INSUFFICIENT_V4",
+    "demonstrablyPublicEventNameDatesV3": 1798,
+    "fractionInSufficientGroups": {
+      "datesBelowThreshold": 398,
+      "min": 0.788135593220339
+    },
+    "groupTotalsNameDates": {
+      "AUTOS": 2207,
+      "BASIC_MATERIALS": 2898,
+      "CAPITAL_GOODS_DEFENSE": 5469,
+      "CHEMICALS": 6587,
+      "COMMUNICATION_MEDIA_SOFTWARE": 6150,
+      "CONSTRUCTION_ENGINEERING": 3153,
+      "CONSUMER_RETAIL_SERVICES": 6929,
+      "ELECTRONICS_ELECTRICAL": 7376,
+      "ENERGY_UTILITIES": 2396,
+      "FINANCIALS": 15575,
+      "FOOD_BEVERAGE_TOBACCO": 3024,
+      "HEALTHCARE": 3147,
+      "HOLDINGS_BUSINESS_SERVICES": 2129,
+      "TRANSPORT_LOGISTICS": 2716
+    },
+    "nameDates": 73200,
+    "preferredUnknownSecurities": [
+      "005385.KS",
+      "005387.KS"
+    ],
+    "statusCounts": {
+      "CURRENT_KRX_KIND_ANCHOR": 7558,
+      "PREFERRED_SHARE_OF_ANCHORED_COMMON": 949,
+      "RECONSTRUCTED_STABLE_NO_CHANGE_EVENT": 54173,
+      "UNKNOWN": 3442,
+      "UNKNOWN_IDENTITY_TERMINATED": 2,
+      "VERIFIED_KRX_KIND_CHANGE_EVENT": 7076
+    },
+    "taxonomySelected": null,
+    "terminal": {
+      "classified": 0,
+      "denominator": 2345
+    },
+    "terminalUnknownSecurities": [
+      "000030.KS",
+      "000060.KS",
+      "000830.KS",
+      "001300.KS",
+      "002550.KS",
+      "003410.KS",
+      "003450.KS",
+      "003600.KS",
+      "004940.KS",
+      "008560.KS",
+      "010520.KS",
+      "010620.KS",
+      "011160.KS",
+      "012510.KS",
+      "037620.KS",
+      "042670.KS",
+      "053000.KS",
+      "057050.KS",
+      "067250.KS",
+      "079440.KS",
+      "115390.KS",
+      "117930.KS"
+    ],
+    "unknown": 3444
+  },
+  "schema": "INDUSTRY_ALPHA_METADATA_AUDIT_V1",
+  "us": {
+    "blankRows": 19,
+    "bySnapshot": [
+      {
+        "blankRows": 0,
+        "date": "2012-12-27",
+        "distinctLabelsIncludingNull": 10,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 8,
+        "rawCsvSha256": "0c9727c2abad50ebf494e3cd94ca3dcb451bed60e6e9173312007e6499ea8563",
+        "rows": 500,
+        "sourceColumn": "Sector",
+        "sourceCommit": "f8d9c4a08f40d4bba54a4dbe25a29503e231aef2"
+      },
+      {
+        "blankRows": 0,
+        "date": "2013-02-10",
+        "distinctLabelsIncludingNull": 10,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 8,
+        "rawCsvSha256": "51bf1ac35397520f3606bf33319c672e4d6b8de72d2cbb10c299f0bd0c95f64b",
+        "rows": 500,
+        "sourceColumn": "Sector",
+        "sourceCommit": "d06c4ee11215173948f12c276824b74bbf9981ed"
+      },
+      {
+        "blankRows": 0,
+        "date": "2013-05-05",
+        "distinctLabelsIncludingNull": 10,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 8,
+        "rawCsvSha256": "b43b148cf01c3ee51eb64dbbec12e6158b5e6ba6e671595401a405f62966a89d",
+        "rows": 500,
+        "sourceColumn": "Sector",
+        "sourceCommit": "41745e949d68abcf0026bbc43d503a52c69d8e55"
+      },
+      {
+        "blankRows": 13,
+        "date": "2013-05-05",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 20,
+        "rawCsvSha256": "79ce8b68620a4bbd132a9312762ed61e9bf1fa88ffdeffb8395853b996976bff",
+        "rows": 500,
+        "sourceColumn": "Sector",
+        "sourceCommit": "ca76180b008bb1cc9f8a88d9f148d86ab9354992"
+      },
+      {
+        "blankRows": 1,
+        "date": "2013-05-05",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [],
+        "outsideTodayVocabularyRows": 8,
+        "rawCsvSha256": "85a95ae7bac0ba92899b60cf27a08bd9c86522b0366ed99e38c895c9b5563108",
+        "rows": 500,
+        "sourceColumn": "Sector",
+        "sourceCommit": "ac0b811977ad6d36c318e6dfdf9b9cbce17064cb"
+      },
+      {
+        "blankRows": 1,
+        "date": "2013-06-08",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [],
+        "outsideTodayVocabularyRows": 8,
+        "rawCsvSha256": "0ec138dc072aa73dc894e57a45ec529964800b9891eed066d24ad61be9eda7ea",
+        "rows": 500,
+        "sourceColumn": "Sector",
+        "sourceCommit": "7197374acf45bafe57e9730152270cea2e780025"
+      },
+      {
+        "blankRows": 1,
+        "date": "2013-08-04",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [],
+        "outsideTodayVocabularyRows": 8,
+        "rawCsvSha256": "d7463ac2225ebdc7aff7bb447d669d0913b96f3c76c7b36d57d7db29956404dd",
+        "rows": 500,
+        "sourceColumn": "Sector",
+        "sourceCommit": "6f316d37cc0f937523c8b4703ff867625c93d393"
+      },
+      {
+        "blankRows": 1,
+        "date": "2013-10-05",
+        "distinctLabelsIncludingNull": 12,
+        "membersWithoutRow": [],
+        "outsideTodayVocabularyRows": 8,
+        "rawCsvSha256": "2392d1b9fa4f3bca20dae34f8017314429276e3e78fcc250854d64b1606ba93a",
+        "rows": 500,
+        "sourceColumn": "Sector",
+        "sourceCommit": "9cb01d48561067778ea277dafa04a0a6778140cc"
+      },
+      {
+        "blankRows": 1,
+        "date": "2014-01-19",
+        "distinctLabelsIncludingNull": 12,
+        "membersWithoutRow": [],
+        "outsideTodayVocabularyRows": 8,
+        "rawCsvSha256": "ba82e87183ac93ce04370bf2cb61e19919448682b8dbd44b15703b47e563c35b",
+        "rows": 500,
+        "sourceColumn": "Sector",
+        "sourceCommit": "16231d591960f1bc9474aebf69ff78c840824c1c"
+      },
+      {
+        "blankRows": 1,
+        "date": "2014-02-25",
+        "distinctLabelsIncludingNull": 12,
+        "membersWithoutRow": [],
+        "outsideTodayVocabularyRows": 8,
+        "rawCsvSha256": "fbcf873d282d2840bea8de057bb30712c258a574c44e83eff61144712b8c4d08",
+        "rows": 500,
+        "sourceColumn": "Sector",
+        "sourceCommit": "f79bf8a9e8e2ad5351e2f497c7b6db5298ee2b0c"
+      },
+      {
+        "blankRows": 0,
+        "date": "2014-02-25",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [],
+        "outsideTodayVocabularyRows": 7,
+        "rawCsvSha256": "79621068c26f605a7acced321f6b2c129c19f015d8502378e79fccd0e8feec43",
+        "rows": 500,
+        "sourceColumn": "Sector",
+        "sourceCommit": "665e42af8546974f38b8389ad1be0a672521c863"
+      },
+      {
+        "blankRows": 0,
+        "date": "2014-05-01",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [],
+        "outsideTodayVocabularyRows": 7,
+        "rawCsvSha256": "ebbba17f02abdd69416e3ff079e2ff0fc415996e7340050a101c2a4da32141c8",
+        "rows": 500,
+        "sourceColumn": "Sector",
+        "sourceCommit": "e64871e745a0d34ec3a0ae1b702886a1925d4cdf"
+      },
+      {
+        "blankRows": 0,
+        "date": "2014-07-28",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [],
+        "outsideTodayVocabularyRows": 7,
+        "rawCsvSha256": "e77c24c0ae94d68029f60ad48712a11c7a15d611f627a7d72b00e6aaba52bd97",
+        "rows": 501,
+        "sourceColumn": "Sector",
+        "sourceCommit": "7202d74a53c9a6a986f6d17aeb51129c9d33eed1"
+      },
+      {
+        "blankRows": 0,
+        "date": "2014-12-07",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [],
+        "outsideTodayVocabularyRows": 7,
+        "rawCsvSha256": "4a4d011cc8b3d54b5c3f9bc820255b0ffa1e0c942c1a905f7b6d096d0f8d0fa2",
+        "rows": 501,
+        "sourceColumn": "Sector",
+        "sourceCommit": "3b362db4098b5068b8c7f16203b69445c47fc3aa"
+      },
+      {
+        "blankRows": 0,
+        "date": "2014-12-07",
+        "distinctLabelsIncludingNull": 10,
+        "membersWithoutRow": [],
+        "outsideTodayVocabularyRows": 5,
+        "rawCsvSha256": "aef3241ed4d776c71d9faed35415733eb236fa78d3d3e13853c99fd0a952b1a5",
+        "rows": 496,
+        "sourceColumn": "Sector",
+        "sourceCommit": "bc037ffe67fe751c67b7c70d82a04a136c9819e2"
+      },
+      {
+        "blankRows": 0,
+        "date": "2015-07-09",
+        "distinctLabelsIncludingNull": 10,
+        "membersWithoutRow": [],
+        "outsideTodayVocabularyRows": 5,
+        "rawCsvSha256": "cc4d109665bd19fc15e1286d17ab4cc128580f4dfbc845daddd2ce422d2cf137",
+        "rows": 496,
+        "sourceColumn": "Sector",
+        "sourceCommit": "65b234a4f698daa15975284b9f9554f3b1f2f598"
+      },
+      {
+        "blankRows": 0,
+        "date": "2015-09-22",
+        "distinctLabelsIncludingNull": 10,
+        "membersWithoutRow": [],
+        "outsideTodayVocabularyRows": 5,
+        "rawCsvSha256": "5c4ab50ca8ed1049635b1dd78e54ff120b37b46e43bda2bf92a120fc79c512da",
+        "rows": 494,
+        "sourceColumn": "Sector",
+        "sourceCommit": "1dfe5d0908a8b0bde76cdd8a2c20417c3295c561"
+      },
+      {
+        "blankRows": 0,
+        "date": "2016-02-23",
+        "distinctLabelsIncludingNull": 10,
+        "membersWithoutRow": [],
+        "outsideTodayVocabularyRows": 5,
+        "rawCsvSha256": "100ff47ccdbf2a7abcd9fcf0c459b9adf8f01705994927ab5c436b9486deba64",
+        "rows": 504,
+        "sourceColumn": "Sector",
+        "sourceCommit": "c33409825f12a602430901bd12fe4fd79036592e"
+      },
+      {
+        "blankRows": 0,
+        "date": "2016-06-12",
+        "distinctLabelsIncludingNull": 10,
+        "membersWithoutRow": [],
+        "outsideTodayVocabularyRows": 5,
+        "rawCsvSha256": "6afb38da2bb273e59f3293b0f2e357c9df3960fe2fb134aeb3fa585d427f95aa",
+        "rows": 504,
+        "sourceColumn": "Sector",
+        "sourceCommit": "56958dd76f50c96278a8ccc99430faff3d3b1314"
+      },
+      {
+        "blankRows": 0,
+        "date": "2016-06-23",
+        "distinctLabelsIncludingNull": 10,
+        "membersWithoutRow": [],
+        "outsideTodayVocabularyRows": 5,
+        "rawCsvSha256": "76ba24bee14f7625b522aec365324fe1d7efa1b20159bc422f94d80e6fc79148",
+        "rows": 504,
+        "sourceColumn": "Sector",
+        "sourceCommit": "e804aeccbc0eef7758aa2758e41218caf41cb295"
+      },
+      {
+        "blankRows": 0,
+        "date": "2016-07-02",
+        "distinctLabelsIncludingNull": 10,
+        "membersWithoutRow": [],
+        "outsideTodayVocabularyRows": 5,
+        "rawCsvSha256": "ef438182e7b3ff3709cb0f69641986e4534b064b47741435f5bdb4292ce6dbca",
+        "rows": 504,
+        "sourceColumn": "Sector",
+        "sourceCommit": "763d9fe6400082c4011ffc60368513a96cc96087"
+      },
+      {
+        "blankRows": 0,
+        "date": "2016-07-06",
+        "distinctLabelsIncludingNull": 10,
+        "membersWithoutRow": [],
+        "outsideTodayVocabularyRows": 5,
+        "rawCsvSha256": "3bd357b893dd1024e8914c45d59b60c5aee86d50323a1a0680c341dcfef01110",
+        "rows": 504,
+        "sourceColumn": "Sector",
+        "sourceCommit": "27bf0673d183f39fde0bfc83d55bd1f18ca25321"
+      },
+      {
+        "blankRows": 0,
+        "date": "2017-03-08",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 5,
+        "rawCsvSha256": "e08294269ee0f1b05d6ec3f0cae5747da2c2c1adadee42a4a0c09a3c0fdce169",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "5bfe9b141ffee903c741b7f2c16ce050cb1cb324"
+      },
+      {
+        "blankRows": 0,
+        "date": "2018-04-02",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 3,
+        "rawCsvSha256": "188659fc8b5d8bed325ee906dab17e53df357789707baa97e89f612172f2269d",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "5dfdfbc3b9f52802f89e72da6e050b5cafdec4a6"
+      },
+      {
+        "blankRows": 0,
+        "date": "2020-05-10",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "89a770292575401cfbe4b6ba4e7cc853737ceb8b68d2da229b5d7d0b733a5f1e",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "5b0e007b27ab6b0f0d406ec65dd05b7261e7fc24"
+      },
+      {
+        "blankRows": 0,
+        "date": "2020-05-25",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "0aa64c6ca153151028f078b9892689fa0d30eae3d399fcf2fb2e8977b8896162",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "8c60cd137027f74a7fd4234131b0405f53063f58"
+      },
+      {
+        "blankRows": 0,
+        "date": "2020-05-29",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "a69b9800996d73ccc0b0544cf75bded242aa00c5e0438fc9c61b923ab5d027e9",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "9d8694b91e79a85bce1d45f9c5d8f52ab5fbb02a"
+      },
+      {
+        "blankRows": 0,
+        "date": "2020-07-17",
+        "distinctLabelsIncludingNull": 12,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 1,
+        "rawCsvSha256": "f3ac2885994f6801e7d25b97dced94f2108bcc4a1d6fe940a33963aadc099a50",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "4b47ebdc76268e2b06aaa0d910334fb418e29b10"
+      },
+      {
+        "blankRows": 0,
+        "date": "2020-07-22",
+        "distinctLabelsIncludingNull": 12,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 1,
+        "rawCsvSha256": "0851afcbd855c2f167161175e17e0709cfc4c77de3006038b8a20bf5494ea625",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "43b90e2317741e624fb5f6dfba4c26f706f52edf"
+      },
+      {
+        "blankRows": 0,
+        "date": "2020-07-23",
+        "distinctLabelsIncludingNull": 12,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 1,
+        "rawCsvSha256": "dc12add43f12c476722ae23b2ceba953687c2a9d3e6a53dc76cedfc3988cdeff",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "e9b24ca48efa69c1e18d38c2e9585e60bd4edb98"
+      },
+      {
+        "blankRows": 0,
+        "date": "2020-07-26",
+        "distinctLabelsIncludingNull": 12,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 1,
+        "rawCsvSha256": "fbaf5195659c44b502dbbc66b632d35a567250b98e251035e6f7f9745d9af626",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "b38d786c12aacc31ade25ee3d54e79d8b209ce03"
+      },
+      {
+        "blankRows": 0,
+        "date": "2020-07-29",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "55b3b14b8f0c775e4c7083311349aa9ec1cedf0f449cffc99840a56e516ddedf",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "573edfabb61a396c23f6b08e44d8f4207ba8832b"
+      },
+      {
+        "blankRows": 0,
+        "date": "2020-08-07",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "8e523b338aa49d6c482fea90fa60587a018b51cb499c4c3a0b83d4f133c77de4",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "31c5dbd253f85ee904c97603b45e5ab626087d5f"
+      },
+      {
+        "blankRows": 0,
+        "date": "2020-08-22",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "c5e3c62c6bb6dcad62d8b2292e40aa025f21656b3acc888f1788afb19259b377",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "aacdeb1d38dfc572aeadfc1a15980edadfe6a4df"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-02-11",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "5d21d6fc9e59d908e90dc76fedbda76c7705a930ee0e9bcff2625fc1e1c9394e",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "4e59528500b087d4566b54ab77b6ce3c1389d0a5"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-02-13",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "c51b2960d647d368723db3e4b25c2072798d98598c6336878fe68a90e40f247c",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "2a66bb410f9b6587a76aec875aad07d99f62b301"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-02-19",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "33fbe030658bf8a3856dc08ee2365121fa72ae5d5a1143abc4ea38422a918b5b",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "256a7193a3eb5ef2fcacc362a1b438eeec0af4a5"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-02-20",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "d3e05c203303ec329b8451d65f867e8e1aea0e11f60a80b136b97bccd44d9953",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "fe63878aa982be8a7b374d6b749a6e09b84f0a42"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-02-21",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "33fbe030658bf8a3856dc08ee2365121fa72ae5d5a1143abc4ea38422a918b5b",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "367d9d7fd4549442311dd2f135e9d50f0861e892"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-03-03",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "21248f07cb95e9dc602172e68e5db2786dcbab1f57cfb7cea8a515479684dbdc",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "490fe1cd5fe22e371330029738b6c9a4edf9b3c4"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-03-11",
+        "distinctLabelsIncludingNull": 12,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 1,
+        "rawCsvSha256": "c0179395d337ff587f42701dc5d342aedb4d3cc1ed3c6d31e11a8cf4eafa0748",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "9217bee804f275883fef4fcb9d744cf20a1bbdd8"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-03-12",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "21248f07cb95e9dc602172e68e5db2786dcbab1f57cfb7cea8a515479684dbdc",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "a9877921d4e24b1df2573efadac8bd514bc49da6"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-03-13",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "008589fd25e055e5fa58cc882d131a96a1f98c8f8edd3dda90b979c7ea3ea9ae",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "f02067fac4476fb6fbba81c0fd0dba513493667e"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-03-18",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "ad845225e82ed96757f189c3f9d988fc993f6f39178fc76baf9d577926336c23",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "86addeef753d9d943e2a2cda7ab61aabc495a30a"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-03-23",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "ffd6db2673c353369a60b10d782eddb03e73f293113a11afbef76ac1aa0fb0fc",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "8d0eed49e39f13a5fd9bcc6dc933df5a29da18c9"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-04-23",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "20ee073b3024dee48a1f6ab579e7a9d736a7543dd1bc10fa09ce01a85a75b362",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "cc86f782894b4e14bcca9bba6c708cc606aa727c"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-04-24",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "806e670c8b3316bd6e48337d4cbddc55cf480e96738fd0fc3b603db8c86f78a4",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "2475c3d990a58c63901adb7fb5a9aa447be6b4bc"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-05-03",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "20ee073b3024dee48a1f6ab579e7a9d736a7543dd1bc10fa09ce01a85a75b362",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "988c06f4ac968a0715fc32a4e56d1be1a8bfed01"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-05-20",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "935741fd60b992f52ea778c29a012c8efb6acad68efc0daebd3eda09be814e98",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "cacfb2f62b0d6cb7c273aaa2ce92e36af9ef2caf"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-05-25",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "6d91add5becc94ed4e9fd06d18b2e78874e572343790a7f446e5c67b4a00bd14",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "31a7f5d5c2b97e1dd964d242e1f8ee2f74569f66"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-06-05",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "949ae539fc8ea6d5185a42fa7a633d62a53987dfea2d86b8afd3c2a4820db9b6",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "c1caa657a1296b8b0324cf2773007c976206d795"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-06-10",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "e2dcf2007cb80e572161758f50858552e590838327b88c34c37014aad4ac33f7",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "26e285aa7d5bda5d494108bdcc9ec8ae1216b71e"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-06-27",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "93d7d4890c4e88ae6d58f07b77b4b8c16f36426415c28ef0bb3f99a4c51fb94c",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "1161d95948b6a8ea961295bb8880486fa73d4bc2"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-07-22",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "e8d925f0c3c4c9aeb2bb551c5bcee62d0a6017352af8a73757c9bd16d7a7215a",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "048c9e02ce6fcd25ebe582f35ea9e98fc8594a4b"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-08-05",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "2ca7be36ad7ab99a5e25b8f3c40f2928884410b87dd608bf4aa7d0d231bcbff2",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "45b55786d5735a1efdd7a985a9fa2c736cb1b771"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-08-10",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "164426319df059829128bd027b6333af4bcee32818aab128b42b37a6ccd8e52d",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "66055ca41a78200d4437aad142e11f6901b7ede2"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-08-12",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "9eebec9ca333924739c5f88f5aaf3631a47af56e3eef778326c03412fa4e8d09",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "d3e624e3594d21248db551998475ed958a691cd6"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-08-29",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "f7e69283527dbc55955788a35f01fdb8c76fb9efaa5e17d403c0bfeb66024f06",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "d08e4a95171777b31513c6c700ddd0f199170d92"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-09-15",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "d5b105b1e4008183b8d1a5ea9080dd6fbef92e7d2808f2afe35807fddbcc0e22",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "011d41fe6acd59790e7ce8d5cab25032e6dd52f8"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-09-23",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "bd168b531641b6ce0287af57d28a3c052f772882e0f76f574f59d66a43562d61",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "a824dfd23e732b3a29537437f34fdc074fdbc1c6"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-10-04",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "a1d113182c1e91b901e369c8b9e9eb2f2f1cc16d7152e688b84cb4ed5ed2f6b8",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "ee459d74f8d4771aed7c61c69e52ac69c696012f"
+      },
+      {
+        "blankRows": 0,
+        "date": "2021-10-06",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "275217d6155a7b2a80e496ac5b4801b423059f3256ce13507d843f2ba850f899",
+        "rows": 505,
+        "sourceColumn": "Sector",
+        "sourceCommit": "bcced33a916862e79b6cc78069f9c987c3a7d246"
+      },
+      {
+        "blankRows": 0,
+        "date": "2022-12-24",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "deeca477070fa5b1b83414a55c80d06991535cfd2b5f9304936da924b11c8332",
+        "rows": 503,
+        "sourceColumn": "Sector",
+        "sourceCommit": "2f8dc5efbfae2019b098e82a27451f56bc235846"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-03-07",
+        "distinctLabelsIncludingNull": 123,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 502,
+        "rawCsvSha256": "229813df5d0b5ce742d9664700b7bd2b3a7c2e0996ee33dc652d0827f508c35d",
+        "rows": 502,
+        "sourceColumn": "Sector",
+        "sourceCommit": "1271ae092ab591aaa98d0fb5950e5144f4d1ad73"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-04-13",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "f5d16d359bf6bfbc075edb1918d720c24beeb6e160a1df6cba040e7aab3da641",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "6517cdbbc8908397ff70d2259d6721672da3bc43"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-05-03",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "171e8a9f1f95cad18892403cd46c5f151b5b214fefc5e6eed3d8914a582572ce",
+        "rows": 502,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "d3317707c1e67b42283384a6f8daddcdc865c7bd"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-05-04",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "ca71245ce0b8c7b1f4d4e23c127f42fcb40ec9adec7fa19879b476a8308f4b99",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "157515ce23913f1210cbc30747f175314bce076e"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-05-11",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "c7e7f090ca9598a475e004d2dfa3be8cd4272e1ae71c53a00d9e089bafce7f6c",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "498ca617bf9e80509d99b88d31bf9c5dcc9ab223"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-05-18",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "8e74728465c18bb3f9ebf7bea86ebe1b93cdc2f9de3489df8e4088e88e760b13",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "6d0edfc24e92eaf8ae2043ce97e6868aef6ede12"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-05-22",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "e315643c89f5112901ed68c354dfab1b40312941af8fcd8731598ed2b1611b10",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "9efac7fdab59f343bb1769f7f2d264c3126b1b25"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-06-02",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "ea15e9c943e618bb1c4020d2a61c928f0e594d673ef88f4e24c7d8989d3ba867",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "bc10969ba673c0a40bdce65de05f66a8f70ec135"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-06-03",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "d8da2fb39230241acce08b4f0bf9c8bcb4185b715c9e4926da93ad1b7953476d",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "4c3628bfa73f4a861dc31aa186cbf11981e25ff6"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-06-04",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "ea15e9c943e618bb1c4020d2a61c928f0e594d673ef88f4e24c7d8989d3ba867",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "ca232d169bcfda54912658a5d43837472000d7c9"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-06-08",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "81d815280b5cf6eee6506c0473abd043ec52334b252e30d689d8bfae0da7ca76",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "766ffbe50fb6f51b47119d80056ccc37d7e12488"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-06-20",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "86e7e47b369ac09c067a79d87f4a54f97f63a6f048500996bc248fbbd1b4a618",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "ee3fe768f229df1fe892945180198184bbc5d1a1"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-07-11",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "a5912c7e2ece58c8ee0f52934c8369da7f05d771376286c673a5a7fb38ddd7fb",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "9981690d99e6b19fcddcb1b6560b572f18862828"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-07-12",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "4b342a29a65a33578e8f4ea6c960efb4aeab5dff1229c7a6a6d6c69423950a38",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "bdb75b11cf9b408e1d594aeb9be53fb8baee16dd"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-07-14",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "4772289709592bb27884b8e4c6cd7ab9626b305e00e2ea9c27afc14681a4aa5d",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "6bbb67b7a2b60de885fdebbe3481b61f686fa562"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-08-03",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "82aef917198ce758833a02dc9ae2777411b5911e072b53a11ab0a80dc04db418",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "4e4be4cfc895f9adb5094f8a4755ce291963291b"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-08-05",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "f40281ce006359ae1e6bbb6a1d7b717eb76328950152cac8509ac7bc9d68238a",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "ddcf3dddf719a072699128680c5bf098c3a9e8a2"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-08-06",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "4772289709592bb27884b8e4c6cd7ab9626b305e00e2ea9c27afc14681a4aa5d",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "d24ece97982f9b7a01f5fdc913291cf0e4fffcbf"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-08-10",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "bc86e076997e12b5be1c726db898ed448b7c8f5513f23ce80db327dfa1ba7fd2",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "9eda69cb82ef76deea0d3ad18f7616b9ac8c770a"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-08-30",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "911011cf481ad730f0aa1495f03ff45167136d4656f12a64345730254a814ca3",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "efcb3d1a7466cb58b788171e724ae914d50b0431"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-09-03",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "253eb5afa312ab71e2ef64559c62e77b0643124b32ba31c81f1d7b361f1e928d",
+        "rows": 502,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "0a2cf0d8e28defb7756b595fd83521299bf4adc5"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-09-04",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "677a6bfc20621ebd5f26cd89a5642e5f3c3d257b9e16d31054e5de8f15ed0f96",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "89e4cbc4827519dd88bd548e25f6f766ebd1a359"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-09-09",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "94dcd77f4d728da9ee72560e9b1351610ae1ea7d2d6d855abc8bd9ac2bc13956",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "2debe828ed346713aeba510696f18fc0b7be7085"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-09-18",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "49b72dc58b1fbe1be0f381488dae79a04b014aa93aec25e6a6430304099ebd72",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "e0e7ae833a1ff5b1111bce6e2b303cf0734f315c"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-09-24",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "0b3c3bba503427b23ba822c6bd5d766ca7184f1e5477860aafc63ff12ef8f8db",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "b7445030cca36e198472eef32789e9c22e194975"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-09-27",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "5ab64d7022e39926b20a6ec9af9dc4f30799d378ee3737a8a2462b30afe36f0f",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "f90f6d6f40b414a22c4acc683e29cc23e8b0e774"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-10-05",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "0d7579426b894948950a0d0729dc8775d047093c778af8a6cd8525aa11d69bb6",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "8e1badbf11e749ba25bc431fc4917395b936112c"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-10-06",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "918c3c7e78e0c17c4d21f9a169a7384264c71daa25c3916b09631bc6136fc111",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "8733502dba1580de2b87439579d21938f88ef03e"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-10-14",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "730ce1371e3e517d1128692789341046ef2cc22376c5ce376438f57ec3f900bb",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "40dd73d3aa4a5b2486932383ba41212aad5ec477"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-10-15",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "603776e093b495877d8718b6fe9ea5c73806aa43c1a14a1ee0c5fbb175298329",
+        "rows": 502,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "7cf56274fcb13a0c5bb4c079289bd8182762baa1"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-10-18",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "7ac2405dcb6ba34afc8fd2cce99ba7b6e6887a03c009ac0b7ee0d1a60b818b7d",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "96c6a92c7964b87257c67d35eb4d091b74e7cb31"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-10-26",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "4445c5c9a269f7cb5451471e7ca5a6a12f1bc1357f995ff352382c3ba937e6c3",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "70fb288b4bdeb6ae85adcca8f21a08b7123eb58f"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-11-04",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "fb53a7b99af3f54fb18fb37f23f2d1d53fa2b0f97d26b0ba1f804f2262cfee33",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "36a57223d4605830659ba96feed2913c452df3a8"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-11-05",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "8cc83cf051eba3e188fe07fa6391d972adf9bbac7c845d0616f81b1c0dec9039",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "80635bc5f5252a56a2a8859dfb947b290a434925"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-11-11",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "2d38269552fbc906c1915f5fddc20124a73eef81431542f05756cb2ba79c4534",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "82513c65fab16e099cb774c6afa4bd118498a99f"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-11-15",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "ad86b77e660ea9f307f0b98890ceb1d3d6f0e2046c1a52e5dacc2257fbed9002",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "65e211664e74f516c0e77748c55ed34b8561d86c"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-11-20",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "ccf7c2ac978db97c5445721526533f45085526abf5ccb0f6de2db74918500028",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "b957363db81710aa0115259f0feddd8409b74a03"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-12-10",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "9bf2188accda17710e9c84503435c48e651c22d3c2d4a3298ebc1969413de178",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "0b8b8dc80113d02dcd14fb446fcc3e17f4339a8f"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-12-13",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "955cd5c03c18340e0fda5638dd02853f5b1601948651bbe4a202c27a911a20d2",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "c65e38152263a74b9a0531a0badb7ebbb95ac446"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-12-18",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "e163ae30df57f36a9d4bcdfdd06108c2704f2dda86dbdac188f7a48151c8a515",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "36abae771b2bd89d3e274ed32aa14d87a7694dcc"
+      },
+      {
+        "blankRows": 0,
+        "date": "2023-12-31",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "8e6fe8c2c42336234beeafe1c68942045dfe4a91da1717039ce549f2ad82047f",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "a9ae84af4152b8d9a7ef821eccda708a7a44469e"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-01-01",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "fb3899e989b70ede6f189c5d1b1a5d9ba6141aa9f778305eee72006b55462bd9",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "016acaae1cb74849cc6fa922a7c0249de279038c"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-01-04",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "361b9551d52b289e43922ede0a5356e39c9dc8e79c26d1b0df1421bb3c06ff5b",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "e717ed9c2fcc8e384bcf972dc356f373982575eb"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-01-15",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "a9064f9d2b968cbaf2667909f023a3efcdf4ff64d463e9ebf1d3fae3bc0fe2fa",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "66835770178722d05c9051577dfb822c6bd53017"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-01-17",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "21645ab37c467ace44740517165f98245423138de86462df9e1ca3f8d74b2e0c",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "823debe4ef2d9a894f0642fcb5243c60673e1758"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-02-03",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "6219529b547693ea2e170a1923dc8cfe7668fe0fe5211d7f0d045bfa3ade47ba",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "2c6063a1dbc287f841793f3536e4c5b216054509"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-02-04",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "a4793cfa55bafe232277c372c0da7882a62971bf657515330aa53c693b2e812c",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "b0e820f9e7b4e94783563e07aab2a4e1c832504b"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-03-05",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "8349743d58ebe9f27ec589400cae3b37de2e21cd68655a08ef1f20f22f0f7a2d",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "89b7d8acd6552d3fe886bcf9196100eb73f49965"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-03-19",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "e47b44622d269a6f571fac513b1ebc3bc81ee25cf0391265b5397c0b8cec0266",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "1b03709b5ab7f5ad1afd431152e4af72594bb8d8"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-03-26",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "2315935b0dc6b499293b51436e7fddadfeac937902c3cb0aae96702c12569072",
+        "rows": 502,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "2a5c8d35b5830bc50549d38ad2148603f7b50b17"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-03-27",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "35af884e1f14f614bf923b9d43a0d13daf237e83057facc47facf802544bcbb6",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "2b1bd536810c30f6bcb72321e1a853b5e4a90b42"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-03-29",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "696d691e1be3b345dfba65e67993d572515d5e05d9e38684fce9323c8f58e0d7",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "d10733e00d4daf65f8150fb20f5b5f3c22e0ed90"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-04-02",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "895cb6ca6c5dc3d88ad0b2b3c3aa51f840f6a999452d4001369cb948d92524aa",
+        "rows": 504,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "315f61c7849f32f7432a7752cc833cb6d69b3b4d"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-04-04",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "fc7517ffdb892bde8be81304036f30eba6a70dde7df7fb89389f714383f1b614",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "8b13203a30148d742b1024b8d800a82a5ce3648d"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-04-06",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "4bac2cbcdd7bd6748dff205f2ff68aeb06ba8a350fa65be0c689807ea3d667bd",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "e89e7e8bbbed9b08f418a99e7f74b43b521b1dfb"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-04-18",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "128f07b5c9e0d87680041b5255087881e1197fb4cbf4206db24d2af10efa0fd1",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "f10bd06a228a2e3a65bc2c0266b835d90d89c71a"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-05-05",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "fa989659c2051cdc8a3be64ff28f61bb4e62100c49803352862fa13b4605f8c6",
+        "rows": 502,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "68b82f21bf67cc7fbca8ce18b3c3f49c2feac0ca"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-05-09",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "0794931f9b5878c3466f291f9cbb0418ae1c258e87b81cf62eeb70f4dcec790d",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "b1d14dbba6e1708426165d23710a3ed07cd497eb"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-05-21",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "c2b43711b25981a0323907606c49ea61c69bfcd482ff4d00bea78dd5fa9028aa",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "3075d4b8445fb6021f65f8093353a5ba7fefb34c"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-05-24",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "59e7354f00f03c3170d3313fdbbd9144fec2e05bb23126135ce12a5c28be8766",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "31d70c9ba68fefc78bbee909cd31d8f2eda30378"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-06-03",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "ff7dfc091e6b546a68c2bafdeefbeb92c46d45d5451f2fa4245213d9518c4e70",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "ee23011479ce12cf2f2cd1b44c3edbb6bebee934"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-06-20",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "07710e8282e6fe197b038fc76a75fece9c8e11a96f1acbb0c76f2eabc72dd832",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "be08e82ea1925023663bba012a5ad9d318d1a10f"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-06-24",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "e60e96bfcde6cd31b22177dff132dc6e2447a78aebaf313d834754e7ccce5873",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "427f3a48567212402bc21d211376ba5790b5693a"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-06-27",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "92497e4498c38b431e43a817bc340925e1d4bbf77ef27df943b6b36bd43f0e50",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "3c9c2d8248a844cd92af85730e1104b981161b5b"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-07-05",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "65db049e0ef446ad8c1eeed59ae0b43568fba68290b5cfcb7d925a33e9d66a1f",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "da0c87bda83a66623f58a5fc1f787b9eb996dec2"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-07-09",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "5a779053959fe6afe2a81c4152f98eecad9cca3b7a953319a76902915826c60b",
+        "rows": 502,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "447dd48bd0200ed2155b6db94e12dbe5aa565d65"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-07-13",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "46a290146e3d84fcdce6276e40205981d6cd860db78e28550b8733d039d89892",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "36ec2168f1555dbc05fa4f04bb6131b22352fcaf"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-07-17",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "191858259bc3608136786ce2d2d3a2b9660b8c7c78643a924523427aa827bb06",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "c7fb58f0f74600903590ace6aeec8807866ea09d"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-07-31",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "77af032238b7fdcce93c76c5ad9bdb95ee134bfe14df3195238787f83cfa6684",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "f8d2e3e3e13d88486a4c8bb39358dbb021b693da"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-08-10",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "f0accd13004500d229a1b1b00a8ab9d107b1ed01beef71103a9fc8b1d2dede9c",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "9b6713a39250809294a45c372e5965bfed24470a"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-08-19",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "a3a4f84f91322b426dedfeecab343616f189ea486b76a937bbb611733ed88623",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "3c38598b9420d9df2a52a94c50ea406901469a68"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-08-22",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "6dc59ca814936e7e9c70d4e9f778c6b3d4687089437e8d0e61861a1a606593ac",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "23fdf4eea42e7b2944c067e82e58290466523748"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-08-25",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "0cd5923ab2a3cb663fff18c14c4312c1a1875a9244373429b70684f5e3e4e338",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "a4eccf9ee5fac9e6e80a227e5ef135c5909c380c"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-09-03",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "66a7565702ccacaf6436208aab07f59a41ce40c2bd4f7581b3b85a5e542776ff",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "195f19be3a1aaabd075f25e7d9e0c8bcb1e2f2a4"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-09-07",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "f56e739220c664cc025c7575a1bf9fed183a879cc58cc222d116517c903fdef7",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "6612d6a1e39979339a9cfc3aea99be6510e19234"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-09-13",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "313cbf12200adb73c4d74e37de78cde2d6cdbd622db36c46118c267691bcdf49",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "85ad3d0cef037026ebb1ba3d37595ebb9fcfc929"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-09-19",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "5b54185d16636b519293d93e20b1d80d89378eefa73cb2478e942838f8f4ca01",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "3755d22ab53f28bac4eab388165d87a8e409877d"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-09-22",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "1aa3233e18fc3754f4ec73f740cb9a52d47ef6806daeb14d8377c5f0326f15f0",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "a1da80a036637954b587ebc92b1e6ddac5f1be65"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-09-26",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "52e2c5bc8e98b19311119e5a9fffe5df893c671718618dde0f854f4b7212b727",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "0e98c42bacb33c5cb43843358d43f02208bbc079"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-09-28",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "aea09c64a76345bd232fc3715245810d16add1c78787afd24c5895d2d3b01a14",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "c39c2e9f2d6ffeb118cecd71b6c124252fa0f68a"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-09-29",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "08b74b75af13cf79a8dc1fe2bd480234797fabb3fff0ba65aa64e69a65c27d69",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "a0018c292ffac4026b1cf4ef593c72f1b0abe3a3"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-10-01",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "41ca470ae318ba8162403ddb8152e543cca98403cb317ad9f5420468424d57c5",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "bbfaf4d2885cfd67cd4adc79c62993e713e43bfe"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-10-08",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "5c8bc110b45e3463b561b770a45874fcd075ffd5f1b2c4a43ba4c17ee2807424",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "7fccb54827ee0cccf4108d69b89ea986f8fe06af"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-10-24",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "412c0d785cb5431cbead64afb508b0ac002599769ef985eedc967e0a630e5306",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "caad097a2bd0022930f09e271a559602a2d84b28"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-10-27",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "810b3c2192fd9197e2502e8b1144cfdb783998213c5b97ec408c941e6e2212f5",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "33dbd998432bf590a9407bf516a5f22b81549e3b"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-11-24",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "c0121d346bca626b06a130f5f1138d116b118aff04c7642d5bb65be94e797660",
+        "rows": 502,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "6993e83fd1d5faf120cc9a34ca35b29e646ee26b"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-11-26",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "1481bae861f39eedd975b22b7f472a18c02499a63719d43f61a6da0ae40b748a",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "1f4a9965353b9ff235421bf9359eba95ceb22db0"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-12-02",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "0acd33bd4ac73fa92a099a27a2326b1c677f60b6e72eee8f31c74670eef28790",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "9f18ae590dda61f8a23e5d52bc2937ae949a2273"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-12-08",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "65cb605f7de4e8b565e21d9a25d85f61aefa5c145cd1425bf070ce563adb465d",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "226112fe926c13df90669d97d731c528159b7ceb"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-12-10",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "0acd33bd4ac73fa92a099a27a2326b1c677f60b6e72eee8f31c74670eef28790",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "80674a6a3563c4536d3f7729a6709931b0b26a4e"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-12-19",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "7c7ba01bbc33ca9935b11eb61cffd504a9a1e6dacf451ddcfa960ffa93a334f1",
+        "rows": 502,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "0a6b42d3a55315dd075c6fa080c85b4ebb8f01c2"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-12-25",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "b287d34e0389a3721728628b58dc77078caace816b414c8af8544750c8d2c5af",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "26f809e837713178ebb2e15e1c0277576ad9c0fa"
+      },
+      {
+        "blankRows": 0,
+        "date": "2024-12-27",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "a4d79622abaec0ccae95fc078e30338ad0d7aa6e0a070c5fc94302301957635e",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "f455575f4e89aebf51dab5c91a470b41b68a4234"
+      },
+      {
+        "blankRows": 0,
+        "date": "2025-03-14",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "63a8a2a93cdb818943562a466e21ff176e885d527112b6f33711067e1748eb3b",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "8df32aff4336193ace1d0ed6125830ddffc3cfd4"
+      },
+      {
+        "blankRows": 0,
+        "date": "2025-03-17",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "7f7ecca6d6620ee7ab8be7ad704d7d1af1d618fd31da7153d15fbf90f3b64d7b",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "d9cdc0646f0684b238d51b18ac240163aaf15110"
+      },
+      {
+        "blankRows": 0,
+        "date": "2025-03-25",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "e01f6dfae3fc781a5239f336bd9624cce09a9da46f29cff28f7472b07c4f8293",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "a62cbbeaaba7f6d80932d87b976685175e9aec6e"
+      },
+      {
+        "blankRows": 0,
+        "date": "2025-03-26",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "79a79a15138616d258b856dd8e54ee2d619de954534ac70f34cee0048bfff8e6",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "76ba995cb47aed8c3634f06706d656e5152b5454"
+      },
+      {
+        "blankRows": 0,
+        "date": "2025-03-28",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "c0247580b199bd70aea9db05cd64eef55f23ff37fbcdc27901ba43c546a5169a",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "e02f93aaef6812a65010f3d41caf74f2e01e3aa6"
+      },
+      {
+        "blankRows": 0,
+        "date": "2025-04-01",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "46cd8d12b99d2e033a113b8831961afc8d9632e4303b2adb517444c93c960d3e",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "87ce14a8a4871c1624c7ffefba52bac021f82c4d"
+      },
+      {
+        "blankRows": 0,
+        "date": "2025-04-03",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "e297f0c264b163c998d2df05a663dfe1a5e5de4cb65b539d4fad7dc15b0d873f",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "dbc0c2d4227658c5075218bf812f227dd32a437a"
+      },
+      {
+        "blankRows": 0,
+        "date": "2025-05-18",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "440eafc253f9a36f63fbacb07390a0011bde9196f792239c640190dba43ccb25",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "28bac5b428772da287bd087e04c616712acaeade"
+      },
+      {
+        "blankRows": 0,
+        "date": "2025-07-04",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "e4a963e426e48b0d4d9c8a8466659df364e6fef3fc0078b475835e7c4a53ec34",
+        "rows": 502,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "2cbb67279fbf8f1e349c8b3e9ef99641dca70eb6"
+      },
+      {
+        "blankRows": 0,
+        "date": "2025-07-12",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "cafaa4f52083d4a9004bd0671629b067010fc1e9f219c088c92336dc21765e7e",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "8fa2be1dd9f8ddbcf8b87bd4ee095c6945df3042"
+      },
+      {
+        "blankRows": 0,
+        "date": "2025-07-18",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "4b2d17d805d4e31307e4dad1a9aa1b79c1dd1fb54c80432900fd26e534bb713c",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "98590f1b2051a9e835e7597e909c105fb95f8173"
+      },
+      {
+        "blankRows": 0,
+        "date": "2025-07-23",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "7ede19819900d83e43f3b1b6990e48258dbf6c0328eb583c16d3b3ca2b3c4000",
+        "rows": 502,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "854caf0c260278e4c7e62917ad851511b459ca2c"
+      },
+      {
+        "blankRows": 0,
+        "date": "2025-07-24",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "c9b3f64839a41965fe49b6f687b31ce3af88749f14be1b3b391a2fd7dded1640",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "b805436a73144020c699a6e671ef805ba795f51b"
+      },
+      {
+        "blankRows": 0,
+        "date": "2025-08-10",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "146ff7006c8a848935fa528b45c4b6ea2314f3751a83ad8a630b1637273a35d6",
+        "rows": 502,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "4aa27a771ce79c9a619856f4a5168dffabea73f7"
+      },
+      {
+        "blankRows": 0,
+        "date": "2025-08-12",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "493d7648fb12515727942f66137d84f1e34e63e8043aa14e0d7c042a7a599873",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "b61fb6f07286691ee86971cab9956182094aca1f"
+      },
+      {
+        "blankRows": 0,
+        "date": "2026-03-04",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "dc075ef3d018098c2143dcc9d0474433ab3674525c322a88874d0fbac334a025",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "409cfe9d4266177519aa1fc52b9311fa1df9fdf3"
+      },
+      {
+        "blankRows": 0,
+        "date": "2026-03-25",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "d539a328cc4034a7546e23a15a4c184f6638e1c84813e809f3156a847842202b",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "890aca5a2a8bfc9d61d9ee80ac9d85b480b259fe"
+      },
+      {
+        "blankRows": 0,
+        "date": "2026-03-27",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "3a7dfe6acf5afe27155f7b522e8161fb3d11aa9e10e22e8e33db6e2aa24c962e",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "4449e5eb0c23aba46924c06583e396288c0a3164"
+      },
+      {
+        "blankRows": 0,
+        "date": "2026-03-28",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "d539a328cc4034a7546e23a15a4c184f6638e1c84813e809f3156a847842202b",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "0d58ed67f5b6a197155e62ac77aa76c81bc0fb3b"
+      },
+      {
+        "blankRows": 0,
+        "date": "2026-04-09",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "3425970f676d087c0e8c0452d344a0dfb1b22e3ab7534787edad437923330e24",
+        "rows": 502,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "10b39153b17723d62a69fa3830219abd73d011b0"
+      },
+      {
+        "blankRows": 0,
+        "date": "2026-04-10",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "23deccdfcf8990d6fd1f4d1a98de241fa79e5712521d5e6171c3fee5c9def410",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "42ff051cdfbe2a3ba6b9634a49b2407aa40e9266"
+      },
+      {
+        "blankRows": 0,
+        "date": "2026-04-20",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "a1a4397dbf49aab5445a6b1a872459c7968ab8156f176a5b3578eecab897d57b",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "873a083f985035e8de695d191616726871de4737"
+      },
+      {
+        "blankRows": 0,
+        "date": "2026-05-08",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "a8efe12fc221dd5eb077c1efe838a546784b71789583aab7f4407c30430b7452",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "d037536b79861cce998cc758b26fa53b510b0ac6"
+      },
+      {
+        "blankRows": 0,
+        "date": "2026-05-11",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "6f6d1331269ae62633db95c35a8fbdcb3de9480c75124eb1b15c1fab7295fd58",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "017cb1cd2e5728f518d2233f0a70e220b0200a63"
+      },
+      {
+        "blankRows": 0,
+        "date": "2026-05-22",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "98b8c20c0b369023f0ebe7965f8fdd8e80edfea473524160508732984ac2d3ba",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "d5d22312fa22e5df04a69016467aa4ecf368561d"
+      },
+      {
+        "blankRows": 0,
+        "date": "2026-06-05",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "23b587ef7d6f8369ac188a5dfa90b543146a4228d1b75f5729135d5a1a55a9be",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "9dbb84ea2b8630920b5203d714ddaf064f38ad8a"
+      },
+      {
+        "blankRows": 0,
+        "date": "2026-06-20",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "5185c5b62cc0038cc6882f88627596c382fd675e962eea899f39d5af4d27d704",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "181706893a6a009dbdc94fff33ee4a50a1368f8f"
+      },
+      {
+        "blankRows": 0,
+        "date": "2026-06-25",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "101f0e84aaf96987b331a35b1ea8c35e7a05e3cd37ec0ac01f14ebdb1fa2661c",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "580bffb983b3b2fd1ead4bd2562e176511164022"
+      },
+      {
+        "blankRows": 0,
+        "date": "2026-07-01",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "090413984a911e4393d8ae7b81b6f0818a4b9a0ccf5ff036a085714181592e97",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "14247bdd3e135370bffb19c24befae61da356472"
+      },
+      {
+        "blankRows": 0,
+        "date": "2026-07-10",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "e1c9bf1929fc3425b0b84875848283372c49caf68b9663d1d5134ea6c8e9cecd",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "d8811227e3cf83caa03f17c7022a964dd19eee52"
+      },
+      {
+        "blankRows": 0,
+        "date": "2026-07-22",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "2d37861fd73ef1fb4521ad0117108481ec42baa4d3c56d325f1340ac0a590d1c",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "493df85c63794d76e8e01a3d0d2ac3c36c55fb59"
+      },
+      {
+        "blankRows": 0,
+        "date": "2026-08-06",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "7ca7aa5e924bf8313dffe1dcf83cb2505916a845758e662c6f69e0bf2420adf3",
+        "rows": 502,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "2cacb03b13d18f20061f71a2f4ae111b047a051d"
+      },
+      {
+        "blankRows": 0,
+        "date": "2026-08-07",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "2cd70c6428617ebc29a84ab421486a52b5fb3816c7acc1ba04a2c82ef334b307",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "d8ffd5546b3dda3d0f75e2a3b9d6ec4d9250137b"
+      },
+      {
+        "blankRows": 0,
+        "date": "2026-08-08",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "e5325068834c252d333c40c9ac02e3fadf14834c2edb62a024b6206c7a0d17d0",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "56509dd80619e4d8e1410c2260d68ddd3eab6068"
+      },
+      {
+        "blankRows": 0,
+        "date": "2026-08-12",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "60c67152e6f7e55eb2e652dcfa2c37d491f92ac070965182402e9a2be07007c3",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "b783942c9833265646a7bf8e63f0b87f981d0524"
+      },
+      {
+        "blankRows": 0,
+        "date": "2026-08-14",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "b1fce38b7dbb44211f285d73a2dda0ef8eed6c2bba487a7e9d6300b67004bfcb",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "fb67d3d05a2092d373c2eaba57215339ccd03aa8"
+      },
+      {
+        "blankRows": 0,
+        "date": "2026-08-19",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "80fb7095dcbc199c2be00f3545b8730de9977c30cf3409ea96e05783618dbe39",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "41c064de98a8f3c7d6f1c95faab74d443742731c"
+      },
+      {
+        "blankRows": 0,
+        "date": "2026-08-20",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "7d2240408ca6852b485c0ad0f37bc8db22c24aed35cf80b28cda71ddcf208c84",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "7ee00fbbe71e521f4497250ac8d3b244ca8cba79"
+      },
+      {
+        "blankRows": 0,
+        "date": "2026-09-05",
+        "distinctLabelsIncludingNull": 11,
+        "membersWithoutRow": [
+          "BF-B",
+          "BRK-B"
+        ],
+        "outsideTodayVocabularyRows": 0,
+        "rawCsvSha256": "e06b473e4679074b2aaa49da67dfc154338b466ca66102935d93486c34e16883",
+        "rows": 503,
+        "sourceColumn": "GICS Sector",
+        "sourceCommit": "3b2bb60e6269439cd75541eded6281c48e7681d1"
+      }
+    ],
+    "collectorFailures": [],
+    "outsideTodayVocabularyRows": 675,
+    "snapshots": 195,
+    "snapshotsOutsideTodayVocabulary": 30,
+    "snapshotsWithMemberRowGaps": 176,
+    "storedRows": 98094,
+    "vocabularyWarning": "Legacy names are not necessarily errors; no historical mapping inferred."
+  },
+  "verifiedInputs": {
+    "data/kr-industry-membership-foundation-v3/state/audit.json.gz": {
+      "bytes": 1353,
+      "sha256": "8ad466de34144d7e9863798bd43cd42b192ec92e00fcfd80c0cbaf9b4ddd6104"
+    },
+    "data/kr-industry-membership-foundation-v4/state/audit.json.gz": {
+      "bytes": 2101,
+      "sha256": "4135846f16dcf59fe4ff89ab83b3b5aec288dea20fed36172b17abf768d44036"
+    },
+    "data/research/us-capital-allocation-alpha-v1/sp500-snapshot-sectors.json.gz": {
+      "bytes": 73396,
+      "sha256": "f49c15a0ebcd371c9a407118abb6ef350bba2060227ca40d61ba210fc4f81a74"
+    },
+    "docs/results/kr-industry-opportunity-anatomy-v1-result.json": {
+      "bytes": 1155199,
+      "sha256": "71a960e3c19ce443d058508c4ec66576e3e5fcbd7a45dc851cf8b832bff62a08"
+    },
+    "docs/results/kr-stock-within-industry-anatomy-v1-result.json": {
+      "bytes": 2072305,
+      "sha256": "3862c390a52f6f19abaa7849e41620858cd154735136647ee36c958624c2739f"
+    }
+  }
+}

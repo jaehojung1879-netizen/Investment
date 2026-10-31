@@ -1,0 +1,1886 @@
+{
+ "contract": "KR22_REPOSITORY_ORIGINALS_RECONCILIATION_V1",
+ "evidenceClass": "SOURCE_ONLY_RECONCILIATION_NOT_ADMISSION",
+ "historicalOutcomesRead": 0,
+ "inputs": {
+  "crosswalkSha256": "76166ad309d323240ffe749df74ac089f4693f30ef77231b8cd5ab85365826b5",
+  "v2Receipts": 2946,
+  "v2Sources": 8579
+ },
+ "networkUsed": false,
+ "planSha256": "00c72389ab2f45747495e40333f9b67dca7ebf55ae76477477dd7714030b518b",
+ "pricesRead": 0,
+ "remainingRequests": [
+  {
+   "code": "000030.KS",
+   "corpCode": "00254045",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20150306800144",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "000030.KS",
+   "corpCode": "00254045",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20150729800239",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "000030.KS",
+   "corpCode": "00254045",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20160304800585",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "000030.KS",
+   "corpCode": "00254045",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20170303800520",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "000030.KS",
+   "corpCode": "00254045",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20170728800149",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "000030.KS",
+   "corpCode": "00254045",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20180302800408",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "000030.KS",
+   "corpCode": "00254045",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20180619000369",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "000030.KS",
+   "corpCode": "00254045",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20180920000544",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "000030.KS",
+   "corpCode": "00254045",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20181108000137",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "000030.KS",
+   "corpCode": "00254045",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20181121000025",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "000030.KS",
+   "corpCode": "00254045",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20181126000101",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "000060.KS",
+   "corpCode": "00117744",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20130424800282",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "000060.KS",
+   "corpCode": "00117744",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20140127800328",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "000060.KS",
+   "corpCode": "00117744",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20150128800587",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "000060.KS",
+   "corpCode": "00117744",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20160129800790",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "000060.KS",
+   "corpCode": "00117744",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20170208800552",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "000060.KS",
+   "corpCode": "00117744",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20180126800465",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "000060.KS",
+   "corpCode": "00117744",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20190128800585",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "000060.KS",
+   "corpCode": "00117744",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20200130800430",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "000060.KS",
+   "corpCode": "00117744",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20210205800606",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "000060.KS",
+   "corpCode": "00117744",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20220207800753",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "000830.KS",
+   "corpCode": "00126229",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20130128800380",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "000830.KS",
+   "corpCode": "00126229",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20140124800281",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "000830.KS",
+   "corpCode": "00126229",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20150129800289",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "000830.KS",
+   "corpCode": "00126229",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20150608000391",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "000830.KS",
+   "corpCode": "00126229",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20150612000428",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "000830.KS",
+   "corpCode": "00126229",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20150619000462",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "002550.KS",
+   "corpCode": "00120216",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20130424800332",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "002550.KS",
+   "corpCode": "00120216",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20140124800170",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "002550.KS",
+   "corpCode": "00120216",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20150202800355",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "002550.KS",
+   "corpCode": "00120216",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20160203800715",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "002550.KS",
+   "corpCode": "00120216",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20170201800595",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "002550.KS",
+   "corpCode": "00120216",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20170516000224",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "002550.KS",
+   "corpCode": "00120216",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20170525000022",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "002550.KS",
+   "corpCode": "00120216",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20170530000327",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20170209801325",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20170704800513",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20171010800470",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20180208801240",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20180425800824",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20180724800205",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20181031800389",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20190214800434",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20190416800311",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20190806800250",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20191025800168",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20200212800948",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20200420800655",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20200812800554",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20201020800406",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20210209801234",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20210421800500",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20210811800200",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20211110800440",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20220210800530",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20220420800372",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20220810800480",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20221109800262",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20230210800515",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20230420800498",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20230726800352",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20231017800264",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20240207801103",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20240425000313",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "003450.KS",
+   "corpCode": "00164876",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20130523800272",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003450.KS",
+   "corpCode": "00164876",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20140226800394",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003450.KS",
+   "corpCode": "00164876",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20140401800704",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003450.KS",
+   "corpCode": "00164876",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20150224800606",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003450.KS",
+   "corpCode": "00164876",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20160302800829",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003450.KS",
+   "corpCode": "00164876",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20160901000273",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "003450.KS",
+   "corpCode": "00164876",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20160902000474",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "003450.KS",
+   "corpCode": "00164876",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20161103000360",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20130201800530",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20130205800119",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20130205800268",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20130208800135",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20130726800004",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20140204800004",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20140204800298",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20140206800721",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20140207800009",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20140725800002",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20150205800526",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20150206800028",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20150723800492",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20150430001586",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20150513003281",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20150521000438",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20150528000580",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20150528000709",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20150721800301",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20150805800334",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "008560.KS",
+   "corpCode": "00163682",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20130521800361",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "008560.KS",
+   "corpCode": "00163682",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20140304800662",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "008560.KS",
+   "corpCode": "00163682",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20150205800735",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "008560.KS",
+   "corpCode": "00163682",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20160204800797",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "008560.KS",
+   "corpCode": "00163682",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20170208800510",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "008560.KS",
+   "corpCode": "00163682",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20180201800535",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "008560.KS",
+   "corpCode": "00163682",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20190129800711",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "008560.KS",
+   "corpCode": "00163682",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20200129800447",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "008560.KS",
+   "corpCode": "00163682",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20210201800630",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "008560.KS",
+   "corpCode": "00163682",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20220127800709",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "008560.KS",
+   "corpCode": "00163682",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20230202800579",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "010520.KS",
+   "corpCode": "00164469",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20130218800223",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "010520.KS",
+   "corpCode": "00164469",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20140221800499",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "010520.KS",
+   "corpCode": "00164469",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20150227800930",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "010520.KS",
+   "corpCode": "00164469",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20150417000066",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "010520.KS",
+   "corpCode": "00164469",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20150417800108",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "010520.KS",
+   "corpCode": "00164469",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20150429000977",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "010620.KS",
+   "corpCode": "00164609",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20130208800247",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "010620.KS",
+   "corpCode": "00164609",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20140206800697",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "010620.KS",
+   "corpCode": "00164609",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20190131800416",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "010620.KS",
+   "corpCode": "00164609",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20200206800322",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "010620.KS",
+   "corpCode": "00164609",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20250205800653",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "010620.KS",
+   "corpCode": "00164609",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20250730800478",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "010620.KS",
+   "corpCode": "00164609",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20250731800111",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20130212800032",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20130226800101",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20140212800044",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20150209800133",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20160125800065",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20170201800062",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20180124800063",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20190129800143",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20200203800156",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20210202800049",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20220209800907",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20230203800170",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20240206800110",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20250206800076",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20250331804043",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20260204800094",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20260429000294",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20260515100001",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "037620.KS",
+   "corpCode": "00311030",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20130522800161",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "037620.KS",
+   "corpCode": "00311030",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20140225800473",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "037620.KS",
+   "corpCode": "00311030",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20150311800914",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "037620.KS",
+   "corpCode": "00311030",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20160310801748",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "037620.KS",
+   "corpCode": "00311030",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20160919000325",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "037620.KS",
+   "corpCode": "00311030",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20161014000405",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "042670.KS",
+   "corpCode": "00344287",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20230203800663",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "042670.KS",
+   "corpCode": "00344287",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20240202800624",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "042670.KS",
+   "corpCode": "00344287",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20250204800477",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "042670.KS",
+   "corpCode": "00344287",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20250228800088",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20130228800538",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20140205800308",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20150211800443",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20160211800250",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20170207800380",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20180207800932",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20190212800745",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20200210801182",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20200210801198",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20210205800944",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20210205800987",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20220208800269",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20220208800824",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20230207800623",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20230207800840",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20240206800869",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20250207800672",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20260209800697",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20260211800225",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20260211800453",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "079440.KS",
+   "corpCode": "00176792",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20170818800233",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "079440.KS",
+   "corpCode": "00176792",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20180208801069",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "079440.KS",
+   "corpCode": "00176792",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20180813800158",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "079440.KS",
+   "corpCode": "00176792",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20190211801121",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "079440.KS",
+   "corpCode": "00176792",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20190812800253",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "079440.KS",
+   "corpCode": "00176792",
+   "kind": "DOCUMENT_DIVIDEND_DECISION",
+   "receiptNo": "20200204800570",
+   "route": "OPENDART_DOCUMENT_XML_WITH_KEY_OR_PUBLIC_VIEWER"
+  },
+  {
+   "code": "079440.KS",
+   "corpCode": "00176792",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20191119000180",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "079440.KS",
+   "corpCode": "00176792",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20191204000479",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "117930.KS",
+   "corpCode": "00790501",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20161017000354",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "117930.KS",
+   "corpCode": "00790501",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20170102000404",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "117930.KS",
+   "corpCode": "00790501",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20170103000011",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  },
+  {
+   "code": "117930.KS",
+   "corpCode": "00790501",
+   "kind": "VIEWER_ROUTE_REQUIRED",
+   "receiptNo": "20170106000714",
+   "route": "PUBLIC_VIEWER_NO_KEY"
+  }
+ ],
+ "securities": [
+  {
+   "code": "000030.KS",
+   "corpCode": "00254045",
+   "industryCandidates": [],
+   "listedNoOriginalYears": [],
+   "planFiscalYearSlots": 6,
+   "planFiscalYearSlotsAnsweredByRepository": 6,
+   "planHeldFiscalYearsWithRetainedOriginal": 0,
+   "planHeldReceipts": 0,
+   "planHeldReceiptsRetainedAsOriginals": 0,
+   "selectedAnnualReceipts": 13,
+   "selectedRetained": 13,
+   "v2IssuerFound": true,
+   "v2PaginationComplete": true,
+   "v2TemplateObservations": 0
+  },
+  {
+   "code": "000060.KS",
+   "corpCode": "00117744",
+   "industryCandidates": [],
+   "listedNoOriginalYears": [],
+   "planFiscalYearSlots": 10,
+   "planFiscalYearSlotsAnsweredByRepository": 10,
+   "planHeldFiscalYearsWithRetainedOriginal": 0,
+   "planHeldReceipts": 0,
+   "planHeldReceiptsRetainedAsOriginals": 0,
+   "selectedAnnualReceipts": 13,
+   "selectedRetained": 13,
+   "v2IssuerFound": true,
+   "v2PaginationComplete": true,
+   "v2TemplateObservations": 0
+  },
+  {
+   "code": "000830.KS",
+   "corpCode": "00126229",
+   "industryCandidates": [],
+   "listedNoOriginalYears": [
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+   ],
+   "planFiscalYearSlots": 2,
+   "planFiscalYearSlotsAnsweredByRepository": 2,
+   "planHeldFiscalYearsWithRetainedOriginal": 0,
+   "planHeldReceipts": 0,
+   "planHeldReceiptsRetainedAsOriginals": 0,
+   "selectedAnnualReceipts": 2,
+   "selectedRetained": 2,
+   "v2IssuerFound": true,
+   "v2PaginationComplete": true,
+   "v2TemplateObservations": 0
+  },
+  {
+   "code": "002550.KS",
+   "corpCode": "00120216",
+   "industryCandidates": [],
+   "listedNoOriginalYears": [
+    2018,
+    2019,
+    2020
+   ],
+   "planFiscalYearSlots": 4,
+   "planFiscalYearSlotsAnsweredByRepository": 4,
+   "planHeldFiscalYearsWithRetainedOriginal": 0,
+   "planHeldReceipts": 0,
+   "planHeldReceiptsRetainedAsOriginals": 0,
+   "selectedAnnualReceipts": 10,
+   "selectedRetained": 10,
+   "v2IssuerFound": true,
+   "v2PaginationComplete": true,
+   "v2TemplateObservations": 0
+  },
+  {
+   "code": "003410.KS",
+   "corpCode": "00138224",
+   "industryCandidates": [],
+   "listedNoOriginalYears": [],
+   "planFiscalYearSlots": 0,
+   "planFiscalYearSlotsAnsweredByRepository": 0,
+   "planHeldFiscalYearsWithRetainedOriginal": 9,
+   "planHeldReceipts": 9,
+   "planHeldReceiptsRetainedAsOriginals": 8,
+   "selectedAnnualReceipts": 13,
+   "selectedRetained": 13,
+   "v2IssuerFound": true,
+   "v2PaginationComplete": true,
+   "v2TemplateObservations": 0
+  },
+  {
+   "code": "003450.KS",
+   "corpCode": "00164876",
+   "industryCandidates": [],
+   "listedNoOriginalYears": [],
+   "planFiscalYearSlots": 3,
+   "planFiscalYearSlotsAnsweredByRepository": 3,
+   "planHeldFiscalYearsWithRetainedOriginal": 0,
+   "planHeldReceipts": 0,
+   "planHeldReceiptsRetainedAsOriginals": 0,
+   "selectedAnnualReceipts": 13,
+   "selectedRetained": 13,
+   "v2IssuerFound": true,
+   "v2PaginationComplete": true,
+   "v2TemplateObservations": 0
+  },
+  {
+   "code": "003600.KS",
+   "corpCode": "00144155",
+   "industryCandidates": [],
+   "listedNoOriginalYears": [
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+   ],
+   "planFiscalYearSlots": 2,
+   "planFiscalYearSlotsAnsweredByRepository": 2,
+   "planHeldFiscalYearsWithRetainedOriginal": 0,
+   "planHeldReceipts": 0,
+   "planHeldReceiptsRetainedAsOriginals": 0,
+   "selectedAnnualReceipts": 2,
+   "selectedRetained": 2,
+   "v2IssuerFound": true,
+   "v2PaginationComplete": true,
+   "v2TemplateObservations": 0
+  },
+  {
+   "code": "008560.KS",
+   "corpCode": "00163682",
+   "industryCandidates": [],
+   "listedNoOriginalYears": [],
+   "planFiscalYearSlots": 10,
+   "planFiscalYearSlotsAnsweredByRepository": 10,
+   "planHeldFiscalYearsWithRetainedOriginal": 0,
+   "planHeldReceipts": 0,
+   "planHeldReceiptsRetainedAsOriginals": 0,
+   "selectedAnnualReceipts": 13,
+   "selectedRetained": 13,
+   "v2IssuerFound": true,
+   "v2PaginationComplete": true,
+   "v2TemplateObservations": 0
+  },
+  {
+   "code": "010520.KS",
+   "corpCode": "00164469",
+   "industryCandidates": [],
+   "listedNoOriginalYears": [
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+   ],
+   "planFiscalYearSlots": 2,
+   "planFiscalYearSlotsAnsweredByRepository": 2,
+   "planHeldFiscalYearsWithRetainedOriginal": 0,
+   "planHeldReceipts": 0,
+   "planHeldReceiptsRetainedAsOriginals": 0,
+   "selectedAnnualReceipts": 2,
+   "selectedRetained": 2,
+   "v2IssuerFound": true,
+   "v2PaginationComplete": true,
+   "v2TemplateObservations": 0
+  },
+  {
+   "code": "010620.KS",
+   "corpCode": "00164609",
+   "industryCandidates": [],
+   "listedNoOriginalYears": [
+    2020,
+    2025
+   ],
+   "planFiscalYearSlots": 2,
+   "planFiscalYearSlotsAnsweredByRepository": 2,
+   "planHeldFiscalYearsWithRetainedOriginal": 9,
+   "planHeldReceipts": 10,
+   "planHeldReceiptsRetainedAsOriginals": 5,
+   "selectedAnnualReceipts": 11,
+   "selectedRetained": 11,
+   "v2IssuerFound": true,
+   "v2PaginationComplete": true,
+   "v2TemplateObservations": 0
+  },
+  {
+   "code": "012510.KS",
+   "corpCode": "00172291",
+   "industryCandidates": [
+    {
+     "admitMechanical": true,
+     "admitReason": null,
+     "crosswalkGroupOfReportedLabel": null,
+     "datedIssuerReleaseProven": true,
+     "fiscalYear": 2013,
+     "frozenV2TemplateProducedIt": false,
+     "knownFrom": "2014-03-31",
+     "receiptNo": "20140331001646",
+     "reportedCode": "J58222",
+     "reportedLabel": "응용소프트웨어개발및공급업",
+     "section": "business_overview",
+     "statedHierarchy": [
+      {
+       "code": "58",
+       "crosswalkGroup": null,
+       "label": "출판업",
+       "level": 2
+      },
+      {
+       "code": "582",
+       "crosswalkGroup": "COMMUNICATION_MEDIA_SOFTWARE",
+       "label": "소프트웨어개발및공급업",
+       "level": 3
+      },
+      {
+       "code": "5822",
+       "crosswalkGroup": null,
+       "label": "시스템·응용소프트웨어개발및공급업",
+       "level": 4
+      }
+     ]
+    },
+    {
+     "admitMechanical": true,
+     "admitReason": null,
+     "crosswalkGroupOfReportedLabel": null,
+     "datedIssuerReleaseProven": true,
+     "fiscalYear": 2014,
+     "frozenV2TemplateProducedIt": false,
+     "knownFrom": "2015-03-31",
+     "receiptNo": "20150331000455",
+     "reportedCode": "J58222",
+     "reportedLabel": "응용소프트웨어개발및공급업",
+     "section": "business_overview",
+     "statedHierarchy": [
+      {
+       "code": "58",
+       "crosswalkGroup": null,
+       "label": "출판업",
+       "level": 2
+      },
+      {
+       "code": "582",
+       "crosswalkGroup": "COMMUNICATION_MEDIA_SOFTWARE",
+       "label": "소프트웨어개발및공급업",
+       "level": 3
+      },
+      {
+       "code": "5822",
+       "crosswalkGroup": null,
+       "label": "시스템·응용소프트웨어개발및공급업",
+       "level": 4
+      }
+     ]
+    },
+    {
+     "admitMechanical": true,
+     "admitReason": null,
+     "crosswalkGroupOfReportedLabel": null,
+     "datedIssuerReleaseProven": true,
+     "fiscalYear": 2015,
+     "frozenV2TemplateProducedIt": false,
+     "knownFrom": "2016-03-30",
+     "receiptNo": "20160330000798",
+     "reportedCode": "J58222",
+     "reportedLabel": "응용소프트웨어개발및공급업",
+     "section": "business_overview",
+     "statedHierarchy": [
+      {
+       "code": "58",
+       "crosswalkGroup": null,
+       "label": "출판업",
+       "level": 2
+      },
+      {
+       "code": "582",
+       "crosswalkGroup": "COMMUNICATION_MEDIA_SOFTWARE",
+       "label": "소프트웨어개발및공급업",
+       "level": 3
+      },
+      {
+       "code": "5822",
+       "crosswalkGroup": null,
+       "label": "시스템·응용소프트웨어개발및공급업",
+       "level": 4
+      }
+     ]
+    },
+    {
+     "admitMechanical": true,
+     "admitReason": null,
+     "crosswalkGroupOfReportedLabel": null,
+     "datedIssuerReleaseProven": true,
+     "fiscalYear": 2016,
+     "frozenV2TemplateProducedIt": false,
+     "knownFrom": "2017-03-30",
+     "receiptNo": "20170330000584",
+     "reportedCode": "J58222",
+     "reportedLabel": "응용소프트웨어개발및공급업",
+     "section": "business_overview",
+     "statedHierarchy": [
+      {
+       "code": "58",
+       "crosswalkGroup": null,
+       "label": "출판업",
+       "level": 2
+      },
+      {
+       "code": "582",
+       "crosswalkGroup": "COMMUNICATION_MEDIA_SOFTWARE",
+       "label": "소프트웨어개발및공급업",
+       "level": 3
+      },
+      {
+       "code": "5822",
+       "crosswalkGroup": null,
+       "label": "시스템·응용소프트웨어개발및공급업",
+       "level": 4
+      }
+     ]
+    },
+    {
+     "admitMechanical": true,
+     "admitReason": null,
+     "crosswalkGroupOfReportedLabel": null,
+     "datedIssuerReleaseProven": true,
+     "fiscalYear": 2017,
+     "frozenV2TemplateProducedIt": false,
+     "knownFrom": "2018-03-30",
+     "receiptNo": "20180330003082",
+     "reportedCode": "J58222",
+     "reportedLabel": "응용소프트웨어개발및공급업",
+     "section": "business_overview",
+     "statedHierarchy": [
+      {
+       "code": "58",
+       "crosswalkGroup": null,
+       "label": "출판업",
+       "level": 2
+      },
+      {
+       "code": "582",
+       "crosswalkGroup": "COMMUNICATION_MEDIA_SOFTWARE",
+       "label": "소프트웨어개발및공급업",
+       "level": 3
+      },
+      {
+       "code": "5822",
+       "crosswalkGroup": null,
+       "label": "시스템·응용소프트웨어개발및공급업",
+       "level": 4
+      }
+     ]
+    },
+    {
+     "admitMechanical": true,
+     "admitReason": null,
+     "crosswalkGroupOfReportedLabel": null,
+     "datedIssuerReleaseProven": true,
+     "fiscalYear": 2018,
+     "frozenV2TemplateProducedIt": false,
+     "knownFrom": "2019-04-01",
+     "receiptNo": "20190401001908",
+     "reportedCode": "J58222",
+     "reportedLabel": "응용소프트웨어개발및공급업",
+     "section": "business_overview",
+     "statedHierarchy": [
+      {
+       "code": "58",
+       "crosswalkGroup": null,
+       "label": "출판업",
+       "level": 2
+      },
+      {
+       "code": "582",
+       "crosswalkGroup": "COMMUNICATION_MEDIA_SOFTWARE",
+       "label": "소프트웨어개발및공급업",
+       "level": 3
+      },
+      {
+       "code": "5822",
+       "crosswalkGroup": null,
+       "label": "시스템·응용소프트웨어개발및공급업",
+       "level": 4
+      }
+     ]
+    },
+    {
+     "admitMechanical": true,
+     "admitReason": null,
+     "crosswalkGroupOfReportedLabel": null,
+     "datedIssuerReleaseProven": true,
+     "fiscalYear": 2019,
+     "frozenV2TemplateProducedIt": false,
+     "knownFrom": "2020-03-30",
+     "receiptNo": "20200330003794",
+     "reportedCode": "J58222",
+     "reportedLabel": "응용소프트웨어개발및공급업",
+     "section": "business_overview",
+     "statedHierarchy": [
+      {
+       "code": "58",
+       "crosswalkGroup": null,
+       "label": "출판업",
+       "level": 2
+      },
+      {
+       "code": "582",
+       "crosswalkGroup": "COMMUNICATION_MEDIA_SOFTWARE",
+       "label": "소프트웨어개발및공급업",
+       "level": 3
+      },
+      {
+       "code": "5822",
+       "crosswalkGroup": null,
+       "label": "시스템·응용소프트웨어개발및공급업",
+       "level": 4
+      }
+     ]
+    },
+    {
+     "admitMechanical": true,
+     "admitReason": null,
+     "crosswalkGroupOfReportedLabel": null,
+     "datedIssuerReleaseProven": true,
+     "fiscalYear": 2020,
+     "frozenV2TemplateProducedIt": false,
+     "knownFrom": "2021-03-17",
+     "receiptNo": "20210317001098",
+     "reportedCode": "J58222",
+     "reportedLabel": "응용소프트웨어개발및공급업",
+     "section": "business_overview",
+     "statedHierarchy": [
+      {
+       "code": "58",
+       "crosswalkGroup": null,
+       "label": "출판업",
+       "level": 2
+      },
+      {
+       "code": "582",
+       "crosswalkGroup": "COMMUNICATION_MEDIA_SOFTWARE",
+       "label": "소프트웨어개발및공급업",
+       "level": 3
+      },
+      {
+       "code": "5822",
+       "crosswalkGroup": null,
+       "label": "시스템·응용소프트웨어개발및공급업",
+       "level": 4
+      }
+     ]
+    }
+   ],
+   "listedNoOriginalYears": [],
+   "planFiscalYearSlots": 0,
+   "planFiscalYearSlotsAnsweredByRepository": 0,
+   "planHeldFiscalYearsWithRetainedOriginal": 5,
+   "planHeldReceipts": 5,
+   "planHeldReceiptsRetainedAsOriginals": 4,
+   "selectedAnnualReceipts": 13,
+   "selectedRetained": 13,
+   "v2IssuerFound": true,
+   "v2PaginationComplete": true,
+   "v2TemplateObservations": 0
+  },
+  {
+   "code": "037620.KS",
+   "corpCode": "00311030",
+   "industryCandidates": [],
+   "listedNoOriginalYears": [
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+   ],
+   "planFiscalYearSlots": 4,
+   "planFiscalYearSlotsAnsweredByRepository": 4,
+   "planHeldFiscalYearsWithRetainedOriginal": 0,
+   "planHeldReceipts": 0,
+   "planHeldReceiptsRetainedAsOriginals": 0,
+   "selectedAnnualReceipts": 3,
+   "selectedRetained": 3,
+   "v2IssuerFound": true,
+   "v2PaginationComplete": true,
+   "v2TemplateObservations": 0
+  },
+  {
+   "code": "042670.KS",
+   "corpCode": "00344287",
+   "industryCandidates": [],
+   "listedNoOriginalYears": [
+    2025
+   ],
+   "planFiscalYearSlots": 2,
+   "planFiscalYearSlotsAnsweredByRepository": 2,
+   "planHeldFiscalYearsWithRetainedOriginal": 8,
+   "planHeldReceipts": 8,
+   "planHeldReceiptsRetainedAsOriginals": 8,
+   "selectedAnnualReceipts": 12,
+   "selectedRetained": 12,
+   "v2IssuerFound": true,
+   "v2PaginationComplete": true,
+   "v2TemplateObservations": 0
+  },
+  {
+   "code": "057050.KS",
+   "corpCode": "00412597",
+   "industryCandidates": [],
+   "listedNoOriginalYears": [],
+   "planFiscalYearSlots": 2,
+   "planFiscalYearSlotsAnsweredByRepository": 2,
+   "planHeldFiscalYearsWithRetainedOriginal": 0,
+   "planHeldReceipts": 0,
+   "planHeldReceiptsRetainedAsOriginals": 0,
+   "selectedAnnualReceipts": 13,
+   "selectedRetained": 13,
+   "v2IssuerFound": true,
+   "v2PaginationComplete": true,
+   "v2TemplateObservations": 0
+  },
+  {
+   "code": "079440.KS",
+   "corpCode": "00176792",
+   "industryCandidates": [],
+   "listedNoOriginalYears": [
+    2013,
+    2014,
+    2015,
+    2016,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+   ],
+   "planFiscalYearSlots": 5,
+   "planFiscalYearSlotsAnsweredByRepository": 5,
+   "planHeldFiscalYearsWithRetainedOriginal": 0,
+   "planHeldReceipts": 0,
+   "planHeldReceiptsRetainedAsOriginals": 0,
+   "selectedAnnualReceipts": 4,
+   "selectedRetained": 4,
+   "v2IssuerFound": true,
+   "v2PaginationComplete": true,
+   "v2TemplateObservations": 0
+  },
+  {
+   "code": "117930.KS",
+   "corpCode": "00790501",
+   "industryCandidates": [],
+   "listedNoOriginalYears": [
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+   ],
+   "planFiscalYearSlots": 2,
+   "planFiscalYearSlotsAnsweredByRepository": 2,
+   "planHeldFiscalYearsWithRetainedOriginal": 0,
+   "planHeldReceipts": 0,
+   "planHeldReceiptsRetainedAsOriginals": 0,
+   "selectedAnnualReceipts": 3,
+   "selectedRetained": 3,
+   "v2IssuerFound": true,
+   "v2PaginationComplete": true,
+   "v2TemplateObservations": 0
+  }
+ ],
+ "summary": {
+  "admissionBlockedBy": [
+   "FROZEN_V2_TEMPLATE_REQUIRES_ISSUER_SUBJECT_SENTENCE",
+   "REPORTED_LABEL_NOT_IN_FROZEN_V4_CROSSWALK; ONLY_A_STATED_HIERARCHY_LABEL_MAPS"
+  ],
+  "coverageIfAdmitted": {
+   "012510.KS": {
+    "firstKnownFrom": "2014-03-31",
+    "monthsAfterFirstKnownFrom": 28,
+    "windowMemberMonths": 28
+   }
+  },
+  "denominator": 22,
+  "explicitKsicReceipts": 8,
+  "inWindowSecurities": 16,
+  "industryAdmitted": {
+   "after": 0,
+   "before": 0
+  },
+  "mechanicallyAdmissibleRows": 8,
+  "planFiscalYearSlots": 56,
+  "planFiscalYearSlotsAnsweredByRepository": 56,
+  "planHeldFiscalYearsWithRetainedOriginal": 31,
+  "planHeldReceipts": 32,
+  "planHeldReceiptsRetainedAsOriginals": 25,
+  "remainingRequests": {
+   "ANNUAL_ORIGINAL_NOT_RETAINED": 0,
+   "DOCUMENT_DIVIDEND_DECISION": 141,
+   "VIEWER_ROUTE_REQUIRED": 35
+  },
+  "securitiesWithExplicitKsicStatement": [
+   "012510.KS"
+  ],
+  "selectedAnnualReceipts": 140,
+  "selectedAnnualReceiptsRetained": 140,
+  "studyWindowMemberMonthsAll16": 535,
+  "v2IssuersFound": 16,
+  "v2TemplateObservationsForTheseSecurities": 0
+ }
+}
