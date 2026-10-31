@@ -553,7 +553,7 @@ function usdMarkup(local) {
     return "";
   return `<div class="usd-context"><div><span class="eyebrow">SPY · USD CAGR</span><br><b>${pct(local.paths.P0.cagrPct, 3)}</b></div><p>같은 주간 문맥의 달러 요약입니다. 아래 원화 경로의 수익률 차이는 환율 효과이며 종목 선택의 우위가 아닙니다.<br>${link(SOURCES.usd.path, "USD 요약 원문")}</p></div>`;
 }
-function performanceMarkup(s, market, visible, usd) {
+function performanceMarkup(s, market, visible, usd, c2Archive = "") {
   if (!s)
     return '<p class="empty">원본 연구 자료를 확인하지 못했습니다. 수익률과 그래프를 표시하지 않습니다.</p>';
   const weekly = s.kind === "weekly";
@@ -561,6 +561,7 @@ function performanceMarkup(s, market, visible, usd) {
     <div class="chart-card"><div class="chart-head"><h3>기록된 누적 자산 경로</h3><span>시작자본 1 · 주말 관측값 · KRW</span></div><div class="line-toggles" role="group" aria-label="차트 전략 표시">${s.keys.map((k) => `<label><input type="checkbox" data-line="${k}" ${visible[k] ? "checked" : ""}/><i class="line-dot" style="--line-color:${COLORS[k]}" aria-hidden="true"></i>${k} ${esc(LABELS[k][0])}</label>`).join("")}</div><div id="chartPlot">${chartMarkup(s, visible)}</div><p class="chart-note">커밋된 NAV만 표시합니다. 선은 기록값을 연결하며 새로운 수익률·초기점·개별 주 기여도를 생성하지 않습니다.</p></div>
     ${market === "KR" && weekly ? `<p class="study-reading">P1 − P0 CAGR <b class="negative">${signed(s.paths.P1.excessCagrPp)} / 년</b>. ${s.decisions.length - s.stockDecisions.length}회는 지수만 보유했습니다. 대부분의 성과는 종목 선택보다 지수 보유에서 나왔습니다.</p>` : ""}
     ${market === "KR" && !weekly ? `<div class="exploration-callout"><p class="eyebrow">C2 − P0 · 과거 관측</p><div class="answer-number">${signed(s.paths.C2.excessCagrPp)}<small> / 년</small></div><h3>과거 지수 초과수익 관측 · 사후 탐색 · 독립 검증 미완료</h3><p>동일한 종목을 선택했지만, 남은 자금을 현금으로 보유하는지 지수에 투자하는지에 따라 결과가 달라졌습니다. C2는 결과를 본 뒤 만든 조합입니다. 검증된 알파나 생산 전략 승격의 근거가 아닙니다.</p></div>` : ""}
+    ${market === "KR" && !weekly ? c2Archive : ""}
     ${timelineMarkup(s, market)}${yearsMarkup(s)}${methodMarkup(s, market)}`;
 }
 function watchlistMarkup(d) {
@@ -719,6 +720,37 @@ function championState(bundle, market, site, now = Date.now(), failure = null) {
       r.asOfDate > new Date(now).toISOString().slice(0,10) || time(r.generatedAt)>now+600000)
     return blocked("C1/C2 판단 이력·종목 비중·잔여 자산의 일치 검증에 실패했습니다.");
   return {state:"READY", receipt:r, freshness:b.freshness, commit:bundle.commit, publishedAt:publication.attemptedAt};
+}
+// A dated C2 receipt is independent of the blocked CURRENT research gate.
+// The receipt log must have passed parseChampionReceipts' SHA256 check at load.
+// Never relabel a prior receipt as the current model allocation.
+function archivedChampionSnapshot(bundle, market, now = Date.now()) {
+  if (!bundle || !/^[a-f0-9]{40}$/.test(bundle.commit || "") ||
+      bundle.latest?.schema !== "CURRENT_CHAMPION_ARTIFACT_V1" ||
+      bundle.latest.version !== CHAMPION_VERSION ||
+      bundle.latest.liveValidated !== false || bundle.latest.evidenceClass !== CHAMPION_EVIDENCE ||
+      bundle.publication?.schema !== "CURRENT_CHAMPION_PUBLICATION_V1" ||
+      bundle.publication.status !== "PUBLISHED" ||
+      bundle.latest.generatedAt !== bundle.publication.generatedAt ||
+      !Array.isArray(bundle.receipts) || !Number.isFinite(now)) return null;
+  const rows = bundle.receipts.filter(r => r?.region === market);
+  if (!rows.length || rows.some(r =>
+      !validChampionPair(r, market) ||
+      !Number.isFinite(time(r.generatedAt)) || time(r.generatedAt) > now + 600000 ||
+      r.asOfDate > new Date(now).toISOString().slice(0, 10))) return null;
+  const receipt = rows.reduce((best, r) =>
+    !best || r.asOfDate > best.asOfDate ? r : best, null);
+  return {state: "PAST_RESEARCH_RECEIPT", receipt, commit: bundle.commit};
+}
+function archivedChampionMarkup(snapshot, market) {
+  if (!snapshot) return '<p class="notice">C2의 마지막 유효 연구 비중을 확인할 수 없습니다. 수치를 추정하지 않습니다.</p>';
+  const r = snapshot.receipt, d = r.decisions.C2;
+  return `<details class="research-archive-observation" data-research-role="PAST_RECORD_ONLY" open>
+    <summary>C2 마지막 기록 비중 · ${esc(r.asOfDate)} · 종목 ${d.stockCount}개 + 잔여 지수</summary>
+    <p class="notice">과거에 기록된 CHAMPION 연구 변형의 비중입니다. <b>현재 판단이나 매수 추천이 아닙니다.</b> 위 C2의 2013–2026년 수익률에 사용된 21거래일 전략과 후보·시장 위험예산·관측 시점이 다릅니다. 새 기록이 충돌하거나 지연되면 과거 비중을 갱신하지 않습니다.</p>
+    <div class="holdings" aria-label="과거 C2 연구 비중 · 현재 매매 대상 아님">${d.holdings.map(h => `<div class="holding"><span>${esc(h.name || h.ticker)}<small>${esc(h.ticker)} · 과거 연구 기록</small></span><b>${pct(h.weightPct,2)}</b></div>`).join("")}<div class="holding residual"><span>${esc(BENCHMARKS[market][1])}<small>${esc(BENCHMARKS[market][0])} · 과거 잔여 지수</small></span><b>${pct(d.residualWeightPct,2)}</b></div></div>
+    <p class="source-caption">종목 합계 ${pct(d.stockWeightPct,2)} · 잔여 지수 ${pct(d.residualWeightPct,2)} · 전체 100% · 기록 생성 ${esc(utcStamp(r.generatedAt))}. 이후 가격 변동을 반영해 비중을 재계산하지 않았습니다.</p>
+    <p class="digest">커밋 ${esc(snapshot.commit)} · 기록 해시 ${esc(r.digest)} · ${esc(r.evidenceClass)} · ${link(CHAMPION_PATH+"receipts.jsonl","과거 연구 원문",snapshot.commit)}</p></details>`;
 }
 function championMarkup(state, strategy, market) {
   const description = strategy === "C1" ? "CHAMPION 종목 + 현금" : "C1 동일 종목 + 지수 ETF";
@@ -907,7 +939,7 @@ function startTerminal() {
     $("#performancePanel").innerHTML =
       !performanceOpened ? '<div class="empty"><p>과거 연구 자료는 요청할 때만 불러옵니다. 현재 전략 판단·시장·13F는 별도 원천을 사용합니다.</p><button type="button" class="detail-button" data-load-performance>전략별 과거 성과 불러오기</button></div>' : !reports[kind] && !failures[kind]
         ? '<p class="loading">교정된 원본 연구 자료를 확인하고 있습니다.</p>'
-        : performanceMarkup(s, market, visible, reports.usd) + (market==="US"?`<p class="notice">미국의 과거 C1/C2는 생존편향·가격 이력 한계로 검증된 종목 선택 성과를 표시하지 않습니다.</p>${qqqMarkup(reports.qqq)}`:"");
+        : performanceMarkup(s, market, visible, reports.usd, archivedChampionMarkup(archivedChampionSnapshot(researchBundle,market),market)) + (market==="US"?`<p class="notice">미국의 과거 C1/C2는 생존편향·가격 이력 한계로 검증된 종목 선택 성과를 표시하지 않습니다.</p>${qqqMarkup(reports.qqq)}`:"");
     $("#watchlistPanel").innerHTML = loading
       ? '<p class="loading">투자 판단의 관찰 기록을 확인하고 있습니다.</p>'
       : watchlistMarkup(d);
@@ -1065,7 +1097,7 @@ if (typeof module !== "undefined" && module.exports)
     fmt,
     esc,
     CHAMPION_PATH, CHAMPION_VERSION, parseChampionReceipts, validChampionPair,
-    championState, championMarkup, displayText, statusText, decisionDatesMarkup, loadResearchPublication, siteIsCurrent, observations, rangePoints, trendSvg,
+    championState, championMarkup, archivedChampionSnapshot, archivedChampionMarkup, displayText, statusText, decisionDatesMarkup, loadResearchPublication, siteIsCurrent, observations, rangePoints, trendSvg,
     marketMarkup, macroIndicators, macroMarkup, chartDetail, institutionalMarkup,
     managerDetail, npsMarkup, safeSourceLink, cachedInstitutions, cachedNps, qqqMarkup,
   };
