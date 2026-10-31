@@ -1,0 +1,314 @@
+{
+ "admission": {
+  "etfDistributionFunding": "BLOCKED",
+  "historicalExecution": "BLOCKED",
+  "reasons": [
+   "PAYMENT_DATE_UNRESOLVED:26_OF_46",
+   "OWNER_DECISION_UNRECORDED:RIGHTS",
+   "OWNER_DECISION_UNRECORDED:CASH",
+   "OWNER_DECISION_UNRECORDED:TOTAL_RETURN",
+   "OWNER_DECISION_UNRECORDED:CRITERIA"
+  ]
+ },
+ "approximateAccounting": {
+  "cash": {
+   "fileVerifiedThrough": "2026-09-07",
+   "meanRatePctPerYear": {
+    "PROXY": 2.0483,
+    "PROXY_MINUS_HAIRCUT": 1.5483,
+    "ZERO": 0.0
+   },
+   "series": "BOK_POLICY_RATE_PROXY",
+   "sessionsCarriedFromLastVerified": 5,
+   "status": "FROZEN_PROXY_NOT_AN_INVESTABLE_DEPOSIT_OR_BILL_INDEX",
+   "unit": "percentage points per year per 100% cash weight"
+  },
+  "contrastPer10ppExposureGap": {
+   "exDateToPaymentDateReinvestmentMixedLagScenario": {
+    "lowerPpPerYear": -0.00231,
+    "upperPpPerYear": 0.0016
+   },
+   "grossToAfterTaxRecentSubperiodAssumedRate": -0.0302,
+   "note": "not netted and not applied to any path; the tax entry is the drag over the issuer-stated sub-period 2021-10-28..2026-07-30 at an assumed, unretained 15.4% rate scaled to a 10pp gap, not a verified 2012-2026 investor tax; the cash entry rests on a non-investable proxy",
+   "status": "UNVERIFIED_SENSITIVITY_NOT_A_CORRECTION",
+   "unit": "pp/yr per 10pp of mean ETF-weight gap; effect of registered -> funded/after-tax/interest-bearing basis on (more-exposed minus less-exposed arm); negative = the registered basis flatters the more-exposed arm",
+   "zeroCashToBokProxy": -0.2048,
+   "zeroCashToBokProxyMinusHaircut": -0.1548
+  },
+  "distributionTax": {
+   "assumedStatutoryRatePct": 15.4,
+   "coverage": "only the issuer's 20 most recent distributions state a taxable base; the other 26 are UNKNOWN, not zero",
+   "coverageSpan": {
+    "firstExDate": "2021-10-28",
+    "lastExDate": "2026-07-30",
+    "years": 4.882
+   },
+   "dragAtAssumedStatutoryRatePpPerYear": 0.3017,
+   "dragPpPerYearPerOnePointOfTaxRate": 0.01959,
+   "grossYieldPpPerYear": 1.9833,
+   "rateStatus": "UNVERIFIED_ASSUMPTION_NOT_RETAINED_FROM_AN_OFFICIAL_SOURCE_IN_THIS_REPOSITORY",
+   "records": 20,
+   "scope": "the drag is measured over that sub-period only, not the 2012-2026 history, and is not a validated investor tax treatment",
+   "taxableBaseYieldPpPerYear": 1.959,
+   "taxableShareOfCash": {
+    "max": 1.0,
+    "mean": 0.9807,
+    "min": 0.8239
+   },
+   "unit": "percentage points per year per 100% ETF weight"
+  },
+  "exactFundedComparison": {
+   "approximationErrorPpPerYear": 0.00102,
+   "byCommonLag": {
+    "10": {
+     "approximationErrorPpPerYear": 0.00191,
+     "exactPpPerYear": 0.00326,
+     "firstOrderPpPerYear": 0.00136
+    },
+    "2": {
+     "approximationErrorPpPerYear": 0.00094,
+     "exactPpPerYear": -0.00379,
+     "firstOrderPpPerYear": -0.00473
+    },
+    "3": {
+     "approximationErrorPpPerYear": 0.00102,
+     "exactPpPerYear": -0.00641,
+     "firstOrderPpPerYear": -0.00743
+    },
+    "4": {
+     "approximationErrorPpPerYear": 0.00128,
+     "exactPpPerYear": -0.00604,
+     "firstOrderPpPerYear": -0.00732
+    },
+    "5": {
+     "approximationErrorPpPerYear": 0.00128,
+     "exactPpPerYear": -0.00416,
+     "firstOrderPpPerYear": -0.00545
+    },
+    "6": {
+     "approximationErrorPpPerYear": 0.00169,
+     "exactPpPerYear": -0.00407,
+     "firstOrderPpPerYear": -0.00576
+    },
+    "7": {
+     "approximationErrorPpPerYear": 0.0016,
+     "exactPpPerYear": -0.00298,
+     "firstOrderPpPerYear": -0.00458
+    },
+    "8": {
+     "approximationErrorPpPerYear": 0.00174,
+     "exactPpPerYear": -0.00147,
+     "firstOrderPpPerYear": -0.00321
+    },
+    "9": {
+     "approximationErrorPpPerYear": 0.00193,
+     "exactPpPerYear": 0.0031,
+     "firstOrderPpPerYear": 0.00118
+    }
+   },
+   "exactPpPerYear": -0.00641,
+   "firstOrderPpPerYear": -0.00743,
+   "largestAbsoluteApproximationErrorPpPerYear": 0.00193,
+   "largestAbsoluteExactEffectPpPerYear": 0.00641,
+   "pathAReproducesCorrectedIndexRelativeResidual": 4.441e-16,
+   "scenario": "official payment dates where known, 3 sessions after ex otherwise",
+   "status": "SCENARIOS_NOT_A_BOUND_MIXED_LAGS_NOT_ENUMERATED"
+  },
+  "paymentTiming": {
+   "commonLagScenario": {
+    "byLagSessionsAfterEx": {
+     "10": {
+      "signedPpPerYear": 0.00955,
+      "sumOfAbsolutePpPerYear": 0.03191
+     },
+     "2": {
+      "signedPpPerYear": 0.00346,
+      "sumOfAbsolutePpPerYear": 0.01006
+     },
+     "3": {
+      "signedPpPerYear": 0.00076,
+      "sumOfAbsolutePpPerYear": 0.01243
+     },
+     "4": {
+      "signedPpPerYear": 0.00088,
+      "sumOfAbsolutePpPerYear": 0.01734
+     },
+     "5": {
+      "signedPpPerYear": 0.00275,
+      "sumOfAbsolutePpPerYear": 0.01906
+     },
+     "6": {
+      "signedPpPerYear": 0.00244,
+      "sumOfAbsolutePpPerYear": 0.02491
+     },
+     "7": {
+      "signedPpPerYear": 0.00361,
+      "sumOfAbsolutePpPerYear": 0.02498
+     },
+     "8": {
+      "signedPpPerYear": 0.00498,
+      "sumOfAbsolutePpPerYear": 0.02518
+     },
+     "9": {
+      "signedPpPerYear": 0.00937,
+      "sumOfAbsolutePpPerYear": 0.03136
+     }
+    },
+    "note": "one lag for every unresolved event; max over lags of the summed absolute effect is NOT an upper bound when events can have different lags",
+    "status": "SCENARIO_NOT_A_BOUND"
+   },
+   "mixedLagScenarioWith20Known": {
+    "boundOnAbsoluteEffectPpPerYear": 0.02312,
+    "conditions": [
+     "each unresolved lag lies independently in the stated range (an assumption: all 20 observed are 3)",
+     "first-order per-event approximation (see exactFundedComparison for its size)",
+     "zero return on cash while awaiting payment"
+    ],
+    "knownEventsFixedAtObservedDatesPpPerYear": -0.00819,
+    "knownOfficialEvents": 20,
+    "lagIntervalStatus": "HYPOTHETICAL_SCENARIO_NOT_CERTIFIED_HISTORICAL_COVERAGE",
+    "lagRangeSessionsAfterEx": [
+     2,
+     10
+    ],
+    "perEventTriangleEnvelopePpPerYear": 0.0451,
+    "signedInterval": {
+     "lowerPpPerYear": -0.02312,
+     "upperPpPerYear": 0.01597
+    },
+    "status": "CONDITIONAL_FIRST_ORDER_RANGE_NOT_A_UNIVERSAL_FUNDING_BOUND_NOT_SOURCE_ADMITTED_PAYMENT_DATES",
+    "unresolvedEvents": 26
+   },
+   "unit": "percentage points per year per 100% ETF weight"
+  }
+ },
+ "confirmedSourceFacts": {
+  "asTradedPriceReconstruction": {
+   "endpointRawQuote": 105410.0,
+   "issuerAsTradedCloseCrossCheck": {
+    "maxAbsRelativeDifference": 4.219e-15,
+    "reader": "pipeline/market_research_c1c_xls_cells.py (dependency-free; compared cell by cell with xlrd in tests where installed)",
+    "sessions": 3612,
+    "status": "GATING_ASSERTION_RUN_IN_REQUIRED_CI",
+    "tolerance": 1e-09
+   },
+   "method": "invert the once-only gross reinvestment from the corrected index and the 46 cash amounts, anchored on the official raw endpoint quote",
+   "sessions": 3612
+  },
+  "distributions": {
+   "exDateIsSessionAndRecordIsNextSession": true,
+   "firstOfficialExDate": "2021-10-28",
+   "firstUnresolved": {
+    "exDate": "2012-04-27",
+    "recordDate": "2012-04-30"
+   },
+   "lastUnresolvedExDate": "2021-07-29",
+   "officialCashEqualsChainCash": true,
+   "officialPaymentDate": 20,
+   "paymentCalendarDaysAfterRecord": {
+    "max": 7,
+    "min": 2
+   },
+   "paymentDateUnresolved": 26,
+   "paymentSessionsAfterEx": [
+    3
+   ],
+   "paymentSessionsAfterRecord": [
+    2
+   ],
+   "records": 46,
+   "unresolvedExDatesByYear": {
+    "2012": 2,
+    "2013": 2,
+    "2014": 2,
+    "2015": 2,
+    "2016": 2,
+    "2017": 3,
+    "2018": 3,
+    "2019": 3,
+    "2020": 4,
+    "2021": 3
+   }
+  },
+  "issuerStatedTaxableBase": {
+   "coverage": "only the issuer's 20 most recent distributions state a taxable base; the other 26 are UNKNOWN, not zero",
+   "coverageSpan": {
+    "firstExDate": "2021-10-28",
+    "lastExDate": "2026-07-30",
+    "years": 4.882
+   },
+   "records": 20,
+   "taxableShareOfCash": {
+    "max": 1.0,
+    "mean": 0.9807,
+    "min": 0.8239
+   }
+  },
+  "ks200Reconciliation": {
+   "annualExcessOfTotalReturnOverKs200PricePp": {
+    "2013": 0.974,
+    "2014": 1.059,
+    "2015": 1.387,
+    "2016": 2.021,
+    "2017": 2.205,
+    "2018": 2.005,
+    "2019": 2.265,
+    "2020": 3.018,
+    "2021": 1.74,
+    "2022": 2.002,
+    "2023": 1.864,
+    "2024": 1.849,
+    "2025": 3.539,
+    "2026": 0.999
+   },
+   "grossDistributionYieldPctByYear": {
+    "2012": 1.248,
+    "2013": 0.897,
+    "2014": 0.942,
+    "2015": 1.199,
+    "2016": 1.846,
+    "2017": 2.034,
+    "2018": 1.949,
+    "2019": 2.102,
+    "2020": 2.149,
+    "2021": 2.002,
+    "2022": 2.155,
+    "2023": 2.117,
+    "2024": 2.217,
+    "2025": 2.226,
+    "2026": 0.752
+   },
+   "mean2017to2024": 2.119,
+   "meanExcessMinusYield2017to2024": 0.028,
+   "meanGrossDistributionYield2017to2024": 2.091,
+   "otherSeries": "the repository's own record that the replay-v16 069500 series applies each distribution about twice is in docs/weekly-decision/weekly-passive-first-v1-benchmark-basis-protocol.json ('why'); not derived here",
+   "reading": "over 2017-2024 the mean excess is close to the mean gross distribution yield computed here; single years differ (compounding of reinvested distributions in strong years, ETF-vs-index tracking). This compares the corrected series only; it says nothing about any other 069500 series"
+  },
+  "officialPaymentJsonEqualsIssuerXls": {
+   "records": 20,
+   "status": "GATING_ASSERTION_RUN_IN_REQUIRED_CI"
+  }
+ },
+ "evidenceClass": "RETAINED_SOURCE_READ_ONLY_NO_STRATEGY_RETURN",
+ "inputs": {
+  "data/bok-policy-rates.json": "a7edf0e532c7b54da9d962ebf12ff2552c90c783439fef99d7c761c5b9ea69ff",
+  "data/kr-market-risk-anatomy-v1/sources/FDR_KS200/normalized.csv": "729a94b81dd45d1c5d1ab2ff692ec249bd5c9c4f24598d648d7f88010f193478",
+  "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json": "58580c4370ec2c5afa124f849afbc4fa7b5c879012e75ebbd48ee7c7a0e659a9",
+  "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-dividends.json": "3f23e3a8ce9c34506e1316bc8b6263c85cfa78086c3725743e02a3d653eeb0df",
+  "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-dividends.xls": "7ed6c79dce2e4baaf9791311e489b7d5bb4294d8a6db34f7572b45110394bab1",
+  "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-standard.xls": "cbdd7a0ce340228ddcfc714de637c512f73c2d691d84ae59a28cfb406d8437b9"
+ },
+ "missingHistoricalEvidence": [
+  "26 of 46 distributions have no official payment date (first: ex 2012-04-27, record 2012-04-30); the retained annual reports list the record date only (지급기준일), and the issuer API serves the 20 most recent",
+  "taxable base for the 26 earlier distributions",
+  "any investable KRW cash-return series with dated source evidence (retained ECOS evidence covers the base rate 722Y001/0101000 and 3-year Treasuries only, status REVISED_HISTORY, no release vintage)",
+  "release/vintage evidence for KS200, VIX and DGS inputs beyond the single 2012-01-03 H.15 release"
+ ],
+ "ownerOnlyDecisions": [
+  "RIGHTS: retention and downstream research use of the KODEX/Samsung Asset Management distribution and quote files, of the FRED-served series (VIXCLS carries a Cboe 'reprinted with permission' notice that is not a downstream grant) and of the KS200 series; HTTP 200 or a retained checksum is not permission",
+  "CASH: which investable KRW cash return (or the registered ZERO scenario) the economic reading uses; the BOK base rate is a non-investable proxy",
+  "TOTAL_RETURN: accept ex-date-close gross reinvestment as the funded ETF basis with the documented payment-timing bound, or require pay-date reinvestment (needs 26 further payment dates), and pre-tax versus after-tax",
+  "CRITERIA: economic tolerances, inference and multiplicity, first evaluation and support, exact-hash execution packet"
+ ],
+ "studyId": "market-research-c1c-source-evidence-v1"
+}

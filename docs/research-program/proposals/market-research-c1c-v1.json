@@ -1,0 +1,81 @@
+{
+  "programId": "rp1-market-research-v1",
+  "studyId": "rp1-c1c-asymmetric-exit-reentry-v1",
+  "status": "DESIGN_PENDING_INDEPENDENT_AUDIT_AND_OWNER_APPROVAL",
+  "evidenceClass": "OUTCOME_EXPOSED_EXPLORATORY",
+  "originalProposalHead": "e0a88afd999e2c0bc0afb5eeb39587c498ad067e",
+  "control": "C1_CONFIRMATION_GATED",
+  "armCount": 4,
+  "breakoutWindow": 20,
+  "severeFast": 2,
+  "hardExitTarget": 0.0,
+  "reentryFast": 1,
+  "reentryTarget": 1.0,
+  "costStress": [1, 2, 3],
+  "historicalExecutionEnabled": false,
+  "productionEffect": "NONE",
+  "proposedHistoricalWindows": {
+    "US": {"gridStart": "1990-01-01", "evaluationStart": "1993-02-01", "through": "2026-09-17"},
+    "KR": {"evaluationStart": "2007-01-01", "through": "2026-09-17", "warmup": "retain full original state lookback before evaluation"},
+    "status": "NEW_EXPLORATORY_SCOPE_PROPOSAL_ONLY; each source/window requires fresh admission and owner approval. No original execution wrapper, lock or consumed permit is reused."
+  },
+  "arms": {
+    "S0": "unchanged C1 target map 1/.7/.4",
+    "S1": "S0 except FAST=2 target=0",
+    "S2": "S0 except FAST=1 AND close>max(previous 20 exchange-session closes) target=1",
+    "S3": "S1 plus S2; FAST=2 always vetoes early re-entry"
+  },
+  "preOutcomeClarifications": [
+    "The breakout compares t against t-20..t-1, never includes t in the high. Require all 21 calendar-aligned valid closes, not just 21 rows.",
+    "All arms use the same weekly C1 decision grid and next exchange-session close. No daily early-reentry arm, latch, grid search or extra hysteresis.",
+    "The override is memoryless. If the next weekly signal no longer meets the trigger, the original C1 map applies; resulting whipsaw is a cost, not fixed after outcomes.",
+    "Missing input is completed over its domain. If all completions agree use that answer, otherwise hold that arm's previous target; an undefined first target blocks.",
+    "Known-at is checked at the decision cutoff. The unchanged layer adapter retains four-calendar-day FRED lag and 14-day staleness; its date-resolution/vintage limitations remain.",
+    "KR cutoff is 18:00 KST; US is exchange close+60min, including early closes. No same-close trade.",
+    "These clarify the post-C1 proposal before ANY new historical value/return execution; they do not revise a sealed B/C contract."
+  ],
+  "families": {
+    "B": {
+      "studyId": "rp1-study-b",
+      "hypotheses": ["B-H1", "B-H2"],
+      "multiplicity": "existing Holm .05 family of two; not pooled with C1c",
+      "B-H1": "rp1-b-h1-state-v1 is state-only prospective. FAST=2 OR trailing calendar-24-month return<0 unchanged. H63 outcome contract not registered; D1-D8 remain open.",
+      "B-H2": "p=1 until an eligible development-supported Study A signal exists; outcome contract/own inference gates also required",
+      "estimand": "unscaled same-stock/same-industry signal excess return by signal-time state, and incremental prediction error; never overlay-scaled returns",
+      "dataPolicy": "retain Study ID, original spec hash, signal key, evidence class, horizon, cohort and validity mask; never pool prospective and exposed historical evidence"
+    },
+    "C1c": {
+      "primaryEffects": {"exit": "S1-S0", "reentry": "S2-S0", "interaction": "S3-S1-S2+S0"},
+      "metric": "paired annualized mean log-growth for the three contrasts; CAGR/MDD are separate economic axes, not an additive profit decomposition",
+      "averageFactorEffects": "reported descriptively, never additional selection opportunities",
+      "classification": "fixed FAST/SLOW/TRANSITION severity only; no classifier training or new risk threshold",
+      "validity": "one common complete calendar/path mask for all four cells and controls. Missing required price/cash/action basis blocks the entire market/basis reading; no surviving-arm selection.",
+      "inference": "DESCRIPTIVE_ONLY. No p-values, SUPPORTED label or alpha claim without separate pre-outcome calibration/independent review. No pooling B/C p-values or markets."
+    }
+  },
+  "readings": {
+    "US_PRIMARY": {"asset": "original S&P500 price-index identity", "cash": "zero", "oneWayBuyBps": 8, "oneWaySellBps": 8.3, "accounting": "C1_PRIMARY_REPLICA; original uncharged initialization; noninvestable diagnostic"},
+    "US_ECONOMIC": {"asset": "separately admitted SPY cash-dividend total return", "cash": "DTB3 known at previous close, actual calendar days/360", "oneWayBuyBps": 8, "oneWaySellBps": 8.3, "accounting": "ETF_CASH_ECONOMIC; funded entry and final liquidation for every arm/control; source rights and external total-return reconciliation must pass separately"},
+    "KR_PRIMARY": {"asset": "original KS200 price-index identity", "cash": "zero", "oneWayBuyBps": 15, "oneWaySellBps": 45, "accounting": "C1_PRIMARY_REPLICA; comparability only; never claim ETF economics or rerun the old KR study"},
+    "KR_ECONOMIC": {"asset": "separately admitted 069500.KS total return", "cash": "zero; BOK sensitivity requires its own approved specification", "oneWayBuyBps": 5.5, "oneWaySellBps": 5.5, "sellTaxBps": 0, "accounting": "ETF_CASH_ECONOMIC; same funded entry/liquidation; existing commission 1.5bps + half of 8bps spread; no stock tax on domestic equity ETF"}
+  },
+  "controls": ["PASSIVE", "C0_DIAGNOSTIC", "STATIC_40", "STATIC_70"],
+  "timingAttribution": "report net arithmetic identity = cash + mean-exposure premium + weight/return covariance - cost impact, including residual; mean exposure is ex post and NOT a tradable control or proof of timing skill. Static 40/70 controls expose simple lower beta; CAGR alone never establishes selection/timing alpha.",
+  "metrics": ["net/gross/funded CAGR", "MDD", "monthly CVaR95", "Sharpe over declared cash", "Calmar", "worst H63/H252 returns", "up/down participation", "mean exposure", "turnover/costs including entry/liquidation", "H63 false alarms and pending counts", "post-trough H63/H126 rebound missed", "sessions to 100% exposure and censoring", "early reentry vs S0", "20-session whipsaw and pending counts", "calendar years and chronological halves"],
+  "metricConventions": "ETF economic CAGR starts from initial wealth 1, includes funded entry/final liquidation and annualizes by 252/(number of close intervals). A target scheduled exactly at final liquidation is not rebalanced before liquidation. Entry cost is an initial fee observation in daily-return diagnostics. Monthly/first-year/first-half results include initial fee. Switching turnover and full entry/exit lifecycle turnover are separate. Up/down classification uses the underlying asset return, not passive trading fees. Primary replication retains original initialization.",
+  "successStopProposal": {
+    "screenOnly": true,
+    "controlNoninferiority": "net CAGR >= S0 minus 0.005 AND |MDD| <= 1.10*|MDD_S0|",
+    "meaningfulImprovement": "net CAGR >= S0 plus 0.005 OR |MDD| <= 0.90*|MDD_S0|; inherited C tolerances, never retuned",
+    "timingClaim": "requires evidence beyond simple/static exposure, costs and cash yield. Positive covariance or one better CAGR does not suffice.",
+    "costRobustness": "publish all x1/x2/x3 results; losing signs, shallow protection and whipsaw remain visible; do not nominate the best cost assumption",
+    "stop": "any unverified source/basis/calendar/rights aborts before historical reads; no complete four-cell comparison means UNRESOLVED. No economically eligible arm means NO_EDGE. Several Pareto tradeoffs remain ambiguous, never forced winner.",
+    "promotion": "none, even after favorable exploration; requires independently registered prospective validation and owner risk-budget decision"
+  },
+  "futureHypotheses": {
+    "continuousVolTarget": "one separate capped inverse-volatility hypothesis; window/target/cap/zero-vol/missing rules UNREGISTERED, no implementation or result here",
+    "cashVsShortBill": "one separate investable cash/short-bill hypothesis; rate proxy is not bond total return, and duration/credit/spread/rights must be specified; UNREGISTERED"
+  },
+  "executionGate": ["independent design/PIT/cost/family audit on exact HEAD", "all exact-head CI complete", "owner accepts exact numeric protocol and each admitted market/basis/source window", "source rights, identity, full calendar and corporate-action/return-basis proofs", "new append-only run manifest with code/protocol/input/runtime hashes and distinct attempt namespace", "explicit owner approval for that exact new manifest; original KR/C1 locks/results never reused"],
+  "marketInterface": "bounded market risk multiplier 0..1, signal/execution/knownAt/study/source hashes, appliedScope=MARKET_RISK_ONCE; apply once to a fixed future eligible book. B state context never supplies another risk multiplier. Industry/Stock development proceeds independently even if market timing fails. No production integration."
+}

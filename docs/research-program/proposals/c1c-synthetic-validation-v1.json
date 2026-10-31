@@ -1,0 +1,55 @@
+{
+  "evidenceClass": "SYNTHETIC_FIXTURE_ONLY_NOT_INVESTMENT_PERFORMANCE",
+  "protocolSha256": "cc9c89b86bc8410af4d87f8ac0c89cd8c47a933f61342ac3ead7dd5fedcc685b",
+  "codeHashes": {
+    "pipeline/market_research_c1c.py": "dcd794b3ee95f2050b89104ac09aa30cc55e85495094c0564dba6cd35291c97e",
+    "scripts/check_market_research.py": "3aa9738f8a2a4c21984c2b4983f7105287e1b0d8caf14961cbeb043d731ac131",
+    "tests/test_market_research_c1c.py": "6166db29f6e03d315da4b31093f397c7a9fd55e21ea4a45a4cbf17f11b9059cc"
+  },
+  "runtime": {
+    "python": "3.12.14",
+    "numpy": "2.3.1",
+    "pandas": "2.3.0",
+    "exchange-calendars": "4.11.1"
+  },
+  "tests": {
+    "c1cPassed": 63,
+    "existingBH1Passed": 64,
+    "existingBH1CodeUnchanged": true
+  },
+  "determinism": "two US CLI runs byte-identical",
+  "synthetic": [
+    {
+      "market": "US",
+      "fullOutputSha256": "de0f13a17d5340750ddc6c59a513d66e8b8028d9db462f4173b9dffb6f26faa1",
+      "inputs": {
+        "calendarSchedule": "74db41e1197bb5bfcacb4248ed07a9884a3a6f235ac147b77588d87fbbbe2c95",
+        "inventedPrices": "3b190de94533f3a53243a1add4c78be7ed2298f57fc52852cdb34cbc8a21028f",
+        "inventedStates": "b4bf0949c87eab268f2198711b328353c76401ecb004d0ad0b58982db23fac51"
+      },
+      "basisCostCells": 6,
+      "armsAndControlsPerCell": 8,
+      "maximumArithmeticIdentityResidual": 6.938893903907228e-17
+    },
+    {
+      "market": "KR",
+      "fullOutputSha256": "40e1a05f939c1109f158fb078f67b96d3fa7330c8cb568bc0e2afa597f53e11f",
+      "inputs": {
+        "calendarSchedule": "004e45a6c8df51d7078a314c697498c72e05eac6cd655207448d7ec494e4ea07",
+        "inventedPrices": "2cd7b8b6eee495171e63b103732340420362733447110d8332be9f7868c75c03",
+        "inventedStates": "cd6fddd271766e48ffdd8188a76c871e2decd0a075c81e764c6b4654d2c29645"
+      },
+      "basisCostCells": 6,
+      "armsAndControlsPerCell": 8,
+      "maximumArithmeticIdentityResidual": 5.551115123125783e-17
+    }
+  ],
+  "preservedOriginalFiles": 94,
+  "ruff": "PASS",
+  "compileall": "PASS",
+  "temporarySeedValidation": "PASS",
+  "newHistoricalOutcomeExecutions": 0,
+  "liveStateWrites": 0,
+  "ownerExecutionAuthorization": false,
+  "independentAudit": "PENDING_CLAUDE_REVIEW; request packaged in PR, no author self-approval"
+}

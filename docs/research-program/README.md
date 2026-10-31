@@ -1,5 +1,10 @@
 # Research Program v1 — Track A/B/C/D 실행 로드맵
 
+**2026-10-25 보완:** Study B·C의 상위 관리는 [Market Research](market-research-program-v1-ko.md)에서 함께 추적한다.
+Study ID·봉인·원장·판정은 독립이다. #285 B-H1은 병합되어 10/30 첫 상태 신호를 기다리며, US C1 단회 실행은
+완료됐고 #288은 결과 보존 Draft다. #289의 새 C1c는 구현/합성·독립 감사 단계이며 역사 실행 승인이 아니다.
+아래 10/18 시점 기록은 당시의 증거로 유지한다. 시장 모델의 성공은 Industry/Stock 연구의 선행 조건이 아니다.
+
 **목표:** KR/US의 향후 6~12개월 초과수익·불확실성을 검증하고, 최종적으로 0~5종목·지역 ETF·현금을 비교한다. 현재 기본값은 기존 passive ETF 정책이다. 이 문서는 실행 순서를 갱신하며 가설·임계값·봉인·운영 정책·실행 권한을 바꾸지 않는다.
 
 **확인 기준:** 2026-10-18 KST, GitHub `main` `786ae1269cc0c94076272e1a56d8e0028c5ed0e2`. [main Tests SUCCESS](https://github.com/jaehojung1879-netizen/Investment/actions/runs/39109316916). 아래의 입력 점검은 미래 라벨·종목 성과·모델·실행 잠금 없이 수행했다. 현재 시점의 실시간 데이터 준비를 인증하는 보고서는 아니다.

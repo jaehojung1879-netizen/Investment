@@ -1,0 +1,286 @@
+{
+ "accountingReadings": {
+  "F_FUNDED_INVESTOR": {
+   "hypotheticalScenariosAreNotEvidence": "the 2-10 session mixed-lag range and the assumed tax rate are sensitivities, not historical coverage",
+   "requires": [
+    "26 of 46 official payment dates",
+    "taxable base for the earlier distributions and a verified 2012-2026 tax treatment (15.4% is an assumption)",
+    "an owner-named investable KRW cash series with dated evidence"
+   ],
+   "status": "BLOCKED"
+  },
+  "R_REGISTERED_SCENARIO": {
+   "admitted": false,
+   "basis": "gross corrected 069500 index, distributions reinvested at the ex-date close, ZERO cash, registered 5.5bp costs at 1x/2x/3x",
+   "constructibleFromRetainedBytes": true,
+   "status": "DESCRIPTIVE_SCENARIO_NOT_A_FUNDED_INVESTOR_RESULT",
+   "why": "every input is retained, but no right, vintage or investability evidence is VERIFIED, so it cannot run"
+  },
+  "separation": "R and F are reported side by side in any future run and never substituted for each other"
+ },
+ "evidenceClass": "READINESS_PACKET_NO_OUTCOME_COMPUTED",
+ "experiment": {
+  "benchmark": "069500.KS",
+  "buyCost": 0.00055,
+  "calendar": "XKRX_FIXED_WEEK_ENDS_NEXT_SESSION_CLOSE",
+  "costStress": [
+   1,
+   2,
+   3
+  ],
+  "market": "KR",
+  "primaryContrast": "C0/C1c-REENTRY-SPEED-ORIGINAL-STRUCTURAL/REENTRY_MINUS_BASE",
+  "primaryHorizonSessions": 126,
+  "sampleClass": "OUTCOME_EXPOSED_DEVELOPMENT_NOT_INDEPENDENT_OOS",
+  "secondaryHorizonSessions": 252,
+  "sellCost": 0.00055,
+  "valuation": "FUNDED_ENTRY_AND_FINAL_LIQUIDATION_IDENTICAL_FOR_ALL_ARMS_AND_PASSIVE",
+  "window": {
+   "end": "2026-09-14",
+   "meaning": "RETAINED_DATE_INTERSECTION_PROPOSAL_NOT_SOURCE_ADMISSION",
+   "start": "2012-01-02"
+  }
+ },
+ "historicalDataReads": {
+  "armReturnsComputed": 0,
+  "benchmarkSeriesRead": "069500 as-traded closes and the corrected total-return index (distribution-timing and tax sensitivities) and KS200 index levels (annual reconciliation with the index), all retained files; the benchmark itself, not a strategy path; history is outcome-exposed",
+  "claim": "no unregistered strategy return was read; benchmark price relatives and the files above were read for accounting sensitivities only",
+  "labelsOrOutcomesRead": 0,
+  "notCoveredByTheProtectedFileCounter": "check_market_research.py realNumericValueReads does not cover these modules; this field is the record",
+  "ratesAndCashAmountsRead": "data/bok-policy-rates.json (cash-proxy mean rate) and the issuer dividend JSON and spreadsheet (record and payment dates, cash amounts, taxable bases): rates and cash amounts, not returns",
+  "stateOrSignalValuesComputed": 0,
+  "strategyPathReturnsComputed": 0
+ },
+ "historicalExecutionAuthorized": false,
+ "identities": {
+  "checkMarketResearchProtectedFiles": 94,
+  "codeAndProposalFiles": [
+   {
+    "path": "pipeline/market_research_c1c.py",
+    "sha256": "6178472732c7e42495852d9f4e1adf4cd5b11490581b3af61715eeb370f6ac2a"
+   },
+   {
+    "path": "pipeline/market_research_c1c_contract.py",
+    "sha256": "c08a13d0b84e4edf5994528e08a8d240c09c50cce9e7de72bc4cd02f7afcfba2"
+   },
+   {
+    "path": "pipeline/market_research_c1c_decisions.py",
+    "sha256": "3afaaa43017dbba9a0a34dc074ca2f7b6573c25f7c91d64d4a35cedef07037ad"
+   },
+   {
+    "path": "pipeline/market_research_c1c_diagnostics.py",
+    "sha256": "2e2233e23617b315cee2ee37aeebda5fbc336b9921aa58c840174b992eba207e"
+   },
+   {
+    "path": "pipeline/market_research_reentry_structure.py",
+    "sha256": "bc85cf976448b4b9b95cb22d2dd1cc9f757e6c5a6e75b490958b0f517803d2c5"
+   },
+   {
+    "path": "pipeline/market_research_c1c_source_evidence.py",
+    "sha256": "7186bc50a1080f1d6c09f2c4a50a00ed31d617b9282f4141a5d165a18e247bde"
+   },
+   {
+    "path": "pipeline/market_research_c1c_xls_cells.py",
+    "sha256": "c858d70edf6ceb61b5c4a502da596c25a9757ccea2dfa4cca6d2f82766648b34"
+   },
+   {
+    "path": "docs/research-program/proposals/market-research-c1c-v2.json",
+    "sha256": "a9226c440896b9b8ae1bdc998c71b780ad3d369f330ba3162b43175f8e95c0b1"
+   }
+  ],
+  "implementationDigest": "d4435652306f4879b8505bca225f34795cffb2ba0d1ab5480c4109488a4d66e7",
+  "registeredContractSha256": "0d94b6b07d0d325b6acc258629d425593e4ff5bb5f2b831018136d0f71b46ea9",
+  "signalInputFiles": [
+   {
+    "path": "data/kr-market-risk-anatomy-v1/sources/FDR_KS200/normalized.csv",
+    "sha256": "729a94b81dd45d1c5d1ab2ff692ec249bd5c9c4f24598d648d7f88010f193478"
+   },
+   {
+    "path": "data/kr-market-risk-anatomy-v1/sources/FRED_VIXCLS/normalized.csv",
+    "sha256": "dd0ccfe0a13f5e72a842dc27d53733748f24fb380808a7b2fb9babb40caa00ef"
+   },
+   {
+    "path": "data/kr-market-risk-anatomy-v1/sources/FRED_DGS10/normalized.csv",
+    "sha256": "db7dc41d9d40ad5608e0ead00086ec15f5969cf785aa378f05cda576a160bc92"
+   },
+   {
+    "path": "data/kr-market-risk-anatomy-v1/sources/FRED_DGS3MO/normalized.csv",
+    "sha256": "7ce2bdbe2547e4fc16c18a36295871d16099d60f51f10edfc2cd8d42218dc06c"
+   }
+  ],
+  "sourceEvidenceInputs": [
+   {
+    "path": "data/bok-policy-rates.json",
+    "sha256": "a7edf0e532c7b54da9d962ebf12ff2552c90c783439fef99d7c761c5b9ea69ff"
+   },
+   {
+    "path": "data/kr-market-risk-anatomy-v1/sources/FDR_KS200/normalized.csv",
+    "sha256": "729a94b81dd45d1c5d1ab2ff692ec249bd5c9c4f24598d648d7f88010f193478"
+   },
+   {
+    "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json",
+    "sha256": "58580c4370ec2c5afa124f849afbc4fa7b5c879012e75ebbd48ee7c7a0e659a9"
+   },
+   {
+    "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-dividends.json",
+    "sha256": "3f23e3a8ce9c34506e1316bc8b6263c85cfa78086c3725743e02a3d653eeb0df"
+   },
+   {
+    "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-dividends.xls",
+    "sha256": "7ed6c79dce2e4baaf9791311e489b7d5bb4294d8a6db34f7572b45110394bab1"
+   },
+   {
+    "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-standard.xls",
+    "sha256": "cbdd7a0ce340228ddcfc714de637c512f73c2d691d84ae59a28cfb406d8437b9"
+   }
+  ],
+  "sourceEvidenceJson": {
+   "path": "docs/research-program/proposals/market-research-c1c-source-evidence-v1.json",
+   "sha256": "bfc464f9a1aea50529f9529c59dce64e86f8a59f6c1a8e07d923fbd82cfb67a3"
+  }
+ },
+ "ownerDecisionsUnresolved": [
+  "RIGHTS: retention and downstream research use of the KODEX/Samsung Asset Management distribution and quote files, of the FRED-served series (VIXCLS carries a Cboe 'reprinted with permission' notice that is not a downstream grant) and of the KS200 series; HTTP 200 or a retained checksum is not permission",
+  "CASH: which investable KRW cash return (or the registered ZERO scenario) the economic reading uses; the BOK base rate is a non-investable proxy",
+  "TOTAL_RETURN: accept ex-date-close gross reinvestment as the funded ETF basis with the documented payment-timing bound, or require pay-date reinvestment (needs 26 further payment dates), and pre-tax versus after-tax",
+  "CRITERIA: economic tolerances, inference and multiplicity, first evaluation and support, exact-hash execution packet"
+ ],
+ "packetSha256": "688a7f65a4b0602046739af672a9fa3d4acb467cc4d0e6030355b3bae439d747",
+ "signConvention": "pp/yr per 10pp of mean ETF-weight gap; effect of registered -> funded/after-tax/interest-bearing basis on (more-exposed minus less-exposed arm); negative = the registered basis flatters the more-exposed arm",
+ "smallestNextStep": "ONE owner decision record, bound to this packet's digest, that (a) states the research-use and retention decision for KS200, VIX/FRED, H.15 and the KODEX files and (b) names the KRW cash convention (the registered ZERO scenario, or a specific investable series). Without (a) not even reading R may run; (b) fixes the cash leg of F.",
+ "sourceBlockers": [
+  "KS200 signal index:rights:NOT_RETAINED",
+  "KS200 signal index:pitVintage:NOT_ESTABLISHED",
+  "VIX:rights:NOT_RETAINED",
+  "VIX:pitVintage:NOT_ESTABLISHED",
+  "Treasury 10y and 3m:rights:PARTIAL_BOARD_POLICY_CITED_NOT_RETAINED_IN_REPO",
+  "Treasury 10y and 3m:pitVintage:NOT_ESTABLISHED",
+  "069500.KS (KODEX 200):rights:NOT_RETAINED",
+  "069500.KS (KODEX 200):pitVintage:PARTIAL",
+  "069500.KS (KODEX 200):investability:NOT_VERIFIED",
+  "KRW cash:rights:NOT_RETAINED",
+  "KRW cash:pitVintage:NOT_ESTABLISHED",
+  "KRW cash:investability:MISSING",
+  "F_FUNDED_INVESTOR:BLOCKED"
+ ],
+ "sourcePrerequisites": [
+  {
+   "input": "KS200 signal index",
+   "investability": {
+    "evidence": [],
+    "smallestMissingEvidence": "none; a signal series is not traded",
+    "status": "NOT_APPLICABLE_SIGNAL_ONLY"
+   },
+   "pitVintage": {
+    "evidence": [],
+    "smallestMissingEvidence": "a dated publication/finality statement for closing index levels, or contemporaneous captures",
+    "status": "NOT_ESTABLISHED"
+   },
+   "retained": "FinanceDataReader 0.9.110 route, KOSPI 200 price index levels 1990-01-03..2026-09-17, vintageClass MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY, the upstream provider behind the route is not recorded in the retained audit",
+   "rights": {
+    "evidence": [],
+    "smallestMissingEvidence": "written terms from the index owner (KRX) or an authorised vendor permitting internal research use and retention of daily KOSPI 200 closes, plus the upstream behind the FinanceDataReader route",
+    "status": "NOT_RETAINED"
+   },
+   "role": "FAST/regime state price series"
+  },
+  {
+   "input": "VIX",
+   "investability": {
+    "evidence": [],
+    "smallestMissingEvidence": "none; a signal series is not traded",
+    "status": "NOT_APPLICABLE_SIGNAL_ONLY"
+   },
+   "pitVintage": {
+    "evidence": [],
+    "smallestMissingEvidence": "vintage coverage for VIXCLS or a documented, tested justification of the frozen 4-calendar-day lag",
+    "status": "NOT_ESTABLISHED"
+   },
+   "retained": "FRED VIXCLS 1990..2026-10-01; series note: Cboe copyright 'reprinted with permission'",
+   "rights": {
+    "evidence": [],
+    "smallestMissingEvidence": "Cboe/FRED terms permitting research use and retention of VIX values (the FRED terms page could not be retrieved reliably; the reprint notice is not a downstream grant)",
+    "status": "NOT_RETAINED"
+   },
+   "role": "transition state (VIXCLS via FRED)"
+  },
+  {
+   "input": "Treasury 10y and 3m",
+   "investability": {
+    "evidence": [],
+    "smallestMissingEvidence": "none; a signal series is not traded",
+    "status": "NOT_APPLICABLE_SIGNAL_ONLY"
+   },
+   "pitVintage": {
+    "evidence": [],
+    "smallestMissingEvidence": "availability at decision time was UNKNOWN for the one release checked (PDF 2012-01-03 vs HTTP Last-Modified 2012-01-09); needs vintage coverage or a published revision statement for 2012-2026",
+    "status": "NOT_ESTABLISHED"
+   },
+   "retained": "FRED DGS10/DGS3MO 1990..2026-10-01; a check of one H.15 release (2012-01-03) on 8 values is reported in PR #289 comment 6540961783 but its receipt is NOT retained in this repository, so it cannot be verified from here",
+   "rights": {
+    "evidence": [],
+    "smallestMissingEvidence": "a retained, hashed copy of the Board reuse policy and the FRED API terms for the served series; the earlier check covered selected Board facts only",
+    "status": "PARTIAL_BOARD_POLICY_CITED_NOT_RETAINED_IN_REPO"
+   },
+   "role": "slow state spread (DGS10, DGS3MO via FRED, origin H.15)"
+  },
+  {
+   "input": "069500.KS (KODEX 200)",
+   "investability": {
+    "evidence": [],
+    "smallestMissingEvidence": "the actual investor tax treatment for 2012-2026 (the 15.4% rate is an unretained assumption) and the 26 payment dates",
+    "status": "NOT_VERIFIED"
+   },
+   "pitVintage": {
+    "evidence": [],
+    "smallestMissingEvidence": "26 official payment dates and 26 taxable bases (the issuer API serves the latest 20); until then the funded reading is a hypothetical 2-10 session scenario",
+    "status": "PARTIAL"
+   },
+   "retained": "issuer as-traded closes 3,612 sessions reconciled to the corrected index; 46 distributions (20 with official payment date); captured under a benchmark-audit authorisation label, which is not a licence",
+   "rights": {
+    "evidence": [],
+    "smallestMissingEvidence": "issuer (Samsung Asset Management) terms permitting research use and retention of the price and distribution files",
+    "status": "NOT_RETAINED"
+   },
+   "role": "traded asset, funded total return"
+  },
+  {
+   "input": "KRW cash",
+   "investability": {
+    "evidence": [],
+    "smallestMissingEvidence": "an owner-named investable KRW instrument or rate with a dated source; the BOK base rate is not one, and the registered ZERO cash is an opportunity-cost scenario only",
+    "status": "MISSING"
+   },
+   "pitVintage": {
+    "evidence": [],
+    "smallestMissingEvidence": "dated release evidence for the named series",
+    "status": "NOT_ESTABLISHED"
+   },
+   "retained": "BOK base-rate step function (non-investable proxy); retained ECOS evidence lists 9 macro series (base rate 722Y001/0101000, 3-year Treasuries and others) and none is an investable deposit, CD or bill return; REVISED_HISTORY, no release vintage",
+   "rights": {
+    "evidence": [],
+    "smallestMissingEvidence": "terms for whichever series the owner names",
+    "status": "NOT_RETAINED"
+   },
+   "role": "residual cash return of the funded-investor reading"
+  }
+ ],
+ "status": "SOURCE_BLOCKED",
+ "studyId": "market-research-c1c-economic-readiness-packet-v2",
+ "supersedes": {
+  "committedAt": "f5d0c51bee514fbba43cbf5a328ba185a4167fa8",
+  "packet": "market-research-c1c-economic-readiness-packet-v1",
+  "packetSha256": "329371a76369efdcaadd5aba2d323b5249b03b94db34ffc3bacc50edb46cff28",
+  "reason": "an independent review found that verify() derived the status from the packet's own prerequisites, so a forged READY packet with a recomputed digest passed; the data-read disclosure omitted the BOK and issuer dividend files; VERIFIED was a bare string with no evidence pointer. v1 was never consumed or approved."
+ },
+ "unapprovedThresholdsLeftNull": {
+  "actualCashReturnAdmission": null,
+  "actualPublicationAndVintageProof": null,
+  "economicTolerances": null,
+  "etfCorporateActionAndDistributionAdmission": null,
+  "executionPacket": null,
+  "firstEvaluationAndSupportRegistration": null,
+  "inferenceAndMultiplicityCalibration": null,
+  "sourceRights": null
+ }
+}

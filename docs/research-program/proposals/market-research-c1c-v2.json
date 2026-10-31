@@ -1,0 +1,162 @@
+{
+  "studyId": "rp1-c1c-prospective-design-v2",
+  "status": "PROPOSED_NOT_REGISTERED_NOT_AUTHORIZED",
+  "primaryControl": "C0",
+  "auxiliaryControl": "C1",
+  "selectControlFromResults": false,
+  "families": [
+    "C1c-REENTRY-SPEED-ORIGINAL-STRUCTURAL",
+    "POST_C1_RESULT_20_SESSION_BREAKOUT_SEPARATE"
+  ],
+  "arms": [
+    "BASE",
+    "HARD_EXIT",
+    "REENTRY",
+    "COMBINED"
+  ],
+  "horizons": [
+    126,
+    252
+  ],
+  "originalGrid": [
+    0.4,
+    0.7,
+    1.0
+  ],
+  "newHardExitInteractionGrid": [
+    0.0,
+    0.4,
+    0.7,
+    1.0
+  ],
+  "structuralContrast": "MEMORYLESS_VS_ONE_RUNG_WEEKLY_NOT_A_BREAKOUT",
+  "breakoutContrast": "POST_OUTCOME_SEPARATE_20_SESSION_PRICE_HYPOTHESIS",
+  "primaryReading": "C1_PRIMARY_REPLICA_DIAGNOSTIC_ONLY",
+  "investabilityRequires": "ETF_CASH_ECONOMIC_WITH_INDEPENDENT_SOURCE_ADMISSION",
+  "marketDisagreement": "NO_PROMOTION",
+  "basisDisagreement": "BASIS_DEPENDENT_NO_PROMOTION",
+  "pastEvidence": {
+    "KR": "OUTCOME_EXPOSED_DEVELOPMENT_ONLY",
+    "US": "OUTCOME_EXPOSED_EXPLORATORY"
+  },
+  "firstSignalNotBefore": "2026-10-30",
+  "minimumMaturedWeeklyDecisions": 52,
+  "proposedMinimumNonoverlappingBlocks": 8,
+  "supportStatus": "NEW_PROPOSED_FLOOR_NOT_POWER_GUARANTEE_OWNER_REVIEW_REQUIRED",
+  "inference": "NO_PVALUE_OR_SUPPORTED_VERDICT_WITHOUT_REGISTERED_CALIBRATION",
+  "descriptiveDecisionPolicy": {
+    "policyId": "C1C_V2_DESCRIPTIVE_SIGNS_PROPOSAL_V2",
+    "status": "PROPOSED_NOT_REGISTERED_NOT_AUTHORIZED",
+    "controlSelection": "C0_PRIMARY_C1_AUXILIARY_NEVER_RESULT_SELECTED",
+    "decisionMetrics": {
+      "netAnnualLogGrowth": 1,
+      "fundedMaxDrawdown": 1,
+      "dailyCvar95Loss": -1
+    },
+    "numericalEqualityTolerance": 1e-10,
+    "verdictWhenComplete": "DESCRIPTIVE_SIGN_ONLY",
+    "numericalRelations": [
+      "NONNEGATIVE_WITH_POSITIVE",
+      "NONPOSITIVE_WITH_NEGATIVE",
+      "MIXED_SIGNS",
+      "NUMERICALLY_EQUAL",
+      "DISAGREEING_FIXED_COMPARATORS"
+    ],
+    "economicMaterialityRegistered": false,
+    "economicTolerances": null,
+    "economicVerdict": null,
+    "inconclusive": "MISSING_INVALID_INCOMPLETE_UNMATURED_OR_UNEQUAL_COMPARISON_BASIS",
+    "fixedComparators": [
+      "SAME_FAMILY_C0_BASE",
+      "OWN_MEAN_INTERVAL_EXPOSURE_MATCHED_EX_POST_STATIC"
+    ],
+    "reentryComparisons": [
+      {
+        "family": "C1c-REENTRY-SPEED-ORIGINAL-STRUCTURAL",
+        "pairedComparisons": [
+          "REENTRY_MINUS_BASE",
+          "COMBINED_MINUS_HARD_EXIT"
+        ],
+        "mechanicalDirection": "NO_FASTER_THAN_MATCHED_MEMORYLESS_DESIRED_TARGET",
+        "desiredEconomicDirection": "NET_GROWTH_NOT_LOWER_AND_DOWNSIDE_RISK_NOT_WORSE",
+        "interpretation": "SLOWER_ONE_RUNG_REENTRY_MAY_AVOID_WHIPSAW_BUT_MISS_REBOUND"
+      },
+      {
+        "family": "POST_C1_RESULT_20_SESSION_BREAKOUT_SEPARATE",
+        "pairedComparisons": [
+          "REENTRY_MINUS_BASE",
+          "COMBINED_MINUS_HARD_EXIT"
+        ],
+        "mechanicalDirection": "FASTER_ONLY_WHEN_FAST_1_AND_STRICT_PRIOR_20_CLOSE_BREAKOUT",
+        "desiredEconomicDirection": "NET_GROWTH_NOT_LOWER_AND_DOWNSIDE_RISK_NOT_WORSE",
+        "interpretation": "POST_OUTCOME_NEW_PRICE_HYPOTHESIS_MAY_RECOVER_REBOUND_BUT_INCREASE_WHIPSAW"
+      }
+    ],
+    "returnInterpretation": "NET_GEOMETRIC_GROWTH_NOT_ARITHMETIC_SELECTION_ALPHA",
+    "tailRiskDefinition": "MAX_ZERO_NEGATIVE_MEAN_OF_WORST_CEIL_5_PERCENT_DAILY_NET_INTERVAL_RETURNS",
+    "tailEntryConvention": "FUNDED_ENTRY_IS_IN_CUMULATIVE_RETURN_AND_DRAWDOWN_NOT_A_TIME_INTERVAL",
+    "nonDecisionDiagnostics": [
+      "volatility",
+      "turnover",
+      "lossAvoidance",
+      "reboundOpportunityCost",
+      "arithmeticAttribution"
+    ],
+    "significanceOrPowerEstablished": false,
+    "minimumResearchSupportEstablished": false,
+    "ownerAuthorization": false,
+    "promotionAllowed": false
+  },
+  "economicExperimentProposal": {
+    "status": "NO_GO_UNREGISTERED_SOURCE_AND_ECONOMIC_DEPENDENCIES",
+    "market": "KR",
+    "benchmark": "069500.KS",
+    "currency": "KRW",
+    "primaryHorizonSessions": 126,
+    "secondaryHorizonSessions": 252,
+    "primaryContrast": "C0/C1c-REENTRY-SPEED-ORIGINAL-STRUCTURAL/REENTRY_MINUS_BASE",
+    "otherCells": "ALL_RETAINED_SECONDARY_DESCRIPTIVE_C1_AUXILIARY_BREAKOUT_SEPARATE_POST_OUTCOME_FAMILY",
+    "window": {
+      "start": "2012-01-02",
+      "end": "2026-09-14",
+      "meaning": "RETAINED_DATE_INTERSECTION_PROPOSAL_NOT_SOURCE_ADMISSION"
+    },
+    "sampleClass": "OUTCOME_EXPOSED_DEVELOPMENT_NOT_INDEPENDENT_OOS",
+    "calendar": "XKRX_FIXED_WEEK_ENDS_NEXT_SESSION_CLOSE",
+    "signalBasis": "FROZEN_KS200_DGS10_DGS3MO_VIX_RULES_WITH_VERIFIED_KNOWN_AT_REQUIRED",
+    "pairedBasisTargets": "SAME_SIGNAL_PRICE_AND_STATE_TARGETS_FOR_INDEX_DIAGNOSTIC_AND_ETF_VALUATION",
+    "signalFinality": "MAX_SESSION_CLOSE_PLUS_1H_AND_18_00_KST",
+    "horizonOrigin": "EXECUTION_CLOSE_POSITION_PLUS_H_SESSIONS",
+    "policyMemory": "CHRONOLOGICAL_PRE_WINDOW_STATE_NOT_RESET_USING_FUTURE_OUTCOMES",
+    "valuation": "FUNDED_ENTRY_AND_FINAL_LIQUIDATION_IDENTICAL_FOR_ALL_ARMS_AND_PASSIVE",
+    "costStress": [
+      1,
+      2,
+      3
+    ],
+    "buyCost": 0.00055,
+    "sellCost": 0.00055,
+    "staticControl": "OWN_REALIZED_MEAN_INTERVAL_EXPOSURE_MATCHED_EX_POST_NOT_TRADABLE_OR_BETA_MATCHED",
+    "missingness": "KEEP_FIXED_COHORT_DENOMINATORS_BLOCK_INCOMPLETE_ASSET_CASH_OR_TERMINAL_PATHS_NO_FILL",
+    "stateMissingness": "FROZEN_DOMAIN_COMPLETION_ELSE_PREVIOUS_TARGET_FIRST_UNDETERMINED_BLOCKED",
+    "metricUnits": {
+      "growth": "EXPM1_ANNUAL_LOG_GROWTH_THEN_CAGR_PP_DIFFERENCE",
+      "drawdown": "FUNDED_MDD_NEGATIVE_LEVEL_HIGHER_IS_BETTER",
+      "tail": "DAILY_CVAR95_NONNEGATIVE_LOSS_LOWER_IS_BETTER"
+    },
+    "economicTolerances": null,
+    "inferenceAndMultiplicityCalibration": null,
+    "sourceRights": null,
+    "actualPublicationAndVintageProof": null,
+    "etfCorporateActionAndDistributionAdmission": null,
+    "actualCashReturnAdmission": null,
+    "cashZeroMeaning": "OPPORTUNITY_COST_SCENARIO_ONLY_NOT_INVESTABLE_CASH",
+    "firstEvaluationAndSupportRegistration": null,
+    "executionPacket": null,
+    "historicalExecutionAuthorized": false
+  },
+  "krEconomicCash": "ZERO_RATE_OPPORTUNITY_COST_SCENARIO_NOT_ACTUAL_SHORT_RATE_OR_CASH_SOURCE_ADMISSION",
+  "historicalExecutionEnabled": false,
+  "liveWriterEnabled": false,
+  "productionAllowed": false
+}
