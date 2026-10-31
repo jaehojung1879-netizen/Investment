@@ -119,7 +119,7 @@
    },
    {
     "path": "pipeline/market_research_c1c_source_resolution.py",
-    "sha256": "2c162f0298f473cac067cfa0a7b2da1778f10ddbd90eb818ba0527d11aa8d8b9"
+    "sha256": "edcc155cc5282b357df15f12ec9ff82a81f9021bd5d0390d4ba3d713a0f31429"
    },
    {
     "path": "docs/research-program/proposals/market-research-c1c-v2.json",
@@ -187,7 +187,7 @@
   "TOTAL_RETURN: accept ex-date-close gross reinvestment as the funded ETF basis with the documented payment-timing bound, or require pay-date reinvestment (needs 26 further payment dates), and pre-tax versus after-tax",
   "CRITERIA: economic tolerances, inference and multiplicity, first evaluation and support, exact-hash execution packet"
  ],
- "packetSha256": "ac96b4c0531ee30ecd66bc4d88e7ed6fae44b359bcf49940da247b8c56c75cba",
+ "packetSha256": "75d806790c8f9b6d54660bc5b576cdee02b3f591245a66cd530d4360a125958f",
  "signConvention": "pp/yr per 10pp of mean ETF-weight gap; effect of registered -> funded/after-tax/interest-bearing basis on (more-exposed minus less-exposed arm); negative = the registered basis flatters the more-exposed arm",
  "smallestNextStep": "ONE owner action: obtain Samsung Asset Management's written permission for research use and retention of the KODEX 200 price and distribution data, or decide the research cannot use it. It gates both readings, because the corrected index is built from the issuer's closes. Cboe's permission for VIX and the KS200 upstream follow; the cash convention is a separate decision for reading F.",
  "sourceBlockers": [
