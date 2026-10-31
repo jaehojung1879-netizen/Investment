@@ -1,0 +1,76 @@
+{
+ "annualRowRegression_C2_on_069500": {
+  "2013_2024_EXCLUDING_2025_2026": {
+   "beta": 0.4683788854765946,
+   "betaSe": 0.09526093642043167,
+   "intercept": 6.5950176794286,
+   "interceptSe": 1.7280176504668001,
+   "jensenAlphaPpPerYear": 5.5462650236672095,
+   "n": 12,
+   "yearsWhereFittedBetaAloneAndInterceptPredictTheObservedWinLossSign": 11
+  },
+  "ALL_14_ROWS": {
+   "beta": 0.5822125153757142,
+   "betaSe": 0.07936348650628511,
+   "intercept": 6.09038857747074,
+   "interceptSe": 2.8740652514354497,
+   "jensenAlphaPpPerYear": 5.266200594575451,
+   "n": 14,
+   "yearsWhereFittedBetaAloneAndInterceptPredictTheObservedWinLossSign": 12
+  },
+  "INTERIOR_EXCLUDING_BOOKENDS": {
+   "beta": 0.694523357894683,
+   "betaSe": 0.07286637370272957,
+   "intercept": 5.8465369602857695,
+   "interceptSe": 2.381998525295536,
+   "jensenAlphaPpPerYear": 5.243909579753241,
+   "n": 12,
+   "yearsWhereFittedBetaAloneAndInterceptPredictTheObservedWinLossSign": 10
+  }
+ },
+ "auditId": "independent-audit-c2-beta-v1",
+ "c2StockLegBetaImplied": {
+  "averageEtfWeightPct": 40.59,
+  "stockLegBetaIfEtfBetaIsOne": 0.29677245476470987
+ },
+ "costStressUnderExposureAdjustment": {
+  "extraCostDragAt3xPpApprox": 3.304,
+  "jensenAlphaAfter3xApproxPp": {
+   "2013_2024_EXCLUDING_2025_2026": 2.2422650236672097,
+   "ALL_14_ROWS": 1.9622005945754508,
+   "INTERIOR_EXCLUDING_BOOKENDS": 1.9399095797532415
+  },
+  "published3xUnitBetaEdgeUpperPp": -1.470084,
+  "reading": "The -1.470pp bound is against a unit-beta 069500 path. Against the C2 book's own estimated exposure the 3x point estimate stays positive. The two readings use different, unregistered comparators; neither is a supported verdict."
+ },
+ "downYearReading": {
+  "downYears": 5,
+  "mechanicalExcessFromBetaAloneInDownYearsPp": [
+   2.75,
+   0.049,
+   7.236,
+   10.09,
+   3.916
+  ],
+  "publishedDownYearWins": 5,
+  "reading": "With beta < 1 a down benchmark year produces positive excess mechanically, (1 - beta) x |R_m|; the 5/5 down-year and 2/9 up-year counts are the signature of the exposure, not separate evidence of selection or timing."
+ },
+ "evidenceClass": "POST_OUTCOME_READ_ONLY_RE_READING_OF_PUBLISHED_AGGREGATES",
+ "limitations": [
+  "14 annual rows, two bookend partial years, 2025/2026 high leverage; no daily C2 path is published.",
+  "Arithmetic annual regression vs CAGR-based bounds: magnitudes are approximate and not additive.",
+  "The intercept cannot separate stock-specific selection from a defensive / low-beta factor premium.",
+  "Outcome-exposed history; no promotion, no rerun, no new path built."
+ ],
+ "publishedExposureBound": 0.761953,
+ "riskFreeProxy": {
+  "meanPctPerYear2013_2026": 1.972744548909782,
+  "series": "data/bok-policy-rates.json (BOK base rate, NOT an investable cash return)"
+ },
+ "source": {
+  "commit": "97aa2cfe2cabace05796f9179f2711cf83698d42",
+  "path": "research/c2_aggregate_evidence_v1/result-v2.json",
+  "pr": 286,
+  "sha256": "847aa910c9ea0bdcce3d930f80d4600942199e03f353afea8d2ef6bd26bbfee6"
+ }
+}
