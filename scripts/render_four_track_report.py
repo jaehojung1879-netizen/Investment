@@ -63,7 +63,7 @@ def main(argv=None):
             s = report['sources'][key]
             lines.append(f"- [{s['path']}](https://github.com/jaehojung1879-netizen/Investment/blob/{s['commit']}/{s['path']}) · commit `{s['commit']}` · SHA256 `{s['sha256']}` · {s['snapshotAt']} · {s['status']}")
     output.mkdir(parents=True, exist_ok=False)
-    (output / 'report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False)+'\n')
+    (output / 'report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False, sort_keys=True)+'\n')
     (output / 'report.md').write_text('\n'.join(lines)+'\n')
     html = '<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Investment — 네 연구 트랙</title><style>'
     html += (ROOT / 'styles.css').read_text()+'</style><body><main class="wrap"><section><h1>시장·산업·종목 — 네 연구 트랙</h1>'+'<p class="digest">보고서 코드 SHA '+report['codeIdentity']['gitSha']+' · 작업 트리 변경 '+str(report['codeIdentity']['workingTreeDirty'])+'</p>'+result['markup']+'</section></main></body></html>'
