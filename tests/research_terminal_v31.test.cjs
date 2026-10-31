@@ -163,6 +163,8 @@ test('archived C2 rationale renders recorded scores, factor components, actual s
   assert.match(html,/진입상태/);
   assert.match(html,/1\.5 : 1\.0 : 0\.5/);
   assert.match(html,/현재 목표 비중도 아닙니다/);
+  assert.match(html,/총 주식시장 노출은 100%/);
+  assert.match(html,/현금은 0%/);
   for(const h of d.holdings){
     const rank=d.selection.ranking.find(z=>z.ticker===h.ticker && z.selected);
     assert.ok(rank);
