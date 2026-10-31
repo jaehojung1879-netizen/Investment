@@ -22,14 +22,16 @@ import json
 from . import market_research_c1c_contract as CONTRACT
 from . import market_research_c1c_source_evidence as EVIDENCE
 
-STUDY = "market-research-c1c-economic-readiness-packet-v2"
+STUDY = "market-research-c1c-economic-readiness-packet-v3"
 ROOT = EVIDENCE.ROOT
-OUTPUT = ROOT / "docs" / "research-program" / "proposals" / "market-research-c1c-economic-readiness-packet-v2.json"
+OUTPUT = ROOT / "docs" / "research-program" / "proposals" / "market-research-c1c-economic-readiness-packet-v3.json"
 EVIDENCE_JSON = "docs/research-program/proposals/market-research-c1c-source-evidence-v1.json"
+RESOLUTION_JSON = "docs/research-program/proposals/market-research-c1c-source-resolution-v1.json"
 CODE_FILES = (
     "pipeline/market_research_c1c.py", "pipeline/market_research_c1c_contract.py", "pipeline/market_research_c1c_decisions.py",
     "pipeline/market_research_c1c_diagnostics.py", "pipeline/market_research_reentry_structure.py",
     "pipeline/market_research_c1c_source_evidence.py", "pipeline/market_research_c1c_xls_cells.py",
+    "pipeline/market_research_c1c_source_resolution.py",
     "docs/research-program/proposals/market-research-c1c-v2.json",
 )
 SIGNAL_INPUT_FILES = (  # the retained normalized series the frozen state rules read; a future run must re-pin its own inputs
@@ -39,11 +41,30 @@ SIGNAL_INPUT_FILES = (  # the retained normalized series the frozen state rules 
     "data/kr-market-risk-anatomy-v1/sources/FRED_DGS3MO/normalized.csv",
 )
 VERIFIED = "VERIFIED"
-SUPERSEDES = {"packet": "market-research-c1c-economic-readiness-packet-v1", "packetSha256":
-              "329371a76369efdcaadd5aba2d323b5249b03b94db34ffc3bacc50edb46cff28", "committedAt": "f5d0c51bee514fbba43cbf5a328ba185a4167fa8",
-              "reason": "an independent review found that verify() derived the status from the packet's own prerequisites, so a forged "
-                        "READY packet with a recomputed digest passed; the data-read disclosure omitted the BOK and issuer dividend files; "
-                        "VERIFIED was a bare string with no evidence pointer. v1 was never consumed or approved."}
+SUPERSEDES = {
+    "packet": "market-research-c1c-economic-readiness-packet-v2",
+    "packetSha256": "688a7f65a4b0602046739af672a9fa3d4acb467cc4d0e6030355b3bae439d747", "committedAt": "2cddd6a0eae4b746246393c1259d3dc6798756d1",
+    "reason": "adds the source-resolution evidence: the trust-deed payment rule bounds 24 of the 26 unresolved payment lags, the applicable source-use terms "
+              "were read for the five inputs, the issuer's retention restriction is reported, and the cash options are recorded. Several statuses are corrected "
+              "to what the terms say. The blocker count is unchanged. v2 was never consumed or approved.",
+    "earlierVersions": [{"packet": "market-research-c1c-economic-readiness-packet-v1",
+                         "packetSha256": "329371a76369efdcaadd5aba2d323b5249b03b94db34ffc3bacc50edb46cff28", "committedAt": "f5d0c51bee514fbba43cbf5a328ba185a4167fa8",
+                         "reason": "verify() derived the status from the packet's own prerequisites, so a forged READY packet with a recomputed digest passed"}]}
+# The 13 blockers of the previous packet, copied from its committed file, so the before/after comparison is computed and not asserted.
+PREVIOUS_BLOCKERS = (
+    "KS200 signal index:rights:NOT_RETAINED", "KS200 signal index:pitVintage:NOT_ESTABLISHED", "VIX:rights:NOT_RETAINED", "VIX:pitVintage:NOT_ESTABLISHED",
+    "Treasury 10y and 3m:rights:PARTIAL_BOARD_POLICY_CITED_NOT_RETAINED_IN_REPO", "Treasury 10y and 3m:pitVintage:NOT_ESTABLISHED",
+    "069500.KS (KODEX 200):rights:NOT_RETAINED", "069500.KS (KODEX 200):pitVintage:PARTIAL", "069500.KS (KODEX 200):investability:NOT_VERIFIED",
+    "KRW cash:rights:NOT_RETAINED", "KRW cash:pitVintage:NOT_ESTABLISHED", "KRW cash:investability:MISSING", "F_FUNDED_INVESTOR:BLOCKED")
+
+
+def blocker_comparison(blockers):
+    """Before/after by (input, dimension), computed from the lists: what was removed, what only changed its status, what is new."""
+    key = lambda b: b.rsplit(":", 1)[0]
+    before, after = {key(b): b for b in PREVIOUS_BLOCKERS}, {key(b): b for b in blockers}
+    return {"before": len(before), "after": len(after), "removed": sorted(set(before) - set(after)), "added": sorted(set(after) - set(before)),
+            "statusChanged": [{"blocker": k, "before": before[k].rsplit(":", 1)[1], "after": after[k].rsplit(":", 1)[1]}
+                              for k in sorted(set(before) & set(after)) if before[k] != after[k]]}
 
 
 def _identity(rel):
@@ -60,37 +81,50 @@ def _has_evidence(entry):
     return bool(items) and all(isinstance(i, dict) and i.get("path") and len(str(i.get("sha256", ""))) == 64 for i in items)
 
 
+def _has_owner_decision(entry):
+    """A RIGHTS entry is VERIFIED only with a recorded owner decision ({path, sha256}); an observation of the terms is never a grant."""
+    record = entry.get("ownerDecision")
+    return isinstance(record, dict) and bool(record.get("path")) and len(str(record.get("sha256", ""))) == 64
+
+
 def prerequisites():
     """Per fixed input: rights, PIT/vintage, investability. A retained checksum or an HTTP 200 is never a licence grant, so no
     entry reads VERIFIED unless an affirmative grant / dated publication evidence is retained in this repository."""
+    record = [_identity(RESOLUTION_JSON)]   # retained observations of the terms read; pointing at them is not a grant
     return [
         {"input": "KS200 signal index", "role": "FAST/regime state price series",
          "retained": "FinanceDataReader 0.9.110 route, KOSPI 200 price index levels 1990-01-03..2026-09-17, vintageClass "
                      "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY, the upstream provider behind the route is not recorded in the retained audit",
-         "rights": _need("NOT_RETAINED", "written terms from the index owner (KRX) or an authorised vendor permitting internal research use "
-                                         "and retention of daily KOSPI 200 closes, plus the upstream behind the FinanceDataReader route"),
+         "rights": _need("UPSTREAM_UNRECORDED_KRX_SITE_TERMS_RESTRICT_AUTOMATED_COLLECTION",
+                         "the upstream behind the FinanceDataReader route, and written terms from the index owner (KRX) or an authorised vendor permitting internal "
+                         "research use and retention of daily KOSPI 200 closes; the KRX site terms prohibit copying and automated collection without prior permission", record),
          "pitVintage": _need("NOT_ESTABLISHED", "a dated publication/finality statement for closing index levels, or contemporaneous captures"),
          "investability": _need("NOT_APPLICABLE_SIGNAL_ONLY", "none; a signal series is not traded")},
         {"input": "VIX", "role": "transition state (VIXCLS via FRED)",
          "retained": "FRED VIXCLS 1990..2026-10-01; series note: Cboe copyright 'reprinted with permission'",
-         "rights": _need("NOT_RETAINED", "Cboe/FRED terms permitting research use and retention of VIX values (the FRED terms page could not be "
-                                         "retrieved reliably; the reprint notice is not a downstream grant)"),
+         "rights": _need("THIRD_PARTY_OWNER_PERMISSION_REQUIRED_BY_FRED_TERMS",
+                         "Cboe's written permission for research use and retention of VIX values: FRED's terms say third-party series (notes containing 'Copyright', "
+                         "which VIXCLS's do) need the data owner's permission beyond personal use and that FRED cannot grant it", record),
          "pitVintage": _need("NOT_ESTABLISHED", "vintage coverage for VIXCLS or a documented, tested justification of the frozen 4-calendar-day lag"),
          "investability": _need("NOT_APPLICABLE_SIGNAL_ONLY", "none; a signal series is not traded")},
         {"input": "Treasury 10y and 3m", "role": "slow state spread (DGS10, DGS3MO via FRED, origin H.15)",
          "retained": "FRED DGS10/DGS3MO 1990..2026-10-01; a check of one H.15 release (2012-01-03) on 8 values is reported in PR #289 comment "
                      "6540961783 but its receipt is NOT retained in this repository, so it cannot be verified from here",
-         "rights": _need("PARTIAL_BOARD_POLICY_CITED_NOT_RETAINED_IN_REPO", "a retained, hashed copy of the Board reuse policy and the FRED API terms "
-                                                                           "for the served series; the earlier check covered selected Board facts only"),
+         "rights": _need("PARTIAL_PUBLISHER_PUBLIC_DOMAIN_STATEMENT_RECORDED_FRED_TERMS_BYTES_NOT_RETAINED",
+                         "the Board statement (public domain unless otherwise indicated, cite the Board) is recorded with its page hash and the series notes carry no "
+                         "'Copyright' marker; the FRED API terms bytes are not retained (the host refuses this environment) and the owner has not recorded a decision", record),
          "pitVintage": _need("NOT_ESTABLISHED", "availability at decision time was UNKNOWN for the one release checked (PDF 2012-01-03 vs HTTP "
                                                 "Last-Modified 2012-01-09); needs vintage coverage or a published revision statement for 2012-2026"),
          "investability": _need("NOT_APPLICABLE_SIGNAL_ONLY", "none; a signal series is not traded")},
         {"input": "069500.KS (KODEX 200)", "role": "traded asset, funded total return",
          "retained": "issuer as-traded closes 3,612 sessions reconciled to the corrected index; 46 distributions (20 with official payment date); "
                      "captured under a benchmark-audit authorisation label, which is not a licence",
-         "rights": _need("NOT_RETAINED", "issuer (Samsung Asset Management) terms permitting research use and retention of the price and distribution files"),
-         "pitVintage": _need("PARTIAL", "26 official payment dates and 26 taxable bases (the issuer API serves the latest 20); until then the funded "
-                                        "reading is a hypothetical 2-10 session scenario"),
+         "rights": _need("EXPLICITLY_RESTRICTED_WITHOUT_PRIOR_PERMISSION",
+                         "the issuer's written permission for research use and retention of the price and distribution files: the KODEX site states that using or "
+                         "databasing its data without prior permission may carry civil and criminal liability, and the repository retains such files", record),
+         "pitVintage": _need("PARTIAL_RULE_BOUNDED_26_EXACT_DATES_AND_TAXABLE_BASES_UNRESOLVED",
+                             "an official per-event document (the exchange disclosure) with the exact payment date and taxable base for each of the 26 events; the trust "
+                             "deed's payment rule bounds the lag for 24 of them (2 are record-date-rule only); the issuer endpoints serve a recent window only", record),
          "investability": _need("NOT_VERIFIED", "the actual investor tax treatment for 2012-2026 (the 15.4% rate is an unretained assumption) "
                                                 "and the 26 payment dates")},
         {"input": "KRW cash", "role": "residual cash return of the funded-investor reading",
@@ -99,7 +133,8 @@ def prerequisites():
          "rights": _need("NOT_RETAINED", "terms for whichever series the owner names"),
          "pitVintage": _need("NOT_ESTABLISHED", "dated release evidence for the named series"),
          "investability": _need("MISSING", "an owner-named investable KRW instrument or rate with a dated source; the BOK base rate is not one, and "
-                                           "the registered ZERO cash is an opportunity-cost scenario only")},
+                                           "the registered ZERO cash is an opportunity-cost scenario only; a listed bond ETF would need the same per-event "
+                                           "distribution evidence this packet cannot yet obtain", record)},
     ]
 
 
@@ -111,13 +146,15 @@ def accounting_readings(evidence):
             "status": "DESCRIPTIVE_SCENARIO_NOT_A_FUNDED_INVESTOR_RESULT",
             "basis": "gross corrected 069500 index, distributions reinvested at the ex-date close, ZERO cash, registered 5.5bp costs at 1x/2x/3x",
             "constructibleFromRetainedBytes": True, "admitted": False,
-            "why": "every input is retained, but no right, vintage or investability evidence is VERIFIED, so it cannot run"},
+            "why": "every input is retained, but no right, vintage or investability evidence is VERIFIED, so it cannot run; the corrected index is built from the "
+                   "issuer's as-traded closes, so the issuer's retention restriction applies to this reading as well"},
         "F_FUNDED_INVESTOR": {
             "status": "BLOCKED",
             "requires": [f"{distributions['paymentDateUnresolved']} of {distributions['records']} official payment dates",
                          "taxable base for the earlier distributions and a verified 2012-2026 tax treatment (15.4% is an assumption)",
                          "an owner-named investable KRW cash series with dated evidence"],
-            "hypotheticalScenariosAreNotEvidence": "the 2-10 session mixed-lag range and the assumed tax rate are sensitivities, not historical coverage"},
+            "hypotheticalScenariosAreNotEvidence": "the mixed-lag range (rule-bounded 2-9 sessions for 24 events, hypothetical 2-10 for 2) and the assumed tax rate are "
+                                                   "sensitivities, not certified payment dates or a verified tax treatment"},
         "separation": "R and F are reported side by side in any future run and never substituted for each other",
     }
 
@@ -130,6 +167,8 @@ def readiness_status(prereqs, readings):
             state = item[dimension]["status"]
             if state == VERIFIED and not _has_evidence(item[dimension]):
                 blockers.append(f"{item['input']}:{dimension}:VERIFIED_WITHOUT_RETAINED_EVIDENCE")
+            elif state == VERIFIED and dimension == "rights" and not _has_owner_decision(item[dimension]):
+                blockers.append(f"{item['input']}:{dimension}:VERIFIED_WITHOUT_OWNER_DECISION_RECORD")
             elif state not in (VERIFIED, "NOT_APPLICABLE_SIGNAL_ONLY"):
                 blockers.append(f"{item['input']}:{dimension}:{state}")
     if readings["F_FUNDED_INVESTOR"]["status"] != "CONSTRUCTIBLE_AND_VERIFIED":
@@ -157,10 +196,11 @@ def build():
         "identities": {
             "registeredContractSha256": CONTRACT.contract_digest(), "implementationDigest": CONTRACT.implementation_digest(),
             "codeAndProposalFiles": [_identity(p) for p in CODE_FILES],
-            "sourceEvidenceJson": _identity(EVIDENCE_JSON),
+            "sourceEvidenceJson": _identity(EVIDENCE_JSON), "sourceResolutionJson": _identity(RESOLUTION_JSON),
             "sourceEvidenceInputs": [{"path": p, "sha256": d} for p, d in sorted(EVIDENCE.PINS.items())],
             "signalInputFiles": [_identity(p) for p in SIGNAL_INPUT_FILES],
             "checkMarketResearchProtectedFiles": 94},
+        "blockerComparison": blocker_comparison(blockers),
         "accountingReadings": readings,
         "sourcePrerequisites": prereqs,
         "ownerDecisionsUnresolved": list(EVIDENCE.OWNER_DECISIONS),
@@ -172,12 +212,15 @@ def build():
                                    "strategy path; history is outcome-exposed",
             "ratesAndCashAmountsRead": "data/bok-policy-rates.json (cash-proxy mean rate) and the issuer dividend JSON and spreadsheet (record and "
                                        "payment dates, cash amounts, taxable bases): rates and cash amounts, not returns",
+            "officialPagesAndDocumentsRead": "the issuer's own site scripts, its product-document and distribution endpoints, its fund-disclosure board and 12 trust-deed "
+                                             "amendment notices, the KRX data-site terms, the Board disclaimer, the Cboe market-data policy and the FRED API terms; the "
+                                             "downloaded PDFs are not committed (issuer retention restriction), only identities and short quotes",
             "notCoveredByTheProtectedFileCounter": "check_market_research.py realNumericValueReads does not cover these modules; this field is the record",
             "claim": "no unregistered strategy return was read; benchmark price relatives and the files above were read for accounting sensitivities only"},
         "signConvention": evidence["approximateAccounting"]["contrastPer10ppExposureGap"]["unit"],
-        "smallestNextStep": "ONE owner decision record, bound to this packet's digest, that (a) states the research-use and retention decision for "
-                            "KS200, VIX/FRED, H.15 and the KODEX files and (b) names the KRW cash convention (the registered ZERO scenario, or a specific "
-                            "investable series). Without (a) not even reading R may run; (b) fixes the cash leg of F.",
+        "smallestNextStep": "ONE owner action: obtain Samsung Asset Management's written permission for research use and retention of the KODEX 200 price and "
+                            "distribution data, or decide the research cannot use it. It gates both readings, because the corrected index is built from the issuer's closes. "
+                            "Cboe's permission for VIX and the KS200 upstream follow; the cash convention is a separate decision for reading F.",
     }
     packet["packetSha256"] = hashlib.sha256(canonical({k: v for k, v in packet.items() if k != "packetSha256"}).encode()).hexdigest()
     return packet
@@ -200,6 +243,8 @@ def verify(packet):
                 problems.append("FILE_CHANGED:" + item["path"])
     if EVIDENCE.sha256(ROOT / ident["sourceEvidenceJson"]["path"]) != ident["sourceEvidenceJson"]["sha256"]:
         problems.append("SOURCE_EVIDENCE_CHANGED")
+    if EVIDENCE.sha256(ROOT / ident["sourceResolutionJson"]["path"]) != ident["sourceResolutionJson"]["sha256"]:
+        problems.append("SOURCE_RESOLUTION_CHANGED")
     for item in ident["sourceEvidenceInputs"]:
         if EVIDENCE.sha256(ROOT / item["path"]) != item["sha256"]:
             problems.append("INPUT_CHANGED:" + item["path"])

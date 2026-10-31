@@ -74,12 +74,50 @@ def test_verified_without_retained_evidence_does_not_count():
     assert P.readiness_status(prereqs, readings)[0] == "SOURCE_BLOCKED"
 
 
-def test_the_superseded_v1_packet_is_recorded_and_no_longer_present():
+def test_the_superseded_versions_are_recorded_and_no_longer_present():
     packet = _committed()
-    assert packet["supersedes"]["packet"].endswith("-v1") and len(packet["supersedes"]["packetSha256"]) == 64
-    assert "forged" in packet["supersedes"]["reason"] and "never consumed" in packet["supersedes"]["reason"]
-    assert not (P.OUTPUT.parent / "market-research-c1c-economic-readiness-packet-v1.json").exists()
-    assert packet["studyId"].endswith("-v2")
+    assert packet["supersedes"]["packet"].endswith("-v2") and len(packet["supersedes"]["packetSha256"]) == 64
+    assert packet["supersedes"]["earlierVersions"][0]["packet"].endswith("-v1")
+    assert "never consumed" in packet["supersedes"]["reason"] and "blocker count is unchanged" in packet["supersedes"]["reason"]
+    for old in ("v1", "v2"):
+        assert not (P.OUTPUT.parent / f"market-research-c1c-economic-readiness-packet-{old}.json").exists()
+    assert packet["studyId"].endswith("-v3")
+
+
+def test_the_blocker_comparison_is_computed_from_the_lists_and_shows_no_removed_blocker():
+    cmp = _committed()["blockerComparison"]
+    assert (cmp["before"], cmp["after"]) == (13, 13) and cmp["removed"] == [] and cmp["added"] == []
+    assert len(P.PREVIOUS_BLOCKERS) == 13
+    changed = {c["blocker"] for c in cmp["statusChanged"]}
+    assert changed == {"069500.KS (KODEX 200):pitVintage", "069500.KS (KODEX 200):rights", "KS200 signal index:rights",
+                       "Treasury 10y and 3m:rights", "VIX:rights"}
+    assert cmp == P.blocker_comparison(_committed()["sourceBlockers"])
+    # a removed blocker would have to show up as removed
+    assert P.blocker_comparison([b for b in _committed()["sourceBlockers"] if not b.startswith("VIX:rights")])["removed"] == ["VIX:rights"]
+
+
+def test_a_rights_entry_cannot_become_verified_without_a_recorded_owner_decision():
+    prereqs, readings = _all_verified()
+    assert P.readiness_status(prereqs, readings)[0] == "READY_FOR_OWNER_SCOPE_REVIEW"
+    for index in range(5):
+        trial = copy.deepcopy(prereqs)
+        del trial[index]["rights"]["ownerDecision"]
+        status, blockers = P.readiness_status(trial, readings)
+        assert status == "SOURCE_BLOCKED" and blockers == [f"{trial[index]['input']}:rights:VERIFIED_WITHOUT_OWNER_DECISION_RECORD"]
+    trial = copy.deepcopy(prereqs)
+    trial[3]["rights"]["ownerDecision"] = {"path": "x", "sha256": "short"}
+    assert P.readiness_status(trial, readings)[0] == "SOURCE_BLOCKED"
+
+
+def test_the_restricted_and_third_party_rights_statuses_come_from_the_resolution_record_and_are_not_grants():
+    by_input = {i["input"]: i["rights"] for i in _committed()["sourcePrerequisites"]}
+    assert by_input["069500.KS (KODEX 200)"]["status"] == "EXPLICITLY_RESTRICTED_WITHOUT_PRIOR_PERMISSION"
+    assert by_input["VIX"]["status"].startswith("THIRD_PARTY_OWNER_PERMISSION_REQUIRED")
+    assert by_input["KS200 signal index"]["status"].startswith("UPSTREAM_UNRECORDED")
+    assert by_input["Treasury 10y and 3m"]["status"].startswith("PARTIAL_PUBLISHER_PUBLIC_DOMAIN")
+    assert all(v["status"] != P.VERIFIED for v in by_input.values())
+    resolution = _committed()["identities"]["sourceResolutionJson"]
+    assert by_input["069500.KS (KODEX 200)"]["evidence"] == [resolution]
 
 
 def test_disclosure_names_every_file_family_read():
@@ -112,6 +150,8 @@ def test_ready_is_reachable_only_when_every_source_prerequisite_is_verified():
             if item[dimension]["status"] != "NOT_APPLICABLE_SIGNAL_ONLY":
                 item[dimension]["status"] = P.VERIFIED
                 item[dimension]["evidence"] = [{"path": "retained/evidence.json", "sha256": "b" * 64}]
+                if dimension == "rights":
+                    item[dimension]["ownerDecision"] = {"path": "owner/decision.json", "sha256": "d" * 64}
     assert P.readiness_status(prereqs, readings)[0] == "SOURCE_BLOCKED"       # the funded-investor reading is still blocked
     readings["F_FUNDED_INVESTOR"]["status"] = "CONSTRUCTIBLE_AND_VERIFIED"
     assert P.readiness_status(prereqs, readings) == ("READY_FOR_OWNER_SCOPE_REVIEW", [])
@@ -127,6 +167,8 @@ def _all_verified():
             if item[dimension]["status"] != "NOT_APPLICABLE_SIGNAL_ONLY":
                 item[dimension]["status"] = P.VERIFIED
                 item[dimension]["evidence"] = [{"path": "retained/evidence.json", "sha256": "b" * 64}]
+                if dimension == "rights":
+                    item[dimension]["ownerDecision"] = {"path": "owner/decision.json", "sha256": "d" * 64}
     readings = copy.deepcopy(_committed()["accountingReadings"])
     readings["F_FUNDED_INVESTOR"]["status"] = "CONSTRUCTIBLE_AND_VERIFIED"
     return prereqs, readings

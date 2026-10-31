@@ -1,0 +1,650 @@
+{
+ "cashOptions": {
+  "A_REGISTERED_ZERO": {
+   "status": "OPPORTUNITY_COST_SCENARIO_NOT_INVESTABLE",
+   "usableFor": "reading R only (never the funded-investor reading)"
+  },
+  "B_LISTED_KRW_SHORT_BOND_OR_MONEY_MARKET_ETF": {
+   "evidenceNeededFromOwner": "a named instrument, its issuer terms for research use, and its per-event distribution disclosures",
+   "status": "INVESTABLE_IN_PRINCIPLE_HISTORY_NOT_BUILDABLE_FROM_RETAINED_OR_ISSUER_SOURCES",
+   "why": "its total return needs as-traded closes AND every distribution with payment dates and taxable bases, the same evidence gap as the 26 events; the issuer's own endpoints serve only a recent window (KODEX 200: 20 records from 2021-10; the document library's per-product distribution list ranges 0 to 23 entries across the 20 products on its first page and is identical for every reference date tested); the exchange disclosures are behind KRX sites whose terms prohibit automated collection"
+  },
+  "C_BANK_DEPOSIT_CMA_RP": {
+   "evidenceNeededFromOwner": "account statements or a rights-cleared published series",
+   "status": "NO_DATED_FREE_HISTORICAL_SERIES_RETAINED_OR_IDENTIFIED"
+  },
+  "D_BOK_BASE_RATE": {
+   "status": "NON_INVESTABLE_PROXY_BRACKET_ONLY",
+   "usableFor": "an upper-side sensitivity, never relabelled as the investor's cash"
+  },
+  "funded_investor_reading": "BLOCKED until B or C is named and its evidence is retained; no return is fabricated",
+  "ownerDecision": "name the cash convention for reading F (B, C, or accept that F stays blocked), separately from reading R",
+  "retainedEcosEvidence": "base rate 722Y001/0101000 and 3-year Treasuries among 9 macro series; none is an investable deposit, CD or bill return"
+ },
+ "events": {
+  "officialPaymentDates": 20,
+  "partialRecordRuleOnly": 2,
+  "partialRuleBounded": 24,
+  "population": 46,
+  "recordDatesMatchingTheDeedRule": 46,
+  "table": [
+   {
+    "cashKrwPerRetainedUnit": 310.0,
+    "exDate": "2012-04-27",
+    "originalSourceNeeded": "exchange (KRX) disclosure of the distribution, filed no later than 3 business days before the record date",
+    "paymentDate": "UNRESOLVED",
+    "paymentLagBasis": "HYPOTHETICAL_SCENARIO_RULE_NOT_READ_FOR_THIS_VERSION",
+    "paymentLagSessionsAfterEx": [
+     2,
+     10
+    ],
+    "recordDate": "2012-04-30",
+    "recordDateRuleHolds": true,
+    "status": "PARTIAL_RECORD_RULE_ONLY",
+    "taxableBasePerUnit": "UNRESOLVED"
+   },
+   {
+    "cashKrwPerRetainedUnit": 20.0,
+    "exDate": "2012-07-30",
+    "originalSourceNeeded": "exchange (KRX) disclosure of the distribution, filed no later than 3 business days before the record date",
+    "paymentDate": "UNRESOLVED",
+    "paymentLagBasis": "HYPOTHETICAL_SCENARIO_RULE_NOT_READ_FOR_THIS_VERSION",
+    "paymentLagSessionsAfterEx": [
+     2,
+     10
+    ],
+    "recordDate": "2012-07-31",
+    "recordDateRuleHolds": true,
+    "status": "PARTIAL_RECORD_RULE_ONLY",
+    "taxableBasePerUnit": "UNRESOLVED"
+   },
+   {
+    "cashKrwPerRetainedUnit": 198.0,
+    "exDate": "2013-04-29",
+    "originalSourceNeeded": "exchange (KRX) disclosure of the distribution, filed no later than 3 business days before the record date",
+    "paymentDate": "UNRESOLVED",
+    "paymentLagBasis": "TRUST_DEED_RULE_FROM_COMPLETE_AMENDMENT_NOTICE_CHAIN",
+    "paymentLagSessionsAfterEx": [
+     2,
+     9
+    ],
+    "recordDate": "2013-04-30",
+    "recordDateRuleHolds": true,
+    "status": "PARTIAL_RULE_BOUNDED",
+    "taxableBasePerUnit": "UNRESOLVED"
+   },
+   {
+    "cashKrwPerRetainedUnit": 30.0,
+    "exDate": "2013-07-30",
+    "originalSourceNeeded": "exchange (KRX) disclosure of the distribution, filed no later than 3 business days before the record date",
+    "paymentDate": "UNRESOLVED",
+    "paymentLagBasis": "TRUST_DEED_RULE_FROM_COMPLETE_AMENDMENT_NOTICE_CHAIN",
+    "paymentLagSessionsAfterEx": [
+     2,
+     9
+    ],
+    "recordDate": "2013-07-31",
+    "recordDateRuleHolds": true,
+    "status": "PARTIAL_RULE_BOUNDED",
+    "taxableBasePerUnit": "UNRESOLVED"
+   },
+   {
+    "cashKrwPerRetainedUnit": 235.0,
+    "exDate": "2014-04-29",
+    "originalSourceNeeded": "exchange (KRX) disclosure of the distribution, filed no later than 3 business days before the record date",
+    "paymentDate": "UNRESOLVED",
+    "paymentLagBasis": "TRUST_DEED_RULE_FROM_COMPLETE_AMENDMENT_NOTICE_CHAIN",
+    "paymentLagSessionsAfterEx": [
+     2,
+     9
+    ],
+    "recordDate": "2014-04-30",
+    "recordDateRuleHolds": true,
+    "status": "PARTIAL_RULE_BOUNDED",
+    "taxableBasePerUnit": "UNRESOLVED"
+   },
+   {
+    "cashKrwPerRetainedUnit": 9.0,
+    "exDate": "2014-07-30",
+    "originalSourceNeeded": "exchange (KRX) disclosure of the distribution, filed no later than 3 business days before the record date",
+    "paymentDate": "UNRESOLVED",
+    "paymentLagBasis": "TRUST_DEED_RULE_FROM_COMPLETE_AMENDMENT_NOTICE_CHAIN",
+    "paymentLagSessionsAfterEx": [
+     2,
+     9
+    ],
+    "recordDate": "2014-07-31",
+    "recordDateRuleHolds": true,
+    "status": "PARTIAL_RULE_BOUNDED",
+    "taxableBasePerUnit": "UNRESOLVED"
+   },
+   {
+    "cashKrwPerRetainedUnit": 320.0,
+    "exDate": "2015-04-29",
+    "originalSourceNeeded": "exchange (KRX) disclosure of the distribution, filed no later than 3 business days before the record date",
+    "paymentDate": "UNRESOLVED",
+    "paymentLagBasis": "TRUST_DEED_RULE_FROM_COMPLETE_AMENDMENT_NOTICE_CHAIN",
+    "paymentLagSessionsAfterEx": [
+     2,
+     9
+    ],
+    "recordDate": "2015-04-30",
+    "recordDateRuleHolds": true,
+    "status": "PARTIAL_RULE_BOUNDED",
+    "taxableBasePerUnit": "UNRESOLVED"
+   },
+   {
+    "cashKrwPerRetainedUnit": 5.0,
+    "exDate": "2015-07-30",
+    "originalSourceNeeded": "exchange (KRX) disclosure of the distribution, filed no later than 3 business days before the record date",
+    "paymentDate": "UNRESOLVED",
+    "paymentLagBasis": "TRUST_DEED_RULE_FROM_COMPLETE_AMENDMENT_NOTICE_CHAIN",
+    "paymentLagSessionsAfterEx": [
+     2,
+     9
+    ],
+    "recordDate": "2015-07-31",
+    "recordDateRuleHolds": true,
+    "status": "PARTIAL_RULE_BOUNDED",
+    "taxableBasePerUnit": "UNRESOLVED"
+   },
+   {
+    "cashKrwPerRetainedUnit": 456.0,
+    "exDate": "2016-04-28",
+    "originalSourceNeeded": "exchange (KRX) disclosure of the distribution, filed no later than 3 business days before the record date",
+    "paymentDate": "UNRESOLVED",
+    "paymentLagBasis": "TRUST_DEED_RULE_FROM_COMPLETE_AMENDMENT_NOTICE_CHAIN",
+    "paymentLagSessionsAfterEx": [
+     2,
+     9
+    ],
+    "recordDate": "2016-04-29",
+    "recordDateRuleHolds": true,
+    "status": "PARTIAL_RULE_BOUNDED",
+    "taxableBasePerUnit": "UNRESOLVED"
+   },
+   {
+    "cashKrwPerRetainedUnit": 10.0,
+    "exDate": "2016-07-28",
+    "originalSourceNeeded": "exchange (KRX) disclosure of the distribution, filed no later than 3 business days before the record date",
+    "paymentDate": "UNRESOLVED",
+    "paymentLagBasis": "TRUST_DEED_RULE_FROM_COMPLETE_AMENDMENT_NOTICE_CHAIN",
+    "paymentLagSessionsAfterEx": [
+     2,
+     9
+    ],
+    "recordDate": "2016-07-29",
+    "recordDateRuleHolds": true,
+    "status": "PARTIAL_RULE_BOUNDED",
+    "taxableBasePerUnit": "UNRESOLVED"
+   },
+   {
+    "cashKrwPerRetainedUnit": 475.0,
+    "exDate": "2017-04-27",
+    "originalSourceNeeded": "exchange (KRX) disclosure of the distribution, filed no later than 3 business days before the record date",
+    "paymentDate": "UNRESOLVED",
+    "paymentLagBasis": "TRUST_DEED_RULE_FROM_COMPLETE_AMENDMENT_NOTICE_CHAIN",
+    "paymentLagSessionsAfterEx": [
+     2,
+     9
+    ],
+    "recordDate": "2017-04-28",
+    "recordDateRuleHolds": true,
+    "status": "PARTIAL_RULE_BOUNDED",
+    "taxableBasePerUnit": "UNRESOLVED"
+   },
+   {
+    "cashKrwPerRetainedUnit": 100.0,
+    "exDate": "2017-07-28",
+    "originalSourceNeeded": "exchange (KRX) disclosure of the distribution, filed no later than 3 business days before the record date",
+    "paymentDate": "UNRESOLVED",
+    "paymentLagBasis": "TRUST_DEED_RULE_FROM_COMPLETE_AMENDMENT_NOTICE_CHAIN",
+    "paymentLagSessionsAfterEx": [
+     2,
+     9
+    ],
+    "recordDate": "2017-07-31",
+    "recordDateRuleHolds": true,
+    "status": "PARTIAL_RULE_BOUNDED",
+    "taxableBasePerUnit": "UNRESOLVED"
+   },
+   {
+    "cashKrwPerRetainedUnit": 30.0,
+    "exDate": "2017-10-30",
+    "originalSourceNeeded": "exchange (KRX) disclosure of the distribution, filed no later than 3 business days before the record date",
+    "paymentDate": "UNRESOLVED",
+    "paymentLagBasis": "TRUST_DEED_RULE_FROM_COMPLETE_AMENDMENT_NOTICE_CHAIN",
+    "paymentLagSessionsAfterEx": [
+     2,
+     9
+    ],
+    "recordDate": "2017-10-31",
+    "recordDateRuleHolds": true,
+    "status": "PARTIAL_RULE_BOUNDED",
+    "taxableBasePerUnit": "UNRESOLVED"
+   },
+   {
+    "cashKrwPerRetainedUnit": 460.0,
+    "exDate": "2018-04-27",
+    "originalSourceNeeded": "exchange (KRX) disclosure of the distribution, filed no later than 3 business days before the record date",
+    "paymentDate": "UNRESOLVED",
+    "paymentLagBasis": "TRUST_DEED_RULE_FROM_COMPLETE_AMENDMENT_NOTICE_CHAIN",
+    "paymentLagSessionsAfterEx": [
+     2,
+     9
+    ],
+    "recordDate": "2018-04-30",
+    "recordDateRuleHolds": true,
+    "status": "PARTIAL_RULE_BOUNDED",
+    "taxableBasePerUnit": "UNRESOLVED"
+   },
+   {
+    "cashKrwPerRetainedUnit": 65.0,
+    "exDate": "2018-07-30",
+    "originalSourceNeeded": "exchange (KRX) disclosure of the distribution, filed no later than 3 business days before the record date",
+    "paymentDate": "UNRESOLVED",
+    "paymentLagBasis": "TRUST_DEED_RULE_FROM_COMPLETE_AMENDMENT_NOTICE_CHAIN",
+    "paymentLagSessionsAfterEx": [
+     2,
+     9
+    ],
+    "recordDate": "2018-07-31",
+    "recordDateRuleHolds": true,
+    "status": "PARTIAL_RULE_BOUNDED",
+    "taxableBasePerUnit": "UNRESOLVED"
+   },
+   {
+    "cashKrwPerRetainedUnit": 80.0,
+    "exDate": "2018-10-30",
+    "originalSourceNeeded": "exchange (KRX) disclosure of the distribution, filed no later than 3 business days before the record date",
+    "paymentDate": "UNRESOLVED",
+    "paymentLagBasis": "TRUST_DEED_RULE_FROM_COMPLETE_AMENDMENT_NOTICE_CHAIN",
+    "paymentLagSessionsAfterEx": [
+     2,
+     9
+    ],
+    "recordDate": "2018-10-31",
+    "recordDateRuleHolds": true,
+    "status": "PARTIAL_RULE_BOUNDED",
+    "taxableBasePerUnit": "UNRESOLVED"
+   },
+   {
+    "cashKrwPerRetainedUnit": 465.0,
+    "exDate": "2019-04-29",
+    "originalSourceNeeded": "exchange (KRX) disclosure of the distribution, filed no later than 3 business days before the record date",
+    "paymentDate": "UNRESOLVED",
+    "paymentLagBasis": "TRUST_DEED_RULE_FROM_COMPLETE_AMENDMENT_NOTICE_CHAIN",
+    "paymentLagSessionsAfterEx": [
+     2,
+     9
+    ],
+    "recordDate": "2019-04-30",
+    "recordDateRuleHolds": true,
+    "status": "PARTIAL_RULE_BOUNDED",
+    "taxableBasePerUnit": "UNRESOLVED"
+   },
+   {
+    "cashKrwPerRetainedUnit": 60.0,
+    "exDate": "2019-07-30",
+    "originalSourceNeeded": "exchange (KRX) disclosure of the distribution, filed no later than 3 business days before the record date",
+    "paymentDate": "UNRESOLVED",
+    "paymentLagBasis": "TRUST_DEED_RULE_FROM_COMPLETE_AMENDMENT_NOTICE_CHAIN",
+    "paymentLagSessionsAfterEx": [
+     2,
+     9
+    ],
+    "recordDate": "2019-07-31",
+    "recordDateRuleHolds": true,
+    "status": "PARTIAL_RULE_BOUNDED",
+    "taxableBasePerUnit": "UNRESOLVED"
+   },
+   {
+    "cashKrwPerRetainedUnit": 70.0,
+    "exDate": "2019-10-30",
+    "originalSourceNeeded": "exchange (KRX) disclosure of the distribution, filed no later than 3 business days before the record date",
+    "paymentDate": "UNRESOLVED",
+    "paymentLagBasis": "TRUST_DEED_RULE_FROM_COMPLETE_AMENDMENT_NOTICE_CHAIN",
+    "paymentLagSessionsAfterEx": [
+     2,
+     9
+    ],
+    "recordDate": "2019-10-31",
+    "recordDateRuleHolds": true,
+    "status": "PARTIAL_RULE_BOUNDED",
+    "taxableBasePerUnit": "UNRESOLVED"
+   },
+   {
+    "cashKrwPerRetainedUnit": 50.0,
+    "exDate": "2020-01-30",
+    "originalSourceNeeded": "exchange (KRX) disclosure of the distribution, filed no later than 3 business days before the record date",
+    "paymentDate": "UNRESOLVED",
+    "paymentLagBasis": "TRUST_DEED_RULE_FROM_COMPLETE_AMENDMENT_NOTICE_CHAIN",
+    "paymentLagSessionsAfterEx": [
+     2,
+     9
+    ],
+    "recordDate": "2020-01-31",
+    "recordDateRuleHolds": true,
+    "status": "PARTIAL_RULE_BOUNDED",
+    "taxableBasePerUnit": "UNRESOLVED"
+   },
+   {
+    "cashKrwPerRetainedUnit": 425.0,
+    "exDate": "2020-04-28",
+    "originalSourceNeeded": "exchange (KRX) disclosure of the distribution, filed no later than 3 business days before the record date",
+    "paymentDate": "UNRESOLVED",
+    "paymentLagBasis": "TRUST_DEED_RULE_FROM_COMPLETE_AMENDMENT_NOTICE_CHAIN",
+    "paymentLagSessionsAfterEx": [
+     2,
+     9
+    ],
+    "recordDate": "2020-04-29",
+    "recordDateRuleHolds": true,
+    "status": "PARTIAL_RULE_BOUNDED",
+    "taxableBasePerUnit": "UNRESOLVED"
+   },
+   {
+    "cashKrwPerRetainedUnit": 55.0,
+    "exDate": "2020-07-30",
+    "originalSourceNeeded": "exchange (KRX) disclosure of the distribution, filed no later than 3 business days before the record date",
+    "paymentDate": "UNRESOLVED",
+    "paymentLagBasis": "TRUST_DEED_RULE_FROM_COMPLETE_AMENDMENT_NOTICE_CHAIN",
+    "paymentLagSessionsAfterEx": [
+     2,
+     9
+    ],
+    "recordDate": "2020-07-31",
+    "recordDateRuleHolds": true,
+    "status": "PARTIAL_RULE_BOUNDED",
+    "taxableBasePerUnit": "UNRESOLVED"
+   },
+   {
+    "cashKrwPerRetainedUnit": 50.0,
+    "exDate": "2020-10-29",
+    "originalSourceNeeded": "exchange (KRX) disclosure of the distribution, filed no later than 3 business days before the record date",
+    "paymentDate": "UNRESOLVED",
+    "paymentLagBasis": "TRUST_DEED_RULE_FROM_COMPLETE_AMENDMENT_NOTICE_CHAIN",
+    "paymentLagSessionsAfterEx": [
+     2,
+     9
+    ],
+    "recordDate": "2020-10-30",
+    "recordDateRuleHolds": true,
+    "status": "PARTIAL_RULE_BOUNDED",
+    "taxableBasePerUnit": "UNRESOLVED"
+   },
+   {
+    "cashKrwPerRetainedUnit": 50.0,
+    "exDate": "2021-01-28",
+    "originalSourceNeeded": "exchange (KRX) disclosure of the distribution, filed no later than 3 business days before the record date",
+    "paymentDate": "UNRESOLVED",
+    "paymentLagBasis": "TRUST_DEED_RULE_FROM_COMPLETE_AMENDMENT_NOTICE_CHAIN",
+    "paymentLagSessionsAfterEx": [
+     2,
+     9
+    ],
+    "recordDate": "2021-01-29",
+    "recordDateRuleHolds": true,
+    "status": "PARTIAL_RULE_BOUNDED",
+    "taxableBasePerUnit": "UNRESOLVED"
+   },
+   {
+    "cashKrwPerRetainedUnit": 670.0,
+    "exDate": "2021-04-29",
+    "originalSourceNeeded": "exchange (KRX) disclosure of the distribution, filed no later than 3 business days before the record date",
+    "paymentDate": "UNRESOLVED",
+    "paymentLagBasis": "TRUST_DEED_RULE_FROM_COMPLETE_AMENDMENT_NOTICE_CHAIN",
+    "paymentLagSessionsAfterEx": [
+     2,
+     9
+    ],
+    "recordDate": "2021-04-30",
+    "recordDateRuleHolds": true,
+    "status": "PARTIAL_RULE_BOUNDED",
+    "taxableBasePerUnit": "UNRESOLVED"
+   },
+   {
+    "cashKrwPerRetainedUnit": 55.0,
+    "exDate": "2021-07-29",
+    "originalSourceNeeded": "exchange (KRX) disclosure of the distribution, filed no later than 3 business days before the record date",
+    "paymentDate": "UNRESOLVED",
+    "paymentLagBasis": "TRUST_DEED_RULE_FROM_COMPLETE_AMENDMENT_NOTICE_CHAIN",
+    "paymentLagSessionsAfterEx": [
+     2,
+     9
+    ],
+    "recordDate": "2021-07-30",
+    "recordDateRuleHolds": true,
+    "status": "PARTIAL_RULE_BOUNDED",
+    "taxableBasePerUnit": "UNRESOLVED"
+   }
+  ],
+  "unresolved": 26,
+  "unresolvedNoRule": 0,
+  "verifiedCount": 0
+ },
+ "evidenceClass": "OFFICIAL_SOURCE_OBSERVATIONS_AND_OFFLINE_CHECKS_NO_STRATEGY_RETURN",
+ "inputs": {
+  "data/bok-policy-rates.json": "a7edf0e532c7b54da9d962ebf12ff2552c90c783439fef99d7c761c5b9ea69ff",
+  "data/kr-market-risk-anatomy-v1/sources/FDR_KS200/normalized.csv": "729a94b81dd45d1c5d1ab2ff692ec249bd5c9c4f24598d648d7f88010f193478",
+  "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json": "58580c4370ec2c5afa124f849afbc4fa7b5c879012e75ebbd48ee7c7a0e659a9",
+  "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-dividends.json": "3f23e3a8ce9c34506e1316bc8b6263c85cfa78086c3725743e02a3d653eeb0df",
+  "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-dividends.xls": "7ed6c79dce2e4baaf9791311e489b7d5bb4294d8a6db34f7572b45110394bab1",
+  "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-standard.xls": "cbdd7a0ce340228ddcfc714de637c512f73c2d691d84ae59a28cfb406d8437b9",
+  "source-evidence": "bfc464f9a1aea50529f9529c59dce64e86f8a59f6c1a8e07d923fbd82cfb67a3"
+ },
+ "issuerEndpoints": {
+  "archivedProductSheets": "the retained annual sheets (2014-2022) list the record date (지급기준일) and amount, not the payment date",
+  "distributionEndpoint": {
+   "oldestRecord": "2021-10-29",
+   "parameters": "id only (read from the site's own script)",
+   "payDateAndTaxableBaseFields": true,
+   "records": 20,
+   "url": "https://www.samsungfund.com/api/v1/kodex/divid-info.do?id=2ETF01"
+  },
+  "documentLibraryEndpoint": {
+   "identicalAcrossReferenceDatesTested": [
+    "2014-03-31",
+    "2015-03-31",
+    "2016-03-31",
+    "2017-03-31",
+    "2018-03-30",
+    "2019-03-29",
+    "2020-03-31",
+    "2021-03-31",
+    "2022-03-31"
+   ],
+   "kodex200DistributionRecords": 12,
+   "note": "the reference date only changes which archived portfolio files are linked; it does not return older distributions",
+   "oldestRecord": "2024-01-31",
+   "url": "https://www.samsungfund.com/api/v1/kodex/product-document.do"
+  },
+  "fundDisclosureBoard": {
+   "finding": "carries trust-deed, prospectus and personnel amendments; no per-event distribution notice and no management report for KODEX 200",
+   "url": "https://www.samsungfund.com/etf/lounge/announcement.do?seq=1"
+  },
+  "kind": "kind.krx.co.kr answered HTTP 403 from this environment; its terms-of-use text prohibits automated collection without permission",
+  "outOfWindowObservation": {
+   "cashPerUnit": 136,
+   "note": "a distribution after the fixed study window (ends 2026-09-14); not added to the 46-event population",
+   "paymentDate": "2026-11-03",
+   "recordDate": "2026-10-30",
+   "taxableBasePerUnit": 136
+  },
+  "retrievedOn": "2026-10-31"
+ },
+ "remainingGap": "an official per-event document with the exact payment date and taxable base for each of the 26 events; the exchange disclosure is the identified source and sits behind KRX sites",
+ "rightsTerms": [
+  {
+   "input": "069500 issuer price and distribution files (KODEX)",
+   "note": "the retained issuer files were captured under an internal benchmark-audit authorisation label, which is not a licence from the issuer; the notice also says the index and yield information is supplied to the issuer by KOSCOM and the administrator",
+   "permissionDocumentRetained": false,
+   "redistribution": "EXPLICITLY_RESTRICTED_WITHOUT_PRIOR_PERMISSION",
+   "repositoryRetainsCoveredData": true,
+   "researchUse": "NOT_ADDRESSED_IN_THE_NOTICE_PRIOR_PERMISSION_REFERENCED",
+   "retention": "EXPLICITLY_RESTRICTED_WITHOUT_PRIOR_PERMISSION",
+   "term": {
+    "bytesSha256": "d6042e12c4ae76c5a407e8a61b516ad1f1253553b82e66adb16d8b61612f44e8",
+    "quote": "본 웹사이트의 자료를 사전 허가없이 무단으로 사용하거나 데이터베이스화 할 경우, 민형사상 법적 책임을 질 수 있습니다.",
+    "retrievedOn": "2026-10-31",
+    "url": "https://www.samsungfund.com/etf/main.do"
+   }
+  },
+  {
+   "input": "KS200 index levels",
+   "note": "these terms govern the KRX data site; the retained series came through FinanceDataReader 0.9.110 whose upstream provider is not recorded, so which terms apply to the retained bytes is unknown. Any automated collection from the KRX sites (including KIND disclosures) is prohibited without permission",
+   "redistribution": "EXPLICITLY_RESTRICTED_WITHOUT_PRIOR_PERMISSION_ON_THE_KRX_SITE",
+   "researchUse": "UNKNOWN",
+   "retention": "UNKNOWN_FOR_THE_RETAINED_ROUTE",
+   "term": {
+    "bytesSha256": "35882efb42891bbb22ea1b8b29fdbbe73737ee573a3cc3b823f860915ac41f69",
+    "quote": "이용자는 당 사이트의 정보를 거래소의 사전 허락 없이 복사·복제·배포·전송·공중송신하여서는 아니 됩니다. / 자동화 수단을 이용하여 정보를 무단 수집·복제·배포하는 행위",
+    "retrievedOn": "2026-10-31",
+    "url": "https://data.krx.co.kr/contents/MDC/INFO/informationController/MDCINFO003.cmd"
+   }
+  },
+  {
+   "input": "VIX (FRED VIXCLS)",
+   "note": "the FRED page text was read through a fetch tool and its bytes are NOT retained (the host refuses this environment's direct requests). A search summary mentioned a 2024 ban on caching FRED content; that sentence was NOT found in the page text read, so it is not relied on either way. The Cboe policy addresses Cboe's Data Recipients; whether a research user of FRED-served VIXCLS is one is not established",
+   "redistribution": "THIRD_PARTY_OWNER_PERMISSION_REQUIRED",
+   "researchUse": "THIRD_PARTY_OWNER_PERMISSION_REQUIRED_BEYOND_PERSONAL_USE",
+   "retainedSeriesNotesContainCopyright": true,
+   "retention": "NOT_ADDRESSED_FOR_DATA_IN_THE_PAGE_READ",
+   "secondTerm": {
+    "bytesSha256": "a2b9204b68740e6a4bd233569a42e66ea91a1fc4c50bc830e9440ed3a8082633",
+    "quote": "Data Recipients receiving Real-time or Delayed Data may store the data and subsequently use the Historical Data internally within their own organization, including Affiliates, for a fee when applicable. Before a firm can redistribute Historical Data to non-Affiliates, the firm must first sign a Data Agreement",
+    "retrievedOn": "2026-10-31",
+    "url": "https://cdn.cboe.com/resources/membership/Market_Data_Policies.pdf"
+   },
+   "term": {
+    "bytesSha256": null,
+    "quote": "Before using data series owned by third parties for anything other than your own personal use, you must contact the data owner to obtain permission. The Federal Reserve Bank of St. Louis cannot give you such permission and making the data series available through the FRED® API does not constitute such permission.",
+    "retrievedOn": "2026-10-31",
+    "url": "https://fred.stlouisfed.org/docs/api/terms_of_use.html"
+   }
+  },
+  {
+   "input": "Treasury 10y and 3m (FRED DGS10, DGS3MO; origin Board H.15)",
+   "note": "the statement covers information on the Board's own website unless otherwise indicated; the retained bytes came through the FRED API, whose terms bytes are not retained, and the series notes carry no 'Copyright' marker (FRED's own flag for third-party series). Credit to the Board is required. This is the strongest rights basis among the five inputs and is still not recorded as a grant",
+   "redistribution": "PUBLIC_DOMAIN_PER_PUBLISHER_STATEMENT_FOR_BOARD_PUBLISHED_INFORMATION",
+   "researchUse": "PUBLIC_DOMAIN_PER_PUBLISHER_STATEMENT_FOR_BOARD_PUBLISHED_INFORMATION",
+   "retainedSeriesNotesContainCopyright": {
+    "DGS10": false,
+    "DGS3MO": false
+   },
+   "retention": "PUBLIC_DOMAIN_PER_PUBLISHER_STATEMENT_FOR_BOARD_PUBLISHED_INFORMATION",
+   "term": {
+    "bytesSha256": "6fd9c6703a144d763e72ed70bc9378f7a855dbb1ad12c46197c3e3161b5d3e3e",
+    "quote": "Unless otherwise indicated, information on Board's website is in the public domain and may be copied and distributed without permission. Please cite to the Board as the source of the information.",
+    "retrievedOn": "2026-10-31",
+    "url": "https://www.federalreserve.gov/disclaimer.htm"
+   }
+  }
+ ],
+ "studyId": "market-research-c1c-source-resolution-v1",
+ "trustDeed": {
+  "amendmentNotices": [
+   {
+    "date": "2010-04-13",
+    "no": "12773",
+    "pages": 2,
+    "sha256": "d2b52ac9895cf33607aeea9cc19c769f1c58b1483791ec006e613f3001600b08"
+   },
+   {
+    "date": "2012-12-17",
+    "no": "27094",
+    "pages": 6,
+    "sha256": "6071de9b77e15ae11db5b39496b060d5a8795418bb1254f91ee83204a6ed35fc"
+   },
+   {
+    "date": "2013-02-25",
+    "no": "29110",
+    "pages": 1,
+    "sha256": "597e302034da3b235d5aaaf8562be646b6c47b1a9e5adac61693eb9e999e8835"
+   },
+   {
+    "date": "2013-05-02",
+    "no": "30727",
+    "pages": 2,
+    "sha256": "062491dcfa4bc2c4cbdb15367bed40e32c968603acf56510ec9788bd40f87658"
+   },
+   {
+    "date": "2014-02-10",
+    "no": "37998",
+    "pages": 7,
+    "sha256": "9d2a57f5332764a8ea94d5c5afd1aed9809d21867186caaa750704af7db00e59"
+   },
+   {
+    "date": "2015-01-16",
+    "no": "47561",
+    "pages": 2,
+    "sha256": "150eeb71d99647252ba6978ac664e8220b77b7c169fce2c5b6d11ab114af8bb7"
+   },
+   {
+    "date": "2016-02-04",
+    "no": "61960",
+    "pages": 2,
+    "sha256": "b4062592cdf41cbc40d3ce105f0156eff5f7920e73bddeb1b080a3a29e98f566"
+   },
+   {
+    "date": "2016-08-19",
+    "no": "75221",
+    "pages": 1,
+    "sha256": "903641809b4310f6f0b386f355e9fc03809e4b92de5f1c136686b477233d1960"
+   },
+   {
+    "date": "2016-09-30",
+    "no": "75207",
+    "pages": 1,
+    "sha256": "903641809b4310f6f0b386f355e9fc03809e4b92de5f1c136686b477233d1960"
+   },
+   {
+    "date": "2020-04-08",
+    "no": "168154",
+    "pages": 4,
+    "sha256": "2bf436bb0d44eb9ec0867b0ceddcc5ccb91a4b7e54391c98a657d0eb88cdbdb1"
+   },
+   {
+    "date": "2024-03-21",
+    "no": "222782",
+    "pages": 7,
+    "sha256": "b99550695b2f1d4677a3b97c234f0297c36fe2730b380137b6d06629ad805653"
+   },
+   {
+    "date": "2026-07-16",
+    "no": "243056",
+    "pages": 2,
+    "sha256": "548841b9f058a9c2976a4352a8ef4312ff90298c8a2d80591be0aa08ec04e297"
+   }
+  ],
+  "attachmentsAreNotVersionSpecific": "fileNo=2 of the 2024-03-21 and 2026-07-16 notices equals the current deed byte for byte",
+  "clause": {
+   "article": "신탁계약서 제41조의2 (before 2026-07-16: 제41조)",
+   "discretion": "지급할 수 있다 (distribution is permitted, not mandatory)",
+   "exchangeDisclosure": "투자신탁분배금의 지급기준일로부터 제3영업일전까지 구체적인 사항을 증권시장에 공시",
+   "paymentTiming": "지급시기: 지급기준일 익영업일로부터 제7영업일 이내",
+   "priorWording2012": "정정전 지급기준일: 1월, 4월, 7월, 10월 마지막일 및 회계기간 말일의 익영업일",
+   "recordDate": "지급기준일: 1월, 4월, 7월, 10월 마지막 영업일 및 회계기간 종료일 (종료일이 영업일이 아니면 직전 영업일)"
+  },
+  "currentDeedSha256": "6a9b4156e4f814d52b71969243519ea430300b5ab20325732fde99537994d72f",
+  "downloadPattern": "https://www.samsungfund.com/fund/download.do?fileNo=1&fileSeq=<no>",
+  "issuerBoard": "https://www.samsungfund.com/etf/lounge/announcement.do?seq=1 (category 약관, search KODEX200증권상장지수투자신탁[주식])",
+  "lagReading": "earliest = the business day after the record date (ex + 2); latest = the 7th business day counted from it (ex + 8 or ex + 9; the conservative reading is used)",
+  "retention": "the downloaded PDFs are NOT committed (issuer retention restriction); only identities and short clause quotes are recorded",
+  "ruleBoundedInterval": {
+   "boundOnAbsoluteEffectPpPerYear": 0.02308,
+   "knownFixedPpPerYear": -0.00819,
+   "signedInterval": {
+    "lowerPpPerYear": -0.02308,
+    "upperPpPerYear": 0.01524
+   },
+   "status": "CONDITIONAL_FIRST_ORDER_RULE_BOUNDED_NOT_CERTIFIED_PAYMENT_DATES",
+   "unit": "pp/yr per 100% ETF weight, funded minus registered (B - A)"
+  },
+  "ruleLagSessionsAfterEx": [
+   2,
+   9
+  ],
+  "ruleReadFrom": "2012-12-17"
+ }
+}
