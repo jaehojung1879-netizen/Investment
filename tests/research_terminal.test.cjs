@@ -272,11 +272,11 @@ test("every original chart point is preserved and no invented initial point exis
   assert.equal(points.length, s.weeklyNav.P0.length);
   assert.doesNotMatch(html, /data-chart-line="P1"/);
 });
-test("v3 has six sections with sourced context and no combined Kelly recommendation", () => {
+test("terminal retains six original sections plus the read-only four-track results section", () => {
   const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
   const app = fs.readFileSync(path.join(root, "app.js"), "utf8");
-  assert.equal((html.match(/<section /g) || []).length, 6);
-  for (const id of ["decision", "market", "performance", "institutional", "watchlist", "evidence"])
+  assert.equal((html.match(/<section /g) || []).length, 7);
+  for (const id of ["decision", "research-tracks", "market", "performance", "institutional", "watchlist", "evidence"])
     assert.ok(html.includes(`id="${id}"`));
   assert.doesNotMatch(
     app,

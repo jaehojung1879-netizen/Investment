@@ -894,6 +894,173 @@ async function loadResearchPublication(commit) {
   return {commit,latest:JSON.parse(decode(files[0])),publication:JSON.parse(decode(files[1])),receipts:await parseChampionReceipts(decode(files[2]))};
 }
 
+const RESEARCH_TRACK_SOURCES = Object.freeze(Object.fromEntries(Object.entries({
+  "kr": {
+    "commit": "ee0dcca0ec9b4c43c7bc9760dc00939f3b6a6b7f",
+    "path": "research/historical_alpha_discovery_v1/results/summary.json",
+    "sha256": "808634f4699289e8ca2fa81f334130937e91b2425581676daae97f48c8278ef0",
+    "snapshotAt": "2026-10-29T12:45:34Z",
+    "format": "json"
+  },
+  "us": {
+    "commit": "9a10baef600078c132b6942e83f72b587cf0c581",
+    "path": "docs/winner-inflection-discovery/blocker-review-v3/source-funnel-20261029.json",
+    "sha256": "04ab2ebf98bfa9c82d7ac64593a12211e528e6ecc216f149e5964977878ba7a3",
+    "snapshotAt": "2026-10-28T22:47:29Z",
+    "format": "json"
+  },
+  "market": {
+    "commit": "35e5413491bae87863bf0101cf1fdacfc49e5387",
+    "path": "docs/research-program/proposals/market-research-c1c-v2.json",
+    "sha256": "a9226c440896b9b8ae1bdc998c71b780ad3d369f330ba3162b43175f8e95c0b1",
+    "snapshotAt": "2026-10-30T23:21:18Z",
+    "format": "json"
+  },
+  "industry": {
+    "commit": "a9bbae495e3d7f11140a02df3a8b7dd3024afca9",
+    "path": "docs/results/kr-industry-opportunity-anatomy-v1-result.json",
+    "sha256": "71a960e3c19ce443d058508c4ec66576e3e5fcbd7a45dc851cf8b832bff62a08",
+    "snapshotAt": "2026-10-27T12:08:19Z",
+    "format": "json"
+  },
+  "terminal": {
+    "commit": "a9bbae495e3d7f11140a02df3a8b7dd3024afca9",
+    "path": "research/industry_alpha_next_v1/kr22-recovery.json",
+    "sha256": "27ff7820ceff625826617025c7cd02735716a5e3168d671b5988c32a00f37067",
+    "snapshotAt": "2026-10-27T12:08:19Z",
+    "format": "json"
+  },
+  "atlas": {
+    "commit": "a9bbae495e3d7f11140a02df3a8b7dd3024afca9",
+    "path": "docs/kr-alpha-research-final-development-assessment.md",
+    "sha256": "9c77f6e1ef18386f61a7d91b286c53e600a9beca57de83a9f75d33039a722714",
+    "snapshotAt": "2026-10-27T12:08:19Z",
+    "format": "markdown"
+  }
+}).map(([key,value]) => [key,Object.freeze(value)])));
+// Read-only projection of existing results. This code never calculates an
+// outcome, fits a model, nominates a stock or changes an investment allocation.
+function researchPointer(document, pointer) {
+  let value = document;
+  for (const part of pointer.split('/').slice(1)) {
+    const key = part.replace(/~1/g, '/').replace(/~0/g, '~');
+    if (value === null || typeof value !== 'object' || !Object.hasOwn(value, key)) return null;
+    value = value[key];
+  }
+  return value;
+}
+function researchMetric(docs, source, pointer, label, unit, scale = 1, pair = null) {
+  const raw = researchPointer(docs[source], pointer);
+  const value = Array.isArray(raw)
+    ? (raw.length === 2 && raw.every(finite) ? raw.map(v => v * scale) : null)
+    : finite(raw) ? raw * scale : null;
+  return {label, value, unit, source, pointer, rawValue: raw ?? null,
+    denominator: pair ? pair.map(p => researchPointer(docs[source], p)) : null,
+    denominatorPointers: pair};
+}
+function researchCount(docs, source, pointer, label, unit) {
+  const rows = researchPointer(docs[source], pointer);
+  return {label,value:Array.isArray(rows)?rows.length:null,unit,source,pointer,transform:'length',denominator:null};
+}
+// Projection-only helper; source authentication belongs to loadFourTrackReport.
+function fourTrackProjection(docs) {
+  const metric = (...args) => researchMetric(docs, ...args);
+  const pair = root => [root + '/validPairs', root + '/scheduledBlocks'];
+  const kr = '/intradayVsMomentum/17', etf = '/pairedComparisons/17';
+  const ind = '/analysis/FULL/', mom = 'REL_MOM_126|CAP_WEIGHTED|H126', ocf = 'MEDIAN_ocfYieldProxy|CAP_WEIGHTED|H126';
+  const c = docs.market || {}, proposal = c.economicExperimentProposal || {};
+  const cells = c.primaryControl === 'C0' && c.auxiliaryControl === 'C1' && Array.isArray(c.families) && c.families.length && Array.isArray(c.arms) && c.arms.length
+    ? 2 * c.families.length * c.arms.length : null;
+  return [
+    {id:'kr', pr:286, title:'한국 종목 Alpha', evidenceClass:'OBSERVED_HISTORICAL', researchStatus:'BLOCKED', benchmark:'069500.KS',
+      sources:['kr'], hypothesis:'장중 수익률 신호가 모멘텀과 ETF보다 향후 H126 순수익을 개선하는가?',
+      metrics:[metric('kr',kr+'/meanBlockExcess','H126 장중 − 모멘텀 유효쌍 평균','pp',100,pair(kr)),
+        metric('kr',kr+'/descriptiveYearBootstrap95','연도블록 기술 95% 구간','pp',100),
+        metric('kr',etf+'/meanBlockExcess','H126 장중 − ETF 유효쌍 평균','pp',100,pair(etf)),
+        metric('kr',etf+'/descriptiveYearBootstrap95','ETF 대비 기술 95% 구간','pp',100),
+        metric('kr','/portfolios/2/metrics/cagr','전체 장중 CAGR','%',100),
+        metric('kr','/portfolios/2/metrics/sharpeZeroRf','전체 장중 Sharpe','ratio'),
+        metric('kr','/portfolios/2/metrics/mdd','전체 장중 MDD','%',100),
+        metric('kr','/portfolios/53/metrics/cagr','별도 H252 OVERNIGHT CAGR','%',100),
+        metric('kr','/portfolios/50/metrics/cagr','같은 H252 ETF CAGR','%',100)],
+      context:'H126은 FULL·기본비용·결측 경로 차단 표본의 부분 유효쌍이다. 모멘텀 대비 차이는 ETF 알파가 아니다. H252는 별도 EVALUATION_2020_AFTER_EMBARGO 장부(2020-03-30~2026-06-01)이며 독립 OOS로 재명명하지 않는다.',
+      limitations:'두 H126 기술 구간은 0을 포함하며, 대조군마다 유효쌍 분모가 다르다. 중첩·결측 선택편향과 미해결 기업행동 때문에 전체 장중 NAV·CAGR·Sharpe·MDD는 미확정이다.',
+      blocker:'009830·012450 분할대가와 신주 연결, 006800의 과거 권리·가치 연결이 완결되지 않았다. 미확정 경제적 가치를 0 또는 보간으로 채우지 않는다.',
+      nextDecision:'정확한 권리 비율·교부/거래 가능일·종결/재연결 가격의 공식 증거를 먼저 확보한다. 기존 결과·가격 관례를 바꾸거나 NAV를 재실행하지 않는다.'},
+    {id:'us', pr:287, title:'미국 WID 종목 Alpha', evidenceClass:'UNVERIFIED_OR_BLOCKED', researchStatus:'BLOCKED', benchmark:'SPY · QQQ 보조',
+      sources:['us'], hypothesis:'수익성 전환·현금흐름 개선이 기존 수익성·모멘텀·규모를 넘는 H126 정보를 주는가?',
+      metrics:[metric('us','/filings/records','보존 공시 메타데이터','건'),metric('us','/filings/tickers','공시 ticker','개'),
+        metric('us','/filings/bothDatesFullyValid','공개·접수 날짜 유효','건'),researchCount(docs,'us','/filings/withheld','날짜 근거 보류','건'),metric('us','/fiscalShardReview/retained','회계연도 shard 검토 후 메타데이터','건'),
+        metric('us','/outcomeReads','정식 WID 결과 읽기','회'),metric('us','/modelFits','정식 WID 모델 적합','회'),
+        metric('us','/universeFunnel/admittedMemberDates','원천 승인 구성원-주','행')],
+      context:'날짜 유효성과 회계연도 shard 검토는 별개다. 추가 IPG 회계연도 신원 보류가 있으며 메타데이터 보존은 증권·재무사실의 연구 승인이 아니다.',
+      limitations:'역사 WID 알파·CAGR·승자 순위는 NOT TESTED / UNKNOWN이다. 원천 승인 0행은 경제적으로 적격인 종목이 0개라는 뜻이 아니다.',
+      blocker:'① 접근·이용·보존 권리 ② 당시 issuer/security/share-class·퇴출 신원 ③ 주식과 SPY의 배당·분할·종결 대가를 포함한 동등 총수익.',
+      nextDecision:'기존 고정 소표본에서 이 세 원천 관문을 증빙한다. 공개 URL·Git 보유·현재 CIK를 허가나 과거 증권 신원으로 대신하지 않는다.'},
+    {id:'market', pr:289, title:'Market C · 위험관리·재진입', evidenceClass:'SYNTHETIC_OR_DESIGN', researchStatus:'NOT TESTED', benchmark:'069500.KS · US SPY 별도',
+      sources:['market'], hypothesis:'C0 구조적 한 단계 재진입이 같은 기본 정책 대비 비용 후 하방 위험과 수익을 개선하는가?',
+      metrics:[{label:'고정 합성 정책 cells',value:cells,unit:'개',source:'market',pointer:'/primaryControl + /auxiliaryControl + /families + /arms',rawValue:cells,denominator:null},
+        metric('market','/economicExperimentProposal/primaryHorizonSessions','일차 지평','sessions'),
+        metric('market','/economicExperimentProposal/secondaryHorizonSessions','보조 지평','sessions'),
+        metric('market','/economicExperimentProposal/buyCost','KR ETF 매수비용 · 1×','bp',10000),
+        metric('market','/economicExperimentProposal/sellCost','KR ETF 매도비용 · 1×','bp',10000)],
+      context:'C0 일차·C1 보조. 원래 구조적 재진입과 결과 노출 후 20세션 돌파는 다른 가설이다. 다음 세션 종가, 같은 달력·진입/청산 비용, 1×/2×/3×, 실현 평균 노출을 맞춘 사후 정적 대조를 사용한다.',
+      limitations:'새 C1c 역사 경제성 결과는 없다. CAGR pp는 각 log-growth에 expm1 후 비교; MDD는 덜 음수, CVaR 손실은 작을수록 낫다. 합성 부호는 DESCRIPTIVE_SIGN_ONLY이며 타이밍 알파·검정력·경제적 개선 판정이 아니다.',
+      blocker:'실제 공개/빈티지·이용권, ETF 기업행동·분배, KRW 현금 수익 관문이 미해결이다. 배당락 총수익의 미수금을 지급 전 자유 현금으로 볼 수 없다. 역사 현금 0은 가정 시나리오다.',
+      nextDecision:'기존 고정 원천의 사용권·known-at 및 배당 지급/미수금 금융 관례를 증빙한다. 경제적 허용오차·다중검정/추론·첫 평가 기준은 미등록 상태로 두고, 준비 후 정확한 별도 실행 승인을 받는다.',
+      executionDecision:proposal.status || 'UNKNOWN', historicalCagr:null, economicVerdict:proposal.economicTolerances ?? null},
+    {id:'industry', pr:290, title:'산업 Alpha', evidenceClass:'OBSERVED_HISTORICAL', researchStatus:'BLOCKED', benchmark:'069500.KS · 산업 상대수익 대용',
+      sources:['industry','terminal','atlas'], hypothesis:'산업 상대 모멘텀·OCF 수익률 대용이 산업 순위와 향후 상대수익을 설명하는가?',
+      metrics:[metric('industry',ind+'ic/'+mom+'/mean','H126 산업 상대 모멘텀 평균 IC','IC',1,[ind+'ic/'+mom+'/validDates']),
+        metric('industry',ind+'tercile/'+mom+'/mean','상−하 삼분위 스프레드','pp',100,[ind+'tercile/'+mom+'/validDates']),
+        metric('industry',ind+'ic/'+ocf+'/mean','H126 산업 중앙 OCF-yield 평균 IC','IC',1,[ind+'ic/'+ocf+'/validDates']),
+        metric('industry',ind+'tercile/'+ocf+'/mean','OCF 상−하 삼분위 스프레드','pp',100,[ind+'tercile/'+ocf+'/validDates']),
+        metric('industry','/eligibility/FULL/eligible','적격 산업-일자','행',1,['/eligibility/FULL/eligible','/eligibility/FULL/industryDates']),
+        metric('industry',ind+'coverage/'+mom+'/bothFinite','모멘텀·라벨 모두 관측','산업-일자'),
+        metric('industry',ind+'coverage/'+ocf+'/bothFinite','OCF·라벨 모두 관측','산업-일자'),
+        metric('terminal','/summary/industry/admitted','동결 기준 종결 종목 산업 승인','개',1,['/summary/industry/admitted','/summary/securities']),
+        metric('terminal','/summary/eligibleForIndustryTotalReturnLabelToday','종결 종목 총수익 라벨 승인','개',1,['/summary/eligibleForIndustryTotalReturnLabelToday','/summary/securities'])],
+      context:'FULL / CAP_WEIGHTED / H126의 기존 기록이다. IC와 삼분위 스프레드는 서로 다른 유효 날짜 수를 갖는다. '+(docs.atlas ? '별도 Atlas 최종평가의 지명은 없고 경제성 단계는 NOT_TRIGGERED였다.' : '별도 Atlas 최종평가 원문은 현재 검증하지 못했다.'),
+      limitations:'주간 관측·H126 보유가 중첩된다. BENCHMARK_RELATIVE_ADJUSTED_INDEX_RETURN_PARTIAL_DISTRIBUTIONS로 완전한 주주 총수익이나 비용 후 ETF 초과수익이 아니다. 다중비교 보정된 경제적 확증은 없다.',
+      blocker:'종결 22종목(연구 구간 16)의 당시 산업 분류, 배당락일, 효력·승계주/현금 대가 연결이 미완결이다. 소수 미측정 종목의 비중만으로 생존편향이 작다고 단정하지 않는다.',
+      nextDecision:'당시 발행사 본인의 명시적 분류와 공식 코드북, 사건별 배당락·종결 대가 원천을 고정 목록에 연결한다. 승인안·합성 스크린을 채택 결과로 바꾸거나 Phase D/36-slot 연구를 실행하지 않는다.'},
+  ];
+}
+async function loadFourTrackReport(reader = getBytes, generatedAt = new Date().toISOString()) {
+  if (!finite(time(generatedAt)) || !/T.*(?:Z|[+-]\d\d:\d\d)$/.test(generatedAt)) throw new Error('REPORT_TIMESTAMP_REQUIRES_TIMEZONE');
+  const docs = {}, sources = {};
+  await Promise.all(Object.entries(RESEARCH_TRACK_SOURCES).map(async ([key, source]) => {
+    try {
+      if (time(source.snapshotAt) > time(generatedAt)) throw new Error('SOURCE_AFTER_REPORT_TIME');
+      const bytes = await reader(RAW(source.commit, source.path), source);
+      if (bytes.byteLength > 16 * 1024 * 1024 || await sha256(bytes) !== source.sha256) throw new Error('SOURCE_HASH_OR_SIZE_MISMATCH');
+      docs[key] = source.format === 'markdown' ? decode(bytes) : JSON.parse(decode(bytes));
+      sources[key] = {...source,status:'VERIFIED_BYTES_NOT_INVESTMENT_ADMISSION'};
+    } catch (_) { sources[key] = {...source,status:'UNAVAILABLE_OR_UNVERIFIED'}; }
+  }));
+  const tracks = fourTrackProjection(docs).map(track => ({...track,
+    reportStatus:track.sources.every(key => docs[key] !== undefined) ? 'DONE' : 'BLOCKED',
+    sourceStatus:track.sources.some(key => docs[key] !== undefined) ? 'READ' : 'UNKNOWN',
+    context:docs[track.sources[0]] === undefined ? '고정 원문 검증 미완료 · 수치와 판단은 UNKNOWN.' : track.context,
+    limitations:docs[track.sources[0]] === undefined ? '원문 바이트를 검증한 뒤 해당 관측과 한계를 확인해야 한다.' : track.limitations,
+    investmentQualified:false, newNominations:[],
+    targetStrategyPerformance:{cagr:null,netAlpha:null,sharpe:null,mdd:null},
+    evidenceClass:docs[track.sources[0]] === undefined ? 'UNVERIFIED_OR_BLOCKED' : track.evidenceClass}));
+  return {schema:'FOUR_TRACK_RESULTS_V1',generatedAt,sources,tracks,productionEffect:'NONE',investmentNominations:[]};
+}
+function researchMetricText(metric) {
+  if (metric.value === null) return 'UNKNOWN';
+  const format = v => `${v > 0 && ['pp','IC'].includes(metric.unit) ? '+' : ''}${number(v,metric.unit === 'IC' ? 3 : ['pp','%','bp'].includes(metric.unit) ? 2 : 0)}`;
+  const v = Array.isArray(metric.value) ? '['+metric.value.map(format).join(', ')+']' : format(metric.value);
+  return v + (metric.unit === 'ratio' ? '' : ' '+metric.unit);
+}
+function fourTrackMarkup(report) {
+  if (!report || report.schema !== 'FOUR_TRACK_RESULTS_V1') return '<p class="empty">연구 결과 자료를 확인하지 못했습니다. UNKNOWN을 0%로 표시하지 않습니다.</p>';
+  return `<p class="notice">기존 결과의 읽기 전용 버전 스냅샷 · 생성 ${esc(utcStamp(report.generatedAt))}. OBSERVED_HISTORICAL / SYNTHETIC_OR_DESIGN / UNVERIFIED_OR_BLOCKED를 합산하지 않습니다. DONE은 보고서 원천 확인이며 투자 승인이나 연구 성공이 아닙니다. 운영은 KR069500.KS·USSPY 기본을 유지하며 새 종목 지명은 없습니다. C2 과거 재현·Oct23 CHAMPION paper·Market C는 각각 다른 연구입니다.</p>
+  <div class="table-scroll"><table><thead><tr><th>연구</th><th>증거 등급</th><th>자료 / 연구</th><th>대표 관측 · 전체 투자 알파 아님</th></tr></thead><tbody>${report.tracks.map(t=>`<tr><th><a href="https://github.com/${REPO}/pull/${t.pr}">${esc(t.title)} #${t.pr}</a></th><td>${esc(t.evidenceClass)}</td><td>${esc(t.reportStatus)} / ${esc(t.researchStatus)}</td><td>${(t.id==='kr'||t.id==='industry'?[t.metrics[0],t.metrics[2]]:[t.metrics[0]]).map(m=>esc(researchMetricText(m))+' · '+esc(m.label)).join('<br>')}</td></tr>`).join('')}</tbody></table></div>
+  ${report.tracks.map(t=>`<article class="decision-card" data-research-track="${t.id}" data-evidence-class="${t.evidenceClass}"><div class="card-meta"><h3>${esc(t.title)} · #${t.pr}</h3><span class="pill warn">${esc(t.researchStatus)} · 투자 적격 미확인</span></div><p><b>가설</b> ${esc(t.hypothesis)}</p><p class="source-caption">비교 기준 ${esc(t.benchmark)} · ${esc(t.evidenceClass)}</p><div class="metric-cards">${t.metrics.map(m=>`<div class="evidence-box"><b>${esc(m.label)}</b><p>${esc(researchMetricText(m))}</p>${m.denominator ? `<small>유효 표본 ${m.denominator.map(v=>finite(v)?number(v,0):'UNKNOWN').join(' / ')}${m.denominator.length===1?' 날짜':''}</small>` : ''}</div>`).join('')}</div><p>${esc(t.context)}</p><p class="notice"><b>신뢰성과 한계</b> ${esc(t.limitations)}</p><p><b>남은 차단</b> ${esc(t.blocker)}</p><p><b>다음 결정</b> ${esc(t.nextDecision)}</p><details><summary>고정 원문 · 시각 · 수치 위치와 검증</summary>${t.sources.map(key=>{const s=report.sources[key];return `<p class="digest">${link(s.path,s.path,s.commit)}<br>자료/코드 스냅샷 커밋 시각 ${esc(s.snapshotAt)} (관측일·현재 시세와 별개)<br>commit ${esc(s.commit)}<br>SHA256 ${esc(s.sha256)} · ${esc(s.status)}</p>`;}).join('')}<p>각 수치의 원문 JSON pointer; 백분율·pp·bp는 원문 비율의 단위 변환만 합니다.</p>${t.metrics.map(m=>`<p class="digest">${esc(m.label)}: ${esc(m.source)} ${esc(m.pointer)}${m.denominatorPointers?' · 표본 '+esc(m.denominatorPointers.join(' / ')):''}</p>`).join('')}<p>원문 해시 불일치·접근 실패는 UNKNOWN. 성공한 CI·Git 객체 보유·메타데이터만으로 투자 적격을 승인하지 않습니다. 이 뷰는 관측 결과만 읽고 수익률/NAV·모델·비중을 계산하지 않습니다.</p></details></article>`).join('')}`;
+}
+
 function startTerminal() {
   const $ = (s) => document.querySelector(s);
   let market = "KR";
@@ -1105,6 +1272,9 @@ function startTerminal() {
   render();
   refresh();
   loadSite();
+  const trackPanel = $("#researchTracksPanel");
+  if (trackPanel) loadFourTrackReport().then(r => {trackPanel.innerHTML = fourTrackMarkup(r);})
+    .catch(() => {trackPanel.innerHTML = fourTrackMarkup(null);});
   window.setInterval(()=>{refresh();loadSite();}, 15 * 60 * 1000);
 }
 
@@ -1114,6 +1284,8 @@ if (typeof module !== "undefined" && module.exports)
   module.exports = {
     SOURCES,
     SOURCE_COMMIT,
+    RESEARCH_TRACK_SOURCES, researchPointer, researchMetric, fourTrackProjection,
+    loadFourTrackReport, fourTrackMarkup, researchMetricText,
     canonicalReceiptLine,
     sha256,
     parseReceipts,
