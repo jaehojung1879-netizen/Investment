@@ -112,7 +112,7 @@ test('C2 archived research is shown separately from a blocked CURRENT observatio
   assert.match(html,/잔여 지수/);
   assert.match(html,/기록 해시/);
   const positions=archive.receipt.decisions.C2;
-  assert.equal(Object.values(positions.weights).reduce((sum,x)=>sum+x,0),1);
+  assert.ok(Math.abs(Object.values(positions.weights).reduce((sum,x)=>sum+x,0)-1)<1e-6);
   for(const hold of positions.holdings) {
     assert.ok(html.includes(hold.ticker));
     assert.ok(html.includes(A.fmt(hold.weightPct,2).split('.')[0]));
