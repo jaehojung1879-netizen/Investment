@@ -67,8 +67,9 @@ def test_timing_sensitivity_is_zero_on_a_flat_price_and_signed_on_a_trend():
     rising = pd.Series(10_000.0 * 1.001 ** np.arange(60), index=sessions)
     t = S.timing_sensitivity(rising, chain, _no_official())
     m = t["mixedLagScenarioWith20Known"]
-    assert m["signedInterval"]["lowerPpPerYear"] > 0
-    assert m["boundOnAbsoluteEffectPpPerYear"] == m["signedInterval"]["upperPpPerYear"]
+    # B - A: a price that keeps rising after the ex-date means the funded investor bought later, i.e. NEGATIVE
+    assert m["signedInterval"]["upperPpPerYear"] < 0
+    assert m["boundOnAbsoluteEffectPpPerYear"] == abs(m["signedInterval"]["lowerPpPerYear"])
 
 
 def test_mixed_lag_bound_exceeds_the_common_lag_figure_when_events_peak_at_different_lags():
@@ -101,7 +102,7 @@ def test_known_official_events_are_fixed_at_their_paid_date_and_only_the_rest_ar
     years = S.years_between(sessions[0], sessions[-1])
     m = t["mixedLagScenarioWith20Known"]
     assert (m["knownOfficialEvents"], m["unresolvedEvents"]) == (1, 1)
-    assert m["knownEventsFixedAtObservedDatesPpPerYear"] == pytest.approx(100.0 / 10_000.0 * 0.03 / years * 100, rel=1e-3)
+    assert m["knownEventsFixedAtObservedDatesPpPerYear"] == pytest.approx(-100.0 / 10_000.0 * 0.03 / years * 100, rel=1e-3)
     assert m["boundOnAbsoluteEffectPpPerYear"] > m["knownEventsFixedAtObservedDatesPpPerYear"]
 
 
@@ -124,6 +125,79 @@ def test_exact_funded_comparison_validates_path_a_and_is_zero_on_a_flat_price():
     flat_tr[:] = vals
     zero = S.exact_funded_comparison(flat, chain, official, flat_tr)
     assert zero["exactPpPerYear"] == pytest.approx(0.0, abs=1e-9)
+
+
+def _trend_case(drift):
+    sessions = pd.bdate_range("2020-01-01", periods=300)
+    price = pd.Series(10_000.0 * (1 + drift) ** np.arange(300), index=sessions)
+    cash = 150.0
+    ex_positions = (60, 140, 220)
+    chain = pd.DataFrame({"ex": [sessions[i] for i in ex_positions], "record": [sessions[i + 1] for i in ex_positions],
+                          "cash": [cash] * 3})
+    tr, level = pd.Series(index=sessions, dtype=float), 1.0
+    for i in range(300):
+        if i:
+            hit = i in ex_positions
+            level *= (price.iloc[i] + (cash if hit else 0.0)) / price.iloc[i - 1]
+        tr.iloc[i] = level
+    return price, tr, chain
+
+
+@pytest.mark.parametrize("drift", [0.002, -0.002])
+def test_first_order_and_exact_share_one_sign_convention_and_agree_to_second_order(drift):
+    """Both are funded-minus-registered (B - A): negative when the price rises after the ex-date, positive when it falls.
+    The approximation error is second order, so it is small next to the effect (it was once published 13x too large)."""
+    price, tr, chain = _trend_case(drift)
+    official = pd.DataFrame({"record": pd.to_datetime([]), "pay": pd.to_datetime([]), "cash": [], "taxBase": []})
+    out = S.exact_funded_comparison(price, chain, official, tr, assumed_lag=3)
+    expected_sign = -1.0 if drift > 0 else 1.0
+    assert np.sign(out["exactPpPerYear"]) == np.sign(out["firstOrderPpPerYear"]) == expected_sign
+    assert abs(out["approximationErrorPpPerYear"]) < 0.25 * abs(out["exactPpPerYear"])
+    assert out["approximationErrorPpPerYear"] == pytest.approx(out["exactPpPerYear"] - out["firstOrderPpPerYear"], abs=1e-5)
+    interval = S.timing_sensitivity(price, chain, official)["mixedLagScenarioWith20Known"]["signedInterval"]
+    assert (interval["upperPpPerYear"] < 0) if drift > 0 else (interval["lowerPpPerYear"] > 0)
+
+
+def test_cash_sensitivity_matches_a_hand_computed_previous_session_gap_weighted_mean():
+    sessions = list(pd.bdate_range("2021-01-01", "2021-03-31"))
+    events = [{"date": "2020-06-01", "annualRatePct": 1.0}, {"date": "2021-02-01", "annualRatePct": 3.0}]
+    got = S.cash_sensitivity(events, sessions)["meanRatePctPerYear"]["PROXY"]
+    num = den = alt = 0.0
+    for prev, cur in zip(sessions[:-1], sessions[1:]):
+        gap = (cur - prev).days
+        rate_prev = 3.0 if prev >= pd.Timestamp("2021-02-01") else 1.0
+        rate_cur = 3.0 if cur >= pd.Timestamp("2021-02-01") else 1.0
+        num, den, alt = num + rate_prev * gap, den + gap, alt + rate_cur * gap
+    assert got == pytest.approx(num / den, abs=1e-4)
+    assert abs(alt / den - num / den) > 0.01          # the convention matters here: a current-session lag would differ
+    equal_weight = np.mean([3.0 if p >= pd.Timestamp("2021-02-01") else 1.0 for p in sessions[:-1]])
+    assert abs(equal_weight - num / den) > 0.001      # and so does gap weighting
+
+
+def test_contrast_entries_share_one_sign_convention_and_are_not_netted():
+    timing = {"mixedLagScenarioWith20Known": {"signedInterval": {"lowerPpPerYear": -0.02, "upperPpPerYear": 0.01}}}
+    tax = {"dragAtAssumedStatutoryRatePpPerYear": 0.30, "coverageSpan": {"firstExDate": "2021-10-28", "lastExDate": "2026-07-30"},
+           "assumedStatutoryRatePct": 15.4}
+    cash = {"meanRatePctPerYear": {"PROXY": 2.0, "PROXY_MINUS_HAIRCUT": 1.5, "ZERO": 0.0}}
+    c = S.contrast_coefficients(timing, tax, cash)
+    assert c["zeroCashToBokProxy"] == pytest.approx(-0.20) and c["zeroCashToBokProxyMinusHaircut"] == pytest.approx(-0.15)
+    assert c["grossToAfterTaxRecentSubperiodAssumedRate"] == pytest.approx(-0.03)   # same direction as cash, not opposite
+    assert c["exDateToPaymentDateReinvestmentMixedLagScenario"] == {"lowerPpPerYear": -0.002, "upperPpPerYear": 0.001}
+    assert "negative = the registered basis flatters the more-exposed arm" in c["unit"]
+    assert "not netted" in c["note"] and not any("net" == k.lower() for k in c)
+
+
+def test_official_json_and_issuer_xls_agree_and_a_changed_row_is_refused():
+    official = S.load_official_payments()
+    assert S.official_json_equals_xls(official)["records"] == 20
+    changed = official.copy()
+    changed.loc[0, "pay"] = changed.loc[0, "pay"] + pd.Timedelta(days=1)
+    with pytest.raises(ValueError, match="OFFICIAL_PAYMENT_JSON_XLS_DISAGREE"):
+        S.official_json_equals_xls(changed)
+    changed = official.copy()
+    changed.loc[3, "taxBase"] += 1.0
+    with pytest.raises(ValueError, match="OFFICIAL_PAYMENT_JSON_XLS_DISAGREE"):
+        S.official_json_equals_xls(changed)
 
 
 def test_tax_basis_full_taxable_base_has_share_one_and_scales_with_the_rate():
@@ -157,7 +231,7 @@ def test_admission_is_fail_closed_and_cannot_be_ready_from_code_alone():
 
 
 def test_every_input_file_is_pinned_and_present():
-    assert len(S.PINS) == 5
+    assert len(S.PINS) == 6
     for rel, digest in S.PINS.items():
         assert S.sha256(S.ROOT / rel) == digest, rel
     assert set(json.loads(S.OUTPUT.read_text())["inputs"]) == set(S.PINS)

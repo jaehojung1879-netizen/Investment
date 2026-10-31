@@ -41,6 +41,8 @@ PINS = {
         "729a94b81dd45d1c5d1ab2ff692ec249bd5c9c4f24598d648d7f88010f193478",
     "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-standard.xls":
         "cbdd7a0ce340228ddcfc714de637c512f73c2d691d84ae59a28cfb406d8437b9",
+    "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-dividends.xls":
+        "7ed6c79dce2e4baaf9791311e489b7d5bb4294d8a6db34f7572b45110394bab1",
 }
 STUDY_WINDOW = ("2012-01-02", "2026-09-14")
 LAGS_SESSIONS_AFTER_EX = tuple(range(2, 11))
@@ -85,6 +87,18 @@ def load_chain(path=None):
     chain["record"] = pd.to_datetime(chain.recordDate)
     chain["cash"] = chain.cashKrwPerUnit.astype(float)
     return quotes.sort_index(), chain.sort_values("ex").reset_index(drop=True), float(report["independentEndpoint"]["officialRawQuote"])
+
+
+def official_json_equals_xls(official, path=None):
+    """GATING: the issuer API rows (JSON) and the issuer's own spreadsheet export agree on record date, payment date, cash and
+    taxable base for every official distribution. Raises otherwise."""
+    cells = XLS.read_cells(path or ROOT / "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-dividends.xls")
+    rows = {(pd.Timestamp(cells[(r, 0)]), pd.Timestamp(cells[(r, 1)]), float(cells[(r, 3)]), float(cells[(r, 4)]))
+            for r in range(3, 1 + max(r for r, _ in cells)) if (r, 0) in cells and isinstance(cells[(r, 0)], str) and cells[(r, 0)].isdigit()}
+    mine = {(row.record, row.pay, row.cash, row.taxBase) for row in official.itertuples()}
+    if rows != mine:
+        raise ValueError(f"OFFICIAL_PAYMENT_JSON_XLS_DISAGREE:{len(mine ^ rows)}_ROWS")
+    return {"records": len(mine), "status": "GATING_ASSERTION_RUN_IN_REQUIRED_CI"}
 
 
 def load_official_payments(path=None):
@@ -144,15 +158,17 @@ def years_between(a, b):
 
 
 def _timing_term(price, ex, cash, lag):
-    """First-order value of buying at the close `lag` sessions after the ex-date instead of at the ex-date close."""
+    """First-order effect on a FUNDED investor of receiving the cash `lag` sessions after the ex-date and buying then, relative
+    to the corrected index (reinvested at the ex-date close): B - A. NEGATIVE when the price rises after the ex-date, because
+    the index bought in earlier. One convention for every figure in this module (the exact comparison below is B/A - 1)."""
     sessions = price.index
     i = sessions.get_loc(ex)
     j = min(i + lag, len(sessions) - 1)
-    return cash / price.iloc[i] * (price.iloc[j] / price.iloc[i] - 1.0)
+    return -cash / price.iloc[i] * (price.iloc[j] / price.iloc[i] - 1.0)
 
 
 def timing_sensitivity(price, chain, official):
-    """Payment-timing effect per 100% ETF weight, pp/yr: the 20 official payments FIXED at their observed dates, the unresolved
+    """Payment-timing effect (funded minus registered index, B - A) per 100% ETF weight, pp/yr: the 20 official payments FIXED at their observed dates, the unresolved
     26 bounded EVENT BY EVENT over `LAGS_SESSIONS_AFTER_EX`.
 
     The bound is the mixed-lag envelope: the total lies in [known + sum_i min_L d_i(L), known + sum_i max_L d_i(L)]. The
@@ -261,16 +277,25 @@ def tax_basis(price, chain, official):
             "unit": "percentage points per year per 100% ETF weight"}
 
 
-def ks200_reconciliation(quotes, ks200):
-    """Calendar-year excess of the corrected total-return index over the KS200 price index (committed FDR series)."""
+def ks200_reconciliation(quotes, ks200, price, chain):
+    """Calendar-year excess of the corrected total-return index over the KS200 price index (committed FDR series), beside the
+    gross distribution yield computed from the same 46-event chain."""
     both = pd.concat({"tr": quotes, "ks": ks200}, axis=1).dropna()
     year_end = both.groupby(both.index.year).last()
     annual = (year_end / year_end.shift(1) - 1).dropna() * 100
     gap = (annual.tr - annual.ks)
+    previous = [price.iloc[price.index.get_loc(e) - 1] for e in chain.ex]
+    yields = pd.Series([c / p for c, p in zip(chain.cash, previous)], index=chain.ex.dt.year).groupby(level=0).sum() * 100
+    mean_gap, mean_yield = float(gap.loc[2017:2024].mean()), float(yields.loc[2017:2024].mean())
     return {"annualExcessOfTotalReturnOverKs200PricePp": {str(k): round(float(v), 3) for k, v in gap.items()},
-            "mean2017to2024": round(float(gap.loc[2017:2024].mean()), 3),
-            "meaning": "a gross total-return index should exceed the price index by about the distribution yield; "
-                       "no unexplained accrual is visible in this series (the replay-v16 069500 series applies each distribution about twice)"}
+            "grossDistributionYieldPctByYear": {str(k): round(float(v), 3) for k, v in yields.items()},
+            "mean2017to2024": round(mean_gap, 3), "meanGrossDistributionYield2017to2024": round(mean_yield, 3),
+            "meanExcessMinusYield2017to2024": round(mean_gap - mean_yield, 3),
+            "reading": "over 2017-2024 the mean excess is close to the mean gross distribution yield computed here; single years "
+                       "differ (compounding of reinvested distributions in strong years, ETF-vs-index tracking). This compares the "
+                       "corrected series only; it says nothing about any other 069500 series",
+            "otherSeries": "the repository's own record that the replay-v16 069500 series applies each distribution about twice is in "
+                           "docs/weekly-decision/weekly-passive-first-v1-benchmark-basis-protocol.json ('why'); not derived here"}
 
 
 def cash_sensitivity(events, sessions):
@@ -295,18 +320,26 @@ def cash_sensitivity(events, sessions):
 
 
 def contrast_coefficients(timing, tax, cash):
-    """Effect on (arm A - arm B) per 10pp of mean weight gap, signed toward the MORE-EXPOSED arm. Illustrative sensitivity."""
-    cash_effect = cash["meanRatePctPerYear"]["PROXY"] * 0.10
-    haircut = cash["meanRatePctPerYear"]["PROXY_MINUS_HAIRCUT"] * 0.10
-    tax_effect = -tax["dragAtAssumedStatutoryRatePpPerYear"] * 0.10
-    return {"unit": "pp/yr per 10pp of mean ETF-weight gap between two arms; positive favours the MORE-EXPOSED arm",
-            "zeroCashVersusBokProxy": round(cash_effect, 4),
-            "zeroCashVersusBokProxyMinusHaircut": round(haircut, 4),
-            "distributionTaxRecentSubperiodOnlyAtAssumedRate": round(tax_effect, 4),
-            "paymentTimingMixedLagScenarioAbs": round(timing["mixedLagScenarioWith20Known"]["boundOnAbsoluteEffectPpPerYear"] * 0.10, 5),
+    """Effect of moving from the REGISTERED basis (gross distributions, reinvestment at the ex-date close, zero cash) to a funded,
+    after-tax, interest-bearing basis on (more-exposed arm minus less-exposed arm), per 10pp of mean ETF-weight gap, pp/yr.
+
+    One convention for every entry: NEGATIVE means the registered basis flatters the more-exposed arm. The cash and tax entries
+    point the SAME way (the more-exposed arm earns no cash interest it never held and pays the distribution tax); they are
+    reported separately, not netted, and none is applied to any path."""
+    gap = 0.10
+    mixed = timing["mixedLagScenarioWith20Known"]["signedInterval"]
+    return {"unit": "pp/yr per 10pp of mean ETF-weight gap; effect of registered -> funded/after-tax/interest-bearing basis on "
+                    "(more-exposed minus less-exposed arm); negative = the registered basis flatters the more-exposed arm",
+            "zeroCashToBokProxy": round(-cash["meanRatePctPerYear"]["PROXY"] * gap, 4),
+            "zeroCashToBokProxyMinusHaircut": round(-cash["meanRatePctPerYear"]["PROXY_MINUS_HAIRCUT"] * gap, 4),
+            "grossToAfterTaxRecentSubperiodAssumedRate": round(-tax["dragAtAssumedStatutoryRatePpPerYear"] * gap, 4),
+            "exDateToPaymentDateReinvestmentMixedLagScenario": {"lowerPpPerYear": round(mixed["lowerPpPerYear"] * gap, 5),
+                                                                "upperPpPerYear": round(mixed["upperPpPerYear"] * gap, 5)},
             "status": "UNVERIFIED_SENSITIVITY_NOT_A_CORRECTION",
-            "note": "components are NOT netted and none is applied to any path; the tax component is the 2021-10-28 to 2026-07-30 "
-                    "drag at an assumed, unretained 15.4% rate scaled by 10pp, not a verified 2012-2026 investor tax"}
+            "note": "not netted and not applied to any path; the tax entry is the drag over the issuer-stated sub-period "
+                    f"{tax['coverageSpan']['firstExDate']}..{tax['coverageSpan']['lastExDate']} at an assumed, unretained "
+                    f"{tax['assumedStatutoryRatePct']}% rate scaled to a 10pp gap, not a verified 2012-2026 investor tax; the cash entry "
+                    "rests on a non-investable proxy"}
 
 
 OWNER_DECISIONS = (
@@ -344,10 +377,12 @@ def evidence():
                 "sessions": int(len(price)), "endpointRawQuote": endpoint,
                 "issuerAsTradedCloseCrossCheck": issuer_close_cross_check(price),
             },
-            "taxBasis": tax,
-            "ks200Reconciliation": ks200_reconciliation(quotes, ks),
+            "officialPaymentJsonEqualsIssuerXls": official_json_equals_xls(official),
+            "issuerStatedTaxableBase": {"records": tax["records"], "taxableShareOfCash": tax["taxableShareOfCash"],
+                                        "coverageSpan": tax["coverageSpan"], "coverage": tax["coverage"]},
+            "ks200Reconciliation": ks200_reconciliation(quotes, ks, price, chain),
         },
-        "approximateAccounting": {"paymentTiming": timing, "exactFundedComparison": funded, "cash": cash,
+        "approximateAccounting": {"paymentTiming": timing, "exactFundedComparison": funded, "distributionTax": tax, "cash": cash,
                                   "contrastPer10ppExposureGap": contrast_coefficients(timing, tax, cash)},
         "missingHistoricalEvidence": [
             f"{facts['paymentDateUnresolved']} of {facts['records']} distributions have no official payment date "
