@@ -214,3 +214,23 @@ def test_committed_events_block_is_internally_consistent():
     assert events["verifiedCount"] + events["partialRuleBounded"] + events["partialRecordRuleOnly"] + events["unresolvedNoRule"] == events["unresolved"] == 26
     assert events["population"] - events["officialPaymentDates"] == events["unresolved"]
     assert (events["verifiedCount"], events["shapeValidUnverifiedCount"], events["partialRuleBounded"], events["partialRecordRuleOnly"]) == (0, 0, 24, 2)
+
+
+def test_admission_layers_never_reach_source_verified_whatever_the_source(tmp_path):
+    event = _event()
+    none = R.admission_layers(event)
+    assert none["metadataComplete"] is False and none["sourceVerified"] is False
+    ok = R.admission_layers(event, _valid_source(event), tmp_path)
+    assert ok["metadataComplete"] is True and ok["retainedBytesMatchHash"] is True
+    assert ok["officialProvenanceAndFieldContent"].startswith("NOT_ESTABLISHED") and ok["sourceUseRights"].startswith("NOT_ESTABLISHED")
+    assert ok["economicAdmission"].startswith("NOT_ADMITTED") and ok["sourceVerified"] is False
+    refused = R.admission_layers(event, _valid_source(event, url="https://example.invalid/x"), tmp_path)
+    assert refused["metadataComplete"] is False and "refusedBecause" in refused and refused["sourceVerified"] is False
+
+
+def test_fred_storage_and_machine_learning_terms_are_recorded_and_the_retained_files_are_flagged():
+    matrix = _committed()["rightsTerms"]
+    fred = matrix[2]["fredLegalTerms"]
+    assert "storing, caching, or archiving" in fred["storageAndCaching"] and "machine learning" in fred["machineLearningAndSoftwareDevelopment"]
+    assert fred["bytesSha256"] is None and "retainedFredApiFilesConflictFlag" in matrix[2]
+    assert matrix[3]["retention"].startswith("BOARD_DIRECT_ROUTE") and "RESTRICTED_BY_FRED_STORAGE_TERMS" in matrix[3]["retention"]

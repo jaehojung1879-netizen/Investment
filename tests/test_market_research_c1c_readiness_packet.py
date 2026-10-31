@@ -114,7 +114,7 @@ def test_the_restricted_and_third_party_rights_statuses_come_from_the_resolution
     assert by_input["069500.KS (KODEX 200)"]["status"] == "EXPLICITLY_RESTRICTED_WITHOUT_PRIOR_PERMISSION"
     assert by_input["VIX"]["status"].startswith("THIRD_PARTY_OWNER_PERMISSION_REQUIRED")
     assert by_input["KS200 signal index"]["status"].startswith("UPSTREAM_UNRECORDED")
-    assert by_input["Treasury 10y and 3m"]["status"].startswith("PARTIAL_PUBLISHER_PUBLIC_DOMAIN")
+    assert by_input["Treasury 10y and 3m"]["status"].startswith("FRED_API_ROUTE_STORAGE_RESTRICTED")
     assert all(v["status"] != P.VERIFIED for v in by_input.values())
     resolution = _committed()["identities"]["sourceResolutionJson"]
     assert by_input["069500.KS (KODEX 200)"]["evidence"] == [resolution]

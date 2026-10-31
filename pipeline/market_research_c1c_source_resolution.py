@@ -120,6 +120,20 @@ def classify_event(event, source=None, root=S.ROOT):
     return "PARTIAL_RULE_BOUNDED" if pd.Timestamp(event["record"]) >= RULE_READ_FROM else "PARTIAL_RECORD_RULE_ONLY"
 
 
+def admission_layers(event, source=None, root=S.ROOT):
+    """The five layers kept apart. A caller-supplied source can raise the first two; nothing in this module can raise the other three,
+    because they need independent authentication, a recorded rights decision and an owner-approved economic scope."""
+    layers = {"metadataComplete": False, "retainedBytesMatchHash": False, "officialProvenanceAndFieldContent": "NOT_ESTABLISHED_NEEDS_INDEPENDENT_OR_HUMAN_REVIEWED_RECORD",
+              "sourceUseRights": "NOT_ESTABLISHED_NEEDS_OWNER_DECISION_RECORD", "economicAdmission": "NOT_ADMITTED_NEEDS_OWNER_APPROVED_SCOPE", "sourceVerified": False}
+    if source is not None:
+        try:
+            layers["metadataComplete"] = classify_event(event, source, root) == SHAPE_VALID
+            layers["retainedBytesMatchHash"] = layers["metadataComplete"]
+        except ValueError as error:
+            layers["refusedBecause"] = str(error)
+    return layers
+
+
 def event_table(quotes, chain, official):
     sessions = quotes.index
     resolved = set(official.record)
@@ -206,15 +220,24 @@ def rights_matrix(flags):
                         "quote": "Data Recipients receiving Real-time or Delayed Data may store the data and subsequently use the Historical Data internally within their own "
                                  "organization, including Affiliates, for a fee when applicable. Before a firm can redistribute Historical Data to non-Affiliates, the firm must first "
                                  "sign a Data Agreement"},
+         "fredLegalTerms": {"url": "https://fred.stlouisfed.org/legal/", "retrievedOn": RETRIEVED_ON, "bytesSha256": None, "readThrough": "fetch tool, verbatim, bytes not retained; no 'last updated' date shown on the page",
+                            "apiTermsIncludeLegalPage": "The Terms of Use shall include: 1. These terms and conditions set forth in this document; 2. The Federal Reserve Bank of St. Louis web site Legal Terms",
+                            "storageAndCaching": "Use the FRED® API in connection with storing, caching, or archiving any portion of the FRED® Services or FRED® Content; providing any stored, cached, or archived portion of the FRED® Services or FRED® Content to any third party; or incorporating any FRED® Content in any database, compilation, archive, cache, or other medium.",
+                            "machineLearningAndSoftwareDevelopment": "Use the FRED® API to access the FRED® Services or FRED® Content in connection with the development or training of any software program or system or machine learning, including, but not limited to, large language models, deep learning, generative artificial intelligence, or any other program or process commonly known as artificial intelligence.",
+                            "copyrightedPreApproval": "Copyrighted: Pre-approval required: These series are under copyright by a third party. Without first obtaining the express written permission of the copyright holder, ... these series may only be used for non-commercial educational or personal use.",
+                            "reviewFlag": "whether building and testing a rule-based systematic model counts as 'development ... of any software program or system' is a legal reading for the owner or counsel; this record does not decide it"},
+         "retainedFredApiFilesConflictFlag": "the repository retains FRED-API-obtained series files (VIXCLS, DGS10, DGS3MO) under data/kr-market-risk-anatomy-v1/sources; the quoted storage prohibition covers storing or archiving FRED content by API use. Flagged for the owner; the sealed files were not touched",
          "note": "the FRED page text was read through a fetch tool and its bytes are NOT retained (the host refuses this environment's direct requests). A search summary "
-                 "mentioned a 2024 ban on caching FRED content; that sentence was NOT found in the page text read, so it is not relied on either way. The Cboe policy "
+                 "mentioned a 2024 ban on caching FRED content; that specific claim was not relied on, but the legal page read later does contain storage and machine-learning prohibitions (see fredLegalTerms). The Cboe policy "
                  "addresses Cboe's Data Recipients; whether a research user of FRED-served VIXCLS is one is not established"},
         {"input": "Treasury 10y and 3m (FRED DGS10, DGS3MO; origin Board H.15)",
          "term": {"url": "https://www.federalreserve.gov/disclaimer.htm", "retrievedOn": RETRIEVED_ON, "bytesSha256": "6fd9c6703a144d763e72ed70bc9378f7a855dbb1ad12c46197c3e3161b5d3e3e", "bytesNote": "a retrieval-time observation; a later independent fetch hashed differently (dynamic page) while the quoted sentence was unchanged",
                   "quote": "Unless otherwise indicated, information on Board's website is in the public domain and may be copied and distributed without permission. "
                            "Please cite to the Board as the source of the information."},
          "retainedSeriesNotesContainCopyright": {"DGS10": flags["FRED_DGS10"], "DGS3MO": flags["FRED_DGS3MO"]},
-         "researchUse": "PUBLIC_DOMAIN_PER_PUBLISHER_STATEMENT_FOR_BOARD_PUBLISHED_INFORMATION", "retention": "PUBLIC_DOMAIN_PER_PUBLISHER_STATEMENT_FOR_BOARD_PUBLISHED_INFORMATION",
+         "researchUse": "PUBLIC_DOMAIN_PER_PUBLISHER_STATEMENT_FOR_BOARD_PUBLISHED_INFORMATION",
+         "retention": "BOARD_DIRECT_ROUTE_PUBLIC_DOMAIN_STATEMENT_BUT_THE_RETAINED_FRED_API_ROUTE_IS_RESTRICTED_BY_FRED_STORAGE_TERMS",
+         "route": "retained bytes came through the FRED API, whose terms prohibit storing, caching or archiving FRED content and use in software or machine-learning development (quotes under the VIX entry); the smallest compliant route is the Board's own H.15 publication, which the Board states is public domain",
          "redistribution": "PUBLIC_DOMAIN_PER_PUBLISHER_STATEMENT_FOR_BOARD_PUBLISHED_INFORMATION",
          "note": "the statement covers information on the Board's own website unless otherwise indicated; the retained bytes came through the FRED API, whose terms bytes "
                  "are not retained, and the series notes carry no 'Copyright' marker (FRED's own flag for third-party series). Credit to the Board is required. "

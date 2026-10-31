@@ -115,15 +115,16 @@ def prerequisites():
          "retained": "FRED VIXCLS 1990..2026-10-01; series note: Cboe copyright 'reprinted with permission'",
          "rights": _need("THIRD_PARTY_OWNER_PERMISSION_REQUIRED_BY_FRED_TERMS",
                          "Cboe's written permission for research use and retention of VIX values: FRED's terms say third-party series (notes containing 'Copyright', "
-                         "which VIXCLS's do) need the data owner's permission beyond personal use and that FRED cannot grant it", record),
+                         "which VIXCLS's do) need the data owner's permission beyond personal use and that FRED cannot grant it; the FRED API terms also prohibit storing or archiving content "
+                         "and use in software or machine-learning development, which the owner must review separately", record),
          "pitVintage": _need("NOT_ESTABLISHED", "vintage coverage for VIXCLS or a documented, tested justification of the frozen 4-calendar-day lag"),
          "investability": _need("NOT_APPLICABLE_SIGNAL_ONLY", "none; a signal series is not traded")},
         {"input": "Treasury 10y and 3m", "role": "slow state spread (DGS10, DGS3MO via FRED, origin H.15)",
          "retained": "FRED DGS10/DGS3MO 1990..2026-10-01; a check of one H.15 release (2012-01-03) on 8 values is reported in PR #289 comment "
                      "6540961783 but its receipt is NOT retained in this repository, so it cannot be verified from here",
-         "rights": _need("PARTIAL_PUBLISHER_PUBLIC_DOMAIN_STATEMENT_RECORDED_FRED_TERMS_BYTES_NOT_RETAINED",
-                         "the Board statement (public domain unless otherwise indicated, cite the Board) is recorded with its page hash and the series notes carry no "
-                         "'Copyright' marker; the FRED API terms bytes are not retained (the host refuses this environment) and the owner has not recorded a decision", record),
+         "rights": _need("FRED_API_ROUTE_STORAGE_RESTRICTED_BOARD_DIRECT_ROUTE_PUBLIC_DOMAIN_STATEMENT_RECORDED",
+                         "the Board states its own information is public domain, but the retained bytes came through the FRED API whose terms prohibit storing, caching or archiving content and "
+                         "use in software or machine-learning development; the owner must record a decision to obtain H.15 directly from the Board (or to accept the FRED route), and the FRED terms bytes are not retained", record),
          "pitVintage": _need("NOT_ESTABLISHED", "availability at decision time was UNKNOWN for the one release checked (PDF 2012-01-03 vs HTTP "
                                                 "Last-Modified 2012-01-09); needs vintage coverage or a published revision statement for 2012-2026"),
          "investability": _need("NOT_APPLICABLE_SIGNAL_ONLY", "none; a signal series is not traded")},
