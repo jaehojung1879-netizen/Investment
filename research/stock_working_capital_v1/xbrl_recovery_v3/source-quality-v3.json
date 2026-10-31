@@ -1,0 +1,107 @@
+{
+  "acquisitionStatusCounts": {
+    "NOT_ATTEMPTED_ENVIRONMENT_NETWORK_BLOCKED": 68
+  },
+  "baselineOriginalFactsVerified": {
+    "collection_discipline": 0,
+    "inventory_discipline": 0
+  },
+  "fixedOriginalTargets": 68,
+  "historicalModelFits": 0,
+  "historicalReturnLabelsRead": 0,
+  "originalFiscalYearsInTargetRegistry": {
+    "2016": 9,
+    "2017": 10,
+    "2018": 9,
+    "2019": 10,
+    "2020": 12,
+    "2021": 10,
+    "2022": 8
+  },
+  "originalPackagesAcquiredUnverified": 0,
+  "originalTargetIssuers": 14,
+  "partitionMeaning": "Fixed diagnostic first-failure order, NOT sample exclusion. All nonexclusive reasons remain in measurement coverage.",
+  "publicReceiptRequestsAttempted": 0,
+  "signals": {
+    "collection_discipline": {
+      "denominator": 51360,
+      "exclusiveFirstUnresolvedStage": {
+        "DATED_INDUSTRY_ISSUER_UNRESOLVED": 3445,
+        "DATED_ISSUER_OR_NAME_UNRESOLVED": 504,
+        "IDENTITY_ENDED_BY_SIGNAL": 13,
+        "MEMBERSHIP_SNAPSHOT_BLOCKED": 360,
+        "ORIGINAL_RECEIPT_OR_MAIN_PAIR_NOT_MATCHED": 4935,
+        "PRIORITY_ORIGINAL_PACKAGES_NOT_ACQUIRED": 688,
+        "RAW_ANNUAL_INPUT_UNREADABLE_OR_INCOMPARABLE": 41270,
+        "SIGNAL_BAR_MISSING_OR_NONTRADABLE": 145,
+        "UNIDENTIFIED_MEMBERSHIP_RANK_SLOTS": 0
+      },
+      "originalFinancialFactsCoverage": 0.0,
+      "originalFinancialFactsVerifiedPairs": 0,
+      "researchEligibleObservations": 0,
+      "taxonomyChangeReasonsBySignalYearNonexclusive": {
+        "2020": {
+          "CONCEPT_BASIS_CHANGED:sales": 2843
+        },
+        "2021": {
+          "CONCEPT_BASIS_CHANGED:sales": 825
+        },
+        "2024": {
+          "CONCEPT_BASIS_CHANGED:receivables": 1303
+        },
+        "2025": {
+          "CONCEPT_BASIS_CHANGED:receivables": 762
+        }
+      }
+    },
+    "inventory_discipline": {
+      "denominator": 51360,
+      "exclusiveFirstUnresolvedStage": {
+        "DATED_INDUSTRY_ISSUER_UNRESOLVED": 7733,
+        "DATED_ISSUER_OR_NAME_UNRESOLVED": 1654,
+        "IDENTITY_ENDED_BY_SIGNAL": 13,
+        "MEMBERSHIP_SNAPSHOT_BLOCKED": 360,
+        "ORIGINAL_RECEIPT_OR_MAIN_PAIR_NOT_MATCHED": 19419,
+        "PRIORITY_ORIGINAL_PACKAGES_NOT_ACQUIRED": 2166,
+        "RAW_ANNUAL_INPUT_UNREADABLE_OR_INCOMPARABLE": 19870,
+        "SIGNAL_BAR_MISSING_OR_NONTRADABLE": 145,
+        "UNIDENTIFIED_MEMBERSHIP_RANK_SLOTS": 0
+      },
+      "originalFinancialFactsCoverage": 0.0,
+      "originalFinancialFactsVerifiedPairs": 0,
+      "researchEligibleObservations": 0,
+      "taxonomyChangeReasonsBySignalYearNonexclusive": {
+        "2020": {
+          "CONCEPT_BASIS_CHANGED:inventory": 2887,
+          "CONCEPT_BASIS_CHANGED:sales": 2843
+        },
+        "2021": {
+          "CONCEPT_BASIS_CHANGED:inventory": 891,
+          "CONCEPT_BASIS_CHANGED:sales": 825
+        },
+        "2022": {
+          "CONCEPT_BASIS_CHANGED:inventory": 50
+        },
+        "2023": {
+          "CONCEPT_BASIS_CHANGED:inventory": 49
+        },
+        "2024": {
+          "CONCEPT_BASIS_CHANGED:inventory": 9
+        }
+      }
+    }
+  },
+  "sourceReceipts": {
+    "acquisitionManifestSha256": "28934164aff7ad9b00c77f72396a62efd4774ade0babc0d60786d0116d3bba0a",
+    "baselineCoverageSha256": "cd795d96277b251e6b2b2d4119281d829418ce1605518fd6ee79f2c86eca12f1",
+    "codeSha256": "001b0bfdcb4046e50c3cfeb14b78b04b68b933b676ef5dbe5db9d49723aa0f9d",
+    "fixedPortablePlanSha256": "2c73067ced7c59a2b23a693b5db6aca37f45d69c478c2f789df877126f738766",
+    "measurementCoverageSha256": "50a2bc6fcd49dfdb1c3a7b758739af37ab107cacecbca9a273c03b2a28d740dc"
+  },
+  "status": "SOURCE_QUALITY_ONLY_NOT_ALPHA_EVIDENCE",
+  "taxonomyVerdict": "UNRESOLVED_UNTIL_ORIGINAL_FACT_AND_TAXONOMY_EVIDENCE; no prefix-only economic equivalence assumed",
+  "verifiedOriginalFactsImprovement": {
+    "collection_discipline": 0,
+    "inventory_discipline": 0
+  }
+}

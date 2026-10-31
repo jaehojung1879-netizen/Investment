@@ -1,0 +1,427 @@
+{
+  "benchmarkSensitivity": {
+    "correctedRecordedExcessPp": 1.752,
+    "originalRecordedExcessPp": 0.364,
+    "stockLegsFullyReconciled": false
+  },
+  "calendar": {
+    "blocks": 155,
+    "endDate": "2026-09-14",
+    "sessions": 3547,
+    "startDate": "2013-01-07",
+    "years": 13.6841
+  },
+  "calibration": {
+    "directC2ConvictionRankingTest": false,
+    "orderingEstablished": false,
+    "pointer": "/finalAnchorCalibration/regions/KR/ordering",
+    "rankICTStat": 0.677,
+    "topMinusBottomTStat": 1.422
+  },
+  "concentration": {
+    "averageNamesHeld": 3.0,
+    "decisionBlockMeanIndexTargetPct": 40.59,
+    "leaveOneOutSensitivity": null,
+    "topContributionsTruncated": [
+      {
+        "navUnits": 2.52928,
+        "ticker": "069500.KS"
+      },
+      {
+        "navUnits": 0.45127,
+        "ticker": "024110.KS"
+      },
+      {
+        "navUnits": 0.42522,
+        "ticker": "010130.KS"
+      },
+      {
+        "navUnits": 0.36373,
+        "ticker": "088980.KS"
+      },
+      {
+        "navUnits": 0.32528,
+        "ticker": "033780.KS"
+      },
+      {
+        "navUnits": -0.29403,
+        "ticker": "068270.KS"
+      },
+      {
+        "navUnits": 0.19745,
+        "ticker": "316140.KS"
+      },
+      {
+        "navUnits": 0.19686,
+        "ticker": "012330.KS"
+      },
+      {
+        "navUnits": 0.19257,
+        "ticker": "207940.KS"
+      },
+      {
+        "navUnits": 0.17817,
+        "ticker": "006260.KS"
+      }
+    ]
+  },
+  "contrastUnits": {
+    "annualizedCostDragPct": "percentage points",
+    "annualizedDownsideVolatilityPct": "percentage points",
+    "annualizedVolatilityPct": "percentage points",
+    "cagrPct": "percentage points",
+    "maxDrawdownPct": "percentage points",
+    "oneWayTurnoverPerYear": "one-way times/year"
+  },
+  "contrastsFromRoundedPublishedScalars": {
+    "C2_MINUS_C1": {
+      "annualizedCostDragPct": 0.094,
+      "annualizedDownsideVolatilityPct": 6.38,
+      "annualizedVolatilityPct": 5.612,
+      "cagrPct": 3.863,
+      "maxDrawdownPct": -12.226,
+      "oneWayTurnoverPerYear": 0.309
+    },
+    "C2_MINUS_PASSIVE": {
+      "annualizedCostDragPct": 1.647,
+      "annualizedDownsideVolatilityPct": -5.859,
+      "annualizedVolatilityPct": -5.321,
+      "cagrPct": 1.751,
+      "maxDrawdownPct": 8.779,
+      "oneWayTurnoverPerYear": 4.195
+    }
+  },
+  "costBoundAssumptions": [
+    "Fixed recorded decisions, gross legs and proportional cost accounting; no price impact change.",
+    "Original per-block costs nonnegative and below NAV; aggregate retention certifies scaled positivity.",
+    "Bounds include adverse source rounding; they are not exact stressed NAV, MDD, tax or investor-return results."
+  ],
+  "costBounds": [
+    {
+      "candidateNetCagrUpperPct": 12.631017,
+      "edgeUpperPp": 0.129648,
+      "maxOriginalCostFractionUpper": 0.178444,
+      "multiplier": 2,
+      "passiveNetCagrLowerPct": 12.501368,
+      "positiveEdgeRuledOutOnRecordedBasis": false,
+      "status": "CONDITIONAL_BOUND_NOT_REPLAY"
+    },
+    {
+      "candidateNetCagrUpperPct": 11.026715,
+      "edgeUpperPp": -1.470084,
+      "maxOriginalCostFractionUpper": 0.178444,
+      "multiplier": 3,
+      "passiveNetCagrLowerPct": 12.496799,
+      "positiveEdgeRuledOutOnRecordedBasis": true,
+      "status": "CONDITIONAL_BOUND_NOT_REPLAY"
+    }
+  ],
+  "decomposition": {
+    "arithmeticActiveNetPpPerYear": 0.62,
+    "causalStockSelectionAlpha": null,
+    "geometricMinusArithmeticPp": 1.131,
+    "geometricResidualSharePct": 64.55479452054794,
+    "interpretation": "Arithmetic active return includes allocation/beta/sector/timing and costs; residual is not an identified volatility contribution."
+  },
+  "evidenceClass": "POST_OUTCOME_EXPOSED_AGGREGATE_DIAGNOSTIC",
+  "exposureBound": {
+    "absoluteBetaUpperBound": 0.761953,
+    "definition": "ABS_SAMPLE_RAW_DAILY_NET_RETURN_BETA_LE_SIGMA_RATIO",
+    "estimatedBeta": null,
+    "interpretation": "Common daily net-return calendar and identical sample-volatility convention. Includes adverse volatility rounding. A bound is not an estimated beta, cash-adjusted beta, timing skill or causal selection attribution.",
+    "selectionAlpha": null,
+    "sourcePointer": "/regions/KR/paths/{C2,P0}/annualizedVolatilityPct",
+    "unitBetaFeasibleOnRecordedBasis": false
+  },
+  "fallbackReplacement": {
+    "arithmeticActiveNetDifferencePpPerYear": 4.202,
+    "causalSelectionEffect": null,
+    "geometricMinusArithmeticDifferencePp": -0.34,
+    "interpretation": "Same recorded starting stock targets; replacement of residual cash with ETF includes cost/drift/compounding interactions. It is not new stock selection.",
+    "isolatedGrossResidualAssetEffect": null
+  },
+  "historicalLedgerReads": 0,
+  "id": "c2-aggregate-falsification-v2",
+  "modelFits": 0,
+  "nextExperiment": "Separate fixed-C2 common-calendar passive-exposure attribution; source admission and new exact-version authorization required before paths/labels are used.",
+  "notAuthorizedByOriginalOneShotProtocol": [
+    "new matched-beta or selection-null path",
+    "exact 2x/3x cost replay",
+    "stock deletion/concentration replay"
+  ],
+  "observed": {
+    "C1": {
+      "annualizedCostDragPct": 1.558,
+      "annualizedDownsideVolatilityPct": 11.112,
+      "annualizedVolatilityPct": 11.416,
+      "averageBenchmarkWeightPct": 0.0,
+      "averageNamesHeld": 3.0,
+      "cagrPct": 10.395,
+      "grossCagrPct": 11.953,
+      "maxDrawdownPct": -19.801,
+      "nameTrades": 545,
+      "oneWayTurnoverPerYear": 3.886
+    },
+    "C2": {
+      "annualizedCostDragPct": 1.652,
+      "annualizedDownsideVolatilityPct": 17.492,
+      "annualizedVolatilityPct": 17.028,
+      "averageBenchmarkWeightPct": 40.59,
+      "averageNamesHeld": 3.0,
+      "cagrPct": 14.258,
+      "grossCagrPct": 15.91,
+      "maxDrawdownPct": -32.027,
+      "nameTrades": 545,
+      "oneWayTurnoverPerYear": 4.195
+    },
+    "P0": {
+      "annualizedCostDragPct": 0.005,
+      "annualizedDownsideVolatilityPct": 23.351,
+      "annualizedVolatilityPct": 22.349,
+      "averageBenchmarkWeightPct": 100.0,
+      "averageNamesHeld": 0.0,
+      "cagrPct": 12.507,
+      "grossCagrPct": 12.511,
+      "maxDrawdownPct": -40.806,
+      "nameTrades": 0,
+      "oneWayTurnoverPerYear": 0.0
+    }
+  },
+  "promotionEligible": false,
+  "publishedCalendarContext": {
+    "allYears": {
+      "DOWN": {
+        "losses": 0,
+        "unresolvedByRounding": 0,
+        "wins": 5,
+        "years": 5
+      },
+      "UNDETERMINED": {
+        "losses": 0,
+        "unresolvedByRounding": 0,
+        "wins": 0,
+        "years": 0
+      },
+      "UP": {
+        "losses": 7,
+        "unresolvedByRounding": 0,
+        "wins": 2,
+        "years": 9
+      }
+    },
+    "betaMatchedSelectionAlpha": null,
+    "costBasis": "PUBLISHED_1X_MODELED_COSTS_ONLY",
+    "directionIsExPostOutcomeContext": true,
+    "interiorYearsExcludingWindowBookends": {
+      "DOWN": {
+        "losses": 0,
+        "unresolvedByRounding": 0,
+        "wins": 5,
+        "years": 5
+      },
+      "UNDETERMINED": {
+        "losses": 0,
+        "unresolvedByRounding": 0,
+        "wins": 0,
+        "years": 0
+      },
+      "UP": {
+        "losses": 6,
+        "unresolvedByRounding": 0,
+        "wins": 1,
+        "years": 7
+      }
+    },
+    "interpretation": "Post-hoc association only. Realized window direction is not known at selection time; these counts prove neither timing skill nor a causal beta explanation. Bookend windows are not full calendar years.",
+    "rows": [
+      {
+        "benchmarkDirection": "UP",
+        "c2ReturnPct": 10.874,
+        "isWindowBookendYear": true,
+        "outperformed": true,
+        "passiveReturnPct": 0.061,
+        "recordedExcessPp": 10.813,
+        "year": "2013"
+      },
+      {
+        "benchmarkDirection": "DOWN",
+        "c2ReturnPct": 10.662,
+        "isWindowBookendYear": false,
+        "outperformed": true,
+        "passiveReturnPct": -6.582,
+        "recordedExcessPp": 17.244,
+        "year": "2014"
+      },
+      {
+        "benchmarkDirection": "DOWN",
+        "c2ReturnPct": 7.319,
+        "isWindowBookendYear": false,
+        "outperformed": true,
+        "passiveReturnPct": -0.117,
+        "recordedExcessPp": 7.436,
+        "year": "2015"
+      },
+      {
+        "benchmarkDirection": "UP",
+        "c2ReturnPct": 5.256,
+        "isWindowBookendYear": false,
+        "outperformed": false,
+        "passiveReturnPct": 10.187,
+        "recordedExcessPp": -4.931,
+        "year": "2016"
+      },
+      {
+        "benchmarkDirection": "UP",
+        "c2ReturnPct": 25.192,
+        "isWindowBookendYear": false,
+        "outperformed": false,
+        "passiveReturnPct": 27.1,
+        "recordedExcessPp": -1.908,
+        "year": "2017"
+      },
+      {
+        "benchmarkDirection": "DOWN",
+        "c2ReturnPct": 0.199,
+        "isWindowBookendYear": false,
+        "outperformed": true,
+        "passiveReturnPct": -17.321,
+        "recordedExcessPp": 17.52,
+        "year": "2018"
+      },
+      {
+        "benchmarkDirection": "UP",
+        "c2ReturnPct": 3.0,
+        "isWindowBookendYear": false,
+        "outperformed": false,
+        "passiveReturnPct": 14.399,
+        "recordedExcessPp": -11.399,
+        "year": "2019"
+      },
+      {
+        "benchmarkDirection": "UP",
+        "c2ReturnPct": 26.216,
+        "isWindowBookendYear": false,
+        "outperformed": false,
+        "passiveReturnPct": 35.533,
+        "recordedExcessPp": -9.317,
+        "year": "2020"
+      },
+      {
+        "benchmarkDirection": "UP",
+        "c2ReturnPct": 11.745,
+        "isWindowBookendYear": false,
+        "outperformed": true,
+        "passiveReturnPct": 2.999,
+        "recordedExcessPp": 8.746,
+        "year": "2021"
+      },
+      {
+        "benchmarkDirection": "DOWN",
+        "c2ReturnPct": -10.511,
+        "isWindowBookendYear": false,
+        "outperformed": true,
+        "passiveReturnPct": -24.15,
+        "recordedExcessPp": 13.639,
+        "year": "2022"
+      },
+      {
+        "benchmarkDirection": "UP",
+        "c2ReturnPct": 13.281,
+        "isWindowBookendYear": false,
+        "outperformed": false,
+        "passiveReturnPct": 24.842,
+        "recordedExcessPp": -11.561,
+        "year": "2023"
+      },
+      {
+        "benchmarkDirection": "DOWN",
+        "c2ReturnPct": 2.876,
+        "isWindowBookendYear": false,
+        "outperformed": true,
+        "passiveReturnPct": -9.372,
+        "recordedExcessPp": 12.248,
+        "year": "2024"
+      },
+      {
+        "benchmarkDirection": "UP",
+        "c2ReturnPct": 80.3,
+        "isWindowBookendYear": false,
+        "outperformed": false,
+        "passiveReturnPct": 94.207,
+        "recordedExcessPp": -13.907,
+        "year": "2025"
+      },
+      {
+        "benchmarkDirection": "UP",
+        "c2ReturnPct": 30.55,
+        "isWindowBookendYear": true,
+        "outperformed": false,
+        "passiveReturnPct": 74.409,
+        "recordedExcessPp": -43.859,
+        "year": "2026"
+      }
+    ],
+    "sourcePointers": [
+      "/regions/KR/paths/P0/calendarYearReturnPct",
+      "/regions/KR/paths/C2/calendarYearReturnPct",
+      "/regions/KR/paths/C2/excessByCalendarYearPp"
+    ]
+  },
+  "recordedExcessCagrPp": 1.752,
+  "roundingNote": "Recorded excess uses unrounded paths; subtracting displayed three-decimal CAGR can differ by 0.001pp.",
+  "sourcePointer": "/regions/KR/paths",
+  "sources": {
+    "accountingCode": {
+      "commit": "ee0dcca0ec9b4c43c7bc9760dc00939f3b6a6b7f",
+      "path": "scripts/run_weekly_passive_first_replay.py",
+      "sha256": "58bc5ca3f2e313baeb3b8ddbf31534f4fb0909efd69fb7460711ce0a51969592"
+    },
+    "basisProtocol": {
+      "commit": "ee0dcca0ec9b4c43c7bc9760dc00939f3b6a6b7f",
+      "path": "docs/weekly-decision/weekly-passive-first-v1-benchmark-basis-protocol.json",
+      "sha256": "a08f92b06aab6de4959b52d0a5bc0fd2c6b21851c53deca114167898e97a8fe6"
+    },
+    "corrected": {
+      "commit": "ee0dcca0ec9b4c43c7bc9760dc00939f3b6a6b7f",
+      "path": "docs/weekly-decision/weekly-passive-first-v1-replay-corrected-benchmark.json",
+      "sha256": "901b3aee7d3bc06eed3fd2bd14b07a0d4ca4da23745b861a877203c48772b8d2"
+    },
+    "original": {
+      "commit": "ee0dcca0ec9b4c43c7bc9760dc00939f3b6a6b7f",
+      "path": "docs/weekly-decision/weekly-passive-first-v1-replay.json",
+      "sha256": "03ed2d619f3040136f8f13744cb776142d5966f9278092d7b29b81d440e5a957"
+    },
+    "spec": {
+      "commit": "ee0dcca0ec9b4c43c7bc9760dc00939f3b6a6b7f",
+      "path": "docs/weekly-decision/weekly-passive-first-v1.json",
+      "sha256": "bfb25cf8799d29197ab50644a6f5d6cd9a06856db25f6a12c5de953af26b749a"
+    }
+  },
+  "stability": {
+    "c2MinusPassiveHalfCagrPp": {
+      "firstHalfCagrPct": 6.446,
+      "secondHalfCagrPct": -3.607
+    },
+    "calendarYearExcessPp": {
+      "2013": 10.813,
+      "2014": 17.244,
+      "2015": 7.436,
+      "2016": -4.931,
+      "2017": -1.908,
+      "2018": 17.52,
+      "2019": -11.399,
+      "2020": -9.317,
+      "2021": 8.746,
+      "2022": 13.639,
+      "2023": -11.561,
+      "2024": 12.248,
+      "2025": -13.907,
+      "2026": -43.859
+    },
+    "independentEvaluation": false,
+    "splitDate": "2019-10-22"
+  },
+  "validatedAlpha": false,
+  "valuationCalls": 0,
+  "verdict": "INCONCLUSIVE"
+}

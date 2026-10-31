@@ -1,0 +1,80 @@
+{
+  "firstExecution": {
+    "freezeCommit": "dc73bae",
+    "specSha256": "540f9cac43e098326218cd55028c42f1abe5d62d22a0860de2c988666d126b0a",
+    "codeSha256": "98c1ab2cf9f594e86ea3a32a303e714cb1ca089e769bf893f0c1ad21f67c360a",
+    "runtime": {
+      "python": "3.12.14",
+      "numpy": "2.3.5",
+      "pandas": "2.2.3",
+      "exchangeCalendars": "4.11.1"
+    },
+    "outputHashes": {
+      "summary.json": "ac9c236ac23538f6c006c03f1f743eb53952bd548b67eb846faf81619c0d47b7",
+      "coverage.json": "471590a5a1f6910ccc90667c7a2575d5754937341b5e7fb2802f224b3531b5c1",
+      "signal-features.csv": "e3f77105561d66932f2eb47234ecbe7259371746b4c037b634b96dbb7fb97aff",
+      "blocks.json": "07753ac062ffb1b76a075b54ddeffde96db6125f389795a149c6a260733c3c02",
+      "nav-EVALUATION_2020_AFTER_EMBARGO-EX_POST_CONTINUING_NAME_CONDITIONAL-252-2-OVERNIGHT.csv": "5af56d6089617b7bd364afc467c032db7e49cb47ea50afa1959fb6d9cf99bcd2",
+      "nav-EVALUATION_2020_AFTER_EMBARGO-EX_POST_CONTINUING_NAME_CONDITIONAL-252-2-ETF.csv": "87168c60b51945606e34a61c23f75784e03ae84c30f9efae4a2c1c27a9d8e2eb",
+      "nav-EVALUATION_2020_AFTER_EMBARGO-EX_POST_CONTINUING_NAME_CONDITIONAL-252-1-OVERNIGHT.csv": "46aafa3bac824bece7ec433b4ef021da61b0046fda9ce89208e0bc8d9ed4f079",
+      "nav-EVALUATION_2020_AFTER_EMBARGO-EX_POST_CONTINUING_NAME_CONDITIONAL-252-1-ETF.csv": "d6b3074dfc1a4cce79bb3cfa90aec9350754c4e73196ca730f16421e3bf2a112",
+      "nav-DEVELOPMENT_THROUGH_2019-EX_POST_CONTINUING_NAME_CONDITIONAL-252-2-ETF.csv": "75179c1601834cc5d41d31707b9b2937d3237c995e6c3ddcd320eaa8b1cb1e96",
+      "nav-DEVELOPMENT_THROUGH_2019-EX_POST_CONTINUING_NAME_CONDITIONAL-252-1-ETF.csv": "6922f5f2372e8116b5f584286f0115e30b2cba2945c9e2bd5eef3cab85cb14dd",
+      "nav-FULL-EX_POST_CONTINUING_NAME_CONDITIONAL-252-2-ETF.csv": "a770d2b2214ee1f9ca95f081b3d001e6a062fbcba0724adea2b8f14e965da31a",
+      "nav-FULL-EX_POST_CONTINUING_NAME_CONDITIONAL-252-1-ETF.csv": "3bedf36636b73d61c8ddafe936202a60f0ad0ca42f551fdd8ae3fc17211259db",
+      "nav-EVALUATION_2020_AFTER_EMBARGO-EX_POST_CONTINUING_NAME_CONDITIONAL-126-2-ETF.csv": "87168c60b51945606e34a61c23f75784e03ae84c30f9efae4a2c1c27a9d8e2eb",
+      "nav-EVALUATION_2020_AFTER_EMBARGO-EX_POST_CONTINUING_NAME_CONDITIONAL-126-1-ETF.csv": "d6b3074dfc1a4cce79bb3cfa90aec9350754c4e73196ca730f16421e3bf2a112",
+      "nav-DEVELOPMENT_THROUGH_2019-EX_POST_CONTINUING_NAME_CONDITIONAL-126-2-OVERNIGHT.csv": "4fb7053cc6260d4c4acee22f32e37585de0e4e2d7909ce9e7fd82a3859f09664",
+      "nav-DEVELOPMENT_THROUGH_2019-EX_POST_CONTINUING_NAME_CONDITIONAL-126-2-ETF.csv": "629ee09d7aad705c426e7cb2e172f650ee7f3252238f026a960a059c71eaa487",
+      "nav-DEVELOPMENT_THROUGH_2019-EX_POST_CONTINUING_NAME_CONDITIONAL-126-1-OVERNIGHT.csv": "9e5864acf8dd871eb7cf1c294f2eefd10fc7562966f664135264347d62fbefe9",
+      "nav-DEVELOPMENT_THROUGH_2019-EX_POST_CONTINUING_NAME_CONDITIONAL-126-1-ETF.csv": "9330c4f45c2085bef7b1b097a64749b94c398e58c56f19f59166d67475900abb",
+      "nav-FULL-EX_POST_CONTINUING_NAME_CONDITIONAL-126-2-ETF.csv": "a770d2b2214ee1f9ca95f081b3d001e6a062fbcba0724adea2b8f14e965da31a",
+      "nav-FULL-EX_POST_CONTINUING_NAME_CONDITIONAL-126-1-ETF.csv": "3bedf36636b73d61c8ddafe936202a60f0ad0ca42f551fdd8ae3fc17211259db",
+      "nav-EVALUATION_2020_AFTER_EMBARGO-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-252-2-OVERNIGHT.csv": "77b8c00b9fc0da0411cee8664f1a12455f37bb15c35b13cdf454a0a97244bdeb",
+      "nav-EVALUATION_2020_AFTER_EMBARGO-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-252-2-ETF.csv": "87168c60b51945606e34a61c23f75784e03ae84c30f9efae4a2c1c27a9d8e2eb",
+      "nav-EVALUATION_2020_AFTER_EMBARGO-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-252-1-OVERNIGHT.csv": "46065d4abe98cd2d49192c82935b1fd7ad06bc7970320c7ecfcf8c4808d248e3",
+      "nav-EVALUATION_2020_AFTER_EMBARGO-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-252-1-ETF.csv": "d6b3074dfc1a4cce79bb3cfa90aec9350754c4e73196ca730f16421e3bf2a112",
+      "nav-DEVELOPMENT_THROUGH_2019-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-252-2-ETF.csv": "75179c1601834cc5d41d31707b9b2937d3237c995e6c3ddcd320eaa8b1cb1e96",
+      "nav-DEVELOPMENT_THROUGH_2019-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-252-1-ETF.csv": "6922f5f2372e8116b5f584286f0115e30b2cba2945c9e2bd5eef3cab85cb14dd",
+      "nav-FULL-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-252-2-ETF.csv": "a770d2b2214ee1f9ca95f081b3d001e6a062fbcba0724adea2b8f14e965da31a",
+      "nav-FULL-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-252-1-ETF.csv": "3bedf36636b73d61c8ddafe936202a60f0ad0ca42f551fdd8ae3fc17211259db",
+      "nav-EVALUATION_2020_AFTER_EMBARGO-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-126-2-ETF.csv": "87168c60b51945606e34a61c23f75784e03ae84c30f9efae4a2c1c27a9d8e2eb",
+      "nav-EVALUATION_2020_AFTER_EMBARGO-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-126-1-ETF.csv": "d6b3074dfc1a4cce79bb3cfa90aec9350754c4e73196ca730f16421e3bf2a112",
+      "nav-DEVELOPMENT_THROUGH_2019-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-126-2-ETF.csv": "629ee09d7aad705c426e7cb2e172f650ee7f3252238f026a960a059c71eaa487",
+      "nav-DEVELOPMENT_THROUGH_2019-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-126-1-ETF.csv": "9330c4f45c2085bef7b1b097a64749b94c398e58c56f19f59166d67475900abb",
+      "nav-FULL-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-126-2-ETF.csv": "a770d2b2214ee1f9ca95f081b3d001e6a062fbcba0724adea2b8f14e965da31a",
+      "nav-FULL-PIT_WITH_UNRESOLVED_PATHS_BLOCKED-126-1-ETF.csv": "3bedf36636b73d61c8ddafe936202a60f0ad0ca42f551fdd8ae3fc17211259db"
+    }
+  },
+  "reproduction": {
+    "runtime": {
+      "python": "3.12.14",
+      "numpy": "2.3.1",
+      "pandas": "2.3.0",
+      "exchangeCalendars": "4.11.1"
+    },
+    "codeSha256": "ea4209a1890114e7b7cd3b30fa49ecede5d863dada20b1eb3267ae246d0ef7b9",
+    "maximumFinancialDifference": 0,
+    "sameSpec": true,
+    "sameSourceBytes": true,
+    "completePathsChecked": 30,
+    "maximumIndependentCompoundReconciliationGap": 8.02439892311213e-10
+  },
+  "repairsAfterFirstExecution": [
+    "Formatting and passive ETF trade-turnover diagnostic fix in run.py; no signal, selection, horizon, return, cost charge or path-validity rule changed.",
+    "Post-execution diagnostics separately reported. Missing FY2014 accounting shard classified ABSENT rather than treated as zero."
+  ],
+  "oldSealedExecutorsCalled": false,
+  "fullPytestNotRun": "Contains real-data sealed KR equivalence recalculation; user prohibits old study reruns.",
+  "finalMetadataCorrection": {
+    "passiveEtfTurnoverCorrectedBlocks": 280,
+    "allReturnRiskSelectionsCostsAndComparisonsUnchanged": true,
+    "codeSha256": "688573d3c8e565a55369e916511941718316a48b6017355c012b2d100003ca6e",
+    "runtime": {
+      "python": "3.12.14",
+      "numpy": "2.3.1",
+      "pandas": "2.3.0",
+      "exchangeCalendars": "4.11.1"
+    }
+  }
+}

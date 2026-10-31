@@ -1,0 +1,129 @@
+{
+  "allDates": 428,
+  "intendedMemberDates": 51360,
+  "meaning": "OPTIMISTIC_INPUT_ONLY_UPPER_BOUND_BEFORE_ORIGINAL_FACT_FISCAL_COMPARABILITY_AGE_RIGHTS_AND_OUTCOME_GATES",
+  "measurementSha256": {
+    "cohorts.jsonl.gz": "6b23451e56e28ce3225af47be38448bec0d635acf53a46d2361417e661490dfb",
+    "coverage.json": "50a2bc6fcd49dfdb1c3a7b758739af37ab107cacecbca9a273c03b2a28d740dc",
+    "rows.jsonl.gz": "ac53b611e0df160e3846931530532b037e5f3ceef0589de93a8564ea1ca7a766"
+  },
+  "modelFits": 0,
+  "outcomeReads": 0,
+  "planSha256": "2c73067ced7c59a2b23a693b5db6aca37f45d69c478c2f789df877126f738766",
+  "proposedMinimumNamesPerDate": 30,
+  "registeredStudy": false,
+  "scope": "Existing retained source-only Friday coverage grid; proposed first-Friday-after-publication event cohort can only be a subset. No new filing, price, outcome, fit or statistical hypothesis.",
+  "sensitivity": "Gate funnel order is diagnostic and non-causal; counts before source facts/annual duration/fiscal age/rights/executable outcomes are optimistic bounds, not admission.",
+  "signals": {
+    "collection_discipline": {
+      "additionalReceiptDemandBeyondFixed68": 0,
+      "allSourceDemandDatesAtLeast30": 0,
+      "allSourceDemandReceipts": 22,
+      "allSourceDemandUpperBoundRows": 688,
+      "datesMeetingProposed30FromFixed68": 0,
+      "distinctNames": 5,
+      "maxNamesOnOneDateFromFixed68": 4,
+      "upperBoundRowsFromFixed68": 688
+    },
+    "inventory_discipline": {
+      "additionalReceiptDemandBeyondFixed68": 0,
+      "allSourceDemandDatesAtLeast30": 0,
+      "allSourceDemandReceipts": 68,
+      "allSourceDemandUpperBoundRows": 2166,
+      "datesMeetingProposed30FromFixed68": 0,
+      "distinctNames": 14,
+      "maxNamesOnOneDateFromFixed68": 11,
+      "upperBoundRowsFromFixed68": 2166
+    }
+  },
+  "sourceGateFunnel": {
+    "collection_discipline": [
+      {
+        "datesAtLeast30": 428,
+        "maximumNamesOnOneDate": 120,
+        "names": 223,
+        "rows": 51360,
+        "stage": "allIntended"
+      },
+      {
+        "datesAtLeast30": 425,
+        "maximumNamesOnOneDate": 120,
+        "names": 222,
+        "rows": 50842,
+        "stage": "cohortAndTrade"
+      },
+      {
+        "datesAtLeast30": 220,
+        "maximumNamesOnOneDate": 48,
+        "names": 77,
+        "rows": 9572,
+        "stage": "rawReadable"
+      },
+      {
+        "datesAtLeast30": 0,
+        "maximumNamesOnOneDate": 28,
+        "names": 46,
+        "rows": 4637,
+        "stage": "originalMainPair"
+      },
+      {
+        "datesAtLeast30": 0,
+        "maximumNamesOnOneDate": 24,
+        "names": 41,
+        "rows": 4133,
+        "stage": "datedIdentity"
+      },
+      {
+        "datesAtLeast30": 0,
+        "maximumNamesOnOneDate": 4,
+        "names": 5,
+        "rows": 688,
+        "stage": "industryIssuer"
+      }
+    ],
+    "inventory_discipline": [
+      {
+        "datesAtLeast30": 428,
+        "maximumNamesOnOneDate": 120,
+        "names": 223,
+        "rows": 51360,
+        "stage": "allIntended"
+      },
+      {
+        "datesAtLeast30": 425,
+        "maximumNamesOnOneDate": 120,
+        "names": 222,
+        "rows": 50842,
+        "stage": "cohortAndTrade"
+      },
+      {
+        "datesAtLeast30": 369,
+        "maximumNamesOnOneDate": 90,
+        "names": 163,
+        "rows": 30972,
+        "stage": "rawReadable"
+      },
+      {
+        "datesAtLeast30": 250,
+        "maximumNamesOnOneDate": 58,
+        "names": 104,
+        "rows": 11553,
+        "stage": "originalMainPair"
+      },
+      {
+        "datesAtLeast30": 249,
+        "maximumNamesOnOneDate": 48,
+        "names": 90,
+        "rows": 9899,
+        "stage": "datedIdentity"
+      },
+      {
+        "datesAtLeast30": 0,
+        "maximumNamesOnOneDate": 11,
+        "names": 14,
+        "rows": 2166,
+        "stage": "industryIssuer"
+      }
+    ]
+  }
+}
