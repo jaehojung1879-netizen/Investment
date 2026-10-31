@@ -1,0 +1,42 @@
+{
+  "studyId": "industry-ocfyield-conditional-v1",
+  "stage": "OUTCOME_FREE_POWER_AND_FEASIBILITY_GATE",
+  "question": "Does industry MEDIAN_ocfYieldProxy carry information about future H126 industry-minus-069500.KS return AFTER controlling for REL_MOM_126, PIT market beta and TOP1_CAP_SHARE, on one common industry-date set?",
+  "outcomeAccess": "NONE. Only the input columns listed in inputColumns are read from the panel. No rel_*, status_*, entry*/exit*, status or reason column is read. Labels are synthetic.",
+  "panel": "data/kr-industry-opportunity-anatomy-v1/tables/full.csv.gz",
+  "inputColumns": ["date", "industry", "MEDIAN_ocfYieldProxy", "REL_MOM_126", "TOP1_CAP_SHARE"],
+  "feature": "MEDIAN_ocfYieldProxy",
+  "controls": {
+    "available": ["REL_MOM_126", "TOP1_CAP_SHARE"],
+    "missing": {
+      "PIT_MARKET_BETA": "Not a column of the panel. No beta is filled or imputed. Design K2 omits it and is an UPPER BOUND on feasibility: adding a control can only remove a degree of freedom and can only shrink the joint mask. Design K3 adds a synthetic, persistent, label-irrelevant control so the df it consumes is counted."
+    }
+  },
+  "minCrossSection": 8,
+  "minCrossSectionSource": "pipeline/kr_industry_anatomy.py MIN_CROSS_SECTION, inherited, not relaxed",
+  "horizons": {"H126": {"weeks": 25, "role": "PRIMARY"}, "H252": {"weeks": 50, "role": "SECONDARY"}},
+  "maturityRule": "A date is usable for horizon H only if its synthetic window ends on or before the last panel date (calendar position only).",
+  "statistic": "Per-date partial Spearman: within-date average ranks of feature, label and controls; feature ranks and label ranks residualised by OLS on [1, control ranks]; Pearson correlation of the residuals. Date-equal mean over usable dates.",
+  "inference": {
+    "registered": "One-sided self-normalised t (Lobato 2001 / Shao 2010) on the time-ordered per-date series; fixed-b limit critical value computed in this module from IID N(0,1) paths (seed 20261031).",
+    "multiplicity": "Holm over the two horizon slots at familywise 0.05: the primary first step is one-sided alpha 0.025. The power reported is power of that first step, which is an UPPER BOUND on Holm power.",
+    "liberalReference": "Newey-West t, Bartlett lag = horizon weeks, normal critical value. Known to over-reject under this overlap; reported only to show the verdict does not hinge on the conservative test."
+  },
+  "dgp": {
+    "label": "y[t,i] = c * Hw * s[t,i] + sum_{w=t+1}^{t+Hw} u[w,i], where s is the within-date standardised residual of the real feature rank on the real control ranks, u is drawn on the full 610-date x 14-industry grid so overlapping windows share shocks exactly as calendar positions dictate, and c = rho / sqrt(Hw * (1 - rho^2)) makes the per-date Pearson correlation of s and y equal rho.",
+    "noise": {"IID_NORMAL": "u ~ N(0,1)", "T4": "u ~ t(4)/sqrt(2)"},
+    "effectGrid": [0.0, 0.05, 0.10, 0.136, 0.20, 0.30, 0.40, 0.50],
+    "syntheticBeta": "K3 only: AR(1) on the weekly grid, phi 0.98, unit stationary variance, drawn once per cell; it does not enter y."
+  },
+  "replications": 2000,
+  "seed": 20261031,
+  "decisionRule": {
+    "economicallyMeaningfulRho": 0.10,
+    "economicallyMeaningfulRationale": "Marginal anatomy reading: IC +0.136 with a +4.7pp H126 top-minus-bottom tercile gap. A conditional rho of 0.10 is roughly a 3.5pp/126d tercile gap, about 7pp/yr gross long-short and about half that long-only against the ETF, before costs. Smaller effects cannot pay for a sector-rotation book; larger ones are not a reasonable prior for an increment over momentum.",
+    "sizeCeiling": 0.0375,
+    "powerFloor": 0.80,
+    "GO": "H126 K2 IID_NORMAL registered-test power at rho = 0.10 >= 0.80 AND the registered test's size at rho = 0 <= 0.0375 in every noise cell.",
+    "NO_GO": "Anything else. K2 is the most favourable design available: if it fails, the real design (K3 with a real beta mask and an outcome-validity mask that removes terminated-name cohorts) cannot pass, so no outcome is to be read and no beta needs to be built for this question.",
+    "noRescue": "No change of horizon, minimum cross-section, feature, control set, test, effect threshold or sample after this file is committed."
+  }
+}
