@@ -31,16 +31,61 @@ def test_packet_reads_the_registered_contract_and_leaves_exactly_its_null_fields
     assert packet["identities"]["checkMarketResearchProtectedFiles"] == 94
 
 
-def test_status_is_derived_so_it_cannot_be_forged_to_ready():
-    packet = _committed()
-    forged = copy.deepcopy(packet)
+def _reseal(packet):
+    packet["packetSha256"] = P.hashlib.sha256(P.canonical({k: v for k, v in packet.items() if k != "packetSha256"}).encode()).hexdigest()
+    return packet
+
+
+def test_a_forged_ready_packet_with_a_recomputed_digest_is_refused():
+    """The packet must equal a fresh rebuild from code and disk: rewriting its own prerequisites cannot make it READY."""
+    forged = copy.deepcopy(_committed())
+    for item in forged["sourcePrerequisites"]:
+        for dimension in ("rights", "pitVintage", "investability"):
+            if item[dimension]["status"] != "NOT_APPLICABLE_SIGNAL_ONLY":
+                item[dimension]["status"] = P.VERIFIED
+                item[dimension]["evidence"] = [{"path": "docs/invented.json", "sha256": "a" * 64}]
+    forged["accountingReadings"]["F_FUNDED_INVESTOR"]["status"] = "CONSTRUCTIBLE_AND_VERIFIED"
     forged["status"], forged["sourceBlockers"] = "READY_FOR_OWNER_SCOPE_REVIEW", []
-    with pytest.raises(ValueError, match="STATUS_NOT_DERIVED_FROM_PREREQUISITES"):
-        P.verify(forged)
-    repackaged = copy.deepcopy(forged)
-    repackaged["packetSha256"] = P.hashlib.sha256(P.canonical({k: v for k, v in repackaged.items() if k != "packetSha256"}).encode()).hexdigest()
-    with pytest.raises(ValueError, match="STATUS_NOT_DERIVED_FROM_PREREQUISITES"):
-        P.verify(repackaged)       # even with a recomputed digest the derived status disagrees
+    with pytest.raises(ValueError, match="FIELD_DIFFERS_FROM_REBUILD:sourcePrerequisites"):
+        P.verify(_reseal(forged))
+
+
+@pytest.mark.parametrize("edit", [
+    lambda p: p.__setitem__("unapprovedThresholdsLeftNull", {}),
+    lambda p: p["experiment"].__setitem__("buyCost", 0.0),
+    lambda p: p["historicalDataReads"].__setitem__("strategyPathReturnsComputed", 7),
+    lambda p: p.__setitem__("smallestNextStep", "approve"),
+    lambda p: p.__setitem__("injected", True),
+])
+def test_other_resealed_edits_are_also_refused(edit):
+    packet = copy.deepcopy(_committed())
+    edit(packet)
+    with pytest.raises(ValueError, match="FIELD_DIFFERS_FROM_REBUILD|UNKNOWN_FIELD"):
+        P.verify(_reseal(packet))
+
+
+def test_verified_without_retained_evidence_does_not_count():
+    prereqs, readings = _all_verified()
+    assert P.readiness_status(prereqs, readings)[0] == "READY_FOR_OWNER_SCOPE_REVIEW"
+    prereqs[1]["rights"]["evidence"] = []
+    status, blockers = P.readiness_status(prereqs, readings)
+    assert status == "SOURCE_BLOCKED" and blockers == ["VIX:rights:VERIFIED_WITHOUT_RETAINED_EVIDENCE"]
+    prereqs[1]["rights"]["evidence"] = [{"path": "x", "sha256": "short"}]
+    assert P.readiness_status(prereqs, readings)[0] == "SOURCE_BLOCKED"
+
+
+def test_the_superseded_v1_packet_is_recorded_and_no_longer_present():
+    packet = _committed()
+    assert packet["supersedes"]["packet"].endswith("-v1") and len(packet["supersedes"]["packetSha256"]) == 64
+    assert "forged" in packet["supersedes"]["reason"] and "never consumed" in packet["supersedes"]["reason"]
+    assert not (P.OUTPUT.parent / "market-research-c1c-economic-readiness-packet-v1.json").exists()
+    assert packet["studyId"].endswith("-v2")
+
+
+def test_disclosure_names_every_file_family_read():
+    reads = _committed()["historicalDataReads"]
+    assert "bok-policy-rates" in reads["ratesAndCashAmountsRead"] and "issuer dividend" in reads["ratesAndCashAmountsRead"]
+    assert "does not cover these modules" in reads["notCoveredByTheProtectedFileCounter"]
 
 
 @pytest.mark.parametrize("mutate,expected", [
@@ -66,6 +111,7 @@ def test_ready_is_reachable_only_when_every_source_prerequisite_is_verified():
         for dimension in ("rights", "pitVintage", "investability"):
             if item[dimension]["status"] != "NOT_APPLICABLE_SIGNAL_ONLY":
                 item[dimension]["status"] = P.VERIFIED
+                item[dimension]["evidence"] = [{"path": "retained/evidence.json", "sha256": "b" * 64}]
     assert P.readiness_status(prereqs, readings)[0] == "SOURCE_BLOCKED"       # the funded-investor reading is still blocked
     readings["F_FUNDED_INVESTOR"]["status"] = "CONSTRUCTIBLE_AND_VERIFIED"
     assert P.readiness_status(prereqs, readings) == ("READY_FOR_OWNER_SCOPE_REVIEW", [])
@@ -80,6 +126,7 @@ def _all_verified():
         for dimension in ("rights", "pitVintage", "investability"):
             if item[dimension]["status"] != "NOT_APPLICABLE_SIGNAL_ONLY":
                 item[dimension]["status"] = P.VERIFIED
+                item[dimension]["evidence"] = [{"path": "retained/evidence.json", "sha256": "b" * 64}]
     readings = copy.deepcopy(_committed()["accountingReadings"])
     readings["F_FUNDED_INVESTOR"]["status"] = "CONSTRUCTIBLE_AND_VERIFIED"
     return prereqs, readings

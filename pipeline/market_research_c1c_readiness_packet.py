@@ -22,9 +22,9 @@ import json
 from . import market_research_c1c_contract as CONTRACT
 from . import market_research_c1c_source_evidence as EVIDENCE
 
-STUDY = "market-research-c1c-economic-readiness-packet-v1"
+STUDY = "market-research-c1c-economic-readiness-packet-v2"
 ROOT = EVIDENCE.ROOT
-OUTPUT = ROOT / "docs" / "research-program" / "proposals" / "market-research-c1c-economic-readiness-packet-v1.json"
+OUTPUT = ROOT / "docs" / "research-program" / "proposals" / "market-research-c1c-economic-readiness-packet-v2.json"
 EVIDENCE_JSON = "docs/research-program/proposals/market-research-c1c-source-evidence-v1.json"
 CODE_FILES = (
     "pipeline/market_research_c1c.py", "pipeline/market_research_c1c_contract.py", "pipeline/market_research_c1c_decisions.py",
@@ -39,14 +39,25 @@ SIGNAL_INPUT_FILES = (  # the retained normalized series the frozen state rules 
     "data/kr-market-risk-anatomy-v1/sources/FRED_DGS3MO/normalized.csv",
 )
 VERIFIED = "VERIFIED"
+SUPERSEDES = {"packet": "market-research-c1c-economic-readiness-packet-v1", "packetSha256":
+              "329371a76369efdcaadd5aba2d323b5249b03b94db34ffc3bacc50edb46cff28", "committedAt": "f5d0c51bee514fbba43cbf5a328ba185a4167fa8",
+              "reason": "an independent review found that verify() derived the status from the packet's own prerequisites, so a forged "
+                        "READY packet with a recomputed digest passed; the data-read disclosure omitted the BOK and issuer dividend files; "
+                        "VERIFIED was a bare string with no evidence pointer. v1 was never consumed or approved."}
 
 
 def _identity(rel):
     return {"path": rel, "sha256": EVIDENCE.sha256(ROOT / rel)}
 
 
-def _need(status, smallest):
-    return {"status": status, "smallestMissingEvidence": smallest}
+def _need(status, smallest, evidence=None):
+    """`evidence` lists {path, sha256} of retained files. A VERIFIED status without it does not count."""
+    return {"status": status, "smallestMissingEvidence": smallest, "evidence": list(evidence or [])}
+
+
+def _has_evidence(entry):
+    items = entry.get("evidence")
+    return bool(items) and all(isinstance(i, dict) and i.get("path") and len(str(i.get("sha256", ""))) == 64 for i in items)
 
 
 def prerequisites():
@@ -55,7 +66,7 @@ def prerequisites():
     return [
         {"input": "KS200 signal index", "role": "FAST/regime state price series",
          "retained": "FinanceDataReader 0.9.110 route, KOSPI 200 price index levels 1990-01-03..2026-09-17, vintageClass "
-                     "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY, upstream provider behind the route not recorded (identity {})",
+                     "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY, the upstream provider behind the route is not recorded in the retained audit",
          "rights": _need("NOT_RETAINED", "written terms from the index owner (KRX) or an authorised vendor permitting internal research use "
                                          "and retention of daily KOSPI 200 closes, plus the upstream behind the FinanceDataReader route"),
          "pitVintage": _need("NOT_ESTABLISHED", "a dated publication/finality statement for closing index levels, or contemporaneous captures"),
@@ -67,7 +78,8 @@ def prerequisites():
          "pitVintage": _need("NOT_ESTABLISHED", "vintage coverage for VIXCLS or a documented, tested justification of the frozen 4-calendar-day lag"),
          "investability": _need("NOT_APPLICABLE_SIGNAL_ONLY", "none; a signal series is not traded")},
         {"input": "Treasury 10y and 3m", "role": "slow state spread (DGS10, DGS3MO via FRED, origin H.15)",
-         "retained": "FRED DGS10/DGS3MO 1990..2026-10-01; one H.15 release (2012-01-03) corroborated on 8 values in PR comment evidence",
+         "retained": "FRED DGS10/DGS3MO 1990..2026-10-01; a check of one H.15 release (2012-01-03) on 8 values is reported in PR #289 comment "
+                     "6540961783 but its receipt is NOT retained in this repository, so it cannot be verified from here",
          "rights": _need("PARTIAL_BOARD_POLICY_CITED_NOT_RETAINED_IN_REPO", "a retained, hashed copy of the Board reuse policy and the FRED API terms "
                                                                            "for the served series; the earlier check covered selected Board facts only"),
          "pitVintage": _need("NOT_ESTABLISHED", "availability at decision time was UNKNOWN for the one release checked (PDF 2012-01-03 vs HTTP "
@@ -82,8 +94,8 @@ def prerequisites():
          "investability": _need("NOT_VERIFIED", "the actual investor tax treatment for 2012-2026 (the 15.4% rate is an unretained assumption) "
                                                 "and the 26 payment dates")},
         {"input": "KRW cash", "role": "residual cash return of the funded-investor reading",
-         "retained": "BOK base-rate step function (non-investable proxy); retained ECOS evidence covers 722Y001/0101000 and 3-year Treasuries only, "
-                     "REVISED_HISTORY",
+         "retained": "BOK base-rate step function (non-investable proxy); retained ECOS evidence lists 9 macro series (base rate 722Y001/0101000, "
+                     "3-year Treasuries and others) and none is an investable deposit, CD or bill return; REVISED_HISTORY, no release vintage",
          "rights": _need("NOT_RETAINED", "terms for whichever series the owner names"),
          "pitVintage": _need("NOT_ESTABLISHED", "dated release evidence for the named series"),
          "investability": _need("MISSING", "an owner-named investable KRW instrument or rate with a dated source; the BOK base rate is not one, and "
@@ -116,7 +128,9 @@ def readiness_status(prereqs, readings):
     for item in prereqs:
         for dimension in ("rights", "pitVintage", "investability"):
             state = item[dimension]["status"]
-            if state not in (VERIFIED, "NOT_APPLICABLE_SIGNAL_ONLY"):
+            if state == VERIFIED and not _has_evidence(item[dimension]):
+                blockers.append(f"{item['input']}:{dimension}:VERIFIED_WITHOUT_RETAINED_EVIDENCE")
+            elif state not in (VERIFIED, "NOT_APPLICABLE_SIGNAL_ONLY"):
                 blockers.append(f"{item['input']}:{dimension}:{state}")
     if readings["F_FUNDED_INVESTOR"]["status"] != "CONSTRUCTIBLE_AND_VERIFIED":
         blockers.append("F_FUNDED_INVESTOR:" + readings["F_FUNDED_INVESTOR"]["status"])
@@ -150,12 +164,16 @@ def build():
         "accountingReadings": readings,
         "sourcePrerequisites": prereqs,
         "ownerDecisionsUnresolved": list(EVIDENCE.OWNER_DECISIONS),
+        "supersedes": SUPERSEDES,
         "historicalDataReads": {
             "strategyPathReturnsComputed": 0, "stateOrSignalValuesComputed": 0, "armReturnsComputed": 0, "labelsOrOutcomesRead": 0,
             "benchmarkSeriesRead": "069500 as-traded closes and the corrected total-return index (distribution-timing and tax sensitivities) and "
                                    "KS200 index levels (annual reconciliation with the index), all retained files; the benchmark itself, not a "
                                    "strategy path; history is outcome-exposed",
-            "claim": "no unregistered strategy return was read; benchmark price relatives were read for accounting sensitivities only"},
+            "ratesAndCashAmountsRead": "data/bok-policy-rates.json (cash-proxy mean rate) and the issuer dividend JSON and spreadsheet (record and "
+                                       "payment dates, cash amounts, taxable bases): rates and cash amounts, not returns",
+            "notCoveredByTheProtectedFileCounter": "check_market_research.py realNumericValueReads does not cover these modules; this field is the record",
+            "claim": "no unregistered strategy return was read; benchmark price relatives and the files above were read for accounting sensitivities only"},
         "signConvention": evidence["approximateAccounting"]["contrastPer10ppExposureGap"]["unit"],
         "smallestNextStep": "ONE owner decision record, bound to this packet's digest, that (a) states the research-use and retention decision for "
                             "KS200, VIX/FRED, H.15 and the KODEX files and (b) names the KRW cash convention (the registered ZERO scenario, or a specific "
@@ -192,6 +210,13 @@ def verify(packet):
         problems.append("THRESHOLD_NOT_NULL")
     if packet["historicalExecutionAuthorized"] is not False:
         problems.append("EXECUTION_FLAG_NOT_FALSE")
+    rebuilt = build()
+    for key in rebuilt:
+        if key != "packetSha256" and packet.get(key) != rebuilt[key]:
+            problems.append("FIELD_DIFFERS_FROM_REBUILD:" + key)
+    for key in packet:
+        if key not in rebuilt:
+            problems.append("UNKNOWN_FIELD:" + key)
     if problems:
         raise ValueError("READINESS_PACKET_VERIFY_FAILED:" + ",".join(problems))
     return packet["status"]
