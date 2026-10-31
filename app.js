@@ -1008,7 +1008,7 @@ function fourTrackProjection(docs) {
       limitations:'새 C1c 역사 경제성 결과는 없다. CAGR pp는 각 log-growth에 expm1 후 비교; MDD는 덜 음수, CVaR 손실은 작을수록 낫다. 합성 부호는 DESCRIPTIVE_SIGN_ONLY이며 타이밍 알파·검정력·경제적 개선 판정이 아니다.',
       blocker:'실제 공개/빈티지·이용권, ETF 기업행동·분배, KRW 현금 수익 관문이 미해결이다. 배당락 총수익의 미수금을 지급 전 자유 현금으로 볼 수 없다. 역사 현금 0은 가정 시나리오다.',
       nextDecision:'기존 고정 원천의 사용권·known-at 및 배당 지급/미수금 금융 관례를 증빙한다. 경제적 허용오차·다중검정/추론·첫 평가 기준은 미등록 상태로 두고, 준비 후 정확한 별도 실행 승인을 받는다.',
-      executionDecision:proposal.status || 'UNKNOWN', historicalCagr:null, economicVerdict:proposal.economicTolerances ?? null},
+      executionDecision:proposal.status || 'UNKNOWN', historicalCagr:null, economicVerdict:null},
     {id:'industry', pr:290, title:'산업 Alpha', evidenceClass:'OBSERVED_HISTORICAL', researchStatus:'BLOCKED', benchmark:'069500.KS · 산업 상대수익 대용',
       sources:['industry','terminal','atlas'], hypothesis:'산업 상대 모멘텀·OCF 수익률 대용이 산업 순위와 향후 상대수익을 설명하는가?',
       metrics:[metric('industry',ind+'ic/'+mom+'/mean','H126 산업 상대 모멘텀 평균 IC','IC',1,[ind+'ic/'+mom+'/validDates']),

@@ -74,3 +74,7 @@ test('US date-held count is a count, distinct from unknown/full admission',()=>{
   assert.equal(t.metrics.find(m=>m.label==='원천 승인 구성원-주').value,null);
   assert.equal(t.evidenceClass,'UNVERIFIED_OR_BLOCKED');
 });
+test('an economic decision criterion is not an observed economic verdict',()=>{
+  const t=A.fourTrackProjection({market:{economicExperimentProposal:{economicTolerances:{fixture:'criterion-only'}}}})[2];
+  assert.equal(t.economicVerdict,null);assert.equal(t.historicalCagr,null);
+});
