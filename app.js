@@ -767,7 +767,7 @@ function archivedChampionReasonMarkup(receipt) {
     <p>입력된 후보 ${number(m.consideredCount)}개 중 편입 조건 통과 ${number(m.eligibleCount)}개. 목표 최대 ${number(m.targetNames)}개지만 시장당 상한 ${number(m.maxNamesPerRegion)}개, 업종당 상한 ${number(m.maxNamesPerSector)}개를 먼저 적용했습니다.</p>
     <p><b>선정 점수:</b> ${esc(m.scoreFormulaKo || "산식 미기록")}. 알파 백분위는 실제 미래 수익률 예측이 아닌 종목간 순위이고, 하방변동성과 진입상태를 반영해 선정 순서를 정합니다. 이 점수 자체는 매수 허가나 통계적으로 입증된 수익률이 아닙니다.</p>
     ${selected}
-    <p><b>비중:</b> 선택된 종목의 하방변동성 역수에 순위 가중치(선정 3개 기준 1.5 : 1.0 : 0.5)를 곱한 뒤, 허용된 종목 예산 안에서 정규화합니다. 종목/업종 상한을 적용하며 남는 자금은 C1에서는 현금, C2에서는 ${esc(d.residualAsset)}로 대체합니다. 이 기록의 거시 위험예산에 따라 종목 총량은 ${pct(d.stockWeightPct,2)}이며, 현금·지수 잔여 하한 ${pct(d.appliedMinCashPct,2)}가 적용됐습니다.</p>
+    <p><b>비중:</b> 선택된 종목의 하방변동성 역수에 순위 가중치(선정 3개 기준 1.5 : 1.0 : 0.5)를 곱한 뒤, 허용된 종목 예산 안에서 정규화합니다. 종목/업종 상한을 적용하며 남는 자금은 C1에서는 현금, C2에서는 ${esc(d.residualAsset)}로 대체합니다. 당시 거시 위험예산으로 직접 선택한 개별주 예산은 ${pct(d.stockWeightPct,2)}로 제한됐습니다. 이 제한은 C1의 현금 비중을 정하는 규칙이며, <b>C2에서는 잔여 ${pct(d.residualWeightPct,2)}를 주식형 지수 ETF로 치환하므로 총 주식시장 노출은 100%이고 현금은 0%입니다.</b> 지수 편입 종목과 개별주 간 중복 보유·시장 하락 동조 위험이 있습니다.</p>
     ${nearest ? `<p><b>다음 후보의 미선정 근거</b></p>${nearest}` : ""}
     <p class="notice">기록 출처: ${esc(receipt.asOfDate)} 시점 연구 결과. 2013~2026년 C2 재현의 종목별 수익 기여를 검증한 설명이 아니며, 현재 목표 비중도 아닙니다.</p></details>`;
 }
