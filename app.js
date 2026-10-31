@@ -742,6 +742,35 @@ function archivedChampionSnapshot(bundle, market, now = Date.now()) {
     !best || r.asOfDate > best.asOfDate ? r : best, null);
   return {state: "PAST_RESEARCH_RECEIPT", receipt, commit: bundle.commit};
 }
+// Explain ONLY the pinned paper receipt's own eligible ranking and static
+// sizing. The 2013-2026 replay has a different candidate population.
+function archivedChampionReasonMarkup(receipt) {
+  const d = receipt.decisions.C2, m = d.selection || {};
+  const ranks = Array.isArray(m.ranking) ? m.ranking : [];
+  const selected = d.holdings.map(h => {
+    const rank = ranks.find(x => x.ticker === h.ticker && x.selected === true);
+    const factors = h.factorPercentiles || {};
+    const factorText = [["momentum","모멘텀"],["value","가치"],["quality","품질"],["lowvol","저변동"]]
+      .filter(([key]) => finite(factors[key]))
+      .map(([key,label]) => label + " " + fmt(factors[key],0))
+      .join(" · ") || "팩터 백분위 세부값 미기록";
+    const evidence = rank && finite(rank.evidenceCoverage) ? pct(rank.evidenceCoverage*100,1) : "미기록";
+    const mul = rank && finite(rank.entryStateMultiplier) ? fmt(rank.entryStateMultiplier,2) : "미기록";
+    return `<p><b>${esc(h.name || h.ticker)} (${esc(h.ticker)}) — ${pct(h.weightPct,2)}</b>
+      <small>알파 순위 백분위 ${fmt(h.alphaPercentile,0)} · 하방변동성 ${pct(h.downsideVolPct,1)} · 근거 커버리지 ${evidence} · 진입상태 ${esc(h.entryState || "미기록")} (배율 ${mul})</small>
+      <small>순위 점수 ${rank ? fmt(rank.convictionScore,4) : "미기록"} · ${esc(factorText)}</small></p>`;
+  }).join("");
+  const nearest = ranks.filter(x => x && x.selected === false).slice(0,4).map(row =>
+    `<p>${esc(row.ticker)} · 점수 ${fmt(row.convictionScore,4)} · ${esc(exclusionText(row.exclusionCodes) || "선정 조건 미충족")}</p>`
+  ).join("");
+  return `<details class="research-archive-rationale"><summary>왜 이 종목을 골랐나? · 실제 기록된 선정 점수와 비중 산식</summary>
+    <p>입력된 후보 ${number(m.consideredCount)}개 중 편입 조건 통과 ${number(m.eligibleCount)}개. 목표 최대 ${number(m.targetNames)}개지만 시장당 상한 ${number(m.maxNamesPerRegion)}개, 업종당 상한 ${number(m.maxNamesPerSector)}개를 먼저 적용했습니다.</p>
+    <p><b>선정 점수:</b> ${esc(m.scoreFormulaKo || "산식 미기록")}. 알파 백분위는 실제 미래 수익률 예측이 아닌 종목간 순위이고, 하방변동성과 진입상태를 반영해 선정 순서를 정합니다. 이 점수 자체는 매수 허가나 통계적으로 입증된 수익률이 아닙니다.</p>
+    ${selected}
+    <p><b>비중:</b> 선택된 종목의 하방변동성 역수에 순위 가중치(선정 3개 기준 1.5 : 1.0 : 0.5)를 곱한 뒤, 허용된 종목 예산 안에서 정규화합니다. 종목/업종 상한을 적용하며 남는 자금은 C1에서는 현금, C2에서는 ${esc(d.residualAsset)}로 대체합니다. 이 기록의 거시 위험예산에 따라 종목 총량은 ${pct(d.stockWeightPct,2)}이며, 현금·지수 잔여 하한 ${pct(d.appliedMinCashPct,2)}가 적용됐습니다.</p>
+    ${nearest ? `<p><b>다음 후보의 미선정 근거</b></p>${nearest}` : ""}
+    <p class="notice">기록 출처: ${esc(receipt.asOfDate)} 시점 연구 결과. 2013~2026년 C2 재현의 종목별 수익 기여를 검증한 설명이 아니며, 현재 목표 비중도 아닙니다.</p></details>`;
+}
 function archivedChampionMarkup(snapshot, market) {
   if (!snapshot) return '<p class="notice">C2의 마지막 유효 연구 비중을 확인할 수 없습니다. 수치를 추정하지 않습니다.</p>';
   const r = snapshot.receipt, d = r.decisions.C2;
@@ -749,6 +778,7 @@ function archivedChampionMarkup(snapshot, market) {
     <summary>C2 마지막 기록 비중 · ${esc(r.asOfDate)} · 종목 ${d.stockCount}개 + 잔여 지수</summary>
     <p class="notice">과거에 기록된 CHAMPION 연구 변형의 비중입니다. <b>현재 판단이나 매수 추천이 아닙니다.</b> 위 C2의 2013–2026년 수익률에 사용된 21거래일 전략과 후보·시장 위험예산·관측 시점이 다릅니다. 새 기록이 충돌하거나 지연되면 과거 비중을 갱신하지 않습니다.</p>
     <div class="holdings" aria-label="과거 C2 연구 비중 · 현재 매매 대상 아님">${d.holdings.map(h => `<div class="holding"><span>${esc(h.name || h.ticker)}<small>${esc(h.ticker)} · 과거 연구 기록</small></span><b>${pct(h.weightPct,2)}</b></div>`).join("")}<div class="holding residual"><span>${esc(BENCHMARKS[market][1])}<small>${esc(BENCHMARKS[market][0])} · 과거 잔여 지수</small></span><b>${pct(d.residualWeightPct,2)}</b></div></div>
+    ${archivedChampionReasonMarkup(r)}
     <p class="source-caption">종목 합계 ${pct(d.stockWeightPct,2)} · 잔여 지수 ${pct(d.residualWeightPct,2)} · 전체 100% · 기록 생성 ${esc(utcStamp(r.generatedAt))}. 이후 가격 변동을 반영해 비중을 재계산하지 않았습니다.</p>
     <p class="digest">커밋 ${esc(snapshot.commit)} · 기록 해시 ${esc(r.digest)} · ${esc(r.evidenceClass)} · ${link(CHAMPION_PATH+"receipts.jsonl","과거 연구 원문",snapshot.commit)}</p></details>`;
 }
@@ -1097,7 +1127,7 @@ if (typeof module !== "undefined" && module.exports)
     fmt,
     esc,
     CHAMPION_PATH, CHAMPION_VERSION, parseChampionReceipts, validChampionPair,
-    championState, championMarkup, archivedChampionSnapshot, archivedChampionMarkup, displayText, statusText, decisionDatesMarkup, loadResearchPublication, siteIsCurrent, observations, rangePoints, trendSvg,
+    championState, championMarkup, archivedChampionSnapshot, archivedChampionMarkup, archivedChampionReasonMarkup, displayText, statusText, decisionDatesMarkup, loadResearchPublication, siteIsCurrent, observations, rangePoints, trendSvg,
     marketMarkup, macroIndicators, macroMarkup, chartDetail, institutionalMarkup,
     managerDetail, npsMarkup, safeSourceLink, cachedInstitutions, cachedNps, qqqMarkup,
   };
