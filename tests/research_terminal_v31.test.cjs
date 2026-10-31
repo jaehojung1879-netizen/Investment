@@ -150,3 +150,37 @@ test('archived C2 escapes names and cannot turn a recorded paper receipt into ap
   assert.match(html,/21거래일/);
   assert.match(html,/현재 판단이나 매수 추천이 아닙니다/);
 });
+
+
+test('archived C2 rationale renders recorded scores, factor components, actual sizing, exclusions',()=>{
+  const r=bundle.receipts.find(x=>x.region==='KR');
+  const html=A.archivedChampionReasonMarkup(r);
+  const d=r.decisions.C2;
+  assert.match(html,/실제 기록된 선정 점수와 비중 산식/);
+  assert.match(html,/알파 백분위/);
+  assert.match(html,/하방변동성/);
+  assert.match(html,/근거 커버리지/);
+  assert.match(html,/진입상태/);
+  assert.match(html,/1\.5 : 1\.0 : 0\.5/);
+  assert.match(html,/현재 목표 비중도 아닙니다/);
+  for(const h of d.holdings){
+    const rank=d.selection.ranking.find(z=>z.ticker===h.ticker && z.selected);
+    assert.ok(rank);
+    assert.match(html,new RegExp(h.ticker.replaceAll('.','\\.') ));
+    assert.ok(html.includes(A.fmt(rank.convictionScore,4)));
+    assert.ok(html.includes(A.fmt(h.alphaPercentile,0)));
+    assert.ok(html.includes(A.fmt(h.downsideVolPct,1)));
+    assert.ok(html.includes(A.fmt(rank.entryStateMultiplier,2)));
+  }
+  assert.ok(!html.includes('현재 권고 비중'));
+});
+
+test('archived C2 explanation escapes injected source text',()=>{
+  const r=structuredClone(bundle.receipts.find(x=>x.region==='KR'));
+  r.decisions.C2.selection.scoreFormulaKo='<img src=x onerror=alert(1)>';
+  r.decisions.C2.holdings[0].name='<svg onload=alert(1)>';
+  const html=A.archivedChampionReasonMarkup(r);
+  assert.ok(html.includes('&lt;img'));
+  assert.ok(html.includes('&lt;svg'));
+  assert.doesNotMatch(html,/<img|<svg|onerror="/);
+});
