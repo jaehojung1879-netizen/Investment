@@ -93,3 +93,60 @@ test('regional operational reason codes stay in expandable evidence',()=>{
   assert.match(html,/판단 생성 차단/);assert.doesNotMatch(html.split('<details>')[0],/CONFLICTING_SAME_SESSION_INPUT/);
   assert.match(html.split('<details>')[1],/CONFLICTING_SAME_SESSION_INPUT/);assert.doesNotMatch(html,/class="holding|SYN_/);
 });
+
+
+test('C2 archived research is shown separately from a blocked CURRENT observation',()=>{
+  const b=structuredClone(bundle);
+  b.latest.regions.KR.status='BLOCKED';
+  b.latest.regions.KR.reasonCodes=['CONFLICTING_SAME_SESSION_INPUT'];
+  const current=A.championState(b,'KR',site,now);
+  assert.equal(current.state,'BLOCKED');
+  assert.doesNotMatch(A.championMarkup(current,'C2','KR'),/class="holding"/);
+  const archive=A.archivedChampionSnapshot(b,'KR',now);
+  assert.equal(archive.state,'PAST_RESEARCH_RECEIPT');
+  assert.equal(archive.receipt.asOfDate, b.receipts.find(r=>r.region==='KR').asOfDate);
+  const html=A.archivedChampionMarkup(archive,'KR');
+  assert.match(html,/과거.*CHAMPION/);
+  assert.match(html,/현재 판단이나 매수 추천이 아닙니다/);
+  assert.match(html,/data-research-role="PAST_RECORD_ONLY"/);
+  assert.match(html,/잔여 지수/);
+  assert.match(html,/기록 해시/);
+  const positions=archive.receipt.decisions.C2;
+  assert.equal(Object.values(positions.weights).reduce((sum,x)=>sum+x,0),1);
+  for(const hold of positions.holdings) {
+    assert.ok(html.includes(hold.ticker));
+    assert.ok(html.includes(A.fmt(hold.weightPct,2).split('.')[0]));
+  }
+  assert.ok(html.includes(archive.receipt.asOfDate));
+  assert.ok(!A.championMarkup(current,'C2','KR').includes(archive.receipt.asOfDate));
+});
+
+test('archived C2 refuses missing, refused, future and semantically forged history',()=>{
+  assert.equal(A.archivedChampionSnapshot(null,'KR',now),null);
+  assert.equal(A.archivedChampionSnapshot({...bundle,publication:{status:'REFUSED'}},'KR',now),null);
+  assert.equal(A.archivedChampionSnapshot({...bundle,commit:'main'},'KR',now),null);
+  const invalid=structuredClone(bundle);
+  invalid.receipts.find(r=>r.region==='KR').decisions.C2.stockWeights={};
+  assert.equal(A.archivedChampionSnapshot(invalid,'KR',now),null);
+  const future=structuredClone(bundle);
+  future.receipts.find(r=>r.region==='KR').generatedAt='2030-01-01T00:00:00Z';
+  assert.equal(A.archivedChampionSnapshot(future,'KR',now),null);
+  const missing=structuredClone(bundle);
+  missing.receipts=missing.receipts.filter(r=>r.region!=='KR');
+  assert.equal(A.archivedChampionSnapshot(missing,'KR',now),null);
+  assert.doesNotMatch(A.archivedChampionMarkup(null,'KR'),/class="holding"/);
+});
+
+test('archived C2 escapes names and cannot turn a recorded paper receipt into approval',()=>{
+  const b=structuredClone(bundle),r=b.receipts.find(x=>x.region==='KR');
+  r.decisions.C1.holdings[0].name='<svg onload=alert(1)>';
+  r.decisions.C2.holdings[0].name='<svg onload=alert(1)>';
+  const result=A.archivedChampionSnapshot(b,'KR',now);
+  assert.equal(result.state,'PAST_RESEARCH_RECEIPT');
+  const html=A.archivedChampionMarkup(result,'KR');
+  assert.doesNotMatch(html,/<svg onload/);
+  assert.match(html,/&lt;svg/);
+  assert.doesNotMatch(html,/data-current-state="READY"/);
+  assert.match(html,/21거래일/);
+  assert.match(html,/현재 판단이나 매수 추천이 아닙니다/);
+});
