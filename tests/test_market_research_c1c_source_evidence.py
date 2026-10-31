@@ -8,6 +8,7 @@ import pandas as pd
 import pytest
 
 from pipeline import market_research_c1c_source_evidence as S
+from pipeline import market_research_c1c_xls_cells as XLS
 
 
 def _synthetic(n=60, ex_positions=(15, 35, 50), cash=(100.0, 120.0, 90.0), seed=1):
@@ -198,18 +199,64 @@ def test_committed_evidence_matches_a_fresh_build():
     assert committed["admission"]["historicalExecution"] == "BLOCKED"
 
 
-def test_reconstructed_price_equals_the_issuers_own_close_on_every_session():
-    xlrd = pytest.importorskip("xlrd")
+def _rebuilt_price():
     quotes, chain, endpoint = S.load_chain()
-    price = S.as_traded_prices(quotes, chain, endpoint)
-    sheet = xlrd.open_workbook(S.AUDIT / "sources" / "issuer-standard.xls").sheet_by_index(0)
-    issuer = pd.Series({pd.to_datetime(sheet.cell_value(r, 0)): sheet.cell_value(r, 1) for r in range(4, sheet.nrows)})
-    joined = pd.concat({"rebuilt": price, "issuer": issuer}, axis=1).dropna()
-    assert len(joined) == len(price) == 3612
-    worst = float(((joined.rebuilt / joined.issuer) - 1).abs().max())
-    assert worst < 1e-9
-    assert S.RECORDED_ISSUER_CLOSE_CROSS_CHECK["sessions"] == len(joined)
-    assert S.RECORDED_ISSUER_CLOSE_CROSS_CHECK["maxAbsRelativeDifference"] == pytest.approx(worst, abs=1e-9)
+    return S.as_traded_prices(quotes, chain, endpoint), endpoint
+
+
+def test_issuer_close_cross_check_runs_without_xlrd_and_is_a_gate_not_a_skip():
+    """The 3,612-session comparison must run in the required CI, which does not install xlrd."""
+    price, _ = _rebuilt_price()
+    out = S.issuer_close_cross_check(price)
+    assert out["sessions"] == len(price) == 3612 and out["maxAbsRelativeDifference"] < S.ISSUER_CLOSE_TOLERANCE
+    assert out["status"] == "GATING_ASSERTION_RUN_IN_REQUIRED_CI"
+    assert json.loads(S.OUTPUT.read_text())["confirmedSourceFacts"]["asTradedPriceReconstruction"]["issuerAsTradedCloseCrossCheck"]["sessions"] == 3612
+
+
+def test_issuer_close_cross_check_fails_loudly_on_one_wrong_session_or_a_missing_session():
+    price, _ = _rebuilt_price()
+    wrong = price.copy()
+    wrong.iloc[1800] *= 1.0001
+    with pytest.raises(ValueError, match="ISSUER_CLOSE_CROSS_CHECK_FAILED"):
+        S.issuer_close_cross_check(wrong)
+    extra = pd.concat([price, pd.Series([1.0], index=[price.index[-1] + pd.Timedelta(days=1)])])
+    with pytest.raises(ValueError, match="ISSUER_CLOSE_CROSS_CHECK_FAILED"):
+        S.issuer_close_cross_check(extra)
+
+
+def test_xls_reader_anchors_on_the_real_file_including_an_independent_official_quote():
+    price, endpoint = _rebuilt_price()
+    cells = XLS.read_cells(S.AUDIT / "sources" / "issuer-standard.xls")
+    assert len(cells) == 53275
+    assert cells[(4, 0)] == "20261007" and cells[(4, 1)] == 108550.0
+    assert cells[(max(r for r, c in cells), 0)] == "20021014"
+    by_date = {v: cells[(r, 1)] for (r, c), v in cells.items() if c == 0 and r >= 4}
+    assert by_date["20260914"] == endpoint == 105410.0   # the independent official raw endpoint quote in the audit report
+    dividends = XLS.read_cells(S.AUDIT / "sources" / "issuer-dividends.xls")
+    assert len(dividends) == 107 and dividends[(3, 0)] == "20260731" and dividends[(3, 1)] == "20260804"
+
+
+def test_xls_reader_refuses_what_it_does_not_understand(tmp_path):
+    bad = tmp_path / "bad.xls"
+    bad.write_bytes(b"not an xls file")
+    with pytest.raises(XLS.XlsReadError, match="NOT_AN_OLE2_FILE"):
+        XLS.read_cells(bad)
+    real = (S.AUDIT / "sources" / "issuer-standard.xls").read_bytes()
+    cut = tmp_path / "cut.xls"
+    cut.write_bytes(real[:100_000])
+    with pytest.raises(XLS.XlsReadError):
+        XLS.read_cells(cut)
+
+
+def test_xls_reader_matches_xlrd_cell_by_cell_where_xlrd_is_installed():
+    """Extra evidence only: the required gate above does not depend on this."""
+    xlrd = pytest.importorskip("xlrd")
+    for name in ("issuer-standard.xls", "issuer-dividends.xls"):
+        path = S.AUDIT / "sources" / name
+        sheet = xlrd.open_workbook(path).sheet_by_index(0)
+        reference = {(r, c): sheet.cell_value(r, c) for r in range(sheet.nrows) for c in range(sheet.ncols)
+                     if sheet.cell_type(r, c) not in (xlrd.XL_CELL_EMPTY, xlrd.XL_CELL_BLANK)}
+        assert XLS.read_cells(path) == reference
 
 
 def test_module_imports_no_strategy_selection_or_replay_code():
@@ -220,4 +267,8 @@ def test_module_imports_no_strategy_selection_or_replay_code():
             imported.add(("." * node.level) + (node.module or ""))
         elif isinstance(node, ast.Import):
             imported.update(a.name for a in node.names)
-    assert imported <= {"__future__", "hashlib", "json", "pathlib", "numpy", "pandas", ".kr_integrated_alpha_portfolio"}
+    assert imported <= {"__future__", "hashlib", "json", "pathlib", "numpy", "pandas", ".kr_integrated_alpha_portfolio", "."}
+    reader = ast.parse(Path(XLS.__file__).read_text())
+    reader_imports = {n.module if isinstance(n, ast.ImportFrom) else a.name for n in ast.walk(reader)
+                      if isinstance(n, (ast.Import, ast.ImportFrom)) for a in (n.names if isinstance(n, ast.Import) else [None])}
+    assert reader_imports <= {"__future__", "struct", "pathlib"}   # no xlrd, no pandas: nothing a CI install could be missing

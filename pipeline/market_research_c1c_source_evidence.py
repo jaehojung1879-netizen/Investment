@@ -23,6 +23,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from . import market_research_c1c_xls_cells as XLS
 from .kr_integrated_alpha_portfolio import CASH_YIELD, cash_variant_rate, policy_rate_in_force
 
 STUDY = "market-research-c1c-source-evidence-v1"
@@ -41,11 +42,6 @@ PINS = {
     "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-standard.xls":
         "cbdd7a0ce340228ddcfc714de637c512f73c2d691d84ae59a28cfb406d8437b9",
 }
-# Measured once at build time with xlrd (not a CI dependency): the as-traded close rebuilt from the corrected index and the 46
-# cash amounts against the issuer's own close, every session. Recomputed by a test only where xlrd is installed, and read by
-# nothing that gates admission.
-RECORDED_ISSUER_CLOSE_CROSS_CHECK = {"sessions": 3612, "maxAbsRelativeDifference": 0.0, "tool": "xlrd",
-                                     "status": "RECORDED_AT_BUILD_NOT_RECOMPUTED_IN_CI_WITHOUT_XLRD"}
 STUDY_WINDOW = ("2012-01-02", "2026-09-14")
 LAGS_SESSIONS_AFTER_EX = tuple(range(2, 11))
 STATUTORY_TAX_RATE_PCT = 15.4  # NOT retained from an official source in this repository; a stated assumption only
@@ -60,6 +56,23 @@ def verify_pins():
     for rel in PINS:
         if sha256(ROOT / rel) != PINS[rel]:
             raise ValueError("SOURCE_EVIDENCE_INPUT_CHANGED:" + rel)
+
+
+ISSUER_CLOSE_TOLERANCE = 1e-9
+
+
+def issuer_close_cross_check(price, path=None):
+    """GATING: the as-traded close rebuilt from the corrected index and the 46 cash amounts equals the issuer's own close on every
+    session. Read with the dependency-free reader, so it runs in the required CI and cannot skip. Raises on any difference."""
+    cells = XLS.read_cells(path or ROOT / "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-standard.xls")
+    closes = pd.Series({pd.Timestamp(v): cells[(r, 1)] for (r, c), v in cells.items() if c == 0 and r >= 4 and isinstance(v, str) and v.isdigit()})
+    both = pd.concat({"rebuilt": price, "issuer": closes}, axis=1).dropna()
+    worst = float(((both.rebuilt / both.issuer) - 1).abs().max())
+    if len(both) != len(price) or worst > ISSUER_CLOSE_TOLERANCE:
+        raise ValueError(f"ISSUER_CLOSE_CROSS_CHECK_FAILED:{len(both)}_OF_{len(price)}_SESSIONS_MAX_REL_DIFF_{worst:.3e}")
+    return {"sessions": int(len(both)), "maxAbsRelativeDifference": float(f"{worst:.3e}"), "tolerance": ISSUER_CLOSE_TOLERANCE,
+            "reader": "pipeline/market_research_c1c_xls_cells.py (dependency-free; compared cell by cell with xlrd in tests where installed)",
+            "status": "GATING_ASSERTION_RUN_IN_REQUIRED_CI"}
 
 
 def load_chain(path=None):
@@ -169,6 +182,7 @@ def timing_sensitivity(price, chain, official):
                 "boundOnAbsoluteEffectPpPerYear": round(float(max(abs(lower), abs(upper)) * scale), 5),
                 "perEventTriangleEnvelopePpPerYear": round(float((np.abs(known_total) + np.abs(grid).max(axis=1).sum()) * scale), 5),
                 "lagRangeSessionsAfterEx": [LAGS_SESSIONS_AFTER_EX[0], LAGS_SESSIONS_AFTER_EX[-1]],
+                "lagIntervalStatus": "HYPOTHETICAL_SCENARIO_NOT_CERTIFIED_HISTORICAL_COVERAGE",
                 "conditions": ["each unresolved lag lies independently in the stated range (an assumption: all 20 observed are 3)",
                                "first-order per-event approximation (see exactFundedComparison for its size)",
                                "zero return on cash while awaiting payment"]}}
@@ -288,10 +302,11 @@ def contrast_coefficients(timing, tax, cash):
     return {"unit": "pp/yr per 10pp of mean ETF-weight gap between two arms; positive favours the MORE-EXPOSED arm",
             "zeroCashVersusBokProxy": round(cash_effect, 4),
             "zeroCashVersusBokProxyMinusHaircut": round(haircut, 4),
-            "distributionTaxAtAssumedRate": round(tax_effect, 4),
+            "distributionTaxRecentSubperiodOnlyAtAssumedRate": round(tax_effect, 4),
             "paymentTimingMixedLagScenarioAbs": round(timing["mixedLagScenarioWith20Known"]["boundOnAbsoluteEffectPpPerYear"] * 0.10, 5),
             "status": "UNVERIFIED_SENSITIVITY_NOT_A_CORRECTION",
-            "note": "cash and tax act in opposite directions; none of these is applied to any path"}
+            "note": "components are NOT netted and none is applied to any path; the tax component is the 2021-10-28 to 2026-07-30 "
+                    "drag at an assumed, unretained 15.4% rate scaled by 10pp, not a verified 2012-2026 investor tax"}
 
 
 OWNER_DECISIONS = (
@@ -327,7 +342,7 @@ def evidence():
             "asTradedPriceReconstruction": {
                 "method": "invert the once-only gross reinvestment from the corrected index and the 46 cash amounts, anchored on the official raw endpoint quote",
                 "sessions": int(len(price)), "endpointRawQuote": endpoint,
-                "issuerAsTradedCloseCrossCheck": RECORDED_ISSUER_CLOSE_CROSS_CHECK,
+                "issuerAsTradedCloseCrossCheck": issuer_close_cross_check(price),
             },
             "taxBasis": tax,
             "ks200Reconciliation": ks200_reconciliation(quotes, ks),

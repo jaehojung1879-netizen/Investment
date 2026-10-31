@@ -24,8 +24,8 @@
    "unit": "percentage points per year per 100% cash weight"
   },
   "contrastPer10ppExposureGap": {
-   "distributionTaxAtAssumedRate": -0.0302,
-   "note": "cash and tax act in opposite directions; none of these is applied to any path",
+   "distributionTaxRecentSubperiodOnlyAtAssumedRate": -0.0302,
+   "note": "components are NOT netted and none is applied to any path; the tax component is the 2021-10-28 to 2026-07-30 drag at an assumed, unretained 15.4% rate scaled by 10pp, not a verified 2012-2026 investor tax",
    "paymentTimingMixedLagScenarioAbs": 0.00231,
    "status": "UNVERIFIED_SENSITIVITY_NOT_A_CORRECTION",
    "unit": "pp/yr per 10pp of mean ETF-weight gap between two arms; positive favours the MORE-EXPOSED arm",
@@ -141,6 +141,7 @@
     ],
     "knownEventsFixedAtObservedDatesPpPerYear": 0.00819,
     "knownOfficialEvents": 20,
+    "lagIntervalStatus": "HYPOTHETICAL_SCENARIO_NOT_CERTIFIED_HISTORICAL_COVERAGE",
     "lagRangeSessionsAfterEx": [
      2,
      10
@@ -160,10 +161,11 @@
   "asTradedPriceReconstruction": {
    "endpointRawQuote": 105410.0,
    "issuerAsTradedCloseCrossCheck": {
-    "maxAbsRelativeDifference": 0.0,
+    "maxAbsRelativeDifference": 4.219e-15,
+    "reader": "pipeline/market_research_c1c_xls_cells.py (dependency-free; compared cell by cell with xlrd in tests where installed)",
     "sessions": 3612,
-    "status": "RECORDED_AT_BUILD_NOT_RECOMPUTED_IN_CI_WITHOUT_XLRD",
-    "tool": "xlrd"
+    "status": "GATING_ASSERTION_RUN_IN_REQUIRED_CI",
+    "tolerance": 1e-09
    },
    "method": "invert the once-only gross reinvestment from the corrected index and the 46 cash amounts, anchored on the official raw endpoint quote",
    "sessions": 3612
