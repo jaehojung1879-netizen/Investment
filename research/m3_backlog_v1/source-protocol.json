@@ -1,0 +1,46 @@
+{
+  "study": "m3-backlog-to-shipments-3m-v1",
+  "status": "UNAPPROVED_OUTCOME_BLIND_SOURCE_FEASIBILITY_ONLY",
+  "frozenAtUtc": "2026-10-31T23:29:22.258826+00:00",
+  "primaryPredictor": "same-vintage log(SA unfilled orders current reference month / prior month)",
+  "primaryTarget": "mean first-FULL-M3-report within-vintage monthly SA shipment log change across the THREE full calendar months after each forecast cutoff month; nominal business activity, NOT real production or stock returns",
+  "industryPublicationGroups": [
+    "Primary metals",
+    "Fabricated metal products",
+    "Machinery",
+    "Computers and electronic products",
+    "Electrical equipment, appliances, and components",
+    "Transportation equipment"
+  ],
+  "industryScope": "fixed six order-taking durable-goods publication groups; numeric NAICS IDs and vintage equivalence REQUIRE original documentation, not guessed from names; no favourable subgroup selection",
+  "sourceReferenceScope": [
+    "2002-10",
+    "2026-04"
+  ],
+  "evaluationCutoffMonths": "2009-01..2025-12, Jan/Apr/Jul/Oct only (68 fixed non-overlapping future three-month windows)",
+  "forecastCutoff": "23:59:59 America/New_York on final calendar day of each fixed cutoff month; use latest FULL M3 report actually released strictly before cutoff; keep actual reference-month lag",
+  "baseline": "fixed historical persistence: mean of last three source-eligible first-full monthly shipment log changes, forecast unchanged for next three complete calendar months",
+  "candidate": "baseline + beta * primaryPredictor; ONE common beta, no intercept, no clipping or tuning; expanding past-only OLS on residuals using only targets whose complete three-month first-full outcomes were already published before cutoff; >=60 prior fully complete monthly training origins, paired same-input mask",
+  "inference": "ONE primary equal-industry-weight paired squared-error improvement averaged within each fixed calendar cutoff. Compare common six-industry panel with >=60 complete non-overlapping time blocks; never count industries as independent time replications. One-sided alpha .05 candidate, 80% power target; dependence-robust time-block inference must be independently reviewed before registration.",
+  "fixedCoverageGate": {
+    "minimumCompleteEvaluationTimeBlocks": 60,
+    "fixedMaximumEvaluationTimeBlocks": 68,
+    "minimumCompleteIndustryGroupsPerBlock": 6,
+    "minimumReleaseCoverageFraction": 0.95,
+    "minimumPriorCompletedTrainingOrigins": 60,
+    "minimumModelCoverageFraction": 0.9
+  },
+  "powerFeasibilityAssumptions": {
+    "pairedTimeBlockLossEffectStdDevUnits": 0.4,
+    "assumedVarianceInflation": 1.5,
+    "alphaOneSided": 0.05,
+    "powerFloor": 0.8,
+    "notEstimatedFromHistoricalOutcomes": true
+  },
+  "missingness": "missing original full release/date/table cells, suppressed/nonnumeric/nonpositive levels, taxonomy uncertainty, late publication or missing training outcome => BLOCKED/UNKNOWN; no fill, revised-series fallback, synthetic vintage, or dropping hard industries. >=60 complete six-group fixed blocks required.",
+  "vintage": "first FULL M3 publication vintage, which can already revise the earlier advance durable-goods release; never call it earliest advance vintage. Read current/prior columns only WITHIN a fixed source release; do not splice newly benchmarked levels to earlier vintages. As-released monthly changes define target rather than final revised growth.",
+  "stop": "NO_GO if any mandatory rights/PIT/taxonomy/source gate unresolved or fixed support insufficient. Do not change series, horizon, dates, groups or target after viewing outcomes.",
+  "outcomeEvaluationExecuted": false,
+  "pricesReturnsModelsFitsAccessed": false,
+  "priorNoGoPreserved": "us-intra-industry-earnings-transfer-v1"
+}

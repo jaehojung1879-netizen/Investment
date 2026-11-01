@@ -1,0 +1,115 @@
+ROLE: Codex — Lead quantitative researcher
+
+Repository: `jaehojung1879-netizen/Investment`
+
+PRIORITY: P0 — DELIVER AN ACTUAL HISTORICAL BUSINESS-FORECAST RESULT.
+
+The owner is dissatisfied with a month of repeated source-readiness, synthetic-gate and audit-only development. The next deliverable MUST be a numerical real-outcome research result, or a definitive reproducible blocker. Another design-only handoff is not acceptable.
+
+## 1. Start from the completed study
+
+Use your existing `m3-backlog-to-shipments-3m-v1` source-feasibility packet, recorded in issue #292:
+
+- 283 original Census M3 historical full-report PDFs
+- 278 reports with printed date/reference metadata
+- Six fixed manufacturing industries
+- 68 preselected calendar-quarter evaluation cutoffs
+- 66 metadata-supported cutoffs
+- Original-release-vintage policy
+- Frozen three-month future shipment-growth target
+- Fixed persistence baseline
+- One incremental unfilled-orders predictor
+- Source evidence artifact SHA256 `22b2df36c1a06900c8e35e933c761fbf47465aa068661260f2391e4a5cefed22`
+- Existing 26 focused tests passed
+
+Preserve the previously declared source population, industry set, target, horizon, cutoff calendar and baseline.
+
+Do not choose another indicator, time window, industry subset or target after observing outcomes.
+
+## 2. One bounded pre-outcome engineering check
+
+Before touching future outcomes:
+
+A. Commit a compact reproducible source manifest, protocol, actual parser and focused tests to one isolated new branch. Do not publish raw source PDFs unnecessarily.
+
+B. Confirm on a small fixed set of ORIGINAL, manually cross-checked PDF cells that:
+- the correct industry row, units and seasonal-adjustment basis are read;
+- reported month and publication date are not confused;
+- current and prior values belong to the correctly specified release vintage;
+- the future label is unavailable at the decision cutoff;
+- a training example enters the model only once its entire future three-month target was actually published;
+- no revised modern series replaces original values.
+
+C. Fix genuine parser/code defects once without changing the hypothesis or selecting favorable observations.
+
+If original financial values cannot be parsed consistently across the fixed dataset, deliver `NUMERIC_SOURCE_NO_GO` with an exact missing-cell audit. Stop. No new source search or substitute dataset.
+
+## 3. EXECUTE ONE REAL HISTORICAL EVALUATION
+
+When the owner sends this prompt, it constitutes authorization for ONE bounded exploratory business-outcome evaluation under this fixed specification, using only eligible Census public-release data. It does not authorize investment deployment, sealed-study modification or additional hypothesis searches.
+
+After the above fixed pre-outcome technical checks pass, run the actual walk-forward study IN THIS SAME TASK.
+
+Do not stop at another readiness packet or request a redundant development sprint.
+
+At every cutoff:
+- Use only information published strictly before the cutoff.
+- Train the fixed baseline and one candidate under the frozen contract.
+- Forecast the next three complete months' first-full-release nominal shipment growth.
+- Store both forecasts and the eventual original-vintage outcome.
+- Preserve the original six industries and 68-cutoff denominator.
+- Make missing rows explicit. Never zero-fill or silently select favorable blocks.
+
+No model or hyperparameter selection using evaluation outcomes.
+
+## 4. ACTUAL RESULT TABLE — REQUIRED
+
+Report:
+
+- Eligible / evaluated / excluded blocks, by reason.
+- Baseline vs candidate MAE and RMSE.
+- Out-of-sample squared-error improvement (skill = 1 − MSE_candidate / MSE_baseline).
+- Paired loss difference on the SAME industry/cutoff observations.
+- A calendar-time block-dependent uncertainty interval, clustering all six industries within each quarterly cutoff.
+- First-half vs second-half performance, predeclared chronological split.
+- Results by six industries, descriptive only.
+- A dated example of the actual prior signal, both forecasts and realized subsequent shipment growth.
+- Whether the candidate actually improves prediction or is rejected/inconclusive.
+
+Treat at most 66 calendar cutoffs as the primary effective time units; do not claim 396 independent observations by multiplying six industries.
+
+Any new statistical procedure must be stated before reading outcomes. Do not optimize its settings on the observed result. Exploratory significance must not be represented as prospective confirmation.
+
+## 5. Link to actual investment research
+
+A positive shipment forecast result is business-information evidence, NOT stock alpha.
+
+If positive, identify exactly which additional prerequisites would permit a separate Market+Stock vs Market+Industry+Stock net ETF-relative test:
+- dated industry-to-security mapping;
+- licensed historical total-return basis and corporate-action treatment;
+- execution and transaction costs;
+- fixed eligible population and sector controls.
+
+Do not execute that second stock study now. Do not fabricate industry ETF returns.
+
+If negative, close this M3 hypothesis and explicitly state which economic mechanism was falsified. Do not automatically substitute G.17 or start another search.
+
+## 6. Delivery rules
+
+Do not:
+- modify sealed A/B/C studies or their results;
+- rerun failed original hypotheses;
+- build another dashboard, governance framework or data platform;
+- stop after a new preregistration proposal;
+- change the rules after observing the real outcomes;
+- merge into main or change live allocations automatically.
+
+Deliver ONE pull request containing the actual study implementation, an auditable source manifest, real numerical outcome JSON and a concise research report.
+
+A valid completed task has either:
+(A) actual historical forecast error comparisons, with full source and interpretation caveats; or
+(B) one reproducible hard blocker proving those comparisons cannot honestly be computed.
+
+No third outcome such as “design complete, next run recommended.”
+
+Conclude in Korean with the concrete measurements and ONE next research decision.
