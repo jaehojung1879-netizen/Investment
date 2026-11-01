@@ -269,6 +269,14 @@ export function observe(champion, weekly, config, sourceCommit, sourceHashes = {
     residualConvention: "ETF_NOT_CASH; DIFFERENT_FROM_OLD_REPLAY_V16",
     stockCountPolicy: "0..5 inclusive; 5 MAXIMUM not target; 0-ETF is valid",
     rankAndCountAreSeparateVariables: true,
+    portfolioDPolicy: {
+      maxCombinedStocks: 5,
+      regionalScenariosAreNotSimultaneousCombinedAllocations: true,
+      feasibleCountPairs: Array.from({length: 6}, (_, kr) => Array.from(
+        {length: 6 - kr}, (_, us) => ({KR: kr, US: us}))).flat(),
+      allocationAcrossKRAndUS: null,
+      note: "KR + US stock counts must sum to <=5; regional 5-name ladders must NOT be combined as ten stocks."
+    },
     regions: results
   };
 }
