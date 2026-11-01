@@ -150,3 +150,27 @@ def test_nav_rows_carry_the_contract_fields():
                 "sourceCommit", "inputSha256", "date", "nav"):
         assert key in rows[0]
     assert pd.Timestamp(rows[0]["date"]) and rows[0]["evidenceClass"] == S.EVIDENCE_CLASS
+
+
+def test_committed_result_matches_frozen_spec_and_nav_contract():
+    import csv
+    import gzip
+    run = ROOT / "research/entry_state_role_etf_residual_v1"
+    result = json.loads((run / "result.json").read_text())
+    assert result["spec"] == S.spec() and result["source"]["specSha256"] == S.spec_sha256()
+    assert result["promotionEligible"] is False and result["evidenceClass"] == S.EVIDENCE_CLASS
+    with gzip.open(run / "nav-daily.csv.gz", "rt") as stream:
+        rows = list(csv.DictReader(stream))
+    ids = {r["strategyId"] for r in rows}
+    assert {"KR:ETF_ONLY:069500.KS", "US:ETF_ONLY:SPY", "US:SEPARATE_COMPARISON:QQQ",
+            "KR:ENTRY_AT_WEIGHT:N5:ETF", "US:ENTRY_IN_RANK:N5:ETF"} <= ids
+    for row in rows[:5] + rows[-5:]:
+        assert row["currency"] in ("KRW", "USD") and row["frequency"] == "DAILY"
+        if row["costBasis"] == S.NET_ALREADY_CHARGED:
+            with pytest.raises(S.AdditionalCostRefused):
+                S.refuse_additional_cost(row)
+    for region in ("KR", "US"):
+        for n in ("N1", "N2", "N3", "N4", "N5", "N10"):
+            for residual in S.RESIDUALS:
+                for rung in S.RUNGS:
+                    assert result["regions"][region]["scenarios"][n][residual][rung]["metrics"]["available"] is True

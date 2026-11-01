@@ -1,0 +1,201 @@
+spec 7e304b56ce2a42ba117d073b5b1180cde44fec492f411cc5d233c3c8b2eaa790
+KR:ENTRY_IN_RANK:N1:ETF: COMPLETE 155 blocks 24.4s
+KR:ENTRY_AT_WEIGHT:N1:ETF: COMPLETE 155 blocks 23.8s
+KR:ENTRY_IN_RANK:N1:CASH: COMPLETE 155 blocks 26.3s
+KR:ENTRY_AT_WEIGHT:N1:CASH: COMPLETE 155 blocks 23.3s
+KR:ENTRY_IN_RANK:N2:ETF: COMPLETE 155 blocks 19.2s
+KR:ENTRY_AT_WEIGHT:N2:ETF: COMPLETE 155 blocks 27.1s
+KR:ENTRY_IN_RANK:N2:CASH: COMPLETE 155 blocks 22.5s
+KR:ENTRY_AT_WEIGHT:N2:CASH: COMPLETE 155 blocks 18.1s
+KR:ENTRY_IN_RANK:N3:ETF: COMPLETE 155 blocks 27.7s
+KR:ENTRY_AT_WEIGHT:N3:ETF: COMPLETE 155 blocks 24.0s
+KR:ENTRY_IN_RANK:N3:CASH: COMPLETE 155 blocks 22.7s
+KR:ENTRY_AT_WEIGHT:N3:CASH: COMPLETE 155 blocks 23.4s
+KR:ENTRY_IN_RANK:N4:ETF: COMPLETE 155 blocks 24.3s
+KR:ENTRY_AT_WEIGHT:N4:ETF: COMPLETE 155 blocks 19.3s
+KR:ENTRY_IN_RANK:N4:CASH: COMPLETE 155 blocks 28.2s
+KR:ENTRY_AT_WEIGHT:N4:CASH: COMPLETE 155 blocks 23.8s
+KR:ENTRY_IN_RANK:N5:ETF: COMPLETE 155 blocks 20.5s
+KR:ENTRY_AT_WEIGHT:N5:ETF: COMPLETE 155 blocks 28.1s
+KR:ENTRY_IN_RANK:N5:CASH: COMPLETE 155 blocks 24.2s
+KR:ENTRY_AT_WEIGHT:N5:CASH: COMPLETE 155 blocks 20.2s
+KR:ENTRY_IN_RANK:N10:ETF: COMPLETE 155 blocks 29.5s
+KR:ENTRY_AT_WEIGHT:N10:ETF: COMPLETE 155 blocks 25.9s
+KR:ENTRY_IN_RANK:N10:CASH: COMPLETE 155 blocks 21.4s
+KR:ENTRY_AT_WEIGHT:N10:CASH: COMPLETE 155 blocks 29.2s
+US:ENTRY_IN_RANK:N1:ETF: COMPLETE 155 blocks 17.8s
+US:ENTRY_AT_WEIGHT:N1:ETF: COMPLETE 155 blocks 25.6s
+US:ENTRY_IN_RANK:N1:CASH: COMPLETE 155 blocks 22.3s
+US:ENTRY_AT_WEIGHT:N1:CASH: COMPLETE 155 blocks 17.9s
+US:ENTRY_IN_RANK:N2:ETF: COMPLETE 155 blocks 27.4s
+US:ENTRY_AT_WEIGHT:N2:ETF: COMPLETE 155 blocks 19.6s
+US:ENTRY_IN_RANK:N2:CASH: COMPLETE 155 blocks 27.0s
+US:ENTRY_AT_WEIGHT:N2:CASH: COMPLETE 155 blocks 23.0s
+US:ENTRY_IN_RANK:N3:ETF: COMPLETE 155 blocks 19.2s
+US:ENTRY_AT_WEIGHT:N3:ETF: COMPLETE 155 blocks 27.3s
+US:ENTRY_IN_RANK:N3:CASH: COMPLETE 155 blocks 22.5s
+US:ENTRY_AT_WEIGHT:N3:CASH: COMPLETE 155 blocks 18.5s
+US:ENTRY_IN_RANK:N4:ETF: COMPLETE 155 blocks 27.8s
+US:ENTRY_AT_WEIGHT:N4:ETF: COMPLETE 155 blocks 20.2s
+US:ENTRY_IN_RANK:N4:CASH: COMPLETE 155 blocks 27.5s
+US:ENTRY_AT_WEIGHT:N4:CASH: COMPLETE 155 blocks 24.0s
+US:ENTRY_IN_RANK:N5:ETF: COMPLETE 155 blocks 20.2s
+US:ENTRY_AT_WEIGHT:N5:ETF: COMPLETE 155 blocks 27.8s
+US:ENTRY_IN_RANK:N5:CASH: COMPLETE 155 blocks 23.9s
+US:ENTRY_AT_WEIGHT:N5:CASH: COMPLETE 155 blocks 20.8s
+US:ENTRY_IN_RANK:N10:ETF: COMPLETE 155 blocks 30.0s
+US:ENTRY_AT_WEIGHT:N10:ETF: COMPLETE 155 blocks 21.7s
+US:ENTRY_IN_RANK:N10:CASH: COMPLETE 155 blocks 29.5s
+US:ENTRY_AT_WEIGHT:N10:CASH: COMPLETE 155 blocks 26.0s
+{
+ "KR": {
+  "N0": null,
+  "N1": {
+   "available": true,
+   "pairedBlocks": 155,
+   "statistic": "annualized mean log NAV growth difference (incl. cost)",
+   "pointEstimatePp": -0.3764,
+   "ci95Pp": [
+    -2.8652,
+    2.2685
+   ],
+   "contains_zero": true,
+   "direction": "CONTAINS_ZERO"
+  },
+  "N2": {
+   "available": true,
+   "pairedBlocks": 155,
+   "statistic": "annualized mean log NAV growth difference (incl. cost)",
+   "pointEstimatePp": -0.0579,
+   "ci95Pp": [
+    -2.4972,
+    2.5274
+   ],
+   "contains_zero": true,
+   "direction": "CONTAINS_ZERO"
+  },
+  "N3": {
+   "available": true,
+   "pairedBlocks": 155,
+   "statistic": "annualized mean log NAV growth difference (incl. cost)",
+   "pointEstimatePp": 1.0616,
+   "ci95Pp": [
+    -2.424,
+    4.8173
+   ],
+   "contains_zero": true,
+   "direction": "CONTAINS_ZERO"
+  },
+  "N4": {
+   "available": true,
+   "pairedBlocks": 155,
+   "statistic": "annualized mean log NAV growth difference (incl. cost)",
+   "pointEstimatePp": 1.8111,
+   "ci95Pp": [
+    -2.6043,
+    6.3395
+   ],
+   "contains_zero": true,
+   "direction": "CONTAINS_ZERO"
+  },
+  "N5": {
+   "available": true,
+   "pairedBlocks": 155,
+   "statistic": "annualized mean log NAV growth difference (incl. cost)",
+   "pointEstimatePp": 1.7386,
+   "ci95Pp": [
+    -2.7794,
+    6.6591
+   ],
+   "contains_zero": true,
+   "direction": "CONTAINS_ZERO"
+  },
+  "N10": {
+   "available": true,
+   "pairedBlocks": 155,
+   "statistic": "annualized mean log NAV growth difference (incl. cost)",
+   "pointEstimatePp": 1.6111,
+   "ci95Pp": [
+    -2.4661,
+    6.184
+   ],
+   "contains_zero": true,
+   "direction": "CONTAINS_ZERO"
+  }
+ },
+ "US": {
+  "N0": null,
+  "N1": {
+   "available": true,
+   "pairedBlocks": 155,
+   "statistic": "annualized mean log NAV growth difference (incl. cost)",
+   "pointEstimatePp": -2.2624,
+   "ci95Pp": [
+    -7.7154,
+    2.2406
+   ],
+   "contains_zero": true,
+   "direction": "CONTAINS_ZERO"
+  },
+  "N2": {
+   "available": true,
+   "pairedBlocks": 155,
+   "statistic": "annualized mean log NAV growth difference (incl. cost)",
+   "pointEstimatePp": -2.6723,
+   "ci95Pp": [
+    -9.6807,
+    2.7972
+   ],
+   "contains_zero": true,
+   "direction": "CONTAINS_ZERO"
+  },
+  "N3": {
+   "available": true,
+   "pairedBlocks": 155,
+   "statistic": "annualized mean log NAV growth difference (incl. cost)",
+   "pointEstimatePp": -2.5942,
+   "ci95Pp": [
+    -10.5767,
+    3.4246
+   ],
+   "contains_zero": true,
+   "direction": "CONTAINS_ZERO"
+  },
+  "N4": {
+   "available": true,
+   "pairedBlocks": 155,
+   "statistic": "annualized mean log NAV growth difference (incl. cost)",
+   "pointEstimatePp": -1.5026,
+   "ci95Pp": [
+    -7.9933,
+    3.6742
+   ],
+   "contains_zero": true,
+   "direction": "CONTAINS_ZERO"
+  },
+  "N5": {
+   "available": true,
+   "pairedBlocks": 155,
+   "statistic": "annualized mean log NAV growth difference (incl. cost)",
+   "pointEstimatePp": -1.142,
+   "ci95Pp": [
+    -6.4621,
+    3.1779
+   ],
+   "contains_zero": true,
+   "direction": "CONTAINS_ZERO"
+  },
+  "N10": {
+   "available": true,
+   "pairedBlocks": 155,
+   "statistic": "annualized mean log NAV growth difference (incl. cost)",
+   "pointEstimatePp": -0.2946,
+   "ci95Pp": [
+    -3.4032,
+    2.5131
+   ],
+   "contains_zero": true,
+   "direction": "CONTAINS_ZERO"
+  }
+ }
+}

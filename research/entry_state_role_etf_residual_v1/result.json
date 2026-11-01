@@ -1,0 +1,3440 @@
+{
+  "calendar": {
+    "first": "2013-01-07",
+    "lastEnd": "2026-09-14",
+    "maturedBlocks": 155,
+    "sha256": "2dbbfe44e91be42951f1d52d3223990d439aa5424c57b011ba8345c2ae3feee4",
+    "through": "2026-09-14",
+    "unmaturedBlocksPending": 1
+  },
+  "evidenceClass": "HISTORICAL_DEVELOPMENT_OUTCOME_EXPOSED",
+  "liveValidated": false,
+  "productionChanged": false,
+  "promotionEligible": false,
+  "regions": {
+    "KR": {
+      "currency": "KRW",
+      "etf": "069500.KS",
+      "etfOnly": {
+        "annualOneWayTurnoverX": 0.0,
+        "annualizedExcessVsEtfPp": 0.0,
+        "annualizedVolPct": 22.4263,
+        "available": true,
+        "averageResidualPct": 100.0,
+        "averageStockNames": 0.0,
+        "blocks": 155,
+        "cagrPct": 14.8663,
+        "costDragPctOfNavTotal": 0.0,
+        "dailyCvar95Pct": -3.2267,
+        "etfAnnualizedVolPct": 22.4263,
+        "etfCagrPct": 14.8663,
+        "etfMddPct": -40.6882,
+        "first": "2013-01-07",
+        "incumbentRetentionPct": null,
+        "informationRatio": null,
+        "last": "2026-09-14",
+        "mddPct": -40.6882,
+        "namesAddedPerRebalance": 0.0,
+        "namesRetainedPerRebalance": 0.0,
+        "trackingErrorPct": 0.0,
+        "years": 13.6838
+      },
+      "scenarios": {
+        "N0": {
+          "metrics": {
+            "annualOneWayTurnoverX": 0.0,
+            "annualizedExcessVsEtfPp": 0.0,
+            "annualizedVolPct": 22.4263,
+            "available": true,
+            "averageResidualPct": 100.0,
+            "averageStockNames": 0.0,
+            "blocks": 155,
+            "cagrPct": 14.8663,
+            "costDragPctOfNavTotal": 0.0,
+            "dailyCvar95Pct": -3.2267,
+            "etfAnnualizedVolPct": 22.4263,
+            "etfCagrPct": 14.8663,
+            "etfMddPct": -40.6882,
+            "first": "2013-01-07",
+            "incumbentRetentionPct": null,
+            "informationRatio": null,
+            "last": "2026-09-14",
+            "mddPct": -40.6882,
+            "namesAddedPerRebalance": 0.0,
+            "namesRetainedPerRebalance": 0.0,
+            "trackingErrorPct": 0.0,
+            "years": 13.6838
+          },
+          "note": "ETF_ONLY on both rungs by construction"
+        },
+        "N1": {
+          "CASH": {
+            "ENTRY_AT_WEIGHT": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 44.0,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -7.1873,
+                  "medianExcessPct": -1.6797,
+                  "nonOverlappingMeanExcessPct": -5.4752,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -66.8537,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 47.22,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -14.8046,
+                  "medianExcessPct": -3.596,
+                  "nonOverlappingMeanExcessPct": -6.2032,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -57.1103,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 0.9611,
+                "annualizedExcessVsEtfPp": -9.6524,
+                "annualizedVolPct": 4.7335,
+                "available": true,
+                "averageResidualPct": 82.2419,
+                "averageStockNames": 0.929,
+                "blocks": 155,
+                "cagrPct": 5.2139,
+                "costDragPctOfNavTotal": 4.7539,
+                "dailyCvar95Pct": -0.6283,
+                "etfAnnualizedVolPct": 22.4263,
+                "etfCagrPct": 14.8663,
+                "etfMddPct": -40.6882,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 68.53,
+                "informationRatio": -0.3943,
+                "last": "2026-09-14",
+                "mddPct": -11.0366,
+                "namesAddedPerRebalance": 0.2987,
+                "namesRetainedPerRebalance": 0.6364,
+                "trackingErrorPct": 21.6384,
+                "years": 13.6838
+              }
+            },
+            "ENTRY_IN_RANK": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 50.0,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -5.3417,
+                  "medianExcessPct": 0.0333,
+                  "nonOverlappingMeanExcessPct": -3.5284,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -65.4611,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 50.69,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -10.6976,
+                  "medianExcessPct": 0.8781,
+                  "nonOverlappingMeanExcessPct": -2.0511,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -60.1851,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 1.7978,
+                "annualizedExcessVsEtfPp": -6.4948,
+                "annualizedVolPct": 8.3688,
+                "available": true,
+                "averageResidualPct": 72.129,
+                "averageStockNames": 0.929,
+                "blocks": 155,
+                "cagrPct": 8.3715,
+                "costDragPctOfNavTotal": 8.6518,
+                "dailyCvar95Pct": -1.1074,
+                "etfAnnualizedVolPct": 22.4263,
+                "etfCagrPct": 14.8663,
+                "etfMddPct": -40.6882,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 44.06,
+                "informationRatio": -0.2739,
+                "last": "2026-09-14",
+                "mddPct": -14.1755,
+                "namesAddedPerRebalance": 0.526,
+                "namesRetainedPerRebalance": 0.4091,
+                "trackingErrorPct": 20.6514,
+                "years": 13.6838
+              }
+            },
+            "pairedAtWeightMinusInRank": {
+              "available": true,
+              "ci95Pp": [
+                -5.2421,
+                -0.6536
+              ],
+              "contains_zero": false,
+              "direction": "WORSE",
+              "pairedBlocks": 155,
+              "pointEstimatePp": -2.957,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          },
+          "ETF": {
+            "ENTRY_AT_WEIGHT": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 61.33,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": 0.7541,
+                  "medianExcessPct": 0.8018,
+                  "nonOverlappingMeanExcessPct": 0.9046,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -13.5187,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 65.28,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": 1.4396,
+                  "medianExcessPct": 2.8176,
+                  "nonOverlappingMeanExcessPct": 2.9457,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -13.5588,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 1.5263,
+                "annualizedExcessVsEtfPp": 2.5777,
+                "annualizedVolPct": 20.7262,
+                "available": true,
+                "averageResidualPct": 82.2419,
+                "averageStockNames": 0.929,
+                "blocks": 155,
+                "cagrPct": 17.444,
+                "costDragPctOfNavTotal": 5.5651,
+                "dailyCvar95Pct": -2.9467,
+                "etfAnnualizedVolPct": 22.4263,
+                "etfCagrPct": 14.8663,
+                "etfMddPct": -40.6882,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 68.53,
+                "informationRatio": 0.3967,
+                "last": "2026-09-14",
+                "mddPct": -38.4116,
+                "namesAddedPerRebalance": 0.2987,
+                "namesRetainedPerRebalance": 0.6364,
+                "trackingErrorPct": 5.4405,
+                "years": 13.6838
+              }
+            },
+            "ENTRY_IN_RANK": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 64.0,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": 0.8182,
+                  "medianExcessPct": 2.0604,
+                  "nonOverlappingMeanExcessPct": 1.3788,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -15.0113,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 68.75,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": 1.8655,
+                  "medianExcessPct": 4.7333,
+                  "nonOverlappingMeanExcessPct": 4.6583,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -22.5341,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 1.8677,
+                "annualizedExcessVsEtfPp": 3.0205,
+                "annualizedVolPct": 20.755,
+                "available": true,
+                "averageResidualPct": 72.129,
+                "averageStockNames": 0.929,
+                "blocks": 155,
+                "cagrPct": 17.8868,
+                "costDragPctOfNavTotal": 8.6697,
+                "dailyCvar95Pct": -2.9365,
+                "etfAnnualizedVolPct": 22.4263,
+                "etfCagrPct": 14.8663,
+                "etfMddPct": -40.6882,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 44.06,
+                "informationRatio": 0.3012,
+                "last": "2026-09-14",
+                "mddPct": -37.5434,
+                "namesAddedPerRebalance": 0.526,
+                "namesRetainedPerRebalance": 0.4091,
+                "trackingErrorPct": 8.3799,
+                "years": 13.6838
+              }
+            },
+            "pairedAtWeightMinusInRank": {
+              "available": true,
+              "ci95Pp": [
+                -2.8652,
+                2.2685
+              ],
+              "contains_zero": true,
+              "direction": "CONTAINS_ZERO",
+              "pairedBlocks": 155,
+              "pointEstimatePp": -0.3764,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          },
+          "residualEffectEtfMinusCash": {
+            "ENTRY_AT_WEIGHT": {
+              "available": true,
+              "ci95Pp": [
+                1.45,
+                22.3169
+              ],
+              "contains_zero": false,
+              "direction": "BETTER",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 10.9966,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            },
+            "ENTRY_IN_RANK": {
+              "available": true,
+              "ci95Pp": [
+                0.0031,
+                18.3265
+              ],
+              "contains_zero": false,
+              "direction": "BETTER",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 8.4159,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          }
+        },
+        "N10": {
+          "CASH": {
+            "ENTRY_AT_WEIGHT": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 45.33,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -6.2903,
+                  "medianExcessPct": -2.5979,
+                  "nonOverlappingMeanExcessPct": -4.5926,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -63.1557,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 47.22,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -12.9129,
+                  "medianExcessPct": -2.096,
+                  "nonOverlappingMeanExcessPct": -4.4912,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -40.9064,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 2.1701,
+                "annualizedExcessVsEtfPp": -8.4773,
+                "annualizedVolPct": 7.2859,
+                "available": true,
+                "averageResidualPct": 59.9492,
+                "averageStockNames": 7.1742,
+                "blocks": 155,
+                "cagrPct": 6.389,
+                "costDragPctOfNavTotal": 10.6282,
+                "dailyCvar95Pct": -1.0271,
+                "etfAnnualizedVolPct": 22.4263,
+                "etfCagrPct": 14.8663,
+                "etfMddPct": -40.6882,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 66.76,
+                "informationRatio": -0.3787,
+                "last": "2026-09-14",
+                "mddPct": -14.3961,
+                "namesAddedPerRebalance": 2.4351,
+                "namesRetainedPerRebalance": 4.7857,
+                "trackingErrorPct": 19.674,
+                "years": 13.6838
+              }
+            },
+            "ENTRY_IN_RANK": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 46.67,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -3.1233,
+                  "medianExcessPct": -0.4509,
+                  "nonOverlappingMeanExcessPct": -1.6097,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -53.6455,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 50.0,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -6.2376,
+                  "medianExcessPct": -0.0278,
+                  "nonOverlappingMeanExcessPct": 1.5292,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -38.2639,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 3.0703,
+                "annualizedExcessVsEtfPp": -3.6315,
+                "annualizedVolPct": 13.8395,
+                "available": true,
+                "averageResidualPct": 27.8658,
+                "averageStockNames": 7.1742,
+                "blocks": 155,
+                "cagrPct": 11.2348,
+                "costDragPctOfNavTotal": 14.9099,
+                "dailyCvar95Pct": -1.9947,
+                "etfAnnualizedVolPct": 22.4263,
+                "etfCagrPct": 14.8663,
+                "etfMddPct": -40.6882,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 65.67,
+                "informationRatio": -0.1752,
+                "last": "2026-09-14",
+                "mddPct": -29.8903,
+                "namesAddedPerRebalance": 2.513,
+                "namesRetainedPerRebalance": 4.7078,
+                "trackingErrorPct": 17.8091,
+                "years": 13.6838
+              }
+            },
+            "pairedAtWeightMinusInRank": {
+              "available": true,
+              "ci95Pp": [
+                -8.8553,
+                -0.0463
+              ],
+              "contains_zero": false,
+              "direction": "WORSE",
+              "pairedBlocks": 155,
+              "pointEstimatePp": -4.4541,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          },
+          "ETF": {
+            "ENTRY_AT_WEIGHT": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 56.67,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -0.1428,
+                  "medianExcessPct": 1.1174,
+                  "nonOverlappingMeanExcessPct": 0.5265,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -18.4724,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 57.64,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -0.1819,
+                  "medianExcessPct": 1.751,
+                  "nonOverlappingMeanExcessPct": 3.1645,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -16.7311,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 2.8952,
+                "annualizedExcessVsEtfPp": 0.9609,
+                "annualizedVolPct": 18.0128,
+                "available": true,
+                "averageResidualPct": 59.9492,
+                "averageStockNames": 7.1742,
+                "blocks": 155,
+                "cagrPct": 15.8272,
+                "costDragPctOfNavTotal": 11.6323,
+                "dailyCvar95Pct": -2.6406,
+                "etfAnnualizedVolPct": 22.4263,
+                "etfCagrPct": 14.8663,
+                "etfMddPct": -40.6882,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 66.76,
+                "informationRatio": 0.0944,
+                "last": "2026-09-14",
+                "mddPct": -31.5047,
+                "namesAddedPerRebalance": 2.4351,
+                "namesRetainedPerRebalance": 4.7857,
+                "trackingErrorPct": 8.5801,
+                "years": 13.6838
+              }
+            },
+            "ENTRY_IN_RANK": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 55.33,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -1.1361,
+                  "medianExcessPct": 1.141,
+                  "nonOverlappingMeanExcessPct": -0.0138,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -35.8023,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 54.86,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -2.0441,
+                  "medianExcessPct": 2.7105,
+                  "nonOverlappingMeanExcessPct": 3.56,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -34.7036,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 3.368,
+                "annualizedExcessVsEtfPp": -0.8902,
+                "annualizedVolPct": 17.379,
+                "available": true,
+                "averageResidualPct": 27.8658,
+                "averageStockNames": 7.1742,
+                "blocks": 155,
+                "cagrPct": 13.9761,
+                "costDragPctOfNavTotal": 15.2687,
+                "dailyCvar95Pct": -2.5433,
+                "etfAnnualizedVolPct": 22.4263,
+                "etfCagrPct": 14.8663,
+                "etfMddPct": -40.6882,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 65.67,
+                "informationRatio": -0.0533,
+                "last": "2026-09-14",
+                "mddPct": -31.4472,
+                "namesAddedPerRebalance": 2.513,
+                "namesRetainedPerRebalance": 4.7078,
+                "trackingErrorPct": 14.1894,
+                "years": 13.6838
+              }
+            },
+            "pairedAtWeightMinusInRank": {
+              "available": true,
+              "ci95Pp": [
+                -2.4661,
+                6.184
+              ],
+              "contains_zero": true,
+              "direction": "CONTAINS_ZERO",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 1.6111,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          },
+          "residualEffectEtfMinusCash": {
+            "ENTRY_AT_WEIGHT": {
+              "available": true,
+              "ci95Pp": [
+                1.4942,
+                16.6067
+              ],
+              "contains_zero": false,
+              "direction": "BETTER",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 8.4997,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            },
+            "ENTRY_IN_RANK": {
+              "available": true,
+              "ci95Pp": [
+                -0.6126,
+                5.7846
+              ],
+              "contains_zero": true,
+              "direction": "CONTAINS_ZERO",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 2.4346,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          }
+        },
+        "N2": {
+          "CASH": {
+            "ENTRY_AT_WEIGHT": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 46.67,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -7.0031,
+                  "medianExcessPct": -1.3401,
+                  "nonOverlappingMeanExcessPct": -5.3097,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -65.0915,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 47.22,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -14.4922,
+                  "medianExcessPct": -2.8013,
+                  "nonOverlappingMeanExcessPct": -6.0014,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -52.5424,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 1.4054,
+                "annualizedExcessVsEtfPp": -9.3029,
+                "annualizedVolPct": 5.6914,
+                "available": true,
+                "averageResidualPct": 75.2268,
+                "averageStockNames": 1.8581,
+                "blocks": 155,
+                "cagrPct": 5.5634,
+                "costDragPctOfNavTotal": 6.9,
+                "dailyCvar95Pct": -0.7747,
+                "etfAnnualizedVolPct": 22.4263,
+                "etfCagrPct": 14.8663,
+                "etfMddPct": -40.6882,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 59.79,
+                "informationRatio": -0.3852,
+                "last": "2026-09-14",
+                "mddPct": -11.7036,
+                "namesAddedPerRebalance": 0.7597,
+                "namesRetainedPerRebalance": 1.1104,
+                "trackingErrorPct": 21.3136,
+                "years": 13.6838
+              }
+            },
+            "ENTRY_IN_RANK": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 50.67,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -4.4998,
+                  "medianExcessPct": 0.2289,
+                  "nonOverlappingMeanExcessPct": -2.6596,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -58.0979,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 51.39,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -9.1396,
+                  "medianExcessPct": 0.1995,
+                  "nonOverlappingMeanExcessPct": -0.7936,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -36.6147,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 2.6097,
+                "annualizedExcessVsEtfPp": -4.9624,
+                "annualizedVolPct": 10.3593,
+                "available": true,
+                "averageResidualPct": 58.0833,
+                "averageStockNames": 1.8581,
+                "blocks": 155,
+                "cagrPct": 9.9039,
+                "costDragPctOfNavTotal": 12.4462,
+                "dailyCvar95Pct": -1.4366,
+                "etfAnnualizedVolPct": 22.4263,
+                "etfCagrPct": 14.8663,
+                "etfMddPct": -40.6882,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 42.31,
+                "informationRatio": -0.2148,
+                "last": "2026-09-14",
+                "mddPct": -12.5306,
+                "namesAddedPerRebalance": 1.0844,
+                "namesRetainedPerRebalance": 0.7857,
+                "trackingErrorPct": 19.975,
+                "years": 13.6838
+              }
+            },
+            "pairedAtWeightMinusInRank": {
+              "available": true,
+              "ci95Pp": [
+                -6.9958,
+                -1.1679
+              ],
+              "contains_zero": false,
+              "direction": "WORSE",
+              "pairedBlocks": 155,
+              "pointEstimatePp": -4.0295,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          },
+          "ETF": {
+            "ENTRY_AT_WEIGHT": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 56.67,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": 0.1978,
+                  "medianExcessPct": 0.4026,
+                  "nonOverlappingMeanExcessPct": 0.6051,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -15.3003,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 59.72,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": 0.2321,
+                  "medianExcessPct": 2.7558,
+                  "nonOverlappingMeanExcessPct": 2.5763,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -15.4589,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 2.1038,
+                "annualizedExcessVsEtfPp": 1.7845,
+                "annualizedVolPct": 19.4583,
+                "available": true,
+                "averageResidualPct": 75.2268,
+                "averageStockNames": 1.8581,
+                "blocks": 155,
+                "cagrPct": 16.6508,
+                "costDragPctOfNavTotal": 7.8905,
+                "dailyCvar95Pct": -2.7958,
+                "etfAnnualizedVolPct": 22.4263,
+                "etfCagrPct": 14.8663,
+                "etfMddPct": -40.6882,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 59.79,
+                "informationRatio": 0.2247,
+                "last": "2026-09-14",
+                "mddPct": -34.6112,
+                "namesAddedPerRebalance": 0.7597,
+                "namesRetainedPerRebalance": 1.1104,
+                "trackingErrorPct": 6.6718,
+                "years": 13.6838
+              }
+            },
+            "ENTRY_IN_RANK": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 57.33,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": 0.1459,
+                  "medianExcessPct": 2.0766,
+                  "nonOverlappingMeanExcessPct": 1.0012,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -18.5983,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 61.11,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": 0.3668,
+                  "medianExcessPct": 3.3064,
+                  "nonOverlappingMeanExcessPct": 4.1936,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -12.3387,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 2.9119,
+                "annualizedExcessVsEtfPp": 1.8521,
+                "annualizedVolPct": 18.9358,
+                "available": true,
+                "averageResidualPct": 58.0833,
+                "averageStockNames": 1.8581,
+                "blocks": 155,
+                "cagrPct": 16.7185,
+                "costDragPctOfNavTotal": 12.8014,
+                "dailyCvar95Pct": -2.7348,
+                "etfAnnualizedVolPct": 22.4263,
+                "etfCagrPct": 14.8663,
+                "etfMddPct": -40.6882,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 42.31,
+                "informationRatio": 0.146,
+                "last": "2026-09-14",
+                "mddPct": -30.0629,
+                "namesAddedPerRebalance": 1.0844,
+                "namesRetainedPerRebalance": 0.7857,
+                "trackingErrorPct": 10.6567,
+                "years": 13.6838
+              }
+            },
+            "pairedAtWeightMinusInRank": {
+              "available": true,
+              "ci95Pp": [
+                -2.4972,
+                2.5274
+              ],
+              "contains_zero": true,
+              "direction": "CONTAINS_ZERO",
+              "pairedBlocks": 155,
+              "pointEstimatePp": -0.0579,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          },
+          "residualEffectEtfMinusCash": {
+            "ENTRY_AT_WEIGHT": {
+              "available": true,
+              "ci95Pp": [
+                1.2913,
+                20.1517
+              ],
+              "contains_zero": false,
+              "direction": "BETTER",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 9.9874,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            },
+            "ENTRY_IN_RANK": {
+              "available": true,
+              "ci95Pp": [
+                -0.66,
+                13.7091
+              ],
+              "contains_zero": true,
+              "direction": "CONTAINS_ZERO",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 6.0158,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          }
+        },
+        "N3": {
+          "CASH": {
+            "ENTRY_AT_WEIGHT": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 46.67,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -6.7114,
+                  "medianExcessPct": -0.9619,
+                  "nonOverlappingMeanExcessPct": -4.9542,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -63.9913,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 47.22,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -13.8315,
+                  "medianExcessPct": -2.7422,
+                  "nonOverlappingMeanExcessPct": -5.3391,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -49.0356,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 1.835,
+                "annualizedExcessVsEtfPp": -8.989,
+                "annualizedVolPct": 6.7251,
+                "available": true,
+                "averageResidualPct": 68.2422,
+                "averageStockNames": 2.7871,
+                "blocks": 155,
+                "cagrPct": 5.8773,
+                "costDragPctOfNavTotal": 8.9856,
+                "dailyCvar95Pct": -0.9419,
+                "etfAnnualizedVolPct": 22.4263,
+                "etfCagrPct": 14.8663,
+                "etfMddPct": -40.6882,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 58.97,
+                "informationRatio": -0.3771,
+                "last": "2026-09-14",
+                "mddPct": -12.1428,
+                "namesAddedPerRebalance": 1.1623,
+                "namesRetainedPerRebalance": 1.6429,
+                "trackingErrorPct": 21.0047,
+                "years": 13.6838
+              }
+            },
+            "ENTRY_IN_RANK": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 48.67,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -4.0183,
+                  "medianExcessPct": -0.3201,
+                  "nonOverlappingMeanExcessPct": -2.0227,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -55.592,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 53.47,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -7.9658,
+                  "medianExcessPct": 1.4699,
+                  "nonOverlappingMeanExcessPct": 0.5124,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -31.5282,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 3.2866,
+                "annualizedExcessVsEtfPp": -4.702,
+                "annualizedVolPct": 12.4437,
+                "available": true,
+                "averageResidualPct": 44.194,
+                "averageStockNames": 2.7871,
+                "blocks": 155,
+                "cagrPct": 10.1643,
+                "costDragPctOfNavTotal": 15.79,
+                "dailyCvar95Pct": -1.7528,
+                "etfAnnualizedVolPct": 22.4263,
+                "etfCagrPct": 14.8663,
+                "etfMddPct": -40.6882,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 47.09,
+                "informationRatio": -0.2057,
+                "last": "2026-09-14",
+                "mddPct": -18.5058,
+                "namesAddedPerRebalance": 1.4935,
+                "namesRetainedPerRebalance": 1.3117,
+                "trackingErrorPct": 19.7425,
+                "years": 13.6838
+              }
+            },
+            "pairedAtWeightMinusInRank": {
+              "available": true,
+              "ci95Pp": [
+                -8.086,
+                -0.3051
+              ],
+              "contains_zero": false,
+              "direction": "WORSE",
+              "pairedBlocks": 155,
+              "pointEstimatePp": -3.9692,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          },
+          "ETF": {
+            "ENTRY_AT_WEIGHT": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 52.67,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -0.2005,
+                  "medianExcessPct": 0.6088,
+                  "nonOverlappingMeanExcessPct": 0.4228,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -18.1646,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 59.72,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -0.5396,
+                  "medianExcessPct": 2.6973,
+                  "nonOverlappingMeanExcessPct": 2.7095,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -16.795,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 2.6165,
+                "annualizedExcessVsEtfPp": 1.1114,
+                "annualizedVolPct": 18.3509,
+                "available": true,
+                "averageResidualPct": 68.2422,
+                "averageStockNames": 2.7871,
+                "blocks": 155,
+                "cagrPct": 15.9777,
+                "costDragPctOfNavTotal": 10.0814,
+                "dailyCvar95Pct": -2.68,
+                "etfAnnualizedVolPct": 22.4263,
+                "etfCagrPct": 14.8663,
+                "etfMddPct": -40.6882,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 58.97,
+                "informationRatio": 0.1113,
+                "last": "2026-09-14",
+                "mddPct": -31.2926,
+                "namesAddedPerRebalance": 1.1623,
+                "namesRetainedPerRebalance": 1.6429,
+                "trackingErrorPct": 8.4132,
+                "years": 13.6838
+              }
+            },
+            "ENTRY_IN_RANK": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 57.33,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -0.846,
+                  "medianExcessPct": 2.0209,
+                  "nonOverlappingMeanExcessPct": 0.4133,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -28.2816,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 62.5,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -1.6081,
+                  "medianExcessPct": 2.2905,
+                  "nonOverlappingMeanExcessPct": 3.7147,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -24.0914,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 3.6368,
+                "annualizedExcessVsEtfPp": -0.1133,
+                "annualizedVolPct": 18.099,
+                "available": true,
+                "averageResidualPct": 44.194,
+                "averageStockNames": 2.7871,
+                "blocks": 155,
+                "cagrPct": 14.753,
+                "costDragPctOfNavTotal": 16.222,
+                "dailyCvar95Pct": -2.6226,
+                "etfAnnualizedVolPct": 22.4263,
+                "etfCagrPct": 14.8663,
+                "etfMddPct": -40.6882,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 47.09,
+                "informationRatio": -0.0071,
+                "last": "2026-09-14",
+                "mddPct": -28.8234,
+                "namesAddedPerRebalance": 1.4935,
+                "namesRetainedPerRebalance": 1.3117,
+                "trackingErrorPct": 13.4726,
+                "years": 13.6838
+              }
+            },
+            "pairedAtWeightMinusInRank": {
+              "available": true,
+              "ci95Pp": [
+                -2.424,
+                4.8173
+              ],
+              "contains_zero": true,
+              "direction": "CONTAINS_ZERO",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 1.0616,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          },
+          "residualEffectEtfMinusCash": {
+            "ENTRY_AT_WEIGHT": {
+              "available": true,
+              "ci95Pp": [
+                1.3365,
+                18.232
+              ],
+              "contains_zero": false,
+              "direction": "BETTER",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 9.1118,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            },
+            "ENTRY_IN_RANK": {
+              "available": true,
+              "ci95Pp": [
+                -0.8695,
+                9.6321
+              ],
+              "contains_zero": true,
+              "direction": "CONTAINS_ZERO",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 4.0809,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          }
+        },
+        "N4": {
+          "CASH": {
+            "ENTRY_AT_WEIGHT": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 48.0,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -6.3923,
+                  "medianExcessPct": -0.9977,
+                  "nonOverlappingMeanExcessPct": -4.6012,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -63.7937,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 47.22,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -13.0941,
+                  "medianExcessPct": -2.4649,
+                  "nonOverlappingMeanExcessPct": -4.5679,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -44.2627,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 2.0285,
+                "annualizedExcessVsEtfPp": -8.5828,
+                "annualizedVolPct": 7.2537,
+                "available": true,
+                "averageResidualPct": 64.1925,
+                "averageStockNames": 3.7032,
+                "blocks": 155,
+                "cagrPct": 6.2835,
+                "costDragPctOfNavTotal": 9.9091,
+                "dailyCvar95Pct": -1.0156,
+                "etfAnnualizedVolPct": 22.4263,
+                "etfCagrPct": 14.8663,
+                "etfMddPct": -40.6882,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 61.4,
+                "informationRatio": -0.3667,
+                "last": "2026-09-14",
+                "mddPct": -13.0552,
+                "namesAddedPerRebalance": 1.4545,
+                "namesRetainedPerRebalance": 2.2727,
+                "trackingErrorPct": 20.5845,
+                "years": 13.6838
+              }
+            },
+            "ENTRY_IN_RANK": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 48.0,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -3.6451,
+                  "medianExcessPct": -0.8413,
+                  "nonOverlappingMeanExcessPct": -1.6035,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -54.1311,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 53.47,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -7.0564,
+                  "medianExcessPct": 1.5119,
+                  "nonOverlappingMeanExcessPct": 1.3865,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -34.9399,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 3.4925,
+                "annualizedExcessVsEtfPp": -4.4154,
+                "annualizedVolPct": 13.3493,
+                "available": true,
+                "averageResidualPct": 36.3769,
+                "averageStockNames": 3.7032,
+                "blocks": 155,
+                "cagrPct": 10.4509,
+                "costDragPctOfNavTotal": 16.8252,
+                "dailyCvar95Pct": -1.8907,
+                "etfAnnualizedVolPct": 22.4263,
+                "etfCagrPct": 14.8663,
+                "etfMddPct": -40.6882,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 50.88,
+                "informationRatio": -0.1964,
+                "last": "2026-09-14",
+                "mddPct": -24.1211,
+                "namesAddedPerRebalance": 1.8442,
+                "namesRetainedPerRebalance": 1.8831,
+                "trackingErrorPct": 19.3864,
+                "years": 13.6838
+              }
+            },
+            "pairedAtWeightMinusInRank": {
+              "available": true,
+              "ci95Pp": [
+                -8.4993,
+                0.5213
+              ],
+              "contains_zero": true,
+              "direction": "CONTAINS_ZERO",
+              "pairedBlocks": 155,
+              "pointEstimatePp": -3.8461,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          },
+          "ETF": {
+            "ENTRY_AT_WEIGHT": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 54.67,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -0.3329,
+                  "medianExcessPct": 0.8775,
+                  "nonOverlappingMeanExcessPct": 0.4241,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -20.4834,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 57.64,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -0.7334,
+                  "medianExcessPct": 3.0061,
+                  "nonOverlappingMeanExcessPct": 2.9904,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -17.7314,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 2.8241,
+                "annualizedExcessVsEtfPp": 0.7799,
+                "annualizedVolPct": 18.0755,
+                "available": true,
+                "averageResidualPct": 64.1925,
+                "averageStockNames": 3.7032,
+                "blocks": 155,
+                "cagrPct": 15.6463,
+                "costDragPctOfNavTotal": 11.0224,
+                "dailyCvar95Pct": -2.642,
+                "etfAnnualizedVolPct": 22.4263,
+                "etfCagrPct": 14.8663,
+                "etfMddPct": -40.6882,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 61.4,
+                "informationRatio": 0.0723,
+                "last": "2026-09-14",
+                "mddPct": -31.1138,
+                "namesAddedPerRebalance": 1.4545,
+                "namesRetainedPerRebalance": 2.2727,
+                "trackingErrorPct": 9.1,
+                "years": 13.6838
+              }
+            },
+            "ENTRY_IN_RANK": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 56.0,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -1.3827,
+                  "medianExcessPct": 1.1659,
+                  "nonOverlappingMeanExcessPct": 0.1138,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -33.8643,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 56.25,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -2.4749,
+                  "medianExcessPct": 2.045,
+                  "nonOverlappingMeanExcessPct": 3.5843,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -29.9693,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 3.8286,
+                "annualizedExcessVsEtfPp": -1.2956,
+                "annualizedVolPct": 17.7375,
+                "available": true,
+                "averageResidualPct": 36.3769,
+                "averageStockNames": 3.7032,
+                "blocks": 155,
+                "cagrPct": 13.5707,
+                "costDragPctOfNavTotal": 17.2527,
+                "dailyCvar95Pct": -2.5833,
+                "etfAnnualizedVolPct": 22.4263,
+                "etfCagrPct": 14.8663,
+                "etfMddPct": -40.6882,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 50.88,
+                "informationRatio": -0.0753,
+                "last": "2026-09-14",
+                "mddPct": -29.2203,
+                "namesAddedPerRebalance": 1.8442,
+                "namesRetainedPerRebalance": 1.8831,
+                "trackingErrorPct": 14.6549,
+                "years": 13.6838
+              }
+            },
+            "pairedAtWeightMinusInRank": {
+              "available": true,
+              "ci95Pp": [
+                -2.6043,
+                6.3395
+              ],
+              "contains_zero": true,
+              "direction": "CONTAINS_ZERO",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 1.8111,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          },
+          "residualEffectEtfMinusCash": {
+            "ENTRY_AT_WEIGHT": {
+              "available": true,
+              "ci95Pp": [
+                1.1286,
+                16.9812
+              ],
+              "contains_zero": false,
+              "direction": "BETTER",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 8.4426,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            },
+            "ENTRY_IN_RANK": {
+              "available": true,
+              "ci95Pp": [
+                -1.0403,
+                7.1414
+              ],
+              "contains_zero": true,
+              "direction": "CONTAINS_ZERO",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 2.7855,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          }
+        },
+        "N5": {
+          "CASH": {
+            "ENTRY_AT_WEIGHT": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 46.67,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -6.3912,
+                  "medianExcessPct": -1.6763,
+                  "nonOverlappingMeanExcessPct": -4.5752,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -63.4635,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 45.14,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -13.0528,
+                  "medianExcessPct": -2.125,
+                  "nonOverlappingMeanExcessPct": -4.5099,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -41.8476,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 2.1363,
+                "annualizedExcessVsEtfPp": -8.6832,
+                "annualizedVolPct": 7.4906,
+                "available": true,
+                "averageResidualPct": 61.9161,
+                "averageStockNames": 4.6129,
+                "blocks": 155,
+                "cagrPct": 6.1831,
+                "costDragPctOfNavTotal": 10.4495,
+                "dailyCvar95Pct": -1.0512,
+                "etfAnnualizedVolPct": 22.4263,
+                "etfCagrPct": 14.8663,
+                "etfMddPct": -40.6882,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 62.39,
+                "informationRatio": -0.3761,
+                "last": "2026-09-14",
+                "mddPct": -14.3665,
+                "namesAddedPerRebalance": 1.7662,
+                "namesRetainedPerRebalance": 2.8766,
+                "trackingErrorPct": 20.3153,
+                "years": 13.6838
+              }
+            },
+            "ENTRY_IN_RANK": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 48.0,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -3.4113,
+                  "medianExcessPct": -0.606,
+                  "nonOverlappingMeanExcessPct": -1.3532,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -51.7188,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 50.0,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -6.5675,
+                  "medianExcessPct": -0.071,
+                  "nonOverlappingMeanExcessPct": 1.7656,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -39.0303,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 3.4321,
+                "annualizedExcessVsEtfPp": -4.2571,
+                "annualizedVolPct": 13.8237,
+                "available": true,
+                "averageResidualPct": 32.0418,
+                "averageStockNames": 4.6129,
+                "blocks": 155,
+                "cagrPct": 10.6092,
+                "costDragPctOfNavTotal": 16.601,
+                "dailyCvar95Pct": -1.9866,
+                "etfAnnualizedVolPct": 22.4263,
+                "etfCagrPct": 14.8663,
+                "etfMddPct": -40.6882,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 56.34,
+                "informationRatio": -0.1928,
+                "last": "2026-09-14",
+                "mddPct": -29.5608,
+                "namesAddedPerRebalance": 2.0455,
+                "namesRetainedPerRebalance": 2.5974,
+                "trackingErrorPct": 19.0317,
+                "years": 13.6838
+              }
+            },
+            "pairedAtWeightMinusInRank": {
+              "available": true,
+              "ci95Pp": [
+                -8.8345,
+                0.6571
+              ],
+              "contains_zero": true,
+              "direction": "CONTAINS_ZERO",
+              "pairedBlocks": 155,
+              "pointEstimatePp": -4.0839,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          },
+          "ETF": {
+            "ENTRY_AT_WEIGHT": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 54.67,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -0.4635,
+                  "medianExcessPct": 0.6717,
+                  "nonOverlappingMeanExcessPct": 0.3833,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -20.494,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 56.94,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -0.8848,
+                  "medianExcessPct": 2.284,
+                  "nonOverlappingMeanExcessPct": 2.99,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -18.774,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 2.9281,
+                "annualizedExcessVsEtfPp": 0.462,
+                "annualizedVolPct": 18.0105,
+                "available": true,
+                "averageResidualPct": 61.9161,
+                "averageStockNames": 4.6129,
+                "blocks": 155,
+                "cagrPct": 15.3283,
+                "costDragPctOfNavTotal": 11.5568,
+                "dailyCvar95Pct": -2.6336,
+                "etfAnnualizedVolPct": 22.4263,
+                "etfCagrPct": 14.8663,
+                "etfMddPct": -40.6882,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 62.39,
+                "informationRatio": 0.0424,
+                "last": "2026-09-14",
+                "mddPct": -30.9625,
+                "namesAddedPerRebalance": 1.7662,
+                "namesRetainedPerRebalance": 2.8766,
+                "trackingErrorPct": 9.1974,
+                "years": 13.6838
+              }
+            },
+            "ENTRY_IN_RANK": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 56.0,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -1.4121,
+                  "medianExcessPct": 1.2541,
+                  "nonOverlappingMeanExcessPct": 0.2204,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -36.3079,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 56.94,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -2.4371,
+                  "medianExcessPct": 2.9957,
+                  "nonOverlappingMeanExcessPct": 3.7542,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -35.0843,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 3.7459,
+                "annualizedExcessVsEtfPp": -1.5258,
+                "annualizedVolPct": 17.6046,
+                "available": true,
+                "averageResidualPct": 32.0418,
+                "averageStockNames": 4.6129,
+                "blocks": 155,
+                "cagrPct": 13.3405,
+                "costDragPctOfNavTotal": 16.9964,
+                "dailyCvar95Pct": -2.5709,
+                "etfAnnualizedVolPct": 22.4263,
+                "etfCagrPct": 14.8663,
+                "etfMddPct": -40.6882,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 56.34,
+                "informationRatio": -0.0867,
+                "last": "2026-09-14",
+                "mddPct": -32.1107,
+                "namesAddedPerRebalance": 2.0455,
+                "namesRetainedPerRebalance": 2.5974,
+                "trackingErrorPct": 15.0031,
+                "years": 13.6838
+              }
+            },
+            "pairedAtWeightMinusInRank": {
+              "available": true,
+              "ci95Pp": [
+                -2.7794,
+                6.6591
+              ],
+              "contains_zero": true,
+              "direction": "CONTAINS_ZERO",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 1.7386,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          },
+          "residualEffectEtfMinusCash": {
+            "ENTRY_AT_WEIGHT": {
+              "available": true,
+              "ci95Pp": [
+                1.1857,
+                16.4462
+              ],
+              "contains_zero": false,
+              "direction": "BETTER",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 8.2618,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            },
+            "ENTRY_IN_RANK": {
+              "available": true,
+              "ci95Pp": [
+                -0.9784,
+                6.3
+              ],
+              "contains_zero": true,
+              "direction": "CONTAINS_ZERO",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 2.4394,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          }
+        }
+      },
+      "separateComparison": null
+    },
+    "US": {
+      "currency": "USD",
+      "etf": "SPY",
+      "etfOnly": {
+        "annualOneWayTurnoverX": 0.0,
+        "annualizedExcessVsEtfPp": 0.0,
+        "annualizedVolPct": 16.5161,
+        "available": true,
+        "averageResidualPct": 100.0,
+        "averageStockNames": 0.0,
+        "blocks": 155,
+        "cagrPct": 14.7405,
+        "costDragPctOfNavTotal": 0.0,
+        "dailyCvar95Pct": -2.5078,
+        "etfAnnualizedVolPct": 16.5161,
+        "etfCagrPct": 14.7405,
+        "etfMddPct": -33.7173,
+        "first": "2013-01-07",
+        "incumbentRetentionPct": null,
+        "informationRatio": null,
+        "last": "2026-09-14",
+        "mddPct": -33.7173,
+        "namesAddedPerRebalance": 0.0,
+        "namesRetainedPerRebalance": 0.0,
+        "trackingErrorPct": 0.0,
+        "years": 13.6838
+      },
+      "scenarios": {
+        "N0": {
+          "metrics": {
+            "annualOneWayTurnoverX": 0.0,
+            "annualizedExcessVsEtfPp": 0.0,
+            "annualizedVolPct": 16.5161,
+            "available": true,
+            "averageResidualPct": 100.0,
+            "averageStockNames": 0.0,
+            "blocks": 155,
+            "cagrPct": 14.7405,
+            "costDragPctOfNavTotal": 0.0,
+            "dailyCvar95Pct": -2.5078,
+            "etfAnnualizedVolPct": 16.5161,
+            "etfCagrPct": 14.7405,
+            "etfMddPct": -33.7173,
+            "first": "2013-01-07",
+            "incumbentRetentionPct": null,
+            "informationRatio": null,
+            "last": "2026-09-14",
+            "mddPct": -33.7173,
+            "namesAddedPerRebalance": 0.0,
+            "namesRetainedPerRebalance": 0.0,
+            "trackingErrorPct": 0.0,
+            "years": 13.6838
+          },
+          "note": "ETF_ONLY on both rungs by construction"
+        },
+        "N1": {
+          "CASH": {
+            "ENTRY_AT_WEIGHT": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 29.33,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -4.6664,
+                  "medianExcessPct": -6.1878,
+                  "nonOverlappingMeanExcessPct": -4.9114,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -14.4885,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 20.83,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -9.9359,
+                  "medianExcessPct": -11.1314,
+                  "nonOverlappingMeanExcessPct": -11.2921,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -27.4647,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 1.2245,
+                "annualizedExcessVsEtfPp": -8.8684,
+                "annualizedVolPct": 3.8402,
+                "available": true,
+                "averageResidualPct": 85.7742,
+                "averageStockNames": 0.9355,
+                "blocks": 155,
+                "cagrPct": 5.8721,
+                "costDragPctOfNavTotal": 2.8144,
+                "dailyCvar95Pct": -0.5472,
+                "etfAnnualizedVolPct": 16.5161,
+                "etfCagrPct": 14.7405,
+                "etfMddPct": -33.7173,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 34.72,
+                "informationRatio": -0.5089,
+                "last": "2026-09-14",
+                "mddPct": -5.5314,
+                "namesAddedPerRebalance": 0.6169,
+                "namesRetainedPerRebalance": 0.3247,
+                "trackingErrorPct": 15.3587,
+                "years": 13.6838
+              }
+            },
+            "ENTRY_IN_RANK": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 34.67,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -2.1741,
+                  "medianExcessPct": -3.0706,
+                  "nonOverlappingMeanExcessPct": -3.3747,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -21.6732,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 30.56,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -6.0105,
+                  "medianExcessPct": -6.84,
+                  "nonOverlappingMeanExcessPct": -10.0164,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -39.0516,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 2.3921,
+                "annualizedExcessVsEtfPp": -4.6055,
+                "annualizedVolPct": 10.228,
+                "available": true,
+                "averageResidualPct": 71.9355,
+                "averageStockNames": 0.9355,
+                "blocks": 155,
+                "cagrPct": 10.1351,
+                "costDragPctOfNavTotal": 5.419,
+                "dailyCvar95Pct": -1.4894,
+                "etfAnnualizedVolPct": 16.5161,
+                "etfCagrPct": 14.7405,
+                "etfMddPct": -33.7173,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 25.69,
+                "informationRatio": -0.263,
+                "last": "2026-09-14",
+                "mddPct": -11.9213,
+                "namesAddedPerRebalance": 0.7013,
+                "namesRetainedPerRebalance": 0.2403,
+                "trackingErrorPct": 15.1254,
+                "years": 13.6838
+              }
+            },
+            "pairedAtWeightMinusInRank": {
+              "available": true,
+              "ci95Pp": [
+                -9.4368,
+                0.5187
+              ],
+              "contains_zero": true,
+              "direction": "CONTAINS_ZERO",
+              "pairedBlocks": 155,
+              "pointEstimatePp": -3.9476,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          },
+          "ETF": {
+            "ENTRY_AT_WEIGHT": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 62.67,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": 1.1455,
+                  "medianExcessPct": 0.7505,
+                  "nonOverlappingMeanExcessPct": 0.8587,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -3.6856,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 64.58,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": 2.0839,
+                  "medianExcessPct": 1.2111,
+                  "nonOverlappingMeanExcessPct": 1.1723,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -3.9673,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 1.6844,
+                "annualizedExcessVsEtfPp": 2.4126,
+                "annualizedVolPct": 16.5492,
+                "available": true,
+                "averageResidualPct": 85.7742,
+                "averageStockNames": 0.9355,
+                "blocks": 155,
+                "cagrPct": 17.1531,
+                "costDragPctOfNavTotal": 3.757,
+                "dailyCvar95Pct": -2.4827,
+                "etfAnnualizedVolPct": 16.5161,
+                "etfCagrPct": 14.7405,
+                "etfMddPct": -33.7173,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 34.72,
+                "informationRatio": 0.5727,
+                "last": "2026-09-14",
+                "mddPct": -32.8489,
+                "namesAddedPerRebalance": 0.6169,
+                "namesRetainedPerRebalance": 0.3247,
+                "trackingErrorPct": 3.5333,
+                "years": 13.6838
+              }
+            },
+            "ENTRY_IN_RANK": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 56.0,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": 2.6427,
+                  "medianExcessPct": 0.7865,
+                  "nonOverlappingMeanExcessPct": 1.4505,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -13.466,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 62.5,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": 3.9941,
+                  "medianExcessPct": 1.7057,
+                  "nonOverlappingMeanExcessPct": 0.252,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -16.7398,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 2.457,
+                "annualizedExcessVsEtfPp": 5.0932,
+                "annualizedVolPct": 18.6908,
+                "available": true,
+                "averageResidualPct": 71.9355,
+                "averageStockNames": 0.9355,
+                "blocks": 155,
+                "cagrPct": 19.8337,
+                "costDragPctOfNavTotal": 5.4803,
+                "dailyCvar95Pct": -2.7687,
+                "etfAnnualizedVolPct": 16.5161,
+                "etfCagrPct": 14.7405,
+                "etfMddPct": -33.7173,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 25.69,
+                "informationRatio": 0.4639,
+                "last": "2026-09-14",
+                "mddPct": -34.3346,
+                "namesAddedPerRebalance": 0.7013,
+                "namesRetainedPerRebalance": 0.2403,
+                "trackingErrorPct": 9.1036,
+                "years": 13.6838
+              }
+            },
+            "pairedAtWeightMinusInRank": {
+              "available": true,
+              "ci95Pp": [
+                -7.7154,
+                2.2406
+              ],
+              "contains_zero": true,
+              "direction": "CONTAINS_ZERO",
+              "pairedBlocks": 155,
+              "pointEstimatePp": -2.2624,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          },
+          "residualEffectEtfMinusCash": {
+            "ENTRY_AT_WEIGHT": {
+              "available": true,
+              "ci95Pp": [
+                4.879,
+                14.9423
+              ],
+              "contains_zero": false,
+              "direction": "BETTER",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 10.125,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            },
+            "ENTRY_IN_RANK": {
+              "available": true,
+              "ci95Pp": [
+                4.0476,
+                12.4814
+              ],
+              "contains_zero": false,
+              "direction": "BETTER",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 8.4398,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          }
+        },
+        "N10": {
+          "CASH": {
+            "ENTRY_AT_WEIGHT": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 26.67,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -4.3664,
+                  "medianExcessPct": -3.9507,
+                  "nonOverlappingMeanExcessPct": -4.3983,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -16.6434,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 24.31,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -9.1115,
+                  "medianExcessPct": -8.3646,
+                  "nonOverlappingMeanExcessPct": -10.2,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -29.101,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 2.821,
+                "annualizedExcessVsEtfPp": -8.5506,
+                "annualizedVolPct": 7.15,
+                "available": true,
+                "averageResidualPct": 57.5896,
+                "averageStockNames": 7.0516,
+                "blocks": 155,
+                "cagrPct": 6.1899,
+                "costDragPctOfNavTotal": 6.3747,
+                "dailyCvar95Pct": -1.0453,
+                "etfAnnualizedVolPct": 16.5161,
+                "etfCagrPct": 14.7405,
+                "etfMddPct": -33.7173,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 58.26,
+                "informationRatio": -0.5906,
+                "last": "2026-09-14",
+                "mddPct": -16.1423,
+                "namesAddedPerRebalance": 3.0,
+                "namesRetainedPerRebalance": 4.0974,
+                "trackingErrorPct": 12.7408,
+                "years": 13.6838
+              }
+            },
+            "ENTRY_IN_RANK": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 40.67,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -1.8512,
+                  "medianExcessPct": -1.259,
+                  "nonOverlappingMeanExcessPct": -2.1332,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -16.9328,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 42.36,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -4.4565,
+                  "medianExcessPct": -2.8385,
+                  "nonOverlappingMeanExcessPct": -6.8475,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -25.822,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 4.5915,
+                "annualizedExcessVsEtfPp": -4.1846,
+                "annualizedVolPct": 13.7372,
+                "available": true,
+                "averageResidualPct": 25.5463,
+                "averageStockNames": 7.0516,
+                "blocks": 155,
+                "cagrPct": 10.556,
+                "costDragPctOfNavTotal": 10.3232,
+                "dailyCvar95Pct": -2.0204,
+                "etfAnnualizedVolPct": 16.5161,
+                "etfCagrPct": 14.7405,
+                "etfMddPct": -33.7173,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 55.49,
+                "informationRatio": -0.3191,
+                "last": "2026-09-14",
+                "mddPct": -33.7233,
+                "namesAddedPerRebalance": 3.1948,
+                "namesRetainedPerRebalance": 3.9026,
+                "trackingErrorPct": 11.3028,
+                "years": 13.6838
+              }
+            },
+            "pairedAtWeightMinusInRank": {
+              "available": true,
+              "ci95Pp": [
+                -7.6553,
+                -0.5776
+              ],
+              "contains_zero": false,
+              "direction": "WORSE",
+              "pairedBlocks": 155,
+              "pointEstimatePp": -4.0293,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          },
+          "ETF": {
+            "ENTRY_AT_WEIGHT": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 50.67,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": 0.0502,
+                  "medianExcessPct": 0.0066,
+                  "nonOverlappingMeanExcessPct": 0.1033,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -4.4656,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 54.86,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -0.1316,
+                  "medianExcessPct": 0.3784,
+                  "nonOverlappingMeanExcessPct": -0.4398,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -8.8854,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 3.5663,
+                "annualizedExcessVsEtfPp": 0.1526,
+                "annualizedVolPct": 15.7319,
+                "available": true,
+                "averageResidualPct": 57.5896,
+                "averageStockNames": 7.0516,
+                "blocks": 155,
+                "cagrPct": 14.8931,
+                "costDragPctOfNavTotal": 7.9546,
+                "dailyCvar95Pct": -2.3191,
+                "etfAnnualizedVolPct": 16.5161,
+                "etfCagrPct": 14.7405,
+                "etfMddPct": -33.7173,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 58.26,
+                "informationRatio": 0.0239,
+                "last": "2026-09-14",
+                "mddPct": -35.0421,
+                "namesAddedPerRebalance": 3.0,
+                "namesRetainedPerRebalance": 4.0974,
+                "trackingErrorPct": 5.4001,
+                "years": 13.6838
+              }
+            },
+            "ENTRY_IN_RANK": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 50.0,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": 0.3062,
+                  "medianExcessPct": 0.1445,
+                  "nonOverlappingMeanExcessPct": 0.212,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -12.5445,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 52.08,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -0.2207,
+                  "medianExcessPct": 0.5589,
+                  "nonOverlappingMeanExcessPct": -1.7953,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -19.3671,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 4.8934,
+                "annualizedExcessVsEtfPp": 0.4915,
+                "annualizedVolPct": 16.6459,
+                "available": true,
+                "averageResidualPct": 25.5463,
+                "averageStockNames": 7.0516,
+                "blocks": 155,
+                "cagrPct": 15.2321,
+                "costDragPctOfNavTotal": 10.9146,
+                "dailyCvar95Pct": -2.425,
+                "etfAnnualizedVolPct": 16.5161,
+                "etfCagrPct": 14.7405,
+                "etfMddPct": -33.7173,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 55.49,
+                "informationRatio": 0.0445,
+                "last": "2026-09-14",
+                "mddPct": -38.3235,
+                "namesAddedPerRebalance": 3.1948,
+                "namesRetainedPerRebalance": 3.9026,
+                "trackingErrorPct": 9.3365,
+                "years": 13.6838
+              }
+            },
+            "pairedAtWeightMinusInRank": {
+              "available": true,
+              "ci95Pp": [
+                -3.4032,
+                2.5131
+              ],
+              "contains_zero": true,
+              "direction": "CONTAINS_ZERO",
+              "pairedBlocks": 155,
+              "pointEstimatePp": -0.2946,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          },
+          "residualEffectEtfMinusCash": {
+            "ENTRY_AT_WEIGHT": {
+              "available": true,
+              "ci95Pp": [
+                4.2246,
+                11.4288
+              ],
+              "contains_zero": false,
+              "direction": "BETTER",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 7.8773,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            },
+            "ENTRY_IN_RANK": {
+              "available": true,
+              "ci95Pp": [
+                2.0092,
+                6.5774
+              ],
+              "contains_zero": false,
+              "direction": "BETTER",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 4.1426,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          }
+        },
+        "N2": {
+          "CASH": {
+            "ENTRY_AT_WEIGHT": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 30.0,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -4.2461,
+                  "medianExcessPct": -4.5823,
+                  "nonOverlappingMeanExcessPct": -4.4934,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -14.5516,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 28.47,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -9.1104,
+                  "medianExcessPct": -8.6129,
+                  "nonOverlappingMeanExcessPct": -10.6111,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -28.527,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 1.8327,
+                "annualizedExcessVsEtfPp": -8.1631,
+                "annualizedVolPct": 5.2608,
+                "available": true,
+                "averageResidualPct": 76.6015,
+                "averageStockNames": 1.8645,
+                "blocks": 155,
+                "cagrPct": 6.5774,
+                "costDragPctOfNavTotal": 4.1709,
+                "dailyCvar95Pct": -0.7786,
+                "etfAnnualizedVolPct": 16.5161,
+                "etfCagrPct": 14.7405,
+                "etfMddPct": -33.7173,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 44.6,
+                "informationRatio": -0.4879,
+                "last": "2026-09-14",
+                "mddPct": -7.2242,
+                "namesAddedPerRebalance": 1.0455,
+                "namesRetainedPerRebalance": 0.8312,
+                "trackingErrorPct": 14.6983,
+                "years": 13.6838
+              }
+            },
+            "ENTRY_IN_RANK": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 40.0,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -0.8083,
+                  "medianExcessPct": -1.8605,
+                  "nonOverlappingMeanExcessPct": -2.4459,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -23.5017,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 39.58,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -3.6382,
+                  "medianExcessPct": -5.7608,
+                  "nonOverlappingMeanExcessPct": -8.8904,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -40.3263,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 3.7981,
+                "annualizedExcessVsEtfPp": -2.515,
+                "annualizedVolPct": 13.3846,
+                "available": true,
+                "averageResidualPct": 55.0404,
+                "averageStockNames": 1.8645,
+                "blocks": 155,
+                "cagrPct": 12.2255,
+                "costDragPctOfNavTotal": 8.5546,
+                "dailyCvar95Pct": -1.9672,
+                "etfAnnualizedVolPct": 16.5161,
+                "etfCagrPct": 14.7405,
+                "etfMddPct": -33.7173,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 25.78,
+                "informationRatio": -0.1453,
+                "last": "2026-09-14",
+                "mddPct": -19.566,
+                "namesAddedPerRebalance": 1.3961,
+                "namesRetainedPerRebalance": 0.4805,
+                "trackingErrorPct": 14.7923,
+                "years": 13.6838
+              }
+            },
+            "pairedAtWeightMinusInRank": {
+              "available": true,
+              "ci95Pp": [
+                -12.4298,
+                0.4008
+              ],
+              "contains_zero": true,
+              "direction": "CONTAINS_ZERO",
+              "pairedBlocks": 155,
+              "pointEstimatePp": -5.1639,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          },
+          "ETF": {
+            "ENTRY_AT_WEIGHT": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 56.0,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": 1.0957,
+                  "medianExcessPct": 0.6812,
+                  "nonOverlappingMeanExcessPct": 0.8386,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -4.9638,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 60.42,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": 1.9133,
+                  "medianExcessPct": 0.9938,
+                  "nonOverlappingMeanExcessPct": 0.95,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -5.6834,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 2.4647,
+                "annualizedExcessVsEtfPp": 2.3133,
+                "annualizedVolPct": 16.4766,
+                "available": true,
+                "averageResidualPct": 76.6015,
+                "averageStockNames": 1.8645,
+                "blocks": 155,
+                "cagrPct": 17.0538,
+                "costDragPctOfNavTotal": 5.4974,
+                "dailyCvar95Pct": -2.4548,
+                "etfAnnualizedVolPct": 16.5161,
+                "etfCagrPct": 14.7405,
+                "etfMddPct": -33.7173,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 44.6,
+                "informationRatio": 0.4134,
+                "last": "2026-09-14",
+                "mddPct": -32.7155,
+                "namesAddedPerRebalance": 1.0455,
+                "namesRetainedPerRebalance": 0.8312,
+                "trackingErrorPct": 4.6949,
+                "years": 13.6838
+              }
+            },
+            "ENTRY_IN_RANK": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 49.33,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": 3.0674,
+                  "medianExcessPct": 0.0,
+                  "nonOverlappingMeanExcessPct": 1.4905,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -17.2341,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 59.03,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": 4.3808,
+                  "medianExcessPct": 2.7375,
+                  "nonOverlappingMeanExcessPct": -0.4526,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -23.0175,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 3.979,
+                "annualizedExcessVsEtfPp": 5.4835,
+                "annualizedVolPct": 19.64,
+                "available": true,
+                "averageResidualPct": 55.0404,
+                "averageStockNames": 1.8645,
+                "blocks": 155,
+                "cagrPct": 20.2241,
+                "costDragPctOfNavTotal": 8.8749,
+                "dailyCvar95Pct": -2.9063,
+                "etfAnnualizedVolPct": 16.5161,
+                "etfCagrPct": 14.7405,
+                "etfMddPct": -33.7173,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 25.78,
+                "informationRatio": 0.4027,
+                "last": "2026-09-14",
+                "mddPct": -36.0068,
+                "namesAddedPerRebalance": 1.3961,
+                "namesRetainedPerRebalance": 0.4805,
+                "trackingErrorPct": 11.2734,
+                "years": 13.6838
+              }
+            },
+            "pairedAtWeightMinusInRank": {
+              "available": true,
+              "ci95Pp": [
+                -9.6807,
+                2.7972
+              ],
+              "contains_zero": true,
+              "direction": "CONTAINS_ZERO",
+              "pairedBlocks": 155,
+              "pointEstimatePp": -2.6723,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          },
+          "residualEffectEtfMinusCash": {
+            "ENTRY_AT_WEIGHT": {
+              "available": true,
+              "ci95Pp": [
+                4.7431,
+                13.7238
+              ],
+              "contains_zero": false,
+              "direction": "BETTER",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 9.3762,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            },
+            "ENTRY_IN_RANK": {
+              "available": true,
+              "ci95Pp": [
+                3.4856,
+                10.1989
+              ],
+              "contains_zero": false,
+              "direction": "BETTER",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 6.8847,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          }
+        },
+        "N3": {
+          "CASH": {
+            "ENTRY_AT_WEIGHT": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 31.33,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -3.8674,
+                  "medianExcessPct": -4.187,
+                  "nonOverlappingMeanExcessPct": -4.1163,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -16.8092,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 26.39,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -8.3919,
+                  "medianExcessPct": -7.6589,
+                  "nonOverlappingMeanExcessPct": -10.0633,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -25.8989,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 2.4462,
+                "annualizedExcessVsEtfPp": -7.5108,
+                "annualizedVolPct": 6.9999,
+                "available": true,
+                "averageResidualPct": 67.1214,
+                "averageStockNames": 2.7935,
+                "blocks": 155,
+                "cagrPct": 7.2298,
+                "costDragPctOfNavTotal": 5.5389,
+                "dailyCvar95Pct": -1.0241,
+                "etfAnnualizedVolPct": 16.5161,
+                "etfCagrPct": 14.7405,
+                "etfMddPct": -33.7173,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 48.37,
+                "informationRatio": -0.4748,
+                "last": "2026-09-14",
+                "mddPct": -12.6483,
+                "namesAddedPerRebalance": 1.461,
+                "namesRetainedPerRebalance": 1.3506,
+                "trackingErrorPct": 13.8537,
+                "years": 13.6838
+              }
+            },
+            "ENTRY_IN_RANK": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 44.0,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": 0.4883,
+                  "medianExcessPct": -1.5425,
+                  "nonOverlappingMeanExcessPct": -1.3428,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -18.4093,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 42.36,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -1.2232,
+                  "medianExcessPct": -2.7079,
+                  "nonOverlappingMeanExcessPct": -7.3926,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -34.939,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 5.0697,
+                "annualizedExcessVsEtfPp": -0.7227,
+                "annualizedVolPct": 16.1526,
+                "available": true,
+                "averageResidualPct": 37.8846,
+                "averageStockNames": 2.7935,
+                "blocks": 155,
+                "cagrPct": 14.0179,
+                "costDragPctOfNavTotal": 11.3904,
+                "dailyCvar95Pct": -2.3702,
+                "etfAnnualizedVolPct": 16.5161,
+                "etfCagrPct": 14.7405,
+                "etfMddPct": -33.7173,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 30.0,
+                "informationRatio": -0.0407,
+                "last": "2026-09-14",
+                "mddPct": -28.8848,
+                "namesAddedPerRebalance": 1.974,
+                "namesRetainedPerRebalance": 0.8377,
+                "trackingErrorPct": 14.9578,
+                "years": 13.6838
+              }
+            },
+            "pairedAtWeightMinusInRank": {
+              "available": true,
+              "ci95Pp": [
+                -14.4444,
+                0.2438
+              ],
+              "contains_zero": true,
+              "direction": "CONTAINS_ZERO",
+              "pairedBlocks": 155,
+              "pointEstimatePp": -6.1381,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          },
+          "ETF": {
+            "ENTRY_AT_WEIGHT": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 53.33,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": 1.1437,
+                  "medianExcessPct": 0.2729,
+                  "nonOverlappingMeanExcessPct": 0.8998,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -5.5895,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 59.03,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": 1.9458,
+                  "medianExcessPct": 1.3572,
+                  "nonOverlappingMeanExcessPct": 0.8262,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -6.2696,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 3.2354,
+                "annualizedExcessVsEtfPp": 2.3832,
+                "annualizedVolPct": 16.5357,
+                "available": true,
+                "averageResidualPct": 67.1214,
+                "averageStockNames": 2.7935,
+                "blocks": 155,
+                "cagrPct": 17.1237,
+                "costDragPctOfNavTotal": 7.2164,
+                "dailyCvar95Pct": -2.447,
+                "etfAnnualizedVolPct": 16.5161,
+                "etfCagrPct": 14.7405,
+                "etfMddPct": -33.7173,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 48.37,
+                "informationRatio": 0.3399,
+                "last": "2026-09-14",
+                "mddPct": -33.3958,
+                "namesAddedPerRebalance": 1.461,
+                "namesRetainedPerRebalance": 1.3506,
+                "trackingErrorPct": 5.8821,
+                "years": 13.6838
+              }
+            },
+            "ENTRY_IN_RANK": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 54.0,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": 3.3578,
+                  "medianExcessPct": 0.8262,
+                  "nonOverlappingMeanExcessPct": 1.6988,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -14.1093,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 59.03,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": 4.6896,
+                  "medianExcessPct": 3.198,
+                  "nonOverlappingMeanExcessPct": -0.8711,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -22.4198,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 5.3937,
+                "annualizedExcessVsEtfPp": 5.4614,
+                "annualizedVolPct": 20.1889,
+                "available": true,
+                "averageResidualPct": 37.8846,
+                "averageStockNames": 2.7935,
+                "blocks": 155,
+                "cagrPct": 20.202,
+                "costDragPctOfNavTotal": 12.0305,
+                "dailyCvar95Pct": -2.9668,
+                "etfAnnualizedVolPct": 16.5161,
+                "etfCagrPct": 14.7405,
+                "etfMddPct": -33.7173,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 30.0,
+                "informationRatio": 0.348,
+                "last": "2026-09-14",
+                "mddPct": -38.8558,
+                "namesAddedPerRebalance": 1.974,
+                "namesRetainedPerRebalance": 0.8377,
+                "trackingErrorPct": 12.9942,
+                "years": 13.6838
+              }
+            },
+            "pairedAtWeightMinusInRank": {
+              "available": true,
+              "ci95Pp": [
+                -10.5767,
+                3.4246
+              ],
+              "contains_zero": true,
+              "direction": "CONTAINS_ZERO",
+              "pairedBlocks": 155,
+              "pointEstimatePp": -2.5942,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          },
+          "residualEffectEtfMinusCash": {
+            "ENTRY_AT_WEIGHT": {
+              "available": true,
+              "ci95Pp": [
+                4.7748,
+                12.6964
+              ],
+              "contains_zero": false,
+              "direction": "BETTER",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 8.8257,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            },
+            "ENTRY_IN_RANK": {
+              "available": true,
+              "ci95Pp": [
+                2.7477,
+                7.9371
+              ],
+              "contains_zero": false,
+              "direction": "BETTER",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 5.2818,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          }
+        },
+        "N4": {
+          "CASH": {
+            "ENTRY_AT_WEIGHT": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 32.67,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -3.7675,
+                  "medianExcessPct": -4.288,
+                  "nonOverlappingMeanExcessPct": -3.9808,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -16.7919,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 28.47,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -8.164,
+                  "medianExcessPct": -7.2747,
+                  "nonOverlappingMeanExcessPct": -9.7992,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -26.98,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 2.7768,
+                "annualizedExcessVsEtfPp": -7.3854,
+                "annualizedVolPct": 7.7373,
+                "available": true,
+                "averageResidualPct": 61.7739,
+                "averageStockNames": 3.7226,
+                "blocks": 155,
+                "cagrPct": 7.3552,
+                "costDragPctOfNavTotal": 6.2763,
+                "dailyCvar95Pct": -1.1285,
+                "etfAnnualizedVolPct": 16.5161,
+                "etfCagrPct": 14.7405,
+                "etfMddPct": -33.7173,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 50.09,
+                "informationRatio": -0.4863,
+                "last": "2026-09-14",
+                "mddPct": -14.5388,
+                "namesAddedPerRebalance": 1.8831,
+                "namesRetainedPerRebalance": 1.8636,
+                "trackingErrorPct": 13.291,
+                "years": 13.6838
+              }
+            },
+            "ENTRY_IN_RANK": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 48.67,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": 0.0973,
+                  "medianExcessPct": -0.7337,
+                  "nonOverlappingMeanExcessPct": -1.1708,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -17.6569,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 42.36,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -1.6755,
+                  "medianExcessPct": -2.7515,
+                  "nonOverlappingMeanExcessPct": -6.895,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -30.793,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 5.6284,
+                "annualizedExcessVsEtfPp": -1.2741,
+                "annualizedVolPct": 16.3947,
+                "available": true,
+                "averageResidualPct": 28.4417,
+                "averageStockNames": 3.7226,
+                "blocks": 155,
+                "cagrPct": 13.4664,
+                "costDragPctOfNavTotal": 12.6361,
+                "dailyCvar95Pct": -2.4214,
+                "etfAnnualizedVolPct": 16.5161,
+                "etfCagrPct": 14.7405,
+                "etfMddPct": -33.7173,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 34.03,
+                "informationRatio": -0.076,
+                "last": "2026-09-14",
+                "mddPct": -32.7219,
+                "namesAddedPerRebalance": 2.4805,
+                "namesRetainedPerRebalance": 1.2662,
+                "trackingErrorPct": 14.201,
+                "years": 13.6838
+              }
+            },
+            "pairedAtWeightMinusInRank": {
+              "available": true,
+              "ci95Pp": [
+                -12.5277,
+                0.2948
+              ],
+              "contains_zero": true,
+              "direction": "CONTAINS_ZERO",
+              "pairedBlocks": 155,
+              "pointEstimatePp": -5.5364,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          },
+          "ETF": {
+            "ENTRY_AT_WEIGHT": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 55.33,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": 1.0172,
+                  "medianExcessPct": 0.5701,
+                  "nonOverlappingMeanExcessPct": 0.8213,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -4.453,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 62.5,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": 1.664,
+                  "medianExcessPct": 1.3771,
+                  "nonOverlappingMeanExcessPct": 0.6317,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -5.8707,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 3.6072,
+                "annualizedExcessVsEtfPp": 2.0843,
+                "annualizedVolPct": 16.4591,
+                "available": true,
+                "averageResidualPct": 61.7739,
+                "averageStockNames": 3.7226,
+                "blocks": 155,
+                "cagrPct": 16.8248,
+                "costDragPctOfNavTotal": 8.0456,
+                "dailyCvar95Pct": -2.4188,
+                "etfAnnualizedVolPct": 16.5161,
+                "etfCagrPct": 14.7405,
+                "etfMddPct": -33.7173,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 50.09,
+                "informationRatio": 0.2833,
+                "last": "2026-09-14",
+                "mddPct": -34.2362,
+                "namesAddedPerRebalance": 1.8831,
+                "namesRetainedPerRebalance": 1.8636,
+                "trackingErrorPct": 6.1801,
+                "years": 13.6838
+              }
+            },
+            "ENTRY_IN_RANK": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 53.33,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": 2.4438,
+                  "medianExcessPct": 1.2022,
+                  "nonOverlappingMeanExcessPct": 1.3605,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -15.1105,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 54.17,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": 3.0437,
+                  "medianExcessPct": 0.4609,
+                  "nonOverlappingMeanExcessPct": -1.5144,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -22.2994,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 5.9421,
+                "annualizedExcessVsEtfPp": 3.8529,
+                "annualizedVolPct": 19.3496,
+                "available": true,
+                "averageResidualPct": 28.4417,
+                "averageStockNames": 3.7226,
+                "blocks": 155,
+                "cagrPct": 18.5934,
+                "costDragPctOfNavTotal": 13.2535,
+                "dailyCvar95Pct": -2.8396,
+                "etfAnnualizedVolPct": 16.5161,
+                "etfCagrPct": 14.7405,
+                "etfMddPct": -33.7173,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 34.03,
+                "informationRatio": 0.2538,
+                "last": "2026-09-14",
+                "mddPct": -39.1072,
+                "namesAddedPerRebalance": 2.4805,
+                "namesRetainedPerRebalance": 1.2662,
+                "trackingErrorPct": 12.6565,
+                "years": 13.6838
+              }
+            },
+            "pairedAtWeightMinusInRank": {
+              "available": true,
+              "ci95Pp": [
+                -7.9933,
+                3.6742
+              ],
+              "contains_zero": true,
+              "direction": "CONTAINS_ZERO",
+              "pairedBlocks": 155,
+              "pointEstimatePp": -1.5026,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          },
+          "residualEffectEtfMinusCash": {
+            "ENTRY_AT_WEIGHT": {
+              "available": true,
+              "ci95Pp": [
+                4.6464,
+                12.0255
+              ],
+              "contains_zero": false,
+              "direction": "BETTER",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 8.4533,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            },
+            "ENTRY_IN_RANK": {
+              "available": true,
+              "ci95Pp": [
+                2.2538,
+                6.858
+              ],
+              "contains_zero": false,
+              "direction": "BETTER",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 4.4194,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          }
+        },
+        "N5": {
+          "CASH": {
+            "ENTRY_AT_WEIGHT": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 28.67,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -3.9517,
+                  "medianExcessPct": -3.8891,
+                  "nonOverlappingMeanExcessPct": -4.0916,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -17.3122,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 28.47,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -8.4297,
+                  "medianExcessPct": -7.879,
+                  "nonOverlappingMeanExcessPct": -9.9442,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -27.5516,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 2.892,
+                "annualizedExcessVsEtfPp": -7.7866,
+                "annualizedVolPct": 7.73,
+                "available": true,
+                "averageResidualPct": 59.7928,
+                "averageStockNames": 4.6323,
+                "blocks": 155,
+                "cagrPct": 6.9539,
+                "costDragPctOfNavTotal": 6.5332,
+                "dailyCvar95Pct": -1.1265,
+                "etfAnnualizedVolPct": 16.5161,
+                "etfCagrPct": 14.7405,
+                "etfMddPct": -33.7173,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 50.77,
+                "informationRatio": -0.5262,
+                "last": "2026-09-14",
+                "mddPct": -16.635,
+                "namesAddedPerRebalance": 2.3117,
+                "namesRetainedPerRebalance": 2.3506,
+                "trackingErrorPct": 12.9761,
+                "years": 13.6838
+              }
+            },
+            "ENTRY_IN_RANK": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 46.0,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": -0.4264,
+                  "medianExcessPct": -0.8563,
+                  "nonOverlappingMeanExcessPct": -1.3572,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -16.2166,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 40.28,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": -2.3596,
+                  "medianExcessPct": -2.8513,
+                  "nonOverlappingMeanExcessPct": -6.5654,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -26.0272,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 5.533,
+                "annualizedExcessVsEtfPp": -1.9945,
+                "annualizedVolPct": 15.6605,
+                "available": true,
+                "averageResidualPct": 25.7806,
+                "averageStockNames": 4.6323,
+                "blocks": 155,
+                "cagrPct": 12.746,
+                "costDragPctOfNavTotal": 12.4234,
+                "dailyCvar95Pct": -2.2921,
+                "etfAnnualizedVolPct": 16.5161,
+                "etfCagrPct": 14.7405,
+                "etfMddPct": -33.7173,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 39.13,
+                "informationRatio": -0.1292,
+                "last": "2026-09-14",
+                "mddPct": -33.8036,
+                "namesAddedPerRebalance": 2.8506,
+                "namesRetainedPerRebalance": 1.8117,
+                "trackingErrorPct": 13.1503,
+                "years": 13.6838
+              }
+            },
+            "pairedAtWeightMinusInRank": {
+              "available": true,
+              "ci95Pp": [
+                -11.1557,
+                -0.2677
+              ],
+              "contains_zero": false,
+              "direction": "WORSE",
+              "pairedBlocks": 155,
+              "pointEstimatePp": -5.274,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          },
+          "ETF": {
+            "ENTRY_AT_WEIGHT": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 54.67,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": 0.7198,
+                  "medianExcessPct": 0.6821,
+                  "nonOverlappingMeanExcessPct": 0.5947,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -4.7264,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 53.47,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": 1.1021,
+                  "medianExcessPct": 0.5389,
+                  "nonOverlappingMeanExcessPct": 0.2118,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -6.4474,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 3.7309,
+                "annualizedExcessVsEtfPp": 1.4421,
+                "annualizedVolPct": 16.2497,
+                "available": true,
+                "averageResidualPct": 59.7928,
+                "averageStockNames": 4.6323,
+                "blocks": 155,
+                "cagrPct": 16.1826,
+                "costDragPctOfNavTotal": 8.3216,
+                "dailyCvar95Pct": -2.3779,
+                "etfAnnualizedVolPct": 16.5161,
+                "etfCagrPct": 14.7405,
+                "etfMddPct": -33.7173,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 50.77,
+                "informationRatio": 0.2043,
+                "last": "2026-09-14",
+                "mddPct": -34.5846,
+                "namesAddedPerRebalance": 2.3117,
+                "namesRetainedPerRebalance": 2.3506,
+                "trackingErrorPct": 5.944,
+                "years": 13.6838
+              }
+            },
+            "ENTRY_IN_RANK": {
+              "horizons": {
+                "H126": {
+                  "available": true,
+                  "hitRatePct": 53.33,
+                  "maturedAnchors": 150,
+                  "meanExcessPct": 1.7533,
+                  "medianExcessPct": 0.6355,
+                  "nonOverlappingMeanExcessPct": 1.0075,
+                  "nonOverlappingWindows": 25,
+                  "nonOverlappingWorstExcessPct": -13.4647,
+                  "pendingAnchorsNotMatured": 5,
+                  "windowSessions": 126
+                },
+                "H252": {
+                  "available": true,
+                  "hitRatePct": 50.0,
+                  "maturedAnchors": 144,
+                  "meanExcessPct": 1.9845,
+                  "medianExcessPct": 0.0048,
+                  "nonOverlappingMeanExcessPct": -1.5139,
+                  "nonOverlappingWindows": 12,
+                  "nonOverlappingWorstExcessPct": -18.9935,
+                  "pendingAnchorsNotMatured": 11,
+                  "windowSessions": 252
+                }
+              },
+              "metrics": {
+                "annualOneWayTurnoverX": 5.8487,
+                "annualizedExcessVsEtfPp": 2.7765,
+                "annualizedVolPct": 18.3451,
+                "available": true,
+                "averageResidualPct": 25.7806,
+                "averageStockNames": 4.6323,
+                "blocks": 155,
+                "cagrPct": 17.517,
+                "costDragPctOfNavTotal": 13.0453,
+                "dailyCvar95Pct": -2.6686,
+                "etfAnnualizedVolPct": 16.5161,
+                "etfCagrPct": 14.7405,
+                "etfMddPct": -33.7173,
+                "first": "2013-01-07",
+                "incumbentRetentionPct": 39.13,
+                "informationRatio": 0.2008,
+                "last": "2026-09-14",
+                "mddPct": -38.5378,
+                "namesAddedPerRebalance": 2.8506,
+                "namesRetainedPerRebalance": 1.8117,
+                "trackingErrorPct": 11.5783,
+                "years": 13.6838
+              }
+            },
+            "pairedAtWeightMinusInRank": {
+              "available": true,
+              "ci95Pp": [
+                -6.4621,
+                3.1779
+              ],
+              "contains_zero": true,
+              "direction": "CONTAINS_ZERO",
+              "pairedBlocks": 155,
+              "pointEstimatePp": -1.142,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          },
+          "residualEffectEtfMinusCash": {
+            "ENTRY_AT_WEIGHT": {
+              "available": true,
+              "ci95Pp": [
+                4.6469,
+                11.8133
+              ],
+              "contains_zero": false,
+              "direction": "BETTER",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 8.2765,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            },
+            "ENTRY_IN_RANK": {
+              "available": true,
+              "ci95Pp": [
+                1.9969,
+                6.5846
+              ],
+              "contains_zero": false,
+              "direction": "BETTER",
+              "pairedBlocks": 155,
+              "pointEstimatePp": 4.1445,
+              "statistic": "annualized mean log NAV growth difference (incl. cost)"
+            }
+          }
+        }
+      },
+      "separateComparison": {
+        "horizons": {
+          "H126": {
+            "available": true,
+            "hitRatePct": 72.67,
+            "maturedAnchors": 150,
+            "meanExcessPct": 3.0622,
+            "medianExcessPct": 2.7635,
+            "nonOverlappingMeanExcessPct": 2.8423,
+            "nonOverlappingWindows": 25,
+            "nonOverlappingWorstExcessPct": -9.2217,
+            "pendingAnchorsNotMatured": 5,
+            "windowSessions": 126
+          },
+          "H252": {
+            "available": true,
+            "hitRatePct": 79.17,
+            "maturedAnchors": 144,
+            "meanExcessPct": 6.6852,
+            "medianExcessPct": 6.0782,
+            "nonOverlappingMeanExcessPct": 6.1898,
+            "nonOverlappingWindows": 12,
+            "nonOverlappingWorstExcessPct": -8.9853,
+            "pendingAnchorsNotMatured": 11,
+            "windowSessions": 252
+          }
+        },
+        "metrics": {
+          "annualOneWayTurnoverX": 0.0,
+          "annualizedExcessVsEtfPp": 5.0835,
+          "annualizedVolPct": 20.5334,
+          "available": true,
+          "averageResidualPct": 100.0,
+          "averageStockNames": 0.0,
+          "blocks": 155,
+          "cagrPct": 19.824,
+          "costDragPctOfNavTotal": 0.163,
+          "dailyCvar95Pct": -3.0986,
+          "etfAnnualizedVolPct": 16.5161,
+          "etfCagrPct": 14.7405,
+          "etfMddPct": -33.7173,
+          "first": "2013-01-07",
+          "incumbentRetentionPct": null,
+          "informationRatio": 0.5308,
+          "last": "2026-09-14",
+          "mddPct": -35.1187,
+          "namesAddedPerRebalance": 0.0,
+          "namesRetainedPerRebalance": 0.0,
+          "trackingErrorPct": 7.964,
+          "years": 13.6838
+        },
+        "ticker": "QQQ"
+      }
+    }
+  },
+  "sealedLedgerUnchanged": true,
+  "source": {
+    "codeCommit": "382a8f2dd7dacf3a70e0c68575bed8b4c8d8562b",
+    "codeSha256": "7e016f81b0ee457abd9341874029a60bda03f2ee122cced7b9256869be4a5a2c",
+    "inputSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+    "sourceCommit": "187aeeda839dd4863bf9432eabb1595581bc7782",
+    "specSha256": "7e304b56ce2a42ba117d073b5b1180cde44fec492f411cc5d233c3c8b2eaa790"
+  },
+  "spec": {
+    "budget": "max(minCashPct, macro regime cash floor) from kelly_portfolio._regime_adjustment, identical per block for both rungs; the withheld budget goes to the residual asset",
+    "evidenceClass": "HISTORICAL_DEVELOPMENT_OUTCOME_EXPOSED",
+    "execution": "block anchor session close, signal = last weekly signal strictly before the anchor",
+    "forbidden": [
+      "choosing N, window, sector or threshold from these results",
+      "calling any of this out-of-sample",
+      "promotion",
+      "production change",
+      "transferring the sealed +1.385pp cash-residual number to an ETF-residual strategy"
+    ],
+    "heldFixed": [
+      "maxNamesPerSector=2",
+      "maxPositionWeight=0.30",
+      "minCashPct=15 plus macro regime floor",
+      "convictionTiltRange=1.0",
+      "21-session blocks on the common KRX/NYSE schedule",
+      "expanding bucket calibration (horizon 126, prior strength 30, min 20 dates, gross)",
+      "realistic dated cost schedule (benchmark_alpha.REALISTIC_COSTS, ETF legs without sell tax)"
+    ],
+    "horizons": {
+      "H126": 126,
+      "H252": 252
+    },
+    "initialState": "100% regional ETF; the ETF-only path never trades",
+    "legacyConstraintsNotInherited": {
+      "maxNamesPerRegion": 3,
+      "minNames": 3
+    },
+    "liveValidated": false,
+    "missingData": "a block that cannot be valued stops that path (INPUT_UNAVAILABLE) at that block; no name is dropped and no return is filled with zero; unmatured horizons are PENDING, not zero",
+    "pairedInference": {
+      "blockLengthBlocks": 6,
+      "bootstrap": "circular block",
+      "draws": 2000,
+      "level": 0.95,
+      "seed": 20261101,
+      "statistic": "per-block log NAV growth difference, annualized"
+    },
+    "primaryHorizon": "H126",
+    "primaryNameCount": 5,
+    "primaryNameCountLabel": "LEGACY_TARGET_SCENARIO_NOT_AN_OPTIMUM",
+    "productionChanged": false,
+    "promotionEligible": false,
+    "question": "Economic difference between entry state inside the selection rank and entry state applied to the weight after selection, with identical sample, region, execution session, residual asset and costs.",
+    "regions": {
+      "KR": {
+        "currency": "KRW",
+        "etf": "069500.KS"
+      },
+      "US": {
+        "currency": "USD",
+        "etf": "SPY"
+      }
+    },
+    "residuals": {
+      "primary": "ETF",
+      "secondary": "CASH (KRW policy-rate accrual), reported apart"
+    },
+    "rungs": {
+      "ENTRY_AT_WEIGHT": "entry_selection_separation.entry_weighted_scores, multiplier applied to held weight",
+      "ENTRY_IN_RANK": "alpha_reliability.reliability_scores (multiplier inside the score)"
+    },
+    "scenarioNameCounts": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      10
+    ],
+    "selectionFunction": "kelly_portfolio.select_portfolio_by_scores",
+    "separateComparison": {
+      "US": "QQQ"
+    },
+    "sizingFunction": "kelly_portfolio.baseline_weights",
+    "studyId": "entry-state-role-etf-residual-v1"
+  },
+  "studyId": "entry-state-role-etf-residual-v1"
+}
