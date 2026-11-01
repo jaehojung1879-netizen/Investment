@@ -61,14 +61,30 @@ def fixture():
 def run(tmp_path, latest, weekly, cfg, *, output=False):
     if NODE is None:
         pytest.skip("Node unavailable")
-    files = [tmp_path / name for name in ("champion.json", "weekly.json",
-                                          "config.json")]
-    for path, obj in zip(files, (latest, weekly, cfg)):
+    # Create an isolated REAL Git object to test that the runner authenticates
+    # source bytes, not merely a caller-supplied reference or input hash.
+    repo = tmp_path
+    if not (repo / ".git").exists():
+        subprocess.run(["git", "init", "-q", str(repo)], check=True)
+    paths = [
+        repo / "ledger/research-strategies/current-champion-decisions-v1/latest.json",
+        repo / "ledger/weekly-decisions/latest.json",
+        repo / "config.json",
+    ]
+    for path, obj in zip(paths, (latest, weekly, cfg)):
+        path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(obj))
-    args = [NODE, str(SCRIPT), *(str(p) for p in files), "f" * 40]
+    subprocess.run(["git", "-C", str(repo), "add", "ledger", "config.json"], check=True)
+    subprocess.run(["git", "-C", str(repo), "-c", "user.name=fixture",
+                    "-c", "user.email=fixture@example.invalid", "commit",
+                    "--allow-empty", "-q", "-m", "source snapshot"], check=True)
+    sha = subprocess.check_output(["git", "-C", str(repo), "rev-parse", "HEAD"],
+                                  text=True).strip()
+    args = [NODE, str(SCRIPT), *(str(p) for p in paths), sha]
     if output:
-        args.append(str(tmp_path / "observation.json"))
-    return subprocess.run(args, text=True, capture_output=True, check=False)
+        args.append(str(repo / "observation.json"))
+    return subprocess.run(args, text=True, capture_output=True,
+                          check=False, cwd=repo)
 
 
 def test_real_selection_v_weight_throttle_not_returns(tmp_path):
