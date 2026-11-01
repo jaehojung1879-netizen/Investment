@@ -524,6 +524,7 @@
         "reason": "COMMON_STORED_GRID_ONLY_NO_DAILY_CALENDAR_OR_UNRECORDED_SESSION_CERTIFICATION",
         "sourceUnionRowsDropped": 0
       },
+      "notMarketC1FormalStudy": true,
       "observations": 715,
       "observedGapCalendarDays": {
         "3": 1,
@@ -532,7 +533,7 @@
         "8": 2
       },
       "perSecurityPeriodAttribution": {
-        "reason": "NO_MATCHING_EXECUTED_C2_POSITION_COST_AND_LEG_PNL_HISTORY_IN_CONSUMED_PACKET; P1_DECISIONS_AND_TRUNCATED_TOPCONTRIBUTIONS_ARE_NOT_C2_PERIOD_ATTRIBUTION",
+        "reason": "NO_MATCHING_EXECUTED_POSITION_COST_AND_LEG_PNL_HISTORY_IN_CONSUMED_PACKET; P1_DECISIONS_AND_TRUNCATED_TOPCONTRIBUTIONS_ARE_NOT_C1_C2_PERIOD_ATTRIBUTION",
         "status": "UNAVAILABLE"
       },
       "region": "KR",
@@ -1976,6 +1977,7 @@
       },
       "sourceStatus": "DEFINITION_INTERNAL_REPLAY_V16",
       "strategyId": "C2",
+      "studyId": "weekly-passive-first-v1-replay-corrected-benchmark",
       "topThreeShareOfFullLogExcessPct": 234.16572362054785,
       "topThreeYears": [
         "2018",
@@ -2508,6 +2510,7 @@
         "reason": "COMMON_STORED_GRID_ONLY_NO_DAILY_CALENDAR_OR_UNRECORDED_SESSION_CERTIFICATION",
         "sourceUnionRowsDropped": 0
       },
+      "notMarketC1FormalStudy": true,
       "observations": 715,
       "observedGapCalendarDays": {
         "3": 1,
@@ -2516,7 +2519,7 @@
         "8": 2
       },
       "perSecurityPeriodAttribution": {
-        "reason": "NO_MATCHING_EXECUTED_C2_POSITION_COST_AND_LEG_PNL_HISTORY_IN_CONSUMED_PACKET; P1_DECISIONS_AND_TRUNCATED_TOPCONTRIBUTIONS_ARE_NOT_C2_PERIOD_ATTRIBUTION",
+        "reason": "NO_MATCHING_EXECUTED_POSITION_COST_AND_LEG_PNL_HISTORY_IN_CONSUMED_PACKET; P1_DECISIONS_AND_TRUNCATED_TOPCONTRIBUTIONS_ARE_NOT_C1_C2_PERIOD_ATTRIBUTION",
         "status": "UNAVAILABLE"
       },
       "region": "US",
@@ -3960,6 +3963,7 @@
       },
       "sourceStatus": "SURVIVORSHIP_BIASED_PARTIAL",
       "strategyId": "C1",
+      "studyId": "weekly-passive-first-v1-replay-corrected-benchmark",
       "topThreeShareOfFullLogExcessPct": -29.613054914562415,
       "topThreeYears": [
         "2022",
@@ -4492,6 +4496,7 @@
         "reason": "COMMON_STORED_GRID_ONLY_NO_DAILY_CALENDAR_OR_UNRECORDED_SESSION_CERTIFICATION",
         "sourceUnionRowsDropped": 0
       },
+      "notMarketC1FormalStudy": true,
       "observations": 715,
       "observedGapCalendarDays": {
         "3": 1,
@@ -4500,7 +4505,7 @@
         "8": 2
       },
       "perSecurityPeriodAttribution": {
-        "reason": "NO_MATCHING_EXECUTED_C2_POSITION_COST_AND_LEG_PNL_HISTORY_IN_CONSUMED_PACKET; P1_DECISIONS_AND_TRUNCATED_TOPCONTRIBUTIONS_ARE_NOT_C2_PERIOD_ATTRIBUTION",
+        "reason": "NO_MATCHING_EXECUTED_POSITION_COST_AND_LEG_PNL_HISTORY_IN_CONSUMED_PACKET; P1_DECISIONS_AND_TRUNCATED_TOPCONTRIBUTIONS_ARE_NOT_C1_C2_PERIOD_ATTRIBUTION",
         "status": "UNAVAILABLE"
       },
       "region": "US",
@@ -5944,6 +5949,7 @@
       },
       "sourceStatus": "SURVIVORSHIP_BIASED_PARTIAL",
       "strategyId": "C2",
+      "studyId": "weekly-passive-first-v1-replay-corrected-benchmark",
       "topThreeShareOfFullLogExcessPct": -64.81860921188058,
       "topThreeYears": [
         "2022",
@@ -5954,7 +5960,7 @@
     }
   ],
   "evidenceClass": "POST_OUTCOME_EXPOSED_DESCRIPTIVE_SAVED_NAV_FORENSICS_NOT_ALPHA",
-  "generatorSha256": "d1fb2c58db3b9dadf9cbecd01afd6d923a01d6a4310513ad1fb2a2e10c3b50a9",
+  "generatorSha256": "2b9419d92c8f0a26e387063e275afab69f1a71c0cbd3adecdb8452dca4fc04ef",
   "id": "portfolio-edge-forensics-v1",
   "knownPriorNotNew": {
     "benchmarkSensitivity": {

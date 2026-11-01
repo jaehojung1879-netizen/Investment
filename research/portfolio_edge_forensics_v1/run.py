@@ -257,6 +257,7 @@ def analyze_pair(region, strategy, packet, old, windows):
     ranked = sorted(rows, key=lambda r: r['logExcess'], reverse=True)
     top3 = sorted(annual, key=lambda r: r['logExcess'], reverse=True)[:3]
     return {'id': f'{region}/{strategy}-P0', 'region': region, 'strategyId': strategy, 'benchmark': s['benchmark'],
+        'studyId': old['candidateInput']['studyId'], 'notMarketC1FormalStudy': True,
         'currency': s['baseCurrency'], 'fxReturnsIncluded': s['fxReturnsIncluded'], 'frequency': 'WEEKLY_OBSERVED_NOT_DAILY',
         'evidenceClass': CLASS, 'inheritedEvidenceClass': old['candidateInput']['evidenceClass'],
         'sourceRef': {'commit': MAIN, 'path': NAV_PATH, 'candidatePointer': f'/regions/{region}/weeklyNav/{strategy}', 'benchmarkPointer': f'/regions/{region}/weeklyNav/P0'},
@@ -275,7 +276,7 @@ def analyze_pair(region, strategy, packet, old, windows):
         'topThreeYears': [x['year'] for x in top3], 'topThreeYearsLogExcess': math.fsum(x['logExcess'] for x in top3),
         'topThreeShareOfFullLogExcessPct': math.fsum(x['logExcess'] for x in top3)/full['logExcess']*100 if abs(full['logExcess']) > 1e-12 else None,
         'sensitivities': annual_sensitivity(rows, annual), 'rolling': rolling,
-        'perSecurityPeriodAttribution': {'status': 'UNAVAILABLE', 'reason': 'NO_MATCHING_EXECUTED_C2_POSITION_COST_AND_LEG_PNL_HISTORY_IN_CONSUMED_PACKET; P1_DECISIONS_AND_TRUNCATED_TOPCONTRIBUTIONS_ARE_NOT_C2_PERIOD_ATTRIBUTION'},
+        'perSecurityPeriodAttribution': {'status': 'UNAVAILABLE', 'reason': 'NO_MATCHING_EXECUTED_POSITION_COST_AND_LEG_PNL_HISTORY_IN_CONSUMED_PACKET; P1_DECISIONS_AND_TRUNCATED_TOPCONTRIBUTIONS_ARE_NOT_C1_C2_PERIOD_ATTRIBUTION'},
         'causalStockSelectionAlpha': None, 'inference': 'NONE_NO_P_VALUES_OR_INDEPENDENT_OOS'}, rows
 
 
@@ -383,6 +384,7 @@ def report(result):
     for c in result['comparisons']:
         d = c['decomposition']
         lines.extend([f"### {c['id']} — {c['currency']} / FX 포함 {c['fxReturnsIncluded']}", '',
+            f"Study ID: `{c['studyId']}`. C1/C2는 이 저장 CHAMPION 연구의 경로명이며 Market C1 정식 연구가 아니다.", '',
             f"{c['sourceStatus']} · {c['evidenceClass']} · {c['returnBasis']} vs {c['benchmarkReturnBasis']} · {c['costBasis']}", '',
             '| 종료 관측 연도 | 실제 시작 ~ 종료 | 후보% | ETF% | 차이pp | 로그 초과 |', '|---|---|---:|---:|---:|---:|'])
         for y in c['annualPeriods']:
