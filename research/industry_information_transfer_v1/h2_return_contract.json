@@ -1,0 +1,30 @@
+{
+ "studyId": "industry-information-transfer-v1",
+ "contrast": "H2_PRELIM_VS_FORMAL_ENTRY_PAIRED",
+ "evidenceClassIfExecuted": "OUTCOME_EXPOSED_EXPLORATORY",
+ "independentConfirmation": false,
+ "unit": "(issuer, fiscal quarter q) in the PIT Top120 with a content-confirmed first preliminary disclosure and an original (non-amended) formal report",
+ "signal": "y_q = clip(ln(revenue_q / revenue_{q-4}), -1, 1) from the issuer's own first preliminary table; centred cross-sectional rank weight within quarter q, w_i = (rank_i - (n+1)/2) / sum |rank - (n+1)/2|",
+ "legA": "enter at the close of the first XKRX session after the preliminary receipt date",
+ "legB": "enter at the close of the first XKRX session after the formal original receipt date",
+ "exit": "each leg holds H sessions after its own entry",
+ "horizons": {"primary": 126, "secondary": 252},
+ "excessReturn": "total-return close ratio of the stock minus total-return close ratio of 069500.KS over the identical window",
+ "statistic": "per quarter q: D_q = sum_i w_i * (excessA_i - excessB_i); mean over quarters with Newey-West lag 2 standard error",
+ "sampleRule": "identical issuer set for both legs within a quarter; an issuer whose window is not fully matured or not fully priced on a total-return basis in EITHER leg is removed from BOTH legs; no last-price or zero fill",
+ "family": "Holm alpha 0.05 over {H1_B2_vs_B1, H2_return_contrast_H126}; H252 is secondary and reported without family claim",
+ "costs": "not charged: both legs trade the same names once each; the contrast is a timing difference, not a strategy NAV",
+ "dataRequirements": [
+  "total-return (dividend-reinvested) daily closes for every unit's issuer over both windows, from a pinned snapshot with a content hash",
+  "total-return daily closes of 069500.KS from the same snapshot",
+  "terminal consideration for any issuer delisted inside a window, or that issuer is removed from both legs and counted"
+ ],
+ "authorization": {
+  "file": "research/industry_information_transfer_v1/AUTHORIZATION.json",
+  "requiredFields": {"studyId": "industry-information-transfer-v1", "contractSha256": "<sha256 of this file>",
+                     "approval": "APPROVE KR_PHASE_D_EXCEPTION industry-information-transfer-v1-h2 <sha256 of this file>",
+                     "approvedBy": "jaehojung1879-netizen"},
+  "mustBeTrackedByGit": true,
+  "reason": "docs/kr-alpha-research-final-development-assessment.md section 7 closed KR historical evaluation; a new information axis needs an independent registration and an explicit owner exception"
+ }
+}
