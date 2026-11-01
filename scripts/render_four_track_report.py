@@ -53,6 +53,43 @@ def main(argv=None):
         summary = '; '.join(m['label']+': '+m['display'] for m in summary_metrics)
         lines.append('|'+ '|'.join(md(v) for v in [track['title'], track['evidenceClass'],
             track['reportStatus']+' / '+track['researchStatus'], summary])+'|')
+    saved = report['storedPerformance']
+    lines.extend(['', '## 저장된 포트폴리오 성과', ''])
+    if saved['status'] != 'READ_ONLY_STORED_RESULTS':
+        lines.append('UNKNOWN · '+saved['reason']+' · 기존 네 트랙과 현재 판단은 유지한다.')
+        lines.extend(f"- {key} · {report['sources'][key]['reason']}" for key in saved['sourceKeys']
+                     if report['sources'].get(key, {}).get('reason'))
+    else:
+        lines.extend([saved['notice'], '',
+            f"저장 비교 {saved['comparisonCount']}개 · 원본 차단 비교 {len(saved['blockedComparisons'])}개", '',
+            f"원본 생성 시각 UNKNOWN · {saved['sourceGeneratedAtReason']}; 저장 독해 기준일 {saved['readoutAsOfDate']} (관측 종료일·생성 시각과 별개).", '',
+            f"QQQ {saved['qqq']['status']} · {saved['qqq']['reason']}", ''])
+        for group in saved['groups']:
+            rows = [c for c in saved['comparisons'] if c['id'] in group['comparisonIds']]
+            lines.extend([f"### 연구: {group['studyId']}", '',
+                '| 비교 | 통화 / 환율 | '+ ' | '.join(m['label'] for m in rows[0]['metrics'])+' |',
+                '|---|---|'+ '|'.join('---' for _ in rows[0]['metrics'])+'|'])
+            for c in rows:
+                a = c['candidateInput']
+                currency = a['currency'] + (' · 환율 포함' if a.get('fxReturnsIncluded') is True else '')
+                lines.append('|'+ '|'.join(md(v) for v in [c['id'], currency,
+                    *(m['display'] for m in c['metrics'])])+'|')
+            for c in rows:
+                lines.extend(['', f"#### {c['id']}", '', c['warning'], ''])
+                for d in c['details']:
+                    lines.append(f"- {d['label']}: {md(d['display'])}")
+                lines.extend(['', f"원문 위치: `results.json {c['sourcePointer']}`", '',
+                    f"원 입력 commit: `{c['candidateInput']['sourceCommit']}`", ''])
+                for path, sha in c['candidateInput']['hashes'].items():
+                    lines.append(f"- `{path}` · SHA256 `{sha}`")
+        lines.extend(['', '### 고정 입력과 처리 규약', '', saved['plan']['calendarWindows'], '',
+            saved['plan']['inference'], ''])
+        for key in saved['sourceKeys']:
+            s = report['sources'][key]
+            lines.append(f"- [{s['path']}](https://github.com/jaehojung1879-netizen/Investment/blob/{s['commit']}/{s['path']}) · commit `{s['commit']}` · SHA256 `{s['sha256']}` · 저장 커밋 시각 {s['snapshotAt']} · {s['status']}")
+        lines.extend(['', '### 원본에서 차단된 경로', ''])
+        for c in saved['blockedComparisons']:
+            lines.append(f"- `{c['id']}` · {c['status']} · {c['reason']}")
     for t in report['tracks']:
         lines.extend(['', f"## {t['title']} — PR #{t['pr']}", '', t['hypothesis'], '',
                       f"비교 기준: {t['benchmark']} · 투자 적격 미확인", ''])

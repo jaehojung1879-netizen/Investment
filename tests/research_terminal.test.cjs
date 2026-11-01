@@ -278,6 +278,7 @@ test("terminal retains six original sections plus the read-only four-track resul
   assert.equal((html.match(/<section /g) || []).length, 7);
   for (const id of ["decision", "research-tracks", "market", "performance", "institutional", "watchlist", "evidence"])
     assert.ok(html.includes(`id="${id}"`));
+  assert.ok(html.includes('href="#stored-performance"'));
   assert.doesNotMatch(
     app,
     /renderModelPortfolio|loadData\(|kellyFraction/,

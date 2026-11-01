@@ -2,6 +2,13 @@
 const test=require('node:test'),assert=require('node:assert/strict');
 if (!globalThis.crypto) Object.defineProperty(globalThis,'crypto',{value:require('node:crypto').webcrypto});
 const A=require('../app.js');
+const fs=require('node:fs'),path=require('node:path'),zlib=require('node:zlib');
+const fixture=name=>zlib.gunzipSync(fs.readFileSync(path.join(__dirname,'fixtures/economic_readout_report_v1',name+'.gz')));
+const economicDocs=()=>({economic:JSON.parse(fixture('results.json')),economicPins:JSON.parse(fixture('source-pins.json')),
+  economicPlan:JSON.parse(fixture('readout-plan.json')),economicReadme:fixture('README.md').toString()});
+const storedReader=async(_url,s)=>fixture(s.path==='research/historical_alpha_discovery_v1/results/summary.json'
+  ? 'kr-summary.json' : s.path.split('/').at(-1));
+const VIEWED_AT='2026-11-01T06:00:00Z';
 
 test('UNKNOWN differs from an explicitly measured zero; arrays retain units',()=>{
   const docs={s:{zero:0,missing:null,range:[-.08,.16],bad:true}};
@@ -77,4 +84,98 @@ test('US date-held count is a count, distinct from unknown/full admission',()=>{
 test('an economic decision criterion is not an observed economic verdict',()=>{
   const t=A.fourTrackProjection({market:{economicExperimentProposal:{economicTolerances:{fixture:'criterion-only'}}}})[2];
   assert.equal(t.economicVerdict,null);assert.equal(t.historicalCagr,null);
+});
+
+test('pinned real readout shows all 12 comparisons and KR C2 conflicting horizons without scaling or cost deductions',async()=>{
+  const r=await A.loadFourTrackReport(storedReader,VIEWED_AT),p=r.storedPerformance;
+  assert.equal(p.status,'READ_ONLY_STORED_RESULTS');assert.equal(p.comparisonCount,12);
+  assert.deepEqual(p.groups.map(g=>g.comparisonIds.length),[6,6]);
+  const c=p.comparisons.find(c=>c.id==='A/KR/C2-P0');
+  assert.deepEqual(c.metrics.slice(2,5).map(m=>m.display),['+1.8181 pp','-0.5193 pp','-0.8804 pp']);
+  assert.equal(c.metrics[8].display,'-2.9206 pp');
+  assert.equal(c.metrics[0].value,economicDocs().economic.comparisons[1].scopes.FULL.candidate.cagrPct);
+  assert.equal(c.candidateInput.costBasis,'NET_ALREADY_CHARGED');
+  const html=A.fourTrackMarkup(r);
+  assert.equal((html.match(/data-stored-comparison=/g)||[]).length,12);
+  for(const m of c.metrics) assert.ok(html.includes(m.display));
+  assert.match(html,/전체 CAGR 우위가 모든 달력 6\/12개월 구간의 우위를 뜻하지 않습니다/);
+  assert.match(html,/주간 관측 MDD는 일별 MDD가 아니며 H126\/H252는 UNAVAILABLE/);
+  assert.match(html,/재차감 없음/);assert.match(html,/원본 생성 시각 UNKNOWN/);
+  assert.match(html,/차단된 별도 비교 90개/);assert.equal(r.productionEffect,'NONE');
+  assert.deepEqual(r.investmentNominations,[]);
+});
+test('US stored C2 is KRW with FX, QQQ unavailable, and C1 study IDs cannot become Market C1',async()=>{
+  const r=await A.loadFourTrackReport(storedReader,VIEWED_AT),p=r.storedPerformance;
+  const c=p.comparisons.find(c=>c.id==='A/US/C2-P0');
+  assert.equal(c.candidateInput.currency,'KRW');assert.equal(c.candidateInput.fxReturnsIncluded,true);
+  assert.equal(p.qqq.status,'UNAVAILABLE');assert.equal(c.candidateInput.notMarketC1FormalStudy,true);
+  const html=A.storedPerformanceMarkup(p,r.sources);
+  assert.match(html,/KRW · 환율 포함/);assert.doesNotMatch(html,/USD/);
+  assert.match(html,/Market C1 정식 연구와 다릅니다/);
+  assert.match(html,/SURVIVORSHIP_BIASED_PARTIAL/);
+  assert.equal(p.sourceGeneratedAt,null);
+});
+test('each missing/corrupt authenticated source isolates UNKNOWN to new section; old KR remains readable',async()=>{
+  for(const key of ['economic','economicPins','economicPlan','economicReadme']) {
+    for(const corruption of [false,true]) {
+      const r=await A.loadFourTrackReport(async(url,s)=>{
+        if(s.path===A.RESEARCH_TRACK_SOURCES[key].path) {
+          if(corruption) return Buffer.from('{}');
+          throw new Error('unavailable');
+        }
+        return storedReader(url,s);
+      },VIEWED_AT);
+      assert.equal(r.storedPerformance.status,'UNKNOWN');
+      assert.equal(r.sources[key].reason,corruption?'SOURCE_HASH_OR_SIZE_MISMATCH':'SOURCE_READ_FAILED');
+      assert.equal(r.tracks[0].reportStatus,'DONE');assert.notEqual(r.tracks[0].metrics[0].value,null);
+      assert.deepEqual(r.storedPerformance.comparisons,[]);
+      const html=A.fourTrackMarkup(r);
+      assert.match(html,/UNKNOWN/);assert.ok(html.includes(r.sources[key].reason));
+      assert.doesNotMatch(html,/\+1\.8181/);
+    }
+  }
+});
+test('measured zero, explicit null, missing, invalid and unsupported fields retain different reasons',()=>{
+  const docs=economicDocs(),before=structuredClone(docs),p=A.storedPerformanceProjection(docs);
+  assert.deepEqual(docs,before);
+  const zero=p.comparisons.find(c=>c.id==='A/US/P1-P0').metrics[2];
+  assert.equal(zero.value,0);assert.equal(zero.status,'MEASURED');assert.equal(zero.display,'0.0000 pp');
+  assert.equal(A.storedMetric(null,'null').reason,'NULL_IN_STORED_RESULT');
+  assert.equal(A.storedMetric(undefined,'missing').reason,'MISSING_IN_STORED_RESULT');
+  for(const v of [NaN,Infinity,false,'0']) assert.equal(A.storedMetric(v,'bad').reason,'INVALID_IN_STORED_RESULT');
+  const c=docs.economic.comparisons[1];c.scopes.FULL.cagrGapPp=null;
+  delete c.scopes.FULL.windows.CALENDAR_6M.meanExcessReturnPp;
+  const changed=A.storedPerformanceProjection(docs).comparisons[1];
+  assert.equal(changed.metrics[2].value,null);assert.match(changed.metrics[2].display,/NULL/);
+  assert.match(changed.metrics[3].display,/MISSING/);
+  assert.match(changed.details.find(d=>d.label==='H126 표본').display,/UNAVAILABLE.*REQUIRES_VERIFIED_COMPLETE_DAILY_SESSION_PATH/);
+});
+test('actual window maturity and missing endpoint counts are preserved without inventing zeroes or independent trials',()=>{
+  const docs=economicDocs(),p=A.storedPerformanceProjection(docs),c=p.comparisons[1];
+  const original=docs.economic.comparisons[1].scopes.FULL.windows.CALENDAR_12M;
+  assert.deepEqual(c.windowAccounting.find(w=>w.key==='CALENDAR_12M').statusCounts,original.statusCounts);
+  assert.deepEqual(original.statusCounts,{MEASURED:662,MATURE_TARGET_NO_STORED_ENDPOINT:7,IMMATURE_AT_AS_OF:46});
+  assert.match(c.details.find(d=>d.label==='CALENDAR_12M 표본').display,/IMMATURE_AT_AS_OF=46/);
+  assert.match(c.details.find(d=>d.label==='CALENDAR_12M 표본').display,/비중첩 시간 블록 13 \(독립성 증명 아님\)/);
+  const html=A.storedPerformanceMarkup(p);
+  assert.match(html,/BEYOND_STORED_PATH_MATURITY_UNKNOWN/);assert.match(html,/미성숙/);
+});
+test('inconsistent contracts/pins fail closed and unknown cost is never certified net',()=>{
+  for(const mutate of [
+    d=>{d.economic.comparisons.pop()},
+    d=>{d.economic.sourcePins.mainCommit='0'.repeat(40)},
+    d=>{d.economic.comparisons[1].candidateInput.currency='USD'},
+    d=>{d.economic.comparisons[1].candidateInput.hashes.x='1'.repeat(64)},
+    d=>{d.economic.comparisons[1].units='FRACTIONS'},
+  ]) {
+    const d=economicDocs();mutate(d);assert.equal(A.storedPerformanceProjection(d).status,'UNKNOWN');
+  }
+  const d=economicDocs();d.economic.comparisons[1].candidateInput.costBasis='UNKNOWN';
+  const c=A.storedPerformanceProjection(d).comparisons[1];
+  assert.match(c.details.find(d=>d.label==='후보 비용 기준').display,/UNKNOWN · 순수익으로 인증하지 않음/);
+});
+test('source strings in saved-path details cannot inject markup',()=>{
+  const d=economicDocs();d.economic.comparisons[1].candidateInput.strategyMeaning='<script>alert(1)</script>';
+  const html=A.storedPerformanceMarkup(A.storedPerformanceProjection(d));
+  assert.doesNotMatch(html,/<script>/);assert.match(html,/&lt;script&gt;/);
 });
