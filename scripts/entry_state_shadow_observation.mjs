@@ -2,7 +2,7 @@
  * Source-pinned, read-only first paper A/B observation. No prices, fills or returns.
  *
  * Usage:
- * node scripts/entry_state_shadow_observation.mjs CHAMPION_LATEST WEEKLY_LATEST CONFIG SOURCE_COMMIT [OUTPUT]
+ * node scripts/entry_state_shadow_observation.mjs CHAMPION_LATEST WEEKLY_LATEST CONFIG SOURCE_COMMIT CONFIG_COMMIT [OUTPUT]
  *
  * Inputs are two already-published SAME-ARTIFACT receipts from the repository's
  * signal-history branch, at an immutable SOURCE_COMMIT. This is a current-origin
@@ -224,7 +224,7 @@ export function observe(champion, weekly, config, sourceCommit, sourceHashes = {
 
 if (process.argv[1]?.endsWith("entry_state_shadow_observation.mjs")) {
   const args = process.argv.slice(2);
-  if (args.length < 4 || args.length > 5)
+  if (args.length < 5 || args.length > 6)
     throw Error("Usage: node scripts/entry_state_shadow_observation.mjs CHAMPION_LATEST WEEKLY_LATEST CONFIG SOURCE_COMMIT [OUTPUT]");
   const inputs = args.slice(0, 3).map(p => fs.readFileSync(p));
   if (!/^[0-9a-f]{40}$/.test(args[3])) throw Error("IMMUTABLE_SOURCE_COMMIT_REQUIRED");
@@ -240,14 +240,19 @@ if (process.argv[1]?.endsWith("entry_state_shadow_observation.mjs")) {
     });
     if (!original.equals(inputs[i])) throw Error("IMMUTABLE_GIT_SOURCE_MISMATCH");
   }
+  if (!/^[0-9a-f]{40}$/.test(args[4])) throw Error("IMMUTABLE_CONFIG_COMMIT_REQUIRED");
+  const trustedConfig = execFileSync("git", ["show", args[4] + ":config.json"], {
+    cwd: process.cwd(), maxBuffer: 2 * 1024 * 1024
+  });
+  if (!trustedConfig.equals(inputs[2])) throw Error("IMMUTABLE_CONFIG_GIT_SOURCE_MISMATCH");
   const [champion, weekly, fullConfig] = inputs.map(x => JSON.parse(x.toString("utf8")));
   const output = observe(champion, weekly, fullConfig.kellyPortfolio, args[3], {
     championSha256: hash(inputs[0]), weeklySha256: hash(inputs[1]),
     configSha256: hash(inputs[2])
   });
   const serialized = JSON.stringify(output, null, 2) + "\n";
-  if (args[4]) {
-    const file = args[4];
+  if (args[5]) {
+    const file = args[5];
     if (fs.existsSync(file)) throw Error("APPEND_ONLY_EXISTING_OBSERVATION_REFUSED");
     fs.writeFileSync(file, serialized, {flag: "wx"});
   } else process.stdout.write(serialized);
