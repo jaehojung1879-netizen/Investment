@@ -1,0 +1,3804 @@
+{
+  "study": "m3-backlog-to-shipments-3m-v1",
+  "classification": "OWNER_AUTHORIZED_EXPLORATORY_NOT_CONFIRMATORY",
+  "fixedBlocks": 68,
+  "evaluatedBlocks": 66,
+  "excludedBlocks": 2,
+  "pairedIndustryCutoffRows": 396,
+  "effectiveTimeUnits": 66,
+  "units": "natural-log monthly growth; target is three-month mean, NOT percent or real output",
+  "metrics": {
+    "baselineMAE": 0.010176334445756587,
+    "candidateMAE": 0.010278262907196597,
+    "baselineRMSE": 0.024241196589603078,
+    "candidateRMSE": 0.024330914648264947,
+    "pairedMSELossDifference": -4.357795525369943e-06,
+    "skill": -0.007415812513179798
+  },
+  "calendarBlock95Interval": {
+    "pairedMSELossDifference": [
+      -9.826608055647134e-06,
+      -9.614338560166989e-08
+    ],
+    "skill": [
+      -0.021030959968390626,
+      -0.0004809038562332717
+    ]
+  },
+  "firstHalf": {
+    "baselineMAE": 0.009035516410263358,
+    "candidateMAE": 0.009187994720355705,
+    "baselineRMSE": 0.013530616725380456,
+    "candidateRMSE": 0.013621924321704776,
+    "pairedMSELossDifference": -2.4792332571068004e-06,
+    "skill": -0.013541981140709813
+  },
+  "secondHalf": {
+    "baselineMAE": 0.011388453608468142,
+    "candidateMAE": 0.011436672855715044,
+    "baselineRMSE": 0.03189793898777533,
+    "candidateRMSE": 0.03199737926148385,
+    "pairedMSELossDifference": -6.353767935399473e-06,
+    "skill": -0.006244621250019788
+  },
+  "industries": {
+    "primary_metals": {
+      "baselineMAE": 0.01250960243952262,
+      "candidateMAE": 0.012564756512755286,
+      "baselineRMSE": 0.01989412119623392,
+      "candidateRMSE": 0.01985662393740749,
+      "pairedMSELossDifference": 1.4905439788197132e-06,
+      "skill": 0.0037661297292970186
+    },
+    "fabricated_metals": {
+      "baselineMAE": 0.005648973974726023,
+      "candidateMAE": 0.0057490485389269695,
+      "baselineRMSE": 0.009707499787620578,
+      "candidateRMSE": 0.00974002110335956,
+      "pairedMSELossDifference": -6.324589672360463e-07,
+      "skill": -0.006711468792436337
+    },
+    "machinery": {
+      "baselineMAE": 0.0068388046009417785,
+      "candidateMAE": 0.00706114786246407,
+      "baselineRMSE": 0.00971942361744253,
+      "candidateRMSE": 0.00982747442803163,
+      "pairedMSELossDifference": -2.1120581783159884e-06,
+      "skill": -0.022357583160340422
+    },
+    "computers_electronics": {
+      "baselineMAE": 0.006121456199513568,
+      "candidateMAE": 0.00618105962389792,
+      "baselineRMSE": 0.00867709694438689,
+      "candidateRMSE": 0.008752917843396749,
+      "pairedMSELossDifference": -1.3215593909649014e-06,
+      "skill": -0.017552451670533875
+    },
+    "electrical_equipment": {
+      "baselineMAE": 0.0059284642137239635,
+      "candidateMAE": 0.00598237511494293,
+      "baselineRMSE": 0.008344911463799292,
+      "candidateRMSE": 0.008370158694233567,
+      "pairedMSELossDifference": -4.220092280049335e-07,
+      "skill": -0.006060081725059785
+    },
+    "transportation_equipment": {
+      "baselineMAE": 0.024010705246111565,
+      "candidateMAE": 0.024131189790192412,
+      "baselineRMSE": 0.0528810486668085,
+      "candidateRMSE": 0.05309947777019927,
+      "pairedMSELossDifference": -2.3149231366518044e-05,
+      "skill": -0.00827821035078613
+    }
+  },
+  "forecasts": [
+    {
+      "cutoffMonth": "2009-01",
+      "latestReferenceMonthKnownAtCutoff": "2008-11",
+      "latestPrintedPublicationDate": "2009-01-06",
+      "baselineFirstFullReferences": [
+        "2008-11",
+        "2008-10",
+        "2008-09"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2009-02",
+        "2009-03",
+        "2009-04"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2009-06-03",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        -0.08346406044730446,
+        -0.011923757161066764,
+        -0.007865299480891891,
+        0.00962755863453466,
+        -0.02791361965737162,
+        -0.0046715357396558185
+      ],
+      "baseline": [
+        -0.07523368017600711,
+        -0.004436956643357198,
+        -0.00040573238812465,
+        -0.01212475270570175,
+        -0.025412091277515713,
+        -0.022796359391970847
+      ],
+      "outcome": [
+        -0.04041455632676102,
+        -0.009564810635501516,
+        -0.026738203570088465,
+        -0.003487985632273658,
+        0.00200190017045369,
+        0.003064909246649653
+      ],
+      "trainingMonthlyOrigins": 57,
+      "candidate": null,
+      "beta": null,
+      "excludedReason": "FEWER_THAN_60_COMPLETED_PAST_TRAINING_ORIGINS"
+    },
+    {
+      "cutoffMonth": "2009-04",
+      "latestReferenceMonthKnownAtCutoff": "2009-02",
+      "latestPrintedPublicationDate": "2009-04-02",
+      "baselineFirstFullReferences": [
+        "2009-02",
+        "2009-01",
+        "2008-12"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2009-05",
+        "2009-06",
+        "2009-07"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2009-09-02",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        -0.07894868561293893,
+        -0.025694739764101367,
+        -0.011256444626177177,
+        -0.0023533050436665235,
+        -0.0205607444452607,
+        -0.012701194035068353
+      ],
+      "baseline": [
+        -0.06298672637190407,
+        -0.020834985426376334,
+        -0.026467548615621655,
+        -0.01564645491443724,
+        -0.0174423468114305,
+        -0.007252344186702764
+      ],
+      "outcome": [
+        0.008360680690660307,
+        -0.003739761810976397,
+        -0.003174036603067087,
+        0.012564400931451586,
+        -0.007097098983188245,
+        -0.01609279415695809
+      ],
+      "trainingMonthlyOrigins": 60,
+      "candidate": [
+        -0.06503507529865575,
+        -0.021501643676736553,
+        -0.026759600675640892,
+        -0.015707512167298248,
+        -0.017975801909393057,
+        -0.0075818807327289765
+      ],
+      "beta": 0.02594532018929497,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2009-07",
+      "latestReferenceMonthKnownAtCutoff": "2009-05",
+      "latestPrintedPublicationDate": "2009-07-02",
+      "baselineFirstFullReferences": [
+        "2009-05",
+        "2009-04",
+        "2009-03"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2009-08",
+        "2009-09",
+        "2009-10"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2009-12-04",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        -0.028482018284679122,
+        -0.01594936375733545,
+        -0.009769141567119383,
+        0.0044990810712531365,
+        -0.012203870922807196,
+        0.0003071689851738117
+      ],
+      "baseline": [
+        -0.04605835798916292,
+        -0.015844660930360164,
+        -0.020671655469770886,
+        -0.003906282968815175,
+        -0.012234364492058761,
+        -0.01615468277349223
+      ],
+      "outcome": [
+        0.02622843878115716,
+        0.0016091443364032235,
+        -0.009149258651507168,
+        -0.001584833848364096,
+        -0.014259162655501307,
+        -0.00025260963909181966
+      ],
+      "trainingMonthlyOrigins": 63,
+      "candidate": [
+        -0.0454118636168053,
+        -0.015482636940039629,
+        -0.020449912228727295,
+        -0.004008404614980625,
+        -0.011957356950187415,
+        -0.016161654997802068
+      ],
+      "beta": -0.022698334292741505,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2009-10",
+      "latestReferenceMonthKnownAtCutoff": "2009-08",
+      "latestPrintedPublicationDate": "2009-10-02",
+      "baselineFirstFullReferences": [
+        "2009-08",
+        "2009-07",
+        "2009-06"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2009-11",
+        "2009-12",
+        "2010-01"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2010-03-04",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.028760152175262652,
+        -0.008270402195559683,
+        -0.004811427146657671,
+        -0.00018553249896928315,
+        -0.000550371514655679,
+        -0.006146982616936343
+      ],
+      "baseline": [
+        0.024464992933405445,
+        0.004201392698582684,
+        -0.01297883026043154,
+        0.010451355367442886,
+        -0.008026665815378697,
+        -0.0014096350557145296
+      ],
+      "outcome": [
+        0.0353099430316003,
+        -0.0005340449527486519,
+        0.0021257424068259014,
+        0.028908983714270295,
+        0.0014859451226424212,
+        -0.0013178112544486068
+      ],
+      "trainingMonthlyOrigins": 66,
+      "candidate": [
+        0.02052045275539094,
+        0.0053357028910295924,
+        -0.012318928755810674,
+        0.01047680169999537,
+        -0.007951180729654382,
+        -0.0005665581568753905
+      ],
+      "beta": -0.13715296615875722,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2010-01",
+      "latestReferenceMonthKnownAtCutoff": "2009-11",
+      "latestPrintedPublicationDate": "2010-01-15",
+      "baselineFirstFullReferences": [
+        "2009-11",
+        "2009-10",
+        "2009-09"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2010-02",
+        "2010-03",
+        "2010-04"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2010-06-03",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        -0.012455266621564532,
+        0.001393557074446167,
+        0.0016690677674937476,
+        0.0007546894567783286,
+        0.009284017301466916,
+        -0.012542933333567064
+      ],
+      "baseline": [
+        0.030853804741167567,
+        0.002034044433074105,
+        0.0029369966023451628,
+        0.0015202136827553111,
+        0.005429597225601424,
+        0.004471234205931333
+      ],
+      "outcome": [
+        0.024917368337247694,
+        0.011346171375516077,
+        0.013074699227316878,
+        0.006973662651241087,
+        0.014094418960513543,
+        -0.006037665593435618
+      ],
+      "trainingMonthlyOrigins": 69,
+      "candidate": [
+        0.032845037116569026,
+        0.0018112554677377382,
+        0.002670161545629604,
+        0.001399560939994323,
+        0.003945354745198701,
+        0.006476481921227817
+      ],
+      "beta": -0.159870714606295,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2010-04",
+      "latestReferenceMonthKnownAtCutoff": "2010-02",
+      "latestPrintedPublicationDate": "2010-03-31",
+      "baselineFirstFullReferences": [
+        "2010-02",
+        "2010-01",
+        "2009-12"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2010-05",
+        "2010-06",
+        "2010-07"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2010-09-02",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.030838649120639005,
+        0.0067010769376386736,
+        0.0011777015602248428,
+        -0.0019128905185519178,
+        -0.00039091131697402155,
+        0.005352212249208422
+      ],
+      "baseline": [
+        0.03317968759138363,
+        0.004529875982955594,
+        0.003703151301066405,
+        0.02445333410971189,
+        -0.0023233951407284916,
+        -0.011316594297621429
+      ],
+      "outcome": [
+        -0.004229349858387875,
+        -0.0008001943156704357,
+        -0.0008792583770037601,
+        0.003038376025165577,
+        0.0028816080001817334,
+        0.02262521040072155
+      ],
+      "trainingMonthlyOrigins": 72,
+      "candidate": [
+        0.028601903833826398,
+        0.0035351475484103377,
+        0.003528329665638835,
+        0.024737289451320924,
+        -0.002265367064644856,
+        -0.012111093116476224
+      ],
+      "beta": -0.14844307024115116,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2010-07",
+      "latestReferenceMonthKnownAtCutoff": "2010-05",
+      "latestPrintedPublicationDate": "2010-07-02",
+      "baselineFirstFullReferences": [
+        "2010-05",
+        "2010-04",
+        "2010-03"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2010-08",
+        "2010-09",
+        "2010-10"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2010-12-16",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.0018242305734958808,
+        -0.009434032233358642,
+        0.02188869878943701,
+        0.0023645168306455295,
+        0.008385970960697868,
+        -0.0003877302196724403
+      ],
+      "baseline": [
+        0.020520170856713683,
+        0.010359271623165476,
+        0.014787451494345285,
+        0.009605307857378158,
+        0.010406467155808419,
+        -0.003638163256451178
+      ],
+      "outcome": [
+        0.0028801014718431947,
+        0.0004623423779885228,
+        0.005923045677778551,
+        -0.017691859518233127,
+        0.000612292528128295,
+        -0.02351860182985509
+      ],
+      "trainingMonthlyOrigins": 75,
+      "candidate": [
+        0.020254183064898214,
+        0.011734830962058825,
+        0.011595899537424067,
+        0.009260541894329608,
+        0.009183723753481754,
+        -0.0035816290077387673
+      ],
+      "beta": -0.14580820850170356,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2010-10",
+      "latestReferenceMonthKnownAtCutoff": "2010-08",
+      "latestPrintedPublicationDate": "2010-10-04",
+      "baselineFirstFullReferences": [
+        "2010-08",
+        "2010-07",
+        "2010-06"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2010-11",
+        "2010-12",
+        "2011-01"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2011-03-04",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        -0.00037844998153963716,
+        0.00427822004715012,
+        0.016604827939094076,
+        0.005884883998803629,
+        0.010244778486768885,
+        -0.0062439025768200864
+      ],
+      "baseline": [
+        -0.007539046247717983,
+        -0.0041017443176040135,
+        0.0014610731593083816,
+        0.0031125360562440155,
+        0.005584345203245682,
+        0.011939962643627103
+      ],
+      "outcome": [
+        0.03465851123062579,
+        0.004355445493818421,
+        0.003410094732233053,
+        -1.01885197892534e-05,
+        0.01156342469357119,
+        -0.002856339343030331
+      ],
+      "trainingMonthlyOrigins": 78,
+      "candidate": [
+        -0.007478464518663399,
+        -0.004786595633167337,
+        -0.0011970038291266593,
+        0.002170492284745415,
+        0.003944375789098267,
+        0.012939477593035318
+      ],
+      "beta": -0.1600785625834109,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2011-01",
+      "latestReferenceMonthKnownAtCutoff": "2010-11",
+      "latestPrintedPublicationDate": "2011-01-04",
+      "baselineFirstFullReferences": [
+        "2010-11",
+        "2010-10",
+        "2010-09"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2011-02",
+        "2011-03",
+        "2011-04"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2011-06-02",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.07862108258152177,
+        0.0035442934142157416,
+        0.020135831470588037,
+        0.003988869032595487,
+        0.030504630739386456,
+        -0.0012878248601912398
+      ],
+      "baseline": [
+        0.015137042496245487,
+        8.352817493160771e-05,
+        -0.002016950985337579,
+        -0.01321603139746467,
+        0.0004530485701232789,
+        -0.013969118785265876
+      ],
+      "outcome": [
+        0.013008219348402876,
+        0.00353100178663286,
+        0.006946241764205611,
+        0.001954346916315292,
+        -0.004721301810814141,
+        0.00426728243322544
+      ],
+      "trainingMonthlyOrigins": 81,
+      "candidate": [
+        0.0024098556358869982,
+        -0.0004902223139895866,
+        -0.005276540923559728,
+        -0.013861749821485353,
+        -0.004485043386621848,
+        -0.013760645598419665
+      ],
+      "beta": -0.16188007646882424,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2011-04",
+      "latestReferenceMonthKnownAtCutoff": "2011-02",
+      "latestPrintedPublicationDate": "2011-03-31",
+      "baselineFirstFullReferences": [
+        "2011-02",
+        "2011-01",
+        "2010-12"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2011-05",
+        "2011-06",
+        "2011-07"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2011-08-31",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        -0.02089587412193771,
+        0.019179693090096556,
+        0.011891851897204427,
+        0.0020622452071429416,
+        0.014239629000450166,
+        0.002747121969718118
+      ],
+      "baseline": [
+        0.0266880422085022,
+        0.0031247279356916963,
+        0.006755815333627944,
+        -0.004970528496535277,
+        0.010372965965397508,
+        0.012175740978742139
+      ],
+      "outcome": [
+        0.02519174080639719,
+        0.0011677935125923766,
+        0.014114904379758523,
+        -0.001121154795634729,
+        0.001168994600454674,
+        0.022414282078742024
+      ],
+      "trainingMonthlyOrigins": 84,
+      "candidate": [
+        0.030052332686563477,
+        3.674709992439488e-05,
+        0.004841196023097286,
+        -0.0053025553776952575,
+        0.008080348390378479,
+        0.011733447144520927
+      ],
+      "beta": -0.1610026198678738,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2011-07",
+      "latestReferenceMonthKnownAtCutoff": "2011-05",
+      "latestPrintedPublicationDate": "2011-07-05",
+      "baselineFirstFullReferences": [
+        "2011-05",
+        "2011-04",
+        "2011-03"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2011-08",
+        "2011-09",
+        "2011-10"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2011-12-05",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.001205182429694236,
+        0.002310371403965898,
+        0.03246462916852921,
+        0.0006608480048375012,
+        0.00926169743382345,
+        0.007754744842268571
+      ],
+      "baseline": [
+        0.014447176747848027,
+        0.004807040703157096,
+        0.006823685722182725,
+        0.00741596057262653,
+        0.0006221612928471598,
+        -0.002013223818661994
+      ],
+      "outcome": [
+        0.011736427737898248,
+        0.004814167194235775,
+        0.008513917452066993,
+        0.0027562710994712167,
+        0.0056031876358236836,
+        -0.00750110586600797
+      ],
+      "trainingMonthlyOrigins": 87,
+      "candidate": [
+        0.014263336430609348,
+        0.004454613218836716,
+        0.001871482986458557,
+        0.0073151538367643935,
+        -0.0007906317851557673,
+        -0.003196144110878137
+      ],
+      "beta": -0.15254148476535714,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2011-10",
+      "latestReferenceMonthKnownAtCutoff": "2011-08",
+      "latestPrintedPublicationDate": "2011-10-04",
+      "baselineFirstFullReferences": [
+        "2011-08",
+        "2011-07",
+        "2011-06"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2011-11",
+        "2011-12",
+        "2012-01"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2012-03-05",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.005648573689602274,
+        0.007859924113182454,
+        0.011511130016423746,
+        -0.002592882741518235,
+        0.0031057711742198315,
+        0.012051430703452293
+      ],
+      "baseline": [
+        0.01710369660445384,
+        0.0021307837110502146,
+        0.023527956505685645,
+        0.0017172129575321472,
+        0.004880732164181187,
+        0.00863619319043149
+      ],
+      "outcome": [
+        0.030938828894212386,
+        0.009637183597217904,
+        -0.004383802007198218,
+        -0.012264870338967665,
+        0.001703145174056157,
+        0.01423229706044192
+      ],
+      "trainingMonthlyOrigins": 90,
+      "candidate": [
+        0.016259170461813188,
+        0.0009556354776168636,
+        0.02180691137740834,
+        0.002104878478129807,
+        0.004416383977573201,
+        0.006834366951708152
+      ],
+      "beta": -0.14951139686735956,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2012-01",
+      "latestReferenceMonthKnownAtCutoff": "2011-11",
+      "latestPrintedPublicationDate": "2012-01-04",
+      "baselineFirstFullReferences": [
+        "2011-11",
+        "2011-10",
+        "2011-09"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2012-02",
+        "2012-03",
+        "2012-04"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2012-06-04",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.02992891347820282,
+        0.009221384550717882,
+        0.011173585204033479,
+        0.0017769955848691717,
+        0.020244638244048214,
+        0.014008613125644012
+      ],
+      "baseline": [
+        0.026862097168957294,
+        0.004900201520812841,
+        -0.006383929807207475,
+        -0.005358770571157055,
+        -0.008376423378606926,
+        -0.00042500825221964317
+      ],
+      "outcome": [
+        -0.003365859791991077,
+        -0.0012761972500838269,
+        0.019797717944019817,
+        -0.0009937082954986464,
+        0.0009147778785267213,
+        0.005799258458274715
+      ],
+      "trainingMonthlyOrigins": 93,
+      "candidate": [
+        0.022386603532656132,
+        0.0035212591176854834,
+        -0.008054799333150705,
+        -0.005624497973443455,
+        -0.011403755115739458,
+        -0.0025198206463576977
+      ],
+      "beta": -0.14953745780182293,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2012-04",
+      "latestReferenceMonthKnownAtCutoff": "2012-02",
+      "latestPrintedPublicationDate": "2012-04-03",
+      "baselineFirstFullReferences": [
+        "2012-02",
+        "2012-01",
+        "2011-12"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2012-05",
+        "2012-06",
+        "2012-07"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2012-08-31",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        -0.013587084929359753,
+        0.006868559695975789,
+        0.019870644270932884,
+        0.004999608517240466,
+        0.0036648148707037866,
+        0.016180500505108095
+      ],
+      "baseline": [
+        0.020139254436813508,
+        0.006043109730488064,
+        0.0013528732000991823,
+        -0.0015982315509169849,
+        0.0014710416822332924,
+        0.014234323166939929
+      ],
+      "outcome": [
+        0.0023096141755968515,
+        -0.0030992166657493824,
+        0.00671927229527725,
+        0.009165803808197755,
+        0.001508544380419611,
+        0.029001208494152247
+      ],
+      "trainingMonthlyOrigins": 96,
+      "candidate": [
+        0.022139712014135844,
+        0.005031835983356712,
+        -0.0015727271847316671,
+        -0.0023343353431547996,
+        0.0009314626102175539,
+        0.01185203108526111
+      ],
+      "beta": -0.1472322862279039,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2012-07",
+      "latestReferenceMonthKnownAtCutoff": "2012-05",
+      "latestPrintedPublicationDate": "2012-07-03",
+      "baselineFirstFullReferences": [
+        "2012-05",
+        "2012-04",
+        "2012-03"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2012-08",
+        "2012-09",
+        "2012-10"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2012-12-05",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        -0.016675142969184542,
+        0.004365694591028386,
+        0.003950604718736518,
+        0.008154559557610267,
+        0.013040157135491903,
+        -0.003523865898743295
+      ],
+      "baseline": [
+        -0.0053410430579751535,
+        0.0006687327487133423,
+        0.011779426932046014,
+        0.001431931386249305,
+        0.008809570999568181,
+        0.019562809723634982
+      ],
+      "outcome": [
+        -0.001717701139516965,
+        0.0007949887717015419,
+        0.000677690839242151,
+        -0.007126366464408847,
+        -0.0021523567145131646,
+        -0.026904073967930712
+      ],
+      "trainingMonthlyOrigins": 99,
+      "candidate": [
+        -0.0028481903964160896,
+        1.6082669436011344e-05,
+        0.011188830767079416,
+        0.0002128644472373419,
+        0.006860131016808675,
+        0.020089610513342935
+      ],
+      "beta": -0.1494951297368679,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2012-10",
+      "latestReferenceMonthKnownAtCutoff": "2012-08",
+      "latestPrintedPublicationDate": "2012-10-04",
+      "baselineFirstFullReferences": [
+        "2012-08",
+        "2012-07",
+        "2012-06"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2012-11",
+        "2012-12",
+        "2013-01"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2013-03-06",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        -0.03064496334264184,
+        0.004551318465395865,
+        -0.03474298596703577,
+        0.0017481818611045194,
+        0.0005192720866321909,
+        -0.020938270913584425
+      ],
+      "baseline": [
+        0.0004215032936815156,
+        -0.0037769489412140434,
+        0.005896952800562991,
+        -0.009485233261950223,
+        -0.003308253563493325,
+        -0.003621501382545502
+      ],
+      "outcome": [
+        0.015018081676387579,
+        0.00432902305597519,
+        0.006328357456247502,
+        -0.005206223066839232,
+        0.004626904874690963,
+        0.0048238929759463495
+      ],
+      "trainingMonthlyOrigins": 102,
+      "candidate": [
+        0.004841727169394951,
+        -0.004433430279494017,
+        0.010908274705829439,
+        -0.009737390692035672,
+        -0.003383153273754335,
+        -0.0006013690373519922
+      ],
+      "beta": -0.14423981606017403,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2013-01",
+      "latestReferenceMonthKnownAtCutoff": "2012-11",
+      "latestPrintedPublicationDate": "2013-01-04",
+      "baselineFirstFullReferences": [
+        "2012-11",
+        "2012-10",
+        "2012-09"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2013-02",
+        "2013-03",
+        "2013-04"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2013-06-05",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.0028123260833330765,
+        0.003919658159217966,
+        -0.014071178180994556,
+        0.002738717290737435,
+        0.008635755855696921,
+        0.003261128868651009
+      ],
+      "baseline": [
+        0.013873911937671006,
+        0.001880934329071964,
+        0.012624051313821444,
+        0.001230672087976958,
+        0.002121106320780898,
+        0.007797080509971151
+      ],
+      "outcome": [
+        -0.0054425234124605695,
+        0.0048277171752618845,
+        0.00611974797129116,
+        -0.0025011401527963105,
+        -0.001250648692613501,
+        0.010148223872117442
+      ],
+      "trainingMonthlyOrigins": 105,
+      "candidate": [
+        0.01346235166316881,
+        0.0013073253164034787,
+        0.01468324992135843,
+        0.000829883841322449,
+        0.0008573360661266731,
+        0.0073198417216517086
+      ],
+      "beta": -0.14634159137564415,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2013-04",
+      "latestReferenceMonthKnownAtCutoff": "2013-02",
+      "latestPrintedPublicationDate": "2013-04-02",
+      "baselineFirstFullReferences": [
+        "2013-02",
+        "2013-01",
+        "2012-12"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2013-05",
+        "2013-06",
+        "2013-07"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2013-09-05",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.013880640265092996,
+        0.0030760570110689466,
+        0.0037830405392794792,
+        -0.0017267277004406711,
+        0.0010587103972534023,
+        0.014317123679749678
+      ],
+      "baseline": [
+        -0.00038911543618875476,
+        0.006503238955902983,
+        0.00370978441601758,
+        -0.0023709472873109047,
+        0.005034417539882579,
+        0.0027095201827365047
+      ],
+      "outcome": [
+        0.008948175740340278,
+        -0.0037700508659704486,
+        -0.00444482980603734,
+        -0.008488496812582598,
+        0.003443827374048546,
+        0.010266413297961626
+      ],
+      "trainingMonthlyOrigins": 108,
+      "candidate": [
+        -0.0024814839415428142,
+        0.006039553946586802,
+        0.003139528669330452,
+        -0.0021106602552486775,
+        0.00487482747420854,
+        0.0005513561425587554
+      ],
+      "beta": -0.1507400570430417,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2013-07",
+      "latestReferenceMonthKnownAtCutoff": "2013-05",
+      "latestPrintedPublicationDate": "2013-07-02",
+      "baselineFirstFullReferences": [
+        "2013-05",
+        "2013-04",
+        "2013-03"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2013-08",
+        "2013-09",
+        "2013-10"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [
+        "2013-08"
+      ],
+      "targetFinalPublicationDate_METADATA_ONLY": null,
+      "metadataSupport": false,
+      "numericalPredictorOrOutcome": null,
+      "x": null,
+      "baseline": null,
+      "outcome": null,
+      "trainingMonthlyOrigins": 111,
+      "candidate": null,
+      "beta": null,
+      "excludedReason": "SOURCE_CHAIN_INCOMPLETE"
+    },
+    {
+      "cutoffMonth": "2013-10",
+      "latestReferenceMonthKnownAtCutoff": "2013-07",
+      "latestPrintedPublicationDate": "2013-09-05",
+      "baselineFirstFullReferences": [
+        "2013-07",
+        "2013-06",
+        "2013-05"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2013-11",
+        "2013-12",
+        "2014-01"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2014-03-06",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.006198395926739908,
+        0.011868834792220671,
+        0.008282287908222113,
+        0.008876071237350971,
+        -0.002772066516251626,
+        0.00109629615050878
+      ],
+      "baseline": [
+        0.008948175740340278,
+        -0.0037700508659704486,
+        -0.00444482980603734,
+        -0.008488496812582598,
+        0.003443827374048546,
+        0.010266413297961626
+      ],
+      "outcome": [
+        0.0006899201833099047,
+        -0.0012881519248102286,
+        0.004554354109605046,
+        0.011421965486271392,
+        0.007006807155239426,
+        -0.012000134130533463
+      ],
+      "trainingMonthlyOrigins": 113,
+      "candidate": [
+        0.008067039641304131,
+        -0.005457271061732016,
+        -0.005622202620681567,
+        -0.009750279195845086,
+        0.003837891887717547,
+        0.010110568765785102
+      ],
+      "beta": -0.1421555043353912,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2014-01",
+      "latestReferenceMonthKnownAtCutoff": "2013-11",
+      "latestPrintedPublicationDate": "2014-01-06",
+      "baselineFirstFullReferences": [
+        "2013-11",
+        "2013-10",
+        "2013-09"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2014-02",
+        "2014-03",
+        "2014-04"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2014-06-03",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.00578746394420178,
+        -0.002309967593428905,
+        0.0027928473378087296,
+        0.01245523172351013,
+        -0.0046761313469112125,
+        0.012948878368072214
+      ],
+      "baseline": [
+        0.008860944652659486,
+        0.004157701777207526,
+        0.017444195769138218,
+        0.0005516243952395859,
+        0.002400068137075755,
+        0.011091169580425287
+      ],
+      "outcome": [
+        0.008124165196125303,
+        0.0032579180430330756,
+        0.00892643263476727,
+        0.0019206530526370974,
+        -0.00250190706704386,
+        0.007336789451223349
+      ],
+      "trainingMonthlyOrigins": 114,
+      "candidate": [
+        0.008054476547844323,
+        0.004479589776030125,
+        0.017055019729118614,
+        -0.001183979872871032,
+        0.0030516749240153823,
+        0.009286776931475216
+      ],
+      "beta": -0.13934740891528677,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2014-04",
+      "latestReferenceMonthKnownAtCutoff": "2014-02",
+      "latestPrintedPublicationDate": "2014-04-02",
+      "baselineFirstFullReferences": [
+        "2014-02",
+        "2014-01",
+        "2013-12"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2014-05",
+        "2014-06",
+        "2014-07"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2014-09-03",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        -0.0017317925627857982,
+        -0.007478685917231999,
+        0.007360795122418661,
+        0.0012280951900147917,
+        0.001779861987961511,
+        0.00407565900755364
+      ],
+      "baseline": [
+        -4.2295072323856675e-05,
+        -0.0008175856816129374,
+        -0.0034592823158358234,
+        0.0014223458374345336,
+        0.0020451582349446554,
+        -0.013434258660680078
+      ],
+      "outcome": [
+        0.01195792812153323,
+        0.0055133312215452715,
+        0.006885862709953936,
+        0.006802298946671136,
+        0.006415988783211263,
+        0.029048106500983866
+      ],
+      "trainingMonthlyOrigins": 116,
+      "candidate": [
+        0.00019449483067643532,
+        0.0002049832743723823,
+        -0.004465731933703896,
+        0.0012544270305475589,
+        0.001801795746538218,
+        -0.01399152800217006
+      ],
+      "beta": -0.13673110053053164,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2014-07",
+      "latestReferenceMonthKnownAtCutoff": "2014-05",
+      "latestPrintedPublicationDate": "2014-07-02",
+      "baselineFirstFullReferences": [
+        "2014-05",
+        "2014-04",
+        "2014-03"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2014-08",
+        "2014-09",
+        "2014-10"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2014-12-05",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.008662909186442537,
+        0.004116849098832526,
+        0.005559965381585277,
+        0.0032718352871009275,
+        0.0110971401261163,
+        0.006784146515428042
+      ],
+      "baseline": [
+        0.011379723467323305,
+        0.0025226668869327293,
+        0.005448360411131024,
+        0.002305018606562709,
+        0.0004475040635810778,
+        0.00302000981725232
+      ],
+      "outcome": [
+        0.00365176937744899,
+        0.0015516438842785628,
+        -0.00048638668369603636,
+        -0.007959678235033008,
+        0.00044332447797713485,
+        -0.01327923119277419
+      ],
+      "trainingMonthlyOrigins": 118,
+      "candidate": [
+        0.010194538664811702,
+        0.0019594349655123943,
+        0.0046876937192697945,
+        0.001857394214440273,
+        -0.0010707113009985126,
+        0.002091861180916537
+      ],
+      "beta": -0.1368114079236129,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2014-10",
+      "latestReferenceMonthKnownAtCutoff": "2014-08",
+      "latestPrintedPublicationDate": "2014-10-02",
+      "baselineFirstFullReferences": [
+        "2014-08",
+        "2014-07",
+        "2014-06"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2014-11",
+        "2014-12",
+        "2015-01"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2015-03-05",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        -0.0031656098529831813,
+        0.004284838136442678,
+        0.010393535776016576,
+        0.00896040188285613,
+        0.006134116282883405,
+        0.005423408511785997
+      ],
+      "baseline": [
+        0.007926770973176357,
+        0.0037626051537657593,
+        0.004256342345513466,
+        0.007848212174666516,
+        0.0064871352497219035,
+        0.010756659782075942
+      ],
+      "outcome": [
+        -0.012750021897602203,
+        0.0024995904571784382,
+        -0.009008153055390072,
+        -0.004369579016732719,
+        0.0018144863841699549,
+        0.003836186887778622
+      ],
+      "trainingMonthlyOrigins": 121,
+      "candidate": [
+        0.008357571533602707,
+        0.0031794913917283537,
+        0.00284190997858747,
+        0.006628811701439518,
+        0.0056523574801568156,
+        0.010018600597651596
+      ],
+      "beta": -0.1360876988743181,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2015-01",
+      "latestReferenceMonthKnownAtCutoff": "2014-11",
+      "latestPrintedPublicationDate": "2015-01-06",
+      "baselineFirstFullReferences": [
+        "2014-11",
+        "2014-10",
+        "2014-09"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2015-02",
+        "2015-03",
+        "2015-04"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2015-06-02",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.004472631067541597,
+        0.0024706410613717696,
+        -0.0023199349474281312,
+        0.00515829560785272,
+        0.0023292840221987745,
+        0.00454625810929326
+      ],
+      "baseline": [
+        -0.0018372523001472076,
+        0.001133197040945413,
+        -0.0006323689074034235,
+        -0.00665281053884756,
+        0.0035971223232223403,
+        -1.0499121232502665e-05
+      ],
+      "outcome": [
+        -0.01404530139815341,
+        -0.004022769256634539,
+        -0.002685808959699059,
+        0.007879585821584203,
+        -0.006107544771061444,
+        0.013423533160681655
+      ],
+      "trainingMonthlyOrigins": 124,
+      "candidate": [
+        -0.0024416416924752772,
+        0.0007993377918381482,
+        -0.0003188746683430495,
+        -0.007349854203035197,
+        0.0032823647379270253,
+        -0.0006248377810836952
+      ],
+      "beta": -0.13513061623038705,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2015-04",
+      "latestReferenceMonthKnownAtCutoff": "2015-02",
+      "latestPrintedPublicationDate": "2015-04-02",
+      "baselineFirstFullReferences": [
+        "2015-02",
+        "2015-01",
+        "2014-12"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2015-05",
+        "2015-06",
+        "2015-07"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2015-09-02",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        -0.003214603276333308,
+        -0.008024794658665766,
+        -0.010422545333169931,
+        0.003871680665971365,
+        0.002996169481998037,
+        -0.006291933918478127
+      ],
+      "baseline": [
+        -0.012830703389719264,
+        -0.0002971714160019976,
+        -0.006605520817049315,
+        -0.00048733258843333655,
+        -0.003799840771818766,
+        0.007505447971715995
+      ],
+      "outcome": [
+        -0.005824384954763974,
+        -0.0022509697059709616,
+        0.0017344391403542388,
+        0.004179551830644715,
+        0.0005252419162044874,
+        0.010524812529988747
+      ],
+      "trainingMonthlyOrigins": 127,
+      "candidate": [
+        -0.012373257181588755,
+        0.0008447772389560692,
+        -0.005122366153197548,
+        -0.0010382825774350797,
+        -0.004226203296409886,
+        0.008400806143595467
+      ],
+      "beta": -0.14230253900950676,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2015-07",
+      "latestReferenceMonthKnownAtCutoff": "2015-05",
+      "latestPrintedPublicationDate": "2015-07-02",
+      "baselineFirstFullReferences": [
+        "2015-05",
+        "2015-04",
+        "2015-03"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2015-08",
+        "2015-09",
+        "2015-10"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2015-12-03",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.003950082877029946,
+        -0.004360125864153233,
+        -0.013388765536993972,
+        0.006232376552874214,
+        -0.012241761276862575,
+        -0.006449936307653562
+      ],
+      "baseline": [
+        -0.010158133454357895,
+        -0.0022583592127381935,
+        -0.001953282584013383,
+        0.00945552524243619,
+        -0.007109388723028427,
+        0.010961654712859327
+      ],
+      "outcome": [
+        -0.009190172626451784,
+        -0.003135418627109155,
+        -0.0032234187532481488,
+        0.0030913437032655407,
+        -0.005380512309370284,
+        -0.008492842245991379
+      ],
+      "trainingMonthlyOrigins": 130,
+      "candidate": [
+        -0.010713293667208476,
+        -0.0016455699427017508,
+        -7.157271697563728e-05,
+        0.008579602482997746,
+        -0.005388883354483092,
+        0.011868154177529292
+      ],
+      "beta": -0.14054394050283928,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2015-10",
+      "latestReferenceMonthKnownAtCutoff": "2015-08",
+      "latestPrintedPublicationDate": "2015-10-02",
+      "baselineFirstFullReferences": [
+        "2015-08",
+        "2015-07",
+        "2015-06"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2015-11",
+        "2015-12",
+        "2016-01"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2016-03-03",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.0012941707860783074,
+        -0.005530798885450602,
+        -0.0034835284200576124,
+        0.003521104241870034,
+        0.0005323868803653411,
+        -0.002800590902701608
+      ],
+      "baseline": [
+        -0.009447518048531915,
+        -0.0016091725232746466,
+        0.0004894167171630178,
+        0.003002358430407439,
+        -0.003977335698915088,
+        0.012464887810410859
+      ],
+      "outcome": [
+        -0.007036156659184519,
+        0.005443423683346132,
+        0.0030898526024957726,
+        0.0018944072185412889,
+        -0.007160875832662571,
+        0.0037584900380045207
+      ],
+      "trainingMonthlyOrigins": 133,
+      "candidate": [
+        -0.009630017457868918,
+        -0.000829238730444144,
+        0.0009806516344614128,
+        0.0025058247029675325,
+        -0.004052411023014983,
+        0.012859817282653405
+      ],
+      "beta": -0.14101648043688725,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2016-01",
+      "latestReferenceMonthKnownAtCutoff": "2015-11",
+      "latestPrintedPublicationDate": "2016-01-06",
+      "baselineFirstFullReferences": [
+        "2015-11",
+        "2015-10",
+        "2015-09"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2016-02",
+        "2016-03",
+        "2016-04"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2016-06-03",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        -0.006499013670385682,
+        0.000489254752472546,
+        0.0008187466436648848,
+        0.006523870445085843,
+        -0.005728573673331978,
+        0.001502528286040209
+      ],
+      "baseline": [
+        -0.00969283773475115,
+        -0.0018182689561928426,
+        -0.006891230378148452,
+        0.0036412129349533066,
+        -0.004060892380702059,
+        0.0012151261426275423
+      ],
+      "outcome": [
+        -0.0014564443543386959,
+        0.0010492206675920942,
+        -0.006490280046985382,
+        0.0005651968945284648,
+        -0.006647698336941549,
+        -0.006990163705743224
+      ],
+      "trainingMonthlyOrigins": 136,
+      "candidate": [
+        -0.00878560334152061,
+        -0.0018865668181464468,
+        -0.007005523892848932,
+        0.0027305086427417066,
+        -0.003261208101796187,
+        0.00100537964769264
+      ],
+      "beta": -0.13959570470894236,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2016-04",
+      "latestReferenceMonthKnownAtCutoff": "2016-02",
+      "latestPrintedPublicationDate": "2016-04-04",
+      "baselineFirstFullReferences": [
+        "2016-02",
+        "2016-01",
+        "2015-12"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2016-05",
+        "2016-06",
+        "2016-07"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2016-09-02",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.007614613267507896,
+        0.003588353270467792,
+        -0.005471541441007572,
+        0.0021012000561937403,
+        0.012640834268559727,
+        -0.00602846007183703
+      ],
+      "baseline": [
+        -0.004606082785071955,
+        0.0019614316035880867,
+        -0.0006829305101551988,
+        -0.004517978015627563,
+        -0.009437165967328326,
+        -0.008986020048114059
+      ],
+      "outcome": [
+        0.002266781112468678,
+        0.0015751990410042486,
+        -0.007039635781152358,
+        0.008171568144033834,
+        0.0008366231621402204,
+        0.0026463906073753035
+      ],
+      "trainingMonthlyOrigins": 139,
+      "candidate": [
+        -0.005666596740984636,
+        0.001461669030180145,
+        7.911029936344318e-05,
+        -0.004810619533387435,
+        -0.011197699389739978,
+        -0.008146415223253673
+      ],
+      "beta": -0.1392735151025949,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2016-07",
+      "latestReferenceMonthKnownAtCutoff": "2016-05",
+      "latestPrintedPublicationDate": "2016-07-05",
+      "baselineFirstFullReferences": [
+        "2016-05",
+        "2016-04",
+        "2016-03"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2016-08",
+        "2016-09",
+        "2016-10"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2016-12-06",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.005358659381874803,
+        -0.0006905189320849975,
+        -0.009776457835514958,
+        0.00654243371051373,
+        -0.0032941342239293674,
+        0.002253371923774315
+      ],
+      "baseline": [
+        -0.0011691028316861013,
+        0.00422681106937632,
+        -0.003516160165107014,
+        0.006510165067600499,
+        -9.449411742025243e-05,
+        -0.004280440887418365
+      ],
+      "outcome": [
+        -0.0029023248269152914,
+        0.0023307046413968,
+        0.0012989532533989974,
+        0.0027496858403372273,
+        0.007693563208234684,
+        -0.0006922406315484452
+      ],
+      "trainingMonthlyOrigins": 142,
+      "candidate": [
+        -0.0019138016736623374,
+        0.004322773251788156,
+        -0.0021575149686305964,
+        0.005600955793279861,
+        0.00036329537190090354,
+        -0.0045935944847252715
+      ],
+      "beta": -0.13897110991885675,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2016-10",
+      "latestReferenceMonthKnownAtCutoff": "2016-08",
+      "latestPrintedPublicationDate": "2016-10-05",
+      "baselineFirstFullReferences": [
+        "2016-08",
+        "2016-07",
+        "2016-06"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2016-11",
+        "2016-12",
+        "2017-01"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2017-03-06",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.004125748639943769,
+        -0.00025654008579510174,
+        -0.003379165766160878,
+        0.0019853124468549536,
+        0.0036213472495981304,
+        -0.0024389875881376333
+      ],
+      "baseline": [
+        0.0019576245826494927,
+        0.0023353124591630405,
+        -0.0024024398015466157,
+        0.0064754446520164976,
+        0.002803858912016106,
+        0.0012204152364122655
+      ],
+      "outcome": [
+        0.014548172453154068,
+        0.005409880093680688,
+        0.003030225643319617,
+        0.005277987187357894,
+        -0.00024073574072716648,
+        0.005191531365819386
+      ],
+      "trainingMonthlyOrigins": 145,
+      "candidate": [
+        0.0013958143237240157,
+        0.0023702459620502337,
+        -0.0019422930112989129,
+        0.006205101255664858,
+        0.0023107338543578385,
+        0.0015525363538117743
+      ],
+      "beta": -0.13617171281019536,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2017-01",
+      "latestReferenceMonthKnownAtCutoff": "2016-11",
+      "latestPrintedPublicationDate": "2017-01-06",
+      "baselineFirstFullReferences": [
+        "2016-11",
+        "2016-10",
+        "2016-09"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2017-02",
+        "2017-03",
+        "2017-04"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2017-06-05",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.014680152186469937,
+        0.002607598276217889,
+        0.0028211507596659726,
+        0.0034768968097981094,
+        0.016541229722135085,
+        -0.004391698222488912
+      ],
+      "baseline": [
+        0.005999266347664796,
+        0.002978313501126973,
+        0.0015077320823166432,
+        0.0027676651710650106,
+        0.0024656059807426855,
+        0.00023795286675213438
+      ],
+      "outcome": [
+        0.0026284201302922694,
+        0.0014760233491072847,
+        0.006835989015175744,
+        -0.0008721907225649846,
+        0.004482658549059014,
+        -0.0019699220047121025
+      ],
+      "trainingMonthlyOrigins": 148,
+      "candidate": [
+        0.004008614744182015,
+        0.0026247190953022003,
+        0.001125179625634914,
+        0.0022961925240751633,
+        0.0002225893517806641,
+        0.0008334740165033932
+      ],
+      "beta": -0.13560156449314462,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2017-04",
+      "latestReferenceMonthKnownAtCutoff": "2017-02",
+      "latestPrintedPublicationDate": "2017-04-04",
+      "baselineFirstFullReferences": [
+        "2017-02",
+        "2017-01",
+        "2016-12"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2017-05",
+        "2017-06",
+        "2017-07"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2017-09-05",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.0022248270104743024,
+        -0.001251764618666787,
+        0.004200092741067831,
+        0.0035165404413412733,
+        0.006210202516750083,
+        -0.0013327618413526282
+      ],
+      "baseline": [
+        0.00996595833127349,
+        0.005866689288966006,
+        0.004845086949470046,
+        0.004907752157859114,
+        0.007714896912546634,
+        0.006047279273213421
+      ],
+      "outcome": [
+        0.0031173783109841612,
+        0.0047798817103006045,
+        0.001053276312593768,
+        0.006261983379962383,
+        -0.0025700381950504226,
+        0.0066870708256670025
+      ],
+      "trainingMonthlyOrigins": 151,
+      "candidate": [
+        0.009665338860604434,
+        0.006035828199674232,
+        0.0042775688230555445,
+        0.004432595877804347,
+        0.006875771989780147,
+        0.006227362559414593
+      ],
+      "beta": -0.13512037981099814,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2017-07",
+      "latestReferenceMonthKnownAtCutoff": "2017-05",
+      "latestPrintedPublicationDate": "2017-07-05",
+      "baselineFirstFullReferences": [
+        "2017-05",
+        "2017-04",
+        "2017-03"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2017-08",
+        "2017-09",
+        "2017-10"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2017-12-04",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.005677279475444264,
+        0.0039008129708539073,
+        0.003879919975143426,
+        0.0011560891476178343,
+        0.006700706088322606,
+        -0.0043071069649968045
+      ],
+      "baseline": [
+        0.0039516974643611135,
+        0.0030788723758554347,
+        0.003549293116256428,
+        -0.0007716613096092514,
+        0.0011408542391901997,
+        0.006715876886477313
+      ],
+      "outcome": [
+        0.010942599436432122,
+        0.008153463641828843,
+        0.01396919305352863,
+        0.006549066782734719,
+        0.0061734351969896005,
+        0.0005802439371138942
+      ],
+      "trainingMonthlyOrigins": 154,
+      "candidate": [
+        0.003185739661180015,
+        0.0025525889426196977,
+        0.0030258284896631134,
+        -0.0009276366332868955,
+        0.0002368194567960914,
+        0.007296976020885665
+      ],
+      "beta": -0.13491634619963105,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2017-10",
+      "latestReferenceMonthKnownAtCutoff": "2017-08",
+      "latestPrintedPublicationDate": "2017-10-05",
+      "baselineFirstFullReferences": [
+        "2017-08",
+        "2017-07",
+        "2017-06"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2017-11",
+        "2017-12",
+        "2018-01"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2018-03-06",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.005059143510780832,
+        0.005683667521664453,
+        0.0038914985811203716,
+        0.0014771553019577582,
+        0.0008064516566105101,
+        -0.001213263607173113
+      ],
+      "baseline": [
+        0.006264810220677382,
+        0.0038182785909416585,
+        0.0065117880551474406,
+        0.007745611728508518,
+        -0.0016697125281680634,
+        -0.0024681691930024895
+      ],
+      "outcome": [
+        0.010466132592407371,
+        0.007464734539762538,
+        0.0008553376631988751,
+        0.005049566125442907,
+        0.003768299369925335,
+        0.008513956838770867
+      ],
+      "trainingMonthlyOrigins": 157,
+      "candidate": [
+        0.005583011502657187,
+        0.0030523154942898,
+        0.00598734775450537,
+        0.007546541947419012,
+        -0.001778394502587375,
+        -0.0023046629453088922
+      ],
+      "beta": -0.13476564097604846,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2018-01",
+      "latestReferenceMonthKnownAtCutoff": "2017-11",
+      "latestPrintedPublicationDate": "2018-01-05",
+      "baselineFirstFullReferences": [
+        "2017-11",
+        "2017-10",
+        "2017-09"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2018-02",
+        "2018-03",
+        "2018-04"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2018-06-04",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.011259321178602196,
+        0.005636319133640299,
+        0.002020491420215212,
+        0.003382148004857375,
+        0.010182803818267184,
+        -0.0006247065803197059
+      ],
+      "baseline": [
+        0.0058902273982283405,
+        0.005093607187725459,
+        0.007264717851432899,
+        0.006296826860010293,
+        0.004056272666637274,
+        0.01054779411933353
+      ],
+      "outcome": [
+        0.019341057290318407,
+        0.006746070712603997,
+        0.0012682098373763028,
+        0.0038279972177966705,
+        0.010579793644978514,
+        0.0009700656279716004
+      ],
+      "trainingMonthlyOrigins": 160,
+      "candidate": [
+        0.004396557121388939,
+        0.00434588872165139,
+        0.006996677893151937,
+        0.005848148483526294,
+        0.002705414017437545,
+        0.01063066817861011
+      ],
+      "beta": -0.132660775294167,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2018-04",
+      "latestReferenceMonthKnownAtCutoff": "2018-02",
+      "latestPrintedPublicationDate": "2018-04-04",
+      "baselineFirstFullReferences": [
+        "2018-02",
+        "2018-01",
+        "2017-12"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2018-05",
+        "2018-06",
+        "2018-07"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2018-09-06",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.007390319341428526,
+        0.002713870261109248,
+        0.0010550172907310797,
+        -0.0009266487287196284,
+        -0.0019241531834347744,
+        0.001856162239040796
+      ],
+      "baseline": [
+        0.015584235329091341,
+        0.010133610816853877,
+        0.007479824944692302,
+        0.005325678921847818,
+        0.00920658395018833,
+        0.001804602513046956
+      ],
+      "outcome": [
+        0.004949281282561161,
+        0.0043867966070059465,
+        0.006075345243945505,
+        0.006578108959827709,
+        0.002121057169985058,
+        0.004625261530490953
+      ],
+      "trainingMonthlyOrigins": 163,
+      "candidate": [
+        0.014610234726380412,
+        0.009775938685531779,
+        0.007340779873759834,
+        0.0054478057716599365,
+        0.009460176017565942,
+        0.001559971252064729
+      ],
+      "beta": -0.13179411574962568,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2018-07",
+      "latestReferenceMonthKnownAtCutoff": "2018-05",
+      "latestPrintedPublicationDate": "2018-07-03",
+      "baselineFirstFullReferences": [
+        "2018-05",
+        "2018-04",
+        "2018-03"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2018-08",
+        "2018-09",
+        "2018-10"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2018-12-06",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.02188111270354515,
+        0.008855532903777504,
+        0.004089080171711489,
+        0.003481528196441078,
+        0.0015489470259237657,
+        0.004937007253712731
+      ],
+      "baseline": [
+        0.011412608601628559,
+        0.00530011047346975,
+        -0.0021012129114287483,
+        0.0032590574216811562,
+        0.007381735606757002,
+        -0.002641421656836136
+      ],
+      "outcome": [
+        0.0019780312399555514,
+        0.002999872274063882,
+        -0.002267692433039997,
+        0.00292492327335037,
+        0.0027688070826972096,
+        0.011617802729641335
+      ],
+      "trainingMonthlyOrigins": 166,
+      "candidate": [
+        0.008537929318877632,
+        0.004136695371088605,
+        -0.002638424808025859,
+        0.00280166400141872,
+        0.007178239286170879,
+        -0.003290031837832078
+      ],
+      "beta": -0.1313771983033191,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2018-10",
+      "latestReferenceMonthKnownAtCutoff": "2018-08",
+      "latestPrintedPublicationDate": "2018-10-04",
+      "baselineFirstFullReferences": [
+        "2018-08",
+        "2018-07",
+        "2018-06"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2018-11",
+        "2018-12",
+        "2019-01"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2019-03-19",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.008364763138520415,
+        0.007044158526431511,
+        0.001403281234912873,
+        0.0015944544105866065,
+        0.0035191831604131927,
+        0.011452748093160036
+      ],
+      "baseline": [
+        0.00846285402035142,
+        0.003304888973391356,
+        0.0019412680181778528,
+        0.00550256826540442,
+        0.003722399811984094,
+        0.013236641277656757
+      ],
+      "outcome": [
+        -0.005489697543256902,
+        0.0027336728579276533,
+        -0.0004908438978803225,
+        0.0055381942234472145,
+        0.0003569410817259858,
+        0.007580043954918671
+      ],
+      "trainingMonthlyOrigins": 169,
+      "candidate": [
+        0.007362786549609446,
+        0.002378496973360653,
+        0.0017567195721230689,
+        0.0052928782357381824,
+        0.003259584684497022,
+        0.011730466456056722
+      ],
+      "beta": -0.13151208857021598,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2019-01",
+      "latestReferenceMonthKnownAtCutoff": "2018-10",
+      "latestPrintedPublicationDate": "2018-12-06",
+      "baselineFirstFullReferences": [
+        "2018-10",
+        "2018-09",
+        "2018-08"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2019-02",
+        "2019-03",
+        "2019-04"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2019-06-04",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        -0.005384701490685915,
+        0.0034773623615723982,
+        0.0037204250577375646,
+        0.00398600692188152,
+        0.00614673438735641,
+        -0.003420129669128173
+      ],
+      "baseline": [
+        0.0019780312399555514,
+        0.002999872274063882,
+        -0.002267692433039997,
+        0.00292492327335037,
+        0.0027688070826972096,
+        0.011617802729641335
+      ],
+      "outcome": [
+        -0.0013087469677153787,
+        0.0005948853868799819,
+        -0.0024268695820769295,
+        0.0054520167939786195,
+        0.002979305823408936,
+        -0.011228992822852259
+      ],
+      "trainingMonthlyOrigins": 171,
+      "candidate": [
+        0.002690977079067458,
+        0.0025394621601410035,
+        -0.0027602845607985586,
+        0.002397167546400185,
+        0.001954966480173187,
+        0.012070635114323353
+      ],
+      "beta": -0.1324021100046328,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2019-04",
+      "latestReferenceMonthKnownAtCutoff": "2019-02",
+      "latestPrintedPublicationDate": "2019-04-08",
+      "baselineFirstFullReferences": [
+        "2019-02",
+        "2019-01",
+        "2018-12"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2019-05",
+        "2019-06",
+        "2019-07"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2019-09-05",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.003368437492619051,
+        0.003239774781483609,
+        -0.0021145365619449842,
+        -0.001063400002376642,
+        -0.0021174959493666184,
+        -0.004458038915790589
+      ],
+      "baseline": [
+        -0.006610801105338898,
+        0.005254346584494817,
+        0.0011352779686224347,
+        0.005585474036860847,
+        0.002765347536644291,
+        -0.00027529359577595875
+      ],
+      "outcome": [
+        -0.006972234080719526,
+        0.000306255284332792,
+        -0.0008228107705471026,
+        0.0001654055473336143,
+        0.003783445433764862,
+        0.004072969337333229
+      ],
+      "trainingMonthlyOrigins": 175,
+      "candidate": [
+        -0.00706555362730287,
+        0.004816964042677358,
+        0.001420748854288728,
+        0.005729037286586248,
+        0.0030512179514383788,
+        0.0003265594724230356
+      ],
+      "beta": -0.13500399605467814,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2019-07",
+      "latestReferenceMonthKnownAtCutoff": "2019-05",
+      "latestPrintedPublicationDate": "2019-07-03",
+      "baselineFirstFullReferences": [
+        "2019-05",
+        "2019-04",
+        "2019-03"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2019-08",
+        "2019-09",
+        "2019-10"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2019-12-05",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        -0.003255564459766185,
+        -0.002810776096377969,
+        -0.005828504802262262,
+        0.0009991025842521937,
+        0.0085784839799919,
+        -0.0071244041478925905
+      ],
+      "baseline": [
+        -0.006395623319425024,
+        -0.00016914273697999008,
+        0.0007341540746217805,
+        0.0041891166308439766,
+        0.002642792702171477,
+        -0.009293854409079828
+      ],
+      "outcome": [
+        0.001868555099176299,
+        0.004100439574123116,
+        0.003876015444721139,
+        -0.0009973570996478953,
+        -0.0069593982926304905,
+        -0.008074155090397892
+      ],
+      "trainingMonthlyOrigins": 178,
+      "candidate": [
+        -0.0059582818431928326,
+        0.00020844738066012666,
+        0.0015171356208175718,
+        0.004054900581828736,
+        0.0014903882899690811,
+        -0.008336786144629654
+      ],
+      "beta": -0.13433660479989426,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2019-10",
+      "latestReferenceMonthKnownAtCutoff": "2019-08",
+      "latestPrintedPublicationDate": "2019-10-03",
+      "baselineFirstFullReferences": [
+        "2019-08",
+        "2019-07",
+        "2019-06"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2019-11",
+        "2019-12",
+        "2020-01"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2020-03-05",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.012444605048083746,
+        0.00676712483344917,
+        -0.005144956537928496,
+        0.0007600324646362207,
+        0.004731673626900257,
+        0.00046877245484560124
+      ],
+      "baseline": [
+        -0.003577540079020003,
+        0.0019800704679580673,
+        0.0011099846645760772,
+        -0.003075307506663219,
+        -0.00011448064975876906,
+        0.0007800408883414878
+      ],
+      "outcome": [
+        5.9623195118449435e-05,
+        0.0024635972244200174,
+        -0.00204130792488795,
+        0.0012779602765802362,
+        0.004633300326088843,
+        -0.005668126752873158
+      ],
+      "trainingMonthlyOrigins": 181,
+      "candidate": [
+        -0.00525222271617907,
+        0.0010694118798970247,
+        0.0018023464831886829,
+        -0.0031775858166043997,
+        -0.0007512265840054726,
+        0.0007169577219513062
+      ],
+      "beta": -0.13457097518871752,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2020-01",
+      "latestReferenceMonthKnownAtCutoff": "2019-11",
+      "latestPrintedPublicationDate": "2020-01-07",
+      "baselineFirstFullReferences": [
+        "2019-11",
+        "2019-10",
+        "2019-09"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2020-02",
+        "2020-03",
+        "2020-04"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2020-06-03",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.0022133903510659246,
+        -0.003560972299956412,
+        -0.00033308841846052247,
+        -0.0002867190089045528,
+        0.0066149149749866855,
+        -0.006028918624352559
+      ],
+      "baseline": [
+        -0.0002776320430895593,
+        0.003588977236112928,
+        -0.006310824552691001,
+        0.0017328072596594904,
+        0.00315659290218385,
+        -0.005428594558608655
+      ],
+      "outcome": [
+        -0.050171407456336976,
+        -0.03700683402638298,
+        -0.0313712657548049,
+        0.0021666062175434903,
+        -0.025253975018894568,
+        -0.22509778375116776
+      ],
+      "trainingMonthlyOrigins": 184,
+      "candidate": [
+        -0.0005761738469374634,
+        0.004069280718672812,
+        -0.006265897629954503,
+        0.0017714798824413807,
+        0.00226437402719779,
+        -0.004615414795491115
+      ],
+      "beta": -0.13487987046845687,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2020-04",
+      "latestReferenceMonthKnownAtCutoff": "2020-02",
+      "latestPrintedPublicationDate": "2020-04-02",
+      "baselineFirstFullReferences": [
+        "2020-02",
+        "2020-01",
+        "2019-12"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2020-05",
+        "2020-06",
+        "2020-07"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2020-09-02",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        -0.002504697615009282,
+        -0.005910265528220154,
+        0.0008088061673454785,
+        -0.0008103933383468071,
+        0.002179547032867148,
+        0.0024611869518059966
+      ],
+      "baseline": [
+        0.0016772373475706674,
+        0.0011833436842343273,
+        -0.00147742032133622,
+        0.0007876956125757801,
+        0.0024848268265429663,
+        0.003457409598998988
+      ],
+      "outcome": [
+        0.028476827279356614,
+        0.03731718819219292,
+        0.021920325823179643,
+        0.011892563561578773,
+        0.017572726675089346,
+        0.23371961042366643
+      ],
+      "trainingMonthlyOrigins": 187,
+      "candidate": [
+        0.0020135115773693597,
+        0.001976840662271985,
+        -0.0015860085474560923,
+        0.0008964969281731336,
+        0.0021922064737325496,
+        0.0031269769984129544
+      ],
+      "beta": -0.1342574160583637,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2020-07",
+      "latestReferenceMonthKnownAtCutoff": "2020-05",
+      "latestPrintedPublicationDate": "2020-07-02",
+      "baselineFirstFullReferences": [
+        "2020-05",
+        "2020-04",
+        "2020-03"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2020-08",
+        "2020-09",
+        "2020-10"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2020-12-04",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.009439772762823229,
+        -0.0009258300312407485,
+        -0.0004231450057203444,
+        0.0005482340675005363,
+        0.004113995679236115,
+        0.0004501184598239999
+      ],
+      "baseline": [
+        -0.04532928599039853,
+        -0.028420825487197588,
+        -0.021423180860124402,
+        0.0027785130310397197,
+        -0.02620460828227476,
+        -0.1955872284999681
+      ],
+      "outcome": [
+        0.009682036488895455,
+        0.007172344672590522,
+        0.007416768225125342,
+        0.011039788497660163,
+        0.010409503793409812,
+        -0.0043428001230788925
+      ],
+      "trainingMonthlyOrigins": 190,
+      "candidate": [
+        -0.04653510891032059,
+        -0.028302561298040523,
+        -0.021369128929090892,
+        0.0027084824041714805,
+        -0.02673012414024331,
+        -0.19564472598101693
+      ],
+      "beta": -0.1277385536938944,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2020-10",
+      "latestReferenceMonthKnownAtCutoff": "2020-08",
+      "latestPrintedPublicationDate": "2020-10-02",
+      "baselineFirstFullReferences": [
+        "2020-08",
+        "2020-07",
+        "2020-06"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2020-11",
+        "2020-12",
+        "2021-01"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2021-03-04",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.004459279909589575,
+        0.0007258037225056406,
+        0.001633844572813207,
+        0.000749836798197623,
+        0.008291619258384878,
+        -0.0093619485187139
+      ],
+      "baseline": [
+        0.027799696133741784,
+        0.02615164867394114,
+        0.021957722315398175,
+        0.01014423494866695,
+        0.012488626162600614,
+        0.18892136853006578
+      ],
+      "outcome": [
+        0.021648797297725116,
+        0.013224135966468015,
+        0.01543969694452297,
+        0.0007350359256583904,
+        0.018710217285692513,
+        0.013855334019696892
+      ],
+      "trainingMonthlyOrigins": 193,
+      "candidate": [
+        0.027100524040028762,
+        0.02603784964840841,
+        0.021701551239812877,
+        0.010026667768591199,
+        0.011188580210183662,
+        0.1903892317904515
+      ],
+      "beta": -0.15679035805971006,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2021-01",
+      "latestReferenceMonthKnownAtCutoff": "2020-11",
+      "latestPrintedPublicationDate": "2021-01-06",
+      "baselineFirstFullReferences": [
+        "2020-11",
+        "2020-10",
+        "2020-09"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2021-02",
+        "2021-03",
+        "2021-04"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2021-06-04",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.017329348629769054,
+        0.010051395048746041,
+        0.006026030014712155,
+        0.005503840183797848,
+        0.01036324795010698,
+        -0.004783925320562243
+      ],
+      "baseline": [
+        0.011025014260270596,
+        0.009525352125969378,
+        0.0032363410906446452,
+        0.006502363592413311,
+        0.006939505287986686,
+        0.0027611267237625087
+      ],
+      "outcome": [
+        0.013229728771926177,
+        0.009258522959991465,
+        0.002396259700215869,
+        0.0023311168833912276,
+        0.003136943595403419,
+        -0.014357787573521413
+      ],
+      "trainingMonthlyOrigins": 196,
+      "candidate": [
+        0.007819135137263244,
+        0.007665873259665109,
+        0.0021215430545779633,
+        0.005484169157147822,
+        0.005022334541434542,
+        0.0036461390020007555
+      ],
+      "beta": -0.18499709316830085,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2021-04",
+      "latestReferenceMonthKnownAtCutoff": "2021-02",
+      "latestPrintedPublicationDate": "2021-04-05",
+      "baselineFirstFullReferences": [
+        "2021-02",
+        "2021-01",
+        "2020-12"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2021-05",
+        "2021-06",
+        "2021-07"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2021-09-02",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.01713735432035692,
+        0.01609058310699252,
+        0.009986145533998878,
+        0.0012953907497029174,
+        0.02094339272605516,
+        0.006991407094941416
+      ],
+      "baseline": [
+        0.012585750810892846,
+        0.010007559395112926,
+        0.006113446662228089,
+        0.004116161635766189,
+        0.020710498368759243,
+        -0.016419416187307818
+      ],
+      "outcome": [
+        0.026868945247149157,
+        0.01193328434026802,
+        0.011945025694792602,
+        -0.0003427866017360887,
+        0.007615833092358398,
+        0.01738114084854386
+      ],
+      "trainingMonthlyOrigins": 199,
+      "candidate": [
+        0.009784224004000142,
+        0.007377153378518669,
+        0.004480962797563088,
+        0.0039043977985452533,
+        0.017286779920011947,
+        -0.01756233556845826
+      ],
+      "beta": -0.163474872172355,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2021-07",
+      "latestReferenceMonthKnownAtCutoff": "2021-05",
+      "latestPrintedPublicationDate": "2021-07-02",
+      "baselineFirstFullReferences": [
+        "2021-05",
+        "2021-04",
+        "2021-03"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2021-08",
+        "2021-09",
+        "2021-10"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2021-12-03",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.03647828697756433,
+        0.02821799750436479,
+        0.011193843033983747,
+        0.0018839841733214063,
+        0.01682562445463652,
+        0.004054940416814506
+      ],
+      "baseline": [
+        0.022550869509458005,
+        0.011726443680860224,
+        0.014930769721648173,
+        0.002598503251897273,
+        0.0056743273114174255,
+        0.013262398231010546
+      ],
+      "outcome": [
+        0.010087047349945056,
+        0.01334079461081232,
+        0.009037157229093656,
+        0.003097117566891348,
+        0.005913560323783557,
+        -0.002683503793749173
+      ],
+      "trainingMonthlyOrigins": 202,
+      "candidate": [
+        0.01665792380172009,
+        0.007167920212458891,
+        0.013122441679797483,
+        0.0022941518865371375,
+        0.0029562037473656565,
+        0.012607336118606616
+      ],
+      "beta": -0.16154666778520393,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2021-10",
+      "latestReferenceMonthKnownAtCutoff": "2021-08",
+      "latestPrintedPublicationDate": "2021-10-04",
+      "baselineFirstFullReferences": [
+        "2021-08",
+        "2021-07",
+        "2021-06"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2021-11",
+        "2021-12",
+        "2022-01"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2022-03-03",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.005031027072469146,
+        0.014128686194277247,
+        0.013790189465329056,
+        0.006491779594012477,
+        0.01488747328273402,
+        0.008945293038254296
+      ],
+      "baseline": [
+        0.021149831401040157,
+        0.014496662034893687,
+        0.01151474627824741,
+        0.0016120631964946857,
+        0.00602313744944282,
+        0.009198782408020382
+      ],
+      "outcome": [
+        -0.000344397443550901,
+        0.011313185057809988,
+        0.013092977871713235,
+        0.007832251904022777,
+        0.00804317717940496,
+        0.008038606267813756
+      ],
+      "trainingMonthlyOrigins": 205,
+      "candidate": [
+        0.0203482581533559,
+        0.012245595460389981,
+        0.009317611022030237,
+        0.0005777541424054366,
+        0.003651176389174267,
+        0.007773564954630333
+      ],
+      "beta": -0.15932596587894282,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2022-01",
+      "latestReferenceMonthKnownAtCutoff": "2021-11",
+      "latestPrintedPublicationDate": "2022-01-06",
+      "baselineFirstFullReferences": [
+        "2021-11",
+        "2021-10",
+        "2021-09"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2022-02",
+        "2022-03",
+        "2022-04"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2022-06-02",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        -0.004321464235045425,
+        0.0036326905055328136,
+        0.009616424522349513,
+        0.013557325543717535,
+        0.011810916187548991,
+        0.006970948927480835
+      ],
+      "baseline": [
+        0.00966787136178413,
+        0.012606552481850436,
+        0.005343203717461363,
+        0.0030941859900122347,
+        0.008735151026340749,
+        0.009998168899381422
+      ],
+      "outcome": [
+        0.012353587158949944,
+        0.0038197177458019695,
+        -0.0006480446050139751,
+        0.004395029592907056,
+        0.009752287362479866,
+        0.0070111613771721
+      ],
+      "trainingMonthlyOrigins": 208,
+      "candidate": [
+        0.010346751131113621,
+        0.01203587551721379,
+        0.003832512963951407,
+        0.0009643999875724773,
+        0.006879716937138127,
+        0.008903068733674252
+      ],
+      "beta": -0.1570948485062159,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2022-04",
+      "latestReferenceMonthKnownAtCutoff": "2022-02",
+      "latestPrintedPublicationDate": "2022-04-04",
+      "baselineFirstFullReferences": [
+        "2022-02",
+        "2022-01",
+        "2021-12"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2022-05",
+        "2022-06",
+        "2022-07"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2022-09-02",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.0035391449106888214,
+        0.0012322626847219083,
+        0.003256900278117403,
+        -0.0023478045200359954,
+        0.0016605531946998298,
+        0.005838307214808735
+      ],
+      "baseline": [
+        0.0011921524681507974,
+        0.009470267486951055,
+        0.006797528732840163,
+        0.010838546483393921,
+        0.012189735001126712,
+        0.0034412334827122032
+      ],
+      "outcome": [
+        -0.00034249828432701685,
+        0.00621908147745054,
+        0.00799622200069928,
+        0.0061913131651705165,
+        0.0034574690088594096,
+        0.010615472245372291
+      ],
+      "trainingMonthlyOrigins": 211,
+      "candidate": [
+        0.0006326087093980113,
+        0.009275445033567564,
+        0.006282608245126616,
+        0.011209737660672401,
+        0.011927199219287123,
+        0.0025181889490279987
+      ],
+      "beta": -0.15810139818317936,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2022-07",
+      "latestReferenceMonthKnownAtCutoff": "2022-05",
+      "latestPrintedPublicationDate": "2022-07-05",
+      "baselineFirstFullReferences": [
+        "2022-05",
+        "2022-04",
+        "2022-03"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2022-08",
+        "2022-09",
+        "2022-10"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2022-12-05",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        3.198618197206227e-05,
+        0.0010069940388993612,
+        0.004510614501256433,
+        0.0018710014598862226,
+        0.0001299190606080577,
+        0.0047272228638283705
+      ],
+      "baseline": [
+        0.02017586629302768,
+        0.006048697448810182,
+        0.01011555714204546,
+        0.001535857862823663,
+        0.009989316844930032,
+        0.01547658964996008
+      ],
+      "outcome": [
+        -0.005797072442018975,
+        -0.0029965122606480793,
+        0.0052967335754110665,
+        0.004979611405125955,
+        0.007532382610164937,
+        0.011908567673962839
+      ],
+      "trainingMonthlyOrigins": 214,
+      "candidate": [
+        0.02017084945204859,
+        0.005890756467780898,
+        0.009408094285411254,
+        0.0012424024949997958,
+        0.0099689398187569,
+        0.014735153069587498
+      ],
+      "beta": -0.15684400793664402,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2022-10",
+      "latestReferenceMonthKnownAtCutoff": "2022-08",
+      "latestPrintedPublicationDate": "2022-10-04",
+      "baselineFirstFullReferences": [
+        "2022-08",
+        "2022-07",
+        "2022-06"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2022-11",
+        "2022-12",
+        "2023-01"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2023-03-06",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.0015278345109334306,
+        0.0005252990936530077,
+        0.005495456402834145,
+        0.0018504158038809388,
+        0.010158544084434342,
+        0.005935964000136368
+      ],
+      "baseline": [
+        -0.008458570257041808,
+        0.001595208671632531,
+        0.003199737481896925,
+        0.006471036031317063,
+        0.005937285915142549,
+        0.010285777275514647
+      ],
+      "outcome": [
+        -0.0032303235447933014,
+        -0.0003008237336054517,
+        -0.00012135412686445921,
+        0.0019703142626968976,
+        0.01462971991375137,
+        0.0021274336978144
+      ],
+      "trainingMonthlyOrigins": 217,
+      "candidate": [
+        -0.008698099656775284,
+        0.0015128538251600737,
+        0.0023381759946988472,
+        0.006180933285509764,
+        0.004344659260031838,
+        0.009355154303185322
+      ],
+      "beta": -0.15677705799899508,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2023-01",
+      "latestReferenceMonthKnownAtCutoff": "2022-11",
+      "latestPrintedPublicationDate": "2023-01-06",
+      "baselineFirstFullReferences": [
+        "2022-11",
+        "2022-10",
+        "2022-09"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2023-02",
+        "2023-03",
+        "2023-04"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2023-06-05",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.0006880846943285086,
+        0.0,
+        0.003601795785282273,
+        -0.001148601294141127,
+        0.0011212858584639309,
+        -0.0007117135362609615
+      ],
+      "baseline": [
+        -0.011075348137366436,
+        -0.0018760191221371665,
+        0.004605352978933171,
+        0.004727506781734324,
+        0.003449327959816018,
+        0.00786600355252688
+      ],
+      "outcome": [
+        -0.0006862443284465764,
+        0.0005344673793674792,
+        -0.0005418818759727781,
+        -0.0016729609228191798,
+        -0.005201953157766652,
+        0.0010668141694993763
+      ],
+      "trainingMonthlyOrigins": 220,
+      "candidate": [
+        -0.011182632909229563,
+        -0.0018760191221371665,
+        0.004043768275325309,
+        0.004906594369089946,
+        0.0032744993398653166,
+        0.007976972485565234
+      ],
+      "beta": -0.15591797455664186,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2023-04",
+      "latestReferenceMonthKnownAtCutoff": "2023-02",
+      "latestPrintedPublicationDate": "2023-04-04",
+      "baselineFirstFullReferences": [
+        "2023-02",
+        "2023-01",
+        "2022-12"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2023-05",
+        "2023-06",
+        "2023-07"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2023-09-05",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        -0.0016409048347292277,
+        -0.002715519094693118,
+        -0.001554608750792813,
+        -0.0009719632276804779,
+        0.005267400123214084,
+        -0.0010070398631769884
+      ],
+      "baseline": [
+        0.0015403005003152084,
+        0.0012546561335056749,
+        -0.0002119696623155028,
+        0.001148353444016071,
+        0.006748685585906453,
+        -0.005167857108811331
+      ],
+      "outcome": [
+        -0.0015497055567796003,
+        0.005008508140881269,
+        0.003356538791481597,
+        0.0024186158993368474,
+        0.003314563113830103,
+        0.015057805309705028
+      ],
+      "trainingMonthlyOrigins": 223,
+      "candidate": [
+        0.001796264676112678,
+        0.001678249014838194,
+        3.053321729230775e-05,
+        0.0012999696506437609,
+        0.005927025668403397,
+        -0.005010769309983662
+      ],
+      "beta": -0.15598965301342857,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2023-07",
+      "latestReferenceMonthKnownAtCutoff": "2023-05",
+      "latestPrintedPublicationDate": "2023-07-05",
+      "baselineFirstFullReferences": [
+        "2023-05",
+        "2023-04",
+        "2023-03"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2023-08",
+        "2023-09",
+        "2023-10"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2023-12-04",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        -0.00021206658970363676,
+        -0.0003950747401094134,
+        -0.0002570492192002796,
+        -0.0003864906695749678,
+        0.0010590782405406971,
+        0.013331376543362933
+      ],
+      "baseline": [
+        -0.0005308854471790416,
+        0.00046347473273279015,
+        0.0019930416107234628,
+        -0.0008576729709623376,
+        0.0016960629642868905,
+        0.021251933099820448
+      ],
+      "outcome": [
+        -0.0038018479065351674,
+        0.002537264494982106,
+        0.0026004309594406523,
+        0.002920053413185164,
+        0.002655316433789825,
+        -0.008421190880015632
+      ],
+      "trainingMonthlyOrigins": 226,
+      "candidate": [
+        -0.0004979708718007822,
+        0.0005247937614942287,
+        0.002032937880631486,
+        -0.0007976862644542684,
+        0.0015316848289640814,
+        0.01918278774908087
+      ],
+      "beta": -0.15520867961453744,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2023-10",
+      "latestReferenceMonthKnownAtCutoff": "2023-08",
+      "latestPrintedPublicationDate": "2023-10-04",
+      "baselineFirstFullReferences": [
+        "2023-08",
+        "2023-07",
+        "2023-06"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2023-11",
+        "2023-12",
+        "2024-01"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2024-03-05",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.0025696843990551128,
+        0.0018741680155162808,
+        -0.0035515570874877144,
+        -0.0010100785897739725,
+        0.002391936899867142,
+        0.006309305026229453
+      ],
+      "baseline": [
+        -0.0034660364286854452,
+        0.005376145983728579,
+        0.0044367023604528705,
+        0.0023197883559884064,
+        0.004269511543986225,
+        0.002523628845151895
+      ],
+      "outcome": [
+        -0.0008519026254090954,
+        0.0030019976727788146,
+        0.0005867151506957436,
+        0.0019853822484730923,
+        0.006874770738498043,
+        -0.006134209141988638
+      ],
+      "trainingMonthlyOrigins": 229,
+      "candidate": [
+        -0.003864769542808592,
+        0.005085334843850239,
+        0.00498779082018778,
+        0.002476520358470029,
+        0.003898359176317733,
+        0.0015446258041612035
+      ],
+      "beta": -0.15516812658774878,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2024-01",
+      "latestReferenceMonthKnownAtCutoff": "2023-11",
+      "latestPrintedPublicationDate": "2024-01-05",
+      "baselineFirstFullReferences": [
+        "2023-11",
+        "2023-10",
+        "2023-09"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2024-02",
+        "2024-03",
+        "2024-04"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2024-06-04",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.0005200884267539312,
+        0.00045441767927572945,
+        -0.003402516187748007,
+        -0.0003631929891792348,
+        -0.001671762495314246,
+        0.020155726441724576
+      ],
+      "baseline": [
+        0.00014784082455662618,
+        0.0045550157813427205,
+        -0.0015471263788674507,
+        0.004220393579147326,
+        -0.002108716945839792,
+        -0.003965575449065301
+      ],
+      "outcome": [
+        0.0021102575448997047,
+        0.002082152583526398,
+        -0.00019705450193985126,
+        0.001111254343920057,
+        -0.00379975323671663,
+        0.022448033909535616
+      ],
+      "trainingMonthlyOrigins": 232,
+      "candidate": [
+        6.600707351056391e-05,
+        0.00448351504930591,
+        -0.00101175460684741,
+        0.0042775404855756646,
+        -0.0018456720695991273,
+        -0.00713699518258883
+      ],
+      "beta": -0.15734584127706455,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2024-04",
+      "latestReferenceMonthKnownAtCutoff": "2024-02",
+      "latestPrintedPublicationDate": "2024-04-02",
+      "baselineFirstFullReferences": [
+        "2024-02",
+        "2024-01",
+        "2023-12"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2024-05",
+        "2024-06",
+        "2024-07"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2024-09-04",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        -0.00025909420810296435,
+        -0.0018698671043399751,
+        -0.0011967732878430813,
+        -0.0007471768530451076,
+        -0.00013679890582208378,
+        0.0006560908915630915
+      ],
+      "baseline": [
+        -0.001367043194753197,
+        0.0019433208716856266,
+        -0.0008422194329483967,
+        0.00024745751473141995,
+        0.0012416554103928524,
+        -0.0003623528683765239
+      ],
+      "outcome": [
+        -0.002426622530247119,
+        0.0005051455515565998,
+        -0.001610340785807132,
+        -2.0419922747582444e-05,
+        -0.0014344924199523029,
+        0.020790385266925813
+      ],
+      "trainingMonthlyOrigins": 235,
+      "candidate": [
+        -0.0013262115835205915,
+        0.0022380001206741096,
+        -0.0006536155194122205,
+        0.00036520786897096825,
+        0.0012632140541791053,
+        -0.00046574865021859217
+      ],
+      "beta": -0.15759368583175262,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2024-07",
+      "latestReferenceMonthKnownAtCutoff": "2024-05",
+      "latestPrintedPublicationDate": "2024-07-03",
+      "baselineFirstFullReferences": [
+        "2024-05",
+        "2024-04",
+        "2024-03"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2024-08",
+        "2024-09",
+        "2024-10"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2024-12-04",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.0031559932285524163,
+        0.00034072605954721375,
+        -0.0037550054924538187,
+        0.0006286773206483137,
+        -0.0006406296693348185,
+        0.00369546434436522
+      ],
+      "baseline": [
+        0.00010681164540156211,
+        2.7400853834952247e-05,
+        0.0018176776669059393,
+        0.00034809674871301774,
+        0.0006569023375107589,
+        0.006403675665089318
+      ],
+      "outcome": [
+        0.0031013883036700215,
+        0.002947376936469435,
+        -0.00011569199330336362,
+        0.003464919021413408,
+        0.005880968480612487,
+        -0.021670313957401276
+      ],
+      "trainingMonthlyOrigins": 238,
+      "candidate": [
+        -0.00038021128989103537,
+        -2.5178918564457504e-05,
+        0.002397138288186645,
+        0.00025108124459722936,
+        0.0007557622904321654,
+        0.005833403246257989
+      ],
+      "beta": -0.15431685051998165,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2024-10",
+      "latestReferenceMonthKnownAtCutoff": "2024-08",
+      "latestPrintedPublicationDate": "2024-10-03",
+      "baselineFirstFullReferences": [
+        "2024-08",
+        "2024-07",
+        "2024-06"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2024-11",
+        "2024-12",
+        "2025-01"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2025-03-05",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.007484989175902959,
+        0.001425638485756427,
+        -0.0009381884645512869,
+        0.0028887133062775283,
+        0.004047616406593126,
+        0.004672485109102209
+      ],
+      "baseline": [
+        -0.00383306764635172,
+        0.0019168262860428014,
+        -0.00017714934937615388,
+        -0.00041853705918363414,
+        0.0017576370517416613,
+        0.016893363905039347
+      ],
+      "outcome": [
+        0.0052116233203858,
+        0.0004815857206555057,
+        -0.002039468249725005,
+        0.0027124531730493714,
+        0.00602205965636823,
+        0.010196906041572652
+      ],
+      "trainingMonthlyOrigins": 241,
+      "candidate": [
+        -0.004980178717986096,
+        0.0016983402398072062,
+        -3.3367394629825583e-05,
+        -0.0008612464524151545,
+        0.0011373201101113747,
+        0.0161772827892572
+      ],
+      "beta": -0.1532548738116235,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2025-01",
+      "latestReferenceMonthKnownAtCutoff": "2024-11",
+      "latestPrintedPublicationDate": "2025-01-06",
+      "baselineFirstFullReferences": [
+        "2024-11",
+        "2024-10",
+        "2024-09"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2025-02",
+        "2025-03",
+        "2025-04"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2025-06-03",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        -0.003593983951895892,
+        0.00107442088768472,
+        -0.0005837866690941334,
+        -0.0012257675349313113,
+        0.004001460413741043,
+        0.005154109900795291
+      ],
+      "baseline": [
+        0.009445645307218064,
+        0.003158247976573158,
+        -0.0022068422683161754,
+        0.0056867830638493945,
+        0.004822369473632758,
+        -0.01863757577286297
+      ],
+      "outcome": [
+        0.006274378720348662,
+        0.002732898034857883,
+        0.00632876376664716,
+        0.003871663382307163,
+        0.0033456753254225524,
+        0.00987487105642912
+      ],
+      "trainingMonthlyOrigins": 244,
+      "candidate": [
+        0.009985369975117798,
+        0.0029968973794219744,
+        -0.0021191724093745654,
+        0.00587086206491563,
+        0.004221452240326515,
+        -0.019411591542482093
+      ],
+      "beta": -0.15017447910834977,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2025-04",
+      "latestReferenceMonthKnownAtCutoff": "2025-02",
+      "latestPrintedPublicationDate": "2025-04-02",
+      "baselineFirstFullReferences": [
+        "2025-02",
+        "2025-01",
+        "2024-12"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2025-05",
+        "2025-06",
+        "2025-07"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2025-09-03",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        -0.0003006237966373558,
+        0.00045470047390228823,
+        0.00022748470263486738,
+        -0.0005824748062313751,
+        0.007227356566289374,
+        0.0019096492880019838
+      ],
+      "baseline": [
+        0.00514434421836949,
+        0.0012792984985018055,
+        0.001522674850197069,
+        0.005170595378483277,
+        0.007495921811119831,
+        0.020738232357898078
+      ],
+      "outcome": [
+        0.007272540222824651,
+        0.006635382218836728,
+        0.0063537816053598475,
+        0.004391480202497077,
+        0.0059354325092928276,
+        0.011932625899097181
+      ],
+      "trainingMonthlyOrigins": 247,
+      "candidate": [
+        0.005189394593875187,
+        0.0012111587593293053,
+        0.001488584830078452,
+        0.005257882908734867,
+        0.006412856761490166,
+        0.02045205934541213
+      ],
+      "beta": -0.14985631879315534,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2025-07",
+      "latestReferenceMonthKnownAtCutoff": "2025-05",
+      "latestPrintedPublicationDate": "2025-07-03",
+      "baselineFirstFullReferences": [
+        "2025-05",
+        "2025-04",
+        "2025-03"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2025-08",
+        "2025-09",
+        "2025-10"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2026-01-07",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.0011887807426879929,
+        0.0022345361919167426,
+        0.0010776617185488232,
+        -0.00195347069744993,
+        0.0015468505346619666,
+        0.05427133939435284
+      ],
+      "baseline": [
+        0.0023611691532013012,
+        0.0014517449425601448,
+        0.00235380497357054,
+        0.0024795274927753067,
+        0.000845743475615624,
+        0.004069343248832452
+      ],
+      "outcome": [
+        0.003903867694655072,
+        -1.8605158173579583e-05,
+        0.004207023305537503,
+        0.0015659109166529298,
+        0.0012254136104928157,
+        0.0008386176383659965
+      ],
+      "trainingMonthlyOrigins": 250,
+      "candidate": [
+        0.0021843240147199666,
+        0.0011193313627375573,
+        0.0021934900988343675,
+        0.0027701292695408238,
+        0.0006156312377662105,
+        -0.004004157764533827
+      ],
+      "beta": -0.14876177930125603,
+      "excludedReason": null
+    },
+    {
+      "cutoffMonth": "2025-10",
+      "latestReferenceMonthKnownAtCutoff": "2025-07",
+      "latestPrintedPublicationDate": "2025-09-03",
+      "baselineFirstFullReferences": [
+        "2025-07",
+        "2025-06",
+        "2025-05"
+      ],
+      "futureTargetReferences_METADATA_ONLY": [
+        "2025-11",
+        "2025-12",
+        "2026-01"
+      ],
+      "missingPastReferences": [],
+      "missingFutureReferences": [],
+      "targetFinalPublicationDate_METADATA_ONLY": "2026-03-18",
+      "metadataSupport": true,
+      "numericalPredictorOrOutcome": null,
+      "x": [
+        0.003528364535875158,
+        -0.0005827204142930201,
+        -0.0002593170165040334,
+        0.0006466084944333006,
+        0.003405388416897125,
+        0.000174498905983538
+      ],
+      "baseline": [
+        0.007272540222824651,
+        0.006635382218836728,
+        0.0063537816053598475,
+        0.004391480202497077,
+        0.0059354325092928276,
+        0.011932625899097181
+      ],
+      "outcome": [
+        0.00929022874898751,
+        0.007250104440082849,
+        0.0036446901893774837,
+        0.010160201318556376,
+        0.0013060961735758148,
+        0.0018315434613454136
+      ],
+      "trainingMonthlyOrigins": 252,
+      "candidate": [
+        0.0067472798444559706,
+        0.006722130609538027,
+        0.006392385596761933,
+        0.0042952209245825865,
+        0.005428479333064951,
+        0.011906648605523942
+      ],
+      "beta": -0.1488679451989781,
+      "excludedReason": null
+    }
+  ],
+  "verdict": "REJECTED"
+}
