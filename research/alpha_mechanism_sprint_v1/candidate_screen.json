@@ -1,0 +1,110 @@
+{
+ "note": "Hand-compiled from committed sources and PR bodies at main@37f8cbf6; every number is quoted from the cited source, none was recomputed here. null means not stated in the source.",
+ "priorResearch": [
+  {
+   "topic": "12-1/6M momentum, value, quality, lowvol sleeves (KR+US pooled 126D Rank IC)",
+   "source": "AGENTS.md v2.21 four-factor-signal-attribution-audit",
+   "statistical": "no sleeve clears raw p<0.05 pooled; all four sign-unstable KR vs US",
+   "economic": null,
+   "status": "CLOSED_NO_EVIDENCE"
+  },
+  {
+   "topic": "106 registered features / 38 Phase C candidates / X1-X6 interactions (KR)",
+   "source": "docs/kr-alpha-research-final-development-assessment.md",
+   "statistical": "BY/Holm passes 0; B4 MSE worse than B0 at every horizon",
+   "economic": "Level 4 NOT_TRIGGERED",
+   "status": "CLOSED_PHASE_D"
+  },
+  {
+   "topic": "Fundamental acceleration (DART/XBRL filing-to-filing change)",
+   "source": "AGENTS.md v2.22",
+   "statistical": "pooled 126D IC -0.0026 / incremental -0.0009, CI contain 0",
+   "economic": null,
+   "status": "CASE_D_NO_DISCOVERY_EVIDENCE"
+  },
+  {
+   "topic": "Signal smoothing (persistence k), switch hurdle",
+   "source": "AGENTS.md v2.12",
+   "statistical": "no rung separates from control; hurdle lower bound +0.122pp, no multiplicity correction",
+   "economic": "hurdle +2.157pp arithmetic selection, mechanism attributed to signal noise",
+   "status": "CONTAINS_ZERO"
+  },
+  {
+   "topic": "Dynamic breadth 3-10 names",
+   "source": "AGENTS.md v2.15",
+   "statistical": "paired -0.317pp, 95% CI [-2.133,+1.425]",
+   "economic": null,
+   "status": "CONTAINS_ZERO"
+  },
+  {
+   "topic": "Selection vs entry-state separation",
+   "source": "AGENTS.md v2.17; PR #304/#306",
+   "statistical": "paired +2.069pp, 95% CI [-1.881,+6.061]",
+   "economic": "#306 descriptive CAGR gaps KR -1.526/+0.462pp, US +2.776/+1.442pp vs ETF",
+   "status": "CONTAINS_ZERO_PROSPECTIVE_SHADOW_ONLY"
+  },
+  {
+   "topic": "Market-state exposure (C0-C3) KR and US replication",
+   "source": "AGENTS.md v2.44; docs/research-program/05",
+   "statistical": null,
+   "economic": "KR: NO_CANDIDATE_NOMINATED_CONTROL_RETAINED (drawdown vs return trade-off)",
+   "status": "SEALED"
+  },
+  {
+   "topic": "Industry + stock integrated portfolio (D)",
+   "source": "AGENTS.md v2.45-v2.47",
+   "statistical": "INDUSTRY_LAYER_DEVELOPMENT_SUPPORTED, NO_UNAMBIGUOUS_FINAL_ARCHITECTURE",
+   "economic": "D +15.01%/yr vs passive +20.24%/yr; 98.2% of gross after 2024, 59.5% one industry",
+   "status": "REGIME_AND_INDUSTRY_CONCENTRATED"
+  },
+  {
+   "topic": "Overnight/intraday decomposition (KR)",
+   "source": "PR #286",
+   "statistical": "intraday vs momentum H126 +1.99pp, year-block CI [-8.41,+16.69]",
+   "economic": "NO STABLE ADDED ALPHA",
+   "status": "OPEN_DRAFT_NO_EVIDENCE"
+  },
+  {
+   "topic": "US stock selection (31-feature model, #245, capital allocation)",
+   "source": "AGENTS.md v2.24; docs/us-capital-allocation-alpha-v1.md",
+   "statistical": "regional-alpha-model-v1 NO_MODEL_EVIDENCE; #245 NOT BEATEN",
+   "economic": null,
+   "status": "CLOSED_OR_PROSPECTIVE_ONLY"
+  }
+ ],
+ "candidates": {
+  "A_earnings_information": {
+   "newObservation": "DART 영업(잠정)실적(공정공시): preliminary quarterly revenue / operating income / net income and their year-over-year change, receipt-dated, filed before the formal periodic report",
+   "overlapWithPrior": "Phase C accounting family and fundamental acceleration used the same accounting lines but only from the formal filing receipt date; J01_periodicFilingEvent was BLOCKED. No study read the preliminary filing.",
+   "usAlternative": "SOURCE_BLOCKED: 8-K Item 2.02 behind the SEC egress block; 10-Q acceptedDate based 'PEAD' is on the stop list (docs/research-program/05 section 4); Finnhub key absent in this environment (HTTP 401)",
+   "governance": "KR historical outcome evaluation closed by Phase D; new axis allowed only as an independent new preregistration plus point-in-time records",
+   "selected": true
+  },
+  "B_industry_lead_lag_diffusion": {
+   "newObservation": null,
+   "overlapWithPrior": "KR: X3 (industry leadership x stock strength), A09 industry-relative momentum, A10 residual momentum, H01/H03/H07 industry leadership and persistence all in the closed Phase C; A05/A08/A10 rank correlation about 0.99",
+   "usAlternative": "PR #290: US 2023-03-07 Sector column is 502 rows / 123 sub-industries (mixed level); no point-in-time industry history; current GICS may not be back-applied",
+   "governance": "KR history closed; a lagged leader-to-laggard return feature is a price-only re-representation of the same OHLCV information set",
+   "selected": false,
+   "reason": "NOT_NEW_INFORMATION_AND_US_SOURCE_BLOCKED"
+  },
+  "C_investor_flow": {
+   "newObservation": "KRX investor-type net trading (foreign/institution) would be new",
+   "overlapWithPrior": "X4/G01 SOURCE_BLOCKED in Phase C",
+   "source": "ledger/kr-investor-flow/manifest.json: 0 calls, 0 records, stopReason REFUSED: HTTP 400 LOGOUT, 426,377 pairs remaining; re-probe is a single Probes dropdown run by policy",
+   "secondarySource": "DART large-holding (5%) events: 2,496 events, first 2024-09-24 (prospective-only; no-rows is not proof of no filing)",
+   "selected": false,
+   "reason": "SOURCE_BLOCKED_AND_IMMATURE"
+  }
+ },
+ "environmentProbes": {
+  "measuredAt": "2026-11-01",
+  "note": "HTTP status of a plain request from this session's sandbox; not a vendor verdict beyond this environment",
+  "opendart.fss.or.kr list.json with DART_API_KEY": "000 정상 (served)",
+  "www.sec.gov": 403,
+  "finnhub.io (no key in environment)": 401,
+  "kind.krx.co.kr": 403,
+  "query1.finance.yahoo.com": 429,
+  "data.krx.co.kr": 200
+ }
+}
