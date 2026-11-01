@@ -111,6 +111,10 @@ def test_real_selection_v_weight_throttle_not_returns(tmp_path):
     assert kr["cardinalityWinner"] is None
     assert kr["realizedReturn"] is None and kr["expectedAlpha"] is None
     assert observed["regions"]["US"]["status"] == "BLOCKED"
+    caps = observed["portfolioDPolicy"]["feasibleCountPairs"]
+    assert len(caps) == 21
+    assert all(p["KR"] + p["US"] <= 5 for p in caps)
+    assert observed["portfolioDPolicy"]["maxCombinedStocks"] == 5
     assert observed["residualConvention"].startswith("ETF_NOT_CASH")
 
 
@@ -135,7 +139,7 @@ def test_control_parity_failure_never_returns_alternative_weights(tmp_path):
     assert out.returncode == 0, out.stderr
     x = json.loads(out.stdout)["regions"]["KR"]
     assert x["reason"] == "ORIGINAL_CONTROL_RECONSTRUCTION_FAILED"
-    assert x["researchScenarios"] is None
+    assert x.get("researchScenarios") is None
 
 
 def test_cross_generation_or_source_mismatch_refused(tmp_path):
