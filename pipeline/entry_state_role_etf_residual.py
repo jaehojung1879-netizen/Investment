@@ -59,7 +59,7 @@ from . import kelly_portfolio as KP
 from . import weekly_decision as W
 
 STUDY_ID = "entry-state-role-etf-residual-v1"
-SPEC_PATH = "research_specs/entry-state-role-etf-residual-v1.json"
+SPEC_PATH = "research/entry_state_role_etf_residual_v1/spec.json"
 EVIDENCE_CLASS = "HISTORICAL_DEVELOPMENT_OUTCOME_EXPOSED"
 REGIONAL_ETF = {"KR": "069500.KS", "US": "SPY"}
 SEPARATE_COMPARISON = {"US": "QQQ"}

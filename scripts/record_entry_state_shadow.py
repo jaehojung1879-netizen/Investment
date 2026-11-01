@@ -2,8 +2,11 @@
 
     python scripts/record_entry_state_shadow.py run CHAMPION_LATEST WEEKLY_LATEST CONFIG LEDGER_STUDY_DIR [--offline]
 
-Called from `pipeline.weekly_publish` (the paper-ledger workflow's weekly step) through `run_isolated`, in a child process
-with a timeout; any refusal is written to the study's own publication-status.json and never costs the weekly decision.
+Called from `scripts/update_ledger.py` (the paper-ledger step of the scheduled ledger workflow) through `run_isolated`, in a
+child process with a timeout. It reads the last PUBLISHED weekly decision and champion artifact on signal-history, so a
+new week is recorded on the run after it was published; receipts are write-once, so re-reading the same week appends
+nothing. Any refusal is written to the study's own publication-status.json and never costs the paper ledger.
+`pipeline/weekly_publish.py` is byte-pinned (docs/weekly-session-integrity-v1-pins.json) and is not touched.
 `--offline` records decisions only and never fetches a price (used by tests and dry runs).
 """
 from __future__ import annotations
