@@ -357,6 +357,17 @@ def main(argv=None) -> int:
         by_industry[g] = industry_delta(rows, g)
         by_industry[g]["eligibleRows"] = len(sub)
     total = sum(v["sumSquaredErrorReduction"] for v in by_industry.values())
+    rows_total = sum(v["evaluatedRows"] for v in by_industry.values())
+    decomposition = {}
+    for label, excluded in (("excludingFinancials", {"FINANCIALS"}),
+                            ("excludingFinancialsAndEnergyUtilities", {"FINANCIALS", "ENERGY_UTILITIES"})):
+        kept = [v for g, v in by_industry.items() if g not in excluded]
+        n = sum(v["evaluatedRows"] for v in kept)
+        decomposition[label] = {"evaluatedRows": n, "meanSquaredErrorReduction":
+                                round(sum(v["sumSquaredErrorReduction"] for v in kept) / n, 6) if n else None}
+    decomposition["all"] = {"evaluatedRows": rows_total, "meanSquaredErrorReduction": round(total / rows_total, 6) if rows_total else None}
+    decomposition["note"] = ("row-level arithmetic on the predeclared per-industry table; the pooled B1/B2 fits are unchanged, "
+                             "nothing was re-estimated without an industry")
     for v in by_industry.values():
         v["shareOfTotalReduction"] = round(v["sumSquaredErrorReduction"] / total, 4) if total else None
 
@@ -410,6 +421,8 @@ def main(argv=None) -> int:
         "H3": {"marketWide_B1_vs_B0": strip(market), "sectorPriceMomentum": {k: strip(v) for k, v in momentum.items()},
                "largestPeerExcluded": {"exLargest_vs_B1": strip(ex_largest), "B2_vs_B1_sameRows": strip(real_on_ex)},
                "byTargetSizeTercile": {k: strip(v) for k, v in size.items()}, "byIndustry": by_industry,
+               "industryDecomposition": decomposition,
+               "sessionsFromFirstUsablePeerToTargetDisclosure": peer_window(rows, sessions),
                "earlyVsLateReporters": early_late},
         "family": family,
         "datedExample": example,
@@ -453,6 +466,22 @@ def industry_delta(rows, industry):
     return {"evaluatedRows": len(sq), "meanSquaredErrorReduction": round(sum(sq) / len(sq), 6) if sq else None,
             "sumSquaredErrorReduction": round(sum(sq), 6),
             "shareRowsImproved": round(sum(1 for x in sq if x > 0) / len(sq), 4) if sq else None}
+
+
+def peer_window(rows, sessions):
+    """How long the industry signal exists before the target publishes its own figure (the only window in which
+    knowing it early could matter to a price)."""
+    gaps = []
+    for r in rows:
+        first = min(date.fromisoformat(d) for _, d, _ in r.peers)
+        usable = sessions.next_after(first)
+        target_day = sessions.next_after(r.origin)
+        if usable and target_day:
+            gaps.append(sessions.count_between(usable, target_day))
+    if not gaps:
+        return None
+    gaps.sort()
+    return {"n": len(gaps), "median": statistics.median(gaps), "p25": gaps[len(gaps) // 4], "p75": gaps[3 * len(gaps) // 4]}
 
 
 def early_vs_late(obs, rows):

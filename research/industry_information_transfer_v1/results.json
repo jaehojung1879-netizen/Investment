@@ -1,0 +1,1216 @@
+{
+ "H1": {
+  "decision": "KEEP",
+  "permutation": {
+   "R": 200,
+   "nullMean": -3.868055737236956e-05,
+   "nullP95": 2.9459925486643804e-05,
+   "observedMeanDelta": 0.0013281187307388554,
+   "p": 0.004975124378109453,
+   "seed": 20261101
+  },
+  "primary_B2_vs_B1_revenue": {
+   "base": [
+    "own",
+    "mkt"
+   ],
+   "challenger": [
+    "own",
+    "mkt",
+    "ind"
+   ],
+   "delta": {
+    "ci95": [
+     0.0003383742386910153,
+     0.002317863222786695
+    ],
+    "mean": 0.0013281187307388554,
+    "n": 45,
+    "p": 0.00853755083040259,
+    "positiveShare": 0.6222222222222222,
+    "se": 0.0005049809547766388,
+    "t": 2.630037268091237
+   },
+   "firstEvaluatedQuarter": "2015-06-30",
+   "incrementalRankIC": {
+    "ci95": [
+     0.09942787809461624,
+     0.24339375501499255
+    ],
+    "mean": 0.1714108165548044,
+    "n": 45,
+    "p": 3.0532673939554365e-06,
+    "positiveShare": 0.7777777777777778,
+    "se": 0.03672666358167198,
+    "t": 4.667203601917844
+   },
+   "oosR2Base": 0.3480166133314233,
+   "oosR2Challenger": 0.36935307087361213,
+   "quartersEvaluated": 45,
+   "rowsEvaluated": 1987,
+   "rowsUsable": 2316,
+   "target": "y",
+   "yearlyDeltaMean": {
+    "2015": 0.002606,
+    "2016": -0.000712,
+    "2017": 0.001053,
+    "2018": 0.002026,
+    "2019": 0.001373,
+    "2020": 0.001198,
+    "2021": 0.001703,
+    "2022": 0.002562,
+    "2023": 0.004953,
+    "2024": -0.002905,
+    "2025": 0.001272,
+    "2026": 0.000928
+   }
+  },
+  "secondary_B2_vs_B1_operatingIncome": {
+   "base": [
+    "own_op",
+    "mkt_op"
+   ],
+   "challenger": [
+    "own_op",
+    "mkt_op",
+    "ind_op"
+   ],
+   "delta": {
+    "ci95": [
+     -0.00015571845527849552,
+     0.00021238948196407716
+    ],
+    "mean": 2.8335513342790824e-05,
+    "n": 45,
+    "p": 0.7628496865903434,
+    "positiveShare": 0.6,
+    "se": 9.390681085024333e-05,
+    "t": 0.30174076923960835
+   },
+   "firstEvaluatedQuarter": "2015-06-30",
+   "incrementalRankIC": {
+    "ci95": [
+     0.040175103436427134,
+     0.16312303218690635
+    ],
+    "mean": 0.10164906781166674,
+    "n": 45,
+    "p": 0.0011916968523467103,
+    "positiveShare": 0.7333333333333333,
+    "se": 0.03136484362735214,
+    "t": 3.2408600221115815
+   },
+   "oosR2Base": 0.30516508872309445,
+   "oosR2Challenger": 0.3050845692315144,
+   "quartersEvaluated": 45,
+   "rowsEvaluated": 1982,
+   "rowsUsable": 2311,
+   "target": "y_op",
+   "yearlyDeltaMean": {
+    "2015": 2.9e-05,
+    "2016": 0.00029,
+    "2017": 0.000443,
+    "2018": -3.4e-05,
+    "2019": 0.000209,
+    "2020": 0.00031,
+    "2021": 0.000291,
+    "2022": -0.000671,
+    "2023": -0.000263,
+    "2024": -0.000448,
+    "2025": 0.000163,
+    "2026": 1.3e-05
+   }
+  },
+  "stalePlacebo": {
+   "B2_vs_B1_sameRows": {
+    "base": [
+     "own",
+     "mkt"
+    ],
+    "challenger": [
+     "own",
+     "mkt",
+     "ind"
+    ],
+    "delta": {
+     "ci95": [
+      0.00033803150357468665,
+      0.0023884240908536446
+     ],
+     "mean": 0.0013632277972141656,
+     "n": 44,
+     "p": 0.009155016296089506,
+     "positiveShare": 0.6136363636363636,
+     "se": 0.0005230689408782401,
+     "t": 2.606210559788327
+    },
+    "firstEvaluatedQuarter": "2015-09-30",
+    "incrementalRankIC": {
+     "ci95": [
+      0.09838692416907335,
+      0.24532244443290696
+     ],
+     "mean": 0.17185468430099016,
+     "n": 44,
+     "p": 4.545986123279395e-06,
+     "positiveShare": 0.7727272727272727,
+     "se": 0.037484239573745644,
+     "t": 4.584718437808699
+    },
+    "oosR2Base": 0.34999818371612734,
+    "oosR2Challenger": 0.371562859063146,
+    "quartersEvaluated": 44,
+    "rowsEvaluated": 1940,
+    "rowsUsable": 2306,
+    "target": "y",
+    "yearlyDeltaMean": {
+     "2015": 0.003639,
+     "2016": -0.000722,
+     "2017": 0.001061,
+     "2018": 0.002045,
+     "2019": 0.001377,
+     "2020": 0.001181,
+     "2021": 0.001919,
+     "2022": 0.002561,
+     "2023": 0.004954,
+     "2024": -0.002971,
+     "2025": 0.001277,
+     "2026": 0.000989
+    }
+   },
+   "check": {
+    "realExceedsStale": true,
+    "realOnSameRows": 0.0013632277972141656,
+    "stale": 0.00041915609452246474
+   },
+   "ind_given_stale": {
+    "base": [
+     "own",
+     "mkt",
+     "stale"
+    ],
+    "challenger": [
+     "own",
+     "mkt",
+     "stale",
+     "ind"
+    ],
+    "delta": {
+     "ci95": [
+      0.00040279976083265113,
+      0.0026916557915774167
+     ],
+     "mean": 0.0015472277762050338,
+     "n": 44,
+     "p": 0.00805383106178652,
+     "positiveShare": 0.5681818181818182,
+     "se": 0.0005839025693188154,
+     "t": 2.6498047063057797
+    },
+    "firstEvaluatedQuarter": "2015-09-30",
+    "incrementalRankIC": {
+     "ci95": [
+      0.10465080045050583,
+      0.24464932534616457
+     ],
+     "mean": 0.1746500628983352,
+     "n": 44,
+     "p": 1.0075227337760786e-06,
+     "positiveShare": 0.8409090909090909,
+     "se": 0.03571456539397121,
+     "t": 4.89016346613074
+    },
+    "oosR2Base": 0.3572904262078588,
+    "oosR2Challenger": 0.3828362013981438,
+    "quartersEvaluated": 44,
+    "rowsEvaluated": 1940,
+    "rowsUsable": 2306,
+    "target": "y",
+    "yearlyDeltaMean": {
+     "2015": 0.003979,
+     "2016": -0.00096,
+     "2017": 0.001089,
+     "2018": 0.001662,
+     "2019": 0.001223,
+     "2020": 0.002313,
+     "2021": 0.001845,
+     "2022": 0.003429,
+     "2023": 0.005417,
+     "2024": -0.002567,
+     "2025": 0.001241,
+     "2026": 0.000676
+    }
+   },
+   "stale_vs_B1": {
+    "base": [
+     "own",
+     "mkt"
+    ],
+    "challenger": [
+     "own",
+     "mkt",
+     "stale"
+    ],
+    "delta": {
+     "ci95": [
+      -0.0001727653207623052,
+      0.0010110775098072346
+     ],
+     "mean": 0.00041915609452246474,
+     "n": 44,
+     "p": 0.1651658908662289,
+     "positiveShare": 0.5681818181818182,
+     "se": 0.00030200626913798925,
+     "t": 1.387905276664799
+    },
+    "firstEvaluatedQuarter": "2015-09-30",
+    "incrementalRankIC": {
+     "ci95": [
+      0.040465983489860205,
+      0.1537495637792935
+     ],
+     "mean": 0.09710777363457686,
+     "n": 44,
+     "p": 0.0007788608131935437,
+     "positiveShare": 0.75,
+     "se": 0.02889940332818187,
+     "t": 3.36019995056023
+    },
+    "oosR2Base": 0.34999818371612734,
+    "oosR2Challenger": 0.3572904262078588,
+    "quartersEvaluated": 44,
+    "rowsEvaluated": 1940,
+    "rowsUsable": 2306,
+    "target": "y",
+    "yearlyDeltaMean": {
+     "2015": 0.001539,
+     "2016": 0.000993,
+     "2017": 0.000504,
+     "2018": 0.000777,
+     "2019": -0.001054,
+     "2020": -0.001348,
+     "2021": 0.000252,
+     "2022": -0.00023,
+     "2023": 0.002015,
+     "2024": 0.001547,
+     "2025": -0.000399,
+     "2026": 0.00157
+    }
+   }
+  }
+ },
+ "H2": {
+  "decision": "DATA_BLOCKED",
+  "information": {
+   "formalBeforePrelim": 9,
+   "leadSessions": {
+    "median": 12,
+    "n": 5015,
+    "p25": 7.0,
+    "p75": 17.0,
+    "shareAtMost5": 0.2134
+   },
+   "oosR2OfBestPreDisclosureForecastB2": 0.36935307087361213,
+   "prelimVsFormalFromPR308": {
+    "operatingIncomeWithin1PctShare": 95.09,
+    "prelimAmendmentRowShare": 4.75,
+    "revenueWithin1PctShare": 97.5,
+    "source": "research/alpha_mechanism_sprint_v1/results.json at f48b6f2"
+   },
+   "rankCorrWithOwnPreviousQuarter": {
+    "max": 0.8068641503424112,
+    "mean": 0.5479,
+    "min": 0.2947753014249178,
+    "quarters": 53
+   },
+   "unitsWithPrelim": 5042,
+   "unitsWithoutFormalOriginal": 18,
+   "varianceShareNotForecastByB2": 0.6306469291263879
+  },
+  "returnContrast": {
+   "authorizationFilePresent": false,
+   "contract": "research/industry_information_transfer_v1/h2_return_contract.json",
+   "contractSha256": "f8c54bcdea8289b70df3d5c5d6de38248f747a8316677ac8bed26ca14d3d49fb",
+   "status": "NOT_EXECUTED_PHASE_D_AUTHORIZATION_ABSENT"
+  }
+ },
+ "H3": {
+  "byIndustry": {
+   "AUTOS": {
+    "eligibleRows": 13,
+    "evaluatedRows": 10,
+    "meanSquaredErrorReduction": 0.003187,
+    "shareOfTotalReduction": 0.0123,
+    "shareRowsImproved": 0.7,
+    "sumSquaredErrorReduction": 0.031871
+   },
+   "BASIC_MATERIALS": {
+    "eligibleRows": 82,
+    "evaluatedRows": 72,
+    "meanSquaredErrorReduction": -0.002035,
+    "shareOfTotalReduction": -0.0567,
+    "shareRowsImproved": 0.4583,
+    "sumSquaredErrorReduction": -0.146489
+   },
+   "CAPITAL_GOODS_DEFENSE": {
+    "eligibleRows": 149,
+    "evaluatedRows": 137,
+    "meanSquaredErrorReduction": -0.001388,
+    "shareOfTotalReduction": -0.0736,
+    "shareRowsImproved": 0.5839,
+    "sumSquaredErrorReduction": -0.190134
+   },
+   "CHEMICALS": {
+    "eligibleRows": 302,
+    "evaluatedRows": 247,
+    "meanSquaredErrorReduction": 0.000293,
+    "shareOfTotalReduction": 0.028,
+    "shareRowsImproved": 0.5101,
+    "sumSquaredErrorReduction": 0.072291
+   },
+   "COMMUNICATION_MEDIA_SOFTWARE": {
+    "eligibleRows": 324,
+    "evaluatedRows": 291,
+    "meanSquaredErrorReduction": -0.000442,
+    "shareOfTotalReduction": -0.0498,
+    "shareRowsImproved": 0.4914,
+    "sumSquaredErrorReduction": -0.128646
+   },
+   "CONSTRUCTION_ENGINEERING": {
+    "eligibleRows": 95,
+    "evaluatedRows": 63,
+    "meanSquaredErrorReduction": 0.000898,
+    "shareOfTotalReduction": 0.0219,
+    "shareRowsImproved": 0.5714,
+    "sumSquaredErrorReduction": 0.056602
+   },
+   "CONSUMER_RETAIL_SERVICES": {
+    "eligibleRows": 352,
+    "evaluatedRows": 287,
+    "meanSquaredErrorReduction": 0.000254,
+    "shareOfTotalReduction": 0.0282,
+    "shareRowsImproved": 0.4774,
+    "sumSquaredErrorReduction": 0.072755
+   },
+   "ELECTRONICS_ELECTRICAL": {
+    "eligibleRows": 278,
+    "evaluatedRows": 238,
+    "meanSquaredErrorReduction": 0.000246,
+    "shareOfTotalReduction": 0.0227,
+    "shareRowsImproved": 0.542,
+    "sumSquaredErrorReduction": 0.05864
+   },
+   "ENERGY_UTILITIES": {
+    "eligibleRows": 75,
+    "evaluatedRows": 72,
+    "meanSquaredErrorReduction": 0.005337,
+    "shareOfTotalReduction": 0.1487,
+    "shareRowsImproved": 0.5694,
+    "sumSquaredErrorReduction": 0.384249
+   },
+   "FINANCIALS": {
+    "eligibleRows": 499,
+    "evaluatedRows": 458,
+    "meanSquaredErrorReduction": 0.005043,
+    "shareOfTotalReduction": 0.8937,
+    "shareRowsImproved": 0.5459,
+    "sumSquaredErrorReduction": 2.30957
+   },
+   "FOOD_BEVERAGE_TOBACCO": {
+    "eligibleRows": 13,
+    "evaluatedRows": 13,
+    "meanSquaredErrorReduction": 0.003,
+    "shareOfTotalReduction": 0.0151,
+    "shareRowsImproved": 0.6923,
+    "sumSquaredErrorReduction": 0.038994
+   },
+   "HEALTHCARE": {
+    "eligibleRows": 59,
+    "evaluatedRows": 59,
+    "meanSquaredErrorReduction": 0.001187,
+    "shareOfTotalReduction": 0.0271,
+    "shareRowsImproved": 0.4915,
+    "sumSquaredErrorReduction": 0.070023
+   },
+   "HOLDINGS_BUSINESS_SERVICES": {
+    "eligibleRows": 63,
+    "evaluatedRows": 30,
+    "meanSquaredErrorReduction": -0.001171,
+    "shareOfTotalReduction": -0.0136,
+    "shareRowsImproved": 0.4,
+    "sumSquaredErrorReduction": -0.035126
+   },
+   "TRANSPORT_LOGISTICS": {
+    "eligibleRows": 12,
+    "evaluatedRows": 10,
+    "meanSquaredErrorReduction": -0.001023,
+    "shareOfTotalReduction": -0.004,
+    "shareRowsImproved": 0.5,
+    "sumSquaredErrorReduction": -0.010227
+   }
+  },
+  "byTargetSizeTercile": {
+   "large": {
+    "base": [
+     "own",
+     "mkt"
+    ],
+    "challenger": [
+     "own",
+     "mkt",
+     "ind"
+    ],
+    "delta": {
+     "ci95": [
+      0.00012371818800745627,
+      0.002811248912608034
+     ],
+     "mean": 0.0014674835503077452,
+     "n": 44,
+     "p": 0.03232127994217543,
+     "positiveShare": 0.5227272727272727,
+     "se": 0.0006856071653868586,
+     "t": 2.140414546979986
+    },
+    "firstEvaluatedQuarter": "2015-09-30",
+    "incrementalRankIC": {
+     "ci95": [
+      0.13290321864823712,
+      0.28692259220191463
+     ],
+     "mean": 0.20991290542507587,
+     "n": 44,
+     "p": 9.168988674224455e-08,
+     "positiveShare": 0.8181818181818182,
+     "se": 0.03929137819717033,
+     "t": 5.342467356876611
+    },
+    "oosR2Base": 0.2986915117076181,
+    "oosR2Challenger": 0.31974469052169086,
+    "quartersEvaluated": 44,
+    "rowsEvaluated": 694,
+    "rowsUsable": 772,
+    "target": "y",
+    "yearlyDeltaMean": {
+     "2015": 0.00053,
+     "2016": -0.000683,
+     "2017": 0.000416,
+     "2018": 0.002966,
+     "2019": 0.003724,
+     "2020": -0.001095,
+     "2021": 0.002146,
+     "2022": 0.000354,
+     "2023": 0.007055,
+     "2024": 0.000333,
+     "2025": 0.000127,
+     "2026": 0.001069
+    }
+   },
+   "mid": {
+    "base": [
+     "own",
+     "mkt"
+    ],
+    "challenger": [
+     "own",
+     "mkt",
+     "ind"
+    ],
+    "delta": {
+     "ci95": [
+      -0.0005015642962069304,
+      0.002738145672055568
+     ],
+     "mean": 0.0011182906879243187,
+     "n": 45,
+     "p": 0.17602689781146402,
+     "positiveShare": 0.6,
+     "se": 0.0008264718046511309,
+     "t": 1.3530899440621207
+    },
+    "firstEvaluatedQuarter": "2015-06-30",
+    "incrementalRankIC": {
+     "ci95": [
+      0.026975787544828947,
+      0.2198741415651621
+     ],
+     "mean": 0.12342496455499552,
+     "n": 45,
+     "p": 0.012136697280028317,
+     "positiveShare": 0.6444444444444445,
+     "se": 0.049209667631735364,
+     "t": 2.5081446491095307
+    },
+    "oosR2Base": 0.34941823240924164,
+    "oosR2Challenger": 0.36774035865397736,
+    "quartersEvaluated": 45,
+    "rowsEvaluated": 671,
+    "rowsUsable": 772,
+    "target": "y",
+    "yearlyDeltaMean": {
+     "2015": 0.004134,
+     "2016": -0.000564,
+     "2017": 0.003126,
+     "2018": -0.000413,
+     "2019": 0.001467,
+     "2020": 0.006408,
+     "2021": 0.002317,
+     "2022": 0.001158,
+     "2023": -0.001165,
+     "2024": -0.005996,
+     "2025": 0.002288,
+     "2026": 0.001705
+    }
+   },
+   "small": {
+    "base": [
+     "own",
+     "mkt"
+    ],
+    "challenger": [
+     "own",
+     "mkt",
+     "ind"
+    ],
+    "delta": {
+     "ci95": [
+      -0.00018626771959601965,
+      0.002724790683499057
+     ],
+     "mean": 0.0012692614819515187,
+     "n": 42,
+     "p": 0.0874245576638968,
+     "positiveShare": 0.5714285714285714,
+     "se": 0.0007426305797185755,
+     "t": 1.709142495091588
+    },
+    "firstEvaluatedQuarter": "2015-09-30",
+    "incrementalRankIC": {
+     "ci95": [
+      0.08293203837826497,
+      0.28231004518747305
+     ],
+     "mean": 0.182621041782869,
+     "n": 42,
+     "p": 0.00033007851918805093,
+     "positiveShare": 0.7142857142857143,
+     "se": 0.05086267064323836,
+     "t": 3.5904729239212
+    },
+    "oosR2Base": 0.3562877010337009,
+    "oosR2Challenger": 0.3786267367131845,
+    "quartersEvaluated": 42,
+    "rowsEvaluated": 594,
+    "rowsUsable": 772,
+    "target": "y",
+    "yearlyDeltaMean": {
+     "2015": 0.002146,
+     "2016": -0.000692,
+     "2017": -0.000638,
+     "2018": 0.00179,
+     "2019": 0.000293,
+     "2020": 0.000763,
+     "2021": 0.00122,
+     "2022": 0.005584,
+     "2023": 0.006238,
+     "2024": -0.004287,
+     "2025": 0.001858,
+     "2026": 0.002358
+    }
+   }
+  },
+  "earlyVsLateReporters": {
+   "eligibleTargetsByIndustry": {
+    "AUTOS": 13,
+    "BASIC_MATERIALS": 82,
+    "CAPITAL_GOODS_DEFENSE": 149,
+    "CHEMICALS": 302,
+    "COMMUNICATION_MEDIA_SOFTWARE": 324,
+    "CONSTRUCTION_ENGINEERING": 95,
+    "CONSUMER_RETAIL_SERVICES": 352,
+    "ELECTRONICS_ELECTRICAL": 278,
+    "ENERGY_UTILITIES": 75,
+    "FINANCIALS": 499,
+    "FOOD_BEVERAGE_TOBACCO": 13,
+    "HEALTHCARE": 59,
+    "HOLDINGS_BUSINESS_SERVICES": 63,
+    "TRANSPORT_LOGISTICS": 12
+   },
+   "industryCountsEarlyHalf": {
+    "AUTOS": 184,
+    "BASIC_MATERIALS": 151,
+    "CAPITAL_GOODS_DEFENSE": 182,
+    "CHEMICALS": 220,
+    "COMMUNICATION_MEDIA_SOFTWARE": 175,
+    "CONSTRUCTION_ENGINEERING": 229,
+    "CONSUMER_RETAIL_SERVICES": 174,
+    "ELECTRONICS_ELECTRICAL": 440,
+    "ENERGY_UTILITIES": 67,
+    "FINANCIALS": 341,
+    "FOOD_BEVERAGE_TOBACCO": 22,
+    "HEALTHCARE": 110,
+    "HOLDINGS_BUSINESS_SERVICES": 79,
+    "TRANSPORT_LOGISTICS": 58,
+    "UNKNOWN": 73
+   },
+   "industryCountsLateHalf": {
+    "AUTOS": 17,
+    "BASIC_MATERIALS": 72,
+    "CAPITAL_GOODS_DEFENSE": 185,
+    "CHEMICALS": 285,
+    "COMMUNICATION_MEDIA_SOFTWARE": 346,
+    "CONSTRUCTION_ENGINEERING": 59,
+    "CONSUMER_RETAIL_SERVICES": 360,
+    "ELECTRONICS_ELECTRICAL": 68,
+    "ENERGY_UTILITIES": 131,
+    "FINANCIALS": 532,
+    "FOOD_BEVERAGE_TOBACCO": 103,
+    "HEALTHCARE": 106,
+    "HOLDINGS_BUSINESS_SERVICES": 102,
+    "TRANSPORT_LOGISTICS": 73,
+    "UNKNOWN": 98
+   },
+   "medianMarketCapEarlyKRW": 7299484439500.0,
+   "medianMarketCapLateKRW": 5048995800000.0
+  },
+  "industryDecomposition": {
+   "all": {
+    "evaluatedRows": 1987,
+    "meanSquaredErrorReduction": 0.001301
+   },
+   "excludingFinancials": {
+    "evaluatedRows": 1529,
+    "meanSquaredErrorReduction": 0.00018
+   },
+   "excludingFinancialsAndEnergyUtilities": {
+    "evaluatedRows": 1457,
+    "meanSquaredErrorReduction": -7.5e-05
+   },
+   "note": "row-level arithmetic on the predeclared per-industry table; the pooled B1/B2 fits are unchanged, nothing was re-estimated without an industry"
+  },
+  "largestPeerExcluded": {
+   "B2_vs_B1_sameRows": {
+    "base": [
+     "own",
+     "mkt"
+    ],
+    "challenger": [
+     "own",
+     "mkt",
+     "ind"
+    ],
+    "delta": {
+     "ci95": [
+      0.00018473013117788683,
+      0.0020342173237626326
+     ],
+     "mean": 0.0011094737274702597,
+     "n": 45,
+     "p": 0.01869821582257035,
+     "positiveShare": 0.6888888888888889,
+     "se": 0.0004718166233116388,
+     "t": 2.3514935096668754
+    },
+    "firstEvaluatedQuarter": "2015-06-30",
+    "incrementalRankIC": {
+     "ci95": [
+      0.0929180831818865,
+      0.25703284951539696
+     ],
+     "mean": 0.17497546634864172,
+     "n": 45,
+     "p": 2.92357714343061e-05,
+     "positiveShare": 0.7555555555555555,
+     "se": 0.04186678080146126,
+     "t": 4.179338917372282
+    },
+    "oosR2Base": 0.399226343162266,
+    "oosR2Challenger": 0.41643839265992877,
+    "quartersEvaluated": 45,
+    "rowsEvaluated": 1579,
+    "rowsUsable": 1816,
+    "target": "y",
+    "yearlyDeltaMean": {
+     "2015": 0.001719,
+     "2016": -0.000986,
+     "2017": 0.001211,
+     "2018": 0.00228,
+     "2019": 0.001262,
+     "2020": -0.000268,
+     "2021": -0.000341,
+     "2022": 0.002341,
+     "2023": 0.00501,
+     "2024": -0.001169,
+     "2025": 0.00144,
+     "2026": 0.000826
+    }
+   },
+   "exLargest_vs_B1": {
+    "base": [
+     "own",
+     "mkt"
+    ],
+    "challenger": [
+     "own",
+     "mkt",
+     "ind_ex_largest"
+    ],
+    "delta": {
+     "ci95": [
+      3.8431102886859634e-06,
+      0.001218761778615895
+     ],
+     "mean": 0.0006113024444522904,
+     "n": 45,
+     "p": 0.04856809429826056,
+     "positiveShare": 0.6666666666666666,
+     "se": 0.0003099339243800419,
+     "t": 1.9723637729399042
+    },
+    "firstEvaluatedQuarter": "2015-06-30",
+    "incrementalRankIC": {
+     "ci95": [
+      0.08022587885569749,
+      0.23149886058205127
+     ],
+     "mean": 0.15586236971887438,
+     "n": 45,
+     "p": 5.3713316703385026e-05,
+     "positiveShare": 0.7333333333333333,
+     "se": 0.03859075516855253,
+     "t": 4.038852544815865
+    },
+    "oosR2Base": 0.399226343162266,
+    "oosR2Challenger": 0.408648738321017,
+    "quartersEvaluated": 45,
+    "rowsEvaluated": 1579,
+    "rowsUsable": 1816,
+    "target": "y",
+    "yearlyDeltaMean": {
+     "2015": 0.001142,
+     "2016": -0.000659,
+     "2017": 0.000405,
+     "2018": 0.00184,
+     "2019": 0.000814,
+     "2020": -0.000414,
+     "2021": -0.000573,
+     "2022": 0.002246,
+     "2023": 0.002308,
+     "2024": -0.000651,
+     "2025": 0.000668,
+     "2026": 7.6e-05
+    }
+   }
+  },
+  "marketWide_B1_vs_B0": {
+   "base": [
+    "own"
+   ],
+   "challenger": [
+    "own",
+    "mkt"
+   ],
+   "delta": {
+    "ci95": [
+     -0.00015430949899271308,
+     0.0022555102066070787
+    ],
+    "mean": 0.0010506003538071828,
+    "n": 45,
+    "p": 0.0874589541379933,
+    "positiveShare": 0.4888888888888889,
+    "se": 0.0006147612164304528,
+    "t": 1.7089567879824703
+   },
+   "firstEvaluatedQuarter": "2015-06-30",
+   "incrementalRankIC": {
+    "ci95": [
+     -0.14407347977917928,
+     -0.03958454502425037
+    ],
+    "mean": -0.09182901240171483,
+    "n": 45,
+    "p": 0.0005710849350410147,
+    "positiveShare": 0.28888888888888886,
+    "se": 0.026655830095585663,
+    "t": -3.444987909677672
+   },
+   "oosR2Base": 0.32964602621560424,
+   "oosR2Challenger": 0.3480166133314233,
+   "quartersEvaluated": 45,
+   "rowsEvaluated": 1987,
+   "rowsUsable": 2316,
+   "target": "y",
+   "yearlyDeltaMean": {
+    "2015": 0.000296,
+    "2016": 0.000763,
+    "2017": 0.000687,
+    "2018": 0.001709,
+    "2019": -0.000118,
+    "2020": 0.003462,
+    "2021": 0.005164,
+    "2022": -0.001389,
+    "2023": 0.000611,
+    "2024": -0.000684,
+    "2025": -0.000928,
+    "2026": 0.00464
+   }
+  },
+  "sectorPriceMomentum": {
+   "B1p_vs_B1": {
+    "base": [
+     "own",
+     "mkt"
+    ],
+    "challenger": [
+     "own",
+     "mkt",
+     "indmom"
+    ],
+    "delta": {
+     "ci95": [
+      -0.00022177012787281882,
+      7.40828796574847e-05
+     ],
+     "mean": -7.384362410766707e-05,
+     "n": 45,
+     "p": 0.32787802015727296,
+     "positiveShare": 0.4444444444444444,
+     "se": 7.547409226146591e-05,
+     "t": -0.9783969822631269
+    },
+    "firstEvaluatedQuarter": "2015-06-30",
+    "incrementalRankIC": {
+     "ci95": [
+      -0.10293743342842482,
+      0.009253412757829184
+     ],
+     "mean": -0.04684201033529782,
+     "n": 45,
+     "p": 0.10170332469423277,
+     "positiveShare": 0.4,
+     "se": 0.02862063950823944,
+     "t": -1.6366514214964598
+    },
+    "oosR2Base": 0.34801811767434965,
+    "oosR2Challenger": 0.34674679522987617,
+    "quartersEvaluated": 45,
+    "rowsEvaluated": 1986,
+    "rowsUsable": 2315,
+    "target": "y",
+    "yearlyDeltaMean": {
+     "2015": -6.7e-05,
+     "2016": -4e-06,
+     "2017": -5.3e-05,
+     "2018": -8.7e-05,
+     "2019": -2.2e-05,
+     "2020": -4.5e-05,
+     "2021": 3.4e-05,
+     "2022": -4.6e-05,
+     "2023": -3.9e-05,
+     "2024": -1e-06,
+     "2025": 9.7e-05,
+     "2026": -0.00123
+    }
+   },
+   "B2_vs_B1_sameRows": {
+    "base": [
+     "own",
+     "mkt"
+    ],
+    "challenger": [
+     "own",
+     "mkt",
+     "ind"
+    ],
+    "delta": {
+     "ci95": [
+      0.00033792375230368697,
+      0.002318195596739441
+     ],
+     "mean": 0.0013280596745215642,
+     "n": 45,
+     "p": 0.008566642456326542,
+     "positiveShare": 0.6222222222222222,
+     "se": 0.0005051806677152627,
+     "t": 2.6288806349773157
+    },
+    "firstEvaluatedQuarter": "2015-06-30",
+    "incrementalRankIC": {
+     "ci95": [
+      0.09982026651251406,
+      0.24364619193441162
+     ],
+     "mean": 0.17173322922346285,
+     "n": 45,
+     "p": 2.8613098356207123e-06,
+     "positiveShare": 0.7777777777777778,
+     "se": 0.03669096101303329,
+     "t": 4.680532329541876
+    },
+    "oosR2Base": 0.34801811767434965,
+    "oosR2Challenger": 0.3693574962079579,
+    "quartersEvaluated": 45,
+    "rowsEvaluated": 1986,
+    "rowsUsable": 2315,
+    "target": "y",
+    "yearlyDeltaMean": {
+     "2015": 0.002606,
+     "2016": -0.000712,
+     "2017": 0.00105,
+     "2018": 0.002027,
+     "2019": 0.001374,
+     "2020": 0.001197,
+     "2021": 0.001704,
+     "2022": 0.002563,
+     "2023": 0.004955,
+     "2024": -0.002906,
+     "2025": 0.001272,
+     "2026": 0.000928
+    }
+   },
+   "B2p_vs_B1p": {
+    "base": [
+     "own",
+     "mkt",
+     "indmom"
+    ],
+    "challenger": [
+     "own",
+     "mkt",
+     "indmom",
+     "ind"
+    ],
+    "delta": {
+     "ci95": [
+      0.00035238139625410323,
+      0.002346917437641746
+     ],
+     "mean": 0.0013496494169479248,
+     "n": 45,
+     "p": 0.007989555422893707,
+     "positiveShare": 0.6222222222222222,
+     "se": 0.0005088195603050982,
+     "t": 2.6525108746579016
+    },
+    "firstEvaluatedQuarter": "2015-06-30",
+    "incrementalRankIC": {
+     "ci95": [
+      0.09472325458341711,
+      0.23975991487303533
+     ],
+     "mean": 0.16724158472822623,
+     "n": 45,
+     "p": 6.1820971977275255e-06,
+     "positiveShare": 0.7777777777777778,
+     "se": 0.03699982762173648,
+     "t": 4.520063888891632
+    },
+    "oosR2Base": 0.34674679522987617,
+    "oosR2Challenger": 0.36851835854654147,
+    "quartersEvaluated": 45,
+    "rowsEvaluated": 1986,
+    "rowsUsable": 2315,
+    "target": "y",
+    "yearlyDeltaMean": {
+     "2015": 0.00261,
+     "2016": -0.000739,
+     "2017": 0.001055,
+     "2018": 0.002104,
+     "2019": 0.001416,
+     "2020": 0.001272,
+     "2021": 0.001768,
+     "2022": 0.002519,
+     "2023": 0.004964,
+     "2024": -0.002991,
+     "2025": 0.001363,
+     "2026": 0.000986
+    }
+   }
+  },
+  "sessionsFromFirstUsablePeerToTargetDisclosure": {
+   "median": 9.0,
+   "n": 2316,
+   "p25": 5,
+   "p75": 13
+  }
+ },
+ "dartCallsMade": 0,
+ "datedExample": {
+  "eventualTarget": {
+   "note": "disclosed after the origin; not available at the origin",
+   "revenueLogGrowth": -0.0427
+  },
+  "knownAtOrigin": {
+   "industryEarlyReporters": [
+    {
+     "corp": "00126380",
+     "disclosed": "2024-04-05",
+     "revenueLogGrowth": 0.1077,
+     "ticker": "005930.KS",
+     "usableFromNextSessionClose": true
+    },
+    {
+     "corp": "00401731",
+     "disclosed": "2024-04-05",
+     "revenueLogGrowth": 0.0328,
+     "ticker": "066570.KS",
+     "usableFromNextSessionClose": true
+    },
+    {
+     "corp": "01205851",
+     "disclosed": "2024-04-23",
+     "revenueLogGrowth": 0.3427,
+     "ticker": "267260.KS",
+     "usableFromNextSessionClose": true
+    },
+    {
+     "corp": "00105961",
+     "disclosed": "2024-04-24",
+     "revenueLogGrowth": -0.0097,
+     "ticker": "011070.KS",
+     "usableFromNextSessionClose": true
+    },
+    {
+     "corp": "00105873",
+     "disclosed": "2024-04-25",
+     "revenueLogGrowth": 0.1747,
+     "ticker": "034220.KS",
+     "usableFromNextSessionClose": true
+    },
+    {
+     "corp": "00155276",
+     "disclosed": "2024-04-25",
+     "revenueLogGrowth": 0.0702,
+     "ticker": "003670.KS",
+     "usableFromNextSessionClose": true
+    },
+    {
+     "corp": "00164779",
+     "disclosed": "2024-04-25",
+     "revenueLogGrowth": 0.8932,
+     "ticker": "000660.KS",
+     "usableFromNextSessionClose": true
+    },
+    {
+     "corp": "00339391",
+     "disclosed": "2024-04-26",
+     "revenueLogGrowth": 0.214,
+     "ticker": "272210.KS",
+     "usableFromNextSessionClose": true
+    },
+    {
+     "corp": "01316245",
+     "disclosed": "2024-04-26",
+     "revenueLogGrowth": 0.1511,
+     "ticker": "298040.KS",
+     "usableFromNextSessionClose": true
+    }
+   ],
+   "marketEarlyReporters": {
+    "meanRevenueLogGrowth": 0.1162,
+    "n": 41
+   },
+   "ownPreviousQuarterRevenueLogGrowth": -0.0696
+  },
+  "predictions": {
+   "B1": 0.0146,
+   "B2": 0.0431,
+   "coefficientsB2": [
+    0.0032,
+    0.4852,
+    0.1139,
+    0.2753
+   ]
+  },
+  "target": {
+   "corp": "00126362",
+   "forecastOriginSessionClose": "2024-04-29",
+   "quarter": "2024-03-31",
+   "ticker": "006400.KS"
+  }
+ },
+ "evidenceClass": "OUTCOME_BLIND_FUNDAMENTAL_FORECASTING_ON_EXPOSED_KR_DISCLOSURES",
+ "evidenceTable": "evidence-per-quarter.csv",
+ "family": {
+  "H1_B2_vs_B1": {
+   "p": 0.00853755083040259,
+   "rejectNull": true,
+   "threshold": 0.025
+  },
+  "H2_return_contrast_H126": {
+   "p": 1.0,
+   "rejectNull": false,
+   "threshold": 0.05
+  }
+ },
+ "inputs": {
+  "hashes": {
+   "pr308/dart-list-A-files": "bf342b8a0d97c2bcb887401fb4527c2b54b9e48b3218b9f989808117de913a64",
+   "pr308/prelim-docs-member-units.jsonl.gz": "6cf752ac64d533516444eeb5aed3827b25c2ff71ef5668f6fc4fcac8c913936f",
+   "pr308/sprint.py": "fd29e25674e7a57aced2ba2fc7a07c88db6bf506c52ddbe764d7d5122aec0339",
+   "signal-history/collection-universe.json": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
+   "signal-history/ledger/prices/kr/krx-prices-2013.jsonl.gz": "2bce090e2005b0bfcbf8f89738bfc5047f4e025f866d09ec571902cde7fc189a",
+   "signal-history/ledger/prices/kr/krx-prices-2014.jsonl.gz": "41e5057ad9648139c73728133d4e33fa5a41fed5a03e7b8862bcd425f8312217",
+   "signal-history/ledger/prices/kr/krx-prices-2015.jsonl.gz": "12f38a419c642ff369d5b5c3219930bb308dd06784ba3ee8b0428e5ca4893f1b",
+   "signal-history/ledger/prices/kr/krx-prices-2016.jsonl.gz": "3a5869f1c08f46eb81080da949040dc67cb56c2792b3e5645182a90ae7201e93",
+   "signal-history/ledger/prices/kr/krx-prices-2017.jsonl.gz": "0116c32a63e2043d37ff05cb9e382570dc1c4d1bdbd40f252ef912725e4e8593",
+   "signal-history/ledger/prices/kr/krx-prices-2018.jsonl.gz": "138e0a6d733ea94ce1334ec55dc040307f6b998f2e4c99b3b4b06e298c5f4717",
+   "signal-history/ledger/prices/kr/krx-prices-2019.jsonl.gz": "8a9da28c176559f56645437b66b8fe1da78ed46b371cfc4f3b42a3e1743c09e6",
+   "signal-history/ledger/prices/kr/krx-prices-2020.jsonl.gz": "e0c375dd826dc017ecef45bc88162e152bf68de8a194e0e0b67893bad1713164",
+   "signal-history/ledger/prices/kr/krx-prices-2021.jsonl.gz": "29279d2360f230dcc6fe63b463a97281144061f7d0cee883759c82fadd2fbee1",
+   "signal-history/ledger/prices/kr/krx-prices-2022.jsonl.gz": "986bc9255a1eb35584bd3dfd306d5489fdab2a6b73c96e99652f9f458c281684",
+   "signal-history/ledger/prices/kr/krx-prices-2023.jsonl.gz": "c0291e6ae19e7cbfe5855f864f04618b46e933f9383e489b0a7753fdb66fe416",
+   "signal-history/ledger/prices/kr/krx-prices-2024.jsonl.gz": "fb3ee2c5435130ff8fceca0ba66f32ce8a815a6ce3bb855b9c08cbfe34fc2808",
+   "signal-history/ledger/prices/kr/krx-prices-2025.jsonl.gz": "d0bef0689a9181276eef7335d8323cfeaf1a166dc545a4b523f1f45508885773",
+   "signal-history/ledger/prices/kr/krx-prices-2026.jsonl.gz": "ddce511008a41e8383daf261d1b1df09b987f8c72a007aafbfa25407081ad62e",
+   "signal-history/ledger/universe/kr/krx-universe-2013.jsonl.gz": "f7e7ecee7541480d3b8ee620c0fd6210a91d6e00b112fd2c41d0e9a8c816fdd2",
+   "signal-history/ledger/universe/kr/krx-universe-2014.jsonl.gz": "03323a8b8b332823000bc881a0972ae2e9727681eab00a518c9ccdb80e65853a",
+   "signal-history/ledger/universe/kr/krx-universe-2015.jsonl.gz": "b656c614a6ebe6ef4b32b26192f306ad6e15102697ae4167ae8534b640a882f2",
+   "signal-history/ledger/universe/kr/krx-universe-2016.jsonl.gz": "bd80f18a025e7b50ee16373ac878e336b50b5a2f5ddd7ca9534527897a8d3e00",
+   "signal-history/ledger/universe/kr/krx-universe-2017.jsonl.gz": "66dc58623f541f06d5e9bed7e90dfe54b080258048e1cd71262f90a8bd010679",
+   "signal-history/ledger/universe/kr/krx-universe-2018.jsonl.gz": "d3def14c97af01bc0aa8292946525e65cc84f95af476f9f842105b3e855f0df1",
+   "signal-history/ledger/universe/kr/krx-universe-2019.jsonl.gz": "b21f475aa8a8f93a7ef7129ac6acd6716e5496d6444372a1edc092849ebf387b",
+   "signal-history/ledger/universe/kr/krx-universe-2020.jsonl.gz": "203e93b8341dd103edb1fc4e14788c9d6653b22370bbf86579b45bd9a11c0ecc",
+   "signal-history/ledger/universe/kr/krx-universe-2021.jsonl.gz": "1a4d9840f2720f9a535e357674ac400296bfe4b1809589a80150a0a4c2b65d2f",
+   "signal-history/ledger/universe/kr/krx-universe-2022.jsonl.gz": "10b50960277a30a7abff18ce49bb8dcef55d81eb2cfe11cdb29d6c998a48a3e2",
+   "signal-history/ledger/universe/kr/krx-universe-2023.jsonl.gz": "0b32a51e604a8b3bead773ff643dd1b1fed27b324c5b0ce777fcd9aaa2ea0c7d",
+   "signal-history/ledger/universe/kr/krx-universe-2024.jsonl.gz": "d80c25e887badc8ab92ebe314f54900c11862aeda75d742935ec33340133cd32",
+   "signal-history/ledger/universe/kr/krx-universe-2025.jsonl.gz": "014672bd80e9cc9f7ce56983ca7ccf42d61ff2e5cbe861c5f28a8aa83d7039f5",
+   "signal-history/ledger/universe/kr/krx-universe-2026.jsonl.gz": "ca6cb363fb42b70ca614a683d6c160f4af907bed3518bf478dc815cad8026032",
+   "v4/crosswalk.json": "76166ad309d323240ffe749df74ac089f4693f30ef77231b8cd5ab85365826b5",
+   "v4/intervals.json.gz": "01a7958608939b73b85f7b96457e6b6420bec1aaa78417526b98dbea3321aae0"
+  },
+  "issuerQuartersWithConfirmedPrelim": 5042,
+  "pr308Commit": "f48b6f29993cf572d191f9724d19d2543f375f6c",
+  "preliminaryDocumentsRead": 6446,
+  "signalHistoryCommit": "5d187ec16dca29c68161060f4002227297ebd632"
+ },
+ "panel": {
+  "attrition": {
+   "eligible": 2316,
+   "fewIndustryPeers": 1430,
+   "fewMarketPeers": 531,
+   "noIndustry": 123,
+   "noOwnHistory": 611,
+   "noTarget": 31,
+   "units": 5042
+  },
+  "eligibleIndustries": 14,
+  "eligibleIssuers": 151,
+  "eligibleQuarters": 54,
+  "eligibleRows": 2316,
+  "industries": 14,
+  "issuerQuarters": 5042,
+  "issuers": 203,
+  "medianIndustryPeersAtOrigin": 5.0,
+  "medianMarketPeersAtOrigin": 58.0,
+  "quarters": 55,
+  "revenueTargetAtClip": 65,
+  "withIndustry": 4871,
+  "withRevenueTarget": 5011
+ },
+ "pricesReadOnlyThroughForecastOrigin": true,
+ "stockReturnsRead": 0,
+ "studyId": "industry-information-transfer-v1"
+}
