@@ -174,3 +174,18 @@ def test_committed_result_matches_frozen_spec_and_nav_contract():
             for residual in S.RESIDUALS:
                 for rung in S.RUNGS:
                     assert result["regions"][region]["scenarios"][n][residual][rung]["metrics"]["available"] is True
+
+
+def test_moved_spec_is_byte_identical_to_the_frozen_commit():
+    import hashlib
+    import subprocess
+    record = json.loads((ROOT / "research/entry_state_role_etf_residual_v1/SPEC_PROVENANCE.json").read_text())
+    current = (ROOT / S.SPEC_PATH).read_bytes()
+    assert hashlib.sha256(current).hexdigest() == record["fileBytesSha256"]
+    assert json.loads(current)["specSha256"] == record["specSha256Field"] == S.spec_sha256()
+    try:
+        frozen = subprocess.run(["git", "show", f"{record['frozenAtCommit']}:{record['frozenAtPath']}"], cwd=ROOT,
+                                capture_output=True, check=True).stdout
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        pytest.skip("frozen commit not in this checkout's history")
+    assert frozen == current
