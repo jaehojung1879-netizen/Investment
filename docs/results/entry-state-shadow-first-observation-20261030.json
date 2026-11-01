@@ -1,0 +1,111 @@
+{
+  "schema": "ENTRY_STATE_SHADOW_PAIRED_FIRST_V1",
+  "sourceCommit": "187aeeda839dd4863bf9432eabb1595581bc7782",
+  "sourcePaths": [
+    "ledger/research-strategies/current-champion-decisions-v1/latest.json",
+    "ledger/weekly-decisions/latest.json"
+  ],
+  "configurationCommit": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+  "sourceArtifactSha256": "893fea88cc42cae89e0ef3cef000faa96bd7d5c78afc0543f2103a8f28b989ae",
+  "sourceGeneratedAt": "2026-10-31T05:44:37.950407+00:00",
+  "recordingClass": "FIRST_SOURCE_PINNED_AS_OF_PROJECTION_NOT_MATURED_PROSPECTIVE_RETURN",
+  "researchDecision": "NOT_INVESTMENT_ADVICE",
+  "historicalReference": "entry-selection-separation-v1: exposed history, not confirmatory",
+  "basis": "C2 ETF residual; original historical challenger used CASH; results NOT economically comparable without separate prospective outcomes",
+  "nextExecutionDateNotAsserted": true,
+  "costsAndRealizedReturns": null,
+  "regions": {
+    "KR": {
+      "sourceStatus": "READY",
+      "asOfDate": "2026-10-30",
+      "controlParity": true,
+      "samePublishedArtifact": true,
+      "fullyBoundedMissing": true,
+      "consideredCount": 12,
+      "eligibleCount": 6,
+      "storedRankingRows": 11,
+      "missingCandidateBounds": [
+        {
+          "ticker": "032640.KS",
+          "excludedByOriginalState": true,
+          "unthrottledMaxScore": 0
+        }
+      ],
+      "control": {
+        "selected": [
+          "028670.KS",
+          "002380.KS",
+          "034730.KS"
+        ],
+        "stocks": {
+          "028670.KS": 0.3,
+          "002380.KS": 0.187666,
+          "034730.KS": 0.080882
+        },
+        "residual": 0.431452,
+        "residualAsset": "069500.KS"
+      },
+      "challenger": {
+        "selected": [
+          "021240.KS",
+          "001450.KS",
+          "028670.KS"
+        ],
+        "stocks": {
+          "021240.KS": 0.075,
+          "001450.KS": 0.046881,
+          "028670.KS": 0.040122
+        },
+        "residual": 0.837997,
+        "residualAsset": "069500.KS"
+      },
+      "investmentEligible": false
+    },
+    "US": {
+      "sourceStatus": "READY",
+      "asOfDate": "2026-10-30",
+      "controlParity": true,
+      "samePublishedArtifact": true,
+      "fullyBoundedMissing": true,
+      "consideredCount": 12,
+      "eligibleCount": 12,
+      "storedRankingRows": 11,
+      "missingCandidateBounds": [
+        {
+          "ticker": "VLO",
+          "excludedByOriginalState": false,
+          "unthrottledMaxScore": 2.7374301675977653
+        }
+      ],
+      "control": {
+        "selected": [
+          "TRV",
+          "HLT",
+          "MAR"
+        ],
+        "stocks": {
+          "TRV": 0.3,
+          "HLT": 0.184682,
+          "MAR": 0.081952
+        },
+        "residual": 0.433366,
+        "residualAsset": "SPY"
+      },
+      "challenger": {
+        "selected": [
+          "SPG",
+          "KIM",
+          "TRV"
+        ],
+        "stocks": {
+          "SPG": 0.131138,
+          "KIM": 0.046931,
+          "TRV": 0.09668
+        },
+        "residual": 0.725251,
+        "residualAsset": "SPY"
+      },
+      "investmentEligible": false
+    }
+  }
+}
