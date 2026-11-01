@@ -10,6 +10,7 @@
  */
 import fs from "node:fs";
 import crypto from "node:crypto";
+import { execFileSync } from "node:child_process";
 
 const REGIONS = Object.freeze({KR: "069500.KS", US: "SPY"});
 const VERSION = "ENTRY_STATE_SHADOW_PAIRED_FIRST_V1";
@@ -226,6 +227,19 @@ if (process.argv[1]?.endsWith("entry_state_shadow_observation.mjs")) {
   if (args.length < 4 || args.length > 5)
     throw Error("Usage: node scripts/entry_state_shadow_observation.mjs CHAMPION_LATEST WEEKLY_LATEST CONFIG SOURCE_COMMIT [OUTPUT]");
   const inputs = args.slice(0, 3).map(p => fs.readFileSync(p));
+  if (!/^[0-9a-f]{40}$/.test(args[3])) throw Error("IMMUTABLE_SOURCE_COMMIT_REQUIRED");
+  // A claimed SHA or file hash is not source verification. Authenticate the
+  // bytes against the Git *objects* reachable from this exact source commit.
+  const sourcePaths = [
+    "ledger/research-strategies/current-champion-decisions-v1/latest.json",
+    "ledger/weekly-decisions/latest.json"
+  ];
+  for (let i = 0; i < sourcePaths.length; i++) {
+    const original = execFileSync("git", ["show", args[3] + ":" + sourcePaths[i]], {
+      cwd: process.cwd(), maxBuffer: 4 * 1024 * 1024
+    });
+    if (!original.equals(inputs[i])) throw Error("IMMUTABLE_GIT_SOURCE_MISMATCH");
+  }
   const [champion, weekly, fullConfig] = inputs.map(x => JSON.parse(x.toString("utf8")));
   const output = observe(champion, weekly, fullConfig.kellyPortfolio, args[3], {
     championSha256: hash(inputs[0]), weeklySha256: hash(inputs[1]),
