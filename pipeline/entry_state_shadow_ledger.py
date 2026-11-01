@@ -19,12 +19,16 @@ observation into write-once decision receipts and advances each strategy's paper
 * H126 / H252 maturity is counted in the region's own sessions from the first fill; before that it is PENDING, never 0.
 
 Every strategy starts at NAV 1.0 fully in its regional ETF at its first execution session (the default the policy keeps).
+Live marks use fixed-origin vendor index levels with published-prefix checks, not raw adjusted-price levels across
+acquisitions. Stored units are valuation-index units, never broker share counts; legacy price-coordinate books refuse
+automatic continuation. Superseded receipt IDs remain consumed across restarts.
 """
 from __future__ import annotations
 
 from datetime import datetime, timezone
 import hashlib
 import json
+import math
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -44,7 +48,7 @@ OPEN = {"KR": ("Asia/Seoul", 9, 0), "US": ("America/New_York", 9, 30)}
 # A session's close is FINAL (no later vendor revision of that day's print is expected) at: KR 18:00 KST (v2.53 rule),
 # US 20:00 New York time.
 FINAL = {"KR": ("Asia/Seoul", 18, 0), "US": ("America/New_York", 20, 0)}
-RETURN_BASIS = "VENDOR_ADJUSTED_CLOSE_AT_MARK_TIME_LATER_READJUSTMENTS_NOT_REAPPLIED"
+RETURN_BASIS = "VENDOR_ADJUSTED_CLOSE_FIXED_ORIGIN_RATIO_V1_PREFIX_CHECKED"
 NET_ALREADY_CHARGED = "NET_ALREADY_CHARGED"
 FILES = ("decisions.jsonl", "fills.jsonl", "nav-daily.jsonl")
 ZERO = 1e-10
@@ -212,6 +216,54 @@ def _weights(units: dict, closes: dict) -> tuple[float, dict]:
     return nav, {t: v / nav for t, v in values.items()}
 
 
+def anchored_closes(frames: dict, origins: dict[str, str], prior_navs: list[dict]):
+    """Put each acquisition in the SAME per-ticker valuation coordinates.
+
+    A later split/dividend rescales Yahoo's adjusted prefix. Dividing both the
+    mark and a fixed, explicitly dated origin by that acquisition's origin
+    close cancels this common rescaling. Units are units of this vendor index,
+    not brokerage shares. Non-uniform revisions of previously marked ratios
+    are refused; this is not certification of vendor corporate-action coverage.
+    """
+    prices, source = {}, {}
+    for ticker, origin in sorted(origins.items()):
+        frame = frames.get(ticker)
+        prices[ticker] = {}
+        if frame is None or "Close" not in frame:
+            continue
+        dates = pd.to_datetime(frame.index).tz_localize(None).strftime("%Y-%m-%d")
+        if dates.duplicated().any():
+            raise ValueError(f"DUPLICATE_VENDOR_SESSION: {ticker}")
+        raw = {d: (float(v) if pd.notna(v) and math.isfinite(float(v)) and float(v) > 0 else None)
+               for d, v in zip(dates, frame["Close"])}
+        source[ticker] = {"origin": origin, "quotes": sorted(raw.items())}
+        anchor = raw.get(origin)
+        if anchor is not None:
+            prices[ticker] = {d: v / anchor if v is not None else None for d, v in raw.items()}
+    for row in prior_navs:
+        if row.get("status") != "MARKED":
+            continue
+        marks = row.get("valuationCloses")
+        pinned = row.get("valuationOrigins")
+        if row.get("returnBasis") != RETURN_BASIS or not marks or not pinned:
+            raise ValueError("LEGACY_VALUATION_BASIS_REQUIRES_EXPLICIT_REVIEW")
+        for ticker, previous in marks.items():
+            if origins.get(ticker) != pinned.get(ticker):
+                raise ValueError(f"VALUATION_ORIGIN_CHANGED: {ticker}")
+            current = prices.get(ticker, {}).get(row["date"])
+            if current is None:
+                raise ValueError(f"PINNED_VENDOR_PREFIX_UNAVAILABLE: {ticker} {row['date']}")
+            # Vendor float32 rounding, not an economic tolerance or a repair.
+            if not math.isclose(current, previous, rel_tol=1e-6, abs_tol=1e-10):
+                raise ValueError(f"VENDOR_RETURN_PREFIX_REVISED: {ticker} {row['date']}")
+
+    def close_of(ticker, session):
+        return prices.get(ticker, {}).get(session)
+    close_of.valuation_origins = dict(origins)
+    close_of.snapshot_sha256 = sha256(canonical(source))
+    return close_of
+
+
 def fill(units: dict, target: dict, closes: dict, region: str, session: str, etf_tickers: set[str]) -> dict:
     """Move a carried book to its target at one close. Cost is charged here and only here."""
     pre_nav, current = _weights(units, closes)
@@ -225,7 +277,8 @@ def fill(units: dict, target: dict, closes: dict, region: str, session: str, etf
         cost += abs(delta) * rate
         legs.append({"ticker": ticker, "side": side, "weight": round(abs(delta), 10),
                      "instrument": "ETF" if ticker in etf_tickers else "STOCK", "costRateBps": round(rate * 1e4, 4),
-                     "costFraction": abs(delta) * rate, "price": closes[ticker]})
+                     "costFraction": abs(delta) * rate, "price": closes[ticker],
+                     "priceRole": "VENDOR_VALUATION_INDEX_NOT_BROKER_SHARE_QUOTE"})
     post_nav = pre_nav * (1 - cost)
     new_units = {t: w * post_nav / closes[t] for t, w in target.items() if w > ZERO}
     before = {t for t in current if t not in etf_tickers}
@@ -261,6 +314,14 @@ def advance(directory: Path, *, now: datetime, close_of, through: str | None = N
             continue
         mine_fills = [f for f in fills if f["strategyId"] == sid]
         filled_ids = {f["decisionReceiptId"] for f in mine_fills}
+        # Superseded decisions were consumed too. Restarts must not trade them.
+        for previous_fill in mine_fills:
+            filled_ids.update(previous_fill.get("supersededReceiptIds") or [])
+        if (any(f.get("returnBasis") != RETURN_BASIS for f in mine_fills)
+                or (mine_navs and mine_navs[-1].get("returnBasis") != RETURN_BASIS)):
+            raise ValueError("LEGACY_VALUATION_BASIS_REQUIRES_EXPLICIT_REVIEW")
+        if mine_fills and (not mine_navs or mine_fills[-1]["session"] > mine_navs[-1]["date"]):
+            raise ValueError("FILL_NAV_CHECKPOINT_INCOMPLETE")
         units = dict(mine_fills[-1]["units"]) if mine_fills else None
         start = mine_navs[-1]["date"] if mine_navs else items[0]["executionSession"]
         end = through or now.strftime("%Y-%m-%d")
@@ -276,7 +337,7 @@ def advance(directory: Path, *, now: datetime, close_of, through: str | None = N
             if units is None:
                 need |= {etf}
             closes = {t: close_of(t, session) for t in need}
-            missing = sorted(t for t, v in closes.items() if v is None or not v > 0)
+            missing = sorted(t for t, v in closes.items() if v is None or not math.isfinite(v) or not v > 0)
             if missing:
                 new_navs.append({"strategyId": sid, "region": region, "date": session, "status":
                                  "UNRESOLVED_MISSING_PRICE", "missing": missing, "nav": None})
@@ -289,7 +350,7 @@ def advance(directory: Path, *, now: datetime, close_of, through: str | None = N
                 row = {"strategyId": sid, "region": region, "session": session,
                        "decisionReceiptId": decision["receiptId"], "decisionAsOfDate": decision["asOfDate"],
                        "supersededReceiptIds": [d["receiptId"] for d in pending[:-1]],
-                       "costBasis": NET_ALREADY_CHARGED, **result}
+                       "costBasis": NET_ALREADY_CHARGED, "returnBasis": RETURN_BASIS, **result}
                 new_fills.append(row)
                 filled_ids |= {d["receiptId"] for d in pending}
                 units = result["units"]
@@ -297,7 +358,10 @@ def advance(directory: Path, *, now: datetime, close_of, through: str | None = N
             nav, _ = _weights(units, closes)
             new_navs.append({"strategyId": sid, "region": region, "date": session, "status": "MARKED",
                              "nav": nav, "currency": CURRENCY[region], "costBasis": NET_ALREADY_CHARGED,
-                             "returnBasis": RETURN_BASIS, "evidenceClass": EVIDENCE_CLASS})
+                             "returnBasis": RETURN_BASIS, "evidenceClass": EVIDENCE_CLASS,
+                             "valuationCloses": closes,
+                             "valuationOrigins": {t: getattr(close_of, "valuation_origins", {}).get(t) for t in closes},
+                             "priceSnapshotSha256": getattr(close_of, "snapshot_sha256", None)})
         report[sid] = "ADVANCED"
     _append(directory / "fills.jsonl", new_fills)
     _append(directory / "nav-daily.jsonl", new_navs)
@@ -320,4 +384,3 @@ def maturity(directory: Path, *, now: datetime) -> dict:
 
 def utc_now() -> datetime:
     return datetime.now(timezone.utc)
-

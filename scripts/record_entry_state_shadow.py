@@ -55,23 +55,22 @@ def observe(champion: Path, weekly: Path, config: Path, *, source_commit: str, c
 
 
 def live_closes(directory: Path):
-    """Close lookup backed by one vendor fetch for every ticker any decision can hold."""
+    """Fixed-origin vendor index lookup; never carry units across raw adjusted vintages."""
     from pipeline.datafeed import fetch_prices
     decisions = [json.loads(s) for s in (directory / "decisions.jsonl").read_text().splitlines() if s.strip()]
-    tickers = sorted({t for d in decisions for t in (d.get("targetWeights") or {})}
-                     | set(L.REGIONAL_ETF.values()) | set(L.SEPARATE_COMPARISON.values()))
-    start = min(d["asOfDate"] for d in decisions)
-    frames = fetch_prices(tickers, start)
-    series = {t: f["Close"] for t, f in frames.items() if f is not None and "Close" in f}
-
-    def close_of(ticker, session):
-        s = series.get(ticker)
-        if s is None:
-            return None
-        index = s.index.tz_localize(None) if getattr(s.index, "tz", None) else s.index
-        hit = s[index.strftime("%Y-%m-%d") == session]
-        return float(hit.iloc[-1]) if len(hit) and hit.iloc[-1] == hit.iloc[-1] else None
-    return close_of
+    origins = {}
+    for decision in decisions:
+        tickers = set(decision.get("targetWeights") or {}) | {L.REGIONAL_ETF[decision["region"]]}
+        for ticker in tickers:
+            origins[ticker] = min(origins.get(ticker, decision["asOfDate"]), decision["asOfDate"])
+    if not origins:
+        raise ValueError("NO_DECISIONS_TO_VALUE")
+    # The fixed signal-session denominator cancels later common rescalings.
+    # Require the exact origin quote; never silently pick a new first row.
+    frames = fetch_prices(sorted(origins), min(origins.values()), auto_adjust=True)
+    nav_path = directory / "nav-daily.jsonl"
+    prior_navs = [json.loads(s) for s in nav_path.read_text().splitlines() if s.strip()] if nav_path.exists() else []
+    return L.anchored_closes(frames, origins, prior_navs)
 
 
 def run(champion: Path, weekly: Path, config: Path, directory: Path, *, offline: bool = False,

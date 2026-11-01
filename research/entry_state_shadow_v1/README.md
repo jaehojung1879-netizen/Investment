@@ -12,3 +12,23 @@
   Recorded 2026-11-01T01:44:36Z, before the 2026-11-02 KR/US opens, so its execution session is 2026-11-02. It is NOT a
   signal-history receipt: no fill, NAV or return exists. Live receipts start only once the hook runs in the scheduled
   paper-ledger workflow on main.
+
+## Prospective accounting repair
+
+`VENDOR_ADJUSTED_CLOSE_FIXED_ORIGIN_RATIO_V1_PREFIX_CHECKED` values each ticker relative to its explicitly dated first
+signal-session close in the SAME vendor acquisition. A later common split/dividend rescaling cancels in this ratio;
+units and fill `price` fields denote a vendor valuation index, not broker shares or executable price quotes. This is
+conditional vendor-adjusted performance, not independent certification of corporate actions or shareholder total return.
+
+Every NAV row retains the valuation marks, origin dates and acquisition digest. A changed origin, missing published
+prefix, or non-uniform revision of a previously recorded ratio is refused without rewriting the old NAV. Legacy raw
+adjusted-price books are refused for explicit review rather than silently converted or reset; receipt IDs and study ID
+are unchanged. The existing offline observations and historical DEVELOPMENT outputs are unchanged.
+
+On restart, both executed and superseded decision IDs are restored, so an older discarded target cannot trade again.
+An incomplete fills/NAV checkpoint is refused; this patch does not claim automatic journal crash recovery.
+
+Regression: `python -m pytest -q tests/test_entry_state_shadow_ledger.py tests/test_entry_state_shadow_restart.py`.
+Tests compare one acquisition with multiple resumed acquisitions through split/reverse-split/dividend rescalings,
+including the real recorder adapter with offline vendor fixtures, dated costs, retained holdings and NAV. They also
+cover superseded decisions, non-uniform revisions, missing origins, legacy books and interrupted checkpoints.
