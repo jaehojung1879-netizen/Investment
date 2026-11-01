@@ -1,37 +1,37 @@
 {
-  "schema": "ENTRY_STATE_SHADOW_PAIRED_FIRST_V1",
+  "schema": "ENTRY_STATE_SHADOW_CARDINALITY_V2",
   "sourceCommit": "187aeeda839dd4863bf9432eabb1595581bc7782",
+  "configurationCommit": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+  "sourceGeneratedAt": "2026-10-31T05:44:37.950407+00:00",
+  "sourceArtifactSha256": "893fea88cc42cae89e0ef3cef000faa96bd7d5c78afc0543f2103a8f28b989ae",
   "sourcePaths": [
     "ledger/research-strategies/current-champion-decisions-v1/latest.json",
     "ledger/weekly-decisions/latest.json"
   ],
-  "configurationCommit": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
-  "sourceArtifactSha256": "893fea88cc42cae89e0ef3cef000faa96bd7d5c78afc0543f2103a8f28b989ae",
-  "sourceGeneratedAt": "2026-10-31T05:44:37.950407+00:00",
-  "recordingClass": "FIRST_SOURCE_PINNED_AS_OF_PROJECTION_NOT_MATURED_PROSPECTIVE_RETURN",
-  "researchDecision": "NOT_INVESTMENT_ADVICE",
-  "historicalReference": "entry-selection-separation-v1: exposed history, not confirmatory",
-  "basis": "C2 ETF residual; original historical challenger used CASH; results NOT economically comparable without separate prospective outcomes",
-  "nextExecutionDateNotAsserted": true,
-  "costsAndRealizedReturns": null,
+  "classification": "SOURCE_PINNED_POST_SIGNAL_DECISION_PROJECTION_NOT_FORECAST_OR_MATURED_OUTCOME",
+  "allowedStockCounts": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "selectionRule": "No validated positive net incremental alpha => use published 0-stock passive ETF; research count ladder NOT optimized or recommended",
+  "researchEvaluation": "Future H126/H252 stock-vs-ETF after-cost risk-adjusted net excess; independent OOS required",
+  "historicalEconomicScopeMismatch": "Historical entry-at-weight used CASH residual; current C2 alternatives use ETF residual. No historical edge is transferable.",
+  "costs": null,
+  "realizedReturns": null,
   "regions": {
     "KR": {
-      "sourceStatus": "READY",
+      "status": "RESEARCH_SNAPSHOT_ONLY_NOT_LIVE_VALIDATED",
       "asOfDate": "2026-10-30",
-      "controlParity": true,
-      "samePublishedArtifact": true,
-      "fullyBoundedMissing": true,
+      "sourceReceiptId": "current-champion-decisions-v1|KR|2026-10-30",
       "consideredCount": 12,
-      "eligibleCount": 6,
-      "storedRankingRows": 11,
-      "missingCandidateBounds": [
-        {
-          "ticker": "032640.KS",
-          "excludedByOriginalState": true,
-          "unthrottledMaxScore": 0
-        }
-      ],
-      "control": {
+      "originallyEligibleCount": 6,
+      "rankedRowsRetained": 11,
+      "legacyControlOnly": {
+        "stockCount": 3,
         "selected": [
           "028670.KS",
           "002380.KS",
@@ -43,41 +43,217 @@
           "034730.KS": 0.080882
         },
         "residual": 0.431452,
-        "residualAsset": "069500.KS"
+        "residualAsset": "069500.KS",
+        "sameAsPublished": true
       },
-      "challenger": {
-        "selected": [
-          "021240.KS",
-          "001450.KS",
-          "028670.KS"
-        ],
-        "stocks": {
-          "021240.KS": 0.075,
-          "001450.KS": 0.046881,
-          "028670.KS": 0.040122
-        },
-        "residual": 0.837997,
-        "residualAsset": "069500.KS"
-      },
-      "investmentEligible": false
-    },
-    "US": {
-      "sourceStatus": "READY",
-      "asOfDate": "2026-10-30",
-      "controlParity": true,
-      "samePublishedArtifact": true,
-      "fullyBoundedMissing": true,
-      "consideredCount": 12,
-      "eligibleCount": 12,
-      "storedRankingRows": 11,
-      "missingCandidateBounds": [
+      "allowedStockCounts": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "researchScenarios": [
         {
-          "ticker": "VLO",
-          "excludedByOriginalState": false,
-          "unthrottledMaxScore": 2.7374301675977653
+          "stockCount": 0,
+          "status": "SOURCE_PINNED_COUNTERFACTUAL",
+          "rankStateInSelection": {
+            "selected": [],
+            "stocks": {},
+            "residual": 1,
+            "residualAsset": "069500.KS"
+          },
+          "stateAtPositionWeight": {
+            "selected": [],
+            "stocks": {},
+            "residual": 1,
+            "residualAsset": "069500.KS"
+          }
+        },
+        {
+          "stockCount": 1,
+          "status": "SOURCE_PINNED_COUNTERFACTUAL",
+          "rankStateInSelection": {
+            "selected": [
+              "028670.KS"
+            ],
+            "stocks": {
+              "028670.KS": 0.3
+            },
+            "residual": 0.7,
+            "residualAsset": "069500.KS"
+          },
+          "stateAtPositionWeight": {
+            "selected": [
+              "021240.KS"
+            ],
+            "stocks": {
+              "021240.KS": 0.075
+            },
+            "residual": 0.925,
+            "residualAsset": "069500.KS"
+          }
+        },
+        {
+          "stockCount": 2,
+          "status": "SOURCE_PINNED_COUNTERFACTUAL",
+          "rankStateInSelection": {
+            "selected": [
+              "028670.KS",
+              "002380.KS"
+            ],
+            "stocks": {
+              "028670.KS": 0.3,
+              "002380.KS": 0.132382
+            },
+            "residual": 0.567618,
+            "residualAsset": "069500.KS"
+          },
+          "stateAtPositionWeight": {
+            "selected": [
+              "021240.KS",
+              "001450.KS"
+            ],
+            "stocks": {
+              "021240.KS": 0.075,
+              "001450.KS": 0.033015
+            },
+            "residual": 0.891985,
+            "residualAsset": "069500.KS"
+          }
+        },
+        {
+          "stockCount": 3,
+          "status": "SOURCE_PINNED_COUNTERFACTUAL",
+          "rankStateInSelection": {
+            "selected": [
+              "028670.KS",
+              "002380.KS",
+              "034730.KS"
+            ],
+            "stocks": {
+              "028670.KS": 0.3,
+              "002380.KS": 0.187666,
+              "034730.KS": 0.080882
+            },
+            "residual": 0.431452,
+            "residualAsset": "069500.KS"
+          },
+          "stateAtPositionWeight": {
+            "selected": [
+              "021240.KS",
+              "001450.KS",
+              "028670.KS"
+            ],
+            "stocks": {
+              "021240.KS": 0.075,
+              "001450.KS": 0.046881,
+              "028670.KS": 0.040122
+            },
+            "residual": 0.837997,
+            "residualAsset": "069500.KS"
+          }
+        },
+        {
+          "stockCount": 4,
+          "status": "SOURCE_PINNED_COUNTERFACTUAL",
+          "rankStateInSelection": {
+            "selected": [
+              "028670.KS",
+              "002380.KS",
+              "034730.KS",
+              "021240.KS"
+            ],
+            "stocks": {
+              "028670.KS": 0.237407,
+              "002380.KS": 0.156822,
+              "034730.KS": 0.096555,
+              "021240.KS": 0.109215
+            },
+            "residual": 0.400001,
+            "residualAsset": "069500.KS"
+          },
+          "stateAtPositionWeight": {
+            "selected": [
+              "021240.KS",
+              "001450.KS",
+              "028670.KS",
+              "002380.KS"
+            ],
+            "stocks": {
+              "021240.KS": 0.066191,
+              "001450.KS": 0.043587,
+              "028670.KS": 0.05329,
+              "002380.KS": 0.027155
+            },
+            "residual": 0.809777,
+            "residualAsset": "069500.KS"
+          }
+        },
+        {
+          "stockCount": 5,
+          "status": "SOURCE_PINNED_COUNTERFACTUAL",
+          "rankStateInSelection": {
+            "selected": [
+              "028670.KS",
+              "002380.KS",
+              "034730.KS",
+              "021240.KS",
+              "005935.KS"
+            ],
+            "stocks": {
+              "028670.KS": 0.19118,
+              "002380.KS": 0.135306,
+              "034730.KS": 0.093305,
+              "021240.KS": 0.131924,
+              "005935.KS": 0.048286
+            },
+            "residual": 0.399999,
+            "residualAsset": "069500.KS"
+          },
+          "stateAtPositionWeight": {
+            "selected": [
+              "021240.KS",
+              "001450.KS",
+              "028670.KS",
+              "002380.KS",
+              "034730.KS"
+            ],
+            "stocks": {
+              "021240.KS": 0.056114,
+              "001450.KS": 0.039591,
+              "028670.KS": 0.054213,
+              "002380.KS": 0.034532,
+              "034730.KS": 0.019844
+            },
+            "residual": 0.795706,
+            "residualAsset": "069500.KS"
+          }
         }
       ],
-      "control": {
+      "currentPolicy": {
+        "status": "PASSIVE_NO_DEFENSIBLE_EDGE",
+        "stockCount": 0,
+        "holdings": {},
+        "benchmark": "069500.KS",
+        "benchmarkWeight": 1,
+        "basis": "PUBLISHED_WEEKLY_POLICY_NOT_COUNTERFACTUAL_BACKTEST_WINNER"
+      },
+      "cardinalityWinner": null,
+      "costs": null,
+      "realizedReturn": null,
+      "expectedAlpha": null
+    },
+    "US": {
+      "status": "RESEARCH_SNAPSHOT_ONLY_NOT_LIVE_VALIDATED",
+      "asOfDate": "2026-10-30",
+      "sourceReceiptId": "current-champion-decisions-v1|US|2026-10-30",
+      "consideredCount": 12,
+      "originallyEligibleCount": 12,
+      "rankedRowsRetained": 11,
+      "legacyControlOnly": {
+        "stockCount": 3,
         "selected": [
           "TRV",
           "HLT",
@@ -89,23 +265,207 @@
           "MAR": 0.081952
         },
         "residual": 0.433366,
-        "residualAsset": "SPY"
+        "residualAsset": "SPY",
+        "sameAsPublished": true
       },
-      "challenger": {
-        "selected": [
-          "SPG",
-          "KIM",
-          "TRV"
-        ],
-        "stocks": {
-          "SPG": 0.131138,
-          "KIM": 0.046931,
-          "TRV": 0.09668
+      "allowedStockCounts": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "researchScenarios": [
+        {
+          "stockCount": 0,
+          "status": "SOURCE_PINNED_COUNTERFACTUAL",
+          "rankStateInSelection": {
+            "selected": [],
+            "stocks": {},
+            "residual": 1,
+            "residualAsset": "SPY"
+          },
+          "stateAtPositionWeight": {
+            "selected": [],
+            "stocks": {},
+            "residual": 1,
+            "residualAsset": "SPY"
+          }
         },
-        "residual": 0.725251,
-        "residualAsset": "SPY"
+        {
+          "stockCount": 1,
+          "status": "SOURCE_PINNED_COUNTERFACTUAL",
+          "rankStateInSelection": {
+            "selected": [
+              "TRV"
+            ],
+            "stocks": {
+              "TRV": 0.3
+            },
+            "residual": 0.7,
+            "residualAsset": "SPY"
+          },
+          "stateAtPositionWeight": {
+            "selected": [
+              "SPG"
+            ],
+            "stocks": {
+              "SPG": 0.15
+            },
+            "residual": 0.85,
+            "residualAsset": "SPY"
+          }
+        },
+        {
+          "stockCount": 2,
+          "status": "SOURCE_PINNED_COUNTERFACTUAL",
+          "rankStateInSelection": {
+            "selected": [
+              "TRV",
+              "HLT"
+            ],
+            "stocks": {
+              "TRV": 0.3,
+              "HLT": 0.130147
+            },
+            "residual": 0.569853,
+            "residualAsset": "SPY"
+          },
+          "stateAtPositionWeight": {
+            "selected": [
+              "SPG",
+              "KIM"
+            ],
+            "stocks": {
+              "SPG": 0.147337,
+              "KIM": 0.038831
+            },
+            "residual": 0.813832,
+            "residualAsset": "SPY"
+          }
+        },
+        {
+          "stockCount": 3,
+          "status": "SOURCE_PINNED_COUNTERFACTUAL",
+          "rankStateInSelection": {
+            "selected": [
+              "TRV",
+              "HLT",
+              "MAR"
+            ],
+            "stocks": {
+              "TRV": 0.3,
+              "HLT": 0.184682,
+              "MAR": 0.081952
+            },
+            "residual": 0.433366,
+            "residualAsset": "SPY"
+          },
+          "stateAtPositionWeight": {
+            "selected": [
+              "SPG",
+              "KIM",
+              "TRV"
+            ],
+            "stocks": {
+              "SPG": 0.131138,
+              "KIM": 0.046931,
+              "TRV": 0.09668
+            },
+            "residual": 0.725251,
+            "residualAsset": "SPY"
+          }
+        },
+        {
+          "stockCount": 4,
+          "status": "SOURCE_PINNED_COUNTERFACTUAL",
+          "rankStateInSelection": {
+            "selected": [
+              "TRV",
+              "HLT",
+              "MAR",
+              "SPG"
+            ],
+            "stocks": {
+              "TRV": 0.250712,
+              "HLT": 0.162041,
+              "MAR": 0.102722,
+              "SPG": 0.084526
+            },
+            "residual": 0.399999,
+            "residualAsset": "SPY"
+          },
+          "stateAtPositionWeight": {
+            "selected": [
+              "SPG",
+              "KIM",
+              "TRV",
+              "HLT"
+            ],
+            "stocks": {
+              "SPG": 0.112859,
+              "KIM": 0.047121,
+              "TRV": 0.123982,
+              "HLT": 0.061816
+            },
+            "residual": 0.654222,
+            "residualAsset": "SPY"
+          }
+        },
+        {
+          "stockCount": 5,
+          "status": "SOURCE_PINNED_COUNTERFACTUAL",
+          "rankStateInSelection": {
+            "selected": [
+              "TRV",
+              "HLT",
+              "MAR",
+              "SPG",
+              "ALL"
+            ],
+            "stocks": {
+              "TRV": 0.205581,
+              "HLT": 0.142363,
+              "MAR": 0.101078,
+              "SPG": 0.103965,
+              "ALL": 0.047013
+            },
+            "residual": 0.4,
+            "residualAsset": "SPY"
+          },
+          "stateAtPositionWeight": {
+            "selected": [
+              "SPG",
+              "KIM",
+              "TRV",
+              "HLT",
+              "ALL"
+            ],
+            "stocks": {
+              "SPG": 0.094023,
+              "KIM": 0.04206,
+              "TRV": 0.123947,
+              "HLT": 0.077249,
+              "ALL": 0.021258
+            },
+            "residual": 0.641463,
+            "residualAsset": "SPY"
+          }
+        }
+      ],
+      "currentPolicy": {
+        "status": "PASSIVE_NO_DEFENSIBLE_EDGE",
+        "stockCount": 0,
+        "holdings": {},
+        "benchmark": "SPY",
+        "benchmarkWeight": 1,
+        "basis": "PUBLISHED_WEEKLY_POLICY_NOT_COUNTERFACTUAL_BACKTEST_WINNER"
       },
-      "investmentEligible": false
+      "cardinalityWinner": null,
+      "costs": null,
+      "realizedReturn": null,
+      "expectedAlpha": null
     }
   }
 }
