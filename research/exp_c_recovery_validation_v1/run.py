@@ -200,12 +200,33 @@ def execute(args):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--execute", action="store_true")
+    parser.add_argument("--prepare", action="store_true", help="Read-only runtime/source hash checks; no values parsed or lock created")
     parser.add_argument("--approval-comment-id", type=int)
     parser.add_argument("--us-source-root")
     parser.add_argument("--output")
     args = parser.parse_args()
     try:
-        if args.execute:
+        if args.execute and args.prepare:
+            raise ValueError("PREPARE_AND_EXECUTE_ARE_EXCLUSIVE")
+        if args.prepare:
+            identity = freeze_identity()
+            checks = {}
+            try:
+                runtime_gate()
+                checks["runtime"] = "PASS"
+            except (ValueError, ImportError) as exc:
+                checks["runtime"] = str(exc)
+            if args.us_source_root:
+                try:
+                    source_gate(Path(args.us_source_root))
+                    checks["sources"] = "HASHES_MATCH_NOT_AUTHORIZATION"
+                except (ValueError, OSError) as exc:
+                    checks["sources"] = "SOURCE_BLOCKED: " + str(exc)
+            else:
+                checks["sources"] = "SOURCE_BLOCKED: original US bundle not supplied"
+            print(json.dumps({"status": "EXECUTION_BLOCKED", "freeze": identity, "checks": checks,
+                              "source_value_parses": 0, "locks_created": 0, "input_cohort_scan": "NOT_AUTHORIZED"}))
+        elif args.execute:
             execute(args)
         else:
             print(json.dumps({"status": "NOT_EXECUTED", "freeze_sha256": freeze_identity(), "source_value_parses": 0,

@@ -4,7 +4,7 @@ Status: `NOT_EXECUTED`. KR/US history was already outcome-exposed. No new indepe
 
 Approve only one `EXP-C-RECOVERY-02` comparison frozen by:
 
-- Code/contract/test/source identity (canonical `FREEZE.json` SHA-256): `cf26eef726eb1945c70c5f2a984e1cb0262a24d1a2c6145fb8dfd98808b52ba0`.
+- Code/contract/test/source identity (canonical `FREEZE.json` SHA-256): `be827ac65652062a6221826bd84a7070a00287ff0ba7f485d6047aad5a71d637`.
 - Source manifest SHA-256: `31e081493395784de9fb9e992ca87d1c3c3576b83482b3833312723571a2e26f`.
 - Every executable SHA-256 is listed in `FREEZE.json`; original sealed source and dependency hashes are in `SOURCES.json`.
 - Also bind the exact **new Draft PR HEAD commit** displayed in that PR (replace the placeholder below). Any code/head/source change invalidates approval. No hash may be silently re-pinned.
@@ -20,7 +20,7 @@ If approving, Owner must post exactly this JSON in the **new Draft PR**, replaci
 ```json
 {
   "study": "EXP-C-RECOVERY-02",
-  "freeze_sha256": "cf26eef726eb1945c70c5f2a984e1cb0262a24d1a2c6145fb8dfd98808b52ba0",
+  "freeze_sha256": "be827ac65652062a6221826bd84a7070a00287ff0ba7f485d6047aad5a71d637",
   "source_manifest_sha256": "31e081493395784de9fb9e992ca87d1c3c3576b83482b3833312723571a2e26f",
   "code_commit": "EXACT_NEW_DRAFT_PR_HEAD_SHA",
   "closure_exception": "C.7_AND_STOP_LIST_SINGLE_COMPARISON_ONLY",
@@ -33,3 +33,5 @@ If approving, Owner must post exactly this JSON in the **new Draft PR**, replaci
 ```
 
 The runner authenticates the commenter via GitHub, checks exact head, the non-author review, clean checkout, hashes and runtime, then creates `refs/tags/research-locks/EXP-C-RECOVERY-02` before parsing source values. Preserve every immutable access/eligibility/support/result receipt and the lock. A post-lock failure consumes the study with no retry. Support failure stops before label arithmetic or fitting; MDE/uncertainty failure stops after the single calculation. No research run is requested until all conditions are concrete and satisfied.
+
+Revision: read READINESS.md; prior-head audit is not a new-head approval. Same-account policy remains unresolved; no execution or input-scan token issued.
