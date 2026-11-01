@@ -80,7 +80,7 @@ def run(tmp_path, latest, weekly, cfg, *, output=False):
                     "--allow-empty", "-q", "-m", "source snapshot"], check=True)
     sha = subprocess.check_output(["git", "-C", str(repo), "rev-parse", "HEAD"],
                                   text=True).strip()
-    args = [NODE, str(SCRIPT), *(str(p) for p in paths), sha]
+    args = [NODE, str(SCRIPT), *(str(p) for p in paths), sha, sha]
     if output:
         args.append(str(repo / "observation.json"))
     return subprocess.run(args, text=True, capture_output=True,
