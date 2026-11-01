@@ -100,7 +100,7 @@ def test_real_selection_v_weight_throttle_not_returns(tmp_path):
     kr = observed["regions"]["KR"]
     assert kr["legacyControlOnly"]["sameAsPublished"] is True
     assert kr["legacyControlOnly"]["stocks"] == {"A": .6, "B": .2}
-    assert kr["allowedStockCounts"] == [0, 1, 2, 3, 4, 5]
+    assert kr["scenarioStockCounts"] == [0, 1, 2, 3, 4, 5, 10]
     assert kr["currentPolicy"]["stockCount"] == 0
     assert kr["currentPolicy"]["benchmarkWeight"] == 1
     assert kr["researchScenarios"][0]["stateAtPositionWeight"]["stocks"] == {}
@@ -111,10 +111,12 @@ def test_real_selection_v_weight_throttle_not_returns(tmp_path):
     assert kr["cardinalityWinner"] is None
     assert kr["realizedReturn"] is None and kr["expectedAlpha"] is None
     assert observed["regions"]["US"]["status"] == "BLOCKED"
-    caps = observed["portfolioDPolicy"]["feasibleCountPairs"]
-    assert len(caps) == 21
-    assert all(p["KR"] + p["US"] <= 5 for p in caps)
-    assert observed["portfolioDPolicy"]["maxCombinedStocks"] == 5
+    # Owner correction (2026-11-01): no permanent combined KR+US maximum is imposed by research code.
+    policy = observed["portfolioDPolicy"]
+    assert policy["permanentCombinedMaximum"] is None and "feasibleCountPairs" not in policy
+    assert policy["regionalScenariosAreNotSimultaneousCombinedAllocations"] is True
+    assert kr["researchScenarios"][-1]["stockCount"] == 10
+    assert kr["researchScenarios"][-1]["status"] == "INSUFFICIENT_ELIGIBLE_NAMES"
     assert observed["residualConvention"].startswith("ETF_NOT_CASH")
 
 
@@ -201,3 +203,18 @@ def test_no_positive_edge_cannot_be_converted_to_three_or_five_stock_policy(tmp_
     row = json.loads(out.stdout)["regions"]["KR"]
     assert row["currentPolicy"]["stockCount"] is None
     assert row["cardinalityWinner"] is None
+
+
+def test_omitted_candidate_below_cutoff_does_not_crash(tmp_path):
+    """Regression: the bounded check read an undefined `x` and threw ReferenceError on any omitted pool name."""
+    a, b, cfg = fixture()
+    a["regions"]["KR"]["decisions"]["C2"]["selection"]["consideredCount"] += 1
+    b["regions"]["KR"]["candidates"].append({
+        "ticker": "Z", "sector": "Energy", "alphaPercentile": 10, "downsideVolPct": 20,
+        "entryState": "ACCUMULATE_GRADUALLY", "edgeAvailable": False, "expectedNetAdvantagePct": None})
+    out = run(tmp_path, a, b, cfg)
+    assert out.returncode == 0, out.stderr
+    kr = json.loads(out.stdout)["regions"]["KR"]
+    assert "ReferenceError" not in out.stderr
+    audit = kr["researchScenarios"][1]["rankStateInSelection"]["candidateAudit"]
+    assert {r["ticker"]: r["status"] for r in audit}["Z"] == "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF"

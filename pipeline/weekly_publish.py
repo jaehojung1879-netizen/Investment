@@ -388,7 +388,34 @@ def main(argv=None) -> int:
             except OSError:
                 print("notice: separate research refusal status could not be stored")
             print(f"notice: separate CHAMPION research publication refused ({type(exc).__name__})")
+        _record_entry_state_shadow(receipts_in.parent.parent, out_path)
     return 0
+
+
+def _record_entry_state_shadow(ledger_dir: Path, weekly_latest: Path) -> None:
+    """entry-state-shadow-ledger-v1: append-only PAPER A/B receipts beside the champion artifact.
+
+    Runs only in the scheduled paper-ledger workflow on main, in a child process with a timeout; a refusal is written
+    to the study's own publication-status.json and never changes this step's result or the official P1 outputs.
+    """
+    import importlib.util
+    root = Path(__file__).resolve().parent.parent
+    try:
+        spec = importlib.util.spec_from_file_location(
+            "record_entry_state_shadow", root / "scripts" / "record_entry_state_shadow.py")
+        shadow = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(shadow)
+        if not shadow.hook_enabled():
+            return
+        from . import current_champion_decisions as champion
+        code = shadow.run_isolated(ledger_dir / "research-strategies" / champion.VERSION / "latest.json",
+                                   weekly_latest, root / "config.json",
+                                   ledger_dir / "research-strategies" / shadow.L.STUDY)
+        if code:
+            print(f"::warning::entry-state-shadow-ledger-v1 exited {code}; see its publication-status.json")
+    except Exception as exc:  # noqa: BLE001 - research must never block the weekly decision
+        print(f"::warning::entry-state-shadow-ledger-v1 hook raised (weekly decision unaffected): "
+              f"{type(exc).__name__}: {exc}")
 
 
 if __name__ == "__main__":

@@ -13,18 +13,21 @@ import crypto from "node:crypto";
 import { execFileSync } from "node:child_process";
 
 const REGIONS = Object.freeze({KR: "069500.KS", US: "SPY"});
-const VERSION = "ENTRY_STATE_SHADOW_CARDINALITY_V2";
+const VERSION = "ENTRY_STATE_SHADOW_CARDINALITY_V3";
+// Scenario grid, not a cap: the same grid entry-state-role-etf-residual-v1 values historically.
+export const SCENARIO_COUNTS = Object.freeze([0, 1, 2, 3, 4, 5, 10]);
 const round6 = n => Math.round((n + Number.EPSILON) * 1e6) / 1e6;
 const isNum = n => typeof n === "number" && Number.isFinite(n);
 const sum = o => Object.values(o).reduce((a, b) => a + b, 0);
 const hash = data => crypto.createHash("sha256").update(data).digest("hex");
 
-function choose(rows, selection, challenger, capacity = null) {
+export function choose(rows, selection, challenger, capacity = null, audit = null) {
   // The existing 3-name regional limit belongs ONLY to the legacy control.
-  // Counterfactual research tests every cardinality from 0 through 5.
+  // Research scenarios take their count from SCENARIO_COUNTS; no count is a
+  // permanent maximum and none is a mandatory minimum.
   const target = capacity === null ?
     Math.min(selection.targetNames, selection.maxNamesPerRegion) : capacity;
-  if (!Number.isInteger(target) || target < 0 || target > 5)
+  if (!Number.isInteger(target) || target < 0)
     throw Error("INVALID_CARDINALITY");
   const bySector = {};
   const ordered = rows.filter(x => x.eligible).map(x => ({
@@ -34,9 +37,16 @@ function choose(rows, selection, challenger, capacity = null) {
     String(a.ticker).localeCompare(String(b.ticker)));
   const chosen = [];
   for (const row of ordered) {
-    if (chosen.length >= target) break;
-    if ((bySector[row.sector] || 0) >= selection.maxNamesPerSector) continue;
+    if (chosen.length >= target) {
+      if (audit) audit[row.ticker] = "BELOW_TARGET_COUNT_CUTOFF";
+      continue;
+    }
+    if ((bySector[row.sector] || 0) >= selection.maxNamesPerSector) {
+      if (audit) audit[row.ticker] = "SECTOR_NAME_LIMIT";
+      continue;
+    }
     chosen.push(row);
+    if (audit) audit[row.ticker] = "SELECTED";
     bySector[row.sector] = (bySector[row.sector] || 0) + 1;
   }
   return chosen;
@@ -50,7 +60,7 @@ function boundedMissingComplete(weeklyPool, ranked, chosen, selection, capacity,
   if (chosen.length !== capacity) return false;
   const cutoff = chosen[chosen.length - 1].comparisonScore;
   for (const missing of weeklyPool.filter(x => !seen.has(x.ticker))) {
-    const state = x.entryState;
+    const state = missing.entryState;
     const multiplier = state === "WAIT_FOR_PULLBACK" ? config.waitForPullbackWeightMultiplier :
       state === "WATCH" ? config.watchWeightMultiplier :
       state === "ACCUMULATE_GRADUALLY" ? 1 :
@@ -68,6 +78,17 @@ function boundedMissingComplete(weeklyPool, ranked, chosen, selection, capacity,
     if (maximum >= cutoff - 1e-8) return false;
   }
   return true;
+}
+
+function candidateAudit(pool, ranking, audit) {
+  const ranked = new Map(ranking.map(r => [r.ticker, r]));
+  return pool.map(c => {
+    const r = ranked.get(c.ticker);
+    const status = !r ? "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF" :
+      !r.eligible ? "INELIGIBLE" : (audit[c.ticker] || "NOT_REACHED");
+    return {ticker: c.ticker, sector: c.sector, entryState: c.entryState,
+      eligible: r ? !!r.eligible : null, status};
+  }).sort((a, b) => a.ticker.localeCompare(b.ticker));
 }
 
 function weights(chosen, config, minCashPct, throttled) {
@@ -206,9 +227,10 @@ export function observe(champion, weekly, config, sourceCommit, sourceHashes = {
     // is inherently better. Separate cardinality and rank/weight mechanisms
     // using identically sized paired variants at each feasible count.
     const researchScenarios = [];
-    for (let count = 0; count <= 5; count++) {
-      const arm0 = choose(active, s, false, count);
-      const arm1 = choose(active, s, true, count);
+    for (const count of SCENARIO_COUNTS) {
+      const audit0 = {}, audit1 = {};
+      const arm0 = choose(active, s, false, count, audit0);
+      const arm1 = choose(active, s, true, count, audit1);
       if (arm0.length !== count || arm1.length !== count) {
         researchScenarios.push({stockCount: count, status: "INSUFFICIENT_ELIGIBLE_NAMES",
           rankStateInSelection: null, stateAtPositionWeight: null});
@@ -225,9 +247,11 @@ export function observe(champion, weekly, config, sourceCommit, sourceHashes = {
       const alternative = weights(arm1, config, original.appliedMinCashPct, true);
       researchScenarios.push({stockCount: count, status: "SOURCE_PINNED_COUNTERFACTUAL",
         rankStateInSelection: {selected: arm0.map(x => x.ticker),
-          ...base, residualAsset: benchmark},
+          ...base, residualAsset: benchmark,
+          candidateAudit: candidateAudit(weeklyPool, ranking, audit0)},
         stateAtPositionWeight: {selected: arm1.map(x => x.ticker),
-          ...alternative, residualAsset: benchmark}});
+          ...alternative, residualAsset: benchmark,
+          candidateAudit: candidateAudit(weeklyPool, ranking, audit1)}});
     }
     // Current P1 weekly decision is authoritative for whether a stock has
     // demonstrated a positive incremental advantage. A shortlist, raw
@@ -246,7 +270,7 @@ export function observe(champion, weekly, config, sourceCommit, sourceHashes = {
       legacyControlOnly: {stockCount: originalChosen.length, selected: originalChosen.map(v => v.ticker),
         ...control, residualAsset: benchmark, sameAsPublished: true,
         note: "Existing maxNamesPerRegion=3 is NOT a research cardinality recommendation"},
-      allowedStockCounts: [0, 1, 2, 3, 4, 5],
+      scenarioStockCounts: [...SCENARIO_COUNTS],
       researchScenarios,
       currentPolicy: passiveVerified ?
         {status: "PASSIVE_NO_DEFENSIBLE_EDGE", stockCount: 0,
@@ -267,22 +291,22 @@ export function observe(champion, weekly, config, sourceCommit, sourceHashes = {
     classification: "HISTORICAL_SESSION_OBSERVED_BEFORE_NEXT_SESSION; NOT_PROSPECTIVE_OUTCOME",
     status: "READ_ONLY_RESEARCH_NO_ORDERS_NO_VALIDATED_ALPHA",
     residualConvention: "ETF_NOT_CASH; DIFFERENT_FROM_OLD_REPLAY_V16",
-    stockCountPolicy: "0..5 inclusive; 5 MAXIMUM not target; 0-ETF is valid",
+    stockCountPolicy: "Scenario grid 0,1,2,3,4,5,10; no count is a permanent maximum or a mandatory minimum; 0 stocks + 100% ETF is valid",
     rankAndCountAreSeparateVariables: true,
     portfolioDPolicy: {
-      maxCombinedStocks: 5,
+      permanentCombinedMaximum: null,
       regionalScenariosAreNotSimultaneousCombinedAllocations: true,
-      feasibleCountPairs: Array.from({length: 6}, (_, kr) => Array.from(
-        {length: 6 - kr}, (_, us) => ({KR: kr, US: us}))).flat(),
       allocationAcrossKRAndUS: null,
-      note: "KR + US stock counts must sum to <=5; regional 5-name ladders must NOT be combined as ten stocks."
+      note: "Each region is a separate book against its own ETF. No combined KR+US count is fixed here; a combined count is a later, evidence-backed decision, never a sum of two regional ladders."
     },
     regions: results
   };
 }
 
 if (process.argv[1]?.endsWith("entry_state_shadow_observation.mjs")) {
-  const args = process.argv.slice(2);
+  const raw = process.argv.slice(2);
+  const preCommit = raw.includes("--pre-commit-bytes");
+  const args = raw.filter(a => a !== "--pre-commit-bytes");
   if (args.length < 5 || args.length > 6)
     throw Error("Usage: node scripts/entry_state_shadow_observation.mjs CHAMPION_LATEST WEEKLY_LATEST CONFIG SOURCE_COMMIT [OUTPUT]");
   const inputs = args.slice(0, 3).map(p => fs.readFileSync(p));
@@ -293,21 +317,25 @@ if (process.argv[1]?.endsWith("entry_state_shadow_observation.mjs")) {
     "ledger/research-strategies/current-champion-decisions-v1/latest.json",
     "ledger/weekly-decisions/latest.json"
   ];
-  for (let i = 0; i < sourcePaths.length; i++) {
+  for (let i = 0; i < sourcePaths.length && !preCommit; i++) {
     const original = execFileSync("git", ["show", args[3] + ":" + sourcePaths[i]], {
       cwd: process.cwd(), maxBuffer: 4 * 1024 * 1024
     });
     if (!original.equals(inputs[i])) throw Error("IMMUTABLE_GIT_SOURCE_MISMATCH");
   }
   if (!/^[0-9a-f]{40}$/.test(args[4])) throw Error("IMMUTABLE_CONFIG_COMMIT_REQUIRED");
-  const trustedConfig = execFileSync("git", ["show", args[4] + ":config.json"], {
-    cwd: process.cwd(), maxBuffer: 2 * 1024 * 1024
-  });
-  if (!trustedConfig.equals(inputs[2])) throw Error("IMMUTABLE_CONFIG_GIT_SOURCE_MISMATCH");
+  if (!preCommit) {
+    const trustedConfig = execFileSync("git", ["show", args[4] + ":config.json"], {
+      cwd: process.cwd(), maxBuffer: 2 * 1024 * 1024
+    });
+    if (!trustedConfig.equals(inputs[2])) throw Error("IMMUTABLE_CONFIG_GIT_SOURCE_MISMATCH");
+  }
   const [champion, weekly, fullConfig] = inputs.map(x => JSON.parse(x.toString("utf8")));
   const output = observe(champion, weekly, fullConfig.kellyPortfolio, args[3], {
     championSha256: hash(inputs[0]), weeklySha256: hash(inputs[1]),
-    configSha256: hash(inputs[2])
+    configSha256: hash(inputs[2]),
+    sourceVerification: preCommit ? "SHA256_OF_BYTES_WRITTEN_IN_THIS_RUN_BEFORE_COMMIT" :
+      "GIT_OBJECTS_AT_SOURCE_AND_CONFIG_COMMITS"
   });
   const serialized = JSON.stringify(output, null, 2) + "\n";
   if (args[5]) {
