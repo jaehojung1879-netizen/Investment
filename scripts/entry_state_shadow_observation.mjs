@@ -13,14 +13,19 @@ import crypto from "node:crypto";
 import { execFileSync } from "node:child_process";
 
 const REGIONS = Object.freeze({KR: "069500.KS", US: "SPY"});
-const VERSION = "ENTRY_STATE_SHADOW_PAIRED_FIRST_V1";
+const VERSION = "ENTRY_STATE_SHADOW_CARDINALITY_V2";
 const round6 = n => Math.round((n + Number.EPSILON) * 1e6) / 1e6;
 const isNum = n => typeof n === "number" && Number.isFinite(n);
 const sum = o => Object.values(o).reduce((a, b) => a + b, 0);
 const hash = data => crypto.createHash("sha256").update(data).digest("hex");
 
-function choose(rows, selection, challenger) {
-  const target = Math.min(selection.targetNames, selection.maxNamesPerRegion);
+function choose(rows, selection, challenger, capacity = null) {
+  // The existing 3-name regional limit belongs ONLY to the legacy control.
+  // Counterfactual research tests every cardinality from 0 through 5.
+  const target = capacity === null ?
+    Math.min(selection.targetNames, selection.maxNamesPerRegion) : capacity;
+  if (!Number.isInteger(target) || target < 0 || target > 5)
+    throw Error("INVALID_CARDINALITY");
   const bySector = {};
   const ordered = rows.filter(x => x.eligible).map(x => ({
     ...x,
@@ -37,27 +42,29 @@ function choose(rows, selection, challenger) {
   return chosen;
 }
 
-function boundedMissingComplete(weeklyPool, ranked, chosen, selection) {
-  // latest.json publishes selected names + only 8 near misses, not the full
-  // candidate population. Even one omitted eligible 0.25x name could jump to
-  // the challenger cut. A rigorous upper bound (coverage <=1) must exclude it.
+function boundedMissingComplete(weeklyPool, ranked, chosen, selection, capacity, challenger, config) {
+  if (capacity === 0) return true; // 100%-ETF needs no individual rank.
   const seen = new Set(ranked.map(x => x.ticker));
   if (seen.size !== ranked.length || weeklyPool.length !== selection.consideredCount)
     return false;
-  const cutoff = chosen.length ? chosen[chosen.length - 1].comparisonScore : -Infinity;
-  if (chosen.length < Math.min(selection.targetNames, selection.maxNamesPerRegion))
-    return weeklyPool.every(x => seen.has(x.ticker) ||
-      ["AVOID", "EVENT_RISK"].includes(x.entryState));
+  if (chosen.length !== capacity) return false;
+  const cutoff = chosen[chosen.length - 1].comparisonScore;
   for (const missing of weeklyPool.filter(x => !seen.has(x.ticker))) {
-    if (["AVOID", "EVENT_RISK"].includes(missing.entryState)) continue;
+    const state = x.entryState;
+    const multiplier = state === "WAIT_FOR_PULLBACK" ? config.waitForPullbackWeightMultiplier :
+      state === "WATCH" ? config.watchWeightMultiplier :
+      state === "ACCUMULATE_GRADUALLY" ? 1 :
+      state === "AVOID" || state === "EVENT_RISK" ? 0 : null;
+    if (multiplier === null || !isNum(multiplier)) return false;
+    if (multiplier === 0) continue;
     const alpha = missing.alphaPercentile;
     const risk = missing.downsideVolPct;
     if (!isNum(alpha) || !isNum(risk) || risk <= 0) return false;
     if (alpha < selection.minAlphaPercentile) continue;
-    // Published current production score = max(0,(alpha-50)/50)/risk
-    // * evidenceCoverage * entryMultiplier. EvidenceCoverage <=1; the
-    // challenger removes ONLY entryMultiplier.
-    const maximum = Math.max(0, (alpha - 50) / 50) / Math.max(risk / 100, 0.05);
+    // Maximum unknown rank assumes evidenceCoverage=1; never fill in an
+    // unobserved value or silently treat an omitted stock as ineligible.
+    const maximum = Math.max(0, (alpha - 50) / 50) / Math.max(risk / 100, 0.05) *
+      (challenger ? 1 : multiplier);
     if (maximum >= cutoff - 1e-8) return false;
   }
   return true;
@@ -184,10 +191,10 @@ export function observe(champion, weekly, config, sourceCommit, sourceHashes = {
       results[region] = blocked("ELIGIBLE_COUNT_CONFLICT");
       continue;
     }
-    const originalChosen = choose(active, s, false);
-    const alternateChosen = choose(active, s, true);
-    if (!boundedMissingComplete(weeklyPool, ranking, alternateChosen, s)) {
-      results[region] = blocked("TRUNCATED_RANKING_COULD_CHANGE_CHALLENGER");
+    const originalChosen = choose(active, s, false); // legacy 3-name control only
+    if (!boundedMissingComplete(weeklyPool, ranking, originalChosen, s,
+          originalChosen.length, false, config)) {
+      results[region] = blocked("TRUNCATED_RANKING_COULD_CHANGE_CONTROL");
       continue;
     }
     const control = weights(originalChosen, config, original.appliedMinCashPct, false);
@@ -195,18 +202,60 @@ export function observe(champion, weekly, config, sourceCommit, sourceHashes = {
       results[region] = blocked("ORIGINAL_CONTROL_RECONSTRUCTION_FAILED");
       continue;
     }
-    const challenger = weights(alternateChosen, config, original.appliedMinCashPct, true);
+    // No fixed three-name selection. Research ALL 0..5; neither three nor five
+    // is inherently better. Separate cardinality and rank/weight mechanisms
+    // using identically sized paired variants at each feasible count.
+    const researchScenarios = [];
+    for (let count = 0; count <= 5; count++) {
+      const arm0 = choose(active, s, false, count);
+      const arm1 = choose(active, s, true, count);
+      if (arm0.length !== count || arm1.length !== count) {
+        researchScenarios.push({stockCount: count, status: "INSUFFICIENT_ELIGIBLE_NAMES",
+          rankStateInSelection: null, stateAtPositionWeight: null});
+        continue;
+      }
+      if (!boundedMissingComplete(weeklyPool, ranking, arm0, s, count, false, config) ||
+          !boundedMissingComplete(weeklyPool, ranking, arm1, s, count, true, config)) {
+        researchScenarios.push({stockCount: count,
+          status: "TRUNCATED_RANKING_COULD_CHANGE_SELECTION",
+          rankStateInSelection: null, stateAtPositionWeight: null});
+        continue;
+      }
+      const base = weights(arm0, config, original.appliedMinCashPct, false);
+      const alternative = weights(arm1, config, original.appliedMinCashPct, true);
+      researchScenarios.push({stockCount: count, status: "SOURCE_PINNED_COUNTERFACTUAL",
+        rankStateInSelection: {selected: arm0.map(x => x.ticker),
+          ...base, residualAsset: benchmark},
+        stateAtPositionWeight: {selected: arm1.map(x => x.ticker),
+          ...alternative, residualAsset: benchmark}});
+    }
+    // Current P1 weekly decision is authoritative for whether a stock has
+    // demonstrated a positive incremental advantage. A shortlist, raw
+    // alpha-percentile or arbitrary count is NEVER evidence of that advantage.
+    // If that gate is not explicitly PASSIVE, fail closed rather than infer
+    // that any one of these six counterfactual choices is optimal.
+    const passiveVerified = b.status === "PASSIVE_NO_DEFENSIBLE_EDGE" &&
+      weeklyPool.every(x => x.edgeAvailable === false &&
+        x.expectedNetAdvantagePct === null);
     results[region] = {
       status: "RESEARCH_SNAPSHOT_ONLY_NOT_LIVE_VALIDATED",
       asOfDate: a.asOfDate,
       sourceReceiptId: a.receiptId,
       consideredCount: s.consideredCount, originallyEligibleCount: s.eligibleCount,
       rankedRowsRetained: ranking.length,
-      omittedCandidateUpperBoundChecked: ranking.length < s.consideredCount,
-      control: {selected: originalChosen.map(v => v.ticker), ...control,
-        residualAsset: benchmark, sameAsPublished: true},
-      challenger: {selected: alternateChosen.map(v => v.ticker), ...challenger,
-        residualAsset: benchmark, note: "after pre-throttle caps; no redistribution"},
+      legacyControlOnly: {stockCount: originalChosen.length, selected: originalChosen.map(v => v.ticker),
+        ...control, residualAsset: benchmark, sameAsPublished: true,
+        note: "Existing maxNamesPerRegion=3 is NOT a research cardinality recommendation"},
+      allowedStockCounts: [0, 1, 2, 3, 4, 5],
+      researchScenarios,
+      currentPolicy: passiveVerified ?
+        {status: "PASSIVE_NO_DEFENSIBLE_EDGE", stockCount: 0,
+          holdings: {}, benchmark, benchmarkWeight: 1,
+          basis: "PUBLISHED_WEEKLY_POLICY_NOT_COUNTERFACTUAL_BACKTEST_WINNER"} :
+        {status: "NO_VERIFIED_STOCK_SELECTION_AVAILABLE", stockCount: null,
+          holdings: null, benchmark, benchmarkWeight: null},
+      cardinalityWinner: null,
+      selectionCriterion: "Future evidence-backed positive NET excess after costs, risk & multiplicity; no chosen count from exposed history",
       costs: null, realizedReturn: null, expectedAlpha: null,
       nextEligibleExecution: null
     };
@@ -218,6 +267,8 @@ export function observe(champion, weekly, config, sourceCommit, sourceHashes = {
     classification: "HISTORICAL_SESSION_OBSERVED_BEFORE_NEXT_SESSION; NOT_PROSPECTIVE_OUTCOME",
     status: "READ_ONLY_RESEARCH_NO_ORDERS_NO_VALIDATED_ALPHA",
     residualConvention: "ETF_NOT_CASH; DIFFERENT_FROM_OLD_REPLAY_V16",
+    stockCountPolicy: "0..5 inclusive; 5 MAXIMUM not target; 0-ETF is valid",
+    rankAndCountAreSeparateVariables: true,
     regions: results
   };
 }
