@@ -1,0 +1,1564 @@
+{
+  "breadthCoverage": {
+    "int_breadth_above_sma200": {
+      "end": "2023-10-27",
+      "start": "2015-10-16",
+      "validDays": 95
+    },
+    "int_breadth_deterioration_63": {
+      "end": "2023-10-27",
+      "start": "2016-11-04",
+      "validDays": 50
+    },
+    "int_capweight_minus_equalweight_63": {
+      "end": "2023-10-27",
+      "start": "2015-10-16",
+      "validDays": 95
+    },
+    "int_concentration_top5_share": {
+      "end": "2026-09-11",
+      "start": "2015-01-02",
+      "validDays": 588
+    },
+    "int_dispersion_63": {
+      "end": "2023-10-27",
+      "start": "2015-10-16",
+      "validDays": 95
+    },
+    "int_positive_breadth_63": {
+      "end": "2023-10-27",
+      "start": "2015-10-16",
+      "validDays": 95
+    }
+  },
+  "featureEvidence": {
+    "fast_downside_vol_63": {
+      "horizons": {
+        "H126": {
+          "end": "2026-03-13",
+          "lossLe15Auroc": {
+            "auroc": 0.6712786490000021,
+            "events": 377,
+            "nonEvents": 1263
+          },
+          "start": "1990-03-24",
+          "validDates": 1640
+        },
+        "H21": {
+          "end": "2026-08-14",
+          "lossLe15Auroc": {
+            "auroc": 0.8066787686256712,
+            "events": 78,
+            "nonEvents": 1695
+          },
+          "start": "1990-03-24",
+          "validDates": 1773
+        },
+        "H63": {
+          "end": "2026-06-12",
+          "lossLe15Auroc": {
+            "auroc": 0.7275035763403682,
+            "events": 247,
+            "nonEvents": 1466
+          },
+          "start": "1990-03-24",
+          "validDates": 1713
+        }
+      },
+      "sample": {
+        "cadence": "W",
+        "end": "2026-09-17",
+        "family": "FAST_MARKET_BREAK",
+        "start": "1990-03-24",
+        "tier": "CORE_LONG_HISTORY",
+        "validDates": 1806
+      }
+    },
+    "fast_drawdown_252": {
+      "horizons": {
+        "H126": {
+          "end": "2026-03-13",
+          "lossLe15Auroc": {
+            "auroc": 0.6125489116489907,
+            "events": 316,
+            "nonEvents": 1184
+          },
+          "start": "1992-11-07",
+          "validDates": 1500
+        },
+        "H21": {
+          "end": "2026-08-14",
+          "lossLe15Auroc": {
+            "auroc": 0.7062622898378917,
+            "events": 71,
+            "nonEvents": 1497
+          },
+          "start": "1990-11-10",
+          "validDates": 1568
+        },
+        "H63": {
+          "end": "2026-06-12",
+          "lossLe15Auroc": {
+            "auroc": 0.6384764801817815,
+            "events": 205,
+            "nonEvents": 1331
+          },
+          "start": "1992-11-07",
+          "validDates": 1536
+        }
+      },
+      "sample": {
+        "cadence": "W",
+        "end": "2026-09-17",
+        "family": "FAST_MARKET_BREAK",
+        "start": "1990-11-10",
+        "tier": "CORE_LONG_HISTORY",
+        "validDates": 1587
+      }
+    },
+    "fast_realized_vol_21": {
+      "horizons": {
+        "H126": {
+          "end": "2026-03-13",
+          "lossLe15Auroc": {
+            "auroc": 0.6578341329141888,
+            "events": 399,
+            "nonEvents": 1282
+          },
+          "start": "1990-02-03",
+          "validDates": 1681
+        },
+        "H21": {
+          "end": "2026-08-14",
+          "lossLe15Auroc": {
+            "auroc": 0.8161007555205507,
+            "events": 78,
+            "nonEvents": 1758
+          },
+          "start": "1990-02-03",
+          "validDates": 1836
+        },
+        "H63": {
+          "end": "2026-06-12",
+          "lossLe15Auroc": {
+            "auroc": 0.7130985003748423,
+            "events": 259,
+            "nonEvents": 1509
+          },
+          "start": "1990-02-03",
+          "validDates": 1768
+        }
+      },
+      "sample": {
+        "cadence": "W",
+        "end": "2026-09-17",
+        "family": "FAST_MARKET_BREAK",
+        "start": "1990-02-03",
+        "tier": "CORE_LONG_HISTORY",
+        "validDates": 1871
+      }
+    },
+    "fast_realized_vol_63": {
+      "horizons": {
+        "H126": {
+          "end": "2026-03-13",
+          "lossLe15Auroc": {
+            "auroc": 0.6678574653838804,
+            "events": 377,
+            "nonEvents": 1263
+          },
+          "start": "1990-03-24",
+          "validDates": 1640
+        },
+        "H21": {
+          "end": "2026-08-14",
+          "lossLe15Auroc": {
+            "auroc": 0.7955525300658044,
+            "events": 78,
+            "nonEvents": 1695
+          },
+          "start": "1990-03-24",
+          "validDates": 1773
+        },
+        "H63": {
+          "end": "2026-06-12",
+          "lossLe15Auroc": {
+            "auroc": 0.7388222103164301,
+            "events": 247,
+            "nonEvents": 1466
+          },
+          "start": "1990-03-24",
+          "validDates": 1713
+        }
+      },
+      "sample": {
+        "cadence": "W",
+        "end": "2026-09-17",
+        "family": "FAST_MARKET_BREAK",
+        "start": "1990-03-24",
+        "tier": "CORE_LONG_HISTORY",
+        "validDates": 1806
+      }
+    },
+    "fast_ret_126": {
+      "horizons": {
+        "H126": {
+          "end": "2026-03-13",
+          "lossLe15Auroc": {
+            "auroc": 0.5744928020560439,
+            "events": 387,
+            "nonEvents": 1299
+          },
+          "start": "1990-06-09",
+          "validDates": 1686
+        },
+        "H21": {
+          "end": "2026-08-14",
+          "lossLe15Auroc": {
+            "auroc": 0.5566245348854044,
+            "events": 78,
+            "nonEvents": 1771
+          },
+          "start": "1990-06-09",
+          "validDates": 1849
+        },
+        "H63": {
+          "end": "2026-06-12",
+          "lossLe15Auroc": {
+            "auroc": 0.5483898522251645,
+            "events": 253,
+            "nonEvents": 1527
+          },
+          "start": "1990-06-09",
+          "validDates": 1780
+        }
+      },
+      "sample": {
+        "cadence": "W",
+        "end": "2026-09-17",
+        "family": "FAST_MARKET_BREAK",
+        "start": "1990-06-09",
+        "tier": "CORE_LONG_HISTORY",
+        "validDates": 1886
+      }
+    },
+    "fast_ret_63": {
+      "horizons": {
+        "H126": {
+          "end": "2026-03-13",
+          "lossLe15Auroc": {
+            "auroc": 0.5765742300323558,
+            "events": 399,
+            "nonEvents": 1299
+          },
+          "start": "1990-03-24",
+          "validDates": 1698
+        },
+        "H21": {
+          "end": "2026-08-14",
+          "lossLe15Auroc": {
+            "auroc": 0.603943798036625,
+            "events": 79,
+            "nonEvents": 1782
+          },
+          "start": "1990-03-24",
+          "validDates": 1861
+        },
+        "H63": {
+          "end": "2026-06-12",
+          "lossLe15Auroc": {
+            "auroc": 0.5210323115329027,
+            "events": 258,
+            "nonEvents": 1534
+          },
+          "start": "1990-03-24",
+          "validDates": 1792
+        }
+      },
+      "sample": {
+        "cadence": "W",
+        "end": "2026-09-17",
+        "family": "FAST_MARKET_BREAK",
+        "start": "1990-03-24",
+        "tier": "CORE_LONG_HISTORY",
+        "validDates": 1898
+      }
+    },
+    "fast_sma200_slope_21": {
+      "horizons": {
+        "H126": {
+          "end": "2026-03-13",
+          "lossLe15Auroc": {
+            "auroc": 0.49815063711853635,
+            "events": 321,
+            "nonEvents": 1196
+          },
+          "start": "1992-10-02",
+          "validDates": 1517
+        },
+        "H21": {
+          "end": "2026-08-14",
+          "lossLe15Auroc": {
+            "auroc": 0.5284920268494513,
+            "events": 74,
+            "nonEvents": 1522
+          },
+          "start": "1990-09-29",
+          "validDates": 1596
+        },
+        "H63": {
+          "end": "2026-06-12",
+          "lossLe15Auroc": {
+            "auroc": 0.48040611629375046,
+            "events": 212,
+            "nonEvents": 1345
+          },
+          "start": "1990-09-29",
+          "validDates": 1557
+        }
+      },
+      "sample": {
+        "cadence": "W",
+        "end": "2026-09-17",
+        "family": "FAST_MARKET_BREAK",
+        "start": "1990-09-29",
+        "tier": "CORE_LONG_HISTORY",
+        "validDates": 1615
+      }
+    },
+    "fast_trend_distance_sma200": {
+      "horizons": {
+        "H126": {
+          "end": "2026-03-13",
+          "lossLe15Auroc": {
+            "auroc": 0.5663940710452339,
+            "events": 325,
+            "nonEvents": 1204
+          },
+          "start": "1992-09-05",
+          "validDates": 1529
+        },
+        "H21": {
+          "end": "2026-08-14",
+          "lossLe15Auroc": {
+            "auroc": 0.5983116883116883,
+            "events": 75,
+            "nonEvents": 1540
+          },
+          "start": "1990-09-08",
+          "validDates": 1615
+        },
+        "H63": {
+          "end": "2026-06-12",
+          "lossLe15Auroc": {
+            "auroc": 0.5387425108932462,
+            "events": 216,
+            "nonEvents": 1360
+          },
+          "start": "1990-09-08",
+          "validDates": 1576
+        }
+      },
+      "sample": {
+        "cadence": "W",
+        "end": "2026-09-17",
+        "family": "FAST_MARKET_BREAK",
+        "start": "1990-09-08",
+        "tier": "CORE_LONG_HISTORY",
+        "validDates": 1634
+      }
+    },
+    "fast_vol_acceleration": {
+      "horizons": {
+        "H126": {
+          "end": "2026-03-13",
+          "lossLe15Auroc": {
+            "auroc": 0.5322723253757736,
+            "events": 377,
+            "nonEvents": 1263
+          },
+          "start": "1990-03-24",
+          "validDates": 1640
+        },
+        "H21": {
+          "end": "2026-08-14",
+          "lossLe15Auroc": {
+            "auroc": 0.6233719083276605,
+            "events": 78,
+            "nonEvents": 1695
+          },
+          "start": "1990-03-24",
+          "validDates": 1773
+        },
+        "H63": {
+          "end": "2026-06-12",
+          "lossLe15Auroc": {
+            "auroc": 0.5039049770506653,
+            "events": 247,
+            "nonEvents": 1466
+          },
+          "start": "1990-03-24",
+          "validDates": 1713
+        }
+      },
+      "sample": {
+        "cadence": "W",
+        "end": "2026-09-17",
+        "family": "FAST_MARKET_BREAK",
+        "start": "1990-03-24",
+        "tier": "CORE_LONG_HISTORY",
+        "validDates": 1806
+      }
+    },
+    "slow_resteepening_flag_10y3m": {
+      "horizons": {
+        "H126": {
+          "end": "2026-02-27",
+          "lossLe15Auroc": {
+            "auroc": 0.6668495297805642,
+            "events": 88,
+            "nonEvents": 290
+          },
+          "start": "1992-01-31",
+          "validDates": 378
+        },
+        "H252": {
+          "end": "2025-08-29",
+          "lossLe15Auroc": {
+            "auroc": 0.6573894020418085,
+            "events": 121,
+            "nonEvents": 238
+          },
+          "start": "1992-01-31",
+          "validDates": 359
+        },
+        "H63": {
+          "end": "2026-05-29",
+          "lossLe15Auroc": {
+            "auroc": 0.6652310924369748,
+            "events": 56,
+            "nonEvents": 340
+          },
+          "start": "1991-09-30",
+          "validDates": 396
+        }
+      },
+      "sample": {
+        "cadence": "M",
+        "end": "2026-09-17",
+        "family": "SLOW_VULNERABILITY",
+        "start": "1991-09-30",
+        "tier": "CORE_LONG_HISTORY",
+        "validDates": 421
+      }
+    },
+    "trans_vix_level": {
+      "horizons": {
+        "H126": {
+          "end": "2026-03-13",
+          "lossLe15Auroc": {
+            "auroc": 0.6367327587825532,
+            "events": 410,
+            "nonEvents": 1299
+          },
+          "start": "1990-01-06",
+          "validDates": 1709
+        },
+        "H63": {
+          "end": "2026-06-12",
+          "lossLe15Auroc": {
+            "auroc": 0.6505946403607222,
+            "events": 264,
+            "nonEvents": 1539
+          },
+          "start": "1990-01-06",
+          "validDates": 1803
+        }
+      },
+      "sample": {
+        "cadence": "W",
+        "end": "2026-09-17",
+        "family": "TRANSITION_FINANCIAL_STRESS",
+        "start": "1990-01-06",
+        "tier": "CORE_LONG_HISTORY",
+        "validDates": 1914
+      }
+    }
+  },
+  "newHistoricalEvaluations": 0,
+  "regions": {
+    "KR": {
+      "candidates": {
+        "C0": {
+          "accounting": {
+            "delayedExitCagrPp": null,
+            "delayedReentryCagrPp": null,
+            "falseAlarmCagrPp": null,
+            "grossMinusNetCostCagrPp": 0.48209582969518383,
+            "passiveMinusNetCagrPp": 2.9958057126305615,
+            "unattributedNonCostCagrPp": 2.5137098829353777
+          },
+          "episodesDepthGe15pct": {
+            "capture": [
+              {
+                "avoidedLoss": 4.440892098500626e-16,
+                "candidatePeakToTrough": -0.17863190643090576,
+                "censored": false,
+                "lossCaptureRatio": 0.9999999999999976,
+                "peakDate": "2007-07-25",
+                "referenceDepth": -0.1786319064309062,
+                "referenceRecoveryDate": "2007-10-02",
+                "sessionsToRegainPeakValue": 801,
+                "troughDate": "2007-08-17"
+              },
+              {
+                "avoidedLoss": 0.17588415931551327,
+                "candidatePeakToTrough": -0.35329619359870257,
+                "censored": false,
+                "lossCaptureRatio": 0.6676290826994754,
+                "peakDate": "2007-10-11",
+                "referenceDepth": -0.5291803529142158,
+                "referenceRecoveryDate": "2010-12-09",
+                "sessionsToRegainPeakValue": 489,
+                "troughDate": "2008-10-24"
+              },
+              {
+                "avoidedLoss": 0.03157030337755651,
+                "candidatePeakToTrough": -0.24325617368355745,
+                "censored": false,
+                "lossCaptureRatio": 0.8851264124361056,
+                "peakDate": "2011-05-02",
+                "referenceDepth": -0.27482647706111396,
+                "referenceRecoveryDate": "2017-05-08",
+                "sessionsToRegainPeakValue": 2287,
+                "troughDate": "2011-09-26"
+              },
+              {
+                "avoidedLoss": 0.04447295819363306,
+                "candidatePeakToTrough": -0.3673854958983894,
+                "censored": false,
+                "lossCaptureRatio": 0.8920188289161685,
+                "peakDate": "2017-11-03",
+                "referenceDepth": -0.4118584540920225,
+                "referenceRecoveryDate": "2020-11-16",
+                "sessionsToRegainPeakValue": 194,
+                "troughDate": "2020-03-19"
+              },
+              {
+                "avoidedLoss": 0.07698370974301705,
+                "candidatePeakToTrough": -0.2841425391216513,
+                "censored": false,
+                "lossCaptureRatio": 0.7868232786039693,
+                "peakDate": "2021-06-25",
+                "referenceDepth": -0.3611262488646684,
+                "referenceRecoveryDate": "2025-09-09",
+                "sessionsToRegainPeakValue": 723,
+                "troughDate": "2022-09-30"
+              },
+              {
+                "avoidedLoss": 0.04383487958250254,
+                "candidatePeakToTrough": -0.1674424238644583,
+                "censored": false,
+                "lossCaptureRatio": 0.7925244270570366,
+                "peakDate": "2026-02-26",
+                "referenceDepth": -0.21127730344696083,
+                "referenceRecoveryDate": "2026-04-21",
+                "sessionsToRegainPeakValue": 15,
+                "troughDate": "2026-03-31"
+              },
+              {
+                "avoidedLoss": 0.023427263356300188,
+                "candidatePeakToTrough": -0.1333985575827077,
+                "censored": false,
+                "lossCaptureRatio": 0.8506160323853084,
+                "peakDate": "2026-06-02",
+                "referenceDepth": -0.15682582093900788,
+                "referenceRecoveryDate": "2026-06-17",
+                "sessionsToRegainPeakValue": 7,
+                "troughDate": "2026-06-08"
+              },
+              {
+                "avoidedLoss": 0.05867120198506259,
+                "candidatePeakToTrough": -0.35069910169346874,
+                "censored": true,
+                "lossCaptureRatio": 0.8566793891548722,
+                "peakDate": "2026-06-22",
+                "referenceDepth": -0.40937030367853133,
+                "referenceRecoveryDate": null,
+                "sessionsToRegainPeakValue": null,
+                "troughDate": "2026-07-30"
+              }
+            ],
+            "rebound": [
+              {
+                "reboundMissedH126": -0.008818475134137582,
+                "reboundMissedH63": 0.026230307301437383,
+                "recoveryOpportunityCost": 0.05492981079978576,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": 0,
+                "troughDate": "2007-08-17"
+              },
+              {
+                "reboundMissedH126": 0.2648841052041808,
+                "reboundMissedH63": 0.15439441887981742,
+                "recoveryOpportunityCost": 0.4729615716783968,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": 174,
+                "troughDate": "2008-10-24"
+              },
+              {
+                "reboundMissedH126": 0.13607624715470035,
+                "reboundMissedH63": 0.08492389540158962,
+                "recoveryOpportunityCost": 0.307025012450987,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": 96,
+                "troughDate": "2011-09-26"
+              },
+              {
+                "reboundMissedH126": 0.30166488302139904,
+                "reboundMissedH63": 0.2546511052053664,
+                "recoveryOpportunityCost": 0.322736609515309,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": 83,
+                "troughDate": "2020-03-19"
+              },
+              {
+                "reboundMissedH126": 0.05841624918945154,
+                "reboundMissedH63": 0.011513034062260452,
+                "recoveryOpportunityCost": 0.23763405682969463,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": 81,
+                "troughDate": "2022-09-30"
+              },
+              {
+                "reboundMissedH126": null,
+                "reboundMissedH63": 0.1589961045277466,
+                "recoveryOpportunityCost": 0.0728594084720453,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": null,
+                "troughDate": "2026-03-31"
+              },
+              {
+                "reboundMissedH126": null,
+                "reboundMissedH63": -0.011818429156957855,
+                "recoveryOpportunityCost": 0.03347659041964013,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": null,
+                "troughDate": "2026-06-08"
+              },
+              {
+                "reboundMissedH126": null,
+                "reboundMissedH63": null,
+                "recoveryOpportunityCost": 0.04729888338045862,
+                "recoveryWindowCensored": true,
+                "sessionsUntilFullExposure": null,
+                "troughDate": "2026-07-30"
+              }
+            ],
+            "summary": {
+              "avoidedLoss": {
+                "episodes": 8,
+                "mean": 0.056855559444198206,
+                "measured": 8,
+                "median": 0.0441539188880678
+              },
+              "lossCaptureRatio": {
+                "episodes": 8,
+                "mean": 0.8414271814066167,
+                "measured": 8,
+                "median": 0.8536477107700903
+              },
+              "reboundMissedH126": {
+                "episodes": 8,
+                "mean": 0.15044460188711883,
+                "measured": 5,
+                "median": 0.13607624715470035
+              },
+              "reboundMissedH63": {
+                "episodes": 8,
+                "mean": 0.09698434803160857,
+                "measured": 7,
+                "median": 0.08492389540158962
+              },
+              "recoveryOpportunityCost": {
+                "episodes": 8,
+                "mean": 0.19361524294328966,
+                "measured": 8,
+                "median": 0.15524673265086997
+              },
+              "sessionsToRegainPeakValue": {
+                "episodes": 8,
+                "mean": 645.1428571428571,
+                "measured": 7,
+                "median": 489.0
+              },
+              "sessionsUntilFullExposure": {
+                "episodes": 8,
+                "mean": 86.8,
+                "measured": 5,
+                "median": 83.0
+              }
+            }
+          },
+          "falseAlarm": {
+            "activations": 42,
+            "falseAlarmShare": 0.8571428571428571,
+            "falseAlarms": 36,
+            "maturedActivations": 42,
+            "pendingActivations": 0,
+            "reducedSessions": 2436,
+            "reducedSessionsWithoutSubsequentLargeLoss": 1789,
+            "shareOfMaturedSessionsReducedWithoutSubsequentLargeLoss": 0.37317480183562785
+          },
+          "heldForMissingState": 0,
+          "implementation": {
+            "annualizedOneWayTurnover": 0.7442338393292007,
+            "costDrag": 0.004820958296951838,
+            "multiplierSwitches": 96,
+            "oneWayTurnover": 14.341267951518248,
+            "totalCostFractionOfNav": 0.08679285480582151,
+            "tradedNotional": 28.682535903036495
+          },
+          "net": {
+            "annualizedReturn": 0.06732192074237697,
+            "annualizedVolatility": 0.18139800742142873,
+            "averageEquityWeight": 0.8225737018975695,
+            "cumulativeReturn": 2.5095257016702646,
+            "downsideVolatility": 0.12923972376154733,
+            "maxDrawdown": -0.4087428367096535,
+            "maxDrawdownPeak": "2011-05-02",
+            "maxDrawdownRecoverySessions": 199,
+            "maxDrawdownTrough": "2020-03-19",
+            "participation": {
+              "downside": 0.7816074175689813,
+              "upside": 0.7713451834862277
+            },
+            "reducedSessionShare": 0.5015441630636195,
+            "sessions": 4856,
+            "targetShare": {
+              "0.4": 0.08873790405600164,
+              "0.7": 0.41280625900761786,
+              "1.0": 0.49845583693638046
+            },
+            "worstRollingReturnH126": -0.2840793311509854,
+            "worstRollingReturnH63": -0.24585974952392364
+          }
+        },
+        "C1": {
+          "accounting": {
+            "delayedExitCagrPp": null,
+            "delayedReentryCagrPp": null,
+            "falseAlarmCagrPp": null,
+            "grossMinusNetCostCagrPp": 0.37343513863421496,
+            "passiveMinusNetCagrPp": 2.5903895112968867,
+            "unattributedNonCostCagrPp": 2.2169543726626717
+          },
+          "episodesDepthGe15pct": {
+            "capture": [
+              {
+                "avoidedLoss": 4.440892098500626e-16,
+                "candidatePeakToTrough": -0.17863190643090576,
+                "censored": false,
+                "lossCaptureRatio": 0.9999999999999976,
+                "peakDate": "2007-07-25",
+                "referenceDepth": -0.1786319064309062,
+                "referenceRecoveryDate": "2007-10-02",
+                "sessionsToRegainPeakValue": 801,
+                "troughDate": "2007-08-17"
+              },
+              {
+                "avoidedLoss": 0.17752661440628925,
+                "candidatePeakToTrough": -0.3516537385079266,
+                "censored": false,
+                "lossCaptureRatio": 0.6645253108346831,
+                "peakDate": "2007-10-11",
+                "referenceDepth": -0.5291803529142158,
+                "referenceRecoveryDate": "2010-12-09",
+                "sessionsToRegainPeakValue": 489,
+                "troughDate": "2008-10-24"
+              },
+              {
+                "avoidedLoss": 0.03134876794184083,
+                "candidatePeakToTrough": -0.24347770911927313,
+                "censored": false,
+                "lossCaptureRatio": 0.885932504476744,
+                "peakDate": "2011-05-02",
+                "referenceDepth": -0.27482647706111396,
+                "referenceRecoveryDate": "2017-05-08",
+                "sessionsToRegainPeakValue": 1493,
+                "troughDate": "2011-09-26"
+              },
+              {
+                "avoidedLoss": 0.04974834934910666,
+                "candidatePeakToTrough": -0.36211010474291583,
+                "censored": false,
+                "lossCaptureRatio": 0.8792100809032045,
+                "peakDate": "2017-11-03",
+                "referenceDepth": -0.4118584540920225,
+                "referenceRecoveryDate": "2020-11-16",
+                "sessionsToRegainPeakValue": 194,
+                "troughDate": "2020-03-19"
+              },
+              {
+                "avoidedLoss": 0.03907469424769716,
+                "candidatePeakToTrough": -0.3220515546169712,
+                "censored": false,
+                "lossCaptureRatio": 0.8917976902245609,
+                "peakDate": "2021-06-25",
+                "referenceDepth": -0.3611262488646684,
+                "referenceRecoveryDate": "2025-09-09",
+                "sessionsToRegainPeakValue": 728,
+                "troughDate": "2022-09-30"
+              },
+              {
+                "avoidedLoss": 0.04383487958250287,
+                "candidatePeakToTrough": -0.16744242386445796,
+                "censored": false,
+                "lossCaptureRatio": 0.792524427057035,
+                "peakDate": "2026-02-26",
+                "referenceDepth": -0.21127730344696083,
+                "referenceRecoveryDate": "2026-04-21",
+                "sessionsToRegainPeakValue": 15,
+                "troughDate": "2026-03-31"
+              },
+              {
+                "avoidedLoss": 0.02342726335630052,
+                "candidatePeakToTrough": -0.13339855758270736,
+                "censored": false,
+                "lossCaptureRatio": 0.8506160323853063,
+                "peakDate": "2026-06-02",
+                "referenceDepth": -0.15682582093900788,
+                "referenceRecoveryDate": "2026-06-17",
+                "sessionsToRegainPeakValue": 7,
+                "troughDate": "2026-06-08"
+              },
+              {
+                "avoidedLoss": 0.05867120198506248,
+                "candidatePeakToTrough": -0.35069910169346885,
+                "censored": true,
+                "lossCaptureRatio": 0.8566793891548724,
+                "peakDate": "2026-06-22",
+                "referenceDepth": -0.40937030367853133,
+                "referenceRecoveryDate": null,
+                "sessionsToRegainPeakValue": null,
+                "troughDate": "2026-07-30"
+              }
+            ],
+            "rebound": [
+              {
+                "reboundMissedH126": -0.005515492993218407,
+                "reboundMissedH63": 0.030857226060041487,
+                "recoveryOpportunityCost": 0.06126415071452551,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": 0,
+                "troughDate": "2007-08-17"
+              },
+              {
+                "reboundMissedH126": 0.26488410520418104,
+                "reboundMissedH63": 0.15439441887981786,
+                "recoveryOpportunityCost": 0.4729615716783986,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": 174,
+                "troughDate": "2008-10-24"
+              },
+              {
+                "reboundMissedH126": 0.1288130327022019,
+                "reboundMissedH63": 0.08492389540158962,
+                "recoveryOpportunityCost": 0.1925913369884682,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": 83,
+                "troughDate": "2011-09-26"
+              },
+              {
+                "reboundMissedH126": 0.30166488302139927,
+                "reboundMissedH63": 0.2546511052053668,
+                "recoveryOpportunityCost": 0.32273660951531014,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": 83,
+                "troughDate": "2020-03-19"
+              },
+              {
+                "reboundMissedH126": 0.04682322222778912,
+                "reboundMissedH63": 0.0371926655311986,
+                "recoveryOpportunityCost": 0.20662478640396054,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": 29,
+                "troughDate": "2022-09-30"
+              },
+              {
+                "reboundMissedH126": null,
+                "reboundMissedH63": 0.15899610452774704,
+                "recoveryOpportunityCost": 0.0728594084720453,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": null,
+                "troughDate": "2026-03-31"
+              },
+              {
+                "reboundMissedH126": null,
+                "reboundMissedH63": -0.011818429156957078,
+                "recoveryOpportunityCost": 0.03347659041964035,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": null,
+                "troughDate": "2026-06-08"
+              },
+              {
+                "reboundMissedH126": null,
+                "reboundMissedH63": null,
+                "recoveryOpportunityCost": 0.04729888338045929,
+                "recoveryWindowCensored": true,
+                "sessionsUntilFullExposure": null,
+                "troughDate": "2026-07-30"
+              }
+            ],
+            "summary": {
+              "avoidedLoss": {
+                "episodes": 8,
+                "mean": 0.05295397135860003,
+                "measured": 8,
+                "median": 0.04145478691510002
+              },
+              "lossCaptureRatio": {
+                "episodes": 8,
+                "mean": 0.8526606793795504,
+                "measured": 8,
+                "median": 0.8679447350290385
+              },
+              "reboundMissedH126": {
+                "episodes": 8,
+                "mean": 0.14733395003247057,
+                "measured": 5,
+                "median": 0.1288130327022019
+              },
+              "reboundMissedH63": {
+                "episodes": 8,
+                "mean": 0.10131385520697204,
+                "measured": 7,
+                "median": 0.08492389540158962
+              },
+              "recoveryOpportunityCost": {
+                "episodes": 8,
+                "mean": 0.176226667196601,
+                "measured": 8,
+                "median": 0.13272537273025675
+              },
+              "sessionsToRegainPeakValue": {
+                "episodes": 8,
+                "mean": 532.4285714285714,
+                "measured": 7,
+                "median": 489.0
+              },
+              "sessionsUntilFullExposure": {
+                "episodes": 8,
+                "mean": 73.8,
+                "measured": 5,
+                "median": 83.0
+              }
+            }
+          },
+          "falseAlarm": {
+            "activations": 31,
+            "falseAlarmShare": 0.8387096774193549,
+            "falseAlarms": 26,
+            "maturedActivations": 31,
+            "pendingActivations": 0,
+            "reducedSessions": 1370,
+            "reducedSessionsWithoutSubsequentLargeLoss": 869,
+            "shareOfMaturedSessionsReducedWithoutSubsequentLargeLoss": 0.18126825198164373
+          },
+          "heldForMissingState": 0,
+          "implementation": {
+            "annualizedOneWayTurnover": 0.5738125006486312,
+            "costDrag": 0.0037343513863421496,
+            "multiplierSwitches": 69,
+            "oneWayTurnover": 11.057275806149814,
+            "totalCostFractionOfNav": 0.06700748793149186,
+            "tradedNotional": 22.11455161229963
+          },
+          "net": {
+            "annualizedReturn": 0.07137608275571372,
+            "annualizedVolatility": 0.18916083896453229,
+            "averageEquityWeight": 0.8914719302274332,
+            "cumulativeReturn": 2.7755181844264714,
+            "downsideVolatility": 0.13453101713936286,
+            "maxDrawdown": -0.36822049437599225,
+            "maxDrawdownPeak": "2007-07-25",
+            "maxDrawdownRecoverySessions": 510,
+            "maxDrawdownTrough": "2008-10-24",
+            "participation": {
+              "downside": 0.8347670619939365,
+              "upside": 0.8235561990514562
+            },
+            "reducedSessionShare": 0.2820671196211653,
+            "sessions": 4856,
+            "targetShare": {
+              "0.4": 0.08873790405600164,
+              "0.7": 0.1933292155651637,
+              "1.0": 0.7179328803788346
+            },
+            "worstRollingReturnH126": -0.28407933115098516,
+            "worstRollingReturnH63": -0.2458597495239243
+          }
+        }
+      },
+      "decision": "NO_CANDIDATE_NOMINATED_CONTROL_RETAINED",
+      "passive": {
+        "annualizedReturn": 0.09727997786868259,
+        "annualizedVolatility": 0.2386414558822139,
+        "averageEquityWeight": 1.0,
+        "cumulativeReturn": 4.982889089676962,
+        "downsideVolatility": 0.16759602450737368,
+        "maxDrawdown": -0.5291803529142163,
+        "maxDrawdownPeak": "2007-10-11",
+        "maxDrawdownRecoverySessions": 535,
+        "maxDrawdownTrough": "2008-10-24",
+        "participation": {
+          "downside": 1.0,
+          "upside": 1.0
+        },
+        "reducedSessionShare": 0.0,
+        "sessions": 4856,
+        "targetShare": {
+          "0.4": 0.0,
+          "0.7": 0.0,
+          "1.0": 1.0
+        },
+        "worstRollingReturnH126": -0.4749904381454253,
+        "worstRollingReturnH63": -0.40832293366612304
+      },
+      "window": {
+        "decisionDates": 1027,
+        "end": "2026-09-17",
+        "episodeCounts": {
+          "depth_ge_10pct": 8,
+          "depth_ge_15pct": 8,
+          "depth_ge_20pct": 6
+        },
+        "firstDecisionDate": "2007-01-05",
+        "firstExecutionDate": "2007-01-08",
+        "lastExecutionDate": "2026-09-14",
+        "sessions": 4856
+      }
+    },
+    "US": {
+      "candidates": {
+        "C0": {
+          "accounting": {
+            "delayedExitCagrPp": null,
+            "delayedReentryCagrPp": null,
+            "falseAlarmCagrPp": null,
+            "grossMinusNetCostCagrPp": 0.10536331902779583,
+            "passiveMinusNetCagrPp": 1.0450158229105888,
+            "unattributedNonCostCagrPp": 0.939652503882793
+          },
+          "episodesDepthGe15pct": {
+            "capture": [
+              {
+                "avoidedLoss": -0.00020097012559372462,
+                "candidatePeakToTrough": -0.1935609622916986,
+                "censored": false,
+                "lossCaptureRatio": 1.0010393573321057,
+                "peakDate": "1998-07-17",
+                "referenceDepth": -0.1933599921661049,
+                "referenceRecoveryDate": "1998-11-23",
+                "sessionsToRegainPeakValue": 104,
+                "troughDate": "1998-08-31"
+              },
+              {
+                "avoidedLoss": 0.08685844189279723,
+                "candidatePeakToTrough": -0.404611037091858,
+                "censored": false,
+                "lossCaptureRatio": 0.8232678821231355,
+                "peakDate": "2000-03-24",
+                "referenceDepth": -0.4914694789846552,
+                "referenceRecoveryDate": "2007-05-30",
+                "sessionsToRegainPeakValue": 1197,
+                "troughDate": "2002-10-09"
+              },
+              {
+                "avoidedLoss": 0.2350519031555086,
+                "candidatePeakToTrough": -0.3327019742722196,
+                "censored": false,
+                "lossCaptureRatio": 0.5859968333101708,
+                "peakDate": "2007-10-09",
+                "referenceDepth": -0.5677538774277282,
+                "referenceRecoveryDate": "2013-03-28",
+                "sessionsToRegainPeakValue": 539,
+                "troughDate": "2009-03-09"
+              },
+              {
+                "avoidedLoss": 0.03687611295130555,
+                "candidatePeakToTrough": -0.16090599140551443,
+                "censored": false,
+                "lossCaptureRatio": 0.8135518222377839,
+                "peakDate": "2018-09-20",
+                "referenceDepth": -0.19778210435681998,
+                "referenceRecoveryDate": "2019-04-23",
+                "sessionsToRegainPeakValue": 212,
+                "troughDate": "2018-12-24"
+              },
+              {
+                "avoidedLoss": 0.08684186188620846,
+                "candidatePeakToTrough": -0.25240773814032424,
+                "censored": false,
+                "lossCaptureRatio": 0.7440177913859986,
+                "peakDate": "2020-02-19",
+                "referenceDepth": -0.3392496000265327,
+                "referenceRecoveryDate": "2020-08-18",
+                "sessionsToRegainPeakValue": 179,
+                "troughDate": "2020-03-23"
+              },
+              {
+                "avoidedLoss": 0.029412367256021366,
+                "candidatePeakToTrough": -0.22483859893628255,
+                "censored": false,
+                "lossCaptureRatio": 0.8843175792151162,
+                "peakDate": "2022-01-03",
+                "referenceDepth": -0.2542509661923039,
+                "referenceRecoveryDate": "2024-01-19",
+                "sessionsToRegainPeakValue": 320,
+                "troughDate": "2022-10-12"
+              },
+              {
+                "avoidedLoss": 0.033594859004598354,
+                "candidatePeakToTrough": -0.15542720283824174,
+                "censored": false,
+                "lossCaptureRatio": 0.8222701695396257,
+                "peakDate": "2025-02-19",
+                "referenceDepth": -0.1890220618428401,
+                "referenceRecoveryDate": "2025-06-27",
+                "sessionsToRegainPeakValue": 106,
+                "troughDate": "2025-04-08"
+              }
+            ],
+            "rebound": [
+              {
+                "reboundMissedH126": 0.09274745464138401,
+                "reboundMissedH63": 0.09404485343854208,
+                "recoveryOpportunityCost": 0.10291303243840866,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": 73,
+                "troughDate": "1998-08-31"
+              },
+              {
+                "reboundMissedH126": 0.10226052585509415,
+                "reboundMissedH63": 0.12318989809038472,
+                "recoveryOpportunityCost": 0.31136370315713857,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": 113,
+                "troughDate": "2002-10-09"
+              },
+              {
+                "reboundMissedH126": 0.3221760446062145,
+                "reboundMissedH63": 0.28290275798232956,
+                "recoveryOpportunityCost": 0.696514453880831,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": 97,
+                "troughDate": "2009-03-09"
+              },
+              {
+                "reboundMissedH126": 0.0918328679739604,
+                "reboundMissedH63": 0.07129600499486766,
+                "recoveryOpportunityCost": 0.07455688565945229,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": 37,
+                "troughDate": "2018-12-24"
+              },
+              {
+                "reboundMissedH126": 0.27963215822515464,
+                "reboundMissedH63": 0.23681699898422082,
+                "recoveryOpportunityCost": 0.28889794413183467,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": 82,
+                "troughDate": "2020-03-23"
+              },
+              {
+                "reboundMissedH126": 0.04681717273683206,
+                "reboundMissedH63": 0.03376613810034712,
+                "recoveryOpportunityCost": 0.06866955074952585,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": 65,
+                "troughDate": "2022-10-12"
+              },
+              {
+                "reboundMissedH126": 0.1279385735987273,
+                "reboundMissedH63": 0.11933562923284335,
+                "recoveryOpportunityCost": 0.11165147032646883,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": 65,
+                "troughDate": "2025-04-08"
+              }
+            ],
+            "summary": {
+              "avoidedLoss": {
+                "episodes": 7,
+                "mean": 0.07263351086012083,
+                "measured": 7,
+                "median": 0.03687611295130555
+              },
+              "lossCaptureRatio": {
+                "episodes": 7,
+                "mean": 0.8106373478777051,
+                "measured": 7,
+                "median": 0.8222701695396257
+              },
+              "reboundMissedH126": {
+                "episodes": 7,
+                "mean": 0.15191497109105243,
+                "measured": 7,
+                "median": 0.10226052585509415
+              },
+              "reboundMissedH63": {
+                "episodes": 7,
+                "mean": 0.1373360401176479,
+                "measured": 7,
+                "median": 0.11933562923284335
+              },
+              "recoveryOpportunityCost": {
+                "episodes": 7,
+                "mean": 0.23636672004909426,
+                "measured": 7,
+                "median": 0.11165147032646883
+              },
+              "sessionsToRegainPeakValue": {
+                "episodes": 7,
+                "mean": 379.57142857142856,
+                "measured": 7,
+                "median": 212.0
+              },
+              "sessionsUntilFullExposure": {
+                "episodes": 7,
+                "mean": 76.0,
+                "measured": 7,
+                "median": 73.0
+              }
+            }
+          },
+          "falseAlarm": {
+            "activations": 49,
+            "falseAlarmShare": 0.7959183673469388,
+            "falseAlarms": 39,
+            "maturedActivations": 49,
+            "pendingActivations": 0,
+            "reducedSessions": 2296,
+            "reducedSessionsWithoutSubsequentLargeLoss": 1612,
+            "shareOfMaturedSessionsReducedWithoutSubsequentLargeLoss": 0.19197332380612123
+          },
+          "heldForMissingState": 0,
+          "implementation": {
+            "annualizedOneWayTurnover": 0.5993694506336995,
+            "costDrag": 0.0010536331902779583,
+            "multiplierSwitches": 135,
+            "oneWayTurnover": 20.1193102496447,
+            "totalCostFractionOfNav": 0.032797144984363355,
+            "tradedNotional": 40.2386204992894
+          },
+          "net": {
+            "annualizedReturn": 0.0777210926646752,
+            "annualizedVolatility": 0.1389075427001011,
+            "averageEquityWeight": 0.8915993855265861,
+            "cumulativeReturn": 11.335498736495676,
+            "downsideVolatility": 0.09981156830144967,
+            "maxDrawdown": -0.4233184363726986,
+            "maxDrawdownPeak": "2000-03-24",
+            "maxDrawdownRecoverySessions": 1093,
+            "maxDrawdownTrough": "2003-03-11",
+            "participation": {
+              "downside": 0.8135949843938343,
+              "upside": 0.8156271618074306
+            },
+            "reducedSessionShare": 0.2713947990543735,
+            "sessions": 8459,
+            "targetShare": {
+              "0.4": 0.0817966903073286,
+              "0.7": 0.1895981087470449,
+              "1.0": 0.7286052009456265
+            },
+            "worstRollingReturnH126": -0.22456076890300913,
+            "worstRollingReturnH63": -0.21024425512824385
+          }
+        },
+        "C1": {
+          "accounting": {
+            "delayedExitCagrPp": null,
+            "delayedReentryCagrPp": null,
+            "falseAlarmCagrPp": null,
+            "grossMinusNetCostCagrPp": 0.09350795531783973,
+            "passiveMinusNetCagrPp": 0.8339938361202837,
+            "unattributedNonCostCagrPp": 0.7404858808024439
+          },
+          "episodesDepthGe15pct": {
+            "capture": [
+              {
+                "avoidedLoss": -0.00020097012559372462,
+                "candidatePeakToTrough": -0.1935609622916986,
+                "censored": false,
+                "lossCaptureRatio": 1.0010393573321057,
+                "peakDate": "1998-07-17",
+                "referenceDepth": -0.1933599921661049,
+                "referenceRecoveryDate": "1998-11-23",
+                "sessionsToRegainPeakValue": 104,
+                "troughDate": "1998-08-31"
+              },
+              {
+                "avoidedLoss": 0.07556106631324266,
+                "candidatePeakToTrough": -0.41590841267141254,
+                "censored": false,
+                "lossCaptureRatio": 0.8462548142982408,
+                "peakDate": "2000-03-24",
+                "referenceDepth": -0.4914694789846552,
+                "referenceRecoveryDate": "2007-05-30",
+                "sessionsToRegainPeakValue": 1149,
+                "troughDate": "2002-10-09"
+              },
+              {
+                "avoidedLoss": 0.2350519031555085,
+                "candidatePeakToTrough": -0.3327019742722197,
+                "censored": false,
+                "lossCaptureRatio": 0.585996833310171,
+                "peakDate": "2007-10-09",
+                "referenceDepth": -0.5677538774277282,
+                "referenceRecoveryDate": "2013-03-28",
+                "sessionsToRegainPeakValue": 764,
+                "troughDate": "2009-03-09"
+              },
+              {
+                "avoidedLoss": 0.0004739353367054777,
+                "candidatePeakToTrough": -0.1973081690201145,
+                "censored": false,
+                "lossCaptureRatio": 0.997603750156028,
+                "peakDate": "2018-09-20",
+                "referenceDepth": -0.19778210435681998,
+                "referenceRecoveryDate": "2019-04-23",
+                "sessionsToRegainPeakValue": 147,
+                "troughDate": "2018-12-24"
+              },
+              {
+                "avoidedLoss": 0.08684186188620846,
+                "candidatePeakToTrough": -0.25240773814032424,
+                "censored": false,
+                "lossCaptureRatio": 0.7440177913859986,
+                "peakDate": "2020-02-19",
+                "referenceDepth": -0.3392496000265327,
+                "referenceRecoveryDate": "2020-08-18",
+                "sessionsToRegainPeakValue": 179,
+                "troughDate": "2020-03-23"
+              },
+              {
+                "avoidedLoss": -0.014752114888176515,
+                "candidatePeakToTrough": -0.26900308108048043,
+                "censored": false,
+                "lossCaptureRatio": 1.0580218636298857,
+                "peakDate": "2022-01-03",
+                "referenceDepth": -0.2542509661923039,
+                "referenceRecoveryDate": "2024-01-19",
+                "sessionsToRegainPeakValue": 333,
+                "troughDate": "2022-10-12"
+              },
+              {
+                "avoidedLoss": 0.0335948590045988,
+                "candidatePeakToTrough": -0.1554272028382413,
+                "censored": false,
+                "lossCaptureRatio": 0.8222701695396234,
+                "peakDate": "2025-02-19",
+                "referenceDepth": -0.1890220618428401,
+                "referenceRecoveryDate": "2025-06-27",
+                "sessionsToRegainPeakValue": 106,
+                "troughDate": "2025-04-08"
+              }
+            ],
+            "rebound": [
+              {
+                "reboundMissedH126": 0.09274745464138379,
+                "reboundMissedH63": 0.09404485343854252,
+                "recoveryOpportunityCost": 0.1029130324384091,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": 73,
+                "troughDate": "1998-08-31"
+              },
+              {
+                "reboundMissedH126": 0.10226052585509393,
+                "reboundMissedH63": 0.12318989809038494,
+                "recoveryOpportunityCost": 0.22895786180321598,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": 113,
+                "troughDate": "2002-10-09"
+              },
+              {
+                "reboundMissedH126": 0.3221760446062145,
+                "reboundMissedH63": 0.2829027579823298,
+                "recoveryOpportunityCost": 0.6513765143996824,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": 97,
+                "troughDate": "2009-03-09"
+              },
+              {
+                "reboundMissedH126": 0.03910440416710781,
+                "reboundMissedH63": 0.037649488224167804,
+                "recoveryOpportunityCost": 0.039371470938213804,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": 13,
+                "troughDate": "2018-12-24"
+              },
+              {
+                "reboundMissedH126": 0.2796321582251542,
+                "reboundMissedH63": 0.23681699898422082,
+                "recoveryOpportunityCost": 0.28889794413183467,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": 82,
+                "troughDate": "2020-03-23"
+              },
+              {
+                "reboundMissedH126": 0.02863119609781406,
+                "reboundMissedH63": 0.024900761952608708,
+                "recoveryOpportunityCost": 0.03348999581526324,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": 37,
+                "troughDate": "2022-10-12"
+              },
+              {
+                "reboundMissedH126": 0.12799681731279589,
+                "reboundMissedH63": 0.11902756713161278,
+                "recoveryOpportunityCost": 0.11373266406677685,
+                "recoveryWindowCensored": false,
+                "sessionsUntilFullExposure": 28,
+                "troughDate": "2025-04-08"
+              }
+            ],
+            "summary": {
+              "avoidedLoss": {
+                "episodes": 7,
+                "mean": 0.059510077240356236,
+                "measured": 7,
+                "median": 0.0335948590045988
+              },
+              "lossCaptureRatio": {
+                "episodes": 7,
+                "mean": 0.8650292256645792,
+                "measured": 7,
+                "median": 0.8462548142982408
+              },
+              "reboundMissedH126": {
+                "episodes": 7,
+                "mean": 0.14179265727222345,
+                "measured": 7,
+                "median": 0.10226052585509393
+              },
+              "reboundMissedH63": {
+                "episodes": 7,
+                "mean": 0.13121890368626676,
+                "measured": 7,
+                "median": 0.11902756713161278
+              },
+              "recoveryOpportunityCost": {
+                "episodes": 7,
+                "mean": 0.20839135479905657,
+                "measured": 7,
+                "median": 0.11373266406677685
+              },
+              "sessionsToRegainPeakValue": {
+                "episodes": 7,
+                "mean": 397.42857142857144,
+                "measured": 7,
+                "median": 179.0
+              },
+              "sessionsUntilFullExposure": {
+                "episodes": 7,
+                "mean": 63.285714285714285,
+                "measured": 7,
+                "median": 73.0
+              }
+            }
+          },
+          "falseAlarm": {
+            "activations": 41,
+            "falseAlarmShare": 0.7804878048780488,
+            "falseAlarms": 32,
+            "maturedActivations": 41,
+            "pendingActivations": 0,
+            "reducedSessions": 1790,
+            "reducedSessionsWithoutSubsequentLargeLoss": 1185,
+            "shareOfMaturedSessionsReducedWithoutSubsequentLargeLoss": 0.1411218292247231
+          },
+          "heldForMissingState": 0,
+          "implementation": {
+            "annualizedOneWayTurnover": 0.5309135319233873,
+            "costDrag": 0.0009350795531783973,
+            "multiplierSwitches": 107,
+            "oneWayTurnover": 17.821418914841004,
+            "totalCostFractionOfNav": 0.02905087252486162,
+            "tradedNotional": 35.64283782968201
+          },
+          "net": {
+            "annualizedReturn": 0.07983131253257825,
+            "annualizedVolatility": 0.14248973964781717,
+            "averageEquityWeight": 0.9098893434853984,
+            "cumulativeReturn": 12.172657934313499,
+            "downsideVolatility": 0.10227558280184029,
+            "maxDrawdown": -0.4342608431352968,
+            "maxDrawdownPeak": "2000-03-24",
+            "maxDrawdownRecoverySessions": 1045,
+            "maxDrawdownTrough": "2003-03-11",
+            "participation": {
+              "downside": 0.832916452899028,
+              "upside": 0.8354414416456538
+            },
+            "reducedSessionShare": 0.2115839243498818,
+            "sessions": 8459,
+            "targetShare": {
+              "0.4": 0.0817966903073286,
+              "0.7": 0.12978723404255318,
+              "1.0": 0.7884160756501182
+            },
+            "worstRollingReturnH126": -0.22456076890300902,
+            "worstRollingReturnH63": -0.21024425512824363
+          }
+        }
+      },
+      "decision": "NO_CANDIDATE_NOMINATED_CONTROL_RETAINED",
+      "passive": {
+        "annualizedReturn": 0.08817125089378108,
+        "annualizedVolatility": 0.18338594256123503,
+        "averageEquityWeight": 1.0,
+        "cumulativeReturn": 16.05428081173125,
+        "downsideVolatility": 0.12961635800903987,
+        "maxDrawdown": -0.5677538774277289,
+        "maxDrawdownPeak": "2007-10-09",
+        "maxDrawdownRecoverySessions": 1021,
+        "maxDrawdownTrough": "2009-03-09",
+        "participation": {
+          "downside": 1.0,
+          "upside": 1.0
+        },
+        "reducedSessionShare": 0.0,
+        "sessions": 8459,
+        "targetShare": {
+          "0.4": 0.0,
+          "0.7": 0.0,
+          "1.0": 1.0
+        },
+        "worstRollingReturnH126": -0.4646582705227834,
+        "worstRollingReturnH63": -0.4177062135321775
+      },
+      "window": {
+        "decisionDates": 1754,
+        "end": "2026-09-17",
+        "episodeCounts": {
+          "depth_ge_10pct": 11,
+          "depth_ge_15pct": 7,
+          "depth_ge_20pct": 4
+        },
+        "firstDecisionDate": "1993-02-05",
+        "firstExecutionDate": "1993-02-08",
+        "lastExecutionDate": "2026-09-14",
+        "sessions": 8459
+      }
+    }
+  },
+  "sourceSha256": {
+    "docs/research-program/results/rp1-c1-us-exposure-formal-20261024/payload/result.json.gz.b64": "910215317eedcaf45f293dc056749688f9400cd00f95102b565d265f552e3938",
+    "docs/results/kr-market-risk-anatomy-v2-result.json": "7be4f68f30cf57b01cde88f106b3c0c2ed88fc9942ca2a14007664ffbe4ca769",
+    "docs/results/kr-market-risk-model-v1-result.json": "2578bbfa245a6540235cc05e231441b4ebb4da165240a84e715756477a897c4b"
+  },
+  "status": "SEALED_EVIDENCE_REVIEW_ONLY",
+  "studyId": "EXP-C-RECOVERY-01"
+}
