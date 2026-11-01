@@ -1,5 +1,4 @@
 """No-network regression tests for the pinned read-only shadow observation."""
-import copy
 import json
 import shutil
 import subprocess
