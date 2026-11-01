@@ -1,0 +1,76 @@
+{
+  "papers": [
+    {
+      "citation": "Moskowitz & Grinblatt (1999)",
+      "title": "Do Industries Explain Momentum?",
+      "doi": "10.1111/0022-1082.00146",
+      "readUrl": "https://ideas.repec.org/a/bla/jfinan/v54y1999i4p1249-1290.html",
+      "sha256": "5f80036e8dc6621fc407b087a1c70e9f2adb97d8eace59ba9a13d2f79e935370",
+      "readScope": "저널 초록의 RePEc 게재본. 출판사 전문 접근403; 전문 열람 주장 안 함.",
+      "applicationKo": "산업 모멘텀 통제의 필요성을 제시하나 이 KR 발전표본의 재현·순수익을 보장하지 않는다. 업종 수익과 업종 내 종목 선택을 구분한다.",
+      "notStrategyValidation": true
+    },
+    {
+      "citation": "Daniel & Moskowitz (2016)",
+      "title": "Momentum Crashes",
+      "doi": "10.1016/j.jfineco.2015.12.002",
+      "readUrl": "https://www.nber.org/system/files/working_papers/w20439/w20439.pdf",
+      "sha256": "bdbb346566311d9e08a5dbddc0f94c9d9567f1fc7cd5f0fba6e232ca26fea7b0",
+      "readScope": "NBER WP20439 (2014 working version): 초록·결론 및 panic/rebound 논의. 2016 저널과 버전 구분.",
+      "applicationKo": "시장 하락 뒤 고변동·급반등에서 모멘텀 crash가 가능하다. 하지만 C2=순수 모멘텀이라고 추정하거나 사후 반등을 신호로 쓰지 않는다.",
+      "notStrategyValidation": true
+    },
+    {
+      "citation": "Fama & French (2015)",
+      "title": "A five-factor asset pricing model",
+      "doi": "10.1016/j.jfineco.2014.10.010",
+      "readUrl": "https://ideas.repec.org/a/eee/jfinec/v116y2015i1p1-22.html",
+      "sha256": "4364640b70c8768911779149b10d917f41b8e919131803825403ec180aad6530",
+      "readScope": "저널 초록의 RePEc 게재본. 원문 출판사 경로403; 전문 열람 주장 안 함.",
+      "applicationKo": "시장 외 size/value/profitability/investment 노출이 절편에 남을 수 있다. 수익성/OCF IC나 한 요인 raw 절편을 독립 alpha로 인증하지 않는다.",
+      "notStrategyValidation": true
+    },
+    {
+      "citation": "Moreira & Muir (2017)",
+      "title": "Volatility-Managed Portfolios",
+      "doi": "10.1111/jofi.12513",
+      "readUrl": "https://www.nber.org/system/files/working_papers/w22208/w22208.pdf",
+      "sha256": "be1ea92102e1394e9ddec9545489902f45e5a07b42bd4c42faf8ee372e99fa7a",
+      "readScope": "NBER WP22208 (2016 revised working version): 초록·도입·결론; 저널 초록도 대조.",
+      "applicationKo": "고변동 시 노출을 낮춘 경로의 Sharpe/회귀 절편 향상 가능성이 연구 동기다. 위험 감소·선택·복리 차이를 분리하고 현재 backtest를 검증됐다고 하지 않는다.",
+      "notStrategyValidation": true
+    },
+    {
+      "citation": "Cederburg et al. (2020)",
+      "title": "On the performance of volatility-managed portfolios",
+      "doi": "10.1016/j.jfineco.2020.04.015",
+      "readUrl": "https://ideas.repec.org/a/eee/jfinec/v138y2020i1p95-117.html",
+      "sha256": "156e1c4ba8d83b9dc77aca984db42a5f619541f3b3365cdc6cbfa643b946c6af",
+      "readScope": "저널 초록의 RePEc 게재본. 출판사 전문 경로403; 전문 열람 주장 안 함.",
+      "applicationKo": "103개 전략의 positive spanning alpha가 실시간 구현 가능한 OOS 우위로 이어지지 않을 수 있고 구조 불안정성이 중요하다. full-sample beta 통제는 사후 통계로만 사용한다.",
+      "notStrategyValidation": true
+    },
+    {
+      "citation": "Bailey et al. (2017)",
+      "title": "The probability of backtest overfitting",
+      "doi": "10.21314/JCF.2016.322",
+      "readUrl": "https://www.davidhbailey.com/dhbpapers/backtest-prob.pdf",
+      "sha256": "d8bfbadaaedb430d9dec929646d92f3580fdf18238f34121ae7738fa1c69a63d",
+      "readScope": "저자 공개2015 working version PDF 초록·PBO 정의·CSCV/결론; 2017 출판 metadata 대조.",
+      "applicationKo": "많은 전략을 본 뒤 선택한 성과는 holdout만으로 해결되지 않을 수 있다. 새 arm/grid/최적화 없이 고정 분석을 하고, 필요한 trial matrix 없이 이 프로젝트의 PBO 숫자를 발명하지 않는다.",
+      "notStrategyValidation": true
+    },
+    {
+      "citation": "Hou, Xue & Zhang (2020)",
+      "title": "Replicating Anomalies",
+      "doi": "10.1093/rfs/hhy131",
+      "readUrl": "https://doi.org/10.1093/rfs/hhy131",
+      "sha256": "1b0f9aa19e83e8a92f53a3bbd5041084c5179ef5fdae31c63fe59705e654cbd2",
+      "readScope": "출판사 제공 저널 초록(Crossref metadata). 전문 미열람.",
+      "applicationKo": "452개 anomaly에서 microcap·value weighting·다중검정에 따른 재현 실패를 문헌 근거로만 사용한다. 미국 논문의 수치 임계값을 KR 연구의 새 승인 기준으로 채택하지 않는다.",
+      "notStrategyValidation": true
+    }
+  ],
+  "rights": "Metadata, bibliographic links and our paraphrases only; no copyrighted PDF/full-text redistribution.",
+  "rejectedSource": "NBER w6493 has a different title and was rejected, never cited as Moskowitz-Grinblatt."
+}
