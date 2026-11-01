@@ -87,6 +87,7 @@ def run(champion: Path, weekly: Path, config: Path, directory: Path, *, offline:
     if not offline:
         report["accounting"] = L.advance(directory, now=now, close_of=live_closes(directory))
     report["maturity"] = L.maturity(directory, now=now)
+    report["readout"] = L.status_report(directory, now=now)
     _status(directory, status="OK", report=report)
     print(json.dumps(report["decisions"], sort_keys=True))
     return 0
@@ -117,6 +118,13 @@ def main(argv=None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
     offline = "--offline" in argv
     argv = [a for a in argv if a != "--offline"]
+    if len(argv) == 5 and argv[0] == "envelope":
+        # envelope LEDGER_STUDY_DIR STRATEGY_ID AS_OF OUT_JSON -> input for research.economic_path_readout_v1.cli --input
+        _, directory, strategy_id, as_of, out = argv
+        Path(out).write_text(json.dumps(L.readout_input(Path(directory), strategy_id, as_of,
+                                                        source_commit=code_identity()["commit"] or "UNKNOWN"),
+                                        indent=1, allow_nan=False) + "\n")
+        return 0
     if len(argv) == 5 and argv[0] == "run":
         try:
             return run(*map(Path, argv[1:]), offline=offline)

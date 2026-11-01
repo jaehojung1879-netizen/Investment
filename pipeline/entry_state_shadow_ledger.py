@@ -52,6 +52,7 @@ RETURN_BASIS = "VENDOR_ADJUSTED_CLOSE_FIXED_ORIGIN_RATIO_V1_PREFIX_CHECKED"
 NET_ALREADY_CHARGED = "NET_ALREADY_CHARGED"
 FILES = ("decisions.jsonl", "fills.jsonl", "nav-daily.jsonl")
 ZERO = 1e-10
+DIGEST_EXCLUDED = ("recordedAtUtc", "digest", "code", "executionSession", "signalSessionFinalAtUtc", "timing")
 
 
 def canonical(obj) -> bytes:
@@ -172,7 +173,10 @@ def decision_receipts(observation: dict, *, recorded_at: datetime, code: dict, o
                 "sourceGeneratedAt": observation.get("sourceGeneratedAt"),
                 "productionEffect": "NONE", "liveValidated": False}
         body["receiptId"] = sha256(canonical(key))
-        body["digest"] = sha256(canonical({k: v for k, v in body.items() if k not in ("recordedAtUtc", "digest")}))
+        # The digest covers what was DECIDED. Who wrote it (code), when it was read (recordedAtUtc) and the execution
+        # session that follows from that read time are provenance: a later re-read of the same published week is the
+        # same decision, kept as first written, and must not be counted as a conflict.
+        body["digest"] = sha256(canonical({k: v for k, v in body.items() if k not in DIGEST_EXCLUDED}))
         receipts.append(body)
     return receipts
 
@@ -260,6 +264,9 @@ def anchored_closes(frames: dict, origins: dict[str, str], prior_navs: list[dict
     def close_of(ticker, session):
         return prices.get(ticker, {}).get(session)
     close_of.valuation_origins = dict(origins)
+    # Last session each ticker has a usable quote for IN THIS ACQUISITION. A session after it is not yet published
+    # (or the fetch failed): that is a deferral, never evidence that the session's price is missing.
+    close_of.quote_through = {t: max((d for d, v in p.items() if v is not None), default=None) for t, p in prices.items()}
     close_of.snapshot_sha256 = sha256(canonical(source))
     return close_of
 
@@ -338,6 +345,13 @@ def advance(directory: Path, *, now: datetime, close_of, through: str | None = N
                 need |= {etf}
             closes = {t: close_of(t, session) for t in need}
             missing = sorted(t for t, v in closes.items() if v is None or not math.isfinite(v) or not v > 0)
+            published = getattr(close_of, "quote_through", None)
+            if missing and published is not None and any(
+                    (published.get(t) or "") < session for t in missing):
+                # The vendor has not published through this session for a needed name, or the fetch failed. Write
+                # nothing, so the next run can mark it; a later quote existing is what makes a gap a real gap.
+                report[sid] = f"DEFERRED_QUOTE_NOT_PUBLISHED_THROUGH_{session}"
+                break
             if missing:
                 new_navs.append({"strategyId": sid, "region": region, "date": session, "status":
                                  "UNRESOLVED_MISSING_PRICE", "missing": missing, "nav": None})
@@ -362,7 +376,7 @@ def advance(directory: Path, *, now: datetime, close_of, through: str | None = N
                              "valuationCloses": closes,
                              "valuationOrigins": {t: getattr(close_of, "valuation_origins", {}).get(t) for t in closes},
                              "priceSnapshotSha256": getattr(close_of, "snapshot_sha256", None)})
-        report[sid] = "ADVANCED"
+        report.setdefault(sid, "ADVANCED")
     _append(directory / "fills.jsonl", new_fills)
     _append(directory / "nav-daily.jsonl", new_navs)
     return {"fillsAppended": len(new_fills), "navRowsAppended": len(new_navs), "strategies": report}
@@ -384,3 +398,101 @@ def maturity(directory: Path, *, now: datetime) -> dict:
 
 def utc_now() -> datetime:
     return datetime.now(timezone.utc)
+
+
+# ------------------------------------------------------------------------------------------------------------------------------
+# Readout connection (economic-path-readout-v1 NAV envelope) and the status report
+# ------------------------------------------------------------------------------------------------------------------------------
+CALENDAR_POLICY = {"KR": "XKRX", "US": "XNYS"}
+
+
+def _file_hashes(directory: Path) -> dict:
+    return {name: sha256((directory / name).read_bytes()) for name in FILES if (directory / name).exists()}
+
+
+def benchmark_id(strategy_id: str) -> str:
+    region = strategy_id.split(":")[0]
+    return f"{region}:ETF_ONLY"
+
+
+def nav_envelope(directory: Path, strategy_id: str, *, source_commit: str = "UNKNOWN") -> dict:
+    """One strategy's NAV in the readout's documented contract. Nothing is rebased, filled or charged here.
+
+    Dates are the region's own sessions (KR: XKRX less the repository's dated closures, US: XNYS), so the readout may
+    verify them against a single-exchange calendar. An UNRESOLVED_MISSING_PRICE row is published as null, never dropped.
+    """
+    rows = [n for n in _read(directory / "nav-daily.jsonl") if n["strategyId"] == strategy_id]
+    if not rows:
+        raise ValueError(f"NO_NAV_ROWS_YET: {strategy_id}")
+    region = rows[0]["region"]
+    etf = REGIONAL_ETF[region]
+    instrument = (strategy_id.split(":")[-1] if ":SEPARATE_COMPARISON:" in strategy_id
+                  else etf if strategy_id == benchmark_id(strategy_id) else None)
+    return {"region": region, "strategyId": strategy_id, "studyId": STUDY, "currency": CURRENCY[region],
+            "frequency": "DAILY", "returnBasis": RETURN_BASIS, "costBasis": NET_ALREADY_CHARGED,
+            "evidenceClass": EVIDENCE_CLASS, "sourceCommit": source_commit, "hashes": _file_hashes(directory),
+            "calendarPolicy": CALENDAR_POLICY[region], "fx": "NONE_LOCAL_CURRENCY_BOOK",
+            "costNote": "every trade leg charged once at fill; ETF_ONLY never trades so its charged cost is zero",
+            **({"instrument": instrument} if instrument else {}),
+            "nav": [[n["date"], n["nav"] if n["status"] == "MARKED" else None] for n in rows]}
+
+
+def readout_input(directory: Path, strategy_id: str, as_of: str, *, source_commit: str = "UNKNOWN",
+                  benchmark: str | None = None) -> dict:
+    """{asOfDate, candidate, benchmark} for `research.economic_path_readout_v1` (CLI --input or core.compare)."""
+    return {"asOfDate": as_of, "candidate": nav_envelope(directory, strategy_id, source_commit=source_commit),
+            "benchmark": nav_envelope(directory, benchmark or benchmark_id(strategy_id), source_commit=source_commit)}
+
+
+def status_report(directory: Path, *, now: datetime) -> dict:
+    """What a reader needs per strategy: decision, weights, fill state, cost, NAV, vs ETF, maturity. No new metric."""
+    decisions = _read(directory / "decisions.jsonl")
+    fills = _read(directory / "fills.jsonl")
+    navs = _read(directory / "nav-daily.jsonl")
+    matured = maturity(directory, now=now)["strategies"]
+    latest_nav = {}
+    for n in navs:
+        latest_nav[n["strategyId"]] = n
+    nav_by = {(n["strategyId"], n["date"]): n for n in navs if n["status"] == "MARKED"}
+    out = {}
+    for sid in sorted({d["strategyId"] for d in decisions}):
+        mine = sorted((d for d in decisions if d["strategyId"] == sid), key=lambda d: d["asOfDate"])
+        last = mine[-1]
+        my_fills = [f for f in fills if f["strategyId"] == sid]
+        consumed = {f["decisionReceiptId"] for f in my_fills} | {r for f in my_fills for r in f.get("supersededReceiptIds") or []}
+        target = last["targetWeights"]
+        if target is None:
+            fill_state = "HOLD_PREVIOUS_BOOK_NO_TRADE"
+        elif last["receiptId"] in consumed:
+            fill_state = "FILLED"
+        else:
+            fill_state = "PENDING_EXECUTION_SESSION"
+        tail = latest_nav.get(sid)
+        if tail and tail["status"] != "MARKED":
+            fill_state = "STOPPED_" + tail["status"]
+        etf_row = nav_by.get((benchmark_id(sid), tail["date"])) if tail and tail["status"] == "MARKED" else None
+        audit = {}
+        for row in last.get("candidateAudit") or []:
+            audit[row["status"]] = audit.get(row["status"], 0) + 1
+        out[sid] = {
+            "region": last["region"], "asOfDate": last["asOfDate"], "recordedAtUtc": last["recordedAtUtc"],
+            "kind": last["kind"], "decisionStatus": last["status"], "action": last["action"],
+            "selected": last.get("selected"), "stockCount": (None if target is None else
+                                                             sum(1 for t in target if t not in (last["residualAsset"],))),
+            "targetWeights": target, "etfResidualWeight": last.get("residualWeight"),
+            "candidateAuditCounts": audit or None,
+            "executionSession": last["executionSession"], "fillState": fill_state,
+            "fills": len(my_fills), "lastFillSession": my_fills[-1]["session"] if my_fills else None,
+            "chargedCostPctOfNav": round(100 * sum(f["costFraction"] for f in my_fills), 6) if my_fills else 0.0,
+            "navDate": tail["date"] if tail else None, "nav": tail["nav"] if tail else None,
+            "etfNavSameDate": etf_row["nav"] if etf_row else None,
+            "excessVsEtfPct": (round(100 * (tail["nav"] / etf_row["nav"] - 1), 6)
+                               if etf_row and tail and tail["nav"] else None),
+            "maturity": matured.get(sid) or {"H126": "PENDING_NO_FILL_YET", "H252": "PENDING_NO_FILL_YET"},
+        }
+    return {"asOfUtc": now.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "evidenceClass": EVIDENCE_CLASS,
+            "returnBasis": RETURN_BASIS, "costBasis": NET_ALREADY_CHARGED,
+            "limits": ["vendor adjusted-close ratios are not certified corporate-action or shareholder-return accounting",
+                       "units are valuation-index units, not broker shares; no order was placed",
+                       "excessVsEtfPct is a NAV ratio since each strategy's own start, not a validated alpha"],
+            "strategies": out}
