@@ -44,17 +44,22 @@ def fixture():
                                      "weights": {"A": .6, "B": .2,
                                                  "069500.KS": .2}}}}}}
     weekly = {"generatedAt": latest["generatedAt"],
-              "regions": {"KR": {"asOfDate": "2026-10-30",
+              "regions": {"KR": {"status": "PASSIVE_NO_DEFENSIBLE_EDGE",
+                                 "asOfDate": "2026-10-30",
                                  "inputs": {"siteDataSha256": "a" * 64},
                                  "candidates": [
                                      {"ticker": "A", "sector": "Finance",
                                       "alphaPercentile": 90,
                                       "downsideVolPct": 20,
-                                      "entryState": "ACCUMULATE_GRADUALLY"},
+                                      "entryState": "ACCUMULATE_GRADUALLY",
+                                      "edgeAvailable": False,
+                                      "expectedNetAdvantagePct": None},
                                      {"ticker": "B", "sector": "Health",
                                       "alphaPercentile": 90,
                                       "downsideVolPct": 20,
-                                      "entryState": "WAIT_FOR_PULLBACK"}]}}}
+                                      "entryState": "WAIT_FOR_PULLBACK",
+                                      "edgeAvailable": False,
+                                      "expectedNetAdvantagePct": None}]}}}
     return latest, weekly, config
 
 
@@ -93,11 +98,17 @@ def test_real_selection_v_weight_throttle_not_returns(tmp_path):
     assert out.returncode == 0, out.stderr
     observed = json.loads(out.stdout)
     kr = observed["regions"]["KR"]
-    assert kr["control"]["sameAsPublished"] is True
-    assert kr["control"]["stocks"] == {"A": .6, "B": .2}
-    assert kr["challenger"]["selected"] == ["B", "A"]
-    assert kr["challenger"]["stocks"] == {"B": .15, "A": .2}
-    assert kr["challenger"]["residual"] == .65
+    assert kr["legacyControlOnly"]["sameAsPublished"] is True
+    assert kr["legacyControlOnly"]["stocks"] == {"A": .6, "B": .2}
+    assert kr["allowedStockCounts"] == [0, 1, 2, 3, 4, 5]
+    assert kr["currentPolicy"]["stockCount"] == 0
+    assert kr["currentPolicy"]["benchmarkWeight"] == 1
+    assert kr["researchScenarios"][0]["stateAtPositionWeight"]["stocks"] == {}
+    assert kr["researchScenarios"][2]["stateAtPositionWeight"]["selected"] == ["B", "A"]
+    assert kr["researchScenarios"][2]["stateAtPositionWeight"]["stocks"] == {"B": .15, "A": .2}
+    assert kr["researchScenarios"][2]["stateAtPositionWeight"]["residual"] == .65
+    assert kr["researchScenarios"][3]["status"] == "INSUFFICIENT_ELIGIBLE_NAMES"
+    assert kr["cardinalityWinner"] is None
     assert kr["realizedReturn"] is None and kr["expectedAlpha"] is None
     assert observed["regions"]["US"]["status"] == "BLOCKED"
     assert observed["residualConvention"].startswith("ETF_NOT_CASH")
@@ -109,11 +120,12 @@ def test_unpublished_candidate_might_cross_cutoff_blocks(tmp_path):
     a["regions"]["KR"]["decisions"]["C2"]["selection"]["eligibleCount"] = 3
     b["regions"]["KR"]["candidates"].append({
         "ticker": "C", "sector": "Industry", "alphaPercentile": 100,
-        "downsideVolPct": 10, "entryState": "WAIT_FOR_PULLBACK"})
+        "downsideVolPct": 10, "entryState": "WAIT_FOR_PULLBACK",
+        "edgeAvailable": False, "expectedNetAdvantagePct": None})
     out = run(tmp_path, a, b, cfg)
     assert out.returncode == 0, out.stderr
     assert json.loads(out.stdout)["regions"]["KR"]["reason"] == (
-        "TRUNCATED_RANKING_COULD_CHANGE_CHALLENGER")
+        "TRUNCATED_RANKING_COULD_CHANGE_CONTROL")
 
 
 def test_control_parity_failure_never_returns_alternative_weights(tmp_path):
@@ -123,7 +135,7 @@ def test_control_parity_failure_never_returns_alternative_weights(tmp_path):
     assert out.returncode == 0, out.stderr
     x = json.loads(out.stdout)["regions"]["KR"]
     assert x["reason"] == "ORIGINAL_CONTROL_RECONSTRUCTION_FAILED"
-    assert x["challenger"] is None
+    assert x["researchScenarios"] is None
 
 
 def test_cross_generation_or_source_mismatch_refused(tmp_path):
@@ -146,3 +158,42 @@ def test_observation_write_is_create_only(tmp_path):
     second = run(tmp_path, a, b, cfg, output=True)
     assert second.returncode != 0
     assert (tmp_path / "observation.json").read_bytes() == content
+
+
+def test_five_names_are_allowed_without_becoming_a_forced_recommendation(tmp_path):
+    a, b, cfg = fixture()
+    region = a["regions"]["KR"]["decisions"]["C2"]
+    for name, score, sector in [
+        ("C", .4, "Energy"), ("D", .3, "Industry"), ("E", .2, "Utilities")
+    ]:
+        region["selection"]["ranking"].append({
+            "ticker": name, "region": "KR", "sector": sector,
+            "alphaPercentile": 90, "downsideVolPct": 20, "eligible": True,
+            "entryStateMultiplier": 1, "convictionScore": score,
+            "evidenceCoverage": 1, "riskUnitFallback": False
+        })
+        b["regions"]["KR"]["candidates"].append({
+            "ticker": name, "sector": sector, "alphaPercentile": 90,
+            "downsideVolPct": 20, "entryState": "ACCUMULATE_GRADUALLY",
+            "edgeAvailable": False, "expectedNetAdvantagePct": None
+        })
+    region["selection"]["consideredCount"] = 5
+    region["selection"]["eligibleCount"] = 5
+    out = run(tmp_path, a, b, cfg)
+    assert out.returncode == 0, out.stderr
+    row = json.loads(out.stdout)["regions"]["KR"]
+    assert row["legacyControlOnly"]["stockCount"] == 2
+    assert row["researchScenarios"][5]["stockCount"] == 5
+    assert len(row["researchScenarios"][5]["stateAtPositionWeight"]["stocks"]) == 5
+    assert row["currentPolicy"]["stockCount"] == 0
+    assert row["cardinalityWinner"] is None
+
+
+def test_no_positive_edge_cannot_be_converted_to_three_or_five_stock_policy(tmp_path):
+    a, b, cfg = fixture()
+    b["regions"]["KR"]["status"] = "UNKNOWN"
+    out = run(tmp_path, a, b, cfg)
+    assert out.returncode == 0, out.stderr
+    row = json.loads(out.stdout)["regions"]["KR"]
+    assert row["currentPolicy"]["stockCount"] is None
+    assert row["cardinalityWinner"] is None
