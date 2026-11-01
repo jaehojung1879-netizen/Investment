@@ -467,5 +467,97 @@
       "realizedReturn": null,
       "expectedAlpha": null
     }
+  },
+  "portfolioDPolicy": {
+    "maxCombinedStocks": 5,
+    "regionalScenariosAreNotSimultaneousCombinedAllocations": true,
+    "feasibleCountPairs": [
+      {
+        "KR": 0,
+        "US": 0
+      },
+      {
+        "KR": 0,
+        "US": 1
+      },
+      {
+        "KR": 0,
+        "US": 2
+      },
+      {
+        "KR": 0,
+        "US": 3
+      },
+      {
+        "KR": 0,
+        "US": 4
+      },
+      {
+        "KR": 0,
+        "US": 5
+      },
+      {
+        "KR": 1,
+        "US": 0
+      },
+      {
+        "KR": 1,
+        "US": 1
+      },
+      {
+        "KR": 1,
+        "US": 2
+      },
+      {
+        "KR": 1,
+        "US": 3
+      },
+      {
+        "KR": 1,
+        "US": 4
+      },
+      {
+        "KR": 2,
+        "US": 0
+      },
+      {
+        "KR": 2,
+        "US": 1
+      },
+      {
+        "KR": 2,
+        "US": 2
+      },
+      {
+        "KR": 2,
+        "US": 3
+      },
+      {
+        "KR": 3,
+        "US": 0
+      },
+      {
+        "KR": 3,
+        "US": 1
+      },
+      {
+        "KR": 3,
+        "US": 2
+      },
+      {
+        "KR": 4,
+        "US": 0
+      },
+      {
+        "KR": 4,
+        "US": 1
+      },
+      {
+        "KR": 5,
+        "US": 0
+      }
+    ],
+    "allocationAcrossKRAndUS": null,
+    "note": "KR+US <=5. This source-pinned regional ladder is not a combined or optimized D portfolio."
   }
 }
