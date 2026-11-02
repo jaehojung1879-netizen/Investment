@@ -133,3 +133,24 @@ def test_unfinal_session_is_not_marked_and_maturity_is_pending(tmp_path):
     L.advance(tmp_path, now=datetime(2026, 11, 2, 12, 0, tzinfo=timezone.utc), close_of=close_of)
     state = L.maturity(tmp_path, now=datetime(2026, 11, 2, 12, 0, tzinfo=timezone.utc))["strategies"]
     assert state["KR:N1:AT_WEIGHT"]["H126"] == "PENDING_126_SESSIONS"
+
+
+def test_rereading_the_same_week_with_new_provenance_is_not_a_conflict(tmp_path):
+    """The scheduled hook stamps sourceCommit with the moving main commit and hashes the bytes it read that run.
+
+    The same published week read on the next day must be `alreadyPresent`; a changed DECISION must still be refused.
+    """
+    first = observation()
+    again = observation()
+    again["sourceCommit"] = "b" * 40
+    again["sourceHashes"] = {"sourceVerification": "SHA256_OF_BYTES_WRITTEN_IN_THIS_RUN_BEFORE_COMMIT"}
+    a = L.decision_receipts(first, recorded_at=SUNDAY, code={}, observation_sha256="x")
+    b = L.decision_receipts(again, recorded_at=SUNDAY, code={}, observation_sha256="y")
+    L.append_decisions(tmp_path, a)
+    before = (tmp_path / "decisions.jsonl").read_bytes()
+    report = L.append_decisions(tmp_path, b)
+    assert report == {"appended": 0, "alreadyPresent": len(a), "conflictsRefused": []}
+    changed = observation(stocks={"000002.KS": 0.3})
+    changed["sourceCommit"] = "c" * 40
+    refused = L.append_decisions(tmp_path, L.decision_receipts(changed, recorded_at=SUNDAY, code={}, observation_sha256="z"))
+    assert refused["conflictsRefused"] and (tmp_path / "decisions.jsonl").read_bytes() == before

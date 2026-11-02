@@ -194,6 +194,16 @@ def _append(path: Path, rows: list[dict]) -> None:
             stream.write(canonical(row) + b"\n")
 
 
+# Where the bytes were read from, not what was decided. The scheduled hook stamps `sourceCommit` with the moving main commit and
+# hashes the bytes of that run, so the same published week read on another day differs in these fields only.
+PROVENANCE = ("sourceCommit", "sourceHashes", "observationSha256")
+
+
+def decided_digest(receipt: dict) -> str:
+    """Identity of what was decided, recomputed from the stored body so stored files and their `digest` stay untouched."""
+    return sha256(canonical({k: v for k, v in receipt.items() if k not in DIGEST_EXCLUDED and k not in PROVENANCE}))
+
+
 def append_decisions(directory: Path, receipts: list[dict]) -> dict:
     """Write-once by receiptId. Existing lines are never rewritten."""
     existing = {r["receiptId"]: r for r in _read(directory / "decisions.jsonl")}
@@ -203,7 +213,7 @@ def append_decisions(directory: Path, receipts: list[dict]) -> dict:
         if prior is None:
             new.append(receipt)
             existing[receipt["receiptId"]] = receipt
-        elif prior["digest"] == receipt["digest"]:
+        elif decided_digest(prior) == decided_digest(receipt):
             same += 1
         else:
             conflicts.append(receipt["receiptId"])
