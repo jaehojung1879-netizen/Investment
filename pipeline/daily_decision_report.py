@@ -457,12 +457,27 @@ def _pct(value, digits=4):
     return "UNKNOWN" if value is None else f"{value:+.{digits}f}%"
 
 
+def headline(report):
+    """One line: what the stored weekly decision says to hold today, per region, or UNKNOWN with its reason.
+
+    Built from the same `currentStance` the table below uses; it never shows a stock and never turns an unverified decision into 0 or 100%.
+    """
+    parts = []
+    for region, v in report["regions"].items():
+        c = v["currentStance"]
+        if c["displayed"]:
+            parts.append(f"{region} {c['stockCount']}종목 · {v['benchmark']} {c['benchmarkWeightPct']:.0f}%")
+        else:
+            parts.append(f"{region} UNKNOWN ({text(c['reason'])})")
+    return "**오늘의 운영 판단** (저장된 최종 주간 판단 기준, 다음 주말 세션까지 유효): " + " / ".join(parts)
+
+
 def render(report):
     """Pure Markdown: report metadata is explicit input, never the wall clock."""
     r = report
     lines = ["# Investment 일간 판단 브리프", "", f"보고 기준/생성: {text(r['reportAsOfKst'])}",
              f"원천 Git: `{r['sourceCommitSha']}` / 커밋 시각: {text(r['sourceCommitTimestamp'])}",
-             f"렌더러 Git: {text(r['codeIdentity'].get('gitSha'))}", "",
+             f"렌더러 Git: {text(r['codeIdentity'].get('gitSha'))}", "", headline(r), "",
              "KR 069500.KS · US SPY 기본 / QQQ 보조. 운영은 지역별 0–5종목이며, 적격 신호가 없으면 기존 ETF 기본값을 유지합니다.",
              "이 보고서는 신규 종목을 지명하거나 비중을 계산하지 않습니다. 신호 인증 모집단은 UNKNOWN이며, 보고서의 신규 지명은 0입니다.",
              "내부 모델 비중·opportunity tier·탐색 순위·paper 성공은 투자 승인이나 검증된 알파가 아닙니다.", "",

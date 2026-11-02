@@ -253,3 +253,120 @@ def test_materialize_reads_only_allowed_paths_at_a_pinned_commit(tmp_path):
         M.materialize("HEAD", root=tmp_path)
     with pytest.raises(ValueError, match="COMMIT_NOT_AVAILABLE_LOCALLY"):
         M.materialize("0" * 40, root=tmp_path)
+
+
+# ------------------------------------------------------------------------------------------------- release candidate: headline
+def _head(out):
+    """Everything above the first section: what a reader sees before scrolling."""
+    return out.split("\n## ", 1)[0]
+
+
+def test_headline_gives_todays_decision_before_any_context_or_freshness_table():
+    out = R.render(build(docs()))
+    head = _head(out)
+    assert "오늘의 운영 판단" in head
+    assert "KR 0종목 · 069500.KS 100%" in head and "US 0종목 · SPY 100%" in head
+    assert out.index("오늘의 운영 판단") < out.index("## 보존된 시장 문맥") < out.index("## 운영 판단과 신선도")
+
+
+@pytest.mark.parametrize("now", ["2026-11-02T10:00:00+00:00", "2026-11-04T03:00:00+00:00"])
+def test_headline_still_shows_the_decision_in_force_while_the_session_table_says_stale(now):
+    r = build(docs(), now=now)
+    assert r["regions"]["KR"]["freshnessAtReport"]["status"] == "STALE"
+    assert "KR 0종목 · 069500.KS 100%" in _head(R.render(r))
+
+
+def test_headline_never_turns_an_unknown_decision_into_zero_or_full_etf():
+    d = docs()
+    d[R.WEEKLY + "receipts.jsonl"][0]["digest"] = "0" * 64                  # KR's receipt is tampered, US's is intact
+    head = _head(R.render(build(d)))
+    assert "KR UNKNOWN (NO_DIGEST_VALID_FINAL_RECEIPT_FOR_THIS_DECISION)" in head
+    assert "KR 0종목" not in head and "US 0종목 · SPY 100%" in head
+    blocked = _head(R.render(build(docs(blocked=True))))
+    assert "0종목" not in blocked and blocked.count("UNKNOWN (WEEKLY_PUBLICATION_BLOCKED)") == 2
+
+
+def test_headline_never_names_a_stock():
+    r = build(docs(status="STOCKS_SELECTED", stockCount=2, holdings=[{"ticker": "AAA", "weightPct": 20}], benchmarkWeightPct=60.0))
+    head = _head(R.render(r))
+    assert "AAA" not in head and "0종목" not in head and "UNKNOWN (STOCK_SELECTION_NOT_DISPLAYED" in head
+
+
+# ------------------------------------------------------------------------------------------- release candidate: two calendars
+@pytest.mark.parametrize("now,kr,us", [
+    ("2026-09-28T00:00:00+00:00", "2026-09-23", "2026-09-25"),    # Chuseok Thu-Fri: KR's week ends Wed, US's Fri
+    ("2026-10-12T00:00:00+00:00", "2026-10-08", "2026-10-09"),    # Hangul Day Fri: KR's week ends Thu, US's Fri
+    ("2026-11-30T00:00:00+00:00", "2026-11-27", "2026-11-27"),    # Thanksgiving Thu (US closed, KR open): both end Fri
+    ("2026-07-20T00:00:00+00:00", "2026-07-16", "2026-07-17"),    # Constitution Day Fri 07-17 is a repository KR closure
+])
+def test_each_region_uses_its_own_calendar_for_its_week_end(now, kr, us):
+    t = datetime.fromisoformat(now)
+    assert (R.latest_completed_week_end("KR", t), R.latest_completed_week_end("US", t)) == (kr, us)
+
+
+def test_holiday_shortened_weeks_keep_each_regions_own_decision_in_force():
+    """On Monday 2026-09-28 KR's decision is the one made for Wed 09-23 and US's the one for Fri 09-25; neither borrows the other's date."""
+    d = docs()
+    d[R.WEEKLY + "latest.json"]["regions"] = {
+        "KR": decision("KR", asOfDate="2026-09-23", generatedAt="2026-09-26T01:00:00+00:00",
+                       freshness={"status": "FRESH", "sourceDate": "2026-09-23"}),
+        "US": decision("US", asOfDate="2026-09-25", generatedAt="2026-09-26T01:00:00+00:00",
+                       freshness={"status": "FRESH", "sourceDate": "2026-09-25"})}
+    d[R.WEEKLY + "receipts.jsonl"] = [final_receipt("KR", asOfDate="2026-09-23", generatedAt="2026-09-26T01:00:00+00:00",
+                                                    freshness={"status": "FRESH", "sourceDate": "2026-09-23"}),
+                                      final_receipt("US", asOfDate="2026-09-25", generatedAt="2026-09-26T01:00:00+00:00",
+                                                    freshness={"status": "FRESH", "sourceDate": "2026-09-25"})]
+    class Early(MemorySnapshot):
+        committed_at = "2026-09-26T12:00:00+00:00"          # the snapshot must predate the report
+
+    def build_early(docs_):
+        return R.build(Early(docs_), as_of="2026-09-28T03:00:00+00:00", code_identity={"gitSha": "b" * 40})
+
+    r = build_early(d)
+    assert all(r["regions"][x]["currentStance"]["displayed"] for x in ("KR", "US"))
+    swapped = deepcopy(d)
+    swapped[R.WEEKLY + "latest.json"]["regions"]["KR"]["asOfDate"] = "2026-09-25"        # KR claiming the US date is not KR's week-end
+    swapped[R.WEEKLY + "receipts.jsonl"][0] = final_receipt("KR", asOfDate="2026-09-25", generatedAt="2026-09-26T01:00:00+00:00",
+                                                            freshness={"status": "FRESH", "sourceDate": "2026-09-25"})
+    assert build_early(swapped)["regions"]["KR"]["currentStance"]["reason"] == \
+        "NOT_THE_LATEST_COMPLETED_WEEK_END_DECISION"
+
+
+# ------------------------------------------------------------------------- release candidate: producer -> report, price failures
+def _paper_status(tmp_path, closes, *, through):
+    """The real ledger code end to end: receipts -> advance -> status_report -> the stored status document the report reads."""
+    from tests.test_entry_state_shadow_ledger import SUNDAY, observation
+    SH.append_decisions(tmp_path, SH.decision_receipts(observation(as_of="2026-10-30"), recorded_at=SUNDAY, code={}, observation_sha256="x"))
+    now = datetime(2026, 11, 6, 2, 0, tzinfo=timezone.utc)
+    SH.advance(tmp_path, now=now, close_of=closes, through=through)
+    return {"schema": "ENTRY_STATE_SHADOW_STATUS_V1", "studyId": SH.STUDY, "productionEffect": "NONE", "atUtc": "2026-11-06T02:00:00Z",
+            "status": "OK", "report": {"readout": SH.status_report(tmp_path, now=now)}}
+
+
+def test_a_stopped_paper_path_reads_unknown_never_a_zero_return(tmp_path):
+    """A genuine gap inside published history (11-04 absent, 11-05 present) stops the path with an explicit row."""
+    prices = {"2026-11-02": 100.0, "2026-11-03": 101.0, "2026-11-05": 103.0}
+    doc = _paper_status(tmp_path, lambda t, s: prices.get(s) if t == "069500.KS" else 50.0, through="2026-11-05")
+    d = docs()
+    d[R.SHADOW] = doc
+    r = build(d, now="2026-11-06T03:00:00+00:00")
+    rows = {x["strategyId"]: x for x in r["trackedPath"]["rows"]}
+    for sid in ("KR:ETF_ONLY", "KR:CURRENT_POLICY"):
+        assert rows[sid]["fillState"] == "STOPPED_UNRESOLVED_MISSING_PRICE"
+        assert rows[sid]["nav"] is None and rows[sid]["excessVsEtfPct"] is None and rows[sid]["navDate"] is None
+    out = R.render(r)
+    assert "STOPPED_UNRESOLVED_MISSING_PRICE" in out and "+0.0000%" not in out
+
+
+def test_a_session_the_vendor_has_not_published_yet_defers_and_the_report_stays_pending(tmp_path):
+    """Nothing is written for an unpublished session, so the path neither stops nor shows a made-up return."""
+    published_through = "2026-11-03"
+
+    def closes(ticker, session):
+        return None if session > published_through else (100.0 if ticker == "069500.KS" else 50.0)
+    closes.quote_through = {"069500.KS": published_through, "000001.KS": published_through}
+    doc = _paper_status(tmp_path, closes, through="2026-11-05")
+    r = build({**docs(), R.SHADOW: doc}, now="2026-11-06T03:00:00+00:00")
+    row = next(x for x in r["trackedPath"]["rows"] if x["strategyId"] == "KR:CURRENT_POLICY")
+    assert row["fillState"] == "FILLED" and row["navDate"] == published_through and row["nav"] is not None
+    assert not any(n["status"] != "MARKED" for n in map(json.loads, (tmp_path / "nav-daily.jsonl").read_text().splitlines()))
