@@ -41,8 +41,8 @@ permissions:
 # queued run was already waiting — runs 168 and 169 died that way on 2026-08-27
 # and the merge commit that pushed them was never deployed by its own run. The
 # two jobs write disjoint paths on signal-history (state/ here, ledger/ there)
-# and each push below rebases and retries, so the shared lock bought nothing
-# that the retry does not.
+# and publication retries against the latest HEAD without force, so a shared
+# lock is unnecessary.
 concurrency:
   group: ${{ github.event_name == 'pull_request' && format('atlas-matrix-diagnostic-{0}', github.event.pull_request.number) || (startsWith(inputs.atlas_action, 'matrix-') && 'kr-alpha-atlas-phase-c-v1-single-attempt' || 'pages-deploy') }}
   cancel-in-progress: false
@@ -143,6 +143,13 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+      - name: Disk before checkout
+        run: |
+          df -h
+          for path in "$GITHUB_WORKSPACE" "$GITHUB_WORKSPACE/.git" "$GITHUB_WORKSPACE/.state" "$GITHUB_WORKSPACE/_site"; do
+            if [ -e "$path" ]; then du -sh "$path"; fi
+          done
+
       - name: Checkout
         uses: actions/checkout@v5
         with:
@@ -206,6 +213,13 @@ jobs:
             fi
           fi
 
+      - name: Disk before build
+        run: |
+          df -h
+          for path in "$GITHUB_WORKSPACE" "$GITHUB_WORKSPACE/.git" "$GITHUB_WORKSPACE/.state" "$GITHUB_WORKSPACE/_site"; do
+            if [ -e "$path" ]; then du -sh "$path"; fi
+          done
+
       - name: Build insight data
         env:
           # Add these secrets in repo Settings → Secrets and variables → Actions.
@@ -252,50 +266,29 @@ jobs:
         with:
           path: _site
 
+      - name: Disk before deployment
+        run: |
+          df -h
+          for path in "$GITHUB_WORKSPACE" "$GITHUB_WORKSPACE/.git" "$GITHUB_WORKSPACE/.state" "$GITHUB_WORKSPACE/_site"; do
+            if [ -e "$path" ]; then du -sh "$path"; fi
+          done
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
 
       # This is deliberately after production validation AND deployment. A bad
       # build can never become the next rank-buffer/prior-regime state.
+      - name: Disk before state publication
+        run: |
+          df -h
+          for path in "$GITHUB_WORKSPACE" "$GITHUB_WORKSPACE/.git" "$GITHUB_WORKSPACE/.state" "$GITHUB_WORKSPACE/_site"; do
+            if [ -e "$path" ]; then du -sh "$path"; fi
+          done
+
       - name: Publish last successful state
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           python scripts/update_state.py data/site-data.json .state/latest.next.json
-          git config user.name "production-state-bot"
-          git config user.email "actions@github.com"
-          mkdir -p state-work
-          if git ls-remote --exit-code --heads origin signal-history; then
-            git fetch origin signal-history
-            git worktree add state-work origin/signal-history
-            git -C state-work checkout -B signal-history
-          else
-            git worktree add --detach state-work
-            git -C state-work checkout --orphan signal-history
-            git -C state-work rm -rf . || true
-          fi
-          mkdir -p state-work/state
-          cp .state/latest.next.json state-work/state/latest.json
-          git -C state-work add state/latest.json
-          if git -C state-work diff --cached --quiet; then
-            echo "production state unchanged"
-            exit 0
-          fi
-          git -C state-work commit -m "state: publish last successful production snapshot"
-          # The replay job writes ledger/ on this same branch and may land
-          # between our fetch and our push. Different paths, so a rebase always
-          # applies; retry rather than serialising the two workflows.
-          for attempt in 1 2 3 4 5; do
-            if git -C state-work push origin signal-history; then
-              exit 0
-            fi
-            echo "push rejected (attempt $attempt); rebasing onto the remote"
-            git -C state-work fetch origin signal-history
-            if ! git -C state-work rebase origin/signal-history; then
-              git -C state-work rebase --abort || true
-              echo "state snapshot could not be rebased onto signal-history"
-              exit 1
-            fi
-            sleep $((attempt * 3))
-          done
-          echo "state snapshot could not be pushed after 5 attempts"
-          exit 1
+          python scripts/publish_state.py .state/latest.next.json
