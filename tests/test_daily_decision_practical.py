@@ -370,3 +370,10 @@ def test_a_session_the_vendor_has_not_published_yet_defers_and_the_report_stays_
     row = next(x for x in r["trackedPath"]["rows"] if x["strategyId"] == "KR:CURRENT_POLICY")
     assert row["fillState"] == "FILLED" and row["navDate"] == published_through and row["nav"] is not None
     assert not any(n["status"] != "MARKED" for n in map(json.loads, (tmp_path / "nav-daily.jsonl").read_text().splitlines()))
+
+
+def test_the_zero_to_five_range_is_described_as_the_existing_policy_never_as_a_research_cap():
+    out = R.render(build(docs()))
+    assert "weekly-passive-first-v1" in out and "연구 목표의 종목 수 상한이나 목표가 아닙니다" in out
+    assert "운영 범위는 지역별 0–5종목" not in out
+    assert "3종목" not in out and "5종목 고정" not in out and "최소 보유" not in out      # no count is forced or required

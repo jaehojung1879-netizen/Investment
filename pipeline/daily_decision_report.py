@@ -505,7 +505,7 @@ def render(report):
             lines.append("|" + "|".join(text(x) for x in (region, f"{c['stockCount']}개", etf, c["holdings"], c["reason"])) + "|")
         else:
             lines.append("|" + "|".join(text(x) for x in (region, None, None, None, c["reason"])) + "|")
-    lines += ["", "운영 범위는 지역별 0–5종목이며 0개이면 ETF 100%입니다. 표는 digest가 확인된 FINAL 주간 판단이 가장 최근에 완료된 주말 세션의 판단이고 저장된 필드끼리 일치할 때만 채웁니다. 주간 판단은 다음 주말 세션이 끝날 때까지 유효합니다. "
+    lines += ["", "현재 운영 정책(weekly-passive-first-v1)은 지역별 0–5종목을 허용하며 0개이면 ETF 100%입니다. 이 범위는 기존 정책의 설명이지 연구 목표의 종목 수 상한이나 목표가 아닙니다(별도 D v2 연구는 0개부터 10개 초과까지를 다룹니다). 표는 digest가 확인된 FINAL 주간 판단이 가장 최근에 완료된 주말 세션의 판단이고 저장된 필드끼리 일치할 때만 채웁니다. 주간 판단은 다음 주말 세션이 끝날 때까지 유효합니다. "
               "그 밖에는 UNKNOWN이며 0개나 100%로 바꿔 쓰지 않습니다. 종목이 선정돼도 이 보고서에는 이름·비중을 표시하지 않습니다(투자 승인 레지스트리가 없음).", ""]
     t = r["trackedPath"]
     lines += ["## ETF 대비 성과 — 세 가지를 합치지 않고 따로 읽음", "",
