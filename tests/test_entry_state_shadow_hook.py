@@ -164,3 +164,74 @@ def test_receipt_provenance_is_content_addressed_and_says_what_was_not_verified(
         assert row["sourceHashes"]["sourceVerification"] == "SHA256_OF_BYTES_WRITTEN_IN_THIS_RUN_BEFORE_COMMIT"
         assert row["productionEffect"] == "NONE" and row["liveValidated"] is False and row["evidenceClass"] == "PROSPECTIVE_PAPER"
         assert row["executionSession"] > row["asOfDate"]                                   # a fill can never predate the signal session
+
+
+# ------------------------------------------------------------------------ a refused observation must not cost the paper path its NAV
+def _recorder():
+    return importlib.import_module("scripts.record_entry_state_shadow")
+
+
+def _stored_week(directory):
+    """One recorded week (signal 2026-10-30, executes 2026-11-02), as the first successful scheduled run would have left it."""
+    from tests.test_entry_state_shadow_ledger import SUNDAY, observation
+    L = importlib.import_module("pipeline.entry_state_shadow_ledger")
+    L.append_decisions(directory, L.decision_receipts(observation(as_of="2026-10-30"), recorded_at=SUNDAY, code={}, observation_sha256="w1"))
+    return L
+
+
+def test_a_refused_observation_still_marks_the_stored_book_and_keeps_the_readout(tmp_path, monkeypatch):
+    """The weekly decision is rewritten daily but the champion artifact only when no session is mid-flight, so from Tuesday to Saturday
+    the two published files are from different generations and the observer refuses to pair them. That refusal concerns NEW decisions
+    only; the stored book still has to be marked, and the stored status the daily brief reads must keep its NAV table."""
+    from datetime import datetime, timezone
+    recorder = _recorder()
+    directory = tmp_path / "study"
+    L = _stored_week(directory)
+    now = datetime(2026, 11, 5, 12, 0, tzinfo=timezone.utc)
+    prices = {"2026-11-02": 100.0, "2026-11-03": 101.0, "2026-11-04": 102.0, "2026-11-05": 103.0}
+
+    def closes(ticker, session):
+        return prices.get(session) if ticker == "069500.KS" else 50.0
+    closes.quote_through = {"069500.KS": "2026-11-05", "000001.KS": "2026-11-05"}
+    closes.valuation_origins = {}
+    monkeypatch.setattr(L, "utc_now", lambda: now)
+    monkeypatch.setattr(recorder, "live_closes", lambda d: closes)
+
+    def refuse(*a, **k):
+        raise RuntimeError("OBSERVATION_REFUSED: DIFFERENT_GENERATION_CANNOT_PAIR")
+    monkeypatch.setattr(recorder, "observe", refuse)
+    assert recorder.run(Path("c.json"), Path("w.json"), Path("cfg.json"), directory) == 0
+    status = json.loads((directory / "publication-status.json").read_text())
+    assert status["status"] == "OK"
+    assert status["report"]["observation"] == {"status": "REFUSED", "reason": "OBSERVATION_REFUSED: DIFFERENT_GENERATION_CANNOT_PAIR"}
+    assert status["report"]["decisions"]["appended"] == 0
+    policy = status["report"]["readout"]["strategies"]["KR:CURRENT_POLICY"]
+    assert policy["fillState"] == "FILLED" and policy["navDate"] == "2026-11-05" and policy["nav"] is not None
+    assert (directory / "nav-daily.jsonl").exists()
+
+
+def test_a_refused_observation_with_no_ledger_yet_is_reported_as_refused(tmp_path, monkeypatch):
+    recorder = _recorder()
+    directory = tmp_path / "study"
+
+    def refuse(*a, **k):
+        raise RuntimeError("OBSERVATION_REFUSED: DIFFERENT_GENERATION_CANNOT_PAIR")
+    monkeypatch.setattr(recorder, "observe", refuse)
+    assert recorder.main(["run", "c.json", "w.json", "cfg.json", str(directory)]) == 1
+    status = json.loads((directory / "publication-status.json").read_text())
+    assert status["status"] == "REFUSED" and "DIFFERENT_GENERATION_CANNOT_PAIR" in status["error"]
+    assert not (directory / "decisions.jsonl").exists()
+
+
+@pytest.mark.skipif(NODE is None, reason="Node unavailable")
+def test_the_recorded_refusal_reason_is_the_error_not_the_node_banner(tmp_path):
+    ledger, cfg = mini_ledger(tmp_path)
+    weekly = ledger / "weekly-decisions/latest.json"
+    doc = json.loads(weekly.read_text())
+    doc["generatedAt"] = "2026-11-02T06:11:21+00:00"                        # a later weekly generation than the champion's
+    weekly.write_text(json.dumps(doc))
+    result = child(ledger, cfg, MAIN_A)
+    assert result.returncode == 1
+    status = json.loads((ledger / "research-strategies" / STUDY / "publication-status.json").read_text())
+    assert status["status"] == "REFUSED" and "DIFFERENT_GENERATION_CANNOT_PAIR" in status["error"]
+    assert "Node.js v" not in status["error"]

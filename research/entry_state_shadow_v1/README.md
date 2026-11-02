@@ -32,3 +32,19 @@ Regression: `python -m pytest -q tests/test_entry_state_shadow_ledger.py tests/t
 Tests compare one acquisition with multiple resumed acquisitions through split/reverse-split/dividend rescalings,
 including the real recorder adapter with offline vendor fixtures, dated costs, retained holdings and NAV. They also
 cover superseded decisions, non-uniform revisions, missing origins, legacy books and interrupted checkpoints.
+
+## Operating pattern of the scheduled hook (measured on signal-history `7e7effce`, 2026-11-02)
+
+- The hook reads the published `weekly-decisions/latest.json` and champion `latest.json` of the **previous** run. The weekly file is
+  rewritten every day; the champion file only when no region is mid-session, so from about Tuesday to Saturday the two are from
+  different generations and the observer refuses to pair them (`DIFFERENT_GENERATION_CANNOT_PAIR`). The champion can also be
+  `BLOCKED` (e.g. `CONFLICTING_SAME_SESSION_INPUT` after a same-session input changed), as it is in the 11/01 and 11/02 files.
+- A new week's decisions are therefore recorded on the first run after a Saturday publication in which both files are READY and from
+  one generation (normally Sunday). A refusal on other days concerns **new decisions only**: with a stored ledger the hook still marks
+  the stored book against prices and keeps the stored readout (`report.observation.status = REFUSED`, `status = OK`); with no ledger
+  yet it writes `status = REFUSED` and the reason.
+- Consequence for the first live week: the 10/30 week was READY in the 10/31 files only, so it is recorded only if a hook run happens
+  while those files are still current; otherwise recording starts with the week of 2026-11-06.
+- `sourceCommit` on a receipt is the **main** commit that ran the workflow (the inputs are not yet committed again when the hook reads
+  them), not an immutable signal-history commit. The receipt carries the SHA-256 of every input it read, which can be matched to the
+  signal-history blob afterwards; the verification label says the bytes were not authenticated against a Git object at write time.
