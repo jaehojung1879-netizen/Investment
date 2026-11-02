@@ -1,0 +1,13 @@
+{
+  "kind": "DESCRIPTIVE_SAVED_PATH_READOUT_NOT_RESEARCH_REEXECUTION",
+  "asOfDate": "2026-11-01",
+  "units": "All returns in percent, gaps in percentage points. No cost deduction. First observed NAV rebased to one for both paths; no synthetic pre-observation starting capital.",
+  "partition": "FULL + two equal elapsed calendar-time halves; first actual observation at/after midpoint starts half two; exclude cross-boundary windows from half summaries.",
+  "calendarWindows": "All scheduled origins; exact +6/+12 calendar months; weekly first stored union endpoint on/after target within7 days, verified daily first exchange session on/after target. No interpolation or inner join.",
+  "sessionWindows": "H126/H252 only when exact full paired date grid equals XKRX/XNYS or frozen #286 declared XKRX calendar. Session transitions i to i+H, not weekly counts or original source holding-label reinterpretation.",
+  "missingness": "Union plus expected daily sessions; invalid/missing values are not zero; missing whole-path observations block whole-path statistics. All window statuses counted including maturity after asOf, mature unavailable endpoints, gap/interior missing and time-split crossing.",
+  "inference": "None. Rolling means/win rates/tails descriptive; disjoint greedy calendar windows reported separately and not called independent. No bootstrap/p-value/model ranking.",
+  "classification": "Observed CAGR, MDD, period lower-tail mean and period volatility partial ordering with no risk-aversion coefficient. Descriptive only, not a preregistered alpha hypothesis. Regardless of path dominance, original source limits prevent investment admission/promotion.",
+  "unknowns": "No positions/trades consumed: turnover, exact added cost stress and selection alpha unavailable. QQQ has no authorized retained path.",
+  "sameSample": "Only original complete #286 NAVs within original window/sample/cost scenario; original incomplete paths blocked, never stitch standalone blocks."
+}

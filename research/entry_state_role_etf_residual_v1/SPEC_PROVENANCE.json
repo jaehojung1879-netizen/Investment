@@ -1,0 +1,11 @@
+{
+  "specFile": "research/entry_state_role_etf_residual_v1/spec.json",
+  "specSha256Field": "7e304b56ce2a42ba117d073b5b1180cde44fec492f411cc5d233c3c8b2eaa790",
+  "frozenAtCommit": "382a8f2dd7dacf3a70e0c68575bed8b4c8d8562b",
+  "frozenAtPath": "research_specs/entry-state-role-etf-residual-v1.json",
+  "fileBytesSha256": "6b0254d7b7f08e0b7322b9e4531923f1c6593f64dde403f0e433931199d08751",
+  "frozenBeforeAnyRealPathValued": true,
+  "realRunCodeCommit": "382a8f2dd7dacf3a70e0c68575bed8b4c8d8562b",
+  "movedBecause": "research_specs/ is tree-pinned by sealed studies (rp1-us-universe protectedTreeSha256, rp1-c1-us-wp4d diff guard, kr-alpha-atlas-phase-c-v1 protectedHashes); adding a file there failed CI run 41264130654. Moved byte-identical by git rename; no field of the spec changed.",
+  "verify": "git show 382a8f2:research_specs/entry-state-role-etf-residual-v1.json | sha256sum  ==  sha256sum research/entry_state_role_etf_residual_v1/spec.json"
+}

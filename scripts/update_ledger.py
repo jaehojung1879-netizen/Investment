@@ -142,6 +142,20 @@ def main(argv=None) -> int:
     except Exception as exc:  # noqa: BLE001 - research must never block the ledger
         print(f"::warning::rp1-b-h1-state-v1 hook raised (paper ledger unaffected): {type(exc).__name__}: {exc}")
         _hook_failed(ledger_dir, "rp1-b-h1-state-v1", exc)
+    # entry-state-shadow-ledger-v1: append-only PAPER receipts for the entry-state A/B, read from the last PUBLISHED
+    # weekly decision and champion artifact on signal-history (this run's own weekly step comes later). Child process,
+    # timeout, only in the scheduled workflow on main; a refusal never costs the paper ledger.
+    try:
+        from scripts import record_entry_state_shadow as shadow
+        if shadow.hook_enabled():
+            code = shadow.run_isolated(ledger_dir / "research-strategies" / "current-champion-decisions-v1" / "latest.json",
+                                       ledger_dir / "weekly-decisions" / "latest.json", ROOT / "config.json",
+                                       ledger_dir / "research-strategies" / shadow.L.STUDY)
+            if code:
+                print(f"::warning::entry-state-shadow-ledger-v1 exited {code}; see its publication-status.json")
+    except Exception as exc:  # noqa: BLE001 - research must never block the ledger
+        print(f"::warning::entry-state-shadow-ledger-v1 hook raised (paper ledger unaffected): {type(exc).__name__}: {exc}")
+        _hook_failed(ledger_dir, "entry-state-shadow-ledger-v1", exc)
     return 0
 
 

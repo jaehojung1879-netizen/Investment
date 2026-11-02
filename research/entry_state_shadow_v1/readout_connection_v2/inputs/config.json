@@ -1,0 +1,303 @@
+{
+  "portfolioName": "My Investment Insight",
+  "tradeHorizon": 10,
+  "horizons": [21, 63, 126],
+  "universeSize": 120,
+  "core": ["005930.KS", "000660.KS", "000810.KS", "010120.KS", "035420.KS", "034020.KS", "047040.KS", "PFE", "QQQ", "NVDA", "GOOGL"],
+  "names": {
+    "005930.KS": "삼성전자", "000660.KS": "SK하이닉스", "000810.KS": "삼성화재", "010120.KS": "LS ELECTRIC",
+    "035420.KS": "NAVER", "034020.KS": "두산에너빌리티", "047040.KS": "대우건설",
+    "000270.KS": "기아", "005380.KS": "현대차", "005935.KS": "삼성전자우", "012330.KS": "현대모비스",
+    "028260.KS": "삼성물산", "035720.KS": "카카오", "051910.KS": "LG화학", "006400.KS": "삼성SDI",
+    "055550.KS": "신한지주", "086790.KS": "하나금융지주", "105560.KS": "KB금융", "015760.KS": "한국전력",
+    "032830.KS": "삼성생명", "207940.KS": "삼성바이오로직스", "373220.KS": "LG에너지솔루션",
+    "066570.KS": "LG전자", "003670.KS": "포스코퓨처엠", "010130.KS": "고려아연", "009150.KS": "삼성전기",
+    "011200.KS": "HMM", "033780.KS": "KT&G", "024110.KS": "기업은행", "316140.KS": "우리금융지주",
+    "138040.KS": "메리츠금융지주", "018260.KS": "삼성에스디에스", "030200.KS": "KT", "068270.KS": "셀트리온",
+    "009540.KS": "HD한국조선해양", "051900.KS": "LG생활건강", "097950.KS": "CJ제일제당", "271560.KS": "오리온",
+    "004020.KS": "현대제철", "267260.KS": "HD현대일렉트릭", "042660.KS": "한화오션", "010140.KS": "삼성중공업",
+    "329180.KS": "HD현대중공업", "012450.KS": "한화에어로스페이스", "064350.KS": "현대로템",
+    "PFE": "화이자(Pfizer)"
+  },
+  "universe": {
+    "US": ["QQQ", "SPY", "AAPL", "MSFT", "NVDA", "GOOGL", "GOOG", "AMZN", "META", "AVGO", "TSLA", "BRK-B", "LLY", "JPM", "V", "WMT", "UNH", "XOM", "MA", "JNJ", "PG", "HD", "COST", "ORCL", "ABBV", "BAC", "KO", "MRK", "CVX", "ADBE", "PEP", "CRM", "AMD", "NFLX", "TMO", "ACN", "LIN", "MCD", "ABT", "CSCO", "WFC", "DHR", "TXN", "QCOM", "PM", "VZ", "INTU", "IBM", "CAT", "GE", "NOW", "ISRG", "AMGN", "PFE", "UNP", "SPGI", "GS", "HON", "BKNG", "AXP", "LOW", "BLK", "SYK", "ELV", "PLD", "TJX", "VRTX", "C", "DE", "GILD"],
+    "KR": ["005930.KS", "000660.KS", "373220.KS", "207940.KS", "005380.KS", "000270.KS", "068270.KS", "105560.KS", "035420.KS", "012330.KS", "028260.KS", "055550.KS", "035720.KS", "051910.KS", "006400.KS", "000810.KS", "015760.KS", "032830.KS", "003670.KS", "086790.KS", "138040.KS", "010130.KS", "009150.KS", "011200.KS", "034020.KS", "033780.KS", "066570.KS", "316140.KS", "024110.KS", "010120.KS", "047040.KS", "018260.KS", "030200.KS", "009540.KS", "051900.KS", "097950.KS", "271560.KS", "004020.KS", "267260.KS", "042660.KS", "010140.KS", "329180.KS", "012450.KS", "064350.KS"]
+  },
+  "benchmark": "SPY",
+  "benchmarks": { "US": "SPY", "KR": "069500.KS" },
+  "benchmarkSources": {
+    "069500.KS": [
+      { "kind": "krx-total-return", "symbol": "069500.KS" },
+      { "kind": "yahoo", "symbol": "069500.KS" }
+    ],
+    "SPY": [
+      { "kind": "yahoo", "symbol": "SPY" }
+    ],
+    "_notes": "Redundancy is across VENDORS for the SAME instrument, never across instruments. The KR benchmark is 069500.KS (KODEX 200), a KOSPI 200 tracking ETF, and NOT the ^KS200 index: ^KS200 is a price index that excludes its constituents' dividends, while the US benchmark SPY is an ETF whose history includes them, so KR excess return was measured against a benchmark short by roughly the KOSPI 200 dividend yield and was flattered by that much. An ETF is quoted like any listed name, so it gets the identical as-traded forward total-return basis SPY gets and the two legs finally mean the same thing. The cost is the ETF wrapper: about 0.15%/yr of fees and tracking error sits in the KR benchmark against SPY's 0.09%, which is an order of magnitude smaller than the dividend yield it removes. The primary route is krx-total-return, which takes exchange-native sessions from FinanceDataReader and distributions from Yahoo through pipeline/korea_prices: Yahoo serves 3,782 KOSPI 200 sessions against FDR's 3,855 and five of the missing ones are absent for the whole Korean cross-section, so a Yahoo-only benchmark would reintroduce the defect replay-v12 was built to fix. Yahoo stays second so the redundancy survives if the primary breaks, and both routes quote the same instrument on the same basis. SPY deliberately has no second vendor: yfinance auto_adjust returns a total-return series while most alternative routes return raw close, and swapping between them mid-history would move 126D excess returns by roughly 0.65%p with nothing reporting an error. SPY relies on the committed snapshot under ledger/benchmarks/ instead."
+  },
+  "primary": "QQQ",
+  "runMode": "paperTrading",
+  "coverageFloor": 95,
+  "longterm": {
+    "minNames": 8,
+    "maxNames": 12,
+    "maxNameWeight": 0.15,
+    "maxSectorWeight": 0.30,
+    "minCashPct": 5,
+    "minFactorSleeves": 3,
+    "minFinancialCoverage": 0.4,
+    "rankBuffer": { "enterPct": 12, "exitPct": 28 },
+    "excludeFromRanking": ["QQQ", "SPY", "DIA", "IWM", "EFA", "EEM", "AGG", "GLD", "BIL", "MTUM", "VLUE", "QUAL", "USMV", "VOO", "IVV"]
+  },
+  "kellyPortfolio": {
+    "enabled": true,
+    "mode": "shadow",
+    "horizonDays": 126,
+    "kellyFraction": 0.25,
+    "blendWeight": 0.25,
+    "minEffectiveDates": 30,
+    "minUniqueDates": 63,
+    "timeDecayHalfLifeDays": 504,
+    "shrinkagePriorStrength": 30,
+    "probabilityCalibration": {
+      "requiredForKelly": true,
+      "priorStrength": 20,
+      "payoffPriorStrength": 20,
+      "minTrainingDates": 30,
+      "minAuditDates": 63,
+      "minIndependentAuditDates": 8,
+      "minConditionDates": 20,
+      "selectionFraction": 0.65,
+      "minConditionBrierImprovement": 0.0025,
+      "maxBrier": 0.255,
+      "maxEce": 0.10,
+      "maxLogLoss": 0.72,
+      "minBrierSkill": 0.0,
+      "integrity": {
+        "minPitCoverage": 0.60,
+        "requireHistoricalUniverse": true,
+        "requirePointInTimeFundamentals": true,
+        "requireVintageMacroForConditionalProbability": true
+      }
+    },
+    "covarianceLookbackDays": 504,
+    "covarianceMinDays": 252,
+    "useLedoitWolf": true,
+    "riskAversion": 1.0,
+    "selection": {
+      "targetNames": 5,
+      "minNames": 3,
+      "maxNamesPerSector": 2,
+      "maxNamesPerRegion": 3,
+      "minAlphaPercentile": 66,
+      "convictionTiltRange": 1.0
+    },
+    "maxPositionWeight": 0.3,
+    "maxSectorWeight": 0.45,
+    "maxThemeWeight": 0.45,
+    "minCashPct": 15,
+    "maxTurnoverPct": 25,
+    "minNames": 3,
+    "minNamesPerRegion": 1,
+    "maxNames": 5,
+    "watchWeightMultiplier": 0.5,
+    "waitForPullbackWeightMultiplier": 0.25,
+    "minPortfolioCompletenessPct": 90,
+  "selectionNullDraws": 200,
+  "_selectionNullNotes": "The concentrated book is tested against the distribution the SAME construction produces when the conviction ranking is replaced by noise: same dates, same research pool, same name/sector/region caps, same entry multipliers, same cash floor, same turnover costs. Only the ordering varies, so the gap is what choosing was worth. It does NOT test the research screen, because the pool is already filtered by the alpha score. minPortfolioCompletenessPct refuses to publish a path built from the subset of portfolios that happened to be measurable - a dropped name is disproportionately a halted or delisted one, so the survivors are a different strategy.",
+  "turnoverPenalty": 0.002,
+    "alphaPercentileBuckets": [0, 60, 80, 90, 95, 100],
+    "regionCaps": { "KR": 0.65, "US": 0.65 },
+    "currency": {
+      "baseCurrency": "KRW",
+      "fxReturnsIncluded": false,
+      "fxHedged": false
+    },
+    "transactionCosts": {
+      "US": {
+        "commissionBps": 5,
+        "sellTaxBps": 3,
+        "spreadBps": 10,
+        "assumedTurnoverPct": 25,
+        "rebalanceDays": 63,
+        "expectedTradeNotionalKrw": 10000000
+      },
+      "KR": {
+        "commissionBps": 5,
+        "sellTaxBps": 20,
+        "spreadBps": 12,
+        "assumedTurnoverPct": 25,
+        "rebalanceDays": 63,
+        "expectedTradeNotionalKrw": 10000000
+      }
+    },
+    "activation": {
+      "minPaperDays": 252,
+      "minMaturedSignals": 100,
+      "requirePositiveCostAdjustedExcess": true,
+      "requirePositiveRankIC": true,
+      "requireNoMddDeterioration": true
+    },
+    "regimeMultipliers": {
+      "Goldilocks": { "kellyMultiplier": 1.0, "minCashPct": 10 },
+      "Reflation": { "kellyMultiplier": 0.8, "minCashPct": 15 },
+      "Transition/Low confidence": { "kellyMultiplier": 0.5, "minCashPct": 20 },
+      "Deflation/Slowdown": { "kellyMultiplier": 0.4, "minCashPct": 25 },
+      "Stagflation": { "kellyMultiplier": 0.3, "minCashPct": 30 }
+    }
+  },
+  "validation": {
+    "minPaperDays": 252,
+    "ledgerBranch": "signal-history"
+  },
+  "historicalReplay": {
+    "enabled": true,
+    "start": "2013-01-01",
+    "frequency": "W",
+    "horizonDays": 126,
+    "minBenchmarkCoveragePct": 95.0,
+    "alphaPercentileBuckets": [0, 60, 80, 90, 95, 100],
+    "minEffectiveDates": 30,
+    "shrinkagePriorStrength": 30,
+    "costAdjusted": true,
+    "requirePitQuality": true,
+    "pitFundamentalsPath": null,
+    "universeHistoryPath": "data/universe-history.json",
+   "krxPricesPath": null,
+    "macroVintageSeries": [],
+    "_macroVintageNotes": "Names from macro.fredSeries whose ALFRED release history the replay should fetch, so the regime is conditioned on the number printed at the time rather than the number as revised since. Opt-in because the full release history is far heavier than the revised series. A series left off this list stays REVISED_HISTORY, and the vintageMacro integrity gate wants PIT_EXACT — which means every column in the macro panel, not just the revision-prone ones.",
+    "_krxNotes": "KRX Open API stores collected by the `Collect universe history` workflow onto signal-history. krxPricesPath is the daily bars korea_prices falls back to for names FinanceDataReader serves nothing for. The monthly membership cross-sections have no key here because nothing reads them from config: replay.yml hands them to build_universe_history --krx-snapshots, which turns them into universe-history.json before the replay starts. Null here and set by replay.yml from the restored ledger, because a path that resolves on a developer's machine and not in CI is worse than one that resolves nowhere. Null means the Korean half behaves exactly as it did through v15: membership undescribed, prices from FDR alone.",
+   "_pitFundamentalsNotes": "PIT_FUNDAMENTALS_V1 JSONL, one filing per line. Required per line: ticker, fiscalPeriod, reportDate, publicationDate, availableFrom, currency, source, sourceAsOf, revisionStatus — availableFrom is the day WE could read it and is the only date that licenses use. Supply per-share numerators (epsTtm, bookValuePerShare, fcfPerShare) rather than yields: a yield needs a price, and the replay divides by the close of the date it is standing on. Ratios that need no price (roe, operatingMargin, profitMargin, debtToEquity, earningsGrowth) are stated directly. Filing dates come from SEC XBRL companyfacts (the per-fact `filed` field) for US and DART 접수일자 for KR; neither is bundled here, and while this stays null the value/quality sleeves are WITHHELD from the replay and the pointInTimeFundamentals integrity gate cannot pass.",
+    "minOrderingTStat": 1.96,
+    "minOrderingEffectiveDates": 12,
+    "_orderingNotes": "minOrderingTStat / minOrderingEffectiveDates gate the bucket ladder on evidence that alpha RANK ordered returns (HAC t on top-minus-bottom, or on the per-date rank IC). 1.96 is calibrated by simulating this exact gate under the null, where it realises a 3.6-5.0% rejection rate; it is not a textbook critical value. Below the gate no ladder is published and no historical prior reaches Kelly, because a bucket's excess over the benchmark is mostly universe carry rather than selection skill.",
+    "_notes": "frequency W = weekly rebalance-grid replay. D gives ~5x the signals at ~5x the cost and mostly adds overlapping observations; the HAC effective sample barely moves because neighbouring days share the same 126-day window. M is cheapest but thins the cross-section count below what bucket calibration needs. W is the chosen trade-off and is recorded in every replay diagnostic."
+  },
+  "evidence": {
+    "priorScalePct": 3.0,
+    "minEffectiveDates": 30,
+    "driftTriggerPct": 3.0,
+    "_notes": "priorScalePct is the zero-mean shrinkage prior on expected excess return. Historical OOS evidence enters at the discounted weight computed per bucket in pipeline.historical_calibration; prospective paper evidence enters at 1.0."
+  },
+  "opportunity": {
+    "enabled": true,
+    "highScoreThreshold": 70,
+    "topBucketPct": 0.1,
+    "limitPerRegion": 8,
+    "trainYears": 4.0,
+    "validationYears": 1.0,
+    "testYears": 1.0,
+    "embargoDays": 21,
+    "foldMode": "expanding",
+    "calibration": "isotonic",
+    "finalHoldoutStart": "2023-01-01",
+    "includeLightGbm": true,
+    "randomState": 42,
+    "acceptance": {
+      "minDecileMonotonicity": 0.6,
+      "minTopBucketNetExcessPct": 0.5,
+      "minPitCoverage": 0.6,
+      "maxRegimeSharePct": 80,
+      "maxSectorSharePct": 60
+    },
+    "_notes": "finalHoldoutStart is sealed during development and scored exactly once, after the winning model is frozen. If any acceptance check fails the ML radar is not published and the transparent rule-based change score is used instead."
+  },
+  "model": {
+    "minTrainDays": 252,
+    "stepSize": 21,
+    "calibrationWindow": 252,
+    "oosStart": "2020-01-01",
+    "alertQuantile": 0.80,
+    "fixedThresholdFallback": 0.70,
+    "historyStart": "2010-01-01",
+    "screenHistoryStart": "2019-01-01"
+  },
+  "fred": {
+    "US": {
+      "Treasury_10Y": "DGS10", "Treasury_2Y": "DGS2", "FedFunds": "DFF",
+      "HY_Spread": "BAMLH0A0HYM2", "IG_Spread": "BAMLC0A0CM",
+      "Real_10Y": "DFII10", "Breakeven_10Y": "T10YIE",
+      "Headline_CPI": "CPIAUCSL", "Core_CPI": "CPILFESL", "Core_PCE": "PCEPILFE",
+      "Headline_PPI": "PPIFIS", "Core_PPI": "WPSFD49116",
+      "Unemployment": "UNRATE", "Initial_Claims": "ICSA", "Payrolls": "PAYEMS",
+      "CFNAI": "CFNAI", "NFCI": "NFCI", "ANFCI": "ANFCI",
+      "Fed_Assets": "WALCL", "RRP": "RRPONTSYD", "TGA": "WTREGEN",
+      "Broad_Dollar": "DTWEXBGS", "WTI": "DCOILWTICO", "M2": "M2SL"
+    },
+    "KR": { "USD_KRW": "DEXKOUS", "Korea_10Y": "IRLTLT01KRM156N", "Korea_3M": "IR3TIB01KRM156N" }
+  },
+  "ecos": {
+    "KR": {
+      "BaseRate": {
+        "seriesId": "722Y001",
+        "itemCode": null,
+        "cycle": null,
+        "sourceStatus": "AMBIGUOUS_SOURCE",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      "KTB_3Y": {
+        "cycle": "D",
+        "itemCode": "010200000",
+        "itemName": "국고채(3년)",
+        "seriesId": "817Y002",
+        "sourceStatus": "LIVE_VALIDATED_SOURCE",
+        "unit": "연%",
+        "validationEvidenceSha256": "6ad1eae9867596e7cf3ea7fb84c1071bf0f209d53ab5dba752e1f1c1f952aed6",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      "CorpBond_3Y": {
+        "seriesId": "817Y002",
+        "itemCode": null,
+        "cycle": null,
+        "sourceStatus": "AMBIGUOUS_SOURCE",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      "CPI": {
+        "seriesId": "901Y009",
+        "itemCode": null,
+        "cycle": null,
+        "sourceStatus": "AMBIGUOUS_SOURCE",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      "CoreCPI": {
+        "seriesId": "901Y010",
+        "itemCode": null,
+        "cycle": null,
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      "IndustrialProduction": {
+        "seriesId": "901Y033",
+        "itemCode": null,
+        "cycle": null,
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      "LeadingIndex": {
+        "cycle": "M",
+        "itemCode": "I16E",
+        "itemName": "선행지수순환변동치",
+        "seriesId": "901Y067",
+        "sourceStatus": "LIVE_VALIDATED_SOURCE",
+        "unit": "2020=100",
+        "validationEvidenceSha256": "a1f230f74bb11c3143be51ae0ebd837b1f0c41d0d5c0950a92c5621918844ee4",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      "Exports": {
+        "seriesId": "901Y011",
+        "itemCode": null,
+        "cycle": null,
+        "sourceStatus": "NOT_AVAILABLE",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      "M2": {
+        "seriesId": "101Y004",
+        "itemCode": null,
+        "cycle": null,
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+        "vintageStatus": "REVISED_HISTORY"
+      }
+    }
+  },
+  "_notes": "core=실제 보유 종목(전체 분석). US universe는 S&P 500 전체 목록(최소 450개)을 확보하지 못하면 fail-closed하며 부분 fallback으로 추천하지 않음. KR universe는 KOSPI 시가총액 기준 구성. FinanceDataReader가 CI 네트워크에서 허용되면 전체 목록 자동 구성. FRED_API_KEY·ECOS_API_KEY는 GitHub Actions Secret으로만 주입. ECOS candidates fail closed until manual metadata/smoke validation resolves table, item and native cycle. Runtime ECOS_API_KEY maps from the ECOS secret in the manual probe only."
+}
