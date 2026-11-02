@@ -471,6 +471,14 @@ def status_report(directory: Path, *, now: datetime) -> dict:
         if tail and tail["status"] != "MARKED":
             fill_state = "STOPPED_" + tail["status"]
         etf_row = nav_by.get((benchmark_id(sid), tail["date"])) if tail and tail["status"] == "MARKED" else None
+        # Every strategy starts at NAV 1.0 on ITS OWN first marked session, which may be later than ETF_ONLY's (a blocked
+        # week holds the previous book). The ETF is therefore rebased to that session; dividing by ETF_ONLY's NAV since
+        # ITS start would charge the strategy with ETF returns earned before it existed.
+        first_nav = next((n for n in navs if n["strategyId"] == sid and n["status"] == "MARKED"), None)
+        etf_base = nav_by.get((benchmark_id(sid), first_nav["date"])) if first_nav else None
+        excess = None
+        if etf_row and etf_base and tail and tail["nav"] and etf_row["nav"] and etf_base["nav"]:
+            excess = round(100 * (tail["nav"] / (etf_row["nav"] / etf_base["nav"]) - 1), 6)
         audit = {}
         for row in last.get("candidateAudit") or []:
             audit[row["status"]] = audit.get(row["status"], 0) + 1
@@ -486,13 +494,13 @@ def status_report(directory: Path, *, now: datetime) -> dict:
             "chargedCostPctOfNav": round(100 * sum(f["costFraction"] for f in my_fills), 6) if my_fills else 0.0,
             "navDate": tail["date"] if tail else None, "nav": tail["nav"] if tail else None,
             "etfNavSameDate": etf_row["nav"] if etf_row else None,
-            "excessVsEtfPct": (round(100 * (tail["nav"] / etf_row["nav"] - 1), 6)
-                               if etf_row and tail and tail["nav"] else None),
+            "excessVsEtfPct": excess,
+            "etfBaseDate": first_nav["date"] if excess is not None else None,
             "maturity": matured.get(sid) or {"H126": "PENDING_NO_FILL_YET", "H252": "PENDING_NO_FILL_YET"},
         }
     return {"asOfUtc": now.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "evidenceClass": EVIDENCE_CLASS,
             "returnBasis": RETURN_BASIS, "costBasis": NET_ALREADY_CHARGED,
             "limits": ["vendor adjusted-close ratios are not certified corporate-action or shareholder-return accounting",
                        "units are valuation-index units, not broker shares; no order was placed",
-                       "excessVsEtfPct is a NAV ratio since each strategy's own start, not a validated alpha"],
+                       "excessVsEtfPct compares the strategy NAV (1.0 at its own first session) with the ETF_ONLY NAV rebased to that session (etfBaseDate); it is not a validated alpha"],
             "strategies": out}

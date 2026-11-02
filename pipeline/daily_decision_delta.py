@@ -93,6 +93,19 @@ def compare(before, after):
                    earlier["freshnessAtReport"].get(key), latest["freshnessAtReport"].get(key))
         record(region, "certificationReason", "CERTIFICATION_GATE",
                earlier.get("certificationReason"), latest.get("certificationReason"))
+        # Reports written before the stance existed have none: the first comparison shows it appearing, never a guessed value.
+        for key in ("displayed", "stockCount", "benchmarkWeightPct", "reason"):
+            record(region, "currentStance." + key, "REGION_STANCE",
+                   (earlier.get("currentStance") or {}).get(key), (latest.get("currentStance") or {}).get(key))
+
+    tracked_before, tracked_after = before.get("trackedPath") or {}, after.get("trackedPath") or {}
+    record("trackedPath", "status", "TRACKED_PATH_STATUS", tracked_before.get("status"), tracked_after.get("status"))
+    rows_before = {r.get("strategyId"): r for r in tracked_before.get("rows") or [] if isinstance(r, dict)}
+    rows_after = {r.get("strategyId"): r for r in tracked_after.get("rows") or [] if isinstance(r, dict)}
+    for strategy in sorted(set(rows_before) | set(rows_after), key=str):
+        for key in ("status", "fillState", "navDate", "nav", "excessVsEtfPct"):
+            record(strategy, "trackedPath." + key, "TRACKED_PATH",
+                   (rows_before.get(strategy) or {}).get(key), (rows_after.get(strategy) or {}).get(key))
 
     for study in sorted(set(before["paperStudies"]) | set(after["paperStudies"])):
         earlier = before["paperStudies"].get(study)

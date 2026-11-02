@@ -18,6 +18,7 @@ from . import prospective_receipt_core as P
 from . import kr_selection_challenger as V1
 from . import kr_selection_challenger_v2 as V2
 from . import rp1_b_h1_state as B
+from . import entry_state_shadow_ledger as SH
 
 ROOT = Path(__file__).resolve().parents[1]
 STUDIES = {V1.STUDY: V1, V2.STUDY: V2, B.STUDY: B}
@@ -26,7 +27,8 @@ WEEKLY = "ledger/weekly-decisions/"
 STEPS = ("record", "outcomes", "assess", "coverage", "hook")
 FILES = ("receipts.jsonl", "outcomes.jsonl", "attempts.jsonl", "assessment.json", "coverage.json",
          "outcome-pending.json", "publication-status.json", *(f"publication-status.{s}.json" for s in STEPS))
-ALLOWED = {STATE, *(WEEKLY + n for n in ("latest.json", "publication-status.json", "receipts.jsonl")),
+SHADOW = f"ledger/research-strategies/{SH.STUDY}/publication-status.json"
+ALLOWED = {STATE, SHADOW, *(WEEKLY + n for n in ("latest.json", "publication-status.json", "receipts.jsonl")),
            *(f"ledger/research-strategies/{s}/{n}" for s in STUDIES for n in FILES)}
 REPO_URL = "https://github.com/jaehojung1879-netizen/Investment"
 
@@ -57,7 +59,9 @@ class GitSnapshot:
         r = subprocess.run(["git", *args], cwd=self.root, capture_output=True,
                            env={**os.environ, "GIT_NO_LAZY_FETCH": "1"})
         if r.returncode:
-            raise ValueError("LOCAL_GIT_SNAPSHOT_UNAVAILABLE")
+            # Names the object so a partial clone (blobs fetched lazily, which this reader forbids) is diagnosable: see
+            # docs/daily-decision-report.md "Reproduce" for the one command that materialises the blobs first.
+            raise ValueError("LOCAL_GIT_SNAPSHOT_UNAVAILABLE: " + (args[-1] if args else "?"))
         return r.stdout
 
     def read(self, path):
@@ -244,6 +248,91 @@ def study_view(snapshot, study, as_of):
                             if module is not B else "Record actual weekly state; register the eight open outcome decisions before any return study"}
 
 
+def stance(row, view, now, weekly_blocked):
+    """What the stored weekly decision says to hold TODAY, shown only when every stored fact agrees.
+
+    The stored decision is read, never recomputed. Anything short of a fresh, digest-backed FINAL weekly decision whose own
+    fields are consistent (status, count, ETF weight, holdings) is UNKNOWN, never a guessed 0 or 100%. A stock selection is
+    never displayed: this renderer has no investment-admission registry, so names and weights stay withheld.
+    """
+    unknown = lambda reason: {"displayed": False, "stockCount": None, "benchmarkWeightPct": None,  # noqa: E731
+                              "holdings": None, "statusKo": None, "reason": reason}
+    if weekly_blocked:
+        return unknown("WEEKLY_PUBLICATION_BLOCKED")
+    if not _timestamp_ok(row.get("generatedAt"), now):
+        return unknown("POLICY_TIMESTAMP_MISSING_OR_AFTER_REPORT")
+    status = row.get("status")
+    if status not in W.DECISION_STATUSES:
+        return unknown("POLICY_STATUS_UNRECOGNIZED")
+    if row.get("weekStatus") != "FINAL_WEEKLY":
+        return unknown("NOT_A_FINAL_WEEKLY_DECISION")
+    if view["freshnessAtReport"]["status"] != "FRESH":
+        return unknown("STALE_OR_UNKNOWN_FRESHNESS_AT_REPORT")
+    if not view["lastValidFinalSession"] or row.get("asOfDate") != view["lastValidFinalSession"]:
+        return unknown("NO_DIGEST_VALID_FINAL_RECEIPT_FOR_THIS_DECISION")
+    count, weight, holdings = row.get("stockCount"), row.get("benchmarkWeightPct"), row.get("holdings")
+    if status == "PASSIVE_NO_DEFENSIBLE_EDGE":
+        if (type(count) is int and count == 0 and holdings == [] and type(weight) in (int, float) and weight == 100
+                and row.get("benchmark") == view["benchmark"]):
+            return {"displayed": True, "stockCount": 0, "benchmarkWeightPct": 100.0, "holdings": [],
+                    "statusKo": row.get("statusKo"), "reason": "STORED_FINAL_DECISION_IS_THE_ETF_DEFAULT"}
+        return unknown("PASSIVE_STATUS_FIELDS_INCONSISTENT")
+    return unknown("STOCK_SELECTION_NOT_DISPLAYED_NO_INVESTMENT_ADMISSION_REGISTRY")
+
+
+TRACKED = ("ETF_ONLY", "CURRENT_POLICY")
+
+
+def _finite(value, *, positive=False):
+    return (type(value) in (int, float) and value == value and abs(value) != float("inf")
+            and (not positive or value > 0))
+
+
+def tracked_path(snapshot, now):
+    """Stored status of the prospective paper ledger (no orders): NAV against the regional ETF. Never recomputed.
+
+    The prospective paper ledger is not an account and not a historical backtest; each is reported on its own line.
+    """
+    doc = snapshot.read(SHADOW)
+    base = {"studyId": SH.STUDY, "evidenceClass": SH.EVIDENCE_CLASS, "realAccountPerformance": None,
+            "rows": [], "researchScenarioCount": None, "errors": []}
+    if doc is None:
+        return {**base, "status": "NOT_STARTED_NO_STORED_STATUS", "atUtc": None}
+    errors = []
+    if (doc.get("schema") != "ENTRY_STATE_SHADOW_STATUS_V1" or doc.get("studyId") != SH.STUDY
+            or doc.get("productionEffect") != "NONE"):
+        errors.append("STATUS_IDENTITY_INVALID")
+    if not _timestamp_ok(doc.get("atUtc"), now):
+        errors.append("STATUS_TIMESTAMP_MISSING_OR_AFTER_REPORT")
+    readout = _mapping(_mapping(doc.get("report")).get("readout"))
+    if readout.get("evidenceClass") != SH.EVIDENCE_CLASS:
+        errors.append("READOUT_EVIDENCE_CLASS_MISMATCH")
+    if errors:
+        return {**base, "status": "INVALID_STORED_STATUS", "atUtc": doc.get("atUtc"), "errors": errors}
+    if doc.get("status") != "OK":
+        return {**base, "status": "LAST_ATTEMPT_" + str(doc.get("status")), "atUtc": doc.get("atUtc"),
+                "errors": [str(doc.get("reason"))] if doc.get("reason") else []}
+    strategies = _mapping(readout.get("strategies"))
+    rows = []
+    for region in W.BENCHMARKS:
+        for name in TRACKED + (("SEPARATE_COMPARISON:QQQ",) if region == "US" else ()):
+            sid = f"{region}:{name}"
+            item = _mapping(strategies.get(sid))
+            if not item:
+                rows.append({"strategyId": sid, "status": "NOT_IN_STORED_STATUS"})
+                continue
+            nav = item.get("nav") if _finite(item.get("nav"), positive=True) else None
+            excess = item.get("excessVsEtfPct") if _finite(item.get("excessVsEtfPct")) else None
+            rows.append({"strategyId": sid, "status": "READ", "fillState": item.get("fillState"),
+                         "navDate": item.get("navDate") if nav is not None else None, "nav": nav,
+                         "excessVsEtfPct": excess, "etfBaseDate": item.get("etfBaseDate") if excess is not None else None,
+                         "fills": item.get("fills") if type(item.get("fills")) is int else None,
+                         "chargedCostPctOfNav": item.get("chargedCostPctOfNav") if _finite(item.get("chargedCostPctOfNav")) else None,
+                         "maturity": {h: _mapping(item.get("maturity")).get(h) for h in SH.HORIZONS}})
+    scenarios = sum(1 for k in strategies if ":N" in k)
+    return {**base, "status": "READ", "atUtc": doc.get("atUtc"), "rows": rows, "researchScenarioCount": scenarios}
+
+
 def build(snapshot, *, as_of, code_identity):
     now = utc(as_of)
     if utc(snapshot.committed_at) > now:
@@ -290,6 +379,10 @@ def build(snapshot, *, as_of, code_identity):
             "lastValidFinalSession": final.get("asOfDate") if final else None,
             "exploratoryWatchlist": watched,
             "nextEvidence": "Source-valid dated inputs and independently admitted net benchmark-relative economic evidence; rank, internal weight, opportunity tier or paper PASS cannot substitute"}
+    for region, view in regions.items():
+        view["currentStance"] = stance(_mapping(_mapping(weekly.get("regions")).get(region)), view, now,
+                                       bool(weekly.get("blocked")))
+    tracked = tracked_path(snapshot, now)
     studies = {s: study_view(snapshot, s, now) for s in STUDIES}
     report = {"schema": "READ_ONLY_DAILY_DECISION_REPORT_V1", "reportAsOfUtc": now.isoformat(),
         "reportGeneratedAt": now.isoformat(), "reportAsOfKst": now.astimezone(W.ZoneInfo("Asia/Seoul")).isoformat(),
@@ -299,7 +392,7 @@ def build(snapshot, *, as_of, code_identity):
             "sourceProducerGitSha": state.get("buildCommitSha"), "sourceFetchTimestamp": None,
             "productionValidationReported": (state.get("productionValidation") or {}).get("passed"),
             "meaning": "INTERNAL_CONTEXT_NOT_PREDICTIVE_OR_SCIENTIFIC_APPROVAL"},
-        "regions": regions, "paperStudies": studies, "weeklyPublication": publication,
+        "regions": regions, "trackedPath": tracked, "paperStudies": studies, "weeklyPublication": publication,
         "weeklyLedgerErrors": weekly_errors,
         "inactiveD2": "Separate Track D v2 research objective N=0 to N>10; this renderer does not activate it or change operating 0–5 policy",
         "safety": {"readOnly": True, "historicalOutcomesExecuted": False, "productionEffect": "NONE",
@@ -319,13 +412,34 @@ def redact_tree(value):
     return value
 
 
+def _item(value):
+    if value is None:
+        return "UNKNOWN"
+    if isinstance(value, bool):
+        return "true" if value else "false"
+    if isinstance(value, (dict, list)):
+        return "(" + _collection(value) + ")"
+    return str(value)
+
+
+def _collection(value):
+    """Plain `a, b` / `k=v; k2=v2`. An empty list is an explicit none; None inside stays UNKNOWN."""
+    if isinstance(value, dict):
+        return "; ".join(f"{k}={_item(v)}" for k, v in sorted(value.items(), key=lambda kv: str(kv[0]))) or "없음"
+    return ", ".join(_item(v) for v in value) or "없음"
+
+
 def text(value):
     if value is None:
         return "UNKNOWN"
     if isinstance(value, (dict, list)):
-        value = json.dumps(value, ensure_ascii=False, sort_keys=True, allow_nan=False)
+        value = _collection(value)
     value = redact_tree(str(value))
-    return html.escape(value).replace("\n", " ").replace("|", "&#124;").replace("`", "&#96;").replace("[", "&#91;").replace("]", "&#93;")
+    return html.escape(value, quote=False).replace("\n", " ").replace("|", "&#124;").replace("`", "&#96;").replace("[", "&#91;").replace("]", "&#93;")
+
+
+def _pct(value, digits=4):
+    return "UNKNOWN" if value is None else f"{value:+.{digits}f}%"
 
 
 def render(report):
@@ -352,6 +466,37 @@ def render(report):
                   f"주간 상태 {text(v['persistedWeekStatus'])}; 마지막 유효 FINAL {text(v['lastValidFinalSession'])}. 저장 당시 FRESH와 현재 신선도는 별개이며, 지수 날짜를 ETF 시세 날짜로 쓰지 않습니다."]
     publication = r["weeklyPublication"]
     lines += ["", f"최신 주간 게시 시도: {text(publication.get('status'))}, {text(publication.get('attemptedAt'))}; 오류 {text(publication.get('errors'))}; 이월 {text(publication.get('deferredRegions'))}."]
+    lines += ["", "## 현재 운영 판단 — 저장된 최종 주간 판단 기준", "",
+              "| 지역 | 보유 종목 수 | ETF 비중 | 보유 종목 | 근거 |", "|---|---|---|---|---|"]
+    for region, v in r["regions"].items():
+        c = v["currentStance"]
+        if c["displayed"]:
+            etf = f"{v['benchmark']} {c['benchmarkWeightPct']:.0f}%" + (" (QQQ는 보조 비교만)" if region == "US" else "")
+            lines.append("|" + "|".join(text(x) for x in (region, f"{c['stockCount']}개", etf, c["holdings"], c["reason"])) + "|")
+        else:
+            lines.append("|" + "|".join(text(x) for x in (region, None, None, None, c["reason"])) + "|")
+    lines += ["", "운영 범위는 지역별 0–5종목이며 0개이면 ETF 100%입니다. 표는 digest가 확인된 FINAL 주간 판단과 지금 신선도가 모두 맞고 저장된 필드끼리 일치할 때만 채웁니다. "
+              "그 밖에는 UNKNOWN이며 0개나 100%로 바꿔 쓰지 않습니다. 종목이 선정돼도 이 보고서에는 이름·비중을 표시하지 않습니다(투자 승인 레지스트리가 없음).", ""]
+    t = r["trackedPath"]
+    lines += ["## ETF 대비 성과 — 세 가지를 합치지 않고 따로 읽음", "",
+              "1. **검증된 실제 계좌 성과: 없음.** 주문·체결·계좌 기록이 이 입력에 없습니다. UNKNOWN은 0%가 아닙니다.",
+              f"2. **전향 paper 경로** ({text(t['evidenceClass'])}, 주문 없음, 아직 검증 아님): 저장 상태 {text(t['status'])}; 저장 시각 {text(t['atUtc'])}.",
+              "3. **과거 탐색 백테스트**(HISTORICAL_DEVELOPMENT, 결과 노출 후 재현): 이 표에 합산하지 않습니다. 연구 결과는 `docs/daily-decision-report.md`의 \u201c연구 결과 읽기\u201d에 적힌 별도 명령으로 따로 읽습니다.", ""]
+    if t["status"] == "READ":
+        lines += ["| 경로 | 체결 상태 | NAV 기준일 | NAV | ETF 대비 초과 (ETF 기준일) | 체결 수 | 누적 비용 | H126 | H252 |", "|---|---|---|---|---|---|---|---|---|"]
+        for row in t["rows"]:
+            if row["status"] != "READ":
+                lines.append("|" + "|".join(text(x) for x in (row["strategyId"], row["status"], None, None, None, None, None, None, None)) + "|")
+                continue
+            nav = None if row["nav"] is None else f"{row['nav']:.6f}"
+            excess = f"{_pct(row['excessVsEtfPct'])} ({text(row['etfBaseDate'])})" if row["excessVsEtfPct"] is not None else None
+            cost = None if row["chargedCostPctOfNav"] is None else f"{row['chargedCostPctOfNav']:.4f}%"
+            lines.append("|" + "|".join(text(x) for x in (row["strategyId"], row["fillState"], row["navDate"], nav, excess, row["fills"], cost,
+                                                           row["maturity"].get("H126"), row["maturity"].get("H252"))) + "|")
+        lines += ["", f"연구용 시나리오 {text(t['researchScenarioCount'])}개는 성과 표에서 제외합니다. 초과 수익은 각 경로가 시작한 세션의 ETF 기준 NAV 비율이며 검증된 알파가 아닙니다. "
+                  "H126/H252 PENDING은 0% 수익이 아니라 아직 만기되지 않았다는 뜻입니다."]
+    else:
+        lines += ["전향 paper 경로의 NAV 행이 없거나 읽을 수 없어 ETF 대비 성과는 **UNKNOWN**입니다(0%가 아님). 오류: " + text(t["errors"])]
     lines += ["", "## 탐색 관찰 목록 — 투자 적격 아님", "", "|지역|티커|보존 순위|시세 세션|지금 신선도|편입 제외 사유|", "|---|---|---|---|---|---|"]
     for region, v in r["regions"].items():
         for item in v["exploratoryWatchlist"]:
@@ -371,6 +516,11 @@ def render(report):
                   f"- 다음 증거: {text(v['nextEvidence'])}.", ""]
         protocol = _mapping(protocol)
         lines += [f"- 등록 하한 {text(protocol.get('firstEligibleFloor'))}; 최소 적격 이름 {text(protocol.get('minimumEligibleNames'))}; 본 평가 영수증 {text(protocol.get('primaryReceiptCohort'))}; 지평 {text(protocol.get('horizons'))}; 원 명세 SHA256 {text(protocol.get('sha256'))}.", ""]
+    lines += ["## 이 보고서와 연구 보고서의 경계", "",
+              "- **매일 보는 것**은 이 문서입니다: 오늘의 운영 판단, 신선도, 검증 상태, 전향 paper 경로의 ETF 대비 성과.",
+              "- **연구 근거**(한국·미국 종목 알파, 시장 위험관리, 산업 알파)는 과거 탐색 결과이며 이 문서의 판단에 들어가지 않습니다. "
+              "`docs/daily-decision-report.md`의 \u201c연구 결과 읽기\u201d에 적힌 별도 명령으로 따로 읽습니다.",
+              "- 어느 쪽도 종목 추천·배분 변경·모델 승격의 근거가 아닙니다.", ""]
     lines += ["## 다음 적격 관문과 별도 D v2", "",
               "원천의 날짜·PIT·거래 가능성·권리·비용/총수익을 입증하고, 등록된 전향 평가와 독립 검토를 거쳐야 투자 적격을 주장할 수 있습니다. UNKNOWN은 0% 수익이나 적격 0명으로 바뀌지 않습니다.",
               r["inactiveD2"], "주간 게시·워크플로 성공은 연구 성공이 아닙니다. 이번 보고서는 저장된 결과만 읽으며 기록·평가·성과 실행·배분 변경을 하지 않습니다.", "",
