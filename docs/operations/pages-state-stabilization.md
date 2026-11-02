@@ -34,9 +34,19 @@ production `build-and-deploy`. The v4 addendum states `formalExecutionAuthorized
 true`; the global one-shot lock `refs/tags/kr-alpha-atlas-phase-c-v1-execution-lock` already exists at `09ba076f`, so no formal
 run can occur again. The seal now protects reproducibility evidence, not a pending execution.
 
-**Where it is enforced.** Both the `matrix-diagnostic` job (pages.yml `pull_request` paths include pages.yml itself) and
-`tests/test_kr_alpha_atlas_reproducibility.py` (`V4.load()` on the real tree) evaluate it, so any pages.yml edit fails CI in
-two places by design.
+**Where it is enforced: five independent pins, measured on head `df80c485`: Tests run 41432985079 (8 failed / 6,436 passed) and Pages run 41432985080 (`matrix-diagnostic` failed).**
+
+| # | Contract | Pin | Failing check on this head |
+|---|---|---|---|
+| 1 | KR Alpha Atlas Phase C v4 reproducibility addendum | whole-file sha256 `d13e2a45…` (`ADDITIONAL_FILES`, addendum, sidecar) | `matrix-diagnostic`; `test_kr_alpha_atlas_reproducibility.py` ×4 (3 × `REPRODUCIBILITY_DEPENDENCY_CHANGED`, 1 regex reached through the same load) |
+| 2 | Research terminal publication seal (Python) | exact bytes of commit `8f45870c`; only `weekly-session-integrity-v1-pins.json` files and a hard-coded tests.yml timeout are exempt | `test_research_terminal.py::test_sealed_build_publication_and_results_are_unchanged` |
+| 3 | Research terminal v3.1 seal (Node) | same file list with the same pins registry | `test_research_terminal_v3.py` (node `research_terminal_v31.test.cjs` #25) |
+| 4 | RP1 C1 US WP4d scope guard | no `.github/workflows/*` change other than its host workflow in a branch diff | `test_rp1_c1_us_wp4d.py::test_no_new_workflow_file_and_the_census_and_its_pinned_layers_are_untouched` |
+| 5 | RP1 US universe registration | `protectedTreeSha256[".github/workflows"] = fa92a9ad…` in its registered spec | `test_rp1_us_universe.py::test_sealed_directories_c1_files_and_workflow_census_unchanged` |
+
+All eight failures are these five pins; no other test fails. Each is a registered contract or its validator, so none may be
+edited to make CI green without approval. A precedent for a narrow, owner-approved exact-hash replacement already exists
+(`docs/weekly-session-integrity-v1-pins.json`, scope `OWNER_REQUESTED_WEEKLY_SESSION_SAFETY_FIX_ONLY`), used by pins 2 and 3.
 
 **Path A rejected: publish state outside pages.yml without changing it.** Technically possible (a `workflow_run`
 workflow could rebuild state from the deployed artifact's `data/site-data.json` and call `publish_state.py`), but unsafe:
@@ -63,15 +73,17 @@ Nothing below is implemented. The exception has to be approved first, because it
 
 | Item | Proposed |
 |---|---|
-| Registration | new file `research_specs/kr-alpha-atlas-phase-c-v4-maintenance-1.json` + `.sha256`; v4 addendum, sidecar, `root-cause.json` and the original module bytes stay reachable at `37f8cbf6` |
-| What it permits | exactly one changed dependency, `.github/workflows/pages.yml`, old `d13e2a45…` → the head's new whole-file hash, **only if** the prefix before `build-and-deploy:` still hashes to `048356c7…` |
-| Validator | `kr_alpha_atlas_reproducibility.load()` accepts the v4 closure with that single substitution when the maintenance record verifies; it is itself in the sealed closure, so its new hash is listed in the record |
-| Does not permit | execution (`formalExecutionAuthorized` stays false and the lock already exists), any change to inputs, matrix digest, numerical environment, research jobs, triggers or concurrency, or re-running anything |
-| Tests | `test_kr_alpha_atlas_reproducibility.py` gains the maintenance case; the existing assertions on the research job text stay as they are |
-| Approval | owner comment on #315 naming the exact head SHA, the record's sha256 and the new pages.yml hash |
+| Registration | one record, `docs/operations/pages-yml-maintenance-1.json` + `.sha256`: old whole-file sha256 `d13e2a45…`, new whole-file sha256 of the approved head (currently `03f38c82d771b0663194985f6dada35453ab9554a0ef289a80c95bfa53f27e79`), sealed prefix sha256 `048356c7…` / 5,992 bytes, the five pins it covers, scope `PRODUCTION_STATE_PUBLICATION_ONLY` |
+| What it permits | exactly one changed file, `.github/workflows/pages.yml`, to exactly that new hash, **only while** the bytes before `build-and-deploy:` still hash to `048356c7…` |
+| Pin 1 | `kr_alpha_atlas_reproducibility.load()` accepts the closure with that single substitution when the record verifies. The module is in its own sealed closure, so its new hash is listed in the record and the v4 addendum, sidecar and `root-cause.json` stay byte-identical |
+| Pins 2–3 | the two terminal seals read the record (like `weekly-session-integrity-v1-pins.json`) instead of comparing pages.yml to `8f45870c` |
+| Pin 4 | the WP4d guard allows pages.yml only when the record verifies |
+| Pin 5 | the universe check recomputes `.github/workflows` with the sealed pages.yml blob substituted, so its registered `fa92a9ad…` is untouched |
+| Does not permit | execution (`formalExecutionAuthorized` stays false and the lock already exists), any change to inputs, matrix digest, numerical environment, research jobs, triggers, permissions or concurrency, or re-running anything |
+| Approval | owner comment on #315 naming the exact head SHA, the record's sha256 and the new pages.yml hash; independent non-author review of that head |
 
-Until then #315 stays red on `matrix-diagnostic` and on the reproducibility tests. No hash, validator, test or registration was
-changed to make it pass.
+Until then #315 stays red on `matrix-diagnostic` and on the eight pytest checks above. No hash, validator, test or registration
+was changed to make it pass.
 
 ## P1: next operational changes (read-only diagnosis)
 
