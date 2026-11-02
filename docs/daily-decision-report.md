@@ -31,8 +31,13 @@ python scripts/render_daily_decision_report.py \
   --output /tmp/investment-daily-20261102      # a new directory outside every Git repository
 ```
 
-Verified on 2026-11-02 against `signal-history` `7c0bcf01cf77bdfe456881febaba43f7461b8c77`: two renders give
-byte-identical `report.md` (sha256 `6577236e…07403d`) and `report.json`.
+Two renders of the same source commit, report time and renderer commit give byte-identical `report.md` and `report.json`
+(tested). The report embeds the renderer's own commit, so a hash printed here would go stale on every change; compare two
+renders you made yourself, or read the hash the command prints.
+
+The brief opens with one line, **오늘의 운영 판단**, taken from the same stored decision as the table further down:
+per region "N종목 · ETF w%" or "UNKNOWN (reason)". It never names a stock. The session-freshness table below it can read
+STALE (the observation session is older than the latest completed session) while that decision is still the one in force.
 
 ## One reading path
 
