@@ -50,8 +50,11 @@ Three performance statements are always kept apart and never summed:
    unreadable status is `UNKNOWN`; `PENDING_n_SESSIONS` means not yet matured, not a zero return.
 3. **Historical exploratory backtests** (`HISTORICAL_DEVELOPMENT`): never in the brief; they live in the research report only.
 
-"현재 운영 판단" shows a stock count and ETF weight only when the stored FINAL weekly decision is digest-valid, fresh at report
-time and internally consistent (status, `stockCount`, `benchmarkWeightPct`, `holdings`, benchmark). A fresh
+"현재 운영 판단" shows a stock count and ETF weight only when the stored FINAL weekly decision is digest-valid, was made from fresh
+inputs, is the decision for the **latest completed week-end session** of that region, and is internally consistent (status,
+`stockCount`, `benchmarkWeightPct`, `holdings`, benchmark). A weekly decision stays in force until the next week-end session
+completes, so Friday's decision still reads "current" the following Monday to Thursday while the session-freshness table calls its
+observation date STALE; once a new week-end has completed with no new decision the row is `UNKNOWN`. A qualifying
 `PASSIVE_NO_DEFENSIBLE_EDGE` reads "0개 · ETF 100%". A stock selection is **never displayed**: names and weights stay withheld
 because no investment-admission registry exists, and every other state reads `UNKNOWN` with its reason code.
 

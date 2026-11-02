@@ -248,12 +248,25 @@ def study_view(snapshot, study, as_of):
                             if module is not B else "Record actual weekly state; register the eight open outcome decisions before any return study"}
 
 
-def stance(row, view, now, weekly_blocked):
+def latest_completed_week_end(region, now):
+    """The most recent week-end session already completed at `now`: the session a weekly decision in force is made for."""
+    session = W.last_completed_session(region, now)
+    for _ in range(12):
+        if W.is_week_end_session(region, session):
+            return session
+        session = W.session_on_or_before(region, (W.pd.Timestamp(session) - W.pd.Timedelta(days=1)).strftime("%Y-%m-%d"))
+    raise ValueError("NO_WEEK_END_SESSION_IN_LOOKBACK")
+
+
+def stance(region, row, view, now, weekly_blocked):
     """What the stored weekly decision says to hold TODAY, shown only when every stored fact agrees.
 
-    The stored decision is read, never recomputed. Anything short of a fresh, digest-backed FINAL weekly decision whose own
-    fields are consistent (status, count, ETF weight, holdings) is UNKNOWN, never a guessed 0 or 100%. A stock selection is
-    never displayed: this renderer has no investment-admission registry, so names and weights stay withheld.
+    The stored decision is read, never recomputed. A weekly decision is made for a week-end session and stays in force until the
+    next week-end session has completed, so Friday's decision is the current one on the following Monday-Thursday even though the
+    session-freshness table calls its observation date STALE. Anything short of a digest-backed FINAL weekly decision for the
+    latest completed week-end, created from fresh inputs and internally consistent (status, count, ETF weight, holdings), is
+    UNKNOWN, never a guessed 0 or 100%. A stock selection is never displayed: this renderer has no investment-admission
+    registry, so names and weights stay withheld.
     """
     unknown = lambda reason: {"displayed": False, "stockCount": None, "benchmarkWeightPct": None,  # noqa: E731
                               "holdings": None, "statusKo": None, "reason": reason}
@@ -266,8 +279,10 @@ def stance(row, view, now, weekly_blocked):
         return unknown("POLICY_STATUS_UNRECOGNIZED")
     if row.get("weekStatus") != "FINAL_WEEKLY":
         return unknown("NOT_A_FINAL_WEEKLY_DECISION")
-    if view["freshnessAtReport"]["status"] != "FRESH":
-        return unknown("STALE_OR_UNKNOWN_FRESHNESS_AT_REPORT")
+    if _mapping(view["freshnessReportedAtCreation"]).get("status") != "FRESH":
+        return unknown("INPUTS_NOT_FRESH_WHEN_THE_DECISION_WAS_MADE")
+    if row.get("asOfDate") != latest_completed_week_end(region, now):
+        return unknown("NOT_THE_LATEST_COMPLETED_WEEK_END_DECISION")
     if not view["lastValidFinalSession"] or row.get("asOfDate") != view["lastValidFinalSession"]:
         return unknown("NO_DIGEST_VALID_FINAL_RECEIPT_FOR_THIS_DECISION")
     count, weight, holdings = row.get("stockCount"), row.get("benchmarkWeightPct"), row.get("holdings")
@@ -380,7 +395,7 @@ def build(snapshot, *, as_of, code_identity):
             "exploratoryWatchlist": watched,
             "nextEvidence": "Source-valid dated inputs and independently admitted net benchmark-relative economic evidence; rank, internal weight, opportunity tier or paper PASS cannot substitute"}
     for region, view in regions.items():
-        view["currentStance"] = stance(_mapping(_mapping(weekly.get("regions")).get(region)), view, now,
+        view["currentStance"] = stance(region, _mapping(_mapping(weekly.get("regions")).get(region)), view, now,
                                        bool(weekly.get("blocked")))
     tracked = tracked_path(snapshot, now)
     studies = {s: study_view(snapshot, s, now) for s in STUDIES}
@@ -475,7 +490,7 @@ def render(report):
             lines.append("|" + "|".join(text(x) for x in (region, f"{c['stockCount']}개", etf, c["holdings"], c["reason"])) + "|")
         else:
             lines.append("|" + "|".join(text(x) for x in (region, None, None, None, c["reason"])) + "|")
-    lines += ["", "운영 범위는 지역별 0–5종목이며 0개이면 ETF 100%입니다. 표는 digest가 확인된 FINAL 주간 판단과 지금 신선도가 모두 맞고 저장된 필드끼리 일치할 때만 채웁니다. "
+    lines += ["", "운영 범위는 지역별 0–5종목이며 0개이면 ETF 100%입니다. 표는 digest가 확인된 FINAL 주간 판단이 가장 최근에 완료된 주말 세션의 판단이고 저장된 필드끼리 일치할 때만 채웁니다. 주간 판단은 다음 주말 세션이 끝날 때까지 유효합니다. "
               "그 밖에는 UNKNOWN이며 0개나 100%로 바꿔 쓰지 않습니다. 종목이 선정돼도 이 보고서에는 이름·비중을 표시하지 않습니다(투자 승인 레지스트리가 없음).", ""]
     t = r["trackedPath"]
     lines += ["## ETF 대비 성과 — 세 가지를 합치지 않고 따로 읽음", "",

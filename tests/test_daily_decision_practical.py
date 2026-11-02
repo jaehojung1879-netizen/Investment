@@ -63,9 +63,28 @@ def test_tampered_receipt_digest_does_not_back_the_decision():
     assert build(d)["regions"]["US"]["currentStance"]["displayed"] is True
 
 
-def test_a_decision_goes_unknown_once_it_is_stale_at_report_time():
+def test_a_decision_goes_unknown_once_a_newer_week_end_has_completed_without_a_new_decision():
     c = build(docs(), now="2026-11-09T03:00:00+00:00")["regions"]["KR"]["currentStance"]
-    assert c["displayed"] is False and c["reason"] == "STALE_OR_UNKNOWN_FRESHNESS_AT_REPORT"
+    assert c["displayed"] is False and c["reason"] == "NOT_THE_LATEST_COMPLETED_WEEK_END_DECISION"
+
+
+@pytest.mark.parametrize("now", ["2026-11-02T10:00:00+00:00",    # Monday, after KR's close
+                                 "2026-11-04T03:00:00+00:00",    # Wednesday
+                                 "2026-11-05T13:00:00+00:00"])   # Thursday, after KR's close
+def test_the_friday_decision_holds_for_the_whole_following_week(now):
+    r = build(docs(), now=now)
+    assert r["regions"]["KR"]["freshnessAtReport"]["status"] == "STALE"        # the session freshness view is unchanged
+    for region in ("KR", "US"):
+        c = r["regions"][region]["currentStance"]
+        assert c["displayed"] is True and c["stockCount"] == 0 and c["benchmarkWeightPct"] == 100.0
+
+
+def test_each_region_goes_unknown_when_its_own_week_end_closes_without_a_new_decision():
+    # Friday 2026-11-06 21:00 KST: KR's week-end has closed, US's (21:00 UTC close) has not.
+    r = build(docs(), now="2026-11-06T12:00:00+00:00")
+    assert r["regions"]["KR"]["currentStance"]["displayed"] is False
+    assert r["regions"]["KR"]["currentStance"]["reason"] == "NOT_THE_LATEST_COMPLETED_WEEK_END_DECISION"
+    assert r["regions"]["US"]["currentStance"]["displayed"] is True
 
 
 @pytest.mark.parametrize("over,reason", [
