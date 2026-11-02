@@ -41,8 +41,8 @@ permissions:
 # queued run was already waiting — runs 168 and 169 died that way on 2026-08-27
 # and the merge commit that pushed them was never deployed by its own run. The
 # two jobs write disjoint paths on signal-history (state/ here, ledger/ there)
-# and publication retries against the latest HEAD without force, so a shared
-# lock is unnecessary.
+# and each push below rebases and retries, so the shared lock bought nothing
+# that the retry does not.
 concurrency:
   group: ${{ github.event_name == 'pull_request' && format('atlas-matrix-diagnostic-{0}', github.event.pull_request.number) || (startsWith(inputs.atlas_action, 'matrix-') && 'kr-alpha-atlas-phase-c-v1-single-attempt' || 'pages-deploy') }}
   cancel-in-progress: false
@@ -286,6 +286,11 @@ jobs:
             if [ -e "$path" ]; then du -sh "$path"; fi
           done
 
+      # Publication no longer checks out signal-history: one Git Data API commit
+      # changes only state/latest.json on the current HEAD (force=false, fresh
+      # retry on a ref conflict). The header comment about rebasing pushes is kept
+      # byte-identical because everything above build-and-deploy is sealed by the
+      # KR Alpha Atlas Phase C v4 reproducibility addendum.
       - name: Publish last successful state
         env:
           GH_TOKEN: ${{ github.token }}

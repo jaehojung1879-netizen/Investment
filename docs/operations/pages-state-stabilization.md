@@ -20,6 +20,59 @@ The kernel `/dev/full` fixture produces ENOSPC when writing a 17,407-byte synthe
 
 Local: 17 new synthetic tests + 28 existing integrity tests PASS (45 total); Ruff, pipeline compile, seed generation and `validate --allow-seed` PASS. Seed is local verification only and cannot enter publication. Full trusted repository suite is delegated to automatic PR CI because local checkout is shallow and historical source identities are not materialized. Exact final-head CI status is recorded on the Draft PR; never inherit a previous head's green. Production deploy+publication confirmation awaits an authorized normal post-merge run. No dispatch, rerun, merge or production state write was performed in this task. Independent non-author review remains a merge gate.
 
+## P0 seal conflict: Phase C v4 pins the whole pages.yml (analysis, no seal change)
+
+**Scope of the seal.** `pipeline/kr_alpha_atlas_reproducibility.py` hard-codes `ADDITIONAL_FILES` (the module itself, its
+tests, the diagnostic modules, `root-cause.json` and `.github/workflows/pages.yml`). Their hashes live in
+`research_specs/kr-alpha-atlas-phase-c-v4-reproducibility.json`, which its `.sha256` sidecar pins and whose
+`effectiveContractSha256`/`dependencyManifestSha256` digest the closure. `load()` raises
+`REPRODUCIBILITY_DEPENDENCY_CHANGED: .github/workflows/pages.yml` on any byte change. The pin is whole-file because the research
+jobs `matrix-diagnostic` (PR / `matrix-validate` / `matrix-preflight`, contents: read) and `matrix-formal-owner-only`
+(`workflow_dispatch` `matrix-execute`, main only, owner only, contents: write), their triggers, concurrency group and the
+numerical environment (thread pins, `OPENBLAS_CORETYPE`, CPU-feature masks, Python 3.11.16) are declared in the same file as
+production `build-and-deploy`. The v4 addendum states `formalExecutionAuthorized: false` and `freshExactHashOwnerApprovalRequired:
+true`; the global one-shot lock `refs/tags/kr-alpha-atlas-phase-c-v1-execution-lock` already exists at `09ba076f`, so no formal
+run can occur again. The seal now protects reproducibility evidence, not a pending execution.
+
+**Where it is enforced.** Both the `matrix-diagnostic` job (pages.yml `pull_request` paths include pages.yml itself) and
+`tests/test_kr_alpha_atlas_reproducibility.py` (`V4.load()` on the real tree) evaluate it, so any pages.yml edit fails CI in
+two places by design.
+
+**Path A rejected: publish state outside pages.yml without changing it.** Technically possible (a `workflow_run`
+workflow could rebuild state from the deployed artifact's `data/site-data.json` and call `publish_state.py`), but unsafe:
+1. The sealed `Publish last successful state` step is unconditional (no input, variable or secret disables it). Every
+   production run would keep materialising 3.36 GiB and fail after deployment, so a real deploy failure becomes
+   indistinguishable from a known one.
+2. If the legacy step ever succeeds (more disk), two publishers write the same path. `publish_state.py` refuses regressions,
+   but the legacy step has no regression guard. Correctness would depend on ordering between two workflows.
+3. The `workflow_run` workflow would write `signal-history` from a job outside the `github-pages` environment that gates
+   `build-and-deploy`. That moves state writes outside whatever protection rules and branch policy that environment
+   enforces (they could not be read from this session).
+4. `workflow_run` also fires on the `pull_request`-triggered Pages runs that execute `matrix-diagnostic`. Rejecting them needs
+   parsing of the triggering run's event, branch and individual step outcomes, because the run's own conclusion would be
+   `failure`. That is a second deploy-state protocol to keep correct.
+
+**Path B chosen: a versioned maintenance exception, pending owner approval.** This branch now keeps **every byte before
+`build-and-deploy:`** identical to the sealed file. The prefix is 5,992 bytes with sha256
+`048356c7b43e499b32660ce40c0b1dde9db7e43b33a58fd36df8a4ea51e17b30` in both the sealed blob `d13e2a45…` and this head.
+`tests/test_pages_sealed_research_prefix.py` asserts that prefix, that `build-and-deploy` is the last job (so the prefix covers
+both research jobs, triggers, permissions and concurrency), and that the addendum, sidecar and `ADDITIONAL_FILES` are untouched.
+The two header comment lines an earlier commit had edited are restored. The explanation moved inside the publish step.
+
+Nothing below is implemented. The exception has to be approved first, because it edits sealed bytes:
+
+| Item | Proposed |
+|---|---|
+| Registration | new file `research_specs/kr-alpha-atlas-phase-c-v4-maintenance-1.json` + `.sha256`; v4 addendum, sidecar, `root-cause.json` and the original module bytes stay reachable at `37f8cbf6` |
+| What it permits | exactly one changed dependency, `.github/workflows/pages.yml`, old `d13e2a45…` → the head's new whole-file hash, **only if** the prefix before `build-and-deploy:` still hashes to `048356c7…` |
+| Validator | `kr_alpha_atlas_reproducibility.load()` accepts the v4 closure with that single substitution when the maintenance record verifies; it is itself in the sealed closure, so its new hash is listed in the record |
+| Does not permit | execution (`formalExecutionAuthorized` stays false and the lock already exists), any change to inputs, matrix digest, numerical environment, research jobs, triggers or concurrency, or re-running anything |
+| Tests | `test_kr_alpha_atlas_reproducibility.py` gains the maintenance case; the existing assertions on the research job text stay as they are |
+| Approval | owner comment on #315 naming the exact head SHA, the record's sha256 and the new pages.yml hash |
+
+Until then #315 stays red on `matrix-diagnostic` and on the reproducibility tests. No hash, validator, test or registration was
+changed to make it pass.
+
 ## P1: next operational changes (read-only diagnosis)
 
 Sizes below are blob bytes from the same fixed tree, rounded MiB. A full current signal-history worktree adds **3,439.81 MiB** per materialization plus filesystem overhead; fetch pack/history/cache/build outputs are extra, not included. Historical sealed trees have their own sizes, not necessarily today's size. Partial-write conversions must use a base tree and non-force ref update; never rebuild a root tree from a sparse set alone. Append-only writers must recompute/merge their own path changes on conflicts rather than overwrite a concurrent append.
