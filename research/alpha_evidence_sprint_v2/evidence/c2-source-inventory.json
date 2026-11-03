@@ -1,0 +1,4808 @@
+{
+ "auditor": "outcome-blind source audit; no return/NAV/price value computed or reported",
+ "auditedAt": "2026-11-03",
+ "mainCommit": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+ "signalHistoryCommit": "4b6f8b7137521a148d9cd2c9e3c2fdfdcb5ae71a",
+ "workingTreeNote": "local HEAD eab18d44 (branch claude/portfolio-d-daily-report-practical-v1); every main-ref file read via git show at 37f8cbf6b1c066f6b3c65235953648d17ebf2f69; the three primary C2 files have identical blobs at HEAD and main",
+ "study": "weekly-passive-first-v1-replay-corrected-benchmark (C2, KR, 21-session cadence)",
+ "items": {
+  "1_c2_targets": {
+   "verdict": "PRESENT",
+   "evidence": [
+    {
+     "path": "docs/results/regional-standalone-paths.json.gz",
+     "gitRef": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+     "blob": "1ff928710f1e2954b0a6280c15f07aa7c1283daf",
+     "sha256": "7a09751f99f5d892821cac6bbb4f28359049d58364cb40db1814fac4f93210cb"
+    },
+    {
+     "path": "docs/weekly-decision/weekly-passive-first-v1-replay-corrected-benchmark.json",
+     "gitRef": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+     "blob": "9c814dbb5ef14e1335f54e98b4fb4666851c5759",
+     "sha256": "901b3aee7d3bc06eed3fd2bd14b07a0d4ca4da23745b861a877203c48772b8d2"
+    },
+    {
+     "path": "scripts/run_weekly_passive_first_replay.py",
+     "gitRef": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+     "blob": "30be0d8f5dd13914bfacf84f5f0a5ac85aefe334",
+     "sha256": "58bc5ca3f2e313baeb3b8ddbf31534f4fb0909efd69fb7460711ce0a51969592"
+    },
+    {
+     "path": "pipeline/replay_valuation.py",
+     "gitRef": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+     "blob": "b3adf61867abb5cc573a86653a8c5dae109677d0",
+     "sha256": "18e673a0721077af06b8ca9f774650c27fa58820a489b9ea639a9ccf02693bf3"
+    }
+   ],
+   "standalonePaths": {
+    "contentDigestField": "d92f7e145153dc2e14b07649e7352712db6eeb58ce1ed948591da2c6fe604642 (= regionalPathsSha256 in corrected replay)",
+    "provenanceInputSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+    "alsoPinnedBy": "research_specs/kr-alpha-atlas-phase-c-v1.json line 4479 (file sha256 7a09751f...)",
+    "KR": {
+     "blocks": 155,
+     "first": "2013-01-07",
+     "firstSignal": "2013-01-04",
+     "last": "2026-08-12",
+     "lastEnd": "2026-09-14",
+     "selector": {
+      "ALPHA_RANK_PER_DOWNSIDE_RISK": 155
+     },
+     "modelVersion": [
+      "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2"
+     ],
+     "replayVersion": [
+      "replay-v16"
+     ],
+     "metricVersion": [
+      "calendar-span-daily-krw-rf-v1"
+     ],
+     "blocksWithStocks": 155,
+     "blocksEmpty": 0,
+     "namesPerBlock": {
+      "3": 155
+     },
+     "blocksWithDailySeries": 155,
+     "dailyCoversDateToEnd": 155,
+     "dailyArraysSameLength": 155,
+     "contiguousBlocks": 154,
+     "dailySessionsTotal": 3701,
+     "distinctTickersHeld": 72,
+     "blocksWithCorporateActions": 0,
+     "appliedMinCash": [
+      "15.0",
+      "20.0",
+      "25.0",
+      "30.0"
+     ],
+     "dataDiagnosticsKeys": [
+      "basis",
+      "fullProductionFidelity",
+      "fundamentalsPit",
+      "survivorshipRisk"
+     ],
+     "benchmarks": [
+      [
+       "069500.KS"
+      ]
+     ],
+     "transactionCostAssumptionKeys": [
+      "KR",
+      "US"
+     ]
+    },
+    "rowFields": [
+     "appliedMinCashPct",
+     "baseCurrency",
+     "benchmarkByTicker",
+     "benchmarkReturn",
+     "cashPct",
+     "cashWeight",
+     "corporateActionsApplied",
+     "costAdjustedExcessReturn",
+     "costAdjustedReturn",
+     "dailyBenchmarkNav",
+     "dailyDates",
+     "dailyGrossNav",
+     "dailyRiskFreeNav",
+     "dataDiagnostics",
+     "date",
+     "effectiveNames",
+     "emptyReasons",
+     "endDate",
+     "excessByRegion",
+     "fxReturnsIncluded",
+     "grossExcessReturn",
+     "grossReturn",
+     "macroEquityBudget",
+     "macroRegime",
+     "metricVersion",
+     "modelVersion",
+     "nearestMisses",
+     "regionByTicker",
+     "replayDate",
+     "replayVersion",
+     "riskFreeReturn",
+     "sectorByTicker",
+     "selected",
+     "selectedTickers",
+     "selector",
+     "signalDate",
+     "terminalRegionByTicker",
+     "terminalWeights",
+     "top1",
+     "top3",
+     "transactionCost",
+     "transactionCostAssumptions",
+     "turnover",
+     "turnoverByRegion",
+     "weightByRegion",
+     "weights"
+    ],
+    "KR_weightsCheck": "stock weight sum per block in [0.4183,0.65]; cashWeight in [0.35,0.5817]; stock+cash = 1 within 1.1e-16; 3 names in every one of 155 blocks; dataDiagnostics on all 155 = {basis: PRICE_SLEEVES_ONLY_AUDIT_PROXY, fullProductionFidelity: false, fundamentalsPit: true, survivorshipRisk: LOW}",
+    "dailySeriesNote": "dailyDates are UNION (KR or US open) sessions from block date to endDate inclusive (155/155 cover [date,endDate]); dailyGrossNav is the STANDALONE (stock+cash) book, not C2 and not per stock; no per-stock daily series is stored"
+   },
+   "correctedReplay": {
+    "id": "weekly-passive-first-v1-replay-corrected-benchmark",
+    "benchmarkBasis": "phase-c-corrected",
+    "specSha256": "bfb25cf8799d29197ab50644a6f5d6cd9a06856db25f6a12c5de953af26b749a",
+    "benchmarkBasisProtocolSha256": "a08f92b06aab6de4959b52d0a5bc0fd2c6b21851c53deca114167898e97a8fe6",
+    "inputManifestSha256": "f0781292...",
+    "through": "2026-09-14",
+    "calendar": "155 blocks, 21_SESSION_ANCHORS_NOT_WEEKLY, first 2013-01-07(signal 2013-01-04)..last 2026-08-12->2026-09-14",
+    "KR": {
+     "paths": [
+      "P0",
+      "P1",
+      "C1",
+      "C2"
+     ],
+     "C2.available": true,
+     "C2.blocks": 155,
+     "C2.sessions": 3547,
+     "weeklyNav.C2.points": 715,
+     "weeklyNav.first": "2013-01-11",
+     "weeklyNav.last": "2026-09-14",
+     "decisionsFields": [
+      "candidates",
+      "date",
+      "holdings",
+      "orderingEstablished",
+      "signalDate",
+      "stockCount"
+     ],
+     "status": "DEFINITION_INTERNAL_REPLAY_V16",
+     "benchmarkDefinition": "PHASE_C_RECONCILED_GROSS_ETF_TOTAL_RETURN"
+    },
+    "C2PathSummaryKeys": "30 aggregate metric keys only (cagrPct, maxDrawdownPct, topContributions, ...); NO per-block C2 weights, NO daily C2 NAV are persisted; only weeklyNav (715 week-end points)"
+   },
+   "howC2IsFormed": "scripts/run_weekly_passive_first_replay.py L396-408: for each 21-session block, stock = sealed standalone row[\"weights\"] (CHAMPION selector ALPHA_RANK_PER_DOWNSIDE_RISK = pipeline/kelly_portfolio.SELECTION_METHOD); C2 target = stock + {069500.KS: max(0, 1 - sum(stock))}, so cash = 0; valued by replay_valuation.ValuationData.window over RC.sessions(date,endDate,\"UNION\") on frozen replay-v16 closes with 069500.KS re-marked by the Phase C corrected series (L360-363); buy-and-hold drift inside the block (terminalWeights); account() L161-195 chains blocks, charging _leg_cost on |target - previous terminalWeights| for every ticker incl. 069500.KS at block start; NAV = prior*(1-cost)*dailyGrossNav. C2 per-block targets are therefore fully DERIVABLE (deterministically) from the standalone file but not stored as a separate record."
+  },
+  "2_actual_fills": {
+   "verdict": "ABSENT",
+   "evidence": "No executed-fill, order, or realised-holdings ledger exists for the historical C2 path: C2 is a simulated target-weight replay (close-to-close, cost as bps of traded weight). git grep for fillPrice/executedPrice/fills/filledQuantity/orderId/executionPrice in docs/ and data/ at main: 0 files. Only live artefact: signal-history ledger/research-strategies/current-champion-decisions-v1/receipts.jsonl (13 PROSPECTIVE_RESEARCH_ONLY receipts, 2026-10-09..2026-10-30, after the window, targets not fills).",
+   "receipts": {
+    "path": "ledger/research-strategies/current-champion-decisions-v1/receipts.jsonl",
+    "gitRef": "4b6f8b7137521a148d9cd2c9e3c2fdfdcb5ae71a",
+    "blob": "35474927365a082040c32f83369ab6830dc89c49",
+    "sha256": "30fa3b2c90821844aabebfa8c041dd4a7841543a55f58093721fb32340e26e69"
+   }
+  },
+  "3_per_stock_prices": {
+   "verdict": "PRESENT (with basis caveats -> effectively PARTIAL for dividend completeness)",
+   "store": {
+    "manifest": {
+     "path": "ledger/historical/replay-v16/input-manifests/f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2.json",
+     "gitRef": "4b6f8b7137521a148d9cd2c9e3c2fdfdcb5ae71a",
+     "blob": "76556e948fd89786d846a6275a0bc55f4bb56658",
+     "sha256": "d60ff99710baaf1417cb23d0b007e2d11766e7d76eb03c0d877e0d2495a929cd"
+    },
+    "currentInputsJsonEqualsManifest": true,
+    "manifestSha256Field": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+    "through": "2026-09-14",
+    "components": {
+     "price": 190,
+     "benchmark": 190,
+     "corporate-events": 190,
+     "fx": 4,
+     "risk-free": 3,
+     "recovery": 2,
+     "calendar": 1,
+     "corporate-actions": 1,
+     "fundamentals": 1,
+     "macro": 1,
+     "universe": 1,
+     "vix": 1
+    },
+    "objectStore": "ledger/replay-inputs/objects/<sha256-of-decompressed-json>.json.gz on 4b6f8b7137521a148d9cd2c9e3c2fdfdcb5ae71a",
+    "objectsReadAndHashVerified": 567,
+    "priceObjectFields": [
+     "Close",
+     "High",
+     "Low",
+     "Open",
+     "Volume",
+     "date",
+     "ticker"
+    ]
+   },
+   "priceBasis": {
+    "dataVersion": "as-traded-close-forward-total-return-v1 ... krx-native-sessions-with-yahoo-distributions-v2 ...",
+    "corporateEventsSource": "AS_TRADED_CLOSE_WITH_FORWARD_ACCUMULATED_TOTAL_RETURN, vendor YAHOO_UNADJUSTED_WITH_ACTIONS, anchor FIRST_OBSERVED_SESSION",
+    "KRpriceSource": "FINANCE_DATA_READER (krx-native-sessions-with-yahoo-distributions-and-open-api-fallback-v3), distributions YAHOO_ACTIONS",
+    "label": "BENCHMARK_RELATIVE_ADJUSTED_INDEX_RETURN_PARTIAL_DISTRIBUTIONS per AGENTS.md v2.42 -- neither price return nor verified shareholder total return"
+   },
+   "KRheldTickers": [
+    "000030.KS",
+    "000060.KS",
+    "000080.KS",
+    "000100.KS",
+    "000150.KS",
+    "000270.KS",
+    "000660.KS",
+    "000810.KS",
+    "000880.KS",
+    "001450.KS",
+    "002380.KS",
+    "002550.KS",
+    "003240.KS",
+    "003550.KS",
+    "004020.KS",
+    "004170.KS",
+    "004370.KS",
+    "004990.KS",
+    "005300.KS",
+    "005380.KS",
+    "005385.KS",
+    "005387.KS",
+    "005490.KS",
+    "005930.KS",
+    "005935.KS",
+    "006260.KS",
+    "006400.KS",
+    "009540.KS",
+    "010060.KS",
+    "010120.KS",
+    "010130.KS",
+    "011200.KS",
+    "011780.KS",
+    "012330.KS",
+    "012450.KS",
+    "017670.KS",
+    "018260.KS",
+    "021240.KS",
+    "024110.KS",
+    "028260.KS",
+    "029780.KS",
+    "030200.KS",
+    "032640.KS",
+    "032830.KS",
+    "033780.KS",
+    "034020.KS",
+    "034730.KS",
+    "035250.KS",
+    "035420.KS",
+    "036460.KS",
+    "036570.KS",
+    "042660.KS",
+    "047040.KS",
+    "047810.KS",
+    "051900.KS",
+    "066570.KS",
+    "068270.KS",
+    "071050.KS",
+    "078930.KS",
+    "088350.KS",
+    "088980.KS",
+    "090430.KS",
+    "096770.KS",
+    "105560.KS",
+    "111770.KS",
+    "138040.KS",
+    "138930.KS",
+    "139480.KS",
+    "161890.KS",
+    "207940.KS",
+    "271560.KS",
+    "316140.KS"
+   ],
+   "KRheldTickerCount": 72,
+   "KRcoverage": {
+    "tickersWithNoValidClose": [],
+    "tickersWithAnyMissingKRSessionInsideAHoldingWindow": [],
+    "holdingWindowsChecked": 465,
+    "method": "required = replay-v16 calendar component KR==True sessions in [block date, endDate]; valid = finite Close > 0 row present"
+   },
+   "KRdividendEvents": {
+    "tickersWithZeroDividendEventsInStore": [
+     "000030.KS",
+     "000060.KS",
+     "002550.KS",
+     "047040.KS",
+     "207940.KS"
+    ],
+    "dividendEventsFallingInsideHoldingWindows": 52,
+    "splitEventsInsideHoldingWindows": 1,
+    "note": "000030/000060/002550 are terminated names whose Yahoo distributions are absent (dividendLineage later RESOLVED from DART in kr-terminal-action-reconstruction-v2 but NOT applied to replay-v16); 047040.KS, 207940.KS have no dividend events -- not verified as genuine non-payers. Per-name dividend completeness for continuing names is unaudited except the 25-name sample of kr-dividend-amount-lineage-v2 (AGENTS v2.31)."
+   },
+   "perTicker": {
+    "000030.KS": {
+     "corporateEventsTotal": 0,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 0,
+     "firstHoldStart": "2017-05-31",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 1,
+     "lastHoldEnd": "2017-06-30",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2014-11-19",
+     "priceLast": "2019-02-12",
+     "rowsPresent": 1037,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 1037,
+     "validCloseDatesBefore2013_01_07": 0,
+     "validCloseDatesBeforeFirstHold": 623,
+     "windowsWithMissingSessions": []
+    },
+    "000060.KS": {
+     "corporateEventsTotal": 0,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 0,
+     "firstHoldStart": "2015-06-23",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 3,
+     "lastHoldEnd": "2015-11-25",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2023-02-20",
+     "rowsPresent": 2991,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 2991,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 1104,
+     "windowsWithMissingSessions": []
+    },
+    "000080.KS": {
+     "corporateEventsTotal": 14,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 14,
+     "firstHoldStart": "2016-03-07",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 1,
+     "lastHoldEnd": "2016-04-06",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 1277,
+     "windowsWithMissingSessions": []
+    },
+    "000100.KS": {
+     "corporateEventsTotal": 16,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 15,
+     "firstHoldStart": "2023-05-26",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 1,
+     "lastHoldEnd": "2023-06-29",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 9,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 3056,
+     "windowsWithMissingSessions": []
+    },
+    "000150.KS": {
+     "corporateEventsTotal": 27,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 27,
+     "firstHoldStart": "2016-06-10",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 1,
+     "lastHoldEnd": "2016-07-12",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 1,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 1342,
+     "windowsWithMissingSessions": []
+    },
+    "000270.KS": {
+     "corporateEventsTotal": 15,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 15,
+     "firstHoldStart": "2022-06-09",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 5,
+     "lastHoldEnd": "2024-02-08",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 2816,
+     "windowsWithMissingSessions": []
+    },
+    "000660.KS": {
+     "corporateEventsTotal": 26,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 26,
+     "firstHoldStart": "2018-04-18",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 6,
+     "lastHoldEnd": "2021-06-18",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 1798,
+     "windowsWithMissingSessions": []
+    },
+    "000810.KS": {
+     "corporateEventsTotal": 16,
+     "dividendEventsInsideHoldingWindows": 1,
+     "dividendEventsTotal": 16,
+     "firstHoldStart": "2018-07-25",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 8,
+     "lastHoldEnd": "2023-08-30",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 1863,
+     "windowsWithMissingSessions": []
+    },
+    "000880.KS": {
+     "corporateEventsTotal": 16,
+     "dividendEventsInsideHoldingWindows": 1,
+     "dividendEventsTotal": 15,
+     "firstHoldStart": "2013-11-20",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 3,
+     "lastHoldEnd": "2014-03-28",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 1,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 715,
+     "windowsWithMissingSessions": []
+    },
+    "001450.KS": {
+     "corporateEventsTotal": 14,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 14,
+     "firstHoldStart": "2022-07-12",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 1,
+     "lastHoldEnd": "2022-08-10",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 2839,
+     "windowsWithMissingSessions": []
+    },
+    "002380.KS": {
+     "corporateEventsTotal": 32,
+     "dividendEventsInsideHoldingWindows": 1,
+     "dividendEventsTotal": 31,
+     "firstHoldStart": "2013-12-20",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 1,
+     "lastHoldEnd": "2014-01-24",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 1,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 737,
+     "windowsWithMissingSessions": []
+    },
+    "002550.KS": {
+     "corporateEventsTotal": 0,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 0,
+     "firstHoldStart": "2015-11-25",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 1,
+     "lastHoldEnd": "2015-12-28",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2017-07-20",
+     "rowsPresent": 1618,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 1618,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 1211,
+     "windowsWithMissingSessions": []
+    },
+    "003240.KS": {
+     "corporateEventsTotal": 15,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 15,
+     "firstHoldStart": "2015-07-23",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 1,
+     "lastHoldEnd": "2015-08-24",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 1126,
+     "windowsWithMissingSessions": []
+    },
+    "003550.KS": {
+     "corporateEventsTotal": 18,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 17,
+     "firstHoldStart": "2013-08-14",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 3,
+     "lastHoldEnd": "2018-03-19",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 1,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 651,
+     "windowsWithMissingSessions": []
+    },
+    "004020.KS": {
+     "corporateEventsTotal": 15,
+     "dividendEventsInsideHoldingWindows": 1,
+     "dividendEventsTotal": 15,
+     "firstHoldStart": "2017-12-08",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 3,
+     "lastHoldEnd": "2025-11-26",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 1711,
+     "windowsWithMissingSessions": []
+    },
+    "004170.KS": {
+     "corporateEventsTotal": 19,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 17,
+     "firstHoldStart": "2016-11-15",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 5,
+     "lastHoldEnd": "2020-03-27",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 2,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 1449,
+     "windowsWithMissingSessions": []
+    },
+    "004370.KS": {
+     "corporateEventsTotal": 15,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 15,
+     "firstHoldStart": "2020-03-27",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 1,
+     "lastHoldEnd": "2020-04-29",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 2274,
+     "windowsWithMissingSessions": []
+    },
+    "004990.KS": {
+     "corporateEventsTotal": 17,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 15,
+     "firstHoldStart": "2016-01-29",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 2,
+     "lastHoldEnd": "2016-04-06",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 2,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 1255,
+     "windowsWithMissingSessions": []
+    },
+    "005300.KS": {
+     "corporateEventsTotal": 16,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 15,
+     "firstHoldStart": "2013-04-11",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 1,
+     "lastHoldEnd": "2013-05-13",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 1,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 565,
+     "windowsWithMissingSessions": []
+    },
+    "005380.KS": {
+     "corporateEventsTotal": 32,
+     "dividendEventsInsideHoldingWindows": 1,
+     "dividendEventsTotal": 32,
+     "firstHoldStart": "2017-01-19",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 4,
+     "lastHoldEnd": "2024-03-14",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 1495,
+     "windowsWithMissingSessions": []
+    },
+    "005385.KS": {
+     "corporateEventsTotal": 32,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 32,
+     "firstHoldStart": "2014-03-28",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 3,
+     "lastHoldEnd": "2023-07-31",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 802,
+     "windowsWithMissingSessions": []
+    },
+    "005387.KS": {
+     "corporateEventsTotal": 32,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 32,
+     "firstHoldStart": "2013-07-16",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 5,
+     "lastHoldEnd": "2023-07-31",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 630,
+     "windowsWithMissingSessions": []
+    },
+    "005490.KS": {
+     "corporateEventsTotal": 50,
+     "dividendEventsInsideHoldingWindows": 4,
+     "dividendEventsTotal": 50,
+     "firstHoldStart": "2013-02-06",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 15,
+     "lastHoldEnd": "2023-04-25",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 521,
+     "windowsWithMissingSessions": []
+    },
+    "005930.KS": {
+     "corporateEventsTotal": 51,
+     "dividendEventsInsideHoldingWindows": 1,
+     "dividendEventsTotal": 50,
+     "firstHoldStart": "2013-03-12",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 8,
+     "lastHoldEnd": "2017-05-31",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 1,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 543,
+     "windowsWithMissingSessions": []
+    },
+    "005935.KS": {
+     "corporateEventsTotal": 51,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 50,
+     "firstHoldStart": "2017-10-10",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 1,
+     "lastHoldEnd": "2017-11-08",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 1,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 1668,
+     "windowsWithMissingSessions": []
+    },
+    "006260.KS": {
+     "corporateEventsTotal": 15,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 15,
+     "firstHoldStart": "2013-01-07",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 8,
+     "lastHoldEnd": "2021-04-16",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 499,
+     "windowsWithMissingSessions": []
+    },
+    "006400.KS": {
+     "corporateEventsTotal": 14,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 14,
+     "firstHoldStart": "2013-07-16",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 2,
+     "lastHoldEnd": "2013-10-22",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 630,
+     "windowsWithMissingSessions": []
+    },
+    "009540.KS": {
+     "corporateEventsTotal": 8,
+     "dividendEventsInsideHoldingWindows": 1,
+     "dividendEventsTotal": 7,
+     "firstHoldStart": "2013-12-20",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 2,
+     "lastHoldEnd": "2017-08-31",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 1,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 737,
+     "windowsWithMissingSessions": []
+    },
+    "010060.KS": {
+     "corporateEventsTotal": 13,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 11,
+     "firstHoldStart": "2013-11-20",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 1,
+     "lastHoldEnd": "2013-12-20",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 2,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 715,
+     "windowsWithMissingSessions": []
+    },
+    "010120.KS": {
+     "corporateEventsTotal": 16,
+     "dividendEventsInsideHoldingWindows": 1,
+     "dividendEventsTotal": 15,
+     "firstHoldStart": "2015-01-14",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 6,
+     "lastHoldEnd": "2018-01-11",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 1,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 996,
+     "windowsWithMissingSessions": []
+    },
+    "010130.KS": {
+     "corporateEventsTotal": 19,
+     "dividendEventsInsideHoldingWindows": 3,
+     "dividendEventsTotal": 19,
+     "firstHoldStart": "2014-08-05",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 33,
+     "lastHoldEnd": "2024-11-29",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 889,
+     "windowsWithMissingSessions": []
+    },
+    "011200.KS": {
+     "corporateEventsTotal": 6,
+     "dividendEventsInsideHoldingWindows": 2,
+     "dividendEventsTotal": 5,
+     "firstHoldStart": "2023-12-06",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 10,
+     "lastHoldEnd": "2026-06-10",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 1,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 3186,
+     "windowsWithMissingSessions": []
+    },
+    "011780.KS": {
+     "corporateEventsTotal": 15,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 15,
+     "firstHoldStart": "2015-02-13",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 5,
+     "lastHoldEnd": "2024-08-22",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 1018,
+     "windowsWithMissingSessions": []
+    },
+    "012330.KS": {
+     "corporateEventsTotal": 22,
+     "dividendEventsInsideHoldingWindows": 3,
+     "dividendEventsTotal": 22,
+     "firstHoldStart": "2016-01-29",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 15,
+     "lastHoldEnd": "2025-09-22",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 1255,
+     "windowsWithMissingSessions": []
+    },
+    "012450.KS": {
+     "corporateEventsTotal": 11,
+     "dividendEventsInsideHoldingWindows": 1,
+     "dividendEventsTotal": 10,
+     "firstHoldStart": "2013-04-11",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 6,
+     "lastHoldEnd": "2019-05-15",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 1,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 565,
+     "windowsWithMissingSessions": []
+    },
+    "017670.KS": {
+     "corporateEventsTotal": 40,
+     "dividendEventsInsideHoldingWindows": 2,
+     "dividendEventsTotal": 39,
+     "firstHoldStart": "2013-09-16",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 10,
+     "lastHoldEnd": "2023-12-06",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 1,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 673,
+     "windowsWithMissingSessions": []
+    },
+    "018260.KS": {
+     "corporateEventsTotal": 12,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 12,
+     "firstHoldStart": "2023-11-06",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 3,
+     "lastHoldEnd": "2024-03-14",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2014-11-14",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 2904,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 2904,
+     "validCloseDatesBefore2013_01_07": 0,
+     "validCloseDatesBeforeFirstHold": 2208,
+     "windowsWithMissingSessions": []
+    },
+    "021240.KS": {
+     "corporateEventsTotal": 25,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 25,
+     "firstHoldStart": "2014-01-24",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 2,
+     "lastHoldEnd": "2019-12-20",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 759,
+     "windowsWithMissingSessions": []
+    },
+    "024110.KS": {
+     "corporateEventsTotal": 16,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 16,
+     "firstHoldStart": "2014-06-03",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 11,
+     "lastHoldEnd": "2026-07-13",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 846,
+     "windowsWithMissingSessions": []
+    },
+    "028260.KS": {
+     "corporateEventsTotal": 12,
+     "dividendEventsInsideHoldingWindows": 1,
+     "dividendEventsTotal": 11,
+     "firstHoldStart": "2018-03-19",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 7,
+     "lastHoldEnd": "2024-06-21",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2014-12-18",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 2880,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 1,
+     "validCloseDates": 2880,
+     "validCloseDatesBefore2013_01_07": 0,
+     "validCloseDatesBeforeFirstHold": 796,
+     "windowsWithMissingSessions": []
+    },
+    "029780.KS": {
+     "corporateEventsTotal": 15,
+     "dividendEventsInsideHoldingWindows": 1,
+     "dividendEventsTotal": 15,
+     "firstHoldStart": "2019-06-17",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 6,
+     "lastHoldEnd": "2023-03-24",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 2080,
+     "windowsWithMissingSessions": []
+    },
+    "030200.KS": {
+     "corporateEventsTotal": 22,
+     "dividendEventsInsideHoldingWindows": 1,
+     "dividendEventsTotal": 22,
+     "firstHoldStart": "2013-01-07",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 4,
+     "lastHoldEnd": "2026-06-10",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 499,
+     "windowsWithMissingSessions": []
+    },
+    "032640.KS": {
+     "corporateEventsTotal": 20,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 20,
+     "firstHoldStart": "2025-01-02",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 1,
+     "lastHoldEnd": "2025-02-10",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 3446,
+     "windowsWithMissingSessions": []
+    },
+    "032830.KS": {
+     "corporateEventsTotal": 16,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 16,
+     "firstHoldStart": "2013-01-07",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 4,
+     "lastHoldEnd": "2022-12-15",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 499,
+     "windowsWithMissingSessions": []
+    },
+    "033780.KS": {
+     "corporateEventsTotal": 19,
+     "dividendEventsInsideHoldingWindows": 5,
+     "dividendEventsTotal": 19,
+     "firstHoldStart": "2013-10-22",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 61,
+     "lastHoldEnd": "2026-09-14",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 694,
+     "windowsWithMissingSessions": []
+    },
+    "034020.KS": {
+     "corporateEventsTotal": 6,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 6,
+     "firstHoldStart": "2015-04-21",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 3,
+     "lastHoldEnd": "2018-10-31",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 1062,
+     "windowsWithMissingSessions": []
+    },
+    "034730.KS": {
+     "corporateEventsTotal": 24,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 24,
+     "firstHoldStart": "2014-08-05",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 9,
+     "lastHoldEnd": "2019-05-15",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 889,
+     "windowsWithMissingSessions": []
+    },
+    "035250.KS": {
+     "corporateEventsTotal": 13,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 13,
+     "firstHoldStart": "2013-03-12",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 2,
+     "lastHoldEnd": "2025-01-02",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 543,
+     "windowsWithMissingSessions": []
+    },
+    "035420.KS": {
+     "corporateEventsTotal": 18,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 16,
+     "firstHoldStart": "2021-05-18",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 5,
+     "lastHoldEnd": "2021-12-27",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 2,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 2555,
+     "windowsWithMissingSessions": []
+    },
+    "036460.KS": {
+     "corporateEventsTotal": 9,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 9,
+     "firstHoldStart": "2017-01-19",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 1,
+     "lastHoldEnd": "2017-02-22",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 1495,
+     "windowsWithMissingSessions": []
+    },
+    "036570.KS": {
+     "corporateEventsTotal": 15,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 15,
+     "firstHoldStart": "2019-09-19",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 2,
+     "lastHoldEnd": "2020-04-29",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 2145,
+     "windowsWithMissingSessions": []
+    },
+    "042660.KS": {
+     "corporateEventsTotal": 5,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 4,
+     "firstHoldStart": "2014-02-27",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 7,
+     "lastHoldEnd": "2021-08-19",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 1,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 781,
+     "windowsWithMissingSessions": []
+    },
+    "047040.KS": {
+     "corporateEventsTotal": 0,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 0,
+     "firstHoldStart": "2014-08-05",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 1,
+     "lastHoldEnd": "2014-09-05",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 889,
+     "windowsWithMissingSessions": []
+    },
+    "047810.KS": {
+     "corporateEventsTotal": 14,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 14,
+     "firstHoldStart": "2015-03-20",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 2,
+     "lastHoldEnd": "2019-11-20",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-06-30",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3739,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3739,
+     "validCloseDatesBefore2013_01_07": 378,
+     "validCloseDatesBeforeFirstHold": 919,
+     "windowsWithMissingSessions": []
+    },
+    "051900.KS": {
+     "corporateEventsTotal": 17,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 17,
+     "firstHoldStart": "2018-03-19",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 3,
+     "lastHoldEnd": "2021-02-10",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 1776,
+     "windowsWithMissingSessions": []
+    },
+    "066570.KS": {
+     "corporateEventsTotal": 18,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 18,
+     "firstHoldStart": "2020-08-03",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 2,
+     "lastHoldEnd": "2020-12-08",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 2361,
+     "windowsWithMissingSessions": []
+    },
+    "068270.KS": {
+     "corporateEventsTotal": 19,
+     "dividendEventsInsideHoldingWindows": 1,
+     "dividendEventsTotal": 7,
+     "firstHoldStart": "2023-05-26",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 12,
+     "lastHoldEnd": "2026-09-14",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 1,
+     "splitEventsTotal": 16,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 3056,
+     "windowsWithMissingSessions": []
+    },
+    "071050.KS": {
+     "corporateEventsTotal": 16,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 16,
+     "firstHoldStart": "2014-10-13",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 1,
+     "lastHoldEnd": "2014-11-11",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 932,
+     "windowsWithMissingSessions": []
+    },
+    "078930.KS": {
+     "corporateEventsTotal": 15,
+     "dividendEventsInsideHoldingWindows": 2,
+     "dividendEventsTotal": 15,
+     "firstHoldStart": "2015-06-23",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 17,
+     "lastHoldEnd": "2024-08-22",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 1104,
+     "windowsWithMissingSessions": []
+    },
+    "088350.KS": {
+     "corporateEventsTotal": 12,
+     "dividendEventsInsideHoldingWindows": 1,
+     "dividendEventsTotal": 12,
+     "firstHoldStart": "2014-12-11",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 1,
+     "lastHoldEnd": "2015-01-14",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 975,
+     "windowsWithMissingSessions": []
+    },
+    "088980.KS": {
+     "corporateEventsTotal": 31,
+     "dividendEventsInsideHoldingWindows": 9,
+     "dividendEventsTotal": 31,
+     "firstHoldStart": "2013-02-06",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 67,
+     "lastHoldEnd": "2022-10-17",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 521,
+     "windowsWithMissingSessions": []
+    },
+    "090430.KS": {
+     "corporateEventsTotal": 16,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 15,
+     "firstHoldStart": "2014-01-24",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 1,
+     "lastHoldEnd": "2014-02-27",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 1,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 759,
+     "windowsWithMissingSessions": []
+    },
+    "096770.KS": {
+     "corporateEventsTotal": 14,
+     "dividendEventsInsideHoldingWindows": 1,
+     "dividendEventsTotal": 13,
+     "firstHoldStart": "2017-12-08",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 2,
+     "lastHoldEnd": "2018-02-12",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 1,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 1711,
+     "windowsWithMissingSessions": []
+    },
+    "105560.KS": {
+     "corporateEventsTotal": 30,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 30,
+     "firstHoldStart": "2016-10-17",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 2,
+     "lastHoldEnd": "2017-03-24",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 1428,
+     "windowsWithMissingSessions": []
+    },
+    "111770.KS": {
+     "corporateEventsTotal": 17,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 17,
+     "firstHoldStart": "2018-10-31",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 1,
+     "lastHoldEnd": "2018-11-30",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-01-03",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3860,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3860,
+     "validCloseDatesBefore2013_01_07": 499,
+     "validCloseDatesBeforeFirstHold": 1927,
+     "windowsWithMissingSessions": []
+    },
+    "138040.KS": {
+     "corporateEventsTotal": 13,
+     "dividendEventsInsideHoldingWindows": 1,
+     "dividendEventsTotal": 13,
+     "firstHoldStart": "2014-04-29",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 3,
+     "lastHoldEnd": "2025-03-13",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-05-13",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3772,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3772,
+     "validCloseDatesBefore2013_01_07": 411,
+     "validCloseDatesBeforeFirstHold": 736,
+     "windowsWithMissingSessions": []
+    },
+    "138930.KS": {
+     "corporateEventsTotal": 22,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 22,
+     "firstHoldStart": "2022-01-27",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 1,
+     "lastHoldEnd": "2022-03-04",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-03-30",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3802,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3802,
+     "validCloseDatesBefore2013_01_07": 441,
+     "validCloseDatesBeforeFirstHold": 2671,
+     "windowsWithMissingSessions": []
+    },
+    "139480.KS": {
+     "corporateEventsTotal": 15,
+     "dividendEventsInsideHoldingWindows": 1,
+     "dividendEventsTotal": 15,
+     "firstHoldStart": "2016-12-15",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 3,
+     "lastHoldEnd": "2017-04-25",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2011-06-10",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3753,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3753,
+     "validCloseDatesBefore2013_01_07": 392,
+     "validCloseDatesBeforeFirstHold": 1364,
+     "windowsWithMissingSessions": []
+    },
+    "161890.KS": {
+     "corporateEventsTotal": 14,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 14,
+     "firstHoldStart": "2021-04-16",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 1,
+     "lastHoldEnd": "2021-05-18",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2012-10-19",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 3413,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 3413,
+     "validCloseDatesBefore2013_01_07": 52,
+     "validCloseDatesBeforeFirstHold": 2087,
+     "windowsWithMissingSessions": []
+    },
+    "207940.KS": {
+     "corporateEventsTotal": 1,
+     "dividendEventsInsideHoldingWindows": 0,
+     "dividendEventsTotal": 0,
+     "firstHoldStart": "2020-03-27",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 14,
+     "lastHoldEnd": "2026-08-12",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2016-11-10",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 2414,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 1,
+     "validCloseDates": 2414,
+     "validCloseDatesBefore2013_01_07": 0,
+     "validCloseDatesBeforeFirstHold": 828,
+     "windowsWithMissingSessions": []
+    },
+    "271560.KS": {
+     "corporateEventsTotal": 10,
+     "dividendEventsInsideHoldingWindows": 3,
+     "dividendEventsTotal": 10,
+     "firstHoldStart": "2020-09-02",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 17,
+     "lastHoldEnd": "2026-09-14",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2017-07-07",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 2252,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 2252,
+     "validCloseDatesBefore2013_01_07": 0,
+     "validCloseDatesBeforeFirstHold": 774,
+     "windowsWithMissingSessions": []
+    },
+    "316140.KS": {
+     "corporateEventsTotal": 19,
+     "dividendEventsInsideHoldingWindows": 2,
+     "dividendEventsTotal": 19,
+     "firstHoldStart": "2024-09-26",
+     "has253BeforeFirstHold": true,
+     "holdingBlocks": 4,
+     "lastHoldEnd": "2026-07-13",
+     "missingSessionsInWindows": 0,
+     "priceFirst": "2019-02-13",
+     "priceLast": "2026-09-14",
+     "rowsPresent": 1864,
+     "splitEventsInsideHoldingWindows": 0,
+     "splitEventsTotal": 0,
+     "validCloseDates": 1864,
+     "validCloseDatesBefore2013_01_07": 0,
+     "validCloseDatesBeforeFirstHold": 1386,
+     "windowsWithMissingSessions": []
+    }
+   }
+  },
+  "4_pre_anchor_history": {
+   "verdict": "PARTIAL",
+   "KRstocks": {
+    "minValidClosesBeforeFirstHolding": 499,
+    "allHeldNamesHave>=254ClosesBeforeFirstHolding": true,
+    "priceStoreFirstDate": "2011-01-03",
+    "namesFirstHeld2013-01-07": {
+     "006260.KS": 499,
+     "030200.KS": 499,
+     "032830.KS": 499
+    }
+   },
+   "ETF069500": {
+    "replayV16BenchmarkComponent": {
+     "before2013_01_07": 499,
+     "first": "2011-01-03",
+     "last": "2026-09-14",
+     "missingCount": 0,
+     "missingKRorUSsessions2013_01_07to2026_09_14": [],
+     "n": 3860
+    },
+    "replayV16BasisDefect": "replay-v16 069500.KS applies each cash distribution about twice (docs/weekly-decision/kodex200-benchmark-audit.md; basis protocol \"why\")",
+    "phaseCCorrected": {
+     "file": {
+      "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json",
+      "gitRef": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+      "blob": "df9507b37d3faa759a5ca2d2287e58f14b5482fd",
+      "sha256": "58580c4370ec2c5afa124f849afbc4fa7b5c879012e75ebbd48ee7c7a0e659a9"
+     },
+     "quotes": 3612,
+     "first": "2012-01-02",
+     "last": "2026-09-14",
+     "quotesBefore2013_01_07": 251,
+     "shortfallVs254PricesNeeded": 3,
+     "inWindowQuotes": 3361,
+     "inWindowKRSessions": 3361
+    },
+    "yahooPriceOnly": {
+     "file": {
+      "path": "data/kr-market-risk-anatomy-v1/sources/YAHOO_069500/normalized.csv",
+      "gitRef": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+      "blob": "72ea8412cc1fd04083d99a613768b4f8bae39933",
+      "sha256": "d13d2c4e4df7f30eee0282749ffadb7e7b900267ebb77103028c1ccc1da278c3"
+     },
+     "rows": 4279,
+     "first": "2007-01-29",
+     "last": "2026-10-02",
+     "before2013_01_07": 938,
+     "basis": "as-traded close, dividends NOT reinvested; ROBUSTNESS_REFERENCE_ONLY_NEVER_PRIMARY"
+    }
+   },
+   "calendarNote": "replay-v16 calendar component starts 2013-01-02 (3550 rows); pre-2013 session calendar must come from pipeline/replay_calendar.py, not the sealed component"
+  },
+  "5_terminated_names": {
+   "verdict": "PRESENT (no terminal economics needed) / dividend basis PARTIAL",
+   "evidence": [
+    {
+     "path": "docs/results/kr-termination-inventory.json",
+     "gitRef": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+     "blob": "f2cbc1df7d1c3bd7386dbf715fdf139c4f0a1947",
+     "sha256": "b58ecb2c4500302c40784613318c8451beee663ece5ee76ada26873a4292f93f"
+    },
+    {
+     "path": "docs/results/kr-terminal-action-reconstruction-v2.json",
+     "gitRef": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+     "blob": "42e4d8fab8c56ae604dd2fabc5ee0594090f56aa",
+     "sha256": "b1d2dcb0a8064139e601c4efab51a44e1323f93910ae70228054338a90629017"
+    },
+    {
+     "path": "data/kr-terminal-corporate-actions.json",
+     "gitRef": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+     "blob": "380e60b56161d6b47486acd85944f8b4e971e308",
+     "sha256": "4e67620afddfb4cd5849e857da78a91f643f00c0b24466e3e1517a108d156077"
+    }
+   ],
+   "heldTerminated": {
+    "000030.KS": {
+     "holdingWindows": "2017-05-31..2017-06-30 (1 block)",
+     "lastTradingDate": "2019-02-12",
+     "terminationType(v2)": "SHARE_TRANSFER",
+     "v2Completeness": "dividendLineageResolved READY, exDateSemanticsResolved BLOCKED, terminalActionChainResolved BLOCKED"
+    },
+    "000060.KS": {
+     "holdingWindows": "2015-06-23..2015-11-25 (3 blocks)",
+     "lastTradingDate": "2023-02-20",
+     "terminationType(v2)": "SHARE_EXCHANGE",
+     "v2Completeness": "dividendLineageResolved READY, exDateSemanticsResolved BLOCKED, terminalActionChainResolved BLOCKED"
+    },
+    "002550.KS": {
+     "holdingWindows": "2015-11-25..2015-12-28 (1 block)",
+     "lastTradingDate": "2017-07-20",
+     "terminationType(v2)": "SHARE_EXCHANGE",
+     "v2Completeness": "dividendLineageResolved READY, exDateSemanticsResolved BLOCKED, terminalActionChainResolved BLOCKED"
+    }
+   },
+   "finding": "3 of the 22 terminated KR securities were held by C2; every holding window ends 1.5+ years before last trading, corporateActionsApplied is empty in all 155 KR blocks and replay-v16 corporate-actions book has 1 action (ESRX, US). Terminal consideration is NOT required for C2; but these 3 names carry zero Yahoo dividend events in replay-v16 (price-only basis inside their windows) and ex-date semantics are BLOCKED.",
+   "inventoryFoundationStatus": "BLOCKED_BY_SOURCE_ACCESS (v1 inventory); reconstruction-v2 foundationStatus PARTIALLY_REPAIRED"
+  },
+  "6_benchmark_069500": {
+   "verdict": "PRESENT (gross ETF market-price TR, reconciled) / official NAV & constituent weights ABSENT",
+   "series": {
+    "phaseCCorrected": {
+     "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json",
+     "gitRef": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+     "blob": "df9507b37d3faa759a5ca2d2287e58f14b5482fd",
+     "sha256": "58580c4370ec2c5afa124f849afbc4fa7b5c879012e75ebbd48ee7c7a0e659a9"
+    },
+    "pinnedBy": {
+     "path": "docs/weekly-decision/weekly-passive-first-v1-benchmark-basis-protocol.json",
+     "gitRef": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+     "blob": "417185c178d39d3136f2223309fab517e30a6ba0",
+     "sha256": "a08f92b06aab6de4959b52d0a5bc0fd2c6b21851c53deca114167898e97a8fe6"
+    },
+    "aggregateStatus": "PASS",
+    "definition": "GROSS_ETF_MARKET_PRICE_TOTAL_RETURN_EX_DATE_CLOSE_CASH_REINVESTMENT, before investor tax",
+    "fields": [
+     "aggregateStatus",
+     "annualComparisons",
+     "auditClass",
+     "correctedBenchmarkQuotes[Close,date]",
+     "coverageFrom",
+     "distributions[cashKrwPerUnit,exDate,recordDate,sourceRefs,ticker]",
+     "economicDefinition",
+     "independentEndpoint",
+     "limits",
+     "requiredYears",
+     "shareholderDefinitionDiagnostics",
+     "sourceIdentities",
+     "threshold",
+     "ticker"
+    ],
+    "distributionsStored": 46,
+    "distributionExDates": "2012-04-27 .. 2026-07-30"
+   },
+   "replayV16": {
+    "component": "benchmark/2011-01..2026-09 + benchmark/source (krx-total-return, PINNED_FOR_GENERATION)",
+    "069500.KS": {
+     "before2013_01_07": 499,
+     "first": "2011-01-03",
+     "last": "2026-09-14",
+     "missingCount": 0,
+     "missingKRorUSsessions2013_01_07to2026_09_14": [],
+     "n": 3860
+    },
+    "corporateEventsFor069500InReplay": 0,
+    "signalHistoryBenchmarkSnapshot": {
+     "path": "ledger/benchmarks/069500.KS.jsonl.gz",
+     "gitRef": "4b6f8b7137521a148d9cd2c9e3c2fdfdcb5ae71a",
+     "blob": "f24df3f32a01f6abec67099396814a497979ec7b",
+     "sha256": "65f5213f4ac5573fa55075c6d40879ddfe6baf86b1fcb1f588752d1aa7496678"
+    }
+   },
+   "officialNavAndWeights": "ABSENT: no KODEX 200 NAV series, KOSPI200 constituent-weight history or ETF PDF (portfolio deposit file) found; git ls-tree main for kospi200 weight/constituent/etf-pdf/portfolio-deposit: 0; only docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-history/20YY03.pdf issuer annual distribution documents. Phase C limits: \"verifies gross ETF market-price shareholder total return, not NAV or KOSPI200\". AGENTS v2.46/2.47: benchmark external reconciliation was UNRESOLVED before Phase C; concentration analyses used a market-cap PROXY."
+  },
+  "7_krw_cash": {
+   "verdict": "PARTIAL (policy-rate proxy only; investable KRW cash ABSENT)",
+   "dailyRiskFreeNavDerivation": "pipeline/replay_valuation.py risk_free_path(): calendar-daily compounding of (annualRatePct/100/365) using the rate effective at the start of each day, from replay-v16 component risk-free/KRW (61 BOK base-rate events 1999-05-07..2026-08-28, source basis BOK_POLICY_RATE_PROXY, risk-free/coverage 2011-01-01..2026-09-14); pipeline/replay_rates.py fetches bok.or.kr with fallback data/bok-policy-rates.json; effective date = decision date + 1 day. In C2 cash weight is 0 so dailyRiskFreeNav does not enter C2; it enters C1/standalone.",
+   "files": [
+    {
+     "path": "data/bok-policy-rates.json",
+     "gitRef": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+     "blob": "663656e41e0e10e49f9ed340d345a92d17cd1aef",
+     "sha256": "a7edf0e532c7b54da9d962ebf12ff2552c90c783439fef99d7c761c5b9ea69ff"
+    },
+    {
+     "path": "pipeline/replay_rates.py",
+     "gitRef": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+     "blob": "45e8a4d081a569a790dbb8fccdcc4fa1eaa0bc79",
+     "sha256": "c82ade6ac5960152a6132d7767e2458a137e80c1a463c0dcbfb166b230a1f59d"
+    },
+    {
+     "path": "pipeline/ecos_macro.py",
+     "gitRef": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+     "blob": "3c25fb1389c1d1ed8334120d6e5818650b3f7479",
+     "sha256": "1fe17d6666b7cc6fe483d47928bbffd1b389f19743cd38c0e05b8a00a324c938"
+    },
+    {
+     "path": "config.json",
+     "gitRef": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+     "blob": "dbedd96c1f6a0e2bd4be3fb262a4950c5345d4f8",
+     "sha256": "d1169e1e4a84ded1385e11e591ea01a4b383e7a625960ece9278a0bde3c15273"
+    }
+   ],
+   "bokPolicyRatesJson": {
+    "events": 36,
+    "first": "2009-02-13",
+    "last": "2026-08-28",
+    "verifiedThrough": "2026-09-07",
+    "basis": "BOK_POLICY_RATE_PROXY",
+    "note": "differs in event count from the sealed replay component (61 events from 1999) -- same source, different snapshot depth"
+   },
+   "ecos": "pipeline/ecos_macro.py adapter exists; config.json ecos.KR registers BaseRate(722Y001, AMBIGUOUS_SOURCE), KTB_3Y (817Y002/010200000 LIVE_VALIDATED), CorpBond_3Y (AMBIGUOUS), macro series; NO CD91, KOFR, MMF, call-rate or T-bill series registered; git grep CD91|KOFR|MMF in *.py/*.json: no series hit; signal-history tree: no ecos/cd/kofr/mmf file",
+   "absent": [
+    "CD91 daily yield",
+    "KOFR",
+    "MMF/deposit/T-bill investable KRW return index"
+   ]
+  },
+  "8_transaction_costs": {
+   "verdict": "PRESENT (assumption model, not measured costs)",
+   "files": [
+    {
+     "path": "pipeline/benchmark_alpha.py",
+     "gitRef": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+     "blob": "c2de66e353f203eccedd4ddfd8b48cd6ea6be40d",
+     "sha256": "9a2aeaeaf9fb92831a44df499e0a2dc420bd3dde45943a93e83281a7ac3445cf"
+    },
+    {
+     "path": "pipeline/weekly_decision.py",
+     "gitRef": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+     "blob": "8100c6da460466344f264ef8f295531cbc99b23e",
+     "sha256": "3ea55f5df819a6dd07542fb5368cebfa2e78d461e43a716942a713c395548619"
+    },
+    {
+     "path": "pipeline/portfolio_validation.py",
+     "gitRef": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+     "blob": "794c52d888d169dd11c88cbbb6e4b61532f17509",
+     "sha256": "a22c18fc31f47b1701ea4c426ff31dec48f3f367163bd1eb3e8cf75c1fadf2a5"
+    }
+   ],
+   "KRmodelUsedForC2": "weekly_decision.trade_cost_fraction: per leg bps = commissionBps 1.5 + spreadBps 8.0/2; sells add dated sellTaxBps for stocks (schedule 1900-01-01:30, 2019-06-03:25, 2021-01-01:23, 2023-01-01:20, 2024-01-01:18, 2025-01-01:15, 2026-01-01:20; resolved by portfolio_validation._dated_cost_policy) and ETF_SELL_TAX_BPS KR 0.0 for 069500.KS",
+   "etfLegCharged": true,
+   "etfLegNote": "account()/_leg_cost iterate every ticker in prior terminalWeights | new target incl. 069500.KS (is_benchmark=True) -> ETF residual rebalances pay commission + half-spread each way, zero sell tax; initial block also pays full buy cost (prior={})",
+   "standaloneRowAssumptionsDiffer": "regional-standalone rows carry transactionCostAssumptions KR {commission 5, spread 12, sellTax 20, rebalanceDays 63, assumedTurnover 25%} -- a different (production estimator) model than the one the C2 replay charges; the stored transactionCost/turnover fields are NOT used for C2",
+   "notModelled": [
+    "market impact / capacity",
+    "price-limit or halt non-execution",
+    "dividend withholding tax"
+   ]
+  },
+  "9_US_analog": {
+   "verdict": "PARTIAL (SURVIVORSHIP_BIASED_PARTIAL)",
+   "targets": "PRESENT: 155 US blocks, 126 distinct tickers, namesPerBlock {1:1, 3:154}, residual SPY",
+   "fills": "ABSENT",
+   "stockPrices": "PRESENT: 126/126 priced with no missing US session in any holding window; 11 names with zero dividend events (ADBE,BIIB,BIO,BRK-B,BSX,EW,FISV,GDDY,ISRG,MTD,ORLY)",
+   "preAnchor": "PRESENT: SPY replay benchmark 505 closes before 2013-01-07; every held name >=254 closes before first holding",
+   "benchmark": {
+    "replayV16SPY": {
+     "before2013_01_07": 505,
+     "first": "2011-01-03",
+     "last": "2026-09-14",
+     "missingCount": 0,
+     "missingKRorUSsessions2013_01_07to2026_09_14": [],
+     "n": 3947
+    },
+    "usDualBenchmark": {
+     "path": "data/research/us-dual-benchmark-v1/spy-qqq-total-return.csv.gz",
+     "gitRef": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+     "blob": "97d4b84d18392533b9e3c948000d7709ccbf1966",
+     "sha256": "a82c64b96ef56e672373240d0b6df317dadbdee8c845bfaa9725b16bb9625b50"
+    },
+    "usDualBenchmarkSPY": "2011-01-03..2026-09-14, 3947 rows, fields ticker,date,totalReturnClose,rawClose,dividend,split,usdKrw"
+   },
+   "cash": {
+    "file": {
+     "path": "data/research/us-dual-benchmark-v1/rates.json",
+     "gitRef": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+     "blob": "63207bfab8838022ee0b8380084072d93c39d034",
+     "sha256": "7e06146de422661d52534d9322e38be04a25177b119ff3da710f96ae2769db4a"
+    },
+    "keys": [
+     "krwPolicyRatePct",
+     "krwSource",
+     "usdFedFundsPct (FRED DFF via replay-v16 macro)",
+     "usdSource"
+    ],
+    "investableUSDCash": "ABSENT (DFF proxy only)"
+   },
+   "survivorship": "corrected replay labels US SURVIVORSHIP_BIASED_PARTIAL, headlineEligible false; standalone rows say survivorshipRisk LOW -- contradictory labels; AGENTS v2.27: 212 of 324 departed US identities unpriced",
+   "fx": "replay-v16 fx/USD_KRW 3550 rows (FRED H10)"
+  }
+ },
+ "singleMostImportantMissingSource": "An investable, dated KRW cash-return series (CD91 / KOFR / MMF or T-bill index) for the cash leg of the ETF+cash control; only the BOK policy-rate proxy exists. Secondary: Phase C corrected 069500.KS has only 251 quotes before 2013-01-07 (needs 254 for a 253-return trailing window) -- the longer replay-v16 series carries the double-applied-distribution defect and the Yahoo series is price-only; and no historical fills exist (targets only).",
+ "objectsRead": [
+  {
+   "component": "price/2011-01",
+   "ref": "3c9e949c86b561819eee934baa1854cc63308330657bc5085e6c03efa127bacd",
+   "blob": "05259bec750e8482eb18f49134ed121cc3fedca2"
+  },
+  {
+   "component": "price/2011-02",
+   "ref": "bd25aaa07b1b168856ddaf5fb82e219258e8e692781c83fb13a91187b55ab179",
+   "blob": "bc896ce5b6c5b2e0a3f28725dc8c7fd7887b3c6c"
+  },
+  {
+   "component": "price/2011-03",
+   "ref": "c494ae1ef6b7514887ff771f1872d48eb8ed0f35f94d0af3c4e4d73d040e1df8",
+   "blob": "b4663f384ce18058d5f6782e3b578ae928112139"
+  },
+  {
+   "component": "price/2011-04",
+   "ref": "bb0a4c8953dfd3ea6d563e51e6f7aeb6eb819e0ba2598582777bc7a5f8299cc1",
+   "blob": "87b60ff5c1ec370f700b5b0d3e23d230f27c658e"
+  },
+  {
+   "component": "price/2011-05",
+   "ref": "b1a98a1ec600eecdef6810e61deedb1ca883dc1c3ca89bd7e0cd052943291a8d",
+   "blob": "973a97d31787c6c0228e4362a16b81909f60e965"
+  },
+  {
+   "component": "price/2011-06",
+   "ref": "94feb72c69e1e228cf064d15d7dcdf156c080bbca3ccf81c38e5b6cac7690949",
+   "blob": "7057d706e4dc015e2ccd38e32891b80d105c9a1d"
+  },
+  {
+   "component": "price/2011-07",
+   "ref": "3e4fd77582ef85440d5285b0bde9065818d70c4913e5cfbc7809aa9bc2793ffb",
+   "blob": "26f86f787aa6d7e65273ce2bc6c591020f813e22"
+  },
+  {
+   "component": "price/2011-08",
+   "ref": "bf1ff253bcd4219159ec675cb0c58cb7f8f38bab5e40c54b425f47d88787deac",
+   "blob": "86402006d1d38ffe59e8d61d868a25ccba615272"
+  },
+  {
+   "component": "price/2011-09",
+   "ref": "85d0a69254de5596d0251836004df6636c42b9c3f531e9ed7c4d497b4d437d81",
+   "blob": "66d92cd18ddc517cf1d76e34b29f29da0e75a7d6"
+  },
+  {
+   "component": "price/2011-10",
+   "ref": "5f92782e87887b95c567c9cea76bb1ab67c65119c4357674c987bd69cdf3ede5",
+   "blob": "9e2e3e86ad97bd97a6b1be22bcc6ad722a387189"
+  },
+  {
+   "component": "price/2011-11",
+   "ref": "d614750b7318147ff6927ac887d6edba0e126c94b62a0abcf47af9daaa8b729c",
+   "blob": "01a9e90001ada21911c9129e4d122cf1f4d3158c"
+  },
+  {
+   "component": "price/2011-12",
+   "ref": "9d5c7eac6d6d2035e37bd56deeec3ebdd2c112adee7c74efc2c9fa740bdab863",
+   "blob": "b9e2e95221964ef157957f6ee9658260c3b7f62b"
+  },
+  {
+   "component": "price/2012-01",
+   "ref": "cf476bd52e486fcf2544a727070da68efce2fb568224cd2b1d75d4b9cbb75a0b",
+   "blob": "c80f7d78d8aa188c37aaec75987027754ed2d7d7"
+  },
+  {
+   "component": "price/2012-02",
+   "ref": "2721dc2dbf6ea1b8b35ec6d65b7a036c8bb601841962ac909d89c1138790c1a4",
+   "blob": "7bdc97b4e3985b1afeba9ced838d221dd72fc246"
+  },
+  {
+   "component": "price/2012-03",
+   "ref": "5ea447e2d8e9c1325854882e6a800ca48a7ae910310f881bdf3be7f87f8dfab9",
+   "blob": "93981057777e66fdddfbfade0e2072409d20bb60"
+  },
+  {
+   "component": "price/2012-04",
+   "ref": "027a2bc62220d4129bbfd18f2eb3ad56badafb7a625887c3d58522f2fddecb20",
+   "blob": "ad56f157510d6b18bf3efeb030c673fdda68b255"
+  },
+  {
+   "component": "price/2012-05",
+   "ref": "28be9793ccddae47e443f23a4aad76da33b2e6a84aaca612badb509fa64f9882",
+   "blob": "bd416a36e6b08411ebdea0ca7a5c321b1c05df7b"
+  },
+  {
+   "component": "price/2012-06",
+   "ref": "acdd4801ccdb6b2ceb2e5cc73501b42adbd80365731c58d218e9ac83eb83baa8",
+   "blob": "9e75270279cb4677c4029866096d4b1c3000e5fe"
+  },
+  {
+   "component": "price/2012-07",
+   "ref": "cb0d773cb2467ddb3c129289353e9ab0cc29e8a299d9bb09f8f05d7dad27503e",
+   "blob": "5dbd710c369e7f74072ec03df7f3c273bd5715bc"
+  },
+  {
+   "component": "price/2012-08",
+   "ref": "4f644854594a2f54dd8cbac9dba8fc53dc6cf95d3b5c1aa80f6f99cc03f65d63",
+   "blob": "d7979803b8f93612a8a8f51d9ed1c74383881e07"
+  },
+  {
+   "component": "price/2012-09",
+   "ref": "1ad549219f236290ac88df3345974b55dc19b43372104313c6a97aed40397150",
+   "blob": "d1bf1dc27fe57e0c023a5f349305eeb09847e88e"
+  },
+  {
+   "component": "price/2012-10",
+   "ref": "ff188d8997430db4a77313077ef305f3ed07f556c6b775a9005e224c62e09a4f",
+   "blob": "608cabc51827816cead93655ec2bd615632adfcb"
+  },
+  {
+   "component": "price/2012-11",
+   "ref": "aefe3407d6cbdd762c7ca89902a43d5ac8174a2d89db78884d389466aa8e14c8",
+   "blob": "4f5adf9ebf2d0595d56cad4d4dfb07ce22768d3c"
+  },
+  {
+   "component": "price/2012-12",
+   "ref": "48db361f08aebaa659a8c9b8b2028c13cbd1f38885d990beb5533218045a4d08",
+   "blob": "87ef35e22ea29b931e8a3b10fd7a75aed7f2736a"
+  },
+  {
+   "component": "price/2013-01",
+   "ref": "92440e9a80e674c95d4c5481b74693cf5a40288c2dd165ccabe4e98146e1c85f",
+   "blob": "4e2d130bea89f96030fe22d351a6b2aacb3b92f5"
+  },
+  {
+   "component": "price/2013-02",
+   "ref": "e9092eec32f5a667d735d672a179100764a8a0836f020b9174db4f5f07ed0a3d",
+   "blob": "fab6a167fff30339e7cefd3678e983fb104f87d3"
+  },
+  {
+   "component": "price/2013-03",
+   "ref": "4c1a6246ffe64411902bb2cbbb619c1f08a2d8aec1b57dcde6e2ce939d2d74bc",
+   "blob": "65649d4ba238697a812f753bc9abd7ffef386eec"
+  },
+  {
+   "component": "price/2013-04",
+   "ref": "2f2d0c6e8b5eeda1ec880650154e11bde937c22a253f18747941f087c87400ae",
+   "blob": "acea13f8da36a33bcb18111ed019fa49d64469b6"
+  },
+  {
+   "component": "price/2013-05",
+   "ref": "c513a1a9e208223afc78637807475a2c3f77b954f0573d482505c7a285ad6939",
+   "blob": "8caffabf87118de76705499ab862926487b9a838"
+  },
+  {
+   "component": "price/2013-06",
+   "ref": "e49af6820c78fe84ac6e34f7b10aa90823e67a222bea39c59e1f99c3443c490d",
+   "blob": "37c53aaba56f26a03ee58570ea623e6ffc7b398c"
+  },
+  {
+   "component": "price/2013-07",
+   "ref": "9885533af93c6453c668d17b06e414a935c08a4e30363d0d9d95725b67b86e52",
+   "blob": "19c8fb6a0402cff3cccd7b3d9e17227108df4e67"
+  },
+  {
+   "component": "price/2013-08",
+   "ref": "7e132ad126cf5464e8eb4aa2335f51bb7a6eecda7ba3f9a53f701be02cc735ab",
+   "blob": "36303d63953211dd011f828b360ac44b16ef4604"
+  },
+  {
+   "component": "price/2013-09",
+   "ref": "376ed512e18889f9acc4536352e2338808008304b9c84722f28f4d55b035efc5",
+   "blob": "3ad381e1003be608cbfd1fa64f474eff7d011f8e"
+  },
+  {
+   "component": "price/2013-10",
+   "ref": "3ac492c58049a757cb95d8f6a30d989a18a53a29cf68ad850de6e7465ad91a3f",
+   "blob": "59ed0a353237fa7f80c39fa80f5c28ef0610f885"
+  },
+  {
+   "component": "price/2013-11",
+   "ref": "9574bdeb6868f72b5029e83ef772382b7c2ab17981c7cb816d8ac181ec45b798",
+   "blob": "ab682fa5e72cac10d2e3dbeebbf4a5fd4c7093a8"
+  },
+  {
+   "component": "price/2013-12",
+   "ref": "25ce545a848f99f7d5f38c647b16b7d26fbe73f99a2c245628ca0244a1ab1784",
+   "blob": "b2694560bbfcb862528f4f7cc030fd36db8ba641"
+  },
+  {
+   "component": "price/2014-01",
+   "ref": "7624100e876b0c1e62adeb7179af6087930e6f1cbfdc3aee6d0dbef9917f78e5",
+   "blob": "0ae36db5793ebdec2b5bd12f89a3c62299b97101"
+  },
+  {
+   "component": "price/2014-02",
+   "ref": "a7b7ae0a79ef2387a322f462f0aa74bcebe3b1f796cfc6a265461795e3045621",
+   "blob": "ac9ace9f565beb3c4b9cd2156d26edb1b3c7a861"
+  },
+  {
+   "component": "price/2014-03",
+   "ref": "137eae7f34fb842bb6d02d115caa7d81a234a84b4c9bdf163005bceb4f5336ea",
+   "blob": "0745973c47b1a504a90bd8e29be6e99ec78fc62f"
+  },
+  {
+   "component": "price/2014-04",
+   "ref": "4007b78ff065ab8904d1f7c8e2f72f3b46178edb2aa235716ba8c3db7885f997",
+   "blob": "e878e8103bc60b9fd745f8476454c463dbb23d69"
+  },
+  {
+   "component": "price/2014-05",
+   "ref": "82fad843c724cfaa8db55a485c66d3660057b2ed519e0a5b76ff00aeac6fce20",
+   "blob": "0d4f2b976cd42609cf92a3dfc2c5e22d6d5eb3b0"
+  },
+  {
+   "component": "price/2014-06",
+   "ref": "71333a935b82b78528d08a6acff9404203cc394a2ba907cbd993ce4c363a331e",
+   "blob": "0f96341f1c0cf087d865866ae680333643d16de8"
+  },
+  {
+   "component": "price/2014-07",
+   "ref": "5d77f083c8bc1594333557a533c04465ac16cee3e5e8957da63fdc8688ef9c3c",
+   "blob": "2953ecb7afed29c033127da27a18506bd63ee9e9"
+  },
+  {
+   "component": "price/2014-08",
+   "ref": "b55bac7d4f885fbd042eeb82b8b6bcd588f327a40ff200e86999c03c7b8ae7e3",
+   "blob": "8468207ee4cbbd6fc0624d44479a4ac4870ad819"
+  },
+  {
+   "component": "price/2014-09",
+   "ref": "929da5c634b3254798fcdf0d5135220de85ef815080042950e53bd59c9deb948",
+   "blob": "995e71e3364ca20427ea5c301becd1d5d0800498"
+  },
+  {
+   "component": "price/2014-10",
+   "ref": "62fe5d0a8b31125ad2a02c84cfcbd5a87acb76c5fc1621baffcc8e29192aa5cf",
+   "blob": "eb57a4c6b93b96d0691aa4e0c02d9aad246e5972"
+  },
+  {
+   "component": "price/2014-11",
+   "ref": "d172b5657925ce6759c290d42df15f66295142a3224f8d56e0f43e9a0e933900",
+   "blob": "6ca010a72d9529bc553f39a49579de7d15554374"
+  },
+  {
+   "component": "price/2014-12",
+   "ref": "3dbfdbb0a6870caa1ffd53a76c4fbb442799ec8be024f2828c9e768d82adf2d9",
+   "blob": "cdfa1bd9ebcab031e8fe0d5a093586ed4de25740"
+  },
+  {
+   "component": "price/2015-01",
+   "ref": "e3ee826164b4c6ab8d8de89bfa3f787a3840d9dc9ad68bc644099482337cbf5d",
+   "blob": "abedf39a571f4df8b5ae5db4a5562e71baab3680"
+  },
+  {
+   "component": "price/2015-02",
+   "ref": "41c20a0a57b6abd85cf19b37a006feec81e83486376e203ec81948b98c1a3500",
+   "blob": "e92e7e809466853a98c99468790bad0a837d9142"
+  },
+  {
+   "component": "price/2015-03",
+   "ref": "5691deac70d3343791742f3f0ff56e34dee0d27b8366ed8f1c0a7c9025449d6a",
+   "blob": "b8977c4615ff14e716be3f331cd4404e10006758"
+  },
+  {
+   "component": "price/2015-04",
+   "ref": "c74bc1a0b68d6dbb16aba35435a6739073dff14882646778d9952d7cbf26535b",
+   "blob": "4fe4ca458a19d58f817c9a432350838c3d1c4d03"
+  },
+  {
+   "component": "price/2015-05",
+   "ref": "be08b21c6e5cc7ee271fdc9e33646d54496f5e0886947d57e1ff32794c484b88",
+   "blob": "01e67821d07de87e58175ee730275d9e56bc760f"
+  },
+  {
+   "component": "price/2015-06",
+   "ref": "535990ab0785abc2c8f35819a41cb6add6c031a6ac1ac66ba81c414216d82efa",
+   "blob": "c1d5d79d256c599e3c50a40e830f2d13b9a033a5"
+  },
+  {
+   "component": "price/2015-07",
+   "ref": "f19400f6c31eb042dcf0aed4456667de5ad8e94e73a8418d4570e300931683af",
+   "blob": "00f20b82ce0f50fa95ae4611c211d0e24a707d4d"
+  },
+  {
+   "component": "price/2015-08",
+   "ref": "eade0a0a25aa607c7b03e74b3bb83042a1a0751f5a2fe4a57a4058a16afca7a4",
+   "blob": "eb4ac5efbbefd61f0a14502a75b3d3a3190f0818"
+  },
+  {
+   "component": "price/2015-09",
+   "ref": "8586126412e470d2d24e8c7aa8069606b90c9e353bf7575a48b9296a55540d51",
+   "blob": "befa461d71ce48f5841ae497841466a0140feb5e"
+  },
+  {
+   "component": "price/2015-10",
+   "ref": "1dcfefd750ea81bd0d1db5c5b105a6d274c3ba49b11ddd77321088a76333f635",
+   "blob": "140ef137fafcadd93aa25c90dd8d0de0a6a75cb9"
+  },
+  {
+   "component": "price/2015-11",
+   "ref": "37720ebcdb2ba4fd9cbaba443ed9336132048cc71d3e095366a9a0b3442a7c9c",
+   "blob": "d6cfa7bb9417c2c847128f4ddcd6ed3e4d25e518"
+  },
+  {
+   "component": "price/2015-12",
+   "ref": "3131c1dad79d7e235c4df8a08e035a89ee0bd712144fb020c72bcc593c3a1acf",
+   "blob": "89c1d189b7fb889d807d64a7b8e2c339007b346d"
+  },
+  {
+   "component": "price/2016-01",
+   "ref": "7c402a157217447fc23b9e27d06e8f612c3015f14d31b8025d9770d19eeb74c6",
+   "blob": "2243be7ac0ce5e7916fe35c13d418859b367565c"
+  },
+  {
+   "component": "price/2016-02",
+   "ref": "7467b88d4dea398bad7fe9e02e48d8405f7de3864db8942a010a362e03746806",
+   "blob": "0e61e2c8d34345a45ff20af37565c6b36f5e6450"
+  },
+  {
+   "component": "price/2016-03",
+   "ref": "e4ba54f98dc8faece8d1c1df893cd07f231bd8cc31c4e828cb5a3912b2811d9b",
+   "blob": "b962e88c2dc5ec89fd4da1607a28cc8d3849ef1d"
+  },
+  {
+   "component": "price/2016-04",
+   "ref": "4e7731f718162564329a6a08179887f1e142b997704660825eb63419ef7626d2",
+   "blob": "394dc4e7722693c098139e9e5b688c7d6f879464"
+  },
+  {
+   "component": "price/2016-05",
+   "ref": "f2bc194f28aa680f9d48301ee300a8fa30483fad66f752ad4ff995b25dfe7359",
+   "blob": "0d17416338a9b9e17ec008bdc2a5a28d55325727"
+  },
+  {
+   "component": "price/2016-06",
+   "ref": "47abe3cc9748458f2d393d24b93acc1ec4d774799f5a0056f9ab65ee52fee149",
+   "blob": "47cec9b9d2882d1da4189f83779edd9f7c589925"
+  },
+  {
+   "component": "price/2016-07",
+   "ref": "e5b2e44af330698b82b150b3ea884c900922acee7b1aa5ac08afbf816b6ff8af",
+   "blob": "f2343b8f02db21a4fa02446666919afe5cb19419"
+  },
+  {
+   "component": "price/2016-08",
+   "ref": "f83f2ce5830330ff5e1245e3ab6c2df473f73d0285cbe849df4a355613cdfe0e",
+   "blob": "a477a7ce8d3b11ffd0cdfbcce5b09d120b7a438d"
+  },
+  {
+   "component": "price/2016-09",
+   "ref": "d5ab4df0a5e4027f2aaf575ab1bcf77608c37f9eac31affdd9cf5854ffd34a72",
+   "blob": "05b452f9b4ccb9060fa707ddbf9fdf8efcb09aac"
+  },
+  {
+   "component": "price/2016-10",
+   "ref": "8b09797191fe35a934bee7a24938105e3107de6d9fb73279f21e33c67ea36cbe",
+   "blob": "2cbb3cc32939fc25a5dce01daadbfdb4189249d7"
+  },
+  {
+   "component": "price/2016-11",
+   "ref": "4d625cb5730720fa5927384c2944b6eb215f7110fc7ba9435ead1cd60adb4012",
+   "blob": "d9e984f5a58cc8c5caaa12ce293036a3bd859c09"
+  },
+  {
+   "component": "price/2016-12",
+   "ref": "3909e870c46f01de7bef4448ab4996d9701da572eeeac9d4c697651b8e525846",
+   "blob": "192212780db39f62ae386c96d149764d33b0d2a8"
+  },
+  {
+   "component": "price/2017-01",
+   "ref": "088814081dc02b38231d8af1b451de3dabdf703b167f930c598b1b8c6c4dedc1",
+   "blob": "84af9efc95f925a97d29751a4cc239cf1ffdfb11"
+  },
+  {
+   "component": "price/2017-02",
+   "ref": "1a52504dc0ef3df8bcc77468e3046ed00f8574356d32cdb496eab0ff638803aa",
+   "blob": "318ce108b869ec175f19e79005a8b685f0c85ce2"
+  },
+  {
+   "component": "price/2017-03",
+   "ref": "78548e3145abcf5df28e7879d7cbdff166c255d2bc835293d3c0e49c16155632",
+   "blob": "40c7befe2c39904561f176a3eb11883c7564fd93"
+  },
+  {
+   "component": "price/2017-04",
+   "ref": "c0fff35d66abcdb661822d9f4f31b05701d9f1b5dcb77decd938521f5e782a50",
+   "blob": "213114b85fbb4677aa22b78f4a621342ce67a304"
+  },
+  {
+   "component": "price/2017-05",
+   "ref": "14412ee242ca1629e3a46aa97768d95baee983ce2d84f79addaa2c91d5b53065",
+   "blob": "91249b422f832c351f3adbfbf6e49d64e4d47620"
+  },
+  {
+   "component": "price/2017-06",
+   "ref": "260d35bb427419497e09ce2d9acdeeea27f63d510ad41e01d3753e505cc69562",
+   "blob": "a29f37bc889c2a5d0e036e9aad3ff3fdc931d1dd"
+  },
+  {
+   "component": "price/2017-07",
+   "ref": "8b5cf224af46025fd73267b277ce0cd333ad5a2695306219080cf8b73a295709",
+   "blob": "d932f452d755ed59973e01972c59de4f05ec0bae"
+  },
+  {
+   "component": "price/2017-08",
+   "ref": "9714a92041d98fdc6a1c34067e016e2c0986bbb23bf81ad6cfb1c20f576e1e47",
+   "blob": "2b2b05945b3142f97a33349096f8add51ca9be01"
+  },
+  {
+   "component": "price/2017-09",
+   "ref": "7f08a38b92dd0aba2140fda33191cf53213bd656e14cbd5096a32a64dea79793",
+   "blob": "b5dde8ddd82eedae240ed8393d35ecd2b4549ad3"
+  },
+  {
+   "component": "price/2017-10",
+   "ref": "c4f614870edb702d1d67f7527b46b74fbc3dd967a2dde981b0bfb42df8c5416b",
+   "blob": "a9da727d7d5bdcad20c53545ab004b4c16056a50"
+  },
+  {
+   "component": "price/2017-11",
+   "ref": "49fb057f40c06c837c07d5492619a5885c0bc48b33e03c062949fc6956a3fe91",
+   "blob": "7cbd5594f9213a3bc3bbf72a48ee5bff097967f6"
+  },
+  {
+   "component": "price/2017-12",
+   "ref": "934b37d579d2375abea684ce8e44adc4c151fdfc22159973e6dfabf0d2a7f378",
+   "blob": "01306715b6397c341bc51f18b5a6783c9c63a348"
+  },
+  {
+   "component": "price/2018-01",
+   "ref": "ad847ac515c38faaf931a45a9063508a8f8393eca48e00ce12ca1a9e2ab6a6a3",
+   "blob": "8e13a2ab6053a5d80ff53a565e6567a494ea6f04"
+  },
+  {
+   "component": "price/2018-02",
+   "ref": "c6c1444b35b9cb5518ab444041673785a980704744c7a276844275e5b54b21ed",
+   "blob": "faad60a7cc706759e12494b05c9335f0d830ca7c"
+  },
+  {
+   "component": "price/2018-03",
+   "ref": "84ce8e51bdb9225b975d40fc9dd922214d61499522ee63d0dcd52cb7b7f52fd8",
+   "blob": "7e083103f5dae5307ec67a3c083438263c025655"
+  },
+  {
+   "component": "price/2018-04",
+   "ref": "dfab471bd2b45672ffb3af818ecf84502a6c74d030b88d28f6bf35cc6122c61d",
+   "blob": "5b7a434067b060019bc57c15bac8cf4e25e2722b"
+  },
+  {
+   "component": "price/2018-05",
+   "ref": "07ab05bb2f1a9fe7f50cf3bf3132705ddc5bb075e95c4fc6abff28705e3b9f35",
+   "blob": "1fa4082049713fd284652e96237897f4091d9733"
+  },
+  {
+   "component": "price/2018-06",
+   "ref": "2ac9e7cc552d5a0f266c870485456e2041679b8b732a21a98084d26dbf9ca245",
+   "blob": "c6ca058ce585e6ff3105b9cea7ab86478b5fd8a2"
+  },
+  {
+   "component": "price/2018-07",
+   "ref": "5e981c5b050e9f1672d5276ec9c0666e22d4495f6b1e597e6ca7d8acbd379fc5",
+   "blob": "0286bcf96493e9a3252678f499d747e8eea5dfed"
+  },
+  {
+   "component": "price/2018-08",
+   "ref": "19805c87e0cf705d0fb771208d1e86876db9f298ad4f5e7a66cb69aa9420d5cf",
+   "blob": "3cf22991daca733fcb8e4c51d3c681e13323f58a"
+  },
+  {
+   "component": "price/2018-09",
+   "ref": "21ee93ed798a762c480c15124150de5267dfe137b96dcaf87cf6c7e8fdfbcd34",
+   "blob": "19ebe8b9242497bdaaa77e645dcd73ab8a523ff8"
+  },
+  {
+   "component": "price/2018-10",
+   "ref": "50e438454f4fa126cb5518433e2f01a7024d91d91414bceece6392b0eb9ed5e5",
+   "blob": "e10e3a2e7b086035c6073d6646d4f7a69946576e"
+  },
+  {
+   "component": "price/2018-11",
+   "ref": "6f16583b1320f7399886e5448cd91eab8d84d86782d95f7b003b9cef9a5ee55a",
+   "blob": "29f8902cf436dfc186347cef183ddae22c9bc746"
+  },
+  {
+   "component": "price/2018-12",
+   "ref": "bc8690420b50794a4a72d90fde93b305d19e1463d556c461ba99cc4c48041eb0",
+   "blob": "d5886916b0a8854559f0360ac42809e3a06bf4b9"
+  },
+  {
+   "component": "price/2019-01",
+   "ref": "53ad6f3437460c5114835b28ae84bb3c1bd57e825106f22e837a16cd958afdf9",
+   "blob": "1e4b45dc46ea1ddc2b4321f632af25bf0b172909"
+  },
+  {
+   "component": "price/2019-02",
+   "ref": "4d915bc4ef02d620d3b97c0fd3b2e605ef895585ab555fe816d5e04c70fcc086",
+   "blob": "7cc59a337c10203209f387fd89b950c3ddb54830"
+  },
+  {
+   "component": "price/2019-03",
+   "ref": "c5040f984d0e000ff4840801b83816e3752041a4e2f45114f1c2c643b5104524",
+   "blob": "98ecd2284ecb74c68984be8a022a89f4f1590b08"
+  },
+  {
+   "component": "price/2019-04",
+   "ref": "9c3e4a024943cff6fbf490cf523e1c23092b725570aa258d7b89dc13b5a271a3",
+   "blob": "63d17976a6a230511525747fe168449f21d5f0e0"
+  },
+  {
+   "component": "price/2019-05",
+   "ref": "70046fb57ccc79885755e360fcf0c1d53bcf2c4873c23145e3032cb07fa14c74",
+   "blob": "74041d78efb86318ebfdbdf27dc750529257bdee"
+  },
+  {
+   "component": "price/2019-06",
+   "ref": "8383f05d4745441101b63fcb760a6377c1966788a41b984b17fe6a35b9422417",
+   "blob": "59e219ca7a86f8c8c57b68dd6bb7a8032d912f44"
+  },
+  {
+   "component": "price/2019-07",
+   "ref": "04337448df105c46997816e9a367cc87ea7a54cdc35208bcfb77bffe65fc5e69",
+   "blob": "4d52d6e6a687c0a187e5c971e1a1c2f8f49de946"
+  },
+  {
+   "component": "price/2019-08",
+   "ref": "d9c9be5ff7448932323f2a0ff7c3d2d3d0282b7126482ecb488c069e87f11eb4",
+   "blob": "1bab2d70d2cdc2184a7c1e493c2478a762892d5c"
+  },
+  {
+   "component": "price/2019-09",
+   "ref": "75579cd8b76cd54d8fb25c4805ecb5e1a44728feb4d8c8c4032006da4ada25fc",
+   "blob": "1119fc9faccb37f6e02b9694b48405a390a27145"
+  },
+  {
+   "component": "price/2019-10",
+   "ref": "ab7ca06d9c3bf92d4f0dc732cef2a8434dd6dc9f266b23047e9ece05ace6498c",
+   "blob": "5d94c34464548a977d15bfd66b57b3b529f960d3"
+  },
+  {
+   "component": "price/2019-11",
+   "ref": "800c37feb1b2afdde97fbdf244a89eb5b7e31f3530cfb2938bfd19c6573ca4fd",
+   "blob": "df5d5104ada7c1fcfbed53a9d0490b05692508c7"
+  },
+  {
+   "component": "price/2019-12",
+   "ref": "683a7fee46916eac5d820aae37bd0b382df179f21a5eb2244be22aa106eb1624",
+   "blob": "052ead14efc55cbd034e6ddc541ff21a09ae2b13"
+  },
+  {
+   "component": "price/2020-01",
+   "ref": "76a570ada006cd3fca7bb33a3e4c42c268e839f2a367a4633d65e1ac5d6ae429",
+   "blob": "a034099b446fc771df00d03abd25fc156828a862"
+  },
+  {
+   "component": "price/2020-02",
+   "ref": "f3cd4c65f7951c338f845d740e3f944b37bed9a4f4a66f8fd146be07c0fc4d49",
+   "blob": "c74f939dc4433719067cacf51b6851215bcdad26"
+  },
+  {
+   "component": "price/2020-03",
+   "ref": "780702bcbc054807bef14c70fd14b65f1c8478ea2ceb675738b7c79c193206f8",
+   "blob": "eee9d7b669410da708c76d7fb0c6508deefc2db0"
+  },
+  {
+   "component": "price/2020-04",
+   "ref": "63f2307fb05380ff2372f0d772f16b1867bf13cf8efb33b4d1630dc9bfcf9df1",
+   "blob": "5caab09b1c86455d8e90255f6249c32451ee82bf"
+  },
+  {
+   "component": "price/2020-05",
+   "ref": "ba14ac241540f180ff10348ccad35544efca76647d069d6652a73a9d8a31e755",
+   "blob": "19b5f09fa978c937edcdd0e3e8c1a8c9db7c4480"
+  },
+  {
+   "component": "price/2020-06",
+   "ref": "9f930ad8e521277f77e4d3182c4bbd2b402b2a30d6dd08edc6766951704ecc0c",
+   "blob": "8842823f4ca51f568b1141e85b9c375280369830"
+  },
+  {
+   "component": "price/2020-07",
+   "ref": "724059d60b5e4d93917a8971d88943b13e4dc93006f0294339b94b13f218133e",
+   "blob": "82581c11be59cb6ca9efdff0699e529d890dda95"
+  },
+  {
+   "component": "price/2020-08",
+   "ref": "ec5cb1d7b72a82c6d423d7ad505679b1d198de29e071e4498814b619910f0b49",
+   "blob": "6097ff8d1f34b79065f97ea5d38bfafdd3ced69e"
+  },
+  {
+   "component": "price/2020-09",
+   "ref": "806312922dc3346088c97a172d3ee0bfcf1cbf241d95f6ee17ec096b233e6014",
+   "blob": "2529f536f538928c5ee9f634bf72875555a1e9c5"
+  },
+  {
+   "component": "price/2020-10",
+   "ref": "e6feaac75b64100e82182991fda46f7b223a8c07e79355e362417d0bf74603aa",
+   "blob": "74cd0d771a70070d6f046c7c133445720edc9da2"
+  },
+  {
+   "component": "price/2020-11",
+   "ref": "aa0758c1f64a1a86f3d79bdb950742c569e02a32424663b877ebfe5241363484",
+   "blob": "f7a09a6208ad03b8d3ad223d608af6c6be1e8ec6"
+  },
+  {
+   "component": "price/2020-12",
+   "ref": "22b995c28f4bacfb5b851eb1658f3cd069f339b02daa80bbbfa57613200f15db",
+   "blob": "9fc619f95635c3b44f2dbf27a32fabd4cd79f019"
+  },
+  {
+   "component": "price/2021-01",
+   "ref": "e902d56f6291192fa51e75f6fba6d8ac9c37307b9f6720e9ec0f415775b3e4c7",
+   "blob": "9255d2d5ec7a5978124bc26b689cd91a1e6cea34"
+  },
+  {
+   "component": "price/2021-02",
+   "ref": "de0e7e03e2ef061ee009c31aba3f0ebf1cde19a4390a3df95bdc3ef1bbda7821",
+   "blob": "55d8104b21b179f04199e7abdcb0e967e62665c1"
+  },
+  {
+   "component": "price/2021-03",
+   "ref": "9bfd66876a8b94fda11d29b5610247d24764fcfb44ce1625c045bc1eb9a06918",
+   "blob": "04e38b3785b39ffe767057549bf4e1dc7e1eeec2"
+  },
+  {
+   "component": "price/2021-04",
+   "ref": "54a21773f10e1779cfc4f94751bd10962f348614ffd7813b33a65e8445f857c2",
+   "blob": "6cab5a4238801226346edc66a82cdc3aab26d13d"
+  },
+  {
+   "component": "price/2021-05",
+   "ref": "8ead1cd707975f43f5b839c034cef572f7f37dde2da0f91deb14b619c16bb2ae",
+   "blob": "56a544b3606ee31de5759c1570639320e3fe8940"
+  },
+  {
+   "component": "price/2021-06",
+   "ref": "4d0d6136c77696e021792e3fb81b5a69c99df1d11f89054b0cfa932a373441c2",
+   "blob": "fc04613906e3fb400cd29fdaaa28fa5504e763f4"
+  },
+  {
+   "component": "price/2021-07",
+   "ref": "6462c92fc9d781472ae2736f32a4700262303baba2032f37e4e42b72a312ad3c",
+   "blob": "7583539ca5e4faaac64b5801cdb9dc658b3171a2"
+  },
+  {
+   "component": "price/2021-08",
+   "ref": "4617955154276001533470eb6776cb4d2dae63c479b4b83d540fd2645a8e0a8d",
+   "blob": "5ec19f1dfbff27e5fe948cf1f196d01218083210"
+  },
+  {
+   "component": "price/2021-09",
+   "ref": "7482ebfa8674a548856c870d16ea9a646af02296dfe0378609fd3a8ecda7b22f",
+   "blob": "b67d3416ee18ef961b2f2c58cfcc11a2a2e65c10"
+  },
+  {
+   "component": "price/2021-10",
+   "ref": "ec842e3e6c6d667353f15413e5b0b6ae8734d878e4e533731c4c579195f3b8a1",
+   "blob": "0537d0eb6f34acdb4d833653229d02addc0d4dc8"
+  },
+  {
+   "component": "price/2021-11",
+   "ref": "7329e823ce97c9465bc7ce102bc0b728be02de41dcc6615bd0c880113964c43e",
+   "blob": "a83d051b5d73391a9f195b88f435125c55c66f82"
+  },
+  {
+   "component": "price/2021-12",
+   "ref": "b7bcd70f5654ebb4b6ed87866851aa0b9c2d8551c05ac7d121daf7643005d173",
+   "blob": "258fc79bcca358d4c652a06d6d407974308a3ddd"
+  },
+  {
+   "component": "price/2022-01",
+   "ref": "300457fb37569fcd3877f83a800dcfb85791636c7c989c069cd5706f9d69012a",
+   "blob": "25f971b6a7c5ff94618ed890b66904944e24776b"
+  },
+  {
+   "component": "price/2022-02",
+   "ref": "b8a52042309e7075ebcb1ff7beb02e8eff862bb7fc9740ee2f59c54dd87c03fa",
+   "blob": "3efbb4650bd18fd402df4f6591c91f8f3536826a"
+  },
+  {
+   "component": "price/2022-03",
+   "ref": "2b50913b494210bd585532497ed6c5de7331ba1ee162f0271f9b1f363202369a",
+   "blob": "f8cb3fd7ea3c47807d07bf353409c7fa54dcd16d"
+  },
+  {
+   "component": "price/2022-04",
+   "ref": "46e3f85691e168e9bee0525c7d2046dc4058a53a40b447da65f7c987e7a0fc85",
+   "blob": "0a76bcac949129b79e32dfabf307c0ac89b25902"
+  },
+  {
+   "component": "price/2022-05",
+   "ref": "8dd97cea2975b272473b92ebc4d97885267779e1ebb8ae0e4b65d84e40198e5c",
+   "blob": "7fb0a25b2e71b9c187b2c5155de5a04ace9568cd"
+  },
+  {
+   "component": "price/2022-06",
+   "ref": "3d4c928e6086d68f73325573a9d5d47a7299ce6168b11a05d4ac99280007f9f1",
+   "blob": "5313869202b58e18064e64ec4c7b8f8adac43dfe"
+  },
+  {
+   "component": "price/2022-07",
+   "ref": "54a935ab821e3b4a21e74bd9b37548135c7ed388c667e1e850e07100d11f5d28",
+   "blob": "347d2ad163c5538ad80793b16de275048d718de8"
+  },
+  {
+   "component": "price/2022-08",
+   "ref": "9364a470ef5865976560ba41d312b734d9e6f59ca21dabfe2b66faf4164496cf",
+   "blob": "4c6d0820c04e568da89d4171556893b6cdb0697b"
+  },
+  {
+   "component": "price/2022-09",
+   "ref": "c16bfdf35a4792c95e87707e5411bb336cb0679385441f63ff8ecb00dfa4919a",
+   "blob": "3240aa4d287c947d1c7240195c91d4c8c4259695"
+  },
+  {
+   "component": "price/2022-10",
+   "ref": "0669ea4541dd67587f6a5d968c40fd2d6ee42ec24973b7e3a9caa17adc003ef2",
+   "blob": "467b95765880fce62b03651a0c8093e14701b0e5"
+  },
+  {
+   "component": "price/2022-11",
+   "ref": "b3d04b78cb067b4d0bb2133cb3997daee50e6b8b22dabf96feafbe26d42acb56",
+   "blob": "3273a8e3b25badf5faabbbdc850db1a8796ff5f0"
+  },
+  {
+   "component": "price/2022-12",
+   "ref": "2a47234ea461447037de8bc163ad64e0c9691ca6b7ba4c15b21df1f662f3336f",
+   "blob": "3885f0140b763072e7f8631028e5e2d04d5c9e53"
+  },
+  {
+   "component": "price/2023-01",
+   "ref": "eea5511974d9f73ee830d31b85bccabf59f5f4d04c9f6d7b6fde8761bbf10239",
+   "blob": "2f2c42587d3bb625ed6dea104f64747674bc957a"
+  },
+  {
+   "component": "price/2023-02",
+   "ref": "a811d2bce3952249253914f92ed6aff03d9a4cf9675c8879cdfe9905ab71a666",
+   "blob": "85fe22a4df47d719f29e6d752d0a9d14a39cd020"
+  },
+  {
+   "component": "price/2023-03",
+   "ref": "499bbf0ef2a6757f3b74d881e02d028fd9888c72829b62c32a9d23a22d3ec314",
+   "blob": "8bb29be942df3b8ab8e0fdaf6e8d6ae8318835f9"
+  },
+  {
+   "component": "price/2023-04",
+   "ref": "c35940499443a37811a7dd320d4213fb1f9d8662a4226b5e882ab11295951b10",
+   "blob": "f88adeb6f14a0bd9497c4e9fba3ed27a190eb068"
+  },
+  {
+   "component": "price/2023-05",
+   "ref": "5ca82a6820fb65c8ca33e2cc93e0c035880dbdffc49ed19bb493fecab65bf091",
+   "blob": "45cbe1536639d0ea6e1c57e751e8645c0aa78e34"
+  },
+  {
+   "component": "price/2023-06",
+   "ref": "82563fa21c75ccdc4f5783ba64b6c869be5b5e6559644085d324018ed69a3a43",
+   "blob": "e49d8905c298c91e125cdc3496093a22260aec5e"
+  },
+  {
+   "component": "price/2023-07",
+   "ref": "43c84b0275124233443e1004469816b7ec19456c8f82e4f465cff9075a3ff716",
+   "blob": "ec55806d6342af6154dfcddd21f7778a718e3525"
+  },
+  {
+   "component": "price/2023-08",
+   "ref": "754aa88eef12def8c1a635eae788963b4c0d5b0adca457cfbc5ff674eeaa2a38",
+   "blob": "72b9c4002922c057715b4421105f43a93e430c6d"
+  },
+  {
+   "component": "price/2023-09",
+   "ref": "e0e23d573c1e2b1dab2ffbc6b7d033def76950b124e4560788ec9ac006d304a9",
+   "blob": "5f501f745adc35d1c4dd4c31676c0750720ecbf8"
+  },
+  {
+   "component": "price/2023-10",
+   "ref": "2a6423c835b4366dde87554f1e133792055d3c42a0e5ee8f5c8f984552c34686",
+   "blob": "81e48750f4d54f9f57da47586ba864ae63ad836c"
+  },
+  {
+   "component": "price/2023-11",
+   "ref": "ae4c3373ade40d0373a662825340e4437fabee4b0e8fe39ab55b2b8525f1d471",
+   "blob": "8a5b0569f8789625d0da0e65d8ef71269611aba1"
+  },
+  {
+   "component": "price/2023-12",
+   "ref": "1a4bca6927d7ad6f5f1ab6d96682e12b70ceae164f4942c6a019ff33385374b6",
+   "blob": "9c50e6302956fcf9ef68c1e79b57efd76432a0b0"
+  },
+  {
+   "component": "price/2024-01",
+   "ref": "5724ff2feb7529c89c6d324223ddbf09bf029e3d58bba1aa1d50c6507d785193",
+   "blob": "c6d30d57793bacc3e7d2456455dde4143f005776"
+  },
+  {
+   "component": "price/2024-02",
+   "ref": "e05545c9aac79258f56ab5825adb3db3005732cba94ddd5ba2d5324da1616fde",
+   "blob": "865f0224b40d592d027be6c07f56a579bbe78190"
+  },
+  {
+   "component": "price/2024-03",
+   "ref": "afde5ea847164d8d14577528eb1c328e78bb46675f02308929ad309c8e0f25d5",
+   "blob": "b85d66ffd6e4a6626e34d5f0eda38df221356020"
+  },
+  {
+   "component": "price/2024-04",
+   "ref": "e6a67b13b4da02d75453beda9c759f3597ff165acf38769a7abbe02ffa14ae8a",
+   "blob": "3dae02e4d2f67832d89391462cc3c2f367026b40"
+  },
+  {
+   "component": "price/2024-05",
+   "ref": "988fcbb3e4196118a709b938e910b71fbd841d16a74b17078c01b4259fe6f22a",
+   "blob": "5b9d9bc17493e8832e91a161830079bb9ee30e05"
+  },
+  {
+   "component": "price/2024-06",
+   "ref": "22ba466da8a401068c1427c48df297d2a116ae24b2b2537bcd2828d9b0d2b99a",
+   "blob": "16c63c35c3c057a7c90047dbb424068ccb65b733"
+  },
+  {
+   "component": "price/2024-07",
+   "ref": "098550bc84c88c3e23bb1e5e1be732496f51591baaaaba9e7e9ab2cdd2394dd1",
+   "blob": "8eafc61c155927b78b88169410899518a33be795"
+  },
+  {
+   "component": "price/2024-08",
+   "ref": "06c9627b8f5653e70af4dc48a1d765a78f73c2017e1bd33aea135e964aafc4ab",
+   "blob": "03184c6558723f902e7d5905cdd46d7420c52027"
+  },
+  {
+   "component": "price/2024-09",
+   "ref": "6a7ba996110f16c6452689395d0b9d3a8ed611a4bc15ebeb527cb2570d2464a5",
+   "blob": "1c40fbef5da2fa8169325714b861f3b196f647ce"
+  },
+  {
+   "component": "price/2024-10",
+   "ref": "b67651a8779e4161988e0d6a02b1918a754d558be689874422cfc1be1c2e5c74",
+   "blob": "5274f17f616ff4cef90850d68f14543cacd823c4"
+  },
+  {
+   "component": "price/2024-11",
+   "ref": "612c3545ea4fac714c8ed460a9f76ed515352e4d2471d7ed9689bf2e4531c00b",
+   "blob": "d53905353ec019eb0df02e0cac9c8738dea6e952"
+  },
+  {
+   "component": "price/2024-12",
+   "ref": "f8f3bfe2914de1a9382458869bdb96acf48178c372a603781cd18cfbe48eb2ae",
+   "blob": "9d40576706b80fce11b5c1b6c7220f6e162a6ad4"
+  },
+  {
+   "component": "price/2025-01",
+   "ref": "20d6bcb0bae6df8d8463e864982b18209586f86b1903b94ded35f1501c80b480",
+   "blob": "5f08a2d68450df9ab6b81bbc32e2b40c981bb58f"
+  },
+  {
+   "component": "price/2025-02",
+   "ref": "a7c05ea79bd185114836165fe5fd01555fba53c3789d25d01699ae3a777cbfa1",
+   "blob": "17b77d3bba10d865e5244b4aa970c2a32a24f9f9"
+  },
+  {
+   "component": "price/2025-03",
+   "ref": "bd6818b801a67e9b4a656fc1766939e3dfa63d63a0b835bf03175830bdbf1c4a",
+   "blob": "3da27d13a1c99da033094f0606e31114f50ccb44"
+  },
+  {
+   "component": "price/2025-04",
+   "ref": "116ca83bf47bdb4cb91e030dce6f388f222c2633d7b8a80f4c4fee9e9f49b0f7",
+   "blob": "b9de3c904bc68b291ef1d46bb872ba8ce883136f"
+  },
+  {
+   "component": "price/2025-05",
+   "ref": "e3c1a8d3ec6759aace072b4f52beb05f13a4af0a4b39735fa467e98a52497fd2",
+   "blob": "3d973d3be2c348a73009fce4263bd42d46870ef8"
+  },
+  {
+   "component": "price/2025-06",
+   "ref": "74c91a6afbcdd1bdb9aacfc3eb5fd520db40c31b3ade85c70b43c89091d93ac7",
+   "blob": "52d5e8390bf0bc2022c216723c46867a56539c01"
+  },
+  {
+   "component": "price/2025-07",
+   "ref": "d8a4d588f930600ec4332aeb0aa84ba2e02f046c011c92b42c8e8e5fe9bff836",
+   "blob": "60a060fe1fca00ab4e340bbafd3405f5e6c1ac26"
+  },
+  {
+   "component": "price/2025-08",
+   "ref": "0ede2a5208deffda5cf1409683a92ddfd3b5e9eb34cf3b0e95d2e6abf404bdb7",
+   "blob": "54623d7458fb320666eaf9a31400db3d65c6805e"
+  },
+  {
+   "component": "price/2025-09",
+   "ref": "a1e62e141e8eb6d33b7cedcb91d5bc657dedc8002a23972b2e9e899519076360",
+   "blob": "63a89667de620be2e7e22ae753440875dc84ff83"
+  },
+  {
+   "component": "price/2025-10",
+   "ref": "cf49b4516945c8aef4d6bc500c6974538a20a13aba2da595ad43742e979c2c25",
+   "blob": "808b7a184829683e0623a7303099d71775f5e9c1"
+  },
+  {
+   "component": "price/2025-11",
+   "ref": "d3ccec42ccc0ffb1f16dd5da312ee8ff392688ba8647e9eaff9dee73652db38c",
+   "blob": "e925e379bd06ac1b81d02dceeab363c4adb1b018"
+  },
+  {
+   "component": "price/2025-12",
+   "ref": "801965186b2319161f96470b8a9459e982a1e8c58ce62ae031cb3693d6dbead6",
+   "blob": "71e641634f7c5d81a43de9775c245b8bb69cb257"
+  },
+  {
+   "component": "price/2026-01",
+   "ref": "2e7f312037de1899fbb93d287bdf46e9c91158009a71ba8a035f7db22c391e79",
+   "blob": "f5ed0bc3f9aa16eb94c18e19717c97e98ee6d0bb"
+  },
+  {
+   "component": "price/2026-02",
+   "ref": "968f09dcc429cfb8b089d9a043588456ff189d076db7d85786fe74232cbe3142",
+   "blob": "83c0ed1356b3b589ef44ffc10d8ea548391b8194"
+  },
+  {
+   "component": "price/2026-03",
+   "ref": "045dc0ee4d2a754c87b8b2490143a85e91ee4cc67b3ee51c360eea0af42328b3",
+   "blob": "d48e60808d52d55e1a135c51a1af1a274511e9d6"
+  },
+  {
+   "component": "price/2026-04",
+   "ref": "4f1a2fdd75e1444b406e6d8002caebdd24b8f32da75e5b3ef630ee1e37125afc",
+   "blob": "4198e1584a3f752070de6523b0e8129077672704"
+  },
+  {
+   "component": "price/2026-05",
+   "ref": "2863e30bfa260ad59a4e2e97084c042fa1244cf8323d4698d4092c9a84a3f4fb",
+   "blob": "15281358e55f1d0894f8672043db6d8b99d3f33a"
+  },
+  {
+   "component": "price/2026-06",
+   "ref": "410aef5c762ad8405f58f7f45b406b23e837494cc074bfbf077cd66b3425c46d",
+   "blob": "6a96e7397f9715a36d5e12d94b76505fbfd0b78e"
+  },
+  {
+   "component": "price/2026-07",
+   "ref": "f95dd68631ff27b36aa64a9896665d2b2b3b2f6fc396265942cf97cff4fde239",
+   "blob": "5b54ac8dd662af9a1b4b6fb563af49fd322aeecc"
+  },
+  {
+   "component": "price/2026-08",
+   "ref": "01326ab6e47366beee7c9110f66734d0f9e871ff2c26cdbb2af05eac5679f86a",
+   "blob": "e68eafdb4232df9d5979cfa8078dc0741d97fadc"
+  },
+  {
+   "component": "price/2026-09",
+   "ref": "bfdfc407f52ed908618043bea7a7178639e9361f18c22feea99d7085dea40836",
+   "blob": "468c66ef6b3d908859aa00b5aefaa22802373ebb"
+  },
+  {
+   "component": "benchmark/2011-01",
+   "ref": "9490460d9738c0a227062f00ccca97028c8ead37a9360b12b9e474d232d21856",
+   "blob": "d43ff004fa130778ed9585f85db7a817544a18e6"
+  },
+  {
+   "component": "benchmark/2011-02",
+   "ref": "d5bfad08118449a070680f9e352cf63f2aec0c1db993e81cc48694183b2914ae",
+   "blob": "324c3e327ff50cebb8101be6329992b9b94e23e2"
+  },
+  {
+   "component": "benchmark/2011-03",
+   "ref": "130f94c367f52254e62ad7e20dffde5f27489bfb956dab1b8a42fec52de170ba",
+   "blob": "4382aade83e17a7960ecbeb48b096f55dfe39b88"
+  },
+  {
+   "component": "benchmark/2011-04",
+   "ref": "870e3fbb278041f69d19c6817f00eb320107fc970c3170e007d6fc10b207c325",
+   "blob": "4f79495375d2e6fa51ea9461b89d351089351347"
+  },
+  {
+   "component": "benchmark/2011-05",
+   "ref": "27767151afa85778d534a2288adda2ac51cf027ff1bf807d603155a50b185b00",
+   "blob": "e4892b30b5f21766558a4d6a4b67070b9c125cb5"
+  },
+  {
+   "component": "benchmark/2011-06",
+   "ref": "ad8017b9168e1c4a4dec6ed7a48e687e49637985b94d82366d78fc51ec52ab6d",
+   "blob": "8265a70024b1193317e6432ed6d0b85b87323e60"
+  },
+  {
+   "component": "benchmark/2011-07",
+   "ref": "8383371e880ee1f2ade0202aaa28622401657f0ff775195cd4cadb0022dd32a5",
+   "blob": "59adae3e24369989554dbf2201d177ec817e5677"
+  },
+  {
+   "component": "benchmark/2011-08",
+   "ref": "508387d55ebb0d2c37a97e7a198ea574b19da83c553559ed2866b14022e4725b",
+   "blob": "d994333942e81e2d9ab86ca9700341fef17aa1d5"
+  },
+  {
+   "component": "benchmark/2011-09",
+   "ref": "ea25424d58221479e791653c32b1a7719278e0bb584b79fd27872a1d39d42a4b",
+   "blob": "92e5fdfadd2504956aa7819142641470bdf1698e"
+  },
+  {
+   "component": "benchmark/2011-10",
+   "ref": "0750a1e1cdb84c1da27f3d08b2ccdfdd2d5916ae2c5e51a29817197cb348c1cb",
+   "blob": "e8018810b8868ff252e6048c980d115506da89ef"
+  },
+  {
+   "component": "benchmark/2011-11",
+   "ref": "055259d6f19f2310fa0b12cbed9da8763e4ac2a5a20d180748396f1af53141f5",
+   "blob": "ac3059424b56f5af1a003579e4612308c36b9f20"
+  },
+  {
+   "component": "benchmark/2011-12",
+   "ref": "d27ee7bb58612d14d0ba9f40a85e103f26a99a93bfcd8456dcda4623f4847591",
+   "blob": "f6828540fda7d47e5b5346feeade559048332d88"
+  },
+  {
+   "component": "benchmark/2012-01",
+   "ref": "9d78193a26aca4b1ee35775c04006cc17662d565aae102fff799495b4b0fee35",
+   "blob": "3cb748041169aa6ca6144aeee04afe93113ab521"
+  },
+  {
+   "component": "benchmark/2012-02",
+   "ref": "f971af897e815f503b3e626352401fcf54c30935eed8d360b1bc96d4f1a01188",
+   "blob": "3d322a540510ae65d288e402ea64e9624e0ecba7"
+  },
+  {
+   "component": "benchmark/2012-03",
+   "ref": "2d6ef72d45e78d17dd2dacb2cb67e8dbc9c22b5a46424636b14bd2ec4e9c2258",
+   "blob": "81e64a53a24d1787fb5e05e5fd77969e752f7a76"
+  },
+  {
+   "component": "benchmark/2012-04",
+   "ref": "de3082ee400e2583ec9a5d13b270dfa690751d09bb588da278a4a5e8523eef15",
+   "blob": "e4640c75c893459e2af574b9af5cdfdc7f34fcb1"
+  },
+  {
+   "component": "benchmark/2012-05",
+   "ref": "f00fb1e1100c7169e43f91655aeb387e7cbbac4f6d3fcb30873ef22fc3988d65",
+   "blob": "e82179268c2089f038c3a51823f2285003aab6dd"
+  },
+  {
+   "component": "benchmark/2012-06",
+   "ref": "4a9b0e46bd44d332a0eefc3a6d6b357aba2b8491592efebd743f4f7d5f48d6bf",
+   "blob": "4983d0772eb273571c6e3c43a37b0af63f9e3ad9"
+  },
+  {
+   "component": "benchmark/2012-07",
+   "ref": "d57ad565f136141c6385b919355b7853abb5badb613edf3001fdbd1b7b630b09",
+   "blob": "07206b28270ee072bf95063966b674e0efd7bd1d"
+  },
+  {
+   "component": "benchmark/2012-08",
+   "ref": "03ceb79508c8c503e4ddac874a06968619d5bc2a782b354ff9435551805f08d5",
+   "blob": "c803d2f920862355635d8da66e26a78f98f153eb"
+  },
+  {
+   "component": "benchmark/2012-09",
+   "ref": "7b1c4f324b0251e372223f7084629919d96b0f13baf9e7c2ab75c0ee0f7929b5",
+   "blob": "482548bc15f492c07712850a20447caaaafa4cbc"
+  },
+  {
+   "component": "benchmark/2012-10",
+   "ref": "5dd4d6f6b1a0fda34e955093fb4f3bdb522118f29d483d9007a80c1388f831bd",
+   "blob": "0a8788addab845b95bbc076bd49ad819890da333"
+  },
+  {
+   "component": "benchmark/2012-11",
+   "ref": "a53794865cf084f7b6e7d74c504bdbd03955392abcc849fba10dd923db4d1ae7",
+   "blob": "7898b53648baec3e645d656db9da13ec1a0884bd"
+  },
+  {
+   "component": "benchmark/2012-12",
+   "ref": "7bc70b11cb54fb893c59953669881d4a094cc70ad6419ec9ec33b760d7639b6b",
+   "blob": "ee0f67467aee33727acea471e8a9b10895636662"
+  },
+  {
+   "component": "benchmark/2013-01",
+   "ref": "cb966f3936d4f7c8c689d8dad7715e7e401b88d39a13deb91dbe1968e2973ef0",
+   "blob": "cd475be047c57829ecafce9ebf0402e27f02a260"
+  },
+  {
+   "component": "benchmark/2013-02",
+   "ref": "5272a61e09f6b3de2575ef51984cad4ea5e4957e741e8eb957ca10a2bc87511b",
+   "blob": "ef86fe99fc96e66afb59559c11171a0dfb33e0cc"
+  },
+  {
+   "component": "benchmark/2013-03",
+   "ref": "3d766912814b527ac2d520cf578e2a985b8b40f25ee8b5f3bbcece59a298089c",
+   "blob": "753d543bdd346f01802b7402e21d0c64ecf9a74b"
+  },
+  {
+   "component": "benchmark/2013-04",
+   "ref": "b9511ad9e1e45cd637890b73dd6764cb3083429f86cd8d50c516eee0cd7dbbf2",
+   "blob": "d3607d7dcf8722bb172e02b20a0493e401e5f8f5"
+  },
+  {
+   "component": "benchmark/2013-05",
+   "ref": "3c980158de950f2878914bd368c6aef7e9fb1cbb913dc9fdc6efac34b4ed24d3",
+   "blob": "12f3237375b8bb812931d23bb0f2d0beac378207"
+  },
+  {
+   "component": "benchmark/2013-06",
+   "ref": "588d7af4d75e3cb5948ab80902490b9b4bb6e8a92886b6a9bf07a2009e1a1878",
+   "blob": "807eb62945ca5c7251f5ebcd787618147be15edf"
+  },
+  {
+   "component": "benchmark/2013-07",
+   "ref": "6cd76bed6d0c16b287de9de10028f328dca1e250368acd2dc784a257d49ee21f",
+   "blob": "7dc39a08389c4883260b7f0fef29f285e097a5a1"
+  },
+  {
+   "component": "benchmark/2013-08",
+   "ref": "ca4cc2edc894a7fbe5494cd265e5fd4ed34289fc925a6b4bfa469654f0a29b29",
+   "blob": "fa25bd95f0f3da354e65a0219e4546d550e18668"
+  },
+  {
+   "component": "benchmark/2013-09",
+   "ref": "22e06260106a2d633cb1165c55d2429a1799024cf6b33b558eb03755dc5fa71d",
+   "blob": "199f3322b65c8ce7184e71ae81d9d799d2ac5519"
+  },
+  {
+   "component": "benchmark/2013-10",
+   "ref": "2bb948597332eacb8a9202f010fcb2b4b1c49768b380ea7e8423b7bd1396bcfd",
+   "blob": "65e2ea68af514fca93115ac18a2c1d8eea6c9c26"
+  },
+  {
+   "component": "benchmark/2013-11",
+   "ref": "d648bc48792959c4ae5db46442257d9d4d54e229adac3a72dc503359d23be1e5",
+   "blob": "84e6f75e40acf99968dc47c4d2874616b66a43e9"
+  },
+  {
+   "component": "benchmark/2013-12",
+   "ref": "fc49a915d6f559253257030abb161d06b079b1f766c5b885c6111fc966862a43",
+   "blob": "a9f869262a352423b476fd0a8b70c0aab8f3d1bf"
+  },
+  {
+   "component": "benchmark/2014-01",
+   "ref": "54f86f3a522fa1acf84a59c586b01ab7cd81c015bf6603e2bd1faaa50b124d27",
+   "blob": "46ad21a86334abf16df63c600d2c4ed134c1ef56"
+  },
+  {
+   "component": "benchmark/2014-02",
+   "ref": "6ac03a91b6f3c310d2565dc8a090fbc519edd46c0253d80413b31f2eb573b26f",
+   "blob": "c3bf35cb04ea122a921e96eeb4697e9618cf1044"
+  },
+  {
+   "component": "benchmark/2014-03",
+   "ref": "c4a01e2cf2120fd26db22d8c81ba321b89df6a118f5b68f57ed04af585d8e93b",
+   "blob": "797b4d0f229f97c7bcddd2c5aeecd32a69697541"
+  },
+  {
+   "component": "benchmark/2014-04",
+   "ref": "f7f89409792792051f7f4ac045868c32a5e54118c6b0b5cb077ac37cc3cd8601",
+   "blob": "8dc3e78b621a11a28d57fb05ea925e62181074f6"
+  },
+  {
+   "component": "benchmark/2014-05",
+   "ref": "ca8e475cf7e7af6a61baeb0aef67641005887b4b3707fc33066a5fc425f636dc",
+   "blob": "c7b50a783f5cf35c4c6fa5b20935e25c7a5d88d8"
+  },
+  {
+   "component": "benchmark/2014-06",
+   "ref": "1425be1ff02c0aacd59e7c32e76898246f3867cade1da85e0756f462f26acb62",
+   "blob": "aee2cac4da39d4fdb6b99e7aa61116329f73c5e8"
+  },
+  {
+   "component": "benchmark/2014-07",
+   "ref": "10f3f11952410d92cddfc4d0abf0d80f307581a0815bf23d327212bcf9f0b696",
+   "blob": "ec45e48f4633ef335e81edd7cd74efdbe9496258"
+  },
+  {
+   "component": "benchmark/2014-08",
+   "ref": "cd70ffb023c0ba29b5f2131cfa6eba5a27a87048f5236903ee517e6fe2fcb904",
+   "blob": "ca3693f942ac6f133d2b4c255a9d457add9f46b0"
+  },
+  {
+   "component": "benchmark/2014-09",
+   "ref": "be4c38a197c7579696490619bbc51cff19927c496c8e5bbae1f06e3e7b99d526",
+   "blob": "6c501fbf815031e5bc8efc25223ca3ac447c737b"
+  },
+  {
+   "component": "benchmark/2014-10",
+   "ref": "d97005fdd06b438c77d1bfca2c8a438c04059ca273fa1351bdb878d1caf588f8",
+   "blob": "086a1deb493540a02259ecf251ef538e2906d75c"
+  },
+  {
+   "component": "benchmark/2014-11",
+   "ref": "a9f07fb51753d2e11505aae920b3029084ef03783948cd10263e03857028ba68",
+   "blob": "46ab7e7bc4bbdd9cc13dcdd93fc5a23cad1873d8"
+  },
+  {
+   "component": "benchmark/2014-12",
+   "ref": "69f82bf4c203d02adf7112163d58b946c9da97e99593ba6de49cf219b9aebf9b",
+   "blob": "4bfa5c20d5eab4c9f8ac8c3df480fd281c4db0d3"
+  },
+  {
+   "component": "benchmark/2015-01",
+   "ref": "9b7eb63937d73d0977edac1140f681df4a3339293db6f6628a561b293049e5c8",
+   "blob": "e31c7828589521b4fd6d61a6ba44532da2017c02"
+  },
+  {
+   "component": "benchmark/2015-02",
+   "ref": "04ce81dac9647a74460543e322edd27171f0da9deb08824412b0c045f3a4a2cd",
+   "blob": "f5dce058e03cb5a5342d3b4bc8f9bcd1c727facb"
+  },
+  {
+   "component": "benchmark/2015-03",
+   "ref": "3113026b5ac1a923d47e62691d217748c656d6537edf10b9f9a0bb037e22ee09",
+   "blob": "771d06db897f87db0994f927d654f53388454d27"
+  },
+  {
+   "component": "benchmark/2015-04",
+   "ref": "d28bdb4c82dba6c4dc244764588a026efa53f1538427ab831cb0eec2a5a1b5d5",
+   "blob": "ad8617058627b91b78a380fbb74d29844c39377e"
+  },
+  {
+   "component": "benchmark/2015-05",
+   "ref": "93a0369d2c52038048d668f3e5b8b2b2c57b97b10cce65c255298ad905d99c21",
+   "blob": "8971b79f6c37a7089ed38ed132412c152d59ae00"
+  },
+  {
+   "component": "benchmark/2015-06",
+   "ref": "e664f6788c3ed516fd347a3dcdb2001863314988d8d71f4dac4ecf32bf538e45",
+   "blob": "e91b088e515ea160a9724ab5894e5658a37d1526"
+  },
+  {
+   "component": "benchmark/2015-07",
+   "ref": "dc4185af99e4901265f94075b90e053fe389a50fa1037f3a4ca84f7717942989",
+   "blob": "69494643dadc4f42fd02c31d2da0680647defd80"
+  },
+  {
+   "component": "benchmark/2015-08",
+   "ref": "669ab7f5dc608e8064203dfac8b84628bf8b2d0baf1573bdf6f9dc535391ae8e",
+   "blob": "6034e6812cc786a6b8e037e42504e266f307cf3c"
+  },
+  {
+   "component": "benchmark/2015-09",
+   "ref": "96ca73bc45e7ce23bbd2fc261edd1909d2e990670e0297c45dc1ad530be7f53e",
+   "blob": "e10430d541103f4ce2ce7e454a3484f74d74c62c"
+  },
+  {
+   "component": "benchmark/2015-10",
+   "ref": "39351a63621f1aa6a933b5e571368f9846933a92f8882d074018abc5b45b56f9",
+   "blob": "0c947e01fcbf414deb6e8ac74b1513c9d83b7d73"
+  },
+  {
+   "component": "benchmark/2015-11",
+   "ref": "048ee9e0724ea013454f10149c7477ec029f1b21818e023909753ac1ce80019a",
+   "blob": "4ffb1214c7344c19d96e8222ce19d1e40ecbb28d"
+  },
+  {
+   "component": "benchmark/2015-12",
+   "ref": "812ad69858eb8f3fe9478ab8dac9c2ae076b9842fadb5e1ec391b4945788cf3e",
+   "blob": "c99af435365f48a988ca9d802778a003bee5eead"
+  },
+  {
+   "component": "benchmark/2016-01",
+   "ref": "e3bccfc54be78c17269affafee0f7f5d3212d1c2d37b264ab3caaea4670d700a",
+   "blob": "82a5ad29dc4797ba823999aec600256e37d4b49d"
+  },
+  {
+   "component": "benchmark/2016-02",
+   "ref": "cbd575acd1c54be537804ad294073d4bb49ea22d57090e4b66bb1d377b333b9c",
+   "blob": "3909cdaf1bdef59ae957f8126836b4a43abb19f9"
+  },
+  {
+   "component": "benchmark/2016-03",
+   "ref": "7e175f5b43e87abea08efcbc03bf9388015107d05c857ee8c94b357e24b83e58",
+   "blob": "8549026743c0a97433a54e29cf9ec8f162094321"
+  },
+  {
+   "component": "benchmark/2016-04",
+   "ref": "d8994733266f853df040cd0c9ab8f740beb8cc82086fc0de58c5c32ebb483bbe",
+   "blob": "dc90e6f066d3b49f9667f55da8322d933fed3c64"
+  },
+  {
+   "component": "benchmark/2016-05",
+   "ref": "96eed2343f96bdab38c3e50d94de533b71a914a00752645eaac32f5d4495810e",
+   "blob": "1734613bcde544a32efae9fd216eb008b1933252"
+  },
+  {
+   "component": "benchmark/2016-06",
+   "ref": "81611bf81309a737c07ce4344a76a5eeeaeee6b06433af5e75ded2b8c5e37015",
+   "blob": "e0ec6619e180bf7d1adb05e52bc6d40de9c51f05"
+  },
+  {
+   "component": "benchmark/2016-07",
+   "ref": "5e4fc8b788be84bbf2a4ae8b8581d93df12b8e95178e657876f16acc8f6faf7d",
+   "blob": "d534246ded65dd48f7c1a53a5077daf3e1d31795"
+  },
+  {
+   "component": "benchmark/2016-08",
+   "ref": "e0f6368f110c0194909ae6157afd3d12c494d0494a5ea69a3c0d9cb82cb2927f",
+   "blob": "12280fcdc44e8763dd67339c4d163f6870320c41"
+  },
+  {
+   "component": "benchmark/2016-09",
+   "ref": "33448562a31119411082cde1a7fe963573a110e339d6c8160045873ec8a4c895",
+   "blob": "a6e108db25046d94d57f0d5f4ae851f1f3fbe2be"
+  },
+  {
+   "component": "benchmark/2016-10",
+   "ref": "b44f6a8c87fcd9e6a5937a5cf0d8ad869f71a4962c78f5df3d2d6f4d038578d1",
+   "blob": "5333a00dc0c622a57c72afbc7e8fdd7573eba4ef"
+  },
+  {
+   "component": "benchmark/2016-11",
+   "ref": "22e88f12f5b2d23a42cf87c9ba85b44025357ed8471ec19ef7f6ec03c488995d",
+   "blob": "a25ecd7a1d6f39e2ca58327b3fdeb607a003bff9"
+  },
+  {
+   "component": "benchmark/2016-12",
+   "ref": "77c5d07dc7ceeafc0235e7ea4cfaa561e6fd2af2bb11ad6f409db8e58d06c88b",
+   "blob": "e617da79e9332ca255de0d2bb5a8a96189f4bde4"
+  },
+  {
+   "component": "benchmark/2017-01",
+   "ref": "5b4e5aa4731ae25595e7a7ee9bcab0ffaa3d6de7223be87af82fdc40744c4bea",
+   "blob": "c4b14d373e83a6477dcf337bfa434795f600f1ad"
+  },
+  {
+   "component": "benchmark/2017-02",
+   "ref": "5b4aeee6350642ca5f00e009ca1023f2719b09d9a6a03b6a0256168c501fa459",
+   "blob": "a6327a09bd7c857f0a2ef4f0068feb66268beaca"
+  },
+  {
+   "component": "benchmark/2017-03",
+   "ref": "46ed1b8c51f3ee86a3b7a4bf974e9c4c516a1d086401b4d6a204390cdeddfdaa",
+   "blob": "aff7c5a36f193b30ed33172412222d5cbd93c60b"
+  },
+  {
+   "component": "benchmark/2017-04",
+   "ref": "a0346b266388add7bfdd29f7c31bd5877f1111d0c7f8bec354689f29b041e6b6",
+   "blob": "8ba06a14aaa1d764887b7510b189b12152ec43ec"
+  },
+  {
+   "component": "benchmark/2017-05",
+   "ref": "edd5db4093fc00ad5d962670944d921098a7c26c84de01d2c8a7953b425d9ee0",
+   "blob": "0f4f4112abe3689e44019afe15b9ddb8995bc3e9"
+  },
+  {
+   "component": "benchmark/2017-06",
+   "ref": "97593883484a312fee147c6e8a28c562a02a7b0fa68caa7baaf1293ae0d1942f",
+   "blob": "ea0caf77fc136239a60e76bc7cb7861f0a140e4c"
+  },
+  {
+   "component": "benchmark/2017-07",
+   "ref": "c298e169d88b1a8aa5b73f2d3f704ac636569858a7ab37aafdcd1e29c82504ee",
+   "blob": "25fd6af2826fe736399e88da435715d857499112"
+  },
+  {
+   "component": "benchmark/2017-08",
+   "ref": "529a30a975973c04face6c70e4d02f31b436a9a70b5b90612fa4cf26f311199c",
+   "blob": "a928804ace9ca301b37fb4daf73c507915fb5e23"
+  },
+  {
+   "component": "benchmark/2017-09",
+   "ref": "3473f5f4be8cd0c550be31ccee7ce98dca41f510d8fd37601c9219a5b1abbaa8",
+   "blob": "5058acd56d76ff210ac641c058664c98856e6669"
+  },
+  {
+   "component": "benchmark/2017-10",
+   "ref": "78ef6a71fe58dbaff114673b6252fb4b5ef488cacb16d193fec709ea9fc4aa5a",
+   "blob": "cf31ef69aa855989bc84d274a78703ddd9f9e4a7"
+  },
+  {
+   "component": "benchmark/2017-11",
+   "ref": "141d90ef1a1e3bdb110513f5dc18ed215370f358c8bea23f8b4492a040ad2c4b",
+   "blob": "a2d5c273aa849b310260eda7a8b6061ee99fc83a"
+  },
+  {
+   "component": "benchmark/2017-12",
+   "ref": "f43cc3a2a80ef0e59ec66d595593a7b5334c91f850a88753b7b9a4ff2ea1ee1c",
+   "blob": "47a3877dba0c3f08dc4a929bb7899019c66af59f"
+  },
+  {
+   "component": "benchmark/2018-01",
+   "ref": "d808842da7f65b1c70936d3df06d58f7d28a49e8b3eee88b9702101b3581edec",
+   "blob": "6df73c4ab001bf16e46d48397e6ef0626d1bdfbc"
+  },
+  {
+   "component": "benchmark/2018-02",
+   "ref": "dbfecf01fc1ce69aaab3d65938324bdc9f6ce00b2b690e47f4c8e64ed75d9574",
+   "blob": "4e8327549f0464bfcf587ec476aa696fe739da81"
+  },
+  {
+   "component": "benchmark/2018-03",
+   "ref": "195f9851f23364918b06d3d589af3577b111b2dd9895adafa8f3ffebdb856aba",
+   "blob": "b5d6c1a3e5371994f4be3e3afe39cc1ed1648420"
+  },
+  {
+   "component": "benchmark/2018-04",
+   "ref": "94e1ada0cecfd2b93c85dd1711fd3a34edd388353309f77926f4a751ae251efc",
+   "blob": "53599c85d92da6b92b408027837a771670ccc6d1"
+  },
+  {
+   "component": "benchmark/2018-05",
+   "ref": "9b5b04b8bb536d2e551c64b0f4278a8da0c6d248cc37df29462ee80a6c8323bd",
+   "blob": "e9f324fdf604cd9ef7575cf7b2cb7cddba018bfd"
+  },
+  {
+   "component": "benchmark/2018-06",
+   "ref": "cb532379b678afc480b47b8ecdf17510000e67481d919024dec466dcb0a34512",
+   "blob": "a197c9391fbeb0962f6e49a456df4d639b200710"
+  },
+  {
+   "component": "benchmark/2018-07",
+   "ref": "3540a0f6e7492b11aadc3be644c5ab4f805fb0aed6262feaafc9bc1950a56632",
+   "blob": "4e8b4aa0a6f65a337c3d6067e8f9328ee3adbfb3"
+  },
+  {
+   "component": "benchmark/2018-08",
+   "ref": "d897d3ce39f279d6d709699525fc493d2e67743add8e0f777589fda63903a263",
+   "blob": "36d9436502c5a39736d529469a45da928d516c8a"
+  },
+  {
+   "component": "benchmark/2018-09",
+   "ref": "e3bfcf55cd56477684f30a1cc9a00f5c15549cb02dab3e387385d00847a1578a",
+   "blob": "e349a14279f110f9fd11237b40957f8c11124b20"
+  },
+  {
+   "component": "benchmark/2018-10",
+   "ref": "b99c2d386e4b56c177c951cf694adccf1d680639ed66e66391aef057c8b45aca",
+   "blob": "c4d4315fed3980ef99bb13331d48ce626a8cb747"
+  },
+  {
+   "component": "benchmark/2018-11",
+   "ref": "f1fda67f7d97aa1ff085df5f9243dcfeff5913784c5330ccf3caabf963c1c2f3",
+   "blob": "1ea86e3e95bb86806e95e7e7d171e64fcf3a9dda"
+  },
+  {
+   "component": "benchmark/2018-12",
+   "ref": "e91c5eb3668ecf11f3e08bae14c73306d97a6c658979bb2890505b24cb16221c",
+   "blob": "d0b4879a23d44acdd9d1a5128e7c3f1bc03cc939"
+  },
+  {
+   "component": "benchmark/2019-01",
+   "ref": "68fd754b44f7359ad85bf6357aaccc79aa97b454c154de8ce8bff2e3b47bddb0",
+   "blob": "846a61c9ca9c591af80fb121b1f8dd78c59b6318"
+  },
+  {
+   "component": "benchmark/2019-02",
+   "ref": "8dbf07230f4415bf712d95c937e1d206c4846daf91bf4825dc04a721e7fa3734",
+   "blob": "0956f8dcb8bfd93770e34e00fa278a7943001f84"
+  },
+  {
+   "component": "benchmark/2019-03",
+   "ref": "be8a2ffcfd57d6187540f97d69c73f8a1165a27d668b914b03f7e17807c34450",
+   "blob": "0eb145209058458fa6c12ab8aa2b0b88b83fcb02"
+  },
+  {
+   "component": "benchmark/2019-04",
+   "ref": "12c1bf1eeed0478c1e659160610db8ab8992b3d3ab39d7e62f9b5f231f045944",
+   "blob": "5f3365be497dd1dbbc01a27230013cb3c0748e39"
+  },
+  {
+   "component": "benchmark/2019-05",
+   "ref": "34fac79afe93c781955a326b9f9006240789825e0db9fc825126cac104afb021",
+   "blob": "d526c3312772d01967bcc2f72658157090decfa6"
+  },
+  {
+   "component": "benchmark/2019-06",
+   "ref": "8955ee139ec3c47b4e706fdeba8d160ef02a13f7b2eaa577dd1a721acb58c85d",
+   "blob": "537c8e8e144550657dbd3553bbdc9c58b1dff1d4"
+  },
+  {
+   "component": "benchmark/2019-07",
+   "ref": "142a1eaa42bb84e096247b3e873d62442cd8abdf0fd0ec75d1aff3acd6019c18",
+   "blob": "69edd906c0e63309b54e9c237807749f09bf0f97"
+  },
+  {
+   "component": "benchmark/2019-08",
+   "ref": "56ef16ed9d30e1ba3880f2b45b8f4edf191524c5ac05c1ed2960ec31f63436f8",
+   "blob": "c22710a9b15b865d775fae7ace5dca432abc57a0"
+  },
+  {
+   "component": "benchmark/2019-09",
+   "ref": "0ca2fb34affde01a36819055d30dd11084a1f989fad1232d9c39d9ca9946e886",
+   "blob": "77d03a286ab6f6da1ae6382a7cb145d4949994b3"
+  },
+  {
+   "component": "benchmark/2019-10",
+   "ref": "8477bb88ffd677f774235929cbccd886122bc0cf8e1f4f6a2732de5764b309bc",
+   "blob": "2ebce3f211f710190fafe7c0ec1ba30e253b1f73"
+  },
+  {
+   "component": "benchmark/2019-11",
+   "ref": "5a77834b3c10dec211f6c79ebd77d19d9cde4a2bd23870ecd5e8f8364850c6cd",
+   "blob": "7bb19fcf12249840735aeea10c3be8b4b8cf8e03"
+  },
+  {
+   "component": "benchmark/2019-12",
+   "ref": "68727c65f6dd791bd52ac03d31061b733c3af57d28790deda7fd6ef2e48e3b53",
+   "blob": "66a9d076c0a041b815c07fab44bb0a5e6c30a05f"
+  },
+  {
+   "component": "benchmark/2020-01",
+   "ref": "0f40ba7ba81a5ac93de939ee675889fbd335e56d1f72fb032c0b758594d5ad43",
+   "blob": "63a76745cb8fda8f0d22c0918a8819eb7f337b0a"
+  },
+  {
+   "component": "benchmark/2020-02",
+   "ref": "edf00a06170d5c77dfb778a15e162c91a9831d0c66b15d96db545d88a70dc5bd",
+   "blob": "65eca8f3f314b47662ded1589e4ef877a8b23ec8"
+  },
+  {
+   "component": "benchmark/2020-03",
+   "ref": "edb471fcfb2905e11747e06a9e12dce6e4e598b63ef0dfdce2a892f6586085b5",
+   "blob": "92fa4bf4b7f52356baf963a382ddd3094fa8bb31"
+  },
+  {
+   "component": "benchmark/2020-04",
+   "ref": "56a4c3e840fa919f89277b03587403a8ed1bffd5917d3ab4ef704c5e5a4549c7",
+   "blob": "72550b135e17e6a8e33835cfb8d96d408cf17faa"
+  },
+  {
+   "component": "benchmark/2020-05",
+   "ref": "f363e9781ca4806d1f0ddde247f7ec4fbef3e06c5b543653c40a6e215d848728",
+   "blob": "b11245ba9c32550c4e82e56885615f335ea6336c"
+  },
+  {
+   "component": "benchmark/2020-06",
+   "ref": "e06349e3bbf06a86a3f775b995d9b13052ccca9d522958b2a55891ca07eee9f2",
+   "blob": "779351dd4b2a4e3f94b00d991ade9159fde5bcd8"
+  },
+  {
+   "component": "benchmark/2020-07",
+   "ref": "4cad8d257f1ded6a5661f705722f44e9176002a5604204b26fa66305885bb062",
+   "blob": "723e58ef6239814cec3d2c1dfcd45a380c63fa59"
+  },
+  {
+   "component": "benchmark/2020-08",
+   "ref": "5dc56be12392501f68d29dcf5e2ba2efd4a183ae7928cccbf750778a7a8efea1",
+   "blob": "d940cccb55ea95a5c4fa763f5a46dc6806eb760a"
+  },
+  {
+   "component": "benchmark/2020-09",
+   "ref": "0871665e0fc81bd3e1183119fd89ffa5bf8c8549bdbf935c5f144787bac045b5",
+   "blob": "056c46cdda221659c8ff3041d072990c2b88c0c4"
+  },
+  {
+   "component": "benchmark/2020-10",
+   "ref": "f5458a16ca3f6dcf43c3e89dcbf79c8e0d277bba775b9b7d743832bccfda1b23",
+   "blob": "d0ecdf89636d0ebf24085a2225c23cbcec09d1e6"
+  },
+  {
+   "component": "benchmark/2020-11",
+   "ref": "ac7bed84799553a1746dc855501018f076ffcc50dae37efc643e29eb4f32d9ff",
+   "blob": "bbec6c86acf45dbe18d1e590685c5c14a7323e54"
+  },
+  {
+   "component": "benchmark/2020-12",
+   "ref": "b02178b9a80572102c8d06ac8428c180987375e05c3991fa83ef110cf35dd90a",
+   "blob": "880c37babb11113885d3e4f3982cc58a08beab8b"
+  },
+  {
+   "component": "benchmark/2021-01",
+   "ref": "f9b908d39647a9607841e5d28c1090062f23e864b94e1e85449b2711b1f877fa",
+   "blob": "3065b931e34ccf632329e94d5bbe82050797a32d"
+  },
+  {
+   "component": "benchmark/2021-02",
+   "ref": "9784d453edd8cf9d40bb33d4a22b7abad4ed0c5eee361f3c8ad9bb24fa14a7a5",
+   "blob": "6a819bed0f9d81f701efab7af9f527060d63369a"
+  },
+  {
+   "component": "benchmark/2021-03",
+   "ref": "ce93379a8cd74199c7f2221a121eb03d7ea836506520646a0ec381eaba7ed01d",
+   "blob": "527bb20e87b268840010659d7e440a074cefaa6e"
+  },
+  {
+   "component": "benchmark/2021-04",
+   "ref": "4243ca6fb379f0ba93066fdf8894d6169f7500d6c0043b202e683a7e01a3c59b",
+   "blob": "7362a3b82cf999bcadf54c0ce822847779c7b99b"
+  },
+  {
+   "component": "benchmark/2021-05",
+   "ref": "2c2e621b01b13b8e54de7bdea7a3363da1ab2ba218b9aecf481961345d35089a",
+   "blob": "070741ae55d33975e37d985ff3052f2af2af21eb"
+  },
+  {
+   "component": "benchmark/2021-06",
+   "ref": "802e28e02eed609d9fd75ae4ef481eb1b2241556d74f314611e7148069b06e82",
+   "blob": "5ad903bbd067b2d1c35b8e92a511c56b0bc50b84"
+  },
+  {
+   "component": "benchmark/2021-07",
+   "ref": "c169a0903ed8ab7c00c7f8ec4940d7f7164b2607b82759e7ec57b37de5be4219",
+   "blob": "43888cc556d6cf246e98194955821e76a3cee770"
+  },
+  {
+   "component": "benchmark/2021-08",
+   "ref": "82894fe3d63129b7004615da3b6f22c7b69849d3406573e06b989dc5f5e57e5f",
+   "blob": "021eb05169c2366a4053e30c58c6e23dd4fd2aa1"
+  },
+  {
+   "component": "benchmark/2021-09",
+   "ref": "85ee1f0e45eb52c3d06d6d83c225d39a8c77857a6b8331bd05db825da50d1532",
+   "blob": "e0ec0992bb8355a875a9125b74197f6d5a368da1"
+  },
+  {
+   "component": "benchmark/2021-10",
+   "ref": "706d6fc3faf408dcac164314bf7a9bab06e010821b346e9eb36c62869def1402",
+   "blob": "26cc01a7d901954daf22797f55b2b8f294bc0c01"
+  },
+  {
+   "component": "benchmark/2021-11",
+   "ref": "8e9af372e2213f07cd6ffa7e143a96988f8ac8e0af3a9ecd3d6fe6789a04cdab",
+   "blob": "6836448b783a30a56514f479c947a26f717cb10c"
+  },
+  {
+   "component": "benchmark/2021-12",
+   "ref": "314fe6c7dc976435888e5e3b887c993e5d2f2a861778ef369619fc97b41fed27",
+   "blob": "5e75ff0a56feb21fe75c5e10d583957e2bd4ebfe"
+  },
+  {
+   "component": "benchmark/2022-01",
+   "ref": "c3fa51d96a9ae666d90490d9923864b98fde9c47b1fa3e76a6130d26ea4389c7",
+   "blob": "a99efd156f5a33f49660b6af911b07992be66436"
+  },
+  {
+   "component": "benchmark/2022-02",
+   "ref": "b7fe74c71861fbac95256e66efe43dd235deb7a492e75f9021c58848c29aaf1e",
+   "blob": "f74670cd4eb4f04f607cb8dba6e5097c2fa3f6ea"
+  },
+  {
+   "component": "benchmark/2022-03",
+   "ref": "9bb8f5bcf3ce103366742affeec95fd2af04d69dadccd43dd23d2e01f06fadf3",
+   "blob": "f8d88b60c81cc8730bf3d02dfd607d143834d386"
+  },
+  {
+   "component": "benchmark/2022-04",
+   "ref": "c4c2ab718321c23a1c0046642dde880aa5cb1e7a7a822173e4b1872197fdff0f",
+   "blob": "8e1821912fa500e9269cbd1d86b71905cbe1ca5a"
+  },
+  {
+   "component": "benchmark/2022-05",
+   "ref": "6eb7f8dd20a87a5e766de4152eabdc3b45b69ed7495dc73254dcb60369a9862b",
+   "blob": "d3660ee89c32cda8279358d084a75ce712d90055"
+  },
+  {
+   "component": "benchmark/2022-06",
+   "ref": "ad68f23f0697c47c561ddead6ff17cae8bd30218e9f992f04337301754a20d29",
+   "blob": "e6127db54006f41613496fbaeb3d24661eb7773d"
+  },
+  {
+   "component": "benchmark/2022-07",
+   "ref": "e9e044df5617c76443f531f1e2d370f9e6f14eaec35c31cb60ff25ccaf8cafab",
+   "blob": "715fc236b27749f902398c5c5ce58cb89a262313"
+  },
+  {
+   "component": "benchmark/2022-08",
+   "ref": "a4097d315441a8eeba57384ba7386dec24f504a20317c2bddc9a4f57ae3061f6",
+   "blob": "17e84755290d0362c407cfad9a29977278dd7d3c"
+  },
+  {
+   "component": "benchmark/2022-09",
+   "ref": "2550ab80f2f548000ee902eae61fb13312eebe3e8c593aa4cd3f8e8cdce904f2",
+   "blob": "3f60ebecfddf8c863dcb0bb287d508d4d7b02a0c"
+  },
+  {
+   "component": "benchmark/2022-10",
+   "ref": "d61c43336ac0bd462612a3a58cb8fc7954b5e186c28e53e2d7860666f2271b14",
+   "blob": "75fb081b82a9676dc26348186f1a2cc0e27399cf"
+  },
+  {
+   "component": "benchmark/2022-11",
+   "ref": "34b7f77948b7a3c95e38307d94301aea73f8e8019d44390033a7a24add53b817",
+   "blob": "bd69fe20da2e00b25c4f509bebd5986baea2da8f"
+  },
+  {
+   "component": "benchmark/2022-12",
+   "ref": "87916cf79f07ba1f8acbada9f8213946e9d552f934c54f673b0a4249bd581afb",
+   "blob": "72d635cd852958484506db1adb6667ed69239cd8"
+  },
+  {
+   "component": "benchmark/2023-01",
+   "ref": "d07117c6021475ebea049d7b2c8797fddd6d762d7f33f36f64cbe01cfa7454ca",
+   "blob": "7058ffab831f397ee99287e6f8944d1195d29a1c"
+  },
+  {
+   "component": "benchmark/2023-02",
+   "ref": "1b53bb0c2dac552bffc83c15570ae99cf5d6d8f1deca0d838a1c4c22ca06bc0d",
+   "blob": "8f72143efa0adfd9109d3b2b49c93704166f22c6"
+  },
+  {
+   "component": "benchmark/2023-03",
+   "ref": "c8a79143660c7d8f46ac28b809cf0eaee27f254fc859c324db829eb8d574e841",
+   "blob": "0fb7c1dda39e2a4035bb576b764e837a8adbd9f5"
+  },
+  {
+   "component": "benchmark/2023-04",
+   "ref": "2649485951a2bca16dd33a6266d360b1f2cdce945dbd7e197f0a1f13917d49b9",
+   "blob": "50f8e0f49998623bdb33e466b16fde315fedc989"
+  },
+  {
+   "component": "benchmark/2023-05",
+   "ref": "2cd301ea84035ee704bb555377af5312cdbf51d05d2e3e46bdb5b7fea8446232",
+   "blob": "241e1c11ff29572698b0ab82da7f72e815d662c8"
+  },
+  {
+   "component": "benchmark/2023-06",
+   "ref": "421c0219b98d6b90fab7809cb3f2ef26f69bbb7c32447f27f38572e72ef62247",
+   "blob": "054e36ebb1cc361088b2b26842fde5c51a81b506"
+  },
+  {
+   "component": "benchmark/2023-07",
+   "ref": "3cff7c733c8600f63c446ffb89886184334a30f79afbb8f5d21bf19fc6ff22a1",
+   "blob": "b48d3c64de63c6a1e174f6a94f35c699930f12f2"
+  },
+  {
+   "component": "benchmark/2023-08",
+   "ref": "ffa46f8ff7f4ee2b794a56de4186fea7ca1e7dda9435afafa9814b98235bc085",
+   "blob": "4e92d874fb8f5a606450d474320ca4af33d756f9"
+  },
+  {
+   "component": "benchmark/2023-09",
+   "ref": "56ec1ab9c851dcdd4e39875f0441a168b961a9953e044d705c9f4db6ac413e5e",
+   "blob": "9dc43e2da515c11f5bee4fec8640d67289ee70e1"
+  },
+  {
+   "component": "benchmark/2023-10",
+   "ref": "754a2f55f74cdf228042a7a28a4f55baf2ed75b590f73f2f8a66a0b1b6fc463c",
+   "blob": "a2312d4ebb980caab6eb44e75031614c8b7e2bda"
+  },
+  {
+   "component": "benchmark/2023-11",
+   "ref": "5177dfc3ae5500420f0b92827122703f6401b8c7347bcb9084472848390cd564",
+   "blob": "b253904ded864d9d85dea49bbc1d0c8662837ce1"
+  },
+  {
+   "component": "benchmark/2023-12",
+   "ref": "e24af0981665f5b1f7738fdc23c2af7f1ee17be646ae7657291fc524030910e1",
+   "blob": "c2d3bcfe5c4b6bacb72593a6f950160e2689e33e"
+  },
+  {
+   "component": "benchmark/2024-01",
+   "ref": "1a2bf87a534b062e1ac80a7c34f935889dc2cafe39d597adcf9337cb6d492927",
+   "blob": "37d43f7cbf85a609b2b752828bcf4365d4b4737f"
+  },
+  {
+   "component": "benchmark/2024-02",
+   "ref": "ecc59816c52cb5f9abca798542c8253c7cc65d9140e7c5cfdf6a6048f7df55cc",
+   "blob": "f4c4626c9fd49e3424a825dac957f2fca25425c8"
+  },
+  {
+   "component": "benchmark/2024-03",
+   "ref": "fadb7062c55b68ff53159e010364f1b6a594791fba1ba1ef9f816cc3d97bd291",
+   "blob": "66dc9d9cb3d510b5a7094195b4d388ae55962d68"
+  },
+  {
+   "component": "benchmark/2024-04",
+   "ref": "758831ddad2a1b6276420634541e2bc249840cae88d9352a054f1827fe990cf0",
+   "blob": "ae1b656733dd2059a128ae9c77915ca8ac99d6dc"
+  },
+  {
+   "component": "benchmark/2024-05",
+   "ref": "b15dd696a8af0010b384b75ab9847da41fcd73cce44cf7aa3869d21f8ef9d6d5",
+   "blob": "f6db963fcecca78359491dff47539ad64e832b70"
+  },
+  {
+   "component": "benchmark/2024-06",
+   "ref": "1e47587c3d24e462461ed95088e6b656d077a72fcdf36297bdc4b96513dbed33",
+   "blob": "77789e87d82241d0d24aa048ef9bc26c3cbfbf05"
+  },
+  {
+   "component": "benchmark/2024-07",
+   "ref": "e20813f4fa4a5ebb222a7a42a5ec5bb4c2070a18e4b6163ac45f77a3137a4469",
+   "blob": "8d4e77c1dff988827453963a947ec254c4e55975"
+  },
+  {
+   "component": "benchmark/2024-08",
+   "ref": "91696dcf7d0c550d6b31e0c392f5932f29fa2fdf3a9815a9f082c284df2742d7",
+   "blob": "e99c81e1b29b664be055e2b3b54dc2a27434f2ed"
+  },
+  {
+   "component": "benchmark/2024-09",
+   "ref": "4b210d05d5a446bc21aa70740e5200d36d73489b7a9235f579616b1b1d55fc5c",
+   "blob": "942ff39f926f4ef8327429f1ef1b943895fcb37b"
+  },
+  {
+   "component": "benchmark/2024-10",
+   "ref": "dc701ed1a4a38e92a50a3f69e1cef583e1b1b4eb76d0572af3b19b0b4b998cc0",
+   "blob": "5119fed46adc431333a7eab5ff66f1d47cec0c2e"
+  },
+  {
+   "component": "benchmark/2024-11",
+   "ref": "3753386eb2d7314f2b094f75d47a62c531197f7261e27b542fcc893214e0551e",
+   "blob": "3ff275ac5c6339004bbd87fa8ed074ce754ca299"
+  },
+  {
+   "component": "benchmark/2024-12",
+   "ref": "67ac76efbea683e7522daf12cb0f263b9309bfffc28e17e10947737de957d0a3",
+   "blob": "c32a6d9314f50b8b2ccc69d0ef8e29ef1dacf413"
+  },
+  {
+   "component": "benchmark/2025-01",
+   "ref": "013851ef3105c8982e2ac234c06307484994cfc2405054ec91da25b5c9e663a1",
+   "blob": "b0f195385250982709313d12e1f045bd015f9f4a"
+  },
+  {
+   "component": "benchmark/2025-02",
+   "ref": "c31f6457cd846d1991fee579b2797e24780ef10cac9c187c46da2935363bd321",
+   "blob": "e0618c69dd394b5756dc0bf3291f5eabba09911f"
+  },
+  {
+   "component": "benchmark/2025-03",
+   "ref": "fd15c8bceb57066920cf1413c54c0ce5ae7e9661baca1e053dbef8372ab1cb69",
+   "blob": "60955fe807a5a35c0d79d3d00a1a279632324c9c"
+  },
+  {
+   "component": "benchmark/2025-04",
+   "ref": "17a80493b04eb7504673dfbdb6c4ad7840cc62c38fe723c18b6efe577a57b246",
+   "blob": "4a2f482e63c49cbc4ae84e141163e5fd3ef8d8dd"
+  },
+  {
+   "component": "benchmark/2025-05",
+   "ref": "1a5df1824a0554c76ca675940507987227f81fc563423a346221e7f1482f651c",
+   "blob": "eeb411f79032843cf7946e284a7b92a62192d8c0"
+  },
+  {
+   "component": "benchmark/2025-06",
+   "ref": "8a25ab11b1472c061ce96319f21ca467bf429bd7478d5a31a425ee2e7ecfd8d4",
+   "blob": "4dff12b75d357ec5459c0ab936925bfd89efb07c"
+  },
+  {
+   "component": "benchmark/2025-07",
+   "ref": "a4820d52090b4a87e32db838a9e9cee975223906ec3f55ddf3e14a230c7e9d51",
+   "blob": "0cc87c13e37e99c2645c37add4b9ece8ed06d07b"
+  },
+  {
+   "component": "benchmark/2025-08",
+   "ref": "7633b7bc34fdcf7d724b0afb9463aad855a1db447bef75d887a38b7e980e6d45",
+   "blob": "2af4b80764eb3da1a9122d7e030345358949a6a8"
+  },
+  {
+   "component": "benchmark/2025-09",
+   "ref": "314b00c409baa2771aaf8779e46cf949bbaa90db2071e664e0dcc7ac089620cf",
+   "blob": "f5f6de96973770052ced84693f332063667e4a0f"
+  },
+  {
+   "component": "benchmark/2025-10",
+   "ref": "4eeae42c8e063183bf80839350c2b3eb2316e0ab2c6383b0dc05f959f13d6aa0",
+   "blob": "9e64c10c782fdfcd13f665ab017b71c506a21198"
+  },
+  {
+   "component": "benchmark/2025-11",
+   "ref": "12f49051037b8e5c29213fa06e61ac9d24cf9f3b936bf081bcf68f53737c2ab0",
+   "blob": "d1a68c3250a652c96df34fa6cbeffe498916e76d"
+  },
+  {
+   "component": "benchmark/2025-12",
+   "ref": "c7874cefb9b9de0ca99cc13dd9484e809f1171eb881d6e12f58d1e7cae81283e",
+   "blob": "5a012883e584e5aeaf8b5c0232cd9c0399f2f537"
+  },
+  {
+   "component": "benchmark/2026-01",
+   "ref": "4e46752b96cca52ec2b876318b180048305c1609b4deb319f11aaaed216bd3f2",
+   "blob": "2adff8ee7c351eae090cfcd52bf1c2d436719a56"
+  },
+  {
+   "component": "benchmark/2026-02",
+   "ref": "734460926b8443186183ed6fe252f46b00d8905c55f406cd414b1332d1b9fe6a",
+   "blob": "99704b8791beb7cba7cfc8f47d731f330150b6da"
+  },
+  {
+   "component": "benchmark/2026-03",
+   "ref": "5c3dd0afba55fc12d6062c3f207c3f9b942146cf179eb5d1708133b830186e0a",
+   "blob": "4facdd8e3c448e2a1d2929e465555e5f83305aa6"
+  },
+  {
+   "component": "benchmark/2026-04",
+   "ref": "2ea426f021d63d5c3df27f0d2547384ecdc81ad0e727660aa7f3973c655b487b",
+   "blob": "59f53cc1365a23660f8a3d6f925bb9baadcab5c1"
+  },
+  {
+   "component": "benchmark/2026-05",
+   "ref": "ff8d480e4650d1cdcfff5f9d1c3e5a3d2c3565d43ddc34a0c6c2ad7ee49a8404",
+   "blob": "53d2ab70b589220035e2f838c19b0d1d49b357ae"
+  },
+  {
+   "component": "benchmark/2026-06",
+   "ref": "b057acbc0b3d6a5928127a518fe2ea0b5c9e306bbb5f3cd08890b78a654b2f75",
+   "blob": "fd0792ae8629862e3ea652017ca16e8e2060b54d"
+  },
+  {
+   "component": "benchmark/2026-07",
+   "ref": "173ac7c1766113f1884a3314ac09ced9e62388127dd0467f421d0d225f5c7030",
+   "blob": "fd53ea64f833f22756f00798bbfa781af682207a"
+  },
+  {
+   "component": "benchmark/2026-08",
+   "ref": "813170ca4893b852409e721916ce582188ee391ab36c61a10b1686d82408a1f5",
+   "blob": "da2fa2649e4a5020130cc0377dad6a2ad9675f9b"
+  },
+  {
+   "component": "benchmark/2026-09",
+   "ref": "d54cf9eda84738d1e09c751da83988db5fc45e211770382530f5610bef5244e8",
+   "blob": "3aa83a85568e9f95d85266132a826de66af540b5"
+  },
+  {
+   "component": "corporate-events/2011-01",
+   "ref": "f9d0ff2f07feb3cfa6eec5564f82be3f03cfa4dedb62c529f1adf3fb892d1c06",
+   "blob": "ec005a51247a4f55d49dbf681aff7fd10b373560"
+  },
+  {
+   "component": "corporate-events/2011-02",
+   "ref": "aa7100cb32e5168182efd4bfffb9008d3b6e11b6eabab7c0fa2e9973a6c38d6b",
+   "blob": "0a3a068b1a29be9bdf8e773a5c9c0ed0ceeca2c1"
+  },
+  {
+   "component": "corporate-events/2011-03",
+   "ref": "1e2b2cfbbfde946762e7218f05e056bfee5457a79ab1d623d100b1a4593c3c62",
+   "blob": "760b8e6fb1e8bec401d09560a7db08161f82139f"
+  },
+  {
+   "component": "corporate-events/2011-04",
+   "ref": "bc6dc71bb3057a7db0ad781eeaee68d4acb12c0f55362da852a4271e560fbffc",
+   "blob": "4e49c8abaa3c5d2445ce8b591f8f7b48e06b7985"
+  },
+  {
+   "component": "corporate-events/2011-05",
+   "ref": "f76318f571f24a7fccac1d7091414bdf806f4ef891f4edb2947cef38fd102458",
+   "blob": "596b15f8bfafd0feaa7452c07daf9f8680f0faf2"
+  },
+  {
+   "component": "corporate-events/2011-06",
+   "ref": "b8679878508386f63830bc68fe29bd945a8b5f9a6c0fa682a1bfb47b7433fb9b",
+   "blob": "6ac1ed6a44ce77f79910deea0a5bcd780e90fd78"
+  },
+  {
+   "component": "corporate-events/2011-07",
+   "ref": "f1044c131da7d6620678fa754e6aa83356f4def76472e595d30c71c16bf12325",
+   "blob": "c025dc714a45ce4c68827326eb26955ec9fcb800"
+  },
+  {
+   "component": "corporate-events/2011-08",
+   "ref": "157c32bcba7d24235cb2300b0da9917f1db93423ff1a40774359acc584d51af3",
+   "blob": "f433927146442152b9ac8a6bf8c283ab66723863"
+  },
+  {
+   "component": "corporate-events/2011-09",
+   "ref": "dabe7d2505d67961560781e7464a988d51504c22720b4691d3e85197c65419b3",
+   "blob": "4b62dd9dc08699b9439677306c765cd38fcaeb3e"
+  },
+  {
+   "component": "corporate-events/2011-10",
+   "ref": "ab5222d5d86d579934cb6c7030121c37964f1df79d55b93f3523cf3462c216b0",
+   "blob": "99ac004df8589ea05afe7560298fa6121e635d46"
+  },
+  {
+   "component": "corporate-events/2011-11",
+   "ref": "3bc5311e45e76de71a496efcd2008df109467e759908c33e328c6d8714a0c714",
+   "blob": "f8cad9138d8db770c9d88498b445006dac85d6af"
+  },
+  {
+   "component": "corporate-events/2011-12",
+   "ref": "6caf7c65fc8a86507140e36e25eb01504a64bb855338395faa08c41ea3da4565",
+   "blob": "bca64c10f0e447b67e064e0e3d146c42845061f8"
+  },
+  {
+   "component": "corporate-events/2012-01",
+   "ref": "788bab1784c4e312fd27c817a0c140b6b6ca5f159229a2f13f370049a871ae13",
+   "blob": "e76e3e3ba8c7c5e4d27f24a8f81dec78c94d0713"
+  },
+  {
+   "component": "corporate-events/2012-02",
+   "ref": "82637a7f59d10eb95217d57a3c1d8f8feb4593e293d4b2e061d26bdb52e6b97d",
+   "blob": "dcbad421afef0802229da272e166b74d2ae20372"
+  },
+  {
+   "component": "corporate-events/2012-03",
+   "ref": "3bb96286c39643f74e1738fea839379d444f0eb44ce3b5dbb3728525b18e7abf",
+   "blob": "5fb24902b73293dad18168708674408959a97eaf"
+  },
+  {
+   "component": "corporate-events/2012-04",
+   "ref": "cbee57638ebf78ed8a44045f3e7a9ceb62f3b00d35d3f5bf0dc1987e8df25528",
+   "blob": "4f3636124357ced7ef458e89fda3f6f30bb7175f"
+  },
+  {
+   "component": "corporate-events/2012-05",
+   "ref": "92c441fb4b3c624369ef0cbdbabce88204820fd5c8baa76adcf44ee6bc4a96ef",
+   "blob": "9443eaee62cc33ca02c6acc87c5c607de9600bf6"
+  },
+  {
+   "component": "corporate-events/2012-06",
+   "ref": "764836c3cef61e2da3dd504fb87d60de2dfe7a498c3f0ea97520c301cb3e1e58",
+   "blob": "02f41ab7beea2745a3f28702513f634f518de1d4"
+  },
+  {
+   "component": "corporate-events/2012-07",
+   "ref": "561ae375a20c90900edb18d1f3bb27b2f05c8fc4f15be0a27f047706cae44786",
+   "blob": "8c05326d2664c2bcc5f6f9c066ba8e533990e52a"
+  },
+  {
+   "component": "corporate-events/2012-08",
+   "ref": "681aa93d2f8ac85da8637f06c2b52610bbde491aa6ffc25788712203b52c70e9",
+   "blob": "a9bc812bff34b4c51e83b80160f2b5064feb3a15"
+  },
+  {
+   "component": "corporate-events/2012-09",
+   "ref": "4bef915b8e52e4433be4cc941940f549a8f9508dc5cb1b720197ebd2094116d1",
+   "blob": "ecd295a8f7abb24c996d9e827564c98a97559380"
+  },
+  {
+   "component": "corporate-events/2012-10",
+   "ref": "e606cf5052ec0b3e221197935a2124bcf226ed57ab51e92facca9d0d0e55b7fc",
+   "blob": "629a73540c778dca13f953691bd3d2a024b345bb"
+  },
+  {
+   "component": "corporate-events/2012-11",
+   "ref": "91b467c4dedcb7f64769369a286bce6e997167cdd53b2e7855b61c8b9f60b020",
+   "blob": "e36a23ad161a7c3e1ea0c2984a1850e7c31be0e9"
+  },
+  {
+   "component": "corporate-events/2012-12",
+   "ref": "14c13dcb07c4e7a6bec5700b7da47e5218c3e3e49b0046f65c157dc53b54332d",
+   "blob": "a0e351440a515541ab498d8ebfc58f29c4a2e4a8"
+  },
+  {
+   "component": "corporate-events/2013-01",
+   "ref": "443453b58c6ede83d2268aabda8832a9ee2ffc19b95b13d04b9a12f4f107ffbf",
+   "blob": "9502d4278036f0081804e373f5e68dd75269f956"
+  },
+  {
+   "component": "corporate-events/2013-02",
+   "ref": "3b997ec2cbfe8d90546af35abe9707f86eace74e8d90b7cad12b3ff3ca7214e7",
+   "blob": "8039ef405fb08a97d3c4234e3f88364aa2ddf2ae"
+  },
+  {
+   "component": "corporate-events/2013-03",
+   "ref": "a208a60b59966adfc95cc316a360384894b92c5d43c91c0b680bf9214aaae131",
+   "blob": "f02432790d0caad8dd427a911fdb17d3e9ba8522"
+  },
+  {
+   "component": "corporate-events/2013-04",
+   "ref": "f8a88a943e18df4124d46342d8c52321177c902ae39a14bc52b95b15e01a90ac",
+   "blob": "99ef1010f3fd85a6926393bed1699013739e6269"
+  },
+  {
+   "component": "corporate-events/2013-05",
+   "ref": "fd6a0185aef28b2bd5545bd2df8edd24760b23890f1c1dda9b50a3b29e1b316d",
+   "blob": "c2b2368471f8156909e6dbf9e7587eae5763f5d1"
+  },
+  {
+   "component": "corporate-events/2013-06",
+   "ref": "763451c94d39699774265b020b260fed40cc9f7a655a1203a3c705102c51b37c",
+   "blob": "44ac9a3786040bf4463c35e7e58e8d5a09007e62"
+  },
+  {
+   "component": "corporate-events/2013-07",
+   "ref": "04cb8f2d6e701e00f2764298aef14af132e659fd6e905676bb6b51921231600b",
+   "blob": "01031da7c167aa025cd9893e669aeba07653189e"
+  },
+  {
+   "component": "corporate-events/2013-08",
+   "ref": "8eea8e38a30e26f127565b8707ce9b58183915b6db4cf2c8ed47938dc0ca5806",
+   "blob": "6c7fa7df4cd281500d93508924640895c2acecd8"
+  },
+  {
+   "component": "corporate-events/2013-09",
+   "ref": "78c61e6bdd880801e5f348674471f37229d82e8aa5f42e5a40f04e6c4c39128d",
+   "blob": "c8c18bdbfc3e97668236f584b4120fa947d453b8"
+  },
+  {
+   "component": "corporate-events/2013-10",
+   "ref": "1eb80c286df370d8e09b6d88d6e4bd7f77c430a52440b0979124b67f2dd9b774",
+   "blob": "63d434bdddcb1fbc5130537644d86d601d56d935"
+  },
+  {
+   "component": "corporate-events/2013-11",
+   "ref": "115d5f5b8a383df410538ae8e066c4d68b8d05e1a621e81c048fa8241751e702",
+   "blob": "3c708c209ac1689cb463d853961c856d868a7196"
+  },
+  {
+   "component": "corporate-events/2013-12",
+   "ref": "b409de131ffefeba9eb375e0d3fb438f7b1b9ef59b2374eebb5975a20006597a",
+   "blob": "0b0c705ddf490feb581519bf5da5f400b89c72e4"
+  },
+  {
+   "component": "corporate-events/2014-01",
+   "ref": "d02e8750bf99c13ce86b1473cd6c86b5bee050baa2776c26667a6eb52db5a81d",
+   "blob": "fdd79cceb2c93c3b214ee3f0d5d3c0150071df20"
+  },
+  {
+   "component": "corporate-events/2014-02",
+   "ref": "669d17d6628639b02d74da6c2817479870225bb4ac3142331eebb6055833b562",
+   "blob": "837bf0947da53f2a2cf2eb262808903239eecfb2"
+  },
+  {
+   "component": "corporate-events/2014-03",
+   "ref": "9dbd4fb580d2b05851a35e16418b609cda20daf5641012cac0802c2b6f97c9b4",
+   "blob": "8d9f62e9764fa88786a467de26ce8858ffbba5eb"
+  },
+  {
+   "component": "corporate-events/2014-04",
+   "ref": "8346b33212c9d20b53f7f3f135a68858f39ab70da20f6d51e16f3e8d68292f86",
+   "blob": "f8131b0db764d7768710509f284d5f4e2c7f945f"
+  },
+  {
+   "component": "corporate-events/2014-05",
+   "ref": "5a4db3f715481719619f46f5330d654777cbdc015014d5b3b3f5e1e2c80494d1",
+   "blob": "42cc8658580c8694f93ca2f8e4734a44f0c720e8"
+  },
+  {
+   "component": "corporate-events/2014-06",
+   "ref": "9d74c0f617d9094ed524f070c9f0b0055b597edcf397644caf53acf9ac8ba03a",
+   "blob": "bd11a44d0b6f248c9a4ad0a50533395795ea2f22"
+  },
+  {
+   "component": "corporate-events/2014-07",
+   "ref": "c5e7561132affca2c2f6d12eb340ffa6eaadc3d97ef5655244171b674551b4a8",
+   "blob": "038746cf254f2d50162f9cfb4d3020144cbc889b"
+  },
+  {
+   "component": "corporate-events/2014-08",
+   "ref": "50df491ce3f9130c10b4486ed53b2c536123539a04c2b6fdb0fc96ed8b47e4ef",
+   "blob": "30a95f4c4bd18e1961c01fb2be8cb256a6c18650"
+  },
+  {
+   "component": "corporate-events/2014-09",
+   "ref": "ce6f0c81a611f9b23939dd6456cd1f99782802182f7b79fcaf16a0181dd81a95",
+   "blob": "bf5ca09a8603a36f7d965dcd072e8084c20a5779"
+  },
+  {
+   "component": "corporate-events/2014-10",
+   "ref": "17279c0a0a1fc2092be19e9d593a50131029d615b9aaf451a12298201538da0f",
+   "blob": "b48ee040dc99e09997b8207da3725041e526c7dd"
+  },
+  {
+   "component": "corporate-events/2014-11",
+   "ref": "cdf2b750fcabe4724d6bc52a6ca5e9db5aaffe71372e3ba4b6e7e0c1e6fc14ed",
+   "blob": "10a47736d3261bc2b743dc860ad432fde056388c"
+  },
+  {
+   "component": "corporate-events/2014-12",
+   "ref": "cf237c3134d2e948f714b6bacb63eb18ae80b78ca344b8719e79f5e40dcbf1f9",
+   "blob": "fe4156f2d4e7f92d38949790f80151ff3b239714"
+  },
+  {
+   "component": "corporate-events/2015-01",
+   "ref": "77f857932f7646229396bc28a01fcdc9052534fe07ae049af6e4c103de4c757c",
+   "blob": "b19b62e51820c6c8257baa4883026210f0cdd9ee"
+  },
+  {
+   "component": "corporate-events/2015-02",
+   "ref": "4f75123c7f499714de0bd94fe178ca07aa55c004939b258aca456a25f4e8fa85",
+   "blob": "c009f58cc21ad606d8252cfbf95f1e7d44e19c1e"
+  },
+  {
+   "component": "corporate-events/2015-03",
+   "ref": "2f53d0e380c932bb1c526e96bb663b30ecbb7f4b2c835cbb9994e5ff251a1900",
+   "blob": "4b02179628389340d7d02a791d67de97600f297b"
+  },
+  {
+   "component": "corporate-events/2015-04",
+   "ref": "124cea18922dc293f5d56c61a2b96c53cd7b04dcaa0380a4344aa0fe4028af1f",
+   "blob": "becb896511502edf27ce82e60fa5d20eb0b1e959"
+  },
+  {
+   "component": "corporate-events/2015-05",
+   "ref": "573800b8e56290d2b115ad1ca0d9ed5d3a1a2988005c4e317303aff91d9411cf",
+   "blob": "98073e43cbac85a59cc6b280f5918249be3f4f0a"
+  },
+  {
+   "component": "corporate-events/2015-06",
+   "ref": "9fcf02aa339d2fc35ffc28f28e2de1dff5a23b7e5f6589d7202193b7f1638858",
+   "blob": "1ffab25d88f7820191b488a42fda1dc2c57a72bf"
+  },
+  {
+   "component": "corporate-events/2015-07",
+   "ref": "8fed16e10386eb56335081f2d23c464c1efcac50f5e0aaf9fbf3d42c6cbbf68f",
+   "blob": "dbc0f33559b04ff4a276616beae4590a1bc68138"
+  },
+  {
+   "component": "corporate-events/2015-08",
+   "ref": "aa067ea629246c089ace84b3bc173f66f0f958597d18de0c600479e6ffc884fc",
+   "blob": "2fb2842d9202bc5a87da56670dfdca74c7d0fdab"
+  },
+  {
+   "component": "corporate-events/2015-09",
+   "ref": "caa619ced6bf1709b9c7c6cbe1362e47e3d843c9c95ee5c6eda49c1e9d791783",
+   "blob": "9197860a85fe2393fd3d66db9b11c156f861f829"
+  },
+  {
+   "component": "corporate-events/2015-10",
+   "ref": "7cdd4ed69b3acd45427be5481536103774add328665dd40516ab3c472b9931bc",
+   "blob": "7b2811f250cb4422e77034b1073129b16741119c"
+  },
+  {
+   "component": "corporate-events/2015-11",
+   "ref": "98ef23f11314b9421ea85bc2545eb5ae9d7d21d832949df48627e2d82c78e83b",
+   "blob": "f83fa20f7c1e1bb9d540fa4a2d67366c528aeb42"
+  },
+  {
+   "component": "corporate-events/2015-12",
+   "ref": "70522d39ea24605d0db622d7dd223835c4f07d06d00a8540b275c9b7e539df85",
+   "blob": "91689d5e0f32299714ae4a4f0812dec5cf43c41c"
+  },
+  {
+   "component": "corporate-events/2016-01",
+   "ref": "a47cb24f44a59748f91614c4515d6a66c66f5523a7015df238c710a4a2019de6",
+   "blob": "09587ea8b2d24a78b126c308df718c9e561492c1"
+  },
+  {
+   "component": "corporate-events/2016-02",
+   "ref": "9b2e4ca53a44e69787104ce78ddbe7b6d9dbaaafab57de72f030a8b39bca756c",
+   "blob": "3bf8d9a8bfd38433c1e70d6647dc74ae12ac6a52"
+  },
+  {
+   "component": "corporate-events/2016-03",
+   "ref": "af87d979fdbb42973fe828a148ecad6bc2460d2ed8cc262b0a34bc59cb7bf554",
+   "blob": "99251caa1ecfe933fe7719a17fd860e6fc42a667"
+  },
+  {
+   "component": "corporate-events/2016-04",
+   "ref": "cdb65dbe3bb2043c78cf8c124bfb1a439b827819be9f625d339f239ed3e38e72",
+   "blob": "f91e83e3853f9e585c34dc41318cacc8ee2c1555"
+  },
+  {
+   "component": "corporate-events/2016-05",
+   "ref": "57f7ec721f31a7fce77b67c0b88e6d5114974b16e7230addc26b45c865e38212",
+   "blob": "6a31800cd0291f7a7cdf86bf315ec13c34a46b55"
+  },
+  {
+   "component": "corporate-events/2016-06",
+   "ref": "e943752e6b8efafeacb354052075bc06263a0ab398a48fbfd0be93ed8b59e2a8",
+   "blob": "f7561ef2ffd9f8a92331c422d8f999fccb0f019a"
+  },
+  {
+   "component": "corporate-events/2016-07",
+   "ref": "cae042ce68eca64afe36a90765f1f14a23b747446ddaa4fd3d002cb958b075f7",
+   "blob": "4fdc3b9954df86ece18317abcd7334b4f407bde1"
+  },
+  {
+   "component": "corporate-events/2016-08",
+   "ref": "cb63d4c31c94249ffe80b56f00879712a7822f3e829980885ce0b6968d2a6d1c",
+   "blob": "eb56eb257639fb66b683ecfd3ad30f19f22b8f7d"
+  },
+  {
+   "component": "corporate-events/2016-09",
+   "ref": "dfcddc775730d04b16d69ad78a80af9623e56982f559a81c3aa7fcfc88029709",
+   "blob": "fd1c8552bf187574260a8aa15188659ffe2da0ba"
+  },
+  {
+   "component": "corporate-events/2016-10",
+   "ref": "8c7ca2f31250a0c660d78827ba382a5d7fa1623349b73a1abcb48e2107d785fe",
+   "blob": "ed965e57c1b2cb542199e4c567f5dc50803cd172"
+  },
+  {
+   "component": "corporate-events/2016-11",
+   "ref": "9648090cf63a0898a7502ce4e63409db44192464254799e9e65e3ad3d382e400",
+   "blob": "b3a5560f9c1c87a4e3f05226f6d5e41a5573ce1e"
+  },
+  {
+   "component": "corporate-events/2016-12",
+   "ref": "0459b0eb5008871d83a7b99b721a64fcf8fc364bbf64d0e01fd98e3fd8cf6075",
+   "blob": "283c32f0c162b7319b736ceef833d51a86f34f8e"
+  },
+  {
+   "component": "corporate-events/2017-01",
+   "ref": "a60fab7bf0e9b04d8bbc46d0b7279d74be6124f8b4851fc1c8c9cc3f5e374eb1",
+   "blob": "254b2ef9b167f7017380ecc74601779144bbee98"
+  },
+  {
+   "component": "corporate-events/2017-02",
+   "ref": "1bfcc174266712f2126553d5d94d4d51158c7b936cf7920a92db0c6e1e2bfe2a",
+   "blob": "64350aea6d4e6ce1ae8f85c27f4ddf8417333e6c"
+  },
+  {
+   "component": "corporate-events/2017-03",
+   "ref": "35bccdf8a34bc77e584042dd71e42bdfe64ed692e530a0fb903d4c541ebe9489",
+   "blob": "c5a795137f35c7adf4d33a6ec22e5de32f9a5024"
+  },
+  {
+   "component": "corporate-events/2017-04",
+   "ref": "5706f9429f9840e3aa387772b16c51a6a4ce6ca216547a25359f714ba967f374",
+   "blob": "33aac349a3631957b3184ce886e85fa623a2c6fa"
+  },
+  {
+   "component": "corporate-events/2017-05",
+   "ref": "7eee234de8fbb8bd0a86cff31c7b88d61d658ac666438644722e41f1dcb13f04",
+   "blob": "0b1b8957cc15ebdfd5a0efc4d76b7c5f8bfba181"
+  },
+  {
+   "component": "corporate-events/2017-06",
+   "ref": "50e55798febbe4f2b0aa0f8cf919933149b055c39c99159e05299dc1e8930c2a",
+   "blob": "71c20199c0b32a53fa53600f5d055afbd63968c1"
+  },
+  {
+   "component": "corporate-events/2017-07",
+   "ref": "249a04773bcdf509df2cc563f2b18b243f9b43bfeb62dd61644af14cdd06de9f",
+   "blob": "f48c140cbf35042799baea8ec9166481fd4a7213"
+  },
+  {
+   "component": "corporate-events/2017-08",
+   "ref": "632ee63b002f896628e8ae609f1c6b6c81d7b87f7cef978d13f77d123b723d68",
+   "blob": "f6f4c83418e5d0f7ab4f5689e3a5fc880bff5525"
+  },
+  {
+   "component": "corporate-events/2017-09",
+   "ref": "6b38cfcad1146266b3f02b1583059253bfe87ffd1d32672ce156065cfc55ed69",
+   "blob": "ffeafb3c4d8ec1b50ec1da748870a11a69428e67"
+  },
+  {
+   "component": "corporate-events/2017-10",
+   "ref": "8f2cdcde0b2673e34ec3aae611273b37bc2a1439a56403ee63c802fdc5379c88",
+   "blob": "af02a3112d5a61064ccfe73755b138e3724f432f"
+  },
+  {
+   "component": "corporate-events/2017-11",
+   "ref": "a8d91d0608f97ae31504ea7bd16c9f195022f420f11f47590815f5ac52ff0c54",
+   "blob": "6f1d8bb1e9bdb1c6d9c17b56c14d949e3ca31040"
+  },
+  {
+   "component": "corporate-events/2017-12",
+   "ref": "3eceabb2e25bff67ffd54cd9c913c887fdc44cb38796d1f0501dfea4a9b266b1",
+   "blob": "7d9ebc4b681faedddd970db269f7ebbeacd82327"
+  },
+  {
+   "component": "corporate-events/2018-01",
+   "ref": "2dbe5aa8dd8f72b1d5165a7d42c5caacf68eb86ff2e260f696d0959067c6a7c5",
+   "blob": "1a133a018e6a1614a40c2d5204b1a1ad26aab93d"
+  },
+  {
+   "component": "corporate-events/2018-02",
+   "ref": "9115f2aaec9528c8268d2cb96b2a0fb316ee2b8d4226a339457339a981c36224",
+   "blob": "b4d6dcba528a16e144c8c367c526a97008943969"
+  },
+  {
+   "component": "corporate-events/2018-03",
+   "ref": "d4e828ff922c63fa7a2c4a01f6e7e104a13816789d9cc1834038b06376acaff4",
+   "blob": "635d3399b1b5c28811ddcf2a371516d23f295305"
+  },
+  {
+   "component": "corporate-events/2018-04",
+   "ref": "4a6297cd20e48cc3d7ce3e20027cef3a03a2a03c887365072c0bc6eda6992f51",
+   "blob": "af2913f41b7c78685768c82a3f3d8acb08c929cb"
+  },
+  {
+   "component": "corporate-events/2018-05",
+   "ref": "e43e9bc05c970e0026c59848744fe4a9cc864f3ff367d9a8189e90d436571c8e",
+   "blob": "1b9107c22d6fcd97be24210fde68f56fd10d0aa1"
+  },
+  {
+   "component": "corporate-events/2018-06",
+   "ref": "21f9e3d1d11d597db9280ec08031d283bcc5dffd201eac7bb528bd45634f45cf",
+   "blob": "def0cdc1885814478448321ee97308b8910031b3"
+  },
+  {
+   "component": "corporate-events/2018-07",
+   "ref": "272fe4355e04e3e23a61418000b1743be729395be3e1ec6eae9f0716289764ed",
+   "blob": "f0be1580778b2324aa5dd8f59cf316068f20141e"
+  },
+  {
+   "component": "corporate-events/2018-08",
+   "ref": "7784ee3c9b2da9ecaca615bf2d70831bec2f3a16fb0f01ed6dacba3ab792617c",
+   "blob": "cd7e6dbdb8cdeffd0518a25ce2abc9489342d664"
+  },
+  {
+   "component": "corporate-events/2018-09",
+   "ref": "c2b95f0aef833683fefed9bf501c95dafab975bb7f15e480b00b7f7440b34914",
+   "blob": "fa4adf78662b42ee19c652de27cd84970da8071b"
+  },
+  {
+   "component": "corporate-events/2018-10",
+   "ref": "d4242c871f0f8f2ab23feb64b86aeb9757df7e8e54e74a91ee209476b34d6882",
+   "blob": "ab8a2392fd4dd170ba02c4dde2a03261f9131b7a"
+  },
+  {
+   "component": "corporate-events/2018-11",
+   "ref": "2323c504169272ed58303f1a8f1d9e678300ccb18bcf29b78c12d1de811dc638",
+   "blob": "e74989072d9db76f3c465f05a740bc0a2002826b"
+  },
+  {
+   "component": "corporate-events/2018-12",
+   "ref": "06821e77217e3b17178fa594a2f94cd7ad86b891ce8d2c73976cf27d09f66def",
+   "blob": "ea68e6ceb30d3e039069124d809ec78acca3d62a"
+  },
+  {
+   "component": "corporate-events/2019-01",
+   "ref": "bece1c38fd5683a49eba0283e13c47e96f15421ca103e81b8a54907f4c3dabce",
+   "blob": "09d791a328a1af2ad4b2a7b1eb37309a1d63d5fa"
+  },
+  {
+   "component": "corporate-events/2019-02",
+   "ref": "edc623348088c351fe6e1126dba1a3bd1d678d6e48cc5fca2672545366c57b39",
+   "blob": "5b24ea6bbf2cb625b77e9326aee1ead4f2f65f5b"
+  },
+  {
+   "component": "corporate-events/2019-03",
+   "ref": "3592188f21c629c4285132a3795ffa2aee9fa46306cdbde925504855d1c38bf4",
+   "blob": "6240106eab18746e2acab80814b8bb3af05a2453"
+  },
+  {
+   "component": "corporate-events/2019-04",
+   "ref": "e44c262fa61b0d5e4932d17284ecf4c9572e8523b258035516d9a792c5428e4c",
+   "blob": "52aef8c0c15c8a9578ce581e500fb8be5b2f2f76"
+  },
+  {
+   "component": "corporate-events/2019-05",
+   "ref": "1f867066b0a751d458c43c5b4f0ed92ededda1c0977d44375147d2d5ac37e1cf",
+   "blob": "b268d06cd35c4a7d100269132946a3a1a931cd10"
+  },
+  {
+   "component": "corporate-events/2019-06",
+   "ref": "e348f0968ae4d882a9c963801f263a86a896a56d6f70c77116169df814b4c0af",
+   "blob": "8fa6fbb151513f60ab87a8d7bc9f72f8ccb9766c"
+  },
+  {
+   "component": "corporate-events/2019-07",
+   "ref": "57749f7a3654753c05950ddecde377d3690a20c6d45a3a8bb431b2f34fd1276a",
+   "blob": "4eb38d12d952bc6c6c7dbadb4fa3e362bd6be414"
+  },
+  {
+   "component": "corporate-events/2019-08",
+   "ref": "4d6a9ababe558f93526aa4367859989ca08d7c82ed52dca68f84382d6a7bd12b",
+   "blob": "fc01b0d401404ac1565b205da693e98ca3b093a6"
+  },
+  {
+   "component": "corporate-events/2019-09",
+   "ref": "fb489041d1ae91aff67070b612227b2de721b5d695291cd79582fa12efbedc03",
+   "blob": "2d449ae4fd0a05b39163d3f0e2924f5488e2fa67"
+  },
+  {
+   "component": "corporate-events/2019-10",
+   "ref": "a0407cb945730aed50ac619f00c35de4f36e8bebf1740ac1b7e1402e3a293c24",
+   "blob": "d239d178f3975c87e14dcf4b84fa9212d2339a53"
+  },
+  {
+   "component": "corporate-events/2019-11",
+   "ref": "9823b160e3a365fcb9a43422e956675b7a994bbd23a6bbae32df5dfc3929f44a",
+   "blob": "dbe91ce6bffcc9a3893ff6d0d23f1416323708b2"
+  },
+  {
+   "component": "corporate-events/2019-12",
+   "ref": "5f45fc257462654061e964be6d28b84a74054dc7347aac40c388b66398bd640f",
+   "blob": "2f2d52bb12c412172788f3526a7e6bd028064e6f"
+  },
+  {
+   "component": "corporate-events/2020-01",
+   "ref": "9882c1f293b8cbeb746b5f0685ff03d8d319e6abeb64553792ed9360c592a9ea",
+   "blob": "a6d563cb5525684beaa2bb9e352d198354f76053"
+  },
+  {
+   "component": "corporate-events/2020-02",
+   "ref": "999a6f80e32ae921e0e7ce2b72f3058445c2e67dcb09a365e80c6ca5e2b6668b",
+   "blob": "322cebd8383a72508201a58de7e222147c99e4c9"
+  },
+  {
+   "component": "corporate-events/2020-03",
+   "ref": "981828ac426a2d2ae042014effb6ab9153beae95c1495686b121e1b4a89cf3d9",
+   "blob": "b23b7625585455e3651731960a94f71517a35158"
+  },
+  {
+   "component": "corporate-events/2020-04",
+   "ref": "f35b53e730e4e392278e794063b59af0f2f74ed90547cb652434f0547e114490",
+   "blob": "15cf579aecd4a71e397e64f6a0e6939a0684a612"
+  },
+  {
+   "component": "corporate-events/2020-05",
+   "ref": "52e3c8d1b3084b0f0f22d81fa89772d8756a87d934d06ece0dcdc80af5b4743d",
+   "blob": "d7651f64ff014cec49d4ceb4a46f72e77cf59de3"
+  },
+  {
+   "component": "corporate-events/2020-06",
+   "ref": "7dc3e7ed67982c75df6f822d8a342ff97359fcb6326ff2824df0051e4a74fa3b",
+   "blob": "9988373daf8efa4bfa07fcb65f561c2fd59ac8c9"
+  },
+  {
+   "component": "corporate-events/2020-07",
+   "ref": "b78bdc852cc0b7ddcf1f515a3e438cbff525dea300eccc66d598868464e786b2",
+   "blob": "80a28ce55a5cf365b920a791df051ee009142c14"
+  },
+  {
+   "component": "corporate-events/2020-08",
+   "ref": "dfcacf444f49827b3fb65db36f5264343b241c5d77627adbef50c69b57c18ce0",
+   "blob": "981aee720f124035afa89d5d7abefe631ed593e2"
+  },
+  {
+   "component": "corporate-events/2020-09",
+   "ref": "9404044d8d1d08a5a0c3dc1fefffc9f5ae91c68dc29fc67999e3689b383f4492",
+   "blob": "9ad4e78a20472313c295563f56e102f20269b54e"
+  },
+  {
+   "component": "corporate-events/2020-10",
+   "ref": "f62203102152279db1a8af6ab979f96d7e3c259a4c6011740a59fe0a6293020b",
+   "blob": "2d66fa43d352c85c639a30b0e13664aa5117b1a3"
+  },
+  {
+   "component": "corporate-events/2020-11",
+   "ref": "27bdff437277c5d8da0745f6822511ccc63729e10017c039ab0b67e30efdf0aa",
+   "blob": "d0dde4c2601a33a15cebe9deea603264a4b027ae"
+  },
+  {
+   "component": "corporate-events/2020-12",
+   "ref": "394634d5a32b5f4e034f0a7e9e80854c0bbd91076051e918a6ca88bf4fcdbaff",
+   "blob": "d16116e1df9c6ceb78f9d77c8a83e7d3363dd9ef"
+  },
+  {
+   "component": "corporate-events/2021-01",
+   "ref": "1af919629635a591ac17ca4b05e667fb1b9bae914b1710982da1233fb249848e",
+   "blob": "f944728ff8cceaefe5f4be91e39de47851f4f9f8"
+  },
+  {
+   "component": "corporate-events/2021-02",
+   "ref": "c3d4a308ed8998da4b0c8421d22999256732b2888bad480a9b4079fb141eef08",
+   "blob": "b753d19bdc3e082291284d3f7afc55e0f82bbee5"
+  },
+  {
+   "component": "corporate-events/2021-03",
+   "ref": "ce15f31331b0ec464bb42f5955ed081baa8420220b5d10743c16cdd9bfdd7009",
+   "blob": "33294141c97db2e4a39e33fdb24fcc39cd63ef1d"
+  },
+  {
+   "component": "corporate-events/2021-04",
+   "ref": "5825029fb874f3082016f121433f3245b1764dddc0e49cff15c95ab59b32920c",
+   "blob": "e73232512f4b98e3769960d38271637d91200089"
+  },
+  {
+   "component": "corporate-events/2021-05",
+   "ref": "fa542922d73d0e98c868485807a1b9c3b936578b1428f696c8e583e73982b9fd",
+   "blob": "c8f6beeabadaf7941ae54ddb5bb440626f915f6b"
+  },
+  {
+   "component": "corporate-events/2021-06",
+   "ref": "25aa1a1118a0f79052381d77d7029d38ce49139c5138b1796aad00873ce1fd1f",
+   "blob": "a0722969b58559544140b6c69f1ed7563bd4c02c"
+  },
+  {
+   "component": "corporate-events/2021-07",
+   "ref": "83adc473c8f46fdb77947c7c7d1e701760f7ad3cc01394fe75e0ac193fa31623",
+   "blob": "bba00ad5bfbf20ba33b2ef627d248a6c5e45cbdc"
+  },
+  {
+   "component": "corporate-events/2021-08",
+   "ref": "fcf8217fdc7307a6aafecc46d41d59e24d8053a00e60dad3817a84652750fb13",
+   "blob": "f43ef18d1db31c1667055f5d07cd99662c6946c3"
+  },
+  {
+   "component": "corporate-events/2021-09",
+   "ref": "1c8fbec1f950365ace9ac79a47e0c3f481f597fa11fdb28e87397121b063fac5",
+   "blob": "c50a054e929950d8498306ee00aeb7c7457cc770"
+  },
+  {
+   "component": "corporate-events/2021-10",
+   "ref": "86a8dcdd12bcdbfb959a37b7be46df4cb5d535fdef7b5bffbe96c1c08993ee73",
+   "blob": "f5faa8d8fcda2282a96d2ecbbb193fc43338ae4e"
+  },
+  {
+   "component": "corporate-events/2021-11",
+   "ref": "0210feba719942a9b8d35668c20c51ecfb9795716757c8781cb82d9b4e128180",
+   "blob": "28221d32053c3d9ff640b2a1af868ac2ed23b416"
+  },
+  {
+   "component": "corporate-events/2021-12",
+   "ref": "b523012d3aa370dac4deb193a46ab818a60e977be6578960c63397da64059fa6",
+   "blob": "6352a22e2fba085f207bafdbda3b5b7da4d8678c"
+  },
+  {
+   "component": "corporate-events/2022-01",
+   "ref": "fc21803d8f2ababc38472b41f6a557a29970b4efdb2de57fa420e5bd85161666",
+   "blob": "95bec551b7f0b5696cb670f6e37687c0bcd7f5b2"
+  },
+  {
+   "component": "corporate-events/2022-02",
+   "ref": "2c9ac054c1476029ae3cc55fa617baf861712313a3d3a57a8b6d1e77d3a33576",
+   "blob": "0a0a0b7432860244427be90a1f0d6fb0ffe6835f"
+  },
+  {
+   "component": "corporate-events/2022-03",
+   "ref": "822cb278fcf02f1ad9263db0ba62ce47dea3925cd4965a39eb7ba484e171c67a",
+   "blob": "a4cbd0be78b424aab7e690bc92bdda192400d12d"
+  },
+  {
+   "component": "corporate-events/2022-04",
+   "ref": "385d63f899b5c9a155f2ce9767d09f159b8a1be714de1681510bac772b1db7f9",
+   "blob": "166ebd964778dda5342ac5ecc2f5fc45d629e81f"
+  },
+  {
+   "component": "corporate-events/2022-05",
+   "ref": "54b5b14bf3f49fe1fb89c4a706f2cfcb10d987b12cb2e194e3b69371e687fad5",
+   "blob": "1570e65baa154cdd625c52a92b49a5d48cd7f783"
+  },
+  {
+   "component": "corporate-events/2022-06",
+   "ref": "a0b4a35b8c59d03552945bc083c947729636b729e3805fc12b0ec3e6eddbac09",
+   "blob": "72e929a1a06af0fe4830203e76e2c43fe85a355d"
+  },
+  {
+   "component": "corporate-events/2022-07",
+   "ref": "cf62fa13ffd655413fa9e4c4d2a6a1f703cb62f15efcef38becc9243a618fbc3",
+   "blob": "a9939570c5f4841f9ece49b3bcf7aabf1a70d130"
+  },
+  {
+   "component": "corporate-events/2022-08",
+   "ref": "2f1d62ecfb8cfee947c8e088d69b7ae6981318d703979b5ec3fe7a46cdb52b59",
+   "blob": "7485edd464cd8a5aa0a421f3ebcaa093be5cfd6d"
+  },
+  {
+   "component": "corporate-events/2022-09",
+   "ref": "77cc2549ac0352c9a5148b0b08483bbf57f8e8af52a3ae527d5b63997a676f39",
+   "blob": "d576116fef1ce1431865c5ef90ca2083483161ad"
+  },
+  {
+   "component": "corporate-events/2022-10",
+   "ref": "c7475741d2bd85e05fb11ef87eb8722c2b075156fbc280e43a75a8a674d485bc",
+   "blob": "cf27e17b86c90f75609f0b861cd6a5ddb21fd08a"
+  },
+  {
+   "component": "corporate-events/2022-11",
+   "ref": "3246732692da79b4e00f732b55488c4aa9f9bcc41e9964596fbbc7d0e44f3337",
+   "blob": "2bf22e36ef4e95b0466fc063c43860bab07d4114"
+  },
+  {
+   "component": "corporate-events/2022-12",
+   "ref": "37215601699c7eb35ab0e2db2a4300b054d75340f77c0b757964fcefa6cd0d3d",
+   "blob": "a086d34c0781317476c59f3cb879e9a40d889239"
+  },
+  {
+   "component": "corporate-events/2023-01",
+   "ref": "5e78c006c3540c1c724521eefc7ee636c137e53efccadacc99b53dff58e96a3d",
+   "blob": "128dc36874e3f09dc9257b798bdbc227a1000d10"
+  },
+  {
+   "component": "corporate-events/2023-02",
+   "ref": "77a1422d172dd9bd5ee6ed1c9cdbbaf7504ef32f2a4198fb9bea89452a4ce276",
+   "blob": "51a80516dd1e6dbdef75f1ac5e4d1bf94ffdf394"
+  },
+  {
+   "component": "corporate-events/2023-03",
+   "ref": "825939d68245fb5080c76a893f99ac54223c37c3eb7e750808cae602c63a90d0",
+   "blob": "20c454e456f2957eb5a0c84f504ec37b3c73d7ea"
+  },
+  {
+   "component": "corporate-events/2023-04",
+   "ref": "bdc300c57740be19fecc8df19da7be46da71eaa62f909542f464adce8860ebef",
+   "blob": "aff4929d597a4b6020dd05f3935660c0106da1f0"
+  },
+  {
+   "component": "corporate-events/2023-05",
+   "ref": "093a9a66d5e56998b85856945c674381637138ed3a3411d5a6d755a72d04bc2d",
+   "blob": "b75d24a84054273c6928ed3feae0427a36143ee7"
+  },
+  {
+   "component": "corporate-events/2023-06",
+   "ref": "a033d3d0c0df919defadc3f220e04810bb20341097d96fbaaa4e25f6c410b8e9",
+   "blob": "b313555c0ad756b85433ee5e297683993ad7b675"
+  },
+  {
+   "component": "corporate-events/2023-07",
+   "ref": "28d086b77e05b7155261889ef96988ee471ba29fe22be764dad2c70f15390708",
+   "blob": "ced235d2de065e05d1c5c18b983c73ccc2d4a0da"
+  },
+  {
+   "component": "corporate-events/2023-08",
+   "ref": "493b2888187fffbf5b25778d8cdbf0e75001099c87b9308e914a2c22676f6cd8",
+   "blob": "fd6dfffd4782a76766284b0d7dd51a5aff5094b9"
+  },
+  {
+   "component": "corporate-events/2023-09",
+   "ref": "4ba841cc1b4b2d8f2741567baacda8a39cd73c6048867bbefe9c7624a64e2667",
+   "blob": "ec5698e67302276a454b9e9f90c5754b50094b91"
+  },
+  {
+   "component": "corporate-events/2023-10",
+   "ref": "0d74684a440e4fc99d03be0b2383324b1dbb75eb0caa7699d043bbb99eb34c1c",
+   "blob": "a65934eb44ecd8e5cffa4e6cf95c6f4c3f5b58b9"
+  },
+  {
+   "component": "corporate-events/2023-11",
+   "ref": "ac4af210789a4b3c1080e89c8b922f9434481e48da72636afcd75d294b055bd7",
+   "blob": "b90f4930736a59ea86c6d1193319ff98b4d5836e"
+  },
+  {
+   "component": "corporate-events/2023-12",
+   "ref": "18820e0319c7bbf4f61ad4223ff316451d78c2ad783aaf61dc01f598c7f04c15",
+   "blob": "b61ea63fd9d51b26f6cc040a633dad008b281f28"
+  },
+  {
+   "component": "corporate-events/2024-01",
+   "ref": "2007b50fc9d6a0d1942498465025a1a5411ab7a2b208622e191c55d85b908305",
+   "blob": "7da4a52a3ad83ad2fd83d0b1a1bad456266ef9e1"
+  },
+  {
+   "component": "corporate-events/2024-02",
+   "ref": "34827e2c1072be92c9dc656878362ff342e450ac3af2908be55346da1b09528d",
+   "blob": "12106f11dc7198ccf45f3df6b14aa5c507e1af1b"
+  },
+  {
+   "component": "corporate-events/2024-03",
+   "ref": "4bc48ff215b563a8f6adef02546263fbacfe183f80aadfbea9a33751cccefd73",
+   "blob": "2905043f83f4d20872dd0adae4a0bd4d0a2f12d5"
+  },
+  {
+   "component": "corporate-events/2024-04",
+   "ref": "b74eb9c94d7e10ec7ed04a85e7729d47888be141fcb62b57e0cc268942aedde0",
+   "blob": "7bc7b7eb6ee6a791b0340072edef26e55714f184"
+  },
+  {
+   "component": "corporate-events/2024-05",
+   "ref": "40ba0f938745335cfaeb487458c734f38444da555f01c28380ec6e70009b1a30",
+   "blob": "be526d19236f0d5701b458a7b1bab6372d1fabd2"
+  },
+  {
+   "component": "corporate-events/2024-06",
+   "ref": "dcd8c772222e95cb0389b539363070af29dcbbe7e90acb25fb46d938e24e07ff",
+   "blob": "e0cb4738e5968033660d79b81e4051d5385d2ab2"
+  },
+  {
+   "component": "corporate-events/2024-07",
+   "ref": "932d5d6f4d6b834cc2fb55675a3e83d2a153d29f4dd60be9592cd07b0710d528",
+   "blob": "fec44bdd353c38f85f63c2eddbe6f33ad814d285"
+  },
+  {
+   "component": "corporate-events/2024-08",
+   "ref": "fa16c141305859812c6c1cd659f1e12484a630e6d4d3394f9d237f5d7dc77146",
+   "blob": "081c0f9255da479153db66efadcbcf6590fbd113"
+  },
+  {
+   "component": "corporate-events/2024-09",
+   "ref": "483e527ed57ab66470560f56461d150e17d2c3cfc7b5f9e7bcb735b735b44b37",
+   "blob": "c8c37917b76e28cac208e1b6ca05095673b51421"
+  },
+  {
+   "component": "corporate-events/2024-10",
+   "ref": "08175682abec1b03d933c6c132b0889951b1631981653a1ed3ab561517256afc",
+   "blob": "29055fc0454262e0b632f156a4467932cb742a6d"
+  },
+  {
+   "component": "corporate-events/2024-11",
+   "ref": "f0033c66761977fc422848503452a8ac27f463bb1f72cbcb4633d225e85f658d",
+   "blob": "a5375c9ce6a530989094dad75e43059887714f3b"
+  },
+  {
+   "component": "corporate-events/2024-12",
+   "ref": "37fd74edca8c783b03e33392924b94f3cf41d64d7dd4640d1806b18cc56477a9",
+   "blob": "868a8b2dbad4ad386433134de7541ba808e489b3"
+  },
+  {
+   "component": "corporate-events/2025-01",
+   "ref": "5a5c9ca84e8998b1eccd8c79e6adb199f60d2ac5c15cebb51421272e3ca125d2",
+   "blob": "32ddb61d7d5067826c0502c7a489463aa6757787"
+  },
+  {
+   "component": "corporate-events/2025-02",
+   "ref": "42d073d13facef965dc843c8363c05ca20b455ac8aa7684962897140f855813e",
+   "blob": "07903be52ad69084819d95e7240532618d37f7f1"
+  },
+  {
+   "component": "corporate-events/2025-03",
+   "ref": "a0b4779223707be1c89eccb08b5b63c3aa2127a8af0a54bcaacc5bb3c7e977a7",
+   "blob": "1978b5d6253595312b289dedbeb52a4f7322a441"
+  },
+  {
+   "component": "corporate-events/2025-04",
+   "ref": "4a8cca4705e539aac78ff3466bbe8143bfa4fb6e4fb9acb0e39335b53aef7c85",
+   "blob": "11b55c616dd85a781baa065e7d3f4938450c16aa"
+  },
+  {
+   "component": "corporate-events/2025-05",
+   "ref": "bba092322e56aaf96c108b597f76bf1a27457cbadf179caf06ad6fdce0ac3015",
+   "blob": "76adb801639f962dafb50e796dcda26c9eac282c"
+  },
+  {
+   "component": "corporate-events/2025-06",
+   "ref": "f8b2642813b5bf7647bace0fd6f0a73477061ff81026e6829a60cf8dbfc237ea",
+   "blob": "cfa7d94157c04ad8bda94103575cefbde651d3aa"
+  },
+  {
+   "component": "corporate-events/2025-07",
+   "ref": "cca00bcd68d37f109bbe73453cb6e7aab08bee37fdb31060b6b643ed98f30c8a",
+   "blob": "a0f1995dac30f86c1ee7b8a00f258c16c8b86611"
+  },
+  {
+   "component": "corporate-events/2025-08",
+   "ref": "ab6a2363371d280bbe22907638513e7f0ed0796d4c305e068ff738b1eff6f4fd",
+   "blob": "421c37980a66bba34fe854ba3a7ea454ddcb6486"
+  },
+  {
+   "component": "corporate-events/2025-09",
+   "ref": "3b6249c25251bc4e9ea921b5aa23a9855f5bd5820e4c5fc022c947a151d5402f",
+   "blob": "3a835b311d05355d81548c4300f08ee7e1886d3d"
+  },
+  {
+   "component": "corporate-events/2025-10",
+   "ref": "dfb4e3d2ef0d8d417f2a2c879ebb6d02d218445c39ce312d4e2578ac660aac23",
+   "blob": "542e953a804d110480a2befb5f19c13cb8dd5d71"
+  },
+  {
+   "component": "corporate-events/2025-11",
+   "ref": "9e78f6b923eb80fcd808880420fd60e93b6100ce56f33418450af720741973c0",
+   "blob": "d08cab4f0b0b481ea190a1f9488be58673ccffdd"
+  },
+  {
+   "component": "corporate-events/2025-12",
+   "ref": "19faf6951be9fed8ce597847d19faa369c01b7b6de42a0cb8247782e50b15bf1",
+   "blob": "f71f280ad5d5f1a9fa777e935c82edd4a790b8af"
+  },
+  {
+   "component": "corporate-events/2026-01",
+   "ref": "334219561e9618f001be5e4c02694eb5e8dd284b4ae9ac87884423760c21687b",
+   "blob": "88ee00e0c25e06f304e54b82664194ce2d37a503"
+  },
+  {
+   "component": "corporate-events/2026-02",
+   "ref": "781fc5799f2c321c99ccbc21e4978e8321382165387d3ded141f72b531f3022e",
+   "blob": "bd92cd38ba5395dafbfee3dda0474fea24951e1c"
+  },
+  {
+   "component": "corporate-events/2026-03",
+   "ref": "526138c545c4bee6b0eabccbb24ccc6e2a5861f43141327bf1538d1a9a849295",
+   "blob": "f6b3af7e9d487e7da92b62c651d9273ed21efa1a"
+  },
+  {
+   "component": "corporate-events/2026-04",
+   "ref": "36080a016f549676a71151731c099e5f351d563a77547a06c8a210cab6e5eec3",
+   "blob": "4b088991b323e5a09c82d713d55be62c935205a6"
+  },
+  {
+   "component": "corporate-events/2026-05",
+   "ref": "13e1f004eb94a728dfd055dc92a0f5ac0159403e2bacf289ccaa6db708d7b070",
+   "blob": "e082307a84861ca26df66ff433bcbb33ad47c333"
+  },
+  {
+   "component": "corporate-events/2026-06",
+   "ref": "1c7821f53130fd41de7c068c259f15eb344a494dfb8032575b7b60096c951cf8",
+   "blob": "51dd344cbc18030985cfcbb2d8775a14fda8ec37"
+  },
+  {
+   "component": "corporate-events/2026-07",
+   "ref": "fd577603eebca3edb59c287a575bff8893a59b98c1e6af821209c758cc56219a",
+   "blob": "5eb31c3c24ca224dee6ec5f23677227e96bb602b"
+  },
+  {
+   "component": "corporate-events/2026-08",
+   "ref": "fee6f8457b9d534e9b6672d04a8ad29111a3f520b1716b6ef17f6345ad797e41",
+   "blob": "7634c53801f923ae3d773a56d96521bec99ee896"
+  },
+  {
+   "component": "corporate-events/2026-09",
+   "ref": "2a7de984e74e66d71fcf0c311adacf561fefa4e865ff732036ad04e259770bc2",
+   "blob": "2977d8b08b19669e72f730edf5ebb671b6efb0c1"
+  }
+ ]
+}

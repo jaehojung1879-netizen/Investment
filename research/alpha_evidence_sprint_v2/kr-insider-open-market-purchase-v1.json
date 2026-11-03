@@ -1,0 +1,92 @@
+{
+ "studyId": "kr-insider-open-market-purchase-v1",
+ "status": "PREREGISTERED_NOT_EXECUTED",
+ "authorizes": "NOTHING. Collection of filings (outcome-free) may proceed; any label, return or portfolio value needs the owner's exact-hash approval and a KR Phase D exception.",
+ "selectedOver": "us-insider-form4-purchase (same mechanism, US): historical outcomes are BLOCKED_BY_DATA_INTEGRITY by the US panel's 212 unpriced departed identities (alpha-opportunity-model-v3 audit) and SEC serves the dataset only to a client declaring a contact address while refusing GitHub Actions egress (evidence/us-insider-probe.json; AGENTS.md v2.9). It stays the US counterpart for a later, separately registered study.",
+ "noveltyCheck": {
+  "atlasRegistry106": "absent (only G06/G07 5%-rule large holders and J03 buybacks are 'insider-like'; none reads executive/major-shareholder open-market trades)",
+  "phaseC38": "absent",
+  "regionalModel31": "absent",
+  "productionFactorWeights": "absent",
+  "issue310NineSessionAdvantage": "unrelated: no earnings figure, no industry peer, no disclosure-timing gap is used",
+  "atlasCombinationRelabel": "no Atlas variable is combined; the state is computed from filings alone"
+ },
+ "economicMechanism": "Executives and major shareholders trade with private information about long-horizon firm value. Open-market purchases are discretionary and costly (they are also disclosed, so they carry signalling cost), unlike grants, option exercises, inheritance or gifts, which are excluded. Reported purchases are a slow-moving, sparsely covered disclosure in a large-cap universe dominated by owner-managers, so if the market under-reacts the drift should accumulate over 6-12 months rather than days. This is a candidate mechanism, not a finding: published evidence is concentrated in US small caps and may be weaker in a top-120 universe.",
+ "information": {
+  "source": "DART list.json (pblntf_ty=D, report_nm contains '임원ㆍ주요주주특정증권등소유상황보고서', originals only; amendments recorded but excluded) + document.xml original filing",
+  "fields": "per detail row: RPT_RSN label (+raw code), MDF_DM date, STR_KND label, MDF_STK_CNT signed shares, ACI_AMT2 price",
+  "openMarket": "reason label exactly '장내매수(+)' (buy) or '장내매도(-)' (sell) AND security label exactly '보통주'; every other row is recorded and never counted",
+  "pointInTime": "usable at the close of the first KRX session strictly after the DART receipt date",
+  "structuredEndpointNote": "elestock.json is NOT used: measured 2026-11-03 it serves only ~2 years (Samsung Electronics: 3,368 rows, 2024-11-11..2026-11-03)"
+ },
+ "universe": "PIT KRX Top-120 common shares on each anchor (the repository's ledger/universe/kr snapshots); preferred shares excluded",
+ "anchors": "the 155 21-session anchors of the replay calendar (signal dates 2013-01-04 .. 2026-08-07), the same schedule as the saved C2 path",
+ "state": {
+  "definition": "net open-market common shares across all reporting insiders of the issuer, over original filings AVAILABLE in the 63 KRX sessions ending on the anchor",
+  "classes": [
+   "NET_BUYER (>0)",
+   "NET_SELLER (<0)",
+   "NO_OPEN_MARKET_TRADE (0)"
+  ],
+  "priceFree": true
+ },
+ "labels": {
+  "horizons": [
+   "H126",
+   "H252"
+  ],
+  "basis": "shareholder total return from the next KRX session close after the anchor, per the existing KR label engine and the alpha-opportunity-model-v4 label-eligibility contract (a name whose dividend/terminal basis is unresolved is label-INELIGIBLE and leaves BOTH baskets' denominators)",
+  "benchmark": "069500.KS Phase C reconciled gross total return (economic comparison only)"
+ },
+ "primaryStatistic": {
+  "perAnchor": "S_t = equal-weight mean label of NET_BUYER minus equal-weight mean label of NO_OPEN_MARKET_TRADE, eligible names only; anchors with < 5 buyers or < 20 controls give no S_t (counted)",
+  "aggregate": "mean of S_t over anchors with a value",
+  "inference": "Bartlett Newey-West over anchors, lag 5 (H126) and 11 (H252); two-sided 97.5% interval per horizon (Bonferroni over the two primary claims)",
+  "independence": "about 25 non-overlapping H126 and 12 non-overlapping H252 windows; overlapping anchors are not independent trials"
+ },
+ "economics": {
+  "portfolio": "long-only equal-weight NET_BUYER basket rebalanced every anchor, held to the next anchor (21 sessions), compounded; compared with 069500.KS",
+  "costs": "weekly_decision.trade_cost_fraction('KR', date, side, is_benchmark=False) at 1x, 2x, 3x on one-way turnover",
+  "reported": "CAGR, H126/H252 window distributions, MDD (block-end), one-way turnover (names replaced vs retargeted), cost drag, arithmetic vs Jensen split",
+  "noShorting": true
+ },
+ "powerAndEffectSize": {
+  "rule": "MDE = (z_0.9875 + z_0.80) * sigma_S / sqrt(N_eff) = 3.08 * sigma_S / sqrt(N_eff); with N_eff ~ 25 (H126) the detectable mean spread is ~0.62 sigma_S, with N_eff ~ 12 (H252) ~0.89 sigma_S",
+  "sigmaSource": "sigma_S is the time-series SD of S_t and is NOT estimated here (that would read outcomes); a result whose interval is wider than the economically relevant spread (3pp per H126) is reported as UNDERPOWERED_NOT_NEGATIVE",
+  "densityGate": "before any label: at least 60% of anchors must have >= 5 NET_BUYER and >= 20 NO_OPEN_MARKET_TRADE names, from filings alone"
+ },
+ "decisionRule": {
+  "SOURCE_BLOCKED": "parse failure on > 5% of original insider filings in the collection, or receipt-date coverage gaps in any calendar year",
+  "POWER_BLOCKED": "density gate fails (measured before any label)",
+  "INSIDER_SPREAD_SUPPORTED": "both a 97.5% lower bound > 0 for the H126 spread AND the long-only basket's net excess over 069500.KS > 0 at 2x cost; H252 reported with its own interval",
+  "NO_EVIDENCE": "H126 interval contains zero (H252 cannot rescue it)",
+  "NEGATIVE": "H126 upper bound < 0",
+  "UNDERPOWERED_NOT_NEGATIVE": "interval contains zero and is wider than +/-3pp"
+ },
+ "noRescue": "No change after outcomes to the 63-session window, the >0 threshold, the reason labels, the universe, the anchors, the horizons, the cost model, the baskets' minimum sizes or the period. A failed result is reported and the study closes; a different definition is a new registration.",
+ "evidenceClassIfExecuted": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_PRICES_WITH_NEVER_TESTED_INFORMATION; a supported result requires prospective receipts before any production use",
+ "productionImpact": "none; the KR default stays 069500.KS 100% and 0-5 names are shown only with an admitted validated signal",
+ "parser": {
+  "module": "research/alpha_evidence_sprint_v2/kr_insider.py",
+  "revision": "v2",
+  "revisionHistory": [
+   {
+    "version": "v1",
+    "defect": "price cells parsed with the strict integer rule rejected 2 of 42 sampled originals ('109374.16()', '139600(원)')",
+    "measuredOn": "42 originals, evidence/kr-insider-structured-parse-v1.json"
+   },
+   {
+    "version": "v2",
+    "change": "price cells read as a leading number or None; share counts stay strict",
+    "result": "42/42 parsed, evidence/kr-insider-structured-parse-v2.json"
+   }
+  ],
+  "revisionMadeBeforeAnyOutcome": true,
+  "frozenAfterRegistration": "any later parser change is a new registration"
+ },
+ "sourceEvidence": {
+  "density": "evidence/kr-insider-density-probe.json.gz (24 issuers x 2013-2026, 5,258 insider filings, 0 call errors)",
+  "parse": "evidence/kr-insider-structured-parse-v2.json",
+  "usAlternative": "evidence/us-insider-probe.json"
+ }
+}
