@@ -56,6 +56,22 @@ test('presentation and read-only audit do not alter scientific or publication co
   const safety=JSON.parse(fs.readFileSync(path.join(__dirname,'../docs/weekly-session-integrity-v1-pins.json')));
   assert.deepEqual(Object.keys(safety.files).sort(),['pipeline/weekly_decision.py','pipeline/weekly_publish.py']);
   for(const file of ['pipeline/current_champion_decisions.py','pipeline/kelly_portfolio.py','pipeline/weekly_decision.py','pipeline/weekly_publish.py','config.json','.github/workflows/tests.yml','.github/workflows/pages.yml','.github/workflows/ledger.yml']) {
+    if(file==='.github/workflows/pages.yml') {
+      const root=path.join(__dirname,'..');
+      const raw=fs.readFileSync(path.join(root,'docs/operations/pages-yml-maintenance-1.json'));
+      const rec=JSON.parse(raw),hash=b=>createHash('sha256').update(b).digest('hex');
+      assert.equal(hash(raw),fs.readFileSync(path.join(root,'docs/operations/pages-yml-maintenance-1.sha256'),'utf8').trim());
+      assert.equal(rec.schema,'PAGES_WORKFLOW_OPERATIONAL_MAINTENANCE_V1');
+      assert.equal(rec.scope,'PRODUCTION_STATE_PUBLICATION_ONLY');
+      assert.equal(rec.formalExecutionAuthorized,false);
+      assert.equal(rec.originalPagesSha256,hash(execFileSync('git',['show',`${A.SOURCE_COMMIT}:${file}`])));
+      const current=fs.readFileSync(path.join(root,file));
+      assert.equal(hash(current),rec.replacementPagesSha256);
+      const boundary=Buffer.from('  build-and-deploy:\n');
+      assert.equal(current.indexOf(boundary),rec.sealedResearchPrefixBytes);
+      assert.equal(hash(current.subarray(0,rec.sealedResearchPrefixBytes)),rec.sealedResearchPrefixSha256);
+      continue;
+    }
     if(safety.files[file]) {
       assert.equal(createHash('sha256').update(fs.readFileSync(path.join(__dirname,'..',file))).digest('hex'),safety.files[file]);
       continue;

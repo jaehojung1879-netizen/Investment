@@ -12,6 +12,8 @@ import hashlib
 import json
 from pathlib import Path
 
+import pytest
+
 from pipeline import kr_alpha_atlas_reproducibility as V4
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -46,3 +48,29 @@ def test_build_and_deploy_is_the_last_job_so_the_prefix_covers_every_research_jo
         assert job in text.split("  build-and-deploy:\n", 1)[0] and job not in tail
     # no further top-level job after build-and-deploy (a two-space key ending in ':' on its own line)
     assert not [line for line in tail.splitlines() if line.startswith("  ") and not line.startswith("   ") and line.endswith(":")]
+
+# Hard pin the reviewed maintenance record, in addition to its sidecar.
+MAINTENANCE_RECORD_SHA256 = "436ce3361d1183fe11db0c931de0cf688dfdd021ac70c7173b8b35a939e25ddf"
+
+
+def test_versioned_record_matches_the_exact_scoped_maintenance():
+    raw = (ROOT / V4.MAINTENANCE_RECORD).read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == MAINTENANCE_RECORD_SHA256
+    assert V4.pages_maintenance_admitted(ROOT)
+
+
+@pytest.mark.parametrize("target", [
+    V4.MAINTENANCE_RECORD, V4.MAINTENANCE_SIDECAR,
+    V4.PAGES_WORKFLOW, V4.VERIFIER_MODULE, V4.ADDENDUM
+])
+def test_maintenance_fails_closed_if_bytes_change(tmp_path, target):
+    paths = (V4.MAINTENANCE_RECORD, V4.MAINTENANCE_SIDECAR,
+             V4.PAGES_WORKFLOW, V4.VERIFIER_MODULE, V4.ADDENDUM, V4.SIDECAR)
+    for rel in paths:
+        dest = tmp_path / rel
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_bytes((ROOT / rel).read_bytes())
+    damaged = tmp_path / target
+    damaged.write_bytes(damaged.read_bytes() + b"\n# corrupted\n")
+    with pytest.raises((ValueError, json.JSONDecodeError)):
+        V4.pages_maintenance_admitted(tmp_path)

@@ -9,6 +9,7 @@ import subprocess
 import pytest
 
 from pipeline import experiment_workbench as W
+from pipeline import kr_alpha_atlas_reproducibility as ATLAS
 from scripts import rp1_us_universe as U
 from scripts import rp1_inspect_us_universe as S
 
@@ -268,6 +269,21 @@ def test_committed_measurement_historical_code_and_equivalent_relocated_reader()
 def test_sealed_directories_c1_files_and_workflow_census_unchanged():
     fixed = spec()
     for directory, expected in fixed["protectedTreeSha256"].items():
-        assert U.RAF.digest_tree(ROOT / directory) == expected
+        if directory == ".github/workflows" and U.RAF.digest_tree(ROOT / directory) != expected:
+            assert ATLAS.pages_maintenance_admitted(ROOT)
+            record = json.loads((ROOT / ATLAS.MAINTENANCE_RECORD).read_text())
+            historical = subprocess.check_output(
+                ["git", "show", record["referenceMain"] + ":" + ATLAS.PAGES_WORKFLOW], cwd=ROOT)
+            assert hashlib.sha256(historical).hexdigest() == record["originalPagesSha256"]
+            digest = hashlib.sha256()
+            for path in sorted((ROOT / directory).rglob("*")):
+                if path.is_file():
+                    name = str(path.relative_to(ROOT / directory))
+                    digest.update(name.encode())
+                    payload = historical if name == "pages.yml" else path.read_bytes()
+                    digest.update(hashlib.sha256(payload).digest())
+            assert digest.hexdigest() == expected
+        else:
+            assert U.RAF.digest_tree(ROOT / directory) == expected
     for name, expected in fixed["protectedC1FileSha256"].items():
         assert hashlib.sha256((ROOT / name).read_bytes()).hexdigest() == expected
