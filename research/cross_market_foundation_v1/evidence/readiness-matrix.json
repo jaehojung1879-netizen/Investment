@@ -1,0 +1,384 @@
+{
+  "schema": "CROSS_MARKET_EMPIRICAL_READINESS_V1",
+  "sourceBaseCommit": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+  "historicalOutcomeExecuted": false,
+  "executionAuthorized": false,
+  "statusMeaning": {
+    "READY": "명시한 연구 범위의 실제 원천 계약 충족; Owner 연구 실행 승인은 별도",
+    "PARTIAL": "한정된 소스/metadata/context 작업 가능, 전체 경제성 실증 적격 아님",
+    "SOURCE_BLOCKED": "필요한 실제 원천/신원/PIT/총수익 계약 미충족",
+    "RIGHTS_BLOCKED": "이용·보관 권한 근거 미충족",
+    "UNDERPOWERED": "등록한 표본/검정력 기준 미달; 아직 평가하지 않았으면 이 판정으로 단정하지 않음"
+  },
+  "cells": [
+    {
+      "region": "KR",
+      "layer": "Market",
+      "status": "PARTIAL",
+      "scope": "기존 시장 context 및 소스/노출 입력 검증 가능. 새로운 ETF 대비 경제성 outcome은 불가.",
+      "availableWithoutOutcome": [
+        "기존 kr_market_context/ecos_macro 재사용",
+        "금리 quote와 실제 투자수익 구분 어댑터",
+        "고정 source-pin 검증"
+      ],
+      "newOutcomeRunnable": false,
+      "blockers": [
+        {
+          "code": "INVESTABLE_KRW_CASH_PATH_MISSING",
+          "priority": "P0",
+          "evidence": [
+            "evidence/economic-source-audit.json"
+          ],
+          "recoveryCondition": "투자자·상품·수수료·세금·공개 시점과 전체 필요기간이 일치하는 실제 현금 payoff/NAV 입력 확보. KOFR/CD91/BOK 인용금리로 대체하지 않음."
+        },
+        {
+          "code": "HISTORICAL_RELEASE_VINTAGES_UNVERIFIED",
+          "priority": "P1",
+          "evidence": [
+            "evidence/source-pins.json"
+          ],
+          "recoveryCondition": "각 원천의 원본 공개 버전/시각과 수정 이력을 보존한 후 기존 PIT 게이트로 심사. 현재 값과 고정 lag만으로 승격하지 않음."
+        },
+        {
+          "code": "EXACT_STUDY_EXECUTION_NOT_AUTHORIZED",
+          "priority": "P1",
+          "evidence": [
+            "evidence/source-pins.json"
+          ],
+          "recoveryCondition": "원천 적격성 및 독립 감사 후 해당 연구에 대한 별도 정확한 코드/입력/사전등록 해시 Owner 승인. 기존 역사 종료/실행 잠금은 그대로 보존."
+        }
+      ]
+    },
+    {
+      "region": "US",
+      "layer": "Market",
+      "status": "PARTIAL",
+      "scope": "보존된 SPY/QQQ 및 replay 입력의 실제 바이트 검증 가능. 기존 봉인 연구 재실행 불가.",
+      "availableWithoutOutcome": [
+        "567 가격/benchmark/actions 객체 검증",
+        "USD 원통화와 KRW/FX 포함 경로 분리"
+      ],
+      "newOutcomeRunnable": false,
+      "blockers": [
+        {
+          "code": "US_BENCHMARK_RIGHTS_AND_RETURN_BASIS_REVIEW",
+          "priority": "P0",
+          "evidence": [
+            "evidence/us-source-inventory.json",
+            "evidence/us-departed-212.json"
+          ],
+          "recoveryCondition": "원 SPY/QQQ 입력의 재사용 범위·배당/분할·세금/통화 기준을 공통 투자자 계약으로 확인."
+        },
+        {
+          "code": "HISTORICAL_RELEASE_VINTAGES_UNVERIFIED",
+          "priority": "P1",
+          "evidence": [
+            "evidence/source-pins.json"
+          ],
+          "recoveryCondition": "각 원천의 원본 공개 버전/시각과 수정 이력을 보존한 후 기존 PIT 게이트로 심사. 현재 값과 고정 lag만으로 승격하지 않음."
+        },
+        {
+          "code": "EXACT_STUDY_EXECUTION_NOT_AUTHORIZED",
+          "priority": "P1",
+          "evidence": [
+            "evidence/source-pins.json"
+          ],
+          "recoveryCondition": "원천 적격성 및 독립 감사 후 해당 연구에 대한 별도 정확한 코드/입력/사전등록 해시 Owner 승인. 기존 역사 종료/실행 잠금은 그대로 보존."
+        }
+      ]
+    },
+    {
+      "region": "KR",
+      "layer": "Industry",
+      "status": "SOURCE_BLOCKED",
+      "scope": "전체 역사 산업 선정은 차단. 공지 공개 이후 last-public 분류 진술만 입력화했으며 PIT_EXACT 적격률로 주장하지 않음.",
+      "availableWithoutOutcome": [
+        "KIND 원문·목록·viewer 80공지/62증권 결속",
+        "공개일 및 효력일 이후 strict 분류 입력",
+        "as-of 산업 구성/투자가능성/집중도·최대구성원 제거 합성 검증"
+      ],
+      "newOutcomeRunnable": false,
+      "blockers": [
+        {
+          "code": "KR_STRICT_CLASSIFICATION_COVERAGE_INSUFFICIENT",
+          "priority": "P0",
+          "evidence": [
+            "evidence/industry-source-audit.json"
+          ],
+          "recoveryCondition": "last-public 관측 투영은 10,093/73,200(13.788%)이며 PIT_EXACT 적격률이 아님. 당시 분류의 완전한 변경 이력·유효기간·분류판·상장/종료·투자 가능성 근거를 확보."
+        },
+        {
+          "code": "KR_TERMINAL_22_CLASSIFICATION_UNRESOLVED",
+          "priority": "P0",
+          "evidence": [
+            "evidence/industry-source-audit.json"
+          ],
+          "recoveryCondition": "종료22 원천/식별/승인된 admission을 별도로 충족. #290 후보4/22와 검증1/22는 최종 적격0/22를 바꾸지 않음."
+        },
+        {
+          "code": "KR_MINIMUM_GROUP_SUPPORT_INSUFFICIENT",
+          "priority": "P1",
+          "evidence": [
+            "evidence/industry-source-audit.json"
+          ],
+          "recoveryCondition": "최소 구성원 수·분류 coverage·PIT·독립 유효 표본을 기존 기준으로 모두 검증. 미달 기준 완화 금지."
+        },
+        {
+          "code": "COMMON_SHAREHOLDER_TOTAL_RETURN_INCOMPLETE",
+          "priority": "P0",
+          "evidence": [
+            "evidence/economic-source-audit.json"
+          ],
+          "recoveryCondition": "주식/ETF 가격 기준·배당락/지급일·권리·종결대가·투자자 세금·재투자 규칙을 원본 근거로 맞춤. 부분 보유기간과 전체 역사 적격성 구분."
+        },
+        {
+          "code": "EXACT_STUDY_EXECUTION_NOT_AUTHORIZED",
+          "priority": "P1",
+          "evidence": [
+            "evidence/source-pins.json"
+          ],
+          "recoveryCondition": "원천 적격성 및 독립 감사 후 해당 연구에 대한 별도 정확한 코드/입력/사전등록 해시 Owner 승인. 기존 역사 종료/실행 잠금은 그대로 보존."
+        }
+      ]
+    },
+    {
+      "region": "US",
+      "layer": "Industry",
+      "status": "SOURCE_BLOCKED",
+      "scope": "한 건의 SEC historical issuer-SIC fact는 확보. 전체 시점별 증권 산업 패널은 미확보.",
+      "availableWithoutOutcome": [
+        "SEC 원본 952바이트 parser",
+        "CIK/SIC/acceptance-time/filing-date 보존",
+        "현재 SIC/GICS 소급 및 issuer→share-class 자동승격 거부"
+      ],
+      "newOutcomeRunnable": false,
+      "blockers": [
+        {
+          "code": "US_HISTORICAL_SIC_PANEL_AND_SECURITY_LINK_MISSING",
+          "priority": "P0",
+          "evidence": [
+            "evidence/industry-source-audit.json",
+            "evidence/us-source-inventory.json",
+            "evidence/us-departed-212.json"
+          ],
+          "recoveryCondition": "원본 filing별 SIC와 공개 시점, 유효한 CIK→증권→share-class 기간을 확보. SIC/GICS 분류 체계 구분 및 코드북·권리 확인."
+        },
+        {
+          "code": "US_SINGLE_HEADER_NOT_EMPIRICAL_SUPPORT",
+          "priority": "P1",
+          "evidence": [
+            "evidence/industry-source-audit.json"
+          ],
+          "recoveryCondition": "하나의 접근성 표본을 넘어 같은 universe/calendar에 충분한 분류 구성과 관측 유효성을 확인. 현재 통계 power는 측정하지 않음."
+        },
+        {
+          "code": "COMMON_SHAREHOLDER_TOTAL_RETURN_INCOMPLETE",
+          "priority": "P0",
+          "evidence": [
+            "evidence/economic-source-audit.json"
+          ],
+          "recoveryCondition": "주식/ETF 가격 기준·배당락/지급일·권리·종결대가·투자자 세금·재투자 규칙을 원본 근거로 맞춤. 부분 보유기간과 전체 역사 적격성 구분."
+        },
+        {
+          "code": "EXACT_STUDY_EXECUTION_NOT_AUTHORIZED",
+          "priority": "P1",
+          "evidence": [
+            "evidence/source-pins.json"
+          ],
+          "recoveryCondition": "원천 적격성 및 독립 감사 후 해당 연구에 대한 별도 정확한 코드/입력/사전등록 해시 Owner 승인. 기존 역사 종료/실행 잠금은 그대로 보존."
+        }
+      ]
+    },
+    {
+      "region": "KR",
+      "layer": "Stock",
+      "status": "PARTIAL",
+      "scope": "기존 회계/PIT 입력과 사전 소스 검증 재사용 가능. 새 6~12개월 투자 우위 실증은 차단.",
+      "availableWithoutOutcome": [
+        "기존 repaired-accounting 및 source gate 재사용",
+        "배당/종결/조정주가 중복 처리 방지",
+        "기존 역사 종료 유지 및 전향 입력 계약 준비"
+      ],
+      "newOutcomeRunnable": false,
+      "blockers": [
+        {
+          "code": "COMMON_SHAREHOLDER_TOTAL_RETURN_INCOMPLETE",
+          "priority": "P0",
+          "evidence": [
+            "evidence/economic-source-audit.json"
+          ],
+          "recoveryCondition": "주식/ETF 가격 기준·배당락/지급일·권리·종결대가·투자자 세금·재투자 규칙을 원본 근거로 맞춤. 부분 보유기간과 전체 역사 적격성 구분."
+        },
+        {
+          "code": "HISTORICAL_RELEASE_VINTAGES_UNVERIFIED",
+          "priority": "P1",
+          "evidence": [
+            "evidence/source-pins.json"
+          ],
+          "recoveryCondition": "각 원천의 원본 공개 버전/시각과 수정 이력을 보존한 후 기존 PIT 게이트로 심사. 현재 값과 고정 lag만으로 승격하지 않음."
+        },
+        {
+          "code": "KR_HISTORICAL_RESEARCH_CLOSURES_RETAINED",
+          "priority": "P1",
+          "evidence": [
+            "evidence/source-pins.json"
+          ],
+          "recoveryCondition": "원 연구의 실패/종료/봉인 결과를 변경하지 않음. 새로운 원천으로 기존 역사 실험을 자동 재개하지 않음."
+        },
+        {
+          "code": "EXACT_STUDY_EXECUTION_NOT_AUTHORIZED",
+          "priority": "P1",
+          "evidence": [
+            "evidence/source-pins.json"
+          ],
+          "recoveryCondition": "원천 적격성 및 독립 감사 후 해당 연구에 대한 별도 정확한 코드/입력/사전등록 해시 Owner 승인. 기존 역사 종료/실행 잠금은 그대로 보존."
+        }
+      ]
+    },
+    {
+      "region": "US",
+      "layer": "Stock",
+      "status": "SOURCE_BLOCKED",
+      "scope": "212 audit identifier 전체 적격 가격 경로 미확보. 회계 filing metadata 투영은 입력 검증용만 가능.",
+      "availableWithoutOutcome": [
+        "212개 종목별 identity/price/actions/terminal/rights 다중 gate 표",
+        "17 fundamental shard의 실제 Git 원천 결속",
+        "metadata-only PIT/CIK 및 통화 입력 builder"
+      ],
+      "newOutcomeRunnable": false,
+      "blockers": [
+        {
+          "code": "US_212_DEPARTED_PRICE_PATHS_NOT_ADMITTED",
+          "priority": "P0",
+          "evidence": [
+            "evidence/us-source-inventory.json",
+            "evidence/us-departed-212.json"
+          ],
+          "recoveryCondition": "보존되지 않은 candidate raw/panel을 원 해시와 합법적인 재사용 근거로 확보하고 증권·share-class·조정/권리·종결 근거까지 심사. 생존종목 대체/0/마지막가격 대체 금지."
+        },
+        {
+          "code": "FINNHUB_REUSE_RETENTION_GRANT_UNPROVEN",
+          "priority": "P0",
+          "evidence": [
+            "evidence/us-source-inventory.json",
+            "evidence/us-departed-212.json"
+          ],
+          "recoveryCondition": "기존 계정/수집 시점의 연구 재사용·보관 허용 근거와 원본 filing 대조를 확인. Git 객체 존재와 이용권을 분리."
+        },
+        {
+          "code": "EXACT_STUDY_EXECUTION_NOT_AUTHORIZED",
+          "priority": "P1",
+          "evidence": [
+            "evidence/source-pins.json"
+          ],
+          "recoveryCondition": "원천 적격성 및 독립 감사 후 해당 연구에 대한 별도 정확한 코드/입력/사전등록 해시 Owner 승인. 기존 역사 종료/실행 잠금은 그대로 보존."
+        }
+      ]
+    },
+    {
+      "region": "KR",
+      "layer": "Portfolio",
+      "status": "SOURCE_BLOCKED",
+      "scope": "P0~P5 공통 계약·합성 계산 완성 범위. 실제 역사 대조/Portfolio D 운영 연결은 실행하지 않음.",
+      "availableWithoutOutcome": [
+        "공통 입력·signal/available/calendar·cost/risk·ETF 계약",
+        "산업/종목 이중 집계 방지",
+        "H126/H252 관측 미완료 판정과 read-only receipt adapter"
+      ],
+      "newOutcomeRunnable": false,
+      "blockers": [
+        {
+          "code": "INVESTABLE_KRW_CASH_PATH_MISSING",
+          "priority": "P0",
+          "evidence": [
+            "evidence/economic-source-audit.json"
+          ],
+          "recoveryCondition": "투자자·상품·수수료·세금·공개 시점과 전체 필요기간이 일치하는 실제 현금 payoff/NAV 입력 확보. KOFR/CD91/BOK 인용금리로 대체하지 않음."
+        },
+        {
+          "code": "COMMON_SHAREHOLDER_TOTAL_RETURN_INCOMPLETE",
+          "priority": "P0",
+          "evidence": [
+            "evidence/economic-source-audit.json"
+          ],
+          "recoveryCondition": "주식/ETF 가격 기준·배당락/지급일·권리·종결대가·투자자 세금·재투자 규칙을 원본 근거로 맞춤. 부분 보유기간과 전체 역사 적격성 구분."
+        },
+        {
+          "code": "DATED_ETF_INDUSTRY_HISTORY_AND_EXECUTION_MISSING",
+          "priority": "P0",
+          "evidence": [
+            "evidence/economic-source-audit.json",
+            "evidence/industry-source-audit.json"
+          ],
+          "recoveryCondition": "P4 산업 중립/기여 분석에는 공식 시점별 ETF 구성·산업 비중이 필요. 보존된 index/factsheet/NAV 존재를 전체 실행 holdings/P&L로 대체하지 않음."
+        },
+        {
+          "code": "FORWARD_LEDGER_NOT_ACTIVE_AND_MATURE",
+          "priority": "P1",
+          "evidence": [
+            "evidence/repository-snapshot.json"
+          ],
+          "recoveryCondition": "별도 운영 소유자가 #306/#314 등을 검토·병합·활성화하고 실제 미래 첫 receipt부터 비용/수익/지역 ETF를 같은 시작일로 누적. H126/H252 실제 만기 전 성과 주장 금지."
+        },
+        {
+          "code": "EXACT_STUDY_EXECUTION_NOT_AUTHORIZED",
+          "priority": "P1",
+          "evidence": [
+            "evidence/source-pins.json"
+          ],
+          "recoveryCondition": "원천 적격성 및 독립 감사 후 해당 연구에 대한 별도 정확한 코드/입력/사전등록 해시 Owner 승인. 기존 역사 종료/실행 잠금은 그대로 보존."
+        }
+      ]
+    },
+    {
+      "region": "US",
+      "layer": "Portfolio",
+      "status": "SOURCE_BLOCKED",
+      "scope": "SPY/USD 공통 기준과 전향 receipt의 read-only 인터페이스 준비. 새 실제 비교는 차단.",
+      "availableWithoutOutcome": [
+        "SPY primary/QQQ 보조 구분",
+        "경로별 누락 제거·서로 다른 시작일·FX 혼용 거부",
+        "공통 요율로 매수 funding/만기 매도비용 계산하는 합성 검증"
+      ],
+      "newOutcomeRunnable": false,
+      "blockers": [
+        {
+          "code": "US_COMMON_STOCK_ETF_TR_IDENTITY_AND_COSTS",
+          "priority": "P0",
+          "evidence": [
+            "evidence/us-source-inventory.json",
+            "evidence/us-departed-212.json",
+            "evidence/economic-source-audit.json"
+          ],
+          "recoveryCondition": "주식과 SPY를 동일 USD·배당/권리/종결·기간·비용으로 적격화. 기존 KRW/FX 포함 NAV를 USD 수익으로 재표기하지 않음."
+        },
+        {
+          "code": "FORWARD_HORIZON_NOT_OBSERVED",
+          "priority": "P1",
+          "evidence": [
+            "evidence/repository-snapshot.json"
+          ],
+          "recoveryCondition": "실제 전향 기록 활성화 후 지역 거래일 126/252 경과·관측 가용성을 확인. 합성/과거/데모 결과로 대체하지 않음."
+        },
+        {
+          "code": "EXACT_STUDY_EXECUTION_NOT_AUTHORIZED",
+          "priority": "P1",
+          "evidence": [
+            "evidence/source-pins.json"
+          ],
+          "recoveryCondition": "원천 적격성 및 독립 감사 후 해당 연구에 대한 별도 정확한 코드/입력/사전등록 해시 Owner 승인. 기존 역사 종료/실행 잠금은 그대로 보존."
+        }
+      ]
+    }
+  ],
+  "additionalUSTracks": "evidence/us-readiness.json",
+  "implementationReadyDoesNotMeanEmpiricalReady": true,
+  "orderedPriorities": [
+    "US_212_DEPARTED_PRICE_PATHS_NOT_ADMITTED",
+    "INVESTABLE_KRW_CASH_PATH_MISSING",
+    "COMMON_SHAREHOLDER_TOTAL_RETURN_INCOMPLETE",
+    "KR_STRICT_CLASSIFICATION_COVERAGE_INSUFFICIENT",
+    "US_HISTORICAL_SIC_PANEL_AND_SECURITY_LINK_MISSING",
+    "DATED_ETF_INDUSTRY_HISTORY_AND_EXECUTION_MISSING"
+  ]
+}

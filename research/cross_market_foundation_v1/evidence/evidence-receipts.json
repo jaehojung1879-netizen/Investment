@@ -1,0 +1,136 @@
+{
+  "schema": "FOUNDATION_PACKET_RECEIPTS_V1",
+  "trustAnchor": "Review the exact Git commit and PR head. The manifest does not recursively hash itself.",
+  "files": [
+    {
+      "path": "REPORT-ko.md",
+      "bytes": 9184,
+      "sha256": "bb2b539d4551b05f6e2a75a9e973d1e73b90c7a7014dba3ea65c574e6988b3dd"
+    },
+    {
+      "path": "__init__.py",
+      "bytes": 226,
+      "sha256": "130f2542e7c5a8220c3ea9f69fa4be9a6cd5ec9dbddbe5a5e00a966b1ad84cbf"
+    },
+    {
+      "path": "audit.py",
+      "bytes": 5000,
+      "sha256": "b6ec3f4f99f05147dd4f91949d815b22522796c5675ab2c838c08d08447d3b5a"
+    },
+    {
+      "path": "comparison.py",
+      "bytes": 22706,
+      "sha256": "b2f4da4c3965891cb42d866ac00b7adb6651cd7cc967513db8e07afcc0204645"
+    },
+    {
+      "path": "economics.py",
+      "bytes": 14921,
+      "sha256": "e78090410469810f11c4fadf6247a3ef7baf2432b46785972b9cb6a295c5793f"
+    },
+    {
+      "path": "evidence/economic-source-audit.json",
+      "bytes": 19618,
+      "sha256": "a31ae8cd16284e4d16665a550c1c23e5b630da0e2837fbdc23fc477dcf25db5f"
+    },
+    {
+      "path": "evidence/industry-sec-aapl-2023-header.sgml",
+      "bytes": 952,
+      "sha256": "e4254ad253c7910000c0887662c49540cc78d7403df93e0fb3b968eefee7ed9a"
+    },
+    {
+      "path": "evidence/industry-sec-probe.json",
+      "bytes": 412,
+      "sha256": "d95a2398ab02a70c25fe7fa7d8c8060deb3127e26986245aed009e9e967c2601"
+    },
+    {
+      "path": "evidence/industry-source-audit.json",
+      "bytes": 42683,
+      "sha256": "b0fbd014dabfc08f2fb47e2d87bc831c5a8fa3bf578845a0f758ea81c3221048"
+    },
+    {
+      "path": "evidence/readiness-matrix.json",
+      "bytes": 17622,
+      "sha256": "0b16af868e89e64c2abd1bbce324bf0dda59e8e711c697445f2c3ed9e2ee8f67"
+    },
+    {
+      "path": "evidence/repository-snapshot.json",
+      "bytes": 9464,
+      "sha256": "e1bcac9fbce4c7fa1b0bd007fd4dd3628515fb6244231af8ca6f24e3fa240e67"
+    },
+    {
+      "path": "evidence/source-pins.json",
+      "bytes": 7365,
+      "sha256": "a740de66ace7cac3951fdc9e167723dd4f276c96f0d02295199c024e4b20aae7"
+    },
+    {
+      "path": "evidence/us-departed-212.json",
+      "bytes": 337940,
+      "sha256": "66575c0fd05b2d7779d7ade97f8093354cad1327944c8a65a9bbc751ca33bf1d"
+    },
+    {
+      "path": "evidence/us-filing-metadata-sample.json",
+      "bytes": 955,
+      "sha256": "af917240def2d0cd3becf2d3f636bdec9278111c1f0c3230bbbfc99b7e33c76f"
+    },
+    {
+      "path": "evidence/us-readiness.json",
+      "bytes": 2175,
+      "sha256": "a17f14c802e1562d510f5125939bceb2474e2f0efe3de249b48500a4e424e9cf"
+    },
+    {
+      "path": "evidence/us-source-inventory.json",
+      "bytes": 339286,
+      "sha256": "409cfc536a3b460120ba63b936e2405339fd0791b394e5d660971c7a6af1c534"
+    },
+    {
+      "path": "evidence/verification.json",
+      "bytes": 1886,
+      "sha256": "a4ea90b7146fc52814b48b403593f4e03f44232fe87f3e1fad3bd3262685a2b5"
+    },
+    {
+      "path": "industry.py",
+      "bytes": 23018,
+      "sha256": "1b8a6bc641c8d7456bb390899903f83716f4cbe69467ba86083f4ef88a3aef57"
+    },
+    {
+      "path": "provenance.py",
+      "bytes": 5170,
+      "sha256": "bcf9dcc45e178575f32d0301a1b50be2751db0ca9eb962139cd8d6b7a2852571"
+    },
+    {
+      "path": "reports/CLAUDE-HANDOFF-ko.md",
+      "bytes": 6549,
+      "sha256": "9d0efdf7d792fd1f93def61bc73559c2d63be8c829899d08fc8adf690cd792b7"
+    },
+    {
+      "path": "reports/COMPARISON-ko.md",
+      "bytes": 9827,
+      "sha256": "c5daf9c7bf47d40358bf16ad6921d156f53a7b0d19030c8bc2cbd3c5a7018fb4"
+    },
+    {
+      "path": "reports/ECONOMIC-SOURCES-ko.md",
+      "bytes": 11261,
+      "sha256": "6df5309c54df2f4155dac8486316680516da62e9ac2042ea3e52fdf32122a5f3"
+    },
+    {
+      "path": "reports/INDEPENDENT-AUDIT-ko.md",
+      "bytes": 5286,
+      "sha256": "1a049fe661fa428b0ccfb190466a10c5fc750ca96002123c3d9ea43456aaf10b"
+    },
+    {
+      "path": "reports/INDUSTRY-ko.md",
+      "bytes": 11639,
+      "sha256": "748dc1b449a37cff527a76d7a9d7e5b0fe17a90008b47bdfd12aa5262b632d90"
+    },
+    {
+      "path": "reports/US-SOURCES-ko.md",
+      "bytes": 11982,
+      "sha256": "8f0b66452339b6bd439a9843cbb88c0c04efca7133727763d14cb017a99346b5"
+    },
+    {
+      "path": "us_sources.py",
+      "bytes": 23791,
+      "sha256": "88a67eeb7745a33e43c3411316087d942083ffe56a6e30f7f872b891670e9fe7"
+    }
+  ]
+}

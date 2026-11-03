@@ -1,0 +1,895 @@
+{
+  "blockers": [
+    "KR_TERMINAL_22_CLASSIFICATION_UNRESOLVED",
+    "KR_CLASSIFICATION_COVERAGE_INSUFFICIENT",
+    "KR_MINIMUM_GROUP_SIZE_INSUFFICIENT",
+    "CLASSIFICATION_TAXONOMY_EDITION_UNVERIFIED",
+    "US_SECURITY_SHARE_CLASS_PIT_LINK_NOT_ADMITTED",
+    "US_HISTORICAL_SIC_PANEL_MISSING"
+  ],
+  "historicalOutcomeComputed": false,
+  "kindAdmission": {
+    "admittedPriorHistoryBeforeFirstNotice": false,
+    "currentAnchorsAdmitted": false,
+    "historicalOutcomeComputed": false,
+    "inputPath": "data/kr-industry-membership-foundation-v3/state/events.json.gz",
+    "inputSha256": "ab5f85e5130eb1eb95ce0756069ece78798c76acac115db1f51b903965fd0f64",
+    "notices": [
+      {
+        "document_sha256": "5913b5e05dc8cf74a9656fd7679f31b33b1ddec73b700f3425335261cf99dcf8",
+        "effective_date": "2013-01-28",
+        "listing_sha256": "e77934bae25b0791b4295c205b90b197f9807a5b262294c97bae104ad3c23044",
+        "notice_date": "2013-01-25",
+        "receipt_no": "20130125000094",
+        "ticker": "014820.KS",
+        "viewer_sha256": "88ab7b30f582c455f5ccdb77fda37016f940cd67de88541f1ea682320eb904b9"
+      },
+      {
+        "document_sha256": "913f94669ed42083c6e8308d24ad74f9b95c0eb82f7b4f55ceb2335b467b94bb",
+        "effective_date": "2013-11-14",
+        "listing_sha256": "20f496fa70a4112cf82f30f7b465da9254686a8bb6f662e90f5234a82e2bf9ec",
+        "notice_date": "2013-11-13",
+        "receipt_no": "20131113000100",
+        "ticker": "000240.KS",
+        "viewer_sha256": "2531839eef4f2737977a9e02e928df3eefb1f55637c699d17323db8b4a11eef5"
+      },
+      {
+        "document_sha256": "ea72d18c70b91aa61d9f545b598a8446e295bb85bf7d9296f52bbe2707fae2e2",
+        "effective_date": "2014-05-02",
+        "listing_sha256": "20f496fa70a4112cf82f30f7b465da9254686a8bb6f662e90f5234a82e2bf9ec",
+        "notice_date": "2014-04-28",
+        "receipt_no": "20140428000280",
+        "ticker": "006400.KS",
+        "viewer_sha256": "f8b2c2397c0215111a52a8fdb6d7b0dfc3e010512c7c340a1f52b663141c975c"
+      },
+      {
+        "document_sha256": "c69ba9935ccbad29faaf9ae68e8a0a84862c2e00e0625e152c43bbc3051c3fb6",
+        "effective_date": "2014-05-02",
+        "listing_sha256": "20f496fa70a4112cf82f30f7b465da9254686a8bb6f662e90f5234a82e2bf9ec",
+        "notice_date": "2014-04-30",
+        "receipt_no": "20140430000332",
+        "ticker": "012450.KS",
+        "viewer_sha256": "630b3548961bbfb269582ede7b0331adcc4f3260370a0b83eaa5baa9da5c2142"
+      },
+      {
+        "document_sha256": "6a0d8960f87467e907fe048772f02b868b41bf77ca408cecbca7c591818bf636",
+        "effective_date": "2014-11-05",
+        "listing_sha256": "826f305e81dc9fd8ea4e8de023f185811cec00feb701885780ad76917fb452a0",
+        "notice_date": "2014-11-04",
+        "receipt_no": "20141104000372",
+        "ticker": "060980.KS",
+        "viewer_sha256": "44572dc541fc3e063b2f3dc82f06ea07f29d7b7e4f23c6052f56f725eda22661"
+      },
+      {
+        "document_sha256": "537d49b029bfb69110d87c82642c23216f064376d812e050bd7577cadedec652",
+        "effective_date": "2015-05-04",
+        "listing_sha256": "6824ec0434a0a6ea38af52fd703ffaac84a60127ad26fe2626d96179f9dfe66d",
+        "notice_date": "2015-04-28",
+        "receipt_no": "20150428000576",
+        "ticker": "012750.KS",
+        "viewer_sha256": "c27da7daab41ddcff74b45b6ec32b79457d07540bab4870e3f39fc4e386c118f"
+      },
+      {
+        "document_sha256": "982daecc55a904f737b3768f4042cdfd75a48728aec46e885fc8da8e6ee2ae6a",
+        "effective_date": "2015-10-02",
+        "listing_sha256": "942d0c6283763a668a4becb6373c2453b9af66b19068e7a307e48392d24912d2",
+        "notice_date": "2015-09-25",
+        "receipt_no": "20150925000078",
+        "ticker": "028260.KS",
+        "viewer_sha256": "3c713b4e1d8d4afa726c7a3ff019336b7d1dc5376f9e33d7f58c52f889337317"
+      },
+      {
+        "document_sha256": "8fc8c80fe1e7cc6eaa67d4ed702585dfd7c21b84f3d09a9ca15c4879f1e08f66",
+        "effective_date": "2015-11-03",
+        "listing_sha256": "942d0c6283763a668a4becb6373c2453b9af66b19068e7a307e48392d24912d2",
+        "notice_date": "2015-11-02",
+        "receipt_no": "20151102000312",
+        "ticker": "034730.KS",
+        "viewer_sha256": "c941517ac9257a4201aafcdfc81fbb217b1375874dbf0a8ce5ace723099d9f32"
+      },
+      {
+        "document_sha256": "97c89af23ce944b49408eb81b75e08e9556048057e42aac0e0a0fa89b76d1553",
+        "effective_date": "2016-05-02",
+        "listing_sha256": "650f17318e159e842b709ef9b46af60a39fc608911c87a8da38560bf899f238a",
+        "notice_date": "2016-04-27",
+        "receipt_no": "20160427000233",
+        "ticker": "012450.KS",
+        "viewer_sha256": "e015e3adbf428276d78531ec93a3ab048c5a47c9777a55b0700c9d1d03bf5dda"
+      },
+      {
+        "document_sha256": "0ca6e2a58eb6c2d823efbd4348e653d4074a0d7e4c06a083c50fc2593e393d5c",
+        "effective_date": "2016-05-02",
+        "listing_sha256": "650f17318e159e842b709ef9b46af60a39fc608911c87a8da38560bf899f238a",
+        "notice_date": "2016-04-27",
+        "receipt_no": "20160427000295",
+        "ticker": "036570.KS",
+        "viewer_sha256": "97927ea1e8748120a4cd03be7eaca8e8dd1a282b06029a97ae83cd47fb5818b2"
+      },
+      {
+        "document_sha256": "a4a41c3b740f38c2b2ef0ec1754e7518be6a7ea1ac99baae8128dc24262c082c",
+        "effective_date": "2017-07-03",
+        "listing_sha256": "bb42b7033f658957110e4bc04ee157d3a4545a6a4d71b5f26cfc684d68fcd6dc",
+        "notice_date": "2017-06-30",
+        "receipt_no": "20170630000076",
+        "ticker": "180640.KS",
+        "viewer_sha256": "a0c4da4a0828ec7a73096d9f27526e2061d4c42ba9fa68a04b99429c1a71f573"
+      },
+      {
+        "document_sha256": "9314ee43da40819446c4fc741219000d1cfb5f61cdf70516578c3cc7439a1d2b",
+        "effective_date": "2017-07-03",
+        "listing_sha256": "ee7d170270aad138ef7761f903ec9a7ca8f3350659f387afeeb9bfddf17fa074",
+        "notice_date": "2017-06-30",
+        "receipt_no": "20170630000115",
+        "ticker": "001040.KS",
+        "viewer_sha256": "53188f2977c95ed23ce5cccdc585272bbcc5ed4623a28cb533297ba6a1175e9e"
+      },
+      {
+        "document_sha256": "8ea542b4890929e7eb1b641f75087d468861e49e2844891123042be7de246a3d",
+        "effective_date": "2017-07-03",
+        "listing_sha256": "9f3ddb84a2d9f98393e8a15f0406522ec8185179efce48f807946c4f48eed1ba",
+        "notice_date": "2017-06-30",
+        "receipt_no": "20170630000128",
+        "ticker": "078930.KS",
+        "viewer_sha256": "983a17bddc6be8ac4bfab19ada6f10bc95c5bd4b1c9caad3c2a6d23775a96c38"
+      },
+      {
+        "document_sha256": "c97e5d4a3621af252f47a5bae891d7e47c2873562fe58e1915e3c4b21bd541df",
+        "effective_date": "2017-07-03",
+        "listing_sha256": "9f3ddb84a2d9f98393e8a15f0406522ec8185179efce48f807946c4f48eed1ba",
+        "notice_date": "2017-06-30",
+        "receipt_no": "20170630000252",
+        "ticker": "241560.KS",
+        "viewer_sha256": "9045a88dbed03457bf6698d59f916ca88a58f5b5edec8085cb44c4aa1a4cbe5e"
+      },
+      {
+        "document_sha256": "8130d6b09e3bcb30bc2c48461fc47f17893c699a9bf8559e56d26afb2746fdba",
+        "effective_date": "2017-07-03",
+        "listing_sha256": "9f3ddb84a2d9f98393e8a15f0406522ec8185179efce48f807946c4f48eed1ba",
+        "notice_date": "2017-06-30",
+        "receipt_no": "20170630000262",
+        "ticker": "034730.KS",
+        "viewer_sha256": "889e74a57bf8fb7bbb398efcf6a89b1cd147951b0711d901bb84f700915c22c8"
+      },
+      {
+        "document_sha256": "cdfac2aeae4e2e2efc10ea5ba00ad91748d0ba19dfc8c18490b102dd69fa0145",
+        "effective_date": "2017-07-03",
+        "listing_sha256": "fb5a6bba5fc2913f5f8d8e0298eabd531bb0f3a133a2bc64039769dc62e41080",
+        "notice_date": "2017-06-30",
+        "receipt_no": "20170630000271",
+        "ticker": "003090.KS",
+        "viewer_sha256": "4687867a4192edb4c4c81d09646413e1aac14a6be88050aace3199e77ab4dec7"
+      },
+      {
+        "document_sha256": "46780b60fcf53d99c853a20aebeb134e3ad1312e1f0af787574a58aafac06949",
+        "effective_date": "2017-07-03",
+        "listing_sha256": "702819ab5ccbd65aee82ff33ede71da2884daeef978f49294ed4873bc1614888",
+        "notice_date": "2017-06-30",
+        "receipt_no": "20170630000311",
+        "ticker": "096770.KS",
+        "viewer_sha256": "c9f4cec6c619309fa8ea9110d6265f0818f582ea7253f779d67f9fa711a1a59f"
+      },
+      {
+        "document_sha256": "54a747c5a9f04547ac714f5d9a6ed9b40788739dc07c0bff361d1777cebd5515",
+        "effective_date": "2017-07-03",
+        "listing_sha256": "702819ab5ccbd65aee82ff33ede71da2884daeef978f49294ed4873bc1614888",
+        "notice_date": "2017-06-30",
+        "receipt_no": "20170630000313",
+        "ticker": "060980.KS",
+        "viewer_sha256": "0ff45e8b91c1e969b6602e1c67e20efa555a3c98ef51aee63628e40ab36ce900"
+      },
+      {
+        "document_sha256": "c1d4a886f8a1b445942d95155d3748feff8be7edf429f9a1ad06ddaecb85400a",
+        "effective_date": "2017-07-03",
+        "listing_sha256": "702819ab5ccbd65aee82ff33ede71da2884daeef978f49294ed4873bc1614888",
+        "notice_date": "2017-06-30",
+        "receipt_no": "20170630000315",
+        "ticker": "008930.KS",
+        "viewer_sha256": "0e90244da66beb0daaceddfccc4e0ef82174df2c32de4d8dd49f79c4d093b192"
+      },
+      {
+        "document_sha256": "b1084aead96a2c8386addb44373c6465d4b0a7168419385b0c1460b0a31d7925",
+        "effective_date": "2017-07-03",
+        "listing_sha256": "702819ab5ccbd65aee82ff33ede71da2884daeef978f49294ed4873bc1614888",
+        "notice_date": "2017-06-30",
+        "receipt_no": "20170630000316",
+        "ticker": "003550.KS",
+        "viewer_sha256": "8bd314dce7c1ae19215d39ed90bdfc9e75d8b49eb356a08415a95904c52f4c12"
+      },
+      {
+        "document_sha256": "d74ed95356a2bee9c11977c54eef24915b16bd6a176eb587b59add55dfd1233d",
+        "effective_date": "2017-07-03",
+        "listing_sha256": "702819ab5ccbd65aee82ff33ede71da2884daeef978f49294ed4873bc1614888",
+        "notice_date": "2017-06-30",
+        "receipt_no": "20170630000319",
+        "ticker": "006260.KS",
+        "viewer_sha256": "f772ae11ea44ea0c44adcea3df57fbe93b981e4ad57d6421700b8a922319b840"
+      },
+      {
+        "document_sha256": "4cbf46d77d8f76a88bb3f29b2e1ebcfeaff7a17ffa0fa9db3cfc38e3bf0e3e0c",
+        "effective_date": "2017-07-03",
+        "listing_sha256": "adef8ee50ed6dd9fa06c7c4ee799ce1d809df72c7c557100ed2f48e2661b419d",
+        "notice_date": "2017-06-30",
+        "receipt_no": "20170630000323",
+        "ticker": "002790.KS",
+        "viewer_sha256": "60141b783521ab52bcda38c1438c4fc09ebb3c73ae323a6049891051100b436a"
+      },
+      {
+        "document_sha256": "d0255d583ce73fedd76454b31b1bfdd9702df2dc12dcfd71f205e176875e1897",
+        "effective_date": "2017-07-03",
+        "listing_sha256": "adef8ee50ed6dd9fa06c7c4ee799ce1d809df72c7c557100ed2f48e2661b419d",
+        "notice_date": "2017-06-30",
+        "receipt_no": "20170630000324",
+        "ticker": "000240.KS",
+        "viewer_sha256": "62c94ec627f6062845c826f3e0bda801cf950594968a20011258c95f9017b1db"
+      },
+      {
+        "document_sha256": "9ded15b5010fab26296a966761ca257a2b19452d7c39c18c6617d804a9c3279c",
+        "effective_date": "2017-07-19",
+        "listing_sha256": "a724a521aa8217d6d76895e5536e944fa921e8e15dd22d2297d931f456ee9992",
+        "notice_date": "2017-07-14",
+        "receipt_no": "20170714000579",
+        "ticker": "267250.KS",
+        "viewer_sha256": "66306f665acc2955c2548c4dbe05336b00c838fb63b7f6b27815f8a5c00ebd95"
+      },
+      {
+        "document_sha256": "ab80457d2671cd0d287850abafbb648a464455ab7202e84246c77ef51d116e35",
+        "effective_date": "2018-02-12",
+        "listing_sha256": "d751f1396369b5dbba86aea1060d8e315882b1272dddeeb8e54b0e85fbac50a7",
+        "notice_date": "2018-02-07",
+        "receipt_no": "20180207000823",
+        "ticker": "001800.KS",
+        "viewer_sha256": "489eacd76c10abb949366e68152669550e4e6b39d67e6283dedf945981fa5253"
+      },
+      {
+        "document_sha256": "7e76368a418920cb4937b4bda0bef1132624d00aad850e98de6867b286efec49",
+        "effective_date": "2018-03-14",
+        "listing_sha256": "d751f1396369b5dbba86aea1060d8e315882b1272dddeeb8e54b0e85fbac50a7",
+        "notice_date": "2018-03-09",
+        "receipt_no": "20180309000895",
+        "ticker": "004990.KS",
+        "viewer_sha256": "7fba1b4332a63524e72ce4ae5e9cae019f62eb4ffc8c50515df53e56894db50d"
+      },
+      {
+        "document_sha256": "e80487ed9279d73250b4f53bd52ed852c8663aa418435d25042f3155ca8cc0ec",
+        "effective_date": "2018-04-13",
+        "listing_sha256": "d751f1396369b5dbba86aea1060d8e315882b1272dddeeb8e54b0e85fbac50a7",
+        "notice_date": "2018-04-10",
+        "receipt_no": "20180410000883",
+        "ticker": "006120.KS",
+        "viewer_sha256": "caa06ba76891d65ebd5ee2747630bc24f8eb489b128a603d03c7db226ba57865"
+      },
+      {
+        "document_sha256": "fecad3c81d571b09a92011529a999c2fa7602ce0dcea4c18100880938bc7cd17",
+        "effective_date": "2018-07-19",
+        "listing_sha256": "85c28855f1534a082d6e91a4b63aa9331912a90c18f744bde225407cc79515ec",
+        "notice_date": "2018-07-16",
+        "receipt_no": "20180716000424",
+        "ticker": "027410.KS",
+        "viewer_sha256": "0062e5415b5547dc1646c1703f65d3ad15166befc5ab39250b173550e7a94e75"
+      },
+      {
+        "document_sha256": "6e56674ece755173b028734a9c1cd0654b1e5d836a9eddde785f35600fda2ab8",
+        "effective_date": "2018-09-06",
+        "listing_sha256": "85c28855f1534a082d6e91a4b63aa9331912a90c18f744bde225407cc79515ec",
+        "notice_date": "2018-09-05",
+        "receipt_no": "20180905000403",
+        "ticker": "192400.KS",
+        "viewer_sha256": "d2df7ac4ec8e240b7c3c34ae526da2b9c56a402750827e3dfef7dc003f0bd535"
+      },
+      {
+        "document_sha256": "f5eb7b3d2a87a1f2483ea19dc0a9237abc89426f6421088d4e22c1026eb98475",
+        "effective_date": "2018-12-18",
+        "listing_sha256": "85c28855f1534a082d6e91a4b63aa9331912a90c18f744bde225407cc79515ec",
+        "notice_date": "2018-12-17",
+        "receipt_no": "20181217000601",
+        "ticker": "012630.KS",
+        "viewer_sha256": "a52b2faa5dec27b664117a98baa8013621811a4498359d60a73c39fa5fd41103"
+      },
+      {
+        "document_sha256": "c857a0c1ccee2d1f4a022d0775d9a2d9e517541a79b49ac0216faf0439225b5d",
+        "effective_date": "2019-04-23",
+        "listing_sha256": "70d23961bfcb08befc16ee6c61bd3ab189f74c976e7e02d917e011d8529c6ad7",
+        "notice_date": "2019-04-18",
+        "receipt_no": "20190418000278",
+        "ticker": "004800.KS",
+        "viewer_sha256": "1505a2f0da3abc1bc60e7d2e753cd836721d0aebbf3b350786e1f31ab774b9f4"
+      },
+      {
+        "document_sha256": "eee9f59f8a98797d038848f67c2678c440885aa70ef35f93f8b066054a97c0fd",
+        "effective_date": "2019-05-02",
+        "listing_sha256": "d7dd2c7a859a2cfd9c3e235008a5beb9a99cc4a9b7cae6e115f60e9bf4c9d9d7",
+        "notice_date": "2019-04-26",
+        "receipt_no": "20190426000290",
+        "ticker": "096770.KS",
+        "viewer_sha256": "81b05808230bdd2cd11db2e4f6c619dc6fc8a1b7bc05af66855c9539c257ed05"
+      },
+      {
+        "document_sha256": "3c56a8e5a39a9b42e7b21e822983655f670ac151f020b2829aa78192126f563a",
+        "effective_date": "2019-05-02",
+        "listing_sha256": "70d23961bfcb08befc16ee6c61bd3ab189f74c976e7e02d917e011d8529c6ad7",
+        "notice_date": "2019-04-26",
+        "receipt_no": "20190426000291",
+        "ticker": "002790.KS",
+        "viewer_sha256": "82ef7595609fa648d51c9e5eb8094cd4b3a2b48b14742948136d31a46af76365"
+      },
+      {
+        "document_sha256": "5789dc0eaf9feeb40c4ac66d5a079e1f6c9e8f7aabbdd512015f30162b7acd77",
+        "effective_date": "2019-05-02",
+        "listing_sha256": "d7dd2c7a859a2cfd9c3e235008a5beb9a99cc4a9b7cae6e115f60e9bf4c9d9d7",
+        "notice_date": "2019-04-26",
+        "receipt_no": "20190426000591",
+        "ticker": "180640.KS",
+        "viewer_sha256": "6ba5fcd0bf1e65ce81229fdd5247074bd04aece62a200f8218ea36482c816a85"
+      },
+      {
+        "document_sha256": "59919f95ab54b3853add0be6753a33a08f59a16f462ec8ff09db14e53f11b5c2",
+        "effective_date": "2019-05-02",
+        "listing_sha256": "9f0e3ff904fc3da61df63cc188a6b61e553e60bbf72caf5e4342fe97d89d1c6d",
+        "notice_date": "2019-04-26",
+        "receipt_no": "20190426000807",
+        "ticker": "267250.KS",
+        "viewer_sha256": "c8efc6ff410716d27877c7c42f12d7b8cf2090fea657ea2035fd94cf050ae6da"
+      },
+      {
+        "document_sha256": "c29d8dc3378dde35d7e604c9754dc74bd9154e2f464cc0bfd58e76f07d9fe0f3",
+        "effective_date": "2019-05-02",
+        "listing_sha256": "d7dd2c7a859a2cfd9c3e235008a5beb9a99cc4a9b7cae6e115f60e9bf4c9d9d7",
+        "notice_date": "2019-04-26",
+        "receipt_no": "20190426000829",
+        "ticker": "241560.KS",
+        "viewer_sha256": "335aa7b743ee81c71fe35a1d65403f42562323dabdd5957a61a1373e675b6d39"
+      },
+      {
+        "document_sha256": "3195e4ff9be66992c0581592e1b262dd913620e6a0b4e591a3ac544ab171c9fb",
+        "effective_date": "2020-05-04",
+        "listing_sha256": "669799e369774011b3b6cc2743caca5ec6ec39e1abd30c4ead08eeda88251ebe",
+        "notice_date": "2020-04-27",
+        "receipt_no": "20200427000716",
+        "ticker": "241560.KS",
+        "viewer_sha256": "80f70eb741abbacd2ef6de64b8df5e9188ae0407dc476edda6b0b1707e4d2181"
+      },
+      {
+        "document_sha256": "fec3dc876511608329ee9b905373e22f39e72c893c56fb03b9c76b8632013f2a",
+        "effective_date": "2020-05-04",
+        "listing_sha256": "669799e369774011b3b6cc2743caca5ec6ec39e1abd30c4ead08eeda88251ebe",
+        "notice_date": "2020-04-27",
+        "receipt_no": "20200427000717",
+        "ticker": "272210.KS",
+        "viewer_sha256": "a8438e8b6b066795d397c8a05da9418b9ca038e9f6a8c284166e03461b3c2d22"
+      },
+      {
+        "document_sha256": "8c07fe781ae6ad6925b968ccb65c9ec2269ca9f55ee8c60fd411f62f79acbd7a",
+        "effective_date": "2021-03-22",
+        "listing_sha256": "7a7b23853280d7a0eed2171b3b37abd2d2333ff73620f8b6246c8210a0bbe089",
+        "notice_date": "2021-03-19",
+        "receipt_no": "20210319000161",
+        "ticker": "000210.KS",
+        "viewer_sha256": "e5cbad818325b43d33578068deee98ad00404ef962ef0e8aaedbad83da392e7b"
+      },
+      {
+        "document_sha256": "2e140ce27ea41d7f9c9e7783c5f83bd2f7da720ad49961fd5e77471aa6062f55",
+        "effective_date": "2021-12-15",
+        "listing_sha256": "ae6c68ea7ec921f4b8a2995dacc739e03ff8c1057b9a4afb1bb1bddd46d8e5ef",
+        "notice_date": "2021-12-14",
+        "receipt_no": "20211214000462",
+        "ticker": "007700.KS",
+        "viewer_sha256": "ce526e84868a0b9c68c716741f1b087da9bdb7d4060fb4f98b440540096e8564"
+      },
+      {
+        "document_sha256": "7187fcc2a44f99ece07515f6e91d0c6065362ec239538ba1b10ebe126f8e6e0b",
+        "effective_date": "2022-05-02",
+        "listing_sha256": "297ae017fdc51fe18f3bd2fcd85d1d5a431ada619dad25da900a8ea6d9dbefb2",
+        "notice_date": "2022-04-26",
+        "receipt_no": "20220426000240",
+        "ticker": "000150.KS",
+        "viewer_sha256": "8c655ed01c6531d35d711b91aa869ba9930fadd803c0c76942cfe82813aaa25c"
+      },
+      {
+        "document_sha256": "b0f485faac0113f447048a76f909138353c1a02b1b85c730fe912bc32570a0aa",
+        "effective_date": "2022-05-02",
+        "listing_sha256": "297ae017fdc51fe18f3bd2fcd85d1d5a431ada619dad25da900a8ea6d9dbefb2",
+        "notice_date": "2022-04-26",
+        "receipt_no": "20220426000241",
+        "ticker": "003090.KS",
+        "viewer_sha256": "7da11baa874475b2c0c1054341fe290e472723dbec9aacfde6b13365403fbc56"
+      },
+      {
+        "document_sha256": "1090704290858a603fedc17793436f3ae5e6ca8b6a558ebe862835f2b849ce9b",
+        "effective_date": "2023-05-02",
+        "listing_sha256": "51480bb76ef657f834a08c75ada5dfd95792853240e887e2348c4e91dbed35d2",
+        "notice_date": "2023-04-26",
+        "receipt_no": "20230426000201",
+        "ticker": "006040.KS",
+        "viewer_sha256": "a6d6154a9ba187c2f35c03faf9d8d6621854e5118f38c4dd892e6104cc9a1458"
+      },
+      {
+        "document_sha256": "f8ff110b82cfecdaf8d55b9a6cb42ac69dd35fc699d93112b11c950c35b268c5",
+        "effective_date": "2023-05-02",
+        "listing_sha256": "3c871b865e1f2b60229d137aa6a9fdfbbac969188a97c0aa56fd9980ebafc85b",
+        "notice_date": "2023-04-26",
+        "receipt_no": "20230426000237",
+        "ticker": "003670.KS",
+        "viewer_sha256": "bf21e7e5d1d0e0119827335e286bd05429dd01c67afce7bdccebf12764ebe284"
+      },
+      {
+        "document_sha256": "f8df6f3e5f5238b25e47b60834f7943c9c554dd9eb7af9749d4fb0d64580c69a",
+        "effective_date": "2023-05-02",
+        "listing_sha256": "51480bb76ef657f834a08c75ada5dfd95792853240e887e2348c4e91dbed35d2",
+        "notice_date": "2023-04-26",
+        "receipt_no": "20230426000241",
+        "ticker": "010780.KS",
+        "viewer_sha256": "5ed22e2ee3442ce1760756c11e3c70195c2d43788c910e05749752f9873f5228"
+      },
+      {
+        "document_sha256": "a4ac56c1eff08cee792fd0bfb8fca69e158253bba8b0d550cd88f4a8a55e1e4e",
+        "effective_date": "2023-05-02",
+        "listing_sha256": "51480bb76ef657f834a08c75ada5dfd95792853240e887e2348c4e91dbed35d2",
+        "notice_date": "2023-04-26",
+        "receipt_no": "20230426000400",
+        "ticker": "000210.KS",
+        "viewer_sha256": "77f604a2ad008e1722594a84e79adfaf9d4e97fcdd876ba847714c8060b8fe2a"
+      },
+      {
+        "document_sha256": "8d68a8440964bc76dbf309a55c2ead15f31d076913195f6d3bf8e5c64294ac99",
+        "effective_date": "2023-05-02",
+        "listing_sha256": "51480bb76ef657f834a08c75ada5dfd95792853240e887e2348c4e91dbed35d2",
+        "notice_date": "2023-04-26",
+        "receipt_no": "20230426000502",
+        "ticker": "267250.KS",
+        "viewer_sha256": "d43353b97aef93ebd7b6e8ec62bd905cc2abb4b62f04118fe383468bd704ad91"
+      },
+      {
+        "document_sha256": "b19b218d7749ed0070ca34e37578d85a63c82829f2a687800e6a42d93917a1b1",
+        "effective_date": "2023-05-02",
+        "listing_sha256": "51480bb76ef657f834a08c75ada5dfd95792853240e887e2348c4e91dbed35d2",
+        "notice_date": "2023-04-26",
+        "receipt_no": "20230426000511",
+        "ticker": "009540.KS",
+        "viewer_sha256": "f0b76c3bb70b7fec62d5ad0cf1a3c48f5c7d32bae5409dbdebd909443edcb090"
+      },
+      {
+        "document_sha256": "07812fcc5ff7776e12eb8eafa00232d9ba305bf822ab714e28d824d3b0ab9904",
+        "effective_date": "2023-05-23",
+        "listing_sha256": "843f05aa5e86ae75b8719b72b9b8882c59e2e1ae83b1e0eea10b941e305ea676",
+        "notice_date": "2023-05-22",
+        "receipt_no": "20230522000191",
+        "ticker": "005440.KS",
+        "viewer_sha256": "3103a182e532521a2bebdb42c299fe28e9e2797956cc097fadd03a52dd34e722"
+      },
+      {
+        "document_sha256": "ac17dcd70462ef57f65b45100df86f04504243512670988cbda1f9ec8641e831",
+        "effective_date": "2024-05-02",
+        "listing_sha256": "843f05aa5e86ae75b8719b72b9b8882c59e2e1ae83b1e0eea10b941e305ea676",
+        "notice_date": "2024-04-26",
+        "receipt_no": "20240426000096",
+        "ticker": "010060.KS",
+        "viewer_sha256": "6af5d76b9b206a0c1b6cf1cabc49e9dd4b9ee5208f51523c7c1128b8586f56d0"
+      },
+      {
+        "document_sha256": "e8b7c6153abefb542e30e412dcf4f452ce7e159f8b47320cb30d5a28e6af7e7a",
+        "effective_date": "2024-05-02",
+        "listing_sha256": "843f05aa5e86ae75b8719b72b9b8882c59e2e1ae83b1e0eea10b941e305ea676",
+        "notice_date": "2024-04-26",
+        "receipt_no": "20240426000104",
+        "ticker": "180640.KS",
+        "viewer_sha256": "b7636f27acdddbf14524af527a99ce758c976a45ce9cf16d7d068b8fa898e541"
+      },
+      {
+        "document_sha256": "26af3995cbb41f6710d82b3fa728679d241941eb2420d734e7139983e8b22c24",
+        "effective_date": "2024-07-01",
+        "listing_sha256": "2a1abc72455fc6fed962ac1866380d38a7274af5e908261c3b0af1bded2e78d5",
+        "notice_date": "2024-06-28",
+        "receipt_no": "20240628000837",
+        "ticker": "066970.KS",
+        "viewer_sha256": "287933ece649dd048ac04e12f15d56600eace0eb6f6a0dee448a36a76024d310"
+      },
+      {
+        "document_sha256": "ad832fa8e7148812454404667273bbfe01eb5d60bfeeeabd2de91fb5b539c57c",
+        "effective_date": "2024-07-01",
+        "listing_sha256": "2a1abc72455fc6fed962ac1866380d38a7274af5e908261c3b0af1bded2e78d5",
+        "notice_date": "2024-06-28",
+        "receipt_no": "20240628000841",
+        "ticker": "003670.KS",
+        "viewer_sha256": "992bebb0a979c36567bd747ea70d4c56a32a6b6be6d3c90140021434ac3f1fb4"
+      },
+      {
+        "document_sha256": "4c9295a6af5ab4275650be3712da745e8580657391f2b647953b6f468428760b",
+        "effective_date": "2024-07-01",
+        "listing_sha256": "2a1abc72455fc6fed962ac1866380d38a7274af5e908261c3b0af1bded2e78d5",
+        "notice_date": "2024-06-28",
+        "receipt_no": "20240628000843",
+        "ticker": "053210.KS",
+        "viewer_sha256": "dae5ca816f43b71aa2c45ba2908b004f18661c380f52394d6264baab07ea485c"
+      },
+      {
+        "document_sha256": "d9c365e25af30e9b31da44c614af8315e84f24144c9ae9df18f8c799509b7d60",
+        "effective_date": "2024-07-01",
+        "listing_sha256": "fe299c4f7ea4d3122c6878012bfb8b99332b92469e711e819731303bd2a5c2d3",
+        "notice_date": "2024-06-28",
+        "receipt_no": "20240628000844",
+        "ticker": "373220.KS",
+        "viewer_sha256": "4bd2591b19ae2e2272a7cd5f3ff105f823eac8fdf419c9f3db1fac660bfd3f8b"
+      },
+      {
+        "document_sha256": "85a5b9cfab5588f1d64bf2f4d487fc6ec8616d71024c646894de33ff081790ad",
+        "effective_date": "2024-07-01",
+        "listing_sha256": "fe299c4f7ea4d3122c6878012bfb8b99332b92469e711e819731303bd2a5c2d3",
+        "notice_date": "2024-06-28",
+        "receipt_no": "20240628000873",
+        "ticker": "302440.KS",
+        "viewer_sha256": "137e45373ba3f93d15d2bc4d10c94559ecb8ee7838193bacf716ed6cbe5191d6"
+      },
+      {
+        "document_sha256": "ba2e55d459fccb7dfd208c8d659825b321bdb93302909823266dcb2e2e9ec398",
+        "effective_date": "2024-07-01",
+        "listing_sha256": "2a1abc72455fc6fed962ac1866380d38a7274af5e908261c3b0af1bded2e78d5",
+        "notice_date": "2024-06-28",
+        "receipt_no": "20240628000876",
+        "ticker": "037560.KS",
+        "viewer_sha256": "a7e78b3a59350ee14490fa5c671761822cbbf8fc5ea11d78cb11b91f30d1875d"
+      },
+      {
+        "document_sha256": "4cf543315ef62c09aaeaceb4aab620f8539e72078757eec4c9aef2b74f089d67",
+        "effective_date": "2024-07-01",
+        "listing_sha256": "fe299c4f7ea4d3122c6878012bfb8b99332b92469e711e819731303bd2a5c2d3",
+        "notice_date": "2024-06-28",
+        "receipt_no": "20240628000880",
+        "ticker": "068270.KS",
+        "viewer_sha256": "454c696f0b0a5657fa87b5e37417128498e200e58bb4eca4768d3fab3ad74eaa"
+      },
+      {
+        "document_sha256": "8178730825ba355b3acc427edc3f5091dc6ded670c93a4a307306f43209b0501",
+        "effective_date": "2024-07-01",
+        "listing_sha256": "2a1abc72455fc6fed962ac1866380d38a7274af5e908261c3b0af1bded2e78d5",
+        "notice_date": "2024-06-28",
+        "receipt_no": "20240628000881",
+        "ticker": "097950.KS",
+        "viewer_sha256": "9e2ff2b1f5f5e11a55ea5a767f0f842e3a1ccf01edb49a706e57a613b7d42d00"
+      },
+      {
+        "document_sha256": "2eea87dfc231e67d3cb5fff0aef252a903cba0a9413f6e90d6a654de05330023",
+        "effective_date": "2024-07-01",
+        "listing_sha256": "fe299c4f7ea4d3122c6878012bfb8b99332b92469e711e819731303bd2a5c2d3",
+        "notice_date": "2024-06-28",
+        "receipt_no": "20240628000885",
+        "ticker": "207940.KS",
+        "viewer_sha256": "de7e13425b637b93081fba587212e661f274b1fd6d61542438afc86bb4840108"
+      },
+      {
+        "document_sha256": "a5bf691eb915da18cf565ed9bc7bda672bf2fb8371fc2dabc82b403ebd3b8cd0",
+        "effective_date": "2024-07-01",
+        "listing_sha256": "fe299c4f7ea4d3122c6878012bfb8b99332b92469e711e819731303bd2a5c2d3",
+        "notice_date": "2024-06-28",
+        "receipt_no": "20240628000893",
+        "ticker": "005690.KS",
+        "viewer_sha256": "b5620f98d7687683f4b306daf463f2a72d29a58237682d2092041a439fe6ba58"
+      },
+      {
+        "document_sha256": "fe96c0d14d6139e8164fcd1de08b9d080984e4721651bb5ece2ad719c96e6da9",
+        "effective_date": "2024-07-01",
+        "listing_sha256": "fe299c4f7ea4d3122c6878012bfb8b99332b92469e711e819731303bd2a5c2d3",
+        "notice_date": "2024-06-28",
+        "receipt_no": "20240628000897",
+        "ticker": "450080.KS",
+        "viewer_sha256": "d48a08528af247d56e16b1816d7ef549259369cde008ebc2f905d3101de4f874"
+      },
+      {
+        "document_sha256": "0ca9329d2dd62246225a70af3c72e2daf04b55337cd2ecfe950e80abe87a87b5",
+        "effective_date": "2024-07-01",
+        "listing_sha256": "31bbd83d874b008c508d1d8d797ae14ff06aa5d69345714522cf9530d46636c7",
+        "notice_date": "2024-06-28",
+        "receipt_no": "20240628000918",
+        "ticker": "007310.KS",
+        "viewer_sha256": "1db3284f195c9585910f3151442d93f799ed82e59f6f1f4ad8d26758fffc7a6e"
+      },
+      {
+        "document_sha256": "99e65b982d095915eb946bf3dea06597d9d3032e3fece90b99f1d220fe187322",
+        "effective_date": "2024-07-01",
+        "listing_sha256": "31bbd83d874b008c508d1d8d797ae14ff06aa5d69345714522cf9530d46636c7",
+        "notice_date": "2024-06-28",
+        "receipt_no": "20240628000941",
+        "ticker": "005610.KS",
+        "viewer_sha256": "723b54d7dd2a68a29325e98d36ea298a2bc6aee0768c855c707196b90ccd5b87"
+      },
+      {
+        "document_sha256": "7b8113959f096fbc0c7416005e440ba16431a81bdaab7b5740aabf827f730c30",
+        "effective_date": "2024-07-01",
+        "listing_sha256": "dd1e59a374ccd81f27af03ba0801f925e49f2c46d7ce6ea4c506e0ec7e26fe41",
+        "notice_date": "2024-06-28",
+        "receipt_no": "20240628000943",
+        "ticker": "032830.KS",
+        "viewer_sha256": "f286e19b86e7e396f0ee8e248f51c4bba95610528c966bd61434a8d46eaab0c9"
+      },
+      {
+        "document_sha256": "91d27d457f3a3073ae1de3a31d30f23fbdc6a41842ec24ba652d4ddc86ece28e",
+        "effective_date": "2024-07-01",
+        "listing_sha256": "dd1e59a374ccd81f27af03ba0801f925e49f2c46d7ce6ea4c506e0ec7e26fe41",
+        "notice_date": "2024-06-28",
+        "receipt_no": "20240628000945",
+        "ticker": "088350.KS",
+        "viewer_sha256": "3e2acbe2e78d5c98c18ef3eb8e317c993db28997d3fc5f6a942f2223bd73f005"
+      },
+      {
+        "document_sha256": "c8661336fe0076809bf189dd059a16f3b0d9c6de75083610e55f4db511cc9ab7",
+        "effective_date": "2024-07-01",
+        "listing_sha256": "fe299c4f7ea4d3122c6878012bfb8b99332b92469e711e819731303bd2a5c2d3",
+        "notice_date": "2024-06-28",
+        "receipt_no": "20240628000946",
+        "ticker": "006400.KS",
+        "viewer_sha256": "92813ad6b13551f9352f863ec4d3701c6af01e7d498e501ebafbf097614beed0"
+      },
+      {
+        "document_sha256": "cbd209df1dee79985438e8874a514dc21a82d6f793d6b2507a7c53c6facc2f2f",
+        "effective_date": "2024-07-01",
+        "listing_sha256": "dd1e59a374ccd81f27af03ba0801f925e49f2c46d7ce6ea4c506e0ec7e26fe41",
+        "notice_date": "2024-06-28",
+        "receipt_no": "20240628000949",
+        "ticker": "001450.KS",
+        "viewer_sha256": "d25a597a59bfe465e31b382daad47ee83cd20d647118185ee281094ddd76ed4c"
+      },
+      {
+        "document_sha256": "19d8845eab5db660c105e2a4d127ae1bde6638af6c7c0a346cfd17ac00dba5eb",
+        "effective_date": "2024-07-01",
+        "listing_sha256": "dd1e59a374ccd81f27af03ba0801f925e49f2c46d7ce6ea4c506e0ec7e26fe41",
+        "notice_date": "2024-06-28",
+        "receipt_no": "20240628000950",
+        "ticker": "005830.KS",
+        "viewer_sha256": "81157fd9c3997bf9f489d79dcac501f3a70b1aa8d303b3f74adf4c80f5c52e1b"
+      },
+      {
+        "document_sha256": "5ca924a44577e2028c0615d98a480d0abd97bf4d0385adcd7c319cda5f208330",
+        "effective_date": "2024-07-01",
+        "listing_sha256": "dd1e59a374ccd81f27af03ba0801f925e49f2c46d7ce6ea4c506e0ec7e26fe41",
+        "notice_date": "2024-06-28",
+        "receipt_no": "20240628000953",
+        "ticker": "000810.KS",
+        "viewer_sha256": "61a29edfe7989b332d38bd6012bc5a0b677858bc84f3740dcecf4e99bc553621"
+      },
+      {
+        "document_sha256": "aeb55176403bb507993eb33304b7f5d381c7c9740d8931094926f2ac34a3ec38",
+        "effective_date": "2024-07-01",
+        "listing_sha256": "fe299c4f7ea4d3122c6878012bfb8b99332b92469e711e819731303bd2a5c2d3",
+        "notice_date": "2024-06-28",
+        "receipt_no": "20240628000960",
+        "ticker": "004370.KS",
+        "viewer_sha256": "feb07f031270ecc331dfafae2382251001e8e7542fda7caf8ac3543ed338e317"
+      },
+      {
+        "document_sha256": "ab83a7982f4e2eeb366696f90effbe6e5bad252dc174bcc0e5eb1bcd3b8e0013",
+        "effective_date": "2024-07-01",
+        "listing_sha256": "dd1e59a374ccd81f27af03ba0801f925e49f2c46d7ce6ea4c506e0ec7e26fe41",
+        "notice_date": "2024-06-28",
+        "receipt_no": "20240628000963",
+        "ticker": "003230.KS",
+        "viewer_sha256": "02a002f9f43c98fcdbf6688dd4decb64e75576ad37f85a97290707ef42354b55"
+      },
+      {
+        "document_sha256": "55cf473a26120d1066193b8c8506a9a464cbd1f4a9e8fbddf806540efd76d338",
+        "effective_date": "2024-07-01",
+        "listing_sha256": "dd1e59a374ccd81f27af03ba0801f925e49f2c46d7ce6ea4c506e0ec7e26fe41",
+        "notice_date": "2024-06-28",
+        "receipt_no": "20240628000997",
+        "ticker": "271560.KS",
+        "viewer_sha256": "991811b0aa585700dd7392429ed98b45b3da448e455fa735f21e16a307da76e7"
+      },
+      {
+        "document_sha256": "33d5aaf223ed1a92a89adc879640a1a28b28f2e04e2f1bfe2bbf276718a982d0",
+        "effective_date": "2024-07-01",
+        "listing_sha256": "dd1e59a374ccd81f27af03ba0801f925e49f2c46d7ce6ea4c506e0ec7e26fe41",
+        "notice_date": "2024-06-28",
+        "receipt_no": "20240628001000",
+        "ticker": "001680.KS",
+        "viewer_sha256": "63d7e7f3c3c5479dea4dba006929796b5ae20ba61f7d4d6defb9e8beb83b7931"
+      },
+      {
+        "document_sha256": "3d4cbe0a17b43281bc646815dc10c129475eddacff8a1801a64dff0b3892c32b",
+        "effective_date": "2024-07-01",
+        "listing_sha256": "dd1e59a374ccd81f27af03ba0801f925e49f2c46d7ce6ea4c506e0ec7e26fe41",
+        "notice_date": "2024-06-28",
+        "receipt_no": "20240628001037",
+        "ticker": "361610.KS",
+        "viewer_sha256": "e39eb8c4c5ee47fb06940bf1d2cd8ebd1d640d03730c4a7119a2fa841d41ca21"
+      },
+      {
+        "document_sha256": "96e0842432da942e6e47b7f5112de4cfd7ff12c686e8e0df72ba36afb5f50d99",
+        "effective_date": "2025-08-04",
+        "listing_sha256": "73905e15ce37b72cc63dd3c058b6793fc5f7d061873a05e17e9664988cd6f5a6",
+        "notice_date": "2025-08-01",
+        "receipt_no": "20250801000729",
+        "ticker": "489790.KS",
+        "viewer_sha256": "12d9c1a251c766faab21420031d57f32f4f81ee94259845356aba89271c3f63d"
+      },
+      {
+        "document_sha256": "bd39c8be26ec8beb5a11920988964dfc4fa321c3ccb2eb82348bbca573931913",
+        "effective_date": "2026-03-17",
+        "listing_sha256": "6363a9dcb04d991e35cb8b5595c61f01ffb95744f165ed0043b4b00e2fc1293d",
+        "notice_date": "2026-03-16",
+        "receipt_no": "20260316001886",
+        "ticker": "267270.KS",
+        "viewer_sha256": "c457b55ad8d87914402438b6019d030fd5946a3eb29aa354cb5fb9ad9297ef84"
+      },
+      {
+        "document_sha256": "1f29c8f346d31a06023737c4cad0a513bfb3624db889bde5cceafaa50ed6feca",
+        "effective_date": "2026-05-04",
+        "listing_sha256": "6363a9dcb04d991e35cb8b5595c61f01ffb95744f165ed0043b4b00e2fc1293d",
+        "notice_date": "2026-04-28",
+        "receipt_no": "20260428000595",
+        "ticker": "064350.KS",
+        "viewer_sha256": "544a144965d22385355058cd458e866e0f2f8fd39f6ad854bc61fedeebf6a0e5"
+      },
+      {
+        "document_sha256": "8a74530c9a0e03b35f6ebfbaf61d2082ad6a2f6c94e00ac91d6fab7524a6305e",
+        "effective_date": "2026-05-04",
+        "listing_sha256": "6363a9dcb04d991e35cb8b5595c61f01ffb95744f165ed0043b4b00e2fc1293d",
+        "notice_date": "2026-04-28",
+        "receipt_no": "20260428000646",
+        "ticker": "005690.KS",
+        "viewer_sha256": "67afca29b56bd03d25b7b0e3715176e364bb6ef3b0ec48c4ec23aeeb6ba87c29"
+      },
+      {
+        "document_sha256": "3d642ee74f66e7c30d2e006936a46dea4a0b9f426d0fd4f9e4c550ac3265663b",
+        "effective_date": "2026-05-04",
+        "listing_sha256": "6363a9dcb04d991e35cb8b5595c61f01ffb95744f165ed0043b4b00e2fc1293d",
+        "notice_date": "2026-04-28",
+        "receipt_no": "20260428000814",
+        "ticker": "000150.KS",
+        "viewer_sha256": "f6148fac928bb04b1987c32e064976d1d30e2d53df8bd3af22350ac033aa6889"
+      }
+    ],
+    "publicationPolicy": "NEXT_CALENDAR_DAY_AND_NOT_BEFORE_STATED_EFFECTIVE_DATE",
+    "securities": 62,
+    "status": "PARTIAL",
+    "taxonomyEditionVerified": false,
+    "verifiedNoticeCount": 80
+  },
+  "priorDecisionsUnchanged": {
+    "v3": "DATA_FOUNDATION_INSUFFICIENT_V3",
+    "v4": "DATA_FOUNDATION_INSUFFICIENT_V4"
+  },
+  "reconstructedV4": {
+    "classifiedNameDates": 69756,
+    "coveragePct": 95.29508196721311,
+    "datesBelowGroupFractionGate": 398,
+    "inferenceOnlyNameDatesV3": 54173,
+    "nameDates": 73200,
+    "notAnExactPitCoverageRate": true,
+    "oldAuditPitKnownEventNameDates": 1798,
+    "terminalCoveragePct": 0.0
+  },
+  "sourceBaseCommit": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+  "sourceInputHashes": {
+    "data/kr-industry-membership-foundation-v1/top120-inputs.json": "d7c464973ad029bf08886c4bdf2517d1b3ece04cce87bcc63706f1230ed53cd0",
+    "data/kr-industry-membership-foundation-v3/state/audit.json.gz": "8ad466de34144d7e9863798bd43cd42b192ec92e00fcfd80c0cbaf9b4ddd6104",
+    "data/kr-industry-membership-foundation-v4/state/audit.json.gz": "4135846f16dcf59fe4ff89ab83b3b5aec288dea20fed36172b17abf768d44036",
+    "research_specs/kr-industry-membership-foundation-v2/criteria.json": "fcf7da7207d2e1c666895743b93d21fb3d50c64002c60ad5f9ebffc0361acf6a",
+    "research_specs/kr-industry-membership-foundation-v4/protocol.json": "955fb27793ce8016755b3d0c2e68ec292cad19c9ec84334a50c21d95f9b2d0ce"
+  },
+  "status": "PARTIAL",
+  "strictLastPublicObservationInput": {
+    "classificationCoveragePct": 13.78825136612022,
+    "classifiedNameDates": 10093,
+    "dates": 610,
+    "datesBelowGroupFractionGate": 610,
+    "empiricalReadiness": "SOURCE_BLOCKED",
+    "maximumSignalCoveragePct": 27.500000000000004,
+    "minimumSignalCoveragePct": 1.6666666666666667,
+    "nameDates": 73200,
+    "notPitExact": "Scoped name-discovery may miss filings; last-public observations do not prove unchanged economic classification.",
+    "terminalNameDates": 2345,
+    "terminalSecuritiesWithObservation": 0,
+    "uniqueScheduledSecurities": 245
+  },
+  "terminal22": {
+    "000030.KS": {
+      "reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+      "status": "UNKNOWN",
+      "terminalActionType": "SHARE_TRANSFER"
+    },
+    "000060.KS": {
+      "reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+      "status": "UNKNOWN",
+      "terminalActionType": "SHARE_EXCHANGE"
+    },
+    "000830.KS": {
+      "reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+      "status": "UNKNOWN",
+      "terminalActionType": "MERGER_STOCK"
+    },
+    "001300.KS": {
+      "reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+      "status": "UNKNOWN",
+      "terminalActionType": "MERGER_STOCK"
+    },
+    "002550.KS": {
+      "reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+      "status": "UNKNOWN",
+      "terminalActionType": "SHARE_EXCHANGE"
+    },
+    "003410.KS": {
+      "reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+      "status": "UNKNOWN",
+      "terminalActionType": "CASH_SHARE_EXCHANGE"
+    },
+    "003450.KS": {
+      "reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+      "status": "UNKNOWN",
+      "terminalActionType": "SHARE_EXCHANGE"
+    },
+    "003600.KS": {
+      "reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+      "status": "UNKNOWN",
+      "terminalActionType": "MERGER_STOCK"
+    },
+    "004940.KS": {
+      "reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+      "status": "UNKNOWN",
+      "terminalActionType": "SHARE_EXCHANGE"
+    },
+    "008560.KS": {
+      "reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+      "status": "UNKNOWN",
+      "terminalActionType": "SHARE_EXCHANGE"
+    },
+    "010520.KS": {
+      "reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+      "status": "UNKNOWN",
+      "terminalActionType": "MERGER_STOCK"
+    },
+    "010620.KS": {
+      "reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+      "status": "UNKNOWN",
+      "terminalActionType": "MERGER_STOCK"
+    },
+    "011160.KS": {
+      "reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+      "status": "UNKNOWN",
+      "terminalActionType": "SHARE_EXCHANGE"
+    },
+    "012510.KS": {
+      "reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+      "status": "UNKNOWN",
+      "terminalActionType": "CASH_SHARE_EXCHANGE"
+    },
+    "037620.KS": {
+      "reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+      "status": "UNKNOWN",
+      "terminalActionType": "MERGER_STOCK"
+    },
+    "042670.KS": {
+      "reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+      "status": "UNKNOWN",
+      "terminalActionType": "MERGER_STOCK"
+    },
+    "053000.KS": {
+      "reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+      "status": "UNKNOWN",
+      "terminalActionType": "MERGER_STOCK"
+    },
+    "057050.KS": {
+      "reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+      "status": "UNKNOWN",
+      "terminalActionType": "SHARE_EXCHANGE"
+    },
+    "067250.KS": {
+      "reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+      "status": "UNKNOWN",
+      "terminalActionType": "TERMINATION_TYPE_UNRESOLVED"
+    },
+    "079440.KS": {
+      "reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+      "status": "UNKNOWN",
+      "terminalActionType": "SHARE_EXCHANGE"
+    },
+    "115390.KS": {
+      "reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+      "status": "UNKNOWN",
+      "terminalActionType": "CASH_SHARE_EXCHANGE"
+    },
+    "117930.KS": {
+      "reason": "NO_OFFICIAL_HISTORICAL_RECORD_AND_NO_ADMITTED_RETAINED_DART_OBSERVATION",
+      "status": "UNKNOWN",
+      "terminalActionType": "TERMINATION_TYPE_UNRESOLVED"
+    }
+  },
+  "version": "cross-market-industry-foundation-v1"
+}
