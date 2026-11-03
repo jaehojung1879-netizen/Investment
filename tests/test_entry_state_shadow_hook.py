@@ -46,7 +46,7 @@ def mini_ledger(tmp_path: Path):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(body)
     cfg = tmp_path / "config.json"
-    cfg.write_text(json.dumps({"kellyPortfolio": config}))
+    cfg.write_text(json.dumps(config))
     return ledger, cfg
 
 
@@ -138,6 +138,10 @@ def test_real_child_writes_only_its_own_namespace_and_a_reread_changes_nothing(t
 
     # The same published week read again on a later run, from a moved main commit: no conflict, no new line, no fill, no NAV.
     decisions = (ledger / namespace / "decisions.jsonl").read_bytes()
+    first_rows = [json.loads(s) for s in decisions.splitlines()]
+    assert any(r["kind"] == "CURRENT_RESEARCH_POLICY" and r["targetWeights"] == {"069500.KS": 1.0}
+               for r in first_rows)
+    assert any(r["strategyId"] == "KR:N1:IN_RANK" and r["targetWeights"] is not None for r in first_rows)
     second = child(ledger, cfg, MAIN_B)
     assert second.returncode == 0, second.stderr
     assert (ledger / namespace / "decisions.jsonl").read_bytes() == decisions

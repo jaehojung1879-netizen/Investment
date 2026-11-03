@@ -1,5 +1,16 @@
 # Read-only daily Portfolio D brief
 
+Release integrity checks (2026-11-04 KST): a passive latest summary must match the decision-relevant fields of its
+digest-valid FINAL receipt; a conflicting summary is UNKNOWN. A later in-week preview may display the verified final
+decision still in force, while keeping observation freshness separate. A same-date preview is not upgraded to FINAL.
+Paper NAV/ETF base dates must be valid final regional sessions no later than the report and stored status clocks;
+unverifiable dates display UNKNOWN. No initial ledger means no observed return, not 0% performance.
+
+Before any paper accounting, persisted shadow decisions now verify their stored digest, key, study identity and writer
+timing independently. Moving an execution session without changing the decision digest is refused. Missing/inconsistent
+stored fill costs are refused before further NAV writes. Existing bytes are not migrated or repaired automatically;
+an incompatible legacy/dry-run book requires explicit review, never a reset or backfilled live track record.
+
 This presentation path reads committed `signal-history` blobs. It reuses
 `weekly_decision` policy constants/calendar/freshness and the registered paper
 receipt validators. It never invokes selectors, fetchers, recorders, assessors,

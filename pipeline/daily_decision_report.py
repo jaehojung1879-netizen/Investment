@@ -5,7 +5,7 @@ optimizer or promotion path is called. Unknown measurements stay None.
 """
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 import hashlib
 import html
 import json
@@ -258,7 +258,7 @@ def latest_completed_week_end(region, now):
     raise ValueError("NO_WEEK_END_SESSION_IN_LOOKBACK")
 
 
-def stance(region, row, view, now, weekly_blocked):
+def stance(region, row, view, now, weekly_blocked, final=None):
     """What the stored weekly decision says to hold TODAY, shown only when every stored fact agrees.
 
     The stored decision is read, never recomputed. A weekly decision is made for a week-end session and stays in force until the
@@ -272,6 +272,11 @@ def stance(region, row, view, now, weekly_blocked):
                               "holdings": None, "statusKo": None, "reason": reason}
     if weekly_blocked:
         return unknown("WEEKLY_PUBLICATION_BLOCKED")
+    if (row.get("weekStatus") == "INTRA_WEEK_PREVIEW" and final is not None
+            and isinstance(row.get("asOfDate"), str) and row["asOfDate"] > final.get("asOfDate", "")
+            and _timestamp_ok(row.get("generatedAt"), now)):
+        # A daily preview is not a replacement for the committed weekly target.
+        row = final
     if not _timestamp_ok(row.get("generatedAt"), now):
         return unknown("POLICY_TIMESTAMP_MISSING_OR_AFTER_REPORT")
     status = row.get("status")
@@ -279,7 +284,7 @@ def stance(region, row, view, now, weekly_blocked):
         return unknown("POLICY_STATUS_UNRECOGNIZED")
     if row.get("weekStatus") != "FINAL_WEEKLY":
         return unknown("NOT_A_FINAL_WEEKLY_DECISION")
-    if _mapping(view["freshnessReportedAtCreation"]).get("status") != "FRESH":
+    if _mapping(row.get("freshness")).get("status") != "FRESH":
         return unknown("INPUTS_NOT_FRESH_WHEN_THE_DECISION_WAS_MADE")
     if row.get("asOfDate") != latest_completed_week_end(region, now):
         return unknown("NOT_THE_LATEST_COMPLETED_WEEK_END_DECISION")
@@ -289,6 +294,9 @@ def stance(region, row, view, now, weekly_blocked):
     if status == "PASSIVE_NO_DEFENSIBLE_EDGE":
         if (type(count) is int and count == 0 and holdings == [] and type(weight) in (int, float) and weight == 100
                 and row.get("benchmark") == view["benchmark"]):
+            keys = ("status", "stockCount", "holdings", "benchmarkWeightPct", "benchmark", "asOfDate", "inputs")
+            if final is None or any(row.get(k) != final.get(k) for k in keys):
+                return unknown("FINAL_RECEIPT_SUMMARY_MISMATCH")
             return {"displayed": True, "stockCount": 0, "benchmarkWeightPct": 100.0, "holdings": [],
                     "statusKo": row.get("statusKo"), "reason": "STORED_FINAL_DECISION_IS_THE_ETF_DEFAULT"}
         return unknown("PASSIVE_STATUS_FIELDS_INCONSISTENT")
@@ -338,12 +346,31 @@ def tracked_path(snapshot, now):
                 continue
             nav = item.get("nav") if _finite(item.get("nav"), positive=True) else None
             excess = item.get("excessVsEtfPct") if _finite(item.get("excessVsEtfPct")) else None
+            invalid_dates = False
+            if nav is not None:
+                try:
+                    nav_day = date.fromisoformat(item["navDate"])
+                    if SH.session_final_utc(str(nav_day), region) > min(now, utc(doc["atUtc"])):
+                        raise ValueError("NAV_SESSION_NOT_FINAL")
+                    if W.session_on_or_before(region, str(nav_day)) != str(nav_day):
+                        raise ValueError("NAV_DATE_NOT_A_SESSION")
+                    if excess is not None:
+                        base_day = date.fromisoformat(item["etfBaseDate"])
+                        if base_day > nav_day or W.session_on_or_before(region, str(base_day)) != str(base_day):
+                            raise ValueError("INVALID_ETF_BASE_DATE")
+                except (ValueError, KeyError, TypeError):
+                    invalid_dates = True
+                    nav = excess = None
+            else:
+                excess = None
             rows.append({"strategyId": sid, "status": "READ", "fillState": item.get("fillState"),
                          "navDate": item.get("navDate") if nav is not None else None, "nav": nav,
                          "excessVsEtfPct": excess, "etfBaseDate": item.get("etfBaseDate") if excess is not None else None,
                          "fills": item.get("fills") if type(item.get("fills")) is int else None,
                          "chargedCostPctOfNav": item.get("chargedCostPctOfNav") if _finite(item.get("chargedCostPctOfNav")) else None,
                          "maturity": {h: _mapping(item.get("maturity")).get(h) for h in SH.HORIZONS}})
+            if invalid_dates:
+                rows[-1].update(status="INVALID_STORED_DATES", errors=["NAV_OR_ETF_DATE_NOT_VERIFIED"])
     scenarios = sum(1 for k in strategies if ":N" in k)
     return {**base, "status": "READ", "atUtc": doc.get("atUtc"), "rows": rows, "researchScenarioCount": scenarios}
 
@@ -365,7 +392,7 @@ def build(snapshot, *, as_of, code_identity):
                 valid_weekly.append(row)
         except (ValueError, KeyError, TypeError):
             weekly_errors.append("INVALID_WEEKLY_RECEIPT")
-    regions = {}
+    regions, finals = {}, {}
     for region, benchmark in W.BENCHMARKS.items():
         row = _mapping(_mapping(weekly.get("regions")).get(region))
         source = _mapping(row.get("inputs"))
@@ -381,6 +408,7 @@ def build(snapshot, *, as_of, code_identity):
                                 "rejectionReasons": item.get("exclusionCodes"),
                                 "class": "EXPLORATORY_WATCHLIST_NOT_RECOMMENDATION"})
         final = W.latest_final(valid_weekly, region)
+        finals[region] = final
         regions[region] = {"benchmark": benchmark, "auxiliaryBenchmark": "QQQ" if region == "US" else None,
             "currency": W.CURRENCY[region], "defaultPolicy": "REGIONAL_ETF_IF_NO_ADMITTED_STOCK_SIGNAL",
             "operatingStockRange": [W.MIN_NAMES, W.MAX_NAMES], "newNominationsInThisReport": 0,
@@ -396,7 +424,7 @@ def build(snapshot, *, as_of, code_identity):
             "nextEvidence": "Source-valid dated inputs and independently admitted net benchmark-relative economic evidence; rank, internal weight, opportunity tier or paper PASS cannot substitute"}
     for region, view in regions.items():
         view["currentStance"] = stance(region, _mapping(_mapping(weekly.get("regions")).get(region)), view, now,
-                                       bool(weekly.get("blocked")))
+                                       bool(weekly.get("blocked")), finals[region])
     tracked = tracked_path(snapshot, now)
     studies = {s: study_view(snapshot, s, now) for s in STUDIES}
     report = {"schema": "READ_ONLY_DAILY_DECISION_REPORT_V1", "reportAsOfUtc": now.isoformat(),
