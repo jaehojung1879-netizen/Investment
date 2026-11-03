@@ -7,25 +7,25 @@
     "plumbingComponentsIgnored": [
       "daily-session"
     ],
-    "excludedPriorModelOutcomes": 9891,
+    "excludedPriorModelOutcomes": 9877,
     "excludedPriorModelPortfolioOutcomes": 14
   },
   "validationStatus": {
-    "paperDays": 77,
-    "trackingDays": 77,
+    "paperDays": 78,
+    "trackingDays": 78,
     "maturedObservationDays": 0,
     "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
     "generationIsolated": true,
     "excludedPriorModelSignals": 9957,
-    "excludedPriorModelOutcomes": 9891,
-    "signalsRecorded": 31197,
-    "uniqueDates": 56,
+    "excludedPriorModelOutcomes": 9877,
+    "signalsRecorded": 31811,
+    "uniqueDates": 57,
     "maturedUniqueDates": 0,
     "firstSignalDate": "2026-07-17",
-    "lastSignalDate": "2026-11-02",
+    "lastSignalDate": "2026-11-03",
     "maturedSignals": 0,
     "maturedByHorizon": {
-      "21": 18761,
+      "21": 19347,
       "63": 1,
       "126": 0,
       "252": 0
@@ -45,10 +45,10 @@
   },
   "horizons": {
     "21": {
-      "n": 1113,
+      "n": 1111,
       "horizon": 21,
-      "rankIC": 0.014,
-      "rankICMedian": 0.003,
+      "rankIC": 0.015,
+      "rankICMedian": 0.004,
       "rankICHitRatio": 0.667,
       "crossSections": 3,
       "eligibleDates": 3,
@@ -58,29 +58,29 @@
           "median": 0.067,
           "hitRatio": 1.0,
           "nDates": 2,
-          "nSignals": 994
+          "nSignals": 992
         },
         "KR": {
-          "mean": -0.091,
-          "median": -0.091,
+          "mean": -0.087,
+          "median": -0.087,
           "hitRatio": 0.0,
           "nDates": 1,
           "nSignals": 118
         }
       },
-      "meanExcess": -0.012,
-      "meanExcessAfterCost": -0.013,
+      "meanExcess": -0.0119,
+      "meanExcessAfterCost": -0.0129,
       "positiveHitRate": 0.357,
       "mdd": -0.03,
       "cvar95": -0.0345,
       "byView": {
         "POSITIVE": {
           "n": 387,
-          "meanFwd": -0.0321
+          "meanFwd": -0.032
         },
         "NEUTRAL": {
-          "n": 357,
-          "meanFwd": -0.0256
+          "n": 355,
+          "meanFwd": -0.0257
         },
         "NEGATIVE": {
           "n": 369,
