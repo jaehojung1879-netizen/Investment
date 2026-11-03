@@ -193,6 +193,25 @@ def test_missing_latest_is_narrowly_created(api):
     assert api.git("diff-tree", "--no-commit-id", "--name-only", "-r", head, api.head) == STATE
 
 
+@pytest.mark.parametrize("content", ["null", "[]", "0", '"not a snapshot"', "{broken"])
+def test_existing_invalid_state_is_never_treated_as_missing(api, content):
+    old = api.head
+    tree = api.request("POST", "/git/trees", {
+        "base_tree": api.git("rev-parse", old + "^{tree}"),
+        "tree": [{"path": STATE, "mode": "100644", "type": "blob", "content": content}],
+    })
+    commit = api.request("POST", "/git/commits", {
+        "tree": tree["sha"], "parents": [old], "message": "invalid stored fixture",
+    })
+    api.git("update-ref", "refs/heads/signal-history", commit["sha"], old)
+    before = api.head
+    api.calls.clear()
+    with pytest.raises(ValueError):
+        publish(api, snapshot())
+    assert api.head == before
+    assert not any(method in ("POST", "PATCH") for method, _ in api.calls)
+
+
 def test_workflow_deploys_then_validates_and_publishes():
     text = (Path(__file__).resolve().parents[1] / ".github/workflows/pages.yml").read_text()
     tail = text[text.index('      - name: Publish last successful state'):]

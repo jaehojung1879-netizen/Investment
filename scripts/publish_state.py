@@ -65,6 +65,7 @@ def freshness(state):
 
 def publish(api, candidate, attempts=5, pause=time.sleep):
     incoming = freshness(candidate)
+    missing = object()
     for attempt in range(attempts):
         head = api.request("GET", f"/git/ref/heads/{BRANCH}")["object"]["sha"]
         commit = api.request("GET", f"/git/commits/{head}")
@@ -83,12 +84,12 @@ def publish(api, candidate, attempts=5, pause=time.sleep):
                 subtree = api.request("GET", f"/git/trees/{state_dir['sha']}")
                 if any(x["path"] == "latest.json" for x in subtree["tree"]):
                     raise ValueError("existing state cannot be read") from None
-            current = None
+            current = missing
         else:
             if content.get("type") != "file" or content.get("encoding") != "base64":
                 raise ValueError("state content is not an ordinary JSON file")
             current = json.loads(base64.b64decode(content["content"], validate=False))
-        if current is not None:
+        if current is not missing:
             previous = freshness(current)
             if candidate == current:
                 return "unchanged"

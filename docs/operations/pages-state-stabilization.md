@@ -1,5 +1,35 @@
 # Pages state publication / operational audit
 
+## Current implementation and consumed-study diagnostic (2026-11-04 KST)
+
+Owner implementation approval is recorded on PR #315 (2026-11-03 KST). Maintenance record v1 and its sidecar now exist;
+the earlier proposal text below is retained as design history, not a statement that approval is still missing.
+The reviewed baseline is `0384ff464ad7e07d3c203b0c78e421fcda359123`.
+
+Tests [41617427471](https://github.com/jaehojung1879-netizen/Investment/actions/runs/41617427471) succeeded. Pages
+[41617427637](https://github.com/jaehojung1879-netizen/Investment/actions/runs/41617427637/job/125854271623) failed in
+`Real full-input preflight behind the outcome firewall`, not registration validation or production publication.
+The original job log (2026-11-03T10:15:32Z) traces CLI `preflight` through `V4.audit` to
+`kr_alpha_atlas_mirae_repair.audit:329`, which raises `AUDIT_REQUIRES_UNAUTHORIZED_UNCONSUMED_STUDY`.
+Its original uploaded `reproducibility-preflight-receipt.json` has `FAIL_GATE_PRESERVED_NOT_CONSUMED` and all seven
+outcome/model/backtest/dispatch/lock counters equal to zero. Neither production deploy nor formal execution ran.
+
+This is the frozen lifecycle rejecting a consumed/authorized study, not a disk failure and not another failed maintenance
+hash check. `tests/test_pages_consumed_preflight.py` reproduces the refusal with an offline GitHub adapter and proves input
+preparation is never reached. The guard is intentionally preserved. Suppressing this error, changing a lock, returning a fake
+matrix-preflight success or excluding the check would not repair the lifecycle.
+
+The unconditional PR real-input preflight is inside the sealed 5,992-byte prefix. Turning it into a closed-study historical
+verification route changes diagnostic behavior and needs a separate explicit scope decision; the current approval permits
+only production state publication and exact maintenance validation. This patch therefore does not claim the Pages check is
+green or that the PR is merge-ready. No workflow prefix, execution authorization, result, numerical code or lock is changed.
+
+Within the existing production scope, the publisher now distinguishes a missing file from existing JSON `null`. Any existing
+non-object/invalid state is rejected before POST/PATCH. The five seal-verifier paths and the exact v1 Pages/verifier hashes
+remain unchanged; no maintenance version/hash update is needed for this unsealed publisher correction. The historical Git
+objects are additionally checked without temporarily replacing current files. Concurrent ledger writes, duplicate no-op,
+bounded conflicts, failure isolation and bounded ENOSPC fixtures remain covered.
+
 Snapshot: 2026-11-02 UTC. Code base: `main@37f8cbf6b1c066f6b3c65235953648d17ebf2f69`.
 Source: [Issue #292 capacity handoff](https://github.com/jaehojung1879-netizen/Investment/issues/292#issuecomment-6574150500).
 This is an engineering inventory, not investment admission, permission to execute research, or a merge approval.
