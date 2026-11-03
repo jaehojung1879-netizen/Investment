@@ -185,6 +185,35 @@ def _read(path: Path) -> list[dict]:
     return [json.loads(line) for line in path.read_text().splitlines() if line.strip()] if path.exists() else []
 
 
+def validate_decisions(receipts: list[dict]) -> None:
+    """Validate persisted identity and timing before deduplication or accounting.
+
+    Timing stays outside decision identity for harmless re-reads, but must
+    independently agree with the first writer's clock. Never repair old rows.
+    """
+    seen = set()
+    for row in receipts:
+        try:
+            key = {k: row[k] for k in ("policyVersion", "region", "strategyId", "asOfDate")}
+            if (row.get("schema") != "ENTRY_STATE_SHADOW_DECISION_V1"
+                    or row.get("studyId") != STUDY or key["policyVersion"] != POLICY_VERSION
+                    or row.get("evidenceClass") != EVIDENCE_CLASS
+                    or row.get("productionEffect") != "NONE" or row.get("liveValidated") is not False
+                    or row["receiptId"] != sha256(canonical(key)) or row["receiptId"] in seen
+                    or row.get("digest") != sha256(canonical({k: v for k, v in row.items() if k not in DIGEST_EXCLUDED}))):
+                raise ValueError("INVALID_STORED_DECISION_IDENTITY")
+            clock = datetime.fromisoformat(row["recordedAtUtc"].replace("Z", "+00:00"))
+            if clock.tzinfo is None:
+                raise ValueError("INVALID_STORED_DECISION_TIMING")
+            final = session_final_utc(key["asOfDate"], key["region"])
+            if (clock < final or row["executionSession"] != execution_session(key["region"], key["asOfDate"], clock)
+                    or row["signalSessionFinalAtUtc"] != final.strftime("%Y-%m-%dT%H:%M:%SZ")):
+                raise ValueError("INVALID_STORED_DECISION_TIMING")
+            seen.add(row["receiptId"])
+        except (KeyError, TypeError, AttributeError) as exc:
+            raise ValueError("INVALID_STORED_DECISION_SCHEMA") from exc
+
+
 def _append(path: Path, rows: list[dict]) -> None:
     if not rows:
         return
@@ -206,7 +235,10 @@ def decided_digest(receipt: dict) -> str:
 
 def append_decisions(directory: Path, receipts: list[dict]) -> dict:
     """Write-once by receiptId. Existing lines are never rewritten."""
-    existing = {r["receiptId"]: r for r in _read(directory / "decisions.jsonl")}
+    stored = _read(directory / "decisions.jsonl")
+    validate_decisions(stored)
+    validate_decisions(receipts)
+    existing = {r["receiptId"]: r for r in stored}
     new, same, conflicts = [], 0, []
     for receipt in receipts:
         prior = existing.get(receipt["receiptId"])
@@ -314,6 +346,7 @@ def advance(directory: Path, *, now: datetime, close_of, through: str | None = N
     """
     now = now.astimezone(timezone.utc)
     decisions = _read(directory / "decisions.jsonl")
+    validate_decisions(decisions)
     fills = _read(directory / "fills.jsonl")
     navs = _read(directory / "nav-daily.jsonl")
     by_strategy: dict[str, list[dict]] = {}
@@ -337,6 +370,16 @@ def advance(directory: Path, *, now: datetime, close_of, through: str | None = N
         if (any(f.get("returnBasis") != RETURN_BASIS for f in mine_fills)
                 or (mine_navs and mine_navs[-1].get("returnBasis") != RETURN_BASIS)):
             raise ValueError("LEGACY_VALUATION_BASIS_REQUIRES_EXPLICIT_REVIEW")
+        for prior_fill in mine_fills:
+            try:
+                cost = prior_fill["costFraction"]
+                legs = prior_fill["legs"]
+                if (prior_fill.get("costBasis") != NET_ALREADY_CHARGED
+                        or type(cost) not in (int, float) or not math.isfinite(cost) or cost < 0
+                        or not math.isclose(sum(leg["costFraction"] for leg in legs), cost, abs_tol=1e-12)):
+                    raise ValueError("INVALID_STORED_FILL_COST")
+            except (KeyError, TypeError) as exc:
+                raise ValueError("INVALID_STORED_FILL_COST") from exc
         if mine_fills and (not mine_navs or mine_fills[-1]["session"] > mine_navs[-1]["date"]):
             raise ValueError("FILL_NAV_CHECKPOINT_INCOMPLETE")
         units = dict(mine_fills[-1]["units"]) if mine_fills else None
@@ -481,6 +524,14 @@ def status_report(directory: Path, *, now: datetime) -> dict:
         if tail and tail["status"] != "MARKED":
             fill_state = "STOPPED_" + tail["status"]
         etf_row = nav_by.get((benchmark_id(sid), tail["date"])) if tail and tail["status"] == "MARKED" else None
+        # Every strategy starts at NAV 1.0 on ITS OWN first marked session, which may be later than ETF_ONLY's (a blocked
+        # week holds the previous book). The ETF is therefore rebased to that session; dividing by ETF_ONLY's NAV since
+        # ITS start would charge the strategy with ETF returns earned before it existed.
+        first_nav = next((n for n in navs if n["strategyId"] == sid and n["status"] == "MARKED"), None)
+        etf_base = nav_by.get((benchmark_id(sid), first_nav["date"])) if first_nav else None
+        excess = None
+        if etf_row and etf_base and tail and tail["nav"] and etf_row["nav"] and etf_base["nav"]:
+            excess = round(100 * (tail["nav"] / (etf_row["nav"] / etf_base["nav"]) - 1), 6)
         audit = {}
         for row in last.get("candidateAudit") or []:
             audit[row["status"]] = audit.get(row["status"], 0) + 1
@@ -496,13 +547,13 @@ def status_report(directory: Path, *, now: datetime) -> dict:
             "chargedCostPctOfNav": round(100 * sum(f["costFraction"] for f in my_fills), 6) if my_fills else 0.0,
             "navDate": tail["date"] if tail else None, "nav": tail["nav"] if tail else None,
             "etfNavSameDate": etf_row["nav"] if etf_row else None,
-            "excessVsEtfPct": (round(100 * (tail["nav"] / etf_row["nav"] - 1), 6)
-                               if etf_row and tail and tail["nav"] else None),
+            "excessVsEtfPct": excess,
+            "etfBaseDate": first_nav["date"] if excess is not None else None,
             "maturity": matured.get(sid) or {"H126": "PENDING_NO_FILL_YET", "H252": "PENDING_NO_FILL_YET"},
         }
     return {"asOfUtc": now.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "evidenceClass": EVIDENCE_CLASS,
             "returnBasis": RETURN_BASIS, "costBasis": NET_ALREADY_CHARGED,
             "limits": ["vendor adjusted-close ratios are not certified corporate-action or shareholder-return accounting",
                        "units are valuation-index units, not broker shares; no order was placed",
-                       "excessVsEtfPct is a NAV ratio since each strategy's own start, not a validated alpha"],
+                       "excessVsEtfPct compares the strategy NAV (1.0 at its own first session) with the ETF_ONLY NAV rebased to that session (etfBaseDate); it is not a validated alpha"],
             "strategies": out}

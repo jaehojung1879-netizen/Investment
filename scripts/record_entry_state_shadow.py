@@ -15,6 +15,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 import sys
 
@@ -50,7 +51,10 @@ def observe(champion: Path, weekly: Path, config: Path, *, source_commit: str, c
         command.append("--pre-commit-bytes")
     done = subprocess.run(command, cwd=str(ROOT), capture_output=True, timeout=120, check=False)
     if done.returncode:
-        raise RuntimeError("OBSERVATION_REFUSED: " + done.stderr.decode(errors="replace").strip().splitlines()[-1])
+        lines = [x for x in done.stderr.decode(errors="replace").splitlines() if x.strip()]
+        # Node prints the thrown message, then a stack, then its own version banner; the version is not the reason.
+        reason = next((x.split(": ", 1)[1] for x in lines if re.match(r"\w*Error: ", x)), lines[-1] if lines else "NO_STDERR")
+        raise RuntimeError("OBSERVATION_REFUSED: " + reason)
     return done.stdout
 
 
@@ -78,12 +82,23 @@ def run(champion: Path, weekly: Path, config: Path, directory: Path, *, offline:
     directory = Path(directory)
     code = code_identity()
     commit = source_commit or code["commit"] or "0" * 40
-    raw = observe(champion, weekly, config, source_commit=commit, config_commit=config_commit or commit,
-                  pre_commit=source_commit is None)
-    observation = json.loads(raw)
-    now = L.utc_now()
-    receipts = L.decision_receipts(observation, recorded_at=now, code=code, observation_sha256=L.sha256(raw))
-    report = {"decisions": L.append_decisions(directory, receipts)}
+    try:
+        raw, refusal = observe(champion, weekly, config, source_commit=commit, config_commit=config_commit or commit,
+                               pre_commit=source_commit is None), None
+    except RuntimeError as exc:
+        # The weekly decision is rewritten daily but the champion artifact only when no session is mid-flight, so on most weekdays
+        # the two published files are from different generations and cannot be paired. That concerns NEW decisions only. With a
+        # stored ledger the stored book is still marked and the stored readout kept; with none, nothing exists to protect.
+        if not (directory / "decisions.jsonl").exists():
+            raise
+        raw, refusal = None, str(exc)
+    now = L.utc_now()                       # the writer's own clock, read AFTER the inputs were read: it decides the execution session
+    if raw is None:
+        report = {"decisions": {"appended": 0, "alreadyPresent": 0, "conflictsRefused": []},
+                  "observation": {"status": "REFUSED", "reason": refusal}}
+    else:
+        receipts = L.decision_receipts(json.loads(raw), recorded_at=now, code=code, observation_sha256=L.sha256(raw))
+        report = {"decisions": L.append_decisions(directory, receipts), "observation": {"status": "OK", "reason": None}}
     if not offline:
         report["accounting"] = L.advance(directory, now=now, close_of=live_closes(directory))
     report["maturity"] = L.maturity(directory, now=now)
