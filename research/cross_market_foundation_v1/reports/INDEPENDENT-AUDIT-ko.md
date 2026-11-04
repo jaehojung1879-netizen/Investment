@@ -44,3 +44,5 @@ python -m pytest -q
 source bytes 검사는 네트워크를 호출하지 않는다. 고정 Git 원천이 없는 clone에서는 `SOURCE_OBJECT_UNAVAILABLE`을 숨기지 않고 필요한 exact commits/paths만 별도로 확보한다. source 재생성 결과와 보존 evidence의 byte equality를 확인한다. 기존 seed generator는 격리 출력에서 실행하고 seed 허용 검증PASS/production 검증거부를 모두 확인한다. 추적 중인 `data/site-data.json`을 갱신하지 않는다.
 
 판정 범위: **코드·입력 계약 검토 가능, 새 실제 경제성 실증은 차단 유지.** 통과한 코드 계약을 연구의 수익성·검정력·사용권·운영 배포 승인으로 확대하지 않는다.
+
+로컬 전체 실행은6581PASS/12FAIL/3SKIP/4XFAIL이었다. 11건은localhost소켓생성 PermissionError를 확인했다. 네트워크허용환경에서 해당파일과Node연동파일을코드변경없이재검증해40PASS했다. Node원실패1건의정확원인은분리확정하지않았다. 최종170신규테스트PASS와이재검증을전체단일green실행으로합쳐표현하지않으며, 최종정확HEAD의자동CI를별도로확인한다. 상세수치와원로그해시는 `evidence/verification.json`에있다.
