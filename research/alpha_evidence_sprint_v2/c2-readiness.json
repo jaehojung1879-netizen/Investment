@@ -1,0 +1,169 @@
+{
+ "blocks": 155,
+ "blocksWithCorporateActionsApplied": 0,
+ "blocksWithStocks": 155,
+ "calendarBlocks": 155,
+ "calendarFirst": {
+  "anchorIndex": 0,
+  "date": "2013-01-07",
+  "endDate": "2013-02-06",
+  "signalDate": "2013-01-04"
+ },
+ "calendarLast": {
+  "anchorIndex": 154,
+  "date": "2026-08-12",
+  "endDate": "2026-09-14",
+  "signalDate": "2026-08-07"
+ },
+ "distinctNamesHeld": 72,
+ "heldTerminatedSecurities": {
+  "000030.KS": {
+   "blocks": 1,
+   "firstHeld": "2017-05-31",
+   "lastHeld": "2017-05-31",
+   "lastTradingDate": "2019-02-12",
+   "terminalConsiderationResolved": "NOT_APPLICABLE",
+   "terminationType": "TERMINATION_TYPE_UNRESOLVED"
+  },
+  "000060.KS": {
+   "blocks": 3,
+   "firstHeld": "2015-06-23",
+   "lastHeld": "2015-10-27",
+   "lastTradingDate": "2023-02-20",
+   "terminalConsiderationResolved": "NOT_APPLICABLE",
+   "terminationType": "TERMINATION_TYPE_UNRESOLVED"
+  },
+  "002550.KS": {
+   "blocks": 1,
+   "firstHeld": "2015-11-25",
+   "lastHeld": "2015-11-25",
+   "lastTradingDate": "2017-07-20",
+   "terminalConsiderationResolved": "NOT_APPLICABLE",
+   "terminationType": "TERMINATION_TYPE_UNRESOLVED"
+  }
+ },
+ "heldTickers": [
+  "000030.KS",
+  "000060.KS",
+  "000080.KS",
+  "000100.KS",
+  "000150.KS",
+  "000270.KS",
+  "000660.KS",
+  "000810.KS",
+  "000880.KS",
+  "001450.KS",
+  "002380.KS",
+  "002550.KS",
+  "003240.KS",
+  "003550.KS",
+  "004020.KS",
+  "004170.KS",
+  "004370.KS",
+  "004990.KS",
+  "005300.KS",
+  "005380.KS",
+  "005385.KS",
+  "005387.KS",
+  "005490.KS",
+  "005930.KS",
+  "005935.KS",
+  "006260.KS",
+  "006400.KS",
+  "009540.KS",
+  "010060.KS",
+  "010120.KS",
+  "010130.KS",
+  "011200.KS",
+  "011780.KS",
+  "012330.KS",
+  "012450.KS",
+  "017670.KS",
+  "018260.KS",
+  "021240.KS",
+  "024110.KS",
+  "028260.KS",
+  "029780.KS",
+  "030200.KS",
+  "032640.KS",
+  "032830.KS",
+  "033780.KS",
+  "034020.KS",
+  "034730.KS",
+  "035250.KS",
+  "035420.KS",
+  "036460.KS",
+  "036570.KS",
+  "042660.KS",
+  "047040.KS",
+  "047810.KS",
+  "051900.KS",
+  "066570.KS",
+  "068270.KS",
+  "071050.KS",
+  "078930.KS",
+  "088350.KS",
+  "088980.KS",
+  "090430.KS",
+  "096770.KS",
+  "105560.KS",
+  "111770.KS",
+  "138040.KS",
+  "138930.KS",
+  "139480.KS",
+  "161890.KS",
+  "207940.KS",
+  "271560.KS",
+  "316140.KS"
+ ],
+ "inputs": {
+  "bokPolicyRate": {
+   "basis": "BOK_POLICY_RATE_PROXY",
+   "events": 36,
+   "firstEvent": "2009-02-13",
+   "path": "data/bok-policy-rates.json",
+   "sha256": "a7edf0e532c7b54da9d962ebf12ff2552c90c783439fef99d7c761c5b9ea69ff",
+   "verifiedThrough": "2026-09-07"
+  },
+  "correctedEtfSeries": {
+   "actualSha256": "58580c4370ec2c5afa124f849afbc4fa7b5c879012e75ebbd48ee7c7a0e659a9",
+   "definition": "GROSS_ETF_MARKET_PRICE_TOTAL_RETURN_EX_DATE_CLOSE_CASH_REINVESTMENT (Phase C aggregateStatus PASS; 46 official distributions from 2012; before investor tax)",
+   "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json",
+   "pinnedSha256": "58580c4370ec2c5afa124f849afbc4fa7b5c879012e75ebbd48ee7c7a0e659a9"
+  },
+  "regionalStandalonePaths": {
+   "path": "docs/results/regional-standalone-paths.json.gz",
+   "sha256": "7a09751f99f5d892821cac6bbb4f28359049d58364cb40db1814fac4f93210cb"
+  },
+  "terminationInventory": {
+   "path": "docs/results/kr-termination-inventory.json",
+   "sha256": "b58ecb2c4500302c40784613318c8451beee663ece5ee76ada26873a4292f93f"
+  },
+  "weeklyReplay": {
+   "inputManifestSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+   "path": "docs/weekly-decision/weekly-passive-first-v1-replay-corrected-benchmark.json",
+   "regionalPathsSha256": "d92f7e145153dc2e14b07649e7352712db6eeb58ce1ed948591da2c6fe604642",
+   "sha256": "901b3aee7d3bc06eed3fd2bd14b07a0d4ca4da23745b861a877203c48772b8d2"
+  }
+ },
+ "mode": "READINESS_OUTCOME_FREE",
+ "namesPerBlock": {
+  "3": 155
+ },
+ "navValuesRead": 0,
+ "readKeysOnly": [
+  "date",
+  "endDate",
+  "signalDate",
+  "weights",
+  "selectedTickers",
+  "corporateActionsApplied"
+ ],
+ "returnsRead": 0,
+ "study": "c2-fixed-exposure-attribution-v1",
+ "targetStockWeight": {
+  "max": 0.650001,
+  "min": 0.418272
+ },
+ "terminalWeightsRead": 0
+}

@@ -1,0 +1,116 @@
+{
+ "contractId": "industry-relative-prospective-v1",
+ "status": "PROPOSED_NOT_REGISTERED_NOT_AUTHORIZED",
+ "evidenceClass": "PROSPECTIVE_PAPER",
+ "outcomeFree": true,
+ "question": "Does an industry ranked high by a pre-existing industry signal at the signal date earn a positive 6-12 month total return relative to the regional ETF, net of the cost of holding it through its constituents?",
+ "regions": {
+  "KR": {
+   "universe": "PIT KRX Top120 at the signal date (ledger/universe/kr), common shares; preferred shares follow the v4 PREFERRED_SHARE_OF_ANCHORED_COMMON rule",
+   "classification": {
+    "source": "KRX/KIND industry label observed AT the signal date, mapped by the frozen v4 14-group crosswalk (research_specs/kr-industry-membership-foundation-v4/crosswalk.json)",
+    "version": "KR_INDUSTRY_MEMBERSHIP_FOUNDATION_V4 crosswalk; KRICS (announced 2026-09-22) only via a new version",
+    "historicalStatus": "DATA_FOUNDATION_INSUFFICIENT_V4 (see kr-industry-foundation-status-v1.json); prospective labels are PIT by construction",
+    "smallGroups": "an industry with < 5 eligible names at the signal date is RECORDED but UNRANKED"
+   },
+   "etf": "069500.KS total return",
+   "costs": "weekly_decision.trade_cost_fraction (dated KR sell tax)",
+   "megaCap": "top-2 signal-date caps of the universe (mechanical, not named) and each basket's top1/top2 cap share"
+  },
+  "US": {
+   "universe": "S&P 500 members visible at the signal date (us_sector_membership.members_on)",
+   "classification": {
+    "source": "datasets/s-and-p-500-companies sector column at the latest commit published before the signal date; the recorder pins that commit and its raw-CSV SHA-256",
+    "version": "GICS sector level (11 sectors as published); sub-industry not used",
+    "staleness": "the snapshot age in days is recorded; a snapshot older than 35 days makes the receipt STALE_CLASSIFICATION (recorded, excluded from claims)",
+    "rights": "dataset label, not an index-provider file; license not verified beyond internal research"
+   },
+   "etf": "SPY total return",
+   "costs": "benchmark_alpha.REALISTIC_COSTS['US']",
+   "megaCap": "top-2 signal-date caps of the universe and each basket's top1/top2 cap share"
+  }
+ },
+ "signals": {
+  "rule": "limited to pre-existing candidates with existing descriptive readings; definitions as in the sealed KR industry anatomy (research_specs/kr-industry-opportunity-anatomy-v1.json@37f8cbf6); no new feature, no re-measurement here",
+  "candidates": {
+   "REL_MOM_126": {
+    "existingReading": "docs/results/kr-industry-opportunity-anatomy-v1-report.md@37f8cbf6 (KR CAP H126 IC and tercile spread, descriptive)"
+   },
+   "BREADTH_ABOVE_MA_126": {
+    "existingReading": "docs/results/kr-industry-opportunity-anatomy-v1-report.md@37f8cbf6 (KR CAP H126, descriptive)"
+   },
+   "MEDIAN_ocfYieldProxy": {
+    "existingReading": "docs/results/kr-industry-opportunity-anatomy-v1-report.md@37f8cbf6 and docs/research-program/07-market-industry-stock-portfolio-hierarchy-ko.md@37f8cbf6 sec 2.2 (sign not stable across periods)"
+   }
+  },
+  "usNote": "US has no historical reading of any of the three; the US leg is an independent prospective sample"
+ },
+ "construction": {
+  "module": "research/master_research_program_v1/market_industry/industry_relative.py",
+  "cohort": "membership and caps fixed at the signal date; returns from the next session close for H126 / H252 sessions",
+  "baskets": "equal-weight AND cap-weight industry total return, each minus the ETF total return on identical dates",
+  "missingConstituent": "basket = None and counted (no renormalisation); a refused basket is excluded from BOTH sides of a comparison on that date; > 10% refused baskets on a date makes the date unreadable",
+  "terminations": "a constituent without terminal consideration makes its basket None (prospective_receipt_core terminal rule)",
+  "ranking": "industries ranked within date by each signal; top tercile (ties by industry name) vs ETF; top-minus-bottom tercile reported"
+ },
+ "horizons": {
+  "primary": "H252",
+  "secondary": "H126",
+  "cadence": "weekly signal dates; one cohort per week"
+ },
+ "inference": {
+  "method": "Newey-West HAC on the weekly cohort series",
+  "lags": {
+   "H126": 26,
+   "H252": 51
+  },
+  "family": [
+   "KR-REL_MOM_126",
+   "KR-BREADTH_ABOVE_MA_126",
+   "KR-MEDIAN_ocfYieldProxy",
+   "US-REL_MOM_126",
+   "US-BREADTH_ABOVE_MA_126",
+   "US-MEDIAN_ocfYieldProxy"
+  ],
+  "multiplicity": "Holm one-sided alpha 0.05 over the six H252 claims (top-tercile EW basket - ETF, net 1x cost)",
+  "calibrationPrerequisite": "a calibration cell for this statistic at the realised depth before any confirmatory read"
+ },
+ "diagnostics": [
+  "cap-weighted vs equal-weighted reading (both published)",
+  "top1/top2 cap share per basket",
+  "reading without the universe's top-2 caps (mechanical)",
+  "names REPLACED vs weights RETARGETED turnover",
+  "share of the signal explained by the market state (TIMING contract states recorded on the same dates)"
+ ],
+ "minimumAccrual": {
+  "H252": "6 non-overlapping matured H252 windows per region",
+  "H126": "6 non-overlapping matured H126 windows",
+  "minIndustriesRanked": "at least 6 ranked industries per date (KR historical minimum observed 6 sufficient groups)"
+ },
+ "decision": {
+  "SUPPORTED": "Holm lower bound > 0 at 1x cost AND positive at 2x AND same sign for EW and CAP baskets",
+  "CONCENTRATION_DEPENDENT": "supported on CAP but not on EW, or vanishes without the top-2 caps",
+  "NO_EVIDENCE": "interval contains zero",
+  "NEGATIVE": "upper bound < 0",
+  "INSUFFICIENT_ACCRUAL": "minimum accrual not met",
+  "SOURCE_BLOCKED": "classification or price source unavailable for > 10% of dates"
+ },
+ "failureRules": [
+  "no signal, window, tercile cut, group map or cost is changed after the first counted receipt",
+  "KR historical industry results (anatomy, Phase C, integrated v1) are never pooled with receipts",
+  "a negative or null read closes this version; KRICS or a new taxonomy is a new contract id"
+ ],
+ "independenceFromStockTrack": [
+  "reads no stock-track score, rank or selection",
+  "own ledger path, own receipts",
+  "stock-within-industry is out of scope; a hierarchy comparison needs its own registration"
+ ],
+ "productionEffect": "NONE",
+ "prerequisites": [
+  "a KR industry receipt writer (none exists)",
+  "a US sector receipt writer that pins the dataset commit (none exists)",
+  "owner decision on small-group handling for KR",
+  "owner registration before the first counted receipt"
+ ],
+ "contractSha256": "44e83ae3da6f7d6023969440b628e9a3667a5d283fc8718ed3b72b45617153f4"
+}

@@ -1,0 +1,122 @@
+{
+ "schema": "MARKET_RECEIPTS_STATUS_V1",
+ "outcomeFree": true,
+ "stateValuesRead": false,
+ "today": "2026-11-03",
+ "signalHistory": {
+  "commit": "0b10f54dfefdafa09470b1c0855bc26bf3c58ea5",
+  "committedAt": "2026-11-04T03:41:35+00:00",
+  "fetch": "git fetch --depth=1 --filter=blob:none origin signal-history"
+ },
+ "statusRule": "RECORDING = last receipt signal date within 14 days of today; STALLED = receipts exist but older; MISSING = no ledger on signal-history",
+ "pathsMatchingMarketPatterns": [],
+ "KR": {
+  "ledgers": [
+   {
+    "studyId": "rp1-b-h1-state-v1",
+    "kind": "MARKET_STATE_RECEIPT",
+    "writer": "scripts/record_rp1_b_h1_state.py (hook in scripts/update_ledger.py)",
+    "spec": "docs/research-program/specs/rp1-b-h1-state-v1.json",
+    "fieldsPresenceChecked": [
+     "state.fast"
+    ],
+    "candidateCoverage": {
+     "C0": "DERIVABLE: C0 reads FAST only and the receipt stores the sealed FAST state",
+     "C1": "NOT_DERIVABLE: SLOW (10y-3m re-steepening) and TRANSITION (VIX level) are not recorded"
+    },
+    "ledgerPath": "signal-history ledger/research-strategies/rp1-b-h1-state-v1/",
+    "filesPresent": [
+     "coverage.json",
+     "publication-status.coverage.json",
+     "publication-status.json",
+     "publication-status.outcomes.json",
+     "publication-status.record.json",
+     "receipts.jsonl"
+    ],
+    "receipts": 1,
+    "firstSignalDate": "2026-10-30",
+    "lastSignalDate": "2026-10-30",
+    "lastWriteUtc": "2026-10-31T05:47:52.795974+00:00",
+    "evidenceClasses": [
+     "PROSPECTIVE_PAPER"
+    ],
+    "fieldsPresentInEveryRow": {
+     "state.fast": true
+    },
+    "status": "RECORDING",
+    "firstExecutionDate": "2026-11-02",
+    "firstMaturitySessions": {
+     "H63": "2027-02-02",
+     "H126": "2027-05-06",
+     "H252": "2027-11-09"
+    },
+    "nextExpectedSignalDate": "2026-11-06",
+    "lastStatusRun": {
+     "attemptedAt": "2026-11-03T06:56:38.974683+00:00",
+     "runId": "41590413444",
+     "status": "OK",
+     "record": "SKIPPED",
+     "recordReason": "NOT_A_WEEKLY_DECISION_SESSION: 2026-11-02",
+     "outcomes": "BLOCKED_OUTCOME_CONTRACT_NOT_REGISTERED"
+    }
+   }
+  ],
+  "contractsWithoutWriter": {
+   "kr-market-risk-model-v1": {
+    "module": "pipeline/kr_market_risk_model_receipts.py",
+    "note": "receipt contract for all C0-C3 multipliers is designed and tested; no script writes it and no ledger exists",
+    "status": "MISSING"
+   },
+   "rp1-c-kr-risk-state-receipt-preview-v1": {
+    "module": "pipeline/rp1_c_risk_state_receipt.py",
+    "note": "PREVIEW only: evidenceClass PROSPECTIVE_PAPER_PREVIEW, ledgerWritten false by construction",
+    "status": "MISSING"
+   },
+   "kr-integrated-alpha-portfolio-v1": {
+    "module": "pipeline/kr_integrated_alpha_portfolio_receipts.py",
+    "note": "receipt contract (C0/C1-scaled books) exists; no writer script, no ledger",
+    "status": "MISSING"
+   }
+  },
+  "candidateStatus": {
+   "C0": "RECORDING_INDIRECTLY via rp1-b-h1-state-v1 state.fast (the exposure itself is not stored)",
+   "C1": "MISSING: no SLOW/TRANSITION recording path"
+  }
+ },
+ "US": {
+  "ledgers": [],
+  "expected": {
+   "C1d-PROSPECTIVE-RECEIPTS-US": {
+    "source": "docs/research-program/07-market-industry-stock-portfolio-hierarchy-ko.md sec 2.1 (listed only)",
+    "stateMachine": "pipeline/rp1_c1_us_exposure.py (layer_states / decision_schedule with market='US')",
+    "note": "named as a follow-up candidate; no module, spec, writer or ledger exists",
+    "status": "MISSING"
+   }
+  },
+  "candidateStatus": {
+   "C0": "MISSING",
+   "C1": "MISSING"
+  }
+ },
+ "notMarketStateReceipts": {
+  "weekly-decisions": {
+   "path": "ledger/weekly-decisions/receipts.jsonl",
+   "why": "weekly-passive-first-v1 stock-vs-ETF decisions; no exposure state or multiplier (US index 100% throughout)",
+   "receipts": 8,
+   "firstAsOf": "2026-10-08",
+   "lastAsOf": "2026-10-30"
+  },
+  "current-champion-decisions-v1": {
+   "path": "ledger/research-strategies/current-champion-decisions-v1/receipts.jsonl",
+   "why": "stock-selection champion paper observations; not a market exposure state",
+   "receipts": 13,
+   "firstAsOf": "2026-10-09",
+   "lastAsOf": "2026-10-30"
+  }
+ },
+ "missingRecordingPaths": [
+  "KR C1-C3: SLOW and TRANSITION layer states (and the resulting multipliers) are not recorded; kr_market_risk_model_receipts has no writer",
+  "KR C0: the multiplier is derivable from B-H1's FAST but no receipt stores the executed exposure or the 069500.KS execution",
+  "US C0-C3: no state recorder, no ledger (C1d-PROSPECTIVE-RECEIPTS-US is listed only)"
+ ]
+}
