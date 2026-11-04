@@ -172,3 +172,35 @@ def test_krw_investor_fx_has_separate_receipt_and_no_future_or_same_day_release(
         us.validate_us_currency_basis(**args, fx_observation={**observation, "observationDate": "2020-01-06"})
     with pytest.raises(ValueError, match="SOURCE_RECEIPT_REQUIRED"):
         us.validate_us_currency_basis(**args, fx_observation={**observation, "sha256": ""})
+
+
+@pytest.mark.parametrize("closed_day", ["2020-01-04", "2020-01-05", "2020-01-01", "2020-07-03"])
+def test_caller_cannot_declare_us_weekends_or_exchange_holidays_as_sessions(closed_day):
+    raw = us.canonical(record())
+    supplied = sorted({"2020-01-02", "2020-01-03", closed_day})
+    with pytest.raises(ValueError, match="NON_US_TRADING_SESSION"):
+        us.build_filing_metadata_inputs(raw, digest(raw), signal_day=closed_day,
+                                        member_cik="123", sessions=supplied)
+
+
+def test_regular_signal_does_not_allow_an_invalid_supplied_calendar():
+    raw = us.canonical(record())
+    with pytest.raises(ValueError, match="NON_US_TRADING_SESSION"):
+        us.build_filing_metadata_inputs(raw, digest(raw), signal_day="2020-01-03", member_cik="123",
+                                        sessions=["2020-01-02", "2020-01-03", "2020-01-04"])
+
+
+def test_regular_us_early_close_remains_a_valid_session():
+    raw = us.canonical(record())
+    result = us.build_filing_metadata_inputs(raw, digest(raw), signal_day="2020-11-27", member_cik="123",
+                                            sessions=["2020-11-25", "2020-11-27"])
+    assert result["records"][0]["status"] == "PIT_METADATA_ONLY"
+
+
+def test_fx_availability_cannot_precede_observation():
+    args = {"stock_currency": "USD", "benchmark_currency": "USD", "investor_currency": "KRW", "signal_day": "2020-01-03"}
+    observation = {"quote": "KRW_PER_USD", "observationDate": "2020-01-02", "availableFrom": "2020-01-01",
+                   "source": "SYNTHETIC_FX_SOURCE", "sha256": "a" * 64}
+    with pytest.raises(ValueError, match="FX_AVAILABILITY_PRECEDES_OBSERVATION"):
+        us.validate_us_currency_basis(**args, fx_observation=observation)
+    assert us.validate_us_currency_basis(**args, fx_observation={**observation, "availableFrom": "2020-01-02"})["fxEmbedded"]

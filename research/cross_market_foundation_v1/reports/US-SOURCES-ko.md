@@ -44,11 +44,11 @@
 - [실제 공시 metadata 소표본](../evidence/us-filing-metadata-sample.json): 고정 Finnhub 2013 shard의 `A|0001090872-13-000005`를 날짜/CIK 등 9필드로만 투영했다. 원본 shard blob/SHA와 원본 JSONL 행 SHA를 기록했다. 원문 재무 수치·가격은 포함하지 않는다. `availableFrom=2013-03-06`, `acceptedDate=2013-03-05 20:37:31`이므로 2013-03-06에는 보류하고 다음 거래일부터 metadata만 가시화한다.
 - [SEC 실제 header](../evidence/industry-sec-aapl-2023-header.sgml): 산업 작업에서 952B를 실제 복구했다. [probe receipt](../evidence/industry-sec-probe.json)의 HTTP200·hash와 CIK/SIC/acceptance/filing date를 구분한다. 과거 SEC403은 endpoint/time-specific 기록이다. 한 header의 성공으로 전체 SIC/공시/소유거래 패널 확보를 선언하지 않는다.
 
-공시 adapter는 publication과 acceptance의 전체 timestamp를 검사하고 **원표기일과 New York 날짜 중 늦은 날 전체까지 보류**한다. 다음 실제 session만 허용한다. 결측/0/16자리 CIK, 잘못된 시각, fiscalYear 1215 같은 미증명 회계연도, 중복 filing ID를 안전하게 거부한다. `PIT_METADATA_ONLY`를 반환해도 주가 증권 신원이나 outcome admission은 false다. 현재 ticker/CIK를 과거로 확장하는 기능은 없다.
+공시 adapter는 publication과 acceptance의 전체 timestamp를 검사하고 **원표기일과 New York 날짜 중 늦은 날 전체까지 보류**한다. 기존 `pipeline.replay_calendar`의 US/XNYS 거래일로 제공된 session 전체를 검증하여 주말·휴장일을 거부하고, 단축 거래일은 허용한다. 결측/0/16자리 CIK, 잘못된 시각, fiscalYear 1215 같은 미증명 회계연도, 중복 filing ID를 안전하게 거부한다. `PIT_METADATA_ONLY`를 반환해도 주가 증권 신원이나 outcome admission은 false다. 현재 ticker/CIK를 과거로 확장하는 기능은 없다.
 
 #287이 이미 수정한 WID 실행기를 복제하거나 수정하지 않았다. 그 연구의 권리·price issuer/share-class·return basis 3개 차단은 유지한다. 고정된 127개 월별 action component의 SPY 이벤트 0건이라는 #287 발견을 재사용하며, 이 표본의 범위를 189개 전체로 확대해서 주장하지 않는다. 공개 dual-benchmark가 별도 존재한다는 사실도 기존 replay stock/ETF가 같은 원거래·분배 기준이라는 증명이 아니다.
 
-미국 경제 비교는 **USD 주식 총수익과 USD SPY 총수익**을 기본으로 한다. KRW 투자자 비교는 같은 native USD 기준에 별도 KRW_PER_USD FX 원천·관측일·가용일을 붙여야 하며, implicit FX 포함과 USD/원화 benchmark 혼용을 입력 단계에서 거부한다. FX 수익을 주식 초과수익으로 부르지 않는다. 실제 환율·배당·종료·비용 적격성 검사는 공통 경제성 계약이 별도로 수행한다.
+미국 경제 비교는 **USD 주식 총수익과 USD SPY 총수익**을 기본으로 한다. KRW 투자자 비교는 같은 native USD 기준에 별도 KRW_PER_USD FX 원천·관측일·가용일을 붙여야 하며, implicit FX 포함과 USD/원화 benchmark 혼용을 입력 단계에서 거부한다. FX 관측일 ≤ 보수적 공개일 < 신호일의 인과 순서를 강제하여 관측 전 공개·같은 날 공개를 허용하지 않는다. FX 수익을 주식 초과수익으로 부르지 않는다. 실제 환율·배당·종료·비용 적격성 검사는 공통 경제성 계약이 별도로 수행한다.
 
 ## 연구 준비도와 가장 가치 있는 다음 작업
 
@@ -77,6 +77,6 @@ python -m pytest -q tests/test_cross_market_us_sources.py tests/test_us_departed
 ruff check research/cross_market_foundation_v1/us_sources.py tests/test_cross_market_us_sources.py
 ```
 
-현재 신규 24개 + 재사용 엔진 회귀 50개 = **74개 통과**. 원천 감사 generator의 567개 hash/tree 검증과 실제 metadata 소표본 테스트는 합성 가격 계산과 구분했다. 재실행 보고서와 패키지 evidence의 byte equality도 확인한다. 테스트는 새 역사 수익률·C2·WID·기존 봉인 outcome을 실행하지 않는다. 코드 최종 통합 HEAD·추가 독립 검증은 root audit packet에 기록한다.
+현재 신규 31개 + 재사용 엔진 회귀 50개 = **81개 통과**. 원천 감사 generator의 567개 hash/tree 검증과 실제 metadata 소표본 테스트는 합성 가격 계산과 구분했다. 재실행 보고서와 패키지 evidence의 byte equality도 확인한다. 테스트는 새 역사 수익률·C2·WID·기존 봉인 outcome을 실행하지 않는다. 코드 최종 통합 HEAD·추가 독립 검증은 root audit packet에 기록한다.
 
 독립 감사 시 특히 (a) Git blob 존재가 권리/증권 신원으로 승격되지 않는지, (b) 212개 cohort가 탈락하지 않는지, (c) raw archive 부재와 예전 coverage 집계가 혼동되지 않는지, (d) PIT 날짜·CIK가 미래 정보로 보완되지 않는지, (e) 미국 USD 비교에 KRW FX가 섞이지 않는지를 확인한다.

@@ -16,8 +16,13 @@
 | SEC-CITATION: Apple 원문에 다른 회사 URL 결합 가능 | URL host/path/CIK/accession 디렉터리/파일명을 원문과 결속. 잘못된 issuer·accession·query·위장 host 회귀 |
 | TERMINAL-REFERENCE: 임의 문자열을 terminal evidence로 인정 가능 | digest-reference 계약 강제. 이것도 실제 원문 검증·admission과 다름을 명시 |
 | DISTRIBUTION-PARTIAL: 일부 배당 쌍 일치가 누락 이벤트를 가림 | unmatched 양쪽 이벤트 수·실패 코드와 completeness=false 유지 |
+| US-SESSION-TRUST: 호출자가 넣은 주말/휴장일을 실제 거래일로 취급 | 기존 US 지역 달력으로 제공 session 전체를 대조. 주말·휴장일 거부 및 실제 단축 거래일 허용 회귀 |
+| FX-AVAILABILITY-INVERSION: 관측일보다 이른 공개일 허용 | 관측일 ≤ 공개일 < 신호일 인과 순서 강제 |
+| COST-STRESS-LIQUIDATION: 스트레스 청산비용이 매도금액을 넘어 음수 NAV 발생 | SELL의 스트레스 적용 요율이100% 이상이면 거부. 높은 BUY 요율의 자기금융 계산은 유지 |
 
 미국 원천 담당의 industry/economics 읽기 전용 교차 검토가 첫 두 외부 재현 사례를 포함했다. 이는 동료 코드 검토이며 비저자 최종 GitHub 승인으로 부르지 않는다. 수정 회귀 및 KR/US 통합 합성 테스트를 제공한다.
+
+US 작성자가 아닌 비교 모듈 담당자가595개 commit/path→blob의 Git hash·실제 SHA256/크기171,108,989B, replay567개 logical hash와212개 cohort 집계를 별도로 대조했다. source admission은 계속false다. 경제성 담당자는 비교 모듈의 정상 자기금융 산식과 극단 비용 경계 결함을 독립 합성 재현했다. 마지막 세 결함은 실제 outcome 실행 경로가 없는 상태의 입력 경계 결함이며, 실제 입력 승격 전에 최소 수정했다.
 
 ## 감사자가 확인할 잔여 위험
 

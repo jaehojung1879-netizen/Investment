@@ -212,6 +212,34 @@ def test_identical_targets_pay_identical_costs_regardless_of_model_label():
         assert scenario["modeledFees"]["P1"] == scenario["modeledFees"]["P3"]
 
 
+@pytest.mark.parametrize(("commission_bps", "stress"), [(4000, 3), (5000, 2)])
+def test_stressed_sell_fee_cannot_consume_or_exceed_liquidation_proceeds(commission_bps, stress):
+    common, _ = inputs()
+    common["costModel"]["tariff"]["STOCK"]["SELL"] = {
+        "commissionBps": commission_bps, "spreadBps": 0, "slippageBps": 0, "taxBps": 0}
+    sell = {"legId": "synthetic-sale", "security": "A", "side": "SELL", "session": "2025-01-03",
+            "notionalFractionOfInitialNav": 1}
+    with pytest.raises(ValueError, match="STRESSED_SELL_COST_NOT_SELF_FINANCING"):
+        C.price_execution_legs(common, [sell], stress=stress)
+    # High BUY costs remain valid: entry funding accounts for their consumption.
+    common["costModel"]["tariff"]["STOCK"]["BUY"] = deepcopy(common["costModel"]["tariff"]["STOCK"]["SELL"])
+    buy = {**sell, "legId": "synthetic-buy", "side": "BUY"}
+    assert C.price_execution_legs(common, [buy], stress=stress)["totalCostFractionOfInitialNav"] == pytest.approx(commission_bps * stress / 10000)
+
+
+def test_scorer_rejects_stress_that_would_create_negative_long_only_nav():
+    common, paths = inputs()
+    for sides in common["costModel"]["tariff"].values():
+        for side in sides:
+            sides[side] = {"commissionBps": 4000, "spreadBps": 0, "slippageBps": 0, "taxBps": 0}
+    common["costPolicySha256"] = C.digest(common["costModel"])
+    for path in paths:
+        path["commonSha256"] = C.digest(common)
+    plan = C.prepare_comparison(common, paths)
+    with pytest.raises(ValueError, match="STRESSED_SELL_COST_NOT_SELF_FINANCING"):
+        C.score_synthetic_fixture(plan, observation_block(plan))
+
+
 def test_terminal_omission_blocks_entire_paired_comparison_not_only_losing_model():
     plan = prepared()
     block = observation_block(plan)

@@ -1,12 +1,13 @@
 {
-  "schema": "FOUNDATION_PRE_PUBLICATION_VERIFICATION_V1",
+  "schema": "FOUNDATION_VERIFICATION_V2",
   "capturedAt": "2026-11-03T23:22:15.330595+00:00",
   "historicalOutcomeExecuted": false,
   "sourceOnlyDataChecks": true,
   "newTests": {
     "command": "python -m pytest -q tests/test_cross_market_*.py",
-    "passed": 170,
-    "failed": 0
+    "passed": 180,
+    "failed": 0,
+    "elapsedSeconds": 4.46
   },
   "ruff": {
     "command": "ruff check .",
@@ -37,11 +38,11 @@
   "codeFileSha256": {
     "__init__.py": "130f2542e7c5a8220c3ea9f69fa4be9a6cd5ec9dbddbe5a5e00a966b1ad84cbf",
     "audit.py": "b6ec3f4f99f05147dd4f91949d815b22522796c5675ab2c838c08d08447d3b5a",
-    "comparison.py": "b2f4da4c3965891cb42d866ac00b7adb6651cd7cc967513db8e07afcc0204645",
+    "comparison.py": "a4a27e8511d2a3bd23d390652b2318bb11ea616161d4088389246e5a668c97fa",
     "economics.py": "e78090410469810f11c4fadf6247a3ef7baf2432b46785972b9cb6a295c5793f",
     "industry.py": "1b8a6bc641c8d7456bb390899903f83716f4cbe69467ba86083f4ef88a3aef57",
     "provenance.py": "bcf9dcc45e178575f32d0301a1b50be2751db0ca9eb962139cd8d6b7a2852571",
-    "us_sources.py": "88a67eeb7745a33e43c3411316087d942083ffe56a6e30f7f872b891670e9fe7"
+    "us_sources.py": "dd85f02e27519565713988343735dd0b4674efd7ab9cb7edf2778c7d19f957c5"
   },
   "localFullSuite": {
     "passed": 6581,
@@ -63,6 +64,28 @@
     "elapsedSeconds": 11.94,
     "codeChangedForRerun": false,
     "capturedLogSha256": "1b673bd94aef7cdac37a6b68b2a820c9d126187e691e9025f6946c884e45b460",
-    "interpretation": "11 initial failures explicitly raised PermissionError opening localhost sockets; the remaining Node integration test also passes unchanged. Its initial precise failure cause was not separately isolated."
+    "interpretation": "11 initial failures explicitly raised PermissionError opening localhost sockets; the remaining Node integration test also passes unchanged. Its initial precise failure cause was not separately isolated.",
+    "codeCommit": "9bde72b42c0a59ccc671b3e114d64f366c2d240a"
+  },
+  "lastVerifiedAt": "2026-11-04T04:12:24.822629+00:00",
+  "previousNewTests": {
+    "command": "python -m pytest -q tests/test_cross_market_*.py",
+    "passed": 170,
+    "failed": 0,
+    "codeCommit": "9bde72b42c0a59ccc671b3e114d64f366c2d240a",
+    "beforeFinalBoundaryFixes": true
+  },
+  "additionalPeerReview": {
+    "independentlyVerifiedCommitPathBlobReceipts": 595,
+    "actualBytes": 171108989,
+    "replayLogicalHashes": 567,
+    "departedCohortIdentifiers": 212,
+    "findingsFixed": [
+      "US-SESSION-TRUST",
+      "FX-AVAILABILITY-INVERSION",
+      "COST-STRESS-LIQUIDATION"
+    ],
+    "actualOutcomeExecuted": false,
+    "independentGitHubApproval": false
   }
 }

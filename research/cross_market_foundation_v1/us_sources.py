@@ -19,6 +19,7 @@ import re
 import subprocess
 from zoneinfo import ZoneInfo
 
+from pipeline.replay_calendar import sessions as exchange_sessions
 from pipeline.us_departed_dataset_admission import filing_visible
 from pipeline.us_departed_price_recovery import canonical, parse_csv
 
@@ -194,6 +195,9 @@ def build_filing_metadata_inputs(raw: bytes, expected_sha256: str, *, signal_day
         raise ValueError("INVALID_SESSION_CALENDAR")
     if signal_day not in sessions:
         raise ValueError("SIGNAL_NOT_A_SESSION")
+    actual_sessions = set(exchange_sessions(sessions[0], sessions[-1], "US").strftime("%Y-%m-%d"))
+    if not set(sessions).issubset(actual_sessions):
+        raise ValueError("NON_US_TRADING_SESSION")
     if not re.fullmatch(r"\d{1,10}", str(member_cik)) or int(member_cik) == 0:
         raise ValueError("INVALID_DATED_MEMBER_CIK")
     records = [json.loads(line) for line in (_inflate(raw) if compressed else raw).splitlines() if line.strip()]
@@ -262,6 +266,8 @@ def validate_us_currency_basis(*, stock_currency: str, benchmark_currency: str,
     observed = date.fromisoformat(str(fx_observation.get("observationDate", ""))).isoformat()
     if observed > signal_day or available >= signal_day:
         raise ValueError("FX_NOT_AVAILABLE_AT_SIGNAL")
+    if observed > available:
+        raise ValueError("FX_AVAILABILITY_PRECEDES_OBSERVATION")
     source = fx_observation.get("source")
     sha = fx_observation.get("sha256", "")
     if not source or not isinstance(sha, str) or not HEX64.fullmatch(sha):

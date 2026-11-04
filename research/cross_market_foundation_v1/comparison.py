@@ -74,8 +74,11 @@ def price_execution_legs(common, legs, *, stress=1):
                  and _finite(leg.get("notionalFractionOfInitialNav")) and leg["notionalFractionOfInitialNav"] >= 0, "EXECUTION_LEG_INVALID")
         _require(_date(model["validFrom"]) <= _date(leg["session"]) <= _date(model["validThrough"]), "EXECUTION_OUTSIDE_TARIFF_VALIDITY")
         kind = "ETF" if leg["security"] == common["benchmarkTicker"] else "STOCK"
+        tariff = model["tariff"][kind][leg["side"]]
+        _require(leg["side"] != "SELL" or math.fsum(tariff.values()) * stress < 10000,
+                 "STRESSED_SELL_COST_NOT_SELF_FINANCING")
         charges = {k: leg["notionalFractionOfInitialNav"] * bps * stress / 10000
-                   for k, bps in model["tariff"][kind][leg["side"]].items()}
+                   for k, bps in tariff.items()}
         priced.append({"legId": leg["legId"], "chargesFractionOfInitialNav": charges,
                        "totalCostFractionOfInitialNav": math.fsum(charges.values())})
     return {"legs": priced, "totalCostFractionOfInitialNav": math.fsum(r["totalCostFractionOfInitialNav"] for r in priced)}
