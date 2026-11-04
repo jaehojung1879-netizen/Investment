@@ -107,3 +107,38 @@ def test_frozen_registration_matches_module_constants():
     assert "63 KRX sessions" in spec["state"]["definition"] and K.TRAILING_SESSIONS == 63
     assert K.BUY_LABEL in spec["information"]["openMarket"] and K.SELL_LABEL in spec["information"]["openMarket"]
     assert spec["status"] == "PREREGISTERED_NOT_EXECUTED" and spec["parser"]["revision"] == "v2"
+
+
+# --- quarantine rule (owner, 2026-11-04): any detail row dated after the DART receipt date ---
+
+def test_row_dated_after_receipt_quarantines_the_whole_filing():
+    # the observed shape: one row dated 212 days after a 2019-03-04 receipt (2019-10-02)
+    rows = K.parse_transactions(doc(row("장내매수(+)", "01", "20190228", "보통주", "1,000", "100"),
+                                    row("장내매수(+)", "01", "20191002", "보통주", "500", "100")))
+    out = K.build_event("A", "r1", "2019-03-04", rows, ["2019-03-04", "2019-03-05"])
+    assert isinstance(out, K.Quarantine)
+    assert out.reason == K.QUARANTINE_ROW_DATED_AFTER_RECEIPT
+    assert out.rows_after_receipt == 1 and out.max_days_after_receipt == 212
+
+
+def test_row_on_the_receipt_date_is_not_quarantined():
+    rows = K.parse_transactions(doc(row("장내매수(+)", "01", "20200103", "보통주", "10", "1")))
+    out = K.build_event("A", "r1", "2020-01-03", rows, SESSIONS)
+    assert isinstance(out, K.Event) and out.available == "2020-01-06" and out.net_shares == 10
+
+
+def test_quarantined_filing_never_contributes_to_state_and_is_counted():
+    good = K.build_event("A", "r1", "2020-01-02", K.parse_transactions(
+        doc(row("장내매도(-)", "01", "20200102", "보통주", "-5", "1"))), SESSIONS)
+    bad = K.build_event("A", "r2", "2020-01-02", K.parse_transactions(
+        doc(row("장내매수(+)", "01", "20200110", "보통주", "1,000,000", "1"))), SESSIONS)
+    events, counts = K.split_events([good, bad, None])
+    assert counts == {"quarantined": 1, "byReason": {K.QUARANTINE_ROW_DATED_AFTER_RECEIPT: 1}}
+    assert K.state_at(events, "A", "2020-01-13", SESSIONS) == "NET_SELLER"
+    with pytest.raises(TypeError, match="EVENTS_ONLY"):
+        K.state_at([good, bad], "A", "2020-01-13", SESSIONS)
+
+
+def test_receipt_after_last_session_is_not_yet_usable():
+    rows = K.parse_transactions(doc(row("장내매수(+)", "01", "20200113", "보통주", "1", "1")))
+    assert K.build_event("A", "r1", "2020-01-13", rows, SESSIONS) is None

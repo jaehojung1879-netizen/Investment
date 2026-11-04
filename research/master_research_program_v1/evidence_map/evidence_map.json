@@ -1,0 +1,591 @@
+{
+ "asOf": "2026-11-04",
+ "classes": [
+  "VERIFIED_EVIDENCE",
+  "EXPLORATORY_EVIDENCE",
+  "EMPIRICAL_FAIL",
+  "SOURCE_BLOCKED",
+  "PREPARED_NOT_EXECUTED",
+  "PROSPECTIVE_PENDING"
+ ],
+ "mainCommit": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+ "mapId": "master-research-evidence-map-v1",
+ "matrix": {
+  "KR": {
+   "INDUSTRY": {
+    "EMPIRICAL_FAIL": [],
+    "EXPLORATORY_EVIDENCE": [
+     "kr-industry-opportunity-anatomy-v1",
+     "industry-information-transfer-v1 H1 (PR #310)"
+    ],
+    "PREPARED_NOT_EXECUTED": [
+     "industry-alpha-kr/us-next-v1 (PR #290)"
+    ],
+    "PROSPECTIVE_PENDING": [],
+    "SOURCE_BLOCKED": [
+     "kr-industry-membership-foundation-v1..v4",
+     "industry-ocfyield-conditional-v1 (PR #300)"
+    ],
+    "VERIFIED_EVIDENCE": []
+   },
+   "MARKET": {
+    "EMPIRICAL_FAIL": [
+     "kr-market-risk-model-v1 (C1-KR, C0..C3)",
+     "kr-market-risk-model-v1 C2_PREEMPTIVE_HIERARCHICAL (Market C2)"
+    ],
+    "EXPLORATORY_EVIDENCE": [],
+    "PREPARED_NOT_EXECUTED": [
+     "C1c asymmetric exit x fast re-entry (PR #289)"
+    ],
+    "PROSPECTIVE_PENDING": [
+     "rp1-b-h1-state-v1 (Track B prospective state receipts) + outcome contract draft (PR #301)"
+    ],
+    "SOURCE_BLOCKED": [
+     "EXP-C-RECOVERY-01/02 (PRs #312, #313)"
+    ],
+    "VERIFIED_EVIDENCE": []
+   },
+   "PORTFOLIO": {
+    "EMPIRICAL_FAIL": [
+     "kr-integrated-alpha-portfolio-v1"
+    ],
+    "EXPLORATORY_EVIDENCE": [
+     "c2_aggregate_evidence_v1 (CHAMPION C2, in PR #286)",
+     "economic-path-readout-v1 (PR #305)",
+     "portfolio-edge-forensics-v1 (PR #309)",
+     "independent_audit_c2_marketc_v1 (PR #300)"
+    ],
+    "PREPARED_NOT_EXECUTED": [
+     "rp1_d_composition_contract / D v2 endogenous breadth (PRs #265, #280, #283 merged)",
+     "c2-fixed-exposure-attribution-v1 (#316)",
+     "portfolio-d-p0-p5-comparison-v1 (this program)"
+    ],
+    "PROSPECTIVE_PENDING": [
+     "current-champion-decisions-v1 (weekly CHAMPION record)"
+    ],
+    "SOURCE_BLOCKED": [
+     "market-industry-alpha-decomposition-v1 (PR #311)"
+    ],
+    "VERIFIED_EVIDENCE": []
+   },
+   "STOCK": {
+    "EMPIRICAL_FAIL": [
+     "kr-alpha-atlas-phase-c-v1 / Phase D",
+     "historical-alpha-discovery-v1 intraday/overnight momentum (PR #286)",
+     "entry-state-role-etf-residual-v1 (PR #304)",
+     "kr-model-overlay-portfolio-v1",
+     "alpha-opportunity-model-v5 (KR)",
+     "regional-alpha-model-v1 (US+KR, 31 features)",
+     "four-factor-signal-attribution-audit",
+     "fundamental-acceleration-discovery-v1"
+    ],
+    "EXPLORATORY_EVIDENCE": [],
+    "PREPARED_NOT_EXECUTED": [
+     "alpha-mechanism-sprint-v1 (PR #308, KR preliminary earnings)",
+     "rp1-kr-a0-measurability-v1 (Study A KR)",
+     "entry-state shadow ledger (#306, open Draft)",
+     "kr-insider-open-market-purchase-v1 (#316)"
+    ],
+    "PROSPECTIVE_PENDING": [
+     "kr-selection-challenger-v1 / v2-accounting (#277/#278)"
+    ],
+    "SOURCE_BLOCKED": [
+     "kr-alpha-discovery-tournament-v1"
+    ],
+    "VERIFIED_EVIDENCE": []
+   }
+  },
+  "US": {
+   "INDUSTRY": {
+    "EMPIRICAL_FAIL": [
+     "M3 backlog -> shipments v1 (PR #302)"
+    ],
+    "EXPLORATORY_EVIDENCE": [],
+    "PREPARED_NOT_EXECUTED": [
+     "industry-alpha-kr/us-next-v1 (PR #290)"
+    ],
+    "PROSPECTIVE_PENDING": [],
+    "SOURCE_BLOCKED": [],
+    "VERIFIED_EVIDENCE": []
+   },
+   "MARKET": {
+    "EMPIRICAL_FAIL": [
+     "rp1-c1-us-exposure-ladder-replication-v1 (C1-US, PR #288)"
+    ],
+    "EXPLORATORY_EVIDENCE": [],
+    "PREPARED_NOT_EXECUTED": [],
+    "PROSPECTIVE_PENDING": [],
+    "SOURCE_BLOCKED": [],
+    "VERIFIED_EVIDENCE": []
+   },
+   "PORTFOLIO": {
+    "EMPIRICAL_FAIL": [],
+    "EXPLORATORY_EVIDENCE": [
+     "portfolio-edge-forensics-v1 (PR #309)"
+    ],
+    "PREPARED_NOT_EXECUTED": [
+     "rp1_d_composition_contract / D v2 endogenous breadth (PRs #265, #280, #283 merged)",
+     "portfolio-d-p0-p5-comparison-v1 (this program)"
+    ],
+    "PROSPECTIVE_PENDING": [
+     "current-champion-decisions-v1 (weekly CHAMPION record)"
+    ],
+    "SOURCE_BLOCKED": [],
+    "VERIFIED_EVIDENCE": []
+   },
+   "STOCK": {
+    "EMPIRICAL_FAIL": [
+     "regional-alpha-model-v1 (US+KR, 31 features)",
+     "entry-state-role-etf-residual-v1 US leg (PR #304)",
+     "four-factor-signal-attribution-audit",
+     "fundamental-acceleration-discovery-v1"
+    ],
+    "EXPLORATORY_EVIDENCE": [],
+    "PREPARED_NOT_EXECUTED": [
+     "us-capital-allocation-alpha-v1",
+     "us-cash-profitability H63 (P3/P4)",
+     "entry-state shadow ledger (#306, open Draft)"
+    ],
+    "PROSPECTIVE_PENDING": [],
+    "SOURCE_BLOCKED": [
+     "WID historical execution recovery (PR #287)",
+     "rp1-a0-measurability-v1 (Study A US, PR #260)",
+     "us-insider-form4 (#316 probe)"
+    ],
+    "VERIFIED_EVIDENCE": []
+   }
+  }
+ },
+ "rowCounts": {
+  "EMPIRICAL_FAIL": 14,
+  "EXPLORATORY_EVIDENCE": 6,
+  "PREPARED_NOT_EXECUTED": 11,
+  "PROSPECTIVE_PENDING": 3,
+  "SOURCE_BLOCKED": 8,
+  "VERIFIED_EVIDENCE": 0
+ },
+ "rows": [
+  {
+   "catalogueClass": "EMPIRICAL_FAIL",
+   "class": "EMPIRICAL_FAIL",
+   "evidence": "docs/results/kr-market-risk-model-v1-result.json @37f8cbf6: decision.developmentNomination = \"NO_CANDIDATE_NOMINATED_CONTROL_RETAINED\"; netAnnualizedReturn C0 0.0673 / C1 0.0714 / passive 0.0973; MDD C0 -0.4087 / C1 -0.3682 / passive -0.5292",
+   "id": "kr-market-risk-model-v1 (C1-KR, C0..C3)",
+   "regions": [
+    "KR"
+   ],
+   "track": "MARKET"
+  },
+  {
+   "catalogueClass": "EMPIRICAL_FAIL",
+   "class": "EMPIRICAL_FAIL",
+   "evidence": "same file: steps.C2.dominatedBy = [C0, C1, C3], returnNonInferiorVersusControl=false, survives=false; C2 net 0.0592, MDD -0.4087",
+   "id": "kr-market-risk-model-v1 C2_PREEMPTIVE_HIERARCHICAL (Market C2)",
+   "regions": [
+    "KR"
+   ],
+   "track": "MARKET"
+  },
+  {
+   "catalogueClass": "EMPIRICAL_FAIL",
+   "class": "EMPIRICAL_FAIL",
+   "evidence": "docs/research-program/results/rp1-c1-us-exposure-formal-20261024/README.md @37f8cbf6: \"Frozen decision: NO_CANDIDATE_NOMINATED_CONTROL_RETAINED; interpretation REPLICATED_CONTROL_RETAINED\"; passive 8.82%/-56.78%, C0 7.77%/-42.33%, C1 7.98%/-43.43%, C2 7.41%/-39.27%",
+   "id": "rp1-c1-us-exposure-ladder-replication-v1 (C1-US, PR #288)",
+   "regions": [
+    "US"
+   ],
+   "track": "MARKET"
+  },
+  {
+   "catalogueClass": "PARTIAL",
+   "class": "PREPARED_NOT_EXECUTED",
+   "evidence": "research/c1c-asymmetric-exit-reentry-design-v1 @92d78cd5 docs/research-program/c1c-asymmetric-exit-reentry-proposal-v1-ko.md: \"DESIGN_PROPOSAL_ONLY / OUTCOME_EXPOSED / NOT_APPROVED / NO_EXECUTION\"; audit docs/research-program/audits/pr289-market-c1c-independent-audit-ko.md @37f8cbf6: \"DESIGN_NOT_READY_FOR_OWNER_APPROVAL\"",
+   "id": "C1c asymmetric exit x fast re-entry (PR #289)",
+   "regions": [
+    "KR"
+   ],
+   "track": "MARKET"
+  },
+  {
+   "catalogueClass": "PARTIAL",
+   "class": "PROSPECTIVE_PENDING",
+   "evidence": "docs/research-program/rp1-b-h1-prospective-state-v1-ko.md @37f8cbf6: \"PREREGISTERED_PROSPECTIVE_STATE_RECORD ... H63 성과 평가는 BLOCKED_OUTCOME_CONTRACT_NOT_REGISTERED\"; #301 @c9eaa036 docs/research-program/rp1-b-h1-outcome-v1-owner-review.md: \"OWNER_REVIEW_DRAFT_NOT_REGISTERED\"; first LIVE signal 2026-10-30, H63 maturity 2027-02-02",
+   "id": "rp1-b-h1-state-v1 (Track B prospective state receipts) + outcome contract draft (PR #301)",
+   "regions": [
+    "KR"
+   ],
+   "track": "MARKET"
+  },
+  {
+   "catalogueClass": "SOURCE_BLOCKED",
+   "class": "SOURCE_BLOCKED",
+   "evidence": "#312 @3b75bb02 research/exp_c_recovery_oracle_v1/README.md: \"SEALED_EVIDENCE_REVIEW + UNREGISTERED_DESIGN; NEW OUTCOME EVALUATION BLOCKED\"; #313 @bd635edc research/exp_c_recovery_validation_v1/RESULTS.md: \"NOT_EXECUTED ... C — execution unavailable on checked source-access paths; recommend historical closure\"",
+   "id": "EXP-C-RECOVERY-01/02 (PRs #312, #313)",
+   "regions": [
+    "KR"
+   ],
+   "track": "MARKET"
+  },
+  {
+   "catalogueClass": "PARTIAL",
+   "class": "PREPARED_NOT_EXECUTED",
+   "evidence": "research/industry-alpha-next-v1 @a72311c0 research/industry_alpha_next_v1/README.md: \"DESIGN_DRAFT / EXECUTION_DISABLED / NOT READY FOR MERGE\"; approval-packet.md: \"PREPARED_NOT_AUTHORIZED\"",
+   "id": "industry-alpha-kr/us-next-v1 (PR #290)",
+   "regions": [
+    "KR",
+    "US"
+   ],
+   "track": "INDUSTRY"
+  },
+  {
+   "catalogueClass": "SOURCE_BLOCKED",
+   "class": "SOURCE_BLOCKED",
+   "evidence": "docs/research-program/07-market-industry-stock-portfolio-hierarchy-ko.md @37f8cbf6 §2.2: \"DATA_FOUNDATION_INSUFFICIENT_V4. 분류 95.295%, 종결 22종목 0%\"; US industry: \"없음\"",
+   "id": "kr-industry-membership-foundation-v1..v4",
+   "regions": [
+    "KR"
+   ],
+   "track": "INDUSTRY"
+  },
+  {
+   "catalogueClass": "PARTIAL",
+   "class": "EXPLORATORY_EVIDENCE",
+   "evidence": "docs/results/kr-industry-opportunity-anatomy-v1-report.md @37f8cbf6: \"Status: EXPLORATORY_DEVELOPMENT_ON_PARTIALLY_RECONSTRUCTED_KR_HISTORY ... Not confirmatory\" (descriptive ICs only)",
+   "id": "kr-industry-opportunity-anatomy-v1",
+   "regions": [
+    "KR"
+   ],
+   "track": "INDUSTRY"
+  },
+  {
+   "catalogueClass": "SOURCE_BLOCKED",
+   "class": "SOURCE_BLOCKED",
+   "evidence": "claude/investment-alpha-research-wmsedu @e580cde9 research/industry_ocfyield_conditional_v1/README.md: \"결과 없는 검정력 게이트: NO_GO\"; power 23.0% at rho=0.10 (needs 80%); only 193/610 dates meet 8-industry minimum (power/sample block, no outcome read)",
+   "id": "industry-ocfyield-conditional-v1 (PR #300)",
+   "regions": [
+    "KR"
+   ],
+   "track": "INDUSTRY"
+  },
+  {
+   "catalogueClass": "EMPIRICAL_FAIL",
+   "class": "EMPIRICAL_FAIL",
+   "evidence": "codex/m3-business-forecast-v1 @06d55d7f research/m3_backlog_v1/REPORT.md: \"M3 backlog → shipments v1: REJECTED (exploratory)\"; skill -0.741581%, interval [-2.103096%, -0.048090%]",
+   "id": "M3 backlog -> shipments v1 (PR #302)",
+   "regions": [
+    "US"
+   ],
+   "track": "INDUSTRY"
+  },
+  {
+   "catalogueClass": "PARTIAL",
+   "class": "EXPLORATORY_EVIDENCE",
+   "evidence": "claude/industry-information-transfer-v1 @50055560 research/industry_information_transfer_v1/REPORT.md: \"H1 = KEEP ... 펀더멘털 정보 전이에 대한 판정이며 수익 주장은 아니다\"; \"H2 = DATA_BLOCKED\"",
+   "id": "industry-information-transfer-v1 H1 (PR #310)",
+   "regions": [
+    "KR"
+   ],
+   "track": "INDUSTRY"
+  },
+  {
+   "catalogueClass": "EMPIRICAL_FAIL",
+   "class": "EMPIRICAL_FAIL",
+   "evidence": "docs/kr-alpha-research-final-development-assessment.md @37f8cbf6: \"BY / Holm 보정 후 개발 증거 통과 0\", \"prospectiveNominations []\", \"Level 4 ... NOT_TRIGGERED\"; 34 NO_DEVELOPMENT_EVIDENCE, 4 BLOCKED",
+   "id": "kr-alpha-atlas-phase-c-v1 / Phase D",
+   "regions": [
+    "KR"
+   ],
+   "track": "STOCK"
+  },
+  {
+   "catalogueClass": "EMPIRICAL_FAIL",
+   "class": "EMPIRICAL_FAIL",
+   "evidence": "codex/historical-alpha-discovery-v1 @97aa2cfe research/historical_alpha_discovery_v1/README.md: \"결과: 안정적인 추가 알파를 발견하지 못했다\"; H126 intraday-minus-momentum +1.99%p, CI −8.41 ~ +16.69%p",
+   "id": "historical-alpha-discovery-v1 intraday/overnight momentum (PR #286)",
+   "regions": [
+    "KR"
+   ],
+   "track": "STOCK"
+  },
+  {
+   "catalogueClass": "PARTIAL",
+   "class": "EXPLORATORY_EVIDENCE",
+   "evidence": "same branch research/c2_aggregate_evidence_v1/result-v2.json: verdict \"INCONCLUSIVE\", validatedAlpha false, promotionEligible false, 3x-cost edgeUpperPp -1.470084",
+   "id": "c2_aggregate_evidence_v1 (CHAMPION C2, in PR #286)",
+   "regions": [
+    "KR"
+   ],
+   "track": "PORTFOLIO"
+  },
+  {
+   "catalogueClass": "EMPIRICAL_FAIL",
+   "class": "EMPIRICAL_FAIL",
+   "evidence": "research/entry-state-shadow-first-observation-v1 @38926172 research/entry_state_role_etf_residual_v1/REPORT.md: \"KR primary contrast ... +1.739pp/yr, 95% CI [-2.779, +6.659], CONTAINS_ZERO\"",
+   "id": "entry-state-role-etf-residual-v1 (PR #304)",
+   "regions": [
+    "KR"
+   ],
+   "track": "STOCK"
+  },
+  {
+   "catalogueClass": "PARTIAL",
+   "class": "PREPARED_NOT_EXECUTED",
+   "evidence": "claude/alpha-mechanism-sprint-v1-shxr6w @f48b6f29 research/alpha_mechanism_sprint_v1/REPORT.md: \"ELIGIBLE_FOR_PROSPECTIVE_REGISTRATION_ONLY\"; \"6~12개월 종목선택 후보로서는 종료를 권고한다\"; returns read 0",
+   "id": "alpha-mechanism-sprint-v1 (PR #308, KR preliminary earnings)",
+   "regions": [
+    "KR"
+   ],
+   "track": "STOCK"
+  },
+  {
+   "catalogueClass": "SOURCE_BLOCKED",
+   "class": "SOURCE_BLOCKED",
+   "evidence": "docs/results/kr-alpha-discovery-tournament-v1-result.json @37f8cbf6: verdict \"BLOCKED_BY_DATA_INTEGRITY\"",
+   "id": "kr-alpha-discovery-tournament-v1",
+   "regions": [
+    "KR"
+   ],
+   "track": "STOCK"
+  },
+  {
+   "catalogueClass": "EMPIRICAL_FAIL",
+   "class": "EMPIRICAL_FAIL",
+   "evidence": "docs/results/kr-model-overlay-portfolio-v1-result.json @37f8cbf6: \"DEVELOPMENT_REJECT\"",
+   "id": "kr-model-overlay-portfolio-v1",
+   "regions": [
+    "KR"
+   ],
+   "track": "STOCK"
+  },
+  {
+   "catalogueClass": "EMPIRICAL_FAIL",
+   "class": "EMPIRICAL_FAIL",
+   "evidence": "docs/results/alpha-opportunity-model-v5-result.json @37f8cbf6: overallStatus \"INCONCLUSIVE\" (claims 21/126 INCONCLUSIVE, economicTier NOT_EVALUATED)",
+   "id": "alpha-opportunity-model-v5 (KR)",
+   "regions": [
+    "KR"
+   ],
+   "track": "STOCK"
+  },
+  {
+   "catalogueClass": "PARTIAL",
+   "class": "PREPARED_NOT_EXECUTED",
+   "evidence": "docs/research-program/results/rp1-kr-a0-measurability-v1.json @37f8cbf6: a1Admission \"GOVERNANCE_CLOSED\", A-H1/H2/H3 verdict \"PROSPECTIVE_ONLY\", mde \"MDE_UNRESOLVED\"",
+   "id": "rp1-kr-a0-measurability-v1 (Study A KR)",
+   "regions": [
+    "KR"
+   ],
+   "track": "STOCK"
+  },
+  {
+   "catalogueClass": "SOURCE_BLOCKED",
+   "class": "SOURCE_BLOCKED",
+   "evidence": "codex/historical-execution-recovery-v1 @9a10baef docs/winner-inflection-discovery/blocker-review-v3/README-ko.md: rights \"BLOCKED\", identity \"BLOCKED\", returnBasis \"BLOCKED\"; \"현재 NOT APPROVED FOR EXECUTION\"",
+   "id": "WID historical execution recovery (PR #287)",
+   "regions": [
+    "US"
+   ],
+   "track": "STOCK"
+  },
+  {
+   "catalogueClass": "SOURCE_BLOCKED",
+   "class": "SOURCE_BLOCKED",
+   "evidence": "docs/research-program/results/rp1-a0-measurability-v1.json @37f8cbf6: a1Admission \"NO_GO\", hypotheses verdict \"PROSPECTIVE_ONLY\", MDE_UNRESOLVED (H3 measurability 1.030% per README)",
+   "id": "rp1-a0-measurability-v1 (Study A US, PR #260)",
+   "regions": [
+    "US"
+   ],
+   "track": "STOCK"
+  },
+  {
+   "catalogueClass": "EMPIRICAL_FAIL",
+   "class": "EMPIRICAL_FAIL",
+   "evidence": "AGENTS.md v2.24 @37f8cbf6: \"{\\\"US\\\": \\\"NO_MODEL_EVIDENCE\\\", \\\"KR\\\": \\\"NO_MODEL_EVIDENCE\\\"}\" (Actions run 35826122755)",
+   "id": "regional-alpha-model-v1 (US+KR, 31 features)",
+   "regions": [
+    "KR",
+    "US"
+   ],
+   "track": "STOCK"
+  },
+  {
+   "catalogueClass": "EMPIRICAL_FAIL",
+   "class": "EMPIRICAL_FAIL",
+   "evidence": "@38926172 REPORT.md: \"US primary contrast ... -1.142pp/yr, 95% CI [-6.462, +3.178], CONTAINS_ZERO\" (survivorship-biased US panel per AGENTS v2.27)",
+   "id": "entry-state-role-etf-residual-v1 US leg (PR #304)",
+   "regions": [
+    "US"
+   ],
+   "track": "STOCK"
+  },
+  {
+   "catalogueClass": "PARTIAL",
+   "class": "PREPARED_NOT_EXECUTED",
+   "evidence": "docs/research-program/README.md @37f8cbf6: \"지금은 결합 검증 BLOCKED_NO_VALIDATED_SELECTION_INPUT\"; docs/research-program/rp1-d-v2-endogenous-breadth-ko.md: \"PREREGISTERED_DESIGN_INACTIVE_NO_ALLOCATION\"",
+   "id": "rp1_d_composition_contract / D v2 endogenous breadth (PRs #265, #280, #283 merged)",
+   "regions": [
+    "KR",
+    "US"
+   ],
+   "track": "PORTFOLIO"
+  },
+  {
+   "catalogueClass": "EMPIRICAL_FAIL",
+   "class": "EMPIRICAL_FAIL",
+   "evidence": "AGENTS.md v2.47 @37f8cbf6: \"INDUSTRY_LAYER_DEVELOPMENT_SUPPORTED, NO_UNAMBIGUOUS_FINAL_ARCHITECTURE, MARKET_LAYER_PARETO_TRADE_OFF\"; \"D did not beat the passive path over the full window (+15.01% vs +20.24% a year, drawdown -57.86% vs -40.69%)\"",
+   "id": "kr-integrated-alpha-portfolio-v1",
+   "regions": [
+    "KR"
+   ],
+   "track": "PORTFOLIO"
+  },
+  {
+   "catalogueClass": "PARTIAL",
+   "class": "EXPLORATORY_EVIDENCE",
+   "evidence": "codex/economic-path-readout-v1 @e46024ca research/economic_path_readout_v1/README.md: \"모든 투자 적격/승격 판정은 INSUFFICIENT_SOURCE_EVIDENCE_NO_PROMOTION\"; KR C2-P0 +1.8181pp CAGR, US C2-P0 -3.7187pp",
+   "id": "economic-path-readout-v1 (PR #305)",
+   "regions": [
+    "KR"
+   ],
+   "track": "PORTFOLIO"
+  },
+  {
+   "catalogueClass": "PARTIAL",
+   "class": "EXPLORATORY_EVIDENCE",
+   "evidence": "codex/portfolio-edge-forensics-v1 @84fe989f research/portfolio_edge_forensics_v1/REPORT.md: \"결론: INCONCLUSIVE — ... 종목선정 알파는 식별하지 못했다\"; top-3 years supply 234.2% of log excess",
+   "id": "portfolio-edge-forensics-v1 (PR #309)",
+   "regions": [
+    "KR",
+    "US"
+   ],
+   "track": "PORTFOLIO"
+  },
+  {
+   "catalogueClass": "SOURCE_BLOCKED",
+   "class": "SOURCE_BLOCKED",
+   "evidence": "codex/market-industry-alpha-decomposition-v1 @e130c64f REPORT.md: Q1 \"BLOCKED — 반도체 귀속\", Q2 \"INCONCLUSIVE — 베타·복리\" (beta 0.6300 [0.5097,0.7503]), Q4 \"BLOCKED — 가장 큰 단일 증거 공백\"",
+   "id": "market-industry-alpha-decomposition-v1 (PR #311)",
+   "regions": [
+    "KR"
+   ],
+   "track": "PORTFOLIO"
+  },
+  {
+   "catalogueClass": "PARTIAL",
+   "class": "EXPLORATORY_EVIDENCE",
+   "evidence": "@e580cde9 research/independent_audit_c2_marketc_v1/README.md: \"판정은 C2 선택 효과에 대해 INCONCLUSIVE\" (beta 0.582 ± 0.079)",
+   "id": "independent_audit_c2_marketc_v1 (PR #300)",
+   "regions": [
+    "KR"
+   ],
+   "track": "PORTFOLIO"
+  },
+  {
+   "class": "PROSPECTIVE_PENDING",
+   "evidence": "signal-history@0b10f54d ledger/research-strategies/kr-selection-challenger-v1/receipts.jsonl and -v2-accounting/receipts.jsonl: 1 receipt each, signalDate 2026-10-30; no matured outcome",
+   "id": "kr-selection-challenger-v1 / v2-accounting (#277/#278)",
+   "regions": [
+    "KR"
+   ],
+   "track": "STOCK"
+  },
+  {
+   "class": "PROSPECTIVE_PENDING",
+   "evidence": "signal-history@0b10f54d ledger/research-strategies/current-champion-decisions-v1/receipts.jsonl: 13 receipts, 10 as-of dates 2026-10-09..2026-10-30, regions KR/US",
+   "id": "current-champion-decisions-v1 (weekly CHAMPION record)",
+   "regions": [
+    "KR",
+    "US"
+   ],
+   "track": "PORTFOLIO"
+  },
+  {
+   "class": "PREPARED_NOT_EXECUTED",
+   "evidence": "docs/us-capital-allocation-alpha-v1.md@37f8cbf6: REGISTERED_PENDING_OWNER_APPROVAL; phase 2 NEEDS_SOURCE_REPAIR",
+   "id": "us-capital-allocation-alpha-v1",
+   "regions": [
+    "US"
+   ],
+   "track": "STOCK"
+  },
+  {
+   "class": "PREPARED_NOT_EXECUTED",
+   "evidence": "docs/us-cash-profitability-p4-execution-design-ko.md@37f8cbf6: scientific CONDITIONAL, execution BLOCKED (owner approval + lock)",
+   "id": "us-cash-profitability H63 (P3/P4)",
+   "regions": [
+    "US"
+   ],
+   "track": "STOCK"
+  },
+  {
+   "class": "EMPIRICAL_FAIL",
+   "evidence": "AGENTS.md v2.21: none of four primary hypotheses clears raw significance; all D_UNSTABLE",
+   "id": "four-factor-signal-attribution-audit",
+   "regions": [
+    "KR",
+    "US"
+   ],
+   "track": "STOCK"
+  },
+  {
+   "class": "EMPIRICAL_FAIL",
+   "evidence": "AGENTS.md v2.22: CASE D NO_DISCOVERY_EVIDENCE",
+   "id": "fundamental-acceleration-discovery-v1",
+   "regions": [
+    "KR",
+    "US"
+   ],
+   "track": "STOCK"
+  },
+  {
+   "class": "PREPARED_NOT_EXECUTED",
+   "evidence": "PR #306 head 49e35ace: hook not merged, no receipt on signal-history",
+   "id": "entry-state shadow ledger (#306, open Draft)",
+   "regions": [
+    "KR",
+    "US"
+   ],
+   "track": "STOCK"
+  },
+  {
+   "class": "PREPARED_NOT_EXECUTED",
+   "evidence": "research/alpha_evidence_sprint_v2/c2-fixed-exposure-attribution-v1.json@86c5983f: owner approval required; investable KRW cash SOURCE_BLOCKED",
+   "id": "c2-fixed-exposure-attribution-v1 (#316)",
+   "regions": [
+    "KR"
+   ],
+   "track": "PORTFOLIO"
+  },
+  {
+   "class": "PREPARED_NOT_EXECUTED",
+   "evidence": "research/alpha_evidence_sprint_v2/kr-insider-open-market-purchase-v1.json@86c5983f; density gate see research/master_research_program_v1/stock/",
+   "id": "kr-insider-open-market-purchase-v1 (#316)",
+   "regions": [
+    "KR"
+   ],
+   "track": "STOCK"
+  },
+  {
+   "class": "SOURCE_BLOCKED",
+   "evidence": "research/alpha_evidence_sprint_v2/evidence/us-insider-probe.json@86c5983f: SEC 403 without a declared contact; US panel survivorship (212 departed identities unpriced)",
+   "id": "us-insider-form4 (#316 probe)",
+   "regions": [
+    "US"
+   ],
+   "track": "STOCK"
+  },
+  {
+   "class": "PREPARED_NOT_EXECUTED",
+   "evidence": "research/master_research_program_v1/portfolio/portfolio-d-p0-p5-comparison-v1.json",
+   "id": "portfolio-d-p0-p5-comparison-v1 (this program)",
+   "regions": [
+    "KR",
+    "US"
+   ],
+   "track": "PORTFOLIO"
+  }
+ ],
+ "verifiedEvidence": {
+  "KR": 0,
+  "US": 0
+ }
+}

@@ -150,11 +150,69 @@ class Event:
     net_krw: float | None
 
 
+@dataclass(frozen=True)
+class Quarantine:
+    """A filing that never contributes to any state (owner rule, 2026-11-04, outcome-blind).
+
+    A detail row dated AFTER the filing's own DART receipt date describes a transaction the
+    filer could not yet have made when the report was received; the filing is internally
+    inconsistent (observed: one sampled original carried a row 212 days after its receipt).
+    Neither the row nor the rest of the filing is trusted, guessed or repaired.
+    """
+    ticker: str
+    receipt_no: str
+    receipt_date: str
+    reason: str
+    rows_after_receipt: int
+    max_days_after_receipt: int
+
+
+QUARANTINE_ROW_DATED_AFTER_RECEIPT = "DETAIL_ROW_DATED_AFTER_RECEIPT"
+
+
+def _days(a: str, b: str) -> int:
+    from datetime import date
+    return (date.fromisoformat(a) - date.fromisoformat(b)).days
+
+
+def build_event(ticker: str, receipt_no: str, receipt_date: str, rows: list[dict],
+                sessions: list[str]) -> "Event | Quarantine | None":
+    """The only constructor of a state-bearing ``Event`` from a parsed original filing.
+
+    ``receipt_date`` is ISO (YYYY-MM-DD). Returns ``Quarantine`` when ANY detail row is dated
+    later than the receipt date, ``None`` when no session follows the receipt yet (not usable),
+    else an ``Event`` with the filing's open-market net. A quarantined filing contributes
+    nothing to ``state_at``, whichever way its open-market rows point.
+    """
+    late = [_days(r["date"], receipt_date) for r in rows if r["date"] > receipt_date]
+    if late:
+        return Quarantine(ticker, receipt_no, receipt_date, QUARANTINE_ROW_DATED_AFTER_RECEIPT,
+                          len(late), max(late))
+    available = available_session(receipt_date, sessions)
+    if available is None:
+        return None
+    net = open_market_net(rows)
+    return Event(ticker, receipt_no, receipt_date, available, net["netShares"], net["netKrw"])
+
+
+def split_events(built: list) -> tuple[list["Event"], dict]:
+    """Keep Events, count Quarantines by reason (never silently dropped)."""
+    events, quarantined = [], {}
+    for item in built:
+        if isinstance(item, Quarantine):
+            quarantined[item.reason] = quarantined.get(item.reason, 0) + 1
+        elif isinstance(item, Event):
+            events.append(item)
+    return events, {"quarantined": sum(quarantined.values()), "byReason": quarantined}
+
+
 def state_at(events: list[Event], ticker: str, anchor: str, sessions: list[str],
              trailing=TRAILING_SESSIONS) -> str:
     """Issuer state on an anchor: net open-market insider shares over events AVAILABLE in the
     ``trailing`` sessions ending ON the anchor. Uses shares (price-free) so the state never
     reads a price; an amended filing is excluded upstream (originals only)."""
+    if any(not isinstance(e, Event) for e in events):
+        raise TypeError("STATE_TAKES_EVENTS_ONLY")   # a Quarantine can never reach a state
     i = bisect.bisect_right(sessions, anchor) - 1
     if i < 0:
         raise ValueError("ANCHOR_BEFORE_CALENDAR")

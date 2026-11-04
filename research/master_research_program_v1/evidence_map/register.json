@@ -1,0 +1,1991 @@
+{
+ "entries": [
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "Insiders trade on private long-horizon information; open-market purchases are discretionary and costly.",
+   "effectiveSampleAndMde": "G2 projection from 24/254 issuers: pooled buyer share 0.3741, 49/155 anchors interval-PASS, 132/155 point-estimate PASS (need 93); ~25 non-overlapping H126 / ~12 H252 windows; MDE 0.62 / 0.89 sigma_S (preregistration); sigma_S UNKNOWN",
+   "evidenceClass": "PREPARED_NOT_EXECUTED",
+   "evidenceRefs": [
+    "research/master_research_program_v1/stock/insider-density-gate-v1.json@WORKTREE(uncommitted; base 86c5983f)",
+    "research/alpha_evidence_sprint_v2/kr-insider-open-market-purchase-v1.json@86c5983f",
+    "research/master_research_program_v1/stock/evidence-insider-filing-summaries-v1.json.gz@WORKTREE(uncommitted; base 86c5983f)"
+   ],
+   "expectedEconomicImportance": "HIGH: netReturnRelevance score 3/3, mechanism 3/3",
+   "failedGate": null,
+   "h126h252Feasibility": "FEASIBLE: (labels need owner exact-hash approval + KR Phase D exception)",
+   "highestGatePassed": "G1",
+   "nextExecutionUnit": "outcome-blind collection of insider originals for the remaining 230 issuers (~49,000 document calls, ~3 DART days) so G2 is measured on the PIT Top-120 itself instead of projected from ~10 sampled members per anchor; owner to note that 115 of 128 quarantined filings are open-market rows dated 1-4 days after receipt (settlement-date shape)",
+   "overlapWithExisting": "usInventory: H02 insiderTransactions (US, UNAVAILABLE); studies: G06/G07 (5%-rule) are different filers and a different report",
+   "ownerApprovalRequired": true,
+   "pitSourceAndRights": "DART list.json pblntf_ty=D + document.xml original (s.173 report) | SERVED (this lane's G2 run)",
+   "prerequisitesAndBlockers": [
+    "G2 UNCERTAIN: projected from ~10 sampled Top-120 members per anchor; the >=20 no-trade control is the binding bound",
+    "labels need owner exact-hash approval and a KR Phase D exception",
+    "7 PARSE_ERROR filings (line break inside a share-count cell); parser v2 frozen with the registration",
+    "owner quarantine rule removes 128 filings (2.5%), 115 of them open-market rows dated 1-4 days after receipt"
+   ],
+   "priority": {
+    "independence": 3,
+    "krUsExtensible": 2,
+    "mechanism": 3,
+    "netReturnRelevance": 3,
+    "sourceObtainable": 3,
+    "tier": "P1",
+    "timeToDecision": 2
+   },
+   "progressStatus": "ACTIVE",
+   "region": "KR",
+   "researchId": "S4-KR-INSIDER",
+   "title": "Executive / major-shareholder open-market purchases (kr-insider-open-market-purchase-v1)",
+   "track": "STOCK",
+   "transactionCostMeasurable": "PARTIAL: event-basket turnover measurable from filings; costs from the dated schedule"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "The firm is the best-informed insider; buybacks (and in Korea, cancellation - the only kind that cannot be re-issued) signal undervaluation and commit cash; documented 6-12M post-announcement drift elsewhere.",
+   "effectiveSampleAndMde": "254-issuer B (this lane, 256 calls incl. the 24-issuer pass): 399 acquisition decisions / 111 issuers + 440 trust contracts / 83 issuers; per-anchor median 20 PIT Top-120 issuers with a decision or trust contract in the trailing 252 sessions, >=5 on 147/155 and >=10 on 143/155 anchors (2013 anchors left-censored: lists start 2013-01-01). 254-issuer I: 542 cancellation decisions / 111 issuers, median 5, >=5 on 91/155 anchors",
+   "evidenceClass": "NOT_STARTED",
+   "evidenceRefs": [
+    "research/master_research_program_v1/stock/kr-event-report-counts-v1.json@WORKTREE(uncommitted; base 86c5983f)",
+    "research/alpha_mechanism_sprint_v1/data/dart-list/*-I.jsonl.gz@86c5983f",
+    "research_specs/kr-alpha-atlas-registry-v1.json@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "MEDIUM: netReturnRelevance score 2/3, mechanism 2/3",
+   "failedGate": null,
+   "h126h252Feasibility": "FEASIBLE: acquisition decisions and trust contracts dense on 147/155 anchors; cancellations concentrated in 2024-26 (value-up regime)",
+   "highestGatePassed": "G1",
+   "nextExecutionUnit": "outcome-blind parse of acquisition size (% of shares) and purpose on a 40-filing sample, then a pre-registration with its own density gate",
+   "overlapWithExisting": "atlas: J03_buybackAnnouncement (DATA_BUILD_REQUIRED, UNTESTED, not in Phase C), C11_shareDilution (realised share count; Phase C) - partial; phaseC: C11 (partial); usInventory: F05 netShareCountChange, F06 netPayoutYield",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "DART list.json B-type 자기주식취득결정 / 자기주식취득신탁계약체결결정 and I-type 주식소각결정 (receipt date) | LIST SERVED (B: this lane, 25 calls; I: already collected for 254 issuers)",
+   "prerequisitesAndBlockers": [
+    "trust contracts vs direct acquisitions are different commitments; amounts unparsed",
+    "cancellation concentrated in 2024-26 (value-up)"
+   ],
+   "priority": {
+    "independence": 2,
+    "krUsExtensible": 3,
+    "mechanism": 2,
+    "netReturnRelevance": 2,
+    "sourceObtainable": 3,
+    "tier": "P1",
+    "timeToDecision": 2
+   },
+   "progressStatus": "ACTIVE",
+   "region": "KR",
+   "researchId": "S4-KR-BUYBACK-CANCELLATION",
+   "title": "Treasury-share acquisition and cancellation decisions",
+   "track": "STOCK",
+   "transactionCostMeasurable": "PARTIAL: dated KR cost schedule exists (weekly_decision.trade_cost_fraction); turnover of an event basket is unmeasured until events are built"
+  },
+  {
+   "_source": "portfolio/register-entries.json",
+   "economicMechanism": "Tests whether industry information, stock information or their combination earns ETF-relative net return after identical costs, name policy and risk budget; the complex arm carries the burden of proof.",
+   "effectiveSampleAndMde": "~2 non-overlapping H126 per year; MDE = 2.80*sigma_diff/sqrt(N_eff); sigma_diff UNKNOWN (outcome)",
+   "evidenceClass": "PREPARED_NOT_EXECUTED",
+   "evidenceRefs": [
+    "research/master_research_program_v1/portfolio/portfolio-d-p0-p5-comparison-v1.json",
+    "docs/research-program/07-market-industry-stock-portfolio-hierarchy-ko.md@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "HIGH: it is the only route by which any signal reaches Portfolio D",
+   "failedGate": null,
+   "h126h252Feasibility": "PROSPECTIVE_ONLY: first verdict needs >= 8 non-overlapping H126 windows (~4 years)",
+   "highestGatePassed": "G1",
+   "nextExecutionUnit": "owner decides whether to start research-only P0..P5 receipts with UNVALIDATED inputs flagged non-displayable",
+   "overlapWithExisting": "Formalises hierarchical-vs-direct-selection-comparison-v1 (doc 07 §7, PROPOSED); KR historical version exhausted by kr-integrated-alpha-portfolio-v1 (AGENTS v2.47)",
+   "ownerApprovalRequired": true,
+   "pitSourceAndRights": "Prospective receipts via pipeline/prospective_receipt_core (write-once, digest); inputs per arm listed in the contract",
+   "prerequisitesAndBlockers": [
+    "no ADMITTED stock or industry input exists (all arms except P0 are research-only or blocked)",
+    "owner approval of a receipt writer"
+   ],
+   "priority": {
+    "independence": 2,
+    "krUsExtensible": 3,
+    "mechanism": 2,
+    "netReturnRelevance": 3,
+    "sourceObtainable": 2,
+    "tier": "P1",
+    "timeToDecision": 1
+   },
+   "progressStatus": "ACTIVE",
+   "region": "COMMON",
+   "researchId": "P-P0-P5-COMPARISON",
+   "title": "Portfolio D P0..P5 prospective comparison (hierarchical vs direct)",
+   "track": "PORTFOLIO",
+   "transactionCostMeasurable": "YES: dated weekly_decision.trade_cost_fraction at 1x/2x/3x"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "Contract wins above a size threshold (stated as % of revenue) are hard, dated backlog news that analysts fold into earnings slowly; the counterparty name is an economic link.",
+   "effectiveSampleAndMde": "SUPPLY_CONTRACT in kr-event-report-counts-v1.json",
+   "evidenceClass": "NOT_STARTED",
+   "evidenceRefs": [
+    "research/master_research_program_v1/stock/kr-event-report-counts-v1.json@WORKTREE(uncommitted; base 86c5983f)",
+    "research/alpha_mechanism_sprint_v1/data/dart-list/*-I.jsonl.gz@86c5983f"
+   ],
+   "expectedEconomicImportance": "MEDIUM: netReturnRelevance score 2/3, mechanism 2/3",
+   "failedGate": null,
+   "h126h252Feasibility": "FEASIBLE: concentrated in industrials (120 of 254 issuers ever file) - industry confound",
+   "highestGatePassed": "G1",
+   "nextExecutionUnit": "parse probe of contract size (% of revenue) on 40 sampled filings; then a pre-registration",
+   "overlapWithExisting": "atlas: J04_materialDisclosure (generic, DATA_BUILD_REQUIRED); usInventory: G03 corporateEvents8K (US, UNAVAILABLE)",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "DART list.json I-type (receipt date) + document.xml (contract amount, % of revenue, counterparty, term) | LIST READY for 254 issuers (0 new calls); amount parse never run",
+   "prerequisitesAndBlockers": [
+    "contract-size parse",
+    "industry concentration",
+    "219 termination filings must be netted"
+   ],
+   "priority": {
+    "independence": 3,
+    "krUsExtensible": 1,
+    "mechanism": 2,
+    "netReturnRelevance": 2,
+    "sourceObtainable": 3,
+    "tier": "P1",
+    "timeToDecision": 2
+   },
+   "progressStatus": "ACTIVE",
+   "region": "KR",
+   "researchId": "S5-KR-SUPPLY-CONTRACT",
+   "title": "Single sales / supply contract announcements (단일판매ㆍ공급계약체결)",
+   "track": "STOCK",
+   "transactionCostMeasurable": "PARTIAL: dated KR cost schedule exists (weekly_decision.trade_cost_fraction); turnover of an event basket is unmeasured until events are built"
+  },
+  {
+   "_source": "market_industry/register-entries.json",
+   "economicMechanism": "If the sealed state machine moves equity exposure ahead of poor ETF periods, the TIMING term mean((x_t - xbar)(R_E - R_F)) is positive at the SAME average exposure; only that term is value added, the LEVEL term is risk reduction bought with lower exposure.",
+   "effectiveSampleAndMde": "UNKNOWN: 1 receipt on signal-history (2026-10-30); MDE not estimable without an outcome variance",
+   "evidenceClass": "PREPARED_NOT_EXECUTED",
+   "evidenceRefs": [
+    "research/master_research_program_v1/market_industry/market-timing-prospective-contract-v1.json",
+    "research/master_research_program_v1/market_industry/market_receipts_status.json",
+    "research/master_research_program_v1/market_industry/market_timing.py",
+    "docs/results/kr-market-risk-model-v1-result.json@37f8cbf6",
+    "research_specs/kr-market-risk-model-v1.json@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "MEDIUM: decides whether any non-100% exposure can ever be justified as value rather than risk preference",
+   "failedGate": null,
+   "h126h252Feasibility": "PROSPECTIVE_ONLY: KR history is outcome-exposed (Phase D closure); first H252 cohort of the B-H1 FAST leg matures 2027-11-09, a 6-window H252 read is about 6+ years away",
+   "highestGatePassed": "G0",
+   "nextExecutionUnit": "build the weekly KR SLOW/TRANSITION + C0-C3 multiplier writer against kr_market_risk_model_receipts and register the contract",
+   "overlapWithExisting": "Same rules as kr-market-risk-model-v1 (C0 control, C1 gated; development nomination NO_CANDIDATE_NOMINATED_CONTROL_RETAINED) and the FAST leg already recorded by rp1-b-h1-state-v1 (X-B-H1). Distinct: the claim is the TIMING term, not drawdown, and it is read only on receipts. Feeds P-MARKET-MULTIPLIER-INCREMENT.",
+   "ownerApprovalRequired": true,
+   "pitSourceAndRights": "FDR_KS200 (FAST, recorded weekly by B-H1), FRED DGS10/DGS3MO/VIXCLS (SLOW/TRANSITION, public; VIX Cboe-copyrighted, research use as in the sealed snapshot), 069500.KS total return; all observed before the next open",
+   "prerequisitesAndBlockers": [
+    "writer for SLOW/TRANSITION and all candidate multipliers (kr_market_risk_model_receipts has a contract, no writer)",
+    "owner registration of market-timing-prospective-contract-v1 before the first counted receipt",
+    "a calibration cell for the time-series TIMING statistic"
+   ],
+   "priority": {
+    "independence": 2,
+    "krUsExtensible": 3,
+    "mechanism": 2,
+    "netReturnRelevance": 2,
+    "sourceObtainable": 3,
+    "tier": "P1",
+    "timeToDecision": 0
+   },
+   "progressStatus": "ACTIVE",
+   "region": "KR",
+   "researchId": "M-KR-TIMING-PROSPECTIVE",
+   "title": "KR market timing at matched exposure (C0/C1 vs 069500.KS), prospective",
+   "track": "MARKET",
+   "transactionCostMeasurable": "YES: exposure changes priced with kr_market_risk_model BUY_COST/SELL_COST at 1x/2x/3x"
+  },
+  {
+   "_source": "portfolio/register-entries.json",
+   "economicMechanism": "Separates whether the saved C2 CAGR lead is stock selection or a low-beta/compounding effect, using an ex-ante beta-matched ETF+cash twin.",
+   "effectiveSampleAndMde": "155 blocks, ~25 non-overlapping H126 / 12 H252 windows; MDE UNKNOWN (outcome)",
+   "evidenceClass": "PREPARED_NOT_EXECUTED",
+   "evidenceRefs": [
+    "research/alpha_evidence_sprint_v2/c2-fixed-exposure-attribution-v1.json@86c5983f",
+    "research/master_research_program_v1/portfolio/c2-remaining-sources.md"
+   ],
+   "expectedEconomicImportance": "MEDIUM: decides whether C2 is worth a prospective test at all",
+   "failedGate": null,
+   "h126h252Feasibility": "FEASIBLE on exposed history after owner approval (Phase D exception)",
+   "highestGatePassed": "G1",
+   "nextExecutionUnit": "owner authorization or ECOS CD91 validation probe",
+   "overlapWithExisting": "Proposed by #309, named the key gap by #311; not a new strategy",
+   "ownerApprovalRequired": true,
+   "pitSourceAndRights": "Saved standalone ledger + replay-v16 prices + Phase C corrected ETF; investable KRW cash SOURCE_BLOCKED (CD91 item not validated in ECOS config)",
+   "prerequisitesAndBlockers": [
+    "AUTHORIZATION-c2.json (owner)",
+    "CD91 ECOS item validation (optional; band otherwise)"
+   ],
+   "priority": {
+    "independence": 1,
+    "krUsExtensible": 1,
+    "mechanism": 2,
+    "netReturnRelevance": 2,
+    "sourceObtainable": 3,
+    "tier": "P1",
+    "timeToDecision": 3
+   },
+   "progressStatus": "ACTIVE",
+   "region": "KR",
+   "researchId": "P-C2-FIXED-EXPOSURE",
+   "title": "C2 fixed-exposure attribution (selection vs exposure vs compounding)",
+   "track": "PORTFOLIO",
+   "transactionCostMeasurable": "YES"
+  },
+  {
+   "_source": "market_industry/register-entries.json",
+   "economicMechanism": "Same TIMING-versus-LEVEL question on an independent market with the sealed KR rules applied unchanged on the US calendar.",
+   "effectiveSampleAndMde": "UNKNOWN: 0 receipts",
+   "evidenceClass": "PREPARED_NOT_EXECUTED",
+   "evidenceRefs": [
+    "research/master_research_program_v1/market_industry/market-timing-prospective-contract-v1.json",
+    "pipeline/rp1_c1_us_exposure.py@37f8cbf6",
+    "docs/research-program/results/rp1-c1-us-exposure-formal-20261024/README.md@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "MEDIUM: independent second market for the same rule",
+   "failedGate": null,
+   "h126h252Feasibility": "PROSPECTIVE_ONLY: no US state recorder or ledger exists; history is publicly known",
+   "highestGatePassed": "G0",
+   "nextExecutionUnit": "implement a US weekly state/multiplier recorder reusing rp1_c1_us_exposure.layer_states(market='US') and prospective_receipt_core",
+   "overlapWithExisting": "rp1-c1-us-exposure-ladder-replication-v1 (REPLICATED_CONTROL_RETAINED on public history); C1d-PROSPECTIVE-RECEIPTS-US was listed only. Distinct: receipts plus the TIMING claim.",
+   "ownerApprovalRequired": true,
+   "pitSourceAndRights": "FRED SP500 / ^GSPC (FAST), FRED spread and VIX (as KR), SPY total return, FRED DTB3 cash; public, all known before the next open",
+   "prerequisitesAndBlockers": [
+    "US state recorder and append-only ledger (none exists)",
+    "owner registration before the first counted receipt"
+   ],
+   "priority": {
+    "independence": 3,
+    "krUsExtensible": 3,
+    "mechanism": 2,
+    "netReturnRelevance": 2,
+    "sourceObtainable": 3,
+    "tier": "P2",
+    "timeToDecision": 0
+   },
+   "progressStatus": "ACTIVE",
+   "region": "US",
+   "researchId": "M-US-TIMING-PROSPECTIVE",
+   "title": "US market timing at matched exposure (C0/C1 vs SPY), prospective",
+   "track": "MARKET",
+   "transactionCostMeasurable": "YES: rp1_c1_us_exposure US_BUY_COST/US_SELL_COST at 1x/2x/3x"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "As KR; the original literature.",
+   "effectiveSampleAndMde": "2013Q1: 261 S&P 500 purchase rows, 82 issuers",
+   "evidenceClass": "SOURCE_BLOCKED",
+   "evidenceRefs": [
+    "research/alpha_evidence_sprint_v2/evidence/us-insider-probe.json@86c5983f",
+    "docs/us-readiness/us-source-readiness-v1.json@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "HIGH: netReturnRelevance score 3/3, mechanism 3/3",
+   "failedGate": "G1",
+   "h126h252Feasibility": "BLOCKED: BLOCKED: historical outcomes BLOCKED_BY_DATA_INTEGRITY",
+   "highestGatePassed": "G0",
+   "nextExecutionUnit": "owner decision: permitted SEC contact + egress route",
+   "overlapWithExisting": "usInventory: H02",
+   "ownerApprovalRequired": true,
+   "pitSourceAndRights": "SEC insider-transactions datasets (TRANS_CODE='P') | ACCESS_CONDITIONAL: SEC refuses a client without a declared contact; Actions egress refused (AGENTS v2.9; evidence/us-insider-probe.json)",
+   "prerequisitesAndBlockers": [
+    "owner decision on declaring an SEC contact",
+    "US departed-price source (paid)"
+   ],
+   "priority": {
+    "independence": 3,
+    "krUsExtensible": 3,
+    "mechanism": 3,
+    "netReturnRelevance": 3,
+    "sourceObtainable": 0,
+    "tier": "P2",
+    "timeToDecision": 1
+   },
+   "progressStatus": "SOURCE_BACKLOG",
+   "region": "US",
+   "researchId": "S4-US-FORM4",
+   "title": "SEC Form 4 open-market purchases",
+   "track": "STOCK",
+   "transactionCostMeasurable": "NO: US historical panel blocked"
+  },
+  {
+   "_source": "market_industry/register-entries.json",
+   "economicMechanism": "Independent prospective sample for the same industry signals; S&P 500 sectors are large and liquid, so constituent-level costs are low.",
+   "effectiveSampleAndMde": "UNKNOWN: 0 receipts; 11 sectors, min 21-22 names per sector on any weekly date since 2021",
+   "evidenceClass": "PREPARED_NOT_EXECUTED",
+   "evidenceRefs": [
+    "research/master_research_program_v1/market_industry/industry-relative-prospective-contract-v1.json",
+    "research/master_research_program_v1/market_industry/industry_relative.py",
+    "research/master_research_program_v1/market_industry/us-sector-foundation-v1.json"
+   ],
+   "expectedEconomicImportance": "MEDIUM",
+   "failedGate": null,
+   "h126h252Feasibility": "PROSPECTIVE_ONLY",
+   "highestGatePassed": "G0",
+   "nextExecutionUnit": "build the weekly US sector receipt writer on us_sector_membership + industry_relative",
+   "overlapWithExisting": "No US industry study exists; signal definitions inherited from the KR anatomy; labels from D-US-SECTOR-FOUNDATION.",
+   "ownerApprovalRequired": true,
+   "pitSourceAndRights": "S&P 500 dataset snapshot visible at the signal date (commit and raw-CSV hash pinned per receipt; staleness recorded); SPY TR; US PIT fundamentals for MEDIAN_ocfYieldProxy",
+   "prerequisitesAndBlockers": [
+    "US sector receipt writer that pins the dataset commit (none exists)",
+    "dataset license verification for operational use",
+    "owner registration"
+   ],
+   "priority": {
+    "independence": 3,
+    "krUsExtensible": 3,
+    "mechanism": 2,
+    "netReturnRelevance": 2,
+    "sourceObtainable": 2,
+    "tier": "P2",
+    "timeToDecision": 0
+   },
+   "progressStatus": "ACTIVE",
+   "region": "US",
+   "researchId": "I-US-INDUSTRY-PROSPECTIVE",
+   "title": "US sector-relative receipts (same three signals vs SPY)",
+   "track": "INDUSTRY",
+   "transactionCostMeasurable": "YES: benchmark_alpha.REALISTIC_COSTS['US']"
+  },
+  {
+   "_source": "portfolio/register-entries.json",
+   "economicMechanism": "Measures whether the market layer adds value beyond the chosen book, separately from selection, so exposure reduction is not credited as alpha.",
+   "effectiveSampleAndMde": "UNKNOWN until receipts accrue",
+   "evidenceClass": "PREPARED_NOT_EXECUTED",
+   "evidenceRefs": [
+    "research/master_research_program_v1/portfolio/comparison.py"
+   ],
+   "expectedEconomicImportance": "MEDIUM",
+   "failedGate": null,
+   "h126h252Feasibility": "PROSPECTIVE_ONLY",
+   "highestGatePassed": "G0",
+   "nextExecutionUnit": "join with market timing contract receipts once recording",
+   "overlapWithExisting": "Market C0/C1 sealed tables (kr-market-risk-model-v1); timing-vs-level decomposition in the market_industry lane",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "Prospective market-state receipts (B-H1 / C tracks)",
+   "prerequisitesAndBlockers": [
+    "prospective market-state receipts recording"
+   ],
+   "priority": {
+    "independence": 2,
+    "krUsExtensible": 3,
+    "mechanism": 2,
+    "netReturnRelevance": 2,
+    "sourceObtainable": 2,
+    "tier": "P2",
+    "timeToDecision": 1
+   },
+   "progressStatus": "ACTIVE",
+   "region": "COMMON",
+   "researchId": "P-MARKET-MULTIPLIER-INCREMENT",
+   "title": "Market risk multiplier as a separate increment on the finished arm",
+   "track": "PORTFOLIO",
+   "transactionCostMeasurable": "PARTIAL: increment excludes the scale-change trade cost (stated simplification)"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "A dividend change is a costly signal of management's view of persistent earnings; Korea's 2024+ value-up regime changes the base rate.",
+   "effectiveSampleAndMde": "see kr-event-report-counts-v1.json I counts CASH_DIVIDEND_DECISION",
+   "evidenceClass": "NOT_STARTED",
+   "evidenceRefs": [
+    "research/master_research_program_v1/stock/kr-event-report-counts-v1.json@WORKTREE(uncommitted; base 86c5983f)",
+    "research/alpha_mechanism_sprint_v1/data/dart-list/*-I.jsonl.gz@86c5983f",
+    "research_specs/kr-alpha-atlas-registry-v1.json@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "LOW: netReturnRelevance score 1/3, mechanism 2/3",
+   "failedGate": null,
+   "h126h252Feasibility": "FEASIBLE: with caveat: KR distribution basis of the label is PARTIAL (Yahoo), worst exactly for payers",
+   "highestGatePassed": "G1",
+   "nextExecutionUnit": "parse the decision's per-share amount for the 24-issuer sample (outcome-blind) and measure change density",
+   "overlapWithExisting": "atlas: J02_dividendPolicyChange (DATA_BUILD_REQUIRED, UNTESTED, not in Phase C); usInventory: F01, F02, F04; studies: us-capital-allocation-alpha-v1 (US analogue, registered, not executed)",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "DART list.json I-type 현금ㆍ현물배당결정 (receipt date) + document/alotMatter.json for amounts | LIST READY (254 issuers already collected, 0 new calls); amount fields CANDIDATE (alotMatter served live per AGENTS v2.29 probe, per fiscal year)",
+   "prerequisitesAndBlockers": [
+    "amount parse not built",
+    "label distribution basis PARTIAL for dividend payers (AGENTS v2.42)"
+   ],
+   "priority": {
+    "independence": 2,
+    "krUsExtensible": 3,
+    "mechanism": 2,
+    "netReturnRelevance": 1,
+    "sourceObtainable": 2,
+    "tier": "P2",
+    "timeToDecision": 2
+   },
+   "progressStatus": "ACTIVE",
+   "region": "KR",
+   "researchId": "S1-KR-DIVIDEND-POLICY-CHANGE",
+   "title": "Cash-dividend decision changes (initiation / increase / cut)",
+   "track": "STOCK",
+   "transactionCostMeasurable": "PARTIAL: dated KR cost schedule exists (weekly_decision.trade_cost_fraction); turnover of an event basket is unmeasured until events are built"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "Managers issue when equity is expensive; CB/EB dilution overhang.",
+   "effectiveSampleAndMde": "254-issuer B: 405 rights offerings / 126 issuers (per-anchor median 8 Top-120 issuers in 252 sessions), 125 CB / 40, 48 EB / 31 (CB+EB median 3, >=5 on 26/155 anchors)",
+   "evidenceClass": "NOT_STARTED",
+   "evidenceRefs": [
+    "research/master_research_program_v1/stock/kr-event-report-counts-v1.json@WORKTREE(uncommitted; base 86c5983f)",
+    "research_specs/kr-alpha-atlas-phase-c-v1.json@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "MEDIUM: netReturnRelevance score 2/3, mechanism 2/3",
+   "failedGate": null,
+   "h126h252Feasibility": "FEASIBLE: but sparse in Top-120",
+   "highestGatePassed": "G1",
+   "nextExecutionUnit": "fold into a net-issuance event study only after buyback density is measured",
+   "overlapWithExisting": "atlas: C11_shareDilution, C10_liabilityGrowth; phaseC: C10, C11; usInventory: F05",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "DART B-type + I-type list (receipt date) | LIST SERVED",
+   "prerequisitesAndBlockers": [
+    "sparse in large caps"
+   ],
+   "priority": {
+    "independence": 1,
+    "krUsExtensible": 2,
+    "mechanism": 2,
+    "netReturnRelevance": 2,
+    "sourceObtainable": 3,
+    "tier": "P2",
+    "timeToDecision": 2
+   },
+   "progressStatus": "ACTIVE",
+   "region": "KR",
+   "researchId": "S4-KR-EQUITY-ISSUANCE-CB",
+   "title": "Rights offerings, convertible / exchangeable bond decisions",
+   "track": "STOCK",
+   "transactionCostMeasurable": "PARTIAL: dated KR cost schedule exists (weekly_decision.trade_cost_fraction); turnover of an event basket is unmeasured until events are built"
+  },
+  {
+   "_source": "evidence_map/register-entries.json",
+   "economicMechanism": "Market state classification for exposure",
+   "effectiveSampleAndMde": "first H63 maturity 2027-02-02 (#301)",
+   "evidenceClass": "PROSPECTIVE_PENDING",
+   "evidenceRefs": [
+    "PR #301@c9eaa036",
+    "signal-history@0b10f54d"
+   ],
+   "expectedEconomicImportance": "MEDIUM",
+   "failedGate": null,
+   "h126h252Feasibility": "PROSPECTIVE_ONLY",
+   "highestGatePassed": "G1",
+   "nextExecutionUnit": "register the outcome contract before first maturity",
+   "overlapWithExisting": "Track B",
+   "ownerApprovalRequired": true,
+   "pitSourceAndRights": "signal-history ledger/research-strategies/rp1-b-h1-state-v1 (1 receipt, 2026-10-30)",
+   "prerequisitesAndBlockers": [
+    "outcome contract not registered (#301 draft)"
+   ],
+   "priority": {
+    "independence": 2,
+    "krUsExtensible": 2,
+    "mechanism": 2,
+    "netReturnRelevance": 2,
+    "sourceObtainable": 3,
+    "tier": "P2",
+    "timeToDecision": 1
+   },
+   "progressStatus": "ACTIVE",
+   "region": "KR",
+   "researchId": "X-B-H1",
+   "title": "B-H1 prospective market-state receipts",
+   "track": "MARKET",
+   "transactionCostMeasurable": "PARTIAL"
+  },
+  {
+   "_source": "market_industry/register-entries.json",
+   "economicMechanism": "Data foundation: a dated sector label for every member on every date is the prerequisite of any US industry baseline or industry-relative label.",
+   "effectiveSampleAndMde": "Not an outcome study. Measured: 191 snapshot dates, median gap 6 days, max gap 769 days (2018-04-02 -> 2020-05-10), 98 consecutive-snapshot sector changes over 79 symbols",
+   "evidenceClass": "PREPARED_NOT_EXECUTED",
+   "evidenceRefs": [
+    "research/master_research_program_v1/market_industry/us-sector-foundation-v1.json",
+    "research/master_research_program_v1/market_industry/us_sector_membership.py",
+    "data/research/us-capital-allocation-alpha-v1/sp500-snapshot-sectors.json.gz@37f8cbf6",
+    "research_specs/alpha-opportunity-model-v1-us-membership.json.gz@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "MEDIUM: unblocks US industry-relative receipts and descriptive baselines",
+   "failedGate": null,
+   "h126h252Feasibility": "FEASIBLE for labels (sector on every weekly date 2013-2026, >= 99.78% of member-dates); outcome use is limited by I-US-SECTOR-PIT",
+   "highestGatePassed": "G0",
+   "nextExecutionUnit": "freeze us_sector_membership as the US industry receipt classifier and pin the dataset commit per receipt",
+   "overlapWithExisting": "Uses the sealed membership (alpha-opportunity-model-v1-us-membership) and the hash-verified sector snapshots already in data/research/us-capital-allocation-alpha-v1; corrects hierarchy doc 07 sec 2.2 ('US 산업 없음') at sector level only.",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "datasets/s-and-p-500-companies at 195 pinned commits (195/195 raw CSV SHA-256 match the pinned identity evidence); visible from publishedAt; dataset label, not an index-provider file; license not verified beyond internal research",
+   "prerequisitesAndBlockers": [
+    "staleness up to 634 days within 2019 (membership and sector both stale)",
+    "2023-03-07 snapshot carries sub-industry names (carried from earlier snapshot)",
+    "sub-industry history and official GICS history absent"
+   ],
+   "priority": {
+    "independence": 2,
+    "krUsExtensible": 1,
+    "mechanism": 1,
+    "netReturnRelevance": 1,
+    "sourceObtainable": 3,
+    "tier": "P2",
+    "timeToDecision": 3
+   },
+   "progressStatus": "ACTIVE",
+   "region": "US",
+   "researchId": "D-US-SECTOR-FOUNDATION",
+   "title": "PIT US sector membership for S&P 500 members (dataset snapshots)",
+   "track": "DATA",
+   "transactionCostMeasurable": "NO: data foundation"
+  },
+  {
+   "_source": "market_industry/register-entries.json",
+   "economicMechanism": "Industry relative strength and breadth capture slow diffusion of industry-wide demand news; cheap industry cash yield captures mispriced industry cash generation. Read only on future receipts.",
+   "effectiveSampleAndMde": "UNKNOWN: 0 receipts; about 6-12 rankable groups per date",
+   "evidenceClass": "PREPARED_NOT_EXECUTED",
+   "evidenceRefs": [
+    "research/master_research_program_v1/market_industry/industry-relative-prospective-contract-v1.json",
+    "research/master_research_program_v1/market_industry/kr-industry-foundation-status-v1.json",
+    "docs/results/kr-industry-opportunity-anatomy-v1-report.md@37f8cbf6",
+    "docs/kr-industry-membership-foundation-v4.md@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "MEDIUM: the only industry route left in KR",
+   "failedGate": null,
+   "h126h252Feasibility": "PROSPECTIVE_ONLY: KR historical industry evaluation is closed (Phase D) and the v4 foundation is DATA_FOUNDATION_INSUFFICIENT_V4 (terminal coverage 0/2,345; groups-of-five gate failed on 398/610 dates)",
+   "highestGatePassed": "G0",
+   "nextExecutionUnit": "owner decides small-group rule, then build the weekly KR industry receipt writer from industry-relative-prospective-contract-v1",
+   "overlapWithExisting": "Signals and descriptive readings from kr-industry-opportunity-anatomy-v1 (outcome-exposed, not re-measured); X-INDUSTRY-OCF closed the historical OCF conditional (#300); hierarchy doc 07 I-1 kr-industry-prospective-receipt-v1 (PROPOSED). Independent of the Stock track.",
+   "ownerApprovalRequired": true,
+   "pitSourceAndRights": "KRX/KIND industry label observed at the signal date mapped by the frozen v4 14-group crosswalk; PIT Top120; DART receipt-dated fundamentals; 069500.KS TR",
+   "prerequisitesAndBlockers": [
+    "KR industry receipt writer (none exists)",
+    "owner decision on small-group handling (v4 taxonomy not selected)",
+    "owner registration before the first counted receipt"
+   ],
+   "priority": {
+    "independence": 2,
+    "krUsExtensible": 3,
+    "mechanism": 2,
+    "netReturnRelevance": 2,
+    "sourceObtainable": 2,
+    "tier": "P2",
+    "timeToDecision": 0
+   },
+   "progressStatus": "ACTIVE",
+   "region": "KR",
+   "researchId": "I-KR-INDUSTRY-PROSPECTIVE",
+   "title": "KR industry-relative receipts (REL_MOM_126, BREADTH_ABOVE_MA_126, MEDIAN_ocfYieldProxy vs 069500.KS)",
+   "track": "INDUSTRY",
+   "transactionCostMeasurable": "YES: weekly_decision.trade_cost_fraction through constituents"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "Blockholders with a control or activist purpose move prices over months; passive filers do not.",
+   "effectiveSampleAndMde": "LARGE_HOLDING_5PCT_REPORT in kr-event-report-counts-v1.json",
+   "evidenceClass": "NOT_STARTED",
+   "evidenceRefs": [
+    "research/master_research_program_v1/stock/kr-event-report-counts-v1.json@WORKTREE(uncommitted; base 86c5983f)",
+    "research_specs/kr-alpha-atlas-registry-v1.json@37f8cbf6",
+    "docs/dart-ownership-history-replay-integrity-v1.md@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "MEDIUM: netReturnRelevance score 2/3, mechanism 2/3",
+   "failedGate": null,
+   "h126h252Feasibility": "FEASIBLE: if parsed; shares filers with the insider axis",
+   "highestGatePassed": "G0",
+   "nextExecutionUnit": "parse probe on 30 sampled 5% originals",
+   "overlapWithExisting": "atlas: G06_largeHolderAccumulation, G07_largeHolderReduction; usInventory: H01 13F (US analogue)",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "DART list.json pblntf_ty=D (주식등의대량보유상황보고서) + document.xml; majorstock.json serves only 2 years | LIST HISTORY MEASURED here (0 new calls): 1,685 original 5% reports 2013-2026 in 23 of 24 sampled issuers, >=99 per year; registry's BLOCKED_HISTORICAL_DEPTH refers to majorstock.json, not to list.json",
+   "prerequisitesAndBlockers": [
+    "5%-report table parser",
+    "overlap with insider filers"
+   ],
+   "priority": {
+    "independence": 1,
+    "krUsExtensible": 2,
+    "mechanism": 2,
+    "netReturnRelevance": 2,
+    "sourceObtainable": 2,
+    "tier": "P2",
+    "timeToDecision": 2
+   },
+   "progressStatus": "ACTIVE",
+   "region": "KR",
+   "researchId": "S4-KR-LARGE-HOLDER-5PCT",
+   "title": "5%-rule large-holding reports (purpose, accumulation / reduction)",
+   "track": "STOCK",
+   "transactionCostMeasurable": "PARTIAL: dated KR cost schedule exists (weekly_decision.trade_cost_fraction); turnover of an event basket is unmeasured until events are built"
+  },
+  {
+   "_source": "market_industry/register-entries.json",
+   "economicMechanism": "Korean customs publishes export values by product within weeks of the period; industries whose exports accelerate may see earnings revisions that prices absorb slowly over 6-12 months.",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "evidenceClass": "NOT_STARTED",
+   "evidenceRefs": [
+    "docs/research-program/07-market-industry-stock-portfolio-hierarchy-ko.md@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "MEDIUM: Korean large caps are export-heavy",
+   "failedGate": null,
+   "h126h252Feasibility": "PROSPECTIVE_ONLY until release-vintage history is verified",
+   "highestGatePassed": "NONE",
+   "nextExecutionUnit": "outcome-free source probe of release dates and revision behaviour",
+   "overlapWithExisting": "Distinct from price-based REL_MOM_126 and from DART accounting (filings lag 45-90 days); not in Atlas, Phase C or the 31-feature matrix.",
+   "ownerApprovalRequired": true,
+   "pitSourceAndRights": "Source condition: Korea Customs Service trade statistics (public portal / data.go.kr API); needs release timestamps per vintage, revision history and an HS-to-industry crosswalk frozen before outcomes. Not probed in this sprint.",
+   "prerequisitesAndBlockers": [
+    "source probe: API access, release timestamps, revisions",
+    "HS->industry crosswalk",
+    "owner approval"
+   ],
+   "priority": {
+    "independence": 3,
+    "krUsExtensible": 1,
+    "mechanism": 2,
+    "netReturnRelevance": 2,
+    "sourceObtainable": 1,
+    "tier": "P2",
+    "timeToDecision": 1
+   },
+   "progressStatus": "SOURCE_BACKLOG",
+   "region": "KR",
+   "researchId": "I-KR-EXPORT-HS-DIFFUSION",
+   "title": "Industry export momentum from customs statistics by HS code",
+   "track": "INDUSTRY",
+   "transactionCostMeasurable": "YES: via industry baskets"
+  },
+  {
+   "_source": "evidence_map/register-entries.json",
+   "economicMechanism": "Prospective stock-selection challengers vs 069500.KS",
+   "effectiveSampleAndMde": "UNKNOWN until maturity",
+   "evidenceClass": "PROSPECTIVE_PENDING",
+   "evidenceRefs": [
+    "signal-history@0b10f54d"
+   ],
+   "expectedEconomicImportance": "MEDIUM",
+   "failedGate": null,
+   "h126h252Feasibility": "PROSPECTIVE_ONLY",
+   "highestGatePassed": "G1",
+   "nextExecutionUnit": "keep recording; score only at maturity",
+   "overlapWithExisting": "Phase C information (exposed)",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "signal-history receipts: 1 each, 2026-10-30",
+   "prerequisitesAndBlockers": [],
+   "priority": {
+    "independence": 1,
+    "krUsExtensible": 1,
+    "mechanism": 1,
+    "netReturnRelevance": 2,
+    "sourceObtainable": 3,
+    "tier": "P2",
+    "timeToDecision": 1
+   },
+   "progressStatus": "ACTIVE",
+   "region": "KR",
+   "researchId": "X-KR-CHALLENGERS",
+   "title": "KR selection challengers v1 / v2-accounting (#277/#278)",
+   "track": "STOCK",
+   "transactionCostMeasurable": "YES"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "Earnings backed by cash persist; accrual-heavy earnings mean-revert.",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "evidenceClass": "NOT_STARTED",
+   "evidenceRefs": [
+    "research_specs/kr-alpha-atlas-registry-v1.json@37f8cbf6",
+    "AGENTS.md@37f8cbf6 v2.24, v2.54"
+   ],
+   "expectedEconomicImportance": "LOW: netReturnRelevance score 1/3, mechanism 2/3",
+   "failedGate": "G0",
+   "h126h252Feasibility": "FEASIBLE: but closed",
+   "highestGatePassed": "NONE",
+   "nextExecutionUnit": "none: closed",
+   "overlapWithExisting": "atlas: C05_ocfToAssets, C06_cashConversion, C07_negativeAccruals, C08_netIncomeMinusOcf, C14_ocfImprovement, B03_ocfYield; usInventory: B05, B06, B07, B08, B09; studies: accounting_quality ACCOUNTING_QUALITY_V1 (AGENTS v2.24)",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "DART accounts (receipt-dated) | READY; C06 below the 60% floor (Phase B)",
+   "prerequisitesAndBlockers": [
+    "none recorded"
+   ],
+   "priority": {
+    "independence": 0,
+    "krUsExtensible": 2,
+    "mechanism": 2,
+    "netReturnRelevance": 1,
+    "sourceObtainable": 3,
+    "tier": "P3",
+    "timeToDecision": 3
+   },
+   "progressStatus": "CLOSED",
+   "region": "KR",
+   "researchId": "S1-KR-ACCRUAL-CASH-QUALITY",
+   "title": "Accruals / cash conversion / OCF quality",
+   "track": "STOCK",
+   "transactionCostMeasurable": "PARTIAL: dated KR cost schedule exists (weekly_decision.trade_cost_fraction); turnover of an event basket is unmeasured until events are built"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "Cheap names with confirming fundamentals re-rate; the information is accounting level + price.",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "evidenceClass": "NOT_STARTED",
+   "evidenceRefs": [
+    "research_specs/kr-alpha-atlas-registry-v1.json@37f8cbf6",
+    "research_specs/kr-alpha-atlas-phase-c-v1.json@37f8cbf6",
+    "research/alpha_evidence_sprint_v2/evidence/feature-overlap.md@86c5983f"
+   ],
+   "expectedEconomicImportance": "LOW: netReturnRelevance score 1/3, mechanism 1/3",
+   "failedGate": "G0",
+   "h126h252Feasibility": "FEASIBLE: but closed on this history",
+   "highestGatePassed": "NONE",
+   "nextExecutionUnit": "none: closed (Phase D)",
+   "overlapWithExisting": "atlas: B01_bookToMarket, B02_earningsYield, B05_industryRelativeValue, B06_ownHistoryValuation, B07_valuationChange126, B08_valueBusinessConfirmation, C01_returnOnAssets, C14_ocfImprovement; phaseC: B06, B07, B08, X1; regional31: roe, profitMargin, operatingMargin; usInventory: A01, A02, A07, B01; studies: kr-alpha-signal-v2 H2 = Phase C B08/X1 (X1 p 0.9895), kr-model-overlay-portfolio-v1 DEVELOPMENT_REJECT",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "DART fnlttSinglAcntAll (receipt-dated) x KRX market cap | READY (Phase B MEASURED_READY for B06-B08)",
+   "prerequisitesAndBlockers": [
+    "Phase C/D 0 nominations"
+   ],
+   "priority": {
+    "independence": 0,
+    "krUsExtensible": 2,
+    "mechanism": 1,
+    "netReturnRelevance": 1,
+    "sourceObtainable": 3,
+    "tier": "P3",
+    "timeToDecision": 3
+   },
+   "progressStatus": "CLOSED",
+   "region": "KR",
+   "researchId": "S1-KR-VALUE-QUALITY-RECOMBINATION",
+   "title": "Industry/own-history value x business-confirmation composites",
+   "track": "STOCK",
+   "transactionCostMeasurable": "PARTIAL: dated KR cost schedule exists (weekly_decision.trade_cost_fraction); turnover of an event basket is unmeasured until events are built"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "Under-reaction / trend.",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "evidenceClass": "NOT_STARTED",
+   "evidenceRefs": [
+    "research/alpha_evidence_sprint_v2/evidence/feature-overlap.md@86c5983f",
+    "research_specs/kr-alpha-atlas-phase-c-v1.json@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "LOW: netReturnRelevance score 0/3, mechanism 1/3",
+   "failedGate": "G0",
+   "h126h252Feasibility": "FEASIBLE: but closed",
+   "highestGatePassed": "NONE",
+   "nextExecutionUnit": "none",
+   "overlapWithExisting": "atlas: A05, A07, A08, A10, A11, A12, A13, A14; phaseC: A08, A10, A11, A12, A13, A14; regional31: mom6, mom121, relative121, high52Distance, ma200Distance; usInventory: D01, D02, D03, D05; studies: #286 intraday/overnight: NO STABLE ADDED ALPHA",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "replay-v16 prices | READY",
+   "prerequisitesAndBlockers": [
+    "none recorded"
+   ],
+   "priority": {
+    "independence": 0,
+    "krUsExtensible": 3,
+    "mechanism": 1,
+    "netReturnRelevance": 0,
+    "sourceObtainable": 3,
+    "tier": "P3",
+    "timeToDecision": 3
+   },
+   "progressStatus": "CLOSED",
+   "region": "KR",
+   "researchId": "S3-KR-MOMENTUM-VARIANTS",
+   "title": "Momentum renames (12-1, 6M, residual, 52w high, persistence, intraday/overnight)",
+   "track": "STOCK",
+   "transactionCostMeasurable": "PARTIAL: dated KR cost schedule exists (weekly_decision.trade_cost_fraction); turnover of an event basket is unmeasured until events are built"
+  },
+  {
+   "_source": "evidence_map/register-entries.json",
+   "economicMechanism": "Faster re-entry may keep drawdown benefit with less lost participation",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "evidenceClass": "PREPARED_NOT_EXECUTED",
+   "evidenceRefs": [
+    "PR #289@92d78cd5",
+    "docs/research-program/audits/pr289-market-c1c-independent-audit-ko.md@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "MEDIUM",
+   "failedGate": "G1",
+   "h126h252Feasibility": "PROSPECTIVE_ONLY",
+   "highestGatePassed": "G0",
+   "nextExecutionUnit": "fix audit items B1/B3/B5/B7 before any registration",
+   "overlapWithExisting": "re-uses C0/C1 vocabulary; history exposed",
+   "ownerApprovalRequired": true,
+   "pitSourceAndRights": "sealed market states",
+   "prerequisitesAndBlockers": [
+    "design not ready (audit)",
+    "history already exposed"
+   ],
+   "priority": {
+    "independence": 1,
+    "krUsExtensible": 2,
+    "mechanism": 2,
+    "netReturnRelevance": 1,
+    "sourceObtainable": 3,
+    "tier": "P3",
+    "timeToDecision": 1
+   },
+   "progressStatus": "PARKED",
+   "region": "KR",
+   "researchId": "X-C1C-ASYMMETRIC-EXIT",
+   "title": "C1c asymmetric hard-exit x fast re-entry (#289)",
+   "track": "MARKET",
+   "transactionCostMeasurable": "YES"
+  },
+  {
+   "_source": "market_industry/register-entries.json",
+   "economicMechanism": "Industry inventory build relative to sales precedes price cuts and margin compression; a falling ratio precedes restocking.",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "evidenceClass": "NOT_STARTED",
+   "evidenceRefs": [
+    "pipeline/accounting_quality.py@37f8cbf6",
+    "AGENTS.md@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "MEDIUM",
+   "failedGate": null,
+   "h126h252Feasibility": "PROSPECTIVE_ONLY: KR history closed",
+   "highestGatePassed": "NONE",
+   "nextExecutionUnit": "outcome-free field-presence count of inventory accounts in kr-raw",
+   "overlapWithExisting": "Inventory/receivables were NOT_FEASIBLE_DATA_MISSING in accounting_quality (not in WANTED_ACCOUNTS); distinct from Census M3 (X-M3-BACKLOG, closed) and from KR profitability levels.",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "Source condition: DART receipt-dated statements; inventory rows must be present in the raw-statements store (kr-raw keeps every row) or a collector extension is needed; same key and PIT mechanism as existing fundamentals.",
+   "prerequisitesAndBlockers": [
+    "count inventory row presence in ledger/fundamentals/kr-raw (outcome-free)",
+    "owner approval"
+   ],
+   "priority": {
+    "independence": 2,
+    "krUsExtensible": 1,
+    "mechanism": 2,
+    "netReturnRelevance": 1,
+    "sourceObtainable": 2,
+    "tier": "P3",
+    "timeToDecision": 1
+   },
+   "progressStatus": "SOURCE_BACKLOG",
+   "region": "KR",
+   "researchId": "I-KR-INVENTORY-CYCLE",
+   "title": "Industry inventory-to-sales cycle from DART filings",
+   "track": "INDUSTRY",
+   "transactionCostMeasurable": "YES: via industry baskets"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "Payout decisions signal management's private view of cash-flow durability.",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "evidenceClass": "PROSPECTIVE_PENDING",
+   "evidenceRefs": [
+    "docs/us-readiness/us-factor-inventory-v1.json@37f8cbf6",
+    "docs/us-capital-allocation-alpha-v1.md@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "LOW: netReturnRelevance score 1/3, mechanism 2/3",
+   "failedGate": "G0",
+   "h126h252Feasibility": "PROSPECTIVE_ONLY: PROSPECTIVE_ONLY (registered prospective)",
+   "highestGatePassed": "NONE",
+   "nextExecutionUnit": "none here: owned by us-capital-allocation-alpha-v1",
+   "overlapWithExisting": "usInventory: F01, F02, F03, F04, F05, F06; studies: us-capital-allocation-alpha-v1 (registered)",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "Finnhub PIT store | AVAILABLE_WITH_CAVEATS (F01-F03), F05/F06 NEEDS_VERIFICATION",
+   "prerequisitesAndBlockers": [
+    "owner authorization None"
+   ],
+   "priority": {
+    "independence": 1,
+    "krUsExtensible": 2,
+    "mechanism": 2,
+    "netReturnRelevance": 1,
+    "sourceObtainable": 2,
+    "tier": "P3",
+    "timeToDecision": 1
+   },
+   "progressStatus": "PARKED",
+   "region": "US",
+   "researchId": "S1-US-CAPITAL-ALLOCATION",
+   "title": "Distribution change / payout over OCF (US)",
+   "track": "STOCK",
+   "transactionCostMeasurable": "PARTIAL: dated KR cost schedule exists (weekly_decision.trade_cost_fraction); turnover of an event basket is unmeasured until events are built"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "Management forecasts carry forward-looking private information; systematic optimism and revision drift are documented elsewhere; no Atlas feature reads a forecast.",
+   "effectiveSampleAndMde": "EARNINGS_GUIDANCE in kr-event-report-counts-v1.json",
+   "evidenceClass": "NOT_STARTED",
+   "evidenceRefs": [
+    "research/master_research_program_v1/stock/kr-event-report-counts-v1.json@WORKTREE(uncommitted; base 86c5983f)",
+    "research/alpha_mechanism_sprint_v1/data/dart-list/*-I.jsonl.gz@86c5983f"
+   ],
+   "expectedEconomicImportance": "MEDIUM: netReturnRelevance score 2/3, mechanism 2/3",
+   "failedGate": null,
+   "h126h252Feasibility": "FEASIBLE: if parse works; issuer self-selection into guiding is itself a confound",
+   "highestGatePassed": "G0",
+   "nextExecutionUnit": "outcome-blind parse probe on 30 sampled guidance filings",
+   "overlapWithExisting": "atlas: J04_materialDisclosure (generic, DATA_BUILD_REQUIRED); usInventory: G04 guidanceChanges (UNAVAILABLE)",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "DART list.json I-type (receipt date) + document.xml forecast table | LIST READY (0 new calls); forecast-number parse NEVER RUN",
+   "prerequisitesAndBlockers": [
+    "document parser for forecast tables does not exist",
+    "self-selected issuers (111 of 254)"
+   ],
+   "priority": {
+    "independence": 2,
+    "krUsExtensible": 1,
+    "mechanism": 2,
+    "netReturnRelevance": 2,
+    "sourceObtainable": 1,
+    "tier": "P3",
+    "timeToDecision": 1
+   },
+   "progressStatus": "PARKED",
+   "region": "KR",
+   "researchId": "S2-KR-MANAGEMENT-GUIDANCE",
+   "title": "Management forecasts (영업실적등에대한전망) and their revisions",
+   "track": "STOCK",
+   "transactionCostMeasurable": "PARTIAL: dated KR cost schedule exists (weekly_decision.trade_cost_fraction); turnover of an event basket is unmeasured until events are built"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "As KR; the US literature is strongest here.",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "evidenceClass": "SOURCE_BLOCKED",
+   "evidenceRefs": [
+    "docs/us-readiness/us-factor-inventory-v1.json@37f8cbf6",
+    "docs/alpha-information-inventory-v1.md@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "MEDIUM: netReturnRelevance score 2/3, mechanism 2/3",
+   "failedGate": "G1",
+   "h126h252Feasibility": "BLOCKED: BLOCKED",
+   "highestGatePassed": "G0",
+   "nextExecutionUnit": "none until purchased",
+   "overlapWithExisting": "usInventory: G01, G02",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "Finnhub paid tier / I/B/E/S | UNAVAILABLE (paid historical estimates; AGENTS v2.23)",
+   "prerequisitesAndBlockers": [
+    "paid source",
+    "US survivorship"
+   ],
+   "priority": {
+    "independence": 3,
+    "krUsExtensible": 2,
+    "mechanism": 2,
+    "netReturnRelevance": 2,
+    "sourceObtainable": 0,
+    "tier": "P3",
+    "timeToDecision": 0
+   },
+   "progressStatus": "SOURCE_BACKLOG",
+   "region": "US",
+   "researchId": "S2-US-ESTIMATE-REVISIONS",
+   "title": "Consensus estimate revisions / surprise (US)",
+   "track": "STOCK",
+   "transactionCostMeasurable": "NO: no source"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "Short sellers are informed; high short interest predicts underperformance.",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "evidenceClass": "SOURCE_BLOCKED",
+   "evidenceRefs": [
+    "research_specs/kr-alpha-atlas-registry-v1.json@37f8cbf6",
+    "AGENTS.md@37f8cbf6 v2.23, v2.25"
+   ],
+   "expectedEconomicImportance": "MEDIUM: netReturnRelevance score 2/3, mechanism 2/3",
+   "failedGate": "G1",
+   "h126h252Feasibility": "BLOCKED: BLOCKED",
+   "highestGatePassed": "G0",
+   "nextExecutionUnit": "one permitted Probes re-run",
+   "overlapWithExisting": "atlas: G08_shortSellingVolume, G09_shortBalanceChange, J05_shortSellingRegime",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "KRX data portal | SOURCE_BLOCKED (probe_kr_short_selling.py; KRX LOGOUT, AGENTS v2.25)",
+   "prerequisitesAndBlockers": [
+    "KRX portal access",
+    "2020-03..2021-05 and 2023-11..2025-03 bans"
+   ],
+   "priority": {
+    "independence": 3,
+    "krUsExtensible": 2,
+    "mechanism": 2,
+    "netReturnRelevance": 2,
+    "sourceObtainable": 0,
+    "tier": "P3",
+    "timeToDecision": 0
+   },
+   "progressStatus": "SOURCE_BACKLOG",
+   "region": "KR",
+   "researchId": "S3-KR-SHORT-SELLING",
+   "title": "Short-selling volume / balance",
+   "track": "STOCK",
+   "transactionCostMeasurable": "NO: no source"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "Attention and liquidity premia.",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "evidenceClass": "NOT_STARTED",
+   "evidenceRefs": [
+    "research/alpha_evidence_sprint_v2/evidence/feature-overlap.md@86c5983f",
+    "research_specs/kr-alpha-atlas-phase-c-v1.json@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "LOW: netReturnRelevance score 0/3, mechanism 1/3",
+   "failedGate": "G0",
+   "h126h252Feasibility": "FEASIBLE: but closed",
+   "highestGatePassed": "NONE",
+   "nextExecutionUnit": "none",
+   "overlapWithExisting": "atlas: D01-D11, E01, E02, E06; phaseC: D01-D11, E01, E06; regional31: volumeSurge5_60; usInventory: H06; studies: opportunity radar ML rejected twice",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "KRX bars | READY",
+   "prerequisitesAndBlockers": [
+    "none recorded"
+   ],
+   "priority": {
+    "independence": 0,
+    "krUsExtensible": 2,
+    "mechanism": 1,
+    "netReturnRelevance": 0,
+    "sourceObtainable": 3,
+    "tier": "P3",
+    "timeToDecision": 3
+   },
+   "progressStatus": "CLOSED",
+   "region": "KR",
+   "researchId": "S3-KR-VOLUME-ATTENTION-VARIANTS",
+   "title": "Volume / attention / liquidity re-expressions",
+   "track": "STOCK",
+   "transactionCostMeasurable": "PARTIAL: dated KR cost schedule exists (weekly_decision.trade_cost_fraction); turnover of an event basket is unmeasured until events are built"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "As KR.",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "evidenceClass": "SOURCE_BLOCKED",
+   "evidenceRefs": [
+    "docs/us-readiness/us-factor-inventory-v1.json@37f8cbf6",
+    "docs/alpha-information-inventory-v1.md@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "MEDIUM: netReturnRelevance score 2/3, mechanism 2/3",
+   "failedGate": "G1",
+   "h126h252Feasibility": "BLOCKED: BLOCKED",
+   "highestGatePassed": "G0",
+   "nextExecutionUnit": "source probe",
+   "overlapWithExisting": "usInventory: H03",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "FINRA / Nasdaq | UNAVAILABLE in this environment (us-factor-inventory-v1)",
+   "prerequisitesAndBlockers": [
+    "egress",
+    "US survivorship"
+   ],
+   "priority": {
+    "independence": 3,
+    "krUsExtensible": 2,
+    "mechanism": 2,
+    "netReturnRelevance": 2,
+    "sourceObtainable": 0,
+    "tier": "P3",
+    "timeToDecision": 0
+   },
+   "progressStatus": "SOURCE_BACKLOG",
+   "region": "US",
+   "researchId": "S3-US-SHORT-INTEREST",
+   "title": "FINRA/Nasdaq short interest",
+   "track": "STOCK",
+   "transactionCostMeasurable": "NO: no source"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "Ambiguous: employee compensation, exchangeable-bond collateral, cross-holding swaps.",
+   "effectiveSampleAndMde": "254-issuer B: 696 / 142 issuers",
+   "evidenceClass": "NOT_STARTED",
+   "evidenceRefs": [
+    "research/master_research_program_v1/stock/kr-event-report-counts-v1.json@WORKTREE(uncommitted; base 86c5983f)"
+   ],
+   "expectedEconomicImportance": "LOW: netReturnRelevance score 1/3, mechanism 0/3",
+   "failedGate": null,
+   "h126h252Feasibility": "FEASIBLE",
+   "highestGatePassed": "G1",
+   "nextExecutionUnit": "none (parked)",
+   "overlapWithExisting": "none found",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "DART B-type list | LIST SERVED",
+   "prerequisitesAndBlockers": [
+    "mechanism ambiguous"
+   ],
+   "priority": {
+    "independence": 2,
+    "krUsExtensible": 1,
+    "mechanism": 0,
+    "netReturnRelevance": 1,
+    "sourceObtainable": 3,
+    "tier": "P3",
+    "timeToDecision": 2
+   },
+   "progressStatus": "PARKED",
+   "region": "KR",
+   "researchId": "S4-KR-TREASURY-DISPOSAL",
+   "title": "Treasury-share disposal decisions",
+   "track": "STOCK",
+   "transactionCostMeasurable": "PARTIAL: dated KR cost schedule exists (weekly_decision.trade_cost_fraction); turnover of an event basket is unmeasured until events are built"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "Investment anomaly: heavy investors underperform.",
+   "effectiveSampleAndMde": "per-anchor median 13 in 252 sessions",
+   "evidenceClass": "NOT_STARTED",
+   "evidenceRefs": [
+    "research/master_research_program_v1/stock/kr-event-report-counts-v1.json@WORKTREE(uncommitted; base 86c5983f)",
+    "research_specs/kr-alpha-atlas-phase-c-v1.json@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "LOW: netReturnRelevance score 1/3, mechanism 1/3",
+   "failedGate": "G0",
+   "h126h252Feasibility": "FEASIBLE",
+   "highestGatePassed": "NONE",
+   "nextExecutionUnit": "none",
+   "overlapWithExisting": "atlas: C09_assetGrowth, C15_capexIntensity; phaseC: C09; usInventory: F07, F08",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "DART I-type | LIST READY",
+   "prerequisitesAndBlockers": [
+    "none recorded"
+   ],
+   "priority": {
+    "independence": 1,
+    "krUsExtensible": 1,
+    "mechanism": 1,
+    "netReturnRelevance": 1,
+    "sourceObtainable": 3,
+    "tier": "P3",
+    "timeToDecision": 2
+   },
+   "progressStatus": "CLOSED",
+   "region": "KR",
+   "researchId": "S5-KR-NEW-FACILITY-INVESTMENT",
+   "title": "New facility investment announcements",
+   "track": "STOCK",
+   "transactionCostMeasurable": "PARTIAL: dated KR cost schedule exists (weekly_decision.trade_cost_fraction); turnover of an event basket is unmeasured until events are built"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "As KR supply contracts / guidance.",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "evidenceClass": "SOURCE_BLOCKED",
+   "evidenceRefs": [
+    "docs/us-readiness/us-factor-inventory-v1.json@37f8cbf6",
+    "docs/alpha-information-inventory-v1.md@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "MEDIUM: netReturnRelevance score 2/3, mechanism 2/3",
+   "failedGate": "G1",
+   "h126h252Feasibility": "BLOCKED: BLOCKED",
+   "highestGatePassed": "G0",
+   "nextExecutionUnit": "none",
+   "overlapWithExisting": "usInventory: G03, G04",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "SEC EDGAR | UNAVAILABLE (SEC egress; AGENTS v2.23)",
+   "prerequisitesAndBlockers": [
+    "SEC access"
+   ],
+   "priority": {
+    "independence": 3,
+    "krUsExtensible": 2,
+    "mechanism": 2,
+    "netReturnRelevance": 2,
+    "sourceObtainable": 0,
+    "tier": "P3",
+    "timeToDecision": 0
+   },
+   "progressStatus": "SOURCE_BACKLOG",
+   "region": "US",
+   "researchId": "S5-US-8K-EVENTS",
+   "title": "8-K material events (contracts, guidance, departures)",
+   "track": "STOCK",
+   "transactionCostMeasurable": "NO: no source"
+  },
+  {
+   "_source": "evidence_map/register-entries.json",
+   "economicMechanism": "Rank vs weight role of entry state",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "evidenceClass": "PREPARED_NOT_EXECUTED",
+   "evidenceRefs": [
+    "PR #306@49e35ace"
+   ],
+   "expectedEconomicImportance": "LOW",
+   "failedGate": null,
+   "h126h252Feasibility": "PROSPECTIVE_ONLY",
+   "highestGatePassed": "G1",
+   "nextExecutionUnit": "independent review of #306",
+   "overlapWithExisting": "#304 CONTAINS_ZERO both regions",
+   "ownerApprovalRequired": true,
+   "pitSourceAndRights": "PR #306 hook not merged",
+   "prerequisitesAndBlockers": [
+    "#306 independent review and merge"
+   ],
+   "priority": {
+    "independence": 1,
+    "krUsExtensible": 2,
+    "mechanism": 1,
+    "netReturnRelevance": 1,
+    "sourceObtainable": 3,
+    "tier": "P3",
+    "timeToDecision": 1
+   },
+   "progressStatus": "ACTIVE",
+   "region": "COMMON",
+   "researchId": "X-ENTRY-STATE-SHADOW",
+   "title": "Entry-state shadow ledger (#304/#306)",
+   "track": "STOCK",
+   "transactionCostMeasurable": "YES"
+  },
+  {
+   "_source": "market_industry/register-entries.json",
+   "economicMechanism": "Returns of a firm's major customers lead its own returns when investors under-attend to economic links.",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "evidenceClass": "SOURCE_BLOCKED",
+   "evidenceRefs": [
+    "AGENTS.md@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "LOW: large-cap universes have few disclosed links",
+   "failedGate": null,
+   "h126h252Feasibility": "BLOCKED: no structured PIT link source",
+   "highestGatePassed": "NONE",
+   "nextExecutionUnit": "none until a structured source is identified",
+   "overlapWithExisting": "Not measured anywhere in the repository.",
+   "ownerApprovalRequired": true,
+   "pitSourceAndRights": "Source condition: US 10-K major-customer disclosures require SEC access (blocked from CI egress per vendor-refusal invariants); KR business reports carry customer text without structure. Dated, structured link data would be a paid feed.",
+   "prerequisitesAndBlockers": [
+    "structured, dated customer-supplier source",
+    "SEC access route"
+   ],
+   "priority": {
+    "independence": 3,
+    "krUsExtensible": 2,
+    "mechanism": 2,
+    "netReturnRelevance": 1,
+    "sourceObtainable": 0,
+    "tier": "P3",
+    "timeToDecision": 0
+   },
+   "progressStatus": "SOURCE_BACKLOG",
+   "region": "COMMON",
+   "researchId": "I-SUPPLY-CHAIN-LINKS",
+   "title": "Customer-supplier link momentum",
+   "track": "INDUSTRY",
+   "transactionCostMeasurable": "PARTIAL"
+  },
+  {
+   "_source": "market_industry/register-entries.json",
+   "economicMechanism": "Sector-level relative strength/breadth/cash-yield readings on the US would be an independent sample for the KR industry anatomy candidates.",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "evidenceClass": "SOURCE_BLOCKED",
+   "evidenceRefs": [
+    "research/master_research_program_v1/market_industry/us-sector-foundation-v1.json",
+    "docs/results/alpha-opportunity-model-v3-survivorship-audit.json@37f8cbf6",
+    "docs/research-program/07-market-industry-stock-portfolio-hierarchy-ko.md@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "LOW: historical US anatomy would be outcome-exposed and survivor-biased",
+   "failedGate": null,
+   "h126h252Feasibility": "BLOCKED: historical sector baskets are survivor-conditioned and the missing names are concentrated by sector; prospective use is FEASIBLE",
+   "highestGatePassed": "NONE",
+   "nextExecutionUnit": "none until departed-name prices exist; use I-US-INDUSTRY-PROSPECTIVE instead",
+   "overlapWithExisting": "Hierarchy doc 07 I-2/I-3 (us-industry-membership-foundation-v1 / us-industry-opportunity-anatomy-v1, PROPOSED); D-US-SECTOR-FOUNDATION supplies the labels; SEC SIC route no longer needed at sector level.",
+   "ownerApprovalRequired": true,
+   "pitSourceAndRights": "Sector labels READY (D-US-SECTOR-FOUNDATION); prices: replay-v16 US panel lacks 212 departed identities (survivorship audit) = 36 Consumer Discretionary, 30 Health Care, 29 Energy, 26 IT, 20 Industrials, 19 Financials, 16 Staples, 12 Materials, 10 Comm Services, 6 Utilities, 5 Telecom, 3 Real Estate",
+   "prerequisitesAndBlockers": [
+    "prices or terminal economics for 212 departed identities",
+    "owner decision whether a survivor-bounded descriptive anatomy is worth running"
+   ],
+   "priority": {
+    "independence": 2,
+    "krUsExtensible": 2,
+    "mechanism": 2,
+    "netReturnRelevance": 1,
+    "sourceObtainable": 0,
+    "tier": "P3",
+    "timeToDecision": 1
+   },
+   "progressStatus": "PARKED",
+   "region": "US",
+   "researchId": "I-US-SECTOR-PIT",
+   "title": "US historical sector-relative anatomy on PIT sectors",
+   "track": "INDUSTRY",
+   "transactionCostMeasurable": "PARTIAL: US cost table exists; sector basket turnover not measured"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "Cash-based profitability predicts returns beyond accrual earnings.",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "evidenceClass": "NOT_STARTED",
+   "evidenceRefs": [
+    "docs/us-readiness/us-factor-inventory-v1.json@37f8cbf6",
+    "docs/us-readiness/us-cash-profitability-study-protocol-v1.json@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "LOW: netReturnRelevance score 1/3, mechanism 2/3",
+   "failedGate": "G0",
+   "h126h252Feasibility": "BLOCKED: BLOCKED: survivorship",
+   "highestGatePassed": "NONE",
+   "nextExecutionUnit": "none here",
+   "overlapWithExisting": "atlas: C05_ocfToAssets; regional31: roe, operatingMargin; usInventory: B04, B05, B07; studies: us-cash-profitability-study-protocol-v1",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "Finnhub PIT store | SURVIVOR_CONDITIONED (US panel)",
+   "prerequisitesAndBlockers": [
+    "none recorded"
+   ],
+   "priority": {
+    "independence": 1,
+    "krUsExtensible": 2,
+    "mechanism": 2,
+    "netReturnRelevance": 1,
+    "sourceObtainable": 1,
+    "tier": "P3",
+    "timeToDecision": 1
+   },
+   "progressStatus": "CLOSED",
+   "region": "US",
+   "researchId": "S1-US-CASH-PROFITABILITY",
+   "title": "Cash operating profitability (US)",
+   "track": "STOCK",
+   "transactionCostMeasurable": "PARTIAL: dated KR cost schedule exists (weekly_decision.trade_cost_fraction); turnover of an event basket is unmeasured until events are built"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "Analysts under-react to news; revisions drift.",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "evidenceClass": "SOURCE_BLOCKED",
+   "evidenceRefs": [
+    "research_specs/kr-alpha-atlas-registry-v1.json@37f8cbf6",
+    "docs/alpha-information-inventory-v1.md@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "MEDIUM: netReturnRelevance score 2/3, mechanism 2/3",
+   "failedGate": "G1",
+   "h126h252Feasibility": "BLOCKED: BLOCKED",
+   "highestGatePassed": "G0",
+   "nextExecutionUnit": "none until a licensed source exists",
+   "overlapWithExisting": "atlas: J08_analystRevisions (NOT_FEASIBLE)",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "FnGuide/FnSpace | BLOCKED: terms of service (challenger-2-signal-source-feasibility-v1)",
+   "prerequisitesAndBlockers": [
+    "licensed source required"
+   ],
+   "priority": {
+    "independence": 3,
+    "krUsExtensible": 1,
+    "mechanism": 2,
+    "netReturnRelevance": 2,
+    "sourceObtainable": 0,
+    "tier": "P3",
+    "timeToDecision": 0
+   },
+   "progressStatus": "SOURCE_BACKLOG",
+   "region": "KR",
+   "researchId": "S2-KR-ANALYST-REVISIONS",
+   "title": "Analyst estimate revisions (KR)",
+   "track": "STOCK",
+   "transactionCostMeasurable": "NO: no source"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "Firms with news to share report early; a periodic-filing event.",
+   "effectiveSampleAndMde": "3,868 filings / 160 issuers (I lists)",
+   "evidenceClass": "NOT_STARTED",
+   "evidenceRefs": [
+    "research_specs/kr-alpha-atlas-phase-c-v1.json@37f8cbf6",
+    "research/alpha_mechanism_sprint_v1/data/dart-list/*-I.jsonl.gz@86c5983f"
+   ],
+   "expectedEconomicImportance": "LOW: netReturnRelevance score 1/3, mechanism 1/3",
+   "failedGate": "G0",
+   "h126h252Feasibility": "FEASIBLE",
+   "highestGatePassed": "NONE",
+   "nextExecutionUnit": "none: in Phase C",
+   "overlapWithExisting": "atlas: J01_periodicFilingEvent; phaseC: J01",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "DART I-type | READY",
+   "prerequisitesAndBlockers": [
+    "none recorded"
+   ],
+   "priority": {
+    "independence": 0,
+    "krUsExtensible": 1,
+    "mechanism": 1,
+    "netReturnRelevance": 1,
+    "sourceObtainable": 3,
+    "tier": "P3",
+    "timeToDecision": 2
+   },
+   "progressStatus": "CLOSED",
+   "region": "KR",
+   "researchId": "S2-KR-ANNOUNCEMENT-TIMING",
+   "title": "Earnings-announcement timing / pre-announcement (결산실적공시예고)",
+   "track": "STOCK",
+   "transactionCostMeasurable": "PARTIAL: dated KR cost schedule exists (weekly_decision.trade_cost_fraction); turnover of an event basket is unmeasured until events are built"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "Under-reaction to early earnings news.",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "evidenceClass": "NOT_STARTED",
+   "evidenceRefs": [
+    "research/alpha_mechanism_sprint_v1/REPORT.md@86c5983f",
+    "research/alpha_evidence_sprint_v2/evidence/feature-overlap.md@86c5983f"
+   ],
+   "expectedEconomicImportance": "LOW: netReturnRelevance score 1/3, mechanism 1/3",
+   "failedGate": "G0",
+   "h126h252Feasibility": "FEASIBLE",
+   "highestGatePassed": "NONE",
+   "nextExecutionUnit": "none: closed as re-expression",
+   "overlapWithExisting": "atlas: C-family levels/changes; phaseC: C02, C09, C12; regional31: earningsGrowth, delta_*; studies: alpha-mechanism-sprint-v1 (#308)",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "DART I-type 영업(잠정)실적 | READY (collected)",
+   "prerequisitesAndBlockers": [
+    "none recorded"
+   ],
+   "priority": {
+    "independence": 0,
+    "krUsExtensible": 1,
+    "mechanism": 1,
+    "netReturnRelevance": 1,
+    "sourceObtainable": 3,
+    "tier": "P3",
+    "timeToDecision": 2
+   },
+   "progressStatus": "CLOSED",
+   "region": "KR",
+   "researchId": "S2-KR-PRELIMINARY-EARNINGS",
+   "title": "Preliminary (잠정) earnings vs formal filing",
+   "track": "STOCK",
+   "transactionCostMeasurable": "PARTIAL: dated KR cost schedule exists (weekly_decision.trade_cost_fraction); turnover of an event basket is unmeasured until events are built"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "As KR.",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "evidenceClass": "NOT_STARTED",
+   "evidenceRefs": [
+    "docs/us-readiness/us-factor-inventory-v1.json@37f8cbf6",
+    "docs/us-readiness/us-source-readiness-v1.json@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "LOW: netReturnRelevance score 1/3, mechanism 1/3",
+   "failedGate": null,
+   "h126h252Feasibility": "BLOCKED: BLOCKED: survivorship of departed names",
+   "highestGatePassed": "G0",
+   "nextExecutionUnit": "none",
+   "overlapWithExisting": "usInventory: G06",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "pinned membership files | NEEDS_SOURCE_OR_IDENTITY_VERIFICATION",
+   "prerequisitesAndBlockers": [
+    "US survivorship"
+   ],
+   "priority": {
+    "independence": 2,
+    "krUsExtensible": 2,
+    "mechanism": 1,
+    "netReturnRelevance": 1,
+    "sourceObtainable": 1,
+    "tier": "P3",
+    "timeToDecision": 1
+   },
+   "progressStatus": "PARKED",
+   "region": "US",
+   "researchId": "S3-US-INDEX-MEMBERSHIP-CHANGE",
+   "title": "S&P 500 / Nasdaq-100 membership changes",
+   "track": "STOCK",
+   "transactionCostMeasurable": "PARTIAL: dated KR cost schedule exists (weekly_decision.trade_cost_fraction); turnover of an event basket is unmeasured until events are built"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "Informed and slow-moving institutional demand.",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "evidenceClass": "SOURCE_BLOCKED",
+   "evidenceRefs": [
+    "research_specs/kr-alpha-atlas-registry-v1.json@37f8cbf6",
+    "AGENTS.md@37f8cbf6 v2.25"
+   ],
+   "expectedEconomicImportance": "MEDIUM: netReturnRelevance score 2/3, mechanism 2/3",
+   "failedGate": "G1",
+   "h126h252Feasibility": "BLOCKED: BLOCKED",
+   "highestGatePassed": "G0",
+   "nextExecutionUnit": "one permitted Probes re-run",
+   "overlapWithExisting": "atlas: G01-G05, X4; usInventory: H04 fundFlows",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "KRX data portal | SOURCE_BLOCKED (HTTP 400 LOGOUT, 0 rows; AGENTS v2.25, v2.54)",
+   "prerequisitesAndBlockers": [
+    "KRX access"
+   ],
+   "priority": {
+    "independence": 3,
+    "krUsExtensible": 1,
+    "mechanism": 2,
+    "netReturnRelevance": 2,
+    "sourceObtainable": 0,
+    "tier": "P3",
+    "timeToDecision": 0
+   },
+   "progressStatus": "SOURCE_BACKLOG",
+   "region": "KR",
+   "researchId": "S4-KR-INVESTOR-FLOW",
+   "title": "Foreign / institutional / retail net buying",
+   "track": "STOCK",
+   "transactionCostMeasurable": "NO: no source"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "The largest shareholder group's holding changes, KRX-side.",
+   "effectiveSampleAndMde": "per-anchor median 50 Top-120 issuers in 63 sessions",
+   "evidenceClass": "NOT_STARTED",
+   "evidenceRefs": [
+    "research/master_research_program_v1/stock/kr-event-report-counts-v1.json@WORKTREE(uncommitted; base 86c5983f)",
+    "research/alpha_mechanism_sprint_v1/data/dart-list/*-I.jsonl.gz@86c5983f"
+   ],
+   "expectedEconomicImportance": "LOW: netReturnRelevance score 1/3, mechanism 2/3",
+   "failedGate": "G0",
+   "h126h252Feasibility": "FEASIBLE",
+   "highestGatePassed": "NONE",
+   "nextExecutionUnit": "use to cross-check insider parse coverage",
+   "overlapWithExisting": "studies: S4-KR-INSIDER (same holders, DART-side)",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "DART I-type list | LIST READY (0 calls)",
+   "prerequisitesAndBlockers": [
+    "none recorded"
+   ],
+   "priority": {
+    "independence": 0,
+    "krUsExtensible": 0,
+    "mechanism": 2,
+    "netReturnRelevance": 1,
+    "sourceObtainable": 3,
+    "tier": "P3",
+    "timeToDecision": 2
+   },
+   "progressStatus": "CLOSED",
+   "region": "KR",
+   "researchId": "S4-KR-KRX-MAJOR-HOLDER-FILING",
+   "title": "KRX 최대주주등소유주식변동신고서",
+   "track": "STOCK",
+   "transactionCostMeasurable": "PARTIAL: dated KR cost schedule exists (weekly_decision.trade_cost_fraction); turnover of an event basket is unmeasured until events are built"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "Economic links: news about a customer reaches the supplier slowly.",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "evidenceClass": "SOURCE_BLOCKED",
+   "evidenceRefs": [
+    "docs/alpha-information-inventory-v1.md@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "MEDIUM: netReturnRelevance score 2/3, mechanism 2/3",
+   "failedGate": "G1",
+   "h126h252Feasibility": "BLOCKED: BLOCKED",
+   "highestGatePassed": "G0",
+   "nextExecutionUnit": "revisit after S5-KR-SUPPLY-CONTRACT parse",
+   "overlapWithExisting": "none found",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "business-report text only | NO structured PIT source",
+   "prerequisitesAndBlockers": [
+    "link data"
+   ],
+   "priority": {
+    "independence": 3,
+    "krUsExtensible": 1,
+    "mechanism": 2,
+    "netReturnRelevance": 2,
+    "sourceObtainable": 0,
+    "tier": "P3",
+    "timeToDecision": 0
+   },
+   "progressStatus": "SOURCE_BACKLOG",
+   "region": "KR",
+   "researchId": "S5-KR-CUSTOMER-SUPPLIER-LINKS",
+   "title": "Customer-supplier return propagation",
+   "track": "STOCK",
+   "transactionCostMeasurable": "NO: no source"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "Index demand shocks; mostly a days-to-weeks price-pressure effect that reverses.",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "evidenceClass": "SOURCE_BLOCKED",
+   "evidenceRefs": [
+    "docs/alpha-information-inventory-v1.md@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "LOW: netReturnRelevance score 1/3, mechanism 1/3",
+   "failedGate": "G1",
+   "h126h252Feasibility": "BLOCKED: BLOCKED",
+   "highestGatePassed": "G0",
+   "nextExecutionUnit": "none",
+   "overlapWithExisting": "usInventory: G06 indexMembershipChange",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "KRX index membership | UNREACHABLE (scripts/probe_krx_index_membership.py; AGENTS v2.23)",
+   "prerequisitesAndBlockers": [
+    "KRX portal"
+   ],
+   "priority": {
+    "independence": 2,
+    "krUsExtensible": 2,
+    "mechanism": 1,
+    "netReturnRelevance": 1,
+    "sourceObtainable": 0,
+    "tier": "P3",
+    "timeToDecision": 1
+   },
+   "progressStatus": "SOURCE_BACKLOG",
+   "region": "KR",
+   "researchId": "S3-KR-INDEX-RECONSTITUTION",
+   "title": "KOSPI 200 additions / deletions",
+   "track": "STOCK",
+   "transactionCostMeasurable": "NO: no source"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "Commitment to payout / ROE targets under the 2024 programme.",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "evidenceClass": "PROSPECTIVE_PENDING",
+   "evidenceRefs": [
+    "research/master_research_program_v1/stock/kr-event-report-counts-v1.json@WORKTREE(uncommitted; base 86c5983f)"
+   ],
+   "expectedEconomicImportance": "LOW: netReturnRelevance score 1/3, mechanism 1/3",
+   "failedGate": null,
+   "h126h252Feasibility": "PROSPECTIVE_ONLY: PROSPECTIVE_ONLY: history starts 2024",
+   "highestGatePassed": "G1",
+   "nextExecutionUnit": "prospective receipts only",
+   "overlapWithExisting": "none found",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "DART I-type 기업가치제고계획 | LIST READY",
+   "prerequisitesAndBlockers": [
+    "no history before 2024"
+   ],
+   "priority": {
+    "independence": 2,
+    "krUsExtensible": 0,
+    "mechanism": 1,
+    "netReturnRelevance": 1,
+    "sourceObtainable": 3,
+    "tier": "P3",
+    "timeToDecision": 0
+   },
+   "progressStatus": "PARKED",
+   "region": "KR",
+   "researchId": "S5-KR-VALUE-UP-PLAN",
+   "title": "Corporate value-up plan disclosures (2024+)",
+   "track": "STOCK",
+   "transactionCostMeasurable": "PARTIAL: dated KR cost schedule exists (weekly_decision.trade_cost_fraction); turnover of an event basket is unmeasured until events are built"
+  },
+  {
+   "_source": "evidence_map/register-entries.json",
+   "economicMechanism": "Industry cash-generation re-rating",
+   "effectiveSampleAndMde": "power 23.0% at rho=0.10 vs 80% floor (#300)",
+   "evidenceClass": "SOURCE_BLOCKED",
+   "evidenceRefs": [
+    "PR #300@e580cde9"
+   ],
+   "expectedEconomicImportance": "MEDIUM",
+   "failedGate": "G2",
+   "h126h252Feasibility": "BLOCKED",
+   "highestGatePassed": "G1",
+   "nextExecutionUnit": "none",
+   "overlapWithExisting": "industry anatomy IC +0.1364 descriptive (#311 reading)",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "sealed industry anatomy",
+   "prerequisitesAndBlockers": [
+    "power"
+   ],
+   "priority": {
+    "independence": 1,
+    "krUsExtensible": 1,
+    "mechanism": 2,
+    "netReturnRelevance": 1,
+    "sourceObtainable": 2,
+    "tier": "P3",
+    "timeToDecision": 0
+   },
+   "progressStatus": "CLOSED",
+   "region": "KR",
+   "researchId": "X-INDUSTRY-OCF",
+   "title": "Industry median OCF-yield conditional (#300)",
+   "track": "INDUSTRY",
+   "transactionCostMeasurable": "YES"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "Post-earnings drift; without consensus this is a scaled seasonal earnings change.",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "evidenceClass": "NOT_STARTED",
+   "evidenceRefs": [
+    "docs/us-readiness/us-factor-inventory-v1.json@37f8cbf6",
+    "AGENTS.md@37f8cbf6 v2.22, v2.24"
+   ],
+   "expectedEconomicImportance": "LOW: netReturnRelevance score 1/3, mechanism 1/3",
+   "failedGate": "G0",
+   "h126h252Feasibility": "BLOCKED: BLOCKED: survivorship",
+   "highestGatePassed": "NONE",
+   "nextExecutionUnit": "none",
+   "overlapWithExisting": "atlas: C13_fundamentalAcceleration; regional31: earningsGrowth, delta_earningsGrowth; usInventory: G05, C01, C06; studies: fundamental-acceleration-discovery-v1 CASE D",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "Finnhub PIT store | AVAILABLE_WITH_CAVEATS",
+   "prerequisitesAndBlockers": [
+    "none recorded"
+   ],
+   "priority": {
+    "independence": 0,
+    "krUsExtensible": 1,
+    "mechanism": 1,
+    "netReturnRelevance": 1,
+    "sourceObtainable": 2,
+    "tier": "P3",
+    "timeToDecision": 1
+   },
+   "progressStatus": "CLOSED",
+   "region": "US",
+   "researchId": "S2-US-SUE-WITHOUT-CONSENSUS",
+   "title": "Seasonal-random-walk earnings surprise (US)",
+   "track": "STOCK",
+   "transactionCostMeasurable": "PARTIAL: dated KR cost schedule exists (weekly_decision.trade_cost_fraction); turnover of an event basket is unmeasured until events are built"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "Informed institutional accumulation.",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "evidenceClass": "SOURCE_BLOCKED",
+   "evidenceRefs": [
+    "docs/us-readiness/us-factor-inventory-v1.json@37f8cbf6",
+    "AGENTS.md@37f8cbf6 v2.25"
+   ],
+   "expectedEconomicImportance": "LOW: netReturnRelevance score 1/3, mechanism 1/3",
+   "failedGate": "G1",
+   "h126h252Feasibility": "BLOCKED: BLOCKED",
+   "highestGatePassed": "G0",
+   "nextExecutionUnit": "none",
+   "overlapWithExisting": "usInventory: H01",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "SEC 13F | BLOCKED/route NONE (probe_guru_13f_access.py; AGENTS v2.25)",
+   "prerequisitesAndBlockers": [
+    "SEC access",
+    "45-day lag"
+   ],
+   "priority": {
+    "independence": 2,
+    "krUsExtensible": 2,
+    "mechanism": 1,
+    "netReturnRelevance": 1,
+    "sourceObtainable": 0,
+    "tier": "P3",
+    "timeToDecision": 0
+   },
+   "progressStatus": "SOURCE_BACKLOG",
+   "region": "US",
+   "researchId": "S4-US-13F",
+   "title": "13F institutional holding changes",
+   "track": "STOCK",
+   "transactionCostMeasurable": "NO: no source"
+  },
+  {
+   "_source": "stock/register-entries.json",
+   "economicMechanism": "Industry-cycle linkage.",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "evidenceClass": "NOT_STARTED",
+   "evidenceRefs": [
+    "research_specs/kr-alpha-atlas-registry-v1.json@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "LOW: netReturnRelevance score 1/3, mechanism 1/3",
+   "failedGate": "G0",
+   "h126h252Feasibility": "BLOCKED: n/a",
+   "highestGatePassed": "NONE",
+   "nextExecutionUnit": "hand to industry lane",
+   "overlapWithExisting": "atlas: I10_semiconductorCycleSOX, H01-H12; studies: industry lane",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "external index | DATA_BUILD_REQUIRED",
+   "prerequisitesAndBlockers": [
+    "none recorded"
+   ],
+   "priority": {
+    "independence": 1,
+    "krUsExtensible": 1,
+    "mechanism": 1,
+    "netReturnRelevance": 1,
+    "sourceObtainable": 1,
+    "tier": "P3",
+    "timeToDecision": 1
+   },
+   "progressStatus": "CLOSED",
+   "region": "KR",
+   "researchId": "S5-KR-SEMICONDUCTOR-CYCLE",
+   "title": "SOX / semiconductor cycle exposure",
+   "track": "STOCK",
+   "transactionCostMeasurable": "PARTIAL: dated KR cost schedule exists (weekly_decision.trade_cost_fraction); turnover of an event basket is unmeasured until events are built"
+  },
+  {
+   "_source": "evidence_map/register-entries.json",
+   "economicMechanism": "Order backlog leads industry earnings",
+   "effectiveSampleAndMde": "skill -0.7416% [-2.1031, -0.0481] (#302)",
+   "evidenceClass": "EMPIRICAL_FAIL",
+   "evidenceRefs": [
+    "PR #302@06d55d7f"
+   ],
+   "expectedEconomicImportance": "LOW",
+   "failedGate": "G3",
+   "h126h252Feasibility": "FEASIBLE",
+   "highestGatePassed": "G2",
+   "nextExecutionUnit": "none",
+   "overlapWithExisting": "none",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "Census M3",
+   "prerequisitesAndBlockers": [],
+   "priority": {
+    "independence": 2,
+    "krUsExtensible": 0,
+    "mechanism": 1,
+    "netReturnRelevance": 0,
+    "sourceObtainable": 3,
+    "tier": "P3",
+    "timeToDecision": 0
+   },
+   "progressStatus": "CLOSED",
+   "region": "US",
+   "researchId": "X-M3-BACKLOG",
+   "title": "Backlog-to-shipments forecast (#302)",
+   "track": "INDUSTRY",
+   "transactionCostMeasurable": "NO"
+  },
+  {
+   "_source": "evidence_map/register-entries.json",
+   "economicMechanism": "ML opportunity model",
+   "effectiveSampleAndMde": "executed",
+   "evidenceClass": "EMPIRICAL_FAIL",
+   "evidenceRefs": [
+    "docs/results/alpha-opportunity-model-v5-result.json@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "LOW",
+   "failedGate": "G3",
+   "h126h252Feasibility": "FEASIBLE",
+   "highestGatePassed": "G2",
+   "nextExecutionUnit": "none",
+   "overlapWithExisting": "31-feature family",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "sealed",
+   "prerequisitesAndBlockers": [],
+   "priority": {
+    "independence": 0,
+    "krUsExtensible": 0,
+    "mechanism": 1,
+    "netReturnRelevance": 0,
+    "sourceObtainable": 3,
+    "tier": "P3",
+    "timeToDecision": 0
+   },
+   "progressStatus": "CLOSED",
+   "region": "KR",
+   "researchId": "X-OPPORTUNITY-V5",
+   "title": "alpha-opportunity-model-v5",
+   "track": "STOCK",
+   "transactionCostMeasurable": "YES"
+  },
+  {
+   "_source": "evidence_map/register-entries.json",
+   "economicMechanism": "Ten information families",
+   "effectiveSampleAndMde": "73 readings, 0 BY/Holm passes",
+   "evidenceClass": "EMPIRICAL_FAIL",
+   "evidenceRefs": [
+    "docs/kr-alpha-research-final-development-assessment.md@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "LOW",
+   "failedGate": "G3",
+   "h126h252Feasibility": "FEASIBLE",
+   "highestGatePassed": "G2",
+   "nextExecutionUnit": "none",
+   "overlapWithExisting": "Atlas 106",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "sealed, locked",
+   "prerequisitesAndBlockers": [
+    "KR historical research closed"
+   ],
+   "priority": {
+    "independence": 0,
+    "krUsExtensible": 0,
+    "mechanism": 1,
+    "netReturnRelevance": 0,
+    "sourceObtainable": 3,
+    "tier": "P3",
+    "timeToDecision": 0
+   },
+   "progressStatus": "CLOSED",
+   "region": "KR",
+   "researchId": "X-PHASE-CD",
+   "title": "KR Alpha Atlas Phase C/D (38 candidates)",
+   "track": "STOCK",
+   "transactionCostMeasurable": "YES"
+  },
+  {
+   "_source": "evidence_map/register-entries.json",
+   "economicMechanism": "Price/fundamental level/change ML",
+   "effectiveSampleAndMde": "executed",
+   "evidenceClass": "EMPIRICAL_FAIL",
+   "evidenceRefs": [
+    "AGENTS.md v2.24"
+   ],
+   "expectedEconomicImportance": "LOW",
+   "failedGate": "G3",
+   "h126h252Feasibility": "FEASIBLE",
+   "highestGatePassed": "G2",
+   "nextExecutionUnit": "none (must not be rerun)",
+   "overlapWithExisting": "closed matrix",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "sealed",
+   "prerequisitesAndBlockers": [
+    "one-shot budget spent"
+   ],
+   "priority": {
+    "independence": 0,
+    "krUsExtensible": 0,
+    "mechanism": 1,
+    "netReturnRelevance": 0,
+    "sourceObtainable": 3,
+    "tier": "P3",
+    "timeToDecision": 0
+   },
+   "progressStatus": "CLOSED",
+   "region": "COMMON",
+   "researchId": "X-REGIONAL-31",
+   "title": "regional-alpha-model-v1 (31 features)",
+   "track": "STOCK",
+   "transactionCostMeasurable": "YES"
+  },
+  {
+   "_source": "market_industry/register-entries.json",
+   "economicMechanism": "Data foundation: without them every historical KR industry basket is survivor-conditioned.",
+   "effectiveSampleAndMde": "Not an outcome study; 2,345 name-dates affected",
+   "evidenceClass": "SOURCE_BLOCKED",
+   "evidenceRefs": [
+    "research/master_research_program_v1/market_industry/kr-industry-foundation-status-v1.json",
+    "data/kr-industry-membership-foundation-v4/state/audit.json.gz@37f8cbf6"
+   ],
+   "expectedEconomicImportance": "LOW: KR historical industry research is closed; matters only for a reopened history",
+   "failedGate": null,
+   "h126h252Feasibility": "BLOCKED: no official historical industry record reachable from free sources",
+   "highestGatePassed": "NONE",
+   "nextExecutionUnit": "none unless an official delisted-company industry source is found",
+   "overlapWithExisting": "kr-industry-membership-foundation-v4 (24 of 28 absent securities unresolved; 0/2,345 terminal name-dates)",
+   "ownerApprovalRequired": false,
+   "pitSourceAndRights": "KIND delisted register probe showed only a search form; DART retained bytes gave termination types only",
+   "prerequisitesAndBlockers": [
+    "official historical KIND/KRX industry record for delisted names"
+   ],
+   "priority": {
+    "independence": 1,
+    "krUsExtensible": 0,
+    "mechanism": 1,
+    "netReturnRelevance": 0,
+    "sourceObtainable": 0,
+    "tier": "P3",
+    "timeToDecision": 1
+   },
+   "progressStatus": "SOURCE_BACKLOG",
+   "region": "KR",
+   "researchId": "D-KR-INDUSTRY-TERMINAL-COVERAGE",
+   "title": "Industry labels for the 22 terminated KR securities",
+   "track": "DATA",
+   "transactionCostMeasurable": "NO: data foundation"
+  }
+ ],
+ "summary": {
+  "byClass": {
+   "EMPIRICAL_FAIL": 4,
+   "EXPLORATORY_EVIDENCE": 0,
+   "NOT_STARTED": 21,
+   "PREPARED_NOT_EXECUTED": 11,
+   "PROSPECTIVE_PENDING": 4,
+   "SOURCE_BLOCKED": 14,
+   "VERIFIED_EVIDENCE": 0
+  },
+  "byStatus": {
+   "ACTIVE": 17,
+   "CLOSED": 16,
+   "PARKED": 7,
+   "SOURCE_BACKLOG": 14
+  },
+  "entries": 54
+ }
+}

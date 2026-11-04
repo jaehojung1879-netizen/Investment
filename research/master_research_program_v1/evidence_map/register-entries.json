@@ -1,0 +1,307 @@
+{
+ "entries": [
+  {
+   "researchId": "X-INDUSTRY-OCF",
+   "region": "KR",
+   "track": "INDUSTRY",
+   "title": "Industry median OCF-yield conditional (#300)",
+   "economicMechanism": "Industry cash-generation re-rating",
+   "overlapWithExisting": "industry anatomy IC +0.1364 descriptive (#311 reading)",
+   "pitSourceAndRights": "sealed industry anatomy",
+   "h126h252Feasibility": "BLOCKED",
+   "effectiveSampleAndMde": "power 23.0% at rho=0.10 vs 80% floor (#300)",
+   "transactionCostMeasurable": "YES",
+   "expectedEconomicImportance": "MEDIUM",
+   "prerequisitesAndBlockers": [
+    "power"
+   ],
+   "evidenceClass": "SOURCE_BLOCKED",
+   "progressStatus": "CLOSED",
+   "highestGatePassed": "G1",
+   "failedGate": "G2",
+   "nextExecutionUnit": "none",
+   "ownerApprovalRequired": false,
+   "priority": {
+    "tier": "P3",
+    "netReturnRelevance": 1,
+    "mechanism": 2,
+    "independence": 1,
+    "sourceObtainable": 2,
+    "timeToDecision": 0,
+    "krUsExtensible": 1
+   },
+   "evidenceRefs": [
+    "PR #300@e580cde9"
+   ]
+  },
+  {
+   "researchId": "X-M3-BACKLOG",
+   "region": "US",
+   "track": "INDUSTRY",
+   "title": "Backlog-to-shipments forecast (#302)",
+   "economicMechanism": "Order backlog leads industry earnings",
+   "overlapWithExisting": "none",
+   "pitSourceAndRights": "Census M3",
+   "h126h252Feasibility": "FEASIBLE",
+   "effectiveSampleAndMde": "skill -0.7416% [-2.1031, -0.0481] (#302)",
+   "transactionCostMeasurable": "NO",
+   "expectedEconomicImportance": "LOW",
+   "prerequisitesAndBlockers": [],
+   "evidenceClass": "EMPIRICAL_FAIL",
+   "progressStatus": "CLOSED",
+   "highestGatePassed": "G2",
+   "failedGate": "G3",
+   "nextExecutionUnit": "none",
+   "ownerApprovalRequired": false,
+   "priority": {
+    "tier": "P3",
+    "netReturnRelevance": 0,
+    "mechanism": 1,
+    "independence": 2,
+    "sourceObtainable": 3,
+    "timeToDecision": 0,
+    "krUsExtensible": 0
+   },
+   "evidenceRefs": [
+    "PR #302@06d55d7f"
+   ]
+  },
+  {
+   "researchId": "X-C1C-ASYMMETRIC-EXIT",
+   "region": "KR",
+   "track": "MARKET",
+   "title": "C1c asymmetric hard-exit x fast re-entry (#289)",
+   "economicMechanism": "Faster re-entry may keep drawdown benefit with less lost participation",
+   "overlapWithExisting": "re-uses C0/C1 vocabulary; history exposed",
+   "pitSourceAndRights": "sealed market states",
+   "h126h252Feasibility": "PROSPECTIVE_ONLY",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "transactionCostMeasurable": "YES",
+   "expectedEconomicImportance": "MEDIUM",
+   "prerequisitesAndBlockers": [
+    "design not ready (audit)",
+    "history already exposed"
+   ],
+   "evidenceClass": "PREPARED_NOT_EXECUTED",
+   "progressStatus": "PARKED",
+   "highestGatePassed": "G0",
+   "failedGate": "G1",
+   "nextExecutionUnit": "fix audit items B1/B3/B5/B7 before any registration",
+   "ownerApprovalRequired": true,
+   "priority": {
+    "tier": "P3",
+    "netReturnRelevance": 1,
+    "mechanism": 2,
+    "independence": 1,
+    "sourceObtainable": 3,
+    "timeToDecision": 1,
+    "krUsExtensible": 2
+   },
+   "evidenceRefs": [
+    "PR #289@92d78cd5",
+    "docs/research-program/audits/pr289-market-c1c-independent-audit-ko.md@37f8cbf6"
+   ]
+  },
+  {
+   "researchId": "X-B-H1",
+   "region": "KR",
+   "track": "MARKET",
+   "title": "B-H1 prospective market-state receipts",
+   "economicMechanism": "Market state classification for exposure",
+   "overlapWithExisting": "Track B",
+   "pitSourceAndRights": "signal-history ledger/research-strategies/rp1-b-h1-state-v1 (1 receipt, 2026-10-30)",
+   "h126h252Feasibility": "PROSPECTIVE_ONLY",
+   "effectiveSampleAndMde": "first H63 maturity 2027-02-02 (#301)",
+   "transactionCostMeasurable": "PARTIAL",
+   "expectedEconomicImportance": "MEDIUM",
+   "prerequisitesAndBlockers": [
+    "outcome contract not registered (#301 draft)"
+   ],
+   "evidenceClass": "PROSPECTIVE_PENDING",
+   "progressStatus": "ACTIVE",
+   "highestGatePassed": "G1",
+   "failedGate": null,
+   "nextExecutionUnit": "register the outcome contract before first maturity",
+   "ownerApprovalRequired": true,
+   "priority": {
+    "tier": "P2",
+    "netReturnRelevance": 2,
+    "mechanism": 2,
+    "independence": 2,
+    "sourceObtainable": 3,
+    "timeToDecision": 1,
+    "krUsExtensible": 2
+   },
+   "evidenceRefs": [
+    "PR #301@c9eaa036",
+    "signal-history@0b10f54d"
+   ]
+  },
+  {
+   "researchId": "X-KR-CHALLENGERS",
+   "region": "KR",
+   "track": "STOCK",
+   "title": "KR selection challengers v1 / v2-accounting (#277/#278)",
+   "economicMechanism": "Prospective stock-selection challengers vs 069500.KS",
+   "overlapWithExisting": "Phase C information (exposed)",
+   "pitSourceAndRights": "signal-history receipts: 1 each, 2026-10-30",
+   "h126h252Feasibility": "PROSPECTIVE_ONLY",
+   "effectiveSampleAndMde": "UNKNOWN until maturity",
+   "transactionCostMeasurable": "YES",
+   "expectedEconomicImportance": "MEDIUM",
+   "prerequisitesAndBlockers": [],
+   "evidenceClass": "PROSPECTIVE_PENDING",
+   "progressStatus": "ACTIVE",
+   "highestGatePassed": "G1",
+   "failedGate": null,
+   "nextExecutionUnit": "keep recording; score only at maturity",
+   "ownerApprovalRequired": false,
+   "priority": {
+    "tier": "P2",
+    "netReturnRelevance": 2,
+    "mechanism": 1,
+    "independence": 1,
+    "sourceObtainable": 3,
+    "timeToDecision": 1,
+    "krUsExtensible": 1
+   },
+   "evidenceRefs": [
+    "signal-history@0b10f54d"
+   ]
+  },
+  {
+   "researchId": "X-ENTRY-STATE-SHADOW",
+   "region": "COMMON",
+   "track": "STOCK",
+   "title": "Entry-state shadow ledger (#304/#306)",
+   "economicMechanism": "Rank vs weight role of entry state",
+   "overlapWithExisting": "#304 CONTAINS_ZERO both regions",
+   "pitSourceAndRights": "PR #306 hook not merged",
+   "h126h252Feasibility": "PROSPECTIVE_ONLY",
+   "effectiveSampleAndMde": "UNKNOWN",
+   "transactionCostMeasurable": "YES",
+   "expectedEconomicImportance": "LOW",
+   "prerequisitesAndBlockers": [
+    "#306 independent review and merge"
+   ],
+   "evidenceClass": "PREPARED_NOT_EXECUTED",
+   "progressStatus": "ACTIVE",
+   "highestGatePassed": "G1",
+   "failedGate": null,
+   "nextExecutionUnit": "independent review of #306",
+   "ownerApprovalRequired": true,
+   "priority": {
+    "tier": "P3",
+    "netReturnRelevance": 1,
+    "mechanism": 1,
+    "independence": 1,
+    "sourceObtainable": 3,
+    "timeToDecision": 1,
+    "krUsExtensible": 2
+   },
+   "evidenceRefs": [
+    "PR #306@49e35ace"
+   ]
+  },
+  {
+   "researchId": "X-OPPORTUNITY-V5",
+   "region": "KR",
+   "track": "STOCK",
+   "title": "alpha-opportunity-model-v5",
+   "economicMechanism": "ML opportunity model",
+   "overlapWithExisting": "31-feature family",
+   "pitSourceAndRights": "sealed",
+   "h126h252Feasibility": "FEASIBLE",
+   "effectiveSampleAndMde": "executed",
+   "transactionCostMeasurable": "YES",
+   "expectedEconomicImportance": "LOW",
+   "prerequisitesAndBlockers": [],
+   "evidenceClass": "EMPIRICAL_FAIL",
+   "progressStatus": "CLOSED",
+   "highestGatePassed": "G2",
+   "failedGate": "G3",
+   "nextExecutionUnit": "none",
+   "ownerApprovalRequired": false,
+   "priority": {
+    "tier": "P3",
+    "netReturnRelevance": 0,
+    "mechanism": 1,
+    "independence": 0,
+    "sourceObtainable": 3,
+    "timeToDecision": 0,
+    "krUsExtensible": 0
+   },
+   "evidenceRefs": [
+    "docs/results/alpha-opportunity-model-v5-result.json@37f8cbf6"
+   ]
+  },
+  {
+   "researchId": "X-REGIONAL-31",
+   "region": "COMMON",
+   "track": "STOCK",
+   "title": "regional-alpha-model-v1 (31 features)",
+   "economicMechanism": "Price/fundamental level/change ML",
+   "overlapWithExisting": "closed matrix",
+   "pitSourceAndRights": "sealed",
+   "h126h252Feasibility": "FEASIBLE",
+   "effectiveSampleAndMde": "executed",
+   "transactionCostMeasurable": "YES",
+   "expectedEconomicImportance": "LOW",
+   "prerequisitesAndBlockers": [
+    "one-shot budget spent"
+   ],
+   "evidenceClass": "EMPIRICAL_FAIL",
+   "progressStatus": "CLOSED",
+   "highestGatePassed": "G2",
+   "failedGate": "G3",
+   "nextExecutionUnit": "none (must not be rerun)",
+   "ownerApprovalRequired": false,
+   "priority": {
+    "tier": "P3",
+    "netReturnRelevance": 0,
+    "mechanism": 1,
+    "independence": 0,
+    "sourceObtainable": 3,
+    "timeToDecision": 0,
+    "krUsExtensible": 0
+   },
+   "evidenceRefs": [
+    "AGENTS.md v2.24"
+   ]
+  },
+  {
+   "researchId": "X-PHASE-CD",
+   "region": "KR",
+   "track": "STOCK",
+   "title": "KR Alpha Atlas Phase C/D (38 candidates)",
+   "economicMechanism": "Ten information families",
+   "overlapWithExisting": "Atlas 106",
+   "pitSourceAndRights": "sealed, locked",
+   "h126h252Feasibility": "FEASIBLE",
+   "effectiveSampleAndMde": "73 readings, 0 BY/Holm passes",
+   "transactionCostMeasurable": "YES",
+   "expectedEconomicImportance": "LOW",
+   "prerequisitesAndBlockers": [
+    "KR historical research closed"
+   ],
+   "evidenceClass": "EMPIRICAL_FAIL",
+   "progressStatus": "CLOSED",
+   "highestGatePassed": "G2",
+   "failedGate": "G3",
+   "nextExecutionUnit": "none",
+   "ownerApprovalRequired": false,
+   "priority": {
+    "tier": "P3",
+    "netReturnRelevance": 0,
+    "mechanism": 1,
+    "independence": 0,
+    "sourceObtainable": 3,
+    "timeToDecision": 0,
+    "krUsExtensible": 0
+   },
+   "evidenceRefs": [
+    "docs/kr-alpha-research-final-development-assessment.md@37f8cbf6"
+   ]
+  }
+ ]
+}
