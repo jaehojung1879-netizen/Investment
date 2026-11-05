@@ -11,21 +11,21 @@
     "excludedPriorModelPortfolioOutcomes": 14
   },
   "validationStatus": {
-    "paperDays": 79,
-    "trackingDays": 79,
+    "paperDays": 80,
+    "trackingDays": 80,
     "maturedObservationDays": 0,
     "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
     "generationIsolated": true,
     "excludedPriorModelSignals": 9957,
     "excludedPriorModelOutcomes": 9877,
-    "signalsRecorded": 32424,
-    "uniqueDates": 58,
+    "signalsRecorded": 33037,
+    "uniqueDates": 59,
     "maturedUniqueDates": 0,
     "firstSignalDate": "2026-07-17",
-    "lastSignalDate": "2026-11-04",
+    "lastSignalDate": "2026-11-05",
     "maturedSignals": 0,
     "maturedByHorizon": {
-      "21": 19465,
+      "21": 19961,
       "63": 1,
       "126": 0,
       "252": 0
@@ -71,7 +71,7 @@
       "meanExcess": -0.012,
       "meanExcessAfterCost": -0.013,
       "positiveHitRate": 0.357,
-      "mdd": -0.03,
+      "mdd": -0.0302,
       "cvar95": -0.0345,
       "byView": {
         "POSITIVE": {
