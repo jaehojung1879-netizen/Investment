@@ -66,6 +66,11 @@ def test_same_week_idempotency_and_source_revision_conflict(tmp_path):
     later = R.prepare_receipt(obs, arms, fixture_clock=obs["createdAtUtc"])
     assert R.append_synthetic_receipt(path, later)["appendCount"] == 0
     assert (path / "KR.jsonl").read_bytes() == before
+    obs["sourceEvidence"][0]["sourceCommit"] = "e" * 40
+    repinned = R.prepare_receipt(obs, arms, fixture_clock=obs["createdAtUtc"])
+    result = R.append_synthetic_receipt(path, repinned)
+    assert result["appendCount"] == 0 and result["receiptSha256"] == row["receiptSha256"]
+    assert (path / "KR.jsonl").read_bytes() == before
     obs["sourceEvidence"][0]["raw"] = b"synthetic:revised"
     obs["sourceEvidence"][0]["sha256"] = hashlib.sha256(b"synthetic:revised").hexdigest()
     revised = R.prepare_receipt(obs, arms, fixture_clock=obs["createdAtUtc"])

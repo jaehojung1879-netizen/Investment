@@ -43,7 +43,7 @@
 - `adapters.adapt_foundation_plan`: #317 plan의 로컬 digest/공통 identity를 확인하되 targets는 버리고 INCOMPATIBLE을 반환한다. digest는 source 권리·과학 admission 인증이 아니다.
 - `receipt.prepare_receipt`: weekly FINAL·지역 휴장·실제 writer clock과 creation 일치·신호 마감/다음 개장 경계를 검사한다. KR은 기존 core를 호출하고 US는 기존 지역 달력/XNYS session 시간을 사용한다. 승인 경계는 **synthetic fixture boundary**이며 Owner 승인으로 가장하지 않는다.
 - P0는 ETF 정책 baseline, P1–P5는 BLOCKED다. KR0~5 dynamic 정책과 US SPY/보조QQQ 식별만 기록한다. 종목 선택·weights·factor score·성과0은 만들지 않는다. 입력 불충분은 UNOBSERVED/SOURCE_BLOCKED다.
-- `append_synthetic_receipt`는 미리 만든 외부 test directory와 `.synthetic-preflight-store` 표식이 필수다. 모든 Git worktree·ledger/state/.git 경로, symlink/hardlink를 거부한다. 기존 core append와 local exclusive lock을 사용하고 동일 주 재조회는0건, 원천 개정 충돌·tamper는거부한다. production store를 초기화하는 API는 없다. 이 test lock/append는 운영 checkpoint/복구 프로토콜을 대체하지 않는다.
+- `append_synthetic_receipt`는 미리 만든 외부 test directory와 `.synthetic-preflight-store` 표식이 필수다. 모든 Git worktree·ledger/state/.git 경로, symlink/hardlink를 거부한다. 기존 core append와 local exclusive lock을 사용하고 동일 주 재조회는0건, 원천 개정 충돌·tamper는거부한다. 원천byte/SHA/vintage가같고ledger commit만전진한재조회는0건이며최초전체provenance와digest를유지한다. production store를 초기화하는 API는 없다. 이 test lock/append는 운영 checkpoint/복구 프로토콜을 대체하지 않는다.
 - `maturity_readiness`는 H126/H252 거래일 경과만 구분한다. 경과 후에도 데이터미관측·성과None·미인증이다. 과거 fixture는 SYNTHETIC_PREFLIGHT이며 진짜 PROSPECTIVE_PAPER 영수증이 아니다.
 
 ## 5. 실제 observation readiness와 release gate

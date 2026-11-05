@@ -197,7 +197,13 @@ def append_synthetic_receipt(directory, row):
         rows = C.read_ledger(path, validate_receipt)
         key = (row["region"], row["signalDate"])
         def semantic(value):
-            return C.canonical({k: v for k, v in value.items() if k not in {"receiptSha256", "createdAtUtc"}})
+            body = deepcopy({k: v for k, v in value.items() if k not in {"receiptSha256", "createdAtUtc"}})
+            # A ledger-only commit must not change a decision with identical
+            # source bytes and availability. Keep the FIRST full provenance;
+            # source SHA/vintage/rights changes still conflict.
+            for source in body["sourceEvidence"]:
+                source.pop("sourceCommit")
+            return C.canonical(body)
         for old in rows:
             if (old["region"], old["signalDate"]) == key:
                 _require(semantic(old) == semantic(row), "SAME_WEEK_SOURCE_OR_INPUT_CONFLICT")
