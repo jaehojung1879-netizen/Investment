@@ -1,0 +1,175 @@
+{
+  "canonicalCandidate": "portfolio-d-p0-p5-comparison-v1",
+  "status": "PREPARED",
+  "newValuationEngine": false,
+  "mapping": [
+    {
+      "topic": "cost/funding",
+      "left": {
+        "commit": "75aab7bc7096b551543bc1582c1e7fd288e94e59",
+        "path": "research/master_research_program_v1/portfolio/comparison.py",
+        "bytes": 8601,
+        "sha256": "7ccbbd0b3da286bdcfa0ae1ac3889023763bc82ed42e1d1dc6498e5986d2a881",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/blob/75aab7bc7096b551543bc1582c1e7fd288e94e59/research/master_research_program_v1/portfolio/comparison.py",
+        "line": 76
+      },
+      "right": {
+        "commit": "a3ee7a716e56c97c99b02537ac060aca01bdb038",
+        "path": "research/cross_market_foundation_v1/comparison.py",
+        "bytes": 22875,
+        "sha256": "a4a27e8511d2a3bd23d390652b2318bb11ea616161d4088389246e5a668c97fa",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/blob/a3ee7a716e56c97c99b02537ac060aca01bdb038/research/cross_market_foundation_v1/comparison.py",
+        "line": 324
+      },
+      "finding": "Drifted ongoing book vs funded entry and terminal liquidation: not interchangeable.",
+      "automaticConversionAllowed": false
+    },
+    {
+      "topic": "common universe",
+      "left": {
+        "commit": "75aab7bc7096b551543bc1582c1e7fd288e94e59",
+        "path": "research/master_research_program_v1/portfolio/portfolio-d-p0-p5-comparison-v1.json",
+        "bytes": 5841,
+        "sha256": "eecdb60753efa8e9600a3d0595109914a56851be236ebfb037d6ca102db3021c",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/blob/75aab7bc7096b551543bc1582c1e7fd288e94e59/research/master_research_program_v1/portfolio/portfolio-d-p0-p5-comparison-v1.json",
+        "line": 17
+      },
+      "right": {
+        "commit": "a3ee7a716e56c97c99b02537ac060aca01bdb038",
+        "path": "research/cross_market_foundation_v1/comparison.py",
+        "bytes": 22875,
+        "sha256": "a4a27e8511d2a3bd23d390652b2318bb11ea616161d4088389246e5a668c97fa",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/blob/a3ee7a716e56c97c99b02537ac060aca01bdb038/research/cross_market_foundation_v1/comparison.py",
+        "line": 149
+      },
+      "finding": "Common mask declared in316; 317 validates complete identical universe/input identity.",
+      "automaticConversionAllowed": false
+    },
+    {
+      "topic": "PIT/availability",
+      "left": {
+        "commit": "75aab7bc7096b551543bc1582c1e7fd288e94e59",
+        "path": "research/master_research_program_v1/portfolio/portfolio-d-p0-p5-comparison-v1.json",
+        "bytes": 5841,
+        "sha256": "eecdb60753efa8e9600a3d0595109914a56851be236ebfb037d6ca102db3021c",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/blob/75aab7bc7096b551543bc1582c1e7fd288e94e59/research/master_research_program_v1/portfolio/portfolio-d-p0-p5-comparison-v1.json",
+        "line": 16
+      },
+      "right": {
+        "commit": "a3ee7a716e56c97c99b02537ac060aca01bdb038",
+        "path": "research/cross_market_foundation_v1/comparison.py",
+        "bytes": 22875,
+        "sha256": "a4a27e8511d2a3bd23d390652b2318bb11ea616161d4088389246e5a668c97fa",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/blob/a3ee7a716e56c97c99b02537ac060aca01bdb038/research/cross_market_foundation_v1/comparison.py",
+        "line": 157
+      },
+      "finding": "316 declaration vs317 per-source availability/vintage checks; bytes and rights still require review.",
+      "automaticConversionAllowed": false
+    },
+    {
+      "topic": "missingness",
+      "left": {
+        "commit": "75aab7bc7096b551543bc1582c1e7fd288e94e59",
+        "path": "research/master_research_program_v1/portfolio/comparison.py",
+        "bytes": 8601,
+        "sha256": "7ccbbd0b3da286bdcfa0ae1ac3889023763bc82ed42e1d1dc6498e5986d2a881",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/blob/75aab7bc7096b551543bc1582c1e7fd288e94e59/research/master_research_program_v1/portfolio/comparison.py",
+        "line": 122
+      },
+      "right": {
+        "commit": "a3ee7a716e56c97c99b02537ac060aca01bdb038",
+        "path": "research/cross_market_foundation_v1/comparison.py",
+        "bytes": 22875,
+        "sha256": "a4a27e8511d2a3bd23d390652b2318bb11ea616161d4088389246e5a668c97fa",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/blob/a3ee7a716e56c97c99b02537ac060aca01bdb038/research/cross_market_foundation_v1/comparison.py",
+        "line": 300
+      },
+      "finding": "316 arm path None and pairwise filtering vs317 complete paired block refusal; samples differ.",
+      "automaticConversionAllowed": false
+    },
+    {
+      "topic": "receipt",
+      "left": {
+        "commit": "75aab7bc7096b551543bc1582c1e7fd288e94e59",
+        "path": "research/master_research_program_v1/portfolio/comparison.py",
+        "bytes": 8601,
+        "sha256": "7ccbbd0b3da286bdcfa0ae1ac3889023763bc82ed42e1d1dc6498e5986d2a881",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/blob/75aab7bc7096b551543bc1582c1e7fd288e94e59/research/master_research_program_v1/portfolio/comparison.py",
+        "line": 174
+      },
+      "right": {
+        "commit": "a3ee7a716e56c97c99b02537ac060aca01bdb038",
+        "path": "research/cross_market_foundation_v1/comparison.py",
+        "bytes": 22875,
+        "sha256": "a4a27e8511d2a3bd23d390652b2318bb11ea616161d4088389246e5a668c97fa",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/blob/a3ee7a716e56c97c99b02537ac060aca01bdb038/research/cross_market_foundation_v1/comparison.py",
+        "line": 256
+      },
+      "finding": "316 target receipt lacks writer-clock/right gates; 317 reads existing external identity. Neither is an activated collector.",
+      "automaticConversionAllowed": false
+    },
+    {
+      "topic": "horizon",
+      "left": {
+        "commit": "75aab7bc7096b551543bc1582c1e7fd288e94e59",
+        "path": "research/master_research_program_v1/portfolio/portfolio-d-p0-p5-comparison-v1.json",
+        "bytes": 5841,
+        "sha256": "eecdb60753efa8e9600a3d0595109914a56851be236ebfb037d6ca102db3021c",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/blob/75aab7bc7096b551543bc1582c1e7fd288e94e59/research/master_research_program_v1/portfolio/portfolio-d-p0-p5-comparison-v1.json",
+        "line": 23
+      },
+      "right": {
+        "commit": "a3ee7a716e56c97c99b02537ac060aca01bdb038",
+        "path": "research/cross_market_foundation_v1/comparison.py",
+        "bytes": 22875,
+        "sha256": "a4a27e8511d2a3bd23d390652b2318bb11ea616161d4088389246e5a668c97fa",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/blob/a3ee7a716e56c97c99b02537ac060aca01bdb038/research/cross_market_foundation_v1/comparison.py",
+        "line": 107
+      },
+      "finding": "316 21-session blocks and prospective126/252 horizons vs317 exact regional-session calendar maturity.",
+      "automaticConversionAllowed": false
+    },
+    {
+      "topic": "industry",
+      "left": {
+        "commit": "75aab7bc7096b551543bc1582c1e7fd288e94e59",
+        "path": "research/master_research_program_v1/market_industry/us_sector_membership.py",
+        "bytes": 9730,
+        "sha256": "1bfb9dc54c4c3dbc721beb2ff9330e980f968d4fd4554798b1a7a197c9b571d9",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/blob/75aab7bc7096b551543bc1582c1e7fd288e94e59/research/master_research_program_v1/market_industry/us_sector_membership.py",
+        "line": 1
+      },
+      "right": {
+        "commit": "a3ee7a716e56c97c99b02537ac060aca01bdb038",
+        "path": "research/cross_market_foundation_v1/industry.py",
+        "bytes": 23018,
+        "sha256": "1b8a6bc641c8d7456bb390899903f83716f4cbe69467ba86083f4ef88a3aef57",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/blob/a3ee7a716e56c97c99b02537ac060aca01bdb038/research/cross_market_foundation_v1/industry.py",
+        "line": 43
+      },
+      "finding": "Dataset-published sector snapshots differ from issuer SEC SIC and do not establish security/class history.",
+      "automaticConversionAllowed": false
+    },
+    {
+      "topic": "qualification/rights",
+      "left": {
+        "commit": "75aab7bc7096b551543bc1582c1e7fd288e94e59",
+        "path": "research/master_research_program_v1/portfolio/comparison.py",
+        "bytes": 8601,
+        "sha256": "7ccbbd0b3da286bdcfa0ae1ac3889023763bc82ed42e1d1dc6498e5986d2a881",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/blob/75aab7bc7096b551543bc1582c1e7fd288e94e59/research/master_research_program_v1/portfolio/comparison.py",
+        "line": 48
+      },
+      "right": {
+        "commit": "a3ee7a716e56c97c99b02537ac060aca01bdb038",
+        "path": "research/cross_market_foundation_v1/comparison.py",
+        "bytes": 22875,
+        "sha256": "a4a27e8511d2a3bd23d390652b2318bb11ea616161d4088389246e5a668c97fa",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/blob/a3ee7a716e56c97c99b02537ac060aca01bdb038/research/cross_market_foundation_v1/comparison.py",
+        "line": 162
+      },
+      "finding": "Input-state strings or hash equality are not scientific or legal admission.",
+      "automaticConversionAllowed": false
+    }
+  ]
+}
