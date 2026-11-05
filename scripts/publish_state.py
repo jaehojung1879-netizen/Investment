@@ -64,6 +64,7 @@ def freshness(state):
 
 
 def publish(api, candidate, attempts=5, pause=time.sleep):
+    encoded = json.dumps(candidate, ensure_ascii=False, indent=2, allow_nan=False) + "\n"
     incoming = freshness(candidate)
     missing = object()
     for attempt in range(attempts):
@@ -89,6 +90,9 @@ def publish(api, candidate, attempts=5, pause=time.sleep):
             if content.get("type") != "file" or content.get("encoding") != "base64":
                 raise ValueError("state content is not an ordinary JSON file")
             current = json.loads(base64.b64decode(content["content"], validate=False))
+            # Python accepts NaN/Infinity and overflowing exponents on decode.
+            # Refuse every nested nonfinite value before creating Git objects.
+            json.dumps(current, allow_nan=False)
         if current is not missing:
             previous = freshness(current)
             if candidate == current:
@@ -100,7 +104,7 @@ def publish(api, candidate, attempts=5, pause=time.sleep):
         tree = api.request("POST", "/git/trees", {
             "base_tree": commit["tree"]["sha"],
             "tree": [{"path": STATE, "mode": "100644", "type": "blob",
-                      "content": json.dumps(candidate, ensure_ascii=False, indent=2) + "\n"}],
+                      "content": encoded}],
         })
         new = api.request("POST", "/git/commits", {
             "message": "state: publish last successful production snapshot",

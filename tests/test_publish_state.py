@@ -193,7 +193,9 @@ def test_missing_latest_is_narrowly_created(api):
     assert api.git("diff-tree", "--no-commit-id", "--name-only", "-r", head, api.head) == STATE
 
 
-@pytest.mark.parametrize("content", ["null", "[]", "0", '"not a snapshot"', "{broken"])
+@pytest.mark.parametrize("content", ["null", "[]", "0", '"not a snapshot"', "{broken",
+    *(json.dumps({**snapshot(1), "extra": value}) for value in (float("nan"), float("inf"), -float("inf"))),
+    json.dumps(snapshot(1))[:-1] + ', "extra": 1e999}'])
 def test_existing_invalid_state_is_never_treated_as_missing(api, content):
     old = api.head
     tree = api.request("POST", "/git/trees", {
@@ -210,6 +212,15 @@ def test_existing_invalid_state_is_never_treated_as_missing(api, content):
         publish(api, snapshot())
     assert api.head == before
     assert not any(method in ("POST", "PATCH") for method, _ in api.calls)
+
+
+@pytest.mark.parametrize("value", [float("nan"), float("inf"), -float("inf")])
+def test_nonfinite_candidate_is_refused_before_api_calls(api, value):
+    before = api.head
+    with pytest.raises(ValueError):
+        publish(api, {**snapshot(), "extra": {"nested": value}})
+    assert api.head == before
+    assert api.calls == []
 
 
 def test_workflow_deploys_then_validates_and_publishes():
