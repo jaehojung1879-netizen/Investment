@@ -1,0 +1,327 @@
+{
+  "programId": "next-alpha-research-direction-v1",
+  "status": "PROPOSED_NOT_REGISTERED",
+  "asOf": "2026-11-05",
+  "evidenceClass": "OUTCOME_BLIND_RESEARCH_DIRECTION",
+  "authoredBy": "research-director lane (AUTHOR_VALIDATION_ONLY; not an independent approval)",
+  "readAnchors": {
+    "main": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+    "pr316": "75aab7bc7096b551543bc1582c1e7fd288e94e59",
+    "pr317": "a3ee7a716e56c97c99b02537ac060aca01bdb038",
+    "pr318": "8da958cccf1f738995a15c5d02e22e2b123b8c1a",
+    "issue292HandoffComment": 6655209199,
+    "closedPrsRead": [
+      286,
+      287,
+      290,
+      302,
+      308,
+      309,
+      310,
+      311
+    ]
+  },
+  "nonGoals": [
+    "no historical outcome read, model fit, rerun or promotion",
+    "no edit of #314/#315/#316/#317/#318, research_specs/, docs/results/, pipeline/, .github/, data/",
+    "no new portfolio engine, comparison calculator, data pipeline or prospective ledger",
+    "production default unchanged: KR 069500.KS 100% (0 names), US SPY 100%; QQQ supplementary"
+  ],
+  "programDecisions": [
+    {
+      "id": "D1-ESTIMAND",
+      "decision": "Every future stock or industry study reports (a) a funded, ex-ante beta-matched alpha (stock leg vs beta*ETF + (1-beta)*investable cash), (b) an industry-neutral selection term, and (c) the exposure term separately. Raw within-date-demeaned benchmark-relative return is no longer a sufficient primary estimand.",
+      "reason": "Within-date demeaning removes the market intercept but not (beta_i - mean beta) * R_market, so any risk-related signal changes sign with market direction. This matches the D_UNSTABLE / region-sign-unstable classifications of lowvol and the C2 pattern (wins in 2014/2018/2022/2024 down years, loses in 2025/2026 up years; HAC beta 0.630).",
+      "industryLabelNote": "KR PIT industry labels exist only for the Top120 v4 reconstruction (terminated names 0%); a current KSIC/GICS label is never back-applied as PIT. Industry-matched terms are therefore secondary and carry their classification limitation."
+    },
+    {
+      "id": "D2-POWER-REALITY",
+      "decision": "Portfolio-level ETF-relative NAV records are monitoring and implementation evidence, never the primary proof of alpha. Primary evidence for a 6-12M mechanism is event-level or calendar-time cross-sectional precision, gated by an outcome-free MDE before any outcome is read.",
+      "reason": "At tracking error 13% (C2 measured 12.99%) a 3pp/yr edge needs about 147 years for 80% power; at 5% about 22 years. A 4-year prospective P0-P5 record cannot separate realistic alphas from zero."
+    },
+    {
+      "id": "D3-NEW-AXIS-EXCEPTION",
+      "decision": "Recommend the owner grant ONE narrowly scoped Phase D exception for information axes that no prior KR study ever read (capital-allocation decisions, supply contracts, insider open-market trades), run once as EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY under a frozen preregistration and power gate, followed by mandatory prospective confirmation. No exception for any Atlas-106 / regional-31 / Phase C feature.",
+      "reason": "Phase D closed re-mining of already-read features. A never-read event axis is not conditioned on by prior searches, while the period itself (2025-26 semiconductor regime) remains exposed and must be reported as a split."
+    },
+    {
+      "id": "D4-UNIVERSE-POWER",
+      "decision": "Build a KOSPI liquidity-qualified PIT universe (signal-date median traded value >= 1bn KRW) as the event-study universe; Top120 stays the reference for existing studies. Terminations are BOUNDED (worst plausible and last-observed) and a verdict must hold under both, never imputed.",
+      "reason": "Under the stated assumptions every Top120-only event study is POWER_MARGINAL or NO_GO; the broader universe (about 2.6x names) is the single largest power lever. Small-capital principle (AGENTS v2.24) permits it with cost discipline."
+    },
+    {
+      "id": "D5-MARKET-LAYER-ROLE",
+      "decision": "Market layer is a risk budget, not an alpha source. Stop new market-timing signal search; keep C0/C1 and B-H1 prospective recorders as risk-overlay evidence.",
+      "reason": "KR C0/C1 and US C1 all NO_CANDIDATE_NOMINATED_CONTROL_RETAINED: lower return for lower drawdown (KR passive 9.73%/-52.92%, C1 7.14%/-36.82%)."
+    },
+    {
+      "id": "D6-INDUSTRY-LAYER-ROLE",
+      "decision": "Industry is used as a neutralisation and conditioning axis inside stock studies, not tested as a stand-alone KR alpha until a source and power gate pass. KR sector ETFs are the investable unit if industry tests resume.",
+      "reason": "KR v4 foundation insufficient (5-member gate fails 398/610 days), industry OCF power 23% (NO_GO, #300), integrated D gain 98% in 2025-26 and 59.5% from one industry."
+    }
+  ],
+  "gatingStudy": {
+    "id": "G0-C2-BETA-SELECTION-SEPARATION",
+    "existingContract": "research/alpha_evidence_sprint_v2/c2-fixed-exposure-attribution-v1.json @86c5983f (PR #316)",
+    "stage": "A_THEN_B",
+    "question": "Does the saved KR C2 path keep a positive arithmetic selection term after an ex-ante beta-matched ETF + KRW cash twin and costs?",
+    "proposedPreOutcomeRevision": "Add a fourth cash scenario INVESTABLE_KRW_CASH_ETF = shareholder total return of KODEX 단기채권 (153130, listed 2012-02-22, tracks a KRW cash index of <1y government/MSB paper) from KRX closes plus official distributions, to the existing conjunction {ZERO, BOK_POLICY_PROXY, BOK_POLICY_PLUS_100BP}. A conjunction can only make SELECTION_SURVIVES harder, so the revision cannot launder a result. Recorded as a preOutcomeRevision with this reason; no ECOS item code is guessed.",
+    "sourceEligibilityChecks": [
+      "KRX bars for 153130 cover every KR session 2012-02-22..2026-09-14 with no gap, or the gap is listed",
+      "official Samsung Asset distribution records match KRX ex-dates; reconcile with #317 economics.reconcile_distribution_events and total_return_input_gate",
+      "series is pinned by content hash before authorization; ETF expense ratio embedded in NAV, not double-charged"
+    ],
+    "decisionRule": "unchanged from the contract: SELECTION_SURVIVES_FIXED_EXPOSURE / SELECTION_NEGATIVE / NO_SELECTION_EVIDENCE / SOURCE_OR_SAMPLE_INSUFFICIENT",
+    "consequences": {
+      "SELECTION_SURVIVES_FIXED_EXPOSURE": "defensive large-cap selection becomes a registered prospective P1 candidate with funded beta-matched scoring; still no production change",
+      "NO_SELECTION_EVIDENCE_OR_NEGATIVE": "close the CHAMPION C2 lineage as alpha evidence; keep only as a historical control; do not create a new C2 arm"
+    },
+    "ownerDecisions": [
+      "Phase D exception AUTHORIZATION-c2.json at exact hashes",
+      "accept the 153130 pre-outcome revision"
+    ]
+  },
+  "studies": [
+    {
+      "rank": 1,
+      "id": "S4S1-KR-CAPITAL-ALLOCATION-EVENTS",
+      "registerIds": [
+        "S4-KR-BUYBACK-CANCELLATION",
+        "S1-KR-DIVIDEND-POLICY-CHANGE",
+        "S4-KR-EQUITY-ISSUANCE-CB"
+      ],
+      "region": "KR",
+      "layer": "STOCK (S4 ownership & capital flows / S1 payout)",
+      "stage": "A_THEN_B",
+      "mechanism": "The firm is its best-informed trader. A buyback decision followed by cancellation is a costly payout signal; acquisition without cancellation in Korea often serves control (literature: Korean investors price cancellation, not acquisition, as payout). Issuance (rights offerings, CB/EB, treasury disposal) is the opposite signal; internationally the issuance effect is driven more by post-issuance weakness than post-buyback strength (McLean-Pontiff-Watanabe 2009, 41 countries).",
+      "horizonFit": "Long-run drift in the literature is measured over 1-4 years; H126 primary, H252 secondary.",
+      "overlapWithExisting": "J03 registered but never built; C11 realised share-count change (Phase C, NO_DEVELOPMENT_EVIDENCE) is months later and net of all causes. The primary hypothesis uses decision-date events only; C11 is a control.",
+      "primaryHypothesis": "H1: issuers with a receipt-dated buyback-and-cancellation decision (or cancellation decision) earn positive funded ex-ante-beta-matched abnormal return over H126 net of a self-financed round trip (primary); industry-matched where a PIT industry label exists (secondary, labelled).",
+      "secondaryHypotheses": [
+        "dilution side: rights offering / CB / EB / treasury disposal decisions underperform (implemented long-only as exclusion from an ETF-weighted book)",
+        "acquisition-without-cancellation vs with-cancellation contrast"
+      ],
+      "data": "DART list.json (receipt-dated, 2013+) plus decision-document fields: shares to acquire as % of shares outstanding, purpose, period, trust vs direct, cancellation; amendments separated from originals; signal = next session close after receipt.",
+      "controls": [
+        "prior 12-1 momentum",
+        "prior 21-session return (buybacks follow drawdowns: reversal confound)",
+        "size",
+        "value",
+        "industry",
+        "ex-ante beta"
+      ],
+      "regimeSplits": [
+        "pre/post 2024-02 Value-up",
+        "ex 2025-26",
+        "Top120 vs broad universe"
+      ],
+      "measuredDensity": "Top120 per-252-session window: buyback decision or trust median 20 issuers, >=5 on 147/155 anchors; cancellations median 5, concentrated 2024-26 (PR #316 kr-event-report-counts-v1)",
+      "survivorshipCorporateActionRisk": "terminations within window bounded both ways; merger/tender buybacks excluded by purpose field",
+      "costTurnover": "one round trip per event; sleeve turnover about 200%/yr at H126; cost from the common #317 tariff incl. dated KR sell tax",
+      "failureCriteria": {
+        "powerGate": "outcome-free MDE (measured events, pre-event residual vol, outcome-free design effect) > 2 x MEE -> do not run historically; prospective only",
+        "reject": "95% upper bound of net funded abnormal < MEE, or negative at cost 2x",
+        "noEvidence": "interval contains 0 -> close axis; no re-specification of event definition, window or controls",
+        "support": "lower bound > 0 AND point >= MEE AND same sign pre/post Value-up AND ex-2025-26 -> DEVELOPMENT_SUPPORT, then prospective confirmation only"
+      },
+      "minimumEconomicEffectPp": {
+        "H126": 3.0,
+        "H252": 4.0
+      }
+    },
+    {
+      "rank": 2,
+      "id": "S5-KR-SUPPLY-CONTRACT-MAGNITUDE",
+      "registerIds": [
+        "S5-KR-SUPPLY-CONTRACT"
+      ],
+      "region": "KR",
+      "layer": "STOCK (S5 material disclosure) with mandatory industry neutralisation",
+      "stage": "A_THEN_B",
+      "mechanism": "단일판매·공급계약 discloses dated, sized future revenue (contract amount vs latest revenue, duration). If the market prices the announcement day but under-weights revenue recognised over the contract life, earnings surprises arrive in the next 2-4 quarters: a 6-12M drift. Korean event studies report a significant announcement-day rise and next-day reversal, so the claim is specifically about LARGE contracts relative to revenue, not the average filing.",
+      "horizonFit": "Revenue recognition runs over quarters; H126 primary.",
+      "overlapWithExisting": "No feature set reads contract size. M3 backlog (US industry aggregate, #302) failed but is a different unit (industry macro series).",
+      "primaryHypothesis": "H2: contracts >= 10% of latest annual revenue (the disclosure-materiality line, frozen before outcomes, not searched) earn positive funded ex-ante-beta-matched abnormal H126 return net of costs (primary); industry-matched where a PIT label exists (secondary, mandatory to report).",
+      "data": "DART list.json + document parse: contract amount, recent revenue, ratio, start/end, counterparty, later correction/cancellation filings linked by receipt.",
+      "controls": [
+        "industry (mandatory: shipbuilding/construction/defense/battery concentration)",
+        "prior momentum",
+        "size",
+        "beta"
+      ],
+      "measuredDensity": "120 of 254 issuers file; >=5 Top120 issuers on every anchor, median 18 per 63 sessions",
+      "keyRisk": "industry super-cycle exposure (e.g. shipbuilding 2021-25) masquerading as selection; contract cancellations (계약해지) must be included as the same event's later state, not dropped",
+      "failureCriteria": "same structure as rank 1",
+      "minimumEconomicEffectPp": {
+        "H126": 3.0,
+        "H252": 4.0
+      }
+    },
+    {
+      "rank": 3,
+      "id": "S4-KR-INSIDER-OPEN-MARKET-NET-PURCHASE",
+      "registerIds": [
+        "S4-KR-INSIDER"
+      ],
+      "region": "KR",
+      "layer": "STOCK (S4) - one element of S4, not the program centre",
+      "stage": "A_CONDITIONAL",
+      "mechanism": "Executives and major shareholders buying in the open market with own cash reveal private information; the literature effect concentrates in opportunistic (non-routine) and clustered purchases and in smaller firms.",
+      "condition": "Proceeds to a historical test only if the outcome-free G2 density gate PASSES on the full 254-issuer collection; otherwise prospective recording only.",
+      "existingState": "G2 UNCERTAIN on a 24-issuer projection: parse 99.86%, 128 quarantined (115 dated 1-4 days after receipt, settlement-date shape), interval-PASS anchors 49/155 vs 93 required.",
+      "primaryHypothesis": "H3: issuer-quarters with net open-market insider purchases by >= 2 distinct insiders earn positive funded ex-ante-beta-matched H126 abnormal return net of costs (primary); industry-matched secondary.",
+      "failureCriteria": "same structure as rank 1; if G2 FAILS -> CLOSED_DENSITY, no historical run",
+      "minimumEconomicEffectPp": {
+        "H126": 3.0,
+        "H252": 4.0
+      }
+    },
+    {
+      "rank": 4,
+      "id": "US-SHAREHOLDER-PAYOUT-PROSPECTIVE-REPLICATION",
+      "registerIds": [
+        "S1-US-CAPITAL-ALLOCATION"
+      ],
+      "region": "US",
+      "layer": "STOCK (S1 payout) - cross-market replication of rank 1's mechanism",
+      "stage": "C_PROSPECTIVE_ONLY",
+      "mechanism": "OCF-backed growth in dividends + buybacks (us-capital-allocation-alpha-v1, already REGISTERED_PENDING_OWNER_APPROVAL).",
+      "whyProspective": "US historical stock work is survivor-biased (212 of 324 departed identities unpriced; 0 admitted sessions after #317). No historical test is proposed.",
+      "nextStep": "owner decision to start LIVE receipts; no new code. Report vs SPY in USD (QQQ secondary), never KRW-mixed.",
+      "knownDesignIssue": "registered rule picks 5 names in all 605 non-blocked weeks (owner decision D2 in that registration)"
+    },
+    {
+      "rank": 5,
+      "id": "PROSPECTIVE-KR-EVENT-RECEIPTS",
+      "region": "KR",
+      "layer": "STOCK events -> Portfolio",
+      "stage": "C_PROSPECTIVE_ONLY",
+      "mechanism": "Starts the independent out-of-sample clock for ranks 1-3 now, regardless of the historical exception decision.",
+      "nextStep": "after the rank 1-3 signal definitions are frozen, append weekly receipt-dated event signals with prospective_receipt_core; outcomes only at H126/H252 maturity.",
+      "why": "Event counts per year (tens to ~100 issuer-events) give an event-level prospective test in 3-4 years that a 0-5 name NAV record cannot give in decades."
+    }
+  ],
+  "heldBack": [
+    {
+      "id": "I-KR-EXPORT-HS-DIFFUSION",
+      "stage": "D",
+      "reason": "plausible 6-12M industry mechanism (customs exports by HS lead exporter earnings) but source not probed and industry-level power is weak; outcome-free source probe of release dates and revisions only"
+    },
+    {
+      "id": "S4-KR-LARGE-HOLDER-5PCT purpose=경영참가",
+      "stage": "D",
+      "reason": "13D-analogue; list.json depth 2013+ but parse and density unknown; after insider"
+    },
+    {
+      "id": "S4-KR-INVESTOR-FLOW",
+      "stage": "D",
+      "reason": "KRX LOGOUT refusal; literature effect mostly short horizon; one permitted re-probe"
+    },
+    {
+      "id": "S2-*-ANALYST-REVISIONS",
+      "stage": "D",
+      "reason": "paid / ToS-blocked; strongest literature prior for 6-12M but no lawful free PIT source"
+    },
+    {
+      "id": "US historical stock selection",
+      "stage": "D",
+      "reason": "needs a delisting-inclusive price source (paid licence decision for the owner)"
+    }
+  ],
+  "stopDecisions": [
+    "Atlas-106 / Phase C / regional-31 re-mining, recombination or reweighting (E)",
+    "OHLCV re-expressions: momentum variants, volume/attention, intraday/overnight, price lead-lag (E)",
+    "fundamental level/acceleration, accruals/cash quality, SUE without consensus (E)",
+    "ML blends: opportunity v5, overlay, radar, tournament (E)",
+    "market-timing signal search; C1/C2/C3 threshold re-optimisation; C1c asymmetric exit (E; recommend closing #289 lineage)",
+    "#308 preliminary earnings and #310 H2 as 6-12M strategies (timing gain of ~12 sessions only) (E)",
+    "M3 backlog, industry OCF conditional (E)"
+  ],
+  "powerPlanning": {
+    "note": "Design assumptions only. Replace sigma with measured pre-event residual vol and events with parsed counts before any registration.",
+    "assumptions": {
+      "alpha": 0.05,
+      "power": 0.8,
+      "timeSeries": [
+        {
+          "label": "C2-like concentrated book, prospective 4y",
+          "trackingErrorPct": 13.0,
+          "years": 4
+        },
+        {
+          "label": "C2-like concentrated book, full history",
+          "trackingErrorPct": 13.0,
+          "years": 13.7
+        },
+        {
+          "label": "diversified event tilt, prospective 4y",
+          "trackingErrorPct": 5.0,
+          "years": 4
+        },
+        {
+          "label": "diversified event tilt, full history",
+          "trackingErrorPct": 5.0,
+          "years": 13.7
+        }
+      ],
+      "events": [
+        {
+          "label": "buyback decisions, Top120, H126",
+          "sigmaPct": 20.0,
+          "events": 270,
+          "designEffect": 2.0,
+          "family": 3,
+          "minimumEconomicEffectPp": 3.0
+        },
+        {
+          "label": "buyback decisions, broad KOSPI, H126",
+          "sigmaPct": 20.0,
+          "events": 700,
+          "designEffect": 2.0,
+          "family": 3,
+          "minimumEconomicEffectPp": 3.0
+        },
+        {
+          "label": "cancellations only, Top120, H126",
+          "sigmaPct": 20.0,
+          "events": 70,
+          "designEffect": 2.0,
+          "family": 3,
+          "minimumEconomicEffectPp": 3.0
+        },
+        {
+          "label": "supply contracts, Top120 issuer-quarters, H126",
+          "sigmaPct": 20.0,
+          "events": 500,
+          "designEffect": 2.0,
+          "family": 3,
+          "minimumEconomicEffectPp": 3.0
+        },
+        {
+          "label": "supply contracts, broad KOSPI, H126",
+          "sigmaPct": 20.0,
+          "events": 1200,
+          "designEffect": 2.0,
+          "family": 3,
+          "minimumEconomicEffectPp": 3.0
+        },
+        {
+          "label": "insider net-purchase issuer-quarters, Top120, H126 (count assumed)",
+          "sigmaPct": 20.0,
+          "events": 1200,
+          "designEffect": 2.0,
+          "family": 3,
+          "minimumEconomicEffectPp": 3.0
+        },
+        {
+          "label": "buyback decisions, Top120, H252",
+          "sigmaPct": 28.0,
+          "events": 270,
+          "designEffect": 2.0,
+          "family": 3,
+          "minimumEconomicEffectPp": 4.0
+        }
+      ]
+    }
+  }
+}
