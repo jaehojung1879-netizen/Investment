@@ -12,6 +12,42 @@
   "portfolio0to5": "NOT_REACHED (requires DEVELOPMENT_SUPPORT first)"
  },
  "contract": "OUTCOME_FREE_EXECUTION_READINESS_V1",
+ "exDateRuleCheck": {
+  "agreeWithMarketRule": 196,
+  "disagreeOneSessionLate": 397,
+  "disagreeRecordDateIsSession": 0,
+  "evidenceReproduced": true,
+  "filingStatedCandidates": 593,
+  "finding": "cohort.dividends.ex_date_candidate counts sessions strictly before a non-session record date and lands one session late (every 12-31 record date); do not use it as an ex-date. Fix belongs to #320 (its receipts pin the data file).",
+  "publicEvidence": [
+   {
+    "lastSession": "2023-12-28",
+    "marketRule": "2023-12-27",
+    "recordDate": "2023-12-31",
+    "reportedExDate": "2023-12-27",
+    "source": "https://www.khan.co.kr/article/202312141411001",
+    "year": 2023
+   },
+   {
+    "lastSession": "2023-12-28",
+    "marketRule": "2023-12-27",
+    "recordDate": "2023-12-31",
+    "reportedExDate": "2023-12-27",
+    "source": "https://www.newsis.com/view/NISX20231226_0002570439",
+    "year": 2023
+   },
+   {
+    "lastSession": "2022-12-29",
+    "marketRule": "2022-12-28",
+    "recordDate": "2022-12-31",
+    "reportedExDate": "2022-12-28",
+    "source": "https://www.fnnews.com/news/202212151630345260",
+    "year": 2022
+   }
+  ],
+  "sealed": false,
+  "tier": "MARKET_T_PLUS_2_LAST_SESSION_RULE_CANDIDATE_UNSEALED"
+ },
  "inherited": {
   "registeredSpecSha256": "1692b5b3131a76ab6dd8a5198ef0fd262fffa4ec7cf0925444cf344aacbd61d4",
   "status": "INHERITED_VALUES_MATCH"
@@ -519,6 +555,11 @@
     "NO_PARSED_RECORD_DATE_IN_WINDOW": 97,
     "RECORD_DATE_ONLY_EX_DATE_RULE_REQUIRED": 148
    },
+   "dividendWindowIfMarketRuleSealed": {
+    "ALL_IN_WINDOW_DIVIDENDS_DATED_AND_SIZED": 165,
+    "IN_WINDOW_DIVIDEND_WITHOUT_COMMON_DPS": 4,
+    "NO_EX_DATE_IN_WINDOW": 96
+   },
    "entries2025_2026": 169,
    "independentEvents": 323,
    "issuerConcentration": {
@@ -634,6 +675,11 @@
     "ALL_IN_WINDOW_FILING_STATED_RULE": 14,
     "NO_PARSED_RECORD_DATE_IN_WINDOW": 17,
     "RECORD_DATE_ONLY_EX_DATE_RULE_REQUIRED": 133
+   },
+   "dividendWindowIfMarketRuleSealed": {
+    "ALL_IN_WINDOW_DIVIDENDS_DATED_AND_SIZED": 143,
+    "IN_WINDOW_DIVIDEND_WITHOUT_COMMON_DPS": 4,
+    "NO_EX_DATE_IN_WINDOW": 17
    },
    "entries2025_2026": 128,
    "independentEvents": 252,
@@ -751,6 +797,11 @@
     "NO_PARSED_RECORD_DATE_IN_WINDOW": 224,
     "RECORD_DATE_ONLY_EX_DATE_RULE_REQUIRED": 250
    },
+   "dividendWindowIfMarketRuleSealed": {
+    "ALL_IN_WINDOW_DIVIDENDS_DATED_AND_SIZED": 273,
+    "IN_WINDOW_DIVIDEND_WITHOUT_COMMON_DPS": 5,
+    "NO_EX_DATE_IN_WINDOW": 224
+   },
    "entries2025_2026": 76,
    "independentEvents": 522,
    "issuerConcentration": {
@@ -866,6 +917,11 @@
     "NO_PARSED_RECORD_DATE_IN_WINDOW": 35,
     "RECORD_DATE_ONLY_EX_DATE_RULE_REQUIRED": 332
    },
+   "dividendWindowIfMarketRuleSealed": {
+    "ALL_IN_WINDOW_DIVIDENDS_DATED_AND_SIZED": 346,
+    "IN_WINDOW_DIVIDEND_WITHOUT_COMMON_DPS": 7,
+    "NO_EX_DATE_IN_WINDOW": 35
+   },
    "entries2025_2026": 54,
    "independentEvents": 416,
    "issuerConcentration": {
@@ -980,6 +1036,12 @@
     "NO_PARSED_RECORD_DATE_IN_WINDOW": 300,
     "RECORD_DATE_ONLY_EX_DATE_RULE_REQUIRED": 110
    },
+   "dividendWindowIfMarketRuleSealed": {
+    "ALL_IN_WINDOW_DIVIDENDS_DATED_AND_SIZED": 134,
+    "IN_WINDOW_DIVIDEND_WITHOUT_COMMON_DPS": 1,
+    "NO_EX_DATE_IN_WINDOW": 306,
+    "WINDOW_MEMBERSHIP_FLIPS_UNDER_REPO_CANDIDATE": 3
+   },
    "entries2025_2026": 93,
    "independentEvents": 464,
    "issuerConcentration": {
@@ -1089,6 +1151,12 @@
     "ALL_IN_WINDOW_FILING_STATED_RULE": 27,
     "NO_PARSED_RECORD_DATE_IN_WINDOW": 134,
     "RECORD_DATE_ONLY_EX_DATE_RULE_REQUIRED": 151
+   },
+   "dividendWindowIfMarketRuleSealed": {
+    "ALL_IN_WINDOW_DIVIDENDS_DATED_AND_SIZED": 176,
+    "IN_WINDOW_DIVIDEND_WITHOUT_COMMON_DPS": 2,
+    "NO_EX_DATE_IN_WINDOW": 134,
+    "WINDOW_MEMBERSHIP_FLIPS_UNDER_REPO_CANDIDATE": 1
    },
    "entries2025_2026": 66,
    "independentEvents": 346,

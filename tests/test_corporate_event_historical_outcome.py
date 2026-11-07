@@ -248,3 +248,20 @@ def test_admission_refuses_wrong_basis_and_digest(tmp_path):
     assert st['stockTotalReturn'] == 'SOURCE_BLOCKED:BASIS_NOT_ADMISSIBLE'
     assert st['investableKrwCash'] == 'SOURCE_BLOCKED:DIGEST_MISMATCH'
     assert st['tradability'] == 'ADMITTED'
+
+
+def test_market_ex_date_rule_reproduces_reported_year_end_dates_and_flags_repo_candidate():
+    from pipeline import replay_calendar
+    from research.corporate_event_readiness_v1.cohort.dividends import ex_date_candidate
+    from research.corporate_event_readiness_v1.cohort.outcome import ex_date as X
+    sessions = [d.date().isoformat() for d in replay_calendar.sessions('2012-01-01', '2024-12-31', 'KR')]
+    for e in X.EVIDENCE:
+        got = X.market_ex_date(e['recordDate'], sessions)
+        assert got['lastSessionOnOrBeforeRecord'] == e['lastSession']
+        assert got['exDate'] == e['reportedExDate']
+        # the #320 candidate is one session late on a non-session record date
+        assert ex_date_candidate(e['recordDate'], True, sessions)['exDateCandidate'] != e['reportedExDate']
+    # on a session record date both rules agree: ex-date = one session before
+    assert X.market_ex_date('2023-03-31', sessions)['exDate'] == '2023-03-30'
+    assert ex_date_candidate('2023-03-31', True, sessions)['exDateCandidate'] == '2023-03-30'
+    assert X.market_ex_date('2012-01-02', sessions)['tier'] == 'CALENDAR_TOO_SHORT'

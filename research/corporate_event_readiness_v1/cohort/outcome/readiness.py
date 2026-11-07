@@ -23,6 +23,7 @@ from pipeline import replay_calendar
 
 from .. import power
 from . import contract as C
+from . import ex_date as X
 
 ROOT = Path(__file__).resolve().parents[4]
 DATA = C.COHORT_DIR / 'data'
@@ -102,6 +103,23 @@ def build() -> dict:
                     div['ALL_IN_WINDOW_FILING_STATED_RULE'] += 1
                 else:
                     div['RECORD_DATE_ONLY_EX_DATE_RULE_REQUIRED'] += 1
+            mkt = Counter()
+            for e in matured:
+                end = e[f'{horizon}End']
+                inside = []
+                for d in div_by_code.get(e['stock_code'], []):
+                    ex = X.market_ex_date(d['recordDate'], sessions)['exDate']
+                    if ex and e['entrySession'] < ex <= end:
+                        inside.append(d)
+                    old = d.get('exDateCandidate')
+                    if old and ex and ((e['entrySession'] < old <= end) != (e['entrySession'] < ex <= end)):
+                        mkt['WINDOW_MEMBERSHIP_FLIPS_UNDER_REPO_CANDIDATE'] += 1
+                if not inside:
+                    mkt['NO_EX_DATE_IN_WINDOW'] += 1
+                elif all(d.get('dpsCommonKrw') for d in inside):
+                    mkt['ALL_IN_WINDOW_DIVIDENDS_DATED_AND_SIZED'] += 1
+                else:
+                    mkt['IN_WINDOW_DIVIDEND_WITHOUT_COMMON_DPS'] += 1
             labelled = Counter({k: v for k, v in ind.items() if k != 'UNLABELLED'})
             top = labelled.most_common(1)[0] if labelled else (None, 0)
             if horizon == C.PRIMARY_HORIZON:
@@ -132,6 +150,7 @@ def build() -> dict:
                                 'largestIndustry': top[0], 'largestIndustryShareOfLabelled':
                                 round(top[1] / sum(labelled.values()), 4) if labelled else None},
                 'dividendWindowExposureMatured': dict(div),
+                'dividendWindowIfMarketRuleSealed': dict(mkt),
                 'calendarSpanMatured': {'start': span[0], 'end': span[1], 'sessions': T,
                                         'effectivePrimaryBlocks': round(T / C.BOOTSTRAP['block'][horizon], 2)},
             }
@@ -144,10 +163,37 @@ def build() -> dict:
         'sets': sets,
         'pinnedLargestPitIndustryForRemovalCheck': pinned,
         'powerOnMaturedN': power.power_table(power_rows),
+        'exDateRuleCheck': ex_date_check(dividends, sessions),
         'sourceStatus': SOURCE_STATUS,
         'computability': COMPUTABILITY,
     }
     return out
+
+
+def ex_date_check(dividends: list[dict], sessions: list[str]) -> dict:
+    """Outcome-free: where does the #320 candidate disagree with the market T+2 rule?"""
+    in_cal = set(sessions)
+    agree, disagree, off_session = 0, 0, Counter()
+    for d in dividends:
+        old = d.get('exDateCandidate')
+        if d.get('amendment') or not old:
+            continue
+        new = X.market_ex_date(d['recordDate'], sessions)['exDate']
+        if new == old:
+            agree += 1
+        else:
+            disagree += 1
+            off_session[d['recordDate'] in in_cal] += 1
+    ev = [{**e, 'marketRule': X.market_ex_date(e['recordDate'], sessions)['exDate']} for e in X.EVIDENCE]
+    return {'tier': X.TIER, 'sealed': False,
+            'filingStatedCandidates': agree + disagree, 'agreeWithMarketRule': agree,
+            'disagreeOneSessionLate': disagree,
+            'disagreeRecordDateIsSession': off_session.get(True, 0),
+            'publicEvidence': ev,
+            'evidenceReproduced': all(e['marketRule'] == e['reportedExDate'] for e in ev),
+            'finding': 'cohort.dividends.ex_date_candidate counts sessions strictly before a '
+                       'non-session record date and lands one session late (every 12-31 record date); '
+                       'do not use it as an ex-date. Fix belongs to #320 (its receipts pin the data file).'}
 
 
 SOURCE_STATUS = {

@@ -28,7 +28,7 @@ PACKET = HERE / 'historical-execution-packet-v1.json'
 READINESS = HERE / 'execution-readiness-v1.json'
 RESULT = C.COHORT_DIR / 'data' / 'historical-outcome-result-v1.json'
 HARNESS_FILES = ('__init__.py', 'contract.py', 'engine.py', 'inference.py', 'decision.py', 'study.py',
-                 'inputs.py', 'readiness.py', 'run.py')
+                 'inputs.py', 'readiness.py', 'ex_date.py', 'run.py')
 PHRASE = 'APPROVE KR_PHASE_D_NEW_AXIS_EXCEPTION kr-corporate-information-events-v1 {spec} PACKET {packet}'
 
 
