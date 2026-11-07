@@ -73,6 +73,8 @@ def inspect_source(raw: bytes) -> dict:
             if payment < record:
                 raise ValueError("PAYMENT_PRECEDES_RECORD")
             gross, taxable = _amount(row["DIVID_A"]), _amount(row["TAX_DIVID_A"])
+            if Decimal(taxable) > Decimal(gross):
+                raise ValueError("TAXABLE_AMOUNT_EXCEEDS_GROSS")
             seen.add(record)
             events.append({"recordDate": record, "paymentDate": payment, "exDate": None,
                            "grossAmount": gross, "taxableAmount": taxable,
@@ -143,3 +145,81 @@ def inspect_price_date_projection(raw: bytes) -> dict:
             "missingSessions": None, "zeroVolumeSessions": None,
             "sourceSha256": payload["originalSha256"],
             "projectionSha256": hashlib.sha256(raw).hexdigest()}
+
+
+def reconcile_price_sessions(raw: bytes, *, expected_sessions: list[str],
+                             requested_through: str, calendar_id: str) -> dict:
+    """Compare fixed labels to an independently supplied calendar, not to prices.
+
+    Library/session agreement is not an official-exchange certification, a
+    historical vintage, an execution price or an investable return series.
+    Reject a supposedly dated endpoint that actually returns later observations.
+    """
+    checked = inspect_price_date_projection(raw)
+    cutoff = date.fromisoformat(requested_through).isoformat()
+    if (not expected_sessions or not calendar_id
+            or expected_sessions != sorted(set(expected_sessions))
+            or any(date.fromisoformat(d).isoformat() != d for d in expected_sessions)
+            or expected_sessions[-1] > cutoff):
+        raise ValueError("INDEPENDENT_ORDERED_CALENDAR_REQUIRED")
+    observed = set(json.loads(raw)["dates"])
+    expected = set(expected_sessions)
+    missing, unexpected = sorted(expected - observed), sorted(observed - expected)
+    after = sorted(d for d in observed if d > cutoff)
+    blockers = []
+    if after:
+        blockers.append("OBSERVATIONS_AFTER_REQUESTED_CUTOFF")
+    if missing:
+        blockers.append("MISSING_EXPECTED_SESSIONS")
+    if unexpected:
+        blockers.append("UNEXPECTED_OBSERVATION_SESSIONS")
+    return {
+        "status": "BLOCKED" if blockers else "REPOSITORY_CALENDAR_LABELS_MATCH",
+        "calendarId": calendar_id, "requestedThrough": cutoff,
+        "calendarSha256": hashlib.sha256(json.dumps(expected_sessions, separators=(",", ":")).encode()).hexdigest(),
+        "expectedSessionCount": len(expected_sessions), "observedDateCount": len(observed),
+        "missingSessions": missing, "unexpectedSessions": unexpected,
+        "observationsAfterRequestedCutoff": after, "blockers": blockers,
+        "sourceSha256": checked["sourceSha256"], "projectionSha256": checked["projectionSha256"],
+        "officialSessionCalendarCertified": False, "priceValuesValidated": False,
+        "historicalPublicationVintageVerified": False,
+        "economicEmpiricismReady": False, "outcomeExecutionAuthorized": False,
+    }
+
+
+def project_price_quality(raw: bytes) -> dict:
+    """Inspect close/volume validity only; never retain values or compute returns.
+
+    NAV, price change and the provider's published returns are never selected.
+    Zero reported volume is an execution-data blocker, not a last-price fill.
+    """
+    import xlrd
+
+    dates = json.loads(project_price_dates(raw))["dates"]
+    sheet = xlrd.open_workbook(file_contents=raw).sheet_by_index(0)
+    bad_price, bad_volume, zero_volume = [], [], []
+    for index, day in enumerate(dates, start=4):
+        values = []
+        for column in (1, 4):  # already-verified close and volume headers only
+            try:
+                value = Decimal(str(sheet.cell_value(index, column)).replace(",", ""))
+                values.append(value if value.is_finite() else None)
+            except InvalidOperation:
+                values.append(None)
+        close, volume = values
+        if close is None or close <= 0:
+            bad_price.append(day)
+        if volume is None or volume < 0 or volume != volume.to_integral_value():
+            bad_volume.append(day)
+        elif volume == 0:
+            zero_volume.append(day)
+    return {
+        "sourceSha256": hashlib.sha256(raw).hexdigest(), "observedRows": len(dates),
+        "firstDate": min(dates) if dates else None, "lastDate": max(dates) if dates else None,
+        "invalidCloseDates": bad_price, "invalidVolumeDates": bad_volume,
+        "zeroReportedVolumeDates": zero_volume,
+        "numericPriceValuesRetained": False, "navSelected": False,
+        "returnsComputed": 0, "tradabilityCertified": False,
+        "historicalPublicationVintageVerified": False,
+        "economicEmpiricismReady": False, "outcomeExecutionAuthorized": False,
+    }

@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 import hashlib
+import base64
+import gzip
+import io
 import json
 from collections import Counter
 from pathlib import Path, PurePosixPath
@@ -67,9 +70,33 @@ def verify_fixed_filings(root: Path = ROOT) -> dict:
             "scope": "PURPOSIVE_PARSER_FIXTURE_NOT_EMPIRICAL_SAMPLE_OR_POWER_N"}
 
 
+def verify_viewer_families(root: Path = ROOT) -> list[dict]:
+    """Replay retained current menus; never treat them as historical PIT proof."""
+    from .filings import parse_viewer_family
+
+    raw = (root / 'evidence/viewer-family-sources.json.gz').read_bytes()
+    with gzip.GzipFile(fileobj=io.BytesIO(raw)) as stream:
+        unpacked = stream.read(1_000_001)
+    if len(unpacked) > 1_000_000:
+        raise ValueError('VIEWER_PACKET_SIZE_LIMIT')
+    results = []
+    for row in json.loads(unpacked)['sources']:
+        body = base64.b64decode(row['rawBase64'], validate=True)
+        if len(body) != row['bytes']:
+            raise ValueError('VIEWER_SOURCE_SIZE_MISMATCH')
+        result = parse_viewer_family(body, receipt=row['receipt'], sha256=row['sha256'])
+        result.update(sourceUrl=row['url'], retrievedAtUtc=row['retrievedAtUtc'])
+        results.append(result)
+    saved = json.loads((root / 'evidence/viewer-family-links.json').read_text())
+    if saved != results:
+        raise ValueError('VIEWER_FAMILY_PROJECTION_NOT_REPRODUCIBLE')
+    return results
+
+
 if __name__ == "__main__":
     result = verify()
     if not result["errors"]:
         result["filings"] = verify_fixed_filings()
+        result['viewerFamilies'] = verify_viewer_families()
     print(json.dumps(result, ensure_ascii=False, indent=2))
     raise SystemExit(bool(result["errors"]))

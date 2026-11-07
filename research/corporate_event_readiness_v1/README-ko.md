@@ -68,3 +68,19 @@ python -m compileall -q pipeline research/corporate_event_readiness_v1
 ```
 
 전체 회귀 suite는 이 작업에서 실행하지 않는다. 저장소 AGENTS.md의 전체 검사 기본 요구보다 사용자의 역사 결과 조회·백테스트 금지 경계를 우선하고, 실제 고정 표본 및 합성 경계·재사용 helper 영향 검증을 실행한다. 작성자 검사와 CI·독립승인을 혼동하지 않는다.
+
+## 2026-11-07 실행 보완 — 원본 보전·cutoff·정정 계보
+
+기존 #320 HEAD `9a81b61d`의 원본 HTML 13건은 모두 CP949였다. `tests/test_source_encoding.py`와 연구 봉인·운영 workflow를 그대로 두고, 원문 221,619바이트를 deterministic gzip 38,868바이트로 보관했다. `load_filing`은 경로/심볼릭 링크/크기 상한, 저장 컨테이너와 복원 원문의 SHA256을 모두 검사한다. 기존 Git 원문과 복원 바이트 13건의 정확한 동일성과 기존 파싱 snapshot 재현을 확인했다. 기존 원문 접수번호·출처·SHA256은 [보전 기록](source-storage-v2.json)에 남긴다. 역사 원문을 UTF-8로 변환하지 않았다.
+
+[원천 적격성 v2](source-readiness-v2.json): 고정 파서 표본 13버전·7발행사, 중복 접수행 0, **원천 적격 후보 0 / 차단 13**이다. 연도·유형별 적격성 및 실패 코드가 기계 판독 가능하다. 산업은 13건 모두 UNRESOLVED이고, 이 목적 표본을 전체 모집단 또는 독립 N으로 쓰지 않는다. unique economic N / MDE는 null이다. 기존 10,615개 목록 행도 여전히 공시 버전 수다.
+
+공식 DART 현재 메인 뷰어 3건만 추가 조회해 원문을 작은 [gzip 패킷](evidence/viewer-family-sources.json.gz)에 보전했다. [재현 가능한 메뉴 연결](evidence/viewer-family-links.json)에는 소각 관련 6버전(정정 5), 공급계약 관련 3버전(정정 2), 원계약 미확인 해지 1버전이 있다. 원접수 후보는 각각 `20241002800232`, `20241226800099`로 좁혀졌다. **현재 메뉴의 연결은 당시 본문 vintage·공개 clock·PIT 증권 인증이 아니다.** 이후 정정은 원래 결정일의 입력으로 소급하지 않으며, 소각 결정은 실제 소각 완료로 바꾸지 않는다. 독립 사건 수나 검정력이 증가했다고 주장하지 않는다.
+
+[ETF 원천 재검증](etf/source-verification-v2.json): 공식 상품 API와 기존 XLS URL 두 건만 재조회했다. 상품·15개 분배금 투영은 기존 바이트와 같았다. 기존 날짜 3,610개는 repository XKRX 달력과 누락/추가 0으로 일치했다. 이는 공식 거래소 달력의 독립 인증은 아니다.
+
+반면 `gijunYMD=20261104` XLS 요청이 실제로는 11월 5·6일을 포함한 3,612행을 반환했다. 새 `reconcile_price_sessions`는 이를 `OBSERVATIONS_AFTER_REQUESTED_CUTOFF`로 거부한다. 날짜 차이와 원문 해시를 보존해 가격 숫자 없이 이 결함을 재현한다. 종가/거래량 열의 값 유효성 검사에서 잘못된 값·보고 거래량 0은 없었지만, 이를 실제 체결 가능성·과거 미개정 가격·총수익 인증으로 해석하지 않는다. 가격 숫자와 NAV는 Git 산출물에 넣지 않았고 신규 수익률/NAV는 계산하지 않았다.
+
+153130은 단기채권 ETF로서 무위험 KRW 현금과 동등하지 않다. 2013~2026 전체 분배·명시적 배당락·과거 빈티지·권리·세금/비용은 미해결이다. #316의 원 C2 계약 SHA256, 종목/비중/날짜, 세 현금 band와 판정은 변경하지 않았다. 경제성 비교 및 역사 outcome 실행은 계속 SOURCE_BLOCKED / 승인 대기다.
+
+검증은 `tests/test_corporate_event*.py`와 수정하지 않은 source encoding 검사 101건을 통과했다. 원문 패킷 감사와 기존 helper 검사를 함께 실행한다. 이는 작성자 검증이며 독립 승인 또는 정확 HEAD의 GitHub CI 성공이 아니다. 공통 threadpoolctl drift는 이 연구 PR에서 우회하지 않았다. 초기 validation.json은 원래 작성 당시 기록으로 남긴다.

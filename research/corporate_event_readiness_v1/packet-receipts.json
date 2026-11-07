@@ -3,8 +3,8 @@
   "files": [
     {
       "path": "README-ko.md",
-      "bytes": 6926,
-      "sha256": "46140ff6de34f784091b08e5293d0f9f35c1a54e969b8e11b649af7fcfde75db"
+      "bytes": 10563,
+      "sha256": "d837d9e9f24f7fa9fa143d446a68254239c7822e33a68570b69c80b495fb4f93"
     },
     {
       "path": "__init__.py",
@@ -13,8 +13,8 @@
     },
     {
       "path": "audit.py",
-      "bytes": 3232,
-      "sha256": "63455ae35e7022582c50110d0119157a1f1454ac7b63416996d359c972b9325d"
+      "bytes": 4406,
+      "sha256": "14f16e812ff9a95a96416baa264fb9c2b125b26462febe9c9e74c04e17299017"
     },
     {
       "path": "build_inventory.py",
@@ -62,9 +62,14 @@
       "sha256": "cf1dcc8633e82a501fa40fbbe4cb491d41c3caa660849e034ee2bc3ffe20b519"
     },
     {
+      "path": "etf/source-verification-v2.json",
+      "bytes": 3974,
+      "sha256": "14957abbc52197a4a681c21f2cc453bc0c8555054a4dfbf0b5898d78ded9f785"
+    },
+    {
       "path": "etf/source.py",
-      "bytes": 6937,
-      "sha256": "8c88228592a7954d1658f78257f565043c5dc05ac6545f152fd1c149039f3c3a"
+      "bytes": 11002,
+      "sha256": "d800ee5b049a030b769b7bada00bb8acd7086b9489e143b4758b2d8135ca04b7"
     },
     {
       "path": "evidence/.gitattributes",
@@ -152,14 +157,24 @@
       "sha256": "dd616bdb896a90c00b81608d7cc61332ded424d06f4d1ed5395ab671c7e12874"
     },
     {
+      "path": "evidence/viewer-family-links.json",
+      "bytes": 4333,
+      "sha256": "7e27f2901d9ae35bc01e3a66e08b52d62ba021fdfce1f26467081ffd72a017cc"
+    },
+    {
+      "path": "evidence/viewer-family-sources.json.gz",
+      "bytes": 47792,
+      "sha256": "5cf7bc3983915aa052b0eed690a8df4f3e49860734466fd184ec6e3947d9b878"
+    },
+    {
       "path": "filings.py",
-      "bytes": 14947,
-      "sha256": "d41ccebfde52868f433e2b57469d6e63b519c1a6c354d417e03a6aa42de6ad4e"
+      "bytes": 17406,
+      "sha256": "e49395036d88a306108751491c59f7efec1ee95adb1346634d25dc963d48bb36"
     },
     {
       "path": "inventory.py",
-      "bytes": 5470,
-      "sha256": "c1ee766b12b5107aa04349cf80d1e286f33deddf0fe7d12f8849da17e09914db"
+      "bytes": 8274,
+      "sha256": "bb92e768d8a63da92639a6b7bf1bbe14570c1f7d5546d6cd754a71842f026039"
     },
     {
       "path": "lane_ab.md",
@@ -175,6 +190,11 @@
       "path": "reuse-anchors.json",
       "bytes": 1896,
       "sha256": "3fbff8b9de1b643b21a97724137a686fd12e0904b1cedf0ee0a087512374f85c"
+    },
+    {
+      "path": "source-readiness-v2.json",
+      "bytes": 2855,
+      "sha256": "47638535a14089eba4dbd77d73655826ce37e139287b50bab3baacfda390c633"
     },
     {
       "path": "source-storage-v2.json",

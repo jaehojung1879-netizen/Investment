@@ -10,6 +10,56 @@ def _ratio(numerator: int, denominator: int) -> float | None:
     return numerator / denominator if denominator else None
 
 
+def fixed_sample_readiness(rows: list[dict]) -> dict:
+    """Summarize actual parser fixtures without inventing independent events.
+
+    Parsing, navigation-chain links and source admission are separate stages.
+    Existing parser eligibility flags and blockers remain authoritative; an
+    issuer/date/title match never merges different economic decisions here.
+    """
+    unique, owners, duplicates = {}, {}, 0
+    for row in rows:
+        key = (row['issuer_id'], row['receipt_no'])
+        if owners.setdefault(row['receipt_no'], row['issuer_id']) != row['issuer_id']:
+            raise ValueError('RECEIPT_ISSUER_CONFLICT')
+        if key in unique:
+            if unique[key] != row:
+                raise ValueError('CONFLICTING_FIXED_RECEIPT')
+            duplicates += 1
+        unique[key] = row
+    values = list(unique.values())
+    reasons, years, families, industries = Counter(), {}, {}, {}
+    for row in values:
+        blockers = sorted(set(row.get('quarantine_reasons', []) + row.get('eligibility_blockers', [])))
+        reasons.update(blockers)
+        for buckets, label in ((years, row['receipt_date'][:4]),
+                               (families, row.get('family') or 'UNCLASSIFIED'),
+                               (industries, row.get('industry_pit') or 'UNRESOLVED')):
+            group = buckets.setdefault(label, {'retainedVersions': 0, 'sourceQualified': 0})
+            group['retainedVersions'] += 1
+            # This packet has no source-admission authority. Even a forged status
+            # cannot erase missing contemporaneous source/security evidence.
+            if (not blockers and row.get('source_version_verified') is True
+                    and row.get('pit_available_at') and row.get('tradable_security_at_event')
+                    and row.get('industry_pit')):
+                group['sourceQualified'] += 1
+    complete = sum(v['sourceQualified'] for v in years.values())
+    return {
+        'scope': 'PURPOSIVE_FIXED_PARSER_FIXTURES_NOT_POPULATION_SAMPLE',
+        'retainedVersions': len(values), 'duplicateReceiptRowsRemoved': duplicates,
+        'issuerCandidates': len({r['issuer_id'] for r in values}),
+        'sourceQualifiedReceiptCandidates': complete,
+        'sourceBlockedReceipts': len(values) - complete,
+        'byYear': dict(sorted(years.items())), 'byFamily': dict(sorted(families.items())),
+        'byPitIndustry': dict(sorted(industries.items())),
+        'blockerCounts': dict(sorted(reasons.items())),
+        'uniqueEconomicEvents': None, 'independentN': None, 'mde': None,
+        'mdeReason': 'VERIFIED_COHORT_INDEPENDENCE_AND_VARIANCE_ABSENT',
+        'hypothesisReadiness': 'SOURCE_BLOCKED' if not complete else 'INDEPENDENT_SOURCE_REVIEW_REQUIRED',
+        'returnsRead': 0, 'outcomeExecutionAuthorized': False,
+    }
+
+
 def sample_inventory(rows: list[dict], sessions: list[str] | None = None) -> dict:
     """Rows are disclosure versions, uniquely keyed by issuer and receipt.
 

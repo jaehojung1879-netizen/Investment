@@ -11,6 +11,7 @@ import io
 from copy import deepcopy
 import html
 import re
+import zlib
 from datetime import date, datetime
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
@@ -37,10 +38,12 @@ def load_filing(evidence: Path, metadata: dict) -> bytes:
     must match; no text conversion, replacement decoding or implicit network.
     """
     receipt = metadata.get('rcept_no', '')
+    if not isinstance(receipt, str) or not re.fullmatch(r'\d{14}', receipt):
+        raise ValueError('FIXED_DART_BODY_PATH_REQUIRED')
     compressed = metadata.get('storage') == 'gzip'
     name = metadata.get('file')
     expected_name = receipt + ('.html.gz' if compressed else '.html')
-    if not re.fullmatch(r'\d{14}', receipt) or name != expected_name:
+    if name != expected_name:
         raise ValueError('FIXED_DART_BODY_PATH_REQUIRED')
     if metadata.get('storage') not in (None, 'identity', 'gzip'):
         raise ValueError('UNSUPPORTED_BODY_STORAGE')
@@ -60,7 +63,7 @@ def load_filing(evidence: Path, metadata: dict) -> bytes:
         try:
             with gzip.GzipFile(fileobj=io.BytesIO(stored)) as stream:
                 raw = stream.read(size + 1)
-        except (OSError, EOFError) as exc:
+        except (OSError, EOFError, zlib.error) as exc:
             raise ValueError('INVALID_BODY_GZIP') from exc
     else:
         raw = stored
@@ -285,3 +288,44 @@ def as_of_chain(versions: list[dict], cutoff: str) -> list[dict]:
     """No date-only or later version can silently amend the original signal."""
     at = _instant(cutoff)
     return [deepcopy(v) for v in versions if v.get('pit_available_at') and _instant(v['pit_available_at']) <= at]
+
+
+def parse_viewer_family(raw: bytes, *, receipt: str, sha256: str) -> dict:
+    """Read the explicit family menu, not a same-issuer/title/date heuristic.
+
+    A current menu links disclosure versions. It does not authenticate the
+    historical body, first-publication clock, issuer security or economic N.
+    """
+    if hashlib.sha256(raw).hexdigest() != sha256:
+        raise ValueError('VIEWER_INPUT_HASH_MISMATCH')
+    text = decode(raw)
+    menus = re.findall(r'<select\b[^>]*\bid=["\x27]family["\x27][^>]*>(.*?)</select>', text, re.I | re.S)
+    if len(menus) != 1:
+        raise ValueError('UNIQUE_VIEWER_FAMILY_MENU_REQUIRED')
+    versions = []
+    for attrs, content in re.findall(r'<option\b([^>]*)>(.*?)</option>', menus[0], re.I | re.S):
+        match = re.search(r'\bvalue=["\x27]rcpNo=(\d{14})["\x27]', attrs)
+        if not match:
+            continue
+        no = match[1]
+        title = clean(content)
+        shown = re.match(r'(\d{4})\.(\d{2})\.(\d{2})\s', title)
+        if not shown or ''.join(shown.groups()) != no[:8]:
+            raise ValueError('VIEWER_RECEIPT_DATE_MISMATCH')
+        versions.append({'receipt': no, 'receiptDate': date(*map(int, shown.groups())).isoformat(),
+                         'amendment': is_amendment(title), 'label': title,
+                         'publishedAt': None, 'historicalBodyVersionVerified': False})
+    ids = [v['receipt'] for v in versions]
+    if receipt not in ids or len(ids) != len(set(ids)):
+        raise ValueError('UNIQUE_SELECTED_RECEIPT_REQUIRED')
+    originals = [v for v in versions if not v['amendment']]
+    # Termination is a follow-up of a supply event; its own menu is not its origin.
+    root = originals[0]['receipt'] if len(originals) == 1 and '해지' not in originals[0]['label'] else None
+    if root and any(v['receipt'] < root for v in versions):
+        raise ValueError('VIEWER_AMENDMENT_PRECEDES_ORIGINAL')
+    return {'evidenceClass': 'CURRENT_VIEWER_DECLARED_FAMILY_ONLY',
+            'selectedReceipt': receipt, 'originalReceiptCandidate': root,
+            'versions': sorted(versions, key=lambda v: v['receipt']),
+            'sourceSha256': sha256, 'sourceVersionAtReceiptVerified': False,
+            'independentEconomicEvents': None, 'pitEligible': False,
+            'researchAdmission': False, 'outcomeExecutionAuthorized': False}
