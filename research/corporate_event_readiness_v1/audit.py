@@ -97,38 +97,67 @@ def verify_viewer_families(root: Path = ROOT) -> list[dict]:
 
 def verify_extended_sources(root: Path = ROOT, *, verify_source_git: bool = False) -> dict:
     """Replay versioned bodies and cash-only history; Git reads are opt-in/offline."""
-    from .filings import load_filing, version_terms, corroborate_family_index
+    from .filings import FAMILIES, capital_share_terms, load_filing, version_terms, corroborate_family_index
     from .etf.source import inspect_distribution_history
 
     evidence = root / 'evidence'
+    families = verify_viewer_families(root)
+    expected_versions = {v['receipt'] for family in families
+                         if family['originalReceiptCandidate']
+                         for v in family['versions']}
     samples = {}
     for name in ('filing-samples.json', 'chain-body-samples-v1.json'):
         for row in json.loads((evidence / name).read_text())['samples']:
+            if row['rcept_no'] in samples:
+                raise ValueError('DUPLICATE_FIXED_BODY_RECEIPT')
             samples[row['rcept_no']] = row
     saved = json.loads((evidence / 'version-terms-v1.json').read_text())
+    saved_receipts = [row['receipt'] for row in saved]
+    if (not expected_versions or len(saved_receipts) != len(set(saved_receipts))
+            or set(saved_receipts) != expected_versions):
+        raise ValueError('EXACT_VIEWER_VERSION_COVERAGE_REQUIRED')
+    if not expected_versions <= samples.keys():
+        raise ValueError('VIEWER_VERSION_BODY_MISSING')
     actual = [version_terms(load_filing(evidence, samples[row['receipt']]), samples[row['receipt']])
               for row in saved]
     if actual != saved:
         raise ValueError('VERSIONED_TERMS_NOT_REPRODUCIBLE')
+    capital = []
+    for no, sample in sorted(samples.items()):
+        title = sample['report_nm'].replace('ㆍ', '').replace('·', '').replace(' ', '')
+        if any(FAMILIES[family] in title for family in ('BUYBACK', 'DISPOSAL', 'CANCELLATION')):
+            capital.append(capital_share_terms(load_filing(evidence, sample), sample))
+    if capital != json.loads((evidence / 'capital-share-evidence-v1.json').read_text()):
+        raise ValueError('EXACT_CAPITAL_SHARE_EVIDENCE_REQUIRED')
     history = json.loads((root / 'etf/distribution-history-pages-v1.json').read_text())
     result = inspect_distribution_history([json.dumps(p).encode() for p in history['pages']],
                                          product_source=(root / 'etf/issuer-projection.json').read_bytes())
     if result != json.loads((root / 'etf/distribution-history-readiness-v1.json').read_text()):
         raise ValueError('DISTRIBUTION_HISTORY_NOT_REPRODUCIBLE')
     indexes = json.loads((evidence / 'index-family-crosscheck-v1.json').read_text())
+    from .build_inventory import LIST_REF, LIST_PATH
+    expected_indexes = {tuple(sorted(v['receipt'] for v in family['versions'])): family
+                        for family in families}
+    index_keys = [tuple(index['matchedReceipts']) for index in indexes]
+    if (not expected_indexes or len(expected_indexes) != len(families)
+            or len(index_keys) != len(set(index_keys)) or set(index_keys) != set(expected_indexes)):
+        raise ValueError('EXACT_FIXED_INDEX_COVERAGE_REQUIRED')
+    for index, key in zip(indexes, index_keys):
+        anchor = samples[expected_indexes[key]['selectedReceipt']]
+        if (index['sourceCommit'] != LIST_REF
+                or index['sourcePath'] != LIST_PATH + '/' + anchor['corp_code'] + '-I.jsonl.gz'
+                or index['issuer'] != anchor['corp_code']
+                or index['indexBlob'] != anchor['index_git_blob']):
+            raise ValueError('EXACT_FIXED_INDEX_SCOPE_REQUIRED')
+        if type(index['matchedVersionCount']) is not int or index['matchedVersionCount'] != len(key):
+            raise ValueError('EXACT_FIXED_INDEX_COUNT_REQUIRED')
+        if any(index[name] is not False for name in
+               ('historicalSecurityIdentityVerified', 'historicalPublicationClockVerified', 'researchAdmission')):
+            raise ValueError('INDEX_CORROBORATION_CANNOT_AUTHORIZE_RESEARCH')
     if verify_source_git:
-        from .build_inventory import LIST_REF, LIST_PATH
-        families = {r['selectedReceipt']: r for r in verify_viewer_families(root)}
         repo = Path(__file__).resolve().parents[2]
-        for index in indexes:
-            family = next(r for r in families.values()
-                          if sorted(v['receipt'] for v in r['versions']) == index['matchedReceipts'])
-            anchor = samples[family['selectedReceipt']]
-            if (index['sourceCommit'] != LIST_REF
-                    or index['sourcePath'] != LIST_PATH + '/' + anchor['corp_code'] + '-I.jsonl.gz'
-                    or index['issuer'] != anchor['corp_code']
-                    or index['indexBlob'] != anchor['index_git_blob']):
-                raise ValueError('EXACT_FIXED_INDEX_SCOPE_REQUIRED')
+        for index, key in zip(indexes, index_keys):
+            family = expected_indexes[key]
             cmd = ['git', '--no-replace-objects', '-c', 'remote.origin.promisor=false']
             env = {**os.environ, 'GIT_NO_LAZY_FETCH': '1', 'GIT_TERMINAL_PROMPT': '0'}
             ref = index['sourceCommit'] + ':' + index['sourcePath']
@@ -143,6 +172,11 @@ def verify_extended_sources(root: Path = ROOT, *, verify_source_git: bool = Fals
             if any(verified[k] != index[k] for k in verified):
                 raise ValueError('INDEX_FAMILY_PROJECTION_NOT_REPRODUCIBLE')
     return {'versionedBodiesReproduced': len(actual),
+            'capitalShareBodiesReproduced': len(capital),
+            'commonDenominatorCellsObserved': sum(r['reportedIssuedCommonShares']['value'] is not None
+                                                  for r in capital),
+            'unclassifiedShareTotalsObserved': sum(r['reportedUnclassifiedIssuedShares'] is not None
+                                                    for r in capital),
             'observedDistributions': result['coverage']['observedEvents'],
             'paginationCompleteAgainstCurrentDeclaredCount': True,
             'indexVersionLinks': sum(r['matchedVersionCount'] for r in indexes),

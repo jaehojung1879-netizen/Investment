@@ -332,21 +332,8 @@ def parse_viewer_family(raw: bytes, *, receipt: str, sha256: str) -> dict:
             'researchAdmission': False, 'outcomeExecutionAuthorized': False}
 
 
-def version_terms(raw: bytes, metadata: dict) -> dict:
-    """Extract one version's main form, never the before/after correction table.
-
-    A hidden amount stays unavailable even if a later version discloses it.
-    Receipt-level terms neither authenticate historical availability nor prove
-    actual execution/cancellation completion.
-    """
-    if metadata.get('sha256') != hashlib.sha256(raw).hexdigest():
-        raise ValueError('INPUT_HASH_MISMATCH')
-    parsed = parse_filing(raw, metadata)
-    if 'INPUT_HASH_MISMATCH' in parsed['quarantine_reasons']:
-        raise ValueError('INPUT_HASH_MISMATCH')
-    family = parsed['family']
-    if family not in ('SUPPLY', 'CANCELLATION'):
-        raise ValueError('SUPPORTED_VERSIONED_FORM_REQUIRED')
+def _main_version_rows(raw: bytes, date_label: str | tuple[str, ...]) -> list[list[str]]:
+    """Select the unique main form independently of correction comparison tables."""
     text, depth, tables, table_start = decode(raw), 0, [], 0
     for match in re.finditer(r'</?table\b[^>]*>', text, re.I):
         if match[0].lower().startswith('</'):
@@ -361,18 +348,35 @@ def version_terms(raw: bytes, metadata: dict) -> dict:
             depth += 1
     if depth:
         raise ValueError('UNBALANCED_FORM_TABLE')
-    date_label = '계약(수주)일자' if family == 'SUPPLY' else '이사회결의일(결정일)'
     candidates = []
+    date_labels = {date_label} if isinstance(date_label, str) else set(date_label)
     for table in tables:
         rows = table_rows(table.encode('utf-8'))
         labels = {_label(cell) for row in rows for cell in row}
         if {'정정항목', '정정전', '정정후'} <= labels:
             continue
-        if date_label in labels:
+        if date_labels & labels:
             candidates.append(rows)
     if len(candidates) != 1:
         raise ValueError('UNIQUE_MAIN_VERSION_FORM_REQUIRED')
-    rows = candidates[0]
+    return candidates[0]
+
+
+def version_terms(raw: bytes, metadata: dict) -> dict:
+    """Extract one version's main form, never the before/after correction table.
+
+    A hidden amount stays unavailable even if a later version discloses it.
+    Receipt-level terms neither authenticate historical availability nor prove
+    actual execution/cancellation completion.
+    """
+    if metadata.get('sha256') != hashlib.sha256(raw).hexdigest():
+        raise ValueError('INPUT_HASH_MISMATCH')
+    parsed = parse_filing(raw, metadata)
+    family = parsed['family']
+    if family not in ('SUPPLY', 'CANCELLATION'):
+        raise ValueError('SUPPORTED_VERSIONED_FORM_REQUIRED')
+    date_label = '계약(수주)일자' if family == 'SUPPLY' else '이사회결의일(결정일)'
+    rows = _main_version_rows(raw, date_label)
     amount_label = '계약금액(원)' if family == 'SUPPLY' else '소각예정금액(원)'
     raw_amount = _value(rows, (amount_label,))
     withheld = (raw_amount in ('-', '') and '공시유보' in ' '.join(' '.join(r) for r in rows))
@@ -397,6 +401,83 @@ def version_terms(raw: bytes, metadata: dict) -> dict:
             and result['reportedDecisionDate'] > parsed['receipt_date']):
         raise ValueError('VERSION_DECISION_AFTER_RECEIPT')
     return result
+
+
+def _whole_shares(text: str) -> str:
+    if not re.fullmatch(r'(?:0|[1-9]\d*|[1-9]\d{0,2}(?:,\d{3})+)', text):
+        raise ValueError('WHOLE_NONNEGATIVE_SHARES_REQUIRED')
+    return str(int(text.replace(',', '')))
+
+
+def _common_share_cell(rows: list[list[str]], label: str) -> dict:
+    hits = [row for row in rows if row and _label(row[0]) == label]
+    if len(hits) > 1:
+        raise ValueError('AMBIGUOUS_SHARE_CLASS_FIELD')
+    row = hits[0] if hits else None
+    explicit_common = (row is not None and len(row) == 3
+                       and _label(row[1]) in ('보통주식', '보통주식(주)', '보통주', '보통주(주)'))
+    if not explicit_common or row[2] in ('', '-'):
+        return {'value': None, 'sourceRow': row,
+                'shareClass': 'COMMON' if explicit_common else 'UNVERIFIED',
+                'status': 'COMMON_CLASS_VALUE_NOT_OBSERVED'}
+    return {'value': _whole_shares(row[2]), 'sourceRow': row,
+            'shareClass': 'COMMON', 'status': 'EXPLICIT_COMMON_TABLE_CELL'}
+
+
+def capital_share_terms(raw: bytes, metadata: dict) -> dict:
+    """Preserve share-class evidence without deriving a denominator from a ratio.
+
+    An explicit but unclassified share total in an order-limit note remains
+    unclassified. No existing treasury-holdings percentage is inverted, and no
+    current security master or later amendment fills an older denominator.
+    """
+    if metadata.get('sha256') != hashlib.sha256(raw).hexdigest():
+        raise ValueError('INPUT_HASH_MISMATCH')
+    parsed = parse_filing(raw, metadata)
+    labels = {'BUYBACK': '취득예정주식(주)', 'DISPOSAL': '처분예정주식(주)',
+              'CANCELLATION': '소각할주식의종류와수'}
+    family = parsed['family']
+    if family not in labels:
+        raise ValueError('CAPITAL_SHARE_FORM_REQUIRED')
+    decision_labels = ('이사회결의일(결정일)', '취득결정일')
+    rows = _main_version_rows(raw, decision_labels)
+    planned = _common_share_cell(rows, labels[family])
+    issued = _common_share_cell(rows, '발행주식총수')
+    if issued['value'] == '0':
+        raise ValueError('POSITIVE_COMMON_SHARE_DENOMINATOR_REQUIRED')
+    if (planned['value'] is not None and issued['value'] is not None
+            and int(planned['value']) > int(issued['value'])):
+        raise ValueError('PLANNED_SHARES_EXCEED_REPORTED_COMMON_TOTAL')
+    # This is a quoted whole-share multiplicand, not an estimate obtained by
+    # dividing a rounded percentage. The note does not specify common shares.
+    notes = ' '.join(' '.join(row) for row in rows
+                     if row and _label(row[0]) in ('기타투자판단에참고할사항', '기타투자판단과관련한중요사항'))
+    matches = list(re.finditer(
+        r'발행주식총수\s*\*\s*1%\s*:\s*(?P<limit>[\d,]+)주\s*:\s*'
+        r'(?P<total>[\d,]+)주\s*\*\s*1%\s*=\s*(?P=limit)주', notes))
+    if len(matches) > 1:
+        raise ValueError('AMBIGUOUS_EXPLICIT_SHARE_TOTAL_NOTE')
+    unclassified = None
+    if matches:
+        match = matches[0]
+        total, limit = _whole_shares(match['total']), _whole_shares(match['limit'])
+        if int(total) <= 0 or int(total) // 100 != int(limit):
+            raise ValueError('INCONSISTENT_ORDER_LIMIT_SHARE_NOTE')
+        unclassified = {'value': total, 'shareClass': 'UNSPECIFIED', 'sourceQuote': match[0],
+                        'commonDenominatorEligible': False}
+    decision = day(_value(rows, decision_labels))
+    if decision and parsed['receipt_date'] and decision > parsed['receipt_date']:
+        raise ValueError('VERSION_DECISION_AFTER_RECEIPT')
+    return {'receipt': parsed['receipt_no'], 'issuer': parsed['issuer_id'], 'family': family,
+            'sourceSha256': parsed['input_sha256'], 'reportedDecisionDate': decision,
+            'subsidiaryEvent': 'SUBSIDIARY_EVENT_SECURITY_UNRESOLVED' in parsed['quarantine_reasons'],
+            'tradableSecurityAtEvent': None, 'issuerSecurityVerified': False,
+            'plannedCommonShares': planned, 'reportedIssuedCommonShares': issued,
+            'reportedUnclassifiedIssuedShares': unclassified,
+            'shareRatioComputed': False, 'denominatorAtDecisionVerified': False,
+            'historicalVersionAuthenticated': False, 'publishedAt': None,
+            'completionStatus': 'NOT_OBSERVED', 'researchAdmission': False,
+            'outcomeExecutionAuthorized': False}
 
 
 def corroborate_family_index(family: dict, raw_index: bytes, *, issuer: str,
