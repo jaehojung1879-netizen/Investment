@@ -7,12 +7,16 @@ The events come from the SAME frozen gates as the historical cohort
 historical one share one definition.
 
 Modes
-* ``DRY_RUN`` (the only mode available today): written to an explicitly
-  marked research store outside the repository and signal-history; the
-  evidence class is ``DRY_RUN_NOT_PROSPECTIVE_EVIDENCE`` and no timing claim is
-  made, so a dry run can never be counted as a forward observation.
-* ``LIVE``: refused while ``REGISTERED_AUTHORIZATION`` is None. Activation is
-  an Owner decision (registered spec, merged authorization, scheduled writer).
+* ``DRY_RUN``: written to an explicitly marked research store outside the
+  repository and signal-history; evidence class
+  ``DRY_RUN_NOT_PROSPECTIVE_EVIDENCE``; no timing claim, so a dry run can never
+  be counted as a forward observation.
+* ``LIVE``: runs only when ``registration.verify`` passes (registered spec,
+  owner authorization pinning its SHA256, every pinned code file unchanged),
+  only inside the core's no-backdating window (after the signal session's
+  18:00 KST final close, before the next session opens), only on or after the
+  first eligible session, and only into the canonical signal-history ledger
+  path. Evidence class ``PROSPECTIVE_PAPER``. Outcomes are never written here.
 
 Known difference to the historical gate, stated rather than hidden: a live
 receipt is written after the signal close and before the next open, so it can
@@ -37,15 +41,16 @@ from .dart_client import DartClient
 from .events import Calendar, build
 from .families import classify_title
 from .identity import PitTop300, load_snapshots
+from .registration import LEDGER_RELATIVE, verify
 
 STUDY_ID = 'kr-corporate-information-events-v1'
-REGISTERED_AUTHORIZATION = None
 STORE_MARKER = '.corporate-event-dry-run-store'
 DRY_RUN_CLASS = 'DRY_RUN_NOT_PROSPECTIVE_EVIDENCE'
 # Filings after the historical cohort's last receipt day; the historical PERIOD never overlaps it.
 PROSPECTIVE_PERIOD = ('2026-11-01', '2099-12-31')
 EVENT_FIELDS = ('rcept_no', 'corp_code', 'stock_code', 'family', 'hypothesis', 'eventType', 'receiptDay',
                 'entrySession', 'pitGrade', 'terms', 'identity', 'sourceBodySha256', 'sameSessionFollowOn')
+MAX_IDENTITY_SNAPSHOT_AGE_DAYS = 62
 
 
 def receipt_days_for(signal_date: str, sessions: list[str]) -> list[str]:
@@ -60,31 +65,52 @@ def receipt_days_for(signal_date: str, sessions: list[str]) -> list[str]:
 
 
 def session_receipt(signal_date: str, events: list[dict], *, spec_sha256: str, created_at_utc: str,
-                    sources: list[dict], mode: str) -> dict:
-    if mode != 'DRY_RUN':
-        raise ValueError('ONLY_DRY_RUN_IS_AVAILABLE')
+                    sources: list[dict], mode: str, authorization: dict | None = None,
+                    code_commit: str | None = None) -> dict:
+    if mode not in ('DRY_RUN', 'LIVE'):
+        raise ValueError('UNKNOWN_MODE')
+    ages = [e['identity']['snapshotAgeDays'] for e in events if (e.get('identity') or {}).get('snapshotAgeDays')]
     receipt = {
-        'studyId': STUDY_ID, 'specSha256': spec_sha256, 'evidenceClass': DRY_RUN_CLASS, 'mode': mode,
+        'studyId': STUDY_ID, 'specSha256': spec_sha256, 'mode': mode,
+        'evidenceClass': core.EVIDENCE_CLASS if mode == 'LIVE' else DRY_RUN_CLASS,
         'signalDate': signal_date, 'createdAtUtc': created_at_utc,
         'events': [{k: e.get(k) for k in EVENT_FIELDS} for e in sorted(events, key=lambda e: e['rcept_no'])],
         'eventCount': len(events), 'sources': sources,
+        'identitySnapshotStale': bool(ages and max(ages) > MAX_IDENTITY_SNAPSHOT_AGE_DAYS),
         'operatingDefault': 'KR 0 names / 069500.KS 100% (unchanged; no event is VERIFIED)',
     }
+    if mode == 'LIVE':
+        if not authorization or not code_commit:
+            raise ValueError('LIVE_REQUIRES_AUTHORIZATION_AND_CODE_COMMIT')
+        receipt['authorizationSha256'] = authorization['authorizationSha256']
+        receipt['codeCommit'] = code_commit
     validate(receipt)
     receipt['receiptSha256'] = core.receipt_digest(receipt)
     return receipt
 
 
 def validate(receipt: dict) -> None:
-    if receipt.get('studyId') != STUDY_ID or receipt.get('mode') != 'DRY_RUN':
+    mode = receipt.get('mode')
+    if receipt.get('studyId') != STUDY_ID or mode not in ('DRY_RUN', 'LIVE'):
         raise ValueError('RECEIPT_IDENTITY_OR_MODE_INVALID')
-    if receipt.get('evidenceClass') == core.EVIDENCE_CLASS:
+    if mode == 'DRY_RUN' and receipt.get('evidenceClass') == core.EVIDENCE_CLASS:
         raise ValueError('DRY_RUN_CANNOT_CLAIM_PROSPECTIVE_PAPER')
+    if mode == 'LIVE' and (receipt.get('evidenceClass') != core.EVIDENCE_CLASS
+                           or not core.is_sha256(receipt.get('authorizationSha256', ''))
+                           or not core.is_git_sha(receipt.get('codeCommit', ''))):
+        raise ValueError('LIVE_RECEIPT_PROVENANCE_INVALID')
     if not core.is_sha256(receipt.get('specSha256', '')):
         raise ValueError('SPEC_SHA256_REQUIRED')
     core.scan_for_outcome_keys(receipt)
     if 'receiptSha256' in receipt and receipt['receiptSha256'] != core.receipt_digest(receipt):
         raise ValueError('RECEIPT_DIGEST_MISMATCH')
+
+
+def checked_ledger(path: Path) -> Path:
+    path = Path(path).resolve()
+    if not path.as_posix().endswith('/' + LEDGER_RELATIVE):
+        raise ValueError('LIVE_LEDGER_PATH_MUST_BE_' + LEDGER_RELATIVE)
+    return path
 
 
 def checked_store(path: Path, repo_root: Path) -> Path:
@@ -121,7 +147,7 @@ def day_rows(client: DartClient, day: str) -> tuple[list[dict], list[dict]]:
     return relevant, sources
 
 
-def dry_run(signal_date: str, *, client: DartClient, pit: PitTop300, spec_sha256: str, created_at_utc: str) -> dict:
+def collect_session(signal_date: str, *, client: DartClient, pit: PitTop300) -> tuple[list[dict], list[dict]]:
     sessions = [d.strftime('%Y-%m-%d') for d in replay_calendar.sessions('2013-01-01', '2027-12-31', 'KR')]
     if signal_date not in sessions:
         raise ValueError('SIGNAL_DATE_IS_NOT_A_KR_SESSION')
@@ -154,28 +180,65 @@ def dry_run(signal_date: str, *, client: DartClient, pit: PitTop300, spec_sha256
         key = (e['corp_code'], e['hypothesis'])
         e['sameSessionFollowOn'] = key in seen
         seen.add(key)
+        snap = (e.get('identity') or {}).get('snapshot')
+        if snap:
+            e['identity']['snapshotAgeDays'] = (date.fromisoformat(signal_date) - date.fromisoformat(snap)).days
+    return events, sources
+
+
+def dry_run(signal_date: str, *, client: DartClient, pit: PitTop300, spec_sha256: str, created_at_utc: str) -> dict:
+    events, sources = collect_session(signal_date, client=client, pit=pit)
     return session_receipt(signal_date, events, spec_sha256=spec_sha256, created_at_utc=created_at_utc,
                            sources=sources, mode='DRY_RUN')
 
 
+def live_append(signal_date: str, *, client: DartClient, pit: PitTop300, ledger: Path, code_commit: str,
+                now_utc=None) -> dict:
+    """Write ONE live receipt for ``signal_date`` or raise before anything is written."""
+    authorization = verify()
+    ledger = checked_ledger(ledger)
+    created = core.system_utc_now() if now_utc is None else now_utc
+    core.check_timing(signal_date=signal_date, created_at_utc=created, now_utc=created,
+                      merged_at_utc=authorization['authorizedAtUtc'])
+    events, sources = collect_session(signal_date, client=client, pit=pit)
+    # Re-check the window after the network work: the receipt must still precede the next open.
+    created = core.system_utc_now() if now_utc is None else now_utc
+    core.check_timing(signal_date=signal_date, created_at_utc=created, now_utc=created,
+                      merged_at_utc=authorization['authorizedAtUtc'])
+    receipt = session_receipt(signal_date, events, spec_sha256=authorization['specSha256'],
+                              created_at_utc=created.isoformat(), sources=sources, mode='LIVE',
+                              authorization=authorization, code_commit=code_commit)
+    core.append(ledger, receipt, validate=validate, key_fields=('signalDate',))
+    return receipt
+
+
 def main(argv: list[str] | None = None) -> int:
+    import subprocess
+
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('--signal-date', action='append', required=True)
     p.add_argument('--cache', type=Path, required=True)
     p.add_argument('--universe', type=Path, required=True)
-    p.add_argument('--store', type=Path, required=True)
+    p.add_argument('--store', type=Path, help='DRY_RUN store (marked, outside the repository)')
+    p.add_argument('--ledger', type=Path, help='LIVE: <signal-history checkout>/' + LEDGER_RELATIVE)
     p.add_argument('--spec', type=Path, default=Path(__file__).with_name(
         'kr-corporate-information-events-v1-candidate.json'))
     p.add_argument('--mode', choices=('DRY_RUN', 'LIVE'), default='DRY_RUN')
     args = p.parse_args(argv)
-    if args.mode == 'LIVE':
-        if REGISTERED_AUTHORIZATION is None:
-            raise SystemExit('LIVE_REFUSED: NO_REGISTERED_AUTHORIZATION (Owner activation required)')
-    repo_root = Path(__file__).resolve().parents[3]
-    store = checked_store(args.store, repo_root)
-    spec_sha = hashlib.sha256(args.spec.read_bytes()).hexdigest()
     client = DartClient(args.cache)
     pit = PitTop300(load_snapshots(args.universe))
+    repo_root = Path(__file__).resolve().parents[3]
+    if args.mode == 'LIVE':
+        if len(args.signal_date) != 1 or not args.ledger:
+            raise SystemExit('LIVE takes exactly one --signal-date and --ledger')
+        commit = subprocess.run(['git', 'rev-parse', 'HEAD'], cwd=repo_root, capture_output=True, text=True,
+                                check=True).stdout.strip()
+        receipt = live_append(args.signal_date[0], client=client, pit=pit, ledger=args.ledger, code_commit=commit)
+        print(json.dumps({'mode': 'LIVE', 'signalDate': receipt['signalDate'], 'events': receipt['eventCount'],
+                          'receiptSha256': receipt['receiptSha256']}, ensure_ascii=False))
+        return 0
+    store = checked_store(args.store, repo_root)
+    spec_sha = hashlib.sha256(args.spec.read_bytes()).hexdigest()
     ledger = store / 'dry-run-receipts.jsonl'
     for signal_date in sorted(args.signal_date):
         receipt = dry_run(signal_date, client=client, pit=pit, spec_sha256=spec_sha,

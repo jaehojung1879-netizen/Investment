@@ -26,7 +26,7 @@
   "research/corporate_event_readiness_v1/cohort/__init__.py": "bcec01f4ea99ce595fc078793d2836401c4879767c4dfc4edc8ff6e523b1661a",
   "research/corporate_event_readiness_v1/cohort/admission.py": "88ee6dc2b4539f418dc6eb9f16254c39db0e781663e47dc1578ec9a561660768",
   "research/corporate_event_readiness_v1/cohort/bodies.py": "f74cde458a68efc8fdcc9602acd7af20346f732287969cf6d6ea613588f9b72c",
-  "research/corporate_event_readiness_v1/cohort/build_spec.py": "45d8275324c7033f15977bb3bf929adc5ad74848444f9645edaddfdd2e0fe9f0",
+  "research/corporate_event_readiness_v1/cohort/build_spec.py": "5069a36a2a218c4ec110322c0a7ddf2d0142f41ca60638bc5d05a465529dc341",
   "research/corporate_event_readiness_v1/cohort/candidate_signal.py": "1e93b054639a0cd2615aeb3c9547a98d8fc1463bb57f50999639139770506448",
   "research/corporate_event_readiness_v1/cohort/collect_index.py": "e731a257e445454a5ef3cd38941f243ffb2946a30dd7b7485df285f0079afd83",
   "research/corporate_event_readiness_v1/cohort/collect_issuers.py": "5b06cc8a7a8b4e03b8a358ccef9a3f119dbc9958768bb4e16dfed83dd9574952",
@@ -36,8 +36,10 @@
   "research/corporate_event_readiness_v1/cohort/events.py": "b56ff7571fbedeedc12dbe56ec0d03c4640f10f5794f162dcf4eda15862f28cd",
   "research/corporate_event_readiness_v1/cohort/families.py": "1ca256828932fb58ec1d95a8eb4f6a064ac73493b329f7a141b26cd8b22bba93",
   "research/corporate_event_readiness_v1/cohort/identity.py": "abaf1f2a343c601d7e65ff53f4cc6d6c5e10b4cac0ea94ca5ac2c6dc3085ce60",
+  "research/corporate_event_readiness_v1/cohort/live_run.py": "736c200ca9cee748714e355c8d6d98617fbbe2bba27d8ed76489635d7282c8fb",
   "research/corporate_event_readiness_v1/cohort/power.py": "f07ad8193d6c7c40dd7b90d134c87ff495414003ebc7b43dbe6b2de7744d3cc3",
-  "research/corporate_event_readiness_v1/cohort/prospective.py": "e5a2ecead799cf18ff2373c174993b583e2f0cd047199d9a4578545d00c20512",
+  "research/corporate_event_readiness_v1/cohort/prospective.py": "c09c55902610e1b20f85f749e969efc1e3af8ce2217e6c748ba9d1c45e4104ed",
+  "research/corporate_event_readiness_v1/cohort/registration.py": "0ae328e7faf606ececc95ebfa28ee8521c441af219d07e5c7b045969473ef63c",
   "research/corporate_event_readiness_v1/cohort/run_cohort.py": "59a03c904687385effc0c2c98a9ca89bdc15f1f335bca04d482b9d2f09bbf7f4",
   "research/corporate_event_readiness_v1/filings.py": "fe9c3c0b8a385e0f31005ae07143ede9895f5365df43be443e652dbae9e616a2"
  },
@@ -86,7 +88,16 @@
   "identity": "PIT KOSPI Top300 monthly snapshot strictly before the receipt day"
  },
  "primaryEstimand": "calendar-time research book: mean daily net difference vs funded ex-ante-beta-matched ETF(069500.KS)+KRW-cash book; delta126 = 126*alpha; MEE 3pp (H126), 4pp (H252, secondary)",
- "status": "PROPOSED_NOT_REGISTERED",
+ "registration": {
+  "authorizationFile": "AUTHORIZATION-prospective-recording.json (pins this file by SHA256)",
+  "historicalExecution": "NOT_AUTHORIZED (needs its own exact-hash approval after blockedBeforeExecution)",
+  "liveLedger": "signal-history ledger/research-strategies/kr-corporate-information-events-v1/receipts.jsonl",
+  "outcomesReadBeforeRegistration": 0,
+  "registeredBy": "repository owner, direct session instruction 2026-11-07 (Korean: 사전등록 후보 등록해. 실제기록 라이브 커)",
+  "registeredScope": "PROSPECTIVE_RECORDING_ONLY",
+  "writer": "cohort/live_run.py from a scheduled task after the 18:00 KST final close of each KR session"
+ },
+ "status": "REGISTERED_PROSPECTIVE_RECORDING",
  "studyId": "kr-corporate-information-events-v1",
  "timing": {
   "entry": "close of the following session",

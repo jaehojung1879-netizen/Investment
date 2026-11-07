@@ -17,7 +17,8 @@ CODE = ['research/corporate_event_readiness_v1/filings.py',
         *[f'research/corporate_event_readiness_v1/cohort/{n}' for n in (
             '__init__.py', 'dart_client.py', 'families.py', 'identity.py', 'collect_index.py',
             'collect_issuers.py', 'bodies.py', 'events.py', 'power.py', 'run_cohort.py',
-            'candidate_signal.py', 'crosscheck_ds005.py', 'crosscheck_routes.py', 'admission.py', 'prospective.py', 'build_spec.py')],
+            'candidate_signal.py', 'crosscheck_ds005.py', 'crosscheck_routes.py', 'admission.py', 'prospective.py', 'registration.py', 'live_run.py',
+            'build_spec.py')],
         'pipeline/kr_corporate_action_events.py', 'pipeline/dart_ownership_universe.py',
         'pipeline/prospective_receipt_core.py',
         'pipeline/replay_calendar.py']
@@ -33,7 +34,17 @@ def sha(path: Path) -> str:
 def spec(data_dir: Path) -> dict:
     return {
         'studyId': 'kr-corporate-information-events-v1',
-        'status': 'PROPOSED_NOT_REGISTERED',
+        'status': 'REGISTERED_PROSPECTIVE_RECORDING',
+        'registration': {
+            'registeredScope': 'PROSPECTIVE_RECORDING_ONLY',
+            'registeredBy': 'repository owner, direct session instruction 2026-11-07 (Korean: 사전등록 후보 등록해. '
+                            '실제기록 라이브 커)',
+            'historicalExecution': 'NOT_AUTHORIZED (needs its own exact-hash approval after blockedBeforeExecution)',
+            'outcomesReadBeforeRegistration': 0,
+            'authorizationFile': 'AUTHORIZATION-prospective-recording.json (pins this file by SHA256)',
+            'liveLedger': 'signal-history ledger/research-strategies/kr-corporate-information-events-v1/receipts.jsonl',
+            'writer': 'cohort/live_run.py from a scheduled task after the 18:00 KST final close of each KR session',
+        },
         'evidenceClassIfExecuted': 'EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY',
         'contractSource': 'Issue #292 comment 6671600416 (Owner draft C0/C1/C2/D), unchanged in substance',
         'hypothesisFamily': {

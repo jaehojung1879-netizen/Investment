@@ -1,6 +1,6 @@
 # KR 기업 이벤트 cohort v1 — 자본배분(A)·대규모 공급계약(B)의 실제 표본
 
-**판정: 원천·표본 단계 완료 / 역사 수익률 실행 BLOCKED(승인·가격측 원천).**
+**판정: 원천·표본 단계 완료 / 사전등록 완료(전향 기록 범위) / LIVE 전향 기록 활성(첫 대상 세션 2026-11-09) / 역사 수익률 실행 BLOCKED(별도 승인·가격측 원천).**
 - 가격·수익률·라벨·NAV는 0회 읽었다.
 - 2026-11-07 OpenDART API로 실제 공시를 수집했다.
 - PIT KOSPI Top300 유니버스에서 날짜 기준 보수적 적격 후보 2,159건을 만들었다.
@@ -92,10 +92,11 @@
 
 가격 원천의 보유창 커버리지는 7절에서 존재 여부만 측정했다. 배당·종결대가·현금·비용이 미해결이므로 최종 연구 적격 사건 수는 여전히 UNKNOWN이다.
 
-사전등록 후보: [`kr-corporate-information-events-v1-candidate.json`](kr-corporate-information-events-v1-candidate.json)
-- `PROPOSED_NOT_REGISTERED`, 코드 21개·입력 10개의 SHA256을 고정했다.
-- 등록에 필요한 승인 문구는 파일의 `approvalRequest`에 있다.
-- 이 파일은 승인이 아니다.
+사전등록: [`kr-corporate-information-events-v1-candidate.json`](kr-corporate-information-events-v1-candidate.json)
+- 상태 `REGISTERED_PROSPECTIVE_RECORDING`. 2026-11-07 저장소 소유자의 직접 지시로 등록했다.
+- 코드 23개·입력 10개의 SHA256을 고정했다.
+- 소유자 승인 파일 [`AUTHORIZATION-prospective-recording.json`](AUTHORIZATION-prospective-recording.json)이 이 사양의 SHA256을 고정한다.
+- **승인 범위는 전향 기록뿐이다.** 역사 outcome 실행은 `approvalRequest`의 별도 정확 해시 승인이 필요하다.
 
 ## 6. 재현
 
@@ -144,10 +145,17 @@ python -m research.corporate_event_readiness_v1.cohort.build_spec
 - 사건은 역사 cohort와 같은 `events.build` 관문으로 만든다. 그래서 전향 표본과 역사 표본의 정의가 같다.
 
 **모드:**
-- **DRY_RUN:** 유일하게 가능한 모드다.
-  - 증거 등급은 `DRY_RUN_NOT_PROSPECTIVE_EVIDENCE`다.
-  - 저장소와 ledger 밖, 표식 파일이 있는 디렉터리에만 쓴다.
-- **LIVE:** `REGISTERED_AUTHORIZATION=None`이면 거부한다. 실제 확인 결과는 `LIVE_REFUSED`였다.
+- **LIVE(활성):** `registration.verify`가 통과할 때만 쓴다.
+  - 확인 항목: 등록 사양, 그 SHA256을 고정한 소유자 승인 파일, 고정된 코드 23개가 디스크 바이트와 모두 일치.
+  - 고정 파일이 하나라도 바뀌면 새 사양과 새 승인 전까지 기록이 멈춘다(fail closed).
+  - 시간 창: 신호 세션의 18:00 KST 최종 마감 후, 다음 세션 개장 전. core `check_timing`을 네트워크 작업 전후로 두 번 확인한다.
+  - 첫 대상 세션: 승인 시각 2026-11-07T20:51:42Z의 KST 날짜 다음 세션인 **2026-11-09**.
+  - 기록 위치: `signal-history`의 `ledger/research-strategies/kr-corporate-information-events-v1/receipts.jsonl`. 증거 등급 `PROSPECTIVE_PAPER`, 코드 commit과 승인 SHA256을 함께 남긴다.
+- **writer:** `live_run.py`가 같은 날짜 영수증이 이미 있으면 아무것도 하지 않고(재작성 없음), push는 `ledger.yml`과 같은 fetch+rebase 재시도를 쓴다.
+  - 저장소 workflow가 아니라 소유자 계정의 예약 작업(평일 19:40 KST)이 실행한다.
+  - 이유: 새 workflow는 inventory 문서에 등록해야 하는데 세 문서와 `ledger.yml`이 모두 봉인 연구 테스트로 보호된다. `ledger.yml`은 00:10 UTC에 돌아 다음 세션 개장 뒤라 시간 창을 어긴다.
+  - GitHub Actions writer로 옮기는 것은 CI 레인(#321)과 inventory 정책 결정이 필요하다.
+- **DRY_RUN:** 표식 파일이 있는 저장소 밖 디렉터리에만 쓰고, 증거 등급은 `DRY_RUN_NOT_PROSPECTIVE_EVIDENCE`다.
 
 **실제 dry run:** 2026-11-02~06 신호 세션 5개에 대해 OpenDART 실시간 공시로 실행했다.
 - 결과는 0 / 0 / 3 / 2 / 6건이다. 같은 세션의 같은 발행사·가설 반복을 빼면 10건(A1 9, B1 1)이다.
@@ -158,7 +166,7 @@ python -m research.corporate_event_readiness_v1.cohort.build_spec
 
 ## 9. 다음 단계 (Owner 결정 순)
 
-1. 사전등록 후보 등록 여부와 LIVE 활성화(스케줄 writer, 월별 universe 갱신 포함).
+1. (완료 2026-11-07) 사전등록과 LIVE 활성화. 남은 항목: 월별 universe 갱신 확인(원장의 최신 스냅샷이 2026-09-01이라 영수증에 `identitySnapshotStale` 플래그가 붙는다), GitHub Actions writer 이관 여부.
 2. 배당 기준 원천: 배당결정 공시 원문의 금액·기준일 파싱. 배당락일 규칙을 근거와 함께 봉인하는 일은 별도 결정이다.
 3. 종결대가: A1 7건, B1 3건. 투자 가능 현금·세금·비용은 C2 레인과 공유한다.
 4. 위 1~3이 해결된 뒤 비저자 감사를 거쳐 정확 해시 기반 1회 역사 실행 승인.

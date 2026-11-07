@@ -284,13 +284,14 @@ def test_prospective_receipt_is_dry_run_only_and_digest_bound(tmp_path):
                                 sources=[], mode='DRY_RUN')
     assert receipt['evidenceClass'] == P.DRY_RUN_CLASS != core.EVIDENCE_CLASS
     assert receipt['receiptSha256'] == core.receipt_digest(receipt)
-    with pytest.raises(ValueError, match='ONLY_DRY_RUN'):
-        P.session_receipt('2020-01-10', [], spec_sha256='ab' * 32, created_at_utc='x', sources=[], mode='LIVE')
+    with pytest.raises(ValueError, match='UNKNOWN_MODE'):
+        P.session_receipt('2020-01-10', [], spec_sha256='ab' * 32, created_at_utc='x', sources=[], mode='OTHER')
     with pytest.raises(ValueError, match='DRY_RUN_CANNOT_CLAIM'):
         P.validate({**receipt, 'evidenceClass': core.EVIDENCE_CLASS})
     with pytest.raises(ValueError, match='OUTCOME_FIELD'):
         P.validate({**{k: v for k, v in receipt.items() if k != 'receiptSha256'}, 'forwardReturn': 1})
-    assert P.REGISTERED_AUTHORIZATION is None
+    with pytest.raises(ValueError, match='LIVE_REQUIRES_AUTHORIZATION'):
+        P.session_receipt('2020-01-10', [], spec_sha256='ab' * 32, created_at_utc='x', sources=[], mode='LIVE')
 
 
 def test_prospective_store_guard(tmp_path):
@@ -310,3 +311,69 @@ def test_receipt_days_map_each_day_to_exactly_one_signal_session():
     sessions = ['2020-01-02', '2020-01-03', '2020-01-06']
     assert P.receipt_days_for('2020-01-06', sessions) == ['2020-01-03', '2020-01-04', '2020-01-05']
     assert P.receipt_days_for('2020-01-03', sessions) == ['2020-01-02']
+
+
+def test_registration_verifies_on_disk_and_fails_closed_on_any_tamper(tmp_path):
+    import shutil
+    from research.corporate_event_readiness_v1.cohort import registration as R
+    ok = R.verify()
+    assert ok['scope'] == 'PROSPECTIVE_RECORDING_ONLY' and ok['firstEligibleSignalSession'] == '2026-11-09'
+    spec = json.loads(R.SPEC.read_text(encoding='utf-8'))
+    assert spec['status'] == 'REGISTERED_PROSPECTIVE_RECORDING'
+    assert spec['registration']['historicalExecution'].startswith('NOT_AUTHORIZED')
+    root = tmp_path / 'repo'
+    for relative in spec['codeSha256']:
+        (root / relative).parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy(R.ROOT / relative, root / relative)
+    spec_copy, auth_copy = tmp_path / 'spec.json', tmp_path / 'auth.json'
+    shutil.copy(R.SPEC, spec_copy)
+    shutil.copy(R.AUTHORIZATION, auth_copy)
+    assert R.verify(spec_copy, auth_copy, root)['specSha256'] == ok['specSha256']
+    victim = root / 'research/corporate_event_readiness_v1/cohort/events.py'
+    victim.write_text(victim.read_text() + '\n# tamper\n')
+    with pytest.raises(ValueError, match='PINNED_CODE_CHANGED'):
+        R.verify(spec_copy, auth_copy, root)
+    spec_copy.write_text(spec_copy.read_text().replace('REGISTERED_PROSPECTIVE_RECORDING', 'X'))
+    with pytest.raises(ValueError, match='SPEC_NOT_REGISTERED|SPEC_CHANGED'):
+        R.verify(spec_copy, auth_copy, root)
+    with pytest.raises(ValueError, match='NO_REGISTERED_AUTHORIZATION'):
+        R.verify(spec_copy, tmp_path / 'absent.json', root)
+
+
+@pytest.mark.parametrize('signal,now,reason', [
+    ('2026-11-06', '2026-11-06T10:00:00+00:00', 'SIGNAL_BEFORE_PROSPECTIVE_ELIGIBILITY'),
+    ('2026-11-09', '2026-11-09T08:59:00+00:00', 'RECEIPT_CREATED_BEFORE_SIGNAL_CLOSE'),
+    ('2026-11-09', '2026-11-10T00:00:00+00:00', 'RECEIPT_CREATED_AFTER_EXECUTION_OPEN_BACKDATED'),
+])
+def test_live_append_refuses_outside_the_window_before_any_network(tmp_path, signal, now, reason):
+    import pandas as pd
+    from research.corporate_event_readiness_v1.cohort import prospective as P
+    from research.corporate_event_readiness_v1.cohort.registration import LEDGER_RELATIVE
+    ledger = tmp_path / LEDGER_RELATIVE
+    with pytest.raises(ValueError, match=reason):
+        P.live_append(signal, client=None, pit=None, ledger=ledger, code_commit='a' * 40,
+                      now_utc=pd.Timestamp(now))
+    assert not ledger.exists()
+    with pytest.raises(ValueError, match='LIVE_LEDGER_PATH'):
+        P.live_append('2026-11-09', client=None, pit=None, ledger=tmp_path / 'x.jsonl', code_commit='a' * 40,
+                      now_utc=pd.Timestamp('2026-11-09T10:00:00+00:00'))
+
+
+def test_live_receipt_provenance_is_required_and_bound():
+    from pipeline import prospective_receipt_core as core
+    from research.corporate_event_readiness_v1.cohort import prospective as P
+    auth = {'authorizationSha256': 'cd' * 32}
+    r = P.session_receipt('2026-11-09', [], spec_sha256='ab' * 32, created_at_utc='2026-11-09T10:00:00+00:00',
+                          sources=[], mode='LIVE', authorization=auth, code_commit='a' * 40)
+    assert r['evidenceClass'] == core.EVIDENCE_CLASS and r['receiptSha256'] == core.receipt_digest(r)
+    with pytest.raises(ValueError, match='LIVE_RECEIPT_PROVENANCE'):
+        P.validate({**{k: v for k, v in r.items() if k != 'receiptSha256'}, 'codeCommit': 'nope'})
+
+
+def test_todays_signal_session_only_after_final_close_on_a_session():
+    import pandas as pd
+    from research.corporate_event_readiness_v1.cohort.live_run import todays_signal_session
+    assert todays_signal_session(pd.Timestamp('2026-11-09T10:40:00+00:00')) == '2026-11-09'
+    assert todays_signal_session(pd.Timestamp('2026-11-09T08:40:00+00:00')) is None
+    assert todays_signal_session(pd.Timestamp('2026-11-08T10:40:00+00:00')) is None
+    assert todays_signal_session(pd.Timestamp('2026-11-09T16:00:00+00:00')) is None
