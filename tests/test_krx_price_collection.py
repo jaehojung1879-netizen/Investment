@@ -138,10 +138,11 @@ def test_no_universe_and_no_all_issues_refuses(tmp_path, monkeypatch, capsys):
 # ---------------------------------------------------------------- the store
 
 def test_sessions_are_dated_by_what_krx_served(tmp_path, monkeypatch):
-    _collect(tmp_path, ["2013-01-02"],
-             {"20130102": _session(["000001"], "2013-01-03")}, monkeypatch)
+    result = _collect(tmp_path, ["2013-01-02"],
+                      {"20130102": _session(["000001"], "2013-01-03")}, monkeypatch)
     rows = HS.read_jsonl(tmp_path / "krx-prices-2013.jsonl.gz")
-    assert {r["date"] for r in rows} == {"2013-01-03"}
+    assert rows == [] and not CP.load_done(tmp_path)
+    assert "RESPONSE_SESSION_MISMATCH" in result["stopped"]
 
 
 def test_a_rerun_that_collects_nothing_new_writes_no_bytes(tmp_path, monkeypatch):
@@ -154,8 +155,8 @@ def test_a_rerun_that_collects_nothing_new_writes_no_bytes(tmp_path, monkeypatch
 
 
 def test_rows_are_sharded_by_the_year_they_describe(tmp_path, monkeypatch):
-    _collect(tmp_path, ["2013-12-31", "2014-01-02"],
-             {"20131231": _session(["000001"], "2013-12-31"),
+    _collect(tmp_path, ["2013-12-30", "2014-01-02"],
+             {"20131230": _session(["000001"], "2013-12-30"),
               "20140102": _session(["000001"], "2014-01-02")}, monkeypatch)
     assert sorted(p.name for p in tmp_path.glob("krx-prices-*.jsonl.gz")) == [
         "krx-prices-2013.jsonl.gz", "krx-prices-2014.jsonl.gz"]
