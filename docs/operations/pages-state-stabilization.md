@@ -41,6 +41,12 @@ The existing Git Data API publisher and its disk/concurrency controls are inheri
 ledger/replay checkout disk pressure remains outside this candidate. Exact final-HEAD test/CI and credential failures
 are recorded in the Draft candidate/handoff; no deployment or operational-recording success is implied.
 
+The first candidate's full Tests run 42354950322 passed 6,513 tests but failed two Finnhub branch-scope assertions:
+both prohibited any `tests.yml` edit relative to main. They now require the same exact v2 validation before admitting
+that one approved install variant. Their other protected paths, frozen feature/derivation hashes, probe workflow hash
+and source/result restrictions are unchanged. Adversarial tests exercise every original protected neighbour and reject
+an unapproved Tests workflow. No scientific registration or v2 workflow/code hash changes for this scope-test correction.
+
 The dated v1 observations below remain historical evidence; their narrower scope and old prefix describe that version.
 
 ## Current implementation and consumed-study diagnostic (2026-11-04 KST)

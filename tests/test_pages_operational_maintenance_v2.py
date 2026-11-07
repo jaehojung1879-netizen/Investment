@@ -1,8 +1,11 @@
 """Approved maintenance cannot become an arbitrary hash override."""
 from copy import deepcopy
 import importlib.metadata
+import importlib.util
 import json
 from pathlib import Path
+import subprocess
+from types import SimpleNamespace
 
 import pytest
 
@@ -126,3 +129,60 @@ def test_auxiliary_scope_cannot_expand_even_with_resigned_record(scratch):
     resign(scratch, expand)
     with pytest.raises(ValueError, match='PAGES_MAINTENANCE_CONTRACT_CHANGED'):
         M.validate(scratch)
+
+
+@pytest.fixture(params=[
+    ('test_finnhub_balance_sheet_health', 'test_no_workflow_or_protected_path_is_edited_by_this_change',
+     ['.github/workflows/probes.yml', 'pipeline/us_real_source_preflight.py',
+      'scripts/preflight_us_real_sources.py', 'pipeline/datafeed.py', 'pipeline/us_cash_profitability.py',
+      'pipeline/finnhub_fundamentals.py', 'pipeline/finnhub_derive.py', 'docs/results/SYN.json']),
+    ('test_finnhub_balance_sheet_probe_workflow', 'test_sealed_and_neighbouring_files_are_untouched_by_this_change',
+     ['.github/workflows/probes.yml', '.github/workflows/ledger.yml', 'pipeline/datafeed.py',
+      'pipeline/us_real_source_preflight.py', 'scripts/preflight_us_real_sources.py',
+      'tests/test_workflow_inventory.py', 'tests/test_kr_alpha_atlas_price_repair_workflow_inventory.py',
+      'docs/workflow-inventory.md', 'docs/workflow-inventory-addendum.md',
+      'pipeline/us_cash_profitability.py', 'pipeline/finnhub_fundamentals.py', 'pipeline/finnhub_derive.py',
+      'docs/results/SYN.json', 'research_specs/SYN.json', 'ledger/SYN.json', 'data/SYN.json']),
+])
+def finnhub_scope_guard(request, monkeypatch):
+    name, function, protected = request.param
+    spec = importlib.util.spec_from_file_location('maintenance_scope_' + name, ROOT / 'tests' / (name + '.py'))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    touched = {M.TESTS}
+    original = subprocess.run
+
+    def git_diff_only(command, *args, **kwargs):
+        if command == ['git', 'diff', '--name-only', 'origin/main...HEAD']:
+            return SimpleNamespace(stdout='\n'.join(sorted(touched)))
+        return original(command, *args, **kwargs)
+
+    monkeypatch.setattr(subprocess, 'run', git_diff_only)
+    return getattr(module, function), touched, protected
+
+
+def test_finnhub_scope_admits_the_exact_approved_install(finnhub_scope_guard):
+    guard, _, _ = finnhub_scope_guard
+    guard()
+
+
+def test_finnhub_scope_still_refuses_every_neighbour_and_sealed_path(finnhub_scope_guard):
+    guard, touched, protected = finnhub_scope_guard
+    for path in protected:
+        touched.add(path)
+        with pytest.raises(AssertionError):
+            guard()
+        touched.remove(path)
+
+
+def test_finnhub_scope_refuses_an_unapproved_tests_workflow(finnhub_scope_guard, monkeypatch):
+    guard, _, _ = finnhub_scope_guard
+    original = M.read
+
+    def corrupted(root, path):
+        raw = original(root, path)
+        return raw + b'\n# SYN_UNAPPROVED_INSTALL\n' if path == M.TESTS else raw
+
+    monkeypatch.setattr(M, 'read', corrupted)
+    with pytest.raises(ValueError, match='PAGES_MAINTENANCE_CONTRACT_CHANGED'):
+        guard()
