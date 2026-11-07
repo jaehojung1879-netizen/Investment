@@ -1,0 +1,125 @@
+{
+  "scope": "ORIGINAL_13_PLUS_7_TARGETED_CHAIN_VERSIONS_NOT_POPULATION_SAMPLE",
+  "retainedVersions": 20,
+  "duplicateReceiptRowsRemoved": 0,
+  "issuerCandidates": 7,
+  "sourceQualifiedReceiptCandidates": 0,
+  "sourceBlockedReceipts": 20,
+  "byYear": {
+    "2012": {
+      "retainedVersions": 1,
+      "sourceQualified": 0
+    },
+    "2013": {
+      "retainedVersions": 2,
+      "sourceQualified": 0
+    },
+    "2014": {
+      "retainedVersions": 1,
+      "sourceQualified": 0
+    },
+    "2016": {
+      "retainedVersions": 1,
+      "sourceQualified": 0
+    },
+    "2017": {
+      "retainedVersions": 2,
+      "sourceQualified": 0
+    },
+    "2019": {
+      "retainedVersions": 1,
+      "sourceQualified": 0
+    },
+    "2020": {
+      "retainedVersions": 1,
+      "sourceQualified": 0
+    },
+    "2024": {
+      "retainedVersions": 3,
+      "sourceQualified": 0
+    },
+    "2025": {
+      "retainedVersions": 5,
+      "sourceQualified": 0
+    },
+    "2026": {
+      "retainedVersions": 3,
+      "sourceQualified": 0
+    }
+  },
+  "byFamily": {
+    "BUYBACK": {
+      "retainedVersions": 2,
+      "sourceQualified": 0
+    },
+    "CANCELLATION": {
+      "retainedVersions": 6,
+      "sourceQualified": 0
+    },
+    "CB": {
+      "retainedVersions": 1,
+      "sourceQualified": 0
+    },
+    "DISPOSAL": {
+      "retainedVersions": 1,
+      "sourceQualified": 0
+    },
+    "EB": {
+      "retainedVersions": 1,
+      "sourceQualified": 0
+    },
+    "RIGHTS": {
+      "retainedVersions": 1,
+      "sourceQualified": 0
+    },
+    "SUPPLY": {
+      "retainedVersions": 6,
+      "sourceQualified": 0
+    },
+    "TERMINATION": {
+      "retainedVersions": 1,
+      "sourceQualified": 0
+    },
+    "TRUST": {
+      "retainedVersions": 1,
+      "sourceQualified": 0
+    }
+  },
+  "byPitIndustry": {
+    "UNRESOLVED": {
+      "retainedVersions": 20,
+      "sourceQualified": 0
+    }
+  },
+  "blockerCounts": {
+    "AMENDMENT_CHAIN_REQUIRES_ORIGINAL_RECEIPT_PROOF": 7,
+    "CONTRACT_AMOUNT_OR_REVENUE_MISSING": 2,
+    "CONVERSION_SHARE_EQUIVALENT_NOT_OBSERVED": 1,
+    "DECISION_DATE_NOT_PARSED": 2,
+    "HISTORICAL_DOCUMENT_VERSION_NOT_VERIFIED": 20,
+    "HISTORICAL_PRICE_ACTIONS_TERMINAL_CONSIDERATION_NOT_ADMITTED": 20,
+    "INDEX_MARKS_AMENDMENTS_HISTORICAL_BODY_VERSION_UNVERIFIED": 8,
+    "ISSUED_SHARES_DENOMINATOR_NOT_OBSERVED": 5,
+    "PIT_SECURITY_IDENTITY_UNVERIFIED": 20,
+    "PUBLICATION_TIME_UNVERIFIED": 20,
+    "REQUIRED_FIELD_MISSING:amount_krw": 2,
+    "REQUIRED_FIELD_MISSING:contract_amount_krw": 2,
+    "REQUIRED_FIELD_MISSING:decision_date": 2,
+    "REQUIRED_FIELD_MISSING:reported_contract_ratio_pct": 2,
+    "REVENUE_FISCAL_YEAR_NOT_EXPLICIT": 1,
+    "SUBSIDIARY_EVENT_SECURITY_UNRESOLVED": 5,
+    "TERMINATION_ORIGINAL_CHAIN_UNRESOLVED": 1
+  },
+  "uniqueEconomicEvents": null,
+  "independentN": null,
+  "mde": null,
+  "mdeReason": "VERIFIED_COHORT_INDEPENDENCE_AND_VARIANCE_ABSENT",
+  "hypothesisReadiness": "SOURCE_BLOCKED",
+  "returnsRead": 0,
+  "outcomeExecutionAuthorized": false,
+  "originalFixtureVersions": 13,
+  "additionalChainBodyVersions": 7,
+  "linkedBodyVersionsInspected": 9,
+  "fullViewerFamilyVersions": 9,
+  "missingIntermediateCancellationBodies": 0
+}

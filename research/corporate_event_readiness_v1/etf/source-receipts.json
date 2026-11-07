@@ -1,0 +1,49 @@
+{
+  "sources": [
+    {
+      "url": "https://www.samsungfund.com/api/v1/kodex/product/2ETF35.do",
+      "sha256": "167aecc5bb72fc5ad54f3ddf9effba7884b2269d362f730cf39a6e36b75e9693",
+      "bytes": 149167,
+      "retrievedAtUtc": "2026-11-05T21:32:16.800093+00:00",
+      "rawLocalPath": "/tmp/lane-d/product.json",
+      "gitRawPreserved": false
+    },
+    {
+      "url": "https://www.samsungfund.com/sheet/20260907/2ETF35_20260831.pdf",
+      "sha256": "88bffc97de92a97bad5b177698d730dc977442043c567e749c6393c577062545",
+      "bytes": 322460,
+      "retrievedAtUtc": "2026-11-05T21:31:42.996397+00:00",
+      "rawLocalPath": "/tmp/lane-d/official-report.pdf",
+      "gitRawPreserved": false
+    },
+    {
+      "url": "https://www.samsungfund.com/excel_standar.do?fId=2ETF35&gijunYMD=20261104",
+      "sha256": "28ace30d89aeb07450231c30e8ba86ea17fed941036f29e8cada164446eba953",
+      "bytes": 736768,
+      "retrievedAtUtc": "2026-11-05T21:36:20.617901+00:00",
+      "rawLocalPath": "/tmp/lane-d/issuer-standard.xls",
+      "gitRawPreserved": false
+    }
+  ],
+  "projectionPath": "issuer-projection.json",
+  "projectionSha256": "a46d57fcc0ea6995e862612c83e7377d07321a11bc0e6739996cc0d1321862fe",
+  "projectionRole": "Whitelisted exact field projection; not original response bytes. Raw bytes retained in task scratch only. Remote response may change.",
+  "evidenceLevel": "AUTHOR_VALIDATION_ONLY",
+  "historicalAvailability": "UNVERIFIED; retrieval time is not original publication time",
+  "calls": {
+    "officialProductApi": 1,
+    "officialPdf": 1,
+    "priceApi": 0,
+    "officialPriceXls": 1
+  },
+  "officialPdfConfirmedFields": {
+    "ticker": "153130",
+    "listingDate": "2012-02-22",
+    "benchmark": "KRW Cash Index 총수익지수",
+    "totalFeeAnnualPercent": "0.15",
+    "distributionDescription": "월중 지급"
+  },
+  "outcomeReadCaveat": "PDF keyword extraction initially printed adjacent published performance text; excluded from data, design, and all calculations. No return series selected, no return computed.",
+  "priceProjectionPath": "issuer-price-date-projection.json",
+  "priceProjectionSha256": "6f3fa2a55dc0bc25b6cbbf6d772edf0bfd4fa56e0311617896a0a99b2f2848b8"
+}

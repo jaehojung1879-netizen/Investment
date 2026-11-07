@@ -1,0 +1,103 @@
+{
+  "schema": "ETF_SOURCE_VERIFICATION_V2",
+  "priorPacketCommit": "9a81b61da4a0493142447920f8bd8269ab8a33a8",
+  "sources": [
+    {
+      "file": "product.json",
+      "url": "https://www.samsungfund.com/api/v1/kodex/product/2ETF35.do",
+      "sha256": "38308dae599b80b145b6bb183a12706ff3afb7160eea8e2089269bb3af1ccd40",
+      "bytes": 149405,
+      "retrievedAtUtc": "2026-11-07T00:44:41.328035+00:00",
+      "contentType": "application/json"
+    },
+    {
+      "file": "issuer-standard.xls",
+      "url": "https://www.samsungfund.com/excel_standar.do?fId=2ETF35&gijunYMD=20261104",
+      "sha256": "6c19950eadbfebb2490c0e570dccad43d550aebe1431faf887f4e1f2025026a4",
+      "bytes": 737280,
+      "retrievedAtUtc": "2026-11-07T00:44:43.847341+00:00",
+      "contentType": "application/smnet;charset=utf-8"
+    }
+  ],
+  "productProjectionByteIdentical": true,
+  "fixedDateProjectionCalendar": {
+    "status": "REPOSITORY_CALENDAR_LABELS_MATCH",
+    "calendarId": "xkrx-xnys-4.11.1-v2-kr-2026-closures",
+    "requestedThrough": "2026-11-04",
+    "calendarSha256": "9b1706a487a37bf2c5198102ef66be5eef30d48320011a2719969c2d7f41381f",
+    "expectedSessionCount": 3610,
+    "observedDateCount": 3610,
+    "missingSessions": [],
+    "unexpectedSessions": [],
+    "observationsAfterRequestedCutoff": [],
+    "blockers": [],
+    "sourceSha256": "28ace30d89aeb07450231c30e8ba86ea17fed941036f29e8cada164446eba953",
+    "projectionSha256": "6f3fa2a55dc0bc25b6cbbf6d772edf0bfd4fa56e0311617896a0a99b2f2848b8",
+    "officialSessionCalendarCertified": false,
+    "priceValuesValidated": false,
+    "historicalPublicationVintageVerified": false,
+    "economicEmpiricismReady": false,
+    "outcomeExecutionAuthorized": false
+  },
+  "reacquiredDateProjectionCalendar": {
+    "status": "BLOCKED",
+    "calendarId": "xkrx-xnys-4.11.1-v2-kr-2026-closures",
+    "requestedThrough": "2026-11-04",
+    "calendarSha256": "9b1706a487a37bf2c5198102ef66be5eef30d48320011a2719969c2d7f41381f",
+    "expectedSessionCount": 3610,
+    "observedDateCount": 3612,
+    "missingSessions": [],
+    "unexpectedSessions": [
+      "2026-11-05",
+      "2026-11-06"
+    ],
+    "observationsAfterRequestedCutoff": [
+      "2026-11-05",
+      "2026-11-06"
+    ],
+    "blockers": [
+      "OBSERVATIONS_AFTER_REQUESTED_CUTOFF",
+      "UNEXPECTED_OBSERVATION_SESSIONS"
+    ],
+    "sourceSha256": "6c19950eadbfebb2490c0e570dccad43d550aebe1431faf887f4e1f2025026a4",
+    "projectionSha256": "50516746e6d94b84881f9f1898e337fcf842d6e42899f08355ba1613dd3cfe6f",
+    "officialSessionCalendarCertified": false,
+    "priceValuesValidated": false,
+    "historicalPublicationVintageVerified": false,
+    "economicEmpiricismReady": false,
+    "outcomeExecutionAuthorized": false
+  },
+  "reacquiredPriceQuality": {
+    "sourceSha256": "6c19950eadbfebb2490c0e570dccad43d550aebe1431faf887f4e1f2025026a4",
+    "observedRows": 3612,
+    "firstDate": "2012-02-22",
+    "lastDate": "2026-11-06",
+    "invalidCloseDates": [],
+    "invalidVolumeDates": [],
+    "zeroReportedVolumeDates": [],
+    "numericPriceValuesRetained": false,
+    "navSelected": false,
+    "returnsComputed": 0,
+    "tradabilityCertified": false,
+    "historicalPublicationVintageVerified": false,
+    "economicEmpiricismReady": false,
+    "outcomeExecutionAuthorized": false
+  },
+  "dateProjectionDelta": {
+    "basePath": "issuer-price-date-projection.json",
+    "addedDates": [
+      "2026-11-05",
+      "2026-11-06"
+    ],
+    "removedDates": [],
+    "replacementOriginalSha256": "6c19950eadbfebb2490c0e570dccad43d550aebe1431faf887f4e1f2025026a4",
+    "replacementProjectionSha256": "50516746e6d94b84881f9f1898e337fcf842d6e42899f08355ba1613dd3cfe6f"
+  },
+  "rawSourcesGitPreserved": false,
+  "rawSourceAvailability": "Task scratch only; mutable endpoint is not a historical vintage",
+  "cashEquivalence": false,
+  "registeredC2CashScenariosChanged": false,
+  "historicalReturnsComputed": 0,
+  "economicEmpiricismReady": false,
+  "outcomeExecutionAuthorized": false
+}
