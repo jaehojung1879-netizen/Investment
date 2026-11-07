@@ -1,5 +1,54 @@
 # Pages state publication / operational audit
 
+## A/B implementation consent and v2 candidate (2026-11-07 UTC)
+
+The Owner explicitly approved A/B implementation and testing in this conversation ("승인할게") after reviewing the
+[exact scope](https://github.com/jaehojung1879-netizen/Investment/issues/292#issuecomment-6699773509). This is not merge,
+deployment, historical execution or prospective-writer activation consent. Existing #314/#315 branches remain untouched;
+this candidate is isolated on parent #315 `23522002dcd2d9e0e16dfb9d325a235aef664f0c`.
+
+- A: both ordinary Tests and production Pages pip installs use the same `constraints/ci-registered-numerics-v1.txt`:
+  threadpoolctl3.7.0 and joblib1.6.0, as the original registration requires. Original requirements, formal requirements,
+  Python3.11.16/CPU/thread guards and numerical error expectations are unchanged.
+- B: the old PR/full-input preflight remains callable and still refuses consumed studies. The operational diagnostic now
+  uses a separate standard-library-only `audit_closed_atlas_provenance.py`. It checks the original metadata, 158 registered
+  dependencies and 235 protected files as opaque bytes, plus the exact existing consumed locks. It imports no numerical,
+  label or model modules and has no GitHub write endpoint. No inputs are re-prepared and no external outcome archive is
+  downloaded or evaluated. The formal result path is absent in the reference Git snapshots; absence is not a successful
+  study and never makes the study unconsumed. Receipts say `CLOSED_STUDY_HISTORICAL_PROVENANCE_VERIFIED`, not execution
+  preflight passed, and can only be created immutably in a private `/tmp` subdirectory.
+- The original v1 record/sidecar stay byte-identical, SHA256436ce3361d1183fe11db0c931de0cf688dfdd021ac70c7173b8b35a939e25ddf.
+  V2 is a new record/sidecar. Historical Pages/verifier/workflow assertion bytes are verified in Git; current bytes are
+  checked separately. The only permitted workflow differences from parent #315 are the diagnostic route and one ordinary
+  install line. The verifier's preparation, audit and formal functions remain byte-identical. The old workflow assertion
+  is preserved in Git and only that function may change; every numerical test byte outside it is identical.
+
+| Identity | v2 candidate SHA256 |
+|---|---|
+| Pages workflow | 112196a5a53123eae00d8f3ba5d6c15cd109263cbd43ecd1c26869c19bfd0371 |
+| Tests workflow | 91e4f2dd587f6cc1a7a1cd0c41f04dcd03c97a4b2af0b6f904fdb1ad2b947124 |
+| Atlas operational verifier | 799bb4a248547ef958eefd676748894413c00212811e56b55d57de021d8eb342 |
+| Original research prefix, 5,992 bytes | 048356c7b43e499b32660ce40c0b1dde9db7e43b33a58fd36df8a4ea51e17b30 |
+| Approved current prefix, 5970 bytes | 06ef04856344a6d076f1012f7bea697cff21e8da3705471b64d24b8802a88cb6 |
+
+Changing a record and its sidecar together cannot authorize a broader workflow, skipped suite, changed formal runtime,
+scientific preparation or altered numerical error expectation: bounded byte transformations and negative tests reject it.
+The original registration/addenda, source IDs, authorization bytes, result bytes and consumed commit
+`09ba076f9fcd7ca9957b12933dd51bd69e6506d0` are preserved. The diagnostic's result scope explicitly excludes external
+outcome artifacts; it is not a new historical result evaluation.
+
+The existing Git Data API publisher and its disk/concurrency controls are inherited without modification. Regular
+ledger/replay checkout disk pressure remains outside this candidate. Exact final-HEAD test/CI and credential failures
+are recorded in the Draft candidate/handoff; no deployment or operational-recording success is implied.
+
+The first candidate's full Tests run 42354950322 passed 6,513 tests but failed two Finnhub branch-scope assertions:
+both prohibited any `tests.yml` edit relative to main. They now require the same exact v2 validation before admitting
+that one approved install variant. Their other protected paths, frozen feature/derivation hashes, probe workflow hash
+and source/result restrictions are unchanged. Adversarial tests exercise every original protected neighbour and reject
+an unapproved Tests workflow. No scientific registration or v2 workflow/code hash changes for this scope-test correction.
+
+The dated v1 observations below remain historical evidence; their narrower scope and old prefix describe that version.
+
 ## Current implementation and consumed-study diagnostic (2026-11-04 KST)
 
 Owner implementation approval is recorded on PR #315 (2026-11-03 KST). Maintenance record v1 and its sidecar now exist;

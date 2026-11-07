@@ -1,0 +1,37 @@
+{
+  "schema": "PAGES_WORKFLOW_OPERATIONAL_MAINTENANCE_V2",
+  "version": 2,
+  "state": "IMPLEMENTATION_APPROVED_FINAL_MERGE_PENDING",
+  "scope": "REGISTERED_CI_INSTALL_AND_CLOSED_STUDY_PROVENANCE_ONLY",
+  "referenceMain": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+  "parentMaintenanceCommit": "23522002dcd2d9e0e16dfb9d325a235aef664f0c",
+  "parentMaintenanceRecordSha256": "436ce3361d1183fe11db0c931de0cf688dfdd021ac70c7173b8b35a939e25ddf",
+  "originalPagesSha256": "d13e2a457072251267a756a8f174dfe2eccdc5458706305fdb917157275e4577",
+  "replacementPagesSha256": "112196a5a53123eae00d8f3ba5d6c15cd109263cbd43ecd1c26869c19bfd0371",
+  "originalVerifierSha256": "2b3a260affcd6d4db901318f097c970220c795f07979d69d3cb1b15c80b64bab",
+  "replacementVerifierSha256": "799bb4a248547ef958eefd676748894413c00212811e56b55d57de021d8eb342",
+  "originalTestsSha256": "92306a9cc7a538278e27887197f525c43f1fe6551303855c066c1e761ff0eb9a",
+  "replacementTestsSha256": "91e4f2dd587f6cc1a7a1cd0c41f04dcd03c97a4b2af0b6f904fdb1ad2b947124",
+  "originalWorkflowTestSha256": "130c2d4947c999bea74b823b0ddbeb433a09ccd9ce86a5799f356126f7149f19",
+  "replacementWorkflowTestSha256": "6391cad7c71642d0b1b8dfc8e8aa6735c15cf7808c62dd7c2b246329ced27f3a",
+  "sealedResearchPrefixSha256": "048356c7b43e499b32660ce40c0b1dde9db7e43b33a58fd36df8a4ea51e17b30",
+  "sealedResearchPrefixBytes": 5992,
+  "approvedResearchPrefixSha256": "06ef04856344a6d076f1012f7bea697cff21e8da3705471b64d24b8802a88cb6",
+  "approvedResearchPrefixBytes": 5970,
+  "protectedContracts": [
+    "KR_ALPHA_ATLAS_PHASE_C_V4",
+    "RESEARCH_TERMINAL_PY",
+    "RESEARCH_TERMINAL_NODE",
+    "RP1_C1_US_WP4D",
+    "RP1_US_UNIVERSE"
+  ],
+  "formalExecutionAuthorized": false,
+  "auxiliaryHashes": {
+    "constraints/ci-registered-numerics-v1.txt": "e214198fc1437b12fffa0d601d5b77bb4b44e1b5f96493b553b15d24f9dbdc2d",
+    "docs/operations/closed-atlas-provenance-1.json": "9cf35f825d67d53dc4b7693309facc1ccf8abd6a5e462b846d515cfb26c6b2c1",
+    "docs/operations/closed-atlas-provenance-1.sha256": "17492951e4a3d6cce89f9a5893a02be6759313a189a872c15d276dfb3c534b39",
+    "pipeline/closed_atlas_provenance.py": "74c54c2a4d516500accf87f853efd61a390878038057a3ad6613045974c4bcf6",
+    "pipeline/pages_operational_maintenance.py": "304573880c8b05e019aa056838ac98a5961cb34f482502ccdb810c0c65e87484",
+    "scripts/audit_closed_atlas_provenance.py": "24ec7fb7d69c6e413e24dc50f18805bc2d20108df8b02c743200044d874667cd"
+  }
+}

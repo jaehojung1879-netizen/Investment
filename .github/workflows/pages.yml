@@ -78,10 +78,10 @@ jobs:
           git fetch --no-tags --depth=1 --filter=blob:none origin 4ea107ed0cde289f0a049a65ff13d2441a786710
       - name: Registration and exact numerical kernel
         run: python scripts/run_kr_alpha_atlas_phase_c_reproducible.py validate
-      - name: Real full-input preflight behind the outcome firewall
+      - name: Closed-study provenance behind the outcome firewall
         if: github.event_name == 'pull_request' || inputs.atlas_action == 'matrix-preflight'
         run: |
-          python scripts/run_kr_alpha_atlas_phase_c_reproducible.py preflight \
+          python scripts/audit_closed_atlas_provenance.py \
             --expected-main "$(git rev-parse origin/main)" --work /tmp/atlas-matrix-v4-preflight
       - uses: actions/upload-artifact@v4
         if: always()
@@ -162,7 +162,7 @@ jobs:
           cache: pip
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -c constraints/ci-registered-numerics-v1.txt -r requirements.txt
 
       - name: Compile check
         run: python -m compileall pipeline
