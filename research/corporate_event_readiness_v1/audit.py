@@ -47,13 +47,13 @@ def verify(root: Path = ROOT) -> dict:
 
 def verify_fixed_filings(root: Path = ROOT) -> dict:
     """Replay actual retained filings, independently of stored parser output."""
-    from .filings import parse_filing
+    from .filings import load_filing, parse_filing
 
     evidence = root / "evidence"
     samples = json.loads((evidence / "filing-samples.json").read_text(encoding="utf-8"))["samples"]
     rows = []
     for sample in samples:
-        row = parse_filing((evidence / sample["file"]).read_bytes(), sample)
+        row = parse_filing(load_filing(evidence, sample), sample)
         row.pop("raw_table_rows", None)
         rows.append(row)
     saved = json.loads((evidence / "parsed-filing-samples.json").read_text(encoding="utf-8"))

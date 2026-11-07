@@ -6,11 +6,14 @@ Raw table cells stay available: extracted fields never substitute a later vintag
 from __future__ import annotations
 
 import hashlib
+import gzip
+import io
 from copy import deepcopy
 import html
 import re
 from datetime import date, datetime
 from decimal import Decimal, InvalidOperation
+from pathlib import Path
 
 from pipeline.kr_corporate_action_events import is_amendment, receipt_date
 
@@ -25,6 +28,45 @@ FAMILIES = {
     'SUPPLY': '공급계약체결',
     'TERMINATION': '공급계약해지',
 }
+
+
+def load_filing(evidence: Path, metadata: dict) -> bytes:
+    """Load one exact retained DART body, preserving its original encoding.
+
+    The gzip container is storage only. Both stored and uncompressed identities
+    must match; no text conversion, replacement decoding or implicit network.
+    """
+    receipt = metadata.get('rcept_no', '')
+    compressed = metadata.get('storage') == 'gzip'
+    name = metadata.get('file')
+    expected_name = receipt + ('.html.gz' if compressed else '.html')
+    if not re.fullmatch(r'\d{14}', receipt) or name != expected_name:
+        raise ValueError('FIXED_DART_BODY_PATH_REQUIRED')
+    if metadata.get('storage') not in (None, 'identity', 'gzip'):
+        raise ValueError('UNSUPPORTED_BODY_STORAGE')
+    target = evidence / name
+    if target.is_symlink() or not target.resolve().is_relative_to(evidence.resolve()):
+        raise ValueError('BODY_PATH_ESCAPE')
+    size = metadata.get('bytes')
+    if type(size) is not int or not 0 < size <= 1_000_000:
+        raise ValueError('BOUNDED_ORIGINAL_BODY_SIZE_REQUIRED')
+    if target.stat().st_size > 1_000_000:
+        raise ValueError('STORED_BODY_SIZE_LIMIT')
+    stored = target.read_bytes()
+    if compressed:
+        if (metadata.get('storedBytes') != len(stored)
+                or metadata.get('storedSha256') != hashlib.sha256(stored).hexdigest()):
+            raise ValueError('STORED_BODY_IDENTITY_MISMATCH')
+        try:
+            with gzip.GzipFile(fileobj=io.BytesIO(stored)) as stream:
+                raw = stream.read(size + 1)
+        except (OSError, EOFError) as exc:
+            raise ValueError('INVALID_BODY_GZIP') from exc
+    else:
+        raw = stored
+    if len(raw) != size or hashlib.sha256(raw).hexdigest() != metadata.get('sha256'):
+        raise ValueError('ORIGINAL_BODY_IDENTITY_MISMATCH')
+    return raw
 
 
 def decode(raw: bytes) -> str:

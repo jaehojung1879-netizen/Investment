@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from research.corporate_event_readiness_v1.filings import as_of_chain, number, parse_filing
+from research.corporate_event_readiness_v1.filings import as_of_chain, load_filing, number, parse_filing
 
 EVIDENCE = Path(__file__).resolve().parents[1] / 'research/corporate_event_readiness_v1/evidence'
 SAMPLES = json.loads((EVIDENCE / 'filing-samples.json').read_text())['samples']
@@ -12,12 +12,12 @@ SAMPLES = json.loads((EVIDENCE / 'filing-samples.json').read_text())['samples']
 
 def parsed(no):
     meta = next(m for m in SAMPLES if m['rcept_no'] == no)
-    return parse_filing((EVIDENCE / meta['file']).read_bytes(), meta)
+    return parse_filing(load_filing(EVIDENCE, meta), meta)
 
 
 @pytest.mark.parametrize('meta', SAMPLES, ids=lambda m: m['rcept_no'])
 def test_real_bytes_hash_and_fail_closed_admission(meta):
-    raw = (EVIDENCE / meta['file']).read_bytes()
+    raw = load_filing(EVIDENCE, meta)
     result = parse_filing(raw, meta)
     assert 'INPUT_HASH_MISMATCH' not in result['quarantine_reasons']
     assert result['family'] and result['raw_table_rows']
