@@ -527,6 +527,13 @@
  "priceValuesRead": 0,
  "sets": {
   "A1_H126": {
+   "bookEquityAtSignal": {
+    "coverage": 0.8731,
+    "missing": {
+     "NO_ANNUAL_REPORT_VISIBLE_AT_SIGNAL": 41
+    },
+    "usable": 282
+   },
    "byEntryYear": {
     "2013": 1,
     "2015": 3,
@@ -654,6 +661,13 @@
    }
   },
   "A1_H252": {
+   "bookEquityAtSignal": {
+    "coverage": 0.877,
+    "missing": {
+     "NO_ANNUAL_REPORT_VISIBLE_AT_SIGNAL": 31
+    },
+    "usable": 221
+   },
    "byEntryYear": {
     "2013": 1,
     "2015": 3,
@@ -780,6 +794,13 @@
    }
   },
   "A2_H126": {
+   "bookEquityAtSignal": {
+    "coverage": 0.6743,
+    "missing": {
+     "NO_ANNUAL_REPORT_VISIBLE_AT_SIGNAL": 170
+    },
+    "usable": 352
+   },
    "byEntryYear": {
     "2013": 12,
     "2014": 49,
@@ -907,6 +928,13 @@
    }
   },
   "A2_H252": {
+   "bookEquityAtSignal": {
+    "coverage": 0.6635,
+    "missing": {
+     "NO_ANNUAL_REPORT_VISIBLE_AT_SIGNAL": 140
+    },
+    "usable": 276
+   },
    "byEntryYear": {
     "2013": 12,
     "2014": 43,
@@ -1033,6 +1061,14 @@
    }
   },
   "B1_H126": {
+   "bookEquityAtSignal": {
+    "coverage": 0.75,
+    "missing": {
+     "NON_POSITIVE_EQUITY": 7,
+     "NO_ANNUAL_REPORT_VISIBLE_AT_SIGNAL": 109
+    },
+    "usable": 348
+   },
    "byEntryYear": {
     "2013": 31,
     "2014": 25,
@@ -1156,6 +1192,14 @@
    }
   },
   "B1_H252": {
+   "bookEquityAtSignal": {
+    "coverage": 0.7312,
+    "missing": {
+     "NON_POSITIVE_EQUITY": 6,
+     "NO_ANNUAL_REPORT_VISIBLE_AT_SIGNAL": 87
+    },
+    "usable": 253
+   },
    "byEntryYear": {
     "2013": 26,
     "2014": 20,
@@ -1285,7 +1329,7 @@
   "investableKrwCash": "SOURCE_BLOCKED: BOK policy rate is a quote, not a payoff; 153130 is a bond-ETF twin candidate, not risk-free cash (#292 Owner review B)",
   "investorCostTaxContract": "MODEL_COST_ONLY: dated KR tariff from pipeline/benchmark_alpha.py; investor account/tax contract (#317) not fixed",
   "ledgerSessionGaps": "SOURCE_DEFECT: 2026-09-15/16 and 2026-10-01 missing for every ticker while krx-prices-done.json marks them complete",
-  "matchingCharacteristics": "SOURCE_BLOCKED: PIT book-to-market for Top300 issuers not admitted",
+  "matchingCharacteristics": "PARTIAL: annual total equity collected for 601 issuers (equity-facts-v1, receipt-dated); market cap, momentum, 21d return and beta need signal-date prices (read at execution); not admitted until a non-author audit",
   "pitIndustryOutsideTop120": "SOURCE_BLOCKED: v4 PIT labels cover the Top120 universe only; B1 final support needs an industry-matched check",
   "stockTotalReturn": "SOURCE_BLOCKED: KRX bars carry no dividends; DART record dates parsed for 4,732 decisions but the ex-date rule is an unsealed Owner decision (AGENTS v2.28)",
   "terminalConsideration": "SOURCE_BLOCKED for the held terminations listed in terminalSplit"

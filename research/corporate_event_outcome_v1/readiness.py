@@ -29,6 +29,7 @@ ROOT = C.REPO
 DATA = C.COHORT_DIR / 'data'
 INDUSTRY = ROOT / 'data/kr-industry-membership-foundation-v4/state/intervals.json.gz'
 EXTENSION = Path(__file__).parent / 'data' / 'industry-extension-v1.json'
+EQUITY = Path(__file__).parent / 'data' / 'equity-facts-v1.jsonl.gz'
 LEDGER_END = '2026-10-30'
 KNOWN_LEDGER_GAPS = ('2026-09-15', '2026-09-16', '2026-10-01')   # cohort README section 10
 
@@ -69,6 +70,26 @@ def label_with_extension(intervals: dict, ext: dict, e: dict) -> tuple[str | Non
     return None, status
 
 
+def equity_visible() -> dict[str, list[tuple[str, int]]]:
+    """corp_code -> ascending [(availability date, total equity KRW)]; date = serving filing's receipt day."""
+    out: dict[str, list] = defaultdict(list)
+    with gzip.open(EQUITY, 'rt', encoding='utf-8') as fh:
+        for line in fh:
+            r = json.loads(line)
+            if r.get('totalEquityKrw') is not None and r.get('rcept_no'):
+                n = r['rcept_no']
+                out[r['corp_code']].append((f'{n[:4]}-{n[4:6]}-{n[6:8]}', r['totalEquityKrw']))
+    return {k: sorted(v) for k, v in out.items()}
+
+
+def book_equity_at(visible: dict, corp: str, signal: str) -> tuple[int | None, str]:
+    """Latest equity whose filing was received strictly BEFORE the signal session."""
+    rows = [v for d, v in visible.get(corp, ()) if d < signal]
+    if not rows:
+        return None, 'NO_ANNUAL_REPORT_VISIBLE_AT_SIGNAL'
+    return (rows[-1], 'OK') if rows[-1] > 0 else (None, 'NON_POSITIVE_EQUITY')
+
+
 def _hhi(counter: Counter) -> float:
     n = sum(counter.values())
     return sum((v / n) ** 2 for v in counter.values()) if n else 0.0
@@ -82,6 +103,7 @@ def build() -> dict:
         dividends = [json.loads(line) for line in fh]
     intervals = industry_lookup()
     ext = extension_labels()
+    eq = equity_visible()
     sessions = [d.date().isoformat() for d in replay_calendar.sessions('2012-01-01', '2027-12-31', 'KR')]
 
     div_by_code = defaultdict(list)
@@ -136,6 +158,7 @@ def build() -> dict:
                     mkt['ALL_IN_WINDOW_DIVIDENDS_DATED_AND_SIZED'] += 1
                 else:
                     mkt['IN_WINDOW_DIVIDEND_WITHOUT_COMMON_DPS'] += 1
+            beq = Counter(book_equity_at(eq, e['corp_code'], e['signalSession'])[1] for e in rows)
             labelled = Counter({k: v for k, v in ind.items() if k != 'UNLABELLED'})
             top = labelled.most_common(1)[0] if labelled else (None, 0)
             if horizon == C.PRIMARY_HORIZON:
@@ -169,6 +192,9 @@ def build() -> dict:
                                 'byValueUp': {k: dict(v.most_common()) for k, v in sorted(ind_vu.items())},
                                 'largestIndustry': top[0], 'largestIndustryShareOfLabelled':
                                 round(top[1] / sum(labelled.values()), 4) if labelled else None},
+                'bookEquityAtSignal': {'usable': beq.get('OK', 0),
+                                       'coverage': round(beq.get('OK', 0) / len(rows), 4) if rows else None,
+                                       'missing': {k: v for k, v in beq.items() if k != 'OK'}},
                 'dividendWindowExposureMatured': dict(div),
                 'dividendWindowIfMarketRuleSealed': dict(mkt),
                 'calendarSpanMatured': {'start': span[0], 'end': span[1], 'sessions': T,
@@ -216,7 +242,9 @@ SOURCE_STATUS = {
                          'krx-prices-done.json marks them complete',
     'pitIndustryOutsideTop120': 'SOURCE_BLOCKED: v4 PIT labels cover the Top120 universe only; B1 final '
                                 'support needs an industry-matched check',
-    'matchingCharacteristics': 'SOURCE_BLOCKED: PIT book-to-market for Top300 issuers not admitted',
+    'matchingCharacteristics': 'PARTIAL: annual total equity collected for 601 issuers (equity-facts-v1, receipt-dated); '
+                              'market cap, momentum, 21d return and beta need signal-date prices (read at execution); '
+                              'not admitted until a non-author audit',
     'investorCostTaxContract': 'MODEL_COST_ONLY: dated KR tariff from pipeline/benchmark_alpha.py; '
                                'investor account/tax contract (#317) not fixed',
 }

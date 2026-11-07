@@ -302,3 +302,15 @@ def test_extension_prediction_ignores_tied_prefix_and_never_labels_below_min_lev
     tied = X.learn([('2641', 'A'), ('2641', 'B')])
     assert X.predict('2641', tied) is None                   # tied at every level: no answer
     assert Counter(x['level'] for x in [X.predict('2641', table)]) == {4: 1}
+
+
+def test_book_equity_is_receipt_dated_strictly_before_signal_and_never_zero_filled():
+    vis = {'c': [('2016-03-30', 100), ('2017-03-31', 120), ('2018-03-30', -5)]}
+    assert R.book_equity_at(vis, 'c', '2017-03-31') == (100, 'OK')          # same-day receipt is not visible
+    assert R.book_equity_at(vis, 'c', '2017-04-03') == (120, 'OK')
+    assert R.book_equity_at(vis, 'c', '2016-03-30') == (None, 'NO_ANNUAL_REPORT_VISIBLE_AT_SIGNAL')
+    assert R.book_equity_at(vis, 'c', '2019-01-02') == (None, 'NON_POSITIVE_EQUITY')
+    assert R.book_equity_at(vis, 'other', '2019-01-02')[0] is None
+    doc = json.loads(R.EQUITY.with_name('equity-facts-summary-v1.json').read_text())
+    assert doc['issuers'] == 601 and doc['issuerYears'] == 601 * 14
+    assert doc['status']['013'] > 0 and doc['withEquity'] == 5274      # 013 is an absence, not zero
