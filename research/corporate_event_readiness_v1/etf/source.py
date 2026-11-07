@@ -18,6 +18,7 @@ PRODUCT_FIELDS = (
     "bosuInfo", "taxation", "taxTpCd", "dividRemark", "minTradeUnit",
 )
 DISTRIBUTION_FIELDS = ("BASIC_D", "PAY_D", "DIVID_A", "TAX_DIVID_A")
+HISTORY_FIELDS = ("fid", "stkTicker", "basicD", "payD", "dividA", "taxDividA")
 
 
 def project_source(raw: bytes) -> bytes:
@@ -100,6 +101,58 @@ def inspect_source(raw: bytes) -> dict:
                      "EX_DATE_EVIDENCE_ABSENT", "HISTORICAL_PUBLICATION_VINTAGE_UNVERIFIED",
                      "DATED_FEES_TAX_COST_LIQUIDITY_UNVERIFIED", "DATA_RIGHTS_UNVERIFIED"],
     }
+
+
+def project_distribution_page(raw: bytes) -> bytes:
+    """Whitelist the official full-period endpoint; never select yield/NAV fields."""
+    try:
+        payload = json.loads(raw)
+        total, rows = payload['totalCnt'], payload['dividList']
+        if type(total) is not int or total < 0 or not isinstance(rows, list):
+            raise ValueError('INVALID_DISTRIBUTION_PAGE')
+        result = {'totalCnt': total, 'dividList': []}
+        for row in rows:
+            if row['fid'] != '2ETF35' or row['stkTicker'] != '153130':
+                raise ValueError('ISSUER_INSTRUMENT_MISMATCH')
+            result['dividList'].append({k: row[k] for k in HISTORY_FIELDS})
+    except (KeyError, TypeError) as exc:
+        raise ValueError('INVALID_DISTRIBUTION_PAGE') from exc
+    return (json.dumps(result, ensure_ascii=False, sort_keys=True, indent=2) + '\n').encode()
+
+
+def inspect_distribution_history(pages: list[bytes], *, product_source: bytes) -> dict:
+    """Require a complete, non-overlapping page set before reusing the event parser.
+
+    'Complete' means complete against this endpoint's declared count NOW.
+    It does not certify that historical zero-event intervals had no payouts.
+    """
+    if not pages:
+        raise ValueError('DISTRIBUTION_PAGES_REQUIRED')
+    selected = [json.loads(project_distribution_page(p)) for p in pages]
+    total = selected[0]['totalCnt']
+    if not total or any(p['totalCnt'] != total for p in selected):
+        raise ValueError('STABLE_POSITIVE_DISTRIBUTION_TOTAL_REQUIRED')
+    rows = [r for p in selected for r in p['dividList']]
+    if len(rows) != total or any(not p['dividList'] for p in selected):
+        raise ValueError('INCOMPLETE_OR_EXCESS_DISTRIBUTION_PAGES')
+    dates = [_date(r['basicD']) for r in rows]
+    pay_dates = [_date(r['payD']) for r in rows]
+    if len(dates) != len(set(dates)):
+        raise ValueError('OVERLAPPING_DISTRIBUTION_PAGES')
+    if pay_dates != sorted(pay_dates, reverse=True):
+        raise ValueError('DISTRIBUTION_PAYMENT_ORDER_MISMATCH')
+    product = json.loads(project_source(product_source))['info']['product']
+    combined = {'info': {'product': product, 'divideList': [
+        dict(zip(DISTRIBUTION_FIELDS, (r['basicD'], r['payD'], r['dividA'], r['taxDividA'])))
+        for r in rows]}}
+    result = inspect_source(json.dumps(combined, ensure_ascii=False).encode())
+    result.update(paginationCompleteAgainstDeclaredCount=True, declaredCount=total,
+                  projectionPageSha256s=[hashlib.sha256(project_distribution_page(p)).hexdigest() for p in pages],
+                  evidenceLevel='PAGINATED_FIELD_PROJECTION_NOT_HISTORICAL_VINTAGE',
+                  coverageGapYears=[year for year in range(2012, 2027)
+                                    if not any(d.startswith(str(year)) for d in dates)],
+                  gapInterpretation='NO_OBSERVED_EVENT_NOT_ZERO_RETURN_OR_NO_PAYOUT_CERTIFICATION')
+    return result
 
 
 def project_price_dates(raw: bytes) -> bytes:

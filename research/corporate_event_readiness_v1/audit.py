@@ -6,6 +6,8 @@ import base64
 import gzip
 import io
 import json
+import os
+import subprocess
 from collections import Counter
 from pathlib import Path, PurePosixPath
 
@@ -93,10 +95,70 @@ def verify_viewer_families(root: Path = ROOT) -> list[dict]:
     return results
 
 
+def verify_extended_sources(root: Path = ROOT, *, verify_source_git: bool = False) -> dict:
+    """Replay versioned bodies and cash-only history; Git reads are opt-in/offline."""
+    from .filings import load_filing, version_terms, corroborate_family_index
+    from .etf.source import inspect_distribution_history
+
+    evidence = root / 'evidence'
+    samples = {}
+    for name in ('filing-samples.json', 'chain-body-samples-v1.json'):
+        for row in json.loads((evidence / name).read_text())['samples']:
+            samples[row['rcept_no']] = row
+    saved = json.loads((evidence / 'version-terms-v1.json').read_text())
+    actual = [version_terms(load_filing(evidence, samples[row['receipt']]), samples[row['receipt']])
+              for row in saved]
+    if actual != saved:
+        raise ValueError('VERSIONED_TERMS_NOT_REPRODUCIBLE')
+    history = json.loads((root / 'etf/distribution-history-pages-v1.json').read_text())
+    result = inspect_distribution_history([json.dumps(p).encode() for p in history['pages']],
+                                         product_source=(root / 'etf/issuer-projection.json').read_bytes())
+    if result != json.loads((root / 'etf/distribution-history-readiness-v1.json').read_text()):
+        raise ValueError('DISTRIBUTION_HISTORY_NOT_REPRODUCIBLE')
+    indexes = json.loads((evidence / 'index-family-crosscheck-v1.json').read_text())
+    if verify_source_git:
+        from .build_inventory import LIST_REF, LIST_PATH
+        families = {r['selectedReceipt']: r for r in verify_viewer_families(root)}
+        repo = Path(__file__).resolve().parents[2]
+        for index in indexes:
+            family = next(r for r in families.values()
+                          if sorted(v['receipt'] for v in r['versions']) == index['matchedReceipts'])
+            anchor = samples[family['selectedReceipt']]
+            if (index['sourceCommit'] != LIST_REF
+                    or index['sourcePath'] != LIST_PATH + '/' + anchor['corp_code'] + '-I.jsonl.gz'
+                    or index['issuer'] != anchor['corp_code']
+                    or index['indexBlob'] != anchor['index_git_blob']):
+                raise ValueError('EXACT_FIXED_INDEX_SCOPE_REQUIRED')
+            cmd = ['git', '--no-replace-objects', '-c', 'remote.origin.promisor=false']
+            env = {**os.environ, 'GIT_NO_LAZY_FETCH': '1', 'GIT_TERMINAL_PROMPT': '0'}
+            ref = index['sourceCommit'] + ':' + index['sourcePath']
+            try:
+                size = int(subprocess.check_output(cmd + ['cat-file', '-s', ref], cwd=repo, env=env, stderr=subprocess.PIPE))
+                if size > 1_000_000:
+                    raise ValueError('FIXED_INDEX_BYTE_BUDGET_EXCEEDED')
+                raw = subprocess.check_output(cmd + ['show', ref], cwd=repo, env=env, stderr=subprocess.PIPE)
+            except subprocess.CalledProcessError as exc:
+                raise ValueError('LOCAL_FIXED_INDEX_OBJECT_UNAVAILABLE') from exc
+            verified = corroborate_family_index(family, raw, issuer=index['issuer'], expected_blob=index['indexBlob'])
+            if any(verified[k] != index[k] for k in verified):
+                raise ValueError('INDEX_FAMILY_PROJECTION_NOT_REPRODUCIBLE')
+    return {'versionedBodiesReproduced': len(actual),
+            'observedDistributions': result['coverage']['observedEvents'],
+            'paginationCompleteAgainstCurrentDeclaredCount': True,
+            'indexVersionLinks': sum(r['matchedVersionCount'] for r in indexes),
+            'indexBytesReverifiedFromLocalGit': verify_source_git,
+            'historicalPublicationVerified': False, 'researchAdmission': False}
+
+
 if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--verify-source-git', action='store_true')
+    args = parser.parse_args()
     result = verify()
     if not result["errors"]:
         result["filings"] = verify_fixed_filings()
         result['viewerFamilies'] = verify_viewer_families()
+        result['extendedSources'] = verify_extended_sources(verify_source_git=args.verify_source_git)
     print(json.dumps(result, ensure_ascii=False, indent=2))
     raise SystemExit(bool(result["errors"]))

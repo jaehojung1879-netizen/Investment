@@ -8,6 +8,7 @@ from __future__ import annotations
 import hashlib
 import gzip
 import io
+import json
 from copy import deepcopy
 import html
 import re
@@ -329,3 +330,112 @@ def parse_viewer_family(raw: bytes, *, receipt: str, sha256: str) -> dict:
             'sourceSha256': sha256, 'sourceVersionAtReceiptVerified': False,
             'independentEconomicEvents': None, 'pitEligible': False,
             'researchAdmission': False, 'outcomeExecutionAuthorized': False}
+
+
+def version_terms(raw: bytes, metadata: dict) -> dict:
+    """Extract one version's main form, never the before/after correction table.
+
+    A hidden amount stays unavailable even if a later version discloses it.
+    Receipt-level terms neither authenticate historical availability nor prove
+    actual execution/cancellation completion.
+    """
+    if metadata.get('sha256') != hashlib.sha256(raw).hexdigest():
+        raise ValueError('INPUT_HASH_MISMATCH')
+    parsed = parse_filing(raw, metadata)
+    if 'INPUT_HASH_MISMATCH' in parsed['quarantine_reasons']:
+        raise ValueError('INPUT_HASH_MISMATCH')
+    family = parsed['family']
+    if family not in ('SUPPLY', 'CANCELLATION'):
+        raise ValueError('SUPPORTED_VERSIONED_FORM_REQUIRED')
+    text, depth, tables, table_start = decode(raw), 0, [], 0
+    for match in re.finditer(r'</?table\b[^>]*>', text, re.I):
+        if match[0].lower().startswith('</'):
+            depth -= 1
+            if depth < 0:
+                raise ValueError('UNBALANCED_FORM_TABLE')
+            if depth == 0:
+                tables.append(text[table_start:match.end()])
+        else:
+            if depth == 0:
+                table_start = match.start()
+            depth += 1
+    if depth:
+        raise ValueError('UNBALANCED_FORM_TABLE')
+    date_label = '계약(수주)일자' if family == 'SUPPLY' else '이사회결의일(결정일)'
+    candidates = []
+    for table in tables:
+        rows = table_rows(table.encode('utf-8'))
+        labels = {_label(cell) for row in rows for cell in row}
+        if {'정정항목', '정정전', '정정후'} <= labels:
+            continue
+        if date_label in labels:
+            candidates.append(rows)
+    if len(candidates) != 1:
+        raise ValueError('UNIQUE_MAIN_VERSION_FORM_REQUIRED')
+    rows = candidates[0]
+    amount_label = '계약금액(원)' if family == 'SUPPLY' else '소각예정금액(원)'
+    raw_amount = _value(rows, (amount_label,))
+    withheld = (raw_amount in ('-', '') and '공시유보' in ' '.join(' '.join(r) for r in rows))
+    result = {
+        'receipt': parsed['receipt_no'], 'issuer': parsed['issuer_id'],
+        'family': family, 'sourceSha256': parsed['input_sha256'],
+        'reportedDecisionDate': day(_value(rows, (date_label,))),
+        'commonShares': number(_value(rows, ('소각할주식의종류와수',))) if family == 'CANCELLATION' else None,
+        'amountKrw': number(raw_amount),
+        'amountStatus': 'WITHHELD_AT_THIS_VERSION' if withheld else
+                        ('OBSERVED' if number(raw_amount) is not None else 'MISSING_OR_AMBIGUOUS'),
+        'contractName': _value(rows, ('-체결계약명',)) if family == 'SUPPLY' else None,
+        'contractPeriod': list(_period(rows, '계약기간')) if family == 'SUPPLY' else None,
+        'amendment': parsed['amendment'], 'publishedAt': None,
+        'historicalVersionAuthenticated': False, 'completionStatus': 'NOT_OBSERVED',
+        'researchAdmission': False, 'outcomeExecutionAuthorized': False,
+    }
+    if any(value is not None and Decimal(value) < 0
+           for value in (result['amountKrw'], result['commonShares'])):
+        raise ValueError('INVALID_VERSION_TERM_NUMBER')
+    if (result['reportedDecisionDate'] and parsed['receipt_date']
+            and result['reportedDecisionDate'] > parsed['receipt_date']):
+        raise ValueError('VERSION_DECISION_AFTER_RECEIPT')
+    return result
+
+
+def corroborate_family_index(family: dict, raw_index: bytes, *, issuer: str,
+                             expected_blob: str) -> dict:
+    """Cross-check explicit menu links against pinned DART list bytes only."""
+    from .build_inventory import _verify
+
+    _verify(raw_index, expected_blob)
+    with gzip.GzipFile(fileobj=io.BytesIO(raw_index)) as stream:
+        body = stream.read(8_000_001)
+    if len(body) > 8_000_000:
+        raise ValueError('DART_INDEX_SIZE_LIMIT')
+    wanted = {v['receipt']: v for v in family['versions']}
+    if not wanted or len(wanted) != len(family['versions']):
+        raise ValueError('UNIQUE_NONEMPTY_FAMILY_REQUIRED')
+    found = {}
+    for line in body.splitlines():
+        row = json.loads(line)
+        no = row.get('rcept_no')
+        if no not in wanted:
+            continue
+        if no in found and found[no] != row:
+            raise ValueError('CONFLICTING_INDEX_RECEIPT')
+        if row.get('corp_code') != issuer:
+            raise ValueError('INDEX_ISSUER_MISMATCH')
+        if receipt_date(row.get('rcept_dt')) != wanted[no]['receiptDate']:
+            raise ValueError('INDEX_MENU_DATE_MISMATCH')
+        if is_amendment(row.get('report_nm')) != wanted[no]['amendment']:
+            raise ValueError('INDEX_MENU_AMENDMENT_MISMATCH')
+        def kinds(title):
+            compact = str(title).replace('ㆍ', '').replace('·', '').replace(' ', '')
+            return {name for name, term in FAMILIES.items() if term in compact}
+        if not kinds(row.get('report_nm')) or kinds(row.get('report_nm')) != kinds(wanted[no].get('label')):
+            raise ValueError('INDEX_MENU_FAMILY_MISMATCH')
+        found[no] = row
+    if set(found) != set(wanted):
+        raise ValueError('INDEX_FAMILY_RECEIPT_MISSING')
+    return {'issuer': issuer, 'indexBlob': expected_blob,
+            'indexSha256': hashlib.sha256(raw_index).hexdigest(),
+            'matchedReceipts': sorted(found), 'matchedVersionCount': len(found),
+            'historicalSecurityIdentityVerified': False,
+            'historicalPublicationClockVerified': False, 'researchAdmission': False}

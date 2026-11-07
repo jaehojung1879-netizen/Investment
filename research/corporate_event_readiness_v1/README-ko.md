@@ -84,3 +84,26 @@ python -m compileall -q pipeline research/corporate_event_readiness_v1
 153130은 단기채권 ETF로서 무위험 KRW 현금과 동등하지 않다. 2013~2026 전체 분배·명시적 배당락·과거 빈티지·권리·세금/비용은 미해결이다. #316의 원 C2 계약 SHA256, 종목/비중/날짜, 세 현금 band와 판정은 변경하지 않았다. 경제성 비교 및 역사 outcome 실행은 계속 SOURCE_BLOCKED / 승인 대기다.
 
 검증은 `tests/test_corporate_event*.py`와 수정하지 않은 source encoding 검사 101건을 통과했다. 원문 패킷 감사와 기존 helper 검사를 함께 실행한다. 이는 작성자 검증이며 독립 승인 또는 정확 HEAD의 GitHub CI 성공이 아니다. 공통 threadpoolctl drift는 이 연구 PR에서 우회하지 않았다. 초기 validation.json은 원래 작성 당시 기록으로 남긴다.
+
+## 계속 작업: 분배 이력 7건 복구·버전별 공시 본문
+
+공식 상품 화면의 JavaScript에서 실제 전체기간(`period=0`) 조회를 확인했다. 상품별 API가 반환한 최근 15건과 달리 전체기간 endpoint는 **22건**을 선언했고, 두 페이지(12+10건)에서 상품 신원·중복·합계가 일치했다. **2012~2018년 분배 기록 7건을 추가 확보**했다. `etf/distribution-history-pages-v1.json`은 날짜·분배금·과세대상액·상품 식별만 보존하며 수익률/NAV 필드는 버린다. 새 page adapter는 누락·겹침·상품 혼입·total 변경을 거부한다. 명시적 배당락은 여전히 없고, 2019~2024년 무관측 구간을 무분배/수익률 0으로 채우지 않는다. endpoint의 선언 건수 충족과 실제 전 기간 경제적 완전성은 별개다. C2의 기존 세 cash band와 원계약은 불변이다.
+
+DART 현재 메뉴 10개 접수번호를 기존 #316의 I형 목록 세 파일과 교차검증해 발행사·접수일·정정 표시가 일치함을 확인했다. 기존 원천을 다시 복사하지 않고 원 commit/path/blob/SHA와 결과만 보존한다. 추가 원문 7건은 작은 gzip 표본으로 보전했다.
+
+`version_terms`는 정정 비교표의 '정정 전/후'와 해당 버전의 본문 표를 분리한다. 원공시 당시 공급계약 금액이 공시유보로 비공개였다가 후속 공시에서 공개된 사례를 확인했다. 과거의 '-'를 이후 금액이나 공시 임계값으로 채우지 않는다. 소각 예정 수량은 원본 3,209,009주에서 정정 2,040,030주로 바뀌었다. 후속 값으로 최초 신호를 덮어쓰지 않으며, 예정 수량/일정은 소각 완료로 인증하지 않는다.
+
+새 고정 표본은 총 **20개 문서 버전**, 원천 적격 후보 **0**이다. 여전히 당시 공개 clock·본문 vintage·PIT 증권·산업·분모가 미검증이다. 두 정정 계보의 9개 버전 모두의 본문을 확인했으며 전체 독립 사건 N이나 MDE가 아니다. `source-readiness-v3.json`과 `evidence/version-terms-v1.json`에 범위를 고정했다. 새 역사 수익률/NAV/라벨·백테스트는 실행하지 않았다.
+
+검증:
+
+```bash
+python -m pytest -q tests/test_corporate_event*.py tests/test_source_encoding.py
+python -m research.corporate_event_readiness_v1.audit
+# 고정 Git 목록 객체를 따로 확보한 경우만: 네트워크 없는 강한 교차검증
+python -m research.corporate_event_readiness_v1.audit --verify-source-git
+```
+
+`--verify-source-git`는 로컬 고정 객체가 없으면 명시적으로 실패하며 자동 fetch하지 않는다. 현재의 연구 적격성, 원본 봉인, 기존 workflow와 운영 활성화 상태는 변경하지 않았다.
+
+이번 보완의 좁은 회귀는 원천·인코딩 124건 및 기존 봉인/수치 26건 통과다. 이는 작성자 검증이며 GitHub 전체 CI 성공이나 독립 연구 승인으로 읽지 않는다. 공통 CI dependency 설치 경로의 변경은 여전히 별도 운영 유지보수 승인 대상이다.
