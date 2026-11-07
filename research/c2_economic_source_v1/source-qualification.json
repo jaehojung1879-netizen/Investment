@@ -1,0 +1,365 @@
+{
+  "mode": "SOURCE_QUALIFICATION_ONLY",
+  "verdict": "SOURCE_BLOCKED",
+  "referencePins": {
+    "contract": {
+      "commit": "75aab7bc7096b551543bc1582c1e7fd288e94e59",
+      "path": "research/alpha_evidence_sprint_v2/c2-fixed-exposure-attribution-v1.json",
+      "sha256": "12f8f156811abb875085da19dec2790454e91e13858b140bd094fd0f22b75628"
+    },
+    "calculator": {
+      "commit": "75aab7bc7096b551543bc1582c1e7fd288e94e59",
+      "path": "research/alpha_evidence_sprint_v2/c2_attribution.py",
+      "sha256": "d2c1f92f10323c60952b3d34d8078ab8f6b73b1e5b9c72e5dd7b9473a76b4b78"
+    },
+    "runner": {
+      "commit": "75aab7bc7096b551543bc1582c1e7fd288e94e59",
+      "path": "research/alpha_evidence_sprint_v2/c2_attribution_run.py",
+      "sha256": "55975879cef269cd35686c5a668326525c1759a86857ddb160d48e940d3b5b75"
+    },
+    "economics": {
+      "commit": "a3ee7a716e56c97c99b02537ac060aca01bdb038",
+      "path": "research/cross_market_foundation_v1/economics.py",
+      "sha256": "e78090410469810f11c4fadf6247a3ef7baf2432b46785972b9cb6a295c5793f"
+    },
+    "etf_source": {
+      "commit": "621fccb1fb242b98f34e2b839ada801634a0e699",
+      "path": "research/corporate_event_readiness_v1/etf/source.py",
+      "sha256": "12880f0ca87d8743b2a11bc23da99fe4deb15e9aab9df0f37de1e434884a2809"
+    }
+  },
+  "fixedInputFilesVerified": [
+    {
+      "path": "docs/results/regional-standalone-paths.json.gz",
+      "sha256": "7a09751f99f5d892821cac6bbb4f28359049d58364cb40db1814fac4f93210cb"
+    },
+    {
+      "path": "docs/weekly-decision/weekly-passive-first-v1-replay-corrected-benchmark.json",
+      "sha256": "901b3aee7d3bc06eed3fd2bd14b07a0d4ca4da23745b861a877203c48772b8d2"
+    },
+    {
+      "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json",
+      "sha256": "58580c4370ec2c5afa124f849afbc4fa7b5c879012e75ebbd48ee7c7a0e659a9"
+    },
+    {
+      "path": "data/bok-policy-rates.json",
+      "sha256": "a7edf0e532c7b54da9d962ebf12ff2552c90c783439fef99d7c761c5b9ea69ff"
+    },
+    {
+      "path": "docs/results/kr-termination-inventory.json",
+      "sha256": "b58ecb2c4500302c40784613318c8451beee663ece5ee76ada26873a4292f93f"
+    }
+  ],
+  "fixedTargets": {
+    "blocks": 155,
+    "distinctNames": 72,
+    "from": "2013-01-07",
+    "through": "2026-09-14",
+    "projectionSha256": "608363917c7474c58dbb425eebd491a7c7ab0c31d74a0bc974b199954f330cc4",
+    "outcomeFieldsRead": [],
+    "actionableTargetsExported": false,
+    "outcomeExecutionAuthorized": false
+  },
+  "registeredHorizonDateAudit": {
+    "H126": {
+      "registeredConsecutiveBlocks": 6,
+      "actualKrReturnIntervalsMin": 128,
+      "actualKrReturnIntervalsMax": 133,
+      "datesOrThresholdsChanged": false
+    },
+    "H252": {
+      "registeredConsecutiveBlocks": 12,
+      "actualKrReturnIntervalsMin": 258,
+      "actualKrReturnIntervalsMax": 263,
+      "datesOrThresholdsChanged": false
+    }
+  },
+  "retainedOriginalPayloadsVerified": 48,
+  "payloadVerificationIsHistoricalVintageVerification": false,
+  "calendarSource": "repository.replay_calendar.KR (not exchange-certified vintage)",
+  "marketPriceCoverage": {
+    "status": "OBSERVED_MARKET_INPUTS_COVER_GRID",
+    "from": "2013-01-07",
+    "through": "2026-09-14",
+    "expectedSessions": 3361,
+    "observedSessions": 3361,
+    "calendarSha256": "c26eafde60787ba9e491c438e53f077e0929a6b4a91238a8aea0af864f609927",
+    "missingSessions": [],
+    "offCalendarDates": [],
+    "invalidCloseDates": [],
+    "invalidVolumeDates": [],
+    "zeroVolumeDates": [],
+    "quarantinedAfterCutoff": [
+      "2026-09-15",
+      "2026-09-16",
+      "2026-09-17",
+      "2026-09-18",
+      "2026-09-21",
+      "2026-09-22",
+      "2026-09-23",
+      "2026-09-28",
+      "2026-09-29",
+      "2026-09-30",
+      "2026-10-01",
+      "2026-10-02",
+      "2026-10-06",
+      "2026-10-07",
+      "2026-10-08",
+      "2026-10-12",
+      "2026-10-13",
+      "2026-10-14",
+      "2026-10-15",
+      "2026-10-16",
+      "2026-10-19",
+      "2026-10-20",
+      "2026-10-21",
+      "2026-10-22",
+      "2026-10-23",
+      "2026-10-26",
+      "2026-10-27",
+      "2026-10-28",
+      "2026-10-29",
+      "2026-10-30",
+      "2026-11-02",
+      "2026-11-03",
+      "2026-11-04",
+      "2026-11-05",
+      "2026-11-06"
+    ],
+    "blockers": [],
+    "valuesRetained": false,
+    "returnsComputed": 0,
+    "historicalVintageVerified": false,
+    "actualFillVerified": false,
+    "outcomeExecutionAuthorized": false,
+    "sourceSha256": "2b5ab9e96cff7ebc6ba7dee08cb8e323345dddfc646afbb9e7a8cfc3ee345112",
+    "dateProjectionSha256": "c3dab3e1b575a5d1ce8e214f30820db15fa2034c83af2ee21e8acdac938eff08",
+    "requestedHeader": "2026/09/14",
+    "xlsParserVersion": "2.0.2",
+    "headerIsPublicationVintage": false
+  },
+  "fixedBoundaryDates": 156,
+  "fixedBoundaryDataBlockers": [],
+  "distributionHistory": {
+    "declaredCount": 22,
+    "paginationCompleteAgainstDeclaredCount": true,
+    "coverageGapYears": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "gapInterpretation": "NO_OBSERVED_EVENT_NOT_ZERO_RETURN_OR_NO_PAYOUT_CERTIFICATION"
+  },
+  "noticeExDateQualification": {
+    "observedEvents": 22,
+    "explicitExDateEvents": [
+      {
+        "recordDate": "2026-10-15",
+        "exDate": "2026-10-14",
+        "withinCutoff": false,
+        "publishedBeforeExDate": true
+      },
+      {
+        "recordDate": "2026-09-15",
+        "exDate": "2026-09-14",
+        "withinCutoff": true,
+        "publishedBeforeExDate": true
+      },
+      {
+        "recordDate": "2026-08-14",
+        "exDate": "2026-08-13",
+        "withinCutoff": true,
+        "publishedBeforeExDate": true
+      },
+      {
+        "recordDate": "2026-07-15",
+        "exDate": "2026-07-14",
+        "withinCutoff": true,
+        "publishedBeforeExDate": true
+      },
+      {
+        "recordDate": "2026-06-15",
+        "exDate": "2026-06-12",
+        "withinCutoff": true,
+        "publishedBeforeExDate": true
+      },
+      {
+        "recordDate": "2026-05-15",
+        "exDate": "2026-05-14",
+        "withinCutoff": true,
+        "publishedBeforeExDate": true
+      },
+      {
+        "recordDate": "2026-04-15",
+        "exDate": "2026-04-14",
+        "withinCutoff": true,
+        "publishedBeforeExDate": true
+      },
+      {
+        "recordDate": "2026-03-13",
+        "exDate": "2026-03-12",
+        "withinCutoff": true,
+        "publishedBeforeExDate": true
+      },
+      {
+        "recordDate": "2026-02-13",
+        "exDate": "2026-02-12",
+        "withinCutoff": true,
+        "publishedBeforeExDate": true
+      },
+      {
+        "recordDate": "2026-01-15",
+        "exDate": "2026-01-14",
+        "withinCutoff": true,
+        "publishedBeforeExDate": true
+      },
+      {
+        "recordDate": "2025-12-15",
+        "exDate": "2025-12-12",
+        "withinCutoff": true,
+        "publishedBeforeExDate": true
+      },
+      {
+        "recordDate": "2025-11-14",
+        "exDate": "2025-11-13",
+        "withinCutoff": true,
+        "publishedBeforeExDate": true
+      },
+      {
+        "recordDate": "2025-10-15",
+        "exDate": "2025-10-14",
+        "withinCutoff": true,
+        "publishedBeforeExDate": true
+      },
+      {
+        "recordDate": "2025-09-15",
+        "exDate": "2025-09-12",
+        "withinCutoff": true,
+        "publishedBeforeExDate": true
+      },
+      {
+        "recordDate": "2025-08-14",
+        "exDate": "2025-08-13",
+        "withinCutoff": true,
+        "publishedBeforeExDate": true
+      }
+    ],
+    "unresolvedExDateRecordDates": [
+      "2012-12-28",
+      "2013-12-30",
+      "2014-12-30",
+      "2015-12-30",
+      "2016-12-29",
+      "2017-12-28",
+      "2018-12-28"
+    ],
+    "historicalCompletenessCertified": false,
+    "payloadIntegrityVerifiedByThisFunction": false,
+    "totalReturnReady": false,
+    "outcomeExecutionAuthorized": false
+  },
+  "shareholderTotalReturnGateReusedFrom317": {
+    "contract": "CROSS_MARKET_ECONOMIC_INPUTS_V1",
+    "status": "BLOCKED",
+    "errors": [
+      "DISTRIBUTION_COVERAGE_UNVERIFIED",
+      "CORPORATE_ACTION_COVERAGE_UNVERIFIED"
+    ],
+    "evidenceLevel": "DECLARATION_AND_DIGEST_REFERENCE_ONLY",
+    "sourcePayloadVerified": false,
+    "outcomeExecutionAuthorized": false
+  },
+  "stockDividendLineage": {
+    "sourcePath": "docs/results/kr-terminal-action-reconstruction-v2.json",
+    "sha256": "b1d2dcb0a8064139e601c4efab51a44e1323f93910ae70228054338a90629017",
+    "heldTerminated": [
+      {
+        "ticker": "000030.KS",
+        "fixedHoldingBlocks": 1,
+        "lastFixedExit": "2017-06-30",
+        "lastTradingDate": "2019-02-12",
+        "terminalConsiderationNeededForTheseHoldings": false,
+        "yahooDividendEventCount": 0,
+        "officialFiscalCashDpsEntriesBeforeLastTrade": [
+          {
+            "fiscalYear": 2015,
+            "metric": "CASH_DPS",
+            "shareClass": "COMMON",
+            "sourceReceiptDate": "2016-03-30",
+            "sourceReceiptNumber": "20160330004090",
+            "value": 500.0
+          },
+          {
+            "fiscalYear": 2016,
+            "metric": "CASH_DPS",
+            "shareClass": "COMMON",
+            "sourceReceiptDate": "2017-03-31",
+            "sourceReceiptNumber": "20170331004833",
+            "value": 400.0
+          },
+          {
+            "fiscalYear": 2017,
+            "metric": "CASH_DPS",
+            "shareClass": "COMMON",
+            "sourceReceiptDate": "2018-11-14",
+            "sourceReceiptNumber": "20181114001021",
+            "value": 600.0
+          }
+        ],
+        "annualDpsConvertedToCashEvent": false,
+        "identityContinuityCertified": false,
+        "exDateStatus": "BLOCKED"
+      },
+      {
+        "ticker": "000060.KS",
+        "fixedHoldingBlocks": 3,
+        "lastFixedExit": "2015-11-25",
+        "lastTradingDate": "2023-02-20",
+        "terminalConsiderationNeededForTheseHoldings": false,
+        "yahooDividendEventCount": 0,
+        "officialFiscalCashDpsEntriesBeforeLastTrade": [
+          {
+            "fiscalYear": 2015,
+            "metric": "CASH_DPS",
+            "shareClass": "COMMON",
+            "sourceReceiptDate": "2016-03-30",
+            "sourceReceiptNumber": "20160330002889",
+            "value": 570.0
+          }
+        ],
+        "annualDpsConvertedToCashEvent": false,
+        "identityContinuityCertified": false,
+        "exDateStatus": "BLOCKED"
+      },
+      {
+        "ticker": "002550.KS",
+        "fixedHoldingBlocks": 1,
+        "lastFixedExit": "2015-12-28",
+        "lastTradingDate": "2017-07-20",
+        "terminalConsiderationNeededForTheseHoldings": false,
+        "yahooDividendEventCount": 0,
+        "officialFiscalCashDpsEntriesBeforeLastTrade": [
+          {
+            "fiscalYear": 2015,
+            "metric": "CASH_DPS",
+            "shareClass": "COMMON",
+            "sourceReceiptDate": "2016-03-30",
+            "sourceReceiptNumber": "20160330004139",
+            "value": 400.0
+          }
+        ],
+        "annualDpsConvertedToCashEvent": false,
+        "identityContinuityCertified": false,
+        "exDateStatus": "BLOCKED"
+      }
+    ]
+  },
+  "cashEtfIsRegisteredCashScenario": false,
+  "cashEtfRequiresProductRiskCostAndProtocolReview": true,
+  "historicalOutcomesComputed": 0,
+  "productionWrites": 0,
+  "outcomeExecutionAuthorized": false
+}

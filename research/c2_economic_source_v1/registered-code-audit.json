@@ -1,0 +1,30 @@
+{
+  "referencePins": {
+    "contract": {
+      "commit": "75aab7bc7096b551543bc1582c1e7fd288e94e59",
+      "path": "research/alpha_evidence_sprint_v2/c2-fixed-exposure-attribution-v1.json",
+      "sha256": "12f8f156811abb875085da19dec2790454e91e13858b140bd094fd0f22b75628"
+    },
+    "calculator": {
+      "commit": "75aab7bc7096b551543bc1582c1e7fd288e94e59",
+      "path": "research/alpha_evidence_sprint_v2/c2_attribution.py",
+      "sha256": "d2c1f92f10323c60952b3d34d8078ab8f6b73b1e5b9c72e5dd7b9473a76b4b78"
+    },
+    "runner": {
+      "commit": "75aab7bc7096b551543bc1582c1e7fd288e94e59",
+      "path": "research/alpha_evidence_sprint_v2/c2_attribution_run.py",
+      "sha256": "55975879cef269cd35686c5a668326525c1759a86857ddb160d48e940d3b5b75"
+    }
+  },
+  "fixtures": {
+    "uncommittedSelfAuthoredFileAccepted": true,
+    "over10PercentUnattributableStillReturnsNegative": true,
+    "selectionCiUnaffectedByNetCostInputs": true,
+    "originalSyntheticIdentityAndBeta": "PASS"
+  },
+  "executionCountOrConsumedGatePresent": false,
+  "realHistoricalInputsRead": false,
+  "realHistoricalOutcomesComputed": 0,
+  "outcomeEntryPointAvailable": false,
+  "outcomeExecutionAuthorized": false
+}
