@@ -116,7 +116,7 @@ class Calendar:
 
 
 def build(index_rows: list[dict], pit, bodies: dict[str, dict], calendar: Calendar,
-          *, data_cutoff: str, as_of: str) -> dict:
+          *, data_cutoff: str, as_of: str, period: tuple[str, str] = PERIOD) -> dict:
     """``bodies``: rcept_no -> {'parsed': dict|None, 'amendmentRef': dict|None, 'error': str|None}."""
     versions, stage_counts = [], Counter()
     amendments_by_key: dict[tuple, list[dict]] = defaultdict(list)
@@ -133,7 +133,7 @@ def build(index_rows: list[dict], pit, bodies: dict[str, dict], calendar: Calend
         day = iso(row['rcept_dt'])
         rec = {'rcept_no': row['rcept_no'], 'corp_code': row['corp_code'], 'stock_code': row['stock_code'],
                'family': row['family'], 'receiptDay': day, 'rm': row.get('rm', '')}
-        if not PERIOD[0] <= day <= PERIOD[1]:
+        if not period[0] <= day <= period[1]:
             stop(rec, 'IN_PERIOD')
             continue
         if is_amendment(row['report_nm']):

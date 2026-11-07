@@ -241,3 +241,72 @@ def test_document_status_014_is_an_explicit_cached_answer(tmp_path, monkeypatch)
     with pytest.raises(DocumentNotServed):
         document_body(offline, '20140203000264')
     assert len(calls) == 1
+
+
+def test_price_presence_keeps_only_ticker_date_traded(tmp_path):
+    from research.corporate_event_readiness_v1.cohort.admission import load_presence
+    rows = [{'ticker': '000001.KS', 'date': '2020-01-02', 'close': 1.0, 'open': 1.0, 'volume': 10},
+            {'ticker': '000001.KS', 'date': '2020-01-03', 'close': 9.0, 'volume': 0}]
+    (tmp_path / 'krx-prices-2020.jsonl.gz').write_bytes(
+        gzip.compress('\n'.join(json.dumps(r) for r in rows).encode()))
+    presence, meta = load_presence(tmp_path)
+    assert presence == {'000001.KS': {'2020-01-02': True, '2020-01-03': False}}
+    assert 'close' in meta['fieldsDiscardedAtParse'] and meta['fieldsKept'] == ['ticker', 'date', 'traded']
+
+
+@pytest.mark.parametrize('bars,expected', [
+    (None, 'NO_PRICE_SOURCE'),
+    ({d: True for d in SESSIONS[:6]}, 'FULL_WINDOW_TRADED'),
+    ({**{d: True for d in SESSIONS[:6]}, SESSIONS[3]: False}, 'SUSPENSION_OR_GAP_IN_WINDOW'),
+    ({d: True for d in SESSIONS[:4]}, 'ENDS_BEFORE_MATURITY_TERMINAL_ECONOMICS_REQUIRED'),
+    ({SESSIONS[1]: False, **{d: True for d in SESSIONS[2:6]}}, 'ENTRY_NOT_TRADED'),
+])
+def test_window_admission_is_a_source_fact_not_a_return(bars, expected):
+    from research.corporate_event_readiness_v1.cohort.admission import window_admission
+    assert window_admission(bars, SESSIONS, SESSIONS[1], 4, SESSIONS[-1])['status'] == expected
+    assert window_admission({SESSIONS[1]: True}, SESSIONS, SESSIONS[1], 4, SESSIONS[2])['status'] == \
+        'PENDING_MATURITY_OR_LEDGER_END'
+
+
+def test_build_period_parameter_leaves_historical_default_unchanged():
+    terms = body(quantity_common='1', issued_shares_common_at_decision='10')
+    rows = [row('p', '2020-01-10', 'CANCELLATION', '주식소각결정')]
+    assert run(rows, {'p': terms})['candidates']
+    out = E.build(rows, pit(), {'p': terms}, E.Calendar(SESSIONS), data_cutoff='2020-02-28',
+                  as_of='2020-02-28', period=('2020-01-11', '2099-12-31'))
+    assert out['stageCounts'] == {'IN_PERIOD': 1}
+
+
+def test_prospective_receipt_is_dry_run_only_and_digest_bound(tmp_path):
+    from pipeline import prospective_receipt_core as core
+    from research.corporate_event_readiness_v1.cohort import prospective as P
+    receipt = P.session_receipt('2020-01-10', [], spec_sha256='ab' * 32, created_at_utc='2020-01-10T10:00:00+00:00',
+                                sources=[], mode='DRY_RUN')
+    assert receipt['evidenceClass'] == P.DRY_RUN_CLASS != core.EVIDENCE_CLASS
+    assert receipt['receiptSha256'] == core.receipt_digest(receipt)
+    with pytest.raises(ValueError, match='ONLY_DRY_RUN'):
+        P.session_receipt('2020-01-10', [], spec_sha256='ab' * 32, created_at_utc='x', sources=[], mode='LIVE')
+    with pytest.raises(ValueError, match='DRY_RUN_CANNOT_CLAIM'):
+        P.validate({**receipt, 'evidenceClass': core.EVIDENCE_CLASS})
+    with pytest.raises(ValueError, match='OUTCOME_FIELD'):
+        P.validate({**{k: v for k, v in receipt.items() if k != 'receiptSha256'}, 'forwardReturn': 1})
+    assert P.REGISTERED_AUTHORIZATION is None
+
+
+def test_prospective_store_guard(tmp_path):
+    from pathlib import Path
+    from research.corporate_event_readiness_v1.cohort import prospective as P
+    repo = Path(P.__file__).resolve().parents[3]
+    with pytest.raises(ValueError, match='OUTSIDE_REPOSITORY'):
+        P.checked_store(repo / 'research', repo)
+    with pytest.raises(ValueError, match='MARKER_REQUIRED'):
+        P.checked_store(tmp_path, repo)
+    (tmp_path / P.STORE_MARKER).write_text('')
+    assert P.checked_store(tmp_path, repo) == tmp_path.resolve()
+
+
+def test_receipt_days_map_each_day_to_exactly_one_signal_session():
+    from research.corporate_event_readiness_v1.cohort import prospective as P
+    sessions = ['2020-01-02', '2020-01-03', '2020-01-06']
+    assert P.receipt_days_for('2020-01-06', sessions) == ['2020-01-03', '2020-01-04', '2020-01-05']
+    assert P.receipt_days_for('2020-01-03', sessions) == ['2020-01-02']

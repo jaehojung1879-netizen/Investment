@@ -17,12 +17,13 @@ CODE = ['research/corporate_event_readiness_v1/filings.py',
         *[f'research/corporate_event_readiness_v1/cohort/{n}' for n in (
             '__init__.py', 'dart_client.py', 'families.py', 'identity.py', 'collect_index.py',
             'collect_issuers.py', 'bodies.py', 'events.py', 'power.py', 'run_cohort.py',
-            'candidate_signal.py', 'crosscheck_ds005.py', 'crosscheck_routes.py', 'build_spec.py')],
+            'candidate_signal.py', 'crosscheck_ds005.py', 'crosscheck_routes.py', 'admission.py', 'prospective.py', 'build_spec.py')],
         'pipeline/kr_corporate_action_events.py', 'pipeline/dart_ownership_universe.py',
+        'pipeline/prospective_receipt_core.py',
         'pipeline/replay_calendar.py']
 INPUTS = ['issuer-index-rows-v1.jsonl.gz', 'issuer-universe-v1.json', 'issuer-index-manifest-v1.json',
           'cohort-events-v1.jsonl.gz', 'cohort-funnel-v1.json', 'body-receipts-v1.json.gz', 'inputs-v1.json',
-          'ds005-crosscheck-v1.json', 'document-route-crosscheck-v1.json']
+          'ds005-crosscheck-v1.json', 'document-route-crosscheck-v1.json', 'price-admission-v1.json']
 
 
 def sha(path: Path) -> str:
