@@ -271,3 +271,34 @@ def test_market_ex_date_rule_reproduces_reported_year_end_dates_and_stored_rows_
     assert len(stated) >= 593 and all(
         X.market_ex_date(r['recordDate'], sessions)['exDate'] == r['exDateCandidate'] for r in stated)
     assert all(r['exDateMarketRuleCandidate'] for r in rows if r.get('recordDate') and r.get('parseStatus'))
+
+
+def test_not_pit_industry_tier_needs_owner_acceptance_and_extension_is_measured(tmp_path):
+    import hashlib
+    f = tmp_path / 'ind.json'
+    f.write_text('{}')
+    row = {'basis': I.COMPOSITE_INDUSTRY_TIER, 'path': 'ind.json', 'sha256': hashlib.sha256(f.read_bytes()).hexdigest(),
+           'rights': I.RIGHTS, 'independentAudit': 'x'}
+    m = tmp_path / 'm.json'
+    m.write_text(json.dumps({'components': {'pitIndustry': row}}))
+    assert I.admit(m)['components']['pitIndustry'] == 'SOURCE_BLOCKED:NOT_PIT_TIER_NEEDS_OWNER_ACCEPTANCE'
+    m.write_text(json.dumps({'components': {'pitIndustry': {**row, 'ownerAcceptedTier': I.COMPOSITE_INDUSTRY_TIER}}}))
+    assert I.admit(m)['components']['pitIndustry'] == 'ADMITTED'
+    from research.corporate_event_outcome_v1 import industry_extension as X
+    doc = json.loads((X.Path(X.__file__).parent / 'data' / 'industry-extension-v1.json').read_text())
+    assert doc['leaveOneOut']['agreement'] >= 0.98 and doc['minAcceptedLevel'] == 3
+    # every extended label came from a prefix level the leave-one-out validated
+    assert all(v['level'] >= 3 for v in doc['labels'].values() if v['kind'] == 'EXTENDED')
+    assert all(v['tier'] == X.TIER for v in doc['labels'].values() if v['kind'] == 'EXTENDED')
+
+
+def test_extension_prediction_ignores_tied_prefix_and_never_labels_below_min_level():
+    from collections import Counter
+    from research.corporate_event_outcome_v1 import industry_extension as X
+    table = X.learn([('2641', 'A'), ('2642', 'B'), ('2611', 'A'), ('2612', 'A')])
+    assert X.predict('2641', table)['group'] == 'A'          # exact level-4 answer
+    assert X.predict('2699', table)['level'] == 2            # only the 2-digit prefix knows it
+    assert X.predict('9999', table) is None
+    tied = X.learn([('2641', 'A'), ('2641', 'B')])
+    assert X.predict('2641', tied) is None                   # tied at every level: no answer
+    assert Counter(x['level'] for x in [X.predict('2641', table)]) == {4: 1}

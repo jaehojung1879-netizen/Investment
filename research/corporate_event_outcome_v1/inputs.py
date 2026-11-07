@@ -11,6 +11,11 @@ import hashlib
 import json
 from pathlib import Path
 
+# v4 PIT intervals (Top120) plus the current-DART-KSIC learned extension for the rest. NOT point-in-time
+# for the extension, so it is admitted only when the Owner names this exact tier in the manifest row.
+COMPOSITE_INDUSTRY_TIER = 'V4_PIT_PLUS_DART_KSIC_NOT_PIT'
+OWNER_ACCEPTANCE_REQUIRED = {COMPOSITE_INDUSTRY_TIER}
+
 REQUIRED = {
     'stockTotalReturn': {'basis': {'SHAREHOLDER_TOTAL_RETURN_EX_DATE_SEALED'},
                          'why': 'KRX bars carry no dividends; A1 matured windows with a record date: see readiness'},
@@ -21,7 +26,7 @@ REQUIRED = {
     'terminalConsideration': {'basis': {'CITED_DART_RECEIPT_CONSIDERATION'},
                               'why': 'held names delisted inside a window'},
     'tradability': {'basis': {'KRX_VOLUME_PRESENCE'}, 'why': 'entry/rebalance tradability'},
-    'pitIndustry': {'basis': {'PIT_INDUSTRY_INTERVALS_ALL_COHORT_ISSUERS'},
+    'pitIndustry': {'basis': {'PIT_INDUSTRY_INTERVALS_ALL_COHORT_ISSUERS', COMPOSITE_INDUSTRY_TIER},
                     'why': 'B1 final support requires the industry-matched check'},
     'matchingCharacteristics': {'basis': {'PIT_SIGNAL_DATE_CROSS_SECTION'},
                                 'why': 'log mcap, B/M, 12-1 momentum, 21d return, beta for 3-peer match'},
@@ -45,6 +50,9 @@ def admit(manifest_path: Path | None) -> dict:
             continue
         if row.get('basis') not in req['basis']:
             status[name] = 'SOURCE_BLOCKED:BASIS_NOT_ADMISSIBLE'
+            continue
+        if row.get('basis') in OWNER_ACCEPTANCE_REQUIRED and row.get('ownerAcceptedTier') != row.get('basis'):
+            status[name] = 'SOURCE_BLOCKED:NOT_PIT_TIER_NEEDS_OWNER_ACCEPTANCE'
             continue
         if row.get('rights') != RIGHTS:
             status[name] = 'SOURCE_BLOCKED:RIGHTS_UNVERIFIED'

@@ -28,6 +28,7 @@ from . import ex_date as X
 ROOT = C.REPO
 DATA = C.COHORT_DIR / 'data'
 INDUSTRY = ROOT / 'data/kr-industry-membership-foundation-v4/state/intervals.json.gz'
+EXTENSION = Path(__file__).parent / 'data' / 'industry-extension-v1.json'
 LEDGER_END = '2026-10-30'
 KNOWN_LEDGER_GAPS = ('2026-09-15', '2026-09-16', '2026-10-01')   # cohort README section 10
 
@@ -53,6 +54,21 @@ def industry_at(intervals: dict, stock_code: str, day: str) -> tuple[str | None,
     return None, 'NO_INTERVAL_COVERS_DATE'
 
 
+def extension_labels() -> dict[str, dict]:
+    return json.loads(EXTENSION.read_text(encoding='utf-8'))['labels']
+
+
+def label_with_extension(intervals: dict, ext: dict, e: dict) -> tuple[str | None, str]:
+    """PIT v4 label first; else the NOT-PIT DART-KSIC extension (kept as a separate tier)."""
+    label, status = industry_at(intervals, e['stock_code'], e['signalSession'])
+    if label:
+        return label, 'PIT_V4'
+    row = ext.get(e['corp_code'])
+    if row and row.get('group') and row['kind'] == 'EXTENDED':
+        return row['group'], 'NOT_PIT_EXTENSION'
+    return None, status
+
+
 def _hhi(counter: Counter) -> float:
     n = sum(counter.values())
     return sum((v / n) ** 2 for v in counter.values()) if n else 0.0
@@ -65,6 +81,7 @@ def build() -> dict:
     with gzip.open(DATA / 'dividend-decisions-v1.jsonl.gz', 'rt', encoding='utf-8') as fh:
         dividends = [json.loads(line) for line in fh]
     intervals = industry_lookup()
+    ext = extension_labels()
     sessions = [d.date().isoformat() for d in replay_calendar.sessions('2012-01-01', '2027-12-31', 'KR')]
 
     div_by_code = defaultdict(list)
@@ -84,11 +101,13 @@ def build() -> dict:
                                                  for g in KNOWN_LEDGER_GAPS)]
             terms = term_by[(hyp, horizon)]
             ind, ind_status, ind_vu = Counter(), Counter(), defaultdict(Counter)
+            pit_only = 0
             for e in rows:
-                label, status = industry_at(intervals, e['stock_code'], e['signalSession'])
+                label, status = label_with_extension(intervals, ext, e)
                 ind[label or 'UNLABELLED'] += 1
                 ind_vu['post' if e['entrySession'] >= C.VALUE_UP else 'pre'][label or 'UNLABELLED'] += 1
-                ind_status[status if label is None else 'LABELLED'] += 1
+                ind_status[status if label is None else 'LABELLED_' + status] += 1
+                pit_only += status == 'PIT_V4'
             issuers = Counter(e['corp_code'] for e in rows)
             years = Counter(e['entrySession'][:4] for e in rows)
             div = Counter()
@@ -142,6 +161,10 @@ def build() -> dict:
                                         'maxEventsOneIssuer': max(issuers.values()) if issuers else 0},
                 'pitIndustry': {'labelled': sum(labelled.values()), 'coverage': round(sum(labelled.values()) / len(rows), 4)
                                 if rows else None,
+                                'pitV4Only': {'labelled': pit_only,
+                                              'coverage': round(pit_only / len(rows), 4) if rows else None},
+                                'labelTiers': 'PIT_V4 = sealed v4 intervals; NOT_PIT_EXTENSION = current DART KSIC '
+                                              'learned map (leave-one-out agreement in industry-extension-v1.json)',
                                 'status': dict(ind_status), 'distribution': dict(ind.most_common()),
                                 'byValueUp': {k: dict(v.most_common()) for k, v in sorted(ind_vu.items())},
                                 'largestIndustry': top[0], 'largestIndustryShareOfLabelled':

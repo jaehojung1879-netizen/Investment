@@ -154,12 +154,13 @@ def _load_admitted(manifest: Path):
               'tradable': {k: set(v) for k, v in read('tradability')['tradable'].items()},
               'terminal': read('terminalConsideration')}
     from . import readiness as R
-    intervals = read('pitIndustry')
+    raw = read('pitIndustry')
+    intervals, ext = (raw['intervals'], raw.get('extension', {}).get('labels', {})) if 'intervals' in raw else (raw, {})
     events = {}
     for e in R.load_events():
         h = e.get('hypothesis')
         if h in ('A1', 'B1', 'A2'):
-            label, _ = R.industry_at(intervals, e['stock_code'], e['signalSession'])
+            label, _ = R.label_with_extension(intervals, ext, e)
             events.setdefault(h, []).append({**e, 'ticker': f"{e['stock_code']}.KS", 'industry': label})
     pinned = json.loads(PACKET.read_text(encoding='utf-8'))['pinnedLargestPitIndustryForRemovalCheck']
     return market, events, read('matchingCharacteristics'), pinned
