@@ -1,10 +1,9 @@
-"""The production fix may change only the build-and-deploy job of pages.yml.
+"""Historical research bytes and the original v1 record remain immutable.
 
-KR Alpha Atlas Phase C v4 seals the WHOLE pages.yml (sha256 d13e2a45...) because its research jobs (matrix-diagnostic and
-matrix-formal-owner-only), triggers, permissions and concurrency live in that file. This test reads the seal, never edits
-it, and proves mechanically that every byte before `build-and-deploy:` is still the sealed file's bytes, so the research
-workflow that the seal protects is unchanged. It does not make the seal pass: the v4 validator still refuses the new
-whole-file hash until the owner approves a versioned maintenance exception (docs/operations/pages-state-stabilization.md).
+Owner-approved v2 changes only ordinary numerical installation and the closed
+study's read-only diagnostic route. The original 5,992-byte prefix is verified
+from Git. Current bytes must equal the exact bounded transformation of #315;
+formal execution, triggers, permissions and scientific tests stay protected.
 """
 from __future__ import annotations
 
@@ -15,6 +14,7 @@ from pathlib import Path
 import pytest
 
 from pipeline import kr_alpha_atlas_reproducibility as V4
+from pipeline import pages_operational_maintenance as M
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW = ".github/workflows/pages.yml"
@@ -34,11 +34,15 @@ def test_the_seal_itself_is_untouched():
 
 
 def test_every_byte_before_build_and_deploy_is_the_sealed_research_workflow():
-    data = (ROOT / WORKFLOW).read_bytes()
+    data = M.historical(ROOT, WORKFLOW)
     assert data.count(BOUNDARY) == 1
     prefix = data[:data.index(BOUNDARY)]
     assert len(prefix) == SEALED_PREFIX_BYTES
     assert hashlib.sha256(prefix).hexdigest() == SEALED_PREFIX_SHA256
+    # v2 changes only the closed diagnostic route, never the formal job.
+    current = (ROOT / WORKFLOW).read_bytes()
+    assert current == M.pages_variant(M.historical(ROOT, WORKFLOW, M.PARENT))
+    assert V4.pages_maintenance_admitted(ROOT)
 
 
 def test_build_and_deploy_is_the_last_job_so_the_prefix_covers_every_research_job():
@@ -54,7 +58,7 @@ MAINTENANCE_RECORD_SHA256 = "436ce3361d1183fe11db0c931de0cf688dfdd021ac70c7173b8
 
 
 def test_versioned_record_matches_the_exact_scoped_maintenance():
-    raw = (ROOT / V4.MAINTENANCE_RECORD).read_bytes()
+    raw = (ROOT / M.PREVIOUS).read_bytes()
     assert hashlib.sha256(raw).hexdigest() == MAINTENANCE_RECORD_SHA256
     assert V4.pages_maintenance_admitted(ROOT)
 
@@ -64,8 +68,9 @@ def test_versioned_record_matches_the_exact_scoped_maintenance():
     V4.PAGES_WORKFLOW, V4.VERIFIER_MODULE, V4.ADDENDUM
 ])
 def test_maintenance_fails_closed_if_bytes_change(tmp_path, target):
-    paths = (V4.MAINTENANCE_RECORD, V4.MAINTENANCE_SIDECAR,
-             V4.PAGES_WORKFLOW, V4.VERIFIER_MODULE, V4.ADDENDUM, V4.SIDECAR)
+    (tmp_path / '.git').symlink_to(ROOT / '.git')
+    paths = {M.RECORD, M.SIDECAR, M.PREVIOUS, M.PREVIOUS.replace('.json', '.sha256'),
+             M.PAGES, M.TESTS, M.VERIFIER, M.WORKFLOW_TEST, V4.ADDENDUM, V4.SIDECAR} | M.AUXILIARY
     for rel in paths:
         dest = tmp_path / rel
         dest.parent.mkdir(parents=True, exist_ok=True)

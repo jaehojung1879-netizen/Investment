@@ -56,20 +56,29 @@ test('presentation and read-only audit do not alter scientific or publication co
   const safety=JSON.parse(fs.readFileSync(path.join(__dirname,'../docs/weekly-session-integrity-v1-pins.json')));
   assert.deepEqual(Object.keys(safety.files).sort(),['pipeline/weekly_decision.py','pipeline/weekly_publish.py']);
   for(const file of ['pipeline/current_champion_decisions.py','pipeline/kelly_portfolio.py','pipeline/weekly_decision.py','pipeline/weekly_publish.py','config.json','.github/workflows/tests.yml','.github/workflows/pages.yml','.github/workflows/ledger.yml']) {
-    if(file==='.github/workflows/pages.yml') {
+    if(file==='.github/workflows/pages.yml' || file==='.github/workflows/tests.yml') {
       const root=path.join(__dirname,'..');
-      const raw=fs.readFileSync(path.join(root,'docs/operations/pages-yml-maintenance-1.json'));
+      const raw=fs.readFileSync(path.join(root,'docs/operations/pages-yml-maintenance-2.json'));
       const rec=JSON.parse(raw),hash=b=>createHash('sha256').update(b).digest('hex');
-      assert.equal(hash(raw),fs.readFileSync(path.join(root,'docs/operations/pages-yml-maintenance-1.sha256'),'utf8').trim());
-      assert.equal(rec.schema,'PAGES_WORKFLOW_OPERATIONAL_MAINTENANCE_V1');
-      assert.equal(rec.scope,'PRODUCTION_STATE_PUBLICATION_ONLY');
+      assert.equal(hash(raw),fs.readFileSync(path.join(root,'docs/operations/pages-yml-maintenance-2.sha256'),'utf8').trim());
+      assert.equal(rec.schema,'PAGES_WORKFLOW_OPERATIONAL_MAINTENANCE_V2');
+      assert.equal(rec.scope,'REGISTERED_CI_INSTALL_AND_CLOSED_STUDY_PROVENANCE_ONLY');
       assert.equal(rec.formalExecutionAuthorized,false);
-      assert.equal(rec.originalPagesSha256,hash(execFileSync('git',['show',`${A.SOURCE_COMMIT}:${file}`])));
+      const original=execFileSync('git',['show',`${A.SOURCE_COMMIT}:${file}`]);
       const current=fs.readFileSync(path.join(root,file));
-      assert.equal(hash(current),rec.replacementPagesSha256);
-      const boundary=Buffer.from('  build-and-deploy:\n');
-      assert.equal(current.indexOf(boundary),rec.sealedResearchPrefixBytes);
-      assert.equal(hash(current.subarray(0,rec.sealedResearchPrefixBytes)),rec.sealedResearchPrefixSha256);
+      if(file==='.github/workflows/pages.yml') {
+        assert.equal(hash(original),rec.originalPagesSha256);
+        assert.equal(hash(current),rec.replacementPagesSha256);
+        const boundary=Buffer.from('  build-and-deploy:\n');
+        assert.equal(original.indexOf(boundary),rec.sealedResearchPrefixBytes);
+        assert.equal(hash(original.subarray(0,rec.sealedResearchPrefixBytes)),rec.sealedResearchPrefixSha256);
+        assert.equal(current.indexOf(boundary),rec.approvedResearchPrefixBytes);
+        assert.equal(hash(current.subarray(0,rec.approvedResearchPrefixBytes)),rec.approvedResearchPrefixSha256);
+      } else {
+        assert.equal(hash(original),rec.originalTestsSha256);
+        assert.equal(hash(current),rec.replacementTestsSha256);
+        assert.equal(current.toString().replace('pip install -c constraints/ci-registered-numerics-v1.txt ', 'pip install '),original.toString());
+      }
       continue;
     }
     if(safety.files[file]) {

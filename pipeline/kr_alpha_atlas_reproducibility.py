@@ -8,7 +8,6 @@ from __future__ import annotations
 from contextlib import ExitStack, contextmanager
 from copy import deepcopy
 from dataclasses import asdict
-import hashlib
 import json
 from pathlib import Path
 import time
@@ -40,9 +39,9 @@ _PARENT = {'ADDENDUM': R.ADDENDUM, 'SIDECAR': R.SIDECAR, 'AUTHORIZATION': R.AUTH
            'load': R.load, 'prepare': R.prepare}
 
 # The original published research dependency hashes stay unchanged. A separate
-# exact-hash maintenance record admits only the reviewed Pages production job.
-MAINTENANCE_RECORD = 'docs/operations/pages-yml-maintenance-1.json'
-MAINTENANCE_SIDECAR = 'docs/operations/pages-yml-maintenance-1.sha256'
+# exact-hash records admit the reviewed operational install/diagnostic variant.
+MAINTENANCE_RECORD = 'docs/operations/pages-yml-maintenance-2.json'
+MAINTENANCE_SIDECAR = 'docs/operations/pages-yml-maintenance-2.sha256'
 PAGES_WORKFLOW = '.github/workflows/pages.yml'
 VERIFIER_MODULE = 'pipeline/kr_alpha_atlas_reproducibility.py'
 _SEALED_PREFIX_SHA = '048356c7b43e499b32660ce40c0b1dde9db7e43b33a58fd36df8a4ea51e17b30'
@@ -51,51 +50,9 @@ _SEALED_JOB_BOUNDARY = b'  build-and-deploy:\n'
 
 
 def pages_maintenance_admitted(root=contract.ROOT):
-    """Validate one exact versioned operational replacement, never a wildcard."""
-    root = Path(root)
-
-    def require(ok):
-        if not ok:
-            raise ValueError('PAGES_MAINTENANCE_CONTRACT_CHANGED')
-
-    raw = (root/MAINTENANCE_RECORD).read_bytes()
-    require(hashlib.sha256(raw).hexdigest() == (root/MAINTENANCE_SIDECAR).read_text().strip())
-    record = json.loads(raw)
-    require(set(record) == {
-        'schema', 'version', 'state', 'scope', 'referenceMain',
-        'originalPagesSha256', 'replacementPagesSha256',
-        'originalVerifierSha256', 'replacementVerifierSha256',
-        'sealedResearchPrefixSha256', 'sealedResearchPrefixBytes',
-        'protectedContracts', 'formalExecutionAuthorized'
-    })
-    require(record['schema'] == 'PAGES_WORKFLOW_OPERATIONAL_MAINTENANCE_V1'
-            and type(record['version']) is int and record['version'] == 1
-            and record['state'] == 'IMPLEMENTATION_APPROVED_FINAL_MERGE_PENDING'
-            and record['scope'] == 'PRODUCTION_STATE_PUBLICATION_ONLY'
-            and record['referenceMain'] == '37f8cbf6b1c066f6b3c65235953648d17ebf2f69'
-            and record['formalExecutionAuthorized'] is False
-            and record['protectedContracts'] == [
-                'KR_ALPHA_ATLAS_PHASE_C_V4', 'RESEARCH_TERMINAL_PY',
-                'RESEARCH_TERMINAL_NODE', 'RP1_C1_US_WP4D', 'RP1_US_UNIVERSE'
-            ])
-    addendum = (root/ADDENDUM).read_bytes()
-    require(hashlib.sha256(addendum).hexdigest() == (root/SIDECAR).read_text().strip())
-    published = json.loads(addendum)
-    require(published['formalExecutionAuthorized'] is False
-            and published['freshExactHashOwnerApprovalRequired'] is True
-            and record['originalPagesSha256'] == published['additionalDependencyHashes'][PAGES_WORKFLOW]
-            and record['originalVerifierSha256'] == published['additionalDependencyHashes'][VERIFIER_MODULE])
-    require(record['sealedResearchPrefixSha256'] == _SEALED_PREFIX_SHA
-            and record['sealedResearchPrefixBytes'] == _SEALED_PREFIX_BYTES)
-    pages = (root/PAGES_WORKFLOW).read_bytes()
-    require(pages.count(_SEALED_JOB_BOUNDARY) == 1)
-    prefix = pages.split(_SEALED_JOB_BOUNDARY, 1)[0]
-    require(len(prefix) == _SEALED_PREFIX_BYTES
-            and hashlib.sha256(prefix).hexdigest() == _SEALED_PREFIX_SHA)
-    require(hashlib.sha256(pages).hexdigest() == record['replacementPagesSha256'])
-    require(contract.file_hash(root/VERIFIER_MODULE) == record['replacementVerifierSha256'])
-    require(record['replacementPagesSha256'] ==
-            '03f38c82d771b0663194985f6dada35453ab9554a0ef289a80c95bfa53f27e79')
+    """Admit only the approved exact operational variant; historical hashes stay."""
+    from pipeline.pages_operational_maintenance import validate
+    validate(root)
     return True
 
 
@@ -160,7 +117,7 @@ def load(root=contract.ROOT):
             raise ValueError('REPRODUCIBILITY_DEPENDENCY_CHANGED: '+path)
         if contract.file_hash(p) == sha:
             continue
-        if path not in (PAGES_WORKFLOW, VERIFIER_MODULE):
+        if path not in (PAGES_WORKFLOW, VERIFIER_MODULE, 'tests/test_kr_alpha_atlas_reproducibility.py'):
             raise ValueError('REPRODUCIBILITY_DEPENDENCY_CHANGED: '+path)
         if not candidate_checked:
             pages_maintenance_admitted(root)

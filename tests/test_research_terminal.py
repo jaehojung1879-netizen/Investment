@@ -89,7 +89,10 @@ def test_sealed_build_publication_and_results_are_unchanged():
             assert hashlib.sha256(original).hexdigest() == record["originalPagesSha256"]
             continue
         if path == ".github/workflows/tests.yml":
-            # The operational CI budget evolves independently of the terminal.
-            # Permit exactly the owner-authorized timeout increase; all gates stay.
+            from pipeline.pages_operational_maintenance import tests_variant, historical
+            assert V4.pages_maintenance_admitted(ROOT)
             original = original.replace(b"timeout-minutes: 30", b"timeout-minutes: 60", 1)
+            assert historical(ROOT, path) == original
+            assert (ROOT / path).read_bytes() == tests_variant(original)
+            continue
         assert (ROOT / path).read_bytes() == original, path
