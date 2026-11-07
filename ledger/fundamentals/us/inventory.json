@@ -1,18 +1,17 @@
 {
-  "filings": 64,
+  "filings": 32,
   "periodLengthByForm": {
     "10-K": {
       "year (316-400d)": 1
     },
     "10-Q": {
-      "three quarters (226-315d)": 54,
-      "quarter (46-135d)": 6,
-      "half (136-225d)": 3
+      "three quarters (226-315d)": 28,
+      "quarter (46-135d)": 3
     }
   },
   "filingsWithNoPeriodLength": 0,
   "filingsByFreq": {
-    "quarterly": 63,
+    "quarterly": 31,
     "annual": 1
   },
   "formsByFreq": {
@@ -20,105 +19,105 @@
       "10-K": 1
     },
     "quarterly": {
-      "10-Q": 63
+      "10-Q": 31
     }
   },
   "conceptsBySection": {
     "bs": 0,
-    "ic": 454,
-    "cf": 770
+    "ic": 267,
+    "cf": 436
   },
   "conceptsBySectionCollapsed": {
     "bs": 0,
-    "ic": 454,
-    "cf": 770
+    "ic": 267,
+    "cf": 436
   },
   "topConcepts": {
     "bs": [],
     "ic": [
+      "us-gaap_NetIncomeLoss",
+      "us-gaap_ComprehensiveIncomeNetOfTax",
+      "us-gaap_EarningsPerShareDiluted",
       "us-gaap_IncomeTaxExpenseBenefit",
       "us-gaap_EarningsPerShareBasic",
-      "us-gaap_EarningsPerShareDiluted",
-      "us-gaap_ComprehensiveIncomeNetOfTax",
-      "us-gaap_NetIncomeLoss",
-      "us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+      "us-gaap_OperatingIncomeLoss",
       "us-gaap_WeightedAverageNumberOfSharesOutstandingBasic",
       "us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
-      "us-gaap_OperatingIncomeLoss",
-      "us-gaap_ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest",
-      "us-gaap_ProfitLoss",
-      "us-gaap_OtherComprehensiveIncomeLossNetOfTax"
+      "us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+      "us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax",
+      "us-gaap_OtherNonoperatingIncomeExpense",
+      "us-gaap_ProfitLoss"
     ],
     "cf": [
-      "us-gaap_NetCashProvidedByUsedInFinancingActivities",
       "us-gaap_NetCashProvidedByUsedInOperatingActivities",
       "us-gaap_NetCashProvidedByUsedInInvestingActivities",
+      "us-gaap_NetCashProvidedByUsedInFinancingActivities",
       "us-gaap_CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
       "us-gaap_ShareBasedCompensation",
-      "us-gaap_PaymentsForRepurchaseOfCommonStock",
-      "us-gaap_ProceedsFromPaymentsForOtherFinancingActivities",
-      "us-gaap_PaymentsForProceedsFromOtherInvestingActivities",
-      "us-gaap_ProfitLoss",
-      "us-gaap_DeferredIncomeTaxExpenseBenefit",
       "us-gaap_PaymentsToAcquirePropertyPlantAndEquipment",
-      "us-gaap_EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents"
+      "us-gaap_PaymentsForRepurchaseOfCommonStock",
+      "us-gaap_PaymentsForProceedsFromOtherInvestingActivities",
+      "us-gaap_ProceedsFromPaymentsForOtherFinancingActivities",
+      "us-gaap_InterestPaidNet",
+      "us-gaap_ProfitLoss",
+      "us-gaap_DepreciationDepletionAndAmortization"
     ]
   },
   "topConceptsCollapsed": {
     "bs": [],
     "ic": [
+      "NetIncomeLoss",
+      "ComprehensiveIncomeNetOfTax",
+      "EarningsPerShareDiluted",
       "IncomeTaxExpenseBenefit",
       "EarningsPerShareBasic",
-      "EarningsPerShareDiluted",
-      "ComprehensiveIncomeNetOfTax",
-      "NetIncomeLoss",
-      "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+      "OperatingIncomeLoss",
       "WeightedAverageNumberOfSharesOutstandingBasic",
       "WeightedAverageNumberOfDilutedSharesOutstanding",
-      "OperatingIncomeLoss",
-      "ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest",
-      "ProfitLoss",
-      "OtherComprehensiveIncomeLossNetOfTax"
+      "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+      "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "OtherNonoperatingIncomeExpense",
+      "ProfitLoss"
     ],
     "cf": [
-      "NetCashProvidedByUsedInFinancingActivities",
       "NetCashProvidedByUsedInOperatingActivities",
       "NetCashProvidedByUsedInInvestingActivities",
+      "NetCashProvidedByUsedInFinancingActivities",
       "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
       "ShareBasedCompensation",
-      "PaymentsForRepurchaseOfCommonStock",
-      "ProceedsFromPaymentsForOtherFinancingActivities",
-      "PaymentsForProceedsFromOtherInvestingActivities",
-      "ProfitLoss",
-      "DeferredIncomeTaxExpenseBenefit",
       "PaymentsToAcquirePropertyPlantAndEquipment",
-      "EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents"
+      "PaymentsForRepurchaseOfCommonStock",
+      "PaymentsForProceedsFromOtherInvestingActivities",
+      "ProceedsFromPaymentsForOtherFinancingActivities",
+      "InterestPaidNet",
+      "ProfitLoss",
+      "DepreciationDepletionAndAmortization"
     ]
   },
   "units": {
-    "usd": 3747,
-    "u_usd": 265,
-    "usd/share": 141,
-    "shares": 99,
-    "unit12": 70,
+    "usd": 1400,
+    "u_usd": 204,
+    "unit_usd": 73,
+    "unit_standard_usd_oqgmf4caauws-qn5ufxgpa": 67,
+    "usd/share": 53,
+    "unit_standard_usd_ctlqb4gq8esfoj445xmqha": 49,
+    "unit_standard_usd__7rs_5ehxemojzhx59nzdg": 44,
+    "unit_standard_usd_cbq9ek-3-e6dve09zznxva": 40,
+    "shares": 38,
     "u_unitedstatesofamericadollarsshare": 8,
-    "u_shares": 8,
-    "u_usdollarshare": 3,
-    "unit17": 2,
-    "unit1": 2,
-    "usd_/_share": 2,
-    "share": 2
+    "u_shares": 3,
+    "unit_usd_/_share": 2
   },
   "unitClasses": {
-    "currency": 4012,
-    "perShare": 143,
-    "shares": 109,
-    "unclassified": 85
+    "currency": 1877,
+    "perShare": 63,
+    "shares": 49,
+    "unclassified": 8
   },
   "unitClassesResolved": {
-    "currency": 4082,
-    "perShare": 156,
-    "shares": 111
+    "currency": 1877,
+    "perShare": 71,
+    "shares": 49
   },
   "unclassifiedUnits": {}
 }
