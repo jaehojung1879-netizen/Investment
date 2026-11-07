@@ -293,8 +293,8 @@
     },
     {
       "path": "cohort/README-ko.md",
-      "bytes": 15656,
-      "sha256": "e8c460f25ee15e0fa13ab0c3337652ab9650baaae993954e4c636471857b2c6f"
+      "bytes": 18299,
+      "sha256": "6215040d5972acbdcf3b4d9665a6fb90b0d74411fa97607e98f7ccc8769de0ce"
     },
     {
       "path": "cohort/__init__.py",
@@ -362,6 +362,16 @@
       "sha256": "f39f1509a6d1f7eeac052f502c22158980da16cc60d820b23ca95199cd40f35a"
     },
     {
+      "path": "cohort/data/dividend-decisions-summary-v1.json",
+      "bytes": 738,
+      "sha256": "4d65e7d930e720771ab40475a6fb342fbbfb4c3ef9dbb637904f30887bb98f3d"
+    },
+    {
+      "path": "cohort/data/dividend-decisions-v1.jsonl.gz",
+      "bytes": 577421,
+      "sha256": "845173bcf42f57a63b53d357c146bfbcd1abc7a7138d1b9ffd9843d465cb78e2"
+    },
+    {
       "path": "cohort/data/document-route-crosscheck-v1.json",
       "bytes": 4683,
       "sha256": "297033f73fcdbb3d6f7e6ba3b2383adf2e097e2785443063a85bf398560f388d"
@@ -400,6 +410,16 @@
       "path": "cohort/data/prospective-dry-run-2026-11-02_to_06.jsonl",
       "bytes": 13692,
       "sha256": "0942306585f5a2c99162cc54614d2fa6cab0450033772f4d16e28c658962b25e"
+    },
+    {
+      "path": "cohort/data/terminal-economics-required-v1.json",
+      "bytes": 11127,
+      "sha256": "b4f03869076b3fe9e517c669a39e2d0c86faa38450be5e9c92c33623115e84e5"
+    },
+    {
+      "path": "cohort/dividends.py",
+      "bytes": 8163,
+      "sha256": "3e12313f3092ec30c9abb90ae0444548e6f8fdaa9206657c168085e6c66da01a"
     },
     {
       "path": "cohort/events.py",
@@ -445,6 +465,11 @@
       "path": "cohort/run_cohort.py",
       "bytes": 8291,
       "sha256": "59a03c904687385effc0c2c98a9ca89bdc15f1f335bca04d482b9d2f09bbf7f4"
+    },
+    {
+      "path": "cohort/terminal_required.py",
+      "bytes": 4437,
+      "sha256": "93a4d816ff086169dd13459f1a52bd7b82cb757156dffc96926eb9ac66874984"
     }
   ]
 }

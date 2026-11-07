@@ -377,3 +377,39 @@ def test_todays_signal_session_only_after_final_close_on_a_session():
     assert todays_signal_session(pd.Timestamp('2026-11-09T08:40:00+00:00')) is None
     assert todays_signal_session(pd.Timestamp('2026-11-08T10:40:00+00:00')) is None
     assert todays_signal_session(pd.Timestamp('2026-11-09T16:00:00+00:00')) is None
+
+
+def test_dividend_form_terms_and_stated_cum_day_rule():
+    from research.corporate_event_readiness_v1.cohort.dividends import parse_dividend
+    html = ('<table><tr><td>1. 배당구분</td><td>분기배당</td></tr><tr><td>2. 배당종류</td><td>현금배당</td></tr>'
+            '<tr><td>3. 1주당 배당금(원)</td><td>보통주식</td><td>4,601</td></tr><tr><td>종류주식</td><td>4,601</td></tr>'
+            '<tr><td>4. 시가배당률(%)</td><td>보통주식</td><td>1.7</td></tr><tr><td>종류주식</td><td>2.2</td></tr>'
+            '<tr><td>5. 배당금총액(원)</td><td>30,003</td></tr><tr><td>6. 배당기준일</td><td>2026-09-30</td></tr>'
+            '<tr><td>7. 배당금지급 예정일자</td><td>2026-11-27</td></tr>'
+            '<tr><td>10. 이사회결의일(결정일)</td><td>2026-10-29</td></tr>'
+            '<tr><td>11. 기타</td><td>시가배당율은 배당기준일 전전거래일(배당부 종가일)부터 과거 1주일</td></tr>'
+            '</table>').encode('cp949')
+    p = parse_dividend(html)
+    assert (p['dpsCommonKrw'], p['dpsOtherKrw'], p['yieldCommonPct']) == ('4601', '4601', '1.7')
+    assert (p['recordDate'], p['paymentDate'], p['decisionDate']) == ('2026-09-30', '2026-11-27', '2026-10-29')
+    assert p['cumDayRuleStated'] and p['parseStatus'] == 'PARSED'
+
+
+def test_ex_date_candidate_only_with_stated_rule_and_never_resolved():
+    from research.corporate_event_readiness_v1.cohort.dividends import ex_date_candidate
+    sessions = ['2012-12-26', '2012-12-27', '2012-12-28', '2013-01-02']
+    got = ex_date_candidate('2012-12-31', True, sessions)
+    assert (got['cumDividendLastSession'], got['exDateCandidate']) == ('2012-12-27', '2012-12-28')
+    assert got['exDateTier'] == 'FILING_STATED_RELATIVE_RULE_PLUS_PINNED_CALENDAR'
+    assert ex_date_candidate('2012-12-31', False, sessions) == {'exDateCandidate': None, 'exDateTier': 'NO_STATED_RULE'}
+    on_session = ex_date_candidate('2012-12-28', True, sessions)
+    assert (on_session['cumDividendLastSession'], on_session['exDateCandidate']) == ('2012-12-26', '2012-12-27')
+
+
+@pytest.mark.parametrize('text,accepted', [
+    ('배당기준일 전전거래일(배당부 종가일)부터', True), ('배당기준일 2매매거래일 전부터', True),
+    ('배당기준일 2매매거래일(배당부종가일)전부터', True), ('배당기준일 2거래일 전', True),
+    ('주주명부폐쇄일 2매매거래일 전부터', False), ('주주명부폐쇄기간 초일의 제2매매거래일전', False)])
+def test_cum_day_rule_accepts_only_record_date_anchored_phrasing(text, accepted):
+    from research.corporate_event_readiness_v1.cohort.dividends import CUM_RULE
+    assert bool(CUM_RULE.search(text)) is accepted
