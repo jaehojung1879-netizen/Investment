@@ -398,8 +398,10 @@ def test_dividend_form_terms_and_stated_cum_day_rule():
 def test_ex_date_candidate_only_with_stated_rule_and_never_resolved():
     from research.corporate_event_readiness_v1.cohort.dividends import ex_date_candidate
     sessions = ['2012-12-26', '2012-12-27', '2012-12-28', '2013-01-02']
+    # 12-31 is not a session: it settles on the last session before it (12-28), so the last
+    # cum-dividend purchase is 12-26 and the ex-date is 12-27 (the first build said 12-27/12-28).
     got = ex_date_candidate('2012-12-31', True, sessions)
-    assert (got['cumDividendLastSession'], got['exDateCandidate']) == ('2012-12-27', '2012-12-28')
+    assert (got['cumDividendLastSession'], got['exDateCandidate']) == ('2012-12-26', '2012-12-27')
     assert got['exDateTier'] == 'FILING_STATED_RELATIVE_RULE_PLUS_PINNED_CALENDAR'
     assert ex_date_candidate('2012-12-31', False, sessions) == {'exDateCandidate': None, 'exDateTier': 'NO_STATED_RULE'}
     on_session = ex_date_candidate('2012-12-28', True, sessions)

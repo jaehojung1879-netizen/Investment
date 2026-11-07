@@ -1,8 +1,8 @@
 """CLI: verify (default), build the approval packet, or execute the ONE authorized run.
 
-    python -m research.corporate_event_readiness_v1.cohort.outcome.run            # verify
-    python -m research.corporate_event_readiness_v1.cohort.outcome.run --packet   # rebuild packet
-    python -m research.corporate_event_readiness_v1.cohort.outcome.run --execute \
+    python -m research.corporate_event_outcome_v1.run            # verify
+    python -m research.corporate_event_outcome_v1.run --packet   # rebuild packet
+    python -m research.corporate_event_outcome_v1.run --execute \
         --authorization AUTH.json --inputs MANIFEST.json --out RESULT.json
 
 ``--execute`` refuses, before reading any market file, unless: the registered
@@ -37,7 +37,7 @@ class Refused(SystemExit):
 
 
 def harness_hashes() -> dict[str, str]:
-    root = HERE.parents[3]
+    root = C.REPO
     return {str((HERE / f).relative_to(root)): C.sha256_file(HERE / f) for f in HARNESS_FILES}
 
 
@@ -48,7 +48,7 @@ def build_packet() -> dict:
     packet = {
         'studyId': C.STUDY_ID, 'contract': 'HISTORICAL_EXECUTION_APPROVAL_PACKET_V1',
         'status': 'PREPARED_BLOCKED_BY_SOURCE' if admission['blocked'] else 'PREPARED_READY_FOR_OWNER',
-        'registeredSpec': {'path': str(C.REGISTERED_SPEC.relative_to(HERE.parents[3])),
+        'registeredSpec': {'path': str(C.REGISTERED_SPEC.relative_to(C.REPO)),
                            'sha256': inherited['registeredSpecSha256']},
         'prospectiveAuthorizationSha256': C.sha256_file(C.COHORT_DIR / 'AUTHORIZATION-prospective-recording.json'),
         'harnessCodeSha256': harness_hashes(),

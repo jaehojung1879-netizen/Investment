@@ -82,26 +82,66 @@ def parse_dividend(raw: bytes) -> dict:
     return out
 
 
+MARKET_RULE_TIER = 'MARKET_T_PLUS_2_LAST_SESSION_RULE_CANDIDATE_UNSEALED'
+
+
+def market_ex_date(record_date: str, sessions: list[str]) -> dict:
+    """T+2 market rule (candidate, unsealed): settle on the last session ON OR BEFORE the record date.
+
+    ``j`` is that session. The last cum-dividend purchase is two sessions before it and the ex-date
+    is the session just before it. For a record date that is a session this is "ex = record - 1
+    session"; for one that is not (every 12-31: KRX closes for the year-end holiday) the record date
+    settles on the last session before it. Counting sessions STRICTLY before such a date landed one
+    session late (2023: 12-28 vs reported 12-27; 2022: 12-29 vs 12-28), which the previous version of
+    this function did on 397 of 593 candidates.
+    """
+    j = bisect.bisect_right(sessions, record_date) - 1
+    if j < 2:
+        return {'exDateCandidate': None, 'exDateTier': 'CALENDAR_TOO_SHORT'}
+    return {'lastSessionOnOrBeforeRecord': sessions[j], 'cumDividendLastSession': sessions[j - 2],
+            'exDateCandidate': sessions[j - 1]}
+
+
 def ex_date_candidate(record_date: str | None, rule_stated: bool, sessions: list[str]) -> dict:
     if not record_date or not rule_stated:
         return {'exDateCandidate': None, 'exDateTier': 'NO_STATED_RULE' if record_date else 'NO_RECORD_DATE'}
-    i = bisect.bisect_left(sessions, record_date)   # sessions strictly before the record date: sessions[:i]
-    if i < 2:
-        return {'exDateCandidate': None, 'exDateTier': 'CALENDAR_TOO_SHORT'}
-    cum_last = sessions[i - 2]
-    return {'cumDividendLastSession': cum_last, 'exDateCandidate': sessions[i - 1],
+    got = market_ex_date(record_date, sessions)
+    if got['exDateCandidate'] is None:
+        return got
+    return {'cumDividendLastSession': got['cumDividendLastSession'], 'exDateCandidate': got['exDateCandidate'],
             'exDateTier': 'FILING_STATED_RELATIVE_RULE_PLUS_PINNED_CALENDAR'}
 
 
+def rederive(rows: list[dict], sessions: list[str]) -> list[dict]:
+    """Recompute every ex-date field from the stored record date and stated-rule flag (no network)."""
+    out = []
+    for r in rows:
+        base = {k: v for k, v in r.items() if k not in (
+            'cumDividendLastSession', 'exDateCandidate', 'exDateTier', 'exDateMarketRuleCandidate',
+            'exDateMarketRuleTier')}
+        if r.get('parseStatus') in ('PARSED', 'GAPS') or 'recordDate' in r:
+            base.update(ex_date_candidate(r.get('recordDate'), bool(r.get('cumDayRuleStated')), sessions))
+            if r.get('recordDate'):
+                m = market_ex_date(r['recordDate'], sessions)
+                base['exDateMarketRuleCandidate'] = m['exDateCandidate']
+                base['exDateMarketRuleTier'] = MARKET_RULE_TIER if m['exDateCandidate'] else m['exDateTier']
+        out.append(base)
+    return out
+
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    p.add_argument('--events', type=Path, required=True)
-    p.add_argument('--cache', type=Path, required=True)
+    p.add_argument('--rederive', type=Path, help='recompute ex-date fields of an existing dividend-decisions jsonl.gz (offline)')
+    p.add_argument('--events', type=Path)
+    p.add_argument('--cache', type=Path)
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--workers', type=int, default=4)
     p.add_argument('--offline', action='store_true')
     args = p.parse_args(argv)
     sessions = [d.strftime('%Y-%m-%d') for d in replay_calendar.sessions('2012-01-01', '2027-12-31', 'KR')]
+    if args.rederive:
+        return _rederive_main(args, sessions)
+    if not (args.events and args.cache):
+        p.error('--events and --cache are required unless --rederive is given')
     events = [json.loads(line) for line in gzip.open(args.events, 'rt', encoding='utf-8')]
     corps = sorted({e['corp_code'] for e in events if e.get('pitGrade')})
     lists = DartClient(args.cache, offline=True)
@@ -149,6 +189,31 @@ def main(argv: list[str] | None = None) -> int:
     (args.out / 'dividend-decisions-summary-v1.json').write_text(
         json.dumps(summary, ensure_ascii=False, indent=1, sort_keys=True) + '\n', encoding='utf-8')
     print(json.dumps(summary, ensure_ascii=False))
+    return 0
+
+
+def _rederive_main(args, sessions) -> int:
+    rows = [json.loads(line) for line in gzip.open(args.rederive, 'rt', encoding='utf-8')]
+    out = rederive(rows, sessions)
+    out.sort(key=lambda r: r['rcept_no'])
+    args.out.mkdir(parents=True, exist_ok=True)
+    payload = ''.join(json.dumps(r, ensure_ascii=False, sort_keys=True) + '\n' for r in out)
+    (args.out / 'dividend-decisions-v1.jsonl.gz').write_bytes(gzip.compress(payload.encode(), 9, mtime=0))
+    originals = [r for r in out if not r['amendment']]
+    prior = json.loads((args.rederive.parent / 'dividend-decisions-summary-v1.json').read_text(encoding='utf-8'))
+    prior.update({
+        'exDateTier': dict(Counter(r.get('exDateTier') for r in originals)),
+        'exDateMarketRuleCandidates': sum(1 for r in originals if r.get('exDateMarketRuleCandidate')),
+        'exDateRuleRevision': 'ex-date counted from the last session ON OR BEFORE the record date; '
+                              'the first build counted sessions strictly before it and was one session '
+                              'late on non-session record dates (397 of 593 stated-rule rows). '
+                              'Re-derived offline from the stored record dates; no other field changed.',
+        'exDateSemanticsResolved': 'BLOCKED: neither tier is DIRECT (AGENTS v2.28); the market rule is an '
+                                   'unsealed candidate; Owner decision',
+    })
+    (args.out / 'dividend-decisions-summary-v1.json').write_text(
+        json.dumps(prior, ensure_ascii=False, indent=1, sort_keys=True) + '\n', encoding='utf-8')
+    print(json.dumps(prior, ensure_ascii=False))
     return 0
 
 

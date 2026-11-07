@@ -109,16 +109,16 @@
   "valueUp": "2024-02-26"
  },
  "harnessCodeSha256": {
-  "research/corporate_event_readiness_v1/cohort/outcome/__init__.py": "c85846551c1e88cd2f74adaa9884643f23598d992e28c9983ec3ebc246a00d8c",
-  "research/corporate_event_readiness_v1/cohort/outcome/contract.py": "1950c67377ff1ad8ec02ffb742920e4d4415afa7ce9a736ae87c2cf554acc384",
-  "research/corporate_event_readiness_v1/cohort/outcome/decision.py": "b38e700bde9b4677c9d5bbff94e84af7a980b046a70d926b8b683716ad11bb32",
-  "research/corporate_event_readiness_v1/cohort/outcome/engine.py": "551932b0ffa60d0c2ad4defe888d5448125975bbaabb17a4ee08920d233d4c67",
-  "research/corporate_event_readiness_v1/cohort/outcome/ex_date.py": "ea2a60aa0784779ef726d2232661e59fddf6b570a92fdacd94ae16af835c200c",
-  "research/corporate_event_readiness_v1/cohort/outcome/inference.py": "1dc73cc75436115d062343515d817ab1046fafb137d804020b6ba8e68d75ca17",
-  "research/corporate_event_readiness_v1/cohort/outcome/inputs.py": "6274d2d0928acadcbd9e87ac4fe1e58c2eae417a779ad1b120886739714f81ba",
-  "research/corporate_event_readiness_v1/cohort/outcome/readiness.py": "1d38fcff5d60d6dab6ae1b51e632bad6e403ab74eabb53e2c06efdd3be20c875",
-  "research/corporate_event_readiness_v1/cohort/outcome/run.py": "dd84137e4874143f3bf4c058c8b02cd26b0d61bae9c391d3bb22bffab86f3b7a",
-  "research/corporate_event_readiness_v1/cohort/outcome/study.py": "fa152898ae410cb7bbf75f0a821e91a152377c8e1d429b586ad3d95fec02f520"
+  "research/corporate_event_outcome_v1/__init__.py": "c85846551c1e88cd2f74adaa9884643f23598d992e28c9983ec3ebc246a00d8c",
+  "research/corporate_event_outcome_v1/contract.py": "4c85e47a4310cc716649f96337a33b927dbb71b1a781e79573df38d8c8fd5c48",
+  "research/corporate_event_outcome_v1/decision.py": "b38e700bde9b4677c9d5bbff94e84af7a980b046a70d926b8b683716ad11bb32",
+  "research/corporate_event_outcome_v1/engine.py": "551932b0ffa60d0c2ad4defe888d5448125975bbaabb17a4ee08920d233d4c67",
+  "research/corporate_event_outcome_v1/ex_date.py": "d73fd730fec0918f2b5308182692bc7e95022ab0e614912f2497579d8b97bd57",
+  "research/corporate_event_outcome_v1/inference.py": "1dc73cc75436115d062343515d817ab1046fafb137d804020b6ba8e68d75ca17",
+  "research/corporate_event_outcome_v1/inputs.py": "6274d2d0928acadcbd9e87ac4fe1e58c2eae417a779ad1b120886739714f81ba",
+  "research/corporate_event_outcome_v1/readiness.py": "b000427e247ad63e26aedd8f54355dc424e3064392266c7a6513547909cdfb34",
+  "research/corporate_event_outcome_v1/run.py": "5e1adba181deaf30505bc74b7a7a371cd66c41cbb1827b8b8cd6977ab00219d8",
+  "research/corporate_event_outcome_v1/study.py": "fa152898ae410cb7bbf75f0a821e91a152377c8e1d429b586ad3d95fec02f520"
  },
  "inputAdmission": {
   "blocked": [
@@ -165,7 +165,7 @@
   "Owner authorization file pinning registeredSpec.sha256 and this packet SHA256 with the phrase"
  ],
  "prospectiveAuthorizationSha256": "c7191d7542a4e3b0d832e63625201585998632ef680d1976c0e2f0faab115d1e",
- "readinessSha256": "88b7a8dc840f77b06f4fcce23b72bb2ffaa32e6ec93c40d5d92d45b57dba0b2e",
+ "readinessSha256": "394edefda4b226753a2750166cd66355d6aa0deb688810d7d518f90da5e728e4",
  "registeredSpec": {
   "path": "research/corporate_event_readiness_v1/cohort/kr-corporate-information-events-v1-candidate.json",
   "sha256": "1692b5b3131a76ab6dd8a5198ef0fd262fffa4ec7cf0925444cf344aacbd61d4"

@@ -6,7 +6,7 @@ import json
 import numpy as np
 import pytest
 
-from research.corporate_event_readiness_v1.cohort.outcome import (
+from research.corporate_event_outcome_v1 import (
     contract as C, decision as DEC, engine as E, inference as INF, inputs as I, readiness as R,
     run as RUN, study as S, synthetic as SY)
 
@@ -250,18 +250,24 @@ def test_admission_refuses_wrong_basis_and_digest(tmp_path):
     assert st['tradability'] == 'ADMITTED'
 
 
-def test_market_ex_date_rule_reproduces_reported_year_end_dates_and_flags_repo_candidate():
+def test_market_ex_date_rule_reproduces_reported_year_end_dates_and_stored_rows_agree():
     from pipeline import replay_calendar
     from research.corporate_event_readiness_v1.cohort.dividends import ex_date_candidate
-    from research.corporate_event_readiness_v1.cohort.outcome import ex_date as X
-    sessions = [d.date().isoformat() for d in replay_calendar.sessions('2012-01-01', '2024-12-31', 'KR')]
+    from research.corporate_event_outcome_v1 import ex_date as X
+    sessions = [d.date().isoformat() for d in replay_calendar.sessions('2012-01-01', '2027-12-31', 'KR')]
     for e in X.EVIDENCE:
         got = X.market_ex_date(e['recordDate'], sessions)
         assert got['lastSessionOnOrBeforeRecord'] == e['lastSession']
         assert got['exDate'] == e['reportedExDate']
-        # the #320 candidate is one session late on a non-session record date
-        assert ex_date_candidate(e['recordDate'], True, sessions)['exDateCandidate'] != e['reportedExDate']
+        # the corrected #320 function agrees with the market rule and the reported date
+        assert ex_date_candidate(e['recordDate'], True, sessions)['exDateCandidate'] == e['reportedExDate']
     # on a session record date both rules agree: ex-date = one session before
     assert X.market_ex_date('2023-03-31', sessions)['exDate'] == '2023-03-30'
     assert ex_date_candidate('2023-03-31', True, sessions)['exDateCandidate'] == '2023-03-30'
     assert X.market_ex_date('2012-01-02', sessions)['tier'] == 'CALENDAR_TOO_SHORT'
+    import gzip
+    rows = [json.loads(line) for line in gzip.open(C.COHORT_DIR / 'data' / 'dividend-decisions-v1.jsonl.gz', 'rt')]
+    stated = [r for r in rows if r.get('exDateCandidate')]
+    assert len(stated) >= 593 and all(
+        X.market_ex_date(r['recordDate'], sessions)['exDate'] == r['exDateCandidate'] for r in stated)
+    assert all(r['exDateMarketRuleCandidate'] for r in rows if r.get('recordDate') and r.get('parseStatus'))

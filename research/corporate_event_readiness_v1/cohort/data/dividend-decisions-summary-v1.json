@@ -19,7 +19,9 @@
   "2026": 321,
   "NONE": 12
  },
- "exDateSemanticsResolved": "BLOCKED: FILING_STATED_RELATIVE_RULE tier is not DIRECT (AGENTS v2.28); Owner decision",
+ "exDateMarketRuleCandidates": 4803,
+ "exDateRuleRevision": "ex-date counted from the last session ON OR BEFORE the record date; the first build counted sessions strictly before it and was one session late on non-session record dates (397 of 593 stated-rule rows). Re-derived offline from the stored record dates; no other field changed.",
+ "exDateSemanticsResolved": "BLOCKED: neither tier is DIRECT (AGENTS v2.28); the market rule is an unsealed candidate; Owner decision",
  "exDateTier": {
   "FILING_STATED_RELATIVE_RULE_PLUS_PINNED_CALENDAR": 593,
   "NO_RECORD_DATE": 12,

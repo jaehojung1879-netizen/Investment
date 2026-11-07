@@ -104,8 +104,8 @@ Owner가 지금 내릴 수 있는 결정(실행 승인이 아닌 원천 결정):
 ## 7. 재현
 
 ```bash
-python -m research.corporate_event_readiness_v1.cohort.outcome.readiness   # outcome-free, 바이트 고정
-python -m research.corporate_event_readiness_v1.cohort.outcome.run          # 패킷·등록·코드 해시 검증
+python -m research.corporate_event_outcome_v1.readiness   # outcome-free, 바이트 고정
+python -m research.corporate_event_outcome_v1.run          # 패킷·등록·코드 해시 검증
 python -m pytest -q tests/test_corporate_event_historical_outcome.py
 ```
 

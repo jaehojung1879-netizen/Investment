@@ -15,7 +15,8 @@ from types import MappingProxyType
 
 from pipeline.benchmark_alpha import REALISTIC_COSTS
 
-COHORT_DIR = Path(__file__).resolve().parents[1]
+REPO = Path(__file__).resolve().parents[2]
+COHORT_DIR = REPO / 'research' / 'corporate_event_readiness_v1' / 'cohort'
 REGISTERED_SPEC = COHORT_DIR / 'kr-corporate-information-events-v1-candidate.json'
 STUDY_ID = 'kr-corporate-information-events-v1'
 

@@ -21,11 +21,11 @@ from pathlib import Path
 
 from pipeline import replay_calendar
 
-from .. import power
+from research.corporate_event_readiness_v1.cohort import power
 from . import contract as C
 from . import ex_date as X
 
-ROOT = Path(__file__).resolve().parents[4]
+ROOT = C.REPO
 DATA = C.COHORT_DIR / 'data'
 INDUSTRY = ROOT / 'data/kr-industry-membership-foundation-v4/state/intervals.json.gz'
 LEDGER_END = '2026-10-30'
@@ -111,9 +111,6 @@ def build() -> dict:
                     ex = X.market_ex_date(d['recordDate'], sessions)['exDate']
                     if ex and e['entrySession'] < ex <= end:
                         inside.append(d)
-                    old = d.get('exDateCandidate')
-                    if old and ex and ((e['entrySession'] < old <= end) != (e['entrySession'] < ex <= end)):
-                        mkt['WINDOW_MEMBERSHIP_FLIPS_UNDER_REPO_CANDIDATE'] += 1
                 if not inside:
                     mkt['NO_EX_DATE_IN_WINDOW'] += 1
                 elif all(d.get('dpsCommonKrw') for d in inside):
@@ -171,29 +168,16 @@ def build() -> dict:
 
 
 def ex_date_check(dividends: list[dict], sessions: list[str]) -> dict:
-    """Outcome-free: where does the #320 candidate disagree with the market T+2 rule?"""
-    in_cal = set(sessions)
-    agree, disagree, off_session = 0, 0, Counter()
-    for d in dividends:
-        old = d.get('exDateCandidate')
-        if d.get('amendment') or not old:
-            continue
-        new = X.market_ex_date(d['recordDate'], sessions)['exDate']
-        if new == old:
-            agree += 1
-        else:
-            disagree += 1
-            off_session[d['recordDate'] in in_cal] += 1
+    """Outcome-free: the corrected stored candidate must equal the market rule on every stated row."""
+    stated = [d for d in dividends if not d.get('amendment') and d.get('exDateCandidate')]
+    disagree = [d['rcept_no'] for d in stated
+                if X.market_ex_date(d['recordDate'], sessions)['exDate'] != d['exDateCandidate']]
     ev = [{**e, 'marketRule': X.market_ex_date(e['recordDate'], sessions)['exDate']} for e in X.EVIDENCE]
-    return {'tier': X.TIER, 'sealed': False,
-            'filingStatedCandidates': agree + disagree, 'agreeWithMarketRule': agree,
-            'disagreeOneSessionLate': disagree,
-            'disagreeRecordDateIsSession': off_session.get(True, 0),
-            'publicEvidence': ev,
+    return {'tier': X.TIER, 'sealed': False, 'filingStatedCandidates': len(stated),
+            'disagreeWithMarketRule': len(disagree), 'publicEvidence': ev,
             'evidenceReproduced': all(e['marketRule'] == e['reportedExDate'] for e in ev),
-            'finding': 'cohort.dividends.ex_date_candidate counts sessions strictly before a '
-                       'non-session record date and lands one session late (every 12-31 record date); '
-                       'do not use it as an ex-date. Fix belongs to #320 (its receipts pin the data file).'}
+            'priorBuildRecordedFact': 'the first build was one session late on 397 of 593 stated-rule '
+                                      'candidates (non-session record dates); corrected in this change'}
 
 
 SOURCE_STATUS = {

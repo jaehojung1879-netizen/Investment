@@ -13,12 +13,10 @@
  },
  "contract": "OUTCOME_FREE_EXECUTION_READINESS_V1",
  "exDateRuleCheck": {
-  "agreeWithMarketRule": 196,
-  "disagreeOneSessionLate": 397,
-  "disagreeRecordDateIsSession": 0,
+  "disagreeWithMarketRule": 0,
   "evidenceReproduced": true,
   "filingStatedCandidates": 593,
-  "finding": "cohort.dividends.ex_date_candidate counts sessions strictly before a non-session record date and lands one session late (every 12-31 record date); do not use it as an ex-date. Fix belongs to #320 (its receipts pin the data file).",
+  "priorBuildRecordedFact": "the first build was one session late on 397 of 593 stated-rule candidates (non-session record dates); corrected in this change",
   "publicEvidence": [
    {
     "lastSession": "2023-12-28",
@@ -1039,8 +1037,7 @@
    "dividendWindowIfMarketRuleSealed": {
     "ALL_IN_WINDOW_DIVIDENDS_DATED_AND_SIZED": 134,
     "IN_WINDOW_DIVIDEND_WITHOUT_COMMON_DPS": 1,
-    "NO_EX_DATE_IN_WINDOW": 306,
-    "WINDOW_MEMBERSHIP_FLIPS_UNDER_REPO_CANDIDATE": 3
+    "NO_EX_DATE_IN_WINDOW": 306
    },
    "entries2025_2026": 93,
    "independentEvents": 464,
@@ -1155,8 +1152,7 @@
    "dividendWindowIfMarketRuleSealed": {
     "ALL_IN_WINDOW_DIVIDENDS_DATED_AND_SIZED": 176,
     "IN_WINDOW_DIVIDEND_WITHOUT_COMMON_DPS": 2,
-    "NO_EX_DATE_IN_WINDOW": 134,
-    "WINDOW_MEMBERSHIP_FLIPS_UNDER_REPO_CANDIDATE": 1
+    "NO_EX_DATE_IN_WINDOW": 134
    },
    "entries2025_2026": 66,
    "independentEvents": 346,
