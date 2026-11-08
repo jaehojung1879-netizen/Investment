@@ -13,6 +13,14 @@
   "Regime checks (point estimates on event subsets): pre/post Value-up by entry date, and the book without entries in 2025-01-01..2026-12-31. Industry check: the book without the PIT research industry holding the most events (pinned outcome-free in the readiness file).",
   "Matched check: 3 nearest non-event peers on standardized log mcap, B/M, 12-1 momentum, 21-session return, beta, exact PIT industry first (B1 mandatory). Measured iff a two-way (issuer x entry-week) clustered SE exists."
  ],
+ "evidenceSha256": {
+  "research/corporate_event_outcome_v1/economic-readiness-v2/benchmark-extension-check.json": "3310abeac179d43214e43f16505c3662f66a8bc45c6827c95d63bc48cfc461f1",
+  "research/corporate_event_outcome_v1/economic-readiness-v2/benchmark/069500-official-distributions.json": "5b39892e69c7ff50b63945793d5b72debd829ea417dbea7f01e8f3c31188e65f",
+  "research/corporate_event_outcome_v1/economic-readiness-v2/benchmark/issuer-standard-20261107.xls": "f9310afe3b7b5e0243433de4a55f05a740fa705f46f49de0a3da1134c58a8936",
+  "research/corporate_event_outcome_v1/economic-readiness-v2/phase1-admission-before-after.json": "05904fc0ac8e83f5de529f0b811b971360f38a291ad19df3bd561aa23d8fa1c0",
+  "research/corporate_event_outcome_v1/economic-readiness-v2/phase1-admission-classified.json": "f85aff207031258d0065ceebe9edf54f1bb6365090cc40246dbe7cc5e8d855fa",
+  "research/corporate_event_outcome_v1/economic-readiness-v2/power-second-moment.json": "05891b09487226fedd9f18ca2139b1fef509c0b4e5d5182bc0b1aa72cab0076b"
+ },
  "frozenParameters": {
   "benchmark": "069500.KS",
   "beta": {
@@ -110,15 +118,16 @@
  },
  "harnessCodeSha256": {
   "research/corporate_event_outcome_v1/__init__.py": "c85846551c1e88cd2f74adaa9884643f23598d992e28c9983ec3ebc246a00d8c",
-  "research/corporate_event_outcome_v1/contract.py": "4c85e47a4310cc716649f96337a33b927dbb71b1a781e79573df38d8c8fd5c48",
-  "research/corporate_event_outcome_v1/decision.py": "b38e700bde9b4677c9d5bbff94e84af7a980b046a70d926b8b683716ad11bb32",
+  "research/corporate_event_outcome_v1/contract.py": "d79dddceaae798d79f36a42f764acdaab557dc701175b3a655ea0308b1ad80b5",
+  "research/corporate_event_outcome_v1/decision.py": "ffc4ccb069fc4c07f1786d70087a076bb3d651583ee454a9570c6d38676561af",
   "research/corporate_event_outcome_v1/engine.py": "551932b0ffa60d0c2ad4defe888d5448125975bbaabb17a4ee08920d233d4c67",
   "research/corporate_event_outcome_v1/ex_date.py": "d73fd730fec0918f2b5308182692bc7e95022ab0e614912f2497579d8b97bd57",
   "research/corporate_event_outcome_v1/inference.py": "1dc73cc75436115d062343515d817ab1046fafb137d804020b6ba8e68d75ca17",
   "research/corporate_event_outcome_v1/inputs.py": "4d2226f95630854dd19a9bb1a0f37ea1a8c5325048b827bc50381adcd1a3049e",
+  "research/corporate_event_outcome_v1/power_calibration.py": "7dfffb65277485ebfef8a968918a83f6992d3b5eadc143a9f14e3d157442eacd",
   "research/corporate_event_outcome_v1/readiness.py": "ef456b478fd2ce7ea32478de7215228cd65a5a4b4f5930e401e145a2f360b090",
-  "research/corporate_event_outcome_v1/run.py": "4fe6bcd80f29afa58db34867ef670c6d87925065137a4524018043e13a0ae730",
-  "research/corporate_event_outcome_v1/study.py": "fa152898ae410cb7bbf75f0a821e91a152377c8e1d429b586ad3d95fec02f520"
+  "research/corporate_event_outcome_v1/run.py": "9d430e9c5ff845a7d507b500f512cf0d53dd8904d865bb99e14f49155609912b",
+  "research/corporate_event_outcome_v1/study.py": "a65a8f3e796519a92862eaa86c704b6c6469050c040ace171e8f6ad281799eda"
  },
  "inputAdmission": {
   "blocked": [
@@ -170,7 +179,7 @@
   "path": "research/corporate_event_readiness_v1/cohort/kr-corporate-information-events-v1-candidate.json",
   "sha256": "1692b5b3131a76ab6dd8a5198ef0fd262fffa4ec7cf0925444cf344aacbd61d4"
  },
- "scope": "ONE historical execution of A1 and B1 (H126 primary, H252 descriptive), A2 descriptive contrast, over the frozen cohort-events-v1; no re-run, no threshold, window, cost or universe change; result class EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+ "scope": "ONE historical execution of B1 only (H126 primary, H252 descriptive) over the frozen cohort-events-v1. A1 is NOT RUN: its pre-outcome second-moment MDE (7.64pp) exceeds 2x MEE, the Owner contract NO_GO gate; its Holm slot keeps p = 1 like H3 (A2 comparator dropped with it). No re-run, no threshold, window, cost or universe change; result class EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
  "status": "PREPARED_BLOCKED_BY_SOURCE",
  "studyId": "kr-corporate-information-events-v1"
 }

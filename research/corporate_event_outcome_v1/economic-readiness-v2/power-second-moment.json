@@ -1,0 +1,69 @@
+{
+ "avgCrossIndustryResidualCorr": -0.0034,
+ "avgWithinIndustryResidualCorr": 0.0477,
+ "contract": "SECOND_MOMENT_ONLY_POWER_V1",
+ "critical": 3.2356,
+ "firstMomentsComputed": 0,
+ "ledgerEnd": "2026-10-30",
+ "mdeIsLowerBound": "days independent; factor-exposure mismatch and serial dependence ignored",
+ "medianDailyResidualSd": 0.0208,
+ "sets": {
+  "A1_H126": {
+   "calendarSessions": 3310,
+   "dailySdOfDPct": 1.078,
+   "emptySessions": 419,
+   "gate": "NO_GO",
+   "maturedIndependent": 265,
+   "maxActiveSlots": 57,
+   "mdePp": 7.64,
+   "meanActiveSlots": 10.1,
+   "meePp": 3.0,
+   "powerAtMee": 0.131,
+   "probRejectEconomicIfTrueZero": 0.131,
+   "seDeltaPp": 2.36
+  },
+  "A1_H252": {
+   "calendarSessions": 3295,
+   "dailySdOfDPct": 1.037,
+   "emptySessions": 235,
+   "gate": "NO_GO",
+   "maturedIndependent": 164,
+   "maxActiveSlots": 49,
+   "mdePp": 14.72,
+   "meanActiveSlots": 12.5,
+   "meePp": 4.0,
+   "powerAtMee": 0.065,
+   "probRejectEconomicIfTrueZero": 0.065,
+   "seDeltaPp": 4.55
+  },
+  "B1_H126": {
+   "calendarSessions": 3387,
+   "dailySdOfDPct": 0.618,
+   "emptySessions": 1,
+   "gate": "MARGINAL",
+   "maturedIndependent": 441,
+   "maxActiveSlots": 34,
+   "mdePp": 4.33,
+   "meanActiveSlots": 16.4,
+   "meePp": 3.0,
+   "powerAtMee": 0.44,
+   "probRejectEconomicIfTrueZero": 0.44,
+   "seDeltaPp": 1.34
+  },
+  "B1_H252": {
+   "calendarSessions": 3388,
+   "dailySdOfDPct": 0.542,
+   "emptySessions": 1,
+   "gate": "MARGINAL",
+   "maturedIndependent": 312,
+   "maxActiveSlots": 46,
+   "mdePp": 7.59,
+   "meanActiveSlots": 23.2,
+   "meePp": 4.0,
+   "powerAtMee": 0.245,
+   "probRejectEconomicIfTrueZero": 0.245,
+   "seDeltaPp": 2.35
+  }
+ },
+ "tickerYears": 7118
+}

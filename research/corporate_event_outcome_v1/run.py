@@ -28,7 +28,7 @@ PACKET = HERE / 'historical-execution-packet-v1.json'
 READINESS = HERE / 'execution-readiness-v1.json'
 RESULT = C.COHORT_DIR / 'data' / 'historical-outcome-result-v1.json'
 HARNESS_FILES = ('__init__.py', 'contract.py', 'engine.py', 'inference.py', 'decision.py', 'study.py',
-                 'inputs.py', 'readiness.py', 'ex_date.py', 'run.py')
+                 'inputs.py', 'readiness.py', 'ex_date.py', 'power_calibration.py', 'run.py')
 PHRASE = 'APPROVE KR_PHASE_D_NEW_AXIS_EXCEPTION kr-corporate-information-events-v1 {spec} PACKET {packet}'
 
 
@@ -67,9 +67,13 @@ def build_packet() -> dict:
         },
         'engineeringChoicesForOwnerReview': list(C.ENGINEERING_CHOICES),
         'inputAdmission': admission,
-        'scope': ('ONE historical execution of A1 and B1 (H126 primary, H252 descriptive), A2 descriptive '
-                  'contrast, over the frozen cohort-events-v1; no re-run, no threshold, window, cost or '
-                  'universe change; result class EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY'),
+        'scope': ('ONE historical execution of B1 only (H126 primary, H252 descriptive) over the frozen '
+                  'cohort-events-v1. A1 is NOT RUN: its pre-outcome second-moment MDE (7.64pp) exceeds 2x MEE, '
+                  'the Owner contract NO_GO gate; its Holm slot keeps p = 1 like H3 (A2 comparator dropped with '
+                  'it). No re-run, no threshold, window, cost or universe change; result class '
+                  'EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY'),
+        'evidenceSha256': {str(f.relative_to(C.REPO)): C.sha256_file(f)
+                           for f in sorted((HERE / 'economic-readiness-v2').rglob('*')) if f.is_file() and f.suffix != '.md'},
         'preconditions': [
             'every inputAdmission component ADMITTED by a separate source PR with a non-author audit',
             'non-author independent review of this harness at these exact hashes',

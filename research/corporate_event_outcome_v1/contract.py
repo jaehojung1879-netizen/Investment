@@ -24,6 +24,11 @@ HORIZONS = MappingProxyType({'H126': 126, 'H252': 252})
 PRIMARY_HORIZON = 'H126'
 MEE = MappingProxyType({'H126': 0.03, 'H252': 0.04})       # arithmetic delta_H = H*alpha, total capital
 PRIMARY_HYPOTHESES = ('A1', 'B1')
+# Pre-outcome power gate (Owner contract: MDE > 2*MEE -> historical exception NO_GO), measured from
+# second moments only (power_calibration.py, economic-readiness-v2/power-second-moment.json):
+# A1 H126 MDE 7.64pp > 6pp -> NOT RUN; its family slot keeps p = 1 like H3. This only REMOVES a test.
+EXECUTED_PRIMARY = ('B1',)
+NOT_RUN = MappingProxyType({'A1': 'NOT_RUN_POWER_NO_GO'})
 FAMILY_SLOTS = ('A1_CAPITAL_ALLOCATION_CANCELLATION', 'B1_LARGE_SUPPLY_CONTRACT',
                 'H3_INSIDER_NOT_RUN_P_EQUALS_1')
 FWER = 0.05

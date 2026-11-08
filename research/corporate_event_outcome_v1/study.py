@@ -15,7 +15,8 @@ from . import decision as DEC
 from . import engine as E
 from . import inference as INF
 
-HYPOTHESES = ('A1', 'B1', 'A2')
+# Books actually simulated: the executed primaries, plus A2 only as A1's descriptive comparator.
+HYPOTHESES = tuple(C.EXECUTED_PRIMARY) + (('A2',) if 'A1' in C.EXECUTED_PRIMARY else ())
 
 
 def _union_calendar(paths: dict[str, dict]) -> list[str]:
@@ -96,8 +97,8 @@ def evaluate(events: dict[str, list[dict]], market: dict, *, pinned_industry: di
     # ---- decisions: primary horizon only; H252, A2 and splits are descriptive
     hz = out['horizons'][C.PRIMARY_HORIZON]
     H = C.HORIZONS[C.PRIMARY_HORIZON]
-    pvals = {'H3': 1.0}
-    for h in C.PRIMARY_HYPOTHESES:
+    pvals = {'H3': 1.0, **{h: 1.0 for h in C.NOT_RUN}}
+    for h in C.EXECUTED_PRIMARY:
         b = hz['books'].get(f'{h}x1')
         if b and 'pBootstrapTwoSided' in b:
             pvals[h] = b['pBootstrapTwoSided']
@@ -105,9 +106,10 @@ def evaluate(events: dict[str, list[dict]], market: dict, *, pinned_industry: di
             pvals[h] = 1.0
     reject = INF.holm(pvals)
     out['holm'] = {'pValues': pvals, 'reject': reject}
-    decisions = {}
+    decisions = {h: {'verdict': v, 'reasons': ['MDE_GT_2X_MEE_BEFORE_ANY_OUTCOME'], 'pValueSlot': 1.0}
+                 for h, v in C.NOT_RUN.items()}
     slots126 = {}
-    for h in C.PRIMARY_HYPOTHESES:
+    for h in C.EXECUTED_PRIMARY:
         slots126[h], _ = E.build_slots(events.get(h, []), C.PRIMARY_HORIZON, market['sessions'],
                                        market['levels'], market['etf'], market['tradable'])
         b = hz['books'].get(f'{h}x1', {})

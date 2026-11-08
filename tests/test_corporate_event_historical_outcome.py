@@ -94,8 +94,8 @@ def test_missing_terminal_consideration_blocks_path_and_admitted_one_completes()
     later = [x for x in slots if x.ticker == s.ticker and x.entry > s.entry]
     p2 = E.simulate([x for x in slots if x not in later], **market)
     assert p2['complete']
-    res = S.evaluate({'A1': events}, {**market, 'terminal': {}}, pinned_industry={}, draws=99)
-    assert res['decisions']['A1']['verdict'] == 'SOURCE_BLOCKED'
+    res = S.evaluate({'B1': events}, {**market, 'terminal': {}}, pinned_industry={}, draws=99)
+    assert res['decisions']['B1']['verdict'] == 'SOURCE_BLOCKED'
 
 
 def test_untradable_name_keeps_weight_on_rebalance():
@@ -158,19 +158,20 @@ def test_dependence_check_flags_disagreement():
 
 
 def test_null_world_does_not_produce_support():
-    market, events = SY.world(alpha_daily=0.0, seed=3)
-    res = S.evaluate({'A1': events, 'B1': []}, market, pinned_industry={'A1': 'IND_A'}, draws=199)
-    assert res['decisions']['A1']['verdict'] != 'DEVELOPMENT_SUPPORT'
+    market, events = SY.world(alpha_daily=0.0, seed=3, hypothesis='B1')
+    res = S.evaluate({'B1': events}, market, pinned_industry={'B1': 'IND_A'}, draws=199)
+    assert res['decisions']['B1']['verdict'] != 'DEVELOPMENT_SUPPORT'
     assert res['promotionEligible'] is False and res['portfolioStep'] == 'NOT_REACHED'
 
 
 def test_strong_edge_passes_every_gate_except_unmeasured_matching():
-    market, events = SY.world(alpha_daily=0.003, seed=5, n_events=120, n_names=80, vol=0.01)
-    res = S.evaluate({'A1': events, 'B1': []}, market, pinned_industry={'A1': 'IND_B'}, draws=499)
-    d = res['decisions']['A1']
+    market, events = SY.world(alpha_daily=0.003, seed=5, n_events=120, n_names=80, vol=0.01, hypothesis='B1')
+    res = S.evaluate({'B1': events}, market, pinned_industry={'B1': 'IND_B'}, draws=499)
+    d = res['decisions']['B1']
     assert d['verdict'] == 'UNCERTAIN'
-    assert set(d['reasons']) <= {'matchedMeasured', 'matchedSignKept', 'regimeMeasured', 'regimeSignKept'}
-    assert res['horizons']['H126']['books']['A1x1']['ciSimultaneous'][0] > 0
+    assert set(d['reasons']) <= {'matchedMeasured', 'matchedSignKept', 'regimeMeasured', 'regimeSignKept',
+                                 'industryMatchedMeasured'}
+    assert res['horizons']['H126']['books']['B1x1']['ciSimultaneous'][0] > 0
 
 
 def test_matching_needs_three_peers_and_industry():
@@ -314,3 +315,26 @@ def test_book_equity_is_receipt_dated_strictly_before_signal_and_never_zero_fill
     doc = json.loads(R.EQUITY.with_name('equity-facts-summary-v1.json').read_text())
     assert doc['issuers'] == 601 and doc['issuerYears'] == 601 * 14
     assert doc['status']['013'] > 0 and doc['withEquity'] == 5274      # 013 is an absence, not zero
+
+
+def test_a1_is_not_run_after_the_pre_outcome_power_gate(monkeypatch):
+    market, events = SY.world(alpha_daily=0.003, seed=5)
+    seen = []
+    real = E.build_slots
+    monkeypatch.setattr(E, 'build_slots', lambda ev, *a, **k: (seen.append(len(ev)), real(ev, *a, **k))[1])
+    res = S.evaluate({'A1': events, 'B1': []}, market, pinned_industry={}, draws=99)
+    assert res['decisions']['A1']['verdict'] == 'NOT_RUN_POWER_NO_GO'
+    assert res['holm']['pValues']['A1'] == 1.0 and res['holm']['pValues']['H3'] == 1.0
+    assert all(n == 0 for n in seen)                     # no A1 (or A2) slot was ever built
+    assert 'A1x1' not in res['horizons']['H126']['books']
+
+
+def test_power_calibration_emits_no_first_moment():
+    from research.corporate_event_outcome_v1 import power_calibration as P
+    doc = json.loads((P.HERE / 'economic-readiness-v2' / 'power-second-moment.json').read_text())
+    assert doc['firstMomentsComputed'] == 0
+    flat = json.dumps(doc).lower()
+    for word in ('meanreturn', 'excess', '"alpha"', 'delta":', 'cagr', 'sharpe'):
+        assert word not in flat
+    assert doc['sets']['A1_H126']['gate'] == 'NO_GO' and doc['sets']['B1_H126']['gate'] == 'MARGINAL'
+    assert doc['sets']['A1_H126']['mdePp'] > 2 * doc['sets']['A1_H126']['meePp']
