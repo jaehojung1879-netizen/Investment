@@ -27,6 +27,16 @@ One research cycle should end in a material scientific update: a source-admissio
 
 **Every handoff, in this order:** prior promise → verified delta → economic meaning → remaining blockers and cost → KEEP / REJECT / INCONCLUSIVE / SOURCE_BLOCKED / STOP → **one smallest next action and named responsible agent**. Do not generate new plans until the prior plan is reconciled. Issue #292 is the active coordination record, not permission to restart terminated research.
 
+### Operational unblock gate: EXECUTE BEFORE INVENTING
+
+When a blocker involves an API key, missing market source, collector, workflow or CI:
+1. Verify **previous GitHub Actions success logs** and existing `secrets.*` injection. A missing key in a Claude/Codex sandbox does not imply that GitHub Actions lacks the key.
+2. Inspect the existing workflow's **actual selected ref/branch, trigger, input names, schedule, target code revision, source scope and write effects**. If the current `main` runner has a known bug and a safe branch fixes it, do not tell the Owner to execute the uncorrected `main` runner.
+3. If a safe existing workflow can resolve the named blocker, run it using an authorized tool, **or immediately ask the Owner for a minimal manual click**: exact workflow link, branch, field values, reason, and post-run success check. The Owner's ability to click is part of the execution plan, not a fallback after weeks of development. Never ask the Owner to reveal or repaste existing secrets.
+4. If current data were agreed sufficient, qualify and analyze the already available permissible subset before proposing additional collection. Separate missing market sessions from true holidays; don't call source gaps terminal missing returns.
+5. After execution, inspect exact committed rows, receipts and source HEAD; a green workflow is insufficient. Distinguish safe, permitted acquisition from a historical one-shot evaluation, sealed changes, production activation or any action requiring separate Owner exact-hash approval.
+6. New API routes, wrappers, CI/jobs, source frameworks and PRs are **last resort** and require evidence why the existing path or user-click could not work. State the smallest step, not another full plan.
+
 ## 3. Research contracts and scientific validity
 
 - A hypothesis, sample, population, event definition, horizon, benchmark, fees, thresholds, multiplicity, confidence procedure, missingness rules, and stop criteria must be frozen **before** reading outcomes. Separate hypothesis-generation history from truly forward evidence.
