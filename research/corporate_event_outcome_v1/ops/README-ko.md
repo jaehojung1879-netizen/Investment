@@ -45,7 +45,21 @@ git show FETCH_HEAD:ledger/research-strategies/kr-corporate-information-events-v
 - `signalDate` = 2026-11-09
 - `evidenceClass` = `PROSPECTIVE_PAPER`
 - `receiptSha256`이 예약 세션이 보고한 값과 같을 것
-- 유니버스를 복구하기 전에는 `identitySnapshotStale` = true일 것
+- `identitySnapshotStale` = **false**일 것. 유니버스는 2026-11-08 복구됐다(아래 1a절).
+
+### 1a. PIT 유니버스 복구 확인 (2026-11-08)
+
+Owner가 `Collect universe history`를 #324 브랜치(`d96c11b`)에서 실행했다(run `42529114342`, 성공). signal-history 커밋은 `0b3025d`다.
+
+| 항목 | 전 | 후 |
+|---|---|---|
+| 최신 스냅샷 | 2026-09-01 | **2026-11-02** |
+| 10-01 슬롯 | 행 0, done | 300행, 제공일 10-01 |
+| 11-01 슬롯(일요일) | 행 0, done | 300행, 제공일 11-02 |
+| 수집 영수증 | 없음 | `krx-universe-collection-receipts.json` 2건, 모두 `SNAPSHOT_ROWS_STORED` |
+| 사용 콜 | — | 3 (휴장 1건) |
+
+등록 코드 `8aee189`의 `identity.PitTop300`을 새 샤드에 그대로 돌렸다. 2026-11-09 영수증의 신원 스냅샷은 11-02(7일 전)이다. `MAX_IDENTITY_SNAPSHOT_AGE_DAYS = 62` 이내이므로 stale이 아니다. 예전에는 09-01(69일 전)이어서 stale이었다.
 
 참고로 첫 실행 시각(11-09 10:40 UTC)은 KST 19:40이다. 11-09 세션 최종 마감(18:00 KST) 이후이므로 영수증 대상 신호일은 11-09다.
 
