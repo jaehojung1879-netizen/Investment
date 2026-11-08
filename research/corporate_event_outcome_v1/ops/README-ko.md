@@ -63,36 +63,38 @@ Owner가 `Collect universe history`를 #324 브랜치(`d96c11b`)에서 실행했
 
 참고로 첫 실행 시각(11-09 10:40 UTC)은 KST 19:40이다. 11-09 세션 최종 마감(18:00 KST) 이후이므로 영수증 대상 신호일은 11-09다.
 
-## 2. KR 시장 위험모델 전향 기록 — 실행안 (승인 필요, 미가동)
+## 2. KR 시장 위험모델 전향 기록 — 구현 완료, 병합 대기 (Owner 승인 2026-11-08)
 
-**현재 상태:** 사양 `prospective.status = DESIGNED_NOT_RUNNING`. 영수증은 0건이다.
+**상태:** 코드와 등록 파일은 이 브랜치에 있다. **main에 병합되기 전에는 아무것도 기록하지 않는다.** 등록 파일이 main에 들어간 커밋 시각이 승인 시각이 되고, 그 다음 KR 세션부터가 전향 구간이다.
 
-**DRY 확인** (`kr-market-risk-model-dry-receipt-2026-11-06.json`, 원장에 쓰지 않음, 증거 아님)
-- 봉인된 `layer_states`와 `build_receipt`를 현재 데이터로 실행했다. 입력은 FinanceDataReader KS200, FRED DGS10·DGS3MO·VIXCLS 공개 CSV이고, 입력 SHA256을 영수증에 기록했다.
-- 2026-11-06 상태: FAST=2(추세·변동성 악화, vol63 0.5154), SLOW=1(10y-3m 재가팔라짐), TRANSITION=0(VIX 백분위 0.706 < 0.80).
-- C0~C3 배수: **모두 0.4**. FAST=2이면 규칙상 모든 후보가 최소 노출이다.
-- vol63 0.5154는 LIVE B-H1 영수증의 같은 날 값과 일치한다. 두 독립 경로가 같은 입력을 읽는다는 교차검증이다.
+| 구성 | 파일 |
+|---|---|
+| 기록기 | `scripts/record_kr_market_risk_model.py` |
+| 별도 등록(봉인 사양은 수정하지 않음) | `research_specs/kr-market-risk-model-v1-prospective-registration.json` |
+| 훅 | `scripts/update_ledger.py`, B-H1 훅 바로 아래. 자식 프로세스+타임아웃이라 종이 원장을 막거나 실패시키지 못한다 |
+| 테스트 | `tests/test_kr_market_risk_model_recorder.py` (합성 입력, 가짜 시계) |
+| 원장 | signal-history `ledger/research-strategies/kr-market-risk-model-v1/receipts.jsonl` |
 
-**이것은 투자 권고가 아니다.** 봉인된 역사 결과에서 C0/C1의 위험조정 우위는 입증되지 않았다. 하방위험당 수익은 전액 노출 0.58, C0 0.52, C1 0.53이다.
+**재사용한 것 (변경 없음):** `layer_states`, `build_receipt`/`append_receipt`(중복·역순·사양 변경·변조 거부), `rp1_b_h1_state.window_at`(쓰기 시계로 어느 세션의 창인지 결정), `prospective_receipt_core.check_timing`(종가 이후, 다음 개장 이전).
 
-**실행안 (정확 해시 승인 대상)**
-1. `scripts/record_kr_market_risk_model.py`를 하나 추가하고, `scripts/update_ledger.py`의 기존 훅 목록(B-H1 옆)에 연결한다. 실행 위치는 main `ledger.yml`이고, 기존 `FRED_API_KEY` Secret을 쓴다.
-2. 재사용하는 것:
-   - `kr_market_risk_model.layer_states`
-   - `kr_market_risk_model_receipts.build_receipt` / `append_receipt`(append 전용, 중복·역순·사양 변경 거부)
-   - B-H1의 KS200 경로와 `prospective_receipt_core` 타이밍 창
-3. 매주 결정 세션마다 영수증 1건을 쓴다. 내용은 FAST·SLOW·TRANSITION 상태와 입력 해시, C0~C3 배수다. SLOW·TRANSITION은 사양의 FRED 공개 지연(`FRED_LAG_DAYS`)을 적용한 당시 이용 가능 값이다.
-4. 대조군은 다음 두 가지다.
-   - ETF 100%(배수 1.0)
-   - **고정 0.7**(모델의 기존 REDUCED 수준이므로 새 파라미터가 아님)
-   
-   두 대조군은 결정적이므로 영수증에 명시만 한다.
-5. 성과 평가는 H21/63/126 성숙 후에만 하고, 별도로 등록한다.
-6. 거래, 운용 비중 변경, 승격은 없다. `productionEffect: NONE`.
+**등록이 고정하는 것:** 봉인 사양 SHA, 지정 결과 파일 SHA(`NO_CANDIDATE_NOMINATED_CONTROL_RETAINED`), 최종 구조 C0, 기록기와 의존 모듈 7개의 SHA. 하나라도 바뀌면 `REFUSED`로 멈춘다. 첫 신호 하한은 2026-11-13이다.
 
-필요한 승인:
-- (a) 위 기록기 코드의 정확 해시
-- (b) 사양 `prospective` 블록을 `REGISTERED_PROSPECTIVE_RECORDING`으로 바꾸는 새 등록. 기존 봉인 사양은 수정하지 않고 별도 등록 파일로 한다.
-- (c) main 병합과 첫 기록일
+**실행안에서 달라진 점 (두 가지):**
+1. FRED 입력은 `FRED_API_KEY` 시크릿이 아니라 **공개 fredgraph CSV**를 쓴다. 드라이 영수증과 vol63 교차검증이 같은 경로였고, 시크릿이 필요 없다. 등록 파일 `inputs.deviationFromPlan`에 적었다.
+2. 대조군(ETF 100%, 고정 0.7)은 영수증에 필드로 넣지 않고 등록 파일에 명시만 했다. 영수증 스키마를 바꾸지 않기 위해서다.
 
-현재 FAST=2로 모든 후보가 같으므로, 후보 간 차이를 보는 정보는 FAST가 1로 내려간 이후에야 생긴다.
+**실데이터 점검 (드라이, 원장에 쓰지 않음):** 기록기의 상태 계산을 2026-11-06 실제 입력에 돌리니 FAST=2, SLOW=1, TRANSITION=0, vol63 0.5154로 이전 드라이 영수증과 같다. 다만 `vixPercentile`은 0.6887로, 이전 드라이의 0.7064와 다르다. 기록기는 봉인 실행과 같은 격자(KS200 첫 세션 1990-01-03부터)를 쓰고, 이 값은 격자 시작일에 따라 0.67~0.70 사이에서 움직인다. 어느 쪽이든 0.80 미만이라 TRANSITION=0이고 C0~C3 배수(모두 0.4)는 같다. 이전 드라이가 어떤 격자를 썼는지는 확인하지 못했다.
+
+**한계:** 기록기가 실제 FDR·FRED에 붙어 영수증을 쓰는 것은 병합 후 첫 금요일 이후의 `ledger.yml` 실행에서야 확인된다. 영수증이 쓰여도 hash-chain 앵커 검증은 B-H1과 달리 넣지 않았다(append-only와 각 영수증 자체 해시 검증만 있다).
+
+**병합 후 확인 방법** (첫 신호일 2026-11-13, 일요일 11-15 00:10 UTC 실행분까지 포함)
+
+```bash
+git fetch origin signal-history
+```
+
+```bash
+git show FETCH_HEAD:ledger/research-strategies/kr-market-risk-model-v1/receipts.jsonl | python3 -c "import sys,json;[print(r['signalDate'],r['states'],r['candidateMultipliers'],r['evidenceClass'],r['receiptSha256']) for r in map(json.loads,sys.stdin)]"
+```
+
+`publication-status.json`이 같은 폴더에 있어 그 주에 무슨 일이 있었는지(RECORDED/SKIPPED/DEFERRED/REFUSED) 읽을 수 있다. 이 기록은 투자 권고가 아니고 운용 노출을 바꾸지 않는다(`productionEffect: NONE`).

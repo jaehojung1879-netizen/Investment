@@ -34,3 +34,14 @@ def pytest_collection_modifyitems(config, items):
         if item.nodeid in SUPERSEDED_BY_NATIVE_ECOS_CLOSURE:
             item.add_marker(pytest.mark.xfail(
                 strict=True, reason="native ECOS/config repair invalidates immutable v1 shared dependency closure; new tests enforce fail-closed refusal"))
+
+
+import pytest  # noqa: E402
+
+
+@pytest.fixture(autouse=True)
+def _market_risk_recorder_isolated(monkeypatch):
+    """The paper-ledger step also runs the kr-market-risk-model-v1 recorder in a child process that reads the clock, git and vendors. It has
+    its own tests (tests/test_kr_market_risk_model_recorder.py); everywhere else it must never run, exactly as Track B's hook is stubbed."""
+    from scripts import record_kr_market_risk_model as recorder
+    monkeypatch.setattr(recorder, "run_isolated", lambda *a, **k: 0)
