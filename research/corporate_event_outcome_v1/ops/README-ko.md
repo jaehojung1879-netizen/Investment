@@ -70,7 +70,7 @@ Owner가 `Collect universe history`를 #324 브랜치(`d96c11b`)에서 실행했
 | 구성 | 파일 |
 |---|---|
 | 기록기 | `scripts/record_kr_market_risk_model.py` |
-| 별도 등록(봉인 사양은 수정하지 않음) | `research_specs/kr-market-risk-model-v1-prospective-registration.json` |
+| 별도 등록(봉인 사양은 수정하지 않음) | `research/kr_market_risk_model_v1_prospective/registration.json` |
 | 훅 | `scripts/update_ledger.py`, B-H1 훅 바로 아래. 자식 프로세스+타임아웃이라 종이 원장을 막거나 실패시키지 못한다 |
 | 테스트 | `tests/test_kr_market_risk_model_recorder.py` (합성 입력, 가짜 시계) |
 | 원장 | signal-history `ledger/research-strategies/kr-market-risk-model-v1/receipts.jsonl` |

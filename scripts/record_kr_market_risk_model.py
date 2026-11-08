@@ -6,7 +6,7 @@ It reuses, unchanged: ``kr_market_risk_model.layer_states`` (the sealed state ma
 ``append_receipt`` (the sealed, append-only contract), ``rp1_b_h1_state.window_at`` (which weekly session a run may speak for, decided by the
 writer's clock alone) and ``prospective_receipt_core.check_timing`` (receipt after the signal close, before the next open).
 
-Authorization is ``research_specs/kr-market-risk-model-v1-prospective-registration.json``: its commit time on ``origin/main`` is the merge time
+Authorization is ``research/kr_market_risk_model_v1_prospective/registration.json``: its commit time on ``origin/main`` is the merge time
 that decides the first prospective session, and it pins the sealed spec, the nomination result and every code file this recorder runs.
 ``scripts/update_ledger.py`` calls ``run_isolated`` (a child process with a timeout), so a hung vendor read or a crash can never hold up or fail the
 paper ledger. Nothing here trades, sizes or promotes anything: ``productionEffect`` is NONE.
@@ -41,7 +41,7 @@ from pipeline import kr_selection_challenger as V1  # noqa: E402
 from pipeline import prospective_receipt_core as CORE  # noqa: E402
 from pipeline import rp1_b_h1_state as B  # noqa: E402
 
-REGISTRATION_PATH = "research_specs/kr-market-risk-model-v1-prospective-registration.json"
+REGISTRATION_PATH = "research/kr_market_risk_model_v1_prospective/registration.json"
 RECEIPTS, ATTEMPTS, STATUS = "receipts.jsonl", "attempts.jsonl", "publication-status.json"
 FRED_URL = "https://fred.stlouisfed.org/graph/fredgraph.csv?id="
 FRED_SERIES = ("DGS10", "DGS3MO", "VIXCLS")

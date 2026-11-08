@@ -25,6 +25,14 @@ def _track_b_isolated(monkeypatch):
     monkeypatch.setattr(track_b, "run_isolated", lambda *a, **k: 0)
 
 
+@pytest.fixture(autouse=True)
+def _market_risk_recorder_isolated(monkeypatch):
+    """The paper-ledger step also runs the kr-market-risk-model-v1 recorder in a child process (clock, git, vendors). It has its own tests;
+    here it must never run, exactly as Track B's hook is stubbed."""
+    from scripts import record_kr_market_risk_model as recorder
+    monkeypatch.setattr(recorder, "run_isolated", lambda *a, **k: 0)
+
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
