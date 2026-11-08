@@ -1,0 +1,50 @@
+{
+ "schemaVersion": 1,
+ "studyId": "kr-market-risk-model-v1",
+ "modelVersion": "kr-market-risk-model-v1",
+ "specSha256": "fa7484c690d125089d628654a86199a23ad95dcfeb9b1b0682bdc704588ae1b4",
+ "codeIdentity": {
+  "mode": "DRY_RUN_NOT_PROSPECTIVE_EVIDENCE"
+ },
+ "signalDate": "2026-11-06",
+ "executionDate": "2026-11-09",
+ "createdAtUtc": "2026-11-08T21:15:32.409382+00:00",
+ "inputIdentities": {
+  "DGS10": "b475ba7f607331389c112cdf0f3bfea981eaab609de34645b49dfd02e9797ea4",
+  "DGS3MO": "ada4828f1ee3a26ec537c960ae424c3e569e0383eb6b2c46db824046910814e0",
+  "KS200": "75e1e74070da948d2631ef59a002f64d53c0bbb5b2435d784d6baaa8f2ef297f",
+  "VIXCLS": "c62f03723d469d30df7481999c2c8ed69168f6924b74e25163681d9cd2dff2f9"
+ },
+ "layerInputs": {
+  "spreadAtSample": 0.7800000000000002,
+  "vixPercentile": 0.7063789868667918,
+  "vol63": 0.5153949301605174
+ },
+ "states": {
+  "slow": 1,
+  "transition": 0,
+  "fast": 2
+ },
+ "candidateMultipliers": {
+  "C0": 0.4,
+  "C1": 0.4,
+  "C2": 0.4,
+  "C3": 0.4
+ },
+ "heldForMissingState": {
+  "C0": false,
+  "C1": false,
+  "C2": false,
+  "C3": false
+ },
+ "finalArchitecture": "C0",
+ "finalEquityRiskMultiplier": 0.4,
+ "nominationSource": "NO_CANDIDATE_NOMINATED_CONTROL_RETAINED",
+ "evaluationHorizons": [
+  21,
+  63,
+  126
+ ],
+ "evidenceClass": "PROSPECTIVE_PAPER",
+ "receiptSha256": "5df9c03cd0e3cb50b1c3969b4c9869e34385d6580b5bae9da6973d6c96a97905"
+}

@@ -1,0 +1,5 @@
+{"day": "2026-11-09", "run": "OK", "cleanup": "REMOVED /tmp/tmpzas6u6k3/kr-event-live-work-2026-11-09/signal-history", "originReceipts": ["2026-11-09"], "worktrees": 0}
+{"day": "2026-11-10", "run": "OK", "cleanup": "REMOVED /tmp/tmpzas6u6k3/kr-event-live-work-2026-11-10/signal-history", "originReceipts": ["2026-11-09", "2026-11-10"], "worktrees": 0}
+{"day": "2026-11-10", "run": "OK", "cleanup": "REMOVED /tmp/tmpzas6u6k3/kr-event-live-work-2026-11-10/signal-history", "originReceipts": ["2026-11-09", "2026-11-10"], "worktrees": 0}
+{"day": "2026-11-11", "run": "RAISED RuntimeError: PUSH_FAILED_AFTER_5_ATTEMPTS", "cleanup": "KEEP /tmp/tmpzas6u6k3/kr-event-live-work-2026-11-11/signal-history unpushed-commit c14aa9d", "originReceipts": ["2026-11-09", "2026-11-10"], "worktrees": 1}
+{"day": "2026-11-12", "run": "OK", "cleanup": "KEEP /tmp/tmpzas6u6k3/kr-event-live-work-2026-11-11/signal-history uncommitted-change\nREMOVED /tmp/tmpzas6u6k3/kr-event-live-work-2026-11-12/signal-history", "originReceipts": ["2026-11-09", "2026-11-10", "2026-11-12"], "worktrees": 1}
