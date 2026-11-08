@@ -14,6 +14,8 @@
   "Matched check: 3 nearest non-event peers on standardized log mcap, B/M, 12-1 momentum, 21-session return, beta, exact PIT industry first (B1 mandatory). Measured iff a two-way (issuer x entry-week) clustered SE exists."
  ],
  "evidenceSha256": {
+  "research/corporate_event_outcome_v1/economic-readiness-v2/b1-admission-status-v2.json": "cfacd2dac885e90fe5cf077379b6807884bb662639a8ffd202f3e3e4a4df99ab",
+  "research/corporate_event_outcome_v1/economic-readiness-v2/b1-input-assembly.json": "22781490ac02de36f8f2932c23b804b9986fc3e47b91914b5089d43bedf75a9e",
   "research/corporate_event_outcome_v1/economic-readiness-v2/benchmark-extension-check.json": "3310abeac179d43214e43f16505c3662f66a8bc45c6827c95d63bc48cfc461f1",
   "research/corporate_event_outcome_v1/economic-readiness-v2/benchmark/069500-official-distributions.json": "5b39892e69c7ff50b63945793d5b72debd829ea417dbea7f01e8f3c31188e65f",
   "research/corporate_event_outcome_v1/economic-readiness-v2/benchmark/issuer-standard-20261107.xls": "f9310afe3b7b5e0243433de4a55f05a740fa705f46f49de0a3da1134c58a8936",
@@ -118,6 +120,7 @@
  },
  "harnessCodeSha256": {
   "research/corporate_event_outcome_v1/__init__.py": "c85846551c1e88cd2f74adaa9884643f23598d992e28c9983ec3ebc246a00d8c",
+  "research/corporate_event_outcome_v1/b1_inputs.py": "ce77ad4fb106dd7bbbc0683c257cf07f41b6696dd9c11bde7c78016486dce888",
   "research/corporate_event_outcome_v1/contract.py": "d79dddceaae798d79f36a42f764acdaab557dc701175b3a655ea0308b1ad80b5",
   "research/corporate_event_outcome_v1/decision.py": "ffc4ccb069fc4c07f1786d70087a076bb3d651583ee454a9570c6d38676561af",
   "research/corporate_event_outcome_v1/engine.py": "551932b0ffa60d0c2ad4defe888d5448125975bbaabb17a4ee08920d233d4c67",
@@ -126,7 +129,7 @@
   "research/corporate_event_outcome_v1/inputs.py": "4d2226f95630854dd19a9bb1a0f37ea1a8c5325048b827bc50381adcd1a3049e",
   "research/corporate_event_outcome_v1/power_calibration.py": "7dfffb65277485ebfef8a968918a83f6992d3b5eadc143a9f14e3d157442eacd",
   "research/corporate_event_outcome_v1/readiness.py": "ef456b478fd2ce7ea32478de7215228cd65a5a4b4f5930e401e145a2f360b090",
-  "research/corporate_event_outcome_v1/run.py": "9d430e9c5ff845a7d507b500f512cf0d53dd8904d865bb99e14f49155609912b",
+  "research/corporate_event_outcome_v1/run.py": "13e14c4ecdcb08211d52522b6c536245ef5c91c310c99126fff804425bd8810b",
   "research/corporate_event_outcome_v1/study.py": "a65a8f3e796519a92862eaa86c704b6c6469050c040ace171e8f6ad281799eda"
  },
  "inputAdmission": {

@@ -338,3 +338,45 @@ def test_power_calibration_emits_no_first_moment():
         assert word not in flat
     assert doc['sets']['A1_H126']['gate'] == 'NO_GO' and doc['sets']['B1_H126']['gate'] == 'MARGINAL'
     assert doc['sets']['A1_H126']['mdePp'] > 2 * doc['sets']['A1_H126']['meePp']
+
+
+def _row(day, close, vol=100, shares=1000):
+    return {'date': day, 'close': close, 'volume': vol, 'listedShares': shares, 'open': close,
+            'high': close, 'low': close}
+
+
+def test_b1_stock_levels_apply_dividend_on_ex_date_and_carry_suspension():
+    from research.corporate_event_outcome_v1 import b1_inputs as BI
+    rows = [_row('2020-01-02', 100.0), _row('2020-01-03', 95.0), _row('2020-01-06', 95.0, vol=0),
+            _row('2020-01-07', 99.0)]
+    levels, tradable, exc = BI.stock_levels(rows, {'2020-01-03': {'dps': 5.0}})
+    assert levels['2020-01-03'] == pytest.approx(1.0)        # (95 + 5) / 100: shareholder total return
+    assert levels['2020-01-06'] == pytest.approx(1.0)        # suspended row carries the close, no fill
+    assert '2020-01-06' not in tradable and not exc
+
+
+def test_b1_stock_levels_flag_a_move_beyond_the_dated_limit_never_adjust_it():
+    from research.corporate_event_outcome_v1 import b1_inputs as BI
+    rows = [_row('2014-01-02', 100.0), _row('2014-01-03', 80.0), _row('2016-01-04', 100.0), _row('2016-01-05', 71.0)]
+    levels, _, exc = BI.stock_levels(rows, {})
+    assert [x['date'] for x in exc] == ['2014-01-03']        # -20% breaks the 15% limit; -29% is inside 30%
+    assert levels['2014-01-03'] == pytest.approx(0.8)        # kept as traded: a lower bound, flagged
+
+
+def test_b1_cash_scenarios_are_three_sensitivities_from_the_dated_bok_file():
+    from research.corporate_event_outcome_v1 import b1_inputs as BI
+    cash, meta = BI.cash_returns(['2020-01-02', '2020-01-03', '2020-01-06'])
+    assert set(cash) == set(BI.CASH_SCENARIOS) and meta['basis'].endswith('NOT_INVESTABLE')
+    assert cash['ZERO']['2020-01-06'] == 0.0
+    assert cash['BOK_POLICY_RATE_PLUS_100BP']['2020-01-06'] > cash['BOK_POLICY_RATE']['2020-01-06'] > 0
+    # a three-day weekend gap accrues three calendar days
+    assert cash['BOK_POLICY_RATE']['2020-01-06'] == pytest.approx(3 * cash['BOK_POLICY_RATE']['2020-01-03'], rel=1e-3)
+
+
+def test_b1_admission_status_keeps_the_formal_contract_and_inputs_py_unchanged():
+    doc = json.loads((C.REPO / 'research/corporate_event_outcome_v1/economic-readiness-v2/b1-admission-status-v2.json').read_text())
+    assert set(doc['formalBlocked']) == {'stockTotalReturn', 'investableKrwCash', 'terminalConsideration',
+                                         'pitIndustry', 'matchingCharacteristics'}
+    assert I.REQUIRED['investableKrwCash']['basis'] == {'REALIZED_CASH_PAYOFF', 'INVESTABLE_NAV_RETURN'}
+    assert I.REQUIRED['terminalConsideration']['basis'] == {'CITED_DART_RECEIPT_CONSIDERATION'}
+    assert len(doc['eventsWithUnboundedUpside_B1_H126']) == 8
