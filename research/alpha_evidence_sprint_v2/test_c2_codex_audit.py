@@ -471,3 +471,18 @@ def test_F1_claim_leaves_no_phase_c_ref_and_uses_only_the_study_ref(repo, tmp_pa
     refs = git(tmp_path / "remote.git", "for-each-ref", "--format=%(refname)").stdout.split()
     assert [r for r in refs if r.startswith("refs/tags/")] == [RUN.LOCK_REF]
     assert RUN.LOCK_REF_PREFIX.startswith("refs/tags/c2-fixed-exposure-attribution-v1")
+
+
+def test_F1_claim_needs_no_configured_git_identity(repo, tmp_path, monkeypatch):
+    """The CI runner has no user.name/email; the first #325 push of this fix failed there."""
+    head, c = two_clones(repo, tmp_path, monkeypatch)
+    for key in ("GIT_AUTHOR_NAME", "GIT_AUTHOR_EMAIL", "GIT_COMMITTER_NAME", "GIT_COMMITTER_EMAIL"):
+        monkeypatch.delenv(key, raising=False)
+    monkeypatch.setenv("HOME", str(tmp_path / "nohome"))
+    monkeypatch.setenv("GIT_CONFIG_GLOBAL", "/dev/null")
+    monkeypatch.setenv("GIT_CONFIG_NOSYSTEM", "1")
+    for clone in c.values():
+        git(clone, "config", "--unset-all", "user.name", check=False)
+        git(clone, "config", "--unset-all", "user.email", check=False)
+    got = claim_from(c["a"], head, monkeypatch)
+    assert git(tmp_path / "remote.git", "rev-parse", RUN.LOCK_REF).stdout.strip() == got["claimTagObject"]

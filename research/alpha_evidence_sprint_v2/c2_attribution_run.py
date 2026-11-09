@@ -226,7 +226,10 @@ def _make_claim_tag(commit: str, body: str, nonce: str, cwd=None) -> str:
     Git treats as an up-to-date success for the second caller (Codex F1 re-audit). A tag object
     whose message carries a fresh nonce has a different OID for every attempt, so the second
     push is a real non-fast-forward update of an existing tag ref and is rejected."""
-    ident = _git("var", "GIT_COMMITTER_IDENT", cwd=cwd).strip()
+    # A fixed claim identity: the tag must not depend on any machine's git user.name/email (a CI
+    # runner or a fresh checkout has none). Uniqueness comes from the nonce, not the tagger.
+    import time
+    ident = f"c2-execution-claim <c2-execution-claim@invalid> {int(time.time())} +0000"
     text = (f"object {commit}\ntype commit\ntag {LOCK_REF.rsplit('/', 1)[-1]}\ntagger {ident}\n\n"
             f"c2-fixed-exposure-attribution-v1 execution claim\nnonce: {nonce}\n{body}")
     import subprocess

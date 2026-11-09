@@ -14,7 +14,7 @@ Codex가 이 패킷의 코드 커밋을 재감사하기 전에는 승인하지 �
 |---|---|
 | 연구 계약 `c2-fixed-exposure-attribution-v1.json` | `75e3c096fc608bba2c57559e07acbb98b6f3371c79e7f20b79ca97863b6898af` |
 | `c2_attribution.py` | `da1e4fa6d16d388310e29305c725aca43aa6b830f80941220a3741a8dd200caa` |
-| `c2_attribution_run.py` | `9e9c427d7d4b6aed6c18a7894a1d610db55da00697e61b5996907d68aefec33f` |
+| `c2_attribution_run.py` | `93125360cd4b9a64fb9bb9b8481429c6f8b1d95afc8e4a57d3c78292681b171f` |
 | replay-v16 매니페스트 | `f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2` (blob `76556e94…`, `signal-history` `4b6f8b71` = `0b3025d9`) |
 | BASIS 프로토콜 (신규 고정) | `a08f92b06aab6de4959b52d0a5bc0fd2c6b21851c53deca114167898e97a8fe6` |
 | 069500 교정 TR 파일 / 필드 | `58580c4370ec2c5afa124f849afbc4fa7b5c879012e75ebbd48ee7c7a0e659a9` / `correctedBenchmarkQuotes` |
@@ -73,7 +73,7 @@ Phase C 잠금은 읽지도, 재사용하지도 않는다.
  "phrase": "APPROVE KR_PHASE_D_EXCEPTION c2-fixed-exposure-attribution-v1 75e3c096fc608bba2c57559e07acbb98b6f3371c79e7f20b79ca97863b6898af",
  "codeSha256": {
   "c2_attribution.py": "da1e4fa6d16d388310e29305c725aca43aa6b830f80941220a3741a8dd200caa",
-  "c2_attribution_run.py": "9e9c427d7d4b6aed6c18a7894a1d610db55da00697e61b5996907d68aefec33f"
+  "c2_attribution_run.py": "93125360cd4b9a64fb9bb9b8481429c6f8b1d95afc8e4a57d3c78292681b171f"
  },
  "decisions": {"D1_R2": "ACCEPT", "D2_R4": "ACCEPT", "D3_lag5": "KEEP", "D4_cashBand": "ACCEPT"},
  "scope": "one-shot historical attribution of the fixed saved KR C2 path; KR Phase D exception for this study only; no promotion, no production change"
