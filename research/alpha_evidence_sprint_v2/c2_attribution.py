@@ -41,6 +41,7 @@ BLOCKS_H126 = 6                    # 6 x 21 sessions
 BLOCKS_H252 = 12                   # 12 x 21 sessions
 CASH_SCENARIOS = ("ZERO", "BOK_POLICY_PROXY", "BOK_POLICY_PLUS_100BP")
 COST_MULTIPLIERS = (1.0, 2.0, 3.0)
+MAX_UNATTRIBUTABLE_SHARE = 0.10    # decisionRule.SOURCE_OR_SAMPLE_INSUFFICIENT
 
 
 class AttributionError(ValueError):
@@ -137,12 +138,14 @@ def attribute_block(block: Block) -> BlockResult:
         for name, g in block.cash_growth.items():
             res.by_cash[name] = {"control": r_e, "selection": 0.0, "exposure": 0.0}
         return res
+    r_s = sum(w * (block.growth[t] - 1.0) for t, w in block.weights.items()) / s
+    c2 = e * r_e + s * r_s
     missing = sorted(t for t in block.weights if block.betas.get(t) is None)
     if missing:
-        return BlockResult(block.date, "BETA_UNAVAILABLE:" + ",".join(missing), s)
-    r_s = sum(w * (block.growth[t] - 1.0) for t, w in block.weights.items()) / s
+        # C2 and the ETF need no beta, so their own paths stay valued; only the
+        # beta-matched control (and hence SELECTION / EXPOSURE) is unavailable.
+        return BlockResult(block.date, "BETA_UNAVAILABLE:" + ",".join(missing), s, c2_gross=c2, etf=r_e)
     b = sum(w * block.betas[t] for t, w in block.weights.items()) / s
-    c2 = e * r_e + s * r_s
     equity = e + s * b
     clip = None
     if equity > 1.0:
@@ -262,17 +265,28 @@ def newey_west(series, lag):
     return {"n": n, "mean": m, "se": se, "ci95": [m - 1.959964 * se, m + 1.959964 * se]}
 
 
-def verdict(per_scenario: dict) -> str:
+def verdict(per_scenario: dict, unattributable_share: float = 0.0) -> str:
     """Registered decision on the annualized SELECTION term (cost 1x).
 
-    ``per_scenario[name] = {"mean":..., "ci95":[lo,hi], "mean2x":...}`` for each cash
-    scenario. Needs all three cash scenarios; agreement is required in both directions.
+    ``per_scenario[name] = {"mean":..., "ci95":[lo,hi], "mean2x":..., "netCi95":[lo,hi]}``
+    for each cash scenario. Needs all three cash scenarios; agreement is required in both
+    directions. ``unattributable_share`` > 10% of blocks is SOURCE_OR_SAMPLE_INSUFFICIENT
+    (decisionRule; the first draft never enforced it).
+
+    Pre-outcome tightening (spec ``preOutcomeRevisions`` R2): SURVIVES also needs the
+    NET-of-cost (1x) per-block C2-minus-control interval to clear zero. It can only remove a
+    SURVIVES verdict, never create one, and the NEGATIVE branch is unchanged.
     """
+    if unattributable_share > MAX_UNATTRIBUTABLE_SHARE + TOL:
+        return "SOURCE_OR_SAMPLE_INSUFFICIENT"
     if set(per_scenario) != set(CASH_SCENARIOS) or any(v.get("ci95") is None for v in per_scenario.values()):
         return "SOURCE_OR_SAMPLE_INSUFFICIENT"
     lows = [v["ci95"][0] for v in per_scenario.values()]
     highs = [v["ci95"][1] for v in per_scenario.values()]
-    if all(lo > 0 for lo in lows) and all((v.get("mean2x") or -1) > 0 for v in per_scenario.values()):
+    net_clears = all(v.get("netCi95") is not None and v["netCi95"][0] > 0 for v in per_scenario.values())
+    if (all(lo > 0 for lo in lows) and net_clears
+            and all((v.get("mean2x") if v.get("mean2x") is not None else -1) > 0
+                    for v in per_scenario.values())):
         return "SELECTION_SURVIVES_FIXED_EXPOSURE"
     if all(hi < 0 for hi in highs):
         return "SELECTION_NEGATIVE_AFTER_FIXED_EXPOSURE"
@@ -285,6 +299,8 @@ def summarize(results: list[BlockResult], c2_net: list, control_net: dict, etf_n
     attributed = [r for r in results if r.status in ("ATTRIBUTED", "ALL_ETF")]
     unavailable = [r for r in results if r.status.startswith("BETA_UNAVAILABLE")]
     out = {"blocks": len(results), "attributed": len(attributed), "betaUnavailable": len(unavailable),
+           "unattributable": len(results) - len(attributed),
+           "unattributableShare": (len(results) - len(attributed)) / len(results) if results else 1.0,
            "clipped": sum(1 for r in results if r.clip), "c2": {}, "etf": {}, "scenarios": {}}
     def complete(series):
         return bool(series) and all(x is not None and math.isfinite(x) for x in series)
@@ -301,9 +317,14 @@ def summarize(results: list[BlockResult], c2_net: list, control_net: dict, etf_n
         sel = [r.by_cash[name]["selection"] if name in r.by_cash else None for r in results]
         ctrl = control_net.get(name) or []
         paths_ok = complete(ctrl) and complete(c2_net)
+        net_gap = [c - k if c is not None and k is not None and math.isfinite(c) and math.isfinite(k)
+                   else None for c, k in zip(c2_net, ctrl)] if ctrl else []
         out["scenarios"][name] = {
             "selectionAnnualized": newey_west([x * blocks_per_year if x is not None else None for x in sel],
                                               BLOCKS_H126 - 1),
+            # descriptive + the R2 SURVIVES tightening: same estimator on NET C2 - NET control
+            "netSelectionAnnualized": newey_west([x * blocks_per_year if x is not None else None
+                                                  for x in net_gap], BLOCKS_H126 - 1),
             "controlCagr": cagr(chain(ctrl), years_total) if paths_ok else None,
             "c2VsControl": jensen_split(c2_net, ctrl, years_total) if paths_ok else None,
         }

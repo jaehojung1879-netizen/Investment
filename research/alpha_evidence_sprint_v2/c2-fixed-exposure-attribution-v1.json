@@ -15,11 +15,26 @@
  "pinnedInputs": {
   "replayInputManifestSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
   "files": [
-   {"path": "docs/results/regional-standalone-paths.json.gz", "sha256": "7a09751f99f5d892821cac6bbb4f28359049d58364cb40db1814fac4f93210cb"},
-   {"path": "docs/weekly-decision/weekly-passive-first-v1-replay-corrected-benchmark.json", "sha256": "901b3aee7d3bc06eed3fd2bd14b07a0d4ca4da23745b861a877203c48772b8d2"},
-   {"path": "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json", "sha256": "58580c4370ec2c5afa124f849afbc4fa7b5c879012e75ebbd48ee7c7a0e659a9"},
-   {"path": "data/bok-policy-rates.json", "sha256": "a7edf0e532c7b54da9d962ebf12ff2552c90c783439fef99d7c761c5b9ea69ff"},
-   {"path": "docs/results/kr-termination-inventory.json", "sha256": "b58ecb2c4500302c40784613318c8451beee663ece5ee76ada26873a4292f93f"}
+   {
+    "path": "docs/results/regional-standalone-paths.json.gz",
+    "sha256": "7a09751f99f5d892821cac6bbb4f28359049d58364cb40db1814fac4f93210cb"
+   },
+   {
+    "path": "docs/weekly-decision/weekly-passive-first-v1-replay-corrected-benchmark.json",
+    "sha256": "901b3aee7d3bc06eed3fd2bd14b07a0d4ca4da23745b861a877203c48772b8d2"
+   },
+   {
+    "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json",
+    "sha256": "58580c4370ec2c5afa124f849afbc4fa7b5c879012e75ebbd48ee7c7a0e659a9"
+   },
+   {
+    "path": "data/bok-policy-rates.json",
+    "sha256": "a7edf0e532c7b54da9d962ebf12ff2552c90c783439fef99d7c761c5b9ea69ff"
+   },
+   {
+    "path": "docs/results/kr-termination-inventory.json",
+    "sha256": "b58ecb2c4500302c40784613318c8451beee663ece5ee76ada26873a4292f93f"
+   }
   ]
  },
  "definitions": {
@@ -29,15 +44,21 @@
   "control": "(e + s*b) in ETF and s*(1-b) in KRW cash; if e + s*b > 1 it is capped at 1 (LEVERAGE_REQUIRED_CAPPED_AT_ETF_100) and if < 0 floored at 0; every clip is counted.",
   "selection": "C2 gross - control gross = s*(R_S - b*R_E - (1-b)*R_F) when unclipped.",
   "exposure": "control gross - ETF gross = s*(b-1)*(R_E-R_F) when unclipped.",
-  "costs": "weekly_decision.trade_cost_fraction('KR', date, side, is_benchmark): commission + half-spread per leg, dated sell tax for stocks, ETF sell tax for the 069500.KS leg; charged on the drifted prior book exactly as the replay's account() does; the control's cash leg is free; multipliers 1x/2x/3x on both C2 and control.",
+  "costs": "weekly_decision.trade_cost_fraction('KR', date, side, is_benchmark): commission + half-spread per leg, dated sell tax for stocks, ETF sell tax for the 069500.KS leg; charged on the drifted prior book exactly as the replay's account() does; the control's cash leg is free; multipliers 1x/2x/3x on both C2 and control.; the ETF-only alternative (the replay's P0) pays its single initial 100% buy at the same schedule and nothing after (R3)",
   "turnover": "one-way, split into names REPLACED and weights RETARGETED (AGENTS.md v2.11).",
   "horizons": "H126 = every run of 6 consecutive 21-session blocks, H252 = 12; overlapping windows are descriptive; non-overlapping counts are 25 (H126) and 12 (H252).",
   "compounding": "annual log-growth gap = arithmetic active + Jensen term (exact identity, as #309).",
-  "drawdown": "MDD on block-end net NAV (daily MDD is not reconstructed by this study)."
+  "drawdown": "MDD on block-end net NAV (daily MDD is not reconstructed by this study).",
+  "reconstruction": "before anything is attributed, the C2 net path (stocks + ETF residual, costs as the replay's account()) and the ETF-only path are compared with docs/weekly-decision/weekly-passive-first-v1-replay-corrected-benchmark.json regions.KR.paths.{C2,P0}.{cagrPct,cumulativeNetReturnPct}; CAGR uses replay_valuation.span_years (days / 365.2425)",
+  "descriptiveOutputs": "exact per-block reconciliation net C2 - net ETF = SELECTION + EXPOSURE + COST (COST = exact residual) annualised, plus Jensen; net-of-cost selection interval; turnover REPLACED/RETARGETED; clip count and dates; BETA_UNAVAILABLE dates; C2-minus-control over every H126/H252 run and the non-overlapping runs; a fixed recent slice from 2024-01-01. None of these is a verdict input except as stated in decisionRule."
  },
  "cashScenarios": {
   "INVESTABLE_KRW_CASH": "SOURCE_BLOCKED: no pinned investable KRW cash/deposit/MMF/CD91/KOFR full-span series exists in this repository; never substituted",
-  "registeredBand": ["ZERO", "BOK_POLICY_PROXY", "BOK_POLICY_PLUS_100BP"],
+  "registeredBand": [
+   "ZERO",
+   "BOK_POLICY_PROXY",
+   "BOK_POLICY_PLUS_100BP"
+  ],
   "rule": "a verdict needs all three to agree; the band brackets, it does not measure, an investable cash return"
  },
  "inference": {
@@ -47,10 +68,10 @@
   "independence": "one historical KR sample already exposed to outcomes; at most 25 non-overlapping H126 windows"
  },
  "decisionRule": {
-  "SELECTION_SURVIVES_FIXED_EXPOSURE": "all three cash scenarios: 95% lower bound > 0 at cost 1x AND net C2-minus-control arithmetic active > 0 at cost 2x",
+  "SELECTION_SURVIVES_FIXED_EXPOSURE": "all three cash scenarios: 95% lower bound > 0 at cost 1x AND the 95% lower bound of the NET-of-cost (1x) per-block C2-minus-control series > 0 (R2) AND net C2-minus-control arithmetic active > 0 at cost 2x",
   "SELECTION_NEGATIVE_AFTER_FIXED_EXPOSURE": "all three upper bounds < 0",
   "NO_SELECTION_EVIDENCE_CI_CONTAINS_ZERO": "otherwise",
-  "SOURCE_OR_SAMPLE_INSUFFICIENT": "any scenario without an interval, or > 10% of blocks unattributable",
+  "SOURCE_OR_SAMPLE_INSUFFICIENT": "any scenario without an interval, or > 10% of blocks unattributable, or the reconstructed C2 / ETF (P0) net path does not reproduce the replay's published KR C2 and P0 cagrPct and cumulativeNetReturnPct within 0.0005pp (R1)",
   "consequence": "No outcome promotes C2 or changes the production ETF default. SURVIVES keeps C2 as a research control worth a prospective test; NO_EVIDENCE/NEGATIVE records that C2's saved CAGR lead is not stock selection after matched exposure."
  },
  "knownLimitations": [
@@ -67,5 +88,28 @@
   "confirm costs match replay account() on a block where control == C2 (all-ETF)",
   "confirm verdict thresholds are read from this file's decisionRule and not changed after execution"
  ],
- "executionPlan": "Owner commits research/alpha_evidence_sprint_v2/AUTHORIZATION-c2.json with phrase 'APPROVE KR_PHASE_D_EXCEPTION c2-fixed-exposure-attribution-v1 <sha256 of this file>' and the sha256 of c2_attribution.py and c2_attribution_run.py; then `python research/alpha_evidence_sprint_v2/c2_attribution_run.py execute <replay-v16 ledger dir> --out <new file>` runs once. Any later code change voids the authorization."
+ "executionPlan": "Owner commits research/alpha_evidence_sprint_v2/AUTHORIZATION-c2.json (content in C2-APPROVAL-PACKET.md) with phrase 'APPROVE KR_PHASE_D_EXCEPTION c2-fixed-exposure-attribution-v1 <sha256 of this file>' and the sha256 of c2_attribution.py and c2_attribution_run.py; then `python research/alpha_evidence_sprint_v2/c2_attribution_run.py execute <replay-v16 ledger dir>` runs once and writes only research/alpha_evidence_sprint_v2/c2-fixed-exposure-attribution-v1-result.json. Any later code or spec change voids the authorization. Outcome-free check available at any time: `... preflight <ledger dir> --out <file>`.",
+ "preOutcomeRevisions": [
+  {
+   "id": "R1",
+   "date": "2026-11-09",
+   "outcomesReadBefore": 0,
+   "change": "reconstruction gate: an attribution of a path that is not the saved C2 path is not an attribution of C2; a mismatch can only produce SOURCE_OR_SAMPLE_INSUFFICIENT",
+   "direction": "TIGHTENING_ONLY"
+  },
+  {
+   "id": "R2",
+   "date": "2026-11-09",
+   "outcomesReadBefore": 0,
+   "change": "SURVIVES additionally needs the net-of-cost 1x C2-minus-control Newey-West 95% lower bound > 0 (the registered SELECTION series is gross of cost by construction); NEGATIVE branch unchanged",
+   "direction": "TIGHTENING_ONLY_CAN_REMOVE_SURVIVES_NEVER_CREATE_IT"
+  },
+  {
+   "id": "R3",
+   "date": "2026-11-09",
+   "outcomesReadBefore": 0,
+   "change": "engine defects fixed before any execution (author audit, AUTHOR_VALIDATION_ONLY): (a) execute called replay_valuation.normalize_daily_series, which does not exist (would have crashed after approval) -> pipeline.market_dates.normalize_daily_series; (b) the >10% unattributable rule was never enforced in verdict(); (c) a BETA_UNAVAILABLE block also erased the C2 and ETF paths, which need no beta -> only the control path breaks, never restarted; (d) the ETF-only path paid no initial buy while P0 and C2 do; (e) turnover REPLACED/RETARGETED was defined but never reported; (f) authorization only checked that a file existed -> must be committed, unmodified, and every commit touching it authored by the owner's identity, not an agent's; (g) nothing enforced one execution -> refuses when the canonical result exists on disk or in git history; (h) years were days/365.25 vs the replay's 365.2425",
+   "direction": "CORRECTNESS_NO_THRESHOLD_OR_DEFINITION_CHANGE"
+  }
+ ]
 }
