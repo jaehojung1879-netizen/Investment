@@ -366,3 +366,108 @@ def test_F6_codex_24_block_example_no_longer_survives():
         == "NO_SELECTION_EVIDENCE_CI_CONTAINS_ZERO"
     assert A.verdict({k: {**good, "mean2x": -1e-6} for k in A.CASH_SCENARIOS}, require_unclipped=True) \
         == "NO_SELECTION_EVIDENCE_CI_CONTAINS_ZERO"
+
+
+# --------------------------------------------------------------------------- #
+# F1 re-audit: same-OID remote claim race (Codex comment 6732427458)
+# --------------------------------------------------------------------------- #
+def two_clones(repo, tmp_path, monkeypatch):
+    """A bare remote and clones a/b at the SAME commit, each with its own local claim file."""
+    head = git(repo, "rev-parse", "HEAD").stdout.strip()
+    clones = {}
+    for name in ("a", "b"):
+        c = tmp_path / name
+        git(tmp_path, "clone", "-q", str(tmp_path / "remote.git"), str(c))
+        git(c, "fetch", "-q", str(repo), head)
+        clones[name] = c
+    return head, clones
+
+
+def claim_from(clone, head, monkeypatch):
+    monkeypatch.setattr(RUN, "CLAIM", clone / "claim.json")
+    monkeypatch.setattr(RUN, "RESULT", clone / "result.json")
+    monkeypatch.setattr(RUN, "ROOT", clone)
+    return RUN.claim_execution(head, {"specSha256": "x"}, cwd=clone)
+
+
+def test_F1_same_head_two_clones_sequential_second_claim_is_rejected(repo, tmp_path, monkeypatch):
+    head, c = two_clones(repo, tmp_path, monkeypatch)
+    # Codex interleaving: both pre-check before either claims
+    for clone in c.values():
+        monkeypatch.setattr(RUN, "ROOT", clone)
+        monkeypatch.setattr(RUN, "CLAIM", clone / "claim.json")
+        monkeypatch.setattr(RUN, "RESULT", clone / "result.json")
+        assert RUN.one_shot_ok(cwd=clone) == (True, "NOT_YET_EXECUTED")
+    first = claim_from(c["a"], head, monkeypatch)
+    with pytest.raises(SystemExit, match="REMOTE_EXECUTION_LOCK_NOT_ACQUIRED"):
+        claim_from(c["b"], head, monkeypatch)            # same OID commit: must now fail
+    remote = tmp_path / "remote.git"
+    assert git(remote, "rev-parse", RUN.LOCK_REF).stdout.strip() == first["claimTagObject"]
+    assert git(remote, "cat-file", "-t", RUN.LOCK_REF).stdout.strip() == "tag"
+
+
+def test_F1_old_same_oid_push_succeeded_twice_which_is_the_codex_counterexample(repo, tmp_path):
+    head = git(repo, "rev-parse", "HEAD").stdout.strip()
+    ref = RUN.LOCK_REF
+    clones = []
+    for n in ("a", "b"):
+        c = tmp_path / f"old{n}"
+        git(tmp_path, "clone", "-q", str(tmp_path / "remote.git"), str(c))
+        git(c, "fetch", "-q", str(repo), head)
+        clones.append(c)
+    # the c598f14e / 4b694611 primitive: push the commit itself
+    assert git(clones[0], "push", "origin", f"{head}:{ref}", check=False).returncode == 0
+    assert git(clones[1], "push", "origin", f"{head}:{ref}", check=False).returncode == 0   # also succeeds
+
+
+def test_F1_different_commit_second_claim_is_rejected(repo, tmp_path, monkeypatch):
+    head, c = two_clones(repo, tmp_path, monkeypatch)
+    claim_from(c["a"], head, monkeypatch)
+    git(c["b"], "commit", "-q", "--allow-empty", "-m", "other")
+    other = git(c["b"], "rev-parse", "HEAD").stdout.strip()
+    with pytest.raises(SystemExit, match="REMOTE_EXECUTION_LOCK_NOT_ACQUIRED"):
+        claim_from(c["b"], other, monkeypatch)
+
+
+def test_F1_each_attempt_makes_a_distinct_tag_object_for_the_same_commit(repo):
+    head = git(repo, "rev-parse", "HEAD").stdout.strip()
+    objects = {RUN._make_claim_tag(head, "body", f"n{i}", cwd=repo) for i in range(5)}
+    assert len(objects) == 5
+    assert RUN._make_claim_tag(head, "body", "n0", cwd=repo) in objects     # same nonce+second: same object
+    assert all(git(repo, "cat-file", "-t", o).stdout.strip() == "tag" for o in objects)
+
+
+def test_F1_simultaneous_same_head_claims_exactly_one_wins(repo, tmp_path, monkeypatch):
+    head, c = two_clones(repo, tmp_path, monkeypatch)
+    results, barrier = [], threading.Barrier(2)
+
+    def attempt(name):
+        clone = c[name]
+        tag = RUN._make_claim_tag(head, f"body-{name}", f"nonce-{name}", cwd=clone)
+        barrier.wait()
+        results.append(git(clone, "push", "origin", f"{tag}:{RUN.LOCK_REF}", check=False).returncode)
+    threads = [threading.Thread(target=attempt, args=(n,)) for n in c]
+    [t.start() for t in threads]
+    [t.join() for t in threads]
+    assert sorted(results)[0] == 0 and sorted(results)[1] != 0
+
+
+def test_F1_readback_refuses_a_remote_that_accepted_another_claims_ref(repo, tmp_path, monkeypatch):
+    head, c = two_clones(repo, tmp_path, monkeypatch)
+    real = RUN._git
+
+    def lying_remote(*args, cwd=None):
+        if args and args[0] == "ls-remote" and RUN.LOCK_REF in args:
+            return "0" * 40 + f"\t{RUN.LOCK_REF}\n"          # someone else's object holds the ref
+        return real(*args, cwd=cwd)
+    monkeypatch.setattr(RUN, "_git", lying_remote)
+    with pytest.raises(SystemExit, match="REMOTE_EXECUTION_LOCK_HELD_BY_ANOTHER_CLAIM"):
+        claim_from(c["a"], head, monkeypatch)
+
+
+def test_F1_claim_leaves_no_phase_c_ref_and_uses_only_the_study_ref(repo, tmp_path, monkeypatch):
+    head, c = two_clones(repo, tmp_path, monkeypatch)
+    claim_from(c["a"], head, monkeypatch)
+    refs = git(tmp_path / "remote.git", "for-each-ref", "--format=%(refname)").stdout.split()
+    assert [r for r in refs if r.startswith("refs/tags/")] == [RUN.LOCK_REF]
+    assert RUN.LOCK_REF_PREFIX.startswith("refs/tags/c2-fixed-exposure-attribution-v1")

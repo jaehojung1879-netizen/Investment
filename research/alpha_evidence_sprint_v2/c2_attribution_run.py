@@ -198,7 +198,8 @@ def authorization_ok(spec_sha: str, *, check_git: bool = True) -> tuple[bool, st
 def remote_lock_refs(remote=REMOTE, cwd=None) -> list[str]:
     """Every ref under the study's lock prefix on the remote (any branch, any worktree, any spec)."""
     out = _git("ls-remote", remote, LOCK_REF_PREFIX + "*", cwd=cwd)
-    return sorted(line.split()[1] for line in out.splitlines() if line.strip())
+    # an annotated tag is listed twice (the tag and its peeled "^{}" commit): one ref, listed once
+    return sorted({line.split()[1].removesuffix("^{}") for line in out.splitlines() if line.strip()})
 
 
 def one_shot_ok(remote=REMOTE, cwd=None) -> tuple[bool, str]:
@@ -218,28 +219,56 @@ def one_shot_ok(remote=REMOTE, cwd=None) -> tuple[bool, str]:
     return True, "NOT_YET_EXECUTED"
 
 
+def _make_claim_tag(commit: str, body: str, nonce: str, cwd=None) -> str:
+    """Create a UNIQUE annotated tag object (not a ref) naming ``commit`` and carrying a nonce.
+
+    Two callers claiming the same commit used to push the same commit OID to the same ref, which
+    Git treats as an up-to-date success for the second caller (Codex F1 re-audit). A tag object
+    whose message carries a fresh nonce has a different OID for every attempt, so the second
+    push is a real non-fast-forward update of an existing tag ref and is rejected."""
+    ident = _git("var", "GIT_COMMITTER_IDENT", cwd=cwd).strip()
+    text = (f"object {commit}\ntype commit\ntag {LOCK_REF.rsplit('/', 1)[-1]}\ntagger {ident}\n\n"
+            f"c2-fixed-exposure-attribution-v1 execution claim\nnonce: {nonce}\n{body}")
+    import subprocess
+    done = subprocess.run(["git", "-C", str(cwd or ROOT), "mktag"], input=text, capture_output=True, text=True)
+    if done.returncode:
+        raise SystemExit(f"REFUSED: CLAIM_TAG_NOT_CREATED:{done.stderr.strip()}")
+    return done.stdout.strip()
+
+
 def claim_execution(commit: str, record: dict, remote=REMOTE, cwd=None) -> dict:
     """Atomically take the one execution right, BEFORE any outcome is read.
 
     1. a local claim file created with O_CREAT|O_EXCL (two processes in one worktree: one wins);
-    2. a remote tag created by a non-forced push. Git refuses to create a ref that already
-       exists, so two worktrees, branches or machines racing for it cannot both succeed.
+    2. a remote annotated tag whose OBJECT is unique to this attempt (random nonce), created by
+       a non-forced push. Even for the same commit, the loser's tag object differs from the
+       winner's, so Git rejects the push instead of reporting an identical ref as up to date.
+    3. a read-back: the remote ref must now equal THIS attempt's tag object, otherwise the claim
+       is refused (defence in depth against any server that accepts the push anyway).
     Once the remote ref exists the study is CONSUMED, whatever happens next; nothing deletes it.
     A study-specific ref; no Phase C lock is read, reused or moved."""
-    body = (json.dumps({**record, "commit": commit, "lockRef": LOCK_REF}, sort_keys=True) + "\n").encode()
+    import uuid
+    nonce = uuid.uuid4().hex
+    body = (json.dumps({**record, "commit": commit, "lockRef": LOCK_REF, "nonce": nonce},
+                       sort_keys=True) + "\n")
     try:
         fd = os.open(CLAIM, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
     except FileExistsError:
         raise SystemExit("REFUSED: LOCAL_CLAIM_ALREADY_EXISTS") from None
     with os.fdopen(fd, "wb") as handle:
-        handle.write(body)
+        handle.write(body.encode())
         handle.flush()
         os.fsync(handle.fileno())
+    tag = _make_claim_tag(commit, body, nonce, cwd)
     try:
-        _git("push", remote, f"{commit}:{LOCK_REF}", cwd=cwd)
+        _git("push", remote, f"{tag}:{LOCK_REF}", cwd=cwd)
     except RuntimeError as error:
         raise SystemExit(f"REFUSED: REMOTE_EXECUTION_LOCK_NOT_ACQUIRED:{error}") from error
-    return {"lockRef": LOCK_REF, "commit": commit, "claimFile": str(CLAIM.name)}
+    held = _git("ls-remote", remote, LOCK_REF, cwd=cwd).split()
+    if not held or held[0] != tag:
+        raise SystemExit("REFUSED: REMOTE_EXECUTION_LOCK_HELD_BY_ANOTHER_CLAIM")
+    return {"lockRef": LOCK_REF, "commit": commit, "claimTagObject": tag, "nonce": nonce,
+            "claimFile": str(CLAIM.name)}
 
 
 def write_result_once(payload: dict, path: Path | None = None) -> Path:
