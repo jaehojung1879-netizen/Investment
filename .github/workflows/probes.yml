@@ -19,6 +19,11 @@ name: Probes
 #
 # On demand only. Nothing downstream consumes a probe, and a probe the daily
 # jobs depend on is a probe that breaks them.
+#
+# BRANCH-ONLY (never merged): `c2-attribution-execute` is the owner-approved ONE-SHOT historical run of c2-fixed-exposure-attribution-v1
+# (PR #325, approved commit 9dc2928d). It exists only on branch claude/c2-attribution-actions-route, which is selected in the Run workflow
+# dialog; main's probes.yml (byte-pinned by sealed specs) is not changed. The generic `probe` job is skipped for this choice, and the C2 job
+# refuses to run from any other ref.
 
 on:
   pull_request:
@@ -48,6 +53,7 @@ on:
           - guru-13f-access
           - ecos-market-context
           - krx-industry-openapi
+          - c2-attribution-execute
       args:
         description: "스크립트에 그대로 넘길 인자 (비우면 스크립트 기본값)"
         type: string
@@ -66,7 +72,7 @@ jobs:
   # cannot share this shape.
   probe:
     if: github.event_name == 'workflow_dispatch' && inputs.probe != 'sec-egress' && inputs.probe != 'ecos-market-context' &&
-      inputs.probe != 'krx-industry-openapi'
+      inputs.probe != 'krx-industry-openapi' && inputs.probe != 'c2-attribution-execute'
     runs-on: ubuntu-latest
     # The KR delisting measurement walks the whole Korean panel and is the
     # only one that needs hours; the rest finish in minutes.
@@ -363,3 +369,144 @@ jobs:
           name: ecos-market-context-source-metadata-${{ github.run_id }}
           path: ${{ runner.temp }}/ecos/source-readiness.json
           if-no-files-found: error
+
+  c2-attribution-execute:
+    # BRANCH-ONLY route: runs only when the Owner dispatches this workflow FROM the work branch and picks the c2-attribution-execute probe.
+    # This branch is never merged; main and every sealed file stay untouched. No PR, push or schedule can reach this job.
+    if: github.event_name == 'workflow_dispatch' && inputs.probe == 'c2-attribution-execute' && github.ref == 'refs/heads/claude/c2-attribution-actions-route' && github.actor == 'jaehojung1879-netizen'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    permissions:
+      contents: write
+    concurrency:
+      group: c2-fixed-exposure-attribution-v1-single-attempt
+      cancel-in-progress: false
+    env:
+      C2_APPROVED_COMMIT: 9dc2928d3c2110a90ea911a74372cd75372a5d2e
+      C2_SIGNAL_HISTORY_COMMIT: 4b6f8b7137521a148d9cd2c9e3c2fdfdcb5ae71a
+      C2_SPEC_SHA256: 75e3c096fc608bba2c57559e07acbb98b6f3371c79e7f20b79ca97863b6898af
+      C2_CALCULATOR_SHA256: da1e4fa6d16d388310e29305c725aca43aa6b830f80941220a3741a8dd200caa
+      C2_RUNNER_SHA256: 93125360cd4b9a64fb9bb9b8481429c6f8b1d95afc8e4a57d3c78292681b171f
+      C2_AUTHORIZATION_SHA256: 67253abe58539fbced204d0f0dd2145ebffcfa5177df1e262cb508c968ae8e4a
+      C2_MANIFEST_SHA256: f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2
+      C2_DIR: research/alpha_evidence_sprint_v2
+    steps:
+      - name: Check out the exact approved C2 commit (full history for the authorization and one-shot checks)
+        uses: actions/checkout@v5
+        with:
+          ref: 9dc2928d3c2110a90ea911a74372cd75372a5d2e
+          path: c2
+          fetch-depth: 0
+      - name: Check out the pinned signal-history commit (replay-v16 inputs only)
+        uses: actions/checkout@v5
+        with:
+          ref: 4b6f8b7137521a148d9cd2c9e3c2fdfdcb5ae71a
+          path: sh
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: |
+            ledger/historical/replay-v16
+            ledger/replay-inputs
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Install the approved commit's pinned requirements
+        run: pip install -r c2/requirements.txt
+      - name: Pre-claim gate 1 - exact commits and file hashes
+        run: |
+          set -euo pipefail
+          [ "$(git -C c2 rev-parse HEAD)" = "$C2_APPROVED_COMMIT" ] || { echo "APPROVED_COMMIT_MISMATCH"; exit 1; }
+          [ "$(git -C sh rev-parse HEAD)" = "$C2_SIGNAL_HISTORY_COMMIT" ] || { echo "SIGNAL_HISTORY_COMMIT_MISMATCH"; exit 1; }
+          check() { [ "$(sha256sum "$1" | cut -d' ' -f1)" = "$2" ] || { echo "HASH_MISMATCH $1"; exit 1; }; }
+          check "c2/$C2_DIR/c2-fixed-exposure-attribution-v1.json" "$C2_SPEC_SHA256"
+          check "c2/$C2_DIR/c2_attribution.py" "$C2_CALCULATOR_SHA256"
+          check "c2/$C2_DIR/c2_attribution_run.py" "$C2_RUNNER_SHA256"
+          check "c2/$C2_DIR/AUTHORIZATION-c2.json" "$C2_AUTHORIZATION_SHA256"
+          echo "commits and hashes OK"
+      - name: Pre-claim gate 2 - authorization, one-shot state, closure, pinned inputs, ETF protocol (runner's own functions)
+        working-directory: c2
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os, sys
+          sys.path.insert(0, ".")
+          from research.alpha_evidence_sprint_v2 import c2_attribution_run as R
+          spec = json.loads(R.SPEC.read_text())
+          ok, why = R.authorization_ok(R.sha256(R.SPEC))
+          print("authorization:", ok, why)
+          assert ok and why == "AUTHORIZED_PROCEDURAL_OWNER_NOT_AUTHENTICATED", why
+          auth = json.loads(R.AUTH.read_text())
+          assert auth["decisions"] == {"D1_R2": "ACCEPT", "D2_R4": "ACCEPT", "D3_lag5": "KEEP", "D4_cashBand": "ACCEPT"}, auth
+          ok, why = R.one_shot_ok()
+          print("one-shot:", ok, why)
+          assert ok, why
+          print("closure files:", len(R.verify_dependency_closure(spec)))
+          for item in spec["pinnedInputs"]["files"]:
+              assert R.sha256(R.ROOT / item["path"]) == item["sha256"], item["path"]
+          print("ETF quotes:", len(R.resolve_etf_series(spec)))
+          assert spec["pinnedInputs"]["replayInputManifestSha256"] == os.environ["C2_MANIFEST_SHA256"]
+          assert spec["decisionRule"]["requireUnclippedSelection"] is True
+          PY
+      - name: Pre-claim gate 3 - outcome-free preflight must equal the committed evidence
+        working-directory: c2
+        run: |
+          set -euo pipefail
+          python "$C2_DIR/c2_attribution_run.py" preflight ../sh/ledger --out "$RUNNER_TEMP/preflight.json"
+          python - "$RUNNER_TEMP/preflight.json" "$C2_DIR/evidence/c2-preflight.json" <<'PY'
+          import json, sys
+          got, want = (json.load(open(p)) for p in sys.argv[1:3])
+          assert got == want, "PREFLIGHT_DIFFERS_FROM_COMMITTED_EVIDENCE"
+          assert got["eligibleBlocks"] == got["blocks"] == 155, got
+          print("preflight identical to committed evidence:", got["eligibleBlocks"], "/", got["blocks"])
+          PY
+      - name: Pre-claim gate 4 - this job can push and delete a tag (a probe outside the study's lock prefix)
+        working-directory: c2
+        run: |
+          set -euo pipefail
+          probe="refs/tags/c2-actions-push-probe-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          git push origin "$C2_APPROVED_COMMIT:$probe"
+          git push origin ":$probe"
+          [ -z "$(git ls-remote origin "$probe")" ] || { echo "PROBE_TAG_NOT_REMOVED"; exit 1; }
+          [ -z "$(git ls-remote origin 'refs/tags/c2-fixed-exposure-attribution-v1-execution*')" ] || { echo "STUDY_LOCK_EXISTS"; exit 1; }
+          echo "tag push OK; study lock absent"
+      - name: Execute once (the runner claims the remote lock before reading any outcome; never retried)
+        id: execution
+        working-directory: c2
+        run: |
+          set -euo pipefail
+          python "$C2_DIR/c2_attribution_run.py" execute ../sh/ledger 2>&1 | tee "$RUNNER_TEMP/execute.log"
+      - name: Collect evidence
+        if: always()
+        run: |
+          mkdir -p c2-evidence
+          for f in c2/$C2_DIR/c2-fixed-exposure-attribution-v1-result.json c2/$C2_DIR/c2-fixed-exposure-attribution-v1-execution-claim.json \
+                   "$RUNNER_TEMP/preflight.json" "$RUNNER_TEMP/execute.log"; do
+            [ -f "$f" ] && cp "$f" c2-evidence/ && sha256sum "$f"
+          done
+          git -C c2 ls-remote origin 'refs/tags/c2-fixed-exposure-attribution-v1-execution*' | tee c2-evidence/lock-refs.txt || true
+          r=c2-evidence/c2-fixed-exposure-attribution-v1-result.json
+          if [ -f "$r" ]; then
+            echo "RESULT_GZIP_BASE64_BEGIN"; gzip -9c "$r" | base64 -w 0; echo; echo "RESULT_GZIP_BASE64_END"
+            python -c "import json;d=json.load(open('$r'));print('VERDICT', d['verdict'], 'WITHOUT_R4', d['verdictWithoutR4'])"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.execution.outcome == 'success'
+        with:
+          name: c2-fixed-exposure-attribution-v1-results-${{ github.run_id }}
+          path: c2-evidence
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.execution.outcome != 'success'
+        with:
+          name: c2-fixed-exposure-attribution-v1-attempt-${{ github.run_id }}
+          path: c2-evidence
+          retention-days: 90
+          if-no-files-found: ignore
+      - name: Report whether the study was consumed (no retry either way)
+        if: always()
+        run: |
+          if [ -s c2-evidence/lock-refs.txt ]; then
+            echo "## C2 STUDY LOCKED: the one execution has been spent. DO NOT RETRY." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "## C2 stopped before the lock: nothing was spent." >> "$GITHUB_STEP_SUMMARY"
+          fi
