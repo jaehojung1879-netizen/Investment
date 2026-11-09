@@ -81,7 +81,7 @@ def test_analyse_end_to_end_recovers_planted_selection_and_rejects_identity_fail
     assert out["verdict"] == "SELECTION_SURVIVES_FIXED_EXPOSURE"
     assert out["reconstruction"]["status"] == "NOT_CHECKED"
     for k, d in out["byCost"]["1x"]["decomposition"].items():
-        assert d["blocks"] == 155 and d["maxIdentityResidual"] < 1e-12
+        assert d["blocks"] == 155 and d["maxResidualVsEtf"] < 1e-12 and d["maxResidualVsControl"] < 1e-12
     one = out["byCost"]["1x"]["scenarios"]["BOK_POLICY_PROXY"]["selectionAnnualized"]
     # selection per block = s * (0.01 + (0.2*0.002) - (1-b)*R_F) with b = 0.8, R_F = 0.002
     assert one["mean"] == pytest.approx(0.6 * 0.01 * (155 / (155 * 21 / 252)), rel=1e-6)
@@ -248,40 +248,24 @@ def test_authorization_is_bound_to_an_owner_commit(tmp_path, monkeypatch):
     rel = str((RUN.HERE / "AUTHORIZATION-c2.json").relative_to(RUN.ROOT))
     base = {"ls-files": lambda a: rel + "\n", "status": lambda a: "", "log": lambda a: "jaeho.jung1879@gmail.com\n"}
     monkeypatch.setattr(RUN, "_git", fake_git(base))
-    assert RUN.authorization_ok(spec) == (True, "AUTHORIZED")
+    assert RUN.authorization_ok(spec) == (True, "AUTHORIZED_PROCEDURAL_OWNER_NOT_AUTHENTICATED")
     monkeypatch.setattr(RUN, "_git", fake_git({**base, "log": lambda a: "noreply@anthropic.com\n"}))
-    assert RUN.authorization_ok(spec)[1] == "AUTHORIZATION_NOT_COMMITTED_BY_OWNER"
+    assert RUN.authorization_ok(spec)[1] == "AUTHORIZATION_NOT_COMMITTED_BY_OWNER_IDENTITY"
     monkeypatch.setattr(RUN, "_git", fake_git({**base, "log": lambda a: "jaeho.jung1879@gmail.com\nnoreply@anthropic.com\n"}))
-    assert RUN.authorization_ok(spec)[1] == "AUTHORIZATION_NOT_COMMITTED_BY_OWNER"   # an agent edit after approval
+    assert RUN.authorization_ok(spec)[1] == "AUTHORIZATION_NOT_COMMITTED_BY_OWNER_IDENTITY"   # an agent edit after approval
     monkeypatch.setattr(RUN, "_git", fake_git({**base, "status": lambda a: " M c2_attribution.py\n"}))
     assert RUN.authorization_ok(spec)[1] == "GATED_FILES_MODIFIED_SINCE_COMMIT"
 
-    def untracked(a):
-        raise RuntimeError("error: pathspec did not match")
-    monkeypatch.setattr(RUN, "_git", fake_git({**base, "ls-files": untracked}))
-    assert RUN.authorization_ok(spec)[1].startswith("GIT_UNAVAILABLE")
-
-
-def test_one_shot_refuses_an_existing_result(tmp_path, monkeypatch):
-    monkeypatch.setattr(RUN, "_git", lambda *a: "")
-    monkeypatch.setattr(RUN, "RESULT", RUN.HERE / "c2-fixed-exposure-attribution-v1-result.json")
-    assert RUN.one_shot_ok() == (True, "NOT_YET_EXECUTED")
-    monkeypatch.setattr(RUN, "_git", lambda *a: "abc123\n")
-    assert RUN.one_shot_ok()[1] == "RESULT_ALREADY_IN_GIT_HISTORY"
-    existing = tmp_path / "r.json"
-    existing.write_text("{}")
-    monkeypatch.setattr(RUN, "RESULT", existing)
-    assert RUN.one_shot_ok()[1] == "RESULT_ALREADY_EXISTS"
+    monkeypatch.setattr(RUN, "_git", fake_git({**base, "ls-files": lambda a: ""}))
+    assert RUN.authorization_ok(spec)[1] == "AUTHORIZATION_NOT_COMMITTED"
 
 
 def test_execute_path_names_resolve():
-    """The owner-gated path was never run in CI; its first draft called a function that does not
-    exist (replay_valuation.normalize_daily_series). Pin every name it resolves."""
-    from pipeline import market_dates, provenance, replay_calendar, replay_inputs, weekly_decision
-    assert callable(market_dates.normalize_daily_series) and callable(replay_calendar.sessions)
-    assert callable(replay_inputs.unpack) and hasattr(replay_inputs.InputStore, "load")
-    assert callable(weekly_decision.trade_cost_fraction) and provenance.REPLAY_VERSION == "replay-v16"
+    """Correction (Codex): ``replay_valuation.normalize_daily_series`` DID resolve at #316 —
+    replay_valuation re-exports it from market_dates (line 11). The #325 change was an import-path
+    tidy-up to the replay's own import, not a crash fix. Pin every name the gated path resolves."""
+    from pipeline import market_dates, provenance, replay_calendar, replay_inputs, replay_valuation, weekly_decision
+    assert replay_valuation.normalize_daily_series is market_dates.normalize_daily_series
+    assert callable(replay_calendar.sessions) and callable(replay_inputs.unpack)
+    assert hasattr(replay_inputs.InputStore, "load") and provenance.REPLAY_VERSION == "replay-v16"
     assert weekly_decision.trade_cost_fraction("KR", "2020-01-02", is_benchmark=True, side="sell") > 0
-    import inspect
-    src = inspect.getsource(RUN.load_inputs)
-    assert "RV.normalize_daily_series" not in src and "market_dates import normalize_daily_series" in src

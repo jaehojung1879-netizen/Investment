@@ -32,6 +32,7 @@ import gzip
 import hashlib
 import json
 import math
+import os
 import sys
 from pathlib import Path
 
@@ -119,7 +120,10 @@ def readiness() -> dict:
         "heldTickers": sorted(held),
         "heldTerminatedSecurities": held_terminated,
         "blocksWithCorporateActionsApplied": sum(1 for r in rows if r["corporateActionsApplied"]),
-        "returnsRead": 0, "navValuesRead": 0, "terminalWeightsRead": 0,
+        # Honest counters (Codex F1): load_rows() decompresses and parses the WHOLE saved file,
+        # outcome fields included, and only then projects to READINESS_KEYS. Outcome values are
+        # therefore deserialized into memory but never used; this is not an I/O firewall.
+        "fullSavedRowsDeserialized": True, "outcomeValuesUsed": 0, "returnsComputed": 0,
     }
 
 
@@ -129,25 +133,38 @@ def readiness() -> dict:
 OWNER_AUTHOR_EMAIL = "jaeho.jung1879@gmail.com"   # the repository owner's commit identity (git log)
 AGENT_AUTHOR_EMAILS = ("noreply@anthropic.com",)
 RESULT = HERE / "c2-fixed-exposure-attribution-v1-result.json"
+CLAIM = HERE / "c2-fixed-exposure-attribution-v1-execution-claim.json"
+LOCK_REF_PREFIX = "refs/tags/c2-fixed-exposure-attribution-v1-execution"
+LOCK_REF = LOCK_REF_PREFIX + "-claim"
+REMOTE = "origin"
 GATED_FILES = ("c2_attribution.py", "c2_attribution_run.py", "c2-fixed-exposure-attribution-v1.json",
                "AUTHORIZATION-c2.json")
+# What the authorization can and cannot prove (Codex F1). Git author identity is self-asserted and
+# in this project agents commit and comment through the owner's own GitHub account, so no check
+# here can tell the Owner from an agent holding the Owner's credentials. The gate below is a
+# PROCEDURAL binding of exact hashes to a committed, unmodified file; the Owner's approval itself
+# must additionally be confirmed by the Owner in person (the conversation), and is reported so.
+OWNER_AUTHENTICATION = ("NOT_CRYPTOGRAPHICALLY_VERIFIED: git author identity is self-asserted and agents act "
+                        "through the owner's GitHub account; Owner approval needs the Owner's own manual "
+                        "confirmation in addition to this procedural gate")
 
 
-def _git(*args) -> str:
+def _git(*args, cwd=None) -> str:
     import subprocess
-    done = subprocess.run(["git", "-C", str(ROOT), *args], capture_output=True, text=True)
+    done = subprocess.run(["git", "-C", str(cwd or ROOT), *args], capture_output=True, text=True)
     if done.returncode:
         raise RuntimeError(done.stderr.strip() or "git failed")
     return done.stdout
 
 
 def authorization_ok(spec_sha: str, *, check_git: bool = True) -> tuple[bool, str]:
-    """The owner's exact-hash approval, bound to the spec, both code files and an owner commit.
+    """The procedural exact-hash approval: bound to the spec, both code files and a commit.
 
     ``check_git`` is only switched off by synthetic tests. In the real gate the authorization
-    file must be committed (not merely present), by the owner's identity and not an agent's,
-    and the gated files must be unmodified relative to HEAD, so the hashes approved are the
-    bytes that run."""
+    file must be committed (not merely present), every commit touching it must carry the
+    owner's author identity and no agent's, and the gated files must be unmodified relative to
+    HEAD, so the hashes approved are the bytes that run. This does NOT authenticate the Owner
+    (see OWNER_AUTHENTICATION)."""
     if not AUTH.exists():
         return False, "NO_OWNER_AUTHORIZATION_FILE"
     auth = json.loads(AUTH.read_text())
@@ -160,30 +177,89 @@ def authorization_ok(spec_sha: str, *, check_git: bool = True) -> tuple[bool, st
         return False, "AUTHORIZED_CODE_HASH_MISMATCH"
     if not check_git:
         return True, "AUTHORIZED_SYNTHETIC"
+    rel = [str((HERE / f).relative_to(ROOT)) for f in GATED_FILES]
     try:
-        rel = [str((HERE / f).relative_to(ROOT)) for f in GATED_FILES]
-        if _git("ls-files", "--error-unmatch", rel[-1]).strip() != rel[-1]:
-            return False, "AUTHORIZATION_NOT_COMMITTED"
+        tracked = _git("ls-files", "--", rel[-1]).strip()
+    except RuntimeError as error:
+        return False, f"GIT_UNAVAILABLE:{error}"
+    if tracked != rel[-1]:
+        return False, "AUTHORIZATION_NOT_COMMITTED"
+    try:
         if _git("status", "--porcelain", "--", *rel).strip():
             return False, "GATED_FILES_MODIFIED_SINCE_COMMIT"
         authors = _git("log", "--format=%ae", "--", rel[-1]).split()
     except RuntimeError as error:
         return False, f"GIT_UNAVAILABLE:{error}"
     if not authors or any(a != OWNER_AUTHOR_EMAIL or a in AGENT_AUTHOR_EMAILS for a in authors):
-        return False, "AUTHORIZATION_NOT_COMMITTED_BY_OWNER"
-    return True, "AUTHORIZED"
+        return False, "AUTHORIZATION_NOT_COMMITTED_BY_OWNER_IDENTITY"
+    return True, "AUTHORIZED_PROCEDURAL_OWNER_NOT_AUTHENTICATED"
 
 
-def one_shot_ok() -> tuple[bool, str]:
-    """The study runs once: refuse when its result exists on disk or anywhere in git history."""
+def remote_lock_refs(remote=REMOTE, cwd=None) -> list[str]:
+    """Every ref under the study's lock prefix on the remote (any branch, any worktree, any spec)."""
+    out = _git("ls-remote", remote, LOCK_REF_PREFIX + "*", cwd=cwd)
+    return sorted(line.split()[1] for line in out.splitlines() if line.strip())
+
+
+def one_shot_ok(remote=REMOTE, cwd=None) -> tuple[bool, str]:
+    """The study runs once: refuse when its result or claim exists locally, the result is in any
+    local git history, or ANY lock ref exists on the remote (Codex F1)."""
     if RESULT.exists():
         return False, "RESULT_ALREADY_EXISTS"
+    if CLAIM.exists():
+        return False, "LOCAL_CLAIM_ALREADY_EXISTS"
     try:
-        if _git("log", "--all", "--format=%H", "--", str(RESULT.relative_to(ROOT))).strip():
+        if _git("log", "--all", "--format=%H", "--", str(RESULT.relative_to(ROOT)), cwd=cwd).strip():
             return False, "RESULT_ALREADY_IN_GIT_HISTORY"
+        if remote_lock_refs(remote, cwd):
+            return False, "REMOTE_EXECUTION_LOCK_EXISTS"
     except RuntimeError as error:
         return False, f"GIT_UNAVAILABLE:{error}"
     return True, "NOT_YET_EXECUTED"
+
+
+def claim_execution(commit: str, record: dict, remote=REMOTE, cwd=None) -> dict:
+    """Atomically take the one execution right, BEFORE any outcome is read.
+
+    1. a local claim file created with O_CREAT|O_EXCL (two processes in one worktree: one wins);
+    2. a remote tag created by a non-forced push. Git refuses to create a ref that already
+       exists, so two worktrees, branches or machines racing for it cannot both succeed.
+    Once the remote ref exists the study is CONSUMED, whatever happens next; nothing deletes it.
+    A study-specific ref; no Phase C lock is read, reused or moved."""
+    body = (json.dumps({**record, "commit": commit, "lockRef": LOCK_REF}, sort_keys=True) + "\n").encode()
+    try:
+        fd = os.open(CLAIM, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
+    except FileExistsError:
+        raise SystemExit("REFUSED: LOCAL_CLAIM_ALREADY_EXISTS") from None
+    with os.fdopen(fd, "wb") as handle:
+        handle.write(body)
+        handle.flush()
+        os.fsync(handle.fileno())
+    try:
+        _git("push", remote, f"{commit}:{LOCK_REF}", cwd=cwd)
+    except RuntimeError as error:
+        raise SystemExit(f"REFUSED: REMOTE_EXECUTION_LOCK_NOT_ACQUIRED:{error}") from error
+    return {"lockRef": LOCK_REF, "commit": commit, "claimFile": str(CLAIM.name)}
+
+
+def write_result_once(payload: dict, path: Path | None = None) -> Path:
+    """Write the single result file atomically and never over an existing one: temp file
+    (O_EXCL) + fsync, then os.link to the final name, which fails if it exists."""
+    path = Path(path or RESULT)
+    data = (json.dumps(payload, ensure_ascii=False, indent=1, sort_keys=True, default=str) + "\n").encode()
+    tmp = path.with_name(path.name + f".tmp-{os.getpid()}")
+    fd = os.open(tmp, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
+    try:
+        with os.fdopen(fd, "wb") as handle:
+            handle.write(data)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.link(tmp, path)
+    except FileExistsError:
+        raise SystemExit("REFUSED: RESULT_ALREADY_EXISTS") from None
+    finally:
+        tmp.unlink(missing_ok=True)
+    return path
 
 
 def returns_from_closes(closes):
@@ -319,15 +395,20 @@ def path_returns(blocks, results, cost_fn, multiplier=1.0, detail=None):
     return c2_net, ctrl_net
 
 
-def etf_path(blocks, cost_fn, multiplier=1.0):
+def etf_path(blocks, cost_fn, multiplier=1.0, costs=None):
     """The ETF-only alternative (the replay's P0): buys 100% 069500.KS once, at the first
-    block, and pays that buy at the same dated schedule; later blocks hold, so cost 0."""
+    block, and pays that buy at the same dated schedule; later blocks hold, so cost 0.
+    ``costs``, when a list, receives each block's cost fraction."""
     out = []
     for index, b in enumerate(blocks):
         if b is None:
             out.append(math.nan)
+            if costs is not None:
+                costs.append(math.nan)
             continue
         cost = A.trade_cost({}, {ETF: 1.0}, ETF, cost_fn, b.date, multiplier) if index == 0 else 0.0
+        if costs is not None:
+            costs.append(cost)
         out.append((1 - cost) * b.etf_growth - 1)
     return out
 
@@ -336,36 +417,61 @@ def _finite(x):
     return x is not None and math.isfinite(x)
 
 
-def decomposition(blocks, results, c2_net, ctrl_net, etf_net, years):
-    """Exact per-block reconciliation, annualised by the span (arithmetic, then Jensen):
+def decomposition(blocks, results, c2_net, ctrl_net, etf_net, years, c2_costs=None, ctrl_costs=None,
+                  etf_costs=None):
+    """Exact per-block reconciliation with EXPLICIT cost terms (Codex: a cost difference is the
+    drag on the funded growth, ``cost * (1 + gross)``, not a difference of fee rates):
 
-        net C2 - net ETF = SELECTION + EXPOSURE + COST,   COST := the exact residual
-        = -(cost_C2 * (1 + C2 gross)) + (cost_ETF * (1 + ETF gross))
+        net C2 - net ETF     = SELECTION + EXPOSURE + COST_vs_ETF
+                             = SELECTION_UNCLIPPED + CLIP_TRANSFER + EXPOSURE + COST_vs_ETF
+        COST_vs_ETF          = -cost_C2 * (1 + C2 gross) + cost_ETF * (1 + ETF gross)
+        net C2 - net CONTROL = SELECTION + COST_vs_CONTROL      (the investable-twin gap)
+        COST_vs_CONTROL      = -cost_C2 * (1 + C2 gross) + cost_CTRL * (1 + CONTROL gross)
 
-    and per scenario ``log-growth gap = arithmetic sum + Jensen`` (jensen_split). Blocks a
-    scenario cannot attribute are counted and excluded from that scenario's sums, never filled.
+    Each cost term is computed from the recorded costs, and the largest residual of each
+    identity is published, so a mismatch is visible rather than absorbed. Terms are summed and
+    annualised by the span; Jensen is the log-minus-arithmetic gap. Unattributable blocks are
+    counted and left out of a scenario's sums, never filled.
     """
+    n_blocks = len(blocks)
+    c2_costs = c2_costs or [0.0] * n_blocks
+    etf_costs = etf_costs or [0.0] * n_blocks
     out = {}
     for k in A.CASH_SCENARIOS:
-        sel = exp = cst = 0.0
-        n = 0
-        worst = 0.0
-        for b, r, c, e in zip(blocks, results, c2_net, etf_net):
+        kc = (ctrl_costs or {}).get(k) or [0.0] * n_blocks
+        acc = dict.fromkeys(("sel", "unc", "clip", "exp", "costE", "costK", "gapK"), 0.0)
+        n, worst_e, worst_k = 0, 0.0, 0.0
+        for i, (b, r, c, e) in enumerate(zip(blocks, results, c2_net, etf_net)):
             if b is None or k not in r.by_cash or not (_finite(c) and _finite(e)):
                 continue
-            total = c - e
-            s_, x_ = r.by_cash[k]["selection"], r.by_cash[k]["exposure"]
-            cost_term = total - s_ - x_
-            worst = max(worst, abs((s_ + x_ + cost_term) - total))
-            sel, exp, cst, n = sel + s_, exp + x_, cst + cost_term, n + 1
+            v = r.by_cash[k]
+            cost_e = -c2_costs[i] * (1 + r.c2_gross) + etf_costs[i] * (1 + b.etf_growth - 1)
+            worst_e = max(worst_e, abs((c - e) - (v["selection"] + v["exposure"] + cost_e)))
+            if abs(v["selection"] - v["selectionUnclipped"] - v["clipTransfer"]) > A.TOL:
+                raise A.AttributionError("CLIP_TRANSFER_IDENTITY_FAILED")
+            ctrl = ctrl_net[k][i]
+            if _finite(ctrl) and _finite(kc[i]):
+                cost_k = -c2_costs[i] * (1 + r.c2_gross) + kc[i] * (1 + v["control"])
+                worst_k = max(worst_k, abs((c - ctrl) - (v["selection"] + cost_k)))
+                acc["costK"] += cost_k
+                acc["gapK"] += c - ctrl
+            acc["sel"] += v["selection"]
+            acc["unc"] += v["selectionUnclipped"]
+            acc["clip"] += v["clipTransfer"]
+            acc["exp"] += v["exposure"]
+            acc["costE"] += cost_e
+            n += 1
         ok = all(_finite(x) for x in c2_net) and all(_finite(x) for x in etf_net)
         jensen = A.jensen_split(c2_net, etf_net, years) if ok else None
-        out[k] = {"blocks": n, "selectionPpPerYear": 100 * sel / years, "exposurePpPerYear": 100 * exp / years,
-                  "costPpPerYear": 100 * cst / years,
-                  "arithmeticC2MinusEtfPpPerYear": 100 * (sel + exp + cst) / years,
+        pp = (lambda x: 100 * x / years)
+        out[k] = {"blocks": n, "selectionPpPerYear": pp(acc["sel"]),
+                  "selectionUnclippedPpPerYear": pp(acc["unc"]), "clipTransferPpPerYear": pp(acc["clip"]),
+                  "exposurePpPerYear": pp(acc["exp"]), "costVsEtfPpPerYear": pp(acc["costE"]),
+                  "arithmeticC2MinusEtfPpPerYear": pp(acc["sel"] + acc["exp"] + acc["costE"]),
+                  "c2MinusControlNetPpPerYear": pp(acc["gapK"]), "costVsControlPpPerYear": pp(acc["costK"]),
                   "jensenPpPerYear": None if jensen is None else 100 * jensen["jensen"],
                   "logGrowthGapPpPerYear": None if jensen is None else 100 * jensen["logGrowthGap"],
-                  "maxIdentityResidual": worst}
+                  "maxResidualVsEtf": worst_e, "maxResidualVsControl": worst_k}
     return out
 
 
@@ -451,7 +557,7 @@ def reconstruction_check(c2_net, etf_net, years, published):
 
 
 def analyse(saved_rows, etf_close, pre_signal_closes, cost_fn, years_total, published=None,
-            recent_from="2024-01-01"):
+            recent_from="2024-01-01", require_unclipped=True):
     """Pure core of ``execute`` (tested on synthetic rows): attribution at cost 1x/2x/3x."""
     blocks, failures = build_blocks(saved_rows, etf_close, pre_signal_closes, cash_growth)
     results = attribute_all(blocks)
@@ -459,10 +565,13 @@ def analyse(saved_rows, etf_close, pre_signal_closes, cost_fn, years_total, publ
     for m in A.COST_MULTIPLIERS:
         detail = {}
         c2_net, ctrl_net = path_returns(blocks, results, cost_fn, m, detail)
-        etf_net = etf_path(blocks, cost_fn, m)
+        etf_costs = []
+        etf_net = etf_path(blocks, cost_fn, m, etf_costs)
         summary = A.summarize(results, c2_net, ctrl_net, etf_net, years_total,
                               len(saved_rows) / years_total)
-        summary["decomposition"] = decomposition(blocks, results, c2_net, ctrl_net, etf_net, years_total)
+        summary["decomposition"] = decomposition(
+            blocks, results, c2_net, ctrl_net, etf_net, years_total, detail["costs"]["c2"],
+            {k: detail["costs"][k] for k in A.CASH_SCENARIOS}, etf_costs)
         summary["horizonC2MinusControl"] = {k: horizon_gaps(c2_net, ctrl_net[k]) for k in A.CASH_SCENARIOS}
         summary["recent"] = subperiod(saved_rows, blocks, results, c2_net, ctrl_net, etf_net, recent_from)
         per_cost[f"{m:g}x"] = summary
@@ -470,7 +579,8 @@ def analyse(saved_rows, etf_close, pre_signal_closes, cost_fn, years_total, publ
     for k in A.CASH_SCENARIOS:
         one = per_cost["1x"]["scenarios"][k]
         verdict_input[k] = {"mean": one["selectionAnnualized"]["mean"], "ci95": one["selectionAnnualized"]["ci95"],
-                            "netCi95": one["netSelectionAnnualized"]["ci95"]}
+                            "netCi95": one["netSelectionAnnualized"]["ci95"],
+                            "unclippedCi95": one["selectionUnclippedAnnualized"]["ci95"]}
     # SELECTION is gross of cost by construction; the 2x requirement reads the net c2-vs-control gap
     for k in A.CASH_SCENARIOS:
         gap = per_cost["2x"]["scenarios"][k]["c2VsControl"]
@@ -478,7 +588,7 @@ def analyse(saved_rows, etf_close, pre_signal_closes, cost_fn, years_total, publ
     c2_1x, etf_1x, detail_1x = extra[1.0]
     recon = reconstruction_check(c2_1x, etf_1x, years_total, published)
     share = per_cost["1x"]["unattributableShare"]
-    verdict = A.verdict(verdict_input, share)
+    verdict = A.verdict(verdict_input, share, require_unclipped=require_unclipped)
     if recon["status"] == "RECONSTRUCTION_MISMATCH":
         verdict = "SOURCE_OR_SAMPLE_INSUFFICIENT"
     turns = [t for t in detail_1x["turnover"] if t]
@@ -494,31 +604,91 @@ def analyse(saved_rows, etf_close, pre_signal_closes, cost_fn, years_total, publ
                 "replaced": sum(t["replaced"] for t in turns) / years_total,
                 "retargeted": sum(t["retargeted"] for t in turns) / years_total},
             "reconstruction": recon, "verdictInput": verdict_input, "unattributableShare": share,
+            "requireUnclippedSelection": require_unclipped,
+            "verdictWithoutR4": A.verdict(verdict_input, share, require_unclipped=False),
             "verdict": verdict}
 
 
+CLOSURE_ENTRY_POINTS = ("research/alpha_evidence_sprint_v2/c2_attribution_run.py",
+                        "pipeline/weekly_decision.py", "pipeline/replay_inputs.py", "pipeline/replay_calendar.py",
+                        "pipeline/market_dates.py", "pipeline/provenance.py")
+
+
+def dependency_closure(root=None) -> dict:
+    """sha256 of every pipeline module execute can import (top-level and lazy), computed with the
+    repository's own ``alpha_opportunity_v3_spec.import_closure``. The two research files are
+    bound by the authorization itself and are excluded here."""
+    from pipeline.alpha_opportunity_v3_spec import import_closure
+    root = Path(root or ROOT)
+    files = [f for f in import_closure(CLOSURE_ENTRY_POINTS, root) if f.startswith("pipeline/")]
+    return {f: sha256(root / f) for f in files}
+
+
+def verify_dependency_closure(spec, root=None) -> dict:
+    """Cost schedule, calendar, input store and valuation code are part of the approved state
+    (Codex F2): a new import or an edited sealed module refuses before any input is read."""
+    pinned = spec["dependencyClosure"]["files"]
+    actual = dependency_closure(root)
+    if set(actual) != set(pinned):
+        raise SystemExit("REFUSED: DEPENDENCY_CLOSURE_CHANGED " + ",".join(sorted(set(actual) ^ set(pinned))))
+    changed = sorted(f for f in pinned if actual[f] != pinned[f])
+    if changed:
+        raise SystemExit("REFUSED: SEALED_DEPENDENCY_CHANGED " + ",".join(changed))
+    return actual
+
+
+def resolve_etf_series(spec, basis_path=None, root=None) -> dict:
+    """The ONLY 069500.KS series execute may use (Codex F2).
+
+    The first draft read the file and field named by the basis protocol and hash-checked a
+    DIFFERENT, separately pinned file, so a protocol pointing at file B passed while file A was
+    verified. Now: the protocol's own bytes are pinned; its file and field must equal the
+    registered ones; that file's bytes must equal the registered sha256, which must also be the
+    pinnedInputs entry for the same path. The series must be strictly dated and positive."""
+    root = Path(root or ROOT)
+    basis_path = Path(basis_path or BASIS)
+    pin = spec["etfSeries"]
+    if sha256(basis_path) != pin["protocolSha256"]:
+        raise SystemExit("REFUSED: BASIS_PROTOCOL_CHANGED")
+    basis = json.loads(basis_path.read_text())["correctedSeries"]
+    if basis.get("file") != pin["file"] or basis.get("field") != pin["field"]:
+        raise SystemExit("REFUSED: ETF_SOURCE_REDIRECTED")
+    listed = {i["path"]: i["sha256"] for i in spec["pinnedInputs"]["files"]}
+    if listed.get(pin["file"]) != pin["sha256"]:
+        raise SystemExit("REFUSED: ETF_PIN_INCONSISTENT")
+    if sha256(root / pin["file"]) != pin["sha256"]:
+        raise SystemExit("REFUSED: ETF_SERIES_CHANGED")
+    quotes = json.loads((root / pin["file"]).read_text())[pin["field"]]
+    series = {}
+    for q in quotes:
+        d, c = q["date"][:10], float(q["Close"])
+        if d in series or (series and d <= max(series)) or not (math.isfinite(c) and c > 0):
+            raise SystemExit("REFUSED: ETF_SERIES_MALFORMED")
+        series[d] = c
+    return series
+
+
 def load_inputs(ledger: Path) -> dict:
-    """Verify every pinned identity and load the inputs ``execute`` needs. Reads prices into
-    memory but computes no return; ``preflight`` uses it to count presence only."""
+    """Verify every pinned identity and load the inputs ``execute`` needs. Loads the full price
+    panel into memory; computes no return (``preflight`` only counts presence)."""
     from pipeline import provenance, replay_calendar as RC, replay_inputs as RI
-    from pipeline.market_dates import normalize_daily_series
+    from pipeline.replay_valuation import normalize_daily_series   # the replay's own import path
     spec = json.loads(SPEC.read_text())
+    closure = verify_dependency_closure(spec)
+    for item in spec["pinnedInputs"]["files"]:
+        if sha256(ROOT / item["path"]) != item["sha256"]:
+            raise SystemExit("REFUSED: PINNED_FILE_CHANGED " + item["path"])
+    etf = resolve_etf_series(spec)
     store = RI.InputStore(ledger, provenance.REPLAY_VERSION, provenance.DATA_VERSION)
     manifest = store.manifest()
     if manifest is None or manifest["sha256"] != spec["pinnedInputs"]["replayInputManifestSha256"]:
         raise SystemExit("REFUSED: REPLAY_INPUT_MANIFEST_MISMATCH")
-    for item in spec["pinnedInputs"]["files"]:
-        if sha256(ROOT / item["path"]) != item["sha256"]:
-            raise SystemExit("REFUSED: PINNED_FILE_CHANGED " + item["path"])
     frozen = RI.unpack(store.load(manifest, valuation_only=True))
     prices = {t: {d.strftime("%Y-%m-%d"): float(v) for d, v in normalize_daily_series(p["Close"]).items()}
               for t, p in frozen["prices"].items() if p is not None and "Close" in p}
-    basis = json.loads(BASIS.read_text())["correctedSeries"]
-    if sha256(ROOT / basis["file"]) != basis["sha256"]:
-        raise SystemExit("REFUSED: CORRECTED_ETF_SERIES_CHANGED")
-    etf = {r["date"][:10]: float(r["Close"]) for r in json.loads((ROOT / basis["file"]).read_text())[basis["field"]]}
     sessions = [d.strftime("%Y-%m-%d") for d in RC.sessions("2011-01-01", manifest["through"], "KR")]
-    return {"spec": spec, "manifest": manifest, "prices": prices, "etf": etf, "sessions": sessions}
+    return {"spec": spec, "manifest": manifest, "prices": prices, "etf": etf, "sessions": sessions,
+            "closure": closure}
 
 
 def preflight(ledger: Path) -> dict:
@@ -556,10 +726,14 @@ def preflight(ledger: Path) -> dict:
             "ineligible": problems, "minimumJointBetaPairs": min_pairs,
             "etfReturnsInFirstWindow": present(window_closes({ETF: etf}, sessions, ETF, rows[0]["signalDate"])),
             "replayInputManifestSha256": data["manifest"]["sha256"], "tickersPriced": len(prices),
-            "returnsComputed": 0, "betasComputed": 0, "navValuesRead": 0}
+            # Honest counters: the full replay-v16 price panel IS loaded into memory (prices after
+            # each signal date included); only date presence is inspected, nothing is divided.
+            "fullPricePanelLoaded": True, "returnsComputed": 0, "betasComputed": 0,
+            "savedRowOutcomeFieldsLoaded": False}
 
 
 def execute(ledger: Path) -> dict:  # pragma: no cover - owner-gated, never run in CI
+    """Order: authorization -> one-shot -> every identity -> CLAIM (consumes the study) -> outcomes."""
     spec_sha = sha256(SPEC)
     ok, reason = authorization_ok(spec_sha)
     if not ok:
@@ -568,7 +742,10 @@ def execute(ledger: Path) -> dict:  # pragma: no cover - owner-gated, never run 
     if not ok:
         raise SystemExit(f"REFUSED: {reason}")
     from pipeline import weekly_decision as W
-    data = load_inputs(ledger)
+    data = load_inputs(ledger)          # identities only; no outcome is computed here
+    commit = _git("rev-parse", "HEAD").strip()
+    claim = claim_execution(commit, {"specSha256": spec_sha, "authorization": reason,
+                                     "replayInputManifestSha256": data["manifest"]["sha256"]})
     prices, etf, sessions = data["prices"], data["etf"], data["sessions"]
     rows = load_rows()
 
@@ -581,10 +758,17 @@ def execute(ledger: Path) -> dict:  # pragma: no cover - owner-gated, never run 
     years = RV_span(rows[0]["date"], rows[-1]["endDate"])
     paths = json.loads(REPLAY.read_text())["regions"]["KR"]["paths"]
     published = {k: {f: paths[k].get(f) for f in ("cagrPct", "cumulativeNetReturnPct")} for k in ("C2", "P0")}
-    out = analyse(rows, lambda d: etf[d], pre, cost, years, published=published)
+    out = analyse(rows, lambda d: etf[d], pre, cost, years, published=published,
+                  require_unclipped=bool(data["spec"]["decisionRule"].get("requireUnclippedSelection")))
+    import importlib.metadata as md
+    import platform
     out.update(study="c2-fixed-exposure-attribution-v1", specSha256=spec_sha,
                codeSha256={"c2_attribution.py": sha256(HERE / "c2_attribution.py"),
                            "c2_attribution_run.py": sha256(HERE / "c2_attribution_run.py")},
+               dependencyClosureSha256=data["closure"], executionClaim=claim,
+               ownerAuthentication=OWNER_AUTHENTICATION,
+               runtime={"python": platform.python_version(),
+                        **{p_: md.version(p_) for p_ in ("numpy", "pandas", "exchange-calendars")}},
                replayInputManifestSha256=data["manifest"]["sha256"], years=years,
                evidenceClass="POST_OUTCOME_EXPOSED_DESCRIPTIVE_ATTRIBUTION_OF_FIXED_SAVED_PATH",
                promotionEligible=False)
@@ -613,7 +797,7 @@ def main(argv=None) -> int:
         print(json.dumps({k: out[k] for k in ("blocks", "eligibleBlocks", "minimumJointBetaPairs")}))
         return 0
     out = execute(Path(args.ledger))   # writes only the canonical one-shot RESULT path
-    RESULT.write_text(json.dumps(out, ensure_ascii=False, indent=1, sort_keys=True, default=str) + "\n")
+    write_result_once(out)
     print(json.dumps({"verdict": out["verdict"], "result": str(RESULT.relative_to(ROOT))}))
     return 0
 
