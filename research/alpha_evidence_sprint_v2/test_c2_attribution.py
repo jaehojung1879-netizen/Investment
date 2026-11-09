@@ -57,7 +57,9 @@ def test_leverage_is_clipped_and_reported_never_silently_used():
 
 def test_missing_beta_fails_closed_without_numbers():
     res = A.attribute_block(block({"A": 0.3, "B": 0.2}, {"A": 1.1, "B": 1.0}, {"A": 0.9, "B": None}))
-    assert res.status == "BETA_UNAVAILABLE:B" and res.by_cash == {} and res.c2_gross is None
+    assert res.status == "BETA_UNAVAILABLE:B" and res.by_cash == {} and res.beta is None
+    # C2 itself needs no beta: its gross return stays valued (0.5 residual ETF at 3%)
+    assert res.c2_gross == pytest.approx(0.5 * 0.03 + 0.3 * 0.1, abs=1e-12) and res.etf == pytest.approx(0.03)
 
 
 def test_all_etf_block_has_nothing_to_attribute():
@@ -127,7 +129,7 @@ def test_newey_west_matches_iid_variance_at_lag_zero_and_refuses_tiny_samples():
 
 
 def test_verdict_needs_all_three_cash_scenarios_to_agree():
-    good = {"mean": 0.02, "ci95": [0.001, 0.04], "mean2x": 0.01}
+    good = {"mean": 0.02, "ci95": [0.001, 0.04], "mean2x": 0.01, "netCi95": [0.0005, 0.03]}
     assert A.verdict({k: good for k in A.CASH_SCENARIOS}) == "SELECTION_SURVIVES_FIXED_EXPOSURE"
     mixed = dict.fromkeys(A.CASH_SCENARIOS, good) | {"ZERO": {"mean": 0.01, "ci95": [-0.01, 0.03], "mean2x": 0.0}}
     assert A.verdict(mixed) == "NO_SELECTION_EVIDENCE_CI_CONTAINS_ZERO"
@@ -135,8 +137,28 @@ def test_verdict_needs_all_three_cash_scenarios_to_agree():
     bad = {"mean": -0.02, "ci95": [-0.04, -0.001], "mean2x": -0.03}
     assert A.verdict({k: bad for k in A.CASH_SCENARIOS}) == "SELECTION_NEGATIVE_AFTER_FIXED_EXPOSURE"
     # a positive 1x interval that does not survive 2x cost is not a survival
-    weak = {"mean": 0.004, "ci95": [0.0001, 0.008], "mean2x": -0.001}
+    weak = {"mean": 0.004, "ci95": [0.0001, 0.008], "mean2x": -0.001, "netCi95": [0.0001, 0.008]}
     assert A.verdict({k: weak for k in A.CASH_SCENARIOS}) == "NO_SELECTION_EVIDENCE_CI_CONTAINS_ZERO"
+
+
+def test_survives_needs_the_net_of_cost_interval_to_clear_zero():
+    # R2 tightening: gross selection clears zero but net-of-cost C2 - control does not
+    gross_only = {"mean": 0.02, "ci95": [0.001, 0.04], "mean2x": 0.01, "netCi95": [-0.002, 0.03]}
+    assert A.verdict({k: gross_only for k in A.CASH_SCENARIOS}) == "NO_SELECTION_EVIDENCE_CI_CONTAINS_ZERO"
+    missing_net = {"mean": 0.02, "ci95": [0.001, 0.04], "mean2x": 0.01}
+    assert A.verdict({k: missing_net for k in A.CASH_SCENARIOS}) == "NO_SELECTION_EVIDENCE_CI_CONTAINS_ZERO"
+    # a 2x arithmetic gap of exactly 0.0 is not > 0 (the old `or -1` read 0.0 as missing, same answer)
+    zero2x = {"mean": 0.02, "ci95": [0.001, 0.04], "mean2x": 0.0, "netCi95": [0.001, 0.03]}
+    assert A.verdict({k: zero2x for k in A.CASH_SCENARIOS}) == "NO_SELECTION_EVIDENCE_CI_CONTAINS_ZERO"
+
+
+def test_more_than_ten_percent_unattributable_is_insufficient():
+    good = {"mean": 0.02, "ci95": [0.001, 0.04], "mean2x": 0.01, "netCi95": [0.0005, 0.03]}
+    per = {k: good for k in A.CASH_SCENARIOS}
+    assert A.verdict(per, 15 / 155) == "SELECTION_SURVIVES_FIXED_EXPOSURE"      # 9.7% allowed
+    assert A.verdict(per, 16 / 155) == "SOURCE_OR_SAMPLE_INSUFFICIENT"          # 10.3% refused
+    bad = {"mean": -0.02, "ci95": [-0.04, -0.001], "mean2x": -0.03, "netCi95": [-0.05, -0.01]}
+    assert A.verdict({k: bad for k in A.CASH_SCENARIOS}, 0.2) == "SOURCE_OR_SAMPLE_INSUFFICIENT"
 
 
 def test_summarize_end_to_end_on_a_synthetic_path_without_alpha():

@@ -16,6 +16,7 @@
   "signalDate": "2026-08-07"
  },
  "distinctNamesHeld": 72,
+ "fullSavedRowsDeserialized": true,
  "heldTerminatedSecurities": {
   "000030.KS": {
    "blocks": 1,
@@ -150,7 +151,7 @@
  "namesPerBlock": {
   "3": 155
  },
- "navValuesRead": 0,
+ "outcomeValuesUsed": 0,
  "readKeysOnly": [
   "date",
   "endDate",
@@ -159,11 +160,10 @@
   "selectedTickers",
   "corporateActionsApplied"
  ],
- "returnsRead": 0,
+ "returnsComputed": 0,
  "study": "c2-fixed-exposure-attribution-v1",
  "targetStockWeight": {
   "max": 0.650001,
   "min": 0.418272
- },
- "terminalWeightsRead": 0
+ }
 }

@@ -41,6 +41,7 @@ BLOCKS_H126 = 6                    # 6 x 21 sessions
 BLOCKS_H252 = 12                   # 12 x 21 sessions
 CASH_SCENARIOS = ("ZERO", "BOK_POLICY_PROXY", "BOK_POLICY_PLUS_100BP")
 COST_MULTIPLIERS = (1.0, 2.0, 3.0)
+MAX_UNATTRIBUTABLE_SHARE = 0.10    # decisionRule.SOURCE_OR_SAMPLE_INSUFFICIENT
 
 
 class AttributionError(ValueError):
@@ -119,6 +120,7 @@ class BlockResult:
     stock_weight: float = 0.0
     beta: float | None = None
     control_equity: float | None = None
+    target_equity: float | None = None        # e + s*b BEFORE any clip (F5 diagnostic)
     clip: str | None = None
     c2_gross: float | None = None
     etf: float | None = None
@@ -133,35 +135,47 @@ def attribute_block(block: Block) -> BlockResult:
     r_e = block.etf_growth - 1.0
     if s <= TOL:
         # an all-ETF block: C2 == ETF == control, nothing to attribute
-        res = BlockResult(block.date, "ALL_ETF", 0.0, None, 1.0, None, r_e, r_e)
+        res = BlockResult(block.date, "ALL_ETF", 0.0, None, 1.0, 1.0, None, r_e, r_e)
         for name, g in block.cash_growth.items():
-            res.by_cash[name] = {"control": r_e, "selection": 0.0, "exposure": 0.0}
+            res.by_cash[name] = {"control": r_e, "selection": 0.0, "exposure": 0.0,
+                                 "selectionUnclipped": 0.0, "clipTransfer": 0.0, "exposureUnclipped": 0.0}
         return res
+    r_s = sum(w * (block.growth[t] - 1.0) for t, w in block.weights.items()) / s
+    c2 = e * r_e + s * r_s
     missing = sorted(t for t in block.weights if block.betas.get(t) is None)
     if missing:
-        return BlockResult(block.date, "BETA_UNAVAILABLE:" + ",".join(missing), s)
-    r_s = sum(w * (block.growth[t] - 1.0) for t, w in block.weights.items()) / s
+        # C2 and the ETF need no beta, so their own paths stay valued; only the
+        # beta-matched control (and hence SELECTION / EXPOSURE) is unavailable.
+        return BlockResult(block.date, "BETA_UNAVAILABLE:" + ",".join(missing), s, c2_gross=c2, etf=r_e)
     b = sum(w * block.betas[t] for t, w in block.weights.items()) / s
-    c2 = e * r_e + s * r_s
-    equity = e + s * b
+    target = e + s * b                  # theoretical beta-matched ETF weight (may need leverage)
+    equity = target
     clip = None
     if equity > 1.0:
         equity, clip = 1.0, "LEVERAGE_REQUIRED_CAPPED_AT_ETF_100"
     elif equity < 0.0:
         equity, clip = 0.0, "NEGATIVE_EXPOSURE_FLOORED_AT_0"
-    res = BlockResult(block.date, "ATTRIBUTED", s, b, equity, clip, c2, r_e)
+    res = BlockResult(block.date, "ATTRIBUTED", s, b, equity, target, clip, c2, r_e)
     for name, g in block.cash_growth.items():
         r_f = g - 1.0
         control = equity * r_e + (1.0 - equity) * r_f
-        selection = c2 - control
+        selection = c2 - control          # REGISTERED definition: vs the investable (clipped) twin
         exposure = control - r_e
         if abs((selection + exposure) - (c2 - r_e)) > TOL:
             raise AttributionError("ATTRIBUTION_IDENTITY_FAILED")
-        if clip is None:
-            closed = s * (r_s - b * r_e - (1 - b) * r_f)
-            if abs(closed - selection) > TOL:
-                raise AttributionError("SELECTION_CLOSED_FORM_MISMATCH")
-        res.by_cash[name] = {"control": control, "selection": selection, "exposure": exposure}
+        # F5: the theoretical (unclipped) twin and the market exposure the clip leaves unmatched.
+        # selection == selectionUnclipped + clipTransfer exactly; with no clip clipTransfer == 0.
+        theoretical = target * r_e + (1.0 - target) * r_f
+        selection_unclipped = c2 - theoretical
+        clip_transfer = (target - equity) * (r_e - r_f)
+        if abs(selection - (selection_unclipped + clip_transfer)) > TOL:
+            raise AttributionError("CLIP_TRANSFER_IDENTITY_FAILED")
+        closed = s * (r_s - b * r_e - (1 - b) * r_f)
+        if abs(closed - selection_unclipped) > TOL:
+            raise AttributionError("SELECTION_CLOSED_FORM_MISMATCH")
+        res.by_cash[name] = {"control": control, "selection": selection, "exposure": exposure,
+                             "selectionUnclipped": selection_unclipped, "clipTransfer": clip_transfer,
+                             "exposureUnclipped": theoretical - r_e}
     return res
 
 
@@ -247,32 +261,67 @@ def windows(returns, k):
 
 
 def newey_west(series, lag):
-    """Mean, Bartlett-HAC standard error and 95% normal interval. ``None`` if n<=lag+1."""
-    xs = [x for x in series if x is not None]
+    """Mean, Bartlett-HAC standard error and 95% normal interval on the ORIGINAL time axis.
+
+    ``series`` keeps one slot per block; ``None`` (or non-finite) marks an unattributable
+    block. The first draft dropped those slots, so a value k blocks away could be treated as
+    adjacent and the HAC weights were applied to the wrong lags (Codex F3). Here deviations of
+    missing slots are set to zero and every autocovariance is formed only from pairs that are
+    exactly ``k`` slots apart on the original axis (amplitude-modulated series; identical to
+    the ordinary estimator when nothing is missing).
+
+    Inference is refused (``None``) when the observed count is <= lag + 1 (the unchanged rule)
+    or when any lag 1..``lag`` has NO jointly observed pair, since that autocovariance is
+    then unestimated rather than zero.
+    """
+    present = [x is not None and isinstance(x, (int, float)) and math.isfinite(x) for x in series]
+    xs = [float(x) for x, ok in zip(series, present) if ok]
     n = len(xs)
-    if n <= lag + 1:
-        return {"n": n, "mean": None, "se": None, "ci95": None}
+    pairs = {k: sum(1 for t in range(k, len(series)) if present[t] and present[t - k])
+             for k in range(1, lag + 1)}
+    base = {"n": n, "slots": len(series), "missingSlots": len(series) - n, "pairsByLag": pairs}
+    if n <= lag + 1 or any(v == 0 for v in pairs.values()):
+        return {**base, "mean": None, "se": None, "ci95": None}
     m = sum(xs) / n
-    d = [x - m for x in xs]
+    d = [float(x) - m if ok else 0.0 for x, ok in zip(series, present)]
     var = sum(v * v for v in d) / n
     for k in range(1, lag + 1):
         w = 1.0 - k / (lag + 1.0)
-        var += 2.0 * w * sum(d[t] * d[t - k] for t in range(k, n)) / n
+        var += 2.0 * w * sum(d[t] * d[t - k] for t in range(k, len(d))) / n
     se = math.sqrt(max(var, 0.0) / n)
-    return {"n": n, "mean": m, "se": se, "ci95": [m - 1.959964 * se, m + 1.959964 * se]}
+    return {**base, "mean": m, "se": se, "ci95": [m - 1.959964 * se, m + 1.959964 * se]}
 
 
-def verdict(per_scenario: dict) -> str:
+def verdict(per_scenario: dict, unattributable_share: float = 0.0, *, require_unclipped: bool = False) -> str:
     """Registered decision on the annualized SELECTION term (cost 1x).
 
-    ``per_scenario[name] = {"mean":..., "ci95":[lo,hi], "mean2x":...}`` for each cash
-    scenario. Needs all three cash scenarios; agreement is required in both directions.
+    ``per_scenario[name] = {"mean":..., "ci95":[lo,hi], "mean2x":..., "netCi95":[lo,hi]}``
+    for each cash scenario. Needs all three cash scenarios; agreement is required in both
+    directions. ``unattributable_share`` > 10% of blocks is SOURCE_OR_SAMPLE_INSUFFICIENT
+    (decisionRule; the first draft never enforced it).
+
+    Pre-outcome tightening (spec ``preOutcomeRevisions`` R2): SURVIVES also needs the
+    NET-of-cost (1x) per-block C2-minus-control interval to clear zero. It can only remove a
+    SURVIVES verdict, never create one, and the NEGATIVE branch is unchanged.
+
+    Proposed tightening R4 (``require_unclipped``; needs the Owner's pre-outcome acceptance via
+    the spec hash): SURVIVES also needs the THEORETICAL unclipped selection interval
+    (``unclippedCi95``) to clear zero, so market exposure left unmatched by the 0..100% ETF clip
+    can never be what makes a block series "survive". It also only removes SURVIVES.
     """
+    if unattributable_share > MAX_UNATTRIBUTABLE_SHARE + TOL:
+        return "SOURCE_OR_SAMPLE_INSUFFICIENT"
     if set(per_scenario) != set(CASH_SCENARIOS) or any(v.get("ci95") is None for v in per_scenario.values()):
         return "SOURCE_OR_SAMPLE_INSUFFICIENT"
     lows = [v["ci95"][0] for v in per_scenario.values()]
     highs = [v["ci95"][1] for v in per_scenario.values()]
-    if all(lo > 0 for lo in lows) and all((v.get("mean2x") or -1) > 0 for v in per_scenario.values()):
+    net_clears = all(v.get("netCi95") is not None and v["netCi95"][0] > 0 for v in per_scenario.values())
+    if require_unclipped:
+        net_clears = net_clears and all(v.get("unclippedCi95") is not None and v["unclippedCi95"][0] > 0
+                                        for v in per_scenario.values())
+    if (all(lo > 0 for lo in lows) and net_clears
+            and all((v.get("mean2x") if v.get("mean2x") is not None else -1) > 0
+                    for v in per_scenario.values())):
         return "SELECTION_SURVIVES_FIXED_EXPOSURE"
     if all(hi < 0 for hi in highs):
         return "SELECTION_NEGATIVE_AFTER_FIXED_EXPOSURE"
@@ -285,6 +334,8 @@ def summarize(results: list[BlockResult], c2_net: list, control_net: dict, etf_n
     attributed = [r for r in results if r.status in ("ATTRIBUTED", "ALL_ETF")]
     unavailable = [r for r in results if r.status.startswith("BETA_UNAVAILABLE")]
     out = {"blocks": len(results), "attributed": len(attributed), "betaUnavailable": len(unavailable),
+           "unattributable": len(results) - len(attributed),
+           "unattributableShare": (len(results) - len(attributed)) / len(results) if results else 1.0,
            "clipped": sum(1 for r in results if r.clip), "c2": {}, "etf": {}, "scenarios": {}}
     def complete(series):
         return bool(series) and all(x is not None and math.isfinite(x) for x in series)
@@ -299,11 +350,22 @@ def summarize(results: list[BlockResult], c2_net: list, control_net: dict, etf_n
                       "h126": windows(series, BLOCKS_H126), "h252": windows(series, BLOCKS_H252)}
     for name in CASH_SCENARIOS:
         sel = [r.by_cash[name]["selection"] if name in r.by_cash else None for r in results]
+        unclipped = [r.by_cash[name]["selectionUnclipped"] if name in r.by_cash else None for r in results]
+        transfer = [r.by_cash[name]["clipTransfer"] for r in results if name in r.by_cash]
         ctrl = control_net.get(name) or []
         paths_ok = complete(ctrl) and complete(c2_net)
+        net_gap = [c - k if c is not None and k is not None and math.isfinite(c) and math.isfinite(k)
+                   else None for c, k in zip(c2_net, ctrl)] if ctrl else []
         out["scenarios"][name] = {
             "selectionAnnualized": newey_west([x * blocks_per_year if x is not None else None for x in sel],
                                               BLOCKS_H126 - 1),
+            # descriptive + the R2 SURVIVES tightening: same estimator on NET C2 - NET control
+            "netSelectionAnnualized": newey_west([x * blocks_per_year if x is not None else None
+                                                  for x in net_gap], BLOCKS_H126 - 1),
+            # F5 diagnostics: theoretical beta-matched selection and the clip's unmatched exposure
+            "selectionUnclippedAnnualized": newey_west([x * blocks_per_year if x is not None else None
+                                                        for x in unclipped], BLOCKS_H126 - 1),
+            "clipTransferPpPerYear": 100 * sum(transfer) / years_total,
             "controlCagr": cagr(chain(ctrl), years_total) if paths_ok else None,
             "c2VsControl": jensen_split(c2_net, ctrl, years_total) if paths_ok else None,
         }

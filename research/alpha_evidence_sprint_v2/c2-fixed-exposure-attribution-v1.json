@@ -15,11 +15,30 @@
  "pinnedInputs": {
   "replayInputManifestSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
   "files": [
-   {"path": "docs/results/regional-standalone-paths.json.gz", "sha256": "7a09751f99f5d892821cac6bbb4f28359049d58364cb40db1814fac4f93210cb"},
-   {"path": "docs/weekly-decision/weekly-passive-first-v1-replay-corrected-benchmark.json", "sha256": "901b3aee7d3bc06eed3fd2bd14b07a0d4ca4da23745b861a877203c48772b8d2"},
-   {"path": "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json", "sha256": "58580c4370ec2c5afa124f849afbc4fa7b5c879012e75ebbd48ee7c7a0e659a9"},
-   {"path": "data/bok-policy-rates.json", "sha256": "a7edf0e532c7b54da9d962ebf12ff2552c90c783439fef99d7c761c5b9ea69ff"},
-   {"path": "docs/results/kr-termination-inventory.json", "sha256": "b58ecb2c4500302c40784613318c8451beee663ece5ee76ada26873a4292f93f"}
+   {
+    "path": "docs/results/regional-standalone-paths.json.gz",
+    "sha256": "7a09751f99f5d892821cac6bbb4f28359049d58364cb40db1814fac4f93210cb"
+   },
+   {
+    "path": "docs/weekly-decision/weekly-passive-first-v1-replay-corrected-benchmark.json",
+    "sha256": "901b3aee7d3bc06eed3fd2bd14b07a0d4ca4da23745b861a877203c48772b8d2"
+   },
+   {
+    "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json",
+    "sha256": "58580c4370ec2c5afa124f849afbc4fa7b5c879012e75ebbd48ee7c7a0e659a9"
+   },
+   {
+    "path": "data/bok-policy-rates.json",
+    "sha256": "a7edf0e532c7b54da9d962ebf12ff2552c90c783439fef99d7c761c5b9ea69ff"
+   },
+   {
+    "path": "docs/results/kr-termination-inventory.json",
+    "sha256": "b58ecb2c4500302c40784613318c8451beee663ece5ee76ada26873a4292f93f"
+   },
+   {
+    "path": "docs/weekly-decision/weekly-passive-first-v1-benchmark-basis-protocol.json",
+    "sha256": "a08f92b06aab6de4959b52d0a5bc0fd2c6b21851c53deca114167898e97a8fe6"
+   }
   ]
  },
  "definitions": {
@@ -29,36 +48,47 @@
   "control": "(e + s*b) in ETF and s*(1-b) in KRW cash; if e + s*b > 1 it is capped at 1 (LEVERAGE_REQUIRED_CAPPED_AT_ETF_100) and if < 0 floored at 0; every clip is counted.",
   "selection": "C2 gross - control gross = s*(R_S - b*R_E - (1-b)*R_F) when unclipped.",
   "exposure": "control gross - ETF gross = s*(b-1)*(R_E-R_F) when unclipped.",
-  "costs": "weekly_decision.trade_cost_fraction('KR', date, side, is_benchmark): commission + half-spread per leg, dated sell tax for stocks, ETF sell tax for the 069500.KS leg; charged on the drifted prior book exactly as the replay's account() does; the control's cash leg is free; multipliers 1x/2x/3x on both C2 and control.",
+  "costs": "weekly_decision.trade_cost_fraction('KR', date, side, is_benchmark): commission + half-spread per leg, dated sell tax for stocks, ETF sell tax for the 069500.KS leg; charged on the drifted prior book exactly as the replay's account() does; the control's cash leg is free; multipliers 1x/2x/3x on both C2 and control.; the ETF-only alternative (the replay's P0) pays its single initial 100% buy at the same schedule and nothing after (R3)",
   "turnover": "one-way, split into names REPLACED and weights RETARGETED (AGENTS.md v2.11).",
   "horizons": "H126 = every run of 6 consecutive 21-session blocks, H252 = 12; overlapping windows are descriptive; non-overlapping counts are 25 (H126) and 12 (H252).",
   "compounding": "annual log-growth gap = arithmetic active + Jensen term (exact identity, as #309).",
-  "drawdown": "MDD on block-end net NAV (daily MDD is not reconstructed by this study)."
+  "drawdown": "MDD on block-end net NAV (daily MDD is not reconstructed by this study).",
+  "reconstruction": "before anything is attributed, the C2 net path (stocks + ETF residual, costs as the replay's account()) and the ETF-only path are compared with docs/weekly-decision/weekly-passive-first-v1-replay-corrected-benchmark.json regions.KR.paths.{C2,P0}.{cagrPct,cumulativeNetReturnPct}; CAGR uses replay_valuation.span_years (days / 365.2425)",
+  "descriptiveOutputs": "exact per-block reconciliation net C2 - net ETF = SELECTION + EXPOSURE + COST (COST = exact residual) annualised, plus Jensen; net-of-cost selection interval; turnover REPLACED/RETARGETED; clip count and dates; BETA_UNAVAILABLE dates; C2-minus-control over every H126/H252 run and the non-overlapping runs; a fixed recent slice from 2024-01-01. None of these is a verdict input except as stated in decisionRule.",
+  "clipping": "x = e + s*b is the theoretical beta-matched ETF weight, q = clip(x, 0, 1) the investable one. SELECTION (registered, vs the investable twin) = selectionUnclipped + clipTransfer exactly, with clipTransfer = (x - q) * (R_E - R_F): market exposure the clip leaves unmatched. selectionUnclipped = s*(R_S - b*R_E - (1-b)*R_F) is the pure beta-matched term; it needs leverage (x > 1) or a short ETF (x < 0) and is not investable."
  },
  "cashScenarios": {
   "INVESTABLE_KRW_CASH": "SOURCE_BLOCKED: no pinned investable KRW cash/deposit/MMF/CD91/KOFR full-span series exists in this repository; never substituted",
-  "registeredBand": ["ZERO", "BOK_POLICY_PROXY", "BOK_POLICY_PLUS_100BP"],
+  "registeredBand": [
+   "ZERO",
+   "BOK_POLICY_PROXY",
+   "BOK_POLICY_PLUS_100BP"
+  ],
   "rule": "a verdict needs all three to agree; the band brackets, it does not measure, an investable cash return"
  },
  "inference": {
   "series": "per-block SELECTION, annualised by blocks per year",
-  "estimator": "mean with Bartlett Newey-West SE, lag 5 (126 sessions); 95% normal interval",
+  "estimator": "mean with Bartlett Newey-West SE, lag 5 (126 sessions); 95% normal interval. Missing (unattributable) blocks keep their slot on the original block axis: their deviations are zero and each lag-k autocovariance uses only pairs exactly k blocks apart (R5); inference is refused when n <= lag+1 or any lag 1..5 has no jointly observed pair",
   "multiplicity": "one primary statistic, three cash scenarios required to agree (conjunction, no correction needed for a PASS); no other test is confirmatory",
-  "independence": "one historical KR sample already exposed to outcomes; at most 25 non-overlapping H126 windows"
+  "independence": "one historical KR sample already exposed to outcomes; at most 25 non-overlapping H126 windows",
+  "lagLimitation": "lag 5 is fixed, not validated for C2: for a synthetic AR(1) with phi=0.8 Bartlett-5 gives a long-run variance factor 4.08 against the true 9 (SE ratio 0.673; Codex). No coverage study was run; the interval may be too narrow if block selection terms are strongly persistent. Not changed here; an Owner decision (D3)."
  },
  "decisionRule": {
-  "SELECTION_SURVIVES_FIXED_EXPOSURE": "all three cash scenarios: 95% lower bound > 0 at cost 1x AND net C2-minus-control arithmetic active > 0 at cost 2x",
+  "SELECTION_SURVIVES_FIXED_EXPOSURE": "all three cash scenarios: (gross) SELECTION 95% lower bound > 0 at cost 1x AND the THEORETICAL unclipped selection 95% lower bound > 0 (R4) AND the NET-of-cost (1x) per-block C2-minus-control 95% lower bound > 0 (R2) AND net C2-minus-control arithmetic active > 0 at cost 2x",
   "SELECTION_NEGATIVE_AFTER_FIXED_EXPOSURE": "all three upper bounds < 0",
   "NO_SELECTION_EVIDENCE_CI_CONTAINS_ZERO": "otherwise",
-  "SOURCE_OR_SAMPLE_INSUFFICIENT": "any scenario without an interval, or > 10% of blocks unattributable",
-  "consequence": "No outcome promotes C2 or changes the production ETF default. SURVIVES keeps C2 as a research control worth a prospective test; NO_EVIDENCE/NEGATIVE records that C2's saved CAGR lead is not stock selection after matched exposure."
+  "SOURCE_OR_SAMPLE_INSUFFICIENT": "any scenario without an interval, or > 10% of blocks unattributable, or the reconstructed C2 / ETF (P0) net path does not reproduce the replay's published KR C2 and P0 cagrPct and cumulativeNetReturnPct within 0.0005pp (R1)",
+  "consequence": "No outcome promotes C2 or changes the production ETF default. SURVIVES keeps C2 as a research control worth a prospective test; NO_EVIDENCE/NEGATIVE records that C2's saved CAGR lead is not stock selection after matched exposure.",
+  "requireUnclippedSelection": true
  },
  "knownLimitations": [
   "stock returns are as-traded close with forward-accumulated Yahoo distributions only where served; 5 held names carry zero dividend events (000030, 000060, 002550, 047040, 207940; evidence/c2-price-coverage.json), 3 of them later terminated but every holding ended 1.5+ years before delisting, so no terminal consideration is needed",
   "the corrected ETF series starts 2012-01-02: only 251 quotes precede the first anchor, so the earliest beta windows have <= 250 ETF returns (above the 200-pair floor; counted, not filled from the replay-v16 series, which double-applies distributions, nor from a price-only Yahoo series)",
   "the ETF leg is the Phase C reconciled gross total return (before investor tax); its external accrual anomaly (AGENTS v2.46/v2.47) is carried, not repaired",
   "industry allocation vs selection (Brinson) is NOT computable: no official KODEX200 constituent/sector weight history is in the repository",
-  "realised fills do not exist: C2 is a target-weight replay, so execution slippage beyond the dated cost schedule is not measured"
+  "realised fills do not exist: C2 is a target-weight replay, so execution slippage beyond the dated cost schedule is not measured",
+  "prices are the replay-v16 vintage (as-traded close with forward-accumulated distributions, collected later); the beta window ends on the signal date, which is date slicing, not a publication-vintage guarantee: corporate-action revisions are NOT certified point-in-time",
+  "owner approval is procedural: git author identity is self-asserted and agents commit through the owner's GitHub account, so execute cannot authenticate the Owner; the Owner must confirm in person (conversation) as well"
  ],
  "independentAuditCriteria": [
   "re-derive G_j from three saved rows by hand and confirm the buy-and-hold identity",
@@ -67,5 +97,97 @@
   "confirm costs match replay account() on a block where control == C2 (all-ETF)",
   "confirm verdict thresholds are read from this file's decisionRule and not changed after execution"
  ],
- "executionPlan": "Owner commits research/alpha_evidence_sprint_v2/AUTHORIZATION-c2.json with phrase 'APPROVE KR_PHASE_D_EXCEPTION c2-fixed-exposure-attribution-v1 <sha256 of this file>' and the sha256 of c2_attribution.py and c2_attribution_run.py; then `python research/alpha_evidence_sprint_v2/c2_attribution_run.py execute <replay-v16 ledger dir> --out <new file>` runs once. Any later code change voids the authorization."
+ "executionPlan": "Owner commits research/alpha_evidence_sprint_v2/AUTHORIZATION-c2.json (content in C2-APPROVAL-PACKET.md) and confirms it in person; then `python research/alpha_evidence_sprint_v2/c2_attribution_run.py execute <replay-v16 ledger dir>` verifies authorization, one-shot state (local + remote lock refs), dependency closure, every pinned input and the ETF protocol, takes the remote lock (consuming the study), computes, and writes only research/alpha_evidence_sprint_v2/c2-fixed-exposure-attribution-v1-result.json once. Any later code, spec or closure change voids the authorization. Outcome-free check: `... preflight <ledger dir> --out <file>`.",
+ "preOutcomeRevisions": [
+  {
+   "id": "R1",
+   "date": "2026-11-09",
+   "outcomesReadBefore": 0,
+   "change": "reconstruction gate: an attribution of a path that is not the saved C2 path is not an attribution of C2; a mismatch can only produce SOURCE_OR_SAMPLE_INSUFFICIENT",
+   "direction": "TIGHTENING_ONLY"
+  },
+  {
+   "id": "R2",
+   "date": "2026-11-09",
+   "outcomesReadBefore": 0,
+   "change": "SURVIVES additionally needs the net-of-cost 1x C2-minus-control Newey-West 95% lower bound > 0 (the registered SELECTION series is gross of cost by construction); NEGATIVE branch unchanged",
+   "direction": "TIGHTENING_ONLY_CAN_REMOVE_SURVIVES_NEVER_CREATE_IT"
+  },
+  {
+   "id": "R3",
+   "date": "2026-11-09",
+   "outcomesReadBefore": 0,
+   "change": "engine defects fixed before any execution (author audit, AUTHOR_VALIDATION_ONLY): (a) [CORRECTED 2026-11-09 after Codex] the original claim that replay_valuation.normalize_daily_series did not exist was WRONG: replay_valuation re-exports it from market_dates (line 11) and #316 would have run; the change is an import-path tidy-up only; (b) the >10% unattributable rule was never enforced in verdict(); (c) a BETA_UNAVAILABLE block also erased the C2 and ETF paths, which need no beta -> only the control path breaks, never restarted; (d) the ETF-only path paid no initial buy while P0 and C2 do; (e) turnover REPLACED/RETARGETED was defined but never reported; (f) authorization only checked that a file existed -> must be committed, unmodified, every commit touching it carries the owner's author identity; this is procedural, NOT authentication (see R6); (g) nothing enforced one execution -> refuses when the canonical result exists on disk or in git history; (h) years were days/365.25 vs the replay's 365.2425",
+   "direction": "CORRECTNESS_NO_THRESHOLD_OR_DEFINITION_CHANGE"
+  },
+  {
+   "id": "R4",
+   "date": "2026-11-09",
+   "outcomesReadBefore": 0,
+   "status": "PROPOSED_REQUIRES_OWNER_ACCEPTANCE_VIA_SPEC_HASH_APPROVAL",
+   "change": "SURVIVES also needs the theoretical unclipped (pure beta-matched) selection lower bound > 0 in all three scenarios, so a lead carried by market exposure the 0..100% clip leaves unmatched (clipTransfer) can never read as stock selection (Codex F5). Registered SELECTION is unchanged; selectionUnclipped and clipTransfer are reported per block, per period and annualised.",
+   "direction": "TIGHTENING_ONLY_CAN_REMOVE_SURVIVES_NEVER_CREATE_IT",
+   "alternativeIfRejected": "remove R4 and re-issue the spec; the registered-only verdict is published as verdictWithoutR4 either way"
+  },
+  {
+   "id": "R5",
+   "date": "2026-11-09",
+   "outcomesReadBefore": 0,
+   "change": "Newey-West keeps the original block axis when blocks are missing instead of dropping slots (Codex F3); identical when nothing is missing",
+   "direction": "CORRECTNESS_NO_THRESHOLD_CHANGE"
+  },
+  {
+   "id": "R6",
+   "date": "2026-11-09",
+   "outcomesReadBefore": 0,
+   "change": "input and one-shot integrity (Codex F1/F2): the basis protocol, its file/field and file bytes are pinned (etfSeries); the pipeline dependency closure is pinned (dependencyClosure); execution takes a local O_EXCL claim and a non-forced remote tag refs/tags/c2-fixed-exposure-attribution-v1-execution-claim BEFORE any outcome is read (consumes the study); the result is written once with O_EXCL+link; readiness/preflight counters state what is deserialized",
+   "direction": "INTEGRITY_NO_DEFINITION_CHANGE"
+  }
+ ],
+ "etfSeries": {
+  "protocolPath": "docs/weekly-decision/weekly-passive-first-v1-benchmark-basis-protocol.json",
+  "protocolSha256": "a08f92b06aab6de4959b52d0a5bc0fd2c6b21851c53deca114167898e97a8fe6",
+  "file": "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json",
+  "field": "correctedBenchmarkQuotes",
+  "sha256": "58580c4370ec2c5afa124f849afbc4fa7b5c879012e75ebbd48ee7c7a0e659a9",
+  "definition": "GROSS_ETF_MARKET_PRICE_TOTAL_RETURN_EX_DATE_CLOSE_CASH_REINVESTMENT (Phase C aggregateStatus PASS); used as-is, its ratio only, no dividend added again",
+  "rule": "execute refuses unless the protocol bytes, its file and field, and that file's bytes all equal these values (Codex F2)"
+ },
+ "dependencyClosure": {
+  "entryPoints": [
+   "research/alpha_evidence_sprint_v2/c2_attribution_run.py",
+   "pipeline/weekly_decision.py",
+   "pipeline/replay_inputs.py",
+   "pipeline/replay_calendar.py",
+   "pipeline/market_dates.py",
+   "pipeline/provenance.py"
+  ],
+  "method": "pipeline.alpha_opportunity_v3_spec.import_closure (top-level and lazy pipeline imports); the two research files are bound by the authorization instead",
+  "files": {
+   "pipeline/__init__.py": "187da1ad9a148da44035f9cf25f7cb094c45afe53d3f445ba62392797972dede",
+   "pipeline/alpha_opportunity_spec.py": "3d7150c2f62dbd8184ed2f3885828e93c1ba64d8ffe3695b0b5716641734c58e",
+   "pipeline/alpha_opportunity_v3_spec.py": "1c11c306f9f27a8e69b985d02bfb3bffaf691001c27ac49e6b21266dd315c162",
+   "pipeline/benchmark_alpha.py": "9a2aeaeaf9fb92831a44df499e0a2dc420bd3dde45943a93e83281a7ac3445cf",
+   "pipeline/evidence.py": "31e8f67184073395d67f44a165d74f4ed368e468b790e695dbdcc698de7d9e88",
+   "pipeline/historical_calibration.py": "2c825613bc1a543a225159e421aa15a176a222ce61cac12937de4e8c33db5e11",
+   "pipeline/historical_outcomes.py": "9db74870fe015f26ee5c4ac4709a420d33ef28e5feaab2c4caeedd7e85555569",
+   "pipeline/historical_store.py": "2751be8b5b79260f2038c9fb975cae58d49cb7868751c6658e363b48712016c0",
+   "pipeline/kelly_portfolio.py": "6a4bd54be11e35e7348f64d0c99e7764635c4efcea62306da0b6ca81bfb3b06c",
+   "pipeline/longterm.py": "75702c4862545e0ceadbfc5db2585b89ffeadad21f43206b597e2982d171c5f6",
+   "pipeline/market_dates.py": "0182986bf731fd762a8004d5cf838ddfaaee656a2b19b8cfd6b47248c6281e4b",
+   "pipeline/pit_data.py": "64da89c602ac4b6c67411d0b5defa2909b65c1a7aad0958b32cb7f7dcd567dbf",
+   "pipeline/portfolio_validation.py": "a22c18fc31f47b1701ea4c426ff31dec48f3f367163bd1eb3e8cf75c1fadf2a5",
+   "pipeline/price_adjustment.py": "ebdde717be22277315186d5f302642cbc8a057fedee84192b7af14b15c405892",
+   "pipeline/probability_calibration.py": "7e06f855981c7c88dc8a595fd879d201892ca99bfbb4b1dcab1bebaf0e6f62f6",
+   "pipeline/prospective_receipt_core.py": "0f5344b09e28a4b9e9df5839bb6fc11f8ace70a4c71c01c6915ae753857ef90f",
+   "pipeline/provenance.py": "762a214d6d0a59cef35a1b4612b60e13e2f6197a0a289e97e2b1da1f496c8171",
+   "pipeline/replay_calendar.py": "56116f837e8ae3b9ca43c27c87b3be8bcf608172a761879a6b1284a39c9a3ab2",
+   "pipeline/replay_determinism.py": "2233d8341d7be1b5123caecd3ebdb10aef67ecfac7b3c10c687795f66f397153",
+   "pipeline/replay_inputs.py": "dd77b249476b252ba585b1b836fd060a029b0c4d9c3b9a0847caf8be545a5a1d",
+   "pipeline/replay_valuation.py": "18e673a0721077af06b8ca9f774650c27fa58820a489b9ea639a9ccf02693bf3",
+   "pipeline/sectors.py": "1cb470d676eeb24d5fa4976bf8fc0f71f808957f132c908158acb6422fde60ba",
+   "pipeline/selection_null.py": "b00e7419a8a620e284f3b5a15aafa66e9a8f776b81da027a766a72b3eecf5e17",
+   "pipeline/weekly_decision.py": "3ea55f5df819a6dd07542fb5368cebfa2e78d461e43a716942a713c395548619"
+  }
+ }
 }

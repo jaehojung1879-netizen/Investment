@@ -1,0 +1,14 @@
+{
+ "phrase": "APPROVE KR_PHASE_D_EXCEPTION c2-fixed-exposure-attribution-v1 75e3c096fc608bba2c57559e07acbb98b6f3371c79e7f20b79ca97863b6898af",
+ "codeSha256": {
+  "c2_attribution.py": "da1e4fa6d16d388310e29305c725aca43aa6b830f80941220a3741a8dd200caa",
+  "c2_attribution_run.py": "93125360cd4b9a64fb9bb9b8481429c6f8b1d95afc8e4a57d3c78292681b171f"
+ },
+ "decisions": {
+  "D1_R2": "ACCEPT",
+  "D2_R4": "ACCEPT",
+  "D3_lag5": "KEEP",
+  "D4_cashBand": "ACCEPT"
+ },
+ "scope": "one-shot historical attribution of the fixed saved KR C2 path; KR Phase D exception for this study only; no promotion, no production change"
+}
