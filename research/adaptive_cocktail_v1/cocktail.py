@@ -208,29 +208,28 @@ def simulate(px, schedule, start, end, terminal_mode="ZERO", cost_mult=1.0, reco
         if i in sched:
             target = dict(sched[i])
             locked = {t: v for t, v in val.items() if t not in (ETF,) and not px.tradable[i, px.col[t]]}
-            lock_share = sum(locked.values()) / nav
+            L = sum(locked.values())
             free = {a: w for a, w in target.items() if a not in locked and (a in (ETF, CASH) or px.tradable[i, px.col[a]])}
             tot = sum(free.values())
-            scale = (1 - lock_share) / tot if tot > 1e-12 else 0.0
-            free = {a: w * scale for a, w in free.items()}
-            if tot <= 1e-12:
-                free = {ETF: 1 - lock_share}
+            free = {a: w / tot for a, w in free.items()} if tot > 1e-12 else {ETF: 1.0}
             cur = {a: v for a, v in val.items() if a not in locked}
             cur[CASH] = cash
             post = nav
-            for _ in range(6):
-                c = sum(abs(free.get(a, 0) * post - cur.get(a, 0)) * cost_rate(a, "buy" if free.get(a, 0) * post > cur.get(a, 0) else "sell", d, cost_mult)
+            for _ in range(8):
+                room = post - L                                   # what the tradable targets can hold after the locked names
+                c = sum(abs(free.get(a, 0) * room - cur.get(a, 0)) * cost_rate(a, "buy" if free.get(a, 0) * room > cur.get(a, 0) else "sell", d, cost_mult)
                         for a in set(free) | set(cur))
                 post = nav - c
-            traded = sum(abs(free.get(a, 0) * post - cur.get(a, 0)) for a in set(free) | set(cur) if a != CASH)
+            room = post - L
+            traded = sum(abs(free.get(a, 0) * room - cur.get(a, 0)) for a in set(free) | set(cur) if a != CASH)
             turnover += traded / nav / 2
             costs += c / nav
             units = {t: locked[t] / px.price(t, i) for t in locked}
             for a, w in free.items():
                 if a == CASH or w <= 0:
                     continue
-                units[a] = units.get(a, 0.0) + w * post / px.price(a, i)
-            cash = free.get(CASH, 0.0) * post
+                units[a] = units.get(a, 0.0) + w * room / px.price(a, i)
+            cash = free.get(CASH, 0.0) * room
             nav = post
             val = {t: u * px.price(t, i) for t, u in units.items()}
             if record:
