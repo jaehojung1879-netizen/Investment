@@ -94,3 +94,17 @@ def test_components_are_described_never_judged():
 
 def test_every_hypothesis_has_a_direction_and_a_source_grade():
     assert all(v[0] in (1, -1) and v[1] and v[2] for v in HY.HYPOTHESES.values())
+
+
+def test_postoutcome_classifies_a_name_frozen_past_its_exit_until_prices_end():
+    from research.broad_alpha_screen_v1 import postoutcome as PO
+    market, events = _market(0.0)
+    slot = S.partition(events[LONG], 'H126', market)['priced'][3]
+    ses = market['sessions']
+    market['tradable'][slot.ticker] = set(ses[:slot.exit - 2])          # suspended before exit, never trades again
+    for d in ses[slot.exit + 4:]:
+        market['levels'][slot.ticker].pop(d, None)                       # and the prices end after the window
+    assert S.window_state(slot, market)[0] == 'PRICED'                   # the registered check missed it
+    assert PO.window_state(slot, market) == ('TERMINAL_UNRESOLVED', ses[slot.exit + 4])
+    other = S.partition(events[LONG], 'H126', market)['priced'][10]
+    assert PO.window_state(other, market)[0] == 'PRICED'
