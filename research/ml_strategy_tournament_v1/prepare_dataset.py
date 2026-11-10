@@ -41,9 +41,19 @@ def main(argv=None):
     bench_end = T.closes_on(prices, T.BENCH, sessions).last_valid_index()
     sessions = sessions[sessions <= bench_end]
     bok = json.loads((ROOT / "data/bok-policy-rates.json").read_text())["events"]
+    corrected = json.loads((ROOT / "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json").read_text())
+    q = pd.Series({pd.Timestamp(r["date"]): float(r["Close"]) for r in corrected["correctedBenchmarkQuotes"]}).sort_index()
+    sessions = sessions[sessions <= q.index.max()]
+    reconciled = q.reindex(sessions)
+    if reconciled.isna().any():
+        raise SystemExit("RECONCILED_BENCHMARK_MISSING_SESSIONS: " + str(list(reconciled[reconciled.isna()].index[:5])))
+    replay_bench = T.closes_on(prices, T.BENCH, sessions)
+    prices = dict(prices)
+    prices["069500.KS@replay-v16"] = prices[T.BENCH]
+    prices[T.BENCH] = pd.DataFrame({"Close": reconciled, "Volume": T.volumes_on(prices, "069500.KS@replay-v16", sessions).fillna(1.0)})
     df, bench = T.assemble(matrix, prices, sessions, bok)
     layers, coverage = T.feature_layers(df)
-    tickers = sorted(set(df["ticker"]) | {T.BENCH})
+    tickers = sorted(set(df["ticker"]) | {T.BENCH, "069500.KS@replay-v16"})
     closes = pd.DataFrame({t: T.closes_on(prices, t, sessions) for t in tickers})
     vols = pd.DataFrame({t: T.volumes_on(prices, t, sessions) for t in tickers})
     (s / "dataset.pkl").write_bytes(pickle.dumps({"df": df, "layers": layers, "closes": closes, "volumes": vols, "sessions": sessions,
@@ -70,6 +80,10 @@ def main(argv=None):
         "inputs": {"signalHistoryCommit": "4ea107ed0cde289f0a049a65ff13d2441a786710", "inputIdentitySha256": blob["identity"]["sha256"],
                    "matrixDigest": matrix.digest(), "tradingValueBasis": blob["tradingValueBasis"], "configSha256": T.sha256_file(HERE / "config.json"),
                    "accountingContentSha256": blob["identity"]["accountingContentSha256"], "replayManifestSha256": blob["identity"]["replayManifestSha256"],
+                   "benchmarkSourceSha256": T.sha256_file(ROOT / "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json"),
+                   "replayVsReconciledBenchmarkAnnual": {int(y): [round(float(a), 4), round(float(b), 4)] for y, a, b in zip(
+                       range(2013, 2027), replay_bench.groupby(replay_bench.index.year).last().pct_change().reindex(range(2013, 2027)),
+                       reconciled.groupby(reconciled.index.year).last().pct_change().reindex(range(2013, 2027)))},
                    "bokPolicyRateFileSha256": T.sha256_file(ROOT / "data/bok-policy-rates.json")},
         "universe": {"signalDates": int(df["date"].nunique()), "firstSignal": str(df["date"].min().date()), "lastSignal": str(df["date"].max().date()),
                      "rows": int(len(df)), "securities": int(df["ticker"].nunique()), "qualityEligibleShare": round(float(q.mean()), 4),

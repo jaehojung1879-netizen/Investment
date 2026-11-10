@@ -5,7 +5,7 @@
   "frozenBeforeFirstFit": true,
   "region": "KR",
   "benchmark": "069500.KS",
-  "benchmarkBasis": "replay-v16 Close: as-traded close with forward-accumulated Yahoo distributions (partial-distribution total return)",
+  "benchmarkBasis": "PRIMARY: docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json correctedBenchmarkQuotes (gross ETF market-price total return, ex-date close reinvestment, every year 2013-2026 reconciled within 0.5pp against an independent source: aggregateStatus PASS). SENSITIVITY: replay-v16 069500.KS Close (carries the unexplained accrual recorded in the v2.46/v2.47 concentration audits).",
   "universe": "PIT Top120 by monthly KRX market cap, snapshot strictly older than the signal date (kr-alpha-atlas Phase B membership)",
   "features": {
     "source": "kr_alpha_atlas_matrix.build_matrix at signal-history 4ea107ed (Phase B PIT matrix, 76 catalogue columns), plus benchmark-derived market state and the dated BOK policy rate",
@@ -443,6 +443,13 @@
       "foundBy": "tests/test_ml_strategy_tournament_v1.py::test_no_name_passes_when_the_past_top_bucket_lost_money, before any model fit or outcome read",
       "change": "only the three top percentile buckets (>= 0.8) can admit a name; the [0, 0.8) bucket is a reference only",
       "reason": "as first frozen, a strategy whose top buckets lost money could still hold the best names of the bottom 80% whenever that broad bucket beat the ETF, i.e. it would be credited universe carry rather than its own ranking (alpha attribution invariant v2.7)"
+    },
+    {
+      "id": "R2_RECONCILED_BENCHMARK",
+      "foundBy": "reading the repository's benchmark audits before any model fit or outcome read",
+      "change": "labels, calibration and the ETF sleeve use the reconciled 069500.KS total-return series; the replay-v16 series is a reported sensitivity",
+      "reason": "the replay-v16 ETF series accrues about +4.5%/yr over the price index against +1.85% for a same-data constituent reference (BENCHMARK_EXTERNAL_RECONCILIATION_UNRESOLVED), while the later corrected series passes an independent annual reconciliation"
     }
-  ]
+  ],
+  "benchmarkSourceSha256": "58580c4370ec2c5afa124f849afbc4fa7b5c879012e75ebbd48ee7c7a0e659a9"
 }
