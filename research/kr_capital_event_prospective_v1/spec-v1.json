@@ -1,0 +1,72 @@
+{
+ "studyId": "kr-capital-event-prospective-v1",
+ "status": "REGISTERED_PROSPECTIVE_RECORDING",
+ "effectiveOnlyWith": "AUTHORIZATION-prospective-recording.json pinning this file by SHA-256",
+ "scope": "PROSPECTIVE_RECORDING_ONLY",
+ "ledger": "ledger/research-strategies/kr-capital-event-prospective-v1/receipts.jsonl",
+ "evidenceClass": "PROSPECTIVE_PAPER",
+ "separateFrom": "kr-corporate-information-events-v1 (its spec, authorization, code and ledger are not read or written)",
+ "origin": {
+  "pr": "jaehojung1879-netizen/Investment#327",
+  "registeredResultSha256": "1332f3be7476a6c73ff4b9386e517467ebe73a30f29e2d676e74b57228bb4cf4",
+  "postOutcomeResultSha256": "37948e97288a9b98510d1c830c4e941d2d9f8c4deb5db65bc5fcd3e036c6f2e1",
+  "statement": "Both candidates come from outcome-exposed KR history and are NOT VERIFIED. F2 H126 does not exist in the registered result; -8.40pp is a POST_OUTCOME diagnostic. F2 H252 -13.60pp is a descriptive reading of the registered run."
+ },
+ "candidates": {
+  "F2_DILUTION_AVOID": {
+   "expectedSign": -1,
+   "event": "original, issuer-own 유상증자결정 / 전환사채권발행결정 / 교환사채권발행결정 / 신주인수권부사채권발행결정 by a PIT KOSPI Top300 member; dropped if the same issuer files a same-family amendment up to the signal session",
+   "terms": "title level; issue size, allotment method, conversion terms, later cancellation are NOT parsed and never gate an event. The body SHA-256 is recorded",
+   "use": "exclusion rule: a name is not eligible for the 0-5 name book for 252 sessions after its entry session. Never a short",
+   "historicalReading": {
+    "H252": "-13.60pp, simultaneous [-24.82, -4.32] (registered run, descriptive)",
+    "H126": "-8.40pp [-15.26, -1.22] (POST_OUTCOME)"
+   }
+  },
+  "F1_DIVIDEND_INCREASE_LONG": {
+   "expectedSign": 1,
+   "event": "issuer-own 현금ㆍ현물배당결정, 결산배당 / 현금배당, common DPS >= 1.25 x the same stock previous fiscal year-end common DPS (issuer-own original decision), listed shares within +/-10% between the two record dates, PIT Top300 member",
+   "notSeparable": "a special dividend inside a year-end decision cannot be told from a regular one at this source",
+   "correction": "subsidiary reports excluded on both years (85 of 460 historical K7 H126 events touched one)",
+   "historicalReading": {
+    "H126": "+3.51pp [-0.84, +8.15] for the UNCORRECTED definition; no reading exists for this corrected one"
+   }
+  }
+ },
+ "timing": {
+  "signal": "first KR session strictly after the receipt day",
+  "entry": "the next KR session close",
+  "grade": "DATE_ONLY_CONSERVATIVE (DART list.json serves no publication clock)",
+  "receiptWindow": "after the signal session 18:00 KST final close and before the entry session 09:00 KST open; never backdated; a missed session is left missing",
+  "amendmentRecheck": "the outcome record must drop an F2 event amended on the entry day (the receipt cannot see it)"
+ },
+ "identity": "latest monthly PIT KOSPI Top300 snapshot dated strictly before the receipt day; a snapshot older than 62 days marks the receipt stale",
+ "book": "no candidate is VERIFIED: every receipt carries 0 of at most 5 names, 069500.KS 100%, cash 0",
+ "evaluationFixedBeforeAnyOutcome": {
+  "estimand": "event-level funded beta-matched holding return against 069500.KS total return, net of dated costs at 1x (2x, 3x reported): corporate_event_outcome_v1.engine.slot_holding_return and COSTS",
+  "horizons": {
+   "primary": "H126",
+   "descriptive": "H252"
+  },
+  "independence": "one event per issuer and candidate per open H window",
+  "firstRead": "one read per candidate when 60 independent H126 events have matured; no earlier look at any outcome",
+  "test": "one-sided in the expected direction, alpha 0.05, Holm over the two candidates, issuer x entry-week two-way clustered SE",
+  "portfolioQuestion": "separately: for every weekly reference selection recorded in signal-history after the first receipt, count names inside an F2 exclusion window and compare the book with and without them at the same read. Exclusion effect and book effect are reported apart",
+  "promotion": "none from this study alone; a passing read is PROSPECTIVE evidence that needs an Owner decision"
+ },
+ "costs": "corporate_event_outcome_v1.contract.COSTS (dated sell tax, 1.5bp commission, 4bp half spread); model costs, no fills",
+ "failure": "a refused DART status, a failed push or a missed window raises; nothing is written and nothing is backfilled",
+ "codeSha256": {
+  "research/kr_capital_event_prospective_v1/recorder.py": "2dd97788309bda024b836060d711d2d0ea2fcf19563847ff5155d48c7d76cf76",
+  "research/broad_alpha_screen_v1/hypotheses.py": "2dac11a7ae18c8320486baf4d45ec2d2eb05eda1a8cb2af8ccc9162b7806b439",
+  "pipeline/prospective_receipt_core.py": "0f5344b09e28a4b9e9df5839bb6fc11f8ace70a4c71c01c6915ae753857ef90f",
+  "pipeline/replay_calendar.py": "56116f837e8ae3b9ca43c27c87b3be8bcf608172a761879a6b1284a39c9a3ab2",
+  "research/corporate_event_readiness_v1/cohort/prospective.py": "c09c55902610e1b20f85f749e969efc1e3af8ce2217e6c748ba9d1c45e4104ed",
+  "research/corporate_event_readiness_v1/cohort/registration.py": "0ae328e7faf606ececc95ebfa28ee8521c441af219d07e5c7b045969473ef63c",
+  "research/corporate_event_readiness_v1/cohort/identity.py": "abaf1f2a343c601d7e65ff53f4cc6d6c5e10b4cac0ea94ca5ac2c6dc3085ce60",
+  "research/corporate_event_readiness_v1/cohort/families.py": "1ca256828932fb58ec1d95a8eb4f6a064ac73493b329f7a141b26cd8b22bba93",
+  "research/corporate_event_readiness_v1/cohort/dividends.py": "c7c1d1a77b45dc605c346045ec594395228516018c93a4ba4d7021ab72606759",
+  "research/corporate_event_readiness_v1/cohort/bodies.py": "f74cde458a68efc8fdcc9602acd7af20346f732287969cf6d6ea613588f9b72c",
+  "research/corporate_event_readiness_v1/cohort/dart_client.py": "4c5c676f204325508d440c9003472e9d76d045d93196031d107515e0a3eb60d2"
+ }
+}
