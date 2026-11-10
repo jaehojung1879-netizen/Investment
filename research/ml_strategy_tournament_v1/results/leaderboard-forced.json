@@ -1,0 +1,568 @@
+{
+ "studyId": "ml-strategy-tournament-v1",
+ "evidenceClass": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+ "horizon": 126,
+ "window": {
+  "start": "2016-01-11",
+  "end": "2026-09-14",
+  "rebalances": 140,
+  "sessions": 2619
+ },
+ "view": "forced",
+ "viewMeaning": "SENSITIVITY (post-outcome addition A1): top-5 by score at 20% each, no gate, no ETF",
+ "strategies": 6,
+ "leaderboard": {
+  "RF_C_RANK_h2": {
+   "cagr": 0.1045194782643486,
+   "etfCagr": 0.1797274603145791,
+   "excessCagr": -0.07520798205023049,
+   "vol": 0.2165723784500575,
+   "sharpe": 0.47966581383589046,
+   "sortino": 0.6993327429631485,
+   "mdd": -0.4470672836780577,
+   "trackingError": 0.19219894754538738,
+   "informationRatio": -0.3843776232407492,
+   "annualStockTurnover": 10.610112099433419,
+   "meanNamesHeld": 5.007142857142857,
+   "etfOnlyRebalanceShare": 0.0,
+   "oosRankIcMean": 0.03396952853356327,
+   "inSampleRankIcMean": 0.710637841792553,
+   "cagrUpperBoundTerminalAtLastClose": 0.1045194782643486,
+   "positiveExcessYearShare": 0.45454545454545453,
+   "minHalfExcessCagr": -0.1025535769483521,
+   "rolling252PositiveShare": 0.4444444444444444,
+   "excessCagrExTop5Names": -0.16324501449566942,
+   "top5ShareOfStockContribution": 0.6370834301440169,
+   "costDrag": 0.01831384895769025,
+   "rankAbs": 1.0,
+   "rankRisk": 1.0,
+   "stabilityScore": 1.75,
+   "rankStability": 1.0,
+   "top5Names": [
+    "402340.KS",
+    "005930.KS",
+    "000270.KS",
+    "016360.KS",
+    "009150.KS"
+   ],
+   "terminalHitCount": 0,
+   "yearly": {
+    "2016": {
+     "ret": -0.251737,
+     "etf": 0.141491,
+     "excess": -0.393228
+    },
+    "2017": {
+     "ret": 0.160608,
+     "etf": 0.271,
+     "excess": -0.110392
+    },
+    "2018": {
+     "ret": -0.139976,
+     "etf": -0.17321,
+     "excess": 0.033234
+    },
+    "2019": {
+     "ret": 0.167835,
+     "etf": 0.143994,
+     "excess": 0.02384
+    },
+    "2020": {
+     "ret": 0.28662,
+     "etf": 0.355328,
+     "excess": -0.068708
+    },
+    "2021": {
+     "ret": 0.061472,
+     "etf": 0.029991,
+     "excess": 0.031481
+    },
+    "2022": {
+     "ret": -0.370155,
+     "etf": -0.241499,
+     "excess": -0.128656
+    },
+    "2023": {
+     "ret": 0.442692,
+     "etf": 0.248424,
+     "excess": 0.194267
+    },
+    "2024": {
+     "ret": 0.106751,
+     "etf": -0.093715,
+     "excess": 0.200467
+    },
+    "2025": {
+     "ret": 0.674217,
+     "etf": 0.942069,
+     "excess": -0.267851
+    },
+    "2026": {
+     "ret": 0.400437,
+     "etf": 0.744093,
+     "excess": -0.343656
+    }
+   }
+  },
+  "RF_CI_RANK_h1": {
+   "cagr": 0.08092459095667004,
+   "etfCagr": 0.1797274603145791,
+   "excessCagr": -0.09880286935790905,
+   "vol": 0.19300714187412904,
+   "sharpe": 0.4015219326705341,
+   "sortino": 0.550481840773069,
+   "mdd": -0.365715611126625,
+   "trackingError": 0.20261069556728067,
+   "informationRatio": -0.49485413346641577,
+   "annualStockTurnover": 9.578751276485798,
+   "meanNamesHeld": 5.007142857142857,
+   "etfOnlyRebalanceShare": 0.0,
+   "oosRankIcMean": 0.06698302148594197,
+   "inSampleRankIcMean": 0.48521576834914715,
+   "cagrUpperBoundTerminalAtLastClose": 0.08092459095667004,
+   "positiveExcessYearShare": 0.45454545454545453,
+   "minHalfExcessCagr": -0.15574217106599542,
+   "rolling252PositiveShare": 0.5175327418673427,
+   "excessCagrExTop5Names": -0.19318943963956947,
+   "top5ShareOfStockContribution": 0.8672389261110964,
+   "costDrag": 0.016834907376665365,
+   "rankAbs": 2.0,
+   "rankRisk": 2.0,
+   "stabilityScore": 2.0,
+   "rankStability": 2.0,
+   "top5Names": [
+    "016360.KS",
+    "005930.KS",
+    "024110.KS",
+    "003550.KS",
+    "316140.KS"
+   ],
+   "terminalHitCount": 0,
+   "yearly": {
+    "2016": {
+     "ret": -0.171004,
+     "etf": 0.141491,
+     "excess": -0.312495
+    },
+    "2017": {
+     "ret": 0.134162,
+     "etf": 0.271,
+     "excess": -0.136838
+    },
+    "2018": {
+     "ret": -0.077408,
+     "etf": -0.17321,
+     "excess": 0.095802
+    },
+    "2019": {
+     "ret": 0.295084,
+     "etf": 0.143994,
+     "excess": 0.15109
+    },
+    "2020": {
+     "ret": 0.271782,
+     "etf": 0.355328,
+     "excess": -0.083546
+    },
+    "2021": {
+     "ret": 0.171276,
+     "etf": 0.029991,
+     "excess": 0.141285
+    },
+    "2022": {
+     "ret": -0.147168,
+     "etf": -0.241499,
+     "excess": 0.094332
+    },
+    "2023": {
+     "ret": 0.143029,
+     "etf": 0.248424,
+     "excess": -0.105395
+    },
+    "2024": {
+     "ret": 0.002992,
+     "etf": -0.093715,
+     "excess": 0.096707
+    },
+    "2025": {
+     "ret": 0.484342,
+     "etf": 0.942069,
+     "excess": -0.457727
+    },
+    "2026": {
+     "ret": -0.075862,
+     "etf": 0.744093,
+     "excess": -0.819955
+    }
+   }
+  },
+  "RF_C_RANK_h1": {
+   "cagr": 0.04596844379001275,
+   "etfCagr": 0.1797274603145791,
+   "excessCagr": -0.13375901652456634,
+   "vol": 0.19265703334568407,
+   "sharpe": 0.23104813777994174,
+   "sortino": 0.33100465665296225,
+   "mdd": -0.4719014148765923,
+   "trackingError": 0.19649211865625849,
+   "informationRatio": -0.6781253769209039,
+   "annualStockTurnover": 8.817555747750342,
+   "meanNamesHeld": 5.007142857142857,
+   "etfOnlyRebalanceShare": 0.0,
+   "oosRankIcMean": 0.03507223468580022,
+   "inSampleRankIcMean": 0.4559495626238434,
+   "cagrUpperBoundTerminalAtLastClose": 0.04596844379001275,
+   "positiveExcessYearShare": 0.45454545454545453,
+   "minHalfExcessCagr": -0.1382322401623579,
+   "rolling252PositiveShare": 0.45669623996620196,
+   "excessCagrExTop5Names": -0.21581005702054346,
+   "top5ShareOfStockContribution": 1.137774503210279,
+   "costDrag": 0.015597178114292572,
+   "rankAbs": 3.0,
+   "rankRisk": 3.0,
+   "stabilityScore": 2.25,
+   "rankStability": 3.0,
+   "top5Names": [
+    "005930.KS",
+    "024110.KS",
+    "003550.KS",
+    "316140.KS",
+    "016360.KS"
+   ],
+   "terminalHitCount": 0,
+   "yearly": {
+    "2016": {
+     "ret": -0.256221,
+     "etf": 0.141491,
+     "excess": -0.397712
+    },
+    "2017": {
+     "ret": 0.025679,
+     "etf": 0.271,
+     "excess": -0.245321
+    },
+    "2018": {
+     "ret": -0.109865,
+     "etf": -0.17321,
+     "excess": 0.063345
+    },
+    "2019": {
+     "ret": 0.193251,
+     "etf": 0.143994,
+     "excess": 0.049257
+    },
+    "2020": {
+     "ret": 0.21066,
+     "etf": 0.355328,
+     "excess": -0.144668
+    },
+    "2021": {
+     "ret": 0.128495,
+     "etf": 0.029991,
+     "excess": 0.098504
+    },
+    "2022": {
+     "ret": -0.320349,
+     "etf": -0.241499,
+     "excess": -0.07885
+    },
+    "2023": {
+     "ret": 0.293201,
+     "etf": 0.248424,
+     "excess": 0.044777
+    },
+    "2024": {
+     "ret": 0.022446,
+     "etf": -0.093715,
+     "excess": 0.116161
+    },
+    "2025": {
+     "ret": 0.49068,
+     "etf": 0.942069,
+     "excess": -0.451389
+    },
+    "2026": {
+     "ret": 0.075559,
+     "etf": 0.744093,
+     "excess": -0.668534
+    }
+   }
+  },
+  "RF_CI_CLF_h1": {
+   "cagr": 0.012131946766931412,
+   "etfCagr": 0.1797274603145791,
+   "excessCagr": -0.16759551354764768,
+   "vol": 0.2938056418442133,
+   "sharpe": 0.12487117372394758,
+   "sortino": 0.16211722508623,
+   "mdd": -0.5519423222812905,
+   "trackingError": 0.251450965341846,
+   "informationRatio": -0.5610298026690821,
+   "annualStockTurnover": 13.787825161570069,
+   "meanNamesHeld": 5.014285714285714,
+   "etfOnlyRebalanceShare": 0.0,
+   "oosRankIcMean": -0.026501171971716045,
+   "inSampleRankIcMean": 0.3832689189105718,
+   "cagrUpperBoundTerminalAtLastClose": 0.054070160358077546,
+   "positiveExcessYearShare": 0.36363636363636365,
+   "minHalfExcessCagr": -0.2476086264558114,
+   "rolling252PositiveShare": 0.4207858048162231,
+   "excessCagrExTop5Names": -0.2364777573399156,
+   "top5ShareOfStockContribution": 0.9682735517795349,
+   "costDrag": 0.023960030386203535,
+   "rankAbs": 4.0,
+   "rankRisk": 4.0,
+   "stabilityScore": 4.0,
+   "rankStability": 4.0,
+   "top5Names": [
+    "012450.KS",
+    "042660.KS",
+    "011200.KS",
+    "024110.KS",
+    "006800.KS"
+   ],
+   "terminalHitCount": 2,
+   "yearly": {
+    "2016": {
+     "ret": -0.253407,
+     "etf": 0.141491,
+     "excess": -0.394898
+    },
+    "2017": {
+     "ret": 0.138962,
+     "etf": 0.271,
+     "excess": -0.132038
+    },
+    "2018": {
+     "ret": -0.156028,
+     "etf": -0.17321,
+     "excess": 0.017182
+    },
+    "2019": {
+     "ret": 0.212917,
+     "etf": 0.143994,
+     "excess": 0.068922
+    },
+    "2020": {
+     "ret": 0.251807,
+     "etf": 0.355328,
+     "excess": -0.10352
+    },
+    "2021": {
+     "ret": 0.259277,
+     "etf": 0.029991,
+     "excess": 0.229286
+    },
+    "2022": {
+     "ret": -0.260769,
+     "etf": -0.241499,
+     "excess": -0.019269
+    },
+    "2023": {
+     "ret": -0.199362,
+     "etf": 0.248424,
+     "excess": -0.447786
+    },
+    "2024": {
+     "ret": -0.021375,
+     "etf": -0.093715,
+     "excess": 0.07234
+    },
+    "2025": {
+     "ret": 0.23179,
+     "etf": 0.942069,
+     "excess": -0.710279
+    },
+    "2026": {
+     "ret": 0.157785,
+     "etf": 0.744093,
+     "excess": -0.586308
+    }
+   }
+  },
+  "RF_C_CLF_h1": {
+   "cagr": -0.03494097003581598,
+   "etfCagr": 0.1797274603145791,
+   "excessCagr": -0.21466843035039507,
+   "vol": 0.2960431050134104,
+   "sharpe": -0.0342966297689265,
+   "sortino": -0.043994030252062624,
+   "mdd": -0.7641348784984062,
+   "trackingError": 0.26219281387543847,
+   "informationRatio": -0.7166963075809236,
+   "annualStockTurnover": 13.042456855488219,
+   "meanNamesHeld": 5.014285714285714,
+   "etfOnlyRebalanceShare": 0.0,
+   "oosRankIcMean": -0.033685124327793935,
+   "inSampleRankIcMean": 0.35878963682322285,
+   "cagrUpperBoundTerminalAtLastClose": 0.007360290728831265,
+   "positiveExcessYearShare": 0.2727272727272727,
+   "minHalfExcessCagr": -0.32275725805633915,
+   "rolling252PositiveShare": 0.32234896493451626,
+   "excessCagrExTop5Names": -0.2826615216130509,
+   "top5ShareOfStockContribution": 2.5412195153661465,
+   "costDrag": 0.022735542070770005,
+   "rankAbs": 5.0,
+   "rankRisk": 5.0,
+   "stabilityScore": 5.25,
+   "rankStability": 5.0,
+   "top5Names": [
+    "402340.KS",
+    "138040.KS",
+    "024110.KS",
+    "009150.KS",
+    "088980.KS"
+   ],
+   "terminalHitCount": 2,
+   "yearly": {
+    "2016": {
+     "ret": -0.285597,
+     "etf": 0.141491,
+     "excess": -0.427088
+    },
+    "2017": {
+     "ret": 0.264443,
+     "etf": 0.271,
+     "excess": -0.006557
+    },
+    "2018": {
+     "ret": -0.138781,
+     "etf": -0.17321,
+     "excess": 0.034429
+    },
+    "2019": {
+     "ret": 0.004456,
+     "etf": 0.143994,
+     "excess": -0.139538
+    },
+    "2020": {
+     "ret": 0.527148,
+     "etf": 0.355328,
+     "excess": 0.17182
+    },
+    "2021": {
+     "ret": 0.023486,
+     "etf": 0.029991,
+     "excess": -0.006505
+    },
+    "2022": {
+     "ret": -0.22829,
+     "etf": -0.241499,
+     "excess": 0.01321
+    },
+    "2023": {
+     "ret": -0.341023,
+     "etf": 0.248424,
+     "excess": -0.589448
+    },
+    "2024": {
+     "ret": -0.407283,
+     "etf": -0.093715,
+     "excess": -0.313567
+    },
+    "2025": {
+     "ret": 0.178781,
+     "etf": 0.942069,
+     "excess": -0.763288
+    },
+    "2026": {
+     "ret": 0.592489,
+     "etf": 0.744093,
+     "excess": -0.151604
+    }
+   }
+  },
+  "RF_C_CLF_h2": {
+   "cagr": -0.06863365610507688,
+   "etfCagr": 0.1797274603145791,
+   "excessCagr": -0.24836111641965597,
+   "vol": 0.28123159653713065,
+   "sharpe": -0.17894766063879705,
+   "sortino": -0.2440778421569759,
+   "mdd": -0.8089812597621542,
+   "trackingError": 0.2475349974567351,
+   "informationRatio": -0.9214255739671301,
+   "annualStockTurnover": 13.451701418481214,
+   "meanNamesHeld": 5.014285714285714,
+   "etfOnlyRebalanceShare": 0.0,
+   "oosRankIcMean": -0.026161731673045738,
+   "inSampleRankIcMean": 0.546867838933196,
+   "cagrUpperBoundTerminalAtLastClose": -0.04862113271890778,
+   "positiveExcessYearShare": 0.09090909090909091,
+   "minHalfExcessCagr": -0.3097845221318568,
+   "rolling252PositiveShare": 0.22855935783692438,
+   "excessCagrExTop5Names": -0.3162209420874934,
+   "top5ShareOfStockContribution": null,
+   "costDrag": 0.02335551991159693,
+   "rankAbs": 6.0,
+   "rankRisk": 6.0,
+   "stabilityScore": 5.75,
+   "rankStability": 6.0,
+   "top5Names": [
+    "005940.KS",
+    "042660.KS",
+    "016360.KS",
+    "000660.KS",
+    "024110.KS"
+   ],
+   "terminalHitCount": 1,
+   "yearly": {
+    "2016": {
+     "ret": -0.29977,
+     "etf": 0.141491,
+     "excess": -0.441261
+    },
+    "2017": {
+     "ret": 0.109866,
+     "etf": 0.271,
+     "excess": -0.161134
+    },
+    "2018": {
+     "ret": -0.188087,
+     "etf": -0.17321,
+     "excess": -0.014877
+    },
+    "2019": {
+     "ret": 0.189758,
+     "etf": 0.143994,
+     "excess": 0.045763
+    },
+    "2020": {
+     "ret": 0.156975,
+     "etf": 0.355328,
+     "excess": -0.198353
+    },
+    "2021": {
+     "ret": -0.036006,
+     "etf": 0.029991,
+     "excess": -0.065997
+    },
+    "2022": {
+     "ret": -0.277245,
+     "etf": -0.241499,
+     "excess": -0.035746
+    },
+    "2023": {
+     "ret": -0.155015,
+     "etf": 0.248424,
+     "excess": -0.403439
+    },
+    "2024": {
+     "ret": -0.575727,
+     "etf": -0.093715,
+     "excess": -0.482011
+    },
+    "2025": {
+     "ret": 0.683644,
+     "etf": 0.942069,
+     "excess": -0.258425
+    },
+    "2026": {
+     "ret": 0.307925,
+     "etf": 0.744093,
+     "excess": -0.436168
+    }
+   }
+  }
+ }
+}

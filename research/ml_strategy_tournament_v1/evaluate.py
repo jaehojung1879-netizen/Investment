@@ -95,7 +95,10 @@ def stability(nav, bench, contrib, years):
             "yearly": {y: {k: round(float(v), 6) for k, v in d.items()} for y, d in yr.items()}}
 
 
-def evaluate(scratch, h252=False, only=None):
+VIEWS = {"gated": {"gate": True}, "forced": {"gate": False}}
+
+
+def evaluate(scratch, h252=False, only=None, view="gated"):
     blob, df, preds, folds = load(scratch, h252)
     h = 252 if h252 else 126
     sessions = blob["sessions"]
@@ -119,7 +122,7 @@ def evaluate(scratch, h252=False, only=None):
             sched = {next_session(sessions, d): {} for d in rdates}
             diag = {}
         else:
-            sched, diag = build_schedule(df, by_date, "_s", h, rdates, sessions)
+            sched, diag = build_schedule(df, by_date, "_s", h, rdates, sessions, gate=VIEWS[view]["gate"])
         sim = T.simulate(book, sched, start, end, "ZERO", record=True)
         alt = T.simulate(book, sched, start, end, "LAST")
         m = T.metrics(sim["nav"], bench_nav, rf, sim["stockTurnover"])
@@ -152,15 +155,10 @@ def rank_tables(results):
     return frame.loc[sids]
 
 
-def main(argv=None):
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--scratch", required=True)
-    ap.add_argument("--h252", action="store_true")
-    a = ap.parse_args(argv)
-    results, paths, window = evaluate(a.scratch, a.h252)
+def write_view(scratch, h252, view, results, paths, window):
     frame = rank_tables(results)
-    suffix = "-h252" if a.h252 else ""
-    (Path(a.scratch) / f"eval{suffix}.pkl").write_bytes(pickle.dumps({"results": results, "paths": paths, "window": window}))
+    suffix = ("-h252" if h252 else "") + "-" + view
+    (Path(scratch) / f"eval{suffix}.pkl").write_bytes(pickle.dumps({"results": results, "paths": paths, "window": window, "view": view}))
     cols = ["cagr", "etfCagr", "excessCagr", "vol", "sharpe", "sortino", "mdd", "trackingError", "informationRatio", "annualStockTurnover",
             "meanNamesHeld", "etfOnlyRebalanceShare", "oosRankIcMean", "inSampleRankIcMean", "cagrUpperBoundTerminalAtLastClose",
             "positiveExcessYearShare", "minHalfExcessCagr", "rolling252PositiveShare", "excessCagrExTop5Names", "top5ShareOfStockContribution",
@@ -168,10 +166,22 @@ def main(argv=None):
     board = {sid: {c: (None if (isinstance(frame.at[sid, c], float) and math.isnan(frame.at[sid, c])) else frame.at[sid, c]) for c in cols}
              | {"top5Names": results[sid]["top5Names"], "terminalHitCount": len(results[sid]["terminalHits"]), "yearly": results[sid]["yearly"]}
              for sid in frame.sort_values("rankAbs").index}
-    out = {"studyId": T.CONFIG["studyId"], "evidenceClass": T.CONFIG["evidenceClass"], "horizon": 252 if a.h252 else 126, "window": window,
+    out = {"studyId": T.CONFIG["studyId"], "evidenceClass": T.CONFIG["evidenceClass"], "horizon": 252 if h252 else 126, "window": window,
+           "view": view, "viewMeaning": {"gated": "PRIMARY: frozen economic gate, 0-5 names at 20%, ETF residual",
+                                         "forced": "SENSITIVITY (post-outcome addition A1): top-5 by score at 20% each, no gate, no ETF"}[view],
            "strategies": len(board), "leaderboard": board}
     (HERE / "results").mkdir(exist_ok=True)
     (HERE / "results" / f"leaderboard{suffix}.json").write_text(json.dumps(out, indent=1, default=float, ensure_ascii=False) + "\n")
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--scratch", required=True)
+    ap.add_argument("--h252", action="store_true")
+    a = ap.parse_args(argv)
+    for view in VIEWS:
+        results, paths, window = evaluate(a.scratch, a.h252, view=view)
+        write_view(a.scratch, a.h252, view, results, paths, window)
 
 
 if __name__ == "__main__":

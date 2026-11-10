@@ -449,9 +449,15 @@ def simulate(book, schedule, start, end, terminal_mode="ZERO", cost_mult=1.0, re
             target = sched[i]
             cur = {t: v / nav for t, v in hold.items()}
             new, cost = {}, 0.0
-            for t in sorted(set(cur) | set(target)):
-                c, w = cur.get(t, 0.0), target.get(t, 0.0)
-                tradable = t in book.col and bool(TR[i, book.col[t]]) and not (t in book.terminal and i > book.terminal[t])
+            names = sorted(set(cur) | set(target))
+            can = {t: t in book.col and bool(TR[i, book.col[t]]) and not (t in book.terminal and i > book.terminal[t]) for t in names}
+            # A name that cannot trade keeps its weight; the tradable targets share what is left, so the book never exceeds 100% (no leverage).
+            locked = sum(cur.get(t, 0.0) for t in names if not can[t])
+            want = sum(target.get(t, 0.0) for t in names if can[t])
+            scale = min(1.0, (1.0 - locked) / want) if want > 1e-12 else 1.0
+            for t in names:
+                c, w = cur.get(t, 0.0), target.get(t, 0.0) * scale
+                tradable = can[t]
                 if not tradable or abs(w - c) < 1e-12:
                     if c > 0:
                         new[t] = c

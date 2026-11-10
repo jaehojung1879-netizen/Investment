@@ -193,3 +193,21 @@ def test_vectorised_spearman_matches_scipy():
     got = T.spearman_by_date(f, "s", "y")
     for d, g in f.groupby("date"):
         assert got[d] == pytest.approx(spearmanr(g["s"], g["y"]).statistic, abs=1e-12)
+
+
+def test_a_name_that_cannot_be_sold_shrinks_new_buys_instead_of_levering_the_book():
+    s = _sessions(12)
+    a = pd.Series(100.0, index=s)
+    b = pd.Series(100.0, index=s)
+    vol = pd.Series(1.0, index=s)
+    vol.iloc[5:8] = 0.0                                           # AAA suspended on the second rebalance
+    s2 = pd.Series(50.0, index=s)
+    prices = {"AAA.KS": pd.DataFrame({"Close": a, "Volume": vol}), "BBB.KS": pd.DataFrame({"Close": s2, "Volume": 1.0}),
+              "CCC.KS": pd.DataFrame({"Close": s2, "Volume": 1.0}), T.BENCH: pd.DataFrame({"Close": b, "Volume": 1.0})}
+    book = T.PriceBook(prices, ["AAA.KS", "BBB.KS", "CCC.KS", T.BENCH], s, b)
+    sched = {s[1]: {"AAA.KS": 0.6}, s[6]: {"BBB.KS": 0.5, "CCC.KS": 0.5}}
+    sim = T.simulate(book, sched, s[0], s[-1], record=True)
+    last = sim["holdings"][-1]
+    assert last["weights"]["AAA.KS"] == pytest.approx(0.6, abs=1e-3)
+    assert sum(last["weights"].values()) <= 1 + 1e-9 and last["etf"] >= -1e-9
+    assert last["weights"]["BBB.KS"] == pytest.approx(0.2, abs=1e-3)

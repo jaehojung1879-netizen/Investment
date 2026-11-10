@@ -267,9 +267,11 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--scratch", required=True)
     ap.add_argument("--top", type=int, default=20)
+    ap.add_argument("--view", choices=["gated", "forced"], default="gated")
     a = ap.parse_args(argv)
     s = Path(a.scratch)
-    ev = pickle.loads((s / "eval.pkl").read_bytes())
+    ev = pickle.loads((s / f"eval-{a.view}.pkl").read_bytes())
+    gate = a.view == "gated"
     results, paths = ev["results"], ev["paths"]
     frame = E.rank_tables(results)
     for sid in results:
@@ -347,9 +349,9 @@ def main(argv=None):
     sc = preds[winner]
     lono = {}
     for t in top_names:
-        m, _ = portfolio_from_scores(df, sc, h, rdates, sessions, book, start, end, bench_nav, rf, exclude=(t,))
+        m, _ = portfolio_from_scores(df, sc, h, rdates, sessions, book, start, end, bench_nav, rf, gate=gate, exclude=(t,))
         lono[t] = {"cagr": _r(m["cagr"]), "excessCagr": _r(m["excessCagr"])}
-    m, _ = portfolio_from_scores(df, sc, h, rdates, sessions, book, start, end, bench_nav, rf, exclude=tuple(top_names))
+    m, _ = portfolio_from_scores(df, sc, h, rdates, sessions, book, start, end, bench_nav, rf, gate=gate, exclude=tuple(top_names))
     lono["ALL_TOP5"] = {"cagr": _r(m["cagr"]), "excessCagr": _r(m["excessCagr"])}
     anat["leaveNamesOut"] = lono
     rw = r_all[winner]
@@ -365,8 +367,8 @@ def main(argv=None):
     for k in (1, 3, 5):
         m, _ = portfolio_from_scores(df, sc, h, rdates, sessions, book, start, end, bench_nav, rf, gate=False, max_names=k)
         conc[f"forcedTop{k}"] = {"cagr": _r(m["cagr"]), "excessCagr": _r(m["excessCagr"]), "mdd": _r(m["mdd"]), "sharpe": _r(m["sharpe"])}
-    m, _ = portfolio_from_scores(df, sc, h, rdates, sessions, book, start, end, bench_nav, rf, cost_mult=2.0)
-    conc["gatedCostX2"] = {"cagr": _r(m["cagr"]), "excessCagr": _r(m["excessCagr"])}
+    m, _ = portfolio_from_scores(df, sc, h, rdates, sessions, book, start, end, bench_nav, rf, gate=gate, cost_mult=2.0)
+    conc["sameViewCostX2"] = {"cagr": _r(m["cagr"]), "excessCagr": _r(m["excessCagr"])}
     anat["concentrationAndCostSensitivity"] = conc
     # ablations and SHAP (ML winners only)
     if not winner.startswith("RULE_"):
@@ -378,7 +380,7 @@ def main(argv=None):
         for fam, pred in T.FAMILIES.items():
             drop = [c for c in layers["company"] + layers["industry"] + layers["market"] if pred(c)]
             s2, _ = refit_scores(cfg, df, layers, ranked, drop=drop)
-            m, _ = portfolio_from_scores(df, s2, h, rdates, sessions, book, start, end, bench_nav, rf)
+            m, _ = portfolio_from_scores(df, s2, h, rdates, sessions, book, start, end, bench_nav, rf, gate=gate)
             ic = T.spearman_by_date(df.assign(_s=s2)[df["date"].dt.year >= 2016], "_s", "y126").mean()
             abl[fam] = {"featuresDropped": len(drop), "cagr": _r(m["cagr"]), "excessCagr": _r(m["excessCagr"]), "sharpe": _r(m["sharpe"]), "oosRankIc": _r(ic, 4)}
         anat["familyAblation"] = abl
@@ -437,10 +439,10 @@ def main(argv=None):
     for x in RULES + ["RULE_ETF_ONLY"]:
         tables.setdefault("ruleBaselines", []).append({"strategy": x, **{c: _r(frame.at[x, c]) for c in ["cagr", "excessCagr", "sharpe", "mdd", "rankAbs"]}})
     out = HERE / "results"
-    (out / "rankings.json").write_text(json.dumps({"evidenceClass": T.CONFIG["evidenceClass"], "window": ev["window"], **tables}, indent=1, ensure_ascii=False, default=float) + "\n")
-    (out / "winner-analysis.json").write_text(json.dumps({"evidenceClass": T.CONFIG["evidenceClass"], "anatomy": anat, "top20Common": common},
+    (out / f"rankings-{a.view}.json").write_text(json.dumps({"evidenceClass": T.CONFIG["evidenceClass"], "view": a.view, "window": ev["window"], **tables}, indent=1, ensure_ascii=False, default=float) + "\n")
+    (out / f"winner-analysis-{a.view}.json").write_text(json.dumps({"evidenceClass": T.CONFIG["evidenceClass"], "view": a.view, "anatomy": anat, "top20Common": common},
                                                          indent=1, ensure_ascii=False, default=float) + "\n")
-    (out / "overfit-diagnostics.json").write_text(json.dumps({"evidenceClass": T.CONFIG["evidenceClass"], **over}, indent=1, ensure_ascii=False, default=float) + "\n")
+    (out / f"overfit-diagnostics-{a.view}.json").write_text(json.dumps({"evidenceClass": T.CONFIG["evidenceClass"], "view": a.view, **over}, indent=1, ensure_ascii=False, default=float) + "\n")
     print(json.dumps({"winner": winner, "pbo": over["cscvPbo"]["pbo"], "nested": over["nestedSelection"]["byPastCagr"]["metrics"]}, default=float))
 
 

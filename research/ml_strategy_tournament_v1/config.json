@@ -451,5 +451,14 @@
       "reason": "the replay-v16 ETF series accrues about +4.5%/yr over the price index against +1.85% for a same-data constituent reference (BENCHMARK_EXTERNAL_RECONCILIATION_UNRESOLVED), while the later corrected series passes an independent annual reconciliation"
     }
   ],
-  "benchmarkSourceSha256": "58580c4370ec2c5afa124f849afbc4fa7b5c879012e75ebbd48ee7c7a0e659a9"
+  "benchmarkSourceSha256": "58580c4370ec2c5afa124f849afbc4fa7b5c879012e75ebbd48ee7c7a0e659a9",
+  "postOutcomeAdditions": [
+    {
+      "id": "A1_FORCED_TOP5_LEADERBOARD_FOR_ALL",
+      "seenBeforeAdding": "evaluate.py debug run on 6 completed RF configurations: every one held 0 names from 2018 because its own pooled past top bucket trailed the ETF after costs",
+      "change": "the forced top-5 book (20% each, no gate, no ETF) is computed and ranked for EVERY strategy as a separate SENSITIVITY leaderboard, instead of only for the top 20",
+      "doesNotChange": "the primary gated rule, calibration, costs, grid, folds or labels; the primary leaderboard stays the gated book",
+      "reading": "the forced book measures the ranking's stock-picking alone against the ETF; it is never presented as the economic rule the config froze"
+    }
+  ]
 }
