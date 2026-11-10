@@ -18,7 +18,23 @@
     "productionDataWritten": false
   },
   "archiveMembersVerified": 22,
-  "fullSuite": "PARENT_CORE_FULL_VALIDATION_RUNNING; FINAL_INPUT_EDGE_DELTAS_FOCUSED_PASS; EXACT_HEAD_CI_SEPARATE",
+  "fullSuite": {
+    "initialCompleteRun": {
+      "passed": 6722,
+      "failed": 3,
+      "skipped": 3,
+      "xfailed": 4,
+      "seconds": 1841.17,
+      "logSha256": "bf72cbd4aa2acdaaef48e44f7e7b8c64307e843253da38eb23dd04da5fc3a187"
+    },
+    "failureCause": "Three immutable RP1 provenance checks required uncached original Git blobs; no frozen bytes changed",
+    "failedTestsAfterCachingOriginalGitBlobs": {
+      "passed": 3,
+      "seconds": 1.17,
+      "logSha256": "20362a81bf4105ac9b50b20bf0a2d76c76b81572886928ac3f09de5e8026048a"
+    },
+    "qualification": "Combined validation, not a claim that one full run was green; final code edge deltas also covered by 44 focused tests"
+  },
   "ci": "CHECK_EXACT_PR_HEAD_NO_PASS_CLAIM_YET",
   "sealedRuntimeTestRestored": true,
   "historicalExecutions": 0,

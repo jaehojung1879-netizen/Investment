@@ -42,7 +42,7 @@
 
 ## 7. 커밋·CI
 
-새 통합 PR은 #327 위의 격리 브랜치이며 main 직접 push/자동 병합은 없다. 정확한 최종 커밋·새 PR URL·CI run은 PR head/checks와 최종 보고서가 근거다. 로컬 집중/기존 경로 검증·lint·compile·격리 synthetic seed 검증을 수행했다. 전체 최종 검증은 별도 진행하며 완료 상태는 추정하지 않는다.
+새 통합 PR은 #327 위의 격리 브랜치이며 main 직접 push/자동 병합은 없다. 정확한 최종 커밋·새 PR URL·CI run은 PR head/checks와 최종 보고서가 근거다. 로컬 집중/기존 경로 검증·lint·compile·격리 synthetic seed 검증을 수행했다. 전체 로컬 실행은6,722 passed/3 failed/3 skipped/4 xfailed였다. 실패3개는 partial clone에서 원래 Git blob이 누락된 RP1 무결성 검사였고, 원본11개 객체를 캐시한 뒤 해당3개 모두 통과했다. 별도 집중44개도 통과했다. 이를 단일 전체 실행의 green으로 표시하지 않는다. 로그 SHA는 verification.json에 보존했다.
 
 일반 CI의 수치 의존성 드리프트는 기존 #321에서 다룬다. 관련 테스트 파일 자체도 봉인 범위여서 원본으로 보존했다. 테스트·의존성 고정·워크플로를 임의 완화해 CI를 통과시키지 않는다.
 
