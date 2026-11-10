@@ -24,3 +24,13 @@ python -m research.ml_strategy_tournament_v2.packet research/ml_strategy_tournam
 소스 Git 객체 두 개는 `config.json`의 고정 커밋에 있어야 한다. 캐시는 존재 여부만으로 재사용되지 않는다. `identity.py`가 전체 로컬 import closure, 설정·원천·모델·fold·환경과 payload 해시를 대조한다. 불일치 시 새 파일에 덮어쓰지 않고 거절한다.
 
 실행은 코드가 고정된 커밋에서 수행한다. `results/<execution-identity-sha256>/`의 JSONL gzip은 mtime=0으로 저장하고 결과 manifest로 고정한다. 같은 입력의 재실행은 완전히 같은 바이트여야 한다. 차단된 날짜도 계정·자산·미체결 행을 남기며, 미확인 수량/가치는 null이다. v1의 23.27%·19.36%를 이 결과로 덮어쓰지 않는다.
+
+정식 보존 계산의 코드 커밋은 `8a8d506757585d523ecb7261e23e45b526e69a48`, Python은 **3.13.5**다. 정확 바이트 재현에는 해당 커밋의 별도 checkout과 [installed-environment.txt](installed-environment.txt)의 환경을 사용한다. 테스트용 Python 3.11.17 환경은 [installed-test-environment-python311.txt](installed-test-environment-python311.txt)로 분리했다. 다른 커밋·환경의 실행은 새 identity 디렉터리가 정상이다.
+
+엔진을 import하지 않는 추가 대조는 저장소 루트에서 다음처럼 실행한다. `.py.txt`는 회계 엔진의 실행 코드 closure 밖에 보존한 독립 검사 원문이다.
+
+```bash
+python research/ml_strategy_tournament_v2/independent_etf_check.py.txt
+python research/ml_strategy_tournament_v2/ledger_invariant_check.py.txt
+python research/ml_strategy_tournament_v2/feature_pit_check.py.txt
+```

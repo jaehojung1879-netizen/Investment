@@ -15,9 +15,16 @@ v1과 #330 증거는 원래 바이트로 보존했다. #330의 판정을 다시 
 |RULE_INDUSTRY_MOMENTUM|23.273486%|SOURCE_BLOCKED|SOURCE_BLOCKED · NOT_RUN|
 |XGB_CI_RANK_h1|19.363224%|SOURCE_BLOCKED|SOURCE_BLOCKED · NOT_RUN|
 
-ETF는 1억원에서 **554,333,210.13원**, CAGR **17.921480%**, MDD **-40.805500%**, Sharpe **0.704823**로 계산됐다. 원래 ETF 총수익 지수 대비 CAGR 차이는 **-0.051266%p**다. 배당 지급일 뒤 실제 사용 가능한 현금으로 다음 고정 리밸런스에서 재투자하고 그 체결 비용을 차감한 영향이다.
+ETF는 1억원에서 **554,333,210.13원**, CAGR **17.921480%**, MDD **-40.805500%**, Sharpe **0.704823**로 계산됐다. 같은 경로의 달력 연환산 CAGR은 **17.401444%**다. 원래 ETF 총수익 지수 대비 252거래일 CAGR 차이는 **-0.051266%p**다. 배당 지급일 뒤 실제 사용 가능한 현금으로 다음 고정 리밸런스에서 재투자하고 그 체결 비용을 차감한 영향이다.
 
-다른 세 전략은 세전 배당·주식배당·권리·분할·종결 조건의 전 기간 완전성이 입증되지 않았다. 실제 원시 가격이 있다는 사실과 완전한 주주수익 원천이 있다는 사실은 다르다. 따라서 전체 CAGR·ETF 대비 격차·MDD·Sharpe·연도별 확정 수익은 null이다. 결과를 좋게 만들기 위해 종목을 빼거나 차순위를 넣지 않았다.
+|전략|v1 ETF 대비 CAGR 격차|v1 MDD|v1 Sharpe|v2 A ETF 대비 격차 / MDD / Sharpe|
+|---|---:|---:|---:|---|
+|RULE_INDUSTRY_MOMENTUM|+5.300740%p|-58.275816%|0.691621|SOURCE_BLOCKED / null / null|
+|XGB_CI_RANK_h1|+1.390478%p|-36.981684%|0.763313|SOURCE_BLOCKED / null / null|
+|LGBM_CIM_RANK_h3|-1.992119%p|-40.805500%|0.630910|SOURCE_BLOCKED / null / null|
+|RULE_ETF_ONLY|0.000000%p|-40.805500%|0.706104|0.000000%p / -40.805500% / 0.704823|
+
+다른 세 전략은 세전 배당·주식배당·권리·분할·종결 조건의 전 기간 완전성이 입증되지 않았다. 실제 원시 가격이 있다는 사실과 완전한 주주수익 원천이 있다는 사실은 다르다. 따라서 전체 CAGR·ETF 대비 격차·MDD·Sharpe·연도별 확정 수익은 null이다. 미확인 권리·종결대가에 검증된 금액 상·하한이 없어 전체 CAGR의 구간 추정도 산정하지 않았다. 결과를 좋게 만들기 위해 종목을 빼거나 차순위를 넣지 않았다.
 
 ### 연도별 수익: 원래 네 전략과 정정 ETF 현금 계정
 
@@ -48,6 +55,8 @@ ETF는 1억원에서 **554,333,210.13원**, CAGR **17.921480%**, MDD **-40.80550
 |LGBM_CIM_RANK_h3|8|102,905,667.55|2.905668%|2016-01-21|
 |RULE_ETF_ONLY|2619|554,333,210.13|454.333210%|끝까지 계산|
 
+원래 선택된 주식은 산업모멘텀 116개, XGB 103개, LGBM 39개이며 합집합 **154개**다. 주식을 담도록 저장된 결정은 각각 140/140, 140/140, 18/140회다. 이는 [원천 보완 범위](source-remediation-scope.json)이며 B의 전체 훈련 유니버스를 이 보유 종목 집합으로 축소하지 않는다.
+
 각 미확정 사건의 종목·vendor cash/split 값·공식 증거 부족 이유는 source-admission 및 account/events/orders 원장에 남겼다. 8거래일 같은 짧은 구간의 연환산 수치를 전체 기간 CAGR처럼 해석하지 않는다.
 
 ## 3. 확인한 오류별 경제성 영향 — 통제 진단
@@ -72,7 +81,7 @@ ETF는 1억원에서 **554,333,210.13원**, CAGR **17.921480%**, MDD **-40.80550
 - 원시 가격만 허용한다. 수정/총수익 가격에 배당을 또 더하는 입력을 거절한다. 현금배당은 권리일 채권으로 인식하고 공식 지급일까지 소비하지 않는다. 주식배당은 실제 입고일까지 비거래 주식채권이다. 분할·종결 현금·교환 주식은 인용된 패키지로만 처리한다.
 - 거래정지 수량은 다른 체결 수수료 때문에 줄어들지 않는다. 매도는 보류, 매수는 미체결로 기록한다. 실제 체결대금의 commission/spread/dated sell tax와 순자산 목표를 같이 풀어 음수 현금·숨은 레버리지를 막는다. 일별 수량·현금·채권·실제 비용·자금 잔차를 모두 저장한다.
 - 초기 1억원·시작 ETF 선보유·세전 배당·현금 금리 0%는 네 경로에 공통이다. 소수 수량 연구 계정이며 실제 거래소 lot 체결·개인 세후 실계좌를 재현한 것은 아니다. 현금은 같은 결제일 약정을 상계한 trade-date buying power다.
-- `refit.training_layers`는 해당 fold의 성숙한 과거 훈련 행만 사용한다. 선택 열·전체 열별 커버리지·평균·표준편차·중앙값·결측 규칙을 저장한다. 미래 행/미래 결측률을 추가해도 과거 입력과 통계가 바뀌지 않는 회귀가 있다. 실제 B 적합은 수행하지 않았으므로 실제 재학습 fold 기록이 있다고 주장하지 않는다.
+- `refit.training_layers`는 해당 fold의 성숙한 과거 훈련 행만 사용한다. 선택 열·전체 열별 커버리지·평균·표준편차·중앙값·결측 규칙을 저장한다. 미래 행/미래 결측률을 추가해도 과거 입력과 통계가 바뀌지 않는 회귀가 있다. [별도 합성 반례](feature-pit-verification.json)에서도 미래 20행 추가가 v1의 B01 커버리지를 0%→80%로 바꿔 과거 입력에 열을 추가하는 반면 v2의 과거 fold receipt는 그대로였다. 실제 B 적합은 수행하지 않았으므로 실제 재학습 fold 기록이 있다고 주장하지 않는다.
 - 원래 두 ML 구조/HP, 산업모멘텀 규칙, gated/forced 구분, H126, 리밸런스 일정과 비용 규칙을 유지한다. B runner도 고정 네 후보만 받아 점수·선택·일별 원장을 저장하며 우승자/순위를 만들지 않는다.
 - 캐시는 code/config/source/model/fold/environment 및 실제 입력 내용과 payload 해시를 검사한다. 다른 identity나 깨진 payload는 재사용·덮어쓰기를 거절한다. NAV는 float64로 저장하며 동일 ETF 경로의 active return은 정확히 0이다.
 
@@ -86,6 +95,14 @@ v1 실제 config 바이트 SHA-256은 `982e116804a5ce35820201037a44e6fc4684ef972
 
 정식 A 실행 디렉터리: [`results/f4d38bd9d11a51168d4299013f64b64af6eef8bdf6225f5b8640da567cf7204a/`](results/f4d38bd9d11a51168d4299013f64b64af6eef8bdf6225f5b8640da567cf7204a/). `execution-identity.json`은 실행 커밋·전체 import closure·설정·원천·환경·선택 해시를 고정한다. `result-manifest.json`은 모든 결과/JSONL gzip의 해시를 고정한다. 동일 입력 재실행의 바이트 비교 결과와 실제 테스트 결과는 [verification.json](verification.json)에 있다.
 
+회계 엔진을 import하지 않는 [별도 ETF 계산기](independent_etf_check.py.txt)로 공식 원시 종가·배당 권리·실제 지급일·고정 리밸런스를 다시 계산했다. 2,619일의 최대 NAV 차이는 **0.000000476837원**, 최대 수량 차이는 **3.64×10⁻¹²주**다. 총 배당 권리 **35,882,575.24원**, 재투자 수수료 **8,968.40원**도 대조했다. 이는 같은 공식 관측에 대한 독립 회계 계산이며 별도 데이터 제공자 교차검증을 의미하지 않는다. [대조 결과](independent-etf-verification.json)를 보존한다.
+
+[전체 원장 별도 검사](ledger-invariant-verification.json)는 종목·날짜 중복 0개, 평가 가능 자산 6,552행의 수량×가격, 실제 체결 비용, 거래정지 수량, 차단 후 null 유지, 현금+자산+채권=NAV를 검사해 PASS다. 최대 NAV 합산 잔차는 **1.49×10⁻⁸원**, 비용 차이는 **1.46×10⁻¹¹원**이다. 엔진 내부의 일별 자금 보존 최대 잔차 **2.98×10⁻⁸원**과 별도 수치다. 두 admission 모드의 ETF/초기 관찰을 중복 포함한 검사 행 수이며 새로운 검증 구간을 늘리지 않는다.
+
+ETF의 거래 가능 여부도 발행사 XLS의 실제 거래량 열과 2,619일 모두 대조했다. 거래량 0인 세션과 원장의 거래 가능 flag 불일치는 각각 **0개**, 재투자 체결 38건 모두 거래량 양수다. 엔진의 ETF fallback `volume=1`은 이 고정 구간의 Boolean 표시이며 실측 거래량이라고 해석하지 않는다. 새 구간으로 확장할 때는 [같은 거래량 검증](etf-tradability-verification.json)을 다시 통과해야 한다.
+
+원본·감사 73파일과 원래 감사의 원천 입력을 합친 **77파일**도 [별도 해시 검사](source-closure-verification.json)로 대조했다. BOK 무위험 금리와 공식 ETF 대조 문서도 동일하다.
+
 account/assets/trades/orders/events의 다섯 원장을 네 후보·두 admission 모드별로 보존한다. 미확정 기간도 모든 예정 선택·주문과 null 평가 행을 남긴다. 총수익 지수 통제 수치를 실제 주식 원장으로 위장하지 않는다.
 
 B는 `refit-execution-packet.json`·`refit-source-readiness.json`·`refit-approval-template.json`으로 정확히 분리돼 있다. 현재 원천은 SOURCE_BLOCKED, 올바른 정정 행렬도 없다. 공개 Owner의 정확 해시 승인 이전에도 이 원천 차단을 우회할 수 없다. 원천·코드·설정·환경이 바뀌면 패킷을 다시 생성해야 한다. 기존 Atlas·KR 연구 승인이나 소비된 lock을 재사용하지 않는다.
@@ -93,5 +110,13 @@ B는 `refit-execution-packet.json`·`refit-source-readiness.json`·`refit-approv
 ## 7. PR·CI·판정
 
 #329 HEAD 17404f86 → #330 HEAD 8657acd5 위에 별도 v2를 쌓는다. #328 HEAD 3b3edb13의 순수 원천 검증 함수와 공식 ETF 내역을 버전 고정해 재사용한다. #321 HEAD cd2892eb의 threadpoolctl 3.7.0/joblib 1.6.0 제약으로 로컬 검증하되 보호된 Tests/Pages workflow는 수정하지 않는다. 인수 당시 #329/#330/#328 Tests는 FAILURE, #321 Tests/Pages는 SUCCESS였다. 기존 CI 의존성 문제가 해결됐다고 미리 주장하지 않는다.
+
+23:08 UTC 재조회에서 #329 HEAD가 `0a1f4941`로 이동해 별도 `adaptive_cocktail_v1` 보고서가 추가된 것을 확인했다. 원래 토너먼트 디렉터리의 모든 파일 blob과 results subtree는 `17404f86` 때와 같았다. [추가 스냅샷](github-upstream-update.json)을 보존하고, 새 연구를 이번 정정이나 검증 대상에 합치지 않았다.
+
+로컬 전체 검사(Python **3.11.17**, #321 수치 제약 사용)는 **6,474 passed / 0 failed / 4 skipped / 4 xfailed**, 1,985.08초, exit 0이다. 새 v2 테스트도 포함했다. 집중 검사 51개는 그와 별도이며 통과 수를 합산하지 않는다. 전체 lint·compileall·격리 worktree seed/검증도 PASS다.
+
+앞선 Python 3.13.5 전체 검사는 **6,428 passed / 9 failed / 9 skipped / 4 xfailed**였다. origin/main 참조 3건, 과거 RP1 Git 객체 3건, Python 3.13 gzip 헤더 차이 3건이다. 참조/객체를 읽기 전용으로 확보하고 Python 3.11에서 해당 9건을 먼저 재검사해 PASS한 후, 전체를 다시 실행했다. 기존 코드·데이터·기대값은 수정하지 않았다. [처음 실패 로그](full-suite-python313.log.gz), [9건 재검사](failure-recheck-python311.log.gz), [최종 전체 로그](full-suite-python311.log.gz)를 모두 남긴다. 실제 A 계산·정확 바이트 재실행 환경은 별도로 고정한 Python 3.13.5다.
+
+23:32 UTC 기준 #332 원격 Tests 실행 `42919299534`는 lint PASS, suite 진행 중이었다. 따라서 원격 전체 PASS라고 표시하지 않는다. 별도로 최신 #329 실행 `42916758982`는 **6,448 passed / 1 failed / 3 skipped / 4 xfailed**이며 설치된 threadpoolctl 3.8.0 때문에 기존 runtime restriction 테스트가 실패했다. [시각별 CI 상태](ci-status-at-submission.json)를 보존한다. 최종 증거 커밋의 새 원격 검사는 #332의 Checks에서 확인해야 한다.
 
 **정정 코드는 검증 가능한 부분을 계산하고, 세 주식 전략의 전체 경제성 인증은 차단한다.** 원래 23.27%·19.36%는 보존한다. 부정적인 초기 관찰 결과도 위에 그대로 공개했다. 세 전략의 수정 후 확정 CAGR을 제시하려면 보유 구간의 공식 cash/share/action/terminal coverage를 먼저 완성해야 한다. 새 역사 우승자 탐색은 다음 단계가 아니다.

@@ -91,8 +91,212 @@
   }
  },
  "fullSuite": {
-  "status": "RUNNING_NO_PASS_CLAIM",
-  "log": "/workspace/ml-v2-full-pytest.log"
+  "status": "PASS_ALL_RUNNABLE_TESTS",
+  "python": "3.11.17",
+  "passed": 6474,
+  "failed": 0,
+  "skipped": 4,
+  "xfailed": 4,
+  "warnings": 318,
+  "seconds": 1985.08,
+  "exitCode": 0,
+  "includesNewV2Tests": true,
+  "testCodeClosureSameAsNumericalRun": true,
+  "command": "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 /workspace/ml-v2-ci-runtime/bin/python -m pytest -q",
+  "log": "full-suite-python311.log.gz",
+  "logRawSha256": "2a9284fc7a06ac2cdce3f01d222e63362febeebdaddbeb5e2cdf8b588361b53f",
+  "environment": "installed-test-environment-python311.txt",
+  "exactRemoteCiPythonPatchClaim": false
  },
- "scope": "FRACTIONAL_GROSS_RESEARCH_ACCOUNTS_NOT_ACTUAL_BROKER_FILLS"
+ "scope": "FRACTIONAL_GROSS_RESEARCH_ACCOUNTS_NOT_ACTUAL_BROKER_FILLS",
+ "independentEtfAccounting": {
+  "status": "PASS",
+  "runId": "f4d38bd9d11a51168d4299013f64b64af6eef8bdf6225f5b8640da567cf7204a",
+  "sessions": 2619,
+  "reference": "Independent raw issuer quote + ex-date entitlement + actual-pay-date cash + fixed ETF rebalance; no v2 engine/helper imported",
+  "maxAbsNavDifferenceKrw": 4.76837158203125e-07,
+  "maxAbsShareQuantityDifference": 3.637978807091713e-12,
+  "maxAbsCashDifferenceKrw": 2.3283064365386963e-09,
+  "maxAbsReceivableDifferenceKrw": 2.3283064365386963e-09,
+  "referenceGrossEntitlementsKrw": 35882575.23844685,
+  "referenceReinvestmentFeesKrw": 8968.401709188052,
+  "actualNotionalFeeDifferenceKrw": 3.6288838600739837e-09,
+  "sourceScope": "Same cited market observations; independent accounting arithmetic, not a second independent market-data vendor",
+  "sourceSha256": "a891c4570b8353296bd08fd65c1c00097103558191a85550b8df8efdebb8989d"
+ },
+ "independentLedgerInvariants": {
+  "status": "PASS",
+  "scope": "ARITHMETIC_INVARIANTS_ONLY_NOT_NEW_SOURCE_ADMISSION",
+  "runId": "f4d38bd9d11a51168d4299013f64b64af6eef8bdf6225f5b8640da567cf7204a",
+  "maxAbsNavReconciliationKrw": 1.4901161193847656e-08,
+  "maxAbsTradeCostDifferenceKrw": 1.4551915228366852e-11,
+  "maxAbsQuantityTradeReconciliation": 9.094947017729282e-13,
+  "checkedValuedAssetRows": 6552,
+  "books": {
+   "LGBM_CIM_RANK_h3": {
+    "A_OBSERVED_PREFIX_INCOMPLETE_EVENT_COVERAGE": {
+     "accountRows": 2619,
+     "assetRows": 92829,
+     "valuedSessions": 8,
+     "sourceBlockedSessions": 2611,
+     "tradeRows": 6,
+     "orderRows": 231,
+     "duplicateAssetKeys": 0
+    },
+    "A_VERIFIED_CASH": {
+     "accountRows": 2619,
+     "assetRows": 92829,
+     "valuedSessions": 0,
+     "sourceBlockedSessions": 2619,
+     "tradeRows": 0,
+     "orderRows": 231,
+     "duplicateAssetKeys": 0
+    }
+   },
+   "RULE_ETF_ONLY": {
+    "A_OBSERVED_PREFIX_INCOMPLETE_EVENT_COVERAGE": {
+     "accountRows": 2619,
+     "assetRows": 2619,
+     "valuedSessions": 2619,
+     "sourceBlockedSessions": 0,
+     "tradeRows": 38,
+     "orderRows": 140,
+     "duplicateAssetKeys": 0
+    },
+    "A_VERIFIED_CASH": {
+     "accountRows": 2619,
+     "assetRows": 2619,
+     "valuedSessions": 2619,
+     "sourceBlockedSessions": 0,
+     "tradeRows": 38,
+     "orderRows": 140,
+     "duplicateAssetKeys": 0
+    }
+   },
+   "RULE_INDUSTRY_MOMENTUM": {
+    "A_OBSERVED_PREFIX_INCOMPLETE_EVENT_COVERAGE": {
+     "accountRows": 2619,
+     "assetRows": 179310,
+     "valuedSessions": 114,
+     "sourceBlockedSessions": 2505,
+     "tradeRows": 49,
+     "orderRows": 844,
+     "duplicateAssetKeys": 0
+    },
+    "A_VERIFIED_CASH": {
+     "accountRows": 2619,
+     "assetRows": 179310,
+     "valuedSessions": 0,
+     "sourceBlockedSessions": 2619,
+     "tradeRows": 0,
+     "orderRows": 831,
+     "duplicateAssetKeys": 0
+    }
+   },
+   "XGB_CI_RANK_h1": {
+    "A_OBSERVED_PREFIX_INCOMPLETE_EVENT_COVERAGE": {
+     "accountRows": 2619,
+     "assetRows": 171869,
+     "valuedSessions": 8,
+     "sourceBlockedSessions": 2611,
+     "tradeRows": 6,
+     "orderRows": 841,
+     "duplicateAssetKeys": 0
+    },
+    "A_VERIFIED_CASH": {
+     "accountRows": 2619,
+     "assetRows": 171869,
+     "valuedSessions": 0,
+     "sourceBlockedSessions": 2619,
+     "tradeRows": 0,
+     "orderRows": 841,
+     "duplicateAssetKeys": 0
+    }
+   }
+  },
+  "sourceSha256": "8911b45270e032b0e6ae136149e54dd413453acfab2c563468669229e05ac2f3"
+ },
+ "fullSuiteFailureRecheck": {
+  "python": "3.11.17",
+  "status": "PASS",
+  "passed": 9,
+  "seconds": 30.28,
+  "environmentOnlyRepairs": [
+   "Read-only origin/main ref fetch",
+   "Exact historical RP1 blobs preloaded for GIT_NO_LAZY_FETCH tests",
+   "Python 3.11 gzip header compatible with frozen artifacts"
+  ],
+  "originalCodeDataExpectedBytesChanged": false,
+  "log": "failure-recheck-python311.log.gz"
+ },
+ "sourceClosureVerification": {
+  "status": "PASS",
+  "protectedAndFrozenFiles": 77,
+  "mismatches": [],
+  "file": "source-closure-verification.json"
+ },
+ "officialEtfTradabilityCrosscheck": {
+  "status": "PASS",
+  "sessions": 2619,
+  "allDatedTradabilityFlagsMatchOfficialVolume": true,
+  "zeroVolumeSessions": [],
+  "mismatches": [],
+  "filledReinvestmentTrades": 38,
+  "minimumOfficialDailyVolume": 943310.0,
+  "sourcePath": "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-standard.xls",
+  "sourceSha256": "cbdd7a0ce340228ddcfc714de637c512f73c2d691d84ae59a28cfb406d8437b9",
+  "engineScope": "ETF fallback value 1 is only a Boolean tradable marker; every flag in this frozen interval is verified against the actual official dated volume. 1 is not observed volume.",
+  "extensionLimit": "New intervals must revalidate actual dated ETF tradability; price presence alone is insufficient.",
+  "verificationScriptSha256": "a891c4570b8353296bd08fd65c1c00097103558191a85550b8df8efdebb8989d"
+ },
+ "featurePitCounterexample": {
+  "scope": "SYNTHETIC_FEATURE_SELECTION_ONLY_NO_FIT_NO_RETURN_CLAIM",
+  "v1Status": "FAIL",
+  "v2Status": "PASS",
+  "pastRows": 5,
+  "appendedFutureRows": 20,
+  "v2MaturedTrainRows": 3,
+  "v2PastFoldReceiptUnchanged": true,
+  "sourceSha256": "31d87edd2da7a3916c69c112eecdd0728d9ac2ba6701175cf63f44fe09fcccea"
+ },
+ "fullSuiteAttempts": [
+  {
+   "status": "COMPLETE_WITH_FAILURES",
+   "python": "3.13.5",
+   "passed": 6428,
+   "failed": 9,
+   "skipped": 9,
+   "xfailed": 4,
+   "seconds": 1921.29,
+   "scope": "Full suite started before new v2 test file was authored; v2/related 51 cases checked separately",
+   "failureClasses": [
+    "3 origin/main ref unavailable",
+    "3 historical RP1 code blob unavailable",
+    "3 gzip OS-header differences under Python 3.13"
+   ],
+   "singleWholeGreenClaim": false
+  },
+  {
+   "status": "PASS_ALL_RUNNABLE_TESTS",
+   "python": "3.11.17",
+   "passed": 6474,
+   "failed": 0,
+   "skipped": 4,
+   "xfailed": 4,
+   "warnings": 318,
+   "seconds": 1985.08,
+   "exitCode": 0,
+   "includesNewV2Tests": true,
+   "testCodeClosureSameAsNumericalRun": true,
+   "command": "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 /workspace/ml-v2-ci-runtime/bin/python -m pytest -q",
+   "log": "full-suite-python311.log.gz",
+   "logRawSha256": "2a9284fc7a06ac2cdce3f01d222e63362febeebdaddbeb5e2cdf8b588361b53f",
+   "environment": "installed-test-environment-python311.txt",
+   "exactRemoteCiPythonPatchClaim": false
+  }
+ ],
+ "originalFailedFullSuiteLog": "full-suite-python313.log.gz",
+ "externalVerificationScriptHashesMatch": true,
+ "remoteCiStatusFile": "ci-status-at-submission.json",
+ "remoteCiAllPassClaim": false
 }

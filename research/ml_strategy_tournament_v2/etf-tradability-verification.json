@@ -1,0 +1,14 @@
+{
+ "status": "PASS",
+ "sessions": 2619,
+ "allDatedTradabilityFlagsMatchOfficialVolume": true,
+ "zeroVolumeSessions": [],
+ "mismatches": [],
+ "filledReinvestmentTrades": 38,
+ "minimumOfficialDailyVolume": 943310.0,
+ "sourcePath": "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-standard.xls",
+ "sourceSha256": "cbdd7a0ce340228ddcfc714de637c512f73c2d691d84ae59a28cfb406d8437b9",
+ "engineScope": "ETF fallback value 1 is only a Boolean tradable marker; every flag in this frozen interval is verified against the actual official dated volume. 1 is not observed volume.",
+ "extensionLimit": "New intervals must revalidate actual dated ETF tradability; price presence alone is insufficient.",
+ "verificationScriptSha256": "a891c4570b8353296bd08fd65c1c00097103558191a85550b8df8efdebb8989d"
+}
