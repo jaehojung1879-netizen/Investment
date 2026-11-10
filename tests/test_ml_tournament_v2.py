@@ -308,3 +308,15 @@ def test_blocked_day_does_not_publish_partial_fills_or_committed_entitlements():
     assert not any(t['date'] == d[1] for t in out['trades'])
     assert any(e.get('status') == 'UNCOMMITTED_SOURCE_BLOCKED_DAY' for e in out['events'])
     assert out['account'][1]['nav'] is None
+
+
+def test_result_manifest_does_not_include_its_own_previous_bytes(tmp_path):
+    from research.ml_strategy_tournament_v2.run import manifest_payload
+    from research.ml_strategy_tournament_v2.identity import write_once
+    write_once(tmp_path / 'results.json', {'cagr': .1})
+    first = manifest_payload(tmp_path, 'SYN_ID', {'ledger.jsonl.gz': 'a' * 64})
+    write_once(tmp_path / 'result-manifest.json', first)
+    second = manifest_payload(tmp_path, 'SYN_ID', {'ledger.jsonl.gz': 'a' * 64})
+    assert first == second
+    assert 'result-manifest.json' not in second['files']
+    write_once(tmp_path / 'result-manifest.json', second)

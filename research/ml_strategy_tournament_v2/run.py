@@ -27,6 +27,12 @@ def records(path, rows):
     return file_hash(path)
 
 
+def manifest_payload(target, runid, ledger_hashes):
+    files = dict(ledger_hashes)
+    files.update({p.name: file_hash(p) for p in target.glob('*.json') if p.name != 'result-manifest.json'})
+    return {'executionIdentitySha256': runid, 'files': files}
+
+
 def diagnostic_tr(market, decisions, rf):
     """Controlled error deltas, not verified shareholder-account outcomes."""
     audit = ROOT / 'research/ml_strategy_tournament_independent_audit_v1'
@@ -151,8 +157,7 @@ def main(argv=None):
     source_review = {k: market[k] for k in ('admission', 'sourceHashes', 'miraeSourceReassessment', 'vendorActionRedFlags', 'shareholderSourceStatus', 'finalSourceProbe')}
     write_once(target / 'source-admission.json', source_review)
     write_once(target / 'decisions.json', ds)
-    hashes.update({p.name: file_hash(p) for p in target.glob('*.json')})
-    write_once(target / 'result-manifest.json', {'executionIdentitySha256': runid, 'files': hashes})
+    write_once(target / 'result-manifest.json', manifest_payload(target, runid, hashes))
     print(json.dumps({'runId': runid, 'output': str(target), 'results': results}, ensure_ascii=False, indent=1))
 
 
