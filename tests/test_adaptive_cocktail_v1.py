@@ -130,3 +130,27 @@ def test_config_freezes_choice_set_without_the_rejected_xgb():
     assert "S4_RISK_MANAGED_ETF" not in cfg["sleeves"]["choiceSet"]
     assert cfg["timing"]["lagCalendarDays"]["FRED_DAILY_MARKET"] == 4 and cfg["timing"]["lagCalendarDays"]["FRED_H10_WEEKLY"] == 8
     assert math.isclose(len(C.ALL_STATES), 19)
+
+
+def _run_module():
+    spec = importlib.util.spec_from_file_location("cocktail_run", HERE / "run.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def test_rebalance_phases_partition_the_weekly_grid():
+    R = _run_module()
+    weeks = pd.date_range("2014-01-03", periods=40, freq="7D")
+    df = pd.DataFrame({"date": weeks})
+    phases = [R.decision_dates(df, p) for p in range(4)]
+    assert sorted(d for ph in phases for d in ph) == list(weeks)
+    assert phases[0][0] == weeks[0] and phases[1][0] == weeks[1]
+
+
+def test_no_change_band_keeps_small_reallocations():
+    R = _run_module()
+    d = pd.to_datetime(["2020-01-03", "2020-01-31", "2020-02-28"])
+    w = {d[0]: {"S0_ETF": 1.0}, d[1]: {"S0_ETF": 0.95, "S2_VALUE_CONFIRMED": 0.05}, d[2]: {"S2_VALUE_CONFIRMED": 1.0}}
+    out = R.apply_band(w)
+    assert out[d[1]] == {"S0_ETF": 1.0} and out[d[2]] == {"S2_VALUE_CONFIRMED": 1.0}

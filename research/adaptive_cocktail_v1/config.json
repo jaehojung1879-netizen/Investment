@@ -8,15 +8,22 @@
   "inputs": {
     "pitMatrix": "kr-alpha-atlas Phase B matrix (digest 32e49b57...), PIT Top120, weekly signal dates, reused from ml-strategy-tournament-v1/prepare_dataset.py",
     "prices": "replay-v16 total-return closes at signal-history 4ea107ed, with the 2026-09-14 session replaced by docs/audits/kr-alpha-atlas-phase-c-integrity/corrected-inputs.json finalSessionQuotes",
-    "withheldSecurities": {"006800.KS": "corrected-inputs.json stockRules WITHHOLD_FULL_SECURITY_PRICE_BASIS (unresolved 2018 and 2026 corporate-action basis); never selectable by any sleeve. The number of rebalances on which a sleeve's own ranking would have picked it is reported, so the pre-removal is visible rather than silent."},
+    "withheldSecurities": {
+      "006800.KS": "corrected-inputs.json stockRules WITHHOLD_FULL_SECURITY_PRICE_BASIS (unresolved 2018 and 2026 corporate-action basis); never selectable by any sleeve. The number of rebalances on which a sleeve's own ranking would have picked it is reported, so the pre-removal is visible rather than silent."
+    },
     "macroPanel": "replay-v16 macro component (FRED daily market series only), vix component, fx/USD_KRW component (DEXKOUS)"
   },
   "timing": {
     "krSignal": "KR close 15:30 KST (06:30 UTC) on the signal date; trades execute at the close of the NEXT KR session",
     "usClose": "16:00 New York = 21:00 UTC (EST) / 20:00 UTC (EDT) on the previous US calendar day, i.e. before the KR close of the following KR day",
     "lagRule": "a series value is visible on KR signal date D only if its observation date <= D - lagCalendarDays",
-    "lagCalendarDays": {"source": "pipeline/kr_market_risk_anatomy.LAG_CALENDAR_DAYS (sealed repository constants, reused unchanged)",
-                        "KR_INDEX_CLOSE": 0, "FRED_DAILY_MARKET": 4, "FRED_H10_WEEKLY": 8, "YAHOO_US_DAILY": 1},
+    "lagCalendarDays": {
+      "source": "pipeline/kr_market_risk_anatomy.LAG_CALENDAR_DAYS (sealed repository constants, reused unchanged)",
+      "KR_INDEX_CLOSE": 0,
+      "FRED_DAILY_MARKET": 4,
+      "FRED_H10_WEEKLY": 8,
+      "YAHOO_US_DAILY": 1
+    },
     "vixLagClass": "FRED_DAILY_MARKET (4): the replay vix object does not name its vendor, so the more conservative registered class is used"
   },
   "stateVariables": {
@@ -71,12 +78,28 @@
     "S3_FOUR_FACTOR": "mean of available within-date ranks of A07_momentum12_1, B01_bookToMarket, C02_returnOnEquity and (1 - rank F02_downsideVol126); the ml-strategy-tournament-v1 RULE_FOUR_FACTOR formula",
     "S4_RISK_MANAGED_ETF": "069500 x the sealed kr-market-risk overlay C0 multiplier (Phase B I01, {1.0, 0.7, 0.4}) + remainder in cash at the BOK policy-rate proxy. RESEARCH REFERENCE ONLY: not in any cocktail choice set",
     "SX_XGB_SENSITIVITY": "ml-strategy-tournament-v1 XGB_CI_RANK_h1 forced top-5 scores. Rejected investment candidate; shown as an explanatory standalone sensitivity only, never in a choice set",
-    "choiceSet": ["S0_ETF", "S1_INDUSTRY_MOMENTUM", "S2_VALUE_CONFIRMED", "S3_FOUR_FACTOR"]
+    "choiceSet": [
+      "S0_ETF",
+      "S1_INDUSTRY_MOMENTUM",
+      "S2_VALUE_CONFIRMED",
+      "S3_FOUR_FACTOR"
+    ]
   },
   "engine": {
     "accounting": "self-financing share units: units are only changed by a trade; a security that cannot trade keeps its units; costs are charged on the traded value and the post-trade NAV solves NAV_post = NAV_pre - cost(NAV_post) (fixes the two approximations #330 found in ml-strategy-tournament-v1/tournament.simulate)",
-    "costs": {"stock": {"commissionBps": 1.5, "spreadBps": 8.0, "sellTaxSchedule": "research_specs/alpha-opportunity-model-v5.json inherited KR schedule (30 -> 25 -> 23 -> 20 -> 18 -> 15 -> 20 bp)"},
-              "etf": {"commissionBps": 1.5, "spreadBps": 2.0, "sellTaxBps": 0.0}, "cash": "no cost"},
+    "costs": {
+      "stock": {
+        "commissionBps": 1.5,
+        "spreadBps": 8.0,
+        "sellTaxSchedule": "research_specs/alpha-opportunity-model-v5.json inherited KR schedule (30 -> 25 -> 23 -> 20 -> 18 -> 15 -> 20 bp)"
+      },
+      "etf": {
+        "commissionBps": 1.5,
+        "spreadBps": 2.0,
+        "sellTaxBps": 0.0
+      },
+      "cash": "no cost"
+    },
     "termination": "a held name with no close after its last priced session is written off (primary, conservative). Alternative: converted to the ETF at its last close. Neither is a measured consideration and neither is called a bound",
     "cash": "accrues the dated BOK policy-rate proxy (data/bok-policy-rates.json); BOK_POLICY_RATE_PROXY, not an investable deposit return"
   },
@@ -104,10 +127,34 @@
     "sleeveHistoryStart": "first rebalance in 2014",
     "cocktailEvaluationStart": "2018-01-01 (all policies and controls on the identical calendar, sessions and costs)",
     "end": "2026-09-14",
-    "metrics": ["net CAGR", "excess CAGR vs 069500", "tracking error", "information ratio", "Sharpe over the BOK proxy", "MDD", "CVaR 5% daily", "rolling 126/252-session excess", "calendar-year excess", "excess by pre-defined state bucket", "returns in the 63 sessions after a weight change >= 0.25", "switch count and switching cost", "dominant-sleeve stability", "loss when the learned top edge is within its own standard error", "regret vs the realised best sleeve"],
+    "metrics": [
+      "net CAGR",
+      "excess CAGR vs 069500",
+      "tracking error",
+      "information ratio",
+      "Sharpe over the BOK proxy",
+      "MDD",
+      "CVaR 5% daily",
+      "rolling 126/252-session excess",
+      "calendar-year excess",
+      "excess by pre-defined state bucket",
+      "returns in the 63 sessions after a weight change >= 0.25",
+      "switch count and switching cost",
+      "dominant-sleeve stability",
+      "loss when the learned top edge is within its own standard error",
+      "regret vs the realised best sleeve"
+    ],
     "inference": "126-session date-synchronised circular block bootstrap (2,000 reps, seed 11) of each dynamic policy minus STATIC_EW4 and minus S0; Holm over the dynamic policies; arithmetic-plus-compounding split of the gross gap (selection_value convention)",
     "q1": "for each sleeve-minus-S0 and S1-minus-S3 relative return at 21 / 63 / 126 sessions, on the every-4th-week decision sample 2014-2026: OLS slope on the expanding-standardised state, Newey-West lags = horizon/20, Benjamini-Yekutieli q=0.10 over every (pair, horizon, variable) cell; plus walk-forward out-of-sample R^2 of B1 against the expanding historical mean",
     "decomposition": "dynamic minus STATIC_EW4: (1) sleeve-timing effect = sum over days of (w_dyn - w_static) . r_sleeves; (2) market-exposure and (3) industry-exposure = regression of the daily difference on 069500 and on the S1-minus-S0 daily return; (4) stock selection = 0 by construction (the same fixed sleeves); (5) arithmetic vs compounding split; (6) cost difference",
     "postHocDiagnostics": "labelled POST_HOC: 2025 removed; CAPITAL_GOODS_DEFENSE and ELECTRONICS_ELECTRICAL removed from every sleeve universe (sleeves re-selected); cost x2; never used to choose a policy"
-  }
+  },
+  "postOutcomeAdditions": [
+    {
+      "id": "P1_REBALANCE_PHASE_ROBUSTNESS",
+      "seenBeforeAdding": "the primary run: the S1 sleeve's 2018-2026 CAGR was 7.56% against ml-strategy-tournament-v1's industry-momentum rule because the frozen schedule (every 4th week from 2014) sits on a different 4-week phase than v1 (every 4th week from 2016); phase 1 reproduces v1's yearly returns",
+      "change": "every policy and control is re-run on all four phases and reported side by side",
+      "doesNotChange": "the primary phase, any rule, threshold, state variable, model or cost"
+    }
+  ]
 }

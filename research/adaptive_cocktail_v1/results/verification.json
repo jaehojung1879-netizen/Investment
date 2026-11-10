@@ -1,0 +1,335 @@
+{
+ "s0EqualsReconciledEtf": {
+  "maxRelDiff": 4.440892098500626e-16
+ },
+ "rechain_SLEEVE_MOMENTUM_SWITCH": {
+  "engineCagr": 0.3244561648847082,
+  "rechainedCagrNoNettingNoPolicyCost": 0.3296972316844544
+ },
+ "rechain_STATIC_EW4": {
+  "engineCagr": 0.14509339355892314,
+  "rechainedCagrNoNettingNoPolicyCost": 0.1451678588577172
+ },
+ "rechain_A1_MOMENTUM_CRASH_GUARD": {
+  "engineCagr": 0.1562590163029185,
+  "rechainedCagrNoNettingNoPolicyCost": 0.15877596258173865
+ },
+ "rechain_B1_RIDGE_ALL_STATES": {
+  "engineCagr": 0.05157576001351116,
+  "rechainedCagrNoNettingNoPolicyCost": 0.056192315742761734
+ },
+ "bootstrapByPhase": {
+  "0": {
+   "SLEEVE_MOMENTUM_SWITCH": {
+    "vsStaticEW4": {
+     "annualisedMeanDiff": 0.1726895758487973,
+     "ci95": [
+      0.08460340837909187,
+      0.26237293258598754
+     ],
+     "twoSidedP": 0.0
+    },
+    "vsS0": {
+     "annualisedMeanDiff": 0.144571003669703,
+     "ci95": [
+      0.018595487139458765,
+      0.28504844992629647
+     ],
+     "twoSidedP": 0.031
+    }
+   },
+   "A1_MOMENTUM_CRASH_GUARD": {
+    "vsStaticEW4": {
+     "annualisedMeanDiff": 0.03079657436777928,
+     "ci95": [
+      -0.08708658354179143,
+      0.15283456824903527
+     ],
+     "twoSidedP": 0.609
+    },
+    "vsS0": {
+     "annualisedMeanDiff": 0.0026780021886849397,
+     "ci95": [
+      -0.12582053343986696,
+      0.13918047615820747
+     ],
+     "twoSidedP": 0.991
+    }
+   },
+   "B2_LGBM_ALL_STATES": {
+    "vsStaticEW4": {
+     "annualisedMeanDiff": 0.0021137226619739507,
+     "ci95": [
+      -0.08629679433584621,
+      0.09288888027820648
+     ],
+     "twoSidedP": 0.997
+    },
+    "vsS0": {
+     "annualisedMeanDiff": -0.026004849517120388,
+     "ci95": [
+      -0.1062686296667062,
+      0.03638227192898675
+     ],
+     "twoSidedP": 0.448
+    }
+   },
+   "S2_VALUE_CONFIRMED": {
+    "vsStaticEW4": {
+     "annualisedMeanDiff": 0.04002714613771588,
+     "ci95": [
+      -0.04994356670890606,
+      0.13026207168464
+     ],
+     "twoSidedP": 0.392
+    },
+    "vsS0": {
+     "annualisedMeanDiff": 0.011908573958621538,
+     "ci95": [
+      -0.11244046627216077,
+      0.12267012895578555
+     ],
+     "twoSidedP": 0.811
+    }
+   }
+  },
+  "1": {
+   "SLEEVE_MOMENTUM_SWITCH": {
+    "vsStaticEW4": {
+     "annualisedMeanDiff": -0.016857300125189725,
+     "ci95": [
+      -0.11347589149791185,
+      0.07466171857230736
+     ],
+     "twoSidedP": 0.728
+    },
+    "vsS0": {
+     "annualisedMeanDiff": -0.029812883955787402,
+     "ci95": [
+      -0.15506317207913695,
+      0.08741394519473791
+     ],
+     "twoSidedP": 0.619
+    }
+   },
+   "A1_MOMENTUM_CRASH_GUARD": {
+    "vsStaticEW4": {
+     "annualisedMeanDiff": 0.06185143608638534,
+     "ci95": [
+      -0.07362991418073744,
+      0.19953864645327432
+     ],
+     "twoSidedP": 0.378
+    },
+    "vsS0": {
+     "annualisedMeanDiff": 0.04889585225578767,
+     "ci95": [
+      -0.09716986334022444,
+      0.199584012990909
+     ],
+     "twoSidedP": 0.537
+    }
+   },
+   "B2_LGBM_ALL_STATES": {
+    "vsStaticEW4": {
+     "annualisedMeanDiff": 0.03176411321601699,
+     "ci95": [
+      -0.07392104352469347,
+      0.14919595670235727
+     ],
+     "twoSidedP": 0.57
+    },
+    "vsS0": {
+     "annualisedMeanDiff": 0.01880852938541931,
+     "ci95": [
+      -0.02529907567170591,
+      0.06984889596138262
+     ],
+     "twoSidedP": 0.429
+    }
+   },
+   "S2_VALUE_CONFIRMED": {
+    "vsStaticEW4": {
+     "annualisedMeanDiff": 0.005151907964153925,
+     "ci95": [
+      -0.06866902808678814,
+      0.08191964175410787
+     ],
+     "twoSidedP": 0.894
+    },
+    "vsS0": {
+     "annualisedMeanDiff": -0.007803675866443756,
+     "ci95": [
+      -0.1246150802935953,
+      0.10198049287361265
+     ],
+     "twoSidedP": 0.891
+    }
+   }
+  },
+  "2": {
+   "SLEEVE_MOMENTUM_SWITCH": {
+    "vsStaticEW4": {
+     "annualisedMeanDiff": 0.0860243366445659,
+     "ci95": [
+      -0.049222105273756124,
+      0.22146572801633427
+     ],
+     "twoSidedP": 0.222
+    },
+    "vsS0": {
+     "annualisedMeanDiff": 0.0787938368021059,
+     "ci95": [
+      -0.0906469673932294,
+      0.27171240363650934
+     ],
+     "twoSidedP": 0.421
+    }
+   },
+   "A1_MOMENTUM_CRASH_GUARD": {
+    "vsStaticEW4": {
+     "annualisedMeanDiff": -0.02468739858888975,
+     "ci95": [
+      -0.1533575616166498,
+      0.1094368697412742
+     ],
+     "twoSidedP": 0.677
+    },
+    "vsS0": {
+     "annualisedMeanDiff": -0.031917898431349734,
+     "ci95": [
+      -0.1463084364504408,
+      0.07719547467371274
+     ],
+     "twoSidedP": 0.585
+    }
+   },
+   "B2_LGBM_ALL_STATES": {
+    "vsStaticEW4": {
+     "annualisedMeanDiff": -0.022238576239269243,
+     "ci95": [
+      -0.1284578009154392,
+      0.08442266151151298
+     ],
+     "twoSidedP": 0.668
+    },
+    "vsS0": {
+     "annualisedMeanDiff": -0.029469076081729228,
+     "ci95": [
+      -0.10095561812470433,
+      0.031625924327256666
+     ],
+     "twoSidedP": 0.389
+    }
+   },
+   "S2_VALUE_CONFIRMED": {
+    "vsStaticEW4": {
+     "annualisedMeanDiff": 0.06373600681114935,
+     "ci95": [
+      -0.05683509146605463,
+      0.20837084487458432
+     ],
+     "twoSidedP": 0.348
+    },
+    "vsS0": {
+     "annualisedMeanDiff": 0.05650550696868937,
+     "ci95": [
+      -0.052521480571215196,
+      0.16680239382707193
+     ],
+     "twoSidedP": 0.335
+    }
+   }
+  },
+  "3": {
+   "SLEEVE_MOMENTUM_SWITCH": {
+    "vsStaticEW4": {
+     "annualisedMeanDiff": 0.08693257035923399,
+     "ci95": [
+      -0.014680738035261272,
+      0.18258352960779892
+     ],
+     "twoSidedP": 0.098
+    },
+    "vsS0": {
+     "annualisedMeanDiff": 0.07753529603603646,
+     "ci95": [
+      -0.09116131385071292,
+      0.24547363250238285
+     ],
+     "twoSidedP": 0.386
+    }
+   },
+   "A1_MOMENTUM_CRASH_GUARD": {
+    "vsStaticEW4": {
+     "annualisedMeanDiff": -0.008946972018637924,
+     "ci95": [
+      -0.14347382231682107,
+      0.12563795459843602
+     ],
+     "twoSidedP": 0.887
+    },
+    "vsS0": {
+     "annualisedMeanDiff": -0.018344246341835454,
+     "ci95": [
+      -0.16166896181093043,
+      0.11341964129204475
+     ],
+     "twoSidedP": 0.777
+    }
+   },
+   "B2_LGBM_ALL_STATES": {
+    "vsStaticEW4": {
+     "annualisedMeanDiff": -0.03541711573172942,
+     "ci95": [
+      -0.13223304986213025,
+      0.06605397616187186
+     ],
+     "twoSidedP": 0.484
+    },
+    "vsS0": {
+     "annualisedMeanDiff": -0.04481439005492695,
+     "ci95": [
+      -0.13386661704708136,
+      0.02444450761086478
+     ],
+     "twoSidedP": 0.239
+    }
+   },
+   "S2_VALUE_CONFIRMED": {
+    "vsStaticEW4": {
+     "annualisedMeanDiff": 0.03074307563523433,
+     "ci95": [
+      -0.06981818239502977,
+      0.14242752738477807
+     ],
+     "twoSidedP": 0.578
+    },
+    "vsS0": {
+     "annualisedMeanDiff": 0.0213458013120368,
+     "ci95": [
+      -0.09316352224271018,
+      0.1389001938392758
+     ],
+     "twoSidedP": 0.717
+    }
+   }
+  }
+ },
+ "leakCanary": {
+  "cut": "2022-01-03",
+  "B1_RIDGE_ALL_STATES": {
+   "decisionsBeforeCut": 53,
+   "identicalBeforeCut": true,
+   "laterDecisionsThatChanged": 50,
+   "laterDecisions": 55
+  },
+  "B2_LGBM_ALL_STATES": {
+   "decisionsBeforeCut": 53,
+   "identicalBeforeCut": true,
+   "laterDecisionsThatChanged": 55,
+   "laterDecisions": 55
+  },
+  "reading": "decisions before the cut cannot see labels exiting after it; later decisions must react to the poison (proof the canary bites)"
+ }
+}

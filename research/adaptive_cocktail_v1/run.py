@@ -19,10 +19,11 @@ import numpy as np
 import pandas as pd
 
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE.parents[1]))
 sys.path.insert(0, str(HERE))
 import cocktail as C  # noqa: E402
 
-EVAL_START = pd.Timestamp(C.CONFIG["evaluation"]["cocktailEvaluationStart"])
+EVAL_START = pd.Timestamp(C.CONFIG["evaluation"]["cocktailEvaluationStart"][:10])
 POST_HOC_INDUSTRIES = ("CAPITAL_GOODS_DEFENSE", "ELECTRONICS_ELECTRICAL")
 
 
@@ -50,14 +51,18 @@ def load(scratch):
     ev = pd.Series({pd.Timestamp(e["date"]): float(e["annualRatePct"]) for e in bok}).sort_index()
     rate = ev.reindex(ev.index.union(sessions)).ffill().reindex(sessions)
     rf = rate / 100 / 252
+    rows = pickle.loads((s / "matrix.pkl").read_bytes())["matrix"].rows[["date", "ticker", "b08Confirmed"]].copy()
+    rows["date"] = pd.to_datetime(rows["date"])
+    df = df.merge(rows, on=["date", "ticker"], how="left", validate="one_to_one")
     df["_q"] = C.quality_mask(df).to_numpy()
     return df, closes, vols, sessions, macro, vf["vix"], vf["fx"], rf, {"finalSessionQuotesApplied": fixed, "identity": blob["identity"]["sha256"],
                                                                          "matrixDigest": blob["matrixDigest"]}
 
 
-def decision_dates(df):
+def decision_dates(df, phase=0):
+    """Every 4th weekly signal date from the first 2014 date (phase 0 = the frozen primary). Phases 1-3 shift the same cycle by 1-3 weeks."""
     weekly = sorted(pd.Timestamp(d) for d in df["date"].unique() if pd.Timestamp(d).year >= 2014)
-    return weekly[::4]
+    return weekly[phase::4]
 
 
 def nxt(sessions, d):
@@ -242,9 +247,9 @@ def decompose(dyn_w, static_w, sleeve_daily, dyn_nav, static_nav, bench_nav, dyn
             "note": "timing = sum((w_dyn - w_static) . sleeve daily returns) with target weights held between decisions; the rest of the gap is drift, netting of overlapping names and costs. Stock selection is identical by construction (same fixed sleeves)."}
 
 
-def run_all(df, closes, vols, sessions, macro, vix, fx, rf, xgb=None, exclude=(), cost_mult=1.0, label="PRIMARY"):
+def run_all(df, closes, vols, sessions, macro, vix, fx, rf, xgb=None, exclude=(), cost_mult=1.0, label="PRIMARY", phase=0):
     px = C.Prices(closes, vols, sessions, rf)
-    dates = decision_dates(df)
+    dates = decision_dates(df, phase)
     mdf = df.groupby("date")[["H09_marketBreadth", "H05_crossIndustryDispersion", "H10_marketConcentrationTop2", "H07_leadershipPersistence",
                               "I01_kospiTrendVolState"]].first().reset_index()
     states = C.state_panel(sessions, closes[C.ETF], macro, vix, fx, mdf)
@@ -408,7 +413,7 @@ def main(argv=None):
             (conf if abs(g["mu"][k]) > g["se"][k] * math.sqrt(63 / 20) else unc).append(val)
         beh[n]["topPickRealised63dWhenWithinOwnSE"] = {"n": len(unc), "mean": r6(np.mean(unc)) if unc else None}
         beh[n]["topPickRealised63dWhenOutsideSE"] = {"n": len(conf), "mean": r6(np.mean(conf)) if conf else None}
-        beh[n]["oosForecast"] = oos_r2(dg, lab63, sorted(dg))
+        beh[n]["oosForecast"] = oos_r2(dg, lab63, R["dates"])
     res["behaviour"] = beh
     # state-bucket performance (pre-defined buckets)
     st_daily = R["states"]
@@ -448,6 +453,14 @@ def main(argv=None):
     post["excludeDefenseAndElectronics"] = {n: r6(C.metrics(s["nav"], E["bench"], rfs)["cagr"]) for n, s in E["sims"].items()}
     K = run_all(df, closes, vols, sessions, macro, vix, fx, rf, cost_mult=2.0, label="COSTX2")
     post["costX2"] = {n: r6(C.metrics(s["nav"], K["bench"], rfs)["cagr"]) for n, s in K["sims"].items()}
+    phases = {}
+    for ph in (0, 1, 2, 3):
+        P = R if ph == 0 else run_all(df, closes, vols, sessions, macro, vix, fx, rf, label=f"PHASE{ph}", phase=ph)
+        phases[ph] = {n: {k: r6(v) for k, v in C.metrics(s["nav"], P["bench"], rfs).items() if k in ("cagr", "excessCagr", "sharpe", "mdd")}
+                      for n, s in P["sims"].items()}
+        phases[ph]["_window"] = {"start": str(P["start"].date()), "firstDecision": str(P["evalDates"][0].date())}
+    post["rebalancePhase"] = {"note": "the same frozen rules on the other three 4-week phases; phase 0 is the frozen primary. Added after the S1 sleeve was "
+                                      "found to differ from ml-strategy-tournament-v1 only by phase (see config postOutcomeAdditions)", "byPhase": phases}
     post["label"] = "POST_HOC: diagnostics only; never used to choose a policy"
     res["postHoc"] = post
     res["runtimeSeconds"] = round(time.time() - t0, 1)
