@@ -89,7 +89,7 @@ def main(argv=None):
                      "rows": int(len(df)), "securities": int(df["ticker"].nunique()), "qualityEligibleShare": round(float(q.mean()), 4),
                      "qualityEligibleByYear": df.assign(q=q).groupby("year")["q"].mean().round(4).to_dict(),
                      "priceEnd": str(sessions[-1].date())},
-        "terminatedInPricePanel": {t: str(d.date()) for t, d in sorted(book_terminal.items())},
+        "terminatedInPricePanel": {t: str(sessions[d].date()) for t, d in sorted(book_terminal.items())},
         "labels": lab,
         "featureLayers": {k: len(v) for k, v in layers.items()},
         "featuresExcludedBelowCoverage": sorted(c for c in coverage.index if coverage[c] < T.CONFIG["features"]["minimumCoverageToEnter"]),

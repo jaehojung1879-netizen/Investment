@@ -178,3 +178,18 @@ def test_results_carry_the_exploratory_label_when_present():
         doc = json.loads(p.read_text())
         if isinstance(doc, dict) and "evidenceClass" in doc:
             assert doc["evidenceClass"] == "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY"
+
+
+def test_vectorised_spearman_matches_scipy():
+    from scipy.stats import spearmanr
+    rng = np.random.default_rng(5)
+    rows = []
+    for d in pd.date_range("2020-01-03", periods=4, freq="7D"):
+        x = rng.normal(size=40)
+        y = x * 0.3 + rng.normal(size=40)
+        x[3] = x[4]                                   # a tie
+        rows += [{"date": d, "s": a, "y": b} for a, b in zip(x, y)]
+    f = pd.DataFrame(rows)
+    got = T.spearman_by_date(f, "s", "y")
+    for d, g in f.groupby("date"):
+        assert got[d] == pytest.approx(spearmanr(g["s"], g["y"]).statistic, abs=1e-12)

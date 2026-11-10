@@ -266,7 +266,7 @@ def fit_predict(cfg, train, test, train_ranked, test_ranked, layers, want_train_
     elif obj == "CLF":
         model = xgb.XGBClassifier(objective="binary:logistic", **p).fit(Xtr, clf)
     else:
-        qid = train["date"].astype("int64").to_numpy()
+        qid = train["date"].rank(method="dense").astype(np.int64).to_numpy()   # small ordinal ids: xgboost narrows qid
         model = xgb.XGBRanker(objective="rank:pairwise", **p).fit(Xtr, quint, qid=qid)
     if obj == "CLF":
         return model.predict_proba(Xte)[:, 1], (model.predict_proba(Xtr)[:, 1] if want_train_pred else None), model, cols
@@ -300,12 +300,19 @@ def fold_split(df, year, h):
 
 
 def spearman_by_date(frame, score_col, y_col):
-    def one(g):
-        g = g[[score_col, y_col]].dropna()
-        if len(g) < 20 or g[score_col].nunique() < 2:
-            return np.nan
-        return g[score_col].rank().corr(g[y_col].rank())
-    return frame.groupby("date").apply(one)
+    """Per-date Spearman correlation (Pearson on within-date average ranks), vectorised; dates with < 20 pairs are NaN."""
+    f = frame[["date", score_col, y_col]].dropna()
+    g = f.groupby("date")
+    x = g[score_col].rank()
+    y = g[y_col].rank()
+    t = pd.DataFrame({"date": f["date"], "x": x, "y": y, "xy": x * y, "xx": x * x, "yy": y * y})
+    s = t.groupby("date").agg(n=("x", "size"), sx=("x", "sum"), sy=("y", "sum"), sxy=("xy", "sum"), sxx=("xx", "sum"), syy=("yy", "sum"))
+    cov = s["sxy"] - s["sx"] * s["sy"] / s["n"]
+    vx = s["sxx"] - s["sx"] ** 2 / s["n"]
+    vy = s["syy"] - s["sy"] ** 2 / s["n"]
+    with np.errstate(invalid="ignore", divide="ignore"):
+        rho = cov / np.sqrt(vx * vy)
+    return rho.where((s["n"] >= 20) & (vx > 0) & (vy > 0))
 
 
 # --------------------------------------------------------------------------- #
