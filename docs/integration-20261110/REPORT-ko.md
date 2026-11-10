@@ -38,7 +38,7 @@
 
 17개 PR의 실제 HEAD/base/CI/파일을 조사한 초기 스냅샷과 KEEP/CLOSE/HOLD 판정은 `github-inventory-initial.json`, `PR-REGISTER.md`에 있다. #315는 #321에 완전히 포함됨을 Git 조상 관계로 확인했다. #323의 고유 문서2파일은 정확 바이트로 흡수했고 archive는 root AGENTS와 동일하다.
 
-새 통합 PR 공개 뒤 #321의 base를 main으로 바꾸고 #315를 대체 댓글과 종료한다. #323도 대체 위치 댓글과 종료한다. 원격 브랜치는 삭제하지 않는다. 실제 처리는 통합 PR Conversation·최종 보고서·GitHub state로 확인한다. #325 미완료 감사, #326 DO NOT MERGE, #320→#322→#327 의존 관계와 다른 고유 연구·UI 작업은 보존한다.
+통합 PR #328 공개 뒤 #321의 base를 main으로 전환했고 #315와 #323은 대체 댓글 후 실제 종료했다. 원격 브랜치는 삭제하지 않았다. `pr-cleanup-result.json`에 실제 API 재확인과 댓글 링크가 있다. 신규 #328을 포함한 열린 PR은16개다. #325 미완료 감사, #326 DO NOT MERGE, #320→#322→#327 의존 관계와 다른 고유 연구·UI 작업은 보존했다.
 
 ## 7. 커밋·CI
 

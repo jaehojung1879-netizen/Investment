@@ -4,8 +4,8 @@
 
 | 대상 | 정확 SHA-256 | 상태 |
 |---|---|---|
-| spec-v2.json | 2a73e28a4b837e828a50becd8e4d668b346ef772816b333589062af4b303ecf3 | 코드/합성 검증 준비, LIVE 미시작 |
-| execution-packet-v2.json | 742fb6d764a405b7ce27db15bf981916388f1376a32749e7df557d75d2507394 | 원천 결측으로 실행 승인 불가 |
+| spec-v2.json | 685a78915bb88065e7b94d6c4115cb2ffbcbf869f9cd1899f66bf70309a936bb | 코드/합성 검증 준비, LIVE 미시작 |
+| execution-packet-v2.json | 6fef2ce75d84ba6edbb9d638477dbd119f550665d95ebe11fd67df8c332e6a0f | 원천 결측으로 실행 승인 불가 |
 
 원래 A1/B1 전향 코드 23개 고정은 모두 일치한다. 원래 broad-alpha 결과·계약·claim·코드와 v1 사양도 보존했다.
 
@@ -13,7 +13,7 @@
 
 LIVE 운영 조건을 갖춘 뒤 사용할 정확 문구:
 
-APPROVE KR_CAPITAL_EVENT_PROSPECTIVE_V2 2a73e28a4b837e828a50becd8e4d668b346ef772816b333589062af4b303ecf3 RECORDING_ONLY
+APPROVE KR_CAPITAL_EVENT_PROSPECTIVE_V2 685a78915bb88065e7b94d6c4115cb2ffbcbf869f9cd1899f66bf70309a936bb RECORDING_ONLY
 
 이는 매매·역사 평가·다른 LIVE 연구 변경을 승인하지 않는다. 공개 Owner 승인 댓글의 ID/본문SHA/게시시각, 위 사양SHA, PROSPECTIVE_RECORDING_ONLY scope와 첫 적격 세션을 신규 AUTHORIZATION-v2-prospective-recording.json에 고정해 커밋해야 한다. 스케줄러·DART 자격증명·push 권한 확인 전에는 실행하지 않는다.
 

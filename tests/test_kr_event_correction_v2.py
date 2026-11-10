@@ -5,7 +5,7 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from research.kr_event_correction_v2 import cohort as C, portfolio as P, run as R
+from research.kr_event_correction_v2 import cohort as C, evaluate as V, portfolio as P, run as R
 from research.corporate_event_outcome_v1.shareholder_inputs_v2 import SourceBlocked
 
 
@@ -93,13 +93,15 @@ def portfolio_input():
     market = {'sessions': days, 'etf': dict.fromkeys(days, 100), 'cash': {'ZERO': dict.fromkeys(days, 0)},
               'levels': {'A': dict(zip(days, [100, 90, 90])), 'B': dict(zip(days, [100, 105, 105]))},
               'tradable': {'A': set(days), 'B': set(days)}}
+    history = list(pd.bdate_range(end=days[0], periods=253).strftime('%Y-%m-%d'))
+    market['signalCalendar'] = [*history[:-1], *days]
     decision = {'signalSession': '2024-12-30', 'knownOn': '2024-12-30', 'entrySession': days[0],
                 'weights': {'A': 1.0}, 'maxNames': 5, 'maxSecurityWeight': 1., 'maxSectorWeight': 1.,
                 'rankedCandidates': [{'ticker': t, 'eligible': True, 'sector': t, 'maxWeight': 1.} for t in ('A', 'B')]}
     events = [{'hypothesis': C.P2, 'ticker': 'A', 'entrySession': days[0]}]
     expected = {f'{i}x': [-.0011 * i, -.1, 0.] for i in (1, 2, 3)}
     bundle = {'status': 'COMPLETE_FROZEN_C2_LEDGER', 'calendar': days, 'decisions': [decision],
-              'expectedDailyByCost': expected}
+              'expectedDailyByCost': expected, 'dilutionEventCoverageFrom': history[0]}
     return bundle, events, market
 
 
@@ -121,6 +123,16 @@ def test_a_baseline_mismatch_never_triggers_a_c2_reconstruction():
         P.compare(bundle, events, market, draws=9)
 
 
+def test_pre_sample_filing_still_blocks_entry_and_unknown_lookback_is_not_empty():
+    bundle, events, market = portfolio_input()
+    events[0]['entrySession'] = market['signalCalendar'][-4]
+    result = P.compare(bundle, events, market, draws=9)
+    assert result['paths']['AVOID_ETF']['1x']['daily'] == [0, 0, 0]
+    bundle.pop('dilutionEventCoverageFrom')
+    with pytest.raises(SourceBlocked, match='LOOKBACK_BEFORE_PORTFOLIO_START'):
+        P.compare(bundle, events, market, draws=9)
+
+
 def test_missing_candidate_caps_or_liquidity_is_not_fabricated():
     bundle, events, market = portfolio_input()
     market['tradable']['B'].clear()
@@ -138,3 +150,33 @@ def test_preserved_v1_result_hashes_are_part_of_the_new_packet():
         assert 'research/broad_alpha_screen_v1/' + path in packet['protectedSha256']
     assert packet['promotionEligible'] is False
     assert Path('research/kr_capital_event_prospective_v1/spec-v1.json').is_file()
+
+
+def test_all_four_cells_execute_on_invented_prices_and_reconcile_net_attribution(monkeypatch):
+    import numpy as np
+    from research.corporate_event_outcome_v1 import inference as I
+
+    days = list(pd.bdate_range('2018-01-01', periods=800).strftime('%Y-%m-%d'))
+    changes = .0002 + .005 * np.sin(np.arange(len(days)))
+    index = dict(zip(days, np.cumprod(1 + changes)))
+    events = [{'hypothesis': hyp, 'rcept_no': str(j), 'corp_code': ticker,
+               'ticker': ticker, 'signalSession': days[299], 'entrySession': days[300],
+               'independent': {'H126': True, 'H252': True}}
+              for j, (hyp, ticker) in enumerate([(C.P2, 'A'), (C.K7, 'B')])]
+    market = {'sessions': days, 'etf': index, 'levels': {'A': index, 'B': index},
+              'tradable': {'A': set(days), 'B': set(days)}, 'terminal': {},
+              'betaLevels': {'0': index, '1': index},
+              'cash': {name: dict.fromkeys(days, 0.) for name in V.CASH}}
+    original = I.synchronized_bootstrap
+    monkeypatch.setattr(I, 'synchronized_bootstrap', lambda columns, block:
+                        original(columns, block, draws=9, seed=319320))
+    result = V.evaluate_four_cells(events, market)
+    assert set(result) == {f'{h}:{z}' for h, z in V.CELLS}
+    for key, cell in result.items():
+        assert cell['slots'] == 1 and not cell['promotionEligible']
+        summary = cell['summary']['BOK_POLICY_RATE:1x']
+        assert summary['selectionDelta'] < 0  # identical gross assets, stock round-trip friction
+        daily = cell['daily']['BOK_POLICY_RATE:1x']['D']
+        assert summary['selectionDelta'] == pytest.approx(int(key.split(':H')[1]) * np.mean(daily))
+        assert summary['simpleEtfExcess'] - summary['exposureTerm'] == pytest.approx(summary['selectionDelta'])
+        assert summary['ci95'][0] <= summary['ci95'][1]

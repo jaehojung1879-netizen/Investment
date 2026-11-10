@@ -182,6 +182,8 @@ def cited_levels(rows, dividends, actions=(), *, known_before=None):
                 raise SourceBlocked('NONPOSITIVE_SHARE_MULTIPLIER')
             distribution = dividends.get(day, {})
             dps = number(distribution.get('dps', 0))
+            if (row.get('volume') or 0) <= 0 and action.get('terminalCashPerOldShare') is None and (action or dps):
+                raise SourceBlocked('HALTED_ACTION_OR_DIVIDEND_VALUATION_UNRESOLVED')
             if factor != 1 and dps:
                 basis = distribution.get('amountBasis')
                 if basis == 'POST_ACTION_SHARE':

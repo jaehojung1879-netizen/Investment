@@ -22,7 +22,7 @@
 | [#326](https://github.com/jaehojung1879-netizen/Investment/pull/326) | HOLD | ba414836a3d7 | DO NOT MERGE 실행 경로 증거. 병합·재실행·잠금 삭제 금지 |
 | [#327](https://github.com/jaehojung1879-netizen/Investment/pull/327) | HOLD | 1e0289d09ba3 | 최신 1e0289d0 인수. 역사 결과·사양 유지; v2는 새 통합 PR |
 
-정리 순서: 새 통합 PR 공개 뒤에만 #315/#323을 대체 댓글과 함께 닫는다. 실제 state/댓글 링크는 통합 PR Conversation과 최종 보고서가 근거다. 다른15개 원본 PR과 원격 브랜치는 보존한다.
+정리 완료: 새 통합 PR #328 공개 뒤 #315/#323을 대체 댓글과 함께 닫았고 #321 base를 main으로 전환했다. 실제 state/댓글 링크는 pr-cleanup-result.json과 PR Conversation에 있다. 다른15개 원본 PR과 원격 브랜치는 보존했으며 신규 #328을 포함해 열린 PR은16개다.
 
 의존: #320→#322→#327→새 통합 PR. #315를 포함한 #321은 main 기준의 독립 Pages/CI PR로 정리한다. #325는 #316 위의 보호 작업, #326은 병합 대상 아님. UI는 #299→#307, #306→#314를 유지한다. 독립 보호 연구·운영 변경을 하나의 diff에 억지로 합치지 않는다.
 

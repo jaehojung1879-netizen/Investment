@@ -140,3 +140,14 @@ def test_cited_total_loss_reports_ruin_without_recreating_capital():
                          {'A': {'date': days[1], 'multiple': 0, 'sourceSha256': 'a' * 64}}, mult=0)
     assert result['complete'] and result['capitalExhausted']
     assert result['book'] == [0, -1, 0, 0, 0]
+
+
+def test_halted_ex_date_never_reinvests_cash_or_guesses_a_post_action_price():
+    rows = [{'date': '2025-01-02', 'close': 100, 'volume': 10},
+            {'date': '2025-01-03', 'close': 100, 'volume': 0}]
+    with pytest.raises(S.SourceBlocked, match='HALTED_ACTION_OR_DIVIDEND'):
+        S.cited_levels(rows, {'2025-01-03': {'dps': 10}})
+    with pytest.raises(S.SourceBlocked, match='HALTED_ACTION_OR_DIVIDEND'):
+        S.cited_levels(rows, {}, [action(shareMultiplier=2)])
+    lv, _, _ = S.cited_levels(rows, {}, [action(kind='TERMINAL_CASH', terminalCashPerOldShare=60)])
+    assert lv['2025-01-03'] == .6  # actual cited cash consideration needs no market trade

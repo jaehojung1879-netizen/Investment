@@ -20,10 +20,10 @@ def asset(ticker):
     return E.ETF if ticker == '069500.KS' else ticker
 
 
-def targets(decisions, events, sessions, mode):
+def targets(decisions, events, sessions, mode, *, signal_calendar=None):
     if mode not in ('ORIGINAL', 'AVOID_NEXT', 'AVOID_ETF'):
         raise ValueError('UNKNOWN_PORTFOLIO_PATH')
-    index, out, previous = {d: i for i, d in enumerate(sessions)}, {}, set()
+    index, out, previous = {d: i for i, d in enumerate(signal_calendar or sessions)}, {}, set()
     for row in decisions:
         day = row['entrySession']
         if row['signalSession'] >= day or row['knownOn'] > row['signalSession']:
@@ -111,8 +111,15 @@ def compare(bundle, events, market, *, draws=None):
     """A mismatch to the stored original blocks B/C; no C2 regeneration fallback."""
     if bundle.get('status') != 'COMPLETE_FROZEN_C2_LEDGER' or bundle['calendar'] != market['sessions']:
         raise SourceBlocked('COMPLETE_ALIGNED_C2_LEDGER_MISSING')
+    signal_calendar = market.get('signalCalendar', market['sessions'])
+    first = signal_calendar.index(market['sessions'][0])
+    if first < 252 or bundle.get('dilutionEventCoverageFrom', '9999') > signal_calendar[first - 252]:
+        raise SourceBlocked('P2_LOOKBACK_BEFORE_PORTFOLIO_START_UNQUALIFIED')
+    events = [*events, *bundle.get('priorP2Events', [])]
+    if any(not e.get('sourceSha256') for e in bundle.get('priorP2Events', [])):
+        raise SourceBlocked('PRIOR_P2_LOOKBACK_SOURCE_UNQUALIFIED')
     decisions = bundle['decisions']
-    original_targets = targets(decisions, events, market['sessions'], 'ORIGINAL')
+    original_targets = targets(decisions, events, market['sessions'], 'ORIGINAL', signal_calendar=signal_calendar)
     original = {}
     for multiplier in (1, 2, 3):
         key = f'{multiplier}x'
@@ -124,7 +131,7 @@ def compare(bundle, events, market, *, draws=None):
     result = {'ORIGINAL': original}
     for mode in ('AVOID_NEXT', 'AVOID_ETF'):
         result[mode] = {}
-        ts = targets(decisions, events, market['sessions'], mode)
+        ts = targets(decisions, events, market['sessions'], mode, signal_calendar=signal_calendar)
         for multiplier in (1, 2, 3):
             key = f'{multiplier}x'
             path, costs = run_targets(ts, market, multiplier)

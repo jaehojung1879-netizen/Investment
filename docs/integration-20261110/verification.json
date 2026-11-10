@@ -1,8 +1,9 @@
 {
   "scope": "SYNTHETIC_AND_SAVED_FILING_DIAGNOSTICS_NO_HISTORICAL_EXECUTION",
   "focusedTests": {
-    "passed": 41,
-    "logSha256": "00647d5bd742c84390ab3b462f6d47697902f2ffc10f40ccf6d94e3b937bd86e"
+    "passed": 44,
+    "logSha256": "7611e2623a63890498fd5c7d379d44d899e4795ec513d2bc2fb3155d2af76fd2",
+    "includesFourCellAndThreePathInventedMarketEndToEnd": true
   },
   "originalRuntimeAndFakeFredTests": {
     "passed": 40
@@ -17,10 +18,29 @@
     "productionDataWritten": false
   },
   "archiveMembersVerified": 22,
-  "fullSuite": "RUNNING_FINAL_FROZEN_CODE",
+  "fullSuite": "PARENT_CORE_FULL_VALIDATION_RUNNING; FINAL_INPUT_EDGE_DELTAS_FOCUSED_PASS; EXACT_HEAD_CI_SEPARATE",
   "ci": "CHECK_EXACT_PR_HEAD_NO_PASS_CLAIM_YET",
   "sealedRuntimeTestRestored": true,
   "historicalExecutions": 0,
   "liveWrites": 0,
-  "workflowsChanged": false
+  "workflowsChanged": false,
+  "prCleanupResult": "pr-cleanup-result.json",
+  "historicalStatus": {
+    "studyId": "kr-event-four-cell-correction-v2",
+    "packetSha256": "6fef2ce75d84ba6edbb9d638477dbd119f550665d95ebe11fd67df8c332e6a0f",
+    "codeFiles": 123,
+    "status": "SOURCE_BLOCKED",
+    "missing": [
+      "Dated official issuer/common/preferred security identity qualifications for every used ticker",
+      "Verified fiscal periods for current and prior own-issuer year-end cash decisions; record-date year is not substituted",
+      "Explicit original/correction receipt links for ambiguous dividend amendments",
+      "Cited split/stock-dividend/terminal actions and complete shareholder-economics coverage; rights/merger packages remain blocked",
+      "Complete frozen historical C2 targets, actual execution path, eligible ranking, sizing caps and daily baseline by cost; 15 observation receipts are not an execution ledger"
+    ],
+    "pricesOpened": 0,
+    "historicalExecutions": 0,
+    "liveWrites": 0,
+    "protectedPinsMatch": true,
+    "runtimeMatchesExecution": true
+  }
 }

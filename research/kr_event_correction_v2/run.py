@@ -230,7 +230,7 @@ def execute(prices, universe):
                 extra.update(c['ticker'] for r in bundle['decisions'] for c in r['rankedCandidates']
                              if c['ticker'] not in ('ETF', 'CASH', '069500.KS'))
                 ps = evaluate.assemble_stocks(rows, [], dividends, admission, sessions, extra_tickers=extra)
-                pm = {**market, **ps, 'sessions': bundle['calendar']}
+                pm = {**market, **ps, 'sessions': bundle['calendar'], 'signalCalendar': sessions}
                 if pm['sessions'] != [d for d in sessions if pm['sessions'][0] <= d <= pm['sessions'][-1]]:
                     raise SourceBlocked('PORTFOLIO_CALENDAR_NOT_COMPLETE')
                 result['portfolioComparison'] = portfolio.compare(bundle, events, pm)
