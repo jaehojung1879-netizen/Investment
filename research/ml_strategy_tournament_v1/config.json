@@ -18,12 +18,30 @@
       "CIMX": "CIM + 6 pre-declared product interactions (linear models only)"
     },
     "declaredInteractions": [
-      ["MKT_trend126", "A07_momentum12_1"],
-      ["MKT_vol63", "A07_momentum12_1"],
-      ["H01_industryRelMom126", "C14_ocfImprovement"],
-      ["H01_industryRelMom126", "C02_returnOnEquity"],
-      ["MKT_vol63", "C10_liabilityGrowth"],
-      ["MKT_drawdown252", "F02_downsideVol126"]
+      [
+        "MKT_trend126",
+        "A07_momentum12_1"
+      ],
+      [
+        "MKT_vol63",
+        "A07_momentum12_1"
+      ],
+      [
+        "H01_industryRelMom126",
+        "C14_ocfImprovement"
+      ],
+      [
+        "H01_industryRelMom126",
+        "C02_returnOnEquity"
+      ],
+      [
+        "MKT_vol63",
+        "C10_liabilityGrowth"
+      ],
+      [
+        "MKT_drawdown252",
+        "F02_downsideVol126"
+      ]
     ]
   },
   "labels": {
@@ -38,7 +56,20 @@
   },
   "walkForward": {
     "scheme": "expanding window, refit once per calendar year",
-    "outerFoldYears": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+    "outerFoldYears": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
     "purge": "labels with exit session >= first signal date of the fold are excluded (equivalent to a full-horizon purge)",
     "embargoSessions": 0,
     "portfolioEvaluationStart": "2016-01-01",
@@ -50,17 +81,83 @@
     "maxNames": 5,
     "weightPerName": 0.2,
     "residual": "069500.KS",
-    "quality": {"tradableAtSignal": true, "notPreferredShare": true, "E04_tradabilityGuard20": 20, "E07_suspensionStaleRisk": 0, "E03_minMedianTradedValueKrw": 5000000000},
+    "quality": {
+      "tradableAtSignal": true,
+      "notPreferredShare": true,
+      "E04_tradabilityGuard20": 20,
+      "E07_suspensionStaleRisk": 0,
+      "E03_minMedianTradedValueKrw": 5000000000
+    },
     "economicGate": "expected H126 excess of the name's within-date percentile bucket, estimated as the date-equal-weighted mean realised excess of the SAME strategy's past OOS predictions whose labels matured before the decision date, minus a round-trip stock cost and the ETF switch cost; a name enters only if that is > 0",
-    "calibrationBuckets": [[0.95, 1.0001], [0.9, 0.95], [0.8, 0.9], [0.0, 0.8]],
+    "calibrationBuckets": [
+      [
+        0.95,
+        1.0001
+      ],
+      [
+        0.9,
+        0.95
+      ],
+      [
+        0.8,
+        0.9
+      ],
+      [
+        0.0,
+        0.8
+      ]
+    ],
     "minimumCalibrationDates": 8,
     "costs": {
-      "stock": {"commissionBps": 1.5, "spreadBps": 8.0, "sellTaxSchedule": [{"effectiveDate": "1900-01-01", "sellTaxBps": 30.0}, {"effectiveDate": "2019-06-03", "sellTaxBps": 25.0}, {"effectiveDate": "2021-01-01", "sellTaxBps": 23.0}, {"effectiveDate": "2023-01-01", "sellTaxBps": 20.0}, {"effectiveDate": "2024-01-01", "sellTaxBps": 18.0}, {"effectiveDate": "2025-01-01", "sellTaxBps": 15.0}, {"effectiveDate": "2026-01-01", "sellTaxBps": 20.0}], "source": "research_specs/alpha-opportunity-model-v5.json inherited KR costs"},
-      "etf": {"commissionBps": 1.5, "spreadBps": 2.0, "sellTaxBps": 0.0}
+      "stock": {
+        "commissionBps": 1.5,
+        "spreadBps": 8.0,
+        "sellTaxSchedule": [
+          {
+            "effectiveDate": "1900-01-01",
+            "sellTaxBps": 30.0
+          },
+          {
+            "effectiveDate": "2019-06-03",
+            "sellTaxBps": 25.0
+          },
+          {
+            "effectiveDate": "2021-01-01",
+            "sellTaxBps": 23.0
+          },
+          {
+            "effectiveDate": "2023-01-01",
+            "sellTaxBps": 20.0
+          },
+          {
+            "effectiveDate": "2024-01-01",
+            "sellTaxBps": 18.0
+          },
+          {
+            "effectiveDate": "2025-01-01",
+            "sellTaxBps": 15.0
+          },
+          {
+            "effectiveDate": "2026-01-01",
+            "sellTaxBps": 20.0
+          }
+        ],
+        "source": "research_specs/alpha-opportunity-model-v5.json inherited KR costs"
+      },
+      "etf": {
+        "commissionBps": 1.5,
+        "spreadBps": 2.0,
+        "sellTaxBps": 0.0
+      }
     },
     "suspension": "a held name with zero volume or no close is carried at its last close and cannot be traded; a sell is deferred, a buy is skipped (ETF keeps the weight)",
     "termination": "a held name with no close after its last priced session: primary path values it at ZERO (lower bound, flagged TERMINAL_UNRESOLVED_LOWER_BOUND); a sensitivity path converts it to the ETF at its last close (upper bound). Neither is a measured consideration.",
-    "concentrationSensitivity": "forced top-1 / top-3 / top-5 without the economic gate, reported separately, never ranked as the primary book"
+    "concentrationSensitivity": "forced top-1 / top-3 / top-5 without the economic gate, reported separately, never ranked as the primary book",
+    "eligibleBuckets": [
+      0,
+      1,
+      2
+    ]
   },
   "rankings": {
     "absolute": "net CAGR over the common evaluation period",
@@ -69,59 +166,241 @@
   },
   "modelGrid": {
     "LGBM": {
-      "featureSets": ["C", "CI", "CIM"],
-      "objectives": ["REG", "RANK", "CLF"],
-      "hyperparameters": [
-        {"id": "h1", "num_leaves": 7, "n_estimators": 300, "learning_rate": 0.03, "min_child_samples": 500, "colsample_bytree": 0.7},
-        {"id": "h2", "num_leaves": 15, "n_estimators": 300, "learning_rate": 0.03, "min_child_samples": 500, "colsample_bytree": 0.7},
-        {"id": "h3", "num_leaves": 31, "n_estimators": 300, "learning_rate": 0.03, "min_child_samples": 500, "colsample_bytree": 0.7},
-        {"id": "h4", "num_leaves": 15, "n_estimators": 600, "learning_rate": 0.02, "min_child_samples": 1000, "colsample_bytree": 0.5},
-        {"id": "h5", "num_leaves": 63, "n_estimators": 300, "learning_rate": 0.03, "min_child_samples": 200, "colsample_bytree": 0.7},
-        {"id": "h6", "num_leaves": 15, "n_estimators": 150, "learning_rate": 0.05, "min_child_samples": 2000, "colsample_bytree": 0.9}
+      "featureSets": [
+        "C",
+        "CI",
+        "CIM"
       ],
-      "fixed": {"subsample": 0.8, "subsample_freq": 1, "reg_lambda": 1.0, "random_state": 7, "n_jobs": 1, "verbose": -1},
-      "objectiveMap": {"REG": "regression (l2) on winsorised excess", "RANK": "lambdarank grouped by signal date on within-date excess quintile (0-4)", "CLF": "binary: excess > economicThresholdPct"}
+      "objectives": [
+        "REG",
+        "RANK",
+        "CLF"
+      ],
+      "hyperparameters": [
+        {
+          "id": "h1",
+          "num_leaves": 7,
+          "n_estimators": 300,
+          "learning_rate": 0.03,
+          "min_child_samples": 500,
+          "colsample_bytree": 0.7
+        },
+        {
+          "id": "h2",
+          "num_leaves": 15,
+          "n_estimators": 300,
+          "learning_rate": 0.03,
+          "min_child_samples": 500,
+          "colsample_bytree": 0.7
+        },
+        {
+          "id": "h3",
+          "num_leaves": 31,
+          "n_estimators": 300,
+          "learning_rate": 0.03,
+          "min_child_samples": 500,
+          "colsample_bytree": 0.7
+        },
+        {
+          "id": "h4",
+          "num_leaves": 15,
+          "n_estimators": 600,
+          "learning_rate": 0.02,
+          "min_child_samples": 1000,
+          "colsample_bytree": 0.5
+        },
+        {
+          "id": "h5",
+          "num_leaves": 63,
+          "n_estimators": 300,
+          "learning_rate": 0.03,
+          "min_child_samples": 200,
+          "colsample_bytree": 0.7
+        },
+        {
+          "id": "h6",
+          "num_leaves": 15,
+          "n_estimators": 150,
+          "learning_rate": 0.05,
+          "min_child_samples": 2000,
+          "colsample_bytree": 0.9
+        }
+      ],
+      "fixed": {
+        "subsample": 0.8,
+        "subsample_freq": 1,
+        "reg_lambda": 1.0,
+        "random_state": 7,
+        "n_jobs": 1,
+        "verbose": -1
+      },
+      "objectiveMap": {
+        "REG": "regression (l2) on winsorised excess",
+        "RANK": "lambdarank grouped by signal date on within-date excess quintile (0-4)",
+        "CLF": "binary: excess > economicThresholdPct"
+      }
     },
     "XGB": {
-      "featureSets": ["C", "CI", "CIM"],
-      "objectives": ["REG", "RANK", "CLF"],
-      "hyperparameters": [
-        {"id": "h1", "max_depth": 3, "n_estimators": 300, "learning_rate": 0.03, "min_child_weight": 200, "colsample_bytree": 0.7},
-        {"id": "h2", "max_depth": 5, "n_estimators": 300, "learning_rate": 0.03, "min_child_weight": 200, "colsample_bytree": 0.7},
-        {"id": "h3", "max_depth": 4, "n_estimators": 600, "learning_rate": 0.02, "min_child_weight": 500, "colsample_bytree": 0.5}
+      "featureSets": [
+        "C",
+        "CI",
+        "CIM"
       ],
-      "fixed": {"subsample": 0.8, "tree_method": "hist", "random_state": 7, "n_jobs": 1},
-      "objectiveMap": {"REG": "reg:squarederror on winsorised excess", "RANK": "rank:pairwise grouped by signal date on within-date excess quintile", "CLF": "binary:logistic, excess > threshold"}
+      "objectives": [
+        "REG",
+        "RANK",
+        "CLF"
+      ],
+      "hyperparameters": [
+        {
+          "id": "h1",
+          "max_depth": 3,
+          "n_estimators": 300,
+          "learning_rate": 0.03,
+          "min_child_weight": 200,
+          "colsample_bytree": 0.7
+        },
+        {
+          "id": "h2",
+          "max_depth": 5,
+          "n_estimators": 300,
+          "learning_rate": 0.03,
+          "min_child_weight": 200,
+          "colsample_bytree": 0.7
+        },
+        {
+          "id": "h3",
+          "max_depth": 4,
+          "n_estimators": 600,
+          "learning_rate": 0.02,
+          "min_child_weight": 500,
+          "colsample_bytree": 0.5
+        }
+      ],
+      "fixed": {
+        "subsample": 0.8,
+        "tree_method": "hist",
+        "random_state": 7,
+        "n_jobs": 1
+      },
+      "objectiveMap": {
+        "REG": "reg:squarederror on winsorised excess",
+        "RANK": "rank:pairwise grouped by signal date on within-date excess quintile",
+        "CLF": "binary:logistic, excess > threshold"
+      }
     },
     "RF": {
-      "featureSets": ["C", "CI", "CIM"],
-      "objectives": ["RANK", "CLF"],
-      "hyperparameters": [
-        {"id": "h1", "n_estimators": 150, "min_samples_leaf": 200, "max_features": 0.3, "max_samples": 0.5},
-        {"id": "h2", "n_estimators": 150, "min_samples_leaf": 50, "max_features": 0.5, "max_samples": 0.5}
+      "featureSets": [
+        "C",
+        "CI",
+        "CIM"
       ],
-      "objectiveMap": {"RANK": "RandomForestRegressor on within-date excess percentile", "CLF": "RandomForestClassifier, excess > threshold"},
+      "objectives": [
+        "RANK",
+        "CLF"
+      ],
+      "hyperparameters": [
+        {
+          "id": "h1",
+          "n_estimators": 150,
+          "min_samples_leaf": 200,
+          "max_features": 0.3,
+          "max_samples": 0.5
+        },
+        {
+          "id": "h2",
+          "n_estimators": 150,
+          "min_samples_leaf": 50,
+          "max_features": 0.5,
+          "max_samples": 0.5
+        }
+      ],
+      "objectiveMap": {
+        "RANK": "RandomForestRegressor on within-date excess percentile",
+        "CLF": "RandomForestClassifier, excess > threshold"
+      },
       "missing": "NaN -> 0.5 (cross-sectional median rank) for company/industry, train median for market"
     },
     "ET": {
-      "featureSets": ["C", "CI", "CIM"],
-      "objectives": ["RANK", "CLF"],
-      "hyperparameters": [
-        {"id": "h1", "n_estimators": 150, "min_samples_leaf": 200, "max_features": 0.3, "max_samples": 0.5},
-        {"id": "h2", "n_estimators": 150, "min_samples_leaf": 50, "max_features": 0.5, "max_samples": 0.5}
+      "featureSets": [
+        "C",
+        "CI",
+        "CIM"
       ],
-      "objectiveMap": {"RANK": "ExtraTreesRegressor on within-date excess percentile", "CLF": "ExtraTreesClassifier, excess > threshold"},
+      "objectives": [
+        "RANK",
+        "CLF"
+      ],
+      "hyperparameters": [
+        {
+          "id": "h1",
+          "n_estimators": 150,
+          "min_samples_leaf": 200,
+          "max_features": 0.3,
+          "max_samples": 0.5
+        },
+        {
+          "id": "h2",
+          "n_estimators": 150,
+          "min_samples_leaf": 50,
+          "max_features": 0.5,
+          "max_samples": 0.5
+        }
+      ],
+      "objectiveMap": {
+        "RANK": "ExtraTreesRegressor on within-date excess percentile",
+        "CLF": "ExtraTreesClassifier, excess > threshold"
+      },
       "missing": "as RF"
     },
     "RIDGE": {
-      "featureSets": ["C", "CI", "CIM", "CIMX"],
-      "objectives": ["REG", "RANK"],
-      "hyperparameters": [{"id": "a1", "alpha": 10.0}, {"id": "a2", "alpha": 1000.0}, {"id": "a3", "alpha": 30000.0}]
+      "featureSets": [
+        "C",
+        "CI",
+        "CIM",
+        "CIMX"
+      ],
+      "objectives": [
+        "REG",
+        "RANK"
+      ],
+      "hyperparameters": [
+        {
+          "id": "a1",
+          "alpha": 10.0
+        },
+        {
+          "id": "a2",
+          "alpha": 1000.0
+        },
+        {
+          "id": "a3",
+          "alpha": 30000.0
+        }
+      ]
     },
     "ENET": {
-      "featureSets": ["C", "CI", "CIM"],
-      "objectives": ["REG", "RANK"],
-      "hyperparameters": [{"id": "e1", "alpha": 0.001, "l1_ratio": 0.5}, {"id": "e2", "alpha": 0.01, "l1_ratio": 0.5}]
+      "featureSets": [
+        "C",
+        "CI",
+        "CIM"
+      ],
+      "objectives": [
+        "REG",
+        "RANK"
+      ],
+      "hyperparameters": [
+        {
+          "id": "e1",
+          "alpha": 0.001,
+          "l1_ratio": 0.5
+        },
+        {
+          "id": "e2",
+          "alpha": 0.01,
+          "l1_ratio": 0.5
+        }
+      ]
     },
     "RULE": {
       "strategies": {
@@ -142,7 +421,28 @@
   },
   "winnerAnalysis": {
     "topN": 20,
-    "familyAblations": ["MARKET", "INDUSTRY", "ACCOUNTING", "PRICE_MOMENTUM", "LIQUIDITY_RISK"],
-    "overfit": ["nested past-only tournament selection", "deflated Sharpe ratio with effective trial count", "CSCV PBO over 16 date blocks", "date-synchronised 126-session block bootstrap", "leave-one-name / leave-one-year sensitivity", "factor regression on rule baselines"]
-  }
+    "familyAblations": [
+      "MARKET",
+      "INDUSTRY",
+      "ACCOUNTING",
+      "PRICE_MOMENTUM",
+      "LIQUIDITY_RISK"
+    ],
+    "overfit": [
+      "nested past-only tournament selection",
+      "deflated Sharpe ratio with effective trial count",
+      "CSCV PBO over 16 date blocks",
+      "date-synchronised 126-session block bootstrap",
+      "leave-one-name / leave-one-year sensitivity",
+      "factor regression on rule baselines"
+    ]
+  },
+  "preOutcomeRevisions": [
+    {
+      "id": "R1_BOTTOM_BUCKET_NEVER_ELIGIBLE",
+      "foundBy": "tests/test_ml_strategy_tournament_v1.py::test_no_name_passes_when_the_past_top_bucket_lost_money, before any model fit or outcome read",
+      "change": "only the three top percentile buckets (>= 0.8) can admit a name; the [0, 0.8) bucket is a reference only",
+      "reason": "as first frozen, a strategy whose top buckets lost money could still hold the best names of the bottom 80% whenever that broad bucket beat the ETF, i.e. it would be credited universe carry rather than its own ranking (alpha attribution invariant v2.7)"
+    }
+  ]
 }
