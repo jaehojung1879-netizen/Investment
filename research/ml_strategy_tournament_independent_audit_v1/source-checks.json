@@ -1,0 +1,2777 @@
+{
+ "pinnedBlobIdentities": {
+  "ledger/universe/kr/krx-universe-2013.jsonl.gz": "e711a6c5e07c89e9b0cf12a94078120ceeb3b9a4",
+  "ledger/universe/kr/krx-universe-2014.jsonl.gz": "395477e6dd72c117615919f850173d2830b2cc1f",
+  "ledger/universe/kr/krx-universe-2015.jsonl.gz": "029bcef52056d4b172d78094779a5eff9c89ff89",
+  "ledger/universe/kr/krx-universe-2016.jsonl.gz": "402910f37a4f75887f8c8f7e501aec1afe90b14d",
+  "ledger/universe/kr/krx-universe-2017.jsonl.gz": "db9b0436c970eb1bf4f2456bab7060432558f6e6",
+  "ledger/universe/kr/krx-universe-2018.jsonl.gz": "9a08628f96aa3aeb5d47b11612d14ab551519abc",
+  "ledger/universe/kr/krx-universe-2019.jsonl.gz": "c1f7990b38b0e17b71c88327b5262c768dcfe16d",
+  "ledger/universe/kr/krx-universe-2020.jsonl.gz": "baf7d4e2609aaaa7091cab087cabdbc5a3c58619",
+  "ledger/universe/kr/krx-universe-2021.jsonl.gz": "c09f60669adf36d81def38dfed6cb0d4dd6c456d",
+  "ledger/universe/kr/krx-universe-2022.jsonl.gz": "a1b303c61dd1d114149c3da51763f1dccb711137",
+  "ledger/universe/kr/krx-universe-2023.jsonl.gz": "024abba6a91153259a8030f6e441497a28c723de",
+  "ledger/universe/kr/krx-universe-2024.jsonl.gz": "a4329587eccc43f015f97524f27a660a6448e263",
+  "ledger/universe/kr/krx-universe-2025.jsonl.gz": "070296ad800a3a57735bbcbaf24f5885d82162e8",
+  "ledger/universe/kr/krx-universe-2026.jsonl.gz": "ccc098c5ce029412a67bf8b85113e0b6a19891dc",
+  "accounting/dart-2015.jsonl.gz": "ee23f00aea08bc28548872a8d8153f1afbb53500",
+  "accounting/dart-2016.jsonl.gz": "65be7342d1d47bcbcda84db99f218312d2adb03d",
+  "accounting/dart-2017.jsonl.gz": "2b0146e9c1b8363fecdc1c3b1af0b21b68c8e237",
+  "accounting/dart-2018.jsonl.gz": "2316d0b0125fb207f9c721323c368120ff10428e",
+  "accounting/dart-2019.jsonl.gz": "4a41f94a2748256efae16c50b04f30e2d7578b56",
+  "accounting/dart-2020.jsonl.gz": "932292695b4906b9b179f5cef506299a43c96c1a",
+  "accounting/dart-2021.jsonl.gz": "46ccf6e760fd2d5037ab67fca0ab2a6ebd1f25dc",
+  "accounting/dart-2022.jsonl.gz": "056694d86b9cefbd6b62eb44c91a610d6b5a08b0",
+  "accounting/dart-2023.jsonl.gz": "8a0dd4f040d37ffb43d6078721d2f9a763e9539d",
+  "accounting/dart-2024.jsonl.gz": "78619db28718f2b49f69893057a10ef459e53c12",
+  "accounting/dart-2025.jsonl.gz": "b60daa3620adba7374155837cdbdc96def57dd7a",
+  "accounting/dart-2026.jsonl.gz": "5caf06224466fcf30cf0d8e412fb50e24f8b94c6"
+ },
+ "membershipSnapshotCount": 164,
+ "membershipSetChanges": 163,
+ "uniqueTop120Ever": 260,
+ "predictionMembershipRowsChecked": 16800,
+ "membershipViolations": [],
+ "filingsChecked": 9351,
+ "independentLabels": {
+  "rows": 85680,
+  "weeklyDates": 714,
+  "H126Valid": 82059,
+  "H252Valid": 78511,
+  "H126LastSignal": "2026-03-06",
+  "H252LastSignal": "2025-08-29",
+  "H126FoldCountMismatches": [],
+  "limit": "Eligibility/maturity only, not proof of correct terminal/corporate-action economics"
+ },
+ "miraeDividendCounterexample": {
+  "ticker": "006800.KS",
+  "date": "2026-03-16",
+  "cashKrw": 300.0,
+  "vendorToKrxScaleChange": 1.004335260115607,
+  "replayToKrxScaleChange": 1.0086763533363132,
+  "singleCashFactor": 1.004335260115607,
+  "replayScaleDivVendorScale": 1.0043223546888183,
+  "primaryDeclarationShareEntitlement": 0.0073206,
+  "limit": "No whole-security correction inferred from this single event"
+ },
+ "receiptDateMismatches": [
+  {
+   "id": "005300.KS:2015:11013",
+   "availableFrom": "2015-05-15"
+  },
+  {
+   "id": "019170.KS:2015:11012",
+   "availableFrom": "2015-08-17"
+  }
+ ],
+ "filingsCollectedAfterReceipt": 9351,
+ "filingVintageLimit": "Receipt-date gating verified in code; historical API values/revisions were not independently archived at release",
+ "finalQuoteComparisons": [
+  {
+   "ticker": "000080.KS",
+   "priorRawKrx": 15320.0,
+   "finalRawKrx": 15340.0,
+   "storedFinalIndex": 25897.642817783562,
+   "priorScaleFinalIndex": 25982.33098919554,
+   "scaleGap": -0.0032594524119946566
+  },
+  {
+   "ticker": "000100.KS",
+   "priorRawKrx": 79400.0,
+   "finalRawKrx": 79100.0,
+   "storedFinalIndex": 642546.2268416587,
+   "priorScaleFinalIndex": 649111.1946765671,
+   "scaleGap": -0.010113780025284513
+  },
+  {
+   "ticker": "000120.KS",
+   "priorRawKrx": 72200.0,
+   "finalRawKrx": 73000.0,
+   "storedFinalIndex": 74844.0653919043,
+   "priorScaleFinalIndex": 74946.7321482718,
+   "scaleGap": -0.00136986301369868
+  },
+  {
+   "ticker": "000150.KS",
+   "priorRawKrx": 1356000.0,
+   "finalRawKrx": 1255000.0,
+   "storedFinalIndex": 2033036.7098387731,
+   "priorScaleFinalIndex": 2054316.482163978,
+   "scaleGap": -0.010358565737051961
+  },
+  {
+   "ticker": "000210.KS",
+   "priorRawKrx": 55000.0,
+   "finalRawKrx": 53800.0,
+   "storedFinalIndex": 31290.892982211877,
+   "priorScaleFinalIndex": 31944.023575768482,
+   "scaleGap": -0.020446096654275103
+  },
+  {
+   "ticker": "000240.KS",
+   "priorRawKrx": 24500.0,
+   "finalRawKrx": 24900.0,
+   "storedFinalIndex": 38162.331853553675,
+   "priorScaleFinalIndex": 38627.72614445067,
+   "scaleGap": -0.012048192771084376
+  },
+  {
+   "ticker": "000270.KS",
+   "priorRawKrx": 126600.0,
+   "finalRawKrx": 124200.0,
+   "storedFinalIndex": 192324.92445259565,
+   "priorScaleFinalIndex": 193415.02523896663,
+   "scaleGap": -0.005636070853462183
+  },
+  {
+   "ticker": "000500.KS",
+   "priorRawKrx": 254000.0,
+   "finalRawKrx": 245500.0,
+   "storedFinalIndex": 584744.429667188,
+   "priorScaleFinalIndex": 608282.8706919265,
+   "scaleGap": -0.03869653767820769
+  },
+  {
+   "ticker": "000660.KS",
+   "priorRawKrx": 1812000.0,
+   "finalRawKrx": 1697000.0,
+   "storedFinalIndex": 1953474.9195051733,
+   "priorScaleFinalIndex": 1969724.8594178723,
+   "scaleGap": -0.008249852681202041
+  },
+  {
+   "ticker": "000670.KS",
+   "priorRawKrx": 38450.0,
+   "finalRawKrx": 49950.0,
+   "storedFinalIndex": 621621.4153112571,
+   "priorScaleFinalIndex": 621621.4153112571,
+   "scaleGap": 0.0
+  },
+  {
+   "ticker": "000720.KS",
+   "priorRawKrx": 134900.0,
+   "finalRawKrx": 128200.0,
+   "storedFinalIndex": 152160.38808437483,
+   "priorScaleFinalIndex": 155433.95818658848,
+   "scaleGap": -0.021060842433697435
+  },
+  {
+   "ticker": "000810.KS",
+   "priorRawKrx": 686000.0,
+   "finalRawKrx": 675000.0,
+   "storedFinalIndex": 1154580.2653862103,
+   "priorScaleFinalIndex": 1158011.4103056344,
+   "scaleGap": -0.002962962962962945
+  },
+  {
+   "ticker": "000880.KS",
+   "priorRawKrx": 137300.0,
+   "finalRawKrx": 143700.0,
+   "storedFinalIndex": 146732.37174456732,
+   "priorScaleFinalIndex": 149224.64132833914,
+   "scaleGap": -0.01670146137787043
+  },
+  {
+   "ticker": "000990.KS",
+   "priorRawKrx": 105800.0,
+   "finalRawKrx": 111300.0,
+   "storedFinalIndex": 130400.61247082618,
+   "priorScaleFinalIndex": 129817.42547408724,
+   "scaleGap": 0.004492362982928988
+  },
+  {
+   "ticker": "001040.KS",
+   "priorRawKrx": 128300.0,
+   "finalRawKrx": 133900.0,
+   "storedFinalIndex": 189236.93707127523,
+   "priorScaleFinalIndex": 191525.51680909866,
+   "scaleGap": -0.011949215832710913
+  },
+  {
+   "ticker": "001120.KS",
+   "priorRawKrx": 40900.0,
+   "finalRawKrx": 40650.0,
+   "storedFinalIndex": 62605.68305178009,
+   "priorScaleFinalIndex": 62837.555951971866,
+   "scaleGap": -0.0036900369003689537
+  },
+  {
+   "ticker": "001440.KS",
+   "priorRawKrx": 29500.0,
+   "finalRawKrx": 28300.0,
+   "storedFinalIndex": 80.30980000000001,
+   "priorScaleFinalIndex": 80.88140000000001,
+   "scaleGap": -0.007067137809187329
+  },
+  {
+   "ticker": "001450.KS",
+   "priorRawKrx": 51300.0,
+   "finalRawKrx": 51200.0,
+   "storedFinalIndex": 86808.07086064521,
+   "priorScaleFinalIndex": 87491.59897765817,
+   "scaleGap": -0.007812500000000111
+  },
+  {
+   "ticker": "001680.KS",
+   "priorRawKrx": 18760.0,
+   "finalRawKrx": 18610.0,
+   "storedFinalIndex": 26034.40956346017,
+   "priorScaleFinalIndex": 25922.97281840523,
+   "scaleGap": 0.004298764105319819
+  },
+  {
+   "ticker": "001740.KS",
+   "priorRawKrx": 6390.0,
+   "finalRawKrx": 6240.0,
+   "storedFinalIndex": 9161.462099762073,
+   "priorScaleFinalIndex": 9117.627352873262,
+   "scaleGap": 0.004807692307692069
+  },
+  {
+   "ticker": "001800.KS",
+   "priorRawKrx": 25450.0,
+   "finalRawKrx": 25250.0,
+   "storedFinalIndex": 154297.58372208325,
+   "priorScaleFinalIndex": 154911.0930012963,
+   "scaleGap": -0.003960396039603964
+  },
+  {
+   "ticker": "002350.KS",
+   "priorRawKrx": 5800.0,
+   "finalRawKrx": 5770.0,
+   "storedFinalIndex": 6892.455047755398,
+   "priorScaleFinalIndex": 6880.530385043018,
+   "scaleGap": 0.0017331022530329143
+  },
+  {
+   "ticker": "002380.KS",
+   "priorRawKrx": 485500.0,
+   "finalRawKrx": 473500.0,
+   "storedFinalIndex": 636002.3386915858,
+   "priorScaleFinalIndex": 639378.147283367,
+   "scaleGap": -0.0052798310454064135
+  },
+  {
+   "ticker": "002790.KS",
+   "priorRawKrx": 25800.0,
+   "finalRawKrx": 26500.0,
+   "storedFinalIndex": 290664.9468108467,
+   "priorScaleFinalIndex": 291765.95039725135,
+   "scaleGap": -0.0037735849056601545
+  },
+  {
+   "ticker": "003000.KS",
+   "priorRawKrx": 3970.0,
+   "finalRawKrx": 3890.0,
+   "storedFinalIndex": 13752.165713975557,
+   "priorScaleFinalIndex": 13699.340493563359,
+   "scaleGap": 0.003856041131105492
+  },
+  {
+   "ticker": "003090.KS",
+   "priorRawKrx": 16590.0,
+   "finalRawKrx": 16350.0,
+   "storedFinalIndex": 98656.60506790366,
+   "priorScaleFinalIndex": 98295.88621939214,
+   "scaleGap": 0.003669724770642091
+  },
+  {
+   "ticker": "003230.KS",
+   "priorRawKrx": 1278000.0,
+   "finalRawKrx": 1310000.0,
+   "storedFinalIndex": 1423365.9541574295,
+   "priorScaleFinalIndex": 1439852.8184912994,
+   "scaleGap": -0.011450381679389388
+  },
+  {
+   "ticker": "003240.KS",
+   "priorRawKrx": 908000.0,
+   "finalRawKrx": 906000.0,
+   "storedFinalIndex": 933310.4974580134,
+   "priorScaleFinalIndex": 931254.7474636125,
+   "scaleGap": 0.002207505518763808
+  },
+  {
+   "ticker": "003490.KS",
+   "priorRawKrx": 28950.0,
+   "finalRawKrx": 29850.0,
+   "storedFinalIndex": 27500.532919694553,
+   "priorScaleFinalIndex": 27686.03398492015,
+   "scaleGap": -0.00670016750418756
+  },
+  {
+   "ticker": "003520.KS",
+   "priorRawKrx": 1050.0,
+   "finalRawKrx": 1043.0,
+   "storedFinalIndex": 1042.0,
+   "priorScaleFinalIndex": 1043.0,
+   "scaleGap": -0.0009587727708533222
+  },
+  {
+   "ticker": "003550.KS",
+   "priorRawKrx": 112500.0,
+   "finalRawKrx": 113200.0,
+   "storedFinalIndex": 157361.61696475817,
+   "priorScaleFinalIndex": 159760.85238036435,
+   "scaleGap": -0.015017667844522964
+  },
+  {
+   "ticker": "003620.KS",
+   "priorRawKrx": 2700.0,
+   "finalRawKrx": 2630.0,
+   "storedFinalIndex": 860.4695088,
+   "priorScaleFinalIndex": 857.2101545999999,
+   "scaleGap": 0.0038022813688214363
+  },
+  {
+   "ticker": "003670.KS",
+   "priorRawKrx": 185300.0,
+   "finalRawKrx": 178900.0,
+   "storedFinalIndex": 1987582.0419525276,
+   "priorScaleFinalIndex": 2010053.2917202215,
+   "scaleGap": -0.011179429849077716
+  },
+  {
+   "ticker": "004000.KS",
+   "priorRawKrx": 46150.0,
+   "finalRawKrx": 46100.0,
+   "storedFinalIndex": 66010.72197767804,
+   "priorScaleFinalIndex": 66515.72203652366,
+   "scaleGap": -0.007592190889370798
+  },
+  {
+   "ticker": "004020.KS",
+   "priorRawKrx": 33600.0,
+   "finalRawKrx": 33000.0,
+   "storedFinalIndex": 41775.47281165258,
+   "priorScaleFinalIndex": 42418.17239337031,
+   "scaleGap": -0.015151515151515138
+  },
+  {
+   "ticker": "004170.KS",
+   "priorRawKrx": 381000.0,
+   "finalRawKrx": 376000.0,
+   "storedFinalIndex": 228354.68966418138,
+   "priorScaleFinalIndex": 230500.3041979388,
+   "scaleGap": -0.009308510638297851
+  },
+  {
+   "ticker": "004370.KS",
+   "priorRawKrx": 414500.0,
+   "finalRawKrx": 417000.0,
+   "storedFinalIndex": 512435.9140968174,
+   "priorScaleFinalIndex": 515526.60115409613,
+   "scaleGap": -0.005995203836930418
+  },
+  {
+   "ticker": "004800.KS",
+   "priorRawKrx": 160300.0,
+   "finalRawKrx": 157300.0,
+   "storedFinalIndex": 430939.32499523915,
+   "priorScaleFinalIndex": 431487.9428501026,
+   "scaleGap": -0.0012714558169103496
+  },
+  {
+   "ticker": "004990.KS",
+   "priorRawKrx": 25050.0,
+   "finalRawKrx": 25350.0,
+   "storedFinalIndex": 883403.4088843798,
+   "priorScaleFinalIndex": 888661.7625086915,
+   "scaleGap": -0.005917159763313529
+  },
+  {
+   "ticker": "005070.KS",
+   "priorRawKrx": 40200.0,
+   "finalRawKrx": 39250.0,
+   "storedFinalIndex": 39050.0,
+   "priorScaleFinalIndex": 39250.0,
+   "scaleGap": -0.005095541401273884
+  },
+  {
+   "ticker": "005250.KS",
+   "priorRawKrx": 9820.0,
+   "finalRawKrx": 9680.0,
+   "storedFinalIndex": 136618.99470364576,
+   "priorScaleFinalIndex": 136618.99470364573,
+   "scaleGap": 2.220446049250313e-16
+  },
+  {
+   "ticker": "005300.KS",
+   "priorRawKrx": 97600.0,
+   "finalRawKrx": 97200.0,
+   "storedFinalIndex": 1222005.3273612885,
+   "priorScaleFinalIndex": 1227054.9361520375,
+   "scaleGap": -0.00411522633744843
+  },
+  {
+   "ticker": "005380.KS",
+   "priorRawKrx": 382500.0,
+   "finalRawKrx": 371500.0,
+   "storedFinalIndex": 562220.0404158087,
+   "priorScaleFinalIndex": 568339.4422162529,
+   "scaleGap": -0.010767160161507472
+  },
+  {
+   "ticker": "005385.KS",
+   "priorRawKrx": 182000.0,
+   "finalRawKrx": 178000.0,
+   "storedFinalIndex": 373058.85014031344,
+   "priorScaleFinalIndex": 372222.395319371,
+   "scaleGap": 0.0022471910112360494
+  },
+  {
+   "ticker": "005387.KS",
+   "priorRawKrx": 180500.0,
+   "finalRawKrx": 175500.0,
+   "storedFinalIndex": 361367.6281433354,
+   "priorScaleFinalIndex": 359932.00192483177,
+   "scaleGap": 0.0039886039886041225
+  },
+  {
+   "ticker": "005440.KS",
+   "priorRawKrx": 13400.0,
+   "finalRawKrx": 13880.0,
+   "storedFinalIndex": 13605.500452537495,
+   "priorScaleFinalIndex": 13744.13000591124,
+   "scaleGap": -0.01008645533141217
+  },
+  {
+   "ticker": "005490.KS",
+   "priorRawKrx": 334000.0,
+   "finalRawKrx": 326000.0,
+   "storedFinalIndex": 531122.8408481296,
+   "priorScaleFinalIndex": 538556.9086049463,
+   "scaleGap": -0.013803680981595123
+  },
+  {
+   "ticker": "005610.KS",
+   "priorRawKrx": 41600.0,
+   "finalRawKrx": 41850.0,
+   "storedFinalIndex": 52898.275396498924,
+   "priorScaleFinalIndex": 53280.21240297184,
+   "scaleGap": -0.007168458781361964
+  },
+  {
+   "ticker": "005690.KS",
+   "priorRawKrx": 11260.0,
+   "finalRawKrx": 10960.0,
+   "storedFinalIndex": 109846.04368063013,
+   "priorScaleFinalIndex": 110248.41014099873,
+   "scaleGap": -0.0036496350364962904
+  },
+  {
+   "ticker": "005830.KS",
+   "priorRawKrx": 191700.0,
+   "finalRawKrx": 192500.0,
+   "storedFinalIndex": 347897.3806386205,
+   "priorScaleFinalIndex": 349531.5541384888,
+   "scaleGap": -0.00467532467532461
+  },
+  {
+   "ticker": "005930.KS",
+   "priorRawKrx": 259500.0,
+   "finalRawKrx": 249000.0,
+   "storedFinalIndex": 16797228.018876236,
+   "priorScaleFinalIndex": 16831025.258350838,
+   "scaleGap": -0.002008032128514192
+  },
+  {
+   "ticker": "005935.KS",
+   "priorRawKrx": 193300.0,
+   "finalRawKrx": 183400.0,
+   "storedFinalIndex": 13243007.901868472,
+   "priorScaleFinalIndex": 13257465.33407575,
+   "scaleGap": -0.0010905125408940952
+  },
+  {
+   "ticker": "005940.KS",
+   "priorRawKrx": 26300.0,
+   "finalRawKrx": 26400.0,
+   "storedFinalIndex": 49945.4599894219,
+   "priorScaleFinalIndex": 50135.36668139689,
+   "scaleGap": -0.0037878787878787845
+  },
+  {
+   "ticker": "006040.KS",
+   "priorRawKrx": 38200.0,
+   "finalRawKrx": 37850.0,
+   "storedFinalIndex": 255062.68622133925,
+   "priorScaleFinalIndex": 255738.34896629644,
+   "scaleGap": -0.0026420079260237594
+  },
+  {
+   "ticker": "006120.KS",
+   "priorRawKrx": 57400.0,
+   "finalRawKrx": 57500.0,
+   "storedFinalIndex": 42439.2681621407,
+   "priorScaleFinalIndex": 42886.78241341108,
+   "scaleGap": -0.01043478260869557
+  },
+  {
+   "ticker": "006260.KS",
+   "priorRawKrx": 319500.0,
+   "finalRawKrx": 312000.0,
+   "storedFinalIndex": 417227.7436493176,
+   "priorScaleFinalIndex": 422646.2857746334,
+   "scaleGap": -0.012820512820512775
+  },
+  {
+   "ticker": "006280.KS",
+   "priorRawKrx": 128300.0,
+   "finalRawKrx": 126600.0,
+   "storedFinalIndex": 153180.7323611281,
+   "priorScaleFinalIndex": 151980.25640218507,
+   "scaleGap": 0.00789889415481837
+  },
+  {
+   "ticker": "006360.KS",
+   "priorRawKrx": 38500.0,
+   "finalRawKrx": 36650.0,
+   "storedFinalIndex": 46204.919882306844,
+   "priorScaleFinalIndex": 46779.29043332999,
+   "scaleGap": -0.012278308321964415
+  },
+  {
+   "ticker": "006400.KS",
+   "priorRawKrx": 545000.0,
+   "finalRawKrx": 532000.0,
+   "storedFinalIndex": 576687.3283311826,
+   "priorScaleFinalIndex": 577773.3684975314,
+   "scaleGap": -0.00187969924812037
+  },
+  {
+   "ticker": "006650.KS",
+   "priorRawKrx": 102200.0,
+   "finalRawKrx": 105000.0,
+   "storedFinalIndex": 127824.10361421539,
+   "priorScaleFinalIndex": 129676.62685500113,
+   "scaleGap": -0.014285714285714346
+  },
+  {
+   "ticker": "006740.KS",
+   "priorRawKrx": 5140.0,
+   "finalRawKrx": 5060.0,
+   "storedFinalIndex": 16219.848301002765,
+   "priorScaleFinalIndex": 15998.524834907212,
+   "scaleGap": 0.01383399209486158
+  },
+  {
+   "ticker": "006800.KS",
+   "priorRawKrx": 33450.0,
+   "finalRawKrx": 33150.0,
+   "storedFinalIndex": 45994.5277334381,
+   "priorScaleFinalIndex": 46698.88497284757,
+   "scaleGap": -0.015082956259426905
+  },
+  {
+   "ticker": "007070.KS",
+   "priorRawKrx": 25050.0,
+   "finalRawKrx": 25900.0,
+   "storedFinalIndex": 31870.671935553288,
+   "priorScaleFinalIndex": 31994.201671737603,
+   "scaleGap": -0.0038610038610038533
+  },
+  {
+   "ticker": "007310.KS",
+   "priorRawKrx": 332500.0,
+   "finalRawKrx": 331500.0,
+   "storedFinalIndex": 410922.6843488049,
+   "priorScaleFinalIndex": 410922.6843488049,
+   "scaleGap": 0.0
+  },
+  {
+   "ticker": "007570.KS",
+   "priorRawKrx": 8070.0,
+   "finalRawKrx": 7980.0,
+   "storedFinalIndex": 8567.459101971146,
+   "priorScaleFinalIndex": 8514.112532220392,
+   "scaleGap": 0.006265664160401085
+  },
+  {
+   "ticker": "007660.KS",
+   "priorRawKrx": 109900.0,
+   "finalRawKrx": 107400.0,
+   "storedFinalIndex": 126024.22418043268,
+   "priorScaleFinalIndex": 128172.36436532642,
+   "scaleGap": -0.016759776536312887
+  },
+  {
+   "ticker": "007700.KS",
+   "priorRawKrx": 14000.0,
+   "finalRawKrx": 14030.0,
+   "storedFinalIndex": 14525.327612056299,
+   "priorScaleFinalIndex": 14473.746192979394,
+   "scaleGap": 0.0035637918745545782
+  },
+  {
+   "ticker": "008770.KS",
+   "priorRawKrx": 41100.0,
+   "finalRawKrx": 41600.0,
+   "storedFinalIndex": 43536.239889011435,
+   "priorScaleFinalIndex": 44012.33485742104,
+   "scaleGap": -0.01081730769230771
+  },
+  {
+   "ticker": "008930.KS",
+   "priorRawKrx": 50300.0,
+   "finalRawKrx": 49700.0,
+   "storedFinalIndex": 382207.61542331555,
+   "priorScaleFinalIndex": 389655.76382643654,
+   "scaleGap": -0.019114688128772594
+  },
+  {
+   "ticker": "009150.KS",
+   "priorRawKrx": 1400000.0,
+   "finalRawKrx": 1337000.0,
+   "storedFinalIndex": 1542141.8480038333,
+   "priorScaleFinalIndex": 1559639.675326116,
+   "scaleGap": -0.011219147344801894
+  },
+  {
+   "ticker": "009240.KS",
+   "priorRawKrx": 39350.0,
+   "finalRawKrx": 39550.0,
+   "storedFinalIndex": 62570.87332514221,
+   "priorScaleFinalIndex": 63049.122038455396,
+   "scaleGap": -0.007585335018963302
+  },
+  {
+   "ticker": "009420.KS",
+   "priorRawKrx": 50100.0,
+   "finalRawKrx": 49300.0,
+   "storedFinalIndex": 48800.0,
+   "priorScaleFinalIndex": 49300.0,
+   "scaleGap": -0.010141987829614618
+  },
+  {
+   "ticker": "009540.KS",
+   "priorRawKrx": 365500.0,
+   "finalRawKrx": 363500.0,
+   "storedFinalIndex": 302167.98551689606,
+   "priorScaleFinalIndex": 304260.5615938829,
+   "scaleGap": -0.006877579092159691
+  },
+  {
+   "ticker": "009830.KS",
+   "priorRawKrx": 29800.0,
+   "finalRawKrx": 28700.0,
+   "storedFinalIndex": 28795.027273144195,
+   "priorScaleFinalIndex": 28795.027273144195,
+   "scaleGap": 0.0
+  },
+  {
+   "ticker": "010060.KS",
+   "priorRawKrx": 218500.0,
+   "finalRawKrx": 206000.0,
+   "storedFinalIndex": 178895.0470674599,
+   "priorScaleFinalIndex": 181092.77491841148,
+   "scaleGap": -0.012135922330096971
+  },
+  {
+   "ticker": "010120.KS",
+   "priorRawKrx": 204500.0,
+   "finalRawKrx": 199300.0,
+   "storedFinalIndex": 1313045.7201070224,
+   "priorScaleFinalIndex": 1325012.7190750865,
+   "scaleGap": -0.009031610637230347
+  },
+  {
+   "ticker": "010130.KS",
+   "priorRawKrx": 1179000.0,
+   "finalRawKrx": 1163000.0,
+   "storedFinalIndex": 1665262.780278359,
+   "priorScaleFinalIndex": 1681163.7269650446,
+   "scaleGap": -0.009458297506448776
+  },
+  {
+   "ticker": "010140.KS",
+   "priorRawKrx": 21400.0,
+   "finalRawKrx": 22100.0,
+   "storedFinalIndex": 23413.491526157468,
+   "priorScaleFinalIndex": 23413.491526157468,
+   "scaleGap": 0.0
+  },
+  {
+   "ticker": "010780.KS",
+   "priorRawKrx": 15770.0,
+   "finalRawKrx": 15330.0,
+   "storedFinalIndex": 32063.921164572028,
+   "priorScaleFinalIndex": 31835.486493062774,
+   "scaleGap": 0.0071754729288975305
+  },
+  {
+   "ticker": "010950.KS",
+   "priorRawKrx": 150000.0,
+   "finalRawKrx": 148600.0,
+   "storedFinalIndex": 215227.65644069706,
+   "priorScaleFinalIndex": 219813.26286658132,
+   "scaleGap": -0.020861372812920553
+  },
+  {
+   "ticker": "011070.KS",
+   "priorRawKrx": 543000.0,
+   "finalRawKrx": 514000.0,
+   "storedFinalIndex": 544776.3297348281,
+   "priorScaleFinalIndex": 553389.3942365645,
+   "scaleGap": -0.015564202334630406
+  },
+  {
+   "ticker": "011170.KS",
+   "priorRawKrx": 65500.0,
+   "finalRawKrx": 65400.0,
+   "storedFinalIndex": 85813.42522384938,
+   "priorScaleFinalIndex": 86341.50784061152,
+   "scaleGap": -0.006116207951070263
+  },
+  {
+   "ticker": "011200.KS",
+   "priorRawKrx": 20850.0,
+   "finalRawKrx": 21250.0,
+   "storedFinalIndex": 3601.0010379171226,
+   "priorScaleFinalIndex": 3626.600571362031,
+   "scaleGap": -0.007058823529411784
+  },
+  {
+   "ticker": "011210.KS",
+   "priorRawKrx": 57400.0,
+   "finalRawKrx": 56900.0,
+   "storedFinalIndex": 66798.31644775056,
+   "priorScaleFinalIndex": 67390.50010420225,
+   "scaleGap": -0.008787346221441061
+  },
+  {
+   "ticker": "011780.KS",
+   "priorRawKrx": 124900.0,
+   "finalRawKrx": 124900.0,
+   "storedFinalIndex": 169665.76992254483,
+   "priorScaleFinalIndex": 171728.1577254931,
+   "scaleGap": -0.012009607686148893
+  },
+  {
+   "ticker": "011790.KS",
+   "priorRawKrx": 89600.0,
+   "finalRawKrx": 87100.0,
+   "storedFinalIndex": 106520.86185031585,
+   "priorScaleFinalIndex": 108260.99261566522,
+   "scaleGap": -0.016073478760045834
+  },
+  {
+   "ticker": "012330.KS",
+   "priorRawKrx": 415500.0,
+   "finalRawKrx": 400000.0,
+   "storedFinalIndex": 494641.90725975827,
+   "priorScaleFinalIndex": 498379.7554254491,
+   "scaleGap": -0.007499999999999951
+  },
+  {
+   "ticker": "012450.KS",
+   "priorRawKrx": 1081000.0,
+   "finalRawKrx": 1137000.0,
+   "storedFinalIndex": 1158089.3658228368,
+   "priorScaleFinalIndex": 1162177.9425777276,
+   "scaleGap": -0.0035180299032541162
+  },
+  {
+   "ticker": "012630.KS",
+   "priorRawKrx": 28450.0,
+   "finalRawKrx": 28200.0,
+   "storedFinalIndex": 25947.15122295366,
+   "priorScaleFinalIndex": 26273.23750403207,
+   "scaleGap": -0.012411347517730431
+  },
+  {
+   "ticker": "0126Z0.KS",
+   "priorRawKrx": 340000.0,
+   "finalRawKrx": 330500.0,
+   "storedFinalIndex": 329500.0,
+   "priorScaleFinalIndex": 330500.0,
+   "scaleGap": -0.00302571860816947
+  },
+  {
+   "ticker": "012750.KS",
+   "priorRawKrx": 81400.0,
+   "finalRawKrx": 85600.0,
+   "storedFinalIndex": 127856.6196451726,
+   "priorScaleFinalIndex": 128306.29122657415,
+   "scaleGap": -0.003504672897196248
+  },
+  {
+   "ticker": "014680.KS",
+   "priorRawKrx": 200000.0,
+   "finalRawKrx": 198000.0,
+   "storedFinalIndex": 242298.00295382497,
+   "priorScaleFinalIndex": 246025.66453772996,
+   "scaleGap": -0.015151515151515138
+  },
+  {
+   "ticker": "014820.KS",
+   "priorRawKrx": 21400.0,
+   "finalRawKrx": 21350.0,
+   "storedFinalIndex": 2507.123437387529,
+   "priorScaleFinalIndex": 2524.8625183124404,
+   "scaleGap": -0.007025761124121677
+  },
+  {
+   "ticker": "015760.KS",
+   "priorRawKrx": 33100.0,
+   "finalRawKrx": 31950.0,
+   "storedFinalIndex": 40143.64573901563,
+   "priorScaleFinalIndex": 40269.68544306278,
+   "scaleGap": -0.003129890453834272
+  },
+  {
+   "ticker": "016360.KS",
+   "priorRawKrx": 87400.0,
+   "finalRawKrx": 87500.0,
+   "storedFinalIndex": 154962.94845402724,
+   "priorScaleFinalIndex": 156573.41789523535,
+   "scaleGap": -0.01028571428571412
+  },
+  {
+   "ticker": "016380.KS",
+   "priorRawKrx": 5590.0,
+   "finalRawKrx": 5550.0,
+   "storedFinalIndex": 56.926322280878125,
+   "priorScaleFinalIndex": 56.62026678474437,
+   "scaleGap": 0.00540540540540535
+  },
+  {
+   "ticker": "017390.KS",
+   "priorRawKrx": 56700.0,
+   "finalRawKrx": 56800.0,
+   "storedFinalIndex": 97675.53235769406,
+   "priorScaleFinalIndex": 97675.53235769406,
+   "scaleGap": 0.0
+  },
+  {
+   "ticker": "017670.KS",
+   "priorRawKrx": 90900.0,
+   "finalRawKrx": 90100.0,
+   "storedFinalIndex": 875617.703455208,
+   "priorScaleFinalIndex": 887437.0650316562,
+   "scaleGap": -0.013318534961154205
+  },
+  {
+   "ticker": "017800.KS",
+   "priorRawKrx": 74300.0,
+   "finalRawKrx": 74800.0,
+   "storedFinalIndex": 177154.6176888374,
+   "priorScaleFinalIndex": 178587.13481300592,
+   "scaleGap": -0.008021390374331694
+  },
+  {
+   "ticker": "018250.KS",
+   "priorRawKrx": 11500.0,
+   "finalRawKrx": 11460.0,
+   "storedFinalIndex": 13256.710892739864,
+   "priorScaleFinalIndex": 13245.153167462844,
+   "scaleGap": 0.0008726003490402423
+  },
+  {
+   "ticker": "018260.KS",
+   "priorRawKrx": 222500.0,
+   "finalRawKrx": 218500.0,
+   "storedFinalIndex": 251194.15566224096,
+   "priorScaleFinalIndex": 254691.05806125127,
+   "scaleGap": -0.013729977116704761
+  },
+  {
+   "ticker": "018880.KS",
+   "priorRawKrx": 3520.0,
+   "finalRawKrx": 3475.0,
+   "storedFinalIndex": 24230.903049215263,
+   "priorScaleFinalIndex": 24441.912364593045,
+   "scaleGap": -0.008633093525179825
+  },
+  {
+   "ticker": "019170.KS",
+   "priorRawKrx": 10020.0,
+   "finalRawKrx": 10070.0,
+   "storedFinalIndex": 123093.49543242606,
+   "priorScaleFinalIndex": 123093.49543242606,
+   "scaleGap": 0.0
+  },
+  {
+   "ticker": "020150.KS",
+   "priorRawKrx": 42200.0,
+   "finalRawKrx": 38300.0,
+   "storedFinalIndex": 39200.37061878502,
+   "priorScaleFinalIndex": 39983.334079879256,
+   "scaleGap": -0.01958224543080933
+  },
+  {
+   "ticker": "020560.KS",
+   "priorRawKrx": 7700.0,
+   "finalRawKrx": 7960.0,
+   "storedFinalIndex": 2623.071,
+   "priorScaleFinalIndex": 2653.0679999999998,
+   "scaleGap": -0.011306532663316493
+  },
+  {
+   "ticker": "021240.KS",
+   "priorRawKrx": 95200.0,
+   "finalRawKrx": 100500.0,
+   "storedFinalIndex": 153833.49114668975,
+   "priorScaleFinalIndex": 155067.86218899014,
+   "scaleGap": -0.00796019900497491
+  },
+  {
+   "ticker": "022100.KS",
+   "priorRawKrx": 22150.0,
+   "finalRawKrx": 21550.0,
+   "storedFinalIndex": 23802.46314879855,
+   "priorScaleFinalIndex": 23802.46314879855,
+   "scaleGap": 0.0
+  },
+  {
+   "ticker": "023530.KS",
+   "priorRawKrx": 112000.0,
+   "finalRawKrx": 119400.0,
+   "storedFinalIndex": 171233.01381247572,
+   "priorScaleFinalIndex": 173411.55088388125,
+   "scaleGap": -0.012562814070351647
+  },
+  {
+   "ticker": "024110.KS",
+   "priorRawKrx": 20850.0,
+   "finalRawKrx": 20900.0,
+   "storedFinalIndex": 44243.404556946196,
+   "priorScaleFinalIndex": 44456.11323270074,
+   "scaleGap": -0.004784688995215225
+  },
+  {
+   "ticker": "026960.KS",
+   "priorRawKrx": 25900.0,
+   "finalRawKrx": 26050.0,
+   "storedFinalIndex": 144756.53403784317,
+   "priorScaleFinalIndex": 145034.91198791593,
+   "scaleGap": -0.0019193857965449368
+  },
+  {
+   "ticker": "027410.KS",
+   "priorRawKrx": 3815.0,
+   "finalRawKrx": 3765.0,
+   "storedFinalIndex": 6559.687299043472,
+   "priorScaleFinalIndex": 6490.728694060098,
+   "scaleGap": 0.010624169986719778
+  },
+  {
+   "ticker": "028050.KS",
+   "priorRawKrx": 51000.0,
+   "finalRawKrx": 50800.0,
+   "storedFinalIndex": 56979.21188274891,
+   "priorScaleFinalIndex": 57660.238319594515,
+   "scaleGap": -0.011811023622047223
+  },
+  {
+   "ticker": "028260.KS",
+   "priorRawKrx": 367000.0,
+   "finalRawKrx": 358500.0,
+   "storedFinalIndex": 420615.82408946345,
+   "priorScaleFinalIndex": 427169.3284308007,
+   "scaleGap": -0.015341701534170138
+  },
+  {
+   "ticker": "028670.KS",
+   "priorRawKrx": 6030.0,
+   "finalRawKrx": 6040.0,
+   "storedFinalIndex": 570.5364247472706,
+   "priorScaleFinalIndex": 569.5933893344653,
+   "scaleGap": 0.0016556291390728006
+  },
+  {
+   "ticker": "029780.KS",
+   "priorRawKrx": 45500.0,
+   "finalRawKrx": 45450.0,
+   "storedFinalIndex": 88300.36397341383,
+   "priorScaleFinalIndex": 88106.51026545903,
+   "scaleGap": 0.002200220022002153
+  },
+  {
+   "ticker": "030000.KS",
+   "priorRawKrx": 18910.0,
+   "finalRawKrx": 18950.0,
+   "storedFinalIndex": 29818.125555125804,
+   "priorScaleFinalIndex": 29960.417776756836,
+   "scaleGap": -0.004749340369393007
+  },
+  {
+   "ticker": "030200.KS",
+   "priorRawKrx": 52700.0,
+   "finalRawKrx": 53200.0,
+   "storedFinalIndex": 99889.1932785935,
+   "priorScaleFinalIndex": 100077.30852017277,
+   "scaleGap": -0.001879699248120148
+  },
+  {
+   "ticker": "031210.KS",
+   "priorRawKrx": 43450.0,
+   "finalRawKrx": 43800.0,
+   "storedFinalIndex": 51010.79834501114,
+   "priorScaleFinalIndex": 51244.792832832296,
+   "scaleGap": -0.004566210045662156
+  },
+  {
+   "ticker": "031430.KS",
+   "priorRawKrx": 10540.0,
+   "finalRawKrx": 10510.0,
+   "storedFinalIndex": 63281.61380498672,
+   "priorScaleFinalIndex": 63402.26511824694,
+   "scaleGap": -0.0019029495718363432
+  },
+  {
+   "ticker": "032640.KS",
+   "priorRawKrx": 14890.0,
+   "finalRawKrx": 15040.0,
+   "storedFinalIndex": 24567.92023784503,
+   "priorScaleFinalIndex": 24715.820761016006,
+   "scaleGap": -0.005984042553191515
+  },
+  {
+   "ticker": "032830.KS",
+   "priorRawKrx": 307500.0,
+   "finalRawKrx": 298000.0,
+   "storedFinalIndex": 457836.91722078325,
+   "priorScaleFinalIndex": 461710.3259959168,
+   "scaleGap": -0.008389261744966459
+  },
+  {
+   "ticker": "033780.KS",
+   "priorRawKrx": 171800.0,
+   "finalRawKrx": 173100.0,
+   "storedFinalIndex": 339351.556552139,
+   "priorScaleFinalIndex": 341521.8281347399,
+   "scaleGap": -0.006354708261120723
+  },
+  {
+   "ticker": "034020.KS",
+   "priorRawKrx": 90800.0,
+   "finalRawKrx": 87000.0,
+   "storedFinalIndex": 98903.21387944302,
+   "priorScaleFinalIndex": 100520.78980737785,
+   "scaleGap": -0.016091954022988575
+  },
+  {
+   "ticker": "034220.KS",
+   "priorRawKrx": 8900.0,
+   "finalRawKrx": 8850.0,
+   "storedFinalIndex": 9703.79465774343,
+   "priorScaleFinalIndex": 9747.852749265534,
+   "scaleGap": -0.004519774011299327
+  },
+  {
+   "ticker": "034730.KS",
+   "priorRawKrx": 585000.0,
+   "finalRawKrx": 570000.0,
+   "storedFinalIndex": 769186.6019539793,
+   "priorScaleFinalIndex": 785728.2493078284,
+   "scaleGap": -0.021052631578947323
+  },
+  {
+   "ticker": "035250.KS",
+   "priorRawKrx": 14800.0,
+   "finalRawKrx": 14810.0,
+   "storedFinalIndex": 23154.78429031453,
+   "priorScaleFinalIndex": 23170.429414835013,
+   "scaleGap": -0.0006752194463200967
+  },
+  {
+   "ticker": "035420.KS",
+   "priorRawKrx": 206500.0,
+   "finalRawKrx": 204000.0,
+   "storedFinalIndex": 727230.5682250671,
+   "priorScaleFinalIndex": 730812.9848173088,
+   "scaleGap": -0.004901960784313708
+  },
+  {
+   "ticker": "035720.KS",
+   "priorRawKrx": 34500.0,
+   "finalRawKrx": 34650.0,
+   "storedFinalIndex": 182165.15394782138,
+   "priorScaleFinalIndex": 182692.40475519566,
+   "scaleGap": -0.0028860028860027143
+  },
+  {
+   "ticker": "036460.KS",
+   "priorRawKrx": 37000.0,
+   "finalRawKrx": 36800.0,
+   "storedFinalIndex": 46352.60310466728,
+   "priorScaleFinalIndex": 46478.90447552468,
+   "scaleGap": -0.0027173913043477826
+  },
+  {
+   "ticker": "036570.KS",
+   "priorRawKrx": 205500.0,
+   "finalRawKrx": 206500.0,
+   "storedFinalIndex": 238738.32936009337,
+   "priorScaleFinalIndex": 241664.04418068274,
+   "scaleGap": -0.01210653753026636
+  },
+  {
+   "ticker": "037560.KS",
+   "priorRawKrx": 1663.0,
+   "finalRawKrx": 1628.0,
+   "storedFinalIndex": 1900.2660890982688,
+   "priorScaleFinalIndex": 1903.7742726473732,
+   "scaleGap": -0.001842751842751733
+  },
+  {
+   "ticker": "039130.KS",
+   "priorRawKrx": 33250.0,
+   "finalRawKrx": 33350.0,
+   "storedFinalIndex": 45292.09647486526,
+   "priorScaleFinalIndex": 45428.31330636862,
+   "scaleGap": -0.002998500749625266
+  },
+  {
+   "ticker": "039490.KS",
+   "priorRawKrx": 278000.0,
+   "finalRawKrx": 276000.0,
+   "storedFinalIndex": 388935.12191485375,
+   "priorScaleFinalIndex": 393209.1342435884,
+   "scaleGap": -0.010869565217391353
+  },
+  {
+   "ticker": "042660.KS",
+   "priorRawKrx": 85600.0,
+   "finalRawKrx": 85900.0,
+   "storedFinalIndex": 9331.189094731333,
+   "priorScaleFinalIndex": 9407.853793866452,
+   "scaleGap": -0.008149010477299434
+  },
+  {
+   "ticker": "042700.KS",
+   "priorRawKrx": 231000.0,
+   "finalRawKrx": 225000.0,
+   "storedFinalIndex": 1648113.7194250892,
+   "priorScaleFinalIndex": 1640821.1808435624,
+   "scaleGap": 0.004444444444444473
+  },
+  {
+   "ticker": "047040.KS",
+   "priorRawKrx": 19890.0,
+   "finalRawKrx": 18760.0,
+   "storedFinalIndex": 18340.0,
+   "priorScaleFinalIndex": 18760.0,
+   "scaleGap": -0.02238805970149249
+  },
+  {
+   "ticker": "047050.KS",
+   "priorRawKrx": 57700.0,
+   "finalRawKrx": 56600.0,
+   "storedFinalIndex": 84272.15218160782,
+   "priorScaleFinalIndex": 85787.8383719245,
+   "scaleGap": -0.017667844522968212
+  },
+  {
+   "ticker": "047810.KS",
+   "priorRawKrx": 130500.0,
+   "finalRawKrx": 133000.0,
+   "storedFinalIndex": 145314.3003422625,
+   "priorScaleFinalIndex": 146748.68599484366,
+   "scaleGap": -0.009774436090225547
+  },
+  {
+   "ticker": "051600.KS",
+   "priorRawKrx": 49300.0,
+   "finalRawKrx": 47400.0,
+   "storedFinalIndex": 80568.95699508824,
+   "priorScaleFinalIndex": 81254.65024611028,
+   "scaleGap": -0.008438818565400963
+  },
+  {
+   "ticker": "051900.KS",
+   "priorRawKrx": 291000.0,
+   "finalRawKrx": 299000.0,
+   "storedFinalIndex": 335343.6993633491,
+   "priorScaleFinalIndex": 337601.9060930686,
+   "scaleGap": -0.006688963210702226
+  },
+  {
+   "ticker": "051905.KS",
+   "priorRawKrx": 103500.0,
+   "finalRawKrx": 103900.0,
+   "storedFinalIndex": 139261.3730981675,
+   "priorScaleFinalIndex": 137279.47499904744,
+   "scaleGap": 0.014436958614052253
+  },
+  {
+   "ticker": "051910.KS",
+   "priorRawKrx": 273000.0,
+   "finalRawKrx": 268000.0,
+   "storedFinalIndex": 325562.4772434875,
+   "priorScaleFinalIndex": 326171.0052383352,
+   "scaleGap": -0.001865671641791189
+  },
+  {
+   "ticker": "051915.KS",
+   "priorRawKrx": 122200.0,
+   "finalRawKrx": 120500.0,
+   "storedFinalIndex": 177339.50790804552,
+   "priorScaleFinalIndex": 176606.700024128,
+   "scaleGap": 0.004149377593360981
+  },
+  {
+   "ticker": "052690.KS",
+   "priorRawKrx": 152000.0,
+   "finalRawKrx": 138200.0,
+   "storedFinalIndex": 160381.24498108152,
+   "priorScaleFinalIndex": 164915.83375286806,
+   "scaleGap": -0.02749638205499283
+  },
+  {
+   "ticker": "053210.KS",
+   "priorRawKrx": 4035.0,
+   "finalRawKrx": 4045.0,
+   "storedFinalIndex": 6712.312267935493,
+   "priorScaleFinalIndex": 6712.312267935493,
+   "scaleGap": 0.0
+  },
+  {
+   "ticker": "055550.KS",
+   "priorRawKrx": 112900.0,
+   "finalRawKrx": 114600.0,
+   "storedFinalIndex": 198398.93932697302,
+   "priorScaleFinalIndex": 197708.85605974877,
+   "scaleGap": 0.003490401396160525
+  },
+  {
+   "ticker": "060980.KS",
+   "priorRawKrx": 39900.0,
+   "finalRawKrx": 40000.0,
+   "storedFinalIndex": 34993.933876134426,
+   "priorScaleFinalIndex": 35302.83367075352,
+   "scaleGap": -0.008750000000000036
+  },
+  {
+   "ticker": "062040.KS",
+   "priorRawKrx": 198600.0,
+   "finalRawKrx": 198000.0,
+   "storedFinalIndex": 197815.36076040202,
+   "priorScaleFinalIndex": 201168.1634851546,
+   "scaleGap": -0.016666666666666607
+  },
+  {
+   "ticker": "064350.KS",
+   "priorRawKrx": 124100.0,
+   "finalRawKrx": 124400.0,
+   "storedFinalIndex": 124668.0117170437,
+   "priorScaleFinalIndex": 126086.99721626208,
+   "scaleGap": -0.0112540192926045
+  },
+  {
+   "ticker": "064400.KS",
+   "priorRawKrx": 71900.0,
+   "finalRawKrx": 70700.0,
+   "storedFinalIndex": 72887.0051511827,
+   "priorScaleFinalIndex": 73510.8596888533,
+   "scaleGap": -0.008486562942008447
+  },
+  {
+   "ticker": "066570.KS",
+   "priorRawKrx": 199500.0,
+   "finalRawKrx": 198200.0,
+   "storedFinalIndex": 219079.60601695752,
+   "priorScaleFinalIndex": 222789.00929995373,
+   "scaleGap": -0.01664984863773966
+  },
+  {
+   "ticker": "066970.KS",
+   "priorRawKrx": 120000.0,
+   "finalRawKrx": 114100.0,
+   "storedFinalIndex": 134012.72925544484,
+   "priorScaleFinalIndex": 134839.9683249229,
+   "scaleGap": -0.00613496932515345
+  },
+  {
+   "ticker": "068270.KS",
+   "priorRawKrx": 178200.0,
+   "finalRawKrx": 178800.0,
+   "storedFinalIndex": 247562.56953451253,
+   "priorScaleFinalIndex": 250080.15498740587,
+   "scaleGap": -0.010067114093959662
+  },
+  {
+   "ticker": "069620.KS",
+   "priorRawKrx": 111900.0,
+   "finalRawKrx": 111100.0,
+   "storedFinalIndex": 131236.9150577718,
+   "priorScaleFinalIndex": 132069.03317860913,
+   "scaleGap": -0.006300630063006296
+  },
+  {
+   "ticker": "069960.KS",
+   "priorRawKrx": 99000.0,
+   "finalRawKrx": 99200.0,
+   "storedFinalIndex": 119277.27984040973,
+   "priorScaleFinalIndex": 119518.24404210753,
+   "scaleGap": -0.0020161290322581182
+  },
+  {
+   "ticker": "071050.KS",
+   "priorRawKrx": 193600.0,
+   "finalRawKrx": 193700.0,
+   "storedFinalIndex": 310608.9702204104,
+   "priorScaleFinalIndex": 312545.23393087526,
+   "scaleGap": -0.006195147134744339
+  },
+  {
+   "ticker": "071840.KS",
+   "priorRawKrx": 6240.0,
+   "finalRawKrx": 6190.0,
+   "storedFinalIndex": 8750.947445531925,
+   "priorScaleFinalIndex": 8750.947445531925,
+   "scaleGap": 0.0
+  },
+  {
+   "ticker": "071970.KS",
+   "priorRawKrx": 52500.0,
+   "finalRawKrx": 52500.0,
+   "storedFinalIndex": 46.69309831960209,
+   "priorScaleFinalIndex": 47.599760422895336,
+   "scaleGap": -0.01904761904761898
+  },
+  {
+   "ticker": "073240.KS",
+   "priorRawKrx": 7370.0,
+   "finalRawKrx": 7110.0,
+   "storedFinalIndex": 7050.0,
+   "priorScaleFinalIndex": 7110.0,
+   "scaleGap": -0.008438818565400852
+  },
+  {
+   "ticker": "078930.KS",
+   "priorRawKrx": 119000.0,
+   "finalRawKrx": 116400.0,
+   "storedFinalIndex": 206262.6215177579,
+   "priorScaleFinalIndex": 209868.611404432,
+   "scaleGap": -0.01718213058419249
+  },
+  {
+   "ticker": "079160.KS",
+   "priorRawKrx": 5450.0,
+   "finalRawKrx": 5620.0,
+   "storedFinalIndex": 5912.142155083626,
+   "priorScaleFinalIndex": 5933.256948494639,
+   "scaleGap": -0.003558718861209953
+  },
+  {
+   "ticker": "079550.KS",
+   "priorRawKrx": 678000.0,
+   "finalRawKrx": 705000.0,
+   "storedFinalIndex": 819902.4833389057,
+   "priorScaleFinalIndex": 826940.2728954629,
+   "scaleGap": -0.008510638297872464
+  },
+  {
+   "ticker": "081660.KS",
+   "priorRawKrx": 39950.0,
+   "finalRawKrx": 39900.0,
+   "storedFinalIndex": 244875.28857796383,
+   "priorScaleFinalIndex": 247668.54282029803,
+   "scaleGap": -0.011278195488721776
+  },
+  {
+   "ticker": "082740.KS",
+   "priorRawKrx": 50300.0,
+   "finalRawKrx": 50600.0,
+   "storedFinalIndex": 60360.0,
+   "priorScaleFinalIndex": 60720.0,
+   "scaleGap": -0.005928853754940677
+  },
+  {
+   "ticker": "086280.KS",
+   "priorRawKrx": 208500.0,
+   "finalRawKrx": 207000.0,
+   "storedFinalIndex": 556901.6917275777,
+   "priorScaleFinalIndex": 559605.0979981,
+   "scaleGap": -0.004830917874396268
+  },
+  {
+   "ticker": "086790.KS",
+   "priorRawKrx": 137800.0,
+   "finalRawKrx": 140800.0,
+   "storedFinalIndex": 270920.5246919244,
+   "priorScaleFinalIndex": 271692.37803862506,
+   "scaleGap": -0.0028409090909091717
+  },
+  {
+   "ticker": "088350.KS",
+   "priorRawKrx": 5990.0,
+   "finalRawKrx": 6020.0,
+   "storedFinalIndex": 8000.12238252299,
+   "priorScaleFinalIndex": 7947.316294189505,
+   "scaleGap": 0.006644518272425293
+  },
+  {
+   "ticker": "088980.KS",
+   "priorRawKrx": 9790.0,
+   "finalRawKrx": 9800.0,
+   "storedFinalIndex": 27956.829243738477,
+   "priorScaleFinalIndex": 27843.18359640621,
+   "scaleGap": 0.004081632653061273
+  },
+  {
+   "ticker": "090430.KS",
+   "priorRawKrx": 140500.0,
+   "finalRawKrx": 146000.0,
+   "storedFinalIndex": 1572830.4697755855,
+   "priorScaleFinalIndex": 1590257.9542052317,
+   "scaleGap": -0.010958904109588996
+  },
+  {
+   "ticker": "090435.KS",
+   "priorRawKrx": 44400.0,
+   "finalRawKrx": 45250.0,
+   "storedFinalIndex": 570456.7402258738,
+   "priorScaleFinalIndex": 572989.2895720486,
+   "scaleGap": -0.0044198895027623974
+  },
+  {
+   "ticker": "096770.KS",
+   "priorRawKrx": 144800.0,
+   "finalRawKrx": 136700.0,
+   "storedFinalIndex": 178546.78456458627,
+   "priorScaleFinalIndex": 182280.39917833413,
+   "scaleGap": -0.02048280907095823
+  },
+  {
+   "ticker": "097950.KS",
+   "priorRawKrx": 179700.0,
+   "finalRawKrx": 181000.0,
+   "storedFinalIndex": 218487.36030170106,
+   "priorScaleFinalIndex": 219214.03666634086,
+   "scaleGap": -0.0033149171270717703
+  },
+  {
+   "ticker": "103140.KS",
+   "priorRawKrx": 77500.0,
+   "finalRawKrx": 78400.0,
+   "storedFinalIndex": 109112.00155385293,
+   "priorScaleFinalIndex": 110236.86754925347,
+   "scaleGap": -0.010204081632653073
+  },
+  {
+   "ticker": "103590.KS",
+   "priorRawKrx": 71000.0,
+   "finalRawKrx": 69700.0,
+   "storedFinalIndex": 83429.16219816048,
+   "priorScaleFinalIndex": 84275.54500306936,
+   "scaleGap": -0.010043041606886738
+  },
+  {
+   "ticker": "105560.KS",
+   "priorRawKrx": 177900.0,
+   "finalRawKrx": 181600.0,
+   "storedFinalIndex": 310654.1644309793,
+   "priorScaleFinalIndex": 311339.93521338765,
+   "scaleGap": -0.0022026431718061845
+  },
+  {
+   "ticker": "105630.KS",
+   "priorRawKrx": 9080.0,
+   "finalRawKrx": 9060.0,
+   "storedFinalIndex": 16603.78499562878,
+   "priorScaleFinalIndex": 16658.947072026218,
+   "scaleGap": -0.0033112582781457123
+  },
+  {
+   "ticker": "108670.KS",
+   "priorRawKrx": 34450.0,
+   "finalRawKrx": 33850.0,
+   "storedFinalIndex": 41270.78467454192,
+   "priorScaleFinalIndex": 41088.707683330715,
+   "scaleGap": 0.004431314623338123
+  },
+  {
+   "ticker": "111770.KS",
+   "priorRawKrx": 72900.0,
+   "finalRawKrx": 72400.0,
+   "storedFinalIndex": 91967.4291108883,
+   "priorScaleFinalIndex": 92094.63164077888,
+   "scaleGap": -0.0013812154696132284
+  },
+  {
+   "ticker": "112610.KS",
+   "priorRawKrx": 52800.0,
+   "finalRawKrx": 52600.0,
+   "storedFinalIndex": 121081.2280420148,
+   "priorScaleFinalIndex": 124392.04287128864,
+   "scaleGap": -0.026615969581748944
+  },
+  {
+   "ticker": "114090.KS",
+   "priorRawKrx": 9220.0,
+   "finalRawKrx": 9230.0,
+   "storedFinalIndex": 13643.02421994329,
+   "priorScaleFinalIndex": 13657.821426255592,
+   "scaleGap": -0.0010834236186347823
+  },
+  {
+   "ticker": "120110.KS",
+   "priorRawKrx": 57400.0,
+   "finalRawKrx": 55300.0,
+   "storedFinalIndex": 75366.4726485767,
+   "priorScaleFinalIndex": 76054.12294646517,
+   "scaleGap": -0.009041591320072206
+  },
+  {
+   "ticker": "128940.KS",
+   "priorRawKrx": 464000.0,
+   "finalRawKrx": 474000.0,
+   "storedFinalIndex": 729100.4160309746,
+   "priorScaleFinalIndex": 737659.7592287768,
+   "scaleGap": -0.011603375527426074
+  },
+  {
+   "ticker": "137310.KS",
+   "priorRawKrx": 6160.0,
+   "finalRawKrx": 6210.0,
+   "storedFinalIndex": 6840.046531958685,
+   "priorScaleFinalIndex": 6829.049672582546,
+   "scaleGap": 0.0016103059581320522
+  },
+  {
+   "ticker": "138040.KS",
+   "priorRawKrx": 128400.0,
+   "finalRawKrx": 132000.0,
+   "storedFinalIndex": 187614.2562266388,
+   "priorScaleFinalIndex": 187614.2562266388,
+   "scaleGap": 0.0
+  },
+  {
+   "ticker": "138930.KS",
+   "priorRawKrx": 15930.0,
+   "finalRawKrx": 16010.0,
+   "storedFinalIndex": 30575.77554833806,
+   "priorScaleFinalIndex": 30518.58893571648,
+   "scaleGap": 0.0018738288569644101
+  },
+  {
+   "ticker": "139130.KS",
+   "priorRawKrx": 18450.0,
+   "finalRawKrx": 18750.0,
+   "storedFinalIndex": 35636.28621338875,
+   "priorScaleFinalIndex": 35560.42397557418,
+   "scaleGap": 0.0021333333333335425
+  },
+  {
+   "ticker": "139480.KS",
+   "priorRawKrx": 73700.0,
+   "finalRawKrx": 75000.0,
+   "storedFinalIndex": 90923.40278098879,
+   "priorScaleFinalIndex": 91410.92772887612,
+   "scaleGap": -0.00533333333333319
+  },
+  {
+   "ticker": "161390.KS",
+   "priorRawKrx": 62300.0,
+   "finalRawKrx": 60700.0,
+   "storedFinalIndex": 79369.88560242289,
+   "priorScaleFinalIndex": 79369.88560242289,
+   "scaleGap": 0.0
+  },
+  {
+   "ticker": "161890.KS",
+   "priorRawKrx": 141300.0,
+   "finalRawKrx": 146100.0,
+   "storedFinalIndex": 160370.32884298463,
+   "priorScaleFinalIndex": 160700.3089434846,
+   "scaleGap": -0.002053388090349051
+  },
+  {
+   "ticker": "175330.KS",
+   "priorRawKrx": 31750.0,
+   "finalRawKrx": 32250.0,
+   "storedFinalIndex": 60391.538186829646,
+   "priorScaleFinalIndex": 59378.87519894073,
+   "scaleGap": 0.01705426356589146
+  },
+  {
+   "ticker": "180640.KS",
+   "priorRawKrx": 139500.0,
+   "finalRawKrx": 138700.0,
+   "storedFinalIndex": 143574.82546447063,
+   "priorScaleFinalIndex": 145250.3887084032,
+   "scaleGap": -0.011535688536409516
+  },
+  {
+   "ticker": "181710.KS",
+   "priorRawKrx": 56400.0,
+   "finalRawKrx": 56900.0,
+   "storedFinalIndex": 117237.70611082562,
+   "priorScaleFinalIndex": 120629.75547388748,
+   "scaleGap": -0.02811950790861162
+  },
+  {
+   "ticker": "185750.KS",
+   "priorRawKrx": 66800.0,
+   "finalRawKrx": 66500.0,
+   "storedFinalIndex": 109257.10779301178,
+   "priorScaleFinalIndex": 109093.05808161086,
+   "scaleGap": 0.0015037593984963404
+  },
+  {
+   "ticker": "192400.KS",
+   "priorRawKrx": 27800.0,
+   "finalRawKrx": 27450.0,
+   "storedFinalIndex": 122954.91837890062,
+   "priorScaleFinalIndex": 123404.47932361324,
+   "scaleGap": -0.0036429872495445936
+  },
+  {
+   "ticker": "192820.KS",
+   "priorRawKrx": 270500.0,
+   "finalRawKrx": 276000.0,
+   "storedFinalIndex": 298590.0140701993,
+   "priorScaleFinalIndex": 298590.0140701993,
+   "scaleGap": 0.0
+  },
+  {
+   "ticker": "204320.KS",
+   "priorRawKrx": 49750.0,
+   "finalRawKrx": 48500.0,
+   "storedFinalIndex": 283263.0140397158,
+   "priorScaleFinalIndex": 287411.21717418864,
+   "scaleGap": -0.01443298969072171
+  },
+  {
+   "ticker": "207940.KS",
+   "priorRawKrx": 1415000.0,
+   "finalRawKrx": 1420000.0,
+   "storedFinalIndex": 911848.182,
+   "priorScaleFinalIndex": 923555.2200000001,
+   "scaleGap": -0.012676056338028263
+  },
+  {
+   "ticker": "241560.KS",
+   "priorRawKrx": 61600.0,
+   "finalRawKrx": 61600.0,
+   "storedFinalIndex": 80306.00126139421,
+   "priorScaleFinalIndex": 81496.69979739511,
+   "scaleGap": -0.014610389610389518
+  },
+  {
+   "ticker": "251270.KS",
+   "priorRawKrx": 35200.0,
+   "finalRawKrx": 35400.0,
+   "storedFinalIndex": 36382.6241692209,
+   "priorScaleFinalIndex": 36693.58676895783,
+   "scaleGap": -0.008474576271186418
+  },
+  {
+   "ticker": "259960.KS",
+   "priorRawKrx": 212500.0,
+   "finalRawKrx": 212000.0,
+   "storedFinalIndex": 212791.93205944798,
+   "priorScaleFinalIndex": 213800.4246284501,
+   "scaleGap": -0.004716981132075415
+  },
+  {
+   "ticker": "267250.KS",
+   "priorRawKrx": 247500.0,
+   "finalRawKrx": 246500.0,
+   "storedFinalIndex": 1966673.8637037596,
+   "priorScaleFinalIndex": 1995000.4419875585,
+   "scaleGap": -0.014198782961460377
+  },
+  {
+   "ticker": "267260.KS",
+   "priorRawKrx": 747000.0,
+   "finalRawKrx": 739000.0,
+   "storedFinalIndex": 3071491.4878162523,
+   "priorScaleFinalIndex": 3109359.191090699,
+   "scaleGap": -0.012178619756427422
+  },
+  {
+   "ticker": "267270.KS",
+   "priorRawKrx": 142500.0,
+   "finalRawKrx": 139800.0,
+   "storedFinalIndex": 614177.9098382194,
+   "priorScaleFinalIndex": 620390.6921631725,
+   "scaleGap": -0.010014306151645225
+  },
+  {
+   "ticker": "271560.KS",
+   "priorRawKrx": 119300.0,
+   "finalRawKrx": 115300.0,
+   "storedFinalIndex": 127347.89893015496,
+   "priorScaleFinalIndex": 129026.47404786349,
+   "scaleGap": -0.013009540329574909
+  },
+  {
+   "ticker": "271940.KS",
+   "priorRawKrx": 10960.0,
+   "finalRawKrx": 11110.0,
+   "storedFinalIndex": 10990.0,
+   "priorScaleFinalIndex": 11110.0,
+   "scaleGap": -0.010801080108010841
+  },
+  {
+   "ticker": "272210.KS",
+   "priorRawKrx": 70900.0,
+   "finalRawKrx": 75000.0,
+   "storedFinalIndex": 82032.31655952209,
+   "priorScaleFinalIndex": 83934.83959023406,
+   "scaleGap": -0.022666666666666613
+  },
+  {
+   "ticker": "278470.KS",
+   "priorRawKrx": 372000.0,
+   "finalRawKrx": 369000.0,
+   "storedFinalIndex": 1879278.4967071428,
+   "priorScaleFinalIndex": 1907713.2470011986,
+   "scaleGap": -0.01490514905149054
+  },
+  {
+   "ticker": "282330.KS",
+   "priorRawKrx": 145000.0,
+   "finalRawKrx": 145900.0,
+   "storedFinalIndex": 174120.78681362618,
+   "priorScaleFinalIndex": 176909.62949935973,
+   "scaleGap": -0.015764222069910794
+  },
+  {
+   "ticker": "285130.KS",
+   "priorRawKrx": 54100.0,
+   "finalRawKrx": 53700.0,
+   "storedFinalIndex": 88434.92107474085,
+   "priorScaleFinalIndex": 89266.0763479997,
+   "scaleGap": -0.009310986964618295
+  },
+  {
+   "ticker": "294870.KS",
+   "priorRawKrx": 24850.0,
+   "finalRawKrx": 24550.0,
+   "storedFinalIndex": 31150.641074408504,
+   "priorScaleFinalIndex": 31536.0098299682,
+   "scaleGap": -0.012219959266802527
+  },
+  {
+   "ticker": "298020.KS",
+   "priorRawKrx": 341000.0,
+   "finalRawKrx": 334500.0,
+   "storedFinalIndex": 439696.7049078355,
+   "priorScaleFinalIndex": 443007.67407129816,
+   "scaleGap": -0.007473841554559102
+  },
+  {
+   "ticker": "298040.KS",
+   "priorRawKrx": 2854000.0,
+   "finalRawKrx": 2803000.0,
+   "storedFinalIndex": 2883586.9186846674,
+   "priorScaleFinalIndex": 2895984.9993096106,
+   "scaleGap": -0.004281127363539139
+  },
+  {
+   "ticker": "298050.KS",
+   "priorRawKrx": 172100.0,
+   "finalRawKrx": 171300.0,
+   "storedFinalIndex": 193672.37071040235,
+   "priorScaleFinalIndex": 194125.6705833348,
+   "scaleGap": -0.0023350846468183084
+  },
+  {
+   "ticker": "302440.KS",
+   "priorRawKrx": 37250.0,
+   "finalRawKrx": 37800.0,
+   "storedFinalIndex": 37650.0,
+   "priorScaleFinalIndex": 37800.0,
+   "scaleGap": -0.003968253968253954
+  },
+  {
+   "ticker": "307950.KS",
+   "priorRawKrx": 390000.0,
+   "finalRawKrx": 373500.0,
+   "storedFinalIndex": 394026.0283099754,
+   "priorScaleFinalIndex": 398831.22377717023,
+   "scaleGap": -0.012048192771084376
+  },
+  {
+   "ticker": "316140.KS",
+   "priorRawKrx": 35100.0,
+   "finalRawKrx": 36850.0,
+   "storedFinalIndex": 58650.668019660756,
+   "priorScaleFinalIndex": 58730.35642729616,
+   "scaleGap": -0.0013568521031206426
+  },
+  {
+   "ticker": "323410.KS",
+   "priorRawKrx": 21350.0,
+   "finalRawKrx": 21600.0,
+   "storedFinalIndex": 22471.79439527097,
+   "priorScaleFinalIndex": 22471.79439527097,
+   "scaleGap": 0.0
+  },
+  {
+   "ticker": "326030.KS",
+   "priorRawKrx": 79400.0,
+   "finalRawKrx": 79100.0,
+   "storedFinalIndex": 78000.0,
+   "priorScaleFinalIndex": 79100.0,
+   "scaleGap": -0.013906447534766109
+  },
+  {
+   "ticker": "329180.KS",
+   "priorRawKrx": 479000.0,
+   "finalRawKrx": 479000.0,
+   "storedFinalIndex": 484317.8966077156,
+   "priorScaleFinalIndex": 493592.0690959484,
+   "scaleGap": -0.018789144050104345
+  },
+  {
+   "ticker": "336260.KS",
+   "priorRawKrx": 48800.0,
+   "finalRawKrx": 47800.0,
+   "storedFinalIndex": 46400.0,
+   "priorScaleFinalIndex": 47800.0,
+   "scaleGap": -0.029288702928870314
+  },
+  {
+   "ticker": "336370.KS",
+   "priorRawKrx": 8510.0,
+   "finalRawKrx": 8490.0,
+   "storedFinalIndex": 16827.246776426393,
+   "priorScaleFinalIndex": 17171.07273219472,
+   "scaleGap": -0.020023557126030544
+  },
+  {
+   "ticker": "352820.KS",
+   "priorRawKrx": 173000.0,
+   "finalRawKrx": 175700.0,
+   "storedFinalIndex": 174735.72194198475,
+   "priorScaleFinalIndex": 176645.95135331832,
+   "scaleGap": -0.01081388730791133
+  },
+  {
+   "ticker": "353200.KS",
+   "priorRawKrx": 100000.0,
+   "finalRawKrx": 97000.0,
+   "storedFinalIndex": 105597.19822412376,
+   "priorScaleFinalIndex": 107143.60070857745,
+   "scaleGap": -0.014432989690721598
+  },
+  {
+   "ticker": "361610.KS",
+   "priorRawKrx": 16690.0,
+   "finalRawKrx": 15750.0,
+   "storedFinalIndex": 15600.0,
+   "priorScaleFinalIndex": 15750.0,
+   "scaleGap": -0.00952380952380949
+  },
+  {
+   "ticker": "373220.KS",
+   "priorRawKrx": 360000.0,
+   "finalRawKrx": 351500.0,
+   "storedFinalIndex": 351000.0,
+   "priorScaleFinalIndex": 351500.0,
+   "scaleGap": -0.0014224751066855834
+  },
+  {
+   "ticker": "375500.KS",
+   "priorRawKrx": 85800.0,
+   "finalRawKrx": 85700.0,
+   "storedFinalIndex": 183888.81141057718,
+   "priorScaleFinalIndex": 188282.8092937451,
+   "scaleGap": -0.023337222870478347
+  },
+  {
+   "ticker": "377300.KS",
+   "priorRawKrx": 46250.0,
+   "finalRawKrx": 46900.0,
+   "storedFinalIndex": 46800.0,
+   "priorScaleFinalIndex": 46900.0,
+   "scaleGap": -0.002132196162046962
+  },
+  {
+   "ticker": "383220.KS",
+   "priorRawKrx": 64800.0,
+   "finalRawKrx": 66600.0,
+   "storedFinalIndex": 362423.072314131,
+   "priorScaleFinalIndex": 370205.16282394365,
+   "scaleGap": -0.02102102102102099
+  },
+  {
+   "ticker": "402340.KS",
+   "priorRawKrx": 1089000.0,
+   "finalRawKrx": 1000000.0,
+   "storedFinalIndex": 1001304.219782069,
+   "priorScaleFinalIndex": 1001304.219782069,
+   "scaleGap": 0.0
+  },
+  {
+   "ticker": "439260.KS",
+   "priorRawKrx": 47300.0,
+   "finalRawKrx": 47050.0,
+   "storedFinalIndex": 46619.64937910884,
+   "priorScaleFinalIndex": 47221.840759678606,
+   "scaleGap": -0.012752391073326264
+  },
+  {
+   "ticker": "443060.KS",
+   "priorRawKrx": 247000.0,
+   "finalRawKrx": 239000.0,
+   "storedFinalIndex": 246950.46226520257,
+   "priorScaleFinalIndex": 252227.18154437357,
+   "scaleGap": -0.02092050209205021
+  },
+  {
+   "ticker": "450080.KS",
+   "priorRawKrx": 36300.0,
+   "finalRawKrx": 34700.0,
+   "storedFinalIndex": 34400.0,
+   "priorScaleFinalIndex": 34700.0,
+   "scaleGap": -0.008645533141210415
+  },
+  {
+   "ticker": "454910.KS",
+   "priorRawKrx": 71500.0,
+   "finalRawKrx": 69400.0,
+   "storedFinalIndex": 68700.0,
+   "priorScaleFinalIndex": 69400.0,
+   "scaleGap": -0.010086455331412059
+  },
+  {
+   "ticker": "462870.KS",
+   "priorRawKrx": 31400.0,
+   "finalRawKrx": 32100.0,
+   "storedFinalIndex": 32350.0,
+   "priorScaleFinalIndex": 32100.0,
+   "scaleGap": 0.007788161993769416
+  },
+  {
+   "ticker": "489790.KS",
+   "priorRawKrx": 47200.0,
+   "finalRawKrx": 44700.0,
+   "storedFinalIndex": 44450.0,
+   "priorScaleFinalIndex": 44700.0,
+   "scaleGap": -0.005592841163310935
+  }
+ ],
+ "gapAbove0p1pct": 217,
+ "priorScaleRepairMaxGapVsExistingAudit": 0.0,
+ "etfRawIssuerPricePlusStatedCashMaxRelativeGap": 0.0,
+ "etfLimit": "Stated historical cash rows reused; archived PDF entitlement completeness not independently re-parsed",
+ "fixedPathFinalSourceDiagnostic": {
+  "gated-RULE_INDUSTRY_MOMENTUM": {
+   "finalSourceOnlyFixedPath": {
+    "cagr": 0.23429529849726993,
+    "calendarCagr": 0.22734888994824698,
+    "mdd": -0.5827581626187575,
+    "sharpe": 0.6950925840597362,
+    "annualStockTurnover": 12.665614043628871,
+    "finalNav": 8.907228833632022,
+    "sessions": 2619
+   },
+   "originalFinalNav": 8.790949895491398,
+   "navRelativeChange": 0.01322711874404603,
+   "scope": "Final marks only, no re-selection; not a corrected tournament or certified action history"
+  },
+  "forced-XGB_CI_RANK_h1": {
+   "finalSourceOnlyFixedPath": {
+    "cagr": 0.1940439879700273,
+    "calendarCagr": 0.18837999165547248,
+    "mdd": -0.3698168369365178,
+    "sharpe": 0.7647621917726294,
+    "annualStockTurnover": 12.254533049724154,
+    "finalNav": 6.31183463021037,
+    "sessions": 2619
+   },
+   "originalFinalNav": 6.289259556906575,
+   "navRelativeChange": 0.0035894644034852874,
+   "scope": "Final marks only, no re-selection; not a corrected tournament or certified action history"
+  }
+ },
+ "pathsHoldingWithheld006800": {
+  "forced": {
+   "ENET_CIM_RANK_e1": [
+    "2019-07-01",
+    "2024-10-14"
+   ],
+   "ENET_CIM_RANK_e2": [
+    "2019-04-08",
+    "2021-12-13",
+    "2022-01-10",
+    "2022-02-07",
+    "2022-03-07",
+    "2022-04-04",
+    "2022-05-02",
+    "2022-05-30",
+    "2022-06-27",
+    "2022-07-25",
+    "2022-08-22"
+   ],
+   "ENET_CIM_REG_e1": [
+    "2024-10-14"
+   ],
+   "ENET_CI_RANK_e1": [
+    "2019-07-01",
+    "2024-10-14"
+   ],
+   "ENET_CI_RANK_e2": [
+    "2019-04-08",
+    "2021-12-13",
+    "2022-01-10",
+    "2022-02-07",
+    "2022-03-07",
+    "2022-04-04",
+    "2022-05-02",
+    "2022-05-30",
+    "2022-06-27",
+    "2022-07-25",
+    "2022-08-22"
+   ],
+   "ENET_CI_REG_e1": [
+    "2019-05-07",
+    "2019-06-03",
+    "2019-07-01",
+    "2019-07-29",
+    "2020-09-21",
+    "2020-11-16",
+    "2022-01-10",
+    "2022-04-04"
+   ],
+   "ENET_C_RANK_e1": [
+    "2019-07-01",
+    "2019-09-23"
+   ],
+   "ENET_C_RANK_e2": [
+    "2019-04-08",
+    "2022-01-10",
+    "2022-02-07",
+    "2022-03-07",
+    "2022-04-04",
+    "2022-05-02",
+    "2022-05-30",
+    "2022-06-27",
+    "2022-07-25",
+    "2022-08-22"
+   ],
+   "ENET_C_REG_e1": [
+    "2019-06-03",
+    "2019-07-01",
+    "2019-07-29",
+    "2019-08-26",
+    "2019-09-23",
+    "2019-11-18",
+    "2020-07-27",
+    "2020-08-24",
+    "2022-04-04",
+    "2024-10-14",
+    "2025-01-06"
+   ],
+   "ET_CIM_RANK_h1": [
+    "2018-07-30",
+    "2018-11-19",
+    "2020-02-10",
+    "2021-08-23",
+    "2021-09-23",
+    "2022-01-10",
+    "2022-04-04",
+    "2022-05-02",
+    "2022-05-30",
+    "2022-06-27",
+    "2022-07-25",
+    "2022-08-22",
+    "2023-03-06"
+   ],
+   "ET_CIM_RANK_h2": [
+    "2019-04-08",
+    "2021-09-23",
+    "2021-10-18",
+    "2022-01-10",
+    "2022-04-04",
+    "2022-05-02",
+    "2022-05-30",
+    "2022-06-27",
+    "2022-07-25",
+    "2022-08-22",
+    "2023-03-06",
+    "2023-05-02"
+   ],
+   "ET_CI_CLF_h1": [
+    "2026-03-30"
+   ],
+   "ET_CI_CLF_h2": [
+    "2026-09-14"
+   ],
+   "ET_CI_RANK_h1": [
+    "2019-02-11",
+    "2019-03-11",
+    "2019-06-03",
+    "2019-07-01",
+    "2021-07-26",
+    "2021-08-23",
+    "2021-09-23",
+    "2021-10-18",
+    "2021-11-15",
+    "2021-12-13",
+    "2022-01-10",
+    "2022-04-04",
+    "2022-05-02",
+    "2022-05-30",
+    "2022-06-27",
+    "2022-07-25",
+    "2022-08-22",
+    "2023-03-06"
+   ],
+   "ET_CI_RANK_h2": [
+    "2019-03-11",
+    "2019-04-08",
+    "2019-05-07",
+    "2019-06-03",
+    "2021-08-23",
+    "2021-09-23",
+    "2021-10-18",
+    "2021-11-15",
+    "2022-01-10",
+    "2022-03-07",
+    "2022-04-04",
+    "2022-05-02",
+    "2022-05-30",
+    "2022-06-27",
+    "2022-07-25",
+    "2022-08-22",
+    "2023-03-06",
+    "2023-04-03",
+    "2026-09-14"
+   ],
+   "ET_C_CLF_h1": [
+    "2020-09-21",
+    "2026-02-02",
+    "2026-03-03",
+    "2026-03-30",
+    "2026-04-27"
+   ],
+   "ET_C_CLF_h2": [
+    "2026-03-03",
+    "2026-03-30"
+   ],
+   "ET_C_RANK_h1": [
+    "2019-02-11",
+    "2020-03-09",
+    "2021-07-26",
+    "2021-08-23",
+    "2021-09-23",
+    "2022-01-10",
+    "2022-02-07",
+    "2022-04-04",
+    "2022-05-02",
+    "2022-05-30",
+    "2022-06-27",
+    "2022-07-25",
+    "2022-08-22"
+   ],
+   "ET_C_RANK_h2": [
+    "2019-04-08",
+    "2019-06-03",
+    "2021-07-26",
+    "2021-08-23",
+    "2021-09-23",
+    "2021-10-18",
+    "2021-11-15",
+    "2021-12-13",
+    "2022-01-10",
+    "2022-04-04",
+    "2022-05-02",
+    "2022-05-30",
+    "2022-06-27",
+    "2022-07-25",
+    "2022-08-22",
+    "2023-03-06",
+    "2023-04-03"
+   ],
+   "LGBM_CIM_CLF_h5": [
+    "2022-07-25",
+    "2026-09-14"
+   ],
+   "LGBM_CIM_CLF_h6": [
+    "2019-07-01"
+   ],
+   "LGBM_CIM_RANK_h1": [
+    "2022-01-10",
+    "2022-02-07",
+    "2022-04-04",
+    "2022-05-30",
+    "2022-07-25",
+    "2022-08-22"
+   ],
+   "LGBM_CIM_RANK_h2": [
+    "2022-01-10",
+    "2022-05-30"
+   ],
+   "LGBM_CIM_RANK_h3": [
+    "2018-03-12",
+    "2022-01-10",
+    "2022-04-04",
+    "2022-05-02",
+    "2022-05-30",
+    "2022-07-25",
+    "2022-08-22"
+   ],
+   "LGBM_CIM_RANK_h4": [
+    "2018-03-12",
+    "2022-01-10",
+    "2022-02-07",
+    "2022-03-07",
+    "2022-04-04",
+    "2022-05-02"
+   ],
+   "LGBM_CIM_RANK_h5": [
+    "2022-04-04",
+    "2022-05-02",
+    "2022-05-30",
+    "2022-06-27",
+    "2022-07-25",
+    "2022-08-22"
+   ],
+   "LGBM_CIM_RANK_h6": [
+    "2019-03-11",
+    "2019-04-08",
+    "2019-06-03",
+    "2019-07-01",
+    "2021-09-23",
+    "2021-10-18",
+    "2021-11-15",
+    "2022-01-10",
+    "2022-02-07",
+    "2022-03-07",
+    "2022-04-04",
+    "2022-05-02",
+    "2022-05-30",
+    "2026-07-20",
+    "2026-08-18"
+   ],
+   "LGBM_CIM_REG_h1": [
+    "2026-02-02"
+   ],
+   "LGBM_CIM_REG_h4": [
+    "2019-06-03",
+    "2019-07-01"
+   ],
+   "LGBM_CIM_REG_h5": [
+    "2018-03-12",
+    "2018-07-02",
+    "2019-06-03",
+    "2019-07-01",
+    "2020-02-10"
+   ],
+   "LGBM_CIM_REG_h6": [
+    "2019-06-03",
+    "2019-07-01",
+    "2020-02-10",
+    "2026-02-02",
+    "2026-03-03",
+    "2026-03-30",
+    "2026-04-27"
+   ],
+   "LGBM_CI_RANK_h1": [
+    "2022-01-10",
+    "2022-02-07",
+    "2022-04-04"
+   ],
+   "LGBM_CI_RANK_h2": [
+    "2022-01-10"
+   ],
+   "LGBM_CI_RANK_h3": [
+    "2021-09-23",
+    "2022-01-10",
+    "2022-03-07",
+    "2022-04-04",
+    "2022-05-02",
+    "2022-05-30"
+   ],
+   "LGBM_CI_RANK_h4": [
+    "2019-06-03",
+    "2022-01-10",
+    "2022-04-04",
+    "2022-05-02"
+   ],
+   "LGBM_CI_RANK_h5": [
+    "2021-09-23",
+    "2022-01-10",
+    "2022-04-04",
+    "2022-05-02",
+    "2022-05-30"
+   ],
+   "LGBM_CI_RANK_h6": [
+    "2021-09-23",
+    "2021-11-15",
+    "2021-12-13",
+    "2022-01-10",
+    "2022-02-07",
+    "2022-03-07",
+    "2022-04-04",
+    "2022-05-02",
+    "2022-05-30",
+    "2022-07-25",
+    "2022-08-22",
+    "2026-05-26",
+    "2026-07-20",
+    "2026-08-18",
+    "2026-09-14"
+   ],
+   "LGBM_CI_REG_h1": [
+    "2026-02-02",
+    "2026-03-03",
+    "2026-03-30",
+    "2026-09-14"
+   ],
+   "LGBM_CI_REG_h4": [
+    "2026-03-30"
+   ],
+   "LGBM_CI_REG_h5": [
+    "2026-03-30",
+    "2026-09-14"
+   ],
+   "LGBM_CI_REG_h6": [
+    "2017-05-29"
+   ],
+   "LGBM_C_CLF_h3": [
+    "2022-01-10",
+    "2022-03-07",
+    "2022-07-25",
+    "2022-08-22"
+   ],
+   "LGBM_C_CLF_h5": [
+    "2022-05-02",
+    "2022-06-27",
+    "2022-07-25",
+    "2022-08-22"
+   ],
+   "LGBM_C_CLF_h6": [
+    "2021-11-15",
+    "2022-07-25",
+    "2022-08-22"
+   ],
+   "LGBM_C_RANK_h3": [
+    "2021-07-26",
+    "2021-08-23",
+    "2021-10-18",
+    "2021-11-15",
+    "2022-01-10",
+    "2023-03-06",
+    "2023-04-03"
+   ],
+   "LGBM_C_RANK_h5": [
+    "2021-08-23",
+    "2021-09-23",
+    "2021-10-18",
+    "2021-11-15",
+    "2022-04-04",
+    "2022-05-02",
+    "2022-06-27",
+    "2022-07-25",
+    "2022-08-22",
+    "2023-03-06",
+    "2023-04-03",
+    "2023-05-02"
+   ],
+   "LGBM_C_RANK_h6": [
+    "2019-04-08",
+    "2021-08-23",
+    "2021-09-23",
+    "2021-10-18",
+    "2021-11-15",
+    "2021-12-13",
+    "2022-02-07",
+    "2022-04-04"
+   ],
+   "LGBM_C_REG_h1": [
+    "2026-03-30"
+   ],
+   "LGBM_C_REG_h2": [
+    "2026-03-30"
+   ],
+   "LGBM_C_REG_h5": [
+    "2021-07-26"
+   ],
+   "LGBM_C_REG_h6": [
+    "2021-07-26"
+   ],
+   "RF_CIM_CLF_h2": [
+    "2019-07-01"
+   ],
+   "RF_CIM_RANK_h1": [
+    "2018-02-12",
+    "2018-03-12",
+    "2018-04-09",
+    "2019-04-08",
+    "2021-08-23",
+    "2021-09-23",
+    "2021-10-18",
+    "2021-11-15",
+    "2021-12-13",
+    "2022-01-10",
+    "2022-02-07",
+    "2022-04-04",
+    "2022-05-02",
+    "2022-05-30",
+    "2022-06-27",
+    "2022-07-25",
+    "2022-08-22",
+    "2023-03-06",
+    "2023-04-03"
+   ],
+   "RF_CIM_RANK_h2": [
+    "2018-02-12",
+    "2018-03-12",
+    "2019-04-08",
+    "2020-02-10",
+    "2021-08-23",
+    "2021-10-18",
+    "2021-11-15",
+    "2022-04-04",
+    "2022-05-02",
+    "2022-05-30",
+    "2022-06-27",
+    "2022-07-25",
+    "2022-08-22",
+    "2023-03-06",
+    "2023-04-03",
+    "2023-05-02"
+   ],
+   "RF_CI_CLF_h1": [
+    "2026-01-05",
+    "2026-03-03",
+    "2026-03-30",
+    "2026-09-14"
+   ],
+   "RF_CI_CLF_h2": [
+    "2026-01-05"
+   ],
+   "RF_CI_RANK_h1": [
+    "2019-04-08",
+    "2021-08-23",
+    "2021-09-23",
+    "2021-10-18",
+    "2021-11-15",
+    "2021-12-13",
+    "2022-01-10",
+    "2022-02-07",
+    "2022-03-07",
+    "2022-04-04",
+    "2022-05-02",
+    "2022-05-30",
+    "2022-06-27",
+    "2022-07-25",
+    "2022-08-22",
+    "2023-03-06"
+   ],
+   "RF_CI_RANK_h2": [
+    "2019-04-08",
+    "2021-11-15",
+    "2022-01-10",
+    "2022-04-04",
+    "2022-05-02",
+    "2022-05-30",
+    "2022-06-27",
+    "2022-07-25",
+    "2023-03-06",
+    "2023-04-03",
+    "2023-05-02"
+   ],
+   "RF_C_CLF_h2": [
+    "2021-07-26",
+    "2021-08-23",
+    "2021-11-15",
+    "2022-05-30",
+    "2022-06-27",
+    "2022-07-25",
+    "2026-01-05"
+   ],
+   "RF_C_RANK_h1": [
+    "2019-04-08",
+    "2021-07-26",
+    "2021-08-23",
+    "2021-09-23",
+    "2021-10-18",
+    "2021-11-15",
+    "2022-01-10",
+    "2022-04-04",
+    "2022-05-02",
+    "2022-05-30",
+    "2022-06-27",
+    "2022-07-25",
+    "2022-08-22",
+    "2023-03-06",
+    "2023-04-03"
+   ],
+   "RF_C_RANK_h2": [
+    "2019-04-08",
+    "2022-04-04",
+    "2022-05-02",
+    "2022-05-30",
+    "2022-06-27",
+    "2022-07-25",
+    "2022-08-22",
+    "2023-03-06",
+    "2023-04-03",
+    "2023-05-02"
+   ],
+   "RIDGE_CIMX_RANK_a2": [
+    "2019-07-01"
+   ],
+   "RIDGE_CIMX_RANK_a3": [
+    "2019-04-08",
+    "2019-07-01",
+    "2022-06-27"
+   ],
+   "RIDGE_CIMX_REG_a3": [
+    "2019-04-08",
+    "2019-06-03",
+    "2019-07-01",
+    "2019-07-29",
+    "2024-10-14",
+    "2025-04-28"
+   ],
+   "RIDGE_CIM_RANK_a2": [
+    "2019-07-01"
+   ],
+   "RIDGE_CIM_RANK_a3": [
+    "2019-04-08",
+    "2019-07-01",
+    "2022-06-27"
+   ],
+   "RIDGE_CIM_REG_a2": [
+    "2024-10-14"
+   ],
+   "RIDGE_CIM_REG_a3": [
+    "2019-07-01",
+    "2019-07-29",
+    "2024-09-19",
+    "2024-10-14",
+    "2025-04-28",
+    "2026-02-02",
+    "2026-03-30"
+   ],
+   "RIDGE_CI_RANK_a2": [
+    "2019-07-01"
+   ],
+   "RIDGE_CI_RANK_a3": [
+    "2019-04-08",
+    "2019-07-01",
+    "2022-06-27"
+   ],
+   "RIDGE_CI_REG_a2": [
+    "2019-06-03",
+    "2019-07-01",
+    "2019-07-29",
+    "2020-07-27",
+    "2021-12-13",
+    "2022-01-10",
+    "2022-04-04"
+   ],
+   "RIDGE_CI_REG_a3": [
+    "2019-06-03",
+    "2019-07-01",
+    "2019-07-29",
+    "2019-11-18",
+    "2025-04-28",
+    "2026-02-02",
+    "2026-03-30"
+   ],
+   "RIDGE_C_RANK_a2": [
+    "2019-07-01"
+   ],
+   "RIDGE_C_RANK_a3": [
+    "2019-07-01",
+    "2022-06-27"
+   ],
+   "RIDGE_C_REG_a1": [
+    "2021-01-11"
+   ],
+   "RIDGE_C_REG_a2": [
+    "2019-07-01",
+    "2019-07-29",
+    "2019-09-23",
+    "2020-04-06",
+    "2020-07-27",
+    "2020-08-24",
+    "2020-09-21",
+    "2020-10-19",
+    "2021-01-11",
+    "2024-10-14"
+   ],
+   "RIDGE_C_REG_a3": [
+    "2019-04-08",
+    "2019-06-03",
+    "2019-07-01",
+    "2019-07-29",
+    "2019-08-26",
+    "2019-11-18",
+    "2024-09-19",
+    "2024-10-14",
+    "2024-11-11",
+    "2025-03-31",
+    "2025-04-28",
+    "2026-02-02",
+    "2026-03-30"
+   ],
+   "RULE_FOUR_FACTOR": [
+    "2021-04-05",
+    "2021-05-03",
+    "2025-05-26",
+    "2025-06-23"
+   ],
+   "RULE_MOMENTUM": [
+    "2026-03-03",
+    "2026-03-30",
+    "2026-04-27"
+   ],
+   "XGB_CIM_CLF_h1": [
+    "2026-03-03",
+    "2026-03-30"
+   ],
+   "XGB_CIM_RANK_h1": [
+    "2018-01-15",
+    "2018-02-12",
+    "2018-03-12",
+    "2018-05-08",
+    "2018-06-04",
+    "2022-01-10",
+    "2022-02-07",
+    "2022-04-04",
+    "2026-03-03",
+    "2026-08-18",
+    "2026-09-14"
+   ],
+   "XGB_CIM_RANK_h2": [
+    "2018-02-12",
+    "2018-03-12",
+    "2018-06-04",
+    "2022-01-10",
+    "2026-03-30",
+    "2026-04-27",
+    "2026-05-26",
+    "2026-07-20",
+    "2026-08-18",
+    "2026-09-14"
+   ],
+   "XGB_CIM_RANK_h3": [
+    "2018-02-12",
+    "2018-06-04",
+    "2022-01-10",
+    "2022-03-07",
+    "2022-04-04",
+    "2025-08-18",
+    "2026-07-20"
+   ],
+   "XGB_CI_CLF_h1": [
+    "2026-03-03",
+    "2026-03-30"
+   ],
+   "XGB_CI_RANK_h1": [
+    "2018-01-15",
+    "2018-02-12",
+    "2018-06-04",
+    "2022-01-10",
+    "2022-02-07",
+    "2022-03-07",
+    "2025-05-26",
+    "2025-08-18",
+    "2026-03-03",
+    "2026-07-20"
+   ],
+   "XGB_CI_RANK_h2": [
+    "2018-06-04",
+    "2026-03-30",
+    "2026-04-27",
+    "2026-09-14"
+   ],
+   "XGB_CI_RANK_h3": [
+    "2018-06-04",
+    "2019-07-29",
+    "2022-01-10",
+    "2022-02-07",
+    "2022-03-07",
+    "2022-04-04",
+    "2022-05-02",
+    "2026-09-14"
+   ],
+   "XGB_CI_REG_h1": [
+    "2026-01-05",
+    "2026-02-02",
+    "2026-03-03",
+    "2026-03-30"
+   ],
+   "XGB_CI_REG_h2": [
+    "2026-02-02"
+   ],
+   "XGB_CI_REG_h3": [
+    "2026-03-03",
+    "2026-03-30"
+   ],
+   "XGB_C_CLF_h1": [
+    "2026-03-03",
+    "2026-03-30"
+   ],
+   "XGB_C_CLF_h3": [
+    "2017-01-09",
+    "2026-03-03"
+   ],
+   "XGB_C_RANK_h1": [
+    "2018-02-12",
+    "2018-03-12",
+    "2018-06-04"
+   ],
+   "XGB_C_RANK_h2": [
+    "2018-02-12",
+    "2018-03-12",
+    "2018-06-04",
+    "2026-05-26"
+   ],
+   "XGB_C_RANK_h3": [
+    "2018-06-04",
+    "2019-09-23",
+    "2021-08-23",
+    "2021-09-23",
+    "2021-12-13",
+    "2022-01-10",
+    "2022-04-04"
+   ],
+   "XGB_C_REG_h1": [
+    "2026-03-03",
+    "2026-03-30"
+   ],
+   "XGB_C_REG_h3": [
+    "2026-03-30"
+   ]
+  },
+  "gated": {
+   "LGBM_CIM_RANK_h6": [
+    "2017-05-29"
+   ],
+   "LGBM_CI_CLF_h1": [
+    "2017-01-09"
+   ],
+   "LGBM_CI_RANK_h1": [
+    "2019-04-08"
+   ],
+   "LGBM_C_CLF_h4": [
+    "2017-01-09"
+   ],
+   "LGBM_C_CLF_h6": [
+    "2017-01-09"
+   ],
+   "LGBM_C_REG_h6": [
+    "2017-01-09",
+    "2019-07-01"
+   ],
+   "RULE_MOMENTUM": [
+    "2026-03-03",
+    "2026-03-30",
+    "2026-04-27"
+   ],
+   "XGB_C_CLF_h1": [
+    "2017-01-09"
+   ],
+   "XGB_C_CLF_h2": [
+    "2017-01-09"
+   ],
+   "XGB_C_REG_h3": [
+    "2017-01-09"
+   ]
+  }
+ }
+}

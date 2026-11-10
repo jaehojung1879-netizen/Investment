@@ -1,0 +1,43 @@
+{
+ "originalFilesUnchanged": true,
+ "changedOriginalPaths": [],
+ "sourceHeadUnchanged": true,
+ "fullMatrixRebuilt": false,
+ "modelsRefit": false,
+ "newHistoricalOptimization": false,
+ "workflowDispatched": false,
+ "locksOrSealedResultsChanged": false,
+ "runtime": {
+  "python": "3.12.14",
+  "numpy": "2.3.5",
+  "pandas": "2.2.3",
+  "scipy": "1.17.0"
+ },
+ "focusedTests": "...................                                                      [100%]\n19 passed in 1.19s",
+ "ruff": "All checks passed!",
+ "compileallPipeline": "PASS",
+ "seedGeneration": "PASS",
+ "seedValidation": "PASS",
+ "seedOutputRestored": true,
+ "fullPytest": {
+  "status": "INTERRUPTED_INCOMPLETE_WITH_FAILURES",
+  "passed": 2178,
+  "failed": 35,
+  "errors": 44,
+  "skipped": 5,
+  "xfailed": 3,
+  "seconds": 444.96,
+  "observedCauses": [
+   "unavailable historical ancestor commit in shallow clone",
+   "requests dependency absent",
+   "sandbox PermissionError"
+  ],
+  "limit": "Not all failures independently attributed; not a full suite PASS"
+ },
+ "artifactCalculations": {
+  "H126PathsReplayed": 296,
+  "absoluteRiskTop10Union": 22,
+  "H252Nav": "NOT_INDEPENDENTLY_REPRODUCED",
+  "fullExecutableLedger": "NOT_INDEPENDENTLY_REPRODUCED"
+ }
+}
