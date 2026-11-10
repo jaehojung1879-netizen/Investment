@@ -268,6 +268,7 @@ def main(argv=None):
     ap.add_argument("--scratch", required=True)
     ap.add_argument("--top", type=int, default=20)
     ap.add_argument("--view", choices=["gated", "forced"], default="gated")
+    ap.add_argument("--subject", default=None, help="strategy to dissect (default: rank 1 by CAGR)")
     a = ap.parse_args(argv)
     s = Path(a.scratch)
     ev = pickle.loads((s / f"eval-{a.view}.pkl").read_bytes())
@@ -291,16 +292,21 @@ def main(argv=None):
 
     order = frame.sort_values("rankAbs")
     top_abs = list(order.index[: a.top])
-    winner = top_abs[0]
+    winner = a.subject or top_abs[0]
+    tag = a.view + (f"-{a.subject}" if a.subject else "")
     r_all, ex_all = daily_excess_matrix(paths, bench_nav)
     r_bench = bench_nav.pct_change().reindex(r_all.index)
 
     # ---------------- overfitting ----------------
-    eff = effective_trials(r_all.drop(columns=[c for c in r_all if c.endswith("ETF_ONLY")]))
+    eff_raw = effective_trials(r_all.drop(columns=[c for c in r_all if c.endswith("ETF_ONLY")]))
+    # Everything co-moves with the market, so independence is measured on returns IN EXCESS of the ETF.
+    eff = effective_trials(ex_all.drop(columns=[c for c in ex_all if c.endswith("ETF_ONLY")]))
     sr_daily = (ex_all.mean() / ex_all.std()).replace([np.inf, -np.inf], np.nan).dropna()
     abs_sr_daily = ((r_all.mean()) / r_all.std()).dropna()
     over = {"trials": {"strategies": len(results), "mlConfigurations": sum(1 for x in results if not x.startswith("RULE_")),
-                       "fitsPerformed": int(sum(len([f for f in folds[x] if f.get("trainRows")]) for x in folds)), **eff}}
+                       "fitsPerformed": int(sum(len([f for f in folds[x] if f.get("trainRows")]) for x in folds)),
+                       "onExcessReturns": eff, "onRawReturns": eff_raw,
+                       "strategiesIdenticalToEtf": int(sum(1 for x in results if results[x]["etfOnlyRebalanceShare"] == 1.0))}}
     over["deflatedSharpeWinnerAbsolute"] = {lbl: deflated_sharpe(r_all[winner], abs_sr_daily.to_numpy(), n) for lbl, n in
                                             (("nAll", len(abs_sr_daily)), ("nParticipationRatio", max(2.0, eff["participationRatio"])),
                                              ("nClusters", max(2, eff["clustersAtCorr0.9"])))}
@@ -308,10 +314,10 @@ def main(argv=None):
                                                (("nAll", len(sr_daily)), ("nParticipationRatio", max(2.0, eff["participationRatio"])),
                                                 ("nClusters", max(2, eff["clustersAtCorr0.9"])))}
     over["cscvPbo"] = cscv_pbo(ex_all.drop(columns=[c for c in ex_all if c.endswith("ETF_ONLY")]))
-    best_rule = max(RULES, key=lambda x: results[x]["cagr"])
+    best_rule = max((x for x in RULES if x != winner), key=lambda x: results[x]["cagr"])
     over["blockBootstrap"] = {"winnerMinusEtf": block_bootstrap(r_all[winner] - r_bench),
                               "winnerMinusBestRule": {"rule": best_rule, **block_bootstrap(r_all[winner] - r_all[best_rule])},
-                              "winnerMinusFourFactor": block_bootstrap(r_all[winner] - r_all["RULE_FOUR_FACTOR"])}
+                              "winnerMinusFourFactor": block_bootstrap(r_all[winner] - r_all["RULE_FOUR_FACTOR"]) if winner != "RULE_FOUR_FACTOR" else None}
     over["nestedSelection"] = {"byPastCagr": nested_selection(paths, results, bench_nav, rf, "cagr"),
                                "byPastSharpe": nested_selection(paths, results, bench_nav, rf, "sharpe")}
     ins = [(x, results[x]["inSampleRankIcMean"], results[x]["oosRankIcMean"]) for x in top_abs if results[x]["inSampleRankIcMean"] is not None]
@@ -321,7 +327,7 @@ def main(argv=None):
     corr = ex_all[top_abs].corr()
     over["top20ExcessCorrelation"] = {"meanOffDiagonal": _r(corr.to_numpy()[np.triu_indices(len(top_abs), 1)].mean(), 3),
                                       "minOffDiagonal": _r(corr.to_numpy()[np.triu_indices(len(top_abs), 1)].min(), 3)}
-    rules = {c: r_all[c] for c in RULES}
+    rules = {c: r_all[c] for c in RULES if c != winner}
     over["factorRegressionWinner"] = factor_regression(r_all[winner], r_bench, rules)
     # ---------------- winner anatomy ----------------
     wp = paths[winner]
@@ -329,7 +335,8 @@ def main(argv=None):
     anat = {"winner": winner, "config": cfg_of(winner) if not winner.startswith("RULE_") else {"rule": winner},
             "metrics": {k: _r(v) for k, v in results[winner].items() if not isinstance(v, (dict, list))},
             "yearly": results[winner]["yearly"],
-            "navMonthEnd": {str(d.date()): [_r(v, 5), _r(bench_nav.loc[d], 5)] for d, v in wp["nav"].astype(float).resample("ME").last().items()},
+            "navMonthEnd": {str(d.date()): [_r(v, 5), _r(bench_nav.loc[d], 5)] for d, v in
+                            wp["nav"].astype(float).groupby(wp["nav"].index.to_period("M")).tail(1).items()},
             "contributions": contributions(wp, nav_idx, df), "holdings": wp["holdings"], "trades": wp["trades"],
             "roundTrips": round_trips(wp["trades"], closes), "decisions": {k: list(v) for k, v in wp["decisions"].items()}}
     # holdings exposure vs eligible universe
@@ -440,9 +447,9 @@ def main(argv=None):
         tables.setdefault("ruleBaselines", []).append({"strategy": x, **{c: _r(frame.at[x, c]) for c in ["cagr", "excessCagr", "sharpe", "mdd", "rankAbs"]}})
     out = HERE / "results"
     (out / f"rankings-{a.view}.json").write_text(json.dumps({"evidenceClass": T.CONFIG["evidenceClass"], "view": a.view, "window": ev["window"], **tables}, indent=1, ensure_ascii=False, default=float) + "\n")
-    (out / f"winner-analysis-{a.view}.json").write_text(json.dumps({"evidenceClass": T.CONFIG["evidenceClass"], "view": a.view, "anatomy": anat, "top20Common": common},
+    (out / f"winner-analysis-{tag}.json").write_text(json.dumps({"evidenceClass": T.CONFIG["evidenceClass"], "view": a.view, "subject": winner, "subjectRankAbs": int(frame.at[winner, "rankAbs"]), "anatomy": anat, "top20Common": common},
                                                          indent=1, ensure_ascii=False, default=float) + "\n")
-    (out / f"overfit-diagnostics-{a.view}.json").write_text(json.dumps({"evidenceClass": T.CONFIG["evidenceClass"], "view": a.view, **over}, indent=1, ensure_ascii=False, default=float) + "\n")
+    (out / f"overfit-diagnostics-{tag}.json").write_text(json.dumps({"evidenceClass": T.CONFIG["evidenceClass"], "view": a.view, "subject": winner, **over}, indent=1, ensure_ascii=False, default=float) + "\n")
     print(json.dumps({"winner": winner, "pbo": over["cscvPbo"]["pbo"], "nested": over["nestedSelection"]["byPastCagr"]["metrics"]}, default=float))
 
 

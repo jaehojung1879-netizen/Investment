@@ -57,7 +57,7 @@ def winner_section(view):
     if w is None:
         return ""
     a = w["anatomy"]
-    out = f"### {view}: 우승 `{a['winner']}` 연도별\n\n"
+    out = f"### {view}: 대상 `{a['winner']}` (절대순위 {w.get('subjectRankAbs')}) 연도별\n\n"
     out += table([{"y": y, **v} for y, v in a["yearly"].items()], [("연도", lambda r: r["y"]), ("전략", lambda r: pct(r["ret"])),
                                                                   ("ETF", lambda r: pct(r["etf"])), ("초과", lambda r: pct(r["excess"]))])
     c = a["contributions"]
@@ -79,8 +79,9 @@ def winner_section(view):
     if o:
         ds = o["deflatedSharpeWinnerAbsolute"]
         out += "\n과최적화 진단:\n\n"
-        out += (f"- 전략 {o['trials']['strategies']}개, 실제 적합 {o['trials']['fitsPerformed']}회, 유효 전략 수: 고유값 참여비 {num(o['trials']['participationRatio'], 1)}, "
-                f"|ρ|≥0.9 군집 {o['trials']['clustersAt' + 'Corr0.9']}\n")
+        out += (f"- 전략 {o['trials']['strategies']}개, 실제 적합 {o['trials']['fitsPerformed']}회, ETF와 완전히 같은 경로 {o['trials']['strategiesIdenticalToEtf']}개; "
+                f"ETF 대비 초과수익 기준 유효 전략 수: 고유값 참여비 {num(o['trials']['onExcessReturns']['participationRatio'], 1)}, "
+                f"|ρ|≥0.9 군집 {o['trials']['onExcessReturns']['clustersAtCorr0.9']}\n")
         out += "- Deflated Sharpe(절대수익): " + ", ".join(f"{k} {num(v['deflatedSharpeProbability'], 3)} (기대최대 SR {num(v['expectedMaxSharpeUnderNullAnnual'])})"
                                                           for k, v in ds.items()) + "\n"
         dx = o["deflatedSharpeWinnerExcessVsEtf"]
@@ -101,6 +102,8 @@ def main():
     parts = ["# ml-strategy-tournament-v1 결과 표 (자동 생성)\n\n증거 등급: EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY\n"]
     for view in ("gated", "forced"):
         parts.append(f"\n## 보기: {view}\n\n" + ranking_section(view) + "\n" + winner_section(view))
+        for p in sorted(RES.glob(f"winner-analysis-{view}-*.json")):
+            parts.append(f"\n## 보기: {view} — 최우수 ML 해부\n\n" + winner_section(p.stem.replace("winner-analysis-", "")))
     (RES / "tables-ko.md").write_text("\n".join(parts))
 
 
