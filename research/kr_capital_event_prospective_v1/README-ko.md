@@ -7,7 +7,7 @@
 | 항목 | 확인 결과 |
 |---|---|
 | 기존 LIVE 원장 | `kr-corporate-information-events-v1` 첫 영수증 1건: signalDate 2026-11-09, 작성 2026-11-09T22:56:51Z(11-10 07:56 KST), 진입 세션 11-10 개장 전. A1 사건 2건(현대지에프홀딩스, 삼양식품). signal-history `c430e98a`. 이 원장·사양·승인·코드는 읽지도 쓰지도 않는다 |
-| 새 연구 | `kr-capital-event-prospective-v1`, 별도 사양(`spec-v1.json`, SHA-256 `23a4517a49a1a7d6b91ba27b45bf82e59d6b2c08503f622b7675fd63b15bb848`), 별도 원장 `ledger/research-strategies/kr-capital-event-prospective-v1/receipts.jsonl` |
+| 새 연구 | `kr-capital-event-prospective-v1`, 별도 사양(`spec-v1.json`, SHA-256 `c13825d40fdfb5f86a5d11a438a0a3a294149637059c99b207eb9b0fa7d82de3`), 별도 원장 `ledger/research-strategies/kr-capital-event-prospective-v1/receipts.jsonl` |
 | 공시 수집 | 이 환경의 `DART_API_KEY`로 실제 `list.json`·`document.xml` 호출 성공. 기존 기록기와 같은 두 조회(B, I001) |
 | 정의 재현 (DRY_RUN) | 과거 접수 3일을 다시 돌려 #327 사건과 같은 접수번호를 얻었다: 2026-03-13 코스모신소재, 2026-10-22 교보증권 2건, 2026-10-27 HD현대. 2026-11-06/09/10 신호일은 사건 0건 |
 | 진입 시점 | 신호 = 접수일 다음 첫 세션, 진입 = 그 다음 세션 종가. 접수 시각은 DART가 주지 않아 `DATE_ONLY_CONSERVATIVE` |
@@ -74,12 +74,23 @@
 ## 5. 승인 요청 (1건)
 
 ```
-APPROVE KR_CAPITAL_EVENT_PROSPECTIVE_V1 LIVE_RECORDING 23a4517a49a1a7d6b91ba27b45bf82e59d6b2c08503f622b7675fd63b15bb848
+APPROVE KR_CAPITAL_EVENT_PROSPECTIVE_V1 LIVE_RECORDING c13825d40fdfb5f86a5d11a438a0a3a294149637059c99b207eb9b0fa7d82de3
 ```
 
 승인 범위: (1) 위 사양을 전향 기록용으로 등록, (2) 별도 원장에 LIVE 영수증 추가, (3) 평일 19:45 KST 예약 작업 1개 등록. 승인하지 않는 것: 역사 outcome 실행, 기존 원장·사양 변경, 포지션, 만기 전 결과 열람.
 
 승인 시각의 KST 날짜 다음 세션부터 기록할 수 있다. 2026-11-10 24:00 KST 전에 승인되면 첫 신호 세션은 2026-11-11이고, 영수증 창은 11-11 18:00 KST ~ 11-12 09:00 KST다.
+
+## 5-1. 승인 전 보완 (2026-11-10)
+
+사양 해시가 `23a4517a…`에서 `c13825d4…`로 바뀌었다(이전 문구는 폐기). `recorder.py` SHA-256 `eae74a7373c20820bc176318b9470d5350ed4e24bbe8cbcece2abba29e512237`.
+
+- **운영 경로:** Claude 예약 작업(평일 19:45 KST, 매회 새 세션)이 등록 커밋에서 기록기를 실행한다. GitHub Actions 예약 실행은 워크플로가 main에 있어야 하고 워크플로 목록이 봉인돼 있어 쓰지 않았다. 워크플로·기존 원장·기존 예약 작업은 바꾸지 않았다. 절차 원문은 `ops-scheduled-task.md`.
+- **push:** 새 행 1개를 push하고, 브랜치가 먼저 움직였으면 fetch·rebase 후 최대 5회 재시도한다. 그 뒤 원격에서 마지막 행을 다시 읽어 다이제스트를 대조한다. 불일치나 실패는 0이 아닌 종료 코드다.
+- **실패 감지:** 실패 시 푸시 알림. 그리고 매 실행이 "창이 닫혔는데 영수증이 없는 세션" 목록을 출력하므로, 예약 작업 자체가 조용히 멈춘 날도 다음 실행에서 드러난다. 누락은 채우지 않는다.
+- **K7 수정 정의 실증(DRY_RUN, 실제 DART):** 신호일 2026-01-26 삼성전기, 01-29 SK하이닉스·LG화학, 01-30 삼성전자·현대글로비스·LG전자가 #327과 같은 접수번호로 나왔고, 03-16의 자회사 공시 건은 제외됐다.
+- **시점 보호:** 전년 배당 기준은 실행이 읽는 가장 이른 접수일보다 **먼저 접수된** 결정만 쓴다. 주식수 스냅샷은 접수일보다 늦을 수 없다. #327의 K7 461건 중 55건은 배당기준일이 접수일 뒤라서 주식수 비교에 접수일 이후 스냅샷이 쓰였다(적격 필터의 작은 선행 참조, 수익률과 무관하게 발견).
+- **미확인:** 예약 세션의 `signal-history` push 권한은 첫 실행에서 확인된다.
 
 ## 6. 누적할 지표
 

@@ -27,6 +27,7 @@ import hashlib
 import json
 import subprocess
 import tempfile
+import time
 from datetime import date
 from pathlib import Path
 
@@ -105,10 +106,17 @@ def _body_hash(client: DartClient, rcept_no: str) -> tuple[bytes | None, str]:
         return None, 'BODY_NOT_SERVED:' + str(exc)[:60]
 
 
-def prior_year_end_dps(prior_rows: list[dict]) -> dict:
-    """(stock_code, fiscal year) -> first ORIGINAL year-end common cash DPS and its record date."""
+def prior_year_end_dps(prior_rows: list[dict], before_day: str) -> dict:
+    """(stock_code, fiscal year) -> first ORIGINAL year-end common cash DPS and its record date.
+
+    Only decisions RECEIVED strictly before ``before_day`` (the earliest receipt day this run reads) are a
+    base. A receipt number starts with its receipt date, so the cut needs no other field. In a LIVE run every
+    stored row is already in the past; the cut is what keeps a DRY_RUN of an old date from reading later filings."""
     out: dict = {}
+    cut = before_day.replace('-', '')
     for r in sorted(prior_rows, key=lambda x: x['rcept_no']):
+        if str(r['rcept_no'])[:8] >= cut:
+            continue
         if r.get('dividendClass') != '결산배당' or r.get('dividendKind') != '현금배당' or r.get('amendment'):
             continue
         if is_subsidiary_report(r.get('report_nm', '')):     # a parent reporting its subsidiary's dividend
@@ -133,7 +141,7 @@ def collect(signal_date: str, *, client: DartClient, pit: PitTop300, prior_rows:
         rows.extend(got)
         sources.extend(src)
     amended = {(r['corp_code'], r['family']) for r in rows if is_amendment(r['report_nm'])}
-    prior = prior_year_end_dps(prior_rows)
+    prior = prior_year_end_dps(prior_rows, receipt_days_for(signal_date, sessions)[0])
     events, observations, seen = [], [], set()
     for r in sorted(rows, key=lambda x: x['rcept_no']):
         day = HY.iso(r['rcept_dt'])
@@ -169,7 +177,9 @@ def collect(signal_date: str, *, client: DartClient, pit: PitTop300, prior_rows:
         before = prior.get((r['stock_code'], fy - 1))
         if not before or before['dps'] <= 0:
             continue
-        a, b = HY._listed(pit, r['stock_code'], before['recordDate']), HY._listed(pit, r['stock_code'], parsed['recordDate'])
+        # a record date can lie AFTER the decision (post-2024 practice); the share count is read no later than the receipt day
+        a = HY._listed(pit, r['stock_code'], before['recordDate'])
+        b = HY._listed(pit, r['stock_code'], min(parsed['recordDate'], day))
         if not a or not b or not 0.9 <= b / a <= 1.1:
             continue
         change = dps / before['dps'] - 1
@@ -269,6 +279,47 @@ def record(signal_date: str, *, mode: str, client: DartClient, universe: Path, l
     return receipt
 
 
+def push_and_verify(worktree: Path, receipt: dict) -> str:
+    """Push the one new row; on a non-fast-forward rebase onto the moved branch and retry. Then read the row back
+    from the REMOTE: a receipt that is not on origin/signal-history is not a public record."""
+    for attempt in range(1, 6):
+        if subprocess.run(['git', 'push', 'origin', 'HEAD:signal-history'], cwd=worktree, capture_output=True).returncode == 0:
+            break
+        git('fetch', '--depth=50', 'origin', 'signal-history', cwd=worktree)
+        if subprocess.run(['git', 'rebase', 'FETCH_HEAD'], cwd=worktree, capture_output=True).returncode != 0:
+            subprocess.run(['git', 'rebase', '--abort'], cwd=worktree, capture_output=True)
+            raise SystemExit('PUSH_FAILED_REBASE_CONFLICT_RECEIPT_NOT_PUBLIC')
+        time.sleep(3 * attempt)
+    else:
+        raise SystemExit('PUSH_FAILED_AFTER_5_ATTEMPTS_RECEIPT_NOT_PUBLIC')
+    git('fetch', '--depth=1', 'origin', 'signal-history', cwd=worktree)
+    last = json.loads(git('show', 'FETCH_HEAD:' + LEDGER_RELATIVE, cwd=worktree).splitlines()[-1])
+    if last.get('receiptSha256') != receipt['receiptSha256'] or core.receipt_digest(last) != last['receiptSha256']:
+        raise SystemExit('REMOTE_LEDGER_DOES_NOT_CARRY_THIS_RECEIPT')
+    return git('rev-parse', 'FETCH_HEAD', cwd=worktree)
+
+
+def missed_sessions(ledger: Path, now=None) -> list[str]:
+    """KR sessions since the first eligible one whose receipt window has closed with no receipt. They stay missed:
+    this list is how a silent failure of the scheduler becomes visible on the next run; nothing is backfilled."""
+    authorization = verify()
+    now = core.system_utc_now() if now is None else now
+    have = set()
+    if Path(ledger).is_file():
+        have = {json.loads(line)['signalDate'] for line in Path(ledger).read_text(encoding='utf-8').splitlines()}
+    sessions = sessions_list()
+    out = []
+    for i, day in enumerate(sessions[:-1]):
+        if day < authorization['firstEligibleSignalSession']:
+            continue
+        closes = (core.pd.Timestamp(sessions[i + 1]) + core.KR_OPEN_UTC).tz_localize('UTC')   # next open ends the window
+        if closes > now:
+            break
+        if day not in have:
+            out.append(day)
+    return out
+
+
 def git(*args, cwd=REPO) -> str:
     return subprocess.run(['git', *args], cwd=cwd, capture_output=True, text=True, check=True).stdout.strip()
 
@@ -305,19 +356,18 @@ def main(argv=None) -> int:
                        ledger=worktree / LEDGER_RELATIVE, code_commit=git('rev-parse', 'HEAD'))
         except ValueError as exc:
             if str(exc) == 'RECEIPT_ALREADY_EXISTS':
-                print(json.dumps({'status': 'ALREADY_RECORDED', 'signalDate': signal_date}))
+                print(json.dumps({'status': 'ALREADY_RECORDED', 'signalDate': signal_date,
+                                  'missedSessions': missed_sessions(worktree / LEDGER_RELATIVE)}))
                 return 0
             raise
         git('add', LEDGER_RELATIVE, cwd=worktree)
         git('-c', 'user.name=capital-event-receipt-bot', '-c', 'user.email=actions@github.com', 'commit', '-m',
             f'ledger: kr capital event prospective receipt {signal_date}', cwd=worktree)
-        pushed = subprocess.run(['git', 'push', 'origin', 'HEAD:signal-history'], cwd=worktree,
-                                capture_output=True, text=True)
-        if pushed.returncode != 0:          # an unpushed receipt is not a public record: fail loudly
-            raise SystemExit('PUSH_FAILED_RECEIPT_NOT_PUBLIC: ' + pushed.stderr[-300:])
+        commit = push_and_verify(worktree, r)
         print(json.dumps({'status': 'RECORDED', 'signalDate': signal_date, 'events': r['eventCount'],
                           'createdAtUtc': r['createdAtUtc'], 'receiptSha256': r['receiptSha256'],
-                          'signalHistoryCommit': git('rev-parse', 'HEAD', cwd=worktree)}, ensure_ascii=False))
+                          'signalHistoryCommit': commit, 'remote': 'MATCH',
+                          'missedSessions': missed_sessions(worktree / LEDGER_RELATIVE)}, ensure_ascii=False))
         return 0
     finally:
         subprocess.run(['git', 'worktree', 'remove', '--force', str(worktree)], cwd=REPO, capture_output=True)

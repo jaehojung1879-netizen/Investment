@@ -30,7 +30,9 @@
    "correction": "subsidiary reports excluded on both years (85 of 460 historical K7 H126 events touched one)",
    "historicalReading": {
     "H126": "+3.51pp [-0.84, +8.15] for the UNCORRECTED definition; no reading exists for this corrected one"
-   }
+   },
+   "pointInTime": "the prior-year base is a decision received strictly before the earliest receipt day the run reads; the listed-share snapshot is never later than the receipt day (a record date can follow the decision)",
+   "knownLimit": "fiscal year is the record-date year; an issuer that moved its record date across the year end can lose one comparison (no event), it is not re-derived"
   }
  },
  "timing": {
@@ -57,7 +59,7 @@
  "costs": "corporate_event_outcome_v1.contract.COSTS (dated sell tax, 1.5bp commission, 4bp half spread); model costs, no fills",
  "failure": "a refused DART status, a failed push or a missed window raises; nothing is written and nothing is backfilled",
  "codeSha256": {
-  "research/kr_capital_event_prospective_v1/recorder.py": "2dd97788309bda024b836060d711d2d0ea2fcf19563847ff5155d48c7d76cf76",
+  "research/kr_capital_event_prospective_v1/recorder.py": "eae74a7373c20820bc176318b9470d5350ed4e24bbe8cbcece2abba29e512237",
   "research/broad_alpha_screen_v1/hypotheses.py": "2dac11a7ae18c8320486baf4d45ec2d2eb05eda1a8cb2af8ccc9162b7806b439",
   "pipeline/prospective_receipt_core.py": "0f5344b09e28a4b9e9df5839bb6fc11f8ace70a4c71c01c6915ae753857ef90f",
   "pipeline/replay_calendar.py": "56116f837e8ae3b9ca43c27c87b3be8bcf608172a761879a6b1284a39c9a3ab2",
@@ -68,5 +70,14 @@
   "research/corporate_event_readiness_v1/cohort/dividends.py": "c7c1d1a77b45dc605c346045ec594395228516018c93a4ba4d7021ab72606759",
   "research/corporate_event_readiness_v1/cohort/bodies.py": "f74cde458a68efc8fdcc9602acd7af20346f732287969cf6d6ea613588f9b72c",
   "research/corporate_event_readiness_v1/cohort/dart_client.py": "4c5c676f204325508d440c9003472e9d76d045d93196031d107515e0a3eb60d2"
+ },
+ "operations": {
+  "runner": "Claude scheduled task, weekdays 19:45 KST, fresh session, running this recorder from the registered commit; no GitHub Actions workflow is added or edited (a scheduled workflow must live on main and the workflow census is sealed)",
+  "push": "one new row to origin signal-history, fetch-rebase retry up to 5, then the row is read back from the remote and its digest compared",
+  "failureDetection": [
+   "any refusal or failed push exits non-zero and the task sends a push notification",
+   "every run lists sessions whose window closed without a receipt (missedSessions); they stay missed"
+  ],
+  "unverifiedUntilFirstRun": "whether the scheduled session may push to signal-history"
  }
 }
