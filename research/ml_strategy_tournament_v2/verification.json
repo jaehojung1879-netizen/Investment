@@ -1,0 +1,98 @@
+{
+ "codeCommit": "8a8d506757585d523ecb7261e23e45b526e69a48",
+ "runId": "f4d38bd9d11a51168d4299013f64b64af6eef8bdf6225f5b8640da567cf7204a",
+ "numericalReproduction": {
+  "status": "PASS",
+  "runId": "f4d38bd9d11a51168d4299013f64b64af6eef8bdf6225f5b8640da567cf7204a",
+  "codeCommit": "8a8d506757585d523ecb7261e23e45b526e69a48",
+  "completeExecutions": 2,
+  "identicalResultObjects": true,
+  "allLedgerWritesComparedExactBytes": true,
+  "verifiedFiles": 45,
+  "manifestSha256": "6ba03f13a288a40841722edb7c9c144256b9b2e4e3950e85ba3d1653b2df5a09",
+  "mismatches": [],
+  "initialFc7Attempt": "NUMERICAL_AND_LEDGER_BYTES_IDENTICAL_BUT_SELF_REFERENTIAL_MANIFEST_FAILED_FIXED_IN_8a8d5067"
+ },
+ "focusedTests": "...................................................                      [100%]\n51 passed in 4.09s",
+ "ruff": "All checks passed!",
+ "compileallPipelineAndV2": "PASS",
+ "isolatedSeedValidation": "wrote /workspace/ml-v2-seed-worktree/data/site-data.json: 11 core, 41 screened, regime=Goldilocks (conf 0.5), longterm regions=['US', 'KR']\nvalidation ok",
+ "sourceAndAuditProtected": true,
+ "strictFullPeriodStrategies": {
+  "COMPLETE": 1,
+  "SOURCE_BLOCKED": 3
+ },
+ "realRefits": 0,
+ "newWinnerSelected": false,
+ "ledgerRows": {
+  "LGBM_CIM_RANK_h3": {
+   "A_OBSERVED_PREFIX_INCOMPLETE_EVENT_COVERAGE": {
+    "account": 2619,
+    "assets": 92829,
+    "events": 1,
+    "orders": 231,
+    "trades": 6
+   },
+   "A_VERIFIED_CASH": {
+    "account": 2619,
+    "assets": 92829,
+    "events": 1,
+    "orders": 231,
+    "trades": 0
+   }
+  },
+  "RULE_ETF_ONLY": {
+   "A_OBSERVED_PREFIX_INCOMPLETE_EVENT_COVERAGE": {
+    "account": 2619,
+    "assets": 2619,
+    "events": 76,
+    "orders": 140,
+    "trades": 38
+   },
+   "A_VERIFIED_CASH": {
+    "account": 2619,
+    "assets": 2619,
+    "events": 76,
+    "orders": 140,
+    "trades": 38
+   }
+  },
+  "RULE_INDUSTRY_MOMENTUM": {
+   "A_OBSERVED_PREFIX_INCOMPLETE_EVENT_COVERAGE": {
+    "account": 2619,
+    "assets": 179310,
+    "events": 1,
+    "orders": 844,
+    "trades": 49
+   },
+   "A_VERIFIED_CASH": {
+    "account": 2619,
+    "assets": 179310,
+    "events": 1,
+    "orders": 831,
+    "trades": 0
+   }
+  },
+  "XGB_CI_RANK_h1": {
+   "A_OBSERVED_PREFIX_INCOMPLETE_EVENT_COVERAGE": {
+    "account": 2619,
+    "assets": 171869,
+    "events": 1,
+    "orders": 841,
+    "trades": 6
+   },
+   "A_VERIFIED_CASH": {
+    "account": 2619,
+    "assets": 171869,
+    "events": 1,
+    "orders": 841,
+    "trades": 0
+   }
+  }
+ },
+ "fullSuite": {
+  "status": "RUNNING_NO_PASS_CLAIM",
+  "log": "/workspace/ml-v2-full-pytest.log"
+ },
+ "scope": "FRACTIONAL_GROSS_RESEARCH_ACCOUNTS_NOT_ACTUAL_BROKER_FILLS"
+}
