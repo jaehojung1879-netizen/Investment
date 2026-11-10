@@ -1,0 +1,54 @@
+{
+  "K7AcceptedContaminationLowerBounds": {
+    "H126": {
+      "acceptedSlots": 450,
+      "matureInputs": 459,
+      "subsidiaryMatureInputs": 70,
+      "wrongEntityAcceptedSlotsLowerBound": 61
+    },
+    "H252": {
+      "acceptedSlots": 327,
+      "matureInputs": 338,
+      "subsidiaryMatureInputs": 59,
+      "wrongEntityAcceptedSlotsLowerBound": 48
+    }
+  },
+  "K7DirectSubsidiaryRows": 70,
+  "K7Rows": 461,
+  "actualFilingDpsCorrections": [
+    {
+      "correctedOwnCommonDps": 600.0,
+      "correctedReceipt": "20190724800532",
+      "exDate": "2019-06-27",
+      "originalLastReceipt": "20190726800709",
+      "originalOverwrittenDps": 40820465.0,
+      "recordDate": "2019-06-30"
+    },
+    {
+      "correctedOwnCommonDps": 600.0,
+      "correctedReceipt": "20200210800791",
+      "exDate": "2019-12-27",
+      "originalLastReceipt": "20200309800657",
+      "originalOverwrittenDps": 43090909.0,
+      "recordDate": "2019-12-31"
+    },
+    {
+      "correctedOwnCommonDps": 750.0,
+      "correctedReceipt": "20230208800627",
+      "exDate": "2022-12-28",
+      "originalLastReceipt": "20230208800675",
+      "originalOverwrittenDps": 238640.0,
+      "recordDate": "2022-12-31"
+    }
+  ],
+  "dividendRows": 5094,
+  "rawBodiesIndependentlyRevalidated": false,
+  "returnOrCiCorrectionComputed": false,
+  "scope": "FILING_IDENTITY_AND_SAVED_COUNTS_ONLY_NO_HISTORICAL_RETURN_RECALCULATION",
+  "sourceAdmission": "BLOCKED_FULL_SECURITY_FISCAL_ACTION_AND_PORTFOLIO_QUALIFICATION_MISSING",
+  "sourceSha256": {
+    "research/broad_alpha_screen_v1/events-v1.jsonl.gz": "ad2c3e7e30f32860f8755ec3c167f29ed820ca451f3edd8e62db104b0f3ede3f",
+    "research/corporate_event_readiness_v1/cohort/data/dividend-decisions-v1.jsonl.gz": "878b9747bf7c53be5835a2e796e0ddde78e111cdaab760cfe5ddf70177c74687"
+  },
+  "subsidiaryDividendRows": 1148
+}

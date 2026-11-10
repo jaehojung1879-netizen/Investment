@@ -42,12 +42,14 @@ from research.corporate_event_readiness_v1.cohort.families import classify_title
 from research.corporate_event_readiness_v1.cohort.identity import PitTop300, load_snapshots
 from research.corporate_event_readiness_v1.cohort.prospective import receipt_days_for
 from research.corporate_event_readiness_v1.cohort.registration import verify as verify_registration
+from research.corporate_event_outcome_v1.shareholder_inputs_v2 import SourceBlocked, annual_comparison, dilution_evidence
+from research.corporate_event_outcome_v1.input_pins_v2 import repository_imports, verify_public_owner_approval
 
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[1]
 STUDY_ID = 'kr-capital-event-prospective-v1'
-SPEC = HERE / 'spec-v1.json'
-AUTHORIZATION = HERE / 'AUTHORIZATION-prospective-recording.json'
+SPEC = HERE / 'spec-v2.json'
+AUTHORIZATION = HERE / 'AUTHORIZATION-v2-prospective-recording.json'
 LEDGER_RELATIVE = f'ledger/research-strategies/{STUDY_ID}/receipts.jsonl'
 DILUTION = ('RIGHTS', 'CB', 'EB', 'BW')
 DIVIDEND_TITLE = '현금현물배당결정'
@@ -61,7 +63,10 @@ PINNED_CODE = ('research/kr_capital_event_prospective_v1/recorder.py', 'research
                'research/corporate_event_readiness_v1/cohort/families.py',
                'research/corporate_event_readiness_v1/cohort/dividends.py',
                'research/corporate_event_readiness_v1/cohort/bodies.py',
-               'research/corporate_event_readiness_v1/cohort/dart_client.py')
+               'research/corporate_event_readiness_v1/cohort/dart_client.py',
+               'research/corporate_event_outcome_v1/shareholder_inputs_v2.py',
+               'pipeline/kr_corporate_action_events.py')
+PINNED_CODE = tuple(repository_imports(REPO, PINNED_CODE))
 PRIOR_DIVIDENDS = HY.COHORT / 'dividend-decisions-v1.jsonl.gz'
 
 
@@ -82,6 +87,8 @@ def day_rows(client: DartClient, day: str) -> tuple[list[dict], list[dict]]:
         sources.append({'day': day, 'query': query, 'pageSha256': sorted(pages)})
     kept, seen = [], set()
     for row in rows:
+        if row.get('rcept_dt') != ymd or str(row.get('rcept_no', ''))[:8] != ymd:
+            raise ValueError('DART_ROW_OUTSIDE_REQUESTED_RECEIPT_DAY')
         title = row.get('report_nm', '')
         family = 'DIVIDEND' if DIVIDEND_TITLE in compact(title) else classify_title(title)
         if family in (*DILUTION, 'DIVIDEND') and row['rcept_no'] not in seen:
@@ -113,21 +120,29 @@ def prior_year_end_dps(prior_rows: list[dict], before_day: str) -> dict:
     base. A receipt number starts with its receipt date, so the cut needs no other field. In a LIVE run every
     stored row is already in the past; the cut is what keeps a DRY_RUN of an old date from reading later filings."""
     out: dict = {}
+    ambiguous = set()
     cut = before_day.replace('-', '')
     for r in sorted(prior_rows, key=lambda x: x['rcept_no']):
         if str(r['rcept_no'])[:8] >= cut:
             continue
-        if r.get('dividendClass') != '결산배당' or r.get('dividendKind') != '현금배당' or r.get('amendment'):
+        if r.get('dividendClass') != '결산배당' or r.get('dividendKind') != '현금배당':
             continue
         if is_subsidiary_report(r.get('report_nm', '')):     # a parent reporting its subsidiary's dividend
+            continue
+        if r.get('recordDate') and r.get('amendment'):
+            ambiguous.add((r['stock_code'], int(r['recordDate'][:4])))
             continue
         try:
             dps = float(str(r.get('dpsCommonKrw')).replace(',', ''))
         except ValueError:
             continue
         if r.get('recordDate'):
-            out.setdefault((r['stock_code'], int(r['recordDate'][:4])), {'dps': dps, 'recordDate': r['recordDate']})
-    return out
+            key = (r['stock_code'], int(r['recordDate'][:4]))
+            value = {'dps': dps, 'recordDate': r['recordDate']}
+            if key in out and out[key] != value:
+                ambiguous.add(key)
+            out.setdefault(key, value)
+    return {k: v for k, v in out.items() if k not in ambiguous}
 
 
 def collect(signal_date: str, *, client: DartClient, pit: PitTop300, prior_rows: list[dict],
@@ -145,6 +160,8 @@ def collect(signal_date: str, *, client: DartClient, pit: PitTop300, prior_rows:
     events, observations, seen = [], [], set()
     for r in sorted(rows, key=lambda x: x['rcept_no']):
         day = HY.iso(r['rcept_dt'])
+        if day >= signal_date:
+            raise ValueError('RECEIPT_NOT_PUBLIC_BEFORE_SIGNAL_SESSION')
         if is_amendment(r['report_nm']) or is_subsidiary_report(r['report_nm']):
             continue
         member = _identity(pit, r.get('stock_code'), day, signal_date)
@@ -159,12 +176,15 @@ def collect(signal_date: str, *, client: DartClient, pit: PitTop300, prior_rows:
             _, body = _body_hash(client, r['rcept_no'])
             key = (r['corp_code'], 'F2')
             events.append({**base, 'candidate': 'F2_DILUTION_AVOID', 'sourceBodySha256': body,
-                           'terms': 'NOT_PARSED_BODY_HASH_RETAINED', 'sameSessionFollowOn': key in seen})
+                           'terms': 'NOT_PARSED_BODY_HASH_RETAINED',
+                           'dilutionEvidence': dilution_evidence(r['family']), 'sameSessionFollowOn': key in seen})
             seen.add(key)
             continue
         raw, body = _body_hash(client, r['rcept_no'])
         parsed = parse_dividend(raw) if raw is not None else {}
-        obs = {'rcept_no': r['rcept_no'], 'stock_code': r['stock_code'], 'sourceBodySha256': body,
+        obs = {'rcept_no': r['rcept_no'], 'rcept_dt': r['rcept_dt'], 'stock_code': r['stock_code'],
+               'corp_code': r['corp_code'], 'report_nm': r['report_nm'], 'amendment': False,
+               'sourceBodySha256': body,
                **{k: parsed.get(k) for k in ('dividendClass', 'dividendKind', 'dpsCommonKrw', 'recordDate')}}
         observations.append(obs)                 # every decision is kept: next year's comparison base
         if parsed.get('dividendClass') != '결산배당' or parsed.get('dividendKind') != '현금배당':
@@ -177,8 +197,13 @@ def collect(signal_date: str, *, client: DartClient, pit: PitTop300, prior_rows:
         before = prior.get((r['stock_code'], fy - 1))
         if not before or before['dps'] <= 0:
             continue
+        try:
+            comparison = annual_comparison(parsed, before)
+        except SourceBlocked as exc:
+            obs['comparisonBlocked'] = str(exc)
+            continue
         # a record date can lie AFTER the decision (post-2024 practice); the share count is read no later than the receipt day
-        a = HY._listed(pit, r['stock_code'], before['recordDate'])
+        a = HY._listed(pit, r['stock_code'], min(before['recordDate'], day))
         b = HY._listed(pit, r['stock_code'], min(parsed['recordDate'], day))
         if not a or not b or not 0.9 <= b / a <= 1.1:
             continue
@@ -186,7 +211,7 @@ def collect(signal_date: str, *, client: DartClient, pit: PitTop300, prior_rows:
         if change >= HY.DIVIDEND_CHANGE:
             events.append({**base, 'candidate': 'F1_DIVIDEND_INCREASE_LONG', 'sourceBodySha256': body,
                            'terms': {'dpsCommonKrw': dps, 'priorDpsCommonKrw': before['dps'],
-                                     'dpsChangePct': round(100 * change, 2), 'fiscalYear': fy,
+                                     'dpsChangePct': round(100 * change, 2), 'annualComparison': comparison,
                                      'specialDividendSeparable': False},
                            'sameSessionFollowOn': False})
     return events, observations, sources
@@ -220,12 +245,13 @@ def validate(receipt: dict) -> None:
     mode = receipt.get('mode')
     if receipt.get('studyId') != STUDY_ID or mode not in ('DRY_RUN', 'LIVE'):
         raise ValueError('RECEIPT_IDENTITY_OR_MODE_INVALID')
-    if (receipt.get('evidenceClass') == core.EVIDENCE_CLASS) != (mode == 'LIVE'):
+    if receipt.get('evidenceClass') != (core.EVIDENCE_CLASS if mode == 'LIVE' else DRY_RUN_CLASS):
         raise ValueError('EVIDENCE_CLASS_DOES_NOT_MATCH_MODE')
     if mode == 'LIVE' and not (core.is_sha256(receipt.get('authorizationSha256', ''))
                                and core.is_git_sha(receipt.get('codeCommit', ''))):
         raise ValueError('LIVE_RECEIPT_PROVENANCE_INVALID')
-    if receipt['book']['signalNames'] != 0 or receipt['book']['etfWeight'] != 1.0:
+    if receipt.get('book') != {'signalNames': 0, 'maxNames': 5, 'etf': '069500.KS', 'etfWeight': 1.0,
+                                'cashWeight': 0.0, 'promotion': 'NONE_CANDIDATES_ARE_NOT_VERIFIED'}:
         raise ValueError('UNVERIFIED_CANDIDATES_CANNOT_HOLD_NAMES')
     core.scan_for_outcome_keys(receipt)
     if 'receiptSha256' in receipt and receipt['receiptSha256'] != core.receipt_digest(receipt):
@@ -233,19 +259,37 @@ def validate(receipt: dict) -> None:
 
 
 def verify() -> dict:
-    return verify_registration(SPEC, AUTHORIZATION, REPO)
+    auth = verify_registration(SPEC, AUTHORIZATION, REPO)
+    spec = json.loads(SPEC.read_text(encoding='utf-8'))
+    if set(spec['codeSha256']) != set(PINNED_CODE):
+        raise ValueError('RECORDER_DEPENDENCY_CLOSURE_CHANGED')
+    relative = str(AUTHORIZATION.relative_to(REPO))
+    try:
+        committed = subprocess.run(['git', 'show', 'HEAD:' + relative], cwd=REPO,
+                                   capture_output=True, check=True).stdout
+    except subprocess.CalledProcessError:
+        raise ValueError('AUTHORIZATION_MUST_BE_COMMITTED') from None
+    if committed != AUTHORIZATION.read_bytes():
+        raise ValueError('AUTHORIZATION_DIFFERS_FROM_COMMITTED_BYTES')
+    verify_public_owner_approval(auth, 'APPROVE KR_CAPITAL_EVENT_PROSPECTIVE_V2 ' +
+                                 hashlib.sha256(SPEC.read_bytes()).hexdigest() + ' RECORDING_ONLY')
+    return auth
 
 
 def sessions_list() -> list[str]:
     return [d.strftime('%Y-%m-%d') for d in replay_calendar.sessions('2013-01-01', '2027-12-31', 'KR')]
 
 
-def prior_rows(ledger: Path | None) -> list[dict]:
+def prior_rows(ledger: Path | None, *, mode='LIVE') -> list[dict]:
     with gzip.open(PRIOR_DIVIDENDS, 'rt', encoding='utf-8') as fh:
         rows = [json.loads(line) for line in fh]
     if ledger and Path(ledger).is_file():            # decisions this study itself recorded in earlier seasons
         for line in Path(ledger).read_text(encoding='utf-8').splitlines():
-            rows += json.loads(line).get('dividendObservations', [])
+            receipt = json.loads(line)
+            validate(receipt)
+            if receipt['mode'] != mode:
+                raise ValueError('BASE_CANNOT_IMPORT_A_DIFFERENT_RECEIPT_MODE')
+            rows += receipt.get('dividendObservations', [])
     return rows
 
 
@@ -265,7 +309,7 @@ def record(signal_date: str, *, mode: str, client: DartClient, universe: Path, l
         authorization = None
         if Path(ledger).resolve().is_relative_to(REPO) or not (Path(ledger).parent / STORE_MARKER).is_file():
             raise ValueError('DRY_RUN_STORE_MUST_BE_MARKED_AND_OUTSIDE_THE_REPOSITORY')
-    events, observations, sources = collect(signal_date, client=client, pit=pit, prior_rows=prior_rows(ledger),
+    events, observations, sources = collect(signal_date, client=client, pit=pit, prior_rows=prior_rows(ledger, mode=mode),
                                             sessions=sessions)
     created = core.system_utc_now()
     if mode == 'LIVE':                                # still before the entry open after the network work
@@ -279,10 +323,55 @@ def record(signal_date: str, *, mode: str, client: DartClient, universe: Path, l
     return receipt
 
 
-def push_and_verify(worktree: Path, receipt: dict) -> str:
+def publication_guard(worktree: Path, receipt: dict):
+    """Actual repository publication cannot bypass LIVE approval via this helper.
+
+    The only alternative is a local bare repository receiving DRY_RUN fixtures.
+    It exists for the inherited concurrent-push tests, never a real remote.
+    """
+    validate(receipt)
+    remote = git('remote', 'get-url', 'origin', cwd=worktree)
+    official = remote in ('https://github.com/jaehojung1879-netizen/Investment.git',
+                          'git@github.com:jaehojung1879-netizen/Investment.git',
+                          'ssh://git@github.com/jaehojung1879-netizen/Investment.git')
+    if official:
+        auth = verify()
+        if (receipt['mode'] != 'LIVE' or receipt['specSha256'] != hashlib.sha256(SPEC.read_bytes()).hexdigest()
+                or receipt['authorizationSha256'] != auth['authorizationSha256']
+                or receipt['codeCommit'] != git('rev-parse', 'HEAD')):
+            raise ValueError('OFFICIAL_PUBLICATION_REQUIRES_CURRENT_APPROVED_LIVE_RECEIPT')
+    elif (receipt['mode'] != 'DRY_RUN' or not Path(remote).is_dir()
+          or git('--git-dir=' + remote, 'rev-parse', '--is-bare-repository', cwd=worktree) != 'true'):
+        raise ValueError('PUBLICATION_REMOTE_OR_RECEIPT_MODE_REFUSED')
+    if git('diff-tree', '--no-commit-id', '--name-only', '-r', 'HEAD', cwd=worktree).splitlines() != [LEDGER_RELATIVE]:
+        raise ValueError('PUBLICATION_COMMIT_MUST_CHANGE_ONLY_THIS_LEDGER')
+    prior = b''
+    if git('ls-tree', '-r', '--name-only', 'HEAD^', '--', LEDGER_RELATIVE, cwd=worktree):
+        prior = subprocess.run(['git', 'show', 'HEAD^:' + LEDGER_RELATIVE], cwd=worktree,
+                               capture_output=True, check=True).stdout
+    if (worktree / LEDGER_RELATIVE).read_bytes() != prior + core.canonical(receipt) + b'\n':
+        raise ValueError('LOCAL_RECEIPT_BYTES_ARE_NOT_ONE_EXACT_APPEND')
+
+    def check():
+        if official:
+            now = core.system_utc_now()
+            entry = core.check_timing(signal_date=receipt['signalDate'], created_at_utc=receipt['createdAtUtc'],
+                                      now_utc=now, merged_at_utc=auth['authorizedAtUtc'])
+            if now >= (entry + core.KR_OPEN_UTC).tz_localize('UTC'):
+                raise ValueError('PUBLICATION_WINDOW_CLOSED_RECEIPT_NOT_QUALIFIED')
+    return check
+
+
+def push_and_verify(worktree: Path, receipt: dict, *, before_publish=None) -> str:
     """Push the one new row; on a non-fast-forward rebase onto the moved branch and retry. Then read the row back
     from the REMOTE: a receipt that is not on origin/signal-history is not a public record."""
+    if before_publish:
+        before_publish()
+    guarded = publication_guard(worktree, receipt)
     for attempt in range(1, 6):
+        guarded()
+        if before_publish:
+            before_publish()
         if subprocess.run(['git', 'push', 'origin', 'HEAD:signal-history'], cwd=worktree, capture_output=True).returncode == 0:
             break
         git('fetch', '--depth=50', 'origin', 'signal-history', cwd=worktree)
@@ -293,9 +382,15 @@ def push_and_verify(worktree: Path, receipt: dict) -> str:
     else:
         raise SystemExit('PUSH_FAILED_AFTER_5_ATTEMPTS_RECEIPT_NOT_PUBLIC')
     git('fetch', '--depth=1', 'origin', 'signal-history', cwd=worktree)
-    last = json.loads(git('show', 'FETCH_HEAD:' + LEDGER_RELATIVE, cwd=worktree).splitlines()[-1])
-    if last.get('receiptSha256') != receipt['receiptSha256'] or core.receipt_digest(last) != last['receiptSha256']:
+    rows = [json.loads(line) for line in git('show', 'FETCH_HEAD:' + LEDGER_RELATIVE, cwd=worktree).splitlines()]
+    for row in rows:
+        validate(row)
+    matches = [r for r in rows if r.get('signalDate') == receipt['signalDate']]
+    if len(matches) != 1 or matches[0].get('receiptSha256') != receipt['receiptSha256']:
         raise SystemExit('REMOTE_LEDGER_DOES_NOT_CARRY_THIS_RECEIPT')
+    if before_publish:
+        before_publish()  # late network completion is a failure, never silently qualified
+    guarded()
     return git('rev-parse', 'FETCH_HEAD', cwd=worktree)
 
 
@@ -340,7 +435,9 @@ def main(argv=None) -> int:
                           'dividendObservations': len(r['dividendObservations']), 'dartCalls': client.calls},
                          ensure_ascii=False))
         return 0
-    verify()
+    authorization = verify()
+    if args.signal_date:
+        raise ValueError('LIVE_SIGNAL_DATE_CANNOT_BE_SUPPLIED')
     now = core.system_utc_now()
     kst_day = (now + core.KST).tz_localize(None).normalize()
     if not core.is_kr_session(kst_day) or now < (kst_day + core.KR_CLOSE_FINAL_UTC).tz_localize('UTC'):
@@ -349,13 +446,17 @@ def main(argv=None) -> int:
     signal_date = kst_day.strftime('%Y-%m-%d')
     worktree = work / 'signal-history'
     git('fetch', '--depth=1', 'origin', 'signal-history')
-    git('worktree', 'add', '--force', '--detach', str(worktree), 'FETCH_HEAD')
+    git('worktree', 'add', '--detach', str(worktree), 'FETCH_HEAD')
     try:
         try:
             r = record(signal_date, mode='LIVE', client=client, universe=worktree / 'ledger' / 'universe' / 'kr',
                        ledger=worktree / LEDGER_RELATIVE, code_commit=git('rev-parse', 'HEAD'))
         except ValueError as exc:
             if str(exc) == 'RECEIPT_ALREADY_EXISTS':
+                existing = core.read_ledger(worktree / LEDGER_RELATIVE, validate)
+                same = [x for x in existing if x['signalDate'] == signal_date]
+                if len(same) != 1 or same[0]['mode'] != 'LIVE':
+                    raise ValueError('EXISTING_RECEIPT_IS_NOT_A_VALID_LIVE_RECORD') from exc
                 print(json.dumps({'status': 'ALREADY_RECORDED', 'signalDate': signal_date,
                                   'missedSessions': missed_sessions(worktree / LEDGER_RELATIVE)}))
                 return 0
@@ -363,7 +464,13 @@ def main(argv=None) -> int:
         git('add', LEDGER_RELATIVE, cwd=worktree)
         git('-c', 'user.name=capital-event-receipt-bot', '-c', 'user.email=actions@github.com', 'commit', '-m',
             f'ledger: kr capital event prospective receipt {signal_date}', cwd=worktree)
-        commit = push_and_verify(worktree, r)
+        def timely():
+            core.check_timing(signal_date=signal_date, created_at_utc=r['createdAtUtc'],
+                              now_utc=core.system_utc_now(), merged_at_utc=authorization['authorizedAtUtc'])
+            if core.system_utc_now() >= (core.next_kr_session(signal_date) + core.KR_OPEN_UTC).tz_localize('UTC'):
+                raise ValueError('PUBLICATION_WINDOW_CLOSED_RECEIPT_NOT_QUALIFIED')
+
+        commit = push_and_verify(worktree, r, before_publish=timely)
         print(json.dumps({'status': 'RECORDED', 'signalDate': signal_date, 'events': r['eventCount'],
                           'createdAtUtc': r['createdAtUtc'], 'receiptSha256': r['receiptSha256'],
                           'signalHistoryCommit': commit, 'remote': 'MATCH',

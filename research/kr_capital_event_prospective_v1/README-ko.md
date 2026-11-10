@@ -1,3 +1,14 @@
+# 현행 운영 상태 — 통합 인수 v2
+
+**미승인 / 외부 예약 설치·가동 미확인(BLOCKED) / 이 환경 DART 자격증명 없음.**
+
+현재 recorder는 별도 spec-v2.json과 AUTHORIZATION-v2-prospective-recording.json을 사용한다.
+이전 사양의 승인을 재사용할 수 없다. LIVE를 시작하지 않았고, 현행 절차는
+ops-scheduled-task-v2.md 및 docs/integration-20261110/APPROVAL-PACKET.md에 있다.
+원본 spec-v1.json은 보존한다. 아래는 기존 v1 준비 기록이며 현재 운영 성공의 증거가 아니다.
+
+---
+
 # P2·K7 전향 검증 준비와 US 개별주 상태 (2026-11-10)
 
 **상태: `READY_PENDING_ONE_OWNER_APPROVAL`. LIVE 영수증은 아직 0건이다. 이번 작업에서 새로 계산한 수익률은 없다.**

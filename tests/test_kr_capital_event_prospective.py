@@ -13,9 +13,12 @@ def _row(no, code, fy, dps, title='현금ㆍ현물배당결정', **kw):
 
 
 def test_prior_year_base_is_the_issuers_own_original_decision():
-    rows = [_row('1', 'A', 2024, 1000, title='현금ㆍ현물배당결정(자회사의 주요경영사항)'), _row('2', 'A', 2024, 500),
-            _row('3', 'A', 2024, 700, amendment=True), _row('4', 'B', 2024, '-')]
-    assert R.prior_year_end_dps(rows, '2026-01-01') == {('A', 2024): {'dps': 500.0, 'recordDate': '2024-12-31'}}
+    rows = [_row('20250101000001', 'A', 2024, 1000, title='현금ㆍ현물배당결정(자회사의 주요경영사항)'),
+            _row('20250102000001', 'A', 2024, 500),
+            _row('20250103000001', 'A', 2024, 700, amendment=True), _row('20250104000001', 'B', 2024, '-')]
+    # An unlinked amendment must block the base, not preserve a stale amount.
+    assert R.prior_year_end_dps(rows, '2026-01-01') == {}
+    assert R.prior_year_end_dps(rows[:2], '2026-01-01') == {('A', 2024): {'dps': 500.0, 'recordDate': '2024-12-31'}}
 
 
 def test_prior_base_never_reads_a_decision_received_on_or_after_the_run():
@@ -98,7 +101,7 @@ def test_push_survives_a_moved_branch_and_is_verified_on_the_remote(tmp_path):
     g('add', '.', cwd=other)
     g('commit', '-qm', 'other writer', cwd=other)
     g('push', '-q', 'origin', 'HEAD:signal-history', cwd=other)
-    receipt = _receipt('LIVE', authorization={'authorizationSha256': 'b' * 64}, code_commit='c' * 40)
+    receipt = _receipt()  # local bare test repositories receive DRY_RUN fixtures only
     ledger = work / R.LEDGER_RELATIVE
     ledger.parent.mkdir(parents=True)
     ledger.write_bytes(core.canonical(receipt) + b'\n')
@@ -107,5 +110,5 @@ def test_push_survives_a_moved_branch_and_is_verified_on_the_remote(tmp_path):
     commit = R.push_and_verify(work, receipt)
     assert g('rev-parse', 'signal-history', cwd=remote) == commit
     assert g('show', 'signal-history:y', cwd=remote) == 'y'            # the other writer's commit is kept
-    with pytest.raises(SystemExit, match='REMOTE_LEDGER_DOES_NOT_CARRY_THIS_RECEIPT'):
+    with pytest.raises(ValueError, match='RECEIPT_DIGEST_MISMATCH'):
         R.push_and_verify(work, {**receipt, 'receiptSha256': 'd' * 64})

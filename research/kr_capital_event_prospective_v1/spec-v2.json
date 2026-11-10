@@ -1,0 +1,108 @@
+{
+ "studyId": "kr-capital-event-prospective-v1",
+ "status": "REGISTERED_PROSPECTIVE_RECORDING",
+ "effectiveOnlyWith": "AUTHORIZATION-v2-prospective-recording.json pinning this file by SHA-256, committed before LIVE",
+ "scope": "PROSPECTIVE_RECORDING_ONLY",
+ "ledger": "ledger/research-strategies/kr-capital-event-prospective-v1/receipts.jsonl",
+ "evidenceClass": "PROSPECTIVE_PAPER",
+ "separateFrom": "kr-corporate-information-events-v1 (its spec, authorization, code and ledger are not read or written)",
+ "origin": {
+  "pr": "jaehojung1879-netizen/Investment#327",
+  "registeredResultSha256": "1332f3be7476a6c73ff4b9386e517467ebe73a30f29e2d676e74b57228bb4cf4",
+  "postOutcomeResultSha256": "37948e97288a9b98510d1c830c4e941d2d9f8c4deb5db65bc5fcd3e036c6f2e1",
+  "statement": "Both candidates come from outcome-exposed KR history and are NOT VERIFIED. F2 H126 does not exist in the registered result; -8.40pp is a POST_OUTCOME diagnostic. F2 H252 -13.60pp is a descriptive reading of the registered run."
+ },
+ "candidates": {
+  "F2_DILUTION_AVOID": {
+   "expectedSign": -1,
+   "event": "original, issuer-own 유상증자결정 / 전환사채권발행결정 / 교환사채권발행결정 / 신주인수권부사채권발행결정 by a PIT KOSPI Top300 member; dropped if the same issuer files a same-family amendment up to the signal session",
+   "terms": "title level; issue size, allotment method, conversion terms, later cancellation are NOT parsed and never gate an event. The body SHA-256 is recorded",
+   "use": "exclusion rule: a name is not eligible for the 0-5 name book for 252 sessions after its entry session. Never a short",
+   "historicalReading": {
+    "H252": "-13.60pp, simultaneous [-24.82, -4.32] (registered run, descriptive)",
+    "H126": "-8.40pp [-15.26, -1.22] (POST_OUTCOME)"
+   }
+  },
+  "F1_DIVIDEND_INCREASE_LONG": {
+   "expectedSign": 1,
+   "event": "issuer-own common cash year-end DPS >=1.25 times a strictly prior-publication original base; unresolved amendments and conflicting bases blocked. Without verified fiscal periods, only a stable consecutive Dec-31 record-date proxy is recorded, explicitly NOT a verified fiscal year. Record-date shifts blocked.",
+   "notSeparable": "a special dividend inside a year-end decision cannot be told from a regular one at this source",
+   "correction": "subsidiary reports excluded on both years (85 of 460 historical K7 H126 events touched one)",
+   "historicalReading": {
+    "H126": "+3.51pp [-0.84, +8.15] for the UNCORRECTED definition; no reading exists for this corrected one"
+   },
+   "pointInTime": "Both share snapshots strictly precede min(recordDate, receiptDay); prior DPS receipt strictly precedes earliest queried receipt day; DART rows outside their requested day refused.",
+   "knownLimit": "Fiscal years are not inferred from record-date years. Stable Dec-31 comparisons are disclosed record-year proxies. Shifted dates require fiscal-period sources and are blocked."
+  }
+ },
+ "timing": {
+  "signal": "first KR session strictly after the receipt day",
+  "entry": "the next KR session close",
+  "grade": "DATE_ONLY_CONSERVATIVE (DART list.json serves no publication clock)",
+  "receiptWindow": "after the signal session 18:00 KST final close and before the entry session 09:00 KST open; never backdated; a missed session is left missing",
+  "amendmentRecheck": "Never delete a recorded signal retroactively because an entry-day amendment later appeared. Keep it dated separately; execution qualification needs independent publication/execution timing. No date-only future amendment can filter a past signal."
+ },
+ "identity": "latest monthly PIT KOSPI Top300 snapshot dated strictly before the receipt day; a snapshot older than 62 days marks the receipt stale",
+ "book": "no candidate is VERIFIED: every receipt carries 0 of at most 5 names, 069500.KS 100%, cash 0",
+ "evaluationFixedBeforeAnyOutcome": {
+  "estimand": "event-level funded beta-matched holding return against 069500.KS total return, net of dated costs at 1x (2x, 3x reported): corporate_event_outcome_v1.engine.slot_holding_return and COSTS",
+  "horizons": {
+   "primary": "H126",
+   "descriptive": "H252"
+  },
+  "independence": "one event per issuer and candidate per open H window",
+  "firstRead": "one read per candidate when 60 independent H126 events have matured; no earlier look at any outcome",
+  "test": "one-sided in the expected direction, alpha 0.05, Holm over the two candidates, issuer x entry-week two-way clustered SE",
+  "portfolioQuestion": "separately: for every weekly reference selection recorded in signal-history after the first receipt, count names inside an F2 exclusion window and compare the book with and without them at the same read. Exclusion effect and book effect are reported apart",
+  "promotion": "none from this study alone; a passing read is PROSPECTIVE evidence that needs an Owner decision",
+  "implementationStatus": "NO_OUTCOME_READER_EXECUTED_OR_INSTALLED; any eventual evaluator must use qualified v2 shareholder economics and net dated costs, not the v1 gross event-return helper alone"
+ },
+ "costs": "corporate_event_outcome_v1.contract.COSTS (dated sell tax, 1.5bp commission, 4bp half spread); model costs, no fills",
+ "failure": "a refused DART status, a failed push or a missed window raises; nothing is written and nothing is backfilled",
+ "codeSha256": {
+  "pipeline/__init__.py": "187da1ad9a148da44035f9cf25f7cb094c45afe53d3f445ba62392797972dede",
+  "pipeline/dart_fundamentals.py": "5faad514e864d199a1eb9db41fbb182ab9b4a73a0e7179e7f56ac99b387e579b",
+  "pipeline/dart_ownership_universe.py": "b7bb3b08d8ce3a5610b64d2427af6c080978cdfd5522daf587b7475704876f29",
+  "pipeline/historical_store.py": "2751be8b5b79260f2038c9fb975cae58d49cb7868751c6658e363b48712016c0",
+  "pipeline/kr_corporate_action_events.py": "3cb8e9b3b43968401ac3659535f9cf6ab0bf7b1121df0b1b0966d9c49089f5fe",
+  "pipeline/prospective_receipt_core.py": "0f5344b09e28a4b9e9df5839bb6fc11f8ace70a4c71c01c6915ae753857ef90f",
+  "pipeline/replay_calendar.py": "56116f837e8ae3b9ca43c27c87b3be8bcf608172a761879a6b1284a39c9a3ab2",
+  "research/broad_alpha_screen_v1/__init__.py": "2250a2a9ec1278c3a3da876386eee67442965239bb030531d0575641e530aec9",
+  "research/broad_alpha_screen_v1/hypotheses.py": "2dac11a7ae18c8320486baf4d45ec2d2eb05eda1a8cb2af8ccc9162b7806b439",
+  "research/corporate_event_outcome_v1/__init__.py": "c85846551c1e88cd2f74adaa9884643f23598d992e28c9983ec3ebc246a00d8c",
+  "research/corporate_event_outcome_v1/input_pins_v2.py": "012905cdaacf57c5274d07e5aeb612f480c1aaf2b93886c57984009c05b696ae",
+  "research/corporate_event_outcome_v1/shareholder_inputs_v2.py": "6b45f3ced837ad4b92f1a10bfbb4a119a5d8f5019ba7e47708640218fe25378d",
+  "research/corporate_event_readiness_v1/__init__.py": "36ce515aba94bdb4f10c053c423a2be91e3ffcfcefc249c00027aa8d34963a06",
+  "research/corporate_event_readiness_v1/build_inventory.py": "a5ebbf4a83399b5ddfdddb4611d2ff462369c9bc269daebba50b67a5eb0811be",
+  "research/corporate_event_readiness_v1/cohort/__init__.py": "bcec01f4ea99ce595fc078793d2836401c4879767c4dfc4edc8ff6e523b1661a",
+  "research/corporate_event_readiness_v1/cohort/bodies.py": "f74cde458a68efc8fdcc9602acd7af20346f732287969cf6d6ea613588f9b72c",
+  "research/corporate_event_readiness_v1/cohort/collect_index.py": "e731a257e445454a5ef3cd38941f243ffb2946a30dd7b7485df285f0079afd83",
+  "research/corporate_event_readiness_v1/cohort/collect_issuers.py": "5b06cc8a7a8b4e03b8a358ccef9a3f119dbc9958768bb4e16dfed83dd9574952",
+  "research/corporate_event_readiness_v1/cohort/dart_client.py": "4c5c676f204325508d440c9003472e9d76d045d93196031d107515e0a3eb60d2",
+  "research/corporate_event_readiness_v1/cohort/dividends.py": "c7c1d1a77b45dc605c346045ec594395228516018c93a4ba4d7021ab72606759",
+  "research/corporate_event_readiness_v1/cohort/events.py": "b56ff7571fbedeedc12dbe56ec0d03c4640f10f5794f162dcf4eda15862f28cd",
+  "research/corporate_event_readiness_v1/cohort/families.py": "1ca256828932fb58ec1d95a8eb4f6a064ac73493b329f7a141b26cd8b22bba93",
+  "research/corporate_event_readiness_v1/cohort/identity.py": "abaf1f2a343c601d7e65ff53f4cc6d6c5e10b4cac0ea94ca5ac2c6dc3085ce60",
+  "research/corporate_event_readiness_v1/cohort/prospective.py": "c09c55902610e1b20f85f749e969efc1e3af8ce2217e6c748ba9d1c45e4104ed",
+  "research/corporate_event_readiness_v1/cohort/registration.py": "0ae328e7faf606ececc95ebfa28ee8521c441af219d07e5c7b045969473ef63c",
+  "research/corporate_event_readiness_v1/filings.py": "fe9c3c0b8a385e0f31005ae07143ede9895f5365df43be443e652dbae9e616a2",
+  "research/corporate_event_readiness_v1/inventory.py": "bb92e768d8a63da92639a6b7bf1bbe14570c1f7d5546d6cd754a71842f026039",
+  "research/corporate_event_readiness_v1/universe.py": "307beba226538ef577a5941847c5e08d780b4dcfea7748c2bb3fa8adc8ef3df8",
+  "research/kr_capital_event_prospective_v1/recorder.py": "c721fd70b460bbceccf41c4cfc6bbfd33439c825aff68ef5fe9c4957d756755f"
+ },
+ "operations": {
+  "runner": "Claude scheduled task, weekdays 19:45 KST, fresh session, running this recorder from the registered commit; no GitHub Actions workflow is added or edited (a scheduled workflow must live on main and the workflow census is sealed)",
+  "push": "non-force push with bounded rebase retry, validate all remote receipt digests, unique signal-date round trip, deadline checks before retry and after read-back",
+  "failureDetection": [
+   "any refusal or failed push exits non-zero and the task sends a push notification",
+   "every run lists sessions whose window closed without a receipt (missedSessions); they stay missed"
+  ],
+  "unverifiedUntilFirstRun": "whether the scheduled session may push to signal-history",
+  "installationStatus": "BLOCKED_EXTERNAL_CLAUDE_SCHEDULER_NOT_OBSERVABLE_HERE",
+  "failureQualification": "A failed or late round trip is never qualified. A late remote write may physically exist; it must be excluded by public-timing validation, never deleted or relabelled.",
+  "pushEntryPoint": "Every real-repository push, including direct helper invocation, requires committed exact-hash LIVE approval and timing. Local bare test repositories accept DRY_RUN fixtures only. The publishing commit must be a single exact append to this ledger."
+ },
+ "specVersion": 2,
+ "operationalStatus": "NOT_AUTHORIZED_INSTALLATION_NOT_VERIFIED",
+ "supersedesSpecSha256": "c13825d40fdfb5f86a5d11a438a0a3a294149637059c99b207eb9b0fa7d82de3"
+}

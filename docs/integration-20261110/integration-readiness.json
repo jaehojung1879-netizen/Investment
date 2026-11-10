@@ -1,0 +1,30 @@
+{
+  "newProspectiveSpecSha256": "2a73e28a4b837e828a50becd8e4d668b346ef772816b333589062af4b303ecf3",
+  "newHistoricalPacketSha256": "742fb6d764a405b7ce27db15bf981916388f1376a32749e7df557d75d2507394",
+  "historicalStatus": {
+    "studyId": "kr-event-four-cell-correction-v2",
+    "packetSha256": "742fb6d764a405b7ce27db15bf981916388f1376a32749e7df557d75d2507394",
+    "codeFiles": 123,
+    "status": "SOURCE_BLOCKED",
+    "missing": [
+      "Dated official issuer/common/preferred security identity qualifications for every used ticker",
+      "Verified fiscal periods for current and prior own-issuer year-end cash decisions; record-date year is not substituted",
+      "Explicit original/correction receipt links for ambiguous dividend amendments",
+      "Cited split/stock-dividend/terminal actions and complete shareholder-economics coverage; rights/merger packages remain blocked",
+      "Complete frozen historical C2 targets, actual execution path, eligible ranking, sizing caps and daily baseline by cost; 15 observation receipts are not an execution ledger"
+    ],
+    "pricesOpened": 0,
+    "historicalExecutions": 0,
+    "liveWrites": 0,
+    "protectedPinsMatch": true,
+    "runtimeMatchesExecution": true
+  },
+  "originalProspectivePinsChecked": 23,
+  "originalProspectivePinMismatches": [],
+  "originalCapitalEventSpecV1Preserved": "c13825d40fdfb5f86a5d11a438a0a3a294149637059c99b207eb9b0fa7d82de3",
+  "externalClaudeScheduler": "BLOCKED_NOT_OBSERVABLE_HERE",
+  "dartCredential": "ABSENT_NO_NEW_REAL_DRY_RUN",
+  "liveLedgerRemoteCheck": "GitHub contents API404 on signal-history at audit time; not evidence about external scheduler installation",
+  "newAuthorizationFilesCreated": false,
+  "newHistoricalClaimOrResultCreated": false
+}
