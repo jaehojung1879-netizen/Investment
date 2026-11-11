@@ -155,8 +155,95 @@ python -m pytest -q research/decision_desk_v1             # Python 계약 + Node
 node --test tests/decision_desk.test.cjs
 ```
 
-**다음 코호트(2026-12):**
-1. 12월 첫 FINAL_WEEKLY(2026-12-04 예정) 뒤에 `evidence.py --fetch`를 실행한다.
-2. `ai-reviews/2026-12.json`을 작성한다(한국어).
-3. 실행 전에 `judgment.py`로 기록하고 커밋한다.
-4. `build_desk.py`를 실행한 뒤 `app.js`의 DESK 고정값을 갱신한다.
+## v2 후속 개선 (2026-11-11) — PIT 정정·단계 분리·평가기
+
+### 1. PIT 정정과 영향 ([`audits/2026-11-pit-review.json`](audits/2026-11-pit-review.json))
+
+공표 시점은 연준 페이지에서 직접 확인했다(2026-11-11 22:23Z).
+- **H.10:** "On Mondays at 4:15 p.m. … for the previous business week"
+- **H.15:** "posted daily Monday through Friday at 4:15pm". 11-10 공표분에 11-09 자료까지 들어 있다.
+
+v1 증거 묶음은 정보 마감 시점에 아직 공개되지 않은 값을 읽었다. KR 8건, US 4건이다.
+
+| 입력 | 실제 공표 | KR 마감 06:30Z | US 마감 21:00Z | v1 값 → 공개되어 있던 값 |
+|---|---|---|---|---|
+| USD/KRW H.10 2026-11-05 | 11-09 21:15Z | 미공개 | (미사용) | 1,352.95 → 1,333.99 (10-30 관측) |
+| DGS10 2026-11-05 | 11-06 21:15Z | 미공개 | 미공개(15분 후) | 4.84% → 4.90%, 63일 변화 +0.15 → +0.27%p |
+| VIXCLS 2026-11-05 (보수 규칙) | 11-06 21:15Z | 미공개 | 미공개 | **28.18 → 16.61** |
+| GLD/UUP/IEF 11-06 종가 | 11-06 21:00Z | 미공개 | 공개 | UUP 126일 +6.55% → +5.51% (KR) |
+| Yahoo KRW=X 일봉 | 확인 불가 | 제외 | — | — |
+
+**판단 영향**
+- 관문 G1~G6와 B0/B1은 production 영수증만 읽으므로 그대로다.
+- 하지만 AI(B2)의 시장·거시 판정 라벨과 근거 문장은 오염된 값을 보고 쓰였다. 특히 US 시장 해석, TRV 근거 2, 6개월 가설의 "VIX 28"이 그렇다.
+- KR 코웨이는 지지 층이 2개였다. 거시 층이 SUPPORTS였다면 선택 가능했으므로, KR 0개 판단은 오염된 입력 위에서 정해진 라벨에 의존했다.
+- 깨끗한 값으로 다시 리뷰하면 이미 결과 기간에 들어선 뒤의 사후 판단이 된다. 그래서 다시 생성하지 않는다.
+- **조치:**
+  - 2026-11 기록 6건은 바이트 그대로다. 테스트로 해시를 고정했다.
+  - 두 B2 기록에 `PIT_CONTAMINATED` 주석 행을 추가했다. 채점은 하되 주 비교에서는 제외한다.
+  - 6건 모두 `PUBLICATION_VERIFIED`다. git 커밋 `860a1845`(12:30:49Z)가 두 실행 마감보다 앞서고 원격 브랜치에 공개되어 있다.
+
+### 2. 단계 분리 (protocol v2, [`protocol-v2.json`](protocol-v2.json))
+
+| 단계 | 명령 | 다음 단계로 넘어가는 조건 |
+|---|---|---|
+| 1 봉인 | `protocol-v2.json`·`reviewers.json` 커밋 (`6e4d1f66`) | 미커밋·수정 상태면 packet 거부 |
+| 2 증거 패킷 | `desk.py packet` | 모든 관측값이 공표 시점(`availableAtUtc`) ≤ 지역 마감. 실행일과 등록 마감을 여기서 고정한다(봉인 + 48시간 뒤 첫 세션의 시가) |
+| 3 AI 리뷰 | `review-template` → (작성) → `check-review` → `commit-review`(약속 해시 먼저 커밋) → 리뷰 커밋 | 패킷만 읽음. 약속이 공개보다 먼저면 `INDEPENDENT_BY_COMMIT_ORDER` |
+| 4 판단 생성 | `desk.py decide` | 패킷·리뷰가 커밋돼 있고 등록 마감 전이어야 한다. B0·B1·B2(primary)·BX(비교군) 기록을 만든다. 주 리뷰가 없으면 `B2_NO_REVIEW`(소급 금지) |
+| 5 공개 | `git push` 후 `desk.py verify-publication` | 기록 줄을 처음 담은 커밋이 원격에 있고 시각 < 마감 → `PUBLICATION_VERIFIED`, 아니면 `_LATE` |
+| 6 평가 | `desk.py evaluate --fetch` | 126·252세션 종료 세션이 실제로 지난 뒤에만 SCORED. 아니면 PENDING(원장에 쓰지 않음) |
+
+`desk.py status`는 각 코호트가 어느 단계에서 무엇을 기다리는지 보여준다.
+
+### 3. 평가기 ([`evaluate.py`](evaluate.py))
+
+- 진입은 실행일 종가(종가 단일가), 청산은 126·252번째 거래소 세션 종가다.
+- 배당은 배당락일 종가에 재투자하고, 기준은 069500.KS / SPY 같은 기준이다. 비용은 영수증의 왕복 비용(2배 스트레스 별도)이다.
+- `SOURCE_BLOCKED` 조건:
+  - 세션 종가 누락
+  - 거래량 0(거래정지)
+  - 검증 목록에 없는 분할·병합
+  - KR 30% / US 50% 초과 변동
+  - 청산 세션 종가 없음(상장폐지)
+- 0%로 대체하지 않는다. 검증된 기업행동은 [`verified-corporate-actions.json`](verified-corporate-actions.json)에 공식 출처와 함께 넣어야 허용된다.
+
+### 4. AI 비교군과 소급 금지
+
+- B0/B1/B2 구조는 그대로다. [`reviewers.json`](reviewers.json)의 다른 리뷰어는 `BX:<id>` 비교군으로만 기록되며, B2를 대체하거나 승격하지 않는다.
+- `gpt`, `claude-independent`는 `PENDING_OWNER_APPROVAL` 상태다. 해당 월 패킷 봉인 전에 ENABLED로 커밋해야 참여한다.
+- 마감 뒤의 판단은 원장이 `REGISTRATION_CLOSED`로 거부한다. 2026-11의 B2 자리는 이미 claude 기록이 차지하고 있다.
+  - 대화 중 나온 종목 아이디어(예: 삼성전기 009150.KS)도 2026-11 코호트로 넣을 수 없다. 테스트로 확인했다.
+  - 이 저장소에 삼성전기 기록은 없다.
+
+## 다음 월간 판단(2026-12) 실행 절차
+
+```bash
+# 0. 12월 첫 FINAL_WEEKLY 영수증(예상 asOf 2026-12-04, 생성 12-05 토요일 KST 오후)이 signal-history에 올라온 뒤
+git fetch origin signal-history && SH=$(git rev-parse origin/signal-history)
+python research/decision_desk_v1/desk.py status --month 2026-12          # AWAITING_PACKET
+
+# 1. 증거 패킷(봉인). 이 시각 + 48시간 뒤 첫 세션 시가가 등록 마감이 된다
+python research/decision_desk_v1/desk.py packet --month 2026-12 --signal-commit $SH --fetch
+git add research/decision_desk_v1/cohorts/2026-12 && git commit -m "desk: 2026-12 evidence packet (stage 2)" && git push
+
+# 2. AI 리뷰(에이전트 세션이 패킷만 읽고 작성; 자동 호출 불가)
+python research/decision_desk_v1/desk.py review-template --month 2026-12 --reviewer claude
+#    cohorts/2026-12/reviews/claude.json 의 TODO를 모두 채운다(한국어, 확률·목표가 금지)
+python research/decision_desk_v1/desk.py check-review --month 2026-12 --reviewer claude
+python research/decision_desk_v1/desk.py commit-review --month 2026-12 --reviewer claude
+git add research/decision_desk_v1/cohorts/2026-12/commitments && git commit -m "desk: 2026-12 review commitment" && git push
+git add research/decision_desk_v1/cohorts/2026-12/reviews && git commit -m "desk: 2026-12 claude review (stage 3)" && git push
+
+# 3. 판단 생성 → 공개 → 검증 (모두 등록 마감 전)
+python research/decision_desk_v1/desk.py decide --month 2026-12
+git add research/decision_desk_v1/dry-run/ledger.jsonl && git commit -m "desk: 2026-12 decisions (stage 4)" && git push
+python research/decision_desk_v1/desk.py verify-publication --month 2026-12
+python research/decision_desk_v1/build_desk.py                           # desk.json 재생성 후 app.js DESK 고정값 갱신
+git add -A research/decision_desk_v1 app.js && git commit -m "desk: 2026-12 publication verified" && git push
+
+# 4. 평가 (2027-05-14 US / 2027-05-19 KR 이후 첫 실행부터 2026-11 126세션 채점)
+python research/decision_desk_v1/desk.py evaluate --fetch
+```
+
+등록 마감을 놓치면 `decide`가 `REGISTRATION_CLOSED`로 거부하고, 그 달은 B0/B1만 기록된다. 마감 시각은 패킷의 `schedule.registrationDeadlineUtc`와 `desk.py status`에 표시된다.

@@ -1293,3 +1293,9 @@ dialog::backdrop { background:#152b2466; backdrop-filter:blur(2px); }
 .desk-shell {
   margin-top: 40px;
 }
+.desk-note {
+  margin: 0 0 8px;
+}
+.desk-note summary {
+  cursor: pointer;
+}

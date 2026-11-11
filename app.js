@@ -993,7 +993,34 @@ function deskItem(it, now, limit) {
   else if (it.weights && it.type !== "HISTORICAL_EXPLORATORY") body = `<p class="desk-weights">${weightsText(it.weights)}</p>`;
   else if (it.weights) body = `<details><summary>전략별 과거 배분 보기</summary>${Object.entries(it.weights).map(([k, w]) => `<p>${esc(k)}: ${weightsText(w)}</p>`).join("")}</details><p class="notice">${esc(it.reason)}</p>`;
   const b2 = it.b2 ? b2Markup(it.b2, it) : "";
-  return `<article class="desk-item" data-desk-item="${esc(it.id)}"><div class="card-meta"><b>${esc(it.id)}</b><span>${typeBadge(it.type)} ${asOf ? freshnessText(asOf, now, limit) : ""}</span></div>${deskDates(it)}${body}${b2}</article>`;
+  const notes = (it.annotations || []).map((a) => `<details class="desk-note" data-desk-annotation="${esc(a.category)}"><summary>${annotationBadge(a.category)}</summary><p>${esc(a.detail)}</p></details>`).join("");
+  return `<article class="desk-item" data-desk-item="${esc(it.id)}">${notes}<div class="card-meta"><b>${esc(it.id)}</b><span>${typeBadge(it.type)} ${asOf ? freshnessText(asOf, now, limit) : ""}</span></div>${deskDates(it)}${body}${b2}</article>`;
+}
+const ANNOTATIONS = {
+  PIT_CONTAMINATED: ["PIT 오염 — 주 비교 제외", "blocked"],
+  PUBLICATION_VERIFIED: ["공개 시점 git 검증", ""],
+  PUBLICATION_LATE: ["실행 후 공개 — 채점 제외", "blocked"],
+  INDEPENDENCE_NOT_VERIFIED: ["독립성 미검증", "warn"],
+  B2_NO_REVIEW: ["AI 리뷰 없음 — 소급 금지", "warn"],
+  NOTE: ["주석", "warn"],
+};
+const annotationBadge = (c) => {
+  const [label, cls] = ANNOTATIONS[c] || [c, "warn"];
+  return `<span class="pill ${cls}">${esc(label)}</span>`;
+};
+const STAGES = {
+  AWAITING_PACKET: "증거 패킷 대기",
+  AI_REVIEW_REQUIRED: "AI 리뷰 필요",
+  READY_TO_DECIDE: "판단 생성 대기",
+  AWAITING_PUBLICATION_VERIFICATION: "공개 검증 대기",
+  PUBLISHED_AWAITING_HORIZONS: "공개 완료 · 평가 지평 대기",
+  EVALUATED: "평가 완료",
+};
+function pipelineMarkup(p) {
+  if (!p) return "";
+  const rows = p.cohorts.map((c) => `<tr><td>${esc(c.cohort)}</td><td>${esc(c.protocol)}</td><td><span class="pill">${esc(STAGES[c.stage] || c.stage)}</span></td><td>${esc(c.records)}</td><td>${(c.annotations || []).map(annotationBadge).join(" ")}</td><td>${esc((c.waitingFor || []).join(", ") || "—")}</td></tr>`).join("");
+  return `<div class="desk-table-wrap"><table class="desk-table"><thead><tr><th>코호트</th><th>프로토콜</th><th>단계</th><th>기록</th><th>주석</th><th>대기 중</th></tr></thead><tbody>${rows}<tr><td>${esc(p.next.cohort)}</td><td>${esc(p.next.protocol)}</td><td><span class="pill warn">${esc(STAGES[p.next.status])}</span></td><td>0</td><td>—</td><td>${esc(p.next.trigger)}</td></tr></tbody></table></div>
+    <p class="notice">${esc(p.automation)}</p><p class="digest">리뷰어: ${p.reviewers.map((r) => `${esc(r.id)} (${esc(r.role)}, ${esc(r.status)})`).join(" · ")}</p>`;
 }
 function deskHistoryMarkup(rows, market) {
   const sel = rows.filter((r) => r.region === market);
@@ -1002,11 +1029,18 @@ function deskHistoryMarkup(rows, market) {
     .map((r) => `<tr data-desk-history="${esc(r.type)}"><td>${esc(r.study)}</td><td>${esc(r.strategy)}</td><td>${typeBadge(r.type)}</td><td>${esc(r.period)}</td><td>${cell(r, "cagrPct", "%")}</td><td>${cell(r, "excessVsEtfPp", "%p")}</td><td>${cell(r, "sharpe")}</td><td>${cell(r, "mddPct", "%")}</td><td>${esc(r.costBasis)}<br><span class="digest">${esc(r.status)} · PR #${esc(r.source.pr)} ${esc(String(r.source.commit).slice(0, 8))}</span></td></tr>`)
     .join("")}</tbody></table></div><p class="notice">유형이 다른 행(탐색·정정·차단)과 기간이 다른 연구를 한 순위로 비교하지 마세요. 원천 차단 행은 0%로 대체하지 않고 숫자를 표시하지 않습니다.</p>`;
 }
+function horizonCell(r, h, approx) {
+  const o = (r.outcomes || []).find((x) => x.horizon === h);
+  if (o && o.status === "SCORED") return `${esc(o.horizonEndSession)} · 비용 후 ${fmt(o.returnAfterCostPct, 2, "%")} · 기준 대비 ${signed(o.excessAfterCostPct, 2)}`;
+  if (o && o.status === "SOURCE_BLOCKED") return `<span class="pill blocked">원천 차단</span> ${esc(JSON.stringify(o.missingDataReason))}`;
+  const end = r.horizonEnd?.[`h${h}`];
+  return end ? `평가 전 (종료 ${esc(end)})` : `평가 전 (약 ${approx})`;
+}
 function deskLedgerMarkup(reg, now) {
   const rows = reg.deskRecords || [];
   const approx = (d, days) => new Date(Date.parse(`${d}T00:00:00Z`) + days * 86400000).toISOString().slice(0, 7);
   return `<div class="desk-table-wrap"><table class="desk-table"><thead><tr><th>경로</th><th>최초 판단(신호)</th><th>정보 마감</th><th>생성·공개</th><th>선택·비중</th><th>기준지수</th><th>126세션</th><th>252세션</th><th>상태</th></tr></thead><tbody>${rows
-    .map((r) => `<tr data-desk-record="${esc(r.path)}"><td>${esc(r.path)}</td><td>${esc(r.signalAsOf)}</td><td>${esc(r.informationCutoff)}</td><td>${esc(r.generatedAt)}<br>${esc(r.publishedAt)}</td><td>${weightsText(r.weights)}</td><td>${esc(r.benchmark)}</td><td>평가 전 (약 ${approx(r.executionAt, 183)})</td><td>평가 전 (약 ${approx(r.executionAt, 365)})</td><td><span class="pill warn">${esc(r.status)}</span></td></tr>`)
+    .map((r) => `<tr data-desk-record="${esc(r.path)}"><td>${esc(r.path)}</td><td>${esc(r.signalAsOf)}</td><td>${esc(r.informationCutoff)}</td><td>${esc(r.generatedAt)}<br>${esc(r.publishedAt)}</td><td>${weightsText(r.weights)}</td><td>${esc(r.benchmark)}</td><td>${horizonCell(r, 126, approx(r.executionAt, 183))}</td><td>${horizonCell(r, 252, approx(r.executionAt, 365))}</td><td><span class="pill warn">${esc(r.status)}</span> ${(r.annotations || []).map((a) => annotationBadge(a.category)).join(" ")}</td></tr>`)
     .join("")}</tbody></table></div><p class="notice">실행 예정일 이후 실제 경과한 세션만 평가합니다. 비용 차감 실현 성과는 지평 종료 전까지 비워 둡니다. 현재 기록은 dry-run이며, 전향 원장 활성화에는 Owner 승인이 필요합니다. 최초 기록 ${rows.length ? esc(rows[0].publishedAt) : "없음"} · 조회 ${new Date(now).toISOString().slice(0, 16)}Z</p>`;
 }
 function deskMarkup(d, market, now = Date.now()) {
@@ -1029,7 +1063,8 @@ function deskMarkup(d, market, now = Date.now()) {
     <h3 class="desk-h">연구 모델별 기록</h3><div class="desk-grid">${research}${hist}</div>
     <h3 class="desk-h">② 알고 있는 사실과 한계</h3><div class="desk-grid"><article class="desk-item"><ul>${reg.facts.known.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></article><article class="desk-item"><ul>${reg.facts.limits.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></article></div>
     <h3 class="desk-h">③ 전략별 과거 성과</h3>${deskHistoryMarkup(d.history, market)}
-    <h3 class="desk-h">④ 전향 투자 기록 (B0 ETF · B1 기존 규칙 · B2 AI 종합판단)</h3>${deskLedgerMarkup(reg, now)}
+    <h3 class="desk-h">④ 전향 투자 기록 (B0 ETF · B1 기존 규칙 · B2 AI 종합판단 · BX 비교군)</h3>${deskLedgerMarkup(reg, now)}
+    <h3 class="desk-h">월간 판단 파이프라인</h3>${pipelineMarkup(d.pipeline)}
     <details class="desk-approvals"><summary>승인·담당 필요 항목 ${d.approvalsNeeded.length}건</summary><ul>${d.approvalsNeeded.map((a) => `<li><b>${esc(a.item)}</b> (${esc(a.owner)}) — ${esc(a.why)}</li>`).join("")}</ul></details>
     <p class="digest">desk ${esc(DESK.commit.slice(0, 12))} · ${esc(DESK.sha256.slice(0, 16))} · protocol ${esc(String(d.protocolSha256).slice(0, 16))}</p>`;
 }
@@ -1288,7 +1323,7 @@ if (typeof module !== "undefined" && module.exports)
     esc,
     CHAMPION_PATH, CHAMPION_VERSION, parseChampionReceipts, validChampionPair,
     championState, championMarkup, archivedChampionSnapshot, archivedChampionMarkup, archivedChampionReasonMarkup, displayText, statusText, decisionDatesMarkup, loadResearchPublication, siteIsCurrent, observations, rangePoints, trendSvg,
-    DESK, validDesk, deskMarkup, deskHistoryMarkup, deskLedgerMarkup,
+    DESK, validDesk, deskMarkup, deskHistoryMarkup, deskLedgerMarkup, pipelineMarkup,
     marketMarkup, macroIndicators, macroMarkup, chartDetail, institutionalMarkup,
     managerDetail, npsMarkup, safeSourceLink, cachedInstitutions, cachedNps, qqqMarkup,
   };

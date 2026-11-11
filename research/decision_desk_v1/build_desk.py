@@ -16,6 +16,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pandas as pd
+
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
@@ -98,19 +100,37 @@ def us_cocktail_latest() -> dict:
             "weights": {k: v["weights"] for k, v in d["weights"].items()}, "source": ref(PINS["pr331"], path, 331)}
 
 
+def horizon_ends(region: str, execution: str) -> dict:
+    """Exact exit sessions from the exchange calendar (None if beyond the calendar's known holidays)."""
+    import availability as A
+    cal = A.calendar(region)
+    sessions = [str(pd.Timestamp(x).date()) for x in cal.sessions_in_range(execution, cal.last_session)]
+    return {f"h{h}": (sessions[h] if len(sessions) > h else None) for h in (126, 252)}
+
+
 def dry_run(region: str) -> list[dict]:
     rows = L.read(L.DRY_RUN_DIR / "ledger.jsonl")
     L.verify_chain(rows)
+    notes = [a for a in rows if a.get("schema") == L.ANNOTATION_SCHEMA]
+    outs = [o for o in rows if o.get("schema") == L.OUTCOME_SCHEMA]
     out = []
     for r in rows:
-        if r.get("schema") != L.SCHEMA or r["region"] != region:
+        if r.get("schema") not in L.RECORD_SCHEMAS or r["region"] != region:
             continue
-        item = {"type": "RESEARCH_ALLOCATION_AS_OF", "id": f"decision-desk-v1 {r['path']} {r['cohort']}", "path": r["path"],
+        reviewer = r.get("reviewer") if r["schema"] == L.SCHEMA_V2 else ("claude" if r["path"] == "B2" else None)
+        arm = r["path"] + (f":{reviewer}" if r["path"] == "BX" else "")
+        item = {"type": "RESEARCH_ALLOCATION_AS_OF", "id": f"decision-desk-v1 {arm} {r['cohort']}", "path": arm,
+                "reviewer": reviewer, "cohort": r["cohort"], "schemaVersion": 2 if r["schema"] == L.SCHEMA_V2 else 1,
                 "signalAsOf": r["signalAsOf"], "informationCutoff": r["informationCutoff"], "generatedAt": r["generatedAt"],
                 "publishedAt": r["publishedAt"], "executionAt": r["plannedExecution"], "weights": r["weights"],
                 "selectedTickers": r["selectedTickers"], "status": r["status"], "digest": r["digest"],
-                "benchmark": r["benchmark"], "modelVersion": r["modelVersion"]}
-        if r["path"] == "B2":
+                "benchmark": r["benchmark"], "modelVersion": r["modelVersion"],
+                "horizonEnd": horizon_ends(region, r["plannedExecution"]),
+                "annotations": [{"category": a["category"], "detail": a["detail"]} for a in notes if r["digest"] in a["recordDigests"]],
+                "outcomes": [{k: o.get(k) for k in ("horizon", "status", "horizonEndSession", "returnAfterCostPct",
+                                                    "excessAfterCostPct", "missingDataReason")}
+                             for o in outs if o["recordDigest"] == r["digest"]]}
+        if r["path"] in ("B2", "BX"):
             th = r["investmentThesis"]
             item["b2"] = {"market": {"label": th["market"]["label"], "interpretation": th["market"]["interpretation"]},
                           "macro": {"label": th["macro"]["label"], "interpretation": th["macro"]["interpretation"]},
@@ -118,10 +138,21 @@ def dry_run(region: str) -> list[dict]:
                                                         "notVerified", "whyVersusBenchmark", "researchWeight")}
                                     | {"layers": {k: v["label"] for k, v in p["layers"].items()},
                                        "invalidationConditions": r["invalidationConditions"][p["ticker"]]} for p in th["picks"]],
-                          "reviewedRejected": th["reviewedRejected"], "gatedOutCount": len(th["gatedOut"]),
+                          "reviewedRejected": th["reviewedRejected"],
+                          "gatedOutCount": th.get("gatedOutCount", len(th.get("gatedOut", []))),
                           "zeroSelectionReason": th["zeroSelectionReason"], "knowledgeLimit": th["knowledgeLimit"]}
         out.append(item)
     return out
+
+
+def pipeline() -> dict:
+    import desk as DK
+    reg = json.loads((HERE / "reviewers.json").read_text())
+    return {"cohorts": [DK.cohort_status(m) for m in DK.all_cohorts()],
+            "next": {"cohort": "2026-12", "trigger": "first FINAL_WEEKLY production receipt with asOfDate in 2026-12 (expected 2026-12-04)",
+                     "protocol": "protocol-v2.json", "status": "AWAITING_PACKET"},
+            "reviewers": [{k: r[k] for k in ("id", "role", "provider", "invocation", "status")} for r in reg["reviewers"]],
+            "automation": reg["automation"]}
 
 
 # ----------------------------------------------------------------------------- history table
@@ -183,6 +214,7 @@ FACTS = {
             "과거 154개 기업행동이 미복구라 주식 전략 전체 CAGR이 미인증이다.",
             "069500 일간 이상수익(2026-07-31 +24.17%)의 경제적 설명이 미해결이다.",
             "현재 후보의 재무값은 현재 스냅샷이다. 전향 기록에서는 판단 시점 값이지만, 과거 재현값은 아니다.",
+            "2026-11 B2는 정보 마감 뒤 공표된 H.10 환율·H.15 금리·VIX·미국 11-06 종가를 읽었다. PIT_CONTAMINATED로 표시하고 주 비교에서 제외한다(기록 원본 보존).",
         ],
     },
     "US": {
@@ -196,14 +228,16 @@ FACTS = {
             "S&P500 퇴출 324개 중 212개는 가격이 없다. 개별주 과거 성과는 계산하지 않는다(TRACK B 차단).",
             "IEF/TLT/SHY/BIL/GLD/UUP는 단일 공급자(Yahoo)이고, 2차 공급자는 접속 불가.",
             "B2의 TRV 선택은 AI 정성판단이다. 확률·목표수익을 산출하지 않으며 검증된 예측이 아니다.",
+            "2026-11 B2 근거 문장의 'VIX 28'은 마감 15분 뒤 공표된 값이다(마감 시점 공개값은 16.61). PIT_CONTAMINATED로 주 비교에서 제외한다.",
         ],
     },
 }
 
 APPROVALS = [
     {"item": "#321 CI/Pages 복구 일반 merge 및 정상 Pages 배포", "owner": "Owner", "why": "threadpoolctl 3.8.0 충돌로 main·모든 연구 PR CI가 실패 중이다. 이 데스크의 실제 게시도 Pages 정상화 이후에야 가능하다."},
-    {"item": "decision-desk-v1 전향 원장 활성화(dry-run → signal-history 기록)", "owner": "Owner", "why": "승인 전에는 research/decision_desk_v1/dry-run/ 에만 기록한다."},
-    {"item": "월간 B2 리뷰 작성 담당과 시각", "owner": "Owner", "why": "매월 첫 FINAL_WEEKLY 후 실행 전까지 AI 리뷰를 작성해야 전향 기록으로 인정된다."},
+    {"item": "decision-desk-v1 전향 원장 활성화(dry-run → signal-history 기록)", "owner": "Owner", "why": "승인 전에는 research/decision_desk_v1/dry-run/ 에만 기록한다. ledger.append는 owner_approved 없이 다른 경로 쓰기를 거부한다."},
+    {"item": "월간 B2 리뷰 작성 담당과 시각", "owner": "Owner", "why": "CI에 AI 자격증명이 없어 자동 호출이 불가하다. 패킷 봉인 후 48시간 안(등록 마감 전)에 에이전트 세션이 리뷰를 커밋해야 한다."},
+    {"item": "GPT·독립 Claude 비교군(BX) 활성화", "owner": "Owner", "why": "reviewers.json 상태를 ENABLED로 바꾸는 커밋이 해당 월 패킷 봉인 전에 있어야 한다. 실행 주체와 비용 결정 필요."},
     {"item": "US 개별주 유료 원천(Norgate/Sharadar) 구매 여부", "owner": "Owner", "why": "라이선스(구독 종료 시 삭제 의무)와 원본 보관 규칙의 충돌을 먼저 확인해야 한다."},
     {"item": "KR 018880·005930 공식 기업행동 패키지", "owner": "원천 담당 + 외부 회계 reviewer", "why": "#333 G의 우선순위 1·2. v2 주식 경제성 인증의 선행 조건이다."},
 ]
@@ -212,7 +246,7 @@ APPROVALS = [
 def build() -> dict:
     desk = {"schema": "DECISION_DESK_V1", "builtFrom": PINS, "publicationTypes": sorted(TYPES),
             "staleAfterDays": 10, "disclaimerKo": "연구·가상 판단입니다. 실제 자금 운용 승인이 없으며 production 비중을 바꾸지 않습니다.",
-            "regions": {}, "history": history(), "approvalsNeeded": APPROVALS,
+            "regions": {}, "history": history(), "approvalsNeeded": APPROVALS, "pipeline": pipeline(),
             "protocolSha256": hashlib.sha256((HERE / "protocol.json").read_bytes()).hexdigest()}
     for region in ("KR", "US"):
         reg = {"production": production(region), "research": research_ledgers(region), "deskRecords": dry_run(region),

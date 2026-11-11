@@ -72,3 +72,35 @@ test("the pinned desk constant matches the committed file", async () => {
   if (a.DESK.sha256.startsWith("__")) return; // pinned in the follow-up commit
   assert.equal(a.DESK.sha256, digest);
 });
+
+test("2026-11 B2 records carry the PIT contamination badge and git-verified publication", () => {
+  for (const m of ["KR", "US"]) {
+    const html = a.deskMarkup(desk(), m, NOW);
+    const b2 = html.split('data-desk-item="decision-desk-v1 B2 2026-11"')[1].split("</article>")[0];
+    assert.match(b2, /PIT 오염 — 주 비교 제외/);
+    assert.match(b2, /공개 시점 git 검증/);
+    const b0 = html.split('data-desk-item="decision-desk-v1 B0 2026-11"')[1].split("</article>")[0];
+    assert.doesNotMatch(b0, /PIT 오염/);
+  }
+});
+
+test("ledger shows exact exchange-calendar exit sessions and the pipeline stage", () => {
+  const html = a.deskMarkup(desk(), "US", NOW);
+  assert.match(html, /평가 전 \(종료 2027-05-14\)/);
+  assert.match(html, /공개 완료 · 평가 지평 대기/);
+  assert.match(html, /증거 패킷 대기/);
+  assert.match(html, /gpt \(COMPARISON_ARM, PENDING_OWNER_APPROVAL\)/);
+});
+
+test("scored and source-blocked outcomes render without inventing numbers", () => {
+  const d = desk();
+  const rec = d.regions.US.deskRecords[0];
+  rec.outcomes = [
+    { horizon: 126, status: "SCORED", horizonEndSession: "2027-05-14", returnAfterCostPct: 4.2, excessAfterCostPct: -0.3 },
+    { horizon: 252, status: "SOURCE_BLOCKED", horizonEndSession: "2027-11-12", returnAfterCostPct: null, excessAfterCostPct: null, missingDataReason: { SPY: "MISSING_SESSION_CLOSE" } },
+  ];
+  const html = a.deskLedgerMarkup(d.regions.US, NOW);
+  assert.match(html, /비용 후 4\.20% · 기준 대비 -0\.30%p/);
+  assert.match(html, /원천 차단/);
+  assert.doesNotMatch(html.split("원천 차단")[1].split("</td>")[0], /%/);
+});

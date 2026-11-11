@@ -8,12 +8,17 @@
   {
    "item": "decision-desk-v1 전향 원장 활성화(dry-run → signal-history 기록)",
    "owner": "Owner",
-   "why": "승인 전에는 research/decision_desk_v1/dry-run/ 에만 기록한다."
+   "why": "승인 전에는 research/decision_desk_v1/dry-run/ 에만 기록한다. ledger.append는 owner_approved 없이 다른 경로 쓰기를 거부한다."
   },
   {
    "item": "월간 B2 리뷰 작성 담당과 시각",
    "owner": "Owner",
-   "why": "매월 첫 FINAL_WEEKLY 후 실행 전까지 AI 리뷰를 작성해야 전향 기록으로 인정된다."
+   "why": "CI에 AI 자격증명이 없어 자동 호출이 불가하다. 패킷 봉인 후 48시간 안(등록 마감 전)에 에이전트 세션이 리뷰를 커밋해야 한다."
+  },
+  {
+   "item": "GPT·독립 Claude 비교군(BX) 활성화",
+   "owner": "Owner",
+   "why": "reviewers.json 상태를 ENABLED로 바꾸는 커밋이 해당 월 패킷 봉인 전에 있어야 한다. 실행 주체와 비용 결정 필요."
   },
   {
    "item": "US 개별주 유료 원천(Norgate/Sharadar) 구매 여부",
@@ -1136,6 +1141,52 @@
    "type": "HISTORICAL_EXPLORATORY"
   }
  ],
+ "pipeline": {
+  "automation": "No AI provider is callable from this repository's CI: no ANTHROPIC/OPENAI credential exists in the workflows or requirements, and adding one is an Owner decision. Every review is therefore written by an agent session (MANUAL_AGENT_SESSION) from the committed packet alone and committed through commit-reveal. desk.py marks the cohort AI_REVIEW_REQUIRED until that happens.",
+  "cohorts": [
+   {
+    "annotations": [
+     "PIT_CONTAMINATED",
+     "PUBLICATION_VERIFIED"
+    ],
+    "cohort": "2026-11",
+    "outcomes": 0,
+    "packet": "research/decision_desk_v1/inputs/2026-11/evidence-pack.json",
+    "protocol": "v1 (legacy)",
+    "records": 6,
+    "stage": "PUBLISHED_AWAITING_HORIZONS"
+   }
+  ],
+  "next": {
+   "cohort": "2026-12",
+   "protocol": "protocol-v2.json",
+   "status": "AWAITING_PACKET",
+   "trigger": "first FINAL_WEEKLY production receipt with asOfDate in 2026-12 (expected 2026-12-04)"
+  },
+  "reviewers": [
+   {
+    "id": "claude",
+    "invocation": "MANUAL_AGENT_SESSION",
+    "provider": "Anthropic",
+    "role": "PRIMARY_B2",
+    "status": "ENABLED"
+   },
+   {
+    "id": "gpt",
+    "invocation": "MANUAL_AGENT_SESSION_OR_API",
+    "provider": "OpenAI",
+    "role": "COMPARISON_ARM",
+    "status": "PENDING_OWNER_APPROVAL"
+   },
+   {
+    "id": "claude-independent",
+    "invocation": "MANUAL_AGENT_SESSION",
+    "provider": "Anthropic",
+    "role": "COMPARISON_ARM",
+    "status": "PENDING_OWNER_APPROVAL"
+   }
+  ]
+ },
  "protocolSha256": "15d46dfde547cd0650f060c4f36a06959ad827cc821f36da727de15f577647e2",
  "publicationTypes": [
   "CORRECTED_CASH_SCOPE",
@@ -1148,15 +1199,29 @@
   "KR": {
    "deskRecords": [
     {
+     "annotations": [
+      {
+       "category": "PUBLICATION_VERIFIED",
+       "detail": "line first committed in 860a184519b964e01b5ae0681f99c5560bcb963e at 2026-11-11T12:30:49Z (committer time; public on a remote branch); deadline 2026-11-12T06:30:00Z"
+      }
+     ],
      "benchmark": "069500.KS",
+     "cohort": "2026-11",
      "digest": "dd887a741d32527961c3f6cac7d95d8971ed0e2ef96e72935cf3c26a36c92c1b",
      "executionAt": "2026-11-12",
      "generatedAt": "2026-11-11T12:29:13Z",
+     "horizonEnd": {
+      "h126": "2027-05-19",
+      "h252": "2027-11-19"
+     },
      "id": "decision-desk-v1 B0 2026-11",
      "informationCutoff": "2026-11-06",
      "modelVersion": "etf-baseline-v1",
+     "outcomes": [],
      "path": "B0",
      "publishedAt": "2026-11-11T12:30:45Z",
+     "reviewer": null,
+     "schemaVersion": 1,
      "selectedTickers": [],
      "signalAsOf": "2026-11-06",
      "status": "DRY_RUN_NOT_ACTIVATED",
@@ -1166,15 +1231,29 @@
      }
     },
     {
+     "annotations": [
+      {
+       "category": "PUBLICATION_VERIFIED",
+       "detail": "line first committed in 860a184519b964e01b5ae0681f99c5560bcb963e at 2026-11-11T12:30:49Z (committer time; public on a remote branch); deadline 2026-11-12T06:30:00Z"
+      }
+     ],
      "benchmark": "069500.KS",
+     "cohort": "2026-11",
      "digest": "938bf45035eaacc1678d6bc9d222918ab4b159b264398f94fbfb9ba9b2d70b58",
      "executionAt": "2026-11-12",
      "generatedAt": "2026-11-11T12:29:13Z",
+     "horizonEnd": {
+      "h126": "2027-05-19",
+      "h252": "2027-11-19"
+     },
      "id": "decision-desk-v1 B1 2026-11",
      "informationCutoff": "2026-11-06",
      "modelVersion": "weekly-passive-first-v1 (production receipt copy)",
+     "outcomes": [],
      "path": "B1",
      "publishedAt": "2026-11-11T12:30:45Z",
+     "reviewer": null,
+     "schemaVersion": 1,
      "selectedTickers": [],
      "signalAsOf": "2026-11-06",
      "status": "DRY_RUN_NOT_ACTIVATED",
@@ -1184,6 +1263,16 @@
      }
     },
     {
+     "annotations": [
+      {
+       "category": "PIT_CONTAMINATED",
+       "detail": "Evidence pack read observations not public at the information cutoff (KR: H.10 USD/KRW 2026-11-05 released 11-09 21:15Z; H.15/VIX 11-05 released 11-06 21:15Z; US closes of 11-06. US: H.15/VIX 11-05 released 15 minutes after the US close). The US narrative cites VIX 28.18 while the public value was 16.61. Gates and B0/B1 are unaffected. Scored but reported outside the primary comparison; the records are not regenerated."
+      },
+      {
+       "category": "PUBLICATION_VERIFIED",
+       "detail": "line first committed in 860a184519b964e01b5ae0681f99c5560bcb963e at 2026-11-11T12:30:49Z (committer time; public on a remote branch); deadline 2026-11-12T06:30:00Z"
+      }
+     ],
      "b2": {
       "gatedOutCount": 11,
       "knowledgeLimit": "The model's background knowledge ends before this cohort. It read no news, filings or analyst material dated after its training; every catalyst stated from memory is NOT_VERIFIED.",
@@ -1215,14 +1304,22 @@
       "zeroSelectionReason": "No KR name met the frozen selection rule. 069500.KS 100% is the explicit B2 choice for this cohort."
      },
      "benchmark": "069500.KS",
+     "cohort": "2026-11",
      "digest": "4820398536ce7d70e7d2c3da0def047c730282db6c363e30e65c0706a4698cb7",
      "executionAt": "2026-11-12",
      "generatedAt": "2026-11-11T12:29:13Z",
+     "horizonEnd": {
+      "h126": "2027-05-19",
+      "h252": "2027-11-19"
+     },
      "id": "decision-desk-v1 B2 2026-11",
      "informationCutoff": "2026-11-06",
      "modelVersion": "decision-desk-v1-ai-synthesis (Claude, structured gates)",
+     "outcomes": [],
      "path": "B2",
      "publishedAt": "2026-11-11T12:30:45Z",
+     "reviewer": "claude",
+     "schemaVersion": 1,
      "selectedTickers": [],
      "signalAsOf": "2026-11-06",
      "status": "DRY_RUN_NOT_ACTIVATED",
@@ -1243,7 +1340,8 @@
     "limits": [
      "과거 154개 기업행동이 미복구라 주식 전략 전체 CAGR이 미인증이다.",
      "069500 일간 이상수익(2026-07-31 +24.17%)의 경제적 설명이 미해결이다.",
-     "현재 후보의 재무값은 현재 스냅샷이다. 전향 기록에서는 판단 시점 값이지만, 과거 재현값은 아니다."
+     "현재 후보의 재무값은 현재 스냅샷이다. 전향 기록에서는 판단 시점 값이지만, 과거 재현값은 아니다.",
+     "2026-11 B2는 정보 마감 뒤 공표된 H.10 환율·H.15 금리·VIX·미국 11-06 종가를 읽었다. PIT_CONTAMINATED로 표시하고 주 비교에서 제외한다(기록 원본 보존)."
     ]
    },
    "production": {
@@ -1481,15 +1579,29 @@
   "US": {
    "deskRecords": [
     {
+     "annotations": [
+      {
+       "category": "PUBLICATION_VERIFIED",
+       "detail": "line first committed in 860a184519b964e01b5ae0681f99c5560bcb963e at 2026-11-11T12:30:49Z (committer time; public on a remote branch); deadline 2026-11-11T21:00:00Z"
+      }
+     ],
      "benchmark": "SPY",
+     "cohort": "2026-11",
      "digest": "9eb0847631de108539b8f73d21a9f92c674b2f9952228298423633d86a8ad875",
      "executionAt": "2026-11-11",
      "generatedAt": "2026-11-11T12:29:13Z",
+     "horizonEnd": {
+      "h126": "2027-05-14",
+      "h252": "2027-11-12"
+     },
      "id": "decision-desk-v1 B0 2026-11",
      "informationCutoff": "2026-11-06",
      "modelVersion": "etf-baseline-v1",
+     "outcomes": [],
      "path": "B0",
      "publishedAt": "2026-11-11T12:30:45Z",
+     "reviewer": null,
+     "schemaVersion": 1,
      "selectedTickers": [],
      "signalAsOf": "2026-11-06",
      "status": "DRY_RUN_NOT_ACTIVATED",
@@ -1499,15 +1611,29 @@
      }
     },
     {
+     "annotations": [
+      {
+       "category": "PUBLICATION_VERIFIED",
+       "detail": "line first committed in 860a184519b964e01b5ae0681f99c5560bcb963e at 2026-11-11T12:30:49Z (committer time; public on a remote branch); deadline 2026-11-11T21:00:00Z"
+      }
+     ],
      "benchmark": "SPY",
+     "cohort": "2026-11",
      "digest": "2b9004f9d1bb75eef5dd06241a106b2a65cfeac748fac75ff9f1d29c97eebcdf",
      "executionAt": "2026-11-11",
      "generatedAt": "2026-11-11T12:29:13Z",
+     "horizonEnd": {
+      "h126": "2027-05-14",
+      "h252": "2027-11-12"
+     },
      "id": "decision-desk-v1 B1 2026-11",
      "informationCutoff": "2026-11-06",
      "modelVersion": "weekly-passive-first-v1 (production receipt copy)",
+     "outcomes": [],
      "path": "B1",
      "publishedAt": "2026-11-11T12:30:45Z",
+     "reviewer": null,
+     "schemaVersion": 1,
      "selectedTickers": [],
      "signalAsOf": "2026-11-06",
      "status": "DRY_RUN_NOT_ACTIVATED",
@@ -1517,6 +1643,16 @@
      }
     },
     {
+     "annotations": [
+      {
+       "category": "PIT_CONTAMINATED",
+       "detail": "Evidence pack read observations not public at the information cutoff (KR: H.10 USD/KRW 2026-11-05 released 11-09 21:15Z; H.15/VIX 11-05 released 11-06 21:15Z; US closes of 11-06. US: H.15/VIX 11-05 released 15 minutes after the US close). The US narrative cites VIX 28.18 while the public value was 16.61. Gates and B0/B1 are unaffected. Scored but reported outside the primary comparison; the records are not regenerated."
+      },
+      {
+       "category": "PUBLICATION_VERIFIED",
+       "detail": "line first committed in 860a184519b964e01b5ae0681f99c5560bcb963e at 2026-11-11T12:30:49Z (committer time; public on a remote branch); deadline 2026-11-11T21:00:00Z"
+      }
+     ],
      "b2": {
       "gatedOutCount": 9,
       "knowledgeLimit": "The model's background knowledge ends before this cohort. It read no news, filings or analyst material dated after its training; every catalyst stated from memory is NOT_VERIFIED.",
@@ -1608,14 +1744,22 @@
       "zeroSelectionReason": null
      },
      "benchmark": "SPY",
+     "cohort": "2026-11",
      "digest": "6d10c42e755be2e21faaa9c830b6934f328f04fe283026cf03b91cb41f7b20a7",
      "executionAt": "2026-11-11",
      "generatedAt": "2026-11-11T12:29:13Z",
+     "horizonEnd": {
+      "h126": "2027-05-14",
+      "h252": "2027-11-12"
+     },
      "id": "decision-desk-v1 B2 2026-11",
      "informationCutoff": "2026-11-06",
      "modelVersion": "decision-desk-v1-ai-synthesis (Claude, structured gates)",
+     "outcomes": [],
      "path": "B2",
      "publishedAt": "2026-11-11T12:30:45Z",
+     "reviewer": "claude",
+     "schemaVersion": 1,
      "selectedTickers": [
       "TRV"
      ],
@@ -1638,7 +1782,8 @@
     "limits": [
      "S&P500 퇴출 324개 중 212개는 가격이 없다. 개별주 과거 성과는 계산하지 않는다(TRACK B 차단).",
      "IEF/TLT/SHY/BIL/GLD/UUP는 단일 공급자(Yahoo)이고, 2차 공급자는 접속 불가.",
-     "B2의 TRV 선택은 AI 정성판단이다. 확률·목표수익을 산출하지 않으며 검증된 예측이 아니다."
+     "B2의 TRV 선택은 AI 정성판단이다. 확률·목표수익을 산출하지 않으며 검증된 예측이 아니다.",
+     "2026-11 B2 근거 문장의 'VIX 28'은 마감 15분 뒤 공표된 값이다(마감 시점 공개값은 16.61). PIT_CONTAMINATED로 주 비교에서 제외한다."
     ]
    },
    "historicalAllocations": [
