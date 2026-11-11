@@ -1,0 +1,47 @@
+{
+  "reviewerRole": "SAME_TEAM_SECOND_READER",
+  "notExternalIndependentApproval": true,
+  "reviewedHead": "0f39c2fef93a9cf924f45ae87662de41090f2528",
+  "verdict": "ETF_ARITHMETIC_SUPPORTED_STOCK_FULL_PERIOD_SOURCE_BLOCKED_B_NOT_RUN",
+  "etfCagr": 0.17921479837413634,
+  "fullPeriodVerifiedStockCandidates": 0,
+  "newFits": 0,
+  "newBacktests": 0,
+  "incrementalCertifiedDaysFromEventFixAlone": 0,
+  "eventScope": {
+    "candidateEventRows": 146,
+    "uniqueSecurityDates": 135,
+    "tickersTouched": 62,
+    "sameCandidateSecurityDateDuplicates": 0
+  },
+  "findings": [
+    {
+      "severity": "MEDIUM_REPORT_PRECISION",
+      "finding": "Actual April stock delivery phrase exceeds evidence: source establishes listing date, generic synthetic receipt test; no actual 006800 A cash-share ledger."
+    },
+    {
+      "severity": "REMEDIATION_PRECONDITION",
+      "finding": "018880 vendor split is dated before raw KRX conversion; complete halt-resumption-delivery package required, do not apply ratio on vendor flag date."
+    },
+    {
+      "severity": "UNRESOLVED_ECONOMIC_BOUNDARY",
+      "finding": "XGB held 20% 006800 across 2018 non-listed preferred subscription right; official terms do not value the right or establish realized settlement."
+    }
+  ],
+  "savedLedgerHashMismatchCount": 0,
+  "protectedFileMismatchCount": 0,
+  "adapted328AST": {
+    "upstreamFunctionsAndClasses": 7,
+    "allPreserved": true
+  },
+  "repositoryStatus": "",
+  "artifacts": {
+    "v2-review-calculate.py": "1418285c3e9915494f1c239b29d13741bf2d154a11147ccd6d57c4793bf5e583",
+    "v2-review-terminal.json": "ba6af8b081130aba977b1419de8c9cf97be895a9e064d5a249b695aafd77fbab",
+    "v2-review-accounting.json": "5277d152f86fa3cd0c48a6640ba52177bc32f57cd5111aade421968ed34fff8b",
+    "v2-review.md": "7dd154d792aa3a01319c934a65725ebaa550de83344f6b641ba854ce37d3b9bc",
+    "v2-review-calculations.json": "7aebb1090432b34773a16942e6321db2866ffcd3f338087f5068c71f3eb76afd",
+    "v2-review-terminal.py": "318e4b2cea960820f048dfec48a0fedbfb13c955dcf452c893b6f86768bc74e6",
+    "v2-review-accounting.py": "375d0f4bc62d22558e852b8701c6ad83e894ee11d178426b6a199446097203be"
+  }
+}

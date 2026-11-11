@@ -1,0 +1,36 @@
+{
+  "scope": "AUDIT_ONLY_NO_ORIGINAL_RESEARCH_RUNTIME_EDITS",
+  "checkedAtUtc": "2026-11-11T11:15:23Z",
+  "originalRepositoryHead": "0f39c2fef93a9cf924f45ae87662de41090f2528",
+  "originalRepositoryStatus": "",
+  "baseMain": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+  "ci321FocusedFirstAttempt": {
+    "failed": 34,
+    "passed": 73,
+    "cause": "Required historical blob23522002 pages.yml absent in partial clone; no test/code expectation change"
+  },
+  "ci321FocusedRecheck": {
+    "passed": 107,
+    "failed": 0,
+    "seconds": 88.67,
+    "scope": "Existing #321 tests in isolated detached checkout after exact Git blob hydration"
+  },
+  "ruff": "All checks passed!",
+  "compileallPipelineAndAuditScript": "PASS",
+  "seedAndValidation": "wrote /workspace/integration-audit/data/site-data.json: 11 core, 41 screened, regime=Goldilocks (conf 0.5), longterm regions=['US', 'KR']\nvalidation ok\n",
+  "seedGeneratedOnlyInIsolatedAuditWorktreeAndRemoved": true,
+  "strictJsonParsing": "PASS",
+  "mergeSimulationExactRepeatBytes": "PASS",
+  "existingRefMergedOrPushed": false,
+  "newStrategyRuns": 0,
+  "newBacktests": 0,
+  "newRealModelFits": 0,
+  "workflowDispatches": 0,
+  "productionWrites": 0,
+  "lockWrites": 0,
+  "fullRepositorySuiteRerunForDocsOnlyAudit": false,
+  "wholeStudyIndependentReproductionClaim": false,
+  "authorReviewConflict": "Lead authored #332; same-team second reader is not external approval",
+  "gitVersion": "git version 2.52.0",
+  "sourceReviewArtifacts": "Review notes and calculation source/result files copied; link-only normalization applied in audit copies."
+}

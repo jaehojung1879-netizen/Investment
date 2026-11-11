@@ -1,0 +1,85 @@
+{
+  "scope": "SAVED_LEDGER_ARITHMETIC_NOT_SOURCE_ADMISSION",
+  "books": {
+    "LGBM_CIM_RANK_h3": {
+      "A_OBSERVED_PREFIX_INCOMPLETE_EVENT_COVERAGE": {
+        "valued": 8,
+        "blocked": 2611,
+        "trades": 6,
+        "events": 1,
+        "duplicateAssetKeys": 0,
+        "strictMetricsNull": true
+      },
+      "A_VERIFIED_CASH": {
+        "valued": 0,
+        "blocked": 2619,
+        "trades": 0,
+        "events": 1,
+        "duplicateAssetKeys": 0,
+        "strictMetricsNull": true
+      }
+    },
+    "RULE_ETF_ONLY": {
+      "A_OBSERVED_PREFIX_INCOMPLETE_EVENT_COVERAGE": {
+        "valued": 2619,
+        "blocked": 0,
+        "trades": 38,
+        "events": 76,
+        "duplicateAssetKeys": 0,
+        "strictMetricsNull": null
+      },
+      "A_VERIFIED_CASH": {
+        "valued": 2619,
+        "blocked": 0,
+        "trades": 38,
+        "events": 76,
+        "duplicateAssetKeys": 0,
+        "strictMetricsNull": null
+      }
+    },
+    "RULE_INDUSTRY_MOMENTUM": {
+      "A_OBSERVED_PREFIX_INCOMPLETE_EVENT_COVERAGE": {
+        "valued": 114,
+        "blocked": 2505,
+        "trades": 49,
+        "events": 1,
+        "duplicateAssetKeys": 0,
+        "strictMetricsNull": true
+      },
+      "A_VERIFIED_CASH": {
+        "valued": 0,
+        "blocked": 2619,
+        "trades": 0,
+        "events": 1,
+        "duplicateAssetKeys": 0,
+        "strictMetricsNull": true
+      }
+    },
+    "XGB_CI_RANK_h1": {
+      "A_OBSERVED_PREFIX_INCOMPLETE_EVENT_COVERAGE": {
+        "valued": 8,
+        "blocked": 2611,
+        "trades": 6,
+        "events": 1,
+        "duplicateAssetKeys": 0,
+        "strictMetricsNull": true
+      },
+      "A_VERIFIED_CASH": {
+        "valued": 0,
+        "blocked": 2619,
+        "trades": 0,
+        "events": 1,
+        "duplicateAssetKeys": 0,
+        "strictMetricsNull": true
+      }
+    }
+  },
+  "valuedAssetRows": 6552,
+  "maxNavSumResidualKrw": 1.4901161193847656e-08,
+  "maxFeeDifferenceKrw": 1.4551915228366852e-11,
+  "maxQuantityTradeResidual": 9.094947017729282e-13,
+  "etfSharpeUsingDeclaredBOKProxy": 0.7048227715201748,
+  "bokVerifiedThrough": "2026-09-07",
+  "newRealFits": 0,
+  "newBacktests": 0
+}
