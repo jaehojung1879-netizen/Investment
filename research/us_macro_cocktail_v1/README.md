@@ -1,5 +1,7 @@
 # US Dynamic Macro & Multi-Asset Research v1 (`us-macro-cocktail-v1`)
 
+> **정정 고지 (2026-11-11):** 이 문서의 KRW "no-look-ahead" 환산 주장은 철회되었습니다(#333 감사). 평균비중 쌍둥이의 분모, CAGR/산술 단위, 동일위험 대조, 독립 가격 검증 상태는 [`errata/README.md`](errata/README.md)를 보세요. 원본 `results/` 파일은 바꾸지 않았고, USD 결과는 그대로입니다.
+
 **증거 등급:** `EXPLORATORY_ON_PUBLICLY_KNOWN_US_HISTORY`. 규칙은 수익률을 한 번도 계산하기 전에 [`protocol.json`](protocol.json)(SHA-256 `0df42821…`)에 고정해 별도 커밋으로 남겼다(`dea5f1b`). 이 커밋은 이번 실행에서 규칙을 결과에 맞추는 것을 막는다. 하지만 2008~2026년 미국 역사와 이 규칙들을 낳은 문헌은 이미 알려져 있다. 그래서 확인적(confirmatory) 증거가 아니고, 실제 증거가 될 수 있는 것은 전향 기록뿐이다.
 
 **지원하지 않는 주장:** production 배분 변경, 종목 선택 알파, 동적 규칙의 미래 우위, 원화 환산 이익을 미국 자산 실력으로 보는 해석.
