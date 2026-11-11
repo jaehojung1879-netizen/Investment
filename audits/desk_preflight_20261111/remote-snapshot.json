@@ -1,0 +1,118 @@
+{
+  "checkedAtUtc": "2026-11-11T23:17:39.769129+00:00",
+  "main": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+  "prs": [
+    {
+      "pr": 321,
+      "head": "cd2892eb6d6623c2527eeda690959d18839acc4d",
+      "base": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+      "headBranch": "fix/ci-pages-maintenance-v2",
+      "baseBranch": "main",
+      "draft": true,
+      "state": "open",
+      "updatedAt": "2026-11-10T08:35:49Z"
+    },
+    {
+      "pr": 329,
+      "head": "0a1f494171576af6928fe531145a8c8f050253fd",
+      "base": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+      "headBranch": "claude/ml-tournament-audit-vddc20",
+      "baseBranch": "main",
+      "draft": true,
+      "state": "open",
+      "updatedAt": "2026-11-10T22:41:11Z"
+    },
+    {
+      "pr": 330,
+      "head": "8657acd5dd840617fc25a6a0cce467294edf72bf",
+      "base": "17404f86535f0b8a8992da451dc7667f00539dd6",
+      "headBranch": "codex/ml-tournament-independent-audit-20261110",
+      "baseBranch": "claude/ml-tournament-audit-vddc20",
+      "draft": true,
+      "state": "open",
+      "updatedAt": "2026-11-10T14:23:14Z"
+    },
+    {
+      "pr": 331,
+      "head": "49c3aa891b1e85520c2a90d0d062678a738a87cf",
+      "base": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+      "headBranch": "claude/us-macro-multi-asset-v1-1zc092",
+      "baseBranch": "main",
+      "draft": true,
+      "state": "open",
+      "updatedAt": "2026-11-11T12:24:17Z"
+    },
+    {
+      "pr": 332,
+      "head": "0f39c2fef93a9cf924f45ae87662de41090f2528",
+      "base": "8657acd5dd840617fc25a6a0cce467294edf72bf",
+      "headBranch": "codex/ml-tournament-v2-integrity-repair-20261110",
+      "baseBranch": "codex/ml-tournament-independent-audit-20261110",
+      "draft": true,
+      "state": "open",
+      "updatedAt": "2026-11-10T23:35:08Z"
+    },
+    {
+      "pr": 333,
+      "head": "61d0d3f6b003ecb95af7af1dcde1911030b4f95d",
+      "base": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+      "headBranch": "codex/research-integration-audit-20261111",
+      "baseBranch": "main",
+      "draft": true,
+      "state": "open",
+      "updatedAt": "2026-11-11T11:18:14Z"
+    },
+    {
+      "pr": 334,
+      "head": "d876c6f0dd87dc9e34fdb081631f8a85f649e37c",
+      "base": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+      "headBranch": "claude/decision-desk-v1-1zc092",
+      "baseBranch": "main",
+      "draft": true,
+      "state": "open",
+      "updatedAt": "2026-11-11T22:36:21Z"
+    }
+  ],
+  "runs": [
+    {
+      "id": 42369756685,
+      "name": "Tests",
+      "head_sha": "cd2892eb6d6623c2527eeda690959d18839acc4d",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/42369756685",
+      "updated_at": "2026-11-07T12:15:10Z"
+    },
+    {
+      "id": 42369756681,
+      "name": "Build insight data and deploy Pages",
+      "head_sha": "cd2892eb6d6623c2527eeda690959d18839acc4d",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/42369756681",
+      "updated_at": "2026-11-07T11:51:15Z"
+    },
+    {
+      "id": 43113069420,
+      "name": "Tests",
+      "head_sha": "d876c6f0dd87dc9e34fdb081631f8a85f649e37c",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43113069420",
+      "updated_at": "2026-11-11T23:15:54Z"
+    },
+    {
+      "id": 43055527324,
+      "name": "Build insight data and deploy Pages",
+      "head_sha": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+      "event": "schedule",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43055527324",
+      "updated_at": "2026-11-11T17:00:02Z"
+    }
+  ]
+}

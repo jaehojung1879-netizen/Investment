@@ -1,0 +1,115 @@
+{
+  "checkedAtUtc": "2026-11-11T23:20:42.962789+00:00",
+  "scope": "AUDIT_ONLY_NO_EXISTING_REFS_CHANGED",
+  "localMerge": {
+    "commit": "37b24def6da03095ed60c86c9e83167f0c058402",
+    "parents": [
+      "d876c6f0dd87dc9e34fdb081631f8a85f649e37c",
+      "cd2892eb6d6623c2527eeda690959d18839acc4d"
+    ],
+    "tree": "0ad82bca2b021ff18eaa416695577443014fc71e",
+    "conflicts": 0,
+    "ancestryPreserved": true,
+    "reverseOrderTree": "0ad82bca2b021ff18eaa416695577443014fc71e"
+  },
+  "protectedHashCount": 235,
+  "protectedHashFailures": 0,
+  "researchSpecsResultsRequirementsChanged": false,
+  "claudeDeskUIResearchChanged": false,
+  "independent": {
+    "passed": 18,
+    "knownStrictXfails": 12,
+    "runxfailFailed": 12,
+    "runxfailPassed": 18,
+    "cleanSafetyPass": false
+  },
+  "scopedCombined": {
+    "deskTestsPassed": 50,
+    "maintenanceTestsPassed": 107,
+    "browser": "PASS: KR/US x1280/390 with pinned Git-response replay",
+    "legacyBrowser": "PASS: pinned fresh KR/US ETF receipt; blocked champion state preserved",
+    "ruff": "PASS",
+    "compileall": "PASS",
+    "pipelineImports": "PASS",
+    "twoInMemoryDeskBuildsMatchCommittedBytes": true,
+    "legacyEvidencePackReproduces": true,
+    "seedValidation": "PASS in isolated seed worktree",
+    "seedProductionAcceptance": "REFUSED as required"
+  },
+  "fullCombinedSuite": {
+    "status": "IN_PROGRESS",
+    "log": "Local /workspace/audit-results/combined-pytest.log; final outcome will replace this field before handoff"
+  },
+  "remote": {
+    "pr321Tests": "PASS: 6521, run42369756685",
+    "pr321Pages": "DIAGNOSTIC_ONLY_SUCCESS; build-and-deploy SKIPPED, run42369756681",
+    "pr334Tests": "FAIL: 1 failed /6473 passed, run43113069420",
+    "latestMainPages": "FAIL: 1 failed /6423 passed; deploy/state SKIPPED, run43055527324",
+    "combinedPRTests": "NOT_RUN",
+    "productionDeployment": "NOT_RUN"
+  },
+  "firstMaintenanceAttempt": {
+    "failed": 16,
+    "passed": 91,
+    "cause": "Missing historical Git blobs in filtered checkout; no code/expected-error change"
+  },
+  "maintenanceRecheck": {
+    "passed": 28,
+    "failed": 0,
+    "followedByFull107Pass": true
+  },
+  "notes": [
+    "An early seed command created only ignored synthetic data/site-data.json in the test checkout; it was removed immediately. Final seed/validation ran in a separate seed worktree. No tracked bytes changed.",
+    "Initial independent harness tried watchlist=12; actual receipts disproved that premise (watchlist=5, candidates=12). Final assertions enforce the observed source chain.",
+    "Initial browser harness selector/display-name errors were corrected without changing application code."
+  ],
+  "evidenceLogIdentities": {
+    "independent-final.log": {
+      "sha256": "456b391c625c31f8b393002250ec2dce43444da1c08e8d8b0dee453b910fdacc",
+      "bytes": 111
+    },
+    "negative-runxfail.log": {
+      "sha256": "02c87d376df1c0986f3721655fa916a9d9101d1910c7f334b9ccb4e6046f3250",
+      "bytes": 16777
+    },
+    "maintenance.log": {
+      "sha256": "66c071b2baff54a9cb304f3025ebd410d7e1d95648c8f8990fefa216bd2fa194",
+      "bytes": 135579
+    },
+    "maintenance-recheck.log": {
+      "sha256": "1c77f0d95c5c02b00c6adbff82bab14c0651f5c29437c83f51d822a242542180",
+      "bytes": 111
+    },
+    "maintenance-final.log": {
+      "sha256": "3f65635d07f9c94045c50ed7238f5786dae53367727f8659baa6d3c9b1e5fb4d",
+      "bytes": 192
+    },
+    "browser.log": {
+      "sha256": "d94417afebddfac855b20bd52089b7f07c582da592f05609096f78ac3d4ce8bf",
+      "bytes": 174
+    },
+    "browser-legacy.log": {
+      "sha256": "d94417afebddfac855b20bd52089b7f07c582da592f05609096f78ac3d4ce8bf",
+      "bytes": 174
+    },
+    "node.log": {
+      "sha256": "5016583e2d748159e8fe7330a2a221a12c65954de7a3397b74fb532a23e3dbc9",
+      "bytes": 215
+    },
+    "seed-validation-corrected.log": {
+      "sha256": "31a680cdc19ef9cfa53ee5c506805e6471ea7ae552e640fe7c9f07c66a4be2ae",
+      "bytes": 14
+    },
+    "seed-production-refusal.log": {
+      "sha256": "d90d9cb6d19950661cd4ac09d7489e6eaabe589a0489fcef17efa697c075f2ae",
+      "bytes": 130
+    }
+  },
+  "productionWrites": 0,
+  "existingBranchPushes": 0,
+  "mainMerges": 0,
+  "workflowDispatches": 0,
+  "historicalStrategyRuns": 0,
+  "realModelFits": 0,
+  "sealedLockWrites": 0
+}
