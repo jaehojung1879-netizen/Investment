@@ -1,0 +1,103 @@
+{
+  "schema": "B2_AI_REVIEW_V1",
+  "cohort": "2026-11",
+  "author": "Claude (AI synthesis; research path B2)",
+  "generatedAt": "2026-11-11T12:29:13Z",
+  "evidencePackSha256": "305d906a95c14ffde96e66e855ac2dc29848c2b98926f6d385fdb2bae258bfe0",
+  "knowledgeLimit": "The model's background knowledge ends before this cohort. It read no news, filings or analyst material dated after its training; every catalyst stated from memory is NOT_VERIFIED.",
+  "regions": {
+    "KR": {
+      "marketLabel": "CONTRADICTS",
+      "marketInterpretation": "KOSPI is 44% below its 252-session high, down 20% over 63 sessions, below its 200-day average, with 47% annualised volatility. That is a crash regime, not a pullback. The cap rule limits KR to at most 2 names, and in a regime like this a 6-12 month comparison is dominated by whether the index rebounds.",
+      "macroLabel": "NEUTRAL",
+      "macroInterpretation": "US 10y 4.84% and rising, dollar strong (UUP +6.5% over 126 sessions), VIX 28. These tighten global conditions but are not a stock-level argument for any KR name.",
+      "names": [
+        {
+          "ticker": "021240.KS",
+          "layers": {
+            "market": ["CONTRADICTS", "Region in a crash regime (see market interpretation)."],
+            "industry": ["NEUTRAL", "Home-appliance rental and subscription. The receipt has no sector-level demand data, so industry direction is not observed."],
+            "company": ["SUPPORTS", "ROE about 19%, operating margin about 18%, positive FCF yield about 5%, debt/equity about 70: a profitable, cash-generating business."],
+            "price": ["NEUTRAL", "Forward PE about 9.6 with positive 12-1 and 63-session momentum, but it trades at 98% of its 52-week high and the production entry layer says WAIT_FOR_PULLBACK."],
+            "macro": ["NEUTRAL", "Domestic consumer exposure; no observed macro variable points either way for this name."],
+            "research": ["NEUTRAL", "The ranking that put it on the list (four-factor alpha percentile) has no established return ordering (KR rank IC t 0.68). It is not in the value-confirmation research book."],
+            "risk": ["SUPPORTS", "Beta about 0.11 and a 252-session drawdown of -23% against the index's -44%: it has held up far better than the market."]
+          },
+          "decision": "REJECT",
+          "rejectionReason": "Only 2 layers support (company, risk); the rule needs 3. The low beta that protected it in the crash is also the main argument against beating 069500 over 6-12 months: after a 44% index drawdown, a rebound would leave a beta-0.1 name far behind the ETF, and the evidence cannot say which comes first.",
+          "notVerified": ["rental account growth and churn", "overseas subsidiary performance", "any event after the model's training cutoff"]
+        }
+      ],
+      "gatedOutNote": "The other 11 KR candidates fail at least one frozen gate. Several also have only a ticker and an alpha percentile in the receipt (G1_DATA). Gated names are not reviewed further.",
+      "regionDecision": {"selected": [], "zeroSelectionReason": "No KR name met the frozen selection rule. 069500.KS 100% is the explicit B2 choice for this cohort."}
+    },
+    "US": {
+      "marketLabel": "NEUTRAL",
+      "marketInterpretation": "SPY is above its 200-day average and 5.6% below its 252-session high. 63-session return is -4.9% with realised volatility 13.6%, while VIX is 28, so implied risk is well above realised. QQQ trailed SPY by 4.1pp over 63 sessions. A correction inside an uptrend, not a crash.",
+      "macroLabel": "NEUTRAL",
+      "macroInterpretation": "10y 4.84% (+15bp over 63 sessions), curve +0.67pp, breakeven flat, dollar strong, gold down 14% over 126 sessions, IEF down 3%. Rates rising without an inflation-expectation shock: a headwind for long-duration and rate-sensitive equities, mild support for insurers' investment income.",
+      "names": [
+        {
+          "ticker": "TRV",
+          "layers": {
+            "market": ["NEUTRAL", "Index in a correction inside an uptrend."],
+            "industry": ["NEUTRAL", "Property & casualty insurance. Where the pricing cycle stands is not observed in the evidence pack."],
+            "company": ["SUPPORTS", "ROE about 27%, operating margin about 20%, debt/equity about 34: high profitability with moderate leverage."],
+            "price": ["SUPPORTS", "Trailing PE about 10.4 and forward about 12.7, below the index multiple. Positive 12-1 and 63-session momentum at 97% of its 52-week high. The production entry layer is ACCUMULATE_GRADUALLY, the most permissive state."],
+            "macro": ["NEUTRAL", "Higher yields raise reinvestment income; the size of that effect is not observed here."],
+            "research": ["NEUTRAL", "Four-factor alpha ordering is not established (US rank IC t 0.17), so the ranking itself is not evidence. No existing research contradicts a low-beta insurer."],
+            "risk": ["SUPPORTS", "Beta about -0.06, volatility about 21%, 252-session drawdown about -10%: a holding that diversifies a 90% SPY book."]
+          },
+          "decision": "SELECT",
+          "reasons": [
+            "A profitable, moderately levered insurer (ROE about 27%) priced below the index multiple",
+            "Near-zero equity beta and a shallow drawdown: it diversifies the 90% SPY residual while VIX is 28",
+            "The production entry layer is ACCUMULATE_GRADUALLY, and no frozen gate or contradicting layer applies"
+          ],
+          "thesis6m": "If the US correction deepens or stays choppy (VIX near 28), a low-beta insurer earning high returns on equity should hold value better than SPY. The 10% sleeve should then add relative return.",
+          "thesis12m": "Over a year, the stock tracks underwriting profitability plus investment income on a book that reinvests at higher yields. At a below-market multiple it does not need multiple expansion to keep pace with SPY.",
+          "catalysts": ["Quarterly underwriting results and combined ratio (NOT_VERIFIED timing)", "Reinvestment of the portfolio at higher yields (direction observed, size NOT_VERIFIED)"],
+          "risks": ["A sharp equity rally: with beta near 0 it would lag SPY", "A large catastrophe loss quarter", "A softening commercial P&C pricing cycle", "The FCF yield includes insurance float and overstates distributable cash"],
+          "invalidationConditions": [
+            "Close below the 200-day average while its 63-session return is negative (the G3 condition becoming true)",
+            "Production entry state moving to AVOID",
+            "A reported quarter with an underwriting loss (combined ratio above 100) not explained by a single named catastrophe",
+            "Underperforming SPY by more than 10pp, after costs, at any month-end before the 126-session horizon"
+          ],
+          "notVerified": ["combined ratio trend", "reserve development", "catastrophe exposure for the coming season", "share buyback pace", "any news after the model's training cutoff"],
+          "whyVersusBenchmark": "Its return driver (underwriting plus investment income) is largely independent of SPY's growth-heavy driver. A 10% sleeve tests whether a profitable low-beta name can beat the index after costs, without betting the book."
+        },
+        {
+          "ticker": "MPC",
+          "layers": {
+            "market": ["NEUTRAL", "Index in a correction inside an uptrend."],
+            "industry": ["NEUTRAL", "Refining margins are highly cyclical; current crack spreads are not in the evidence pack."],
+            "company": ["SUPPORTS", "ROE about 60%, FCF yield about 16%, operating margin about 18%."],
+            "price": ["NEUTRAL", "Forward PE about 6 after a +140% 12-1 return, now 23% below its 52-week high. The production entry layer is WAIT_FOR_PULLBACK. A single-digit multiple on peak-cycle earnings is what a market expecting margin normalisation would pay."],
+            "macro": ["NEUTRAL", "Oil and product prices are not observed."],
+            "research": ["NEUTRAL", "Momentum is not a supported standalone signal in this repository's research."],
+            "risk": ["CONTRADICTS", "Volatility about 37% (2.7x SPY's realised), a -23% drawdown and commodity-margin exposure. For a 6-12 month benchmark-relative claim this risk is not compensated by any verified margin evidence."]
+          },
+          "decision": "REJECT",
+          "rejectionReason": "Risk layer contradicts. Cheapness on cyclical earnings is not evidence of mispricing without margin data."
+        },
+        {
+          "ticker": "SPG",
+          "layers": {
+            "market": ["NEUTRAL", "Index in a correction inside an uptrend."],
+            "industry": ["NEUTRAL", "Mall REIT; tenant sales and occupancy are not observed."],
+            "company": ["NEUTRAL", "The reported ROE above 100% comes from a small equity base after distributions and is not comparable. FFO, the REIT earnings measure, is not available. Debt/equity about 567 is exempt from the leverage gate for real estate but remains material."],
+            "price": ["NEUTRAL", "Near its 52-week high. A PE-based valuation is not meaningful for a REIT and FFO is missing."],
+            "macro": ["CONTRADICTS", "Rising 10y yields (+15bp over 63 sessions) are a direct headwind for leveraged real estate."],
+            "research": ["NEUTRAL", "No supporting or contradicting study."],
+            "risk": ["SUPPORTS", "Volatility about 19% and beta about 0.22."]
+          },
+          "decision": "REJECT",
+          "rejectionReason": "Only 1 layer supports. The quality signal is an accounting artifact, the valuation basis (FFO) is missing, and the macro layer is adverse."
+        }
+      ],
+      "gatedOutNote": "The other US candidates fail at least one frozen gate, mostly G1_DATA (ticker-only rows) or G5 leverage. Altria and Yum also lack a usable debt/equity figure and have dataCompleteness 0.667.",
+      "regionDecision": {"selected": ["TRV"], "zeroSelectionReason": null}
+    }
+  }
+}
