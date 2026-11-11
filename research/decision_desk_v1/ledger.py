@@ -14,7 +14,13 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 DRY_RUN_DIR = HERE / "dry-run"
 SCHEMA = "RESEARCH_DECISION_RECORD_V1"
+SCHEMA_V2 = "RESEARCH_DECISION_RECORD_V2"
 OUTCOME_SCHEMA = "RESEARCH_DECISION_OUTCOME_V1"
+ANNOTATION_SCHEMA = "RESEARCH_DECISION_ANNOTATION_V1"
+RECORD_SCHEMAS = {SCHEMA, SCHEMA_V2}
+ANNOTATION_CATEGORIES = {"PIT_CONTAMINATED", "PUBLICATION_VERIFIED", "PUBLICATION_LATE", "INDEPENDENCE_NOT_VERIFIED",
+                         "B2_NO_REVIEW", "NOTE"}
+PATHS_V2 = {"B0", "B1", "B2", "BX"}
 GENESIS = "0" * 64
 PATHS = {"B0", "B1", "B2"}
 RECORD_STATUSES = {"DRY_RUN_NOT_ACTIVATED", "RECORDED", "LATE_NOT_PROSPECTIVE"}
@@ -52,6 +58,12 @@ def _forbidden(obj, path="") -> list[str]:
 
 
 def validate_record(r: dict) -> None:
+    if r.get("schema") == SCHEMA_V2:
+        return validate_record_v2(r)
+    _validate_common(r)
+
+
+def _validate_common(r: dict, check_digest: bool = True) -> None:
     missing = [k for k in REQUIRED if k not in r]
     if missing:
         raise LedgerError(f"MISSING_FIELDS {missing}")
@@ -74,8 +86,49 @@ def validate_record(r: dict) -> None:
     hits = _forbidden(r)
     if hits:
         raise LedgerError(f"FORBIDDEN_NUMERIC_CLAIM {hits}")
+    if check_digest and digest(r) != r["digest"]:
+        raise LedgerError("DIGEST_MISMATCH")
+
+
+def validate_record_v2(r: dict) -> None:
+    """V2 = V1 fields + reviewer, protocolVersion and a registration deadline fixed by the packet."""
+    for k in ("reviewer", "protocolVersion", "registrationDeadlineUtc", "packetSha256"):
+        if k not in r:
+            raise LedgerError(f"MISSING_FIELDS ['{k}']")
+    if r["path"] not in PATHS_V2:
+        raise LedgerError("BAD_SCHEMA_PATH_OR_STATUS")
+    if r["path"] in ("B2", "BX") and not r["reviewer"]:
+        raise LedgerError("AI_PATH_NEEDS_A_REVIEWER")
+    if r["path"] in ("B0", "B1") and r["reviewer"] is not None:
+        raise LedgerError("RULE_PATH_HAS_NO_REVIEWER")
+    if r["publishedAt"] > r["registrationDeadlineUtc"]:
+        raise LedgerError("REGISTRATION_CLOSED: published after the cohort's registration deadline")
+    if r["plannedExecutionCloseUtc"] <= r["registrationDeadlineUtc"]:
+        raise LedgerError("EXECUTION_NOT_AFTER_DEADLINE")
+    v1 = dict(r)
+    v1["schema"] = SCHEMA
+    v1["path"] = "B2" if r["path"] == "BX" else r["path"]
+    _validate_common(v1, check_digest=False)
     if digest(r) != r["digest"]:
         raise LedgerError("DIGEST_MISMATCH")
+
+
+def record_key(r: dict) -> tuple:
+    """One record per (region, path, reviewer, cohort); a V1 B2 record is the 'claude' reviewer's."""
+    reviewer = r.get("reviewer") if r["schema"] == SCHEMA_V2 else ("claude" if r["path"] == "B2" else None)
+    return (r["region"], r["path"], reviewer, r["cohort"])
+
+
+def validate_annotation(a: dict, rows: list[dict]) -> None:
+    if a.get("category") not in ANNOTATION_CATEGORIES:
+        raise LedgerError("BAD_ANNOTATION_CATEGORY")
+    if not a.get("recordDigests") or not a.get("detail") or not a.get("createdAt"):
+        raise LedgerError("ANNOTATION_INCOMPLETE")
+    known = {r["digest"] for r in rows if r.get("schema") in RECORD_SCHEMAS}
+    if not set(a["recordDigests"]) <= known:
+        raise LedgerError("ANNOTATION_CITES_UNKNOWN_RECORD")
+    if {"weights", "selectedTickers", "excessAfterCostPct", "returnAfterCostPct"} & set(a):
+        raise LedgerError("ANNOTATION_CANNOT_CHANGE_A_DECISION_OR_OUTCOME")
 
 
 def read(path: Path) -> list[dict]:
@@ -90,14 +143,16 @@ def verify_chain(rows: list[dict]) -> None:
     for r in rows:
         if r.get("prevDigest") != prev:
             raise LedgerError(f"CHAIN_BROKEN at {r.get('digest')}")
-        if r.get("schema") == SCHEMA:
+        if r.get("schema") in RECORD_SCHEMAS:
             validate_record(r)
-            key = (r["region"], r["path"], r["cohort"])
+            key = record_key(r)
             if key in seen:
                 raise LedgerError(f"DUPLICATE_RECORD {key}")
             seen.add(key)
         elif r.get("schema") == OUTCOME_SCHEMA:
             validate_outcome(r, rows)
+        elif r.get("schema") == ANNOTATION_SCHEMA:
+            validate_annotation(r, rows)
         else:
             raise LedgerError("UNKNOWN_ROW_SCHEMA")
         if digest(r) != r["digest"]:
@@ -126,7 +181,7 @@ def append(path: Path, row: dict, *, owner_approved: bool = False) -> dict:
 def validate_outcome(o: dict, rows: list[dict]) -> None:
     if o.get("status") not in OUTCOME_STATUSES:
         raise LedgerError("BAD_OUTCOME_STATUS")
-    target = [r for r in rows if r.get("digest") == o.get("recordDigest") and r.get("schema") == SCHEMA]
+    target = [r for r in rows if r.get("digest") == o.get("recordDigest") and r.get("schema") in RECORD_SCHEMAS]
     if not target:
         raise LedgerError("OUTCOME_CITES_UNKNOWN_RECORD")
     if o["status"] == "SCORED":

@@ -69,7 +69,8 @@ def release_utc(series: str, obs_date) -> pd.Timestamp | None:
 @lru_cache(maxsize=4)
 def calendar(region: str):
     import exchange_calendars as xc
-    return xc.get_calendar({"KR": "XKRX", "US": "XNYS"}[region], start="2000-01-01")
+    end = (pd.Timestamp.now(tz="UTC").tz_localize(None).normalize() + pd.Timedelta(days=730)).strftime("%Y-%m-%d")
+    return xc.get_calendar({"KR": "XKRX", "US": "XNYS"}[region], start="2000-01-01", end=end)
 
 
 def exchange_close_utc(region: str, session) -> pd.Timestamp:
