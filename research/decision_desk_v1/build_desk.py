@@ -24,6 +24,8 @@ ROOT = HERE.parents[1]
 sys.path.insert(0, str(HERE))
 import ledger as L  # noqa: E402
 
+EF = ROOT / "research" / "evidence_first_v2"
+
 PINS = {
     "signalHistory": "6398e94feddd4f552910d31b36bc8db0766576af",
     "pr329": "0a1f494171576af6928fe531145a8c8f050253fd",
@@ -120,6 +122,7 @@ def dry_run(region: str) -> list[dict]:
         reviewer = r.get("reviewer") if r["schema"] == L.SCHEMA_V2 else ("claude" if r["path"] == "B2" else None)
         arm = r["path"] + (f":{reviewer}" if r["path"] == "BX" else "")
         item = {"type": "RESEARCH_ALLOCATION_AS_OF", "id": f"decision-desk-v1 {arm} {r['cohort']}", "path": arm,
+                "v3Path": EFC.v3_path(r), "v3PathLabel": EFC.V3_PATHS[EFC.v3_path(r)],
                 "reviewer": reviewer, "cohort": r["cohort"], "schemaVersion": 2 if r["schema"] == L.SCHEMA_V2 else 1,
                 "signalAsOf": r["signalAsOf"], "informationCutoff": r["informationCutoff"], "generatedAt": r["generatedAt"],
                 "publishedAt": r["publishedAt"], "executionAt": r["plannedExecution"], "weights": r["weights"],
@@ -153,6 +156,69 @@ def pipeline() -> dict:
                      "protocol": "protocol-v2.json", "status": "AWAITING_PACKET"},
             "reviewers": [{k: r[k] for k in ("id", "role", "provider", "invocation", "status")} for r in reg["reviewers"]],
             "automation": reg["automation"]}
+
+
+# ----------------------------------------------------------------------------- evidence-first v2
+def _ef_load():
+    if str(EF) not in sys.path:
+        sys.path.insert(0, str(EF))
+    import contract
+    return contract
+
+
+EFC = _ef_load()
+
+
+def _efj(name: str) -> dict:
+    return json.loads((EF / name).read_text())
+
+
+def _efsha(name: str) -> str:
+    return hashlib.sha256((EF / name).read_bytes()).hexdigest()
+
+
+def evidence_first() -> dict:
+    """Read-only copy of research/evidence_first_v2 results; each file is referenced by SHA-256."""
+    matrix = _efj("evidence-grades.json")
+    graded = EFC.validate_grades(matrix)
+    grades = [{"id": it["id"], "region": it["region"], "label": it["label"], "path": it["path"],
+               "grade": graded[it["id"]]["grade"], "blocks": graded[it["id"]]["blocks"],
+               "decisionEligible": graded[it["id"]]["decisionEligible"], "decisionUse": it["decisionUse"],
+               "criteria": [{"level": lvl, "met": c.get("met"), "ref": c.get("ref")} for lvl, c in it.get("criteria", {}).items()]}
+              for it in matrix["items"]]
+    lit = _efj("literature.json")
+    census = _efj("results/census.json")
+    ap = _efj("results/academic-path.json")
+    dos = _efj("results/b3-dossiers.json")
+    for d in dos["dossiers"]:
+        EFC.validate_dossier(d, d["nominatingEvidence"]["grade"],
+                             {r["ticker"]: r for r in census["regions"][d["region"]]["b1"]["topQuintile"]})
+    funnel = {}
+    for g, reg in census["regions"].items():
+        pc = reg["productionComparison"]
+        funnel[g] = {"asOf": reg["asOf"], "universeSource": reg["universeSource"], "stages": reg["funnel"],
+                     "b1Rule": reg["b1"]["rule"], "b1TopQuintile": reg["b1"]["topQuintile"], "deepReview": reg["b1"]["deepReview"],
+                     "factorTopQuintile": reg["factorTopQuintile"],
+                     "productionComparison": {"receipt": pc["productionReceipt"], "both": pc["both"], "onlyB1": pc["onlyB1"],
+                                              "onlyProduction": pc["onlyProduction"], "note": pc["note"]}}
+    keep = ("full", "prePublication", "postPublication", "postPublicationEx2025", "ourEra")
+    academic = {"verdict": ap["verdict"], "latestMonth": ap["latestMonth"], "gradeEffect": ap["gradeEffect"],
+                "significantAtBonferroni": ap["significantAtBonferroni"],
+                "protocolSha256": ap["protocolSha256"], "dataManifestSha256": ap["dataManifestSha256"],
+                "portfolios": {k: {w: {m: v[w][m] for m in ("first", "last", "months", "annualExcessPct", "hacT",
+                                                            "annualExcessAfterDragPct", "maxRelativeDrawdownPct")}
+                                       | {"excess12mSharePositive": v[w]["excess12m"]["sharePositive"]}
+                                       for w in keep if w in v}
+                               for k, v in ap["portfolios"].items()}}
+    return {"schema": "EVIDENCE_FIRST_V2", "levels": matrix["levels"], "rule": matrix["rule"], "grades": grades,
+            "v3Paths": EFC.V3_PATHS, "legacyToV3": EFC.LEGACY_TO_V3,
+            "literature": {"sourcePolicy": lit["sourcePolicy"], "timeSeriesVsCrossSection": lit["timeSeriesVsCrossSection"],
+                           "studies": lit["studies"]},
+            "funnel": funnel, "survivorshipStatement": census["survivorshipStatement"], "academic": academic,
+            "dossiers": {k: dos[k] for k in ("path", "role", "author", "knowledgeLimit", "concentrationNote", "regionDecision", "dossiers")},
+            "sources": {n: _efsha(n) for n in ("evidence-grades.json", "literature.json", "results/census.json",
+                                               "results/academic-path.json", "results/b3-dossiers.json",
+                                               "academic-path-protocol.json")}}
 
 
 # ----------------------------------------------------------------------------- history table
@@ -204,7 +270,7 @@ def history() -> list[dict]:
 FACTS = {
     "KR": {
         "known": [
-            "Production 판단: 069500.KS 100%. 알파 순위의 수익 정렬이 확인되지 않았다(rank IC t 0.68).",
+            "Production 판단: 069500.KS 100%. 알파 순위가 수익 순서를 맞힌다는 근거가 없다(rank IC t 0.68).",
             "ML v1 141개: 검증된 ETF 초과성과 없음. v2 정정에서 주식 후보 3개는 기업행동 원천이 막혀 SOURCE_BLOCKED.",
             "산업모멘텀 우위는 리밸런싱 위상에 의존한다(네 위상 ETF 격차 −9.40~+2.58%p).",
             "S2 가치·확인은 비용 2배 시 +0.04%p, 2025년 제외 시 +0.0015%p. 연구 후보이며 승격 불가.",
@@ -247,6 +313,7 @@ def build() -> dict:
     desk = {"schema": "DECISION_DESK_V1", "builtFrom": PINS, "publicationTypes": sorted(TYPES),
             "staleAfterDays": 10, "disclaimerKo": "연구·가상 판단입니다. 실제 자금 운용 승인이 없으며 production 비중을 바꾸지 않습니다.",
             "regions": {}, "history": history(), "approvalsNeeded": APPROVALS, "pipeline": pipeline(),
+            "evidenceFirst": evidence_first(),
             "protocolSha256": hashlib.sha256((HERE / "protocol.json").read_bytes()).hexdigest()}
     for region in ("KR", "US"):
         reg = {"production": production(region), "research": research_ledgers(region), "deskRecords": dry_run(region),

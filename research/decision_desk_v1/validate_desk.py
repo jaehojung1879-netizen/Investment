@@ -3,8 +3,12 @@
 Refuses: an unknown type; a SOURCE_BLOCKED item carrying a performance number; a
 RESEARCH_ALLOCATION_AS_OF without its timestamps or generated after its execution; a
 historical item marked as a current recommendation; any probability/target claim.
+Evidence-first v2: a graded item that is decision-eligible below E4 or while blocked, an AI dossier
+whose status exceeds HOLD_FOR_RESEARCH / ETF_DEFAULT below E2, or AI text carrying a digit.
 """
 from __future__ import annotations
+
+import re
 
 import ledger as L
 
@@ -49,3 +53,17 @@ def validate(desk: dict) -> None:
                 raise DeskError(f"SOURCE_BLOCKED_WITH_WEIGHTS {item.get('id')}")
             if item["type"] == "HISTORICAL_EXPLORATORY" and item.get("currentRecommendation") is not False:
                 raise DeskError(f"HISTORICAL_ITEM_MUST_DECLARE_NOT_CURRENT {item.get('id')}")
+
+    ef = desk.get("evidenceFirst")
+    if ef is None:
+        raise DeskError("EVIDENCE_FIRST_MISSING")
+    for g in ef["grades"]:
+        if g["decisionEligible"] and g["grade"] != "BENCHMARK" and (g["grade"] not in ("E4", "E5") or g["blocks"]):
+            raise DeskError(f"ELIGIBLE_WITHOUT_EVIDENCE {g['id']}")
+    for d in ef["dossiers"]["dossiers"]:
+        low = d["nominatingEvidence"]["grade"] not in ("E2", "E3", "E4", "E5")
+        if d["status"] not in ("HOLD_FOR_RESEARCH", "ETF_DEFAULT") and low:
+            raise DeskError(f"DOSSIER_STATUS_ABOVE_EVIDENCE {d['ticker']}")
+        for f in ("interpretation", "background", "counterArguments", "invalidationConditions", "unknowns"):
+            if any(re.search(r"\d", x) for x in d[f]):
+                raise DeskError(f"NUMBER_IN_AI_TEXT {d['ticker']}")
