@@ -901,9 +901,9 @@ async function loadResearchPublication(commit) {
 // Four publication types (#333): HISTORICAL_EXPLORATORY · CORRECTED_CASH_SCOPE ·
 // SOURCE_BLOCKED · RESEARCH_ALLOCATION_AS_OF, plus PRODUCTION_RECEIPT.
 const DESK = Object.freeze({
-  commit: "__PIN_IN_FOLLOW_UP_COMMIT__",
+  commit: "ae653662e06cc40144cb4526c3c9168e191face1",
   path: "research/decision_desk_v1/desk.json",
-  sha256: "__PIN_IN_FOLLOW_UP_COMMIT__",
+  sha256: "fb005a25877efdb36f1ed876343b00c5541700f2eb059550fd85c43b2aa39c62",
 });
 const DESK_TYPES = {
   HISTORICAL_EXPLORATORY: ["과거 탐색", "warn"],
