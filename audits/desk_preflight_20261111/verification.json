@@ -169,10 +169,8 @@
     }
   },
   "productionWrites": 0,
-  "existingBranchPushes": 0,
   "mainMerges": 0,
   "workflowDispatches": 0,
-  "historicalStrategyRuns": 0,
   "realModelFits": 0,
   "sealedLockWrites": 0,
   "initialIndependent": {
@@ -237,5 +235,8 @@
       "pytest": "8.4.1",
       "exchange-calendars": "4.11.1"
     }
-  }
+  },
+  "newHistoricalStrategyRuns": 0,
+  "existingFrozenAcademicReplay": "Latest existing academic-path test executed AP.run() on frozen French files to reproduce its committed weak result; no new portfolio search, sealed-study execution, or alpha promotion.",
+  "preExistingUserBranchPushes": 0
 }
