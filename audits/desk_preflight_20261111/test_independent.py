@@ -198,7 +198,7 @@ def test_ledger_tamper_and_append_preserves_prefix(tmp_path, monkeypatch):
 
 # Release gates below assert the required behavior and fail against exact #334.
 # strict=True also makes a later fix (XPASS) fail until the audit is updated.
-@pytest.mark.xfail(strict=True, reason="G1: revision/vintage time is discarded; observation date alone survives")
+@pytest.mark.xfail(strict=True, raises=AssertionError, reason="G1: revision/vintage time is discarded; observation date alone survives")
 def test_future_revision_cannot_change_prior_information_set():
     idx = pd.to_datetime(["2026-11-04"])
     old = pd.Series([4.90], index=idx)
@@ -208,7 +208,7 @@ def test_future_revision_cannot_change_prior_information_set():
     assert A.available_fred("DGS10", revised, cutoff).equals(A.available_fred("DGS10", old, cutoff))
 
 
-@pytest.mark.xfail(strict=True, reason="G2: future fundamental publication timestamp is ignored by gates")
+@pytest.mark.xfail(strict=True, raises=AssertionError, reason="G2: future fundamental publication timestamp is ignored by gates")
 def test_future_fundamental_publication_fails_eligibility():
     pack = json.loads((DESK / "inputs/2026-11/evidence-pack.json").read_text())
     row = copy.deepcopy(next(c for c in pack["regions"]["US"]["candidates"] if c["ticker"] == "TRV"))
@@ -216,14 +216,14 @@ def test_future_fundamental_publication_fails_eligibility():
     assert V.gates(row, pack["regions"]["US"]["freshness"])
 
 
-@pytest.mark.xfail(strict=True, reason="G3: valid same-day v2 cutoff compared to date-only generatedAt and rejected")
+@pytest.mark.xfail(strict=True, raises=C.DeskError, reason="G3: valid same-day v2 cutoff compared to date-only generatedAt and rejected")
 def test_v2_iso_cutoff_can_be_published():
     r = copy.deepcopy(json.loads((DESK / "desk.json").read_text())["regions"]["US"]["deskRecords"][0])
     r.update(informationCutoff="2026-11-06T21:00:00Z", generatedAt="2026-11-06T22:00:00Z")
     C._alloc_ok(r)
 
 
-@pytest.mark.xfail(strict=True, reason="G4: free-text reasons can introduce any unobserved forecast number")
+@pytest.mark.xfail(strict=True, raises=pytest.fail.Exception, reason="G4: free-text reasons can introduce any unobserved forecast number")
 def test_unobserved_numeric_return_claim_in_prose_is_refused():
     review = json.loads((DESK / "ai-reviews/2026-11.json").read_text())
     pack = json.loads((DESK / "inputs/2026-11/evidence-pack.json").read_text())
@@ -233,7 +233,7 @@ def test_unobserved_numeric_return_claim_in_prose_is_refused():
         J.check_review(review, pack)
 
 
-@pytest.mark.xfail(strict=True, reason="G5: SOURCE_BLOCKED is terminal in done set; later verified quotes never retry")
+@pytest.mark.xfail(strict=True, raises=AssertionError, reason="G5: SOURCE_BLOCKED is terminal in done set; later verified quotes never retry")
 def test_source_blocked_can_receive_later_append_only_correction():
     r = record()
     blocked = E.outcomes([r], {}, "2028-01-01T00:00:00Z")
@@ -241,14 +241,14 @@ def test_source_blocked_can_receive_later_append_only_correction():
     assert retry and retry[0]["status"] == "SCORED"
 
 
-@pytest.mark.xfail(strict=True, reason="G6: zero quotes pass and NaN gross factors collapse to a fabricated flat return")
+@pytest.mark.xfail(strict=True, raises=AssertionError, reason="G6: zero quotes pass and NaN gross factors collapse to a fabricated flat return")
 def test_zero_price_is_source_blocked():
     df = frame()
     df["close"] = 0.0
     assert E.outcomes([record()], {"TRV": df, "SPY": frame()}, "2028-01-01T00:00:00Z")[0]["status"] == "SOURCE_BLOCKED"
 
 
-@pytest.mark.xfail(strict=True, reason="G7: no primary-comparison eligibility field accompanies scored contaminated record")
+@pytest.mark.xfail(strict=True, raises=AssertionError, reason="G7: no primary-comparison eligibility field accompanies scored contaminated record")
 def test_contaminated_outcomes_cannot_enter_primary_comparison():
     rows = L.read(DESK / "dry-run/ledger.jsonl")
     r = record()
@@ -257,7 +257,7 @@ def test_contaminated_outcomes_cannot_enter_primary_comparison():
     assert scored.get("primaryComparisonEligible") is False
 
 
-@pytest.mark.xfail(strict=True, reason="G8: current remote reachability plus backdated committer time passes publication check")
+@pytest.mark.xfail(strict=True, raises=AssertionError, reason="G8: current remote reachability plus backdated committer time passes publication check")
 def test_git_committer_time_is_not_first_publication_time(tmp_path, monkeypatch):
     r = records()[0]
     path = tmp_path / "ledger.jsonl"
@@ -269,7 +269,7 @@ def test_git_committer_time_is_not_first_publication_time(tmp_path, monkeypatch)
     assert not any(a["category"] == "PUBLICATION_VERIFIED" for a in D.cmd_verify_publication("2026-11"))
 
 
-@pytest.mark.xfail(strict=True, reason="G9: Yahoo prior prices remain adjusted by a split after the information cutoff")
+@pytest.mark.xfail(strict=True, raises=AssertionError, reason="G9: Yahoo prior prices remain adjusted by a split after the information cutoff")
 def test_future_split_cannot_rewrite_observed_historical_quote(tmp_path):
     payload = {"chart": {"result": [{"meta": {"exchangeTimezoneName": "America/New_York"},
         "timestamp": [int(pd.Timestamp("2026-11-05T14:30:00Z").timestamp())],
@@ -281,11 +281,12 @@ def test_future_split_cannot_rewrite_observed_historical_quote(tmp_path):
     assert s.iloc[0] == 100.0  # as-traded price before the injected December split
 
 
-@pytest.mark.xfail(strict=True, reason="G10: missed deadline refuses the entire cohort, including B0/B1")
+@pytest.mark.xfail(strict=True, raises=D.StageError, reason="G10: missed deadline refuses the entire cohort, including B0/B1")
 def test_missed_review_deadline_still_records_b0_b1(tmp_path, monkeypatch):
     month = "2099-12"
     packet_path = tmp_path / "packet.json"
-    pk = {"regions": {"US": {"schedule": {"registrationDeadlineUtc": "2026-11-09T14:30:00Z"}}}}
+    pk = {"signalHistoryCommit": "synthetic", "receiptsBlob": "synthetic",
+          "regions": {"US": {"schedule": {"registrationDeadlineUtc": "2026-11-09T14:30:00Z"}}}}
     packet_path.write_text(json.dumps(pk))
     monkeypatch.setattr(D, "packet_path", lambda m: packet_path)
     monkeypatch.setattr(D, "reviewers_at_seal", lambda m: [])
@@ -293,7 +294,7 @@ def test_missed_review_deadline_still_records_b0_b1(tmp_path, monkeypatch):
     assert {r["path"] for r in written} == {"B0", "B1"}
 
 
-@pytest.mark.xfail(strict=True, reason="G11: new research ledger append has no lock or compare-and-swap; concurrent appends fork chain")
+@pytest.mark.xfail(strict=True, raises=L.LedgerError, reason="G11: new research ledger append has no lock or compare-and-swap; concurrent appends fork chain")
 def test_two_research_ledger_writers_cannot_fork_chain(tmp_path, monkeypatch):
     monkeypatch.setattr(L, "DRY_RUN_DIR", tmp_path)
     path = tmp_path / "ledger.jsonl"
@@ -314,7 +315,7 @@ def test_two_research_ledger_writers_cannot_fork_chain(tmp_path, monkeypatch):
     L.verify_chain(real_read(path))
 
 
-@pytest.mark.xfail(strict=True, reason="G12: official evaluate command calls base cost only; does not emit advertised 2x sensitivity")
+@pytest.mark.xfail(strict=True, raises=AssertionError, reason="G12: official evaluate command calls base cost only; does not emit advertised 2x sensitivity")
 def test_official_evaluation_reports_base_and_double_cost(tmp_path, monkeypatch):
     monkeypatch.setattr(D, "LEDGER", tmp_path / "absent.jsonl")
     calls = []
@@ -326,6 +327,35 @@ def test_official_evaluation_reports_base_and_double_cost(tmp_path, monkeypatch)
     monkeypatch.setattr(E, "outcomes", outcomes)
     D.cmd_evaluate("2028-01-01", fetch=False)
     assert calls == [1.0, 2.0]
+
+
+@pytest.mark.xfail(strict=True, raises=AssertionError, reason="G13: decide bypasses check-review's generation-after-packet-seal check")
+def test_decide_rejects_review_generated_before_packet_seal(tmp_path, monkeypatch):
+    pk = json.loads((DESK / "inputs/2026-11/evidence-pack.json").read_text())
+    pk.update(schema="DECISION_DESK_EVIDENCE_PACKET_V2", cohort="2099-12")
+    pk["sealedAtUtc"] = "2026-11-11T12:30:00Z"
+    for region, ev in pk["regions"].items():
+        ev["informationCutoffUtc"] = "2026-11-06T06:30:00Z" if region == "KR" else "2026-11-06T21:00:00Z"
+        ev["gatePassers"] = [c["ticker"] for c in ev["candidates"] if not c["gatesFailed"]]
+        ev["schedule"] = {"plannedExecution": "2026-11-12",
+                          "plannedExecutionCloseUtc": "2026-11-12T06:30:00Z" if region == "KR" else "2026-11-12T21:00:00Z",
+                          "registrationDeadlineUtc": "2026-11-12T00:00:00Z" if region == "KR" else "2026-11-12T14:30:00Z"}
+    pp = tmp_path / "packet.json"
+    pp.write_text(json.dumps(pk))
+    rv = json.loads((DESK / "ai-reviews/2026-11.json").read_text())
+    rv.update(schema="B2_AI_REVIEW_V2", cohort="2099-12", reviewer="claude", readOnlyThePacket=True)
+    rv["generatedAt"] = "2026-11-11T12:00:00Z"  # after cutoff, BEFORE packet seal
+    rv["evidencePackSha256"] = hashlib.sha256(pp.read_bytes()).hexdigest()
+    rv["packetSha256"] = rv["evidencePackSha256"]
+    rp = tmp_path / "review.json"
+    rp.write_text(json.dumps(rv))
+    monkeypatch.setattr(D, "packet_path", lambda month: pp)
+    monkeypatch.setattr(D, "review_path", lambda month, reviewer: rp)
+    monkeypatch.setattr(D, "reviewers_at_seal", lambda month: [{"id": "claude", "role": "PRIMARY_B2"}])
+    monkeypatch.setattr(D, "committed_unchanged", lambda p: True)
+    monkeypatch.setattr(D, "independence", lambda *args: {"claude": "INDEPENDENCE_NOT_VERIFIED"})
+    written, _ = D.build_v2_records("2099-12", "2026-11-11T13:00:00Z")
+    assert all(r["generatedAt"] >= pk["sealedAtUtc"] for r in written)
 
 
 def test_primary_exclusion_badge_is_present_in_both_views():

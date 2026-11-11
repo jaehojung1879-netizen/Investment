@@ -1,5 +1,5 @@
 {
-  "checkedAtUtc": "2026-11-11T23:20:42.962789+00:00",
+  "checkedAtUtc": "2026-11-11T23:29:50.805487+00:00",
   "scope": "AUDIT_ONLY_NO_EXISTING_REFS_CHANGED",
   "localMerge": {
     "commit": "37b24def6da03095ed60c86c9e83167f0c058402",
@@ -18,8 +18,8 @@
   "claudeDeskUIResearchChanged": false,
   "independent": {
     "passed": 18,
-    "knownStrictXfails": 12,
-    "runxfailFailed": 12,
+    "knownStrictXfails": 13,
+    "runxfailFailed": 13,
     "runxfailPassed": 18,
     "cleanSafetyPass": false
   },
@@ -34,7 +34,8 @@
     "twoInMemoryDeskBuildsMatchCommittedBytes": true,
     "legacyEvidencePackReproduces": true,
     "seedValidation": "PASS in isolated seed worktree",
-    "seedProductionAcceptance": "REFUSED as required"
+    "seedProductionAcceptance": "REFUSED as required",
+    "publicPinnedDeskUrl": "HTTP 200; exact SHA256 7d03a711f9e966eda2c1c8ef8a11841890b60a8bddd3e855937f4be7d8d3d20e"
   },
   "fullCombinedSuite": {
     "status": "IN_PROGRESS",
@@ -61,16 +62,17 @@
   "notes": [
     "An early seed command created only ignored synthetic data/site-data.json in the test checkout; it was removed immediately. Final seed/validation ran in a separate seed worktree. No tracked bytes changed.",
     "Initial independent harness tried watchlist=12; actual receipts disproved that premise (watchlist=5, candidates=12). Final assertions enforce the observed source chain.",
-    "Initial browser harness selector/display-name errors were corrected without changing application code."
+    "Initial browser harness selector/display-name errors were corrected without changing application code.",
+    "Final expected-failure markers constrain exception types; incomplete synthetic fixtures were corrected so G10 is REGISTRATION_CLOSED and G13 is the intended seal-order assertion, not a KeyError."
   ],
   "evidenceLogIdentities": {
     "independent-final.log": {
-      "sha256": "456b391c625c31f8b393002250ec2dce43444da1c08e8d8b0dee453b910fdacc",
+      "sha256": "5fdafd85a87b6f068aa25f7bb6e787c5ee76e657c282982d744ab593f1e8f887",
       "bytes": 111
     },
     "negative-runxfail.log": {
-      "sha256": "02c87d376df1c0986f3721655fa916a9d9101d1910c7f334b9ccb4e6046f3250",
-      "bytes": 16777
+      "sha256": "7623db289cf8517a5927ca4dce90e70e2bbd5222922ab4e789e0692d0ac6f48f",
+      "bytes": 20171
     },
     "maintenance.log": {
       "sha256": "66c071b2baff54a9cb304f3025ebd410d7e1d95648c8f8990fefa216bd2fa194",
