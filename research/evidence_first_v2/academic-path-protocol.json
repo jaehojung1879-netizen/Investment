@@ -1,0 +1,52 @@
+{
+  "studyId": "evidence-first-v2-academic-path-profitability",
+  "status": "PRE_REGISTERED_BEFORE_DOWNLOADING_THE_PORTFOLIO_RETURNS",
+  "registeredUtc": "2026-11-11",
+  "question": "Does a long-only, LARGE-CAP, high operating-profitability portfolio beat the value-weighted US market over 6- and 12-month holding windows, and did that survive publication? This is the translation question our 0-5 name long-only books face; the original evidence is long-short and broadly diversified.",
+  "whyThisPath": [
+    "Profitability is the one academic path with E1 support (Novy-Marx 2013; Fama-French 2015 RMW; QMJ profitability) that our local studies did not settle: the repository's quality sleeve (roe, margins, leverage) measured pooled 126D rank IC -0.022 (p 0.08) with KR/US sign instability (four-factor attribution audit, v2.21).",
+    "Local stock-level replication is blocked: US history is survivorship-biased (212 of 324 departed S&P 500 names unpriced), KR historical stock research is GOVERNANCE_CLOSED (kr-alpha-atlas Phase C/D) and KR stock cash economics are SOURCE_BLOCKED (#332).",
+    "The Ken French Data Library portfolios are survivorship-free (CRSP), use lagged accounting (June formation on the fiscal year ending in t-1) and are public; they answer the translation question without our blocked data."
+  ],
+  "data": {
+    "source": "Ken French Data Library (Tuck), downloaded once, SHA-256 frozen",
+    "files": {
+      "ME_OP_25": "https://mba.tuck.dartmouth.edu/pages/faculty/Ken.French/ftp/25_Portfolios_ME_OP_5x5_CSV.zip",
+      "OP_quantiles": "https://mba.tuck.dartmouth.edu/pages/faculty/Ken.French/ftp/Portfolios_Formed_on_OP_CSV.zip",
+      "ME_BM_25": "https://mba.tuck.dartmouth.edu/pages/faculty/Ken.French/ftp/25_Portfolios_5x5_CSV.zip",
+      "ME_PRIOR_25": "https://mba.tuck.dartmouth.edu/pages/faculty/Ken.French/ftp/25_Portfolios_ME_Prior_12_2_CSV.zip",
+      "FF3": "https://mba.tuck.dartmouth.edu/pages/faculty/Ken.French/ftp/F-F_Research_Data_Factors_CSV.zip"
+    },
+    "series": "value-weighted monthly returns; market = Mkt-RF + RF from FF3"
+  },
+  "primary": {"portfolio": "ME_OP_25 value-weighted 'ME5 OP5' (largest size quintile, highest operating-profitability quintile)", "benchmark": "value-weighted market"},
+  "secondaryDescriptive": {
+    "OP_HI_ALL_SIZES": "Portfolios_Formed_on_OP value-weighted top quintile ('Hi 20')",
+    "BIG_VALUE": "ME_BM_25 'ME5 BM5' (maps to our value sleeve, already locally tested)",
+    "BIG_WINNERS": "ME_PRIOR_25 'ME5 PRIOR5' (maps to our momentum sleeve, already locally tested; monthly reformation, high turnover)"
+  },
+  "windows": {
+    "full": "1963-07 .. latest",
+    "prePublication": "1963-07 .. 2012-12 (Novy-Marx JFE 2013 published 2013; Fama-French five-factor 2015)",
+    "postPublication": "2013-01 .. latest",
+    "ourEra": "2016-01 .. latest",
+    "sensitivity": "post-publication excluding calendar 2025"
+  },
+  "statistics": [
+    "annualised mean of monthly excess over the market (x12) and Newey-West HAC t with 12 lags",
+    "tracking error and information ratio",
+    "overlapping 6- and 12-month excess: share positive, 5th percentile, worst",
+    "maximum drawdown of relative wealth (portfolio / market)",
+    "decade table"
+  ],
+  "costs": {
+    "basis": "French portfolios are gross; no turnover is published. Two flat annual drags are reported beside gross: 0.5%/yr and 1.0%/yr for annually re-formed sorts (OP, BM) and 2.0%/yr for monthly re-formed momentum. These are conservative stress assumptions, not measurements."
+  },
+  "decisionRule": {
+    "TRANSFER_SUPPORTED": "post-publication HAC t >= 2.0 AND 12-month excess positive in more than half of windows AND mean excess after the 0.5%/yr drag > 0",
+    "WEAK_OR_ABSENT_AFTER_PUBLICATION": "otherwise",
+    "multiplicity": "4 portfolios; a 'significant' statement needs HAC |t| >= 2.5 (Bonferroni 0.05/4, two-sided normal approx); Novy-Marx (2015) warns combined signals inflate t-statistics, so no combination is tested",
+    "gradeEffect": "Whatever the verdict, profitability stays E1 in our grade matrix: external portfolios are not our data, our universe or a 0-5 name book. The verdict decides only whether a local E2 attempt is worth a licensed data source."
+  },
+  "notClaimed": ["anything about a 0-5 stock book's variance", "anything about Korea", "a forecast for the next 6-12 months"]
+}
