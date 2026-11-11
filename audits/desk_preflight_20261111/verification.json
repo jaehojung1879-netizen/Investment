@@ -1,5 +1,5 @@
 {
-  "checkedAtUtc": "2026-11-11T23:29:50.805487+00:00",
+  "checkedAtUtc": "2026-11-11T23:47:46.404608+00:00",
   "scope": "AUDIT_ONLY_NO_EXISTING_REFS_CHANGED",
   "localMerge": {
     "commit": "37b24def6da03095ed60c86c9e83167f0c058402",
@@ -17,10 +17,11 @@
   "researchSpecsResultsRequirementsChanged": false,
   "claudeDeskUIResearchChanged": false,
   "independent": {
-    "passed": 18,
-    "knownStrictXfails": 13,
-    "runxfailFailed": 13,
-    "runxfailPassed": 18,
+    "targetHead": "ef2f012bca5a5c4a513497eb5841f46a47325ce0",
+    "passed": 21,
+    "knownStrictXfails": 15,
+    "runxfailFailed": 15,
+    "runxfailPassed": 21,
     "cleanSafetyPass": false
   },
   "scopedCombined": {
@@ -38,15 +39,27 @@
     "publicPinnedDeskUrl": "HTTP 200; exact SHA256 7d03a711f9e966eda2c1c8ef8a11841890b60a8bddd3e855937f4be7d8d3d20e"
   },
   "fullCombinedSuite": {
-    "status": "IN_PROGRESS",
-    "log": "Local /workspace/audit-results/combined-pytest.log; final outcome will replace this field before handoff"
+    "targetHead": "d876c6f0dd87dc9e34fdb081631f8a85f649e37c",
+    "status": "COMPLETED_WITH_12_HISTORICAL_GIT_OBJECT_FAILURES",
+    "passed": 6559,
+    "failed": 12,
+    "skipped": 3,
+    "xfailed": 4,
+    "seconds": 2096.61,
+    "failedCasesRecheck": {
+      "passed": 12,
+      "failed": 0,
+      "seconds": 2.95
+    },
+    "cleanSingleRunFullPass": false,
+    "latestHeadFullSuiteRerun": false
   },
   "remote": {
     "pr321Tests": "PASS: 6521, run42369756685",
     "pr321Pages": "DIAGNOSTIC_ONLY_SUCCESS; build-and-deploy SKIPPED, run42369756681",
-    "pr334Tests": "FAIL: 1 failed /6473 passed, run43113069420",
+    "pr334Tests": "OLD d876: FAIL 1/6473 passed run43113069420; LATEST ef2: IN_PROGRESS run43118847675 (not PASS)",
     "latestMainPages": "FAIL: 1 failed /6423 passed; deploy/state SKIPPED, run43055527324",
-    "combinedPRTests": "NOT_RUN",
+    "combinedPRTests": "NOT_RUN; only isolated local merged trees tested",
     "productionDeployment": "NOT_RUN"
   },
   "firstMaintenanceAttempt": {
@@ -105,6 +118,54 @@
     "seed-production-refusal.log": {
       "sha256": "d90d9cb6d19950661cd4ac09d7489e6eaabe589a0489fcef17efa697c075f2ae",
       "bytes": 130
+    },
+    "combined-pytest.log": {
+      "sha256": "3dfe96edfe746ef02b46c8abab2b363b8c4e9a42c1ad72138508048cccb250b4",
+      "bytes": 108961
+    },
+    "combined-failures-recheck.log": {
+      "sha256": "4f4fca8b8d089159ef5bea8a6ced9f814d6890332eaeced60d78d8eeb056babd",
+      "bytes": 99
+    },
+    "rp1-recheck.log": {
+      "sha256": "9fd6ad84961f7f51f30af6d0abfc8030b9b53afc50e4dda2f38289a41b24bade",
+      "bytes": 12231
+    },
+    "rp1-hydrated-recheck.log": {
+      "sha256": "1a3b27ccec9bbcf29c2f3c35daf6cc7788bf04bc0b1770aae8bd4758b8ccb0a9",
+      "bytes": 12273
+    },
+    "rp1-final-recheck.log": {
+      "sha256": "fbf834ed000ff63cef6aba584945158c33adb38b91e49939db4a9c3b9f3ed6bd",
+      "bytes": 98
+    },
+    "latest-focused.log": {
+      "sha256": "e9c3812241f5dd3362a6715662de9f54b107cb71a56922f60d91a4504e8c1bd2",
+      "bytes": 1814
+    },
+    "latest-census-recheck.log": {
+      "sha256": "d7f9231e63ed81320f8602a06c314ecfe5a68b759d0aaf673e08f1662d3eea18",
+      "bytes": 1331
+    },
+    "latest-independent.log": {
+      "sha256": "4847776b4774f9fc01705f2436c247f3783f87ebe8234ae6cf814e339effa44b",
+      "bytes": 111
+    },
+    "latest-negative.log": {
+      "sha256": "93f4698a21c2e1cc3cae487d7841ff18e5d98c4e858d6a71b0710efc27b671a5",
+      "bytes": 22918
+    },
+    "browser-latest.log": {
+      "sha256": "d94417afebddfac855b20bd52089b7f07c582da592f05609096f78ac3d4ce8bf",
+      "bytes": 174
+    },
+    "browser-latest-legacy.log": {
+      "sha256": "d94417afebddfac855b20bd52089b7f07c582da592f05609096f78ac3d4ce8bf",
+      "bytes": 174
+    },
+    "latest-node.log": {
+      "sha256": "2c8265be073e3a8cb6960c726954883abe2f1138c1350bb59fa7f506f7662f2a",
+      "bytes": 215
     }
   },
   "productionWrites": 0,
@@ -113,5 +174,68 @@
   "workflowDispatches": 0,
   "historicalStrategyRuns": 0,
   "realModelFits": 0,
-  "sealedLockWrites": 0
+  "sealedLockWrites": 0,
+  "initialIndependent": {
+    "passed": 18,
+    "knownStrictXfails": 13,
+    "runxfailFailed": 13,
+    "runxfailPassed": 18,
+    "cleanSafetyPass": false
+  },
+  "latestIntegration": {
+    "head334": "ef2f012bca5a5c4a513497eb5841f46a47325ce0",
+    "head321": "cd2892eb6d6623c2527eeda690959d18839acc4d",
+    "commit": "f497814dd6dbcb2fb7abdf997870e962f54d30fb",
+    "parents": [
+      "ef2f012bca5a5c4a513497eb5841f46a47325ce0",
+      "cd2892eb6d6623c2527eeda690959d18839acc4d"
+    ],
+    "tree": "fb738918bd6a1561ea0ff7e97b9b757337a6ec99",
+    "reverseOrderTree": "fb738918bd6a1561ea0ff7e97b9b757337a6ec99",
+    "conflicts": 0,
+    "originalLatestDeskBytesChanged": false,
+    "protectedHashCount": 235,
+    "protectedHashFailures": 0
+  },
+  "latestChecks": {
+    "focusedPassed": 172,
+    "focusedFailed": 1,
+    "failure": "test_census_reproduces_from_the_pinned_signal_history_commit",
+    "isolatedFailureReproduced": true,
+    "censusDifferenceCount": 2,
+    "differencePaths": [
+      "/regions/KR/b1/rule",
+      "/regions/US/b1/rule"
+    ],
+    "numericalOrSelectionDifferences": 0,
+    "docstringProbe": {
+      "pythonVersions": [
+        "3.11.17",
+        "3.13.5"
+      ],
+      "stripStringsEqual": false,
+      "cleandocStringsEqual": true
+    },
+    "browserLatestAndFreshLegacy": "PASS: KR/US x1280/390; exact Git responses replayed",
+    "node": "PASS",
+    "ruff": "PASS",
+    "compileall": "PASS",
+    "publicDeskSha256": "fb005a25877efdb36f1ed876343b00c5541700f2eb059550fd85c43b2aa39c62",
+    "publicDeskUrlMatchesPin": true,
+    "legacyTemporalEvaluatorLedgerAndProtocolCodeChanged": false,
+    "allLegacyLedgerBytesChanged": false
+  },
+  "environment": {
+    "python": "3.11.17",
+    "packages": {
+      "numpy": "2.3.1",
+      "pandas": "2.3.0",
+      "scipy": "1.16.0",
+      "scikit-learn": "1.7.0",
+      "threadpoolctl": "3.7.0",
+      "joblib": "1.6.0",
+      "pytest": "8.4.1",
+      "exchange-calendars": "4.11.1"
+    }
+  }
 }

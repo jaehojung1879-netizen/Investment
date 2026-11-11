@@ -1,8 +1,22 @@
 # Decision desk: independent release preflight
 
-**Verdict: #321 + #334 integrate cleanly. The read-only desk is an experimental research disclosure, not a scientifically validated stock selector. Do not activate its writer/evaluator yet.** This is a focused delta to [#333](https://github.com/jaehojung1879-netizen/Investment/pull/333), not a new research audit or a strategy run.
+**Current verdict: #321 + latest #334 `ef2f012b` merge cleanly, but release readiness is not PASS.** The refreshed census has a Python-version-dependent metadata reproducibility failure. The desk is an experimental disclosure with zero current stock selections, not a validated stock selector. Keep its writer/evaluator disabled. This is a focused delta to [#333](https://github.com/jaehojung1879-netizen/Investment/pull/333), not a new research program.
 
 No existing branch, workflow permission, allocation, sealed result, lock or production ref was changed. This branch adds only this audit directory. Local merge commits were not pushed. Owner approval remains necessary for integration and deployment.
+
+## Latest HEAD moved during the audit: current findings supersede the old UI assessment
+
+#334 advanced from `d876c6f0` to **`ef2f012bca5a5c4a513497eb5841f46a47325ce0`** (three commits, 51-file delta). Its Evidence-First v2 now discloses **KR 300→78 factor-complete→61 B1-eligible→5 reviewed→0 selected; US 503→356→206→5→0**. This is a separate dated census, not an enlargement or repair of the original November 12/12 cohort. US membership is current survivors; liquidity is a membership proxy without volume checks. KR is a top-300 snapshot at 2026-10-30, US 2026-11-10; neither is an unrestricted full-market universe.
+
+Improvements verified: all non-benchmark paths remain **E0/E1, zero decision-eligible**; new dossiers are HOLD_FOR_RESEARCH; digit-bearing AI prose and future-dated facts are refused. Legacy B1 maps to **v3.B2 production**, legacy B2/BX to **v3.B3 AI**, with every original ledger byte preserved. **v3.B1 is an academic screen, not an executed independent rule portfolio**. The old contaminated cohort is now explicitly archived and keeps its exclusion badges. Claims of calibrated AI returns, optimal 10% sizing or investability remain unsupported. The new academic translation remains weak/E1; its arithmetic replication is not alpha validation.
+
+**Latest technical blocker:** the combined changed-area suite gives **172 PASS /1 FAIL** (`test_census_reproduces_from_the_pinned_signal_history_commit`). A second isolated run reproduces it. Independent recursive comparison finds **exactly two differences, both `/regions/{KR,US}/b1/rule` whitespace**; all numbers, nominees and funnel counts agree. `census.py` serializes `b1_screen.__doc__.strip()`. A definition-only probe proves CPython **3.11.17 versus 3.13.5** produces different `.strip()` strings and equal `inspect.cleandoc()` strings. **Claude should explicitly canonicalize the rule string and regenerate census → dossiers → desk and its app pin, retaining the exact equality assertion.** No scientific result or original November record needs changing. [Mismatch](latest-census-diff.json) · [probe](probe_docstring.py).
+
+New independent contract gaps: **G14** unknown fact fields bypass the census-value check, allowing an invented numerical fact; **G15** `contract.facts_from_census` assigns ROE's filing/publication date to every financial field, although `census.latest_filings` tracks field-specific sources. Preserve each field's actual provenance or narrow the date claim; unknown facts must be refused. These supplement the unchanged legacy evaluator/PIT/append gaps below.
+
+Latest independent suite: **21 PASS /15 typed strict XFAIL**; `--runxfail`: **15 FAIL /21 PASS**. Latest desktop/mobile + fresh legacy browser checks PASS, public desk pin SHA256 **`fb005a25877efdb36f1ed876343b00c5541700f2eb059550fd85c43b2aa39c62`** matches. Latest remote Tests **43118847675 was IN_PROGRESS**, not PASS. The completed full suite below applies to the earlier `d876c6f0` merge, not this refreshed HEAD; latest changed areas and unchanged maintenance guards were tested separately.
+
+**Current release order:** Owner may first approve exact #321 plain merge including its existing state publication consequence; observe real normal Pages/state/ledger preservation. Before approving #334 read-only publication, obtain Claude's canonical metadata fix, correct/narrow fact provenance, and **remote combined CI on the new exact HEAD**. Keep writer/evaluator/BX disabled pending their independent failures. The population and archival UI corrections previously requested are substantially implemented; do not ask Claude to redo them. Prospective fixes need a versioned contract; never repair November retrospectively.
 
 ## Exact versions
 
@@ -15,13 +29,13 @@ No existing branch, workflow permission, allocation, sealed result, lock or prod
 | #331 | `49c3aa891b1e85520c2a90d0d062678a738a87cf` |
 | #332 | `0f39c2fef93a9cf924f45ae87662de41090f2528` |
 | #333 | `61d0d3f6b003ecb95af7af1dcde1911030b4f95d` |
-| #334 | `d876c6f0dd87dc9e34fdb081631f8a85f649e37c` |
+| #334 latest | `ef2f012bca5a5c4a513497eb5841f46a47325ce0` (initially `d876c6f0dd87dc9e34fdb081631f8a85f649e37c`) |
 
-Local merge `37b24def6da03095ed60c86c9e83167f0c058402` has parents **#334, #321**, tree `0ad82bca2b021ff18eaa416695577443014fc71e`. Reverse-order `git merge-tree --write-tree <321> <334>` gives the same tree. Both PR histories and #315 parent `23522002` remain reachable. No conflict; this does not establish remote combined CI or production deployment.
+Latest local merge **`f497814dd6dbcb2fb7abdf997870e962f54d30fb`**, parents **ef2f012b, cd2892eb**, tree **`fb738918bd6a1561ea0ff7e97b9b757337a6ec99`**, has no conflicts; reverse-order merge-tree agrees. Earlier completed baseline merge `37b24def6da03095ed60c86c9e83167f0c058402` has parents **d876c6f0, cd2892eb**, tree `0ad82bca2b021ff18eaa416695577443014fc71e`. Both preserve #315 parent `23522002`. Neither is remote combined CI or production deployment.
 
 ## Evidence chain: what the implementation actually establishes
 
-Paths below are in `research/decision_desk_v1/` at exact #334 unless prefixed otherwise.
+**The following table audits the legacy November pipeline, unchanged at latest HEAD.** Paths are in `research/decision_desk_v1/` unless prefixed otherwise. Its population limitations do not describe the new separate 300/503 census above.
 
 | Link / requested check | Independent finding |
 |---|---|
@@ -44,7 +58,7 @@ Paths below are in `research/decision_desk_v1/` at exact #334 unless prefixed ot
 
 ## Reproduced gaps and release gates
 
-`test_independent.py` has **18 passing cases +13 strict expected failures**, each constrained to its intended failure type. Running `--runxfail` produces **13 FAIL /18 PASS**, including actual future-information injections. These are unmet release assertions; the default xfail summary must never be called a clean safety PASS. No assertion in existing tests was relaxed.
+At latest HEAD `test_independent.py` has **21 passing cases +15 strict expected failures**, each constrained to its intended failure type. Running `--runxfail` produces **15 FAIL /21 PASS**, including actual future-information injections. Initial-head results were 18 PASS /13 XFAIL; the new dossier rejects digits/future dates but has G14/G15. These are unmet release assertions, not a clean safety PASS. No assertion in existing tests was relaxed.
 
 | Gap | Counterexample / required treatment |
 |---|---|
@@ -56,6 +70,7 @@ Paths below are in `research/decision_desk_v1/` at exact #334 unless prefixed ot
 | G10 | `desk.py:196` refuses **all** records after deadline; it does not automatically record the promised B0/B1 + B2_NO_REVIEW fallback. Clarify/fix the missed-deadline path without backfilling B2. |
 | G11 | `ledger.py:163` has no lock/CAS. Two concurrent valid appends fork the hash chain. Keep this writer disabled/single-process; use an atomic append transaction before activation. Existing production ledger and #321 state publisher are separate paths. |
 | G13 | `desk.py:196` calls `judgment.check_review` directly, bypassing `cmd_check_review`'s generation-after-packet-seal check. A review dated before packet sealing produces v2 records. Require stage/time validation in the actual decide path. |
+| G14/G15 | New `evidence_first_v2/contract.py`: unknown fact names evade value matching; financial fact dates all reuse `roeFrom`. Tested separately at latest HEAD; not failures of the improved digit/future-date rejection. |
 
 ## CI / Pages / release decision
 
@@ -64,18 +79,18 @@ Paths below are in `research/decision_desk_v1/` at exact #334 unless prefixed ot
 - #334 exact remote Tests [43113069420](https://github.com/jaehojung1879-netizen/Investment/actions/runs/43113069420): **1 failed /6,473 passed**, same threadpoolctl **3.8.0** failure. This is not a remote CI PASS; the combined local constraints are not on its branch.
 - Latest main Pages [43055527324](https://github.com/jaehojung1879-netizen/Investment/actions/runs/43055527324): **1 failed /6,423 passed**, installed threadpoolctl **3.8.0**, expected SINGLE_THREAD but raised PINNED_DEPENDENCY_VERSION_REQUIRED. Deploy/state publication SKIPPED. **Common CI failure remains on main.**
 - Local combined: **50/50 desk tests**, legacy/desk Node contracts, Ruff/compileall, **235 protected hashes**, unchanged `research_specs/`, `docs/results/`, requirements, and unchanged #334 UI/research bytes. State-publisher concurrency, base-tree preservation, force:false retry and old ledger tests are exercised; actual branch-policy/token/disk behavior is not established by mocks.
-- Desktop/mobile browser: **KR/US ×1280/390 PASS**, no overflow/page errors, plus fresh pinned legacy ETF receipt renders correctly. These use exact Git response replay, not a production URL/deployment. The real public DESK raw URL separately returned bytes matching SHA256 `7d03a711…d3d20e`. Historical/stale C1/C2 blocks remain visible; no allocation is changed.
-- Full combined suite and final remote #334 status: see [verification.json](verification.json) and evidence logs for the completed results; only those exact results may be called PASS.
+- Initial-head desktop/mobile browser: **KR/US ×1280/390 PASS**, no overflow/page errors, plus fresh pinned legacy ETF receipt renders correctly. These use exact Git response replay, not a production URL/deployment. The real public DESK raw URL separately returned bytes matching SHA256 `7d03a711…d3d20e`. Historical/stale C1/C2 blocks remain visible; no allocation is changed.
+- **Earlier-head full combined suite:** 6,559 PASS /12 FAIL /3 SKIP /4 XFAIL in 2,096.61s. All 12 failures were missing historical Git blobs; after hydration, **all 12 PASS in 2.95s**. Every test passes across those runs, but **there was no clean single-run full PASS**. Latest-head changed-area suite instead has the real metadata mismatch above. See [verification.json](verification.json); do not transfer old-HEAD/full-suite labels to latest HEAD.
 
-**Safe order / minimal Owner action:** (1) approve **exact #321 plain merge**, explicitly including its existing production state-publisher change; a main push already triggers normal Pages, so approval must cover that operational consequence. Do not squash away #315 ancestry. Observe main Tests → real build/validation → deploy → state publication, checking ledger subtree identity before/after and normal concurrent ledger ancestry. (2) Claude narrows the visible claims: 12 selected/5 enriched population, identical B0/B1, experimental 10%, uncalibrated AI, November exclusion, and limited Git-time proof. Keep evaluations pending and writer disabled; address evaluator gaps before activation. (3) Incorporate approved main into #334 with preserved ancestry; run remote combined Tests on the new exact HEAD. Owner then approves **read-only #334 merge/publication only**, followed by real URL/hash and old/new-view smoke checks. (4) Writer activation, monthly operator assignment and BX enablement require separate approval after G1/G2/G5/G6/G7/G11/G12/G13 are resolved or explicitly prevented by the operating contract. No source license purchase or historical strategy rerun is necessary merely to publish accurately labeled research.
+**Owner action:** follow the current release order at the top. Exact #321 approval includes its existing deploy/state behavior because a main push triggers normal Pages. Exact #334 approval stays conditional on the metadata fix, accurate fact provenance and remote combined CI. No new writer, BX, license purchase or historical study execution is authorized by this audit.
 
-**Answer:** verified are provenance links, frozen-record preservation, selected-pool/gate accounting, scoped return arithmetic and local integration. Experimental are stock-selection value, AI labels, 10% sizing, full PIT/vintage independence and future executable economics. The website needs approved #321 operational integration, narrower #334 disclosures, exact combined remote CI, then approved read-only publication with production evidence. This audit grants none of those operational approvals.
+**Answer:** verified are frozen-record preservation, legacy selected-pool accounting, latest census numerical/nominee agreement, scoped synthetic return arithmetic and ancestry-preserving local integration. Experimental are stock-selection value, AI interpretation, fixed sizing, full PIT/vintage independence and future executable economics. Latest publication needs explicit census metadata canonicalization, accurate/narrow fact dates, approved #321 operations, exact combined remote CI and approved read-only #334 publication. No writer activation or production deployment is approved or claimed here.
 
 ## Reproduction
 
 ```bash
 git fetch origin main signal-history refs/pull/321/head refs/pull/329/head refs/pull/330/head refs/pull/331/head refs/pull/332/head refs/pull/333/head refs/pull/334/head
-# In a NEW detached worktree at d876c6f0 (never Claude's active worktree):
+# In a NEW detached worktree at ef2f012b (never Claude's active worktree):
 git merge --no-ff --no-edit cd2892eb6d6623c2527eeda690959d18839acc4d
 pip install -c constraints/ci-registered-numerics-v1.txt -r requirements.txt -r requirements-dev.txt
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1

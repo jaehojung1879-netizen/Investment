@@ -7,6 +7,7 @@ import copy
 from concurrent.futures import ThreadPoolExecutor
 import gzip
 import hashlib
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -364,3 +365,64 @@ for(const m of ['KR','US']) {let h=a.deskMarkup(d,m,Date.parse('2026-11-11T13:00
 if(!h.includes('PIT 오염 — 주 비교 제외')) process.exit(1);}
 """
     subprocess.run(["node", "-e", code], cwd=TARGET, check=True)
+
+
+@pytest.fixture
+def evidence_first():
+    folder = TARGET / "research/evidence_first_v2"
+    if not folder.exists():
+        pytest.skip("Evidence-First added after initial d876c6f0 audit")
+    spec = importlib.util.spec_from_file_location("independent_evidence_contract", folder / "contract.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return folder, module
+
+
+def test_latest_funnel_and_evidence_grades_do_not_promote(evidence_first):
+    folder, contract = evidence_first
+    census = json.loads((folder / "results/census.json").read_text())
+    for region, expected in (("KR", (300, 78, 61, 5, 0)), ("US", (503, 356, 206, 5, 0))):
+        f = census["regions"][region]["funnel"]
+        assert tuple(f[i]["remaining"] for i in (0, 4, 6, 7, 8)) == expected
+        for before, after in zip(f[:4], f[1:5]):
+            assert before["remaining"] - sum(after["dropped"].values()) == after["remaining"]
+    grades = contract.validate_grades(json.loads((folder / "evidence-grades.json").read_text()))
+    assert not any(g["decisionEligible"] for g in grades.values() if g["grade"] != "BENCHMARK")
+
+
+@pytest.mark.parametrize("injection", ["future_publication", "numeric_forecast"])
+def test_latest_dossier_rejects_future_date_and_numeric_forecast(evidence_first, injection):
+    folder, contract = evidence_first
+    d = copy.deepcopy(json.loads((folder / "results/b3-dossiers.json").read_text())["dossiers"][0])
+    region = json.loads((folder / "results/census.json").read_text())["regions"][d["region"]]
+    rows = {r["ticker"]: r for r in region["b1"]["topQuintile"]}
+    if injection == "future_publication":
+        d["facts"][0]["source"]["availableFrom"] = "2099-01-01"
+    else:
+        d["interpretation"] = ["Expected return 999 percent"]
+    with pytest.raises(ValueError):
+        contract.validate_dossier(d, "E1", rows)
+
+
+@pytest.mark.xfail(strict=True, raises=pytest.fail.Exception, reason="G14: unknown fact field bypasses census value validation")
+def test_latest_dossier_rejects_an_unobserved_fact_number(evidence_first):
+    folder, contract = evidence_first
+    d = copy.deepcopy(json.loads((folder / "results/b3-dossiers.json").read_text())["dossiers"][0])
+    region = json.loads((folder / "results/census.json").read_text())["regions"][d["region"]]
+    rows = {r["ticker"]: r for r in region["b1"]["topQuintile"]}
+    d["facts"].append({"field": "unobservedFutureReturnPct", "label": "unverified forecast", "value": 999,
+                       "source": {"availableFrom": "2000-01-01"}})
+    with pytest.raises(ValueError):
+        contract.validate_dossier(d, "E1", rows)
+
+
+@pytest.mark.xfail(strict=True, raises=AssertionError, reason="G15: every financial fact reuses ROE's date, ignoring field-specific provenance")
+def test_latest_financial_facts_keep_their_own_publication_dates(evidence_first):
+    _, contract = evidence_first
+    roe_from = {"availableFrom": "2026-01-01", "reportDate": "2025-09-30"}
+    op_from = {"availableFrom": "2026-10-30", "reportDate": "2026-09-30"}
+    row = {"roe": .1, "operatingMargin": .2, "debtToEquity": .5, "bookToPrice": .3, "momentum12_2": .4,
+           "roeFrom": roe_from, "fieldSources": {"roe": roe_from, "operatingMargin": op_from, "debtToEquity": op_from}}
+    facts = contract.facts_from_census("US", row, "2026-11-10", "synthetic")
+    op_fact = next(f for f in facts if f["field"] == "operatingMargin")
+    assert op_fact["source"]["availableFrom"] == op_from["availableFrom"]

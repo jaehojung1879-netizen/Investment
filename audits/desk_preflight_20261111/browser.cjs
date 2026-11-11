@@ -46,6 +46,7 @@ const pin = process.env.PUBLICATION_PIN || '6398e94feddd4f552910d31b36bc8db07665
   for(const market of ['KR','US']){
    await page.locator(`button[data-market="${market}"]`).click();
    await page.waitForSelector(`[data-desk-production="${market}"]`);
+   await page.locator('#deskPanel details').evaluateAll(ds=>ds.forEach(d=>d.open=true));
    if(process.env.CHECK_LEGACY==='1') {
     const legacy=await page.locator('#decisionPanel').innerText();
     fs.writeFileSync(path.join(output,`legacy-${market}.txt`),legacy);
@@ -53,7 +54,8 @@ const pin = process.env.PUBLICATION_PIN || '6398e94feddd4f552910d31b36bc8db07665
    }
    const text=await page.locator('#deskPanel').innerText();
    assert(text.includes('PIT 오염 — 주 비교 제외'));
-   assert(text.includes(market==='KR'?'069500.KS 100%':'TRV · 연구 비중 10%'));
+   const pickLabel=text.includes('AI 실험 기록 비중')?'TRV · AI 실험 기록 비중 10%':'TRV · 연구 비중 10%';
+   assert(text.includes(market==='KR'?'069500.KS 100%':pickLabel));
    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
    await page.screenshot({path:path.join(output,`${market}-${width}.png`),fullPage:true});
   }
