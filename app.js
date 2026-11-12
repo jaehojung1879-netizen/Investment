@@ -1166,15 +1166,32 @@ function gradeMatrixMarkup(ef, market) {
 const TRACK_KO = { A_VERIFIED_STRATEGY: ["A 검증된 실전 전략", ""], B_PROSPECTIVE_VIRTUAL: ["B 미검증 전향 가상", "warn"], C_WATCHLIST_ONLY: ["C 관심만(기록 안 함)", "blocked"],
   PRODUCTION: ["production 규칙", ""], BENCHMARK: ["기준 ETF", ""] };
 const trackBadge = (t) => { const [l, c] = TRACK_KO[t] || [t, "warn"]; return `<span class="pill ${c}" data-desk-track="${esc(t)}">${esc(l)}</span>`; };
-function fourWayMarkup(d, market) {
+// One rule for "is this the current production decision", shared by every desk view and matching the
+// operating terminal: a final status, a FINAL_WEEKLY receipt, quotes FRESH for that very session, and an
+// as-of date within staleAfterDays. Anything else is shown as a dated record, never as the current portfolio.
+function productionCurrency(p, now, limit) {
+  if (!p || p.weekStatus !== "FINAL_WEEKLY" || !FINAL_STATUSES.has(p.status))
+    return { current: false, code: "PREVIEW", label: `미리보기(${p?.weekStatus || "상태 미기록"}) — 현재 확정 판단 아님` };
+  const f = p.freshness || {};
+  if (f.status !== "FRESH" || f.observedSession !== p.asOfDate || f.expectedSession !== p.asOfDate)
+    return { current: false, code: "NOT_FRESH", label: "지역 시세가 게시 기준 미충족 — 현재 확정 판단 아님" };
+  const age = ageDays(p.asOfDate, now);
+  if (!(age <= limit)) return { current: false, code: "STALE", label: `${age}일 경과 — 과거 기록, 현재 판단 아님` };
+  return { current: true, code: "CURRENT", label: `현재 확정 판단 · ${age}일 전 기준` };
+}
+const currencyPill = (c) => `<span class="pill ${c.current ? "" : "warn"}" data-desk-currency="${esc(c.code)}">${esc(c.label)}</span>`;
+function fourWayMarkup(d, market, now = Date.now()) {
   const ef = d.evidenceFirst;
   const p = d.regions[market].production;
+  const pc = productionCurrency(p, now, d.staleAfterDays);
   const arm = ef.prospective.dryRun[market].arms.B1_ROE;
   const ds = ef.dossiers.dossiers.filter((x) => x.region === market);
   const verified = ef.grades.filter((g) => g.track === "A_VERIFIED_STRATEGY" && inRegion(g.region, market));
   const box = (key, title, body, foot) => `<article class="desk-item desk-four" data-desk-four="${key}"><b>${title}</b>${body}<p class="digest">${foot}</p></article>`;
   return `<div class="desk-grid desk-four-grid">
-    ${box("production", "1 현재 production 포트폴리오", `<p class="desk-weights">${weightsText(p.weights)}</p>`, `운영 규칙의 결과 · ${esc(p.asOfDate)} · ETF 초과성과 검증 아님`)}
+    ${box("production", pc.current ? "1 현재 production 포트폴리오" : "1 production 포트폴리오 — 현재 확정 판단 아님",
+      `<p>${currencyPill(pc)}</p><p class="desk-weights">${pc.current ? "" : "기록된 비중: "}${weightsText(p.weights)}</p>`,
+      `운영 규칙의 결과 · 기준일 ${esc(p.asOfDate)} · ${esc(p.weekStatus)} · ETF 초과성과 검증 아님`)}
     ${box("virtual", "2 학술 근거 기반 미검증 가상 전략", `<p>모의 구성: ${arm.selection.selected.length ? `${arm.selection.selected.map(esc).join(" · ")} 각 10% + ETF ${ratio(arm.weights[market === "KR" ? "069500.KS" : "SPY"], 0)}` : "0종목 (ETF 100%)"}</p>`, `B1 ROE 규칙 · 가상·미검증 · 기록 미활성 (${esc(ef.prospective.activation.split(" ")[0])}) · 매수 적격 아님`)}
     ${box("ai", "3 AI가 분석한 연구 후보", `<p>${ds.map((x) => esc(x.name)).join(" · ")}</p>`, `${ds.length}개 모두 연구 보류 · AI 정성 분석만으로는 매수 적격이 아님`)}
     ${box("verified", "4 실제 성과로 검증된 전략", `<p>${verified.length ? verified.map((g) => esc(g.label)).join(" · ") : "없음 (0개)"}</p>`, "E5(전향 성과 + Owner 승인)에 도달한 전략이 아직 없습니다")}
@@ -1197,7 +1214,7 @@ function selectionsMarkup(d, reg, market, now, limit) {
   const p = reg.production;
   const f = d.evidenceFirst.funnel[market];
   const cur = [
-    ["v3.B0 · v3.B2 production", p.asOfDate, weightsText(p.weights), "현재 운영 판단"],
+    ["v3.B0 · v3.B2 production", p.asOfDate, weightsText(p.weights), productionCurrency(p, now, limit).current ? "현재 운영 판단" : productionCurrency(p, now, limit).label],
     ["v3.B1 학술 단순 규칙", f.asOf, `심층검토 ${f.deepReview.map(esc).join(" · ")} → 공식 선정 0개`, "연구 선별, 비중 없음"],
     ["v3.B3 AI 분석", f.asOf, `${f.deepReview.length}개 모두 연구 보류`, "실험용 challenger, 비중 없음"],
   ].map(([a, b, c, e]) => `<tr data-desk-current="${esc(a)}"><td>${esc(a)}</td><td>${esc(b)}</td><td>${c}</td><td>${esc(e)}</td></tr>`).join("");
@@ -1212,7 +1229,8 @@ function deskMarkup(d, market, now = Date.now()) {
   const f = ef.funnel[market];
   const limit = d.staleAfterDays;
   const p = reg.production;
-  const prod = `<article class="desk-item desk-production" data-desk-production="${esc(market)}"><div class="card-meta"><b>현재 production 판단 · ${esc(p.policy)}</b><span>${typeBadge(p.type)} ${freshnessText(p.asOfDate, now, limit)}</span></div>
+  const pcur = productionCurrency(p, now, limit);
+  const prod = `<article class="desk-item desk-production" data-desk-production="${esc(market)}"><div class="card-meta"><b>${pcur.current ? "현재 production 판단" : "production 판단 기록"} · ${esc(p.policy)}</b><span>${typeBadge(p.type)} ${currencyPill(pcur)}</span></div>
     <p class="desk-weights">${weightsText(p.weights)} · 종목 ${esc(p.stockCount)}개</p><p>${esc(p.statusKo)}</p>
     <div class="desk-dates"><span>기준일 <b>${esc(p.asOfDate)}</b></span><span>주간 상태 <b>${esc(p.weekStatus)}</b></span><span>생성 <b>${esc(p.generatedAt)}</b></span><span>자료 신선도 <b>${esc(p.freshness?.status)}</b></span></div>
     <p class="notice">운영 규칙이 낸 결과이며, 이 규칙이 기준 ETF를 이긴다는 검증은 아닙니다. 아래 연구 경로는 이 판단을 바꾸지 않습니다.</p>
@@ -1223,8 +1241,8 @@ function deskMarkup(d, market, now = Date.now()) {
     ? `<p class="notice">기본값은 SPY입니다. QQQ는 별도 비교 기준이며 SPY를 대체하지 않습니다. 미국 개별주 과거 연구는 <b>원천 차단</b>(퇴출 ${esc(reg.singleStockEligibility.departed)}개 중 무가격 ${esc(reg.singleStockEligibility.departedNoPrice)}개, 승인 세션 ${esc(reg.singleStockEligibility.admittedSessions)}).</p>`
     : "";
   return `<p class="watch-note">${esc(d.disclaimerKo)}</p>
-    <h3 class="desk-h desk-four-h">한눈에 구분</h3>${fourWayMarkup(d, market)}
-    <h3 class="desk-h">① 현재 production ${market === "KR" ? "한국" : "미국"} 판단</h3><div class="desk-grid">${prod}</div>${us}
+    <h3 class="desk-h desk-four-h">한눈에 구분</h3>${fourWayMarkup(d, market, now)}
+    <h3 class="desk-h">① ${pcur.current ? "현재 " : ""}production ${market === "KR" ? "한국" : "미국"} 판단${pcur.current ? "" : " (현재 확정 판단 아님)"}</h3><div class="desk-grid">${prod}</div>${us}
     <h3 class="desk-h">② 데이터와 모델 적격성</h3>${eligibilityMarkup(ef, reg, market)}
     <h3 class="desk-h">③ 투자 유니버스와 후보가 줄어드는 과정</h3>${funnelMarkup(f, ef, market)}
     <h3 class="desk-h">④ 선행연구 기반 모델별 평가</h3>${academicMarkup(ef, f, market)}
@@ -1494,7 +1512,7 @@ if (typeof module !== "undefined" && module.exports)
     esc,
     CHAMPION_PATH, CHAMPION_VERSION, parseChampionReceipts, validChampionPair,
     championState, championMarkup, archivedChampionSnapshot, archivedChampionMarkup, archivedChampionReasonMarkup, displayText, statusText, decisionDatesMarkup, loadResearchPublication, siteIsCurrent, observations, rangePoints, trendSvg,
-    DESK, validDesk, deskMarkup, deskHistoryMarkup, deskLedgerMarkup, pipelineMarkup,
+    DESK, validDesk, deskMarkup, productionCurrency, deskHistoryMarkup, deskLedgerMarkup, pipelineMarkup,
     marketMarkup, macroIndicators, macroMarkup, chartDetail, institutionalMarkup,
     managerDetail, npsMarkup, safeSourceLink, cachedInstitutions, cachedNps, qqqMarkup,
   };

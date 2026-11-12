@@ -261,3 +261,35 @@ test("an unobserved or malformed dossier fact is refused, not rendered (review G
   assert.equal(a.validDesk(late), false);
   assert.ok(a.validDesk(desk()));
 });
+
+test("the top production box qualifies a preview and a stale snapshot instead of calling it current (review G16)", () => {
+  const top = (html) => html.split('data-desk-four="production"')[1].split("</article>")[0];
+  // US input is INTRA_WEEK_PREVIEW: never the current portfolio, in the box, the card or the current-selection table
+  const us = a.deskMarkup(desk(), "US", NOW);
+  assert.equal(desk().regions.US.production.weekStatus, "INTRA_WEEK_PREVIEW");
+  assert.match(top(us), /현재 확정 판단 아님/);
+  assert.match(top(us), /data-desk-currency="PREVIEW"/);
+  assert.doesNotMatch(top(us), /1 현재 production 포트폴리오/);
+  assert.match(us.split('data-desk-production="US"')[1].split("</article>")[0], /production 판단 기록/);
+  assert.doesNotMatch(us.split("⑧ 현재 선택과 과거 선택")[1].split("</table>")[0], /현재 운영 판단/);
+  // KR input is FINAL_WEEKLY and FRESH: current on 2026-11-11, stale on 2027-01-15
+  const kr = a.deskMarkup(desk(), "KR", NOW);
+  assert.match(top(kr), /1 현재 production 포트폴리오/);
+  assert.match(top(kr), /data-desk-currency="CURRENT"/);
+  const later = a.deskMarkup(desk(), "KR", Date.parse("2027-01-15T12:00:00Z"));
+  assert.match(top(later), /data-desk-currency="STALE"/);
+  assert.match(top(later), /과거 기록, 현재 판단 아님/);
+  assert.doesNotMatch(top(later), /1 현재 production 포트폴리오/);
+  assert.doesNotMatch(later.split('data-desk-production="KR"')[1].split("</article>")[0], /현재 production 판단/);
+  assert.doesNotMatch(a.deskMarkup(desk(), "US", Date.parse("2027-01-15T12:00:00Z")).split('data-desk-four="production"')[1].split("</article>")[0], /1 현재 production 포트폴리오/);
+});
+
+test("productionCurrency applies the operating terminal's final/fresh/age rule", () => {
+  const p = desk().regions.KR.production;
+  assert.equal(a.productionCurrency(p, NOW, 10).code, "CURRENT");
+  assert.equal(a.productionCurrency({ ...p, weekStatus: "INTRA_WEEK_PREVIEW" }, NOW, 10).code, "PREVIEW");
+  assert.equal(a.productionCurrency({ ...p, status: "BLOCKED" }, NOW, 10).code, "PREVIEW");
+  assert.equal(a.productionCurrency({ ...p, freshness: { ...p.freshness, status: "STALE" } }, NOW, 10).code, "NOT_FRESH");
+  assert.equal(a.productionCurrency({ ...p, freshness: { ...p.freshness, observedSession: "2026-11-05" } }, NOW, 10).code, "NOT_FRESH");
+  assert.equal(a.productionCurrency(p, Date.parse("2026-11-30T00:00:00Z"), 10).code, "STALE");
+});
