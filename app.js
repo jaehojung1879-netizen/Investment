@@ -894,6 +894,308 @@ async function loadResearchPublication(commit) {
   return {commit,latest:JSON.parse(decode(files[0])),publication:JSON.parse(decode(files[1])),receipts:await parseChampionReceipts(decode(files[2]))};
 }
 
+const RESEARCH_TRACK_SOURCES = Object.freeze(Object.fromEntries(Object.entries({
+  "economic": {
+    "commit": "e46024ca92be16b5ded9c459797a7027c1d81d23",
+    "path": "research/economic_path_readout_v1/results.json",
+    "sha256": "1267f449b4c2be285f95fa12bfb5f3e093ff05b81c805ff7830bea39343a7431",
+    "snapshotAt": "2026-11-01T04:11:00Z",
+    "format": "json"
+  },
+  "economicPins": {
+    "commit": "e46024ca92be16b5ded9c459797a7027c1d81d23",
+    "path": "research/economic_path_readout_v1/source-pins.json",
+    "sha256": "b4571cd50787e4c9b6ed248702ad9b04c1f7460c0dc2661d89e54c45decdf98e",
+    "snapshotAt": "2026-11-01T04:11:00Z",
+    "format": "json"
+  },
+  "economicPlan": {
+    "commit": "e46024ca92be16b5ded9c459797a7027c1d81d23",
+    "path": "research/economic_path_readout_v1/readout-plan.json",
+    "sha256": "0c8c723e1c46ce842c84407c5dcc117c7631404bfe1b67987a703f2ff2f76bc8",
+    "snapshotAt": "2026-11-01T04:11:00Z",
+    "format": "json"
+  },
+  "economicReadme": {
+    "commit": "e46024ca92be16b5ded9c459797a7027c1d81d23",
+    "path": "research/economic_path_readout_v1/README.md",
+    "sha256": "ba7c3182ea728850cd798f26fac6b64117051b6074a144ec637426cbd037570c",
+    "snapshotAt": "2026-11-01T04:11:00Z",
+    "format": "markdown"
+  },
+  "kr": {
+    "commit": "ee0dcca0ec9b4c43c7bc9760dc00939f3b6a6b7f",
+    "path": "research/historical_alpha_discovery_v1/results/summary.json",
+    "sha256": "808634f4699289e8ca2fa81f334130937e91b2425581676daae97f48c8278ef0",
+    "snapshotAt": "2026-10-29T12:45:34Z",
+    "format": "json"
+  },
+  "us": {
+    "commit": "9a10baef600078c132b6942e83f72b587cf0c581",
+    "path": "docs/winner-inflection-discovery/blocker-review-v3/source-funnel-20261029.json",
+    "sha256": "04ab2ebf98bfa9c82d7ac64593a12211e528e6ecc216f149e5964977878ba7a3",
+    "snapshotAt": "2026-10-28T22:47:29Z",
+    "format": "json"
+  },
+  "market": {
+    "commit": "35e5413491bae87863bf0101cf1fdacfc49e5387",
+    "path": "docs/research-program/proposals/market-research-c1c-v2.json",
+    "sha256": "a9226c440896b9b8ae1bdc998c71b780ad3d369f330ba3162b43175f8e95c0b1",
+    "snapshotAt": "2026-10-30T23:21:18Z",
+    "format": "json"
+  },
+  "industry": {
+    "commit": "a9bbae495e3d7f11140a02df3a8b7dd3024afca9",
+    "path": "docs/results/kr-industry-opportunity-anatomy-v1-result.json",
+    "sha256": "71a960e3c19ce443d058508c4ec66576e3e5fcbd7a45dc851cf8b832bff62a08",
+    "snapshotAt": "2026-10-27T12:08:19Z",
+    "format": "json"
+  },
+  "terminal": {
+    "commit": "a9bbae495e3d7f11140a02df3a8b7dd3024afca9",
+    "path": "research/industry_alpha_next_v1/kr22-recovery.json",
+    "sha256": "27ff7820ceff625826617025c7cd02735716a5e3168d671b5988c32a00f37067",
+    "snapshotAt": "2026-10-27T12:08:19Z",
+    "format": "json"
+  },
+  "atlas": {
+    "commit": "a9bbae495e3d7f11140a02df3a8b7dd3024afca9",
+    "path": "docs/kr-alpha-research-final-development-assessment.md",
+    "sha256": "9c77f6e1ef18386f61a7d91b286c53e600a9beca57de83a9f75d33039a722714",
+    "snapshotAt": "2026-10-27T12:08:19Z",
+    "format": "markdown"
+  }
+}).map(([key,value]) => [key,Object.freeze(value)])));
+// Read-only projection of existing results. This code never calculates an
+// outcome, fits a model, nominates a stock or changes an investment allocation.
+function researchPointer(document, pointer) {
+  let value = document;
+  for (const part of pointer.split('/').slice(1)) {
+    const key = part.replace(/~1/g, '/').replace(/~0/g, '~');
+    if (value === null || typeof value !== 'object' || !Object.hasOwn(value, key)) return null;
+    value = value[key];
+  }
+  return value;
+}
+function researchMetric(docs, source, pointer, label, unit, scale = 1, pair = null) {
+  const raw = researchPointer(docs[source], pointer);
+  const value = Array.isArray(raw)
+    ? (raw.length === 2 && raw.every(finite) ? raw.map(v => v * scale) : null)
+    : finite(raw) ? raw * scale : null;
+  return {label, value, unit, source, pointer, rawValue: raw ?? null,
+    denominator: pair ? pair.map(p => researchPointer(docs[source], p)) : null,
+    denominatorPointers: pair};
+}
+function researchCount(docs, source, pointer, label, unit) {
+  const rows = researchPointer(docs[source], pointer);
+  return {label,value:Array.isArray(rows)?rows.length:null,unit,source,pointer,transform:'length',denominator:null};
+}
+// Projection-only helper; source authentication belongs to loadFourTrackReport.
+function fourTrackProjection(docs) {
+  const metric = (...args) => researchMetric(docs, ...args);
+  const pair = root => [root + '/validPairs', root + '/scheduledBlocks'];
+  const kr = '/intradayVsMomentum/17', etf = '/pairedComparisons/17';
+  const ind = '/analysis/FULL/', mom = 'REL_MOM_126|CAP_WEIGHTED|H126', ocf = 'MEDIAN_ocfYieldProxy|CAP_WEIGHTED|H126';
+  const c = docs.market || {}, proposal = c.economicExperimentProposal || {};
+  const cells = c.primaryControl === 'C0' && c.auxiliaryControl === 'C1' && Array.isArray(c.families) && c.families.length && Array.isArray(c.arms) && c.arms.length
+    ? 2 * c.families.length * c.arms.length : null;
+  return [
+    {id:'kr', pr:286, title:'한국 종목 Alpha', evidenceClass:'OBSERVED_HISTORICAL', researchStatus:'BLOCKED', benchmark:'069500.KS',
+      sources:['kr'], hypothesis:'장중 수익률 신호가 모멘텀과 ETF보다 향후 H126 순수익을 개선하는가?',
+      metrics:[metric('kr',kr+'/meanBlockExcess','H126 장중 − 모멘텀 유효쌍 평균','pp',100,pair(kr)),
+        metric('kr',kr+'/descriptiveYearBootstrap95','연도블록 기술 95% 구간','pp',100),
+        metric('kr',etf+'/meanBlockExcess','H126 장중 − ETF 유효쌍 평균','pp',100,pair(etf)),
+        metric('kr',etf+'/descriptiveYearBootstrap95','ETF 대비 기술 95% 구간','pp',100),
+        metric('kr','/portfolios/2/metrics/cagr','전체 장중 CAGR','%',100),
+        metric('kr','/portfolios/2/metrics/sharpeZeroRf','전체 장중 Sharpe','ratio'),
+        metric('kr','/portfolios/2/metrics/mdd','전체 장중 MDD','%',100),
+        metric('kr','/portfolios/53/metrics/cagr','별도 H252 OVERNIGHT CAGR','%',100),
+        metric('kr','/portfolios/50/metrics/cagr','같은 H252 ETF CAGR','%',100)],
+      context:'H126은 FULL·기본비용·결측 경로 차단 표본의 부분 유효쌍이다. 모멘텀 대비 차이는 ETF 알파가 아니다. H252는 별도 EVALUATION_2020_AFTER_EMBARGO 장부(2020-03-30~2026-06-01)이며 독립 OOS로 재명명하지 않는다.',
+      limitations:'두 H126 기술 구간은 0을 포함하며, 대조군마다 유효쌍 분모가 다르다. 중첩·결측 선택편향과 미해결 기업행동 때문에 전체 장중 NAV·CAGR·Sharpe·MDD는 미확정이다.',
+      blocker:'009830·012450 분할대가와 신주 연결, 006800의 과거 권리·가치 연결이 완결되지 않았다. 미확정 경제적 가치를 0 또는 보간으로 채우지 않는다.',
+      nextDecision:'정확한 권리 비율·교부/거래 가능일·종결/재연결 가격의 공식 증거를 먼저 확보한다. 기존 결과·가격 관례를 바꾸거나 NAV를 재실행하지 않는다.'},
+    {id:'us', pr:287, title:'미국 WID 종목 Alpha', evidenceClass:'UNVERIFIED_OR_BLOCKED', researchStatus:'BLOCKED', benchmark:'SPY · QQQ 보조',
+      sources:['us'], hypothesis:'수익성 전환·현금흐름 개선이 기존 수익성·모멘텀·규모를 넘는 H126 정보를 주는가?',
+      metrics:[metric('us','/filings/records','보존 공시 메타데이터','건'),metric('us','/filings/tickers','공시 ticker','개'),
+        metric('us','/filings/bothDatesFullyValid','공개·접수 날짜 유효','건'),researchCount(docs,'us','/filings/withheld','날짜 근거 보류','건'),metric('us','/fiscalShardReview/retained','회계연도 shard 검토 후 메타데이터','건'),
+        metric('us','/outcomeReads','정식 WID 결과 읽기','회'),metric('us','/modelFits','정식 WID 모델 적합','회'),
+        metric('us','/universeFunnel/admittedMemberDates','원천 승인 구성원-주','행')],
+      context:'날짜 유효성과 회계연도 shard 검토는 별개다. 추가 IPG 회계연도 신원 보류가 있으며 메타데이터 보존은 증권·재무사실의 연구 승인이 아니다.',
+      limitations:'역사 WID 알파·CAGR·승자 순위는 NOT TESTED / UNKNOWN이다. 원천 승인 0행은 경제적으로 적격인 종목이 0개라는 뜻이 아니다.',
+      blocker:'① 접근·이용·보존 권리 ② 당시 issuer/security/share-class·퇴출 신원 ③ 주식과 SPY의 배당·분할·종결 대가를 포함한 동등 총수익.',
+      nextDecision:'기존 고정 소표본에서 이 세 원천 관문을 증빙한다. 공개 URL·Git 보유·현재 CIK를 허가나 과거 증권 신원으로 대신하지 않는다.'},
+    {id:'market', pr:289, title:'Market C · 위험관리·재진입', evidenceClass:'SYNTHETIC_OR_DESIGN', researchStatus:'NOT TESTED', benchmark:'069500.KS · US SPY 별도',
+      sources:['market'], hypothesis:'C0 구조적 한 단계 재진입이 같은 기본 정책 대비 비용 후 하방 위험과 수익을 개선하는가?',
+      metrics:[{label:'고정 합성 정책 cells',value:cells,unit:'개',source:'market',pointer:'/primaryControl + /auxiliaryControl + /families + /arms',rawValue:cells,denominator:null},
+        metric('market','/economicExperimentProposal/primaryHorizonSessions','일차 지평','sessions'),
+        metric('market','/economicExperimentProposal/secondaryHorizonSessions','보조 지평','sessions'),
+        metric('market','/economicExperimentProposal/buyCost','KR ETF 매수비용 · 1×','bp',10000),
+        metric('market','/economicExperimentProposal/sellCost','KR ETF 매도비용 · 1×','bp',10000)],
+      context:'C0 일차·C1 보조. 원래 구조적 재진입과 결과 노출 후 20세션 돌파는 다른 가설이다. 다음 세션 종가, 같은 달력·진입/청산 비용, 1×/2×/3×, 실현 평균 노출을 맞춘 사후 정적 대조를 사용한다.',
+      limitations:'새 C1c 역사 경제성 결과는 없다. CAGR pp는 각 log-growth에 expm1 후 비교; MDD는 덜 음수, CVaR 손실은 작을수록 낫다. 합성 부호는 DESCRIPTIVE_SIGN_ONLY이며 타이밍 알파·검정력·경제적 개선 판정이 아니다.',
+      blocker:'실제 공개/빈티지·이용권, ETF 기업행동·분배, KRW 현금 수익 관문이 미해결이다. 배당락 총수익의 미수금을 지급 전 자유 현금으로 볼 수 없다. 역사 현금 0은 가정 시나리오다.',
+      nextDecision:'기존 고정 원천의 사용권·known-at 및 배당 지급/미수금 금융 관례를 증빙한다. 경제적 허용오차·다중검정/추론·첫 평가 기준은 미등록 상태로 두고, 준비 후 정확한 별도 실행 승인을 받는다.',
+      executionDecision:proposal.status || 'UNKNOWN', historicalCagr:null, economicVerdict:null},
+    {id:'industry', pr:290, title:'산업 Alpha', evidenceClass:'OBSERVED_HISTORICAL', researchStatus:'BLOCKED', benchmark:'069500.KS · 산업 상대수익 대용',
+      sources:['industry','terminal','atlas'], hypothesis:'산업 상대 모멘텀·OCF 수익률 대용이 산업 순위와 향후 상대수익을 설명하는가?',
+      metrics:[metric('industry',ind+'ic/'+mom+'/mean','H126 산업 상대 모멘텀 평균 IC','IC',1,[ind+'ic/'+mom+'/validDates']),
+        metric('industry',ind+'tercile/'+mom+'/mean','상−하 삼분위 스프레드','pp',100,[ind+'tercile/'+mom+'/validDates']),
+        metric('industry',ind+'ic/'+ocf+'/mean','H126 산업 중앙 OCF-yield 평균 IC','IC',1,[ind+'ic/'+ocf+'/validDates']),
+        metric('industry',ind+'tercile/'+ocf+'/mean','OCF 상−하 삼분위 스프레드','pp',100,[ind+'tercile/'+ocf+'/validDates']),
+        metric('industry','/eligibility/FULL/eligible','적격 산업-일자','행',1,['/eligibility/FULL/eligible','/eligibility/FULL/industryDates']),
+        metric('industry',ind+'coverage/'+mom+'/bothFinite','모멘텀·라벨 모두 관측','산업-일자'),
+        metric('industry',ind+'coverage/'+ocf+'/bothFinite','OCF·라벨 모두 관측','산업-일자'),
+        metric('terminal','/summary/industry/admitted','동결 기준 종결 종목 산업 승인','개',1,['/summary/industry/admitted','/summary/securities']),
+        metric('terminal','/summary/eligibleForIndustryTotalReturnLabelToday','종결 종목 총수익 라벨 승인','개',1,['/summary/eligibleForIndustryTotalReturnLabelToday','/summary/securities'])],
+      context:'FULL / CAP_WEIGHTED / H126의 기존 기록이다. IC와 삼분위 스프레드는 서로 다른 유효 날짜 수를 갖는다. '+(docs.atlas ? '별도 Atlas 최종평가의 지명은 없고 경제성 단계는 NOT_TRIGGERED였다.' : '별도 Atlas 최종평가 원문은 현재 검증하지 못했다.'),
+      limitations:'주간 관측·H126 보유가 중첩된다. BENCHMARK_RELATIVE_ADJUSTED_INDEX_RETURN_PARTIAL_DISTRIBUTIONS로 완전한 주주 총수익이나 비용 후 ETF 초과수익이 아니다. 다중비교 보정된 경제적 확증은 없다.',
+      blocker:'종결 22종목(연구 구간 16)의 당시 산업 분류, 배당락일, 효력·승계주/현금 대가 연결이 미완결이다. 소수 미측정 종목의 비중만으로 생존편향이 작다고 단정하지 않는다.',
+      nextDecision:'당시 발행사 본인의 명시적 분류와 공식 코드북, 사건별 배당락·종결 대가 원천을 고정 목록에 연결한다. 승인안·합성 스크린을 채택 결과로 바꾸거나 Phase D/36-slot 연구를 실행하지 않는다.'},
+  ];
+}
+async function loadFourTrackReport(reader = getBytes, generatedAt = new Date().toISOString()) {
+  if (!finite(time(generatedAt)) || !/T.*(?:Z|[+-]\d\d:\d\d)$/.test(generatedAt)) throw new Error('REPORT_TIMESTAMP_REQUIRES_TIMEZONE');
+  const docs = {}, sources = {};
+  await Promise.all(Object.entries(RESEARCH_TRACK_SOURCES).map(async ([key, source]) => {
+    try {
+      if (time(source.snapshotAt) > time(generatedAt)) throw new Error('SOURCE_AFTER_REPORT_TIME');
+      const bytes = await reader(RAW(source.commit, source.path), source);
+      if (bytes.byteLength > 16 * 1024 * 1024 || await sha256(bytes) !== source.sha256) throw new Error('SOURCE_HASH_OR_SIZE_MISMATCH');
+      docs[key] = source.format === 'markdown' ? decode(bytes) : JSON.parse(decode(bytes));
+      sources[key] = {...source,status:'VERIFIED_BYTES_NOT_INVESTMENT_ADMISSION'};
+    } catch (error) {
+      const reason = ['SOURCE_AFTER_REPORT_TIME','SOURCE_HASH_OR_SIZE_MISMATCH'].includes(error.message)
+        ? error.message : error instanceof SyntaxError ? 'SOURCE_JSON_INVALID' : 'SOURCE_READ_FAILED';
+      sources[key] = {...source,status:'UNAVAILABLE_OR_UNVERIFIED',reason};
+    }
+  }));
+  const tracks = fourTrackProjection(docs).map(track => ({...track,
+    reportStatus:track.sources.every(key => docs[key] !== undefined) ? 'DONE' : 'BLOCKED',
+    sourceStatus:track.sources.some(key => docs[key] !== undefined) ? 'READ' : 'UNKNOWN',
+    context:docs[track.sources[0]] === undefined ? '고정 원문 검증 미완료 · 수치와 판단은 UNKNOWN.' : track.context,
+    limitations:docs[track.sources[0]] === undefined ? '원문 바이트를 검증한 뒤 해당 관측과 한계를 확인해야 한다.' : track.limitations,
+    investmentQualified:false, newNominations:[],
+    targetStrategyPerformance:{cagr:null,netAlpha:null,sharpe:null,mdd:null},
+    evidenceClass:docs[track.sources[0]] === undefined ? 'UNVERIFIED_OR_BLOCKED' : track.evidenceClass}));
+  return {schema:'FOUR_TRACK_RESULTS_V1',generatedAt,sources,tracks,
+    storedPerformance:storedPerformanceProjection(docs),productionEffect:'NONE',investmentNominations:[]};
+}
+function researchMetricText(metric) {
+  if (metric.value === null) return 'UNKNOWN';
+  const format = v => `${v > 0 && ['pp','IC'].includes(metric.unit) ? '+' : ''}${number(v,metric.unit === 'IC' ? 3 : ['pp','%','bp'].includes(metric.unit) ? 2 : 0)}`;
+  const v = Array.isArray(metric.value) ? '['+metric.value.map(format).join(', ')+']' : format(metric.value);
+  return v + (metric.unit === 'ratio' ? '' : ' '+metric.unit);
+}
+// Display stored #305 fields only. No NAV, return, cost or allocation calculation.
+function storedMetric(value, label, unit = 'pp', reason = null) {
+  const status = value === undefined ? 'MISSING' : value === null ? 'NULL' : finite(value) ? 'MEASURED' : 'INVALID';
+  return {label, value:status === 'MEASURED' ? value : null, unit, status,
+    reason:status === 'MEASURED' ? null : reason || `${status}_IN_STORED_RESULT`,
+    display:status === 'MEASURED'
+      ? `${value > 0 && unit === 'pp' ? '+' : ''}${value.toFixed(4)} ${unit}`
+      : `UNKNOWN · ${reason || `${status}_IN_STORED_RESULT`}`};
+}
+function storedPerformanceProjection(docs) {
+  const sourceKeys = ['economic','economicPins','economicPlan','economicReadme'];
+  const unknown = reason => ({status:'UNKNOWN',reason,sourceKeys,comparisons:[],groups:[],comparisonCount:null});
+  if (sourceKeys.some(k => docs[k] === undefined)) return unknown('SOURCE_MISSING_CORRUPT_OR_AFTER_REPORT_TIME');
+  const r = docs.economic, pins = docs.economicPins, plan = docs.economicPlan;
+  if (r?.readout !== 'economic-path-readout-v1' || r.operation !== 'READ_EXISTING_NAV_ONLY_NOT_A_NEW_STRATEGY_BACKTEST'
+      || r.productionChanges !== false || r.strategyReexecution !== false || !day(r.asOfDate)
+      || r.asOfDate !== plan?.asOfDate || JSON.stringify(r.sourcePins) !== JSON.stringify(pins)
+      || !Array.isArray(r.comparisons) || r.comparisons.length !== 12
+      || new Set(r.comparisons.map(c => c?.id)).size !== 12 || !Array.isArray(r.blockedComparisons)) {
+    return unknown('STORED_READOUT_CONTRACT_OR_PIN_MISMATCH');
+  }
+  const comparisons = [];
+  const text = v => typeof v === 'string' && v ? v : 'UNKNOWN · MISSING_IN_STORED_RESULT';
+  const count = v => Number.isInteger(v) && v >= 0 ? String(v) : 'UNKNOWN · COUNT_NOT_RECORDED';
+  for (const [index, c] of r.comparisons.entries()) {
+    const a = c.candidateInput, b = c.benchmarkInput, full = c.scopes?.FULL;
+    if (!a || !b || !full || !['KR','US'].includes(a.region) || a.region !== b.region
+        || a.currency !== b.currency || a.frequency !== b.frequency
+        || c.units !== 'PERCENT_FOR_RETURNS_AND_PP_FOR_DIFFERENCES_NOT_FRACTIONS'
+        || !['WEEKLY','DAILY'].includes(a.frequency)
+        || [a,b].some(input => !input.hashes || !Object.keys(input.hashes).length
+          || Object.entries(input.hashes).some(([path, hash]) => pins.blobs?.[`${input.sourceCommit}:${path}`] !== hash))) {
+      return unknown('STORED_COMPARISON_CONTRACT_OR_UPSTREAM_PIN_MISMATCH');
+    }
+    const windows = full.windows || {}, m = (v,label,unit,reason) => storedMetric(v,label,unit,reason);
+    const windowMetric = (key,label) => m(windows[key]?.meanExcessReturnPp,label,'pp',windows[key]?.reason);
+    const metrics = [m(full.candidate?.cagrPct,'후보 CAGR','%'),m(full.benchmark?.cagrPct,'ETF CAGR','%'),
+      m(full.cagrGapPp,'전체 CAGR 차이'),windowMetric('CALENDAR_6M','달력 6개월 평균 차이'),
+      windowMetric('CALENDAR_12M','달력 12개월 평균 차이'),
+      m(full.candidate?.observedMddPct,`${a.frequency === 'WEEKLY' ? '주간' : '일별 관측'} 후보 MDD`,'%'),
+      m(full.benchmark?.observedMddPct,`${a.frequency === 'WEEKLY' ? '주간' : '일별 관측'} ETF MDD`,'%'),
+      m(c.scopes?.FIRST_EQUAL_TIME_HALF?.cagrGapPp,'전반 CAGR 차이'),
+      m(c.scopes?.SECOND_EQUAL_TIME_HALF?.cagrGapPp,'후반 CAGR 차이')];
+    const fx = a.fxReturnsIncluded === true ? '환율 포함' : a.fxReturnsIncluded === false ? '환율 미포함' : '환율 포함 여부 UNKNOWN · 미기록';
+    const costText = input => input.costBasis === 'NET_ALREADY_CHARGED'
+      ? `NET_ALREADY_CHARGED · 원 비용 반영 완료, 재차감 없음 · ${text(input.costScenario)}`
+      : `${text(input.costBasis)} · 순수익으로 인증하지 않음 · ${text(input.costScenario)}`;
+    const accounting = Object.entries(windows).map(([key,w]) => ({key,...w}));
+    const details = [
+      ['비교 ID',c.id],['연구 / 원 Study ID',`${text(a.studyId)} / ${text(a.sourceStudyId || a.studyId)}`],
+      ['전략 / 의미',`${text(a.strategyId)} / ${text(a.strategyMeaning)}`],
+      ['벤치마크',`${text(b.instrument)} / ${text(b.strategyId)}`],
+      ['통화 / 환율',`${text(a.currency)} · ${fx} · 지역 간 종합 순위 없음`],
+      ['관측 빈도 / 의사결정 주기',`${text(a.frequency)} / ${text(a.decisionCadence)}`],
+      ['관측 기간',`${text(full.candidate?.from)} ~ ${text(full.candidate?.through)} · 후보 ${count(full.candidate?.observations)} / ETF ${count(full.benchmark?.observations)}개`],
+      ['증거 유형',text(a.evidenceClass)],['원천 상태',text(a.sourceStatus)],
+      ['후보 수익 기준',text(a.returnBasis)],['ETF 수익 기준',text(b.returnBasis)],
+      ['후보 비용 기준',costText(a)],['ETF 비용 기준',costText(b)],
+      ['경제적 비교 제한',text(c.comparativeInterpretation)],
+      ['표본 / 원 지평',`${text(a.analysisWindow)} / ${text(a.sample)} / ${a.originalHoldingHorizonLabel ?? '미기록'} (원 라벨이며 새 H126/H252 측정과 별개)`],
+      ['일정 / 누락',`원점 ${count(c.schedule?.origins)} · 후보 누락 ${Array.isArray(c.schedule?.missingCandidateDates) ? c.schedule.missingCandidateDates.length : 'UNKNOWN'} · ETF 누락 ${Array.isArray(c.schedule?.missingBenchmarkDates) ? c.schedule.missingBenchmarkDates.length : 'UNKNOWN'} · 달력 gap ${Array.isArray(c.schedule?.gapDates) ? c.schedule.gapDates.length : 'UNKNOWN'}`],
+      ['동일 시간 분할',`${text(c.equalElapsedTimeSplitDate)} · 경계를 넘는 창은 반기 요약에서 제외`],
+      ['일별 MDD',text(c.dailyMdd)],
+      ['회전율 / 추가 비용 스트레스 / 선택 알파',`UNKNOWN · ${text(c.unavailableReason)}`],
+      ['원천 한계',(a.limitations || []).join(' · ') || 'UNKNOWN · LIMITATIONS_NOT_RECORDED'],
+      ['원 관측 해석',`${text(full.observedPathVerdict)} · ${text(c.excessLabel)} · 투자 적격 판정 아님`]
+    ].map(([label,display]) => ({label,display}));
+    for (const w of accounting) {
+      details.push({label:`${w.key} 표본`,display:w.status === 'UNAVAILABLE' ? `UNAVAILABLE · ${text(w.reason)}`
+        : `예정 ${count(w.scheduledOrigins)} · 유효 ${count(w.measuredWindows)} · 상태 ${w.statusCounts && typeof w.statusCounts === 'object'
+          ? Object.entries(w.statusCounts).map(([k,v])=>`${k}=${count(v)}`).join(', ') : 'UNKNOWN · STATUS_COUNTS_NOT_RECORDED'} · 비중첩 시간 블록 ${count(w.disjointTimeWindowCount)} (독립성 증명 아님)`});
+      if (w.status !== 'UNAVAILABLE') details.push({label:`${w.key} 분포`,display:[
+        m(w.winRatePct,'승률','%'),m(w.p05ExcessReturnPp,'하위 5% 경계'),m(w.worst5PctMeanExcessReturnPp,'최하위 5% 평균')
+      ].map(v=>`${v.label}: ${v.display}`).join(' · ')});
+    }
+    comparisons.push({id:c.id,sourcePointer:`/comparisons/${index}`,region:a.region,studyId:a.studyId,
+      candidateInput:a,benchmarkInput:b,metrics,details,windowAccounting:accounting,
+      scopes:c.scopes,schedule:c.schedule,
+      warning:a.frequency === 'WEEKLY'
+        ? '전체 CAGR 우위가 모든 달력 6/12개월 구간의 우위를 뜻하지 않습니다. 주간 관측 MDD는 일별 MDD가 아니며 H126/H252는 UNAVAILABLE입니다.'
+        : '원본의 완전 경로와 해당 표본 안에서만 비교합니다. 조건부 생존 표본과 evaluation 명칭은 전체 PIT 또는 독립 OOS 증명이 아닙니다.'});
+  }
+  const studyIds = [...new Set(comparisons.map(c=>c.studyId))];
+  return {status:'READ_ONLY_STORED_RESULTS',sourceKeys,comparisonCount:comparisons.length,
+    sourceGeneratedAt:null,sourceGeneratedAtReason:'NOT_RECORDED_IN_SOURCE',readoutAsOfDate:r.asOfDate,
+    qqq:r.QQQ,comparisons,groups:studyIds.map(studyId=>({studyId,comparisonIds:comparisons.filter(c=>c.studyId===studyId).map(c=>c.id)})),
+    blockedComparisons:r.blockedComparisons,plan,sourcePins:pins,
+    notice:'과거 개발 성과의 저장 경로만 표시합니다. 신규 실전·그림자 운용 기록은 연결하지 않았습니다. 현재 판단·배분은 기존 화면을 유지합니다. C1/C2는 위 연구의 경로 ID이며 Market C1 정식 연구와 다릅니다. 순위·추천·종목 수·비중을 정하지 않습니다.'};
+}
+function storedPerformanceMarkup(p, sources = {}) {
+  const header = '<h3 id="storedPerformanceTitle">저장된 포트폴리오 성과</h3>';
+  if (!p || p.status !== 'READ_ONLY_STORED_RESULTS') return `<div id="stored-performance">${header}<p class="notice">UNKNOWN · ${esc(p?.reason || 'SOURCE_NOT_VERIFIED')} · 기존 네 트랙과 현재 판단은 유지합니다. 미확인 값을 0으로 표시하지 않습니다.</p>${(p?.sourceKeys || []).map(k=>sources[k]?.reason ? `<p class="source-caption">${esc(k)} · ${esc(sources[k].reason)}</p>` : '').join('')}</div>`;
+  const sourceMarkup = p.sourceKeys.map(key=>{const s=sources[key];return s
+    ? `<p class="digest">${link(s.path,s.path,s.commit)}<br>commit ${esc(s.commit)} · SHA256 ${esc(s.sha256)}<br>저장 커밋 시각 ${esc(s.snapshotAt)} · ${esc(s.status)}</p>` : '<p>UNKNOWN · SOURCE_METADATA_MISSING</p>';}).join('');
+  return `<div id="stored-performance" aria-labelledby="storedPerformanceTitle">${header}<p class="notice">${esc(p.notice)}</p>
+    <p>저장 비교 ${p.comparisonCount}개 · 원본에서 차단된 별도 비교 ${p.blockedComparisons.length}개 · QQQ ${esc(p.qqq?.status || 'UNKNOWN')} · ${esc(p.qqq?.reason || 'REASON_NOT_RECORDED')}</p>
+    <p class="source-caption">원본 생성 시각 UNKNOWN · ${esc(p.sourceGeneratedAtReason)}. 저장 독해 기준일 ${esc(p.readoutAsOfDate)}는 관측 종료일·생성 시각과 다릅니다. 관측 종료일은 각 경로에 표시합니다.</p>
+    ${p.groups.map(g=>`<article class="decision-card"><h3 class="digest">연구: ${esc(g.studyId)}</h3><p>동일 연구 안에서도 표본·통화·비용·수익 기준을 함께 확인합니다. 이미 반영된 비용은 다시 빼지 않으며 비용 불명은 순수익으로 인증하지 않습니다.</p>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="저장 비교 표 가로 스크롤"><table><caption>저장 비교 전체 · 가로 스크롤 가능 · %는 수익/CAGR/MDD, pp는 차이 · 수치는 원본에서 읽은 값</caption><thead><tr><th>국가 · 경로</th><th>통화</th><th>후보 CAGR</th><th>ETF CAGR</th><th>전체 차이</th><th>달력 6M 평균 차이</th><th>달력 12M 평균 차이</th><th>후보 관측 MDD</th><th>ETF 관측 MDD</th><th>전반 CAGR 차이</th><th>후반 CAGR 차이</th></tr></thead><tbody>${g.comparisonIds.map(id=>{const c=p.comparisons.find(x=>x.id===id),a=c.candidateInput;return `<tr data-stored-comparison="${esc(c.id)}"><th><a href="#stored-comparison-${p.comparisons.indexOf(c)}">${esc(c.region)} ${esc(a.strategyId)}</a></th><td>${esc(a.currency)}${a.fxReturnsIncluded===true?' · 환율 포함':''}</td>${c.metrics.map(m=>`<td>${esc(m.display)}</td>`).join('')}</tr>`;}).join('')}</tbody></table></div>
+      ${g.comparisonIds.map(id=>{const c=p.comparisons.find(x=>x.id===id);return `<div id="stored-comparison-${p.comparisons.indexOf(c)}"><h4 class="digest">${esc(c.id)}</h4><p>${[2,3,4,8].map(i=>`${esc(c.metrics[i].label)} ${esc(c.metrics[i].display)}`).join(' · ')}</p><p>${esc(c.warning)}</p><p class="source-caption">${esc(c.candidateInput.evidenceClass)} · ${esc(c.candidateInput.frequency)} · ${esc(c.candidateInput.currency)}${c.candidateInput.fxReturnsIncluded===true?' · 환율 포함':''} · ${esc(c.scopes.FULL.candidate?.from || 'UNKNOWN')} ~ ${esc(c.scopes.FULL.candidate?.through || 'UNKNOWN')}</p><details><summary>비교 조건 · 유효/누락/미성숙 표본 · 한계</summary>${c.details.map(d=>`<p class="source-caption"><b>${esc(d.label)}</b> ${esc(d.display)}</p>`).join('')}<p class="digest">results.json ${esc(c.sourcePointer)} · 원 입력 commit ${esc(c.candidateInput.sourceCommit)}<br>${esc(JSON.stringify(c.candidateInput.hashes))}</p></details></div>`;}).join('')}</article>`).join('')}
+    <details><summary>고정 입력 출처 · 처리 규약 · 차단된 경로</summary>${sourceMarkup}<p>${esc(p.plan.calendarWindows)}</p><p>${esc(p.plan.inference)}</p>${p.blockedComparisons.map(c=>`<p class="digest">${esc(c.id)} · ${esc(c.status)} · ${esc(c.reason)}</p>`).join('')}</details></div>`;
+}
+function fourTrackMarkup(report) {
+  if (!report || report.schema !== 'FOUR_TRACK_RESULTS_V1') return '<p class="empty">연구 결과 자료를 확인하지 못했습니다. UNKNOWN을 0%로 표시하지 않습니다.</p>';
+  return `<p class="notice">기존 결과의 읽기 전용 버전 스냅샷 · 생성 ${esc(utcStamp(report.generatedAt))}. OBSERVED_HISTORICAL / SYNTHETIC_OR_DESIGN / UNVERIFIED_OR_BLOCKED를 합산하지 않습니다. DONE은 보고서 원천 확인이며 투자 승인이나 연구 성공이 아닙니다. 운영은 KR069500.KS·USSPY 기본을 유지하며 새 종목 지명은 없습니다. C2 과거 재현·Oct23 CHAMPION paper·Market C는 각각 다른 연구입니다.</p>${storedPerformanceMarkup(report.storedPerformance,report.sources)}
+  <div class="table-scroll"><table><thead><tr><th>연구</th><th>증거 등급</th><th>자료 / 연구</th><th>대표 관측 · 전체 투자 알파 아님</th></tr></thead><tbody>${report.tracks.map(t=>`<tr><th><a href="https://github.com/${REPO}/pull/${t.pr}">${esc(t.title)} #${t.pr}</a></th><td>${esc(t.evidenceClass)}</td><td>${esc(t.reportStatus)} / ${esc(t.researchStatus)}</td><td>${(t.id==='kr'||t.id==='industry'?[t.metrics[0],t.metrics[2]]:[t.metrics[0]]).map(m=>esc(researchMetricText(m))+' · '+esc(m.label)).join('<br>')}</td></tr>`).join('')}</tbody></table></div>
+  ${report.tracks.map(t=>`<article class="decision-card" data-research-track="${t.id}" data-evidence-class="${t.evidenceClass}"><div class="card-meta"><h3>${esc(t.title)} · #${t.pr}</h3><span class="pill warn">${esc(t.researchStatus)} · 투자 적격 미확인</span></div><p><b>가설</b> ${esc(t.hypothesis)}</p><p class="source-caption">비교 기준 ${esc(t.benchmark)} · ${esc(t.evidenceClass)}</p><div class="metric-cards">${t.metrics.map(m=>`<div class="evidence-box"><b>${esc(m.label)}</b><p>${esc(researchMetricText(m))}</p>${m.denominator ? `<small>유효 표본 ${m.denominator.map(v=>finite(v)?number(v,0):'UNKNOWN').join(' / ')}${m.denominator.length===1?' 날짜':''}</small>` : ''}</div>`).join('')}</div><p>${esc(t.context)}</p><p class="notice"><b>신뢰성과 한계</b> ${esc(t.limitations)}</p><p><b>남은 차단</b> ${esc(t.blocker)}</p><p><b>다음 결정</b> ${esc(t.nextDecision)}</p><details><summary>고정 원문 · 시각 · 수치 위치와 검증</summary>${t.sources.map(key=>{const s=report.sources[key];return `<p class="digest">${link(s.path,s.path,s.commit)}<br>자료/코드 스냅샷 커밋 시각 ${esc(s.snapshotAt)} (관측일·현재 시세와 별개)<br>commit ${esc(s.commit)}<br>SHA256 ${esc(s.sha256)} · ${esc(s.status)}</p>`;}).join('')}<p>각 수치의 원문 JSON pointer; 백분율·pp·bp는 원문 비율의 단위 변환만 합니다.</p>${t.metrics.map(m=>`<p class="digest">${esc(m.label)}: ${esc(m.source)} ${esc(m.pointer)}${m.denominatorPointers?' · 표본 '+esc(m.denominatorPointers.join(' / ')):''}</p>`).join('')}<p>원문 해시 불일치·접근 실패는 UNKNOWN. 성공한 CI·Git 객체 보유·메타데이터만으로 투자 적격을 승인하지 않습니다. 이 뷰는 관측 결과만 읽고 수익률/NAV·모델·비중을 계산하지 않습니다.</p></details></article>`).join('')}`;
+}
+
 function startTerminal() {
   const $ = (s) => document.querySelector(s);
   let market = "KR";
@@ -1105,6 +1407,9 @@ function startTerminal() {
   render();
   refresh();
   loadSite();
+  const trackPanel = $("#researchTracksPanel");
+  if (trackPanel) loadFourTrackReport().then(r => {trackPanel.innerHTML = fourTrackMarkup(r);})
+    .catch(() => {trackPanel.innerHTML = fourTrackMarkup(null);});
   window.setInterval(()=>{refresh();loadSite();}, 15 * 60 * 1000);
 }
 
@@ -1114,6 +1419,9 @@ if (typeof module !== "undefined" && module.exports)
   module.exports = {
     SOURCES,
     SOURCE_COMMIT,
+    RESEARCH_TRACK_SOURCES, researchPointer, researchMetric, fourTrackProjection,
+    loadFourTrackReport, fourTrackMarkup, researchMetricText,
+    storedPerformanceProjection, storedPerformanceMarkup, storedMetric,
     canonicalReceiptLine,
     sha256,
     parseReceipts,
