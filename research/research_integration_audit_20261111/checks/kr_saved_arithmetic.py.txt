@@ -1,0 +1,114 @@
+"""Read-only independent arithmetic on saved outputs and official benchmark data.
+
+Does not import strategy modules, build labels, fit a model or simulate a portfolio.
+"""
+import hashlib
+import json
+import math
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+
+BASE = Path(__file__).resolve().parent
+STUDY = BASE / "research/adaptive_cocktail_v1"
+SRC = BASE / "docs/audits/kr-alpha-atlas-phase-c-integrity"
+results = json.loads((STUDY / "results/results.json").read_text())
+rec = json.loads((SRC / "benchmark-reconciliation-corrected.json").read_text())
+
+
+def issuer(path):
+    x = pd.read_excel(path, header=None).iloc[4:]
+    x.index = pd.to_datetime(x[0].astype(str), format="%Y%m%d")
+    x = x[[1, 5]].astype(float).sort_index()
+    x.columns = ["price", "nav"]
+    return x
+
+
+x = issuer(SRC / "sources/issuer-standard.xls")
+b = pd.Series({r["date"]: r["Close"] for r in rec["correctedBenchmarkQuotes"]})
+b.index = pd.to_datetime(b.index)
+x = x.reindex(b.index)
+cash = pd.Series({pd.Timestamp(r["exDate"]): r["cashKrwPerUnit"] for r in rec["distributions"]})
+cash = cash.reindex(x.index).fillna(0)
+growth = (x.price + cash) / x.price.shift(1)
+growth.iloc[0] = 1.0
+rebuilt = growth.cumprod()
+
+out = {"head": "0a1f494171576af6928fe531145a8c8f050253fd", "scope": "SAVED_OUTPUT_ARITHMETIC_AND_BENCHMARK_SOURCE_ONLY_NO_STRATEGY_RUN"}
+out["sourceHashes"] = {}
+manifest = json.loads((SRC / "sources/sources.json").read_text())
+for k, v in manifest["files"].items():
+    p = SRC / "sources" / v["path"]
+    actual = hashlib.sha256(p.read_bytes()).hexdigest()
+    out["sourceHashes"][k] = {"sha256": actual, "matchesManifest": actual == v["sha256"]}
+out["officialBenchmarkReconstruction"] = {
+    "sessions": len(x), "distributionsUsed": int((cash > 0).sum()),
+    "formula": "(raw_market_close_t + gross_cash_ex_date_t) / raw_market_close_previous",
+    "maxRelativeDifferenceFromStoredCorrected": float((rebuilt / b - 1).abs().max()),
+    "cashSourceAuditLimit": "Recent 20 payments checked against preserved issuer API; earlier 26 events reused from reconciliation schedule, not fully re-extracted from all official PDFs.",
+}
+api = json.loads((SRC / "sources/issuer-dividends.json").read_text())
+stored_by_record = {r["recordDate"].replace("-", ""): r["cashKrwPerUnit"] for r in rec["distributions"]}
+out["recentOfficialCashCheck"] = {"records": len(api["dividList"]), "allAmountsMatch": all(float(r["dividA"]) == stored_by_record[r["basicD"]] for r in api["dividList"])}
+live = issuer(BASE / "live-issuer-standard.xls")
+common = x.index.intersection(live.index)
+out["liveOfficialIssuerCrosscheck"] = {
+    "url": manifest["files"]["issuerPrices"]["url"],
+    "retrievedUtcDate": "2026-11-11", "sha256": hashlib.sha256((BASE / "live-issuer-standard.xls").read_bytes()).hexdigest(),
+    "commonSessions": len(common), "maxAbsRawPriceDifferenceKrw": float((x.loc[common, "price"] - live.loc[common, "price"]).abs().max()),
+    "maxAbsNavDifferenceKrw": float((x.loc[common, "nav"] - live.loc[common, "nav"]).abs().max()),
+    "note": "URL date parameter does not freeze response: live file has appended dates through 2026-11-10. Comparison restricted to saved benchmark sessions.",
+}
+rr = x.pct_change()
+big = rr.price.loc["2026"].abs().sort_values(ascending=False).head(12).index.sort_values()
+out["large2026DailyMoves"] = [{"date": str(d.date()), "rawPrice": x.at[d, "price"], "rawMarketReturn": rr.at[d, "price"], "navReturn": rr.at[d, "nav"], "grossCash": cash.at[d], "rebuiltTotalReturn": growth.at[d] - 1} for d in big]
+out["annualBenchmark"] = {}
+for yr in (2025, 2026):
+    days = b[b.index.year == yr].index
+    prior = b.index[b.index < days[0]][-1]
+    r = rebuilt.loc[days[-1]] / rebuilt.loc[prior] - 1
+    out["annualBenchmark"][yr] = {"recomputed": r, "storedAnnualComparison": next(a["internalReturn"] for a in rec["annualComparisons"] if a["year"] == yr)}
+
+start, end = map(pd.Timestamp, (results["window"]["start"], results["window"]["end"]))
+bb = rebuilt.loc[start:end]
+yrs = (len(bb) - 1) / 252
+out["s0CagrFromOfficialSource"] = (bb.iloc[-1] / bb.iloc[0]) ** (1 / yrs) - 1
+out["annualReturnChainChecks"] = {}
+for name, m in results["performance"].items():
+    wealth = math.prod(1 + y["ret"] for y in m["yearly"].values())
+    cagr = wealth ** (1 / m["years"]) - 1
+    out["annualReturnChainChecks"][name] = {"recomputedCagr": cagr, "reportedCagr": m["cagr"], "absoluteDifference": abs(cagr - m["cagr"])}
+phase = results["postHoc"]["rebalancePhase"]["byPhase"]
+out["phaseExcessCagrPp"] = {n: [100 * phase[str(p)][n]["excessCagr"] for p in range(4)] for n in ("S1_INDUSTRY_MOMENTUM", "S2_VALUE_CONFIRMED", "SLEEVE_MOMENTUM_SWITCH")}
+out["phaseWindowStarts"] = {p: d["_window"]["start"] for p, d in phase.items()}
+out["s2CostX2ExcessPp"] = 100 * (results["postHoc"]["costX2"]["S2_VALUE_CONFIRMED"] - results["postHoc"]["costX2"]["S0_ETF"])
+out["s2Without2025ExcessPp"] = 100 * (results["postHoc"]["cagrWithout2025"]["S2_VALUE_CONFIRMED"] - results["postHoc"]["cagrWithout2025"]["S0_ETF"])
+out["momentumExclusionExcessPp"] = 100 * (results["postHoc"]["excludeDefenseAndElectronics"]["SLEEVE_MOMENTUM_SWITCH"] - results["postHoc"]["excludeDefenseAndElectronics"]["S0_ETF"])
+out["momentumWithout2025ExcessPp"] = 100 * (results["postHoc"]["cagrWithout2025"]["SLEEVE_MOMENTUM_SWITCH"] - results["postHoc"]["cagrWithout2025"]["S0_ETF"])
+
+p = np.array([r["p"] for r in results["q1Predictability"]])
+m = len(p)
+order = np.argsort(p)
+adj = np.empty(m)
+running = 1.0
+for rank, i in reversed(list(enumerate(order, 1))):
+    running = min(running, p[i] * m * sum(1 / j for j in range(1, m + 1)) / rank)
+    adj[i] = min(1.0, running)
+out["q1SavedPvalueRecheck"] = {"cells": m, "rawBelow05": int((p < .05).sum()), "byBelow10": int((adj <= .10).sum()), "minimumRawP": float(p.min()), "minimumRecomputedBY": float(adj.min()), "precisionLimit": "Saved raw p-values rounded to five decimals; original regressions not rerun."}
+ps = sorted((v["vsS0"]["twoSidedP"], n) for n, v in results["inference"].items())
+out["sameSixPolicyHolmVsEtf"] = {}
+running = 0.0
+for j, (pvalue, name) in enumerate(ps):
+    running = max(running, min(1.0, (len(ps) - j) * pvalue))
+    out["sameSixPolicyHolmVsEtf"][name] = {"storedUnadjustedP": pvalue, "independentlyComputedHolmP": running}
+out["oosR2"] = {n: d["oosForecast"] for n, d in results["behaviour"].items() if "oosForecast" in d}
+out["oosR2VerificationLimit"] = "Saved aggregate values and implementation formula inspected; raw predictions, matured labels and per-fold historical-mean forecasts absent, so numerical R2 not independently recomputable without prohibited model/label reruns."
+out["availability"] = json.loads((STUDY / "results/summary-tables.json").read_text())["stateAvailability"]
+out["withheldWouldPick"] = results["withheldWouldHavePickedRebalances"]
+out["currentBenchmarkStateRecomputed"] = {}
+d = pd.Timestamp(results["currentState"]["signalDate"])
+z = rebuilt.loc[:d]
+out["currentBenchmarkStateRecomputed"] = {"signalDate": str(d.date()), "MKT_TREND_63": z.iloc[-1] / z.iloc[-64] - 1, "MKT_TREND_252": z.iloc[-1] / z.iloc[-253] - 1, "MKT_VOL_63": z.pct_change().tail(63).std() * math.sqrt(252), "MKT_DD_252": z.iloc[-1] / z.tail(252).max() - 1}
+(BASE / "independent-checks.json").write_text(json.dumps(out, indent=2, ensure_ascii=False) + "\n")
+print(json.dumps({k: v for k, v in out.items() if k not in ("availability", "oosR2", "annualReturnChainChecks", "sourceHashes", "large2026DailyMoves")}, indent=2))

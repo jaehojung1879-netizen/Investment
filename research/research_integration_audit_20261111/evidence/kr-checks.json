@@ -1,0 +1,476 @@
+{
+  "head": "0a1f494171576af6928fe531145a8c8f050253fd",
+  "scope": "SAVED_OUTPUT_ARITHMETIC_AND_BENCHMARK_SOURCE_ONLY_NO_STRATEGY_RUN",
+  "sourceHashes": {
+    "issuerPrices": {
+      "sha256": "cbdd7a0ce340228ddcfc714de637c512f73c2d691d84ae59a28cfb406d8437b9",
+      "matchesManifest": true
+    },
+    "issuerDistributions": {
+      "sha256": "3f23e3a8ce9c34506e1316bc8b6263c85cfa78086c3725743e02a3d653eeb0df",
+      "matchesManifest": true
+    },
+    "issuerDistributionsXls": {
+      "sha256": "7ed6c79dce2e4baaf9791311e489b7d5bb4294d8a6db34f7572b45110394bab1",
+      "matchesManifest": true
+    },
+    "vendorPrices": {
+      "sha256": "3697d1dc608563a012ec55571a8ae4b5145cfbfa4a630de673059ecfe9b5759d",
+      "matchesManifest": true
+    }
+  },
+  "officialBenchmarkReconstruction": {
+    "sessions": 3612,
+    "distributionsUsed": 46,
+    "formula": "(raw_market_close_t + gross_cash_ex_date_t) / raw_market_close_previous",
+    "maxRelativeDifferenceFromStoredCorrected": 0.0,
+    "cashSourceAuditLimit": "Recent 20 payments checked against preserved issuer API; earlier 26 events reused from reconciliation schedule, not fully re-extracted from all official PDFs."
+  },
+  "recentOfficialCashCheck": {
+    "records": 20,
+    "allAmountsMatch": true
+  },
+  "liveOfficialIssuerCrosscheck": {
+    "url": "https://www.samsungfund.com/excel_standar.do?fId=2ETF01&gijunYMD=20261007",
+    "retrievedUtcDate": "2026-11-11",
+    "sha256": "c14c10da71132ae47ffc2c2d2666c5edff30915ab329111df50913dd0361df7a",
+    "commonSessions": 3612,
+    "maxAbsRawPriceDifferenceKrw": 0.0,
+    "maxAbsNavDifferenceKrw": 0.0,
+    "note": "URL date parameter does not freeze response: live file has appended dates through 2026-11-10. Comparison restricted to saved benchmark sessions."
+  },
+  "large2026DailyMoves": [
+    {
+      "date": "2026-03-04",
+      "rawPrice": 75900.0,
+      "rawMarketReturn": -0.12461795744190074,
+      "navReturn": -0.11909912739202855,
+      "grossCash": 0.0,
+      "rebuiltTotalReturn": -0.12461795744190074
+    },
+    {
+      "date": "2026-03-05",
+      "rawPrice": 83570.0,
+      "rawMarketReturn": 0.1010540184453228,
+      "navReturn": 0.09805673547509719,
+      "grossCash": 0.0,
+      "rebuiltTotalReturn": 0.1010540184453228
+    },
+    {
+      "date": "2026-04-01",
+      "rawPrice": 82170.0,
+      "rawMarketReturn": 0.08935436828847942,
+      "navReturn": 0.09230264060119686,
+      "grossCash": 0.0,
+      "rebuiltTotalReturn": 0.08935436828847942
+    },
+    {
+      "date": "2026-05-21",
+      "rawPrice": 123060.0,
+      "rawMarketReturn": 0.08575966119640022,
+      "navReturn": 0.088643010663213,
+      "grossCash": 0.0,
+      "rebuiltTotalReturn": 0.08575966119640022
+    },
+    {
+      "date": "2026-06-08",
+      "rawPrice": 119560.0,
+      "rawMarketReturn": -0.0875372052201786,
+      "navReturn": -0.08536878960161487,
+      "grossCash": 0.0,
+      "rebuiltTotalReturn": -0.0875372052201786
+    },
+    {
+      "date": "2026-06-09",
+      "rawPrice": 130130.0,
+      "rawMarketReturn": 0.0884074941451991,
+      "navReturn": 0.08990889628024412,
+      "grossCash": 0.0,
+      "rebuiltTotalReturn": 0.0884074941451991
+    },
+    {
+      "date": "2026-06-23",
+      "rawPrice": 132820.0,
+      "rawMarketReturn": -0.10471504162313372,
+      "navReturn": -0.1050941546374633,
+      "grossCash": 0.0,
+      "rebuiltTotalReturn": -0.10471504162313372
+    },
+    {
+      "date": "2026-07-02",
+      "rawPrice": 123530.0,
+      "rawMarketReturn": -0.08173202007061886,
+      "navReturn": -0.08636341520137869,
+      "grossCash": 0.0,
+      "rebuiltTotalReturn": -0.08173202007061886
+    },
+    {
+      "date": "2026-07-13",
+      "rawPrice": 108820.0,
+      "rawMarketReturn": -0.09771568342937687,
+      "navReturn": -0.09852258382409651,
+      "grossCash": 0.0,
+      "rebuiltTotalReturn": -0.09771568342937687
+    },
+    {
+      "date": "2026-07-28",
+      "rawPrice": 95675.0,
+      "rawMarketReturn": -0.11190012067205046,
+      "navReturn": -0.11542602643477318,
+      "grossCash": 0.0,
+      "rebuiltTotalReturn": -0.11190012067205046
+    },
+    {
+      "date": "2026-07-31",
+      "rawPrice": 108820.0,
+      "rawMarketReturn": 0.24174131340217953,
+      "navReturn": 0.19969438630492875,
+      "grossCash": 0.0,
+      "rebuiltTotalReturn": 0.24174131340217953
+    },
+    {
+      "date": "2026-08-03",
+      "rawPrice": 99105.0,
+      "rawMarketReturn": -0.08927586840654289,
+      "navReturn": -0.057428807864204456,
+      "grossCash": 0.0,
+      "rebuiltTotalReturn": -0.08927586840654289
+    }
+  ],
+  "annualBenchmark": {
+    "2025": {
+      "recomputed": 0.9420688227518288,
+      "storedAnnualComparison": 0.9420688227518288
+    },
+    "2026": {
+      "recomputed": 0.7440928797268869,
+      "storedAnnualComparison": 0.7440928797268869
+    }
+  },
+  "s0CagrFromOfficialSource": 0.1695759776499448,
+  "annualReturnChainChecks": {
+    "S0_ETF": {
+      "recomputedCagr": 0.16957598543932972,
+      "reportedCagr": 0.169576,
+      "absoluteDifference": 1.4560670280605592e-08
+    },
+    "S1_INDUSTRY_MOMENTUM": {
+      "recomputedCagr": 0.07562089707805586,
+      "reportedCagr": 0.075621,
+      "absoluteDifference": 1.0292194413397127e-07
+    },
+    "S2_VALUE_CONFIRMED": {
+      "recomputedCagr": 0.18628565037299327,
+      "reportedCagr": 0.186286,
+      "absoluteDifference": 3.4962700673490943e-07
+    },
+    "S3_FOUR_FACTOR": {
+      "recomputedCagr": 0.08778931441419835,
+      "reportedCagr": 0.087789,
+      "absoluteDifference": 3.144141983435489e-07
+    },
+    "STATIC_EW4": {
+      "recomputedCagr": 0.14509343972635835,
+      "reportedCagr": 0.145093,
+      "absoluteDifference": 4.3972635835332063e-07
+    },
+    "STATIC_50_ETF_50_S1": {
+      "recomputedCagr": 0.13479049981681257,
+      "reportedCagr": 0.134791,
+      "absoluteDifference": 5.001831874240636e-07
+    },
+    "A1_MOMENTUM_CRASH_GUARD": {
+      "recomputedCagr": 0.15625923157233546,
+      "reportedCagr": 0.156259,
+      "absoluteDifference": 2.3157233544623956e-07
+    },
+    "A2_INVERSE_VOL_RISK_BUDGET": {
+      "recomputedCagr": 0.15443472584882523,
+      "reportedCagr": 0.154435,
+      "absoluteDifference": 2.7415117476170536e-07
+    },
+    "SLEEVE_MOMENTUM_SWITCH": {
+      "recomputedCagr": 0.324456216516253,
+      "reportedCagr": 0.324456,
+      "absoluteDifference": 2.1651625298213517e-07
+    },
+    "B1_RIDGE_ALL_STATES": {
+      "recomputedCagr": 0.0515757643753445,
+      "reportedCagr": 0.051576,
+      "absoluteDifference": 2.356246554952035e-07
+    },
+    "B2_LGBM_ALL_STATES": {
+      "recomputedCagr": 0.13515552149654808,
+      "reportedCagr": 0.135155,
+      "absoluteDifference": 5.214965480837552e-07
+    },
+    "B3_RIDGE_KR_ONLY": {
+      "recomputedCagr": 0.09884393306734784,
+      "reportedCagr": 0.098844,
+      "absoluteDifference": 6.693265215684807e-08
+    },
+    "TREND_200_CASH": {
+      "recomputedCagr": 0.1691806342982869,
+      "reportedCagr": 0.169181,
+      "absoluteDifference": 3.657017131064588e-07
+    },
+    "S4_RISK_MANAGED_ETF": {
+      "recomputedCagr": 0.13720488592865654,
+      "reportedCagr": 0.137205,
+      "absoluteDifference": 1.1407134345442493e-07
+    },
+    "SX_XGB_SENSITIVITY": {
+      "recomputedCagr": 0.2574785704956921,
+      "reportedCagr": 0.257479,
+      "absoluteDifference": 4.295043078972327e-07
+    }
+  },
+  "phaseExcessCagrPp": {
+    "S1_INDUSTRY_MOMENTUM": [
+      -9.3955,
+      2.5767,
+      -2.3674,
+      -5.0876
+    ],
+    "S2_VALUE_CONFIRMED": [
+      1.6709999999999998,
+      -0.5785,
+      6.9430000000000005,
+      2.8337000000000003
+    ],
+    "SLEEVE_MOMENTUM_SWITCH": [
+      15.488,
+      -5.8486,
+      6.561699999999999,
+      6.5071
+    ]
+  },
+  "phaseWindowStarts": {
+    "0": "2018-01-08",
+    "1": "2018-01-15",
+    "2": "2018-01-22",
+    "3": "2018-01-29"
+  },
+  "s2CostX2ExcessPp": 0.04009999999999847,
+  "s2Without2025ExcessPp": 0.0015000000000001124,
+  "momentumExclusionExcessPp": 0.5917000000000006,
+  "momentumWithout2025ExcessPp": 10.349599999999999,
+  "q1SavedPvalueRecheck": {
+    "cells": 228,
+    "rawBelow05": 12,
+    "byBelow10": 0,
+    "minimumRawP": 0.00146,
+    "minimumRecomputedBY": 1.0,
+    "precisionLimit": "Saved raw p-values rounded to five decimals; original regressions not rerun."
+  },
+  "sameSixPolicyHolmVsEtf": {
+    "SLEEVE_MOMENTUM_SWITCH": {
+      "storedUnadjustedP": 0.031,
+      "independentlyComputedHolmP": 0.186
+    },
+    "B1_RIDGE_ALL_STATES": {
+      "storedUnadjustedP": 0.075,
+      "independentlyComputedHolmP": 0.375
+    },
+    "B3_RIDGE_KR_ONLY": {
+      "storedUnadjustedP": 0.24,
+      "independentlyComputedHolmP": 0.96
+    },
+    "B2_LGBM_ALL_STATES": {
+      "storedUnadjustedP": 0.448,
+      "independentlyComputedHolmP": 1.0
+    },
+    "A2_INVERSE_VOL_RISK_BUDGET": {
+      "storedUnadjustedP": 0.666,
+      "independentlyComputedHolmP": 1.0
+    },
+    "A1_MOMENTUM_CRASH_GUARD": {
+      "storedUnadjustedP": 0.991,
+      "independentlyComputedHolmP": 1.0
+    }
+  },
+  "oosR2": {
+    "B1_RIDGE_ALL_STATES": {
+      "S1_INDUSTRY_MOMENTUM": {
+        "n": 111,
+        "oosR2VsExpandingMean": -0.8394,
+        "signHitRate": 0.532
+      },
+      "S2_VALUE_CONFIRMED": {
+        "n": 111,
+        "oosR2VsExpandingMean": -0.8036,
+        "signHitRate": 0.405
+      },
+      "S3_FOUR_FACTOR": {
+        "n": 111,
+        "oosR2VsExpandingMean": -0.54,
+        "signHitRate": 0.505
+      }
+    },
+    "B2_LGBM_ALL_STATES": {
+      "S1_INDUSTRY_MOMENTUM": {
+        "n": 111,
+        "oosR2VsExpandingMean": -0.2307,
+        "signHitRate": 0.468
+      },
+      "S2_VALUE_CONFIRMED": {
+        "n": 111,
+        "oosR2VsExpandingMean": -0.196,
+        "signHitRate": 0.405
+      },
+      "S3_FOUR_FACTOR": {
+        "n": 111,
+        "oosR2VsExpandingMean": -0.0477,
+        "signHitRate": 0.532
+      }
+    },
+    "B3_RIDGE_KR_ONLY": {
+      "S1_INDUSTRY_MOMENTUM": {
+        "n": 111,
+        "oosR2VsExpandingMean": -0.4711,
+        "signHitRate": 0.459
+      },
+      "S2_VALUE_CONFIRMED": {
+        "n": 111,
+        "oosR2VsExpandingMean": -0.36,
+        "signHitRate": 0.432
+      },
+      "S3_FOUR_FACTOR": {
+        "n": 111,
+        "oosR2VsExpandingMean": -0.3679,
+        "signHitRate": 0.459
+      }
+    }
+  },
+  "oosR2VerificationLimit": "Saved aggregate values and implementation formula inspected; raw predictions, matured labels and per-fold historical-mean forecasts absent, so numerical R2 not independently recomputable without prohibited model/label reruns.",
+  "availability": {
+    "MKT_TREND_63": {
+      "firstVisibleKrSession": "2013-04-03",
+      "lagCalendarDays": 0,
+      "coverage2014to2026": 1.0,
+      "coverage2018to2026": 1.0
+    },
+    "MKT_TREND_252": {
+      "firstVisibleKrSession": "2014-01-09",
+      "lagCalendarDays": 0,
+      "coverage2014to2026": 0.9984,
+      "coverage2018to2026": 1.0
+    },
+    "MKT_VOL_63": {
+      "firstVisibleKrSession": "2013-04-03",
+      "lagCalendarDays": 0,
+      "coverage2014to2026": 1.0,
+      "coverage2018to2026": 1.0
+    },
+    "MKT_DD_252": {
+      "firstVisibleKrSession": "2014-01-08",
+      "lagCalendarDays": 0,
+      "coverage2014to2026": 0.9987,
+      "coverage2018to2026": 1.0
+    },
+    "BREADTH_200": {
+      "firstVisibleKrSession": "2014-01-10",
+      "lagCalendarDays": 0,
+      "coverage2014to2026": 0.9981,
+      "coverage2018to2026": 1.0
+    },
+    "IND_DISPERSION": {
+      "firstVisibleKrSession": "2013-07-05",
+      "lagCalendarDays": 0,
+      "coverage2014to2026": 0.6372,
+      "coverage2018to2026": 0.5368
+    },
+    "CONCENTRATION_TOP2": {
+      "firstVisibleKrSession": "2013-01-04",
+      "lagCalendarDays": 0,
+      "coverage2014to2026": 1.0,
+      "coverage2018to2026": 1.0
+    },
+    "LEADERSHIP_PERSIST": {
+      "firstVisibleKrSession": "2013-08-02",
+      "lagCalendarDays": 0,
+      "coverage2014to2026": 0.5675,
+      "coverage2018to2026": 0.4473
+    },
+    "UST10_LEVEL": {
+      "firstVisibleKrSession": "2013-01-02",
+      "lagCalendarDays": 4,
+      "coverage2014to2026": 1.0,
+      "coverage2018to2026": 1.0
+    },
+    "UST10_CHG_63": {
+      "firstVisibleKrSession": "2013-04-03",
+      "lagCalendarDays": 4,
+      "coverage2014to2026": 1.0,
+      "coverage2018to2026": 1.0
+    },
+    "CURVE_10Y2Y": {
+      "firstVisibleKrSession": "2013-01-02",
+      "lagCalendarDays": 4,
+      "coverage2014to2026": 1.0,
+      "coverage2018to2026": 1.0
+    },
+    "CURVE_CHG_63": {
+      "firstVisibleKrSession": "2013-04-03",
+      "lagCalendarDays": 4,
+      "coverage2014to2026": 1.0,
+      "coverage2018to2026": 1.0
+    },
+    "BROAD_DOLLAR_CHG_63": {
+      "firstVisibleKrSession": "2013-04-03",
+      "lagCalendarDays": 8,
+      "coverage2014to2026": 1.0,
+      "coverage2018to2026": 1.0
+    },
+    "USDKRW_CHG_63": {
+      "firstVisibleKrSession": "2013-04-11",
+      "lagCalendarDays": 8,
+      "coverage2014to2026": 1.0,
+      "coverage2018to2026": 1.0
+    },
+    "USDKRW_VOL_63": {
+      "firstVisibleKrSession": "2013-04-09",
+      "lagCalendarDays": 8,
+      "coverage2014to2026": 1.0,
+      "coverage2018to2026": 1.0
+    },
+    "VIX_LEVEL": {
+      "firstVisibleKrSession": "2013-01-02",
+      "lagCalendarDays": 4,
+      "coverage2014to2026": 1.0,
+      "coverage2018to2026": 1.0
+    },
+    "VIX_CHG_63": {
+      "firstVisibleKrSession": "2013-04-03",
+      "lagCalendarDays": 4,
+      "coverage2014to2026": 1.0,
+      "coverage2018to2026": 1.0
+    },
+    "CORR_KR_USDKRW_126": {
+      "firstVisibleKrSession": "2013-07-12",
+      "lagCalendarDays": 8,
+      "coverage2014to2026": 1.0,
+      "coverage2018to2026": 1.0
+    },
+    "CORR_KR_UST10_126": {
+      "firstVisibleKrSession": "2013-09-02",
+      "lagCalendarDays": 4,
+      "coverage2014to2026": 1.0,
+      "coverage2018to2026": 1.0
+    }
+  },
+  "withheldWouldPick": {
+    "S0_ETF": 0,
+    "S1_INDUSTRY_MOMENTUM": 1,
+    "S2_VALUE_CONFIRMED": 0,
+    "S3_FOUR_FACTOR": 5,
+    "SX_XGB_SENSITIVITY": 3
+  },
+  "currentBenchmarkStateRecomputed": {
+    "signalDate": "2026-09-04",
+    "MKT_TREND_63": -0.19147702648724862,
+    "MKT_TREND_252": 1.485532520154826,
+    "MKT_VOL_63": 0.8858181827541861,
+    "MKT_DD_252": -0.2858969012208835
+  }
+}

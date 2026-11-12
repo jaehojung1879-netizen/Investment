@@ -1,0 +1,43 @@
+{
+  "retrievedDuringUtcInterval": ["2026-11-11T10:53:08Z", "2026-11-11T10:55:01Z"],
+  "retrievalTimestampNote": "Bounded by explicit clock tool reads in this audit; the browser response did not expose an exact retrieval timestamp.",
+  "head": "d2cd9781627773381b63cd9f2db13b369a1dd31e",
+  "sources": [
+    {
+      "url": "https://www.federalreserve.gov/releases/h10/",
+      "title": "Federal Reserve Board - Foreign Exchange Rates - H.10 - November 09, 2026",
+      "observedToolLines": [20, 21, 27],
+      "shortQuote": "On Mondays at 4:15 p.m.",
+      "paraphrase": "Daily bilateral exchange-rate observations for the previous business week are released on Monday at 16:15 ET, or the next business day if Monday is a Federal Holiday. Weekly H.10 publication was suspended May 22, 2006 through January 2009; historical observations remain downloadable.",
+      "lastUpdateDisplayed": "November 09, 2026"
+    },
+    {
+      "url": "https://fred.stlouisfed.org/series/DEXKOUS",
+      "title": "South Korean Won to U.S. Dollar Spot Exchange Rate (DEXKOUS)",
+      "observedToolLines": [20, 22, 24, 28, 30, 38, 67],
+      "shortQuote": "Updated: Nov 9, 2026 3:16 PM CST",
+      "observationsDisplayed": {
+        "2026-11-02": 1344.51,
+        "2026-11-03": 1344.72,
+        "2026-11-04": 1341.60,
+        "2026-11-05": 1352.95,
+        "2026-11-06": 1361.89
+      },
+      "nextReleaseDisplayed": "Nov 16, 2026",
+      "meaning": "The noon-New-York date is an observation date. The H.10/FRED publication is later; the daily observation date cannot stand in for availability."
+    }
+  ],
+  "concreteCounterexample": {
+    "usdNavDate": "2026-10-30",
+    "appliedFxObservationDate": "2026-11-02",
+    "appliedFx": 1344.51,
+    "sameDayObservation": 1333.99,
+    "H10PublicationDateForNov2Week": "2026-11-09T16:15:00-05:00",
+    "fredPageUpdateDisplayed": "2026-11-09T15:16:00-06:00",
+    "code": ["research/us_macro_cocktail_v1/cocktail.py:232", "research/us_macro_cocktail_v1/cocktail.py:233", "research/us_macro_cocktail_v1/run_study.py:47", "research/us_macro_cocktail_v1/run_study.py:89"],
+    "storedJsonPointers": ["results/result.json#/windows/primary/usdkrw/endRate", "results/result.json#/windows/extended/usdkrw/endRate"],
+    "storedFileLines": ["results/result.json:2458", "results/result.json:4611"],
+    "falseClaimLocations": ["protocol.json:109", "README.md:66", "results/data-audit.json:485"],
+    "conclusion": "The KRW NAV assigned to Oct30 incorporates a future observation published later still. These results may describe an ex-post asynchronous currency translation but cannot support contemporaneous/PIT/no-look-ahead KRW NAV. FX is not a strategy signal in STATE_COLS; this defect does not change the USD results."
+  }
+}

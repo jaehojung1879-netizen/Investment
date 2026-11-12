@@ -1,0 +1,35 @@
+"""Read-only quote-presence/selection-window audit. No path return calculation."""
+from pathlib import Path
+import gzip,json,subprocess,bisect,hashlib
+from collections import defaultdict
+ROOT=Path('/workspace/Investment');OUT=Path('/workspace/integration-review-notes');v2=ROOT/'research/ml_strategy_tournament_v2';cfg=json.loads((v2/'config.json').read_text());pin=cfg['rawSourceCommit'];h=json.loads(gzip.decompress((ROOT/'research/ml_strategy_tournament_v1/results/holdings-all.json.gz').read_bytes()));sels={c['id']:h[c['view']][c['id']] for c in cfg['candidates']};ts={t for ds in sels.values() for d in ds for t,w in d['weights'].items() if w>0};quotes=defaultdict(dict);sourcehashes={}
+for year in range(2016,2027):
+ b=subprocess.check_output(['git','cat-file','blob',pin+f':ledger/prices/kr/krx-prices-{year}.jsonl.gz'],cwd=ROOT)
+ sourcehashes[f'ledger/prices/kr/krx-prices-{year}.jsonl.gz']=hashlib.sha256(b).hexdigest()
+ for line in gzip.decompress(b).splitlines():
+  r=json.loads(line)
+  if r['ticker'] in ts and cfg['start']<=r['date']<=cfg['end']:quotes[r['ticker']][r['date']]=r
+res={'basis':'PINNED_RAW_KRX_QUOTE_PRESENCE_AND_SAVED_V1_SELECTION_WINDOWS_NO_RETURN','sourceCommit':pin,'endedSelectedTickers':[],'selectedWindowMissingRawQuotes':[],'zeroVolumeRowsInSavedHoldingWindows':[],'lastObservedQuotesByTicker':{},'actualTerminalSettlementCertified':False}
+ref=set(json.loads(gzip.decompress(next((v2/'results').glob('*/RULE_ETF_ONLY-A_VERIFIED_CASH-account.jsonl.gz')).read_bytes())).keys()) if False else [json.loads(l)['date'] for l in gzip.decompress(next((v2/'results').glob('*/RULE_ETF_ONLY-A_VERIFIED_CASH-account.jsonl.gz')).read_bytes()).splitlines()]
+for t in sorted(ts):
+ dd=sorted(quotes[t]);last=dd[-1] if dd else None;res['lastObservedQuotesByTicker'][t]=last
+ if last and last<cfg['end']:
+  actual=[d for d in dd if quotes[t][d]['volume']>0];rec={'ticker':t,'lastRawQuote':last,'lastPositiveVolumeQuote':actual[-1] if actual else None,'savedHoldings':[]}
+  for sid,ds in sels.items():
+   for i,r in enumerate(ds):
+    if r['weights'].get(t,0)>0:rec['savedHoldings'].append({'candidate':sid,'from':r['date'],'until':ds[i+1]['date'] if i+1<len(ds) else cfg['end'],'weight':r['weights'][t]})
+  res['endedSelectedTickers'].append(rec)
+for sid,ds in sels.items():
+ for i,r in enumerate(ds):
+  stop=ds[i+1]['date'] if i+1<len(ds) else cfg['end']
+  for t,w in r['weights'].items():
+   if w<=0:continue
+   # Need current issue marked up to and INCLUDING planned next trade day.
+   absent=[d for d in ref if r['date']<=d<=stop and d not in quotes[t]]
+   halted=[d for d in ref if r['date']<=d<=stop and d in quotes[t] and quotes[t][d]['volume']<=0]
+   if halted:res['zeroVolumeRowsInSavedHoldingWindows'].append({'candidate':sid,'ticker':t,'from':r['date'],'until':stop,'dates':halted})
+   if absent:res['selectedWindowMissingRawQuotes'].append({'candidate':sid,'ticker':t,'from':r['date'],'until':stop,'firstMissing':absent[0],'count':len(absent)})
+res['sourceSha256']=sourcehashes
+probe={'018880.KS':['2016-01-20','2016-01-21','2016-01-22','2016-02-11','2016-02-15','2016-02-16'],'012450.KS':['2024-08-28','2024-08-29','2024-09-26','2024-09-27'],'010120.KS':['2026-04-07','2026-04-08','2026-04-10','2026-04-13']}
+res['actionRawProbes']={t:[quotes[t][d] for d in dates] for t,dates in probe.items()}
+(OUT/'v2-review-terminal.json').write_text(json.dumps(res,indent=2)+'\n');print(json.dumps({k:v for k,v in res.items() if k!='lastObservedQuotesByTicker'},indent=2))
