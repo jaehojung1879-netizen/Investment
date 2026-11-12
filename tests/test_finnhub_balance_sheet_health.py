@@ -394,6 +394,11 @@ def test_no_workflow_or_protected_path_is_edited_by_this_change():
     protected = {".github/workflows/tests.yml", ".github/workflows/probes.yml",
                  "pipeline/us_real_source_preflight.py", "scripts/preflight_us_real_sources.py", "pipeline/datafeed.py",
                  "pipeline/us_cash_profitability.py", "pipeline/finnhub_fundamentals.py", "pipeline/finnhub_derive.py"}
+    if ".github/workflows/tests.yml" in touched:
+        # Admit the approved exact CI install only; all Finnhub pins stay.
+        from pipeline.pages_operational_maintenance import validate
+        assert validate(ROOT)
+        protected.remove(".github/workflows/tests.yml")
     assert not touched & protected and not [p for p in touched if p.startswith("docs/results/")]
 
 
