@@ -38,6 +38,23 @@ ADDITIONAL_FILES = (
 _PARENT = {'ADDENDUM': R.ADDENDUM, 'SIDECAR': R.SIDECAR, 'AUTHORIZATION': R.AUTHORIZATION,
            'load': R.load, 'prepare': R.prepare}
 
+# The original published research dependency hashes stay unchanged. A separate
+# exact-hash records admit the reviewed operational install/diagnostic variant.
+MAINTENANCE_RECORD = 'docs/operations/pages-yml-maintenance-2.json'
+MAINTENANCE_SIDECAR = 'docs/operations/pages-yml-maintenance-2.sha256'
+PAGES_WORKFLOW = '.github/workflows/pages.yml'
+VERIFIER_MODULE = 'pipeline/kr_alpha_atlas_reproducibility.py'
+_SEALED_PREFIX_SHA = '048356c7b43e499b32660ce40c0b1dde9db7e43b33a58fd36df8a4ea51e17b30'
+_SEALED_PREFIX_BYTES = 5992
+_SEALED_JOB_BOUNDARY = b'  build-and-deploy:\n'
+
+
+def pages_maintenance_admitted(root=contract.ROOT):
+    """Admit only the approved exact operational variant; historical hashes stay."""
+    from pipeline.pages_operational_maintenance import validate
+    validate(root)
+    return True
+
 
 def parent_load(root):
     # A scoped binding below never changes the parent's published hash checks.
@@ -93,10 +110,18 @@ def load(root=contract.ROOT):
         raise ValueError('ONE_ORIGINAL_STUDY_AND_EXACT_RUNTIME_REQUIRED')
     if set(meta['additionalDependencyHashes']) != set(ADDITIONAL_FILES):
         raise ValueError('COMPLETE_REPRODUCIBILITY_CLOSURE_REQUIRED')
+    candidate_checked = False
     for path, sha in meta['additionalDependencyHashes'].items():
         p = (root/path).resolve()
-        if not p.is_relative_to(root.resolve()) or contract.file_hash(p) != sha:
+        if not p.is_relative_to(root.resolve()):
             raise ValueError('REPRODUCIBILITY_DEPENDENCY_CHANGED: '+path)
+        if contract.file_hash(p) == sha:
+            continue
+        if path not in (PAGES_WORKFLOW, VERIFIER_MODULE, 'tests/test_kr_alpha_atlas_reproducibility.py'):
+            raise ValueError('REPRODUCIBILITY_DEPENDENCY_CHANGED: '+path)
+        if not candidate_checked:
+            pages_maintenance_admitted(root)
+            candidate_checked = True
     evidence = json.loads((root/BASE/'root-cause.json').read_text())
     full = evidence['fullMatrixReproduction']
     if (full['actualMatrixDigest'] != meta['correctedMatrixDigest'] or

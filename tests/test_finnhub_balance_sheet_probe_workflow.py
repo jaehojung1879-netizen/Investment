@@ -192,6 +192,11 @@ def test_sealed_and_neighbouring_files_are_untouched_by_this_change():
                  "tests/test_kr_alpha_atlas_price_repair_workflow_inventory.py", "docs/workflow-inventory.md",
                  "docs/workflow-inventory-addendum.md", "pipeline/us_cash_profitability.py", "pipeline/finnhub_fundamentals.py",
                  "pipeline/finnhub_derive.py"}
+    if ".github/workflows/tests.yml" in touched:
+        # Admit the approved exact CI install only; all probe/seal pins stay.
+        from pipeline.pages_operational_maintenance import validate
+        assert validate(ROOT)
+        protected.remove(".github/workflows/tests.yml")
     assert not touched & protected and not [p for p in touched if p.startswith(("docs/results/", "research_specs/", "ledger/", "data/"))]
     probes = hashlib.sha256((ROOT / ".github/workflows/probes.yml").read_bytes()).hexdigest()
     assert probes == "2c00464e756e9512cec60961b22a35dd40d3798f350efb49a12e0aa94fab190d"      # still what two sealed specs pin

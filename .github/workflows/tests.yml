@@ -43,7 +43,7 @@ jobs:
           cache: pip
 
       - name: Install dependencies
-        run: pip install -r requirements.txt -r requirements-dev.txt
+        run: pip install -c constraints/ci-registered-numerics-v1.txt -r requirements.txt -r requirements-dev.txt
 
       # The frozen KR accounting snapshot is verified against its pinned source
       # commit (accounting shards only, never a checkout of that branch).
