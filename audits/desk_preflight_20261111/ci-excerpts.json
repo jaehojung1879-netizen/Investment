@@ -1,0 +1,31 @@
+{
+  "main": {
+    "run": 43055527324,
+    "job": 130643834257,
+    "lines": [
+      "2026-11-11T16:14:08.2944312Z   Using cached threadpoolctl-3.8.0-py3-none-any.whl.metadata (29 kB)",
+      "2026-11-11T16:14:09.1584161Z Using cached threadpoolctl-3.8.0-py3-none-any.whl (32 kB)",
+      "2026-11-11T16:14:26.4770764Z Successfully installed beautifulsoup4-4.15.0 certifi-2026.10.23 cffi-2.1.1 charset_normalizer-3.5.2 cloudpickle-3.1.2 curl_cffi-0.17.0 exchange-calendars-4.11.1 finance-datareader-0.9.110 fredapi-0.5.2 frozendict-2.5.1 idna-3.20 iniconfig-2.3.1 joblib-1.6.0 korean-lunar-calendar-0.4.0 lightgbm-4.6.0 lxml-6.1.3 multitasking-0.0.13 narwhals-2.28.0 numpy-2.3.1 packaging-26.3 pandas-2.3.0 peewee-4.5.3 platformdirs-4.14.5 plotly-7.1.0 pluggy-1.7.0 protobuf-7.36.2 pycparser-3.12 pygments-2.21.0 pyluach-2.3.0 pytest-8.4.1 python-dateutil-4.0.0 pytz-2026.6 requests-2.34.2 requests-file-3.0.1 scikit-learn-1.7.0 scipy-1.16.0 soupsieve-4.1 threadpoolctl-3.8.0 toolz-1.2.0 tqdm-4.70.1 typing-extensions-4.16.0 tzdata-2026.6 urllib3-2.8.0 websockets-17.4 yfinance-0.2.65",
+      "2026-11-11T16:59:57.4379554Z             with pytest.raises(ValueError, match='SINGLE_THREAD_ENVIRONMENT_REQUIRED'):",
+      "2026-11-11T16:59:57.4390774Z >           raise ValueError(\"PINNED_DEPENDENCY_VERSION_REQUIRED\")",
+      "2026-11-11T16:59:57.4391380Z E           ValueError: PINNED_DEPENDENCY_VERSION_REQUIRED",
+      "2026-11-11T16:59:57.4404843Z >           with pytest.raises(ValueError, match='SINGLE_THREAD_ENVIRONMENT_REQUIRED'):",
+      "2026-11-11T16:59:57.4406157Z E            Regex: 'SINGLE_THREAD_ENVIRONMENT_REQUIRED'",
+      "2026-11-11T16:59:57.4406701Z E            Input: 'PINNED_DEPENDENCY_VERSION_REQUIRED'",
+      "2026-11-11T16:59:57.4420874Z  Regex: 'SINGLE_THREAD_ENVIRONMENT_REQUIRED'",
+      "2026-11-11T16:59:57.4421370Z  Input: 'PINNED_DEPENDENCY_VERSION_REQUIRED'",
+      "2026-11-11T16:59:57.4422017Z 1 failed, 6423 passed, 3 skipped, 4 xfailed, 318 warnings in 2705.76s (0:45:05)"
+    ]
+  },
+  "pr321": {
+    "run": 42369756685,
+    "job": 128395247214,
+    "lines": [
+      "2026-11-07T11:50:41.5307954Z   Using cached threadpoolctl-3.7.0-py3-none-any.whl.metadata (24 kB)",
+      "2026-11-07T11:50:42.2522556Z Using cached joblib-1.6.0-py3-none-any.whl (306 kB)",
+      "2026-11-07T11:50:42.2804529Z Using cached threadpoolctl-3.7.0-py3-none-any.whl (26 kB)",
+      "2026-11-07T11:50:53.2562906Z Successfully installed beautifulsoup4-4.15.0 certifi-2026.10.23 cffi-2.1.1 charset_normalizer-3.5.2 cloudpickle-3.1.2 curl_cffi-0.17.0 exchange-calendars-4.11.1 finance-datareader-0.9.110 fredapi-0.5.2 frozendict-2.5.1 idna-3.20 iniconfig-2.3.1 joblib-1.6.0 korean-lunar-calendar-0.4.0 lightgbm-4.6.0 lxml-6.1.3 multitasking-0.0.13 narwhals-2.28.0 numpy-2.3.1 packaging-26.3 pandas-2.3.0 peewee-4.5.3 platformdirs-4.14.5 plotly-7.1.0 pluggy-1.7.0 protobuf-7.36.2 pycparser-3.12 pygments-2.21.0 pyluach-2.3.0 pytest-8.4.1 python-dateutil-4.0.0 pytz-2026.6 requests-2.34.2 requests-file-3.0.1 ruff-0.15.8 scikit-learn-1.7.0 scipy-1.16.0 soupsieve-4.0.1 threadpoolctl-3.7.0 toolz-1.2.0 tqdm-4.70.1 typing-extensions-4.16.0 tzdata-2026.6 urllib3-2.8.0 websockets-17.4 yfinance-0.2.65",
+      "2026-11-07T12:15:05.0022234Z 6521 passed, 3 skipped, 4 xfailed, 318 warnings in 1424.35s (0:23:44)"
+    ]
+  }
+}
