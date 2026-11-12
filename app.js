@@ -901,9 +901,9 @@ async function loadResearchPublication(commit) {
 // Four publication types (#333): HISTORICAL_EXPLORATORY · CORRECTED_CASH_SCOPE ·
 // SOURCE_BLOCKED · RESEARCH_ALLOCATION_AS_OF, plus PRODUCTION_RECEIPT.
 const DESK = Object.freeze({
-  commit: "9258f669090fb88943efe4a048e85ec81746f0ae",
+  commit: "__PIN_IN_FOLLOW_UP_COMMIT__",
   path: "research/decision_desk_v1/desk.json",
-  sha256: "761d79686d4f1d6e4a529ac22b9c66ac5d2bbd623792d5bc9ab75abdbb4e5551",
+  sha256: "__PIN_IN_FOLLOW_UP_COMMIT__",
 });
 const DESK_TYPES = {
   HISTORICAL_EXPLORATORY: ["과거 탐색", "warn"],
@@ -1095,7 +1095,7 @@ function integrityMarkup(it, market) {
       <li data-desk-periods><b>보고기간과 공개일</b> 팩터 계산 ${esc(per.factorRows)}종목 중 ${esc(per.rowsMixingReportPeriods)}종목은 ROE·영업이익률·부채비율이 서로 다른 공시 기간에서 왔습니다(필드별 최신값 방식). 공개 지연 중앙값 ${esc(per.publicationLagDays?.median)}일, 보고기간 경과 중앙값 ${esc(per.ageDays?.median)}일. 최신성 기준: ${esc(per.freshnessRule)}</li>
       <li data-desk-shares><b>주식수</b> ${flagged.length ? `${flagged.length}종목은 주식수가 15개월 넘게 이월되어 주당 값(장부가/주가)이 무효입니다: ${flagged.map(([t, v]) => `${esc(t)}(마지막 공시 주식수 ${esc(v.lastShareCountAsFiled)})`).join(", ")}. ${esc(it.shareCounts.affects)}` : "이월 주식수 문제 없음"}</li>
       <li data-desk-opm><b>|영업이익률|&gt;1 규칙(자료 확인 후 추가)</b> ${opm || "해당 없음"} · 판정 ${esc(it.opmRule.verdict)}</li>
-      <li><b>유니버스 스냅샷</b> ${market === "US" ? `${esc(snap.file)} 마지막 구성 변경 ${esc(snap.lastMembershipChange)} (커밋 ${esc(String(snap.lastCommitAt).slice(0, 10))}), 기준일과 ${esc(snap.gapDays)}일 차이 — ${esc(snap.note)}` : `KRX 시가총액 상위 300 스냅샷 ${esc(snap)}`}</li>
+      <li><b>유니버스 스냅샷</b> ${market === "US" ? `${esc(snap.file)} 마지막 구성 변경 ${esc(snap.lastMembershipChange)} (파일 SHA-256 ${esc(String(snap.fileSha256).slice(0, 12))}), 기준일과 ${esc(snap.gapDays)}일 차이 — ${esc(snap.note)}` : `KRX 시가총액 상위 300 스냅샷 ${esc(snap)}`}</li>
     </ul>`;
 }
 function funnelMarkup(f, ef, market) {

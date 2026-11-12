@@ -18,6 +18,25 @@ import contract as C  # noqa: E402
 import prospective as PR  # noqa: E402
 
 
+def _diff(a, b, path="", out=None):
+    """Up to 20 differing paths, so a failing reproduction names what moved instead of dumping both trees."""
+    out = [] if out is None else out
+    if len(out) >= 20:
+        return out
+    if isinstance(a, dict) and isinstance(b, dict):
+        for k in sorted(set(a) | set(b)):
+            if k not in a or k not in b:
+                out.append(f"{path}/{k}: only in {'fresh' if k in a else 'committed'}")
+            else:
+                _diff(a[k], b[k], f"{path}/{k}", out)
+    elif isinstance(a, list) and isinstance(b, list) and len(a) == len(b):
+        for i, (x, y) in enumerate(zip(a, b)):
+            _diff(x, y, f"{path}[{i}]", out)
+    elif a != b:
+        out.append(f"{path}: fresh {str(a)[:80]!r} != committed {str(b)[:80]!r}")
+    return out
+
+
 def _j(name):
     return json.loads((HERE / name).read_text())
 
@@ -167,7 +186,8 @@ def _signal_commit_available() -> bool:
 def test_census_reproduces_from_the_pinned_signal_history_commit():
     import census as CE
     res = json.loads(json.dumps(CE.run(), ensure_ascii=False, sort_keys=True, default=float))
-    assert res == json.loads(B3.CENSUS.read_text())
+    committed = json.loads(B3.CENSUS.read_text())
+    assert not _diff(res, committed), _diff(res, committed)
 
 
 # ----------------------------------------------------------------------------- integrity / definitions
@@ -287,4 +307,4 @@ def test_production_receipt_is_read_by_decision_date():
 def test_integrity_audit_reproduces_and_matches_the_committed_census():
     import integrity as IG
     fresh = json.loads(json.dumps(IG._round(IG.run()), ensure_ascii=False, sort_keys=True))
-    assert fresh == INTEG
+    assert not _diff(fresh, INTEG), _diff(fresh, INTEG)

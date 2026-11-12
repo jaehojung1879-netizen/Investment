@@ -20,7 +20,6 @@ from __future__ import annotations
 
 import inspect
 import json
-import subprocess
 import sys
 from pathlib import Path
 
@@ -291,12 +290,15 @@ def b1v2(region: str, members: dict, rows: list, survivors: set) -> dict:
 
 # ----------------------------------------------------------------------------- run
 def us_snapshot() -> dict:
+    """Facts read from the membership file itself (its bytes and its own dates), never from git history:
+    which commit last touched a path depends on how the repository was checked out."""
+    import hashlib
     p = "data/universe-history.json"
-    commit = subprocess.check_output(["git", "log", "-1", "--format=%H %cI", "--", p], cwd=C.ROOT, text=True).split()
-    hist = json.loads((C.ROOT / p).read_text())
+    raw = (C.ROOT / p).read_bytes()
+    hist = json.loads(raw)
     us = {t: v for t, v in hist.items() if v["region"] == "US"}
     changes = [d for v in us.values() for d in (v.get("listed"), v.get("delisted")) if d]
-    return {"file": p, "lastCommit": commit[0], "lastCommitAt": commit[1], "lastMembershipChange": max(changes),
+    return {"file": p, "fileSha256": hashlib.sha256(raw).hexdigest(), "lastMembershipChange": max(changes),
             "currentMembers": sum(v["delisted"] is None for v in us.values()), "censusAsOf": C.AS_OF["US"],
             "gapDays": int((pd.Timestamp(C.AS_OF["US"]) - pd.Timestamp(max(changes))).days),
             "note": "Index changes after the last recorded change are not in the census; the file is a snapshot, not a live feed."}
