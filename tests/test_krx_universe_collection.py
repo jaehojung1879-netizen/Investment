@@ -54,6 +54,10 @@ def _fake(responses, log=None):
 def _collect(tmp_path, targets, responses, monkeypatch, **kwargs):
     call = _fake(responses)
     monkeypatch.setattr(CC, "call", call)
+    # The fixtures describe a synthetic market whose closures are whatever the fake leaves empty,
+    # so the exchange calendar is replaced by "no known session" and nothing is unpublished.
+    kwargs.setdefault("is_session", lambda day: False)
+    kwargs.setdefault("today", "2099-01-01")
     result = CC.collect(tmp_path, targets, auth_key="k", base="b",
                         top=kwargs.pop("top", 10),
                         max_calls=kwargs.pop("max_calls", 100),
@@ -319,3 +323,55 @@ def test_reading_the_korean_shards_and_keeping_replay_v15_cannot_both_be_true():
         f"replay.yml {'passes' if wired else 'does not pass'} --krx-snapshots "
         f"while REPLAY_VERSION is {provenance.REPLAY_VERSION!r}; Korean "
         f"membership needs a new generation, not an extension of v15")
+
+
+# ---------------------------------------------------------------- fail-closed completion (2026-11)
+
+def test_an_empty_answer_on_an_open_session_is_not_completion(tmp_path, monkeypatch):
+    """2026-10-01 was a KRX session that answered empty; it was marked done with no rows."""
+    result = _collect(tmp_path, ["2026-10-01"], {}, monkeypatch,
+                      is_session=lambda d: d == "2026-10-01", today="2026-11-08")
+    assert result["stopped"] and "EMPTY_RESPONSE_ON_EXPECTED_SESSION" in result["stopped"]
+    assert CC.load_done(tmp_path) == {}
+
+
+def test_a_window_not_yet_published_is_deferred_not_done(tmp_path, monkeypatch):
+    """2026-11-01 (Sunday) ran before Monday 11-02 was published; that is a deferral."""
+    result = _collect(tmp_path, ["2026-11-01"], {}, monkeypatch,
+                      is_session=lambda d: d >= "2026-11-02", today="2026-11-02")
+    assert result["deferred"] == ["2026-11-01"] and result["stopped"] is None
+    assert CC.load_done(tmp_path) == {}
+    assert result["asked"] == ["20261101"]          # never asked about an unpublished day
+
+
+def test_legacy_done_without_rows_is_retried_and_dated_by_the_served_session(tmp_path, monkeypatch):
+    CC.save_done(tmp_path, {"2026-09-01": 10, "2026-11-01": 10})
+    HS.write_shard(tmp_path / "krx-universe-2026.jsonl.gz",
+                   CC.KU.snapshot_rows("2026-09-01", CC.KU.rank_issues(
+                       CC.KU.parse_issues(_market(["000001"], "2026-09-01"))[0], 10)))
+    result = _collect(tmp_path, ["2026-09-01", "2026-11-01"],
+                      {"20261102": _market(["000001", "000002"], "2026-11-02")}, monkeypatch,
+                      is_session=lambda d: d in {"2026-09-01", "2026-11-02"}, today="2026-11-08")
+    assert result["legacyDoneWithoutRows"] == ["2026-11-01"]
+    assert result["collected"] == ["2026-11-02"]
+    rows = HS.read_jsonl(tmp_path / "krx-universe-2026.jsonl.gz")
+    assert {r["date"] for r in rows} == {"2026-09-01", "2026-11-02"}
+    receipts = __import__("json").loads((tmp_path / CC.RECEIPTS_NAME).read_text())
+    assert receipts["2026-11-01"]["servedDate"] == "2026-11-02"
+    assert receipts["2026-11-01"]["status"] == "SNAPSHOT_ROWS_STORED"
+
+
+def test_a_served_date_other_than_the_one_asked_is_refused(tmp_path, monkeypatch):
+    result = _collect(tmp_path, ["2026-09-01"], {"20260901": _market(["000001"], "2026-08-31")},
+                      monkeypatch, is_session=lambda d: True, today="2026-11-08")
+    assert result["stopped"] and "RESPONSE_DATE_MISMATCH" in result["stopped"]
+    assert CC.load_done(tmp_path) == {}
+
+
+def test_budget_exhausted_inside_a_window_is_not_completion(tmp_path, monkeypatch):
+    result = _collect(tmp_path, ["2013-01-01"], {}, monkeypatch, max_calls=2)
+    assert CC.load_done(tmp_path) == {} and "예산" in result["stopped"]
+
+
+def test_the_real_calendar_knows_2026_10_01_was_open_and_2026_11_01_closed():
+    assert CC.calendar_session("2026-10-01") and not CC.calendar_session("2026-11-01")
