@@ -17,6 +17,7 @@ from __future__ import annotations
 import datetime as dt
 import gzip
 import hashlib
+import inspect
 import json
 import re
 import subprocess
@@ -275,7 +276,7 @@ def census_region(region: str, members: dict[str, dict], prices, fund: dict[str,
         stage_of[t] = ("FACTOR_COMPLETE" if t in factor_rows else "DROPPED_BEFORE_FACTORS")
     return {
         "asOf": as_of, "funnel": counts,
-        "b1": {"rule": b1_screen.__doc__.strip(), "topQuintile": [{"ticker": t, "name": names.get(t), **{k: round(v, 4) if isinstance(v, float) else v for k, v in factor_rows[t].items()}} for t in b1["topQuintile"]],
+        "b1": {"rule": inspect.cleandoc(b1_screen.__doc__), "topQuintile": [{"ticker": t, "name": names.get(t), **{k: round(v, 4) if isinstance(v, float) else v for k, v in factor_rows[t].items()}} for t in b1["topQuintile"]],
                "deepReview": b1["deepReview"]},
         "factorTopQuintile": top,
         "productionComparison": {"productionReceipt": production["receiptId"], "productionTickers": sorted(prod),

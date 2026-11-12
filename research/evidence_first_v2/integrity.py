@@ -18,6 +18,7 @@ It adds no outcome, return or forward price. Seven questions:
 """
 from __future__ import annotations
 
+import inspect
 import json
 import subprocess
 import sys
@@ -280,7 +281,7 @@ def b1v2(region: str, members: dict, rows: list, survivors: set) -> dict:
                    "ageDays": int((pd.Timestamp(as_of) - pd.Timestamp(f["reportDate"])).days)}
     ranked = sorted(elig, key=lambda t: (-elig[t]["roe"], t))
     ages = [v["ageDays"] for v in elig.values()]
-    return {"rule": b1v2.__doc__.strip(), "stage3Survivors": len(survivors), "noCompleteFiling": len(no_complete),
+    return {"rule": inspect.cleandoc(b1v2.__doc__), "stage3Survivors": len(survivors), "noCompleteFiling": len(no_complete),
             "eligible": len(elig), "ageDays": {"median": float(np.median(ages)), "max": max(ages)} if ages else None,
             "top5": [{"ticker": t, **{k: (round(v, 4) if isinstance(v, float) else v) for k, v in elig[t].items()}} for t in ranked[:5]],
             "ranked": [{"ticker": t, "roe": round(elig[t]["roe"], 4), "reportDate": elig[t]["reportDate"],
