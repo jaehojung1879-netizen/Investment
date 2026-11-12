@@ -156,6 +156,15 @@ def test_source_blocked_is_superseded_append_only(tmp_path, monkeypatch):
         L.append(led2, dict(b, missingDataReason={"TRV": "OTHER"}))
 
 
+def test_in_memory_blocked_rows_can_be_retried_without_a_ledger(tmp_path, monkeypatch):
+    """A SOURCE_BLOCKED row that was never appended (no digest) must not crash a retry."""
+    r = dict(_record("US", "B2"), weights={"TRV": 0.1, "SPY": 0.9})
+    observed = "2028-06-01T00:00:00Z"
+    blocked = [o for o in EV.outcomes([r], {}, observed) if o["status"] == "SOURCE_BLOCKED"]
+    retry = [o for o in EV.outcomes([r, *blocked], {"TRV": _frame(), "SPY": _frame()}, observed) if o["status"] != "PENDING"]
+    assert {o["status"] for o in retry} == {"SCORED"} and all(o["supersedes"] is None for o in retry)
+
+
 def test_primary_comparison_excludes_contaminated_and_unobserved(tmp_path, monkeypatch):
     excl = L.primary_exclusions(LEDGER_ROWS)
     by = {(r["region"], r["path"]): excl[r["digest"]] for r in RECORDS}

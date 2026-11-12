@@ -14,6 +14,7 @@ B3       an AI dossier keeps sourced FACT rows (generated from the census, never
 from __future__ import annotations
 
 import json
+import math
 import re
 from pathlib import Path
 
@@ -104,6 +105,8 @@ def _forbidden(obj, path="") -> list[str]:
 
 
 AI_TEXT_FIELDS = ("interpretation", "background", "counterArguments", "invalidationConditions", "unknowns")
+# The only numbers a dossier may show. Each must exist in the nominating census row and equal it (#334 review G14).
+FACT_FIELDS = ("roe", "operatingMargin", "debtToEquity", "bookToPrice", "momentum12_2")
 
 
 def validate_dossier(d: dict, nominating_grade: str, census_rows: dict) -> None:
@@ -126,12 +129,27 @@ def validate_dossier(d: dict, nominating_grade: str, census_rows: dict) -> None:
     row = census_rows.get(d["ticker"])
     if row is None:
         raise ContractError(f"NOT_NOMINATED_BY_A_QUANT_SCREEN {d['ticker']}")
+    if not isinstance(d["facts"], list) or not d["facts"]:
+        raise ContractError(f"FACTS_MISSING {d['ticker']}")
+    seen = set()
     for fact in d["facts"]:
+        field = fact.get("field") if isinstance(fact, dict) else None
+        if field not in FACT_FIELDS:
+            raise ContractError(f"FACT_FIELD_NOT_ALLOWED {d['ticker']} {field!r}")
+        if field in seen:
+            raise ContractError(f"FACT_FIELD_DUPLICATED {d['ticker']} {field}")
+        seen.add(field)
+        if field not in row:
+            raise ContractError(f"FACT_FIELD_NOT_IN_SOURCE_ROW {d['ticker']} {field}")
+        value, source_value = fact.get("value"), row[field]
+        for v, what in ((value, "FACT"), (source_value, "SOURCE")):
+            if isinstance(v, bool) or not isinstance(v, (int, float)) or not math.isfinite(v):
+                raise ContractError(f"{what}_VALUE_NOT_A_FINITE_NUMBER {d['ticker']} {field}: {v!r}")
         src = fact.get("source") or {}
         if not src.get("availableFrom") or src["availableFrom"] > d["informationCutoff"]:
-            raise ContractError(f"FACT_NOT_PUBLIC_AT_CUTOFF {d['ticker']} {fact.get('field')}")
-        if fact["field"] in row and abs(float(row[fact["field"]]) - float(fact["value"])) > 1e-9:
-            raise ContractError(f"FACT_DIFFERS_FROM_SOURCE {d['ticker']} {fact['field']}")
+            raise ContractError(f"FACT_NOT_PUBLIC_AT_CUTOFF {d['ticker']} {field}")
+        if abs(float(source_value) - float(value)) > 1e-9:
+            raise ContractError(f"FACT_DIFFERS_FROM_SOURCE {d['ticker']} {field}")
 
 
 def facts_from_census(region: str, row: dict, as_of: str, census_ref: str, field_sources: dict | None = None,

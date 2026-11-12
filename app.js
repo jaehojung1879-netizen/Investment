@@ -955,9 +955,17 @@ function validDesk(d) {
     const low = !["E2", "E3", "E4", "E5"].includes(x.nominatingEvidence?.grade);
     if (!["HOLD_FOR_RESEARCH", "ETF_DEFAULT"].includes(x.status) && low) return false;
     if (AI_TEXT.some((f) => (x[f] || []).some((line) => /\d/.test(line)))) return false;
+    if (!Array.isArray(x.facts) || !x.facts.length) return false;
+    const seen = new Set();
+    for (const ft of x.facts) {  // every number on the page is an allowed, sourced, finite census fact (#334 review G14)
+      if (!FACT_FIELDS.includes(ft?.field) || seen.has(ft.field) || typeof ft.value !== "number" || !Number.isFinite(ft.value)) return false;
+      if (!ft.source?.availableFrom || ft.source.availableFrom > x.informationCutoff) return false;
+      seen.add(ft.field);
+    }
   }
   return true;
 }
+const FACT_FIELDS = ["roe", "operatingMargin", "debtToEquity", "bookToPrice", "momentum12_2"];
 const AI_TEXT = ["interpretation", "background", "counterArguments", "invalidationConditions", "unknowns"];
 const typeBadge = (t) => {
   const [label, cls] = DESK_TYPES[t] || ["미확인", "blocked"];

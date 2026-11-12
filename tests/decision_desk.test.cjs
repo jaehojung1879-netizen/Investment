@@ -245,3 +245,19 @@ test("track and activation contract violations are refused", () => {
   delete unlabelled.evidenceFirst.prospective.dryRun.KR.arms.B1_ROE.recordLabel;
   assert.equal(a.validDesk(unlabelled), false);
 });
+
+test("an unobserved or malformed dossier fact is refused, not rendered (review G14)", () => {
+  const add = desk();
+  add.evidenceFirst.dossiers.dossiers[0].facts.push({ field: "unobservedFutureReturnPct", value: 999, source: { availableFrom: "2000-01-01" } });
+  assert.equal(a.validDesk(add), false);
+  const nan = desk();
+  nan.evidenceFirst.dossiers.dossiers[0].facts[0].value = "0.65";
+  assert.equal(a.validDesk(nan), false);
+  const dup = desk();
+  dup.evidenceFirst.dossiers.dossiers[0].facts.push({ ...dup.evidenceFirst.dossiers.dossiers[0].facts[0] });
+  assert.equal(a.validDesk(dup), false);
+  const late = desk();
+  late.evidenceFirst.dossiers.dossiers[0].facts[0].source.availableFrom = "2099-01-01";
+  assert.equal(a.validDesk(late), false);
+  assert.ok(a.validDesk(desk()));
+});

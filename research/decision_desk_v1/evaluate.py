@@ -184,6 +184,6 @@ def outcomes(rows: list[dict], prices: dict[str, pd.DataFrame], observed_at: str
             if prev is not None:  # a SOURCE_BLOCKED row exists: supersede it only when the answer changed
                 if o["status"] == "PENDING" or (o["status"] == "SOURCE_BLOCKED" and o.get("missingDataReason") == prev.get("missingDataReason")):
                     continue
-                o["supersedes"] = prev["digest"]
+                o["supersedes"] = prev.get("digest")  # None for a row not yet appended; the ledger refuses that on write
             out.append(o)
     return out

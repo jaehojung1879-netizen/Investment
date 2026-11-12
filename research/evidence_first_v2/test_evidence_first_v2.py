@@ -118,6 +118,45 @@ def test_a_fact_that_differs_from_the_census_is_refused(built):
         C.validate_dossier(d, "E1", _census_rows(d["region"]))
 
 
+@pytest.mark.parametrize("mutate,code", [
+    (lambda d: d["facts"].append({"field": "unobservedFutureReturnPct", "value": 999, "source": {"availableFrom": "2000-01-01"}}),
+     "FACT_FIELD_NOT_ALLOWED"),
+    (lambda d: d["facts"].append({"value": 1.0, "source": {"availableFrom": "2000-01-01"}}), "FACT_FIELD_NOT_ALLOWED"),
+    (lambda d: d["facts"].append(dict(d["facts"][0])), "FACT_FIELD_DUPLICATED"),
+    (lambda d: d["facts"][0].update(value=float("nan")), "FACT_VALUE_NOT_A_FINITE_NUMBER"),
+    (lambda d: d["facts"][0].update(value=float("inf")), "FACT_VALUE_NOT_A_FINITE_NUMBER"),
+    (lambda d: d["facts"][0].update(value="0.65"), "FACT_VALUE_NOT_A_FINITE_NUMBER"),
+    (lambda d: d["facts"][0].update(value=None), "FACT_VALUE_NOT_A_FINITE_NUMBER"),
+    (lambda d: d["facts"][0].update(value=True), "FACT_VALUE_NOT_A_FINITE_NUMBER"),
+    (lambda d: d.update(facts=[]), "FACTS_MISSING"),
+])
+def test_an_unobserved_or_malformed_fact_is_refused(built, mutate, code):
+    """#334 review G14: a number with no census source must never pass, whatever field name it carries."""
+    d = copy.deepcopy(built["dossiers"][0])
+    mutate(d)
+    with pytest.raises(C.ContractError, match=code):
+        C.validate_dossier(d, "E1", _census_rows(d["region"]))
+
+
+def test_an_allowed_fact_missing_from_the_source_row_is_refused(built):
+    d = copy.deepcopy(built["dossiers"][0])
+    rows = _census_rows(d["region"])
+    rows[d["ticker"]] = {k: v for k, v in rows[d["ticker"]].items() if k != "momentum12_2"}
+    with pytest.raises(C.ContractError, match="FACT_FIELD_NOT_IN_SOURCE_ROW"):
+        C.validate_dossier(d, "E1", rows)
+
+
+def test_every_committed_and_published_fact_is_sourced():
+    """census -> dossiers -> desk: every fact on the page is an allowed field equal to its census row value."""
+    desk = json.loads((ROOT / "research" / "decision_desk_v1" / "desk.json").read_text())
+    published = desk["evidenceFirst"]["dossiers"]["dossiers"]
+    assert published == json.loads((HERE / "results" / "b3-dossiers.json").read_text())["dossiers"]
+    for d in published:
+        rows = _census_rows(d["region"])
+        C.validate_dossier(d, d["nominatingEvidence"]["grade"], rows)
+        assert {f["field"] for f in d["facts"]} == set(C.FACT_FIELDS)
+
+
 def test_a_fact_published_after_the_cutoff_is_refused(built):
     d = copy.deepcopy(built["dossiers"][0])
     d["facts"][0]["source"] = dict(d["facts"][0]["source"], availableFrom="2027-01-01")
