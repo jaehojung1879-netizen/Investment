@@ -1,0 +1,3240 @@
+# Investment repository invariants
+
+- Blocked artifacts must contain no actionable output, entry state, positions, weights, or radar tiers.
+- Synthetic, seed, and stale artifacts must never pass production validation or deployment.
+- Ledger signals are append-only and identified by date, region, ticker, and model version.
+- Do not claim point-in-time behavior unless release visibility and vintage limitations are verified and documented.
+- `liveValidated` is forbidden until real ledger requirements are met; builds never auto-promote it.
+- Keep generated `data/site-data.json` separate from explicit synthetic fixtures.
+- After changes run `ruff check .`, `python -m compileall pipeline`, `pytest -q`, seed
+  generation, and artifact validation.
+- Never merge directly to `main`.
+
+## Measurement-absence invariants (v2.11)
+
+- A statistic with nothing measurable behind it is `None`, never its most extreme
+  value. Excluding unmeasurable names from a ratio and then returning `0.0` when the
+  measurable set is EMPTY is the same defect the exclusion exists to prevent, wearing
+  the strongest reading the scale allows: `sentiment` published 0% 200-day breadth for
+  a cross-section that stated nothing, and that component carries 0.4 of the fear/greed
+  index, so a silent universe read as 극도의 공포. An unmeasured component abstains
+  from the score; a component that is measured but wrong is a different bug with a
+  different fix, and collapsing them costs the ability to tell which one happened.
+- A share is published with what it was measured ON. 100% breadth over two names and
+  over five hundred are not the same reading and an artifact carrying only the ratio
+  cannot tell them apart. The denominator and the universe size travel with it.
+- A classification that has a verdict for the unresolvable case is not a missing
+  measurement. `risk.diagnose` answers "Transition" for a name whose 200-day mean does
+  not exist yet, so `bull_pct` has no absence to handle — only the statistics that
+  return `None` get an abstention branch, and inventing one for the others would hide
+  a real reading.
+
+## Selection-value invariants (v2.11)
+
+- A CAGR gap is not a selection edge until it has been SPLIT. Geometric =
+  arithmetic + compounding, and a book less volatile than its matched benchmark
+  earns the second term without picking a single better name. The calibrated
+  challenger's headline +0.340pp/yr is +0.040pp of arithmetic stock selection
+  and +0.300pp of compounding at 0.83x the benchmark's block volatility — 88% of
+  the only positive number in the benchmark-alpha report is a low-volatility
+  tilt. `selection_value.decompose_edge` reports both terms or neither.
+- Turnover is reported as names REPLACED and weights RETARGETED separately,
+  because the remedies are opposite: carrying a drifted book removes the second
+  at zero change in what is held, while the first means holding different names.
+  Both published books are 92-93% name replacement, so a no-retarget band was
+  never going to be the lever.
+- A permutation null belongs to ONE selector and says which. It permutes one
+  ranking, so BEATS_RANDOM is a statement about that ranking and no other. The
+  report published a single unlabelled null built from the champion's conviction
+  score while a promotion would move the CHALLENGER — whose arithmetic selection
+  edge is +0.040pp/yr against the champion's -1.589pp. `selection_null` stamps
+  `selector` on every return including the unavailable ones, `promotionEvidence`
+  names `promotedSelector`, and the validator refuses a mismatch or a blank.
+- Beating the null and beating the benchmark are DIFFERENT BARS and are never
+  reported as one. Choosing is worth about +2.9pp/yr against a permuted ranking
+  on replay-v16 and the book still trails its matched benchmark by 1.378pp: the
+  null says the ordering carries information, the benchmark says the
+  construction does not yet pay for itself.
+- An ablation ladder is specified BEFORE its result and each rung moves exactly
+  one thing. `benchmark-relative-alpha-v1` moved cadence, a cash gate and the
+  weighting rule together, and its 1.4pp gross loss could not be attributed to
+  any of them. A rung is a fixed point on a design axis, never a tuned variant,
+  and the neutral setting is the ABSENCE of a component rather than a fitted
+  value for it.
+- A hypothesis refuted by its own pre-specified test is REPORTED and the
+  reasoning that produced it is left standing next to the refutation. "The
+  ranking is not worth its bill, so hold what the screen approved" lost to the
+  concentrated book by 1.683pp/yr and the arithmetic edge rose monotonically
+  with how much of the ranking was used. Re-specifying the ladder until the
+  hypothesis survives is the failure this repository's discipline exists to
+  prevent; deleting the module afterwards loses the instrument that produced
+  the answer.
+
+## Switch-hurdle invariants (v2.12)
+
+- A LADDER CARRIES ITS OWN CONTROL, and the control is the baseline. A research
+  loop is not `portfolio_replay` however carefully it is written: this one
+  builds its calibration on gross rather than cost-adjusted excess, and its
+  no-hurdle rung lands at -0.684pp against the published challenger's -1.046pp.
+  Paired against the published path the hurdle would have been credited +3.119pp,
+  0.362pp of which is a scoring difference it did not make. Every rung is paired
+  against the rung that differs from it in ONE thing, and the control's own gap
+  to the published path is published beside it as a harness difference.
+- Turnover costs are regional because the tax is. A buy pays commission plus
+  half the spread; a sell pays that plus the statutory transaction tax, which
+  in Korea has run 30bp down to 15bp and makes a Korean round trip cost 1.6x to
+  2.5x an American one. A pooled rate under-protects the expensive market and
+  over-protects the cheap one, and the hurdle a decision clears is priced from
+  the same dated schedule `_turnover_cost` charges the realised path.
+- A HURDLE IS SPENT AGAINST THE GAP BETWEEN COMPETING NAMES, not against zero,
+  so the size of a credit does not predict how often it binds. Korea's credit is
+  three times America's and American retention still rose four times as much
+  (41.2% -> 88.0% against 53.2% -> 62.9%): what decides it is the dispersion of
+  expected alpha inside the region, plus how many of its pool names the region
+  cap lets the book hold. Predicting where a rule will bite is not measuring it.
+- WHERE THE GAIN CAME FROM IS PART OF THE RESULT. The cost hurdle saves 0.270pp
+  of cost drag and gains 2.157pp of arithmetic stock selection, so eight times
+  more of it is the book holding names longer than the fees it avoids. A rule
+  that works for a reason its author did not predict is weaker evidence than one
+  that works for the stated reason, and the report says so rather than banking
+  the headline. Here it points at a different hypothesis — that last month's
+  ranking is noisier than the position it displaces — which is a claim about the
+  signal and has not been tested.
+- More hysteresis is not monotonically better and the ladder must be able to
+  show it. The one-standard-error rung trades least (2.814x) and gives back most
+  of the gain at a -35.0% drawdown, deeper than every other path measured.
+- A first interval that clears zero is reported with what makes it thin. The
+  cost rung's lower bound clears by 0.122pp, on one historical sample, after
+  several rungs across two studies, with no multiplicity correction — all of
+  which is published with the number, and none of which makes it a promotion.
+
+## Signal-persistence invariants (v2.12)
+
+- WHEN A RULE WORKS FOR THE WRONG REASON, THE REASON IS THE NEXT STUDY. The
+  switch hurdle saved 0.270pp of cost drag and gained 2.157pp of arithmetic
+  stock selection; holding a name longer cannot make the name better, so the
+  finding was about the signal. Banking the headline and moving on would have
+  left the actual mechanism unmeasured.
+- A SMOOTHER LOOKS BACKWARD ONLY, over a name's OWN prior appearances, and never
+  invents the history it lacks. A name seen for the first time carries its raw
+  percentile, so every window agrees on it. Reaching forward would hand the
+  ranking information it did not have and would do it invisibly — the path would
+  simply look better.
+- Scoring and selection are handed the SAME number. Ranking on a smoothed
+  percentile while capping on the raw one ranks names by one quantity and
+  constrains them by another, and nothing in the output shows the disagreement.
+- An ADDED-versus-RETAINED comparison is paired WITHIN a rebalance. Both groups
+  were chosen by the same ranking on the same date under the same constraints,
+  so the within-date difference carries no market-timing term; pooled across
+  dates it would measure which months were kind. Measured: -1.331% per block,
+  95% CI [-3.029%, +0.174%], which CONTAINS zero on 131 paired rebalances.
+- THE AXIS IS MEASURED BEFORE THE LADDER IS READ. A name's alpha percentile
+  moves a mean of 1.146 points between consecutive blocks and is integer
+  rounded, so the axis being varied is narrow. That a one-point input change
+  produces a multi-point output change is the greedy-selection property the
+  determinism invariants already name — it makes the mechanism plausible AND
+  the estimate fragile, and both halves are published.
+- Two levers that move DIFFERENT quantities are reported as different findings.
+  Smoothing raises arithmetic stock selection from +0.315pp to +2.994pp at
+  essentially unchanged turnover (4.679x to 4.625x); the hurdle cut turnover to
+  3.567x holding the same kind of names longer. They stack because they are
+  orthogonal, and the stacked path moves TWO axes and is attributable to
+  neither, so it is reported outside the ladder.
+- A LADDER THAT DOES NOT SEPARATE SAYS SO IN ITS OWN VERDICT.
+  `separatedFromControl` is empty here: every point estimate moves one way, the
+  rungs are monotone in k, and no interval clears zero. Consistency across
+  angles is corroboration and is reported as corroboration — never as a
+  rejection of the null, and never as grounds to promote.
+
+## Alpha-reliability invariants (v2.13)
+
+- A RANKING CANNOT BE SPENT BETTER THAN IT CAN BE REPRESENTED, and how much it
+  can represent is measured before anything is built on it. The research pool is
+  already alpha-filtered: its percentiles run 91-100 (mean 97.4, sd 2.33) and
+  the calibration's edges are (0, 60, 80, 90, 95, 100), so exactly TWO buckets
+  are ever occupied and 83.55% of 3,720 pool name-dates sit in one of them.
+  Names inside a bucket are handed the SAME expected excess, so for most of the
+  pool the alpha term is a constant and the ordering falls to realised downside
+  volatility. Every study that proposed to refine the percentile was proposing
+  to refine something the decision layer cannot see.
+- THE BOOK SWAPS NAMES IT HAS NO ALPHA REASON TO SWAP, and this is measured, not
+  inferred. 86.71% of the control's top-5 cuts and 29.77% of its swaps are
+  between names the calibration scores IDENTICALLY. Of 412 held names whose raw
+  percentile moved one point or less since their previous appearance, 47.82%
+  were replaced anyway. The relative score gap at the cut has a median of 0.086
+  and a p10 of 0.010 — the boundary is decided by a rounding of the risk
+  estimate far more often than by the signal.
+- THE SWAPS THE CALIBRATION CANNOT JUSTIFY ARE THE ONES THAT LOSE. Arriving
+  minus departing realised 21-session excess is -2.601% per block on the 39
+  swaps tied on expected alpha (38.5% win rate, 95% CI [-5.510%, +0.024%]) and
+  +1.845% on the 92 that were separated (55.4%, [-1.075%, +5.005%]). Pooled the
+  two read +0.521% and say nothing. This is the strongest statement this
+  programme has about WHICH replacements are worth making, and both intervals
+  still contain zero.
+- A NAME EXCLUDED BY A CAP IS NOT THE RANKING'S MARGINAL REJECT. `_select_scored`
+  stamps `BELOW_TARGET_COUNT_CUTOFF` on what the book was too full to reach and
+  a cap code on what it refused earlier, and those are different facts:
+  comparing the last held name against the first non-held one would measure the
+  diversification rules instead of the ranking. Cap-bound rebalances are
+  counted, never silently folded into the boundary statistic — on the control
+  path 2 of 145.
+- A DIAGNOSTIC BUILT ON AN AUDIT WINDOW MEASURES THE WINDOW. `selection.ranking`
+  publishes the selected names plus EIGHT near misses, so every name below that
+  carries no cut reason at all — and the first boundary statistic read a missing
+  reason as "not excluded by rank" and dropped the rebalance. It reported 91 of
+  145 measured and 54 cap-bound; re-running production's own `_select_scored`
+  over the whole cross-section gives 143 and 2. The conclusion did not move
+  (81.32% -> 86.71% tied) but a third of the sample had been silently
+  unobservable, and a truncated audit view is not a measurement of the thing it
+  is a view of.
+- PRODUCTION MUTATES THE ROWS A CALLER HANDS IT, and a research module that
+  keeps them has to know. `select_portfolio_by_scores` shallow copies each row,
+  so `item["exclusionCodes"]` IS the caller's list and `_select_scored` appends
+  `BELOW_TARGET_COUNT_CUTOFF` and the cap codes straight into it. Departure
+  attribution read those back as facts about the name and called 244 of 444
+  departures "ineligible on its own facts"; against an immutable
+  `eligibilityCodes` captured at build time the real split is 160 pool exits,
+  150 outranked, 84 region cap, 40 entry state and 10 sector cap, and none
+  ineligible. The two lists answer different questions and are kept apart.
+- A CONFIDENCE WEIGHT IS A CONTRACTION OR IT IS A FACTOR. `reliable_alpha =
+  confidence x alpha` keeps |reliable| <= |alpha| with the sign preserved, so it
+  can only ever reduce what a name is credited with; `contraction_holds` is
+  asserted on every row of every block and raises. The alternative shapes were
+  refused for cause, not for taste: shrinking the PERCENTILE toward the pool
+  mean moves a weak name at 93 UP into the top bucket, shrinking it toward 50
+  collapses the whole pool into one bucket, and `evidenceCoverage` is
+  unavailable entirely because `longterm` already computes
+  `alpha = rawAlpha x evidenceCoverage` before the percentile is taken.
+- SEPARATION IS READ IN BOTH DIRECTIONS, and the downside one is the more
+  informative. Reading it as "the lower bound cleared zero" is how a ladder
+  reports `separatedFromControl: []` while one of its own rungs has been
+  refuted. The confidence axis is the first interval in four studies on this
+  ledger to exclude zero against its own control — at -3.984pp, 95% CI
+  [-8.144, -0.214], in the WRONG direction. `separatedFromRungBelow` carries a
+  `direction`, never a bare list of names.
+- A CANDIDATE ITS OWN PRE-SPECIFIED TEST REFUTED IS NOT FROZEN, and the
+  provenance of that rule is published with it. The design named the last rung
+  unconditionally; the condition was added after the first full run produced the
+  refutation above. What makes that a tightening and not a re-specification: no
+  rung, parameter, window or scoring rule changed, every number is what that run
+  produced, and the condition can only ever REMOVE a candidate. A rule that can
+  only subtract cannot launder a result.
+- A RULE CAN DO EXACTLY WHAT IT WAS DESIGNED TO DO AND STILL NOT PAY. Signal
+  hysteresis moved incumbent retention 39.3% -> 67.1%, one-way turnover 4.535x
+  -> 2.955x and cost drag 1.330pp -> 0.847pp, and it removed the losing tied
+  swaps it was aimed at — the tied population's realised difference goes -2.601%
+  (n=39) to +1.149% (n=24). Its paired difference against the rung below is
+  +0.288pp, 95% CI [-4.430, +5.416]. Behaviour changing as predicted is
+  mechanism evidence and is reported as mechanism evidence; it is not a result.
+- WHERE THE ALPHA TERM ORDERS AND WHERE IT DOES NOT ARE DIFFERENT PLACES, and
+  only one of them decides anything. Across the whole cross-section the score's
+  rank correlation with the calibrated alpha is 0.758 against 0.075 with
+  downside volatility, so the alpha term orders most PAIRS — but a five-name
+  book is decided at its margin, and 86.71% of cuts have both sides in the same
+  bucket. The held set matches an alpha-only top-N 30.07% of the time and 37.52%
+  of held-against-not-held pairs are ordered the other way by the alpha
+  percentile. Quoting either number alone describes a different system.
+- THE DEFENSIVE TILT IS IN WHAT IS HELD, NOT IN A RANK CORRELATION. Held names
+  carry 24.45% downside volatility against 27.17% for rejected ones and a
+  `lowvol` sleeve percentile of 74.37 against 63.81, and `lowvol` is among a
+  held name's top two sleeves 58.86% of the time. So part of the tilt arrives
+  through the ALPHA itself and would survive deleting the score's
+  downside-volatility denominator — which is why `alpha-risk-separation-v1`
+  moves the denominator alone and leaves the 0.20 sleeve weight to the study
+  after it. Two risk channels moved together are attributable to neither.
+- THE DIVERSIFICATION GUARD IS A LARGER SOURCE OF TURNOVER THAN THE RANKING'S
+  OPINION IS. The region cap stopped a name on 93.10% of control rebalances and
+  on 134 of 145 the capped name outscored one the book took, median decision
+  alpha gap 0.856pp; held name-dates split KR 421 / US 301 where the same count
+  with the caps lifted wanted KR 640 / US 82, and the book is KR:3/US:2 on 132
+  of 145. Caps account for 21.17% of every replacement and the entry-state step
+  for a further 9.01%, against 33.78% the ranking actually outranked. A rule
+  that produces a fifth of the turnover is not a side constraint.
+- A DIAGNOSTIC ADDED AFTER A LADDER IS SCORED MAY ONLY READ IT. The structural
+  diagnostics landed after this study's rungs were final; they changed no score,
+  added no rung, moved no constraint, and the ladder, its paired intervals and
+  the stacked path are byte-identical with and without them. A within-block
+  reading with a constraint notionally lifted — "the top-N on alpha alone", "the
+  top-N with the caps off" — is a count of how often two rules disagree, never
+  an estimate of what disagreeing would have earned: nothing is valued, carried
+  forward or compounded, and no realised return enters one.
+- THE BOTTLENECK NAMED BY THIS STUDY IS RESOLUTION, NOT INFORMATION. Before any
+  new factor is collected, the open question is whether a finer or pool-relative
+  calibration of the SAME percentile recovers orderings the current five-edge
+  bucket map discards. Adding a factor to a decision layer that can express two
+  states would add it to the same two states.
+
+## Alpha-risk-separation invariants (v2.14)
+
+- A CONTROL THAT IS CALLED IS SAFER THAN A CONTROL THAT IS REPRODUCED.
+  `alpha_risk_separation.CONTROL` is literally `alpha_reliability.CONTROL`,
+  and the control path is produced by calling
+  `alpha_reliability.run_rung(alpha_reliability.CONTROL, ...)` directly rather
+  than re-implementing its candidate assembly and scoring. A second
+  implementation is a second place for a control to drift from the path it is
+  supposed to be.
+- REMOVING A DENOMINATOR IS NOT REMOVING AN ELIGIBILITY FACT.
+  `DOWNSIDE_RISK_UNAVAILABLE` excludes a name on BOTH rungs, because
+  inverse-downside-volatility position SIZING still needs a risk unit
+  whatever the selection SCORE divides by. Relaxing the exclusion along with
+  the score change would let the study claim a benefit that actually came
+  from sizing names the control could not size at all.
+- THE SAME SCORE SERVES SELECTION AND THE CONVICTION TILT, so removing its
+  denominator changes both. `selection_and_baseline` hands one `scored` list
+  to `select_portfolio_by_scores` (which five names) and to `baseline_weights`
+  (the 0.5x-1.5x tilt among them, by the same rank). What the axis leaves
+  UNTOUCHED is the tilt's BASE, `1 / max(risk_unit, 0.05)`, computed
+  identically on both rungs — inverse-volatility sizing is exactly as it was;
+  only the ranking that decides who receives it no longer divides by risk.
+- REMOVING THE SCORE'S ONE CONTINUOUSLY-VARYING TERM CAN ONLY MAKE TIES AT
+  THE MARGIN MORE COMMON. Measured: cuts tied on expected alpha rise from
+  86.71% to 94.41%, the median relative score gap at the cut collapses from
+  0.086 to 0.000, and one-way turnover rises from 4.679x to 5.744x. This is
+  reported as the MECHANISM behind the turnover change, not left as an
+  unexplained side effect — `boundary_instability` and `replacement_anatomy`
+  (`alpha_reliability`) are run unmodified on the new rung's own decisions,
+  exactly as `risk_dominance` is, rather than re-derived.
+- A DEFENSIVE TILT CAN SURVIVE THE CHANNEL THAT WAS MEASURED FIRST. Removing
+  the denominator moves downside volatility held by +1.664pp and `lowvol`
+  being a held name's highest sleeve by -7.76pp (32.69% -> 24.93%) — present
+  but reduced, not collapsed. The tilt LARGELY SURVIVES, which means part of
+  it arrives through the alpha term itself (the `lowvol` sleeve, 0.20 weight)
+  and not through the ranking denominator this rung removed. That is why the
+  sleeve move is its OWN study and was never widened into this one.
+- THE PAIRED INTERVAL CONTAINS ZERO AND THE POINT ESTIMATE IS WORSE. Net
+  excess moves from -0.684pp (control) to -1.586pp (alpha only), paired
+  difference -0.902pp, 95% CI [-5.068, +3.210] over 155 blocks. Sharpe falls
+  0.853 -> 0.747 and MDD deepens -25.158% -> -28.958%. Removing the
+  denominator is not shown to help, and the interval does not clear zero in
+  either direction — reported as CONTAINS ZERO, not folded into "no result".
+- NO PERMUTATION NULL WAS RUN. No rung in this ladder may be described as
+  beating random, and the freeze manifest says so explicitly.
+
+## Dynamic-breadth invariants (v2.15)
+
+- A FLOOR, A CEILING AND A MULTIPLE ARE ALL INHERITED, NONE INVENTED HERE.
+  `[FLOOR, CEILING] = [3, 10]` are the exact numbers `alpha-reliability-v1`
+  pre-registered for this study; `FLOOR` also equals production's existing
+  `selection.minNames`. `SE_MULTIPLE = 1.0` is `switch_hurdle.SE_MULTIPLE`,
+  imported rather than re-declared, so the two studies that use it cannot
+  silently diverge on the unit.
+- DISTINGUISHABILITY IS TESTED ON THE ALPHA CLAIM, NOT THE RISK-ADJUSTED
+  SCORE. The selection score blends three questions (alpha, risk, entry
+  state); breadth is specifically about the alpha estimate's own precision,
+  so the walk reads `expectedExcessReturnPct` and `standardErrorPct x
+  shrinkageFactor` directly from the calibration — the same scaling
+  `switch_hurdle.hurdle_scores` already uses for its own margin. The SCORE
+  used to RANK names never moves from `alpha_reliability.CONTROL`'s.
+- THE WALK IS MONOTONIC AND STOPS AT THE FIRST FAILURE. A later name clearing
+  the bar after an earlier one failed it is not additional distinguishable
+  breadth, it is the tail of a ranking whose head already said stop. Below
+  the floor no test is applied — the floor is unconditional, matching
+  production's own `minNames`.
+- A CAP OUT OF SCOPE FOR THIS STUDY STILL BINDS, AND THAT IS MEASURED RATHER
+  THAN ABSORBED. `maxNamesPerRegion = 3` is unchanged and this is a
+  two-region universe, so the hard ceiling this book can ever actually hold
+  is 6, not the pre-registered 10. Measured: the SE-distinguishability walk
+  computed a target averaging 4.290 names before any cap; 17.42% of
+  rebalances were trimmed below that computed target by the region or sector
+  cap; the walk reached the ceiling of 10 on only 4.52% of rebalances.
+  Widening those caps is `region-quota-removal-v1`'s axis, not this one's.
+- ON THIS SAMPLE THE WALK MOSTLY STOPS RIGHT AT THE FLOOR. 138 of 155
+  rebalances stopped on `ALPHA_NOT_DISTINGUISHABLE_FROM_ZERO`, most of them
+  at or near rank 4 — consistent with `alpha-reliability-v1`'s finding that
+  the pool occupies two calibration buckets and consecutive-rank alpha gaps
+  cluster near zero. Mean names held fell from the fixed 4.658 to 3.910.
+- THE PAIRED INTERVAL CONTAINS ZERO. Net excess moves from -0.684pp (fixed
+  five) to -1.001pp (dynamic 3-10), paired difference -0.317pp, 95% CI
+  [-2.133, +1.425] over 155 blocks. Turnover fell 4.679x -> 4.416x and MDD
+  shallowed -25.158% -> -21.336%, but the excess comparison does not
+  separate in either direction — reported as CONTAINS ZERO, not as a result.
+- NO PERMUTATION NULL WAS RUN, and no search over 3/5/7/10 was performed.
+  Exactly one dynamic rule, specified before the result, is compared against
+  the fixed-five control.
+
+## Region-quota-removal invariants (v2.16)
+
+- THE PREREQUISITE IS MEASURED, NOT ASSUMED AWAY. `alpha-reliability-v1`
+  named a prerequisite for removing the region cap: within-region alpha
+  percentiles need a common cross-region scale first. That scale already
+  exists — `ExpandingBucketCalibration.expected()` returns a region-specific
+  calibrated expected benchmark excess in pp, the same quantity every rung
+  already ranks on — so `calibration_comparability` measures whether it is
+  comparable IN PRACTICE rather than inventing a second normalization. On
+  this sample the US-minus-KR shrinkage gap is -0.002: the comparability
+  artefact the prerequisite warned about (thinner history pulling one
+  region's alpha harder toward zero) is not present.
+- A COMPARABLE SCALE CAN STILL DISAGREE ON THE LEVEL, AND THAT IS A
+  DIFFERENT FINDING. Shrinkage and effective-date counts are nearly
+  identical between regions, but the calibrated alpha LEVEL is not: the pool
+  assigns Korean names a mean of 0.645pp against 0.041pp for American names,
+  roughly 16x. An unconstrained ranking is not exploiting a scale artefact
+  when it piles into the higher-level region — it is reading the
+  calibration's own belief about opportunity, correctly.
+- OPENING THE CAP REPRODUCES THE EARLIER CAP-LIFTED MEASUREMENT
+  INDEPENDENTLY. `alpha-reliability-v1`'s own diagnostic measured KR 640 /
+  US 82 held name-dates with the caps notionally lifted, from a
+  within-block reading that valued nothing. This study's actual replayed,
+  valued path lands at KR 639 / US 85 — two independently built
+  measurements of "what the ranking wants without the region cap" agree to
+  within one name-date, and only the second one is a realised return.
+- REMOVING THE CAP MADE THE POINT ESTIMATE WORSE, AND THE INTERVAL DOES NOT
+  SEPARATE. Net excess moves from -0.684pp (3-cap control) to -2.314pp
+  (quota opened), paired difference -1.630pp, 95% CI [-4.462pp, +0.961pp]
+  over 155 blocks. CONTAINS ZERO — reported as such, not folded into "no
+  result" and not read as a refutation either, since the interval does not
+  clear zero in the other direction.
+- THE GROSS GAP IS ARITHMETIC SELECTION, NOT A VOLATILITY TILT. Control:
+  +0.315pp arithmetic / +0.405pp compounding. Quota opened: -1.351pp
+  arithmetic / +0.260pp compounding. The KR-concentrated book is choosing
+  names that underperform their own region's benchmark by more than the
+  diversified book's names do — the loss is in WHICH names, not in a
+  changed risk profile.
+- THIS STUDY QUANTIFIES THE TRADE, IT DOES NOT ADJUDICATE IT. The region cap
+  costing turnover (`alpha-reliability-v1`) and the region cap providing
+  diversification value the ranking's own opinion would forgo (this study)
+  are BOTH true on this sample and are not in tension: a constraint can be a
+  large source of turnover and still pay for itself. Neither this result nor
+  any prior one in this line makes a claim about which effect dominates
+  going forward.
+- NO PERMUTATION NULL WAS RUN. Only `maxNamesPerRegion` moved; `targetNames`,
+  `maxNamesPerSector`, breadth and every cost assumption are unchanged from
+  `alpha_reliability.CONTROL`, called directly rather than reimplemented.
+
+## Entry-selection-separation invariants (v2.17)
+
+- ENTRY STATE DECIDES WHO TODAY, NOT HOW FAST. `score = decision / (risk *
+  100) * state` bakes the entry-state multiplier straight into the
+  SELECTION score, so a WATCH name's score is halved before it is ever
+  ranked against an ACCUMULATE name's. Nothing in `baseline_weights`
+  applies the multiplier again once a name is selected. Production
+  therefore does the opposite of the pre-registration's separation
+  ("alpha decides the held set, entry state decides how fast the target
+  weight is approached") on both ends.
+- THE AXIS IS THE CONTINUOUS THROTTLE ONLY. A multiplier of 0.0 (EVENT_RISK,
+  AVOID, a non-POSITIVE research view, insufficient data) stays a full
+  eligibility exclusion on BOTH rungs, for incumbents and new entries
+  alike. Whether an incumbent should be forced out on a blocking state at
+  all is a separate claim about EXITS the pre-registration explicitly
+  reserved for its own test.
+- A BUG THE DIAGNOSTIC CAUGHT IS RECORDED, NOT SILENTLY FIXED.
+  `select_portfolio_by_scores` builds and mutates its OWN internal row
+  copies, never the caller's `scored` list — so a `selected` flag read off
+  `scored`'s own rows is always stale or absent. The first sealed run of
+  `entry_state_incidence` read exactly that flag and reported `heldByState:
+  {}` and `namesTheDiscountLetIntoTheBook: 0` on every block, both
+  mechanically impossible. The fix reads the held set from `retained`/
+  `added` on the decision, the same fields every other diagnostic in this
+  line already uses.
+- THIS AXIS HAS BITE, MEASURED BEFORE THE LADDER. The discount changes
+  which names are held on 130 of 155 control rebalances (83.87%) — 258
+  names it kept out that alpha-only selection would hold, 258 it let in
+  that alpha-only would drop (necessarily equal: both rungs hold the same
+  COUNT per block under the same caps).
+- AVERAGE CASH NEARLY DOUBLED, AND THAT IS THE MECHANISM, NOT A SIDE
+  EFFECT. Moving the throttle to weight lifts average cash held from
+  30.417% to 56.002%: alpha-only selection holds far more of the WATCH/
+  WAIT_FOR_PULLBACK names the discount used to exclude, and 68.7% of held
+  name-dates on the new rung then carry a throttled weight, withholding a
+  mean of 66.7% of target when throttled. A materially smaller invested
+  fraction mechanically shrinks realised volatility and drawdown, and also
+  moves the region-weighted matched benchmark itself.
+- THE GROSS GAP IS NOT MERELY A VOLATILITY EFFECT. Arithmetic stock
+  selection rises 0.315pp -> 2.017pp while compounding is roughly flat
+  (0.405pp -> 0.289pp): on this sample the names the discount used to
+  exclude realised BETTER excess returns than the ones it favoured, not
+  merely lower volatility from holding more cash. That is a claim about
+  this historical sample's realised outcomes, not a mechanism this study
+  tested or a prediction about future samples.
+- THE PAIRED INTERVAL CONTAINS ZERO. Net excess moves from -0.684pp
+  (control) to +1.385pp (entry-at-weight), paired difference +2.069pp, 95%
+  CI [-1.881pp, +6.061pp] over 155 blocks. The point estimate is large and
+  favourable, but the interval does not clear zero, and no permutation
+  null was run — reported as CONTAINS ZERO, not as a result.
+- THIS WAS THE FOURTH AND LAST STUDY `alpha-reliability-v1` pre-registered.
+  `alpha_reliability.CONTROL` is called directly rather than reimplemented,
+  exactly as in every prior study in this line.
+
+## Alpha-risk-separation diagnostic-extension invariants (v2.18)
+
+- A DIAGNOSTIC ADDED AFTER A LADDER IS SCORED MAY ONLY READ IT, AND HERE THAT
+  IS PROVEN MECHANICALLY RATHER THAN ASSERTED. The frozen
+  `alpha-risk-separation-v1` rungs are re-run by CALLING that study's own
+  functions, and the runner recomputes all TEN of its scored blocks and
+  compares them canonically against the checked-in
+  `docs/results/alpha-risk-separation-report.json`. A mismatch raises
+  `FROZEN_LADDER_MOVED` and refuses to publish. The runner's `_guard` also
+  refuses the frozen report's own path as an output, so it cannot be
+  overwritten by mistake, and the workflow runs `git diff --exit-code` on it.
+- RE-RUNNING A SETTLED LADDER IS HOW A PROGRAMME TALKS ITSELF INTO A RESULT.
+  The study this extends is scored, merged and CONTAINS ZERO; the correct
+  response to a request to redo it was to establish that it already exists,
+  say so, and extend only what it never measured.
+- `risk_dominance` COMPARES HELD AGAINST REJECTED WITHIN A RUNG, WHICH CANNOT
+  SAY WHAT REMOVING THE DENOMINATOR BOUGHT. Only the names the two rungs
+  DISAGREE about can answer that. `set_difference_profiles` pairs the rungs
+  by date and profiles `selectedByChallengerNotControl` against
+  `selectedByControlNotChallenger`; paired WITHIN a rebalance, so it carries
+  no market-timing term, and factor facts are read from ONE source (the
+  control's own rows) so a profile gap cannot come from the source.
+- THE DENOMINATOR WAS NOT HOLDING BACK HIGH-MOMENTUM OR HIGH-QUALITY NAMES,
+  AND THAT REFRAMES THE AXIS. On the 233 name-dates the rungs disagree about,
+  momentum separates them by +0.687 and quality by +0.626 — well under a
+  percentile point — while `lowvol` moves -9.725 and realised downside
+  volatility +5.157pp. Alpha percentile is 98.163 against 98.039. Removing
+  the denominator did not buy different alpha; it bought THE SAME ALPHA MORE
+  RISKILY, which is what a risk denominator is supposed to prevent.
+- AND THOSE NAMES DID NOT GO ON TO DO BETTER. Challenger-only names realised
+  0.587% mean forward block excess at a 46.78% win rate against
+  control-only's 0.799% and 51.93% — a difference of -0.212pp. Descriptive
+  only: a difference of two group means, not a paired test, with no
+  multiplicity correction, read off the same priced cross-section
+  `replacement_anatomy` reads, and entering no score, ranking or rule.
+- A STACK THAT MOVES TWO AXES IS REPORTED OUTSIDE THE LADDER AND NAMED AS
+  SUCH. k=6 persistence plus the denominator removal lands at -0.231pp
+  against the control's -0.684pp (+0.454pp, 95% CI [-4.235, +5.570]). It is
+  attributable to NEITHER axis alone and is never paired into the primary
+  ladder — the same status `signal-persistence-v1` gave its own stacked path.
+- A DIAGNOSTIC THAT PRINTS `n/a` FOR EVERY ROW LOOKS LIKE A MEASUREMENT.
+  The observational region/entry table was first written against guessed key
+  names (`rebalancesWhereRegionCapBoundPct`) that `region_cap_binding` does
+  not emit. Read the function's actual output keys before formatting them;
+  a silently blank row is worse than a missing section.
+
+## Lowvol-alpha-separation invariants (v2.19)
+
+- A SEALED LEDGER'S SCHEMA IS MEASURED BEFORE A STUDY IS DESIGNED, NOT
+  ASSUMED FROM THE PRODUCTION CODE THAT WROTE IT. Production blends sleeve
+  Z-SCORES; the replay-v16 ledger stores each sleeve's PERCENTILE
+  (`factorPercentiles`) and `rawAlpha` as a single scalar, never the
+  z-scores, so production's exact alpha arithmetic is UNREACHABLE from
+  sealed inputs. Both rungs therefore blend percentiles, which keeps the
+  axis between them exactly one thing but makes the harness's own control
+  a DIFFERENT path from production's, at a measured rank correlation of
+  0.906 to the published `alphaPercentile` over 1,430 cross-sections. That
+  gap is published, not hidden, per `switch-hurdle-v1`'s rule that a ladder
+  carries its own control.
+- A CONSTRUCTION CHOICE MADE BEFORE A RUNG IS VALUED IS NOT THE SAME AS ONE
+  MADE AFTER. `evidenceCoverage` shrinks production's SIGNED `rawAlpha`
+  toward zero; a percentile blend is strictly positive, so multiplying it
+  by coverage uncentred would push every weakly-covered name DOWN
+  regardless of sign. Centring the blend at 50 before applying coverage was
+  selected on fidelity to the PUBLISHED ranking (0.929 centred vs 0.746
+  uncentred, measured against the sealed ledger's own `alphaPercentile`),
+  before any rung's performance was computed.
+- REMOVING A SLEEVE IS NOT A MISSING-DATA EVENT, AND THE DIFFERENCE COSTS
+  ABOUT 14 POINTS OF COVERAGE IF CONFUSED. `longterm.factorCoverage =
+  sleevesPresent / len(FACTOR_WEIGHTS)` and source quality is averaged over
+  the sleeves a name HAS; naively deleting `lowvol` would drop coverage
+  from 4/4 to 3/4 and source quality 0.80 -> 0.733 for a name that lost
+  nothing but a factor DEFINITION. This study never recomputes coverage —
+  it reads the sealed value, identical on both rungs — so the penalty
+  cannot arise. Zero of 399,547 name-dates lack a three-factor sleeve, so
+  no eligibility diverges between the rungs either.
+- THE CHALLENGER'S WEIGHTS ARE DERIVED FROM PRODUCTION'S, NEVER FITTED.
+  `THREE_FACTOR` is computed from `longterm.FACTOR_WEIGHTS` at import by
+  renormalizing over the three non-`lowvol` sleeves, preserving the
+  30:25:25 ratio exactly (momentum/value = 1.2 on both rungs). No weight
+  sweep was performed.
+- THE HYPOTHESIS'S OWN PREDICTED SHIFT HAPPENED, AND THE PORTFOLIO LOST
+  ANYWAY. On the 336 name-dates the two rungs disagree about, the
+  challenger's picks carry momentum +7.875, value +13.870, downside
+  volatility +7.536pp and `lowvol` -25.411 against the control's, and held
+  Technology exposure rose 4.570% -> 7.890% (+3.32pp) while Consumer
+  Staples fell 14.130% -> 10.940% (-3.19pp). The higher-momentum,
+  higher-volatility, more-technology book the hypothesis predicted is
+  exactly what got built.
+- AND IT WAS BUILT ON A WORSE CALIBRATED READING. The challenger-only
+  names' own calibrated expected excess is 0.268pp against the
+  control-only names' 0.565pp, at an alpha percentile of 92.461 against
+  94.696 — LOWER on both counts, not higher. Net excess moves -1.647pp ->
+  -4.556pp, arithmetic stock selection -0.355pp -> -2.565pp: the loss is
+  concentrated in SELECTION, not compounding (0.190pp -> -0.282pp), so it
+  is not a volatility-drag story either. Paired difference -2.909pp, 95%
+  CI [-9.194pp, +3.417pp] — CONTAINS ZERO, verdict
+  `DIRECTIONAL_BUT_NOT_STATISTICALLY_SEPARATED`, but the point estimate is
+  unfavourable on every reading measured.
+- THE NEWLY SELECTED NAMES DID NOT REALISE BETTER FORWARD RETURNS EITHER.
+  Challenger-only mean forward block excess is -0.076% (47.02% win rate)
+  against control-only's -0.077% (49.40%) — indistinguishable, and if
+  anything the challenger's win rate is lower. Descriptive only, fitted to
+  nothing, but it corroborates rather than complicates the calibrated
+  reading.
+- THREE STACKS THAT MOVE MORE THAN ONE AXIS ALL LAND WORSE, AND NONE MAY BE
+  READ AS THE SLEEVE'S EFFECT. `+persistence k=6` (2 axes): -3.528pp,
+  MDD -41.035%. `+entry-at-weight` (2 axes): -2.259pp. `+both` (3 axes):
+  -1.878pp. Each is attributable to none of its own axes individually, and
+  none is paired into the primary ladder — the same status
+  `signal-persistence-v1` gave its own stacked path.
+- THE COMBINED READING IS CASE D: KEEP THE SLEEVE. Of the five cases
+  specified before the result (a favourable separation; no effect alone
+  but a better persistence stack; no effect alone but a better
+  entry-separation stack; both other axes strong while this one adds
+  nothing; and a selection improvement bought with worse drawdown), what
+  was measured matches none of the favourable ones — net excess worsens,
+  arithmetic selection worsens, MDD worsens (-27.651% -> -31.733%), and
+  every stacked path is worse still. Research attention belongs on signal
+  persistence, role separation, and the calibration bucket RESOLUTION
+  `alpha-reliability-v1` named as the bottleneck — not on the alpha's
+  factor composition.
+- NO PERMUTATION NULL WAS RUN, so no rung in this ladder may be described
+  as beating random, and a CI containing zero on an already-unfavourable
+  point estimate is reported as CONTAINS ZERO, never softened toward "no
+  effect either way."
+
+## Alpha-calibration-resolution invariants (v2.20)
+
+- A SCORE CANNOT BE REORDERED BY REORDERING ROWS, ONLY BY MOVING ITS VALUE.
+  `select_portfolio_by_scores` always re-sorts candidates by `(-score,
+  ticker)` before selecting, so handing it candidate rows in a new order
+  changes nothing — the re-sort erases any ordering not carried in the
+  SCORE FIELD itself. `rescue_scores` therefore never permutes rows: it
+  keeps the exact score VALUE Control computed at a given sort position and
+  reassigns which candidate's identity carries it. `select_portfolio_by_
+  scores` and `_select_scored` run completely unmodified as a result, and
+  this is proved mechanically rather than argued: `assert_noop_blocks_
+  match_control` checks, on every one of 155 real blocks, that an EMPTY
+  swap list reproduces Control's held set exactly — a mathematical
+  necessity of the construction, not a tolerance-based check.
+- GROUPING BY ELIGIBLE ROWS ONLY MAKES A REGION-CAP CASCADE STRUCTURALLY
+  IMPOSSIBLE, AND THIS IS MEASURED RATHER THAN ASSUMED. A group is
+  `(region, calibrationBucket)` among `eligible=True` rows, so every
+  member shares one region by construction — a swap can change which
+  SECTOR occupies a position but never how many eligible names from a
+  region reached the ordering. Measured: of 862 changed name-dates, 0 of
+  the swap-bearing rebalances showed a changed regional shape in the held
+  set; 853 (99.0%) are the direct reorder itself and 9 (1.0%) are a
+  sector-cap cascade.
+- THIS STUDY CARRIES NONE OF `lowvol-alpha-separation-v1`'S HARNESS-
+  FIDELITY GAP, BECAUSE IT NEVER RECONSTRUCTS THE INPUT. `alphaPercentile`,
+  `calibrationBucket` and `expectedGrossBenchmarkExcessPct` are read
+  DIRECTLY from `alpha_reliability.reliability_scores`'s own sealed output,
+  the exact fields production computed. There is no percentile rebuild and
+  therefore no fidelity gap to publish.
+- THE DISCARDED ORDINAL INFORMATION IS MEASURED BEFORE THE LADDER IS READ,
+  AND IT IS NOT INFORMATIVE. Within a `(date, region, calibrationBucket)`
+  group, pairwise concordance (higher `alphaPercentile` realised the better
+  forward excess) is 49.06% over 9,375 pairs, mean within-group Spearman is
+  0.006, and a parameter-free median-rank half split reads +0.075pp — all
+  three at essentially CHANCE. This is measured on the CONTROL path's own
+  scored candidates and enters no score, ranking or rule.
+- THE POINT ESTIMATE IS UNFAVOURABLE AND THE INTERVAL CONTAINS ZERO — BOTH
+  ARE PUBLISHED, NEITHER IS SOFTENED. Net excess moves -0.684pp (control) to
+  -1.865pp (ordinal rescue), paired difference -1.181pp, 95% CI [-6.207pp,
+  +3.955pp] over 155 blocks. Arithmetic stock selection moves +0.315pp to
+  -0.402pp and compounding +0.405pp to -0.158pp — both terms unfavourable,
+  not a volatility-drag story. Verdict:
+  `DIRECTIONAL_BUT_NOT_STATISTICALLY_SEPARATED`.
+- A THREE-CASE PRE-REGISTRATION DID NOT NAME A FOURTH CASE, AND THE FOURTH
+  CASE IS NOT STRETCHED TO FIT ONE OF THE THREE. The design specified
+  favourable-and-separated (A), doesn't-help (B), and directionally-good-
+  but-uncertain (C) before the result was seen. A negative point estimate
+  that does not statistically separate is not "directionally good," so it
+  is routed to B on point-estimate sign rather than reported as C — which
+  would have misrepresented an unfavourable reading as a promising one.
+  Verdict: **CASE B — ordinal rescue does not help**, corroborated
+  independently by Stage B's near-chance concordance.
+- THE BOTTLENECK NAMED BY `alpha-reliability-v1` WAS RESOLUTION; THIS STUDY
+  TESTED IT DIRECTLY AND FOUND DISCRIMINATION INSTEAD. The two-occupied-
+  bucket calibration compresses production's ordering hard (3,028 eligible
+  name-dates into 3 levels, the largest holding 53.70%), and there is real
+  ordinal spread inside a level (mean range 2.979 points) for a rescue to
+  use — but Stage B's near-chance concordance shows that spread does not
+  order forward outcomes. A finer or continuous calibration would not be
+  expected to recover value that Stage B shows is not there.
+- NO BUCKET-COUNT SWEEP, NO PERCENTILE-COEFFICIENT OPTIMISATION, NO SPLINE
+  OR ISOTONIC FIT, NO THRESHOLD SEARCH. One binary mechanistic test,
+  specified before the result: does restoring discarded ordinal information
+  inside a tied group help, yes or no. It does not, and re-specifying the
+  calibration until it does would be the exact failure this repository's
+  discipline exists to prevent.
+- NO PERMUTATION NULL WAS RUN, so no rung here may be described as beating
+  random, and this remains one historical sample after ten studies on this
+  ledger, with no multiplicity correction.
+
+## Four-factor-signal-attribution-audit invariants (v2.21)
+
+- AN ATTRIBUTION AUDIT IS NOT A SELECTOR STUDY, AND NOTHING IN IT VALUES A
+  PORTFOLIO. `kelly_portfolio.select_portfolio_by_scores` and
+  `replay_valuation` are never called by
+  `four_factor_signal_attribution_audit.py`; it reads `factorPercentiles`,
+  `alphaPercentile`, `rawAlpha`, `alpha` and matured `excessReturn` directly
+  from the sealed signals/outcomes and computes cross-sectional Spearman
+  correlations, reusing `historical_outcomes.horizon_frame` and
+  `portfolio_validation._nw_summary` exactly as production's own
+  `alpha_diagnostics` already uses them.
+- SUBFACTOR PROVENANCE IS MEASURED BY SCANNING THE SEALED LEDGER, NOT
+  ASSUMED FROM THE PRODUCTION CODE THAT WROTE IT — the same discipline
+  `lowvol-alpha-separation-v1` established one level up. Every raw
+  subfactor input for momentum, value and quality is absent from the
+  sealed signal record (`mom121`, `mom6`, `earningsYield`,
+  `fwdEarningsYield`, `bookYield`, `fcfYield`, `roe`, `opMargin`,
+  `profitMargin`, `earningsGrowth`, `debtToEquity`) — only each sleeve's
+  already-blended percentile survives. Lowvol's one raw input (`vol252`)
+  is the sole exception, via `risk.vol252Pct`. `mom20Pct`/`mom60Pct`/
+  `relMomentum` exist on the record but are a DIFFERENT short-horizon
+  feature (the entry/overheat layer) and are never substituted for
+  production's actual momentum sleeve inputs.
+- REGION POOLING COMBINES TWO ALREADY-COMPUTED SUMMARIES, NEVER TWO
+  CROSS-SECTIONS. A naive concatenation of KR's and US's date-indexed IC
+  series into one `kelly_portfolio._newey_west_stats` call was considered
+  and rejected: `_sampling_step_days` filters non-positive gaps when
+  estimating the HAC lag, so a same-calendar-date cross-region pair would
+  be silently dropped from the LAG estimate while both rows still count in
+  the VARIANCE term. `pool_region_summaries` instead applies fixed-effect
+  inverse-variance weighting to the two regions' own independently-HAC-
+  estimated mean/SE pairs — a standard, off-the-shelf combination method,
+  not one invented for this study — and a region whose IC series has ZERO
+  sampling variance is treated as infinitely informative, not as
+  unusable: an early implementation read a falsy `se == 0.0` as "no
+  usable estimate" and a regression test now pins the fix.
+- A SILENT MISSING FIELD DROPPED EVERY POOLED SECONDARY READING TO
+  `n/a`, WITH NO ERROR RAISED. `portfolio_validation._nw_summary` reports
+  a 95% CI but never an `se` key; `sleeve_ic_table` recovered `se` from
+  the CI half-width inline, but `incremental_ic_table` and
+  `quartile_spread_table` returned `_nw_summary`'s dict as-is. The first
+  full sealed run published real by-region incremental IC and quartile
+  spread numbers next to a pooled column that was `None` for all four
+  sleeves, because `pool_region_summaries` reads a missing `se` as "this
+  region has no usable estimate." Centralized into `_with_se_and_p`,
+  applied identically everywhere a HAC summary is pooled, with a
+  regression test that pools a single region's own summary and checks
+  the pooled mean reproduces it.
+- NONE OF THE FOUR PRIMARY HYPOTHESES CLEARS RAW SIGNIFICANCE, LET ALONE
+  HOLM CORRECTION. Pooled-within-region 126D Rank IC: momentum -0.0015
+  (raw p=0.9155), value -0.0056 (p=0.7373), quality -0.0223 (p=0.0805),
+  lowvol +0.0286 (p=0.1464); every 95% CI contains zero and every
+  Holm-adjusted p exceeds 0.32. Measured on 399,547 sealed signals /
+  396,358 matured outcomes.
+- KR-ONLY LOWVOL IS THE ONE REGIONAL READING THAT CLEARS ZERO ON ITS OWN
+  (+0.0511, 95% CI [+0.0047, +0.0974], raw p=0.031) — AND IT IS STILL NOT
+  THE PRIMARY CLAIM. Section 8 forbids substituting a regional reading
+  for the pooled one; pooled against US's -0.0225 it does not survive,
+  and it is published as a secondary, descriptive number, not a finding.
+- REDUNDANCY IS LOW ACROSS ALL SIX SLEEVE PAIRS (|ρ| <= 0.17 POOLED), SO
+  THE COMPOSITE'S WEAKNESS IS NOT A DUPLICATION STORY. The four sleeves
+  select largely different names; they are just not, individually or
+  jointly, selecting names whose forward benchmark-relative return the
+  percentile orders. No sleeve's own quintile bucket is monotone
+  (best score 0.50 of 1.0; lowvol scores 0.00, the wrong direction).
+- EVERY SLEEVE CLASSIFIES AS REGION-SIGN-UNSTABLE, A MORE SPECIFIC
+  FINDING THAN "WEAK." `classify_sleeve` checks KR/US and first/second-half
+  sign agreement before magnitude, and all four sleeves disagree in sign
+  between KR and US at the primary horizon — not merely a small pooled
+  point estimate, but a sign that does not generalize across the two
+  regions the composite is applied to identically.
+- KOREAN VALUE/QUALITY COVERAGE IS A REAL GAP THIS AUDIT CANNOT SEPARATE
+  FROM A TRUE WEAK SIGNAL, AND IS PUBLISHED BESIDE THE IC RATHER THAN
+  AVERAGED AWAY. Missing rate: KR value 55.45%, KR quality 53.99%, against
+  US value 20.11%, US quality 0.96% — consistent with this repository's
+  own PIT-fundamentals invariants (DART serves from 2015; Korean
+  value/quality dark for the replay's first two years). A weak Korean
+  value/quality IC is `NO EVIDENCE DUE TO COVERAGE`-adjacent, never
+  reported as `EVIDENCE OF NO EFFECT`.
+- CLASSIFICATION IS DESCRIPTIVE AND NEVER RECOMMENDS DELETING A SLEEVE ON
+  ITS OWN. The four pre-specified cases (independent / redundant /
+  potentially harmful / unstable) describe the measured evidence; removing
+  a sleeve needs an independent sample, which this ledger — used by ten
+  prior studies — is not.
+- NO FACTOR WEIGHT WAS CHANGED, NO COMBINATION WAS SEARCHED, AND NO NEW
+  ALPHA FORMULA WAS BUILT FROM THIS SAMPLE. This result reads closest to
+  Case C (weak across the board) with a Case D (region-sign instability
+  plus a genuine Korean coverage gap) overlay, and the proposed next step
+  is new information sources evaluated as a separate CHALLENGER, not a
+  same-sample reweighting of these four sleeves.
+
+## Fundamental-acceleration-discovery invariants (v2.22)
+
+- A DISCOVERY STUDY MEASURES COMPUTABILITY AND DISTINCTNESS BEFORE IT ASKS
+  ABOUT RETURN, AND CASE D IS A REAL, PUBLISHABLE ANSWER. Fundamental
+  acceleration (`accel_f = f(current filing) - f(previous filing)` for
+  roe/operatingMargin/profitMargin/earningsGrowth, sector-neutral z,
+  minimum 3 of 4 present) cleared both gates a same-sample re-tune would
+  have been tempted to fail on purpose: overall coverage 64.95% (>= the
+  pre-registered 0.60 floor) and |Spearman(accelerationPercentile,
+  qualityPercentile)| = 0.118 (well under the 0.70 redundancy ceiling — this
+  is genuinely distinct information from the existing Quality level
+  factor, not a relabelling of it). The standalone and incremental pooled
+  126D Rank IC point estimates are near zero regardless (-0.0026, -0.0009,
+  both 95% CI containing zero, both Holm p = 1.0 of a 2-hypothesis family)
+  and the sign disagrees KR-vs-US and first-half-vs-second-half. `CASE D —
+  NO_DISCOVERY_EVIDENCE`, per the pre-registered routing that a negative
+  point estimate is never stretched into "directionally promising" (Case
+  E) regardless of how the coverage/orthogonality gates read.
+- THE CURRENT FILING IS THE LATEST REPORT PERIOD VISIBLE, NEVER THE LATEST
+  AVAILABILITY DATE. `resolve_filing_pair` filters to
+  `availableFrom <= asOf` and THEN orders by fiscal period, because a
+  severely delayed filing can in principle arrive out of period order; both
+  legs' PIT visibility is asserted explicitly in code, exactly as
+  `contraction_holds` is asserted for the confidence weight in
+  `alpha_reliability.py`. Consecutiveness is a strict one-step adjacency in
+  each region's own fixed report-code cadence (US Q1→Q2→Q3→FY; KR DART's
+  11013→11012→11014→11011); a skipped period is `NOT_CONSECUTIVE` and
+  contributes no reading — deliberately conservative, never adaptive
+  per-company cadence detection, and any resulting coverage cost is
+  measured rather than engineered around (9,725 of 399,547 name-dates).
+- AMENDMENT RESOLUTION IS A DEFENSIVE-CORRECTNESS REQUIREMENT THAT CHANGES
+  NO REAL NUMBER ON THIS LEDGER, AND BOTH FACTS ARE PUBLISHED TOGETHER.
+  `resolve_filing_pair` groups visible filings by report period and keeps
+  the max-`availableFrom` record per group before chronological ordering.
+  Measured directly against the real sealed ledger: zero duplicate
+  `(ticker, reportPeriod)` filings exist in either region (0 of 4,302 KR
+  keys, 0 of 33,832 US keys), so this logic is exercised only by synthetic
+  fixtures in the test suite — a correctness guarantee for filings this
+  ledger does not currently contain, not a tuning knob.
+- OVERALL COVERAGE PASSING HIDES A REGIONAL SPLIT WIDE ENOUGH TO BE ITS OWN
+  FINDING, AND IT IS REPORTED RATHER THAN AVERAGED AWAY. KR data-sufficient
+  ratio is 13.76% against US's 81.79% — a sixth as complete — because KR is
+  24.7% of the sample by row count, so the US-dominated pooled ratio (64.95%)
+  clears the 0.60 floor while the region that needed the floor most does
+  not. Consistent with the PIT-fundamentals invariants' own finding that
+  DART serves from 2015 while the replay starts 2013: by time half,
+  coverage rises from 58.13% (first half) to 70.65% (second half) as more
+  consecutive Korean filing pairs accumulate.
+- THE SAME CONSTRUCTION SERVES BOTH VALIDATION LEGS, NEVER TWO
+  IMPLEMENTATIONS OF "ACCELERATION". `pipeline/fundamental_acceleration.py`
+  is the single shared PIT filing-pair resolver; the historical discovery
+  study (`fundamental_acceleration_discovery.py`, scored against
+  `replay-v16`) and prospective sealing
+  (`fundamental_acceleration_seal.py`, appended immutably before an
+  outcome can be known) both call it directly rather than each
+  re-deriving "current" and "previous" filing on their own.
+- A SEALED RECORD IS KEYED BY `(sealVersion, ticker, asOfDate)` AND A
+  COLLIDING KEY REFUSES THE WHOLE BATCH RATHER THAN MERGING OR OVERWRITING
+  IT. `fundamental_acceleration_seal.append_seal` raises rather than
+  silently reseals a key that already exists, and every sealed row carries
+  its own SHA-256 digest over its canonical content so a downstream reader
+  can verify a row was not altered after sealing without trusting file
+  mtime or git history alone. This mirrors the ledger's own append-only
+  signal discipline (date x region x ticker x model version) one level
+  down, at the record-digest level.
+- THE PROSPECTIVE SEALING WORKFLOW SHIPS `workflow_dispatch`-ONLY,
+  DELIBERATELY, BECAUSE ITS WIRING HAS NOT BEEN EXERCISED AGAINST REAL
+  SECRETS. `Seal fundamental acceleration signal` builds `data/site-data
+  .json` fresh, extracts the live candidate universe from its own
+  `longTerm.regions.*.researchTable`
+  (`scripts/extract_acceleration_candidates.py`), derives live PIT
+  fundamentals from the raw collected shards via the SAME
+  `scripts/build_pit_fundamentals.py` the sealed replay uses (never a
+  second derivation path), and seals. `PROSPECTIVE_START_DATE` is fixed by
+  whichever run a human first triggers after this PR merges; converting the
+  workflow to a schedule is a follow-up decision, not made here.
+- A DIAGNOSTIC THAT IS NEVER SCORED STILL RESPECTS THE SAME SECTOR
+  EXEMPTION THE SCORED FACTOR DOES. `debt_acceleration_diagnostic` masks
+  Financials/Utilities/Real Estate/Holding names' `debtToEquity`
+  acceleration to unmeasured, exactly as production's own leverage penalty
+  masks them (`lev.where(~lev_exempt)` in `longterm.score_cross_section`),
+  never includes them at a neutral zero. 297,790 non-exempt observations
+  measured, 17,617 exempt-sector observations masked; `debtToEquity`
+  acceleration is never in the composite regardless.
+- THE HISTORICAL DISCOVERY RUN IS DETERMINISTIC AND THE SEALED LEDGER IS
+  UNCHANGED, BOTH VERIFIED MECHANICALLY, NOT ASSERTED. Two full runs
+  against the real sealed `replay-v16` ledger (399,547 signals, 396,358
+  outcomes, 38,134 PIT filings across 904 tickers) produced byte-identical
+  JSON and Markdown reports, and the runner itself raises
+  `SEALED_LEDGER_CHANGED` if the ledger's own content digest differs
+  before and after — it did not, on either run.
+- NO PORTFOLIO WAS SELECTED OR VALUED, NO WEIGHT WAS TUNED IN RESPONSE TO
+  THIS RESULT, AND THE NEXT STEP NAMED IS A NEW SOURCE, NOT A RE-TUNE.
+  `kelly_portfolio.select_portfolio_by_scores` and `replay_valuation` are
+  never called anywhere in this study. Per the design's own case routing,
+  Case D points at evaluating a new information source as a separate
+  CHALLENGER rather than re-tuning this composite's fields, weights, or
+  windows — and the KR/US and first-half/second-half sign instability is
+  named as its own finding rather than folded into a bare "no effect".
+
+## Alpha-information-inventory invariants (v2.23)
+
+- A DATA INVENTORY IS NOT A STUDY AND DOES NOT SCORE A LADDER.
+  `alpha-information-inventory-v1` measures no relationship to future
+  returns, computes no IC, runs no backtest, and touches no `FACTOR_WEIGHTS`,
+  CHAMPION, selector, Kelly parameter, entry rule, region cap, or macro
+  multiplier. Its only output is a map of what information exists, what is
+  used, what is collected but unused, and what is acquirable — graded on
+  economic rationale, PIT correctness, coverage, and cost, never on a
+  measured return.
+- "THE 31 FEATURES" IS `regional_alpha_features.feature_manifest()`'S
+  ELIGIBLE ROW COUNT, A RESEARCH-ONLY, NEVER-EXECUTED CHALLENGER MATRIX —
+  NOT PRODUCTION AND NOT THE OPPORTUNITY RADAR. No literal "31" constant
+  exists anywhere in the codebase; it is reproducible by counting
+  (21 price + 5 fundamental level + 4 fundamental-acceleration delta + 1
+  region-specific: US leadership breadth, KR market cap), identically in
+  both regions. Production's `FACTOR_WEIGHTS` has 13 raw sub-inputs across
+  4 sleeves; the Opportunity radar has 28 (`FEATURE_COLUMNS`). Three
+  different constructs; conflating any two of them mis-describes what has
+  actually been tried.
+- "USED IN ALPHA SCORING" HAS TWO DIFFERENT ANSWERS DEPENDING ON WHICH BUILD
+  IS ASKED ABOUT, AND BOTH MUST BE STATED. The live daily site build's
+  value/quality/growth sleeve reads `fundamentals.py` (Yahoo current-snapshot,
+  explicitly no PIT history, per `longterm.py:35-39`'s own design note).
+  The PIT-safe DART/Finnhub pipelines feed the identical
+  `score_cross_section` function, but only inside `historical_replay.py`'s
+  backtest/validation path. A study that reads "the model uses PIT
+  fundamentals" from the replay code and assumes the live build does the
+  same would be wrong about what ships today.
+- THE OPPORTUNITY MODEL ALREADY BLENDED VOLUME SHOCK, MOMENTUM
+  ACCELERATION, AND FUNDAMENTAL PERCENTILE VIA ML, AND IT WAS REJECTED
+  TWICE. Trained on `replay-v14` across 7 model families including a real
+  executed LightGBM run (not merely wired up), the winning rung's own
+  pooled test-period decile table is **negatively monotonic**
+  (`[+2.83,+0.88,-1.31,-6.35,-1.75,+6.79,+2.31,+2.81,-2.36,-0.87]` —
+  decile 10 underperforms decile 1) and failed to beat a plain logistic
+  baseline. Both the opportunity and warning radars are `accepted: false`.
+  A next study proposing this same information combination needs a stated,
+  concrete construction difference (e.g. magnitude-preserving volume shock
+  instead of percentile-only, or a hand-specified interaction instead of an
+  ML blend) to not be a relabelled redo.
+- A REJECTED MODEL CAN ALSO BE STRANDED, AND THE TWO FACTS ARE INDEPENDENT.
+  The committed Opportunity model spec is trained on `replayVersion:
+  replay-v14`; production has since moved to `replay-v16`, and
+  `build.py`'s generation-match check silently discards the stale spec
+  regardless of its own acceptance verdict. Fixing the generation mismatch
+  alone would not resurrect a model that already failed acceptance; both
+  causes of today's rule-based fallback are recorded separately, not
+  merged into one explanation.
+- `regional-alpha-model-v1` WAS ALREADY EXECUTED WHEN THIS BULLET WAS FIRST
+  WRITTEN, AND THE ORIGINAL CLAIM HERE THAT IT "HAS NEVER BEEN RUN" WAS
+  WRONG — corrected in `alpha-research-foundation-v2` (v2.24 below carries
+  the full correction and its evidence). It ran twice for determinism on
+  2026-09-23, closed `{"US": "NO_MODEL_EVIDENCE", "KR": "NO_MODEL_EVIDENCE"}`
+  on the frozen 31-feature matrix, and must not be run again — its one-shot
+  historical-discovery budget for both regions is spent.
+- THE ECOS FETCH LAYER IS CONFIRMED 100% DEAD CODE, AND ONE OF ITS NINE
+  CONFIGURED SERIES IS A REAL, UNFIXED BUG. Grep across every `pipeline/*.py`
+  file for "ecos" finds only a boolean diagnostic flag; no HTTP call to
+  `ecos.bok.or.kr` exists anywhere. `config.json`'s `ecos.KR` block also
+  points `KTB_3Y` and `CorpBond_3Y` at the identical series ID `817Y002`,
+  which multiple independent secondary sources describe as a single broad
+  table distinguished only by an `item_code` this config schema has no
+  field for — even a working fetch function built against today's config
+  could not currently tell these two series apart. Flagged, not fixed, per
+  this inventory's own no-repair-work-here scope.
+- KOREAN INVESTOR-BEHAVIOR DATA (FLOW, SHORT-SELLING, LARGE-HOLDINGS
+  DISCLOSURE) IS REAL AND OFFICIAL, AND THE BLOCKER IS ACCESS, NOT
+  EXISTENCE. Per-stock investor-type net trading and short-sale statistics
+  are published free on KRX's own public data portal but sit behind a
+  different endpoint than this repo's currently-subscribed Open API key
+  reaches, and that portal was already found unreachable from this
+  project's sandbox by `scripts/probe_krx_index_membership.py`. Large-
+  holdings (5%-rule) disclosure is the one exception: it is served by
+  DART, the same vendor, same key, and same receipt-date PIT mechanism
+  `dart_fundamentals.py` already implements — the lowest-effort new data
+  build identified anywhere in this inventory.
+- KOREAN SHORT-SELLING SPANS AT LEAST THREE REGULATORY REGIMES WITHIN THE
+  REPLAY WINDOW, AND A FACTOR BUILT ON IT MUST CARRY THAT FORWARD RATHER
+  THAN AVERAGE IT AWAY. Full-market bans ran approximately 2020-03 to
+  2021-05 and 2023-11-05 to 2025-03-31 (the second paired with a structural
+  reporting overhaul), during which the variable is either illegal-to-
+  observe or measured under a materially different microstructure.
+- `fxBeta26w`/`absFxBeta26w`'S EXCLUSION IS RECONFIRMED OPEN, AND GOT MORE
+  CERTAIN, NOT LESS, SINCE THE EARLIER DESIGN DOC. The pre-registration
+  (`kr-alpha-research-design-v1.md`) had said FX-beta's PIT semantics
+  "pass, cleanly," before the feature matrix was actually built; the built
+  matrix (`regional_alpha_features.py:88`) excludes it as
+  `FX_PUBLICATION_TIME_UNRESOLVED`. FRED's `DEXKOUS` (already fetched,
+  display-only) is a noon-New-York rate, confirmed mismatched to a same-day
+  KRX-close regression; ECOS `731Y001` is a better-timed candidate,
+  contingent on the same unbuilt fetch layer above and an unverified live
+  timing check against the KRX close.
+- THE SEC DOMAIN-WIDE BLOCK ALREADY ESTABLISHED IN THE VENDOR REFUSAL
+  INVARIANTS ALSO BLOCKS FORM 4 AND 8-K ACCESS, AND NO FREE ALTERNATE
+  VENDOR RE-SERVES EITHER THE WAY FINNHUB RE-SERVES 10-Q/10-K FUNDAMENTALS.
+  Both are free, official, sufficiently historical (Form 4 structured
+  extraction from 2006; 8-K since 2001/2004) — the blocker is this
+  project's current CI egress, not the data's existence, exactly the
+  pattern already measured for SEC's other bulk products.
+- ANALYST ESTIMATE REVISIONS ARE NOT FREELY BUILDABLE IN EITHER REGION, AND
+  THIS CORROBORATES RATHER THAN OVERTURNS A PRIOR SUSPICION. Finnhub's free
+  tier reads as a current-snapshot or shallow-rolling-window product (two
+  independently surfaced sources disagree on retention depth, neither
+  describing a stable 2013-2026 panel), and Finnhub sells a *separate*
+  paid tier specifically for historical estimates. Korea's FnGuide/FnSpace
+  equivalent was already found ToS-blocked in `challenger-2-signal-source
+  -feasibility-v1.md`, not re-tested here.
+- A US DIVIDEND-CHANGE SIGNAL COULD BE BUILT TODAY WITH ZERO NEW
+  COLLECTION. `finnhub_fundamentals.py`'s `UNIT_ANCHORS[PER_SHARE]` already
+  includes `CommonStockDividendsPerShareDeclared`, sealed into the US PIT
+  store since replay-v15 — the raw field for a corporate-payout-policy
+  signal is already inside the canonical store; only a derived
+  period-over-period field is missing, the same shape of gap as the raw
+  debt/asset/equity levels already collected but not exposed standalone.
+- `sentiment.py` IS PRICE/BREADTH-DERIVED, NOT NEWS OR SEARCH SENTIMENT,
+  AND ITS MEASUREMENT-ABSENCE DEFECT (v2.11) IS CONFIRMED FIXED. No news
+  article, headline, or search-trend data is read anywhere in the module;
+  it blends 200D/50D breadth, %-Bull share, and median momentum with
+  region-specific market gauges. The denominator is now restricted to
+  measurable names, absence returns `(None, 0)` not `(0.0, 0)`, and the
+  measured-name counts are published alongside the share.
+- A REGIME×BUCKET PORTFOLIO-OUTCOME INTERACTION DIAGNOSTIC EXISTS AND IS
+  NEVER CONSUMED; A STOCK-LEVEL FEATURE×REGIME INTERACTION HAS NEVER BEEN
+  CODED ANYWHERE. `historical_calibration.regime_interaction()`'s
+  `activate` flag is read by nothing downstream (confirmed by grep across
+  `kelly_portfolio.py`, `validate.py`, `build.py`). Momentum acceleration ×
+  financial conditions and volume shock × quality × liquidity regime are
+  both confirmed genuinely absent, not merely untested by omission.
+- THE DECISION GATE IS CASE B — DATA BUILD REQUIRED. Real, `HIGHLY_DISTINCT`
+  candidate axes exist (KR investor flow, KR macro, KR large-holdings,
+  accounting-quality ratios, US dividend-change), but none is Grade A
+  end-to-end. (Corrected in `alpha-research-foundation-v2`, v2.24 below: the
+  original bullet here named running `regional-alpha-model-v1` as the
+  zero-data-build first action — it had already been run and closed at
+  `NO_MODEL_EVIDENCE` when this was written, so that recommendation was
+  never actionable and must not be acted on.)
+
+## Alpha-research-foundation-v2 invariants (v2.24)
+
+- A RESEARCH LEDGER ERROR IS CORRECTED WITH ITS OWN EVIDENCE, NOT SILENTLY
+  REWRITTEN. Two bullets in the "Alpha-information-inventory invariants
+  (v2.23)" section above stated `regional-alpha-model-v1` had "never been
+  run." That was wrong, and the correction is published here rather than
+  edited into v2.23 without a trace: the study's own GitHub Actions job log
+  (run `35826122755`, job `discovery`, 2026-09-23) was read directly —
+  primary source, not the task instructions that first flagged the error —
+  and shows the frozen study executed TWICE for determinism, building a
+  381,899-row feature manifest (hash
+  `6261031bf59e725ca58342e4f320a8ed62e5d4e797dc6f580c2d372a830543b7`)
+  WITHOUT forward labels, then constructing labels and fitting independent
+  annual US/KR models (US training rows 44,456→267,171 across 2016→2026; KR
+  15,294→75,743), landing on the byte-identical classification `{"US":
+  "NO_MODEL_EVIDENCE", "KR": "NO_MODEL_EVIDENCE"}` on both runs. The 179MB
+  report artifact (`regional-alpha-model-v1-discovery-only`) was uploaded to
+  CI but never committed to `docs/results/` — that omission, not
+  non-execution, is what made the ledger read as unexecuted.
+- THE CORRECT STATUS DESCRIBES WHAT CLOSED, NOT A BLANKET CLAIM ABOUT PUBLIC
+  INFORMATION. `regional-alpha-model-v1` is `EXECUTED` /
+  `NO_MODEL_EVIDENCE` (both regions) /
+  `HISTORICAL_DISCOVERY_CLOSED_ON_EXISTING_FEATURE_SET` — closed for the
+  31-feature price/trend/risk + fundamental-level + fundamental-change
+  matrix specifically. "31 independent pieces of public information were
+  given to an ML model and it found no Alpha" overstates the result: most of
+  those 31 features are different representations of the same three
+  information families (price/trend, fundamental level, fundamental
+  change), and the study never had access to investor flow, ownership
+  behavior, accounting-quality ratios beyond profitability levels, event
+  information, or any macro interaction. The discovery phase is closed on
+  what was actually in the matrix, not on those absent axes.
+- A SPENT ONE-SHOT DISCOVERY BUDGET IS NEVER REFILLED BY RE-RUNNING THE SAME
+  MATRIX. Both regions' historical-discovery budget against this feature set
+  is spent; a future study over the SAME 31 features would be re-tuning a
+  closed result, the exact failure this repository's discipline exists to
+  prevent. A genuinely new axis (KR investor flow, KR ownership events,
+  accounting quality, a macro×feature interaction) is a different study, not
+  a retry.
+- SMALL-CAPITAL EDGE MEANS INSTITUTIONAL SCALABILITY IS NOT A REQUIREMENT,
+  AND THIS IS A DESIGN PRINCIPLE, NOT A PERFORMANCE CLAIM. `docs/alpha-
+  research-philosophy-v2.md` fixes the project's objective as finding
+  individual opportunities with a sufficiently large expected advantage
+  over their own passive benchmark to be worth the concentration risk — not
+  filling a fixed name count or a fixed regional quota. Holding fewer names,
+  holding cash when nothing clears the bar, and concentrating capital when
+  conviction is unusually high are treated as available degrees of freedom
+  precisely because this capital does not need to scale to institutional
+  size — not as a license to hold illiquid names without realistic
+  transaction-cost, slippage, capacity and liquidity-floor discipline, all
+  of which stay in force.
+- A DATA-FOUNDATION PR ADDS DERIVED FIELDS WITHOUT TOUCHING WHAT PRODUCTION
+  ALREADY EXPOSES. `pipeline/accounting_quality.py` is additive and
+  read-only with respect to `dart_derive.py`/`finnhub_derive.py`: it reuses
+  their `trailing_twelve_months`/`level_amount`/`amount`/`carried_shares`
+  primitives rather than re-deriving TTM or column semantics a second time,
+  and produces a SEPARATE `ACCOUNTING_QUALITY_V1` field set
+  (`ocfToNetIncomePct`, `fcfToNetIncomePct`, `assetGrowthPct`,
+  `debtGrowthPct`, `capexIntensityPct`, `shareCountChangePct`) that no
+  production path reads. Measured against the real sealed store (126 KR
+  tickers / 3,965 rows 2015-2026; 779 US tickers / 30,999 rows 2011-2026,
+  pulled from the `signal-history` branch): KR `assetGrowthPct`/
+  `debtGrowthPct`/`shareCountChangePct` coverage is 96-97%, but KR
+  `capexIntensityPct` is only 7.74% and `fcfToNetIncomePct` only 4.31% —
+  Korean filers omit `유형자산의취득` (capex) far more often than US filers
+  omit their capex chain (US: 83.03% and 87.00% respectively) — while KR
+  `ocfToNetIncomePct` (52.36%) trails US (97.39%) by a wide margin.
+  Receivables growth, inventory growth, and any working-capital metric stay
+  `NOT_FEASIBLE_DATA_MISSING`: no such line item exists in
+  `dart_fundamentals.WANTED_ACCOUNTS` or `finnhub_derive`'s account chains,
+  confirmed by reading them, not assumed.
+
+## Workflow hygiene invariants (v2.25)
+
+- A CLOSED STUDY'S WORKFLOW IS REMOVABLE FROM THE ACTIONS MENU; ITS CODE,
+  RESULTS AND HISTORY ARE NOT. A study is closed when it has a published
+  verdict in `docs/results/` and no rung promotes production — removing its
+  `.github/workflows/*.yml` entry (`git rm`, never `rm`) only removes the
+  "Run workflow" button; the workflow file, the module it ran, and the
+  results it produced all remain reachable through git history and through
+  `docs/workflow-inventory.md`'s own RETIRED table. This is not a reason to
+  defer cleanup: 16 closed studies (`regional-alpha-model-v1` through
+  `signal-persistence-v1`) were retired from Active Actions in one pass
+  (`workflow-hygiene-live-data-fixes-v1`) because every one of them already
+  had a published, unambiguous verdict — 25 workflow files down to 9.
+- A SOURCE FAMILY THAT IS BLOCKED TODAY IS NOT RE-ATTEMPTED AS A DEDICATED
+  COLLECTOR WORKFLOW; IT BECOMES ONE `Probes` DROPDOWN OPTION. `kr-investor
+  -flow.yml`'s own two axes both measured `BLOCKED_SOURCE` on a real Actions
+  run (KRX's portal answering `HTTP 400: LOGOUT`/`400` on every candidate),
+  and `guru-13f-backfill.yml` measured `BLOCKED`/route `NONE` against SEC —
+  both dedicated workflows were removed rather than kept as buttons that do
+  nothing, and `scripts/probe_kr_investor_flow.py`, `probe_kr_short_selling
+  .py` and `probe_guru_13f_access.py` became options in
+  `.github/workflows/probes.yml`'s existing dropdown instead of new files.
+  The collector/backfill scripts themselves are untouched and still work
+  the moment a probe reports `SERVED`.
+- `success` ON A COLLECTOR JOB MUST NEVER HIDE A SOURCE REFUSAL. Measured
+  directly, 2026-09-24: the KR investor-flow collector logged
+  `호출 0 · 수집 0건 · 샤드 0개 변경 · 종료 사유 REFUSED: HTTP 400: b'LOGOUT'`
+  and the GitHub Actions job still reported green. `pipeline.
+  collector_outcomes.run_outcome` now classifies every collector run into
+  `SERVED` / `EMPTY_BUT_VALID` / `BLOCKED_SOURCE` / `AUTH_REQUIRED` /
+  `SCHEMA_CHANGED` / `NETWORK_ERROR`, and a refusal that produced zero rows
+  THIS run exits non-zero — which stops the workflow's own commit-and-push
+  step from running, so a refused run's empty manifest is never committed
+  to `signal-history` as if it were a completed collection. A refusal that
+  happened only after real rows were already written keeps exit code 0:
+  those rows are real and are kept, and failing that job would only hide
+  what it actually collected. Existing failed-attempt manifests already on
+  `signal-history` from before this fix are left alone, not rewritten —
+  the fact that they were `0 rows / REFUSED` is recorded here and in
+  `docs/workflow-inventory.md` instead.
+- A RAW ENUM FIELD'S VALUE IS NEVER TRANSLATED ON A GUESS, EVEN A PLAUSIBLE
+  ONE, AND A LIVE PROBE DISPROVING AN EARLIER GUESS IS PUBLISHED, NOT
+  QUIETLY FIXED. `dart_ownership_events.py` originally mapped DART's
+  `report_tp` field to `NEW_5PCT_HOLDER`/`CHANGE`, guessed from third-party
+  library research and never confirmed against a live response. A real
+  probe run (Actions run 35964461327, 2026-09-24) measured the actual
+  values across 55 rows on 3 tickers as "일반"/"약식" — "신규"/"변동" never
+  appeared once. The disproven constants were removed rather than kept
+  unused, and the real values are NOT translated into a normalized
+  `reportType` either: `KNOWN_REPORT_TYPE_RAW_VALUES` records what a live
+  probe has actually seen, `reportTypeRaw` always carries DART's exact
+  string, and `reportType` stays `None` until an authoritative source (not
+  general regulatory knowledge, however plausible) confirms what to call a
+  value. Guessing a second time would repeat the exact defect this fixes.
+
+## Alpha-opportunity-model-v2 invariants (v2.26)
+
+- THE BENCHMARK IS A COMPETITOR FOR THE CAPITAL, NOT A SCALE FOR A RANKING.
+  `alpha-opportunity-model-v2` puts each stock's own regional benchmark in the
+  choice set with expected net alpha exactly 0. A name is
+  `ACTIVE_OPPORTUNITY` only if BOTH heads favour it over that outside option
+  at their point estimates AND at v1's sealed 5th-percentile bootstrap bounds
+  (`expectedNetAlpha > 0`, `P(net alpha > 0) > 0.5`). 0 and 0.5 are the
+  outside option's own values, not hurdles. A universe always has a best stock
+  and often has no active opportunity; zero active names is a valid state and
+  the count is endogenous. No Top-N, percentile cut, +X% edge, US/KR slot or
+  invested fraction exists, and `alpha_opportunity_v2_spec.load_sealed`
+  refuses a spec that reintroduces one with a value.
+- ACCOUNT SIZE IS NOT AN ALPHA QUESTION. v1's minimum edge, concentration
+  multiple, order notional, cash-ADV floor/fraction and slippage budget were
+  removed or moved to a separate, undefined portfolio layer under
+  `SMALL_CAPITAL_ASSUMPTION`. What stays: dated realistic costs inside net
+  alpha (the benchmark is charged nothing, which errs toward it), and a PIT
+  traded-at-all guard: 20 consecutive regional sessions of positive sealed
+  close AND positive share volume. Share volume is evidence of trading, never
+  cash value. That a personal order is small relative to traded value is an
+  assumption, published as one, not a measurement.
+- A GATE THAT A CALIBRATED MODEL CANNOT PASS IS NOT A CALIBRATION GATE. v1
+  averaged a per-date ECE and required <= 0.05. A perfectly calibrated
+  synthetic predictor reads 0.0693 at 120 names (KR) and 0.0342 at 500 (US),
+  so the KR gate was a certain rejection. v2 gates pooled date-balanced ECE
+  over the same bins and bound (null 0.0010 / 0.0018). The null is recorded in
+  the spec and reproduced by a test, and was measured with no market data.
+- A RULE THAT VOIDS A DATE ON ANY MISSING MEMBER CAN BE UNSATISFIABLE BY
+  CONSTRUCTION, AND THAT IS MEASURABLE FROM IDENTITIES ALONE. 703 of 715 US
+  weekly dates hold a pinned S&P 500 member the replay-v16 panel never priced
+  (194 names, 27.10% of 2013 member-dates falling to 0.65% in 2026), so v1's
+  US leg could only return `DATA_INSUFFICIENT`. v2 inherits the repository's
+  own answers instead of inventing one. Region-years whose unvouched share
+  exceeds `HISTORICAL_UNIVERSE_GAP_TOLERANCE_PCT` are excluded from training
+  AND evaluation (US 2013-2016 on the lower bound). Every gate must hold with
+  unresolved endpoints dropped AND assigned the date's worst plausible
+  outcome. The active level is additionally stressed at the full date gap.
+- A NEW VERSION RE-VERIFIES THE OLD SEAL; IT NEVER EDITS OR FALLS BACK TO IT.
+  v2 pins the v1 spec and sidecar by hash and raises `V1_SEAL_CHANGED` if
+  either moves. The v2 runner refuses any spec whose `studyId` is not v2. v2
+  hashes only its import closure plus its inputs, so unrelated production
+  edits do not strand it.
+- READY IS A STATEMENT ABOUT THE DESIGN, NOT ABOUT THE SOFTWARE. v2 is
+  `READY_FOR_HISTORICAL_EXECUTION` because no design blocker remains. Its
+  fail-closed pre-label gates (input identity, region-year eligibility,
+  coverage, calendar depth) can still stop the first real run, before any
+  label exists, and the runner has only been exercised on synthetic
+  fixtures. DART ownership is prospective-only; Guru/13F is never a feature.
+
+## Alpha-opportunity-model-v3 invariants (v2.27)
+
+- EXPECTED VALUE, PROBABILITY AND CONFIDENCE ARE DIFFERENT QUESTIONS, AND ONLY
+  THE FIRST DEFINES ALPHA. v3's alpha layer classifies a name
+  `POSITIVE_EXPECTED_ALPHA` iff `expectedNetAlpha > 0` against the benchmark's
+  0, nothing else. v2 also required `P(net alpha > 0) > 0.5` and bootstrap
+  lower bounds above the outside option. Those are an OUTPERFORMANCE-
+  PROBABILITY reading and an ESTIMATION-confidence reading, and made hurdles
+  they hide a risk preference inside the alpha definition: 40% x +30% / 60% x
+  -8% has positive expectation and a probability of beating the benchmark
+  below one half. Both readings are published beside the class and can never
+  change it.
+- A PROBABILITY FROM ONE MODEL IS NOT A QUANTILE OF ANOTHER. The probability
+  head is a separately fitted Logistic model and the expected-return head is
+  Ridge; they are not one coherent predictive distribution, so
+  `probabilityNetOutperform > 0.5` is never described as a positive median.
+  The descriptive states are named for exactly what is known
+  (`EXPECTATION_{POSITIVE|NOT_POSITIVE}_OUTPERFORM_PROBABILITY_{ABOVE|NOT_ABOVE}_HALF`). The loader refuses any probability/lower-bound hurdle, Top-N, quota,
+  invested fraction or sizing parameter with a value.
+- A FITTED-VALUE INTERVAL IS NOT A RETURN INTERVAL. `prediction_uncertainty`
+  quantiles REFITTED predictions (sampling uncertainty of the conditional
+  mean); `matured_residual_scale` is realised-minus-predicted RMS over past
+  matured OOF predictions (predictive dispersion). They are labelled as such on
+  every record and neither is a veto.
+- IDENTITY IS RESOLVED BEFORE SURVIVORSHIP IS MEASURED, AND ONLY ON EVIDENCE.
+  The pinned US membership carries two upstream data errors in the Symbol
+  column (`American Airlines Group`, commit 9217bee; `RVTY (Previously PKI)`,
+  commit a9ae84a); they explain every count difference between v2 (829/194)
+  and v3's first seal (828/195), and resolve to AAL/RVTY only by a
+  bracketing-snapshot rule. Symbols are joined only on SAME_CIK (never
+  co-listed), an explicit "(Previously X)" annotation, or an identical name at
+  the exact switch — 14 verified renames; an acquirer, a reused ticker's later
+  issuer or an unverifiable pre-2023 rename (the upstream file has CIK only from
+  2023-04-13) is never joined. The corrected count is stricter: 195 - 1 - 11 +
+  29 reused-symbol panels = 212 departed identities without usable history.
+- MISSINGNESS THAT FALLS ONLY ON DEPARTED NAMES IS NOT A SHARE TO TOLERATE.
+  Measured from sealed identities (no return read): 212 of 324 departed US
+  identities and 0 of 503 current ones lack usable history; 0 priced US panels
+  ever stop trading, so the US sample contains no failed or acquired company
+  at all; 181 departed exits cannot be established from sealed evidence. The
+  departed-only share declines smoothly (30.32% in 2013 to 0.54% in 2026) and
+  is never zero, so no cutoff is structural — any would be a tolerance. v2's reuse of the 20% `HISTORICAL_UNIVERSE_GAP_TOLERANCE_PCT`,
+  built for a different gate, is withdrawn.
+- ENDPOINT STRESS IS NOT TRAINING-SURVIVORSHIP REPAIR, AND HERE IT WAS VACUOUS.
+  US tradable member-dates have 0 missing forward endpoints (301,714 / 290,710
+  at 21/126 sessions): the absent companies never entered the sample, so a
+  bound on sampled names' endpoints had nothing to act on. Sample survivorship
+  and endpoint survivorship are audited separately, in both regions.
+- A REGION CAN HAVE COMPLETE COVERAGE AND STILL A SURVIVORSHIP-CORRELATED BASIS
+  GAP. KR is priced for all 260 members (140 departed) with 22 delistings
+  observed to their last session, but 0 of those 22 carry any dividend event
+  against 215 of 238 continuing names: Yahoo distributions do not serve
+  delisted KR tickers, so exactly the names that later leave are on a
+  price-return basis against a total-return benchmark (3.74% of tradable
+  member-dates). Dividends alone do not repair it: all 22 terminations are
+  `TERMINATION_TYPE_UNRESOLVED` and their terminal consideration (merger,
+  share exchange, tender, delisting) is unsealed. Both are data-foundation
+  builds in `docs/alpha-opportunity-v3-data-repair-plan.md`, not repaired here.
+- A BLOCKED VERSION IS NEVER UNBLOCKED IN PLACE. v3 stays
+  `BLOCKED_BY_DATA_INTEGRITY` whatever repair lands later; repaired inputs
+  are sealed by separate data-foundation work and only a new v4
+  preregistration, re-audited with v3's rules before any outcome, may be
+  `READY_FOR_HISTORICAL_EXECUTION`.
+- A SEAL PINS THE COMPUTED CLOSURE, NOT A HAND LIST. v2 sealed 51 files
+  including `kelly_portfolio`, `longterm`, `replay_valuation`, `selection_null`
+  through one lazy `portfolio_validation` import (for a 15-line cost lookup)
+  and `regional_alpha_features -> historical_replay`. v3 recomputes the
+  top-level-and-lazy import closure of its entry points on every load and
+  requires the sealed set to equal it plus declared data inputs (25 files): a
+  new import raises `DEPENDENCY_CLOSURE_CHANGED`, an edited sealed file raises
+  `SEALED_DEPENDENCY_CHANGED`, and unrelated production edits change nothing.
+- A BLOCKED STUDY HAS NO EXECUTION BUTTON. v3 is `BLOCKED_BY_DATA_INTEGRITY`,
+  ships no workflow, and its CLI refuses `--execute` on the sealed status
+  before any input is read. v2's workflow still exists and still validates;
+  it must not be run, because its US leg would train and evaluate on the
+  survivor-only sample v3 measured.
+
+## KR terminated-security total-return foundation invariants (v2.28)
+
+- A DATA-FOUNDATION BUILD IS NOT A STUDY AND COMPUTES NO OUTCOME.
+  `kr-terminated-security-total-return-foundation-v1` reconstructs what a
+  shareholder actually received when one of the 22 KR securities v3's own
+  sealed audit found without dividend or terminal-value lineage paid a
+  distribution or stopped trading. It calls no Alpha, IC, calibration,
+  return, CAGR, Sharpe or Sortino function anywhere, runs no portfolio
+  backtest, and touches none of `alpha-opportunity-model-v1/v2/v3`, whose
+  seals reload unchanged by their own digest.
+- A DISCLOSURE-NAME MATCH IS A READING LIST, NEVER A VERDICT.
+  `kr_corporate_action_events.classify_disclosure_family` matches DART's
+  `list.json` `report_nm` text against known corporate-action keywords —
+  the exact confirmed endpoint `probe_dart_ownership_events
+  .official_filing_depth` already reads live in this repository — and
+  assigns no `terminationType`. `TERMINATION_TYPE_UNRESOLVED` stays a
+  security's state until a human reads the matched disclosure's actual
+  content and a record citing its DART receipt is added to
+  `data/kr-terminal-corporate-actions.json`; guessing a type from a report
+  name, a company-name stem, or a ticker is exactly the failure this
+  repository's vendor-refusal and identity-resolution invariants already
+  forbid one level up, and this module never does it.
+- A CONSIDERATION TERM WITH NO RECEIPT CANNOT BE CONSTRUCTED, NOT MERELY
+  VALIDATED AFTER THE FACT. `kr_terminal_corporate_actions.build_record`
+  raises rather than returning a record if any of `cashPerOldShare`,
+  `successorSecurity` or `successorSharesPerOldShare` is set without a
+  citing `sourceReceiptNumber`/`sourceReceiptDate` — the same check
+  `replay_recovery.load_corporate_actions` already applies to the US book,
+  moved to construction time so an unvouched record can never exist to
+  begin with. `validate_book` re-applies the same check to a book read back
+  from disk, so a hand-edited file cannot smuggle one past the loader.
+- AN EX-DATE IS NEVER DERIVED FROM A RECORD DATE BY ASSUMPTION, AND NONE OF
+  THIS REPOSITORY'S SOURCES CURRENTLY LET ONE BE. No sealed, dated Korean
+  settlement-cycle rule exists anywhere in this codebase, and this
+  environment could not reach an authoritative source to establish one —
+  `opendart.fss.or.kr` is blocked from this sandbox's egress, the same
+  block `dart_ownership_events.py`'s docstring already records for the same
+  host. `exDateSemanticsResolved` reads `READY` only when a security's
+  dividend evidence states `exDateSource: "DIRECT"` — an ex-date DART's own
+  disclosure stated outright — never from a computed rule.
+  `DIVIDEND_EX_DATE_LINEAGE_BLOCKED` stays the status otherwise, and no
+  future change may flip it without first sealing that dated rule and
+  citing its source.
+- TWO CONFIDENCE TIERS FOR A DART ENDPOINT ARE NEVER BLURRED INTO ONE.
+  `list.json` (DS001) is CONFIRMED — already used live in this repository —
+  and its fields are read directly. `alotMatter.json`'s field names are
+  corroborated only from third-party OpenDART client documentation, exactly
+  the standard `dart_ownership_events.py` used for `majorstock.json` before
+  its own live probe (`probe_dart_ownership_events.py`) confirmed it; every
+  row `kr_corporate_action_events.build_dividend_section_row` produces
+  carries `endpointConfidence: CANDIDATE_UNCONFIRMED` until
+  `scripts/probe_kr_corporate_actions.py` runs against the real API. No
+  endpoint or field map for the merger/share-exchange/tender/delisting
+  structured disclosures is guessed anywhere in this codebase; discovery
+  for them stops at the `list.json` report-name level until one can be
+  corroborated or confirmed.
+- A SINGLE `page_count=100` CALL IS NOT A FILING-HISTORY RECONSTRUCTION.
+  `fetch_all_pages` walks a `list.json` result set to its own served
+  `total_page`, deduplicating by receipt number, and fails closed
+  (`PaginationError`) — never returns a partial result silently — on a
+  missing or non-numeric pagination field, a row-parse failure on any page,
+  or the underlying result set changing mid-walk (a later page's
+  `totalCount`/`totalPage` disagreeing with the first page's). A collector
+  ticker's state is marked `SUCCESS` only once every page has completed;
+  a mid-walk pagination failure leaves that ticker's state as anything but
+  `SUCCESS`, so the next run retries it rather than treating it as done.
+- AN EXACT-CURRENT-STOCK-CODE-ONLY RESOLVER IS TOO WEAK FOR A DELISTED
+  SECURITY, AND THIS REPOSITORY ALREADY HAS THE STRONGER ONE.
+  `kr_corporate_action_events.resolve_historical_dart_identity` calls
+  `dart_ownership_universe`'s EXISTING `_resolve_security`/`_unique_index`
+  directly rather than a second, weaker path: DART blanks a corp's current
+  `corpCode.xml` `stock_code` field once it delists, so an exact-code-only
+  match fails for exactly the securities this study needs — exact stock
+  code, then a UNIQUE exact normalized historical company name, then
+  unresolved; never fuzzy, never a ticker/name similarity guess, and an
+  ambiguous name match stays unresolved rather than picking either
+  candidate. Both `scripts/probe_kr_corporate_actions.py` and
+  `scripts/collect_kr_corporate_actions.py` call this one function.
+  `dart_ownership_universe.py`'s functions are called by their existing
+  PRIVATE names rather than given a new public alias:
+  `alpha-opportunity-model-v1` seals that file's exact bytes in its
+  dependency closure, and even an additive edit to it raises
+  `SEALED_DEPENDENCY_CHANGED` on v1's next load — reuse without ever
+  touching a sealed file's bytes.
+- A CALL BUDGET CHECKED ONCE PER TICKER IS NOT A CALL BUDGET ONCE
+  PAGINATION EXISTS. `--max-calls 30`, described as "enough for all 22
+  securities", stopped being true the moment a ticker could span more than
+  one `list.json` page — the budget was checked before each TICKER, not
+  each PAGE, so a single high-volume issuer could spend past the requested
+  ceiling before the next check ever ran. `checked_call` in
+  `collect_kr_corporate_actions.py` now checks the budget before every
+  call, ticker-first-page or later page alike, and raises
+  `CallBudgetExhausted` before the call that would cross it — `calls` can
+  therefore never exceed `max_calls`. A ticker interrupted mid-pagination
+  this way is left exactly as it was on entry, never `SUCCESS`, so it
+  restarts from page 1 next run rather than resuming a partial page count;
+  a ticker completed by an EARLIER run is preserved and never re-queried.
+  The default rose from 30 to 250 — a conservative, explicitly
+  NOT-guaranteed estimate (22 tickers × up to ~10 pages, a round number
+  with no measured basis, since this sandbox has never run against the
+  live API) — and every run reports `tickersRemaining`,
+  `fullWorkListExhausted` and `datasetComplete` so a budget-truncated run
+  can never be read as a finished one; `operatorMessage` says so in prose
+  and tells the operator to re-run the same workflow.
+- MEMBERSHIP IN THE TOP-120 RESEARCH UNIVERSE AND A SECURITY'S OWN TRADING
+  LIFE ARE DIFFERENT FACTS, MEASURED SEPARATELY. Several of the 22
+  securities' last top-120 KRX snapshot date falls years before their last
+  priced session (두산건설: last in the top-120 2013-07, last traded
+  2020-03-23; 락앤락: one snapshot in 2013-03, last traded 2024-12-06) —
+  consistent with a name remaining listed for years after falling out of
+  this study's research universe, reported as a measured date gap and
+  never as an inferred cause.
+- THIS BUILD IS BLOCKED BY SOURCE ACCESS, NOT BY DESIGN, AND THAT DIFFERENCE
+  IS PUBLISHED. `DART_API_KEY` is absent from this development environment,
+  so `corpCode.xml`, `list.json` and `alotMatter.json` were never called
+  live; `docs/results/kr-termination-inventory.json` reads
+  `dartIdentityStatus: DART_DIRECTORY_NOT_AVAILABLE` and
+  `terminationType: TERMINATION_TYPE_UNRESOLVED` for all 22 securities, and
+  `foundationStatus: BLOCKED_BY_SOURCE_ACCESS` follows from the completeness
+  matrix alone, never forced. `.github/workflows/kr-corporate-action-
+  collection.yml` (`mode: auto`, probe-then-collect, fails closed on a
+  zero-progress refusal via `pipeline.collector_outcomes`) is the exact
+  operator action that can change this status; it has not been run with a
+  real key in this environment.
+
+## KR terminal-action reconstruction invariants (v2.29)
+
+- A STALE "NEVER RUN" CLAIM IS CORRECTED WITH ITS OWN EVIDENCE, THE SAME
+  DISCIPLINE `alpha-research-foundation-v2` (v2.24) ALREADY ESTABLISHED ONE
+  LEVEL UP. v2.28's closing bullet said `kr-corporate-action-collection.yml`
+  "has not been run with a real key in this environment" — true when
+  written, false since: two real runs (`36091590740`, `36094672107`,
+  2026-09-25, `head_sha dd7ccb4`) both closed `conclusion: success`. Read
+  directly from `signal-history` rather than trusted from any prompt's
+  claim: `ledger/kr-corporate-actions/fetch-state.json` shows 22/22
+  `status: SUCCESS`; `kr-corporate-actions-disclosures.jsonl.gz` holds 451
+  rows, 145 of them amendments (32.2%). `foundationStatus` moved from
+  `BLOCKED_BY_SOURCE_ACCESS` to `PARTIALLY_REPAIRED` — DART identity and raw
+  evidence are now resolved for all 22, not zero.
+- A SANDBOX THAT CANNOT REACH ONE HOST STILL VERIFIES AGAINST A DIFFERENT
+  ONE, RATHER THAN TRUSTING THE UNREACHABLE ONE'S CLAIM SECOND-HAND. This
+  environment's egress cannot reach `*.blob.core.windows.net` (GitHub
+  Actions' own artifact storage; `connect_rejected`, gateway 403 on
+  CONNECT), so the probe's uploaded JSON artifact could not be downloaded —
+  but the same run's job LOGS (reachable via the GitHub API) already
+  printed everything needed to confirm `verdict: SERVED` and real
+  `alotMatter.json` rows. `probe_kr_corporate_actions.py` now also prints
+  its field-presence percentages and one raw sample row directly to stdout,
+  so a future run's schema is readable from the log alone, without the
+  artifact.
+- A GITHUB APP TOKEN'S OWN SCOPE IS A REAL BLOCKER, DISTINCT FROM A DART
+  REFUSAL, AND IS REPORTED AS ITSELF. This session's token answered
+  `workflow_dispatch` with `403 Resource not accessible by integration` —
+  not a DART-side refusal, not a schema problem, a permission this
+  environment's own credentials do not carry. It is recorded as exactly
+  that in `docs/kr-terminal-action-reconstruction-v2.md`'s "exact next
+  step", never conflated with a source-access blocker the way `AUTH_
+  REQUIRED`/`BLOCKED_SOURCE` already keep apart for a collector's own HTTP
+  calls (workflow-hygiene invariants, v2.25).
+- DISCLOSURE METADATA STAYS METADATA EVEN WHEN THE ENDPOINT IS FULLY
+  CONFIRMED AND THE FAMILY MATCH IS UNAMBIGUOUS. `list.json`'s 451 real
+  rows (117 MERGER, 160 DIVIDEND_DECISION, 56 BUSINESS_TRANSFER, 50
+  SPINOFF_OR_SPLIT_MERGER, 39 SHARE_EXCHANGE_OR_TRANSFER, 28 TENDER_OFFER,
+  13 DELISTING) never become a `terminationType`: `build_terminal_actions`
+  has no path from `disclosureFamilies` to `actionType`, tested directly
+  (`test_no_termination_type_is_ever_guessed_from_a_report_name`) against
+  an unambiguous single-family match, not just an ambiguous one. All 22
+  securities stay `TERMINATION_TYPE_UNRESOLVED` in this PR, by construction
+  rather than by incomplete effort.
+- A SCHEMA MAY GENERALIZE BEFORE A REAL RECORD NEEDS IT, PROVEN AGAINST
+  SYNTHETIC FIXTURES ONLY, AND SAID SO. `considerationComponents` (multi-leg
+  cash-and-stock, multi-successor split-mergers), `amendmentHistory` and
+  `chain_all_successors`' cycle-safe multi-successor reachability were built
+  and tested before any real DART filing content was reachable to populate
+  them — zero of the 22 securities uses any of these fields yet. A schema
+  extension is not evidence of what it was built to eventually hold.
+- A CONTINUING-NAME CROSS-VALIDATION SAMPLE IS DRAWN FROM THE REPOSITORY'S
+  OWN DATA, NEVER HAND-PICKED A SECOND TIME. `kr_continuing_dividend_
+  sample.select_continuing_sample` ranks every code ever seen inside the
+  top 120 by market cap, by how many snapshot dates it held that rank,
+  reading the real `ledger/universe/kr` shards this repository already
+  collects for other purposes — the same "days in top-N" measure `kr_
+  termination_inventory`'s own membership windows already use, reused as a
+  ranking key rather than invented again. Preferred shares are excluded by
+  a published, reviewable name-pattern heuristic (a KR preferred ticker's
+  name ends "우"/"N우X"), not a confirmed structured field — no field in
+  the snapshot rows states common/preferred directly.
+- RAW EVIDENCE RETAINED AND A RESOLVED TERM ARE DIFFERENT FACTS, AND
+  CONFLATING THEM WOULD HAVE READ 22 SECURITIES AS LESS DOCUMENTED THAN THEY
+  ARE. `rawEvidenceRetained` originally read only a record's SINGULAR
+  `sourceReceiptNumber` — populated only once a consideration TERM is
+  resolved and cited. All 22 securities have real disclosure receipts
+  retained (`sources`/`amendmentHistory`) with zero terms resolved yet, so
+  the original check would have reported `rawEvidenceRetained: BLOCKED`
+  for all 22 despite 451 real receipts on file. Fixed to recognize evidence
+  retained via `sources`/`sourceReceiptNumbers` independent of whether any
+  term built from it has been resolved.
+- A DEDICATED PROBE TIER EXISTS FOR "IS RAW CONTENT REACHABLE AT ALL",
+  SEPARATE FROM "IS A STRUCTURED FIELD MAP CONFIRMED". `document.xml`
+  (DART's original-filing-document download, a ZIP of raw XML/HTML) is
+  corroborated with HIGHER confidence than any disclosure-type-specific
+  structured endpoint precisely because it takes no type-specific path to
+  guess — probed for real receipt numbers this same run already found via
+  the confirmed `list.json` endpoint, never a fabricated one, and reported
+  as raw-evidence reachability only: zip/non-zip, byte count, content type —
+  never a structured field, because it is not a structured endpoint.
+
+## Alpha-opportunity-model-v4 invariants (v2.30)
+
+- SOURCE FOUNDATION, STUDY DESIGN AND EXECUTION ARE THREE DIFFERENT FACTS,
+  AND A DOCUMENT THAT CONFLATES THEM READS "PARTIALLY_REPAIRED" AS A
+  BLOCKER FOREVER. `kr-terminal-action-reconstruction-v2.json`'s
+  `foundationStatus` stays `PARTIALLY_REPAIRED` — unedited, unloosened,
+  exactly PR #158's own value — while `alpha-opportunity-model-v4.json`'s
+  `preregistrationStatus` reads `READY_FOR_HISTORICAL_EXECUTION`, because
+  "ready" here means every known gap has a predeclared, machine-checked
+  treatment, not that the gap is gone. `pipeline.alpha_opportunity_v4_spec
+  .verify_source_foundation` re-checks both the cited artifact's hash and
+  its quoted status on every load, so a foundation that improves OR
+  regresses after this seal both raise rather than silently going stale.
+- A RETRY CONFIRMED EXHAUSTED IS VERIFIED FROM THE JOB LOG, NOT ASSUMED FROM
+  A PRIOR PR'S CLAIM, THE SAME DISCIPLINE `kr-terminal-action-
+  reconstruction-v2` (v2.29) ALREADY ESTABLISHED. GitHub Actions run
+  `36264244053` (2026-09-26, `mode: collect`, on `main` at PR #158's merge
+  commit) was read directly: disclosure index and dividend collection both
+  logged "no new" rows (already complete, 22/22 and 47/47), and the
+  document collector retried exactly the 38 previously-failed receipts —
+  `receiptsFailed: 38`, `written: 0`, `outcome: EMPTY_BUT_VALID`,
+  `datasetComplete: true` — all 38 failing again with the identical
+  retained error. Signal-history commit
+  `2132d8d83589ddc8ee6c0e640016211c8ebc65f0` (38 insertions, 38 deletions)
+  refreshes retry bookkeeping only; it is never read as 38 recovered
+  documents.
+- A PRIOR DOCUMENT'S OWN GATE IS A REAL CONSTRAINT, NOT SOMETHING A LATER
+  TASK SILENTLY OVERRIDES. Both `kr-terminated-security-total-return-
+  foundation-v1.md` and `kr-terminal-action-reconstruction-v2.md` state a
+  v4 preregistration should wait for every completeness-matrix field to
+  read READY. `alpha-opportunity-model-v4-preregistration.md` §2 states
+  this conflict explicitly, states why it is resolved differently now (the
+  one remaining operator action they named has since been run and
+  confirmed exhausted), and resolves it by adding a study-design layer
+  those documents did not contemplate — never by editing the source
+  foundation to force a READY reading of its own matrix.
+- A LABEL-ELIGIBILITY GATE ON A TERMINATED SECURITY IS A SECURITY-LEVEL
+  GATE, NOT ONLY A WINDOW-CROSSES-TERMINATION GATE, BECAUSE THE MISSING
+  BASIS APPLIES TO THE SECURITY'S ENTIRE TRADING LIFE.
+  `pipeline.alpha_opportunity_v4_eligibility.label_eligibility` requires
+  `exDateSemanticsResolved: READY` before ANY observation on one of the 22
+  KR terminated securities is eligible, pre- or post-termination — measured
+  BLOCKED for all 22 of 22 today, since Yahoo serves no distribution at all
+  for a delisted KR ticker, so the security's whole price-return history
+  (not merely its terminal window) sits on a different basis than the
+  total-return benchmark. `terminalActionChainResolved` (also BLOCKED for
+  all 22) gates a window that crosses termination on top of that. Every
+  reason code is frozen in `REASON_CODES` before any label is built, and
+  the function is a pure computation over the sealed completeness matrix —
+  re-running it against a repaired foundation would change the result
+  without changing the policy code.
+- EXCLUDING ALL 22 IS NOT THE SAME DEFECT AS THE US LEG'S
+  `NO_TERMINATED_SECURITY_IN_SAMPLE`, AND THE DIFFERENCE IS MEASURED. The US
+  panel never priced 212 of 324 departed identities at all (0% observed,
+  structurally invisible). All 22 KR terminated securities ARE priced to
+  their last session, ARE PIT-universe members on their live dates, and DO
+  enter feature computation and cross-sectional context — only their own
+  forward-return LABEL is withheld, for a disclosed, bounded, declining
+  share (`alpha-opportunity-model-v3`'s own sealed audit: 3.7366% of
+  tradable KR member-dates, 7.93% in 2013 to 0.76% in 2025, never zero).
+  This is still a real survivorship-conditioning limitation on v4's labeled
+  sample, published as such rather than left implicit, and the future
+  execution's required `exclusionsClusterAroundTerminalEventsCheck`
+  diagnostic exists precisely so no headline result can be read as an
+  unconditional statement about KR delisting risk.
+- ZERO NEW FEATURES, INTERACTIONS, HYPERPARAMETERS OR HORIZONS WERE ADDED.
+  v4 carries v3's KR model family, feature set, transforms, transaction
+  costs, tradability guard and uncertainty machinery forward byte-for-byte
+  (`carriedFromV3` in the spec). The one new axis is the eligibility
+  policy; everything else is a narrowing (KR-only) of an already-vetted
+  design, never a re-tune.
+- A STUDY THAT IS "READY" AT THE DESIGN LEVEL STILL SHIPS NO EXECUTION
+  BUTTON. `scripts/run_alpha_opportunity_model_v4.py --execute` raises
+  `NO_V4_EXECUTION_HARNESS_IN_THIS_PR` unconditionally, regardless of
+  `preregistrationStatus` — this PR builds no label engine, training loop
+  or evaluation code, exactly `alpha-opportunity-model-v3`'s own script's
+  discipline one level up.
+
+## Alpha-opportunity-model-v4 correction invariants (v2.31)
+
+- A LABEL-ELIGIBILITY GATE MUST NEVER TAKE A SECURITY'S IDENTITY OR ITS
+  TERMINATION-LIST MEMBERSHIP AS AN INPUT, AND THIS IS NOW PROVEN
+  MECHANICALLY RATHER THAN ARGUED. v2.30's own first bullet already named the
+  right PRINCIPLE (a security-level gate is legitimate ONLY because the
+  underlying basis gap applies to a security's whole trading life); what it
+  shipped did not fully live up to it: `label_eligibility` took `code` and
+  `known_terminated_codes` and branched on set membership BEFORE ever
+  reading completeness evidence, so a security's own eventual termination
+  status — knowable only in hindsight — decided whether extra scrutiny
+  applied to a PRE-termination observation whose own target window never
+  touches the event. Contract V2 removes both parameters entirely:
+  `label_eligibility(completeness, window_crosses_termination, ...)` cannot
+  read a security's code or its list membership because neither is a
+  parameter, and `test_function_signature_takes_no_security_identity_or_
+  termination_list` checks the signature itself, not just behaviour on
+  today's data. Two securities with identical completeness evidence and the
+  same window-crossing fact now receive IDENTICAL treatment by construction
+  — six anti-look-ahead tests (future-termination invariance, future-
+  metadata-mutation invariance, termination-window sensitivity, return-
+  basis symmetry, no-manufactured-outcome, no-outcome-access) prove this
+  from both directions rather than asserting it in prose.
+- THE NUMERIC RESULT DID NOT CHANGE; THE MECHANISM DID. All 22 audited KR
+  securities remain INELIGIBLE on both the pre-termination and termination-
+  crossing window scopes after this fix, because their own dividend
+  evidence (measured, not assumed: ZERO Yahoo dividend rows across each
+  security's entire observed life, against 215/238 dividend events on
+  continuing names — `alpha-opportunity-model-v3`'s sealed survivorship
+  audit) is exactly as incomplete as it was under the defective version.
+  Deferring to unaudited production behaviour for every OTHER KR security
+  (`completeness is None` ⇒ `KR_DIVIDEND_BASIS_AUDIT_NOT_PERFORMED_DEFERS_
+  TO_PRODUCTION`) is not a double standard: it is the same trust-Yahoo's-
+  own-row-dates basis `pipeline.price_adjustment.to_total_return` already
+  applies to every KR security with zero independent verification anywhere
+  in this codebase, confirmed by reading that module directly rather than
+  assumed from its docstring.
+- SEALING A POLICY AND HASH-PINNING ITS EVIDENTIARY INPUT'S EXACT BYTES ARE
+  TWO DIFFERENT PROMISES, AND CONFLATING THEM MADE V2.30'S OWN CLAIM FALSE
+  ON ITS FACE. The first sealed spec hash-pinned `kr-terminal-action-
+  reconstruction-v2.json` (and two sibling artifacts) into `dependencyHashes`
+  /`sealedDataInputs` while claiming a future repair to those same artifacts
+  would let the same eligibility function admit new evidence WITHOUT a new
+  preregistration — but the old `load_sealed` would raise `SEALED_
+  DEPENDENCY_CHANGED` the moment those bytes changed, refusing to load the
+  spec at all. The three KR terminal-action artifacts are now
+  `sourceFoundationCitation` entries (a historical record of what they
+  looked like at seal time, never re-verified against disk by
+  `load_sealed`), and `pipeline.alpha_opportunity_v4_eligibility.assert_
+  foundation_not_regressed` gives a future execution a PREFIX-STABILITY
+  check (may only improve, never regress a field already relied on) in
+  place of a byte-identity requirement — the same discipline `Historical
+  replay invariants` (v2.6) already established for a growing ledger, one
+  level up. `alpha-opportunity-model-v3-survivorship-audit.json` is
+  different in kind (a declared-frozen, input-only snapshot, never
+  legitimately updated in place) and stays fully hash-pinned, unchanged.
+- BOTH DEFECTS WERE FOUND BY INDEPENDENT REVIEW BEFORE MERGE, NOT BY THIS
+  PROJECT'S OWN AUTHOR, AND THE CORRECTION IS PUBLISHED WITH ITS OWN
+  EVIDENCE RATHER THAN SILENTLY EDITED IN — the same discipline `alpha-
+  research-foundation-v2` (v2.24) and `kr-terminal-action-reconstruction-v2`
+  (v2.29) already established for a stale or wrong claim one level up.
+  `research_specs/alpha-opportunity-model-v4.json`'s own `correctionHistory`
+  field records the issue and the fix in the sealed artifact itself, not
+  only in prose.
+- FIXING A LOOK-AHEAD BRANCH IN THE ELIGIBILITY FUNCTION DOES NOT, BY
+  ITSELF, PROVE THE FUNCTION'S INPUTS ARE FREE OF THE SAME BIAS ONE LEVEL
+  UP, AND THIS WAS INVESTIGATED WITH EVIDENCE RATHER THAN ASSUMED EITHER
+  WAY. A further review asked whether audit-SELECTION (which securities
+  ever receive a `completeness` row) is itself outcome-conditioned, since
+  the 22 audited names were chosen because prior research already knew they
+  terminate, while no continuing name has ever been checked the same way.
+  This is not resolved by re-reading `label_eligibility`'s signature again
+  — it needed evidence the signature fix could not produce. `docs/results/
+  kr-dividend-amount-lineage-v2.json`'s `continuingNameReconciliation`
+  already cross-validates DART fiscal-year dividend amounts against
+  Yahoo's own window sums for a 25-name CONTINUING-security sample, selected
+  by `pipeline.kr_continuing_dividend_sample.select_continuing_sample` —
+  ranked by market-cap tenure, excluding the 22 under study, with nothing
+  about dividend completeness in the ranking rule, built for an unrelated
+  validation purpose before this question was ever asked. Measured: 224 of
+  226 (99.1%) DART-confirmed dividend-year rows across those 25 names show
+  a matching Yahoo event; ZERO of the 25 show the all-years-zero blackout
+  pattern all 22 audited terminated names show (one name, 010140.KS, has no
+  DART rows to check at all — a category-C data-absence case, counted
+  neither way, never assumed to be a genuine non-payer or a vendor gap).
+  This corroborates, on already-available evidence and without new
+  collection, that trusting `completeness is None` as a genuine UNKNOWN
+  default (never a "confirmed clean" claim) is evidence-supported — and is
+  reported as exactly that: corroboration for 25 of 238 continuing names,
+  never a claim that the remaining 213 are verified, and never a reason to
+  change `label_eligibility`'s own decision logic, which was already
+  correct after v2.30's fix.
+- "MAY ONLY IMPROVE, NEVER REGRESS" IS NOT THE SAME GUARANTEE AS "THE
+  EXECUTION DATASET IS FIXED", AND A REVIEWER CORRECTLY NAMED THE GAP.
+  `assert_foundation_not_regressed` (v2.30) proves a later snapshot never
+  loses evidence the seal relied on, but says nothing about a single
+  execution RUN reading two different snapshots at two different points, or
+  choosing among candidate snapshots for a more favourable result. The
+  contract now names a third, explicit tier: `freeze_execution_snapshot`
+  hashes whatever snapshot one run actually uses, once, before that run
+  constructs its first label, and `assert_snapshot_matches_frozen_hash`
+  proves a later read within the same run is still that snapshot — POLICY
+  sealed / FOUNDATION improves monotonically pre-execution / EXECUTION
+  SNAPSHOT frozen once outcome computation begins, three different
+  promises that must never be collapsed into one byte-pin again.
+
+## Alpha-opportunity-model-v4 execution invariants (v2.32)
+
+- EXECUTION CODE IS NOT THE SEALED PREREGISTRATION, AND LIVES OUTSIDE ITS
+  DEPENDENCY CLOSURE BY CONSTRUCTION. `pipeline/alpha_opportunity_v4_
+  execution.py` and `scripts/execute_alpha_opportunity_model_v4.py` build the
+  KR-only label engine the preregistration explicitly deferred, but neither
+  file is in `research_specs/alpha-opportunity-model-v4.json`'s own
+  `dependencyHashes` — editing the PREREGISTRATION's own entry point
+  (`scripts/run_alpha_opportunity_model_v4.py`) to add real execution code
+  would have raised `SEALED_DEPENDENCY_CHANGED` and retroactively rewritten
+  what PR #159 merged. The execution script instead calls `pipeline.
+  alpha_opportunity_v4_spec.load_sealed()` as a read-only proof the
+  preregistration is still exactly what was reviewed, then imports (never
+  edits) `pipeline.alpha_opportunity_v4_eligibility`'s sealed functions.
+- A RUNTIME SPEC IS ASSEMBLED FROM TWO ALREADY-SEALED DOCUMENTS, NEVER
+  INVENTED. v4's own JSON never redeclares `evidenceGates`, `costStress`,
+  the `WORST_PLAUSIBLE` survivorship-stress thresholds, or `coverageGate` --
+  they do not change when a study narrows from four region x horizon claims
+  to two, so `build_runtime_spec` reads them from `research_specs/alpha-
+  opportunity-model-v2.json` (already one of v4's own `sealedDataInputs`)
+  and overlays v4's own explicit `carriedFromV3` values on top, which always
+  win where both specify one.
+- A "PRE-LABEL" GATE IS PRE-LABEL ONLY IF NOTHING BEFORE IT CAN BUILD A
+  LABEL, AND THE FIRST EXECUTION'S WAS NOT. Harness contract V1 called
+  `target_from_sessions`, `attach_labels` and `label_eligibility` for every
+  horizon BEFORE its coverage gate, then wrote `stoppedBeforeLabels: true`.
+  The claims first published here, that zero labels were constructed and
+  that the eligibility policy was never exercised, were false. Derived from
+  the corrected run's 85,132 tradable name-dates x 2 horizons, run 1 built
+  about 170,264 forward labels in memory and made as many eligibility calls
+  (reproduced directly on the unrepaired code: 1,248 of each before a stop
+  that reported none). Nothing downstream consumed them: no fold, fit,
+  prediction, evaluation or persisted field. The raw report is kept
+  byte-identical as `docs/results/alpha-opportunity-model-v4-execution-
+  run1-defective.json` rather than deleted. Contract V2 moved the gates
+  ahead of every label by calling v2's own `tradability_frame`,
+  `eligibility` and `pre_label_gates` (see the next bullets for what that
+  got wrong). Call counters incremented at the call sites put
+  `targetFromSessionsCalls`/`labelEligibilityCalls` in every report, and
+  regression tests replace every outcome-reading function with a spy that
+  raises on touch. A flag that says what happened is not evidence that it
+  did; the counter and the spy are.
+- A SEALED CONTRACT SAYS WHICH INHERITED RULE IT REPLACES, AND CALLING THE
+  OLDER STUDY'S PIPELINE WHOLESALE RE-IMPORTS THE REPLACED ONE. v4's
+  `carriedFromV3.walkForward.survivorshipEligibility` states that the
+  per-observation `label_eligibility` policy REPLACES the inherited 20%
+  region-year gap tolerance. Contract V2, in restoring v2's pre-label
+  order, also called v2's `eligibility` and `pre_label_gates`, so it
+  dropped whole region-years above 20% unvouched from both the coverage
+  denominator and the labelled sample, and its report published a
+  `regionYearEligibility` table as if the rule governed v4. That is a
+  second implementation mismatch, found by review before merge. It had no
+  numerical effect on the V2 run: the maximum KR unvouched share is 0.128%
+  (2014), so every year stayed in and the denominator was the same 85,132
+  tradable name-dates. Contract V3 removes the rule rather than setting
+  every year eligible: `alpha_opportunity_v4_execution.pre_label_gates`
+  runs v2's sealed coverage thresholds and calendar-depth check on every
+  tradable KR name-date, v2's `eligibility` and `pre_label_gates` are never
+  called (a spy test raises if they are), and a synthetic year the old rule
+  would have dropped stays in the denominator and can fail the coverage
+  gate. The V2 report is kept byte-identical as `docs/results/alpha-
+  opportunity-model-v4-execution-run2-region-year-mismatch.json`.
+- THE CONTRACT-CORRECT EXECUTION STOPPED AT THE SAME GATE WITH ZERO LABELS.
+  Contract V3 at `b8a5dd29`, run with `--stop-before-labels`, on the sealed
+  `signal-history` commit `4ea107ed` (input identity `674a8b97…`):
+  `BLOCKED_BY_DATA_INTEGRITY`, all four call counters zero, and the same
+  four coverage failures as runs 1 and 2 (the gate reads PIT features only,
+  and no year was ever excluded, so neither earlier defect could move it).
+- THE REPLAY MANIFEST DOES NOT COVER THE RAW SHARDS THE FEATURE PATH READS,
+  SO THEIR IDENTITY IS VERIFIED SEPARATELY. `ledger/fundamentals/kr` and
+  `ledger/universe/kr` live beside the replay store, not inside it. V2 and
+  V3 verify all 28 files by git blob against `alpha-opportunity-model-v3`'s
+  sealed `futureExecutionInputs` (identical to v2's sealed `inputFiles`),
+  refuses any unsealed shard the harness would read, and re-verifies after
+  the gates, before any label. The workflow never checks out `signal-history`
+  by branch name. The freeze job pins the sealed commit and publishes the
+  commit and identity hash, and the execute job checks out that exact
+  commit and refuses a mismatch. A moving branch cannot put the two jobs on
+  different snapshots.
+- A COVERAGE-GATE FAILURE IS INVESTIGATED TO A MECHANISM BEFORE IT IS
+  ACCEPTED AS A RESULT, THE SAME DISCIPLINE THIS FILE'S OWN "GENUINE BUG"
+  RULE REQUIRES ONE LEVEL UP. Two of the four coverage failures read exactly
+  `0.0` (`assetGrowthPct`/`debtGrowthPct`, KR, 2016) -- re-verified directly
+  against the real fetched ledger rather than assumed to be a harness
+  defect: the raw DART collection's earliest fiscal year (2015) carries
+  ONLY the annual report code (`11011`, 81 tickers, zero quarterly rows),
+  so any signal date inside calendar year 2016 -- which can only ever pick
+  a fiscal-year-2016 filing as "current" (the FY2016 annual is not filed
+  until ~March 2017) -- structurally lacks the same-report-code
+  fiscal-2015 prior filing `_growth_pct` requires. This sharpens this
+  file's own PIT-fundamentals invariant ("dark for the first two years")
+  to a measured third dark year for these two specific growth features. The
+  fourth failure (`ocfToNetIncomePct`, KR, 2025, 17.42%) is NOT explained by
+  the same mechanism (2024/2025 both carry full four-report-code coverage
+  across all 126 DART-tracked tickers) -- traced instead to genuine
+  per-filing DART account-completeness variance (measured directly:
+  `000080.KS`'s `(2024, '11014')` filing carries `매출액`/`영업이익`/
+  `영업활동현금흐름`/`유형자산의취득`/`자본총계`/`자산총계` but not
+  `당기순이익`/`부채총계`, even though its neighbouring quarters and
+  annuals do), compounding across the three filings a TTM rollforward
+  needs. Neither mechanism is a code defect; neither was "fixed" by
+  loosening the inherited `0.2` floor, adding an imputation, or excluding a
+  year -- the gate is reported exactly as it fired.
+- ONLY 126 OF THE 260 KR SECURITIES THIS STUDY'S OWN TOP-120 UNIVERSE EVER
+  HELD HAVE ANY DART FUNDAMENTALS COLLECTED AT ALL (48.5%), MEASURED
+  DIRECTLY FROM THE SAME LEDGER THIS EXECUTION READ -- matching `alpha-
+  research-foundation-v2`'s own 126-ticker citation exactly, and confirming
+  this run's own fetched ledger snapshot is complete against that
+  independently-documented count rather than an artifact of a partial
+  checkout. This lowers every KR accounting feature's coverage ceiling in
+  every year and is a real, standing limitation the 2016/2025 findings
+  above sit on top of, not a substitute explanation for either.
+- RUN 1 WAS EXECUTED TWICE, AND BOTH EXECUTIONS CARRY THE SAME DEFECT. The
+  second execution re-stamped `executionCodeCommitSha` after the V1 code was
+  committed and reproduced a byte-identical report. That is a determinism
+  check of the V1 harness, not a correction of its ordering.
+- NO PROMOTION, NO PRODUCTION CHANGE, REGARDLESS OF THIS RESULT.
+  `promotionEligible: false` is asserted in the execution report's own
+  schema; nothing about the KR terminal-action foundation, the eligibility
+  policy, or any v1-v4 spec was edited by this execution.
+
+## KR accounting coverage repair invariants (v2.33)
+
+- A COVERAGE AUDIT CALLS THE FEATURE PATH IT AUDITS AND REFUSES TO PUBLISH A
+  SECOND DENOMINATOR. `alpha_opportunity_kr_accounting_coverage_audit`
+  decides availability with the sealed `alpha_opportunity_features.
+  accounting_at` and only EXPLAINS absences; it raises
+  `AUDIT_DISAGREES_WITH_FEATURE_PATH` if its chain walk ever contradicts that
+  function, and `scripts/audit_kr_accounting_coverage.py` refuses to publish
+  unless it reproduces #160's 85,680 / 85,132 frame and all four failing
+  cells exactly (248/6,212, 0/6,212, 0/6,212, 1,083/6,218). It reads no
+  label, forward price, model or return.
+- THE COLLECTOR'S UNIVERSE WAS TODAY'S, NOT THE ONE V4 READS. `collect_dart_
+  fundamentals.py` builds its work list from `universe.resolve(cfg)`, so only
+  126 of the 260 tickers ever in a KR top-120 snapshot have any DART filing
+  -- 2,223 tradable 2016 name-dates and 751 in 2025 (156 of them preferred
+  shares, whose accounts sit under the common issuer and which no
+  `corpCode.xml` row names; mapping them is an identity rule that needs its
+  own preregistered decision, not a collector default).
+- A RAW STORE THAT KEEPS ONLY MATCHED ROWS CANNOT SAY WHAT IT DROPPED.
+  `dart_fundamentals.build_record` stores only exact-label rows. Net income
+  is absent from 1,586 of 3,260 stored quarterly filings (87 of 1,113 annual),
+  rising from 5% in 2016 to 72% in 2024-2025, while 259 of the 274 2025
+  quarterlies without it still carry revenue or operating income from the
+  same income statement. That is 3,706 of 2025's 5,135 missing
+  `ocfToNetIncomePct` name-dates, and it cannot be proven from the sealed
+  store which label was dropped. `pipeline/dart_raw_statements.py` keeps
+  every row and every attempt's real status instead.
+- A COLLECTOR MUST NOT WRITE A STATUS THE SOURCE DID NOT SEND. `fetch_one`
+  returns the literal "013" whenever CFS and OFS both fail, so all 1,723
+  sealed absences -- including 381 of 381 fiscal-2015 quarterlies -- read
+  013 by construction. The uniform 127-ticker pattern points at the endpoint
+  not serving 2015 quarterlies, but whether original 2015 filings exist is
+  answered only by `raw-probe-2015` (statement endpoint's real status,
+  `list.json`, original XBRL), never inferred.
+- A REQUEST, CONFIGURATION OR SYSTEM FAILURE IS NEVER EVIDENCE THAT A
+  HISTORICAL FILING DID NOT EXIST. The new raw collector's first draft
+  stopped only on key and quota statuses, let 100 (invalid field), 800
+  (maintenance), 900 (undefined error) and 021 (company-count limit) fall
+  through to an absence, and settled that absence on the calendar alone --
+  and a test asserted it. Fixed before any collection ran:
+  `dart_raw_statements.absence_evidence` is SOURCE_ABSENCE only when every
+  statement division answered a status in `SOURCE_ABSENCE_STATUSES` (013
+  alone -- 014 has no repository evidence for this endpoint and fails
+  closed), `settled` re-derives that from the stored attempts, and every
+  other answer is kept in `unresolved.json` with DART's own status and
+  message and retried. 800 and 021 stop the run as a refusal.
+- AN ACCOUNT IS ADMITTED BY WHAT THE FILER SAYS IT IS, IN THE STATEMENT IT
+  BELONGS TO, AND NOWHERE ELSE. `dart_canonical_accounts` adds exactly one
+  rule for the four gate accounts: the IFRS element id those accounts carry
+  under an exact label match in the sealed store (`ProfitLoss` in IS/CIS,
+  `CashFlowsFromUsedInOperatingActivities` in CF, `Assets`/`Liabilities` in
+  BS). Attributable-to-parent profit, cash generated from operations,
+  current subtotals, SCE rows and component rows are never mapped, and
+  disagreeing candidates are left out as AMBIGUOUS. The rebuild publishes
+  every label the element rule admitted for review before any snapshot is
+  frozen. It also refuses the 56 legacy filings whose net income came from
+  an SCE component row -- a correctness repair that LOWERS 2016
+  `ocfToNetIncomePct` 3.99% -> 3.88% on the legacy rows, reported rather
+  than hidden.
+- AN AMENDMENT SERVED IN PLACE OF AN ORIGINAL IS PIT-HONEST AND COSTS
+  COVERAGE, AND THE SAME ENDPOINT CANNOT GIVE IT BACK. 1,208 of 4,373 stored
+  filings (27.6%) are dated after their statutory deadline because
+  `fnlttSinglAcntAll` serves the latest amendment's receipt and the record id
+  has no receipt in it -- 010130.KS's fourteen FY2022-2025Q3 filings are all
+  dated 2026-08-13. 239 collected 2025 name-dates run on a current filing
+  held back this way. "Restatements arrive as their own filing" is false for
+  that implementation and is recorded, not edited into a sealed module.
+- AN UPPER BOUND IS PUBLISHED AS ONE. With every collection reason resolved,
+  2016 growth is still bounded at 0% and 2016 `ocfToNetIncomePct` at 9.43%:
+  the 2016 gate cannot pass by collection alone, only if DART supplies
+  fiscal-2015 quarterlies (bound 55.10% / 60.87%). 2025
+  `ocfToNetIncomePct` is bounded at 95.75%. None of these is a projection;
+  the `kr-raw` job measures the real after-coverage with the same audit.
+- REPAIRED DATA IS A NEW INPUT SNAPSHOT AND NEVER RUNS UNDER V4. The repair
+  writes only `ledger/fundamentals/kr-raw` and `kr-canonical-v2`; the 28
+  blobs v4 sealed are untouched and its identity still verifies. Executing
+  against the repaired store needs a frozen snapshot and a new
+  preregistration (`alpha-opportunity-model-v5`, same economic and model
+  design, new KR fundamentals input and canonicalization contract). v5 is
+  not built here.
+
+## KR original-fiscal-2015-XBRL invariants (v2.34)
+
+- A "NOT ANSWERABLE FROM THIS ENVIRONMENT" CLAIM IS CORRECTED WITH A REAL
+  RUN, THE SAME DISCIPLINE `alpha-research-foundation-v2` (v2.24) AND
+  `kr-terminal-action-reconstruction-v2` (v2.29) ALREADY ESTABLISHED. v2.33's
+  own text said whether original 2015 filings exist was "not answered from
+  this environment." GitHub Actions run
+  `36300578100` (2026-09-27, `data/kr-accounting-coverage-repair-v1` at
+  `4965599c`, `target: raw-probe-2015`, a real `DART_API_KEY`) answered it:
+  artifact `dart-fiscal-2015-probe`, sha256
+  `af7e3b58086b1004af59bdbf978d4e19e9a150fd212d51a639f3512a9a885c2e`, 64
+  calls, 8 tickers. `fnlttSinglAcntAll` answered 013/013 on 24 of 24 real
+  attempts (reconfirming, not merely re-asserting, v2.33's mechanism).
+  `list.json` listed the original fiscal-2015 Q1/H1/Q3 filings with real
+  receipt numbers for all 8, including a genuine original-vs-amendment pair
+  (`000030.KS` Q1: original receipt `20150515002248`, amendment
+  `[기재정정]`, receipt `20150529001078`). `fnlttXbrl.xml` served a real ZIP
+  (`PK` signature, 85-170 KB) for 6 of 8 sampled 2015 Q3 packages and DART's
+  own `<result><status>014</status><message>파일이 존재하지 않습니다.
+  </message></result>` (147 bytes) for the other 2. The workflow's own step
+  list confirms `Collect a slice`/`Rebuild canonical`/`Commit & push` all
+  ran `conclusion: skipped` -- nothing was written to `signal-history`.
+- TWO ENDPOINTS, TWO DEPTHS, NEVER ONE VERDICT ABOUT "DART". Fiscal-2015
+  quarterlies are `PRIMARY_SOURCE_DOES_NOT_SUPPLY_REQUIRED_HISTORY` for
+  `fnlttSinglAcntAll` specifically, confirmed live rather than inferred from
+  the sealed store's own recorded (and, per v2.33's own finding, partly
+  invented) statuses. The original filing archive
+  (`list.json` + `fnlttXbrl.xml`) is a DIFFERENT route with different
+  depth, and it recovers most, not all, of the sample.
+- AN ENVELOPE CONFIRMED LIVE IS NOT THE SAME PROMISE AS CONTENT CONFIRMED
+  LIVE, AND THE TWO ARE NEVER BLURRED. The probe recorded only a served
+  package's first two bytes and total size, never its contents --
+  `DART_API_KEY` is absent from this development environment and
+  `opendart.fss.or.kr` stays blocked from this sandbox's egress (unchanged
+  from v2.28). `pipeline/dart_xbrl_statements.py`'s account-extraction logic
+  has NEVER run against a real served ZIP in this session. It carries
+  `endpointConfidence: CANDIDATE_UNCONFIRMED` on every record it builds --
+  the same tier `alotMatter.json` carried before ITS OWN live probe
+  (workflow-hygiene invariants, v2.25) -- built from general XBRL/K-IFRS
+  convention plus element identifiers this repository has ALREADY confirmed
+  live via the JSON statement endpoint's own `account_id` field, tested
+  only against synthetic fixtures, never claimed as verified.
+- AN ORIGINAL FILING IS SELECTED BY WHAT `list.json` ITSELF SAYS, NEVER BY
+  PICKING THE LATEST RECEIPT. `dart_xbrl_originals.select_original_filing`
+  matches a stage's own stated report label and period, then keeps only the
+  row WITHOUT the `[기재정정]` amendment marker; more than one such row is
+  `AMBIGUOUS_REPORT_MATCH`, refused rather than resolved by any tiebreak. A
+  stage whose only listed filing is an amendment is
+  `ORIGINAL_NOT_LISTED_ONLY_AMENDMENT`, never silently upgraded to "original
+  available."
+- THE CONTEXT WINDOW DECIDES THE COLUMN, THE SAME RULE `dart_derive.
+  cumulative_amount` ALREADY USES, NEVER A SECOND ONE INVENTED FOR XBRL. A
+  flow account is read only from a DURATION context running from the fiscal
+  year's own start to the filing's period end -- the cumulative reading --
+  stored under exactly the amount field name `dart_derive` already reads
+  for that statement (`thstrm_add_amount` for net income's CIS branch,
+  `thstrm_amount` for cash flow's single-column branch). A same-named
+  concept's standalone-quarter duration context is never even considered a
+  candidate, so it cannot silently win a tiebreak; two facts surviving the
+  cumulative-window filter with disagreeing values is `AMBIGUOUS`,
+  proved end to end by a test that reconstructs a 2016 Q3 TTM roll-forward
+  through the unmodified sealed `dart_derive.trailing_twelve_months` using
+  an XBRL-derived 2015 record as its missing same-stage prior.
+- NEITHER THE 20% GATE NOR ANY COVERAGE NUMBER HAS MOVED YET. Only
+  `raw-probe-2015` has run against the live API; `raw-xbrl-2015` (the real
+  collector) and `raw-statements` (whose fiscal-2015 work list is now
+  annual-report-only, since quarterlies there are confirmed wasteful) have
+  not. Every 2016/2025 coverage figure in this document is still the
+  pre-repair measurement or an upper bound, never an "after" result.
+
+## KR original-fiscal-2015-XBRL parser-repair invariants (v2.35)
+
+- AN EXPANDED LIVE PROBE FOUND A REAL PARSER DEFECT, AND IT WAS FIXED FROM
+  THE SERVED CONTENT ITSELF, NOT FROM ASSUMED SEMANTICS. GitHub Actions run
+  `36304452901` (`raw-probe-2015`, `--dump-entries`, real `DART_API_KEY`, a
+  re-run after a first attempt timed out on `corpCode.xml`) served 18 of 24
+  sampled fiscal-2015 Q1/H1/Q3 packages as real ZIPs; the parser resolved
+  only 3 and read 15 `AMBIGUOUS`, all-or-nothing per issuer (never per-stage
+  or per-account). `pipeline/dart_xbrl_statements.py`'s context-window match
+  never inspected a context's own `<scenario>`/`<segment>` dimensional
+  qualifier, and real served content showed multiple contexts sharing the
+  exact same literal dates, distinguished only by such a qualifier.
+- DIMENSIONAL QUALIFIERS ARE AN ALLOWLIST, NEVER A BLOCKLIST, BECAUSE A
+  BLOCKLIST ASSUMES EVERY FUTURE AXIS HAS ALREADY BEEN SEEN. A context is
+  eligible only if its dimensional content is empty, or is exactly one
+  `ConsolidatedAndSeparateFinancialStatementsAxis` member — the same
+  Consolidated-vs-Separate distinction this repository's PIT-fundamentals
+  invariants already resolve for the JSON endpoint (prefer Consolidated),
+  reused rather than re-decided. Two OTHER axis families were measured live
+  and are excluded by the same allowlist, not named individually as special
+  cases: `dart-gcd:PeriodAxis` (every member observed names a PRIOR period;
+  DART's general-corp comparative template reuses one boilerplate date
+  range across a table, so the member's own name is the only real signal)
+  and `ifrs:ComponentsOfEquityAxis` (an SCE component row — one real context
+  carried this axis together WITH the admitted Consolidated one at once,
+  confirming exclusion must check the axis SET rather than a single flag).
+  Exclusion gets its own status, `AXIS_EXCLUDED_ONLY`, kept apart from
+  `NOT_FOUND` — "stated only under a qualifier not admitted" and "never
+  stated at all" are different facts. This can only ever REMOVE a candidate
+  from ambiguity, never invent one: a residual disagreement inside the
+  preferred pool still reports `AMBIGUOUS`, exactly as before this evidence
+  was read. Six regression tests are pinned byte-for-byte to the real
+  context XML this run served, not to a hand-written approximation of it.
+- THE FIX HAS NOT YET BEEN RE-VALIDATED AGAINST LIVE CONTENT, AND THE REASON
+  IS A CONFIRMED PERMISSION BLOCKER, NOT A DESIGN GAP. A direct
+  `workflow_dispatch` call against `fundamentals.yml` from this session
+  returned `403 Resource not accessible by integration` — the same class of
+  blocker already recorded one level up for `kr-corporate-action-
+  collection.yml`. Re-running `raw-probe-2015` on the repaired parser, then
+  reading `candidateAccounts[account].candidateDetail`'s per-candidate
+  `contextRef`/`dims`/`eligibleAxisShape` (now attached even without
+  `--dump-entries`), is the confirming step a human operator must dispatch
+  before `raw-xbrl-2015` or `raw-statements` is run against it.
+- NEITHER THE 20% GATE NOR ANY COVERAGE NUMBER HAS MOVED. This PR still
+  changes only parsing and diagnostic code; no collector has written to
+  `signal-history` and no "after" coverage figure exists anywhere in this
+  repository yet.
+
+## KR original-fiscal-2015-XBRL live-collection invariants (v2.36)
+
+- THE REAL COLLECTOR VALIDATED THE PARSER FIX FAR MORE STRONGLY THAN THE
+  SAMPLE PROBE COULD, AND THEN A DIFFERENT REAL DEFECT DISCARDED THE RESULT.
+  GitHub Actions run `36313209561` (operator-dispatched, `target: raw-xbrl-
+  2015`, this branch at `fee7cba1`, real `DART_API_KEY`) ran the actual
+  collector across the full 254-issuer PIT universe: 762 (ticker, stage)
+  pairs, 1,369 calls, `datasetComplete: true`. 526 packages served a real
+  ZIP; **525 of those 526 (99.8%) produced a record with at least one
+  resolved account** -- against 3 of 18 (16.7%) on the small pre-fix
+  sample that found the defect in the first place. This is measured on the
+  full population the fix was never tuned against, not the 8-ticker sample
+  it was built from.
+- A COLLECTOR SUCCEEDING IS NOT THE SAME FACT AS ITS DATA REACHING
+  `signal-history`, AND THIS RUN PROVED WHY THE DISTINCTION MATTERS. The
+  same run's commit-and-push step failed: `fatal: pathspec 'ledger/
+  fundamentals/kr-canonical-v2' did not match any files`. `raw-xbrl-2015`
+  alone never creates `kr-canonical-v2` (that is `raw-statements`' own
+  rebuild step, never run on this branch), and a bare `git add` on a path
+  that does not exist at all is a hard git error, not a no-op -- unlike a
+  glob that matches zero files. All 525 real, live-collected records were
+  discarded before ever reaching `signal-history`, and the workflow's own
+  green/red status on the earlier steps gave no indication of this until
+  the final step's own failure.
+- A WORKFLOW FIX GETS THE SAME EVIDENTIARY STANDARD AS A CODE FIX: A
+  REGRESSION TEST EXTRACTED FROM THE REAL FAILING SCRIPT, NOT A REWRITE
+  ASSERTED CORRECT BY INSPECTION. `fundamentals.yml`'s commit step now adds
+  only the candidate paths that exist that run (`for path in ...; do [ -e
+  "$path" ] && git add "$path"; done`), and `test_commit_step_never_
+  crashes_when_one_candidate_path_is_missing` extracts that exact shell
+  loop from the workflow file's own text and runs it for real, in a temp
+  git repo missing `kr-canonical-v2` -- reproducing the real run's own
+  state rather than a hypothetical one.
+- THE SAME RUN'S OWN COVERAGE AUDIT READ EVERY 2016-2026 GATE CELL AS
+  EXACTLY 0.0, AND THAT IS NOT A PARSER FAILURE. With `kr-canonical-v2`
+  never built (no `raw-statements` run has ever landed on this branch), the
+  merged candidate store this run audited held ONLY the 525 fiscal-2015
+  XBRL records and no filing from any other year at all -- so a 2016 TTM
+  computation had no fiscal-2016 "current" filing to roll forward from,
+  independent of whether the fiscal-2015 PRIOR the XBRL path supplied was
+  correct. Reading this 0.0 as "the fix did not help" would have been
+  exactly the genuine-bug-vs-harness-defect confusion this file's own KR
+  accounting coverage repair invariants (v2.33) already warn against one
+  level up. The real "after" reading needs `raw-statements` to actually run
+  and land `kr-canonical-v2` first.
+- STILL NEITHER THE 20% GATE NOR A REAL "AFTER" COVERAGE NUMBER HAS MOVED.
+  The 525 records collected by run `36313209561` never reached `signal-
+  history` (the commit failed), so the sealed store, `kr-canonical-v2`, and
+  every published coverage figure are unchanged. The next real measurement
+  needs `raw-xbrl-2015` re-run on the fixed commit step, then `raw-
+  statements` run to `datasetComplete: true`.
+
+## Alpha-inference-calibration-v4 invariants (v2.37)
+
+- A CALIBRATION FAILURE IS DIAGNOSED BEFORE IT IS REPLACED, AND THE DIAGNOSIS
+  MAY NOT REOPEN IT. v3 (run `36483954346`) failed 3 of 16 cells, all
+  H126/312 weeks, all `dateMean`/`selectedMean`. Its exact Gaussian coverage
+  there (Imhof) is 0.957-0.958 against nominal 0.975 -- a real distortion,
+  yet ABOVE the 0.95 floor; the observed 0.937-0.950 are that distortion read
+  through 300-replicate noise (a true-0.958 cell reads below the floor with
+  probability 0.198). Both facts are published; v3 stays FAIL and immutable.
+- AN "IID" DGP IS NOT AN IID SERIES. `IID_SHARED` has iid DAILY shocks, but its
+  weekly H126 forward sums overlap 26 dates (lag-1 autocorrelation 0.960). The
+  v1/v2 reading that failure "under IID" excluded a dependence cause was wrong.
+- A STATISTIC THAT PASSES UNDER A NULL THAT MAKES IT WHITE HAS NOT BEEN TESTED.
+  With predictors redrawn independently every week, `rankIC`,
+  `pairedMseImprovement` and `selectedMinusUniverse` are martingale
+  differences whatever the overlap; they could not fail for the reason the
+  mean statistics did. v4 adds persistent-predictor DGPs, never removes one.
+- KNOWN DEPENDENCE IS REMOVED, NOT RE-ESTIMATED. Every confirmatory v4
+  statistic is linear in forward returns with signal-date weights, so each
+  realized return is attributed to the one calendar week it occurs in; the
+  sum is an exact identity (same estimator, same estimand) and the unchanged
+  v3 SN pivot is applied to that series. Spearman rank IC is not linear in
+  returns and is DESCRIPTIVE only. The method has no tuning parameter. It was
+  derived from the overlap structure, but development-only exact-Gaussian
+  coverage of the v4 interval was computed and seen BEFORE the protocol freeze
+  commit (disclosed in the development diagnostics); nothing was selected by
+  optimizing it. "Fixed before any v4 coverage was computed" would be false.
+- MONTE CARLO BUDGET IS SET BY A PRECISION CRITERION, NOT BY A HOPED-FOR
+  VERDICT. R = 2,000 because the 95% half-width at the 0.95 floor must be at
+  most 1pp; a larger R can only make a method below the floor fail more
+  reliably. Tolerances, depths and U1 = 66.57 are unchanged from v3.
+- A METHODOLOGICAL VERDICT IS NOT A PROCESS FAILURE. The v4 runner exits 0
+  on PASS/FAIL/INCONCLUSIVE/DATA_INSUFFICIENT and 1 only on
+  INFRASTRUCTURE_ERROR, and always writes the artifact; the workflow runs only
+  from `main`. A complete v4 FAIL is final: no reseed, no v4.1 -- a further
+  method is a new, separately justified v5 calibration study.
+- A SIMULATED PROBABILITY IS COMPARED TO A THRESHOLD THROUGH ITS OWN
+  UNCERTAINTY, NOT AS IF IT WERE EXACT. Revision 2 classifies every
+  Monte Carlo-estimated metric (coverage floor, false-positive and
+  undefined-frequency ceilings) PASS / FAIL / INCONCLUSIVE from exact
+  one-sided Clopper-Pearson bounds (`pipeline/alpha_inference_mc_decision`).
+  The old point-estimate rule read a true-0.950 method as FAIL with
+  probability 0.473 and a true-0.945 method as PASS with probability 0.176
+  at 2,000 replicates; both operating characteristics are published.
+- MONTE CARLO CONFIDENCE AND STATISTICAL CONFIDENCE ARE DIFFERENT LEVELS.
+  The 97.5% interval (Bonferroni over two KR horizon claims) is the claim
+  being calibrated; the Monte Carlo levels (PASS side 0.025 per metric, FAIL
+  side 0.05 Bonferroni over 360 registered decisions) only govern
+  classification error of the simulation. PASS is an intersection so it needs
+  no adjustment; FAIL is a union so it does. The price is that FAIL is
+  reserved for clear refutation.
+- INCONCLUSIVE IS AN ANSWER AND IS NOT FIXED BY MORE REPLICATES. At 2,000
+  replicates PASS needs observed coverage >= 0.960 and FAIL <= 0.931; a
+  true-0.957 cell (the exact Gaussian value for PERSISTENT_SHARED_HEAVY at
+  H21/78) is INCONCLUSIVE with probability about 0.735, and the chance that
+  all 16 inherited-DGP `dateMean` coverage cells PASS is about 0.20. That was
+  published before the run and R was not raised to avoid it; a more precise
+  study is a new v5 calibration-method study, never a rerun of v4.
+- A FUTURE ORDERING CLAIM IS NOT DECIDED BY A CALIBRATION STATISTIC.
+  `rankWeightedSpread` is confirmatory in the v4 calibration because it is
+  decomposable; it is NOT silently substituted for Spearman rank IC in Alpha
+  v5, whose design review still expects a positive rank-IC lower bound. That
+  choice is a separate pre-v5 design decision.
+
+## Alpha-inference-calibration-v5 invariants (v2.38)
+
+- AN INCONCLUSIVE RESULT IS NOT A FAILURE AND NOT A PASS, AND IT IS RECORDED AS
+  EXACTLY THAT. v4 (run `36493207997`, main `4b5cd78`, spec `012e4317...`,
+  artifact `11002423544`) returned 22 PASS / 2 INCONCLUSIVE / 0 FAIL: both
+  INCONCLUSIVE cells are H21 at 78 weeks (`PERSISTENT_SHARED_HEAVY` and its
+  heavy-tailed persistent-predictor twin), and every H126 cell passed. The
+  H126 / 312-week failure that closed v3 did not reproduce. v4 is closed and
+  is never rerun, re-seeded, re-thresholded, reinterpreted or continued as
+  v4.1. Its metric-level detail lives in its artifact, which the authoring
+  environment cannot fetch, so it was NOT regenerated by re-running v4: a
+  gap in the record is reported as a gap.
+- A PRECISION-ONLY REPLICATION CHANGES THE BUDGET AND THE SEED AND NOTHING
+  ELSE, AND THAT IS PROVED BY MACHINE. v5 CALLS the v4 engine rather than
+  copying it; the sha256 of every file the engine executes is pinned in the v5
+  module and spec and verified by the runner before any simulation
+  (`ENGINE_FILE_CHANGED`). `semantic_differences` classifies every top-level
+  protocol key: the 17 scientific keys must equal v4's, the permitted
+  differences are an explicit list, and any unclassified key fails. A test
+  also requires the wrapper and the v4 engine to give identical cell results
+  for the same protocol.
+- A BUDGET IS DERIVED FROM A RULE ABOUT THE THRESHOLD, NOT FROM THE CELLS THAT
+  FAILED TO CLASSIFY. The 95% Monte Carlo half-width of a probability at
+  p = 0.95 must be at most 0.5pp by BOTH the normal approximation (R >= 7,299)
+  and the exact Clopper-Pearson interval (R >= 7,501; 7,500 misses by
+  1.3e-7), rounded up to a multiple of 500: R = 8,000. Asking how many
+  replicates would make a specific cell pass would have been outcome-driven.
+- MORE PRECISION NARROWS THE AMBIGUOUS BAND, IT DOES NOT ABOLISH IT. At 8,000
+  replicates PASS needs observed coverage >= 0.9549 (7,639) and FAIL <= 0.9408
+  (7,526), against 0.960 and 0.931 at 2,000. A true coverage of about
+  0.941-0.955 is still INCONCLUSIVE with high probability (0.955 PASSes 0.536,
+  0.950 PASSes 0.023). That was published before the run and R was not raised
+  further; a v5 INCONCLUSIVE is answered by a new preregistered version,
+  never by a rerun.
+- A NEW SEED IS ONE DETERMINISTIC VALUE CHOSEN BEFORE ANY RUN, NEVER SEARCHED.
+  20261002 differs from v1-v4 (20260928-20261001), and a development smoke
+  refuses the formal seed and every closed protocol's seed. Replicate streams
+  are `SeedSequence([seed, dgp, horizon, weeks, replicate])`, so v5 is an
+  independent replication, not an extension of v4's draws.
+- "v5" HERE IS THE CALIBRATION, NOT THE ALPHA MODEL. `ALPHA_INFERENCE_
+  CALIBRATION_V5` authorizes no Alpha-v5 preregistration, seal or execution;
+  the open rank-IC versus `rankWeightedSpread` decision (v2.37) remains a
+  separate pre-Alpha-v5 design choice.
+
+## Alpha-opportunity-model-v5 preregistration invariants (v2.39)
+
+- A PREREGISTRATION IS NOT AN EXECUTION, AND NEITHER IS ITS VERIFIER. `alpha-
+  opportunity-model-v5` freezes one KR historical execution. Its runner verifies
+  identities (`--verify-only`) and its `--execute` refuses with
+  `NO_V5_EXECUTION_HARNESS_IN_THIS_PR`; the reviewed harness is a later change kept
+  outside the sealed dependency closure, as v4's was, so adding it cannot rewrite the
+  frozen protocol. No label, score or outcome was read to write the protocol.
+- A REGION WITH NO REPAIRED INPUT IS BLOCKED, NOT SUBSTITUTED. The US survivorship
+  defect has no sealed repair on `main`, so the single execution is KR-only with two
+  primary claims (which is also what the inference calibration's Bonferroni design
+  assumed). The US model stays separate, never pooled and with no region feature; it can
+  join only through a new version over a separately hashed US snapshot.
+- A DESIGN QUESTION THE CALIBRATION LEFT OPEN IS DECIDED IN THE FROZEN FILE, BEFORE
+  OUTCOMES. `rankWeightedSpread` is the confirmatory ordering statistic because it is
+  linear in returns with signal-date weights and was calibrated; Spearman `rankIC` is
+  descriptive only. The change from the earlier rank-IC expectation is recorded as an
+  explicit pre-outcome revision with its reason, not adopted after a result.
+- SUBTRACTING A FIELD IS NOT MINING A FEATURE, AND IT IS STILL RECORDED. `ocfTo
+  NetIncomePct` is removed from KR H126 (the design review required its state contract
+  to be approved or the field excluded); nothing is added. The decision is in the
+  spec's decisions ledger with its reason.
+- INHERITED MEANS VERIFIED, NOT RESTATED. Every value carried from the sealed v4 is
+  copied with a digest and compared to its source on each load
+  (`INHERITED_VALUE_CHANGED`), the KR accounting snapshot is pinned by content hash,
+  candidate identity and per-shard blob, and the calibrated inference spec and engine
+  files are pinned by hash. A merged result the repository does not carry (the v5
+  calibration run) is cited from Actions with its provenance, never invented.
+- A SUBSTANTIVE RESULT CLOSES THE STUDY. One authorized execution from merged `main`;
+  a retry only for a run with no complete artifact; no reseeding, threshold, feature,
+  model, horizon, benchmark or universe change afterwards. The sample is exposed
+  history: PASS is replication-type evidence needing prospective confirmation.
+
+## Alpha-opportunity-model-v5 execution-harness invariants (v2.40)
+
+- A HARNESS IS NOT AN AUTHORIZATION AND NEITHER IS AN EXECUTION. `alpha-opportunity-model-v5-
+  execution-harness-v1` implements the reviewed harness that PR #174 left outside the sealed
+  closure (`pipeline/alpha_opportunity_v5_execution.py`, `alpha_opportunity_v5_evidence.py`,
+  `scripts/execute_alpha_opportunity_model_v5.py`) and executes nothing. The sealed spec
+  (`d0f1aaf5...`), its sidecar, the preregistration document, `alpha_opportunity_v5_spec.py` and
+  `run_alpha_opportunity_model_v5.py` are byte-identical to the preregistration merge, the sealed runner's
+  `--execute` still refuses, and neither the operator authorization file nor any result artifact exists.
+  State: `HARNESS_READY_BUT_NOT_AUTHORIZED`. All tests use synthetic fixtures; the harness has never
+  run on real prices.
+- "STOPPED BEFORE LABELS" IS DERIVED FROM CALL COUNTERS, NEVER ASSERTED. v4's first harness built about
+  170k forward labels before its coverage gate and wrote `stoppedBeforeLabels: true`. In v5 the counters are
+  incremented at the call sites of `target_from_sessions`, `label_eligibility`, every fit, prediction and
+  evaluation; the flag is computed from them; `build_labels` raises without a `LabelPermit`; a permit exists
+  only for a `GatesPassed` object and only after every frozen identity was re-verified; and a test replaces
+  each outcome-reading function with a spy that raises and requires zero counters and zero spy hits after any
+  pre-label failure. A flag that says what happened is not evidence that it did; the counter and the spy are.
+- ONE FROZEN IDENTITY, MEASURED AT THREE POINTS. Spec, closure, priors, KR accounting snapshot, sealed raw
+  blobs and replay manifest, calibrated-inference pins, the terminal-action execution snapshot and the harness
+  code are frozen together, re-verified immediately before the first label, and verified once more at the end
+  of the run. A same-run input swap is an `INFRASTRUCTURE_ERROR` naming the component that moved, never a
+  verdict. Price objects are covered by the replay manifest and re-hashed by `InputStore` when read; that is a
+  disclosed limit, not a claim of a second hash.
+- A VERDICT IS A SUCCESSFUL PROCESS. PASS, FAIL, INCONCLUSIVE and DATA_INSUFFICIENT (including a registered
+  pre-label gate stop) exit 0 and, from the formal run, close the preregistration. Only INFRASTRUCTURE_ERROR
+  exits non-zero, and its artifact is uploaded under an attempt name so it cannot close the one-shot guard. The
+  workflow reports whether the machinery worked; the artifact and job summary report what it found.
+- THE CALIBRATED ENGINE IS CALLED, AND THE ONE NEW PIECE IS PROVED EQUAL TO IT. The interval is
+  `calendar_time_sn_interval` and the rank weights are the engine's `_centred_rank_weights`, both from the
+  engine files pinned by the sealed spec. The frozen label is a compounded ratio while the calibration
+  simulates additive shared returns, so real cohorts are attributed to calendar weeks through the exact
+  telescoping increment `(Close[s]-Close[s-1])/Close[entry]` minus the benchmark's. That generalisation equals
+  the engine's `calendar_time_series` on additive data (tested) and the sum of D over weeks must equal the sum
+  of the signal-date statistic on every series or the run raises. Estimator and estimand are unchanged.
+- THE ONE-SHOT HAS THREE INDEPENDENT LOCKS. The workflow refuses non-main and an existing unexpired result
+  artifact; the script refuses outside Actions on main, without an authorization file that pins the spec digest
+  and the reviewed harness file hashes (an authorization cannot be spent on code that was not reviewed), and when
+  `docs/results/alpha-opportunity-model-v5-result.json` is committed. A dry run of the pre-label gates
+  (`--stop-before-labels`, workflow `mode: gates-only`) is outcome-free, needs no authorization, is never a
+  substantive result and closes nothing: a formal run that stops at a gate is a closing result, and learning that
+  fact from an outcome-free run does not spend the budget.
+- DESCRIPTIVE HEADS CANNOT GATE. B1, B3, B5, the Logistic head, rankIC, calibration, fitted-value uncertainty
+  and cost stress are reported and read by nothing that decides a claim; a descriptive head failing is recorded
+  and moves nothing, while a PRIMARY Ridge (B0/B2/B3/B4) failing numerically is an execution failure.
+- A PRE-EXISTING TEST THAT ENCODED THE OLD STATE WAS UPDATED, AND SAYS SO. The PR #174 workflow test required the
+  execute step to be the workflow's LAST step; the harness adds classification, artifact and fail-on-
+  infrastructure-error steps after it, so that test now requires exactly one step passing `--execute`, gated on
+  execute mode. No frozen-value assertion was loosened.
+
+## Alpha-opportunity-model-v5 supplemental-diagnostics invariants (v2.41)
+
+- A SUPPLEMENTAL DIAGNOSTIC PROTOCOL IS FROZEN BEFORE OUTCOMES AND IS NOT AN AMENDMENT. `alpha-opportunity-model-v5-
+  diagnostics-v1` (`research_specs/alpha-opportunity-model-v5-diagnostics-v1.json`, digest `15a855fa...`) adds
+  descriptive attribution to the ONE authorized v5 execution without changing a feature, horizon, target, model,
+  hyperparameter, interval, threshold, claim state, cost, universe or execution count. Its firewall flags
+  (`affectsPrimaryClaim`, `promotionEligible`, `modelSelectionAllowed`, `featureSelectionAllowed`,
+  `resultCanRescuePrimary`, `resultCanRefutePrimary`, `resultCanGatePrimary`, `resultCanTriggerRerun`) are all false
+  and re-checked on every load; the operator authorization pins its digest beside the harness file hashes. No
+  historical outcome was read to write or test it.
+- THE PRIMARY RESULT IS DURABLE BEFORE ANY DIAGNOSTIC RUNS. Catching a diagnostic exception is not isolation from a
+  diagnostic that cannot be caught (OOM kill, timeout, crash). The primary file is therefore written atomically (temp file,
+  fsync, rename) before the first diagnostic function is invoked and is never rewritten; it carries no diagnostic
+  reference (those are in a separate `diagnostics/...-diagnostic-references.json`); diagnostic artifacts can only be
+  written under `diagnostics/`; and the workflow classifies and uploads whatever primary file exists with `always()`.
+  Tested with a normal exception, `SystemExit`/`KeyboardInterrupt` and a real SIGKILL right after the primary write.
+- PRIMARY FIRST, DIAGNOSTICS AFTER, ON COPIES. The complete primary result is built, canonicalised and hashed before a
+  diagnostic runs; diagnostics get deep copies and their own counters; the result file is the unchanged primary payload
+  and its original hash, and the REFERENCES to diagnostic artifacts are a separate file outside it. The primary digest is identical with diagnostics on or off (tested on a real re-run), and a diagnostic that
+  raises, returns garbage or violates the firewall becomes a separate `DIAGNOSTIC_ERROR` that changes no status,
+  payload or hash, does not fail the job and authorises no retry.
+- EXACTNESS IS ASSERTED, NOT ASSUMED. The Ridge decomposition `intercept + sum(valueCoef*transformed +
+  missingCoef*indicator)` must equal the B4 prediction to 1e-9 on every evaluated row and each diagnostic refit must
+  reproduce the primary B4 and B5 predictions, or the diagnostic run is an error. The Logistic head is decomposed on
+  the log-odds scale only; probability-scale additivity is never claimed.
+- CORRELATED PREDICTORS CHANGE WHAT AN ABLATION MEANS. Individual leave-one-feature-out is unique information
+  conditional on the remaining substitutes, so a near-zero value is not evidence of no information; the frozen
+  families make group leave-one-family-out the headline reading and a training-only redundancy map is reported beside
+  both with no verdict label. ALE, not PDP, is the nonlinear display, with edges from the fold's TRAINING data only and
+  unsupported bins reported rather than bridged.
+- REGIME LABELS READ THE PAST ONLY. The volatility threshold is the median of the same statistic over the strictly
+  earlier signal dates (expanding, minimum 26), the trend label reads the trailing 126 sessions, no named event and no
+  full-sample constant is used, and a test shows a future shock cannot alter an earlier label.
+- THE MULTIPLE-TESTING FIREWALL IS CODE. Outputs are scanned for significance, p-value, winner, best-feature and
+  promoted-predictor keys; a hit makes the run a `DIAGNOSTIC_ERROR`. Diagnostics choose no best feature, group,
+  regime or interaction, and any hypothesis they suggest belongs to a NEW preregistration.
+
+## KR factor anatomy protocol invariants (v2.42)
+
+- AN EXPLORATORY MAP ON OUTCOME-EXPOSED HISTORY GENERATES HYPOTHESES AND NOTHING ELSE. `kr-factor-anatomy-v1`
+  decomposes the eleven raw features of `kr-model-overlay-portfolio-v1` descriptively. Every KR date through
+  2026-09-14 is already outcome-exposed, so every result is permanently
+  `EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY`: no PASS/FAIL, no promotion, no production weight, no
+  "best factor", no recommended portfolio, and it can never validate, rescue or alter v1's sealed
+  `DEVELOPMENT_REJECT`. The output schema is scanned for those semantics (`assert_no_forbidden_keys`).
+- A PREMISE ABOUT THE OUTCOME IS READ FROM THE CODE, NOT FROM THE BRIEF. The task brief expected a price-only
+  return. The replay `Close` is the as-traded close with a forward-accumulated dividend factor
+  (`price_adjustment.to_total_return`, `AS_TRADED_CLOSE_WITH_FORWARD_ACCUMULATED_TOTAL_RETURN`), joined to
+  Yahoo distributions only where the vendor served them (none for the 22 audited delisted names; per-name
+  completeness for continuing names unaudited). The outcome is therefore
+  `BENCHMARK_RELATIVE_ADJUSTED_INDEX_RETURN_PARTIAL_DISTRIBUTIONS` — neither a price return nor a total shareholder
+  return — and is never labelled either. High-dividend names (banks, financials) stay unreliable;
+  `TOTAL_RETURN_ANALYSIS` is DATA_FOUNDATION_REQUIRED and no dividend adjustment is improvised.
+- RANKS ARE FIXED BEFORE OUTCOMES. Percentiles and buckets come from the signal-date cross-section only, so a name
+  whose outcome is later withheld keeps its rank slot and no future information can move a rank. Every statistic is
+  per date first and date-equal-weighted after (`date_weights`), summed in an input-order-independent order.
+- A STRUCTURAL SUBGROUP NEEDS A DATED CLASSIFICATION OR IT IS NOT COMPUTED. No point-in-time sector or
+  regulated-enterprise/financial history exists, so `STRUCTURAL_CLASSIFICATION_STATUS` is DATA_FOUNDATION_REQUIRED.
+  A classification file the spec does not pin is refused (`UNPINNED_STRUCTURAL_CLASSIFICATION_PRESENT`); KEPCO stays
+  in every primary table, with a labelled single-ticker leave-out and a fixed case study.
+- OUTCOME EXECUTION IS A SEPARATE, GUARDED STEP. The protocol change computes no outcome. `execute` needs a
+  `workflow_dispatch` on merged `main`, this exact spec committed at that commit, the exact preserved artifact
+  (name, run, id and archive digest checked through the Actions API), the input identity, and no committed result;
+  pull-request CI runs `verify` only. A sealed study's pinned files (here `docs/workflow-inventory.md`) are never
+  edited: later workflows are documented in `docs/workflow-inventory-addendum.md`.
+
+- PRE-OUTCOME REVISION 2: the primary universe is named for what it is, the PIT top-120 LARGE-CAP set (an outcome-free
+  audit shows price and accounting inputs exist only for the 260 ever-top-120 securities, so no broader denominator is
+  valid); structural classification was attempted and stays DATA_FOUNDATION_REQUIRED with eight frozen financial case
+  studies and distribution caveats; a BROADLY_* label needs D10-D1, decile monotonicity and mean rank correlation to
+  agree in sign; separate largest-rise and largest-fall tables exist. No outcome was computed.
+
+## KR Top120 regime review protocol invariants (v2.43)
+
+- A POST-OUTCOME DIAGNOSTIC SAYS SO, AND CAN ONLY DECOMPOSE. `kr-top120-regime-review-v1` is
+  `EXPLORATORY_POST_OUTCOME_REGIME_DIAGNOSTIC`, designed after the sealed `kr-factor-anatomy-v1` outcomes were seen
+  (predecessor pinned by result / report / manifest / provenance / archive / spec / raw-input identity). It asks only whether
+  known relationships are concentrated in outcome periods, signal-time market states or mega-cap names; it cannot confirm a
+  factor, validate a strategy, rescue `kr-model-overlay-portfolio-v1`, produce weights, pick a best factor or tune a threshold.
+- CHRONOLOGY IS BY OUTCOME WINDOW, NOT SIGNAL YEAR. A late-2024 signal maturing in 2025 is a 2025 observation: slices are decided
+  by each observation's entry / exit date (closed-interval intersection with the calendar year). A slice removes outcomes only;
+  a mechanical sensitivity universe removes names BEFORE ranking and same-date ranks are recomputed. Only Samsung Electronics,
+  SK Hynix and the two largest signal-date market caps can be removed; no company is added after outcomes.
+- NO OUTLIER RULE IS CHOSEN FROM THE RESULT. No winsorisation or trimming exists; the median spread and mean within-date Spearman
+  are fixed robust views reported beside, never instead of, the ordinary mean. The leave-one-out Top120 benchmark excludes the
+  subject, needs at least 50 OTHER valid names (the anatomy's decile minimum) and never zero-fills a peer; absolute, KODEX200-relative
+  and leave-one-out returns, and the three fundamentals success definitions, are never collapsed.
+- THE ONE-SHOT IS A DURABLE GITHUB-SIDE LOCK, NOT AN ARTIFACT OR A LOCAL FILE. Identities and readiness gates pass first; only
+  then the study-level git tag `refs/tags/kr-top120-regime-review-v1-execution-lock` and the identity tag `...-lock-<specSha256>`
+  are created by atomic `POST /git/refs` at the dispatched main commit (existing ref: 422, refuse; only POST and GET are ever
+  issued, so none is moved or deleted) and ANY ref under that prefix, for any spec SHA, refuses execution, so editing the spec
+  never reopens the study (a first repair keyed the check to the current spec SHA only, which a revised spec would have escaped) and only after it exists can any outcome be read. A failure before the lock spends nothing; a failure after it
+  permanently consumes the study whatever artifacts exist or expire. The first draft of this protocol wrote its "marker" only
+  into the run's output directory and let a later `execute` run again after a post-marker failure — found by review before
+  merge and repaired. Authorization and lock tests build their own synthetic repository and fake GitHub API (the lesson of the
+  anatomy authorization-test repair).
+
+## KR market risk model v1 preregistration invariants (v2.44)
+
+- AN ANATOMY THAT MOTIVATES A DESIGN MAKES EVERY LATER HISTORICAL NUMBER DEVELOPMENT EVIDENCE. `kr-market-risk-model-v1`
+  is built from what the sealed `kr-market-risk-anatomy-v2` showed (fast volatility clearest, re-steepening over inversion,
+  VIX level over VIX change, the overlay's either/both trade-off), so its spec carries `developmentStatement` verbatim and
+  `load_spec` refuses a spec without it. The anatomy is pinned by hash, never rerun, never re-thresholded. Only prospective
+  receipts can turn this model into evidence.
+- THE NEXT STEP AFTER AN ANATOMY IS AN ACTION QUESTION, NOT A WIDER SIGNAL SEARCH. The study owns one number,
+  `equityRiskMultiplier` in {1.0, 0.7, 0.4}: no industry or stock selection, no Kelly, no leverage, no machine learning. Its
+  modules import no selection module and no function takes a ticker (tested).
+- A LADDER IS STRUCTURE ON ONE VOCABULARY. Two switches — GATING (one FAST warning needs SLOW or TRANSITION confirmation) and
+  PREEMPTION (SLOW and TRANSITION both adverse step down one level) — make a 2 x 2: C0 the existing overlay, C1, C2, and C3,
+  which is provably the multi-layer consensus count. Every rung moves one thing; every candidate uses the control's own
+  1.0 / 0.7 / 0.4; no window, threshold, lag or multiplier is new; the twelve-cell tables are computed from the module and
+  compared with the spec on every load.
+- MISSING IS NEITHER BENIGN NOR ADVERSE, AND A DETERMINED ANSWER IS NOT MISSING. A multiplier exists only when every
+  completion of the missing layers the candidate reads agrees; otherwise the candidate holds its previous target and the hold
+  is counted. Re-entry is the same memoryless state map — no trough, no rebound threshold, no hysteresis.
+- A SAMPLING DATE COMES FROM THE CALENDAR, NOT FROM WHERE THE DATA STOP. Grouping the sessions that happen to be present marks
+  the last available session as a period end, so a state would move when the data end moves. Week- and month-ends are sessions
+  whose NEXT exchange session lies in a later period; the end-date-invariance test truncates mid-week and mid-month.
+- READINESS CAN MEASURE DEFINEDNESS WITHOUT A VALUE. A presence proxy (1.0 on every observed date) pushed through the same
+  state machine shows exactly where each candidate is determinable (tested equal to the real-valued pattern on synthetic
+  inputs). Outcome-free readiness on the committed bytes: READY, 1,027 weekly decisions from 2007-01-05, every candidate
+  determinable on all of them, all counters zero.
+- THE DECISION IS PARETO FIRST, SYMMETRIC AND DOES NOT FORCE A WINNER, AND ITS TOLERANCES ARE FIXED BEFORE OUTCOMES. Dominance
+  on net annualized return, maximum drawdown and share of sessions de-risked (the passive path can eliminate, never be
+  nominated); then non-inferiority versus C0 on BOTH axes (return >= C0 - 0.50 pp, |MDD| <= 1.10 x C0's); then at least one
+  meaningful improvement (efficiency route: return >= C0 + 0.50 pp; protection route: |MDD| <= 0.90 x C0's). One survivor is
+  nominated, none keeps the control, and several mutually non-dominated survivors are `NO_UNAMBIGUOUS_NOMINATION_PARETO_TRADEOFF`
+  with every candidate kept in the prospective receipts. No weighted utility; neither CAGR nor drawdown alone decides.
+- A GATE THAT A CANDIDATE CANNOT STRUCTURALLY PASS IS NOT A TEST OF THAT CANDIDATE. The first nomination rule demanded a 10%
+  drawdown gain from every candidate, but C1 can never be more de-risked than C0 (it only leaves an isolated FAST == 1 warning
+  at 1.0): its hypothesis is fewer false alarms and better participation at acceptable protection, so the rule made it
+  ineligible by construction. A simplicity tie-break would also have silently preferred the least-structured hypothesis. Both
+  were replaced BEFORE any outcome access (all counters zero) and the revision is recorded in the spec (`preOutcomeRevisions`)
+  with its reason, so it is part of the sealed identity rather than a silent edit. Ask of every success criterion: can each
+  candidate pass it for the reason it was built?
+- A PREDECESSOR'S TAMPER GUARD PROTECTS ITS EXACT FILES, NEVER A NAME PREFIX. `test_seal_change_touches_no_frozen_machinery`
+  matched `pipeline/kr_market_risk*`, so the first legitimate `kr_market_risk_model*` study read as a mutation of the sealed
+  anatomy and failed full CI. The protected set is now the files the sealed v1 and v2 specs themselves hash (import closure plus
+  sealed data inputs) plus an exact list of the few anatomy-owned files outside those closures; files the seal commit created
+  are byte-pinned by their own tests rather than listed against a base that predates them. Regression tests prove a genuinely
+  frozen file is still caught, a later `kr_market_risk_model*` / `kr_market_risk_regime*` file is not, and the same diff
+  plumbing flags a frozen edit in a throwaway git repository.
+- A RESULT SEAL THAT CAN ONLY COPY CANNOT REINTERPRET. The automatic seal module imports only the standard library, verifies
+  run, archive digest, file list, manifest, marker, spec and both lock refs, copies bytes it never parses back out, and its
+  only pull-request write is a `draft: true` create. It never merges, marks ready or seals an attempt artifact; a failure
+  after the lock consumes the study and is never retried.
+- A SET REBUILT INSIDE A COMPREHENSION IS A QUADRATIC LOOP. The first readiness spent 73 of 93 seconds rebuilding
+  `set(reference dates)` for each of 5,108 sessions; build it once.
+
+## KR integrated alpha portfolio protocol invariants (v2.45)
+
+- A COMPARISON OF SIX FIXED ARCHITECTURES IS NOT A SEARCH, AND IT IS THE LAST LARGE ONE. `kr-integrated-alpha-portfolio-v1` compares Stock-only (A),
+  +Market C0 (B), +Market C1 (C), Industry+Stock (D), +C0 (E) and +C1 (F) on one calendar, one set of costs and one execution engine, and stops. Nothing
+  is discovered, tuned, fitted or added after an outcome: no new factor, macro predictor, machine learning, threshold, weight, horizon, benchmark, top-k, cost
+  or cap. After an unfavourable sealed result there is no v1.1; the default next step is prospective receipts of all six targets. Every Korean date is
+  outcome-exposed and the three component studies were read before this was designed, so everything it can produce is `EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY`.
+- THE SIX PATHS DIFFER ONLY ALONG THE TWO REGISTERED AXES, AND THE ENGINE NEVER READS WHICH PATH IT IS RUNNING. `replay_architecture` takes the underlying
+  decisions (S or I+S) and the market table (none, C0, C1); the architecture label is output only, and a test swaps it and requires byte-identical paths. A, B and C
+  are handed the SAME decision objects, D, E and F the same, and a spy proves that identity from the call arguments rather than asserting it in prose.
+- A LAYER THAT ONLY SCALES CANNOT REORDER. The market multiplier is applied to the book already selected and sized; it is not an input to eligibility,
+  scoring or order. Stock-only is always on; Industry OFF contributes exactly zero (the S decision does not even record an industry score); a missing component makes
+  a score missing and is never substituted (`VALUE_SCORE` needs BOTH of its percentiles, `STOCK_SCORE` and `COMBINED_SCORE` need every part).
+- THE MARKET LAYER IS THE SEALED MODEL, CALLED NOT COPIED. Layer states, the weekly schedule, the hold-on-missing rule and the C0 / C1 mapping tables come from
+  `kr_market_risk_model` directly; the frozen spec carries the mapping tables and the bands and `load_spec` compares them with the market model's own sealed spec.
+  The one thing this study adds is how a multiplier CHANGE meets an already-held 0-5 name book: a pure scale of the held proportions (drifted weights kept,
+  re-expressed at multiplier 1, renormalised to at most 1, times the new target), executed by the same `execute_rebalance` as every other trade. That is an
+  engineering choice of this study and is stated as one.
+- DEPTH IS A QUALITY CONDITION FOR A NEW DECISION, NOT A GATE EVERY ANCHOR MUST PASS. A new S decision needs at least 10 eligible stocks (twice the book) and a
+  new I+S decision the same plus at least 5 ranked industries (the sealed minimum observed was 6); 0-5 holdings stay valid when executability leaves fewer, and there
+  is no absolute "do not invest" threshold. The first draft required those minimums at EVERY anchor before the lock. Formal run `37299251812` proved that wrong the
+  hard way (see the missing-signal bullets below): five of 113 anchors had no valid new cross-section and the whole historical study was refused for it.
+- A THIN OR UNRANKABLE ANCHOR IS DATA AVAILABILITY, AND IT IS HANDLED BY A RULE REGISTERED BEFORE ANY OUTCOME. `SIGNAL_UNAVAILABLE_NO_STOCK_REBALANCE`, per book
+  independently: no new decision, no stock trade, the previously held stock book continues unchanged (it drifts; no cost, no liquidation, no names borrowed from
+  another architecture); 100% cash before a book's first valid decision, never a fabricated initial portfolio; the normal registered decision and a normal
+  rebalance when the signal is valid again; the 21-session calendar identical for all six architectures (a no-trade anchor, not a removed one); A/B/C share one S
+  state and D/E/F one I+S state; C0 and C1 stay independent and may still scale the held book. This is hold-previous, not imputation: no feature is zero-filled, no
+  factor is substituted, no finiteness rule is relaxed, no future observation is used, and MIN_ELIGIBLE_PER_DATE / MIN_INDUSTRIES_RANKED did not move. Lowering
+  either number to make the observed dates pass is exactly what this rule exists to avoid.
+- AVAILABILITY IS REPORTED, AND A MOSTLY-MISSING STUDY STILL CANNOT RUN. For S and I+S separately the result and any pre-lock refusal expose valid-decision and
+  unavailable anchors, the unavailable signal dates with causes, consecutive unavailable runs, the first and last valid decision, the availability share and the
+  exact industry-unrankable anchors, all from signal-time decisions with no price after the signal, return, NAV or excess. The study-level gate before the lock
+  needs, for EACH book, at least one valid decision and at least 80% of the scheduled anchors (integer arithmetic). 80% is round and defensible, not fitted to the
+  five anchors seen: a book that cannot be re-ranked at more than one anchor in five is mostly a stale book. The observed history clears it by a wide margin
+  (S 110 of 113, I+S 108 of 113 by the refusal list), so the number is not one the history barely passes.
+- A PRE-LOCK REFUSAL IS NOT A CONSUMED STUDY, AND THE RECORD SAYS WHICH IT WAS. Run `37299251812` passed the frozen machine, the exact input identity and the exact
+  raw-artifact download, and stopped at the signal-time gate with `featureBuilds = 1` and every other counter zero: no lock, no marker, no market value, no
+  portfolio outcome. The one-shot is unspent. The revision is recorded in the spec (`MISSING_SIGNAL_NO_TRADE_REVISION_1`, with the run id and the ten refusal
+  reasons from the job log) and in the design document, so it is part of the sealed identity and not a silent edit. The attempt artifact stays an `-attempt-`
+  artifact and never trips the `-results-` guard.
+- THE PROSPECTIVE RECEIPT STAYS HONEST ABOUT AN UNAVAILABLE BOOK. A receipt records `available: false` and the targets of that book carry `targetStatus
+  HOLD_PREVIOUS_BOOK_SIGNAL_UNAVAILABLE_NO_STOCK_REBALANCE`; an unavailable book is never written as an explicit 100%-cash target, because the registered rule is to
+  hold, not to liquidate. This is additive: no schema field, digest rule or append rule changed.
+- AN UNRESOLVED HELD MARK BLOCKS THAT ARCHITECTURE'S PATH. A name with no observed close, no observed zero-volume quote to carry and no terminal economics makes
+  `complete: false` for the paths that hold it; the others stay published, a pair needing a blocked path is `NOT_EVALUABLE_BLOCKED_PATH`, and the final architecture
+  is then `NO_FINAL_ARCHITECTURE_BLOCKED_PATH`. Nothing is dropped, substituted or zero-filled.
+- BANDS ARE INHERITED, NOT INVENTED, AND "JUSTIFIED" IS DEFINED, NOT ASSUMED. The pair classes use the sealed market model's own return band (0.50 pp/yr) and
+  drawdown bands (110% / 90% of the base's). Return participation lost to a market overlay is justified only while it stays inside the non-inferiority band; a larger
+  loss bought with a larger drawdown reduction is a risk-preference choice the study does not make, so it is `TRADE_OFF` and the final architecture is
+  `NO_UNAMBIGUOUS_FINAL_ARCHITECTURE`. Each layer is decided on its own (Industry on D vs A with E vs B and F vs C as context that must not be `WORSE`; C0 and C1
+  separately on the same underlying book) and the final architecture is assembled mechanically: no composite score, no post-hoc tie-break. When BOTH overlays are
+  supported, C1 vs C0 decides: `IMPROVES` -> C1, `WORSE` -> C0, `NON_INFERIOR_NO_MEANINGFUL_GAIN` -> C0 retained as the existing control with that stated, and
+  `TRADE_OFF` -> `NO_UNAMBIGUOUS_FINAL_ARCHITECTURE` (`C0_VS_C1_PARETO_TRADE_OFF`). The first draft silently kept C0 on a trade-off, which is a hidden preference for
+  the control and exactly what "a genuine trade-off is never ranked away" forbids; it was corrected before any outcome. C1's formal non-nomination in the sealed
+  market model is untouched.
+- CASH YIELD IS AN ACCOUNTING OVERLAY ON THE FINISHED PRIMARY PATH. The series (the repository's dated Bank of Korea base-rate proxy, effective on its event date,
+  rate of the previous session applied) was frozen before any portfolio outcome was read. The sensitivity adds `cash weight x cash return` to each primary session
+  return and so cannot change a name, weight, market state, trade, cost, layer decision or nomination. KOFR is not assumed to have full-span history. An ECOS adapter DOES exist
+  (`pipeline/ecos_macro.py`; the first draft wrongly said the fetch layer did not exist) but no exact, full-span, pinned investable KRW cash-return / CD91 series is
+  registered for this study and no item code is guessed, so the series stays `BOK_POLICY_RATE_PROXY`: not an investable deposit, MMF, CD or bill return. The file is
+  verified through 2026-09-07 against a 2026-09-14 cutoff; the official page was unreachable from the authoring sandbox, so the later sessions are
+  `CARRIED_FROM_LAST_VERIFIED`, never called verified. An unreadable source is `DATA_UNAVAILABLE` without blocking the primary study. Sharpe and Sortino are not reported.
+- A PRIOR STUDY'S EXACT FILES ARE PINNED, NEVER A NAME PREFIX. `priors.sealedArtifacts` lists every file of the eight sealed prior studies by SHA-256 (built from
+  the files that exist, not from a pattern the next study could silently match), and each component's own sealed `dependencyHashes` are compared with the bytes on disk.
+  A seal commit of THIS study adds exactly four files, none of which is pinned.
+- READINESS SHOWS THE MACHINE WORKS WITHOUT TOUCHING A REAL VALUE. It replays an invented six-path world twice (complete and deterministic), pushes date-presence
+  proxies through the sealed market state machine (where each candidate is determinable, never what a state is), reads only committed membership for depth upper
+  bounds and the frozen cash source, and its counters prove no market value was read and no portfolio valued. The invented world is a separate `Counters`, so the
+  outcome counters of `verify` and `readiness` are literally zero while the synthetic replay still exercises the real engine.
+- THE ONE-SHOT IS A DURABLE GITHUB-SIDE LOCK, TAKEN AFTER THE SIGNAL-TIME GATES AND BEFORE THE FIRST MARKET VALUE. `featureBuilds` (past-only feature construction)
+  is the only counter allowed to be non-zero before the lock; the marker records `valuesReadBeforeThisMarker == 0`. `workflow_dispatch` on merged main only, exact
+  committed spec, exact preserved raw-input artifact, no earlier result, marker or lock ref under the study prefix, then one result artifact and an automatic
+  exact-byte DRAFT seal PR (stdlib only, imports nothing it could rerun with). A failure after the lock consumes the study. A Draft-PR API refusal AFTER the
+  exact-byte seal is pushed is a `RECOVERABLE_SEAL_HANDOFF_FAILURE` (exit 3, job summary), not an execution failure: the branch is verified at the sealed commit, stays
+  immutable, no credential or permission is changed, transient failures are retried a bounded number of times, a second PR is never opened, and a human opens the
+  Draft PR from the pushed branch. The execution is never rerun because a PR could not be created.
+- NO HISTORICAL OUTCOME WAS COMPUTED IN THE PROTOCOL CHANGE. The workflow was not dispatched, no lock exists, no sealed prior result changed, and every number in this
+  section is a design fact, not a result.
+
+## KR integrated alpha portfolio post-outcome concentration audit invariants (v2.46)
+
+- A SPENT FORMAL RESULT IS DIAGNOSED, NEVER REDONE. `kr-integrated-alpha-portfolio-v1` consumed its one execution (run `37374530672`, commit `33237df6`, spec
+  `eea6128c...`; both execution-lock tags exist and point at that commit); the later seal job failed at its commit step, which is an infrastructure failure and not
+  permission to execute again. `kr-integrated-alpha-portfolio-v1-postoutcome-concentration-audit-v1` is `EXPLORATORY_POST_OUTCOME_DESCRIPTIVE_DIAGNOSTIC`: it is not a
+  confirmatory experiment, a model rescue, an architecture selection or a promotion decision, and it adds no pre-registration. No audit module may reference the lock,
+  marker, permit, `execute`, `load_market_values` or any GitHub write (an AST test enforces it) and its workflow has read-only permissions and no pull-request trigger.
+- EVIDENCE CLASSES ARE NEVER BLENDED. `FORMAL_REPORTED_RESULT` (copied from the exact artifact), `POST_OUTCOME_DIAGNOSTIC_RECONSTRUCTION` (the frozen code replayed
+  read-only, admitted only after it reproduces the formal metrics and every month-end NAV; otherwise `D_PATH_RECONSTRUCTION_MISMATCH` with the first divergence and no
+  attribution), `POST_OUTCOME_COUNTERFACTUAL_SENSITIVITY` (exactly one: D without 005930.KS and 000660.KS, removed after scoring and before selection, every other frozen
+  rule unchanged, no other exclusion set) and `POST_OUTCOME_DESCRIPTIVE_PROXY`. A proxy is never called the KODEX 200 / KOSPI 200 weight or return.
+- AN ARTIFACT THE ENVIRONMENT CANNOT REACH IS REPORTED AS UNREACHABLE, NOT INFERRED. The formal result (19.5 KB) and the raw snapshot (336 MB) live on Azure blob
+  storage that the authoring sandbox cannot reach (CONNECT 403), the daily KRX market-value files in that snapshot are not stored in git, and no official KODEX 200 source
+  was reachable. Everything needing them is `NOT_RUN_IN_THIS_ENVIRONMENT` and runs through `kr-integrated-alpha-portfolio-v1-postoutcome-audit.yml` (manual dispatch). The
+  quoted ~20.24% passive CAGR was reproduced from the frozen series; the artifact's own value was not read.
+- THE PASSIVE FIGURE IS A RECENT-REGIME FIGURE, MEASURED NOT ASSUMED. On the frozen 069500.KS series (reproduced from hash-verified replay-v16 objects) 2017-2024
+  annualizes +6.89%, 2025 returned +98.72% and 2026 to the cutoff +75.73%; those last two spans carry 70.2% of the window's log wealth and 85.8% of its terminal gain. The
+  full-window +20.24% is therefore not a long-run Korean return. Fixed spans, no optimised breakpoint.
+- THE BENCHMARK IS REPRODUCIBLE AND STILL QUESTIONED. Complete against the registered calendar (3,860 sessions, none missing, none duplicated), but its excess over the
+  committed KS200 price index is +3.87% to +5.25% in every full year 2018-2025, +4.53% a year over 2017-2024, against +1.85% for a same-data constituent total-return reference,
+  and it does not shrink in 2025 when the index rose 90.67%. The snapshot stores only the total-return close, not the applied distribution events, so the gap cannot be
+  decomposed from it. Classified `BENCHMARK_EXTERNAL_RECONCILIATION_UNRESOLVED`; no official number was quoted, and no corrected benchmark was constructed.
+- CONCENTRATION IS A MARKET-CAP PROXY INSIDE THE STUDY'S PIT TOP120. Samsung Electronics + SK Hynix: median 28.5% in the formal window, 34.6% at the end of 2025, a maximum
+  of 57.2% (2026-07-01), 52.6% on 2026-09-01; above 40% in 8 and above 50% in 4 monthly snapshots, all in 2026; never above 60%. In the cap-weighted Top120 reference they
+  contributed about 65% of the 2025 + 2026 gain (approximate; monthly proxy weights), and the reference without them returned +56.4% (2025) and +26.6% (2026) against
+  +86.9% and +65.1%. These are descriptions of reference portfolios, not a statement that the real passive alternative should exclude them: the primary benchmark stays
+  `069500.KS`, concentration included, and "the model beats the benchmark once the two names are removed" is outcome-selected reasoning that is forbidden.
+- SIGNAL ASSOCIATION AND IMPLEMENTED PORTFOLIO DEPEND ON THE TWO NAMES DIFFERENTLY. The sealed anatomy reports (read, not rerun) show the industry REL_MOM_126 and
+  BREADTH_ABOVE_MA_126 associations and the four stock features keeping their sign when only the two names are removed. That says nothing about whether a five-name book held
+  them or what they earned; that needs the D reconstruction and the registered sensitivity.
+- ATTRIBUTION MUST CLOSE TWICE. `security_contributions` requires each day's residual cost to equal the engine's own `costFraction` times the pre-trade NAV (otherwise the
+  identity nav_T - 1 = gross - cost would be a tautology) and the whole identity to hold to 1e-9. Transaction cost is reported on its own and never allocated to a name.
+- NO FORMAL FILE MOVED. The formal spec, model, replay, receipts, seal and workflow bytes are untouched (`load_spec` still verifies every pin), the formal result was not
+  committed or rewritten, and the seal workflow bug is left for its own change.
+
+## KR integrated alpha portfolio post-outcome audit completion invariants (v2.47)
+
+- AN AUDIT THAT COULD NOT RUN IN THE AUTHORING SANDBOX RAN WHERE THE ARTIFACTS ARE, AND THE v2.46 "NOT_RUN" SECTIONS ARE NOW ANSWERED. Actions run `37451761441`
+  (workflow definition on `main`, `audit_ref` `11b0d67a`, conclusion success) downloaded the exact result and raw-input artifacts, re-verified their identities and both lock
+  refs, replayed the frozen A and D books read-only and printed `RECONSTRUCTION_REPRODUCES_THE_FORMAL_A_AND_D_PATHS`: 0 divergences in 18 metrics and 117 month-end NAVs each
+  at 1e-9, with every day's residual cost equal to the engine's `costFraction` times pre-trade NAV. Q6-Q10 moved from `UNRESOLVED_DATA_LIMITATION` to answered; Q3 stays unresolved.
+- THE FULL AUDIT FILE IS AN ACTIONS-ONLY ARTIFACT AND IS REFERENCED BY ITS BYTES, NOT COMMITTED. 539,839 bytes, SHA-256 `b316a6ef2ffbf77a0b4ce5646df5b7b6b0bfc079aa3a9e795727d0e7f7e39bbc`
+  (the run's own printed value). The authoring environment cannot download artifacts (blob storage is unreachable), so the file was decoded from the gzip+base64 the workflow
+  printed to its job log and its size and digest were recomputed and matched. A handoff message quoted a different digest; it was a transcription error and is not repeated.
+  `pipeline/kr_integrated_alpha_portfolio_postoutcome_completed.py` turns the file into a compact committed record and refuses any other bytes; the report is rendered from it.
+- A WORKFLOW THAT EXISTS ONLY ON A PR BRANCH CANNOT BE DISPATCHED, AND A WORKFLOW'S OWN JAVASCRIPT IS PART OF ITS EVIDENCE. The session's token answers dispatch with 403; the
+  audit workflow was installed on `main` (#204) with an explicit `audit_ref` input, and its first run failed at parse time because `actions/github-script` injects `exec` and the script
+  declared `const exec` (#205). It failed before any artifact download or audit code, which the step list shows. The fix compiled the whole script with the injected names first.
+- D BEAT A ONLY AFTER 2024, AND THAT IS THE FINDING. Net of costs D trailed A in 2017-2024 (-17.34% vs -12.57%, passive +69.90%) and led it in 2025 (+132.28% vs +51.81%) and in
+  2026 to the cutoff (+101.04% vs +29.77%); 98.2% of D's gross NAV-unit contribution arrived in those two spans. NAV-unit shares weigh late periods more because NAV had compounded,
+  so percentage returns by span are read beside them.
+- D IS AN INDUSTRY BOOK BY CONSTRUCTION. It held three or more names of one industry on 76.3% of held sessions (A 10.0%), a mean top-industry share of 62.6% (A 44.0%) and 83.5%
+  in 2026; `ELECTRONICS_ELECTRICAL` supplied 59.5% of its gross and five securities 87.1%. That is development support concentrated in a regime and an industry, not broad support.
+- THE TWO NAMED MEGA-CAPS ARE NOT WHERE D'S GAIN CAME FROM. Samsung Electronics +0.531 and SK Hynix -0.236 NAV units are 9.2% of D's gross; SK Hynix subtracted, mostly in 2026. The
+  single registered sensitivity `D_EXCLUDE_SAMSUNG_HYNIX` moved cumulative return +15.82pp (+301.85% vs +286.02%) with the book moving to other members of the same industry. It shows
+  independence from two securities, not from their industry, and it is `POST_OUTCOME_DESCRIPTIVE_SENSITIVITY`, `NOT_CONFIRMATORY`, `NOT_ELIGIBLE_FOR_MODEL_SELECTION`.
+- A BENCHMARK CAN BE REPRODUCIBLE AND STILL CARRY AN UNEXPLAINED ACCRUAL, AND BOTH ARE REPORTED. The five >=10% daily moves are market moves (the committed price index moved the same
+  way on all five). The benchmark's excess over that index is +4.53% a year over 2017-2024 against +1.85% for the same-data constituent reference; 13 single days in late April and
+  late December of 2017-2025 carry +1.1% to +2.0% each and the 2026-07-31 / 2026-08-03 pair (+3.50% / -3.38%) reverses at once, which reads as quote timing. The stored series carries
+  no event list, so double application, wrong date or wrong size cannot be tested: `INTERNAL_CONSTRUCTION_ANOMALY_FOUND`, `BENCHMARK_EXTERNAL_RECONCILIATION_UNRESOLVED`. No corrected
+  benchmark is built and no official number is quoted.
+- THE FORMAL DECISION AND ITS ECONOMIC READING ARE KEPT APART. Formal and unchanged: `INDUSTRY_LAYER_DEVELOPMENT_SUPPORTED`, `NO_UNAMBIGUOUS_FINAL_ARCHITECTURE`,
+  `MARKET_LAYER_PARETO_TRADE_OFF`. Post-outcome reading: regime-dependent and industry-concentrated development support, not dependent on the two named securities, and D did not beat
+  the passive path over the full window (+15.01% vs +20.24% a year, drawdown -57.86% vs -40.69%).
+- SUCCESSOR MODEL DESIGN IS OUTSIDE THIS AUDIT. It adds no model, factor, weight, exclusion set or benchmark, reruns no formal or anatomy study and touches no lock.
+
+## KR alpha discovery tournament v1 preregistration invariants (v2.48)
+
+- THE OBJECT UNDER TEST IS A PROCESS, NOT A MODEL. `kr-alpha-discovery-tournament-v1` freezes a bounded tournament (5 fitted families -- ridge,
+  elastic net, shallow HGB, pairwise ranker, weighted PLS -- x 4 targets x 11 hyperparameter configurations x 3 recency schemes = 120 configurations,
+  123 effective trials with the ensemble rule, the decision-focused challenger and baseline 1) and publishes what the pre-registered SELECTION PROCESS
+  would have done from information available at each date. "The full-history best model is X" is never a result.
+- A STUDY THAT ADDS NO NEW RAW INFORMATION SAYS SO BEFORE IT IS BUILT. It differs from `regional-alpha-model-v1` and `kr-model-overlay-portfolio-v1`
+  in representation (industry state, within-industry ranks, valuation yields v1 excluded, magnitude-preserving liquidity), targets (LOO-industry
+  residual, tail event), selection architecture and objective, but not in raw information: investor flow, ownership, short selling and vintage-safe macro
+  are not ready. An `INFORMATION_LIMITED` verdict therefore closes model search on THIS information set permanently.
+- ALL FLEXIBILITY LIVES INSIDE THE PAST. Outer fold Y trains only on labels exiting strictly before the signal date of its first anchor; inner blocks
+  purge every label exiting at or after the block's first entry and embargo 21 sessions; hyperparameters, recency, calibration and uncertainty are fitted
+  inside that set. A test poisons every label that exits on or after the cutoff and requires byte-identical fold forecasts.
+- PASSIVE CAPITAL IS THE DEFAULT, SIMULATED IN ONE LEDGER. The book is 069500.KS plus long-only active overweights (gross <= 1, no cash target); an
+  active name must pay its shrunk forecast's covariance penalty and the cost of buying it AND selling the passive leg. The passive leg's 15 bp each way is
+  an assumption, stated as one; the benchmark's unexplained accrual is carried unrepaired and biases the comparison against active capital.
+- CALIBRATION CANNOT CREATE ALPHA AND UNCERTAINTY CAN ONLY SUBTRACT. Native scores become within-date ranks; the slope on the economic label is
+  positive-part James-Stein shrunk with a Newey-West SE; universe carry is never credited; kappa = mu^2/(mu^2+sigma^2) with disagreement + calibration
+  variance is asserted a contraction on every row. No coarse buckets.
+- MULTIPLE TESTING IS PAID, AND THE VERDICT IS FROZEN BEFORE NUMBERS EXIST. DSR (N = 123), CSCV PBO, Hansen SPA and a 126-session block bootstrap are
+  implemented; A requires all nine registered checks, missing evidence never passes one, and the order E, A, B, C, D is code. The first SPA draft
+  recentred GOOD strategies (it kept every mean above the threshold); a synthetic test with a planted edge caught it before any outcome existed.
+- A SEAL SCRIPT WITHOUT A MAIN GUARD IS A SILENT NO-OP. `scripts/seal_kr_integrated_alpha_portfolio_v1.py` has no `if __name__ == "__main__": main()`,
+  so run `37374530672`'s `check-main` and `seal` steps succeeded while doing nothing and the commit step found no file. This study's seal script is run
+  as a real subprocess by a test and its commit step refuses a missing sealed file. The integrated script itself is not repaired here.
+- PREREGISTERED, NOT EXECUTED. No label of this study was built, no real fit or portfolio exists, no lock ref exists and no workflow was dispatched;
+  readiness reads the calendar, committed membership and an invented world, with every real-outcome counter at zero.
+- AN UNRESOLVED BENCHMARK INTERCEPT NEVER ENTERS A CROSS-SECTIONAL FORECAST. The calibration's per-date intercept is stock minus 069500.KS, a
+  same-date constant carrying the unresolved accrual anomaly; `min(0, carry)` would have debited it from every forecast and read the benchmark's
+  construction as missing selection skill. The credited intercept is 0, the carry is reported only, mu(s) = b* x (s - 0.5), and a test shifts every
+  date by a different constant and requires identical forecasts. 069500.KS is unchanged in the passive core, the replay and the evaluation.
+- ONE PAST-ONLY ECONOMIC BLOCK CANNOT CHOOSE AMONG 120 CONFIGURATIONS. An outer year becomes active only with 3 valid inner folds and >= 2 finite
+  economic folds; otherwise it is `PASSIVE_DEFAULT_INSUFFICIENT_INNER_EVIDENCE`, distinct from `PASSIVE_DEFAULT_NO_STABLE_CANDIDATE`. 2018 is passive by
+  the calendar alone; no date moves and its sessions stay in the final evaluation. Readiness blocks only if NO year could become active.
+- A ONE-STRATEGY BOOTSTRAP IS NOT THE TOURNAMENT'S SPA. The A verdict gates on `spaUniverse` (primary, baseline 1, challenger, every configuration);
+  `spaPrimary` is descriptive and is not a verdict input. DSR and PBO are unchanged.
+- A REPAIR CAN WALK A HARNESS INTO A STATE IT NEVER REACHED. Without the debited carry the invented world's primary went fully invested (sum w = 1,
+  always permitted) and hit two latent ledger defects: the passive-leg key was dropped at weight 0 (next-day KeyError) and the allocator's eta = 0
+  starting projection divided by zero when the held book summed to 1 plus rounding. Both are fixed with tests that fail on the old code; in a formal
+  run either would have struck after the lock and consumed the study.
+
+## KR alpha discovery tournament v1 post-outcome integrity audit invariants (v2.49)
+
+- A CONSUMED STUDY IS DIAGNOSED, NEVER REDONE. `kr-alpha-discovery-tournament-v1` spent its one execution (run `37535814142`, commit `eac50fdf`, spec
+  `a8acb44c...`) and is sealed as `BLOCKED_BY_DATA_INTEGRITY` (`pathsComplete: false`; four of seven registered paths incomplete). The integrity audit
+  is `POST_OUTCOME_FORENSIC_DIAGNOSTIC_NOT_CONFIRMATORY`: it never claims, reads as authorisation, moves or deletes a lock, never writes a marker, never
+  writes or edits the sealed result (`verify_sealed_result` checks its bytes; the CLI refuses that path as an output), and tunes nothing. An AST test
+  forbids every lock / marker / permit / formal-execute name in the audit code, and its workflow is manual, read-only and has no pull-request trigger.
+- A REASON THE HARNESS DISCARDED CANNOT BE READ BACK FROM THE RESULT. `replay` returns the failing `ticker:day`; `assemble` keeps only the boolean,
+  and the job log prints only the verdict. The first failures exist nowhere committed and can only come from a read-only re-run of the frozen process
+  on the exact raw-input artifact. A later harness should keep the reason string beside the boolean.
+- TRACING OBSERVES, IT NEVER REIMPLEMENTS. The reconstruction calls the frozen `build_signal_bundle`, `run_process`, `make_decider` and `replay`.
+  Wrappers record the mark, decision and execution calls and return exactly what they wrap. The held book is read from `replay`'s own `weights`, and
+  `P.execute` is observed by swapping the module attribute for one call. A trade loop's price lookup for a new order (previous = None) is never
+  recorded as the path's failure: the ledger skips that order itself. A test shows the traced path loop is byte-identical to `run_paths` (paths and
+  counters) on the invented world, and nothing is attributed unless the reconstruction reproduces the sealed result.
+- A MODEL-FREE SCAN BOUNDS WHAT A MODEL-DEPENDENT REPLAY CAN FIND. From the replay-v16 panels and PIT membership alone, with the manifest digest the
+  formal run requires: across 2,116 sessions the benchmark has no missing close and no Top120 name has a mid-series gap. Exactly eight terminal ends
+  fall in the window, all in the 22-name terminated inventory, each after a 12-22 session pre-delisting suspension (unchanged close, zero volume),
+  and all with the terminal action chain BLOCKED. Every incomplete path's first failure must be one of those eight first-unpriced sessions. A held
+  name cannot be sold during the suspension (the ledger defers a non-executable trade), and the ledger has no terminal-economics path. That is the
+  registered conservative rule meeting an unresolved foundation, not a `mark()` defect. Which path held what is left to the reconstruction.
+- A BASELINE THAT NEVER TRADES IS A MEASUREMENT. `BASELINE_1_EQUAL_WEIGHT_SLEEVE` is identical to 100% passive on every session, so no shrunk forecast
+  ever cleared the 0.9% round-trip cost. Whatever active weight the primary paths held relied at least partly on the allocator's covariance terms.
+  This is recorded as a fact about the sealed bytes, not a reinterpretation, and is not decomposed here.
+
+## Lint gate invariants (v2.11)
+
+- The enabled rule set reports ZERO findings on `main`. A rule is turned on in the
+  same change that fixes its existing instances; a gate with a standing backlog is a
+  warning nobody reads and then a gate somebody switches off.
+- The set is defect-finding, not style-enforcing. The first full run over this
+  repository reported 455 findings, and almost all of them were opinions this code
+  deliberately disagrees with. `ruff.toml` argues each rule that is on; a rule that
+  needs arguing with on every pull request does not belong there.
+- Lint runs BEFORE the suite in `Tests`, because it catches a class the suite
+  structurally cannot: a name no test reaches, an import two modules disagree about, a
+  value computed and then dropped. Both of the defects the first run found —
+  `sentiment`'s discarded coverage count and two whole-ledger index passes in
+  `portfolio_replay` that nothing read — were invisible to 1,345 passing tests.
+
+## Historical replay invariants (v2.6)
+
+- HISTORICAL_OOS and PROSPECTIVE_PAPER evidence live in separate files, carry separate
+  `evidenceClass` labels, and are never pooled into one table, one average, or one UI panel.
+  They may only meet inside the expected-return posterior, with both weights published.
+- A replay must read no data after its as-of date. Historical fundamentals without a
+  publication date are WITHHELD, never back-applied from today's snapshot.
+- Historical signals are immutable and stamped with `replayVersion`, `featureVersion`,
+  `modelVersion` and `dataVersion`. A model change starts a new generation; it never
+  rewrites or pools with an old one.
+- The historical ledger is stored as gzipped month shards under
+  `ledger/historical/<replayVersion>/`, never as one file: a decade of weekly
+  cross-sections is ~900 MB and GitHub rejects blobs over 100 MB. Shard writes must stay
+  byte-deterministic so an unchanged shard is not re-committed, and `assert_pushable`
+  must run before any push. If a shard outgrows the limit, shard finer — do not raise it.
+- Path-dependent statistics (drawdown, CVaR, Sharpe) are computed only on non-overlapping
+  date samples. Means and hit ratios may use every date.
+- Historical portfolio replay and live construction share the production selection and
+  baseline-weighting functions. A copied backtest formula is forbidden.
+- A price-sleeve replay without PIT fundamentals is labelled
+  `PRICE_SLEEVES_ONLY_AUDIT_PROXY`; it may not claim full four-factor fidelity.
+- Survivorship has two gaps and they are counted separately: names the membership
+  file describes but the vendor cannot price (`constituentCoveragePct`), and names
+  the file does not describe at all (`membershipCoveragePct`). A gate that reads one
+  of them turns green when the other is wide open — a US-only membership file prices
+  everything it knows about and answers the first with 100.0 while an entire region
+  is undescribed. `portfolio_validation.universe_ready` is the single predicate for
+  both; the published `affectedObservationsPct` is their UNION, never one of them and
+  never their sum. Measured-on-one-side is `None`, not a pass.
+- Coverage is reported by region and by year, and the risk band is the WORST region's,
+  not the pooled average's. The gap is concentrated: one region can be entirely
+  unresolved while the pooled figure reads as a nick, and the need is front-loaded in
+  time — the 2013 S&P 500 is missing 219 of 500 names before any vendor is asked
+  against 34 in 2025. A decade-averaged coverage figure describes no cross-section
+  inside it.
+- Challenger calibration admits a label only after `outcomeEndDate <= replayDate`, and no
+  historical result may automatically promote a selector or relax the Kelly gate.
+- The final holdout stays sealed during development and raises on access; it is scored
+  once, after the winning model is frozen.
+- Model selection happens on validation blocks only. Test blocks are scored, never consulted.
+- An ML model that fails any acceptance check is NOT published; the rule-based score stays
+  in force and the artifact says which checks failed.
+- `VALIDATED_OPPORTUNITY` requires an accepted model. The validator rejects the tier otherwise.
+- Drift between historical and prospective evidence may only reduce the Kelly fraction.
+- Serving features come from `historical_replay.live_features` so training and inference
+  share one feature definition. Do not build a second one in `build.py`.
+- `trackingDays` and `maturedObservationDays` are different quantities and are reported
+  separately; a ledger with recorded signals must never report zero tracking days.
+
+## PIT fundamentals invariants (v2.9)
+
+- A filing's `availableFrom` comes from its receipt date and from nothing else. The
+  period it describes ended long before it was submitted — on the 2023 samples the
+  quarterlies landed 45 days after period end and the annual report 71 — so reading
+  it from the period end is a look-ahead of exactly that gap. A filing whose receipt
+  date is missing is REFUSED, never stored with a substitute: a row that cannot say
+  when it became visible looks like coverage and is not.
+- Filings are stored RAW — the accounts as DART states them, under DART's own amount
+  column names. Deriving TTM figures, per-share numerators and ratios is a separate
+  step, because a derivation found wrong must be fixable without re-fetching a
+  backfill that took fourteen hours.
+- Both amount columns are kept. `thstrm_amount` is the period and `thstrm_add_amount`
+  the year-to-date running total; an income figure in a Q3 report is nine months
+  cumulative, not three, and a TTM built from the wrong column is wrong all the way
+  down to the position size.
+- Consolidated and separate statements are different definitions of the same company.
+  Consolidated is preferred, the separate one is the only statement some filers have,
+  and which answered is RECORDED on the record — a book that mixes them without
+  saying so ranks companies against each other on two different bases.
+- Account labels are matched EXACTLY against a filer-alias list. A substring rule
+  folds `영업이익률` into `영업이익` and ranks a percentage against a currency amount
+  without erroring.
+- A blank line item is `None`, never `0.0`. Zero is a number a filer stated; blank is
+  a line they did not, and a fabricated zero propagates into every ratio built on it.
+- An absence is an ANSWER and is recorded. DART returns 013 both for a filing a
+  company never made and for one whose period has not closed, and a run that
+  forgets either re-asks it forever: the first two real runs spent 950 of every
+  1,500 calls on filings that do not exist, and the work list did not shrink by
+  one of them. An absence settles only once the filing's legal deadline plus a
+  grace period has passed — permanent for a 2016 quarter, still open for a 2026
+  one — and settled absences count as done, because a backfill that reports them
+  as pending can never reach 100%.
+- Absences live beside the shards, never inside them. `FundamentalStore` would
+  read an absence row as a filing with no accounts.
+- Collection is append-only and identified by ticker x fiscal year x report code. A
+  restatement arrives as its own filing with its own receipt date rather than
+  overwriting the number that was actually visible at the time.
+- DART serves from 2015 and the replay starts 2013, so Korean value and quality are
+  dark for the first two years however complete the collection is. That gap is
+  reported per year, not averaged away, and it is not a reason to move the replay
+  start: it would trade two years of price-sleeve evidence for uniformity.
+
+- A trailing twelve months is a ROLLFORWARD, never an annualisation. Multiplying
+  a nine-month figure by 4/3 invents a quarter nobody reported:
+  `TTM(Y,Q3) = FY(Y-1) - cum(Y-1,Q3) + cum(Y,Q3)`. When either prior-year filing
+  is missing the answer is None — a factor that is absent costs coverage, and a
+  factor that is invented costs the whole claim.
+- Income and cash flow are read by DIFFERENT rules, established from the data and
+  not from memory. The income statement states the quarter in `thstrm_amount` and
+  the year-to-date in `thstrm_add_amount` (measured present on ~100% of quarterly
+  IS rows, 0% of annual ones). The cash flow statement states ONE column at every
+  report and it is the report period's cumulative figure — settled by value over
+  84 companies: Q3/FY median 0.68 against the 0.75 cumulative implies, while
+  (Q1+H1+Q3)/FY of 1.31 rules out standalone quarters, which would give 0.75.
+  Reading a Q3 operating cash flow as three months and annualising it inflates
+  free cash flow fourfold with nothing raising an error.
+- Balance-sheet items are levels and are never rolled forward or averaged.
+- A ratio whose denominator must be positive to mean anything returns None when
+  it is not. A ROE on negative equity is a number with the wrong sign that ranks
+  a distressed company as a quality name.
+- Per-share numerators, not yields, are what a filing may state: a yield needs a
+  price and the price moves every day after the filing. `pit_data.
+  derive_price_relative` divides them by the close on the replay date.
+- Share counts are a SECOND collection pass and net of treasury stock. Without
+  them the entire value sleeve is dark, and computing per-share figures on the
+  issued total understates every company with a buyback behind it by exactly the
+  amount that made the buyback worth doing. Quality coverage and value coverage
+  are reported separately, so "we collected fundamentals" is never read as "the
+  value sleeve works".
+- A missing quarterly share count may be CARRIED FORWARD from the nearest earlier
+  filing, never a later one. Measured against the real store: Q1/Q3 filings
+  answered 013 at a rising rate from 2022 (0% in 2015-21 to 77-78% by 2025) while
+  half-year and annual filings stayed at 0% — Korean quarterly reports may omit
+  restating 주식총수 현황 when it has not changed, not a coverage gap. Which each
+  row got — `AS_FILED` or `CARRIED_FORWARD` — is published on `derivation.
+  sharesBasis` and tallied in the coverage report, the same discipline as the TTM
+  basis.
+
+## Replay determinism invariants (v2.10)
+
+- A backtest that is not reproducible is not evidence. Two runs from one
+  commit over one set of replay dates published CAGRs of 19.47% and 16.77%
+  and drawdowns of -13.35% and -9.85%, and nothing in either report said they
+  disagreed. Both looked plausible alone; only side by side was either wrong.
+  So the check is not optional reporting — a divergence blocks the report.
+- The invariant is PREFIX STABILITY, never immutability. The ledger must grow
+  daily, so "nothing changed" would fail every night and get switched off.
+  What must hold is that everything already published is still there,
+  unchanged, and new work only appends after it.
+- Fingerprint what the schedule is ANCHORED on, not just what it is indexed
+  by. `shared_block_dates` chains each block off the previous block's end and
+  takes the later of the two selectors' ends, so an end date can move while
+  its entry date does not — and that alone shifts every later block. Entry
+  dates alone would have called the 2026-09-05 divergence stable.
+- A tiny input change is not a tiny output change when selection is greedy.
+  250 added rows out of 120,371 (0.2%) turned over 84% of the evaluation
+  dates, because one added date re-anchors every block after it. Never reason
+  about the size of a result change from the size of the input change.
+- When two runs disagree, find the variable in the INPUTS before theorising
+  about the model. The benchmark's own CAGR moving is what ruled out a model
+  change; diffing the ledger commits then named three tickers. Existing rows
+  being byte-identical is as much of a finding as the added ones — it is what
+  says the recomputation was deterministic and the UNIVERSE was not.
+- Floating-point drift is not the finding, and mistaking it for one hides the
+  real one. 2,386 of 2,470 outcome rows "changed" between the two runs, all at
+  the sixth decimal. Rank a diff by magnitude before reading meaning into its
+  row count.
+- The baseline has to be read before it is overwritten. The ledger records
+  outcomes but never recorded the calendar they were graded on, which is why
+  two runs could disagree with nothing to compare; the previous report is now
+  read at the top of `audit_portfolio.py`, before the write.
+
+## Vendor refusal invariants (v2.9)
+
+- A vendor's refusal is attributed only after OUR side of the request has been
+  ruled out. The SEC conclusion — "the Actions IP pool is blocked site-wide" —
+  was first reached while sending a header set that does not meet SEC's stated
+  policy, so it was an assumption; the isolation run then measured it and the
+  assumption turned out to be RIGHT. Ruling our side out is not a way of
+  overturning a conclusion, it is how one stops being a guess.
+- What settled it was byte identity, not the status code. Four header sets
+  across two hosts returned the same 403 with the same body length every time
+  (4,819B on data.sec.gov, 1,925B on www.sec.gov). A refusal that does not
+  change when the request changes is not reading the request. That is the
+  reading a status code alone cannot support, and it is why the probe records
+  body size per variant.
+- Corroboration must be INDEPENDENT of the suspect. `institutional_13f`
+  falling back to cache on the same day was cited as evidence for the IP
+  reading, and it sends the same headers — so it corroborated the shared
+  suspect rather than the conclusion.
+- An authenticated service refusing a KEY is a third thing again, distinct
+  from both a blocked address and a wrong path. KRX's Open API answered every
+  endpoint with `{"respMsg":"Unauthorized Key","respCode":"401"}` — structured
+  JSON in the service's own protocol, which establishes that the base and the
+  paths are right (a wrong path answers 404, not this) and that the key was
+  read rather than missing. It gets its own verdict; rolled into "the source
+  could not answer" it would retire a source that was never actually asked.
+- A status code is not the variable that produced it. FMP answered
+  `limit=4` with HTTP 200 and real statements, and `limit=400` with HTTP 402,
+  on the same endpoint with the same key in the same minute. Only `limit`
+  differed, so only `limit` could be blamed — yet the 402 alone had already
+  been written up as "the free tier excludes statements", a claim about the
+  PLAN made from a run that had also, in its own log, been served. When two
+  calls to one endpoint disagree, the difference between them is the finding;
+  look for it before attributing the refusal to the vendor's product.
+- A cap is a number to measure, not a tier to infer. `find_limit_cap()` walks
+  the request upward until the first refusal and stops there, because FMP's
+  caps are monotonic and buying rungs above a refusal only spends quota. The
+  answer is "served up to N", which is actionable; "the free tier is
+  insufficient" is not.
+- A vendor renaming a field is indistinguishable from the field being absent,
+  and reads as the WORSE finding. FMP's `/api/v3` shipped a misspelt
+  `fillingDate` for years and `/stable` corrected it to `filingDate`; a probe
+  that knew only the old spelling would have counted zero filing dates on a
+  response carrying one in every row, and reported "no point-in-time" about
+  the source that has it. Field names get candidate lists for the same reason
+  endpoint paths do — and which name answered is recorded, not assumed.
+- A name missing from an old cross-section is two different findings that
+  need opposite fixes: it was LISTED LATER (the dated cross-section is right
+  and the fixed universe list is the anachronism), or the source never
+  carries it at all (wrong market, wrong code, a real gap). KRX held 51 of
+  the replay's 68 KR names at 2013 and all 68 today. Pooled, that reads as a
+  25% hole in the source; split by first-seen date it reads as a source
+  behaving exactly as a point-in-time source must. `universe_reach()` reports
+  `missingListedLater` and `missingNeverHeld` separately and never sums them.
+- Access granted per service is measured per service. The KRX approval opened
+  `sto/stk_bydd_trd` and left `sto/ksq_bydd_trd`, `sto/stk_isu_base_info` and
+  `idx/kosdaq_dd_trd` answering the same `Unauthorized API Call` as before.
+  "KRX works now" and "KRX still refuses" were both true in one run, so the
+  verdict is per endpoint; whether a still-refused service MATTERS is a
+  separate question answered from the universe (all 68 KR names are `.KS`,
+  so the KOSDAQ refusal does not touch this one).
+- Isolating one variable FIXES the others, which makes them untested rather
+  than ruled out. The header run held the runner constant and so held the
+  egress address constant; one address refused eight times is one observation
+  repeated eight times, and reading it as "the pool is blocked" mistook the
+  constant for a control. A vendor that once served us and no longer does
+  (SEC did, on 2026-08-15, `sourceMode: LIVE_SEC`) has a variable nobody has
+  moved yet — find it before concluding.
+- A fan-out only buys the axis it was meant to buy if the axis actually
+  varied. Parallel runners usually get distinct addresses and sometimes do
+  not, so the summary counts DISTINCT addresses first and refuses a verdict
+  below two. "Every address refused" from one address is the same error the
+  fan-out exists to correct.
+- A refusal body is read and KEPT, never read and dropped. The FMP probe
+  fetched the 402 body and then replaced it with "non-JSON response" in an
+  `except ValueError`, and that empty status became "FMP dropped statements
+  from the free tier" — a third conclusion inferred from a bare status code
+  with the vendor's own explanation discarded. FMP's 402 names the plan the
+  endpoint needs; that sentence was the finding.
+- A credential that fails on the endpoints you want is not evidence about the
+  credential until it has been tried on one you already expect to work. A dead
+  key and a plan that excludes an endpoint produce the same failure on that
+  endpoint and have completely different fixes, so the probe asks a liveness
+  endpoint first and reports the two apart.
+- A vendor's own error text is REPORTED, never paraphrased into our own label.
+  The KRX probe hardcoded "Unauthorized Key" for any 401 while the service was
+  actually answering `Unauthorized API Call` — two different statements
+  collapsed into one, and they point in opposite directions: the first says the
+  key is not recognised, the second that it IS and the call is not authorised
+  for it. Only the second means a subscription rather than a bad key, and the
+  label was hiding exactly the change that showed the new key had taken.
+- How a credential is PRESENTED is a variable too, not something to infer from
+  an error string. KRX's "Unauthorized Key" was read as proof the header name
+  was right, on the reasoning that a missing key would say "missing" — an
+  inference about someone else's wording. The transport is now resolved by
+  trying header and query forms and reporting which was served.
+- Isolating a refusal means one variable at a time, in ONE run: the shipped
+  request is included as the baseline, everything else is held fixed (host,
+  endpoint, pacing, runner, minute), and only the header set moves. Without
+  the baseline in the same run a later success is attributable to the day
+  rather than to the change.
+- A block page is not data whatever status it wears. SEC serves its refusals
+  with 403 and sometimes with 200, so the body decides, never the status code.
+  And a request that asks for `gzip` must decompress before it judges: reading
+  compressed bytes as text turns a served response into an apparent refusal.
+
+## Macro vintage invariants (v2.9)
+
+- A panel column that is COMPUTED from other columns has no vendor series id, so
+  no vintage source can ever answer for it by name. Subtracting the vintaged
+  names from the panel's columns therefore finds it missing forever, and the
+  aggregate `pit_status` is capped below PIT_EXACT however many series are opted
+  in — the `vintageMacro` gate was unreachable by construction, not by anything
+  in the data. A derived column is neither exempted nor fetched: it is
+  RECOMPUTED from its vintaged inputs, and it counts as vintaged only when
+  EVERY input is. One vintaged input and one revised one is a revised column.
+- The derivation lives in one place (`pit_data.DERIVED_MACRO_COLUMNS` /
+  `derive_macro_columns`) and the fetch site imports it. Two copies of the
+  arithmetic is how a replay silently stops replaying the production panel.
+- Opting a series into `macroVintageSeries` is measured before it is done.
+  `vintage_column` keeps only the prints published by the as-of date, so a
+  series whose release history begins after the replay start returns an EMPTY
+  column on early replay dates: that column goes dark for years while
+  `pit_status` UPGRADES to PIT_EXACT and the gate turns green. Trading a
+  revised number for no number and receiving a better label for it is the
+  failure this measurement exists to prevent. Row counts and a first-observation
+  date cannot see it; only reconstructing the column on the replay's own start
+  date can, and that is what `probe_alfred_macro_vintages` runs — with the
+  replay's own `vintage_column`, not a re-implementation.
+- The panel verdict is all-or-nothing because PIT_EXACT is. One usable series
+  among many is not partial credit.
+- MEASURED 2026-09-04 and it settles the gate: 10 of the 28 panel columns have
+  NO ALFRED vintages at all — `series/vintagedates` refuses them with "The
+  series does not exist in ALFRED but may exist in FRED". FRED serves the
+  numbers and keeps no pre-revision history of them. So `vintageMacro` is
+  unreachable at EVERY start date, not merely at 2013-01-01, and moving the
+  replay start buys nothing: the first run read those series' `realtime_start`
+  values (2014, 2019, 2023) as first vintages when they are the dates FRED
+  began carrying the series, and the "move the start and six recover" reading
+  built on that is withdrawn. Never vintaged is an ANSWER and gets its own
+  verdict; filed as a fetch failure it looks like something a retry fixes.
+- Both integrity gates are therefore permanently closed as defined, for
+  different reasons, and neither opens by collecting more. The only remaining
+  moves are to change what the macro panel contains (a model change) or what
+  the gate requires, and both belong to a human.
+- A vintage that carries MORE of a span than today's series does is a series
+  redefined under its own id, not a healthy column — measured on TGA
+  (`WTREGEN`), 1,408 periods served to 2013 against 524 today. Conditioning a
+  replay on it would use a definition that no longer exists, so it is flagged
+  rather than published as coverage or dropped in silence.
+- A vintage source is asked for the FIRST VINTAGE DATE, never for the whole
+  release matrix. ALFRED caps a request at 2,000 vintage dates and 100,000
+  rows, and a daily series blows both: the first run lost DGS10, DGS2, DFF,
+  DFII10, T10YIE and RRPONTSYD to the first cap and silently clipped NFCI and
+  ANFCI at the second. `series/vintagedates` answers the verdict, and a request
+  pinned to `realtime_start = realtime_end = T` answers what the column served
+  on T — both are small, neither can be capped, and the second is the vendor's
+  own reconstruction rather than a second implementation of ours.
+
+## Benchmark acquisition invariants (v2.8)
+
+- A benchmark panel materially shorter than the span it was requested for is a FAILED
+  download, not a market with no sessions. It is rejected at the source. Outcomes are
+  recomputed from a fresh panel every run, so one truncated response silently rewrites
+  the whole evidence base — this happened on 2026-08-20, 08-23 and 08-24, and moved the
+  published headline from +1.96%/yr to -2.18%/yr on an unchanged ledger.
+- The last panel that passed that check is committed under `ledger/benchmarks/`. When no
+  vendor passes, the replay runs on that snapshot and the region is labelled
+  `SNAPSHOT_FALLBACK`. That is not a substitute value: it is the same vendor's own
+  observations, versioned in git and named in the artifact. An outage then costs the
+  newest grid dates — not yet matured at 126 days — instead of a decade.
+- A snapshot fallback never rewrites the snapshot. A run that could not reach the vendor
+  must not be able to shorten the record for the next one.
+- Benchmark redundancy is across VENDORS for the SAME instrument. Substituting a
+  different index, or a tracking ETF, when one is unavailable redefines what excess
+  return means halfway through the history — a quieter error than the outage. A second
+  vendor is only admissible when both quote the same series: `^KS200` qualifies because
+  a price index carries no dividend adjustment; `SPY` does not, because `auto_adjust`
+  returns total return and most alternative routes return raw close.
+- An accepted panel is used alone and never stitched to the snapshot. Adjusted closes are
+  rescaled retroactively on every dividend, so a series spliced from two fetch vintages
+  carries two adjustment factors and its returns across the join are wrong.
+- Regional benchmark coverage is appended to `ledger/benchmark-coverage-history.jsonl`
+  every run. A collapse must be visible as a one-line diff, not something that can only
+  be found by rewinding the branch and recounting shards.
+- Lowering `minBenchmarkCoveragePct`, or dropping a region from `benchmarks`, is never
+  the fix for a coverage failure. Both restore the pre-gate state where a run is green
+  and the evidence is silently gone.
+
+## Promotion gate invariants (v2.9)
+
+- `universe_ready` requires `constituentCoveragePct` AND `membershipCoveragePct`
+  at exactly 100.0. On the free vendors available that is not a bar more
+  collection reaches: the US half is at 99.80% membership and 83.02% pricing
+  because the panel cannot price 17% of the name-dates the membership file
+  describes, and Korean membership, if it were built, would stop near 40%
+  unvouched because only 34.55% of departed KOSPI names can be priced at all
+  (measured 2026-08-30). The gate is unreachable, and that fact is published
+  rather than worked around.
+- Lowering the bar is not the answer, and neither is leaving it undescribed. If
+  there is an answer it is to BOUND the bias rather than demand it be zero:
+  whether the paired selector difference keeps its sign when the missing
+  name-dates are assigned their worst plausible outcome. Until that is measured,
+  no promotion claim is made in either direction, and the favourable reading is
+  not taken on the strength of the gap being unmeasured.
+- A challenger separating from the champion is not a promotion trigger and is
+  never reported as one. On `replay-v6` the paired difference cleared zero for
+  the first time (-0.684pp, 95% CI [-1.127, -0.225] over 132 shared blocks)
+  while `promotionEligible` stayed false — both facts are published together or
+  neither is.
+
+## Selection-edge invariants (v2.8)
+
+- A concentrated book's edge is a claim about CHOOSING, and it is tested against the
+  distribution the same construction produces when the conviction scores are permuted
+  across names. Dates, research pool, name/sector/region caps, entry-state and evidence
+  exclusions, cash floor, weighting function and transaction costs are all held fixed;
+  only which name carries which score changes. A benchmark comparison cannot make this
+  claim, because it bundles universe carry and the construction rules in with the
+  ranking.
+- The null permutes REAL scores rather than drawing noise, so the null book carries the
+  same conviction-tilt and concentration profile as the real one. Drawing fresh scores
+  would change the shape of the book and confound tilt with ordering.
+- The alpha selection floor is dropped inside the null, because it is itself a score
+  decision — a null bound by it could only ever pick names the score already approved.
+  Every other exclusion is a fact about the name, and the null stays subject to it.
+- `BEATS_RANDOM` requires clearing the null on a RISK-ADJUSTED statistic. Beating it on
+  raw excess while sitting inside it on information ratio means the extra return was
+  bought with extra risk, which is not what a 3-5 name book is for.
+- The null tests the ranking and concentration step WITHIN an already alpha-filtered
+  research pool. It does not test the research screen, and no artifact may describe it
+  as if it did.
+- Selectors are compared on ONE precomputed common KRX/NYSE session schedule, with
+  a 21-session stride for the primary horizon. Data availability and actual portfolio
+  end dates MUST NOT move anchors. Missing matured blocks block headline publication;
+  unmatured blocks are pending, and empty portfolios are disclosed KRW cash windows.
+  Comparing two selectors over two different periods and two different benchmark blends
+  is not a comparison; the 2026-08-22 report ranked a champion from 2013-01 against a
+  challenger from 2013-11 that way.
+- A selector difference is decided by a paired difference with a published interval, not
+  by a bare inequality between two point estimates. On ~130 blocks the sampling error is
+  wider than any gap either selector has shown.
+- A path is published only when nearly every portfolio in it was measurable
+  (`minPortfolioCompletenessPct`). A dropped portfolio is not a random omission: a name
+  without a matured benchmark is disproportionately a halted or delisted one, so a path
+  built from the survivors is a different strategy. Refuse the headline; never
+  renormalize the covered weight and present it as the book.
+- A permutation p-value carries the +1 correction in both terms, so it is never zero and
+  never claims more evidence than the draw count supports.
+
+- Rank IC is not the instrument for a concentrated book. It scores whether the whole
+  cross-section is ordered correctly on average; the production book holds five names,
+  and the two disagree in practice — on the validation period the composition with the
+  best US rank IC had a WORSE Sharpe than production, and the one with the worst IC had
+  the smallest drawdown. A sleeve may be there to hold down risk rather than to predict
+  return, and IC cannot tell the difference. Judge selection by the null-tested portfolio
+  path.
+- A factor attribution measured over the full ledger includes the sealed holdout. Any
+  number used to MOTIVATE a model change must be recomputed on the validation period
+  first: the KR rank IC that justified a region-specific rule was +0.019 over
+  2013-2026 and -0.001 over the validation period alone.
+
+## Transaction-cost invariants (v2.9)
+
+- The turnover in a cost estimate is a share of the SLEEVE, not of the book.
+  `estimate_transaction_cost` multiplies it by one candidate's position, so the
+  quantity is "of the weight held in this region, what fraction is traded per
+  rebalance". The portfolio-level figure divides by the whole book including
+  cash, so with a cash floor it is always the smaller number: on the replay
+  ledger it reads 58.1% while the sleeves measure 85.3% (US) and 63.1% (KR).
+  One number applied to both understated BOTH, most on the sleeve that churns
+  hardest. The sleeves differing is established by a paired difference with an
+  interval, not by the inequality between two point estimates: US-KR is
+  +22.20pp over the 50 shared rebalances, 95% bootstrap CI [+9.83, +34.09]pp.
+  A regional split whose interval spans zero is a split nobody measured, and
+  the portfolio figure stands.
+- A region held at neither end of a rebalance is absent from the measurement,
+  never a 0% observation. Counting it as one drags a region's hurdle down in
+  exactly the periods the strategy was avoiding that region.
+- Regional rates do not sum to the portfolio rate and are not expected to; cash
+  carries no region. Reconciling them by attributing cash to a region would
+  invent an allocation the book never made.
+- A 3-5 name book holds 2-3 names a side, so one name replaced moves a regional
+  rate 33-50 points. A regional rate is admitted only over
+  `MIN_REGIONAL_TURNOVER_REBALANCES`; below it the portfolio rate stands in and
+  `turnoverNote` says the region is wearing another sleeve's number. Silence
+  would read as its own measurement.
+- The initial build is not a rebalance. It is paid once and the rate it feeds is
+  multiplied by every cycle in the horizon, so it is excluded from both the
+  portfolio and the regional averages.
+
+## Version generation policy (v2.8)
+
+- `dataVersion` covers acquisition: sources, batching, date normalization. `modelVersion`
+  covers scoring only. A download-shape change is not a scoring change, and bumping
+  `modelVersion` for one resets the prospective paper ledger to zero days.
+- A generation bump is a deletion. It strands every existing record behind a version
+  filter, and two bumps in two days stranded 853,076 historical signals and 13,518
+  prospective ones while the underlying defect was still unfixed. A PR that bumps any
+  generation version states, in its description: what changed that makes old records
+  incomparable, how many records are stranded, and when the replacement generation will
+  exist. Verify the fix works on real data BEFORE bumping.
+- A generation the code requires but no run has ever produced is a PIPELINE FAULT, not an
+  absence of evidence. `historicalValidation.pipelineHealth` must say which, and the
+  validator rejects an artifact that reports the fault as plain unavailability.
+
+## Alpha attribution invariants (v2.7)
+
+- A bucket's excess return over the benchmark is `universe carry + alpha spread`. The
+  expected return is the LESSER of the level and the spread, and the artifact records which
+  side bound. When the universe beat its benchmark the level is inflated by carry the
+  ranking did not produce, so the spread binds; when the universe LAGGED its benchmark the
+  spread flatters, because a bucket can sit far above a falling universe while earning
+  nothing against the index the book is measured on. Crediting either is the same error.
+- Ordering admission tests the same conservative quantity that will be published. The top
+  bucket's own spread must clear the threshold on its own — a top-minus-bottom spread that
+  is significant only because the bottom collapsed is not an edge a long-only book can
+  collect — and at least one corroborating reading (top-minus-bottom, or the rank IC) must
+  agree.
+- The ML acceptance gate obeys the same attribution rule. `netExcessSurvivesCost`,
+  `beatsBaselineOutOfSample` and `holdoutHolds` are evaluated on the top bucket's
+  attributable excess (the conservative side of level and spread over the per-date
+  universe), never on the raw excess over the benchmark. An absolute bar met by a level
+  is met by universe carry: on the production ledger a random pick earns +1.1% to +2.4%
+  per 126 days and clears a 0.5% bar with no skill.
+- A skill threshold is never negative. `minBrierSkill` gates the probability distribution
+  that sizes a Kelly weight, and it is the only reliability check a zero-information
+  predictor cannot clear: a constant at the base rate has Brier <= 0.25 by construction,
+  near-zero ECE and log-loss ~0.69, so `maxBrier`, `maxEce` and `maxLogLoss` pass every
+  time. The floor is not a noise allowance — the simulated null has sd ~0.001.
+- An acceptance check that could not be assessed is `None`, not `True`. It stays
+  non-blocking, but it is never reported as a pass.
+- Passing the gate is not one fact. A significant rank IC is `FULL_RANK`; a significant
+  extreme spread with an unproven middle is `EXTREMES_ONLY`, which is usable for a book that
+  only holds the top bucket but must never be reported as full-range ordering. A score that
+  is sharp at the extreme while its middle runs backwards is real and is admitted on its
+  top-bucket spread, not rejected on the IC's sign.
+- Shrinkage, standard errors and effective-date counts attach to the SPREAD series, not the
+  level. A level made precise by the universe moving together carries no information about
+  the ranking.
+- Isotonic monotonicity repair runs only where ordering is established. Isotonic regression
+  returns a monotone fit for any input, so running it ungated launders noise into a ladder.
+- Ordering is established only by a HAC t on the top-minus-bottom spread or on the per-date
+  rank IC clearing `minOrderingTStat` with sufficient effective dates. Where it is not
+  established, no bucket is usable and no historical prior reaches Kelly.
+- HAC bandwidth is measured in observations of the series being estimated, converted from
+  the horizon via the replay grid spacing — never fixed at `horizon - 1` trading days. On a
+  weekly grid a 126-session overlap spans ~26 observations, and using 125 lags inflates
+  every t-statistic and effective sample in the system.
+- Thresholds that gate a claim are calibrated against a simulated null of that same gate,
+  and the simulated rejection rates are recorded next to the constant.
+
+## KR alpha discovery tournament v1 audit-recovery invariants (v2.50)
+
+- A RUN THAT FINISHED ITS WORK AND DIED IN ITS LAST LINE IS RECOVERED, NOT RERUN. `kr-alpha-discovery-tournament-v1`'s post-outcome audit (run
+  `37688582489`) spent 1h31m on the reconstruction, wrote its full document, and then raised `KeyError: 'evidenceClass'` in the final status print:
+  `dict.get(key, default)` evaluates `default` eagerly. The job log's own gzip + base64 print step had already carried both files, so the exact bytes
+  were recovered from the log and checked against the recorded sha256 and size (`9dca9508…` / 16,012 and `3de415bf…` / 1,875) with no recomputation.
+  The artifact ZIP could not be downloaded (the blob host refuses the sandbox); its digest `f4ff29d8…` is quoted, not recomputed, and says so.
+- THE RECOVERED RESULT IS `RECONSTRUCTION_MISMATCH`, AND THAT STOPS INTERPRETATION. First divergence: `PRIMARY_ROBUST_KELLY:COST_X2/annualLogGrowth`,
+  reconstructed 0.10176568680470117 against sealed 0.101765555609953, a gap of 1.31e-07 against a registered tolerance of 1e-9. It is small and it is
+  not softened. The 1,875-byte document therefore carries no per-path attribution by design, none was invented, and the nine audit questions about
+  the four incomplete paths and COST_X2 remain `not determined`.
+- A SMALL, STABLE DIVERGENCE IS NOT A DATA-FOUNDATION OR LEDGER VERDICT. The pinned requirements and the tournament workflow are identical between
+  the formal commit and the audited main and both runs set one thread, so the cause is untested (unpinned transitive packages, Python patch release,
+  hardware are candidates). Whether the mismatch is stable is a question for a second, separately dispatched run, or a cheap outcome-free comparison
+  of the dependency versions both job logs printed; neither is done here.
+- THE RECOVERED MODEL-FREE SCAN REPLICATES THE COMMITTED ONE. Identical in every substantive field (two prose provenance strings differ), on the real raw
+  snapshot: 2,116 sessions, no benchmark gap, no mid-series gap, eight terminal ends.
+- THE FIX TO THE ENTRY POINT IS OUTPUT-ONLY. `status_of` replaces the eager default; it touches no tournament module, spec, result, lock or workflow, and
+  is not part of the tournament's sealed closure (verified against `dependencyHashes`). Regression tests cover both document shapes and `main` end to end.
+
+## KR alpha discovery tournament v1 audit-environment invariants (v2.51)
+
+- A RECONSTRUCTION THAT REFUSES AT 1e-9 IS NOT FIXED BY LOOSENING 1e-9, AND IT IS NOT FIXED BY GUESSING THE ENVIRONMENT EITHER. The first post-outcome audit (run
+  `37688582489`) read `RECONSTRUCTION_MISMATCH` at 1.31e-07 in a different environment from the formal execution (run `37535814142`). Both job logs were read
+  directly: the formal result was computed in the `execute` job (not `frozen-machine`), on CPython 3.11.16 and runner image `20260927.320.1`; the audit ran 3.11.17
+  on `20261004.327.1`. Of 47 installed packages exactly three differ (`iniconfig`, `peewee`, `toolz`), all pure Python and outside the numerical path; the numpy,
+  scipy, scikit-learn, pandas and lightgbm wheel files are identical. The prompt's package list equalled the formal log's list exactly; it was verified, not assumed.
+- THE ENVIRONMENT RECORD IS DERIVED FROM THE LOG AND IS AUDIT-ONLY. `docs/results/...-formal-environment-37535814142.json` and
+  `constraints/...-formal-env-37535814142.txt` are not in the sealed tournament's dependency closure, the sealed workflow is byte-identical (a test compares it with the
+  spec's own pin), and pip's resolver run against `requirements*.txt` plus the constraints selects exactly the 47 formal versions. pip's "Successfully installed"
+  line lists only what pip installed that run, so `pip`, `setuptools` and `wheel` are not recorded and are not compared.
+- A PREFLIGHT SPENDS SECONDS TO AVOID SPENDING 90 MINUTES IN A KNOWINGLY DIFFERENT ENVIRONMENT. It runs after the install and before the snapshot download:
+  exact CPython patch release, every package version, the three thread variables, and the constraint file against its manifest. A failure exits non-zero and the job
+  stops; the parity record (with `pip freeze`, `numpy.show_config()`, threadpool/OpenBLAS architecture, CPU) is written and uploaded either way.
+- THE PYTHON ENVIRONMENT AND THE HOST ARE DIFFERENT CLAIMS. `PYTHON_ENVIRONMENT_EXACT_MATCH` gates; `HOST_HARDWARE_IMAGE_MATCH` never does and cannot be reached today,
+  because the formal log recorded no CPU and no BLAS architecture. A hosted runner image cannot be re-selected, so the honest values are `DIFFERS` or `UNVERIFIABLE`.
+- AN ENVIRONMENT HYPOTHESIS IS STATED AS ONE. Bundled OpenBLAS can choose different kernels on a different CPU generation, and a 3,960-fit, 24,231-solve pipeline can
+  amplify a last-bit difference; that is plausible and unproven, and the formal result may simply not be reproducible across hosts, in which case the refusal is the registered
+  outcome. The gate was not softened to avoid it.
+- A REFUSED REPRODUCTION NOW SAYS HOW IT FAILED, WITHOUT SAYING WHY. `reproduction.diagnostics` records the first divergence and its absolute and relative difference, whether
+  the complete flags, fold states, ensemble IDs by year, counters and process structure matched, the maximum numeric differences before and beyond the refusal point, and the
+  environment comparison. No ticker, event date, weight or cause appears, and a test checks that every attribution call in `reconstruct` sits after the gate's return.
+- NOTHING WAS DISPATCHED. The expensive audit was not run by this change, and no sealed tournament file, spec, result or lock moved.
+
+## KR alpha discovery tournament v1 closure and kr-alpha-signal-v2 foundation invariants (v2.52)
+
+- A REPRODUCED RESULT IS STILL THE RESULT IT REPRODUCED. Audit run `37757869994` (code `685b33de`, `PYTHON_ENVIRONMENT_EXACT_MATCH`, host image
+  differing and non-gating) read `RECONSTRUCTION_REPRODUCES_THE_SEALED_RESULT` with no divergence at 1e-9. The formal verdict stays
+  `BLOCKED_BY_DATA_INTEGRITY`, not eligible for promotion, and no performance gate was ever evaluated. Exact audit bytes were decoded from the job log
+  and matched to the digests the run printed (`…-run37757869994-{full,environment-parity,provenance}.json`). The investigation is closed:
+  `docs/kr-alpha-discovery-tournament-v1-forensic-closure.md`.
+- ALL FOUR INCOMPLETE PATHS FAIL ON TERMINAL ECONOMICS OF A NAME THEY ACTUALLY HELD: 000030.KS 우리은행 (`SHARE_TRANSFER`) on 2019-02-13 and 079440.KS
+  오렌지라이프 (`SHARE_EXCHANGE`) on 2020-02-14. Each was held through a 15-22 session pre-delisting suspension with the consideration `BLOCKED`. No
+  registered information class carried the termination, and `COST_X2` completed only because it never entered either name. A small held weight is
+  not a measured immateriality. Not rebuilding historical corporate-action economics now is a prioritization decision, not an integrity waiver.
+- A NEW RECEIPT FORMAT IS AN OLD ONE PLUS RULES, NOT A SECOND FORMAT. `prospective_receipt_core` keeps the canonical JSON, digest rule, JSON Lines
+  ledger and `PROSPECTIVE_PAPER` class of the three sealed study receipts (a test proves the bytes agree) and adds a no-backdating window (after
+  the signal close, before the next open), a prospective boundary strictly after the KST date of the authorizing merge, outcome records kept apart
+  and built only after maturity, and the terminal rule: a held name without a cited consideration makes the portfolio outcome `None`.
+- kr-alpha-signal-v2 IS A DIFFERENT CONSTRUCTION OF ALREADY-MEASURED INFORMATION, AND SAYS SO. Value (book-to-market, earnings yield) within
+  industry, confirmed by three signs at zero (net income, OCF, OCF improvement), with no fitted parameter. These are the same accounting fields
+  `kr-model-overlay-portfolio-v1` fitted and was rejected on. A negative result closes this construction on this information set. Its primary
+  tests (confirmed vs unconfirmed cheap; confirmed vs 069500.KS after costs) and its controls (the same contrast among expensive names; permuted
+  confirmation) were written before any number exists. Ownership (H3) is the next information bet, and its history starts 2024-09-24.
+- NO FORECAST, NO WEIGHT. Until a separately authorized calibration supplies an expected return and SE, every decision is `NOT_READY` and carries no
+  holdings. Coverage below 60% is `BLOCKED` with no per-name signal. `REGISTERED_AUTHORIZATION` is `None`, so no live receipt can be written.
+  Nothing here is scheduled or imported by production.
+
+## KR alpha research completion program invariants (v2.53)
+
+- ONE BOUNDED PROGRAM, NOT ANOTHER NARROW HYPOTHESIS. `kr-alpha-atlas` (`docs/kr-alpha-atlas-methodology.md`) evaluates all ten information families in
+  one registered development evaluation and then closes Korean historical research (`docs/kr-alpha-atlas-execution-roadmap.md`), whatever it finds.
+  kr-alpha-signal-v2 (H2) is one `CANDIDATE_SIGNAL_FAMILY` inside it (interaction X1). The v2.52 bullet that framed H2 as the direction is superseded,
+  not deleted.
+- READINESS IS NOT EVIDENCE, AND EVIDENCE IS NOT A VERDICT. `research_specs/kr-alpha-atlas-registry-v1.json` keeps `readinessStatus` (data/PIT) and
+  `existingResearchStatus` (prior development evidence) apart, and `pipeline/kr_alpha_atlas_registry.validate` refuses: a usable feature without a
+  safe PIT status; a feature a prior study measured or used jointly labelled `UNTESTED`; `ALREADY_TESTED` without an individual measurement; an OHLCV
+  source in the investor-flow family; a cost, capacity or eligibility quantity inside an alpha baseline; and verdict words anywhere in the registry.
+  `docs/kr-alpha-atlas-information-map.md` is rendered from the registry, never edited by hand.
+- AN ALREADY-MEASURED FEATURE IS NOT RE-MEASURED ON THE SAME HISTORY. `ALREADY_TESTED` features reuse their sealed anatomy readings and enter Level 2
+  only as baselines; the program spends outcome access only on what was never measured individually.
+- A LIVE RECEIPT IS BUILT FROM THE REGISTERED AUTHORIZATION ONLY. `build_live_receipt` takes no authorization, spec hash, code hash or timestamp: it
+  reads `REGISTERED_AUTHORIZATION`, hashes the spec, the authorized code files and the data snapshots from disk, requires the running commit to contain
+  the authorizing merge, and uses the writer's own clock. Synthetic fixtures are labelled `SYNTHETIC_FIXTURE` and can never enter a live ledger; no
+  flag converts one pathway into the other.
+- A SESSION THAT EXISTS HAS NOT NECESSARILY CLOSED. An outcome is final only once the maturity session itself (the H-th KR session after execution, by
+  the pinned calendar) is final at 18:00 KST (09:00 UTC), the latest moment any KRX day variant can change its close, judged by the writer's own clock
+  on the live path, and only from prices of that session. The receipt window uses the same 18:00 KST lower bound.
+
+## KR alpha atlas Phase B invariants (v2.54)
+
+- A READINESS COUNT IS A COUNT OF MEASURED CELLS, NEVER A STATEMENT ABOUT ALPHA. `docs/results/kr-alpha-atlas-phase-b-readiness.json` reports, for every one of the 106
+  registered features, how many point-in-time cells exist, on what denominator, in which years, industries and liquidity tiers, and why the rest are missing. It reads no label,
+  forward price, outcome or model prediction; counters and spies on every label / outcome / training entry point read zero in the build and in the dry run. `MEASURED_READY` means
+  "enough data to attempt the registered comparison"; it is the measured overlay of the registry's design-time `readinessStatus`, which this change does not edit.
+- ONE DEFINITION, TWO USES. `kr_alpha_atlas_matrix.build_matrix` is called by the historical matrix and by the weekly dry run, and every number it holds comes from the existing
+  function `kr_alpha_atlas_catalogue` names (`liquidity_attention`, `accounting_quality`, `dart_derive`, the sealed anatomy and overlay functions, `kr_alpha_signal_v2.cross_section`).
+  A feature with no existing function carries its own arithmetic in the catalogue under `addsArithmetic`, and every place an implemented definition is narrower than the registry text
+  (A10 and F04 use a market residual only) is stated under `deviationFromRegistryText`. A matrix column that was a second implementation of an economic feature would let the historical
+  evidence and the prospective process drift apart without a test noticing.
+- THE REAL RUN WAS REPRODUCED AND AUDITED. 714 weekly decision sessions (2013-01-04 to 2026-09-11) x the PIT Top120 = 85,680 member-dates over 260 tickers and 76 columns, from the inputs
+  `kr-model-overlay-portfolio-v1` pinned (blob and content hashes verified by the sealed loader) plus the KRX bar ledger and the DART share counts read at the same `signal-history` commit
+  `4ea107ed`; matrix digest `32e49b57a7541eea66f76373baef50c6302a394247b313f6099f718d46d54b0c`, identical across two independent full runs (CPython 3.13, pandas 2.3.0, numpy 2.3.1; CI runs 3.11 and did not rerun the real build). 805,676 filing-based cells were checked and none became
+  visible on or after its signal date; all 1,542,935 missing cells carry a reason from a closed vocabulary. Four volume and traded-value features (D01, D02, D03, E03) at three tickers on two dates were recomputed
+  from the raw ledger rows without the module and agreed to ten digits. A passing unit test proves the code; this paragraph is the only claim about the real data, and it is limited to what it names.
+- A SPLIT IS ADJUSTED ONLY ONCE IT WAS KNOWABLE. A clean par-value ratio moving the price by at least 42.5% is a corporate action the market cannot manufacture, but only the listed-share
+  count says WHICH one, and it can lag the ex-date by weeks (064960.KS: 33 days). `kr_alpha_atlas_bars.split_events` returns each confirmed split with the first session on which the share
+  count had moved. A feature window containing a split-shaped move that is not confirmed by the signal date is MISSING (`UNCONFIRMED_CORPORATE_ACTION_IN_WINDOW`), never adjusted with
+  later knowledge; a turnover window touching the stale share-count interval is MISSING (`STALE_SHARE_COUNT_IN_WINDOW`); a move above the daily limit that no ratio explains is
+  `UNEXPLAINED_PRICE_MOVE_IN_WINDOW`. A confirmed split is volume-neutral by test (the same series with and without a split gives the same features to 1e-7).
+- VOLUME, TRADED VALUE AND TURNOVER ARE THREE QUANTITIES. Traded value is as-traded close x as-traded volume in KRW (a split cannot move it), turnover is volume over listed shares on one split
+  basis, and a shock is a ratio that cancels a constant volume scale; scaling shares changes only turnover, scaling volume changes traded value and turnover but not a shock (all tested).
+  The official KRX `ACC_TRDVAL` lives only in the preserved raw-input artifact (`kr-model-raw-inputs-36844599518`), not in git, so this run used the close x volume PROXY and says so
+  (`tradingValueBasis`). The proxy's gap to the official figure was not measured. The loader finds `market/` and uses the official values when run against that artifact.
+- A SUSPENSION IS NOT A SESSION. KRX carries a halted issue's last close at zero volume; those rows are NaN, a window containing one is missing, and nothing is filled with a fabricated trade.
+  Suspensions are counted on their own (E07). The replay-v16 price panel was adjusted for splits with the share count's LATER confirmation, so the A/F windows it feeds are masked by the
+  same rule; the panel is still not a signal-date reproduction, and that is a stated limitation. Replay and ledger daily returns agree within 0.1% on 99.57% of 727,883 compared sessions, the
+  remainder dominated by ex-dividend sessions (the replay accumulates dividends, the KRX bars carry none).
+- AN UNDEFINED DENOMINATOR IS MISSING, NOT AN ORDINARY NUMBER. Cash conversion needs positive net income, ROE positive equity, growth a positive prior level, capex intensity positive revenue,
+  and a figure whose inputs span a consolidated/separate mix is dropped, not blended. Filings become visible the day AFTER their receipt date, and a figure is derived from the filings visible
+  then, never from a whole-history derive that is filtered afterwards.
+- ACCOUNTING READINESS WAS MEASURED, NOT CARRIED FROM AN EARLIER REGISTRY NOTE. The registry cited KR capex on 7.74% of filings (`alpha-research-foundation-v2`, the sealed `kr` store); the pinned
+  `kr-candidate-merged` store carries it on 87.86% of 9,351 filings, and `B04_freeCashFlowYield` is measured on 62.3% of rows within its usable range. The two stores are different
+  objects and the registry note is not edited; the report publishes the measured one. Coverage is dark for 2013-2015, 6.5% in 2016 and about 40% in 2017, and financials (20% of member-dates)
+  rarely state revenue or operating income: C03, C04, C06 and C15 are below the 60% floor (52.9%-56.6%) and are excluded, not repaired.
+- A DENOMINATOR CORRECTION IS PUBLISHED WITH BOTH NUMBERS. The first run measured `B08_valueBusinessConfirmation` on every member-date and read 55.3% within its usable range, below the floor.
+  B08 is a state defined only on names the sealed H2 contract does not itself exclude (preferred share, untraded, below the 1 billion KRW median-traded-value floor, unclassified industry), so those
+  are definitional exclusions, not data gaps. The denominator was changed to the contract's eligible set for B08 and X1 alone (69.1% and 75.9%); the all-member figure stays in the report and the
+  revision is recorded in `preOutcomeRevisions`. No outcome existed to motivate it. A pass that clears a floor by under five points is flagged `thinOverFloor` beside the number (B04, C02, C11, C12, C14, H07).
+- JOINT COVERAGE IS NOT THE PRODUCT OF MARGINAL COVERAGES, AND IT IS WHAT A COMPARISON NEEDS. Two features each measured on 70% of rows are measured together on about 49% (tested), so the six
+  Level 3 interactions are classified on their own joint coverage, evaluable dates and 2x2 corner-cell sizes. X1, X2, X3, X5 and X6 are READY (447, 686, 616, 661 and 293 evaluable weekly dates);
+  X4 is SOURCE_BLOCKED and its OHLCV-proxy control is never a substitute. The baselines B0-B4 are READY because every member is individually usable; their complete-case coverage (B4: 44.3%) is published
+  because the reference model carries missingness indicators rather than dropping rows.
+- BLOCKED SOURCES STAY BLOCKED AND THE LATEST EVIDENCE IS QUOTED, NOT REPEATED. The investor-flow collector's manifest (2026-09-24) reads `REFUSED: HTTP 400: b'LOGOUT'` with 0 records, so no re-probe
+  was dispatched; the exact `Probes` inputs for the one permitted re-probe per source are in the manifest. DART large-holding events are PIT-safe but start 2024-09-24 and "no rows" is not proof of no
+  filing, so they are prospective, not a historical feature. `data/bok-policy-rates.json` could make I04 derivable, but no registered comparison reads it, so it is reported and not computed.
+- THE BROADER UNIVERSE IS NOT READY AND IS NOT ADDED. By the 1 billion KRW median-traded-value rule an average of 196 qualified names a month sit outside the Top120 (2014-2026), but only about 34%
+  of those name-months have a visible DART filing in the sealed store, and there is no price panel, industry label or terminal economics for them. 335 qualified-ever tickers outside the Top120 have
+  no DART record (an estimate of up to 48,240 collector calls, about 33 runs, from the collector's own call structure). The PIT Top120 stays the reference universe.
+- THE DRY RUN CAN ONLY SAY NOT_READY OR BLOCKED, AND ITS FIRST REAL RUN FOUND A BUG A SYNTHETIC TEST COULD NOT. Reading the matrix back through a DataFrame turned the Python `False` that
+  `kr_alpha_signal_v2` tests with `is not False` into `numpy.bool_(False)`, so all 120 names read as preferred shares and the H2 gate reported BLOCKED. The row builder now coerces, and the dry run
+  builds 160 earlier weekly dates because B06, B07 and H07 read the name's own earlier rows (with none they honestly read `INSUFFICIENT_OWN_HISTORY`). The result carries no weight, position,
+  holding, entry state, tier, forecast or portfolio key (a scanner refuses one), writes no receipt, and never reads `REGISTERED_AUTHORIZATION` except to ask whether it is `None`.
+- WHAT PHASE B DOES NOT SETTLE. It builds no label engine, fits no baseline model, runs no Level 1-3 statistic and chooses no horizon, feature or threshold from a return. The 52-date and 3-name
+  gates are introduced here and stated as such; 60% and 30 names are inherited. The 22 terminated securities' terminal economics, the benchmark's external reconciliation and the official traded
+  value remain open and are listed in the manifest's prerequisites. Phase C registration is the next step and is not started here.
+- A REGISTRY'S DESIGN-TIME STATUS, AN IMPLEMENTATION STATUS, A MEASURED COVERAGE VERDICT AND A GENUINE SOURCE BLOCKER ARE FOUR FACTS, AND A REGISTER THAT FOLDS THEM INTO ONE CONTRADICTS ITSELF.
+  The first Phase B outputs listed B04, C06 and C15 under `sourceBlockers` as `DATA_BUILD_REQUIRED` (copied from the registry's design-time status) while the same report had computed
+  them (B04 `MEASURED_READY`, thin, 62.29%; C06 56.63% and C15 52.90% below the floor), and the Korean summary described them as "not computed". The register is now reconciled to the
+  report: `genuineSourceBlocker` is non-null only for a feature that was not computed, computed features appear in `coverageVerdicts`, the registry's note is kept verbatim as a
+  superseded `registryBlockingNote`, `reconcile_sources` raises on a computed feature in a source group or a non-computed feature with no source verdict, and the I05, I10 and I12 gaps
+  that no group named are now covered. A below-floor verdict is a statement about measured cells, not about a source. No measurement, gate, source identity or matrix digest changed.
+
+## KR alpha atlas Phase C invariants (v2.55)
+
+- ONE FINAL REGISTERED DEVELOPMENT STUDY. `research_specs/kr-alpha-atlas-phase-c-v1.json` freezes the Phase B-authoritative 38 candidates, 73 feature-horizon readings, B0-B4, 30 family comparisons and exactly X1-X6. No previously tested individual discovery is repeated, no new feature or macro interaction is added. H63/H252 and X6 state contrasts are descriptive. Previously exposed KR history cannot become untouched confirmation through a chronological split.
+- AUTHORING IS OUTCOME-FREE. `scripts/run_kr_alpha_atlas_phase_c.py` defaults to validation. CI runs only invented SYN markets. There is no execution authorization in this PR, no real outcome, no permanent lock, no formal result and no production change. Never dispatch the formal workflow on behalf of a validation request.
+- PREPARE BEFORE CONSUMING. The manual-only workflow must verify actual merged main, owner-committed exact-hash human authorization, no prior result/lock, selected Phase B Git proxy identities and separately preserved original artifact lineage, calendar/matrix/readiness, pinned runtime, synthetic checks and persistence before atomically creating the permanent refs. Any post-lock failure consumes the study; no unlock, silent retry, threshold change or model correction is allowed. Only already-written exact-byte recovery is permitted.
+- SELECT BEFORE OUTCOME VALIDITY. Forecasts include unpriceable names. All statistical comparisons use the same validity mask and publish common IDs/counts. Missing terminal consideration never becomes zero, last-price exit or a missing row removed from only one strategy. A selected unpriceable name or required industry peer blocks the paired portfolio comparison. Existing v4 security-level basis eligibility applies symmetrically from each name's own evidence.
+- THE PROXY AND BENCHMARK ARE NOT SWITCHED. Trading value stays `PROXY_ASTRADED_CLOSE_X_VOLUME`; the original preserved snapshot and separately identified proxy view cannot be relabelled or mixed. Benchmark stays 069500.KS. Its unresolved authoritative reconciliation blocks investability claims and positive final nomination, without erasing unaffected within-date information. X4 investor flows cannot be substituted with an OHLCV proxy.
+- SUPPORT IS A COMPLETE DECISION CHAIN. Date-balanced calibrated H21/H126 SN intervals, explicitly asymptotic SN p-values, family BY .10, 30-cell Holm .05 and six-interaction Holm .05 are frozen. Every unavailable hypothesis remains a p=1 slot. Nomination additionally requires the primary calibrated interval above zero, stability, matched incremental information and both realistic long-only fallback economics. Zero nominations closes the program as valid evidence; Phase D must close KR history rather than chase another backtest.

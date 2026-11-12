@@ -1,0 +1,1004 @@
+{
+ "population": "Issuers ever in a monthly PIT KOSPI Top300 snapshot; every B/I001 filing 2013-01-01..2026-10-31",
+ "calendarVersion": "xkrx-xnys-4.11.1-v2-kr-2026-closures",
+ "dataCutoff": "2026-10-30",
+ "asOf": "2026-11-06",
+ "filingVersionsByFamily": {
+  "BUYBACK": 994,
+  "BW": 152,
+  "CANCELLATION": 795,
+  "CAPITAL_REDUCTION": 578,
+  "CB": 1256,
+  "DISPOSAL": 1786,
+  "EB": 194,
+  "RIGHTS": 4245,
+  "SUPPLY": 14650,
+  "TERMINATION": 344,
+  "TRUST": 1497,
+  "TRUST_TERMINATION": 831
+ },
+ "stoppedAtGate": {
+  "ORIGINAL_VERSION": 10707,
+  "PIT_TOP300_IDENTITY": 5096,
+  "BODY_FAMILY": 2127,
+  "NOT_SUBSIDIARY_REPORT": 3462,
+  "DATE_ONLY_CONSERVATIVE_CANDIDATE": 2159,
+  "HYPOTHESIS_CLASS": 3467,
+  "TERMS_PARSED": 63,
+  "NO_PRE_ENTRY_AMENDMENT": 89,
+  "BODY_RETRIEVED": 151,
+  "ENTRY_WITHIN_CALENDAR": 1
+ },
+ "firstFailingReasonDetail": {
+  "BODY_FAMILY:BW:PIT_TOP300_MEMBER": 17,
+  "BODY_FAMILY:CAPITAL_REDUCTION:PIT_TOP300_MEMBER": 62,
+  "BODY_FAMILY:CB:PIT_TOP300_MEMBER": 150,
+  "BODY_FAMILY:DISPOSAL:PIT_TOP300_MEMBER": 960,
+  "BODY_FAMILY:EB:PIT_TOP300_MEMBER": 66,
+  "BODY_FAMILY:RIGHTS:PIT_TOP300_MEMBER": 339,
+  "BODY_FAMILY:TERMINATION:PIT_TOP300_MEMBER": 153,
+  "BODY_FAMILY:TRUST_TERMINATION:PIT_TOP300_MEMBER": 380,
+  "BODY_RETRIEVED:TRUST:PIT_TOP300_MEMBER": 151,
+  "ENTRY_WITHIN_CALENDAR:CANCELLATION:CANCELLATION_DECISION_COMMON": 1,
+  "HYPOTHESIS_CLASS:BUYBACK:BUYBACK_EXCLUDED:EMPLOYEE": 67,
+  "HYPOTHESIS_CLASS:CANCELLATION:CANCELLATION_OTHER_CLASS_ONLY": 11,
+  "HYPOTHESIS_CLASS:SUPPLY:SUPPLY_BELOW_10PCT_REVENUE": 3177,
+  "HYPOTHESIS_CLASS:SUPPLY:SUPPLY_PROGRESS_UPDATE_LATER_STATE": 81,
+  "HYPOTHESIS_CLASS:SUPPLY:SUPPLY_RATIO_MISMATCH": 9,
+  "HYPOTHESIS_CLASS:SUPPLY:SUPPLY_TERMS_WITHHELD_AT_SIGNAL": 117,
+  "HYPOTHESIS_CLASS:TRUST:TRUST_EXCLUDED:CORPORATE_ACTION": 1,
+  "HYPOTHESIS_CLASS:TRUST:TRUST_EXCLUDED:EMPLOYEE": 4,
+  "NOT_SUBSIDIARY_REPORT:BUYBACK:NOT_SUBSIDIARY_REPORT": 108,
+  "NOT_SUBSIDIARY_REPORT:BW:NOT_SUBSIDIARY_REPORT": 4,
+  "NOT_SUBSIDIARY_REPORT:CANCELLATION:NOT_SUBSIDIARY_REPORT": 68,
+  "NOT_SUBSIDIARY_REPORT:CAPITAL_REDUCTION:NOT_SUBSIDIARY_REPORT": 170,
+  "NOT_SUBSIDIARY_REPORT:CB:NOT_SUBSIDIARY_REPORT": 29,
+  "NOT_SUBSIDIARY_REPORT:DISPOSAL:NOT_SUBSIDIARY_REPORT": 185,
+  "NOT_SUBSIDIARY_REPORT:EB:NOT_SUBSIDIARY_REPORT": 20,
+  "NOT_SUBSIDIARY_REPORT:RIGHTS:NOT_SUBSIDIARY_REPORT": 1231,
+  "NOT_SUBSIDIARY_REPORT:SUPPLY:NOT_SUBSIDIARY_REPORT": 1428,
+  "NOT_SUBSIDIARY_REPORT:TERMINATION:NOT_SUBSIDIARY_REPORT": 67,
+  "NOT_SUBSIDIARY_REPORT:TRUST:NOT_SUBSIDIARY_REPORT": 76,
+  "NOT_SUBSIDIARY_REPORT:TRUST_TERMINATION:NOT_SUBSIDIARY_REPORT": 76,
+  "NO_PRE_ENTRY_AMENDMENT:BUYBACK:BODY_STATED": 1,
+  "NO_PRE_ENTRY_AMENDMENT:BUYBACK:UNLINKED_SAME_ISSUER_FAMILY_WINDOW": 48,
+  "NO_PRE_ENTRY_AMENDMENT:CANCELLATION:BODY_STATED": 3,
+  "NO_PRE_ENTRY_AMENDMENT:CANCELLATION:UNLINKED_SAME_ISSUER_FAMILY_WINDOW": 2,
+  "NO_PRE_ENTRY_AMENDMENT:SUPPLY:BODY_STATED": 5,
+  "NO_PRE_ENTRY_AMENDMENT:SUPPLY:UNLINKED_SAME_ISSUER_FAMILY_WINDOW": 16,
+  "NO_PRE_ENTRY_AMENDMENT:TRUST:UNLINKED_SAME_ISSUER_FAMILY_WINDOW": 14,
+  "ORIGINAL_VERSION:BUYBACK:AMENDMENT_REF_NOT_FETCHED": 87,
+  "ORIGINAL_VERSION:BUYBACK:AMENDMENT_REF_NOT_STATED_IN_BODY": 49,
+  "ORIGINAL_VERSION:BUYBACK:AMENDMENT_REF_STATED": 1,
+  "ORIGINAL_VERSION:BW:AMENDMENT_REF_NOT_FETCHED": 85,
+  "ORIGINAL_VERSION:CANCELLATION:AMENDMENT_REF_NOT_FETCHED": 133,
+  "ORIGINAL_VERSION:CANCELLATION:AMENDMENT_REF_STATED": 13,
+  "ORIGINAL_VERSION:CAPITAL_REDUCTION:AMENDMENT_REF_NOT_FETCHED": 220,
+  "ORIGINAL_VERSION:CB:AMENDMENT_REF_NOT_FETCHED": 701,
+  "ORIGINAL_VERSION:DISPOSAL:AMENDMENT_REF_NOT_FETCHED": 253,
+  "ORIGINAL_VERSION:EB:AMENDMENT_REF_NOT_FETCHED": 66,
+  "ORIGINAL_VERSION:RIGHTS:AMENDMENT_REF_NOT_FETCHED": 2064,
+  "ORIGINAL_VERSION:SUPPLY:AMENDMENT_REF_NOT_FETCHED": 6196,
+  "ORIGINAL_VERSION:SUPPLY:AMENDMENT_REF_NOT_STATED_IN_BODY": 3,
+  "ORIGINAL_VERSION:SUPPLY:AMENDMENT_REF_STATED": 649,
+  "ORIGINAL_VERSION:TERMINATION:AMENDMENT_REF_NOT_FETCHED": 10,
+  "ORIGINAL_VERSION:TRUST:AMENDMENT_REF_NOT_FETCHED": 143,
+  "ORIGINAL_VERSION:TRUST:AMENDMENT_REF_NOT_STATED_IN_BODY": 8,
+  "ORIGINAL_VERSION:TRUST_TERMINATION:AMENDMENT_REF_NOT_FETCHED": 26,
+  "PIT_TOP300_IDENTITY:BUYBACK:NOT_IN_PIT_TOP300": 227,
+  "PIT_TOP300_IDENTITY:BW:NOT_IN_PIT_TOP300": 46,
+  "PIT_TOP300_IDENTITY:CANCELLATION:NOT_IN_PIT_TOP300": 153,
+  "PIT_TOP300_IDENTITY:CAPITAL_REDUCTION:NOT_IN_PIT_TOP300": 126,
+  "PIT_TOP300_IDENTITY:CB:NOT_IN_PIT_TOP300": 376,
+  "PIT_TOP300_IDENTITY:DISPOSAL:NOT_IN_PIT_TOP300": 388,
+  "PIT_TOP300_IDENTITY:EB:NOT_IN_PIT_TOP300": 42,
+  "PIT_TOP300_IDENTITY:RIGHTS:NOT_IN_PIT_TOP300": 611,
+  "PIT_TOP300_IDENTITY:SUPPLY:NOT_IN_PIT_TOP300": 2066,
+  "PIT_TOP300_IDENTITY:SUPPLY:NO_PRIOR_SNAPSHOT": 4,
+  "PIT_TOP300_IDENTITY:TERMINATION:NOT_IN_PIT_TOP300": 113,
+  "PIT_TOP300_IDENTITY:TERMINATION:NO_PRIOR_SNAPSHOT": 1,
+  "PIT_TOP300_IDENTITY:TRUST:NOT_IN_PIT_TOP300": 594,
+  "PIT_TOP300_IDENTITY:TRUST_TERMINATION:NOT_IN_PIT_TOP300": 349,
+  "TERMS_PARSED:BUYBACK:BUYBACK_COMMON_QUANTITY_MISSING": 31,
+  "TERMS_PARSED:SUPPLY:SUPPLY_TERMS_INCOMPLETE": 13,
+  "TERMS_PARSED:TRUST:TRUST_AMOUNT_MISSING": 19
+ },
+ "pitExact": {
+  "count": 0,
+  "reason": "RECEIPT_CLOCK_NOT_SERVED_BY_LIST_JSON_DOCUMENT_XML_OR_DS005"
+ },
+ "dateOnlyConservativeCandidates": {
+  "A1": 491,
+  "A2": 782,
+  "B1": 886
+ },
+ "independent": {
+  "A1_H126": {
+   "N": 323,
+   "issuers": 145,
+   "entryWeeks": 175,
+   "entryMonths": 90,
+   "byEntryYear": {
+    "2013": 1,
+    "2015": 3,
+    "2016": 3,
+    "2017": 6,
+    "2018": 11,
+    "2019": 5,
+    "2020": 15,
+    "2021": 9,
+    "2022": 16,
+    "2023": 36,
+    "2024": 49,
+    "2025": 66,
+    "2026": 103
+   },
+   "preValueUp": 121,
+   "postValueUp": 202,
+   "recent2025to2026": 169,
+   "matured": 270,
+   "meanConcurrentWhenActive": 13.48,
+   "maxConcurrent": 70,
+   "sessionsWithNoOpenPositionInSpan": 418,
+   "sessionsInSpan": 3312,
+   "largestIssuerShare": 0.0279
+  },
+  "A1_H252": {
+   "N": 252,
+   "issuers": 145,
+   "entryWeeks": 152,
+   "entryMonths": 87,
+   "byEntryYear": {
+    "2013": 1,
+    "2015": 3,
+    "2016": 2,
+    "2017": 4,
+    "2018": 10,
+    "2019": 5,
+    "2020": 12,
+    "2021": 6,
+    "2022": 14,
+    "2023": 31,
+    "2024": 36,
+    "2025": 48,
+    "2026": 80
+   },
+   "preValueUp": 99,
+   "postValueUp": 153,
+   "recent2025to2026": 128,
+   "matured": 165,
+   "meanConcurrentWhenActive": 19.08,
+   "maxConcurrent": 88,
+   "sessionsWithNoOpenPositionInSpan": 234,
+   "sessionsInSpan": 3312,
+   "largestIssuerShare": 0.0278
+  },
+  "A2_H126": {
+   "N": 522,
+   "issuers": 203,
+   "entryWeeks": 340,
+   "entryMonths": 150,
+   "byEntryYear": {
+    "2013": 12,
+    "2014": 49,
+    "2015": 26,
+    "2016": 34,
+    "2017": 19,
+    "2018": 28,
+    "2019": 27,
+    "2020": 64,
+    "2021": 37,
+    "2022": 49,
+    "2023": 51,
+    "2024": 50,
+    "2025": 40,
+    "2026": 36
+   },
+   "preValueUp": 406,
+   "postValueUp": 116,
+   "recent2025to2026": 76,
+   "matured": 503,
+   "meanConcurrentWhenActive": 18.8,
+   "maxConcurrent": 44,
+   "sessionsWithNoOpenPositionInSpan": 0,
+   "sessionsInSpan": 3373,
+   "largestIssuerShare": 0.0211
+  },
+  "A2_H252": {
+   "N": 416,
+   "issuers": 203,
+   "entryWeeks": 288,
+   "entryMonths": 139,
+   "byEntryYear": {
+    "2013": 12,
+    "2014": 43,
+    "2015": 19,
+    "2016": 32,
+    "2017": 17,
+    "2018": 24,
+    "2019": 22,
+    "2020": 53,
+    "2021": 27,
+    "2022": 41,
+    "2023": 37,
+    "2024": 35,
+    "2025": 29,
+    "2026": 25
+   },
+   "preValueUp": 333,
+   "postValueUp": 83,
+   "recent2025to2026": 54,
+   "matured": 389,
+   "meanConcurrentWhenActive": 28.93,
+   "maxConcurrent": 55,
+   "sessionsWithNoOpenPositionInSpan": 0,
+   "sessionsInSpan": 3373,
+   "largestIssuerShare": 0.0192
+  },
+  "B1_H126": {
+   "N": 464,
+   "issuers": 117,
+   "entryWeeks": 312,
+   "entryMonths": 150,
+   "byEntryYear": {
+    "2013": 31,
+    "2014": 25,
+    "2015": 27,
+    "2016": 21,
+    "2017": 17,
+    "2018": 33,
+    "2019": 32,
+    "2020": 37,
+    "2021": 35,
+    "2022": 41,
+    "2023": 33,
+    "2024": 39,
+    "2025": 53,
+    "2026": 40
+   },
+   "preValueUp": 337,
+   "postValueUp": 127,
+   "recent2025to2026": 93,
+   "matured": 441,
+   "meanConcurrentWhenActive": 16.69,
+   "maxConcurrent": 34,
+   "sessionsWithNoOpenPositionInSpan": 0,
+   "sessionsInSpan": 3378,
+   "largestIssuerShare": 0.0345
+  },
+  "B1_H252": {
+   "N": 346,
+   "issuers": 117,
+   "entryWeeks": 260,
+   "entryMonths": 140,
+   "byEntryYear": {
+    "2013": 26,
+    "2014": 20,
+    "2015": 20,
+    "2016": 16,
+    "2017": 13,
+    "2018": 26,
+    "2019": 23,
+    "2020": 25,
+    "2021": 27,
+    "2022": 28,
+    "2023": 24,
+    "2024": 32,
+    "2025": 37,
+    "2026": 29
+   },
+   "preValueUp": 251,
+   "postValueUp": 95,
+   "recent2025to2026": 66,
+   "matured": 312,
+   "meanConcurrentWhenActive": 24.03,
+   "maxConcurrent": 46,
+   "sessionsWithNoOpenPositionInSpan": 0,
+   "sessionsInSpan": 3378,
+   "largestIssuerShare": 0.0318
+  }
+ },
+ "bodies": {
+  "requested": 6926,
+  "retrieved": 6502,
+  "errors": 424
+ },
+ "apiCalls": 0,
+ "cacheHits": 6926,
+ "power": {
+  "status": "CONDITIONAL_ON_UNMEASURED_SIGMA_AND_DESIGN_EFFECT",
+  "formula": "MDE=(z_{1-.05/6}+z_.80)*sigma*sqrt(D/N)",
+  "meePp": {
+   "H126": 3.0,
+   "H252": 4.0
+  },
+  "rows": [
+   {
+    "set": "A1_H126",
+    "N": 323,
+    "sigmaPct": 15.0,
+    "designEffect": 1.0,
+    "mdePp": 2.7,
+    "gate": "POWER_PASS"
+   },
+   {
+    "set": "A1_H126",
+    "N": 323,
+    "sigmaPct": 15.0,
+    "designEffect": 2.0,
+    "mdePp": 3.82,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "A1_H126",
+    "N": 323,
+    "sigmaPct": 15.0,
+    "designEffect": 4.0,
+    "mdePp": 5.4,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "A1_H126",
+    "N": 323,
+    "sigmaPct": 20.0,
+    "designEffect": 1.0,
+    "mdePp": 3.6,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "A1_H126",
+    "N": 323,
+    "sigmaPct": 20.0,
+    "designEffect": 2.0,
+    "mdePp": 5.09,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "A1_H126",
+    "N": 323,
+    "sigmaPct": 20.0,
+    "designEffect": 4.0,
+    "mdePp": 7.2,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "A1_H126",
+    "N": 323,
+    "sigmaPct": 25.0,
+    "designEffect": 1.0,
+    "mdePp": 4.5,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "A1_H126",
+    "N": 323,
+    "sigmaPct": 25.0,
+    "designEffect": 2.0,
+    "mdePp": 6.37,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "A1_H126",
+    "N": 323,
+    "sigmaPct": 25.0,
+    "designEffect": 4.0,
+    "mdePp": 9.0,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "A1_H126",
+    "N": 323,
+    "sigmaPct": 30.0,
+    "designEffect": 1.0,
+    "mdePp": 5.4,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "A1_H126",
+    "N": 323,
+    "sigmaPct": 30.0,
+    "designEffect": 2.0,
+    "mdePp": 7.64,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "A1_H126",
+    "N": 323,
+    "sigmaPct": 30.0,
+    "designEffect": 4.0,
+    "mdePp": 10.8,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "A1_H252",
+    "N": 252,
+    "sigmaPct": 20.0,
+    "designEffect": 1.0,
+    "mdePp": 4.08,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "A1_H252",
+    "N": 252,
+    "sigmaPct": 20.0,
+    "designEffect": 2.0,
+    "mdePp": 5.77,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "A1_H252",
+    "N": 252,
+    "sigmaPct": 20.0,
+    "designEffect": 4.0,
+    "mdePp": 8.15,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "A1_H252",
+    "N": 252,
+    "sigmaPct": 28.0,
+    "designEffect": 1.0,
+    "mdePp": 5.71,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "A1_H252",
+    "N": 252,
+    "sigmaPct": 28.0,
+    "designEffect": 2.0,
+    "mdePp": 8.07,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "A1_H252",
+    "N": 252,
+    "sigmaPct": 28.0,
+    "designEffect": 4.0,
+    "mdePp": 11.41,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "A1_H252",
+    "N": 252,
+    "sigmaPct": 35.0,
+    "designEffect": 1.0,
+    "mdePp": 7.13,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "A1_H252",
+    "N": 252,
+    "sigmaPct": 35.0,
+    "designEffect": 2.0,
+    "mdePp": 10.09,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "A1_H252",
+    "N": 252,
+    "sigmaPct": 35.0,
+    "designEffect": 4.0,
+    "mdePp": 14.27,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "A1_H252",
+    "N": 252,
+    "sigmaPct": 42.0,
+    "designEffect": 1.0,
+    "mdePp": 8.56,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "A1_H252",
+    "N": 252,
+    "sigmaPct": 42.0,
+    "designEffect": 2.0,
+    "mdePp": 12.11,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "A1_H252",
+    "N": 252,
+    "sigmaPct": 42.0,
+    "designEffect": 4.0,
+    "mdePp": 17.12,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "A2_H126",
+    "N": 522,
+    "sigmaPct": 15.0,
+    "designEffect": 1.0,
+    "mdePp": 2.12,
+    "gate": "POWER_PASS"
+   },
+   {
+    "set": "A2_H126",
+    "N": 522,
+    "sigmaPct": 15.0,
+    "designEffect": 2.0,
+    "mdePp": 3.0,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "A2_H126",
+    "N": 522,
+    "sigmaPct": 15.0,
+    "designEffect": 4.0,
+    "mdePp": 4.25,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "A2_H126",
+    "N": 522,
+    "sigmaPct": 20.0,
+    "designEffect": 1.0,
+    "mdePp": 2.83,
+    "gate": "POWER_PASS"
+   },
+   {
+    "set": "A2_H126",
+    "N": 522,
+    "sigmaPct": 20.0,
+    "designEffect": 2.0,
+    "mdePp": 4.01,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "A2_H126",
+    "N": 522,
+    "sigmaPct": 20.0,
+    "designEffect": 4.0,
+    "mdePp": 5.66,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "A2_H126",
+    "N": 522,
+    "sigmaPct": 25.0,
+    "designEffect": 1.0,
+    "mdePp": 3.54,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "A2_H126",
+    "N": 522,
+    "sigmaPct": 25.0,
+    "designEffect": 2.0,
+    "mdePp": 5.01,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "A2_H126",
+    "N": 522,
+    "sigmaPct": 25.0,
+    "designEffect": 4.0,
+    "mdePp": 7.08,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "A2_H126",
+    "N": 522,
+    "sigmaPct": 30.0,
+    "designEffect": 1.0,
+    "mdePp": 4.25,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "A2_H126",
+    "N": 522,
+    "sigmaPct": 30.0,
+    "designEffect": 2.0,
+    "mdePp": 6.01,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "A2_H126",
+    "N": 522,
+    "sigmaPct": 30.0,
+    "designEffect": 4.0,
+    "mdePp": 8.5,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "A2_H252",
+    "N": 416,
+    "sigmaPct": 20.0,
+    "designEffect": 1.0,
+    "mdePp": 3.17,
+    "gate": "POWER_PASS"
+   },
+   {
+    "set": "A2_H252",
+    "N": 416,
+    "sigmaPct": 20.0,
+    "designEffect": 2.0,
+    "mdePp": 4.49,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "A2_H252",
+    "N": 416,
+    "sigmaPct": 20.0,
+    "designEffect": 4.0,
+    "mdePp": 6.35,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "A2_H252",
+    "N": 416,
+    "sigmaPct": 28.0,
+    "designEffect": 1.0,
+    "mdePp": 4.44,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "A2_H252",
+    "N": 416,
+    "sigmaPct": 28.0,
+    "designEffect": 2.0,
+    "mdePp": 6.28,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "A2_H252",
+    "N": 416,
+    "sigmaPct": 28.0,
+    "designEffect": 4.0,
+    "mdePp": 8.88,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "A2_H252",
+    "N": 416,
+    "sigmaPct": 35.0,
+    "designEffect": 1.0,
+    "mdePp": 5.55,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "A2_H252",
+    "N": 416,
+    "sigmaPct": 35.0,
+    "designEffect": 2.0,
+    "mdePp": 7.85,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "A2_H252",
+    "N": 416,
+    "sigmaPct": 35.0,
+    "designEffect": 4.0,
+    "mdePp": 11.1,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "A2_H252",
+    "N": 416,
+    "sigmaPct": 42.0,
+    "designEffect": 1.0,
+    "mdePp": 6.66,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "A2_H252",
+    "N": 416,
+    "sigmaPct": 42.0,
+    "designEffect": 2.0,
+    "mdePp": 9.42,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "A2_H252",
+    "N": 416,
+    "sigmaPct": 42.0,
+    "designEffect": 4.0,
+    "mdePp": 13.33,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "B1_H126",
+    "N": 464,
+    "sigmaPct": 15.0,
+    "designEffect": 1.0,
+    "mdePp": 2.25,
+    "gate": "POWER_PASS"
+   },
+   {
+    "set": "B1_H126",
+    "N": 464,
+    "sigmaPct": 15.0,
+    "designEffect": 2.0,
+    "mdePp": 3.19,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "B1_H126",
+    "N": 464,
+    "sigmaPct": 15.0,
+    "designEffect": 4.0,
+    "mdePp": 4.51,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "B1_H126",
+    "N": 464,
+    "sigmaPct": 20.0,
+    "designEffect": 1.0,
+    "mdePp": 3.0,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "B1_H126",
+    "N": 464,
+    "sigmaPct": 20.0,
+    "designEffect": 2.0,
+    "mdePp": 4.25,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "B1_H126",
+    "N": 464,
+    "sigmaPct": 20.0,
+    "designEffect": 4.0,
+    "mdePp": 6.01,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "B1_H126",
+    "N": 464,
+    "sigmaPct": 25.0,
+    "designEffect": 1.0,
+    "mdePp": 3.76,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "B1_H126",
+    "N": 464,
+    "sigmaPct": 25.0,
+    "designEffect": 2.0,
+    "mdePp": 5.31,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "B1_H126",
+    "N": 464,
+    "sigmaPct": 25.0,
+    "designEffect": 4.0,
+    "mdePp": 7.51,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "B1_H126",
+    "N": 464,
+    "sigmaPct": 30.0,
+    "designEffect": 1.0,
+    "mdePp": 4.51,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "B1_H126",
+    "N": 464,
+    "sigmaPct": 30.0,
+    "designEffect": 2.0,
+    "mdePp": 6.37,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "B1_H126",
+    "N": 464,
+    "sigmaPct": 30.0,
+    "designEffect": 4.0,
+    "mdePp": 9.01,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "B1_H252",
+    "N": 346,
+    "sigmaPct": 20.0,
+    "designEffect": 1.0,
+    "mdePp": 3.48,
+    "gate": "POWER_PASS"
+   },
+   {
+    "set": "B1_H252",
+    "N": 346,
+    "sigmaPct": 20.0,
+    "designEffect": 2.0,
+    "mdePp": 4.92,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "B1_H252",
+    "N": 346,
+    "sigmaPct": 20.0,
+    "designEffect": 4.0,
+    "mdePp": 6.96,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "B1_H252",
+    "N": 346,
+    "sigmaPct": 28.0,
+    "designEffect": 1.0,
+    "mdePp": 4.87,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "B1_H252",
+    "N": 346,
+    "sigmaPct": 28.0,
+    "designEffect": 2.0,
+    "mdePp": 6.89,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "B1_H252",
+    "N": 346,
+    "sigmaPct": 28.0,
+    "designEffect": 4.0,
+    "mdePp": 9.74,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "B1_H252",
+    "N": 346,
+    "sigmaPct": 35.0,
+    "designEffect": 1.0,
+    "mdePp": 6.09,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "B1_H252",
+    "N": 346,
+    "sigmaPct": 35.0,
+    "designEffect": 2.0,
+    "mdePp": 8.61,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "B1_H252",
+    "N": 346,
+    "sigmaPct": 35.0,
+    "designEffect": 4.0,
+    "mdePp": 12.18,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "B1_H252",
+    "N": 346,
+    "sigmaPct": 42.0,
+    "designEffect": 1.0,
+    "mdePp": 7.31,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "B1_H252",
+    "N": 346,
+    "sigmaPct": 42.0,
+    "designEffect": 2.0,
+    "mdePp": 10.33,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "B1_H252",
+    "N": 346,
+    "sigmaPct": 42.0,
+    "designEffect": 4.0,
+    "mdePp": 14.61,
+    "gate": "POWER_NO_GO"
+   }
+  ],
+  "valueUpSplit": [
+   {
+    "set": "A1_H126",
+    "part": "preValueUp",
+    "N": 121,
+    "sigmaPct": 20.0,
+    "designEffect": 2.0,
+    "mdePp": 8.32,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "A1_H126",
+    "part": "postValueUp",
+    "N": 202,
+    "sigmaPct": 20.0,
+    "designEffect": 2.0,
+    "mdePp": 6.44,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "A1_H252",
+    "part": "preValueUp",
+    "N": 99,
+    "sigmaPct": 28.0,
+    "designEffect": 2.0,
+    "mdePp": 12.88,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "A1_H252",
+    "part": "postValueUp",
+    "N": 153,
+    "sigmaPct": 28.0,
+    "designEffect": 2.0,
+    "mdePp": 10.36,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "A2_H126",
+    "part": "preValueUp",
+    "N": 406,
+    "sigmaPct": 20.0,
+    "designEffect": 2.0,
+    "mdePp": 4.54,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "A2_H126",
+    "part": "postValueUp",
+    "N": 116,
+    "sigmaPct": 20.0,
+    "designEffect": 2.0,
+    "mdePp": 8.5,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "A2_H252",
+    "part": "preValueUp",
+    "N": 333,
+    "sigmaPct": 28.0,
+    "designEffect": 2.0,
+    "mdePp": 7.02,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "A2_H252",
+    "part": "postValueUp",
+    "N": 83,
+    "sigmaPct": 28.0,
+    "designEffect": 2.0,
+    "mdePp": 14.06,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "B1_H126",
+    "part": "preValueUp",
+    "N": 337,
+    "sigmaPct": 20.0,
+    "designEffect": 2.0,
+    "mdePp": 4.99,
+    "gate": "POWER_MARGINAL"
+   },
+   {
+    "set": "B1_H126",
+    "part": "postValueUp",
+    "N": 127,
+    "sigmaPct": 20.0,
+    "designEffect": 2.0,
+    "mdePp": 8.12,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "B1_H252",
+    "part": "preValueUp",
+    "N": 251,
+    "sigmaPct": 28.0,
+    "designEffect": 2.0,
+    "mdePp": 8.09,
+    "gate": "POWER_NO_GO"
+   },
+   {
+    "set": "B1_H252",
+    "part": "postValueUp",
+    "N": 95,
+    "sigmaPct": 28.0,
+    "designEffect": 2.0,
+    "mdePp": 13.15,
+    "gate": "POWER_NO_GO"
+   }
+  ]
+ }
+}

@@ -1,0 +1,62 @@
+{
+  "scope": "SYNTHETIC_AND_SAVED_FILING_DIAGNOSTICS_NO_HISTORICAL_EXECUTION",
+  "focusedTests": {
+    "passed": 44,
+    "logSha256": "7611e2623a63890498fd5c7d379d44d899e4795ec513d2bc2fb3155d2af76fd2",
+    "includesFourCellAndThreePathInventedMarketEndToEnd": true
+  },
+  "originalRuntimeAndFakeFredTests": {
+    "passed": 40
+  },
+  "ruff": "PASS",
+  "compileall": "PASS",
+  "seed": {
+    "scope": "ISOLATED_SYNTHETIC_SEED_ONLY",
+    "validation": "validation ok",
+    "sha256": "9e3a32747dc8ee198a283c96e07ed7098ae17aa3e8f2fca6d7c7ab644a07c594",
+    "bytes": 973674,
+    "productionDataWritten": false
+  },
+  "archiveMembersVerified": 22,
+  "fullSuite": {
+    "initialCompleteRun": {
+      "passed": 6722,
+      "failed": 3,
+      "skipped": 3,
+      "xfailed": 4,
+      "seconds": 1841.17,
+      "logSha256": "bf72cbd4aa2acdaaef48e44f7e7b8c64307e843253da38eb23dd04da5fc3a187"
+    },
+    "failureCause": "Three immutable RP1 provenance checks required uncached original Git blobs; no frozen bytes changed",
+    "failedTestsAfterCachingOriginalGitBlobs": {
+      "passed": 3,
+      "seconds": 1.17,
+      "logSha256": "20362a81bf4105ac9b50b20bf0a2d76c76b81572886928ac3f09de5e8026048a"
+    },
+    "qualification": "Combined validation, not a claim that one full run was green; final code edge deltas also covered by 44 focused tests"
+  },
+  "ci": "CHECK_EXACT_PR_HEAD_NO_PASS_CLAIM_YET",
+  "sealedRuntimeTestRestored": true,
+  "historicalExecutions": 0,
+  "liveWrites": 0,
+  "workflowsChanged": false,
+  "prCleanupResult": "pr-cleanup-result.json",
+  "historicalStatus": {
+    "studyId": "kr-event-four-cell-correction-v2",
+    "packetSha256": "6fef2ce75d84ba6edbb9d638477dbd119f550665d95ebe11fd67df8c332e6a0f",
+    "codeFiles": 123,
+    "status": "SOURCE_BLOCKED",
+    "missing": [
+      "Dated official issuer/common/preferred security identity qualifications for every used ticker",
+      "Verified fiscal periods for current and prior own-issuer year-end cash decisions; record-date year is not substituted",
+      "Explicit original/correction receipt links for ambiguous dividend amendments",
+      "Cited split/stock-dividend/terminal actions and complete shareholder-economics coverage; rights/merger packages remain blocked",
+      "Complete frozen historical C2 targets, actual execution path, eligible ranking, sizing caps and daily baseline by cost; 15 observation receipts are not an execution ledger"
+    ],
+    "pricesOpened": 0,
+    "historicalExecutions": 0,
+    "liveWrites": 0,
+    "protectedPinsMatch": true,
+    "runtimeMatchesExecution": true
+  }
+}

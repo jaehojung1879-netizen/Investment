@@ -1,0 +1,19 @@
+{
+ "authorizedAtUtc": "2026-11-07T20:51:42+00:00",
+ "authorizes": [
+  "REGISTER the spec for prospective recording",
+  "LIVE append-only receipts to ledger/research-strategies/kr-corporate-information-events-v1/receipts.jsonl"
+ ],
+ "doesNotAuthorize": [
+  "historical outcome execution",
+  "any change to Portfolio D or production defaults",
+  "outcome reads before H126/H252 maturity",
+  "editing a pinned file without a new spec and authorization"
+ ],
+ "firstEligibleSignalSession": "2026-11-09",
+ "ownerInstruction": "사전등록 후보 등록해. 실제기록 라이브 커 나머진 너가 합리적이라고 생각되면 진행해",
+ "ownerInstructionChannel": "direct instruction from the repository owner in the Claude Code session; recorded instant is when this file was written, not earlier",
+ "scope": "PROSPECTIVE_RECORDING_ONLY",
+ "specSha256": "1692b5b3131a76ab6dd8a5198ef0fd262fffa4ec7cf0925444cf344aacbd61d4",
+ "studyId": "kr-corporate-information-events-v1"
+}

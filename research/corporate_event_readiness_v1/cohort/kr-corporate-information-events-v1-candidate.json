@@ -1,0 +1,108 @@
+{
+ "A1": {
+  "comparatorA2": "Buyback or trust with no cancellation stated (descriptive matched contrast only).",
+  "event": "Original receipt of a common-share cancellation decision (주식소각결정) or a buyback (자기주식취득결정/신탁) whose FILED purpose states cancellation; amendments are later states."
+ },
+ "B1": {
+  "event": "Original 단일판매·공급계약체결 whose FILED contract amount / FILED recent revenue >= 10%, amount, revenue and ratio all stated; CONTRACT_RATIO_MISMATCH excluded."
+ },
+ "approvalRequest": {
+  "phrase": "APPROVE KR_PHASE_D_NEW_AXIS_EXCEPTION kr-corporate-information-events-v1 <specSha256>",
+  "scope": "ONE historical execution of A1 and B1 over the frozen cohort, after every blockedBeforeExecution item is admitted by a separate source PR and an independent non-author audit; no re-run, no threshold or window change, no Atlas/Phase C reuse"
+ },
+ "blockedBeforeExecution": [
+  "investable KRW cash series (BOK proxy is not a payoff)",
+  "stock total-return basis: KRX bars carry no dividends; dividend lineage per name",
+  "terminal economics for names delisted inside a holding window",
+  "PIT industry labels outside the Top120 v4 reconstruction",
+  "pre-event residual volatility and design effect for the final MDE (needs a price read)",
+  "investor account, tax and cost contract shared with #317 economics"
+ ],
+ "codeSha256": {
+  "pipeline/dart_ownership_universe.py": "b7bb3b08d8ce3a5610b64d2427af6c080978cdfd5522daf587b7475704876f29",
+  "pipeline/kr_corporate_action_events.py": "3cb8e9b3b43968401ac3659535f9cf6ab0bf7b1121df0b1b0966d9c49089f5fe",
+  "pipeline/prospective_receipt_core.py": "0f5344b09e28a4b9e9df5839bb6fc11f8ace70a4c71c01c6915ae753857ef90f",
+  "pipeline/replay_calendar.py": "56116f837e8ae3b9ca43c27c87b3be8bcf608172a761879a6b1284a39c9a3ab2",
+  "research/corporate_event_readiness_v1/cohort/__init__.py": "bcec01f4ea99ce595fc078793d2836401c4879767c4dfc4edc8ff6e523b1661a",
+  "research/corporate_event_readiness_v1/cohort/admission.py": "88ee6dc2b4539f418dc6eb9f16254c39db0e781663e47dc1578ec9a561660768",
+  "research/corporate_event_readiness_v1/cohort/bodies.py": "f74cde458a68efc8fdcc9602acd7af20346f732287969cf6d6ea613588f9b72c",
+  "research/corporate_event_readiness_v1/cohort/build_spec.py": "5069a36a2a218c4ec110322c0a7ddf2d0142f41ca60638bc5d05a465529dc341",
+  "research/corporate_event_readiness_v1/cohort/candidate_signal.py": "1e93b054639a0cd2615aeb3c9547a98d8fc1463bb57f50999639139770506448",
+  "research/corporate_event_readiness_v1/cohort/collect_index.py": "e731a257e445454a5ef3cd38941f243ffb2946a30dd7b7485df285f0079afd83",
+  "research/corporate_event_readiness_v1/cohort/collect_issuers.py": "5b06cc8a7a8b4e03b8a358ccef9a3f119dbc9958768bb4e16dfed83dd9574952",
+  "research/corporate_event_readiness_v1/cohort/crosscheck_ds005.py": "495d2fa6b1057bc3689dd65ac71c26c3666ae274ea0336f0a1034133029a265b",
+  "research/corporate_event_readiness_v1/cohort/crosscheck_routes.py": "b7fe59f2dc468b23a865eaad3f455bc119a7b2f0d814d3827e8ab547bbb2b8b4",
+  "research/corporate_event_readiness_v1/cohort/dart_client.py": "4c5c676f204325508d440c9003472e9d76d045d93196031d107515e0a3eb60d2",
+  "research/corporate_event_readiness_v1/cohort/events.py": "b56ff7571fbedeedc12dbe56ec0d03c4640f10f5794f162dcf4eda15862f28cd",
+  "research/corporate_event_readiness_v1/cohort/families.py": "1ca256828932fb58ec1d95a8eb4f6a064ac73493b329f7a141b26cd8b22bba93",
+  "research/corporate_event_readiness_v1/cohort/identity.py": "abaf1f2a343c601d7e65ff53f4cc6d6c5e10b4cac0ea94ca5ac2c6dc3085ce60",
+  "research/corporate_event_readiness_v1/cohort/live_run.py": "736c200ca9cee748714e355c8d6d98617fbbe2bba27d8ed76489635d7282c8fb",
+  "research/corporate_event_readiness_v1/cohort/power.py": "f07ad8193d6c7c40dd7b90d134c87ff495414003ebc7b43dbe6b2de7744d3cc3",
+  "research/corporate_event_readiness_v1/cohort/prospective.py": "c09c55902610e1b20f85f749e969efc1e3af8ce2217e6c748ba9d1c45e4104ed",
+  "research/corporate_event_readiness_v1/cohort/registration.py": "0ae328e7faf606ececc95ebfa28ee8521c441af219d07e5c7b045969473ef63c",
+  "research/corporate_event_readiness_v1/cohort/run_cohort.py": "59a03c904687385effc0c2c98a9ca89bdc15f1f335bca04d482b9d2f09bbf7f4",
+  "research/corporate_event_readiness_v1/filings.py": "fe9c3c0b8a385e0f31005ae07143ede9895f5365df43be443e652dbae9e616a2"
+ },
+ "contractSource": "Issue #292 comment 6671600416 (Owner draft C0/C1/C2/D), unchanged in substance",
+ "decisionOrder": [
+  "SOURCE_BLOCKED",
+  "REJECT_ECONOMIC_EFFECT (upper bound < MEE) / FAIL_COST_ROBUSTNESS (2x cost point <= 0)",
+  "DEVELOPMENT_SUPPORT (all gates)",
+  "UNCERTAIN"
+ ],
+ "evidenceClassIfExecuted": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+ "fixedSplits": {
+  "recentConcentration": [
+   "2025-01-01",
+   "2026-12-31"
+  ],
+  "valueUp": "2024-02-26"
+ },
+ "hypothesisFamily": {
+  "correction": "Holm FWER 0.05 over 3 slots; simultaneous two-sided 98.333% interval lower bound > 0",
+  "slots": [
+   "A1_CAPITAL_ALLOCATION_CANCELLATION",
+   "B1_LARGE_SUPPLY_CONTRACT",
+   "H3_INSIDER_NOT_RUN_P_EQUALS_1"
+  ]
+ },
+ "independence": "one event per issuer per hypothesis per H window from entry (embargo H126 / H252)",
+ "inference": {
+  "primary": "synchronized moving-block bootstrap, block 252 sessions (H126) / 504 (H252), B=9999, seed 319320",
+  "secondary": "Bartlett HAC lag 125/251; issuer x entry-week two-way clustered event regressions"
+ },
+ "inputSha256": {
+  "body-receipts-v1.json.gz": "99d349d9405f6db049e99c2a0ae6f13950b52d8b0552831dd4740148db9a3776",
+  "cohort-events-v1.jsonl.gz": "d6cb1591381768ffa4ac8feb5d2a1772c6e5c4112d2b37ba6e4cedc11672ae82",
+  "cohort-funnel-v1.json": "f39f1509a6d1f7eeac052f502c22158980da16cc60d820b23ca95199cd40f35a",
+  "document-route-crosscheck-v1.json": "297033f73fcdbb3d6f7e6ba3b2383adf2e097e2785443063a85bf398560f388d",
+  "ds005-crosscheck-v1.json": "75044aa2f4ae1fc7db42a40e06b2900063a03d3ca1295cf9a6a0e4de2a19155c",
+  "inputs-v1.json": "9fceb428472495a3b489a985a3f010707c48924cfad4cc7fdf6b1d37bdf6adcd",
+  "issuer-index-manifest-v1.json": "510bfd438194d180f1b1ed3cf4e5c11e257bdfeb5adad5ba0172ba0a6974c01f",
+  "issuer-index-rows-v1.jsonl.gz": "7b493e27c30f6fad09ebf80c55e529480eff170569cf4931a8e2a350fd17d0d9",
+  "issuer-universe-v1.json": "ab64c380cf1d559ab9f2cd3dc53b17b1a8561c9253f4e38a3ffa5b4e3292b0b7",
+  "price-admission-v1.json": "fdaa3907502d3bd4856f04b08e3919004e62177224fa275007ca0a704a417d2f"
+ },
+ "population": {
+  "fullKospiLiquidityUniverse": "SOURCE_BLOCKED (KRX portal LOGOUT); not substituted",
+  "identity": "PIT KOSPI Top300 monthly snapshot strictly before the receipt day"
+ },
+ "primaryEstimand": "calendar-time research book: mean daily net difference vs funded ex-ante-beta-matched ETF(069500.KS)+KRW-cash book; delta126 = 126*alpha; MEE 3pp (H126), 4pp (H252, secondary)",
+ "registration": {
+  "authorizationFile": "AUTHORIZATION-prospective-recording.json (pins this file by SHA256)",
+  "historicalExecution": "NOT_AUTHORIZED (needs its own exact-hash approval after blockedBeforeExecution)",
+  "liveLedger": "signal-history ledger/research-strategies/kr-corporate-information-events-v1/receipts.jsonl",
+  "outcomesReadBeforeRegistration": 0,
+  "registeredBy": "repository owner, direct session instruction 2026-11-07 (Korean: 사전등록 후보 등록해. 실제기록 라이브 커)",
+  "registeredScope": "PROSPECTIVE_RECORDING_ONLY",
+  "writer": "cohort/live_run.py from a scheduled task after the 18:00 KST final close of each KR session"
+ },
+ "status": "REGISTERED_PROSPECTIVE_RECORDING",
+ "studyId": "kr-corporate-information-events-v1",
+ "timing": {
+  "entry": "close of the following session",
+  "pitExact": 0,
+  "pitGrade": "DATE_ONLY_CONSERVATIVE",
+  "signal": "close of first KR session strictly after receipt day"
+ }
+}

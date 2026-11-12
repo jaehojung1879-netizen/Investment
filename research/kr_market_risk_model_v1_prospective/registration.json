@@ -1,0 +1,55 @@
+{
+ "codeFileHashes": {
+  "pipeline/kr_market_risk_anatomy.py": "e97887dd5b0bbb15b37ed40473b1da8e40a8f3fea2125d9fb176fa94dac6e978",
+  "pipeline/kr_market_risk_model.py": "568ba9fe963881699e6abaa6d2d6c8a747583485e3436eda7620032facdca54a",
+  "pipeline/kr_market_risk_model_receipts.py": "1871bfbca2cc548eda2be5972c5b79ea750c099c1aa23042984f19696ecc232e",
+  "pipeline/kr_selection_challenger.py": "7f4c3311a9fb872c007a6afc354417a93d16417d4dc5c4fa48d8edfbb42e08e9",
+  "pipeline/prospective_receipt_core.py": "0f5344b09e28a4b9e9df5839bb6fc11f8ace70a4c71c01c6915ae753857ef90f",
+  "pipeline/rp1_b_h1_state.py": "619fdf76457fc4b181fc40e661f0217fdb2f5fa58ca5ff276cce97494fd88882",
+  "scripts/record_kr_market_risk_model.py": "4fa0be4d783d576ff4f931100c4876523cbc713c065e01828d467d6a05fe296d"
+ },
+ "controlsStatedNotRecorded": {
+  "ETF_100_PERCENT": 1.0,
+  "FIXED_0_7": 0.7,
+  "note": "deterministic; stated here so the receipt schema is unchanged. 0.7 is the model's own REDUCED level, not a new parameter"
+ },
+ "evaluation": {
+  "horizons": [
+   21,
+   63,
+   126
+  ],
+  "rule": "only after maturity on the KR calendar and under a separate registration; no outcome is read or computed by the recorder"
+ },
+ "finalArchitecture": "C0",
+ "firstEligibleSignalSessionFloor": "2026-11-13",
+ "hook": "scripts/update_ledger.py calls scripts/record_kr_market_risk_model.run_isolated beside the B-H1 hook; ledger path ledger/research-strategies/kr-market-risk-model-v1/",
+ "inputs": {
+  "DGS10": "FRED public CSV",
+  "DGS3MO": "FRED public CSV",
+  "KS200": "FinanceDataReader KS200 close (same route as rp1-b-h1-state-v1)",
+  "VIXCLS": "FRED public CSV",
+  "deviationFromPlan": "the plan named the FRED_API_KEY secret; the public fredgraph CSV is used instead because the dry receipt and its vol63 cross-check used it and it needs no secret",
+  "lag": "kr_market_risk_model.FRED_LAG_DAYS applied by the sealed layer_states"
+ },
+ "nominationResult": {
+  "developmentNomination": "NO_CANDIDATE_NOMINATED_CONTROL_RETAINED",
+  "path": "docs/results/kr-market-risk-model-v1-result.json",
+  "sha256": "2578bbfa245a6540235cc05e231441b4ebb4da165240a84e715756477a897c4b"
+ },
+ "nominationSource": "NO_CANDIDATE_NOMINATED_CONTROL_RETAINED",
+ "ownerApproval": {
+  "date": "2026-11-08",
+  "scope": "prospective PAPER recording of the sealed kr-market-risk-model-v1 receipts only: the recorder code, this registration and the hook beside B-H1 in scripts/update_ledger.py. No trade, exposure change, weight, promotion or new hypothesis.",
+  "source": "Owner message in the research session, 2026-11-08"
+ },
+ "productionEffect": "NONE",
+ "registrationVersion": "kr-market-risk-model-v1-prospective-recording-1",
+ "schedule": "every weekly KR decision session whose receipt window (18:00 KST of the signal session until the next KR open) a ledger.yml run falls in; the writer's own clock decides, a missed window stays missed",
+ "sealedSpec": {
+  "path": "research_specs/kr-market-risk-model-v1.json",
+  "sha256": "fa7484c690d125089d628654a86199a23ad95dcfeb9b1b0682bdc704588ae1b4"
+ },
+ "status": "REGISTERED_PROSPECTIVE_RECORDING",
+ "studyId": "kr-market-risk-model-v1"
+}

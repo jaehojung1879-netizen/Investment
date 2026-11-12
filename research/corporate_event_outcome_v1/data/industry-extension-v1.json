@@ -1,0 +1,4338 @@
+{
+ "contract": "KR_INDUSTRY_EXTENSION_FROM_DART_KSIC_V1",
+ "issuers": 601,
+ "labelKinds": {
+  "EXTENDED": 303,
+  "NONE": 66,
+  "V4": 232
+ },
+ "labels": {
+  "00100939": {
+   "group": "CHEMICALS",
+   "induty_code": "20411",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00101044": {
+   "group": "HEALTHCARE",
+   "induty_code": "212",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00101220": {
+   "group": "CHEMICALS",
+   "induty_code": "201",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 9,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00101336": {
+   "group": "ENERGY_UTILITIES",
+   "induty_code": "35200",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00101433": {
+   "group": null,
+   "induty_code": "2032",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00101488": {
+   "group": null,
+   "induty_code": "28520",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00101628": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "47119",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00101664": {
+   "group": "HEALTHCARE",
+   "induty_code": "211",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00102113": {
+   "group": "CHEMICALS",
+   "induty_code": "20132",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 9,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00102760": {
+   "group": "CONSTRUCTION_ENGINEERING",
+   "induty_code": "41112",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00102858": {
+   "group": "BASIC_MATERIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00103006": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "2411",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00103176": {
+   "group": "FINANCIALS",
+   "induty_code": "65121",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00103592": {
+   "group": "HEALTHCARE",
+   "induty_code": "21220",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00104102": {
+   "group": "FINANCIALS",
+   "induty_code": "64919",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00104388": {
+   "group": "CHEMICALS",
+   "induty_code": "20111",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 5,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00104698": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "46800",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00104768": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00104856": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00105244": {
+   "group": "HEALTHCARE",
+   "induty_code": "21212",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00105271": {
+   "group": "CHEMICALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00105280": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00105299": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "2413",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00105606": {
+   "group": "AUTOS",
+   "induty_code": "303",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00105855": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00105873": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00105952": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00105961": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00106119": {
+   "group": "CHEMICALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00106313": {
+   "group": "CONSTRUCTION_ENGINEERING",
+   "induty_code": "41112",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00106368": {
+   "group": "CHEMICALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00106395": {
+   "group": null,
+   "induty_code": "28410",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00106623": {
+   "group": "AUTOS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00106641": {
+   "group": "AUTOS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00106669": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "2411",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00107066": {
+   "group": "CONSTRUCTION_ENGINEERING",
+   "induty_code": "41221",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00107224": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "24222",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00107598": {
+   "group": null,
+   "induty_code": "104",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00107613": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00107987": {
+   "group": null,
+   "induty_code": "20312",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00108135": {
+   "group": "HOLDINGS_BUSINESS_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00108241": {
+   "group": "FOOD_BEVERAGE_TOBACCO",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00108612": {
+   "group": "CHEMICALS",
+   "induty_code": "204",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00108913": {
+   "group": null,
+   "induty_code": "851",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00108940": {
+   "group": "HOLDINGS_BUSINESS_SERVICES",
+   "induty_code": "715",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00109170": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "induty_code": "2622",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00109189": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00109286": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "induty_code": "29210",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00109453": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "induty_code": "3111",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00109514": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "23325",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00109693": {
+   "group": "CHEMICALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00109718": {
+   "group": null,
+   "induty_code": "10211",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00110893": {
+   "group": "FINANCIALS",
+   "induty_code": "66121",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00111704": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00111722": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00111810": {
+   "group": "HEALTHCARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00111847": {
+   "group": "AUTOS",
+   "induty_code": "303",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00111999": {
+   "group": "HEALTHCARE",
+   "induty_code": "212",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00112004": {
+   "group": "HEALTHCARE",
+   "induty_code": "21100",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00112332": {
+   "group": "FINANCIALS",
+   "induty_code": "65110",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00112998": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00113058": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00113191": {
+   "group": null,
+   "induty_code": "65200",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00113207": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00113225": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "2411",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00113234": {
+   "group": null,
+   "induty_code": "105",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00113243": {
+   "group": null,
+   "induty_code": "105",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00113359": {
+   "group": "FINANCIALS",
+   "induty_code": "66121",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00113410": {
+   "group": "TRANSPORT_LOGISTICS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00113508": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00113526": {
+   "group": "TRANSPORT_LOGISTICS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00113535": {
+   "group": "TRANSPORT_LOGISTICS",
+   "induty_code": "50112",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00113562": {
+   "group": "FINANCIALS",
+   "induty_code": "65121",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00113997": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00114552": {
+   "group": "CONSTRUCTION_ENGINEERING",
+   "induty_code": "72121",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00114792": {
+   "group": "FINANCIALS",
+   "induty_code": "649",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 34,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00115676": {
+   "group": "BASIC_MATERIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00115977": {
+   "group": "BASIC_MATERIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00116268": {
+   "group": "HEALTHCARE",
+   "induty_code": "212",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00116824": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00116860": {
+   "group": "FINANCIALS",
+   "induty_code": "66121",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00116949": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "induty_code": "28202",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00117027": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "24222",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00117179": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00117188": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00117212": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00117258": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "47111",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00117267": {
+   "group": "FINANCIALS",
+   "induty_code": "65110",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00117300": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "24191",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00117337": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "23322",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00117498": {
+   "group": "FINANCIALS",
+   "induty_code": "64201",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00117577": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00117601": {
+   "group": "FINANCIALS",
+   "induty_code": "66121",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00117744": {
+   "group": "FINANCIALS",
+   "induty_code": "65121",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00118026": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00118275": {
+   "group": null,
+   "induty_code": "27212",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00118345": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "46103",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00118521": {
+   "group": "HEALTHCARE",
+   "induty_code": "212",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00119007": {
+   "group": null,
+   "induty_code": "171",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00119195": {
+   "group": "HEALTHCARE",
+   "induty_code": "212",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00120021": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00120030": {
+   "group": "CONSTRUCTION_ENGINEERING",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00120076": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00120182": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00120216": {
+   "group": "FINANCIALS",
+   "induty_code": "65121",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00120508": {
+   "group": null,
+   "induty_code": "10422",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00120526": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00120562": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00120571": {
+   "group": "FOOD_BEVERAGE_TOBACCO",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00121543": {
+   "group": "FOOD_BEVERAGE_TOBACCO",
+   "induty_code": "11122",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00121729": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "47111",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00121932": {
+   "group": "CHEMICALS",
+   "induty_code": "204",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00121941": {
+   "group": "FOOD_BEVERAGE_TOBACCO",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00122472": {
+   "group": "CHEMICALS",
+   "induty_code": "20131",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 9,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00122579": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "14120",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00122694": {
+   "group": "CONSTRUCTION_ENGINEERING",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00122737": {
+   "group": "TRANSPORT_LOGISTICS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00122825": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "induty_code": "612",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00122898": {
+   "group": null,
+   "induty_code": "23999",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00122922": {
+   "group": "CONSTRUCTION_ENGINEERING",
+   "induty_code": "41112",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00123143": {
+   "group": "HEALTHCARE",
+   "induty_code": "212",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00123718": {
+   "group": "HEALTHCARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00123772": {
+   "group": "FINANCIALS",
+   "induty_code": "66121",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00123967": {
+   "group": "ENERGY_UTILITIES",
+   "induty_code": "35200",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00124197": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00124504": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00124540": {
+   "group": "CONSTRUCTION_ENGINEERING",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00124726": {
+   "group": null,
+   "induty_code": "104",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00124799": {
+   "group": null,
+   "induty_code": "102",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00125080": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00125150": {
+   "group": "ENERGY_UTILITIES",
+   "induty_code": "351",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00125521": {
+   "group": "AUTOS",
+   "induty_code": "303",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00125530": {
+   "group": "FOOD_BEVERAGE_TOBACCO",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00125743": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "24122",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00125974": {
+   "group": "CONSTRUCTION_ENGINEERING",
+   "induty_code": "41221",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00126186": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00126229": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "467",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00126256": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00126292": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00126308": {
+   "group": "CONSTRUCTION_ENGINEERING",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00126362": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00126371": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00126380": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00126414": {
+   "group": "HEALTHCARE",
+   "induty_code": "212",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00126478": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00126487": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00126566": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00126779": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "24222",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00126937": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00126955": {
+   "group": "FOOD_BEVERAGE_TOBACCO",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00127042": {
+   "group": null,
+   "induty_code": "15110",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00127167": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "46739",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00127802": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "induty_code": "29141",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 5,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00127857": {
+   "group": null,
+   "induty_code": "33201",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00128412": {
+   "group": "HEALTHCARE",
+   "induty_code": "212",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00128555": {
+   "group": "ENERGY_UTILITIES",
+   "induty_code": "35200",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00128971": {
+   "group": "CONSTRUCTION_ENGINEERING",
+   "induty_code": "411",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00129350": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "induty_code": "26291",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00129387": {
+   "group": "CHEMICALS",
+   "induty_code": "20411",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00129679": {
+   "group": "HEALTHCARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00129989": {
+   "group": "CHEMICALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00130684": {
+   "group": "ENERGY_UTILITIES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00130772": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "induty_code": "60210",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00131054": {
+   "group": "FINANCIALS",
+   "induty_code": "66121",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00131692": {
+   "group": "CHEMICALS",
+   "induty_code": "2049",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00131780": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00131832": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00131850": {
+   "group": "FINANCIALS",
+   "induty_code": "66121",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00132105": {
+   "group": "FOOD_BEVERAGE_TOBACCO",
+   "induty_code": "108",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 7,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00132354": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00132637": {
+   "group": "BASIC_MATERIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00132804": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "23311",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00133511": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "46800",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00133812": {
+   "group": "TRANSPORT_LOGISTICS",
+   "induty_code": "49301",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00133858": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "induty_code": "28202",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00134316": {
+   "group": "AUTOS",
+   "induty_code": "303",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00134477": {
+   "group": "AUTOS",
+   "induty_code": "30331",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00134510": {
+   "group": "AUTOS",
+   "induty_code": "303",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00134963": {
+   "group": "CHEMICALS",
+   "induty_code": "20499",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00135795": {
+   "group": null,
+   "induty_code": "263",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00135917": {
+   "group": "FINANCIALS",
+   "induty_code": "65121",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00135962": {
+   "group": null,
+   "induty_code": "03111",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00136271": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "induty_code": "2612",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00136341": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "467",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00136378": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00136721": {
+   "group": "FINANCIALS",
+   "induty_code": "66121",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00136776": {
+   "group": "CHEMICALS",
+   "induty_code": "204",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00137359": {
+   "group": "HEALTHCARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00137997": {
+   "group": "FINANCIALS",
+   "induty_code": "66121",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00138190": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "468",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00138224": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "23311",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00138242": {
+   "group": "AUTOS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00138260": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "24113",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00138279": {
+   "group": "ENERGY_UTILITIES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00138297": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00138516": {
+   "group": null,
+   "induty_code": "265",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00138701": {
+   "group": "HOLDINGS_BUSINESS_SERVICES",
+   "induty_code": "715",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00138729": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "172",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00138792": {
+   "group": "TRANSPORT_LOGISTICS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00139214": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00139454": {
+   "group": "CHEMICALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00139764": {
+   "group": null,
+   "induty_code": "32021",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00139834": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00139889": {
+   "group": "CHEMICALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00140131": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "induty_code": "631",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00140177": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00140955": {
+   "group": "CHEMICALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00140964": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00141149": {
+   "group": "HEALTHCARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00141307": {
+   "group": "BASIC_MATERIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00141404": {
+   "group": "BASIC_MATERIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00141529": {
+   "group": "FOOD_BEVERAGE_TOBACCO",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00141626": {
+   "group": "HEALTHCARE",
+   "induty_code": "212",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00143527": {
+   "group": "FINANCIALS",
+   "induty_code": "649",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 34,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00144155": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00144164": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "46713",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00144395": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00144720": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "induty_code": "2611",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00145109": {
+   "group": "HEALTHCARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00145163": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00145260": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "22231",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00145552": {
+   "group": "CHEMICALS",
+   "induty_code": "20111",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 5,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00145598": {
+   "group": "HEALTHCARE",
+   "induty_code": "212",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00145880": {
+   "group": "BASIC_MATERIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00146083": {
+   "group": "HEALTHCARE",
+   "induty_code": "212",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00146214": {
+   "group": "HEALTHCARE",
+   "induty_code": "212",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00146269": {
+   "group": null,
+   "induty_code": "13101",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00146454": {
+   "group": "HEALTHCARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00146649": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00146861": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "induty_code": "26292",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00147295": {
+   "group": "FINANCIALS",
+   "induty_code": "64121",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00148276": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00148328": {
+   "group": "CHEMICALS",
+   "induty_code": "20202",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00148443": {
+   "group": "HOLDINGS_BUSINESS_SERVICES",
+   "induty_code": "715",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00148540": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00148610": {
+   "group": "FINANCIALS",
+   "induty_code": "66121",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00148717": {
+   "group": "CHEMICALS",
+   "induty_code": "20501",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00148832": {
+   "group": "FINANCIALS",
+   "induty_code": "64121",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00148896": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00148939": {
+   "group": null,
+   "induty_code": "15110",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00148984": {
+   "group": null,
+   "induty_code": "2321",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00148993": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00149354": {
+   "group": "HEALTHCARE",
+   "induty_code": "212",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00149646": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00149655": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00149947": {
+   "group": "HEALTHCARE",
+   "induty_code": "212",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00150244": {
+   "group": "FOOD_BEVERAGE_TOBACCO",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00150633": {
+   "group": null,
+   "induty_code": "320",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00150828": {
+   "group": "CONSTRUCTION_ENGINEERING",
+   "induty_code": "41221",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00151128": {
+   "group": "AUTOS",
+   "induty_code": "303",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00152385": {
+   "group": "HEALTHCARE",
+   "induty_code": "212",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00152686": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "induty_code": "2622",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00152862": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00152880": {
+   "group": "CONSTRUCTION_ENGINEERING",
+   "induty_code": "41221",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00153126": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00153393": {
+   "group": "CHEMICALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00153524": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "1721",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00153861": {
+   "group": "CONSTRUCTION_ENGINEERING",
+   "induty_code": "41221",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00154426": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "induty_code": "591",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00154462": {
+   "group": "CHEMICALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00155212": {
+   "group": "CONSTRUCTION_ENGINEERING",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00155276": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00155319": {
+   "group": "BASIC_MATERIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00155355": {
+   "group": "FOOD_BEVERAGE_TOBACCO",
+   "induty_code": "108",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 7,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00155531": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00156521": {
+   "group": "FINANCIALS",
+   "induty_code": "66199",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00157070": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "induty_code": "2812",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00157399": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "induty_code": "26299",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00157681": {
+   "group": "CHEMICALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00158149": {
+   "group": "ENERGY_UTILITIES",
+   "induty_code": "19221",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00158307": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00158316": {
+   "group": "HOLDINGS_BUSINESS_SERVICES",
+   "induty_code": "715",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00158325": {
+   "group": null,
+   "induty_code": "63991",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00158501": {
+   "group": "HOLDINGS_BUSINESS_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00158909": {
+   "group": "FINANCIALS",
+   "induty_code": "64121",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00158963": {
+   "group": "HEALTHCARE",
+   "induty_code": "212",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00159005": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00159023": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00159102": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00159193": {
+   "group": "ENERGY_UTILITIES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00159209": {
+   "group": "CONSTRUCTION_ENGINEERING",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00159218": {
+   "group": "CONSTRUCTION_ENGINEERING",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00159573": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "24131",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00159616": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00159698": {
+   "group": null,
+   "induty_code": "35300",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00159786": {
+   "group": "CHEMICALS",
+   "induty_code": "20129",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00159795": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "induty_code": "2512",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00159810": {
+   "group": "CHEMICALS",
+   "induty_code": "20119",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00160047": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00160302": {
+   "group": "CHEMICALS",
+   "induty_code": "2049",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00160588": {
+   "group": "CHEMICALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00160843": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00161046": {
+   "group": "HEALTHCARE",
+   "induty_code": "212",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00161125": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00161383": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00161408": {
+   "group": "FINANCIALS",
+   "induty_code": "64911",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00161426": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00161693": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00161709": {
+   "group": null,
+   "induty_code": "32029",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00161976": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "1419",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00162461": {
+   "group": "CHEMICALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00162586": {
+   "group": "HEALTHCARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00162993": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "23311",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00163114": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00163512": {
+   "group": "TRANSPORT_LOGISTICS",
+   "induty_code": "49309",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00163673": {
+   "group": "ENERGY_UTILITIES",
+   "induty_code": "352",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00163682": {
+   "group": "FINANCIALS",
+   "induty_code": "66121",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00163691": {
+   "group": "HOLDINGS_BUSINESS_SERVICES",
+   "induty_code": "715",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00164469": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "2413",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00164478": {
+   "group": "CONSTRUCTION_ENGINEERING",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00164609": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "induty_code": "3111",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00164636": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00164645": {
+   "group": "TRANSPORT_LOGISTICS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00164672": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "23311",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00164724": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00164742": {
+   "group": "AUTOS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00164779": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00164788": {
+   "group": "AUTOS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00164812": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "46800",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00164830": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00164876": {
+   "group": "FINANCIALS",
+   "induty_code": "66121",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00164973": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00165413": {
+   "group": "CHEMICALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00165583": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "46713",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00165680": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00166227": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "46800",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00166315": {
+   "group": "AUTOS",
+   "induty_code": "30391",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00166573": {
+   "group": "HEALTHCARE",
+   "induty_code": "212",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00167192": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "221",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00167208": {
+   "group": "TRANSPORT_LOGISTICS",
+   "induty_code": "50112",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00167280": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "461",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00169048": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "471",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 6,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00170558": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00171265": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "91249",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00171636": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00172228": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "induty_code": "2512",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00172291": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "induty_code": "62022",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00172936": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "24113",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00173078": {
+   "group": "AUTOS",
+   "induty_code": "303",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00173874": {
+   "group": "BASIC_MATERIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00176792": {
+   "group": "FINANCIALS",
+   "induty_code": "65110",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00176914": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "induty_code": "631",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00179489": {
+   "group": "HEALTHCARE",
+   "induty_code": "21212",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00181712": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00181934": {
+   "group": "CONSTRUCTION_ENGINEERING",
+   "induty_code": "41225",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00182696": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00188089": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "14112",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00190321": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00191472": {
+   "group": "CHEMICALS",
+   "induty_code": "20119",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00193009": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "induty_code": "2629",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00194947": {
+   "group": "CONSTRUCTION_ENGINEERING",
+   "induty_code": "72129",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00195229": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00198697": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "induty_code": "261",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00201450": {
+   "group": null,
+   "induty_code": "76110",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00203290": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00203315": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "induty_code": "591",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00209443": {
+   "group": "FINANCIALS",
+   "induty_code": "64911",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00209780": {
+   "group": null,
+   "induty_code": "27216",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00219097": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00219574": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00220561": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "47111",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00222532": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00225159": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00225706": {
+   "group": "HEALTHCARE",
+   "induty_code": "212",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00231363": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00231372": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "75210",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00233653": {
+   "group": "FINANCIALS",
+   "induty_code": "642",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00234412": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00241005": {
+   "group": "CHEMICALS",
+   "induty_code": "20202",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00244455": {
+   "group": "FOOD_BEVERAGE_TOBACCO",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00248974": {
+   "group": "HEALTHCARE",
+   "induty_code": "212",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00249247": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "induty_code": "631",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00254045": {
+   "group": "FINANCIALS",
+   "induty_code": "64121",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00255619": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00258801": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00260383": {
+   "group": "CHEMICALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00260392": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "induty_code": "28302",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00260408": {
+   "group": null,
+   "induty_code": "105",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00261285": {
+   "group": "ENERGY_UTILITIES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00261443": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00266961": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00269940": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00273615": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "induty_code": "620",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00274933": {
+   "group": null,
+   "induty_code": "561",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00296290": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00299002": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00300548": {
+   "group": null,
+   "induty_code": "32029",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00302926": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00303873": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00309503": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00311030": {
+   "group": "FINANCIALS",
+   "induty_code": "66121",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00332927": {
+   "group": null,
+   "induty_code": "15121",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00339391": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00340917": {
+   "group": "FOOD_BEVERAGE_TOBACCO",
+   "induty_code": "108",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 7,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00344287": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "induty_code": "29241",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00349097": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00351418": {
+   "group": null,
+   "induty_code": "2311",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00356361": {
+   "group": "CHEMICALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00356370": {
+   "group": "CHEMICALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00360142": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "46800",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00360595": {
+   "group": "TRANSPORT_LOGISTICS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00361008": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00362238": {
+   "group": "CHEMICALS",
+   "induty_code": "20501",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00362441": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00365387": {
+   "group": null,
+   "induty_code": "76320",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00365989": {
+   "group": null,
+   "induty_code": "55103",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00366438": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00372129": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "induty_code": "292",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00375302": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00377610": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "241",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00382199": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00398701": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00398792": {
+   "group": "AUTOS",
+   "induty_code": "303",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00399773": {
+   "group": "CHEMICALS",
+   "induty_code": "20111",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 5,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00400857": {
+   "group": "CHEMICALS",
+   "induty_code": "20423",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 5,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00401731": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00403632": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "induty_code": "61299",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00404701": {
+   "group": "FINANCIALS",
+   "induty_code": "642",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00406046": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00406392": {
+   "group": null,
+   "induty_code": "47919",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00409672": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "141",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00412597": {
+   "group": null,
+   "induty_code": "47919",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00413046": {
+   "group": "HEALTHCARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00413523": {
+   "group": "CONSTRUCTION_ENGINEERING",
+   "induty_code": "72111",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00414601": {
+   "group": null,
+   "induty_code": "4659",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00415628": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "induty_code": "31114",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00415646": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "induty_code": "2629",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00423609": {
+   "group": "HEALTHCARE",
+   "induty_code": "21212",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00426086": {
+   "group": "CHEMICALS",
+   "induty_code": "2049",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00427483": {
+   "group": "HEALTHCARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00428251": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00428321": {
+   "group": "FOOD_BEVERAGE_TOBACCO",
+   "induty_code": "108",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 7,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00432102": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00435297": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00447609": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "induty_code": "2622",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00453284": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "46313",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00459871": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00469799": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "induty_code": "29193",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 5,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00480367": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "2413",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00480455": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "induty_code": "29111",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00481454": {
+   "group": "BASIC_MATERIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00486705": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "2419",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00500254": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00503668": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00508274": {
+   "group": "CHEMICALS",
+   "induty_code": "204",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00508344": {
+   "group": null,
+   "induty_code": "68122",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00525934": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "induty_code": "2612",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00526599": {
+   "group": "HEALTHCARE",
+   "induty_code": "27191",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00539274": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00540605": {
+   "group": null,
+   "induty_code": "331",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00544452": {
+   "group": null,
+   "induty_code": "68112",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00545716": {
+   "group": null,
+   "induty_code": "76110",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00547583": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00555874": {
+   "group": "TRANSPORT_LOGISTICS",
+   "induty_code": "511",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00557508": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00561866": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "22299",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00564562": {
+   "group": null,
+   "induty_code": "26519",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00565154": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "induty_code": "71310",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00583424": {
+   "group": "CHEMICALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00587466": {
+   "group": "CHEMICALS",
+   "induty_code": "201",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 9,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00589127": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "induty_code": "2612",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00593032": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "14111",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00595191": {
+   "group": "CHEMICALS",
+   "induty_code": "20129",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00600013": {
+   "group": "FINANCIALS",
+   "induty_code": "642",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00622787": {
+   "group": null,
+   "induty_code": "213",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00628189": {
+   "group": null,
+   "induty_code": "85120",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00631518": {
+   "group": "ENERGY_UTILITIES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00632304": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00633835": {
+   "group": "CONSTRUCTION_ENGINEERING",
+   "induty_code": "41221",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00635134": {
+   "group": "FOOD_BEVERAGE_TOBACCO",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00636045": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "induty_code": "2612",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00648721": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "induty_code": "29176",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00650629": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "induty_code": "602",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00651901": {
+   "group": "TRANSPORT_LOGISTICS",
+   "induty_code": "511",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00653024": {
+   "group": "TRANSPORT_LOGISTICS",
+   "induty_code": "511",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00670340": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00671376": {
+   "group": "TRANSPORT_LOGISTICS",
+   "induty_code": "511",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00681142": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "14120",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00683469": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00684714": {
+   "group": "BASIC_MATERIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00687711": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "2411",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00688996": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00706715": {
+   "group": "FINANCIALS",
+   "induty_code": "649",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 34,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00722500": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00728638": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00759513": {
+   "group": "BASIC_MATERIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00760971": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00767460": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "2221",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00776820": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00790501": {
+   "group": "TRANSPORT_LOGISTICS",
+   "induty_code": "501",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00795135": {
+   "group": "CHEMICALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00816544": {
+   "group": "CHEMICALS",
+   "induty_code": "20423",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 5,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00828497": {
+   "group": "HEALTHCARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00838500": {
+   "group": null,
+   "induty_code": "451",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "00854997": {
+   "group": "HEALTHCARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00858364": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00860332": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00872984": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00877059": {
+   "group": "HEALTHCARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00878696": {
+   "group": "HOLDINGS_BUSINESS_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00878915": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00896285": {
+   "group": "FOOD_BEVERAGE_TOBACCO",
+   "induty_code": "108",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 7,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00904672": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00907013": {
+   "group": "FINANCIALS",
+   "induty_code": "642",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00907660": {
+   "group": "FINANCIALS",
+   "induty_code": "64919",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00911955": {
+   "group": "CHEMICALS",
+   "induty_code": "20423",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 5,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00936787": {
+   "group": "CHEMICALS",
+   "induty_code": "201",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 9,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00937324": {
+   "group": "BASIC_MATERIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00939331": {
+   "group": "CHEMICALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00949161": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "induty_code": "2830",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00956930": {
+   "group": "HEALTHCARE",
+   "induty_code": "212",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00960641": {
+   "group": "FINANCIALS",
+   "induty_code": "64209",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00968607": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "468",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00972503": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00980122": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00983040": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00983271": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "00990165": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "23311",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "00992871": {
+   "group": "HEALTHCARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01009789": {
+   "group": "CHEMICALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01010110": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "induty_code": "5821",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01026157": {
+   "group": null,
+   "induty_code": "76110",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "01028164": {
+   "group": "FINANCIALS",
+   "induty_code": "64121",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01030132": {
+   "group": "FINANCIALS",
+   "induty_code": "64121",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01032413": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "induty_code": "262",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 10,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01032486": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01036446": {
+   "group": "AUTOS",
+   "induty_code": "303",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01042775": {
+   "group": "AUTOS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01060744": {
+   "group": null,
+   "induty_code": "171",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "01093007": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01105153": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01128613": {
+   "group": null,
+   "induty_code": "15219",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "01133217": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01159233": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "induty_code": "2629",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01168383": {
+   "group": "HEALTHCARE",
+   "induty_code": "212",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01190568": {
+   "group": "CHEMICALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01194689": {
+   "group": "CONSTRUCTION_ENGINEERING",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01199550": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "induty_code": "2612",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01203312": {
+   "group": "FINANCIALS",
+   "induty_code": "64121",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01204056": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01205709": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01205842": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01205851": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01234297": {
+   "group": "CHEMICALS",
+   "induty_code": "201",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 9,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01236897": {
+   "group": "HEALTHCARE",
+   "induty_code": "212",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01238169": {
+   "group": "FOOD_BEVERAGE_TOBACCO",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01244601": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01258507": {
+   "group": "FOOD_BEVERAGE_TOBACCO",
+   "induty_code": "108",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 7,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01261893": {
+   "group": null,
+   "induty_code": "272",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "01262032": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "induty_code": "62021",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 2,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01263022": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01267170": {
+   "group": "CHEMICALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01267684": {
+   "group": null,
+   "induty_code": "762",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "01276594": {
+   "group": null,
+   "induty_code": "6811",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "01310269": {
+   "group": "CONSTRUCTION_ENGINEERING",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01311408": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01316227": {
+   "group": "CHEMICALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01316236": {
+   "group": "CHEMICALS",
+   "induty_code": "201",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 9,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01316245": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01316254": {
+   "group": "CHEMICALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01319808": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "23311",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01319899": {
+   "group": "HEALTHCARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01323032": {
+   "group": null,
+   "induty_code": "45120",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "01325979": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "2413",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01350869": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01363818": {
+   "group": null,
+   "induty_code": "681",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "01384787": {
+   "group": "COMMUNICATION_MEDIA_SOFTWARE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01386916": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01390344": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01412725": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01412822": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01415892": {
+   "group": null,
+   "induty_code": "681",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "01428203": {
+   "group": null,
+   "induty_code": "2311",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "01430475": {
+   "group": null,
+   "induty_code": "6811",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "01437186": {
+   "group": null,
+   "induty_code": "681",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "01478712": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01497869": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01510489": {
+   "group": "HOLDINGS_BUSINESS_SERVICES",
+   "induty_code": "70113",
+   "kind": "EXTENDED",
+   "level": 4,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01515323": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01519790": {
+   "group": "CAPITAL_GOODS_DEFENSE",
+   "induty_code": "292",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01524093": {
+   "group": "CONSTRUCTION_ENGINEERING",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01535150": {
+   "group": null,
+   "induty_code": "68112",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "01562589": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01568413": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01596425": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01622720": {
+   "group": null,
+   "induty_code": "68112",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "01649204": {
+   "group": "CHEMICALS",
+   "induty_code": "20423",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 5,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01669226": {
+   "group": null,
+   "induty_code": "68112",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "01712485": {
+   "group": null,
+   "induty_code": "45110",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "01721809": {
+   "group": "CONSUMER_RETAIL_SERVICES",
+   "induty_code": "471",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 6,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01760738": {
+   "group": "CHEMICALS",
+   "induty_code": "20129",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01762569": {
+   "group": "CHEMICALS",
+   "induty_code": "20111",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 5,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01765265": {
+   "group": "BASIC_MATERIALS",
+   "induty_code": "241",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 3,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01770203": {
+   "group": null,
+   "induty_code": "2321",
+   "kind": "NONE",
+   "tier": "UNLABELLED"
+  },
+  "01817081": {
+   "group": "CONSTRUCTION_ENGINEERING",
+   "induty_code": "411",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 4,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01867758": {
+   "group": "ELECTRONICS_ELECTRICAL",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01880801": {
+   "group": "FINANCIALS",
+   "induty_code": "642",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 1,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01882845": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "01965324": {
+   "group": "FINANCIALS",
+   "kind": "V4",
+   "tier": "V4_CURRENT_ANCHOR"
+  },
+  "01965333": {
+   "group": "HEALTHCARE",
+   "induty_code": "212",
+   "kind": "EXTENDED",
+   "level": 3,
+   "purity": 1.0,
+   "support": 11,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  },
+  "02042949": {
+   "group": "FINANCIALS",
+   "induty_code": "64992",
+   "kind": "EXTENDED",
+   "level": 5,
+   "purity": 1.0,
+   "support": 29,
+   "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+  }
+ },
+ "leaveOneOut": {
+  "agree": 219,
+  "agreement": 0.9821,
+  "answered": 223,
+  "byAnsweringLevel": {
+   "UNANSWERED": {
+    "agree": 0,
+    "agreement": 0.0,
+    "n": 9
+   },
+   "level2": {
+    "agree": 13,
+    "agreement": 0.7647,
+    "n": 17
+   },
+   "level3": {
+    "agree": 88,
+    "agreement": 1.0,
+    "n": 88
+   },
+   "level4": {
+    "agree": 28,
+    "agreement": 1.0,
+    "n": 28
+   },
+   "level5": {
+    "agree": 90,
+    "agreement": 1.0,
+    "n": 90
+   }
+  },
+  "unanswered": 9
+ },
+ "minAcceptedLevel": 3,
+ "overlapWithV4": 232,
+ "source": {
+  "calls": 601,
+  "collected": "2026-11-07",
+  "endpoint": "opendart company.json",
+  "statusCounts": {
+   "000": 601
+  }
+ },
+ "tier": "CURRENT_DART_KSIC_LEARNED_NOT_PIT"
+}

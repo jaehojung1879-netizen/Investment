@@ -142,6 +142,16 @@ def main(argv=None) -> int:
     except Exception as exc:  # noqa: BLE001 - research must never block the ledger
         print(f"::warning::rp1-b-h1-state-v1 hook raised (paper ledger unaffected): {type(exc).__name__}: {exc}")
         _hook_failed(ledger_dir, "rp1-b-h1-state-v1", exc)
+    # kr-market-risk-model-v1: the sealed market-exposure model's weekly PROSPECTIVE_PAPER receipts (states and multipliers only; productionEffect NONE).
+    # Same isolation as rp1-b-h1-state-v1: a child process with a timeout, so it can never hold up or fail the paper ledger.
+    try:
+        from scripts import record_kr_market_risk_model as market_risk
+        code = market_risk.run_isolated(ledger_dir / "research-strategies" / market_risk.K.STUDY)
+        if code:
+            print(f"::warning::kr-market-risk-model-v1 research step exited {code}; see its publication-status.json")
+    except Exception as exc:  # noqa: BLE001 - research must never block the ledger
+        print(f"::warning::kr-market-risk-model-v1 hook raised (paper ledger unaffected): {type(exc).__name__}: {exc}")
+        _hook_failed(ledger_dir, "kr-market-risk-model-v1", exc)
     return 0
 
 
