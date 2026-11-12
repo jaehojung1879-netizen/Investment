@@ -1,0 +1,7100 @@
+{
+ "studyId": "adaptive-cocktail-v1",
+ "evidenceClass": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+ "inputs": {
+  "finalSessionQuotesApplied": 235,
+  "identity": "3e4d7aa35e2c4b273e4ecef0e2e8ea7a8a27077f0de14bb3d5ea6a696a97f1a5",
+  "matrixDigest": "32e49b57a7541eea66f76373baef50c6302a394247b313f6099f718d46d54b0c"
+ },
+ "window": {
+  "start": "2018-01-08",
+  "end": "2026-09-14",
+  "decisions": 114,
+  "sleeveHistoryStart": "2014-01-06"
+ },
+ "withheldWouldHavePickedRebalances": {
+  "S0_ETF": 0,
+  "S1_INDUSTRY_MOMENTUM": 1,
+  "S2_VALUE_CONFIRMED": 0,
+  "S3_FOUR_FACTOR": 5,
+  "SX_XGB_SENSITIVITY": 3
+ },
+ "performance": {
+  "S0_ETF": {
+   "cagr": 0.169576,
+   "etfCagr": 0.169576,
+   "excessCagr": 0.0,
+   "vol": 0.274009,
+   "sharpe": 0.633386,
+   "mdd": -0.408055,
+   "cvar5Daily": -0.04042,
+   "trackingError": 0.0,
+   "informationRatio": 0.238763,
+   "rolling126ExcessPositiveShare": 0.13217,
+   "rolling126ExcessWorst": -0.0,
+   "rolling252ExcessPositiveShare": 0.15008,
+   "rolling252ExcessWorst": -0.0,
+   "years": 8.452381,
+   "costPerYear": 0.0,
+   "turnoverPerYear": 0.0,
+   "terminalHits": 0,
+   "cagrTerminalAtLastClose": 0.169576,
+   "yearly": {
+    "2018": {
+     "ret": -0.190376,
+     "etf": -0.190376,
+     "excess": 0.0
+    },
+    "2019": {
+     "ret": 0.143994,
+     "etf": 0.143994,
+     "excess": 0.0
+    },
+    "2020": {
+     "ret": 0.355328,
+     "etf": 0.355328,
+     "excess": 0.0
+    },
+    "2021": {
+     "ret": 0.029991,
+     "etf": 0.029991,
+     "excess": 0.0
+    },
+    "2022": {
+     "ret": -0.241499,
+     "etf": -0.241499,
+     "excess": -0.0
+    },
+    "2023": {
+     "ret": 0.248424,
+     "etf": 0.248424,
+     "excess": 0.0
+    },
+    "2024": {
+     "ret": -0.093715,
+     "etf": -0.093715,
+     "excess": -0.0
+    },
+    "2025": {
+     "ret": 0.942069,
+     "etf": 0.942069,
+     "excess": 0.0
+    },
+    "2026": {
+     "ret": 0.744093,
+     "etf": 0.744093,
+     "excess": 0.0
+    }
+   }
+  },
+  "S1_INDUSTRY_MOMENTUM": {
+   "cagr": 0.075621,
+   "etfCagr": 0.169576,
+   "excessCagr": -0.093955,
+   "vol": 0.400472,
+   "sharpe": 0.329844,
+   "mdd": -0.6321,
+   "cvar5Daily": -0.056708,
+   "trackingError": 0.300777,
+   "informationRatio": -0.137844,
+   "rolling126ExcessPositiveShare": 0.439401,
+   "rolling126ExcessWorst": -1.136863,
+   "rolling252ExcessPositiveShare": 0.448111,
+   "rolling252ExcessWorst": -2.25486,
+   "years": 8.452381,
+   "costPerYear": 0.023639,
+   "turnoverPerYear": 7.070258,
+   "terminalHits": 0,
+   "cagrTerminalAtLastClose": 0.075621,
+   "yearly": {
+    "2018": {
+     "ret": -0.163801,
+     "etf": -0.190376,
+     "excess": 0.026574
+    },
+    "2019": {
+     "ret": -0.153046,
+     "etf": 0.143994,
+     "excess": -0.29704
+    },
+    "2020": {
+     "ret": 0.168029,
+     "etf": 0.355328,
+     "excess": -0.187299
+    },
+    "2021": {
+     "ret": 0.081209,
+     "etf": 0.029991,
+     "excess": 0.051218
+    },
+    "2022": {
+     "ret": -0.417434,
+     "etf": -0.241499,
+     "excess": -0.175935
+    },
+    "2023": {
+     "ret": 0.599915,
+     "etf": 0.248424,
+     "excess": 0.351491
+    },
+    "2024": {
+     "ret": -0.021362,
+     "etf": -0.093715,
+     "excess": 0.072353
+    },
+    "2025": {
+     "ret": 1.394387,
+     "etf": 0.942069,
+     "excess": 0.452318
+    },
+    "2026": {
+     "ret": -0.052008,
+     "etf": 0.744093,
+     "excess": -0.796101
+    }
+   }
+  },
+  "S2_VALUE_CONFIRMED": {
+   "cagr": 0.186286,
+   "etfCagr": 0.169576,
+   "excessCagr": 0.01671,
+   "vol": 0.264233,
+   "sharpe": 0.701889,
+   "mdd": -0.492281,
+   "cvar5Daily": -0.037625,
+   "trackingError": 0.201001,
+   "informationRatio": 0.059246,
+   "rolling126ExcessPositiveShare": 0.543142,
+   "rolling126ExcessWorst": -0.885635,
+   "rolling252ExcessPositiveShare": 0.533262,
+   "rolling252ExcessWorst": -1.266737,
+   "years": 8.452381,
+   "costPerYear": 0.013842,
+   "turnoverPerYear": 4.280198,
+   "terminalHits": 0,
+   "cagrTerminalAtLastClose": 0.186286,
+   "yearly": {
+    "2018": {
+     "ret": 0.045123,
+     "etf": -0.190376,
+     "excess": 0.235499
+    },
+    "2019": {
+     "ret": 0.006237,
+     "etf": 0.143994,
+     "excess": -0.137757
+    },
+    "2020": {
+     "ret": 0.040707,
+     "etf": 0.355328,
+     "excess": -0.314621
+    },
+    "2021": {
+     "ret": 0.215317,
+     "etf": 0.029991,
+     "excess": 0.185326
+    },
+    "2022": {
+     "ret": -0.154356,
+     "etf": -0.241499,
+     "excess": 0.087143
+    },
+    "2023": {
+     "ret": 0.070867,
+     "etf": 0.248424,
+     "excess": -0.177557
+    },
+    "2024": {
+     "ret": -0.079104,
+     "etf": -0.093715,
+     "excess": 0.014611
+    },
+    "2025": {
+     "ret": 1.189232,
+     "etf": 0.942069,
+     "excess": 0.247163
+    },
+    "2026": {
+     "ret": 0.744877,
+     "etf": 0.744093,
+     "excess": 0.000784
+    }
+   }
+  },
+  "S3_FOUR_FACTOR": {
+   "cagr": 0.087789,
+   "etfCagr": 0.169576,
+   "excessCagr": -0.081787,
+   "vol": 0.236219,
+   "sharpe": 0.388159,
+   "mdd": -0.620827,
+   "cvar5Daily": -0.033668,
+   "trackingError": 0.21985,
+   "informationRatio": -0.372359,
+   "rolling126ExcessPositiveShare": 0.440399,
+   "rolling126ExcessWorst": -1.333549,
+   "rolling252ExcessPositiveShare": 0.387972,
+   "rolling252ExcessWorst": -2.431745,
+   "years": 8.452381,
+   "costPerYear": 0.014654,
+   "turnoverPerYear": 4.505228,
+   "terminalHits": 0,
+   "cagrTerminalAtLastClose": 0.087789,
+   "yearly": {
+    "2018": {
+     "ret": -0.258093,
+     "etf": -0.190376,
+     "excess": -0.067718
+    },
+    "2019": {
+     "ret": -0.035136,
+     "etf": 0.143994,
+     "excess": -0.179131
+    },
+    "2020": {
+     "ret": -0.198424,
+     "etf": 0.355328,
+     "excess": -0.553752
+    },
+    "2021": {
+     "ret": 0.165671,
+     "etf": 0.029991,
+     "excess": 0.135681
+    },
+    "2022": {
+     "ret": -0.087459,
+     "etf": -0.241499,
+     "excess": 0.154041
+    },
+    "2023": {
+     "ret": 0.120932,
+     "etf": 0.248424,
+     "excess": -0.127492
+    },
+    "2024": {
+     "ret": 0.272547,
+     "etf": -0.093715,
+     "excess": 0.366262
+    },
+    "2025": {
+     "ret": 0.640205,
+     "etf": 0.942069,
+     "excess": -0.301864
+    },
+    "2026": {
+     "ret": 0.426102,
+     "etf": 0.744093,
+     "excess": -0.317991
+    }
+   }
+  },
+  "STATIC_EW4": {
+   "cagr": 0.145093,
+   "etfCagr": 0.169576,
+   "excessCagr": -0.024483,
+   "vol": 0.246208,
+   "sharpe": 0.590701,
+   "mdd": -0.488553,
+   "cvar5Daily": -0.036726,
+   "trackingError": 0.12533,
+   "informationRatio": -0.224356,
+   "rolling126ExcessPositiveShare": 0.437406,
+   "rolling126ExcessWorst": -0.864314,
+   "rolling252ExcessPositiveShare": 0.458222,
+   "rolling252ExcessWorst": -1.509553,
+   "years": 8.452381,
+   "costPerYear": 0.012859,
+   "turnoverPerYear": 3.954322,
+   "terminalHits": 0,
+   "cagrTerminalAtLastClose": 0.145093,
+   "yearly": {
+    "2018": {
+     "ret": -0.144404,
+     "etf": -0.190376,
+     "excess": 0.045971
+    },
+    "2019": {
+     "ret": -0.008658,
+     "etf": 0.143994,
+     "excess": -0.152652
+    },
+    "2020": {
+     "ret": 0.086299,
+     "etf": 0.355328,
+     "excess": -0.269029
+    },
+    "2021": {
+     "ret": 0.129154,
+     "etf": 0.029991,
+     "excess": 0.099163
+    },
+    "2022": {
+     "ret": -0.229737,
+     "etf": -0.241499,
+     "excess": 0.011762
+    },
+    "2023": {
+     "ret": 0.257617,
+     "etf": 0.248424,
+     "excess": 0.009193
+    },
+    "2024": {
+     "ret": 0.025144,
+     "etf": -0.093715,
+     "excess": 0.11886
+    },
+    "2025": {
+     "ret": 1.068634,
+     "etf": 0.942069,
+     "excess": 0.126565
+    },
+    "2026": {
+     "ret": 0.470602,
+     "etf": 0.744093,
+     "excess": -0.273491
+    }
+   }
+  },
+  "STATIC_50_ETF_50_S1": {
+   "cagr": 0.134791,
+   "etfCagr": 0.169576,
+   "excessCagr": -0.034785,
+   "vol": 0.308224,
+   "sharpe": 0.497204,
+   "mdd": -0.502398,
+   "cvar5Daily": -0.04488,
+   "trackingError": 0.150043,
+   "informationRatio": -0.135318,
+   "rolling126ExcessPositiveShare": 0.448878,
+   "rolling126ExcessWorst": -0.608564,
+   "rolling252ExcessPositiveShare": 0.481107,
+   "rolling252ExcessWorst": -1.307413,
+   "years": 8.452381,
+   "costPerYear": 0.011837,
+   "turnoverPerYear": 3.646124,
+   "terminalHits": 0,
+   "cagrTerminalAtLastClose": 0.134791,
+   "yearly": {
+    "2018": {
+     "ret": -0.17394,
+     "etf": -0.190376,
+     "excess": 0.016435
+    },
+    "2019": {
+     "ret": -0.010863,
+     "etf": 0.143994,
+     "excess": -0.154857
+    },
+    "2020": {
+     "ret": 0.269365,
+     "etf": 0.355328,
+     "excess": -0.085962
+    },
+    "2021": {
+     "ret": 0.065218,
+     "etf": 0.029991,
+     "excess": 0.035227
+    },
+    "2022": {
+     "ret": -0.330901,
+     "etf": -0.241499,
+     "excess": -0.089401
+    },
+    "2023": {
+     "ret": 0.429969,
+     "etf": 0.248424,
+     "excess": 0.181545
+    },
+    "2024": {
+     "ret": -0.049119,
+     "etf": -0.093715,
+     "excess": 0.044596
+    },
+    "2025": {
+     "ret": 1.202021,
+     "etf": 0.942069,
+     "excess": 0.259952
+    },
+    "2026": {
+     "ret": 0.31556,
+     "etf": 0.744093,
+     "excess": -0.428533
+    }
+   }
+  },
+  "A1_MOMENTUM_CRASH_GUARD": {
+   "cagr": 0.156259,
+   "etfCagr": 0.169576,
+   "excessCagr": -0.013317,
+   "vol": 0.321683,
+   "sharpe": 0.547843,
+   "mdd": -0.557281,
+   "cvar5Daily": -0.047812,
+   "trackingError": 0.167584,
+   "informationRatio": 0.01598,
+   "rolling126ExcessPositiveShare": 0.421945,
+   "rolling126ExcessWorst": -0.406546,
+   "rolling252ExcessPositiveShare": 0.463544,
+   "rolling252ExcessWorst": -0.731432,
+   "years": 8.452381,
+   "costPerYear": 0.011087,
+   "turnoverPerYear": 4.295404,
+   "terminalHits": 0,
+   "cagrTerminalAtLastClose": 0.156259,
+   "yearly": {
+    "2018": {
+     "ret": -0.229887,
+     "etf": -0.190376,
+     "excess": -0.039512
+    },
+    "2019": {
+     "ret": 0.066598,
+     "etf": 0.143994,
+     "excess": -0.077397
+    },
+    "2020": {
+     "ret": 0.469343,
+     "etf": 0.355328,
+     "excess": 0.114015
+    },
+    "2021": {
+     "ret": -0.172363,
+     "etf": 0.029991,
+     "excess": -0.202354
+    },
+    "2022": {
+     "ret": -0.331838,
+     "etf": -0.241499,
+     "excess": -0.090339
+    },
+    "2023": {
+     "ret": 0.279845,
+     "etf": 0.248424,
+     "excess": 0.031421
+    },
+    "2024": {
+     "ret": -0.021495,
+     "etf": -0.093715,
+     "excess": 0.07222
+    },
+    "2025": {
+     "ret": 1.340327,
+     "etf": 0.942069,
+     "excess": 0.398258
+    },
+    "2026": {
+     "ret": 0.744093,
+     "etf": 0.744093,
+     "excess": -0.0
+    }
+   }
+  },
+  "A2_INVERSE_VOL_RISK_BUDGET": {
+   "cagr": 0.154435,
+   "etfCagr": 0.169576,
+   "excessCagr": -0.015141,
+   "vol": 0.237575,
+   "sharpe": 0.637686,
+   "mdd": -0.480305,
+   "cvar5Daily": -0.035435,
+   "trackingError": 0.118927,
+   "informationRatio": -0.185451,
+   "rolling126ExcessPositiveShare": 0.478304,
+   "rolling126ExcessWorst": -0.834836,
+   "rolling252ExcessPositiveShare": 0.494412,
+   "rolling252ExcessWorst": -1.403948,
+   "years": 8.452381,
+   "costPerYear": 0.011651,
+   "turnoverPerYear": 3.620279,
+   "terminalHits": 0,
+   "cagrTerminalAtLastClose": 0.154435,
+   "yearly": {
+    "2018": {
+     "ret": -0.142114,
+     "etf": -0.190376,
+     "excess": 0.048262
+    },
+    "2019": {
+     "ret": 0.009944,
+     "etf": 0.143994,
+     "excess": -0.13405
+    },
+    "2020": {
+     "ret": 0.06783,
+     "etf": 0.355328,
+     "excess": -0.287498
+    },
+    "2021": {
+     "ret": 0.141945,
+     "etf": 0.029991,
+     "excess": 0.111955
+    },
+    "2022": {
+     "ret": -0.220974,
+     "etf": -0.241499,
+     "excess": 0.020525
+    },
+    "2023": {
+     "ret": 0.247075,
+     "etf": 0.248424,
+     "excess": -0.001349
+    },
+    "2024": {
+     "ret": 0.035712,
+     "etf": -0.093715,
+     "excess": 0.129427
+    },
+    "2025": {
+     "ret": 1.057031,
+     "etf": 0.942069,
+     "excess": 0.114962
+    },
+    "2026": {
+     "ret": 0.53947,
+     "etf": 0.744093,
+     "excess": -0.204622
+    }
+   }
+  },
+  "SLEEVE_MOMENTUM_SWITCH": {
+   "cagr": 0.324456,
+   "etfCagr": 0.169576,
+   "excessCagr": 0.15488,
+   "vol": 0.340273,
+   "sharpe": 0.93491,
+   "mdd": -0.408055,
+   "cvar5Daily": -0.048609,
+   "trackingError": 0.229242,
+   "informationRatio": 0.630649,
+   "rolling126ExcessPositiveShare": 0.637905,
+   "rolling126ExcessWorst": -0.337901,
+   "rolling252ExcessPositiveShare": 0.73603,
+   "rolling252ExcessWorst": -0.567422,
+   "years": 8.452381,
+   "costPerYear": 0.016785,
+   "turnoverPerYear": 5.503034,
+   "terminalHits": 0,
+   "cagrTerminalAtLastClose": 0.324456,
+   "yearly": {
+    "2018": {
+     "ret": 0.01114,
+     "etf": -0.190376,
+     "excess": 0.201515
+    },
+    "2019": {
+     "ret": 0.04836,
+     "etf": 0.143994,
+     "excess": -0.095634
+    },
+    "2020": {
+     "ret": 0.343475,
+     "etf": 0.355328,
+     "excess": -0.011853
+    },
+    "2021": {
+     "ret": 0.036279,
+     "etf": 0.029991,
+     "excess": 0.006288
+    },
+    "2022": {
+     "ret": -0.176059,
+     "etf": -0.241499,
+     "excess": 0.06544
+    },
+    "2023": {
+     "ret": 0.530049,
+     "etf": 0.248424,
+     "excess": 0.281624
+    },
+    "2024": {
+     "ret": 0.157248,
+     "etf": -0.093715,
+     "excess": 0.250963
+    },
+    "2025": {
+     "ret": 1.819511,
+     "etf": 0.942069,
+     "excess": 0.877442
+    },
+    "2026": {
+     "ret": 0.771245,
+     "etf": 0.744093,
+     "excess": 0.027152
+    }
+   }
+  },
+  "B1_RIDGE_ALL_STATES": {
+   "cagr": 0.051576,
+   "etfCagr": 0.169576,
+   "excessCagr": -0.118,
+   "vol": 0.291591,
+   "sharpe": 0.247107,
+   "mdd": -0.501572,
+   "cvar5Daily": -0.043292,
+   "trackingError": 0.140724,
+   "informationRatio": -0.721266,
+   "rolling126ExcessPositiveShare": 0.382045,
+   "rolling126ExcessWorst": -1.18101,
+   "rolling252ExcessPositiveShare": 0.389037,
+   "rolling252ExcessWorst": -2.421766,
+   "years": 8.452381,
+   "costPerYear": 0.011776,
+   "turnoverPerYear": 4.470431,
+   "terminalHits": 0,
+   "cagrTerminalAtLastClose": 0.051576,
+   "yearly": {
+    "2018": {
+     "ret": -0.197471,
+     "etf": -0.190376,
+     "excess": -0.007096
+    },
+    "2019": {
+     "ret": 0.157425,
+     "etf": 0.143994,
+     "excess": 0.013431
+    },
+    "2020": {
+     "ret": 0.288309,
+     "etf": 0.355328,
+     "excess": -0.067019
+    },
+    "2021": {
+     "ret": 0.015813,
+     "etf": 0.029991,
+     "excess": -0.014178
+    },
+    "2022": {
+     "ret": -0.240922,
+     "etf": -0.241499,
+     "excess": 0.000578
+    },
+    "2023": {
+     "ret": 0.239861,
+     "etf": 0.248424,
+     "excess": -0.008563
+    },
+    "2024": {
+     "ret": -0.068416,
+     "etf": -0.093715,
+     "excess": 0.025299
+    },
+    "2025": {
+     "ret": 0.28676,
+     "etf": 0.942069,
+     "excess": -0.655309
+    },
+    "2026": {
+     "ret": 0.11542,
+     "etf": 0.744093,
+     "excess": -0.628673
+    }
+   }
+  },
+  "B2_LGBM_ALL_STATES": {
+   "cagr": 0.135155,
+   "etfCagr": 0.169576,
+   "excessCagr": -0.034421,
+   "vol": 0.287745,
+   "sharpe": 0.512777,
+   "mdd": -0.408055,
+   "cvar5Daily": -0.04339,
+   "trackingError": 0.094206,
+   "informationRatio": -0.276042,
+   "rolling126ExcessPositiveShare": 0.401995,
+   "rolling126ExcessWorst": -0.585209,
+   "rolling252ExcessPositiveShare": 0.340075,
+   "rolling252ExcessWorst": -1.186991,
+   "years": 8.452381,
+   "costPerYear": 0.005238,
+   "turnoverPerYear": 2.497086,
+   "terminalHits": 0,
+   "cagrTerminalAtLastClose": 0.135155,
+   "yearly": {
+    "2018": {
+     "ret": -0.148835,
+     "etf": -0.190376,
+     "excess": 0.041541
+    },
+    "2019": {
+     "ret": 0.087465,
+     "etf": 0.143994,
+     "excess": -0.056529
+    },
+    "2020": {
+     "ret": 0.378629,
+     "etf": 0.355328,
+     "excess": 0.023302
+    },
+    "2021": {
+     "ret": 0.01853,
+     "etf": 0.029991,
+     "excess": -0.011461
+    },
+    "2022": {
+     "ret": -0.241499,
+     "etf": -0.241499,
+     "excess": 0.0
+    },
+    "2023": {
+     "ret": 0.217507,
+     "etf": 0.248424,
+     "excess": -0.030918
+    },
+    "2024": {
+     "ret": -0.163176,
+     "etf": -0.093715,
+     "excess": -0.069461
+    },
+    "2025": {
+     "ret": 0.725094,
+     "etf": 0.942069,
+     "excess": -0.216975
+    },
+    "2026": {
+     "ret": 0.685094,
+     "etf": 0.744093,
+     "excess": -0.058999
+    }
+   }
+  },
+  "B3_RIDGE_KR_ONLY": {
+   "cagr": 0.098844,
+   "etfCagr": 0.169576,
+   "excessCagr": -0.070732,
+   "vol": 0.279641,
+   "sharpe": 0.403089,
+   "mdd": -0.408055,
+   "cvar5Daily": -0.04163,
+   "trackingError": 0.095375,
+   "informationRatio": -0.637836,
+   "rolling126ExcessPositiveShare": 0.412968,
+   "rolling126ExcessWorst": -0.928475,
+   "rolling252ExcessPositiveShare": 0.503459,
+   "rolling252ExcessWorst": -1.98603,
+   "years": 8.452381,
+   "costPerYear": 0.007824,
+   "turnoverPerYear": 3.242895,
+   "terminalHits": 0,
+   "cagrTerminalAtLastClose": 0.098844,
+   "yearly": {
+    "2018": {
+     "ret": -0.136348,
+     "etf": -0.190376,
+     "excess": 0.054028
+    },
+    "2019": {
+     "ret": 0.102588,
+     "etf": 0.143994,
+     "excess": -0.041407
+    },
+    "2020": {
+     "ret": 0.304446,
+     "etf": 0.355328,
+     "excess": -0.050882
+    },
+    "2021": {
+     "ret": 0.127762,
+     "etf": 0.029991,
+     "excess": 0.097771
+    },
+    "2022": {
+     "ret": -0.249766,
+     "etf": -0.241499,
+     "excess": -0.008267
+    },
+    "2023": {
+     "ret": 0.232467,
+     "etf": 0.248424,
+     "excess": -0.015957
+    },
+    "2024": {
+     "ret": -0.043514,
+     "etf": -0.093715,
+     "excess": 0.050202
+    },
+    "2025": {
+     "ret": 0.423909,
+     "etf": 0.942069,
+     "excess": -0.51816
+    },
+    "2026": {
+     "ret": 0.257414,
+     "etf": 0.744093,
+     "excess": -0.486679
+    }
+   }
+  },
+  "TREND_200_CASH": {
+   "cagr": 0.169181,
+   "etfCagr": 0.169576,
+   "excessCagr": -0.000395,
+   "vol": 0.238726,
+   "sharpe": 0.687757,
+   "mdd": -0.408055,
+   "cvar5Daily": -0.036089,
+   "trackingError": 0.134541,
+   "informationRatio": -0.069628,
+   "rolling126ExcessPositiveShare": 0.404988,
+   "rolling126ExcessWorst": -0.464186,
+   "rolling252ExcessPositiveShare": 0.384779,
+   "rolling252ExcessWorst": -0.611921,
+   "years": 8.452381,
+   "costPerYear": 0.000532,
+   "turnoverPerYear": 1.064656,
+   "terminalHits": 0,
+   "cagrTerminalAtLastClose": 0.169181,
+   "yearly": {
+    "2018": {
+     "ret": -0.125024,
+     "etf": -0.190376,
+     "excess": 0.065351
+    },
+    "2019": {
+     "ret": -0.058327,
+     "etf": 0.143994,
+     "excess": -0.202321
+    },
+    "2020": {
+     "ret": 0.305688,
+     "etf": 0.355328,
+     "excess": -0.04964
+    },
+    "2021": {
+     "ret": 0.059332,
+     "etf": 0.029991,
+     "excess": 0.029341
+    },
+    "2022": {
+     "ret": 0.020038,
+     "etf": -0.241499,
+     "excess": 0.261538
+    },
+    "2023": {
+     "ret": 0.079783,
+     "etf": 0.248424,
+     "excess": -0.168641
+    },
+    "2024": {
+     "ret": 0.014177,
+     "etf": -0.093715,
+     "excess": 0.107892
+    },
+    "2025": {
+     "ret": 0.687941,
+     "etf": 0.942069,
+     "excess": -0.254128
+    },
+    "2026": {
+     "ret": 0.744093,
+     "etf": 0.744093,
+     "excess": 0.0
+    }
+   }
+  },
+  "S4_RISK_MANAGED_ETF": {
+   "cagr": 0.137205,
+   "etfCagr": 0.169576,
+   "excessCagr": -0.032371,
+   "vol": 0.209122,
+   "sharpe": 0.621689,
+   "mdd": -0.338894,
+   "cvar5Daily": -0.031538,
+   "trackingError": 0.080139,
+   "informationRatio": -0.543368,
+   "rolling126ExcessPositiveShare": 0.365586,
+   "rolling126ExcessWorst": -0.605323,
+   "rolling252ExcessPositiveShare": 0.39702,
+   "rolling252ExcessWorst": -0.941369,
+   "years": 8.452381,
+   "costPerYear": 0.000252,
+   "turnoverPerYear": 0.503526,
+   "terminalHits": 0,
+   "cagrTerminalAtLastClose": 0.137205,
+   "yearly": {
+    "2018": {
+     "ret": -0.170609,
+     "etf": -0.190376,
+     "excess": 0.019767
+    },
+    "2019": {
+     "ret": 0.077507,
+     "etf": 0.143994,
+     "excess": -0.066487
+    },
+    "2020": {
+     "ret": 0.232558,
+     "etf": 0.355328,
+     "excess": -0.12277
+    },
+    "2021": {
+     "ret": 0.027787,
+     "etf": 0.029991,
+     "excess": -0.002204
+    },
+    "2022": {
+     "ret": -0.166826,
+     "etf": -0.241499,
+     "excess": 0.074673
+    },
+    "2023": {
+     "ret": 0.196886,
+     "etf": 0.248424,
+     "excess": -0.051538
+    },
+    "2024": {
+     "ret": -0.049128,
+     "etf": -0.093715,
+     "excess": 0.044587
+    },
+    "2025": {
+     "ret": 0.815267,
+     "etf": 0.942069,
+     "excess": -0.126801
+    },
+    "2026": {
+     "ret": 0.52135,
+     "etf": 0.744093,
+     "excess": -0.222743
+    }
+   }
+  },
+  "SX_XGB_SENSITIVITY": {
+   "cagr": 0.257479,
+   "etfCagr": 0.169576,
+   "excessCagr": 0.087903,
+   "vol": 0.255667,
+   "sharpe": 0.944389,
+   "mdd": -0.385061,
+   "cvar5Daily": -0.034852,
+   "trackingError": 0.195481,
+   "informationRatio": 0.347324,
+   "rolling126ExcessPositiveShare": 0.622444,
+   "rolling126ExcessWorst": -1.194647,
+   "rolling252ExcessPositiveShare": 0.766365,
+   "rolling252ExcessWorst": -1.82556,
+   "years": 8.452381,
+   "costPerYear": 0.021748,
+   "turnoverPerYear": 6.546473,
+   "terminalHits": 0,
+   "cagrTerminalAtLastClose": 0.257479,
+   "yearly": {
+    "2018": {
+     "ret": -0.132144,
+     "etf": -0.190376,
+     "excess": 0.058232
+    },
+    "2019": {
+     "ret": 0.322609,
+     "etf": 0.143994,
+     "excess": 0.178615
+    },
+    "2020": {
+     "ret": 0.312476,
+     "etf": 0.355328,
+     "excess": -0.042852
+    },
+    "2021": {
+     "ret": 0.379114,
+     "etf": 0.029991,
+     "excess": 0.349123
+    },
+    "2022": {
+     "ret": 0.014381,
+     "etf": -0.241499,
+     "excess": 0.25588
+    },
+    "2023": {
+     "ret": 0.205467,
+     "etf": 0.248424,
+     "excess": -0.042957
+    },
+    "2024": {
+     "ret": -0.058582,
+     "etf": -0.093715,
+     "excess": 0.035133
+    },
+    "2025": {
+     "ret": 0.916471,
+     "etf": 0.942069,
+     "excess": -0.025598
+    },
+    "2026": {
+     "ret": 0.512882,
+     "etf": 0.744093,
+     "excess": -0.231211
+    }
+   }
+  }
+ },
+ "inference": {
+  "A1_MOMENTUM_CRASH_GUARD": {
+   "vsStaticEW4": {
+    "annualisedMeanDiff": 0.03079657436777928,
+    "ci95": [
+     -0.08708658354179143,
+     0.15283456824903527
+    ],
+    "twoSidedP": 0.609,
+    "holmP": 1.0
+   },
+   "vsS0": {
+    "annualisedMeanDiff": 0.0026780021886849397,
+    "ci95": [
+     -0.12582053343986696,
+     0.13918047615820747
+    ],
+    "twoSidedP": 0.991
+   }
+  },
+  "A2_INVERSE_VOL_RISK_BUDGET": {
+   "vsStaticEW4": {
+    "annualisedMeanDiff": 0.00606346779313378,
+    "ci95": [
+     -0.011350921455906385,
+     0.023365292309791664
+    ],
+    "twoSidedP": 0.468,
+    "holmP": 1.0
+   },
+   "vsS0": {
+    "annualisedMeanDiff": -0.022055104385960558,
+    "ci95": [
+     -0.12041370851862594,
+     0.06664273060540084
+    ],
+    "twoSidedP": 0.666
+   }
+  },
+  "B1_RIDGE_ALL_STATES": {
+   "vsStaticEW4": {
+    "annualisedMeanDiff": -0.07338076852681542,
+    "ci95": [
+     -0.18164503341722357,
+     0.02707460309530018
+    ],
+    "twoSidedP": 0.151,
+    "holmP": 0.755
+   },
+   "vsS0": {
+    "annualisedMeanDiff": -0.10149934070590978,
+    "ci95": [
+     -0.24144445159852113,
+     0.007045580054649394
+    ],
+    "twoSidedP": 0.075
+   }
+  },
+  "B2_LGBM_ALL_STATES": {
+   "vsStaticEW4": {
+    "annualisedMeanDiff": 0.0021137226619739507,
+    "ci95": [
+     -0.08629679433584621,
+     0.09288888027820648
+    ],
+    "twoSidedP": 0.997,
+    "holmP": 1.0
+   },
+   "vsS0": {
+    "annualisedMeanDiff": -0.026004849517120388,
+    "ci95": [
+     -0.1062686296667062,
+     0.03638227192898675
+    ],
+    "twoSidedP": 0.448
+   }
+  },
+  "B3_RIDGE_KR_ONLY": {
+   "vsStaticEW4": {
+    "annualisedMeanDiff": -0.03271472264889343,
+    "ci95": [
+     -0.1159753071421993,
+     0.038126784261999704
+    ],
+    "twoSidedP": 0.403,
+    "holmP": 1.0
+   },
+   "vsS0": {
+    "annualisedMeanDiff": -0.060833294827987765,
+    "ci95": [
+     -0.1797465325179562,
+     0.03132463545680419
+    ],
+    "twoSidedP": 0.24
+   }
+  },
+  "SLEEVE_MOMENTUM_SWITCH": {
+   "vsStaticEW4": {
+    "annualisedMeanDiff": 0.1726895758487973,
+    "ci95": [
+     0.08460340837909187,
+     0.26237293258598754
+    ],
+    "twoSidedP": 0.0,
+    "holmP": 0.0
+   },
+   "vsS0": {
+    "annualisedMeanDiff": 0.144571003669703,
+    "ci95": [
+     0.018595487139458765,
+     0.28504844992629647
+    ],
+    "twoSidedP": 0.031
+   }
+  }
+ },
+ "decompositionVsStaticEW4": {
+  "A1_MOMENTUM_CRASH_GUARD": {
+   "grossCagrGap": 0.011166,
+   "arithmeticMeanDailyGapAnnualised": 0.030782,
+   "compoundingTerm": -0.019616,
+   "sleeveTimingEffectAnnualised": 0.032685,
+   "marketBetaOfDifference": 0.204,
+   "marketExposureContributionAnnualised": 0.03955,
+   "industryMomentumBetaOfDifference": 0.0282,
+   "industryExposureContributionAnnualised": -0.001244,
+   "regressionInterceptAnnualised": -0.007524,
+   "stockSelectionEffect": 0.0,
+   "costDifferencePerYear": -0.001772,
+   "note": "timing = sum((w_dyn - w_static) . sleeve daily returns) with target weights held between decisions; the rest of the gap is drift, netting of overlapping names and costs. Stock selection is identical by construction (same fixed sleeves)."
+  },
+  "A2_INVERSE_VOL_RISK_BUDGET": {
+   "grossCagrGap": 0.009341,
+   "arithmeticMeanDailyGapAnnualised": 0.006061,
+   "compoundingTerm": 0.003281,
+   "sleeveTimingEffectAnnualised": 0.006099,
+   "marketBetaOfDifference": -0.0197,
+   "marketExposureContributionAnnualised": -0.003825,
+   "industryMomentumBetaOfDifference": -0.0678,
+   "industryExposureContributionAnnualised": 0.002991,
+   "regressionInterceptAnnualised": 0.006895,
+   "stockSelectionEffect": 0.0,
+   "costDifferencePerYear": -0.001207,
+   "note": "timing = sum((w_dyn - w_static) . sleeve daily returns) with target weights held between decisions; the rest of the gap is drift, netting of overlapping names and costs. Stock selection is identical by construction (same fixed sleeves)."
+  },
+  "B1_RIDGE_ALL_STATES": {
+   "grossCagrGap": -0.093518,
+   "arithmeticMeanDailyGapAnnualised": -0.073346,
+   "compoundingTerm": -0.020171,
+   "sleeveTimingEffectAnnualised": -0.069219,
+   "marketBetaOfDifference": 0.1336,
+   "marketExposureContributionAnnualised": 0.025903,
+   "industryMomentumBetaOfDifference": -0.0485,
+   "industryExposureContributionAnnualised": 0.002139,
+   "regressionInterceptAnnualised": -0.101388,
+   "stockSelectionEffect": 0.0,
+   "costDifferencePerYear": -0.001083,
+   "note": "timing = sum((w_dyn - w_static) . sleeve daily returns) with target weights held between decisions; the rest of the gap is drift, netting of overlapping names and costs. Stock selection is identical by construction (same fixed sleeves)."
+  },
+  "B2_LGBM_ALL_STATES": {
+   "grossCagrGap": -0.009938,
+   "arithmeticMeanDailyGapAnnualised": 0.002113,
+   "compoundingTerm": -0.012051,
+   "sleeveTimingEffectAnnualised": 0.005335,
+   "marketBetaOfDifference": 0.1876,
+   "marketExposureContributionAnnualised": 0.036368,
+   "industryMomentumBetaOfDifference": -0.1636,
+   "industryExposureContributionAnnualised": 0.007212,
+   "regressionInterceptAnnualised": -0.041467,
+   "stockSelectionEffect": 0.0,
+   "costDifferencePerYear": -0.007621,
+   "note": "timing = sum((w_dyn - w_static) . sleeve daily returns) with target weights held between decisions; the rest of the gap is drift, netting of overlapping names and costs. Stock selection is identical by construction (same fixed sleeves)."
+  },
+  "B3_RIDGE_KR_ONLY": {
+   "grossCagrGap": -0.046249,
+   "arithmeticMeanDailyGapAnnualised": -0.032699,
+   "compoundingTerm": -0.01355,
+   "sleeveTimingEffectAnnualised": -0.029733,
+   "marketBetaOfDifference": 0.1567,
+   "marketExposureContributionAnnualised": 0.030379,
+   "industryMomentumBetaOfDifference": -0.1286,
+   "industryExposureContributionAnnualised": 0.00567,
+   "regressionInterceptAnnualised": -0.068748,
+   "stockSelectionEffect": 0.0,
+   "costDifferencePerYear": -0.005034,
+   "note": "timing = sum((w_dyn - w_static) . sleeve daily returns) with target weights held between decisions; the rest of the gap is drift, netting of overlapping names and costs. Stock selection is identical by construction (same fixed sleeves)."
+  },
+  "SLEEVE_MOMENTUM_SWITCH": {
+   "grossCagrGap": 0.179363,
+   "arithmeticMeanDailyGapAnnualised": 0.172609,
+   "compoundingTerm": 0.006754,
+   "sleeveTimingEffectAnnualised": 0.176293,
+   "marketBetaOfDifference": 0.1287,
+   "marketExposureContributionAnnualised": 0.024947,
+   "industryMomentumBetaOfDifference": 0.1931,
+   "industryExposureContributionAnnualised": -0.008511,
+   "regressionInterceptAnnualised": 0.156172,
+   "stockSelectionEffect": 0.0,
+   "costDifferencePerYear": 0.003927,
+   "note": "timing = sum((w_dyn - w_static) . sleeve daily returns) with target weights held between decisions; the rest of the gap is drift, netting of overlapping names and costs. Stock selection is identical by construction (same fixed sleeves)."
+  }
+ },
+ "behaviour": {
+  "A1_MOMENTUM_CRASH_GUARD": {
+   "decisions": 114,
+   "weightChangesAboveBand": 19,
+   "largeSwitches": 19,
+   "dominantSleeveChangeShare": 0.168,
+   "dominantSleeveCounts": {
+    "S0_ETF": 70,
+    "S1_INDUSTRY_MOMENTUM": 44
+   },
+   "meanRealised63dRelativeVsS0": -0.004217,
+   "meanRegretVsBestSleeve63d": 0.099259,
+   "after63dRelativeToEW4AfterLargeSwitch": {
+    "n": 19,
+    "mean": 0.01133,
+    "hitRate": 0.421
+   }
+  },
+  "A2_INVERSE_VOL_RISK_BUDGET": {
+   "decisions": 114,
+   "weightChangesAboveBand": 5,
+   "largeSwitches": 0,
+   "dominantSleeveChangeShare": 0.044,
+   "dominantSleeveCounts": {
+    "S3_FOUR_FACTOR": 74,
+    "S0_ETF": 40
+   },
+   "meanRealised63dRelativeVsS0": -0.007908,
+   "meanRegretVsBestSleeve63d": 0.10295,
+   "after63dRelativeToEW4AfterLargeSwitch": {
+    "n": 0,
+    "mean": null,
+    "hitRate": null
+   }
+  },
+  "B1_RIDGE_ALL_STATES": {
+   "decisions": 114,
+   "weightChangesAboveBand": 51,
+   "largeSwitches": 32,
+   "dominantSleeveChangeShare": 0.195,
+   "dominantSleeveCounts": {
+    "S0_ETF": 66,
+    "S1_INDUSTRY_MOMENTUM": 22,
+    "S2_VALUE_CONFIRMED": 15,
+    "S3_FOUR_FACTOR": 11
+   },
+   "meanRealised63dRelativeVsS0": -0.022296,
+   "meanRegretVsBestSleeve63d": 0.117338,
+   "after63dRelativeToEW4AfterLargeSwitch": {
+    "n": 32,
+    "mean": -0.025713,
+    "hitRate": 0.5
+   },
+   "topPickRealised63dWhenWithinOwnSE": {
+    "n": 63,
+    "mean": 0.003066
+   },
+   "topPickRealised63dWhenOutsideSE": {
+    "n": 48,
+    "mean": -0.057886
+   },
+   "oosForecast": {
+    "S1_INDUSTRY_MOMENTUM": {
+     "n": 111,
+     "oosR2VsExpandingMean": -0.8394,
+     "signHitRate": 0.532
+    },
+    "S2_VALUE_CONFIRMED": {
+     "n": 111,
+     "oosR2VsExpandingMean": -0.8036,
+     "signHitRate": 0.405
+    },
+    "S3_FOUR_FACTOR": {
+     "n": 111,
+     "oosR2VsExpandingMean": -0.54,
+     "signHitRate": 0.505
+    }
+   }
+  },
+  "B2_LGBM_ALL_STATES": {
+   "decisions": 114,
+   "weightChangesAboveBand": 45,
+   "largeSwitches": 25,
+   "dominantSleeveChangeShare": 0.142,
+   "dominantSleeveCounts": {
+    "S0_ETF": 100,
+    "S1_INDUSTRY_MOMENTUM": 11,
+    "S3_FOUR_FACTOR": 2,
+    "S2_VALUE_CONFIRMED": 1
+   },
+   "meanRealised63dRelativeVsS0": -0.007888,
+   "meanRegretVsBestSleeve63d": 0.10293,
+   "after63dRelativeToEW4AfterLargeSwitch": {
+    "n": 25,
+    "mean": -0.009676,
+    "hitRate": 0.36
+   },
+   "topPickRealised63dWhenWithinOwnSE": {
+    "n": 89,
+    "mean": -0.051471
+   },
+   "topPickRealised63dWhenOutsideSE": {
+    "n": 22,
+    "mean": -0.009782
+   },
+   "oosForecast": {
+    "S1_INDUSTRY_MOMENTUM": {
+     "n": 111,
+     "oosR2VsExpandingMean": -0.2307,
+     "signHitRate": 0.468
+    },
+    "S2_VALUE_CONFIRMED": {
+     "n": 111,
+     "oosR2VsExpandingMean": -0.196,
+     "signHitRate": 0.405
+    },
+    "S3_FOUR_FACTOR": {
+     "n": 111,
+     "oosR2VsExpandingMean": -0.0477,
+     "signHitRate": 0.532
+    }
+   }
+  },
+  "B3_RIDGE_KR_ONLY": {
+   "decisions": 114,
+   "weightChangesAboveBand": 50,
+   "largeSwitches": 37,
+   "dominantSleeveChangeShare": 0.23,
+   "dominantSleeveCounts": {
+    "S0_ETF": 87,
+    "S1_INDUSTRY_MOMENTUM": 16,
+    "S2_VALUE_CONFIRMED": 11
+   },
+   "meanRealised63dRelativeVsS0": -0.01329,
+   "meanRegretVsBestSleeve63d": 0.108332,
+   "after63dRelativeToEW4AfterLargeSwitch": {
+    "n": 37,
+    "mean": -0.020558,
+    "hitRate": 0.459
+   },
+   "topPickRealised63dWhenWithinOwnSE": {
+    "n": 80,
+    "mean": -0.035997
+   },
+   "topPickRealised63dWhenOutsideSE": {
+    "n": 31,
+    "mean": -0.022595
+   },
+   "oosForecast": {
+    "S1_INDUSTRY_MOMENTUM": {
+     "n": 111,
+     "oosR2VsExpandingMean": -0.4711,
+     "signHitRate": 0.459
+    },
+    "S2_VALUE_CONFIRMED": {
+     "n": 111,
+     "oosR2VsExpandingMean": -0.36,
+     "signHitRate": 0.432
+    },
+    "S3_FOUR_FACTOR": {
+     "n": 111,
+     "oosR2VsExpandingMean": -0.3679,
+     "signHitRate": 0.459
+    }
+   }
+  },
+  "SLEEVE_MOMENTUM_SWITCH": {
+   "decisions": 114,
+   "weightChangesAboveBand": 18,
+   "largeSwitches": 18,
+   "dominantSleeveChangeShare": 0.159,
+   "dominantSleeveCounts": {
+    "S1_INDUSTRY_MOMENTUM": 43,
+    "S3_FOUR_FACTOR": 27,
+    "S2_VALUE_CONFIRMED": 26,
+    "S0_ETF": 18
+   },
+   "meanRealised63dRelativeVsS0": 0.007381,
+   "meanRegretVsBestSleeve63d": 0.087661,
+   "after63dRelativeToEW4AfterLargeSwitch": {
+    "n": 17,
+    "mean": 0.084004,
+    "hitRate": 0.941
+   }
+  },
+  "STATIC_EW4": {
+   "decisions": 114,
+   "weightChangesAboveBand": 0,
+   "largeSwitches": 0,
+   "dominantSleeveChangeShare": 0.0,
+   "dominantSleeveCounts": {
+    "S0_ETF": 114
+   },
+   "meanRealised63dRelativeVsS0": -0.010477,
+   "meanRegretVsBestSleeve63d": 0.105519,
+   "after63dRelativeToEW4AfterLargeSwitch": {
+    "n": 0,
+    "mean": null,
+    "hitRate": null
+   }
+  }
+ },
+ "stateBuckets": {
+  "definition": "annualised mean daily excess vs 069500 on sessions whose PREVIOUS-session state fell in the bucket",
+  "TREND_252_UP": {
+   "sessions": 1316,
+   "S0_ETF": 0.0,
+   "S1_INDUSTRY_MOMENTUM": -0.075828,
+   "S2_VALUE_CONFIRMED": -0.04595,
+   "S3_FOUR_FACTOR": -0.082359,
+   "STATIC_EW4": -0.050353,
+   "A1_MOMENTUM_CRASH_GUARD": 0.000712,
+   "A2_INVERSE_VOL_RISK_BUDGET": -0.039043,
+   "B1_RIDGE_ALL_STATES": -0.154958,
+   "B2_LGBM_ALL_STATES": -0.076702,
+   "B3_RIDGE_KR_ONLY": -0.096193,
+   "SLEEVE_MOMENTUM_SWITCH": 0.146968
+  },
+  "TREND_252_DOWN": {
+   "sessions": 815,
+   "S0_ETF": 0.0,
+   "S1_INDUSTRY_MOMENTUM": 0.013992,
+   "S2_VALUE_CONFIRMED": 0.105263,
+   "S3_FOUR_FACTOR": -0.081062,
+   "STATIC_EW4": 0.007757,
+   "A1_MOMENTUM_CRASH_GUARD": 0.005851,
+   "A2_INVERSE_VOL_RISK_BUDGET": 0.005355,
+   "B1_RIDGE_ALL_STATES": -0.015245,
+   "B2_LGBM_ALL_STATES": 0.055796,
+   "B3_RIDGE_KR_ONLY": -0.00378,
+   "SLEEVE_MOMENTUM_SWITCH": 0.140704
+  },
+  "VOL_HIGH_80PCT": {
+   "sessions": 1149,
+   "S0_ETF": 0.0,
+   "S1_INDUSTRY_MOMENTUM": -0.020647,
+   "S2_VALUE_CONFIRMED": -0.003543,
+   "S3_FOUR_FACTOR": -0.167687,
+   "STATIC_EW4": -0.049086,
+   "A1_MOMENTUM_CRASH_GUARD": 0.086442,
+   "A2_INVERSE_VOL_RISK_BUDGET": -0.052368,
+   "B1_RIDGE_ALL_STATES": -0.181325,
+   "B2_LGBM_ALL_STATES": -0.01966,
+   "B3_RIDGE_KR_ONLY": -0.107513,
+   "SLEEVE_MOMENTUM_SWITCH": 0.157852
+  },
+  "VOL_NOT_HIGH": {
+   "sessions": 982,
+   "S0_ETF": 0.0,
+   "S1_INDUSTRY_MOMENTUM": -0.065838,
+   "S2_VALUE_CONFIRMED": 0.030006,
+   "S3_FOUR_FACTOR": 0.018659,
+   "STATIC_EW4": -0.003561,
+   "A1_MOMENTUM_CRASH_GUARD": -0.09543,
+   "A2_INVERSE_VOL_RISK_BUDGET": 0.013449,
+   "B1_RIDGE_ALL_STATES": -0.008003,
+   "B2_LGBM_ALL_STATES": -0.033436,
+   "B3_RIDGE_KR_ONLY": -0.006159,
+   "SLEEVE_MOMENTUM_SWITCH": 0.129015
+  },
+  "USDKRW_RISING_63": {
+   "sessions": 1373,
+   "S0_ETF": 0.0,
+   "S1_INDUSTRY_MOMENTUM": -0.10069,
+   "S2_VALUE_CONFIRMED": 0.052124,
+   "S3_FOUR_FACTOR": -0.073966,
+   "STATIC_EW4": -0.030592,
+   "A1_MOMENTUM_CRASH_GUARD": -0.042663,
+   "A2_INVERSE_VOL_RISK_BUDGET": -0.02011,
+   "B1_RIDGE_ALL_STATES": -0.162201,
+   "B2_LGBM_ALL_STATES": -0.038597,
+   "B3_RIDGE_KR_ONLY": -0.098301,
+   "SLEEVE_MOMENTUM_SWITCH": 0.1085
+  },
+  "USDKRW_FALLING_63": {
+   "sessions": 758,
+   "S0_ETF": 0.0,
+   "S1_INDUSTRY_MOMENTUM": 0.065967,
+   "S2_VALUE_CONFIRMED": -0.061032,
+   "S3_FOUR_FACTOR": -0.096186,
+   "STATIC_EW4": -0.023633,
+   "A1_MOMENTUM_CRASH_GUARD": 0.084914,
+   "A2_INVERSE_VOL_RISK_BUDGET": -0.025583,
+   "B1_RIDGE_ALL_STATES": 0.008597,
+   "B2_LGBM_ALL_STATES": -0.003166,
+   "B3_RIDGE_KR_ONLY": 0.007123,
+   "SLEEVE_MOMENTUM_SWITCH": 0.209994
+  },
+  "UST10_RISING_63": {
+   "sessions": 1225,
+   "S0_ETF": 0.0,
+   "S1_INDUSTRY_MOMENTUM": -0.021393,
+   "S2_VALUE_CONFIRMED": -0.016997,
+   "S3_FOUR_FACTOR": -0.064208,
+   "STATIC_EW4": -0.024147,
+   "A1_MOMENTUM_CRASH_GUARD": 0.019647,
+   "A2_INVERSE_VOL_RISK_BUDGET": -0.020222,
+   "B1_RIDGE_ALL_STATES": -0.157969,
+   "B2_LGBM_ALL_STATES": -0.016988,
+   "B3_RIDGE_KR_ONLY": -0.07049,
+   "SLEEVE_MOMENTUM_SWITCH": 0.145608
+  },
+  "UST10_FALLING_63": {
+   "sessions": 906,
+   "S0_ETF": 0.0,
+   "S1_INDUSTRY_MOMENTUM": -0.068571,
+   "S2_VALUE_CONFIRMED": 0.05096,
+   "S3_FOUR_FACTOR": -0.105715,
+   "STATIC_EW4": -0.033484,
+   "A1_MOMENTUM_CRASH_GUARD": -0.020247,
+   "A2_INVERSE_VOL_RISK_BUDGET": -0.024532,
+   "B1_RIDGE_ALL_STATES": -0.025209,
+   "B2_LGBM_ALL_STATES": -0.038187,
+   "B3_RIDGE_KR_ONLY": -0.047787,
+   "SLEEVE_MOMENTUM_SWITCH": 0.14317
+  }
+ },
+ "q1Predictability": [
+  {
+   "horizon": 21,
+   "pair": "S1-S0",
+   "state": "MKT_TREND_63",
+   "slope": -0.00215,
+   "t": -0.36227,
+   "p": 0.71766,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S0",
+   "state": "MKT_TREND_252",
+   "slope": -0.00513,
+   "t": -0.81572,
+   "p": 0.41596,
+   "n": 152.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S0",
+   "state": "MKT_VOL_63",
+   "slope": -0.00894,
+   "t": -1.53877,
+   "p": 0.12595,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S0",
+   "state": "MKT_DD_252",
+   "slope": 0.00361,
+   "t": 0.73662,
+   "p": 0.4625,
+   "n": 152.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S0",
+   "state": "BREADTH_200",
+   "slope": -0.00217,
+   "t": -0.40307,
+   "p": 0.68747,
+   "n": 152.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S0",
+   "state": "IND_DISPERSION",
+   "slope": -0.00368,
+   "t": -0.65823,
+   "p": 0.51198,
+   "n": 97.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S0",
+   "state": "CONCENTRATION_TOP2",
+   "slope": -0.00427,
+   "t": -0.51875,
+   "p": 0.60469,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S0",
+   "state": "LEADERSHIP_PERSIST",
+   "slope": 7e-05,
+   "t": 0.00898,
+   "p": 0.99286,
+   "n": 85.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S0",
+   "state": "UST10_LEVEL",
+   "slope": 0.00106,
+   "t": 0.24158,
+   "p": 0.80943,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S0",
+   "state": "UST10_CHG_63",
+   "slope": 0.00174,
+   "t": 0.35967,
+   "p": 0.71959,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S0",
+   "state": "CURVE_10Y2Y",
+   "slope": -0.0065,
+   "t": -0.57324,
+   "p": 0.56734,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S0",
+   "state": "CURVE_CHG_63",
+   "slope": 0.01223,
+   "t": 2.145,
+   "p": 0.03355,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S0",
+   "state": "BROAD_DOLLAR_CHG_63",
+   "slope": 0.00419,
+   "t": 0.58979,
+   "p": 0.55622,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S0",
+   "state": "USDKRW_CHG_63",
+   "slope": -0.00053,
+   "t": -0.07696,
+   "p": 0.93876,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S0",
+   "state": "USDKRW_VOL_63",
+   "slope": -0.00244,
+   "t": -0.35467,
+   "p": 0.72333,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S0",
+   "state": "VIX_LEVEL",
+   "slope": -0.00605,
+   "t": -1.64547,
+   "p": 0.10195,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S0",
+   "state": "VIX_CHG_63",
+   "slope": -0.00264,
+   "t": -0.73353,
+   "p": 0.46437,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S0",
+   "state": "CORR_KR_USDKRW_126",
+   "slope": 0.00436,
+   "t": 0.58183,
+   "p": 0.56155,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S0",
+   "state": "CORR_KR_UST10_126",
+   "slope": 0.00227,
+   "t": 0.31526,
+   "p": 0.753,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S2-S0",
+   "state": "MKT_TREND_63",
+   "slope": -0.00461,
+   "t": -1.58039,
+   "p": 0.11611,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S2-S0",
+   "state": "MKT_TREND_252",
+   "slope": -0.00344,
+   "t": -1.08712,
+   "p": 0.27873,
+   "n": 152.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S2-S0",
+   "state": "MKT_VOL_63",
+   "slope": -8e-05,
+   "t": -0.02919,
+   "p": 0.97675,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S2-S0",
+   "state": "MKT_DD_252",
+   "slope": -0.00525,
+   "t": -2.26791,
+   "p": 0.02476,
+   "n": 152.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S2-S0",
+   "state": "BREADTH_200",
+   "slope": -0.003,
+   "t": -1.0509,
+   "p": 0.29499,
+   "n": 152.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S2-S0",
+   "state": "IND_DISPERSION",
+   "slope": -0.00114,
+   "t": -0.46445,
+   "p": 0.64339,
+   "n": 97.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S2-S0",
+   "state": "CONCENTRATION_TOP2",
+   "slope": -0.00329,
+   "t": -0.76907,
+   "p": 0.44305,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S2-S0",
+   "state": "LEADERSHIP_PERSIST",
+   "slope": -0.00213,
+   "t": -0.78705,
+   "p": 0.43349,
+   "n": 85.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S2-S0",
+   "state": "UST10_LEVEL",
+   "slope": 0.00121,
+   "t": 0.53822,
+   "p": 0.59122,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S2-S0",
+   "state": "UST10_CHG_63",
+   "slope": 8e-05,
+   "t": 0.03985,
+   "p": 0.96826,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S2-S0",
+   "state": "CURVE_10Y2Y",
+   "slope": 0.0007,
+   "t": 0.12565,
+   "p": 0.90017,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S2-S0",
+   "state": "CURVE_CHG_63",
+   "slope": -0.00167,
+   "t": -0.57035,
+   "p": 0.56929,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S2-S0",
+   "state": "BROAD_DOLLAR_CHG_63",
+   "slope": 0.00413,
+   "t": 1.71251,
+   "p": 0.08885,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S2-S0",
+   "state": "USDKRW_CHG_63",
+   "slope": 0.00228,
+   "t": 0.85009,
+   "p": 0.39662,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S2-S0",
+   "state": "USDKRW_VOL_63",
+   "slope": -0.00066,
+   "t": -0.1943,
+   "p": 0.8462,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S2-S0",
+   "state": "VIX_LEVEL",
+   "slope": 0.00173,
+   "t": 0.80026,
+   "p": 0.42481,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S2-S0",
+   "state": "VIX_CHG_63",
+   "slope": 0.00277,
+   "t": 1.15247,
+   "p": 0.25095,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S2-S0",
+   "state": "CORR_KR_USDKRW_126",
+   "slope": -0.00199,
+   "t": -0.54899,
+   "p": 0.58382,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S2-S0",
+   "state": "CORR_KR_UST10_126",
+   "slope": 0.00296,
+   "t": 0.76549,
+   "p": 0.44517,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S3-S0",
+   "state": "MKT_TREND_63",
+   "slope": -0.00292,
+   "t": -0.60506,
+   "p": 0.54605,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S3-S0",
+   "state": "MKT_TREND_252",
+   "slope": -0.00632,
+   "t": -1.17338,
+   "p": 0.2425,
+   "n": 152.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S3-S0",
+   "state": "MKT_VOL_63",
+   "slope": -0.00788,
+   "t": -1.4864,
+   "p": 0.13926,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S3-S0",
+   "state": "MKT_DD_252",
+   "slope": -0.00143,
+   "t": -0.42721,
+   "p": 0.66984,
+   "n": 152.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S3-S0",
+   "state": "BREADTH_200",
+   "slope": -0.00121,
+   "t": -0.30223,
+   "p": 0.7629,
+   "n": 152.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S3-S0",
+   "state": "IND_DISPERSION",
+   "slope": -0.00075,
+   "t": -0.15735,
+   "p": 0.8753,
+   "n": 97.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S3-S0",
+   "state": "CONCENTRATION_TOP2",
+   "slope": -0.00754,
+   "t": -1.01117,
+   "p": 0.31355,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S3-S0",
+   "state": "LEADERSHIP_PERSIST",
+   "slope": -0.00469,
+   "t": -1.18252,
+   "p": 0.24038,
+   "n": 85.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S3-S0",
+   "state": "UST10_LEVEL",
+   "slope": 0.00213,
+   "t": 0.74066,
+   "p": 0.46005,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S3-S0",
+   "state": "UST10_CHG_63",
+   "slope": -0.00017,
+   "t": -0.05794,
+   "p": 0.95387,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S3-S0",
+   "state": "CURVE_10Y2Y",
+   "slope": -0.00539,
+   "t": -0.69278,
+   "p": 0.48951,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S3-S0",
+   "state": "CURVE_CHG_63",
+   "slope": -0.00062,
+   "t": -0.15351,
+   "p": 0.8782,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S3-S0",
+   "state": "BROAD_DOLLAR_CHG_63",
+   "slope": 0.00436,
+   "t": 1.12306,
+   "p": 0.2632,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S3-S0",
+   "state": "USDKRW_CHG_63",
+   "slope": 0.00143,
+   "t": 0.38055,
+   "p": 0.70407,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S3-S0",
+   "state": "USDKRW_VOL_63",
+   "slope": 0.00069,
+   "t": 0.12341,
+   "p": 0.90194,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S3-S0",
+   "state": "VIX_LEVEL",
+   "slope": -0.00432,
+   "t": -2.2389,
+   "p": 0.02662,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S3-S0",
+   "state": "VIX_CHG_63",
+   "slope": -0.00473,
+   "t": -1.7604,
+   "p": 0.08036,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S3-S0",
+   "state": "CORR_KR_USDKRW_126",
+   "slope": 0.00206,
+   "t": 0.34708,
+   "p": 0.72901,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S3-S0",
+   "state": "CORR_KR_UST10_126",
+   "slope": 0.00634,
+   "t": 1.38654,
+   "p": 0.16762,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S3",
+   "state": "MKT_TREND_63",
+   "slope": 0.00077,
+   "t": 0.13071,
+   "p": 0.89618,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S3",
+   "state": "MKT_TREND_252",
+   "slope": 0.00119,
+   "t": 0.23022,
+   "p": 0.81823,
+   "n": 152.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S3",
+   "state": "MKT_VOL_63",
+   "slope": -0.00106,
+   "t": -0.25619,
+   "p": 0.79815,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S3",
+   "state": "MKT_DD_252",
+   "slope": 0.00503,
+   "t": 1.03381,
+   "p": 0.30289,
+   "n": 152.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S3",
+   "state": "BREADTH_200",
+   "slope": -0.00096,
+   "t": -0.20163,
+   "p": 0.84048,
+   "n": 152.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S3",
+   "state": "IND_DISPERSION",
+   "slope": -0.00293,
+   "t": -0.51588,
+   "p": 0.60713,
+   "n": 97.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S3",
+   "state": "CONCENTRATION_TOP2",
+   "slope": 0.00327,
+   "t": 0.42269,
+   "p": 0.67312,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S3",
+   "state": "LEADERSHIP_PERSIST",
+   "slope": 0.00475,
+   "t": 0.56188,
+   "p": 0.57571,
+   "n": 85.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S3",
+   "state": "UST10_LEVEL",
+   "slope": -0.00107,
+   "t": -0.24286,
+   "p": 0.80844,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S3",
+   "state": "UST10_CHG_63",
+   "slope": 0.0019,
+   "t": 0.35008,
+   "p": 0.72677,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S3",
+   "state": "CURVE_10Y2Y",
+   "slope": -0.00111,
+   "t": -0.10539,
+   "p": 0.91621,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S3",
+   "state": "CURVE_CHG_63",
+   "slope": 0.01285,
+   "t": 2.3548,
+   "p": 0.01982,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S3",
+   "state": "BROAD_DOLLAR_CHG_63",
+   "slope": -0.00017,
+   "t": -0.02147,
+   "p": 0.9829,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S3",
+   "state": "USDKRW_CHG_63",
+   "slope": -0.00196,
+   "t": -0.25553,
+   "p": 0.79866,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S3",
+   "state": "USDKRW_VOL_63",
+   "slope": -0.00313,
+   "t": -0.47376,
+   "p": 0.63636,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S3",
+   "state": "VIX_LEVEL",
+   "slope": -0.00173,
+   "t": -0.58104,
+   "p": 0.56208,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S3",
+   "state": "VIX_CHG_63",
+   "slope": 0.0021,
+   "t": 0.50929,
+   "p": 0.61129,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S3",
+   "state": "CORR_KR_USDKRW_126",
+   "slope": 0.0023,
+   "t": 0.31634,
+   "p": 0.75218,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 21,
+   "pair": "S1-S3",
+   "state": "CORR_KR_UST10_126",
+   "slope": -0.00407,
+   "t": -0.54438,
+   "p": 0.58698,
+   "n": 153.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S0",
+   "state": "MKT_TREND_63",
+   "slope": -0.0187,
+   "t": -1.16284,
+   "p": 0.24675,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S0",
+   "state": "MKT_TREND_252",
+   "slope": -0.01505,
+   "t": -1.02137,
+   "p": 0.30874,
+   "n": 150.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S0",
+   "state": "MKT_VOL_63",
+   "slope": -0.02539,
+   "t": -1.47125,
+   "p": 0.14333,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S0",
+   "state": "MKT_DD_252",
+   "slope": 0.00016,
+   "t": 0.0122,
+   "p": 0.99028,
+   "n": 150.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S0",
+   "state": "BREADTH_200",
+   "slope": -0.00722,
+   "t": -0.50456,
+   "p": 0.61462,
+   "n": 150.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S0",
+   "state": "IND_DISPERSION",
+   "slope": -0.0144,
+   "t": -1.01243,
+   "p": 0.31391,
+   "n": 97.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S0",
+   "state": "CONCENTRATION_TOP2",
+   "slope": -0.01473,
+   "t": -0.64997,
+   "p": 0.51671,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S0",
+   "state": "LEADERSHIP_PERSIST",
+   "slope": -0.01426,
+   "t": -0.93391,
+   "p": 0.35306,
+   "n": 85.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S0",
+   "state": "UST10_LEVEL",
+   "slope": 0.00198,
+   "t": 0.14947,
+   "p": 0.88138,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S0",
+   "state": "UST10_CHG_63",
+   "slope": 0.00744,
+   "t": 0.60188,
+   "p": 0.54817,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S0",
+   "state": "CURVE_10Y2Y",
+   "slope": -0.03482,
+   "t": -1.12841,
+   "p": 0.26096,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S0",
+   "state": "CURVE_CHG_63",
+   "slope": 0.02627,
+   "t": 1.80906,
+   "p": 0.07246,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S0",
+   "state": "BROAD_DOLLAR_CHG_63",
+   "slope": 0.0293,
+   "t": 1.58966,
+   "p": 0.11403,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S0",
+   "state": "USDKRW_CHG_63",
+   "slope": 0.0101,
+   "t": 0.64399,
+   "p": 0.52057,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S0",
+   "state": "USDKRW_VOL_63",
+   "slope": 0.00298,
+   "t": 0.14815,
+   "p": 0.88243,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S0",
+   "state": "VIX_LEVEL",
+   "slope": -0.01402,
+   "t": -1.45886,
+   "p": 0.14671,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S0",
+   "state": "VIX_CHG_63",
+   "slope": 2e-05,
+   "t": 0.0033,
+   "p": 0.99737,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S0",
+   "state": "CORR_KR_USDKRW_126",
+   "slope": 0.0174,
+   "t": 0.71656,
+   "p": 0.47477,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S0",
+   "state": "CORR_KR_UST10_126",
+   "slope": 0.00771,
+   "t": 0.39719,
+   "p": 0.69179,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S2-S0",
+   "state": "MKT_TREND_63",
+   "slope": -0.00721,
+   "t": -1.11717,
+   "p": 0.26572,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S2-S0",
+   "state": "MKT_TREND_252",
+   "slope": -0.00182,
+   "t": -0.28699,
+   "p": 0.77452,
+   "n": 150.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S2-S0",
+   "state": "MKT_VOL_63",
+   "slope": -0.00218,
+   "t": -0.47492,
+   "p": 0.63554,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S2-S0",
+   "state": "MKT_DD_252",
+   "slope": -0.00806,
+   "t": -1.61843,
+   "p": 0.1077,
+   "n": 150.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S2-S0",
+   "state": "BREADTH_200",
+   "slope": -0.00198,
+   "t": -0.28913,
+   "p": 0.77288,
+   "n": 150.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S2-S0",
+   "state": "IND_DISPERSION",
+   "slope": -0.00391,
+   "t": -0.5282,
+   "p": 0.59859,
+   "n": 97.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S2-S0",
+   "state": "CONCENTRATION_TOP2",
+   "slope": -0.00485,
+   "t": -0.596,
+   "p": 0.55208,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S2-S0",
+   "state": "LEADERSHIP_PERSIST",
+   "slope": -0.00044,
+   "t": -0.07566,
+   "p": 0.93987,
+   "n": 85.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S2-S0",
+   "state": "UST10_LEVEL",
+   "slope": 0.00897,
+   "t": 1.55052,
+   "p": 0.12314,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S2-S0",
+   "state": "UST10_CHG_63",
+   "slope": 0.00773,
+   "t": 1.90965,
+   "p": 0.0581,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S2-S0",
+   "state": "CURVE_10Y2Y",
+   "slope": 0.00728,
+   "t": 0.52823,
+   "p": 0.59812,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S2-S0",
+   "state": "CURVE_CHG_63",
+   "slope": -0.00284,
+   "t": -0.46475,
+   "p": 0.64279,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S2-S0",
+   "state": "BROAD_DOLLAR_CHG_63",
+   "slope": 0.00451,
+   "t": 0.75994,
+   "p": 0.44849,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S2-S0",
+   "state": "USDKRW_CHG_63",
+   "slope": -0.0003,
+   "t": -0.05224,
+   "p": 0.95841,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S2-S0",
+   "state": "USDKRW_VOL_63",
+   "slope": -0.0029,
+   "t": -0.44005,
+   "p": 0.66054,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S2-S0",
+   "state": "VIX_LEVEL",
+   "slope": -0.00134,
+   "t": -0.46402,
+   "p": 0.64331,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S2-S0",
+   "state": "VIX_CHG_63",
+   "slope": 0.00136,
+   "t": 0.38566,
+   "p": 0.7003,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S2-S0",
+   "state": "CORR_KR_USDKRW_126",
+   "slope": 0.00423,
+   "t": 0.43482,
+   "p": 0.66432,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S2-S0",
+   "state": "CORR_KR_UST10_126",
+   "slope": 0.00635,
+   "t": 0.70623,
+   "p": 0.48115,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S3-S0",
+   "state": "MKT_TREND_63",
+   "slope": -0.01447,
+   "t": -0.9722,
+   "p": 0.33253,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S3-S0",
+   "state": "MKT_TREND_252",
+   "slope": -0.01048,
+   "t": -0.75903,
+   "p": 0.44904,
+   "n": 150.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S3-S0",
+   "state": "MKT_VOL_63",
+   "slope": -0.01998,
+   "t": -1.97781,
+   "p": 0.04979,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S3-S0",
+   "state": "MKT_DD_252",
+   "slope": -0.00265,
+   "t": -0.3035,
+   "p": 0.76194,
+   "n": 150.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S3-S0",
+   "state": "BREADTH_200",
+   "slope": -0.00558,
+   "t": -0.46468,
+   "p": 0.64285,
+   "n": 150.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S3-S0",
+   "state": "IND_DISPERSION",
+   "slope": -0.00912,
+   "t": -0.72355,
+   "p": 0.47112,
+   "n": 97.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S3-S0",
+   "state": "CONCENTRATION_TOP2",
+   "slope": -0.01077,
+   "t": -0.59663,
+   "p": 0.55166,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S3-S0",
+   "state": "LEADERSHIP_PERSIST",
+   "slope": -0.00723,
+   "t": -1.15869,
+   "p": 0.24991,
+   "n": 85.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S3-S0",
+   "state": "UST10_LEVEL",
+   "slope": 0.00436,
+   "t": 0.47896,
+   "p": 0.63267,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S3-S0",
+   "state": "UST10_CHG_63",
+   "slope": 0.00731,
+   "t": 1.15362,
+   "p": 0.2505,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S3-S0",
+   "state": "CURVE_10Y2Y",
+   "slope": -0.02202,
+   "t": -0.95683,
+   "p": 0.3402,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S3-S0",
+   "state": "CURVE_CHG_63",
+   "slope": -0.00988,
+   "t": -1.12935,
+   "p": 0.26056,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S3-S0",
+   "state": "BROAD_DOLLAR_CHG_63",
+   "slope": 0.02659,
+   "t": 2.35667,
+   "p": 0.01974,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S3-S0",
+   "state": "USDKRW_CHG_63",
+   "slope": 0.01261,
+   "t": 1.72167,
+   "p": 0.0872,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S3-S0",
+   "state": "USDKRW_VOL_63",
+   "slope": 0.00203,
+   "t": 0.16614,
+   "p": 0.86827,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S3-S0",
+   "state": "VIX_LEVEL",
+   "slope": -0.01033,
+   "t": -2.41109,
+   "p": 0.01712,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S3-S0",
+   "state": "VIX_CHG_63",
+   "slope": -0.00513,
+   "t": -0.63559,
+   "p": 0.52602,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S3-S0",
+   "state": "CORR_KR_USDKRW_126",
+   "slope": 0.00351,
+   "t": 0.19128,
+   "p": 0.84857,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S3-S0",
+   "state": "CORR_KR_UST10_126",
+   "slope": 0.02026,
+   "t": 1.60815,
+   "p": 0.10992,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S3",
+   "state": "MKT_TREND_63",
+   "slope": -0.00423,
+   "t": -0.27939,
+   "p": 0.78033,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S3",
+   "state": "MKT_TREND_252",
+   "slope": -0.00457,
+   "t": -0.29543,
+   "p": 0.76808,
+   "n": 150.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S3",
+   "state": "MKT_VOL_63",
+   "slope": -0.00541,
+   "t": -0.37158,
+   "p": 0.71073,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S3",
+   "state": "MKT_DD_252",
+   "slope": 0.00281,
+   "t": 0.2202,
+   "p": 0.82602,
+   "n": 150.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S3",
+   "state": "BREADTH_200",
+   "slope": -0.00164,
+   "t": -0.14125,
+   "p": 0.88786,
+   "n": 150.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S3",
+   "state": "IND_DISPERSION",
+   "slope": -0.00528,
+   "t": -0.44241,
+   "p": 0.6592,
+   "n": 97.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S3",
+   "state": "CONCENTRATION_TOP2",
+   "slope": -0.00396,
+   "t": -0.16745,
+   "p": 0.86724,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S3",
+   "state": "LEADERSHIP_PERSIST",
+   "slope": -0.00704,
+   "t": -0.4689,
+   "p": 0.64037,
+   "n": 85.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S3",
+   "state": "UST10_LEVEL",
+   "slope": -0.00239,
+   "t": -0.19825,
+   "p": 0.84312,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S3",
+   "state": "UST10_CHG_63",
+   "slope": 0.00013,
+   "t": 0.00976,
+   "p": 0.99222,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S3",
+   "state": "CURVE_10Y2Y",
+   "slope": -0.0128,
+   "t": -0.46454,
+   "p": 0.64294,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S3",
+   "state": "CURVE_CHG_63",
+   "slope": 0.03615,
+   "t": 2.28137,
+   "p": 0.02394,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S3",
+   "state": "BROAD_DOLLAR_CHG_63",
+   "slope": 0.00271,
+   "t": 0.14972,
+   "p": 0.88119,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S3",
+   "state": "USDKRW_CHG_63",
+   "slope": -0.00251,
+   "t": -0.16204,
+   "p": 0.87149,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S3",
+   "state": "USDKRW_VOL_63",
+   "slope": 0.00094,
+   "t": 0.05041,
+   "p": 0.95986,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S3",
+   "state": "VIX_LEVEL",
+   "slope": -0.00369,
+   "t": -0.4129,
+   "p": 0.68027,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S3",
+   "state": "VIX_CHG_63",
+   "slope": 0.00516,
+   "t": 0.63766,
+   "p": 0.52467,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S3",
+   "state": "CORR_KR_USDKRW_126",
+   "slope": 0.01389,
+   "t": 0.69984,
+   "p": 0.48512,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 63,
+   "pair": "S1-S3",
+   "state": "CORR_KR_UST10_126",
+   "slope": -0.01255,
+   "t": -0.65939,
+   "p": 0.51067,
+   "n": 151.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S0",
+   "state": "MKT_TREND_63",
+   "slope": -0.04096,
+   "t": -1.08991,
+   "p": 0.27756,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S0",
+   "state": "MKT_TREND_252",
+   "slope": -0.02582,
+   "t": -0.80964,
+   "p": 0.41948,
+   "n": 146.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S0",
+   "state": "MKT_VOL_63",
+   "slope": -0.03327,
+   "t": -2.02817,
+   "p": 0.04437,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S0",
+   "state": "MKT_DD_252",
+   "slope": -0.01067,
+   "t": -0.34316,
+   "p": 0.73198,
+   "n": 146.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S0",
+   "state": "BREADTH_200",
+   "slope": -0.01536,
+   "t": -0.47938,
+   "p": 0.6324,
+   "n": 146.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S0",
+   "state": "IND_DISPERSION",
+   "slope": -0.0393,
+   "t": -1.4571,
+   "p": 0.14838,
+   "n": 97.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S0",
+   "state": "CONCENTRATION_TOP2",
+   "slope": -0.01081,
+   "t": -0.25265,
+   "p": 0.80089,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S0",
+   "state": "LEADERSHIP_PERSIST",
+   "slope": -0.01021,
+   "t": -0.50348,
+   "p": 0.61596,
+   "n": 85.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S0",
+   "state": "UST10_LEVEL",
+   "slope": 0.00371,
+   "t": 0.12904,
+   "p": 0.89751,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S0",
+   "state": "UST10_CHG_63",
+   "slope": 0.00864,
+   "t": 0.4126,
+   "p": 0.68051,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S0",
+   "state": "CURVE_10Y2Y",
+   "slope": -0.08902,
+   "t": -1.3577,
+   "p": 0.17667,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S0",
+   "state": "CURVE_CHG_63",
+   "slope": 0.03178,
+   "t": 1.02364,
+   "p": 0.30771,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S0",
+   "state": "BROAD_DOLLAR_CHG_63",
+   "slope": 0.04293,
+   "t": 1.08389,
+   "p": 0.28021,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S0",
+   "state": "USDKRW_CHG_63",
+   "slope": -0.01009,
+   "t": -0.29056,
+   "p": 0.7718,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S0",
+   "state": "USDKRW_VOL_63",
+   "slope": 0.03091,
+   "t": 0.86341,
+   "p": 0.38934,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S0",
+   "state": "VIX_LEVEL",
+   "slope": -0.02216,
+   "t": -1.95903,
+   "p": 0.05203,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S0",
+   "state": "VIX_CHG_63",
+   "slope": 0.00386,
+   "t": 0.27293,
+   "p": 0.78529,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S0",
+   "state": "CORR_KR_USDKRW_126",
+   "slope": 0.02478,
+   "t": 0.44549,
+   "p": 0.65663,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S0",
+   "state": "CORR_KR_UST10_126",
+   "slope": 0.03692,
+   "t": 1.01121,
+   "p": 0.3136,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S2-S0",
+   "state": "MKT_TREND_63",
+   "slope": -0.02031,
+   "t": -1.43122,
+   "p": 0.15452,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S2-S0",
+   "state": "MKT_TREND_252",
+   "slope": -0.00275,
+   "t": -0.18022,
+   "p": 0.85723,
+   "n": 146.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S2-S0",
+   "state": "MKT_VOL_63",
+   "slope": -0.01015,
+   "t": -1.43049,
+   "p": 0.15473,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S2-S0",
+   "state": "MKT_DD_252",
+   "slope": -0.01479,
+   "t": -1.32784,
+   "p": 0.18633,
+   "n": 146.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S2-S0",
+   "state": "BREADTH_200",
+   "slope": -0.00478,
+   "t": -0.2569,
+   "p": 0.79763,
+   "n": 146.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S2-S0",
+   "state": "IND_DISPERSION",
+   "slope": 0.00272,
+   "t": 0.21632,
+   "p": 0.8292,
+   "n": 97.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S2-S0",
+   "state": "CONCENTRATION_TOP2",
+   "slope": -0.01927,
+   "t": -1.43776,
+   "p": 0.15266,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S2-S0",
+   "state": "LEADERSHIP_PERSIST",
+   "slope": -0.00127,
+   "t": -0.11609,
+   "p": 0.90786,
+   "n": 85.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S2-S0",
+   "state": "UST10_LEVEL",
+   "slope": 0.01076,
+   "t": 0.83838,
+   "p": 0.4032,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S2-S0",
+   "state": "UST10_CHG_63",
+   "slope": 0.03297,
+   "t": 3.12774,
+   "p": 0.00213,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S2-S0",
+   "state": "CURVE_10Y2Y",
+   "slope": 0.00746,
+   "t": 0.20881,
+   "p": 0.83489,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S2-S0",
+   "state": "CURVE_CHG_63",
+   "slope": 0.00242,
+   "t": 0.19448,
+   "p": 0.84607,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S2-S0",
+   "state": "BROAD_DOLLAR_CHG_63",
+   "slope": 0.00724,
+   "t": 0.66527,
+   "p": 0.50693,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S2-S0",
+   "state": "USDKRW_CHG_63",
+   "slope": -0.00547,
+   "t": -0.41136,
+   "p": 0.68142,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S2-S0",
+   "state": "USDKRW_VOL_63",
+   "slope": -0.01244,
+   "t": -0.91692,
+   "p": 0.3607,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S2-S0",
+   "state": "VIX_LEVEL",
+   "slope": -0.00451,
+   "t": -0.75669,
+   "p": 0.45046,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S2-S0",
+   "state": "VIX_CHG_63",
+   "slope": 0.00055,
+   "t": 0.08401,
+   "p": 0.93316,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S2-S0",
+   "state": "CORR_KR_USDKRW_126",
+   "slope": 0.0046,
+   "t": 0.19812,
+   "p": 0.84323,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S2-S0",
+   "state": "CORR_KR_UST10_126",
+   "slope": 0.01129,
+   "t": 0.59835,
+   "p": 0.55054,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S3-S0",
+   "state": "MKT_TREND_63",
+   "slope": -0.03757,
+   "t": -1.55702,
+   "p": 0.12165,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S3-S0",
+   "state": "MKT_TREND_252",
+   "slope": -0.01919,
+   "t": -0.83709,
+   "p": 0.40393,
+   "n": 146.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S3-S0",
+   "state": "MKT_VOL_63",
+   "slope": -0.03741,
+   "t": -3.24483,
+   "p": 0.00146,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S3-S0",
+   "state": "MKT_DD_252",
+   "slope": -0.00487,
+   "t": -0.26696,
+   "p": 0.78988,
+   "n": 146.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S3-S0",
+   "state": "BREADTH_200",
+   "slope": -0.01468,
+   "t": -0.58275,
+   "p": 0.56097,
+   "n": 146.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S3-S0",
+   "state": "IND_DISPERSION",
+   "slope": -0.01294,
+   "t": -0.57608,
+   "p": 0.56592,
+   "n": 97.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S3-S0",
+   "state": "CONCENTRATION_TOP2",
+   "slope": -0.02229,
+   "t": -0.87479,
+   "p": 0.38314,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S3-S0",
+   "state": "LEADERSHIP_PERSIST",
+   "slope": -0.00252,
+   "t": -0.15682,
+   "p": 0.87577,
+   "n": 85.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S3-S0",
+   "state": "UST10_LEVEL",
+   "slope": 0.00437,
+   "t": 0.20692,
+   "p": 0.83636,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S3-S0",
+   "state": "UST10_CHG_63",
+   "slope": 0.02683,
+   "t": 1.96829,
+   "p": 0.05094,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S3-S0",
+   "state": "CURVE_10Y2Y",
+   "slope": -0.05602,
+   "t": -0.97373,
+   "p": 0.33181,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S3-S0",
+   "state": "CURVE_CHG_63",
+   "slope": -0.0122,
+   "t": -0.69505,
+   "p": 0.48814,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S3-S0",
+   "state": "BROAD_DOLLAR_CHG_63",
+   "slope": 0.04767,
+   "t": 2.33644,
+   "p": 0.02084,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S3-S0",
+   "state": "USDKRW_CHG_63",
+   "slope": 0.01592,
+   "t": 0.84386,
+   "p": 0.40014,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S3-S0",
+   "state": "USDKRW_VOL_63",
+   "slope": 0.01801,
+   "t": 0.66996,
+   "p": 0.50395,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S3-S0",
+   "state": "VIX_LEVEL",
+   "slope": -0.01547,
+   "t": -1.7386,
+   "p": 0.08423,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S3-S0",
+   "state": "VIX_CHG_63",
+   "slope": -0.00036,
+   "t": -0.02742,
+   "p": 0.97816,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S3-S0",
+   "state": "CORR_KR_USDKRW_126",
+   "slope": -0.00468,
+   "t": -0.11759,
+   "p": 0.90656,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S3-S0",
+   "state": "CORR_KR_UST10_126",
+   "slope": 0.0402,
+   "t": 1.72045,
+   "p": 0.08748,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S3",
+   "state": "MKT_TREND_63",
+   "slope": -0.00339,
+   "t": -0.1377,
+   "p": 0.89067,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S3",
+   "state": "MKT_TREND_252",
+   "slope": -0.00663,
+   "t": -0.35722,
+   "p": 0.72145,
+   "n": 146.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S3",
+   "state": "MKT_VOL_63",
+   "slope": 0.00415,
+   "t": 0.34613,
+   "p": 0.72975,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S3",
+   "state": "MKT_DD_252",
+   "slope": -0.0058,
+   "t": -0.21595,
+   "p": 0.82933,
+   "n": 146.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S3",
+   "state": "BREADTH_200",
+   "slope": -0.00068,
+   "t": -0.03434,
+   "p": 0.97265,
+   "n": 146.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S3",
+   "state": "IND_DISPERSION",
+   "slope": -0.02636,
+   "t": -1.66234,
+   "p": 0.09974,
+   "n": 97.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S3",
+   "state": "CONCENTRATION_TOP2",
+   "slope": 0.01149,
+   "t": 0.37386,
+   "p": 0.70906,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S3",
+   "state": "LEADERSHIP_PERSIST",
+   "slope": -0.00769,
+   "t": -0.46563,
+   "p": 0.6427,
+   "n": 85.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S3",
+   "state": "UST10_LEVEL",
+   "slope": -0.00066,
+   "t": -0.02668,
+   "p": 0.97875,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S3",
+   "state": "UST10_CHG_63",
+   "slope": -0.0182,
+   "t": -1.06171,
+   "p": 0.29013,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S3",
+   "state": "CURVE_10Y2Y",
+   "slope": -0.033,
+   "t": -0.64108,
+   "p": 0.52248,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S3",
+   "state": "CURVE_CHG_63",
+   "slope": 0.04398,
+   "t": 1.38891,
+   "p": 0.16699,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S3",
+   "state": "BROAD_DOLLAR_CHG_63",
+   "slope": -0.00474,
+   "t": -0.15585,
+   "p": 0.87637,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S3",
+   "state": "USDKRW_CHG_63",
+   "slope": -0.02601,
+   "t": -0.99484,
+   "p": 0.32147,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S3",
+   "state": "USDKRW_VOL_63",
+   "slope": 0.01289,
+   "t": 0.41203,
+   "p": 0.68092,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S3",
+   "state": "VIX_LEVEL",
+   "slope": -0.00668,
+   "t": -0.54367,
+   "p": 0.5875,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S3",
+   "state": "VIX_CHG_63",
+   "slope": 0.00422,
+   "t": 0.3747,
+   "p": 0.70843,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S3",
+   "state": "CORR_KR_USDKRW_126",
+   "slope": 0.02946,
+   "t": 0.77821,
+   "p": 0.43771,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  },
+  {
+   "horizon": 126,
+   "pair": "S1-S3",
+   "state": "CORR_KR_UST10_126",
+   "slope": -0.00328,
+   "t": -0.11551,
+   "p": 0.9082,
+   "n": 147.0,
+   "byAdjustedP": 1.0
+  }
+ ],
+ "sleeveStandaloneFull": {
+  "S0_ETF": 0.142651,
+  "S1_INDUSTRY_MOMENTUM": 0.103914,
+  "S2_VALUE_CONFIRMED": 0.14821,
+  "S3_FOUR_FACTOR": 0.094174,
+  "SX_XGB_SENSITIVITY": 0.189921
+ },
+ "currentState": {
+  "signalDate": "2026-09-04",
+  "states": {
+   "MKT_TREND_63": -0.19148,
+   "MKT_TREND_252": 1.48553,
+   "MKT_VOL_63": 0.88582,
+   "MKT_DD_252": -0.2859,
+   "BREADTH_200": 0.47368,
+   "IND_DISPERSION": null,
+   "CONCENTRATION_TOP2": 0.52455,
+   "LEADERSHIP_PERSIST": null,
+   "UST10_LEVEL": 4.75,
+   "UST10_CHG_63": 0.28,
+   "CURVE_10Y2Y": 0.41,
+   "CURVE_CHG_63": -0.01,
+   "BROAD_DOLLAR_CHG_63": -0.00567,
+   "USDKRW_CHG_63": -0.07977,
+   "USDKRW_VOL_63": 0.10478,
+   "VIX_LEVEL": 14.92,
+   "VIX_CHG_63": -1.13,
+   "CORR_KR_USDKRW_126": 0.18722,
+   "CORR_KR_UST10_126": -0.01147
+  },
+  "policyWeights": {
+   "A1_MOMENTUM_CRASH_GUARD": {
+    "S0_ETF": 1.0
+   },
+   "A2_INVERSE_VOL_RISK_BUDGET": {
+    "S0_ETF": 0.2295,
+    "S1_INDUSTRY_MOMENTUM": 0.2028,
+    "S2_VALUE_CONFIRMED": 0.268,
+    "S3_FOUR_FACTOR": 0.2996
+   },
+   "B1_RIDGE_ALL_STATES": {
+    "S0_ETF": 1.0
+   },
+   "B2_LGBM_ALL_STATES": {
+    "S0_ETF": 1.0
+   },
+   "B3_RIDGE_KR_ONLY": {
+    "S0_ETF": 1.0
+   },
+   "SLEEVE_MOMENTUM_SWITCH": {
+    "S2_VALUE_CONFIRMED": 1.0
+   }
+  },
+  "sleeveBooks": {
+   "S0_ETF": {
+    "069500.KS": 1.0
+   },
+   "S1_INDUSTRY_MOMENTUM": {
+    "009150.KS": 0.2,
+    "011070.KS": 0.2,
+    "000660.KS": 0.2,
+    "353200.KS": 0.2,
+    "066570.KS": 0.2
+   },
+   "S2_VALUE_CONFIRMED": {
+    "034730.KS": 0.2,
+    "002380.KS": 0.2,
+    "267270.KS": 0.2,
+    "042660.KS": 0.2,
+    "267250.KS": 0.2
+   },
+   "S3_FOUR_FACTOR": {
+    "078930.KS": 0.2,
+    "267250.KS": 0.2,
+    "034730.KS": 0.2,
+    "001450.KS": 0.2,
+    "161390.KS": 0.2
+   }
+  },
+  "learnedDiagnostics": {
+   "B1_RIDGE_ALL_STATES": {
+    "mu": {
+     "S1_INDUSTRY_MOMENTUM": -0.00244,
+     "S2_VALUE_CONFIRMED": 0.05447,
+     "S3_FOUR_FACTOR": -0.17413
+    },
+    "se": {
+     "S1_INDUSTRY_MOMENTUM": 0.16471,
+     "S2_VALUE_CONFIRMED": 0.07686,
+     "S3_FOUR_FACTOR": 0.12194
+    },
+    "edges": {
+     "S2_VALUE_CONFIRMED": 0.00389
+    },
+    "n": 162
+   },
+   "B2_LGBM_ALL_STATES": {
+    "mu": {
+     "S1_INDUSTRY_MOMENTUM": 0.02255,
+     "S2_VALUE_CONFIRMED": 0.03296,
+     "S3_FOUR_FACTOR": -0.02154
+    },
+    "se": {
+     "S1_INDUSTRY_MOMENTUM": 0.16471,
+     "S2_VALUE_CONFIRMED": 0.07686,
+     "S3_FOUR_FACTOR": 0.12194
+    },
+    "edges": {},
+    "n": 162
+   },
+   "B3_RIDGE_KR_ONLY": {
+    "mu": {
+     "S1_INDUSTRY_MOMENTUM": -0.20353,
+     "S2_VALUE_CONFIRMED": 0.02289,
+     "S3_FOUR_FACTOR": -0.25223
+    },
+    "se": {
+     "S1_INDUSTRY_MOMENTUM": 0.12239,
+     "S2_VALUE_CONFIRMED": 0.05739,
+     "S3_FOUR_FACTOR": 0.09394
+    },
+    "edges": {},
+    "n": 162
+   }
+  }
+ },
+ "decisionLog": {
+  "A1_MOMENTUM_CRASH_GUARD": {
+   "2018-01-05": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2018-02-02": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2018-03-02": {
+    "S0_ETF": 1.0
+   },
+   "2018-03-30": {
+    "S0_ETF": 1.0
+   },
+   "2018-04-27": {
+    "S0_ETF": 1.0
+   },
+   "2018-05-25": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2018-06-22": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2018-07-20": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2018-08-17": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2018-09-14": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2018-10-12": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2018-11-09": {
+    "S0_ETF": 1.0
+   },
+   "2018-12-07": {
+    "S0_ETF": 1.0
+   },
+   "2019-01-04": {
+    "S0_ETF": 1.0
+   },
+   "2019-02-01": {
+    "S0_ETF": 1.0
+   },
+   "2019-02-28": {
+    "S0_ETF": 1.0
+   },
+   "2019-03-29": {
+    "S0_ETF": 1.0
+   },
+   "2019-04-26": {
+    "S0_ETF": 1.0
+   },
+   "2019-05-24": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2019-06-21": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2019-07-19": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2019-08-16": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2019-09-11": {
+    "S0_ETF": 1.0
+   },
+   "2019-10-11": {
+    "S0_ETF": 1.0
+   },
+   "2019-11-08": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2019-12-06": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2020-01-03": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2020-01-31": {
+    "S0_ETF": 1.0
+   },
+   "2020-02-28": {
+    "S0_ETF": 1.0
+   },
+   "2020-03-27": {
+    "S0_ETF": 1.0
+   },
+   "2020-04-24": {
+    "S0_ETF": 1.0
+   },
+   "2020-05-22": {
+    "S0_ETF": 1.0
+   },
+   "2020-06-19": {
+    "S0_ETF": 1.0
+   },
+   "2020-07-17": {
+    "S0_ETF": 1.0
+   },
+   "2020-08-14": {
+    "S0_ETF": 1.0
+   },
+   "2020-09-11": {
+    "S0_ETF": 1.0
+   },
+   "2020-10-08": {
+    "S0_ETF": 1.0
+   },
+   "2020-11-06": {
+    "S0_ETF": 1.0
+   },
+   "2020-12-04": {
+    "S0_ETF": 1.0
+   },
+   "2020-12-30": {
+    "S0_ETF": 1.0
+   },
+   "2021-01-29": {
+    "S0_ETF": 1.0
+   },
+   "2021-02-26": {
+    "S0_ETF": 1.0
+   },
+   "2021-03-26": {
+    "S0_ETF": 1.0
+   },
+   "2021-04-23": {
+    "S0_ETF": 1.0
+   },
+   "2021-05-21": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2021-06-18": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2021-07-16": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2021-08-13": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2021-09-10": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2021-10-08": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2021-11-05": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2021-12-03": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2021-12-30": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2022-01-28": {
+    "S0_ETF": 1.0
+   },
+   "2022-02-25": {
+    "S0_ETF": 1.0
+   },
+   "2022-03-25": {
+    "S0_ETF": 1.0
+   },
+   "2022-04-22": {
+    "S0_ETF": 1.0
+   },
+   "2022-05-20": {
+    "S0_ETF": 1.0
+   },
+   "2022-06-17": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2022-07-15": {
+    "S0_ETF": 1.0
+   },
+   "2022-08-12": {
+    "S0_ETF": 1.0
+   },
+   "2022-09-08": {
+    "S0_ETF": 1.0
+   },
+   "2022-10-07": {
+    "S0_ETF": 1.0
+   },
+   "2022-11-04": {
+    "S0_ETF": 1.0
+   },
+   "2022-12-02": {
+    "S0_ETF": 1.0
+   },
+   "2022-12-29": {
+    "S0_ETF": 1.0
+   },
+   "2023-01-27": {
+    "S0_ETF": 1.0
+   },
+   "2023-02-24": {
+    "S0_ETF": 1.0
+   },
+   "2023-03-24": {
+    "S0_ETF": 1.0
+   },
+   "2023-04-21": {
+    "S0_ETF": 1.0
+   },
+   "2023-05-19": {
+    "S0_ETF": 1.0
+   },
+   "2023-06-16": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2023-07-14": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2023-08-11": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2023-09-08": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2023-10-06": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2023-11-03": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2023-12-01": {
+    "S0_ETF": 1.0
+   },
+   "2023-12-28": {
+    "S0_ETF": 1.0
+   },
+   "2024-01-26": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2024-02-23": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2024-03-22": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2024-04-19": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2024-05-17": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2024-06-14": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2024-07-12": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2024-08-09": {
+    "S0_ETF": 1.0
+   },
+   "2024-09-06": {
+    "S0_ETF": 1.0
+   },
+   "2024-10-04": {
+    "S0_ETF": 1.0
+   },
+   "2024-11-01": {
+    "S0_ETF": 1.0
+   },
+   "2024-11-29": {
+    "S0_ETF": 1.0
+   },
+   "2024-12-27": {
+    "S0_ETF": 1.0
+   },
+   "2025-01-24": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2025-02-21": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2025-03-21": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2025-04-18": {
+    "S0_ETF": 1.0
+   },
+   "2025-05-16": {
+    "S0_ETF": 1.0
+   },
+   "2025-06-13": {
+    "S0_ETF": 1.0
+   },
+   "2025-07-11": {
+    "S0_ETF": 1.0
+   },
+   "2025-08-08": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2025-09-05": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2025-10-02": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2025-10-31": {
+    "S0_ETF": 1.0
+   },
+   "2025-11-28": {
+    "S0_ETF": 1.0
+   },
+   "2025-12-26": {
+    "S0_ETF": 1.0
+   },
+   "2026-01-23": {
+    "S0_ETF": 1.0
+   },
+   "2026-02-20": {
+    "S0_ETF": 1.0
+   },
+   "2026-03-20": {
+    "S0_ETF": 1.0
+   },
+   "2026-04-17": {
+    "S0_ETF": 1.0
+   },
+   "2026-05-15": {
+    "S0_ETF": 1.0
+   },
+   "2026-06-12": {
+    "S0_ETF": 1.0
+   },
+   "2026-07-10": {
+    "S0_ETF": 1.0
+   },
+   "2026-08-07": {
+    "S0_ETF": 1.0
+   },
+   "2026-09-04": {
+    "S0_ETF": 1.0
+   }
+  },
+  "A2_INVERSE_VOL_RISK_BUDGET": {
+   "2018-01-05": {
+    "S0_ETF": 0.3434,
+    "S1_INDUSTRY_MOMENTUM": 0.1389,
+    "S2_VALUE_CONFIRMED": 0.2764,
+    "S3_FOUR_FACTOR": 0.2414
+   },
+   "2018-02-02": {
+    "S0_ETF": 0.3434,
+    "S1_INDUSTRY_MOMENTUM": 0.1389,
+    "S2_VALUE_CONFIRMED": 0.2764,
+    "S3_FOUR_FACTOR": 0.2414
+   },
+   "2018-03-02": {
+    "S0_ETF": 0.3434,
+    "S1_INDUSTRY_MOMENTUM": 0.1389,
+    "S2_VALUE_CONFIRMED": 0.2764,
+    "S3_FOUR_FACTOR": 0.2414
+   },
+   "2018-03-30": {
+    "S0_ETF": 0.3434,
+    "S1_INDUSTRY_MOMENTUM": 0.1389,
+    "S2_VALUE_CONFIRMED": 0.2764,
+    "S3_FOUR_FACTOR": 0.2414
+   },
+   "2018-04-27": {
+    "S0_ETF": 0.3434,
+    "S1_INDUSTRY_MOMENTUM": 0.1389,
+    "S2_VALUE_CONFIRMED": 0.2764,
+    "S3_FOUR_FACTOR": 0.2414
+   },
+   "2018-05-25": {
+    "S0_ETF": 0.3434,
+    "S1_INDUSTRY_MOMENTUM": 0.1389,
+    "S2_VALUE_CONFIRMED": 0.2764,
+    "S3_FOUR_FACTOR": 0.2414
+   },
+   "2018-06-22": {
+    "S0_ETF": 0.3434,
+    "S1_INDUSTRY_MOMENTUM": 0.1389,
+    "S2_VALUE_CONFIRMED": 0.2764,
+    "S3_FOUR_FACTOR": 0.2414
+   },
+   "2018-07-20": {
+    "S0_ETF": 0.3434,
+    "S1_INDUSTRY_MOMENTUM": 0.1389,
+    "S2_VALUE_CONFIRMED": 0.2764,
+    "S3_FOUR_FACTOR": 0.2414
+   },
+   "2018-08-17": {
+    "S0_ETF": 0.3434,
+    "S1_INDUSTRY_MOMENTUM": 0.1389,
+    "S2_VALUE_CONFIRMED": 0.2764,
+    "S3_FOUR_FACTOR": 0.2414
+   },
+   "2018-09-14": {
+    "S0_ETF": 0.3434,
+    "S1_INDUSTRY_MOMENTUM": 0.1389,
+    "S2_VALUE_CONFIRMED": 0.2764,
+    "S3_FOUR_FACTOR": 0.2414
+   },
+   "2018-10-12": {
+    "S0_ETF": 0.3434,
+    "S1_INDUSTRY_MOMENTUM": 0.1389,
+    "S2_VALUE_CONFIRMED": 0.2764,
+    "S3_FOUR_FACTOR": 0.2414
+   },
+   "2018-11-09": {
+    "S0_ETF": 0.3434,
+    "S1_INDUSTRY_MOMENTUM": 0.1389,
+    "S2_VALUE_CONFIRMED": 0.2764,
+    "S3_FOUR_FACTOR": 0.2414
+   },
+   "2018-12-07": {
+    "S0_ETF": 0.3434,
+    "S1_INDUSTRY_MOMENTUM": 0.1389,
+    "S2_VALUE_CONFIRMED": 0.2764,
+    "S3_FOUR_FACTOR": 0.2414
+   },
+   "2019-01-04": {
+    "S0_ETF": 0.3434,
+    "S1_INDUSTRY_MOMENTUM": 0.1389,
+    "S2_VALUE_CONFIRMED": 0.2764,
+    "S3_FOUR_FACTOR": 0.2414
+   },
+   "2019-02-01": {
+    "S0_ETF": 0.3434,
+    "S1_INDUSTRY_MOMENTUM": 0.1389,
+    "S2_VALUE_CONFIRMED": 0.2764,
+    "S3_FOUR_FACTOR": 0.2414
+   },
+   "2019-02-28": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2019-03-29": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2019-04-26": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2019-05-24": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2019-06-21": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2019-07-19": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2019-08-16": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2019-09-11": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2019-10-11": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2019-11-08": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2019-12-06": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2020-01-03": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2020-01-31": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2020-02-28": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2020-03-27": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2020-04-24": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2020-05-22": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2020-06-19": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2020-07-17": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2020-08-14": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2020-09-11": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2020-10-08": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2020-11-06": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2020-12-04": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2020-12-30": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2021-01-29": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2021-02-26": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2021-03-26": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2021-04-23": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2021-05-21": {
+    "S0_ETF": 0.2735,
+    "S1_INDUSTRY_MOMENTUM": 0.1831,
+    "S2_VALUE_CONFIRMED": 0.2385,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2021-06-18": {
+    "S0_ETF": 0.3517,
+    "S1_INDUSTRY_MOMENTUM": 0.1282,
+    "S2_VALUE_CONFIRMED": 0.2616,
+    "S3_FOUR_FACTOR": 0.2585
+   },
+   "2021-07-16": {
+    "S0_ETF": 0.3517,
+    "S1_INDUSTRY_MOMENTUM": 0.1282,
+    "S2_VALUE_CONFIRMED": 0.2616,
+    "S3_FOUR_FACTOR": 0.2585
+   },
+   "2021-08-13": {
+    "S0_ETF": 0.3517,
+    "S1_INDUSTRY_MOMENTUM": 0.1282,
+    "S2_VALUE_CONFIRMED": 0.2616,
+    "S3_FOUR_FACTOR": 0.2585
+   },
+   "2021-09-10": {
+    "S0_ETF": 0.3517,
+    "S1_INDUSTRY_MOMENTUM": 0.1282,
+    "S2_VALUE_CONFIRMED": 0.2616,
+    "S3_FOUR_FACTOR": 0.2585
+   },
+   "2021-10-08": {
+    "S0_ETF": 0.3517,
+    "S1_INDUSTRY_MOMENTUM": 0.1282,
+    "S2_VALUE_CONFIRMED": 0.2616,
+    "S3_FOUR_FACTOR": 0.2585
+   },
+   "2021-11-05": {
+    "S0_ETF": 0.3517,
+    "S1_INDUSTRY_MOMENTUM": 0.1282,
+    "S2_VALUE_CONFIRMED": 0.2616,
+    "S3_FOUR_FACTOR": 0.2585
+   },
+   "2021-12-03": {
+    "S0_ETF": 0.3517,
+    "S1_INDUSTRY_MOMENTUM": 0.1282,
+    "S2_VALUE_CONFIRMED": 0.2616,
+    "S3_FOUR_FACTOR": 0.2585
+   },
+   "2021-12-30": {
+    "S0_ETF": 0.3517,
+    "S1_INDUSTRY_MOMENTUM": 0.1282,
+    "S2_VALUE_CONFIRMED": 0.2616,
+    "S3_FOUR_FACTOR": 0.2585
+   },
+   "2022-01-28": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2022-02-25": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2022-03-25": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2022-04-22": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2022-05-20": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2022-06-17": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2022-07-15": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2022-08-12": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2022-09-08": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2022-10-07": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2022-11-04": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2022-12-02": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2022-12-29": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2023-01-27": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2023-02-24": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2023-03-24": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2023-04-21": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2023-05-19": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2023-06-16": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2023-07-14": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2023-08-11": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2023-09-08": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2023-10-06": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2023-11-03": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2023-12-01": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2023-12-28": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2024-01-26": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2024-02-23": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2024-03-22": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2024-04-19": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2024-05-17": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2024-06-14": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2024-07-12": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2024-08-09": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2024-09-06": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2024-10-04": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2024-11-01": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2024-11-29": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2024-12-27": {
+    "S0_ETF": 0.2896,
+    "S1_INDUSTRY_MOMENTUM": 0.2107,
+    "S2_VALUE_CONFIRMED": 0.2065,
+    "S3_FOUR_FACTOR": 0.2932
+   },
+   "2025-01-24": {
+    "S0_ETF": 0.3015,
+    "S1_INDUSTRY_MOMENTUM": 0.1635,
+    "S2_VALUE_CONFIRMED": 0.2967,
+    "S3_FOUR_FACTOR": 0.2382
+   },
+   "2025-02-21": {
+    "S0_ETF": 0.3015,
+    "S1_INDUSTRY_MOMENTUM": 0.1635,
+    "S2_VALUE_CONFIRMED": 0.2967,
+    "S3_FOUR_FACTOR": 0.2382
+   },
+   "2025-03-21": {
+    "S0_ETF": 0.3015,
+    "S1_INDUSTRY_MOMENTUM": 0.1635,
+    "S2_VALUE_CONFIRMED": 0.2967,
+    "S3_FOUR_FACTOR": 0.2382
+   },
+   "2025-04-18": {
+    "S0_ETF": 0.3015,
+    "S1_INDUSTRY_MOMENTUM": 0.1635,
+    "S2_VALUE_CONFIRMED": 0.2967,
+    "S3_FOUR_FACTOR": 0.2382
+   },
+   "2025-05-16": {
+    "S0_ETF": 0.3015,
+    "S1_INDUSTRY_MOMENTUM": 0.1635,
+    "S2_VALUE_CONFIRMED": 0.2967,
+    "S3_FOUR_FACTOR": 0.2382
+   },
+   "2025-06-13": {
+    "S0_ETF": 0.3015,
+    "S1_INDUSTRY_MOMENTUM": 0.1635,
+    "S2_VALUE_CONFIRMED": 0.2967,
+    "S3_FOUR_FACTOR": 0.2382
+   },
+   "2025-07-11": {
+    "S0_ETF": 0.3015,
+    "S1_INDUSTRY_MOMENTUM": 0.1635,
+    "S2_VALUE_CONFIRMED": 0.2967,
+    "S3_FOUR_FACTOR": 0.2382
+   },
+   "2025-08-08": {
+    "S0_ETF": 0.3015,
+    "S1_INDUSTRY_MOMENTUM": 0.1635,
+    "S2_VALUE_CONFIRMED": 0.2967,
+    "S3_FOUR_FACTOR": 0.2382
+   },
+   "2025-09-05": {
+    "S0_ETF": 0.3015,
+    "S1_INDUSTRY_MOMENTUM": 0.1635,
+    "S2_VALUE_CONFIRMED": 0.2967,
+    "S3_FOUR_FACTOR": 0.2382
+   },
+   "2025-10-02": {
+    "S0_ETF": 0.3015,
+    "S1_INDUSTRY_MOMENTUM": 0.1635,
+    "S2_VALUE_CONFIRMED": 0.2967,
+    "S3_FOUR_FACTOR": 0.2382
+   },
+   "2025-10-31": {
+    "S0_ETF": 0.3015,
+    "S1_INDUSTRY_MOMENTUM": 0.1635,
+    "S2_VALUE_CONFIRMED": 0.2967,
+    "S3_FOUR_FACTOR": 0.2382
+   },
+   "2025-11-28": {
+    "S0_ETF": 0.3015,
+    "S1_INDUSTRY_MOMENTUM": 0.1635,
+    "S2_VALUE_CONFIRMED": 0.2967,
+    "S3_FOUR_FACTOR": 0.2382
+   },
+   "2025-12-26": {
+    "S0_ETF": 0.3015,
+    "S1_INDUSTRY_MOMENTUM": 0.1635,
+    "S2_VALUE_CONFIRMED": 0.2967,
+    "S3_FOUR_FACTOR": 0.2382
+   },
+   "2026-01-23": {
+    "S0_ETF": 0.3015,
+    "S1_INDUSTRY_MOMENTUM": 0.1635,
+    "S2_VALUE_CONFIRMED": 0.2967,
+    "S3_FOUR_FACTOR": 0.2382
+   },
+   "2026-02-20": {
+    "S0_ETF": 0.3015,
+    "S1_INDUSTRY_MOMENTUM": 0.1635,
+    "S2_VALUE_CONFIRMED": 0.2967,
+    "S3_FOUR_FACTOR": 0.2382
+   },
+   "2026-03-20": {
+    "S0_ETF": 0.3015,
+    "S1_INDUSTRY_MOMENTUM": 0.1635,
+    "S2_VALUE_CONFIRMED": 0.2967,
+    "S3_FOUR_FACTOR": 0.2382
+   },
+   "2026-04-17": {
+    "S0_ETF": 0.3015,
+    "S1_INDUSTRY_MOMENTUM": 0.1635,
+    "S2_VALUE_CONFIRMED": 0.2967,
+    "S3_FOUR_FACTOR": 0.2382
+   },
+   "2026-05-15": {
+    "S0_ETF": 0.2295,
+    "S1_INDUSTRY_MOMENTUM": 0.2028,
+    "S2_VALUE_CONFIRMED": 0.268,
+    "S3_FOUR_FACTOR": 0.2996
+   },
+   "2026-06-12": {
+    "S0_ETF": 0.2295,
+    "S1_INDUSTRY_MOMENTUM": 0.2028,
+    "S2_VALUE_CONFIRMED": 0.268,
+    "S3_FOUR_FACTOR": 0.2996
+   },
+   "2026-07-10": {
+    "S0_ETF": 0.2295,
+    "S1_INDUSTRY_MOMENTUM": 0.2028,
+    "S2_VALUE_CONFIRMED": 0.268,
+    "S3_FOUR_FACTOR": 0.2996
+   },
+   "2026-08-07": {
+    "S0_ETF": 0.2295,
+    "S1_INDUSTRY_MOMENTUM": 0.2028,
+    "S2_VALUE_CONFIRMED": 0.268,
+    "S3_FOUR_FACTOR": 0.2996
+   },
+   "2026-09-04": {
+    "S0_ETF": 0.2295,
+    "S1_INDUSTRY_MOMENTUM": 0.2028,
+    "S2_VALUE_CONFIRMED": 0.268,
+    "S3_FOUR_FACTOR": 0.2996
+   }
+  },
+  "B1_RIDGE_ALL_STATES": {
+   "2018-01-05": {
+    "S1_INDUSTRY_MOMENTUM": 0.6213,
+    "S0_ETF": 0.3787
+   },
+   "2018-02-02": {
+    "S0_ETF": 1.0
+   },
+   "2018-03-02": {
+    "S0_ETF": 1.0
+   },
+   "2018-03-30": {
+    "S0_ETF": 1.0
+   },
+   "2018-04-27": {
+    "S0_ETF": 1.0
+   },
+   "2018-05-25": {
+    "S1_INDUSTRY_MOMENTUM": 0.3572,
+    "S3_FOUR_FACTOR": 0.6428,
+    "S0_ETF": 0.0
+   },
+   "2018-06-22": {
+    "S1_INDUSTRY_MOMENTUM": 0.6659,
+    "S3_FOUR_FACTOR": 0.3341,
+    "S0_ETF": 0.0
+   },
+   "2018-07-20": {
+    "S1_INDUSTRY_MOMENTUM": 0.8565,
+    "S3_FOUR_FACTOR": 0.1435,
+    "S0_ETF": 0.0
+   },
+   "2018-08-17": {
+    "S1_INDUSTRY_MOMENTUM": 0.3435,
+    "S0_ETF": 0.6565
+   },
+   "2018-09-14": {
+    "S2_VALUE_CONFIRMED": 0.1407,
+    "S0_ETF": 0.8593
+   },
+   "2018-10-12": {
+    "S2_VALUE_CONFIRMED": 0.8759,
+    "S0_ETF": 0.1241
+   },
+   "2018-11-09": {
+    "S2_VALUE_CONFIRMED": 1.0,
+    "S0_ETF": 0.0
+   },
+   "2018-12-07": {
+    "S2_VALUE_CONFIRMED": 1.0,
+    "S0_ETF": 0.0
+   },
+   "2019-01-04": {
+    "S2_VALUE_CONFIRMED": 1.0,
+    "S0_ETF": 0.0
+   },
+   "2019-02-01": {
+    "S2_VALUE_CONFIRMED": 1.0,
+    "S0_ETF": 0.0
+   },
+   "2019-02-28": {
+    "S2_VALUE_CONFIRMED": 0.5486,
+    "S0_ETF": 0.4514
+   },
+   "2019-03-29": {
+    "S2_VALUE_CONFIRMED": 0.0882,
+    "S0_ETF": 0.9118
+   },
+   "2019-04-26": {
+    "S2_VALUE_CONFIRMED": 0.0882,
+    "S0_ETF": 0.9118
+   },
+   "2019-05-24": {
+    "S2_VALUE_CONFIRMED": 0.0882,
+    "S0_ETF": 0.9118
+   },
+   "2019-06-21": {
+    "S2_VALUE_CONFIRMED": 0.0882,
+    "S0_ETF": 0.9118
+   },
+   "2019-07-19": {
+    "S2_VALUE_CONFIRMED": 0.0882,
+    "S0_ETF": 0.9118
+   },
+   "2019-08-16": {
+    "S2_VALUE_CONFIRMED": 0.0882,
+    "S0_ETF": 0.9118
+   },
+   "2019-09-11": {
+    "S1_INDUSTRY_MOMENTUM": 0.4114,
+    "S2_VALUE_CONFIRMED": 0.5886,
+    "S0_ETF": 0.0
+   },
+   "2019-10-11": {
+    "S1_INDUSTRY_MOMENTUM": 0.9419,
+    "S2_VALUE_CONFIRMED": 0.0581,
+    "S0_ETF": -0.0
+   },
+   "2019-11-08": {
+    "S1_INDUSTRY_MOMENTUM": 0.8247,
+    "S2_VALUE_CONFIRMED": 0.0459,
+    "S3_FOUR_FACTOR": 0.1294,
+    "S0_ETF": 0.0
+   },
+   "2019-12-06": {
+    "S1_INDUSTRY_MOMENTUM": 0.7933,
+    "S0_ETF": 0.2067
+   },
+   "2020-01-03": {
+    "S1_INDUSTRY_MOMENTUM": 0.0409,
+    "S0_ETF": 0.9591
+   },
+   "2020-01-31": {
+    "S1_INDUSTRY_MOMENTUM": 0.4757,
+    "S0_ETF": 0.5243
+   },
+   "2020-02-28": {
+    "S0_ETF": 1.0
+   },
+   "2020-03-27": {
+    "S0_ETF": 1.0
+   },
+   "2020-04-24": {
+    "S0_ETF": 1.0
+   },
+   "2020-05-22": {
+    "S0_ETF": 1.0
+   },
+   "2020-06-19": {
+    "S0_ETF": 1.0
+   },
+   "2020-07-17": {
+    "S0_ETF": 1.0
+   },
+   "2020-08-14": {
+    "S0_ETF": 1.0
+   },
+   "2020-09-11": {
+    "S0_ETF": 1.0
+   },
+   "2020-10-08": {
+    "S1_INDUSTRY_MOMENTUM": 1.0,
+    "S0_ETF": 0.0
+   },
+   "2020-11-06": {
+    "S1_INDUSTRY_MOMENTUM": 0.7099,
+    "S0_ETF": 0.2901
+   },
+   "2020-12-04": {
+    "S1_INDUSTRY_MOMENTUM": 0.6066,
+    "S0_ETF": 0.3934
+   },
+   "2020-12-30": {
+    "S1_INDUSTRY_MOMENTUM": 0.2052,
+    "S0_ETF": 0.7948
+   },
+   "2021-01-29": {
+    "S0_ETF": 1.0
+   },
+   "2021-02-26": {
+    "S0_ETF": 1.0
+   },
+   "2021-03-26": {
+    "S0_ETF": 1.0
+   },
+   "2021-04-23": {
+    "S1_INDUSTRY_MOMENTUM": 0.1911,
+    "S0_ETF": 0.8089
+   },
+   "2021-05-21": {
+    "S1_INDUSTRY_MOMENTUM": 0.0787,
+    "S0_ETF": 0.9213
+   },
+   "2021-06-18": {
+    "S1_INDUSTRY_MOMENTUM": 0.0787,
+    "S0_ETF": 0.9213
+   },
+   "2021-07-16": {
+    "S1_INDUSTRY_MOMENTUM": 0.0787,
+    "S0_ETF": 0.9213
+   },
+   "2021-08-13": {
+    "S1_INDUSTRY_MOMENTUM": 0.0787,
+    "S0_ETF": 0.9213
+   },
+   "2021-09-10": {
+    "S1_INDUSTRY_MOMENTUM": 0.0787,
+    "S0_ETF": 0.9213
+   },
+   "2021-10-08": {
+    "S1_INDUSTRY_MOMENTUM": 0.0787,
+    "S0_ETF": 0.9213
+   },
+   "2021-11-05": {
+    "S1_INDUSTRY_MOMENTUM": 0.0787,
+    "S0_ETF": 0.9213
+   },
+   "2021-12-03": {
+    "S1_INDUSTRY_MOMENTUM": 0.0787,
+    "S0_ETF": 0.9213
+   },
+   "2021-12-30": {
+    "S1_INDUSTRY_MOMENTUM": 0.0787,
+    "S0_ETF": 0.9213
+   },
+   "2022-01-28": {
+    "S1_INDUSTRY_MOMENTUM": 0.0787,
+    "S0_ETF": 0.9213
+   },
+   "2022-02-25": {
+    "S1_INDUSTRY_MOMENTUM": 0.0787,
+    "S0_ETF": 0.9213
+   },
+   "2022-03-25": {
+    "S2_VALUE_CONFIRMED": 0.2657,
+    "S0_ETF": 0.7343
+   },
+   "2022-04-22": {
+    "S2_VALUE_CONFIRMED": 1.0,
+    "S0_ETF": 0.0
+   },
+   "2022-05-20": {
+    "S2_VALUE_CONFIRMED": 1.0,
+    "S0_ETF": 0.0
+   },
+   "2022-06-17": {
+    "S2_VALUE_CONFIRMED": 1.0,
+    "S0_ETF": 0.0
+   },
+   "2022-07-15": {
+    "S2_VALUE_CONFIRMED": 0.8139,
+    "S0_ETF": 0.1861
+   },
+   "2022-08-12": {
+    "S2_VALUE_CONFIRMED": 0.0055,
+    "S0_ETF": 0.9945
+   },
+   "2022-09-08": {
+    "S2_VALUE_CONFIRMED": 0.0055,
+    "S0_ETF": 0.9945
+   },
+   "2022-10-07": {
+    "S2_VALUE_CONFIRMED": 0.0055,
+    "S0_ETF": 0.9945
+   },
+   "2022-11-04": {
+    "S2_VALUE_CONFIRMED": 0.0055,
+    "S0_ETF": 0.9945
+   },
+   "2022-12-02": {
+    "S2_VALUE_CONFIRMED": 0.0055,
+    "S0_ETF": 0.9945
+   },
+   "2022-12-29": {
+    "S2_VALUE_CONFIRMED": 0.0055,
+    "S0_ETF": 0.9945
+   },
+   "2023-01-27": {
+    "S2_VALUE_CONFIRMED": 0.0055,
+    "S0_ETF": 0.9945
+   },
+   "2023-02-24": {
+    "S2_VALUE_CONFIRMED": 0.0055,
+    "S0_ETF": 0.9945
+   },
+   "2023-03-24": {
+    "S2_VALUE_CONFIRMED": 0.0055,
+    "S0_ETF": 0.9945
+   },
+   "2023-04-21": {
+    "S2_VALUE_CONFIRMED": 0.0055,
+    "S0_ETF": 0.9945
+   },
+   "2023-05-19": {
+    "S2_VALUE_CONFIRMED": 0.0055,
+    "S0_ETF": 0.9945
+   },
+   "2023-06-16": {
+    "S2_VALUE_CONFIRMED": 0.0055,
+    "S0_ETF": 0.9945
+   },
+   "2023-07-14": {
+    "S2_VALUE_CONFIRMED": 0.0055,
+    "S0_ETF": 0.9945
+   },
+   "2023-08-11": {
+    "S2_VALUE_CONFIRMED": 0.0055,
+    "S0_ETF": 0.9945
+   },
+   "2023-09-08": {
+    "S2_VALUE_CONFIRMED": 0.0055,
+    "S0_ETF": 0.9945
+   },
+   "2023-10-06": {
+    "S1_INDUSTRY_MOMENTUM": 0.1982,
+    "S0_ETF": 0.8018
+   },
+   "2023-11-03": {
+    "S1_INDUSTRY_MOMENTUM": 0.3352,
+    "S0_ETF": 0.6648
+   },
+   "2023-12-01": {
+    "S1_INDUSTRY_MOMENTUM": 0.2282,
+    "S0_ETF": 0.7718
+   },
+   "2023-12-28": {
+    "S1_INDUSTRY_MOMENTUM": 1.0,
+    "S0_ETF": 0.0
+   },
+   "2024-01-26": {
+    "S1_INDUSTRY_MOMENTUM": 1.0,
+    "S0_ETF": 0.0
+   },
+   "2024-02-23": {
+    "S1_INDUSTRY_MOMENTUM": 1.0,
+    "S0_ETF": 0.0
+   },
+   "2024-03-22": {
+    "S1_INDUSTRY_MOMENTUM": 0.3809,
+    "S3_FOUR_FACTOR": 0.1083,
+    "S0_ETF": 0.5107
+   },
+   "2024-04-19": {
+    "S1_INDUSTRY_MOMENTUM": 0.3055,
+    "S3_FOUR_FACTOR": 0.6945,
+    "S0_ETF": 0.0
+   },
+   "2024-05-17": {
+    "S1_INDUSTRY_MOMENTUM": 0.3055,
+    "S3_FOUR_FACTOR": 0.6945,
+    "S0_ETF": 0.0
+   },
+   "2024-06-14": {
+    "S1_INDUSTRY_MOMENTUM": 0.3055,
+    "S3_FOUR_FACTOR": 0.6945,
+    "S0_ETF": 0.0
+   },
+   "2024-07-12": {
+    "S1_INDUSTRY_MOMENTUM": 0.365,
+    "S2_VALUE_CONFIRMED": 0.1573,
+    "S3_FOUR_FACTOR": 0.4777,
+    "S0_ETF": 0.0
+   },
+   "2024-08-09": {
+    "S2_VALUE_CONFIRMED": 0.911,
+    "S0_ETF": 0.089
+   },
+   "2024-09-06": {
+    "S1_INDUSTRY_MOMENTUM": 0.2555,
+    "S2_VALUE_CONFIRMED": 0.7445,
+    "S0_ETF": 0.0
+   },
+   "2024-10-04": {
+    "S2_VALUE_CONFIRMED": 0.763,
+    "S0_ETF": 0.237
+   },
+   "2024-11-01": {
+    "S1_INDUSTRY_MOMENTUM": 0.0249,
+    "S2_VALUE_CONFIRMED": 0.8518,
+    "S3_FOUR_FACTOR": 0.1233,
+    "S0_ETF": 0.0
+   },
+   "2024-11-29": {
+    "S2_VALUE_CONFIRMED": 0.4776,
+    "S3_FOUR_FACTOR": 0.5224,
+    "S0_ETF": 0.0
+   },
+   "2024-12-27": {
+    "S1_INDUSTRY_MOMENTUM": 0.0773,
+    "S2_VALUE_CONFIRMED": 0.2517,
+    "S3_FOUR_FACTOR": 0.671,
+    "S0_ETF": 0.0
+   },
+   "2025-01-24": {
+    "S2_VALUE_CONFIRMED": 0.2064,
+    "S3_FOUR_FACTOR": 0.7936,
+    "S0_ETF": 0.0
+   },
+   "2025-02-21": {
+    "S2_VALUE_CONFIRMED": 0.2064,
+    "S3_FOUR_FACTOR": 0.7936,
+    "S0_ETF": 0.0
+   },
+   "2025-03-21": {
+    "S2_VALUE_CONFIRMED": 0.0511,
+    "S3_FOUR_FACTOR": 0.1695,
+    "S0_ETF": 0.7794
+   },
+   "2025-04-18": {
+    "S2_VALUE_CONFIRMED": 0.0597,
+    "S0_ETF": 0.9403
+   },
+   "2025-05-16": {
+    "S2_VALUE_CONFIRMED": 0.0597,
+    "S0_ETF": 0.9403
+   },
+   "2025-06-13": {
+    "S2_VALUE_CONFIRMED": 0.0597,
+    "S0_ETF": 0.9403
+   },
+   "2025-07-11": {
+    "S2_VALUE_CONFIRMED": 0.0893,
+    "S3_FOUR_FACTOR": 0.7682,
+    "S0_ETF": 0.1425
+   },
+   "2025-08-08": {
+    "S2_VALUE_CONFIRMED": 0.3731,
+    "S3_FOUR_FACTOR": 0.6269,
+    "S0_ETF": 0.0
+   },
+   "2025-09-05": {
+    "S1_INDUSTRY_MOMENTUM": 0.544,
+    "S2_VALUE_CONFIRMED": 0.1326,
+    "S3_FOUR_FACTOR": 0.3234,
+    "S0_ETF": 0.0
+   },
+   "2025-10-02": {
+    "S1_INDUSTRY_MOMENTUM": 0.544,
+    "S2_VALUE_CONFIRMED": 0.1326,
+    "S3_FOUR_FACTOR": 0.3234,
+    "S0_ETF": 0.0
+   },
+   "2025-10-31": {
+    "S1_INDUSTRY_MOMENTUM": 0.6309,
+    "S2_VALUE_CONFIRMED": 0.1912,
+    "S3_FOUR_FACTOR": 0.1779,
+    "S0_ETF": 0.0
+   },
+   "2025-11-28": {
+    "S1_INDUSTRY_MOMENTUM": 0.7012,
+    "S2_VALUE_CONFIRMED": 0.2644,
+    "S3_FOUR_FACTOR": 0.0344,
+    "S0_ETF": 0.0
+   },
+   "2025-12-26": {
+    "S1_INDUSTRY_MOMENTUM": 0.7012,
+    "S2_VALUE_CONFIRMED": 0.2644,
+    "S3_FOUR_FACTOR": 0.0344,
+    "S0_ETF": 0.0
+   },
+   "2026-01-23": {
+    "S1_INDUSTRY_MOMENTUM": 0.7012,
+    "S2_VALUE_CONFIRMED": 0.2644,
+    "S3_FOUR_FACTOR": 0.0344,
+    "S0_ETF": 0.0
+   },
+   "2026-02-20": {
+    "S1_INDUSTRY_MOMENTUM": 0.7012,
+    "S2_VALUE_CONFIRMED": 0.2644,
+    "S3_FOUR_FACTOR": 0.0344,
+    "S0_ETF": 0.0
+   },
+   "2026-03-20": {
+    "S1_INDUSTRY_MOMENTUM": 1.0,
+    "S0_ETF": 0.0
+   },
+   "2026-04-17": {
+    "S1_INDUSTRY_MOMENTUM": 1.0,
+    "S0_ETF": 0.0
+   },
+   "2026-05-15": {
+    "S1_INDUSTRY_MOMENTUM": 1.0,
+    "S0_ETF": 0.0
+   },
+   "2026-06-12": {
+    "S0_ETF": 1.0
+   },
+   "2026-07-10": {
+    "S0_ETF": 1.0
+   },
+   "2026-08-07": {
+    "S0_ETF": 1.0
+   },
+   "2026-09-04": {
+    "S0_ETF": 1.0
+   }
+  },
+  "B2_LGBM_ALL_STATES": {
+   "2018-01-05": {
+    "S1_INDUSTRY_MOMENTUM": 0.0031,
+    "S0_ETF": 0.9969
+   },
+   "2018-02-02": {
+    "S1_INDUSTRY_MOMENTUM": 0.0031,
+    "S0_ETF": 0.9969
+   },
+   "2018-03-02": {
+    "S1_INDUSTRY_MOMENTUM": 0.0031,
+    "S0_ETF": 0.9969
+   },
+   "2018-03-30": {
+    "S1_INDUSTRY_MOMENTUM": 0.0031,
+    "S0_ETF": 0.9969
+   },
+   "2018-04-27": {
+    "S1_INDUSTRY_MOMENTUM": 0.0031,
+    "S0_ETF": 0.9969
+   },
+   "2018-05-25": {
+    "S1_INDUSTRY_MOMENTUM": 0.1189,
+    "S0_ETF": 0.8811
+   },
+   "2018-06-22": {
+    "S0_ETF": 1.0
+   },
+   "2018-07-20": {
+    "S0_ETF": 1.0
+   },
+   "2018-08-17": {
+    "S1_INDUSTRY_MOMENTUM": 0.4324,
+    "S0_ETF": 0.5676
+   },
+   "2018-09-14": {
+    "S1_INDUSTRY_MOMENTUM": 0.7877,
+    "S0_ETF": 0.2123
+   },
+   "2018-10-12": {
+    "S2_VALUE_CONFIRMED": 0.1864,
+    "S0_ETF": 0.8136
+   },
+   "2018-11-09": {
+    "S2_VALUE_CONFIRMED": 0.3053,
+    "S0_ETF": 0.6947
+   },
+   "2018-12-07": {
+    "S2_VALUE_CONFIRMED": 0.4677,
+    "S0_ETF": 0.5323
+   },
+   "2019-01-04": {
+    "S2_VALUE_CONFIRMED": 0.4677,
+    "S0_ETF": 0.5323
+   },
+   "2019-02-01": {
+    "S2_VALUE_CONFIRMED": 0.8001,
+    "S0_ETF": 0.1999
+   },
+   "2019-02-28": {
+    "S2_VALUE_CONFIRMED": 0.2264,
+    "S0_ETF": 0.7736
+   },
+   "2019-03-29": {
+    "S2_VALUE_CONFIRMED": 0.1241,
+    "S0_ETF": 0.8759
+   },
+   "2019-04-26": {
+    "S0_ETF": 1.0
+   },
+   "2019-05-24": {
+    "S0_ETF": 1.0
+   },
+   "2019-06-21": {
+    "S2_VALUE_CONFIRMED": 0.3669,
+    "S0_ETF": 0.6331
+   },
+   "2019-07-19": {
+    "S2_VALUE_CONFIRMED": 0.3669,
+    "S0_ETF": 0.6331
+   },
+   "2019-08-16": {
+    "S2_VALUE_CONFIRMED": 0.3669,
+    "S0_ETF": 0.6331
+   },
+   "2019-09-11": {
+    "S2_VALUE_CONFIRMED": 0.1293,
+    "S0_ETF": 0.8707
+   },
+   "2019-10-11": {
+    "S0_ETF": 1.0
+   },
+   "2019-11-08": {
+    "S0_ETF": 1.0
+   },
+   "2019-12-06": {
+    "S1_INDUSTRY_MOMENTUM": 0.1555,
+    "S0_ETF": 0.8445
+   },
+   "2020-01-03": {
+    "S1_INDUSTRY_MOMENTUM": 0.1555,
+    "S0_ETF": 0.8445
+   },
+   "2020-01-31": {
+    "S1_INDUSTRY_MOMENTUM": 0.0086,
+    "S0_ETF": 0.9914
+   },
+   "2020-02-28": {
+    "S1_INDUSTRY_MOMENTUM": 0.0086,
+    "S0_ETF": 0.9914
+   },
+   "2020-03-27": {
+    "S1_INDUSTRY_MOMENTUM": 0.0086,
+    "S0_ETF": 0.9914
+   },
+   "2020-04-24": {
+    "S1_INDUSTRY_MOMENTUM": 0.0086,
+    "S0_ETF": 0.9914
+   },
+   "2020-05-22": {
+    "S1_INDUSTRY_MOMENTUM": 0.0086,
+    "S0_ETF": 0.9914
+   },
+   "2020-06-19": {
+    "S1_INDUSTRY_MOMENTUM": 0.0086,
+    "S0_ETF": 0.9914
+   },
+   "2020-07-17": {
+    "S1_INDUSTRY_MOMENTUM": 0.0086,
+    "S0_ETF": 0.9914
+   },
+   "2020-08-14": {
+    "S1_INDUSTRY_MOMENTUM": 0.0086,
+    "S0_ETF": 0.9914
+   },
+   "2020-09-11": {
+    "S1_INDUSTRY_MOMENTUM": 0.259,
+    "S0_ETF": 0.741
+   },
+   "2020-10-08": {
+    "S1_INDUSTRY_MOMENTUM": 0.259,
+    "S0_ETF": 0.741
+   },
+   "2020-11-06": {
+    "S0_ETF": 1.0
+   },
+   "2020-12-04": {
+    "S0_ETF": 1.0
+   },
+   "2020-12-30": {
+    "S0_ETF": 1.0
+   },
+   "2021-01-29": {
+    "S0_ETF": 1.0
+   },
+   "2021-02-26": {
+    "S0_ETF": 1.0
+   },
+   "2021-03-26": {
+    "S0_ETF": 1.0
+   },
+   "2021-04-23": {
+    "S0_ETF": 1.0
+   },
+   "2021-05-21": {
+    "S0_ETF": 1.0
+   },
+   "2021-06-18": {
+    "S1_INDUSTRY_MOMENTUM": 0.4671,
+    "S0_ETF": 0.5329
+   },
+   "2021-07-16": {
+    "S1_INDUSTRY_MOMENTUM": 0.4671,
+    "S0_ETF": 0.5329
+   },
+   "2021-08-13": {
+    "S1_INDUSTRY_MOMENTUM": 0.2021,
+    "S0_ETF": 0.7979
+   },
+   "2021-09-10": {
+    "S0_ETF": 1.0
+   },
+   "2021-10-08": {
+    "S0_ETF": 1.0
+   },
+   "2021-11-05": {
+    "S0_ETF": 1.0
+   },
+   "2021-12-03": {
+    "S0_ETF": 1.0
+   },
+   "2021-12-30": {
+    "S0_ETF": 1.0
+   },
+   "2022-01-28": {
+    "S0_ETF": 1.0
+   },
+   "2022-02-25": {
+    "S0_ETF": 1.0
+   },
+   "2022-03-25": {
+    "S0_ETF": 1.0
+   },
+   "2022-04-22": {
+    "S0_ETF": 1.0
+   },
+   "2022-05-20": {
+    "S0_ETF": 1.0
+   },
+   "2022-06-17": {
+    "S0_ETF": 1.0
+   },
+   "2022-07-15": {
+    "S0_ETF": 1.0
+   },
+   "2022-08-12": {
+    "S0_ETF": 1.0
+   },
+   "2022-09-08": {
+    "S0_ETF": 1.0
+   },
+   "2022-10-07": {
+    "S0_ETF": 1.0
+   },
+   "2022-11-04": {
+    "S0_ETF": 1.0
+   },
+   "2022-12-02": {
+    "S0_ETF": 1.0
+   },
+   "2022-12-29": {
+    "S0_ETF": 1.0
+   },
+   "2023-01-27": {
+    "S0_ETF": 1.0
+   },
+   "2023-02-24": {
+    "S0_ETF": 1.0
+   },
+   "2023-03-24": {
+    "S0_ETF": 1.0
+   },
+   "2023-04-21": {
+    "S2_VALUE_CONFIRMED": 0.2251,
+    "S0_ETF": 0.7749
+   },
+   "2023-05-19": {
+    "S2_VALUE_CONFIRMED": 0.2251,
+    "S0_ETF": 0.7749
+   },
+   "2023-06-16": {
+    "S0_ETF": 1.0
+   },
+   "2023-07-14": {
+    "S0_ETF": 1.0
+   },
+   "2023-08-11": {
+    "S1_INDUSTRY_MOMENTUM": 0.1854,
+    "S0_ETF": 0.8146
+   },
+   "2023-09-08": {
+    "S1_INDUSTRY_MOMENTUM": 0.3032,
+    "S0_ETF": 0.6968
+   },
+   "2023-10-06": {
+    "S1_INDUSTRY_MOMENTUM": 0.1099,
+    "S0_ETF": 0.8901
+   },
+   "2023-11-03": {
+    "S1_INDUSTRY_MOMENTUM": 0.1099,
+    "S0_ETF": 0.8901
+   },
+   "2023-12-01": {
+    "S1_INDUSTRY_MOMENTUM": 0.5097,
+    "S0_ETF": 0.4903
+   },
+   "2023-12-28": {
+    "S1_INDUSTRY_MOMENTUM": 0.5097,
+    "S0_ETF": 0.4903
+   },
+   "2024-01-26": {
+    "S0_ETF": 1.0
+   },
+   "2024-02-23": {
+    "S0_ETF": 1.0
+   },
+   "2024-03-22": {
+    "S0_ETF": 1.0
+   },
+   "2024-04-19": {
+    "S0_ETF": 1.0
+   },
+   "2024-05-17": {
+    "S0_ETF": 1.0
+   },
+   "2024-06-14": {
+    "S2_VALUE_CONFIRMED": 0.3573,
+    "S0_ETF": 0.6427
+   },
+   "2024-07-12": {
+    "S2_VALUE_CONFIRMED": 0.3573,
+    "S0_ETF": 0.6427
+   },
+   "2024-08-09": {
+    "S2_VALUE_CONFIRMED": 0.0238,
+    "S0_ETF": 0.9762
+   },
+   "2024-09-06": {
+    "S2_VALUE_CONFIRMED": 0.0238,
+    "S0_ETF": 0.9762
+   },
+   "2024-10-04": {
+    "S2_VALUE_CONFIRMED": 0.0238,
+    "S0_ETF": 0.9762
+   },
+   "2024-11-01": {
+    "S2_VALUE_CONFIRMED": 0.0238,
+    "S0_ETF": 0.9762
+   },
+   "2024-11-29": {
+    "S3_FOUR_FACTOR": 0.724,
+    "S0_ETF": 0.276
+   },
+   "2024-12-27": {
+    "S3_FOUR_FACTOR": 0.724,
+    "S0_ETF": 0.276
+   },
+   "2025-01-24": {
+    "S3_FOUR_FACTOR": 0.2357,
+    "S0_ETF": 0.7643
+   },
+   "2025-02-21": {
+    "S3_FOUR_FACTOR": 0.4464,
+    "S0_ETF": 0.5536
+   },
+   "2025-03-21": {
+    "S1_INDUSTRY_MOMENTUM": 0.9737,
+    "S3_FOUR_FACTOR": 0.0263,
+    "S0_ETF": 0.0
+   },
+   "2025-04-18": {
+    "S1_INDUSTRY_MOMENTUM": 0.1449,
+    "S0_ETF": 0.8551
+   },
+   "2025-05-16": {
+    "S1_INDUSTRY_MOMENTUM": 0.9862,
+    "S2_VALUE_CONFIRMED": 0.0138,
+    "S0_ETF": 0.0
+   },
+   "2025-06-13": {
+    "S1_INDUSTRY_MOMENTUM": 0.9862,
+    "S2_VALUE_CONFIRMED": 0.0138,
+    "S0_ETF": 0.0
+   },
+   "2025-07-11": {
+    "S1_INDUSTRY_MOMENTUM": 0.5222,
+    "S2_VALUE_CONFIRMED": 0.4778,
+    "S0_ETF": 0.0
+   },
+   "2025-08-08": {
+    "S1_INDUSTRY_MOMENTUM": 0.0519,
+    "S0_ETF": 0.9481
+   },
+   "2025-09-05": {
+    "S1_INDUSTRY_MOMENTUM": 0.81,
+    "S2_VALUE_CONFIRMED": 0.0086,
+    "S3_FOUR_FACTOR": 0.1814,
+    "S0_ETF": 0.0
+   },
+   "2025-10-02": {
+    "S1_INDUSTRY_MOMENTUM": 0.6521,
+    "S2_VALUE_CONFIRMED": 0.1219,
+    "S3_FOUR_FACTOR": 0.226,
+    "S0_ETF": 0.0
+   },
+   "2025-10-31": {
+    "S1_INDUSTRY_MOMENTUM": 0.8774,
+    "S2_VALUE_CONFIRMED": 0.0213,
+    "S3_FOUR_FACTOR": 0.0875,
+    "S0_ETF": 0.0138
+   },
+   "2025-11-28": {
+    "S0_ETF": 1.0
+   },
+   "2025-12-26": {
+    "S1_INDUSTRY_MOMENTUM": 0.3806,
+    "S0_ETF": 0.6194
+   },
+   "2026-01-23": {
+    "S1_INDUSTRY_MOMENTUM": 0.6013,
+    "S0_ETF": 0.3987
+   },
+   "2026-02-20": {
+    "S0_ETF": 1.0
+   },
+   "2026-03-20": {
+    "S0_ETF": 1.0
+   },
+   "2026-04-17": {
+    "S0_ETF": 1.0
+   },
+   "2026-05-15": {
+    "S0_ETF": 1.0
+   },
+   "2026-06-12": {
+    "S0_ETF": 1.0
+   },
+   "2026-07-10": {
+    "S0_ETF": 1.0
+   },
+   "2026-08-07": {
+    "S0_ETF": 1.0
+   },
+   "2026-09-04": {
+    "S0_ETF": 1.0
+   }
+  },
+  "B3_RIDGE_KR_ONLY": {
+   "2018-01-05": {
+    "S1_INDUSTRY_MOMENTUM": 0.2599,
+    "S0_ETF": 0.7401
+   },
+   "2018-02-02": {
+    "S0_ETF": 1.0
+   },
+   "2018-03-02": {
+    "S0_ETF": 1.0
+   },
+   "2018-03-30": {
+    "S0_ETF": 1.0
+   },
+   "2018-04-27": {
+    "S0_ETF": 1.0
+   },
+   "2018-05-25": {
+    "S1_INDUSTRY_MOMENTUM": 0.3802,
+    "S0_ETF": 0.6198
+   },
+   "2018-06-22": {
+    "S0_ETF": 1.0
+   },
+   "2018-07-20": {
+    "S1_INDUSTRY_MOMENTUM": 0.7539,
+    "S0_ETF": 0.2461
+   },
+   "2018-08-17": {
+    "S1_INDUSTRY_MOMENTUM": 0.1585,
+    "S0_ETF": 0.8415
+   },
+   "2018-09-14": {
+    "S1_INDUSTRY_MOMENTUM": 0.1585,
+    "S0_ETF": 0.8415
+   },
+   "2018-10-12": {
+    "S2_VALUE_CONFIRMED": 0.9391,
+    "S0_ETF": 0.0609
+   },
+   "2018-11-09": {
+    "S2_VALUE_CONFIRMED": 0.9391,
+    "S0_ETF": 0.0609
+   },
+   "2018-12-07": {
+    "S2_VALUE_CONFIRMED": 0.9391,
+    "S0_ETF": 0.0609
+   },
+   "2019-01-04": {
+    "S2_VALUE_CONFIRMED": 0.9391,
+    "S0_ETF": 0.0609
+   },
+   "2019-02-01": {
+    "S2_VALUE_CONFIRMED": 0.8107,
+    "S3_FOUR_FACTOR": 0.1893,
+    "S0_ETF": 0.0
+   },
+   "2019-02-28": {
+    "S2_VALUE_CONFIRMED": 0.9703,
+    "S0_ETF": 0.0297
+   },
+   "2019-03-29": {
+    "S2_VALUE_CONFIRMED": 0.4286,
+    "S3_FOUR_FACTOR": 0.0946,
+    "S0_ETF": 0.4768
+   },
+   "2019-04-26": {
+    "S3_FOUR_FACTOR": 0.1143,
+    "S0_ETF": 0.8857
+   },
+   "2019-05-24": {
+    "S2_VALUE_CONFIRMED": 0.4419,
+    "S0_ETF": 0.5581
+   },
+   "2019-06-21": {
+    "S2_VALUE_CONFIRMED": 0.2623,
+    "S0_ETF": 0.7377
+   },
+   "2019-07-19": {
+    "S2_VALUE_CONFIRMED": 0.1528,
+    "S0_ETF": 0.8472
+   },
+   "2019-08-16": {
+    "S2_VALUE_CONFIRMED": 0.4474,
+    "S0_ETF": 0.5526
+   },
+   "2019-09-11": {
+    "S2_VALUE_CONFIRMED": 0.6037,
+    "S0_ETF": 0.3963
+   },
+   "2019-10-11": {
+    "S2_VALUE_CONFIRMED": 0.4517,
+    "S0_ETF": 0.5483
+   },
+   "2019-11-08": {
+    "S1_INDUSTRY_MOMENTUM": 0.3552,
+    "S2_VALUE_CONFIRMED": 0.0912,
+    "S3_FOUR_FACTOR": 0.311,
+    "S0_ETF": 0.2425
+   },
+   "2019-12-06": {
+    "S1_INDUSTRY_MOMENTUM": 0.0828,
+    "S0_ETF": 0.9172
+   },
+   "2020-01-03": {
+    "S1_INDUSTRY_MOMENTUM": 0.0828,
+    "S0_ETF": 0.9172
+   },
+   "2020-01-31": {
+    "S1_INDUSTRY_MOMENTUM": 0.0828,
+    "S0_ETF": 0.9172
+   },
+   "2020-02-28": {
+    "S1_INDUSTRY_MOMENTUM": 0.0828,
+    "S0_ETF": 0.9172
+   },
+   "2020-03-27": {
+    "S1_INDUSTRY_MOMENTUM": 0.0828,
+    "S0_ETF": 0.9172
+   },
+   "2020-04-24": {
+    "S1_INDUSTRY_MOMENTUM": 0.0828,
+    "S0_ETF": 0.9172
+   },
+   "2020-05-22": {
+    "S1_INDUSTRY_MOMENTUM": 0.0828,
+    "S0_ETF": 0.9172
+   },
+   "2020-06-19": {
+    "S1_INDUSTRY_MOMENTUM": 0.0828,
+    "S0_ETF": 0.9172
+   },
+   "2020-07-17": {
+    "S1_INDUSTRY_MOMENTUM": 0.0828,
+    "S0_ETF": 0.9172
+   },
+   "2020-08-14": {
+    "S1_INDUSTRY_MOMENTUM": 0.0828,
+    "S0_ETF": 0.9172
+   },
+   "2020-09-11": {
+    "S1_INDUSTRY_MOMENTUM": 0.2164,
+    "S0_ETF": 0.7836
+   },
+   "2020-10-08": {
+    "S1_INDUSTRY_MOMENTUM": 0.3634,
+    "S0_ETF": 0.6366
+   },
+   "2020-11-06": {
+    "S1_INDUSTRY_MOMENTUM": 0.3634,
+    "S0_ETF": 0.6366
+   },
+   "2020-12-04": {
+    "S0_ETF": 1.0
+   },
+   "2020-12-30": {
+    "S0_ETF": 1.0
+   },
+   "2021-01-29": {
+    "S0_ETF": 1.0
+   },
+   "2021-02-26": {
+    "S0_ETF": 1.0
+   },
+   "2021-03-26": {
+    "S0_ETF": 1.0
+   },
+   "2021-04-23": {
+    "S1_INDUSTRY_MOMENTUM": 0.5786,
+    "S2_VALUE_CONFIRMED": 0.4214,
+    "S0_ETF": 0.0
+   },
+   "2021-05-21": {
+    "S1_INDUSTRY_MOMENTUM": 0.5786,
+    "S2_VALUE_CONFIRMED": 0.4214,
+    "S0_ETF": 0.0
+   },
+   "2021-06-18": {
+    "S1_INDUSTRY_MOMENTUM": 0.5786,
+    "S2_VALUE_CONFIRMED": 0.4214,
+    "S0_ETF": 0.0
+   },
+   "2021-07-16": {
+    "S1_INDUSTRY_MOMENTUM": 0.5786,
+    "S2_VALUE_CONFIRMED": 0.4214,
+    "S0_ETF": 0.0
+   },
+   "2021-08-13": {
+    "S1_INDUSTRY_MOMENTUM": 0.172,
+    "S2_VALUE_CONFIRMED": 0.703,
+    "S0_ETF": 0.1251
+   },
+   "2021-09-10": {
+    "S1_INDUSTRY_MOMENTUM": 0.2189,
+    "S2_VALUE_CONFIRMED": 0.3553,
+    "S0_ETF": 0.4257
+   },
+   "2021-10-08": {
+    "S2_VALUE_CONFIRMED": 0.7253,
+    "S0_ETF": 0.2747
+   },
+   "2021-11-05": {
+    "S1_INDUSTRY_MOMENTUM": 0.0098,
+    "S2_VALUE_CONFIRMED": 0.4345,
+    "S0_ETF": 0.5557
+   },
+   "2021-12-03": {
+    "S0_ETF": 1.0
+   },
+   "2021-12-30": {
+    "S0_ETF": 1.0
+   },
+   "2022-01-28": {
+    "S0_ETF": 1.0
+   },
+   "2022-02-25": {
+    "S0_ETF": 1.0
+   },
+   "2022-03-25": {
+    "S0_ETF": 1.0
+   },
+   "2022-04-22": {
+    "S0_ETF": 1.0
+   },
+   "2022-05-20": {
+    "S0_ETF": 1.0
+   },
+   "2022-06-17": {
+    "S2_VALUE_CONFIRMED": 0.4094,
+    "S0_ETF": 0.5906
+   },
+   "2022-07-15": {
+    "S2_VALUE_CONFIRMED": 0.086,
+    "S0_ETF": 0.914
+   },
+   "2022-08-12": {
+    "S2_VALUE_CONFIRMED": 0.086,
+    "S0_ETF": 0.914
+   },
+   "2022-09-08": {
+    "S2_VALUE_CONFIRMED": 0.086,
+    "S0_ETF": 0.914
+   },
+   "2022-10-07": {
+    "S2_VALUE_CONFIRMED": 0.086,
+    "S0_ETF": 0.914
+   },
+   "2022-11-04": {
+    "S2_VALUE_CONFIRMED": 0.086,
+    "S0_ETF": 0.914
+   },
+   "2022-12-02": {
+    "S2_VALUE_CONFIRMED": 0.086,
+    "S0_ETF": 0.914
+   },
+   "2022-12-29": {
+    "S2_VALUE_CONFIRMED": 0.086,
+    "S0_ETF": 0.914
+   },
+   "2023-01-27": {
+    "S2_VALUE_CONFIRMED": 0.086,
+    "S0_ETF": 0.914
+   },
+   "2023-02-24": {
+    "S2_VALUE_CONFIRMED": 0.086,
+    "S0_ETF": 0.914
+   },
+   "2023-03-24": {
+    "S2_VALUE_CONFIRMED": 0.086,
+    "S0_ETF": 0.914
+   },
+   "2023-04-21": {
+    "S2_VALUE_CONFIRMED": 0.086,
+    "S0_ETF": 0.914
+   },
+   "2023-05-19": {
+    "S2_VALUE_CONFIRMED": 0.086,
+    "S0_ETF": 0.914
+   },
+   "2023-06-16": {
+    "S2_VALUE_CONFIRMED": 0.086,
+    "S0_ETF": 0.914
+   },
+   "2023-07-14": {
+    "S2_VALUE_CONFIRMED": 0.086,
+    "S0_ETF": 0.914
+   },
+   "2023-08-11": {
+    "S2_VALUE_CONFIRMED": 0.086,
+    "S0_ETF": 0.914
+   },
+   "2023-09-08": {
+    "S2_VALUE_CONFIRMED": 0.086,
+    "S0_ETF": 0.914
+   },
+   "2023-10-06": {
+    "S2_VALUE_CONFIRMED": 0.086,
+    "S0_ETF": 0.914
+   },
+   "2023-11-03": {
+    "S2_VALUE_CONFIRMED": 0.086,
+    "S0_ETF": 0.914
+   },
+   "2023-12-01": {
+    "S2_VALUE_CONFIRMED": 0.086,
+    "S0_ETF": 0.914
+   },
+   "2023-12-28": {
+    "S1_INDUSTRY_MOMENTUM": 0.3477,
+    "S0_ETF": 0.6523
+   },
+   "2024-01-26": {
+    "S1_INDUSTRY_MOMENTUM": 0.515,
+    "S0_ETF": 0.485
+   },
+   "2024-02-23": {
+    "S1_INDUSTRY_MOMENTUM": 0.8251,
+    "S0_ETF": 0.1749
+   },
+   "2024-03-22": {
+    "S1_INDUSTRY_MOMENTUM": 0.8251,
+    "S0_ETF": 0.1749
+   },
+   "2024-04-19": {
+    "S1_INDUSTRY_MOMENTUM": 0.2569,
+    "S0_ETF": 0.7431
+   },
+   "2024-05-17": {
+    "S1_INDUSTRY_MOMENTUM": 0.6399,
+    "S3_FOUR_FACTOR": 0.054,
+    "S0_ETF": 0.3061
+   },
+   "2024-06-14": {
+    "S1_INDUSTRY_MOMENTUM": 0.488,
+    "S0_ETF": 0.512
+   },
+   "2024-07-12": {
+    "S1_INDUSTRY_MOMENTUM": 0.6185,
+    "S3_FOUR_FACTOR": 0.0924,
+    "S0_ETF": 0.2892
+   },
+   "2024-08-09": {
+    "S0_ETF": 1.0
+   },
+   "2024-09-06": {
+    "S0_ETF": 1.0
+   },
+   "2024-10-04": {
+    "S0_ETF": 1.0
+   },
+   "2024-11-01": {
+    "S0_ETF": 1.0
+   },
+   "2024-11-29": {
+    "S2_VALUE_CONFIRMED": 0.2443,
+    "S3_FOUR_FACTOR": 0.2668,
+    "S0_ETF": 0.4889
+   },
+   "2024-12-27": {
+    "S2_VALUE_CONFIRMED": 0.0083,
+    "S0_ETF": 0.9917
+   },
+   "2025-01-24": {
+    "S2_VALUE_CONFIRMED": 0.0083,
+    "S0_ETF": 0.9917
+   },
+   "2025-02-21": {
+    "S2_VALUE_CONFIRMED": 0.0083,
+    "S0_ETF": 0.9917
+   },
+   "2025-03-21": {
+    "S2_VALUE_CONFIRMED": 0.0083,
+    "S0_ETF": 0.9917
+   },
+   "2025-04-18": {
+    "S2_VALUE_CONFIRMED": 0.0083,
+    "S0_ETF": 0.9917
+   },
+   "2025-05-16": {
+    "S2_VALUE_CONFIRMED": 0.0083,
+    "S0_ETF": 0.9917
+   },
+   "2025-06-13": {
+    "S2_VALUE_CONFIRMED": 0.0083,
+    "S0_ETF": 0.9917
+   },
+   "2025-07-11": {
+    "S2_VALUE_CONFIRMED": 0.0083,
+    "S0_ETF": 0.9917
+   },
+   "2025-08-08": {
+    "S2_VALUE_CONFIRMED": 0.0083,
+    "S0_ETF": 0.9917
+   },
+   "2025-09-05": {
+    "S1_INDUSTRY_MOMENTUM": 0.5247,
+    "S3_FOUR_FACTOR": 0.4753,
+    "S0_ETF": 0.0
+   },
+   "2025-10-02": {
+    "S1_INDUSTRY_MOMENTUM": 0.5151,
+    "S2_VALUE_CONFIRMED": 0.1526,
+    "S3_FOUR_FACTOR": 0.3323,
+    "S0_ETF": 0.0
+   },
+   "2025-10-31": {
+    "S1_INDUSTRY_MOMENTUM": 0.5871,
+    "S2_VALUE_CONFIRMED": 0.3328,
+    "S0_ETF": 0.0802
+   },
+   "2025-11-28": {
+    "S1_INDUSTRY_MOMENTUM": 0.1372,
+    "S2_VALUE_CONFIRMED": 0.671,
+    "S0_ETF": 0.1918
+   },
+   "2025-12-26": {
+    "S1_INDUSTRY_MOMENTUM": 0.6412,
+    "S2_VALUE_CONFIRMED": 0.3082,
+    "S0_ETF": 0.0506
+   },
+   "2026-01-23": {
+    "S1_INDUSTRY_MOMENTUM": 0.4198,
+    "S2_VALUE_CONFIRMED": 0.5802,
+    "S0_ETF": 0.0
+   },
+   "2026-02-20": {
+    "S2_VALUE_CONFIRMED": 0.2583,
+    "S0_ETF": 0.7417
+   },
+   "2026-03-20": {
+    "S1_INDUSTRY_MOMENTUM": 0.1876,
+    "S0_ETF": 0.8124
+   },
+   "2026-04-17": {
+    "S1_INDUSTRY_MOMENTUM": 0.4002,
+    "S0_ETF": 0.5998
+   },
+   "2026-05-15": {
+    "S1_INDUSTRY_MOMENTUM": 0.6946,
+    "S0_ETF": 0.3054
+   },
+   "2026-06-12": {
+    "S0_ETF": 1.0
+   },
+   "2026-07-10": {
+    "S0_ETF": 1.0
+   },
+   "2026-08-07": {
+    "S0_ETF": 1.0
+   },
+   "2026-09-04": {
+    "S0_ETF": 1.0
+   }
+  },
+  "SLEEVE_MOMENTUM_SWITCH": {
+   "2018-01-05": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2018-02-02": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2018-03-02": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2018-03-30": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2018-04-27": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2018-05-25": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2018-06-22": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2018-07-20": {
+    "S2_VALUE_CONFIRMED": 1.0
+   },
+   "2018-08-17": {
+    "S2_VALUE_CONFIRMED": 1.0
+   },
+   "2018-09-14": {
+    "S2_VALUE_CONFIRMED": 1.0
+   },
+   "2018-10-12": {
+    "S2_VALUE_CONFIRMED": 1.0
+   },
+   "2018-11-09": {
+    "S2_VALUE_CONFIRMED": 1.0
+   },
+   "2018-12-07": {
+    "S2_VALUE_CONFIRMED": 1.0
+   },
+   "2019-01-04": {
+    "S2_VALUE_CONFIRMED": 1.0
+   },
+   "2019-02-01": {
+    "S2_VALUE_CONFIRMED": 1.0
+   },
+   "2019-02-28": {
+    "S2_VALUE_CONFIRMED": 1.0
+   },
+   "2019-03-29": {
+    "S2_VALUE_CONFIRMED": 1.0
+   },
+   "2019-04-26": {
+    "S2_VALUE_CONFIRMED": 1.0
+   },
+   "2019-05-24": {
+    "S2_VALUE_CONFIRMED": 1.0
+   },
+   "2019-06-21": {
+    "S2_VALUE_CONFIRMED": 1.0
+   },
+   "2019-07-19": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2019-08-16": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2019-09-11": {
+    "S0_ETF": 1.0
+   },
+   "2019-10-11": {
+    "S0_ETF": 1.0
+   },
+   "2019-11-08": {
+    "S0_ETF": 1.0
+   },
+   "2019-12-06": {
+    "S0_ETF": 1.0
+   },
+   "2020-01-03": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2020-01-31": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2020-02-28": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2020-03-27": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2020-04-24": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2020-05-22": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2020-06-19": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2020-07-17": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2020-08-14": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2020-09-11": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2020-10-08": {
+    "S0_ETF": 1.0
+   },
+   "2020-11-06": {
+    "S0_ETF": 1.0
+   },
+   "2020-12-04": {
+    "S0_ETF": 1.0
+   },
+   "2020-12-30": {
+    "S0_ETF": 1.0
+   },
+   "2021-01-29": {
+    "S0_ETF": 1.0
+   },
+   "2021-02-26": {
+    "S0_ETF": 1.0
+   },
+   "2021-03-26": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2021-04-23": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2021-05-21": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2021-06-18": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2021-07-16": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2021-08-13": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2021-09-10": {
+    "S2_VALUE_CONFIRMED": 1.0
+   },
+   "2021-10-08": {
+    "S2_VALUE_CONFIRMED": 1.0
+   },
+   "2021-11-05": {
+    "S2_VALUE_CONFIRMED": 1.0
+   },
+   "2021-12-03": {
+    "S2_VALUE_CONFIRMED": 1.0
+   },
+   "2021-12-30": {
+    "S2_VALUE_CONFIRMED": 1.0
+   },
+   "2022-01-28": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2022-02-25": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2022-03-25": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2022-04-22": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2022-05-20": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2022-06-17": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2022-07-15": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2022-08-12": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2022-09-08": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2022-10-07": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2022-11-04": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2022-12-02": {
+    "S2_VALUE_CONFIRMED": 1.0
+   },
+   "2022-12-29": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2023-01-27": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2023-02-24": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2023-03-24": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2023-04-21": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2023-05-19": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2023-06-16": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2023-07-14": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2023-08-11": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2023-09-08": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2023-10-06": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2023-11-03": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2023-12-01": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2023-12-28": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2024-01-26": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2024-02-23": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2024-03-22": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2024-04-19": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2024-05-17": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2024-06-14": {
+    "S2_VALUE_CONFIRMED": 1.0
+   },
+   "2024-07-12": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2024-08-09": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2024-09-06": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2024-10-04": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2024-11-01": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2024-11-29": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2024-12-27": {
+    "S3_FOUR_FACTOR": 1.0
+   },
+   "2025-01-24": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2025-02-21": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2025-03-21": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2025-04-18": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2025-05-16": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2025-06-13": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2025-07-11": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2025-08-08": {
+    "S1_INDUSTRY_MOMENTUM": 1.0
+   },
+   "2025-09-05": {
+    "S2_VALUE_CONFIRMED": 1.0
+   },
+   "2025-10-02": {
+    "S2_VALUE_CONFIRMED": 1.0
+   },
+   "2025-10-31": {
+    "S2_VALUE_CONFIRMED": 1.0
+   },
+   "2025-11-28": {
+    "S2_VALUE_CONFIRMED": 1.0
+   },
+   "2025-12-26": {
+    "S0_ETF": 1.0
+   },
+   "2026-01-23": {
+    "S0_ETF": 1.0
+   },
+   "2026-02-20": {
+    "S0_ETF": 1.0
+   },
+   "2026-03-20": {
+    "S0_ETF": 1.0
+   },
+   "2026-04-17": {
+    "S0_ETF": 1.0
+   },
+   "2026-05-15": {
+    "S0_ETF": 1.0
+   },
+   "2026-06-12": {
+    "S0_ETF": 1.0
+   },
+   "2026-07-10": {
+    "S0_ETF": 1.0
+   },
+   "2026-08-07": {
+    "S2_VALUE_CONFIRMED": 1.0
+   },
+   "2026-09-04": {
+    "S2_VALUE_CONFIRMED": 1.0
+   }
+  }
+ },
+ "postHoc": {
+  "cagrWithout2025": {
+   "S0_ETF": 0.092125,
+   "S1_INDUSTRY_MOMENTUM": -0.033717,
+   "S2_VALUE_CONFIRMED": 0.09214,
+   "S3_FOUR_FACTOR": 0.029309,
+   "STATIC_EW4": 0.057419,
+   "A1_MOMENTUM_CRASH_GUARD": 0.051595,
+   "A2_INVERSE_VOL_RISK_BUDGET": 0.067958,
+   "B1_RIDGE_ALL_STATES": 0.023352,
+   "B2_LGBM_ALL_STATES": 0.072763,
+   "B3_RIDGE_KR_ONLY": 0.060955,
+   "SLEEVE_MOMENTUM_SWITCH": 0.195621
+  },
+  "excludeDefenseAndElectronics": {
+   "S0_ETF": 0.169576,
+   "S1_INDUSTRY_MOMENTUM": -0.020866,
+   "S2_VALUE_CONFIRMED": 0.093789,
+   "S3_FOUR_FACTOR": 0.079882,
+   "STATIC_EW4": 0.091689,
+   "STATIC_50_ETF_50_S1": 0.080926,
+   "A1_MOMENTUM_CRASH_GUARD": 0.026482,
+   "A2_INVERSE_VOL_RISK_BUDGET": 0.092584,
+   "SLEEVE_MOMENTUM_SWITCH": 0.175493,
+   "B1_RIDGE_ALL_STATES": 0.088774,
+   "B2_LGBM_ALL_STATES": 0.099947,
+   "B3_RIDGE_KR_ONLY": 0.102596,
+   "TREND_200_CASH": 0.169181,
+   "S4_RISK_MANAGED_ETF": 0.137205
+  },
+  "costX2": {
+   "S0_ETF": 0.169576,
+   "S1_INDUSTRY_MOMENTUM": 0.050502,
+   "S2_VALUE_CONFIRMED": 0.169977,
+   "S3_FOUR_FACTOR": 0.072021,
+   "STATIC_EW4": 0.130495,
+   "STATIC_50_ETF_50_S1": 0.121466,
+   "A1_MOMENTUM_CRASH_GUARD": 0.143572,
+   "A2_INVERSE_VOL_RISK_BUDGET": 0.141088,
+   "SLEEVE_MOMENTUM_SWITCH": 0.302458,
+   "B1_RIDGE_ALL_STATES": 0.03929,
+   "B2_LGBM_ALL_STATES": 0.129214,
+   "B3_RIDGE_KR_ONLY": 0.090288,
+   "TREND_200_CASH": 0.168559,
+   "S4_RISK_MANAGED_ETF": 0.136919
+  },
+  "rebalancePhase": {
+   "note": "the same frozen rules on the other three 4-week phases; phase 0 is the frozen primary. Added after the S1 sleeve was found to differ from ml-strategy-tournament-v1 only by phase (see config postOutcomeAdditions)",
+   "byPhase": {
+    "0": {
+     "S0_ETF": {
+      "cagr": 0.169576,
+      "excessCagr": 0.0,
+      "sharpe": 0.633386,
+      "mdd": -0.408055
+     },
+     "S1_INDUSTRY_MOMENTUM": {
+      "cagr": 0.075621,
+      "excessCagr": -0.093955,
+      "sharpe": 0.329844,
+      "mdd": -0.6321
+     },
+     "S2_VALUE_CONFIRMED": {
+      "cagr": 0.186286,
+      "excessCagr": 0.01671,
+      "sharpe": 0.701889,
+      "mdd": -0.492281
+     },
+     "S3_FOUR_FACTOR": {
+      "cagr": 0.087789,
+      "excessCagr": -0.081787,
+      "sharpe": 0.388159,
+      "mdd": -0.620827
+     },
+     "STATIC_EW4": {
+      "cagr": 0.145093,
+      "excessCagr": -0.024483,
+      "sharpe": 0.590701,
+      "mdd": -0.488553
+     },
+     "STATIC_50_ETF_50_S1": {
+      "cagr": 0.134791,
+      "excessCagr": -0.034785,
+      "sharpe": 0.497204,
+      "mdd": -0.502398
+     },
+     "A1_MOMENTUM_CRASH_GUARD": {
+      "cagr": 0.156259,
+      "excessCagr": -0.013317,
+      "sharpe": 0.547843,
+      "mdd": -0.557281
+     },
+     "A2_INVERSE_VOL_RISK_BUDGET": {
+      "cagr": 0.154435,
+      "excessCagr": -0.015141,
+      "sharpe": 0.637686,
+      "mdd": -0.480305
+     },
+     "SLEEVE_MOMENTUM_SWITCH": {
+      "cagr": 0.324456,
+      "excessCagr": 0.15488,
+      "sharpe": 0.93491,
+      "mdd": -0.408055
+     },
+     "B1_RIDGE_ALL_STATES": {
+      "cagr": 0.051576,
+      "excessCagr": -0.118,
+      "sharpe": 0.247107,
+      "mdd": -0.501572
+     },
+     "B2_LGBM_ALL_STATES": {
+      "cagr": 0.135155,
+      "excessCagr": -0.034421,
+      "sharpe": 0.512777,
+      "mdd": -0.408055
+     },
+     "B3_RIDGE_KR_ONLY": {
+      "cagr": 0.098844,
+      "excessCagr": -0.070732,
+      "sharpe": 0.403089,
+      "mdd": -0.408055
+     },
+     "TREND_200_CASH": {
+      "cagr": 0.169181,
+      "excessCagr": -0.000395,
+      "sharpe": 0.687757,
+      "mdd": -0.408055
+     },
+     "S4_RISK_MANAGED_ETF": {
+      "cagr": 0.137205,
+      "excessCagr": -0.032371,
+      "sharpe": 0.621689,
+      "mdd": -0.338894
+     },
+     "SX_XGB_SENSITIVITY": {
+      "cagr": 0.257479,
+      "excessCagr": 0.087903,
+      "sharpe": 0.944389,
+      "mdd": -0.385061
+     },
+     "_window": {
+      "start": "2018-01-08",
+      "firstDecision": "2018-01-05"
+     }
+    },
+    "1": {
+     "S0_ETF": {
+      "cagr": 0.171613,
+      "excessCagr": 0.0,
+      "sharpe": 0.639296,
+      "mdd": -0.408055
+     },
+     "S1_INDUSTRY_MOMENTUM": {
+      "cagr": 0.197381,
+      "excessCagr": 0.025767,
+      "sharpe": 0.596406,
+      "mdd": -0.582756
+     },
+     "S2_VALUE_CONFIRMED": {
+      "cagr": 0.165828,
+      "excessCagr": -0.005785,
+      "sharpe": 0.63796,
+      "mdd": -0.491252
+     },
+     "S3_FOUR_FACTOR": {
+      "cagr": 0.050578,
+      "excessCagr": -0.121035,
+      "sharpe": 0.241827,
+      "mdd": -0.636914
+     },
+     "STATIC_EW4": {
+      "cagr": 0.164631,
+      "excessCagr": -0.006982,
+      "sharpe": 0.658801,
+      "mdd": -0.487183
+     },
+     "STATIC_50_ETF_50_S1": {
+      "cagr": 0.199198,
+      "excessCagr": 0.027584,
+      "sharpe": 0.671864,
+      "mdd": -0.477058
+     },
+     "A1_MOMENTUM_CRASH_GUARD": {
+      "cagr": 0.213066,
+      "excessCagr": 0.041452,
+      "sharpe": 0.696331,
+      "mdd": -0.548538
+     },
+     "A2_INVERSE_VOL_RISK_BUDGET": {
+      "cagr": 0.153245,
+      "excessCagr": -0.018368,
+      "sharpe": 0.636587,
+      "mdd": -0.497323
+     },
+     "SLEEVE_MOMENTUM_SWITCH": {
+      "cagr": 0.113127,
+      "excessCagr": -0.058486,
+      "sharpe": 0.423223,
+      "mdd": -0.509326
+     },
+     "B1_RIDGE_ALL_STATES": {
+      "cagr": 0.143518,
+      "excessCagr": -0.028095,
+      "sharpe": 0.525412,
+      "mdd": -0.545693
+     },
+     "B2_LGBM_ALL_STATES": {
+      "cagr": 0.189159,
+      "excessCagr": 0.017546,
+      "sharpe": 0.673183,
+      "mdd": -0.408172
+     },
+     "B3_RIDGE_KR_ONLY": {
+      "cagr": 0.125423,
+      "excessCagr": -0.046191,
+      "sharpe": 0.482399,
+      "mdd": -0.487297
+     },
+     "TREND_200_CASH": {
+      "cagr": 0.17199,
+      "excessCagr": 0.000377,
+      "sharpe": 0.680957,
+      "mdd": -0.408055
+     },
+     "S4_RISK_MANAGED_ETF": {
+      "cagr": 0.146555,
+      "excessCagr": -0.025059,
+      "sharpe": 0.6453,
+      "mdd": -0.394929
+     },
+     "_window": {
+      "start": "2018-01-15",
+      "firstDecision": "2018-01-12"
+     }
+    },
+    "2": {
+     "S0_ETF": {
+      "cagr": 0.172515,
+      "excessCagr": 0.0,
+      "sharpe": 0.641673,
+      "mdd": -0.408055
+     },
+     "S1_INDUSTRY_MOMENTUM": {
+      "cagr": 0.148841,
+      "excessCagr": -0.023674,
+      "sharpe": 0.492459,
+      "mdd": -0.670391
+     },
+     "S2_VALUE_CONFIRMED": {
+      "cagr": 0.241945,
+      "excessCagr": 0.06943,
+      "sharpe": 0.862201,
+      "mdd": -0.486029
+     },
+     "S3_FOUR_FACTOR": {
+      "cagr": 0.045783,
+      "excessCagr": -0.126732,
+      "sharpe": 0.223008,
+      "mdd": -0.667821
+     },
+     "STATIC_EW4": {
+      "cagr": 0.171415,
+      "excessCagr": -0.0011,
+      "sharpe": 0.676769,
+      "mdd": -0.519706
+     },
+     "STATIC_50_ETF_50_S1": {
+      "cagr": 0.178395,
+      "excessCagr": 0.00588,
+      "sharpe": 0.613889,
+      "mdd": -0.49663
+     },
+     "A1_MOMENTUM_CRASH_GUARD": {
+      "cagr": 0.120119,
+      "excessCagr": -0.052396,
+      "sharpe": 0.44948,
+      "mdd": -0.471534
+     },
+     "A2_INVERSE_VOL_RISK_BUDGET": {
+      "cagr": 0.166335,
+      "excessCagr": -0.00618,
+      "sharpe": 0.680303,
+      "mdd": -0.517981
+     },
+     "SLEEVE_MOMENTUM_SWITCH": {
+      "cagr": 0.238131,
+      "excessCagr": 0.065617,
+      "sharpe": 0.724397,
+      "mdd": -0.522211
+     },
+     "B1_RIDGE_ALL_STATES": {
+      "cagr": 0.108058,
+      "excessCagr": -0.064457,
+      "sharpe": 0.419732,
+      "mdd": -0.526448
+     },
+     "B2_LGBM_ALL_STATES": {
+      "cagr": 0.132792,
+      "excessCagr": -0.039723,
+      "sharpe": 0.502041,
+      "mdd": -0.408055
+     },
+     "B3_RIDGE_KR_ONLY": {
+      "cagr": 0.17828,
+      "excessCagr": 0.005765,
+      "sharpe": 0.627021,
+      "mdd": -0.424063
+     },
+     "TREND_200_CASH": {
+      "cagr": 0.162669,
+      "excessCagr": -0.009846,
+      "sharpe": 0.66002,
+      "mdd": -0.408055
+     },
+     "S4_RISK_MANAGED_ETF": {
+      "cagr": 0.145465,
+      "excessCagr": -0.02705,
+      "sharpe": 0.652048,
+      "mdd": -0.357736
+     },
+     "_window": {
+      "start": "2018-01-22",
+      "firstDecision": "2018-01-19"
+     }
+    },
+    "3": {
+     "S0_ETF": {
+      "cagr": 0.168278,
+      "excessCagr": 0.0,
+      "sharpe": 0.628084,
+      "mdd": -0.408055
+     },
+     "S1_INDUSTRY_MOMENTUM": {
+      "cagr": 0.117402,
+      "excessCagr": -0.050876,
+      "sharpe": 0.424392,
+      "mdd": -0.655963
+     },
+     "S2_VALUE_CONFIRMED": {
+      "cagr": 0.196614,
+      "excessCagr": 0.028337,
+      "sharpe": 0.734871,
+      "mdd": -0.489768
+     },
+     "S3_FOUR_FACTOR": {
+      "cagr": 0.10759,
+      "excessCagr": -0.060688,
+      "sharpe": 0.459571,
+      "mdd": -0.557739
+     },
+     "STATIC_EW4": {
+      "cagr": 0.165545,
+      "excessCagr": -0.002732,
+      "sharpe": 0.661991,
+      "mdd": -0.474924
+     },
+     "STATIC_50_ETF_50_S1": {
+      "cagr": 0.157921,
+      "excessCagr": -0.010357,
+      "sharpe": 0.558807,
+      "mdd": -0.483826
+     },
+     "A1_MOMENTUM_CRASH_GUARD": {
+      "cagr": 0.129509,
+      "excessCagr": -0.038769,
+      "sharpe": 0.472941,
+      "mdd": -0.546503
+     },
+     "A2_INVERSE_VOL_RISK_BUDGET": {
+      "cagr": 0.166423,
+      "excessCagr": -0.001855,
+      "sharpe": 0.683204,
+      "mdd": -0.475551
+     },
+     "SLEEVE_MOMENTUM_SWITCH": {
+      "cagr": 0.233349,
+      "excessCagr": 0.065071,
+      "sharpe": 0.715122,
+      "mdd": -0.540686
+     },
+     "B1_RIDGE_ALL_STATES": {
+      "cagr": 0.103672,
+      "excessCagr": -0.064606,
+      "sharpe": 0.414159,
+      "mdd": -0.440838
+     },
+     "B2_LGBM_ALL_STATES": {
+      "cagr": 0.113396,
+      "excessCagr": -0.054882,
+      "sharpe": 0.446018,
+      "mdd": -0.469535
+     },
+     "B3_RIDGE_KR_ONLY": {
+      "cagr": 0.113987,
+      "excessCagr": -0.054291,
+      "sharpe": 0.452675,
+      "mdd": -0.487364
+     },
+     "TREND_200_CASH": {
+      "cagr": 0.144906,
+      "excessCagr": -0.023372,
+      "sharpe": 0.588811,
+      "mdd": -0.408055
+     },
+     "S4_RISK_MANAGED_ETF": {
+      "cagr": 0.121142,
+      "excessCagr": -0.047136,
+      "sharpe": 0.549636,
+      "mdd": -0.39632
+     },
+     "_window": {
+      "start": "2018-01-29",
+      "firstDecision": "2018-01-26"
+     }
+    }
+   }
+  },
+  "label": "POST_HOC: diagnostics only; never used to choose a policy"
+ },
+ "runtimeSeconds": 34.7
+}

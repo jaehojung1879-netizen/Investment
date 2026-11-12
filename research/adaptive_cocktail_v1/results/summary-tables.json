@@ -1,0 +1,438 @@
+{
+ "stateAvailability": {
+  "MKT_TREND_63": {
+   "firstVisibleKrSession": "2013-04-03",
+   "lagCalendarDays": 0,
+   "coverage2014to2026": 1.0,
+   "coverage2018to2026": 1.0
+  },
+  "MKT_TREND_252": {
+   "firstVisibleKrSession": "2014-01-09",
+   "lagCalendarDays": 0,
+   "coverage2014to2026": 0.9984,
+   "coverage2018to2026": 1.0
+  },
+  "MKT_VOL_63": {
+   "firstVisibleKrSession": "2013-04-03",
+   "lagCalendarDays": 0,
+   "coverage2014to2026": 1.0,
+   "coverage2018to2026": 1.0
+  },
+  "MKT_DD_252": {
+   "firstVisibleKrSession": "2014-01-08",
+   "lagCalendarDays": 0,
+   "coverage2014to2026": 0.9987,
+   "coverage2018to2026": 1.0
+  },
+  "BREADTH_200": {
+   "firstVisibleKrSession": "2014-01-10",
+   "lagCalendarDays": 0,
+   "coverage2014to2026": 0.9981,
+   "coverage2018to2026": 1.0
+  },
+  "IND_DISPERSION": {
+   "firstVisibleKrSession": "2013-07-05",
+   "lagCalendarDays": 0,
+   "coverage2014to2026": 0.6372,
+   "coverage2018to2026": 0.5368
+  },
+  "CONCENTRATION_TOP2": {
+   "firstVisibleKrSession": "2013-01-04",
+   "lagCalendarDays": 0,
+   "coverage2014to2026": 1.0,
+   "coverage2018to2026": 1.0
+  },
+  "LEADERSHIP_PERSIST": {
+   "firstVisibleKrSession": "2013-08-02",
+   "lagCalendarDays": 0,
+   "coverage2014to2026": 0.5675,
+   "coverage2018to2026": 0.4473
+  },
+  "UST10_LEVEL": {
+   "firstVisibleKrSession": "2013-01-02",
+   "lagCalendarDays": 4,
+   "coverage2014to2026": 1.0,
+   "coverage2018to2026": 1.0
+  },
+  "UST10_CHG_63": {
+   "firstVisibleKrSession": "2013-04-03",
+   "lagCalendarDays": 4,
+   "coverage2014to2026": 1.0,
+   "coverage2018to2026": 1.0
+  },
+  "CURVE_10Y2Y": {
+   "firstVisibleKrSession": "2013-01-02",
+   "lagCalendarDays": 4,
+   "coverage2014to2026": 1.0,
+   "coverage2018to2026": 1.0
+  },
+  "CURVE_CHG_63": {
+   "firstVisibleKrSession": "2013-04-03",
+   "lagCalendarDays": 4,
+   "coverage2014to2026": 1.0,
+   "coverage2018to2026": 1.0
+  },
+  "BROAD_DOLLAR_CHG_63": {
+   "firstVisibleKrSession": "2013-04-03",
+   "lagCalendarDays": 8,
+   "coverage2014to2026": 1.0,
+   "coverage2018to2026": 1.0
+  },
+  "USDKRW_CHG_63": {
+   "firstVisibleKrSession": "2013-04-11",
+   "lagCalendarDays": 8,
+   "coverage2014to2026": 1.0,
+   "coverage2018to2026": 1.0
+  },
+  "USDKRW_VOL_63": {
+   "firstVisibleKrSession": "2013-04-09",
+   "lagCalendarDays": 8,
+   "coverage2014to2026": 1.0,
+   "coverage2018to2026": 1.0
+  },
+  "VIX_LEVEL": {
+   "firstVisibleKrSession": "2013-01-02",
+   "lagCalendarDays": 4,
+   "coverage2014to2026": 1.0,
+   "coverage2018to2026": 1.0
+  },
+  "VIX_CHG_63": {
+   "firstVisibleKrSession": "2013-04-03",
+   "lagCalendarDays": 4,
+   "coverage2014to2026": 1.0,
+   "coverage2018to2026": 1.0
+  },
+  "CORR_KR_USDKRW_126": {
+   "firstVisibleKrSession": "2013-07-12",
+   "lagCalendarDays": 8,
+   "coverage2014to2026": 1.0,
+   "coverage2018to2026": 1.0
+  },
+  "CORR_KR_UST10_126": {
+   "firstVisibleKrSession": "2013-09-02",
+   "lagCalendarDays": 4,
+   "coverage2014to2026": 1.0,
+   "coverage2018to2026": 1.0
+  }
+ },
+ "meanSleeveWeightsByYear": {
+  "SLEEVE_MOMENTUM_SWITCH": {
+   "2018": {
+    "S1_INDUSTRY_MOMENTUM": 0.538,
+    "S2_VALUE_CONFIRMED": 0.462,
+    "S3_FOUR_FACTOR": 0.0,
+    "S0_ETF": 0.0
+   },
+   "2019": {
+    "S1_INDUSTRY_MOMENTUM": 0.0,
+    "S2_VALUE_CONFIRMED": 0.538,
+    "S3_FOUR_FACTOR": 0.154,
+    "S0_ETF": 0.308
+   },
+   "2020": {
+    "S1_INDUSTRY_MOMENTUM": 0.714,
+    "S2_VALUE_CONFIRMED": 0.0,
+    "S3_FOUR_FACTOR": 0.0,
+    "S0_ETF": 0.286
+   },
+   "2021": {
+    "S1_INDUSTRY_MOMENTUM": 0.462,
+    "S2_VALUE_CONFIRMED": 0.385,
+    "S3_FOUR_FACTOR": 0.0,
+    "S0_ETF": 0.154
+   },
+   "2022": {
+    "S1_INDUSTRY_MOMENTUM": 0.0,
+    "S2_VALUE_CONFIRMED": 0.077,
+    "S3_FOUR_FACTOR": 0.923,
+    "S0_ETF": 0.0
+   },
+   "2023": {
+    "S1_INDUSTRY_MOMENTUM": 0.923,
+    "S2_VALUE_CONFIRMED": 0.0,
+    "S3_FOUR_FACTOR": 0.077,
+    "S0_ETF": 0.0
+   },
+   "2024": {
+    "S1_INDUSTRY_MOMENTUM": 0.0,
+    "S2_VALUE_CONFIRMED": 0.077,
+    "S3_FOUR_FACTOR": 0.923,
+    "S0_ETF": 0.0
+   },
+   "2025": {
+    "S1_INDUSTRY_MOMENTUM": 0.615,
+    "S2_VALUE_CONFIRMED": 0.308,
+    "S3_FOUR_FACTOR": 0.0,
+    "S0_ETF": 0.077
+   },
+   "2026": {
+    "S1_INDUSTRY_MOMENTUM": 0.0,
+    "S2_VALUE_CONFIRMED": 0.222,
+    "S3_FOUR_FACTOR": 0.0,
+    "S0_ETF": 0.778
+   }
+  },
+  "A1_MOMENTUM_CRASH_GUARD": {
+   "2018": {
+    "S1_INDUSTRY_MOMENTUM": 0.615,
+    "S0_ETF": 0.385
+   },
+   "2019": {
+    "S1_INDUSTRY_MOMENTUM": 0.462,
+    "S0_ETF": 0.538
+   },
+   "2020": {
+    "S1_INDUSTRY_MOMENTUM": 0.071,
+    "S0_ETF": 0.929
+   },
+   "2021": {
+    "S1_INDUSTRY_MOMENTUM": 0.692,
+    "S0_ETF": 0.308
+   },
+   "2022": {
+    "S1_INDUSTRY_MOMENTUM": 0.077,
+    "S0_ETF": 0.923
+   },
+   "2023": {
+    "S1_INDUSTRY_MOMENTUM": 0.462,
+    "S0_ETF": 0.538
+   },
+   "2024": {
+    "S1_INDUSTRY_MOMENTUM": 0.538,
+    "S0_ETF": 0.462
+   },
+   "2025": {
+    "S1_INDUSTRY_MOMENTUM": 0.462,
+    "S0_ETF": 0.538
+   },
+   "2026": {
+    "S1_INDUSTRY_MOMENTUM": 0.0,
+    "S0_ETF": 1.0
+   }
+  },
+  "B1_RIDGE_ALL_STATES": {
+   "2018": {
+    "S1_INDUSTRY_MOMENTUM": 0.219,
+    "S0_ETF": 0.463,
+    "S3_FOUR_FACTOR": 0.086,
+    "S2_VALUE_CONFIRMED": 0.232
+   },
+   "2019": {
+    "S1_INDUSTRY_MOMENTUM": 0.229,
+    "S0_ETF": 0.471,
+    "S3_FOUR_FACTOR": 0.01,
+    "S2_VALUE_CONFIRMED": 0.29
+   },
+   "2020": {
+    "S1_INDUSTRY_MOMENTUM": 0.217,
+    "S0_ETF": 0.783,
+    "S3_FOUR_FACTOR": 0.0,
+    "S2_VALUE_CONFIRMED": 0.0
+   },
+   "2021": {
+    "S1_INDUSTRY_MOMENTUM": 0.069,
+    "S0_ETF": 0.931,
+    "S3_FOUR_FACTOR": 0.0,
+    "S2_VALUE_CONFIRMED": 0.0
+   },
+   "2022": {
+    "S1_INDUSTRY_MOMENTUM": 0.012,
+    "S0_ETF": 0.672,
+    "S3_FOUR_FACTOR": 0.0,
+    "S2_VALUE_CONFIRMED": 0.316
+   },
+   "2023": {
+    "S1_INDUSTRY_MOMENTUM": 0.136,
+    "S0_ETF": 0.861,
+    "S3_FOUR_FACTOR": 0.0,
+    "S2_VALUE_CONFIRMED": 0.004
+   },
+   "2024": {
+    "S1_INDUSTRY_MOMENTUM": 0.309,
+    "S0_ETF": 0.064,
+    "S3_FOUR_FACTOR": 0.307,
+    "S2_VALUE_CONFIRMED": 0.32
+   },
+   "2025": {
+    "S1_INDUSTRY_MOMENTUM": 0.24,
+    "S0_ETF": 0.288,
+    "S3_FOUR_FACTOR": 0.311,
+    "S2_VALUE_CONFIRMED": 0.161
+   },
+   "2026": {
+    "S1_INDUSTRY_MOMENTUM": 0.489,
+    "S0_ETF": 0.444,
+    "S3_FOUR_FACTOR": 0.008,
+    "S2_VALUE_CONFIRMED": 0.059
+   }
+  },
+  "B2_LGBM_ALL_STATES": {
+   "2018": {
+    "S1_INDUSTRY_MOMENTUM": 0.104,
+    "S0_ETF": 0.822,
+    "S2_VALUE_CONFIRMED": 0.074,
+    "S3_FOUR_FACTOR": 0.0
+   },
+   "2019": {
+    "S1_INDUSTRY_MOMENTUM": 0.012,
+    "S0_ETF": 0.769,
+    "S2_VALUE_CONFIRMED": 0.219,
+    "S3_FOUR_FACTOR": 0.0
+   },
+   "2020": {
+    "S1_INDUSTRY_MOMENTUM": 0.053,
+    "S0_ETF": 0.947,
+    "S2_VALUE_CONFIRMED": 0.0,
+    "S3_FOUR_FACTOR": 0.0
+   },
+   "2021": {
+    "S1_INDUSTRY_MOMENTUM": 0.087,
+    "S0_ETF": 0.913,
+    "S2_VALUE_CONFIRMED": 0.0,
+    "S3_FOUR_FACTOR": 0.0
+   },
+   "2022": {
+    "S1_INDUSTRY_MOMENTUM": 0.0,
+    "S0_ETF": 1.0,
+    "S2_VALUE_CONFIRMED": 0.0,
+    "S3_FOUR_FACTOR": 0.0
+   },
+   "2023": {
+    "S1_INDUSTRY_MOMENTUM": 0.133,
+    "S0_ETF": 0.832,
+    "S2_VALUE_CONFIRMED": 0.035,
+    "S3_FOUR_FACTOR": 0.0
+   },
+   "2024": {
+    "S1_INDUSTRY_MOMENTUM": 0.0,
+    "S0_ETF": 0.826,
+    "S2_VALUE_CONFIRMED": 0.062,
+    "S3_FOUR_FACTOR": 0.111
+   },
+   "2025": {
+    "S1_INDUSTRY_MOMENTUM": 0.491,
+    "S0_ETF": 0.366,
+    "S2_VALUE_CONFIRMED": 0.051,
+    "S3_FOUR_FACTOR": 0.093
+   },
+   "2026": {
+    "S1_INDUSTRY_MOMENTUM": 0.067,
+    "S0_ETF": 0.933,
+    "S2_VALUE_CONFIRMED": 0.0,
+    "S3_FOUR_FACTOR": 0.0
+   }
+  },
+  "B3_RIDGE_KR_ONLY": {
+   "2018": {
+    "S1_INDUSTRY_MOMENTUM": 0.132,
+    "S0_ETF": 0.652,
+    "S2_VALUE_CONFIRMED": 0.217,
+    "S3_FOUR_FACTOR": 0.0
+   },
+   "2019": {
+    "S1_INDUSTRY_MOMENTUM": 0.034,
+    "S0_ETF": 0.481,
+    "S2_VALUE_CONFIRMED": 0.431,
+    "S3_FOUR_FACTOR": 0.055
+   },
+   "2020": {
+    "S1_INDUSTRY_MOMENTUM": 0.121,
+    "S0_ETF": 0.879,
+    "S2_VALUE_CONFIRMED": 0.0,
+    "S3_FOUR_FACTOR": 0.0
+   },
+   "2021": {
+    "S1_INDUSTRY_MOMENTUM": 0.209,
+    "S0_ETF": 0.491,
+    "S2_VALUE_CONFIRMED": 0.3,
+    "S3_FOUR_FACTOR": 0.0
+   },
+   "2022": {
+    "S1_INDUSTRY_MOMENTUM": 0.0,
+    "S0_ETF": 0.922,
+    "S2_VALUE_CONFIRMED": 0.078,
+    "S3_FOUR_FACTOR": 0.0
+   },
+   "2023": {
+    "S1_INDUSTRY_MOMENTUM": 0.027,
+    "S0_ETF": 0.894,
+    "S2_VALUE_CONFIRMED": 0.079,
+    "S3_FOUR_FACTOR": 0.0
+   },
+   "2024": {
+    "S1_INDUSTRY_MOMENTUM": 0.321,
+    "S0_ETF": 0.628,
+    "S2_VALUE_CONFIRMED": 0.019,
+    "S3_FOUR_FACTOR": 0.032
+   },
+   "2025": {
+    "S1_INDUSTRY_MOMENTUM": 0.185,
+    "S0_ETF": 0.635,
+    "S2_VALUE_CONFIRMED": 0.118,
+    "S3_FOUR_FACTOR": 0.062
+   },
+   "2026": {
+    "S1_INDUSTRY_MOMENTUM": 0.189,
+    "S0_ETF": 0.718,
+    "S2_VALUE_CONFIRMED": 0.093,
+    "S3_FOUR_FACTOR": 0.0
+   }
+  },
+  "A2_INVERSE_VOL_RISK_BUDGET": {
+   "2018": {
+    "S0_ETF": 0.343,
+    "S1_INDUSTRY_MOMENTUM": 0.139,
+    "S2_VALUE_CONFIRMED": 0.276,
+    "S3_FOUR_FACTOR": 0.241
+   },
+   "2019": {
+    "S0_ETF": 0.284,
+    "S1_INDUSTRY_MOMENTUM": 0.176,
+    "S2_VALUE_CONFIRMED": 0.244,
+    "S3_FOUR_FACTOR": 0.295
+   },
+   "2020": {
+    "S0_ETF": 0.274,
+    "S1_INDUSTRY_MOMENTUM": 0.183,
+    "S2_VALUE_CONFIRMED": 0.238,
+    "S3_FOUR_FACTOR": 0.305
+   },
+   "2021": {
+    "S0_ETF": 0.322,
+    "S1_INDUSTRY_MOMENTUM": 0.149,
+    "S2_VALUE_CONFIRMED": 0.253,
+    "S3_FOUR_FACTOR": 0.276
+   },
+   "2022": {
+    "S0_ETF": 0.29,
+    "S1_INDUSTRY_MOMENTUM": 0.211,
+    "S2_VALUE_CONFIRMED": 0.207,
+    "S3_FOUR_FACTOR": 0.293
+   },
+   "2023": {
+    "S0_ETF": 0.29,
+    "S1_INDUSTRY_MOMENTUM": 0.211,
+    "S2_VALUE_CONFIRMED": 0.207,
+    "S3_FOUR_FACTOR": 0.293
+   },
+   "2024": {
+    "S0_ETF": 0.29,
+    "S1_INDUSTRY_MOMENTUM": 0.211,
+    "S2_VALUE_CONFIRMED": 0.207,
+    "S3_FOUR_FACTOR": 0.293
+   },
+   "2025": {
+    "S0_ETF": 0.301,
+    "S1_INDUSTRY_MOMENTUM": 0.164,
+    "S2_VALUE_CONFIRMED": 0.297,
+    "S3_FOUR_FACTOR": 0.238
+   },
+   "2026": {
+    "S0_ETF": 0.262,
+    "S1_INDUSTRY_MOMENTUM": 0.185,
+    "S2_VALUE_CONFIRMED": 0.281,
+    "S3_FOUR_FACTOR": 0.272
+   }
+  }
+ }
+}
