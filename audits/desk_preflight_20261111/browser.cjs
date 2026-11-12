@@ -8,10 +8,13 @@ const target = process.env.AUDIT_TARGET;
 const output = process.env.AUDIT_OUTPUT || '/tmp/desk-browser';
 fs.mkdirSync(output, {recursive:true});
 const pin = process.env.PUBLICATION_PIN || '6398e94feddd4f552910d31b36bc8db0766576af';
+const weekly=JSON.parse(execFileSync('git',['show',`${pin}:ledger/weekly-decisions/latest.json`],{cwd:target,maxBuffer:32*1024*1024}));
+const expectedLegacy=market=>weekly.regions[market].weekStatus==='FINAL_WEEKLY'
+ ? (market==='KR'?'KODEX 200 100%':'SPDR S&P 500 ETF 100%') : '현재 판단 확인 불가';
 (async()=>{
  const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH || '/usr/bin/chromium',args:['--no-sandbox']});
  const page=await browser.newPage();
- await page.clock.setFixedTime(new Date(process.env.FIXED_TIME || '2026-11-11T13:00:00Z'));
+ await page.clock.setFixedTime(new Date(process.env.FIXED_TIME || '2026-11-12T10:00:00Z'));
  const errors=[]; page.on('pageerror',e=>errors.push(e.message));
  await page.route('https://**/*',async route=>{
   const u=new URL(route.request().url());
@@ -32,7 +35,7 @@ const pin = process.env.PUBLICATION_PIN || '6398e94feddd4f552910d31b36bc8db07665
   }
   return route.abort();
  });
- await page.goto('http://127.0.0.1:8765/');
+ await page.goto(process.env.AUDIT_URL || 'http://127.0.0.1:8765/');
  if(process.env.CHECK_LEGACY==='1') {
   await page.waitForFunction(()=>document.querySelector('#decisionPanel')?.innerText.includes('KODEX 200 100%')).catch(async e=>{
    fs.writeFileSync(path.join(output,'legacy-failure.txt'),await page.locator('#decisionPanel').innerText());throw e;
@@ -48,12 +51,16 @@ const pin = process.env.PUBLICATION_PIN || '6398e94feddd4f552910d31b36bc8db07665
    await page.waitForSelector(`[data-desk-production="${market}"]`);
    await page.locator('#deskPanel details').evaluateAll(ds=>ds.forEach(d=>d.open=true));
    if(process.env.CHECK_LEGACY==='1') {
+    await page.waitForFunction(expected=>document.querySelector('#decisionPanel')?.innerText.includes(expected),
+      expectedLegacy(market),{timeout:15000});
     const legacy=await page.locator('#decisionPanel').innerText();
     fs.writeFileSync(path.join(output,`legacy-${market}.txt`),legacy);
-    assert(legacy.includes(market==='KR'?'KODEX 200 100%':'SPDR S&P 500 ETF 100%'));
+    assert(legacy.includes(expectedLegacy(market)));
    }
    const text=await page.locator('#deskPanel').innerText();
    assert(text.includes('PIT 오염 — 주 비교 제외'));
+   assert(text.includes('원천 차단'));
+   assert(text.includes('미검증'));
    const pickLabel=text.includes('AI 실험 기록 비중')?'TRV · AI 실험 기록 비중 10%':'TRV · 연구 비중 10%';
    assert(text.includes(market==='KR'?'069500.KS 100%':pickLabel));
    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));

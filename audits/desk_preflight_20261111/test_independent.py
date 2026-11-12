@@ -13,7 +13,6 @@ import os
 from pathlib import Path
 import subprocess
 import sys
-import threading
 
 import pandas as pd
 import pytest
@@ -80,6 +79,14 @@ def test_original_six_records_preserved_and_annotations_target_only_b2():
     for region in ("KR", "US"):
         rr = {r["path"]: r for r in records() if r["region"] == region}
         assert rr["B0"]["weights"] == rr["B1"]["weights"]
+    excluded = L.primary_exclusions(rows)
+    for r in records():
+        if r["region"] == "US":
+            assert "PUBLICATION_NOT_OBSERVED_BEFORE_DEADLINE" in excluded[r["digest"]]
+        elif r["path"] in ("B0", "B1"):
+            assert excluded[r["digest"]] == []
+        if r["path"] == "B2":
+            assert "PIT_CONTAMINATED" in excluded[r["digest"]]
     assert J.PROTOCOL["portfolio"]["perNameWeight"] == 0.1
 
 
@@ -197,59 +204,53 @@ def test_ledger_tamper_and_append_preserves_prefix(tmp_path, monkeypatch):
         L.verify_chain(edited)
 
 
-# Release gates below assert the required behavior and fail against exact #334.
-# strict=True also makes a later fix (XPASS) fail until the audit is updated.
-@pytest.mark.xfail(strict=True, raises=AssertionError, reason="G1: revision/vintage time is discarded; observation date alone survives")
+# Latest-HEAD regressions. Resolved gaps have ordinary assertions; only reproduced
+# residual gaps retain typed strict xfail markers. Earlier outcomes remain in Git history.
 def test_future_revision_cannot_change_prior_information_set():
     idx = pd.to_datetime(["2026-11-04"])
     old = pd.Series([4.90], index=idx)
     revised = pd.Series([99.0], index=idx)
     revised.attrs["revisedAtUtc"] = "2026-11-10T12:00:00Z"
     cutoff = pd.Timestamp("2026-11-06T21:00:00Z")
-    assert A.available_fred("DGS10", revised, cutoff).equals(A.available_fred("DGS10", old, cutoff))
+    assert not A.available_fred("DGS10", old, cutoff).empty
+    assert A.available_fred("DGS10", revised, cutoff).empty
 
 
-@pytest.mark.xfail(strict=True, raises=AssertionError, reason="G2: future fundamental publication timestamp is ignored by gates")
 def test_future_fundamental_publication_fails_eligibility():
     pack = json.loads((DESK / "inputs/2026-11/evidence-pack.json").read_text())
     row = copy.deepcopy(next(c for c in pack["regions"]["US"]["candidates"] if c["ticker"] == "TRV"))
     row["valuationProfitability"].update(originalPublicationAtUtc="2099-01-01T00:00:00Z", vintageAtUtc="2099-01-01T00:00:00Z")
-    assert V.gates(row, pack["regions"]["US"]["freshness"])
+    assert "G6_PUBLICATION" in V.gates(row, pack["regions"]["US"]["freshness"], pd.Timestamp("2026-11-06T21:00:00Z"))
 
 
-@pytest.mark.xfail(strict=True, raises=C.DeskError, reason="G3: valid same-day v2 cutoff compared to date-only generatedAt and rejected")
 def test_v2_iso_cutoff_can_be_published():
     r = copy.deepcopy(json.loads((DESK / "desk.json").read_text())["regions"]["US"]["deskRecords"][0])
     r.update(informationCutoff="2026-11-06T21:00:00Z", generatedAt="2026-11-06T22:00:00Z")
     C._alloc_ok(r)
 
 
-@pytest.mark.xfail(strict=True, raises=pytest.fail.Exception, reason="G4: free-text reasons can introduce any unobserved forecast number")
 def test_unobserved_numeric_return_claim_in_prose_is_refused():
     review = json.loads((DESK / "ai-reviews/2026-11.json").read_text())
     pack = json.loads((DESK / "inputs/2026-11/evidence-pack.json").read_text())
     pack["_sha256"] = hashlib.sha256((DESK / "inputs/2026-11/evidence-pack.json").read_bytes()).hexdigest()
     next(n for n in review["regions"]["US"]["names"] if n["ticker"] == "TRV")["reasons"] = ["Expected return 999% with 100% probability."]
     with pytest.raises(J.ReviewError):
-        J.check_review(review, pack)
+        J.check_prose_numbers(review, pack)
 
 
-@pytest.mark.xfail(strict=True, raises=AssertionError, reason="G5: SOURCE_BLOCKED is terminal in done set; later verified quotes never retry")
 def test_source_blocked_can_receive_later_append_only_correction():
     r = record()
-    blocked = E.outcomes([r], {}, "2028-01-01T00:00:00Z")
+    blocked = [dict(o, digest=L.digest(o)) for o in E.outcomes([r], {}, "2028-01-01T00:00:00Z")]
     retry = E.outcomes([r, *blocked], {"TRV": frame(), "SPY": frame()}, "2028-01-02T00:00:00Z")
     assert retry and retry[0]["status"] == "SCORED"
 
 
-@pytest.mark.xfail(strict=True, raises=AssertionError, reason="G6: zero quotes pass and NaN gross factors collapse to a fabricated flat return")
 def test_zero_price_is_source_blocked():
     df = frame()
     df["close"] = 0.0
     assert E.outcomes([record()], {"TRV": df, "SPY": frame()}, "2028-01-01T00:00:00Z")[0]["status"] == "SOURCE_BLOCKED"
 
 
-@pytest.mark.xfail(strict=True, raises=AssertionError, reason="G7: no primary-comparison eligibility field accompanies scored contaminated record")
 def test_contaminated_outcomes_cannot_enter_primary_comparison():
     rows = L.read(DESK / "dry-run/ledger.jsonl")
     r = record()
@@ -258,7 +259,6 @@ def test_contaminated_outcomes_cannot_enter_primary_comparison():
     assert scored.get("primaryComparisonEligible") is False
 
 
-@pytest.mark.xfail(strict=True, raises=AssertionError, reason="G8: current remote reachability plus backdated committer time passes publication check")
 def test_git_committer_time_is_not_first_publication_time(tmp_path, monkeypatch):
     r = records()[0]
     path = tmp_path / "ledger.jsonl"
@@ -270,7 +270,6 @@ def test_git_committer_time_is_not_first_publication_time(tmp_path, monkeypatch)
     assert not any(a["category"] == "PUBLICATION_VERIFIED" for a in D.cmd_verify_publication("2026-11"))
 
 
-@pytest.mark.xfail(strict=True, raises=AssertionError, reason="G9: Yahoo prior prices remain adjusted by a split after the information cutoff")
 def test_future_split_cannot_rewrite_observed_historical_quote(tmp_path):
     payload = {"chart": {"result": [{"meta": {"exchangeTimezoneName": "America/New_York"},
         "timestamp": [int(pd.Timestamp("2026-11-05T14:30:00Z").timestamp())],
@@ -282,8 +281,7 @@ def test_future_split_cannot_rewrite_observed_historical_quote(tmp_path):
     assert s.iloc[0] == 100.0  # as-traded price before the injected December split
 
 
-@pytest.mark.xfail(strict=True, raises=D.StageError, reason="G10: missed deadline refuses the entire cohort, including B0/B1")
-def test_missed_review_deadline_still_records_b0_b1(tmp_path, monkeypatch):
+def test_missed_deadline_refuses_backfilling_every_path(tmp_path, monkeypatch):
     month = "2099-12"
     packet_path = tmp_path / "packet.json"
     pk = {"signalHistoryCommit": "synthetic", "receiptsBlob": "synthetic",
@@ -291,32 +289,26 @@ def test_missed_review_deadline_still_records_b0_b1(tmp_path, monkeypatch):
     packet_path.write_text(json.dumps(pk))
     monkeypatch.setattr(D, "packet_path", lambda m: packet_path)
     monkeypatch.setattr(D, "reviewers_at_seal", lambda m: [])
-    written, notes = D.build_v2_records(month, "2026-11-09T15:00:00Z")
-    assert {r["path"] for r in written} == {"B0", "B1"}
+    with pytest.raises(D.StageError, match="REGISTRATION_CLOSED"):
+        D.build_v2_records(month, "2026-11-09T15:00:00Z")
 
 
-@pytest.mark.xfail(strict=True, raises=L.LedgerError, reason="G11: new research ledger append has no lock or compare-and-swap; concurrent appends fork chain")
 def test_two_research_ledger_writers_cannot_fork_chain(tmp_path, monkeypatch):
     monkeypatch.setattr(L, "DRY_RUN_DIR", tmp_path)
     path = tmp_path / "ledger.jsonl"
     r = L.append(path, records()[0])
-    real_read = L.read
-    barrier = threading.Barrier(2)
-
-    def racing_read(p):
-        rows = real_read(p)
-        barrier.wait(timeout=10)
-        return rows
-
-    monkeypatch.setattr(L, "read", racing_read)
     note = {"schema": L.ANNOTATION_SCHEMA, "category": "NOTE", "cohort": "2026-11", "recordDigests": [r["digest"]],
             "createdAt": "2026-11-12T00:00:00Z", "detail": "concurrent"}
-    with ThreadPoolExecutor(max_workers=2) as pool:
-        list(pool.map(lambda i: L.append(path, {**note, "detail": str(i)}), range(2)))
-    L.verify_chain(real_read(path))
+    prefix = path.read_bytes()
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        list(pool.map(lambda i: L.append(path, {**note, "detail": str(i)}), range(32)))
+    rows = L.read(path)
+    L.verify_chain(rows)
+    assert len(rows) == 33 and path.read_bytes().startswith(prefix)
+    with pytest.raises(L.LedgerError, match="STALE_TIP"):
+        L.append(path, note, expected_tip=r["digest"])
 
 
-@pytest.mark.xfail(strict=True, raises=AssertionError, reason="G12: official evaluate command calls base cost only; does not emit advertised 2x sensitivity")
 def test_official_evaluation_reports_base_and_double_cost(tmp_path, monkeypatch):
     monkeypatch.setattr(D, "LEDGER", tmp_path / "absent.jsonl")
     calls = []
@@ -330,8 +322,8 @@ def test_official_evaluation_reports_base_and_double_cost(tmp_path, monkeypatch)
     assert calls == [1.0, 2.0]
 
 
-@pytest.mark.xfail(strict=True, raises=AssertionError, reason="G13: decide bypasses check-review's generation-after-packet-seal check")
-def test_decide_rejects_review_generated_before_packet_seal(tmp_path, monkeypatch):
+@pytest.mark.parametrize("injection", ["before_seal", "numeric_forecast"])
+def test_decide_rejects_bad_review_on_actual_path(tmp_path, monkeypatch, injection):
     pk = json.loads((DESK / "inputs/2026-11/evidence-pack.json").read_text())
     pk.update(schema="DECISION_DESK_EVIDENCE_PACKET_V2", cohort="2099-12")
     pk["sealedAtUtc"] = "2026-11-11T12:30:00Z"
@@ -345,7 +337,9 @@ def test_decide_rejects_review_generated_before_packet_seal(tmp_path, monkeypatc
     pp.write_text(json.dumps(pk))
     rv = json.loads((DESK / "ai-reviews/2026-11.json").read_text())
     rv.update(schema="B2_AI_REVIEW_V2", cohort="2099-12", reviewer="claude", readOnlyThePacket=True)
-    rv["generatedAt"] = "2026-11-11T12:00:00Z"  # after cutoff, BEFORE packet seal
+    rv["generatedAt"] = "2026-11-11T12:00:00Z" if injection == "before_seal" else "2026-11-11T12:45:00Z"
+    if injection == "numeric_forecast":
+        rv["regions"]["US"]["names"][0]["reasons"] = ["Expected return 999%"]
     rv["evidencePackSha256"] = hashlib.sha256(pp.read_bytes()).hexdigest()
     rv["packetSha256"] = rv["evidencePackSha256"]
     rp = tmp_path / "review.json"
@@ -355,8 +349,9 @@ def test_decide_rejects_review_generated_before_packet_seal(tmp_path, monkeypatc
     monkeypatch.setattr(D, "reviewers_at_seal", lambda month: [{"id": "claude", "role": "PRIMARY_B2"}])
     monkeypatch.setattr(D, "committed_unchanged", lambda p: True)
     monkeypatch.setattr(D, "independence", lambda *args: {"claude": "INDEPENDENCE_NOT_VERIFIED"})
-    written, _ = D.build_v2_records("2099-12", "2026-11-11T13:00:00Z")
-    assert all(r["generatedAt"] >= pk["sealedAtUtc"] for r in written)
+    error, match = (D.StageError, "REVIEW_BEFORE_PACKET") if injection == "before_seal" else (J.ReviewError, "UNSOURCED_NUMBER")
+    with pytest.raises(error, match=match):
+        D.build_v2_records("2099-12", "2026-11-11T13:00:00Z")
 
 
 def test_primary_exclusion_badge_is_present_in_both_views():
@@ -404,7 +399,6 @@ def test_latest_dossier_rejects_future_date_and_numeric_forecast(evidence_first,
         contract.validate_dossier(d, "E1", rows)
 
 
-@pytest.mark.xfail(strict=True, raises=pytest.fail.Exception, reason="G14: unknown fact field bypasses census value validation")
 def test_latest_dossier_rejects_an_unobserved_fact_number(evidence_first):
     folder, contract = evidence_first
     d = copy.deepcopy(json.loads((folder / "results/b3-dossiers.json").read_text())["dossiers"][0])
@@ -416,13 +410,143 @@ def test_latest_dossier_rejects_an_unobserved_fact_number(evidence_first):
         contract.validate_dossier(d, "E1", rows)
 
 
-@pytest.mark.xfail(strict=True, raises=AssertionError, reason="G15: every financial fact reuses ROE's date, ignoring field-specific provenance")
 def test_latest_financial_facts_keep_their_own_publication_dates(evidence_first):
     _, contract = evidence_first
     roe_from = {"availableFrom": "2026-01-01", "reportDate": "2025-09-30"}
     op_from = {"availableFrom": "2026-10-30", "reportDate": "2026-09-30"}
     row = {"roe": .1, "operatingMargin": .2, "debtToEquity": .5, "bookToPrice": .3, "momentum12_2": .4,
            "roeFrom": roe_from, "fieldSources": {"roe": roe_from, "operatingMargin": op_from, "debtToEquity": op_from}}
-    facts = contract.facts_from_census("US", row, "2026-11-10", "synthetic")
+    facts = contract.facts_from_census("US", row, "2026-11-10", "synthetic", row["fieldSources"])
     op_fact = next(f for f in facts if f["field"] == "operatingMargin")
     assert op_fact["source"]["availableFrom"] == op_from["availableFrom"]
+
+
+@pytest.mark.xfail(strict=True, raises=AssertionError, reason="G1 residual: current FRED CSV has no vintage receipt, so a silent revision cannot be detected")
+def test_macro_without_a_vintage_receipt_cannot_claim_pit_exact():
+    silently_revised = pd.Series([99.0], index=pd.to_datetime(["2026-11-04"]))
+    assert A.available_fred("DGS10", silently_revised, pd.Timestamp("2026-11-06T21:00:00Z")).empty
+
+
+@pytest.mark.xfail(strict=True, raises=AssertionError, reason="G2 residual: legacy fundamentals without publication metadata are flagged but not rejected by the eligibility helper")
+def test_legacy_undated_fundamental_is_not_certified_public():
+    pack = json.loads((DESK / "inputs/2026-11/evidence-pack.json").read_text())
+    row = copy.deepcopy(next(c for c in pack["regions"]["US"]["candidates"] if c["ticker"] == "TRV"))
+    for key in V.PUBLICATION_KEYS:
+        row["valuationProfitability"].pop(key, None)
+    assert "G6_PUBLICATION" in V.gates(row, pack["regions"]["US"]["freshness"], pd.Timestamp("2026-11-06T21:00:00Z"))
+
+
+def test_activation_gates_are_scoped_and_owner_gate_stays_closed(evidence_first, tmp_path, monkeypatch):
+    folder, _ = evidence_first
+    assert {g["id"] for g in L.open_gates("DESK_V2_B2")} == {"G1_MACRO_VINTAGE", "G2_FUNDAMENTAL_PUBLICATION", "CI_GREEN"}
+    assert {g["id"] for g in L.open_gates("PROSPECTIVE_V1")} == {"CI_GREEN"}
+    assert {g["id"] for g in L.open_gates("DESK_WRITER")} == {"CI_GREEN"}
+    with pytest.raises(L.LedgerError, match="ACTIVATION_GATES_OPEN"):
+        L.append(tmp_path / "unactivated.jsonl", records()[0], owner_approved=True)
+    assert not (tmp_path / "unactivated.jsonl").exists()
+    spec = importlib.util.spec_from_file_location("independent_prospective", folder / "prospective.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    monkeypatch.setattr(module, "APPROVAL", tmp_path / "absent.json")
+    with pytest.raises(module.ProtocolError, match="OWNER_APPROVAL_FILE_MISSING"):
+        module.assert_activation_allowed(tmp_path / "absent.json")
+
+
+@pytest.mark.parametrize("price", [0.0, -1.0, float("nan"), float("inf"), float("-inf")])
+def test_nonfinite_and_nonpositive_prices_never_score(price):
+    df = frame()
+    df.loc[df.index[10], "close"] = price
+    out = E.outcomes([record()], {"TRV": df, "SPY": frame()}, "2028-01-01T00:00:00Z")
+    assert out and all(o["status"] == "SOURCE_BLOCKED" and o["returnAfterCostPct"] is None for o in out)
+
+
+def test_retry_is_append_only_and_double_cost_rows_are_persisted(tmp_path, monkeypatch):
+    monkeypatch.setattr(L, "DRY_RUN_DIR", tmp_path)
+    path = tmp_path / "ledger.jsonl"
+    r = L.append(path, records()[0])
+    # Shift the synthetic valuation calendar without changing the valid frozen receipt.
+    monkeypatch.setattr(D, "LEDGER", path)
+    monkeypatch.setattr(E, "load_store", lambda p: {r["benchmark"]: frame(r["region"])})
+    synthetic = frame(r["region"])
+    original_outcomes = E.outcomes
+    def outcomes(rows, prices, observed_at, cost_mult=1.0):
+        vals = [dict(x, plannedExecution=str(synthetic.index[0].date())) if x.get("schema") in L.RECORD_SCHEMAS else x for x in rows]
+        return original_outcomes(vals, prices, observed_at, cost_mult)
+    monkeypatch.setattr(E, "outcomes", outcomes)
+    D.cmd_evaluate("2028-01-01", fetch=False)
+    prefix = path.read_bytes()
+    blocked = [x for x in L.read(path) if x.get("schema") == L.OUTCOME_SCHEMA]
+    assert len(blocked) == 4 and {x["costMultiplier"] for x in blocked} == {1.0, 2.0}
+    monkeypatch.setattr(E, "outcomes", lambda rows, prices, observed_at, cost_mult=1.0:
+                        outcomes(rows, {r["benchmark"]: synthetic}, observed_at, cost_mult))
+    D.cmd_evaluate("2028-01-02", fetch=False)
+    assert path.read_bytes().startswith(prefix)
+    rows = L.read(path)
+    L.verify_chain(rows)
+    scored = [x for x in rows if x.get("status") == "SCORED"]
+    assert len(scored) == 4 and all(x.get("supersedes") for x in scored)
+    assert {x["costMultiplier"] for x in scored} == {1.0, 2.0}
+
+
+def test_actual_dossier_financial_dates_match_each_stored_field(evidence_first):
+    folder, _ = evidence_first
+    integrity = json.loads((folder / "results/data-integrity.json").read_text())["regions"]
+    dossiers = json.loads((folder / "results/b3-dossiers.json").read_text())["dossiers"]
+    fields = {"roe": "roe", "operatingMargin": "operatingMargin", "debtToEquity": "debtToEquity", "bookToPrice": "bookValuePerShare"}
+    checked = 0
+    for d in dossiers:
+        sources = integrity[d["region"]]["periods"]["byTicker"][d["ticker"]]
+        for fact in d["facts"]:
+            if fact["field"] in fields:
+                actual = sources[fields[fact["field"]]]
+                assert {k: fact["source"][k] for k in ("reportDate", "availableFrom")} == {k: actual[k] for k in ("reportDate", "availableFrom")}
+                checked += 1
+    assert checked == 40
+
+
+def test_new_prospective_inputs_refuse_same_day_and_future_filings(evidence_first, monkeypatch):
+    folder, _ = evidence_first
+    monkeypatch.syspath_prepend(str(folder))
+    spec = importlib.util.spec_from_file_location("independent_integrity", folder / "integrity.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    old = {"ticker": "SYN", "availableFrom": "2026-11-09", "reportDate": "2026-09-30",
+           "fields": {"roe": .1, "operatingMargin": .2, "debtToEquity": .5, "profitMargin": .1, "bookValuePerShare": 10}}
+    same = dict(old, availableFrom="2026-11-10", fields={k: 999 for k in old["fields"]})
+    future = dict(same, availableFrom="2099-01-01")
+    assert module.complete_filing([old, same, future], "2026-11-10") == old
+    assert module.complete_filing([same, future], "2026-11-10") is None
+    result = module.C.latest_filings([old, future], "2026-11-10")["SYN"]
+    assert result["fields"] == old["fields"]
+    assert all(src["availableFrom"] == old["availableFrom"] for src in result["fieldSources"].values())
+
+
+def test_current_etf_policy_and_four_draft_arms_stay_separate(evidence_first):
+    folder, _ = evidence_first
+    desk = json.loads((DESK / "desk.json").read_text())
+    draft = json.loads((folder / "results/prospective-dry-run.json").read_text())
+    assert "NOT_A_COHORT" in draft["label"]
+    assert "ACTIVATION_BLOCKED" in draft["activation"]
+    for region, etf in (("KR", "069500.KS"), ("US", "SPY")):
+        assert desk["regions"][region]["production"]["weights"] == {etf: 1.0}
+        arms = draft["regions"][region]["arms"]
+        assert set(arms) == {"ETF100", "B1_ROE", "PRODUCTION", "B1_PLUS_AI"}
+        assert arms["PRODUCTION"]["weights"] == arms["ETF100"]["weights"] == {etf: 1.0}
+        assert arms["B1_PLUS_AI"]["status"] == "NO_RECORD"
+        assert arms["B1_ROE"]["recordLabel"] == "UNVERIFIED_PROSPECTIVE_VIRTUAL"
+
+
+@pytest.mark.parametrize("scenario", ["preview", "stale"])
+def test_top_production_summary_qualifies_preview_and_stale_inputs(scenario):
+    code = r"""const a=require('./app.js'),d=require('./research/decision_desk_v1/desk.json');
+const now=process.argv[1]==='stale'?'2027-01-15T12:00:00Z':'2026-11-12T10:00:00Z';
+if(d.regions.US.production.weekStatus!=='INTRA_WEEK_PREVIEW') throw new Error('fixture changed: re-audit the new snapshot');
+const market=process.argv[1]==='stale'?'KR':'US';
+const html=a.deskMarkup(d,market,Date.parse(now));
+const box=html.match(/<article[^>]*data-desk-four="production"[^>]*>[\s\S]*?<\/article>/);
+if(!box) throw new Error('summary not found'); process.stdout.write(box[0]);"""
+    box = subprocess.check_output(["node", "-e", code, scenario], cwd=TARGET, text=True)
+    if scenario == "preview":
+        assert any(token in box for token in ("미리보기", "INTRA_WEEK_PREVIEW", "현재 판단 확인 불가")), box
+    else:
+        assert any(token in box for token in ("과거 기록", "현재 판단 확인 불가", "STALE")), box

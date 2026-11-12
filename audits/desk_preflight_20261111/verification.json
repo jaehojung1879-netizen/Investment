@@ -1,242 +1,728 @@
 {
-  "checkedAtUtc": "2026-11-11T23:47:46.404608+00:00",
-  "scope": "AUDIT_ONLY_NO_EXISTING_REFS_CHANGED",
-  "localMerge": {
-    "commit": "37b24def6da03095ed60c86c9e83167f0c058402",
-    "parents": [
-      "d876c6f0dd87dc9e34fdb081631f8a85f649e37c",
-      "cd2892eb6d6623c2527eeda690959d18839acc4d"
+  "current20261112": {
+    "checkedAtUtc": "2026-11-12T10:57:57.070863+00:00",
+    "main": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+    "pr321": "cd2892eb6d6623c2527eeda690959d18839acc4d",
+    "pr334": "645d9fe0b3693a219693234468b70f43bc7f0bd2",
+    "auditInput335": "b4fb08556a0dde7fe4933ff6475e481d20a7931d",
+    "merge": [
+      "c697056b5381faa7ba0c98950f0914a546d54bc6",
+      "645d9fe0b3693a219693234468b70f43bc7f0bd2 cd2892eb6d6623c2527eeda690959d18839acc4d",
+      "4b6ede8d3324b1ae03d09e57192a6004ef545729"
     ],
-    "tree": "0ad82bca2b021ff18eaa416695577443014fc71e",
-    "conflicts": 0,
-    "ancestryPreserved": true,
-    "reverseOrderTree": "0ad82bca2b021ff18eaa416695577443014fc71e"
-  },
-  "protectedHashCount": 235,
-  "protectedHashFailures": 0,
-  "researchSpecsResultsRequirementsChanged": false,
-  "claudeDeskUIResearchChanged": false,
-  "independent": {
-    "targetHead": "ef2f012bca5a5c4a513497eb5841f46a47325ce0",
-    "passed": 21,
-    "knownStrictXfails": 15,
-    "runxfailFailed": 15,
-    "runxfailPassed": 21,
-    "cleanSafetyPass": false
-  },
-  "scopedCombined": {
-    "deskTestsPassed": 50,
-    "maintenanceTestsPassed": 107,
-    "browser": "PASS: KR/US x1280/390 with pinned Git-response replay",
-    "legacyBrowser": "PASS: pinned fresh KR/US ETF receipt; blocked champion state preserved",
-    "ruff": "PASS",
-    "compileall": "PASS",
-    "pipelineImports": "PASS",
-    "twoInMemoryDeskBuildsMatchCommittedBytes": true,
-    "legacyEvidencePackReproduces": true,
-    "seedValidation": "PASS in isolated seed worktree",
-    "seedProductionAcceptance": "REFUSED as required",
-    "publicPinnedDeskUrl": "HTTP 200; exact SHA256 7d03a711f9e966eda2c1c8ef8a11841890b60a8bddd3e855937f4be7d8d3d20e"
-  },
-  "fullCombinedSuite": {
-    "targetHead": "d876c6f0dd87dc9e34fdb081631f8a85f649e37c",
-    "status": "COMPLETED_WITH_12_HISTORICAL_GIT_OBJECT_FAILURES",
-    "passed": 6559,
-    "failed": 12,
-    "skipped": 3,
-    "xfailed": 4,
-    "seconds": 2096.61,
-    "failedCasesRecheck": {
-      "passed": 12,
-      "failed": 0,
-      "seconds": 2.95
-    },
-    "cleanSingleRunFullPass": false,
-    "latestHeadFullSuiteRerun": false
-  },
-  "remote": {
-    "pr321Tests": "PASS: 6521, run42369756685",
-    "pr321Pages": "DIAGNOSTIC_ONLY_SUCCESS; build-and-deploy SKIPPED, run42369756681",
-    "pr334Tests": "OLD d876: FAIL 1/6473 passed run43113069420; LATEST ef2: IN_PROGRESS run43118847675 (not PASS)",
-    "latestMainPages": "FAIL: 1 failed /6423 passed; deploy/state SKIPPED, run43055527324",
-    "combinedPRTests": "NOT_RUN; only isolated local merged trees tested",
-    "productionDeployment": "NOT_RUN"
-  },
-  "firstMaintenanceAttempt": {
-    "failed": 16,
-    "passed": 91,
-    "cause": "Missing historical Git blobs in filtered checkout; no code/expected-error change"
-  },
-  "maintenanceRecheck": {
-    "passed": 28,
-    "failed": 0,
-    "followedByFull107Pass": true
-  },
-  "notes": [
-    "An early seed command created only ignored synthetic data/site-data.json in the test checkout; it was removed immediately. Final seed/validation ran in a separate seed worktree. No tracked bytes changed.",
-    "Initial independent harness tried watchlist=12; actual receipts disproved that premise (watchlist=5, candidates=12). Final assertions enforce the observed source chain.",
-    "Initial browser harness selector/display-name errors were corrected without changing application code.",
-    "Final expected-failure markers constrain exception types; incomplete synthetic fixtures were corrected so G10 is REGISTRATION_CLOSED and G13 is the intended seal-order assertion, not a KeyError."
-  ],
-  "evidenceLogIdentities": {
-    "independent-final.log": {
-      "sha256": "5fdafd85a87b6f068aa25f7bb6e787c5ee76e657c282982d744ab593f1e8f887",
-      "bytes": 111
-    },
-    "negative-runxfail.log": {
-      "sha256": "7623db289cf8517a5927ca4dce90e70e2bbd5222922ab4e789e0692d0ac6f48f",
-      "bytes": 20171
-    },
-    "maintenance.log": {
-      "sha256": "66c071b2baff54a9cb304f3025ebd410d7e1d95648c8f8990fefa216bd2fa194",
-      "bytes": 135579
-    },
-    "maintenance-recheck.log": {
-      "sha256": "1c77f0d95c5c02b00c6adbff82bab14c0651f5c29437c83f51d822a242542180",
-      "bytes": 111
-    },
-    "maintenance-final.log": {
-      "sha256": "3f65635d07f9c94045c50ed7238f5786dae53367727f8659baa6d3c9b1e5fb4d",
-      "bytes": 192
-    },
-    "browser.log": {
-      "sha256": "d94417afebddfac855b20bd52089b7f07c582da592f05609096f78ac3d4ce8bf",
-      "bytes": 174
-    },
-    "browser-legacy.log": {
-      "sha256": "d94417afebddfac855b20bd52089b7f07c582da592f05609096f78ac3d4ce8bf",
-      "bytes": 174
-    },
-    "node.log": {
-      "sha256": "5016583e2d748159e8fe7330a2a221a12c65954de7a3397b74fb532a23e3dbc9",
-      "bytes": 215
-    },
-    "seed-validation-corrected.log": {
-      "sha256": "31a680cdc19ef9cfa53ee5c506805e6471ea7ae552e640fe7c9f07c66a4be2ae",
-      "bytes": 14
-    },
-    "seed-production-refusal.log": {
-      "sha256": "d90d9cb6d19950661cd4ac09d7489e6eaabe589a0489fcef17efa697c075f2ae",
-      "bytes": 130
-    },
-    "combined-pytest.log": {
-      "sha256": "3dfe96edfe746ef02b46c8abab2b363b8c4e9a42c1ad72138508048cccb250b4",
-      "bytes": 108961
-    },
-    "combined-failures-recheck.log": {
-      "sha256": "4f4fca8b8d089159ef5bea8a6ced9f814d6890332eaeced60d78d8eeb056babd",
-      "bytes": 99
-    },
-    "rp1-recheck.log": {
-      "sha256": "9fd6ad84961f7f51f30af6d0abfc8030b9b53afc50e4dda2f38289a41b24bade",
-      "bytes": 12231
-    },
-    "rp1-hydrated-recheck.log": {
-      "sha256": "1a3b27ccec9bbcf29c2f3c35daf6cc7788bf04bc0b1770aae8bd4758b8ccb0a9",
-      "bytes": 12273
-    },
-    "rp1-final-recheck.log": {
-      "sha256": "fbf834ed000ff63cef6aba584945158c33adb38b91e49939db4a9c3b9f3ed6bd",
-      "bytes": 98
-    },
-    "latest-focused.log": {
-      "sha256": "e9c3812241f5dd3362a6715662de9f54b107cb71a56922f60d91a4504e8c1bd2",
-      "bytes": 1814
-    },
-    "latest-census-recheck.log": {
-      "sha256": "d7f9231e63ed81320f8602a06c314ecfe5a68b759d0aaf673e08f1662d3eea18",
-      "bytes": 1331
-    },
-    "latest-independent.log": {
-      "sha256": "4847776b4774f9fc01705f2436c247f3783f87ebe8234ae6cf814e339effa44b",
-      "bytes": 111
-    },
-    "latest-negative.log": {
-      "sha256": "93f4698a21c2e1cc3cae487d7841ff18e5d98c4e858d6a71b0710efc27b671a5",
-      "bytes": 22918
-    },
-    "browser-latest.log": {
-      "sha256": "d94417afebddfac855b20bd52089b7f07c582da592f05609096f78ac3d4ce8bf",
-      "bytes": 174
-    },
-    "browser-latest-legacy.log": {
-      "sha256": "d94417afebddfac855b20bd52089b7f07c582da592f05609096f78ac3d4ce8bf",
-      "bytes": 174
-    },
-    "latest-node.log": {
-      "sha256": "2c8265be073e3a8cb6960c726954883abe2f1138c1350bb59fa7f506f7662f2a",
-      "bytes": 215
-    }
-  },
-  "productionWrites": 0,
-  "mainMerges": 0,
-  "workflowDispatches": 0,
-  "realModelFits": 0,
-  "sealedLockWrites": 0,
-  "initialIndependent": {
-    "passed": 18,
-    "knownStrictXfails": 13,
-    "runxfailFailed": 13,
-    "runxfailPassed": 18,
-    "cleanSafetyPass": false
-  },
-  "latestIntegration": {
-    "head334": "ef2f012bca5a5c4a513497eb5841f46a47325ce0",
-    "head321": "cd2892eb6d6623c2527eeda690959d18839acc4d",
-    "commit": "f497814dd6dbcb2fb7abdf997870e962f54d30fb",
-    "parents": [
-      "ef2f012bca5a5c4a513497eb5841f46a47325ce0",
-      "cd2892eb6d6623c2527eeda690959d18839acc4d"
-    ],
-    "tree": "fb738918bd6a1561ea0ff7e97b9b757337a6ec99",
-    "reverseOrderTree": "fb738918bd6a1561ea0ff7e97b9b757337a6ec99",
-    "conflicts": 0,
-    "originalLatestDeskBytesChanged": false,
-    "protectedHashCount": 235,
-    "protectedHashFailures": 0
-  },
-  "latestChecks": {
-    "focusedPassed": 172,
-    "focusedFailed": 1,
-    "failure": "test_census_reproduces_from_the_pinned_signal_history_commit",
-    "isolatedFailureReproduced": true,
-    "censusDifferenceCount": 2,
-    "differencePaths": [
-      "/regions/KR/b1/rule",
-      "/regions/US/b1/rule"
-    ],
-    "numericalOrSelectionDifferences": 0,
-    "docstringProbe": {
-      "pythonVersions": [
-        "3.11.17",
-        "3.13.5"
+    "latestDelta": {
+      "head334": "645d9fe0b3693a219693234468b70f43bc7f0bd2",
+      "previous334": "2e1cef5987eaee0f72d3b33fb8358c54e5da9dd5",
+      "merge": [
+        "c697056b5381faa7ba0c98950f0914a546d54bc6",
+        "645d9fe0b3693a219693234468b70f43bc7f0bd2 cd2892eb6d6623c2527eeda690959d18839acc4d",
+        "4b6ede8d3324b1ae03d09e57192a6004ef545729"
       ],
-      "stripStringsEqual": false,
-      "cleandocStringsEqual": true
+      "changedPaths": [
+        "app.js",
+        "research/decision_desk_v1/evaluate.py",
+        "research/decision_desk_v1/test_review_gaps.py",
+        "research/evidence_first_v2/contract.py",
+        "research/evidence_first_v2/test_evidence_first_v2.py",
+        "tests/decision_desk.test.cjs"
+      ],
+      "changedProtected": [],
+      "protectedCount": 235,
+      "originalSixSha256": "3854d94f07f6f91dc4d74372e3e59132ab3adbf613eec1b95c0f43aaa1c7b050",
+      "allOtherFilesUnchanged": true,
+      "scope": "Two author repairs only; old baseline full suite is not latest-head full CI",
+      "nativeRun": 43203465272,
+      "nativeState": "in_progress",
+      "G14": "PASS unknown field /finite source checks",
+      "G16": "PASS actual preview and final stale counterexamples; control old HEAD failed all3"
     },
-    "browserLatestAndFreshLegacy": "PASS: KR/US x1280/390; exact Git responses replayed",
-    "node": "PASS",
+    "latestChangedArea": {
+      "tests": 113,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 113,
+      "seconds": 142.053
+    },
+    "independentLatest": {
+      "tests": 51,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2,
+      "passed": 49,
+      "seconds": 9.349
+    },
+    "independentRunxfail": {
+      "failed": 2,
+      "passed": 49
+    },
+    "G14G16": {
+      "oldHeadControl": "3 FAIL on2e1cef59",
+      "latestHead": "3 PASS on645d9fe0",
+      "status": "RESOLVED_BY_AUTHOR_AND_INDEPENDENTLY_CHECKED"
+    },
+    "currentClassification334": "MERGE_CANDIDATE_CONDITIONAL_ON_OPERATIONS_AND_EXACT_REMOTE_CI",
+    "currentReadOnlyDefects": "No reproduced G14/G16 defect remains. This is not alpha/source admission or writer approval.",
+    "remainingStrictXfail": [
+      "G1_MISSING_MACRO_VINTAGE",
+      "G2_MISSING_LEGACY_PUBLICATION"
+    ],
+    "legacyB2Writer": "BLOCKED_BY_G1_G2_AND_CI_GREEN",
+    "newProspectiveV1": "BLOCKED_BY_OWNER_APPROVAL_AND_CI_GREEN; draft only",
+    "localFullIntegration": "NOT_RERUN_ON645d9fe0; baseline2e1cef59 has6612 PASS/2 historical Git-blob FAIL and2/2 PASS after hydration; no clean latest-head full PASS claimed",
+    "reusedUnchangedMaintenanceChecks": {
+      "passed": 128,
+      "evidence": "baseline2e1cef59; none of the6-file delta touches321 code/workflows/records"
+    },
+    "browserLatest": {
+      "status": "PASS",
+      "regions": [
+        "KR",
+        "US"
+      ],
+      "viewports": [
+        1280,
+        390
+      ],
+      "pageErrors": 0,
+      "overflow": false,
+      "source": "browser-latest-head.log",
+      "actualDeployment": false
+    },
+    "protectedCount": 235,
+    "changedProtected": [],
+    "originalSixSha256": "3854d94f07f6f91dc4d74372e3e59132ab3adbf613eec1b95c0f43aaa1c7b050",
+    "definitionAndViewChecks": {
+      "usSnapshot": {
+        "file": "data/universe-history.json",
+        "fileSha256": "0c01373dcefa99653d25b8b218ac87c1741c979e27e02cade6f6e052ac7b78de",
+        "lastMembershipChange": "2026-08-19",
+        "currentMembers": 503,
+        "censusAsOf": "2026-11-10",
+        "gapDays": 83,
+        "note": "Index changes after the last recorded change are not in the census; the file is a snapshot, not a live feed."
+      },
+      "mixedReportPeriodCounts": {
+        "KR": 70,
+        "US": 354
+      },
+      "GOOGL": {
+        "bookToPriceInCensus": 2.4455,
+        "bookValueFrom": "2026-03-31",
+        "carriedDays": 2100,
+        "lastShareCountAsFiled": "2020-06-30"
+      },
+      "WDC_invalid_flag": "SHARE_COUNT_CARRIED_FORWARD_OVER_15_MONTHS",
+      "definitionIds": [
+        "FF_OP",
+        "NM_GPA",
+        "B1_ROE"
+      ],
+      "scope": "Read-only source-field/metadata checks; generic carry-age flag is not independent corporate-action certification"
+    },
+    "ruff": "PASS on latest combined tree",
+    "compileall": "PASS on latest combined tree",
+    "productionPolicyChange": false,
+    "ourWritesToClaude334": 0,
+    "newResearchExecutions": 0,
+    "dispatches": 0,
+    "deploys": 0,
+    "remote": {
+      "321Tests": "6521 PASS run42369756685",
+      "321Pages": "diagnostic-only SUCCESS; deploy skipped run42369756681",
+      "334LatestTests": "IN_PROGRESS run43203465272 exact645d9fe0",
+      "334PreviousTests": "1 FAIL /6516 PASS run43131341576 exact2e1cef59",
+      "mainNormalPages": "1 FAIL /6423 PASS run43150678545; build/deploy/state skipped",
+      "combinedRemoteCI": "NOT_RUN",
+      "normalPagesBuildDeployState": "NOT_RUN_BY_THIS_TASK"
+    },
+    "initialOpen": 23,
+    "finalOpen": 17,
+    "cleanup": [
+      {
+        "number": 299,
+        "replacement": 307,
+        "head": "4d7fbbd83afb82d3b83ebca81fc312e962bf41c9",
+        "replacementHead": "03a72544c513bed7d094d2ffb37239ce459ee133",
+        "comment": {
+          "id": 6820450212
+        },
+        "state": "closed",
+        "isError": false
+      },
+      {
+        "number": 306,
+        "replacement": 314,
+        "head": "49e35ace1cd3ca03599d8bfc3913a37ec164e5fb",
+        "replacementHead": "26a40921aced2e377287955819d111a809c0da31",
+        "comment": {
+          "id": 6820455202
+        },
+        "state": "closed",
+        "isError": false
+      },
+      {
+        "number": 320,
+        "replacement": 328,
+        "head": "9a47f478a407fae5324e8ae04e75199c16b56023",
+        "replacementHead": "3b3edb13164ad38f8393c87432bb166f75068291",
+        "comment": {
+          "id": 6820459665
+        },
+        "state": "closed",
+        "isError": false
+      },
+      {
+        "number": 322,
+        "replacement": 328,
+        "head": "f3b1aa9d75fc10677ce794c779ecb17d8fa240e0",
+        "replacementHead": "3b3edb13164ad38f8393c87432bb166f75068291",
+        "comment": {
+          "id": 6820463961
+        },
+        "state": "closed",
+        "isError": false
+      },
+      {
+        "number": 327,
+        "replacement": 328,
+        "head": "1e0289d09ba30bf2e26ec9cfb7e118f33a6a8a87",
+        "replacementHead": "3b3edb13164ad38f8393c87432bb166f75068291",
+        "comment": {
+          "id": 6820468244
+        },
+        "state": "closed",
+        "isError": false
+      },
+      {
+        "number": 330,
+        "replacement": 332,
+        "head": "8657acd5dd840617fc25a6a0cce467294edf72bf",
+        "replacementHead": "0f39c2fef93a9cf924f45ae87662de41090f2528",
+        "comment": {
+          "id": 6820472698
+        },
+        "state": "closed",
+        "isError": false
+      }
+    ],
+    "preservedRemoteBranches": [
+      {
+        "number": 299,
+        "branch": "codex/four-track-research-results",
+        "expected": "4d7fbbd83afb82d3b83ebca81fc312e962bf41c9",
+        "actual": "4d7fbbd83afb82d3b83ebca81fc312e962bf41c9",
+        "preserved": true
+      },
+      {
+        "number": 306,
+        "branch": "claude/compassionate-galileo-yunri9",
+        "expected": "49e35ace1cd3ca03599d8bfc3913a37ec164e5fb",
+        "actual": "49e35ace1cd3ca03599d8bfc3913a37ec164e5fb",
+        "preserved": true
+      },
+      {
+        "number": 320,
+        "branch": "research/corporate-event-readiness-v1",
+        "expected": "9a47f478a407fae5324e8ae04e75199c16b56023",
+        "actual": "9a47f478a407fae5324e8ae04e75199c16b56023",
+        "preserved": true
+      },
+      {
+        "number": 322,
+        "branch": "claude/inspiring-planck-lm1z5k",
+        "expected": "f3b1aa9d75fc10677ce794c779ecb17d8fa240e0",
+        "actual": "f3b1aa9d75fc10677ce794c779ecb17d8fa240e0",
+        "preserved": true
+      },
+      {
+        "number": 327,
+        "branch": "claude/trusting-tesla-ob0jym",
+        "expected": "1e0289d09ba30bf2e26ec9cfb7e118f33a6a8a87",
+        "actual": "1e0289d09ba30bf2e26ec9cfb7e118f33a6a8a87",
+        "preserved": true
+      },
+      {
+        "number": 330,
+        "branch": "codex/ml-tournament-independent-audit-20261110",
+        "expected": "8657acd5dd840617fc25a6a0cce467294edf72bf",
+        "actual": "8657acd5dd840617fc25a6a0cce467294edf72bf",
+        "preserved": true
+      }
+    ],
+    "review334RepairAcknowledgement": 5873150788,
+    "ownerDecision": "Exact321 plain merge with A dependency/B existing Pages state publisher/C read-only diagnostics. Later read-only334 publication needs a new exact combined head and CI. No writer/BX/historical execution approval."
+  },
+  "baseline2e1cef59": {
+    "checkedAtUtc": "2026-11-12T10:46:12.678741+00:00",
+    "scope": "CONSOLIDATION_AND_EXISTING_335_DELTA_ONLY",
+    "main": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+    "pr321": "cd2892eb6d6623c2527eeda690959d18839acc4d",
+    "pr334": "2e1cef5987eaee0f72d3b33fb8358c54e5da9dd5",
+    "auditInput335": "b4fb08556a0dde7fe4933ff6475e481d20a7931d",
+    "merge": [
+      "24d3c44202b67acddd70ccab130d349bc2afaece",
+      "2e1cef5987eaee0f72d3b33fb8358c54e5da9dd5 cd2892eb6d6623c2527eeda690959d18839acc4d",
+      "a0bba24038b61939e36a7618b5107399b285d0b5"
+    ],
+    "localFullIntegration": {
+      "tests": 6621,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 7,
+      "seconds": 3273.558,
+      "xfailed": 4,
+      "passed": 6612,
+      "cleanSingleRunFullPass": false,
+      "failedCasesRecheck": {
+        "passed": 2,
+        "failed": 0,
+        "cause": "local filtered clone lacked historical scripts/rp1_inspect_us_universe.py at8b43d6ee; original module also hydrated; no code or assertion changed",
+        "cleanSingleRunFullPass": false
+      }
+    },
+    "independentLatest": {
+      "tests": 51,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 5,
+      "seconds": 8.168,
+      "xfailed": 5,
+      "passed": 46
+    },
+    "independentRunxfail": {
+      "failed": 5,
+      "passed": 46
+    },
+    "maintenanceAfterHydration": {
+      "passed": 128,
+      "failed": 0
+    },
+    "legacyNodeV31CorrectEnvironment": {
+      "passed": 1,
+      "failed": 0
+    },
+    "report307Node": {
+      "passed": 35,
+      "failed": 0
+    },
+    "report314Shadow": {
+      "passed": 57,
+      "failed": 0
+    },
+    "report314DailyHook": {
+      "passed": 45,
+      "failed": 0
+    },
+    "browser": {
+      "status": "PASS",
+      "regions": [
+        "KR",
+        "US"
+      ],
+      "viewports": [
+        1280,
+        390
+      ],
+      "fixedTime": "2026-11-12T10:00:00Z",
+      "pageErrors": 0,
+      "overflow": false,
+      "fixturePin": "6398e94feddd4f552910d31b36bc8db0766576af",
+      "legacyFixtureKR": "FINAL_WEEKLY ETF100",
+      "legacyFixtureUS": "INTRA_WEEK_PREVIEW currently blocked",
+      "limitation": "Local Git response replay, not deployed Pages"
+    },
     "ruff": "PASS",
     "compileall": "PASS",
-    "publicDeskSha256": "fb005a25877efdb36f1ed876343b00c5541700f2eb059550fd85c43b2aa39c62",
-    "publicDeskUrlMatchesPin": true,
-    "legacyTemporalEvaluatorLedgerAndProtocolCodeChanged": false,
-    "allLegacyLedgerBytesChanged": false
-  },
-  "environment": {
-    "python": "3.11.17",
-    "packages": {
-      "numpy": "2.3.1",
-      "pandas": "2.3.0",
-      "scipy": "1.16.0",
-      "scikit-learn": "1.7.0",
-      "threadpoolctl": "3.7.0",
-      "joblib": "1.6.0",
-      "pytest": "8.4.1",
-      "exchange-calendars": "4.11.1"
+    "entrypointImports": "PASS",
+    "seedValidation": "PASS in separate worktree",
+    "productionSeedAcceptance": "REFUSED as required",
+    "protection": {
+      "protectedCount": 235,
+      "changedProtected": [],
+      "formalJobUnchanged": true,
+      "changedReproducibilityTestFunctions": [
+        "test_workflow_separates_pr_preflight_owner_execution_and_pages"
+      ],
+      "specResultsRequirementsDiff": [],
+      "originalSixSha256": "3854d94f07f6f91dc4d74372e3e59132ab3adbf613eec1b95c0f43aaa1c7b050",
+      "merge": [
+        "24d3c44202b67acddd70ccab130d349bc2afaece",
+        "2e1cef5987eaee0f72d3b33fb8358c54e5da9dd5 cd2892eb6d6623c2527eeda690959d18839acc4d",
+        "a0bba24038b61939e36a7618b5107399b285d0b5"
+      ],
+      "ancestralObjectsPreserved": {
+        "315": true,
+        "registration": true,
+        "consumed": true
+      }
+    },
+    "remote": {
+      "321Tests": "6521 PASS run42369756685",
+      "321Pages": "matrix-diagnostic SUCCESS; build-and-deploy SKIPPED run42369756681",
+      "334Tests": "1 FAIL /6516 PASS run43131341576",
+      "335TestsBeforeUpdate": "1 FAIL /6423 PASS run43122772855; audit file skipped without AUDIT_TARGET",
+      "mainLatestNormalPages": "1 FAIL /6423 PASS run43150678545; build/deploy/state SKIPPED",
+      "combinedRemoteCI": "NOT_RUN",
+      "normalProductionBuild": "NOT_RUN_BY_THIS_TASK",
+      "actualPagesDeploy": "NOT_RUN",
+      "stateLedgerPublication": "NOT_RUN"
+    },
+    "cleanup": [
+      {
+        "number": 299,
+        "replacement": 307,
+        "head": "4d7fbbd83afb82d3b83ebca81fc312e962bf41c9",
+        "replacementHead": "03a72544c513bed7d094d2ffb37239ce459ee133",
+        "comment": {
+          "id": 6820450212
+        },
+        "state": "closed",
+        "isError": false
+      },
+      {
+        "number": 306,
+        "replacement": 314,
+        "head": "49e35ace1cd3ca03599d8bfc3913a37ec164e5fb",
+        "replacementHead": "26a40921aced2e377287955819d111a809c0da31",
+        "comment": {
+          "id": 6820455202
+        },
+        "state": "closed",
+        "isError": false
+      },
+      {
+        "number": 320,
+        "replacement": 328,
+        "head": "9a47f478a407fae5324e8ae04e75199c16b56023",
+        "replacementHead": "3b3edb13164ad38f8393c87432bb166f75068291",
+        "comment": {
+          "id": 6820459665
+        },
+        "state": "closed",
+        "isError": false
+      },
+      {
+        "number": 322,
+        "replacement": 328,
+        "head": "f3b1aa9d75fc10677ce794c779ecb17d8fa240e0",
+        "replacementHead": "3b3edb13164ad38f8393c87432bb166f75068291",
+        "comment": {
+          "id": 6820463961
+        },
+        "state": "closed",
+        "isError": false
+      },
+      {
+        "number": 327,
+        "replacement": 328,
+        "head": "1e0289d09ba30bf2e26ec9cfb7e118f33a6a8a87",
+        "replacementHead": "3b3edb13164ad38f8393c87432bb166f75068291",
+        "comment": {
+          "id": 6820468244
+        },
+        "state": "closed",
+        "isError": false
+      },
+      {
+        "number": 330,
+        "replacement": 332,
+        "head": "8657acd5dd840617fc25a6a0cce467294edf72bf",
+        "replacementHead": "0f39c2fef93a9cf924f45ae87662de41090f2528",
+        "comment": {
+          "id": 6820472698
+        },
+        "state": "closed",
+        "isError": false
+      }
+    ],
+    "initialOpen": 23,
+    "finalOpen": 17,
+    "noChangesTo": [
+      "main",
+      "Claude334branch",
+      "signal-history",
+      "production policy",
+      "registered/sealed scientific bytes",
+      "consumed refs"
+    ],
+    "preparationFailuresPreserved": [
+      "Original old-HEAD audit markers give XPASS and obsolete fixture assumptions on latest HEAD; updated actual-path tests and kept only reproduced residual gaps",
+      "Maintenance first attempt:30 FAIL/91 PASS due missing read-only historical blobs; explicit hydration then128 PASS",
+      "Node v31 direct run lacked fixture; proper fixture in sandbox exposed spawnSync git EPERM; same test in normal environment PASS",
+      "Legacy browser initially required US FINAL although pinned source says PREVIEW; expected blocked state now derived from actual snapshot; no application change"
+    ],
+    "ownerDecision": "Only exact321 plain merge, covering A dependency restoration + B existing Pages state publisher + C read-only closed provenance; no merge performed",
+    "evidenceFile": "consolidation-20261112.json.gz",
+    "definitionAndViewChecks": {
+      "usSnapshot": {
+        "file": "data/universe-history.json",
+        "fileSha256": "0c01373dcefa99653d25b8b218ac87c1741c979e27e02cade6f6e052ac7b78de",
+        "lastMembershipChange": "2026-08-19",
+        "currentMembers": 503,
+        "censusAsOf": "2026-11-10",
+        "gapDays": 83,
+        "note": "Index changes after the last recorded change are not in the census; the file is a snapshot, not a live feed."
+      },
+      "mixedReportPeriodCounts": {
+        "KR": 70,
+        "US": 354
+      },
+      "GOOGL": {
+        "bookToPriceInCensus": 2.4455,
+        "bookValueFrom": "2026-03-31",
+        "carriedDays": 2100,
+        "lastShareCountAsFiled": "2020-06-30"
+      },
+      "WDC_invalid_flag": "SHARE_COUNT_CARRIED_FORWARD_OVER_15_MONTHS",
+      "definitionIds": [
+        "FF_OP",
+        "NM_GPA",
+        "B1_ROE"
+      ],
+      "scope": "Read-only source-field/metadata checks; generic carry-age flag is not independent corporate-action certification"
     }
   },
-  "newHistoricalStrategyRuns": 0,
-  "existingFrozenAcademicReplay": "Latest existing academic-path test executed AP.run() on frozen French files to reproduce its committed weak result; no new portfolio search, sealed-study execution, or alpha promotion.",
-  "preExistingUserBranchPushes": 0
+  "historical20261111": {
+    "checkedAtUtc": "2026-11-11T23:47:46.404608+00:00",
+    "scope": "AUDIT_ONLY_NO_EXISTING_REFS_CHANGED",
+    "localMerge": {
+      "commit": "37b24def6da03095ed60c86c9e83167f0c058402",
+      "parents": [
+        "d876c6f0dd87dc9e34fdb081631f8a85f649e37c",
+        "cd2892eb6d6623c2527eeda690959d18839acc4d"
+      ],
+      "tree": "0ad82bca2b021ff18eaa416695577443014fc71e",
+      "conflicts": 0,
+      "ancestryPreserved": true,
+      "reverseOrderTree": "0ad82bca2b021ff18eaa416695577443014fc71e"
+    },
+    "protectedHashCount": 235,
+    "protectedHashFailures": 0,
+    "researchSpecsResultsRequirementsChanged": false,
+    "claudeDeskUIResearchChanged": false,
+    "independent": {
+      "targetHead": "ef2f012bca5a5c4a513497eb5841f46a47325ce0",
+      "passed": 21,
+      "knownStrictXfails": 15,
+      "runxfailFailed": 15,
+      "runxfailPassed": 21,
+      "cleanSafetyPass": false
+    },
+    "scopedCombined": {
+      "deskTestsPassed": 50,
+      "maintenanceTestsPassed": 107,
+      "browser": "PASS: KR/US x1280/390 with pinned Git-response replay",
+      "legacyBrowser": "PASS: pinned fresh KR/US ETF receipt; blocked champion state preserved",
+      "ruff": "PASS",
+      "compileall": "PASS",
+      "pipelineImports": "PASS",
+      "twoInMemoryDeskBuildsMatchCommittedBytes": true,
+      "legacyEvidencePackReproduces": true,
+      "seedValidation": "PASS in isolated seed worktree",
+      "seedProductionAcceptance": "REFUSED as required",
+      "publicPinnedDeskUrl": "HTTP 200; exact SHA256 7d03a711f9e966eda2c1c8ef8a11841890b60a8bddd3e855937f4be7d8d3d20e"
+    },
+    "fullCombinedSuite": {
+      "targetHead": "d876c6f0dd87dc9e34fdb081631f8a85f649e37c",
+      "status": "COMPLETED_WITH_12_HISTORICAL_GIT_OBJECT_FAILURES",
+      "passed": 6559,
+      "failed": 12,
+      "skipped": 3,
+      "xfailed": 4,
+      "seconds": 2096.61,
+      "failedCasesRecheck": {
+        "passed": 12,
+        "failed": 0,
+        "seconds": 2.95
+      },
+      "cleanSingleRunFullPass": false,
+      "latestHeadFullSuiteRerun": false
+    },
+    "remote": {
+      "pr321Tests": "PASS: 6521, run42369756685",
+      "pr321Pages": "DIAGNOSTIC_ONLY_SUCCESS; build-and-deploy SKIPPED, run42369756681",
+      "pr334Tests": "OLD d876: FAIL 1/6473 passed run43113069420; LATEST ef2: IN_PROGRESS run43118847675 (not PASS)",
+      "latestMainPages": "FAIL: 1 failed /6423 passed; deploy/state SKIPPED, run43055527324",
+      "combinedPRTests": "NOT_RUN; only isolated local merged trees tested",
+      "productionDeployment": "NOT_RUN"
+    },
+    "firstMaintenanceAttempt": {
+      "failed": 16,
+      "passed": 91,
+      "cause": "Missing historical Git blobs in filtered checkout; no code/expected-error change"
+    },
+    "maintenanceRecheck": {
+      "passed": 28,
+      "failed": 0,
+      "followedByFull107Pass": true
+    },
+    "notes": [
+      "An early seed command created only ignored synthetic data/site-data.json in the test checkout; it was removed immediately. Final seed/validation ran in a separate seed worktree. No tracked bytes changed.",
+      "Initial independent harness tried watchlist=12; actual receipts disproved that premise (watchlist=5, candidates=12). Final assertions enforce the observed source chain.",
+      "Initial browser harness selector/display-name errors were corrected without changing application code.",
+      "Final expected-failure markers constrain exception types; incomplete synthetic fixtures were corrected so G10 is REGISTRATION_CLOSED and G13 is the intended seal-order assertion, not a KeyError."
+    ],
+    "evidenceLogIdentities": {
+      "independent-final.log": {
+        "sha256": "5fdafd85a87b6f068aa25f7bb6e787c5ee76e657c282982d744ab593f1e8f887",
+        "bytes": 111
+      },
+      "negative-runxfail.log": {
+        "sha256": "7623db289cf8517a5927ca4dce90e70e2bbd5222922ab4e789e0692d0ac6f48f",
+        "bytes": 20171
+      },
+      "maintenance.log": {
+        "sha256": "66c071b2baff54a9cb304f3025ebd410d7e1d95648c8f8990fefa216bd2fa194",
+        "bytes": 135579
+      },
+      "maintenance-recheck.log": {
+        "sha256": "1c77f0d95c5c02b00c6adbff82bab14c0651f5c29437c83f51d822a242542180",
+        "bytes": 111
+      },
+      "maintenance-final.log": {
+        "sha256": "3f65635d07f9c94045c50ed7238f5786dae53367727f8659baa6d3c9b1e5fb4d",
+        "bytes": 192
+      },
+      "browser.log": {
+        "sha256": "d94417afebddfac855b20bd52089b7f07c582da592f05609096f78ac3d4ce8bf",
+        "bytes": 174
+      },
+      "browser-legacy.log": {
+        "sha256": "d94417afebddfac855b20bd52089b7f07c582da592f05609096f78ac3d4ce8bf",
+        "bytes": 174
+      },
+      "node.log": {
+        "sha256": "5016583e2d748159e8fe7330a2a221a12c65954de7a3397b74fb532a23e3dbc9",
+        "bytes": 215
+      },
+      "seed-validation-corrected.log": {
+        "sha256": "31a680cdc19ef9cfa53ee5c506805e6471ea7ae552e640fe7c9f07c66a4be2ae",
+        "bytes": 14
+      },
+      "seed-production-refusal.log": {
+        "sha256": "d90d9cb6d19950661cd4ac09d7489e6eaabe589a0489fcef17efa697c075f2ae",
+        "bytes": 130
+      },
+      "combined-pytest.log": {
+        "sha256": "3dfe96edfe746ef02b46c8abab2b363b8c4e9a42c1ad72138508048cccb250b4",
+        "bytes": 108961
+      },
+      "combined-failures-recheck.log": {
+        "sha256": "4f4fca8b8d089159ef5bea8a6ced9f814d6890332eaeced60d78d8eeb056babd",
+        "bytes": 99
+      },
+      "rp1-recheck.log": {
+        "sha256": "9fd6ad84961f7f51f30af6d0abfc8030b9b53afc50e4dda2f38289a41b24bade",
+        "bytes": 12231
+      },
+      "rp1-hydrated-recheck.log": {
+        "sha256": "1a3b27ccec9bbcf29c2f3c35daf6cc7788bf04bc0b1770aae8bd4758b8ccb0a9",
+        "bytes": 12273
+      },
+      "rp1-final-recheck.log": {
+        "sha256": "fbf834ed000ff63cef6aba584945158c33adb38b91e49939db4a9c3b9f3ed6bd",
+        "bytes": 98
+      },
+      "latest-focused.log": {
+        "sha256": "e9c3812241f5dd3362a6715662de9f54b107cb71a56922f60d91a4504e8c1bd2",
+        "bytes": 1814
+      },
+      "latest-census-recheck.log": {
+        "sha256": "d7f9231e63ed81320f8602a06c314ecfe5a68b759d0aaf673e08f1662d3eea18",
+        "bytes": 1331
+      },
+      "latest-independent.log": {
+        "sha256": "4847776b4774f9fc01705f2436c247f3783f87ebe8234ae6cf814e339effa44b",
+        "bytes": 111
+      },
+      "latest-negative.log": {
+        "sha256": "93f4698a21c2e1cc3cae487d7841ff18e5d98c4e858d6a71b0710efc27b671a5",
+        "bytes": 22918
+      },
+      "browser-latest.log": {
+        "sha256": "d94417afebddfac855b20bd52089b7f07c582da592f05609096f78ac3d4ce8bf",
+        "bytes": 174
+      },
+      "browser-latest-legacy.log": {
+        "sha256": "d94417afebddfac855b20bd52089b7f07c582da592f05609096f78ac3d4ce8bf",
+        "bytes": 174
+      },
+      "latest-node.log": {
+        "sha256": "2c8265be073e3a8cb6960c726954883abe2f1138c1350bb59fa7f506f7662f2a",
+        "bytes": 215
+      }
+    },
+    "productionWrites": 0,
+    "mainMerges": 0,
+    "workflowDispatches": 0,
+    "realModelFits": 0,
+    "sealedLockWrites": 0,
+    "initialIndependent": {
+      "passed": 18,
+      "knownStrictXfails": 13,
+      "runxfailFailed": 13,
+      "runxfailPassed": 18,
+      "cleanSafetyPass": false
+    },
+    "latestIntegration": {
+      "head334": "ef2f012bca5a5c4a513497eb5841f46a47325ce0",
+      "head321": "cd2892eb6d6623c2527eeda690959d18839acc4d",
+      "commit": "f497814dd6dbcb2fb7abdf997870e962f54d30fb",
+      "parents": [
+        "ef2f012bca5a5c4a513497eb5841f46a47325ce0",
+        "cd2892eb6d6623c2527eeda690959d18839acc4d"
+      ],
+      "tree": "fb738918bd6a1561ea0ff7e97b9b757337a6ec99",
+      "reverseOrderTree": "fb738918bd6a1561ea0ff7e97b9b757337a6ec99",
+      "conflicts": 0,
+      "originalLatestDeskBytesChanged": false,
+      "protectedHashCount": 235,
+      "protectedHashFailures": 0
+    },
+    "latestChecks": {
+      "focusedPassed": 172,
+      "focusedFailed": 1,
+      "failure": "test_census_reproduces_from_the_pinned_signal_history_commit",
+      "isolatedFailureReproduced": true,
+      "censusDifferenceCount": 2,
+      "differencePaths": [
+        "/regions/KR/b1/rule",
+        "/regions/US/b1/rule"
+      ],
+      "numericalOrSelectionDifferences": 0,
+      "docstringProbe": {
+        "pythonVersions": [
+          "3.11.17",
+          "3.13.5"
+        ],
+        "stripStringsEqual": false,
+        "cleandocStringsEqual": true
+      },
+      "browserLatestAndFreshLegacy": "PASS: KR/US x1280/390; exact Git responses replayed",
+      "node": "PASS",
+      "ruff": "PASS",
+      "compileall": "PASS",
+      "publicDeskSha256": "fb005a25877efdb36f1ed876343b00c5541700f2eb059550fd85c43b2aa39c62",
+      "publicDeskUrlMatchesPin": true,
+      "legacyTemporalEvaluatorLedgerAndProtocolCodeChanged": false,
+      "allLegacyLedgerBytesChanged": false
+    },
+    "environment": {
+      "python": "3.11.17",
+      "packages": {
+        "numpy": "2.3.1",
+        "pandas": "2.3.0",
+        "scipy": "1.16.0",
+        "scikit-learn": "1.7.0",
+        "threadpoolctl": "3.7.0",
+        "joblib": "1.6.0",
+        "pytest": "8.4.1",
+        "exchange-calendars": "4.11.1"
+      }
+    },
+    "newHistoricalStrategyRuns": 0,
+    "existingFrozenAcademicReplay": "Latest existing academic-path test executed AP.run() on frozen French files to reproduce its committed weak result; no new portfolio search, sealed-study execution, or alpha promotion.",
+    "preExistingUserBranchPushes": 0
+  }
 }
