@@ -1,0 +1,151 @@
+"""Read-only arithmetic audit of PR331 stored inputs/results. No strategy/model imports or runs.
+Run: python /workspace/integration-review-notes/us/arithmetic_audit.py
+"""
+from pathlib import Path
+import gzip, hashlib, json
+import numpy as np
+import pandas as pd
+
+HERE = Path(__file__).resolve().parent
+R = HERE / 'research/us_macro_cocktail_v1'
+OUT = HERE / 'arithmetic-checks.json'
+manifest = json.loads((R/'data/manifest.json').read_text())
+result = json.loads((R/'results/result.json').read_text())
+audit = json.loads((R/'results/data-audit.json').read_text())
+checks = {'head':'d2cd9781627773381b63cd9f2db13b369a1dd31e',
+          'scope':'Stored raw inputs and monthly NAV only; no study, backtest, learning or strategy run',
+          'rawHashes':{}, 'assets':{}, 'monthlyMetrics':{}, 'targetWeightDenominators':{}}
+for filename, meta in manifest['files'].items():
+    actual = hashlib.sha256(gzip.decompress((R/'data/raw'/filename).read_bytes())).hexdigest()
+    checks['rawHashes'][filename] = {'expected':meta['sha256'],'actual':actual,'match':actual==meta['sha256']}
+checks['identity'] = {p:hashlib.sha256((R/p).read_bytes()).hexdigest() for p in ['protocol.json','data/manifest.json','results/result.json']}
+
+def yahoo(sym):
+    o=json.loads(gzip.decompress((R/f'data/raw/yahoo_{sym}.json.gz').read_bytes()))['chart']['result'][0]
+    tz=o['meta']['exchangeTimezoneName']
+    idx=pd.to_datetime(o['timestamp'],unit='s',utc=True).tz_convert(tz).normalize().tz_localize(None)
+    q=o['indicators']['quote'][0]
+    f=pd.DataFrame({'close':q['close'],'adj':o['indicators']['adjclose'][0]['adjclose']},index=idx)
+    f['div']=0.0
+    for d in o.get('events',{}).get('dividends',{}).values():
+        t=pd.Timestamp(d['date'],unit='s',tz='UTC').tz_convert(tz).normalize().tz_localize(None)
+        f.loc[t,'div']+=d['amount']
+    f=f.sort_index().dropna(subset=['close'])
+    f['tr']=((f.close+f['div'])/f.close.shift()).fillna(1).cumprod()
+    return f,o
+
+def fred(sym):
+    f=pd.read_csv(R/f'data/raw/fred_{sym}.csv.gz',index_col=0,parse_dates=True)
+    return pd.to_numeric(f.iloc[:,0],errors='coerce').dropna()
+
+assets={}
+for sym, saved in audit['assets'].items():
+    f,o=yahoo(sym);assets[sym]=f
+    delta=(f.tr.pct_change()-f.adj.pct_change()).abs().dropna()
+    rec={'sessions':len(f),'first':str(f.index[0].date()),'last':str(f.index[-1].date()),
+         'dividendEvents':int((f['div']>0).sum()),'dividendEventsInRaw':len(o.get('events',{}).get('dividends',{})),
+         'splitEvents':o.get('events',{}).get('splits',{}),
+         'sameVendorAdjcloseMedianAbsDailyBp':float(delta.median()*10000),
+         'sameVendorAdjcloseMaxAbsDailyBp':float(delta.max()*10000),
+         'sameVendorAdjcloseCumulativeRatio':float(f.tr.iloc[-1]/(f.adj.iloc[-1]/f.adj.iloc[0])),
+         'independentSourceVerdict':'LIMITED_PRICE_INDEX_CROSSCHECK_ONLY' if sym in ['SPY','QQQ'] else 'INCONCLUSIVE_SINGLE_VENDOR'}
+    rec['savedCountsMatch']=(rec['sessions']==saved['sessions'] and rec['dividendEvents']==saved['distributionEvents'])
+    checks['assets'][sym]=rec
+
+checks['crossVendor']={}
+for sym,ind in [('SPY','SP500'),('QQQ','NASDAQ100')]:
+    f=assets[sym]; ix=fred(ind)
+    dates=f.index.intersection(ix.index)
+    dates=dates[dates>=pd.Timestamp('2016-11-14')]
+    er=f.loc[dates,'close'].pct_change();ir=ix.loc[dates].pct_change()
+    keep=(f.loc[dates,'div']==0)&er.notna()&ir.notna()
+    diff=(er[keep]-ir[keep]).abs()
+    checks['crossVendor'][sym]={'sessions':len(diff),'first':str(diff.index[0].date()),'last':str(diff.index[-1].date()),
+        'medianAbsDailyBp':float(diff.median()*10000),'p99AbsDailyBp':float(diff.quantile(.99)*10000),
+        'sessionsAbove50bp':int((diff>.005).sum()),'returnCorrelation':float(er[keep].corr(ir[keep])),
+        'caveat':'ETF price versus index price, ex-dividend dates excluded; neither dividends nor entire history independently verified'}
+
+for window,w in result['windows'].items():
+    m=pd.read_csv(R/f'results/{window}-monthly-nav-usd.csv',index_col=0,parse_dates=True)
+    returns=m.pct_change().dropna()
+    years=(m.index[-1]-m.index[0]).days/365.25
+    errs=[]; summary={}
+    for name,s in w['strategies'].items():
+        a=returns[name]; b=returns['ASSET_BIL'];spy=returns['ASSET_SPY']
+        calculated={'cagrPct':((m[name].iloc[-1]/m[name].iloc[0])**(1/years)-1)*100,
+                    'arithAnnualPct':a.mean()*1200,'volPct':a.std(ddof=1)*np.sqrt(12)*100,
+                    'sharpeOverBil':(a-b).mean()/(a-b).std(ddof=1)*np.sqrt(12),
+                    'betaToSpy':a.cov(spy)/spy.var(ddof=1),'worstMonthPct':a.min()*100}
+        calculated['compoundingTermPct']=calculated['cagrPct']-calculated['arithAnnualPct']
+        diffs={k:float(v-s['USD'][k]) for k,v in calculated.items()}
+        for k,v in diffs.items():
+            if abs(v)>.00051:errs.append({'strategy':name,'metric':k,'error':v})
+        summary[name]={'calculated':{k:float(v) for k,v in calculated.items()},'errorsVsSaved':diffs,
+                       'monthlyOnlyMddPct':float((m[name]/m[name].cummax()-1).min()*100),
+                       'savedDailyMddPct':s['USD']['maxDrawdownPct'],
+                       'actualCagrGapVsS4Pct':float(calculated['cagrPct']-w['strategies']['S4_BALANCED']['USD']['cagrPct']),
+                       'savedAnnualArithmeticDifferenceVsS4Pct':s['vsS4']['meanAnnualDiffPct'] if s['vsS4'] else 0,
+                       'savedTwinCagrGapPct':s['averageWeightTwin']['cagrGapPct'],
+                       'savedTwinArithmeticGapPct':s['averageWeightTwin']['strategyMinusTwin']['meanAnnualDiffPct']}
+    checks['monthlyMetrics'][window]={'rows':len(m),'returnMonths':len(returns),'errorsOverRoundingTolerance':errs,'strategies':summary}
+
+weights=pd.read_csv(R/'results/primary-target-weights.csv.gz')
+for name,rows in weights.groupby('strategy'):
+    cols=[c for c in rows if c not in ['strategy','decision']]
+    reported=rows[cols].mean();executed=rows[rows.decision<'2026-10-30'][cols].mean()
+    checks['targetWeightDenominators'][name]={'allDecisions':len(rows),'executedDecisionsBeforeEnd':len(rows)-1,
+        'lastIncludedDecision':rows.decision.max(),'lastExecution':'2026-11-02','backtestEnd':'2026-10-30',
+        'largestWeightDifferencePctPoints':float((reported-executed).abs().max()*100),
+        'averageIncludingUnexecutedLast':reported.to_dict(),'averageOfExecutedTargets':executed.to_dict()}
+
+fx=fred('DEXKOUS'); d=pd.Timestamp('2026-10-30'); nextdate=fx.index[fx.index>d][0]
+checks['fxCounterexample']={'navDate':str(d.date()),'appliedObservationDate':str(nextdate.date()),
+    'appliedRate':float(fx.loc[nextdate]),'sameDayObservedRate':float(fx.loc[d]),
+    'savedEndRates':{k:w['usdkrw']['endRate'] for k,w in result['windows'].items()},
+    'releaseEvidence':'H10 daily values for previous business week released Monday 16:15 ET; Nov2 rate in Nov9 release',
+    'code':'cocktail.py:232-233; run_study.py:47-49,84-91',
+    'verdict':'NEXT_OBSERVATION_DATE_IS_NOT_PUBLICATION_TIMESTAMP; contemporaneous KRW PIT claim fails'}
+snap_path=Path('/workspace/Investment/data/research/us-dual-benchmark-v1/spy-qqq-total-return.csv.gz')
+snap=pd.read_csv(snap_path,parse_dates=['date'])
+checks['repoSnapshotCrosscheck']={'basis':'Same Yahoo provider, earlier fetch; not independent source','assets':{}}
+for sym in ['SPY','QQQ']:
+    s=snap[snap.ticker==sym].set_index('date').totalReturnClose.dropna()
+    f=assets[sym]; common=s.index.intersection(f.index)
+    common=common[common>=pd.Timestamp('2007-05-30')]
+    a=s.loc[common].pct_change().dropna();b=f.loc[common,'tr'].pct_change().dropna();diff=(a-b).abs()
+    checks['repoSnapshotCrosscheck']['assets'][sym]={'sessions':len(diff),'maxAbsDailyBp':float(diff.max()*10000),
+       'medianAbsDailyBp':float(diff.median()*10000),'sessionsAbove1bp':int((diff>.0001).sum()),
+       'cumulativeRatio':float((1+b).prod()/(1+a).prod())}
+rf=json.loads((R/'results/risk-forecast.json').read_text())
+checks['riskForecastSavedIdentity']={}
+for name,row in rf['results'].items():
+    a=row['all']
+    residual=(1-a['oosR2ModelVsExpandingMean'])-(1-a['oosR2ModelVsNaive'])*(1-a['oosR2NaiveVsExpandingMean'])
+    checks['riskForecastSavedIdentity'][name]={'R2IdentityResidual':residual,'forecasts':a['forecasts'],
+         'modelVsNaiveR2':a['oosR2ModelVsNaive'],'savedNwT':a['nwTStatModelBeatsNaive'],
+         'verdict':'AGGREGATE_IDENTITY_ONLY_NOT_PREDICTION_OR_INFERENCE_REPLICATION'}
+tb=json.loads((R/'results/track-b-reaudit.json').read_text())
+tb_src={};tb_hashes={}
+for rel,h in tb['inputSha256'].items():
+    p=Path('/workspace/Investment')/rel
+    body=p.read_bytes();tb_hashes[rel]={'match':hashlib.sha256(body).hexdigest()==h,'sha256':h}
+    tb_src[rel]=json.loads(body)
+surv=tb_src['docs/results/alpha-opportunity-model-v3-survivorship-audit.json']['regions']['US']
+u=surv['universe'];s=surv['sampleSurvivorship'];adm=tb_src['docs/us-readiness/us-departed-dataset-admission-audit-v1.json']
+checks['trackB']={'sourceHashChecks':tb_hashes,
+    'currentPlusDeparted':u['currentMembers']+u['departedMembers'],
+    'departedPricedRenamedUnpricedSum':s['departedPricedByOwnHistory']+s['departedPricedViaVerifiedRename']+s['noPanelDeparted'],
+    'noPanelDepartedSharePct':s['noPanelDeparted']/u['departedMembers']*100,
+    'terminatedInPricedPanel':surv['terminations']['terminatedInPanel'],
+    'candidateRecoveredSessions':adm['candidateRecoveredSessions'],'finalAdmittedSessions':adm['finalAdmittedSessions'],
+    'verdict':'BLOCKED_UNCHANGED_NO_INDEPENDENT_HISTORICAL_PERFORMANCE'}
+checks['notIndependentlyVerified']=['XNYS exchange calendar: exchange_calendars is unavailable here; raw relative-date panels checked only',
+    'Strategy daily NAV and MDD: only monthly strategy NAV retained; no strategy rerun authorized',
+    'Twin NAV: not retained; only saved twin metrics and target arithmetic audited',
+    'Forecast predictions/residuals/training receipts: not retained; no model training authorized',
+    'Six non-equity ETFs: no independent provider snapshots', 'ALFRED vintages and original per-observation release timestamps']
+OUT.write_text(json.dumps(checks,ensure_ascii=False,indent=2,default=str)+'\n')
+print(json.dumps({'output':str(OUT),'rawHashesMatch':all(v['match'] for v in checks['rawHashes'].values()),
+    'rawCountChecksMatch':all(v['savedCountsMatch'] for v in checks['assets'].values()),
+    'monthlyErrors':{k:len(v['errorsOverRoundingTolerance']) for k,v in checks['monthlyMetrics'].items()},
+    'fxCounterexample':checks['fxCounterexample']},ensure_ascii=False,indent=2))
