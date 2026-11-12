@@ -1,0 +1,4440 @@
+{
+ "anchorsSource": "docs/results/regional-standalone-paths.json.gz regional.KR[i].signalDate (only key read)",
+ "calendar": "pipeline.replay_calendar.sessions(..., 'KR') (offline exchange calendar)",
+ "dartCalls": 5260,
+ "dartCallsLaneTotal": {
+  "eventCounts": 256,
+  "insiderGate": 5260,
+  "manualLatencyCheck": 1,
+  "total": 5517
+ },
+ "decisionRule": "anchor PASS iff both Wilson lower bounds clear (>=5 buyers, >=20 no-trade); FAIL iff either upper bound misses; overall PROJECTED_PASS iff interval-PASS anchors >= 60%; PROJECTED_FAIL iff PASS+UNCERTAIN < 60%; else UNCERTAIN",
+ "eventsUsable": 4998,
+ "evidenceClass": "OUTCOME_BLIND_SOURCE_PROBE",
+ "gate": {
+  "anchors": 155,
+  "anchorsIntervalFail": 0,
+  "anchorsIntervalPass": 49,
+  "anchorsIntervalUncertain": 106,
+  "anchorsPointEstimatePass": 132,
+  "anchorsRequired": 93,
+  "anchorsUnmeasured": 0,
+  "notIntervalPassBecause": {
+   "both": 5,
+   "buyerLowerBoundBelow5": 13,
+   "noTradeLowerBoundBelow20": 98
+  },
+  "verdict": "UNCERTAIN"
+ },
+ "gateId": "G2-INFORMATION-DENSITY",
+ "isProjection": true,
+ "membership": "PIT_TOP120_CONDITIONED: latest signal-history ledger/universe/kr snapshot on or before the anchor, rank <= 120 (common and preferred share lines ranked together; the issuer is matched on its DART common stock code)",
+ "membershipSourceCommit": "0b10f54dfefdafa09470b1c0855bc26bf3c58ea5",
+ "outcomeAccess": {
+  "labelsBuilt": 0,
+  "modelOutputsRead": 0,
+  "navsRead": 0,
+  "pricesAfterFilingRead": 0,
+  "returnsRead": 0
+ },
+ "perAnchor": [
+  {
+   "NET_BUYER": 2,
+   "NET_SELLER": 0,
+   "NO_OPEN_MARKET_TRADE": 5,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2013-01-04",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.2857,
+   "buyersWilson95": [
+    9.866,
+    76.928
+   ],
+   "measured": 7,
+   "membershipSnapshot": "2013-01-02",
+   "noTradeWilson95": [
+    43.072,
+    110.134
+   ],
+   "projectedTop120Buyers": 34.286,
+   "projectedTop120NoTrade": 85.714,
+   "sampledMembers": 7
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 0,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2013-02-01",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5714,
+   "buyersWilson95": [
+    30.055,
+    101.014
+   ],
+   "measured": 7,
+   "membershipSnapshot": "2013-02-01",
+   "noTradeWilson95": [
+    18.986,
+    89.945
+   ],
+   "projectedTop120Buyers": 68.571,
+   "projectedTop120NoTrade": 51.429,
+   "sampledMembers": 7
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 0,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2013-03-08",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5714,
+   "buyersWilson95": [
+    30.055,
+    101.014
+   ],
+   "measured": 7,
+   "membershipSnapshot": "2013-03-04",
+   "noTradeWilson95": [
+    18.986,
+    89.945
+   ],
+   "projectedTop120Buyers": 68.571,
+   "projectedTop120NoTrade": 51.429,
+   "sampledMembers": 7
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 0,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2013-04-05",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5714,
+   "buyersWilson95": [
+    30.055,
+    101.014
+   ],
+   "measured": 7,
+   "membershipSnapshot": "2013-04-01",
+   "noTradeWilson95": [
+    18.986,
+    89.945
+   ],
+   "projectedTop120Buyers": 68.571,
+   "projectedTop120NoTrade": 51.429,
+   "sampledMembers": 7
+  },
+  {
+   "NET_BUYER": 6,
+   "NET_SELLER": 0,
+   "NO_OPEN_MARKET_TRADE": 2,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2013-05-10",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.75,
+   "buyersWilson95": [
+    49.113,
+    111.422
+   ],
+   "measured": 8,
+   "membershipSnapshot": "2013-05-02",
+   "noTradeWilson95": [
+    8.578,
+    70.887
+   ],
+   "projectedTop120Buyers": 90.0,
+   "projectedTop120NoTrade": 30.0,
+   "sampledMembers": 8
+  },
+  {
+   "NET_BUYER": 5,
+   "NET_SELLER": 0,
+   "NO_OPEN_MARKET_TRADE": 2,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2013-06-07",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.7143,
+   "buyersWilson95": [
+    43.072,
+    110.134
+   ],
+   "measured": 7,
+   "membershipSnapshot": "2013-06-03",
+   "noTradeWilson95": [
+    9.866,
+    76.928
+   ],
+   "projectedTop120Buyers": 85.714,
+   "projectedTop120NoTrade": 34.286,
+   "sampledMembers": 7
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 0,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2013-07-12",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5714,
+   "buyersWilson95": [
+    30.055,
+    101.014
+   ],
+   "measured": 7,
+   "membershipSnapshot": "2013-07-01",
+   "noTradeWilson95": [
+    18.986,
+    89.945
+   ],
+   "projectedTop120Buyers": 68.571,
+   "projectedTop120NoTrade": 51.429,
+   "sampledMembers": 7
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 0,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2013-08-09",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5714,
+   "buyersWilson95": [
+    30.055,
+    101.014
+   ],
+   "measured": 7,
+   "membershipSnapshot": "2013-08-01",
+   "noTradeWilson95": [
+    18.986,
+    89.945
+   ],
+   "projectedTop120Buyers": 68.571,
+   "projectedTop120NoTrade": 51.429,
+   "sampledMembers": 7
+  },
+  {
+   "NET_BUYER": 5,
+   "NET_SELLER": 0,
+   "NO_OPEN_MARKET_TRADE": 2,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2013-09-13",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.7143,
+   "buyersWilson95": [
+    43.072,
+    110.134
+   ],
+   "measured": 7,
+   "membershipSnapshot": "2013-09-02",
+   "noTradeWilson95": [
+    9.866,
+    76.928
+   ],
+   "projectedTop120Buyers": 85.714,
+   "projectedTop120NoTrade": 34.286,
+   "sampledMembers": 7
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 1,
+   "NO_OPEN_MARKET_TRADE": 2,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2013-10-18",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5714,
+   "buyersWilson95": [
+    30.055,
+    101.014
+   ],
+   "measured": 7,
+   "membershipSnapshot": "2013-10-01",
+   "noTradeWilson95": [
+    9.866,
+    76.928
+   ],
+   "projectedTop120Buyers": 68.571,
+   "projectedTop120NoTrade": 34.286,
+   "sampledMembers": 7
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 1,
+   "NO_OPEN_MARKET_TRADE": 2,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2013-11-15",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5714,
+   "buyersWilson95": [
+    30.055,
+    101.014
+   ],
+   "measured": 7,
+   "membershipSnapshot": "2013-11-01",
+   "noTradeWilson95": [
+    9.866,
+    76.928
+   ],
+   "projectedTop120Buyers": 68.571,
+   "projectedTop120NoTrade": 34.286,
+   "sampledMembers": 7
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 1,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2013-12-13",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.4286,
+   "buyersWilson95": [
+    18.986,
+    89.945
+   ],
+   "measured": 7,
+   "membershipSnapshot": "2013-12-02",
+   "noTradeWilson95": [
+    3.082,
+    61.575
+   ],
+   "projectedTop120Buyers": 51.429,
+   "projectedTop120NoTrade": 17.143,
+   "sampledMembers": 7
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 1,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2014-01-17",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.4286,
+   "buyersWilson95": [
+    18.986,
+    89.945
+   ],
+   "measured": 7,
+   "membershipSnapshot": "2014-01-02",
+   "noTradeWilson95": [
+    18.986,
+    89.945
+   ],
+   "projectedTop120Buyers": 51.429,
+   "projectedTop120NoTrade": 51.429,
+   "sampledMembers": 7
+  },
+  {
+   "NET_BUYER": 2,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2014-02-21",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.2857,
+   "buyersWilson95": [
+    9.866,
+    76.928
+   ],
+   "measured": 7,
+   "membershipSnapshot": "2014-02-03",
+   "noTradeWilson95": [
+    18.986,
+    89.945
+   ],
+   "projectedTop120Buyers": 34.286,
+   "projectedTop120NoTrade": 51.429,
+   "sampledMembers": 7
+  },
+  {
+   "NET_BUYER": 2,
+   "NET_SELLER": 1,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2014-03-21",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.2857,
+   "buyersWilson95": [
+    9.866,
+    76.928
+   ],
+   "measured": 7,
+   "membershipSnapshot": "2014-03-03",
+   "noTradeWilson95": [
+    30.055,
+    101.014
+   ],
+   "projectedTop120Buyers": 34.286,
+   "projectedTop120NoTrade": 68.571,
+   "sampledMembers": 7
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2014-04-25",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.3333,
+   "buyersWilson95": [
+    14.47,
+    77.496
+   ],
+   "measured": 9,
+   "membershipSnapshot": "2014-04-01",
+   "noTradeWilson95": [
+    14.47,
+    77.496
+   ],
+   "projectedTop120Buyers": 40.0,
+   "projectedTop120NoTrade": 40.0,
+   "sampledMembers": 9
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 1,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2014-05-30",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5,
+   "buyersWilson95": [
+    25.826,
+    94.174
+   ],
+   "measured": 8,
+   "membershipSnapshot": "2014-05-02",
+   "noTradeWilson95": [
+    16.421,
+    83.311
+   ],
+   "projectedTop120Buyers": 60.0,
+   "projectedTop120NoTrade": 45.0,
+   "sampledMembers": 8
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 2,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2014-07-04",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.4444,
+   "buyersWilson95": [
+    22.653,
+    88.002
+   ],
+   "measured": 9,
+   "membershipSnapshot": "2014-07-01",
+   "noTradeWilson95": [
+    7.587,
+    65.689
+   ],
+   "projectedTop120Buyers": 53.333,
+   "projectedTop120NoTrade": 26.667,
+   "sampledMembers": 9
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 2,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2014-08-01",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.375,
+   "buyersWilson95": [
+    16.421,
+    83.311
+   ],
+   "measured": 8,
+   "membershipSnapshot": "2014-08-01",
+   "noTradeWilson95": [
+    8.578,
+    70.887
+   ],
+   "projectedTop120Buyers": 45.0,
+   "projectedTop120NoTrade": 30.0,
+   "sampledMembers": 8
+  },
+  {
+   "NET_BUYER": 2,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2014-08-29",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.25,
+   "buyersWilson95": [
+    8.578,
+    70.887
+   ],
+   "measured": 8,
+   "membershipSnapshot": "2014-08-01",
+   "noTradeWilson95": [
+    16.421,
+    83.311
+   ],
+   "projectedTop120Buyers": 30.0,
+   "projectedTop120NoTrade": 45.0,
+   "sampledMembers": 8
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2014-10-10",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.4444,
+   "buyersWilson95": [
+    22.653,
+    88.002
+   ],
+   "measured": 9,
+   "membershipSnapshot": "2014-10-01",
+   "noTradeWilson95": [
+    14.47,
+    77.496
+   ],
+   "projectedTop120Buyers": 53.333,
+   "projectedTop120NoTrade": 40.0,
+   "sampledMembers": 9
+  },
+  {
+   "NET_BUYER": 6,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 2,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2014-11-07",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.6,
+   "buyersWilson95": [
+    37.521,
+    99.818
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2014-11-03",
+   "noTradeWilson95": [
+    6.802,
+    61.181
+   ],
+   "projectedTop120Buyers": 72.0,
+   "projectedTop120NoTrade": 24.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 7,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 2,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2014-12-05",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.6364,
+   "buyersWilson95": [
+    42.456,
+    101.8
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2014-12-01",
+   "noTradeWilson95": [
+    6.164,
+    57.238
+   ],
+   "projectedTop120Buyers": 76.364,
+   "projectedTop120NoTrade": 21.818,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 8,
+   "NET_SELLER": 1,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2015-01-09",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.6667,
+   "buyersWilson95": [
+    46.875,
+    103.426
+   ],
+   "measured": 12,
+   "membershipSnapshot": "2015-01-02",
+   "noTradeWilson95": [
+    10.673,
+    63.877
+   ],
+   "projectedTop120Buyers": 80.0,
+   "projectedTop120NoTrade": 30.0,
+   "sampledMembers": 12
+  },
+  {
+   "NET_BUYER": 6,
+   "NET_SELLER": 1,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2015-02-06",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5455,
+   "buyersWilson95": [
+    33.611,
+    94.474
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2015-02-02",
+   "noTradeWilson95": [
+    18.2,
+    77.544
+   ],
+   "projectedTop120Buyers": 65.455,
+   "projectedTop120NoTrade": 43.636,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 5,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2015-03-13",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.3,
+   "buyersWilson95": [
+    12.935,
+    72.387
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2015-03-02",
+   "noTradeWilson95": [
+    28.391,
+    91.609
+   ],
+   "projectedTop120Buyers": 36.0,
+   "projectedTop120NoTrade": 60.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 5,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2015-04-17",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.4167,
+   "buyersWilson95": [
+    23.191,
+    81.659
+   ],
+   "measured": 12,
+   "membershipSnapshot": "2015-04-01",
+   "noTradeWilson95": [
+    16.574,
+    73.125
+   ],
+   "projectedTop120Buyers": 50.0,
+   "projectedTop120NoTrade": 40.0,
+   "sampledMembers": 12
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2015-05-15",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.3636,
+   "buyersWilson95": [
+    18.2,
+    77.544
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2015-05-04",
+   "noTradeWilson95": [
+    18.2,
+    77.544
+   ],
+   "projectedTop120Buyers": 43.636,
+   "projectedTop120NoTrade": 43.636,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2015-06-19",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.3636,
+   "buyersWilson95": [
+    18.2,
+    77.544
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2015-06-01",
+   "noTradeWilson95": [
+    18.2,
+    77.544
+   ],
+   "projectedTop120Buyers": 43.636,
+   "projectedTop120NoTrade": 43.636,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 4,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2015-07-17",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.2727,
+   "buyersWilson95": [
+    11.695,
+    67.877
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2015-07-01",
+   "noTradeWilson95": [
+    18.2,
+    77.544
+   ],
+   "projectedTop120Buyers": 32.727,
+   "projectedTop120NoTrade": 43.636,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 4,
+   "NO_OPEN_MARKET_TRADE": 5,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2015-08-21",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.25,
+   "buyersWilson95": [
+    10.673,
+    63.877
+   ],
+   "measured": 12,
+   "membershipSnapshot": "2015-08-03",
+   "noTradeWilson95": [
+    23.191,
+    81.659
+   ],
+   "projectedTop120Buyers": 30.0,
+   "projectedTop120NoTrade": 50.0,
+   "sampledMembers": 12
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2015-09-18",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.3636,
+   "buyersWilson95": [
+    18.2,
+    77.544
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2015-09-01",
+   "noTradeWilson95": [
+    18.2,
+    77.544
+   ],
+   "projectedTop120Buyers": 43.636,
+   "projectedTop120NoTrade": 43.636,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 4,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2015-10-23",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.3636,
+   "buyersWilson95": [
+    18.2,
+    77.544
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2015-10-01",
+   "noTradeWilson95": [
+    11.695,
+    67.877
+   ],
+   "projectedTop120Buyers": 43.636,
+   "projectedTop120NoTrade": 32.727,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 4,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2015-11-20",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.3636,
+   "buyersWilson95": [
+    18.2,
+    77.544
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2015-11-02",
+   "noTradeWilson95": [
+    11.695,
+    67.877
+   ],
+   "projectedTop120Buyers": 43.636,
+   "projectedTop120NoTrade": 32.727,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 2,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 6,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2015-12-24",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.1818,
+   "buyersWilson95": [
+    6.164,
+    57.238
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2015-12-01",
+   "noTradeWilson95": [
+    33.611,
+    94.474
+   ],
+   "projectedTop120Buyers": 21.818,
+   "projectedTop120NoTrade": 65.455,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2016-01-22",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.3636,
+   "buyersWilson95": [
+    18.2,
+    77.544
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2016-01-04",
+   "noTradeWilson95": [
+    18.2,
+    77.544
+   ],
+   "projectedTop120Buyers": 43.636,
+   "projectedTop120NoTrade": 43.636,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2016-03-04",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.3636,
+   "buyersWilson95": [
+    18.2,
+    77.544
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2016-03-02",
+   "noTradeWilson95": [
+    18.2,
+    77.544
+   ],
+   "projectedTop120Buyers": 43.636,
+   "projectedTop120NoTrade": 43.636,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 6,
+   "NO_OPEN_MARKET_TRADE": 2,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2016-04-01",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.2727,
+   "buyersWilson95": [
+    11.695,
+    67.877
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2016-04-01",
+   "noTradeWilson95": [
+    6.164,
+    57.238
+   ],
+   "projectedTop120Buyers": 32.727,
+   "projectedTop120NoTrade": 21.818,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 5,
+   "NO_OPEN_MARKET_TRADE": 2,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2016-05-06",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.3636,
+   "buyersWilson95": [
+    18.2,
+    77.544
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2016-05-02",
+   "noTradeWilson95": [
+    6.164,
+    57.238
+   ],
+   "projectedTop120Buyers": 43.636,
+   "projectedTop120NoTrade": 21.818,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2016-06-03",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.3636,
+   "buyersWilson95": [
+    18.2,
+    77.544
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2016-06-01",
+   "noTradeWilson95": [
+    18.2,
+    77.544
+   ],
+   "projectedTop120Buyers": 43.636,
+   "projectedTop120NoTrade": 43.636,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 4,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2016-07-08",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.3,
+   "buyersWilson95": [
+    12.935,
+    72.387
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2016-07-01",
+   "noTradeWilson95": [
+    12.935,
+    72.387
+   ],
+   "projectedTop120Buyers": 36.0,
+   "projectedTop120NoTrade": 36.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 5,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2016-08-05",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.3333,
+   "buyersWilson95": [
+    16.574,
+    73.125
+   ],
+   "measured": 12,
+   "membershipSnapshot": "2016-08-01",
+   "noTradeWilson95": [
+    23.191,
+    81.659
+   ],
+   "projectedTop120Buyers": 40.0,
+   "projectedTop120NoTrade": 50.0,
+   "sampledMembers": 12
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 5,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2016-09-09",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.3636,
+   "buyersWilson95": [
+    18.2,
+    77.544
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2016-09-01",
+   "noTradeWilson95": [
+    25.526,
+    86.389
+   ],
+   "projectedTop120Buyers": 43.636,
+   "projectedTop120NoTrade": 54.545,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 0,
+   "NO_OPEN_MARKET_TRADE": 7,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2016-10-14",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.3636,
+   "buyersWilson95": [
+    18.2,
+    77.544
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2016-10-04",
+   "noTradeWilson95": [
+    42.456,
+    101.8
+   ],
+   "projectedTop120Buyers": 43.636,
+   "projectedTop120NoTrade": 76.364,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 6,
+   "NET_SELLER": 1,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2016-11-11",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5455,
+   "buyersWilson95": [
+    33.611,
+    94.474
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2016-11-01",
+   "noTradeWilson95": [
+    18.2,
+    77.544
+   ],
+   "projectedTop120Buyers": 65.455,
+   "projectedTop120NoTrade": 43.636,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 6,
+   "NET_SELLER": 1,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2016-12-09",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.6,
+   "buyersWilson95": [
+    37.521,
+    99.818
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2016-12-01",
+   "noTradeWilson95": [
+    12.935,
+    72.387
+   ],
+   "projectedTop120Buyers": 72.0,
+   "projectedTop120NoTrade": 36.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2017-01-13",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.4,
+   "buyersWilson95": [
+    20.182,
+    82.479
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2017-01-02",
+   "noTradeWilson95": [
+    12.935,
+    72.387
+   ],
+   "projectedTop120Buyers": 48.0,
+   "projectedTop120NoTrade": 36.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2017-02-17",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.3,
+   "buyersWilson95": [
+    12.935,
+    72.387
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2017-02-01",
+   "noTradeWilson95": [
+    20.182,
+    82.479
+   ],
+   "projectedTop120Buyers": 36.0,
+   "projectedTop120NoTrade": 48.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2017-03-17",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.4,
+   "buyersWilson95": [
+    20.182,
+    82.479
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2017-03-02",
+   "noTradeWilson95": [
+    12.935,
+    72.387
+   ],
+   "projectedTop120Buyers": 48.0,
+   "projectedTop120NoTrade": 36.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 7,
+   "NET_SELLER": 1,
+   "NO_OPEN_MARKET_TRADE": 1,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 1,
+   "anchor": "2017-04-21",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.7778,
+   "buyersWilson95": [
+    54.311,
+    112.413
+   ],
+   "measured": 9,
+   "membershipSnapshot": "2017-04-03",
+   "noTradeWilson95": [
+    2.387,
+    52.2
+   ],
+   "projectedTop120Buyers": 93.333,
+   "projectedTop120NoTrade": 13.333,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 5,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 1,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 1,
+   "anchor": "2017-05-26",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5556,
+   "buyersWilson95": [
+    31.998,
+    97.347
+   ],
+   "measured": 9,
+   "membershipSnapshot": "2017-05-02",
+   "noTradeWilson95": [
+    2.387,
+    52.2
+   ],
+   "projectedTop120Buyers": 66.667,
+   "projectedTop120NoTrade": 13.333,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 4,
+   "NO_OPEN_MARKET_TRADE": 2,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 1,
+   "anchor": "2017-06-23",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.4,
+   "buyersWilson95": [
+    20.182,
+    82.479
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2017-06-01",
+   "noTradeWilson95": [
+    6.802,
+    61.181
+   ],
+   "projectedTop120Buyers": 48.0,
+   "projectedTop120NoTrade": 24.0,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 5,
+   "NO_OPEN_MARKET_TRADE": 2,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 1,
+   "anchor": "2017-07-28",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.3,
+   "buyersWilson95": [
+    12.935,
+    72.387
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2017-07-03",
+   "noTradeWilson95": [
+    6.802,
+    61.181
+   ],
+   "projectedTop120Buyers": 36.0,
+   "projectedTop120NoTrade": 24.0,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 4,
+   "NO_OPEN_MARKET_TRADE": 1,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 1,
+   "anchor": "2017-08-25",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.4444,
+   "buyersWilson95": [
+    22.653,
+    88.002
+   ],
+   "measured": 9,
+   "membershipSnapshot": "2017-08-01",
+   "noTradeWilson95": [
+    2.387,
+    52.2
+   ],
+   "projectedTop120Buyers": 53.333,
+   "projectedTop120NoTrade": 13.333,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 5,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2017-10-06",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.4545,
+   "buyersWilson95": [
+    25.526,
+    86.389
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2017-09-01",
+   "noTradeWilson95": [
+    11.695,
+    67.877
+   ],
+   "projectedTop120Buyers": 54.545,
+   "projectedTop120NoTrade": 32.727,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 1,
+   "NO_OPEN_MARKET_TRADE": 5,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2017-11-03",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.4,
+   "buyersWilson95": [
+    20.182,
+    82.479
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2017-11-01",
+   "noTradeWilson95": [
+    28.391,
+    91.609
+   ],
+   "projectedTop120Buyers": 48.0,
+   "projectedTop120NoTrade": 60.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 1,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 6,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2017-12-01",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.1,
+   "buyersWilson95": [
+    2.145,
+    48.498
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2017-12-01",
+   "noTradeWilson95": [
+    37.521,
+    99.818
+   ],
+   "projectedTop120Buyers": 12.0,
+   "projectedTop120NoTrade": 72.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 2,
+   "NET_SELLER": 6,
+   "NO_OPEN_MARKET_TRADE": 1,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2018-01-05",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.2222,
+   "buyersWilson95": [
+    7.587,
+    65.689
+   ],
+   "measured": 9,
+   "membershipSnapshot": "2018-01-02",
+   "noTradeWilson95": [
+    2.387,
+    52.2
+   ],
+   "projectedTop120Buyers": 26.667,
+   "projectedTop120NoTrade": 13.333,
+   "sampledMembers": 9
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 6,
+   "NO_OPEN_MARKET_TRADE": 1,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2018-02-09",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.3,
+   "buyersWilson95": [
+    12.935,
+    72.387
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2018-02-01",
+   "noTradeWilson95": [
+    2.145,
+    48.498
+   ],
+   "projectedTop120Buyers": 36.0,
+   "projectedTop120NoTrade": 12.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 6,
+   "NO_OPEN_MARKET_TRADE": 0,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2018-03-16",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.3333,
+   "buyersWilson95": [
+    14.47,
+    77.496
+   ],
+   "measured": 9,
+   "membershipSnapshot": "2018-03-02",
+   "noTradeWilson95": [
+    0.0,
+    35.897
+   ],
+   "projectedTop120Buyers": 40.0,
+   "projectedTop120NoTrade": 0.0,
+   "sampledMembers": 9
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 4,
+   "NO_OPEN_MARKET_TRADE": 1,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2018-04-13",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.4444,
+   "buyersWilson95": [
+    22.653,
+    88.002
+   ],
+   "measured": 9,
+   "membershipSnapshot": "2018-04-02",
+   "noTradeWilson95": [
+    2.387,
+    52.2
+   ],
+   "projectedTop120Buyers": 53.333,
+   "projectedTop120NoTrade": 13.333,
+   "sampledMembers": 9
+  },
+  {
+   "NET_BUYER": 5,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 1,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2018-05-18",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5556,
+   "buyersWilson95": [
+    31.998,
+    97.347
+   ],
+   "measured": 9,
+   "membershipSnapshot": "2018-05-02",
+   "noTradeWilson95": [
+    2.387,
+    52.2
+   ],
+   "projectedTop120Buyers": 66.667,
+   "projectedTop120NoTrade": 13.333,
+   "sampledMembers": 9
+  },
+  {
+   "NET_BUYER": 5,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 2,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2018-06-22",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5556,
+   "buyersWilson95": [
+    31.998,
+    97.347
+   ],
+   "measured": 9,
+   "membershipSnapshot": "2018-06-01",
+   "noTradeWilson95": [
+    7.587,
+    65.689
+   ],
+   "projectedTop120Buyers": 66.667,
+   "projectedTop120NoTrade": 26.667,
+   "sampledMembers": 9
+  },
+  {
+   "NET_BUYER": 5,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2018-07-20",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5,
+   "buyersWilson95": [
+    28.391,
+    91.609
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2018-07-02",
+   "noTradeWilson95": [
+    12.935,
+    72.387
+   ],
+   "projectedTop120Buyers": 60.0,
+   "projectedTop120NoTrade": 36.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 4,
+   "NO_OPEN_MARKET_TRADE": 2,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2018-08-17",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.4,
+   "buyersWilson95": [
+    20.182,
+    82.479
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2018-08-01",
+   "noTradeWilson95": [
+    6.802,
+    61.181
+   ],
+   "projectedTop120Buyers": 48.0,
+   "projectedTop120NoTrade": 24.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 4,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2018-09-21",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.3,
+   "buyersWilson95": [
+    12.935,
+    72.387
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2018-09-03",
+   "noTradeWilson95": [
+    12.935,
+    72.387
+   ],
+   "projectedTop120Buyers": 36.0,
+   "projectedTop120NoTrade": 36.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2018-10-26",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.3333,
+   "buyersWilson95": [
+    14.47,
+    77.496
+   ],
+   "measured": 9,
+   "membershipSnapshot": "2018-10-01",
+   "noTradeWilson95": [
+    14.47,
+    77.496
+   ],
+   "projectedTop120Buyers": 40.0,
+   "projectedTop120NoTrade": 40.0,
+   "sampledMembers": 9
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2018-11-23",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.3333,
+   "buyersWilson95": [
+    14.47,
+    77.496
+   ],
+   "measured": 9,
+   "membershipSnapshot": "2018-11-01",
+   "noTradeWilson95": [
+    14.47,
+    77.496
+   ],
+   "projectedTop120Buyers": 40.0,
+   "projectedTop120NoTrade": 40.0,
+   "sampledMembers": 9
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 5,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2018-12-28",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.3,
+   "buyersWilson95": [
+    12.935,
+    72.387
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2018-12-03",
+   "noTradeWilson95": [
+    28.391,
+    91.609
+   ],
+   "projectedTop120Buyers": 36.0,
+   "projectedTop120NoTrade": 60.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 2,
+   "NET_SELLER": 4,
+   "NO_OPEN_MARKET_TRADE": 5,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2019-02-01",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.1818,
+   "buyersWilson95": [
+    6.164,
+    57.238
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2019-02-01",
+   "noTradeWilson95": [
+    25.526,
+    86.389
+   ],
+   "projectedTop120Buyers": 21.818,
+   "projectedTop120NoTrade": 54.545,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 4,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2019-03-08",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.3,
+   "buyersWilson95": [
+    12.935,
+    72.387
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2019-03-04",
+   "noTradeWilson95": [
+    12.935,
+    72.387
+   ],
+   "projectedTop120Buyers": 36.0,
+   "projectedTop120NoTrade": 36.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 5,
+   "NO_OPEN_MARKET_TRADE": 2,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2019-04-05",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.3,
+   "buyersWilson95": [
+    12.935,
+    72.387
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2019-04-01",
+   "noTradeWilson95": [
+    6.802,
+    61.181
+   ],
+   "projectedTop120Buyers": 36.0,
+   "projectedTop120NoTrade": 24.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 6,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2019-05-10",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5455,
+   "buyersWilson95": [
+    33.611,
+    94.474
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2019-05-02",
+   "noTradeWilson95": [
+    11.695,
+    67.877
+   ],
+   "projectedTop120Buyers": 65.455,
+   "projectedTop120NoTrade": 32.727,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 6,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2019-06-14",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5455,
+   "buyersWilson95": [
+    33.611,
+    94.474
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2019-06-03",
+   "noTradeWilson95": [
+    11.695,
+    67.877
+   ],
+   "projectedTop120Buyers": 65.455,
+   "projectedTop120NoTrade": 32.727,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 5,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2019-07-12",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5,
+   "buyersWilson95": [
+    28.391,
+    91.609
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2019-07-01",
+   "noTradeWilson95": [
+    12.935,
+    72.387
+   ],
+   "projectedTop120Buyers": 60.0,
+   "projectedTop120NoTrade": 36.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2019-08-09",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.4,
+   "buyersWilson95": [
+    20.182,
+    82.479
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2019-08-01",
+   "noTradeWilson95": [
+    12.935,
+    72.387
+   ],
+   "projectedTop120Buyers": 48.0,
+   "projectedTop120NoTrade": 36.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 4,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2019-09-13",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.2727,
+   "buyersWilson95": [
+    11.695,
+    67.877
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2019-09-02",
+   "noTradeWilson95": [
+    18.2,
+    77.544
+   ],
+   "projectedTop120Buyers": 32.727,
+   "projectedTop120NoTrade": 43.636,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 6,
+   "NET_SELLER": 0,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2019-10-18",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.6,
+   "buyersWilson95": [
+    37.521,
+    99.818
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2019-10-01",
+   "noTradeWilson95": [
+    20.182,
+    82.479
+   ],
+   "projectedTop120Buyers": 72.0,
+   "projectedTop120NoTrade": 48.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 7,
+   "NET_SELLER": 0,
+   "NO_OPEN_MARKET_TRADE": 5,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2019-11-15",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.5833,
+   "buyersWilson95": [
+    38.341,
+    96.809
+   ],
+   "measured": 12,
+   "membershipSnapshot": "2019-11-01",
+   "noTradeWilson95": [
+    23.191,
+    81.659
+   ],
+   "projectedTop120Buyers": 70.0,
+   "projectedTop120NoTrade": 50.0,
+   "sampledMembers": 12
+  },
+  {
+   "NET_BUYER": 7,
+   "NET_SELLER": 1,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2019-12-13",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5833,
+   "buyersWilson95": [
+    38.341,
+    96.809
+   ],
+   "measured": 12,
+   "membershipSnapshot": "2019-12-02",
+   "noTradeWilson95": [
+    16.574,
+    73.125
+   ],
+   "projectedTop120Buyers": 70.0,
+   "projectedTop120NoTrade": 40.0,
+   "sampledMembers": 12
+  },
+  {
+   "NET_BUYER": 6,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2020-01-24",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5,
+   "buyersWilson95": [
+    30.454,
+    89.546
+   ],
+   "measured": 12,
+   "membershipSnapshot": "2020-01-02",
+   "noTradeWilson95": [
+    10.673,
+    63.877
+   ],
+   "projectedTop120Buyers": 60.0,
+   "projectedTop120NoTrade": 30.0,
+   "sampledMembers": 12
+  },
+  {
+   "NET_BUYER": 9,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 1,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2020-02-21",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.6923,
+   "buyersWilson95": [
+    50.843,
+    104.783
+   ],
+   "measured": 13,
+   "membershipSnapshot": "2020-02-03",
+   "noTradeWilson95": [
+    1.645,
+    39.977
+   ],
+   "projectedTop120Buyers": 83.077,
+   "projectedTop120NoTrade": 9.231,
+   "sampledMembers": 13
+  },
+  {
+   "NET_BUYER": 9,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 2,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2020-03-20",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.6923,
+   "buyersWilson95": [
+    50.843,
+    104.783
+   ],
+   "measured": 13,
+   "membershipSnapshot": "2020-03-02",
+   "noTradeWilson95": [
+    5.191,
+    50.682
+   ],
+   "projectedTop120Buyers": 83.077,
+   "projectedTop120NoTrade": 18.462,
+   "sampledMembers": 13
+  },
+  {
+   "NET_BUYER": 7,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2020-04-24",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5385,
+   "buyersWilson95": [
+    34.973,
+    92.153
+   ],
+   "measured": 13,
+   "membershipSnapshot": "2020-04-01",
+   "noTradeWilson95": [
+    9.815,
+    60.308
+   ],
+   "projectedTop120Buyers": 64.615,
+   "projectedTop120NoTrade": 27.692,
+   "sampledMembers": 13
+  },
+  {
+   "NET_BUYER": 7,
+   "NET_SELLER": 4,
+   "NO_OPEN_MARKET_TRADE": 2,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2020-05-29",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5385,
+   "buyersWilson95": [
+    34.973,
+    92.153
+   ],
+   "measured": 13,
+   "membershipSnapshot": "2020-05-04",
+   "noTradeWilson95": [
+    5.191,
+    50.682
+   ],
+   "projectedTop120Buyers": 64.615,
+   "projectedTop120NoTrade": 18.462,
+   "sampledMembers": 13
+  },
+  {
+   "NET_BUYER": 8,
+   "NET_SELLER": 4,
+   "NO_OPEN_MARKET_TRADE": 1,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2020-06-26",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.6154,
+   "buyersWilson95": [
+    42.627,
+    98.748
+   ],
+   "measured": 13,
+   "membershipSnapshot": "2020-06-01",
+   "noTradeWilson95": [
+    1.645,
+    39.977
+   ],
+   "projectedTop120Buyers": 73.846,
+   "projectedTop120NoTrade": 9.231,
+   "sampledMembers": 13
+  },
+  {
+   "NET_BUYER": 7,
+   "NET_SELLER": 4,
+   "NO_OPEN_MARKET_TRADE": 1,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2020-07-31",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5833,
+   "buyersWilson95": [
+    38.341,
+    96.809
+   ],
+   "measured": 12,
+   "membershipSnapshot": "2020-07-01",
+   "noTradeWilson95": [
+    1.784,
+    42.466
+   ],
+   "projectedTop120Buyers": 70.0,
+   "projectedTop120NoTrade": 10.0,
+   "sampledMembers": 12
+  },
+  {
+   "NET_BUYER": 7,
+   "NET_SELLER": 4,
+   "NO_OPEN_MARKET_TRADE": 1,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2020-08-28",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5833,
+   "buyersWilson95": [
+    38.341,
+    96.809
+   ],
+   "measured": 12,
+   "membershipSnapshot": "2020-08-03",
+   "noTradeWilson95": [
+    1.784,
+    42.466
+   ],
+   "projectedTop120Buyers": 70.0,
+   "projectedTop120NoTrade": 10.0,
+   "sampledMembers": 12
+  },
+  {
+   "NET_BUYER": 7,
+   "NET_SELLER": 5,
+   "NO_OPEN_MARKET_TRADE": 1,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2020-10-02",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5385,
+   "buyersWilson95": [
+    34.973,
+    92.153
+   ],
+   "measured": 13,
+   "membershipSnapshot": "2020-09-01",
+   "noTradeWilson95": [
+    1.645,
+    39.977
+   ],
+   "projectedTop120Buyers": 64.615,
+   "projectedTop120NoTrade": 9.231,
+   "sampledMembers": 13
+  },
+  {
+   "NET_BUYER": 1,
+   "NET_SELLER": 11,
+   "NO_OPEN_MARKET_TRADE": 1,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2020-10-30",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.0769,
+   "buyersWilson95": [
+    1.645,
+    39.977
+   ],
+   "measured": 13,
+   "membershipSnapshot": "2020-10-05",
+   "noTradeWilson95": [
+    1.645,
+    39.977
+   ],
+   "projectedTop120Buyers": 9.231,
+   "projectedTop120NoTrade": 9.231,
+   "sampledMembers": 13
+  },
+  {
+   "NET_BUYER": 0,
+   "NET_SELLER": 12,
+   "NO_OPEN_MARKET_TRADE": 1,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2020-12-04",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.0,
+   "buyersWilson95": [
+    0.0,
+    27.371
+   ],
+   "measured": 13,
+   "membershipSnapshot": "2020-12-01",
+   "noTradeWilson95": [
+    1.645,
+    39.977
+   ],
+   "projectedTop120Buyers": 0.0,
+   "projectedTop120NoTrade": 9.231,
+   "sampledMembers": 13
+  },
+  {
+   "NET_BUYER": 1,
+   "NET_SELLER": 10,
+   "NO_OPEN_MARKET_TRADE": 1,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2021-01-08",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.0833,
+   "buyersWilson95": [
+    1.784,
+    42.466
+   ],
+   "measured": 12,
+   "membershipSnapshot": "2021-01-04",
+   "noTradeWilson95": [
+    1.784,
+    42.466
+   ],
+   "projectedTop120Buyers": 10.0,
+   "projectedTop120NoTrade": 10.0,
+   "sampledMembers": 12
+  },
+  {
+   "NET_BUYER": 2,
+   "NET_SELLER": 8,
+   "NO_OPEN_MARKET_TRADE": 1,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2021-02-05",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.1818,
+   "buyersWilson95": [
+    6.164,
+    57.238
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2021-02-01",
+   "noTradeWilson95": [
+    1.948,
+    45.283
+   ],
+   "projectedTop120Buyers": 21.818,
+   "projectedTop120NoTrade": 10.909,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 2,
+   "NET_SELLER": 8,
+   "NO_OPEN_MARKET_TRADE": 2,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2021-03-12",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.1667,
+   "buyersWilson95": [
+    5.636,
+    53.764
+   ],
+   "measured": 12,
+   "membershipSnapshot": "2021-03-02",
+   "noTradeWilson95": [
+    5.636,
+    53.764
+   ],
+   "projectedTop120Buyers": 20.0,
+   "projectedTop120NoTrade": 20.0,
+   "sampledMembers": 12
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 6,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2021-04-09",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.25,
+   "buyersWilson95": [
+    10.673,
+    63.877
+   ],
+   "measured": 12,
+   "membershipSnapshot": "2021-04-01",
+   "noTradeWilson95": [
+    10.673,
+    63.877
+   ],
+   "projectedTop120Buyers": 30.0,
+   "projectedTop120NoTrade": 30.0,
+   "sampledMembers": 12
+  },
+  {
+   "NET_BUYER": 2,
+   "NET_SELLER": 5,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2021-05-14",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.1818,
+   "buyersWilson95": [
+    6.164,
+    57.238
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2021-05-03",
+   "noTradeWilson95": [
+    18.2,
+    77.544
+   ],
+   "projectedTop120Buyers": 21.818,
+   "projectedTop120NoTrade": 43.636,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 1,
+   "NET_SELLER": 6,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2021-06-11",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.1,
+   "buyersWilson95": [
+    2.145,
+    48.498
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2021-06-01",
+   "noTradeWilson95": [
+    12.935,
+    72.387
+   ],
+   "projectedTop120Buyers": 12.0,
+   "projectedTop120NoTrade": 36.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 1,
+   "NET_SELLER": 7,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2021-07-16",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.0909,
+   "buyersWilson95": [
+    1.948,
+    45.283
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2021-07-01",
+   "noTradeWilson95": [
+    11.695,
+    67.877
+   ],
+   "projectedTop120Buyers": 10.909,
+   "projectedTop120NoTrade": 32.727,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 2,
+   "NET_SELLER": 5,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2021-08-13",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.1818,
+   "buyersWilson95": [
+    6.164,
+    57.238
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2021-08-02",
+   "noTradeWilson95": [
+    18.2,
+    77.544
+   ],
+   "projectedTop120Buyers": 21.818,
+   "projectedTop120NoTrade": 43.636,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 1,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 6,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2021-09-17",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.1,
+   "buyersWilson95": [
+    2.145,
+    48.498
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2021-09-01",
+   "noTradeWilson95": [
+    37.521,
+    99.818
+   ],
+   "projectedTop120Buyers": 12.0,
+   "projectedTop120NoTrade": 72.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 2,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 5,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2021-10-22",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.2,
+   "buyersWilson95": [
+    6.802,
+    61.181
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2021-10-01",
+   "noTradeWilson95": [
+    28.391,
+    91.609
+   ],
+   "projectedTop120Buyers": 24.0,
+   "projectedTop120NoTrade": 60.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 2,
+   "NET_SELLER": 4,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2021-11-19",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.2,
+   "buyersWilson95": [
+    6.802,
+    61.181
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2021-11-01",
+   "noTradeWilson95": [
+    20.182,
+    82.479
+   ],
+   "projectedTop120Buyers": 24.0,
+   "projectedTop120NoTrade": 48.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 2,
+   "NET_SELLER": 4,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2021-12-24",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.2,
+   "buyersWilson95": [
+    6.802,
+    61.181
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2021-12-01",
+   "noTradeWilson95": [
+    20.182,
+    82.479
+   ],
+   "projectedTop120Buyers": 24.0,
+   "projectedTop120NoTrade": 48.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 1,
+   "NET_SELLER": 4,
+   "NO_OPEN_MARKET_TRADE": 5,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2022-01-21",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.1,
+   "buyersWilson95": [
+    2.145,
+    48.498
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2022-01-03",
+   "noTradeWilson95": [
+    28.391,
+    91.609
+   ],
+   "projectedTop120Buyers": 12.0,
+   "projectedTop120NoTrade": 60.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 2,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 6,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2022-02-25",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.2,
+   "buyersWilson95": [
+    6.802,
+    61.181
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2022-02-03",
+   "noTradeWilson95": [
+    37.521,
+    99.818
+   ],
+   "projectedTop120Buyers": 24.0,
+   "projectedTop120NoTrade": 72.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 2,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 5,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2022-04-01",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.2,
+   "buyersWilson95": [
+    6.802,
+    61.181
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2022-04-01",
+   "noTradeWilson95": [
+    28.391,
+    91.609
+   ],
+   "projectedTop120Buyers": 24.0,
+   "projectedTop120NoTrade": 60.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2022-04-29",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.4,
+   "buyersWilson95": [
+    20.182,
+    82.479
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2022-04-01",
+   "noTradeWilson95": [
+    20.182,
+    82.479
+   ],
+   "projectedTop120Buyers": 48.0,
+   "projectedTop120NoTrade": 48.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2022-06-03",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.4,
+   "buyersWilson95": [
+    20.182,
+    82.479
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2022-06-02",
+   "noTradeWilson95": [
+    20.182,
+    82.479
+   ],
+   "projectedTop120Buyers": 48.0,
+   "projectedTop120NoTrade": 48.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 5,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2022-07-08",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.3,
+   "buyersWilson95": [
+    12.935,
+    72.387
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2022-07-01",
+   "noTradeWilson95": [
+    28.391,
+    91.609
+   ],
+   "projectedTop120Buyers": 36.0,
+   "projectedTop120NoTrade": 60.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 1,
+   "NO_OPEN_MARKET_TRADE": 6,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2022-08-05",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.3,
+   "buyersWilson95": [
+    12.935,
+    72.387
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2022-08-01",
+   "noTradeWilson95": [
+    37.521,
+    99.818
+   ],
+   "projectedTop120Buyers": 36.0,
+   "projectedTop120NoTrade": 72.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 5,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2022-09-09",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.3,
+   "buyersWilson95": [
+    12.935,
+    72.387
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2022-09-01",
+   "noTradeWilson95": [
+    28.391,
+    91.609
+   ],
+   "projectedTop120Buyers": 36.0,
+   "projectedTop120NoTrade": 60.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2022-10-14",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.3333,
+   "buyersWilson95": [
+    14.47,
+    77.496
+   ],
+   "measured": 9,
+   "membershipSnapshot": "2022-10-04",
+   "noTradeWilson95": [
+    22.653,
+    88.002
+   ],
+   "projectedTop120Buyers": 40.0,
+   "projectedTop120NoTrade": 53.333,
+   "sampledMembers": 9
+  },
+  {
+   "NET_BUYER": 5,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 2,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2022-11-11",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5556,
+   "buyersWilson95": [
+    31.998,
+    97.347
+   ],
+   "measured": 9,
+   "membershipSnapshot": "2022-11-01",
+   "noTradeWilson95": [
+    7.587,
+    65.689
+   ],
+   "projectedTop120Buyers": 66.667,
+   "projectedTop120NoTrade": 26.667,
+   "sampledMembers": 9
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 1,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2022-12-09",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.375,
+   "buyersWilson95": [
+    16.421,
+    83.311
+   ],
+   "measured": 8,
+   "membershipSnapshot": "2022-12-01",
+   "noTradeWilson95": [
+    25.826,
+    94.174
+   ],
+   "projectedTop120Buyers": 45.0,
+   "projectedTop120NoTrade": 60.0,
+   "sampledMembers": 8
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 2,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2023-01-13",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.375,
+   "buyersWilson95": [
+    16.421,
+    83.311
+   ],
+   "measured": 8,
+   "membershipSnapshot": "2023-01-02",
+   "noTradeWilson95": [
+    8.578,
+    70.887
+   ],
+   "projectedTop120Buyers": 45.0,
+   "projectedTop120NoTrade": 30.0,
+   "sampledMembers": 8
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 4,
+   "NO_OPEN_MARKET_TRADE": 2,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2023-02-17",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.4,
+   "buyersWilson95": [
+    20.182,
+    82.479
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2023-02-01",
+   "noTradeWilson95": [
+    6.802,
+    61.181
+   ],
+   "projectedTop120Buyers": 48.0,
+   "projectedTop120NoTrade": 24.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 5,
+   "NET_SELLER": 4,
+   "NO_OPEN_MARKET_TRADE": 2,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2023-03-17",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.4545,
+   "buyersWilson95": [
+    25.526,
+    86.389
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2023-03-02",
+   "noTradeWilson95": [
+    6.164,
+    57.238
+   ],
+   "projectedTop120Buyers": 54.545,
+   "projectedTop120NoTrade": 21.818,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 5,
+   "NET_SELLER": 0,
+   "NO_OPEN_MARKET_TRADE": 5,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2023-04-21",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.5,
+   "buyersWilson95": [
+    28.391,
+    91.609
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2023-04-03",
+   "noTradeWilson95": [
+    28.391,
+    91.609
+   ],
+   "projectedTop120Buyers": 60.0,
+   "projectedTop120NoTrade": 60.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 6,
+   "NET_SELLER": 0,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2023-05-19",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.6,
+   "buyersWilson95": [
+    37.521,
+    99.818
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2023-05-02",
+   "noTradeWilson95": [
+    20.182,
+    82.479
+   ],
+   "projectedTop120Buyers": 72.0,
+   "projectedTop120NoTrade": 48.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 5,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2023-06-23",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.3,
+   "buyersWilson95": [
+    12.935,
+    72.387
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2023-06-01",
+   "noTradeWilson95": [
+    28.391,
+    91.609
+   ],
+   "projectedTop120Buyers": 36.0,
+   "projectedTop120NoTrade": 60.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 6,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2023-07-28",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5455,
+   "buyersWilson95": [
+    33.611,
+    94.474
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2023-07-03",
+   "noTradeWilson95": [
+    11.695,
+    67.877
+   ],
+   "projectedTop120Buyers": 65.455,
+   "projectedTop120NoTrade": 32.727,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 5,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2023-08-25",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.4545,
+   "buyersWilson95": [
+    25.526,
+    86.389
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2023-08-01",
+   "noTradeWilson95": [
+    18.2,
+    77.544
+   ],
+   "projectedTop120Buyers": 54.545,
+   "projectedTop120NoTrade": 43.636,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 5,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2023-09-29",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.4545,
+   "buyersWilson95": [
+    25.526,
+    86.389
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2023-09-01",
+   "noTradeWilson95": [
+    18.2,
+    77.544
+   ],
+   "projectedTop120Buyers": 54.545,
+   "projectedTop120NoTrade": 43.636,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 6,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2023-11-03",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.5455,
+   "buyersWilson95": [
+    33.611,
+    94.474
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2023-11-01",
+   "noTradeWilson95": [
+    11.695,
+    67.877
+   ],
+   "projectedTop120Buyers": 65.455,
+   "projectedTop120NoTrade": 32.727,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 5,
+   "NET_SELLER": 1,
+   "NO_OPEN_MARKET_TRADE": 5,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2023-12-01",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.4545,
+   "buyersWilson95": [
+    25.526,
+    86.389
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2023-12-01",
+   "noTradeWilson95": [
+    25.526,
+    86.389
+   ],
+   "projectedTop120Buyers": 54.545,
+   "projectedTop120NoTrade": 54.545,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 1,
+   "NO_OPEN_MARKET_TRADE": 5,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2024-01-05",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.4,
+   "buyersWilson95": [
+    20.182,
+    82.479
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2024-01-02",
+   "noTradeWilson95": [
+    28.391,
+    91.609
+   ],
+   "projectedTop120Buyers": 48.0,
+   "projectedTop120NoTrade": 60.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 1,
+   "NO_OPEN_MARKET_TRADE": 6,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2024-02-02",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.3636,
+   "buyersWilson95": [
+    18.2,
+    77.544
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2024-02-01",
+   "noTradeWilson95": [
+    33.611,
+    94.474
+   ],
+   "projectedTop120Buyers": 43.636,
+   "projectedTop120NoTrade": 65.455,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 5,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2024-03-08",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.3636,
+   "buyersWilson95": [
+    18.2,
+    77.544
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2024-03-04",
+   "noTradeWilson95": [
+    25.526,
+    86.389
+   ],
+   "projectedTop120Buyers": 43.636,
+   "projectedTop120NoTrade": 54.545,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 1,
+   "NET_SELLER": 1,
+   "NO_OPEN_MARKET_TRADE": 8,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2024-04-12",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.1,
+   "buyersWilson95": [
+    2.145,
+    48.498
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2024-04-01",
+   "noTradeWilson95": [
+    58.819,
+    113.198
+   ],
+   "projectedTop120Buyers": 12.0,
+   "projectedTop120NoTrade": 96.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 0,
+   "NET_SELLER": 1,
+   "NO_OPEN_MARKET_TRADE": 9,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2024-05-17",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.0,
+   "buyersWilson95": [
+    0.0,
+    33.304
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2024-05-02",
+   "noTradeWilson95": [
+    71.502,
+    117.855
+   ],
+   "projectedTop120Buyers": 0.0,
+   "projectedTop120NoTrade": 108.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 0,
+   "NET_SELLER": 1,
+   "NO_OPEN_MARKET_TRADE": 9,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2024-06-14",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.0,
+   "buyersWilson95": [
+    0.0,
+    33.304
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2024-06-03",
+   "noTradeWilson95": [
+    71.502,
+    117.855
+   ],
+   "projectedTop120Buyers": 0.0,
+   "projectedTop120NoTrade": 108.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 2,
+   "NET_SELLER": 1,
+   "NO_OPEN_MARKET_TRADE": 7,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2024-07-19",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.2,
+   "buyersWilson95": [
+    6.802,
+    61.181
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2024-07-01",
+   "noTradeWilson95": [
+    47.613,
+    107.065
+   ],
+   "projectedTop120Buyers": 24.0,
+   "projectedTop120NoTrade": 84.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 2,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 6,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2024-08-16",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.2,
+   "buyersWilson95": [
+    6.802,
+    61.181
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2024-08-01",
+   "noTradeWilson95": [
+    37.521,
+    99.818
+   ],
+   "projectedTop120Buyers": 24.0,
+   "projectedTop120NoTrade": 72.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 2,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 7,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2024-09-20",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.1818,
+   "buyersWilson95": [
+    6.164,
+    57.238
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2024-09-02",
+   "noTradeWilson95": [
+    42.456,
+    101.8
+   ],
+   "projectedTop120Buyers": 21.818,
+   "projectedTop120NoTrade": 76.364,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 2,
+   "NET_SELLER": 1,
+   "NO_OPEN_MARKET_TRADE": 7,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2024-10-25",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.2,
+   "buyersWilson95": [
+    6.802,
+    61.181
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2024-10-02",
+   "noTradeWilson95": [
+    47.613,
+    107.065
+   ],
+   "projectedTop120Buyers": 24.0,
+   "projectedTop120NoTrade": 84.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 5,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2024-11-22",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.3636,
+   "buyersWilson95": [
+    18.2,
+    77.544
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2024-11-01",
+   "noTradeWilson95": [
+    25.526,
+    86.389
+   ],
+   "projectedTop120Buyers": 43.636,
+   "projectedTop120NoTrade": 54.545,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 6,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2024-12-27",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.2727,
+   "buyersWilson95": [
+    11.695,
+    67.877
+   ],
+   "measured": 11,
+   "membershipSnapshot": "2024-12-02",
+   "noTradeWilson95": [
+    33.611,
+    94.474
+   ],
+   "projectedTop120Buyers": 32.727,
+   "projectedTop120NoTrade": 65.455,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 5,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 1,
+   "anchor": "2025-02-07",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.3,
+   "buyersWilson95": [
+    12.935,
+    72.387
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2025-02-03",
+   "noTradeWilson95": [
+    28.391,
+    91.609
+   ],
+   "projectedTop120Buyers": 36.0,
+   "projectedTop120NoTrade": 60.0,
+   "sampledMembers": 11
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 0,
+   "NO_OPEN_MARKET_TRADE": 5,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 2,
+   "anchor": "2025-03-07",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.375,
+   "buyersWilson95": [
+    16.421,
+    83.311
+   ],
+   "measured": 8,
+   "membershipSnapshot": "2025-03-04",
+   "noTradeWilson95": [
+    36.689,
+    103.579
+   ],
+   "projectedTop120Buyers": 45.0,
+   "projectedTop120NoTrade": 75.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 0,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 2,
+   "anchor": "2025-04-04",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.5,
+   "buyersWilson95": [
+    25.826,
+    94.174
+   ],
+   "measured": 8,
+   "membershipSnapshot": "2025-04-01",
+   "noTradeWilson95": [
+    25.826,
+    94.174
+   ],
+   "projectedTop120Buyers": 60.0,
+   "projectedTop120NoTrade": 60.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 0,
+   "NO_OPEN_MARKET_TRADE": 4,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 2,
+   "anchor": "2025-05-09",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.5,
+   "buyersWilson95": [
+    25.826,
+    94.174
+   ],
+   "measured": 8,
+   "membershipSnapshot": "2025-05-02",
+   "noTradeWilson95": [
+    25.826,
+    94.174
+   ],
+   "projectedTop120Buyers": 60.0,
+   "projectedTop120NoTrade": 60.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 1,
+   "anchor": "2025-06-13",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.375,
+   "buyersWilson95": [
+    16.421,
+    83.311
+   ],
+   "measured": 8,
+   "membershipSnapshot": "2025-06-02",
+   "noTradeWilson95": [
+    16.421,
+    83.311
+   ],
+   "projectedTop120Buyers": 45.0,
+   "projectedTop120NoTrade": 45.0,
+   "sampledMembers": 9
+  },
+  {
+   "NET_BUYER": 2,
+   "NET_SELLER": 2,
+   "NO_OPEN_MARKET_TRADE": 5,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2025-07-18",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.2222,
+   "buyersWilson95": [
+    7.587,
+    65.689
+   ],
+   "measured": 9,
+   "membershipSnapshot": "2025-07-01",
+   "noTradeWilson95": [
+    31.998,
+    97.347
+   ],
+   "projectedTop120Buyers": 26.667,
+   "projectedTop120NoTrade": 66.667,
+   "sampledMembers": 9
+  },
+  {
+   "NET_BUYER": 1,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 5,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2025-08-15",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.1111,
+   "buyersWilson95": [
+    2.387,
+    52.2
+   ],
+   "measured": 9,
+   "membershipSnapshot": "2025-08-01",
+   "noTradeWilson95": [
+    31.998,
+    97.347
+   ],
+   "projectedTop120Buyers": 13.333,
+   "projectedTop120NoTrade": 66.667,
+   "sampledMembers": 9
+  },
+  {
+   "NET_BUYER": 2,
+   "NET_SELLER": 1,
+   "NO_OPEN_MARKET_TRADE": 6,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2025-09-19",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.2222,
+   "buyersWilson95": [
+    7.587,
+    65.689
+   ],
+   "measured": 9,
+   "membershipSnapshot": "2025-09-01",
+   "noTradeWilson95": [
+    42.504,
+    105.53
+   ],
+   "projectedTop120Buyers": 26.667,
+   "projectedTop120NoTrade": 80.0,
+   "sampledMembers": 9
+  },
+  {
+   "NET_BUYER": 2,
+   "NET_SELLER": 1,
+   "NO_OPEN_MARKET_TRADE": 6,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2025-10-24",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.2222,
+   "buyersWilson95": [
+    7.587,
+    65.689
+   ],
+   "measured": 9,
+   "membershipSnapshot": "2025-10-01",
+   "noTradeWilson95": [
+    42.504,
+    105.53
+   ],
+   "projectedTop120Buyers": 26.667,
+   "projectedTop120NoTrade": 80.0,
+   "sampledMembers": 9
+  },
+  {
+   "NET_BUYER": 2,
+   "NET_SELLER": 0,
+   "NO_OPEN_MARKET_TRADE": 6,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 1,
+   "anchor": "2025-11-21",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.25,
+   "buyersWilson95": [
+    8.578,
+    70.887
+   ],
+   "measured": 8,
+   "membershipSnapshot": "2025-11-03",
+   "noTradeWilson95": [
+    49.113,
+    111.422
+   ],
+   "projectedTop120Buyers": 30.0,
+   "projectedTop120NoTrade": 90.0,
+   "sampledMembers": 9
+  },
+  {
+   "NET_BUYER": 2,
+   "NET_SELLER": 0,
+   "NO_OPEN_MARKET_TRADE": 6,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 1,
+   "anchor": "2025-12-26",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.25,
+   "buyersWilson95": [
+    8.578,
+    70.887
+   ],
+   "measured": 8,
+   "membershipSnapshot": "2025-12-01",
+   "noTradeWilson95": [
+    49.113,
+    111.422
+   ],
+   "projectedTop120Buyers": 30.0,
+   "projectedTop120NoTrade": 90.0,
+   "sampledMembers": 9
+  },
+  {
+   "NET_BUYER": 1,
+   "NET_SELLER": 1,
+   "NO_OPEN_MARKET_TRADE": 6,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 1,
+   "anchor": "2026-01-23",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.125,
+   "buyersWilson95": [
+    2.69,
+    56.507
+   ],
+   "measured": 8,
+   "membershipSnapshot": "2026-01-02",
+   "noTradeWilson95": [
+    49.113,
+    111.422
+   ],
+   "projectedTop120Buyers": 15.0,
+   "projectedTop120NoTrade": 90.0,
+   "sampledMembers": 9
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 1,
+   "NO_OPEN_MARKET_TRADE": 5,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2026-02-27",
+   "anchorVerdict": "PASS",
+   "buyerShare": 0.4,
+   "buyersWilson95": [
+    20.182,
+    82.479
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2026-02-02",
+   "noTradeWilson95": [
+    28.391,
+    91.609
+   ],
+   "projectedTop120Buyers": 48.0,
+   "projectedTop120NoTrade": 60.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2026-04-03",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.4,
+   "buyersWilson95": [
+    20.182,
+    82.479
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2026-04-01",
+   "noTradeWilson95": [
+    12.935,
+    72.387
+   ],
+   "projectedTop120Buyers": 48.0,
+   "projectedTop120NoTrade": 36.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 3,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 0,
+   "anchor": "2026-05-01",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.4,
+   "buyersWilson95": [
+    20.182,
+    82.479
+   ],
+   "measured": 10,
+   "membershipSnapshot": "2026-04-01",
+   "noTradeWilson95": [
+    12.935,
+    72.387
+   ],
+   "projectedTop120Buyers": 48.0,
+   "projectedTop120NoTrade": 36.0,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 5,
+   "NO_OPEN_MARKET_TRADE": 1,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 1,
+   "anchor": "2026-06-05",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.3333,
+   "buyersWilson95": [
+    14.47,
+    77.496
+   ],
+   "measured": 9,
+   "membershipSnapshot": "2026-06-01",
+   "noTradeWilson95": [
+    2.387,
+    52.2
+   ],
+   "projectedTop120Buyers": 40.0,
+   "projectedTop120NoTrade": 13.333,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 3,
+   "NET_SELLER": 4,
+   "NO_OPEN_MARKET_TRADE": 2,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 1,
+   "anchor": "2026-07-10",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.3333,
+   "buyersWilson95": [
+    14.47,
+    77.496
+   ],
+   "measured": 9,
+   "membershipSnapshot": "2026-07-01",
+   "noTradeWilson95": [
+    7.587,
+    65.689
+   ],
+   "projectedTop120Buyers": 40.0,
+   "projectedTop120NoTrade": 26.667,
+   "sampledMembers": 10
+  },
+  {
+   "NET_BUYER": 4,
+   "NET_SELLER": 3,
+   "NO_OPEN_MARKET_TRADE": 2,
+   "UNRESOLVED_UNPARSED_FILING_IN_WINDOW": 1,
+   "anchor": "2026-08-07",
+   "anchorVerdict": "UNCERTAIN",
+   "buyerShare": 0.4444,
+   "buyersWilson95": [
+    22.653,
+    88.002
+   ],
+   "measured": 9,
+   "membershipSnapshot": "2026-08-03",
+   "noTradeWilson95": [
+    7.587,
+    65.689
+   ],
+   "projectedTop120Buyers": 53.333,
+   "projectedTop120NoTrade": 26.667,
+   "sampledMembers": 10
+  }
+ ],
+ "preregisteredGate": "at least 60% of anchors with >= 5 NET_BUYER and >= 20 NO_OPEN_MARKET_TRADE names, from filings alone",
+ "projectionStatement": "PROJECTION from a deterministic 24-issuer sample (kr_insider_probe.issuer_sample(24), first 24 of 254 DART-resolved ever-Top-120 issuers by sha256(corp_code)); per-anchor counts are the sampled members only and the Top-120 figures are 120 x sample share with a Wilson 95% interval that treats sampled members as a random draw. The same issuers recur across anchors, so anchor verdicts are NOT independent.",
+ "quarantine": {
+  "byReason": {
+   "DETAIL_ROW_DATED_AFTER_RECEIPT": 128
+  },
+  "filings": [
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20130507001348",
+    "receiptDate": "2013-05-07",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 4,
+    "rcept_no": "20130516000328",
+    "receiptDate": "2013-05-16",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20130613000354",
+    "receiptDate": "2013-06-13",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20131031000136",
+    "receiptDate": "2013-10-31",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20131031000146",
+    "receiptDate": "2013-10-31",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20131217000245",
+    "receiptDate": "2013-12-17",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20131226000364",
+    "receiptDate": "2013-12-26",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 3,
+    "rcept_no": "20131231000180",
+    "receiptDate": "2013-12-31",
+    "rowsAfterReceipt": 2
+   },
+   {
+    "maxDaysAfterReceipt": 364,
+    "rcept_no": "20140516000156",
+    "receiptDate": "2014-05-16",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20140724000133",
+    "receiptDate": "2014-07-24",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20140924000067",
+    "receiptDate": "2014-09-24",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20140924000069",
+    "receiptDate": "2014-09-24",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 4,
+    "rcept_no": "20141107000435",
+    "receiptDate": "2014-11-07",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 3,
+    "rcept_no": "20150424000119",
+    "receiptDate": "2015-04-24",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20150506000429",
+    "receiptDate": "2015-05-06",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20150604000054",
+    "receiptDate": "2015-06-04",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20150611000089",
+    "receiptDate": "2015-06-11",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 3,
+    "rcept_no": "20150731000415",
+    "receiptDate": "2015-07-31",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 2,
+    "rcept_no": "20150901000390",
+    "receiptDate": "2015-09-01",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20151022000195",
+    "receiptDate": "2015-10-22",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20151102000217",
+    "receiptDate": "2015-11-02",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20151228000417",
+    "receiptDate": "2015-12-28",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20160107000247",
+    "receiptDate": "2016-01-07",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20160920000058",
+    "receiptDate": "2016-09-20",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20161109000300",
+    "receiptDate": "2016-11-09",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 2,
+    "rcept_no": "20161228000292",
+    "receiptDate": "2016-12-28",
+    "rowsAfterReceipt": 2
+   },
+   {
+    "maxDaysAfterReceipt": 2,
+    "rcept_no": "20170404001671",
+    "receiptDate": "2017-04-04",
+    "rowsAfterReceipt": 2
+   },
+   {
+    "maxDaysAfterReceipt": 4,
+    "rcept_no": "20170407000058",
+    "receiptDate": "2017-04-07",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 4,
+    "rcept_no": "20170518000168",
+    "receiptDate": "2017-05-18",
+    "rowsAfterReceipt": 2
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20170612000284",
+    "receiptDate": "2017-06-12",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20170627000041",
+    "receiptDate": "2017-06-27",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 4,
+    "rcept_no": "20170720000424",
+    "receiptDate": "2017-07-20",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 2,
+    "rcept_no": "20170724000280",
+    "receiptDate": "2017-07-24",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 2,
+    "rcept_no": "20170726000463",
+    "receiptDate": "2017-07-26",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20170727000376",
+    "receiptDate": "2017-07-27",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 4,
+    "rcept_no": "20170728000420",
+    "receiptDate": "2017-07-28",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 2,
+    "rcept_no": "20170731000377",
+    "receiptDate": "2017-07-31",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 2,
+    "rcept_no": "20170802000268",
+    "receiptDate": "2017-08-02",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 4,
+    "rcept_no": "20170817000120",
+    "receiptDate": "2017-08-17",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 2,
+    "rcept_no": "20170821000444",
+    "receiptDate": "2017-08-21",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20170823000038",
+    "receiptDate": "2017-08-23",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 4,
+    "rcept_no": "20170825000379",
+    "receiptDate": "2017-08-25",
+    "rowsAfterReceipt": 2
+   },
+   {
+    "maxDaysAfterReceipt": 4,
+    "rcept_no": "20170825000383",
+    "receiptDate": "2017-08-25",
+    "rowsAfterReceipt": 2
+   },
+   {
+    "maxDaysAfterReceipt": 4,
+    "rcept_no": "20170831001257",
+    "receiptDate": "2017-08-31",
+    "rowsAfterReceipt": 2
+   },
+   {
+    "maxDaysAfterReceipt": 4,
+    "rcept_no": "20170907000239",
+    "receiptDate": "2017-09-07",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 12,
+    "rcept_no": "20170929001018",
+    "receiptDate": "2017-09-29",
+    "rowsAfterReceipt": 2
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20171019000056",
+    "receiptDate": "2017-10-19",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 3,
+    "rcept_no": "20171027000141",
+    "receiptDate": "2017-10-27",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 3,
+    "rcept_no": "20171117000038",
+    "receiptDate": "2017-11-17",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 4,
+    "rcept_no": "20171208000331",
+    "receiptDate": "2017-12-08",
+    "rowsAfterReceipt": 2
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20180219000162",
+    "receiptDate": "2018-02-19",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 4,
+    "rcept_no": "20180223000310",
+    "receiptDate": "2018-02-23",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 4,
+    "rcept_no": "20180223000405",
+    "receiptDate": "2018-02-23",
+    "rowsAfterReceipt": 2
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20180308000951",
+    "receiptDate": "2018-03-08",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 280,
+    "rcept_no": "20180321000141",
+    "receiptDate": "2018-03-21",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 3,
+    "rcept_no": "20180413002014",
+    "receiptDate": "2018-04-13",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 3,
+    "rcept_no": "20180427000554",
+    "receiptDate": "2018-04-27",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20180510002525",
+    "receiptDate": "2018-05-10",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20180510002571",
+    "receiptDate": "2018-05-10",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20180510002609",
+    "receiptDate": "2018-05-10",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20180510002642",
+    "receiptDate": "2018-05-10",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20180510002672",
+    "receiptDate": "2018-05-10",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20180510002705",
+    "receiptDate": "2018-05-10",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20180510002738",
+    "receiptDate": "2018-05-10",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20180510002815",
+    "receiptDate": "2018-05-10",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20180510002840",
+    "receiptDate": "2018-05-10",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20180510002879",
+    "receiptDate": "2018-05-10",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20180515000253",
+    "receiptDate": "2018-05-15",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 3,
+    "rcept_no": "20180518000061",
+    "receiptDate": "2018-05-18",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 2,
+    "rcept_no": "20180521000302",
+    "receiptDate": "2018-05-21",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20180523000078",
+    "receiptDate": "2018-05-23",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20180524000158",
+    "receiptDate": "2018-05-24",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 3,
+    "rcept_no": "20180525000232",
+    "receiptDate": "2018-05-25",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 3,
+    "rcept_no": "20180601000184",
+    "receiptDate": "2018-06-01",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 3,
+    "rcept_no": "20180601000387",
+    "receiptDate": "2018-06-01",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 3,
+    "rcept_no": "20180622000275",
+    "receiptDate": "2018-06-22",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 2,
+    "rcept_no": "20180703000427",
+    "receiptDate": "2018-07-03",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20180705000155",
+    "receiptDate": "2018-07-05",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 3,
+    "rcept_no": "20180706000074",
+    "receiptDate": "2018-07-06",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 3,
+    "rcept_no": "20180706000089",
+    "receiptDate": "2018-07-06",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20180905000020",
+    "receiptDate": "2018-09-05",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 3,
+    "rcept_no": "20180914000598",
+    "receiptDate": "2018-09-14",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 5,
+    "rcept_no": "20181005000560",
+    "receiptDate": "2018-10-05",
+    "rowsAfterReceipt": 2
+   },
+   {
+    "maxDaysAfterReceipt": 3,
+    "rcept_no": "20181019000158",
+    "receiptDate": "2018-10-19",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 2,
+    "rcept_no": "20181022000051",
+    "receiptDate": "2018-10-22",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20181030000174",
+    "receiptDate": "2018-10-30",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 2,
+    "rcept_no": "20181030000177",
+    "receiptDate": "2018-10-30",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 3,
+    "rcept_no": "20190215000526",
+    "receiptDate": "2019-02-15",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 3,
+    "rcept_no": "20190222000317",
+    "receiptDate": "2019-02-22",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 4,
+    "rcept_no": "20190228005885",
+    "receiptDate": "2019-02-28",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20190328001387",
+    "receiptDate": "2019-03-28",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 4,
+    "rcept_no": "20190404002069",
+    "receiptDate": "2019-04-04",
+    "rowsAfterReceipt": 2
+   },
+   {
+    "maxDaysAfterReceipt": 3,
+    "rcept_no": "20190412002413",
+    "receiptDate": "2019-04-12",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 2,
+    "rcept_no": "20190416000363",
+    "receiptDate": "2019-04-16",
+    "rowsAfterReceipt": 2
+   },
+   {
+    "maxDaysAfterReceipt": 2,
+    "rcept_no": "20190507000446",
+    "receiptDate": "2019-05-07",
+    "rowsAfterReceipt": 2
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20190516000015",
+    "receiptDate": "2019-05-16",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20190516000017",
+    "receiptDate": "2019-05-16",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 3,
+    "rcept_no": "20190531000696",
+    "receiptDate": "2019-05-31",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20190613000341",
+    "receiptDate": "2019-06-13",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 3,
+    "rcept_no": "20190614000212",
+    "receiptDate": "2019-06-14",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20190624000099",
+    "receiptDate": "2019-06-24",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20190702000142",
+    "receiptDate": "2019-07-02",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 3,
+    "rcept_no": "20190712000065",
+    "receiptDate": "2019-07-12",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20190722000161",
+    "receiptDate": "2019-07-22",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20190731000023",
+    "receiptDate": "2019-07-31",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20190808000073",
+    "receiptDate": "2019-08-08",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 4,
+    "rcept_no": "20190808000288",
+    "receiptDate": "2019-08-08",
+    "rowsAfterReceipt": 2
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20190819000005",
+    "receiptDate": "2019-08-19",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 2,
+    "rcept_no": "20190821000409",
+    "receiptDate": "2019-08-21",
+    "rowsAfterReceipt": 2
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20200319000001",
+    "receiptDate": "2020-03-19",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 3,
+    "rcept_no": "20200320000661",
+    "receiptDate": "2020-03-20",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 2,
+    "rcept_no": "20210824000169",
+    "receiptDate": "2021-08-24",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 2,
+    "rcept_no": "20210825000456",
+    "receiptDate": "2021-08-25",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 4,
+    "rcept_no": "20210826000400",
+    "receiptDate": "2021-08-26",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 2,
+    "rcept_no": "20210901000322",
+    "receiptDate": "2021-09-01",
+    "rowsAfterReceipt": 2
+   },
+   {
+    "maxDaysAfterReceipt": 2,
+    "rcept_no": "20220621000233",
+    "receiptDate": "2022-06-21",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 3,
+    "rcept_no": "20220701000078",
+    "receiptDate": "2022-07-01",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20221130000441",
+    "receiptDate": "2022-11-30",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20221130000456",
+    "receiptDate": "2022-11-30",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20221130000477",
+    "receiptDate": "2022-11-30",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20230103000480",
+    "receiptDate": "2023-01-04",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 2,
+    "rcept_no": "20230228001119",
+    "receiptDate": "2023-02-28",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20251203000225",
+    "receiptDate": "2025-12-03",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20251211000372",
+    "receiptDate": "2025-12-11",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20251222000401",
+    "receiptDate": "2025-12-22",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 212,
+    "rcept_no": "20260211000765",
+    "receiptDate": "2026-02-11",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 1,
+    "rcept_no": "20260305001322",
+    "receiptDate": "2026-03-05",
+    "rowsAfterReceipt": 1
+   },
+   {
+    "maxDaysAfterReceipt": 3,
+    "rcept_no": "20260313001236",
+    "receiptDate": "2026-03-13",
+    "rowsAfterReceipt": 1
+   }
+  ],
+  "lateRowProfile": {
+   "filingsProfiled": 128,
+   "filingsWhoseLateRowsAreAllOpenMarket": 115,
+   "lateRowsByCalendarDayGap": {
+    "1-4d": 139,
+    "5-30d": 3,
+    ">30d": 3
+   },
+   "lateRowsByReasonAndSecurity": {
+    "시간외매매(+)|보통주": 3,
+    "시간외매매(-)|보통주": 8,
+    "신규보고(+)|보통주": 2,
+    "장내매도(-)|보통주": 16,
+    "장내매수(+)|보통주": 115,
+    "장내매수(+)|신주인수권이표시된것": 1
+   },
+   "reading": "descriptive: a 1-4 calendar-day gap on an open-market row is the shape a settlement-date (T+2) 변동일 would leave on a promptly filed report; this is an observation about the filings, not a verified explanation, and it does not change the owner rule"
+  },
+  "quarantined": 128,
+  "shareOfParsedOriginals": 0.025
+ },
+ "quarantineRule": "owner rule added 2026-11-04 before any outcome: a filing with ANY detail row dated after its DART receipt date is QUARANTINED (kr_insider.build_event -> Quarantine) and never contributes to a state; not part of the frozen registration's text, recorded here as a pre-outcome addition",
+ "quarantineRuleBound": {
+  "gateRuleOff": {
+   "anchors": 155,
+   "anchorsIntervalFail": 0,
+   "anchorsIntervalPass": 47,
+   "anchorsIntervalUncertain": 108,
+   "anchorsPointEstimatePass": 132,
+   "anchorsRequired": 93,
+   "anchorsUnmeasured": 0,
+   "verdict": "UNCERTAIN"
+  },
+  "purpose": "bound, not a substitute: the same gate with the owner quarantine rule switched OFF (every parsed original contributes). The primary verdict is the rule-ON one; this only shows how much of it the rule decides. No alternative rule is proposed or tuned here."
+ },
+ "sampleCommonStockCodes": {
+  "00106119": "001570",
+  "00115977": "010780",
+  "00126487": "007700",
+  "00132354": "192400",
+  "00138297": "011810",
+  "00139889": "011790",
+  "00141149": "003520",
+  "00141529": "007310",
+  "00144395": "026960",
+  "00148328": "001300",
+  "00155319": "005490",
+  "00161693": "009240",
+  "00170558": "021240",
+  "00195229": "081660",
+  "00219097": "027410",
+  "00266961": "035420",
+  "00339391": "272210",
+  "00356361": "051910",
+  "00547583": "086790",
+  "00631518": "096770",
+  "00728638": "105630",
+  "00983040": "180640",
+  "00992871": "185750",
+  "01205842": "267270"
+ },
+ "source": {
+  "byReceiptYear": {
+   "2013": {
+    "originals": 375,
+    "parsed": 375,
+    "quarantined": 8
+   },
+   "2014": {
+    "originals": 410,
+    "parsed": 410,
+    "quarantined": 5
+   },
+   "2015": {
+    "originals": 382,
+    "parsed": 382,
+    "quarantined": 9
+   },
+   "2016": {
+    "originals": 419,
+    "parsed": 419,
+    "quarantined": 4
+   },
+   "2017": {
+    "originals": 430,
+    "parsed": 428,
+    "quarantined": 24
+   },
+   "2018": {
+    "originals": 317,
+    "parsed": 317,
+    "quarantined": 37
+   },
+   "2019": {
+    "originals": 317,
+    "parsed": 317,
+    "quarantined": 22
+   },
+   "2020": {
+    "originals": 349,
+    "parsed": 349,
+    "quarantined": 2
+   },
+   "2021": {
+    "originals": 475,
+    "parsed": 475,
+    "quarantined": 4
+   },
+   "2022": {
+    "originals": 393,
+    "parsed": 393,
+    "quarantined": 5
+   },
+   "2023": {
+    "originals": 406,
+    "parsed": 406,
+    "quarantined": 2
+   },
+   "2024": {
+    "originals": 312,
+    "parsed": 312,
+    "quarantined": 0
+   },
+   "2025": {
+    "originals": 305,
+    "parsed": 301,
+    "quarantined": 3
+   },
+   "2026": {
+    "originals": 243,
+    "parsed": 242,
+    "quarantined": 3
+   }
+  },
+  "insiderAmendmentsExcluded": 125,
+  "insiderOriginals": 5133,
+  "issuersSampled": 24,
+  "listedRange": [
+   "20130101",
+   "20261031"
+  ],
+  "nonParsedFilings": [
+   {
+    "error": "NOT_AN_INTEGER:-600\n00",
+    "rcept_no": "20170419000391",
+    "sourceStatus": null,
+    "status": "PARSE_ERROR"
+   },
+   {
+    "error": "NOT_AN_INTEGER:-10000\n00",
+    "rcept_no": "20170526000320",
+    "sourceStatus": null,
+    "status": "PARSE_ERROR"
+   },
+   {
+    "error": "NOT_AN_INTEGER:-\n1207",
+    "rcept_no": "20250107000331",
+    "sourceStatus": null,
+    "status": "PARSE_ERROR"
+   },
+   {
+    "error": "NOT_AN_INTEGER:-\n2000",
+    "rcept_no": "20250207000890",
+    "sourceStatus": null,
+    "status": "PARSE_ERROR"
+   },
+   {
+    "error": "NOT_AN_INTEGER:-\n1514",
+    "rcept_no": "20250327000922",
+    "sourceStatus": null,
+    "status": "PARSE_ERROR"
+   },
+   {
+    "error": "NOT_AN_INTEGER:-\n746",
+    "rcept_no": "20251114002768",
+    "sourceStatus": null,
+    "status": "PARSE_ERROR"
+   },
+   {
+    "error": "NOT_AN_INTEGER:-\n505",
+    "rcept_no": "20260522000605",
+    "sourceStatus": null,
+    "status": "PARSE_ERROR"
+   }
+  ],
+  "notFetched": 0,
+  "parseFailureLimit": 0.05,
+  "parseFailureRate": 0.001364,
+  "parseFailures": 7,
+  "parseRate": 0.998636,
+  "parserNote": "parser kr_insider v2 left UNCHANGED (frozen with the registration): the observed PARSE_ERROR shape is a share-count cell whose digits are split by a line break (e.g. '-\\n2000', '-600\\n00'); fixing it would be a parser v3 = a new registration decision for the owner, and it is far below the 5% SOURCE_BLOCKED limit",
+  "sourceVerdict": "SOURCE_PARSE_GATE_PASSED",
+  "statusCounts": {
+   "PARSED": 5126,
+   "PARSE_ERROR": 7
+  }
+ },
+ "studyId": "kr-insider-open-market-purchase-v1",
+ "summary": {
+  "buyerShareMax": 0.7778,
+  "buyerShareMedian": 0.3636,
+  "buyerShareMin": 0.0,
+  "pooledBuyerShare": 0.3741,
+  "pooledNote": "pooled over all anchor x issuer cells; cells of the same issuer on consecutive anchors are strongly dependent, so this interval is too narrow and is NOT the gate",
+  "pooledProjectedTop120Buyers": 44.893,
+  "pooledWilson95ProjectedTop120Buyers": [
+   42.039,
+   47.823
+  ],
+  "sampledMembersMedian": 10
+ },
+ "window": "63 KRX sessions ending on the anchor; filing usable from the first session strictly after receipt"
+}

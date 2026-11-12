@@ -1,0 +1,481 @@
+{
+ "contractId": "market-timing-prospective-v1",
+ "status": "PROPOSED_NOT_REGISTERED_NOT_AUTHORIZED",
+ "evidenceClass": "PROSPECTIVE_PAPER",
+ "outcomeFree": true,
+ "question": "Does moving the equity exposure by the sealed market-state machine add value AT MATCHED AVERAGE EXPOSURE (TIMING > 0), net of the cost of the moves, against holding the regional ETF?",
+ "notTheQuestion": [
+  "drawdown reduction against the ETF (that is effect A, achievable by a lower constant exposure)",
+  "re-fitting any window, threshold, lag, level or mapping on history"
+ ],
+ "regions": {
+  "KR": {
+   "etf": "069500.KS",
+   "etfReturnBasis": "TOTAL_RETURN (repository's reconciled 069500.KS series; same vendor at scoring)",
+   "stateMachine": "pipeline/kr_market_risk_model.py (sealed; imported, never copied)",
+   "sealedSpec": {
+    "path": "research_specs/kr-market-risk-model-v1.json@37f8cbf6",
+    "specSha256": "711f17ba946daa77ceb8f2fb18936ce45812585103f749f793f254aaeced3ad3",
+    "fileSha256": "fa7484c690d125089d628654a86199a23ad95dcfeb9b1b0682bdc704588ae1b4"
+   },
+   "sealedResult": "docs/results/kr-market-risk-model-v1-result.json@37f8cbf6 decision.developmentNomination = NO_CANDIDATE_NOMINATED_CONTROL_RETAINED (development evidence only)",
+   "costs": {
+    "buy": 0.0015,
+    "sell": 0.0045,
+    "source": "kr_market_risk_model.BUY_COST / SELL_COST"
+   },
+   "cash": {
+    "primary": "ZERO_KRW_NOMINAL",
+    "sensitivity": "BOK_POLICY_RATE_PROXY (data/bok-policy-rates.json; not investable)",
+    "rule": "a TIMING claim must hold in sign under both cash readings"
+   },
+   "stateInputs": {
+    "FAST": "FDR_KS200 close (already recorded weekly by rp1-b-h1-state-v1 state.fast)",
+    "SLOW": "FRED DGS10 - DGS3MO re-steepening flag, month-end, FRED lag 4d",
+    "TRANSITION": "FRED VIXCLS level vs its own past weekly history (top fifth, min 156 obs)"
+   }
+  },
+  "US": {
+   "etf": "SPY",
+   "etfReturnBasis": "TOTAL_RETURN (economic reading of the US replication)",
+   "stateMachine": "pipeline/rp1_c1_us_exposure.py layer_states/decision_schedule with market='US' (sealed KR rules, US calendar)",
+   "sealedSpec": {
+    "path": "docs/research-program/specs/rp1-c1-us-exposure-ladder-replication-v1.json@37f8cbf6",
+    "fileSha256": "6a37b8dae1c062212e7523642a5af95754257a9c7de64c5fdbdcceef1d58885e"
+   },
+   "sealedResult": "docs/research-program/results/rp1-c1-us-exposure-formal-20261024/README.md@37f8cbf6 NO_CANDIDATE_NOMINATED_CONTROL_RETAINED / REPLICATED_CONTROL_RETAINED",
+   "costs": {
+    "buy": 0.0008,
+    "sell": 0.00083,
+    "source": "rp1_c1_us_exposure.US_BUY_COST / US_SELL_COST"
+   },
+   "cash": {
+    "primary": "FRED DTB3 per rp1_c1_us_exposure.CASH_RATE_DEFINITION",
+    "sensitivity": "ZERO",
+    "rule": "a TIMING claim must hold in sign under both cash readings"
+   },
+   "stateInputs": {
+    "FAST": "S&P 500 price index close (FRED SP500 / ^GSPC per the US spec registry)",
+    "SLOW": "same FRED spread rule as KR",
+    "TRANSITION": "same VIX rule as KR"
+   }
+  }
+ },
+ "candidates": {
+  "primary": [
+   "C0",
+   "C1"
+  ],
+  "recordedNotClaimed": [
+   "C2",
+   "C3"
+  ],
+  "definitions": {
+   "C0": "C0_EXISTING_BASELINE_CONTROL",
+   "C1": "C1_CONFIRMATION_GATED",
+   "C2": "C2_PREEMPTIVE_HIERARCHICAL",
+   "C3": "C3_MULTI_LAYER_CONSENSUS"
+  },
+  "levels": [
+   1.0,
+   0.7,
+   0.4
+  ],
+  "mappingTables": {
+   "C0": [
+    {
+     "slow": 0,
+     "transition": 0,
+     "fast": 0,
+     "equityRiskMultiplier": 1.0
+    },
+    {
+     "slow": 0,
+     "transition": 0,
+     "fast": 1,
+     "equityRiskMultiplier": 0.7
+    },
+    {
+     "slow": 0,
+     "transition": 0,
+     "fast": 2,
+     "equityRiskMultiplier": 0.4
+    },
+    {
+     "slow": 0,
+     "transition": 1,
+     "fast": 0,
+     "equityRiskMultiplier": 1.0
+    },
+    {
+     "slow": 0,
+     "transition": 1,
+     "fast": 1,
+     "equityRiskMultiplier": 0.7
+    },
+    {
+     "slow": 0,
+     "transition": 1,
+     "fast": 2,
+     "equityRiskMultiplier": 0.4
+    },
+    {
+     "slow": 1,
+     "transition": 0,
+     "fast": 0,
+     "equityRiskMultiplier": 1.0
+    },
+    {
+     "slow": 1,
+     "transition": 0,
+     "fast": 1,
+     "equityRiskMultiplier": 0.7
+    },
+    {
+     "slow": 1,
+     "transition": 0,
+     "fast": 2,
+     "equityRiskMultiplier": 0.4
+    },
+    {
+     "slow": 1,
+     "transition": 1,
+     "fast": 0,
+     "equityRiskMultiplier": 1.0
+    },
+    {
+     "slow": 1,
+     "transition": 1,
+     "fast": 1,
+     "equityRiskMultiplier": 0.7
+    },
+    {
+     "slow": 1,
+     "transition": 1,
+     "fast": 2,
+     "equityRiskMultiplier": 0.4
+    }
+   ],
+   "C1": [
+    {
+     "slow": 0,
+     "transition": 0,
+     "fast": 0,
+     "equityRiskMultiplier": 1.0
+    },
+    {
+     "slow": 0,
+     "transition": 0,
+     "fast": 1,
+     "equityRiskMultiplier": 1.0
+    },
+    {
+     "slow": 0,
+     "transition": 0,
+     "fast": 2,
+     "equityRiskMultiplier": 0.4
+    },
+    {
+     "slow": 0,
+     "transition": 1,
+     "fast": 0,
+     "equityRiskMultiplier": 1.0
+    },
+    {
+     "slow": 0,
+     "transition": 1,
+     "fast": 1,
+     "equityRiskMultiplier": 0.7
+    },
+    {
+     "slow": 0,
+     "transition": 1,
+     "fast": 2,
+     "equityRiskMultiplier": 0.4
+    },
+    {
+     "slow": 1,
+     "transition": 0,
+     "fast": 0,
+     "equityRiskMultiplier": 1.0
+    },
+    {
+     "slow": 1,
+     "transition": 0,
+     "fast": 1,
+     "equityRiskMultiplier": 0.7
+    },
+    {
+     "slow": 1,
+     "transition": 0,
+     "fast": 2,
+     "equityRiskMultiplier": 0.4
+    },
+    {
+     "slow": 1,
+     "transition": 1,
+     "fast": 0,
+     "equityRiskMultiplier": 1.0
+    },
+    {
+     "slow": 1,
+     "transition": 1,
+     "fast": 1,
+     "equityRiskMultiplier": 0.7
+    },
+    {
+     "slow": 1,
+     "transition": 1,
+     "fast": 2,
+     "equityRiskMultiplier": 0.4
+    }
+   ],
+   "C2": [
+    {
+     "slow": 0,
+     "transition": 0,
+     "fast": 0,
+     "equityRiskMultiplier": 1.0
+    },
+    {
+     "slow": 0,
+     "transition": 0,
+     "fast": 1,
+     "equityRiskMultiplier": 0.7
+    },
+    {
+     "slow": 0,
+     "transition": 0,
+     "fast": 2,
+     "equityRiskMultiplier": 0.4
+    },
+    {
+     "slow": 0,
+     "transition": 1,
+     "fast": 0,
+     "equityRiskMultiplier": 1.0
+    },
+    {
+     "slow": 0,
+     "transition": 1,
+     "fast": 1,
+     "equityRiskMultiplier": 0.7
+    },
+    {
+     "slow": 0,
+     "transition": 1,
+     "fast": 2,
+     "equityRiskMultiplier": 0.4
+    },
+    {
+     "slow": 1,
+     "transition": 0,
+     "fast": 0,
+     "equityRiskMultiplier": 1.0
+    },
+    {
+     "slow": 1,
+     "transition": 0,
+     "fast": 1,
+     "equityRiskMultiplier": 0.7
+    },
+    {
+     "slow": 1,
+     "transition": 0,
+     "fast": 2,
+     "equityRiskMultiplier": 0.4
+    },
+    {
+     "slow": 1,
+     "transition": 1,
+     "fast": 0,
+     "equityRiskMultiplier": 0.7
+    },
+    {
+     "slow": 1,
+     "transition": 1,
+     "fast": 1,
+     "equityRiskMultiplier": 0.4
+    },
+    {
+     "slow": 1,
+     "transition": 1,
+     "fast": 2,
+     "equityRiskMultiplier": 0.4
+    }
+   ],
+   "C3": [
+    {
+     "slow": 0,
+     "transition": 0,
+     "fast": 0,
+     "equityRiskMultiplier": 1.0
+    },
+    {
+     "slow": 0,
+     "transition": 0,
+     "fast": 1,
+     "equityRiskMultiplier": 1.0
+    },
+    {
+     "slow": 0,
+     "transition": 0,
+     "fast": 2,
+     "equityRiskMultiplier": 0.4
+    },
+    {
+     "slow": 0,
+     "transition": 1,
+     "fast": 0,
+     "equityRiskMultiplier": 1.0
+    },
+    {
+     "slow": 0,
+     "transition": 1,
+     "fast": 1,
+     "equityRiskMultiplier": 0.7
+    },
+    {
+     "slow": 0,
+     "transition": 1,
+     "fast": 2,
+     "equityRiskMultiplier": 0.4
+    },
+    {
+     "slow": 1,
+     "transition": 0,
+     "fast": 0,
+     "equityRiskMultiplier": 1.0
+    },
+    {
+     "slow": 1,
+     "transition": 0,
+     "fast": 1,
+     "equityRiskMultiplier": 0.7
+    },
+    {
+     "slow": 1,
+     "transition": 0,
+     "fast": 2,
+     "equityRiskMultiplier": 0.4
+    },
+    {
+     "slow": 1,
+     "transition": 1,
+     "fast": 0,
+     "equityRiskMultiplier": 0.7
+    },
+    {
+     "slow": 1,
+     "transition": 1,
+     "fast": 1,
+     "equityRiskMultiplier": 0.4
+    },
+    {
+     "slow": 1,
+     "transition": 1,
+     "fast": 2,
+     "equityRiskMultiplier": 0.4
+    }
+   ]
+  },
+  "missingState": "sealed rule: a multiplier is defined only when every completion of the missing layers agrees; otherwise hold the previous target (counted)"
+ },
+ "recording": {
+  "cadence": "weekly: KR decision = KR week-end session close (prospective_receipt_core.is_weekly_decision_session); US decision = US week-end session close (rp1_c1_us_exposure.period_end_sessions(market='US'))",
+  "execution": "next session close of the same market",
+  "receiptFields": [
+   "signalDate",
+   "executionDate",
+   "layer states (SLOW, TRANSITION, FAST) or None with reason",
+   "every candidate's multiplier and hold flag",
+   "input identities (SHA-256)",
+   "codeIdentity",
+   "specSha256",
+   "createdAtUtc inside the window (after signal close, before next open)"
+  ],
+  "ledger": "append-only JSONL with digest chain (prospective_receipt_core); one ledger per region; never backfilled",
+  "existingPaths": {
+   "KR_FAST": "rp1-b-h1-state-v1 (RECORDING since 2026-10-30; see market_receipts_status.json)",
+   "KR_SLOW_TRANSITION": "MISSING",
+   "US_ALL": "MISSING"
+  }
+ },
+ "decomposition": {
+  "module": "research/master_research_program_v1/market_industry/market_timing.py",
+  "period": "one weekly execution-to-execution interval; x_t = the candidate target executed at the start of the period",
+  "identity": "mean(R_overlay - R_E) = LEVEL + TIMING; LEVEL = (xbar - 1) mean(R_E - R_F); TIMING = mean((x - xbar)(R_E - R_F))",
+  "staticControl": "constant exposure xbar of the SAME window (exposure-matched); TIMING = mean(R_overlay - R_static)",
+  "costTerm": "stress x (buy x increase + sell x decrease) of exposure, build uncharged; TIMING_NET = TIMING - mean(COST)",
+  "driftResidual": "realised drifting-path return minus the per-period model return is reported as a residual, never folded into TIMING"
+ },
+ "horizons": {
+  "windows": {
+   "H126": "weekly periods whose execution session lies within the first 126 sessions after the cohort's execution",
+   "H252": "same with 252 sessions"
+  },
+  "cohort": "every weekly receipt starts a cohort; within each cohort window TIMING_t^h and its own xbar_t^h are computed",
+  "primaryHorizon": "H252",
+  "secondaryHorizon": "H126",
+  "primaryStatistic": "mean over matured cohorts of TIMING_NET_t^H252 at cost stress 1x"
+ },
+ "inference": {
+  "method": "Newey-West (Bartlett) HAC on the cohort series; lag in weekly observations = ceil(h / 5) sessions-per-week overlap",
+  "lags": {
+   "H126": 26,
+   "H252": 51
+  },
+  "family": [
+   "KR-C0-H252",
+   "KR-C1-H252",
+   "US-C0-H252",
+   "US-C1-H252"
+  ],
+  "multiplicity": "Holm, one-sided alpha 0.05 over the four primary claims; H126 claims are secondary and descriptive",
+  "calibrationPrerequisite": "the rp1-inference-calibration cells (KR/US H252) calibrate a different, cross-sectional statistic; a calibration cell for THIS time-series statistic at the realised depth must be registered before the first confirmatory read, otherwise every read is DESCRIPTIVE_ONLY",
+  "costStress": [
+   1.0,
+   2.0,
+   3.0
+  ],
+  "costRule": "a claim needs the Holm-adjusted lower bound > 0 at 1x AND a positive point estimate at 2x; 3x is reported"
+ },
+ "minimumAccrual": {
+  "basis": "weekly receipts; H252 cohorts first mature about 52 weeks after the first receipt",
+  "H252": "no read before 6 NON-OVERLAPPING matured H252 windows per region (about 6 years of receipts + 252 sessions)",
+  "H126": "no read before 6 non-overlapping matured H126 windows per region (about 3 years + 126 sessions)",
+  "exposureVariation": "at least 4 exposure changes inside the read window; otherwise NO_DYNAMIC_EXPOSURE_OBSERVED (not a fail)",
+  "interimPublication": "state counts, exposure-change counts and receipt integrity only; no return-based number before the minimum"
+ },
+ "classification": {
+  "B_TIMING_SUPPORTED": "Holm lower bound of TIMING_NET > 0 at 1x, positive at 2x, same sign under both cash readings",
+  "A_ONLY_LEVEL_RISK_REDUCTION": "overlay drawdown shallower than ETF but NOT shallower than the exposure-matched static control, and TIMING interval contains zero",
+  "TIMING_NEGATIVE": "upper bound of TIMING_NET < 0",
+  "NO_TIMING_EVIDENCE_INTERVAL_CONTAINS_ZERO": "otherwise",
+  "INSUFFICIENT_ACCRUAL": "minimum accrual not met",
+  "NO_DYNAMIC_EXPOSURE_OBSERVED": "fewer than 4 exposure changes",
+  "RECEIPT_INTEGRITY_FAILED": "missed weekly receipts > 10% of due sessions, a backfilled or rewritten row, or a broken chain"
+ },
+ "failureRules": [
+  "no threshold, window, lag, level, mapping or candidate is re-optimised on history or on receipts",
+  "a missed week is MISSED, never backfilled; a region whose missed share exceeds 10% cannot claim",
+  "historical development numbers (KR 2007-2026, US 1993-2026) are never pooled with receipts",
+  "C2/C3 are recorded but cannot be promoted into the primary family after the fact",
+  "an unfavourable read closes this contract version; a successor is a new id with its own registration"
+ ],
+ "productionEffect": "NONE: the operating default stays 100% regional ETF; no read authorizes an exposure change",
+ "prerequisites": [
+  "KR: a writer for SLOW/TRANSITION + all candidate multipliers (pipeline/kr_market_risk_model_receipts.py has the contract, no writer)",
+  "US: a state recorder and ledger (none exists)",
+  "owner registration of this contract (spec + code hash) before the first counted receipt; receipts before registration do not count",
+  "a calibration cell for the time-series TIMING statistic (see inference)"
+ ],
+ "evidenceRefs": [
+  "research_specs/kr-market-risk-model-v1.json@37f8cbf6",
+  "pipeline/kr_market_risk_model.py@37f8cbf6",
+  "pipeline/rp1_c1_us_exposure.py@37f8cbf6",
+  "docs/research-program/rp1-b-h1-prospective-state-v1-ko.md@37f8cbf6",
+  "signal-history@0b10f54dfefdafa09470b1c0855bc26bf3c58ea5 ledger/research-strategies/rp1-b-h1-state-v1/"
+ ],
+ "contractSha256": "f232863d21e1addfc6bb93f0559dc883c640b09f13bbdf5bd37c59cb291e2c1b"
+}

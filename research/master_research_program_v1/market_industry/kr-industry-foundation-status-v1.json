@@ -1,0 +1,87 @@
+{
+ "schema": "KR_INDUSTRY_FOUNDATION_STATUS_V1",
+ "outcomeFree": true,
+ "recomputed": false,
+ "source": {
+  "audit": "data/kr-industry-membership-foundation-v4/state/audit.json.gz@37f8cbf6",
+  "auditSha256": "4135846f16dcf59fe4ff89ab83b3b5aec288dea20fed36172b17abf768d44036",
+  "intervals": "data/kr-industry-membership-foundation-v4/state/intervals.json.gz@37f8cbf6",
+  "intervalsSha256": "01a7958608939b73b85f7b96457e6b6420bec1aaa78417526b98dbea3321aae0",
+  "doc": "docs/kr-industry-membership-foundation-v4.md@37f8cbf6",
+  "unchangedSinceBase": true
+ },
+ "files": [
+  "data/kr-industry-membership-foundation-v4/delisted-register/1fe81355db2152c373aa4cf1880d51dca722e59b02c173234239738375b49f95.bin",
+  "data/kr-industry-membership-foundation-v4/delisted-register/manifest.json",
+  "data/kr-industry-membership-foundation-v4/state/audit.json.gz",
+  "data/kr-industry-membership-foundation-v4/state/intervals.json.gz"
+ ],
+ "copiedFromAudit": {
+  "contract": "KR_INDUSTRY_MEMBERSHIP_FOUNDATION_V4",
+  "decision": "DATA_FOUNDATION_INSUFFICIENT_V4",
+  "gates": {
+   "annualCoverage": true,
+   "fractionInSufficientGroups": false,
+   "minimumSufficientGroups": true,
+   "signalCoverage": true,
+   "taxonomyDominance": true,
+   "taxonomyMappingComplete": true,
+   "terminalCoverage": false
+  },
+  "thresholds": {
+   "minimumAnnualCoverage": 0.9,
+   "minimumFractionInSufficientGroups": 0.9,
+   "minimumGroupSize": 5,
+   "minimumSignalCoverage": 0.9,
+   "minimumSufficientGroups": 3,
+   "minimumTerminalCoverage": 0.9,
+   "taxonomyDominanceLimit": 0.35
+  },
+  "everTop120Securities": 260,
+  "nameDates": 73200,
+  "classifiedNameDates": 69756,
+  "classifiedPct": 95.29508196721311,
+  "signalDates": 610,
+  "signalCoveragePct": {
+   "max": 98.33333333333333,
+   "median": 95.83333333333334,
+   "min": 91.66666666666666
+  },
+  "terminal": {
+   "classified": 0,
+   "denominator": 2345
+  },
+  "terminalCoveragePct": 0.0,
+  "fractionInSufficientGroups": {
+   "datesBelowThreshold": 398,
+   "min": 0.788135593220339
+  },
+  "sufficientGroupsPerDate": {
+   "max": 12,
+   "median": 10.0,
+   "min": 6
+  },
+  "groupSize": {
+   "max": 34,
+   "median": 6.0,
+   "min": 1
+  },
+  "coarseIndustryCount": 14,
+  "rawIndustryCount": 78,
+  "topGroupShare": 0.22327828430529273,
+  "identityBreaksFromTerminalSet": 22,
+  "historicalOutcomeComputed": false
+ },
+ "absent28Summary": {
+  "preferredResolved": 4,
+  "resolved": 4,
+  "terminalResolved": 0,
+  "total": 28,
+  "unresolved": 24
+ },
+ "intervalSecurities": 260,
+ "reading": {
+  "historical": "DATA_FOUNDATION_INSUFFICIENT_V4: terminal coverage 0/2,345 name-dates and 398/610 dates below the 90% groups-of-five gate; no taxonomy selected; the 22 terminated securities carry no industry",
+  "prospective": "a classification observed AT the signal date is PIT by construction; the v4 frozen 14-group crosswalk could label new receipts, but taxonomy selection failed the groups-of-five rule, so a prospective contract must preregister how small groups are handled before the first receipt"
+ }
+}
