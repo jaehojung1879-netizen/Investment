@@ -1,6 +1,6 @@
 {
   "contract": "DART_RAW_FILINGS_V1",
-  "updatedAt": "2026-11-11T11:31:10Z",
+  "updatedAt": "2026-11-12T11:54:18Z",
   "universeSize": 119,
   "years": [
     2015,
@@ -8,11 +8,11 @@
   ],
   "firstServedYear": 2015,
   "progress": {
-    "collected": 4589,
+    "collected": 4596,
     "absent": 1484,
-    "pending": 375,
+    "pending": 368,
     "total": 6448,
-    "completePct": 94.18
+    "completePct": 94.29
   },
   "absences": {
     "recorded": 1748,
@@ -20,17 +20,17 @@
     "awaitingDeadline": 264
   },
   "thisRun": {
-    "calls": 232,
-    "recordsWritten": 1,
+    "calls": 231,
+    "recordsWritten": 7,
     "shardsChanged": 1,
     "stopReason": "WORK_LIST_EXHAUSTED",
     "statuses": {
-      "013": 231,
-      "000": 1
+      "013": 224,
+      "000": 7
     },
     "refused": {
       "NO_CORP_CODE": 144,
-      "EMPTY_RESPONSE": 231
+      "EMPTY_RESPONSE": 224
     },
     "noCorpCodeTickers": [
       "005385.KS",
@@ -38,22 +38,22 @@
       "005935.KS"
     ],
     "fsDiv": {
-      "CFS": 1
+      "CFS": 7
     },
     "amountFieldsSeen": {
-      "3분기|BS|thstrm_amount": 55,
-      "3분기|BS|frmtrm_amount": 54,
-      "3분기|BS|bfefrmtrm_amount": 3,
-      "3분기|IS|thstrm_amount": 17,
-      "3분기|IS|thstrm_add_amount": 17,
-      "3분기|IS|frmtrm_add_amount": 17,
-      "3분기|CIS|thstrm_amount": 12,
-      "3분기|CIS|thstrm_add_amount": 12,
-      "3분기|CIS|frmtrm_add_amount": 13,
-      "3분기|CF|thstrm_amount": 48,
-      "3분기|CF|frmtrm_amount": 48,
-      "3분기|SCE|thstrm_amount": 45,
-      "3분기|SCE|frmtrm_amount": 1
+      "3분기|BS|thstrm_amount": 345,
+      "3분기|BS|frmtrm_amount": 345,
+      "3분기|BS|bfefrmtrm_amount": 20,
+      "3분기|CIS|thstrm_amount": 189,
+      "3분기|CIS|thstrm_add_amount": 189,
+      "3분기|CIS|frmtrm_add_amount": 187,
+      "3분기|CF|thstrm_amount": 278,
+      "3분기|CF|frmtrm_amount": 278,
+      "3분기|SCE|thstrm_amount": 714,
+      "3분기|SCE|frmtrm_amount": 7,
+      "3분기|IS|thstrm_amount": 37,
+      "3분기|IS|thstrm_add_amount": 37,
+      "3분기|IS|frmtrm_add_amount": 37
     }
   }
 }
