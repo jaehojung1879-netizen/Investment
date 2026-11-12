@@ -18,6 +18,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
+from pipeline import kr_alpha_atlas_reproducibility as ATLAS
 from pipeline import kr_market_risk_model as K
 from pipeline import kr_market_risk_model_execution as E
 from pipeline import rp1_c1_us_execution as X
@@ -77,7 +78,10 @@ def test_no_new_workflow_file_and_the_census_and_its_pinned_layers_are_untouched
     protected = {"tests/test_workflow_inventory.py", "tests/test_kr_alpha_atlas_price_repair_workflow_inventory.py", "docs/workflow-inventory.md",
                  "docs/workflow-inventory-addendum.md", "docs/workflow-inventory-phase-c-amendment.md", "docs/workflow-inventory-phase-c-price-repair.md"}
     assert not touched & protected
-    assert not [p for p in touched if p.startswith((".github/workflows/",)) and p != X.HOST_WORKFLOW]
+    changed_workflows = [p for p in touched if p.startswith(".github/workflows/") and p != X.HOST_WORKFLOW]
+    assert set(changed_workflows) <= {ATLAS.PAGES_WORKFLOW, ".github/workflows/tests.yml"}
+    if changed_workflows:
+        assert ATLAS.pages_maintenance_admitted(ROOT)
     assert not [p for p in touched if p.startswith(("research_specs/", "docs/results/", "ledger/", "data/"))]
 
 

@@ -1,0 +1,27 @@
+{
+  "schema": "CLOSED_ATLAS_PROVENANCE_V1",
+  "referenceMain": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+  "studyId": "kr-alpha-atlas-phase-c-v1",
+  "consumedCommit": "09ba076f9fcd7ca9957b12933dd51bd69e6506d0",
+  "lockPrefix": "refs/tags/kr-alpha-atlas-phase-c-v1-execution-lock",
+  "lockRefs": [
+    "refs/tags/kr-alpha-atlas-phase-c-v1-execution-lock",
+    "refs/tags/kr-alpha-atlas-phase-c-v1-execution-lock-spec-50e9d761cfe282f2fa8ec07c1c697e5486af62538419efe0f073dca42f916e00"
+  ],
+  "metadataSha256": {
+    "docs/audits/kr-alpha-atlas-phase-c-reproducibility/root-cause.json": "767ae213fdc9e9152ec2eaffc39af24695b14d4d442b9cce2e3c26f9192ea27a",
+    "docs/audits/kr-alpha-atlas-phase-c-reproducibility/validation.json": "4329edca1ca3b8e35ad7710e56b6334ec2832600be2b2087a60055658d757855",
+    "docs/ci/historical-workflow-provenance-v1.json": "baa6bbfeea3b012f53c83ca2d97384e270af4f240e85c1c6a61e6b2d8edb1b1b",
+    "research_specs/kr-alpha-atlas-phase-c-v1.json": "b57be30ce54abf1dd26388954053e99d4b1bf71fa06f3598787317e953988db0",
+    "research_specs/kr-alpha-atlas-phase-c-v1.sha256": "dc97e8d5fc99f36b7e0a11b95d0bedfae2b35ff622755b1dcf2185a888e287f5",
+    "research_specs/kr-alpha-atlas-phase-c-v2-amendment.json": "ca2564703dc018474a3d041f95d86bf16aa053a91ca4453cb975801c17a577bb",
+    "research_specs/kr-alpha-atlas-phase-c-v2-amendment.sha256": "c093666751668eadbb36621eaf8b1100f9ed7f36b682e785a14aa802a21daacd",
+    "research_specs/kr-alpha-atlas-phase-c-v3-price-repair.json": "64c742408331d7da91e8def6a6eba6fde52d5f19734b011e1287e8a7622c8198",
+    "research_specs/kr-alpha-atlas-phase-c-v3-price-repair.sha256": "d86d8a5add5f04a7358b423e6b20582088a5dc87733315584a96a35d9ba221b1",
+    "research_specs/kr-alpha-atlas-phase-c-v4-execution-authorization.json": "b8fad5453fac749aae42ddf87cb3d394273b44f93430794cd3fc5ccea6307a8d",
+    "research_specs/kr-alpha-atlas-phase-c-v4-reproducibility.json": "50e9d761cfe282f2fa8ec07c1c697e5486af62538419efe0f073dca42f916e00",
+    "research_specs/kr-alpha-atlas-phase-c-v4-reproducibility.sha256": "140461ad3195b411fb01647509cf32e680884caafd274f50e82d96c8cf875e2d"
+  },
+  "resultPath": "docs/results/kr-alpha-atlas-phase-c-v1-result.json",
+  "resultPresent": false
+}
