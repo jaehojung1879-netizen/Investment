@@ -1,0 +1,92 @@
+{
+ "status": "PASS",
+ "scope": "ARITHMETIC_INVARIANTS_ONLY_NOT_NEW_SOURCE_ADMISSION",
+ "runId": "f4d38bd9d11a51168d4299013f64b64af6eef8bdf6225f5b8640da567cf7204a",
+ "maxAbsNavReconciliationKrw": 1.4901161193847656e-08,
+ "maxAbsTradeCostDifferenceKrw": 1.4551915228366852e-11,
+ "maxAbsQuantityTradeReconciliation": 9.094947017729282e-13,
+ "checkedValuedAssetRows": 6552,
+ "books": {
+  "LGBM_CIM_RANK_h3": {
+   "A_OBSERVED_PREFIX_INCOMPLETE_EVENT_COVERAGE": {
+    "accountRows": 2619,
+    "assetRows": 92829,
+    "valuedSessions": 8,
+    "sourceBlockedSessions": 2611,
+    "tradeRows": 6,
+    "orderRows": 231,
+    "duplicateAssetKeys": 0
+   },
+   "A_VERIFIED_CASH": {
+    "accountRows": 2619,
+    "assetRows": 92829,
+    "valuedSessions": 0,
+    "sourceBlockedSessions": 2619,
+    "tradeRows": 0,
+    "orderRows": 231,
+    "duplicateAssetKeys": 0
+   }
+  },
+  "RULE_ETF_ONLY": {
+   "A_OBSERVED_PREFIX_INCOMPLETE_EVENT_COVERAGE": {
+    "accountRows": 2619,
+    "assetRows": 2619,
+    "valuedSessions": 2619,
+    "sourceBlockedSessions": 0,
+    "tradeRows": 38,
+    "orderRows": 140,
+    "duplicateAssetKeys": 0
+   },
+   "A_VERIFIED_CASH": {
+    "accountRows": 2619,
+    "assetRows": 2619,
+    "valuedSessions": 2619,
+    "sourceBlockedSessions": 0,
+    "tradeRows": 38,
+    "orderRows": 140,
+    "duplicateAssetKeys": 0
+   }
+  },
+  "RULE_INDUSTRY_MOMENTUM": {
+   "A_OBSERVED_PREFIX_INCOMPLETE_EVENT_COVERAGE": {
+    "accountRows": 2619,
+    "assetRows": 179310,
+    "valuedSessions": 114,
+    "sourceBlockedSessions": 2505,
+    "tradeRows": 49,
+    "orderRows": 844,
+    "duplicateAssetKeys": 0
+   },
+   "A_VERIFIED_CASH": {
+    "accountRows": 2619,
+    "assetRows": 179310,
+    "valuedSessions": 0,
+    "sourceBlockedSessions": 2619,
+    "tradeRows": 0,
+    "orderRows": 831,
+    "duplicateAssetKeys": 0
+   }
+  },
+  "XGB_CI_RANK_h1": {
+   "A_OBSERVED_PREFIX_INCOMPLETE_EVENT_COVERAGE": {
+    "accountRows": 2619,
+    "assetRows": 171869,
+    "valuedSessions": 8,
+    "sourceBlockedSessions": 2611,
+    "tradeRows": 6,
+    "orderRows": 841,
+    "duplicateAssetKeys": 0
+   },
+   "A_VERIFIED_CASH": {
+    "accountRows": 2619,
+    "assetRows": 171869,
+    "valuedSessions": 0,
+    "sourceBlockedSessions": 2619,
+    "tradeRows": 0,
+    "orderRows": 841,
+    "duplicateAssetKeys": 0
+   }
+  }
+ },
+ "sourceSha256": "8911b45270e032b0e6ae136149e54dd413453acfab2c563468669229e05ac2f3"
+}

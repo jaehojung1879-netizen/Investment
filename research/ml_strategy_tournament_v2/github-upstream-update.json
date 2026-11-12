@@ -1,0 +1,144 @@
+{
+ "observedAtUtc": "2026-11-10T23:08:08Z",
+ "pullRequests": [
+  {
+   "number": 321,
+   "head": "cd2892eb6d6623c2527eeda690959d18839acc4d",
+   "headRef": "fix/ci-pages-maintenance-v2",
+   "base": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+   "baseRef": "main",
+   "state": "open",
+   "merged": false,
+   "draft": true,
+   "mergeable": true,
+   "url": "https://github.com/jaehojung1879-netizen/Investment/pull/321"
+  },
+  {
+   "number": 328,
+   "head": "3b3edb13164ad38f8393c87432bb166f75068291",
+   "headRef": "codex/investment-integration-20261110",
+   "base": "1e0289d09ba30bf2e26ec9cfb7e118f33a6a8a87",
+   "baseRef": "claude/trusting-tesla-ob0jym",
+   "state": "open",
+   "merged": false,
+   "draft": true,
+   "mergeable": true,
+   "url": "https://github.com/jaehojung1879-netizen/Investment/pull/328"
+  },
+  {
+   "number": 329,
+   "head": "0a1f494171576af6928fe531145a8c8f050253fd",
+   "headRef": "claude/ml-tournament-audit-vddc20",
+   "base": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+   "baseRef": "main",
+   "state": "open",
+   "merged": false,
+   "draft": true,
+   "mergeable": true,
+   "url": "https://github.com/jaehojung1879-netizen/Investment/pull/329"
+  },
+  {
+   "number": 330,
+   "head": "8657acd5dd840617fc25a6a0cce467294edf72bf",
+   "headRef": "codex/ml-tournament-independent-audit-20261110",
+   "base": "17404f86535f0b8a8992da451dc7667f00539dd6",
+   "baseRef": "claude/ml-tournament-audit-vddc20",
+   "state": "open",
+   "merged": false,
+   "draft": true,
+   "mergeable": null,
+   "url": "https://github.com/jaehojung1879-netizen/Investment/pull/330"
+  },
+  {
+   "number": 332,
+   "head": "02a91145c96692c304bb58b179f31d1ccdcc8d1c",
+   "headRef": "codex/ml-tournament-v2-integrity-repair-20261110",
+   "base": "8657acd5dd840617fc25a6a0cce467294edf72bf",
+   "baseRef": "codex/ml-tournament-independent-audit-20261110",
+   "state": "open",
+   "merged": false,
+   "draft": true,
+   "mergeable": true,
+   "url": "https://github.com/jaehojung1879-netizen/Investment/pull/332"
+  }
+ ],
+ "upstream329Moved": true,
+ "upstream329NewHead": "0a1f494171576af6928fe531145a8c8f050253fd",
+ "upstream329NewCommitTitle": "research(adaptive-cocktail-v1): Korean report",
+ "v2RemainsPinnedToOriginalTournamentHead": "17404f86535f0b8a8992da451dc7667f00539dd6",
+ "newResearchIncorporated": false,
+ "v1DirectoryAtNewUpstreamHead": [
+  {
+   "name": "README.md",
+   "type": "file",
+   "gitObjectSha1": "9350c6a31906381892ec52c856bd87e1581462d5"
+  },
+  {
+   "name": "REPORT-ko.md",
+   "type": "file",
+   "gitObjectSha1": "a43aee8b77217b6758715c3e186d275e1b6cb4c9"
+  },
+  {
+   "name": "analyze.py",
+   "type": "file",
+   "gitObjectSha1": "8b888328bfba6c6bb105331c66558e1b3bf0185a"
+  },
+  {
+   "name": "audit_checks.py",
+   "type": "file",
+   "gitObjectSha1": "715f8cb9eeda9fdb77d814e557dca1a2f5be2c2b"
+  },
+  {
+   "name": "build_features.py",
+   "type": "file",
+   "gitObjectSha1": "f2a0ab68c692a636682143d571c71baa0eaba020"
+  },
+  {
+   "name": "config.json",
+   "type": "file",
+   "gitObjectSha1": "857a941af0231780b2a963e4272e2d8183f20f2c"
+  },
+  {
+   "name": "evaluate.py",
+   "type": "file",
+   "gitObjectSha1": "ed6beae11fb0e01d68c6d5fbe1a0b1690adb6387"
+  },
+  {
+   "name": "export_records.py",
+   "type": "file",
+   "gitObjectSha1": "8c7bec735b575e0f5411138b82a7fdae1ad533ac"
+  },
+  {
+   "name": "independent_nav.py",
+   "type": "file",
+   "gitObjectSha1": "b9007d147822f8dfb9c0a010233dd7df8b38edb0"
+  },
+  {
+   "name": "prepare_dataset.py",
+   "type": "file",
+   "gitObjectSha1": "d0b9414ce5d0f3be709e92e80b85d240f79495b5"
+  },
+  {
+   "name": "render_report.py",
+   "type": "file",
+   "gitObjectSha1": "6e152b3b941a5e0321d1fb21b84cd47fe7957900"
+  },
+  {
+   "name": "results",
+   "type": "dir",
+   "gitObjectSha1": "70024b5839e44edc1ccbc15d5ba1d86fa4ca89ff"
+  },
+  {
+   "name": "run_tournament.py",
+   "type": "file",
+   "gitObjectSha1": "9478c794872d337aea95bc8e3ae17fb206e3aace"
+  },
+  {
+   "name": "tournament.py",
+   "type": "file",
+   "gitObjectSha1": "bb21f57dcfe8a3a60118a3b1f1558b48461b0f33"
+  }
+ ],
+ "v1WholeDirectoryContentsUnchanged": true,
+ "note": "Every immediate file blob and results subtree SHA matches git ls-tree at frozen 17404f86; no new upstream research fetched or executed."
+}

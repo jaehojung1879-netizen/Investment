@@ -1,0 +1,71 @@
+"""Independent stored-ledger arithmetic checks; no portfolio engine imported."""
+from pathlib import Path
+from collections import defaultdict
+import gzip,json,hashlib
+
+root=Path.cwd()
+v2=root/'research/ml_strategy_tournament_v2'
+runid=json.loads((v2/'replay-verification.json').read_text())['runId']
+p=v2/'results'/runid
+results=json.loads((p/'results.json').read_text())
+cfg=json.loads((root/'research/ml_strategy_tournament_v1/config.json').read_text())['portfolio']['costs']
+summary={}
+max_nav_gap=max_cost_gap=max_quantity_gap=0.
+checked_asset_rows=0
+for sid,result in results.items():
+ summary[sid]={}
+ for mode,r in result['v2A'].items():
+  prefix=sid+'-'+mode+'-'
+  load=lambda name:[json.loads(x) for x in gzip.decompress((p/(prefix+name+'.jsonl.gz')).read_bytes()).splitlines()]
+  accounts=load('account');assets=load('assets');trades=load('trades');orders=load('orders')
+  by_assets=defaultdict(list);by_trades=defaultdict(list)
+  keys=set()
+  for row in assets:
+   key=row['date'],row['ticker']
+   assert key not in keys
+   keys.add(key);by_assets[row['date']].append(row)
+  for t in trades:
+   by_trades[t['date']].append(t)
+   assert abs(t['notional']-t['quantityDelta']*t['rawPrice'])<1e-6
+   c=cfg['etf' if t['ticker']=='069500.KS' else 'stock']
+   bps=c['commissionBps']+c['spreadBps']/2
+   if t['ticker']!='069500.KS' and t['notional']<0:
+    bps+=max((r for r in c['sellTaxSchedule'] if r['effectiveDate']<=t['date']),key=lambda r:r['effectiveDate'])['sellTaxBps']
+   expected=abs(t['notional'])*bps/10000
+   max_cost_gap=max(max_cost_gap,abs(expected-t['totalFeeIncludingTax']))
+  blocked=False;valued=0
+  for a in accounts:
+   day=a['date'];rows=by_assets[day]
+   if a['status']=='SOURCE_BLOCKED':
+    blocked=True
+    assert a['nav'] is None and a['cash'] is None and a['totalCosts'] is None
+    assert all(x['marketValue'] is None and x['quantity'] is None for x in rows)
+    assert not by_trades[day]
+    continue
+   assert not blocked
+   valued+=1
+   market_value=0.
+   trade_by_ticker=defaultdict(float)
+   for t in by_trades[day]:trade_by_ticker[t['ticker']]+=t['quantityDelta']
+   for x in rows:
+    checked_asset_rows+=1
+    assert x['quantity']>=0
+    if x['quantity']>0:assert x['rawClose']>0
+    expected=x['quantity']*x['rawClose'] if x['rawClose'] is not None else 0.
+    assert abs(expected-x['marketValue'])<1e-6
+    market_value+=x['marketValue']
+    # In these admitted/prefix paths no settled stock split is injected.
+    gap=x['quantity']-x['quantityBeforeEvents']-trade_by_ticker[x['ticker']]
+    max_quantity_gap=max(max_quantity_gap,abs(gap))
+    if not x['tradable']:assert abs(gap)<1e-10
+   expected_nav=a['cash']+market_value+a['cashReceivable']+a['stockReceivableValue']
+   max_nav_gap=max(max_nav_gap,abs(a['nav']-expected_nav))
+   assert a['cash']>=0
+   assert abs(sum(t['totalFeeIncludingTax'] for t in by_trades[day])-a['totalCosts'])<1e-6
+  assert valued==r['valuedSessions']
+  assert len(accounts)==2619 and len({a['date'] for a in accounts})==2619
+  summary[sid][mode]={'accountRows':len(accounts),'assetRows':len(assets),'valuedSessions':valued,'sourceBlockedSessions':2619-valued,'tradeRows':len(trades),'orderRows':len(orders),'duplicateAssetKeys':0}
+assert max_nav_gap<1e-5 and max_cost_gap<1e-6 and max_quantity_gap<1e-8
+out={'status':'PASS','scope':'ARITHMETIC_INVARIANTS_ONLY_NOT_NEW_SOURCE_ADMISSION','runId':runid,'maxAbsNavReconciliationKrw':max_nav_gap,'maxAbsTradeCostDifferenceKrw':max_cost_gap,'maxAbsQuantityTradeReconciliation':max_quantity_gap,'checkedValuedAssetRows':checked_asset_rows,'books':summary,'sourceSha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
+(v2/'ledger-invariant-verification.json').write_text(json.dumps(out,indent=1)+'\n')
+print(json.dumps({k:v for k,v in out.items() if k!='books'},indent=1))

@@ -1,0 +1,197 @@
+{
+  "auditedHead": "17404f86535f0b8a8992da451dc7667f00539dd6",
+  "pr": 329,
+  "files": {
+    "AGENTS.md": {
+      "bytes": 258682,
+      "sha256": "3211c5ebb2ebd591eb01b9486fe8baf475bec5f1ad67b8ea7bc384d7cc0ae7f2"
+    },
+    "research/ml_strategy_tournament_v1/config.json": {
+      "bytes": 15487,
+      "sha256": "982e116804a5ce35820201037a44e6fc4684ef9725f356e25fefdf1c84080a65"
+    },
+    "research/ml_strategy_tournament_v1/prepare_dataset.py": {
+      "bytes": 7565,
+      "sha256": "f68d96e8c021f3f4c8230c5c2a5f13ecc7b290e42eee39d3021793346b19bc99"
+    },
+    "research/ml_strategy_tournament_v1/README.md": {
+      "bytes": 1704,
+      "sha256": "690c33f6abda0bcff3b44e46b1bc1d5afe739fcfd3e015b1f218782fa5bd0c52"
+    },
+    "research/ml_strategy_tournament_v1/analyze.py": {
+      "bytes": 27636,
+      "sha256": "80aa93bc7dd7ee6572e3830cb7d9f1bdb610e11a48abdb93061a78a2b19ca866"
+    },
+    "research/ml_strategy_tournament_v1/run_tournament.py": {
+      "bytes": 4056,
+      "sha256": "36a7b0e600eac5b0559b2658811b9e461e0130bdd86373327cc211055f13b8dc"
+    },
+    "research/ml_strategy_tournament_v1/evaluate.py": {
+      "bytes": 9823,
+      "sha256": "ff8491386f791449e640bf5b86b14676266290551bc4fb8168f1b9857e332ef0"
+    },
+    "research/ml_strategy_tournament_v1/REPORT-ko.md": {
+      "bytes": 26442,
+      "sha256": "7ed2a90b88214624f082aa2c8a2dbc91b41340cce137306894f68499e208f9ba"
+    },
+    "research/ml_strategy_tournament_v1/build_features.py": {
+      "bytes": 2018,
+      "sha256": "3e79a40879895ddb32bfc59f825dd7395e91913f8bd5b90d6083a50466f773e1"
+    },
+    "research/ml_strategy_tournament_v1/independent_nav.py": {
+      "bytes": 4453,
+      "sha256": "8ac608c8ea62f1af07147888de3701d9b80d93828b47ab02da07907332bda7c9"
+    },
+    "research/ml_strategy_tournament_v1/tournament.py": {
+      "bytes": 25470,
+      "sha256": "38f437571b586471ff4441e886c6e0445396e469a93d7bbb2bca04f38eda5a46"
+    },
+    "research/ml_strategy_tournament_v1/export_records.py": {
+      "bytes": 2812,
+      "sha256": "48b5773b059fc0092206299efb90102d592e8219cfb8440210a9753295520aae"
+    },
+    "research/ml_strategy_tournament_v1/audit_checks.py": {
+      "bytes": 8721,
+      "sha256": "72da4554189fea16b9c0b581d225916ad460c34d8bbbef560d1877830737fb93"
+    },
+    "research/ml_strategy_tournament_v1/render_report.py": {
+      "bytes": 8020,
+      "sha256": "337c5d8fb874fcb18e419f8743fee49b64ef3c3641fc23b2ad10690e614241c7"
+    },
+    "research/ml_strategy_tournament_v1/results/fold-records.json": {
+      "bytes": 359085,
+      "sha256": "33c00cfdb049953e1cbe9293731fb8a6038e29e79897d949fca868c26f23f275"
+    },
+    "research/ml_strategy_tournament_v1/results/leaderboard-h252-gated.json": {
+      "bytes": 88552,
+      "sha256": "67880c87ae13bfe20d577fcb4a6b6f298bfe95a9ad7225a4861cd816aa28e070"
+    },
+    "research/ml_strategy_tournament_v1/results/round-trips-gated-LGBM_CIM_RANK_h3.csv": {
+      "bytes": 5755,
+      "sha256": "5e9d8de53b109cdb7cba014488011a6c1bc1987746683d3823e1ba2318b000cd"
+    },
+    "research/ml_strategy_tournament_v1/results/leaderboard-gated.json": {
+      "bytes": 308915,
+      "sha256": "1fa63145931f1aba2d2b83bb20682455e25fd92c7c10ddcbbcc2e7965368b8f6"
+    },
+    "research/ml_strategy_tournament_v1/results/round-trips-forced-RULE_INDUSTRY_MOMENTUM.csv": {
+      "bytes": 31218,
+      "sha256": "a0aaf4bda6687c269573b4c350a8526614aac892f4a2ef7e310ae6981feacfd4"
+    },
+    "research/ml_strategy_tournament_v1/results/leaderboard-forced.json": {
+      "bytes": 316211,
+      "sha256": "60ec0daea0466cc81f35829b4055abd73907f6f4dbb91f7a4e65cfdea935a1df"
+    },
+    "research/ml_strategy_tournament_v1/results/trades-forced-XGB_CI_RANK_h1.csv": {
+      "bytes": 56245,
+      "sha256": "4af848f81c43f83bb89724f1c9631fc7a301a54639f119eeff7ab72ba11c301b"
+    },
+    "research/ml_strategy_tournament_v1/results/leaderboard-h252-forced.json": {
+      "bytes": 90130,
+      "sha256": "8bbc9e3a3e19de2e658f7007292cbef3c9a24ed3ec0a908647add4bd1f59be6b"
+    },
+    "research/ml_strategy_tournament_v1/results/predictions-rebalance-pctile.npz": {
+      "bytes": 3086650,
+      "sha256": "d986bedad48fa7ccbfa6f845c05487c3cf3bcbd66b1865ee56d1bfcd111635f2"
+    },
+    "research/ml_strategy_tournament_v1/results/overfit-diagnostics-gated-LGBM_CIM_RANK_h3.json": {
+      "bytes": 8649,
+      "sha256": "c31d987b5710d1245f6b8624a9ca266a6dfcf310c5ee3ae87d09197ccc0d59c3"
+    },
+    "research/ml_strategy_tournament_v1/results/winner-analysis-gated-LGBM_CIM_RANK_h3.json": {
+      "bytes": 86147,
+      "sha256": "5ce6d05148a913f02bff6bd0940b0925188cd2eb18388ae9629e9390b4f9d703"
+    },
+    "research/ml_strategy_tournament_v1/results/winner-analysis-forced.json": {
+      "bytes": 310947,
+      "sha256": "95e3c6f5b3fa1fc920c5499d7640348e95e15326c3579dc26cb0636f861657a4"
+    },
+    "research/ml_strategy_tournament_v1/results/tables-ko.md": {
+      "bytes": 21338,
+      "sha256": "bea4398affaae6bc81a5685f3ae8fc014e5f6a822bdd4286476dfa9887efd9f6"
+    },
+    "research/ml_strategy_tournament_v1/results/winner-analysis-gated.json": {
+      "bytes": 307629,
+      "sha256": "1de6640439b76d39a778dc403c9ce19673920882b8fd37504d2fbe16fa782258"
+    },
+    "research/ml_strategy_tournament_v1/results/data-audit.json": {
+      "bytes": 5439,
+      "sha256": "93167f281207c60e11eb2012f000621137d6ee985e9f4b3249752417483c288c"
+    },
+    "research/ml_strategy_tournament_v1/results/round-trips-gated-RULE_INDUSTRY_MOMENTUM.csv": {
+      "bytes": 31114,
+      "sha256": "f35eb5ac90f597b0a16241e1f9a914afccfcce754d4c2155682e1237704fd5a8"
+    },
+    "research/ml_strategy_tournament_v1/results/independent-nav-forced.json": {
+      "bytes": 6398,
+      "sha256": "5a5e679a533e9dffba9ea18eea77b76b0b8576021598d1576551f840a588e1e6"
+    },
+    "research/ml_strategy_tournament_v1/results/trades-gated-RULE_INDUSTRY_MOMENTUM.csv": {
+      "bytes": 55968,
+      "sha256": "e97dc47f53c53b747bc67db6fe3f977fe983f1e4b36cc71f8daf301874781ea6"
+    },
+    "research/ml_strategy_tournament_v1/results/data-eligibility.json": {
+      "bytes": 34947,
+      "sha256": "77a885b5d178c58df735ceec9ec14f7b04eebb011c8e4e2b369f1a31b6bd9144"
+    },
+    "research/ml_strategy_tournament_v1/results/overfit-diagnostics-forced.json": {
+      "bytes": 8540,
+      "sha256": "135463ac989fb1b2de790375318c93d2e745752af79b98e313474a9818daa0bf"
+    },
+    "research/ml_strategy_tournament_v1/results/overfit-diagnostics-forced-XGB_CI_RANK_h1.json": {
+      "bytes": 8631,
+      "sha256": "c8cbbd2f63871db7fcc15ba4ca99ce1188352946ad9e72191ffaace72cde1d67"
+    },
+    "research/ml_strategy_tournament_v1/results/winner-analysis-forced-XGB_CI_RANK_h1.json": {
+      "bytes": 311134,
+      "sha256": "68387e0ce11251e048a45a414b88f835281200a190a07a43ab7bf615abdc034c"
+    },
+    "research/ml_strategy_tournament_v1/results/holdings-all.json.gz": {
+      "bytes": 228554,
+      "sha256": "a67a50c4474f67732d88014c9b1ab7c5f5159ee0e7808883909be663205499fd"
+    },
+    "research/ml_strategy_tournament_v1/results/overfit-diagnostics-gated.json": {
+      "bytes": 8561,
+      "sha256": "44b15c347908fea963bed749f81eaf1d834d323375e0e45dd62c76eca26701d2"
+    },
+    "research/ml_strategy_tournament_v1/results/independent-nav-gated.json": {
+      "bytes": 6341,
+      "sha256": "f4a6284ec497db5328a7b4b07e4b750b3475f27ad090d0937d40059fa4fe0937"
+    },
+    "research/ml_strategy_tournament_v1/results/rankings-gated.json": {
+      "bytes": 19584,
+      "sha256": "f42237164c87838c30e47a9400e24fa785b427bc694dc4bf971adb6bb666f03f"
+    },
+    "research/ml_strategy_tournament_v1/results/rankings-forced.json": {
+      "bytes": 19918,
+      "sha256": "a36addc47214ccf064fa4a7dc9d26e886ba6f3b2347f14da079cc11324b599ba"
+    },
+    "research/ml_strategy_tournament_v1/results/trades-gated-LGBM_CIM_RANK_h3.csv": {
+      "bytes": 8307,
+      "sha256": "a9a7bcdeb92f896ba0eece5c88a8a775026c6187f993998cd3a615e3ac7b0a58"
+    },
+    "research/ml_strategy_tournament_v1/results/trades-forced-RULE_INDUSTRY_MOMENTUM.csv": {
+      "bytes": 56590,
+      "sha256": "f3b759da43854b23557efe1ba1b3839a5ecc0e453d84ee3205528661931d1989"
+    },
+    "research/ml_strategy_tournament_v1/results/round-trips-forced-XGB_CI_RANK_h1.csv": {
+      "bytes": 30249,
+      "sha256": "1a6c0c823917cbfb511858602f89b6892e4750ead53d95b91d92cb92ef4f7784"
+    },
+    "research_specs/kr-model-overlay-portfolio-v1.json": {
+      "bytes": 29335,
+      "sha256": "c1cbfd232fdcaa7fa584cd1762e9e28291b4382d37e6244f5ab1a18731fb2df2"
+    },
+    "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json": {
+      "bytes": 201032,
+      "sha256": "58580c4370ec2c5afa124f849afbc4fa7b5c879012e75ebbd48ee7c7a0e659a9"
+    },
+    "data/bok-policy-rates.json": {
+      "bytes": 2635,
+      "sha256": "a7edf0e532c7b54da9d962ebf12ff2552c90c783439fef99d7c761c5b9ea69ff"
+    }
+  },
+  "runtime": {
+    "python": "3.12.14"
+  }
+}
