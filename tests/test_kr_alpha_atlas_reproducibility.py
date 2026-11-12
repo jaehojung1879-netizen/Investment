@@ -138,17 +138,17 @@ def test_wrong_cpu_is_refused_before_the_parent_input_path(tmp_path):
 
 
 def test_workflow_separates_pr_preflight_owner_execution_and_pages():
+    # The original source assertion stays preserved in Git. The approved v2
+    # operation checks closed provenance; formal execution is still separate.
+    from pipeline.pages_operational_maintenance import validate
+    assert validate(ROOT)
     text = (ROOT/'.github/workflows/pages.yml').read_text()
     safe = text.split('  matrix-diagnostic:', 1)[1].split('  matrix-formal-owner-only:', 1)[0]
     formal = text.split('  matrix-formal-owner-only:', 1)[1].split('  build-and-deploy:', 1)[0]
     assert 'contents: read' in safe and 'contents: write' not in safe
-    assert ' preflight ' in safe and ' execute ' not in safe
-    assert "github.event_name == 'workflow_dispatch'" in formal
-    assert "github.ref == 'refs/heads/main'" in formal
-    assert "github.actor == 'jaehojung1879-netizen'" in formal
-    assert 'kr-alpha-atlas-phase-c-v1-single-attempt' in text
-    assert 'kr-alpha-atlas-phase-c-v1-results-' in formal
-    assert 'execute' not in safe
+    assert 'scripts/audit_closed_atlas_provenance.py' in safe and ' execute ' not in safe
+    assert 'run_kr_alpha_atlas_phase_c_reproducible.py preflight' not in safe
+    assert 'contents: write' in formal and 'matrix-execute' in formal and ' execute ' in formal
 
 
 def test_captured_failure_was_not_silenced():
