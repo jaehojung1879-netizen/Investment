@@ -1,0 +1,1485 @@
+{
+  "head": "d2cd9781627773381b63cd9f2db13b369a1dd31e",
+  "scope": "Stored raw inputs and monthly NAV only; no study, backtest, learning or strategy run",
+  "rawHashes": {
+    "fred_DEXKOUS.csv.gz": {
+      "expected": "a4220e2fd1ea53f57d265ab4156dc6d47659282eb9235db1fe4c20c937a925c7",
+      "actual": "a4220e2fd1ea53f57d265ab4156dc6d47659282eb9235db1fe4c20c937a925c7",
+      "match": true
+    },
+    "fred_DFII10.csv.gz": {
+      "expected": "70de4423776e4ad78f025ec59aad591ae02f73842ef9779ed825e409969a2520",
+      "actual": "70de4423776e4ad78f025ec59aad591ae02f73842ef9779ed825e409969a2520",
+      "match": true
+    },
+    "fred_DGS10.csv.gz": {
+      "expected": "0a19145416475025a3db81f1d24cddde626211cc098ccba2c22c4baf426c5bb4",
+      "actual": "0a19145416475025a3db81f1d24cddde626211cc098ccba2c22c4baf426c5bb4",
+      "match": true
+    },
+    "fred_DGS2.csv.gz": {
+      "expected": "4d4ee579aa22639298cb3667a693b402b1c3e6e13869d9de9bbf3f71cf937128",
+      "actual": "4d4ee579aa22639298cb3667a693b402b1c3e6e13869d9de9bbf3f71cf937128",
+      "match": true
+    },
+    "fred_DGS3MO.csv.gz": {
+      "expected": "52f832786520f9dbf3e994f9d8e35ebdd67094aadc5cf822167c9b833e3dc647",
+      "actual": "52f832786520f9dbf3e994f9d8e35ebdd67094aadc5cf822167c9b833e3dc647",
+      "match": true
+    },
+    "fred_DTB3.csv.gz": {
+      "expected": "f524d6761c4728f2288fd6d8bc0dedb7b95ca0eb7836b9a73c7d6449c508640d",
+      "actual": "f524d6761c4728f2288fd6d8bc0dedb7b95ca0eb7836b9a73c7d6449c508640d",
+      "match": true
+    },
+    "fred_DTWEXBGS.csv.gz": {
+      "expected": "448522e5b4b78d787e08edd86028dfe67a92c4aeab1aded9266304d6c71f19bc",
+      "actual": "448522e5b4b78d787e08edd86028dfe67a92c4aeab1aded9266304d6c71f19bc",
+      "match": true
+    },
+    "fred_NASDAQ100.csv.gz": {
+      "expected": "3759a7171692329b5b44507abaa52c26fd25a6824ec3454ec9e23080ac37157a",
+      "actual": "3759a7171692329b5b44507abaa52c26fd25a6824ec3454ec9e23080ac37157a",
+      "match": true
+    },
+    "fred_SP500.csv.gz": {
+      "expected": "70e8bb2a2c0001643681d4d2820247c25be0c97a4615eb7ba34f390419e46be4",
+      "actual": "70e8bb2a2c0001643681d4d2820247c25be0c97a4615eb7ba34f390419e46be4",
+      "match": true
+    },
+    "fred_T10YIE.csv.gz": {
+      "expected": "a58373f5bb8b8419a798e3c870e41cfe8c6ea9e59d81c1f84f07dc14d6e3528f",
+      "actual": "a58373f5bb8b8419a798e3c870e41cfe8c6ea9e59d81c1f84f07dc14d6e3528f",
+      "match": true
+    },
+    "fred_VIXCLS.csv.gz": {
+      "expected": "2724110ef2d9e5f4c7c64ca1539c50e1a503300aad5946d45b0c733255b32fa9",
+      "actual": "2724110ef2d9e5f4c7c64ca1539c50e1a503300aad5946d45b0c733255b32fa9",
+      "match": true
+    },
+    "yahoo_BIL.json.gz": {
+      "expected": "5d0b7e05ad87d644e0264080c0e1fe08b3e3920190c83a4575c871d2327bfb3e",
+      "actual": "5d0b7e05ad87d644e0264080c0e1fe08b3e3920190c83a4575c871d2327bfb3e",
+      "match": true
+    },
+    "yahoo_GLD.json.gz": {
+      "expected": "33b6aa5cefd02faf9a0e6f37c69d767e2948e890490086d1bd7bc8f1d2544944",
+      "actual": "33b6aa5cefd02faf9a0e6f37c69d767e2948e890490086d1bd7bc8f1d2544944",
+      "match": true
+    },
+    "yahoo_IEF.json.gz": {
+      "expected": "0eb35b7cb53537088ae6c276e4fc261760458b7edddfca526a1e4a97485baa7f",
+      "actual": "0eb35b7cb53537088ae6c276e4fc261760458b7edddfca526a1e4a97485baa7f",
+      "match": true
+    },
+    "yahoo_KRW_X.json.gz": {
+      "expected": "e2d1df5a8c5bd349f56e43f7d3b6db07818174bbdb17bb41e2c66d88464e9798",
+      "actual": "e2d1df5a8c5bd349f56e43f7d3b6db07818174bbdb17bb41e2c66d88464e9798",
+      "match": true
+    },
+    "yahoo_QQQ.json.gz": {
+      "expected": "726eacd3a3d663c103efe3457b395072f7227bc4666552572b9c534e7216dd89",
+      "actual": "726eacd3a3d663c103efe3457b395072f7227bc4666552572b9c534e7216dd89",
+      "match": true
+    },
+    "yahoo_SHY.json.gz": {
+      "expected": "93b4199bbb204fab42c9999b31128080e8f7a012f763476d2ec7c46f7cfeee3b",
+      "actual": "93b4199bbb204fab42c9999b31128080e8f7a012f763476d2ec7c46f7cfeee3b",
+      "match": true
+    },
+    "yahoo_SPY.json.gz": {
+      "expected": "381dd6ccb483fccdc90ad8f8ac0ca45cc2fe54de1d0174cae76aedb63adcc062",
+      "actual": "381dd6ccb483fccdc90ad8f8ac0ca45cc2fe54de1d0174cae76aedb63adcc062",
+      "match": true
+    },
+    "yahoo_TLT.json.gz": {
+      "expected": "828fdaa18f3a4ceabf272fe8741ade4f712136d62b4a380ff89f48c706e5507a",
+      "actual": "828fdaa18f3a4ceabf272fe8741ade4f712136d62b4a380ff89f48c706e5507a",
+      "match": true
+    },
+    "yahoo_UUP.json.gz": {
+      "expected": "3f518cdca3e44b221fccb10542bcd168de6368a55a0665c9ca1c592ffbe95127",
+      "actual": "3f518cdca3e44b221fccb10542bcd168de6368a55a0665c9ca1c592ffbe95127",
+      "match": true
+    }
+  },
+  "assets": {
+    "BIL": {
+      "sessions": 4894,
+      "first": "2007-05-30",
+      "last": "2026-11-09",
+      "dividendEvents": 128,
+      "dividendEventsInRaw": 128,
+      "splitEvents": {
+        "1512052200": {
+          "date": 1512052200,
+          "numerator": 1.0,
+          "denominator": 2.0,
+          "splitRatio": "1:2"
+        }
+      },
+      "sameVendorAdjcloseMedianAbsDailyBp": 0.000818026646420833,
+      "sameVendorAdjcloseMaxAbsDailyBp": 0.04007539434303098,
+      "sameVendorAdjcloseCumulativeRatio": 0.9999494507970734,
+      "independentSourceVerdict": "INCONCLUSIVE_SINGLE_VENDOR",
+      "savedCountsMatch": true
+    },
+    "GLD": {
+      "sessions": 5528,
+      "first": "2004-11-18",
+      "last": "2026-11-09",
+      "dividendEvents": 0,
+      "dividendEventsInRaw": 0,
+      "splitEvents": {},
+      "sameVendorAdjcloseMedianAbsDailyBp": 0.0,
+      "sameVendorAdjcloseMaxAbsDailyBp": 1.1102230246251565e-12,
+      "sameVendorAdjcloseCumulativeRatio": 0.9999999999999983,
+      "independentSourceVerdict": "INCONCLUSIVE_SINGLE_VENDOR",
+      "savedCountsMatch": true
+    },
+    "IEF": {
+      "sessions": 6110,
+      "first": "2002-07-30",
+      "last": "2026-11-09",
+      "dividendEvents": 291,
+      "dividendEventsInRaw": 291,
+      "splitEvents": {},
+      "sameVendorAdjcloseMedianAbsDailyBp": 0.0024653765606785782,
+      "sameVendorAdjcloseMaxAbsDailyBp": 1.1870363664256978,
+      "sameVendorAdjcloseCumulativeRatio": 0.9999317842711973,
+      "independentSourceVerdict": "INCONCLUSIVE_SINGLE_VENDOR",
+      "savedCountsMatch": true
+    },
+    "QQQ": {
+      "sessions": 6961,
+      "first": "1999-03-10",
+      "last": "2026-11-09",
+      "dividendEvents": 90,
+      "dividendEventsInRaw": 90,
+      "splitEvents": {
+        "953562600": {
+          "date": 953562600,
+          "numerator": 2.0,
+          "denominator": 1.0,
+          "splitRatio": "2:1"
+        }
+      },
+      "sameVendorAdjcloseMedianAbsDailyBp": 0.0015086759808102812,
+      "sameVendorAdjcloseMaxAbsDailyBp": 0.7130146857481368,
+      "sameVendorAdjcloseCumulativeRatio": 1.0000036705122726,
+      "independentSourceVerdict": "LIMITED_PRICE_INDEX_CROSSCHECK_ONLY",
+      "savedCountsMatch": true
+    },
+    "SHY": {
+      "sessions": 6110,
+      "first": "2002-07-30",
+      "last": "2026-11-09",
+      "dividendEvents": 290,
+      "dividendEventsInRaw": 290,
+      "splitEvents": {},
+      "sameVendorAdjcloseMedianAbsDailyBp": 0.0025383186286198622,
+      "sameVendorAdjcloseMaxAbsDailyBp": 0.1955869037972846,
+      "sameVendorAdjcloseCumulativeRatio": 0.9998778099457857,
+      "independentSourceVerdict": "INCONCLUSIVE_SINGLE_VENDOR",
+      "savedCountsMatch": true
+    },
+    "SPY": {
+      "sessions": 8503,
+      "first": "1993-01-29",
+      "last": "2026-11-09",
+      "dividendEvents": 136,
+      "dividendEventsInRaw": 136,
+      "splitEvents": {},
+      "sameVendorAdjcloseMedianAbsDailyBp": 0.0016407443204080607,
+      "sameVendorAdjcloseMaxAbsDailyBp": 2.522106833002802,
+      "sameVendorAdjcloseCumulativeRatio": 1.0007271423414845,
+      "independentSourceVerdict": "LIMITED_PRICE_INDEX_CROSSCHECK_ONLY",
+      "savedCountsMatch": true
+    },
+    "TLT": {
+      "sessions": 6110,
+      "first": "2002-07-30",
+      "last": "2026-11-09",
+      "dividendEvents": 289,
+      "dividendEventsInRaw": 289,
+      "splitEvents": {},
+      "sameVendorAdjcloseMedianAbsDailyBp": 0.00247677427900328,
+      "sameVendorAdjcloseMaxAbsDailyBp": 1.2899595495619032,
+      "sameVendorAdjcloseCumulativeRatio": 1.0001527875566067,
+      "independentSourceVerdict": "INCONCLUSIVE_SINGLE_VENDOR",
+      "savedCountsMatch": true
+    },
+    "UUP": {
+      "sessions": 4956,
+      "first": "2007-03-01",
+      "last": "2026-11-09",
+      "dividendEvents": 9,
+      "dividendEventsInRaw": 9,
+      "splitEvents": {},
+      "sameVendorAdjcloseMedianAbsDailyBp": 0.0004751057658403113,
+      "sameVendorAdjcloseMaxAbsDailyBp": 1.5834732927677564,
+      "sameVendorAdjcloseCumulativeRatio": 1.0000959839770596,
+      "independentSourceVerdict": "INCONCLUSIVE_SINGLE_VENDOR",
+      "savedCountsMatch": true
+    }
+  },
+  "monthlyMetrics": {
+    "extended": {
+      "rows": 222,
+      "returnMonths": 221,
+      "errorsOverRoundingTolerance": [],
+      "strategies": {
+        "D1_TREND_SIGN": {
+          "calculated": {
+            "cagrPct": 6.71887216392828,
+            "arithAnnualPct": 6.7152915073868815,
+            "volPct": 6.2616068753847935,
+            "sharpeOverBil": 0.8690067209097128,
+            "betaToSpy": 0.285390350065034,
+            "worstMonthPct": -5.032729790757962,
+            "compoundingTermPct": 0.003580656541398497
+          },
+          "errorsVsSaved": {
+            "cagrPct": -0.00012783607172028866,
+            "arithAnnualPct": 0.000291507386881662,
+            "volPct": -0.0003931246152060197,
+            "sharpeOverBil": 6.720909712765177e-06,
+            "betaToSpy": 0.0003903500650340175,
+            "worstMonthPct": 0.00027020924203835506,
+            "compoundingTermPct": -0.0004193434586015031
+          },
+          "monthlyOnlyMddPct": -9.213822131944005,
+          "savedDailyMddPct": -16.137,
+          "actualCagrGapVsS4Pct": -1.3481278360717202,
+          "savedAnnualArithmeticDifferenceVsS4Pct": -1.431,
+          "savedTwinCagrGapPct": 0.023,
+          "savedTwinArithmeticGapPct": -0.02
+        },
+        "D2_ERC_COV": {
+          "calculated": {
+            "cagrPct": 6.877610831866043,
+            "arithAnnualPct": 6.940089188599654,
+            "volPct": 7.359204816499863,
+            "sharpeOverBil": 0.7720775429288502,
+            "betaToSpy": 0.27531810505674026,
+            "worstMonthPct": -8.942138570480495,
+            "compoundingTermPct": -0.06247835673361024
+          },
+          "errorsVsSaved": {
+            "cagrPct": -0.0003891681339567299,
+            "arithAnnualPct": 8.918859965323378e-05,
+            "volPct": 0.00020481649986336947,
+            "sharpeOverBil": 7.754292885020497e-05,
+            "betaToSpy": 0.0003181050567402366,
+            "worstMonthPct": -0.00013857048049459308,
+            "compoundingTermPct": -0.0004783567336102412
+          },
+          "monthlyOnlyMddPct": -16.363126746420985,
+          "savedDailyMddPct": -17.762,
+          "actualCagrGapVsS4Pct": -1.1893891681339568,
+          "savedAnnualArithmeticDifferenceVsS4Pct": -1.206,
+          "savedTwinCagrGapPct": 0.003,
+          "savedTwinArithmeticGapPct": -0.01
+        },
+        "D3_STATE_RULES": {
+          "calculated": {
+            "cagrPct": 7.267650873881104,
+            "arithAnnualPct": 7.276081297955441,
+            "volPct": 6.937560682537828,
+            "sharpeOverBil": 0.86310980721316,
+            "betaToSpy": 0.38936221710119484,
+            "worstMonthPct": -5.840520007620764,
+            "compoundingTermPct": -0.00843042407433714
+          },
+          "errorsVsSaved": {
+            "cagrPct": -0.000349126118895704,
+            "arithAnnualPct": 8.129795544142837e-05,
+            "volPct": -0.00043931746217129586,
+            "sharpeOverBil": 0.00010980721316000697,
+            "betaToSpy": 0.0003622171011948283,
+            "worstMonthPct": 0.0004799923792360161,
+            "compoundingTermPct": -0.0004304240743371393
+          },
+          "monthlyOnlyMddPct": -13.249605205509518,
+          "savedDailyMddPct": -16.137,
+          "actualCagrGapVsS4Pct": -0.7993491261188961,
+          "savedAnnualArithmeticDifferenceVsS4Pct": -0.87,
+          "savedTwinCagrGapPct": -0.329,
+          "savedTwinArithmeticGapPct": -0.374
+        },
+        "D4_RIDGE_SIGN": {
+          "calculated": {
+            "cagrPct": 5.558861366900625,
+            "arithAnnualPct": 5.694390662791862,
+            "volPct": 7.373008951151662,
+            "sharpeOverBil": 0.5966951808497979,
+            "betaToSpy": 0.40169910559356936,
+            "worstMonthPct": -10.155842633108259,
+            "compoundingTermPct": -0.13552929589123686
+          },
+          "errorsVsSaved": {
+            "cagrPct": -0.0001386330993753404,
+            "arithAnnualPct": 0.0003906627918617289,
+            "volPct": 8.951151661662493e-06,
+            "sharpeOverBil": -0.0003048191502020847,
+            "betaToSpy": -0.0003008944064306629,
+            "worstMonthPct": 0.0001573668917416171,
+            "compoundingTermPct": 0.0004707041087631536
+          },
+          "monthlyOnlyMddPct": -22.392473999999996,
+          "savedDailyMddPct": -25.525,
+          "actualCagrGapVsS4Pct": -2.5081386330993753,
+          "savedAnnualArithmeticDifferenceVsS4Pct": -2.452,
+          "savedTwinCagrGapPct": -0.521,
+          "savedTwinArithmeticGapPct": -0.405
+        },
+        "D5_TREE_SIGN": {
+          "calculated": {
+            "cagrPct": 6.829355590699304,
+            "arithAnnualPct": 6.899244521216844,
+            "volPct": 7.404348424873087,
+            "sharpeOverBil": 0.7582708337349015,
+            "betaToSpy": 0.40835992381736197,
+            "worstMonthPct": -10.155842633108259,
+            "compoundingTermPct": -0.06988893051754008
+          },
+          "errorsVsSaved": {
+            "cagrPct": 0.0003555906993044644,
+            "arithAnnualPct": 0.0002445212168442623,
+            "volPct": 0.00034842487308672787,
+            "sharpeOverBil": 0.00027083373490144336,
+            "betaToSpy": 0.00035992381736199563,
+            "worstMonthPct": 0.0001573668917416171,
+            "compoundingTermPct": 0.00011106948245992454
+          },
+          "monthlyOnlyMddPct": -22.392473999999996,
+          "savedDailyMddPct": -25.525,
+          "actualCagrGapVsS4Pct": -1.237644409300696,
+          "savedAnnualArithmeticDifferenceVsS4Pct": -1.247,
+          "savedTwinCagrGapPct": -0.143,
+          "savedTwinArithmeticGapPct": -0.119
+        },
+        "D6_FORECAST_VOL_SLEEVE": {
+          "calculated": {
+            "cagrPct": 7.381919484865285,
+            "arithAnnualPct": 7.396144262495635,
+            "volPct": 7.116311467511836,
+            "sharpeOverBil": 0.8583760572310613,
+            "betaToSpy": 0.39406893372255375,
+            "worstMonthPct": -5.867971396960858,
+            "compoundingTermPct": -0.014224777630349905
+          },
+          "errorsVsSaved": {
+            "cagrPct": -8.051513471496463e-05,
+            "arithAnnualPct": 0.00014426249563470606,
+            "volPct": 0.0003114675118363053,
+            "sharpeOverBil": 0.00037605723106126643,
+            "betaToSpy": 6.893372255373231e-05,
+            "worstMonthPct": 2.8603039142538478e-05,
+            "compoundingTermPct": -0.00022477763034990488
+          },
+          "monthlyOnlyMddPct": -17.190605285615135,
+          "savedDailyMddPct": -17.749,
+          "actualCagrGapVsS4Pct": -0.6850805151347155,
+          "savedAnnualArithmeticDifferenceVsS4Pct": -0.75,
+          "savedTwinCagrGapPct": -0.108,
+          "savedTwinArithmeticGapPct": -0.148
+        },
+        "S1_SPY": {
+          "calculated": {
+            "cagrPct": 11.655791449908115,
+            "arithAnnualPct": 12.301047350408151,
+            "volPct": 15.607891158102111,
+            "sharpeOverBil": 0.7055079903482634,
+            "betaToSpy": 1.0000000000000004,
+            "worstMonthPct": -16.51866254336398,
+            "compoundingTermPct": -0.645255900500036
+          },
+          "errorsVsSaved": {
+            "cagrPct": -0.00020855009188558427,
+            "arithAnnualPct": 4.735040815084801e-05,
+            "volPct": -0.00010884189788917809,
+            "sharpeOverBil": -0.0004920096517365691,
+            "betaToSpy": 4.440892098500626e-16,
+            "worstMonthPct": 0.00033745663601791875,
+            "compoundingTermPct": -0.0002559005000359882
+          },
+          "monthlyOnlyMddPct": -45.821822,
+          "savedDailyMddPct": -50.704,
+          "actualCagrGapVsS4Pct": 3.588791449908115,
+          "savedAnnualArithmeticDifferenceVsS4Pct": 4.155,
+          "savedTwinCagrGapPct": 0.0,
+          "savedTwinArithmeticGapPct": 0.0
+        },
+        "S2_QQQ": {
+          "calculated": {
+            "cagrPct": 16.34705279560349,
+            "arithAnnualPct": 17.001535474429883,
+            "volPct": 18.812776041041126,
+            "sharpeOverBil": 0.8351164791581231,
+            "betaToSpy": 1.1035821745375876,
+            "worstMonthPct": -15.578064627391008,
+            "compoundingTermPct": -0.654482678826394
+          },
+          "errorsVsSaved": {
+            "cagrPct": 5.279560348725454e-05,
+            "arithAnnualPct": -0.00046452557011633644,
+            "volPct": -0.00022395895887328265,
+            "sharpeOverBil": 0.00011647915812318388,
+            "betaToSpy": -0.0004178254624125355,
+            "worstMonthPct": -6.462739100854265e-05,
+            "compoundingTermPct": -0.0004826788263939674
+          },
+          "monthlyOnlyMddPct": -44.17036600000001,
+          "savedDailyMddPct": -49.367,
+          "actualCagrGapVsS4Pct": 8.280052795603488,
+          "savedAnnualArithmeticDifferenceVsS4Pct": 8.855,
+          "savedTwinCagrGapPct": 0.0,
+          "savedTwinArithmeticGapPct": 0.0
+        },
+        "S3_6040": {
+          "calculated": {
+            "cagrPct": 8.486940612511184,
+            "arithAnnualPct": 8.642556515207415,
+            "volPct": 9.678706524910716,
+            "sharpeOverBil": 0.7590450632861591,
+            "betaToSpy": 0.5950616446262214,
+            "worstMonthPct": -10.273105312937481,
+            "compoundingTermPct": -0.1556159026962316
+          },
+          "errorsVsSaved": {
+            "cagrPct": -5.9387488816398104e-05,
+            "arithAnnualPct": -0.0004434847925853802,
+            "volPct": -0.0002934750892844562,
+            "sharpeOverBil": 4.506328615905275e-05,
+            "betaToSpy": 6.16446262213799e-05,
+            "worstMonthPct": -0.00010531293748172743,
+            "compoundingTermPct": 0.00038409730376839923
+          },
+          "monthlyOnlyMddPct": -26.921987,
+          "savedDailyMddPct": -30.397,
+          "actualCagrGapVsS4Pct": 0.41994061251118353,
+          "savedAnnualArithmeticDifferenceVsS4Pct": 0.496,
+          "savedTwinCagrGapPct": 0.0,
+          "savedTwinArithmeticGapPct": 0.0
+        },
+        "S4_BALANCED": {
+          "calculated": {
+            "cagrPct": 8.067037739023242,
+            "arithAnnualPct": 8.146528450664333,
+            "volPct": 8.520837109183024,
+            "sharpeOverBil": 0.8054951362517342,
+            "betaToSpy": 0.5079789986487833,
+            "worstMonthPct": -10.155842633108259,
+            "compoundingTermPct": -0.07949071164109078
+          },
+          "errorsVsSaved": {
+            "cagrPct": 3.7739023241556424e-05,
+            "arithAnnualPct": -0.0004715493356677314,
+            "volPct": -0.0001628908169770682,
+            "sharpeOverBil": 0.0004951362517341407,
+            "betaToSpy": -2.1001351216742847e-05,
+            "worstMonthPct": 0.0001573668917416171,
+            "compoundingTermPct": -0.0004907116410907825
+          },
+          "monthlyOnlyMddPct": -22.392473999999996,
+          "savedDailyMddPct": -25.525,
+          "actualCagrGapVsS4Pct": 3.7739023241556424e-05,
+          "savedAnnualArithmeticDifferenceVsS4Pct": 0,
+          "savedTwinCagrGapPct": 0.0,
+          "savedTwinArithmeticGapPct": 0.0
+        },
+        "S5_EQUAL4": {
+          "calculated": {
+            "cagrPct": 6.400468283818084,
+            "arithAnnualPct": 6.448402197763977,
+            "volPct": 6.765388654235966,
+            "sharpeOverBil": 0.7676814083729107,
+            "betaToSpy": 0.27605517444436617,
+            "worstMonthPct": -8.416011009160274,
+            "compoundingTermPct": -0.047933913945893636
+          },
+          "errorsVsSaved": {
+            "cagrPct": 0.0004682838180833926,
+            "arithAnnualPct": 0.0004021977639769858,
+            "volPct": 0.00038865423596590176,
+            "sharpeOverBil": -0.0003185916270893596,
+            "betaToSpy": 5.517444436614616e-05,
+            "worstMonthPct": -1.1009160273189877e-05,
+            "compoundingTermPct": 6.608605410636514e-05
+          },
+          "monthlyOnlyMddPct": -12.196831288530586,
+          "savedDailyMddPct": -14.476,
+          "actualCagrGapVsS4Pct": -1.6665317161819164,
+          "savedAnnualArithmeticDifferenceVsS4Pct": -1.698,
+          "savedTwinCagrGapPct": 0.0,
+          "savedTwinArithmeticGapPct": 0.0
+        },
+        "S6_RISK_BUDGET_IV": {
+          "calculated": {
+            "cagrPct": 6.3757186883815375,
+            "arithAnnualPct": 6.451733137515863,
+            "volPct": 7.161398176508513,
+            "sharpeOverBil": 0.7248950607033857,
+            "betaToSpy": 0.22203736466507407,
+            "worstMonthPct": -7.208049014317397,
+            "compoundingTermPct": -0.07601444913432509
+          },
+          "errorsVsSaved": {
+            "cagrPct": -0.0002813116184627873,
+            "arithAnnualPct": -0.00026686248413732017,
+            "volPct": 0.00039817650851325936,
+            "sharpeOverBil": -0.00010493929661425927,
+            "betaToSpy": 3.736466507406333e-05,
+            "worstMonthPct": -4.901431739678941e-05,
+            "compoundingTermPct": -1.4449134325092428e-05
+          },
+          "monthlyOnlyMddPct": -16.053470316256902,
+          "savedDailyMddPct": -17.603,
+          "actualCagrGapVsS4Pct": -1.6912813116184626,
+          "savedAnnualArithmeticDifferenceVsS4Pct": -1.695,
+          "savedTwinCagrGapPct": 0.039,
+          "savedTwinArithmeticGapPct": 0.026
+        },
+        "S7_VOLTARGET_SPY": {
+          "calculated": {
+            "cagrPct": 9.938239387913317,
+            "arithAnnualPct": 10.252571691297558,
+            "volPct": 12.160105333354085,
+            "sharpeOverBil": 0.7375565096552411,
+            "betaToSpy": 0.7274742831507572,
+            "worstMonthPct": -11.244134530531458,
+            "compoundingTermPct": -0.3143323033842407
+          },
+          "errorsVsSaved": {
+            "cagrPct": 0.00023938791331623577,
+            "arithAnnualPct": -0.00042830870244259245,
+            "volPct": 0.00010533335408524636,
+            "sharpeOverBil": -0.00044349034475887894,
+            "betaToSpy": 0.0004742831507572598,
+            "worstMonthPct": -0.0001345305314579548,
+            "compoundingTermPct": -0.00033230338424067307
+          },
+          "monthlyOnlyMddPct": -23.584857999999997,
+          "savedDailyMddPct": -31.877,
+          "actualCagrGapVsS4Pct": 1.8712393879133167,
+          "savedAnnualArithmeticDifferenceVsS4Pct": 2.106,
+          "savedTwinCagrGapPct": -0.588,
+          "savedTwinArithmeticGapPct": -0.742
+        }
+      }
+    },
+    "primary": {
+      "rows": 131,
+      "returnMonths": 130,
+      "errorsOverRoundingTolerance": [],
+      "strategies": {
+        "D1_TREND_SIGN": {
+          "calculated": {
+            "cagrPct": 6.6861366392681365,
+            "arithAnnualPct": 6.697600629660159,
+            "volPct": 6.498526428560776,
+            "sharpeOverBil": 0.7076164419121389,
+            "betaToSpy": 0.33127357462278456,
+            "worstMonthPct": -5.032729700563243,
+            "compoundingTermPct": -0.011463990392022616
+          },
+          "errorsVsSaved": {
+            "cagrPct": 0.00013663926813656246,
+            "arithAnnualPct": -0.00039937033984127623,
+            "volPct": -0.00047357143922344136,
+            "sharpeOverBil": -0.00038355808786105783,
+            "betaToSpy": 0.0002735746227845448,
+            "worstMonthPct": 0.00027029943675760393,
+            "compoundingTermPct": -0.0004639903920226167
+          },
+          "monthlyOnlyMddPct": -9.213822949983152,
+          "savedDailyMddPct": -16.137,
+          "actualCagrGapVsS4Pct": -2.7128633607318626,
+          "savedAnnualArithmeticDifferenceVsS4Pct": -2.674,
+          "savedTwinCagrGapPct": -1.677,
+          "savedTwinArithmeticGapPct": -1.592
+        },
+        "D2_ERC_COV": {
+          "calculated": {
+            "cagrPct": 7.701912257065047,
+            "arithAnnualPct": 7.7069183816149645,
+            "volPct": 7.328283164821431,
+            "sharpeOverBil": 0.7670177040787824,
+            "betaToSpy": 0.3139013283389583,
+            "worstMonthPct": -5.112420411327956,
+            "compoundingTermPct": -0.005006124549917779
+          },
+          "errorsVsSaved": {
+            "cagrPct": -8.774293495328322e-05,
+            "arithAnnualPct": -8.161838503539798e-05,
+            "volPct": 0.00028316482143075916,
+            "sharpeOverBil": 1.7704078782432298e-05,
+            "betaToSpy": -9.867166104171599e-05,
+            "worstMonthPct": -0.00042041132795578307,
+            "compoundingTermPct": -6.1245499177785614e-06
+          },
+          "monthlyOnlyMddPct": -16.363126465764356,
+          "savedDailyMddPct": -17.762,
+          "actualCagrGapVsS4Pct": -1.6970877429349525,
+          "savedAnnualArithmeticDifferenceVsS4Pct": -1.665,
+          "savedTwinCagrGapPct": -0.005,
+          "savedTwinArithmeticGapPct": -0.028
+        },
+        "D3_STATE_RULES": {
+          "calculated": {
+            "cagrPct": 7.7226946742749325,
+            "arithAnnualPct": 7.714100602093443,
+            "volPct": 7.1436560372074505,
+            "sharpeOverBil": 0.7831011157062701,
+            "betaToSpy": 0.43111204876792086,
+            "worstMonthPct": -5.8405202297807435,
+            "compoundingTermPct": 0.008594072181489665
+          },
+          "errorsVsSaved": {
+            "cagrPct": -0.00030532572506736244,
+            "arithAnnualPct": 0.00010060209344242566,
+            "volPct": -0.000343962792549668,
+            "sharpeOverBil": 0.00010111570627002742,
+            "betaToSpy": 0.00011204876792086926,
+            "worstMonthPct": 0.00047977021925671437,
+            "compoundingTermPct": -0.00040592781851033453
+          },
+          "monthlyOnlyMddPct": -13.249605665834052,
+          "savedDailyMddPct": -16.137,
+          "actualCagrGapVsS4Pct": -1.6763053257250666,
+          "savedAnnualArithmeticDifferenceVsS4Pct": -1.658,
+          "savedTwinCagrGapPct": -1.263,
+          "savedTwinArithmeticGapPct": -1.223
+        },
+        "D4_RIDGE_SIGN": {
+          "calculated": {
+            "cagrPct": 5.937659346762514,
+            "arithAnnualPct": 6.000067120378139,
+            "volPct": 6.655307103105092,
+            "sharpeOverBil": 0.5813393553935592,
+            "betaToSpy": 0.36074450700866595,
+            "worstMonthPct": -6.047444167916871,
+            "compoundingTermPct": -0.06240777361562522
+          },
+          "errorsVsSaved": {
+            "cagrPct": -0.0003406532374858884,
+            "arithAnnualPct": 6.71203781390517e-05,
+            "volPct": 0.0003071031050918549,
+            "sharpeOverBil": 0.0003393553935592264,
+            "betaToSpy": -0.0002554929913340387,
+            "worstMonthPct": -0.00044416791687140744,
+            "compoundingTermPct": -0.00040777361562521763
+          },
+          "monthlyOnlyMddPct": -9.716443541275165,
+          "savedDailyMddPct": -17.404,
+          "actualCagrGapVsS4Pct": -3.4613406532374853,
+          "savedAnnualArithmeticDifferenceVsS4Pct": -3.372,
+          "savedTwinCagrGapPct": -1.045,
+          "savedTwinArithmeticGapPct": -0.912
+        },
+        "D5_TREE_SIGN": {
+          "calculated": {
+            "cagrPct": 8.484591557981647,
+            "arithAnnualPct": 8.394547142811653,
+            "volPct": 6.738208575978269,
+            "sharpeOverBil": 0.9294743081909507,
+            "betaToSpy": 0.38414819757002455,
+            "worstMonthPct": -4.986751929715472,
+            "compoundingTermPct": 0.09004441516999329
+          },
+          "errorsVsSaved": {
+            "cagrPct": -0.0004084420183527726,
+            "arithAnnualPct": -0.0004528571883462007,
+            "volPct": 0.00020857597826839935,
+            "sharpeOverBil": 0.00047430819095062304,
+            "betaToSpy": 0.00014819757002454415,
+            "worstMonthPct": 0.0002480702845284455,
+            "compoundingTermPct": 4.4415169993289316e-05
+          },
+          "monthlyOnlyMddPct": -13.73498008274977,
+          "savedDailyMddPct": -15.783,
+          "actualCagrGapVsS4Pct": -0.9144084420183525,
+          "savedAnnualArithmeticDifferenceVsS4Pct": -0.977,
+          "savedTwinCagrGapPct": -0.05,
+          "savedTwinArithmeticGapPct": -0.072
+        },
+        "D6_FORECAST_VOL_SLEEVE": {
+          "calculated": {
+            "cagrPct": 8.318187940261602,
+            "arithAnnualPct": 8.307566570181459,
+            "volPct": 7.6677769353613145,
+            "sharpeOverBil": 0.8062744704244736,
+            "betaToSpy": 0.46641318956679956,
+            "worstMonthPct": -5.8679714895860435,
+            "compoundingTermPct": 0.010621370080142967
+          },
+          "errorsVsSaved": {
+            "cagrPct": 0.00018794026160229294,
+            "arithAnnualPct": -0.0004334298185408869,
+            "volPct": -0.00022306463868559945,
+            "sharpeOverBil": 0.00027447042447359404,
+            "betaToSpy": 0.0004131895667995322,
+            "worstMonthPct": 2.8510413956794878e-05,
+            "compoundingTermPct": -0.0003786299198570327
+          },
+          "monthlyOnlyMddPct": -17.19060562388123,
+          "savedDailyMddPct": -17.749,
+          "actualCagrGapVsS4Pct": -1.0808120597383972,
+          "savedAnnualArithmeticDifferenceVsS4Pct": -1.064,
+          "savedTwinCagrGapPct": -0.614,
+          "savedTwinArithmeticGapPct": -0.592
+        },
+        "S1_SPY": {
+          "calculated": {
+            "cagrPct": 14.82391807840262,
+            "arithAnnualPct": 15.0099426464478,
+            "volPct": 14.945094979168843,
+            "sharpeOverBil": 0.8611922547056514,
+            "betaToSpy": 0.9999999999999998,
+            "worstMonthPct": -12.464088200814693,
+            "compoundingTermPct": -0.18602456804518042
+          },
+          "errorsVsSaved": {
+            "cagrPct": -8.192159737951954e-05,
+            "arithAnnualPct": -5.7353552199046476e-05,
+            "volPct": 9.497916884271262e-05,
+            "sharpeOverBil": 0.000192254705651429,
+            "betaToSpy": -2.220446049250313e-16,
+            "worstMonthPct": -8.820081469274044e-05,
+            "compoundingTermPct": -2.4568045180417553e-05
+          },
+          "monthlyOnlyMddPct": -23.928039921745714,
+          "savedDailyMddPct": -33.7,
+          "actualCagrGapVsS4Pct": 5.424918078402621,
+          "savedAnnualArithmeticDifferenceVsS4Pct": 5.638,
+          "savedTwinCagrGapPct": 0.0,
+          "savedTwinArithmeticGapPct": 0.0
+        },
+        "S2_QQQ": {
+          "calculated": {
+            "cagrPct": 19.354656462333274,
+            "arithAnnualPct": 19.566896413469692,
+            "volPct": 18.823455736493223,
+            "sharpeOverBil": 0.9264387752138644,
+            "betaToSpy": 1.1411971822950528,
+            "worstMonthPct": -13.595743197569055,
+            "compoundingTermPct": -0.21223995113641791
+          },
+          "errorsVsSaved": {
+            "cagrPct": -0.00034353766672623465,
+            "arithAnnualPct": -0.00010358653030806408,
+            "volPct": 0.00045573649322250276,
+            "sharpeOverBil": 0.000438775213864373,
+            "betaToSpy": 0.00019718229505283347,
+            "worstMonthPct": 0.00025680243094505784,
+            "compoundingTermPct": -0.00023995113641792076
+          },
+          "monthlyOnlyMddPct": -32.578601854923484,
+          "savedDailyMddPct": -35.122,
+          "actualCagrGapVsS4Pct": 9.955656462333275,
+          "savedAnnualArithmeticDifferenceVsS4Pct": 10.195,
+          "savedTwinCagrGapPct": 0.0,
+          "savedTwinArithmeticGapPct": 0.0
+        },
+        "S3_6040": {
+          "calculated": {
+            "cagrPct": 9.44039270149306,
+            "arithAnnualPct": 9.522530910907175,
+            "volPct": 9.729722460981275,
+            "sharpeOverBil": 0.7595195423949346,
+            "betaToSpy": 0.6272782064189395,
+            "worstMonthPct": -7.423035453648186,
+            "compoundingTermPct": -0.08213820941411498
+          },
+          "errorsVsSaved": {
+            "cagrPct": 0.0003927014930606987,
+            "arithAnnualPct": -0.00046908909282450395,
+            "volPct": -0.0002775390187252924,
+            "sharpeOverBil": -0.0004804576050654319,
+            "betaToSpy": 0.00027820641893949727,
+            "worstMonthPct": -3.54536481861345e-05,
+            "compoundingTermPct": -0.00013820941411497867
+          },
+          "monthlyOnlyMddPct": -20.412905093240862,
+          "savedDailyMddPct": -21.208,
+          "actualCagrGapVsS4Pct": 0.04139270149306107,
+          "savedAnnualArithmeticDifferenceVsS4Pct": 0.15,
+          "savedTwinCagrGapPct": 0.0,
+          "savedTwinArithmeticGapPct": 0.0
+        },
+        "S4_BALANCED": {
+          "calculated": {
+            "cagrPct": 9.398830203459706,
+            "arithAnnualPct": 9.372038498149914,
+            "volPct": 8.490841155654854,
+            "sharpeOverBil": 0.8538227153310015,
+            "betaToSpy": 0.5325738756191072,
+            "worstMonthPct": -6.294617456431362,
+            "compoundingTermPct": 0.026791705309792135
+          },
+          "errorsVsSaved": {
+            "cagrPct": -0.00016979654029292135,
+            "arithAnnualPct": 3.8498149914190094e-05,
+            "volPct": -0.00015884434514568113,
+            "sharpeOverBil": -0.0001772846689984675,
+            "betaToSpy": -0.000426124380892845,
+            "worstMonthPct": 0.00038254356863820504,
+            "compoundingTermPct": -0.00020829469020786431
+          },
+          "monthlyOnlyMddPct": -17.506839167318724,
+          "savedDailyMddPct": -18.157,
+          "actualCagrGapVsS4Pct": -0.00016979654029292135,
+          "savedAnnualArithmeticDifferenceVsS4Pct": 0,
+          "savedTwinCagrGapPct": 0.0,
+          "savedTwinArithmeticGapPct": 0.0
+        },
+        "S5_EQUAL4": {
+          "calculated": {
+            "cagrPct": 7.817487181116833,
+            "arithAnnualPct": 7.761533804576004,
+            "volPct": 6.556120214403484,
+            "sharpeOverBil": 0.8646266993648951,
+            "betaToSpy": 0.29704819490017187,
+            "worstMonthPct": -4.452134726714219,
+            "compoundingTermPct": 0.055953376540829325
+          },
+          "errorsVsSaved": {
+            "cagrPct": 0.00048718111683321297,
+            "arithAnnualPct": -0.00046619542399550795,
+            "volPct": 0.00012021440348419787,
+            "sharpeOverBil": -0.00037330063510487843,
+            "betaToSpy": 4.819490017188288e-05,
+            "worstMonthPct": -0.00013472671421865812,
+            "compoundingTermPct": -4.6623459170676285e-05
+          },
+          "monthlyOnlyMddPct": -12.196831844096966,
+          "savedDailyMddPct": -12.802,
+          "actualCagrGapVsS4Pct": -1.5815128188831657,
+          "savedAnnualArithmeticDifferenceVsS4Pct": -1.611,
+          "savedTwinCagrGapPct": 0.0,
+          "savedTwinArithmeticGapPct": -0.0
+        },
+        "S6_RISK_BUDGET_IV": {
+          "calculated": {
+            "cagrPct": 6.872777885827319,
+            "arithAnnualPct": 6.915349785646418,
+            "volPct": 7.127201578508599,
+            "sharpeOverBil": 0.6774568782246038,
+            "betaToSpy": 0.2590237698308214,
+            "worstMonthPct": -5.061278593419716,
+            "compoundingTermPct": -0.042571899819098924
+          },
+          "errorsVsSaved": {
+            "cagrPct": -0.00022211417268103162,
+            "arithAnnualPct": 0.0003497856464180771,
+            "volPct": 0.0002015785085989208,
+            "sharpeOverBil": 0.0004568782246037184,
+            "betaToSpy": 2.376983082141848e-05,
+            "worstMonthPct": -0.0002785934197158113,
+            "compoundingTermPct": 0.0004281001809010726
+          },
+          "monthlyOnlyMddPct": -16.053469938573826,
+          "savedDailyMddPct": -17.603,
+          "actualCagrGapVsS4Pct": -2.52622211417268,
+          "savedAnnualArithmeticDifferenceVsS4Pct": -2.457,
+          "savedTwinCagrGapPct": 0.076,
+          "savedTwinArithmeticGapPct": 0.055
+        },
+        "S7_VOLTARGET_SPY": {
+          "calculated": {
+            "cagrPct": 11.590732140000704,
+            "arithAnnualPct": 11.791276640335234,
+            "volPct": 12.485370284678632,
+            "sharpeOverBil": 0.7748995310037053,
+            "betaToSpy": 0.787962740569875,
+            "worstMonthPct": -11.244134685579088,
+            "compoundingTermPct": -0.20054450033453008
+          },
+          "errorsVsSaved": {
+            "cagrPct": -0.0002678599992957942,
+            "arithAnnualPct": 0.00027664033523322473,
+            "volPct": 0.0003702846786328706,
+            "sharpeOverBil": -0.00010046899629467809,
+            "betaToSpy": -3.725943012500288e-05,
+            "worstMonthPct": -0.000134685579087801,
+            "compoundingTermPct": 0.00045549966546992726
+          },
+          "monthlyOnlyMddPct": -18.303564635575555,
+          "savedDailyMddPct": -31.877,
+          "actualCagrGapVsS4Pct": 2.1917321400007044,
+          "savedAnnualArithmeticDifferenceVsS4Pct": 2.419,
+          "savedTwinCagrGapPct": -2.012,
+          "savedTwinArithmeticGapPct": -1.925
+        }
+      }
+    }
+  },
+  "targetWeightDenominators": {
+    "D1_TREND_SIGN": {
+      "allDecisions": 131,
+      "executedDecisionsBeforeEnd": 130,
+      "lastIncludedDecision": "2026-10-30",
+      "lastExecution": "2026-11-02",
+      "backtestEnd": "2026-10-30",
+      "largestWeightDifferencePctPoints": 0.09688784497944858,
+      "averageIncludingUnexecutedLast": {
+        "SPY": 0.42748091603053434,
+        "QQQ": 0.0,
+        "IEF": 0.12595419847328243,
+        "TLT": 0.0,
+        "SHY": 0.0,
+        "BIL": 0.3748091603053435,
+        "GLD": 0.07175572519083968,
+        "UUP": 0.0
+      },
+      "averageOfExecutedTargets": {
+        "SPY": 0.4269230769230769,
+        "QQQ": 0.0,
+        "IEF": 0.12692307692307692,
+        "TLT": 0.0,
+        "SHY": 0.0,
+        "BIL": 0.3738461538461539,
+        "GLD": 0.0723076923076923,
+        "UUP": 0.0
+      }
+    },
+    "D2_ERC_COV": {
+      "allDecisions": 131,
+      "executedDecisionsBeforeEnd": 130,
+      "lastIncludedDecision": "2026-10-30",
+      "lastExecution": "2026-11-02",
+      "backtestEnd": "2026-10-30",
+      "largestWeightDifferencePctPoints": 0.08108663534938665,
+      "averageIncludingUnexecutedLast": {
+        "SPY": 0.2783060381679389,
+        "QQQ": 0.0,
+        "IEF": 0.48827437404580154,
+        "TLT": 0.0,
+        "SHY": 0.0,
+        "BIL": 0.0,
+        "GLD": 0.23341952671755725,
+        "UUP": 0.0
+      },
+      "averageOfExecutedTargets": {
+        "SPY": 0.2783979846153846,
+        "QQQ": 0.0,
+        "IEF": 0.4874635076923077,
+        "TLT": 0.0,
+        "SHY": 0.0,
+        "BIL": 0.0,
+        "GLD": 0.23413844615384616,
+        "UUP": 0.0
+      }
+    },
+    "D3_STATE_RULES": {
+      "allDecisions": 131,
+      "executedDecisionsBeforeEnd": 130,
+      "lastIncludedDecision": "2026-10-30",
+      "lastExecution": "2026-11-02",
+      "backtestEnd": "2026-10-30",
+      "largestWeightDifferencePctPoints": 0.18849089841456237,
+      "averageIncludingUnexecutedLast": {
+        "SPY": 0.4637404580152672,
+        "QQQ": 0.0,
+        "IEF": 0.24503816793893127,
+        "TLT": 0.0,
+        "SHY": 0.054961832061068694,
+        "BIL": 0.12480916030534349,
+        "GLD": 0.09999999999999998,
+        "UUP": 0.011450381679389313
+      },
+      "averageOfExecutedTargets": {
+        "SPY": 0.4634615384615385,
+        "QQQ": 0.0,
+        "IEF": 0.24692307692307688,
+        "TLT": 0.0,
+        "SHY": 0.05307692307692307,
+        "BIL": 0.125,
+        "GLD": 0.09999999999999999,
+        "UUP": 0.011538461538461539
+      }
+    },
+    "D4_RIDGE_SIGN": {
+      "allDecisions": 131,
+      "executedDecisionsBeforeEnd": 130,
+      "lastIncludedDecision": "2026-10-30",
+      "lastExecution": "2026-11-02",
+      "backtestEnd": "2026-10-30",
+      "largestWeightDifferencePctPoints": 0.30358191426893,
+      "averageIncludingUnexecutedLast": {
+        "SPY": 0.33587786259541985,
+        "QQQ": 0.0,
+        "IEF": 0.116793893129771,
+        "TLT": 0.0,
+        "SHY": 0.0,
+        "BIL": 0.4946564885496184,
+        "GLD": 0.05267175572519083,
+        "UUP": 0.0
+      },
+      "averageOfExecutedTargets": {
+        "SPY": 0.3346153846153846,
+        "QQQ": 0.0,
+        "IEF": 0.11538461538461539,
+        "TLT": 0.0,
+        "SHY": 0.0,
+        "BIL": 0.4976923076923077,
+        "GLD": 0.0523076923076923,
+        "UUP": 0.0
+      }
+    },
+    "D5_TREE_SIGN": {
+      "allDecisions": 131,
+      "executedDecisionsBeforeEnd": 130,
+      "lastIncludedDecision": "2026-10-30",
+      "lastExecution": "2026-11-02",
+      "backtestEnd": "2026-10-30",
+      "largestWeightDifferencePctPoints": 0.11802701115677938,
+      "averageIncludingUnexecutedLast": {
+        "SPY": 0.44274809160305345,
+        "QQQ": 0.0,
+        "IEF": 0.13969465648854962,
+        "TLT": 0.0,
+        "SHY": 0.0,
+        "BIL": 0.3465648854961832,
+        "GLD": 0.07099236641221375,
+        "UUP": 0.0
+      },
+      "averageOfExecutedTargets": {
+        "SPY": 0.4423076923076923,
+        "QQQ": 0.0,
+        "IEF": 0.14076923076923079,
+        "TLT": 0.0,
+        "SHY": 0.0,
+        "BIL": 0.3453846153846154,
+        "GLD": 0.07153846153846155,
+        "UUP": 0.0
+      }
+    },
+    "D6_FORECAST_VOL_SLEEVE": {
+      "allDecisions": 131,
+      "executedDecisionsBeforeEnd": 130,
+      "lastIncludedDecision": "2026-10-30",
+      "lastExecution": "2026-11-02",
+      "backtestEnd": "2026-10-30",
+      "largestWeightDifferencePctPoints": 0.0280846330005885,
+      "averageIncludingUnexecutedLast": {
+        "SPY": 0.4634899770992366,
+        "QQQ": 0.0,
+        "IEF": 0.3,
+        "TLT": 0.0,
+        "SHY": 0.0,
+        "BIL": 0.13651002290076336,
+        "GLD": 0.09999999999999998,
+        "UUP": 0.0
+      },
+      "averageOfExecutedTargets": {
+        "SPY": 0.46320913076923076,
+        "QQQ": 0.0,
+        "IEF": 0.3,
+        "TLT": 0.0,
+        "SHY": 0.0,
+        "BIL": 0.13679086923076925,
+        "GLD": 0.09999999999999999,
+        "UUP": 0.0
+      }
+    },
+    "S1_SPY": {
+      "allDecisions": 131,
+      "executedDecisionsBeforeEnd": 130,
+      "lastIncludedDecision": "2026-10-30",
+      "lastExecution": "2026-11-02",
+      "backtestEnd": "2026-10-30",
+      "largestWeightDifferencePctPoints": 0.0,
+      "averageIncludingUnexecutedLast": {
+        "SPY": 1.0,
+        "QQQ": 0.0,
+        "IEF": 0.0,
+        "TLT": 0.0,
+        "SHY": 0.0,
+        "BIL": 0.0,
+        "GLD": 0.0,
+        "UUP": 0.0
+      },
+      "averageOfExecutedTargets": {
+        "SPY": 1.0,
+        "QQQ": 0.0,
+        "IEF": 0.0,
+        "TLT": 0.0,
+        "SHY": 0.0,
+        "BIL": 0.0,
+        "GLD": 0.0,
+        "UUP": 0.0
+      }
+    },
+    "S2_QQQ": {
+      "allDecisions": 131,
+      "executedDecisionsBeforeEnd": 130,
+      "lastIncludedDecision": "2026-10-30",
+      "lastExecution": "2026-11-02",
+      "backtestEnd": "2026-10-30",
+      "largestWeightDifferencePctPoints": 0.0,
+      "averageIncludingUnexecutedLast": {
+        "SPY": 0.0,
+        "QQQ": 1.0,
+        "IEF": 0.0,
+        "TLT": 0.0,
+        "SHY": 0.0,
+        "BIL": 0.0,
+        "GLD": 0.0,
+        "UUP": 0.0
+      },
+      "averageOfExecutedTargets": {
+        "SPY": 0.0,
+        "QQQ": 1.0,
+        "IEF": 0.0,
+        "TLT": 0.0,
+        "SHY": 0.0,
+        "BIL": 0.0,
+        "GLD": 0.0,
+        "UUP": 0.0
+      }
+    },
+    "S3_6040": {
+      "allDecisions": 131,
+      "executedDecisionsBeforeEnd": 130,
+      "lastIncludedDecision": "2026-10-30",
+      "lastExecution": "2026-11-02",
+      "backtestEnd": "2026-10-30",
+      "largestWeightDifferencePctPoints": 5.551115123125783e-15,
+      "averageIncludingUnexecutedLast": {
+        "SPY": 0.6,
+        "QQQ": 0.0,
+        "IEF": 0.3999999999999999,
+        "TLT": 0.0,
+        "SHY": 0.0,
+        "BIL": 0.0,
+        "GLD": 0.0,
+        "UUP": 0.0
+      },
+      "averageOfExecutedTargets": {
+        "SPY": 0.6,
+        "QQQ": 0.0,
+        "IEF": 0.39999999999999997,
+        "TLT": 0.0,
+        "SHY": 0.0,
+        "BIL": 0.0,
+        "GLD": 0.0,
+        "UUP": 0.0
+      }
+    },
+    "S4_BALANCED": {
+      "allDecisions": 131,
+      "executedDecisionsBeforeEnd": 130,
+      "lastIncludedDecision": "2026-10-30",
+      "lastExecution": "2026-11-02",
+      "backtestEnd": "2026-10-30",
+      "largestWeightDifferencePctPoints": 1.3877787807814457e-15,
+      "averageIncludingUnexecutedLast": {
+        "SPY": 0.5,
+        "QQQ": 0.0,
+        "IEF": 0.3,
+        "TLT": 0.0,
+        "SHY": 0.0,
+        "BIL": 0.09999999999999998,
+        "GLD": 0.09999999999999998,
+        "UUP": 0.0
+      },
+      "averageOfExecutedTargets": {
+        "SPY": 0.5,
+        "QQQ": 0.0,
+        "IEF": 0.3,
+        "TLT": 0.0,
+        "SHY": 0.0,
+        "BIL": 0.09999999999999999,
+        "GLD": 0.09999999999999999,
+        "UUP": 0.0
+      }
+    },
+    "S5_EQUAL4": {
+      "allDecisions": 131,
+      "executedDecisionsBeforeEnd": 130,
+      "lastIncludedDecision": "2026-10-30",
+      "lastExecution": "2026-11-02",
+      "backtestEnd": "2026-10-30",
+      "largestWeightDifferencePctPoints": 0.0,
+      "averageIncludingUnexecutedLast": {
+        "SPY": 0.25,
+        "QQQ": 0.0,
+        "IEF": 0.25,
+        "TLT": 0.0,
+        "SHY": 0.0,
+        "BIL": 0.25,
+        "GLD": 0.25,
+        "UUP": 0.0
+      },
+      "averageOfExecutedTargets": {
+        "SPY": 0.25,
+        "QQQ": 0.0,
+        "IEF": 0.25,
+        "TLT": 0.0,
+        "SHY": 0.0,
+        "BIL": 0.25,
+        "GLD": 0.25,
+        "UUP": 0.0
+      }
+    },
+    "S6_RISK_BUDGET_IV": {
+      "allDecisions": 131,
+      "executedDecisionsBeforeEnd": 130,
+      "lastIncludedDecision": "2026-10-30",
+      "lastExecution": "2026-11-02",
+      "backtestEnd": "2026-10-30",
+      "largestWeightDifferencePctPoints": 0.09291623018203021,
+      "averageIncludingUnexecutedLast": {
+        "SPY": 0.21663081679389312,
+        "QQQ": 0.0,
+        "IEF": 0.551272038167939,
+        "TLT": 0.0,
+        "SHY": 0.0,
+        "BIL": 0.0,
+        "GLD": 0.23209709923664124,
+        "UUP": 0.0
+      },
+      "averageOfExecutedTargets": {
+        "SPY": 0.21638796153846152,
+        "QQQ": 0.0,
+        "IEF": 0.5505857307692308,
+        "TLT": 0.0,
+        "SHY": 0.0,
+        "BIL": 0.0,
+        "GLD": 0.23302626153846154,
+        "UUP": 0.0
+      }
+    },
+    "S7_VOLTARGET_SPY": {
+      "allDecisions": 131,
+      "executedDecisionsBeforeEnd": 130,
+      "lastIncludedDecision": "2026-10-30",
+      "lastExecution": "2026-11-02",
+      "backtestEnd": "2026-10-30",
+      "largestWeightDifferencePctPoints": 0.07749733998825697,
+      "averageIncludingUnexecutedLast": {
+        "SPY": 0.8992534580152671,
+        "QQQ": 0.0,
+        "IEF": 0.0,
+        "TLT": 0.0,
+        "SHY": 0.0,
+        "BIL": 0.10074654198473283,
+        "GLD": 0.0,
+        "UUP": 0.0
+      },
+      "averageOfExecutedTargets": {
+        "SPY": 0.8984784846153846,
+        "QQQ": 0.0,
+        "IEF": 0.0,
+        "TLT": 0.0,
+        "SHY": 0.0,
+        "BIL": 0.1015215153846154,
+        "GLD": 0.0,
+        "UUP": 0.0
+      }
+    }
+  },
+  "identity": {
+    "protocol.json": "0df428212f761b6e3fe4609dabe218df564105f820ead0babdbaf2533c948e43",
+    "data/manifest.json": "c1c44233908aa6d217c7bc065b944e7d81809590b96d924757972e00ab79e3b6",
+    "results/result.json": "2f6a155d7adbad650fb449bf7f4d2f9bf1fd5bc716bff10208a363b2eb5b7234"
+  },
+  "crossVendor": {
+    "SPY": {
+      "sessions": 2469,
+      "first": "2016-11-15",
+      "last": "2026-11-09",
+      "medianAbsDailyBp": 2.5457309275545015,
+      "p99AbsDailyBp": 18.18926548188236,
+      "sessionsAbove50bp": 6,
+      "returnCorrelation": 0.9984217764681622,
+      "caveat": "ETF price versus index price, ex-dividend dates excluded; neither dividends nor entire history independently verified"
+    },
+    "QQQ": {
+      "sessions": 2469,
+      "first": "2016-11-15",
+      "last": "2026-11-09",
+      "medianAbsDailyBp": 2.7837718641876563,
+      "p99AbsDailyBp": 21.39114164324251,
+      "sessionsAbove50bp": 4,
+      "returnCorrelation": 0.9987201317588202,
+      "caveat": "ETF price versus index price, ex-dividend dates excluded; neither dividends nor entire history independently verified"
+    }
+  },
+  "fxCounterexample": {
+    "navDate": "2026-10-30",
+    "appliedObservationDate": "2026-11-02",
+    "appliedRate": 1344.51,
+    "sameDayObservedRate": 1333.99,
+    "savedEndRates": {
+      "extended": 1344.51,
+      "primary": 1344.51
+    },
+    "releaseEvidence": "H10 daily values for previous business week released Monday 16:15 ET; Nov2 rate in Nov9 release",
+    "code": "cocktail.py:232-233; run_study.py:47-49,84-91",
+    "verdict": "NEXT_OBSERVATION_DATE_IS_NOT_PUBLICATION_TIMESTAMP; contemporaneous KRW PIT claim fails"
+  },
+  "repoSnapshotCrosscheck": {
+    "basis": "Same Yahoo provider, earlier fetch; not independent source",
+    "assets": {
+      "SPY": {
+        "sessions": 3946,
+        "maxAbsDailyBp": 2.5192475827917615,
+        "medianAbsDailyBp": 8.260059303211165e-10,
+        "sessionsAbove1bp": 3,
+        "cumulativeRatio": 1.0007883946311855
+      },
+      "QQQ": {
+        "sessions": 3946,
+        "maxAbsDailyBp": 0.707459195161686,
+        "medianAbsDailyBp": 1.325606291402437e-09,
+        "sessionsAbove1bp": 0,
+        "cumulativeRatio": 1.000075829577643
+      }
+    }
+  },
+  "riskForecastSavedIdentity": {
+    "corrSpyGld_h126": {
+      "R2IdentityResidual": 2.1473500000368517e-07,
+      "forecasts": 151,
+      "modelVsNaiveR2": 0.059815,
+      "savedNwT": 0.312432,
+      "verdict": "AGGREGATE_IDENTITY_ONLY_NOT_PREDICTION_OR_INFERENCE_REPLICATION"
+    },
+    "corrSpyGld_h21": {
+      "R2IdentityResidual": 3.0883199986231347e-07,
+      "forecasts": 161,
+      "modelVsNaiveR2": 0.151056,
+      "savedNwT": 1.737237,
+      "verdict": "AGGREGATE_IDENTITY_ONLY_NOT_PREDICTION_OR_INFERENCE_REPLICATION"
+    },
+    "corrSpyGld_h63": {
+      "R2IdentityResidual": 3.9509599991660593e-07,
+      "forecasts": 157,
+      "modelVsNaiveR2": 0.074452,
+      "savedNwT": 0.507134,
+      "verdict": "AGGREGATE_IDENTITY_ONLY_NOT_PREDICTION_OR_INFERENCE_REPLICATION"
+    },
+    "corrSpyIef_h126": {
+      "R2IdentityResidual": -1.463060002038219e-07,
+      "forecasts": 151,
+      "modelVsNaiveR2": -0.737639,
+      "savedNwT": -1.883465,
+      "verdict": "AGGREGATE_IDENTITY_ONLY_NOT_PREDICTION_OR_INFERENCE_REPLICATION"
+    },
+    "corrSpyIef_h21": {
+      "R2IdentityResidual": -5.114200000155833e-07,
+      "forecasts": 161,
+      "modelVsNaiveR2": 0.157366,
+      "savedNwT": 1.517596,
+      "verdict": "AGGREGATE_IDENTITY_ONLY_NOT_PREDICTION_OR_INFERENCE_REPLICATION"
+    },
+    "corrSpyIef_h63": {
+      "R2IdentityResidual": 4.724799997912754e-07,
+      "forecasts": 157,
+      "modelVsNaiveR2": -0.397936,
+      "savedNwT": -1.797449,
+      "verdict": "AGGREGATE_IDENTITY_ONLY_NOT_PREDICTION_OR_INFERENCE_REPLICATION"
+    },
+    "corrSpyUup_h126": {
+      "R2IdentityResidual": 4.527720000035984e-07,
+      "forecasts": 151,
+      "modelVsNaiveR2": 0.033194,
+      "savedNwT": 0.16301,
+      "verdict": "AGGREGATE_IDENTITY_ONLY_NOT_PREDICTION_OR_INFERENCE_REPLICATION"
+    },
+    "corrSpyUup_h21": {
+      "R2IdentityResidual": 3.870959999208168e-07,
+      "forecasts": 161,
+      "modelVsNaiveR2": 0.121768,
+      "savedNwT": 1.311656,
+      "verdict": "AGGREGATE_IDENTITY_ONLY_NOT_PREDICTION_OR_INFERENCE_REPLICATION"
+    },
+    "corrSpyUup_h63": {
+      "R2IdentityResidual": -2.2662400001038918e-07,
+      "forecasts": 157,
+      "modelVsNaiveR2": -0.035728,
+      "savedNwT": -0.241092,
+      "verdict": "AGGREGATE_IDENTITY_ONLY_NOT_PREDICTION_OR_INFERENCE_REPLICATION"
+    },
+    "logVolS4_h126": {
+      "R2IdentityResidual": 3.104999990455326e-08,
+      "forecasts": 151,
+      "modelVsNaiveR2": -0.294565,
+      "savedNwT": -1.362729,
+      "verdict": "AGGREGATE_IDENTITY_ONLY_NOT_PREDICTION_OR_INFERENCE_REPLICATION"
+    },
+    "logVolS4_h21": {
+      "R2IdentityResidual": -2.642480000369929e-07,
+      "forecasts": 161,
+      "modelVsNaiveR2": 0.086072,
+      "savedNwT": 0.870034,
+      "verdict": "AGGREGATE_IDENTITY_ONLY_NOT_PREDICTION_OR_INFERENCE_REPLICATION"
+    },
+    "logVolS4_h63": {
+      "R2IdentityResidual": 1.7488699999290702e-07,
+      "forecasts": 157,
+      "modelVsNaiveR2": 0.006689,
+      "savedNwT": 0.034833,
+      "verdict": "AGGREGATE_IDENTITY_ONLY_NOT_PREDICTION_OR_INFERENCE_REPLICATION"
+    },
+    "logVolSpy_h126": {
+      "R2IdentityResidual": -1.032299998815489e-07,
+      "forecasts": 151,
+      "modelVsNaiveR2": -0.38347,
+      "savedNwT": -1.536598,
+      "verdict": "AGGREGATE_IDENTITY_ONLY_NOT_PREDICTION_OR_INFERENCE_REPLICATION"
+    },
+    "logVolSpy_h21": {
+      "R2IdentityResidual": 2.245800001521303e-08,
+      "forecasts": 161,
+      "modelVsNaiveR2": 0.151591,
+      "savedNwT": 1.618585,
+      "verdict": "AGGREGATE_IDENTITY_ONLY_NOT_PREDICTION_OR_INFERENCE_REPLICATION"
+    },
+    "logVolSpy_h63": {
+      "R2IdentityResidual": -5.610600000149901e-07,
+      "forecasts": 157,
+      "modelVsNaiveR2": 0.01263,
+      "savedNwT": 0.071736,
+      "verdict": "AGGREGATE_IDENTITY_ONLY_NOT_PREDICTION_OR_INFERENCE_REPLICATION"
+    }
+  },
+  "trackB": {
+    "sourceHashChecks": {
+      "data/replay-corporate-actions.json": {
+        "match": true,
+        "sha256": "56953ff054ed4151105e01d66fca1d5fe061412d2b30aa7acae17525b2897b2b"
+      },
+      "data/us-unpriced-members.json": {
+        "match": true,
+        "sha256": "5206b031771ffc6766e2cfdfa53aee808c66e8dcf3feb40163e250cba94c1edc"
+      },
+      "docs/results/alpha-opportunity-model-v3-survivorship-audit.json": {
+        "match": true,
+        "sha256": "f0d9ed09880ffb75c6cc698dbb001e6f6879dee1991ede6ff6d365cc50f22902"
+      },
+      "docs/us-readiness/us-departed-dataset-admission-audit-v1.json": {
+        "match": true,
+        "sha256": "8f065811f5a5c17c8d97b80e7b4ebf57c9bec1c0918cfb09c31deadd58abd1ed"
+      }
+    },
+    "currentPlusDeparted": 827,
+    "departedPricedRenamedUnpricedSum": 324,
+    "noPanelDepartedSharePct": 65.4320987654321,
+    "terminatedInPricedPanel": 0,
+    "candidateRecoveredSessions": 186910,
+    "finalAdmittedSessions": 0,
+    "verdict": "BLOCKED_UNCHANGED_NO_INDEPENDENT_HISTORICAL_PERFORMANCE"
+  },
+  "notIndependentlyVerified": [
+    "XNYS exchange calendar: exchange_calendars is unavailable here; raw relative-date panels checked only",
+    "Strategy daily NAV and MDD: only monthly strategy NAV retained; no strategy rerun authorized",
+    "Twin NAV: not retained; only saved twin metrics and target arithmetic audited",
+    "Forecast predictions/residuals/training receipts: not retained; no model training authorized",
+    "Six non-equity ETFs: no independent provider snapshots",
+    "ALFRED vintages and original per-observation release timestamps"
+  ]
+}

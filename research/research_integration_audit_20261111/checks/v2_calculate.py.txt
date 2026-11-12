@@ -1,0 +1,113 @@
+"""Second reader arithmetic only: existing ledgers + pinned source rows; no backtest/fit."""
+from pathlib import Path
+from collections import defaultdict
+import ast,bisect,csv,gzip,hashlib,json,subprocess,sys
+import numpy as np
+import pandas as pd
+import xlrd
+ROOT=Path('/workspace/Investment'); OUT=Path('/workspace/integration-review-notes');sys.path.insert(0,str(ROOT))
+V2=ROOT/'research/ml_strategy_tournament_v2'; cfg=json.loads((V2/'config.json').read_text()); pin=cfg['rawSourceCommit']
+runid=json.loads((V2/'replay-verification.json').read_text())['runId'];rd=V2/'results'/runid
+sha=lambda b:hashlib.sha256(b).hexdigest()
+def readledger(name):return [json.loads(x) for x in gzip.decompress((rd/name).read_bytes()).splitlines()]
+def git(path,commit=pin):return subprocess.check_output(['git','cat-file','blob',commit+':'+path],cwd=ROOT)
+ac=readledger('RULE_ETF_ONLY-A_VERIFIED_CASH-account.jsonl.gz'); aa=readledger('RULE_ETF_ONLY-A_VERIFIED_CASH-assets.jsonl.gz'); days=[x['date'] for x in ac];di={d:i for i,d in enumerate(days)}
+h=json.loads(gzip.decompress((ROOT/'research/ml_strategy_tournament_v1/results/holdings-all.json.gz').read_bytes()))
+sel={c['id']:h[c['view']][c['id']] for c in cfg['candidates']}
+# Source columns inspected directly: date, market close and actual traded volume.
+xls=ROOT/'docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-standard.xls';sheet=xlrd.open_workbook(xls).sheet_by_index(0)
+assert sheet.cell_value(3,4)=='거래량'
+quotes={pd.to_datetime(str(sheet.cell_value(i,0)),format='%Y%m%d').strftime('%Y-%m-%d'):(float(sheet.cell_value(i,1)),float(sheet.cell_value(i,4))) for i in range(4,sheet.nrows)}
+bdoc=json.loads((ROOT/'docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json').read_text());exs={r['recordDate']:r['exDate'] for r in bdoc['distributions']}
+distributions=json.loads((V2/'vendor/069500-official-distributions-328.json').read_text());cash_events={}
+for r in distributions:
+ rec=pd.to_datetime(r['basicD'],format='%Y%m%d').strftime('%Y-%m-%d')
+ if rec in exs and days[0]<=exs[rec]<=days[-1]:cash_events[exs[rec]]=(float(r['dividA']),pd.to_datetime(r['payD'],format='%Y%m%d').strftime('%Y-%m-%d'))
+qty=1e8/quotes[days[0]][0];cash=0.;claims=[];navs=[];ent=fees=0.;gaps=[]
+for a,s in zip(ac,aa):
+ d=a['date'];pay=sum(v for pay,v in claims if pay<=d);cash+=pay;claims=[x for x in claims if x[0]>d]
+ if d in cash_events:
+  dps,paydate=cash_events[d];value=qty*dps;ent+=value
+  if paydate<=d:cash+=value
+  else:claims.append((paydate,value))
+ if d in {r['date'] for r in sel['RULE_ETF_ONLY']} and cash>0:
+  buy=cash/1.00025;fees+=cash-buy;qty+=buy/quotes[d][0];cash=0.
+ nav=qty*quotes[d][0]+cash+sum(v for _,v in claims);navs.append(nav);gaps.append(abs(nav-a['nav']))
+ assert quotes[d][1]>0 and abs(qty-s['quantity'])<1e-8
+nv=np.array(navs);ret=nv[1:]/nv[:-1]-1
+etf={'sessions':len(days),'distributionEvents':len(cash_events),'finalNavKrw':float(nv[-1]),'cagr252':float((nv[-1]/1e8)**(252/(len(days)-1))-1),'calendarCagr':float((nv[-1]/1e8)**(365.2425/(pd.Timestamp(days[-1])-pd.Timestamp(days[0])).days)-1),'mdd':float((nv/np.maximum.accumulate(nv)-1).min()),'grossDividendEntitlementsKrw':ent,'feesKrw':fees,'maxNavDifferenceKrw':max(gaps),'issuerXlsSha256':sha(xls.read_bytes()),'sameSourceIndependentArithmeticNotVendorCrosscheck':True}
+# Read vendor flags from the original immutable source objects.
+manifest=json.loads(git('ledger/historical/replay-v16/inputs.json'));events=[]
+for component,refs in manifest['components'].items():
+ if not component.startswith('corporate-events/20') or not '2016'<=component.split('/')[1][:4]<='2026':continue
+ for ref in refs:
+  raw=gzip.decompress(git('ledger/replay-inputs/objects/'+ref+'.json.gz'));assert sha(raw)==ref
+  for row in json.loads(raw):
+   if row.get('date') in di and row.get('ticker','').endswith('.KS') and (row.get('dividend') or float(row.get('split') or 1)!=1):events.append({**row,'sourceObject':ref})
+# Registered non-vendor right is a separate economic boundary.
+qpath=ROOT/'docs/audits/kr-alpha-atlas-phase-c-integrity/mirae-source-recovery/006800-source-correction.json';q=json.loads(qpath.read_text())
+events.append({'date':'2018-01-23','ticker':'006800.KS','dividend':None,'split':None,'sourceObject':None,'sourceDocumentSha256':sha(qpath.read_bytes()),'registeredRightBoundary':True})
+# Existing v1 daily TR ledger: read only actual recorded exposure, no reconstructed portfolio.
+drift={}
+for sid,view in [('XGB_CI_RANK_h1','forced'),('RULE_INDUSTRY_MOMENTUM','gated')]:
+ p=ROOT/f'research/ml_strategy_tournament_independent_audit_v1/ledger-{view}-{sid}.csv.gz'
+ with gzip.open(p,'rt') as f:
+  drift[sid]={(r['date'],r['ticker']):float(r['value'])/float(r['nav']) for r in csv.DictReader(f)}
+allstocks=set();counts={};hitrows=[]
+for sid,ds in sel.items():
+ stocks={t for r in ds for t,w in r['weights'].items() if w>0};allstocks|=stocks;counts[sid]={'decisions':len(ds),'stockDecisions':sum(bool(r['weights']) for r in ds),'stocks':len(stocks)}
+ dd=[r['date'] for r in ds];hits=[]
+ for e in events:
+  i=bisect.bisect_left(dd,e['date'])-1 # entitlement on pre-ex-date holdings, before same-day rebalance
+  if i<0 or ds[i]['weights'].get(e['ticker'],0)<=0:continue
+  w=ds[i]['weights'][e['ticker']];t=e['ticker'];j=i
+  while j>0 and ds[j-1]['weights'].get(t,0)>0:j-=1
+  k=i+1
+  while k<len(ds) and ds[k]['weights'].get(t,0)>0:k+=1
+  end=ds[k]['date'] if k<len(ds) else 'AFTER_CUTOFF'
+  prev=days[di[e['date']]-1] if di[e['date']]>0 else None
+  hits.append({**e,'candidate':sid,'savedWeightAtLastRebalance':w,'lastRebalance':dd[i],'heldFrom':dd[j],'heldUntilFirstZeroDecision':end,'priorSessionV1TRWeight':drift.get(sid,{}).get((prev,t)),'eventType':('UNVALUED_PREFERRED_SUBSCRIPTION_RIGHT' if e.get('registeredRightBoundary') else ('CASH_RED_FLAG' if float(e.get('split') or 1)==1 else 'SHARE_ACTION_RED_FLAG')),'officialSourceStatus':'NOT_ESTABLISHED_IN_V2_ADMISSION','extraCertifiedSessionsFromFlagResolutionAlone':0,'conclusionImpact':'UNKNOWN_FULL_PERIOD_CAGR_NO_BOUND'})
+ hits.sort(key=lambda r:(r['date'],r['ticker']))
+ distinctdates=sorted({r['date'] for r in hits})
+ for row in hits:
+  nxt=next((d for d in distinctdates if d>row['date']),None)
+  row['nextHeldRecordedBoundaryDate']=nxt
+  row['conditionalAdditionalObservedSessionsUntilNextVendorFlag']=di[nxt]-di[row['date']] if nxt else len(days)-di[row['date']]
+  row['conditionalDayLimit']='Arithmetic event calendar only; requires all earlier flags on path resolved; ignores other possible gaps/missing actions. NOT certified and not a new path.'
+ for row in hits:
+  if row['ticker']=='006800.KS':
+   row['officialSourceStatus']='OFFICIAL_RIGHT_TERMS_EXIST_BUT_ECONOMIC_VALUE_UNKNOWN' if row.get('registeredRightBoundary') else 'PARTIAL_OFFICIAL_CASH_STOCK_TERMS_NO_COMPLETE_ACTUAL_PAY_DELIVERY_COVERAGE'
+ hitrows.extend(hits)
+ counts[sid]['heldVendorFlags']=sum(not x.get('registeredRightBoundary') for x in hits)
+ counts[sid]['heldRegisteredRightBoundaries']=sum(bool(x.get('registeredRightBoundary')) for x in hits)
+# Saved blocked account rows and exact original quantities at initial observed stop.
+blocks={}
+for sid in sel:
+ a=readledger(sid+'-A_VERIFIED_CASH-account.jsonl.gz');o=readledger(sid+'-A_OBSERVED_PREFIX_INCOMPLETE_EVENT_COVERAGE-account.jsonl.gz');e=readledger(sid+'-A_OBSERVED_PREFIX_INCOMPLETE_EVENT_COVERAGE-events.jsonl.gz')
+ blocks[sid]={'strictValuedSessions':sum(r['nav'] is not None for r in a),'observedValuedSessionsNotCertified':sum(r['nav'] is not None for r in o),'observedFirstEvent':next((r for r in e if r.get('kind')=='SOURCE_BLOCKED'),None)}
+# Direct official 006800 source content confirmation and raw arithmetic.
+qpath=ROOT/'docs/audits/kr-alpha-atlas-phase-c-integrity/mirae-source-recovery/006800-source-correction.json';q=json.loads(qpath.read_text());qr={r['date']:r for r in q['rawQuotes']};d='2026-03-16';prev=max(x for x in qr if x<d)
+mir={'date':d,'previousClose':qr[prev]['close'],'rawClose':qr[d]['close'],'dps':300.,'sharesPerOldShare':.0073206,'gross':(qr[d]['close']*1.0073206+300)/qr[prev]['close'],'right2018Value':q['rightsEvent']['valueOrAdjustmentFactor'],'sourceHtmlChecks':{}}
+for f in ['2026-issuer-dividend.html.gz','2018-rights-decision-final.html.gz']:
+ b=gzip.decompress((qpath.parent/f).read_bytes());s=b.decode('utf-8','replace');mir['sourceHtmlChecks'][f]={'rawSha256':sha(b),'has300': '300' in s,'hasRatio': '0.0073206' in s,'has2018RightsAllocation': '0.1979557317' in s}
+for f in ['mirae-stock-dividend-declaration.html','mirae-share-delivery-koscom.html']:
+ b=(ROOT/'docs/audits/kr-alpha-atlas-phase-c-integrity/stock-sources'/f).read_bytes();st=b.decode('utf-8','replace');mir['sourceHtmlChecks'][f]={'rawSha256':sha(b),'hasRatio': '0.0073206' in st,'hasListingDate': '2026년04월22일' in st}
+# Verify pinned #328 exact bytes, without inheriting source completeness.
+prov=json.loads((V2/'vendor/PROVENANCE.json').read_text());reuse={}
+for local,up in [( 'shareholder_inputs_328.py.txt',prov['path']),('069500-official-distributions-328.json',prov['additionalExactFiles']['vendor/069500-official-distributions-328.json']['upstream']),('input_pins_328.py',prov['additionalExactFiles']['vendor/input_pins_328.py']['upstream'])]:
+ try:raw=git(up,prov['commit']);reuse[local]={'exactMatchesUpstream':raw==(V2/'vendor'/local).read_bytes(),'upstreamSha256':sha(raw)}
+ except subprocess.CalledProcessError:reuse[local]={'gitObjectUnavailable':True}
+# Saved result hashes and original artifacts independently compared.
+manifest2=json.loads((rd/'result-manifest.json').read_text());savedhashes={'resultFiles':len(manifest2['files']),'resultMismatches':[p for p,h in manifest2['files'].items() if sha((rd/p).read_bytes())!=h]}
+closure=json.loads((V2/'source-closure-verification.json').read_text());savedhashes.update({'protectedFiles':len(closure['hashes']),'protectedMismatches':[p for p,h in closure['hashes'].items() if sha((ROOT/p).read_bytes())!=h]})
+# Adapted helper must preserve every upstream economic function/class AST.
+upast=ast.parse((V2/'vendor/shareholder_inputs_328.py.txt').read_text());adast=ast.parse((V2/'vendor/shareholder_inputs.py').read_text());funcs=lambda tr:{n.name:ast.dump(n) for n in tr.body if isinstance(n,(ast.FunctionDef,ast.ClassDef))};of,nf=funcs(upast),funcs(adast);asteq={'upstreamFunctionsAndClasses':len(of),'allPreserved':all(nf.get(k)==v for k,v in of.items())};assert asteq['allPreserved']
+# Synthetic future-append input check, no fit.
+from research.ml_strategy_tournament_v1 import tournament as T1
+from research.ml_strategy_tournament_v2 import refit as T2
+f=pd.DataFrame({'date':pd.to_datetime(['2019-01-04','2019-02-01','2019-03-01','2020-01-03','2020-02-07']),'ticker':['SYN.KS']*5,'y126':[.1]*5,'exit126':pd.to_datetime(['2019-09-01','2019-10-01','2019-11-01','2020-08-01','2020-09-01']),'A07_momentum12_1':[.2]*5,'B01_bookToMarket':[np.nan]*5,'MKT_trend126':[1,2,3,100,200]})
+future=f.iloc[[4]*20].copy();future['date']=pd.bdate_range('2025-01-03',periods=20);future['exit126']=pd.Timestamp('2025-12-31');future['B01_bookToMarket']=999.
+ff=pd.concat([f,future],ignore_index=True);pit={'v1AddsFutureOnlyB01':'B01_bookToMarket' in T1.feature_layers(ff)[0]['company'],'v1BeforeHasB01':'B01_bookToMarket' in T1.feature_layers(f)[0]['company'],'v2PastFoldUnchanged':T2.fold_inputs(f,2020)[-1]==T2.fold_inputs(ff,2020)[-1],'realFits':0}
+res={'role':'SAME_TEAM_SECOND_READER_NOT_EXTERNAL_INDEPENDENT_APPROVAL','head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),'etf':etf,'selectionCounts':counts,'distinctStocks':len(allstocks),'blocks':blocks,'mirae':mir,'upstream328ExactBytes':reuse,'featurePITCounterexample':pit,'savedHashChecks':savedhashes,'adapted328FunctionASTCheck':asteq,'eventInventoryScope':{'candidateEventRows':len(hitrows),'uniqueSecurityDates':len({(x['date'],x['ticker']) for x in hitrows}),'tickersTouched':len({x['ticker'] for x in hitrows}),'sameCandidateSecurityDateDuplicates':len(hitrows)-len({(x['candidate'],x['date'],x['ticker']) for x in hitrows})},'heldEventOrBoundaryRows':hitrows,'limits':['No new backtest, selection, real fit, workflow or lock mutation.','Unflagged corporate actions may exist; vendor event count is no completeness certificate.','Only 2 existing daily v1 TR ledgers supply measured drifted exposure. LGBM shows original saved target weights only.','Event-only fixes cannot waive strict stock source admission or certify full-period economics.']}
+(OUT/'v2-review-calculations.json').write_text(json.dumps(res,indent=2,ensure_ascii=False)+'\n')
+print(json.dumps({k:v for k,v in res.items() if k not in ['heldEventOrBoundaryRows','blocks']},ensure_ascii=False,indent=2));print('FIRST_EVENTS',json.dumps({sid:[r for r in hitrows if r['candidate']==sid][:4] for sid in sel},ensure_ascii=False,indent=2))
