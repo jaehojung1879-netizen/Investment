@@ -9,6 +9,13 @@
     "E4": "PROSPECTIVE_OBSERVED — economics evaluated on records published before the decision, with enough horizon and power",
     "E5": "DEPLOYMENT_ELIGIBLE — pre-set source, statistical, economic and operational conditions met, plus a separate Owner approval"
   },
+  "tracks": {
+    "A_VERIFIED_STRATEGY": "E5 and no block (E5 itself requires an Owner approval reference)",
+    "B_PROSPECTIVE_VIRTUAL": "at least E1, a rule registered in prospective-protocol-v1.json (prospectiveRule) and no block that applies to prospective use (prospectiveBlocks); recorded as UNVERIFIED_PROSPECTIVE_VIRTUAL, never as a recommendation",
+    "C_WATCHLIST_ONLY": "everything else: may be shown and discussed, never recorded as a portfolio",
+    "PRODUCTION": "the production rule is reported as the production copy arm; its own grade still applies",
+    "BENCHMARK": "the regional ETF"
+  },
   "rule": "Levels are sequential: an item's grade is the highest level whose criteria AND every lower level's criteria are met. A famous paper never skips a level. Blocking states (SOURCE_BLOCKED, PIT_UNSAFE, PIT_CONTAMINATED, GOVERNANCE_CLOSED) are listed separately and make an item ineligible for a decision whatever its grade.",
   "items": [
     {"id": "PROD_FOUR_FACTOR_KR", "region": "KR", "label": "Production weekly-passive-first four-factor alpha ranking", "path": "v3.B2",
@@ -54,11 +61,14 @@
     {"id": "ACADEMIC_PROFITABILITY_US", "region": "US", "label": "B1 academic path: long-only large-cap profitability", "path": "v3.B1",
      "criteria": {"E1": {"met": true, "ref": "literature.json FF5 (RMW/OP), NM2013, QMJ; academic-path.json measured post-publication"},
                   "E2": {"met": false, "ref": "academic-path.json verdict WEAK_OR_ABSENT_AFTER_PUBLICATION (big high-OP +1.03%/yr, HAC t 0.81, 2013-2026); local stock-level replication blocked by survivorship"}},
-     "blocks": [], "decisionUse": "Research screen only (census B1 lists); official selection 0."},
+     "blocks": [], "decisionUse": "Research screen only (census B1 lists); official selection 0.",
+     "prospectiveRule": "B1_PROFITABILITY_V2 in prospective-protocol-v1.json", "prospectiveBlocks": []},
     {"id": "ACADEMIC_PROFITABILITY_KR", "region": "KR", "label": "B1 academic path: profitability (ROE proxy) in KR large caps", "path": "v3.B1",
      "criteria": {"E1": {"met": true, "ref": "literature.json QMJ (24 countries), NM2013"},
                   "E2": {"met": false, "ref": "KR historical stock research GOVERNANCE_CLOSED; quality sleeve rank IC not significant"}},
-     "blocks": ["GOVERNANCE_CLOSED"], "decisionUse": "Research screen only; any evidence must come from prospective records."},
+     "blocks": ["GOVERNANCE_CLOSED"], "decisionUse": "Research screen only; any evidence must come from prospective records.",
+     "prospectiveRule": "B1_PROFITABILITY_V2 in prospective-protocol-v1.json", "prospectiveBlocks": [],
+     "blockScope": "GOVERNANCE_CLOSED closes NEW HISTORICAL KR stock research (AGENTS v2.55); it does not forbid recording a prospective portfolio, which is the only route left to evidence."},
     {"id": "ETF_BASELINES", "region": "KR+US", "label": "069500.KS / SPY (QQQ comparison)", "path": "v3.B0",
      "criteria": {}, "blocks": [], "benchmark": true, "decisionUse": "Default holding."}
   ]

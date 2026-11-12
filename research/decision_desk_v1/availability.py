@@ -83,11 +83,33 @@ def cutoff_utc(region: str, as_of: str) -> pd.Timestamp:
 
 
 def available_fred(series: str, values: pd.Series, cutoff: pd.Timestamp) -> pd.Series:
-    """Observations of a FRED series whose release time is at or before the cutoff."""
-    keep = [d for d in values.index if (r := release_utc(series, d)) is not None and r <= cutoff]
+    """Observations of a FRED series whose release time is at or before the cutoff.
+
+    If the series carries revision metadata (attrs["revisedAtUtc"]: one timestamp, or {obs date: timestamp}),
+    an observation whose current value was set after the cutoff is DROPPED: the value known at the cutoff
+    is not in hand, and the revised one is future information (#335 G1). Without metadata a silent revision
+    cannot be detected, which is why the macro layer stays an open activation gate."""
+    rev = values.attrs.get("revisedAtUtc")
+
+    def revised_after(d) -> bool:
+        if rev is None:
+            return False
+        t = rev.get(d, rev.get(str(pd.Timestamp(d).date()))) if isinstance(rev, dict) else rev
+        return t is not None and pd.Timestamp(t) > cutoff
+    keep = [d for d in values.index if (r := release_utc(series, d)) is not None and r <= cutoff and not revised_after(d)]
     return values.loc[keep]
 
 
 def available_closes(region: str, closes: pd.Series, cutoff: pd.Timestamp) -> pd.Series:
+    """Closes public by the cutoff, in the units traded AT the cutoff.
+
+    Vendors rescale history for every later split. A split dated after the cutoff (attrs["splits"]:
+    {date: ratio}) is undone on the closes before it, so the series shows the as-traded level a reader
+    at the cutoff saw (#335 G9)."""
     keep = [d for d in closes.index if exchange_close_utc(region, d) <= cutoff]
-    return closes.loc[keep]
+    out = closes.loc[keep].copy()
+    for d, ratio in (closes.attrs.get("splits") or {}).items():
+        if exchange_close_utc(region, d) > cutoff:
+            out.loc[out.index < pd.Timestamp(d)] *= float(ratio)
+    out.attrs = {}
+    return out

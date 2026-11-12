@@ -8,6 +8,9 @@ ex-date close. A window that cannot be verified is SOURCE_BLOCKED, never 0%:
   UNVERIFIED_SPLIT       a split/consolidation inside the window not listed in verified-corporate-actions.json
   UNEXPLAINED_MOVE       a close-to-close move beyond the daily limit with no verified event
   NO_EXIT_CLOSE          no close on the exit session (delisting, data end)
+  NON_POSITIVE_PRICE     a close or a distribution that is zero, negative or not a number (a vendor placeholder)
+A SOURCE_BLOCKED outcome is not final: a later run with better data appends a new row that supersedes it
+(append-only, the blocked row stays). Every outcome says whether its record may enter the primary comparison.
 Prices are fetched once per evaluation run and frozen with SHA-256 under evaluations/<asOf>/.
 """
 from __future__ import annotations
@@ -20,6 +23,7 @@ import time
 import urllib.request
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 import availability as A
@@ -66,6 +70,10 @@ def window_block(region: str, ticker: str, df: pd.DataFrame, entry: str, exit_: 
     if missing:
         return f"MISSING_SESSION_CLOSE {missing[:3]}"
     win = have.loc[entry:exit_]
+    bad = win.index[~np.isfinite(win["close"].astype(float)) | (win["close"].astype(float) <= 0)
+                    | ~np.isfinite(win["dividend"].astype(float)) | (win["dividend"].astype(float) < 0)]
+    if len(bad):
+        return f"NON_POSITIVE_PRICE {bad[0].date()}"
     if "volume" in win and (win["volume"].fillna(0) == 0).any():
         return "ZERO_VOLUME_SESSION " + str(win.index[(win["volume"].fillna(0) == 0)][0].date())
     for d, ratio in win.loc[win["split"] != 1.0, "split"].items():
@@ -79,10 +87,13 @@ def window_block(region: str, ticker: str, df: pd.DataFrame, entry: str, exit_: 
     return None
 
 
-def total_return(df: pd.DataFrame, entry: str, exit_: str) -> float:
+def total_return(df: pd.DataFrame, entry: str, exit_: str) -> float | None:
     w = df.dropna(subset=["close"]).loc[entry:exit_]
+    if (w["close"] <= 0).any() or not np.isfinite(w["close"]).all():
+        return None
     gross = (w["close"] + w["dividend"]) / w["close"].shift(1)
-    return float(gross.iloc[1:].prod() - 1)
+    out = float(gross.iloc[1:].prod() - 1)
+    return out if np.isfinite(out) else None
 
 
 def fetch_prices(store: Path, tickers: list[str], start: str) -> dict:
@@ -127,8 +138,12 @@ def load_store(store: Path) -> dict[str, pd.DataFrame]:
 def outcomes(rows: list[dict], prices: dict[str, pd.DataFrame], observed_at: str, cost_mult: float = 1.0) -> list[dict]:
     """Outcome rows for every record x horizon; PENDING rows are returned but should not be appended."""
     verified = verified_actions()
-    done = {(o["recordDigest"], o["horizon"], o.get("costMultiplier", 1.0)) for o in rows
-            if o.get("schema") == L.OUTCOME_SCHEMA and o["status"] != "PENDING"}
+    last = {}
+    for o in rows:
+        if o.get("schema") == L.OUTCOME_SCHEMA and o["status"] != "PENDING":
+            last[(o["recordDigest"], o["horizon"], o.get("costMultiplier", 1.0))] = o
+    done = {k for k, o in last.items() if o["status"] == "SCORED"}
+    excl = L.primary_exclusions([r for r in rows if r.get("schema") != L.OUTCOME_SCHEMA])
     out = []
     for r in rows:
         if r.get("schema") not in L.RECORD_SCHEMAS:
@@ -163,5 +178,12 @@ def outcomes(rows: list[dict], prices: dict[str, pd.DataFrame], observed_at: str
                 return total_return(prices[t], s, e) if t in prices else None
             o = L.evaluate(rec, h, sessions, tr, observed_at, blocked=blocked)
             o["costMultiplier"] = cost_mult
+            o["primaryComparisonEligible"] = not excl.get(r["digest"], ["UNKNOWN_RECORD"])
+            o["primaryExclusionReasons"] = excl.get(r["digest"], ["UNKNOWN_RECORD"])
+            prev = last.get((r["digest"], h, cost_mult))
+            if prev is not None:  # a SOURCE_BLOCKED row exists: supersede it only when the answer changed
+                if o["status"] == "PENDING" or (o["status"] == "SOURCE_BLOCKED" and o.get("missingDataReason") == prev.get("missingDataReason")):
+                    continue
+                o["supersedes"] = prev["digest"]
             out.append(o)
     return out

@@ -37,7 +37,13 @@ def raw_close(store: Path, sym: str) -> pd.Series:
     tz = res["meta"].get("exchangeTimezoneName", "UTC")
     idx = pd.to_datetime(res["timestamp"], unit="s", utc=True).tz_convert(tz).normalize().tz_localize(None)
     s = pd.Series(res["indicators"]["quote"][0]["close"], index=idx, dtype=float).dropna()
-    return s[~s.index.duplicated(keep="last")]
+    s = s[~s.index.duplicated(keep="last")]
+    splits = {}
+    for item in (res.get("events") or {}).get("splits", {}).values():
+        d = pd.Timestamp(item["date"], unit="s", tz="UTC").tz_convert(tz).normalize().tz_localize(None)
+        splits[d] = float(item["numerator"]) / float(item["denominator"])
+    s.attrs["splits"] = splits  # undone after the cutoff by availability.available_closes
+    return s
 
 
 def raw_fred(store: Path, series: str) -> pd.Series:
@@ -112,11 +118,14 @@ def build_packet(signal_commit: str, month: str, store: Path, sealed_at: pd.Time
         cutoff = A.cutoff_utc(region, r["asOfDate"])
         rows = E.candidate_rows(r)
         for row in rows:
-            row["gatesFailed"] = E.gates(row, r["freshness"])
+            row["gatesFailed"] = E.gates(row, r["freshness"], cutoff)
         regions[region] = {
             "receiptId": r["receiptId"], "receiptDigest": r["digest"], "asOfDate": r["asOfDate"],
             "informationCutoffUtc": iso(cutoff), "receiptGeneratedAt": r["generatedAt"],
             "productionStatus": r["status"], "productionWeights": r["weights"], "noTradeReason": r.get("noTradeReason"),
+            "fundamentalPublicationTimes": {"stated": sum(any((x.get("valuationProfitability") or {}).get(k) for k in E.PUBLICATION_KEYS) for x in rows),
+                                            "notStated": sum(not any((x.get("valuationProfitability") or {}).get(k) for k in E.PUBLICATION_KEYS) for x in rows),
+                                            "note": "a receipt that states no publication time is not evidence the fundamentals were public at the cutoff (activation gate G2)"},
             "calibrationOrdering": r.get("calibrationOrdering"), "costs": r["costs"], "freshness": r["freshness"],
             "modelVersion": r["inputs"]["modelVersion"], "siteDataSha256": r["inputs"]["siteDataSha256"],
             "market": market_layer(store, region, cutoff), "macro": macro_layer(store, region, cutoff),

@@ -73,7 +73,13 @@ def candidate_rows(receipt: dict) -> list[dict]:
 
 
 # ----------------------------------------------------------------------------- gates
-def gates(row: dict, freshness: dict) -> list[str]:
+PUBLICATION_KEYS = ("originalPublicationAtUtc", "vintageAtUtc", "publishedAtUtc", "availableFrom", "filingDate")
+
+
+def gates(row: dict, freshness: dict, cutoff=None) -> list[str]:
+    """Frozen gates G1-G5, plus G6_PUBLICATION when a cutoff is given: any stated publication or vintage
+    time of the fundamentals that is after the cutoff fails the name (#335 G2). A date-only value is
+    visible from the next day. An absent time is not trusted either way; packets flag it."""
     failed = []
     cov = row.get("coverage") or {}
     if freshness.get("status") != "FRESH" or cov.get("dataCompleteness") is None or cov["dataCompleteness"] < 0.75 \
@@ -90,6 +96,19 @@ def gates(row: dict, freshness: dict) -> list[str]:
     vp = row.get("valuationProfitability") or {}
     if row.get("sector") not in FINANCIAL_SECTORS and (vp.get("debtToEquity") is None or vp["debtToEquity"] >= 200):
         failed.append("G5_LEVERAGE")
+    if cutoff is not None:
+        cut = pd.Timestamp(cutoff)
+        cut = cut.tz_localize("UTC") if cut.tzinfo is None else cut
+        for k in PUBLICATION_KEYS:
+            v = vp.get(k)
+            if not v:
+                continue
+            t = pd.Timestamp(v)
+            if t.tzinfo is None:  # a date-only publication is public from the next day
+                t = (t.normalize() + pd.Timedelta(days=1)).tz_localize("UTC")
+            if t > cut:
+                failed.append("G6_PUBLICATION")
+                break
     return failed
 
 

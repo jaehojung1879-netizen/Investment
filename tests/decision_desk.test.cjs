@@ -182,3 +182,66 @@ test("evidence-first contract violations are refused", () => {
   delete missing.evidenceFirst;
   assert.equal(a.validDesk(missing), false);
 });
+
+test("the top panel separates production, unverified virtual strategy, AI candidates and verified strategies", () => {
+  for (const m of ["KR", "US"]) {
+    const html = a.deskMarkup(desk(), m, NOW);
+    const top = html.split('class="desk-h desk-four-h"')[1].split('<h3 class="desk-h">')[0];
+    for (const k of ["production", "virtual", "ai", "verified"]) assert.match(top, new RegExp(`data-desk-four="${k}"`));
+    const virt = top.split('data-desk-four="virtual"')[1].split("</article>")[0];
+    assert.match(virt, /가상·미검증/);
+    assert.match(virt, /매수 적격 아님/);
+    const ai = top.split('data-desk-four="ai"')[1].split("</article>")[0];
+    assert.match(ai, /연구 보류/);
+    assert.match(ai, /매수 적격이 아님/);
+    assert.match(top.split('data-desk-four="verified"')[1], /없음 \(0개\)/);
+  }
+});
+
+test("data integrity: drop sides, mixed report periods, stale share counts and the post-inspection rule are shown", () => {
+  const us = a.deskMarkup(desk(), "US", NOW);
+  assert.match(us, /data-desk-side="OUR_PIPELINE"/);
+  assert.match(us, /GOOGL\(마지막 공시 주식수 2020-06-30\)/);
+  assert.match(us, /data-desk-invalid="bookToPrice"/);  // WDC's B/P is shown struck, not silently used
+  assert.match(us, /data-desk-mixed/);
+  const kr = a.deskMarkup(desk(), "KR", NOW);
+  assert.match(kr, /402340\.KS: 영업이익률 27\.02 · 규칙이 없었다면 B1 5위로 심층검토 대상/);
+  assert.match(kr, /data-desk-branch="FACTOR_REFERENCE"/);
+  assert.match(kr, /data-desk-branch="B1"/);
+});
+
+test("profitability definitions say the ROE screen is not a reproduction of the academic strategies", () => {
+  const html = a.deskMarkup(desk(), "US", NOW);
+  for (const id of ["FF_OP", "NM_GPA", "B1_ROE"]) assert.match(html, new RegExp(`data-desk-definition="${id}"`));
+  assert.match(html, /재현한 것이 아닙니다/);
+});
+
+test("the next cohort shows four comparable arms with recording blocked", () => {
+  for (const m of ["KR", "US"]) {
+    const html = a.deskMarkup(desk(), m, NOW);
+    for (const k of ["ETF100", "B1_ROE", "PRODUCTION", "B1_PLUS_AI"]) assert.match(html, new RegExp(`data-desk-arm="${k}"`));
+    assert.match(html, /data-desk-activation>ACTIVATION_BLOCKED/);
+    assert.match(html, /data-desk-gate="CI_GREEN"/);
+  }
+  assert.match(a.deskMarkup(desk(), "US", NOW), /LRCX 제외\(INDUSTRY_CAP UNCLASSIFIED\)/);
+});
+
+test("primary-comparison exclusions are computed and shown on every past record", () => {
+  const html = a.deskLedgerMarkup(desk().regions.US, NOW);
+  assert.equal((html.match(/data-desk-primary="excluded"/g) || []).length, 3);
+  assert.match(html, /마감 전 공개 관측 없음\(커밋 시각 주장만 있음\)/);
+  const kr = a.deskLedgerMarkup(desk().regions.KR, NOW);
+  assert.equal((kr.match(/data-desk-primary="eligible"/g) || []).length, 2);
+});
+
+test("track and activation contract violations are refused", () => {
+  const fake = desk();
+  fake.evidenceFirst.grades.find((g) => g.id === "ACADEMIC_PROFITABILITY_US").track = "A_VERIFIED_STRATEGY";
+  assert.equal(a.validDesk(fake), false);
+  const active = desk();
+  active.evidenceFirst.prospective.activation = "ALLOWED";
+  assert.equal(a.validDesk(active), false);
+  const unlabelled = desk();
+  delete unlabelled.evidenceFirst.prospective.dryRun.KR.arms.B1_ROE.recordLabel;
+  assert.equal(a.validDesk(unlabelled), false);
+});

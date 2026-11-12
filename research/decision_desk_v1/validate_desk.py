@@ -24,10 +24,21 @@ def _alloc_ok(item: dict) -> None:
     for k in ("signalAsOf", "informationCutoff", "generatedAt", "executionAt"):
         if not item.get(k):
             raise DeskError(f"ALLOCATION_MISSING_{k} {item.get('id')}")
-    if str(item["generatedAt"])[:10] > str(item["executionAt"]):
+    if str(item["generatedAt"])[:10] > str(item["executionAt"])[:10]:
         raise DeskError(f"ALLOCATION_GENERATED_AFTER_EXECUTION {item.get('id')}")
-    if str(item["informationCutoff"]) > str(item["generatedAt"])[:10]:
+    if _when(item["informationCutoff"]) > _when(item["generatedAt"], date_end=False):
         raise DeskError(f"CUTOFF_AFTER_GENERATION {item.get('id')}")
+
+
+def _when(v, date_end: bool = True):
+    """A full timestamp compares as itself; a date-only cutoff is the end of that day (#335 G3)."""
+    import pandas as pd
+    t = pd.Timestamp(str(v))
+    if t.tzinfo is None:
+        t = t.tz_localize("UTC")
+    if len(str(v)) == 10 and date_end:
+        t = t + pd.Timedelta(days=1) - pd.Timedelta(seconds=1)
+    return t
 
 
 def validate(desk: dict) -> None:
@@ -60,6 +71,16 @@ def validate(desk: dict) -> None:
     for g in ef["grades"]:
         if g["decisionEligible"] and g["grade"] != "BENCHMARK" and (g["grade"] not in ("E4", "E5") or g["blocks"]):
             raise DeskError(f"ELIGIBLE_WITHOUT_EVIDENCE {g['id']}")
+    for g in ef["grades"]:
+        if g.get("track") == "A_VERIFIED_STRATEGY" and g["grade"] != "E5":
+            raise DeskError(f"VERIFIED_TRACK_WITHOUT_E5 {g['id']}")
+    pr = ef["prospective"]
+    if pr["activation"] == "ALLOWED" and any(x["status"] != "RESOLVED" and "ALL" in x["blocks"] for x in pr["gates"]):
+        raise DeskError("ACTIVATION_SHOWN_WHILE_A_GATE_IS_OPEN")
+    for region, v in pr["dryRun"].items():
+        for arm in v["arms"].values():
+            if arm.get("track") == "B_PROSPECTIVE_VIRTUAL" and arm.get("recordLabel") != "UNVERIFIED_PROSPECTIVE_VIRTUAL":
+                raise DeskError(f"VIRTUAL_ARM_WITHOUT_UNVERIFIED_LABEL {region}")
     for d in ef["dossiers"]["dossiers"]:
         low = d["nominatingEvidence"]["grade"] not in ("E2", "E3", "E4", "E5")
         if d["status"] not in ("HOLD_FOR_RESEARCH", "ETF_DEFAULT") and low:

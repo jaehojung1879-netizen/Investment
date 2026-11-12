@@ -47,6 +47,52 @@ def execution_after(region: str, published_at: str) -> tuple[str, str]:
     raise ReviewError("NO_SESSION_FOUND")
 
 
+_NUM = __import__("re").compile(r"\d+(?:[.,]\d+)*")
+_STRUCTURAL = {"generatedAt", "evidencePackSha256", "packetSha256", "cohort", "reviewer", "schema", "commitment", "ticker"}
+
+
+def _numbers_in(obj, out: set) -> set:
+    if isinstance(obj, dict):
+        for v in obj.values():
+            _numbers_in(v, out)
+    elif isinstance(obj, list):
+        for v in obj:
+            _numbers_in(v, out)
+    elif isinstance(obj, bool) or obj is None:
+        pass
+    elif isinstance(obj, (int, float)):
+        for d in (0, 1, 2, 3, 4):
+            out.add(f"{round(float(obj), d):.{d}f}".rstrip("0").rstrip(".") if d else str(int(round(float(obj)))))
+        out.add(str(obj))
+    else:
+        for tok in _NUM.findall(str(obj)):
+            out.add(tok.replace(",", ""))
+    return out
+
+
+def check_prose_numbers(review: dict, pack: dict) -> None:
+    """Every number written in a v2 review's free text must appear in the evidence packet (#335 G4).
+
+    A forecast such as "expected return 999%" quotes a number no evidence contains and is refused.
+    Rounding of a packet value (e.g. 28 for 28.18) is accepted; anything else is not."""
+    known = _numbers_in(pack, set()) | {"6", "12", "126", "252"}  # the protocol's own horizons
+
+    def walk(obj, key=""):
+        if isinstance(obj, dict):
+            for k, v in obj.items():
+                if k not in _STRUCTURAL:
+                    walk(v, k)
+        elif isinstance(obj, list):
+            for v in obj:
+                walk(v, key)
+        elif isinstance(obj, str):
+            for tok in _NUM.findall(obj):
+                t = tok.replace(",", "")
+                if t not in known and not (len(t) == 4 and t.startswith("20")):  # a year is a date, not a claim
+                    raise ReviewError(f"UNSOURCED_NUMBER_IN_PROSE {key}: {tok!r}")
+    walk(review.get("regions", {}))
+
+
 def check_review(review: dict, pack: dict) -> dict:
     """Enforce the frozen B2 rules; returns {region: [selected tickers]}."""
     if review["evidencePackSha256"] != pack["_sha256"]:

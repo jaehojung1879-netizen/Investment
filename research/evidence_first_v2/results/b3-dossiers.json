@@ -30,10 +30,10 @@
      "field": "operatingMargin",
      "label": "영업이익률 (TTM, PIT)",
      "source": {
-      "availableFrom": "2026-03-23",
+      "availableFrom": "2026-08-14",
       "census": "results/census.json sha256 a1de9c4fa941f776",
       "path": "signal-history ledger/fundamentals/pit-kr (derived)",
-      "reportDate": "2025-12-31"
+      "reportDate": "2026-06-30"
      },
      "value": 0.2481
     },
@@ -41,10 +41,10 @@
      "field": "debtToEquity",
      "label": "부채/자본",
      "source": {
-      "availableFrom": "2026-03-23",
+      "availableFrom": "2026-08-14",
       "census": "results/census.json sha256 a1de9c4fa941f776",
       "path": "signal-history ledger/fundamentals/pit-kr (derived)",
-      "reportDate": "2025-12-31"
+      "reportDate": "2026-06-30"
      },
      "value": 0.7007
     },
@@ -52,10 +52,10 @@
      "field": "bookToPrice",
      "label": "장부가/주가",
      "source": {
-      "availableFrom": "2026-10-30",
+      "availableFrom": "2026-08-14",
       "census": "results/census.json sha256 a1de9c4fa941f776",
-      "path": "KRX daily close",
-      "reportDate": "2026-10-30"
+      "path": "signal-history ledger/fundamentals/pit-kr (derived) / KRX daily close",
+      "reportDate": "2026-06-30"
      },
      "value": 0.0663
     },
@@ -80,6 +80,7 @@
     "다음 분기 공시에서 영업이익률이 뚜렷이 하락",
     "주가가 장기 이동평균 아래로 내려가고 중기 수익률이 음수로 전환"
    ],
+   "mixedReportPeriods": true,
    "name": "에이피알",
    "nominatingEvidence": {
     "blocks": [
@@ -139,10 +140,10 @@
      "field": "debtToEquity",
      "label": "부채/자본",
      "source": {
-      "availableFrom": "2026-03-16",
+      "availableFrom": "2026-08-14",
       "census": "results/census.json sha256 a1de9c4fa941f776",
       "path": "signal-history ledger/fundamentals/pit-kr (derived)",
-      "reportDate": "2025-12-31"
+      "reportDate": "2026-06-30"
      },
      "value": 1.4318
     },
@@ -150,10 +151,10 @@
      "field": "bookToPrice",
      "label": "장부가/주가",
      "source": {
-      "availableFrom": "2026-10-30",
+      "availableFrom": "2026-08-14",
       "census": "results/census.json sha256 a1de9c4fa941f776",
-      "path": "KRX daily close",
-      "reportDate": "2026-10-30"
+      "path": "signal-history ledger/fundamentals/pit-kr (derived) / KRX daily close",
+      "reportDate": "2026-06-30"
      },
      "value": 0.1478
     },
@@ -177,6 +178,7 @@
     "수주잔고 감소 공시",
     "영업이익률이 직전 연도 수준보다 낮아짐"
    ],
+   "mixedReportPeriods": true,
    "name": "HD현대일렉트릭",
    "nominatingEvidence": {
     "blocks": [
@@ -226,10 +228,10 @@
      "field": "operatingMargin",
      "label": "영업이익률 (TTM, PIT)",
      "source": {
-      "availableFrom": "2026-03-17",
+      "availableFrom": "2026-08-14",
       "census": "results/census.json sha256 a1de9c4fa941f776",
       "path": "signal-history ledger/fundamentals/pit-kr (derived)",
-      "reportDate": "2025-12-31"
+      "reportDate": "2026-06-30"
      },
      "value": 0.6804
     },
@@ -237,10 +239,10 @@
      "field": "debtToEquity",
      "label": "부채/자본",
      "source": {
-      "availableFrom": "2026-03-17",
+      "availableFrom": "2026-08-14",
       "census": "results/census.json sha256 a1de9c4fa941f776",
       "path": "signal-history ledger/fundamentals/pit-kr (derived)",
-      "reportDate": "2025-12-31"
+      "reportDate": "2026-06-30"
      },
      "value": 0.328
     },
@@ -248,10 +250,10 @@
      "field": "bookToPrice",
      "label": "장부가/주가",
      "source": {
-      "availableFrom": "2026-10-30",
+      "availableFrom": "2026-08-14",
       "census": "results/census.json sha256 a1de9c4fa941f776",
-      "path": "KRX daily close",
-      "reportDate": "2026-10-30"
+      "path": "signal-history ledger/fundamentals/pit-kr (derived) / KRX daily close",
+      "reportDate": "2026-06-30"
      },
      "value": 0.2605
     },
@@ -276,6 +278,7 @@
     "메모리 가격 하락 전환을 보여주는 실적 공시",
     "영업이익률의 연속 하락"
    ],
+   "mixedReportPeriods": true,
    "name": "SK하이닉스",
    "nominatingEvidence": {
     "blocks": [
@@ -324,10 +327,10 @@
      "field": "operatingMargin",
      "label": "영업이익률 (TTM, PIT)",
      "source": {
-      "availableFrom": "2026-03-16",
+      "availableFrom": "2026-08-14",
       "census": "results/census.json sha256 a1de9c4fa941f776",
       "path": "signal-history ledger/fundamentals/pit-kr (derived)",
-      "reportDate": "2025-12-31"
+      "reportDate": "2026-06-30"
      },
      "value": 0.1717
     },
@@ -335,10 +338,10 @@
      "field": "debtToEquity",
      "label": "부채/자본",
      "source": {
-      "availableFrom": "2026-03-16",
+      "availableFrom": "2026-08-14",
       "census": "results/census.json sha256 a1de9c4fa941f776",
       "path": "signal-history ledger/fundamentals/pit-kr (derived)",
-      "reportDate": "2025-12-31"
+      "reportDate": "2026-06-30"
      },
      "value": 0.5598
     },
@@ -346,10 +349,10 @@
      "field": "bookToPrice",
      "label": "장부가/주가",
      "source": {
-      "availableFrom": "2026-10-30",
+      "availableFrom": "2026-08-14",
       "census": "results/census.json sha256 a1de9c4fa941f776",
-      "path": "KRX daily close",
-      "reportDate": "2026-10-30"
+      "path": "signal-history ledger/fundamentals/pit-kr (derived) / KRX daily close",
+      "reportDate": "2026-06-30"
      },
      "value": 0.1211
     },
@@ -373,6 +376,7 @@
     "서비스 매출 성장 둔화 공시",
     "영업이익률 하락"
    ],
+   "mixedReportPeriods": true,
    "name": "HD현대마린솔루션",
    "nominatingEvidence": {
     "blocks": [
@@ -420,10 +424,10 @@
      "field": "operatingMargin",
      "label": "영업이익률 (TTM, PIT)",
      "source": {
-      "availableFrom": "2026-03-18",
+      "availableFrom": "2026-08-14",
       "census": "results/census.json sha256 a1de9c4fa941f776",
       "path": "signal-history ledger/fundamentals/pit-kr (derived)",
-      "reportDate": "2025-12-31"
+      "reportDate": "2026-06-30"
      },
      "value": 0.2263
     },
@@ -431,10 +435,10 @@
      "field": "debtToEquity",
      "label": "부채/자본",
      "source": {
-      "availableFrom": "2026-03-18",
+      "availableFrom": "2026-08-14",
       "census": "results/census.json sha256 a1de9c4fa941f776",
       "path": "signal-history ledger/fundamentals/pit-kr (derived)",
-      "reportDate": "2025-12-31"
+      "reportDate": "2026-06-30"
      },
      "value": 0.7753
     },
@@ -442,10 +446,10 @@
      "field": "bookToPrice",
      "label": "장부가/주가",
      "source": {
-      "availableFrom": "2026-10-30",
+      "availableFrom": "2026-08-14",
       "census": "results/census.json sha256 a1de9c4fa941f776",
-      "path": "KRX daily close",
-      "reportDate": "2026-10-30"
+      "path": "signal-history ledger/fundamentals/pit-kr (derived) / KRX daily close",
+      "reportDate": "2026-06-30"
      },
      "value": 0.1806
     },
@@ -469,6 +473,7 @@
     "해외 매출 감소 공시",
     "영업이익률 하락"
    ],
+   "mixedReportPeriods": true,
    "name": "삼양식품",
    "nominatingEvidence": {
     "blocks": [
@@ -516,10 +521,10 @@
      "field": "operatingMargin",
      "label": "영업이익률 (TTM, PIT)",
      "source": {
-      "availableFrom": "2026-05-20",
+      "availableFrom": "2026-08-26",
       "census": "results/census.json sha256 a1de9c4fa941f776",
       "path": "signal-history ledger/fundamentals/pit-us (derived)",
-      "reportDate": "2026-04-26"
+      "reportDate": "2026-07-26"
      },
      "value": 0.6521
     },
@@ -538,10 +543,10 @@
      "field": "bookToPrice",
      "label": "장부가/주가",
      "source": {
-      "availableFrom": "2026-11-10",
+      "availableFrom": "2026-05-20",
       "census": "results/census.json sha256 a1de9c4fa941f776",
-      "path": "Yahoo daily close",
-      "reportDate": "2026-11-10"
+      "path": "signal-history ledger/fundamentals/pit-us (derived) / Yahoo daily close",
+      "reportDate": "2026-04-26"
      },
      "value": 0.0475
     },
@@ -566,6 +571,7 @@
     "데이터센터 매출 성장의 뚜렷한 둔화 공시",
     "영업이익률 하락"
    ],
+   "mixedReportPeriods": true,
    "name": "NVDA",
    "nominatingEvidence": {
     "blocks": [],
@@ -583,7 +589,7 @@
    "statusReason": "The nominating screen is graded E1; nothing below E2 can propose capital. The decision for the region stays the ETF.",
    "ticker": "NVDA",
    "unknowns": [
-    "더 최근 분기 공시의 수익성 값(이 센서스에 반영되지 않은 이유는 확인하지 않음)",
+    "최근 분기 공시의 자본총계가 추출되지 않아 ROE와 부채비율은 이전 분기 공시 기준이고 영업이익률만 최근 분기 기준임(데이터 무결성 감사)",
     "고객 집중도",
     "수출 규제 영향"
    ]
@@ -612,10 +618,10 @@
      "field": "operatingMargin",
      "label": "영업이익률 (TTM, PIT)",
      "source": {
-      "availableFrom": "2026-04-30",
+      "availableFrom": "2026-10-29",
       "census": "results/census.json sha256 a1de9c4fa941f776",
       "path": "signal-history ledger/fundamentals/pit-us (derived)",
-      "reportDate": "2026-03-31"
+      "reportDate": "2026-09-30"
      },
      "value": 0.4219
     },
@@ -634,10 +640,10 @@
      "field": "bookToPrice",
      "label": "장부가/주가",
      "source": {
-      "availableFrom": "2026-11-10",
+      "availableFrom": "2026-04-30",
       "census": "results/census.json sha256 a1de9c4fa941f776",
-      "path": "Yahoo daily close",
-      "reportDate": "2026-11-10"
+      "path": "signal-history ledger/fundamentals/pit-us (derived) / Yahoo daily close",
+      "reportDate": "2026-03-31"
      },
      "value": 0.2886
     },
@@ -661,6 +667,7 @@
     "수주 또는 매출 가이던스 하향 공시",
     "부채/자본 비율 상승"
    ],
+   "mixedReportPeriods": true,
    "name": "KLAC",
    "nominatingEvidence": {
     "blocks": [],
@@ -706,10 +713,10 @@
      "field": "operatingMargin",
      "label": "영업이익률 (TTM, PIT)",
      "source": {
-      "availableFrom": "2026-05-05",
+      "availableFrom": "2026-11-02",
       "census": "results/census.json sha256 a1de9c4fa941f776",
       "path": "signal-history ledger/fundamentals/pit-us (derived)",
-      "reportDate": "2026-03-31"
+      "reportDate": "2026-09-30"
      },
      "value": 0.323
     },
@@ -728,10 +735,10 @@
      "field": "bookToPrice",
      "label": "장부가/주가",
      "source": {
-      "availableFrom": "2026-11-10",
+      "availableFrom": "2026-05-05",
       "census": "results/census.json sha256 a1de9c4fa941f776",
-      "path": "Yahoo daily close",
-      "reportDate": "2026-11-10"
+      "path": "signal-history ledger/fundamentals/pit-us (derived) / Yahoo daily close",
+      "reportDate": "2026-03-31"
      },
      "value": 0.0279
     },
@@ -755,6 +762,7 @@
     "반복 매출 성장 둔화 공시",
     "영업이익률 하락"
    ],
+   "mixedReportPeriods": true,
    "name": "IDXX",
    "nominatingEvidence": {
     "blocks": [],
@@ -800,10 +808,10 @@
      "field": "operatingMargin",
      "label": "영업이익률 (TTM, PIT)",
      "source": {
-      "availableFrom": "2026-05-01",
+      "availableFrom": "2026-10-23",
       "census": "results/census.json sha256 a1de9c4fa941f776",
       "path": "signal-history ledger/fundamentals/pit-us (derived)",
-      "reportDate": "2026-04-03"
+      "reportDate": "2026-10-02"
      },
      "value": 0.3941
     },
@@ -820,12 +828,13 @@
     },
     {
      "field": "bookToPrice",
+     "invalid": "SHARE_COUNT_CARRIED_FORWARD_OVER_15_MONTHS",
      "label": "장부가/주가",
      "source": {
-      "availableFrom": "2026-11-10",
+      "availableFrom": "2026-05-01",
       "census": "results/census.json sha256 a1de9c4fa941f776",
-      "path": "Yahoo daily close",
-      "reportDate": "2026-11-10"
+      "path": "signal-history ledger/fundamentals/pit-us (derived) / Yahoo daily close",
+      "reportDate": "2026-04-03"
      },
      "value": 0.0938
     },
@@ -849,6 +858,7 @@
     "저장장치 가격 하락을 보여주는 실적 공시",
     "영업이익률 하락"
    ],
+   "mixedReportPeriods": true,
    "name": "WDC",
    "nominatingEvidence": {
     "blocks": [],
@@ -894,10 +904,10 @@
      "field": "operatingMargin",
      "label": "영업이익률 (TTM, PIT)",
      "source": {
-      "availableFrom": "2026-04-23",
+      "availableFrom": "2026-10-22",
       "census": "results/census.json sha256 a1de9c4fa941f776",
       "path": "signal-history ledger/fundamentals/pit-us (derived)",
-      "reportDate": "2026-03-29"
+      "reportDate": "2026-09-27"
      },
      "value": 0.3695
     },
@@ -916,10 +926,10 @@
      "field": "bookToPrice",
      "label": "장부가/주가",
      "source": {
-      "availableFrom": "2026-11-10",
+      "availableFrom": "2026-04-23",
       "census": "results/census.json sha256 a1de9c4fa941f776",
-      "path": "Yahoo daily close",
-      "reportDate": "2026-11-10"
+      "path": "signal-history ledger/fundamentals/pit-us (derived) / Yahoo daily close",
+      "reportDate": "2026-03-29"
      },
      "value": 0.0377
     },
@@ -943,6 +953,7 @@
     "수주 둔화 공시",
     "영업이익률 하락"
    ],
+   "mixedReportPeriods": true,
    "name": "LRCX",
    "nominatingEvidence": {
     "blocks": [],
@@ -965,6 +976,7 @@
    ]
   }
  ],
+ "integritySha256": "df1674e1f78a833642cdaf046223cbc7ec5add16724570b3f9220c24291f0e68",
  "knowledgeLimit": "The model read no filing, news, guidance or analyst estimate dated after its training. background lines are model knowledge marked NOT_VERIFIED; no consensus or forecast is stated anywhere.",
  "path": "v3.B3",
  "regionDecision": {
@@ -973,5 +985,5 @@
  },
  "role": "EXPERIMENTAL_CHALLENGER",
  "schema": "B3_DOSSIERS_V1",
- "textSha256": "39fc09fec9309979946ec9c91cc1a5618989b54af61de1a0ef399d59ed24777f"
+ "textSha256": "030d02ac7ab74f303b2488dd1fd58dff2c8c8ecc946c60d5c7a47b091a304da2"
 }

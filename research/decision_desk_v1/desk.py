@@ -162,6 +162,7 @@ def cmd_check_review(month: str, reviewer: str) -> list[str]:
             raise StageError("REVIEW_IDENTITY")
         if review["generatedAt"] < pk["sealedAtUtc"]:
             raise StageError("REVIEW_BEFORE_PACKET")
+        J.check_prose_numbers(review, pk)
     pk = json.loads(pk_path.read_text())
     pk["_sha256"] = sha256(pk_path)
     sel = J.check_review(_as_v1_review(review), pk)
@@ -203,6 +204,12 @@ def build_v2_records(month: str, now: str) -> tuple[list[dict], list[dict]]:
     available = [r for r in primary + arms if review_path(month, r).exists() and committed_unchanged(review_path(month, r))]
     indep = independence(month, available) if available else {}
     reviews = {r: json.loads(review_path(month, r).read_text()) for r in available}
+    for r, rv in reviews.items():  # the same stage checks as check-review, on the decide path itself
+        if rv.get("schema") != "B2_AI_REVIEW_V2" or rv.get("reviewer") != r:
+            raise StageError(f"REVIEW_IDENTITY {r}")
+        if rv["generatedAt"] < pk["sealedAtUtc"]:
+            raise StageError(f"REVIEW_BEFORE_PACKET {r}: generated {rv['generatedAt']} before the packet seal {pk['sealedAtUtc']}")
+        J.check_prose_numbers(rv, pk)
     selections = {r: J.check_review(_as_v1_review(reviews[r]), pk) for r in available}
     hashes = {"protocolV2": sha256(P.PROTOCOL_V2), "packet": pk["_sha256"], "reviewers": sha256(P.REVIEWERS),
               "reviews": {r: sha256(review_path(month, r)) for r in available},
@@ -295,7 +302,8 @@ def cmd_annotate(month: str, category: str, paths: list[str], regions: list[str]
 
 def cmd_verify_publication(month: str) -> list[dict]:
     rows = L.read(LEDGER)
-    done = {d for a in rows if a.get("schema") == L.ANNOTATION_SCHEMA and a["category"] in ("PUBLICATION_VERIFIED", "PUBLICATION_LATE")
+    done = {d for a in rows if a.get("schema") == L.ANNOTATION_SCHEMA
+            and a["category"] in ("PUBLICATION_VERIFIED", "PUBLICATION_LATE", "PUBLICATION_NOT_OBSERVED")
             for d in a["recordDigests"]}
     out = []
     for r in rows:
@@ -306,11 +314,19 @@ def cmd_verify_publication(month: str) -> list[dict]:
             continue  # not yet in a public commit; verify again after pushing
         deadline = r.get("registrationDeadlineUtc") or r["plannedExecutionCloseUtc"]
         when = pd.Timestamp(c[1]).tz_convert("UTC")
-        ok = when < pd.Timestamp(deadline)
-        out.append(L.append(LEDGER, {"schema": L.ANNOTATION_SCHEMA, "cohort": month,
-                                     "category": "PUBLICATION_VERIFIED" if ok else "PUBLICATION_LATE",
-                                     "recordDigests": [r["digest"]], "createdAt": now_utc(),
-                                     "detail": f"line first committed in {c[0]} at {when.strftime('%Y-%m-%dT%H:%M:%SZ')} (committer time; public on a remote branch); deadline {deadline}",
+        observed = now_utc()
+        # Committer time is set by the committer. Only an observation of the public commit made BEFORE the deadline
+        # proves the record was public in time (#335 G8); a later check can say no more than "not observed".
+        if when >= pd.Timestamp(deadline):
+            cat = "PUBLICATION_LATE"
+        elif observed <= deadline:
+            cat = "PUBLICATION_VERIFIED"
+        else:
+            cat = "PUBLICATION_NOT_OBSERVED"
+        out.append(L.append(LEDGER, {"schema": L.ANNOTATION_SCHEMA, "cohort": month, "category": cat,
+                                     "recordDigests": [r["digest"]], "createdAt": observed,
+                                     "detail": f"line first committed in {c[0]} at {when.strftime('%Y-%m-%dT%H:%M:%SZ')} (committer time); "
+                                               f"public reachability observed {observed}; deadline {deadline}",
                                      "publicationCommit": c[0]}))
     return out
 
@@ -363,10 +379,13 @@ def cmd_evaluate(as_of: str, fetch: bool) -> list[dict]:
         EV.fetch_prices(store, tickers, start)
     prices = EV.load_store(store) if (store / "manifest.json").exists() else {}
     observed = f"{as_of}T23:59:59Z" if len(as_of) == 10 else as_of
-    outs = EV.outcomes(rows, prices, observed)
-    for o in outs:
-        if o["status"] != "PENDING":
-            L.append(LEDGER, o)
+    outs = []
+    for mult in (1.0, 2.0):  # base costs and the 2x stress, both written
+        batch = EV.outcomes(rows, prices, observed, cost_mult=mult)
+        for o in batch:
+            if o["status"] != "PENDING":
+                L.append(LEDGER, o)
+        outs += batch
     return outs
 
 

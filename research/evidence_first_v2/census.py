@@ -56,7 +56,7 @@ def jsonl(path: str) -> list[dict]:
 
 
 # ----------------------------------------------------------------------------- fundamentals
-FIELDS = ("roe", "operatingMargin", "debtToEquity", "bookValuePerShare")
+FIELDS = ("roe", "operatingMargin", "debtToEquity", "bookValuePerShare", "profitMargin")
 
 
 def latest_filings(rows: list[dict], as_of: str) -> dict[str, dict]:
@@ -160,7 +160,11 @@ def momentum_12_2(close: pd.Series, as_of: str) -> float | None:
 
 
 # ----------------------------------------------------------------------------- census
-def funnel_stage(counts: list, name: str, survivors: set, dropped: dict) -> set:
+def funnel_stage(counts: list, name: str, survivors: set, dropped: dict, trace: dict | None = None) -> set:
+    if trace is not None:
+        for code, ts in dropped.items():
+            for t in ts:
+                trace.setdefault(t, {"stage": name, "code": code})
     counts.append({"stage": name, "remaining": len(survivors), "dropped": {k: len(v) for k, v in dropped.items() if v}})
     return survivors
 
@@ -175,13 +179,16 @@ def b1_screen(rows: dict[str, dict], large: set[str]) -> dict:
     return {"eligible": len(elig), "topQuintile": ranked[:q], "deepReview": ranked[:5]}
 
 
-def census_region(region: str, members: dict[str, dict], prices, fund: dict[str, dict], production: dict) -> dict:
+def census_region(region: str, members: dict[str, dict], prices, fund: dict[str, dict], production: dict,
+                  trace: dict | None = None) -> dict:
+    """trace (optional) receives each ticker's drop stage and code; it never changes the census output."""
     as_of = AS_OF[region]
+    trace = {} if trace is None else trace
     counts: list = []
     names = {t: m.get("name", t) for t, m in members.items()}
     s = funnel_stage(counts, "0 원래 유니버스", set(members), {})
     drop = {"PREFERRED_OR_NON_COMMON": {t for t in s if region == "KR" and PREFERRED.search(names[t] or "")}}
-    s = funnel_stage(counts, "1 상장·보통주 신원", s - set().union(*drop.values()), drop)
+    s = funnel_stage(counts, "1 상장·보통주 신원", s - set().union(*drop.values()), drop, trace)
     drop = {"NO_CLOSE_ON_AS_OF": set(), "ZERO_VOLUME_LAST_20": set(), "LOW_TRADED_VALUE": set()}
     for t in s:
         px = prices.get(t)
@@ -194,7 +201,7 @@ def census_region(region: str, members: dict[str, dict], prices, fund: dict[str,
                 drop["ZERO_VOLUME_LAST_20"].add(t)
             elif (last["close"] * last["volume"]).median() < KR_MIN_TRADED_VALUE:
                 drop["LOW_TRADED_VALUE"].add(t)
-    s = funnel_stage(counts, "2 매매 가능(가격·거래·유동성)", s - set().union(*drop.values()), drop)
+    s = funnel_stage(counts, "2 매매 가능(가격·거래·유동성)", s - set().union(*drop.values()), drop, trace)
     drop = {"PRICE_HISTORY_UNDER_252": set(), "CORPORATE_ACTION_UNRESOLVED": set()}
     closes, share_drift = {}, set()
     for t in s:
@@ -212,7 +219,7 @@ def census_region(region: str, members: dict[str, dict], prices, fund: dict[str,
             if sh.max() / sh.min() > 1.01:
                 share_drift.add(t)
         closes[t] = c
-    s = funnel_stage(counts, "3 가격 이력·기업행동", s - set().union(*drop.values()), drop)
+    s = funnel_stage(counts, "3 가격 이력·기업행동", s - set().union(*drop.values()), drop, trace)
     counts[-1]["kept_shareCountDriftOver1pct"] = len(share_drift)
     drop = {"NO_PIT_FILING": set(), "FILING_OLDER_THAN_15M": set(), "PROFITABILITY_MISSING": set(),
             "OPERATING_LINE_MISSING_ACCOUNTING_DEFINITION": set(), "BOOK_VALUE_OR_LEVERAGE_MISSING": set()}
@@ -235,6 +242,7 @@ def census_region(region: str, members: dict[str, dict], prices, fund: dict[str,
             continue
         if abs(fl["operatingMargin"]) > 1.0:  # added after inspection (SK Square 27.0): a data-validity rule, not a performance rule
             drop["OPERATING_LINE_MISSING_ACCOUNTING_DEFINITION"].add(t)
+            trace[t] = {"stage": "4 PIT 재무 충족·팩터 계산 가능", "code": "OPERATING_MARGIN_ABOVE_100PCT_RULE", "fields": fl}
             continue
         if fl.get("bookValuePerShare") is None or fl.get("debtToEquity") is None:
             drop["BOOK_VALUE_OR_LEVERAGE_MISSING"].add(t)
@@ -243,7 +251,7 @@ def census_region(region: str, members: dict[str, dict], prices, fund: dict[str,
         factor_rows[t] = {"roe": fl["roe"], "operatingMargin": fl["operatingMargin"], "debtToEquity": fl["debtToEquity"],
                           "bookToPrice": fl["bookValuePerShare"] / close, "momentum12_2": momentum_12_2(closes[t], as_of),
                           "roeFrom": f["fieldSources"]["roe"], "close": close}
-    s = funnel_stage(counts, "4 PIT 재무 충족·팩터 계산 가능", set(factor_rows), drop)
+    s = funnel_stage(counts, "4 PIT 재무 충족·팩터 계산 가능", set(factor_rows), drop, trace)
     ages = [(pd.Timestamp(as_of) - pd.Timestamp(r["roeFrom"]["reportDate"])).days for r in factor_rows.values()]
     counts[-1]["profitabilityPeriodAgeDays"] = {"median": float(np.median(ages)) if ages else None, "max": max(ages) if ages else None}
     counts[-1]["rulesAddedAfterInspection"] = ["|operatingMargin| > 1 treated as an accounting-definition mismatch"]
@@ -315,9 +323,29 @@ def run(fetch_prices: bool = False) -> dict:
             "survivorshipStatement": "The US census lists today's members only. It supports a current screen, never a historical performance claim."}
 
 
+def configure(signal_commit: str, as_of_kr: str, as_of_us: str, us_prices: Path) -> None:
+    """Point the census at a later cohort: pinned signal-history commit, decision dates, frozen US price store."""
+    global SIGNAL_COMMIT, US_PRICES
+    SIGNAL_COMMIT = signal_commit
+    AS_OF.update(KR=as_of_kr, US=as_of_us)
+    US_PRICES = us_prices
+
+
 if __name__ == "__main__":
-    res = run("--fetch-us-prices" in sys.argv)
-    OUT.parent.mkdir(exist_ok=True)
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--fetch-us-prices", action="store_true")
+    ap.add_argument("--signal-commit")
+    ap.add_argument("--as-of-kr")
+    ap.add_argument("--as-of-us")
+    ap.add_argument("--us-prices", type=Path, help="price store directory for this cohort (default data/us-prices)")
+    ap.add_argument("--out", type=Path, default=OUT)
+    a = ap.parse_args()
+    if a.signal_commit:
+        configure(a.signal_commit, a.as_of_kr, a.as_of_us, a.us_prices or US_PRICES)
+    OUT = a.out
+    res = run(a.fetch_us_prices)
+    OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(res, indent=1, ensure_ascii=False, sort_keys=True, default=float) + "\n")
     for g, v in res["regions"].items():
         print("==", g, v["asOf"])

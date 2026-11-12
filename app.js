@@ -901,9 +901,9 @@ async function loadResearchPublication(commit) {
 // Four publication types (#333): HISTORICAL_EXPLORATORY · CORRECTED_CASH_SCOPE ·
 // SOURCE_BLOCKED · RESEARCH_ALLOCATION_AS_OF, plus PRODUCTION_RECEIPT.
 const DESK = Object.freeze({
-  commit: "ae653662e06cc40144cb4526c3c9168e191face1",
+  commit: "__PIN_IN_FOLLOW_UP_COMMIT__",
   path: "research/decision_desk_v1/desk.json",
-  sha256: "fb005a25877efdb36f1ed876343b00c5541700f2eb059550fd85c43b2aa39c62",
+  sha256: "__PIN_IN_FOLLOW_UP_COMMIT__",
 });
 const DESK_TYPES = {
   HISTORICAL_EXPLORATORY: ["과거 탐색", "warn"],
@@ -945,6 +945,12 @@ function validDesk(d) {
   if (!ef || !Array.isArray(ef.grades) || !ef.dossiers || !ef.funnel) return false;
   for (const g of ef.grades)
     if (g.decisionEligible && g.grade !== "BENCHMARK" && (!["E4", "E5"].includes(g.grade) || g.blocks.length)) return false;
+  if (!ef.prospective || !ef.integrity) return false;
+  for (const g of ef.grades) if (g.track === "A_VERIFIED_STRATEGY" && g.grade !== "E5") return false;
+  if (ef.prospective.activation === "ALLOWED" && ef.prospective.gates.some((x) => x.status !== "RESOLVED" && x.blocks.includes("ALL"))) return false;
+  for (const v of Object.values(ef.prospective.dryRun))
+    for (const arm of Object.values(v.arms))
+      if (arm.track === "B_PROSPECTIVE_VIRTUAL" && arm.recordLabel !== "UNVERIFIED_PROSPECTIVE_VIRTUAL") return false;
   for (const x of ef.dossiers.dossiers) {
     const low = !["E2", "E3", "E4", "E5"].includes(x.nominatingEvidence?.grade);
     if (!["HOLD_FOR_RESEARCH", "ETF_DEFAULT"].includes(x.status) && low) return false;
@@ -1051,9 +1057,14 @@ function deskLedgerMarkup(reg, now) {
   const rows = reg.deskRecords || [];
   const approx = (d, days) => new Date(Date.parse(`${d}T00:00:00Z`) + days * 86400000).toISOString().slice(0, 7);
   return `<div class="desk-table-wrap"><table class="desk-table"><thead><tr><th>경로</th><th>최초 판단(신호)</th><th>정보 마감</th><th>생성·공개</th><th>선택·비중</th><th>기준지수</th><th>126세션</th><th>252세션</th><th>상태</th></tr></thead><tbody>${rows
-    .map((r) => `<tr data-desk-record="${esc(r.path)}"><td>${esc(r.v3Path || r.path)}<br><span class="digest">기존 ${esc(r.path)}</span></td><td>${esc(r.signalAsOf)}</td><td>${esc(r.informationCutoff)}</td><td>${esc(r.generatedAt)}<br>${esc(r.publishedAt)}</td><td>${weightsText(r.weights)}</td><td>${esc(r.benchmark)}</td><td>${horizonCell(r, 126, approx(r.executionAt, 183))}</td><td>${horizonCell(r, 252, approx(r.executionAt, 365))}</td><td><span class="pill warn">${esc(r.status)}</span> ${(r.annotations || []).map((a) => annotationBadge(a.category)).join(" ")}</td></tr>`)
+    .map((r) => `<tr data-desk-record="${esc(r.path)}"><td>${esc(r.v3Path || r.path)}<br><span class="digest">기존 ${esc(r.path)}</span></td><td>${esc(r.signalAsOf)}</td><td>${esc(r.informationCutoff)}</td><td>${esc(r.generatedAt)}<br>${esc(r.publishedAt)}</td><td>${weightsText(r.weights)}</td><td>${esc(r.benchmark)}</td><td>${horizonCell(r, 126, approx(r.executionAt, 183))}</td><td>${horizonCell(r, 252, approx(r.executionAt, 365))}</td><td><span class="pill warn">${esc(r.status)}</span> ${(r.annotations || []).map((a) => annotationBadge(a.category)).join(" ")} ${primaryBadge(r)}</td></tr>`)
     .join("")}</tbody></table></div><p class="notice">실행 예정일 이후 실제 경과한 세션만 평가합니다. 비용 차감 실현 성과는 지평 종료 전까지 비워 둡니다. 현재 기록은 dry-run이며, 전향 원장 활성화에는 Owner 승인이 필요합니다. 최초 기록 ${rows.length ? esc(rows[0].publishedAt) : "없음"} · 조회 ${new Date(now).toISOString().slice(0, 16)}Z</p>`;
 }
+const EXCL_KO = { PIT_CONTAMINATED: "PIT 오염", PUBLICATION_LATE: "마감 후 공개", PUBLICATION_NOT_OBSERVED: "마감 전 공개 관측 없음",
+  PUBLICATION_NOT_OBSERVED_BEFORE_DEADLINE: "마감 전 공개 관측 없음(커밋 시각 주장만 있음)" };
+const primaryBadge = (r) => (!r.primaryExclusionReasons ? "" : r.primaryExclusionReasons.length
+  ? `<span class="pill blocked" data-desk-primary="excluded">주 비교 제외: ${r.primaryExclusionReasons.map((x) => esc(EXCL_KO[x] || x)).join(" · ")}</span>`
+  : `<span class="pill" data-desk-primary="eligible">주 비교 대상</span>`);
 const ratio = (v, d = 1) => (finite(v) ? `${(v * 100).toFixed(d)}%` : "—");
 const GRADE_CLS = { E0: "blocked", E1: "warn", E2: "", E3: "", E4: "", E5: "", BENCHMARK: "" };
 const BLOCK_KO = { SOURCE_BLOCKED: "원천 차단", PIT_UNSAFE: "PIT 불안전", PIT_CONTAMINATED: "PIT 오염", GOVERNANCE_CLOSED: "연구 종결(거버넌스)" };
@@ -1065,10 +1076,31 @@ function eligibilityMarkup(ef, reg, market) {
   return `<div class="desk-table-wrap"><table class="desk-table"><thead><tr><th>모델·경로</th><th>판단에 쓸 수 있나</th><th>차단 상태</th><th>현재 쓰임</th></tr></thead><tbody>${rows
     .map((g) => `<tr data-desk-eligibility="${esc(g.id)}"><td>${esc(g.label)}<br><span class="digest">${esc(g.path)}</span></td><td>${g.grade === "BENCHMARK" ? "기본 보유" : g.decisionEligible ? "예" : "아니오"}</td><td>${blockBadges(g.blocks) || "—"}</td><td>${esc(g.decisionUse)}</td></tr>`)
     .join("")}</tbody></table></div>
-    <div class="desk-grid"><article class="desk-item"><b>확인된 사실</b><ul>${reg.facts.known.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></article><article class="desk-item"><b>데이터 한계</b><ul>${reg.facts.limits.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></article></div>`;
+    <div class="desk-grid"><article class="desk-item"><b>확인된 사실</b><ul>${reg.facts.known.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></article><article class="desk-item"><b>데이터 한계</b><ul>${reg.facts.limits.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></article></div>
+    ${integrityMarkup(ef.integrity.regions[market], market)}`;
+}
+const SIDE_KO = { OUR_PIPELINE: "우리 수집 공백", OUR_PIPELINE_OR_FILER_UNRESOLVED: "수집·추출 공백 또는 기업 미기재(미판별)", COMPANY_STATE: "기업 상태(분모 음수 등)",
+  COMPANY_REPORTING_FORMAT: "기업 보고 형식(영업이익 항목 없음)", RULE_ADDED_AFTER_INSPECTION: "자료 확인 후 추가한 규칙", TIMING: "공개 시점 전", UNRESOLVED: "미판별" };
+function integrityMarkup(it, market) {
+  const sides = Object.entries(it.dropSides.bySide).map(([k, v]) => `<tr data-desk-side="${esc(k)}"><td>${esc(SIDE_KO[k] || k)}</td><td>${esc(v)}</td></tr>`).join("");
+  const reasons = Object.entries(it.dropSides.byReason).map(([r, sub]) => `<li><b>${esc(r)}</b> ${Object.entries(sub).map(([k, v]) => `${esc(k)} ${esc(v)}`).join(" · ")}</li>`).join("");
+  const flagged = Object.entries(it.shareCounts.flagged);
+  const opm = Object.entries(it.opmRule.removed).map(([t, v]) => `${esc(t)}: 영업이익률 ${fmt(v.operatingMargin, 2)} · ${v.wouldEnterDeepReview ? `규칙이 없었다면 B1 ${esc(v.roeRankIfKept)}위로 심층검토 대상` : "규칙이 없어도 B1 비대상"}`).join("<br>");
+  const per = it.periods;
+  const snap = it.membershipSnapshot;
+  return `<h4>재무·유니버스 데이터 정합성 (4단계 탈락 원인)</h4>
+    <div class="desk-table-wrap"><table class="desk-table"><thead><tr><th>탈락 원인 쪽</th><th>종목 수</th></tr></thead><tbody>${sides}</tbody></table></div>
+    <details><summary>사유별 세부</summary><ul>${reasons}</ul><p class="notice">${esc(it.dropSides.method)}</p></details>
+    <ul class="desk-integrity">
+      <li data-desk-periods><b>보고기간과 공개일</b> 팩터 계산 ${esc(per.factorRows)}종목 중 ${esc(per.rowsMixingReportPeriods)}종목은 ROE·영업이익률·부채비율이 서로 다른 공시 기간에서 왔습니다(필드별 최신값 방식). 공개 지연 중앙값 ${esc(per.publicationLagDays?.median)}일, 보고기간 경과 중앙값 ${esc(per.ageDays?.median)}일. 최신성 기준: ${esc(per.freshnessRule)}</li>
+      <li data-desk-shares><b>주식수</b> ${flagged.length ? `${flagged.length}종목은 주식수가 15개월 넘게 이월되어 주당 값(장부가/주가)이 무효입니다: ${flagged.map(([t, v]) => `${esc(t)}(마지막 공시 주식수 ${esc(v.lastShareCountAsFiled)})`).join(", ")}. ${esc(it.shareCounts.affects)}` : "이월 주식수 문제 없음"}</li>
+      <li data-desk-opm><b>|영업이익률|&gt;1 규칙(자료 확인 후 추가)</b> ${opm || "해당 없음"} · 판정 ${esc(it.opmRule.verdict)}</li>
+      <li><b>유니버스 스냅샷</b> ${market === "US" ? `${esc(snap.file)} 마지막 구성 변경 ${esc(snap.lastMembershipChange)} (커밋 ${esc(String(snap.lastCommitAt).slice(0, 10))}), 기준일과 ${esc(snap.gapDays)}일 차이 — ${esc(snap.note)}` : `KRX 시가총액 상위 300 스냅샷 ${esc(snap)}`}</li>
+    </ul>`;
 }
 function funnelMarkup(f, ef, market) {
-  const stages = f.stages.map((s) => `<tr data-desk-funnel="${esc(s.stage)}"><td>${esc(s.stage)}</td><td>${esc(s.remaining)}</td><td>${s.dropped && Object.keys(s.dropped).length ? Object.entries(s.dropped).map(([k, v]) => `${esc(k)} ${esc(v)}`).join(" · ") : s.reason ? esc(s.reason) : "—"}</td></tr>`).join("");
+  const BR = { MAIN: "본선", FACTOR_REFERENCE: "참고 분기(4단계에서)", B1: "B1 분기(4단계에서)" };
+  const stages = f.stages.map((s) => `<tr data-desk-funnel="${esc(s.stage)}" data-desk-branch="${esc(s.branch)}"><td>${esc(s.stage)}<br><span class="digest">${esc(BR[s.branch] || s.branch)}</span></td><td>${esc(s.remaining)}</td><td>${s.dropped && Object.keys(s.dropped).length ? Object.entries(s.dropped).map(([k, v]) => `${esc(k)} ${esc(v)}`).join(" · ") : s.reason ? esc(s.reason) : "—"}</td></tr>`).join("");
   const pc = f.productionComparison;
   const list = (xs) => (xs.length ? xs.map(esc).join(" · ") : "없음");
   return `<p class="digest">유니버스 원천: ${esc(f.universeSource)} · 기준일 ${esc(f.asOf)}</p>
@@ -1088,8 +1120,18 @@ function academicMarkup(ef, f, market) {
     <p>판정 <span class="pill warn" data-desk-verdict="${esc(a.verdict)}">${esc(a.verdict)}</span> · 자료 ${esc(a.latestMonth)}까지 · Bonferroni 유의 ${Object.values(a.significantAtBonferroni).some(Boolean) ? "있음" : "없음"}</p>
     <div class="desk-table-wrap"><table class="desk-table"><thead><tr><th>포트폴리오</th><th>기간</th><th>연 초과(시장 대비)</th><th>HAC t</th><th>비용 0.5%p 후</th><th>12개월 양(+) 비율</th><th>최대 상대낙폭</th></tr></thead><tbody>${ports}</tbody></table></div>
     <p class="notice">${esc(a.gradeEffect)} ${market === "KR" ? "한국은 같은 공개 자료가 없고 과거 종목 연구가 종결되어 측정하지 않았습니다." : ""}</p>
+    <h4>수익성 정의 — 세 가지는 서로 다른 방법론입니다</h4>${definitionsMarkup(ef.integrity, market)}
     <h4>B1 학술 단순 규칙 (수익 관측 전 고정)</h4><p>${esc(f.b1Rule)}</p>
     <details><summary>B1 상위 20% ${f.b1TopQuintile.length}개 (연구 선별 목록 — 선정·추천 아님)</summary><div class="desk-table-wrap"><table class="desk-table"><thead><tr><th>종목</th><th>ROE</th><th>영업이익률</th><th>부채/자본</th><th>12-2개월</th><th>재무 기준기간 → 공개일</th></tr></thead><tbody>${top}</tbody></table></div></details>`;
+}
+function definitionsMarkup(integ, market) {
+  const defs = integ.definitions.map((x) => `<tr data-desk-definition="${esc(x.id)}"><td><b>${esc(x.id)}</b><br><span class="digest">${esc(x.source)}</span></td><td>${esc(x.definition)}</td><td>${esc({ YES: "가능", PARTIAL: "부분", NO: "불가" }[x.buildable] || x.buildable)}<br><span class="digest">${esc(x.closestPit)}</span></td><td>${esc(x.gap)}</td></tr>`).join("");
+  const b = integ.regions[market].b1v2;
+  const c = b.rankingComparison;
+  const cmpRow = (k, lab) => `<tr><td>${lab}</td><td>${esc(c[k].n)}</td><td>${fmt(c[k].spearmanWithRoe, 2)}</td><td>${esc(c[k].top5Overlap)}/5</td><td>${esc(c[k].topQuintileOverlap)}</td></tr>`;
+  return `<div class="desk-table-wrap"><table class="desk-table"><thead><tr><th>정의</th><th>원 방법</th><th>PIT로 계산</th><th>차이</th></tr></thead><tbody>${defs}</tbody></table></div>
+    <p class="notice">현재 B1 ROE 순위는 Fama-French OP나 Novy-Marx GP/A 전략을 재현한 것이 아닙니다. 같은 경제적 가설(수익성 높은 기업이 장기적으로 낫다)을 우리가 가진 PIT 지표로 근사한 내부 대용변수입니다.</p>
+    <div class="desk-table-wrap"><table class="desk-table"><thead><tr><th>대체 지표 (한 공시 기준)</th><th>비교 종목</th><th>ROE와 순위상관</th><th>상위 5 겹침</th><th>상위 20% 겹침</th></tr></thead><tbody>${cmpRow("oiToBookEquity", "영업이익/자기자본 (FF OP 근사)")}${cmpRow("oiToAssets", "영업이익/총자산 (GP/A 아님)")}</tbody></table></div>`;
 }
 const factValue = (x) => (x.field === "debtToEquity" || x.field === "bookToPrice" ? fmt(x.value, 2) : ratio(x.value));
 function dossierMarkup(ef, market) {
@@ -1097,7 +1139,8 @@ function dossierMarkup(ef, market) {
   const cards = ds.dossiers.filter((x) => x.region === market).map((x) => `<article class="desk-item desk-dossier" data-desk-dossier="${esc(x.ticker)}">
     <div class="card-meta"><b>${esc(x.name)} <span class="ticker">${esc(x.ticker)}</span></b><span><span class="pill warn" data-desk-status="${esc(x.status)}">연구 보류 (HOLD_FOR_RESEARCH)</span> ${gradeBadge(x.nominatingEvidence.grade)}</span></div>
     <p class="digest">선정 경위: ${esc(x.origin.rule)} ${esc(x.origin.rank)}위 · 정보 마감 ${esc(x.informationCutoff)} · production 관찰 목록 ${x.origin.inProductionWatchlist ? "포함" : "미포함"}</p>
-    <div class="desk-table-wrap"><table class="desk-table"><thead><tr><th>사실(출처 있음)</th><th>값</th><th>기준기간</th><th>공개일</th></tr></thead><tbody>${x.facts.map((ft) => `<tr><td>${esc(ft.label)}</td><td>${factValue(ft)}</td><td>${esc(ft.source.reportDate)}</td><td>${esc(ft.source.availableFrom)}</td></tr>`).join("")}</tbody></table></div>
+    <div class="desk-table-wrap"><table class="desk-table"><thead><tr><th>사실(출처 있음)</th><th>값</th><th>기준기간</th><th>공개일</th></tr></thead><tbody>${x.facts.map((ft) => `<tr><td>${esc(ft.label)}</td><td>${ft.invalid ? `<s>${factValue(ft)}</s> <span class="pill blocked" data-desk-invalid="${esc(ft.field)}">무효: 이월 주식수</span>` : factValue(ft)}</td><td>${esc(ft.source.reportDate)}</td><td>${esc(ft.source.availableFrom)}</td></tr>`).join("")}</tbody></table></div>
+    ${x.mixedReportPeriods ? '<p class="notice" data-desk-mixed>재무 사실들이 서로 다른 공시 기간에서 왔습니다. 기준기간 열을 확인하세요.</p>' : ""}
     <p><b>AI 해석</b> ${x.interpretation.map(esc).join(" ")}</p>
     <p><b>반대 논거</b></p><ul>${x.counterArguments.map((c) => `<li>${esc(c)}</li>`).join("")}</ul>
     <details><summary>배경(미검증)·훼손 조건·모르는 것</summary><p><b>배경</b> ${x.background.map(esc).join(" ")}</p><p><b>가설 훼손 조건</b></p><ul>${x.invalidationConditions.map((c) => `<li>${esc(c)}</li>`).join("")}</ul><p><b>확인하지 못한 정보</b> ${x.unknowns.map(esc).join(" · ")}</p></details>
@@ -1107,10 +1150,40 @@ function dossierMarkup(ef, market) {
 }
 function gradeMatrixMarkup(ef, market) {
   const levels = Object.entries(ef.levels).map(([k, v]) => `<li><b>${esc(k)}</b> ${esc(v)}</li>`).join("");
-  const rows = ef.grades.filter((g) => inRegion(g.region, market)).map((g) => `<tr data-desk-grade-row="${esc(g.id)}"><td>${esc(g.label)}</td><td>${gradeBadge(g.grade)}</td><td>${blockBadges(g.blocks) || "—"}</td><td>${g.criteria.map((c) => `<span class="digest">${esc(c.level)} ${c.met ? "충족" : "미충족"}: ${esc(c.ref)}</span>`).join("<br>") || "—"}</td></tr>`).join("");
+  const rows = ef.grades.filter((g) => inRegion(g.region, market)).map((g) => `<tr data-desk-grade-row="${esc(g.id)}"><td>${esc(g.label)}</td><td>${gradeBadge(g.grade)}</td><td>${trackBadge(g.track)}</td><td>${blockBadges(g.blocks) || "—"}${g.blockScope ? `<br><span class="digest">${esc(g.blockScope)}</span>` : ""}</td><td>${g.criteria.map((c) => `<span class="digest">${esc(c.level)} ${c.met ? "충족" : "미충족"}: ${esc(c.ref)}</span>`).join("<br>") || "—"}</td></tr>`).join("");
   return `<details><summary>등급 정의 E0~E5</summary><ul>${levels}</ul><p class="notice">${esc(ef.rule)}</p></details>
-    <div class="desk-table-wrap"><table class="desk-table"><thead><tr><th>항목</th><th>등급</th><th>차단 상태</th><th>단계별 근거</th></tr></thead><tbody>${rows}</tbody></table></div>
-    <p class="notice">E4 이상이고 차단 상태가 없어야 판단에 쓸 수 있습니다. 현재 그런 연구 경로는 없으므로 기본값은 ETF입니다.</p>`;
+    <div class="desk-table-wrap"><table class="desk-table"><thead><tr><th>항목</th><th>등급</th><th>참여 트랙</th><th>차단 상태</th><th>단계별 근거</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <p class="notice">연구 참여와 투자 승인은 다릅니다. E4 이상이고 차단이 없어야 판단(투자)에 쓸 수 있고, 검증된 실전 전략(A)은 E5와 Owner 승인이 필요합니다. 미검증 전향 가상 포트폴리오(B)는 E1이어도 사전등록 규칙이 있으면 별도로 기록될 수 있지만 추천이 아닙니다. 현재 판단에 쓸 수 있는 연구 경로는 없으므로 기본값은 ETF입니다.</p>`;
+}
+const TRACK_KO = { A_VERIFIED_STRATEGY: ["A 검증된 실전 전략", ""], B_PROSPECTIVE_VIRTUAL: ["B 미검증 전향 가상", "warn"], C_WATCHLIST_ONLY: ["C 관심만(기록 안 함)", "blocked"],
+  PRODUCTION: ["production 규칙", ""], BENCHMARK: ["기준 ETF", ""] };
+const trackBadge = (t) => { const [l, c] = TRACK_KO[t] || [t, "warn"]; return `<span class="pill ${c}" data-desk-track="${esc(t)}">${esc(l)}</span>`; };
+function fourWayMarkup(d, market) {
+  const ef = d.evidenceFirst;
+  const p = d.regions[market].production;
+  const arm = ef.prospective.dryRun[market].arms.B1_ROE;
+  const ds = ef.dossiers.dossiers.filter((x) => x.region === market);
+  const verified = ef.grades.filter((g) => g.track === "A_VERIFIED_STRATEGY" && inRegion(g.region, market));
+  const box = (key, title, body, foot) => `<article class="desk-item desk-four" data-desk-four="${key}"><b>${title}</b>${body}<p class="digest">${foot}</p></article>`;
+  return `<div class="desk-grid desk-four-grid">
+    ${box("production", "1 현재 production 포트폴리오", `<p class="desk-weights">${weightsText(p.weights)}</p>`, `운영 규칙의 결과 · ${esc(p.asOfDate)} · ETF 초과성과 검증 아님`)}
+    ${box("virtual", "2 학술 근거 기반 미검증 가상 전략", `<p>모의 구성: ${arm.selection.selected.length ? `${arm.selection.selected.map(esc).join(" · ")} 각 10% + ETF ${ratio(arm.weights[market === "KR" ? "069500.KS" : "SPY"], 0)}` : "0종목 (ETF 100%)"}</p>`, `B1 ROE 규칙 · 가상·미검증 · 기록 미활성 (${esc(ef.prospective.activation.split(" ")[0])}) · 매수 적격 아님`)}
+    ${box("ai", "3 AI가 분석한 연구 후보", `<p>${ds.map((x) => esc(x.name)).join(" · ")}</p>`, `${ds.length}개 모두 연구 보류 · AI 정성 분석만으로는 매수 적격이 아님`)}
+    ${box("verified", "4 실제 성과로 검증된 전략", `<p>${verified.length ? verified.map((g) => esc(g.label)).join(" · ") : "없음 (0개)"}</p>`, "E5(전향 성과 + Owner 승인)에 도달한 전략이 아직 없습니다")}
+  </div>`;
+}
+function prospectiveMarkup(ef, market) {
+  const pr = ef.prospective;
+  const v = pr.dryRun[market];
+  const ARM_KO = { ETF100: "ETF 100%", B1_ROE: "학술 기반 단순 ROE (가상)", PRODUCTION: "기존 production", B1_PLUS_AI: "ROE + AI 기업 분석 (가상)" };
+  const arms = Object.entries(v.arms).map(([k, a]) => `<tr data-desk-arm="${esc(k)}"><td>${esc(ARM_KO[k] || k)}<br><span class="digest">${esc(a.v3Path)}</span></td><td>${trackBadge(a.track)}</td><td>${a.weights ? weightsText(a.weights) : `<span class="pill warn">${esc(a.status)}</span> ${esc(a.reason || "")}`}</td><td>${a.selection ? (a.selection.skipped.map((x) => `${esc(x.ticker)} 제외(${esc(x.reason)})`).join(" · ") || "—") : "—"}</td></tr>`).join("");
+  const gates = pr.gates.map((g) => `<li data-desk-gate="${esc(g.id)}"><span class="pill ${g.status === "RESOLVED" ? "" : "blocked"}">${esc(g.status)}</span> <b>${esc(g.id)}</b> ${g.blocks.length ? `(${esc(g.blocks.join(", "))} 차단)` : ""} ${esc(g.detail || "")}</li>`).join("");
+  return `<p class="notice">${esc(pr.dryRunLabel)}. 네 비교군은 같은 정보 마감·실행 기준·비용·수익 정의를 씁니다. 종목은 0~5개, 종목당 10%, 산업당 최대 2개, 나머지는 ETF입니다. 리밸런싱 없이 126·252세션까지 보유합니다.</p>
+    <div class="desk-table-wrap"><table class="desk-table"><thead><tr><th>비교군</th><th>트랙</th><th>모의 비중</th><th>규칙에 따라 건너뛴 종목</th></tr></thead><tbody>${arms}</tbody></table></div>
+    <details><summary>B1 ROE 규칙 단계와 비교 방법</summary><ol>${pr.b1Steps.map((x) => `<li>${esc(x)}</li>`).join("")}</ol><p>${esc(pr.comparison.primary)}</p><p>${esc(pr.comparison.excludedFromPrimary)}</p><p>${esc(pr.comparison.noEarlyClaim)}</p></details>
+    <p><b>기록 활성화</b> <span class="pill blocked" data-desk-activation>${esc(pr.activation)}</span></p>
+    <details><summary>활성화 관문 ${pr.gates.length}개 (독립 감사 #335 반영)</summary><ul>${gates}</ul><p class="notice">${pr.activationRequires.map(esc).join(" · ")}</p></details>
+    <p class="digest">protocol ${esc(pr.protocolSha256.slice(0, 16))} · ${esc(pr.status)}</p>`;
 }
 function selectionsMarkup(d, reg, market, now, limit) {
   const p = reg.production;
@@ -1142,6 +1215,7 @@ function deskMarkup(d, market, now = Date.now()) {
     ? `<p class="notice">기본값은 SPY입니다. QQQ는 별도 비교 기준이며 SPY를 대체하지 않습니다. 미국 개별주 과거 연구는 <b>원천 차단</b>(퇴출 ${esc(reg.singleStockEligibility.departed)}개 중 무가격 ${esc(reg.singleStockEligibility.departedNoPrice)}개, 승인 세션 ${esc(reg.singleStockEligibility.admittedSessions)}).</p>`
     : "";
   return `<p class="watch-note">${esc(d.disclaimerKo)}</p>
+    <h3 class="desk-h desk-four-h">한눈에 구분</h3>${fourWayMarkup(d, market)}
     <h3 class="desk-h">① 현재 production ${market === "KR" ? "한국" : "미국"} 판단</h3><div class="desk-grid">${prod}</div>${us}
     <h3 class="desk-h">② 데이터와 모델 적격성</h3>${eligibilityMarkup(ef, reg, market)}
     <h3 class="desk-h">③ 투자 유니버스와 후보가 줄어드는 과정</h3>${funnelMarkup(f, ef, market)}
@@ -1152,6 +1226,7 @@ function deskMarkup(d, market, now = Date.now()) {
     <h4>연구 원장 기록</h4><div class="desk-grid">${research}${hist}</div>
     <h4>전향 기록 (v3.B0 ETF · v3.B2 production 규칙 · v3.B3 AI 실험 · BX 비교군)</h4>${deskLedgerMarkup(reg, now)}
     <h3 class="desk-h">⑧ 현재 선택과 과거 선택</h3>${selectionsMarkup(d, reg, market, now, limit)}
+    <h3 class="desk-h">다음 유효 코호트 준비 (전향 가상 비교, 기록 미활성)</h3>${prospectiveMarkup(ef, market)}
     <h3 class="desk-h">월간 판단 파이프라인</h3>${pipelineMarkup(d.pipeline)}
     <details class="desk-approvals"><summary>승인·담당 필요 항목 ${d.approvalsNeeded.length}건</summary><ul>${d.approvalsNeeded.map((a) => `<li><b>${esc(a.item)}</b> (${esc(a.owner)}) — ${esc(a.why)}</li>`).join("")}</ul></details>
     <p class="digest">desk ${esc(DESK.commit.slice(0, 12))} · ${esc(DESK.sha256.slice(0, 16))} · protocol ${esc(String(d.protocolSha256).slice(0, 16))} · evidence ${esc(String(ef.sources["evidence-grades.json"]).slice(0, 12))}</p>`;

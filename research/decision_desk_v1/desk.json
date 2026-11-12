@@ -1,34 +1,19 @@
 {
  "approvalsNeeded": [
   {
-   "item": "#321 CI/Pages 복구 일반 merge 및 정상 Pages 배포",
+   "item": "1. #321 정확한 HEAD의 일반 merge (squash 금지) 및 main CI·Pages 정상 배포 확인",
    "owner": "Owner",
-   "why": "threadpoolctl 3.8.0 충돌로 main·모든 연구 PR CI가 실패 중이다. 이 데스크의 실제 게시도 Pages 정상화 이후에야 가능하다."
+   "why": "threadpoolctl 3.8.0 충돌로 main과 모든 연구 PR의 Tests가 실패한다. #321은 production state-publisher 변경을 포함하므로 그 운영 영향까지 승인 범위에 들어간다(#335)."
   },
   {
-   "item": "decision-desk-v1 전향 원장 활성화(dry-run → signal-history 기록)",
+   "item": "2. main을 #334에 병합(이력 보존) → 결합 원격 CI 통과 → #334 읽기 전용 화면 게시 승인",
    "owner": "Owner",
-   "why": "승인 전에는 research/decision_desk_v1/dry-run/ 에만 기록한다. ledger.append는 owner_approved 없이 다른 경로 쓰기를 거부한다."
+   "why": "게시는 화면뿐이다. 연구 원장 writer·evaluator·BX 비교군은 이 승인으로 켜지지 않는다."
   },
   {
-   "item": "월간 B2 리뷰 작성 담당과 시각",
+   "item": "3. 전향 가상 비교(prospective-v1) 기록 활성화와 월간 운영 담당",
    "owner": "Owner",
-   "why": "CI에 AI 자격증명이 없어 자동 호출이 불가하다. 패킷 봉인 후 48시간 안(등록 마감 전)에 에이전트 세션이 리뷰를 커밋해야 한다."
-  },
-  {
-   "item": "GPT·독립 Claude 비교군(BX) 활성화",
-   "owner": "Owner",
-   "why": "reviewers.json 상태를 ENABLED로 바꾸는 커밋이 해당 월 패킷 봉인 전에 있어야 한다. 실행 주체와 비용 결정 필요."
-  },
-  {
-   "item": "US 개별주 유료 원천(Norgate/Sharadar) 구매 여부",
-   "owner": "Owner",
-   "why": "라이선스(구독 종료 시 삭제 의무)와 원본 보관 규칙의 충돌을 먼저 확인해야 한다."
-  },
-  {
-   "item": "KR 018880·005930 공식 기업행동 패키지",
-   "owner": "원천 담당 + 외부 회계 reviewer",
-   "why": "#333 G의 우선순위 1·2. v2 주식 경제성 인증의 선행 조건이다."
+   "why": "owner-approvals/prospective-v1.json에 protocol SHA-256을 적어 커밋해야 한다. 담당자는 매달 마감 전에 공개 관측(verify-publication)과 AI 리뷰를 수행한다. 남은 관문 G1·G2는 기존 B2 경로에만 걸리고 전향 가상 비교에는 걸리지 않는다."
   }
  ],
  "builtFrom": {
@@ -349,10 +334,10 @@
        "field": "operatingMargin",
        "label": "영업이익률 (TTM, PIT)",
        "source": {
-        "availableFrom": "2026-03-23",
+        "availableFrom": "2026-08-14",
         "census": "results/census.json sha256 a1de9c4fa941f776",
         "path": "signal-history ledger/fundamentals/pit-kr (derived)",
-        "reportDate": "2025-12-31"
+        "reportDate": "2026-06-30"
        },
        "value": 0.2481
       },
@@ -360,10 +345,10 @@
        "field": "debtToEquity",
        "label": "부채/자본",
        "source": {
-        "availableFrom": "2026-03-23",
+        "availableFrom": "2026-08-14",
         "census": "results/census.json sha256 a1de9c4fa941f776",
         "path": "signal-history ledger/fundamentals/pit-kr (derived)",
-        "reportDate": "2025-12-31"
+        "reportDate": "2026-06-30"
        },
        "value": 0.7007
       },
@@ -371,10 +356,10 @@
        "field": "bookToPrice",
        "label": "장부가/주가",
        "source": {
-        "availableFrom": "2026-10-30",
+        "availableFrom": "2026-08-14",
         "census": "results/census.json sha256 a1de9c4fa941f776",
-        "path": "KRX daily close",
-        "reportDate": "2026-10-30"
+        "path": "signal-history ledger/fundamentals/pit-kr (derived) / KRX daily close",
+        "reportDate": "2026-06-30"
        },
        "value": 0.0663
       },
@@ -399,6 +384,7 @@
       "다음 분기 공시에서 영업이익률이 뚜렷이 하락",
       "주가가 장기 이동평균 아래로 내려가고 중기 수익률이 음수로 전환"
      ],
+     "mixedReportPeriods": true,
      "name": "에이피알",
      "nominatingEvidence": {
       "blocks": [
@@ -458,10 +444,10 @@
        "field": "debtToEquity",
        "label": "부채/자본",
        "source": {
-        "availableFrom": "2026-03-16",
+        "availableFrom": "2026-08-14",
         "census": "results/census.json sha256 a1de9c4fa941f776",
         "path": "signal-history ledger/fundamentals/pit-kr (derived)",
-        "reportDate": "2025-12-31"
+        "reportDate": "2026-06-30"
        },
        "value": 1.4318
       },
@@ -469,10 +455,10 @@
        "field": "bookToPrice",
        "label": "장부가/주가",
        "source": {
-        "availableFrom": "2026-10-30",
+        "availableFrom": "2026-08-14",
         "census": "results/census.json sha256 a1de9c4fa941f776",
-        "path": "KRX daily close",
-        "reportDate": "2026-10-30"
+        "path": "signal-history ledger/fundamentals/pit-kr (derived) / KRX daily close",
+        "reportDate": "2026-06-30"
        },
        "value": 0.1478
       },
@@ -496,6 +482,7 @@
       "수주잔고 감소 공시",
       "영업이익률이 직전 연도 수준보다 낮아짐"
      ],
+     "mixedReportPeriods": true,
      "name": "HD현대일렉트릭",
      "nominatingEvidence": {
       "blocks": [
@@ -545,10 +532,10 @@
        "field": "operatingMargin",
        "label": "영업이익률 (TTM, PIT)",
        "source": {
-        "availableFrom": "2026-03-17",
+        "availableFrom": "2026-08-14",
         "census": "results/census.json sha256 a1de9c4fa941f776",
         "path": "signal-history ledger/fundamentals/pit-kr (derived)",
-        "reportDate": "2025-12-31"
+        "reportDate": "2026-06-30"
        },
        "value": 0.6804
       },
@@ -556,10 +543,10 @@
        "field": "debtToEquity",
        "label": "부채/자본",
        "source": {
-        "availableFrom": "2026-03-17",
+        "availableFrom": "2026-08-14",
         "census": "results/census.json sha256 a1de9c4fa941f776",
         "path": "signal-history ledger/fundamentals/pit-kr (derived)",
-        "reportDate": "2025-12-31"
+        "reportDate": "2026-06-30"
        },
        "value": 0.328
       },
@@ -567,10 +554,10 @@
        "field": "bookToPrice",
        "label": "장부가/주가",
        "source": {
-        "availableFrom": "2026-10-30",
+        "availableFrom": "2026-08-14",
         "census": "results/census.json sha256 a1de9c4fa941f776",
-        "path": "KRX daily close",
-        "reportDate": "2026-10-30"
+        "path": "signal-history ledger/fundamentals/pit-kr (derived) / KRX daily close",
+        "reportDate": "2026-06-30"
        },
        "value": 0.2605
       },
@@ -595,6 +582,7 @@
       "메모리 가격 하락 전환을 보여주는 실적 공시",
       "영업이익률의 연속 하락"
      ],
+     "mixedReportPeriods": true,
      "name": "SK하이닉스",
      "nominatingEvidence": {
       "blocks": [
@@ -643,10 +631,10 @@
        "field": "operatingMargin",
        "label": "영업이익률 (TTM, PIT)",
        "source": {
-        "availableFrom": "2026-03-16",
+        "availableFrom": "2026-08-14",
         "census": "results/census.json sha256 a1de9c4fa941f776",
         "path": "signal-history ledger/fundamentals/pit-kr (derived)",
-        "reportDate": "2025-12-31"
+        "reportDate": "2026-06-30"
        },
        "value": 0.1717
       },
@@ -654,10 +642,10 @@
        "field": "debtToEquity",
        "label": "부채/자본",
        "source": {
-        "availableFrom": "2026-03-16",
+        "availableFrom": "2026-08-14",
         "census": "results/census.json sha256 a1de9c4fa941f776",
         "path": "signal-history ledger/fundamentals/pit-kr (derived)",
-        "reportDate": "2025-12-31"
+        "reportDate": "2026-06-30"
        },
        "value": 0.5598
       },
@@ -665,10 +653,10 @@
        "field": "bookToPrice",
        "label": "장부가/주가",
        "source": {
-        "availableFrom": "2026-10-30",
+        "availableFrom": "2026-08-14",
         "census": "results/census.json sha256 a1de9c4fa941f776",
-        "path": "KRX daily close",
-        "reportDate": "2026-10-30"
+        "path": "signal-history ledger/fundamentals/pit-kr (derived) / KRX daily close",
+        "reportDate": "2026-06-30"
        },
        "value": 0.1211
       },
@@ -692,6 +680,7 @@
       "서비스 매출 성장 둔화 공시",
       "영업이익률 하락"
      ],
+     "mixedReportPeriods": true,
      "name": "HD현대마린솔루션",
      "nominatingEvidence": {
       "blocks": [
@@ -739,10 +728,10 @@
        "field": "operatingMargin",
        "label": "영업이익률 (TTM, PIT)",
        "source": {
-        "availableFrom": "2026-03-18",
+        "availableFrom": "2026-08-14",
         "census": "results/census.json sha256 a1de9c4fa941f776",
         "path": "signal-history ledger/fundamentals/pit-kr (derived)",
-        "reportDate": "2025-12-31"
+        "reportDate": "2026-06-30"
        },
        "value": 0.2263
       },
@@ -750,10 +739,10 @@
        "field": "debtToEquity",
        "label": "부채/자본",
        "source": {
-        "availableFrom": "2026-03-18",
+        "availableFrom": "2026-08-14",
         "census": "results/census.json sha256 a1de9c4fa941f776",
         "path": "signal-history ledger/fundamentals/pit-kr (derived)",
-        "reportDate": "2025-12-31"
+        "reportDate": "2026-06-30"
        },
        "value": 0.7753
       },
@@ -761,10 +750,10 @@
        "field": "bookToPrice",
        "label": "장부가/주가",
        "source": {
-        "availableFrom": "2026-10-30",
+        "availableFrom": "2026-08-14",
         "census": "results/census.json sha256 a1de9c4fa941f776",
-        "path": "KRX daily close",
-        "reportDate": "2026-10-30"
+        "path": "signal-history ledger/fundamentals/pit-kr (derived) / KRX daily close",
+        "reportDate": "2026-06-30"
        },
        "value": 0.1806
       },
@@ -788,6 +777,7 @@
       "해외 매출 감소 공시",
       "영업이익률 하락"
      ],
+     "mixedReportPeriods": true,
      "name": "삼양식품",
      "nominatingEvidence": {
       "blocks": [
@@ -835,10 +825,10 @@
        "field": "operatingMargin",
        "label": "영업이익률 (TTM, PIT)",
        "source": {
-        "availableFrom": "2026-05-20",
+        "availableFrom": "2026-08-26",
         "census": "results/census.json sha256 a1de9c4fa941f776",
         "path": "signal-history ledger/fundamentals/pit-us (derived)",
-        "reportDate": "2026-04-26"
+        "reportDate": "2026-07-26"
        },
        "value": 0.6521
       },
@@ -857,10 +847,10 @@
        "field": "bookToPrice",
        "label": "장부가/주가",
        "source": {
-        "availableFrom": "2026-11-10",
+        "availableFrom": "2026-05-20",
         "census": "results/census.json sha256 a1de9c4fa941f776",
-        "path": "Yahoo daily close",
-        "reportDate": "2026-11-10"
+        "path": "signal-history ledger/fundamentals/pit-us (derived) / Yahoo daily close",
+        "reportDate": "2026-04-26"
        },
        "value": 0.0475
       },
@@ -885,6 +875,7 @@
       "데이터센터 매출 성장의 뚜렷한 둔화 공시",
       "영업이익률 하락"
      ],
+     "mixedReportPeriods": true,
      "name": "NVDA",
      "nominatingEvidence": {
       "blocks": [],
@@ -902,7 +893,7 @@
      "statusReason": "The nominating screen is graded E1; nothing below E2 can propose capital. The decision for the region stays the ETF.",
      "ticker": "NVDA",
      "unknowns": [
-      "더 최근 분기 공시의 수익성 값(이 센서스에 반영되지 않은 이유는 확인하지 않음)",
+      "최근 분기 공시의 자본총계가 추출되지 않아 ROE와 부채비율은 이전 분기 공시 기준이고 영업이익률만 최근 분기 기준임(데이터 무결성 감사)",
       "고객 집중도",
       "수출 규제 영향"
      ]
@@ -931,10 +922,10 @@
        "field": "operatingMargin",
        "label": "영업이익률 (TTM, PIT)",
        "source": {
-        "availableFrom": "2026-04-30",
+        "availableFrom": "2026-10-29",
         "census": "results/census.json sha256 a1de9c4fa941f776",
         "path": "signal-history ledger/fundamentals/pit-us (derived)",
-        "reportDate": "2026-03-31"
+        "reportDate": "2026-09-30"
        },
        "value": 0.4219
       },
@@ -953,10 +944,10 @@
        "field": "bookToPrice",
        "label": "장부가/주가",
        "source": {
-        "availableFrom": "2026-11-10",
+        "availableFrom": "2026-04-30",
         "census": "results/census.json sha256 a1de9c4fa941f776",
-        "path": "Yahoo daily close",
-        "reportDate": "2026-11-10"
+        "path": "signal-history ledger/fundamentals/pit-us (derived) / Yahoo daily close",
+        "reportDate": "2026-03-31"
        },
        "value": 0.2886
       },
@@ -980,6 +971,7 @@
       "수주 또는 매출 가이던스 하향 공시",
       "부채/자본 비율 상승"
      ],
+     "mixedReportPeriods": true,
      "name": "KLAC",
      "nominatingEvidence": {
       "blocks": [],
@@ -1025,10 +1017,10 @@
        "field": "operatingMargin",
        "label": "영업이익률 (TTM, PIT)",
        "source": {
-        "availableFrom": "2026-05-05",
+        "availableFrom": "2026-11-02",
         "census": "results/census.json sha256 a1de9c4fa941f776",
         "path": "signal-history ledger/fundamentals/pit-us (derived)",
-        "reportDate": "2026-03-31"
+        "reportDate": "2026-09-30"
        },
        "value": 0.323
       },
@@ -1047,10 +1039,10 @@
        "field": "bookToPrice",
        "label": "장부가/주가",
        "source": {
-        "availableFrom": "2026-11-10",
+        "availableFrom": "2026-05-05",
         "census": "results/census.json sha256 a1de9c4fa941f776",
-        "path": "Yahoo daily close",
-        "reportDate": "2026-11-10"
+        "path": "signal-history ledger/fundamentals/pit-us (derived) / Yahoo daily close",
+        "reportDate": "2026-03-31"
        },
        "value": 0.0279
       },
@@ -1074,6 +1066,7 @@
       "반복 매출 성장 둔화 공시",
       "영업이익률 하락"
      ],
+     "mixedReportPeriods": true,
      "name": "IDXX",
      "nominatingEvidence": {
       "blocks": [],
@@ -1119,10 +1112,10 @@
        "field": "operatingMargin",
        "label": "영업이익률 (TTM, PIT)",
        "source": {
-        "availableFrom": "2026-05-01",
+        "availableFrom": "2026-10-23",
         "census": "results/census.json sha256 a1de9c4fa941f776",
         "path": "signal-history ledger/fundamentals/pit-us (derived)",
-        "reportDate": "2026-04-03"
+        "reportDate": "2026-10-02"
        },
        "value": 0.3941
       },
@@ -1139,12 +1132,13 @@
       },
       {
        "field": "bookToPrice",
+       "invalid": "SHARE_COUNT_CARRIED_FORWARD_OVER_15_MONTHS",
        "label": "장부가/주가",
        "source": {
-        "availableFrom": "2026-11-10",
+        "availableFrom": "2026-05-01",
         "census": "results/census.json sha256 a1de9c4fa941f776",
-        "path": "Yahoo daily close",
-        "reportDate": "2026-11-10"
+        "path": "signal-history ledger/fundamentals/pit-us (derived) / Yahoo daily close",
+        "reportDate": "2026-04-03"
        },
        "value": 0.0938
       },
@@ -1168,6 +1162,7 @@
       "저장장치 가격 하락을 보여주는 실적 공시",
       "영업이익률 하락"
      ],
+     "mixedReportPeriods": true,
      "name": "WDC",
      "nominatingEvidence": {
       "blocks": [],
@@ -1213,10 +1208,10 @@
        "field": "operatingMargin",
        "label": "영업이익률 (TTM, PIT)",
        "source": {
-        "availableFrom": "2026-04-23",
+        "availableFrom": "2026-10-22",
         "census": "results/census.json sha256 a1de9c4fa941f776",
         "path": "signal-history ledger/fundamentals/pit-us (derived)",
-        "reportDate": "2026-03-29"
+        "reportDate": "2026-09-27"
        },
        "value": 0.3695
       },
@@ -1235,10 +1230,10 @@
        "field": "bookToPrice",
        "label": "장부가/주가",
        "source": {
-        "availableFrom": "2026-11-10",
+        "availableFrom": "2026-04-23",
         "census": "results/census.json sha256 a1de9c4fa941f776",
-        "path": "Yahoo daily close",
-        "reportDate": "2026-11-10"
+        "path": "signal-history ledger/fundamentals/pit-us (derived) / Yahoo daily close",
+        "reportDate": "2026-03-29"
        },
        "value": 0.0377
       },
@@ -1262,6 +1257,7 @@
       "수주 둔화 공시",
       "영업이익률 하락"
      ],
+     "mixedReportPeriods": true,
      "name": "LRCX",
      "nominatingEvidence": {
       "blocks": [],
@@ -1559,11 +1555,13 @@
     },
     "stages": [
      {
+      "branch": "MAIN",
       "dropped": {},
       "remaining": 300,
       "stage": "0 원래 유니버스"
      },
      {
+      "branch": "MAIN",
       "dropped": {
        "PREFERRED_OR_NON_COMMON": 11
       },
@@ -1571,6 +1569,7 @@
       "stage": "1 상장·보통주 신원"
      },
      {
+      "branch": "MAIN",
       "dropped": {
        "LOW_TRADED_VALUE": 36,
        "ZERO_VOLUME_LAST_20": 1
@@ -1579,6 +1578,7 @@
       "stage": "2 매매 가능(가격·거래·유동성)"
      },
      {
+      "branch": "MAIN",
       "dropped": {
        "CORPORATE_ACTION_UNRESOLVED": 12,
        "PRICE_HISTORY_UNDER_252": 2
@@ -1588,6 +1588,7 @@
       "stage": "3 가격 이력·기업행동"
      },
      {
+      "branch": "MAIN",
       "dropped": {
        "BOOK_VALUE_OR_LEVERAGE_MISSING": 1,
        "NO_PIT_FILING": 121,
@@ -1605,6 +1606,7 @@
       "stage": "4 PIT 재무 충족·팩터 계산 가능"
      },
      {
+      "branch": "FACTOR_REFERENCE",
       "byFactor": {
        "momentum(12-2)": 15,
        "profitability(ROE)": 15,
@@ -1614,15 +1616,18 @@
       "stage": "5 (참고) 팩터별 상위 20% 합집합"
      },
      {
+      "branch": "B1",
       "remaining": 61,
       "stage": "6 B1 적격: 4단계 중 대형주·영업이익률>0·부채/자본≤2",
       "topQuintile": 12
      },
      {
+      "branch": "B1",
       "remaining": 5,
       "stage": "7 기업 심층검토 대상(B1 상위 5)"
      },
      {
+      "branch": "B1",
       "reason": "B1 is E1 (externally documented, not locally replicated); no path reaches E2, so the official choice is ETF_DEFAULT",
       "remaining": 0,
       "stage": "8 최종 연구용 선정"
@@ -2501,16 +2506,19 @@
     },
     "stages": [
      {
+      "branch": "MAIN",
       "dropped": {},
       "remaining": 503,
       "stage": "0 원래 유니버스"
      },
      {
+      "branch": "MAIN",
       "dropped": {},
       "remaining": 503,
       "stage": "1 상장·보통주 신원"
      },
      {
+      "branch": "MAIN",
       "dropped": {
        "NO_CLOSE_ON_AS_OF": 3
       },
@@ -2518,6 +2526,7 @@
       "stage": "2 매매 가능(가격·거래·유동성)"
      },
      {
+      "branch": "MAIN",
       "dropped": {
        "PRICE_HISTORY_UNDER_252": 2
       },
@@ -2526,6 +2535,7 @@
       "stage": "3 가격 이력·기업행동"
      },
      {
+      "branch": "MAIN",
       "dropped": {
        "BOOK_VALUE_OR_LEVERAGE_MISSING": 60,
        "FILING_OLDER_THAN_15M": 6,
@@ -2544,6 +2554,7 @@
       "stage": "4 PIT 재무 충족·팩터 계산 가능"
      },
      {
+      "branch": "FACTOR_REFERENCE",
       "byFactor": {
        "momentum(12-2)": 71,
        "profitability(ROE)": 71,
@@ -2553,15 +2564,18 @@
       "stage": "5 (참고) 팩터별 상위 20% 합집합"
      },
      {
+      "branch": "B1",
       "remaining": 206,
       "stage": "6 B1 적격: 4단계 중 대형주·영업이익률>0·부채/자본≤2",
       "topQuintile": 41
      },
      {
+      "branch": "B1",
       "remaining": 5,
       "stage": "7 기업 심층검토 대상(B1 상위 5)"
      },
      {
+      "branch": "B1",
       "reason": "B1 is E1 (externally documented, not locally replicated); no path reaches E2, so the official choice is ETF_DEFAULT",
       "remaining": 0,
       "stage": "8 최종 연구용 선정"
@@ -2572,6 +2586,7 @@
   },
   "grades": [
    {
+    "blockScope": null,
     "blocks": [],
     "criteria": [
      {
@@ -2591,9 +2606,12 @@
     "id": "PROD_FOUR_FACTOR_KR",
     "label": "Production weekly-passive-first four-factor alpha ranking",
     "path": "v3.B2",
-    "region": "KR"
+    "prospectiveBlocks": null,
+    "region": "KR",
+    "track": "PRODUCTION"
    },
    {
+    "blockScope": null,
     "blocks": [
      "SOURCE_BLOCKED"
     ],
@@ -2615,9 +2633,12 @@
     "id": "PROD_FOUR_FACTOR_US",
     "label": "Production weekly-passive-first four-factor alpha ranking",
     "path": "v3.B2",
-    "region": "US"
+    "prospectiveBlocks": null,
+    "region": "US",
+    "track": "PRODUCTION"
    },
    {
+    "blockScope": null,
     "blocks": [
      "SOURCE_BLOCKED"
     ],
@@ -2634,9 +2655,12 @@
     "id": "KR_ML_V1_141",
     "label": "KR ML strategy tournament v1 (141 ML configs)",
     "path": "observation",
-    "region": "KR"
+    "prospectiveBlocks": null,
+    "region": "KR",
+    "track": "C_WATCHLIST_ONLY"
    },
    {
+    "blockScope": null,
     "blocks": [
      "SOURCE_BLOCKED"
     ],
@@ -2658,9 +2682,12 @@
     "id": "KR_INDUSTRY_MOMENTUM",
     "label": "Industry momentum rule (S1)",
     "path": "observation",
-    "region": "KR"
+    "prospectiveBlocks": null,
+    "region": "KR",
+    "track": "C_WATCHLIST_ONLY"
    },
    {
+    "blockScope": null,
     "blocks": [
      "SOURCE_BLOCKED"
     ],
@@ -2677,9 +2704,12 @@
     "id": "KR_STRATEGY_MOMENTUM",
     "label": "Adaptive cocktail strategy-momentum switch",
     "path": "observation",
-    "region": "KR"
+    "prospectiveBlocks": null,
+    "region": "KR",
+    "track": "C_WATCHLIST_ONLY"
    },
    {
+    "blockScope": null,
     "blocks": [
      "SOURCE_BLOCKED"
     ],
@@ -2701,9 +2731,12 @@
     "id": "KR_S2_VALUE_CONFIRMED",
     "label": "S2 value confirmed by profit and cash flow",
     "path": "observation",
-    "region": "KR"
+    "prospectiveBlocks": null,
+    "region": "KR",
+    "track": "C_WATCHLIST_ONLY"
    },
    {
+    "blockScope": null,
     "blocks": [],
     "criteria": [
      {
@@ -2718,9 +2751,12 @@
     "id": "KR_STATE_LEARNED_SELECTION",
     "label": "Macro/market-state learned strategy selection",
     "path": "observation",
-    "region": "KR"
+    "prospectiveBlocks": null,
+    "region": "KR",
+    "track": "C_WATCHLIST_ONLY"
    },
    {
+    "blockScope": null,
     "blocks": [
      "GOVERNANCE_CLOSED",
      "SOURCE_BLOCKED"
@@ -2738,9 +2774,12 @@
     "id": "KR_HISTORICAL_STOCK_RESEARCH",
     "label": "Any new historical KR stock-selection backtest",
     "path": "none",
-    "region": "KR"
+    "prospectiveBlocks": null,
+    "region": "KR",
+    "track": "C_WATCHLIST_ONLY"
    },
    {
+    "blockScope": null,
     "blocks": [],
     "criteria": [
      {
@@ -2755,9 +2794,12 @@
     "id": "US_DYNAMIC_MULTI_ASSET",
     "label": "US dynamic ETF allocation D1-D6",
     "path": "observation",
-    "region": "US"
+    "prospectiveBlocks": null,
+    "region": "US",
+    "track": "C_WATCHLIST_ONLY"
    },
    {
+    "blockScope": null,
     "blocks": [],
     "criteria": [
      {
@@ -2772,9 +2814,12 @@
     "id": "US_TREND_CRISIS_DEFENCE",
     "label": "Trend rules' drawdown defence (D1/D3/D6)",
     "path": "observation",
-    "region": "US"
+    "prospectiveBlocks": null,
+    "region": "US",
+    "track": "C_WATCHLIST_ONLY"
    },
    {
+    "blockScope": null,
     "blocks": [
      "SOURCE_BLOCKED"
     ],
@@ -2791,9 +2836,12 @@
     "id": "US_HISTORICAL_SINGLE_STOCK",
     "label": "Any historical US single-stock performance",
     "path": "none",
-    "region": "US"
+    "prospectiveBlocks": null,
+    "region": "US",
+    "track": "C_WATCHLIST_ONLY"
    },
    {
+    "blockScope": null,
     "blocks": [
      "PIT_CONTAMINATED"
     ],
@@ -2810,9 +2858,12 @@
     "id": "DESK_B2_2026_11",
     "label": "Decision desk 2026-11 AI judgment (KR 0 names, US TRV)",
     "path": "v3.B3",
-    "region": "KR+US"
+    "prospectiveBlocks": null,
+    "region": "KR+US",
+    "track": "C_WATCHLIST_ONLY"
    },
    {
+    "blockScope": null,
     "blocks": [],
     "criteria": [
      {
@@ -2832,9 +2883,12 @@
     "id": "ACADEMIC_PROFITABILITY_US",
     "label": "B1 academic path: long-only large-cap profitability",
     "path": "v3.B1",
-    "region": "US"
+    "prospectiveBlocks": [],
+    "region": "US",
+    "track": "B_PROSPECTIVE_VIRTUAL"
    },
    {
+    "blockScope": "GOVERNANCE_CLOSED closes NEW HISTORICAL KR stock research (AGENTS v2.55); it does not forbid recording a prospective portfolio, which is the only route left to evidence.",
     "blocks": [
      "GOVERNANCE_CLOSED"
     ],
@@ -2856,9 +2910,12 @@
     "id": "ACADEMIC_PROFITABILITY_KR",
     "label": "B1 academic path: profitability (ROE proxy) in KR large caps",
     "path": "v3.B1",
-    "region": "KR"
+    "prospectiveBlocks": [],
+    "region": "KR",
+    "track": "B_PROSPECTIVE_VIRTUAL"
    },
    {
+    "blockScope": null,
     "blocks": [],
     "criteria": [],
     "decisionEligible": true,
@@ -2867,9 +2924,506 @@
     "id": "ETF_BASELINES",
     "label": "069500.KS / SPY (QQQ comparison)",
     "path": "v3.B0",
-    "region": "KR+US"
+    "prospectiveBlocks": null,
+    "region": "KR+US",
+    "track": "BENCHMARK"
    }
   ],
+  "integrity": {
+   "definitions": [
+    {
+     "buildable": "PARTIAL",
+     "closestPit": "oiToBookEquity = operating income (TTM) / book equity",
+     "definition": "(revenue - cost of goods sold - SG&A - interest expense) / book equity, fiscal year t-1, formed each June",
+     "gap": "Operating income already deducts COGS and SG&A, but interest expense is not deducted (no interest-expense field in the PIT store); TTM rather than fiscal-year t-1; refreshed per filing rather than each June.",
+     "id": "FF_OP",
+     "source": "Fama-French (2015) / Ken French Data Library"
+    },
+    {
+     "buildable": "NO",
+     "closestPit": "oiToAssets = operating income (TTM) / total assets",
+     "definition": "(revenue - cost of goods sold) / total assets",
+     "gap": "Neither store collects cost of goods sold or gross profit (US FLOWS and KR WANTED_ACCOUNTS list revenue, operating income, net income, equity, liabilities, assets, operating cash flow, capex). Operating income also deducts SG&A, which Novy-Marx deliberately does not; this is a different measure (closer to operating profitability / assets), not a weaker version of GP/A.",
+     "id": "NM_GPA",
+     "source": "Novy-Marx (2013), NBER w15940"
+    },
+    {
+     "buildable": "YES",
+     "closestPit": "roe",
+     "definition": "net income (TTM) / book equity among large caps with operating margin > 0 and liabilities/equity <= 2",
+     "gap": "Bottom-line and levered: includes interest, taxes, non-operating and one-off items, and rises with leverage (the <= 2 cap limits but does not remove that). It is an in-house proxy motivated by the profitability literature, NOT a reproduction of either academic strategy.",
+     "id": "B1_ROE",
+     "source": "this repository, B1_PROFITABILITY_V1"
+    }
+   ],
+   "regions": {
+    "KR": {
+     "b1v2": {
+      "ageDays": {
+       "max": 303,
+       "median": 303.0
+      },
+      "eligible": 58,
+      "noCompleteFiling": 160,
+      "rankingComparison": {
+       "n": 58,
+       "oiToAssets": {
+        "n": 53,
+        "spearmanWithRoe": 0.888,
+        "top5ByThisMeasure": [
+         "278470.KS",
+         "443060.KS",
+         "062040.KS",
+         "000660.KS",
+         "042700.KS"
+        ],
+        "top5Overlap": 3,
+        "topQuintileOverlap": "8/10"
+       },
+       "oiToBookEquity": {
+        "n": 53,
+        "spearmanWithRoe": 0.869,
+        "top5ByThisMeasure": [
+         "278470.KS",
+         "267260.KS",
+         "443060.KS",
+         "003230.KS",
+         "000660.KS"
+        ],
+        "top5Overlap": 5,
+        "topQuintileOverlap": "9/10"
+       }
+      },
+      "stage3Survivors": 238,
+      "top5": [
+       {
+        "ageDays": 303,
+        "availableFrom": "2026-03-23",
+        "oiToAssets": 0.4736,
+        "oiToBookEquity": 0.8199,
+        "reportDate": "2025-12-31",
+        "roe": 0.6497,
+        "ticker": "278470.KS"
+       },
+       {
+        "ageDays": 303,
+        "availableFrom": "2026-03-16",
+        "oiToAssets": 0.2087,
+        "oiToBookEquity": 0.4896,
+        "reportDate": "2025-12-31",
+        "roe": 0.36,
+        "ticker": "267260.KS"
+       },
+       {
+        "ageDays": 303,
+        "availableFrom": "2026-03-17",
+        "oiToAssets": 0.2681,
+        "oiToBookEquity": 0.3912,
+        "reportDate": "2025-12-31",
+        "roe": 0.3559,
+        "ticker": "000660.KS"
+       },
+       {
+        "ageDays": 303,
+        "availableFrom": "2026-03-16",
+        "oiToAssets": 0.2752,
+        "oiToBookEquity": 0.4246,
+        "reportDate": "2025-12-31",
+        "roe": 0.3269,
+        "ticker": "443060.KS"
+       },
+       {
+        "ageDays": 303,
+        "availableFrom": "2026-03-18",
+        "oiToAssets": 0.2386,
+        "oiToBookEquity": 0.4122,
+        "reportDate": "2025-12-31",
+        "roe": 0.3057,
+        "ticker": "003230.KS"
+       }
+      ]
+     },
+     "dropSides": {
+      "byReason": {
+       "BOOK_VALUE_OR_LEVERAGE_MISSING": {
+        "BALANCE_SHEET_NOT_EXTRACTED": 1
+       },
+       "NO_PIT_FILING": {
+        "NOT_COLLECTED_BY_PIPELINE": 121
+       },
+       "OPERATING_LINE_MISSING_ACCOUNTING_DEFINITION": {
+        "NO_OPERATING_SUBTOTAL_STATED": 17,
+        "OPERATING_MARGIN_ABOVE_100PCT_RULE": 2,
+        "STORE_CHAIN_INCOMPLETE": 2
+       },
+       "PROFITABILITY_MISSING": {
+        "BALANCE_SHEET_NOT_EXTRACTED": 1,
+        "STORE_CHAIN_INCOMPLETE": 16
+       }
+      },
+      "bySide": {
+       "COMPANY_REPORTING_FORMAT": 17,
+       "OUR_PIPELINE": 121,
+       "OUR_PIPELINE_OR_FILER_UNRESOLVED": 20,
+       "RULE_ADDED_AFTER_INSPECTION": 2
+      },
+      "method": "Classified from the latest filing visible on the as-of date and its derivation flags; a name absent from the store altogether was never collected. INCOMPLETE_CHAIN cannot tell an account the filer omitted from one the collector's exact-label match dropped (AGENTS v2.33), so it stays unresolved."
+     },
+     "membershipSnapshot": "2026-10-01",
+     "opmRule": {
+      "addedAfterInspection": true,
+      "b1DeepReviewWithRule": [
+       "278470.KS",
+       "267260.KS",
+       "000660.KS",
+       "443060.KS",
+       "003230.KS"
+      ],
+      "removed": {
+       "402340.KS": {
+        "operatingMargin": 27.016,
+        "roe": 0.3151,
+        "roeRankIfKept": 5,
+        "wouldBeB1Eligible": true,
+        "wouldEnterDeepReview": true
+       },
+       "454910.KS": {
+        "operatingMargin": -1.803,
+        "roe": -0.1592,
+        "roeRankIfKept": null,
+        "wouldBeB1Eligible": false,
+        "wouldEnterDeepReview": false
+       }
+      },
+      "verdict": "CHANGES_B1"
+     },
+     "periods": {
+      "ageDays": {
+       "max": 395,
+       "median": 122.0
+      },
+      "factorRows": 78,
+      "freshnessRule": "each field's report period must end within 456 days of the as-of date; the filing must be visible by its receipt date (availableFrom)",
+      "publicationLagDays": {
+       "max": 187,
+       "median": 45.0
+      },
+      "rowsMixingReportPeriods": 70,
+      "rowsUsingSameDayFiling": 0
+     },
+     "shareCounts": {
+      "affects": "bookToPrice and every per-share figure; ROE, margins and liabilities/equity are ratios of totals and are unaffected",
+      "flagged": {},
+      "rule": "a per-share field is invalid when its share count was carried forward more than 456 days"
+     }
+    },
+    "US": {
+     "b1v2": {
+      "ageDays": {
+       "max": 375,
+       "median": 224.0
+      },
+      "eligible": 235,
+      "noCompleteFiling": 80,
+      "rankingComparison": {
+       "n": 235,
+       "oiToAssets": {
+        "n": 230,
+        "spearmanWithRoe": 0.902,
+        "top5ByThisMeasure": [
+         "NVDA",
+         "MU",
+         "IDXX",
+         "LRCX",
+         "TPL"
+        ],
+        "top5Overlap": 3,
+        "topQuintileOverlap": "36/46"
+       },
+       "oiToBookEquity": {
+        "n": 230,
+        "spearmanWithRoe": 0.942,
+        "top5ByThisMeasure": [
+         "KLAC",
+         "IDXX",
+         "NVDA",
+         "ADBE",
+         "WSM"
+        ],
+        "top5Overlap": 3,
+        "topQuintileOverlap": "41/46"
+       }
+      },
+      "stage3Survivors": 498,
+      "top5": [
+       {
+        "ageDays": 198,
+        "availableFrom": "2026-05-20",
+        "oiToAssets": 0.6254,
+        "oiToBookEquity": 0.8302,
+        "reportDate": "2026-04-26",
+        "roe": 0.8165,
+        "ticker": "NVDA"
+       },
+       {
+        "ageDays": 224,
+        "availableFrom": "2026-04-30",
+        "oiToAssets": 0.3192,
+        "oiToBookEquity": 0.9237,
+        "reportDate": "2026-03-31",
+        "roe": 0.8011,
+        "ticker": "KLAC"
+       },
+       {
+        "ageDays": 224,
+        "availableFrom": "2026-05-05",
+        "oiToAssets": 0.4153,
+        "oiToBookEquity": 0.9036,
+        "reportDate": "2026-03-31",
+        "roe": 0.7038,
+        "ticker": "IDXX"
+       },
+       {
+        "ageDays": 221,
+        "availableFrom": "2026-05-01",
+        "oiToAssets": 0.2373,
+        "oiToBookEquity": 0.3688,
+        "reportDate": "2026-04-03",
+        "roe": 0.6726,
+        "ticker": "WDC"
+       },
+       {
+        "ageDays": 226,
+        "availableFrom": "2026-04-23",
+        "oiToAssets": 0.3572,
+        "oiToBookEquity": 0.7017,
+        "reportDate": "2026-03-29",
+        "roe": 0.6338,
+        "ticker": "LRCX"
+       }
+      ]
+     },
+     "dropSides": {
+      "byReason": {
+       "BOOK_VALUE_OR_LEVERAGE_MISSING": {
+        "SHARE_COUNT_NOT_COLLECTED": 60
+       },
+       "FILING_OLDER_THAN_15M": {
+        "STORED_FILINGS_STALE": 6
+       },
+       "NO_PIT_FILING": {
+        "NOT_COLLECTED_BY_PIPELINE": 1
+       },
+       "OPERATING_LINE_MISSING_ACCOUNTING_DEFINITION": {
+        "NO_OPERATING_SUBTOTAL_STATED": 11,
+        "OPERATING_MARGIN_ABOVE_100PCT_RULE": 2,
+        "STORE_CHAIN_INCOMPLETE": 22
+       },
+       "PROFITABILITY_MISSING": {
+        "BALANCE_SHEET_NOT_EXTRACTED": 33,
+        "STORE_CHAIN_INCOMPLETE": 7
+       }
+      },
+      "bySide": {
+       "COMPANY_REPORTING_FORMAT": 11,
+       "OUR_PIPELINE": 61,
+       "OUR_PIPELINE_OR_FILER_UNRESOLVED": 68,
+       "RULE_ADDED_AFTER_INSPECTION": 2
+      },
+      "method": "Classified from the latest filing visible on the as-of date and its derivation flags; a name absent from the store altogether was never collected. INCOMPLETE_CHAIN cannot tell an account the filer omitted from one the collector's exact-label match dropped (AGENTS v2.33), so it stays unresolved."
+     },
+     "membershipSnapshot": {
+      "censusAsOf": "2026-11-10",
+      "currentMembers": 503,
+      "file": "data/universe-history.json",
+      "gapDays": 83,
+      "lastCommit": "3a97c12e3e0d6a20ea8c0dbfd7699b1e0d303298",
+      "lastCommitAt": "2026-08-28T12:44:50+00:00",
+      "lastMembershipChange": "2026-08-19",
+      "note": "Index changes after the last recorded change are not in the census; the file is a snapshot, not a live feed."
+     },
+     "opmRule": {
+      "addedAfterInspection": true,
+      "b1DeepReviewWithRule": [
+       "NVDA",
+       "KLAC",
+       "IDXX",
+       "WDC",
+       "LRCX"
+      ],
+      "removed": {
+       "MRNA": {
+        "operatingMargin": -1.16,
+        "roe": -0.4312,
+        "roeRankIfKept": null,
+        "wouldBeB1Eligible": false,
+        "wouldEnterDeepReview": false
+       },
+       "WFC": {
+        "operatingMargin": 1.119,
+        "roe": 0.1216,
+        "roeRankIfKept": null,
+        "wouldBeB1Eligible": false,
+        "wouldEnterDeepReview": false
+       }
+      },
+      "verdict": "NO_CHANGE_TO_B1_DEEP_REVIEW"
+     },
+     "periods": {
+      "ageDays": {
+       "max": 375,
+       "median": 224.0
+      },
+      "factorRows": 356,
+      "freshnessRule": "each field's report period must end within 456 days of the as-of date; the filing must be visible by its receipt date (availableFrom)",
+      "publicationLagDays": {
+       "max": 60,
+       "median": 31.0
+      },
+      "rowsMixingReportPeriods": 354,
+      "rowsUsingSameDayFiling": 4
+     },
+     "shareCounts": {
+      "affects": "bookToPrice and every per-share figure; ROE, margins and liabilities/equity are ratios of totals and are unaffected",
+      "flagged": {
+       "ARES": {
+        "bookToPriceInCensus": 0.1166,
+        "bookValueFrom": "2026-03-31",
+        "carriedDays": 2191,
+        "lastShareCountAsFiled": "2020-03-31"
+       },
+       "BA": {
+        "bookToPriceInCensus": 0.0453,
+        "bookValueFrom": "2026-03-31",
+        "carriedDays": 4930,
+        "lastShareCountAsFiled": "2012-09-30"
+       },
+       "BEN": {
+        "bookToPriceInCensus": 0.6643,
+        "bookValueFrom": "2026-03-31",
+        "carriedDays": 1735,
+        "lastShareCountAsFiled": "2021-06-30"
+       },
+       "BRO": {
+        "bookToPriceInCensus": 1.2278,
+        "bookValueFrom": "2026-03-31",
+        "carriedDays": 4108,
+        "lastShareCountAsFiled": "2014-12-31"
+       },
+       "CB": {
+        "bookToPriceInCensus": 0.4435,
+        "bookValueFrom": "2026-03-31",
+        "carriedDays": 1916,
+        "lastShareCountAsFiled": "2020-12-31"
+       },
+       "COHR": {
+        "bookToPriceInCensus": 2.0535,
+        "bookValueFrom": "2026-03-31",
+        "carriedDays": 4840,
+        "lastShareCountAsFiled": "2012-12-29"
+       },
+       "GOOGL": {
+        "bookToPriceInCensus": 2.4455,
+        "bookValueFrom": "2026-03-31",
+        "carriedDays": 2100,
+        "lastShareCountAsFiled": "2020-06-30"
+       },
+       "GPC": {
+        "bookToPriceInCensus": 0.2522,
+        "bookValueFrom": "2026-03-31",
+        "carriedDays": 1186,
+        "lastShareCountAsFiled": "2022-12-31"
+       },
+       "HSY": {
+        "bookToPriceInCensus": 0.1199,
+        "bookValueFrom": "2026-03-29",
+        "carriedDays": 4382,
+        "lastShareCountAsFiled": "2014-03-30"
+       },
+       "J": {
+        "bookToPriceInCensus": 0.1577,
+        "bookValueFrom": "2026-03-27",
+        "carriedDays": 2282,
+        "lastShareCountAsFiled": "2019-12-27"
+       },
+       "JCI": {
+        "bookToPriceInCensus": 0.2238,
+        "bookValueFrom": "2026-03-31",
+        "carriedDays": 3567,
+        "lastShareCountAsFiled": "2016-06-24"
+       },
+       "KHC": {
+        "bookToPriceInCensus": 1.4256,
+        "bookValueFrom": "2026-03-28",
+        "carriedDays": 3835,
+        "lastShareCountAsFiled": "2015-09-27"
+       },
+       "LDOS": {
+        "bookToPriceInCensus": 0.4199,
+        "bookValueFrom": "2026-04-03",
+        "carriedDays": 3472,
+        "lastShareCountAsFiled": "2016-09-30"
+       },
+       "NEE": {
+        "bookToPriceInCensus": 1.3239,
+        "bookValueFrom": "2026-03-31",
+        "carriedDays": 2374,
+        "lastShareCountAsFiled": "2019-09-30"
+       },
+       "NSC": {
+        "bookToPriceInCensus": 0.1881,
+        "bookValueFrom": "2026-03-31",
+        "carriedDays": 2191,
+        "lastShareCountAsFiled": "2020-03-31"
+       },
+       "PG": {
+        "bookToPriceInCensus": 0.1305,
+        "bookValueFrom": "2026-03-31",
+        "carriedDays": 1096,
+        "lastShareCountAsFiled": "2023-03-31"
+       },
+       "PKG": {
+        "bookToPriceInCensus": 0.185,
+        "bookValueFrom": "2026-03-31",
+        "carriedDays": 4473,
+        "lastShareCountAsFiled": "2013-12-31"
+       },
+       "STE": {
+        "bookToPriceInCensus": 0.4743,
+        "bookValueFrom": "2026-03-31",
+        "carriedDays": 4473,
+        "lastShareCountAsFiled": "2013-12-31"
+       },
+       "SWK": {
+        "bookToPriceInCensus": 0.4675,
+        "bookValueFrom": "2026-04-04",
+        "carriedDays": 1645,
+        "lastShareCountAsFiled": "2021-10-02"
+       },
+       "VTR": {
+        "bookToPriceInCensus": 0.4044,
+        "bookValueFrom": "2026-03-31",
+        "carriedDays": 2647,
+        "lastShareCountAsFiled": "2018-12-31"
+       },
+       "WDC": {
+        "bookToPriceInCensus": 0.0938,
+        "bookValueFrom": "2026-04-03",
+        "carriedDays": 462,
+        "lastShareCountAsFiled": "2024-12-27"
+       },
+       "ZBRA": {
+        "bookToPriceInCensus": 0.1995,
+        "bookValueFrom": "2026-04-04",
+        "carriedDays": 2835,
+        "lastShareCountAsFiled": "2018-06-30"
+       }
+      },
+      "rule": "a per-share field is invalid when its share count was carried forward more than 456 days"
+     }
+    }
+   }
+  },
   "legacyToV3": {
    "B0": "v3.B0",
    "B1": "v3.B2",
@@ -2954,17 +3508,460 @@
    ],
    "timeSeriesVsCrossSection": "All five are cross-sectional (which stocks beat others), not forecasts of the market index. Market-timing evidence (C1 exposure, US cocktail) is a separate question and is graded separately."
   },
+  "prospective": {
+   "activation": "ACTIVATION_BLOCKED OWNER_APPROVAL_FILE_MISSING, GATE_OPEN CI_GREEN",
+   "activationRequires": [
+    "an Owner approval file research/evidence_first_v2/owner-approvals/prospective-v1.json naming this protocol's SHA-256",
+    "every gate in research/decision_desk_v1/ledger.py ACTIVATION_GATES at RESOLVED",
+    "#321 merged so the repository's CI is green"
+   ],
+   "arms": {
+    "B1_PLUS_AI": {
+     "rule": "start from the B1_ROE selection; the AI review may only REMOVE names (decision EXCLUDE with at least two sourced reasons), never add or resize; survivors keep the B1 weight",
+     "track": "B_PROSPECTIVE_VIRTUAL",
+     "v3Path": "v3.B3"
+    },
+    "B1_ROE": {
+     "rule": "B1_PROFITABILITY_V2",
+     "track": "B_PROSPECTIVE_VIRTUAL",
+     "v3Path": "v3.B1"
+    },
+    "ETF100": {
+     "rule": "100% regional ETF (KR 069500.KS, US SPY)",
+     "track": "BENCHMARK",
+     "v3Path": "v3.B0"
+    },
+    "PRODUCTION": {
+     "rule": "the weights of the FINAL_WEEKLY production receipt of the decision date, copied by digest",
+     "track": "PRODUCTION_COPY",
+     "v3Path": "v3.B2"
+    }
+   },
+   "b1Steps": [
+    "universe: the census stage-3 survivors (common identity, tradable, 252 sessions of history, no unresolved corporate action)",
+    "inputs: the latest single filing, visible strictly before the decision date, that states ROE, operating margin, net margin and liabilities/equity, with a report period at most 456 days old",
+    "eligible: large cap (KR market-cap rank <= 150, US S&P 500), 0 < operating margin <= 1, liabilities/equity <= 2",
+    "rank by ROE (descending, ties by ticker); walk down the ranking and take a name unless its industry already holds 2 selected names; stop at 5",
+    "industry: KR = kr-industry-membership-foundation-v4 interval containing the decision date; US = pipeline.sectors.sector_of; an unknown industry is the shared bucket UNCLASSIFIED with the same cap"
+   ],
+   "cohort": {
+    "decisionDate": "the asOfDate of the first FINAL_WEEKLY production receipt of the month in each region (KR and US separately)",
+    "execution": "close of the first regional session whose open is at least 48 hours after the cohort packet is sealed; identical for all four arms",
+    "frequency": "monthly, independent: each cohort is a separate buy-and-hold portfolio to its horizons; cohorts overlap and are never netted against each other",
+    "informationCutoff": "the regional close of the decision date (KR 15:30 Asia/Seoul, US 16:00 America/New_York)",
+    "noBackfill": "an arm that is not committed by the deadline is NO_RECORD for that cohort and is never filled in later",
+    "recordedAt": "the commit time of the cohort file, verified public before the deadline by an observation made before the deadline (ledger PUBLICATION rule)",
+    "registrationDeadline": "the open of the execution session"
+   },
+   "comparison": {
+    "excludedFromPrimary": "records annotated PIT_CONTAMINATED, PUBLICATION_LATE or PUBLICATION_NOT_OBSERVED; they stay in the ledger and are reported separately",
+    "noEarlyClaim": "no statement about an arm's edge before 24 cohorts have matured at 126 sessions; until then outcomes are listed, not summarised",
+    "primary": "per cohort and horizon: B1_ROE - ETF100, B1_PLUS_AI - B1_ROE (the AI's marginal effect), PRODUCTION - ETF100, after base costs"
+   },
+   "costs": {
+    "basis": "the production receipt's stated round-trip cost per leg (stock and ETF) on the decision date",
+    "stress": "2x the same costs, reported beside the base case for every outcome"
+   },
+   "dryRun": {
+    "KR": {
+     "arms": {
+      "B1_PLUS_AI": {
+       "excluded": null,
+       "reason": "NO_REVIEW_COMMITTED_BEFORE_DEADLINE",
+       "recordLabel": "UNVERIFIED_PROSPECTIVE_VIRTUAL",
+       "status": "NO_RECORD",
+       "track": "B_PROSPECTIVE_VIRTUAL",
+       "v3Path": "v3.B3",
+       "weights": null
+      },
+      "B1_ROE": {
+       "inputs": {
+        "000660.KS": {
+         "availableFrom": "2026-03-17",
+         "reportDate": "2025-12-31",
+         "roe": 0.3559
+        },
+        "003230.KS": {
+         "availableFrom": "2026-03-18",
+         "reportDate": "2025-12-31",
+         "roe": 0.3057
+        },
+        "267260.KS": {
+         "availableFrom": "2026-03-16",
+         "reportDate": "2025-12-31",
+         "roe": 0.36
+        },
+        "278470.KS": {
+         "availableFrom": "2026-03-23",
+         "reportDate": "2025-12-31",
+         "roe": 0.6497
+        },
+        "443060.KS": {
+         "availableFrom": "2026-03-16",
+         "reportDate": "2025-12-31",
+         "roe": 0.3269
+        }
+       },
+       "recordLabel": "UNVERIFIED_PROSPECTIVE_VIRTUAL",
+       "selection": {
+        "industries": {
+         "000660.KS": "Electronics and electrical equipment",
+         "003230.KS": "Food, beverage and tobacco",
+         "267260.KS": "Electronics and electrical equipment",
+         "278470.KS": "Chemicals",
+         "443060.KS": "Construction and engineering"
+        },
+        "selected": [
+         "278470.KS",
+         "267260.KS",
+         "000660.KS",
+         "443060.KS",
+         "003230.KS"
+        ],
+        "skipped": []
+       },
+       "status": "DRAFT",
+       "track": "B_PROSPECTIVE_VIRTUAL",
+       "v3Path": "v3.B1",
+       "weights": {
+        "000660.KS": 0.1,
+        "003230.KS": 0.1,
+        "069500.KS": 0.5,
+        "267260.KS": 0.1,
+        "278470.KS": 0.1,
+        "443060.KS": 0.1
+       }
+      },
+      "ETF100": {
+       "status": "DRAFT",
+       "track": "BENCHMARK",
+       "v3Path": "v3.B0",
+       "weights": {
+        "069500.KS": 1.0
+       }
+      },
+      "PRODUCTION": {
+       "receiptDigest": "004ab3870da0b8e444d01362bc51d27c38967631168de8be434909c903a7b596",
+       "receiptId": "weekly-passive-first-v1|KR|2026-11-06",
+       "status": "DRAFT",
+       "track": "PRODUCTION_COPY",
+       "v3Path": "v3.B2",
+       "weights": {
+        "069500.KS": 1.0
+       }
+      }
+     },
+     "common": {
+      "benchmark": "069500.KS",
+      "cohort": "DRY-RUN",
+      "costStress": 2.0,
+      "costs": {
+       "benchmarkRoundTripPct": 0.11,
+       "commissionBps": 1.5,
+       "sellTaxBps": 20.0,
+       "source": "pipeline/benchmark_alpha.py REALISTIC_COSTS (dated sell tax)",
+       "spreadBps": 8.0,
+       "stockRoundTripPct": 0.31,
+       "switchCostPct": 0.42
+      },
+      "decisionDate": "2026-10-30",
+      "execution": "close of the first regional session whose open is at least 48 hours after the cohort packet is sealed; identical for all four arms",
+      "informationCutoff": "2026-10-30 regional close",
+      "label": "DRY_RUN_NOT_A_COHORT",
+      "protocolSha256": "71c2170dc9ad61e202e1db8ea006783b11759c1c72c1df85681e993b4dd3d9a4",
+      "region": "KR",
+      "returnDefinition": "total return in local currency (KRW / USD), distributions reinvested at the ex-date close, entry at the execution close, exit at the close of the 126th and 252nd regional session"
+     }
+    },
+    "US": {
+     "arms": {
+      "B1_PLUS_AI": {
+       "excluded": null,
+       "reason": "NO_REVIEW_COMMITTED_BEFORE_DEADLINE",
+       "recordLabel": "UNVERIFIED_PROSPECTIVE_VIRTUAL",
+       "status": "NO_RECORD",
+       "track": "B_PROSPECTIVE_VIRTUAL",
+       "v3Path": "v3.B3",
+       "weights": null
+      },
+      "B1_ROE": {
+       "inputs": {
+        "IDXX": {
+         "availableFrom": "2026-05-05",
+         "reportDate": "2026-03-31",
+         "roe": 0.7038
+        },
+        "KLAC": {
+         "availableFrom": "2026-04-30",
+         "reportDate": "2026-03-31",
+         "roe": 0.8011
+        },
+        "NVDA": {
+         "availableFrom": "2026-05-20",
+         "reportDate": "2026-04-26",
+         "roe": 0.8165
+        },
+        "V": {
+         "availableFrom": "2026-04-29",
+         "reportDate": "2026-03-31",
+         "roe": 0.6235
+        },
+        "WDC": {
+         "availableFrom": "2026-05-01",
+         "reportDate": "2026-04-03",
+         "roe": 0.6726
+        }
+       },
+       "recordLabel": "UNVERIFIED_PROSPECTIVE_VIRTUAL",
+       "selection": {
+        "industries": {
+         "IDXX": "UNCLASSIFIED",
+         "KLAC": "Technology",
+         "NVDA": "Technology",
+         "V": "Financials",
+         "WDC": "UNCLASSIFIED"
+        },
+        "selected": [
+         "NVDA",
+         "KLAC",
+         "IDXX",
+         "WDC",
+         "V"
+        ],
+        "skipped": [
+         {
+          "reason": "INDUSTRY_CAP UNCLASSIFIED",
+          "ticker": "LRCX"
+         },
+         {
+          "reason": "INDUSTRY_CAP Technology",
+          "ticker": "ADBE"
+         }
+        ]
+       },
+       "status": "DRAFT",
+       "track": "B_PROSPECTIVE_VIRTUAL",
+       "v3Path": "v3.B1",
+       "weights": {
+        "IDXX": 0.1,
+        "KLAC": 0.1,
+        "NVDA": 0.1,
+        "SPY": 0.5,
+        "V": 0.1,
+        "WDC": 0.1
+       }
+      },
+      "ETF100": {
+       "status": "DRAFT",
+       "track": "BENCHMARK",
+       "v3Path": "v3.B0",
+       "weights": {
+        "SPY": 1.0
+       }
+      },
+      "PRODUCTION": {
+       "receiptDigest": "ae673d8225e85998f0e08d80bb174e88ea56885e0aba92d4a039e79eb16d3d52",
+       "receiptId": "weekly-passive-first-v1|US|2026-11-10",
+       "status": "DRAFT",
+       "track": "PRODUCTION_COPY",
+       "v3Path": "v3.B2",
+       "weights": {
+        "SPY": 1.0
+       }
+      }
+     },
+     "common": {
+      "benchmark": "SPY",
+      "cohort": "DRY-RUN",
+      "costStress": 2.0,
+      "costs": {
+       "benchmarkRoundTripPct": 0.163,
+       "commissionBps": 5.0,
+       "sellTaxBps": 0.3,
+       "source": "pipeline/benchmark_alpha.py REALISTIC_COSTS (dated sell tax)",
+       "spreadBps": 6.0,
+       "stockRoundTripPct": 0.163,
+       "switchCostPct": 0.326
+      },
+      "decisionDate": "2026-11-10",
+      "execution": "close of the first regional session whose open is at least 48 hours after the cohort packet is sealed; identical for all four arms",
+      "informationCutoff": "2026-11-10 regional close",
+      "label": "DRY_RUN_NOT_A_COHORT",
+      "protocolSha256": "71c2170dc9ad61e202e1db8ea006783b11759c1c72c1df85681e993b4dd3d9a4",
+      "region": "US",
+      "returnDefinition": "total return in local currency (KRW / USD), distributions reinvested at the ex-date close, entry at the execution close, exit at the close of the 126th and 252nd regional session"
+     }
+    }
+   },
+   "dryRunLabel": "DRY_RUN_NOT_A_COHORT: run on the 2026-11 census to exercise the rules; nothing is recorded or evaluated",
+   "gates": [
+    {
+     "blocks": [
+      "DESK_V2_B2"
+     ],
+     "detail": "FRED values are read at the current vintage. An observation revised after the cutoff is dropped when revision metadata is supplied (availability.available_fred), but the FRED CSV carries none, so a silent revision cannot be detected. Prospective-v1 arms read no macro series.",
+     "id": "G1_MACRO_VINTAGE",
+     "status": "OPEN",
+     "test": "test_review_gaps.py::test_revised_observation_is_dropped_not_substituted"
+    },
+    {
+     "blocks": [
+      "DESK_V2_B2"
+     ],
+     "detail": "Production receipts carry no per-field publication time. A stated time after the cutoff now fails gate G6_PUBLICATION; an absent one is flagged, not trusted. Prospective-v1 arms read dated PIT filings (availableFrom strictly before the decision date).",
+     "id": "G2_FUNDAMENTAL_PUBLICATION",
+     "status": "OPEN",
+     "test": "test_review_gaps.py::test_fundamental_published_after_cutoff_fails_gates"
+    },
+    {
+     "blocks": [],
+     "detail": null,
+     "id": "G3_SAME_DAY_CUTOFF",
+     "status": "RESOLVED",
+     "test": "test_review_gaps.py::test_same_day_iso_cutoff_is_published"
+    },
+    {
+     "blocks": [],
+     "detail": null,
+     "id": "G4_PROSE_NUMBERS",
+     "status": "RESOLVED",
+     "test": "test_review_gaps.py::test_unsourced_number_in_prose_is_refused"
+    },
+    {
+     "blocks": [],
+     "detail": null,
+     "id": "G5_SOURCE_BLOCKED_RETRY",
+     "status": "RESOLVED",
+     "test": "test_review_gaps.py::test_source_blocked_is_superseded_append_only"
+    },
+    {
+     "blocks": [],
+     "detail": null,
+     "id": "G6_NON_POSITIVE_PRICE",
+     "status": "RESOLVED",
+     "test": "test_review_gaps.py::test_zero_or_negative_price_blocks"
+    },
+    {
+     "blocks": [],
+     "detail": null,
+     "id": "G7_PRIMARY_EXCLUSION",
+     "status": "RESOLVED",
+     "test": "test_review_gaps.py::test_primary_comparison_excludes_contaminated_and_unobserved"
+    },
+    {
+     "blocks": [],
+     "detail": "PUBLICATION_VERIFIED needs the public commit to be OBSERVED before the deadline; a later check can only record PUBLICATION_NOT_OBSERVED. An operator must therefore run verify-publication before each deadline.",
+     "id": "G8_PUBLICATION_OBSERVED",
+     "status": "RESOLVED",
+     "test": "test_review_gaps.py::test_publication_checked_after_deadline_is_not_verified"
+    },
+    {
+     "blocks": [],
+     "detail": null,
+     "id": "G9_FUTURE_SPLIT",
+     "status": "RESOLVED",
+     "test": "test_review_gaps.py::test_future_split_is_undone_at_the_cutoff"
+    },
+    {
+     "blocks": [],
+     "detail": "Clarified: the registration deadline applies to every path. A cohort decided after it records nothing (REGISTRATION_CLOSED); no path is back-filled.",
+     "id": "G10_MISSED_DEADLINE",
+     "status": "RESOLVED",
+     "test": "test_review_gaps.py::test_missed_deadline_records_no_path"
+    },
+    {
+     "blocks": [],
+     "detail": null,
+     "id": "G11_CONCURRENT_APPEND",
+     "status": "RESOLVED",
+     "test": "test_review_gaps.py::test_concurrent_appends_keep_one_chain"
+    },
+    {
+     "blocks": [],
+     "detail": null,
+     "id": "G12_DOUBLE_COST",
+     "status": "RESOLVED",
+     "test": "test_review_gaps.py::test_evaluate_writes_base_and_double_cost"
+    },
+    {
+     "blocks": [],
+     "detail": null,
+     "id": "G13_REVIEW_BEFORE_SEAL",
+     "status": "RESOLVED",
+     "test": "test_review_gaps.py::test_decide_refuses_review_before_packet_seal"
+    },
+    {
+     "blocks": [
+      "ALL"
+     ],
+     "detail": "Every PR's Tests job fails on the shared threadpoolctl 3.8.0 pin until #321 merges.",
+     "id": "CI_GREEN",
+     "status": "OPEN",
+     "test": null
+    }
+   ],
+   "portfolio": {
+    "maxNames": 5,
+    "maxNamesPerIndustry": 2,
+    "minNames": 0,
+    "perNameWeight": 0.1,
+    "perNameWeightNote": "10% is a fixed experimental convention carried from decision-desk protocol v1 so every arm is comparable; it is not an estimated optimum and no arm sizes by conviction",
+    "rebalance": "none inside a horizon; a new cohort is a new portfolio",
+    "unselectedWeightGoesTo": "the regional ETF"
+   },
+   "protocolSha256": "71c2170dc9ad61e202e1db8ea006783b11759c1c72c1df85681e993b4dd3d9a4",
+   "returns": {
+    "benchmark": "ETF100 of the same region and cohort on the same basis",
+    "definition": "total return in local currency (KRW / USD), distributions reinvested at the ex-date close, entry at the execution close, exit at the close of the 126th and 252nd regional session",
+    "sourceBlocked": "missing session, zero volume, non-positive price, unverified split, move beyond the daily limit, missing exit: SOURCE_BLOCKED, re-evaluated append-only when better data arrives, never 0%"
+   },
+   "status": "FROZEN_NOT_ACTIVATED",
+   "tracks": {
+    "A_VERIFIED_STRATEGY": {
+     "currentMembers": "none",
+     "entry": "grade E5 in evidence-grades.json (which already requires an Owner approval reference) and no block state",
+     "label": "검증된 실전 전략"
+    },
+    "B_PROSPECTIVE_VIRTUAL": {
+     "entry": [
+      "a pre-registered hypothesis whose rule is in this file (rule SHA-256 recorded on every record)",
+      "the rule's own evidence grade is at least E1 and its evidence-grades item lists no block in prospectiveBlocks (a block on NEW HISTORICAL research, such as KR GOVERNANCE_CLOSED, does not stop a prospective record)",
+      "every input fact was public strictly before the information cutoff (date-only receipts count from the next day)",
+      "every selected name has a price eligible for evaluation: a close on the decision date, no unresolved corporate action, no non-positive price",
+      "the record is committed and observed public before the registration deadline"
+     ],
+     "graduates": "to A only through E2-E4 evidence plus E5 Owner approval; accumulating records alone never promotes",
+     "label": "미검증 전향 가상 포트폴리오",
+     "neverLabelled": "a verified strategy, a recommendation or a buy signal; the record says UNVERIFIED_PROSPECTIVE_VIRTUAL"
+    },
+    "C_WATCHLIST_ONLY": {
+     "entry": "a name someone wants to watch that fails any B condition (no pre-registered rule nominated it, inputs not PIT, price not eligible)",
+     "label": "단순 관심종목",
+     "recorded": "never as a portfolio; no weight, no outcome"
+    }
+   }
+  },
   "rule": "Levels are sequential: an item's grade is the highest level whose criteria AND every lower level's criteria are met. A famous paper never skips a level. Blocking states (SOURCE_BLOCKED, PIT_UNSAFE, PIT_CONTAMINATED, GOVERNANCE_CLOSED) are listed separately and make an item ineligible for a decision whatever its grade.",
   "schema": "EVIDENCE_FIRST_V2",
   "sources": {
    "academic-path-protocol.json": "37498fe96bd33095d151d74490234f5e0f21aca6fd1ff0d20bfb551396b08443",
-   "evidence-grades.json": "532cebb47c4a2e545e0662f7cb62600b8d4c43103eb7aab9871cfb99c3dc2073",
+   "evidence-grades.json": "3c45bf5c0471f62b5f7a4471aa97e345e3c4c55de6d22e8c37f96d77c74214ec",
    "literature.json": "718141aeb15c2ee7a54ef2c46d11a3a88ffd591a98872a01f247e94897fad24c",
+   "prospective-protocol-v1.json": "71c2170dc9ad61e202e1db8ea006783b11759c1c72c1df85681e993b4dd3d9a4",
    "results/academic-path.json": "bc38b02fd5fc94412bb692fc250bc573573ef8cb40009c07c3fc888728c45949",
-   "results/b3-dossiers.json": "0ca83378f11443a2d7bb9b9ea92e256925e205a64915f7e782f5e3513ba5006c",
-   "results/census.json": "a1de9c4fa941f776c60cf7c05aea2b806d8e7cc93d6ed9decfe230e0759ca5e9"
+   "results/b3-dossiers.json": "ba33c9ac03e820a727e1fa78f60552469ccf41824af1f39546ec3f957b70d1f8",
+   "results/census.json": "a1de9c4fa941f776c60cf7c05aea2b806d8e7cc93d6ed9decfe230e0759ca5e9",
+   "results/data-integrity.json": "df1674e1f78a833642cdaf046223cbc7ec5add16724570b3f9220c24291f0e68",
+   "results/prospective-dry-run.json": "80eece77ec15b1168e500af78849f995a012bc0299444b13bc6ccc5eb8843386"
   },
   "survivorshipStatement": "The US census lists today's members only. It supports a current screen, never a historical performance claim.",
+  "tracks": {
+   "A_VERIFIED_STRATEGY": "E5 and no block (E5 itself requires an Owner approval reference)",
+   "BENCHMARK": "the regional ETF",
+   "B_PROSPECTIVE_VIRTUAL": "at least E1, a rule registered in prospective-protocol-v1.json (prospectiveRule) and no block that applies to prospective use (prospectiveBlocks); recorded as UNVERIFIED_PROSPECTIVE_VIRTUAL, never as a recommendation",
+   "C_WATCHLIST_ONLY": "everything else: may be shown and discussed, never recorded as a portfolio",
+   "PRODUCTION": "the production rule is reported as the production copy arm; its own grade still applies"
+  },
   "v3Paths": {
    "v3.B0": "지역 ETF (069500.KS / SPY; QQQ 별도 비교)",
    "v3.B1": "선행연구 기반 단순 정량 경로 (B1_PROFITABILITY_V1)",
@@ -4152,6 +5149,7 @@
      "modelVersion": "etf-baseline-v1",
      "outcomes": [],
      "path": "B0",
+     "primaryExclusionReasons": [],
      "publishedAt": "2026-11-11T12:30:45Z",
      "reviewer": null,
      "schemaVersion": 1,
@@ -4186,6 +5184,7 @@
      "modelVersion": "weekly-passive-first-v1 (production receipt copy)",
      "outcomes": [],
      "path": "B1",
+     "primaryExclusionReasons": [],
      "publishedAt": "2026-11-11T12:30:45Z",
      "reviewer": null,
      "schemaVersion": 1,
@@ -4254,6 +5253,9 @@
      "modelVersion": "decision-desk-v1-ai-synthesis (Claude, structured gates)",
      "outcomes": [],
      "path": "B2",
+     "primaryExclusionReasons": [
+      "PIT_CONTAMINATED"
+     ],
      "publishedAt": "2026-11-11T12:30:45Z",
      "reviewer": "claude",
      "schemaVersion": 1,
@@ -4538,6 +5540,9 @@
      "modelVersion": "etf-baseline-v1",
      "outcomes": [],
      "path": "B0",
+     "primaryExclusionReasons": [
+      "PUBLICATION_NOT_OBSERVED_BEFORE_DEADLINE"
+     ],
      "publishedAt": "2026-11-11T12:30:45Z",
      "reviewer": null,
      "schemaVersion": 1,
@@ -4572,6 +5577,9 @@
      "modelVersion": "weekly-passive-first-v1 (production receipt copy)",
      "outcomes": [],
      "path": "B1",
+     "primaryExclusionReasons": [
+      "PUBLICATION_NOT_OBSERVED_BEFORE_DEADLINE"
+     ],
      "publishedAt": "2026-11-11T12:30:45Z",
      "reviewer": null,
      "schemaVersion": 1,
@@ -4700,6 +5708,10 @@
      "modelVersion": "decision-desk-v1-ai-synthesis (Claude, structured gates)",
      "outcomes": [],
      "path": "B2",
+     "primaryExclusionReasons": [
+      "PIT_CONTAMINATED",
+      "PUBLICATION_NOT_OBSERVED_BEFORE_DEADLINE"
+     ],
      "publishedAt": "2026-11-11T12:30:45Z",
      "reviewer": "claude",
      "schemaVersion": 1,

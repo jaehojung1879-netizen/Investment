@@ -15,6 +15,7 @@ sys.path.insert(0, str(HERE))
 import academic_path as AP  # noqa: E402
 import b3_dossiers as B3  # noqa: E402
 import contract as C  # noqa: E402
+import prospective as PR  # noqa: E402
 
 
 def _j(name):
@@ -50,7 +51,7 @@ def test_e5_needs_owner_approval_and_criteria_need_evidence():
 def test_blocked_item_is_never_decision_eligible_and_unknown_blocks_are_refused():
     crit = {lvl: {"met": True, "ref": "r"} for lvl in C.LEVELS[:4]}
     out = C.validate_grades({"items": [{"id": "X", "criteria": crit, "blocks": ["PIT_UNSAFE"]}]})
-    assert out["X"] == {"grade": "E4", "blocks": ["PIT_UNSAFE"], "decisionEligible": False}
+    assert out["X"] == {"grade": "E4", "blocks": ["PIT_UNSAFE"], "decisionEligible": False, "track": "C_WATCHLIST_ONLY"}
     with pytest.raises(C.ContractError, match="UNKNOWN_BLOCK"):
         C.validate_grades({"items": [{"id": "Z", "criteria": {}, "blocks": ["LOOKS_FINE"]}]})
 
@@ -167,3 +168,123 @@ def test_census_reproduces_from_the_pinned_signal_history_commit():
     import census as CE
     res = json.loads(json.dumps(CE.run(), ensure_ascii=False, sort_keys=True, default=float))
     assert res == json.loads(B3.CENSUS.read_text())
+
+
+# ----------------------------------------------------------------------------- integrity / definitions
+INTEG = json.loads((HERE / "results" / "data-integrity.json").read_text())
+
+
+def test_profitability_definitions_never_call_b1_a_reproduction():
+    defs = {d["id"]: d for d in INTEG["definitions"]}
+    assert defs["NM_GPA"]["buildable"] == "NO" and defs["FF_OP"]["buildable"] == "PARTIAL"
+    assert "NOT a reproduction" in defs["B1_ROE"]["gap"]
+    for g in ("KR", "US"):
+        cmp_ = INTEG["regions"][g]["b1v2DryRun"]["rankingComparison"]
+        assert cmp_["oiToBookEquity"]["n"] >= 50 and 0 < cmp_["oiToBookEquity"]["spearmanWithRoe"] < 1
+
+
+def test_drop_sides_add_up_to_stage_four():
+    census = json.loads(B3.CENSUS.read_text())
+    for g in ("KR", "US"):
+        st = census["regions"][g]["funnel"][4]
+        sides = INTEG["regions"][g]["dropSides"]
+        assert sum(sides["bySide"].values()) == sum(st["dropped"].values())
+        for reason, n in st["dropped"].items():
+            assert sum(sides["byReason"][reason].values()) == n
+    assert INTEG["regions"]["KR"]["dropSides"]["byReason"]["NO_PIT_FILING"] == {"NOT_COLLECTED_BY_PIPELINE": 121}
+
+
+def test_stale_share_counts_invalidate_per_share_facts_only():
+    flagged = INTEG["regions"]["US"]["shareCounts"]["flagged"]
+    assert "GOOGL" in flagged and flagged["GOOGL"]["lastShareCountAsFiled"] < "2022-07-15"  # before the 20:1 split
+    dos = {d["ticker"]: d for d in json.loads((HERE / "results" / "b3-dossiers.json").read_text())["dossiers"]}
+    wdc = {f["field"]: f for f in dos["WDC"]["facts"]}
+    assert wdc["bookToPrice"]["invalid"] == "SHARE_COUNT_CARRIED_FORWARD_OVER_15_MONTHS"
+    assert "invalid" not in wdc["roe"]
+
+
+def test_dossier_facts_carry_each_fields_own_filing():
+    for d in json.loads((HERE / "results" / "b3-dossiers.json").read_text())["dossiers"]:
+        src = INTEG["regions"][d["region"]]["periods"]["byTicker"][d["ticker"]]
+        for f in d["facts"]:
+            if f["field"] in ("roe", "operatingMargin", "debtToEquity"):
+                assert f["source"]["reportDate"] == src[f["field"]]["reportDate"]
+        assert d["mixedReportPeriods"] == (len({v["reportDate"] for v in src.values()}) > 1)
+
+
+def test_opm_rule_impact_is_reported_not_hidden():
+    kr = INTEG["regions"]["KR"]["opmRule"]
+    assert kr["addedAfterInspection"] and kr["verdict"] == "CHANGES_B1"
+    assert kr["removed"]["402340.KS"]["wouldEnterDeepReview"] is True
+    assert INTEG["regions"]["US"]["opmRule"]["verdict"] == "NO_CHANGE_TO_B1_DEEP_REVIEW"
+
+
+# ----------------------------------------------------------------------------- prospective protocol
+PROTO, PROTO_SHA = PR.protocol()
+
+
+def test_industry_cap_and_weights():
+    ind = {"A": "X", "B": "X", "C": "X", "D": "Y", "E": PR.UNCLASSIFIED, "F": PR.UNCLASSIFIED, "G": PR.UNCLASSIFIED, "H": "Z"}
+    sel = PR.select_b1(list("ABCDEFGH"), ind, 5, 2)
+    assert sel["selected"] == ["A", "B", "D", "E", "F"]
+    assert sel["skipped"] == [{"ticker": "C", "reason": "INDUSTRY_CAP X"}]
+    w = PR.weights(sel["selected"], "KR", 0.1)
+    assert w["069500.KS"] == 0.5 and abs(sum(w.values()) - 1) < 1e-12
+    assert PR.weights([], "US", 0.1) == {"SPY": 1.0}  # zero names is a valid cohort
+
+
+def test_ai_can_only_remove_names_and_needs_reasons():
+    assert PR.ai_filter(["A", "B"], None)["status"] == "NO_RECORD"
+    ok = PR.ai_filter(["A", "B"], {"A": {"decision": "KEEP"}, "B": {"decision": "EXCLUDE", "reasons": ["낮은 이익 지속성", "업황 정점"]}})
+    assert ok["selected"] == ["A"] and list(ok["excluded"]) == ["B"]
+    for bad, code in (({"A": {"decision": "KEEP"}, "B": {"decision": "KEEP"}, "Z": {"decision": "KEEP"}}, "AI_MAY_NOT_ADD_NAMES"),
+                      ({"A": {"decision": "KEEP"}}, "AI_REVIEW_INCOMPLETE"),
+                      ({"A": {"decision": "KEEP"}, "B": {"decision": "EXCLUDE", "reasons": ["하나"]}}, "AI_EXCLUDE_NEEDS_TWO_REASONS"),
+                      ({"A": {"decision": "KEEP"}, "B": {"decision": "EXCLUDE", "reasons": ["ROE 30%", "x"]}}, "NUMBER_IN_AI_REASON")):
+        with pytest.raises(PR.ProtocolError, match=code):
+            PR.ai_filter(["A", "B"], bad)
+
+
+def test_dry_run_arms_share_one_basis_and_are_never_recorded():
+    dry = json.loads((HERE / "results" / "prospective-dry-run.json").read_text())
+    assert dry == json.loads(json.dumps(PR.dry_run(), ensure_ascii=False, sort_keys=True))
+    assert dry["protocolSha256"] == PROTO_SHA and dry["activation"].startswith("ACTIVATION_BLOCKED")
+    for g, v in dry["regions"].items():
+        assert set(v["arms"]) == {"ETF100", "B1_ROE", "PRODUCTION", "B1_PLUS_AI"}
+        assert v["common"]["label"] == "DRY_RUN_NOT_A_COHORT"
+        assert v["arms"]["B1_PLUS_AI"]["status"] == "NO_RECORD"  # no review written under this protocol
+        assert v["arms"]["B1_ROE"]["recordLabel"] == "UNVERIFIED_PROSPECTIVE_VIRTUAL"
+        assert len(v["arms"]["B1_ROE"]["selection"]["selected"]) <= PROTO["portfolio"]["maxNames"]
+    assert not (HERE / "dry-run").exists()  # nothing written to a ledger
+
+
+def test_activation_requires_owner_file_and_resolved_gates(tmp_path):
+    with pytest.raises(PR.ProtocolError, match="OWNER_APPROVAL_FILE_MISSING"):
+        PR.assert_activation_allowed(tmp_path / "none.json")
+    f = tmp_path / "approval.json"
+    f.write_text(json.dumps({"protocolSha256": PROTO_SHA}))
+    with pytest.raises(PR.ProtocolError, match="GATE_OPEN CI_GREEN"):
+        PR.assert_activation_allowed(f)
+
+
+def test_grade_tracks_separate_participation_from_approval():
+    out = C.validate_grades(_j("evidence-grades.json"))
+    assert {k for k, v in out.items() if v["track"] == "B_PROSPECTIVE_VIRTUAL"} == {"ACADEMIC_PROFITABILITY_US", "ACADEMIC_PROFITABILITY_KR"}
+    assert not any(v["track"] == "A_VERIFIED_STRATEGY" for v in out.values())
+    assert out["DESK_B2_2026_11"]["track"] == "C_WATCHLIST_ONLY"
+    assert all(not v["decisionEligible"] for k, v in out.items() if v["track"] == "B_PROSPECTIVE_VIRTUAL")
+
+
+@pytest.mark.skipif(not _signal_commit_available(), reason="pinned signal-history commit not fetched in this clone")
+def test_production_receipt_is_read_by_decision_date():
+    r = PR.production_receipt(json.loads(B3.CENSUS.read_text())["signalHistoryCommit"], "KR", "2026-11-06")
+    assert r["weights"] == {"069500.KS": 1.0} and r["receiptId"].endswith("KR|2026-11-06")
+    with pytest.raises(PR.ProtocolError, match="NO_UNIQUE_FINAL_WEEKLY_RECEIPT"):
+        PR.production_receipt(json.loads(B3.CENSUS.read_text())["signalHistoryCommit"], "KR", "2026-11-07")
+
+
+@pytest.mark.skipif(not _signal_commit_available(), reason="pinned signal-history commit not fetched in this clone")
+def test_integrity_audit_reproduces_and_matches_the_committed_census():
+    import integrity as IG
+    fresh = json.loads(json.dumps(IG._round(IG.run()), ensure_ascii=False, sort_keys=True))
+    assert fresh == INTEG

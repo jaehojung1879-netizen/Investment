@@ -19,6 +19,7 @@ HERE = Path(__file__).resolve().parent
 CENSUS = HERE / "results" / "census.json"
 TEXT = HERE / "ai-dossiers-2026-11.json"
 GRADES = HERE / "evidence-grades.json"
+INTEGRITY = HERE / "results" / "data-integrity.json"
 OUT = HERE / "results" / "b3-dossiers.json"
 NOMINATING_ITEM = {"KR": "ACADEMIC_PROFITABILITY_KR", "US": "ACADEMIC_PROFITABILITY_US"}
 
@@ -32,6 +33,7 @@ def build() -> dict:
     text = json.loads(TEXT.read_text())
     grades = {it["id"]: it for it in json.loads(GRADES.read_text())["items"]}
     census_ref = f"results/census.json sha256 {_sha(CENSUS)[:16]}"
+    integ = json.loads(INTEGRITY.read_text())["regions"]
     out, seen = [], set()
     for region in ("KR", "US"):
         reg = census["regions"][region]
@@ -46,7 +48,11 @@ def build() -> dict:
                  "origin": {"path": "v3.B1", "rule": "B1_PROFITABILITY_V1", "rank": reg["b1"]["deepReview"].index(ticker) + 1,
                             "inProductionWatchlist": ticker in reg["productionComparison"]["both"]},
                  "nominatingEvidence": {"item": item["id"], "grade": grade, "blocks": item.get("blocks", [])},
-                 "facts": facts_from_census(region, row, reg["asOf"], census_ref),
+                 "facts": facts_from_census(region, row, reg["asOf"], census_ref,
+                                            integ[region]["periods"]["byTicker"].get(ticker),
+                                            {"bookToPrice": "SHARE_COUNT_CARRIED_FORWARD_OVER_15_MONTHS"}
+                                            if ticker in integ[region]["shareCounts"]["flagged"] else None),
+                 "mixedReportPeriods": len({v["reportDate"] for v in integ[region]["periods"]["byTicker"][ticker].values()}) > 1,
                  **{k: body[k] for k in ("interpretation", "background", "counterArguments", "invalidationConditions", "unknowns")},
                  "status": "HOLD_FOR_RESEARCH",
                  "statusReason": "The nominating screen is graded " + grade + "; nothing below E2 can propose capital. "
@@ -59,7 +65,7 @@ def build() -> dict:
         raise ValueError(f"AI_TEXT_FOR_A_NAME_NO_SCREEN_NOMINATED {sorted(extra)}")
     return {"schema": "B3_DOSSIERS_V1", "path": "v3.B3", "role": "EXPERIMENTAL_CHALLENGER",
             "author": text["author"], "knowledgeLimit": text["knowledgeLimit"],
-            "censusSha256": _sha(CENSUS), "textSha256": _sha(TEXT),
+            "censusSha256": _sha(CENSUS), "textSha256": _sha(TEXT), "integritySha256": _sha(INTEGRITY),
             "concentrationNote": {"KR": "HD현대일렉트릭 and HD현대마린솔루션 share a group; two of five names.",
                                   "US": "NVDA, KLAC, WDC and LRCX are semiconductors, semicap or storage hardware; four of five names."},
             "regionDecision": {"KR": "ETF_DEFAULT (069500.KS)", "US": "ETF_DEFAULT (SPY)"},

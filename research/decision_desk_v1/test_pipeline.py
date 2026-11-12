@@ -4,6 +4,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -69,7 +70,17 @@ def test_pit_review_is_reproducible_and_finds_the_known_defects():
     sys.path.insert(0, str(HERE / "audits"))
     import pit_review as R
     committed = json.loads((HERE / "audits" / "2026-11-pit-review.json").read_text())
-    assert R.review() == committed
+    fresh = R.review()
+    # The audit is pinned by a ledger annotation and is never regenerated. availability.py later gained the
+    # #335 G1/G9 rules, which do not change any 2026-11 value: the result must match without the module stamp,
+    # and the stamp must be the module as committed with the audit.
+    stamp = committed["inputsSha256"].pop("availabilityModule")
+    fresh["inputsSha256"].pop("availabilityModule")
+    assert fresh == committed
+    added = subprocess.check_output(["git", "log", "--format=%H", "--diff-filter=A", "--",
+                                     "research/decision_desk_v1/audits/2026-11-pit-review.json"], cwd=HERE.parents[1], text=True).split()[-1]
+    old = subprocess.check_output(["git", "show", f"{added}:research/decision_desk_v1/availability.py"], cwd=HERE.parents[1])
+    assert hashlib.sha256(old).hexdigest() == stamp
     kr = committed["regions"]["KR"]
     assert "FRED DEXKOUS 2026-11-05" in kr["notPublicAtCutoff"]
     assert "Yahoo UUP close 2026-11-06" in kr["notPublicAtCutoff"]

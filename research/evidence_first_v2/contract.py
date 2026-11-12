@@ -62,12 +62,25 @@ def validate_grades(matrix: dict) -> dict:
                 raise ContractError(f"CRITERION_WITHOUT_EVIDENCE {it['id']}")
         if not set(it.get("blocks", [])) <= BLOCKS:
             raise ContractError(f"UNKNOWN_BLOCK {it['id']}")
+        if not set(it.get("prospectiveBlocks", [])) <= BLOCKS:
+            raise ContractError(f"UNKNOWN_BLOCK {it['id']}")
         if it.get("benchmark"):
-            out[it["id"]] = {"grade": "BENCHMARK", "blocks": [], "decisionEligible": True}
+            out[it["id"]] = {"grade": "BENCHMARK", "blocks": [], "decisionEligible": True, "track": "BENCHMARK"}
             continue
         out[it["id"]] = {"grade": g, "blocks": it.get("blocks", []),
-                         "decisionEligible": g in ("E4", "E5") and not it.get("blocks")}
+                         "decisionEligible": g in ("E4", "E5") and not it.get("blocks"), "track": track_of(it, g)}
     return out
+
+
+def track_of(item: dict, grade: str) -> str:
+    """Research participation is not investment approval: A needs E5; B needs only E1 plus a registered rule."""
+    if grade == "E5" and not item.get("blocks"):
+        return "A_VERIFIED_STRATEGY"
+    if item.get("path") == "v3.B2":
+        return "PRODUCTION"
+    if grade != "E0" and item.get("prospectiveRule") and not item.get("prospectiveBlocks"):
+        return "B_PROSPECTIVE_VIRTUAL"
+    return "C_WATCHLIST_ONLY"
 
 
 # ----------------------------------------------------------------------------- paths
@@ -121,17 +134,33 @@ def validate_dossier(d: dict, nominating_grade: str, census_rows: dict) -> None:
             raise ContractError(f"FACT_DIFFERS_FROM_SOURCE {d['ticker']} {fact['field']}")
 
 
-def facts_from_census(region: str, row: dict, as_of: str, census_ref: str) -> list[dict]:
-    """FACT rows are generated, never typed: values copied from the census with their filing dates."""
-    fin = {"availableFrom": row["roeFrom"]["availableFrom"], "reportDate": row["roeFrom"]["reportDate"],
-           "path": f"signal-history ledger/fundamentals/pit-{region.lower()} (derived)", "census": census_ref}
+def facts_from_census(region: str, row: dict, as_of: str, census_ref: str, field_sources: dict | None = None,
+                      invalid: dict | None = None) -> list[dict]:
+    """FACT rows are generated, never typed: values copied from the census with their filing dates.
+
+    field_sources (from data-integrity.json periods) gives each accounting field its OWN report period and
+    publication date; without it every field falls back to the ROE filing, which is wrong whenever the census
+    took fields from different filings. invalid marks a fact the integrity audit refuted (e.g. a per-share
+    figure on a stale share count); the value is still shown as recorded, never silently corrected."""
+    field_sources = field_sources or {}
+    invalid = invalid or {}
+
+    def fin(field):
+        src = field_sources.get(field) or row["roeFrom"]
+        return {"availableFrom": src["availableFrom"], "reportDate": src["reportDate"],
+                "path": f"signal-history ledger/fundamentals/pit-{region.lower()} (derived)", "census": census_ref}
     px = {"availableFrom": as_of, "reportDate": as_of, "path": "KRX daily close" if region == "KR" else "Yahoo daily close",
           "census": census_ref}
-    return [{"field": "roe", "label": "ROE (TTM, PIT)", "value": row["roe"], "source": fin},
-            {"field": "operatingMargin", "label": "영업이익률 (TTM, PIT)", "value": row["operatingMargin"], "source": fin},
-            {"field": "debtToEquity", "label": "부채/자본", "value": row["debtToEquity"], "source": fin},
-            {"field": "bookToPrice", "label": "장부가/주가", "value": row["bookToPrice"], "source": px},
-            {"field": "momentum12_2", "label": "12-2개월 수익률", "value": row["momentum12_2"], "source": px}]
+    b2p = dict(fin("bookValuePerShare"), path=fin("bookValuePerShare")["path"] + " / " + px["path"])
+    out = [{"field": "roe", "label": "ROE (TTM, PIT)", "value": row["roe"], "source": fin("roe")},
+           {"field": "operatingMargin", "label": "영업이익률 (TTM, PIT)", "value": row["operatingMargin"], "source": fin("operatingMargin")},
+           {"field": "debtToEquity", "label": "부채/자본", "value": row["debtToEquity"], "source": fin("debtToEquity")},
+           {"field": "bookToPrice", "label": "장부가/주가", "value": row["bookToPrice"], "source": b2p},
+           {"field": "momentum12_2", "label": "12-2개월 수익률", "value": row["momentum12_2"], "source": px}]
+    for f in out:
+        if f["field"] in invalid:
+            f["invalid"] = invalid[f["field"]]
+    return out
 
 
 def load_json(name: str) -> dict:

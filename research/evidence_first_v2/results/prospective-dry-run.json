@@ -1,0 +1,238 @@
+{
+ "activation": "ACTIVATION_BLOCKED OWNER_APPROVAL_FILE_MISSING, GATE_OPEN CI_GREEN",
+ "integritySha256": "df1674e1f78a833642cdaf046223cbc7ec5add16724570b3f9220c24291f0e68",
+ "label": "DRY_RUN_NOT_A_COHORT: run on the 2026-11 census to exercise the rules; nothing is recorded or evaluated",
+ "protocolSha256": "71c2170dc9ad61e202e1db8ea006783b11759c1c72c1df85681e993b4dd3d9a4",
+ "regions": {
+  "KR": {
+   "arms": {
+    "B1_PLUS_AI": {
+     "excluded": null,
+     "reason": "NO_REVIEW_COMMITTED_BEFORE_DEADLINE",
+     "recordLabel": "UNVERIFIED_PROSPECTIVE_VIRTUAL",
+     "status": "NO_RECORD",
+     "track": "B_PROSPECTIVE_VIRTUAL",
+     "v3Path": "v3.B3",
+     "weights": null
+    },
+    "B1_ROE": {
+     "inputs": {
+      "000660.KS": {
+       "availableFrom": "2026-03-17",
+       "reportDate": "2025-12-31",
+       "roe": 0.3559
+      },
+      "003230.KS": {
+       "availableFrom": "2026-03-18",
+       "reportDate": "2025-12-31",
+       "roe": 0.3057
+      },
+      "267260.KS": {
+       "availableFrom": "2026-03-16",
+       "reportDate": "2025-12-31",
+       "roe": 0.36
+      },
+      "278470.KS": {
+       "availableFrom": "2026-03-23",
+       "reportDate": "2025-12-31",
+       "roe": 0.6497
+      },
+      "443060.KS": {
+       "availableFrom": "2026-03-16",
+       "reportDate": "2025-12-31",
+       "roe": 0.3269
+      }
+     },
+     "recordLabel": "UNVERIFIED_PROSPECTIVE_VIRTUAL",
+     "selection": {
+      "industries": {
+       "000660.KS": "Electronics and electrical equipment",
+       "003230.KS": "Food, beverage and tobacco",
+       "267260.KS": "Electronics and electrical equipment",
+       "278470.KS": "Chemicals",
+       "443060.KS": "Construction and engineering"
+      },
+      "selected": [
+       "278470.KS",
+       "267260.KS",
+       "000660.KS",
+       "443060.KS",
+       "003230.KS"
+      ],
+      "skipped": []
+     },
+     "status": "DRAFT",
+     "track": "B_PROSPECTIVE_VIRTUAL",
+     "v3Path": "v3.B1",
+     "weights": {
+      "000660.KS": 0.1,
+      "003230.KS": 0.1,
+      "069500.KS": 0.5,
+      "267260.KS": 0.1,
+      "278470.KS": 0.1,
+      "443060.KS": 0.1
+     }
+    },
+    "ETF100": {
+     "status": "DRAFT",
+     "track": "BENCHMARK",
+     "v3Path": "v3.B0",
+     "weights": {
+      "069500.KS": 1.0
+     }
+    },
+    "PRODUCTION": {
+     "receiptDigest": "004ab3870da0b8e444d01362bc51d27c38967631168de8be434909c903a7b596",
+     "receiptId": "weekly-passive-first-v1|KR|2026-11-06",
+     "status": "DRAFT",
+     "track": "PRODUCTION_COPY",
+     "v3Path": "v3.B2",
+     "weights": {
+      "069500.KS": 1.0
+     }
+    }
+   },
+   "common": {
+    "benchmark": "069500.KS",
+    "cohort": "DRY-RUN",
+    "costStress": 2.0,
+    "costs": {
+     "benchmarkRoundTripPct": 0.11,
+     "commissionBps": 1.5,
+     "sellTaxBps": 20.0,
+     "source": "pipeline/benchmark_alpha.py REALISTIC_COSTS (dated sell tax)",
+     "spreadBps": 8.0,
+     "stockRoundTripPct": 0.31,
+     "switchCostPct": 0.42
+    },
+    "decisionDate": "2026-10-30",
+    "execution": "close of the first regional session whose open is at least 48 hours after the cohort packet is sealed; identical for all four arms",
+    "informationCutoff": "2026-10-30 regional close",
+    "label": "DRY_RUN_NOT_A_COHORT",
+    "protocolSha256": "71c2170dc9ad61e202e1db8ea006783b11759c1c72c1df85681e993b4dd3d9a4",
+    "region": "KR",
+    "returnDefinition": "total return in local currency (KRW / USD), distributions reinvested at the ex-date close, entry at the execution close, exit at the close of the 126th and 252nd regional session"
+   }
+  },
+  "US": {
+   "arms": {
+    "B1_PLUS_AI": {
+     "excluded": null,
+     "reason": "NO_REVIEW_COMMITTED_BEFORE_DEADLINE",
+     "recordLabel": "UNVERIFIED_PROSPECTIVE_VIRTUAL",
+     "status": "NO_RECORD",
+     "track": "B_PROSPECTIVE_VIRTUAL",
+     "v3Path": "v3.B3",
+     "weights": null
+    },
+    "B1_ROE": {
+     "inputs": {
+      "IDXX": {
+       "availableFrom": "2026-05-05",
+       "reportDate": "2026-03-31",
+       "roe": 0.7038
+      },
+      "KLAC": {
+       "availableFrom": "2026-04-30",
+       "reportDate": "2026-03-31",
+       "roe": 0.8011
+      },
+      "NVDA": {
+       "availableFrom": "2026-05-20",
+       "reportDate": "2026-04-26",
+       "roe": 0.8165
+      },
+      "V": {
+       "availableFrom": "2026-04-29",
+       "reportDate": "2026-03-31",
+       "roe": 0.6235
+      },
+      "WDC": {
+       "availableFrom": "2026-05-01",
+       "reportDate": "2026-04-03",
+       "roe": 0.6726
+      }
+     },
+     "recordLabel": "UNVERIFIED_PROSPECTIVE_VIRTUAL",
+     "selection": {
+      "industries": {
+       "IDXX": "UNCLASSIFIED",
+       "KLAC": "Technology",
+       "NVDA": "Technology",
+       "V": "Financials",
+       "WDC": "UNCLASSIFIED"
+      },
+      "selected": [
+       "NVDA",
+       "KLAC",
+       "IDXX",
+       "WDC",
+       "V"
+      ],
+      "skipped": [
+       {
+        "reason": "INDUSTRY_CAP UNCLASSIFIED",
+        "ticker": "LRCX"
+       },
+       {
+        "reason": "INDUSTRY_CAP Technology",
+        "ticker": "ADBE"
+       }
+      ]
+     },
+     "status": "DRAFT",
+     "track": "B_PROSPECTIVE_VIRTUAL",
+     "v3Path": "v3.B1",
+     "weights": {
+      "IDXX": 0.1,
+      "KLAC": 0.1,
+      "NVDA": 0.1,
+      "SPY": 0.5,
+      "V": 0.1,
+      "WDC": 0.1
+     }
+    },
+    "ETF100": {
+     "status": "DRAFT",
+     "track": "BENCHMARK",
+     "v3Path": "v3.B0",
+     "weights": {
+      "SPY": 1.0
+     }
+    },
+    "PRODUCTION": {
+     "receiptDigest": "ae673d8225e85998f0e08d80bb174e88ea56885e0aba92d4a039e79eb16d3d52",
+     "receiptId": "weekly-passive-first-v1|US|2026-11-10",
+     "status": "DRAFT",
+     "track": "PRODUCTION_COPY",
+     "v3Path": "v3.B2",
+     "weights": {
+      "SPY": 1.0
+     }
+    }
+   },
+   "common": {
+    "benchmark": "SPY",
+    "cohort": "DRY-RUN",
+    "costStress": 2.0,
+    "costs": {
+     "benchmarkRoundTripPct": 0.163,
+     "commissionBps": 5.0,
+     "sellTaxBps": 0.3,
+     "source": "pipeline/benchmark_alpha.py REALISTIC_COSTS (dated sell tax)",
+     "spreadBps": 6.0,
+     "stockRoundTripPct": 0.163,
+     "switchCostPct": 0.326
+    },
+    "decisionDate": "2026-11-10",
+    "execution": "close of the first regional session whose open is at least 48 hours after the cohort packet is sealed; identical for all four arms",
+    "informationCutoff": "2026-11-10 regional close",
+    "label": "DRY_RUN_NOT_A_COHORT",
+    "protocolSha256": "71c2170dc9ad61e202e1db8ea006783b11759c1c72c1df85681e993b4dd3d9a4",
+    "region": "US",
+    "returnDefinition": "total return in local currency (KRW / USD), distributions reinvested at the ex-date close, entry at the execution close, exit at the close of the 126th and 252nd regional session"
+   }
+  }
+ },
+ "schema": "PROSPECTIVE_DRY_RUN_V1"
+}

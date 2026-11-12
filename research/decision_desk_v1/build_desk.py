@@ -114,6 +114,7 @@ def dry_run(region: str) -> list[dict]:
     rows = L.read(L.DRY_RUN_DIR / "ledger.jsonl")
     L.verify_chain(rows)
     notes = [a for a in rows if a.get("schema") == L.ANNOTATION_SCHEMA]
+    excl = L.primary_exclusions(rows)
     outs = [o for o in rows if o.get("schema") == L.OUTCOME_SCHEMA]
     out = []
     for r in rows:
@@ -123,6 +124,7 @@ def dry_run(region: str) -> list[dict]:
         arm = r["path"] + (f":{reviewer}" if r["path"] == "BX" else "")
         item = {"type": "RESEARCH_ALLOCATION_AS_OF", "id": f"decision-desk-v1 {arm} {r['cohort']}", "path": arm,
                 "v3Path": EFC.v3_path(r), "v3PathLabel": EFC.V3_PATHS[EFC.v3_path(r)],
+                "primaryExclusionReasons": excl[r["digest"]],
                 "reviewer": reviewer, "cohort": r["cohort"], "schemaVersion": 2 if r["schema"] == L.SCHEMA_V2 else 1,
                 "signalAsOf": r["signalAsOf"], "informationCutoff": r["informationCutoff"], "generatedAt": r["generatedAt"],
                 "publishedAt": r["publishedAt"], "executionAt": r["plannedExecution"], "weights": r["weights"],
@@ -182,7 +184,8 @@ def evidence_first() -> dict:
     matrix = _efj("evidence-grades.json")
     graded = EFC.validate_grades(matrix)
     grades = [{"id": it["id"], "region": it["region"], "label": it["label"], "path": it["path"],
-               "grade": graded[it["id"]]["grade"], "blocks": graded[it["id"]]["blocks"],
+               "grade": graded[it["id"]]["grade"], "blocks": graded[it["id"]]["blocks"], "track": graded[it["id"]]["track"],
+               "prospectiveBlocks": it.get("prospectiveBlocks"), "blockScope": it.get("blockScope"),
                "decisionEligible": graded[it["id"]]["decisionEligible"], "decisionUse": it["decisionUse"],
                "criteria": [{"level": lvl, "met": c.get("met"), "ref": c.get("ref")} for lvl, c in it.get("criteria", {}).items()]}
               for it in matrix["items"]]
@@ -193,10 +196,13 @@ def evidence_first() -> dict:
     for d in dos["dossiers"]:
         EFC.validate_dossier(d, d["nominatingEvidence"]["grade"],
                              {r["ticker"]: r for r in census["regions"][d["region"]]["b1"]["topQuintile"]})
+    integ = _efj("results/data-integrity.json")
+    branch = lambda name: "FACTOR_REFERENCE" if name.startswith("5") else ("B1" if name[0] in "678" else "MAIN")  # noqa: E731
     funnel = {}
     for g, reg in census["regions"].items():
         pc = reg["productionComparison"]
-        funnel[g] = {"asOf": reg["asOf"], "universeSource": reg["universeSource"], "stages": reg["funnel"],
+        funnel[g] = {"asOf": reg["asOf"], "universeSource": reg["universeSource"],
+                     "stages": [dict(st, branch=branch(st["stage"])) for st in reg["funnel"]],
                      "b1Rule": reg["b1"]["rule"], "b1TopQuintile": reg["b1"]["topQuintile"], "deepReview": reg["b1"]["deepReview"],
                      "factorTopQuintile": reg["factorTopQuintile"],
                      "productionComparison": {"receipt": pc["productionReceipt"], "both": pc["both"], "onlyB1": pc["onlyB1"],
@@ -210,7 +216,27 @@ def evidence_first() -> dict:
                                        | {"excess12mSharePositive": v[w]["excess12m"]["sharePositive"]}
                                        for w in keep if w in v}
                                for k, v in ap["portfolios"].items()}}
-    return {"schema": "EVIDENCE_FIRST_V2", "levels": matrix["levels"], "rule": matrix["rule"], "grades": grades,
+    integrity = {"definitions": integ["definitions"], "regions": {}}
+    for g, r in integ["regions"].items():
+        per = r["periods"]
+        integrity["regions"][g] = {
+            "dropSides": {k: r["dropSides"][k] for k in ("byReason", "bySide", "method")},
+            "periods": {k: per[k] for k in ("freshnessRule", "factorRows", "rowsMixingReportPeriods", "rowsUsingSameDayFiling",
+                                            "publicationLagDays", "ageDays")},
+            "shareCounts": {"rule": r["shareCounts"]["rule"], "affects": r["shareCounts"]["affects"],
+                            "flagged": r["shareCounts"]["flagged"]},
+            "opmRule": r["opmRule"], "membershipSnapshot": r["membershipSnapshot"],
+            "b1v2": {k: r["b1v2DryRun"][k] for k in ("stage3Survivors", "noCompleteFiling", "eligible", "ageDays", "top5", "rankingComparison")}}
+    proto = _efj("prospective-protocol-v1.json")
+    dry = _efj("results/prospective-dry-run.json")
+    prospective = {"protocolSha256": dry["protocolSha256"], "status": proto["status"], "tracks": proto["tracks"],
+                   "cohort": proto["cohort"], "arms": {k: {x: v[x] for x in ("v3Path", "track", "rule") if x in v} for k, v in proto["arms"].items()},
+                   "b1Steps": proto["arms"]["B1_ROE"]["steps"], "portfolio": proto["portfolio"], "costs": proto["costs"],
+                   "returns": proto["returns"], "comparison": proto["comparison"], "activation": dry["activation"],
+                   "activationRequires": proto["activation"]["requires"], "dryRun": dry["regions"], "dryRunLabel": dry["label"],
+                   "gates": [{k: g.get(k) for k in ("id", "status", "blocks", "detail", "test")} for g in L.ACTIVATION_GATES]}
+    return {"schema": "EVIDENCE_FIRST_V2", "levels": matrix["levels"], "rule": matrix["rule"], "tracks": matrix["tracks"], "grades": grades,
+            "integrity": integrity, "prospective": prospective,
             "v3Paths": EFC.V3_PATHS, "legacyToV3": EFC.LEGACY_TO_V3,
             "literature": {"sourcePolicy": lit["sourcePolicy"], "timeSeriesVsCrossSection": lit["timeSeriesVsCrossSection"],
                            "studies": lit["studies"]},
@@ -218,7 +244,8 @@ def evidence_first() -> dict:
             "dossiers": {k: dos[k] for k in ("path", "role", "author", "knowledgeLimit", "concentrationNote", "regionDecision", "dossiers")},
             "sources": {n: _efsha(n) for n in ("evidence-grades.json", "literature.json", "results/census.json",
                                                "results/academic-path.json", "results/b3-dossiers.json",
-                                               "academic-path-protocol.json")}}
+                                               "academic-path-protocol.json", "results/data-integrity.json",
+                                               "prospective-protocol-v1.json", "results/prospective-dry-run.json")}}
 
 
 # ----------------------------------------------------------------------------- history table
@@ -300,12 +327,12 @@ FACTS = {
 }
 
 APPROVALS = [
-    {"item": "#321 CI/Pages 복구 일반 merge 및 정상 Pages 배포", "owner": "Owner", "why": "threadpoolctl 3.8.0 충돌로 main·모든 연구 PR CI가 실패 중이다. 이 데스크의 실제 게시도 Pages 정상화 이후에야 가능하다."},
-    {"item": "decision-desk-v1 전향 원장 활성화(dry-run → signal-history 기록)", "owner": "Owner", "why": "승인 전에는 research/decision_desk_v1/dry-run/ 에만 기록한다. ledger.append는 owner_approved 없이 다른 경로 쓰기를 거부한다."},
-    {"item": "월간 B2 리뷰 작성 담당과 시각", "owner": "Owner", "why": "CI에 AI 자격증명이 없어 자동 호출이 불가하다. 패킷 봉인 후 48시간 안(등록 마감 전)에 에이전트 세션이 리뷰를 커밋해야 한다."},
-    {"item": "GPT·독립 Claude 비교군(BX) 활성화", "owner": "Owner", "why": "reviewers.json 상태를 ENABLED로 바꾸는 커밋이 해당 월 패킷 봉인 전에 있어야 한다. 실행 주체와 비용 결정 필요."},
-    {"item": "US 개별주 유료 원천(Norgate/Sharadar) 구매 여부", "owner": "Owner", "why": "라이선스(구독 종료 시 삭제 의무)와 원본 보관 규칙의 충돌을 먼저 확인해야 한다."},
-    {"item": "KR 018880·005930 공식 기업행동 패키지", "owner": "원천 담당 + 외부 회계 reviewer", "why": "#333 G의 우선순위 1·2. v2 주식 경제성 인증의 선행 조건이다."},
+    {"item": "1. #321 정확한 HEAD의 일반 merge (squash 금지) 및 main CI·Pages 정상 배포 확인", "owner": "Owner",
+     "why": "threadpoolctl 3.8.0 충돌로 main과 모든 연구 PR의 Tests가 실패한다. #321은 production state-publisher 변경을 포함하므로 그 운영 영향까지 승인 범위에 들어간다(#335)."},
+    {"item": "2. main을 #334에 병합(이력 보존) → 결합 원격 CI 통과 → #334 읽기 전용 화면 게시 승인", "owner": "Owner",
+     "why": "게시는 화면뿐이다. 연구 원장 writer·evaluator·BX 비교군은 이 승인으로 켜지지 않는다."},
+    {"item": "3. 전향 가상 비교(prospective-v1) 기록 활성화와 월간 운영 담당", "owner": "Owner",
+     "why": "owner-approvals/prospective-v1.json에 protocol SHA-256을 적어 커밋해야 한다. 담당자는 매달 마감 전에 공개 관측(verify-publication)과 AI 리뷰를 수행한다. 남은 관문 G1·G2는 기존 B2 경로에만 걸리고 전향 가상 비교에는 걸리지 않는다."},
 ]
 
 
