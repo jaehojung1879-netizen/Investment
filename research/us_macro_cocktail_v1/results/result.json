@@ -1,0 +1,4620 @@
+{
+ "identity": {
+  "files": 20,
+  "manifestSha256": "c1c44233908aa6d217c7bc065b944e7d81809590b96d924757972e00ab79e3b6",
+  "protocolSha256": "0df428212f761b6e3fe4609dabe218df564105f820ead0babdbaf2533c948e43"
+ },
+ "latestAllocation": {
+  "decision": "2026-10-30",
+  "execution": "2026-11-02",
+  "state": {
+   "corrSpyGld126": 0.552224,
+   "corrSpyIef126": 0.347945,
+   "corrSpyUup126": -0.335883,
+   "curve10y3m": 0.8,
+   "dBreakeven63": 0.07,
+   "dY10_63": 0.23,
+   "gldEx12": -0.056746,
+   "iefEx12": -0.052482,
+   "logVolSpy63": -2.258206,
+   "realYield10": 2.63,
+   "spyEx1": -0.013997,
+   "spyEx12": 0.074391,
+   "uup6": 0.058008,
+   "vix": 17.2,
+   "y10": 4.98
+  },
+  "status": "RESEARCH_ONLY_NOT_A_RECOMMENDATION_NO_PRODUCTION_EFFECT",
+  "weights": {
+   "D1_TREND_SIGN": {
+    "meta": {
+     "GLD": false,
+     "IEF": false,
+     "SPY": true
+    },
+    "weights": {
+     "BIL": 0.5,
+     "SPY": 0.5
+    }
+   },
+   "D2_ERC_COV": {
+    "meta": {},
+    "weights": {
+     "GLD": 0.13996,
+     "IEF": 0.593687,
+     "SPY": 0.266353
+    }
+   },
+   "D3_STATE_RULES": {
+    "meta": {
+     "fired": [
+      "b_bondsNotHedgingRatesRising"
+     ]
+    },
+    "weights": {
+     "BIL": 0.1,
+     "GLD": 0.1,
+     "SHY": 0.3,
+     "SPY": 0.5
+    }
+   },
+   "D4_RIDGE_SIGN": {
+    "meta": {
+     "predictedExcess": {
+      "GLD": 0.027269,
+      "IEF": 0.004863,
+      "SPY": 0.018332
+     },
+     "trainingSamples": 220
+    },
+    "weights": {
+     "BIL": 0.1,
+     "GLD": 0.1,
+     "IEF": 0.3,
+     "SPY": 0.5
+    }
+   },
+   "D5_TREE_SIGN": {
+    "meta": {
+     "predictedExcess": {
+      "GLD": -0.005031,
+      "IEF": -0.005027,
+      "SPY": 0.007928
+     },
+     "trainingSamples": 220
+    },
+    "weights": {
+     "BIL": 0.5,
+     "SPY": 0.5
+    }
+   },
+   "D6_FORECAST_VOL_SLEEVE": {
+    "meta": {
+     "forecastVol": 0.133053,
+     "volSource": "RIDGE_FORECAST"
+    },
+    "weights": {
+     "BIL": 0.1,
+     "GLD": 0.1,
+     "IEF": 0.3,
+     "SPY": 0.5
+    }
+   },
+   "S1_SPY": {
+    "meta": {},
+    "weights": {
+     "SPY": 1.0
+    }
+   },
+   "S2_QQQ": {
+    "meta": {},
+    "weights": {
+     "QQQ": 1.0
+    }
+   },
+   "S3_6040": {
+    "meta": {},
+    "weights": {
+     "IEF": 0.4,
+     "SPY": 0.6
+    }
+   },
+   "S4_BALANCED": {
+    "meta": {},
+    "weights": {
+     "BIL": 0.1,
+     "GLD": 0.1,
+     "IEF": 0.3,
+     "SPY": 0.5
+    }
+   },
+   "S5_EQUAL4": {
+    "meta": {},
+    "weights": {
+     "BIL": 0.25,
+     "GLD": 0.25,
+     "IEF": 0.25,
+     "SPY": 0.25
+    }
+   },
+   "S6_RISK_BUDGET_IV": {
+    "meta": {},
+    "weights": {
+     "GLD": 0.111306,
+     "IEF": 0.640492,
+     "SPY": 0.248202
+    }
+   },
+   "S7_VOLTARGET_SPY": {
+    "meta": {
+     "spyVol63": 0.104538
+    },
+    "weights": {
+     "SPY": 1.0
+    }
+   }
+  }
+ },
+ "windows": {
+  "extended": {
+   "assets": {
+    "BIL": {
+     "KRW": {
+      "arithAnnualPct": 3.394,
+      "betaToSpy": 0.17,
+      "cagrPct": 2.807,
+      "calmar": 0.078,
+      "compoundingTermPct": -0.588,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -35.833,
+      "maxDrawdownTrough": "2014-07-02",
+      "months": 221,
+      "sharpeOverBil": null,
+      "start": "2008-05-30",
+      "volPct": 11.254,
+      "worstMonthPct": -12.225
+     },
+     "USD": {
+      "arithAnnualPct": 1.283,
+      "betaToSpy": -0.0,
+      "cagrPct": 1.289,
+      "calmar": 1.652,
+      "compoundingTermPct": 0.006,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -0.78,
+      "maxDrawdownTrough": "2016-01-06",
+      "months": 221,
+      "sharpeOverBil": null,
+      "start": "2008-05-30",
+      "volPct": 0.544,
+      "worstMonthPct": -0.233
+     }
+    },
+    "GLD": {
+     "KRW": {
+      "arithAnnualPct": 10.784,
+      "betaToSpy": 0.069,
+      "cagrPct": 9.494,
+      "calmar": 0.218,
+      "compoundingTermPct": -1.29,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -43.486,
+      "maxDrawdownTrough": "2015-12-02",
+      "months": 221,
+      "sharpeOverBil": 0.418,
+      "start": "2008-05-30",
+      "volPct": 18.602,
+      "worstMonthPct": -14.446
+     },
+     "USD": {
+      "arithAnnualPct": 9.138,
+      "betaToSpy": 0.121,
+      "cagrPct": 7.877,
+      "calmar": 0.173,
+      "compoundingTermPct": -1.261,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -45.555,
+      "maxDrawdownTrough": "2015-12-17",
+      "months": 221,
+      "sharpeOverBil": 0.449,
+      "start": "2008-05-30",
+      "volPct": 17.566,
+      "worstMonthPct": -16.14
+     }
+    },
+    "IEF": {
+     "KRW": {
+      "arithAnnualPct": 4.958,
+      "betaToSpy": 0.123,
+      "cagrPct": 4.249,
+      "calmar": 0.142,
+      "compoundingTermPct": -0.709,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -30.021,
+      "maxDrawdownTrough": "2010-01-08",
+      "months": 221,
+      "sharpeOverBil": 0.228,
+      "start": "2008-05-30",
+      "volPct": 12.806,
+      "worstMonthPct": -9.89
+     },
+     "USD": {
+      "arithAnnualPct": 2.901,
+      "betaToSpy": -0.014,
+      "cagrPct": 2.71,
+      "calmar": 0.113,
+      "compoundingTermPct": -0.191,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -23.923,
+      "maxDrawdownTrough": "2023-10-19",
+      "months": 221,
+      "sharpeOverBil": 0.24,
+      "start": "2008-05-30",
+      "volPct": 6.725,
+      "worstMonthPct": -4.734
+     }
+    },
+    "QQQ": {
+     "KRW": {
+      "arithAnnualPct": 18.169,
+      "betaToSpy": 1.111,
+      "cagrPct": 18.091,
+      "calmar": 0.586,
+      "compoundingTermPct": -0.078,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -30.848,
+      "maxDrawdownTrough": "2022-12-28",
+      "months": 221,
+      "sharpeOverBil": 0.782,
+      "start": "2008-05-30",
+      "volPct": 16.941,
+      "worstMonthPct": -13.81
+     },
+     "USD": {
+      "arithAnnualPct": 17.002,
+      "betaToSpy": 1.104,
+      "cagrPct": 16.347,
+      "calmar": 0.331,
+      "compoundingTermPct": -0.654,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -49.367,
+      "maxDrawdownTrough": "2008-11-20",
+      "months": 221,
+      "sharpeOverBil": 0.835,
+      "start": "2008-05-30",
+      "volPct": 18.813,
+      "worstMonthPct": -15.578
+     }
+    },
+    "SHY": {
+     "KRW": {
+      "arithAnnualPct": 3.622,
+      "betaToSpy": 0.154,
+      "cagrPct": 3.052,
+      "calmar": 0.095,
+      "compoundingTermPct": -0.571,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -32.218,
+      "maxDrawdownTrough": "2014-07-02",
+      "months": 221,
+      "sharpeOverBil": 0.164,
+      "start": "2008-05-30",
+      "volPct": 11.175,
+      "worstMonthPct": -11.781
+     },
+     "USD": {
+      "arithAnnualPct": 1.529,
+      "betaToSpy": -0.004,
+      "cagrPct": 1.53,
+      "calmar": 0.268,
+      "compoundingTermPct": 0.001,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -5.707,
+      "maxDrawdownTrough": "2022-10-20",
+      "months": 221,
+      "sharpeOverBil": 0.18,
+      "start": "2008-05-30",
+      "volPct": 1.405,
+      "worstMonthPct": -1.402
+     }
+    },
+    "SPY": {
+     "KRW": {
+      "arithAnnualPct": 13.499,
+      "betaToSpy": 1.0,
+      "cagrPct": 13.329,
+      "calmar": 0.428,
+      "compoundingTermPct": -0.17,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -31.113,
+      "maxDrawdownTrough": "2020-03-23",
+      "months": 221,
+      "sharpeOverBil": 0.64,
+      "start": "2008-05-30",
+      "volPct": 13.619,
+      "worstMonthPct": -11.827
+     },
+     "USD": {
+      "arithAnnualPct": 12.301,
+      "betaToSpy": 1.0,
+      "cagrPct": 11.656,
+      "calmar": 0.23,
+      "compoundingTermPct": -0.645,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -50.704,
+      "maxDrawdownTrough": "2009-03-09",
+      "months": 221,
+      "sharpeOverBil": 0.706,
+      "start": "2008-05-30",
+      "volPct": 15.608,
+      "worstMonthPct": -16.519
+     }
+    },
+    "TLT": {
+     "KRW": {
+      "arithAnnualPct": 5.609,
+      "betaToSpy": 0.092,
+      "cagrPct": 4.042,
+      "calmar": 0.094,
+      "compoundingTermPct": -1.567,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -43.039,
+      "maxDrawdownTrough": "2023-10-19",
+      "months": 221,
+      "sharpeOverBil": 0.151,
+      "start": "2008-05-30",
+      "volPct": 18.589,
+      "worstMonthPct": -13.79
+     },
+     "USD": {
+      "arithAnnualPct": 3.497,
+      "betaToSpy": -0.062,
+      "cagrPct": 2.505,
+      "calmar": 0.052,
+      "compoundingTermPct": -0.992,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -48.35,
+      "maxDrawdownTrough": "2023-10-19",
+      "months": 221,
+      "sharpeOverBil": 0.153,
+      "start": "2008-05-30",
+      "volPct": 14.401,
+      "worstMonthPct": -13.071
+     }
+    },
+    "UUP": {
+     "KRW": {
+      "arithAnnualPct": 5.328,
+      "betaToSpy": 0.157,
+      "cagrPct": 3.905,
+      "calmar": 0.081,
+      "compoundingTermPct": -1.423,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -48.491,
+      "maxDrawdownTrough": "2014-07-01",
+      "months": 221,
+      "sharpeOverBil": 0.245,
+      "start": "2008-05-30",
+      "volPct": 17.427,
+      "worstMonthPct": -15.004
+     },
+     "USD": {
+      "arithAnnualPct": 2.649,
+      "betaToSpy": -0.24,
+      "cagrPct": 2.371,
+      "calmar": 0.107,
+      "compoundingTermPct": -0.278,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -22.182,
+      "maxDrawdownTrough": "2011-07-26",
+      "months": 221,
+      "sharpeOverBil": 0.175,
+      "start": "2008-05-30",
+      "volPct": 7.82,
+      "worstMonthPct": -6.369
+     }
+    }
+   },
+   "calendarYearsUSD": {
+    "2008": {
+     "ASSET_BIL": 0.574649,
+     "ASSET_GLD": -1.735375,
+     "ASSET_IEF": 15.21077,
+     "ASSET_QQQ": -39.688585,
+     "ASSET_SPY": -33.869354,
+     "ASSET_TLT": 35.302759,
+     "ASSET_UUP": 9.49767,
+     "D1_TREND_SIGN": 4.294456,
+     "D2_ERC_COV": -3.40529,
+     "D3_STATE_RULES": -4.38521,
+     "D4_RIDGE_SIGN": -13.989528,
+     "D5_TREE_SIGN": -13.989528,
+     "D6_FORECAST_VOL_SLEEVE": -6.187151,
+     "S1_SPY": -33.869354,
+     "S2_QQQ": -39.688585,
+     "S3_6040": -16.334806,
+     "S4_BALANCED": -13.989528,
+     "S5_EQUAL4": -5.488033,
+     "S6_RISK_BUDGET_IV": 0.76364,
+     "S7_VOLTARGET_SPY": -19.961349
+    },
+    "2009": {
+     "ASSET_BIL": 0.270834,
+     "ASSET_GLD": 24.029128,
+     "ASSET_IEF": -6.589657,
+     "ASSET_QQQ": 54.681649,
+     "ASSET_SPY": 26.364501,
+     "ASSET_TLT": -21.802447,
+     "ASSET_UUP": -6.520861,
+     "D1_TREND_SIGN": 2.412886,
+     "D2_ERC_COV": 7.460906,
+     "D3_STATE_RULES": 9.451208,
+     "D4_RIDGE_SIGN": 13.986732,
+     "D5_TREE_SIGN": 13.986732,
+     "D6_FORECAST_VOL_SLEEVE": 10.875558,
+     "S1_SPY": 26.364501,
+     "S2_QQQ": 54.681649,
+     "S3_6040": 13.195347,
+     "S4_BALANCED": 13.986732,
+     "S5_EQUAL4": 11.361427,
+     "S6_RISK_BUDGET_IV": 5.189558,
+     "S7_VOLTARGET_SPY": 21.764528
+    },
+    "2010": {
+     "ASSET_BIL": -0.043602,
+     "ASSET_GLD": 29.270342,
+     "ASSET_IEF": 9.371753,
+     "ASSET_QQQ": 20.143173,
+     "ASSET_SPY": 15.057081,
+     "ASSET_TLT": 9.046072,
+     "ASSET_UUP": -1.603123,
+     "D1_TREND_SIGN": 12.043029,
+     "D2_ERC_COV": 14.870895,
+     "D3_STATE_RULES": 13.762556,
+     "D4_RIDGE_SIGN": 13.762556,
+     "D5_TREE_SIGN": 13.762556,
+     "D6_FORECAST_VOL_SLEEVE": 11.686582,
+     "S1_SPY": 15.057081,
+     "S2_QQQ": 20.143173,
+     "S3_6040": 13.490793,
+     "S4_BALANCED": 13.762556,
+     "S5_EQUAL4": 13.469225,
+     "S6_RISK_BUDGET_IV": 14.823039,
+     "S7_VOLTARGET_SPY": 11.117323
+    },
+    "2011": {
+     "ASSET_BIL": -0.039251,
+     "ASSET_GLD": 9.566035,
+     "ASSET_IEF": 15.640512,
+     "ASSET_QQQ": 3.4732,
+     "ASSET_SPY": 1.887858,
+     "ASSET_TLT": 33.95933,
+     "ASSET_UUP": -1.056802,
+     "D1_TREND_SIGN": 7.238426,
+     "D2_ERC_COV": 11.107803,
+     "D3_STATE_RULES": 7.238426,
+     "D4_RIDGE_SIGN": 7.238426,
+     "D5_TREE_SIGN": 7.238426,
+     "D6_FORECAST_VOL_SLEEVE": 5.448924,
+     "S1_SPY": 1.887858,
+     "S2_QQQ": 3.4732,
+     "S3_6040": 7.845097,
+     "S4_BALANCED": 7.238426,
+     "S5_EQUAL4": 7.516135,
+     "S6_RISK_BUDGET_IV": 11.226936,
+     "S7_VOLTARGET_SPY": -1.152898
+    },
+    "2012": {
+     "ASSET_BIL": -0.043641,
+     "ASSET_GLD": 6.599117,
+     "ASSET_IEF": 3.663635,
+     "ASSET_QQQ": 18.116211,
+     "ASSET_SPY": 15.99132,
+     "ASSET_TLT": 2.406665,
+     "ASSET_UUP": -2.937249,
+     "D1_TREND_SIGN": 8.964155,
+     "D2_ERC_COV": 8.237195,
+     "D3_STATE_RULES": 9.936139,
+     "D4_RIDGE_SIGN": 9.936139,
+     "D5_TREE_SIGN": 9.936139,
+     "D6_FORECAST_VOL_SLEEVE": 7.734165,
+     "S1_SPY": 15.99132,
+     "S2_QQQ": 18.116211,
+     "S3_6040": 11.289874,
+     "S4_BALANCED": 9.936139,
+     "S5_EQUAL4": 6.687688,
+     "S6_RISK_BUDGET_IV": 7.094253,
+     "S7_VOLTARGET_SPY": 11.42891
+    },
+    "2013": {
+     "ASSET_BIL": -0.087319,
+     "ASSET_GLD": -28.329836,
+     "ASSET_IEF": -6.087121,
+     "ASSET_QQQ": 36.634401,
+     "ASSET_SPY": 32.306697,
+     "ASSET_TLT": -13.370723,
+     "ASSET_UUP": -1.329661,
+     "D1_TREND_SIGN": 14.480192,
+     "D2_ERC_COV": -0.249971,
+     "D3_STATE_RULES": 9.668853,
+     "D4_RIDGE_SIGN": 6.181318,
+     "D5_TREE_SIGN": 7.335922,
+     "D6_FORECAST_VOL_SLEEVE": 8.70845,
+     "S1_SPY": 32.306697,
+     "S2_QQQ": 36.634401,
+     "S3_6040": 15.612119,
+     "S4_BALANCED": 9.668853,
+     "S5_EQUAL4": -2.255781,
+     "S6_RISK_BUDGET_IV": -2.323063,
+     "S7_VOLTARGET_SPY": 32.306697
+    },
+    "2014": {
+     "ASSET_BIL": -0.065542,
+     "ASSET_GLD": -2.187393,
+     "ASSET_IEF": 9.066336,
+     "ASSET_QQQ": 19.179407,
+     "ASSET_SPY": 13.462476,
+     "ASSET_TLT": 27.297453,
+     "ASSET_UUP": 11.384753,
+     "D1_TREND_SIGN": 7.442781,
+     "D2_ERC_COV": 8.048952,
+     "D3_STATE_RULES": 8.176862,
+     "D4_RIDGE_SIGN": 1.531749,
+     "D5_TREE_SIGN": 3.977497,
+     "D6_FORECAST_VOL_SLEEVE": 8.84011,
+     "S1_SPY": 13.462476,
+     "S2_QQQ": 19.179407,
+     "S3_6040": 11.861998,
+     "S4_BALANCED": 9.330982,
+     "S5_EQUAL4": 5.164739,
+     "S6_RISK_BUDGET_IV": 8.278386,
+     "S7_VOLTARGET_SPY": 13.462476
+    },
+    "2015": {
+     "ASSET_BIL": -0.131179,
+     "ASSET_GLD": -10.670895,
+     "ASSET_IEF": 1.508894,
+     "ASSET_QQQ": 9.445887,
+     "ASSET_SPY": 1.252101,
+     "ASSET_TLT": -1.787439,
+     "ASSET_UUP": 7.008762,
+     "D1_TREND_SIGN": -4.023923,
+     "D2_ERC_COV": -1.694405,
+     "D3_STATE_RULES": -2.008731,
+     "D4_RIDGE_SIGN": 2.286868,
+     "D5_TREE_SIGN": -4.893718,
+     "D6_FORECAST_VOL_SLEEVE": 0.387322,
+     "S1_SPY": 1.252101,
+     "S2_QQQ": 9.445887,
+     "S3_6040": 1.721452,
+     "S4_BALANCED": 0.387322,
+     "S5_EQUAL4": -1.69506,
+     "S6_RISK_BUDGET_IV": -1.231846,
+     "S7_VOLTARGET_SPY": -1.329582
+    },
+    "2016": {
+     "ASSET_BIL": 0.109443,
+     "ASSET_GLD": 8.032724,
+     "ASSET_IEF": 1.004428,
+     "ASSET_QQQ": 7.10208,
+     "ASSET_SPY": 12.001284,
+     "ASSET_TLT": 1.178834,
+     "ASSET_UUP": 3.157893,
+     "D1_TREND_SIGN": 1.741062,
+     "D2_ERC_COV": 6.905981,
+     "D3_STATE_RULES": 4.856693,
+     "D4_RIDGE_SIGN": 0.899747,
+     "D5_TREE_SIGN": 3.294685,
+     "D6_FORECAST_VOL_SLEEVE": 6.870989,
+     "S1_SPY": 12.001284,
+     "S2_QQQ": 7.10208,
+     "S3_6040": 7.670223,
+     "S4_BALANCED": 7.334242,
+     "S5_EQUAL4": 5.624241,
+     "S6_RISK_BUDGET_IV": 5.632539,
+     "S7_VOLTARGET_SPY": 10.201351
+    },
+    "2017": {
+     "ASSET_BIL": 0.689063,
+     "ASSET_GLD": 12.809051,
+     "ASSET_IEF": 2.553835,
+     "ASSET_QQQ": 32.663286,
+     "ASSET_SPY": 21.700272,
+     "ASSET_TLT": 9.183099,
+     "ASSET_UUP": -9.097957,
+     "D1_TREND_SIGN": 10.609692,
+     "D2_ERC_COV": 11.475449,
+     "D3_STATE_RULES": 12.685816,
+     "D4_RIDGE_SIGN": 5.686575,
+     "D5_TREE_SIGN": 12.640398,
+     "D6_FORECAST_VOL_SLEEVE": 12.685816,
+     "S1_SPY": 21.700272,
+     "S2_QQQ": 32.663286,
+     "S3_6040": 13.723605,
+     "S4_BALANCED": 12.685816,
+     "S5_EQUAL4": 9.238278,
+     "S6_RISK_BUDGET_IV": 9.780336,
+     "S7_VOLTARGET_SPY": 21.700272
+    },
+    "2018": {
+     "ASSET_BIL": 1.737291,
+     "ASSET_GLD": -1.940964,
+     "ASSET_IEF": 0.989208,
+     "ASSET_QQQ": -0.115808,
+     "ASSET_SPY": -4.556877,
+     "ASSET_TLT": -1.606973,
+     "ASSET_UUP": 7.053349,
+     "D1_TREND_SIGN": -2.608714,
+     "D2_ERC_COV": -0.969262,
+     "D3_STATE_RULES": -1.593334,
+     "D4_RIDGE_SIGN": -0.751174,
+     "D5_TREE_SIGN": 2.732417,
+     "D6_FORECAST_VOL_SLEEVE": -1.593334,
+     "S1_SPY": -4.556877,
+     "S2_QQQ": -0.115808,
+     "S3_6040": -1.971401,
+     "S4_BALANCED": -1.593334,
+     "S5_EQUAL4": -0.595385,
+     "S6_RISK_BUDGET_IV": 0.178372,
+     "S7_VOLTARGET_SPY": -4.367123
+    },
+    "2019": {
+     "ASSET_BIL": 2.031775,
+     "ASSET_GLD": 17.855665,
+     "ASSET_IEF": 8.030018,
+     "ASSET_QQQ": 38.960034,
+     "ASSET_SPY": 31.222021,
+     "ASSET_TLT": 14.121528,
+     "ASSET_UUP": 4.087189,
+     "D1_TREND_SIGN": 12.267708,
+     "D2_ERC_COV": 15.841206,
+     "D3_STATE_RULES": 16.443696,
+     "D4_RIDGE_SIGN": 13.509026,
+     "D5_TREE_SIGN": 17.984051,
+     "D6_FORECAST_VOL_SLEEVE": 18.882843,
+     "S1_SPY": 31.222021,
+     "S2_QQQ": 38.960034,
+     "S3_6040": 21.802272,
+     "S4_BALANCED": 19.84354,
+     "S5_EQUAL4": 14.630774,
+     "S6_RISK_BUDGET_IV": 14.114559,
+     "S7_VOLTARGET_SPY": 25.009231
+    },
+    "2020": {
+     "ASSET_BIL": 0.398549,
+     "ASSET_GLD": 24.814561,
+     "ASSET_IEF": 10.00653,
+     "ASSET_QQQ": 48.403338,
+     "ASSET_SPY": 18.373267,
+     "ASSET_TLT": 18.151496,
+     "ASSET_UUP": -6.661531,
+     "D1_TREND_SIGN": 3.74595,
+     "D2_ERC_COV": 11.551621,
+     "D3_STATE_RULES": 9.650251,
+     "D4_RIDGE_SIGN": 5.931018,
+     "D5_TREE_SIGN": 13.58535,
+     "D6_FORECAST_VOL_SLEEVE": 13.117581,
+     "S1_SPY": 18.373267,
+     "S2_QQQ": 48.403338,
+     "S3_6040": 16.619438,
+     "S4_BALANCED": 16.13164,
+     "S5_EQUAL4": 14.255566,
+     "S6_RISK_BUDGET_IV": 13.090066,
+     "S7_VOLTARGET_SPY": -5.385346
+    },
+    "2021": {
+     "ASSET_BIL": -0.098335,
+     "ASSET_GLD": -4.148909,
+     "ASSET_IEF": -3.329115,
+     "ASSET_QQQ": 27.420447,
+     "ASSET_SPY": 28.744169,
+     "ASSET_TLT": -4.602025,
+     "ASSET_UUP": 5.734321,
+     "D1_TREND_SIGN": 11.016903,
+     "D2_ERC_COV": 4.127042,
+     "D3_STATE_RULES": 11.350054,
+     "D4_RIDGE_SIGN": 12.771712,
+     "D5_TREE_SIGN": 13.035504,
+     "D6_FORECAST_VOL_SLEEVE": 12.164243,
+     "S1_SPY": 28.744169,
+     "S2_QQQ": 27.420447,
+     "S3_6040": 15.056225,
+     "S4_BALANCED": 12.164243,
+     "S5_EQUAL4": 4.831075,
+     "S6_RISK_BUDGET_IV": 1.49603,
+     "S7_VOLTARGET_SPY": 28.789682
+    },
+    "2022": {
+     "ASSET_BIL": 1.404433,
+     "ASSET_GLD": -0.772115,
+     "ASSET_IEF": -15.158888,
+     "ASSET_QQQ": -32.578602,
+     "ASSET_SPY": -18.171827,
+     "ASSET_TLT": -31.244891,
+     "ASSET_UUP": 9.460447,
+     "D1_TREND_SIGN": -6.413856,
+     "D2_ERC_COV": -12.100125,
+     "D3_STATE_RULES": -11.021254,
+     "D4_RIDGE_SIGN": -8.693305,
+     "D5_TREE_SIGN": -10.968345,
+     "D6_FORECAST_VOL_SLEEVE": -14.201284,
+     "S1_SPY": -18.171827,
+     "S2_QQQ": -32.578602,
+     "S3_6040": -16.61346,
+     "S4_BALANCED": -13.353159,
+     "S5_EQUAL4": -8.072343,
+     "S6_RISK_BUDGET_IV": -11.912571,
+     "S7_VOLTARGET_SPY": -13.339866
+    },
+    "2023": {
+     "ASSET_BIL": 4.943808,
+     "ASSET_GLD": 12.691582,
+     "ASSET_IEF": 3.643978,
+     "ASSET_QQQ": 54.852707,
+     "ASSET_SPY": 26.189314,
+     "ASSET_TLT": 2.767794,
+     "ASSET_UUP": 3.631913,
+     "D1_TREND_SIGN": 6.963407,
+     "D2_ERC_COV": 12.900552,
+     "D3_STATE_RULES": 7.653398,
+     "D4_RIDGE_SIGN": 9.589392,
+     "D5_TREE_SIGN": 7.656976,
+     "D6_FORECAST_VOL_SLEEVE": 13.69644,
+     "S1_SPY": 26.189314,
+     "S2_QQQ": 54.852707,
+     "S3_6040": 16.787348,
+     "S4_BALANCED": 15.732642,
+     "S5_EQUAL4": 11.857904,
+     "S6_RISK_BUDGET_IV": 11.581671,
+     "S7_VOLTARGET_SPY": 23.396431
+    },
+    "2024": {
+     "ASSET_BIL": 5.191526,
+     "ASSET_GLD": 26.656906,
+     "ASSET_IEF": -0.634951,
+     "ASSET_QQQ": 25.576568,
+     "ASSET_SPY": 24.885362,
+     "ASSET_TLT": -8.058366,
+     "ASSET_UUP": 13.484109,
+     "D1_TREND_SIGN": 15.84726,
+     "D2_ERC_COV": 13.866461,
+     "D3_STATE_RULES": 14.347492,
+     "D4_RIDGE_SIGN": 13.405187,
+     "D5_TREE_SIGN": 16.620457,
+     "D6_FORECAST_VOL_SLEEVE": 14.363251,
+     "S1_SPY": 24.885362,
+     "S2_QQQ": 25.576568,
+     "S3_6040": 14.161954,
+     "S4_BALANCED": 15.060252,
+     "S5_EQUAL4": 13.706803,
+     "S6_RISK_BUDGET_IV": 13.844371,
+     "S7_VOLTARGET_SPY": 24.854607
+    },
+    "2025": {
+     "ASSET_BIL": 4.146159,
+     "ASSET_GLD": 63.676533,
+     "ASSET_IEF": 8.031386,
+     "ASSET_QQQ": 20.765749,
+     "ASSET_SPY": 17.715039,
+     "ASSET_TLT": 4.247715,
+     "ASSET_UUP": -4.972806,
+     "D1_TREND_SIGN": 15.670037,
+     "D2_ERC_COV": 22.753362,
+     "D3_STATE_RULES": 17.391193,
+     "D4_RIDGE_SIGN": 13.451405,
+     "D5_TREE_SIGN": 13.293157,
+     "D6_FORECAST_VOL_SLEEVE": 15.136324,
+     "S1_SPY": 17.715039,
+     "S2_QQQ": 20.765749,
+     "S3_6040": 13.899127,
+     "S4_BALANCED": 17.391193,
+     "S5_EQUAL4": 21.70666,
+     "S6_RISK_BUDGET_IV": 19.566859,
+     "S7_VOLTARGET_SPY": 11.29782
+    },
+    "2026": {
+     "ASSET_BIL": 3.020652,
+     "ASSET_GLD": -10.226842,
+     "ASSET_IEF": -1.679036,
+     "ASSET_QQQ": 12.779122,
+     "ASSET_SPY": 11.689096,
+     "ASSET_TLT": -2.823773,
+     "ASSET_UUP": 7.288196,
+     "D1_TREND_SIGN": 5.547999,
+     "D2_ERC_COV": 1.720406,
+     "D3_STATE_RULES": 4.962977,
+     "D4_RIDGE_SIGN": 1.098665,
+     "D5_TREE_SIGN": 5.490945,
+     "D6_FORECAST_VOL_SLEEVE": 3.149151,
+     "S1_SPY": 11.689096,
+     "S2_QQQ": 12.779122,
+     "S3_6040": 6.34268,
+     "S4_BALANCED": 4.790932,
+     "S5_EQUAL4": 1.060573,
+     "S6_RISK_BUDGET_IV": 1.251177,
+     "S7_VOLTARGET_SPY": 11.633077
+    }
+   },
+   "decisions": 222,
+   "end": "2026-10-30",
+   "firstDecision": "2008-05-30",
+   "firstExecution": "2008-06-02",
+   "regimeSplits": {
+    "labelTiming": {
+     "risingTenYearConcurrent": "CONCURRENT",
+     "spyDownMonthConcurrent": "CONCURRENT",
+     "spyDrawdown10ExAnte": "EX_ANTE",
+     "uupUpMonthConcurrent": "CONCURRENT"
+    },
+    "risingTenYearConcurrent=False": {
+     "meanMonthlyPct": {
+      "D1_TREND_SIGN": 0.746305,
+      "D2_ERC_COV": 1.512275,
+      "D3_STATE_RULES": 0.996156,
+      "D4_RIDGE_SIGN": 0.689317,
+      "D5_TREE_SIGN": 0.857683,
+      "D6_FORECAST_VOL_SLEEVE": 1.120706,
+      "S1_SPY": 1.001344,
+      "S2_QQQ": 1.396197,
+      "S3_6040": 1.261102,
+      "S4_BALANCED": 1.196282,
+      "S5_EQUAL4": 1.157995,
+      "S6_RISK_BUDGET_IV": 1.544374,
+      "S7_VOLTARGET_SPY": 0.721285
+     },
+     "months": 113,
+     "shareBeatingS4": {
+      "D1_TREND_SIGN": 0.212389,
+      "D2_ERC_COV": 0.548673,
+      "D3_STATE_RULES": 0.292035,
+      "D4_RIDGE_SIGN": 0.132743,
+      "D5_TREE_SIGN": 0.185841,
+      "D6_FORECAST_VOL_SLEEVE": 0.371681,
+      "S1_SPY": 0.584071,
+      "S2_QQQ": 0.548673,
+      "S3_6040": 0.566372,
+      "S5_EQUAL4": 0.460177,
+      "S6_RISK_BUDGET_IV": 0.548673,
+      "S7_VOLTARGET_SPY": 0.486726
+     }
+    },
+    "risingTenYearConcurrent=True": {
+     "meanMonthlyPct": {
+      "D1_TREND_SIGN": 0.364267,
+      "D2_ERC_COV": -0.398831,
+      "D3_STATE_RULES": 0.198478,
+      "D4_RIDGE_SIGN": 0.249804,
+      "D5_TREE_SIGN": 0.279101,
+      "D6_FORECAST_VOL_SLEEVE": 0.088634,
+      "S1_SPY": 1.04993,
+      "S2_QQQ": 1.438346,
+      "S3_6040": 0.154283,
+      "S4_BALANCED": 0.137519,
+      "S5_EQUAL4": -0.111994,
+      "S6_RISK_BUDGET_IV": -0.515693,
+      "S7_VOLTARGET_SPY": 0.993639
+     },
+     "months": 108,
+     "shareBeatingS4": {
+      "D1_TREND_SIGN": 0.574074,
+      "D2_ERC_COV": 0.25,
+      "D3_STATE_RULES": 0.351852,
+      "D4_RIDGE_SIGN": 0.453704,
+      "D5_TREE_SIGN": 0.444444,
+      "D6_FORECAST_VOL_SLEEVE": 0.361111,
+      "S1_SPY": 0.703704,
+      "S2_QQQ": 0.666667,
+      "S3_6040": 0.564815,
+      "S5_EQUAL4": 0.398148,
+      "S6_RISK_BUDGET_IV": 0.25,
+      "S7_VOLTARGET_SPY": 0.712963
+     }
+    },
+    "spyDownMonthConcurrent=False": {
+     "meanMonthlyPct": {
+      "D1_TREND_SIGN": 1.385659,
+      "D2_ERC_COV": 1.238071,
+      "D3_STATE_RULES": 1.620471,
+      "D4_RIDGE_SIGN": 1.412065,
+      "D5_TREE_SIGN": 1.562998,
+      "D6_FORECAST_VOL_SLEEVE": 1.643777,
+      "S1_SPY": 3.46289,
+      "S2_QQQ": 4.098445,
+      "S3_6040": 2.166412,
+      "S4_BALANCED": 1.907689,
+      "S5_EQUAL4": 1.192393,
+      "S6_RISK_BUDGET_IV": 1.062532,
+      "S7_VOLTARGET_SPY": 2.815829
+     },
+     "months": 148,
+     "shareBeatingS4": {
+      "D1_TREND_SIGN": 0.324324,
+      "D2_ERC_COV": 0.222973,
+      "D3_STATE_RULES": 0.216216,
+      "D4_RIDGE_SIGN": 0.22973,
+      "D5_TREE_SIGN": 0.243243,
+      "D6_FORECAST_VOL_SLEEVE": 0.263514,
+      "S1_SPY": 0.905405,
+      "S2_QQQ": 0.77027,
+      "S3_6040": 0.702703,
+      "S5_EQUAL4": 0.222973,
+      "S6_RISK_BUDGET_IV": 0.202703,
+      "S7_VOLTARGET_SPY": 0.804054
+     }
+    },
+    "spyDownMonthConcurrent=True": {
+     "meanMonthlyPct": {
+      "D1_TREND_SIGN": -1.115126,
+      "D2_ERC_COV": -0.759194,
+      "D3_STATE_RULES": -1.449705,
+      "D4_RIDGE_SIGN": -1.426218,
+      "D5_TREE_SIGN": -1.428255,
+      "D6_FORECAST_VOL_SLEEVE": -1.466668,
+      "S1_SPY": -3.917308,
+      "S2_QQQ": -4.019976,
+      "S3_6040": -2.211807,
+      "S4_BALANCED": -1.812412,
+      "S5_EQUAL4": -0.790631,
+      "S6_RISK_BUDGET_IV": -0.526512,
+      "S7_VOLTARGET_SPY": -3.122254
+     },
+     "months": 73,
+     "shareBeatingS4": {
+      "D1_TREND_SIGN": 0.520548,
+      "D2_ERC_COV": 0.767123,
+      "D3_STATE_RULES": 0.534247,
+      "D4_RIDGE_SIGN": 0.410959,
+      "D5_TREE_SIGN": 0.452055,
+      "D6_FORECAST_VOL_SLEEVE": 0.575342,
+      "S1_SPY": 0.109589,
+      "S2_QQQ": 0.273973,
+      "S3_6040": 0.287671,
+      "S5_EQUAL4": 0.849315,
+      "S6_RISK_BUDGET_IV": 0.808219,
+      "S7_VOLTARGET_SPY": 0.178082
+     }
+    },
+    "spyDrawdown10ExAnte=False": {
+     "meanMonthlyPct": {
+      "D1_TREND_SIGN": 0.590079,
+      "D2_ERC_COV": 0.513575,
+      "D3_STATE_RULES": 0.594463,
+      "D4_RIDGE_SIGN": 0.438269,
+      "D5_TREE_SIGN": 0.536542,
+      "D6_FORECAST_VOL_SLEEVE": 0.591121,
+      "S1_SPY": 1.052285,
+      "S2_QQQ": 1.322103,
+      "S3_6040": 0.685858,
+      "S4_BALANCED": 0.636045,
+      "S5_EQUAL4": 0.468406,
+      "S6_RISK_BUDGET_IV": 0.456392,
+      "S7_VOLTARGET_SPY": 0.930406
+     },
+     "months": 164,
+     "shareBeatingS4": {
+      "D1_TREND_SIGN": 0.420732,
+      "D2_ERC_COV": 0.384146,
+      "D3_STATE_RULES": 0.317073,
+      "D4_RIDGE_SIGN": 0.347561,
+      "D5_TREE_SIGN": 0.371951,
+      "D6_FORECAST_VOL_SLEEVE": 0.378049,
+      "S1_SPY": 0.652439,
+      "S2_QQQ": 0.609756,
+      "S3_6040": 0.579268,
+      "S5_EQUAL4": 0.414634,
+      "S6_RISK_BUDGET_IV": 0.384146,
+      "S7_VOLTARGET_SPY": 0.621951
+     }
+    },
+    "spyDrawdown10ExAnte=True": {
+     "meanMonthlyPct": {
+      "D1_TREND_SIGN": 0.471936,
+      "D2_ERC_COV": 0.764684,
+      "D3_STATE_RULES": 0.640511,
+      "D4_RIDGE_SIGN": 0.57887,
+      "D5_TREE_SIGN": 0.685407,
+      "D6_FORECAST_VOL_SLEEVE": 0.68892,
+      "S1_SPY": 0.946835,
+      "S2_QQQ": 1.68924,
+      "S3_6040": 0.81906,
+      "S4_BALANCED": 0.802115,
+      "S5_EQUAL4": 0.73578,
+      "S6_RISK_BUDGET_IV": 0.771425,
+      "S7_VOLTARGET_SPY": 0.635643
+     },
+     "months": 57,
+     "shareBeatingS4": {
+      "D1_TREND_SIGN": 0.298246,
+      "D2_ERC_COV": 0.45614,
+      "D3_STATE_RULES": 0.333333,
+      "D4_RIDGE_SIGN": 0.122807,
+      "D5_TREE_SIGN": 0.140351,
+      "D6_FORECAST_VOL_SLEEVE": 0.333333,
+      "S1_SPY": 0.614035,
+      "S2_QQQ": 0.596491,
+      "S3_6040": 0.526316,
+      "S5_EQUAL4": 0.473684,
+      "S6_RISK_BUDGET_IV": 0.45614,
+      "S7_VOLTARGET_SPY": 0.526316
+     }
+    },
+    "uupUpMonthConcurrent=False": {
+     "meanMonthlyPct": {
+      "D1_TREND_SIGN": 1.166504,
+      "D2_ERC_COV": 1.518523,
+      "D3_STATE_RULES": 1.470937,
+      "D4_RIDGE_SIGN": 1.344896,
+      "D5_TREE_SIGN": 1.508854,
+      "D6_FORECAST_VOL_SLEEVE": 1.48726,
+      "S1_SPY": 2.694955,
+      "S2_QQQ": 3.037423,
+      "S3_6040": 1.821075,
+      "S4_BALANCED": 1.778398,
+      "S5_EQUAL4": 1.491037,
+      "S6_RISK_BUDGET_IV": 1.402209,
+      "S7_VOLTARGET_SPY": 2.016029
+     },
+     "months": 104,
+     "shareBeatingS4": {
+      "D1_TREND_SIGN": 0.259615,
+      "D2_ERC_COV": 0.394231,
+      "D3_STATE_RULES": 0.201923,
+      "D4_RIDGE_SIGN": 0.192308,
+      "D5_TREE_SIGN": 0.201923,
+      "D6_FORECAST_VOL_SLEEVE": 0.298077,
+      "S1_SPY": 0.711538,
+      "S2_QQQ": 0.634615,
+      "S3_6040": 0.528846,
+      "S5_EQUAL4": 0.432692,
+      "S6_RISK_BUDGET_IV": 0.365385,
+      "S7_VOLTARGET_SPY": 0.596154
+     }
+    },
+    "uupUpMonthConcurrent=True": {
+     "meanMonthlyPct": {
+      "D1_TREND_SIGN": 0.020144,
+      "D2_ERC_COV": -0.257377,
+      "D3_STATE_RULES": -0.162191,
+      "D4_RIDGE_SIGN": -0.299124,
+      "D5_TREE_SIGN": -0.255212,
+      "D6_FORECAST_VOL_SLEEVE": -0.157801,
+      "S1_SPY": -0.459239,
+      "S2_QQQ": -0.023764,
+      "S3_6040": -0.258331,
+      "S4_BALANCED": -0.298474,
+      "S5_EQUAL4": -0.31034,
+      "S6_RISK_BUDGET_IV": -0.230857,
+      "S7_VOLTARGET_SPY": -0.178195
+     },
+     "months": 117,
+     "shareBeatingS4": {
+      "D1_TREND_SIGN": 0.504274,
+      "D2_ERC_COV": 0.410256,
+      "D3_STATE_RULES": 0.42735,
+      "D4_RIDGE_SIGN": 0.376068,
+      "D5_TREE_SIGN": 0.410256,
+      "D6_FORECAST_VOL_SLEEVE": 0.42735,
+      "S1_SPY": 0.581197,
+      "S2_QQQ": 0.581197,
+      "S3_6040": 0.598291,
+      "S5_EQUAL4": 0.42735,
+      "S6_RISK_BUDGET_IV": 0.435897,
+      "S7_VOLTARGET_SPY": 0.598291
+     }
+    }
+   },
+   "strategies": {
+    "D1_TREND_SIGN": {
+     "KRW_hedged": "NOT_COMPUTED_NO_VERIFIED_HEDGE_INSTRUMENT_OR_COST",
+     "KRW_unhedged": {
+      "arithAnnualPct": 8.584,
+      "betaToSpy": 0.412,
+      "cagrPct": 8.318,
+      "calmar": 0.314,
+      "compoundingTermPct": -0.266,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -26.461,
+      "maxDrawdownTrough": "2009-10-15",
+      "months": 221,
+      "sharpeOverBil": 0.828,
+      "start": "2008-05-30",
+      "volPct": 10.741,
+      "worstMonthPct": -11.358
+     },
+     "KRW_unhedged_sameDayFxSensitivity": {
+      "cagrPct": 8.237,
+      "maxDrawdownPct": -26.592
+     },
+     "USD": {
+      "arithAnnualPct": 6.715,
+      "betaToSpy": 0.285,
+      "cagrPct": 6.719,
+      "calmar": 0.416,
+      "compoundingTermPct": 0.004,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -16.137,
+      "maxDrawdownTrough": "2020-03-23",
+      "months": 221,
+      "sharpeOverBil": 0.869,
+      "start": "2008-05-30",
+      "volPct": 6.262,
+      "worstMonthPct": -5.033
+     },
+     "USD_cost2x": {
+      "arithAnnualPct": 6.5,
+      "betaToSpy": 0.285,
+      "cagrPct": 6.49,
+      "calmar": 0.402,
+      "compoundingTermPct": -0.01,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -16.14,
+      "maxDrawdownTrough": "2020-03-23",
+      "months": 221,
+      "sharpeOverBil": 0.834,
+      "start": "2008-05-30",
+      "volPct": 6.263,
+      "worstMonthPct": -5.036
+     },
+     "averageEquityWeight": 0.416667,
+     "averageTargetWeights": {
+      "BIL": 0.341892,
+      "GLD": 0.064414,
+      "IEF": 0.177027,
+      "SPY": 0.416667
+     },
+     "averageWeightTwin": {
+      "USD": {
+       "cagrPct": 6.696,
+       "maxDrawdownPct": -22.151,
+       "sharpeOverBil": 0.794,
+       "volPct": 6.87
+      },
+      "arithGapPct": -0.02,
+      "cagrGapPct": 0.023,
+      "compoundingGapPct": 0.043,
+      "strategyMinusTwin": {
+       "ci95AnnualPct": [
+        -2.731,
+        1.217
+       ],
+       "intervalContainsZero": true,
+       "meanAnnualDiffPct": -0.02,
+       "months": 221
+      }
+     },
+     "costTotalPctOfInitial": 7.454871,
+     "decompositionVsS4": {
+      "arithGapPct": -1.432,
+      "cagrGapPct": -1.348,
+      "compoundingGapPct": 0.083
+     },
+     "fxContributionCagrPct": 1.599,
+     "turnoverTwoWayPerYear": 1.872705,
+     "vsS4": {
+      "ci95AnnualPct": [
+       -4.609,
+       -0.095
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -1.431,
+      "months": 221
+     },
+     "vsSPY": {
+      "ci95AnnualPct": [
+       -11.415,
+       -2.977
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -5.586,
+      "months": 221
+     }
+    },
+    "D2_ERC_COV": {
+     "KRW_hedged": "NOT_COMPUTED_NO_VERIFIED_HEDGE_INSTRUMENT_OR_COST",
+     "KRW_unhedged": {
+      "arithAnnualPct": 8.701,
+      "betaToSpy": 0.344,
+      "cagrPct": 8.479,
+      "calmar": 0.429,
+      "compoundingTermPct": -0.222,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -19.776,
+      "maxDrawdownTrough": "2008-10-10",
+      "months": 221,
+      "sharpeOverBil": 0.716,
+      "start": "2008-05-30",
+      "volPct": 10.504,
+      "worstMonthPct": -9.485
+     },
+     "KRW_unhedged_sameDayFxSensitivity": {
+      "cagrPct": 8.398,
+      "maxDrawdownPct": -18.509
+     },
+     "USD": {
+      "arithAnnualPct": 6.94,
+      "betaToSpy": 0.275,
+      "cagrPct": 6.878,
+      "calmar": 0.387,
+      "compoundingTermPct": -0.062,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -17.762,
+      "maxDrawdownTrough": "2022-10-20",
+      "months": 221,
+      "sharpeOverBil": 0.772,
+      "start": "2008-05-30",
+      "volPct": 7.359,
+      "worstMonthPct": -8.942
+     },
+     "USD_cost2x": {
+      "arithAnnualPct": 6.872,
+      "betaToSpy": 0.276,
+      "cagrPct": 6.805,
+      "calmar": 0.382,
+      "compoundingTermPct": -0.067,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -17.796,
+      "maxDrawdownTrough": "2022-10-20",
+      "months": 221,
+      "sharpeOverBil": 0.763,
+      "start": "2008-05-30",
+      "volPct": 7.361,
+      "worstMonthPct": -8.954
+     },
+     "averageEquityWeight": 0.278719,
+     "averageTargetWeights": {
+      "GLD": 0.219143,
+      "IEF": 0.502137,
+      "SPY": 0.278719
+     },
+     "averageWeightTwin": {
+      "USD": {
+       "cagrPct": 6.875,
+       "maxDrawdownPct": -17.623,
+       "sharpeOverBil": 0.754,
+       "volPct": 7.53
+      },
+      "arithGapPct": -0.01,
+      "cagrGapPct": 0.003,
+      "compoundingGapPct": 0.013,
+      "strategyMinusTwin": {
+       "ci95AnnualPct": [
+        -0.733,
+        0.527
+       ],
+       "intervalContainsZero": true,
+       "meanAnnualDiffPct": -0.01,
+       "months": 221
+      }
+     },
+     "costTotalPctOfInitial": 2.218333,
+     "decompositionVsS4": {
+      "arithGapPct": -1.207,
+      "cagrGapPct": -1.189,
+      "compoundingGapPct": 0.017
+     },
+     "fxContributionCagrPct": 1.601,
+     "turnoverTwoWayPerYear": 0.594473,
+     "vsS4": {
+      "ci95AnnualPct": [
+       -3.289,
+       0.12
+      ],
+      "intervalContainsZero": true,
+      "meanAnnualDiffPct": -1.206,
+      "months": 221
+     },
+     "vsSPY": {
+      "ci95AnnualPct": [
+       -11.265,
+       -1.851
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -5.361,
+      "months": 221
+     }
+    },
+    "D3_STATE_RULES": {
+     "KRW_hedged": "NOT_COMPUTED_NO_VERIFIED_HEDGE_INSTRUMENT_OR_COST",
+     "KRW_unhedged": {
+      "arithAnnualPct": 9.018,
+      "betaToSpy": 0.482,
+      "cagrPct": 8.875,
+      "calmar": 0.487,
+      "compoundingTermPct": -0.143,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -18.218,
+      "maxDrawdownTrough": "2009-10-02",
+      "months": 221,
+      "sharpeOverBil": 0.804,
+      "start": "2008-05-30",
+      "volPct": 9.937,
+      "worstMonthPct": -9.842
+     },
+     "KRW_unhedged_sameDayFxSensitivity": {
+      "cagrPct": 8.793,
+      "maxDrawdownPct": -17.125
+     },
+     "USD": {
+      "arithAnnualPct": 7.276,
+      "betaToSpy": 0.389,
+      "cagrPct": 7.268,
+      "calmar": 0.45,
+      "compoundingTermPct": -0.008,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -16.137,
+      "maxDrawdownTrough": "2020-03-23",
+      "months": 221,
+      "sharpeOverBil": 0.863,
+      "start": "2008-05-30",
+      "volPct": 6.938,
+      "worstMonthPct": -5.841
+     },
+     "USD_cost2x": {
+      "arithAnnualPct": 7.139,
+      "betaToSpy": 0.389,
+      "cagrPct": 7.122,
+      "calmar": 0.441,
+      "compoundingTermPct": -0.017,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -16.14,
+      "maxDrawdownTrough": "2020-03-23",
+      "months": 221,
+      "sharpeOverBil": 0.844,
+      "start": "2008-05-30",
+      "volPct": 6.935,
+      "worstMonthPct": -5.845
+     },
+     "averageEquityWeight": 0.458333,
+     "averageTargetWeights": {
+      "BIL": 0.131306,
+      "GLD": 0.1,
+      "IEF": 0.266216,
+      "SHY": 0.033784,
+      "SPY": 0.458333,
+      "UUP": 0.01036
+     },
+     "averageWeightTwin": {
+      "USD": {
+       "cagrPct": 7.597,
+       "maxDrawdownPct": -23.319,
+       "sharpeOverBil": 0.815,
+       "volPct": 7.816
+      },
+      "arithGapPct": -0.374,
+      "cagrGapPct": -0.329,
+      "compoundingGapPct": 0.045,
+      "strategyMinusTwin": {
+       "ci95AnnualPct": [
+        -1.888,
+        0.286
+       ],
+       "intervalContainsZero": true,
+       "meanAnnualDiffPct": -0.374,
+       "months": 221
+      }
+     },
+     "costTotalPctOfInitial": 5.389974,
+     "decompositionVsS4": {
+      "arithGapPct": -0.871,
+      "cagrGapPct": -0.799,
+      "compoundingGapPct": 0.071
+     },
+     "fxContributionCagrPct": 1.607,
+     "ruleFiredMonths": {
+      "a_equityTrendOff": 37,
+      "b_bondsNotHedgingRatesRising": 25,
+      "c_dollarStrongInEquityDowntrend": 23
+     },
+     "turnoverTwoWayPerYear": 1.187215,
+     "vsS4": {
+      "ci95AnnualPct": [
+       -2.536,
+       -0.183
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -0.87,
+      "months": 221
+     },
+     "vsSPY": {
+      "ci95AnnualPct": [
+       -9.862,
+       -2.553
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -5.025,
+      "months": 221
+     }
+    },
+    "D4_RIDGE_SIGN": {
+     "KRW_hedged": "NOT_COMPUTED_NO_VERIFIED_HEDGE_INSTRUMENT_OR_COST",
+     "KRW_unhedged": {
+      "arithAnnualPct": 7.384,
+      "betaToSpy": 0.475,
+      "cagrPct": 7.141,
+      "calmar": 0.347,
+      "compoundingTermPct": -0.243,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -20.58,
+      "maxDrawdownTrough": "2008-10-10",
+      "months": 221,
+      "sharpeOverBil": 0.535,
+      "start": "2008-05-30",
+      "volPct": 9.744,
+      "worstMonthPct": -8.012
+     },
+     "KRW_unhedged_sameDayFxSensitivity": {
+      "cagrPct": 7.06,
+      "maxDrawdownPct": -16.989
+     },
+     "USD": {
+      "arithAnnualPct": 5.694,
+      "betaToSpy": 0.402,
+      "cagrPct": 5.559,
+      "calmar": 0.218,
+      "compoundingTermPct": -0.136,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -25.525,
+      "maxDrawdownTrough": "2009-03-09",
+      "months": 221,
+      "sharpeOverBil": 0.597,
+      "start": "2008-05-30",
+      "volPct": 7.373,
+      "worstMonthPct": -10.156
+     },
+     "USD_cost2x": {
+      "arithAnnualPct": 5.232,
+      "betaToSpy": 0.402,
+      "cagrPct": 5.072,
+      "calmar": 0.198,
+      "compoundingTermPct": -0.16,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -25.57,
+      "maxDrawdownTrough": "2009-03-09",
+      "months": 221,
+      "sharpeOverBil": 0.532,
+      "start": "2008-05-30",
+      "volPct": 7.394,
+      "worstMonthPct": -10.162
+     },
+     "averageEquityWeight": 0.362613,
+     "averageTargetWeights": {
+      "BIL": 0.403604,
+      "GLD": 0.060811,
+      "IEF": 0.172973,
+      "SPY": 0.362613
+     },
+     "averageWeightTwin": {
+      "USD": {
+       "cagrPct": 6.08,
+       "maxDrawdownPct": -19.193,
+       "sharpeOverBil": 0.799,
+       "volPct": 6.037
+      },
+      "arithGapPct": -0.405,
+      "cagrGapPct": -0.521,
+      "compoundingGapPct": -0.117,
+      "strategyMinusTwin": {
+       "ci95AnnualPct": [
+        -1.573,
+        1.314
+       ],
+       "intervalContainsZero": true,
+       "meanAnnualDiffPct": -0.405,
+       "months": 221
+      }
+     },
+     "costTotalPctOfInitial": 15.315318,
+     "decompositionVsS4": {
+      "arithGapPct": -2.453,
+      "cagrGapPct": -2.508,
+      "compoundingGapPct": -0.057
+     },
+     "fallbackDecisions": 61,
+     "firstModelDecision": "2013-06-28",
+     "fxContributionCagrPct": 1.582,
+     "turnoverTwoWayPerYear": 4.027388,
+     "vsS4": {
+      "ci95AnnualPct": [
+       -4.075,
+       -0.904
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -2.452,
+      "months": 221
+     },
+     "vsSPY": {
+      "ci95AnnualPct": [
+       -11.252,
+       -3.582
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -6.607,
+      "months": 221
+     }
+    },
+    "D5_TREE_SIGN": {
+     "KRW_hedged": "NOT_COMPUTED_NO_VERIFIED_HEDGE_INSTRUMENT_OR_COST",
+     "KRW_unhedged": {
+      "arithAnnualPct": 8.594,
+      "betaToSpy": 0.487,
+      "cagrPct": 8.43,
+      "calmar": 0.41,
+      "compoundingTermPct": -0.163,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -20.58,
+      "maxDrawdownTrough": "2008-10-10",
+      "months": 221,
+      "sharpeOverBil": 0.695,
+      "start": "2008-05-30",
+      "volPct": 9.807,
+      "worstMonthPct": -8.297
+     },
+     "KRW_unhedged_sameDayFxSensitivity": {
+      "cagrPct": 8.349,
+      "maxDrawdownPct": -16.989
+     },
+     "USD": {
+      "arithAnnualPct": 6.899,
+      "betaToSpy": 0.408,
+      "cagrPct": 6.829,
+      "calmar": 0.268,
+      "compoundingTermPct": -0.07,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -25.525,
+      "maxDrawdownTrough": "2009-03-09",
+      "months": 221,
+      "sharpeOverBil": 0.758,
+      "start": "2008-05-30",
+      "volPct": 7.404,
+      "worstMonthPct": -10.156
+     },
+     "USD_cost2x": {
+      "arithAnnualPct": 6.549,
+      "betaToSpy": 0.408,
+      "cagrPct": 6.457,
+      "calmar": 0.253,
+      "compoundingTermPct": -0.091,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -25.57,
+      "maxDrawdownTrough": "2009-03-09",
+      "months": 221,
+      "sharpeOverBil": 0.71,
+      "start": "2008-05-30",
+      "volPct": 7.408,
+      "worstMonthPct": -10.162
+     },
+     "averageEquityWeight": 0.436937,
+     "averageTargetWeights": {
+      "BIL": 0.313063,
+      "GLD": 0.071622,
+      "IEF": 0.178378,
+      "SPY": 0.436937
+     },
+     "averageWeightTwin": {
+      "USD": {
+       "cagrPct": 6.972,
+       "maxDrawdownPct": -23.214,
+       "sharpeOverBil": 0.795,
+       "volPct": 7.216
+      },
+      "arithGapPct": -0.12,
+      "cagrGapPct": -0.143,
+      "compoundingGapPct": -0.023,
+      "strategyMinusTwin": {
+       "ci95AnnualPct": [
+        -1.479,
+        1.267
+       ],
+       "intervalContainsZero": true,
+       "meanAnnualDiffPct": -0.119,
+       "months": 221
+      }
+     },
+     "costTotalPctOfInitial": 12.549691,
+     "decompositionVsS4": {
+      "arithGapPct": -1.248,
+      "cagrGapPct": -1.238,
+      "compoundingGapPct": 0.009
+     },
+     "fallbackDecisions": 61,
+     "firstModelDecision": "2013-06-28",
+     "fxContributionCagrPct": 1.601,
+     "turnoverTwoWayPerYear": 3.042622,
+     "vsS4": {
+      "ci95AnnualPct": [
+       -2.678,
+       -0.055
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -1.247,
+      "months": 221
+     },
+     "vsSPY": {
+      "ci95AnnualPct": [
+       -9.664,
+       -2.81
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -5.402,
+      "months": 221
+     }
+    },
+    "D6_FORECAST_VOL_SLEEVE": {
+     "KRW_hedged": "NOT_COMPUTED_NO_VERIFIED_HEDGE_INSTRUMENT_OR_COST",
+     "KRW_unhedged": {
+      "arithAnnualPct": 9.148,
+      "betaToSpy": 0.495,
+      "cagrPct": 8.991,
+      "calmar": 0.489,
+      "compoundingTermPct": -0.157,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -18.398,
+      "maxDrawdownTrough": "2009-10-02",
+      "months": 221,
+      "sharpeOverBil": 0.801,
+      "start": "2008-05-30",
+      "volPct": 10.19,
+      "worstMonthPct": -9.927
+     },
+     "KRW_unhedged_sameDayFxSensitivity": {
+      "cagrPct": 8.909,
+      "maxDrawdownPct": -17.704
+     },
+     "USD": {
+      "arithAnnualPct": 7.396,
+      "betaToSpy": 0.394,
+      "cagrPct": 7.382,
+      "calmar": 0.416,
+      "compoundingTermPct": -0.014,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -17.749,
+      "maxDrawdownTrough": "2022-10-14",
+      "months": 221,
+      "sharpeOverBil": 0.858,
+      "start": "2008-05-30",
+      "volPct": 7.116,
+      "worstMonthPct": -5.868
+     },
+     "USD_cost2x": {
+      "arithAnnualPct": 7.306,
+      "betaToSpy": 0.394,
+      "cagrPct": 7.286,
+      "calmar": 0.408,
+      "compoundingTermPct": -0.02,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -17.838,
+      "maxDrawdownTrough": "2022-10-14",
+      "months": 221,
+      "sharpeOverBil": 0.846,
+      "start": "2008-05-30",
+      "volPct": 7.119,
+      "worstMonthPct": -5.882
+     },
+     "averageEquityWeight": 0.445715,
+     "averageTargetWeights": {
+      "BIL": 0.154285,
+      "GLD": 0.1,
+      "IEF": 0.3,
+      "SPY": 0.445715
+     },
+     "averageWeightTwin": {
+      "USD": {
+       "cagrPct": 7.49,
+       "maxDrawdownPct": -22.588,
+       "sharpeOverBil": 0.809,
+       "volPct": 7.739
+      },
+      "arithGapPct": -0.148,
+      "cagrGapPct": -0.108,
+      "compoundingGapPct": 0.04,
+      "strategyMinusTwin": {
+       "ci95AnnualPct": [
+        -1.12,
+        0.341
+       ],
+       "intervalContainsZero": true,
+       "meanAnnualDiffPct": -0.148,
+       "months": 221
+      }
+     },
+     "costTotalPctOfInitial": 3.112962,
+     "decompositionVsS4": {
+      "arithGapPct": -0.751,
+      "cagrGapPct": -0.685,
+      "compoundingGapPct": 0.065
+     },
+     "fallbackDecisions": 62,
+     "firstModelDecision": "2013-07-31",
+     "fxContributionCagrPct": 1.609,
+     "turnoverTwoWayPerYear": 0.783778,
+     "vsS4": {
+      "ci95AnnualPct": [
+       -1.947,
+       -0.216
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -0.75,
+      "months": 221
+     },
+     "vsSPY": {
+      "ci95AnnualPct": [
+       -9.489,
+       -2.461
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -4.905,
+      "months": 221
+     }
+    },
+    "S1_SPY": {
+     "KRW_hedged": "NOT_COMPUTED_NO_VERIFIED_HEDGE_INSTRUMENT_OR_COST",
+     "KRW_unhedged": {
+      "arithAnnualPct": 13.499,
+      "betaToSpy": 1.0,
+      "cagrPct": 13.329,
+      "calmar": 0.428,
+      "compoundingTermPct": -0.17,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -31.113,
+      "maxDrawdownTrough": "2020-03-23",
+      "months": 221,
+      "sharpeOverBil": 0.64,
+      "start": "2008-05-30",
+      "volPct": 13.619,
+      "worstMonthPct": -11.827
+     },
+     "KRW_unhedged_sameDayFxSensitivity": {
+      "cagrPct": 13.244,
+      "maxDrawdownPct": -29.598
+     },
+     "USD": {
+      "arithAnnualPct": 12.301,
+      "betaToSpy": 1.0,
+      "cagrPct": 11.656,
+      "calmar": 0.23,
+      "compoundingTermPct": -0.645,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -50.704,
+      "maxDrawdownTrough": "2009-03-09",
+      "months": 221,
+      "sharpeOverBil": 0.706,
+      "start": "2008-05-30",
+      "volPct": 15.608,
+      "worstMonthPct": -16.519
+     },
+     "USD_cost2x": {
+      "arithAnnualPct": 12.296,
+      "betaToSpy": 1.0,
+      "cagrPct": 11.65,
+      "calmar": 0.23,
+      "compoundingTermPct": -0.646,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -50.704,
+      "maxDrawdownTrough": "2009-03-09",
+      "months": 221,
+      "sharpeOverBil": 0.705,
+      "start": "2008-05-30",
+      "volPct": 15.611,
+      "worstMonthPct": -16.519
+     },
+     "averageEquityWeight": 1.0,
+     "averageTargetWeights": {
+      "SPY": 1.0
+     },
+     "averageWeightTwin": {
+      "USD": {
+       "cagrPct": 11.656,
+       "maxDrawdownPct": -50.704,
+       "sharpeOverBil": 0.706,
+       "volPct": 15.608
+      },
+      "arithGapPct": 0.0,
+      "cagrGapPct": 0.0,
+      "compoundingGapPct": 0.0,
+      "strategyMinusTwin": {
+       "ci95AnnualPct": [
+        0.0,
+        0.0
+       ],
+       "intervalContainsZero": true,
+       "meanAnnualDiffPct": 0.0,
+       "months": 221
+      }
+     },
+     "costTotalPctOfInitial": 0.0999,
+     "decompositionVsS4": {
+      "arithGapPct": 4.154,
+      "cagrGapPct": 3.589,
+      "compoundingGapPct": -0.566
+     },
+     "fxContributionCagrPct": 1.673,
+     "turnoverTwoWayPerYear": 0.054296,
+     "vsS4": {
+      "ci95AnnualPct": [
+       1.842,
+       8.088
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": 4.155,
+      "months": 221
+     },
+     "vsSPY": null
+    },
+    "S2_QQQ": {
+     "KRW_hedged": "NOT_COMPUTED_NO_VERIFIED_HEDGE_INSTRUMENT_OR_COST",
+     "KRW_unhedged": {
+      "arithAnnualPct": 18.169,
+      "betaToSpy": 1.111,
+      "cagrPct": 18.091,
+      "calmar": 0.586,
+      "compoundingTermPct": -0.078,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -30.848,
+      "maxDrawdownTrough": "2022-12-28",
+      "months": 221,
+      "sharpeOverBil": 0.782,
+      "start": "2008-05-30",
+      "volPct": 16.941,
+      "worstMonthPct": -13.81
+     },
+     "KRW_unhedged_sameDayFxSensitivity": {
+      "cagrPct": 18.002,
+      "maxDrawdownPct": -30.646
+     },
+     "USD": {
+      "arithAnnualPct": 17.002,
+      "betaToSpy": 1.104,
+      "cagrPct": 16.347,
+      "calmar": 0.331,
+      "compoundingTermPct": -0.654,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -49.367,
+      "maxDrawdownTrough": "2008-11-20",
+      "months": 221,
+      "sharpeOverBil": 0.835,
+      "start": "2008-05-30",
+      "volPct": 18.813,
+      "worstMonthPct": -15.578
+     },
+     "USD_cost2x": {
+      "arithAnnualPct": 16.997,
+      "betaToSpy": 1.104,
+      "cagrPct": 16.341,
+      "calmar": 0.331,
+      "compoundingTermPct": -0.656,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -49.367,
+      "maxDrawdownTrough": "2008-11-20",
+      "months": 221,
+      "sharpeOverBil": 0.835,
+      "start": "2008-05-30",
+      "volPct": 18.815,
+      "worstMonthPct": -15.578
+     },
+     "averageEquityWeight": 1.0,
+     "averageTargetWeights": {
+      "QQQ": 1.0
+     },
+     "averageWeightTwin": {
+      "USD": {
+       "cagrPct": 16.347,
+       "maxDrawdownPct": -49.367,
+       "sharpeOverBil": 0.835,
+       "volPct": 18.813
+      },
+      "arithGapPct": 0.0,
+      "cagrGapPct": 0.0,
+      "compoundingGapPct": 0.0,
+      "strategyMinusTwin": {
+       "ci95AnnualPct": [
+        0.0,
+        0.0
+       ],
+       "intervalContainsZero": true,
+       "meanAnnualDiffPct": 0.0,
+       "months": 221
+      }
+     },
+     "costTotalPctOfInitial": 0.0999,
+     "decompositionVsS4": {
+      "arithGapPct": 8.855,
+      "cagrGapPct": 8.28,
+      "compoundingGapPct": -0.575
+     },
+     "fxContributionCagrPct": 1.744,
+     "turnoverTwoWayPerYear": 0.054296,
+     "vsS4": {
+      "ci95AnnualPct": [
+       5.492,
+       14.59
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": 8.855,
+      "months": 221
+     },
+     "vsSPY": {
+      "ci95AnnualPct": [
+       1.79,
+       8.415
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": 4.7,
+      "months": 221
+     }
+    },
+    "S3_6040": {
+     "KRW_hedged": "NOT_COMPUTED_NO_VERIFIED_HEDGE_INSTRUMENT_OR_COST",
+     "KRW_unhedged": {
+      "arithAnnualPct": 10.18,
+      "betaToSpy": 0.648,
+      "cagrPct": 10.113,
+      "calmar": 0.471,
+      "compoundingTermPct": -0.067,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -21.483,
+      "maxDrawdownTrough": "2008-10-10",
+      "months": 221,
+      "sharpeOverBil": 0.693,
+      "start": "2008-05-30",
+      "volPct": 10.176,
+      "worstMonthPct": -8.24
+     },
+     "KRW_unhedged_sameDayFxSensitivity": {
+      "cagrPct": 10.03,
+      "maxDrawdownPct": -17.267
+     },
+     "USD": {
+      "arithAnnualPct": 8.643,
+      "betaToSpy": 0.595,
+      "cagrPct": 8.487,
+      "calmar": 0.279,
+      "compoundingTermPct": -0.156,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -30.397,
+      "maxDrawdownTrough": "2009-03-09",
+      "months": 221,
+      "sharpeOverBil": 0.759,
+      "start": "2008-05-30",
+      "volPct": 9.679,
+      "worstMonthPct": -10.273
+     },
+     "USD_cost2x": {
+      "arithAnnualPct": 8.609,
+      "betaToSpy": 0.595,
+      "cagrPct": 8.45,
+      "calmar": 0.278,
+      "compoundingTermPct": -0.158,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -30.435,
+      "maxDrawdownTrough": "2009-03-09",
+      "months": 221,
+      "sharpeOverBil": 0.755,
+      "start": "2008-05-30",
+      "volPct": 9.68,
+      "worstMonthPct": -10.278
+     },
+     "averageEquityWeight": 0.6,
+     "averageTargetWeights": {
+      "IEF": 0.4,
+      "SPY": 0.6
+     },
+     "averageWeightTwin": {
+      "USD": {
+       "cagrPct": 8.487,
+       "maxDrawdownPct": -30.397,
+       "sharpeOverBil": 0.759,
+       "volPct": 9.679
+      },
+      "arithGapPct": 0.0,
+      "cagrGapPct": 0.0,
+      "compoundingGapPct": 0.0,
+      "strategyMinusTwin": {
+       "ci95AnnualPct": [
+        0.0,
+        0.0
+       ],
+       "intervalContainsZero": false,
+       "meanAnnualDiffPct": 0.0,
+       "months": 221
+      }
+     },
+     "costTotalPctOfInitial": 1.136485,
+     "decompositionVsS4": {
+      "arithGapPct": 0.496,
+      "cagrGapPct": 0.42,
+      "compoundingGapPct": -0.077
+     },
+     "fxContributionCagrPct": 1.626,
+     "turnoverTwoWayPerYear": 0.302326,
+     "vsS4": {
+      "ci95AnnualPct": [
+       -0.254,
+       1.394
+      ],
+      "intervalContainsZero": true,
+      "meanAnnualDiffPct": 0.496,
+      "months": 221
+     },
+     "vsSPY": {
+      "ci95AnnualPct": [
+       -6.991,
+       -1.822
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -3.658,
+      "months": 221
+     }
+    },
+    "S4_BALANCED": {
+     "KRW_hedged": "NOT_COMPUTED_NO_VERIFIED_HEDGE_INSTRUMENT_OR_COST",
+     "KRW_unhedged": {
+      "arithAnnualPct": 9.736,
+      "betaToSpy": 0.559,
+      "cagrPct": 9.687,
+      "calmar": 0.471,
+      "compoundingTermPct": -0.049,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -20.58,
+      "maxDrawdownTrough": "2008-10-10",
+      "months": 221,
+      "sharpeOverBil": 0.737,
+      "start": "2008-05-30",
+      "volPct": 9.621,
+      "worstMonthPct": -8.012
+     },
+     "KRW_unhedged_sameDayFxSensitivity": {
+      "cagrPct": 9.604,
+      "maxDrawdownPct": -16.989
+     },
+     "USD": {
+      "arithAnnualPct": 8.147,
+      "betaToSpy": 0.508,
+      "cagrPct": 8.067,
+      "calmar": 0.316,
+      "compoundingTermPct": -0.079,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -25.525,
+      "maxDrawdownTrough": "2009-03-09",
+      "months": 221,
+      "sharpeOverBil": 0.805,
+      "start": "2008-05-30",
+      "volPct": 8.521,
+      "worstMonthPct": -10.156
+     },
+     "USD_cost2x": {
+      "arithAnnualPct": 8.109,
+      "betaToSpy": 0.508,
+      "cagrPct": 8.027,
+      "calmar": 0.314,
+      "compoundingTermPct": -0.082,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -25.57,
+      "maxDrawdownTrough": "2009-03-09",
+      "months": 221,
+      "sharpeOverBil": 0.801,
+      "start": "2008-05-30",
+      "volPct": 8.522,
+      "worstMonthPct": -10.162
+     },
+     "averageEquityWeight": 0.5,
+     "averageTargetWeights": {
+      "BIL": 0.1,
+      "GLD": 0.1,
+      "IEF": 0.3,
+      "SPY": 0.5
+     },
+     "averageWeightTwin": {
+      "USD": {
+       "cagrPct": 8.067,
+       "maxDrawdownPct": -25.525,
+       "sharpeOverBil": 0.805,
+       "volPct": 8.521
+      },
+      "arithGapPct": 0.0,
+      "cagrGapPct": 0.0,
+      "compoundingGapPct": 0.0,
+      "strategyMinusTwin": {
+       "ci95AnnualPct": [
+        0.0,
+        0.0
+       ],
+       "intervalContainsZero": false,
+       "meanAnnualDiffPct": 0.0,
+       "months": 221
+      }
+     },
+     "costTotalPctOfInitial": 1.204891,
+     "decompositionVsS4": {
+      "arithGapPct": 0.0,
+      "cagrGapPct": 0.0,
+      "compoundingGapPct": 0.0
+     },
+     "fxContributionCagrPct": 1.62,
+     "turnoverTwoWayPerYear": 0.330068,
+     "vsS4": null,
+     "vsSPY": {
+      "ci95AnnualPct": [
+       -8.088,
+       -1.842
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -4.155,
+      "months": 221
+     }
+    },
+    "S5_EQUAL4": {
+     "KRW_hedged": "NOT_COMPUTED_NO_VERIFIED_HEDGE_INSTRUMENT_OR_COST",
+     "KRW_unhedged": {
+      "arithAnnualPct": 8.2,
+      "betaToSpy": 0.339,
+      "cagrPct": 7.995,
+      "calmar": 0.429,
+      "compoundingTermPct": -0.205,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -18.634,
+      "maxDrawdownTrough": "2008-10-10",
+      "months": 221,
+      "sharpeOverBil": 0.707,
+      "start": "2008-05-30",
+      "volPct": 9.958,
+      "worstMonthPct": -10.079
+     },
+     "KRW_unhedged_sameDayFxSensitivity": {
+      "cagrPct": 7.914,
+      "maxDrawdownPct": -17.035
+     },
+     "USD": {
+      "arithAnnualPct": 6.448,
+      "betaToSpy": 0.276,
+      "cagrPct": 6.4,
+      "calmar": 0.442,
+      "compoundingTermPct": -0.048,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -14.476,
+      "maxDrawdownTrough": "2008-11-20",
+      "months": 221,
+      "sharpeOverBil": 0.768,
+      "start": "2008-05-30",
+      "volPct": 6.765,
+      "worstMonthPct": -8.416
+     },
+     "USD_cost2x": {
+      "arithAnnualPct": 6.411,
+      "betaToSpy": 0.276,
+      "cagrPct": 6.361,
+      "calmar": 0.436,
+      "compoundingTermPct": -0.05,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -14.584,
+      "maxDrawdownTrough": "2008-11-20",
+      "months": 221,
+      "sharpeOverBil": 0.762,
+      "start": "2008-05-30",
+      "volPct": 6.766,
+      "worstMonthPct": -8.421
+     },
+     "averageEquityWeight": 0.25,
+     "averageTargetWeights": {
+      "BIL": 0.25,
+      "GLD": 0.25,
+      "IEF": 0.25,
+      "SPY": 0.25
+     },
+     "averageWeightTwin": {
+      "USD": {
+       "cagrPct": 6.4,
+       "maxDrawdownPct": -14.476,
+       "sharpeOverBil": 0.768,
+       "volPct": 6.765
+      },
+      "arithGapPct": 0.0,
+      "cagrGapPct": 0.0,
+      "compoundingGapPct": 0.0,
+      "strategyMinusTwin": {
+       "ci95AnnualPct": [
+        -0.0,
+        0.0
+       ],
+       "intervalContainsZero": true,
+       "meanAnnualDiffPct": 0.0,
+       "months": 221
+      }
+     },
+     "costTotalPctOfInitial": 1.07251,
+     "decompositionVsS4": {
+      "arithGapPct": -1.699,
+      "cagrGapPct": -1.667,
+      "compoundingGapPct": 0.031
+     },
+     "fxContributionCagrPct": 1.595,
+     "turnoverTwoWayPerYear": 0.329475,
+     "vsS4": {
+      "ci95AnnualPct": [
+       -3.663,
+       -0.305
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -1.698,
+      "months": 221
+     },
+     "vsSPY": {
+      "ci95AnnualPct": [
+       -11.598,
+       -2.314
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -5.853,
+      "months": 221
+     }
+    },
+    "S6_RISK_BUDGET_IV": {
+     "KRW_hedged": "NOT_COMPUTED_NO_VERIFIED_HEDGE_INSTRUMENT_OR_COST",
+     "KRW_unhedged": {
+      "arithAnnualPct": 8.25,
+      "betaToSpy": 0.293,
+      "cagrPct": 7.97,
+      "calmar": 0.396,
+      "compoundingTermPct": -0.28,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -20.144,
+      "maxDrawdownTrough": "2010-01-08",
+      "months": 221,
+      "sharpeOverBil": 0.673,
+      "start": "2008-05-30",
+      "volPct": 10.732,
+      "worstMonthPct": -9.551
+     },
+     "KRW_unhedged_sameDayFxSensitivity": {
+      "cagrPct": 7.889,
+      "maxDrawdownPct": -19.778
+     },
+     "USD": {
+      "arithAnnualPct": 6.452,
+      "betaToSpy": 0.222,
+      "cagrPct": 6.376,
+      "calmar": 0.362,
+      "compoundingTermPct": -0.076,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -17.603,
+      "maxDrawdownTrough": "2022-10-20",
+      "months": 221,
+      "sharpeOverBil": 0.725,
+      "start": "2008-05-30",
+      "volPct": 7.161,
+      "worstMonthPct": -7.208
+     },
+     "USD_cost2x": {
+      "arithAnnualPct": 6.407,
+      "betaToSpy": 0.222,
+      "cagrPct": 6.328,
+      "calmar": 0.358,
+      "compoundingTermPct": -0.079,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -17.681,
+      "maxDrawdownTrough": "2022-10-20",
+      "months": 221,
+      "sharpeOverBil": 0.719,
+      "start": "2008-05-30",
+      "volPct": 7.162,
+      "worstMonthPct": -7.215
+     },
+     "averageEquityWeight": 0.221495,
+     "averageTargetWeights": {
+      "GLD": 0.223093,
+      "IEF": 0.555413,
+      "SPY": 0.221495
+     },
+     "averageWeightTwin": {
+      "USD": {
+       "cagrPct": 6.337,
+       "maxDrawdownPct": -17.386,
+       "sharpeOverBil": 0.706,
+       "volPct": 7.302
+      },
+      "arithGapPct": 0.026,
+      "cagrGapPct": 0.039,
+      "compoundingGapPct": 0.013,
+      "strategyMinusTwin": {
+       "ci95AnnualPct": [
+        -0.67,
+        0.502
+       ],
+       "intervalContainsZero": true,
+       "meanAnnualDiffPct": 0.026,
+       "months": 221
+      }
+     },
+     "costTotalPctOfInitial": 1.417737,
+     "decompositionVsS4": {
+      "arithGapPct": -1.695,
+      "cagrGapPct": -1.691,
+      "compoundingGapPct": 0.003
+     },
+     "fxContributionCagrPct": 1.594,
+     "turnoverTwoWayPerYear": 0.393528,
+     "vsS4": {
+      "ci95AnnualPct": [
+       -4.288,
+       -0.151
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -1.695,
+      "months": 221
+     },
+     "vsSPY": {
+      "ci95AnnualPct": [
+       -12.308,
+       -2.016
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -5.849,
+      "months": 221
+     }
+    },
+    "S7_VOLTARGET_SPY": {
+     "KRW_hedged": "NOT_COMPUTED_NO_VERIFIED_HEDGE_INSTRUMENT_OR_COST",
+     "KRW_unhedged": {
+      "arithAnnualPct": 11.792,
+      "betaToSpy": 0.822,
+      "cagrPct": 11.586,
+      "calmar": 0.397,
+      "compoundingTermPct": -0.206,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -29.219,
+      "maxDrawdownTrough": "2020-03-23",
+      "months": 221,
+      "sharpeOverBil": 0.685,
+      "start": "2008-05-30",
+      "volPct": 12.557,
+      "worstMonthPct": -8.939
+     },
+     "KRW_unhedged_sameDayFxSensitivity": {
+      "cagrPct": 11.502,
+      "maxDrawdownPct": -27.662
+     },
+     "USD": {
+      "arithAnnualPct": 10.253,
+      "betaToSpy": 0.727,
+      "cagrPct": 9.938,
+      "calmar": 0.312,
+      "compoundingTermPct": -0.314,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -31.877,
+      "maxDrawdownTrough": "2020-03-23",
+      "months": 221,
+      "sharpeOverBil": 0.738,
+      "start": "2008-05-30",
+      "volPct": 12.16,
+      "worstMonthPct": -11.244
+     },
+     "USD_cost2x": {
+      "arithAnnualPct": 10.11,
+      "betaToSpy": 0.727,
+      "cagrPct": 9.782,
+      "calmar": 0.307,
+      "compoundingTermPct": -0.328,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -31.888,
+      "maxDrawdownTrough": "2020-03-23",
+      "months": 221,
+      "sharpeOverBil": 0.726,
+      "start": "2008-05-30",
+      "volPct": 12.164,
+      "worstMonthPct": -11.259
+     },
+     "averageEquityWeight": 0.878995,
+     "averageTargetWeights": {
+      "BIL": 0.121005,
+      "SPY": 0.878995
+     },
+     "averageWeightTwin": {
+      "USD": {
+       "cagrPct": 10.526,
+       "maxDrawdownPct": -45.853,
+       "sharpeOverBil": 0.707,
+       "volPct": 13.722
+      },
+      "arithGapPct": -0.742,
+      "cagrGapPct": -0.588,
+      "compoundingGapPct": 0.155,
+      "strategyMinusTwin": {
+       "ci95AnnualPct": [
+        -4.085,
+        0.862
+       ],
+       "intervalContainsZero": true,
+       "meanAnnualDiffPct": -0.742,
+       "months": 221
+      }
+     },
+     "costTotalPctOfInitial": 5.504066,
+     "decompositionVsS4": {
+      "arithGapPct": 2.106,
+      "cagrGapPct": 1.871,
+      "compoundingGapPct": -0.235
+     },
+     "fxContributionCagrPct": 1.648,
+     "turnoverTwoWayPerYear": 1.242796,
+     "vsS4": {
+      "ci95AnnualPct": [
+       -1.634,
+       5.539
+      ],
+      "intervalContainsZero": true,
+      "meanAnnualDiffPct": 2.106,
+      "months": 221
+     },
+     "vsSPY": {
+      "ci95AnnualPct": [
+       -5.86,
+       -0.373
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -2.048,
+      "months": 221
+     }
+    }
+   },
+   "usdkrw": {
+    "conversion": "first DEXKOUS print dated after each US session (no look-ahead)",
+    "endRate": 1344.51,
+    "fxCagrPct": 1.498695,
+    "startRate": 1022.3
+   },
+   "window": "extended"
+  },
+  "primary": {
+   "assets": {
+    "BIL": {
+     "KRW": {
+      "arithAnnualPct": 3.636,
+      "betaToSpy": 0.122,
+      "cagrPct": 3.295,
+      "calmar": 0.224,
+      "compoundingTermPct": -0.341,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -14.714,
+      "maxDrawdownTrough": "2020-12-31",
+      "months": 130,
+      "sharpeOverBil": null,
+      "start": "2015-12-31",
+      "volPct": 8.864,
+      "worstMonthPct": -7.979
+     },
+     "USD": {
+      "arithAnnualPct": 2.129,
+      "betaToSpy": -0.0,
+      "cagrPct": 2.149,
+      "calmar": 10.306,
+      "compoundingTermPct": 0.02,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -0.209,
+      "maxDrawdownTrough": "2022-02-14",
+      "months": 130,
+      "sharpeOverBil": null,
+      "start": "2015-12-31",
+      "volPct": 0.564,
+      "worstMonthPct": -0.1
+     }
+    },
+    "GLD": {
+     "KRW": {
+      "arithAnnualPct": 13.776,
+      "betaToSpy": 0.02,
+      "cagrPct": 13.384,
+      "calmar": 0.39,
+      "compoundingTermPct": -0.391,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -34.288,
+      "maxDrawdownTrough": "2026-10-30",
+      "months": 130,
+      "sharpeOverBil": 0.639,
+      "start": "2015-12-31",
+      "volPct": 15.367,
+      "worstMonthPct": -9.413
+     },
+     "USD": {
+      "arithAnnualPct": 12.729,
+      "betaToSpy": 0.122,
+      "cagrPct": 12.126,
+      "calmar": 0.429,
+      "compoundingTermPct": -0.603,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -28.256,
+      "maxDrawdownTrough": "2026-10-30",
+      "months": 130,
+      "sharpeOverBil": 0.672,
+      "start": "2015-12-31",
+      "volPct": 15.846,
+      "worstMonthPct": -11.685
+     }
+    },
+    "IEF": {
+     "KRW": {
+      "arithAnnualPct": 2.499,
+      "betaToSpy": 0.105,
+      "cagrPct": 2.097,
+      "calmar": 0.113,
+      "compoundingTermPct": -0.403,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -18.538,
+      "maxDrawdownTrough": "2018-05-09",
+      "months": 130,
+      "sharpeOverBil": -0.172,
+      "start": "2015-12-31",
+      "volPct": 9.22,
+      "worstMonthPct": -9.026
+     },
+     "USD": {
+      "arithAnnualPct": 1.174,
+      "betaToSpy": 0.066,
+      "cagrPct": 0.964,
+      "calmar": 0.04,
+      "compoundingTermPct": -0.21,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -23.923,
+      "maxDrawdownTrough": "2023-10-19",
+      "months": 130,
+      "sharpeOverBil": -0.146,
+      "start": "2015-12-31",
+      "volPct": 6.576,
+      "worstMonthPct": -4.734
+     }
+    },
+    "QQQ": {
+     "KRW": {
+      "arithAnnualPct": 20.55,
+      "betaToSpy": 1.158,
+      "cagrPct": 20.694,
+      "calmar": 0.671,
+      "compoundingTermPct": 0.144,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -30.848,
+      "maxDrawdownTrough": "2022-12-28",
+      "months": 130,
+      "sharpeOverBil": 0.898,
+      "start": "2015-12-31",
+      "volPct": 17.98,
+      "worstMonthPct": -13.81
+     },
+     "USD": {
+      "arithAnnualPct": 19.567,
+      "betaToSpy": 1.141,
+      "cagrPct": 19.355,
+      "calmar": 0.551,
+      "compoundingTermPct": -0.212,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -35.122,
+      "maxDrawdownTrough": "2022-11-03",
+      "months": 130,
+      "sharpeOverBil": 0.926,
+      "start": "2015-12-31",
+      "volPct": 18.823,
+      "worstMonthPct": -13.596
+     }
+    },
+    "SHY": {
+     "KRW": {
+      "arithAnnualPct": 3.137,
+      "betaToSpy": 0.11,
+      "cagrPct": 2.815,
+      "calmar": 0.188,
+      "compoundingTermPct": -0.323,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -15.009,
+      "maxDrawdownTrough": "2018-04-02",
+      "months": 130,
+      "sharpeOverBil": -0.325,
+      "start": "2015-12-31",
+      "volPct": 8.481,
+      "worstMonthPct": -7.631
+     },
+     "USD": {
+      "arithAnnualPct": 1.674,
+      "betaToSpy": 0.009,
+      "cagrPct": 1.674,
+      "calmar": 0.293,
+      "compoundingTermPct": 0.0,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -5.707,
+      "maxDrawdownTrough": "2022-10-20",
+      "months": 130,
+      "sharpeOverBil": -0.3,
+      "start": "2015-12-31",
+      "volPct": 1.612,
+      "worstMonthPct": -1.402
+     }
+    },
+    "SPY": {
+     "KRW": {
+      "arithAnnualPct": 15.991,
+      "betaToSpy": 1.0,
+      "cagrPct": 16.112,
+      "calmar": 0.518,
+      "compoundingTermPct": 0.122,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -31.113,
+      "maxDrawdownTrough": "2020-03-23",
+      "months": 130,
+      "sharpeOverBil": 0.822,
+      "start": "2015-12-31",
+      "volPct": 13.949,
+      "worstMonthPct": -9.615
+     },
+     "USD": {
+      "arithAnnualPct": 15.01,
+      "betaToSpy": 1.0,
+      "cagrPct": 14.824,
+      "calmar": 0.44,
+      "compoundingTermPct": -0.186,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -33.7,
+      "maxDrawdownTrough": "2020-03-23",
+      "months": 130,
+      "sharpeOverBil": 0.861,
+      "start": "2015-12-31",
+      "volPct": 14.945,
+      "worstMonthPct": -12.464
+     }
+    },
+    "TLT": {
+     "KRW": {
+      "arithAnnualPct": 1.255,
+      "betaToSpy": 0.124,
+      "cagrPct": 0.272,
+      "calmar": 0.006,
+      "compoundingTermPct": -0.982,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -43.039,
+      "maxDrawdownTrough": "2023-10-19",
+      "months": 130,
+      "sharpeOverBil": -0.175,
+      "start": "2015-12-31",
+      "volPct": 14.13,
+      "worstMonthPct": -11.87
+     },
+     "USD": {
+      "arithAnnualPct": 0.06,
+      "betaToSpy": 0.141,
+      "cagrPct": -0.84,
+      "calmar": -0.017,
+      "compoundingTermPct": -0.9,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -48.35,
+      "maxDrawdownTrough": "2023-10-19",
+      "months": 130,
+      "sharpeOverBil": -0.153,
+      "start": "2015-12-31",
+      "volPct": 13.52,
+      "worstMonthPct": -9.424
+     }
+    },
+    "UUP": {
+     "KRW": {
+      "arithAnnualPct": 4.872,
+      "betaToSpy": 0.126,
+      "cagrPct": 3.963,
+      "calmar": 0.151,
+      "compoundingTermPct": -0.909,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -26.243,
+      "maxDrawdownTrough": "2021-01-06",
+      "months": 130,
+      "sharpeOverBil": 0.189,
+      "start": "2015-12-31",
+      "volPct": 14.059,
+      "worstMonthPct": -12.606
+     },
+     "USD": {
+      "arithAnnualPct": 2.984,
+      "betaToSpy": -0.167,
+      "cagrPct": 2.809,
+      "calmar": 0.197,
+      "compoundingTermPct": -0.174,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -14.24,
+      "maxDrawdownTrough": "2021-01-06",
+      "months": 130,
+      "sharpeOverBil": 0.131,
+      "start": "2015-12-31",
+      "volPct": 6.514,
+      "worstMonthPct": -4.729
+     }
+    }
+   },
+   "calendarYearsUSD": {
+    "2015": {
+     "ASSET_BIL": 0.0,
+     "ASSET_GLD": 0.0,
+     "ASSET_IEF": 0.0,
+     "ASSET_QQQ": 0.0,
+     "ASSET_SPY": 0.0,
+     "ASSET_TLT": 0.0,
+     "ASSET_UUP": 0.0,
+     "D1_TREND_SIGN": 0.0,
+     "D2_ERC_COV": 0.0,
+     "D3_STATE_RULES": 0.0,
+     "D4_RIDGE_SIGN": 0.0,
+     "D5_TREE_SIGN": 0.0,
+     "D6_FORECAST_VOL_SLEEVE": 0.0,
+     "S1_SPY": 0.0,
+     "S2_QQQ": 0.0,
+     "S3_6040": 0.0,
+     "S4_BALANCED": 0.0,
+     "S5_EQUAL4": 0.0,
+     "S6_RISK_BUDGET_IV": 0.0,
+     "S7_VOLTARGET_SPY": 0.0
+    },
+    "2016": {
+     "ASSET_BIL": -0.012452,
+     "ASSET_GLD": 6.424823,
+     "ASSET_IEF": 0.475317,
+     "ASSET_QQQ": 9.301098,
+     "ASSET_SPY": 13.475723,
+     "ASSET_TLT": 0.353695,
+     "ASSET_UUP": 2.894375,
+     "D1_TREND_SIGN": 2.21251,
+     "D2_ERC_COV": 6.570361,
+     "D3_STATE_RULES": 5.195029,
+     "D4_RIDGE_SIGN": 0.892935,
+     "D5_TREE_SIGN": 3.163681,
+     "D6_FORECAST_VOL_SLEEVE": 7.215825,
+     "S1_SPY": 13.475723,
+     "S2_QQQ": 9.301098,
+     "S3_6040": 8.280338,
+     "S4_BALANCED": 7.680573,
+     "S5_EQUAL4": 5.392405,
+     "S6_RISK_BUDGET_IV": 5.272608,
+     "S7_VOLTARGET_SPY": 11.524649
+    },
+    "2017": {
+     "ASSET_BIL": 0.689063,
+     "ASSET_GLD": 12.809051,
+     "ASSET_IEF": 2.553835,
+     "ASSET_QQQ": 32.663286,
+     "ASSET_SPY": 21.700272,
+     "ASSET_TLT": 9.183099,
+     "ASSET_UUP": -9.097957,
+     "D1_TREND_SIGN": 10.609692,
+     "D2_ERC_COV": 11.475449,
+     "D3_STATE_RULES": 12.685816,
+     "D4_RIDGE_SIGN": 5.686575,
+     "D5_TREE_SIGN": 12.640398,
+     "D6_FORECAST_VOL_SLEEVE": 12.685816,
+     "S1_SPY": 21.700272,
+     "S2_QQQ": 32.663286,
+     "S3_6040": 13.723605,
+     "S4_BALANCED": 12.685816,
+     "S5_EQUAL4": 9.238278,
+     "S6_RISK_BUDGET_IV": 9.780336,
+     "S7_VOLTARGET_SPY": 21.700272
+    },
+    "2018": {
+     "ASSET_BIL": 1.737291,
+     "ASSET_GLD": -1.940964,
+     "ASSET_IEF": 0.989208,
+     "ASSET_QQQ": -0.115808,
+     "ASSET_SPY": -4.556877,
+     "ASSET_TLT": -1.606973,
+     "ASSET_UUP": 7.053349,
+     "D1_TREND_SIGN": -2.608714,
+     "D2_ERC_COV": -0.969262,
+     "D3_STATE_RULES": -1.593334,
+     "D4_RIDGE_SIGN": -0.751174,
+     "D5_TREE_SIGN": 2.732417,
+     "D6_FORECAST_VOL_SLEEVE": -1.593334,
+     "S1_SPY": -4.556877,
+     "S2_QQQ": -0.115808,
+     "S3_6040": -1.971401,
+     "S4_BALANCED": -1.593334,
+     "S5_EQUAL4": -0.595385,
+     "S6_RISK_BUDGET_IV": 0.178372,
+     "S7_VOLTARGET_SPY": -4.367123
+    },
+    "2019": {
+     "ASSET_BIL": 2.031775,
+     "ASSET_GLD": 17.855665,
+     "ASSET_IEF": 8.030018,
+     "ASSET_QQQ": 38.960034,
+     "ASSET_SPY": 31.222021,
+     "ASSET_TLT": 14.121528,
+     "ASSET_UUP": 4.087189,
+     "D1_TREND_SIGN": 12.267708,
+     "D2_ERC_COV": 15.841206,
+     "D3_STATE_RULES": 16.443696,
+     "D4_RIDGE_SIGN": 13.509026,
+     "D5_TREE_SIGN": 17.984051,
+     "D6_FORECAST_VOL_SLEEVE": 18.882843,
+     "S1_SPY": 31.222021,
+     "S2_QQQ": 38.960034,
+     "S3_6040": 21.802272,
+     "S4_BALANCED": 19.84354,
+     "S5_EQUAL4": 14.630774,
+     "S6_RISK_BUDGET_IV": 14.114559,
+     "S7_VOLTARGET_SPY": 25.009231
+    },
+    "2020": {
+     "ASSET_BIL": 0.398549,
+     "ASSET_GLD": 24.814561,
+     "ASSET_IEF": 10.00653,
+     "ASSET_QQQ": 48.403338,
+     "ASSET_SPY": 18.373267,
+     "ASSET_TLT": 18.151496,
+     "ASSET_UUP": -6.661531,
+     "D1_TREND_SIGN": 3.74595,
+     "D2_ERC_COV": 11.551621,
+     "D3_STATE_RULES": 9.650251,
+     "D4_RIDGE_SIGN": 5.931018,
+     "D5_TREE_SIGN": 13.58535,
+     "D6_FORECAST_VOL_SLEEVE": 13.117581,
+     "S1_SPY": 18.373267,
+     "S2_QQQ": 48.403338,
+     "S3_6040": 16.619438,
+     "S4_BALANCED": 16.13164,
+     "S5_EQUAL4": 14.255566,
+     "S6_RISK_BUDGET_IV": 13.090066,
+     "S7_VOLTARGET_SPY": -5.385346
+    },
+    "2021": {
+     "ASSET_BIL": -0.098335,
+     "ASSET_GLD": -4.148909,
+     "ASSET_IEF": -3.329115,
+     "ASSET_QQQ": 27.420447,
+     "ASSET_SPY": 28.744169,
+     "ASSET_TLT": -4.602025,
+     "ASSET_UUP": 5.734321,
+     "D1_TREND_SIGN": 11.016903,
+     "D2_ERC_COV": 4.127042,
+     "D3_STATE_RULES": 11.350054,
+     "D4_RIDGE_SIGN": 12.771712,
+     "D5_TREE_SIGN": 13.035504,
+     "D6_FORECAST_VOL_SLEEVE": 12.164243,
+     "S1_SPY": 28.744169,
+     "S2_QQQ": 27.420447,
+     "S3_6040": 15.056225,
+     "S4_BALANCED": 12.164243,
+     "S5_EQUAL4": 4.831075,
+     "S6_RISK_BUDGET_IV": 1.49603,
+     "S7_VOLTARGET_SPY": 28.789682
+    },
+    "2022": {
+     "ASSET_BIL": 1.404433,
+     "ASSET_GLD": -0.772115,
+     "ASSET_IEF": -15.158888,
+     "ASSET_QQQ": -32.578602,
+     "ASSET_SPY": -18.171827,
+     "ASSET_TLT": -31.244891,
+     "ASSET_UUP": 9.460447,
+     "D1_TREND_SIGN": -6.413856,
+     "D2_ERC_COV": -12.100125,
+     "D3_STATE_RULES": -11.021254,
+     "D4_RIDGE_SIGN": -8.693305,
+     "D5_TREE_SIGN": -10.968345,
+     "D6_FORECAST_VOL_SLEEVE": -14.201284,
+     "S1_SPY": -18.171827,
+     "S2_QQQ": -32.578602,
+     "S3_6040": -16.61346,
+     "S4_BALANCED": -13.353159,
+     "S5_EQUAL4": -8.072343,
+     "S6_RISK_BUDGET_IV": -11.912571,
+     "S7_VOLTARGET_SPY": -13.339866
+    },
+    "2023": {
+     "ASSET_BIL": 4.943808,
+     "ASSET_GLD": 12.691582,
+     "ASSET_IEF": 3.643978,
+     "ASSET_QQQ": 54.852707,
+     "ASSET_SPY": 26.189314,
+     "ASSET_TLT": 2.767794,
+     "ASSET_UUP": 3.631913,
+     "D1_TREND_SIGN": 6.963407,
+     "D2_ERC_COV": 12.900552,
+     "D3_STATE_RULES": 7.653398,
+     "D4_RIDGE_SIGN": 9.589392,
+     "D5_TREE_SIGN": 7.656976,
+     "D6_FORECAST_VOL_SLEEVE": 13.69644,
+     "S1_SPY": 26.189314,
+     "S2_QQQ": 54.852707,
+     "S3_6040": 16.787348,
+     "S4_BALANCED": 15.732642,
+     "S5_EQUAL4": 11.857904,
+     "S6_RISK_BUDGET_IV": 11.581671,
+     "S7_VOLTARGET_SPY": 23.396431
+    },
+    "2024": {
+     "ASSET_BIL": 5.191526,
+     "ASSET_GLD": 26.656906,
+     "ASSET_IEF": -0.634951,
+     "ASSET_QQQ": 25.576568,
+     "ASSET_SPY": 24.885362,
+     "ASSET_TLT": -8.058366,
+     "ASSET_UUP": 13.484109,
+     "D1_TREND_SIGN": 15.84726,
+     "D2_ERC_COV": 13.866461,
+     "D3_STATE_RULES": 14.347492,
+     "D4_RIDGE_SIGN": 13.405187,
+     "D5_TREE_SIGN": 16.620457,
+     "D6_FORECAST_VOL_SLEEVE": 14.363251,
+     "S1_SPY": 24.885362,
+     "S2_QQQ": 25.576568,
+     "S3_6040": 14.161954,
+     "S4_BALANCED": 15.060252,
+     "S5_EQUAL4": 13.706803,
+     "S6_RISK_BUDGET_IV": 13.844371,
+     "S7_VOLTARGET_SPY": 24.854607
+    },
+    "2025": {
+     "ASSET_BIL": 4.146159,
+     "ASSET_GLD": 63.676533,
+     "ASSET_IEF": 8.031386,
+     "ASSET_QQQ": 20.765749,
+     "ASSET_SPY": 17.715039,
+     "ASSET_TLT": 4.247715,
+     "ASSET_UUP": -4.972806,
+     "D1_TREND_SIGN": 15.670037,
+     "D2_ERC_COV": 22.753362,
+     "D3_STATE_RULES": 17.391193,
+     "D4_RIDGE_SIGN": 13.451405,
+     "D5_TREE_SIGN": 13.293157,
+     "D6_FORECAST_VOL_SLEEVE": 15.136324,
+     "S1_SPY": 17.715039,
+     "S2_QQQ": 20.765749,
+     "S3_6040": 13.899127,
+     "S4_BALANCED": 17.391193,
+     "S5_EQUAL4": 21.70666,
+     "S6_RISK_BUDGET_IV": 19.566859,
+     "S7_VOLTARGET_SPY": 11.29782
+    },
+    "2026": {
+     "ASSET_BIL": 3.020652,
+     "ASSET_GLD": -10.226842,
+     "ASSET_IEF": -1.679036,
+     "ASSET_QQQ": 12.779122,
+     "ASSET_SPY": 11.689096,
+     "ASSET_TLT": -2.823773,
+     "ASSET_UUP": 7.288196,
+     "D1_TREND_SIGN": 5.547999,
+     "D2_ERC_COV": 1.720406,
+     "D3_STATE_RULES": 4.962977,
+     "D4_RIDGE_SIGN": 1.098665,
+     "D5_TREE_SIGN": 5.490945,
+     "D6_FORECAST_VOL_SLEEVE": 3.149151,
+     "S1_SPY": 11.689096,
+     "S2_QQQ": 12.779122,
+     "S3_6040": 6.34268,
+     "S4_BALANCED": 4.790932,
+     "S5_EQUAL4": 1.060573,
+     "S6_RISK_BUDGET_IV": 1.251177,
+     "S7_VOLTARGET_SPY": 11.633077
+    }
+   },
+   "decisions": 131,
+   "end": "2026-10-30",
+   "firstDecision": "2015-12-31",
+   "firstExecution": "2016-01-04",
+   "regimeSplits": {
+    "labelTiming": {
+     "risingTenYearConcurrent": "CONCURRENT",
+     "spyDownMonthConcurrent": "CONCURRENT",
+     "spyDrawdown10ExAnte": "EX_ANTE",
+     "uupUpMonthConcurrent": "CONCURRENT"
+    },
+    "risingTenYearConcurrent=False": {
+     "meanMonthlyPct": {
+      "D1_TREND_SIGN": 0.825215,
+      "D2_ERC_COV": 1.785227,
+      "D3_STATE_RULES": 1.250461,
+      "D4_RIDGE_SIGN": 0.822298,
+      "D5_TREE_SIGN": 1.10396,
+      "D6_FORECAST_VOL_SLEEVE": 1.474275,
+      "S1_SPY": 1.733294,
+      "S2_QQQ": 2.285166,
+      "S3_6040": 1.653964,
+      "S4_BALANCED": 1.592107,
+      "S5_EQUAL4": 1.476461,
+      "S6_RISK_BUDGET_IV": 1.788461,
+      "S7_VOLTARGET_SPY": 1.220458
+     },
+     "months": 64,
+     "shareBeatingS4": {
+      "D1_TREND_SIGN": 0.0625,
+      "D2_ERC_COV": 0.53125,
+      "D3_STATE_RULES": 0.109375,
+      "D4_RIDGE_SIGN": 0.171875,
+      "D5_TREE_SIGN": 0.203125,
+      "D6_FORECAST_VOL_SLEEVE": 0.375,
+      "S1_SPY": 0.625,
+      "S2_QQQ": 0.609375,
+      "S3_6040": 0.546875,
+      "S5_EQUAL4": 0.453125,
+      "S6_RISK_BUDGET_IV": 0.53125,
+      "S7_VOLTARGET_SPY": 0.5
+     }
+    },
+    "risingTenYearConcurrent=True": {
+     "meanMonthlyPct": {
+      "D1_TREND_SIGN": 0.299145,
+      "D2_ERC_COV": -0.466104,
+      "D3_STATE_RULES": 0.053635,
+      "D4_RIDGE_SIGN": 0.18748,
+      "D5_TREE_SIGN": 0.307386,
+      "D6_FORECAST_VOL_SLEEVE": -0.065984,
+      "S1_SPY": 0.782983,
+      "S2_QQQ": 0.995819,
+      "S3_6040": -0.040802,
+      "S4_BALANCED": -0.005522,
+      "S5_EQUAL4": -0.157731,
+      "S6_RISK_BUDGET_IV": -0.59917,
+      "S7_VOLTARGET_SPY": 0.751963
+     },
+     "months": 66,
+     "shareBeatingS4": {
+      "D1_TREND_SIGN": 0.590909,
+      "D2_ERC_COV": 0.242424,
+      "D3_STATE_RULES": 0.530303,
+      "D4_RIDGE_SIGN": 0.621212,
+      "D5_TREE_SIGN": 0.621212,
+      "D6_FORECAST_VOL_SLEEVE": 0.409091,
+      "S1_SPY": 0.69697,
+      "S2_QQQ": 0.636364,
+      "S3_6040": 0.515152,
+      "S5_EQUAL4": 0.393939,
+      "S6_RISK_BUDGET_IV": 0.257576,
+      "S7_VOLTARGET_SPY": 0.712121
+     }
+    },
+    "spyDownMonthConcurrent=False": {
+     "meanMonthlyPct": {
+      "D1_TREND_SIGN": 1.3834,
+      "D2_ERC_COV": 1.346483,
+      "D3_STATE_RULES": 1.636014,
+      "D4_RIDGE_SIGN": 1.282431,
+      "D5_TREE_SIGN": 1.567258,
+      "D6_FORECAST_VOL_SLEEVE": 1.75572,
+      "S1_SPY": 3.405571,
+      "S2_QQQ": 4.0555,
+      "S3_6040": 2.151891,
+      "S4_BALANCED": 1.943155,
+      "S5_EQUAL4": 1.315721,
+      "S6_RISK_BUDGET_IV": 1.154318,
+      "S7_VOLTARGET_SPY": 2.810575
+     },
+     "months": 91,
+     "shareBeatingS4": {
+      "D1_TREND_SIGN": 0.274725,
+      "D2_ERC_COV": 0.241758,
+      "D3_STATE_RULES": 0.252747,
+      "D4_RIDGE_SIGN": 0.307692,
+      "D5_TREE_SIGN": 0.318681,
+      "D6_FORECAST_VOL_SLEEVE": 0.307692,
+      "S1_SPY": 0.89011,
+      "S2_QQQ": 0.769231,
+      "S3_6040": 0.681319,
+      "S5_EQUAL4": 0.230769,
+      "S6_RISK_BUDGET_IV": 0.21978,
+      "S7_VOLTARGET_SPY": 0.791209
+     }
+    },
+    "spyDownMonthConcurrent=True": {
+     "meanMonthlyPct": {
+      "D1_TREND_SIGN": -1.367488,
+      "D2_ERC_COV": -1.000983,
+      "D3_STATE_RULES": -1.67456,
+      "D4_RIDGE_SIGN": -1.325653,
+      "D5_TREE_SIGN": -1.325117,
+      "D6_FORECAST_VOL_SLEEVE": -1.789022,
+      "S1_SPY": -3.776904,
+      "S2_QQQ": -4.027585,
+      "S3_6040": -2.37593,
+      "S4_BALANCED": -1.930685,
+      "S5_EQUAL4": -0.914035,
+      "S6_RISK_BUDGET_IV": -0.772477,
+      "S7_VOLTARGET_SPY": -3.282654
+     },
+     "months": 39,
+     "shareBeatingS4": {
+      "D1_TREND_SIGN": 0.461538,
+      "D2_ERC_COV": 0.717949,
+      "D3_STATE_RULES": 0.487179,
+      "D4_RIDGE_SIGN": 0.615385,
+      "D5_TREE_SIGN": 0.641026,
+      "D6_FORECAST_VOL_SLEEVE": 0.589744,
+      "S1_SPY": 0.128205,
+      "S2_QQQ": 0.282051,
+      "S3_6040": 0.179487,
+      "S5_EQUAL4": 0.871795,
+      "S6_RISK_BUDGET_IV": 0.794872,
+      "S7_VOLTARGET_SPY": 0.179487
+     }
+    },
+    "spyDrawdown10ExAnte=False": {
+     "meanMonthlyPct": {
+      "D1_TREND_SIGN": 0.648244,
+      "D2_ERC_COV": 0.618974,
+      "D3_STATE_RULES": 0.675613,
+      "D4_RIDGE_SIGN": 0.50768,
+      "D5_TREE_SIGN": 0.686668,
+      "D6_FORECAST_VOL_SLEEVE": 0.667923,
+      "S1_SPY": 1.158973,
+      "S2_QQQ": 1.409622,
+      "S3_6040": 0.718834,
+      "S4_BALANCED": 0.722138,
+      "S5_EQUAL4": 0.61673,
+      "S6_RISK_BUDGET_IV": 0.545572,
+      "S7_VOLTARGET_SPY": 1.002677
+     },
+     "months": 111,
+     "shareBeatingS4": {
+      "D1_TREND_SIGN": 0.324324,
+      "D2_ERC_COV": 0.387387,
+      "D3_STATE_RULES": 0.324324,
+      "D4_RIDGE_SIGN": 0.405405,
+      "D5_TREE_SIGN": 0.414414,
+      "D6_FORECAST_VOL_SLEEVE": 0.387387,
+      "S1_SPY": 0.657658,
+      "S2_QQQ": 0.621622,
+      "S3_6040": 0.522523,
+      "S5_EQUAL4": 0.432432,
+      "S6_RISK_BUDGET_IV": 0.396396,
+      "S7_VOLTARGET_SPY": 0.621622
+     }
+    },
+    "spyDrawdown10ExAnte=True": {
+     "meanMonthlyPct": {
+      "D1_TREND_SIGN": 0.031696,
+      "D2_ERC_COV": 0.778186,
+      "D3_STATE_RULES": 0.451388,
+      "D4_RIDGE_SIGN": 0.455169,
+      "D5_TREE_SIGN": 0.77478,
+      "D6_FORECAST_VOL_SLEEVE": 0.834692,
+      "S1_SPY": 1.787461,
+      "S2_QQQ": 2.921404,
+      "S3_6040": 1.230009,
+      "S4_BALANCED": 1.124903,
+      "S5_EQUAL4": 0.822436,
+      "S6_RISK_BUDGET_IV": 0.755671,
+      "S7_VOLTARGET_SPY": 0.865351
+     },
+     "months": 19,
+     "shareBeatingS4": {
+      "D1_TREND_SIGN": 0.368421,
+      "D2_ERC_COV": 0.368421,
+      "D3_STATE_RULES": 0.315789,
+      "D4_RIDGE_SIGN": 0.368421,
+      "D5_TREE_SIGN": 0.421053,
+      "D6_FORECAST_VOL_SLEEVE": 0.421053,
+      "S1_SPY": 0.684211,
+      "S2_QQQ": 0.631579,
+      "S3_6040": 0.578947,
+      "S5_EQUAL4": 0.368421,
+      "S6_RISK_BUDGET_IV": 0.368421,
+      "S7_VOLTARGET_SPY": 0.526316
+     }
+    },
+    "uupUpMonthConcurrent=False": {
+     "meanMonthlyPct": {
+      "D1_TREND_SIGN": 1.220536,
+      "D2_ERC_COV": 1.847379,
+      "D3_STATE_RULES": 1.625628,
+      "D4_RIDGE_SIGN": 1.318876,
+      "D5_TREE_SIGN": 1.601309,
+      "D6_FORECAST_VOL_SLEEVE": 1.808152,
+      "S1_SPY": 2.864659,
+      "S2_QQQ": 3.237155,
+      "S3_6040": 2.014539,
+      "S4_BALANCED": 2.00291,
+      "S5_EQUAL4": 1.771888,
+      "S6_RISK_BUDGET_IV": 1.711222,
+      "S7_VOLTARGET_SPY": 2.261336
+     },
+     "months": 60,
+     "shareBeatingS4": {
+      "D1_TREND_SIGN": 0.166667,
+      "D2_ERC_COV": 0.416667,
+      "D3_STATE_RULES": 0.25,
+      "D4_RIDGE_SIGN": 0.233333,
+      "D5_TREE_SIGN": 0.25,
+      "D6_FORECAST_VOL_SLEEVE": 0.35,
+      "S1_SPY": 0.716667,
+      "S2_QQQ": 0.65,
+      "S3_6040": 0.516667,
+      "S5_EQUAL4": 0.416667,
+      "S6_RISK_BUDGET_IV": 0.4,
+      "S7_VOLTARGET_SPY": 0.6
+     }
+    },
+    "uupUpMonthConcurrent=True": {
+     "meanMonthlyPct": {
+      "D1_TREND_SIGN": -0.009641,
+      "D2_ERC_COV": -0.39073,
+      "D3_STATE_RULES": -0.199547,
+      "D4_RIDGE_SIGN": -0.201884,
+      "D5_TREE_SIGN": -0.073394,
+      "D6_FORECAST_VOL_SLEEVE": -0.26415,
+      "S1_SPY": -0.132455,
+      "S2_QQQ": 0.253506,
+      "S3_6040": -0.253023,
+      "S4_BALANCED": -0.266345,
+      "S5_EQUAL4": -0.317571,
+      "S6_RISK_BUDGET_IV": -0.396529,
+      "S7_VOLTARGET_SPY": -0.113448
+     },
+     "months": 70,
+     "shareBeatingS4": {
+      "D1_TREND_SIGN": 0.471429,
+      "D2_ERC_COV": 0.357143,
+      "D3_STATE_RULES": 0.385714,
+      "D4_RIDGE_SIGN": 0.542857,
+      "D5_TREE_SIGN": 0.557143,
+      "D6_FORECAST_VOL_SLEEVE": 0.428571,
+      "S1_SPY": 0.614286,
+      "S2_QQQ": 0.6,
+      "S3_6040": 0.542857,
+      "S5_EQUAL4": 0.428571,
+      "S6_RISK_BUDGET_IV": 0.385714,
+      "S7_VOLTARGET_SPY": 0.614286
+     }
+    }
+   },
+   "strategies": {
+    "D1_TREND_SIGN": {
+     "KRW_hedged": "NOT_COMPUTED_NO_VERIFIED_HEDGE_INSTRUMENT_OR_COST",
+     "KRW_unhedged": {
+      "arithAnnualPct": 8.01,
+      "betaToSpy": 0.402,
+      "cagrPct": 7.883,
+      "calmar": 0.531,
+      "compoundingTermPct": -0.127,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -14.832,
+      "maxDrawdownTrough": "2026-10-23",
+      "months": 130,
+      "sharpeOverBil": 0.675,
+      "start": "2015-12-31",
+      "volPct": 8.964,
+      "worstMonthPct": -7.979
+     },
+     "KRW_unhedged_sameDayFxSensitivity": {
+      "cagrPct": 7.992,
+      "maxDrawdownPct": -14.585
+     },
+     "USD": {
+      "arithAnnualPct": 6.698,
+      "betaToSpy": 0.331,
+      "cagrPct": 6.686,
+      "calmar": 0.414,
+      "compoundingTermPct": -0.011,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -16.137,
+      "maxDrawdownTrough": "2020-03-23",
+      "months": 130,
+      "sharpeOverBil": 0.708,
+      "start": "2015-12-31",
+      "volPct": 6.499,
+      "worstMonthPct": -5.033
+     },
+     "USD_cost2x": {
+      "arithAnnualPct": 6.453,
+      "betaToSpy": 0.331,
+      "cagrPct": 6.427,
+      "calmar": 0.398,
+      "compoundingTermPct": -0.026,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -16.14,
+      "maxDrawdownTrough": "2020-03-23",
+      "months": 130,
+      "sharpeOverBil": 0.669,
+      "start": "2015-12-31",
+      "volPct": 6.502,
+      "worstMonthPct": -5.036
+     },
+     "averageEquityWeight": 0.427481,
+     "averageTargetWeights": {
+      "BIL": 0.374809,
+      "GLD": 0.071756,
+      "IEF": 0.125954,
+      "SPY": 0.427481
+     },
+     "averageWeightTwin": {
+      "USD": {
+       "cagrPct": 8.363,
+       "maxDrawdownPct": -14.495,
+       "sharpeOverBil": 0.9,
+       "volPct": 6.858
+      },
+      "arithGapPct": -1.591,
+      "cagrGapPct": -1.677,
+      "compoundingGapPct": -0.084,
+      "strategyMinusTwin": {
+       "ci95AnnualPct": [
+        -3.647,
+        0.481
+       ],
+       "intervalContainsZero": true,
+       "meanAnnualDiffPct": -1.592,
+       "months": 130
+      }
+     },
+     "costTotalPctOfInitial": 3.509524,
+     "decompositionVsS4": {
+      "arithGapPct": -2.674,
+      "cagrGapPct": -2.713,
+      "compoundingGapPct": -0.038
+     },
+     "fxContributionCagrPct": 1.197,
+     "turnoverTwoWayPerYear": 2.126526,
+     "vsS4": {
+      "ci95AnnualPct": [
+       -5.2,
+       0.024
+      ],
+      "intervalContainsZero": true,
+      "meanAnnualDiffPct": -2.674,
+      "months": 130
+     },
+     "vsSPY": {
+      "ci95AnnualPct": [
+       -12.804,
+       -3.903
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -8.312,
+      "months": 130
+     }
+    },
+    "D2_ERC_COV": {
+     "KRW_hedged": "NOT_COMPUTED_NO_VERIFIED_HEDGE_INSTRUMENT_OR_COST",
+     "KRW_unhedged": {
+      "arithAnnualPct": 8.889,
+      "betaToSpy": 0.314,
+      "cagrPct": 8.91,
+      "calmar": 0.531,
+      "compoundingTermPct": 0.021,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -16.796,
+      "maxDrawdownTrough": "2026-10-23",
+      "months": 130,
+      "sharpeOverBil": 0.717,
+      "start": "2015-12-31",
+      "volPct": 8.09,
+      "worstMonthPct": -8.395
+     },
+     "KRW_unhedged_sameDayFxSensitivity": {
+      "cagrPct": 9.021,
+      "maxDrawdownPct": -15.621
+     },
+     "USD": {
+      "arithAnnualPct": 7.707,
+      "betaToSpy": 0.314,
+      "cagrPct": 7.702,
+      "calmar": 0.434,
+      "compoundingTermPct": -0.005,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -17.762,
+      "maxDrawdownTrough": "2022-10-20",
+      "months": 130,
+      "sharpeOverBil": 0.767,
+      "start": "2015-12-31",
+      "volPct": 7.328,
+      "worstMonthPct": -5.112
+     },
+     "USD_cost2x": {
+      "arithAnnualPct": 7.638,
+      "betaToSpy": 0.314,
+      "cagrPct": 7.628,
+      "calmar": 0.429,
+      "compoundingTermPct": -0.01,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -17.796,
+      "maxDrawdownTrough": "2022-10-20",
+      "months": 130,
+      "sharpeOverBil": 0.758,
+      "start": "2015-12-31",
+      "volPct": 7.327,
+      "worstMonthPct": -5.114
+     },
+     "averageEquityWeight": 0.278306,
+     "averageTargetWeights": {
+      "GLD": 0.23342,
+      "IEF": 0.488274,
+      "SPY": 0.278306
+     },
+     "averageWeightTwin": {
+      "USD": {
+       "cagrPct": 7.707,
+       "maxDrawdownPct": -17.509,
+       "sharpeOverBil": 0.737,
+       "volPct": 7.635
+      },
+      "arithGapPct": -0.028,
+      "cagrGapPct": -0.005,
+      "compoundingGapPct": 0.023,
+      "strategyMinusTwin": {
+       "ci95AnnualPct": [
+        -1.168,
+        0.744
+       ],
+       "intervalContainsZero": true,
+       "meanAnnualDiffPct": -0.028,
+       "months": 130
+      }
+     },
+     "costTotalPctOfInitial": 1.073583,
+     "decompositionVsS4": {
+      "arithGapPct": -1.665,
+      "cagrGapPct": -1.697,
+      "compoundingGapPct": -0.032
+     },
+     "fxContributionCagrPct": 1.208,
+     "turnoverTwoWayPerYear": 0.610981,
+     "vsS4": {
+      "ci95AnnualPct": [
+       -4.143,
+       0.279
+      ],
+      "intervalContainsZero": true,
+      "meanAnnualDiffPct": -1.665,
+      "months": 130
+     },
+     "vsSPY": {
+      "ci95AnnualPct": [
+       -13.296,
+       -2.405
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -7.303,
+      "months": 130
+     }
+    },
+    "D3_STATE_RULES": {
+     "KRW_hedged": "NOT_COMPUTED_NO_VERIFIED_HEDGE_INSTRUMENT_OR_COST",
+     "KRW_unhedged": {
+      "arithAnnualPct": 8.939,
+      "betaToSpy": 0.472,
+      "cagrPct": 8.931,
+      "calmar": 0.58,
+      "compoundingTermPct": -0.008,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -15.398,
+      "maxDrawdownTrough": "2026-10-23",
+      "months": 130,
+      "sharpeOverBil": 0.738,
+      "start": "2015-12-31",
+      "volPct": 8.449,
+      "worstMonthPct": -8.018
+     },
+     "KRW_unhedged_sameDayFxSensitivity": {
+      "cagrPct": 9.042,
+      "maxDrawdownPct": -14.204
+     },
+     "USD": {
+      "arithAnnualPct": 7.714,
+      "betaToSpy": 0.431,
+      "cagrPct": 7.723,
+      "calmar": 0.479,
+      "compoundingTermPct": 0.009,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -16.137,
+      "maxDrawdownTrough": "2020-03-23",
+      "months": 130,
+      "sharpeOverBil": 0.783,
+      "start": "2015-12-31",
+      "volPct": 7.144,
+      "worstMonthPct": -5.841
+     },
+     "USD_cost2x": {
+      "arithAnnualPct": 7.539,
+      "betaToSpy": 0.431,
+      "cagrPct": 7.535,
+      "calmar": 0.467,
+      "compoundingTermPct": -0.004,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -16.14,
+      "maxDrawdownTrough": "2020-03-23",
+      "months": 130,
+      "sharpeOverBil": 0.759,
+      "start": "2015-12-31",
+      "volPct": 7.143,
+      "worstMonthPct": -5.845
+     },
+     "averageEquityWeight": 0.46374,
+     "averageTargetWeights": {
+      "BIL": 0.124809,
+      "GLD": 0.1,
+      "IEF": 0.245038,
+      "SHY": 0.054962,
+      "SPY": 0.46374,
+      "UUP": 0.01145
+     },
+     "averageWeightTwin": {
+      "USD": {
+       "cagrPct": 8.986,
+       "maxDrawdownPct": -16.505,
+       "sharpeOverBil": 0.872,
+       "volPct": 7.816
+      },
+      "arithGapPct": -1.223,
+      "cagrGapPct": -1.263,
+      "compoundingGapPct": -0.04,
+      "strategyMinusTwin": {
+       "ci95AnnualPct": [
+        -2.555,
+        -0.015
+       ],
+       "intervalContainsZero": false,
+       "meanAnnualDiffPct": -1.223,
+       "months": 130
+      }
+     },
+     "costTotalPctOfInitial": 2.848075,
+     "decompositionVsS4": {
+      "arithGapPct": -1.658,
+      "cagrGapPct": -1.676,
+      "compoundingGapPct": -0.018
+     },
+     "fxContributionCagrPct": 1.208,
+     "ruleFiredMonths": {
+      "a_equityTrendOff": 19,
+      "b_bondsNotHedgingRatesRising": 24,
+      "c_dollarStrongInEquityDowntrend": 15
+     },
+     "turnoverTwoWayPerYear": 1.526084,
+     "vsS4": {
+      "ci95AnnualPct": [
+       -3.092,
+       -0.306
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -1.658,
+      "months": 130
+     },
+     "vsSPY": {
+      "ci95AnnualPct": [
+       -11.404,
+       -3.616
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -7.296,
+      "months": 130
+     }
+    },
+    "D4_RIDGE_SIGN": {
+     "KRW_hedged": "NOT_COMPUTED_NO_VERIFIED_HEDGE_INSTRUMENT_OR_COST",
+     "KRW_unhedged": {
+      "arithAnnualPct": 7.298,
+      "betaToSpy": 0.428,
+      "cagrPct": 7.126,
+      "calmar": 0.457,
+      "compoundingTermPct": -0.172,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -15.602,
+      "maxDrawdownTrough": "2026-10-23",
+      "months": 130,
+      "sharpeOverBil": 0.547,
+      "start": "2015-12-31",
+      "volPct": 8.912,
+      "worstMonthPct": -8.012
+     },
+     "KRW_unhedged_sameDayFxSensitivity": {
+      "cagrPct": 7.235,
+      "maxDrawdownPct": -14.41
+     },
+     "USD": {
+      "arithAnnualPct": 6.0,
+      "betaToSpy": 0.361,
+      "cagrPct": 5.938,
+      "calmar": 0.341,
+      "compoundingTermPct": -0.062,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -17.404,
+      "maxDrawdownTrough": "2020-03-23",
+      "months": 130,
+      "sharpeOverBil": 0.581,
+      "start": "2015-12-31",
+      "volPct": 6.655,
+      "worstMonthPct": -6.047
+     },
+     "USD_cost2x": {
+      "arithAnnualPct": 5.384,
+      "betaToSpy": 0.361,
+      "cagrPct": 5.288,
+      "calmar": 0.304,
+      "compoundingTermPct": -0.096,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -17.406,
+      "maxDrawdownTrough": "2020-03-23",
+      "months": 130,
+      "sharpeOverBil": 0.487,
+      "start": "2015-12-31",
+      "volPct": 6.685,
+      "worstMonthPct": -6.05
+     },
+     "averageEquityWeight": 0.335878,
+     "averageTargetWeights": {
+      "BIL": 0.494656,
+      "GLD": 0.052672,
+      "IEF": 0.116794,
+      "SPY": 0.335878
+     },
+     "averageWeightTwin": {
+      "USD": {
+       "cagrPct": 6.983,
+       "maxDrawdownPct": -11.301,
+       "sharpeOverBil": 0.886,
+       "volPct": 5.417
+      },
+      "arithGapPct": -0.912,
+      "cagrGapPct": -1.045,
+      "compoundingGapPct": -0.132,
+      "strategyMinusTwin": {
+       "ci95AnnualPct": [
+        -2.182,
+        1.239
+       ],
+       "intervalContainsZero": true,
+       "meanAnnualDiffPct": -0.912,
+       "months": 130
+      }
+     },
+     "costTotalPctOfInitial": 8.863049,
+     "decompositionVsS4": {
+      "arithGapPct": -3.372,
+      "cagrGapPct": -3.461,
+      "compoundingGapPct": -0.089
+     },
+     "fallbackDecisions": 0,
+     "firstModelDecision": "2015-12-31",
+     "fxContributionCagrPct": 1.188,
+     "turnoverTwoWayPerYear": 5.360934,
+     "vsS4": {
+      "ci95AnnualPct": [
+       -5.295,
+       -0.476
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -3.372,
+      "months": 130
+     },
+     "vsSPY": {
+      "ci95AnnualPct": [
+       -13.179,
+       -3.983
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -9.01,
+      "months": 130
+     }
+    },
+    "D5_TREE_SIGN": {
+     "KRW_hedged": "NOT_COMPUTED_NO_VERIFIED_HEDGE_INSTRUMENT_OR_COST",
+     "KRW_unhedged": {
+      "arithAnnualPct": 9.691,
+      "betaToSpy": 0.455,
+      "cagrPct": 9.702,
+      "calmar": 0.646,
+      "compoundingTermPct": 0.011,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -15.019,
+      "maxDrawdownTrough": "2026-10-23",
+      "months": 130,
+      "sharpeOverBil": 0.892,
+      "start": "2015-12-31",
+      "volPct": 8.94,
+      "worstMonthPct": -8.297
+     },
+     "KRW_unhedged_sameDayFxSensitivity": {
+      "cagrPct": 9.813,
+      "maxDrawdownPct": -13.819
+     },
+     "USD": {
+      "arithAnnualPct": 8.395,
+      "betaToSpy": 0.384,
+      "cagrPct": 8.485,
+      "calmar": 0.538,
+      "compoundingTermPct": 0.09,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -15.783,
+      "maxDrawdownTrough": "2020-03-23",
+      "months": 130,
+      "sharpeOverBil": 0.929,
+      "start": "2015-12-31",
+      "volPct": 6.738,
+      "worstMonthPct": -4.987
+     },
+     "USD_cost2x": {
+      "arithAnnualPct": 8.009,
+      "betaToSpy": 0.383,
+      "cagrPct": 8.07,
+      "calmar": 0.511,
+      "compoundingTermPct": 0.061,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -15.786,
+      "maxDrawdownTrough": "2020-03-23",
+      "months": 130,
+      "sharpeOverBil": 0.873,
+      "start": "2015-12-31",
+      "volPct": 6.734,
+      "worstMonthPct": -4.99
+     },
+     "averageEquityWeight": 0.442748,
+     "averageTargetWeights": {
+      "BIL": 0.346565,
+      "GLD": 0.070992,
+      "IEF": 0.139695,
+      "SPY": 0.442748
+     },
+     "averageWeightTwin": {
+      "USD": {
+       "cagrPct": 8.535,
+       "maxDrawdownPct": -14.943,
+       "sharpeOverBil": 0.893,
+       "volPct": 7.105
+      },
+      "arithGapPct": -0.071,
+      "cagrGapPct": -0.05,
+      "compoundingGapPct": 0.021,
+      "strategyMinusTwin": {
+       "ci95AnnualPct": [
+        -1.563,
+        1.745
+       ],
+       "intervalContainsZero": true,
+       "meanAnnualDiffPct": -0.072,
+       "months": 130
+      }
+     },
+     "costTotalPctOfInitial": 6.751309,
+     "decompositionVsS4": {
+      "arithGapPct": -0.977,
+      "cagrGapPct": -0.914,
+      "compoundingGapPct": 0.063
+     },
+     "fallbackDecisions": 0,
+     "firstModelDecision": "2015-12-31",
+     "fxContributionCagrPct": 1.217,
+     "turnoverTwoWayPerYear": 3.339284,
+     "vsS4": {
+      "ci95AnnualPct": [
+       -2.487,
+       0.966
+      ],
+      "intervalContainsZero": true,
+      "meanAnnualDiffPct": -0.977,
+      "months": 130
+     },
+     "vsSPY": {
+      "ci95AnnualPct": [
+       -10.562,
+       -2.288
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -6.615,
+      "months": 130
+     }
+    },
+    "D6_FORECAST_VOL_SLEEVE": {
+     "KRW_hedged": "NOT_COMPUTED_NO_VERIFIED_HEDGE_INSTRUMENT_OR_COST",
+     "KRW_unhedged": {
+      "arithAnnualPct": 9.49,
+      "betaToSpy": 0.491,
+      "cagrPct": 9.534,
+      "calmar": 0.611,
+      "compoundingTermPct": 0.043,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -15.602,
+      "maxDrawdownTrough": "2026-10-23",
+      "months": 130,
+      "sharpeOverBil": 0.758,
+      "start": "2015-12-31",
+      "volPct": 8.409,
+      "worstMonthPct": -8.012
+     },
+     "KRW_unhedged_sameDayFxSensitivity": {
+      "cagrPct": 9.644,
+      "maxDrawdownPct": -14.41
+     },
+     "USD": {
+      "arithAnnualPct": 8.308,
+      "betaToSpy": 0.466,
+      "cagrPct": 8.318,
+      "calmar": 0.469,
+      "compoundingTermPct": 0.011,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -17.749,
+      "maxDrawdownTrough": "2022-10-14",
+      "months": 130,
+      "sharpeOverBil": 0.806,
+      "start": "2015-12-31",
+      "volPct": 7.668,
+      "worstMonthPct": -5.868
+     },
+     "USD_cost2x": {
+      "arithAnnualPct": 8.221,
+      "betaToSpy": 0.466,
+      "cagrPct": 8.225,
+      "calmar": 0.461,
+      "compoundingTermPct": 0.004,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -17.838,
+      "maxDrawdownTrough": "2022-10-14",
+      "months": 130,
+      "sharpeOverBil": 0.795,
+      "start": "2015-12-31",
+      "volPct": 7.667,
+      "worstMonthPct": -5.882
+     },
+     "averageEquityWeight": 0.46349,
+     "averageTargetWeights": {
+      "BIL": 0.13651,
+      "GLD": 0.1,
+      "IEF": 0.3,
+      "SPY": 0.46349
+     },
+     "averageWeightTwin": {
+      "USD": {
+       "cagrPct": 8.932,
+       "maxDrawdownPct": -17.301,
+       "sharpeOverBil": 0.849,
+       "volPct": 7.982
+      },
+      "arithGapPct": -0.591,
+      "cagrGapPct": -0.614,
+      "compoundingGapPct": -0.021,
+      "strategyMinusTwin": {
+       "ci95AnnualPct": [
+        -1.189,
+        0.038
+       ],
+       "intervalContainsZero": true,
+       "meanAnnualDiffPct": -0.592,
+       "months": 130
+      }
+     },
+     "costTotalPctOfInitial": 1.490529,
+     "decompositionVsS4": {
+      "arithGapPct": -1.064,
+      "cagrGapPct": -1.081,
+      "compoundingGapPct": -0.016
+     },
+     "fallbackDecisions": 0,
+     "firstModelDecision": "2015-12-31",
+     "fxContributionCagrPct": 1.216,
+     "turnoverTwoWayPerYear": 0.761474,
+     "vsS4": {
+      "ci95AnnualPct": [
+       -1.703,
+       -0.45
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -1.064,
+      "months": 130
+     },
+     "vsSPY": {
+      "ci95AnnualPct": [
+       -10.442,
+       -3.331
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -6.702,
+      "months": 130
+     }
+    },
+    "S1_SPY": {
+     "KRW_hedged": "NOT_COMPUTED_NO_VERIFIED_HEDGE_INSTRUMENT_OR_COST",
+     "KRW_unhedged": {
+      "arithAnnualPct": 15.991,
+      "betaToSpy": 1.0,
+      "cagrPct": 16.112,
+      "calmar": 0.518,
+      "compoundingTermPct": 0.122,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -31.113,
+      "maxDrawdownTrough": "2020-03-23",
+      "months": 130,
+      "sharpeOverBil": 0.822,
+      "start": "2015-12-31",
+      "volPct": 13.949,
+      "worstMonthPct": -9.615
+     },
+     "KRW_unhedged_sameDayFxSensitivity": {
+      "cagrPct": 16.23,
+      "maxDrawdownPct": -29.598
+     },
+     "USD": {
+      "arithAnnualPct": 15.01,
+      "betaToSpy": 1.0,
+      "cagrPct": 14.824,
+      "calmar": 0.44,
+      "compoundingTermPct": -0.186,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -33.7,
+      "maxDrawdownTrough": "2020-03-23",
+      "months": 130,
+      "sharpeOverBil": 0.861,
+      "start": "2015-12-31",
+      "volPct": 14.945,
+      "worstMonthPct": -12.464
+     },
+     "USD_cost2x": {
+      "arithAnnualPct": 15.001,
+      "betaToSpy": 1.0,
+      "cagrPct": 14.813,
+      "calmar": 0.44,
+      "compoundingTermPct": -0.188,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -33.7,
+      "maxDrawdownTrough": "2020-03-23",
+      "months": 130,
+      "sharpeOverBil": 0.86,
+      "start": "2015-12-31",
+      "volPct": 14.948,
+      "worstMonthPct": -12.464
+     },
+     "averageEquityWeight": 1.0,
+     "averageTargetWeights": {
+      "SPY": 1.0
+     },
+     "averageWeightTwin": {
+      "USD": {
+       "cagrPct": 14.824,
+       "maxDrawdownPct": -33.7,
+       "sharpeOverBil": 0.861,
+       "volPct": 14.945
+      },
+      "arithGapPct": 0.0,
+      "cagrGapPct": 0.0,
+      "compoundingGapPct": 0.0,
+      "strategyMinusTwin": {
+       "ci95AnnualPct": [
+        0.0,
+        0.0
+       ],
+       "intervalContainsZero": true,
+       "meanAnnualDiffPct": 0.0,
+       "months": 130
+      }
+     },
+     "costTotalPctOfInitial": 0.0999,
+     "decompositionVsS4": {
+      "arithGapPct": 5.638,
+      "cagrGapPct": 5.425,
+      "compoundingGapPct": -0.213
+     },
+     "fxContributionCagrPct": 1.288,
+     "turnoverTwoWayPerYear": 0.092328,
+     "vsS4": {
+      "ci95AnnualPct": [
+       2.441,
+       9.358
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": 5.638,
+      "months": 130
+     },
+     "vsSPY": null
+    },
+    "S2_QQQ": {
+     "KRW_hedged": "NOT_COMPUTED_NO_VERIFIED_HEDGE_INSTRUMENT_OR_COST",
+     "KRW_unhedged": {
+      "arithAnnualPct": 20.55,
+      "betaToSpy": 1.158,
+      "cagrPct": 20.694,
+      "calmar": 0.671,
+      "compoundingTermPct": 0.144,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -30.848,
+      "maxDrawdownTrough": "2022-12-28",
+      "months": 130,
+      "sharpeOverBil": 0.898,
+      "start": "2015-12-31",
+      "volPct": 17.98,
+      "worstMonthPct": -13.81
+     },
+     "KRW_unhedged_sameDayFxSensitivity": {
+      "cagrPct": 20.816,
+      "maxDrawdownPct": -30.646
+     },
+     "USD": {
+      "arithAnnualPct": 19.567,
+      "betaToSpy": 1.141,
+      "cagrPct": 19.355,
+      "calmar": 0.551,
+      "compoundingTermPct": -0.212,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -35.122,
+      "maxDrawdownTrough": "2022-11-03",
+      "months": 130,
+      "sharpeOverBil": 0.926,
+      "start": "2015-12-31",
+      "volPct": 18.823,
+      "worstMonthPct": -13.596
+     },
+     "USD_cost2x": {
+      "arithAnnualPct": 19.558,
+      "betaToSpy": 1.141,
+      "cagrPct": 19.344,
+      "calmar": 0.551,
+      "compoundingTermPct": -0.214,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -35.122,
+      "maxDrawdownTrough": "2022-11-03",
+      "months": 130,
+      "sharpeOverBil": 0.926,
+      "start": "2015-12-31",
+      "volPct": 18.827,
+      "worstMonthPct": -13.596
+     },
+     "averageEquityWeight": 1.0,
+     "averageTargetWeights": {
+      "QQQ": 1.0
+     },
+     "averageWeightTwin": {
+      "USD": {
+       "cagrPct": 19.355,
+       "maxDrawdownPct": -35.122,
+       "sharpeOverBil": 0.926,
+       "volPct": 18.823
+      },
+      "arithGapPct": 0.0,
+      "cagrGapPct": 0.0,
+      "compoundingGapPct": 0.0,
+      "strategyMinusTwin": {
+       "ci95AnnualPct": [
+        0.0,
+        0.0
+       ],
+       "intervalContainsZero": true,
+       "meanAnnualDiffPct": 0.0,
+       "months": 130
+      }
+     },
+     "costTotalPctOfInitial": 0.0999,
+     "decompositionVsS4": {
+      "arithGapPct": 10.195,
+      "cagrGapPct": 9.956,
+      "compoundingGapPct": -0.239
+     },
+     "fxContributionCagrPct": 1.339,
+     "turnoverTwoWayPerYear": 0.092328,
+     "vsS4": {
+      "ci95AnnualPct": [
+       4.161,
+       17.15
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": 10.195,
+      "months": 130
+     },
+     "vsSPY": {
+      "ci95AnnualPct": [
+       0.183,
+       10.257
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": 4.557,
+      "months": 130
+     }
+    },
+    "S3_6040": {
+     "KRW_hedged": "NOT_COMPUTED_NO_VERIFIED_HEDGE_INSTRUMENT_OR_COST",
+     "KRW_unhedged": {
+      "arithAnnualPct": 10.642,
+      "betaToSpy": 0.643,
+      "cagrPct": 10.668,
+      "calmar": 0.665,
+      "compoundingTermPct": 0.027,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -16.05,
+      "maxDrawdownTrough": "2020-03-23",
+      "months": 130,
+      "sharpeOverBil": 0.715,
+      "start": "2015-12-31",
+      "volPct": 9.687,
+      "worstMonthPct": -8.24
+     },
+     "KRW_unhedged_sameDayFxSensitivity": {
+      "cagrPct": 10.78,
+      "maxDrawdownPct": -14.622
+     },
+     "USD": {
+      "arithAnnualPct": 9.523,
+      "betaToSpy": 0.627,
+      "cagrPct": 9.44,
+      "calmar": 0.445,
+      "compoundingTermPct": -0.082,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -21.208,
+      "maxDrawdownTrough": "2022-10-14",
+      "months": 130,
+      "sharpeOverBil": 0.76,
+      "start": "2015-12-31",
+      "volPct": 9.73,
+      "worstMonthPct": -7.423
+     },
+     "USD_cost2x": {
+      "arithAnnualPct": 9.488,
+      "betaToSpy": 0.627,
+      "cagrPct": 9.403,
+      "calmar": 0.443,
+      "compoundingTermPct": -0.085,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -21.232,
+      "maxDrawdownTrough": "2022-10-14",
+      "months": 130,
+      "sharpeOverBil": 0.756,
+      "start": "2015-12-31",
+      "volPct": 9.73,
+      "worstMonthPct": -7.424
+     },
+     "averageEquityWeight": 0.6,
+     "averageTargetWeights": {
+      "IEF": 0.4,
+      "SPY": 0.6
+     },
+     "averageWeightTwin": {
+      "USD": {
+       "cagrPct": 9.44,
+       "maxDrawdownPct": -21.208,
+       "sharpeOverBil": 0.76,
+       "volPct": 9.73
+      },
+      "arithGapPct": 0.0,
+      "cagrGapPct": 0.0,
+      "compoundingGapPct": 0.0,
+      "strategyMinusTwin": {
+       "ci95AnnualPct": [
+        0.0,
+        0.0
+       ],
+       "intervalContainsZero": false,
+       "meanAnnualDiffPct": 0.0,
+       "months": 130
+      }
+     },
+     "costTotalPctOfInitial": 0.541435,
+     "decompositionVsS4": {
+      "arithGapPct": 0.151,
+      "cagrGapPct": 0.041,
+      "compoundingGapPct": -0.109
+     },
+     "fxContributionCagrPct": 1.228,
+     "turnoverTwoWayPerYear": 0.306643,
+     "vsS4": {
+      "ci95AnnualPct": [
+       -0.909,
+       1.02
+      ],
+      "intervalContainsZero": true,
+      "meanAnnualDiffPct": 0.15,
+      "months": 130
+     },
+     "vsSPY": {
+      "ci95AnnualPct": [
+       -8.529,
+       -2.863
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -5.487,
+      "months": 130
+     }
+    },
+    "S4_BALANCED": {
+     "KRW_hedged": "NOT_COMPUTED_NO_VERIFIED_HEDGE_INSTRUMENT_OR_COST",
+     "KRW_unhedged": {
+      "arithAnnualPct": 10.516,
+      "betaToSpy": 0.547,
+      "cagrPct": 10.626,
+      "calmar": 0.681,
+      "compoundingTermPct": 0.11,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -15.602,
+      "maxDrawdownTrough": "2026-10-23",
+      "months": 130,
+      "sharpeOverBil": 0.806,
+      "start": "2015-12-31",
+      "volPct": 8.727,
+      "worstMonthPct": -8.012
+     },
+     "KRW_unhedged_sameDayFxSensitivity": {
+      "cagrPct": 10.738,
+      "maxDrawdownPct": -14.41
+     },
+     "USD": {
+      "arithAnnualPct": 9.372,
+      "betaToSpy": 0.533,
+      "cagrPct": 9.399,
+      "calmar": 0.518,
+      "compoundingTermPct": 0.027,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -18.157,
+      "maxDrawdownTrough": "2022-10-14",
+      "months": 130,
+      "sharpeOverBil": 0.854,
+      "start": "2015-12-31",
+      "volPct": 8.491,
+      "worstMonthPct": -6.295
+     },
+     "USD_cost2x": {
+      "arithAnnualPct": 9.335,
+      "betaToSpy": 0.533,
+      "cagrPct": 9.358,
+      "calmar": 0.515,
+      "compoundingTermPct": 0.024,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -18.183,
+      "maxDrawdownTrough": "2022-10-14",
+      "months": 130,
+      "sharpeOverBil": 0.849,
+      "start": "2015-12-31",
+      "volPct": 8.491,
+      "worstMonthPct": -6.296
+     },
+     "averageEquityWeight": 0.5,
+     "averageTargetWeights": {
+      "BIL": 0.1,
+      "GLD": 0.1,
+      "IEF": 0.3,
+      "SPY": 0.5
+     },
+     "averageWeightTwin": {
+      "USD": {
+       "cagrPct": 9.399,
+       "maxDrawdownPct": -18.157,
+       "sharpeOverBil": 0.854,
+       "volPct": 8.491
+      },
+      "arithGapPct": 0.0,
+      "cagrGapPct": 0.0,
+      "compoundingGapPct": 0.0,
+      "strategyMinusTwin": {
+       "ci95AnnualPct": [
+        0.0,
+        0.0
+       ],
+       "intervalContainsZero": false,
+       "meanAnnualDiffPct": 0.0,
+       "months": 130
+      }
+     },
+     "costTotalPctOfInitial": 0.59359,
+     "decompositionVsS4": {
+      "arithGapPct": 0.0,
+      "cagrGapPct": 0.0,
+      "compoundingGapPct": 0.0
+     },
+     "fxContributionCagrPct": 1.227,
+     "turnoverTwoWayPerYear": 0.333488,
+     "vsS4": null,
+     "vsSPY": {
+      "ci95AnnualPct": [
+       -9.358,
+       -2.441
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -5.638,
+      "months": 130
+     }
+    },
+    "S5_EQUAL4": {
+     "KRW_hedged": "NOT_COMPUTED_NO_VERIFIED_HEDGE_INSTRUMENT_OR_COST",
+     "KRW_unhedged": {
+      "arithAnnualPct": 8.978,
+      "betaToSpy": 0.312,
+      "cagrPct": 9.027,
+      "calmar": 0.534,
+      "compoundingTermPct": 0.049,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -16.904,
+      "maxDrawdownTrough": "2026-10-23",
+      "months": 130,
+      "sharpeOverBil": 0.814,
+      "start": "2015-12-31",
+      "volPct": 7.848,
+      "worstMonthPct": -7.8
+     },
+     "KRW_unhedged_sameDayFxSensitivity": {
+      "cagrPct": 9.138,
+      "maxDrawdownPct": -15.731
+     },
+     "USD": {
+      "arithAnnualPct": 7.762,
+      "betaToSpy": 0.297,
+      "cagrPct": 7.817,
+      "calmar": 0.611,
+      "compoundingTermPct": 0.056,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -12.802,
+      "maxDrawdownTrough": "2022-10-20",
+      "months": 130,
+      "sharpeOverBil": 0.865,
+      "start": "2015-12-31",
+      "volPct": 6.556,
+      "worstMonthPct": -4.452
+     },
+     "USD_cost2x": {
+      "arithAnnualPct": 7.724,
+      "betaToSpy": 0.297,
+      "cagrPct": 7.777,
+      "calmar": 0.606,
+      "compoundingTermPct": 0.053,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -12.826,
+      "maxDrawdownTrough": "2022-10-20",
+      "months": 130,
+      "sharpeOverBil": 0.859,
+      "start": "2015-12-31",
+      "volPct": 6.555,
+      "worstMonthPct": -4.458
+     },
+     "averageEquityWeight": 0.25,
+     "averageTargetWeights": {
+      "BIL": 0.25,
+      "GLD": 0.25,
+      "IEF": 0.25,
+      "SPY": 0.25
+     },
+     "averageWeightTwin": {
+      "USD": {
+       "cagrPct": 7.817,
+       "maxDrawdownPct": -12.802,
+       "sharpeOverBil": 0.865,
+       "volPct": 6.556
+      },
+      "arithGapPct": 0.0,
+      "cagrGapPct": 0.0,
+      "compoundingGapPct": 0.0,
+      "strategyMinusTwin": {
+       "ci95AnnualPct": [
+        -0.0,
+        0.0
+       ],
+       "intervalContainsZero": true,
+       "meanAnnualDiffPct": -0.0,
+       "months": 130
+      }
+     },
+     "costTotalPctOfInitial": 0.561661,
+     "decompositionVsS4": {
+      "arithGapPct": -1.61,
+      "cagrGapPct": -1.582,
+      "compoundingGapPct": 0.029
+     },
+     "fxContributionCagrPct": 1.21,
+     "turnoverTwoWayPerYear": 0.336604,
+     "vsS4": {
+      "ci95AnnualPct": [
+       -3.551,
+       0.351
+      ],
+      "intervalContainsZero": true,
+      "meanAnnualDiffPct": -1.611,
+      "months": 130
+     },
+     "vsSPY": {
+      "ci95AnnualPct": [
+       -12.787,
+       -2.262
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -7.248,
+      "months": 130
+     }
+    },
+    "S6_RISK_BUDGET_IV": {
+     "KRW_hedged": "NOT_COMPUTED_NO_VERIFIED_HEDGE_INSTRUMENT_OR_COST",
+     "KRW_unhedged": {
+      "arithAnnualPct": 8.121,
+      "betaToSpy": 0.263,
+      "cagrPct": 8.072,
+      "calmar": 0.483,
+      "compoundingTermPct": -0.049,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -16.696,
+      "maxDrawdownTrough": "2026-10-19",
+      "months": 130,
+      "sharpeOverBil": 0.63,
+      "start": "2015-12-31",
+      "volPct": 8.209,
+      "worstMonthPct": -8.484
+     },
+     "KRW_unhedged_sameDayFxSensitivity": {
+      "cagrPct": 8.181,
+      "maxDrawdownPct": -15.552
+     },
+     "USD": {
+      "arithAnnualPct": 6.915,
+      "betaToSpy": 0.259,
+      "cagrPct": 6.873,
+      "calmar": 0.39,
+      "compoundingTermPct": -0.043,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -17.603,
+      "maxDrawdownTrough": "2022-10-20",
+      "months": 130,
+      "sharpeOverBil": 0.677,
+      "start": "2015-12-31",
+      "volPct": 7.127,
+      "worstMonthPct": -5.061
+     },
+     "USD_cost2x": {
+      "arithAnnualPct": 6.867,
+      "betaToSpy": 0.259,
+      "cagrPct": 6.821,
+      "calmar": 0.386,
+      "compoundingTermPct": -0.045,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -17.681,
+      "maxDrawdownTrough": "2022-10-20",
+      "months": 130,
+      "sharpeOverBil": 0.671,
+      "start": "2015-12-31",
+      "volPct": 7.125,
+      "worstMonthPct": -5.064
+     },
+     "averageEquityWeight": 0.216631,
+     "averageTargetWeights": {
+      "GLD": 0.232097,
+      "IEF": 0.551272,
+      "SPY": 0.216631
+     },
+     "averageWeightTwin": {
+      "USD": {
+       "cagrPct": 6.797,
+       "maxDrawdownPct": -17.298,
+       "sharpeOverBil": 0.647,
+       "volPct": 7.347
+      },
+      "arithGapPct": 0.055,
+      "cagrGapPct": 0.076,
+      "compoundingGapPct": 0.02,
+      "strategyMinusTwin": {
+       "ci95AnnualPct": [
+        -0.992,
+        0.801
+       ],
+       "intervalContainsZero": true,
+       "meanAnnualDiffPct": 0.055,
+       "months": 130
+      }
+     },
+     "costTotalPctOfInitial": 0.7156,
+     "decompositionVsS4": {
+      "arithGapPct": -2.457,
+      "cagrGapPct": -2.526,
+      "compoundingGapPct": -0.07
+     },
+     "fxContributionCagrPct": 1.199,
+     "turnoverTwoWayPerYear": 0.430023,
+     "vsS4": {
+      "ci95AnnualPct": [
+       -5.423,
+       -0.246
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -2.457,
+      "months": 130
+     },
+     "vsSPY": {
+      "ci95AnnualPct": [
+       -14.607,
+       -2.903
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -8.095,
+      "months": 130
+     }
+    },
+    "S7_VOLTARGET_SPY": {
+     "KRW_hedged": "NOT_COMPUTED_NO_VERIFIED_HEDGE_INSTRUMENT_OR_COST",
+     "KRW_unhedged": {
+      "arithAnnualPct": 12.883,
+      "betaToSpy": 0.815,
+      "cagrPct": 12.843,
+      "calmar": 0.44,
+      "compoundingTermPct": -0.041,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -29.219,
+      "maxDrawdownTrough": "2020-03-23",
+      "months": 130,
+      "sharpeOverBil": 0.738,
+      "start": "2015-12-31",
+      "volPct": 12.235,
+      "worstMonthPct": -8.355
+     },
+     "KRW_unhedged_sameDayFxSensitivity": {
+      "cagrPct": 12.957,
+      "maxDrawdownPct": -27.662
+     },
+     "USD": {
+      "arithAnnualPct": 11.791,
+      "betaToSpy": 0.788,
+      "cagrPct": 11.591,
+      "calmar": 0.364,
+      "compoundingTermPct": -0.201,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -31.877,
+      "maxDrawdownTrough": "2020-03-23",
+      "months": 130,
+      "sharpeOverBil": 0.775,
+      "start": "2015-12-31",
+      "volPct": 12.485,
+      "worstMonthPct": -11.244
+     },
+     "USD_cost2x": {
+      "arithAnnualPct": 11.645,
+      "betaToSpy": 0.787,
+      "cagrPct": 11.43,
+      "calmar": 0.358,
+      "compoundingTermPct": -0.216,
+      "end": "2026-10-30",
+      "maxDrawdownPct": -31.888,
+      "maxDrawdownTrough": "2020-03-23",
+      "months": 130,
+      "sharpeOverBil": 0.763,
+      "start": "2015-12-31",
+      "volPct": 12.484,
+      "worstMonthPct": -11.259
+     },
+     "averageEquityWeight": 0.899253,
+     "averageTargetWeights": {
+      "BIL": 0.100747,
+      "SPY": 0.899253
+     },
+     "averageWeightTwin": {
+      "USD": {
+       "cagrPct": 13.603,
+       "maxDrawdownPct": -30.522,
+       "sharpeOverBil": 0.861,
+       "volPct": 13.441
+      },
+      "arithGapPct": -1.925,
+      "cagrGapPct": -2.012,
+      "compoundingGapPct": -0.088,
+      "strategyMinusTwin": {
+       "ci95AnnualPct": [
+        -6.122,
+        0.949
+       ],
+       "intervalContainsZero": true,
+       "meanAnnualDiffPct": -1.925,
+       "months": 130
+      }
+     },
+     "costTotalPctOfInitial": 2.548156,
+     "decompositionVsS4": {
+      "arithGapPct": 2.419,
+      "cagrGapPct": 2.192,
+      "compoundingGapPct": -0.228
+     },
+     "fxContributionCagrPct": 1.252,
+     "turnoverTwoWayPerYear": 1.269147,
+     "vsS4": {
+      "ci95AnnualPct": [
+       -2.971,
+       7.053
+      ],
+      "intervalContainsZero": true,
+      "meanAnnualDiffPct": 2.419,
+      "months": 130
+     },
+     "vsSPY": {
+      "ci95AnnualPct": [
+       -7.572,
+       -0.189
+      ],
+      "intervalContainsZero": false,
+      "meanAnnualDiffPct": -3.219,
+      "months": 130
+     }
+    }
+   },
+   "usdkrw": {
+    "conversion": "first DEXKOUS print dated after each US session (no look-ahead)",
+    "endRate": 1344.51,
+    "fxCagrPct": 1.122035,
+    "startRate": 1191.46
+   },
+   "window": "primary"
+  }
+ }
+}

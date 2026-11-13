@@ -1,0 +1,80 @@
+{
+ "conclusion": "Any S&P 500 history computed from the priced panel is conditional on survival: 212 of 324 departed identities (65.4%) have no usable price and none of the priced US sample contains a failed or acquired company. No Track B performance is computed until a licensed delisting-inclusive source with dated corporate actions and terminal consideration is secured.",
+ "departedOnlyNoPanelPctByYear": {
+  "2013": 30.3231,
+  "2014": 28.4539,
+  "2015": 26.8223,
+  "2016": 22.4769,
+  "2017": 20.2126,
+  "2018": 17.7723,
+  "2019": 17.0297,
+  "2020": 12.9199,
+  "2021": 9.1203,
+  "2022": 8.6374,
+  "2023": 4.126,
+  "2024": 2.8715,
+  "2025": 1.7932,
+  "2026": 0.5374
+ },
+ "fundamentals": "Finnhub-served SEC filings with PIT acceptance dates exist for priced names; departed no-panel names are not covered by an admitted price basis, so no factor on them can be valued",
+ "identityChecks": {
+  "admissionAuditCoversTheSameNoPanelIdentities": true,
+  "currentPlusDepartedEqualsResolvedUnion": true,
+  "departedSplitsIntoPricedRenamedAndNoPanel": true,
+  "noCurrentMemberLacksAPanel": true,
+  "noTerminatedCompanyInThePricedUsSample": true,
+  "tickerLevelUnpricedAllDelisted": true
+ },
+ "independentHistoricalPerformanceComputed": false,
+ "inputSha256": {
+  "data/replay-corporate-actions.json": "56953ff054ed4151105e01d66fca1d5fe061412d2b30aa7acae17525b2897b2b",
+  "data/us-unpriced-members.json": "5206b031771ffc6766e2cfdfa53aee808c66e8dcf3feb40163e250cba94c1edc",
+  "docs/results/alpha-opportunity-model-v3-survivorship-audit.json": "f0d9ed09880ffb75c6cc698dbb001e6f6879dee1991ede6ff6d365cc50f22902",
+  "docs/us-readiness/us-departed-dataset-admission-audit-v1.json": "8f065811f5a5c17c8d97b80e7b4ebf57c9bec1c0918cfb09c31deadd58abd1ed"
+ },
+ "pitMembership": {
+  "gapsOver45Days": 21,
+  "maxGapDays": 769,
+  "source": "derived (unofficial) S&P 500 snapshot history pinned in replay-v16; no announcement dates, CIK only from 2023-04-13"
+ },
+ "publicPriceRecovery": {
+  "candidateRecoveredSessions": 186910,
+  "finalAdmittedSessions": 0,
+  "highestValueBlocker": "Verified dated issuer/share-class and split/dividend lineage for D/F candidates; never more ticker-only prices",
+  "originalMissingSessions": 256402,
+  "verdict": "NOT_ADMITTED"
+ },
+ "status": "TRACK_B_BLOCKED_NO_ELIGIBLE_DELISTING_INCLUSIVE_SOURCE",
+ "terminalConsideration": {
+  "departedWithoutCitedConsideration": 212,
+  "examples": [
+   "ESRX"
+  ],
+  "usActionsCited": 1
+ },
+ "usUniverse": {
+  "current": 503,
+  "departed": 324,
+  "departedExitReasonUnresolved": 181,
+  "departedNoPanel": 212,
+  "departedPricedByOwnHistory": 99,
+  "departedPricedViaVerifiedRename": 13,
+  "identityCategories": {
+   "ACQUIRED_OR_MERGED_TERMINATED": 1,
+   "CURRENT_MEMBER_OWN_PANEL": 496,
+   "CURRENT_MEMBER_PANEL_LATE_START": 7,
+   "DEPARTED_NO_PANEL_REASON_UNRESOLVED": 181,
+   "PANEL_PARTIAL_OWN_HISTORY": 2,
+   "REMOVED_FROM_INDEX_STILL_TRADING": 97,
+   "SAME_SECURITY_RENAME": 14,
+   "TICKER_REUSE_DIFFERENT_ISSUER": 29
+  },
+  "pNoPanelGivenDepartedPct": 65.4321,
+  "resolvedIdentities": 827,
+  "tickerLevel": {
+   "members": 829,
+   "servedByPanel": 633,
+   "unpriced": 194
+  }
+ }
+}
