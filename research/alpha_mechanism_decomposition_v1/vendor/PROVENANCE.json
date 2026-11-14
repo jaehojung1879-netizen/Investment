@@ -1,0 +1,15 @@
+{
+ "purpose": "Exact byte copies of the frozen #329 research code this decomposition CALLS rather than reimplements (sleeve books, self-financing engine, policies, tournament rule/gate/engine). PR #329 is open and unmerged, so its files are not on main; vendoring keeps this study runnable from one directory. Nothing here was edited.",
+ "sourceRepository": "jaehojung1879-netizen/Investment",
+ "sourceCommit": "0a1f4941",
+ "sourceCommitFull": "0a1f494171576af6928fe531145a8c8f050253fd",
+ "sourcePullRequest": 329,
+ "files": {
+  "adaptive_cocktail_v1/cocktail.py": {"sourcePath": "research/adaptive_cocktail_v1/cocktail.py", "gitBlobSha1": "0d5c73b366e29ca1ec591606b2bc4f3bcb66601e"},
+  "adaptive_cocktail_v1/config.json": {"sourcePath": "research/adaptive_cocktail_v1/config.json", "gitBlobSha1": "ebcc82d915fbb55905150b669e728256f6bbaacb"},
+  "adaptive_cocktail_v1/run.py": {"sourcePath": "research/adaptive_cocktail_v1/run.py", "gitBlobSha1": "78b2a9503af435b3b7ae181356c20739f813d788"},
+  "ml_strategy_tournament_v1/tournament.py": {"sourcePath": "research/ml_strategy_tournament_v1/tournament.py", "gitBlobSha1": "bb21f57dcfe8a3a60118a3b1f1558b48461b0f33"},
+  "ml_strategy_tournament_v1/config.json": {"sourcePath": "research/ml_strategy_tournament_v1/config.json", "gitBlobSha1": "857a941af0231780b2a963e4272e2d8183f20f2c"}
+ },
+ "runtimePatch": "cocktail.ROOT is set to the repository root at import time by analyze.py (the vendored path is two levels deeper than the original); no function body is changed."
+}

@@ -1,0 +1,38 @@
+{
+ "studyId": "alpha-mechanism-decomposition-v1",
+ "date": "2026-11-14",
+ "environment": "CPython 3.13.18, pandas 2.3.0, numpy 2.3.1, scikit-learn 1.7.0, lightgbm 4.6.0, threadpoolctl 3.7.0; partial clone (blob:none)",
+ "requiredChecks": {
+  "ruff check .": "PASS",
+  "python -m compileall pipeline": "PASS",
+  "scripts/make_seed.py": "PASS",
+  "python -m pipeline.validate data/site-data.json --allow-seed": "validation ok",
+  "tests/test_alpha_mechanism_decomposition_v1.py": "15 passed"
+ },
+ "fullSuite": {
+  "result": "44 failed, 6659 passed, 5 skipped, 4 xfailed, 44 errors in 1478.40s",
+  "failingIds": 88,
+  "sameIdsOnCleanOriginMain4f4497bc": "after fetching the one missing historical object 8c361111 both trees give the identical 34 failed / 10 passed / 44 errors on these ids; before the fetch, clean main 43 failed / 1 passed / 44 errors",
+  "dominantCause": "67 x HISTORICAL_CI_REGISTRATION_NOT_ANCESTOR (historical commits absent from this shallow/partial clone); remaining: Python 3.13 gzip header byte comparisons and regex/reconstruction checks bound to historical git objects",
+  "touchesThisStudy": false,
+  "failingTestFiles": [
+   "tests/test_closed_atlas_provenance.py",
+   "tests/test_historical_workflow_provenance.py",
+   "tests/test_kr_alpha_atlas_integrity_audit.py",
+   "tests/test_kr_alpha_atlas_mirae_repair.py",
+   "tests/test_kr_alpha_atlas_phase_c.py",
+   "tests/test_kr_alpha_atlas_phase_c_amendment.py",
+   "tests/test_kr_alpha_atlas_phase_c_reporting.py",
+   "tests/test_kr_alpha_atlas_reproducibility.py",
+   "tests/test_kr_industry_membership_v2.py",
+   "tests/test_kr_industry_membership_v3.py",
+   "tests/test_kr_industry_membership_v4.py",
+   "tests/test_kr_original_xbrl_value_validation.py",
+   "tests/test_kr_original_xbrl_value_validation_v2.py",
+   "tests/test_kr_original_xbrl_value_validation_v3.py",
+   "tests/test_kr_xbrl_presentation_diagnostic.py",
+   "tests/test_pages_consumed_preflight.py"
+  ]
+ },
+ "note": "No existing test, expectation or tolerance was modified. CI on the PR is the authoritative full-suite run."
+}

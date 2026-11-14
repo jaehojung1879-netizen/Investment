@@ -1,0 +1,44 @@
+{
+ "studyId": "alpha-mechanism-decomposition-v1",
+ "subject": "Requested re-run of research/us_historical_market_recovery_v1 (main 4f4497bc) with the original private market bundle, to report H126/H252 effective holding counts before/after recovery and the remaining missingness reasons",
+ "status": "NOT_RUN_PRIVATE_BUNDLE_NOT_ACCESSIBLE_IN_THIS_ENVIRONMENT",
+ "checkedOn": "2026-11-14",
+ "whatWasSearched": [
+  "filesystem search (outside .git) for holding-returns.json.gz, bundle-manifest.json, public-para-price-packet.json, public-wbd-kvue-price-packet.json, *.pem private keys: none found",
+  "environment variables MARKET_PRIVATE / MARKET_UPLOADED / FMP / FINNHUB / POLYGON keys: none set",
+  "the repository and signal-history: by design the bundle is kept outside git (README-ko.md '재실행과 보관'); the authenticated responses leave Actions only as CMS AES-256-GCM ciphertext whose private key is held locally by the collector and was never committed"
+ ],
+ "requiredToRerun": {
+  "environment": {
+   "MARKET_PRIVATE": "absolute path outside git holding the private bundle (PRIVATE_MARKET_INPUT_BUNDLE_V1)",
+   "MARKET_UPLOADED": "absolute path to the extracted user ZIP",
+   "MARKET_RESULT": "research/us_historical_market_recovery_v1/results (or a new directory, per FOLLOWUP-2026-11-14.md, so the archived #337 result is not overwritten)"
+  },
+  "privateRootFiles_verifyREQUIRED": [
+   "sealed-inputs-manifest.json", "baseline-bars.json.gz", "baseline-events.json.gz", "baseline-lineage.json.gz",
+   "baseline-component-receipts.json", "original-input-eligible-cohorts.json", "repaired-input-eligible-cohorts.json",
+   "baseline_reacquisition.json", "new_charts.json", "authenticated-responses.json.gz", "supplement-responses.json.gz",
+   "holding-returns.json.gz", "new-source-series.json.gz", "mature-gap-tickers.json", "label_followup_charts.json"
+  ],
+  "privateRootFilesOptionalButUsed": ["last-gap-public-charts.json", "last-gap-account-attempts.json", "objects/*", "identity-sources/public-receipts.json",
+                                      "identity-sources/spy-official-distributions.xlsx", "bundle-manifest.json"],
+  "pinnedPublicPricePackets": {
+   "public-para-price-packet.json": "e26f87d0c7a7d6a7043037ca36ef7543c5405abb80de91ef5d1d4605699baa7f",
+   "public-wbd-kvue-price-packet.json": "9c96ba38062be7a8522c504e297215b3d40dc457d4b7c2b663886009957b32b7"
+  },
+  "uploadedDirFiles": ["us-212-market-data-request.json", "provenance.json", "historical-member-weeks.jsonl.gz", "public-corporate-event-evidence.json"],
+  "reproducibleWithoutTheBundle": "prepare.py regenerates baseline-bars/events/lineage/component-receipts/original-input-eligible-cohorts from signal-history 704d7db6 (replay-v16 manifest f0781292); everything that carries a vendor response (authenticated/supplement responses, new_charts, holding-returns) cannot be regenerated without the existing-account keys or the decrypted transfer",
+  "decryptionPath": "python -m research.us_historical_market_recovery_v1.decrypt --input TRANSFER.json --private-key LOCAL_KEY --private-root $MARKET_PRIVATE --name authenticated (and supplement); TRANSFER.json from Actions runs 43539000217 / 43540781549; LOCAL_KEY is the collector's private key (not in the repository)"
+ },
+ "latestPublishedNumbersNotRecomputedHere": {
+  "source": "research/us_historical_market_recovery_v1/results/results.json on main 4f4497bc (archived #337 bab11f48 aggregate; result_status SUPERSEDED_PRICE_IDENTITY_CORRECTION_REQUIRED)",
+  "fixedUnionDenominator": 52768,
+  "H126": {"before": {"COMPLETE": 45536, "INPUT_NOT_ELIGIBLE": 204, "NOT_MATURED": 3971, "PRICE_PATH_GAP": 3057},
+           "after": {"COMPLETE": 48753, "FRACTIONAL_SHARE_SETTLEMENT_UNRESOLVED": 26, "NOT_MATURED": 3971, "PRICE_PATH_GAP": 18}},
+  "H252": {"before": {"COMPLETE": 37231, "INPUT_NOT_ELIGIBLE": 204, "NOT_MATURED": 12571, "PRICE_PATH_GAP": 2762},
+           "after": {"COMPLETE": 40116, "CVR_MARK_OR_PAYOFF_MISSING": 19, "FRACTIONAL_SHARE_SETTLEMENT_UNRESOLVED": 52, "NOT_MATURED": 12571, "PRICE_PATH_GAP": 10}},
+  "knownCorrectionPending": "103 PARA signal-ticker paths per horizon were counted COMPLETE on a ticker column that mixes Paramount Class B with the later Parabolic Technologies; the corrected count is between 48,650 and 48,753 (H126) and between 40,013 and 40,116 (H252) depending on how many of the 103 the pinned public PARA/PSKY packet re-completes. The exact number needs the private re-run.",
+  "remainingGapsCsvRows": 1803
+ },
+ "impactOnThisStudy": "None. This study is KR-only; no file it reads (pipeline/, data/, docs/audits/kr-*, signal-history 4ea107ed) changed between 056c3b5 and 4f4497bc. See verification.json mainMergeImpact."
+}

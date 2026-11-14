@@ -1,0 +1,226 @@
+{
+ "studyId": "alpha-mechanism-decomposition-v1",
+ "evidenceClass": "POST_HOC_EXPLORATORY_DECOMPOSITION_ON_OUTCOME_EXPOSED_KR_HISTORY",
+ "returnBasis": "CONDITIONAL_REPLAY_V16_TOTAL_RETURN_INDEX_NOT_CERTIFIED_SHAREHOLDER_RETURN",
+ "inputs": {
+  "finalSessionQuotesApplied": 235,
+  "identity": "3e4d7aa35e2c4b273e4ecef0e2e8ea7a8a27077f0de14bb3d5ea6a696a97f1a5",
+  "matrixDigest": "32e49b57a7541eea66f76373baef50c6302a394247b313f6099f718d46d54b0c",
+  "mcapCoverage": 1.0,
+  "universeShards": 14
+ },
+ "reproduction": {
+  "status": "REPRODUCED",
+  "worstAbsCagrDiff": "4.920e-07",
+  "cagrPhase0": {
+   "S0_ETF": {
+    "published": 0.169576,
+    "reproduced": 0.169576,
+    "absDiff": 0.0
+   },
+   "S1_INDUSTRY_MOMENTUM": {
+    "published": 0.075621,
+    "reproduced": 0.075621,
+    "absDiff": 0.0
+   },
+   "S2_VALUE_CONFIRMED": {
+    "published": 0.186286,
+    "reproduced": 0.186286,
+    "absDiff": 0.0
+   },
+   "S3_FOUR_FACTOR": {
+    "published": 0.087789,
+    "reproduced": 0.087789,
+    "absDiff": 0.0
+   },
+   "STATIC_EW4": {
+    "published": 0.145093,
+    "reproduced": 0.145093,
+    "absDiff": 0.0
+   },
+   "STATIC_50_ETF_50_S1": {
+    "published": 0.134791,
+    "reproduced": 0.134791,
+    "absDiff": 0.0
+   },
+   "A1_MOMENTUM_CRASH_GUARD": {
+    "published": 0.156259,
+    "reproduced": 0.156259,
+    "absDiff": 0.0
+   },
+   "A2_INVERSE_VOL_RISK_BUDGET": {
+    "published": 0.154435,
+    "reproduced": 0.154435,
+    "absDiff": 0.0
+   },
+   "SLEEVE_MOMENTUM_SWITCH": {
+    "published": 0.324456,
+    "reproduced": 0.324456,
+    "absDiff": 0.0
+   },
+   "B1_RIDGE_ALL_STATES": {
+    "published": 0.051576,
+    "reproduced": 0.051576,
+    "absDiff": 0.0
+   },
+   "B2_LGBM_ALL_STATES": {
+    "published": 0.135155,
+    "reproduced": 0.135155,
+    "absDiff": 0.0
+   },
+   "B3_RIDGE_KR_ONLY": {
+    "published": 0.098844,
+    "reproduced": 0.098844,
+    "absDiff": 0.0
+   },
+   "TREND_200_CASH": {
+    "published": 0.169181,
+    "reproduced": 0.169181,
+    "absDiff": 0.0
+   },
+   "S4_RISK_MANAGED_ETF": {
+    "published": 0.137205,
+    "reproduced": 0.137205,
+    "absDiff": 0.0
+   }
+  },
+  "cagrByPhase": {
+   "0:SLEEVE_MOMENTUM_SWITCH": {
+    "published": 0.324456,
+    "reproduced": 0.324456,
+    "absDiff": 0.0
+   },
+   "0:S1_INDUSTRY_MOMENTUM": {
+    "published": 0.075621,
+    "reproduced": 0.075621,
+    "absDiff": 0.0
+   },
+   "0:S2_VALUE_CONFIRMED": {
+    "published": 0.186286,
+    "reproduced": 0.186286,
+    "absDiff": 0.0
+   },
+   "0:STATIC_EW4": {
+    "published": 0.145093,
+    "reproduced": 0.145093,
+    "absDiff": 0.0
+   },
+   "1:SLEEVE_MOMENTUM_SWITCH": {
+    "published": 0.113127,
+    "reproduced": 0.113127,
+    "absDiff": 0.0
+   },
+   "1:S1_INDUSTRY_MOMENTUM": {
+    "published": 0.197381,
+    "reproduced": 0.197381,
+    "absDiff": 0.0
+   },
+   "1:S2_VALUE_CONFIRMED": {
+    "published": 0.165828,
+    "reproduced": 0.165828,
+    "absDiff": 0.0
+   },
+   "1:STATIC_EW4": {
+    "published": 0.164631,
+    "reproduced": 0.164631,
+    "absDiff": 0.0
+   },
+   "2:SLEEVE_MOMENTUM_SWITCH": {
+    "published": 0.238131,
+    "reproduced": 0.238131,
+    "absDiff": 0.0
+   },
+   "2:S1_INDUSTRY_MOMENTUM": {
+    "published": 0.148841,
+    "reproduced": 0.148841,
+    "absDiff": 0.0
+   },
+   "2:S2_VALUE_CONFIRMED": {
+    "published": 0.241945,
+    "reproduced": 0.241945,
+    "absDiff": 0.0
+   },
+   "2:STATIC_EW4": {
+    "published": 0.171415,
+    "reproduced": 0.171415,
+    "absDiff": 0.0
+   },
+   "3:SLEEVE_MOMENTUM_SWITCH": {
+    "published": 0.233349,
+    "reproduced": 0.233349,
+    "absDiff": 0.0
+   },
+   "3:S1_INDUSTRY_MOMENTUM": {
+    "published": 0.117402,
+    "reproduced": 0.117402,
+    "absDiff": 0.0
+   },
+   "3:S2_VALUE_CONFIRMED": {
+    "published": 0.196614,
+    "reproduced": 0.196614,
+    "absDiff": 0.0
+   },
+   "3:STATIC_EW4": {
+    "published": 0.165545,
+    "reproduced": 0.165545,
+    "absDiff": 0.0
+   }
+  },
+  "reference": {
+   "path": "research/adaptive_cocktail_v1/results/results.json",
+   "commit": "0a1f494171576af6928fe531145a8c8f050253fd",
+   "gitBlobSha1": "7efdbb1e934cd72c2a864298c24796dc27506735",
+   "note": "extract of the #329 published numbers this study must reproduce before any decomposition is read"
+  }
+ },
+ "accounting": {
+  "attributionIdentityMaxResidual": "5.551e-17",
+  "identityTolerance": "1e-10",
+  "netGapClosureMaxResidual": "3.643e-17",
+  "nanReturnLegs": 0,
+  "mechanicsResidualAbsMaxPerPeriod": 0.195068,
+  "targetBookTerminalWriteOffs": [],
+  "engineResidualNote": "engine-vs-target-book residuals are classified event by event in source-readiness.json engineResidualEvents"
+ },
+ "pit": {
+  "featureSource": "Phase B matrix digest 32e49b57a7541eea66f76373baef50c6302a394247b313f6099f718d46d54b0c",
+  "beta": "F03_beta252 at the signal date (trailing 252 sessions, ends at signal date)",
+  "industry": "PIT industry label on the signal date; basket = cap-weighted quality-eligible members on the signal date, market cap from the PIT universe snapshot the membership used (pitSnapshotDate < signal date)",
+  "forwardReturns": "read only for attribution after the decision; never fed back into a choice"
+ },
+ "mainMergeImpact": {
+  "question": "Do the US data-recovery merges #336/#337/#339/#340/#342 (#341 inside #342) change any number of this KR study?",
+  "oldMain": "056c3b5b (#333 merge)",
+  "newMain": "4f4497bc (#342 merge)",
+  "changedPaths": 115,
+  "changedUnderPipelineDataDocsAuditsKrResearchSpecs": 0,
+  "changedAreas": [
+   "research/us_historical_market_recovery_v1",
+   "research/us_sec_fundamentals_v1",
+   "research/cross_market_foundation_v1",
+   "audits/desk_preflight_20261111",
+   "docs/us-readiness",
+   "docs (US/terminal notes)",
+   "scripts (US probes/builders)",
+   "tests (US)"
+  ],
+  "pinnedDataUnchanged": "signal-history 4ea107ed (KR replay-v16, Phase B matrix 32e49b57, input identity 3e4d7aa3) is read by commit hash",
+  "byteIdenticalRerun": "the same analyze.py run in a worktree at 056c3b5 and on the merged tree produced identical SHA-256 for every output file",
+  "verdict": "NO_IMPACT_NOTHING_RECOMPUTED_FOR_THE_MERGE",
+  "usItemsChecked": {
+   "SEC_TOTAL_ASSETS_AND_ISSUER_MIX_QUARANTINE": "US accounting input only; not read",
+   "DEPARTED_PRICE_AND_CORPORATE_ACTION_RECOVERY": "US prices only; not read",
+   "QQQ_DISTRIBUTION_CORRECTION": "US ETF only; not read",
+   "SP500_NASDAQ100_MEMBERSHIP_DATES": "US membership only; not read"
+  }
+ },
+ "tests": "tests/test_alpha_mechanism_decomposition_v1.py",
+ "runtimeSeconds": 113.3,
+ "outputSha256": {
+  "mechanism-attribution.csv": "a3fb0715c4c8e55867e877516c413c2bc74945ed58624ee3969f906ba5c05439",
+  "s2-ablation.csv": "402be4f6a5337b73f13c522ffd7f4ff8dd331b6fedcfb3f9bc1333267a25129c",
+  "industry-momentum-diagnostics.csv": "114e2733028ec3f6cbb0902ce1b511407813016b180ae593201733ac9d3559e5",
+  "source-readiness.json": "a0f9f93712d6da7cfda5e2448f22e32a01b9c57a33b50aa55b00b4a37182b5db",
+  "results/summary.json": "7913000d44125d612568dc75644077c07714c4c77b34a57345604c889df65e58"
+ }
+}
