@@ -23,6 +23,7 @@ import json
 import subprocess
 import sys
 from collections import Counter
+from dataclasses import replace
 from pathlib import Path
 
 import pandas as pd
@@ -41,6 +42,7 @@ SNAPSHOT = DATA / "spy-qqq-total-return.csv.gz"
 RATES = DATA / "rates.json"
 MANIFEST = DATA / "manifest.json"
 N100_DIR = DATA / "nasdaq100-n100tickers"
+N100_OFFICIAL = DATA / "nasdaq100-official-membership-evidence.json"
 COVERAGE_CSV = DATA / "us-universe-coverage-manifest.csv.gz"
 DATA_AUDIT = OUT / "us-dual-benchmark-v1-data-audit.json"
 COMPARISON = OUT / "us-spy-qqq-comparison-v1.json"
@@ -91,9 +93,9 @@ SOURCE_CANDIDATES = [
      "effectiveDate": "yes", "completeness": "complete in principle but must be gathered release by release",
      "identity": "company name + ticker; no CUSIP", "license": "public press releases",
      "reproducibility": "per-URL documents", "cost": "free",
-     "actionsReachable": "NOT_MEASURED (workflow dispatch refused to this agent; probe script prepared)",
-     "thisEnvironment": "BLOCKED (egress proxy refuses nasdaq.com; WebFetch cannot resolve hosts)",
-     "survivorship": "none if complete", "verdict": "BEST_AUTHORITATIVE_ROUTE_NOT_YET_COLLECTED"},
+     "actionsReachable": "NOT_MEASURED",
+     "thisEnvironment": "THIRTEEN_ANNUAL_ANNOUNCEMENTS_VERIFIED",
+     "survivorship": "none if complete", "verdict": "PARTIAL_OFFICIAL_ANNUAL_AND_EVENT_EVIDENCE"},
     {"id": "nasdaq-global-index-watch-history", "kind": "official historical constituent/weight files",
      "depth": "unknown", "publicationDate": "unknown", "effectiveDate": "yes",
      "completeness": "presumably complete", "identity": "unknown", "license": "subscription",
@@ -320,7 +322,7 @@ def stage_sealed() -> None:
     dump(MANIFEST, {
         "id": "us-dual-benchmark-v1", "kind": "RESEARCH_DATASET_NOT_A_SEALED_INPUT",
         "files": {str(p.relative_to(ROOT)): sha256(p)
-                  for p in sorted([SNAPSHOT, RATES, COVERAGE_CSV, *N100_DIR.glob("*")])},
+                  for p in sorted([SNAPSHOT, RATES, COVERAGE_CSV, N100_OFFICIAL, *N100_DIR.glob("*")])},
         "builtFrom": {"signalHistoryCommit": D.SOURCE_COMMIT, "replayManifestSha256": D.REPLAY_MANIFEST_SHA256,
                       "n100tickersCommit": N100_SOURCE["commit"]},
         "coverageSummary": coverage["summary"]["union"],
@@ -366,7 +368,58 @@ def stage_n100(ciks: dict) -> dict:
         docs[doc["year"]] = doc
         shas[doc["year"]] = sha256(path)
     chain = N.chain_consistency(docs)
-    events = N.events_from_yearly(docs, N100_SOURCE["id"], shas)
+    official = json.loads(N100_OFFICIAL.read_text())
+    annual = official["annual_announcements"]
+    checks = []
+    for row in annual:
+        effective = row["effective_date"]
+        derived = docs[int(effective[:4])]["changes"][effective]
+        checks.append({**row,
+                       "missingDerivedAdds": sorted(set(row["added"]) - set(derived["union"])),
+                       "missingDerivedRemoves": sorted(set(row["removed"]) - set(derived["difference"]))})
+
+    comcast, seagen = official["membership_corrections"]
+    start, end = comcast["start_inclusive"], comcast["end_exclusive"]
+    added = docs[int(start[:4])]["changes"][start]["union"]
+    assert comcast["ticker"] not in added
+    added.append(comcast["ticker"])
+    docs[int(end[:4])]["tickers_on_Jan_1"].append(comcast["ticker"])
+    docs[int(end[:4])]["changes"].setdefault(end, {}).setdefault("difference", []).append(comcast["ticker"])
+
+    old, new = seagen["replace_derived_event_date"], seagen["effective_date"]
+    event = docs[int(old[:4])]["changes"].pop(old)
+    assert event == {"union": [seagen["added"]], "difference": [seagen["removed"]]}
+    effective_changes = docs[int(new[:4])]["changes"][new]
+    for side, symbols in event.items():
+        effective_changes[side].extend(symbols)
+
+    annual_by_date = {row["effective_date"]: row for row in annual}
+    official_sha = sha256(N100_OFFICIAL)
+    comcast_security = N.Security(comcast["ticker"], "Comcast Corporation", comcast["share_class"],
+                                 comcast["security_cusip"])
+    events = []
+    for event in N.events_from_yearly(docs, N100_SOURCE["id"], shas):
+        evidence = annual_by_date.get(event.effectiveDate)
+        if evidence is not None:
+            event = replace(event, announcementDate=evidence["published_date"],
+                            sourceId="NASDAQ_OFFICIAL_ANNOUNCEMENT", sourceSha256=official_sha)
+        if event.effectiveDate == start:
+            event = replace(event, added=tuple(comcast_security if s.tickerAtEvent == comcast["ticker"] else s
+                                               for s in event.added))
+        if event.effectiveDate == end:
+            event = replace(event, removed=(comcast_security,), sourceId="SEC_OFFICIAL_RECLASSIFICATION",
+                            sourceSha256=official_sha, announcementDate=comcast["end_announced_date"])
+        if event.effectiveDate == new:
+            # A merged event cannot expose TTWO before the supplemental announcement.
+            additions = tuple(s for s in event.added if s.tickerAtEvent == seagen["added"])
+            removals = tuple(s for s in event.removed if s.tickerAtEvent == seagen["removed"])
+            events.append(N.MembershipEvent(
+                "nasdaq:2023-reconstitution-update", "NASDAQ_OFFICIAL_ANNOUNCEMENT", official_sha,
+                seagen["published_date"], new, added=additions, removed=removals,
+                kind="REPLACEMENT_OR_CORPORATE_ACTION"))
+            event = replace(event, added=tuple(s for s in event.added if s not in additions),
+                            removed=tuple(s for s in event.removed if s not in removals))
+        events.append(event)
     base = N.BaseSnapshot(sourceId=N100_SOURCE["id"], sourceSha256=shas[2013], asOfDate="2013-01-01",
                           publishedDate="2013-01-01",
                           members=tuple(N.Security(t, issuer="") for t in docs[2013]["tickers_on_Jan_1"]))
@@ -391,19 +444,21 @@ def stage_n100(ciks: dict) -> dict:
                 "identity": swap_identity(e.removed[0].tickerAtEvent, e.added[0].tickerAtEvent, e.note, ciks)}
                for e in in_window if len(e.added) == 1 and len(e.removed) == 1]
     recon = N.classify_reconstruction(base, in_window, 2013, 2025)
-    recon["status"] = N.PARTIAL                 # derived source, no announcement dates, no identifiers
+    recon["status"] = N.PARTIAL  # Intra-year events and most historical share-class identities are incomplete.
     payload = {
         "id": "nasdaq100-pit-membership-v1",
         "evidenceClass": "OUTCOME_BLIND_SOURCE_AUDIT",
         "verdict": "PARTIAL",
         "verdictReasons": [
-            "membership comes from one DERIVED, non-authoritative source (n100tickers, MIT), not from Nasdaq",
-            "announcement dates are absent: changes are usable only from their effective date (conservative)",
-            "no CUSIP/CIK: identity rests on contemporaneous tickers; 1-for-1 swaps may be renames or replacements",
-            "the maintainers record known omissions (e.g. Comcast CMCSK, 2014-12-22)",
-            "no authoritative cross-check could be fetched here (Nasdaq, SEC, Wikipedia refused by egress)",
+            "membership starts from a derived n100tickers history and includes limited official corrections",
+            "annual events have official announcement dates; other events without evidence use their effective date",
+            "most identities still rest on contemporaneous tickers rather than CUSIP/CIK",
+            "the annual cross-check and two corrections do not establish a complete intra-year event ledger",
         ],
         "source": N100_SOURCE, "fileSha256": {str(y): s for y, s in shas.items()},
+        "officialEvidence": {"path": str(N100_OFFICIAL.relative_to(ROOT)), "sha256": official_sha,
+                             "annualChecksBeforeCorrection": checks, "corrections": official["membership_corrections"]},
+        "correctedChainConsistency": N.chain_consistency(docs),
         "candidates": SOURCE_CANDIDATES,
         "chainConsistency": {"years": len(chain), "inconsistentYears": [c for c in chain if not c["consistent"]]},
         "studyWindow": [STUDY_START, STUDY_END],

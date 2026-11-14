@@ -1,13 +1,13 @@
 {
-  "base_evidence_sha256": "a456a9c1f50e7fe4ecde55e66b6f84603817cb0ac9e41f7522e3f145ec3031c6",
+  "base_evidence_sha256": "7994d00c2ce8c9854f4f615ff62cb3947e381985bce32028541753a4dc074a76",
   "coverage": {
     "additional_corporate_events": 63,
-    "additional_index_timing_rows": 41,
+    "additional_index_timing_rows": 42,
     "additional_requests_with_public_evidence": 63,
     "base_requests_with_public_evidence": 149,
     "combined_requests_with_public_evidence": 212,
-    "distinct_public_document_downloads": 72,
-    "distinct_public_documents": 99,
+    "distinct_public_document_downloads": 73,
+    "distinct_public_documents": 100,
     "requests": 212
   },
   "rows": [
@@ -1026,8 +1026,16 @@
         "successor": "",
         "terms": "USD 10.85 per R.R. Donnelley common share."
       },
-      "index_timing_evidence": null,
-      "membership_observation_audit": {},
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://press.spglobal.com/2012-12-05-Garmin-Set-to-Join-the-S-P-500-R-R-Donnelly-Sons-to-Join-S-P-MidCap-400",
+        "reported_change_date": "2012-12-11",
+        "reported_timing": "after_close"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 18,
+        "observed_weeks_at_or_after_symbol_exit": 18
+      },
       "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
       "security_audit_id": "ba1f69c136458d18c2cf"
     },
@@ -1305,6 +1313,11 @@
     },
     "https://press.spglobal.com/2012-11-26-Dollar-General-Set-to-Join-the-S-P-500": {
       "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://press.spglobal.com/2012-12-05-Garmin-Set-to-Join-the-S-P-500-R-R-Donnelly-Sons-to-Join-S-P-MidCap-400": {
+      "bytes": 52731,
+      "sha256": "092a4b3d4aa78117f9f7a52268d01f106bd30bada03a6685e55f51f21d0a399c",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
     },
     "https://press.spglobal.com/2012-12-18-Delphi-Automotive-Set-to-Join-S-P-500": {
       "bytes": 47372,

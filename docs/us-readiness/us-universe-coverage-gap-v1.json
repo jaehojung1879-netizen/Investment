@@ -20,8 +20,8 @@
  },
  "manifest": {
   "path": "data/research/us-dual-benchmark-v1/us-universe-coverage-manifest.csv.gz",
-  "rows": 885,
-  "sha256": "b1f5fbbafeb4f7dd4b50534cd86e9942233ae3d5f94922970a7c854569c5bfb1"
+  "rows": 886,
+  "sha256": "150de176327d389aa4ab179e455dc682025f91c651530103bbdea3d0fd7d6fb4"
  },
  "nasdaq100OnlyWithoutPrices": [
   "ALAB",
@@ -35,6 +35,7 @@
   "BMRN",
   "CCEP",
   "CHKP",
+  "CMCSK",
   "CRWV",
   "CTRP",
   "CTRX",
@@ -107,20 +108,20 @@
    "NEEDS_FUNDAMENTALS": 0,
    "NEEDS_IDENTITY_REPAIR": 12,
    "NEEDS_MEMBERSHIP_EVIDENCE": 0,
-   "NEEDS_PRICE_HISTORY": 58,
+   "NEEDS_PRICE_HISTORY": 59,
    "NOT_EVALUABLE": 0,
    "READY": 132,
-   "symbols": 233
+   "symbols": 234
   },
   "nasdaq100Only": {
    "BLOCKED_PAID_SOURCE": 0,
    "NEEDS_FUNDAMENTALS": 0,
    "NEEDS_IDENTITY_REPAIR": 0,
    "NEEDS_MEMBERSHIP_EVIDENCE": 0,
-   "NEEDS_PRICE_HISTORY": 58,
+   "NEEDS_PRICE_HISTORY": 59,
    "NOT_EVALUABLE": 0,
    "READY": 0,
-   "symbols": 58
+   "symbols": 59
   },
   "sp500": {
    "BLOCKED_PAID_SOURCE": 183,
@@ -137,10 +138,10 @@
    "NEEDS_FUNDAMENTALS": 0,
    "NEEDS_IDENTITY_REPAIR": 38,
    "NEEDS_MEMBERSHIP_EVIDENCE": 0,
-   "NEEDS_PRICE_HISTORY": 58,
+   "NEEDS_PRICE_HISTORY": 59,
    "NOT_EVALUABLE": 0,
    "READY": 606,
-   "symbols": 885
+   "symbols": 886
   },
   "withFinnhubFilings": 785,
   "withOwnPriceCoverage": 606
