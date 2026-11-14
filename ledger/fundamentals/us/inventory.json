@@ -1,112 +1,105 @@
 {
-  "filings": 6,
+  "filings": 1,
   "periodLengthByForm": {
-    "10-K": {
-      "year (316-400d)": 3
-    },
     "10-Q": {
-      "three quarters (226-315d)": 3
+      "three quarters (226-315d)": 1
     }
   },
   "filingsWithNoPeriodLength": 0,
   "filingsByFreq": {
-    "annual": 3,
-    "quarterly": 3
+    "quarterly": 1
   },
   "formsByFreq": {
-    "annual": {
-      "10-K": 3
-    },
     "quarterly": {
-      "10-Q": 3
+      "10-Q": 1
     }
   },
   "conceptsBySection": {
     "bs": 0,
-    "ic": 81,
-    "cf": 119
+    "ic": 23,
+    "cf": 23
   },
   "conceptsBySectionCollapsed": {
     "bs": 0,
-    "ic": 81,
-    "cf": 119
+    "ic": 23,
+    "cf": 23
   },
   "topConcepts": {
     "bs": [],
     "ic": [
-      "us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
-      "us-gaap_IncomeTaxExpenseBenefit",
-      "us-gaap_ProfitLoss",
-      "us-gaap_EarningsPerShareBasic",
-      "us-gaap_EarningsPerShareDiluted",
-      "us-gaap_ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest",
-      "us-gaap_ComprehensiveIncomeNetOfTax",
-      "us-gaap_CostOfGoodsAndServicesSold",
-      "us-gaap_SellingGeneralAndAdministrativeExpense",
-      "us-gaap_OtherComprehensiveIncomeLossNetOfTax",
-      "us-gaap_ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest",
-      "us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax"
+      "us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax",
+      "us-gaap_ResearchAndDevelopmentExpense",
+      "us-gaap_GeneralAndAdministrativeExpense",
+      "us-gaap_RestructuringCostsAndAssetImpairmentCharges",
+      "us-gaap_CostsAndExpenses",
+      "us-gaap_OperatingIncomeLoss",
+      "nktr_NonCashInterestExpenseRelatedToSaleOfRoyalties",
+      "us-gaap_InvestmentIncomeInterest",
+      "us-gaap_OtherNonoperatingIncomeExpense",
+      "us-gaap_NonoperatingIncomeExpense",
+      "us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments",
+      "us-gaap_IncomeTaxExpenseBenefit"
     ],
     "cf": [
-      "us-gaap_IncreaseDecreaseInInventories",
-      "us-gaap_EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
-      "us-gaap_CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
-      "us-gaap_ShareBasedCompensation",
-      "us-gaap_OtherNoncashIncomeExpense",
-      "us-gaap_IncreaseDecreaseInAccountsReceivable",
-      "us-gaap_PaymentsToAcquireBusinessesNetOfCashAcquired",
+      "nktr_NonCashInterestExpenseRelatedToSaleOfRoyalties",
+      "us-gaap_IncomeLossFromEquityMethodInvestments",
       "us-gaap_ProfitLoss",
-      "us-gaap_NetCashProvidedByUsedInOperatingActivities",
-      "us-gaap_NetCashProvidedByUsedInInvestingActivities",
-      "us-gaap_NetCashProvidedByUsedInFinancingActivities",
-      "us-gaap_DepreciationDepletionAndAmortization"
+      "nktr_NonCashRoyaltyRevenueRelatedToSaleOfFutureRoyalties",
+      "us-gaap_AllocatedShareBasedCompensationExpense",
+      "us-gaap_DepreciationAndAmortization",
+      "us-gaap_AmortizationOfDebtDiscountPremium",
+      "nktr_IncreaseDecreaseInOperatingLeaseRightOfUseAssetsNetOfOperatingLeaseLiabilities",
+      "us-gaap_IncreaseDecreaseInOtherOperatingAssets",
+      "us-gaap_IncreaseDecreaseInAccountsPayable",
+      "us-gaap_IncreaseDecreaseInOtherAccruedLiabilities",
+      "us-gaap_NetCashProvidedByUsedInOperatingActivities"
     ]
   },
   "topConceptsCollapsed": {
     "bs": [],
     "ic": [
-      "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
-      "IncomeTaxExpenseBenefit",
-      "ProfitLoss",
-      "EarningsPerShareBasic",
-      "EarningsPerShareDiluted",
-      "ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest",
-      "ComprehensiveIncomeNetOfTax",
-      "CostOfGoodsAndServicesSold",
-      "SellingGeneralAndAdministrativeExpense",
-      "OtherComprehensiveIncomeLossNetOfTax",
-      "ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest",
-      "RevenueFromContractWithCustomerExcludingAssessedTax"
+      "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "ResearchAndDevelopmentExpense",
+      "GeneralAndAdministrativeExpense",
+      "RestructuringCostsAndAssetImpairmentCharges",
+      "CostsAndExpenses",
+      "OperatingIncomeLoss",
+      "nktr_NonCashInterestExpenseRelatedToSaleOfRoyalties",
+      "InvestmentIncomeInterest",
+      "OtherNonoperatingIncomeExpense",
+      "NonoperatingIncomeExpense",
+      "IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments",
+      "IncomeTaxExpenseBenefit"
     ],
     "cf": [
-      "IncreaseDecreaseInInventories",
-      "EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
-      "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
-      "ShareBasedCompensation",
-      "OtherNoncashIncomeExpense",
-      "IncreaseDecreaseInAccountsReceivable",
-      "PaymentsToAcquireBusinessesNetOfCashAcquired",
+      "nktr_NonCashInterestExpenseRelatedToSaleOfRoyalties",
+      "IncomeLossFromEquityMethodInvestments",
       "ProfitLoss",
-      "NetCashProvidedByUsedInOperatingActivities",
-      "NetCashProvidedByUsedInInvestingActivities",
-      "NetCashProvidedByUsedInFinancingActivities",
-      "DepreciationDepletionAndAmortization"
+      "nktr_NonCashRoyaltyRevenueRelatedToSaleOfFutureRoyalties",
+      "AllocatedShareBasedCompensationExpense",
+      "DepreciationAndAmortization",
+      "AmortizationOfDebtDiscountPremium",
+      "nktr_IncreaseDecreaseInOperatingLeaseRightOfUseAssetsNetOfOperatingLeaseLiabilities",
+      "IncreaseDecreaseInOtherOperatingAssets",
+      "IncreaseDecreaseInAccountsPayable",
+      "IncreaseDecreaseInOtherAccruedLiabilities",
+      "NetCashProvidedByUsedInOperatingActivities"
     ]
   },
   "units": {
-    "usd": 366,
-    "usd/share": 24,
-    "shares": 8
+    "u_usd": 42,
+    "u_unitedstatesofamericadollarsshare": 2,
+    "u_shares": 2
   },
   "unitClasses": {
-    "currency": 366,
-    "perShare": 24,
-    "shares": 8
+    "currency": 42,
+    "unclassified": 2,
+    "shares": 2
   },
   "unitClassesResolved": {
-    "currency": 366,
-    "perShare": 24,
-    "shares": 8
+    "currency": 42,
+    "perShare": 2,
+    "shares": 2
   },
   "unclassifiedUnits": {}
 }
