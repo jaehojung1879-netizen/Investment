@@ -65,6 +65,58 @@ def check_paramount_class_b_chart(record, metadata):
         raise Unresolved("PARA_VENDOR_SECURITY_TYPE_OR_SYMBOL_UNVERIFIED")
 
 
+def membership_conflicts(frames, pilot, *, root=ROOT, inputs=None):
+    """Detect old index symbols carried forward across an attested transition."""
+    from pipeline import regional_alpha_features as RAF
+
+    inputs = inputs or Path(__file__).with_name("inputs")
+    base = read(inputs / "departed-public-evidence.json")
+    supplement = read(inputs / "departed-public-evidence-supplement.json")
+    cutoffs = {}
+    for row in base["rows"]:
+        removals = row["index_removals"]
+        if len(removals) == 1:
+            cutoffs[row["audit_identifier"]] = (removals[0]["date"], removals[0]["timing"])
+    for row in supplement["rows"]:
+        rule = row["index_timing_evidence"]
+        if rule:
+            cutoffs[row["audit_identifier"]] = (rule["reported_change_date"], rule["reported_timing"])
+    membership = RAF.MembershipSnapshots(read(root / pilot.MEMBERSHIP)["snapshots"])
+    identity = read(root / pilot.IDENTITY)["regions"]["US"]["identity"]
+    malformed = {t.upper(): v["resolvedTo"] for t, v in identity["malformed"].items() if v.get("resolvedTo")}
+    renames = {t: row["pricedBy"] for t, row in identity["renames"].items() if row.get("pricedBy")}
+
+    # If a later snapshot omits the old symbol, a future reappearance is a
+    # different membership episode requiring its own evidence. Do not backfill
+    # a successor or silently substitute that episode with the old one.
+    stop = {}
+    for symbol, (cutoff, _) in cutoffs.items():
+        for snapshot in membership.snapshots:
+            if snapshot["date"] >= cutoff and symbol not in snapshot["members"]:
+                stop[symbol] = snapshot["date"]
+                break
+
+    conflicts = []
+    for day, frame in sorted(frames.items()):
+        date = day.date().isoformat()
+        snapshot = membership.on(date)
+        if snapshot is None:
+            continue
+        held, plausible = set(), set()
+        for symbol in snapshot["members"]:
+            normalized = malformed.get(symbol.upper(), symbol)
+            ticker = renames.get(normalized, normalized)
+            rule = cutoffs.get(symbol)
+            if rule and snapshot["date"] < stop.get(symbol, "9999-12-31"):
+                cutoff, timing = rule
+                if date > cutoff or (date == cutoff and timing == "before_open"):
+                    held.add(ticker)
+                    continue
+            plausible.add(ticker)
+        conflicts.extend([date, ticker] for ticker in frame.index.intersection(held - plausible))
+    return sorted(conflicts)
+
+
 def accounting_conflicts(frames, filings, pilot, *, root=ROOT):
     """Find eligible rows whose inputs depend on another issuer's filings."""
     from pipeline import regional_alpha_features as RAF, us_capital_allocation_coverage as C
@@ -360,7 +412,9 @@ def main(argv=None):
                         "authenticated-responses.json.gz", "supplement-responses.json.gz", "new_charts.json")]
     dependency_files += [ROOT / n for n in ("scripts/run_us_decision_pilot.py", "pipeline/us_decision_pilot.py",
                          "research/us_historical_market_recovery_v1/audit.py", "research/us_historical_market_recovery_v1/engine.py")]
-    dependency_files.append(Path(__file__).with_name("inputs") / "terminal-followup.json")
+    dependency_files.extend(Path(__file__).with_name("inputs") / name for name in
+                            ("terminal-followup.json", "departed-public-evidence.json",
+                             "departed-public-evidence-supplement.json"))
     cache_key = digest(canonical([digest(p.read_bytes()) for p in dependency_files]))
     repaired = read(repaired_file) if repaired_file.exists() else {}
     if repaired.get("input_cache_key") != cache_key:
@@ -370,8 +424,9 @@ def main(argv=None):
                 filings[old] = filings[new]  # immutable records; actual CIK checks remain in the original helper
         frames, annual, weeks = P.build_signals(frame, filings)
         conflicts = accounting_conflicts(frames, filings, P)
+        index_conflicts = membership_conflicts(frames, P)
         blocked = defaultdict(set)
-        for day, ticker in conflicts:
+        for day, ticker in conflicts + index_conflicts:
             blocked[day].add(ticker)
         cohorts = []
         for day, frame_at_day in sorted(frames.items()):
@@ -380,14 +435,16 @@ def main(argv=None):
             if len(tickers) >= PILOT.MIN_NAMES:
                 cohorts.append({"signal": text, "tickers": tickers})
         repaired = {"cohorts": cohorts, "accounting_issuer_conflicts": conflicts,
+                    "membership_conflicts": index_conflicts,
                     "issuer_conflict_scope": "ORIGINAL_DATED_CIK_SINGLE_ISSUER_RECHECK",
                     "annual": annual, "weeks": weeks, "input_cache_key": cache_key}
         write_private(repaired_file, repaired)
     old_cohorts = {r["signal"]: set(r["tickers"]) for r in original_cohorts["cohorts"]}
     new_cohorts = {r["signal"]: set(r["tickers"]) for r in repaired["cohorts"]}
     issuer_conflicts = {tuple(row) for row in repaired["accounting_issuer_conflicts"]}
+    index_conflicts = {tuple(row) for row in repaired["membership_conflicts"]}
     cohort = {(day, ticker) for day in old_cohorts.keys() | new_cohorts.keys()
-              for ticker in old_cohorts.get(day, set()) | new_cohorts.get(day, set())} | issuer_conflicts
+              for ticker in old_cohorts.get(day, set()) | new_cohorts.get(day, set())} | issuer_conflicts | index_conflicts
     horizon_counts, private_labels = {}, []
     for horizon in (126, 252):
         counts, annual = {"before": Counter(), "after": Counter()}, defaultdict(lambda: {"before": Counter(), "after": Counter()})
@@ -399,6 +456,8 @@ def main(argv=None):
                 missing_security, missing_benchmark = [], []
                 if phase == "after" and ticker in QUARANTINED_BASELINE:
                     status = "PRICE_SECURITY_IDENTITY_QUARANTINED" if end <= AS_OF else "NOT_MATURED"
+                elif phase == "after" and (day, ticker) in index_conflicts:
+                    status = "INDEX_MEMBERSHIP_SYMBOL_CONFLICT" if end <= AS_OF else "NOT_MATURED"
                 elif phase == "after" and (day, ticker) in issuer_conflicts:
                     status = "ACCOUNTING_ISSUER_CONFLICT" if end <= AS_OF else "NOT_MATURED"
                 elif ticker not in members.get(day, set()):
@@ -535,6 +594,7 @@ def main(argv=None):
               "original_input_eligible_records": sum(len(r["tickers"]) for r in original_cohorts["cohorts"]),
               "repaired_input_eligible_records": sum(len(r["tickers"]) for r in repaired["cohorts"]),
               "accounting_issuer_conflict_records": len(issuer_conflicts),
+              "index_membership_symbol_conflict_records": len(index_conflicts),
               "horizons": horizon_counts, "spy_official_reconciliation": spy_report,
               "source_receipts": source_receipts, "price_basis_diagnostics": diagnostics,
               "old_new_close_reconciliation": quote_reconciliation,
@@ -548,6 +608,7 @@ def main(argv=None):
               "inventory": inventory,
               "limitations": ["Development data reconstruction, not a new alpha test, investment nomination, or actual broker execution",
                               "Original surviving-stock labels retain the original replay-v16 vendor-basis and observed-membership limitations",
+                              "The dated index guard excludes stale old symbols without admitting a successor",
                               "The single-issuer guard blocks mismatched accounting rows; it does not establish a permanent traded security ID",
                               "SEC name candidates and current Finnhub profiles are never permanent historical security IDs",
                               "Mixed-consideration fractional settlement and unresolved CVRs/DAP rights are never filled with zero",

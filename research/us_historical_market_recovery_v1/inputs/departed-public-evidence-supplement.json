@@ -1,0 +1,1742 @@
+{
+  "base_evidence_sha256": "a456a9c1f50e7fe4ecde55e66b6f84603817cb0ac9e41f7522e3f145ec3031c6",
+  "coverage": {
+    "additional_corporate_events": 63,
+    "additional_index_timing_rows": 41,
+    "additional_requests_with_public_evidence": 63,
+    "base_requests_with_public_evidence": 149,
+    "combined_requests_with_public_evidence": 212,
+    "distinct_public_document_downloads": 72,
+    "distinct_public_documents": 99,
+    "requests": 212
+  },
+  "rows": [
+    {
+      "audit_identifier": "ACE",
+      "corporate_event_evidence": {
+        "event_date": "2016-01-15",
+        "event_type": "ticker_change",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/896159/000119312516430900/d113231d8k.htm",
+        "issuer_cik": "896159",
+        "successor": "CB",
+        "terms": "Legacy ACE common shares traded under CB. Legacy Chubb Corp shares were a different security."
+      },
+      "index_timing_evidence": null,
+      "membership_observation_audit": {},
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "2706e01f6b550b2525f8"
+    },
+    {
+      "audit_identifier": "ADT",
+      "corporate_event_evidence": {
+        "event_date": "2016-05-02",
+        "event_type": "cash_merger",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1546640/000119312516582209/d177489dex991.htm",
+        "issuer_cik": "1546640",
+        "successor": "",
+        "terms": "USD 42.00 per share of old ADT Corporation common stock."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/337754_ayivsatlablopb5466.pdf",
+        "reported_change_date": "2016-05-02",
+        "reported_timing": "after_close"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 162,
+        "observed_weeks_at_or_after_symbol_exit": 6
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "8558be17aebc8d6ec2f4"
+    },
+    {
+      "audit_identifier": "ANTM",
+      "corporate_event_evidence": {
+        "event_date": "2022-06-28",
+        "event_type": "ticker_change",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1156039/000119312522183957/d359422d8k.htm",
+        "issuer_cik": "1156039",
+        "successor": "ELV",
+        "terms": "Same common stock from Anthem to Elevance Health."
+      },
+      "index_timing_evidence": null,
+      "membership_observation_audit": {},
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "22ba3545af0affb29a91"
+    },
+    {
+      "audit_identifier": "APOL",
+      "corporate_event_evidence": {
+        "event_date": "2017-02-01",
+        "event_type": "cash_merger",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/929887/000119312517026959/d329920d8k.htm",
+        "issuer_cik": "929887",
+        "successor": "",
+        "terms": "USD 10.00 per Class A or Class B common share."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://press.spglobal.com/2013-06-20-News-Corp-Set-to-Join-S-P-500-Mallinckrodt-Apollo-to-Join-S-P-MidCap-400-Forest-Oil-Tesco-to-Join-S-P-SmallCap-600",
+        "reported_change_date": "2013-06-28",
+        "reported_timing": "after_close"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 40,
+        "observed_weeks_at_or_after_symbol_exit": 14,
+        "weeks_from_snapshot_dated_after_exit": 9
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "e3692e48ee7ebb411c42"
+    },
+    {
+      "audit_identifier": "BHI",
+      "corporate_event_evidence": {
+        "event_date": "2017-07-03",
+        "event_type": "stock_and_special_dividend",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/808362/000112760217022533/form4.xml",
+        "issuer_cik": "808362",
+        "successor": "BHGE",
+        "terms": "One BHGE Class A share and USD 17.50 special dividend per old BHI common share."
+      },
+      "index_timing_evidence": null,
+      "membership_observation_audit": {},
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "ecbcabaec3edd4d34d77"
+    },
+    {
+      "audit_identifier": "BRCM",
+      "corporate_event_evidence": {
+        "event_date": "2016-02-01",
+        "event_type": "election_and_proration",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1649345/000164934516000009/R9.htm",
+        "issuer_cik": "1054374",
+        "successor": "AVGO",
+        "terms": "Cash election USD 54.50 and stock election 0.4378 Broadcom ordinary shares subject to proration, or restricted exchangeable units. Use final allocation."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://press.spglobal.com/2016-01-22-Federal-Realty-Investment-Trust-Set-to-Join-the-S-P-500-Curtiss-Wright-Pool-to-Join-S-P-MidCap-400-Cray-Asbury-Automotive-to-Join-S-P-SmallCap-600",
+        "reported_change_date": "2016-01-29",
+        "reported_timing": "after_close"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 164,
+        "observed_weeks_at_or_after_symbol_exit": 3
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "bca6f4dcdabd17049545"
+    },
+    {
+      "audit_identifier": "BXLT",
+      "corporate_event_evidence": {
+        "event_date": "2016-06-03",
+        "event_type": "stock_cash_and_election",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/936402/000110465916125387/a16-12719_2ex99d4.htm",
+        "issuer_cik": "1620546",
+        "successor": "SHPG",
+        "terms": "USD 18.00 plus 0.1482 Shire ADS by default or 0.4446 Shire ordinary shares by election."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://press.spglobal.com/2016-05-27-TransDigm-Group-Set-to-Join-the-S-P-500-Helen-of-Troy-and-Brocade-Communications-Systems-to-Join-S-P-MidCap-400-Team-and-MDC-Holdings-to-Join-S-P-SmallCap-600",
+        "reported_change_date": "2016-06-02",
+        "reported_timing": "after_close"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 16,
+        "observed_weeks_at_or_after_symbol_exit": 2
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "0378e099d7e01cf263dd"
+    },
+    {
+      "audit_identifier": "CBE",
+      "corporate_event_evidence": {
+        "event_date": "2012-11-30",
+        "event_type": "cash_stock_merger",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1551182/000155118213000035/R41.htm",
+        "issuer_cik": "1141982",
+        "successor": "ETN",
+        "terms": "USD 39.15 and 0.77479 new Eaton shares per Cooper ordinary share."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://press.spglobal.com/2012-11-26-Dollar-General-Set-to-Join-the-S-P-500",
+        "reported_change_date": "2012-11-30",
+        "reported_timing": "after_close"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 18,
+        "observed_weeks_at_or_after_symbol_exit": 18,
+        "weeks_from_snapshot_dated_after_exit": 18
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "86d2759660c5dbd2886c"
+    },
+    {
+      "audit_identifier": "CBS",
+      "corporate_event_evidence": {
+        "event_date": "2019-12-05",
+        "event_type": "class_preserving_ticker_change",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/813828/000081382820000013/a2019k.htm",
+        "issuer_cik": "813828",
+        "successor": "VIAC",
+        "terms": "CBS Class B remained ViacomCBS Class B and changed trading symbol. Class A followed the separately traded VIACA line."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "symbol_transition",
+        "evidence_url": "https://press.spglobal.com/2019-11-27-W-R-Berkley-Set-to-Join-S-P-500-RLI-to-Join-S-P-MidCap-400-The-St-Joe-Company-to-Join-S-P-SmallCap-600",
+        "reported_change_date": "2019-12-05",
+        "reported_timing": "before_open"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 384,
+        "observed_weeks_at_or_after_symbol_exit": 23
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "5ae85d368bd1c5afdf3b"
+    },
+    {
+      "audit_identifier": "CCE",
+      "corporate_event_evidence": {
+        "event_date": "2016-05-28",
+        "event_type": "cash_stock_merger",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1491675/000112760216054279/form4.xml",
+        "issuer_cik": "1491675",
+        "successor": "CCE",
+        "terms": "Old common share converted into one new European Partners ordinary share plus USD 14.50. The initial successor reused CCE."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://press.spglobal.com/2016-05-24-Arthur-J-Gallagher-Co-Set-to-Join-the-S-P-500-Education-Realty-Trust-to-Join-S-P-MidCap-400-American-Axle-Manufacturing-Holdings-to-Join-S-P-SmallCap-600",
+        "reported_change_date": "2016-05-27",
+        "reported_timing": "after_close"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 180,
+        "observed_weeks_at_or_after_symbol_exit": 2
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "1b2ed4524ba02b2311f6"
+    },
+    {
+      "audit_identifier": "CDAY",
+      "corporate_event_evidence": {
+        "event_date": "2024-02-01",
+        "event_type": "ticker_change",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1725057/000095017024022100/R29.htm",
+        "issuer_cik": "1725057",
+        "successor": "DAY",
+        "terms": "Same Ceridian common stock changed trading symbol."
+      },
+      "index_timing_evidence": null,
+      "membership_observation_audit": {},
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "10babcd32e3513ef8a4e"
+    },
+    {
+      "audit_identifier": "CFN",
+      "corporate_event_evidence": {
+        "event_date": "2015-03-17",
+        "event_type": "cash_stock_merger",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1457543/000119312515094831/d890298d8k.htm",
+        "issuer_cik": "1457543",
+        "successor": "BDX",
+        "terms": "USD 49 and 0.0777 BD common shares per CareFusion common share, with cash in lieu."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://press.spglobal.com/2015-03-13-Celgene-Kinder-Morgan-and-Actavis-Set-to-Join-the-S-P-100-Several-Constituent-Changes-Announced-for-S-P-500-S-P-MidCap-400-and-S-P-SmallCap-600",
+        "reported_change_date": "2015-03-17",
+        "reported_timing": "after_close"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 142,
+        "observed_weeks_at_or_after_symbol_exit": 27,
+        "weeks_from_snapshot_dated_after_exit": 11
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "5730f9c51265c4b22e66"
+    },
+    {
+      "audit_identifier": "COG",
+      "corporate_event_evidence": {
+        "event_date": "2021-10-04",
+        "event_type": "ticker_change",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/858470/000110465921122041/tm2129019d1_ex99-1.htm",
+        "issuer_cik": "858470",
+        "successor": "CTRA",
+        "terms": "Legacy Cabot common stock changed ticker after acquiring Cimarex."
+      },
+      "index_timing_evidence": null,
+      "membership_observation_audit": {},
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "34845b836290fd1b266c"
+    },
+    {
+      "audit_identifier": "CPGX",
+      "corporate_event_evidence": {
+        "event_date": "2016-07-01",
+        "event_type": "cash_merger",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1629995/000119312516639518/d221385dex991.htm",
+        "issuer_cik": "1629995",
+        "successor": "",
+        "terms": "USD 25.50 per Columbia Pipeline Group common share."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20160623-365754/365754_tecocolumbiaspindhr.pdf",
+        "reported_change_date": "2016-07-05",
+        "reported_timing": "after_close"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 19
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "4ff00aeb2367e54d3b03"
+    },
+    {
+      "audit_identifier": "CSRA",
+      "corporate_event_evidence": {
+        "event_date": "2018-04-03",
+        "event_type": "cash_merger",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/40533/000004053318000018/gd-2018040110q.htm",
+        "issuer_cik": "1646383",
+        "successor": "",
+        "terms": "USD 41.25 per common share."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://press.spglobal.com/2018-03-28-MSCI-Set-to-Join-S-P-500-Lumentum-Holdings-to-Join-S-P-MidCap-400-C-J-Energy-Services-to-Join-S-P-SmallCap-600",
+        "reported_change_date": "2018-04-04",
+        "reported_timing": "before_open"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 220,
+        "observed_weeks_at_or_after_symbol_exit": 110
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "c818346bb2f580d6bab2"
+    },
+    {
+      "audit_identifier": "CVC",
+      "corporate_event_evidence": {
+        "event_date": "2016-06-21",
+        "event_type": "cash_merger",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1702780/000170278017000011/alticeusa9-30x17.htm",
+        "issuer_cik": "1053112",
+        "successor": "",
+        "terms": "USD 34.90 for Cablevision NY Group Class A and Class B."
+      },
+      "index_timing_evidence": null,
+      "membership_observation_audit": {},
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "2e52b8ab96ee4e32b425"
+    },
+    {
+      "audit_identifier": "DAY",
+      "corporate_event_evidence": {
+        "event_date": "2026-02-04",
+        "event_type": "cash_merger",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1725057/000114036126003628/ef20064744_8k.htm",
+        "issuer_cik": "1725057",
+        "successor": "",
+        "terms": "USD 70.00 per Dayforce common share."
+      },
+      "index_timing_evidence": null,
+      "membership_observation_audit": {},
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "3f71496eead0d83c54b3"
+    },
+    {
+      "audit_identifier": "DISCA",
+      "corporate_event_evidence": {
+        "event_date": "2022-04-08",
+        "event_type": "class_reclassification",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1421985/000143710722000111/xslF345X03/wf-form4_164980791758271.xml",
+        "issuer_cik": "1437107",
+        "successor": "WBD",
+        "terms": "Discovery Series A converted into WBD Series A common stock."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "symbol_transition",
+        "evidence_url": "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20220407-1451476/1451476_attspinwbd5.pdf",
+        "reported_change_date": "2022-04-11",
+        "reported_timing": "before_open"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 521,
+        "observed_weeks_at_or_after_symbol_exit": 37
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "8a390b1b1675b6bf6973"
+    },
+    {
+      "audit_identifier": "DISCK",
+      "corporate_event_evidence": {
+        "event_date": "2022-04-08",
+        "event_type": "class_reclassification",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1421985/000143710722000111/xslF345X03/wf-form4_164980791758271.xml",
+        "issuer_cik": "1437107",
+        "successor": "WBD",
+        "terms": "Discovery Series C converted into WBD Series A common stock."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "symbol_transition",
+        "evidence_url": "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20220407-1451476/1451476_attspinwbd5.pdf",
+        "reported_change_date": "2022-04-11",
+        "reported_timing": "before_open"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 357,
+        "observed_weeks_at_or_after_symbol_exit": 37
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "4ece04570139625609a8"
+    },
+    {
+      "audit_identifier": "DNB",
+      "corporate_event_evidence": {
+        "event_date": "2019-02-08",
+        "event_type": "cash_merger",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1115222/000110465919006848/a19-4290_1ex99d1.htm",
+        "issuer_cik": "1115222",
+        "successor": "",
+        "terms": "Old Dun & Bradstreet acquired for USD 145.00 per share. The later listed DNB is a different security."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://press.spglobal.com/2017-03-29-Gartner-Set-to-Join-S-P-500-Dun-Bradstreet-Wintrust-Financial-and-INC-Research-to-Join-S-P-MidCap-400-Heska-to-Join-S-P-SmallCap-600",
+        "reported_change_date": "2017-04-05",
+        "reported_timing": "before_open"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 274,
+        "observed_weeks_at_or_after_symbol_exit": 52
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "ef7e1617af199ac16057"
+    },
+    {
+      "audit_identifier": "DPS",
+      "corporate_event_evidence": {
+        "event_date": "2018-07-09",
+        "event_type": "ticker_and_special_dividend",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1418135/000141813519000007/kdp-10kx12312018.htm",
+        "issuer_cik": "1418135",
+        "successor": "KDP",
+        "terms": "USD 103.75 special dividend for July 6 record holders and continuation of the common stock as KDP."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20180625-731759/731759_june25drpepperclarifications.pdf",
+        "reported_change_date": "2018-07-02",
+        "reported_timing": "before_open"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 384,
+        "observed_weeks_at_or_after_symbol_exit": 97
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "3843a570050bea496e2f"
+    },
+    {
+      "audit_identifier": "DTV",
+      "corporate_event_evidence": {
+        "event_date": "2015-07-24",
+        "event_type": "cash_stock_merger",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1465112/000090951815000217/mm07-2415_8k.htm",
+        "issuer_cik": "1465112",
+        "successor": "T",
+        "terms": "USD 28.50 and 1.892 AT&T common shares per DIRECTV common share, with cash in lieu."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://press.spglobal.com/2015-07-24-Signet-Jewelers-Set-to-Join-the-S-P-500-PAREXEL-International-Catalent-to-Join-the-S-P-MidCap-400-Others-to-Join-S-P-SmallCap-600",
+        "reported_change_date": "2015-07-28",
+        "reported_timing": "after_close"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 164,
+        "observed_weeks_at_or_after_symbol_exit": 30,
+        "weeks_from_snapshot_dated_after_exit": 22
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "df95be6382dcbeabe451"
+    },
+    {
+      "audit_identifier": "DV",
+      "corporate_event_evidence": {
+        "event_date": "2017-05-24",
+        "event_type": "ticker_change",
+        "evidence_url": "https://www.miaxglobal.com/alerts/2017/05/24/miax-corporate-action-alert-devry-education-group-inc-dv-will-change-its-name-and",
+        "issuer_cik": "730464",
+        "successor": "ATGE",
+        "terms": "DeVry Education Group common share symbol changed to ATGE."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://press.spglobal.com/2012-09-24-ADT-Pentair-Set-to-Join-the-S-P-500-Lexmark-DeVry-to-Join-the-S-P-MidCap-400-and-MarketAxess-to-Join-the-S-P-SmallCap-600",
+        "reported_change_date": "2012-09-28",
+        "reported_timing": "after_close"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 18,
+        "observed_weeks_at_or_after_symbol_exit": 18,
+        "weeks_from_snapshot_dated_after_exit": 18
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "703ab8e0a7781b092e6c"
+    },
+    {
+      "audit_identifier": "DWDP",
+      "corporate_event_evidence": {
+        "event_date": "2019-06-01",
+        "event_type": "spin_off_and_reverse_split",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1755672/000119312519163314/d753864d8k.htm",
+        "issuer_cik": "1666700",
+        "successor": "DD;CTVA",
+        "terms": "Corteva distribution and DuPont reverse split. The separate prior Dow spin-off also matters for holdings crossing April 2019."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "symbol_transition",
+        "evidence_url": "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20190530-936758/936758_correcteddwdpspin5blmn6.pdf",
+        "reported_change_date": "2019-06-03",
+        "reported_timing": "before_open"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 110,
+        "observed_weeks_at_or_after_symbol_exit": 49
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "68874e7dae8c4f5c801f"
+    },
+    {
+      "audit_identifier": "FBHS",
+      "corporate_event_evidence": {
+        "event_date": "2022-12-14",
+        "event_type": "spin_off_and_ticker_change",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1519751/000119312522306146/d420098d8k.htm",
+        "issuer_cik": "1519751",
+        "successor": "FBIN;MBC",
+        "terms": "One MasterBrand common share per Fortune Brands common share. Parent regular-way ticker changed Dec 15."
+      },
+      "index_timing_evidence": null,
+      "membership_observation_audit": {},
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "a3f9780f3fd6a3acf145"
+    },
+    {
+      "audit_identifier": "FII",
+      "corporate_event_evidence": {
+        "event_date": "2020-02-03",
+        "event_type": "class_preserving_ticker_change",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1056288/000105628821000008/fhi-20201231.htm",
+        "issuer_cik": "1056288",
+        "successor": "FHI",
+        "terms": "Federated Hermes Class B common stock changed from FII to FHI."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://press.spglobal.com/2012-12-20-AbbVie-Set-to-Join-S-P-100-500-Federated-Investors-Set-to-Join-S-P-MidCap-400-ITT-Educational-Services-Procera-Networks-to-Join-S-P-SmallCap-600",
+        "reported_change_date": "2012-12-31",
+        "reported_timing": "after_close"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 18,
+        "observed_weeks_at_or_after_symbol_exit": 18,
+        "weeks_from_snapshot_dated_after_exit": 12
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "4d204a786ee7bee11c0d"
+    },
+    {
+      "audit_identifier": "GCI",
+      "corporate_event_evidence": {
+        "event_date": "2015-06-29",
+        "event_type": "spin_off_and_ticker_reuse",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/39899/000003989915000026/R20.htm",
+        "issuer_cik": "39899",
+        "successor": "TGNA;GCI",
+        "terms": "Original Gannett continues as TEGNA. One share of new Gannett for every two legacy shares. New Gannett reused GCI."
+      },
+      "index_timing_evidence": null,
+      "membership_observation_audit": {},
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "d89a2d301d32ddf2d974"
+    },
+    {
+      "audit_identifier": "GPS",
+      "corporate_event_evidence": {
+        "event_date": "2024-08-22",
+        "event_type": "ticker_change",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/39911/000003991125000029/gap-20250201.htm",
+        "issuer_cik": "39911",
+        "successor": "GAP",
+        "terms": "The Gap common stock changed trading symbol on NYSE."
+      },
+      "index_timing_evidence": null,
+      "membership_observation_audit": {},
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "e0d1b35ca2520d8bc499"
+    },
+    {
+      "audit_identifier": "HAR",
+      "corporate_event_evidence": {
+        "event_date": "2017-03-10",
+        "event_type": "cash_merger",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/800459/000119312517078968/d184457dex991.htm",
+        "issuer_cik": "800459",
+        "successor": "",
+        "terms": "USD 112.00 per Harman common share."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://press.spglobal.com/2017-03-13-Synopsys-Set-to-Join-S-P-500-The-GEO-Group-to-Join-S-P-MidCap-400-Coca-Cola-Bottling-and-Orthofix-International-to-Join-S-P-SmallCap-600",
+        "reported_change_date": "2017-03-16",
+        "reported_timing": "before_open"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 274,
+        "observed_weeks_at_or_after_symbol_exit": 55
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "b5c92d97732b8ef32c0b"
+    },
+    {
+      "audit_identifier": "HCP",
+      "corporate_event_evidence": {
+        "event_date": "2019-11-05",
+        "event_type": "ticker_change",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/765880/000162828020001456/healthpeak10-k12312019.htm",
+        "issuer_cik": "765880",
+        "successor": "PEAK",
+        "terms": "Healthpeak common shares first traded as PEAK on this date."
+      },
+      "index_timing_evidence": null,
+      "membership_observation_audit": {},
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "f3d22e2f182021d6d336"
+    },
+    {
+      "audit_identifier": "HOT",
+      "corporate_event_evidence": {
+        "event_date": "2016-09-23",
+        "event_type": "cash_stock_merger",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1048286/000162828016021074/R7.htm",
+        "issuer_cik": "316206",
+        "successor": "MAR",
+        "terms": "USD 21.00 and 0.80 Marriott Class A common shares per Starwood common share."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://www.prnewswire.com/news-releases/the-cooper-companies-set-to-join-the-sp-500-northwestern-and-nuvasive-to-join-sp-midcap-400-sps-commerce-and-fox-factory-to-join-sp-smallcap-600-300331403.html",
+        "reported_change_date": "2016-09-22",
+        "reported_timing": "after_close"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 218,
+        "observed_weeks_at_or_after_symbol_exit": 24
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "466c9f6828a34936e431"
+    },
+    {
+      "audit_identifier": "HRS",
+      "corporate_event_evidence": {
+        "event_date": "2019-07-01",
+        "event_type": "ticker_and_cusip_change",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/202058/000114036119012139/form8k.htm",
+        "issuer_cik": "202058",
+        "successor": "LHX",
+        "terms": "Existing Harris common stock changed ticker and received CUSIP 502431109. L3 exchanged in a separate leg."
+      },
+      "index_timing_evidence": null,
+      "membership_observation_audit": {},
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "b534920815b6c652d9be"
+    },
+    {
+      "audit_identifier": "JCP",
+      "corporate_event_evidence": {
+        "event_date": "2020-05-18",
+        "event_type": "trading_suspension",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1166126/000116612620000068/jcp-20200502.htm",
+        "issuer_cik": "1166126",
+        "successor": "",
+        "terms": "NYSE suspended old J.C. Penney common stock at market open. Final OTC holdings and cancellation have a separate timeline."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20131122/64568_irspinpenney1.pdf",
+        "reported_change_date": "2013-11-29",
+        "reported_timing": "after_close"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 55,
+        "observed_weeks_at_or_after_symbol_exit": 7
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "cf258fc761a734107f2b"
+    },
+    {
+      "audit_identifier": "JDSU",
+      "corporate_event_evidence": {
+        "event_date": "2015-08-01",
+        "event_type": "spin_off_and_ticker_change",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/912093/000110465915056495/a15-16911_18k.htm",
+        "issuer_cik": "912093",
+        "successor": "VIAV;LITE",
+        "terms": "One Lumentum share for every five old JDSU shares. Regular-way ex date August 4."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://press.spglobal.com/2013-12-11-Facebook-Set-to-Join-the-S-P-100-500-Alliance-Data-Systems-and-Mohawk-to-Join-the-S-P-500-Changes-to-the-S-P-MidCap-400-and-the-S-P-SmallCap-600",
+        "reported_change_date": "2013-12-20",
+        "reported_timing": "after_close"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 55,
+        "observed_weeks_at_or_after_symbol_exit": 4
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "a734a7c95693cd606ebf"
+    },
+    {
+      "audit_identifier": "JNPR",
+      "corporate_event_evidence": {
+        "event_date": "2025-07-02",
+        "event_type": "cash_merger",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1043604/000119312525154400/d912160d8k.htm",
+        "issuer_cik": "1043604",
+        "successor": "",
+        "terms": "USD 40.00 per Juniper Networks common share."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://press.spglobal.com/2025-07-02-Datadog-Set-to-Join-S-P-500",
+        "reported_change_date": "2025-07-09",
+        "reported_timing": "before_open"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 522
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "f5cd25dcdeea60bdb688"
+    },
+    {
+      "audit_identifier": "K",
+      "corporate_event_evidence": {
+        "event_date": "2025-12-11",
+        "event_type": "cash_merger",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/55067/000119312525315130/d90636d8k.htm",
+        "issuer_cik": "55067",
+        "successor": "",
+        "terms": "USD 83.50 per Kellanova common share. Separate historical Kellogg distribution remains relevant."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20251208-1481001/1481001_56-k-hsii-vtle.pdf",
+        "reported_change_date": "2025-12-11",
+        "reported_timing": "before_open"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 522
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "822a124b11e488eb84e6"
+    },
+    {
+      "audit_identifier": "KFT",
+      "corporate_event_evidence": {
+        "event_date": "2012-10-01",
+        "event_type": "spin_off_and_ticker_change",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1103982/000119312512411522/d418430dex991.htm",
+        "issuer_cik": "1103982",
+        "successor": "MDLZ;KRFT",
+        "terms": "Original issuer continues as MDLZ. Distribution of one new KRFT share per three old shares."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "symbol_transition",
+        "evidence_url": "https://press.spglobal.com/2012-09-25-Kraft-Foods-Group-Set-to-Join-the-S-P-500-Alpha-Natural-Resources-InterDigital-Genesee-Wyoming-to-Join-the-S-P-MidCap-400-and-Korn-Ferry-to-Join-the-S-P-SmallCap-600",
+        "reported_change_date": "2012-10-01",
+        "reported_timing": "after_close"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 18,
+        "observed_weeks_at_or_after_symbol_exit": 18,
+        "weeks_from_snapshot_dated_after_exit": 18
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "afae8cabc91a5c885efb"
+    },
+    {
+      "audit_identifier": "KORS",
+      "corporate_event_evidence": {
+        "event_date": "2019-01-02",
+        "event_type": "ticker_change",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1530721/000119312518362322/d653406dex991.htm",
+        "issuer_cik": "1530721",
+        "successor": "CPRI",
+        "terms": "Michael Kors Holdings changed name and trading symbol."
+      },
+      "index_timing_evidence": null,
+      "membership_observation_audit": {},
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "3e5be19d41dde09f2605"
+    },
+    {
+      "audit_identifier": "LLL",
+      "corporate_event_evidence": {
+        "event_date": "2019-06-29",
+        "event_type": "stock_merger",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/202058/000114036119012139/form8k.htm",
+        "issuer_cik": "1056239",
+        "successor": "LHX",
+        "terms": "1.30 L3Harris common shares per legacy L3 Technologies common share, with cash in lieu."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20190624-948566/948566_mktxaaxnmlab546usna6xncr6.pdf",
+        "reported_change_date": "2019-07-01",
+        "reported_timing": "before_open"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 384,
+        "observed_weeks_at_or_after_symbol_exit": 45
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "ddbebc04474058d9fdb0"
+    },
+    {
+      "audit_identifier": "LTD",
+      "corporate_event_evidence": {
+        "event_date": "2013-12-02",
+        "event_type": "ticker_change",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/701985/000070198513000043/ltd-2013112_10q.htm",
+        "issuer_cik": "701985",
+        "successor": "LB",
+        "terms": "Legacy Limited Brands trading symbol changed to LB."
+      },
+      "index_timing_evidence": null,
+      "membership_observation_audit": {},
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "fe58e862d3e31de90b77"
+    },
+    {
+      "audit_identifier": "LXK",
+      "corporate_event_evidence": {
+        "event_date": "2016-11-29",
+        "event_type": "cash_merger",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1001288/000119312516779022/d237632d8k.htm",
+        "issuer_cik": "1001288",
+        "successor": "",
+        "terms": "USD 40.50 per Lexmark share."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://press.spglobal.com/2012-09-24-ADT-Pentair-Set-to-Join-the-S-P-500-Lexmark-DeVry-to-Join-the-S-P-MidCap-400-and-MarketAxess-to-Join-the-S-P-SmallCap-600",
+        "reported_change_date": "2012-09-28",
+        "reported_timing": "after_close"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 18,
+        "observed_weeks_at_or_after_symbol_exit": 18,
+        "weeks_from_snapshot_dated_after_exit": 18
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "26b2f86c2f153df63e39"
+    },
+    {
+      "audit_identifier": "MHP",
+      "corporate_event_evidence": {
+        "event_date": "2013-05-14",
+        "event_type": "ticker_change",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/64040/000114420413024851/v343076_ex99.htm",
+        "issuer_cik": "64040",
+        "successor": "MHFI",
+        "terms": "McGraw-Hill announced the new trading symbol effective May 14."
+      },
+      "index_timing_evidence": null,
+      "membership_observation_audit": {},
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "4e0a479cf431df2cda5e"
+    },
+    {
+      "audit_identifier": "MJN",
+      "corporate_event_evidence": {
+        "event_date": "2017-06-15",
+        "event_type": "cash_merger",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1452575/000110465917039502/a17-15238_18k.htm",
+        "issuer_cik": "1452575",
+        "successor": "",
+        "terms": "USD 90.00 per Mead Johnson common share."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://press.spglobal.com/2017-06-12-Everest-Re-Group-Set-to-Join-S-P-500-Pinnacle-Financial-Partners-to-Join-S-P-MidCap-400-and-Armada-Hoffler-Properties-to-Join-S-P-SmallCap-600",
+        "reported_change_date": "2017-06-19",
+        "reported_timing": "before_open"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 274,
+        "observed_weeks_at_or_after_symbol_exit": 41
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "cc18fbc2bee1ca13b340"
+    },
+    {
+      "audit_identifier": "MON",
+      "corporate_event_evidence": {
+        "event_date": "2018-06-07",
+        "event_type": "cash_merger",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/876661/000087666118000681/ruleprovisionnotice.htm",
+        "issuer_cik": "1110783",
+        "successor": "",
+        "terms": "USD 128.00 per Monsanto common share."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20180604-719152/719152_nflx1twtr5rgnx6.pdf",
+        "reported_change_date": "2018-06-07",
+        "reported_timing": "before_open"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 384,
+        "observed_weeks_at_or_after_symbol_exit": 101
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "2b2656f426ada78a3074"
+    },
+    {
+      "audit_identifier": "NE",
+      "corporate_event_evidence": {
+        "event_date": "2020-07-31",
+        "event_type": "trading_suspension_and_otc",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1169055/000119312520270359/d52184d8k.htm",
+        "issuer_cik": "1169055",
+        "successor": "NEBLQ",
+        "terms": "NYSE suspended old ordinary shares on July 31. OTC quotation started August 4. Later successor equity requires separate proof."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://press.spglobal.com/2015-07-14-PayPal-Holdings-Set-to-Join-S-P-100-500-Others-to-Join-S-P-MidCap-400-and-S-P-SmallCap-600",
+        "reported_change_date": "2015-07-17",
+        "reported_timing": "after_close"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 164,
+        "observed_weeks_at_or_after_symbol_exit": 31,
+        "weeks_from_snapshot_dated_after_exit": 22
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "bfa08adc7959057375ab"
+    },
+    {
+      "audit_identifier": "NLSN",
+      "corporate_event_evidence": {
+        "event_date": "2022-10-11",
+        "event_type": "cash_merger",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1492633/000119312522260583/d407513dex991.htm",
+        "issuer_cik": "1492633",
+        "successor": "",
+        "terms": "USD 28.00 per Nielsen share."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20221006-1456477/1456477_5nlsn.pdf",
+        "reported_change_date": "2022-10-12",
+        "reported_timing": "before_open"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 459,
+        "observed_weeks_at_or_after_symbol_exit": 11
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "c2e146de2c0a1d736871"
+    },
+    {
+      "audit_identifier": "NU",
+      "corporate_event_evidence": {
+        "event_date": "2015-02-19",
+        "event_type": "ticker_change",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/72741/000110465915032649/a15-10114_1424b3.htm",
+        "issuer_cik": "72741",
+        "successor": "ES",
+        "terms": "NYSE common shares began trading as ES before the April legal name change."
+      },
+      "index_timing_evidence": null,
+      "membership_observation_audit": {},
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "be43ed896db60cbf9f13"
+    },
+    {
+      "audit_identifier": "PCS",
+      "corporate_event_evidence": {
+        "event_date": "2013-04-30",
+        "event_type": "reverse_split_and_cash",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1399077/000119312513444683/d628075d424b5.htm",
+        "issuer_cik": "1283699",
+        "successor": "TMUS",
+        "terms": "MetroPCS business combination. One-for-two reverse split and approximately USD 4.05 per pre-split share."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://press.spglobal.com/2013-04-24-Regeneron-Set-to-Join-the-S-P-500-Eagle-Materials-CST-Brands-to-Join-the-S-P-MidCap-400-Francescas-Northern-Oil-Gas-to-Join-the-S-P-SmallCap-600",
+        "reported_change_date": "2013-04-30",
+        "reported_timing": "after_close"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 18,
+        "observed_weeks_at_or_after_symbol_exit": 1
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "f04b7726d54cf25ba593"
+    },
+    {
+      "audit_identifier": "RDC",
+      "corporate_event_evidence": {
+        "event_date": "2019-04-11",
+        "event_type": "stock_merger",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/85408/000114420419019311/tv518654_8k.htm",
+        "issuer_cik": "85408",
+        "successor": "ESV",
+        "terms": "2.215 Ensco Class A ordinary shares for each Rowan Class A ordinary share."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://press.spglobal.com/2014-08-14-Mallinckrodt-Set-to-Join-the-S-P-500-Rowan-to-Join-S-P-MidCap-400-GulfMark-Offshore-to-Join-S-P-SmallCap-600",
+        "reported_change_date": "2014-08-18",
+        "reported_timing": "after_close"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 101,
+        "observed_weeks_at_or_after_symbol_exit": 16
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "5f39fc00d50fac875d85"
+    },
+    {
+      "audit_identifier": "RRD",
+      "corporate_event_evidence": {
+        "event_date": "2022-02-25",
+        "event_type": "cash_merger",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/29669/000119312522053784/d219453d8k.htm",
+        "issuer_cik": "29669",
+        "successor": "",
+        "terms": "USD 10.85 per R.R. Donnelley common share."
+      },
+      "index_timing_evidence": null,
+      "membership_observation_audit": {},
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "ba1f69c136458d18c2cf"
+    },
+    {
+      "audit_identifier": "RTN",
+      "corporate_event_evidence": {
+        "event_date": "2020-04-03",
+        "event_type": "stock_merger",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1047122/000119312520097237/d827106d8k.htm",
+        "issuer_cik": "1047122",
+        "successor": "RTX",
+        "terms": "2.3348 RTX common shares per legacy Raytheon common share, with cash in lieu."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20200331-1119193/1119193_1utxspinrtn15otiscarrier.pdf",
+        "reported_change_date": "2020-04-06",
+        "reported_timing": "before_open"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 384,
+        "observed_weeks_at_or_after_symbol_exit": 5
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "188048b0bbe6a38a804b"
+    },
+    {
+      "audit_identifier": "S",
+      "corporate_event_evidence": {
+        "event_date": "2013-07-10",
+        "event_type": "election_and_same_ticker_successor",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/101830/000119312513287538/d565823d8k12b.htm",
+        "issuer_cik": "101830",
+        "successor": "S",
+        "terms": "New Sprint reused S. Stock election received 1 New Sprint share. Cash or no election received USD 5.647658 and 0.261744048 New Sprint shares."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://press.spglobal.com/2013-07-01-Nielsen-Set-to-Join-the-S-P-500",
+        "reported_change_date": "2013-07-08",
+        "reported_timing": "after_close"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 40,
+        "observed_weeks_at_or_after_symbol_exit": 13,
+        "weeks_from_snapshot_dated_after_exit": 9
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "095d69a13ffbfe4ddff6"
+    },
+    {
+      "audit_identifier": "SAI",
+      "corporate_event_evidence": {
+        "event_date": "2013-09-27",
+        "event_type": "spin_off_and_ticker_change",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/353394/000035339413000003/ldos-q3x1112013.htm",
+        "issuer_cik": "1336920",
+        "successor": "LDOS;SAIC",
+        "terms": "Old SAIC issuer became Leidos. One new SAIC share per seven legacy shares. Verify prior reverse split and share basis separately."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://press.spglobal.com/2013-09-11-Vertex-Ametek-Set-to-Join-the-S-P-500-Advanced-Micro-Devices-SAIC-to-Join-S-P-MidCap-400-Capstead-to-Join-S-P-SmallCap-600",
+        "reported_change_date": "2013-09-20",
+        "reported_timing": "after_close"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 40,
+        "observed_weeks_at_or_after_symbol_exit": 2
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "1510d239b98717cea692"
+    },
+    {
+      "audit_identifier": "SYMC",
+      "corporate_event_evidence": {
+        "event_date": "2019-11-05",
+        "event_type": "ticker_change_after_asset_sale",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/849399/000110465919059239/tm1921662d1_ex99-01.htm",
+        "issuer_cik": "849399",
+        "successor": "NLOK",
+        "terms": "Original Symantec common stock became NLOK after enterprise business sale. Broadcom shares were not an exchange for legacy Symantec shares."
+      },
+      "index_timing_evidence": null,
+      "membership_observation_audit": {},
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "83553706288e53047bad"
+    },
+    {
+      "audit_identifier": "TEG",
+      "corporate_event_evidence": {
+        "event_date": "2015-06-29",
+        "event_type": "cash_stock_merger",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/107815/000010781515000105/R6.htm",
+        "issuer_cik": "916863",
+        "successor": "WEC",
+        "terms": "USD 18.58 and 1.128 Wisconsin Energy common shares per Integrys share."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://press.spglobal.com/2015-06-26-J-B-Hunt-Transport-Services-Set-to-Join-the-S-P-500-Molina-Healthcare-to-be-Added-to-S-P-MidCap-400-MYR-Group-to-be-Added-to-S-P-SmallCap-600",
+        "reported_change_date": "2015-06-30",
+        "reported_timing": "after_close"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 142,
+        "observed_weeks_at_or_after_symbol_exit": 12,
+        "weeks_from_snapshot_dated_after_exit": 11
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "c801bea04f0ba4a2af4e"
+    },
+    {
+      "audit_identifier": "TIE",
+      "corporate_event_evidence": {
+        "event_date": "2013-01-07",
+        "event_type": "cash_merger_after_tender",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/79958/000119312513006827/d464033dex992.htm",
+        "issuer_cik": "1011657",
+        "successor": "",
+        "terms": "USD 16.50 per remaining share at short-form merger after December tender."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://press.spglobal.com/2012-12-18-Delphi-Automotive-Set-to-Join-S-P-500",
+        "reported_change_date": "2012-12-21",
+        "reported_timing": "after_close"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 18,
+        "observed_weeks_at_or_after_symbol_exit": 18,
+        "weeks_from_snapshot_dated_after_exit": 18
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "674870bf9f437414aa11"
+    },
+    {
+      "audit_identifier": "TSO",
+      "corporate_event_evidence": {
+        "event_date": "2017-08-01",
+        "event_type": "ticker_change",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/50104/000005010417000180/andvnamechange8-k.htm",
+        "issuer_cik": "50104",
+        "successor": "ANDV",
+        "terms": "Tesoro changed name to Andeavor and trading symbol to ANDV."
+      },
+      "index_timing_evidence": null,
+      "membership_observation_audit": {},
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "9826239ac6e800be91e6"
+    },
+    {
+      "audit_identifier": "TYC",
+      "corporate_event_evidence": {
+        "event_date": "2016-09-02",
+        "event_type": "reverse_split_and_ticker_change",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/53669/000110465916143072/a16-17944_18k.htm",
+        "issuer_cik": "833444",
+        "successor": "JCI",
+        "terms": "Legacy Tyco continued as JCI following a 0.955-for-one share consolidation. Separate election terms for legacy Johnson Controls holders do not apply to Tyco shares."
+      },
+      "index_timing_evidence": null,
+      "membership_observation_audit": {},
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "aca3a8dcb539fb5a58a8"
+    },
+    {
+      "audit_identifier": "UTX",
+      "corporate_event_evidence": {
+        "event_date": "2020-04-03",
+        "event_type": "spin_off_and_ticker_change",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/101829/000010182920000033/exhibit992-q12020profo.htm",
+        "issuer_cik": "101829",
+        "successor": "RTX;CARR;OTIS",
+        "terms": "Legacy UTC continued as RTX after distributing Carrier and Otis. Legacy RTN was a separate exchange leg."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "symbol_transition",
+        "evidence_url": "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20200331-1119193/1119193_1utxspinrtn15otiscarrier.pdf",
+        "reported_change_date": "2020-04-03",
+        "reported_timing": "before_open"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 384,
+        "observed_weeks_at_or_after_symbol_exit": 6
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "afdfef82d9163110d836"
+    },
+    {
+      "audit_identifier": "WLP",
+      "corporate_event_evidence": {
+        "event_date": "2014-12-02",
+        "event_type": "name_and_symbol_change",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1156039/000119312514430982/d825952d8k.htm",
+        "issuer_cik": "1156039",
+        "successor": "ANTM",
+        "terms": "WellPoint legal name change took effect December 2. Its common stock moved to ANTM; verify the first trading session separately."
+      },
+      "index_timing_evidence": null,
+      "membership_observation_audit": {},
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "728903e4e5f92b97e90e"
+    },
+    {
+      "audit_identifier": "WRK",
+      "corporate_event_evidence": {
+        "event_date": "2024-07-05",
+        "event_type": "cash_stock_merger",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1732845/000110465925031733/sw-20241231xs4.htm",
+        "issuer_cik": "1732845",
+        "successor": "SW",
+        "terms": "USD 5.00 and one Smurfit Westrock ordinary share per WestRock common share. Earlier WestRock issuer changed during the request history."
+      },
+      "index_timing_evidence": null,
+      "membership_observation_audit": {},
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "13fd17ed9b5e22fe13a3"
+    },
+    {
+      "audit_identifier": "WYN",
+      "corporate_event_evidence": {
+        "event_date": "2018-05-31",
+        "event_type": "spin_off_and_ticker_change",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1361658/000136165818000016/wyn-2017xform11xk.htm",
+        "issuer_cik": "1361658",
+        "successor": "WYND;WH",
+        "terms": "One Wyndham Hotels common share per original Wyndham Worldwide share. Parent continued as Wyndham Destinations."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20180525-714752/714752_spinwyndxccmicro54.pdf",
+        "reported_change_date": "2018-05-31",
+        "reported_timing": "before_open"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 384,
+        "observed_weeks_at_or_after_symbol_exit": 102
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "eddbf7553a5e6b3a76f1"
+    },
+    {
+      "audit_identifier": "YHOO",
+      "corporate_event_evidence": {
+        "event_date": "2017-06-16",
+        "event_type": "conversion_after_asset_sale",
+        "evidence_url": "https://www.sec.gov/Archives/edgar/data/1011006/000119312517205499/d372379d8k.htm",
+        "issuer_cik": "1011006",
+        "successor": "AABA",
+        "terms": "Yahoo became Altaba, a publicly traded closed-end fund, after selling its operating business. Separate trading symbol effective date."
+      },
+      "index_timing_evidence": {
+        "eligibility_effect": "removal",
+        "evidence_url": "https://press.spglobal.com/2017-06-09-Hilton-Worldwide-Align-Technology-ANSYS-Set-to-Join-S-P-500-Teradata-and-Ryder-System-to-Join-S-P-MidCap-400",
+        "reported_change_date": "2017-06-19",
+        "reported_timing": "before_open"
+      },
+      "membership_observation_audit": {
+        "observed_historical_symbol_weeks": 274,
+        "observed_weeks_at_or_after_symbol_exit": 41
+      },
+      "price_and_return_admission": "NOT_DETERMINED_BY_THIS_AUDIT",
+      "security_audit_id": "9216308b3894f44d4f42"
+    }
+  ],
+  "schema": "US_DEPARTED_PUBLIC_EVIDENCE_SUPPLEMENT_V1",
+  "scope": "Case-specific primary documentation for previously unlinked requests. Corporate event and index timing are independent of security price admission.",
+  "sources": {
+    "https://press.spglobal.com/2012-09-24-ADT-Pentair-Set-to-Join-the-S-P-500-Lexmark-DeVry-to-Join-the-S-P-MidCap-400-and-MarketAxess-to-Join-the-S-P-SmallCap-600": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://press.spglobal.com/2012-09-25-Kraft-Foods-Group-Set-to-Join-the-S-P-500-Alpha-Natural-Resources-InterDigital-Genesee-Wyoming-to-Join-the-S-P-MidCap-400-and-Korn-Ferry-to-Join-the-S-P-SmallCap-600": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://press.spglobal.com/2012-11-26-Dollar-General-Set-to-Join-the-S-P-500": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://press.spglobal.com/2012-12-18-Delphi-Automotive-Set-to-Join-S-P-500": {
+      "bytes": 47372,
+      "sha256": "8d2c2edddc6132b81f7efe09acecbb9b4831a8bd2d8debfa77aeabbe539eee1a",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://press.spglobal.com/2012-12-20-AbbVie-Set-to-Join-S-P-100-500-Federated-Investors-Set-to-Join-S-P-MidCap-400-ITT-Educational-Services-Procera-Networks-to-Join-S-P-SmallCap-600": {
+      "bytes": 67712,
+      "sha256": "c8b2a6b5e0c9dfd398f087933ef7b295663b46ce8079a199e65c76d2f46cfd92",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://press.spglobal.com/2013-04-24-Regeneron-Set-to-Join-the-S-P-500-Eagle-Materials-CST-Brands-to-Join-the-S-P-MidCap-400-Francescas-Northern-Oil-Gas-to-Join-the-S-P-SmallCap-600": {
+      "bytes": 70237,
+      "sha256": "c6e6794b131b0b7d2cb513b8c50ccea4b13ba450c9d7f03dc2a41e6f81932bc7",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://press.spglobal.com/2013-06-20-News-Corp-Set-to-Join-S-P-500-Mallinckrodt-Apollo-to-Join-S-P-MidCap-400-Forest-Oil-Tesco-to-Join-S-P-SmallCap-600": {
+      "bytes": 53542,
+      "sha256": "f5b456393487a83427130faf8c97225b2d6bccbe26994f08e151b5bab0042872",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://press.spglobal.com/2013-07-01-Nielsen-Set-to-Join-the-S-P-500": {
+      "bytes": 44435,
+      "sha256": "7cbef558fec4436cb4f3975564f90a8ee42cb99d90b2f96c1ed76edf027cbca3",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://press.spglobal.com/2013-09-11-Vertex-Ametek-Set-to-Join-the-S-P-500-Advanced-Micro-Devices-SAIC-to-Join-S-P-MidCap-400-Capstead-to-Join-S-P-SmallCap-600": {
+      "bytes": 52276,
+      "sha256": "25599740aa345a3bfb29e60c0f985c414f464e9f1ba2d2d5a0a539b3a2e987f6",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://press.spglobal.com/2013-12-11-Facebook-Set-to-Join-the-S-P-100-500-Alliance-Data-Systems-and-Mohawk-to-Join-the-S-P-500-Changes-to-the-S-P-MidCap-400-and-the-S-P-SmallCap-600": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://press.spglobal.com/2014-08-14-Mallinckrodt-Set-to-Join-the-S-P-500-Rowan-to-Join-S-P-MidCap-400-GulfMark-Offshore-to-Join-S-P-SmallCap-600": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://press.spglobal.com/2015-03-13-Celgene-Kinder-Morgan-and-Actavis-Set-to-Join-the-S-P-100-Several-Constituent-Changes-Announced-for-S-P-500-S-P-MidCap-400-and-S-P-SmallCap-600": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://press.spglobal.com/2015-06-26-J-B-Hunt-Transport-Services-Set-to-Join-the-S-P-500-Molina-Healthcare-to-be-Added-to-S-P-MidCap-400-MYR-Group-to-be-Added-to-S-P-SmallCap-600": {
+      "bytes": 49192,
+      "sha256": "b5bd8ce19e632c8b39ad0c86ff4dec1e65210bf9871d15f24c0dde325dae221a",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://press.spglobal.com/2015-07-14-PayPal-Holdings-Set-to-Join-S-P-100-500-Others-to-Join-S-P-MidCap-400-and-S-P-SmallCap-600": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://press.spglobal.com/2015-07-24-Signet-Jewelers-Set-to-Join-the-S-P-500-PAREXEL-International-Catalent-to-Join-the-S-P-MidCap-400-Others-to-Join-S-P-SmallCap-600": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://press.spglobal.com/2016-01-22-Federal-Realty-Investment-Trust-Set-to-Join-the-S-P-500-Curtiss-Wright-Pool-to-Join-S-P-MidCap-400-Cray-Asbury-Automotive-to-Join-S-P-SmallCap-600": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://press.spglobal.com/2016-05-24-Arthur-J-Gallagher-Co-Set-to-Join-the-S-P-500-Education-Realty-Trust-to-Join-S-P-MidCap-400-American-Axle-Manufacturing-Holdings-to-Join-S-P-SmallCap-600": {
+      "bytes": 49150,
+      "sha256": "8e07bdefb0426d523e09e046a56e54f9e4bb9b09b0853d71b41dc3105e7e9230",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://press.spglobal.com/2016-05-27-TransDigm-Group-Set-to-Join-the-S-P-500-Helen-of-Troy-and-Brocade-Communications-Systems-to-Join-S-P-MidCap-400-Team-and-MDC-Holdings-to-Join-S-P-SmallCap-600": {
+      "bytes": 52106,
+      "sha256": "f7084f24a85e189ea0551ccdd8fb11f2d528385175121cd9a534ec3ad2841df5",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://press.spglobal.com/2017-03-13-Synopsys-Set-to-Join-S-P-500-The-GEO-Group-to-Join-S-P-MidCap-400-Coca-Cola-Bottling-and-Orthofix-International-to-Join-S-P-SmallCap-600": {
+      "bytes": 50342,
+      "sha256": "34f1140311ff94dbc42ceb68b22bba707e6c69b1c7c62098967aa2aeb14f2120",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://press.spglobal.com/2017-03-29-Gartner-Set-to-Join-S-P-500-Dun-Bradstreet-Wintrust-Financial-and-INC-Research-to-Join-S-P-MidCap-400-Heska-to-Join-S-P-SmallCap-600": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://press.spglobal.com/2017-06-09-Hilton-Worldwide-Align-Technology-ANSYS-Set-to-Join-S-P-500-Teradata-and-Ryder-System-to-Join-S-P-MidCap-400": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://press.spglobal.com/2017-06-12-Everest-Re-Group-Set-to-Join-S-P-500-Pinnacle-Financial-Partners-to-Join-S-P-MidCap-400-and-Armada-Hoffler-Properties-to-Join-S-P-SmallCap-600": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://press.spglobal.com/2018-03-28-MSCI-Set-to-Join-S-P-500-Lumentum-Holdings-to-Join-S-P-MidCap-400-C-J-Energy-Services-to-Join-S-P-SmallCap-600": {
+      "bytes": 50110,
+      "sha256": "40577de85eb14558634d149de00470284ae0ee5506bd2d487d0203e21f0b8013",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://press.spglobal.com/2019-11-27-W-R-Berkley-Set-to-Join-S-P-500-RLI-to-Join-S-P-MidCap-400-The-St-Joe-Company-to-Join-S-P-SmallCap-600": {
+      "bytes": 49453,
+      "sha256": "37574b6fe2f2d462471d8d36588b1422d5e8499d33bc1afb76415297532e1a59",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://press.spglobal.com/2025-07-02-Datadog-Set-to-Join-S-P-500": {
+      "bytes": 45225,
+      "sha256": "5d893e1958beb6e7f8507513a49d2d68801aec687e30c26ae97127b56bf5ca77",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.miaxglobal.com/alerts/2017/05/24/miax-corporate-action-alert-devry-education-group-inc-dv-will-change-its-name-and": {
+      "bytes": 92127,
+      "sha256": "0fc75325bed9ee030b7538f3e6d72df403ca8e2b7a688a6af91aa85ff9a4eece",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.prnewswire.com/news-releases/the-cooper-companies-set-to-join-the-sp-500-northwestern-and-nuvasive-to-join-sp-midcap-400-sps-commerce-and-fox-factory-to-join-sp-smallcap-600-300331403.html": {
+      "bytes": 183753,
+      "sha256": "d11e94a4a3c761169542b7bf48279adcb9053eae9b2fdb6a5b094ce941fe0664",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1001288/000119312516779022/d237632d8k.htm": {
+      "bytes": 12360,
+      "sha256": "6773faf696ee5faf61f15edc5a493df74ea0753da6861b40a9004e36b7353019",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1011006/000119312517205499/d372379d8k.htm": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://www.sec.gov/Archives/edgar/data/101829/000010182920000033/exhibit992-q12020profo.htm": {
+      "bytes": 890841,
+      "sha256": "2842a388f330a6a5ddcf319643d8990253b259c173189990abb85f0a4b63c8cf",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/101830/000119312513287538/d565823d8k12b.htm": {
+      "bytes": 101624,
+      "sha256": "f50f6f535166d724c3ca40f475c275e1abdae7af6318642ba0cfed1c014e46ff",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1043604/000119312525154400/d912160d8k.htm": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1047122/000119312520097237/d827106d8k.htm": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1048286/000162828016021074/R7.htm": {
+      "bytes": 77548,
+      "sha256": "6cf86ccbcc834aba581969574a33b9c6f982232d686b5a5d95f7341a45228a71",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1056288/000105628821000008/fhi-20201231.htm": {
+      "bytes": 3110461,
+      "sha256": "26dac2fd0059c46bb6f5c5091eda1f4a3ff4d2dc8b66ad14f072603194b056c9",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/107815/000010781515000105/R6.htm": {
+      "bytes": 9692,
+      "sha256": "cf3ecccc8f9d4a3207b1059bbc109a5ffe8ab18604ab462fa1c701b38f3425fe",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1103982/000119312512411522/d418430dex991.htm": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1115222/000110465919006848/a19-4290_1ex99d1.htm": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1156039/000119312514430982/d825952d8k.htm": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1156039/000119312522183957/d359422d8k.htm": {
+      "bytes": 26045,
+      "sha256": "854e566d683ce7ef926f5b82ba2535fb012c47b96de2c95de5abbab9035d2403",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1166126/000116612620000068/jcp-20200502.htm": {
+      "bytes": 1571493,
+      "sha256": "5ec7f497de06b389c537d375a044d35b792fe8c6a4f9543966e48d77e2a6847c",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1169055/000119312520270359/d52184d8k.htm": {
+      "bytes": 82450,
+      "sha256": "01ef3776678fb103610dab4437ffdd975e379b8bc116d4feed0651992afe12dd",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1361658/000136165818000016/wyn-2017xform11xk.htm": {
+      "bytes": 366013,
+      "sha256": "ef2f636974209e46b113a2814f4f46061b1452b32625e4679b504e30029b4963",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1399077/000119312513444683/d628075d424b5.htm": {
+      "bytes": 1550597,
+      "sha256": "12d255e50faaeac2d02e66e6b705ec6b8a700ff52f3cd5d0a8ac140ada9fc3a5",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1418135/000141813519000007/kdp-10kx12312018.htm": {
+      "bytes": 5304652,
+      "sha256": "7c0e89a54859295ffb8d717698ac53f8b86f7cf39a1b7389baecf81fa04950d1",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1421985/000143710722000111/xslF345X03/wf-form4_164980791758271.xml": {
+      "bytes": 30101,
+      "sha256": "6a889b8ea9462a020afdce1916b002d27050822580782bd64ff2dfc30cfc9560",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1452575/000110465917039502/a17-15238_18k.htm": {
+      "bytes": 65716,
+      "sha256": "48f221c0b9fc794346916ad2c303fb1a9bca73944e03ad09efddab80f5a5cbc5",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1457543/000119312515094831/d890298d8k.htm": {
+      "bytes": 26515,
+      "sha256": "606559cf347255036367e44b0be5246dc202836538f188ab064226a0eae8f956",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1465112/000090951815000217/mm07-2415_8k.htm": {
+      "bytes": 47171,
+      "sha256": "6ee894cf4f673fefc93af1d2a139a391f8c8927dd28944b155aca89186e410ae",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1491675/000112760216054279/form4.xml": {
+      "bytes": 16722,
+      "sha256": "d5614fbd22e04b6021037e5fa454776cf78c25b6c4316c86c2b20dddb7652b40",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1492633/000119312522260583/d407513dex991.htm": {
+      "bytes": 6879,
+      "sha256": "a214a289b503c084a857ea8c51d14dbd607258c5d35f93e7463b7da9dc695e8a",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1519751/000119312522306146/d420098d8k.htm": {
+      "bytes": 40278,
+      "sha256": "6cac0bc7b44787f17d2262043b02cb20c75c0651b7811ce4e1621586c363816e",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1530721/000119312518362322/d653406dex991.htm": {
+      "bytes": 17079,
+      "sha256": "b8596ae08487bf17fb8c6e52a1d802288f998c109e28244a5b821fa01a410cfc",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1546640/000119312516582209/d177489dex991.htm": {
+      "bytes": 10853,
+      "sha256": "2f2561ca9232d1a491bffa84c8182dc5c4d8d45d6f53846b694e2177407d9a7e",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1551182/000155118213000035/R41.htm": {
+      "bytes": 27093,
+      "sha256": "a54016b5df5b7b14b834d99637c5db3da9a623e8f8b9dfdba624f875ff6f6cba",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1629995/000119312516639518/d221385dex991.htm": {
+      "bytes": 11482,
+      "sha256": "0a7bc03ac79e788c074c0ecf5a5d6a47dd7e8bd7d14e7b53d0a7f0163722c82c",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1649345/000164934516000009/R9.htm": {
+      "bytes": 60014,
+      "sha256": "b6d51901274b1849dec738cff380760e20681f49f4227ceaceddbba65fabcb1c",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1702780/000170278017000011/alticeusa9-30x17.htm": {
+      "bytes": 2151132,
+      "sha256": "fa60480e5f4bdaff544f6aeb1fd97ac399ec9f4d633ad623d2a57d4f82612e55",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1725057/000095017024022100/R29.htm": {
+      "bytes": 6228,
+      "sha256": "c459fd4335280f5a0aef25cc4108a39eecac8eb1ac1b91832b285ec86c65ee3f",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1725057/000114036126003628/ef20064744_8k.htm": {
+      "bytes": 73190,
+      "sha256": "3fe0d0fb2225b8f62846c0d838642434a4e2c8bf4a302c379ed96ae3ea7499f2",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1732845/000110465925031733/sw-20241231xs4.htm": {
+      "bytes": 15597542,
+      "sha256": "c239d9a1339546fec6d4558a442e8109fd6232b7e94c03f50aab3dcdf85adcf3",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/1755672/000119312519163314/d753864d8k.htm": {
+      "bytes": 44217,
+      "sha256": "26b859682e51b7932e5287bf6f7d86889965de8bc1e1c660053315e0f58b9cf2",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/202058/000114036119012139/form8k.htm": {
+      "bytes": 142789,
+      "sha256": "cdc0e210a8d1bd244c3de3cb559e225c5b7a36ce00201f1b74bee95f3042a31f",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/29669/000119312522053784/d219453d8k.htm": {
+      "bytes": 54551,
+      "sha256": "4227e1dea872f52b6f3da23421cdd41e1664d18d4ab5243f26655d1d3457ec36",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/353394/000035339413000003/ldos-q3x1112013.htm": {
+      "bytes": 1667683,
+      "sha256": "dae055a303007e10caf3aa4fe4a6172de49e96aef5a04bf1d29635956077401e",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/39899/000003989915000026/R20.htm": {
+      "bytes": 133412,
+      "sha256": "6dde5e71858c1b3c14620cfcb33aabecbdfdd63048258d7090106e8d89b409d4",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/39911/000003991125000029/gap-20250201.htm": {
+      "bytes": 1754607,
+      "sha256": "a6d8e34c7971d88fdce59360d4628fb7206c736e99d49e69e759d136f27954df",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/40533/000004053318000018/gd-2018040110q.htm": {
+      "bytes": 1403087,
+      "sha256": "7dbf6d5732b214c2e0e498db59159e10cf81f397d97402f0bd8023556842d0f4",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/50104/000005010417000180/andvnamechange8-k.htm": {
+      "bytes": 36908,
+      "sha256": "d9b6f3bd621875fd044480785692347ceb2624e43aae7d87009ec778eef34e43",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/53669/000110465916143072/a16-17944_18k.htm": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://www.sec.gov/Archives/edgar/data/55067/000119312525315130/d90636d8k.htm": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://www.sec.gov/Archives/edgar/data/64040/000114420413024851/v343076_ex99.htm": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://www.sec.gov/Archives/edgar/data/701985/000070198513000043/ltd-2013112_10q.htm": {
+      "bytes": 2101250,
+      "sha256": "4d55c7c111a83478660f43ba89ffbadd76aba73a43b1b54d2321d0a2132dade1",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/72741/000110465915032649/a15-10114_1424b3.htm": {
+      "bytes": 182404,
+      "sha256": "1041b6500dcd7c115f21e8f2723b3bdb3d3ff09250903432538afeff360d2eda",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/765880/000162828020001456/healthpeak10-k12312019.htm": {
+      "bytes": 12602146,
+      "sha256": "d99f84b80c81a4b3b6fd975e758e821ad0ac3ea75f54f50026fa5637ca20eb4d",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/79958/000119312513006827/d464033dex992.htm": {
+      "bytes": 6038,
+      "sha256": "ec00e8c41f8ef682a58029169667c8015b7bcdb2875c230f4eac88d3d884f42e",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/800459/000119312517078968/d184457dex991.htm": {
+      "bytes": 8408,
+      "sha256": "a9510189e8a9c94fd53326d30433cb9b70e5f1b23f3138a933c52048a9b8009c",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/808362/000112760217022533/form4.xml": {
+      "bytes": 21164,
+      "sha256": "0f8226974ed20b8a8204dc2d6ffe6aa051854295f7b31170a1740b44527fa335",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/813828/000081382820000013/a2019k.htm": {
+      "bytes": 6629353,
+      "sha256": "ffed1e540eead935989cf4019ee3aa6593ad72553dc8c8079f2421653356cd7f",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/849399/000110465919059239/tm1921662d1_ex99-01.htm": {
+      "bytes": 8225,
+      "sha256": "cc4dd1772fd3eb817988271f9721eaa1aecbafbffee9e016cbd291d987c5b8f9",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/85408/000114420419019311/tv518654_8k.htm": {
+      "bytes": 40642,
+      "sha256": "de878db1dd2be5b4f5146379377b1114795fb60b701426eb2946fccdd0d302de",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/858470/000110465921122041/tm2129019d1_ex99-1.htm": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://www.sec.gov/Archives/edgar/data/876661/000087666118000681/ruleprovisionnotice.htm": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://www.sec.gov/Archives/edgar/data/896159/000119312516430900/d113231d8k.htm": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://www.sec.gov/Archives/edgar/data/912093/000110465915056495/a15-16911_18k.htm": {
+      "bytes": 42605,
+      "sha256": "8165508f645ede3a78dffc3a3a5da29076a012cb0adee080b7b47c5b92cf2b7d",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/929887/000119312517026959/d329920d8k.htm": {
+      "bytes": 36902,
+      "sha256": "6d371f6f08f387da5674a81e89af88202c6531c7c23999d92cd0b3267dd691f6",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.sec.gov/Archives/edgar/data/936402/000110465916125387/a16-12719_2ex99d4.htm": {
+      "bytes": 1014990,
+      "sha256": "d5106b6ea5eef43306815629fc0993446c387e3eacc32fcb438a47c87ac86b34",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20131122/64568_irspinpenney1.pdf": {
+      "bytes": 259096,
+      "sha256": "eafdc825b7b037d8822fb9161714366fd23b9a24e996d57474ceb3f4cc3f32ad",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20160623-365754/365754_tecocolumbiaspindhr.pdf": {
+      "bytes": 132595,
+      "sha256": "93cbd66668c5cc2d6fc63ed8cfeaa0f6336712bc6c37b1deb877c9bf233c666c",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20180525-714752/714752_spinwyndxccmicro54.pdf": {
+      "bytes": 219265,
+      "sha256": "223a6a7533b900d0723371055358305c1ee0d16c0bf65544534640683fc5e360",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20180604-719152/719152_nflx1twtr5rgnx6.pdf": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20180625-731759/731759_june25drpepperclarifications.pdf": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20190530-936758/936758_correcteddwdpspin5blmn6.pdf": {
+      "status": "PUBLIC_SOURCE_REVIEWED_DOWNLOAD_UNAVAILABLE"
+    },
+    "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20190624-948566/948566_mktxaaxnmlab546usna6xncr6.pdf": {
+      "bytes": 27821,
+      "sha256": "f74e6500fb541b323f29e8934ecfb0002847d28fcb6d4067b09db7b349ac19e6",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20200331-1119193/1119193_1utxspinrtn15otiscarrier.pdf": {
+      "bytes": 179528,
+      "sha256": "044187c7ac3f7c871c746856e3ce951a455aca29d5393576012de67745fab8cb",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20220407-1451476/1451476_attspinwbd5.pdf": {
+      "bytes": 154685,
+      "sha256": "fab164fea81b8e8bf105adfd183c25d7ce945e366843ff8712a40e372532cc23",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20221006-1456477/1456477_5nlsn.pdf": {
+      "bytes": 231132,
+      "sha256": "52522040e6bac9b3ee78e64089816550c230b101d8de71d7462418a4bbd8ebe7",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20251208-1481001/1481001_56-k-hsii-vtle.pdf": {
+      "bytes": 42487,
+      "sha256": "4623bd506be15d93df20710f7b492376a82f7e96726f29c9269b37e911b41969",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    },
+    "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/337754_ayivsatlablopb5466.pdf": {
+      "bytes": 208278,
+      "sha256": "b245b80d1a5f582c0afb9be9f466ec7d9ea58e3f2dfb7968cde669d7258a71eb",
+      "status": "PUBLIC_DOCUMENT_DOWNLOADED"
+    }
+  }
+}
