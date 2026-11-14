@@ -1,0 +1,614 @@
+{
+ "dataManifestSha256": "54eacf2e773f5ca577f02d4b7414e85c48d05942f2fb55bc4328b9a36e7e5de2",
+ "gradeEffect": "Whatever the verdict, profitability stays E1 in our grade matrix: external portfolios are not our data, our universe or a 0-5 name book. The verdict decides only whether a local E2 attempt is worth a licensed data source.",
+ "latestMonth": "2026-09",
+ "portfolios": {
+  "BIG_HI_OP": {
+   "decadeAnnualExcessPct": {
+    "1960s": 2.87,
+    "1970s": -1.518,
+    "1980s": 0.363,
+    "1990s": 1.774,
+    "2000s": 0.49,
+    "2010s": 0.817,
+    "2020s": 0.885
+   },
+   "full": {
+    "annualExcessAfterDragPct": {
+     "0.5": 0.194,
+     "1.0": -0.306
+    },
+    "annualExcessPct": 0.694,
+    "excess12m": {
+     "medianPct": 0.8677,
+     "p5Pct": -9.8047,
+     "sharePositive": 0.5575,
+     "windows": 748,
+     "worstPct": -20.0605
+    },
+    "excess6m": {
+     "medianPct": 0.5098,
+     "p5Pct": -6.549,
+     "sharePositive": 0.5557,
+     "windows": 754,
+     "worstPct": -16.9371
+    },
+    "first": "1963-07",
+    "hacT": 0.9796,
+    "informationRatio": 0.1346,
+    "last": "2026-09",
+    "maxRelativeDrawdownPct": -34.6942,
+    "months": 759,
+    "trackingErrorPct": 5.157
+   },
+   "ourEra": {
+    "annualExcessAfterDragPct": {
+     "0.5": 0.9535,
+     "1.0": 0.4535
+    },
+    "annualExcessPct": 1.4535,
+    "excess12m": {
+     "medianPct": 2.6307,
+     "p5Pct": -8.2011,
+     "sharePositive": 0.6186,
+     "windows": 118,
+     "worstPct": -11.5936
+    },
+    "excess6m": {
+     "medianPct": 0.8578,
+     "p5Pct": -5.3042,
+     "sharePositive": 0.5968,
+     "windows": 124,
+     "worstPct": -10.4213
+    },
+    "first": "2016-01",
+    "hacT": 0.9511,
+    "informationRatio": 0.2965,
+    "last": "2026-09",
+    "maxRelativeDrawdownPct": -13.663,
+    "months": 129,
+    "trackingErrorPct": 4.9028
+   },
+   "postPublication": {
+    "annualExcessAfterDragPct": {
+     "0.5": 0.5337,
+     "1.0": 0.0337
+    },
+    "annualExcessPct": 1.0337,
+    "excess12m": {
+     "medianPct": 1.9827,
+     "p5Pct": -7.9165,
+     "sharePositive": 0.6104,
+     "windows": 154,
+     "worstPct": -11.5936
+    },
+    "excess6m": {
+     "medianPct": 0.7371,
+     "p5Pct": -5.0814,
+     "sharePositive": 0.6,
+     "windows": 160,
+     "worstPct": -10.4213
+    },
+    "first": "2013-01",
+    "hacT": 0.8069,
+    "informationRatio": 0.2196,
+    "last": "2026-09",
+    "maxRelativeDrawdownPct": -13.663,
+    "months": 165,
+    "trackingErrorPct": 4.7079
+   },
+   "postPublicationEx2025": {
+    "annualExcessAfterDragPct": {
+     "0.5": 0.9402,
+     "1.0": 0.4402
+    },
+    "annualExcessPct": 1.4402,
+    "excess12m": {
+     "medianPct": 2.4057,
+     "p5Pct": -7.1824,
+     "sharePositive": 0.662,
+     "windows": 142,
+     "worstPct": -9.953
+    },
+    "excess6m": {
+     "medianPct": 0.8976,
+     "p5Pct": -5.0181,
+     "sharePositive": 0.6351,
+     "windows": 148,
+     "worstPct": -10.4213
+    },
+    "first": "2013-01",
+    "hacT": 1.1113,
+    "informationRatio": 0.3059,
+    "last": "2026-09",
+    "maxRelativeDrawdownPct": -10.1605,
+    "months": 153,
+    "trackingErrorPct": 4.7086
+   },
+   "prePublication": {
+    "annualExcessAfterDragPct": {
+     "0.5": 0.0997,
+     "1.0": -0.4003
+    },
+    "annualExcessPct": 0.5997,
+    "excess12m": {
+     "medianPct": 0.8094,
+     "p5Pct": -9.8553,
+     "sharePositive": 0.554,
+     "windows": 583,
+     "worstPct": -20.0605
+    },
+    "excess6m": {
+     "medianPct": 0.4844,
+     "p5Pct": -6.6769,
+     "sharePositive": 0.5484,
+     "windows": 589,
+     "worstPct": -16.9371
+    },
+    "first": "1963-07",
+    "hacT": 0.7299,
+    "informationRatio": 0.1136,
+    "last": "2012-12",
+    "maxRelativeDrawdownPct": -34.6942,
+    "months": 594,
+    "trackingErrorPct": 5.2784
+   }
+  },
+  "BIG_VALUE": {
+   "decadeAnnualExcessPct": {
+    "1960s": 0.023,
+    "1970s": 2.672,
+    "1980s": 4.29,
+    "1990s": -0.173,
+    "2000s": 3.277,
+    "2010s": -2.516,
+    "2020s": 11.546
+   },
+   "full": {
+    "annualExcessAfterDragPct": {
+     "0.5": 1.7855,
+     "1.0": 1.2855
+    },
+    "annualExcessPct": 2.2855,
+    "excess12m": {
+     "medianPct": 1.3196,
+     "p5Pct": -20.7643,
+     "sharePositive": 0.5388,
+     "windows": 748,
+     "worstPct": -40.0246
+    },
+    "excess6m": {
+     "medianPct": 0.5807,
+     "p5Pct": -13.2264,
+     "sharePositive": 0.5292,
+     "windows": 754,
+     "worstPct": -38.4409
+    },
+    "first": "1963-07",
+    "hacT": 1.3007,
+    "informationRatio": 0.1837,
+    "last": "2026-09",
+    "maxRelativeDrawdownPct": -68.722,
+    "months": 759,
+    "trackingErrorPct": 12.4422
+   },
+   "ourEra": {
+    "annualExcessAfterDragPct": {
+     "0.5": 6.164,
+     "1.0": 5.664
+    },
+    "annualExcessPct": 6.664,
+    "excess12m": {
+     "medianPct": 5.7225,
+     "p5Pct": -25.6226,
+     "sharePositive": 0.5932,
+     "windows": 118,
+     "worstPct": -34.6286
+    },
+    "excess6m": {
+     "medianPct": 2.1634,
+     "p5Pct": -17.6615,
+     "sharePositive": 0.5887,
+     "windows": 124,
+     "worstPct": -28.8501
+    },
+    "first": "2016-01",
+    "hacT": 1.146,
+    "informationRatio": 0.4117,
+    "last": "2026-09",
+    "maxRelativeDrawdownPct": -42.3653,
+    "months": 129,
+    "trackingErrorPct": 16.1866
+   },
+   "postPublication": {
+    "annualExcessAfterDragPct": {
+     "0.5": 4.6859,
+     "1.0": 4.1859
+    },
+    "annualExcessPct": 5.1859,
+    "excess12m": {
+     "medianPct": 0.9855,
+     "p5Pct": -23.792,
+     "sharePositive": 0.513,
+     "windows": 154,
+     "worstPct": -34.6286
+    },
+    "excess6m": {
+     "medianPct": 1.1651,
+     "p5Pct": -14.3066,
+     "sharePositive": 0.5375,
+     "windows": 160,
+     "worstPct": -28.8501
+    },
+    "first": "2013-01",
+    "hacT": 1.1016,
+    "informationRatio": 0.3532,
+    "last": "2026-09",
+    "maxRelativeDrawdownPct": -44.2298,
+    "months": 165,
+    "trackingErrorPct": 14.682
+   },
+   "postPublicationEx2025": {
+    "annualExcessAfterDragPct": {
+     "0.5": 3.0194,
+     "1.0": 2.5194
+    },
+    "annualExcessPct": 3.5194,
+    "excess12m": {
+     "medianPct": -0.3775,
+     "p5Pct": -25.1983,
+     "sharePositive": 0.4718,
+     "windows": 142,
+     "worstPct": -34.6286
+    },
+    "excess6m": {
+     "medianPct": 0.4005,
+     "p5Pct": -16.0094,
+     "sharePositive": 0.5068,
+     "windows": 148,
+     "worstPct": -28.8501
+    },
+    "first": "2013-01",
+    "hacT": 0.7964,
+    "informationRatio": 0.2371,
+    "last": "2026-09",
+    "maxRelativeDrawdownPct": -44.2298,
+    "months": 153,
+    "trackingErrorPct": 14.8442
+   },
+   "prePublication": {
+    "annualExcessAfterDragPct": {
+     "0.5": 0.9799,
+     "1.0": 0.4799
+    },
+    "annualExcessPct": 1.4799,
+    "excess12m": {
+     "medianPct": 1.1382,
+     "p5Pct": -20.7245,
+     "sharePositive": 0.5369,
+     "windows": 583,
+     "worstPct": -40.0246
+    },
+    "excess6m": {
+     "medianPct": 0.357,
+     "p5Pct": -12.8053,
+     "sharePositive": 0.5229,
+     "windows": 589,
+     "worstPct": -38.4409
+    },
+    "first": "1963-07",
+    "hacT": 0.8199,
+    "informationRatio": 0.126,
+    "last": "2012-12",
+    "maxRelativeDrawdownPct": -55.0893,
+    "months": 594,
+    "trackingErrorPct": 11.7482
+   }
+  },
+  "BIG_WINNERS": {
+   "decadeAnnualExcessPct": {
+    "1960s": 7.86,
+    "1970s": 3.815,
+    "1980s": 2.435,
+    "1990s": 4.919,
+    "2000s": -0.104,
+    "2010s": 1.259,
+    "2020s": 1.921
+   },
+   "full": {
+    "annualExcessAfterDragPct": {
+     "2.0": 0.9679
+    },
+    "annualExcessPct": 2.9679,
+    "excess12m": {
+     "medianPct": 2.926,
+     "p5Pct": -12.3216,
+     "sharePositive": 0.6297,
+     "windows": 748,
+     "worstPct": -24.5801
+    },
+    "excess6m": {
+     "medianPct": 1.0719,
+     "p5Pct": -8.2545,
+     "sharePositive": 0.5809,
+     "windows": 754,
+     "worstPct": -22.2704
+    },
+    "first": "1963-07",
+    "hacT": 2.6371,
+    "informationRatio": 0.3294,
+    "last": "2026-09",
+    "maxRelativeDrawdownPct": -25.1747,
+    "months": 759,
+    "trackingErrorPct": 9.011
+   },
+   "ourEra": {
+    "annualExcessAfterDragPct": {
+     "2.0": -0.9972
+    },
+    "annualExcessPct": 1.0028,
+    "excess12m": {
+     "medianPct": 1.868,
+     "p5Pct": -14.6233,
+     "sharePositive": 0.5678,
+     "windows": 118,
+     "worstPct": -16.7245
+    },
+    "excess6m": {
+     "medianPct": 0.9979,
+     "p5Pct": -11.0054,
+     "sharePositive": 0.5645,
+     "windows": 124,
+     "worstPct": -14.3889
+    },
+    "first": "2016-01",
+    "hacT": 0.3907,
+    "informationRatio": 0.106,
+    "last": "2026-09",
+    "maxRelativeDrawdownPct": -19.5806,
+    "months": 129,
+    "trackingErrorPct": 9.4574
+   },
+   "postPublication": {
+    "annualExcessAfterDragPct": {
+     "2.0": -0.3622
+    },
+    "annualExcessPct": 1.6378,
+    "excess12m": {
+     "medianPct": 3.7202,
+     "p5Pct": -14.2706,
+     "sharePositive": 0.6364,
+     "windows": 154,
+     "worstPct": -16.7245
+    },
+    "excess6m": {
+     "medianPct": 1.5384,
+     "p5Pct": -10.7218,
+     "sharePositive": 0.625,
+     "windows": 160,
+     "worstPct": -14.3889
+    },
+    "first": "2013-01",
+    "hacT": 0.7851,
+    "informationRatio": 0.183,
+    "last": "2026-09",
+    "maxRelativeDrawdownPct": -19.5806,
+    "months": 165,
+    "trackingErrorPct": 8.9512
+   },
+   "postPublicationEx2025": {
+    "annualExcessAfterDragPct": {
+     "2.0": 0.7608
+    },
+    "annualExcessPct": 2.7608,
+    "excess12m": {
+     "medianPct": 4.3066,
+     "p5Pct": -14.162,
+     "sharePositive": 0.6901,
+     "windows": 142,
+     "worstPct": -16.7245
+    },
+    "excess6m": {
+     "medianPct": 1.9014,
+     "p5Pct": -8.9224,
+     "sharePositive": 0.6689,
+     "windows": 148,
+     "worstPct": -14.3889
+    },
+    "first": "2013-01",
+    "hacT": 1.2194,
+    "informationRatio": 0.3059,
+    "last": "2026-09",
+    "maxRelativeDrawdownPct": -19.5806,
+    "months": 153,
+    "trackingErrorPct": 9.0248
+   },
+   "prePublication": {
+    "annualExcessAfterDragPct": {
+     "2.0": 1.3374
+    },
+    "annualExcessPct": 3.3374,
+    "excess12m": {
+     "medianPct": 2.9045,
+     "p5Pct": -11.9417,
+     "sharePositive": 0.6398,
+     "windows": 583,
+     "worstPct": -24.5801
+    },
+    "excess6m": {
+     "medianPct": 0.9962,
+     "p5Pct": -8.0506,
+     "sharePositive": 0.5739,
+     "windows": 589,
+     "worstPct": -22.2704
+    },
+    "first": "1963-07",
+    "hacT": 2.5592,
+    "informationRatio": 0.3695,
+    "last": "2012-12",
+    "maxRelativeDrawdownPct": -25.1747,
+    "months": 594,
+    "trackingErrorPct": 9.0322
+   }
+  },
+  "OP_HI_ALL_SIZES": {
+   "decadeAnnualExcessPct": {
+    "1960s": 3.549,
+    "1970s": -0.387,
+    "1980s": 0.955,
+    "1990s": 1.383,
+    "2000s": 1.455,
+    "2010s": 0.833,
+    "2020s": 0.501
+   },
+   "full": {
+    "annualExcessAfterDragPct": {
+     "0.5": 0.5884,
+     "1.0": 0.0884
+    },
+    "annualExcessPct": 1.0884,
+    "excess12m": {
+     "medianPct": 1.2296,
+     "p5Pct": -7.6617,
+     "sharePositive": 0.6029,
+     "windows": 748,
+     "worstPct": -18.3674
+    },
+    "excess6m": {
+     "medianPct": 0.709,
+     "p5Pct": -5.2137,
+     "sharePositive": 0.5849,
+     "windows": 754,
+     "worstPct": -15.6107
+    },
+    "first": "1963-07",
+    "hacT": 1.9209,
+    "informationRatio": 0.2609,
+    "last": "2026-09",
+    "maxRelativeDrawdownPct": -17.4441,
+    "months": 759,
+    "trackingErrorPct": 4.1716
+   },
+   "ourEra": {
+    "annualExcessAfterDragPct": {
+     "0.5": 0.5967,
+     "1.0": 0.0967
+    },
+    "annualExcessPct": 1.0967,
+    "excess12m": {
+     "medianPct": 2.0025,
+     "p5Pct": -7.6424,
+     "sharePositive": 0.6271,
+     "windows": 118,
+     "worstPct": -11.6265
+    },
+    "excess6m": {
+     "medianPct": 0.8732,
+     "p5Pct": -5.0007,
+     "sharePositive": 0.6048,
+     "windows": 124,
+     "worstPct": -8.7939
+    },
+    "first": "2016-01",
+    "hacT": 0.7871,
+    "informationRatio": 0.2615,
+    "last": "2026-09",
+    "maxRelativeDrawdownPct": -14.1851,
+    "months": 129,
+    "trackingErrorPct": 4.1941
+   },
+   "postPublication": {
+    "annualExcessAfterDragPct": {
+     "0.5": 0.2367,
+     "1.0": -0.2633
+    },
+    "annualExcessPct": 0.7367,
+    "excess12m": {
+     "medianPct": 1.355,
+     "p5Pct": -7.3021,
+     "sharePositive": 0.6104,
+     "windows": 154,
+     "worstPct": -11.6265
+    },
+    "excess6m": {
+     "medianPct": 0.5889,
+     "p5Pct": -4.7237,
+     "sharePositive": 0.5875,
+     "windows": 160,
+     "worstPct": -8.7939
+    },
+    "first": "2013-01",
+    "hacT": 0.6442,
+    "informationRatio": 0.1848,
+    "last": "2026-09",
+    "maxRelativeDrawdownPct": -14.1851,
+    "months": 165,
+    "trackingErrorPct": 3.986
+   },
+   "postPublicationEx2025": {
+    "annualExcessAfterDragPct": {
+     "0.5": 0.671,
+     "1.0": 0.171
+    },
+    "annualExcessPct": 1.171,
+    "excess12m": {
+     "medianPct": 1.7875,
+     "p5Pct": -6.7142,
+     "sharePositive": 0.662,
+     "windows": 142,
+     "worstPct": -9.4769
+    },
+    "excess6m": {
+     "medianPct": 0.7823,
+     "p5Pct": -4.3541,
+     "sharePositive": 0.6216,
+     "windows": 148,
+     "worstPct": -8.7939
+    },
+    "first": "2013-01",
+    "hacT": 1.0397,
+    "informationRatio": 0.2963,
+    "last": "2026-09",
+    "maxRelativeDrawdownPct": -10.1419,
+    "months": 153,
+    "trackingErrorPct": 3.9525
+   },
+   "prePublication": {
+    "annualExcessAfterDragPct": {
+     "0.5": 0.6861,
+     "1.0": 0.1861
+    },
+    "annualExcessPct": 1.1861,
+    "excess12m": {
+     "medianPct": 1.2348,
+     "p5Pct": -7.1314,
+     "sharePositive": 0.6123,
+     "windows": 583,
+     "worstPct": -18.3674
+    },
+    "excess6m": {
+     "medianPct": 0.7382,
+     "p5Pct": -5.1912,
+     "sharePositive": 0.5891,
+     "windows": 589,
+     "worstPct": -15.6107
+    },
+    "first": "1963-07",
+    "hacT": 1.847,
+    "informationRatio": 0.2808,
+    "last": "2012-12",
+    "maxRelativeDrawdownPct": -17.4441,
+    "months": 594,
+    "trackingErrorPct": 4.2245
+   }
+  }
+ },
+ "protocolSha256": "37498fe96bd33095d151d74490234f5e0f21aca6fd1ff0d20bfb551396b08443",
+ "significantAtBonferroni": {
+  "BIG_HI_OP": false,
+  "BIG_VALUE": false,
+  "BIG_WINNERS": false,
+  "OP_HI_ALL_SIZES": false
+ },
+ "verdict": "WEAK_OR_ABSENT_AFTER_PUBLICATION"
+}

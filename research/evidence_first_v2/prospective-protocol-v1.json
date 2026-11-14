@@ -1,0 +1,97 @@
+{
+  "schema": "EVIDENCE_FIRST_PROSPECTIVE_PROTOCOL_V1",
+  "studyId": "evidence-first-prospective-v1",
+  "status": "FROZEN_NOT_ACTIVATED",
+  "frozenBeforeAnyOutcome": "Written 2026-11-11 before the first cohort it governs exists. Nothing in it was chosen from a forward return; none exists for any arm.",
+  "doesNotAuthorize": [
+    "writing any record to signal-history or any ledger outside research/evidence_first_v2/dry-run/",
+    "changing production, its receipts or the 2026-11 decision-desk ledger",
+    "calling any arm a verified or recommended portfolio"
+  ],
+  "activation": {
+    "requires": [
+      "an Owner approval file research/evidence_first_v2/owner-approvals/prospective-v1.json naming this protocol's SHA-256",
+      "every gate in research/decision_desk_v1/ledger.py ACTIVATION_GATES at RESOLVED",
+      "#321 merged so the repository's CI is green"
+    ],
+    "refusal": "prospective.assert_activation_allowed() raises ACTIVATION_BLOCKED and lists what is missing"
+  },
+  "tracks": {
+    "A_VERIFIED_STRATEGY": {
+      "label": "검증된 실전 전략",
+      "entry": "grade E5 in evidence-grades.json (which already requires an Owner approval reference) and no block state",
+      "currentMembers": "none"
+    },
+    "B_PROSPECTIVE_VIRTUAL": {
+      "label": "미검증 전향 가상 포트폴리오",
+      "entry": [
+        "a pre-registered hypothesis whose rule is in this file (rule SHA-256 recorded on every record)",
+        "the rule's own evidence grade is at least E1 and its evidence-grades item lists no block in prospectiveBlocks (a block on NEW HISTORICAL research, such as KR GOVERNANCE_CLOSED, does not stop a prospective record)",
+        "every input fact was public strictly before the information cutoff (date-only receipts count from the next day)",
+        "every selected name has a price eligible for evaluation: a close on the decision date, no unresolved corporate action, no non-positive price",
+        "the record is committed and observed public before the registration deadline"
+      ],
+      "neverLabelled": "a verified strategy, a recommendation or a buy signal; the record says UNVERIFIED_PROSPECTIVE_VIRTUAL",
+      "graduates": "to A only through E2-E4 evidence plus E5 Owner approval; accumulating records alone never promotes"
+    },
+    "C_WATCHLIST_ONLY": {
+      "label": "단순 관심종목",
+      "entry": "a name someone wants to watch that fails any B condition (no pre-registered rule nominated it, inputs not PIT, price not eligible)",
+      "recorded": "never as a portfolio; no weight, no outcome"
+    }
+  },
+  "cohort": {
+    "frequency": "monthly, independent: each cohort is a separate buy-and-hold portfolio to its horizons; cohorts overlap and are never netted against each other",
+    "decisionDate": "the asOfDate of the first FINAL_WEEKLY production receipt of the month in each region (KR and US separately)",
+    "informationCutoff": "the regional close of the decision date (KR 15:30 Asia/Seoul, US 16:00 America/New_York)",
+    "recordedAt": "the commit time of the cohort file, verified public before the deadline by an observation made before the deadline (ledger PUBLICATION rule)",
+    "registrationDeadline": "the open of the execution session",
+    "execution": "close of the first regional session whose open is at least 48 hours after the cohort packet is sealed; identical for all four arms",
+    "noBackfill": "an arm that is not committed by the deadline is NO_RECORD for that cohort and is never filled in later"
+  },
+  "arms": {
+    "ETF100": {"v3Path": "v3.B0", "track": "BENCHMARK", "rule": "100% regional ETF (KR 069500.KS, US SPY)"},
+    "B1_ROE": {
+      "v3Path": "v3.B1", "track": "B_PROSPECTIVE_VIRTUAL", "gradeItem": {"KR": "ACADEMIC_PROFITABILITY_KR", "US": "ACADEMIC_PROFITABILITY_US"},
+      "rule": "B1_PROFITABILITY_V2",
+      "steps": [
+        "universe: the census stage-3 survivors (common identity, tradable, 252 sessions of history, no unresolved corporate action)",
+        "inputs: the latest single filing, visible strictly before the decision date, that states ROE, operating margin, net margin and liabilities/equity, with a report period at most 456 days old",
+        "eligible: large cap (KR market-cap rank <= 150, US S&P 500), 0 < operating margin <= 1, liabilities/equity <= 2",
+        "rank by ROE (descending, ties by ticker); walk down the ranking and take a name unless its industry already holds 2 selected names; stop at 5",
+        "industry: KR = kr-industry-membership-foundation-v4 interval containing the decision date; US = pipeline.sectors.sector_of; an unknown industry is the shared bucket UNCLASSIFIED with the same cap"
+      ],
+      "nameNote": "ROE is an in-house proxy motivated by the profitability literature; it is not the Fama-French OP or Novy-Marx GP/A strategy (data-integrity.json definitions)"
+    },
+    "PRODUCTION": {"v3Path": "v3.B2", "track": "PRODUCTION_COPY", "rule": "the weights of the FINAL_WEEKLY production receipt of the decision date, copied by digest"},
+    "B1_PLUS_AI": {
+      "v3Path": "v3.B3", "track": "B_PROSPECTIVE_VIRTUAL", "gradeItem": {"KR": "ACADEMIC_PROFITABILITY_KR", "US": "ACADEMIC_PROFITABILITY_US"},
+      "rule": "start from the B1_ROE selection; the AI review may only REMOVE names (decision EXCLUDE with at least two sourced reasons), never add or resize; survivors keep the B1 weight",
+      "reviewContract": "contract.validate_dossier: FACT rows generated from the census, no digit in AI text, counter-arguments and invalidation conditions required",
+      "noReview": "if no review is committed before the deadline the arm is NO_RECORD (never copied from B1, never back-filled)"
+    }
+  },
+  "portfolio": {
+    "perNameWeight": 0.10,
+    "maxNames": 5,
+    "minNames": 0,
+    "maxNamesPerIndustry": 2,
+    "unselectedWeightGoesTo": "the regional ETF",
+    "rebalance": "none inside a horizon; a new cohort is a new portfolio",
+    "perNameWeightNote": "10% is a fixed experimental convention carried from decision-desk protocol v1 so every arm is comparable; it is not an estimated optimum and no arm sizes by conviction"
+  },
+  "costs": {
+    "basis": "the production receipt's stated round-trip cost per leg (stock and ETF) on the decision date",
+    "stress": "2x the same costs, reported beside the base case for every outcome"
+  },
+  "returns": {
+    "definition": "total return in local currency (KRW / USD), distributions reinvested at the ex-date close, entry at the execution close, exit at the close of the 126th and 252nd regional session",
+    "benchmark": "ETF100 of the same region and cohort on the same basis",
+    "sourceBlocked": "missing session, zero volume, non-positive price, unverified split, move beyond the daily limit, missing exit: SOURCE_BLOCKED, re-evaluated append-only when better data arrives, never 0%"
+  },
+  "comparison": {
+    "primary": "per cohort and horizon: B1_ROE - ETF100, B1_PLUS_AI - B1_ROE (the AI's marginal effect), PRODUCTION - ETF100, after base costs",
+    "excludedFromPrimary": "records annotated PIT_CONTAMINATED, PUBLICATION_LATE or PUBLICATION_NOT_OBSERVED; they stay in the ledger and are reported separately",
+    "noEarlyClaim": "no statement about an arm's edge before 24 cohorts have matured at 126 sessions; until then outcomes are listed, not summarised"
+  }
+}

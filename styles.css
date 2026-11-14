@@ -1215,3 +1215,87 @@ dialog::backdrop { background:#152b2466; backdrop-filter:blur(2px); }
  .nps-allocation { grid-template-columns:92px minmax(0,1fr) 44px; gap:8px; }
  .raw-indicators { grid-template-columns:1fr; }
 }
+
+/* Research decision desk (research/decision_desk_v1) */
+.pill.blocked {
+  background: #f6e3e0;
+  color: var(--negative);
+}
+.desk-h {
+  margin: 26px 0 10px;
+  font-size: 16px;
+}
+.desk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 14px;
+}
+.desk-item {
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.desk-production {
+  border-color: #ccdbd4;
+}
+.desk-weights {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 4px 0 8px;
+}
+.desk-dates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  color: var(--muted);
+  font-size: 12px;
+  margin: 6px 0;
+}
+.desk-pick {
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+  margin-top: 10px;
+}
+.desk-pick h4 {
+  margin: 0 0 6px;
+}
+.desk-zero {
+  padding: 10px 12px;
+  background: #f5eedf;
+  border-radius: 8px;
+}
+.desk-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+.desk-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.desk-table th,
+.desk-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  white-space: nowrap;
+}
+.desk-table td:last-child {
+  white-space: normal;
+  min-width: 220px;
+}
+.desk-shell {
+  margin-top: 40px;
+}
+.desk-note {
+  margin: 0 0 8px;
+}
+.desk-note summary {
+  cursor: pointer;
+}
