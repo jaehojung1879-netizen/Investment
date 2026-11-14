@@ -1,0 +1,285 @@
+{
+ "studyId": "alpha-mechanism-decomposition-v1",
+ "evidenceClass": "POST_HOC_EXPLORATORY_DECOMPOSITION_ON_OUTCOME_EXPOSED_KR_HISTORY",
+ "returnBasis": "CONDITIONAL_REPLAY_V16_TOTAL_RETURN_INDEX_NOT_CERTIFIED_SHAREHOLDER_RETURN",
+ "status": {
+  "KR_ETF_069500_CASH_ACCOUNT": "VERIFIED_IN_#332_FOR_2016-01-11..2026-09-14 (not recomputed here)",
+  "KR_STOCK_STRATEGY_PATHS": "CONDITIONAL — replay-v16 total-return index; #332 strict admission SOURCE_BLOCKED from the first unresolved event; every stock number in this study is a conditional decomposition",
+  "KR_STATE_MACRO_INPUTS": "CONDITIONAL — repository lag rules, FRED values not vintage-certified",
+  "TERMINAL_CONSIDERATION": "NOT_EXERCISED — zero terminal hits on every decomposed 2018-2026 path"
+ },
+ "vendorEventFlagsRead": 0,
+ "minimumRecoveryTargets": {
+  "S1_INDUSTRY_MOMENTUM": {
+   "stockLegs": 2265,
+   "distinctTickers": 134,
+   "legsCarrying50pctOfAbsAlpha": 432,
+   "top10Legs": [
+    {
+     "ticker": "012450.KS",
+     "phase": 1,
+     "execution": "2025-02-03",
+     "industry": "CAPITAL_GOODS_DEFENSE",
+     "alpha": 0.152763,
+     "weight": 0.2
+    },
+    {
+     "ticker": "006740.KS",
+     "phase": 3,
+     "execution": "2023-10-04",
+     "industry": "BASIC_MATERIALS",
+     "alpha": -0.149502,
+     "weight": 0.2
+    },
+    {
+     "ticker": "064350.KS",
+     "phase": 0,
+     "execution": "2025-05-19",
+     "industry": "CAPITAL_GOODS_DEFENSE",
+     "alpha": 0.141876,
+     "weight": 0.2
+    },
+    {
+     "ticker": "012450.KS",
+     "phase": 2,
+     "execution": "2025-02-10",
+     "industry": "CAPITAL_GOODS_DEFENSE",
+     "alpha": 0.137341,
+     "weight": 0.2
+    },
+    {
+     "ticker": "042700.KS",
+     "phase": 0,
+     "execution": "2023-06-19",
+     "industry": "CAPITAL_GOODS_DEFENSE",
+     "alpha": 0.13527,
+     "weight": 0.2
+    },
+    {
+     "ticker": "047040.KS",
+     "phase": 2,
+     "execution": "2026-05-04",
+     "industry": "CONSTRUCTION_ENGINEERING",
+     "alpha": -0.134881,
+     "weight": 0.2
+    },
+    {
+     "ticker": "011200.KS",
+     "phase": 0,
+     "execution": "2021-03-02",
+     "industry": "TRANSPORT_LOGISTICS",
+     "alpha": 0.130871,
+     "weight": 0.2
+    },
+    {
+     "ticker": "012450.KS",
+     "phase": 0,
+     "execution": "2025-01-31",
+     "industry": "CAPITAL_GOODS_DEFENSE",
+     "alpha": 0.127088,
+     "weight": 0.2
+    },
+    {
+     "ticker": "052690.KS",
+     "phase": 2,
+     "execution": "2026-05-04",
+     "industry": "CONSTRUCTION_ENGINEERING",
+     "alpha": -0.122206,
+     "weight": 0.2
+    },
+    {
+     "ticker": "042700.KS",
+     "phase": 3,
+     "execution": "2023-07-10",
+     "industry": "CAPITAL_GOODS_DEFENSE",
+     "alpha": 0.119723,
+     "weight": 0.2
+    }
+   ],
+   "vendorFlaggedEventsInsideHeldWindows": 0,
+   "distinctTickersWithFlaggedEvents": 0,
+   "flaggedEvents": []
+  },
+  "S2_VALUE_CONFIRMED": {
+   "stockLegs": 2227,
+   "distinctTickers": 55,
+   "legsCarrying50pctOfAbsAlpha": 408,
+   "top10Legs": [
+    {
+     "ticker": "066570.KS",
+     "phase": 2,
+     "execution": "2026-05-04",
+     "industry": "ELECTRONICS_ELECTRICAL",
+     "alpha": 0.276894,
+     "weight": 0.2
+    },
+    {
+     "ticker": "066570.KS",
+     "phase": 3,
+     "execution": "2026-05-11",
+     "industry": "ELECTRONICS_ELECTRICAL",
+     "alpha": 0.144884,
+     "weight": 0.2
+    },
+    {
+     "ticker": "066570.KS",
+     "phase": 1,
+     "execution": "2026-04-27",
+     "industry": "ELECTRONICS_ELECTRICAL",
+     "alpha": 0.125065,
+     "weight": 0.2
+    },
+    {
+     "ticker": "011070.KS",
+     "phase": 0,
+     "execution": "2026-04-20",
+     "industry": "ELECTRONICS_ELECTRICAL",
+     "alpha": 0.124045,
+     "weight": 0.2
+    },
+    {
+     "ticker": "011780.KS",
+     "phase": 2,
+     "execution": "2021-01-18",
+     "industry": "CHEMICALS",
+     "alpha": 0.120191,
+     "weight": 0.2
+    },
+    {
+     "ticker": "267250.KS",
+     "phase": 0,
+     "execution": "2025-05-19",
+     "industry": "FINANCIALS",
+     "alpha": 0.114139,
+     "weight": 0.2
+    },
+    {
+     "ticker": "066570.KS",
+     "phase": 0,
+     "execution": "2026-04-20",
+     "industry": "ELECTRONICS_ELECTRICAL",
+     "alpha": 0.107084,
+     "weight": 0.2
+    },
+    {
+     "ticker": "011070.KS",
+     "phase": 3,
+     "execution": "2026-04-13",
+     "industry": "ELECTRONICS_ELECTRICAL",
+     "alpha": 0.106522,
+     "weight": 0.2
+    },
+    {
+     "ticker": "066570.KS",
+     "phase": 0,
+     "execution": "2020-12-07",
+     "industry": "ELECTRONICS_ELECTRICAL",
+     "alpha": 0.105683,
+     "weight": 0.2
+    },
+    {
+     "ticker": "002380.KS",
+     "phase": 1,
+     "execution": "2021-08-23",
+     "industry": "CHEMICALS",
+     "alpha": 0.103469,
+     "weight": 0.2
+    }
+   ],
+   "vendorFlaggedEventsInsideHeldWindows": 0,
+   "distinctTickersWithFlaggedEvents": 0,
+   "flaggedEvents": []
+  },
+  "SLEEVE_MOMENTUM_SWITCH": {
+   "stockLegs": 1915,
+   "distinctTickers": 126,
+   "legsCarrying50pctOfAbsAlpha": 341,
+   "top10Legs": [
+    {
+     "ticker": "066570.KS",
+     "phase": 2,
+     "execution": "2026-05-04",
+     "industry": "ELECTRONICS_ELECTRICAL",
+     "alpha": 0.276894,
+     "weight": 0.2
+    },
+    {
+     "ticker": "006740.KS",
+     "phase": 3,
+     "execution": "2023-10-04",
+     "industry": "BASIC_MATERIALS",
+     "alpha": -0.149502,
+     "weight": 0.2
+    },
+    {
+     "ticker": "064350.KS",
+     "phase": 0,
+     "execution": "2025-05-19",
+     "industry": "CAPITAL_GOODS_DEFENSE",
+     "alpha": 0.141876,
+     "weight": 0.2
+    },
+    {
+     "ticker": "012450.KS",
+     "phase": 2,
+     "execution": "2025-02-10",
+     "industry": "CAPITAL_GOODS_DEFENSE",
+     "alpha": 0.137341,
+     "weight": 0.2
+    },
+    {
+     "ticker": "042700.KS",
+     "phase": 0,
+     "execution": "2023-06-19",
+     "industry": "CAPITAL_GOODS_DEFENSE",
+     "alpha": 0.13527,
+     "weight": 0.2
+    },
+    {
+     "ticker": "012450.KS",
+     "phase": 0,
+     "execution": "2025-01-31",
+     "industry": "CAPITAL_GOODS_DEFENSE",
+     "alpha": 0.127088,
+     "weight": 0.2
+    },
+    {
+     "ticker": "042700.KS",
+     "phase": 3,
+     "execution": "2023-07-10",
+     "industry": "CAPITAL_GOODS_DEFENSE",
+     "alpha": 0.119723,
+     "weight": 0.2
+    },
+    {
+     "ticker": "009150.KS",
+     "phase": 1,
+     "execution": "2026-03-30",
+     "industry": "ELECTRONICS_ELECTRICAL",
+     "alpha": 0.117217,
+     "weight": 0.2
+    },
+    {
+     "ticker": "006280.KS",
+     "phase": 1,
+     "execution": "2020-06-29",
+     "industry": "HEALTHCARE",
+     "alpha": 0.11192,
+     "weight": 0.2
+    },
+    {
+     "ticker": "006280.KS",
+     "phase": 2,
+     "execution": "2020-07-06",
+     "industry": "HEALTHCARE",
+     "alpha": 0.111295,
+     "weight": 0.2
+    }
+   ],
+   "vendorFlaggedEventsInsideHeldWindows": 0,
+   "distinctTickersWithFlaggedEvents": 0,
+   "flaggedEvents": []
+  }
+ },
+ "note": "A vendor dividend/split flag inside a held window is the minimum set of (ticker, date) events whose official cash/share package must be verified to certify that leg; the flag list is not a completeness certificate (unflagged actions may exist)."
+}

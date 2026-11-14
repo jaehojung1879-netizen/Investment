@@ -1,0 +1,160 @@
+{
+  "studyId": "adaptive-cocktail-v1",
+  "evidenceClass": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+  "exposureStatement": "Written AFTER ml-strategy-tournament-v1 (#329) and its independent audit (#330) were read: the author has seen that the industry-momentum rule won mainly in 2017, 2023 and 2025 (defense and semiconductors). Every state variable, window, threshold, sleeve and policy below is fixed from pre-existing repository constants, literature, or round numbers BEFORE any sleeve or cocktail return in this study is computed, and none is chosen to fit those years. A chronological walk-forward on this history is development evidence, not independent or prospective validation.",
+  "frozenBeforeFirstSleeveReturn": true,
+  "region": "KR",
+  "benchmark": "069500.KS reconciled total return (docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json)",
+  "inputs": {
+    "pitMatrix": "kr-alpha-atlas Phase B matrix (digest 32e49b57...), PIT Top120, weekly signal dates, reused from ml-strategy-tournament-v1/prepare_dataset.py",
+    "prices": "replay-v16 total-return closes at signal-history 4ea107ed, with the 2026-09-14 session replaced by docs/audits/kr-alpha-atlas-phase-c-integrity/corrected-inputs.json finalSessionQuotes",
+    "withheldSecurities": {
+      "006800.KS": "corrected-inputs.json stockRules WITHHOLD_FULL_SECURITY_PRICE_BASIS (unresolved 2018 and 2026 corporate-action basis); never selectable by any sleeve. The number of rebalances on which a sleeve's own ranking would have picked it is reported, so the pre-removal is visible rather than silent."
+    },
+    "macroPanel": "replay-v16 macro component (FRED daily market series only), vix component, fx/USD_KRW component (DEXKOUS)"
+  },
+  "timing": {
+    "krSignal": "KR close 15:30 KST (06:30 UTC) on the signal date; trades execute at the close of the NEXT KR session",
+    "usClose": "16:00 New York = 21:00 UTC (EST) / 20:00 UTC (EDT) on the previous US calendar day, i.e. before the KR close of the following KR day",
+    "lagRule": "a series value is visible on KR signal date D only if its observation date <= D - lagCalendarDays",
+    "lagCalendarDays": {
+      "source": "pipeline/kr_market_risk_anatomy.LAG_CALENDAR_DAYS (sealed repository constants, reused unchanged)",
+      "KR_INDEX_CLOSE": 0,
+      "FRED_DAILY_MARKET": 4,
+      "FRED_H10_WEEKLY": 8,
+      "YAHOO_US_DAILY": 1
+    },
+    "vixLagClass": "FRED_DAILY_MARKET (4): the replay vix object does not name its vendor, so the more conservative registered class is used"
+  },
+  "stateVariables": {
+    "KR_EQUITY": {
+      "MKT_TREND_63": "069500 63-session total return (lag 0)",
+      "MKT_TREND_252": "069500 252-session total return (lag 0)",
+      "MKT_VOL_63": "069500 63-session annualised realised volatility (lag 0)",
+      "MKT_DD_252": "069500 close / 252-session max - 1 (lag 0)",
+      "BREADTH_200": "Phase B H09: share of measured PIT Top120 above their 200-session mean (same-date)",
+      "IND_DISPERSION": "Phase B H05: cross-industry dispersion of industry relative 126-session momentum (same-date)",
+      "CONCENTRATION_TOP2": "Phase B H10: Samsung Electronics + SK Hynix share of Top120 cap (same-date)",
+      "LEADERSHIP_PERSIST": "Phase B H07: rank persistence of industry leadership (same-date)"
+    },
+    "US_RATES": {
+      "UST10_LEVEL": "DGS10 level, percent (lag 4)",
+      "UST10_CHG_63": "DGS10 change over 63 sessions in percentage points; POSITIVE = yields up = Treasury PRICES down (lag 4)",
+      "CURVE_10Y2Y": "DGS10 - DGS2 level (lag 4)",
+      "CURVE_CHG_63": "change of the 10y-2y spread over 63 sessions (lag 4)"
+    },
+    "DOLLAR_FX": {
+      "BROAD_DOLLAR_CHG_63": "log change of DTWEXBGS (broad trade-weighted dollar) over 63 sessions (lag 8, H.10)",
+      "USDKRW_CHG_63": "log change of DEXKOUS (KRW per USD; positive = KRW weaker) over 63 sessions (lag 8, H.10). A separate variable from the broad dollar",
+      "USDKRW_VOL_63": "annualised volatility of daily DEXKOUS log changes over 63 observations (lag 8)"
+    },
+    "RISK": {
+      "VIX_LEVEL": "VIX close (lag 4)",
+      "VIX_CHG_63": "VIX change over 63 sessions (lag 4)"
+    },
+    "DYNAMIC_RELATIONS": {
+      "CORR_KR_USDKRW_126": "126-session rolling correlation of 069500 daily return with the daily DEXKOUS log change, both as visible on each KR date",
+      "CORR_KR_UST10_126": "126-session rolling correlation of 069500 daily return with the daily DGS10 change (yield, not price), as visible on each KR date"
+    },
+    "SLEEVE_HISTORY": {
+      "REL63_<k>": "sleeve k standalone NAV over 069500 over the trailing 63 sessions (realised, hence matured by construction)",
+      "REL126_<k>": "same over 126 sessions"
+    },
+    "windowsFixedBecause": "63 / 126 / 252 sessions are the repository's standing quarter / half-year / year conventions (horizon labels H63/H126/H252 in every prior study); none was chosen from returns in this study",
+    "standardisation": "for learned models, each state variable is z-scored with the TRAINING rows' mean and standard deviation only",
+    "unavailableOrExcluded": {
+      "GOLD": "no gold price or gold ETF series exists in the repository snapshot; not substituted",
+      "US_TREASURY_PRICE_OR_TOTAL_RETURN": "no Treasury ETF or total-return index in the snapshot; the yield change is used and labelled as a yield, never as a bond price",
+      "HY_SPREAD_IG_SPREAD": "the replay macro panel carries ICE BofA spreads only from 2023-09 (FRED's licensed 3-year window); cannot cover the 2014-2026 study window",
+      "CPI_PCE_PAYROLLS_UNEMPLOYMENT_CFNAI_M2_NFCI": "monthly or re-estimated series with no retained ALFRED vintage in the repository (Macro vintage invariants v2.9); revised values are never used",
+      "KR_RATES": "ECOS / OECD Korean rates are REVISED_HISTORY by the repository contract (kr_market_risk_sources)"
+    }
+  },
+  "sleeves": {
+    "common": "rebalance every 4th weekly signal date; quality mask of ml-strategy-tournament-v1 (tradable at signal, not preferred, 20/20 traded sessions, no stale-suspension, median traded value >= 5bn KRW); top 5 by score at 20% each; fewer than 5 scored eligible names -> the remainder in 069500; ties broken by ticker",
+    "S0_ETF": "069500.KS 100%",
+    "S1_INDUSTRY_MOMENTUM": "score = rank(H01_industryRelMom126) + 0.01 * rank(A09_industryRelativeMomentum126), the ml-strategy-tournament-v1 RULE_INDUSTRY_MOMENTUM formula, WITHOUT that study's calibration gate (the plain rule)",
+    "S2_VALUE_CONFIRMED": "kr-alpha-signal-v2 H2 construction as carried by Phase B B08: names with b08Confirmed == 1, ranked by B08_valueBusinessConfirmation (within-industry value percentile)",
+    "S3_FOUR_FACTOR": "mean of available within-date ranks of A07_momentum12_1, B01_bookToMarket, C02_returnOnEquity and (1 - rank F02_downsideVol126); the ml-strategy-tournament-v1 RULE_FOUR_FACTOR formula",
+    "S4_RISK_MANAGED_ETF": "069500 x the sealed kr-market-risk overlay C0 multiplier (Phase B I01, {1.0, 0.7, 0.4}) + remainder in cash at the BOK policy-rate proxy. RESEARCH REFERENCE ONLY: not in any cocktail choice set",
+    "SX_XGB_SENSITIVITY": "ml-strategy-tournament-v1 XGB_CI_RANK_h1 forced top-5 scores. Rejected investment candidate; shown as an explanatory standalone sensitivity only, never in a choice set",
+    "choiceSet": [
+      "S0_ETF",
+      "S1_INDUSTRY_MOMENTUM",
+      "S2_VALUE_CONFIRMED",
+      "S3_FOUR_FACTOR"
+    ]
+  },
+  "engine": {
+    "accounting": "self-financing share units: units are only changed by a trade; a security that cannot trade keeps its units; costs are charged on the traded value and the post-trade NAV solves NAV_post = NAV_pre - cost(NAV_post) (fixes the two approximations #330 found in ml-strategy-tournament-v1/tournament.simulate)",
+    "costs": {
+      "stock": {
+        "commissionBps": 1.5,
+        "spreadBps": 8.0,
+        "sellTaxSchedule": "research_specs/alpha-opportunity-model-v5.json inherited KR schedule (30 -> 25 -> 23 -> 20 -> 18 -> 15 -> 20 bp)"
+      },
+      "etf": {
+        "commissionBps": 1.5,
+        "spreadBps": 2.0,
+        "sellTaxBps": 0.0
+      },
+      "cash": "no cost"
+    },
+    "termination": "a held name with no close after its last priced session is written off (primary, conservative). Alternative: converted to the ETF at its last close. Neither is a measured consideration and neither is called a bound",
+    "cash": "accrues the dated BOK policy-rate proxy (data/bok-policy-rates.json); BOK_POLICY_RATE_PROXY, not an investable deposit return"
+  },
+  "cocktails": {
+    "decision": "same every-4th-weekly signal dates as the sleeves; the cocktail's book is the weighted sum of the chosen sleeves' target books, so overlapping names net and the engine charges only the net trade",
+    "noChangeBand": "the sleeve weights are left unchanged unless the half-sum of absolute weight changes exceeds 0.10 (sleeves still rebalance their own names)",
+    "A1_MOMENTUM_CRASH_GUARD": "S1 100%, except S0 100% when the market is in a rebound state (MKT_TREND_252 < 0 and MKT_TREND_63 > 0) or MKT_VOL_63 exceeds the 80th percentile of its own past (expanding, >= 252 sessions). Daniel & Moskowitz (2016) momentum-crash conditions; 0.80 = kr_market_risk_anatomy.HIGH_STATE_PERCENTILE",
+    "A2_INVERSE_VOL_RISK_BUDGET": "w_k proportional to 1 / sigma_k over the choice set, sigma_k = 63-session realised volatility of the sleeve's daily return",
+    "B1_RIDGE_ALL_STATES": "per risky sleeve k in {S1,S2,S3}: Ridge(alpha=10) of the next-63-session sleeve-minus-S0 return on all standardised state variables + that sleeve's REL63/REL126; trained only on decision dates whose 63-session exit is strictly before the current decision date (expanding); minimum 36 training dates, otherwise 100% S0",
+    "B2_LGBM_ALL_STATES": "as B1 with LightGBM regression (n_estimators 50, max_depth 2, num_leaves 4, learning_rate 0.05, min_child_samples 10, subsample 0.8, seed 7)",
+    "B3_RIDGE_KR_ONLY": "as B1 with KR_EQUITY + SLEEVE_HISTORY variables only (ablation: does the US rates / dollar / VIX layer add anything)",
+    "learnedAllocation": "mu_k = predicted 63-session relative return; shrink by kappa_k = mu_k^2 / (mu_k^2 + se_k^2), se_k = the ridge/LGBM conditional-mean standard error from the training design (LGBM: the matched ridge se), inflated by sqrt(63/20) for overlapping targets; edge_k = kappa_k * mu_k - round-trip switch cost; risky weight w_k = edge_k / sum(edge) * min(1, sum(edge) / 0.05) over positive edges; the rest in S0. 0.05 = a 5% 63-session relative edge for full commitment, fixed here, not tuned",
+    "hmm": "no latent-state smoothing of any kind"
+  },
+  "controls": {
+    "S0_ETF": "069500 100%",
+    "S1/S2/S3 alone": "each sleeve alone",
+    "STATIC_EW4": "25% each of S0, S1, S2, S3",
+    "STATIC_50_ETF_50_S1": "50% S0 + 50% S1",
+    "TREND_200_CASH": "069500 100% when its close is above its 200-session mean on the signal date, otherwise cash",
+    "S4_RISK_MANAGED_ETF": "the sealed overlay reference",
+    "SLEEVE_MOMENTUM_SWITCH": "100% in the choice-set sleeve with the highest trailing 126-session NAV return (naive adaptive control)"
+  },
+  "evaluation": {
+    "sleeveHistoryStart": "first rebalance in 2014",
+    "cocktailEvaluationStart": "2018-01-01 (all policies and controls on the identical calendar, sessions and costs)",
+    "end": "2026-09-14",
+    "metrics": [
+      "net CAGR",
+      "excess CAGR vs 069500",
+      "tracking error",
+      "information ratio",
+      "Sharpe over the BOK proxy",
+      "MDD",
+      "CVaR 5% daily",
+      "rolling 126/252-session excess",
+      "calendar-year excess",
+      "excess by pre-defined state bucket",
+      "returns in the 63 sessions after a weight change >= 0.25",
+      "switch count and switching cost",
+      "dominant-sleeve stability",
+      "loss when the learned top edge is within its own standard error",
+      "regret vs the realised best sleeve"
+    ],
+    "inference": "126-session date-synchronised circular block bootstrap (2,000 reps, seed 11) of each dynamic policy minus STATIC_EW4 and minus S0; Holm over the dynamic policies; arithmetic-plus-compounding split of the gross gap (selection_value convention)",
+    "q1": "for each sleeve-minus-S0 and S1-minus-S3 relative return at 21 / 63 / 126 sessions, on the every-4th-week decision sample 2014-2026: OLS slope on the expanding-standardised state, Newey-West lags = horizon/20, Benjamini-Yekutieli q=0.10 over every (pair, horizon, variable) cell; plus walk-forward out-of-sample R^2 of B1 against the expanding historical mean",
+    "decomposition": "dynamic minus STATIC_EW4: (1) sleeve-timing effect = sum over days of (w_dyn - w_static) . r_sleeves; (2) market-exposure and (3) industry-exposure = regression of the daily difference on 069500 and on the S1-minus-S0 daily return; (4) stock selection = 0 by construction (the same fixed sleeves); (5) arithmetic vs compounding split; (6) cost difference",
+    "postHocDiagnostics": "labelled POST_HOC: 2025 removed; CAPITAL_GOODS_DEFENSE and ELECTRONICS_ELECTRICAL removed from every sleeve universe (sleeves re-selected); cost x2; never used to choose a policy"
+  },
+  "postOutcomeAdditions": [
+    {
+      "id": "P1_REBALANCE_PHASE_ROBUSTNESS",
+      "seenBeforeAdding": "the primary run: the S1 sleeve's 2018-2026 CAGR was 7.56% against ml-strategy-tournament-v1's industry-momentum rule because the frozen schedule (every 4th week from 2014) sits on a different 4-week phase than v1 (every 4th week from 2016); phase 1 reproduces v1's yearly returns",
+      "change": "every policy and control is re-run on all four phases and reported side by side",
+      "doesNotChange": "the primary phase, any rule, threshold, state variable, model or cost"
+    }
+  ]
+}
