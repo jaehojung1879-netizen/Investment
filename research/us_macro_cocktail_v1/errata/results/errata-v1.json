@@ -1,0 +1,1529 @@
+{
+ "auditSource": "PR #333 research_integration_audit_20261111 (HEAD 61d0d3f6)",
+ "errataId": "us-macro-cocktail-v1-errata-v1",
+ "independentPriceVerification": {
+  "meaning": "Consistency with an independent construct; it cannot verify a vendor's daily closes or distributions.",
+  "notCovered": [
+   "TLT",
+   "GLD",
+   "UUP"
+  ],
+  "plausibility": {
+   "BIL": {
+    "annualisedDiffPct": -0.1175,
+    "basis": "DTB3/12 accrual",
+    "correlation": 0.957,
+    "months": 225
+   },
+   "IEF": {
+    "basis": "carry DGS10/12 minus duration 7.5 x monthly change (approximation, different construct)",
+    "correlation": 0.992,
+    "meanAbsDiffPctPerMonth": 0.1915,
+    "months": 225
+   },
+   "SHY": {
+    "basis": "carry DGS2/12 minus duration 1.9 x monthly change (approximation, different construct)",
+    "correlation": 0.9873,
+    "meanAbsDiffPctPerMonth": 0.0529,
+    "months": 225
+   }
+  },
+  "priceVerificationStatus": "INDEPENDENT_VENDOR_UNREACHABLE_SINGLE_SOURCE_YAHOO",
+  "secondVendorAttempts": [
+   {
+    "result": "HTTP 200 with totalRecords 0 for IEF/SPY across 2016-2025 date ranges",
+    "vendor": "Nasdaq quote historical API"
+   },
+   {
+    "result": "JavaScript proof-of-work challenge page instead of data",
+    "vendor": "Stooq CSV"
+   }
+  ]
+ },
+ "inputIdentity": {
+  "files": 20,
+  "manifestSha256": "c1c44233908aa6d217c7bc065b944e7d81809590b96d924757972e00ab79e3b6",
+  "protocolSha256": "0df428212f761b6e3fe4609dabe218df564105f820ead0babdbaf2533c948e43"
+ },
+ "originalResultsUnchanged": true,
+ "windows": {
+  "extended": {
+   "end": "2026-10-30",
+   "firstDecision": "2008-05-30",
+   "fxAtEnd": {
+    "availableAtSessionClose": 1325.06,
+    "availableObservationDate": "2026-10-23",
+    "originalNextObservation": 1344.51,
+    "sameDayObservation": 1333.99,
+    "session": "2026-10-30"
+   },
+   "krw": {
+    "D1_TREND_SIGN": {
+     "ACCOUNTING_SAME_DAY": {
+      "cagrPct": 8.237,
+      "maxDrawdownPct": -26.592,
+      "volPct": 11.127
+     },
+     "AVAILABLE_AT_SESSION": {
+      "cagrPct": 8.101,
+      "maxDrawdownPct": -26.034,
+      "volPct": 10.897
+     },
+     "AVAILABLE_AT_SESSION_status": "AVAILABILITY_UNVERIFIED_H10_WEEKLY_SUSPENDED_2006_2009",
+     "ORIGINAL_NEXT_OBSERVATION_WITHDRAWN": {
+      "cagrPct": 8.318,
+      "maxDrawdownPct": -26.461
+     },
+     "usdCagrPct": 6.719
+    },
+    "D2_ERC_COV": {
+     "ACCOUNTING_SAME_DAY": {
+      "cagrPct": 8.398,
+      "maxDrawdownPct": -18.509,
+      "volPct": 10.8
+     },
+     "AVAILABLE_AT_SESSION": {
+      "cagrPct": 8.262,
+      "maxDrawdownPct": -19.444,
+      "volPct": 9.637
+     },
+     "AVAILABLE_AT_SESSION_status": "AVAILABILITY_UNVERIFIED_H10_WEEKLY_SUSPENDED_2006_2009",
+     "ORIGINAL_NEXT_OBSERVATION_WITHDRAWN": {
+      "cagrPct": 8.479,
+      "maxDrawdownPct": -19.776
+     },
+     "usdCagrPct": 6.878
+    },
+    "D3_STATE_RULES": {
+     "ACCOUNTING_SAME_DAY": {
+      "cagrPct": 8.793,
+      "maxDrawdownPct": -17.125,
+      "volPct": 10.27
+     },
+     "AVAILABLE_AT_SESSION": {
+      "cagrPct": 8.657,
+      "maxDrawdownPct": -18.079,
+      "volPct": 9.952
+     },
+     "AVAILABLE_AT_SESSION_status": "AVAILABILITY_UNVERIFIED_H10_WEEKLY_SUSPENDED_2006_2009",
+     "ORIGINAL_NEXT_OBSERVATION_WITHDRAWN": {
+      "cagrPct": 8.875,
+      "maxDrawdownPct": -18.218
+     },
+     "usdCagrPct": 7.268
+    },
+    "D4_RIDGE_SIGN": {
+     "ACCOUNTING_SAME_DAY": {
+      "cagrPct": 7.06,
+      "maxDrawdownPct": -16.989,
+      "volPct": 9.892
+     },
+     "AVAILABLE_AT_SESSION": {
+      "cagrPct": 6.926,
+      "maxDrawdownPct": -15.623,
+      "volPct": 9.107
+     },
+     "AVAILABLE_AT_SESSION_status": "AVAILABILITY_UNVERIFIED_H10_WEEKLY_SUSPENDED_2006_2009",
+     "ORIGINAL_NEXT_OBSERVATION_WITHDRAWN": {
+      "cagrPct": 7.141,
+      "maxDrawdownPct": -20.58
+     },
+     "usdCagrPct": 5.559
+    },
+    "D5_TREE_SIGN": {
+     "ACCOUNTING_SAME_DAY": {
+      "cagrPct": 8.349,
+      "maxDrawdownPct": -16.989,
+      "volPct": 9.983
+     },
+     "AVAILABLE_AT_SESSION": {
+      "cagrPct": 8.213,
+      "maxDrawdownPct": -15.211,
+      "volPct": 9.353
+     },
+     "AVAILABLE_AT_SESSION_status": "AVAILABILITY_UNVERIFIED_H10_WEEKLY_SUSPENDED_2006_2009",
+     "ORIGINAL_NEXT_OBSERVATION_WITHDRAWN": {
+      "cagrPct": 8.43,
+      "maxDrawdownPct": -20.58
+     },
+     "usdCagrPct": 6.829
+    },
+    "D6_FORECAST_VOL_SLEEVE": {
+     "ACCOUNTING_SAME_DAY": {
+      "cagrPct": 8.909,
+      "maxDrawdownPct": -17.704,
+      "volPct": 10.503
+     },
+     "AVAILABLE_AT_SESSION": {
+      "cagrPct": 8.772,
+      "maxDrawdownPct": -18.398,
+      "volPct": 9.965
+     },
+     "AVAILABLE_AT_SESSION_status": "AVAILABILITY_UNVERIFIED_H10_WEEKLY_SUSPENDED_2006_2009",
+     "ORIGINAL_NEXT_OBSERVATION_WITHDRAWN": {
+      "cagrPct": 8.991,
+      "maxDrawdownPct": -18.398
+     },
+     "usdCagrPct": 7.382
+    },
+    "S1_SPY": {
+     "ACCOUNTING_SAME_DAY": {
+      "cagrPct": 13.244,
+      "maxDrawdownPct": -29.598,
+      "volPct": 13.553
+     },
+     "AVAILABLE_AT_SESSION": {
+      "cagrPct": 13.102,
+      "maxDrawdownPct": -32.128,
+      "volPct": 13.929
+     },
+     "AVAILABLE_AT_SESSION_status": "AVAILABILITY_UNVERIFIED_H10_WEEKLY_SUSPENDED_2006_2009",
+     "ORIGINAL_NEXT_OBSERVATION_WITHDRAWN": {
+      "cagrPct": 13.329,
+      "maxDrawdownPct": -31.113
+     },
+     "usdCagrPct": 11.656
+    },
+    "S2_QQQ": {
+     "ACCOUNTING_SAME_DAY": {
+      "cagrPct": 18.002,
+      "maxDrawdownPct": -30.646,
+      "volPct": 16.671
+     },
+     "AVAILABLE_AT_SESSION": {
+      "cagrPct": 17.854,
+      "maxDrawdownPct": -31.112,
+      "volPct": 17.294
+     },
+     "AVAILABLE_AT_SESSION_status": "AVAILABILITY_UNVERIFIED_H10_WEEKLY_SUSPENDED_2006_2009",
+     "ORIGINAL_NEXT_OBSERVATION_WITHDRAWN": {
+      "cagrPct": 18.091,
+      "maxDrawdownPct": -30.848
+     },
+     "usdCagrPct": 16.347
+    },
+    "S3_6040": {
+     "ACCOUNTING_SAME_DAY": {
+      "cagrPct": 10.03,
+      "maxDrawdownPct": -17.267,
+      "volPct": 10.249
+     },
+     "AVAILABLE_AT_SESSION": {
+      "cagrPct": 9.892,
+      "maxDrawdownPct": -16.751,
+      "volPct": 10.055
+     },
+     "AVAILABLE_AT_SESSION_status": "AVAILABILITY_UNVERIFIED_H10_WEEKLY_SUSPENDED_2006_2009",
+     "ORIGINAL_NEXT_OBSERVATION_WITHDRAWN": {
+      "cagrPct": 10.113,
+      "maxDrawdownPct": -21.483
+     },
+     "usdCagrPct": 8.487
+    },
+    "S4_BALANCED": {
+     "ACCOUNTING_SAME_DAY": {
+      "cagrPct": 9.604,
+      "maxDrawdownPct": -16.989,
+      "volPct": 9.83
+     },
+     "AVAILABLE_AT_SESSION": {
+      "cagrPct": 9.466,
+      "maxDrawdownPct": -15.623,
+      "volPct": 9.401
+     },
+     "AVAILABLE_AT_SESSION_status": "AVAILABILITY_UNVERIFIED_H10_WEEKLY_SUSPENDED_2006_2009",
+     "ORIGINAL_NEXT_OBSERVATION_WITHDRAWN": {
+      "cagrPct": 9.687,
+      "maxDrawdownPct": -20.58
+     },
+     "usdCagrPct": 8.067
+    },
+    "S5_EQUAL4": {
+     "ACCOUNTING_SAME_DAY": {
+      "cagrPct": 7.914,
+      "maxDrawdownPct": -17.035,
+      "volPct": 10.396
+     },
+     "AVAILABLE_AT_SESSION": {
+      "cagrPct": 7.778,
+      "maxDrawdownPct": -16.832,
+      "volPct": 9.477
+     },
+     "AVAILABLE_AT_SESSION_status": "AVAILABILITY_UNVERIFIED_H10_WEEKLY_SUSPENDED_2006_2009",
+     "ORIGINAL_NEXT_OBSERVATION_WITHDRAWN": {
+      "cagrPct": 7.995,
+      "maxDrawdownPct": -18.634
+     },
+     "usdCagrPct": 6.4
+    },
+    "S6_RISK_BUDGET_IV": {
+     "ACCOUNTING_SAME_DAY": {
+      "cagrPct": 7.889,
+      "maxDrawdownPct": -19.778,
+      "volPct": 11.045
+     },
+     "AVAILABLE_AT_SESSION": {
+      "cagrPct": 7.753,
+      "maxDrawdownPct": -20.434,
+      "volPct": 9.951
+     },
+     "AVAILABLE_AT_SESSION_status": "AVAILABILITY_UNVERIFIED_H10_WEEKLY_SUSPENDED_2006_2009",
+     "ORIGINAL_NEXT_OBSERVATION_WITHDRAWN": {
+      "cagrPct": 7.97,
+      "maxDrawdownPct": -20.144
+     },
+     "usdCagrPct": 6.376
+    },
+    "S7_VOLTARGET_SPY": {
+     "ACCOUNTING_SAME_DAY": {
+      "cagrPct": 11.502,
+      "maxDrawdownPct": -27.662,
+      "volPct": 12.578
+     },
+     "AVAILABLE_AT_SESSION": {
+      "cagrPct": 11.362,
+      "maxDrawdownPct": -30.262,
+      "volPct": 12.629
+     },
+     "AVAILABLE_AT_SESSION_status": "AVAILABILITY_UNVERIFIED_H10_WEEKLY_SUSPENDED_2006_2009",
+     "ORIGINAL_NEXT_OBSERVATION_WITHDRAWN": {
+      "cagrPct": 11.586,
+      "maxDrawdownPct": -29.219
+     },
+     "usdCagrPct": 9.938
+    }
+   },
+   "riskMatched": {
+    "D1_TREND_SIGN": {
+     "arithmeticMeanGapCi95": [
+      -2.095,
+      1.719
+     ],
+     "arithmeticMeanGapPctPerYear": 0.462,
+     "cagrGapPct": 0.49,
+     "crisisDrawdownPct": {
+      "COVID_2020-02_2020-04": {
+       "S4": -16.136696,
+       "SPY": -33.699814,
+       "riskMatchedStatic": -12.588605,
+       "strategy": -16.136696
+      },
+      "GFC_2008-09_2009-03": {
+       "S4": -25.525287,
+       "SPY": -50.7042,
+       "riskMatchedStatic": -20.238153,
+       "strategy": -3.156731
+      },
+      "RATES_2022": {
+       "S4": -18.156872,
+       "SPY": -24.497244,
+       "riskMatchedStatic": -12.622776,
+       "strategy": -9.851324
+      }
+     },
+     "matchedVolPct": 6.262,
+     "mddGapPct": 4.101,
+     "method": "average-weight twin de-levered into BIL to the strategy's realised monthly vol (EX_POST diagnostic)",
+     "riskMatchedStatic": {
+      "cagrPct": 6.229,
+      "calmar": 0.308,
+      "maxDrawdownPct": -20.238,
+      "sharpeOverBil": 0.795
+     },
+     "strategy": {
+      "cagrPct": 6.719,
+      "calmar": 0.416,
+      "maxDrawdownPct": -16.137,
+      "sharpeOverBil": 0.869
+     },
+     "strategyVolPct": 6.262,
+     "twinRiskyScale": 0.9115
+    },
+    "D2_ERC_COV": {
+     "arithmeticMeanGapCi95": [
+      -0.556,
+      0.66
+     ],
+     "arithmeticMeanGapPctPerYear": 0.119,
+     "cagrGapPct": 0.127,
+     "crisisDrawdownPct": {
+      "COVID_2020-02_2020-04": {
+       "S4": -16.136696,
+       "SPY": -33.699814,
+       "riskMatchedStatic": -9.436166,
+       "strategy": -11.073723
+      },
+      "GFC_2008-09_2009-03": {
+       "S4": -25.525287,
+       "SPY": -50.7042,
+       "riskMatchedStatic": -13.774402,
+       "strategy": -14.980275
+      },
+      "RATES_2022": {
+       "S4": -18.156872,
+       "SPY": -24.497244,
+       "riskMatchedStatic": -17.226945,
+       "strategy": -17.761739
+      }
+     },
+     "matchedVolPct": 7.359,
+     "mddGapPct": -0.535,
+     "method": "average-weight twin de-levered into BIL to the strategy's realised monthly vol (EX_POST diagnostic)",
+     "riskMatchedStatic": {
+      "cagrPct": 6.751,
+      "calmar": 0.392,
+      "maxDrawdownPct": -17.227,
+      "sharpeOverBil": 0.754
+     },
+     "strategy": {
+      "cagrPct": 6.878,
+      "calmar": 0.387,
+      "maxDrawdownPct": -17.762,
+      "sharpeOverBil": 0.772
+     },
+     "strategyVolPct": 7.359,
+     "twinRiskyScale": 0.9768
+    },
+    "D3_STATE_RULES": {
+     "arithmeticMeanGapCi95": [
+      -1.039,
+      1.062
+     ],
+     "arithmeticMeanGapPctPerYear": 0.342,
+     "cagrGapPct": 0.365,
+     "crisisDrawdownPct": {
+      "COVID_2020-02_2020-04": {
+       "S4": -16.136696,
+       "SPY": -33.699814,
+       "riskMatchedStatic": -13.135094,
+       "strategy": -16.136696
+      },
+      "GFC_2008-09_2009-03": {
+       "S4": -25.525287,
+       "SPY": -50.7042,
+       "riskMatchedStatic": -20.776876,
+       "strategy": -10.832687
+      },
+      "RATES_2022": {
+       "S4": -18.156872,
+       "SPY": -24.497244,
+       "riskMatchedStatic": -14.819598,
+       "strategy": -13.53817
+      }
+     },
+     "matchedVolPct": 6.938,
+     "mddGapPct": 4.64,
+     "method": "average-weight twin de-levered into BIL to the strategy's realised monthly vol (EX_POST diagnostic)",
+     "riskMatchedStatic": {
+      "cagrPct": 6.903,
+      "calmar": 0.332,
+      "maxDrawdownPct": -20.777,
+      "sharpeOverBil": 0.815
+     },
+     "strategy": {
+      "cagrPct": 7.268,
+      "calmar": 0.45,
+      "maxDrawdownPct": -16.137,
+      "sharpeOverBil": 0.863
+     },
+     "strategyVolPct": 6.938,
+     "twinRiskyScale": 0.8873
+    },
+    "D4_RIDGE_SIGN": {
+     "arithmeticMeanGapCi95": [
+      -1.561,
+      1.326
+     ],
+     "arithmeticMeanGapPctPerYear": -0.396,
+     "cagrGapPct": -0.512,
+     "crisisDrawdownPct": {
+      "COVID_2020-02_2020-04": {
+       "S4": -16.136696,
+       "SPY": -33.699814,
+       "riskMatchedStatic": -11.930461,
+       "strategy": -17.404033
+      },
+      "GFC_2008-09_2009-03": {
+       "S4": -25.525287,
+       "SPY": -50.7042,
+       "riskMatchedStatic": -19.163394,
+       "strategy": -25.525287
+      },
+      "RATES_2022": {
+       "S4": -18.156872,
+       "SPY": -24.497244,
+       "riskMatchedStatic": -12.386014,
+       "strategy": -10.821244
+      }
+     },
+     "matchedVolPct": 6.026,
+     "mddGapPct": -6.362,
+     "method": "average-weight twin de-levered into BIL to the strategy's realised monthly vol (EX_POST diagnostic)",
+     "riskMatchedStatic": {
+      "cagrPct": 6.071,
+      "calmar": 0.317,
+      "maxDrawdownPct": -19.163,
+      "sharpeOverBil": 0.799
+     },
+     "strategy": {
+      "cagrPct": 5.559,
+      "calmar": 0.218,
+      "maxDrawdownPct": -25.525,
+      "sharpeOverBil": 0.597
+     },
+     "strategyVolPct": 7.373,
+     "twinRiskyScale": 1.0
+    },
+    "D5_TREE_SIGN": {
+     "arithmeticMeanGapCi95": [
+      -1.478,
+      1.266
+     ],
+     "arithmeticMeanGapPctPerYear": -0.12,
+     "cagrGapPct": -0.143,
+     "crisisDrawdownPct": {
+      "COVID_2020-02_2020-04": {
+       "S4": -16.136696,
+       "SPY": -33.699814,
+       "riskMatchedStatic": -14.52041,
+       "strategy": -15.782975
+      },
+      "GFC_2008-09_2009-03": {
+       "S4": -25.525287,
+       "SPY": -50.7042,
+       "riskMatchedStatic": -23.190431,
+       "strategy": -25.525287
+      },
+      "RATES_2022": {
+       "S4": -18.156872,
+       "SPY": -24.497244,
+       "riskMatchedStatic": -14.420923,
+       "strategy": -15.086183
+      }
+     },
+     "matchedVolPct": 7.215,
+     "mddGapPct": -2.335,
+     "method": "average-weight twin de-levered into BIL to the strategy's realised monthly vol (EX_POST diagnostic)",
+     "riskMatchedStatic": {
+      "cagrPct": 6.972,
+      "calmar": 0.301,
+      "maxDrawdownPct": -23.19,
+      "sharpeOverBil": 0.795
+     },
+     "strategy": {
+      "cagrPct": 6.829,
+      "calmar": 0.268,
+      "maxDrawdownPct": -25.525,
+      "sharpeOverBil": 0.758
+     },
+     "strategyVolPct": 7.404,
+     "twinRiskyScale": 1.0
+    },
+    "D6_FORECAST_VOL_SLEEVE": {
+     "arithmeticMeanGapCi95": [
+      -0.496,
+      0.881
+     ],
+     "arithmeticMeanGapPctPerYear": 0.356,
+     "cagrGapPct": 0.38,
+     "crisisDrawdownPct": {
+      "COVID_2020-02_2020-04": {
+       "S4": -16.136696,
+       "SPY": -33.699814,
+       "riskMatchedStatic": -13.128937,
+       "strategy": -13.840904
+      },
+      "GFC_2008-09_2009-03": {
+       "S4": -25.525287,
+       "SPY": -50.7042,
+       "riskMatchedStatic": -20.827201,
+       "strategy": -12.8089
+      },
+      "RATES_2022": {
+       "S4": -18.156872,
+       "SPY": -24.497244,
+       "riskMatchedStatic": -15.562342,
+       "strategy": -17.749384
+      }
+     },
+     "matchedVolPct": 7.116,
+     "mddGapPct": 3.078,
+     "method": "average-weight twin de-levered into BIL to the strategy's realised monthly vol (EX_POST diagnostic)",
+     "riskMatchedStatic": {
+      "cagrPct": 7.002,
+      "calmar": 0.336,
+      "maxDrawdownPct": -20.827,
+      "sharpeOverBil": 0.809
+     },
+     "strategy": {
+      "cagrPct": 7.382,
+      "calmar": 0.416,
+      "maxDrawdownPct": -17.749,
+      "sharpeOverBil": 0.858
+     },
+     "strategyVolPct": 7.116,
+     "twinRiskyScale": 0.9197
+    },
+    "S6_RISK_BUDGET_IV": {
+     "arithmeticMeanGapCi95": [
+      -0.529,
+      0.601
+     ],
+     "arithmeticMeanGapPctPerYear": 0.127,
+     "cagrGapPct": 0.135,
+     "crisisDrawdownPct": {
+      "COVID_2020-02_2020-04": {
+       "S4": -16.136696,
+       "SPY": -33.699814,
+       "riskMatchedStatic": -8.652283,
+       "strategy": -8.93401
+      },
+      "GFC_2008-09_2009-03": {
+       "S4": -25.525287,
+       "SPY": -50.7042,
+       "riskMatchedStatic": -11.615759,
+       "strategy": -11.194855
+      },
+      "RATES_2022": {
+       "S4": -18.156872,
+       "SPY": -24.497244,
+       "riskMatchedStatic": -17.048884,
+       "strategy": -17.602609
+      }
+     },
+     "matchedVolPct": 7.161,
+     "mddGapPct": -0.554,
+     "method": "average-weight twin de-levered into BIL to the strategy's realised monthly vol (EX_POST diagnostic)",
+     "riskMatchedStatic": {
+      "cagrPct": 6.241,
+      "calmar": 0.366,
+      "maxDrawdownPct": -17.049,
+      "sharpeOverBil": 0.706
+     },
+     "strategy": {
+      "cagrPct": 6.376,
+      "calmar": 0.362,
+      "maxDrawdownPct": -17.603,
+      "sharpeOverBil": 0.725
+     },
+     "strategyVolPct": 7.161,
+     "twinRiskyScale": 0.9801
+    },
+    "S7_VOLTARGET_SPY": {
+     "arithmeticMeanGapCi95": [
+      -2.769,
+      2.049
+     ],
+     "arithmeticMeanGapPctPerYear": 0.346,
+     "cagrGapPct": 0.377,
+     "crisisDrawdownPct": {
+      "COVID_2020-02_2020-04": {
+       "S4": -16.136696,
+       "SPY": -33.699814,
+       "riskMatchedStatic": -26.652938,
+       "strategy": -31.876551
+      },
+      "GFC_2008-09_2009-03": {
+       "S4": -25.525287,
+       "SPY": -50.7042,
+       "riskMatchedStatic": -41.567727,
+       "strategy": -26.134117
+      },
+      "RATES_2022": {
+       "S4": -18.156872,
+       "SPY": -24.497244,
+       "riskMatchedStatic": -19.321078,
+       "strategy": -18.801654
+      }
+     },
+     "matchedVolPct": 12.16,
+     "mddGapPct": 9.691,
+     "method": "average-weight twin de-levered into BIL to the strategy's realised monthly vol (EX_POST diagnostic)",
+     "riskMatchedStatic": {
+      "cagrPct": 9.561,
+      "calmar": 0.23,
+      "maxDrawdownPct": -41.568,
+      "sharpeOverBil": 0.709
+     },
+     "strategy": {
+      "cagrPct": 9.938,
+      "calmar": 0.312,
+      "maxDrawdownPct": -31.877,
+      "sharpeOverBil": 0.738
+     },
+     "strategyVolPct": 12.16,
+     "twinRiskyScale": 0.8865
+    }
+   },
+   "targetsExecutedInWindow": 221,
+   "targetsInWindow": 222,
+   "twin": {
+    "D1_TREND_SIGN": {
+     "arithmeticMeanGapCi95": [
+      -2.727,
+      1.216
+     ],
+     "arithmeticMeanGapPctPerYear": -0.019,
+     "cagrGapPct": 0.023,
+     "strategyCagrPct": 6.719,
+     "strategyMddPct": -16.137,
+     "targetsAveraged": 221,
+     "twinCagrPct": 6.696,
+     "twinMddPct": -22.123,
+     "twinWeights": {
+      "BIL": 0.341176,
+      "GLD": 0.064706,
+      "IEF": 0.177828,
+      "SPY": 0.41629
+     }
+    },
+    "D2_ERC_COV": {
+     "arithmeticMeanGapCi95": [
+      -0.737,
+      0.521
+     ],
+     "arithmeticMeanGapPctPerYear": -0.013,
+     "cagrGapPct": 0.001,
+     "strategyCagrPct": 6.878,
+     "strategyMddPct": -17.762,
+     "targetsAveraged": 221,
+     "twinCagrPct": 6.877,
+     "twinMddPct": -17.62,
+     "twinWeights": {
+      "GLD": 0.219502,
+      "IEF": 0.501723,
+      "SPY": 0.278775
+     }
+    },
+    "D3_STATE_RULES": {
+     "arithmeticMeanGapCi95": [
+      -1.886,
+      0.286
+     ],
+     "arithmeticMeanGapPctPerYear": -0.374,
+     "cagrGapPct": -0.329,
+     "strategyCagrPct": 7.268,
+     "strategyMddPct": -16.137,
+     "targetsAveraged": 221,
+     "twinCagrPct": 7.597,
+     "twinMddPct": -23.302,
+     "twinWeights": {
+      "BIL": 0.131448,
+      "GLD": 0.1,
+      "IEF": 0.267421,
+      "SHY": 0.032579,
+      "SPY": 0.458145,
+      "UUP": 0.010407
+     }
+    },
+    "D4_RIDGE_SIGN": {
+     "arithmeticMeanGapCi95": [
+      -1.561,
+      1.326
+     ],
+     "arithmeticMeanGapPctPerYear": -0.396,
+     "cagrGapPct": -0.512,
+     "strategyCagrPct": 5.559,
+     "strategyMddPct": -25.525,
+     "targetsAveraged": 221,
+     "twinCagrPct": 6.071,
+     "twinMddPct": -19.163,
+     "twinWeights": {
+      "BIL": 0.404977,
+      "GLD": 0.060633,
+      "IEF": 0.172398,
+      "SPY": 0.361991
+     }
+    },
+    "D5_TREE_SIGN": {
+     "arithmeticMeanGapCi95": [
+      -1.478,
+      1.266
+     ],
+     "arithmeticMeanGapPctPerYear": -0.12,
+     "cagrGapPct": -0.143,
+     "strategyCagrPct": 6.829,
+     "strategyMddPct": -25.525,
+     "targetsAveraged": 221,
+     "twinCagrPct": 6.972,
+     "twinMddPct": -23.19,
+     "twinWeights": {
+      "BIL": 0.312217,
+      "GLD": 0.071946,
+      "IEF": 0.179186,
+      "SPY": 0.436652
+     }
+    },
+    "D6_FORECAST_VOL_SLEEVE": {
+     "arithmeticMeanGapCi95": [
+      -1.116,
+      0.344
+     ],
+     "arithmeticMeanGapPctPerYear": -0.145,
+     "cagrGapPct": -0.105,
+     "strategyCagrPct": 7.382,
+     "strategyMddPct": -17.749,
+     "targetsAveraged": 221,
+     "twinCagrPct": 7.487,
+     "twinMddPct": -22.575,
+     "twinWeights": {
+      "BIL": 0.154531,
+      "GLD": 0.1,
+      "IEF": 0.3,
+      "SPY": 0.445469
+     }
+    },
+    "S6_RISK_BUDGET_IV": {
+     "arithmeticMeanGapCi95": [
+      -0.674,
+      0.499
+     ],
+     "arithmeticMeanGapPctPerYear": 0.024,
+     "cagrGapPct": 0.037,
+     "strategyCagrPct": 6.376,
+     "strategyMddPct": -17.603,
+     "targetsAveraged": 221,
+     "twinCagrPct": 6.339,
+     "twinMddPct": -17.382,
+     "twinWeights": {
+      "GLD": 0.223598,
+      "IEF": 0.555028,
+      "SPY": 0.221374
+     }
+    },
+    "S7_VOLTARGET_SPY": {
+     "arithmeticMeanGapCi95": [
+      -4.08,
+      0.868
+     ],
+     "arithmeticMeanGapPctPerYear": -0.736,
+     "cagrGapPct": -0.582,
+     "strategyCagrPct": 9.938,
+     "strategyMddPct": -31.877,
+     "targetsAveraged": 221,
+     "twinCagrPct": 10.52,
+     "twinMddPct": -45.83,
+     "twinWeights": {
+      "BIL": 0.121553,
+      "SPY": 0.878447
+     }
+    }
+   }
+  },
+  "primary": {
+   "end": "2026-10-30",
+   "firstDecision": "2015-12-31",
+   "fxAtEnd": {
+    "availableAtSessionClose": 1325.06,
+    "availableObservationDate": "2026-10-23",
+    "originalNextObservation": 1344.51,
+    "sameDayObservation": 1333.99,
+    "session": "2026-10-30"
+   },
+   "krw": {
+    "D1_TREND_SIGN": {
+     "ACCOUNTING_SAME_DAY": {
+      "cagrPct": 7.992,
+      "maxDrawdownPct": -14.585,
+      "volPct": 9.258
+     },
+     "AVAILABLE_AT_SESSION": {
+      "cagrPct": 7.937,
+      "maxDrawdownPct": -15.04,
+      "volPct": 8.739
+     },
+     "AVAILABLE_AT_SESSION_status": "H10_RELEASE_RULE_APPLIED",
+     "ORIGINAL_NEXT_OBSERVATION_WITHDRAWN": {
+      "cagrPct": 7.883,
+      "maxDrawdownPct": -14.832
+     },
+     "usdCagrPct": 6.686
+    },
+    "D2_ERC_COV": {
+     "ACCOUNTING_SAME_DAY": {
+      "cagrPct": 9.021,
+      "maxDrawdownPct": -15.621,
+      "volPct": 8.449
+     },
+     "AVAILABLE_AT_SESSION": {
+      "cagrPct": 8.964,
+      "maxDrawdownPct": -16.588,
+      "volPct": 8.476
+     },
+     "AVAILABLE_AT_SESSION_status": "H10_RELEASE_RULE_APPLIED",
+     "ORIGINAL_NEXT_OBSERVATION_WITHDRAWN": {
+      "cagrPct": 8.91,
+      "maxDrawdownPct": -16.796
+     },
+     "usdCagrPct": 7.702
+    },
+    "D3_STATE_RULES": {
+     "ACCOUNTING_SAME_DAY": {
+      "cagrPct": 9.042,
+      "maxDrawdownPct": -14.204,
+      "volPct": 8.741
+     },
+     "AVAILABLE_AT_SESSION": {
+      "cagrPct": 8.985,
+      "maxDrawdownPct": -15.543,
+      "volPct": 8.644
+     },
+     "AVAILABLE_AT_SESSION_status": "H10_RELEASE_RULE_APPLIED",
+     "ORIGINAL_NEXT_OBSERVATION_WITHDRAWN": {
+      "cagrPct": 8.931,
+      "maxDrawdownPct": -15.398
+     },
+     "usdCagrPct": 7.723
+    },
+    "D4_RIDGE_SIGN": {
+     "ACCOUNTING_SAME_DAY": {
+      "cagrPct": 7.235,
+      "maxDrawdownPct": -14.41,
+      "volPct": 9.064
+     },
+     "AVAILABLE_AT_SESSION": {
+      "cagrPct": 7.179,
+      "maxDrawdownPct": -15.623,
+      "volPct": 8.747
+     },
+     "AVAILABLE_AT_SESSION_status": "H10_RELEASE_RULE_APPLIED",
+     "ORIGINAL_NEXT_OBSERVATION_WITHDRAWN": {
+      "cagrPct": 7.126,
+      "maxDrawdownPct": -15.602
+     },
+     "usdCagrPct": 5.938
+    },
+    "D5_TREE_SIGN": {
+     "ACCOUNTING_SAME_DAY": {
+      "cagrPct": 9.813,
+      "maxDrawdownPct": -13.819,
+      "volPct": 9.133
+     },
+     "AVAILABLE_AT_SESSION": {
+      "cagrPct": 9.756,
+      "maxDrawdownPct": -15.211,
+      "volPct": 9.007
+     },
+     "AVAILABLE_AT_SESSION_status": "H10_RELEASE_RULE_APPLIED",
+     "ORIGINAL_NEXT_OBSERVATION_WITHDRAWN": {
+      "cagrPct": 9.702,
+      "maxDrawdownPct": -15.019
+     },
+     "usdCagrPct": 8.485
+    },
+    "D6_FORECAST_VOL_SLEEVE": {
+     "ACCOUNTING_SAME_DAY": {
+      "cagrPct": 9.644,
+      "maxDrawdownPct": -14.41,
+      "volPct": 8.734
+     },
+     "AVAILABLE_AT_SESSION": {
+      "cagrPct": 9.588,
+      "maxDrawdownPct": -15.623,
+      "volPct": 8.716
+     },
+     "AVAILABLE_AT_SESSION_status": "H10_RELEASE_RULE_APPLIED",
+     "ORIGINAL_NEXT_OBSERVATION_WITHDRAWN": {
+      "cagrPct": 9.534,
+      "maxDrawdownPct": -15.602
+     },
+     "usdCagrPct": 8.318
+    },
+    "S1_SPY": {
+     "ACCOUNTING_SAME_DAY": {
+      "cagrPct": 16.23,
+      "maxDrawdownPct": -29.598,
+      "volPct": 13.988
+     },
+     "AVAILABLE_AT_SESSION": {
+      "cagrPct": 16.17,
+      "maxDrawdownPct": -32.128,
+      "volPct": 14.467
+     },
+     "AVAILABLE_AT_SESSION_status": "H10_RELEASE_RULE_APPLIED",
+     "ORIGINAL_NEXT_OBSERVATION_WITHDRAWN": {
+      "cagrPct": 16.112,
+      "maxDrawdownPct": -31.113
+     },
+     "usdCagrPct": 14.824
+    },
+    "S2_QQQ": {
+     "ACCOUNTING_SAME_DAY": {
+      "cagrPct": 20.816,
+      "maxDrawdownPct": -30.646,
+      "volPct": 17.84
+     },
+     "AVAILABLE_AT_SESSION": {
+      "cagrPct": 20.754,
+      "maxDrawdownPct": -30.39,
+      "volPct": 18.224
+     },
+     "AVAILABLE_AT_SESSION_status": "H10_RELEASE_RULE_APPLIED",
+     "ORIGINAL_NEXT_OBSERVATION_WITHDRAWN": {
+      "cagrPct": 20.694,
+      "maxDrawdownPct": -30.848
+     },
+     "usdCagrPct": 19.355
+    },
+    "S3_6040": {
+     "ACCOUNTING_SAME_DAY": {
+      "cagrPct": 10.78,
+      "maxDrawdownPct": -14.622,
+      "volPct": 9.891
+     },
+     "AVAILABLE_AT_SESSION": {
+      "cagrPct": 10.723,
+      "maxDrawdownPct": -16.751,
+      "volPct": 10.105
+     },
+     "AVAILABLE_AT_SESSION_status": "H10_RELEASE_RULE_APPLIED",
+     "ORIGINAL_NEXT_OBSERVATION_WITHDRAWN": {
+      "cagrPct": 10.668,
+      "maxDrawdownPct": -16.05
+     },
+     "usdCagrPct": 9.44
+    },
+    "S4_BALANCED": {
+     "ACCOUNTING_SAME_DAY": {
+      "cagrPct": 10.738,
+      "maxDrawdownPct": -14.41,
+      "volPct": 9.0
+     },
+     "AVAILABLE_AT_SESSION": {
+      "cagrPct": 10.681,
+      "maxDrawdownPct": -15.623,
+      "volPct": 9.196
+     },
+     "AVAILABLE_AT_SESSION_status": "H10_RELEASE_RULE_APPLIED",
+     "ORIGINAL_NEXT_OBSERVATION_WITHDRAWN": {
+      "cagrPct": 10.626,
+      "maxDrawdownPct": -15.602
+     },
+     "usdCagrPct": 9.399
+    },
+    "S5_EQUAL4": {
+     "ACCOUNTING_SAME_DAY": {
+      "cagrPct": 9.138,
+      "maxDrawdownPct": -15.731,
+      "volPct": 8.267
+     },
+     "AVAILABLE_AT_SESSION": {
+      "cagrPct": 9.081,
+      "maxDrawdownPct": -16.81,
+      "volPct": 8.282
+     },
+     "AVAILABLE_AT_SESSION_status": "H10_RELEASE_RULE_APPLIED",
+     "ORIGINAL_NEXT_OBSERVATION_WITHDRAWN": {
+      "cagrPct": 9.027,
+      "maxDrawdownPct": -16.904
+     },
+     "usdCagrPct": 7.817
+    },
+    "S6_RISK_BUDGET_IV": {
+     "ACCOUNTING_SAME_DAY": {
+      "cagrPct": 8.181,
+      "maxDrawdownPct": -15.552,
+      "volPct": 8.587
+     },
+     "AVAILABLE_AT_SESSION": {
+      "cagrPct": 8.125,
+      "maxDrawdownPct": -16.361,
+      "volPct": 8.54
+     },
+     "AVAILABLE_AT_SESSION_status": "H10_RELEASE_RULE_APPLIED",
+     "ORIGINAL_NEXT_OBSERVATION_WITHDRAWN": {
+      "cagrPct": 8.072,
+      "maxDrawdownPct": -16.696
+     },
+     "usdCagrPct": 6.873
+    },
+    "S7_VOLTARGET_SPY": {
+     "ACCOUNTING_SAME_DAY": {
+      "cagrPct": 12.957,
+      "maxDrawdownPct": -27.662,
+      "volPct": 12.201
+     },
+     "AVAILABLE_AT_SESSION": {
+      "cagrPct": 12.899,
+      "maxDrawdownPct": -30.262,
+      "volPct": 12.25
+     },
+     "AVAILABLE_AT_SESSION_status": "H10_RELEASE_RULE_APPLIED",
+     "ORIGINAL_NEXT_OBSERVATION_WITHDRAWN": {
+      "cagrPct": 12.843,
+      "maxDrawdownPct": -29.219
+     },
+     "usdCagrPct": 11.591
+    }
+   },
+   "riskMatched": {
+    "D1_TREND_SIGN": {
+     "arithmeticMeanGapCi95": [
+      -3.3,
+      0.79
+     ],
+     "arithmeticMeanGapPctPerYear": -1.268,
+     "cagrGapPct": -1.354,
+     "crisisDrawdownPct": {
+      "COVID_2020-02_2020-04": {
+       "S4": -16.136696,
+       "SPY": -33.699814,
+       "riskMatchedStatic": -13.727264,
+       "strategy": -16.136696
+      },
+      "RATES_2022": {
+       "S4": -18.156872,
+       "SPY": -24.497244,
+       "riskMatchedStatic": -12.617896,
+       "strategy": -9.851324
+      }
+     },
+     "matchedVolPct": 6.499,
+     "mddGapPct": -2.41,
+     "method": "average-weight twin de-levered into BIL to the strategy's realised monthly vol (EX_POST diagnostic)",
+     "riskMatchedStatic": {
+      "cagrPct": 8.04,
+      "calmar": 0.586,
+      "maxDrawdownPct": -13.727,
+      "sharpeOverBil": 0.9
+     },
+     "strategy": {
+      "cagrPct": 6.686,
+      "calmar": 0.414,
+      "maxDrawdownPct": -16.137,
+      "sharpeOverBil": 0.708
+     },
+     "strategyVolPct": 6.499,
+     "twinRiskyScale": 0.9478
+    },
+    "D2_ERC_COV": {
+     "arithmeticMeanGapCi95": [
+      -0.899,
+      0.969
+     ],
+     "arithmeticMeanGapPctPerYear": 0.195,
+     "cagrGapPct": 0.208,
+     "crisisDrawdownPct": {
+      "COVID_2020-02_2020-04": {
+       "S4": -16.136696,
+       "SPY": -33.699814,
+       "riskMatchedStatic": -9.418554,
+       "strategy": -11.073723
+      },
+      "RATES_2022": {
+       "S4": -18.156872,
+       "SPY": -24.497244,
+       "riskMatchedStatic": -16.81104,
+       "strategy": -17.761739
+      }
+     },
+     "matchedVolPct": 7.328,
+     "mddGapPct": -0.951,
+     "method": "average-weight twin de-levered into BIL to the strategy's realised monthly vol (EX_POST diagnostic)",
+     "riskMatchedStatic": {
+      "cagrPct": 7.494,
+      "calmar": 0.446,
+      "maxDrawdownPct": -16.811,
+      "sharpeOverBil": 0.738
+     },
+     "strategy": {
+      "cagrPct": 7.702,
+      "calmar": 0.434,
+      "maxDrawdownPct": -17.762,
+      "sharpeOverBil": 0.767
+     },
+     "strategyVolPct": 7.328,
+     "twinRiskyScale": 0.9589
+    },
+    "D3_STATE_RULES": {
+     "arithmeticMeanGapCi95": [
+      -1.927,
+      0.606
+     ],
+     "arithmeticMeanGapPctPerYear": -0.629,
+     "cagrGapPct": -0.676,
+     "crisisDrawdownPct": {
+      "COVID_2020-02_2020-04": {
+       "S4": -16.136696,
+       "SPY": -33.699814,
+       "riskMatchedStatic": -13.756297,
+       "strategy": -16.136696
+      },
+      "RATES_2022": {
+       "S4": -18.156872,
+       "SPY": -24.497244,
+       "riskMatchedStatic": -15.128844,
+       "strategy": -13.53817
+      }
+     },
+     "matchedVolPct": 7.144,
+     "mddGapPct": -1.008,
+     "method": "average-weight twin de-levered into BIL to the strategy's realised monthly vol (EX_POST diagnostic)",
+     "riskMatchedStatic": {
+      "cagrPct": 8.399,
+      "calmar": 0.555,
+      "maxDrawdownPct": -15.129,
+      "sharpeOverBil": 0.871
+     },
+     "strategy": {
+      "cagrPct": 7.723,
+      "calmar": 0.479,
+      "maxDrawdownPct": -16.137,
+      "sharpeOverBil": 0.783
+     },
+     "strategyVolPct": 7.144,
+     "twinRiskyScale": 0.9136
+    },
+    "D4_RIDGE_SIGN": {
+     "arithmeticMeanGapCi95": [
+      -2.162,
+      1.264
+     ],
+     "arithmeticMeanGapPctPerYear": -0.894,
+     "cagrGapPct": -1.026,
+     "crisisDrawdownPct": {
+      "COVID_2020-02_2020-04": {
+       "S4": -16.136696,
+       "SPY": -33.699814,
+       "riskMatchedStatic": -11.263079,
+       "strategy": -17.404033
+      },
+      "RATES_2022": {
+       "S4": -18.156872,
+       "SPY": -24.497244,
+       "riskMatchedStatic": -10.653024,
+       "strategy": -10.821244
+      }
+     },
+     "matchedVolPct": 5.394,
+     "mddGapPct": -6.141,
+     "method": "average-weight twin de-levered into BIL to the strategy's realised monthly vol (EX_POST diagnostic)",
+     "riskMatchedStatic": {
+      "cagrPct": 6.964,
+      "calmar": 0.618,
+      "maxDrawdownPct": -11.263,
+      "sharpeOverBil": 0.886
+     },
+     "strategy": {
+      "cagrPct": 5.938,
+      "calmar": 0.341,
+      "maxDrawdownPct": -17.404,
+      "sharpeOverBil": 0.581
+     },
+     "strategyVolPct": 6.655,
+     "twinRiskyScale": 1.0
+    },
+    "D5_TREE_SIGN": {
+     "arithmeticMeanGapCi95": [
+      -1.265,
+      2.11
+     ],
+     "arithmeticMeanGapPctPerYear": 0.257,
+     "cagrGapPct": 0.277,
+     "crisisDrawdownPct": {
+      "COVID_2020-02_2020-04": {
+       "S4": -16.136696,
+       "SPY": -33.699814,
+       "riskMatchedStatic": -14.164203,
+       "strategy": -15.782975
+      },
+      "RATES_2022": {
+       "S4": -18.156872,
+       "SPY": -24.497244,
+       "riskMatchedStatic": -13.198807,
+       "strategy": -15.086183
+      }
+     },
+     "matchedVolPct": 6.738,
+     "mddGapPct": -1.619,
+     "method": "average-weight twin de-levered into BIL to the strategy's realised monthly vol (EX_POST diagnostic)",
+     "riskMatchedStatic": {
+      "cagrPct": 8.208,
+      "calmar": 0.58,
+      "maxDrawdownPct": -14.164,
+      "sharpeOverBil": 0.893
+     },
+     "strategy": {
+      "cagrPct": 8.485,
+      "calmar": 0.538,
+      "maxDrawdownPct": -15.783,
+      "sharpeOverBil": 0.929
+     },
+     "strategyVolPct": 6.738,
+     "twinRiskyScale": 0.9484
+    },
+    "D6_FORECAST_VOL_SLEEVE": {
+     "arithmeticMeanGapCi95": [
+      -0.919,
+      0.334
+     ],
+     "arithmeticMeanGapPctPerYear": -0.323,
+     "cagrGapPct": -0.35,
+     "crisisDrawdownPct": {
+      "COVID_2020-02_2020-04": {
+       "S4": -16.136696,
+       "SPY": -33.699814,
+       "riskMatchedStatic": -14.301441,
+       "strategy": -13.840904
+      },
+      "RATES_2022": {
+       "S4": -18.156872,
+       "SPY": -24.497244,
+       "riskMatchedStatic": -16.643554,
+       "strategy": -17.749384
+      }
+     },
+     "matchedVolPct": 7.668,
+     "mddGapPct": -1.105,
+     "method": "average-weight twin de-levered into BIL to the strategy's realised monthly vol (EX_POST diagnostic)",
+     "riskMatchedStatic": {
+      "cagrPct": 8.668,
+      "calmar": 0.521,
+      "maxDrawdownPct": -16.644,
+      "sharpeOverBil": 0.849
+     },
+     "strategy": {
+      "cagrPct": 8.318,
+      "calmar": 0.469,
+      "maxDrawdownPct": -17.749,
+      "sharpeOverBil": 0.806
+     },
+     "strategyVolPct": 7.668,
+     "twinRiskyScale": 0.961
+    },
+    "S6_RISK_BUDGET_IV": {
+     "arithmeticMeanGapCi95": [
+      -0.826,
+      0.93
+     ],
+     "arithmeticMeanGapPctPerYear": 0.195,
+     "cagrGapPct": 0.208,
+     "crisisDrawdownPct": {
+      "COVID_2020-02_2020-04": {
+       "S4": -16.136696,
+       "SPY": -33.699814,
+       "riskMatchedStatic": -8.566241,
+       "strategy": -8.93401
+      },
+      "RATES_2022": {
+       "S4": -18.156872,
+       "SPY": -24.497244,
+       "riskMatchedStatic": -16.776,
+       "strategy": -17.602609
+      }
+     },
+     "matchedVolPct": 7.127,
+     "mddGapPct": -0.827,
+     "method": "average-weight twin de-levered into BIL to the strategy's realised monthly vol (EX_POST diagnostic)",
+     "riskMatchedStatic": {
+      "cagrPct": 6.665,
+      "calmar": 0.397,
+      "maxDrawdownPct": -16.776,
+      "sharpeOverBil": 0.648
+     },
+     "strategy": {
+      "cagrPct": 6.873,
+      "calmar": 0.39,
+      "maxDrawdownPct": -17.603,
+      "sharpeOverBil": 0.677
+     },
+     "strategyVolPct": 7.127,
+     "twinRiskyScale": 0.9692
+    },
+    "S7_VOLTARGET_SPY": {
+     "arithmeticMeanGapCi95": [
+      -5.237,
+      1.746
+     ],
+     "arithmeticMeanGapPctPerYear": -1.102,
+     "cagrGapPct": -1.228,
+     "crisisDrawdownPct": {
+      "COVID_2020-02_2020-04": {
+       "S4": -16.136696,
+       "SPY": -33.699814,
+       "riskMatchedStatic": -28.475548,
+       "strategy": -31.876551
+      },
+      "RATES_2022": {
+       "S4": -18.156872,
+       "SPY": -24.497244,
+       "riskMatchedStatic": -20.662603,
+       "strategy": -18.801654
+      }
+     },
+     "matchedVolPct": 12.485,
+     "mddGapPct": -3.401,
+     "method": "average-weight twin de-levered into BIL to the strategy's realised monthly vol (EX_POST diagnostic)",
+     "riskMatchedStatic": {
+      "cagrPct": 12.819,
+      "calmar": 0.45,
+      "maxDrawdownPct": -28.476,
+      "sharpeOverBil": 0.861
+     },
+     "strategy": {
+      "cagrPct": 11.591,
+      "calmar": 0.364,
+      "maxDrawdownPct": -31.877,
+      "sharpeOverBil": 0.775
+     },
+     "strategyVolPct": 12.485,
+     "twinRiskyScale": 0.9296
+    }
+   },
+   "targetsExecutedInWindow": 130,
+   "targetsInWindow": 131,
+   "twin": {
+    "D1_TREND_SIGN": {
+     "arithmeticMeanGapCi95": [
+      -3.649,
+      0.484
+     ],
+     "arithmeticMeanGapPctPerYear": -1.59,
+     "cagrGapPct": -1.674,
+     "strategyCagrPct": 6.686,
+     "strategyMddPct": -16.137,
+     "targetsAveraged": 130,
+     "twinCagrPct": 8.36,
+     "twinMddPct": -14.473,
+     "twinWeights": {
+      "BIL": 0.373846,
+      "GLD": 0.072308,
+      "IEF": 0.126923,
+      "SPY": 0.426923
+     }
+    },
+    "D2_ERC_COV": {
+     "arithmeticMeanGapCi95": [
+      -1.176,
+      0.732
+     ],
+     "arithmeticMeanGapPctPerYear": -0.038,
+     "cagrGapPct": -0.015,
+     "strategyCagrPct": 7.702,
+     "strategyMddPct": -17.762,
+     "targetsAveraged": 130,
+     "twinCagrPct": 7.717,
+     "twinMddPct": -17.504,
+     "twinWeights": {
+      "GLD": 0.234138,
+      "IEF": 0.487463,
+      "SPY": 0.278398
+     }
+    },
+    "D3_STATE_RULES": {
+     "arithmeticMeanGapCi95": [
+      -2.552,
+      -0.008
+     ],
+     "arithmeticMeanGapPctPerYear": -1.218,
+     "cagrGapPct": -1.258,
+     "strategyCagrPct": 7.723,
+     "strategyMddPct": -16.137,
+     "targetsAveraged": 130,
+     "twinCagrPct": 8.981,
+     "twinMddPct": -16.519,
+     "twinWeights": {
+      "BIL": 0.125,
+      "GLD": 0.1,
+      "IEF": 0.246923,
+      "SHY": 0.053077,
+      "SPY": 0.463462,
+      "UUP": 0.011538
+     }
+    },
+    "D4_RIDGE_SIGN": {
+     "arithmeticMeanGapCi95": [
+      -2.162,
+      1.264
+     ],
+     "arithmeticMeanGapPctPerYear": -0.894,
+     "cagrGapPct": -1.026,
+     "strategyCagrPct": 5.938,
+     "strategyMddPct": -17.404,
+     "targetsAveraged": 130,
+     "twinCagrPct": 6.964,
+     "twinMddPct": -11.263,
+     "twinWeights": {
+      "BIL": 0.497692,
+      "GLD": 0.052308,
+      "IEF": 0.115385,
+      "SPY": 0.334615
+     }
+    },
+    "D5_TREE_SIGN": {
+     "arithmeticMeanGapCi95": [
+      -1.562,
+      1.747
+     ],
+     "arithmeticMeanGapPctPerYear": -0.071,
+     "cagrGapPct": -0.049,
+     "strategyCagrPct": 8.485,
+     "strategyMddPct": -15.783,
+     "targetsAveraged": 130,
+     "twinCagrPct": 8.534,
+     "twinMddPct": -14.924,
+     "twinWeights": {
+      "BIL": 0.345385,
+      "GLD": 0.071538,
+      "IEF": 0.140769,
+      "SPY": 0.442308
+     }
+    },
+    "D6_FORECAST_VOL_SLEEVE": {
+     "arithmeticMeanGapCi95": [
+      -1.186,
+      0.043
+     ],
+     "arithmeticMeanGapPctPerYear": -0.588,
+     "cagrGapPct": -0.61,
+     "strategyCagrPct": 8.318,
+     "strategyMddPct": -17.749,
+     "targetsAveraged": 130,
+     "twinCagrPct": 8.928,
+     "twinMddPct": -17.295,
+     "twinWeights": {
+      "BIL": 0.136791,
+      "GLD": 0.1,
+      "IEF": 0.3,
+      "SPY": 0.463209
+     }
+    },
+    "S6_RISK_BUDGET_IV": {
+     "arithmeticMeanGapCi95": [
+      -1.004,
+      0.794
+     ],
+     "arithmeticMeanGapPctPerYear": 0.048,
+     "cagrGapPct": 0.069,
+     "strategyCagrPct": 6.873,
+     "strategyMddPct": -17.603,
+     "targetsAveraged": 130,
+     "twinCagrPct": 6.804,
+     "twinMddPct": -17.29,
+     "twinWeights": {
+      "GLD": 0.233026,
+      "IEF": 0.550586,
+      "SPY": 0.216388
+     }
+    },
+    "S7_VOLTARGET_SPY": {
+     "arithmeticMeanGapCi95": [
+      -6.115,
+      0.961
+     ],
+     "arithmeticMeanGapPctPerYear": -1.915,
+     "cagrGapPct": -2.002,
+     "strategyCagrPct": 11.591,
+     "strategyMddPct": -31.877,
+     "targetsAveraged": 130,
+     "twinCagrPct": 13.593,
+     "twinMddPct": -30.497,
+     "twinWeights": {
+      "BIL": 0.101522,
+      "SPY": 0.898478
+     }
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,812 @@
+{
+ "Q1_equityUpDollarUp": {
+  "conditional": {
+   "CONCURRENT d10y<=0": {
+    "meanUupPctWhenSpyUp": -0.486598,
+    "months": 120,
+    "shareSpyUpAndUupUp": 0.258333
+   },
+   "CONCURRENT d10y>0": {
+    "meanUupPctWhenSpyUp": -0.236301,
+    "months": 112,
+    "shareSpyUpAndUupUp": 0.303571
+   },
+   "CONCURRENT dRealYield<=0": {
+    "meanUupPctWhenSpyUp": -0.650322,
+    "months": 130,
+    "shareSpyUpAndUupUp": 0.238462
+   },
+   "CONCURRENT dRealYield>0": {
+    "meanUupPctWhenSpyUp": 0.084218,
+    "months": 102,
+    "shareSpyUpAndUupUp": 0.333333
+   },
+   "EX_ANTE corrSpyUup126<=0": {
+    "meanUupPctWhenSpyUp": -0.418074,
+    "months": 156,
+    "shareSpyUpAndUupUp": 0.275641
+   },
+   "EX_ANTE corrSpyUup126>0": {
+    "meanUupPctWhenSpyUp": -0.185121,
+    "months": 71,
+    "shareSpyUpAndUupUp": 0.295775
+   },
+   "EX_ANTE dY10_63<=0": {
+    "meanUupPctWhenSpyUp": -0.340154,
+    "months": 117,
+    "shareSpyUpAndUupUp": 0.290598
+   },
+   "EX_ANTE dY10_63>0": {
+    "meanUupPctWhenSpyUp": -0.398941,
+    "months": 113,
+    "shareSpyUpAndUupUp": 0.265487
+   },
+   "EX_ANTE spyEx12<=0": {
+    "meanUupPctWhenSpyUp": -1.124333,
+    "months": 37,
+    "shareSpyUpAndUupUp": 0.135135
+   },
+   "EX_ANTE spyEx12>0": {
+    "meanUupPctWhenSpyUp": -0.225451,
+    "months": 184,
+    "shareSpyUpAndUupUp": 0.309783
+   },
+   "EX_ANTE vix<20": {
+    "meanUupPctWhenSpyUp": -0.105226,
+    "months": 150,
+    "shareSpyUpAndUupUp": 0.313333
+   },
+   "EX_ANTE vix>=20 (conventional level)": {
+    "meanUupPctWhenSpyUp": -0.86152,
+    "months": 82,
+    "shareSpyUpAndUupUp": 0.219512
+   }
+  },
+  "independenceBenchmark": 0.346797,
+  "months": 232,
+  "spyUpShare": 0.659483,
+  "unconditionalShare": 0.280172,
+  "uupUpShare": 0.525862
+ },
+ "Q2_stockBond": {
+  "concurrentLevelSplits": {
+   "breakeven<2.5": {
+    "meanCorr126": -0.281024,
+    "months": 212,
+    "sharePositive": 0.183962
+   },
+   "breakeven>=2.5": {
+    "meanCorr126": -0.264382,
+    "months": 14,
+    "sharePositive": 0.142857
+   },
+   "y10<3 at month end": {
+    "meanCorr126": -0.384235,
+    "months": 139,
+    "sharePositive": 0.071942
+   },
+   "y10>=3 at month end": {
+    "meanCorr126": -0.113445,
+    "months": 87,
+    "sharePositive": 0.356322
+   }
+  },
+  "concurrentLevelsRegression": {
+   "coef": {
+    "breakeven": 0.140231,
+    "const": -0.932884,
+    "realYield": -0.007041,
+    "y10": 0.13319
+   },
+   "months": 226,
+   "r2": 0.305812,
+   "timing": "CONCURRENT (ex-post explanation; overlapping 126-session windows, no inference)"
+  },
+  "levelThresholdNote": "3% and 2.5% are round conventional levels fixed while writing this table; they are descriptive splits, not fitted breakpoints",
+  "regimesSpyIef126": [
+   {
+    "end": "2021-03-17",
+    "sessions": 3325,
+    "sign": "NEGATIVE",
+    "start": "2008-01-02"
+   },
+   {
+    "end": "2021-09-13",
+    "sessions": 124,
+    "sign": "POSITIVE",
+    "start": "2021-03-18"
+   },
+   {
+    "end": "2022-08-01",
+    "sessions": 222,
+    "sign": "NEGATIVE",
+    "start": "2021-09-14"
+   },
+   {
+    "end": "2023-05-12",
+    "sessions": 197,
+    "sign": "POSITIVE",
+    "start": "2022-08-02"
+   },
+   {
+    "end": "2023-09-20",
+    "sessions": 89,
+    "sign": "NEGATIVE",
+    "start": "2023-05-15"
+   },
+   {
+    "end": "2024-10-28",
+    "sessions": 278,
+    "sign": "POSITIVE",
+    "start": "2023-09-21"
+   },
+   {
+    "end": "2026-03-19",
+    "sessions": 347,
+    "sign": "NEGATIVE",
+    "start": "2024-10-29"
+   },
+   {
+    "end": "2026-10-30",
+    "sessions": 156,
+    "sign": "POSITIVE",
+    "start": "2026-03-20"
+   }
+  ],
+  "regimesSpyTlt126": [
+   {
+    "end": "2022-08-30",
+    "sessions": 3692,
+    "sign": "NEGATIVE",
+    "start": "2008-01-02"
+   },
+   {
+    "end": "2023-06-01",
+    "sessions": 189,
+    "sign": "POSITIVE",
+    "start": "2022-08-31"
+   },
+   {
+    "end": "2023-09-14",
+    "sessions": 72,
+    "sign": "NEGATIVE",
+    "start": "2023-06-02"
+   },
+   {
+    "end": "2024-10-28",
+    "sessions": 282,
+    "sign": "POSITIVE",
+    "start": "2023-09-15"
+   },
+   {
+    "end": "2025-04-08",
+    "sessions": 110,
+    "sign": "NEGATIVE",
+    "start": "2024-10-29"
+   },
+   {
+    "end": "2026-10-30",
+    "sessions": 393,
+    "sign": "POSITIVE",
+    "start": "2025-04-09"
+   }
+  ]
+ },
+ "Q3_goldInEquityDeclines": {
+  "conditional": {
+   "CONCURRENT UUP down": {
+    "gldMeanPct": 2.397013,
+    "gldUpShare": 0.681818,
+    "months": 22
+   },
+   "CONCURRENT UUP up": {
+    "gldMeanPct": -0.23794,
+    "gldUpShare": 0.403509,
+    "months": 57
+   },
+   "CONCURRENT dRealYield<=0": {
+    "gldMeanPct": 2.887482,
+    "gldUpShare": 0.648649,
+    "months": 37
+   },
+   "CONCURRENT dRealYield>0": {
+    "gldMeanPct": -1.611074,
+    "gldUpShare": 0.333333,
+    "months": 42
+   },
+   "EX_ANTE corrSpyGld126<=0": {
+    "gldMeanPct": 0.181706,
+    "gldUpShare": 0.4,
+    "months": 30
+   },
+   "EX_ANTE corrSpyGld126>0": {
+    "gldMeanPct": 0.70232,
+    "gldUpShare": 0.531915,
+    "months": 47
+   },
+   "EX_ANTE uup6<=0": {
+    "gldMeanPct": 0.714481,
+    "gldUpShare": 0.423077,
+    "months": 26
+   },
+   "EX_ANTE uup6>0": {
+    "gldMeanPct": 0.389877,
+    "gldUpShare": 0.509804,
+    "months": 51
+   }
+  },
+  "gldMeanPctInSpyDown": 0.495845,
+  "gldMeanPctInSpyUp": 1.062747,
+  "gldUpShareInSpyDown": 0.481013,
+  "spyDownMonths": 79,
+  "worst10SpyMonths": [
+   {
+    "GLD": -16.139654,
+    "IEF": -0.865275,
+    "SPY": -16.518662,
+    "TLT": -1.864384,
+    "UUP": 8.428803,
+    "month": "2008-10"
+   },
+   {
+    "GLD": -0.222403,
+    "IEF": 3.722763,
+    "SPY": -12.464088,
+    "TLT": 6.377833,
+    "UUP": 1.130792,
+    "month": "2020-03"
+   },
+   {
+    "GLD": 1.445624,
+    "IEF": -0.737147,
+    "SPY": -10.744901,
+    "TLT": -1.536862,
+    "UUP": 2.042384,
+    "month": "2009-02"
+   },
+   {
+    "GLD": 4.112105,
+    "IEF": -0.142098,
+    "SPY": -9.437268,
+    "TLT": 1.472547,
+    "UUP": 2.088555,
+    "month": "2008-09"
+   },
+   {
+    "GLD": -2.888181,
+    "IEF": -4.733618,
+    "SPY": -9.241732,
+    "TLT": -8.231495,
+    "UUP": 3.572652,
+    "month": "2022-09"
+   },
+   {
+    "GLD": 4.942011,
+    "IEF": 2.80326,
+    "SPY": -8.793771,
+    "TLT": 5.850287,
+    "UUP": -0.752622,
+    "month": "2018-12"
+   },
+   {
+    "GLD": -2.070296,
+    "IEF": -4.227561,
+    "SPY": -8.776905,
+    "TLT": -9.42439,
+    "UUP": 4.828899,
+    "month": "2022-04"
+   },
+   {
+    "GLD": 4.516872,
+    "IEF": 1.143839,
+    "SPY": -8.350058,
+    "TLT": 2.652176,
+    "UUP": -0.968733,
+    "month": "2008-06"
+   },
+   {
+    "GLD": -1.565965,
+    "IEF": -0.862743,
+    "SPY": -8.246894,
+    "TLT": -1.274365,
+    "UUP": 2.75634,
+    "month": "2022-06"
+   },
+   {
+    "GLD": 5.536293,
+    "IEF": -3.887143,
+    "SPY": -8.211432,
+    "TLT": -13.070799,
+    "UUP": 5.103281,
+    "month": "2009-01"
+   }
+  ]
+ },
+ "Q4_rates": {
+  "concurrent": {
+   "GLD": {
+    "coefPctPerPctPoint": {
+     "const": 0.862522,
+     "d10y": -10.973455,
+     "dBreakeven": 11.337655,
+     "dCurve10y3m": 1.270078
+    },
+    "months": 232,
+    "r2": 0.203799,
+    "timing": "CONCURRENT"
+   },
+   "IEF": {
+    "coefPctPerPctPoint": {
+     "const": 0.278401,
+     "d10y": -7.363204,
+     "dBreakeven": 0.64051,
+     "dCurve10y3m": 0.09595
+    },
+    "months": 232,
+    "r2": 0.888664,
+    "timing": "CONCURRENT"
+   },
+   "QQQ": {
+    "coefPctPerPctPoint": {
+     "const": 1.385116,
+     "d10y": -2.037829,
+     "dBreakeven": 17.305107,
+     "dCurve10y3m": -3.602257
+    },
+    "months": 232,
+    "r2": 0.252937,
+    "timing": "CONCURRENT"
+   },
+   "SPY": {
+    "coefPctPerPctPoint": {
+     "const": 0.958194,
+     "d10y": -1.900003,
+     "dBreakeven": 14.628117,
+     "dCurve10y3m": -2.576561
+    },
+    "months": 232,
+    "r2": 0.264108,
+    "timing": "CONCURRENT"
+   },
+   "TLT": {
+    "coefPctPerPctPoint": {
+     "const": 0.319175,
+     "d10y": -12.736694,
+     "dBreakeven": -1.800442,
+     "dCurve10y3m": -1.171542
+    },
+    "months": 232,
+    "r2": 0.817707,
+    "timing": "CONCURRENT"
+   },
+   "UUP": {
+    "coefPctPerPctPoint": {
+     "const": 0.177595,
+     "d10y": 3.970012,
+     "dBreakeven": -5.829757,
+     "dCurve10y3m": -0.674052
+    },
+    "months": 232,
+    "r2": 0.176972,
+    "timing": "CONCURRENT"
+   }
+  },
+  "exAnteWalkForward": {
+   "GLD": {
+    "features": [
+     "y10",
+     "dY10_63",
+     "curve10y3m",
+     "dBreakeven63"
+    ],
+    "firstForecast": "2012-09-28",
+    "inSampleR2SameFeatures": 0.035683,
+    "months": 170,
+    "nwTStatSquaredErrorGain": -0.424838,
+    "oosR2VsExpandingMean": -0.018914,
+    "timing": "EX_ANTE"
+   },
+   "IEF": {
+    "features": [
+     "y10",
+     "dY10_63",
+     "curve10y3m",
+     "dBreakeven63"
+    ],
+    "firstForecast": "2012-09-28",
+    "inSampleR2SameFeatures": 0.061633,
+    "months": 170,
+    "nwTStatSquaredErrorGain": -0.705354,
+    "oosR2VsExpandingMean": -0.029172,
+    "timing": "EX_ANTE"
+   },
+   "QQQ": {
+    "features": [
+     "y10",
+     "dY10_63",
+     "curve10y3m",
+     "dBreakeven63"
+    ],
+    "firstForecast": "2012-09-28",
+    "inSampleR2SameFeatures": 0.02293,
+    "months": 170,
+    "nwTStatSquaredErrorGain": -1.997607,
+    "oosR2VsExpandingMean": -0.114802,
+    "timing": "EX_ANTE"
+   },
+   "SPY": {
+    "features": [
+     "y10",
+     "dY10_63",
+     "curve10y3m",
+     "dBreakeven63"
+    ],
+    "firstForecast": "2012-09-28",
+    "inSampleR2SameFeatures": 0.025723,
+    "months": 170,
+    "nwTStatSquaredErrorGain": -2.202338,
+    "oosR2VsExpandingMean": -0.126465,
+    "timing": "EX_ANTE"
+   },
+   "TLT": {
+    "features": [
+     "y10",
+     "dY10_63",
+     "curve10y3m",
+     "dBreakeven63"
+    ],
+    "firstForecast": "2012-09-28",
+    "inSampleR2SameFeatures": 0.051857,
+    "months": 170,
+    "nwTStatSquaredErrorGain": -1.090546,
+    "oosR2VsExpandingMean": -0.046889,
+    "timing": "EX_ANTE"
+   },
+   "UUP": {
+    "features": [
+     "y10",
+     "dY10_63",
+     "curve10y3m",
+     "dBreakeven63"
+    ],
+    "firstForecast": "2012-09-28",
+    "inSampleR2SameFeatures": 0.001607,
+    "months": 170,
+    "nwTStatSquaredErrorGain": -2.621546,
+    "oosR2VsExpandingMean": -0.044282,
+    "timing": "EX_ANTE"
+   }
+  }
+ },
+ "firstMonth": "2007-07-31",
+ "lastMonth": "2026-10-30",
+ "regimesSpyGld126": [
+  {
+   "end": "2008-05-12",
+   "sessions": 91,
+   "sign": "POSITIVE",
+   "start": "2008-01-02"
+  },
+  {
+   "end": "2008-12-01",
+   "sessions": 141,
+   "sign": "NEGATIVE",
+   "start": "2008-05-13"
+  },
+  {
+   "end": "2011-08-05",
+   "sessions": 675,
+   "sign": "POSITIVE",
+   "start": "2008-12-02"
+  },
+  {
+   "end": "2012-02-06",
+   "sessions": 126,
+   "sign": "NEGATIVE",
+   "start": "2011-08-08"
+  },
+  {
+   "end": "2014-01-10",
+   "sessions": 485,
+   "sign": "POSITIVE",
+   "start": "2012-02-07"
+  },
+  {
+   "end": "2018-02-20",
+   "sessions": 1034,
+   "sign": "NEGATIVE",
+   "start": "2014-01-13"
+  },
+  {
+   "end": "2018-10-15",
+   "sessions": 165,
+   "sign": "POSITIVE",
+   "start": "2018-02-21"
+  },
+  {
+   "end": "2020-03-23",
+   "sessions": 360,
+   "sign": "NEGATIVE",
+   "start": "2018-10-16"
+  },
+  {
+   "end": "2022-02-14",
+   "sessions": 479,
+   "sign": "POSITIVE",
+   "start": "2020-03-24"
+  },
+  {
+   "end": "2022-08-29",
+   "sessions": 135,
+   "sign": "NEGATIVE",
+   "start": "2022-02-15"
+  },
+  {
+   "end": "2023-06-01",
+   "sessions": 190,
+   "sign": "POSITIVE",
+   "start": "2022-08-30"
+  },
+  {
+   "end": "2023-10-30",
+   "sessions": 104,
+   "sign": "NEGATIVE",
+   "start": "2023-06-02"
+  },
+  {
+   "end": "2025-07-28",
+   "sessions": 435,
+   "sign": "POSITIVE",
+   "start": "2023-10-31"
+  },
+  {
+   "end": "2025-11-21",
+   "sessions": 83,
+   "sign": "NEGATIVE",
+   "start": "2025-07-29"
+  },
+  {
+   "end": "2026-10-30",
+   "sessions": 235,
+   "sign": "POSITIVE",
+   "start": "2025-11-24"
+  }
+ ],
+ "regimesSpyUup126": [
+  {
+   "end": "2008-10-27",
+   "sessions": 208,
+   "sign": "POSITIVE",
+   "start": "2008-01-02"
+  },
+  {
+   "end": "2014-04-17",
+   "sessions": 1377,
+   "sign": "NEGATIVE",
+   "start": "2008-10-28"
+  },
+  {
+   "end": "2015-03-18",
+   "sessions": 230,
+   "sign": "POSITIVE",
+   "start": "2014-04-21"
+  },
+  {
+   "end": "2015-08-20",
+   "sessions": 108,
+   "sign": "NEGATIVE",
+   "start": "2015-03-19"
+  },
+  {
+   "end": "2016-06-23",
+   "sessions": 212,
+   "sign": "POSITIVE",
+   "start": "2015-08-21"
+  },
+  {
+   "end": "2016-12-23",
+   "sessions": 128,
+   "sign": "NEGATIVE",
+   "start": "2016-06-24"
+  },
+  {
+   "end": "2018-02-12",
+   "sessions": 284,
+   "sign": "POSITIVE",
+   "start": "2016-12-27"
+  },
+  {
+   "end": "2019-08-15",
+   "sessions": 379,
+   "sign": "NEGATIVE",
+   "start": "2018-02-13"
+  },
+  {
+   "end": "2020-09-10",
+   "sessions": 270,
+   "sign": "POSITIVE",
+   "start": "2019-08-16"
+  },
+  {
+   "end": "2025-04-09",
+   "sessions": 1150,
+   "sign": "NEGATIVE",
+   "start": "2020-09-11"
+  },
+  {
+   "end": "2025-11-07",
+   "sessions": 147,
+   "sign": "POSITIVE",
+   "start": "2025-04-10"
+  },
+  {
+   "end": "2026-10-30",
+   "sessions": 245,
+   "sign": "NEGATIVE",
+   "start": "2025-11-10"
+  }
+ ],
+ "sampleMonths": 232,
+ "yearlyDailyCorrelations": {
+  "2007": {
+   "IEF_GLD": -0.175353,
+   "SPY_GLD": 0.300239,
+   "SPY_IEF": -0.550016,
+   "SPY_QQQ": 0.874081,
+   "SPY_TLT": -0.414953,
+   "SPY_UUP": 0.082102
+  },
+  "2008": {
+   "IEF_GLD": 0.083358,
+   "SPY_GLD": -0.001017,
+   "SPY_IEF": -0.469978,
+   "SPY_QQQ": 0.923464,
+   "SPY_TLT": -0.483158,
+   "SPY_UUP": -0.107816
+  },
+  "2009": {
+   "IEF_GLD": 0.133682,
+   "SPY_GLD": 0.036455,
+   "SPY_IEF": -0.309129,
+   "SPY_QQQ": 0.930749,
+   "SPY_TLT": -0.323359,
+   "SPY_UUP": -0.467559
+  },
+  "2010": {
+   "IEF_GLD": 0.153083,
+   "SPY_GLD": 0.196132,
+   "SPY_IEF": -0.517889,
+   "SPY_QQQ": 0.944269,
+   "SPY_TLT": -0.552992,
+   "SPY_UUP": -0.465239
+  },
+  "2011": {
+   "IEF_GLD": 0.083196,
+   "SPY_GLD": -0.027126,
+   "SPY_IEF": -0.680274,
+   "SPY_QQQ": 0.946714,
+   "SPY_TLT": -0.708691,
+   "SPY_UUP": -0.62995
+  },
+  "2012": {
+   "IEF_GLD": 0.038332,
+   "SPY_GLD": 0.25455,
+   "SPY_IEF": -0.586881,
+   "SPY_QQQ": 0.915,
+   "SPY_TLT": -0.651594,
+   "SPY_UUP": -0.50207
+  },
+  "2013": {
+   "IEF_GLD": 0.238361,
+   "SPY_GLD": 0.164976,
+   "SPY_IEF": -0.116698,
+   "SPY_QQQ": 0.891614,
+   "SPY_TLT": -0.213875,
+   "SPY_UUP": -0.134731
+  },
+  "2014": {
+   "IEF_GLD": 0.34149,
+   "SPY_GLD": -0.161432,
+   "SPY_IEF": -0.460641,
+   "SPY_QQQ": 0.920259,
+   "SPY_TLT": -0.460402,
+   "SPY_UUP": 0.171387
+  },
+  "2015": {
+   "IEF_GLD": 0.317358,
+   "SPY_GLD": -0.042033,
+   "SPY_IEF": -0.345606,
+   "SPY_QQQ": 0.943005,
+   "SPY_TLT": -0.371502,
+   "SPY_UUP": 0.176115
+  },
+  "2016": {
+   "IEF_GLD": 0.547902,
+   "SPY_GLD": -0.351574,
+   "SPY_IEF": -0.393527,
+   "SPY_QQQ": 0.911919,
+   "SPY_TLT": -0.372931,
+   "SPY_UUP": -0.047142
+  },
+  "2017": {
+   "IEF_GLD": 0.668776,
+   "SPY_GLD": -0.247666,
+   "SPY_IEF": -0.357588,
+   "SPY_QQQ": 0.793642,
+   "SPY_TLT": -0.334049,
+   "SPY_UUP": 0.217494
+  },
+  "2018": {
+   "IEF_GLD": 0.176351,
+   "SPY_GLD": -0.030045,
+   "SPY_IEF": -0.392026,
+   "SPY_QQQ": 0.945401,
+   "SPY_TLT": -0.281739,
+   "SPY_UUP": -0.107365
+  },
+  "2019": {
+   "IEF_GLD": 0.649313,
+   "SPY_GLD": -0.267344,
+   "SPY_IEF": -0.494454,
+   "SPY_QQQ": 0.94656,
+   "SPY_TLT": -0.456521,
+   "SPY_UUP": 0.040888
+  },
+  "2020": {
+   "IEF_GLD": 0.181715,
+   "SPY_GLD": 0.160188,
+   "SPY_IEF": -0.505785,
+   "SPY_QQQ": 0.934081,
+   "SPY_TLT": -0.477105,
+   "SPY_UUP": 0.109161
+  },
+  "2021": {
+   "IEF_GLD": 0.344009,
+   "SPY_GLD": 0.16852,
+   "SPY_IEF": -0.085958,
+   "SPY_QQQ": 0.874066,
+   "SPY_TLT": -0.138813,
+   "SPY_UUP": -0.279909
+  },
+  "2022": {
+   "IEF_GLD": 0.457201,
+   "SPY_GLD": 0.194292,
+   "SPY_IEF": 0.190009,
+   "SPY_QQQ": 0.967012,
+   "SPY_TLT": 0.084803,
+   "SPY_UUP": -0.530776
+  },
+  "2023": {
+   "IEF_GLD": 0.550961,
+   "SPY_GLD": 0.001758,
+   "SPY_IEF": 0.044593,
+   "SPY_QQQ": 0.91677,
+   "SPY_TLT": 0.125674,
+   "SPY_UUP": -0.306677
+  },
+  "2024": {
+   "IEF_GLD": 0.266883,
+   "SPY_GLD": 0.265871,
+   "SPY_IEF": 0.071611,
+   "SPY_QQQ": 0.944301,
+   "SPY_TLT": 0.06253,
+   "SPY_UUP": -0.172119
+  },
+  "2025": {
+   "IEF_GLD": 0.082943,
+   "SPY_GLD": 0.02711,
+   "SPY_IEF": -0.087038,
+   "SPY_QQQ": 0.972035,
+   "SPY_TLT": 0.098924,
+   "SPY_UUP": 0.121419
+  },
+  "2026": {
+   "IEF_GLD": 0.253459,
+   "SPY_GLD": 0.400931,
+   "SPY_IEF": 0.324037,
+   "SPY_QQQ": 0.920972,
+   "SPY_TLT": 0.284905,
+   "SPY_UUP": -0.35187
+  }
+ }
+}

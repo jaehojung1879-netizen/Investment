@@ -1,0 +1,119 @@
+{
+  "studyId": "us-macro-cocktail-v1",
+  "status": "PROTOCOL_FROZEN_BEFORE_ANY_RETURN_WAS_COMPUTED",
+  "evidenceClass": "EXPLORATORY_ON_PUBLICLY_KNOWN_US_HISTORY",
+  "evidenceClassReason": "The 2008-2026 US multi-asset history (GFC, 2013 taper, 2020 crash, 2022 stock-bond co-crash) is publicly known to the author and to the literature that motivated every rule below. Freezing the rules before computing returns prevents tuning on this run, not on general knowledge. Nothing here is confirmatory; only prospective receipts can be.",
+  "doesNotSupport": [
+    "a production allocation or weight change",
+    "stock-selection alpha of any kind",
+    "a claim that any dynamic rule will beat its static anchor in future",
+    "KRW-translated gains as US asset skill"
+  ],
+  "trackA": {
+    "investableAssets": {
+      "SPY": "US large-cap equity (S&P 500 ETF)",
+      "QQQ": "US growth equity (Nasdaq-100 ETF); second equity benchmark",
+      "IEF": "7-10y US Treasury ETF",
+      "TLT": "20+y US Treasury ETF (descriptive relation analysis only; not held by any strategy)",
+      "SHY": "1-3y US Treasury ETF",
+      "BIL": "1-3 month T-bill ETF; the investable cash leg",
+      "GLD": "physical gold ETF",
+      "UUP": "US dollar index futures ETF (long USD vs DXY basket); the investable dollar exposure"
+    },
+    "nonInvestableSeries": {
+      "DTWEXBGS": "FRED broad trade-weighted dollar. Published only from 2019 under its current definition with revisable trade weights: DESCRIPTIVE ONLY, never a signal input.",
+      "DEXKOUS": "FRED H.10 USD/KRW noon-New-York buying rate: KRW translation",
+      "KRW=X": "Yahoo USD/KRW: cross-check of DEXKOUS only",
+      "DGS10/DGS2/DGS3MO/DTB3/T10YIE/DFII10/VIXCLS": "market-observed daily series used as state variables with a one-session publication lag",
+      "SP500/NASDAQ100": "FRED price indices: cross-vendor level checks of SPY/QQQ only"
+    },
+    "totalReturnConstruction": "TR_t = TR_{t-1} * (close_t + dividend_t) / close_{t-1}, with Yahoo close (split-adjusted, not dividend-adjusted) and the dated cash distribution on its ex-date. Vendor adjclose is a cross-check, never the source. ETF expense ratios are inside the traded price and are not charged again.",
+    "calendar": "XNYS sessions from exchange_calendars; a series observation on a non-session or a missing session is reported, never filled.",
+    "windows": {
+      "primary": {"firstDecision": "2015-12-31", "lastHoldingEnd": "2026-10-30", "note": "the instruction's 2016-2026 common window"},
+      "extended": {"firstDecision": "2008-05-30", "lastHoldingEnd": "2026-10-30", "note": "first month-end with 252 sessions of every held asset (BIL lists 2007-05-30); reported separately, never pooled with primary"},
+      "noPreInceptionSynthesis": true
+    },
+    "timing": {
+      "decision": "close of the last XNYS session of month m, reading ETF closes through that session and FRED values dated strictly before it (one-session publication lag)",
+      "execution": "close of the first XNYS session of month m+1 (one-session implementation lag)",
+      "holding": "buy-and-hold drift between executions; returns compounded daily"
+    },
+    "costs": {
+      "source": "config.json policy.transactionCosts.US (repository single-stock table; conservative for liquid ETFs)",
+      "buyBps": 10.0,
+      "sellBps": 13.0,
+      "formula": "buy = commissionBps + spreadBps/2 = 5 + 5; sell = commissionBps + sellTaxBps + spreadBps/2 = 5 + 3 + 5",
+      "stressMultiplier": 2.0,
+      "initialBuildCharged": true,
+      "sameForEveryStrategy": true
+    },
+    "stateVariables": {
+      "spyEx12": "SPY 252-session TR minus BIL 252-session TR",
+      "spyEx1": "SPY 21-session TR minus BIL",
+      "iefEx12": "IEF 252-session TR minus BIL",
+      "gldEx12": "GLD 252-session TR minus BIL",
+      "uup6": "UUP 126-session TR",
+      "logVolSpy63": "log annualised 63-session realised vol of SPY",
+      "vix": "VIXCLS level (lagged one session)",
+      "corrSpyIef126": "126-session correlation of daily SPY and IEF returns",
+      "corrSpyGld126": "126-session correlation SPY/GLD",
+      "corrSpyUup126": "126-session correlation SPY/UUP",
+      "y10": "DGS10 level (lagged)",
+      "dY10_63": "63-session change of DGS10 (lagged)",
+      "curve10y3m": "DGS10 minus DGS3MO (lagged)",
+      "dBreakeven63": "63-session change of T10YIE (lagged)",
+      "realYield10": "DFII10 level (lagged)"
+    },
+    "strategies": {
+      "S1_SPY": "100% SPY",
+      "S2_QQQ": "100% QQQ",
+      "S3_6040": "60 SPY / 40 IEF",
+      "S4_BALANCED": "50 SPY / 30 IEF / 10 GLD / 10 BIL. The static default every dynamic rule starts from and falls back to.",
+      "S5_EQUAL4": "25 SPY / 25 IEF / 25 GLD / 25 BIL",
+      "S6_RISK_BUDGET_IV": "equal risk budget across SPY/IEF/GLD by inverse 252-session vol, re-estimated monthly",
+      "S7_VOLTARGET_SPY": "SPY weight min(1, 0.15 / 63-session realised vol), rest BIL",
+      "D1_TREND_SIGN": "S4 sleeves SPY/IEF/GLD each kept iff its 252-session TR beats BIL's, else moved to BIL",
+      "D2_ERC_COV": "equal risk contribution across SPY/IEF/GLD on a 126-session Ledoit-Wolf covariance (long-only, fully invested, no cash)",
+      "D3_STATE_RULES": "from S4: (a) spyEx12 < 0 halves SPY into BIL; (b) corrSpyIef126 > 0 AND dY10_63 > 0 moves IEF to SHY; (c) spyEx12 < 0 AND uup6 > 0 moves the BIL sleeve (10%) to UUP",
+      "D4_RIDGE_SIGN": "same mapping as D1 but the sign comes from a walk-forward ridge (alpha 10, standardised state vector) prediction of the next holding month's excess return over BIL",
+      "D5_TREE_SIGN": "same mapping as D1 with a walk-forward regression tree (max_depth 2, min_samples_leaf 24, random_state 0)",
+      "D6_FORECAST_VOL_SLEEVE": "S4 with the SPY sleeve scaled by min(1, 0.15 / forecast vol) into BIL; forecast = walk-forward ridge (alpha 1) of log next-63-session SPY vol on the state vector; trailing 63-session vol when training is insufficient"
+    },
+    "walkForward": {
+      "sampleUnit": "one decision month",
+      "labelVisibility": "a sample enters training only after its target window has closed on or before the decision session",
+      "minTrainingSamples": 60,
+      "insufficientTraining": "the static default (S4) for D4/D5; trailing vol for D6",
+      "hyperparameters": "fixed above; no tuning, no inner search"
+    },
+    "riskForecastStudy": {
+      "horizons": [21, 63, 126],
+      "targets": ["corrSpyIef", "corrSpyGld", "corrSpyUup", "logVolSpy", "logVolS4"],
+      "naive": "trailing estimate of the same length ending at the decision session",
+      "model": "walk-forward ridge (alpha 1) of the target on the naive estimate plus the state vector; correlations on the Fisher-z scale",
+      "metric": "out-of-sample R2 relative to the naive forecast and relative to the expanding mean; full-sample in-sample R2 reported beside it as EXPLANATORY (ex-post), never as a forecast",
+      "signTest": "sign of next-126-session SPY/IEF correlation predicted by the trailing sign: hit rate against the majority-class base rate",
+      "inference": "Newey-West HAC on the per-date squared-error difference with lag = horizon/21 + 1 monthly observations"
+    },
+    "evaluation": {
+      "metrics": ["CAGR net of cost", "annualised vol", "Sharpe over BIL", "max drawdown", "Calmar", "two-way turnover/yr", "average equity weight", "beta to SPY"],
+      "pairedComparisons": "monthly return difference against S4 and against the strategy's own AVERAGE-WEIGHT static twin (same assets, constant mix, same costs); 12-month moving block bootstrap, 5000 draws, seed 20261110, 95% interval",
+      "decomposition": "CAGR gap = arithmetic mean gap + compounding (volatility drag) term, as selection_value.decompose_edge splits it; twin comparison isolates timing from average exposure",
+      "regimeSplits": ["calendar year", "rising 10y yield months (concurrent, ex-post label)", "SPY down months (concurrent)", "UUP up months (concurrent)", "SPY 10%+ drawdown state at decision (ex-ante label)"],
+      "allStrategiesPublished": true,
+      "multiplicity": "13 strategies x 2 windows x 2 currencies; no correction is applied and no interval is read as significance"
+    },
+    "currency": {
+      "USD": "primary",
+      "KRW_UNHEDGED": "USD NAV at the US close of t times DEXKOUS of the first H.10 print dated after t (the earliest observed rate after the close; no look-ahead). Same-day print reported as a sensitivity. Conversion spreads are not charged (a USD account held throughout).",
+      "KRW_HEDGED": "NOT COMPUTED unless a verified hedge instrument and dated cost series exist; a covered-interest-parity rate differential is not a verified cost and no free hedge is assumed",
+      "attribution": "KRW return = (1+USD return)(1+FX return)-1; the FX term is reported separately and is never asset or selection skill"
+    }
+  },
+  "trackB": {
+    "status": "NO_INDEPENDENT_HISTORICAL_PERFORMANCE_UNTIL_AN_ELIGIBLE_SOURCE_IS_SECURED",
+    "scope": "re-audit of the 324 departed / 212 unpriced S&P 500 identities and a priced, licensed comparison of delisting-inclusive data vendors; no subscription or payment is executed"
+  },
+  "repositoryBoundaries": "All files live under research/us_macro_cocktail_v1/. No KR research file, common pipeline module, sealed spec, docs/results or research_specs file is edited."
+}
