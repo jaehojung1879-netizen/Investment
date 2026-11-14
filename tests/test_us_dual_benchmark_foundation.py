@@ -358,15 +358,21 @@ def test_vendored_n100_files_are_chain_consistent_and_pinned():
 
 
 def test_official_nasdaq_corrections_are_used_in_the_built_spans():
-    evidence = N100["officialEvidence"]
+    corrected = json.loads(B.N100_CORRECTED.read_bytes())
+    coverage = json.loads(B.COVERAGE_CORRECTED.read_bytes())
+    evidence = corrected["officialEvidence"]
     source = ROOT / evidence["path"]
     assert hashlib.sha256(source.read_bytes()).hexdigest() == evidence["sha256"]
     assert len(evidence["annualChecksBeforeCorrection"]) == 13
-    assert all(row["consistent"] for row in N100["correctedChainConsistency"])
-    assert N100["spans"]["CMCSK"] == [["2014-12-22", "2015-12-14"]]
-    assert N100["spans"]["SGEN"][-1][1] == "2023-12-18"
-    assert N100["spans"]["TTWO"][-1][0] == "2023-12-18"
-    assert "CMCSK" in COVERAGE["nasdaq100OnlyWithoutPrices"]
+    assert all(row["consistent"] for row in corrected["correctedChainConsistency"])
+    assert corrected["spans"]["CMCSK"] == [["2014-12-22", "2015-12-14"]]
+    assert corrected["spans"]["SGEN"][-1][1] == "2023-12-18"
+    assert corrected["spans"]["TTWO"][-1][0] == "2023-12-18"
+    assert "CMCSK" in coverage["nasdaq100OnlyWithoutPrices"]
+    assert "CMCSK" not in N100["spans"]
+    assert "CMCSK" not in COVERAGE["nasdaq100OnlyWithoutPrices"]
+    csv_path = ROOT / coverage["manifest"]["path"]
+    assert hashlib.sha256(csv_path.read_bytes()).hexdigest() == coverage["manifest"]["sha256"]
 
 
 # --------------------------------------------------------------------------- #

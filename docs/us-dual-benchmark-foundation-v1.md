@@ -13,6 +13,7 @@ SEC 공시 101건에서 두 펀드의 보유내역 79개 펀드-기준일을 확
 | SPY·QQQ 총수익 스냅샷(연구용, 봉인 입력 아님) | `data/research/us-dual-benchmark-v1/spy-qqq-total-return.csv.gz` + `manifest.json` |
 | 데이터 무결성 감사 | [`docs/us-readiness/us-dual-benchmark-v1-data-audit.json`](us-readiness/us-dual-benchmark-v1-data-audit.json) |
 | SPY/QQQ 비교(JSON·차트) | [`us-spy-qqq-comparison-v1.json`](us-readiness/us-spy-qqq-comparison-v1.json), [`.svg`](us-readiness/us-spy-qqq-comparison-v1.svg) |
+| 정정 멤버십과 커버리지 | [나스닥100 v2](us-readiness/nasdaq100-pit-membership-v2.json) · [커버리지 v2](us-readiness/us-universe-coverage-gap-v2.json) · [종목별 CSV](us-readiness/us-universe-coverage-manifest-v2.csv.gz) |
 | 나스닥100 PIT 멤버십 감사 | [`nasdaq100-pit-membership-v1.json`](us-readiness/nasdaq100-pit-membership-v1.json) |
 | S&P 500 ∪ 나스닥100 커버리지 갭 | [`us-universe-coverage-gap-v1.json`](us-readiness/us-universe-coverage-gap-v1.json) + 종목별 `us-universe-coverage-manifest.csv.gz` |
 | 연구 어댑터 | `pipeline/us_dual_benchmark_adapter.py` |
@@ -31,7 +32,7 @@ SEC 공시 101건에서 두 펀드의 보유내역 79개 펀드-기준일을 확
 3. **나스닥100 PIT 멤버십은 PARTIAL.** 2013~2025년 13개 정기변경을 공식 발표와 대조했다.
    Comcast Class A Special(CMCSK)의 누락 구간과 TTWO/SGEN의 2023년 변경일을 보정했다.
    정기변경 사이에 발생한 이벤트의 완전성과 나머지 증권의 식별자는 추가 대조가 필요하다.
-   [공식 발표 및 보정 원장](../data/research/us-dual-benchmark-v1/nasdaq100-official-membership-evidence.json)
+   [공식 발표 및 보정 원장](us-readiness/nasdaq100-official-membership-evidence.json)
 4. **이중 벤치마크 연구 어댑터는 준비됐고, 알파 연구는 실행하지 않았다.** → `US_DUAL_BENCHMARK_ADAPTER_READY`,
    `FUTURE_US_ALPHA_STUDY_NOT_EXECUTED`
 
@@ -134,7 +135,9 @@ SEC 공시 101건에서 두 펀드의 보유내역 79개 펀드-기준일을 확
   SGEN의 12월 14일 합병 완료일은 기업행동 기록에 별도로 남겼다.
 - **판정 PARTIAL인 이유:** 2013년 기준 구성의 출처와 다수 수시변경·증권 클래스의 독립 대조가 남아 있다.
 
-## 6. 커버리지·갭 (2013-01-01 ~ 2026-09-14, 종목별 매니페스트)
+## 6. 정정 커버리지·갭 (2013-01-01 ~ 2026-09-14)
+
+정정 자료는 `python scripts/build_us_dual_benchmark_foundation.py --stage membership-correction`으로 생성한다. 기존 v1은 해당 버전을 인용하는 연구의 재현에 쓴다.
 
 | 집합 | 심볼 | READY | 신원 수리 | 유료 원천 차단 | 가격 필요 |
 |---|---:|---:|---:|---:|---:|
