@@ -30,6 +30,11 @@ def main(argv=None):
     (out / "public-source-receipts.json").write_bytes(canonical({"downloaded": docs, "supplied": supplied,
         "uploaded_sha256": read(uploaded / "provenance.json"),
         "account_collection_runs": [43538004827, 43539000217, 43540781549]}))
+    supplemental = {}
+    for name in ("last-gap-public-charts.json", "last-gap-account-attempts.json"):
+        if (private / name).exists():
+            supplemental[name] = read(private / name)
+    (out / "supplemental-source-attempts.json").write_bytes(canonical(supplemental))
     links = []
     for ticker, request in requests.items():
         evidence = result["source_receipts"].get(ticker)

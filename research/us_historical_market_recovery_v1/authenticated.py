@@ -106,7 +106,10 @@ def main(argv=None):
                 break
 
     if args.last_gaps:
+        stopped = False
         for endpoint in ("historical-price-eod/full", "dividends", "splits"):
+            if stopped:
+                break
             status = record("FMP", endpoint, "AAPL", "2011-12-29", AS_OF, True)
             if status in {401, 403, 429, "NO_KEY", "TRANSPORT_ERROR"}:
                 break
@@ -115,7 +118,8 @@ def main(argv=None):
             for ticker in ("KVUE", "WBD", "PARA"):
                 status = record("FMP", endpoint, ticker, "2011-12-29", AS_OF)
                 if status in {401, 403, 429, "NO_KEY", "TRANSPORT_ERROR"}:
-                    return 1  # no incomplete transfer is represented as success
+                    stopped = True
+                    break  # retain encrypted receipts even when the provider stops
     elif args.supplement:
         for ticker in ("COR", "BALL", "LUMN", "META"):
             record("FMP", "historical-price-eod/full", ticker, "2011-12-29", AS_OF)

@@ -26,7 +26,7 @@ def main(argv=None):
     assert result["collection_denominator"] == len(result["inventory"]) == 212
     assert len({r["security_audit_id"] for r in result["inventory"]}) == 212
     assert result["baseline_bytes_match"]
-    source_rows = read(private / "baseline_reacquisition.json") + read(private / "new_charts.json") + read(private / "label_followup_charts.json")
+    source_rows = read(private / "baseline_reacquisition.json") + read(private / "new_charts.json") + read(private / "label_followup_charts.json") + read(private / "last-gap-public-charts.json")
     for r in source_rows:
         if r.get("object"):
             assert hashlib.sha256((private / r["object"]).read_bytes()).hexdigest() == r["sha256"]
@@ -45,6 +45,7 @@ def main(argv=None):
                 else:
                     assert r["gross_usd_total_return"] is None
     paths = [private / name for name in REQUIRED]
+    paths += [private / name for name in ("last-gap-public-charts.json", "last-gap-account-attempts.json") if (private / name).exists()]
     paths += sorted((private / "objects").iterdir()) + sorted((private / "identity-sources").iterdir())
     files = {str(p.relative_to(private)): {"sha256": hashlib.sha256(p.read_bytes()).hexdigest(), "bytes": p.stat().st_size}
              for p in paths if p.is_file()}

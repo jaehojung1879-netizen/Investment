@@ -125,6 +125,7 @@ def main(argv=None):
     parser.add_argument("--private-root", type=Path, required=True)
     parser.add_argument("--existing-audit", type=Path, required=True)
     parser.add_argument("--label-followup", action="store_true", help="Fetch whole series for mature gaps; input eligibility stays fixed")
+    parser.add_argument("--last-gap-public", action="store_true", help="Try the documented VIAC Class B successor PARA")
     args = parser.parse_args(argv)
     rows = json.loads(args.input.read_bytes())
     if len(rows) != 212 or len({r["audit_identifier"] for r in rows}) != 212:
@@ -134,6 +135,10 @@ def main(argv=None):
     candidates = [{"source": r["source"], "ticker": r["ticker"], "url": r["url"], "expected_sha256": r["sha256"]}
                   for r in old["acquisition"] if r["ticker"] in cohort and r.get("status") == 200]
     collector = Collector(args.private_root)
+    if args.last_gap_public:
+        collector.run([chart_request("PARA", "2019-05-10", "2023-12-27", audit_identifier="VIAC")],
+                      "last-gap-public-charts", workers=1)
+        return
     if args.label_followup:
         ticker_file = collector.root / "mature-gap-tickers.json"
         if not ticker_file.exists():

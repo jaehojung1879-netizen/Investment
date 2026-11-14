@@ -40,6 +40,8 @@
 
 계정 수집 실행: [대조군/기존 probe](https://github.com/jaehojung1879-netizen/Investment/actions/runs/43538004827), [212개](https://github.com/jaehojung1879-netizen/Investment/actions/runs/43539000217), [배당·분할 보충](https://github.com/jaehojung1879-netizen/Investment/actions/runs/43540781549). 모두 completed/success다. skipped 작업은 성공으로 세지 않는다. 새 결제는 없었다.
 
+마지막 대체 수집 [실행](https://github.com/jaehojung1879-netizen/Investment/actions/runs/43546636111)은 **failure**다. FMP의 KVUE·WBD·PARA 가격은 모두 402였고, 이후 PARA 배당 429에서 계정 요청을 중단했다. 이 실행에서 새 대상 가격은 확보하지 못했고 원응답 전송도 완료하지 못해 로그 상태 영수증만 보존했다. 이를 성공으로 집계하지 않았다. 공개 Yahoo에서 PARA의 2021-02-12~2023-12-27 723행과 행동 자료는 별도로 확보해 VIAC의 동일 Class B 후속 자료로 검증했다. FMP VIAC와 이어 붙이지 않고 각 보유 전체를 덮는 원천만 사용한다. [추가 조회 기록](results/supplemental-source-attempts.json)
+
 ## 기업행동과 식별 보류
 
 | 사례 | 확인한 처리 / 남은 공백 |
@@ -84,6 +86,7 @@ git fetch --no-tags --depth=1 --filter=blob:none origin 704d7db6d5b00def771aba5d
 python -m research.us_historical_market_recovery_v1.prepare --private-root "$MARKET_PRIVATE"
 python -m research.us_historical_market_recovery_v1.collect --input research/us_historical_market_recovery_v1/inputs/requests.json --private-root "$MARKET_PRIVATE" --existing-audit docs/us-readiness/us-departed-public-price-recovery-v1.json
 python -m research.us_historical_market_recovery_v1.sources --private-root "$MARKET_PRIVATE"
+python -m research.us_historical_market_recovery_v1.collect --input research/us_historical_market_recovery_v1/inputs/requests.json --private-root "$MARKET_PRIVATE" --existing-audit docs/us-readiness/us-departed-public-price-recovery-v1.json --last-gap-public
 # Existing-account response inputs are required before audit; reuse the private bundle.
 # For fresh collection, use authenticated.py with existing env keys and a recipient certificate.
 python -m research.us_historical_market_recovery_v1.audit --uploaded-dir "$MARKET_UPLOADED" --private-root "$MARKET_PRIVATE" --output "$MARKET_RESULT"

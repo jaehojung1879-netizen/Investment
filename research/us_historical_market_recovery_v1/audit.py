@@ -164,6 +164,8 @@ def main(argv=None):
     latest = auth_rows(private)
     by_key = {(r["provider"], r["endpoint"], r["ticker"]): r for r in latest}
     chart_records = read(private / "new_charts.json")
+    extra_charts = read(private / "last-gap-public-charts.json") if (private / "last-gap-public-charts.json").exists() else []
+    chart_records += extra_charts
     charts, chart_frames, diagnostics = {}, {}, {}
     for rec in chart_records:
         if rec.get("status") == 200 and rec.get("rows", 0) > 1:
@@ -207,6 +209,17 @@ def main(argv=None):
                                     "class": "Class B common" if ticker == "VIAC" else "Common",
                                     "identity_citation": next((r["url"] for r in supplied if r["audit_identifier"] == ticker),
                                                                docs.get({"MRO": "MRO_EXCHANGE", "WBA": "WBA_DAP", "VIAC": "VIAC_CLASS_B"}.get(ticker, ""), {}).get("url"))}
+    alternate_series = {}
+    if "PARA" in charts:
+        successor = charts["PARA"]
+        successor.identity_verified = successor.actions_verified = True
+        successor.good_days = {d for d in successor.good_days if d >= "2019-12-05"}
+        alternate_series["VIAC"] = successor
+        source_receipts["VIAC"]["additional_whole_publisher_series"] = {
+            "source": successor.source, "sha256": successor.receipt, "symbol": "PARA",
+            "class": "Class B common", "cik": "813828", "symbol_effective": "2022-02-17",
+            "identity_citation": docs["VIAC_CLASS_B"]["url"],
+            "restriction": "Each entire holding uses one publisher series; no price-level splice"}
     terminals = {
         "ATVI": {"date": "2023-10-13", "cash": 95., "verified": True, "effective_before_open": True},
         "TWTR": {"date": "2022-10-27", "cash": 54.2, "verified": True},
@@ -310,6 +323,8 @@ def main(argv=None):
                     status = "NOT_MATURED"
                 else:
                     source = whole_window_source(label_followups.get(ticker), new_sources.get(ticker, baseline.get(ticker)), entry, end) if phase == "after" else baseline.get(ticker)
+                    if phase == "after":
+                        source = whole_window_source(alternate_series.get(ticker), source, entry, end)
                     if source is None:
                         status = "PRICE_SOURCE_MISSING"
                     else:
@@ -390,6 +405,8 @@ def main(argv=None):
         last_quote_required = terminal.get("last_trading_date", last) if terminal else last
         expected = {d for d in full_requested if d <= last_quote_required}
         observations = set(new_sources[ticker].good_days) if ticker in new_sources else set()
+        if ticker in alternate_series:
+            observations |= alternate_series[ticker].good_days
         direct = [x for x in chart_records if x.get("audit_identifier") == ticker]
         account = [x for x in latest if x["ticker"] == ticker]
         missing = expected - (observations | baseline_dates[ticker])
@@ -435,6 +452,7 @@ def main(argv=None):
               "label_followup_scope": "MATURE_LABEL_GAPS_ONLY_NOT_SIGNAL_INPUTS_OR_UNIVERSE_CHANGE",
               "label_followup_downloads": len(followup_records), "label_followup_whole_series_validated": len(label_followups),
               "label_followup_diagnostics": followup_diagnostics,
+              "additional_documented_class_price_series": len(alternate_series),
               "older_full_history_followup_refusals": historical_followup_refusals,
               "source_event_counts": dict(Counter(r["event"]["event"] for r in inventory)),
               "formal_dataset_admission": "NOT_GRANTED_INDEPENDENT_REVIEW_AND_RESIDUAL_GAPS_REMAIN",
@@ -450,7 +468,8 @@ def main(argv=None):
     write_private(private / "new-source-series.json.gz", {t: {"source": s.source, "receipt": s.receipt,
                   "tr": {str(d.date()): None if pd.isna(v) else float(v) for d, v in s.tr.items()},
                   "raw_close": {str(d.date()): None if pd.isna(v) else float(v) for d, v in s.raw_close.items()},
-                  "good_days": sorted(s.good_days)} for t, s in {**new_sources, **label_followups, "SPY": spy}.items()})
+                  "good_days": sorted(s.good_days)} for t, s in {**new_sources, **label_followups, "SPY": spy,
+                  **{t + "@YAHOO_" + s.ticker: s for t, s in alternate_series.items()}}.items()})
 
 
 if __name__ == "__main__":
