@@ -10,7 +10,7 @@ import argparse
 import base64
 from bisect import bisect_left
 from collections import Counter, defaultdict
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 import gzip
 import hashlib
 import json
@@ -21,6 +21,8 @@ import pandas as pd
 from pipeline import price_adjustment as PA, replay_calendar as RC, us_decision_pilot as PILOT
 from pipeline.us_departed_price_recovery import parse_csv
 from research.us_historical_market_recovery_v1.collect import AS_OF, private_root
+from research.us_historical_market_recovery_v1.public_prices import PACKETS, PARA_TERMINAL, load_public_prices
+from research.us_sec_fundamentals_v1 import assets as sec_assets
 from research.us_historical_market_recovery_v1.engine import (
     Series, Unresolved, frame_series, holding, positive, ranges, required_old_quote_end, whole_window_source,
 )
@@ -115,6 +117,27 @@ def membership_conflicts(frames, pilot, *, root=ROOT, inputs=None):
             plausible.add(ticker)
         conflicts.extend([date, ticker] for ticker in frame.index.intersection(held - plausible))
     return sorted(conflicts)
+
+
+def apply_sec_overlay(filings, cutoff):
+    """Supplement same-accession assets without making the filing visible earlier."""
+    from pipeline.us_cash_profitability import visible_day
+    from pipeline.us_total_assets_source import normalize_accession, normalize_cik
+
+    assets = sec_assets.load_assets()
+    updated = 0
+    for ticker, records in filings.items():
+        supplemented = []
+        for record in records:
+            row = sec_assets.with_sec_assets(record, assets, cutoff)
+            if row is not record:
+                fact = assets[normalize_cik(record["cik"]), normalize_accession(record["accession"])]
+                if max(fact.filed, fact.accepted_local.date()) <= visible_day(record):
+                    record = row
+                    updated += 1
+            supplemented.append(record)
+        filings[ticker] = supplemented
+    return updated
 
 
 def accounting_conflicts(frames, filings, pilot, *, root=ROOT):
@@ -277,6 +300,7 @@ def main(argv=None):
         raise Unresolved("COHORT_CHANGED")
     calendar = [str(d.date()) for d in RC.sessions("2011-01-03", "2028-01-14", "US")]
     calendar_set = set(calendar)
+    public_prices, public_price_receipts = load_public_prices(private, original, calendar)
     latest = auth_rows(private)
     by_key = {(r["provider"], r["endpoint"], r["ticker"]): r for r in latest}
     chart_records = read(private / "new_charts.json")
@@ -351,6 +375,8 @@ def main(argv=None):
     settlement = read(Path(__file__).with_name("inputs") / "terminal-followup.json")
     terminals["MRO"].update(settlement["MRO"])
     terminals.update({ticker: settlement[ticker] for ticker in ("KVUE", "WBD")})
+    if "PARA" in public_prices:
+        terminals["PARA"] = PARA_TERMINAL
     # A whole publisher series per security. No old/new level concatenation.
     baseline = {}
     for ticker, rows in original.items():
@@ -408,6 +434,9 @@ def main(argv=None):
     for ticker, source in new_sources.items():
         frame[ticker] = source.tr.reindex(fixed_sessions).where(
             [d.strftime("%Y-%m-%d") in source.good_days for d in fixed_sessions])
+    if "PARA" in public_prices:
+        old_class_b = public_prices["PARA"]
+        frame["PARA"] = old_class_b.tr.reindex(fixed_sessions)
     dependency_files = [private / n for n in ("baseline-bars.json.gz", "original-input-eligible-cohorts.json",
                         "authenticated-responses.json.gz", "supplement-responses.json.gz", "new_charts.json")]
     dependency_files += [ROOT / n for n in ("scripts/run_us_decision_pilot.py", "pipeline/us_decision_pilot.py",
@@ -415,10 +444,14 @@ def main(argv=None):
     dependency_files.extend(Path(__file__).with_name("inputs") / name for name in
                             ("terminal-followup.json", "departed-public-evidence.json",
                              "departed-public-evidence-supplement.json"))
+    dependency_files.extend((Path(__file__).with_name("public_prices.py"),
+                             Path(sec_assets.__file__), sec_assets.PAYLOAD))
+    dependency_files.extend(private / name for name in PACKETS if (private / name).exists())
     cache_key = digest(canonical([digest(p.read_bytes()) for p in dependency_files]))
     repaired = read(repaired_file) if repaired_file.exists() else {}
     if repaired.get("input_cache_key") != cache_key:
         filings, _ = P.load_filings()
+        sec_asset_filings = apply_sec_overlay(filings, date.fromisoformat("2026-09-14"))
         for old, (new, _, _) in ALIASES.items():
             if old in new_sources and old not in filings and new in filings:
                 filings[old] = filings[new]  # immutable records; actual CIK checks remain in the original helper
@@ -435,7 +468,7 @@ def main(argv=None):
             if len(tickers) >= PILOT.MIN_NAMES:
                 cohorts.append({"signal": text, "tickers": tickers})
         repaired = {"cohorts": cohorts, "accounting_issuer_conflicts": conflicts,
-                    "membership_conflicts": index_conflicts,
+                    "membership_conflicts": index_conflicts, "sec_asset_filings_supplemented": sec_asset_filings,
                     "issuer_conflict_scope": "ORIGINAL_DATED_CIK_SINGLE_ISSUER_RECHECK",
                     "annual": annual, "weeks": weeks, "input_cache_key": cache_key}
         write_private(repaired_file, repaired)
@@ -446,6 +479,9 @@ def main(argv=None):
     cohort = {(day, ticker) for day in old_cohorts.keys() | new_cohorts.keys()
               for ticker in old_cohorts.get(day, set()) | new_cohorts.get(day, set())} | issuer_conflicts | index_conflicts
     horizon_counts, private_labels = {}, []
+    repaired_successors = dict(label_followups)
+    repaired_successors.update({ticker: public_prices[ticker] for ticker in ("KMB", "PSKY")
+                                if ticker in public_prices})
     for horizon in (126, 252):
         counts, annual = {"before": Counter(), "after": Counter()}, defaultdict(lambda: {"before": Counter(), "after": Counter()})
         for day, ticker in sorted(cohort):
@@ -454,7 +490,7 @@ def main(argv=None):
             for phase, members in (("before", old_cohorts), ("after", new_cohorts)):
                 status, value, benchmark_value = None, None, None
                 missing_security, missing_benchmark = [], []
-                if phase == "after" and ticker in QUARANTINED_BASELINE:
+                if phase == "after" and ticker in QUARANTINED_BASELINE and ticker not in public_prices:
                     status = "PRICE_SECURITY_IDENTITY_QUARANTINED" if end <= AS_OF else "NOT_MATURED"
                 elif phase == "after" and (day, ticker) in index_conflicts:
                     status = "INDEX_MEMBERSHIP_SYMBOL_CONFLICT" if end <= AS_OF else "NOT_MATURED"
@@ -472,6 +508,11 @@ def main(argv=None):
                         source = whole_window_source(label_followups.get(ticker), new_sources.get(ticker, source),
                                                      entry, quote_end)
                         source = whole_window_source(alternate_series.get(ticker), source, entry, quote_end)
+                        source = whole_window_source(public_prices.get(ticker), source, entry, quote_end)
+                        if ticker == "PSKY" and entry < "2025-08-07":
+                            source = None
+                        if ticker in QUARANTINED_BASELINE and source is baseline.get(ticker):
+                            source = None
                     if source is None:
                         status = "PRICE_SOURCE_MISSING"
                     else:
@@ -479,7 +520,7 @@ def main(argv=None):
                             if terminal and entry <= terminal["date"] <= end and source is baseline.get(ticker):
                                 raise Unresolved("TERMINAL_RAW_CLOSE_UNVERIFIED")
                             value = holding(source, entry, end, calendar, terminal=terminal,
-                                            successors=label_followups if phase == "after" else None)
+                                            successors=repaired_successors if phase == "after" else None)
                             benchmark_value = holding(spy if phase == "after" else baseline["SPY"], entry, end, calendar)
                             status = "COMPLETE_ORIGINAL_RESEARCH_CONTRACT"
                         except Unresolved as exc:
@@ -597,6 +638,8 @@ def main(argv=None):
               "index_membership_symbol_conflict_records": len(index_conflicts),
               "horizons": horizon_counts, "spy_official_reconciliation": spy_report,
               "source_receipts": source_receipts, "price_basis_diagnostics": diagnostics,
+              "validated_public_price_windows": public_price_receipts,
+              "sec_asset_filings_supplemented": repaired["sec_asset_filings_supplemented"],
               "old_new_close_reconciliation": quote_reconciliation,
               "label_followup_scope": "MATURE_LABEL_GAPS_ONLY_NOT_SIGNAL_INPUTS_OR_UNIVERSE_CHANGE",
               "label_followup_downloads": len(followup_records), "label_followup_whole_series_validated": len(label_followups),

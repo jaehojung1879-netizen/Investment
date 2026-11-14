@@ -135,6 +135,51 @@ def test_recovery_index_guard_respects_session_timing_and_later_episodes(tmp_pat
     ]
 
 
+def test_recovery_asset_overlay_cannot_use_a_later_sec_date(monkeypatch):
+    from datetime import date, datetime, timezone
+
+    from research.us_historical_market_recovery_v1.audit import apply_sec_overlay
+    from research.us_sec_fundamentals_v1 import assets
+
+    accession = "0000000123-20-000001"
+    fact = assets.AssetFact(date(2020, 3, 31), date(2020, 5, 1),
+                            datetime(2020, 5, 4, 20, tzinfo=timezone.utc), 100, "companyfacts")
+    monkeypatch.setattr(assets, "load_assets", lambda: {("123", accession): fact})
+    early = {"cik": "123", "accession": accession, "periodEnd": "2020-03-31",
+             "availableFrom": "2020-05-01", "acceptedDate": "2020-05-01", "statements": {}}
+    timely = {**early, "acceptedDate": "2020-05-04"}
+    grouped = {"EARLY": [early], "TIMELY": [timely]}
+    assert apply_sec_overlay(grouped, date(2020, 5, 5)) == 1
+    assert grouped["EARLY"] == [early]
+    assert grouped["TIMELY"][0]["statements"]["bs"][0]["value"] == 100
+    assert grouped["TIMELY"][0]["acceptedDate"] == timely["acceptedDate"]
+
+
+def test_public_price_packet_preserves_official_dividend_after_legacy_basis_check(tmp_path, monkeypatch):
+    from pipeline import price_adjustment as PA
+    from research.us_historical_market_recovery_v1 import public_prices
+
+    days = ["2020-01-02", "2020-01-03", "2020-01-06"]
+    file = tmp_path / "example.json"
+    packet = {"KVUE": [
+        {"date": day, "Open": 10, "High": 10, "Low": 10, "Close": 10, "Volume": 100,
+         PA.DIVIDEND: .2075 if day == days[1] else 0, PA.SPLIT: 0}
+        for day in days
+    ]}
+    raw = json.dumps(packet).encode()
+    file.write_bytes(raw)
+    monkeypatch.setattr(public_prices, "PACKETS", {
+        file.name: (hashlib.sha256(raw).hexdigest(), {"KVUE": (days[0], days[-1], "KVUE", days[-1], 3)})
+    })
+    baseline = {"KVUE": {d: {"Close": 10 if d == days[0] else 100 / (10 - .208)} for d in days}}
+    series, evidence = public_prices.load_public_prices(tmp_path, baseline, days)
+    assert evidence["KVUE"]["comparison_maximum_deviation"] == pytest.approx(0)
+    assert holding(series["KVUE"], days[0], days[-1], days) == pytest.approx(10 / (10 - .2075) - 1)
+    file.write_bytes(raw + b" ")
+    with pytest.raises(Unresolved, match="PUBLIC_PRICE_PACKET_CHECKSUM_MISMATCH"):
+        public_prices.load_public_prices(tmp_path, baseline, days)
+
+
 def test_unknown_terminal_is_not_last_close_or_zero():
     days = ["2020-01-02", "2020-01-03", "2020-01-06"]
     series = source(days[:2], [100, 110])
