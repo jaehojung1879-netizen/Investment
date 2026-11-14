@@ -7,6 +7,7 @@ import math
 from pathlib import Path
 
 from research.us_historical_market_recovery_v1.audit import read, canonical
+from research.us_historical_market_recovery_v1.public_prices import PACKETS
 
 REQUIRED = ("sealed-inputs-manifest.json", "baseline-bars.json.gz", "baseline-events.json.gz",
             "baseline-lineage.json.gz", "baseline-component-receipts.json", "original-input-eligible-cohorts.json",
@@ -46,6 +47,7 @@ def main(argv=None):
                     assert r["gross_usd_total_return"] is None
     paths = [private / name for name in REQUIRED]
     paths += [private / name for name in ("last-gap-public-charts.json", "last-gap-account-attempts.json") if (private / name).exists()]
+    paths += [private / name for name in PACKETS if (private / name).exists()]
     paths += sorted((private / "objects").iterdir()) + sorted((private / "identity-sources").iterdir())
     files = {str(p.relative_to(private)): {"sha256": hashlib.sha256(p.read_bytes()).hexdigest(), "bytes": p.stat().st_size}
              for p in paths if p.is_file()}
