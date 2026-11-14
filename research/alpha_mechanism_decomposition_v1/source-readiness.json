@@ -9,6 +9,356 @@
   "TERMINAL_CONSIDERATION": "NOT_EXERCISED — zero terminal hits on every decomposed 2018-2026 path"
  },
  "vendorEventFlagsRead": 0,
+ "engineResidualEvents": [
+  {
+   "policy": "STATIC_EW4",
+   "phase": 0,
+   "execution": "2024-09-09",
+   "periodEnd": "2024-10-07",
+   "mechanics": 0.007266,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "012450.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "012450.KS": 11
+   },
+   "sessionsInPeriod": 15
+  },
+  {
+   "policy": "S1_INDUSTRY_MOMENTUM",
+   "phase": 0,
+   "execution": "2024-09-09",
+   "periodEnd": "2024-10-07",
+   "mechanics": 0.022619,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "012450.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "012450.KS": 11
+   },
+   "sessionsInPeriod": 15
+  },
+  {
+   "policy": "S2_VALUE_CONFIRMED",
+   "phase": 0,
+   "execution": "2023-05-22",
+   "periodEnd": "2023-06-19",
+   "mechanics": 0.011951,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "010060.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "010060.KS": 5
+   },
+   "sessionsInPeriod": 18
+  },
+  {
+   "policy": "SLEEVE_MOMENTUM_SWITCH",
+   "phase": 1,
+   "execution": "2024-09-19",
+   "periodEnd": "2024-10-14",
+   "mechanics": 0.048683,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "012450.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "012450.KS": 6
+   },
+   "sessionsInPeriod": 14
+  },
+  {
+   "policy": "STATIC_EW4",
+   "phase": 1,
+   "execution": "2019-02-11",
+   "periodEnd": "2019-03-11",
+   "mechanics": -0.044657,
+   "kind": "DRIFT_OR_NETTING",
+   "lockedNames": [],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {},
+   "sessionsInPeriod": 19
+  },
+  {
+   "policy": "STATIC_EW4",
+   "phase": 1,
+   "execution": "2023-05-02",
+   "periodEnd": "2023-05-30",
+   "mechanics": -0.006683,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "010060.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "010060.KS": 18
+   },
+   "sessionsInPeriod": 18
+  },
+  {
+   "policy": "STATIC_EW4",
+   "phase": 1,
+   "execution": "2024-09-19",
+   "periodEnd": "2024-10-14",
+   "mechanics": 0.00918,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "012450.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "012450.KS": 6
+   },
+   "sessionsInPeriod": 14
+  },
+  {
+   "policy": "S1_INDUSTRY_MOMENTUM",
+   "phase": 1,
+   "execution": "2024-09-19",
+   "periodEnd": "2024-10-14",
+   "mechanics": 0.031965,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "012450.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "012450.KS": 6
+   },
+   "sessionsInPeriod": 14
+  },
+  {
+   "policy": "S2_VALUE_CONFIRMED",
+   "phase": 1,
+   "execution": "2023-05-02",
+   "periodEnd": "2023-05-30",
+   "mechanics": -0.019751,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "010060.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "010060.KS": 18
+   },
+   "sessionsInPeriod": 18
+  },
+  {
+   "policy": "S3_FOUR_FACTOR",
+   "phase": 1,
+   "execution": "2019-02-11",
+   "periodEnd": "2019-03-11",
+   "mechanics": -0.189098,
+   "kind": "DRIFT_OR_NETTING",
+   "lockedNames": [],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {},
+   "sessionsInPeriod": 19
+  },
+  {
+   "policy": "SLEEVE_MOMENTUM_SWITCH",
+   "phase": 2,
+   "execution": "2023-10-23",
+   "periodEnd": "2023-11-20",
+   "mechanics": -0.161385,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "006740.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "006740.KS": 3
+   },
+   "sessionsInPeriod": 20
+  },
+  {
+   "policy": "SLEEVE_MOMENTUM_SWITCH",
+   "phase": 2,
+   "execution": "2024-09-23",
+   "periodEnd": "2024-10-21",
+   "mechanics": 0.052846,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "012450.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "012450.KS": 4
+   },
+   "sessionsInPeriod": 17
+  },
+  {
+   "policy": "STATIC_EW4",
+   "phase": 2,
+   "execution": "2019-01-21",
+   "periodEnd": "2019-02-18",
+   "mechanics": -0.045029,
+   "kind": "TERMINAL_WRITE_OFF_AT_ZERO_UNRESOLVED_CONSIDERATION",
+   "lockedNames": [
+    "000030.KS"
+   ],
+   "terminalNames": [
+    "000030.KS"
+   ],
+   "untradableSessionsInPeriod": {
+    "000030.KS": 18
+   },
+   "sessionsInPeriod": 17
+  },
+  {
+   "policy": "STATIC_EW4",
+   "phase": 2,
+   "execution": "2023-05-08",
+   "periodEnd": "2023-06-05",
+   "mechanics": -0.009003,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "010060.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "010060.KS": 15
+   },
+   "sessionsInPeriod": 19
+  },
+  {
+   "policy": "STATIC_EW4",
+   "phase": 2,
+   "execution": "2023-10-23",
+   "periodEnd": "2023-11-20",
+   "mechanics": -0.037456,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "006740.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "006740.KS": 3
+   },
+   "sessionsInPeriod": 20
+  },
+  {
+   "policy": "STATIC_EW4",
+   "phase": 2,
+   "execution": "2024-09-23",
+   "periodEnd": "2024-10-21",
+   "mechanics": 0.014102,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "012450.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "012450.KS": 4
+   },
+   "sessionsInPeriod": 17
+  },
+  {
+   "policy": "S1_INDUSTRY_MOMENTUM",
+   "phase": 2,
+   "execution": "2023-10-23",
+   "periodEnd": "2023-11-20",
+   "mechanics": -0.161385,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "006740.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "006740.KS": 3
+   },
+   "sessionsInPeriod": 20
+  },
+  {
+   "policy": "S1_INDUSTRY_MOMENTUM",
+   "phase": 2,
+   "execution": "2024-09-23",
+   "periodEnd": "2024-10-21",
+   "mechanics": 0.052846,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "012450.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "012450.KS": 4
+   },
+   "sessionsInPeriod": 17
+  },
+  {
+   "policy": "S2_VALUE_CONFIRMED",
+   "phase": 2,
+   "execution": "2023-05-08",
+   "periodEnd": "2023-06-05",
+   "mechanics": -0.033043,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "010060.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "010060.KS": 15
+   },
+   "sessionsInPeriod": 19
+  },
+  {
+   "policy": "S3_FOUR_FACTOR",
+   "phase": 2,
+   "execution": "2019-01-21",
+   "periodEnd": "2019-02-18",
+   "mechanics": -0.195068,
+   "kind": "TERMINAL_WRITE_OFF_AT_ZERO_UNRESOLVED_CONSIDERATION",
+   "lockedNames": [
+    "000030.KS"
+   ],
+   "terminalNames": [
+    "000030.KS"
+   ],
+   "untradableSessionsInPeriod": {
+    "000030.KS": 18
+   },
+   "sessionsInPeriod": 17
+  },
+  {
+   "policy": "S1_INDUSTRY_MOMENTUM",
+   "phase": 3,
+   "execution": "2024-09-02",
+   "periodEnd": "2024-09-30",
+   "mechanics": -0.007403,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "012450.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "012450.KS": 16
+   },
+   "sessionsInPeriod": 17
+  },
+  {
+   "policy": "S2_VALUE_CONFIRMED",
+   "phase": 3,
+   "execution": "2023-05-15",
+   "periodEnd": "2023-06-12",
+   "mechanics": -0.003817,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "010060.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "010060.KS": 10
+   },
+   "sessionsInPeriod": 18
+  }
+ ],
  "minimumRecoveryTargets": {
   "S1_INDUSTRY_MOMENTUM": {
    "stockLegs": 2265,

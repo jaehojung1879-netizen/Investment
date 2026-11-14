@@ -264,9 +264,14 @@ def mechanics_events(ctx, legs, per_rows, name, phase, threshold=0.002):
             continue
         k, e, x = int(r["period"]), r["execution"], r["periodEnd"]
         i = ctx.px.pos[e]
-        locked = sorted(t for t in prev.get(k - 1, ()) if not ctx.px.tradable[i, ctx.px.col[t]])
-        term = sorted(t for t in prev.get(k - 1, ()) | prev.get(k, set()) if t in ctx.pp.terminal and e < ctx.pp.terminal[t] <= x
-                      or (t in ctx.pp.terminal and ctx.pp.terminal[t] < x and t in locked))
+        execs = per_rows.set_index("period")["execution"]
+        carried = set()
+        for j in range(k - 1, -1, -1):                     # a name stays in the engine's book while it is untradable at every later execution
+            for t in prev.get(j, ()):
+                if all(not ctx.px.tradable[ctx.px.pos[execs[m]], ctx.px.col[t]] for m in range(j + 1, k + 1)):
+                    carried.add(t)
+        locked = sorted(carried)
+        term = sorted(t for t in carried | prev.get(k, set()) if t in ctx.pp.terminal and ctx.pp.terminal[t] < x)
         untradable_days = {t: int((~ctx.px.tradable[i:ctx.px.pos[x] + 1, ctx.px.col[t]]).sum()) for t in locked}
         kind = ("TERMINAL_WRITE_OFF_AT_ZERO_UNRESOLVED_CONSIDERATION" if term else
                 "LOCKED_UNTRADABLE_AT_REBALANCE" if locked else "DRIFT_OR_NETTING")
