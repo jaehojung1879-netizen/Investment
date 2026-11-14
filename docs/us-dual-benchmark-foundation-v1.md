@@ -1,5 +1,9 @@
 # 미국 이중 벤치마크 기반 — us-dual-benchmark-foundation-v1 (SPY + QQQ)
 
+> **2026-11-14 QQQ 분배금 정정.** 원천 스냅샷에서 2020-09-21 배당락의 주당 0.38824달러가 누락됐다. [정정 비교](us-readiness/us-qqq-distribution-correction-v1.json)는 기존 시장 종가에 이 분배금을 한 번 적용한다. 같은 기간의 USD QQQ CAGR은 19.838%에서 19.851%로 수정됐다. 아래 수치와 기존 비교 JSON은 당시 기록이다.
+
+SEC 공시 101건에서 두 펀드의 보유내역 79개 펀드-기준일을 확인했다(SPY 43개, QQQ 36개). [보유내역 원천 감사](us-readiness/us-etf-sec-holdings-cross-check-v1.json)에 공시일·기준일·접수번호가 있다. 이는 시점별 나스닥100과 S&P 500 복원에 쓸 교차 근거다.
+
 **증거 등급:** ETF 비교는 `DESCRIPTIVE_ETF_COMPARISON_NOT_ALPHA`(기술 통계), 데이터·멤버십·커버리지 감사는
 `OUTCOME_BLIND`(종목 수익률·라벨·모델 출력을 읽지 않음). **새 알파 연구는 실행하지 않았다.**
 `weekly-passive-first-v1`, 주간 영수증, `config.json`의 공식 벤치마크(`benchmarks.US = SPY`)는 바뀌지 않는다.
@@ -9,6 +13,7 @@
 | SPY·QQQ 총수익 스냅샷(연구용, 봉인 입력 아님) | `data/research/us-dual-benchmark-v1/spy-qqq-total-return.csv.gz` + `manifest.json` |
 | 데이터 무결성 감사 | [`docs/us-readiness/us-dual-benchmark-v1-data-audit.json`](us-readiness/us-dual-benchmark-v1-data-audit.json) |
 | SPY/QQQ 비교(JSON·차트) | [`us-spy-qqq-comparison-v1.json`](us-readiness/us-spy-qqq-comparison-v1.json), [`.svg`](us-readiness/us-spy-qqq-comparison-v1.svg) |
+| 정정 멤버십과 커버리지 | [나스닥100 v2](us-readiness/nasdaq100-pit-membership-v2.json) · [커버리지 v2](us-readiness/us-universe-coverage-gap-v2.json) · [종목별 CSV](us-readiness/us-universe-coverage-manifest-v2.csv.gz) |
 | 나스닥100 PIT 멤버십 감사 | [`nasdaq100-pit-membership-v1.json`](us-readiness/nasdaq100-pit-membership-v1.json) |
 | S&P 500 ∪ 나스닥100 커버리지 갭 | [`us-universe-coverage-gap-v1.json`](us-readiness/us-universe-coverage-gap-v1.json) + 종목별 `us-universe-coverage-manifest.csv.gz` |
 | 연구 어댑터 | `pipeline/us_dual_benchmark_adapter.py` |
@@ -24,8 +29,10 @@
    두 다리를 같은 봉인 매니페스트에서 꺼내는 것이 "같은 기준"을 보장하는 가장 강한 방법이다. → `QQQ_DATA_READY`
 2. **같은 기간·같은 세션에서 QQQ의 역사적 수익은 SPY보다 높았고, 변동성과 상대 낙폭도 컸다.** 이것은 한 표본의
    기술 통계이며 미래 비중의 근거가 아니다. → `SPY_QQQ_COMPARISON_READY`
-3. **나스닥100 PIT 멤버십은 PARTIAL.** 무료로 재현 가능한 유일한 원천은 파생(비공식) 기록이다. 발표일이 없고
-   증권 식별자가 없다. 공식 원천은 이 환경에서 닿지 않았다. → `NASDAQ100_PIT_STATUS_EXPLICIT`
+3. **나스닥100 PIT 멤버십은 PARTIAL.** 2013~2025년 13개 정기변경을 공식 발표와 대조했다.
+   Comcast Class A Special(CMCSK)의 누락 구간과 TTWO/SGEN의 2023년 변경일을 보정했다.
+   정기변경 사이에 발생한 이벤트의 완전성과 나머지 증권의 식별자는 추가 대조가 필요하다.
+   [공식 발표 및 보정 원장](us-readiness/nasdaq100-official-membership-evidence.json)
 4. **이중 벤치마크 연구 어댑터는 준비됐고, 알파 연구는 실행하지 않았다.** → `US_DUAL_BENCHMARK_ADAPTER_READY`,
    `FUTURE_US_ALPHA_STUDY_NOT_EXECUTED`
 
@@ -107,47 +114,48 @@
 
 | 후보 원천 | 실제 시험 | 결과 |
 |---|---|---|
-| Nasdaq 공식 보도자료(연례 재구성·교체) | 웹 검색으로 제목·URL 확인, 본문 미수집 | 최선의 공식 경로. 이 환경에서는 차단, Actions 미측정 |
+| Nasdaq 공식 보도자료(연례 재구성·교체) | 2013~2025년 발표 13건과 2023년 정정 공지 본문 대조 | 정기변경과 두 사례 보정, 나머지 수시변경은 확인 중 |
 | Nasdaq Global Index Watch 이력 파일 | 미시험 | 유료(가격 미확인·미구매) → `BLOCKED_PAID_SOURCE` |
 | Nasdaq API 현재 목록 / Invesco QQQ 보유 | 이 환경 차단 | 오늘 목록뿐 → 역사용 불가(생존편향 100%) |
-| SEC QQQ N-PORT 분기 보유 | 기존 측정 인용 | CUSIP이 있는 최선의 신원 대조. SEC가 Actions egress를 차단 |
+| SEC QQQ N-PORT 분기 보유 | SEC 원문에서 공시일·기준일·CUSIP 확인 | 시점별 증권 식별 교차 자료 |
 | 위키백과 개정 이력 | 이 환경 차단(프로브 준비) | 비공식, CC BY-SA. 아래 원천의 상류 |
 | **n100tickers** (`jmccarrell/n100tickers@ec99dfb8`, MIT) | **수집·고정(raw.githubusercontent.com 접근 가능)** | **사용 — 파생·비공식** |
 | 상용 API(Norgate·EODHD·Eulerpool) | 미시험 | 유료 → `BLOCKED_PAID_SOURCE` |
 
-- **재구성:** 2013-01-01 기준 목록에서 87개의 날짜별 변경을 **효력일 순서로만** 적용한다. 2007–2026 연도 파일 20개를
+- **재구성:** 2013-01-01 기준 목록에서 88개의 변경 이벤트를 효력일 순서로 적용한다. 2007–2026 연도 파일 20개를
   SHA-256과 함께 고정했다. 연간 연결 일관성(전년 변경 적용 = 다음 해 1월 1일 목록) 19/19년 일치.
-  2013–2025 연례 재구성 13회 모두 검출(연도 공백 0). 구성 수 100–105. 역대 구성 심볼 233개.
+  2013–2025 연례 재구성 13회를 공식 발표와 대조했다. 반기 표본의 구성 수는 100–106, 역대 구성 심볼은 234개다.
 - **정보 가용성 규칙:** 발표일이 있으면 발표일, 없으면 효력일부터 사용한다. 지수 변경은 항상 효력 전에 발표되므로
   이 대체는 정보를 더 늦게 쓸 뿐 미래를 엿보지 않는다. 발표되었으나 아직 효력 전인 변경은 `pending`으로만 둔다.
   오늘 목록을 과거로 채우지 않는다. 나스닥 상장은 지수 편입을 뜻하지 않는다.
-- **신원:** 증권 식별자가 없다. 1대1 교체 57건 중 Finnhub CIK로 **다른 회사 교체**가 증명된 것 29건, 원천 주석상
-  티커 변경(미검증) 3건, 식별 불가 25건(FB→META, PCLN→BKNG 포함). 원천이 Comcast CMCSK(2014-12-22) 누락을 스스로
-  밝히고 있다.
-- **대조(본문 미수집):** 검색으로 드러난 공식 보도 제목 7건(2014-12-22 연례, 2020 DXCM·DOCU·MRNA, 2024 SMCI,
-  2026 LITE·SPCX)과 효력일·편입·편출이 모두 일치했다.
-- **판정 PARTIAL인 이유:** 단일 파생 원천, 발표일 없음, 식별자 없음, 알려진 누락, 공식 원천 미대조.
+- **신원:** CMCSK는 별도 클래스의 CUSIP으로 연결했다. 다른 종목의 1대1 교체 57건 중 CIK가 다른 회사로
+  확인된 건은 29건이며, 3건은 파생 원천의 티커 변경 설명, 25건은 미확인이다.
+- **공식 대조:** 2014년 공지는 CMCSK 편입을, 2015년 SEC 공시는 1대1 전환과 마지막 거래일을 확인한다.
+  2023년 정정 공지는 TTWO 편입과 SGEN 편출의 지수 효력일을 12월 18일로 명시한다.
+  SGEN의 12월 14일 합병 완료일은 기업행동 기록에 별도로 남겼다.
+- **판정 PARTIAL인 이유:** 2013년 기준 구성의 출처와 다수 수시변경·증권 클래스의 독립 대조가 남아 있다.
 
-## 6. 커버리지·갭 (2013-01-01 ~ 2026-09-14, 종목별 매니페스트)
+## 6. 정정 커버리지·갭 (2013-01-01 ~ 2026-09-14)
+
+정정 자료는 `python scripts/build_us_dual_benchmark_foundation.py --stage membership-correction`으로 생성한다. 기존 v1은 해당 버전을 인용하는 연구의 재현에 쓴다.
 
 | 집합 | 심볼 | READY | 신원 수리 | 유료 원천 차단 | 가격 필요 |
 |---|---:|---:|---:|---:|---:|
 | 역대 S&P 500 | 827 | 606 | 38 | 183 | 0 |
-| 역대 나스닥100 | 233 | 132 | 12 | 31 | 58 |
-| 나스닥100 전용 | 58 | 0 | 0 | 0 | 58 |
-| 합집합 | 885 | 606 | 38 | 183 | 58 |
+| 역대 나스닥100 | 234 | 132 | 12 | 31 | 59 |
+| 나스닥100 전용 | 59 | 0 | 0 | 0 | 59 |
+| 합집합 | 886 | 606 | 38 | 183 | 59 |
 
 - Finnhub PIT 저장소는 **782종목, 34,945건**으로 측정됐다(준비도 문서의 34,941 + 회계연도 비정상 4건). 합집합 중 785개가
-  공시를 갖고 있고(이름 변경 후속 포함), 100개는 없다. 가격이 있는 606개는 모두 공시가 있다. 그래서 `NEEDS_FUNDAMENTALS`는
+  공시를 갖고 있고(이름 변경 후속 포함), 101개는 없다. 가격이 있는 606개는 모두 공시가 있다. 그래서 `NEEDS_FUNDAMENTALS`는
   1차 상태로 나오지 않지만 `gaps`에는 기록된다.
 - **유료 원천 차단 183개:** 무료 벤더에 이미 요청했고 두 번 거부된 상장폐지·피인수 S&P 500 종목이다(polygon
   PLAN_LIMITED, FMP 402). 나스닥100에서도 31개(YHOO, CELG, XLNX, ATVI, WBA 등)가 같은 이유로 막혀 있다.
 - **신원 수리 38개:** 지금의 패널이 다른 발행사의 것(티커 재사용) 또는 멤버십보다 늦게 시작하는 경우다
   (DELL, FOX/FOXA, DOW, IR, SNDK, NWSA, FB, PCLN …). EA 등 일부는 v3 감사 분류를 그대로 물려받아 재검토가 필요할 수 있다.
-- **나스닥100 전용 58개**(ASML, BIDU, JD, PDD, MELI, TEAM, ZS 등)는 무료 벤더에 **요청된 적이 없다**. 그래서 유료
-  차단으로 분류하지 않는다. 다수는 해외 발행사(20-F)라 Finnhub 10-K/10-Q 경로로 재무가 덮이지 않을 수 있다.
+- **나스닥100 전용 59개**(ASML, BIDU, CMCSK, JD, PDD, MELI, TEAM, ZS 등)는 기존 연구 가격 원장에 없다. 다수는 해외 발행사(20-F)라 Finnhub 10-K/10-Q 경로로 재무가 덮이지 않을 수 있다.
 - 결측 수익을 0으로 읽지 않으며, 생존 종목만으로 과거 유니버스를 줄이지 않는다.
-- **공식 차단: 완전한 나스닥100 역사적 종목 백테스트는 지금 불가능하다**(멤버십 PARTIAL, 상장폐지 31개 유료, 58개 가격 미수집).
+- **공식 차단: 완전한 나스닥100 역사적 종목 백테스트는 지금 불가능하다**(멤버십 PARTIAL, 상장폐지 31개 유료, 59개 원장 가격 누락).
 
 ## 7. 연구 어댑터 (`pipeline/us_dual_benchmark_adapter.py`)
 

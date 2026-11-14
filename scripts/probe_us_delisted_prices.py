@@ -416,6 +416,12 @@ def ask(vendor: str, fetch, key: str, rows: list[dict], *, delay: float,
 
 
 def main(argv=None) -> int:
+    import sys
+    supplied = sys.argv[1:] if argv is None else argv
+    if "--market-recovery" in supplied:
+        sys.path.insert(0, str(ROOT))
+        from research.us_historical_market_recovery_v1.authenticated import main as recover
+        return recover(supplied)
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", default="us-delisted-prices.json")
     parser.add_argument("--cohort", default=str(COHORT))

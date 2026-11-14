@@ -1,0 +1,452 @@
+{
+  "schema": "CROSS_MARKET_ECONOMIC_SOURCE_AUDIT_V1",
+  "outcomeExecutionPerformed": false,
+  "snapshotMain": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+  "reference316": "86c5983ffba643a58d9eba84a05dc60f4d8e9e6a",
+  "existingPayloads": [
+    {
+      "id": "issuerPrices",
+      "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-standard.xls",
+      "gitCommit": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+      "gitBlob": "5c39ddc9e1e328048a866fb2cdc04c016d5a3e51",
+      "expectedSha256": "cbdd7a0ce340228ddcfc714de637c512f73c2d691d84ae59a28cfb406d8437b9",
+      "observedSha256": "cbdd7a0ce340228ddcfc714de637c512f73c2d691d84ae59a28cfb406d8437b9",
+      "bytes": 1202176,
+      "hashVerified": true,
+      "url": "https://www.samsungfund.com/excel_standar.do?fId=2ETF01&gijunYMD=20261007",
+      "capturedAtUtc": "2026-10-09T08:15:02.916288+00:00",
+      "definition": "KODEX 200 official ETF market close, raw NAV and tax NAV; NOT a total-return price panel",
+      "rights": "UNVERIFIED_NOT_INFERRED_FROM_PUBLIC_ACCESS"
+    },
+    {
+      "id": "issuerDistributions",
+      "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-dividends.json",
+      "gitCommit": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+      "gitBlob": "b5a72f6484e5d9fcb71e5bc8e29238daee846c09",
+      "expectedSha256": "3f23e3a8ce9c34506e1316bc8b6263c85cfa78086c3725743e02a3d653eeb0df",
+      "observedSha256": "3f23e3a8ce9c34506e1316bc8b6263c85cfa78086c3725743e02a3d653eeb0df",
+      "bytes": 3020,
+      "hashVerified": true,
+      "url": "https://www.samsungfund.com/api/v1/kodex/divid-info.do?id=2ETF01",
+      "capturedAtUtc": "2026-10-09T08:09:23.689071+00:00",
+      "definition": "20 most recent official gross distributions; record and payment dates",
+      "rights": "UNVERIFIED_NOT_INFERRED_FROM_PUBLIC_ACCESS"
+    },
+    {
+      "id": "issuerDistributionsXls",
+      "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-dividends.xls",
+      "gitCommit": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+      "gitBlob": "cf0b86e3b07dcafdccff0db801c1a86a4480ffe8",
+      "expectedSha256": "7ed6c79dce2e4baaf9791311e489b7d5bb4294d8a6db34f7572b45110394bab1",
+      "observedSha256": "7ed6c79dce2e4baaf9791311e489b7d5bb4294d8a6db34f7572b45110394bab1",
+      "bytes": 15360,
+      "hashVerified": true,
+      "url": "https://www.samsungfund.com/excel-divid-list.do?id=2ETF01",
+      "capturedAtUtc": "2026-10-09T08:09:25.924738+00:00",
+      "definition": "independent format of same issuer cash records",
+      "rights": "UNVERIFIED_NOT_INFERRED_FROM_PUBLIC_ACCESS"
+    },
+    {
+      "id": "vendorPrices",
+      "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/naver-benchmark.json",
+      "gitCommit": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+      "gitBlob": "9333101bc349c19fdade01504f4d1e6f8d1dbbc9",
+      "expectedSha256": "3697d1dc608563a012ec55571a8ae4b5145cfbfa4a630de673059ecfe9b5759d",
+      "observedSha256": "3697d1dc608563a012ec55571a8ae4b5145cfbfa4a630de673059ecfe9b5759d",
+      "bytes": 221415,
+      "hashVerified": true,
+      "url": "https://api.finance.naver.com/siseJson.naver?symbol=069500&requestType=1&startTime=20120101&endTime=20260914&timeframe=day",
+      "capturedAtUtc": "2026-10-09T08:24:14.925343+00:00",
+      "definition": "fresh original-vendor lineage, diagnostic ONLY; never relabelled as frozen snapshot",
+      "rights": "UNVERIFIED_NOT_INFERRED_FROM_PUBLIC_ACCESS"
+    }
+  ],
+  "issuerProduct": {
+    "id": "issuerProduct",
+    "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-history/issuer-product.json",
+    "gitCommit": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+    "gitBlob": "a685638cb64b24333831f41189c898cc6365a37e",
+    "sha256": "ddec5c1f8dad5902927f2ad4504543a4100c9d98a2faaf7ef950d9a6e58be6d7",
+    "bytes": 3692797,
+    "sourcePayloadAvailable": true,
+    "currentConstituentSnapshotDate": "20261008",
+    "constituentSnapshotRows": 202,
+    "historicalConstituentPanelAvailable": false,
+    "monthlyReportIndexEntries": 200,
+    "rights": "UNVERIFIED"
+  },
+  "historicalDistributionPdfs": [
+    {
+      "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-history/201403.pdf",
+      "httpStatus": 200,
+      "reportMonth": "201403",
+      "bytes": 824335,
+      "sha256": "10af528dad4dbd8b3f8097495fbde699db42fcea151919c125f91748897eea3a",
+      "expectedSha256": "10af528dad4dbd8b3f8097495fbde699db42fcea151919c125f91748897eea3a",
+      "hashVerified": true,
+      "url": "https://www.samsungfund.com/sheet/20140411/2ETF01_20140331.pdf",
+      "capturedAtUtc": "2026-10-09T13:23:02.846255+00:00",
+      "acceptedPdf": true
+    },
+    {
+      "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-history/201503.pdf",
+      "httpStatus": 429,
+      "reportMonth": "201503",
+      "bytes": 6216,
+      "sha256": "eef1956902753c581f1b02f5a69daf58646cee38a9a862ec49f6fda6bda9e13b",
+      "expectedSha256": "eef1956902753c581f1b02f5a69daf58646cee38a9a862ec49f6fda6bda9e13b",
+      "hashVerified": true,
+      "url": "https://www.samsungfund.com/sheet/20150409/2ETF01_20150331.pdf",
+      "capturedAtUtc": "2026-10-09T13:23:03.714244+00:00",
+      "acceptedPdf": false
+    },
+    {
+      "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-history/201603.pdf",
+      "httpStatus": 200,
+      "reportMonth": "201603",
+      "bytes": 637038,
+      "sha256": "f06b38f281ee2e59bc68f91bcba59e93d4de767b7a8674a0f86ceb42337cc19c",
+      "expectedSha256": "f06b38f281ee2e59bc68f91bcba59e93d4de767b7a8674a0f86ceb42337cc19c",
+      "hashVerified": true,
+      "url": "https://www.samsungfund.com/sheet/20160411/2ETF01_20160331.pdf",
+      "capturedAtUtc": "2026-10-09T13:23:05.394170+00:00",
+      "acceptedPdf": true
+    },
+    {
+      "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-history/201703.pdf",
+      "httpStatus": 200,
+      "reportMonth": "201703",
+      "bytes": 884277,
+      "sha256": "1640800d76e8b4e053e0d1aa02804fa7b0b84769405723de817d2f281254d372",
+      "expectedSha256": "1640800d76e8b4e053e0d1aa02804fa7b0b84769405723de817d2f281254d372",
+      "hashVerified": true,
+      "url": "https://www.samsungfund.com/sheet/20170406/2ETF01_20170331.pdf",
+      "capturedAtUtc": "2026-10-09T13:23:08.319081+00:00",
+      "acceptedPdf": true
+    },
+    {
+      "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-history/201803.pdf",
+      "httpStatus": 200,
+      "reportMonth": "201803",
+      "bytes": 884472,
+      "sha256": "76c85c64fb50eee674257e6f5c187a2f28b2fc7abde1a6226a8deb3d5e0e711b",
+      "expectedSha256": "76c85c64fb50eee674257e6f5c187a2f28b2fc7abde1a6226a8deb3d5e0e711b",
+      "hashVerified": true,
+      "url": "https://www.samsungfund.com/sheet/20180409/2ETF01_20180331.pdf",
+      "capturedAtUtc": "2026-10-09T13:23:10.231683+00:00",
+      "acceptedPdf": true
+    },
+    {
+      "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-history/201903.pdf",
+      "httpStatus": 200,
+      "reportMonth": "201903",
+      "bytes": 964331,
+      "sha256": "9ad4fe2474dab3da2b7790d8b323dd05f769f6b9e265d0dc4f1e20a91f6d713d",
+      "expectedSha256": "9ad4fe2474dab3da2b7790d8b323dd05f769f6b9e265d0dc4f1e20a91f6d713d",
+      "hashVerified": true,
+      "url": "https://www.samsungfund.com/sheet/20190409/2ETF01_20190331.pdf",
+      "capturedAtUtc": "2026-10-09T13:23:11.758495+00:00",
+      "acceptedPdf": true
+    },
+    {
+      "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-history/202003.pdf",
+      "httpStatus": 200,
+      "reportMonth": "202003",
+      "bytes": 964960,
+      "sha256": "975fc2f16d0af1da8142b243adbdad4d7690cd3555eb054845526a3d16fa6ada",
+      "expectedSha256": "975fc2f16d0af1da8142b243adbdad4d7690cd3555eb054845526a3d16fa6ada",
+      "hashVerified": true,
+      "url": "https://www.samsungfund.com/sheet/20200410/2ETF01_20200331.pdf",
+      "capturedAtUtc": "2026-10-09T13:23:12.280424+00:00",
+      "acceptedPdf": true
+    },
+    {
+      "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-history/202103.pdf",
+      "httpStatus": 200,
+      "reportMonth": "202103",
+      "bytes": 895645,
+      "sha256": "17b51a97f3f7c62b7e850d3e6b021463daad2918f2314d10f900bfea2a5c5215",
+      "expectedSha256": "17b51a97f3f7c62b7e850d3e6b021463daad2918f2314d10f900bfea2a5c5215",
+      "hashVerified": true,
+      "url": "https://www.samsungfund.com/sheet/20210421/2ETF01_20210331.pdf",
+      "capturedAtUtc": "2026-10-09T13:23:12.989827+00:00",
+      "acceptedPdf": true
+    },
+    {
+      "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-history/202203.pdf",
+      "httpStatus": 200,
+      "reportMonth": "202203",
+      "bytes": 854601,
+      "sha256": "189fe6196d873f6e1e823a31de64b0775f40feab5dfb56d65755007c65775226",
+      "expectedSha256": "189fe6196d873f6e1e823a31de64b0775f40feab5dfb56d65755007c65775226",
+      "hashVerified": true,
+      "url": "https://www.samsungfund.com/sheet/20220407/2ETF01_20220331.pdf",
+      "capturedAtUtc": "2026-10-09T13:23:13.357773+00:00",
+      "acceptedPdf": true
+    }
+  ],
+  "historicalPdfDistributionMetadata": {
+    "coverageMethod": "Overlapping six-most-recent-payment tables; each usable March report agrees on overlapping records, including the bridge into the issuer 20-record API. 2015 HTTP429 body is not parsed; 2016 six-record table covers all 2014-2015 records. PDF NAV performance figures are excluded from return reconciliation.",
+    "range": "2011-04-29..2022-01-28",
+    "recordsFromPdf": 30
+  },
+  "publicMetadataProbes": [
+    {
+      "id": "kofr_root",
+      "url": "https://www.kofr.kr/",
+      "httpStatus": 200,
+      "resolvedUrl": "https://www.kofr.kr/",
+      "bytes": 1349,
+      "sha256": "3a1e3c03732e6e71f80af78fabdf10d8576d14aa43db6dcb8e2e198b95ce1a19",
+      "capturedAt": "2026-11-03T23:03:16.345857+00:00"
+    },
+    {
+      "id": "kofr_no_www",
+      "url": "https://kofr.kr/",
+      "httpStatus": 200,
+      "resolvedUrl": "https://www.kofr.kr/",
+      "bytes": 1349,
+      "sha256": "3a1e3c03732e6e71f80af78fabdf10d8576d14aa43db6dcb8e2e198b95ce1a19",
+      "capturedAt": "2026-11-03T23:03:16.774730+00:00"
+    },
+    {
+      "id": "kofia_bond",
+      "url": "https://www.kofiabond.or.kr/",
+      "httpStatus": 200,
+      "resolvedUrl": "https://www.kofiabond.or.kr/",
+      "bytes": 582,
+      "sha256": "720d2e009cdba64666ec4df92ce030dde44e7d92a65c820ae0000c9b8d5c3b1a",
+      "capturedAt": "2026-11-03T23:03:16.641320+00:00"
+    },
+    {
+      "id": "ksd_root",
+      "url": "https://www.ksd.or.kr/ko/",
+      "httpStatus": 200,
+      "resolvedUrl": "https://www.ksd.or.kr/ko/",
+      "bytes": 2689,
+      "sha256": "655d0c8b1726078d4b2ba34bb69c561b96bd23ee859697a0fb4af9393e29925e",
+      "capturedAt": "2026-11-03T23:03:17.484912+00:00"
+    },
+    {
+      "id": "ecos_root",
+      "url": "https://ecos.bok.or.kr/",
+      "httpStatus": 200,
+      "resolvedUrl": "https://ecos.bok.or.kr/",
+      "bytes": 7710,
+      "sha256": "f60b426ddfbd5f1e4abea70b5dd0af27baf774d7af6927e9104a969c0b41bca1",
+      "capturedAt": "2026-11-03T23:03:17.506361+00:00"
+    },
+    {
+      "id": "bok_home",
+      "url": "https://www.bok.or.kr/portal/main/main.do",
+      "httpStatus": 200,
+      "resolvedUrl": "https://www.bok.or.kr/portal/main/main.do",
+      "bytes": 481101,
+      "sha256": "5a402a83d284afc36f5e8bb596b6a57b8a5d26063d28f0effbb8fc7ab2f9c79f",
+      "capturedAt": "2026-11-03T23:03:17.921181+00:00"
+    },
+    {
+      "id": "kofr_main",
+      "url": "https://www.kofr.kr/main.jsp",
+      "httpStatus": 200,
+      "bytes": 3418,
+      "sha256": "b46ce0dffa07a06f679f427e194d12b77bb1b6cc7c41d15aa3182d0fbe884855",
+      "capturedAt": "2026-11-03T23:04:03.105408+00:00"
+    },
+    {
+      "id": "kofia_main",
+      "url": "https://www.kofiabond.or.kr/html/MAIN.html",
+      "error": "TimeoutError",
+      "message": "The read operation timed out"
+    },
+    {
+      "id": "kofr_application",
+      "url": "https://www.kofr.kr/pub/main.xml",
+      "httpStatus": 200,
+      "bytes": 126586,
+      "sha256": "080c6b284e0e6588228b585de0031b7585c6e96b872de6469f6c7c9b1be57632",
+      "capturedAt": "2026-11-03T23:04:40.254295+00:00"
+    },
+    {
+      "id": "kofr_header",
+      "url": "https://www.kofr.kr/pub/wframe/header.xml",
+      "httpStatus": 200,
+      "bytes": 13109,
+      "sha256": "1a1a57381d46d968ddf92a4e810a2252b10a4a2829efaeb297007db79d02c09c",
+      "capturedAt": "2026-11-03T23:07:42.704639+00:00"
+    },
+    {
+      "id": "kofr_footer",
+      "url": "https://www.kofr.kr/pub/wframe/footer.xml",
+      "httpStatus": 200,
+      "bytes": 10150,
+      "sha256": "59d1ef31389045db085ec15f06de5163ce2edb5e14dc255ce1b6a6489dc4be3c",
+      "capturedAt": "2026-11-03T23:07:42.557551+00:00"
+    },
+    {
+      "id": "kofr_method",
+      "url": "https://www.kofr.kr/intro/RFRinfo.jsp",
+      "httpStatus": 200,
+      "bytes": 3428,
+      "sha256": "1632b193a06b2ab1d8bb39147fb18bbb14ff6b0e5852ce5405184ba3b0a6db77",
+      "capturedAt": "2026-11-03T23:08:52.547165+00:00"
+    },
+    {
+      "id": "kofr_rates",
+      "url": "https://www.kofr.kr/rate/rate.jsp",
+      "httpStatus": 200,
+      "bytes": 3429,
+      "sha256": "7479dd0ab247173824228e6f1122da9089387c3cb23e2fe5a06c2c4068cd4721",
+      "capturedAt": "2026-11-03T23:08:52.979681+00:00"
+    },
+    {
+      "id": "kofr_method_body",
+      "url": "https://www.kofr.kr/pub/intro/RFRinfo.xml",
+      "httpStatus": 200,
+      "bytes": 8606,
+      "sha256": "95811cb55c91aec038ee7a8a58ce31e6adb73981c5097273afde4be42233d302",
+      "capturedAt": "2026-11-03T23:09:35.166823+00:00"
+    },
+    {
+      "id": "kofr_rates_body",
+      "url": "https://www.kofr.kr/pub/rate/rate.xml",
+      "httpStatus": 200,
+      "bytes": 99155,
+      "sha256": "01ec59c7cf3fe4480c3325a30a268450057bb76c8e0ebf674970d1ad54be53aa",
+      "capturedAt": "2026-11-03T23:09:35.691423+00:00"
+    },
+    {
+      "id": "kofr_description",
+      "url": "https://www.kofr.kr/pub/intro/RFRinfo_01_kr.xml",
+      "httpStatus": 200,
+      "bytes": 33155,
+      "sha256": "dd4a42cc72aea816243d165547847110fcca870a9d10ea0c6c492a400ce167d1",
+      "capturedAt": "2026-11-03T23:10:43.066993+00:00"
+    }
+  ],
+  "coverage": {
+    "officialDistributionApiRecords": 20,
+    "officialDistributionRecordDateStart": "2021-10-29",
+    "officialDistributionRecordDateEnd": "2026-07-31",
+    "officialDistributionApiExDateFieldPresent": false,
+    "officialNavPayloadAvailable": true,
+    "officialNavIndependentlyParsed": true,
+    "fullHistoryConstituentsAvailable": false,
+    "investableKrwCashReturnSeries2013to2026Available": false,
+    "brokerFillsAvailable": false
+  },
+  "readiness": [
+    {
+      "area": "KRW_INVESTABLE_CASH_FULL_SPAN",
+      "status": "SOURCE_BLOCKED",
+      "rights": "UNVERIFIED",
+      "codes": [
+        "INVESTABLE_TERMS_UNVERIFIED",
+        "CASH_PERIOD_COVERAGE_GAP"
+      ],
+      "condition": "Dated actual investor instrument/realized cashflows or net NAV, period coverage, costs and tax basis, permitted preservation/use; no conversion of a benchmark quote into cash returns."
+    },
+    {
+      "area": "KODEX200_OFFICIAL_SOURCE_METADATA",
+      "status": "PARTIAL",
+      "codes": [
+        "DISTRIBUTION_COVERAGE_UNVERIFIED",
+        "EX_DATE_EVIDENCE_REQUIRED",
+        "HISTORICAL_CONSTITUENT_PANEL_ABSENT"
+      ],
+      "condition": "Raw official NAV/market and distribution payload exists; reconcile source date semantics and full history without replacing frozen benchmark. No current holdings backdating."
+    },
+    {
+      "area": "KR_STOCK_TOTAL_RETURN_COMPLETENESS",
+      "status": "SOURCE_BLOCKED",
+      "codes": [
+        "DISTRIBUTION_COVERAGE_UNVERIFIED",
+        "CORPORATE_ACTION_COVERAGE_UNVERIFIED"
+      ],
+      "condition": "Retain original v16 partial distributions and terminated name verdict; new per-security explicit event completeness and source evidence required."
+    },
+    {
+      "area": "ACTUAL_EXECUTION_SLIPPAGE",
+      "status": "SOURCE_BLOCKED",
+      "codes": [
+        "ACTUAL_FILL_RECEIPTS_ABSENT"
+      ],
+      "condition": "Real broker order/fill timestamps, fees, spread/impact and reconciliation; synthetic cost-model checks do not validate fills."
+    }
+  ],
+  "existing316FactsPreserved": {
+    "heldKrNames": 72,
+    "heldNamesWithZeroDividendEvents": [
+      "000030",
+      "000060",
+      "002550",
+      "047040",
+      "207940"
+    ],
+    "correctedBenchmarkPreAnchorQuotes": 251,
+    "requiredFor253Returns": 254,
+    "modelCommissionBp": 1.5,
+    "modelSpreadBp": 8,
+    "modelHalfSpreadBp": 4,
+    "actualExecutionClaim": false
+  },
+  "referenceCorrection": "#316 KODEX200 NAV-series absence is too broad at raw-source availability level: pinned main contains the official NAV XLS, independently parsed here (5,918 rows). This does not admit it into the registered study. In #316, ETF PDF means Portfolio Deposit File, not a document with .pdf extension. The monthly/annual distribution PDF documents were already acknowledged by #316; their presence does not contradict the missing historical Portfolio Deposit File/constituent-weight panel. The 2026-10-08 current constituent snapshot is not a historical panel.",
+  "officialXlsPayloadAudit": {
+    "parser": "pipeline.kr_alpha_atlas_benchmark_audit.issuer_prices",
+    "xlrdVersion": "2.0.1",
+    "dependencyScope": "/tmp/foundation-xls-tools only; not repository dependency",
+    "rawMarketCloseRows": 5918,
+    "marketDateStart": "2002-10-14",
+    "marketDateEnd": "2026-10-07",
+    "rawNavRows": 5918,
+    "navDateStart": "2002-10-14",
+    "navDateEnd": "2026-10-07",
+    "xlsDataRows": 5918,
+    "headers": [
+      "",
+      "종가",
+      "증감",
+      "증감율",
+      "거래량",
+      "기준가격",
+      "증감",
+      "증감율",
+      ""
+    ],
+    "navMissingFromValidMarketDates": 0,
+    "marketDuplicateDates": false,
+    "navDuplicateDates": false,
+    "returnsComputed": false,
+    "fullHistoricalConstituentMembership": false,
+    "officialDistributionFormatReconciliation": {
+      "status": "PASS",
+      "records": 20,
+      "amount": "gross cash, not taxable amount or investor net cash"
+    }
+  },
+  "kofrPublicationPolicy": {
+    "sourceUrl": "https://www.kofr.kr/pub/intro/RFRinfo_01_kr.xml",
+    "sourceSha256": "dd4a42cc72aea816243d165547847110fcca870a9d10ea0c6c492a400ce167d1",
+    "formalPublicationStarted": "2021-11-26",
+    "preLaunchProvisionalHistoryFirstReleased": "2022-04-18",
+    "publicationTime": "11:00 Asia/Seoul",
+    "underlyingTransactionDay": "PREVIOUS_BUSINESS_DAY",
+    "market": "KRW overnight interbank repo collateralised by government/monetary-stabilisation bonds",
+    "officialTextExcerpts": [
+      "예탁결제원 RFR사무국은 ’21년 11월 26일부터",
+      "예탁결제원 RFR사무국은 ’22년 4월 18일부터, KOFR 정식 공시 전 RP결제자료를 기초로 계산한",
+      "공시일 전영업일의 선별된 적격 기초자료",
+      "매일 오전 11시 공시합니다."
+    ],
+    "rateObservationsAcquired": 0,
+    "investorPayoffAcquired": false,
+    "preLaunchQuoteCannotBeClaimedPublicThen": true,
+    "preservationAndReuseRights": "UNVERIFIED; copyright footer is not a data redistribution licence"
+  },
+  "terminology": {
+    "etfPdf": "Portfolio Deposit File / 포트폴리오 납입내역",
+    "distributionPdfDocument": "Monthly/annual issuer distribution document in .pdf format; already acknowledged by #316",
+    "historicalPortfolioDepositFilePanelAvailable": false,
+    "correctionScope": "NAV raw-source availability only; no correction to the missing historical ETF PDF/constituent panel finding"
+  }
+}

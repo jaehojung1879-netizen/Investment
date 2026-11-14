@@ -23,6 +23,7 @@ import json
 import subprocess
 import sys
 from collections import Counter
+from dataclasses import replace
 from pathlib import Path
 
 import pandas as pd
@@ -45,6 +46,10 @@ COVERAGE_CSV = DATA / "us-universe-coverage-manifest.csv.gz"
 DATA_AUDIT = OUT / "us-dual-benchmark-v1-data-audit.json"
 COMPARISON = OUT / "us-spy-qqq-comparison-v1.json"
 N100_AUDIT = OUT / "nasdaq100-pit-membership-v1.json"
+N100_OFFICIAL = OUT / "nasdaq100-official-membership-evidence.json"
+N100_CORRECTED = OUT / "nasdaq100-pit-membership-v2.json"
+COVERAGE_CORRECTED = OUT / "us-universe-coverage-gap-v2.json"
+COVERAGE_CSV_CORRECTED = OUT / "us-universe-coverage-manifest-v2.csv.gz"
 COVERAGE = OUT / "us-universe-coverage-gap-v1.json"
 CHART = OUT / "us-spy-qqq-comparison-v1.svg"
 
@@ -359,14 +364,75 @@ def swap_identity(removed: str, added: str, note: str, ciks: dict) -> str:
     return "UNRESOLVED_NO_IDENTIFIER"
 
 
-def stage_n100(ciks: dict) -> dict:
+def official_nasdaq_events(docs, shas):
+    official = json.loads(N100_OFFICIAL.read_text())
+    annual = official["annual_announcements"]
+    checks = []
+    for row in annual:
+        effective = row["effective_date"]
+        derived = docs[int(effective[:4])]["changes"][effective]
+        checks.append({**row,
+                       "missingDerivedAdds": sorted(set(row["added"]) - set(derived["union"])),
+                       "missingDerivedRemoves": sorted(set(row["removed"]) - set(derived["difference"]))})
+
+    comcast, seagen = official["membership_corrections"]
+    start, end = comcast["start_inclusive"], comcast["end_exclusive"]
+    added = docs[int(start[:4])]["changes"][start]["union"]
+    assert comcast["ticker"] not in added
+    added.append(comcast["ticker"])
+    docs[int(end[:4])]["tickers_on_Jan_1"].append(comcast["ticker"])
+    docs[int(end[:4])]["changes"].setdefault(end, {}).setdefault("difference", []).append(comcast["ticker"])
+
+    old, new = seagen["replace_derived_event_date"], seagen["effective_date"]
+    event = docs[int(old[:4])]["changes"].pop(old)
+    assert event == {"union": [seagen["added"]], "difference": [seagen["removed"]]}
+    effective_changes = docs[int(new[:4])]["changes"][new]
+    for side, symbols in event.items():
+        effective_changes[side].extend(symbols)
+
+    annual_by_date = {row["effective_date"]: row for row in annual}
+    official_sha = sha256(N100_OFFICIAL)
+    comcast_security = N.Security(comcast["ticker"], "Comcast Corporation", comcast["share_class"],
+                                 comcast["security_cusip"])
+    events = []
+    for event in N.events_from_yearly(docs, N100_SOURCE["id"], shas):
+        evidence = annual_by_date.get(event.effectiveDate)
+        if evidence is not None:
+            event = replace(event, announcementDate=evidence["published_date"],
+                            sourceId="NASDAQ_OFFICIAL_ANNOUNCEMENT", sourceSha256=official_sha)
+        if event.effectiveDate == start:
+            event = replace(event, added=tuple(comcast_security if s.tickerAtEvent == comcast["ticker"] else s
+                                               for s in event.added))
+        if event.effectiveDate == end:
+            event = replace(event, removed=(comcast_security,), sourceId="SEC_OFFICIAL_RECLASSIFICATION",
+                            sourceSha256=official_sha, announcementDate=comcast["end_announced_date"])
+        if event.effectiveDate == new:
+            # A merged event cannot expose TTWO before the supplemental announcement.
+            additions = tuple(s for s in event.added if s.tickerAtEvent == seagen["added"])
+            removals = tuple(s for s in event.removed if s.tickerAtEvent == seagen["removed"])
+            events.append(N.MembershipEvent(
+                "nasdaq:2023-reconstitution-update", "NASDAQ_OFFICIAL_ANNOUNCEMENT", official_sha,
+                seagen["published_date"], new, added=additions, removed=removals,
+                kind="REPLACEMENT_OR_CORPORATE_ACTION"))
+            event = replace(event, added=tuple(s for s in event.added if s not in additions),
+                            removed=tuple(s for s in event.removed if s not in removals))
+        events.append(event)
+    evidence = {"path": str(N100_OFFICIAL.relative_to(ROOT)), "sha256": official_sha,
+                "annualChecksBeforeCorrection": checks, "corrections": official["membership_corrections"]}
+    return events, evidence
+
+
+def stage_n100(ciks: dict, *, corrected: bool = False) -> dict:
     docs, shas = {}, {}
     for path in sorted(N100_DIR.glob("n100-ticker-changes-*.yaml")):
         doc = N.parse_yearly_yaml(path.read_text())
         docs[doc["year"]] = doc
         shas[doc["year"]] = sha256(path)
     chain = N.chain_consistency(docs)
-    events = N.events_from_yearly(docs, N100_SOURCE["id"], shas)
+    if corrected:
+        events, official_evidence = official_nasdaq_events(docs, shas)
+    else:
+        events = N.events_from_yearly(docs, N100_SOURCE["id"], shas)
     base = N.BaseSnapshot(sourceId=N100_SOURCE["id"], sourceSha256=shas[2013], asOfDate="2013-01-01",
                           publishedDate="2013-01-01",
                           members=tuple(N.Security(t, issuer="") for t in docs[2013]["tickers_on_Jan_1"]))
@@ -420,7 +486,18 @@ def stage_n100(ciks: dict) -> dict:
                                         "else effectiveDate; today's list is never back-filled"),
         "spans": {t: s for t, s in sorted(spans.items())},
     }
-    dump(N100_AUDIT, payload)
+    if corrected:
+        payload.update(
+            id="nasdaq100-pit-membership-v2",
+            verdictReasons=[
+                "membership starts from the derived n100tickers history and includes official corrections",
+                "the annual changes have official announcement dates",
+                "most share-class identities and completeness of intra-year events remain unverified",
+            ],
+            officialEvidence=official_evidence,
+            correctedChainConsistency=N.chain_consistency(docs),
+        )
+    dump(N100_CORRECTED if corrected else N100_AUDIT, payload)
     payload["_spans"] = spans
     return payload
 
@@ -464,7 +541,8 @@ def _finnhub(reader) -> tuple[dict, dict, int]:
     return dict(counts), ciks, total
 
 
-def stage_coverage(reader, n100_spans, finnhub) -> dict:
+def stage_coverage(reader, n100_spans, finnhub, *, corrected: bool = False) -> dict:
+    csv_path = COVERAGE_CSV_CORRECTED if corrected else COVERAGE_CSV
     v3 = json.loads((ROOT / "docs/results/alpha-opportunity-model-v3-survivorship-audit.json").read_text())
     identity = v3["regions"]["US"]["identity"]
     category = {t: c for c, ts in identity["categories"].items() for t in ts}
@@ -490,15 +568,15 @@ def stage_coverage(reader, n100_spans, finnhub) -> dict:
     for row in rows:
         writer.writerow({k: (json.dumps(row[k], separators=(",", ":")) if isinstance(row[k], (list, dict))
                              else row[k]) for k in fields})
-    COVERAGE_CSV.write_bytes(gzip.compress(buf.getvalue().encode(), compresslevel=9, mtime=0))
+    csv_path.write_bytes(gzip.compress(buf.getvalue().encode(), compresslevel=9, mtime=0))
     n100_only_unpriced = [r["symbol"] for r in rows if r["inNasdaq100"] and not r["inSp500"] and not r["priceCovered"]]
     payload = {
-        "id": "us-universe-coverage-gap-v1", "evidenceClass": "OUTCOME_BLIND_COVERAGE_AUDIT",
+        "id": "us-universe-coverage-gap-v2" if corrected else "us-universe-coverage-gap-v1", "evidenceClass": "OUTCOME_BLIND_COVERAGE_AUDIT",
         "window": [STUDY_START, STUDY_END],
         "inputs": {"sp500Membership": "replay-v16 sealed universe component (US)",
                    "sp500Identity": "docs/results/alpha-opportunity-model-v3-survivorship-audit.json",
                    "freeVendorRefused": "data/us-unpriced-members.json",
-                   "nasdaq100Membership": N100_SOURCE["id"],
+                   "nasdaq100Membership": str(N100_CORRECTED.relative_to(ROOT)) if corrected else N100_SOURCE["id"],
                    "prices": "replay-v16 sealed price panels (Yahoo unadjusted with actions)",
                    "fundamentals": f"signal-history@{D.SOURCE_COMMIT[:8]} ledger/fundamentals/us (Finnhub)"},
         "finnhubStoreMeasured": {"tickers": len(filings), "filings": total,
@@ -507,16 +585,21 @@ def stage_coverage(reader, n100_spans, finnhub) -> dict:
         "statusPrecedence": list(U.PRECEDENCE),
         "summary": U.summarize(rows),
         "nasdaq100OnlyWithoutPrices": n100_only_unpriced,
-        "manifest": {"path": str(COVERAGE_CSV.relative_to(ROOT)), "sha256": sha256(COVERAGE_CSV), "rows": len(rows)},
+        "manifest": {"path": str(csv_path.relative_to(ROOT)), "sha256": sha256(csv_path), "rows": len(rows)},
     }
-    dump(COVERAGE, payload)
+    dump(COVERAGE_CORRECTED if corrected else COVERAGE, payload)
     return payload
 
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--stage", choices=("all", "sealed", "compare"), default="all")
+    parser.add_argument("--stage", choices=("all", "sealed", "compare", "membership-correction"), default="all")
     args = parser.parse_args(argv)
+    if args.stage == "membership-correction":
+        reader = D.SealedReader(ROOT)
+        finnhub = _finnhub(reader)
+        membership = stage_n100(finnhub[1], corrected=True)
+        stage_coverage(reader, membership["_spans"], finnhub, corrected=True)
     if args.stage in ("all", "sealed"):
         stage_sealed()
     if args.stage in ("all", "compare"):
