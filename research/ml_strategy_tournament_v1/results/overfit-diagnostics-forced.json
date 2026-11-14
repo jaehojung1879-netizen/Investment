@@ -1,0 +1,380 @@
+{
+ "evidenceClass": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+ "view": "forced",
+ "subject": "RULE_INDUSTRY_MOMENTUM",
+ "trials": {
+  "strategies": 148,
+  "mlConfigurations": 141,
+  "fitsPerformed": 1692,
+  "onExcessReturns": {
+   "participationRatio": 4.723553858646805,
+   "clustersAtCorr0.9": 134,
+   "strategiesWithVariance": 147
+  },
+  "onRawReturns": {
+   "participationRatio": 2.320310592730327,
+   "clustersAtCorr0.9": 125,
+   "strategiesWithVariance": 147
+  },
+  "strategiesIdenticalToEtf": 1
+ },
+ "deflatedSharpeWinnerAbsolute": {
+  "nAll": {
+   "dailySharpe": 0.046362330026909905,
+   "annualSharpe": 0.7359791727162367,
+   "expectedMaxSharpeUnderNullDaily": 0.029989382026014578,
+   "expectedMaxSharpeUnderNullAnnual": 0.47606668088006965,
+   "nEffective": 148.0,
+   "skew": 0.39061265825973907,
+   "kurtosis": 10.37889176303617,
+   "deflatedSharpeProbability": 0.8004172351853208
+  },
+  "nParticipationRatio": {
+   "dailySharpe": 0.046362330026909905,
+   "annualSharpe": 0.7359791727162367,
+   "expectedMaxSharpeUnderNullDaily": 0.01302574137144492,
+   "expectedMaxSharpeUnderNullAnnual": 0.20677723386653207,
+   "nEffective": 4.723553858646805,
+   "skew": 0.39061265825973907,
+   "kurtosis": 10.37889176303617,
+   "deflatedSharpeProbability": 0.9569777224129791
+  },
+  "nClusters": {
+   "dailySharpe": 0.046362330026909905,
+   "annualSharpe": 0.7359791727162367,
+   "expectedMaxSharpeUnderNullDaily": 0.029610542634489055,
+   "expectedMaxSharpeUnderNullAnnual": 0.47005279197920025,
+   "nEffective": 134.0,
+   "skew": 0.39061265825973907,
+   "kurtosis": 10.37889176303617,
+   "deflatedSharpeProbability": 0.8058269344232547
+  }
+ },
+ "deflatedSharpeWinnerExcessVsEtf": {
+  "nAll": {
+   "dailySharpe": 0.01845003400441357,
+   "annualSharpe": 0.2928852099381809,
+   "expectedMaxSharpeUnderNullDaily": 0.037429982006484994,
+   "expectedMaxSharpeUnderNullAnnual": 0.5941825438006902,
+   "nEffective": 148.0,
+   "skew": 0.17239368689365106,
+   "kurtosis": 5.9635950227719885,
+   "deflatedSharpeProbability": 0.165452682527221
+  },
+  "nParticipationRatio": {
+   "dailySharpe": 0.01845003400441357,
+   "annualSharpe": 0.2928852099381809,
+   "expectedMaxSharpeUnderNullDaily": 0.016257529572679348,
+   "expectedMaxSharpeUnderNullAnnual": 0.25808028108952646,
+   "nEffective": 4.723553858646805,
+   "skew": 0.17239368689365106,
+   "kurtosis": 5.9635950227719885,
+   "deflatedSharpeProbability": 0.544713622254949
+  },
+  "nClusters": {
+   "dailySharpe": 0.01845003400441357,
+   "annualSharpe": 0.2928852099381809,
+   "expectedMaxSharpeUnderNullDaily": 0.036957149602141096,
+   "expectedMaxSharpeUnderNullAnnual": 0.5866765620784501,
+   "nEffective": 134.0,
+   "skew": 0.17239368689365106,
+   "kurtosis": 5.9635950227719885,
+   "deflatedSharpeProbability": 0.17154692569381952
+  }
+ },
+ "cscvPbo": {
+  "blocks": 16,
+  "combinations": 12870,
+  "pbo": 0.31087801087801087,
+  "medianLogitOosRank": 1.3820480702384395,
+  "isToOosSlope": -0.4121695699755027,
+  "meanOosDailyExcessOfIsWinner": -0.00014205832910331153
+ },
+ "blockBootstrap": {
+  "winnerMinusEtf": {
+   "annualisedMeanDiff": 0.08180161236993008,
+   "ci95": [
+    -0.07619130454545692,
+    0.2516178232495187
+   ],
+   "shareBootstrapAtOrBelowZero": 0.1665,
+   "blockSessions": 126,
+   "reps": 2000
+  },
+  "winnerMinusBestRule": {
+   "rule": "RULE_QUALITY",
+   "annualisedMeanDiff": 0.0883232009796388,
+   "ci95": [
+    -0.10646843973960524,
+    0.28158652013715235
+   ],
+   "shareBootstrapAtOrBelowZero": 0.183,
+   "blockSessions": 126,
+   "reps": 2000
+  },
+  "winnerMinusFourFactor": {
+   "annualisedMeanDiff": 0.20672300418276435,
+   "ci95": [
+    0.012071630484333403,
+    0.4042270274094473
+   ],
+   "shareBootstrapAtOrBelowZero": 0.021,
+   "blockSessions": 126,
+   "reps": 2000
+  }
+ },
+ "nestedSelection": {
+  "byPastCagr": {
+   "criterion": "cagr",
+   "picks": [
+    {
+     "year": 2017,
+     "picked": "RULE_VALUE",
+     "pastRankAbs": 42
+    },
+    {
+     "year": 2018,
+     "picked": "RULE_INDUSTRY_MOMENTUM",
+     "pastRankAbs": 1
+    },
+    {
+     "year": 2019,
+     "picked": "RULE_INDUSTRY_MOMENTUM",
+     "pastRankAbs": 1
+    },
+    {
+     "year": 2020,
+     "picked": "RULE_QUALITY",
+     "pastRankAbs": 5
+    },
+    {
+     "year": 2021,
+     "picked": "RULE_INDUSTRY_MOMENTUM",
+     "pastRankAbs": 1
+    },
+    {
+     "year": 2022,
+     "picked": "LGBM_CI_REG_h1",
+     "pastRankAbs": 26
+    },
+    {
+     "year": 2023,
+     "picked": "LGBM_CI_REG_h5",
+     "pastRankAbs": 4
+    },
+    {
+     "year": 2024,
+     "picked": "XGB_CI_RANK_h1",
+     "pastRankAbs": 2
+    },
+    {
+     "year": 2025,
+     "picked": "LGBM_CIM_RANK_h6",
+     "pastRankAbs": 25
+    },
+    {
+     "year": 2026,
+     "picked": "RULE_INDUSTRY_MOMENTUM",
+     "pastRankAbs": 1
+    }
+   ],
+   "metrics": {
+    "cagr": 0.014475,
+    "etfCagr": 0.182867,
+    "excessCagr": -0.168392,
+    "vol": 0.334921,
+    "sharpe": 0.151036,
+    "sortino": 0.20628,
+    "mdd": -0.673591,
+    "trackingError": 0.231962,
+    "informationRatio": -0.567821,
+    "annualStockTurnover": null,
+    "years": 9.436508
+   },
+   "distinctPicks": 7
+  },
+  "byPastSharpe": {
+   "criterion": "sharpe",
+   "picks": [
+    {
+     "year": 2017,
+     "picked": "RULE_VALUE",
+     "pastRankAbs": 42
+    },
+    {
+     "year": 2018,
+     "picked": "RULE_INDUSTRY_MOMENTUM",
+     "pastRankAbs": 1
+    },
+    {
+     "year": 2019,
+     "picked": "RULE_INDUSTRY_MOMENTUM",
+     "pastRankAbs": 1
+    },
+    {
+     "year": 2020,
+     "picked": "RULE_QUALITY",
+     "pastRankAbs": 5
+    },
+    {
+     "year": 2021,
+     "picked": "LGBM_CIM_RANK_h1",
+     "pastRankAbs": 17
+    },
+    {
+     "year": 2022,
+     "picked": "LGBM_CI_REG_h1",
+     "pastRankAbs": 26
+    },
+    {
+     "year": 2023,
+     "picked": "LGBM_CI_REG_h5",
+     "pastRankAbs": 4
+    },
+    {
+     "year": 2024,
+     "picked": "LGBM_CIM_RANK_h6",
+     "pastRankAbs": 25
+    },
+    {
+     "year": 2025,
+     "picked": "LGBM_CIM_RANK_h6",
+     "pastRankAbs": 25
+    },
+    {
+     "year": 2026,
+     "picked": "XGB_CI_RANK_h1",
+     "pastRankAbs": 2
+    }
+   ],
+   "metrics": {
+    "cagr": 0.044552,
+    "etfCagr": 0.182867,
+    "excessCagr": -0.138315,
+    "vol": 0.27775,
+    "sharpe": 0.225182,
+    "sortino": 0.314506,
+    "mdd": -0.63508,
+    "trackingError": 0.225963,
+    "informationRatio": -0.529972,
+    "annualStockTurnover": null,
+    "years": 9.436508
+   },
+   "distinctPicks": 8
+  }
+ },
+ "trainVsOosRankIc": [
+  {
+   "strategy": "XGB_CI_RANK_h1",
+   "inSample": 0.2795,
+   "outOfSample": 0.0309
+  },
+  {
+   "strategy": "LGBM_CI_REG_h5",
+   "inSample": 0.7923,
+   "outOfSample": 0.0274
+  },
+  {
+   "strategy": "LGBM_CI_CLF_h4",
+   "inSample": 0.4924,
+   "outOfSample": -0.0025
+  },
+  {
+   "strategy": "LGBM_CIM_RANK_h2",
+   "inSample": 0.4452,
+   "outOfSample": 0.0598
+  },
+  {
+   "strategy": "ENET_C_REG_e2",
+   "inSample": 0.1542,
+   "outOfSample": -0.1514
+  },
+  {
+   "strategy": "ENET_CIM_REG_e2",
+   "inSample": 0.0313,
+   "outOfSample": -0.1514
+  },
+  {
+   "strategy": "RIDGE_CI_RANK_a2",
+   "inSample": 0.1776,
+   "outOfSample": 0.0672
+  },
+  {
+   "strategy": "RIDGE_CIM_RANK_a2",
+   "inSample": 0.1778,
+   "outOfSample": 0.0672
+  },
+  {
+   "strategy": "ENET_CI_REG_e2",
+   "inSample": 0.1102,
+   "outOfSample": -0.1011
+  },
+  {
+   "strategy": "XGB_CI_REG_h2",
+   "inSample": 0.5684,
+   "outOfSample": 0.0363
+  },
+  {
+   "strategy": "LGBM_CI_CLF_h2",
+   "inSample": 0.4967,
+   "outOfSample": 0.0027
+  },
+  {
+   "strategy": "XGB_CIM_REG_h1",
+   "inSample": 0.4281,
+   "outOfSample": 0.0304
+  },
+  {
+   "strategy": "LGBM_CIM_RANK_h3",
+   "inSample": 0.5386,
+   "outOfSample": 0.0518
+  },
+  {
+   "strategy": "LGBM_CIM_RANK_h1",
+   "inSample": 0.3344,
+   "outOfSample": 0.0557
+  },
+  {
+   "strategy": "LGBM_CI_REG_h6",
+   "inSample": 0.435,
+   "outOfSample": 0.0319
+  },
+  {
+   "strategy": "LGBM_CI_RANK_h3",
+   "inSample": 0.5237,
+   "outOfSample": 0.0602
+  }
+ ],
+ "oosRankIcAll": {
+  "mean": 0.0228,
+  "shareNegative": 0.2585
+ },
+ "top20ExcessCorrelation": {
+  "meanOffDiagonal": 0.318,
+  "minOffDiagonal": -0.106
+ },
+ "factorRegressionWinner": {
+  "coefficients": {
+   "alpha": 0.000326,
+   "ETF": 1.082829,
+   "RULE_FOUR_FACTOR": 0.083399,
+   "RULE_MOMENTUM": 0.373155,
+   "RULE_LOW_VOL": 0.018668,
+   "RULE_VALUE": 0.079512,
+   "RULE_QUALITY": 0.007719
+  },
+  "tStats": {
+   "alpha": 1.047,
+   "ETF": 24.648,
+   "RULE_FOUR_FACTOR": 1.979,
+   "RULE_MOMENTUM": 9.351,
+   "RULE_LOW_VOL": 0.294,
+   "RULE_VALUE": 2.117,
+   "RULE_QUALITY": 0.202
+  },
+  "annualisedAlpha": 0.082067,
+  "alphaT": 1.047,
+  "r2": 0.5524,
+  "neweyWestLags": 10
+ }
+}
