@@ -1,0 +1,46 @@
+{
+ "observedAtUtc": "2026-11-10T23:32:22Z",
+ "repository": "jaehojung1879-netizen/Investment",
+ "numericalCodeCommit": "8a8d506757585d523ecb7261e23e45b526e69a48",
+ "testedPrHead": "02a91145c96692c304bb58b179f31d1ccdcc8d1c",
+ "localFullSuite": {
+  "python": "3.11.17",
+  "passed": 6474,
+  "failed": 0,
+  "skipped": 4,
+  "xfailed": 4,
+  "exitCode": 0
+ },
+ "remotePr332": {
+  "runId": 42919299534,
+  "jobId": 130189786940,
+  "status": "in_progress",
+  "conclusion": null,
+  "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/42919299534",
+  "lint": "success",
+  "suite": "in_progress"
+ },
+ "upstream329LatestCi": {
+  "head": "0a1f494171576af6928fe531145a8c8f050253fd",
+  "runId": 42916758982,
+  "status": "completed",
+  "conclusion": "failure",
+  "passed": 6448,
+  "failed": 1,
+  "skipped": 3,
+  "xfailed": 4,
+  "failure": "test_runtime_restriction_and_cli_bootstrap_order: PINNED_DEPENDENCY_VERSION_REQUIRED rather than SINGLE_THREAD_ENVIRONMENT_REQUIRED",
+  "observedInstalledThreadpoolctl": "3.8.0",
+  "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/42916758982"
+ },
+ "dependency321": {
+  "head": "cd2892eb6d6623c2527eeda690959d18839acc4d",
+  "mergedByThisRepair": false,
+  "numericalConstraintsUsedLocally": {
+   "threadpoolctl": "3.7.0",
+   "joblib": "1.6.0"
+  }
+ },
+ "remoteAllPassClaim": false,
+ "note": "Final evidence-only commit will trigger a new PR-head CI run. Its actual status must be read from PR checks; these are timestamped snapshots, not a claim about a future head."
+}

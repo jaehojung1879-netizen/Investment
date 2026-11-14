@@ -1,0 +1,80 @@
+{
+ "scope": "SYNTHETIC_FEATURE_SELECTION_ONLY_NO_FIT_NO_RETURN_CLAIM",
+ "v1Status": "FAIL",
+ "v2Status": "PASS",
+ "pastRows": 5,
+ "appendedFutureRows": 20,
+ "fullSampleB01CoverageBefore": 0.0,
+ "fullSampleB01CoverageAfter": 0.8,
+ "v1LayersBefore": {
+  "company": [
+   "A07_momentum12_1"
+  ],
+  "industry": [
+   "A09_industryRelativeMomentum126",
+   "H01_industryRelMom126"
+  ],
+  "market": [
+   "MKT_trend126"
+  ]
+ },
+ "v1LayersAfter": {
+  "company": [
+   "A07_momentum12_1",
+   "B01_bookToMarket"
+  ],
+  "industry": [
+   "A09_industryRelativeMomentum126",
+   "H01_industryRelMom126"
+  ],
+  "market": [
+   "MKT_trend126"
+  ]
+ },
+ "v2MaturedTrainRows": 3,
+ "v2PastFoldReceiptUnchanged": true,
+ "v2PastFoldReceipt": {
+  "year": 2020,
+  "horizon": 126,
+  "trainRows": 3,
+  "trainDates": 3,
+  "trainLastExit": "2019-11-01",
+  "testFirst": "2020-01-03",
+  "layers": {
+   "company": [
+    "A07_momentum12_1"
+   ],
+   "industry": [
+    "A09_industryRelativeMomentum126",
+    "H01_industryRelMom126"
+   ],
+   "market": [
+    "MKT_trend126"
+   ]
+  },
+  "coverage": {
+   "A07_momentum12_1": 1.0,
+   "A09_industryRelativeMomentum126": 1.0,
+   "H01_industryRelMom126": 1.0,
+   "B01_bookToMarket": 0.0,
+   "MKT_trend126": 1.0
+  },
+  "marketMedian": {
+   "MKT_trend126": 2.0
+  },
+  "marketMean": {
+   "MKT_trend126": 2.0
+  },
+  "marketStd": {
+   "MKT_trend126": 1.0
+  },
+  "missingRules": {
+   "linearCross": "RANK_MINUS_HALF_NAN_TO_ZERO_WITH_LAYER_MISSING_SHARE",
+   "linearMarket": "TRAIN_Z_NAN_TO_ZERO_CLIP_5",
+   "LGBM_XGB": "NATIVE_NAN",
+   "RF_ET": "CROSS_RANK_HALF_TRAIN_MARKET_MEDIAN"
+  },
+  "featureSelectionBasis": "MATURED_TRAIN_ROWS_ONLY"
+ },
+ "sourceSha256": "31d87edd2da7a3916c69c112eecdd0728d9ac2ba6701175cf63f44fe09fcccea"
+}

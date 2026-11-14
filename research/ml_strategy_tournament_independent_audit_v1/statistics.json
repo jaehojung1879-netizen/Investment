@@ -1,0 +1,280 @@
+{
+ "gated": {
+  "subject": "RULE_INDUSTRY_MOMENTUM",
+  "strategies": 148,
+  "activeNonzeroStrategies": 143,
+  "activeEffectiveParticipationRatio": 3.9576259229174293,
+  "dsr": {
+   "naiveProbability": 0.26987709056389875,
+   "trials": 148,
+   "dailySharpe": 0.018911528534488162,
+   "status": "DESCRIPTIVE_IID_APPROXIMATION_ONLY",
+   "formalDsr": "NOT_COMPUTABLE_WITH_VALIDATED_ASSUMPTIONS",
+   "reasons": [
+    "serial dependence not adjusted",
+    "full prior research trial count unknown",
+    "winner ranked by CAGR not daily active Sharpe",
+    "adaptive forced view added after outcomes"
+   ]
+  },
+  "cscv": {
+   "naivePbo": 0.09867909867909867,
+   "combinations": 12870,
+   "blocks": 16,
+   "blockLength": 163,
+   "droppedTailSessions": 10,
+   "status": "DESCRIPTIVE_SYSTEM_LEVEL_ONLY",
+   "formalPurgedPbo": "NOT_VALIDATED_FOR_REPORTED_SELECTION_PROCEDURE",
+   "reasons": [
+    "no purge between adjacent CSCV blocks",
+    "performance criterion is mean active return, unlike reported CAGR/Sharpe ranking",
+    "block exchangeability under changing walk-forward training states not established"
+   ]
+  },
+  "factorProxyRegressions": {
+   "10": {
+    "annualAlpha": 0.11078917784453449,
+    "alphaT": 1.3850689201601865,
+    "etfBeta": 0.9835974876941833,
+    "rSquared": 0.5164726751257551,
+    "conditionNumber": 352.6371039571493,
+    "neweyWestLags": 10,
+    "limit": "ETF and strategy-return proxies only; not industry-neutral or size-factor alpha"
+   },
+   "126": {
+    "annualAlpha": 0.11078917784453449,
+    "alphaT": 1.4219935809034336,
+    "etfBeta": 0.9835974876941833,
+    "rSquared": 0.5164726751257551,
+    "conditionNumber": 352.6371039571493,
+    "neweyWestLags": 126,
+    "limit": "ETF and strategy-return proxies only; not industry-neutral or size-factor alpha"
+   }
+  },
+  "factorProxyColumns": [
+   "ETF",
+   "RULE_FOUR_FACTOR",
+   "RULE_LOW_VOL",
+   "RULE_MOMENTUM",
+   "RULE_VALUE"
+  ],
+  "float32Reconciliation": {
+   "dsr": {
+    "naiveProbability": 0.18670796334749984,
+    "trials": 148,
+    "dailySharpe": 0.018911529351181438,
+    "status": "DESCRIPTIVE_IID_APPROXIMATION_ONLY",
+    "formalDsr": "NOT_COMPUTABLE_WITH_VALIDATED_ASSUMPTIONS",
+    "reasons": [
+     "serial dependence not adjusted",
+     "full prior research trial count unknown",
+     "winner ranked by CAGR not daily active Sharpe",
+     "adaptive forced view added after outcomes"
+    ]
+   },
+   "cscv": {
+    "naivePbo": 0.10986790986790987,
+    "combinations": 12870,
+    "blocks": 16,
+    "blockLength": 163,
+    "droppedTailSessions": 10,
+    "status": "DESCRIPTIVE_SYSTEM_LEVEL_ONLY",
+    "formalPurgedPbo": "NOT_VALIDATED_FOR_REPORTED_SELECTION_PROCEDURE",
+    "reasons": [
+     "no purge between adjacent CSCV blocks",
+     "performance criterion is mean active return, unlike reported CAGR/Sharpe ranking",
+     "block exchangeability under changing walk-forward training states not established"
+    ]
+   },
+   "etfOnlyArtificialActiveVol": 5.59461235136129e-07,
+   "limit": "Float32 paths minus double-precision ETF create active returns for identical ETF books"
+  },
+  "pastOnlyReturnSplice": {
+   "cagr": 0.20739465069168572,
+   "selected": [
+    [
+     2017,
+     "RULE_QUALITY"
+    ],
+    [
+     2018,
+     "RULE_INDUSTRY_MOMENTUM"
+    ],
+    [
+     2019,
+     "RULE_INDUSTRY_MOMENTUM"
+    ],
+    [
+     2020,
+     "RULE_QUALITY"
+    ],
+    [
+     2021,
+     "RULE_INDUSTRY_MOMENTUM"
+    ],
+    [
+     2022,
+     "RULE_INDUSTRY_MOMENTUM"
+    ],
+    [
+     2023,
+     "RULE_INDUSTRY_MOMENTUM"
+    ],
+    [
+     2024,
+     "RULE_INDUSTRY_MOMENTUM"
+    ],
+    [
+     2025,
+     "RULE_INDUSTRY_MOMENTUM"
+    ],
+    [
+     2026,
+     "RULE_INDUSTRY_MOMENTUM"
+    ]
+   ],
+   "status": "RETURN_SPLICE_NOT_SELF_FINANCING_SWITCH_BACKTEST",
+   "limit": "Boundary holdings and additional model-switch transaction costs absent"
+  }
+ },
+ "forced": {
+  "subject": "XGB_CI_RANK_h1",
+  "strategies": 148,
+  "activeNonzeroStrategies": 147,
+  "activeEffectiveParticipationRatio": 4.723554009741898,
+  "dsr": {
+   "naiveProbability": 0.04394601801879237,
+   "trials": 148,
+   "dailySharpe": 0.0037120870009136504,
+   "status": "DESCRIPTIVE_IID_APPROXIMATION_ONLY",
+   "formalDsr": "NOT_COMPUTABLE_WITH_VALIDATED_ASSUMPTIONS",
+   "reasons": [
+    "serial dependence not adjusted",
+    "full prior research trial count unknown",
+    "winner ranked by CAGR not daily active Sharpe",
+    "adaptive forced view added after outcomes"
+   ]
+  },
+  "cscv": {
+   "naivePbo": 0.31095571095571095,
+   "combinations": 12870,
+   "blocks": 16,
+   "blockLength": 163,
+   "droppedTailSessions": 10,
+   "status": "DESCRIPTIVE_SYSTEM_LEVEL_ONLY",
+   "formalPurgedPbo": "NOT_VALIDATED_FOR_REPORTED_SELECTION_PROCEDURE",
+   "reasons": [
+    "no purge between adjacent CSCV blocks",
+    "performance criterion is mean active return, unlike reported CAGR/Sharpe ranking",
+    "block exchangeability under changing walk-forward training states not established"
+   ]
+  },
+  "factorProxyRegressions": {
+   "10": {
+    "annualAlpha": 0.06279459975478892,
+    "alphaT": 1.2916494139074295,
+    "etfBeta": 0.9585001531604506,
+    "rSquared": 0.6039746673278561,
+    "conditionNumber": 176.01439875163203,
+    "neweyWestLags": 10,
+    "limit": "ETF and strategy-return proxies only; not industry-neutral or size-factor alpha"
+   },
+   "126": {
+    "annualAlpha": 0.06279459975478892,
+    "alphaT": 1.2908130592635492,
+    "etfBeta": 0.9585001531604506,
+    "rSquared": 0.6039746673278561,
+    "conditionNumber": 176.01439875163203,
+    "neweyWestLags": 126,
+    "limit": "ETF and strategy-return proxies only; not industry-neutral or size-factor alpha"
+   }
+  },
+  "factorProxyColumns": [
+   "ETF",
+   "RULE_FOUR_FACTOR",
+   "RULE_INDUSTRY_MOMENTUM",
+   "RULE_LOW_VOL",
+   "RULE_MOMENTUM",
+   "RULE_QUALITY",
+   "RULE_VALUE"
+  ],
+  "float32Reconciliation": {
+   "dsr": {
+    "naiveProbability": 0.04234095892512566,
+    "trials": 148,
+    "dailySharpe": 0.003712086548909621,
+    "status": "DESCRIPTIVE_IID_APPROXIMATION_ONLY",
+    "formalDsr": "NOT_COMPUTABLE_WITH_VALIDATED_ASSUMPTIONS",
+    "reasons": [
+     "serial dependence not adjusted",
+     "full prior research trial count unknown",
+     "winner ranked by CAGR not daily active Sharpe",
+     "adaptive forced view added after outcomes"
+    ]
+   },
+   "cscv": {
+    "naivePbo": 0.31087801087801087,
+    "combinations": 12870,
+    "blocks": 16,
+    "blockLength": 163,
+    "droppedTailSessions": 10,
+    "status": "DESCRIPTIVE_SYSTEM_LEVEL_ONLY",
+    "formalPurgedPbo": "NOT_VALIDATED_FOR_REPORTED_SELECTION_PROCEDURE",
+    "reasons": [
+     "no purge between adjacent CSCV blocks",
+     "performance criterion is mean active return, unlike reported CAGR/Sharpe ranking",
+     "block exchangeability under changing walk-forward training states not established"
+    ]
+   },
+   "etfOnlyArtificialActiveVol": 5.59461235136129e-07,
+   "limit": "Float32 paths minus double-precision ETF create active returns for identical ETF books"
+  },
+  "pastOnlyReturnSplice": {
+   "cagr": 0.014474849132473988,
+   "selected": [
+    [
+     2017,
+     "RULE_VALUE"
+    ],
+    [
+     2018,
+     "RULE_INDUSTRY_MOMENTUM"
+    ],
+    [
+     2019,
+     "RULE_INDUSTRY_MOMENTUM"
+    ],
+    [
+     2020,
+     "RULE_QUALITY"
+    ],
+    [
+     2021,
+     "RULE_INDUSTRY_MOMENTUM"
+    ],
+    [
+     2022,
+     "LGBM_CI_REG_h1"
+    ],
+    [
+     2023,
+     "LGBM_CI_REG_h5"
+    ],
+    [
+     2024,
+     "XGB_CI_RANK_h1"
+    ],
+    [
+     2025,
+     "LGBM_CIM_RANK_h6"
+    ],
+    [
+     2026,
+     "RULE_INDUSTRY_MOMENTUM"
+    ]
+   ],
+   "status": "RETURN_SPLICE_NOT_SELF_FINANCING_SWITCH_BACKTEST",
+   "limit": "Boundary holdings and additional model-switch transaction costs absent"
+  }
+ }
+}

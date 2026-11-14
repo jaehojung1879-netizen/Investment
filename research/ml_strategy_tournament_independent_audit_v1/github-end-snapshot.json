@@ -1,0 +1,47 @@
+{
+  "headUnchanged": true,
+  "head": "17404f86535f0b8a8992da451dc7667f00539dd6",
+  "commits": [
+    {
+      "sha": "63948c07a103af40c574961f5d1b4dddc28d884a",
+      "date": "2026-11-10T11:25:05Z",
+      "message": "research(ml-strategy-tournament-v1): freeze model grid, labels and portfolio rule before any fit\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01UtFTvfck53kGRVo2MU3oZF"
+    },
+    {
+      "sha": "74e047d9743a9e6f10d378dfc65cf2f1ded5869f",
+      "date": "2026-11-10T11:30:03Z",
+      "message": "research(ml-strategy-tournament-v1): harness, NAV engine, synthetic tests; pre-outcome revision R1 (bottom bucket never eligible)\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01UtFTvfck53kGRVo2MU3oZF"
+    },
+    {
+      "sha": "c96507528a46d2ac8ecd22004e23a57becd563c9",
+      "date": "2026-11-10T11:42:47Z",
+      "message": "research(ml-strategy-tournament-v1): pre-outcome revision R2 (reconciled 069500.KS benchmark), analysis stage\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01UtFTvfck53kGRVo2MU3oZF"
+    },
+    {
+      "sha": "b5ca5877ae9c8e1684e11b1d107cf9e2025aeced",
+      "date": "2026-11-10T11:53:42Z",
+      "message": "research(ml-strategy-tournament-v1): vectorised per-date Spearman, xgboost ordinal qid\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01UtFTvfck53kGRVo2MU3oZF"
+    },
+    {
+      "sha": "8cebf8a56e00944bfb28494bfa6d177eab24b213",
+      "date": "2026-11-10T12:16:42Z",
+      "message": "research(ml-strategy-tournament-v1): fix suspended-name leverage in NAV engine; forced top-5 sensitivity view (post-outcome addition A1)\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01UtFTvfck53kGRVo2MU3oZF"
+    },
+    {
+      "sha": "d2ff70adabd308223d73b3489f810f16d9eaa587",
+      "date": "2026-11-10T12:28:01Z",
+      "message": "research(ml-strategy-tournament-v1): independent share-unit NAV recomputation and report renderer\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01UtFTvfck53kGRVo2MU3oZF"
+    },
+    {
+      "sha": "17404f86535f0b8a8992da451dc7667f00539dd6",
+      "date": "2026-11-10T13:42:47Z",
+      "message": "research(ml-strategy-tournament-v1): H126/H252 tournament results, winner anatomy, overfit diagnostics, data audit, independent NAV, Korean report\n\n148 strategies (141 ML + 7 rules), 1,692 H126 + 504 H252 walk-forward fits on the PIT Top120.\nTop CAGR is RULE_INDUSTRY_MOMENTUM (23.27% vs 17.97% ETF); best ML is XGB_CI_RANK_h1 (forced top-5,\n19.36%). 0/141 ML configs beat the ETF under the frozen gated rule. Exploratory, outcome-exposed;\nno production, sealed spec, lock or signal-history change.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01UtFTvfck53kGRVo2MU3oZF"
+    }
+  ],
+  "testRun": {
+    "id": 42827121240,
+    "status": "in_progress",
+    "conclusion": null,
+    "head": "17404f86535f0b8a8992da451dc7667f00539dd6"
+  }
+}

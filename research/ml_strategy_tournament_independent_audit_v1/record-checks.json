@@ -1,0 +1,150 @@
+{
+ "predictionRows": 16800,
+ "duplicatePredictionKeys": 0,
+ "uniqueRebalanceSignalDates": 140,
+ "submittedFittedFoldsH126": 1692,
+ "recordedMaturityViolationsH126": [],
+ "h252FoldRecords": "NOT_SAVED",
+ "weightSumMinMax": [
+  0.9999979999999999,
+  1.000002
+ ],
+ "weightSumViolations": [],
+ "negativeWeights": [],
+ "allPathsRebalanceRange": [
+  140,
+  140
+ ],
+ "forced": {
+  "top10Union": [
+   "ENET_CIM_REG_e2",
+   "ENET_C_REG_e2",
+   "LGBM_CIM_RANK_h1",
+   "LGBM_CIM_RANK_h2",
+   "LGBM_CI_CLF_h4",
+   "LGBM_CI_REG_h5",
+   "RIDGE_CIM_RANK_a2",
+   "RIDGE_CI_RANK_a2",
+   "RULE_ETF_ONLY",
+   "RULE_INDUSTRY_MOMENTUM",
+   "RULE_QUALITY",
+   "XGB_CI_RANK_h1"
+  ],
+  "top20HoldJaccard": 0.11949827797192648,
+  "top20PredictionRankCorrRebalanceOnly": 0.3994672482664483,
+  "predictionCorrelationScope": "140 recorded rebalances; quantized percentiles; not all weekly predictions",
+  "nonEtfMlBeatEtf": 1
+ },
+ "gated": {
+  "top10Union": [
+   "ENET_CIM_REG_e2",
+   "LGBM_CIM_RANK_h3",
+   "LGBM_CIM_REG_h6",
+   "RULE_ETF_ONLY",
+   "RULE_INDUSTRY_MOMENTUM",
+   "RULE_QUALITY",
+   "XGB_CIM_RANK_h3",
+   "XGB_CIM_REG_h1",
+   "XGB_CI_RANK_h3",
+   "XGB_C_RANK_h3"
+  ],
+  "top20HoldJaccard": 0.09747531328354694,
+  "top20PredictionRankCorrRebalanceOnly": 0.376866747213522,
+  "predictionCorrelationScope": "140 recorded rebalances; quantized percentiles; not all weekly predictions",
+  "nonEtfMlBeatEtf": 0
+ },
+ "featuresWithFullCoveragePassButNo2015Coverage": {
+  "B01_bookToMarket": {
+   "fullCoverage": 0.637,
+   "2015Coverage": 0.0
+  },
+  "B02_earningsYield": {
+   "fullCoverage": 0.5143,
+   "2015Coverage": 0.0
+  },
+  "B03_ocfYield": {
+   "fullCoverage": 0.5107,
+   "2015Coverage": 0.0
+  },
+  "B04_freeCashFlowYield": {
+   "fullCoverage": 0.4755,
+   "2015Coverage": 0.0
+  },
+  "B05_industryRelativeValue": {
+   "fullCoverage": 0.5334,
+   "2015Coverage": 0.0
+  },
+  "B06_ownHistoryValuation": {
+   "fullCoverage": 0.4238,
+   "2015Coverage": 0.0
+  },
+  "B07_valuationChange126": {
+   "fullCoverage": 0.5756,
+   "2015Coverage": 0.0
+  },
+  "B08_valueBusinessConfirmation": {
+   "fullCoverage": 0.4222,
+   "2015Coverage": 0.0
+  },
+  "C01_returnOnAssets": {
+   "fullCoverage": 0.5155,
+   "2015Coverage": 0.0
+  },
+  "C02_returnOnEquity": {
+   "fullCoverage": 0.485,
+   "2015Coverage": 0.0
+  },
+  "C03_operatingMargin": {
+   "fullCoverage": 0.4137,
+   "2015Coverage": 0.0
+  },
+  "C04_profitMargin": {
+   "fullCoverage": 0.4212,
+   "2015Coverage": 0.0
+  },
+  "C05_ocfToAssets": {
+   "fullCoverage": 0.5121,
+   "2015Coverage": 0.0
+  },
+  "C06_cashConversion": {
+   "fullCoverage": 0.4322,
+   "2015Coverage": 0.0
+  },
+  "C07_negativeAccruals": {
+   "fullCoverage": 0.4992,
+   "2015Coverage": 0.0
+  },
+  "C09_assetGrowth": {
+   "fullCoverage": 0.553,
+   "2015Coverage": 0.0
+  },
+  "C10_liabilityGrowth": {
+   "fullCoverage": 0.5536,
+   "2015Coverage": 0.0
+  },
+  "C11_shareDilution": {
+   "fullCoverage": 0.4352,
+   "2015Coverage": 0.0
+  },
+  "C12_profitabilityPersistence": {
+   "fullCoverage": 0.4154,
+   "2015Coverage": 0.0
+  },
+  "C14_ocfImprovement": {
+   "fullCoverage": 0.4345,
+   "2015Coverage": 0.0
+  },
+  "C15_capexIntensity": {
+   "fullCoverage": 0.4038,
+   "2015Coverage": 0.0
+  },
+  "H11_industryEarningsContext": {
+   "fullCoverage": 0.4461,
+   "2015Coverage": 0.0
+  },
+  "H12_industryValuationContext": {
+   "fullCoverage": 0.5189,
+   "2015Coverage": 0.0
+  }
+ }
+}

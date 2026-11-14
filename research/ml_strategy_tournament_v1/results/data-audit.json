@@ -1,0 +1,167 @@
+{
+ "studyId": "ml-strategy-tournament-v1",
+ "evidenceClass": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+ "items": {
+  "pitUniverse": {
+   "status": "PASS",
+   "rows": 85680,
+   "evidence": "every row's membership snapshot is strictly older than its signal date",
+   "counterexamples": []
+  },
+  "filingVisibility": {
+   "status": "PASS",
+   "filingCellsChecked": 805676,
+   "counterexamples": [],
+   "evidence": "every filing-based cell's visibility date (receipt date + 1) is before its signal date"
+  },
+  "macroReleaseTiming": {
+   "status": "PASS",
+   "evidence": "the only macro input is the BOK base rate, applied from its announcement date (test_bok_rate_is_the_latest_announced_rate); no revised macro panel is used. Coverage limit: no vintage-safe Korean macro series exists in the repository."
+  },
+  "duplicateKeys": {
+   "status": "PASS",
+   "duplicates": 0
+  },
+  "labelMaturityAndPurge": {
+   "status": "PASS",
+   "foldsChecked": 1692,
+   "counterexamples": [],
+   "evidence": "each fold's latest training-label exit session precedes its first test signal date; every exit is 126 KR sessions after the session following the signal"
+  },
+  "leakCanaryPermutedTrainingLabels": {
+   "status": "PASS",
+   "config": "XGB_CI_RANK_h1",
+   "years": [
+    2019,
+    2021,
+    2023
+   ],
+   "draws": 10,
+   "oosIcRealLabels": {
+    "2019": 0.11065321291775285,
+    "2021": 0.02379011161924067,
+    "2023": 0.16781816015453133
+   },
+   "oosIcPermutedLabelsByYear": {
+    "2019": [
+     0.006008202029138184,
+     0.04303909448697734,
+     0.017229851287770017,
+     -0.10343359686758388,
+     0.07453357187862805,
+     -0.06530781943742685,
+     0.024755781114142394,
+     0.10609756425670674,
+     0.04667737941907736,
+     -0.0689886376014259
+    ],
+    "2021": [
+     0.023144098678589242,
+     0.02666498348993204,
+     -0.005393799064648017,
+     0.1128182016253611,
+     -0.09928988968075295,
+     0.1218426646683392,
+     -0.07949163469663964,
+     -0.04585200804555057,
+     -0.13700196843723791,
+     -0.04971399296300831
+    ],
+    "2023": [
+     0.0672373788454727,
+     -0.038781970332372136,
+     0.0199697401165975,
+     -0.13356265526612637,
+     0.18142119860538475,
+     -0.09145072251888037,
+     0.0051672371751959306,
+     -0.1721272070548404,
+     -0.07007060680810223,
+     -0.06098627640841933
+    ]
+   },
+   "permutedMean": -0.011494861250190077,
+   "permutedSe": 0.015526818918432737,
+   "permutedSdAcrossDraws": 0.08504388967923576,
+   "realMeanIc": 0.10075382823050827,
+   "permutationPValueRealVsNoiseModels": 0.09090909090909091,
+   "firstRunNote": "a first single-draw version of this check read FAIL (permuted ICs 0.006 / -0.120 / -0.200 in 2019/2021/2023); one draw of a noise-trained model is a random factor tilt and cannot separate leakage from factor variance, so the check was rerun with 10 draws per year",
+   "evidence": "PASS means noise-trained models average ~0 OOS IC: the features do not carry the label. The p-value compares the real model's mean IC with the distribution of noise-trained models' mean IC."
+  },
+  "normalisationAndImputation": {
+   "status": "PASS",
+   "evidence": "company/industry features are within-date percentile ranks (same-date only); linear market z-scores and tree market medians are fitted on the training fold only (tournament._linear_matrix / _tree_matrix); no feature selection step exists - feature sets are fixed in config.json"
+  },
+  "dividendsSplitsCorporateActions": {
+   "status": "INCONCLUSIVE",
+   "evidence": "stock returns are replay-v16 total-return closes: split-continuous, Yahoo distributions forward-accumulated. Continuing-name dividend completeness is corroborated on 25 names only (99.1% of DART dividend-years matched, v2.31); the 22 terminated names carry no distributions at all. The ETF uses the independently reconciled series. Codex's DPS correction (#328, 241560) concerns the shareholder-event input, not this price panel.",
+   "replayVsReconciledEtfAnnual": {
+    "2013": [
+     NaN,
+     NaN
+    ],
+    "2014": [
+     -0.0547,
+     -0.0658
+    ],
+    "2015": [
+     0.014,
+     -0.0012
+    ],
+    "2016": [
+     0.1276,
+     0.1019
+    ],
+    "2017": [
+     0.3031,
+     0.271
+    ],
+    "2018": [
+     -0.1537,
+     -0.1732
+    ],
+    "2019": [
+     0.1731,
+     0.144
+    ],
+    "2020": [
+     0.3896,
+     0.3553
+    ],
+    "2021": [
+     0.0534,
+     0.03
+    ],
+    "2022": [
+     -0.2227,
+     -0.2415
+    ],
+    "2023": [
+     0.2773,
+     0.2484
+    ],
+    "2024": [
+     -0.0722,
+     -0.0937
+    ],
+    "2025": [
+     0.9872,
+     0.9421
+    ],
+    "2026": [
+     0.7573,
+     0.7441
+    ]
+   }
+  },
+  "terminalConsiderationAndSuspension": {
+   "status": "INCONCLUSIVE",
+   "terminatedNamesInPanel": 22,
+   "evidence": "no terminal consideration is sealed; a held terminating name is written off (primary, lower bound) or converted at its last close (sensitivity, upper bound); a suspended name cannot be traded (tested). The gap between the two bounds is published per strategy as cagrUpperBoundTerminalAtLastClose."
+  },
+  "selectionVersusEvaluation": {
+   "status": "INCONCLUSIVE",
+   "evidence": "each model's hyperparameters are fixed by config, so there is no inner tuning; but the tournament ranking itself is computed on the same 2016-2026 window it reports. That selection bias is measured, not removed: nested past-only selection, deflated Sharpe, CSCV PBO (overfit-diagnostics-*.json)."
+  }
+ }
+}

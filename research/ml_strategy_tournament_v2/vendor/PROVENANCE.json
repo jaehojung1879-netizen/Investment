@@ -1,0 +1,18 @@
+{
+ "repository": "jaehojung1879-netizen/Investment",
+ "pr": 328,
+ "commit": "3b3edb13164ad38f8393c87432bb166f75068291",
+ "path": "research/corporate_event_outcome_v1/shareholder_inputs_v2.py",
+ "sha256": "fda29d40ad3f1e540eb87a9c2ecb5d4d99ea6ecf7579c4e992c8704781b7f0f7",
+ "adaptation": "Only pure is_subsidiary_report helper inlined from the same PR. Cash/action/economic functions unchanged.",
+ "additionalExactFiles": {
+  "vendor/069500-official-distributions-328.json": {
+   "upstream": "research/corporate_event_outcome_v1/economic-readiness-v2/benchmark/069500-official-distributions.json",
+   "sha256": "5b39892e69c7ff50b63945793d5b72debd829ea417dbea7f01e8f3c31188e65f"
+  },
+  "vendor/input_pins_328.py": {
+   "upstream": "research/corporate_event_outcome_v1/input_pins_v2.py",
+   "sha256": "012905cdaacf57c5274d07e5aeb612f480c1aaf2b93886c57984009c05b696ae"
+  }
+ }
+}

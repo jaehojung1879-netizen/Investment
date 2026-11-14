@@ -1,0 +1,166 @@
+[
+ {
+  "number": 329,
+  "head": "17404f86535f0b8a8992da451dc7667f00539dd6",
+  "headRef": "claude/ml-tournament-audit-vddc20",
+  "base": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+  "baseRef": "main",
+  "state": "open",
+  "merged": false,
+  "body": "## 요약\n\n한국 PIT Top120을 대상으로 ML 141개 구성과 규칙 기준선 7개를 같은 0–5종목 + 069500.KS 규칙으로 경쟁시켰습니다.\n\n- 평가 기간: 2016-01-11 ~ 2026-09-14, 2,619 거래일, 리밸런스 140회.\n- 실제 적합: H126 1,692회, H252 504회, 진단 재적합 약 230회.\n- 증거 등급: `EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY`. 확증이나 승격 근거가 아닙니다.\n\n| | CAGR | ETF 대비 | Sharpe | MDD |\n|---|---|---|---|---|\n| 069500.KS (재구성 총수익) | 17.97% | – | 0.71 | −40.8% |\n| **1위 RULE_INDUSTRY_MOMENTUM** (gated) | 23.27% | +5.30%p | 0.69 | −58.3% |\n| 최우수 ML XGB_CI_RANK_h1 (forced top-5 민감도) | 19.36% | +1.39%p | 0.76 | −37.0% |\n| 최우수 ML LGBM_CIM_RANK_h3 (gated) | 15.98% | −1.99%p | 0.63 | −40.8% |\n\n**ML 결과**\n\n- gated(주 규칙): 141개 중 **0개**가 ETF를 이겼습니다.\n- forced top-5: **1개**가 이겼습니다.\n- H252: 42개 중 **0개**가 이겼습니다.\n\n**1위(산업모멘텀)**\n\n- 2025년 한 해의 +111%p에 의존합니다.\n- 상위 5개 종목을 빼면 ETF 대비 −3.68%p입니다.\n- 블록 부트스트랩 95% 구간 [−7.4%, +24.7%]로 통계적으로 분리되지 않습니다.\n\n**최우수 ML(XGB)**\n\n- 비용 2배에서 −1.11%p입니다.\n- SK스퀘어 한 종목만 빼도 −2.23%p입니다.\n- 특성군 하나만 제거해도 CAGR 5–14%로 떨어집니다.\n- DSR 0.04, PBO 0.31.\n- 과거 정보만으로 매년 1위를 골랐다면 CAGR 1.45%(ETF 대비 −16.8%p)였습니다.\n\n전체 보고서: `research/ml_strategy_tournament_v1/REPORT-ko.md`\n\n## 검증\n\n- PIT 행렬: Phase B 등록 digest `32e49b57…`를 정확히 재현했습니다. input identity `3e4d7aa3…`.\n- 독립 NAV 재계산: TOP-10(절대·위험·안정) 합집합 34개 경로 전부 재현했습니다. 일별 최대 상대오차 4.1e-6. 엔진을 호출하지 않는 주식 수 단위 회계입니다.\n- 데이터 감사:\n  - PASS 7개: PIT 유니버스, 공시 공개일, 거시 발표 시점, 라벨 성숙·purge, 누출 카나리아(10회 순열), 정규화, 중복.\n  - INCONCLUSIVE 3개: 배당·기업행동, 종결대가, 같은 구간에서의 토너먼트 선택. 이 선택 편향은 측정했고 제거하지는 않았습니다.\n- 개발 중 엔진 결함 1건을 발견해 수정했습니다. 거래정지 종목을 유지한 채 신규 매수하면 ETF 비중이 음수(숨은 레버리지)가 됐습니다. 회귀 테스트를 추가했습니다.\n- 사전 고정과 변경 이력:\n  - 첫 적합 전에 `config.json`을 커밋했습니다(`63948c0`).\n  - 결과 전 정정 2건: R1 하위 버킷 진입 불가, R2 독립 대조를 통과한 069500 시계열 사용.\n  - 결과 후 추가 1건: A1 forced top-5 리더보드. 주 규칙은 바꾸지 않았습니다.\n- 로컬 검사: `ruff check .` PASS, `python -m compileall pipeline` PASS, 신규 테스트 12개 PASS, `scripts/make_seed.py` + `pipeline.validate --allow-seed` PASS.\n\n**CI (Tests, 실행 42827121240): 6,435 passed, 1 failed.**\n\n- 실패한 테스트는 `test_kr_alpha_atlas_reproducibility::test_runtime_restriction_and_cli_bootstrap_order`입니다(`PINNED_DEPENDENCY_VERSION_REQUIRED`).\n- 이 PR이 원인이 아닙니다. #328 CI에서도 같은 방식으로 실패합니다.\n- 원인은 일반 설치에서 threadpoolctl 3.8.0이 선택되어 봉인 환경의 버전 검사를 막는 것입니다. 수정은 #321에 있습니다.\n- #321이 병합된 뒤 main을 이 브랜치에 병합하면 해소될 것으로 예상합니다.\n\n## 변경 범위\n\n- `research/ml_strategy_tournament_v1/`와 `tests/test_ml_strategy_tournament_v1.py`만 추가했습니다.\n- `pipeline/`, production, 봉인 사양·결과·잠금, signal-history, AGENTS.md, 워크플로는 변경하지 않았습니다.\n- 연구 전용 추가 의존성: `xgboost==3.4.1`.\n\n## 정책 메모\n\nAGENTS v2.55는 Phase C를 KR 역사 연구의 마지막 등록 연구로 규정합니다. 이 토너먼트는 소유자가 요청한 별도 탐색 축이며, 그 결론을 바꾸거나 승격하지 않습니다.\n\n## 다음 결정 (소유자)\n\nRULE_INDUSTRY_MOMENTUM과 XGB_CI_RANK_h1을 **돈 없이 전향 기록**할지 결정해야 합니다. 별도 사양과 승인이 필요하며, 이 PR은 그것을 만들지 않습니다.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nhttps://claude.ai/code/session_01UtFTvfck53kGRVo2MU3oZF",
+  "ci": {
+   "status": "fulfilled",
+   "value": {
+    "content": [
+     {
+      "type": "text",
+      "text": "Action completed."
+     }
+    ],
+    "structuredContent": {
+     "workflow_runs": [
+      {
+       "id": 42827120949,
+       "name": "KR industry membership source acquisition v1",
+       "status": "completed",
+       "conclusion": "skipped",
+       "run_number": 117,
+       "jobs_url": "https://api.github.com/repos/jaehojung1879-netizen/Investment/actions/runs/42827120949/jobs",
+       "logs_url": "https://api.github.com/repos/jaehojung1879-netizen/Investment/actions/runs/42827120949/logs",
+       "workflow_id": 373681103
+      },
+      {
+       "id": 42827121240,
+       "name": "Tests",
+       "status": "completed",
+       "conclusion": "failure",
+       "run_number": 929,
+       "jobs_url": "https://api.github.com/repos/jaehojung1879-netizen/Investment/actions/runs/42827121240/jobs",
+       "logs_url": "https://api.github.com/repos/jaehojung1879-netizen/Investment/actions/runs/42827121240/logs",
+       "workflow_id": 344619441
+      }
+     ]
+    },
+    "isError": false
+   }
+  }
+ },
+ {
+  "number": 330,
+  "head": "8657acd5dd840617fc25a6a0cce467294edf72bf",
+  "headRef": "codex/ml-tournament-independent-audit-20261110",
+  "base": "17404f86535f0b8a8992da451dc7667f00539dd6",
+  "baseRef": "claude/ml-tournament-audit-vddc20",
+  "state": "open",
+  "merged": false,
+  "body": "보고된 산업모멘텀 CAGR 23.27%와 XGB forced CAGR 19.36%는 원천 총수익 지수와 저장 비중으로 독립 재계산해 재현됩니다. 다만 006800.KS의 중복 배당 조정, 주식 최종일 가격 불일치, 전체기간 결측률에 따른 특성 선택, 거래정지 수량 회계 반례가 있어 완전한 실행 회계나 투자 적격성의 PASS는 줄 수 없습니다.\n\n감사 대상: #329 / `17404f86535f0b8a8992da451dc7667f00539dd6`\n감사 커밋: `8657acd5dd840617fc25a6a0cce467294edf72bf`\n\n- H126 gated/forced 296개 경로, 절대·위험 TOP 10 합집합 22개 대조. TOP 10 최대 CAGR 차이 0.0000445%p.\n- 독립 NAV 코드는 제출 엔진을 호출하지 않음. 실제 주식·현금·배당 원장이 없어 완전 재현은 `NOT_INDEPENDENTLY_REPRODUCED`.\n- 원시 KRX 235종목 대조 중 217종목 최종 배율 차이 >0.1%. 최종 가격만 정정한 고정 경로는 산업 23.4295%, XGB 19.4044%로 오히려 소폭 상승. 원래 결과는 보존.\n- 2025 제거 시 산업 11.8672% vs ETF 11.8199%. XGB에서 SK스퀘어 비중을 ETF로 대체하면 17.4347% vs ETF 17.9727%.\n- DSR/PBO는 설명적 재계산과 정식 검정 적격성을 구분. XGB−Ridge CAGR +4.8652%p, 산술 연환산 차이 +4.6863%p, 블록 구간은 0 포함.\n- 판정: 산업모멘텀 수정 후 재검증, XGB 현재 투자 후보 기각. 개발 성과 기록은 삭제하지 않음.\n\n한국어 전체 보고서: [REPORT-ko.md](https://github.com/jaehojung1879-netizen/Investment/blob/8657acd5dd840617fc25a6a0cce467294edf72bf/research/ml_strategy_tournament_independent_audit_v1/REPORT-ko.md)\nTOP 10 표, 독립 NAV/파생 TR 단위 원장, source/config/result 해시와 실행 기록을 같은 디렉터리에 포함했습니다.\n\n검증: 관련 테스트 19 PASS, ruff/compileall/seed/seed validation PASS. 전체 pytest는 444.96초 후 중단되어 2178 pass / 35 fail / 44 error이며 완주 PASS가 아닙니다. shallow 역사 객체, requests 누락, sandbox 권한 오류 등 관측 원인과 전체 로그를 보존했습니다.\n\n감사만 추가하는 stacked PR이므로 base는 원 제출 브랜치입니다. Fable 브랜치, main, 봉인 사양·결과·잠금·production은 수정하지 않았습니다. 원래 고정 파일 47개 해시 불변 확인. 새로운 모델 적합·역사 최적화·formal workflow 실행은 없습니다. 이 PR은 병합하거나 원 연구의 승격을 승인하지 않습니다.",
+  "ci": {
+   "status": "fulfilled",
+   "value": {
+    "content": [
+     {
+      "type": "text",
+      "text": "Action completed."
+     }
+    ],
+    "structuredContent": {
+     "workflow_runs": [
+      {
+       "id": 42833560860,
+       "name": "Tests",
+       "status": "completed",
+       "conclusion": "failure",
+       "run_number": 930,
+       "jobs_url": "https://api.github.com/repos/jaehojung1879-netizen/Investment/actions/runs/42833560860/jobs",
+       "logs_url": "https://api.github.com/repos/jaehojung1879-netizen/Investment/actions/runs/42833560860/logs",
+       "workflow_id": 344619441
+      }
+     ]
+    },
+    "isError": false
+   }
+  }
+ },
+ {
+  "number": 328,
+  "head": "3b3edb13164ad38f8393c87432bb166f75068291",
+  "headRef": "codex/investment-integration-20261110",
+  "base": "1e0289d09ba30bf2e26ec9cfb7e118f33a6a8a87",
+  "baseRef": "claude/trusting-tesla-ob0jym",
+  "state": "open",
+  "merged": false,
+  "body": "자회사 배당의 모회사 DPS 귀속과 미래 정보 참조를 차단하는 공통 입력 v2를 추가하고 #327 최신 전향 기록기의 승인·게시 경계를 보완합니다. 실제 공시에서 잘못된 DPS 40,820,465/43,090,909/238,640원이 모회사 보통주 600/600/750원으로 분리됨을 확인했습니다. 원래 결과·등록·잠금·워크플로는 보존하며 역사 수익률은 재계산하지 않았습니다.\n\n- 주체·주식 종류/중복·정정/PIT/회계연도 구분, 인용된 분할·주식배당·종결대가 처리, 불확실한 기업행동 차단. 거래재개 청산 루프만 버전 분리하고 기존 beta·비중·비용 함수 재사용.\n- 기존 P2/K7 네 셀의 정확 코드·closure·원천 해시 패킷과 기존/차순위/ETF 세 경로 비교 코드. 자료 부족은 SOURCE_BLOCKED이며 C2를 재생성하지 않습니다.\n- recorder의 기존 DRY_RUN·PIT·재시도 구현을 재사용. 신규 spec-v2/승인, 공개 Owner 댓글·시각·커밋 확인, 실제 push helper 승인 우회 차단, 정확 한 행 append/원격 해시/기한 검증.\n- #323 문서2파일을 정확 바이트로 흡수. #315는 #321에 완전 포함됨을 확인했습니다. #321 base를 main으로 전환했고 #315/#323은 대체 댓글 후 실제 종료했습니다. 댓글: https://github.com/jaehojung1879-netizen/Investment/pull/315#issuecomment-6762744948 및 https://github.com/jaehojung1879-netizen/Investment/pull/323#issuecomment-6762738233 . 다른 고유·보호 PR과 브랜치는 보존합니다.\n- Codex B 12전략 원본3파일은 현재 환경에 없어 재현 성공으로 표시하지 않습니다. 별도로 실제 남은 이전 Codex A 자체 코드·집계22파일만 정확 바이트 보존했습니다. 공급자 원본·가격·일별 NAV는 업로드하지 않았습니다.\n\n검증: 집중44 passed, 기존 런타임/가짜 FRED40 passed, ruff·compileall·격리 synthetic seed PASS. 원래 A1/B1 전향 고정23개와 broad-alpha 보호 해시 일치. 전체 로컬 검사 6,722 passed/3 failed/3 skipped/4 xfailed. 실패3건은 원래 Git blob 누락이었으며 원본 캐시 후 해당3건 재검사 모두 통과했습니다. 이를 단일 전체 실행 green으로 표시하지 않습니다. 최종 HEAD [Tests run 42786379740](https://github.com/jaehojung1879-netizen/Investment/actions/runs/42786379740)은 최종 확인 시 in_progress입니다. 정확 최종 커밋에서 집중44개를 다시 실행해 모두 통과했습니다. 전체 GitHub CI 완료 전까지 draft를 유지합니다. CI 성공을 미리 주장하지 않으며 기존 수치 의존성 드리프트는 #321 경로로 유지합니다. 신규 v2 코드는 작성자 합성 검증이며 독립 운용 승인이 아닙니다.\n\n역사 실행0/LIVE0/실제 매매0. 공식 fiscal/action/terminal 및 전체 C2 원장은 미완비. DART 자격증명 부재, 외부 예약 설치·가동 미확인. 과거 승인 문구를 재사용하지 않습니다.\n\n커밋: 3b3edb13164ad38f8393c87432bb166f75068291\n의존: #320 → #322 → #327 → 이 PR. #321과 #325/#326은 별도 보호 경계로 유지합니다.\n\n[한국어 전체 보고서](https://github.com/jaehojung1879-netizen/Investment/blob/3b3edb13164ad38f8393c87432bb166f75068291/docs/integration-20261110/REPORT-ko.md) · [PR 등록부](https://github.com/jaehojung1879-netizen/Investment/blob/3b3edb13164ad38f8393c87432bb166f75068291/docs/integration-20261110/PR-REGISTER.md) · [실행 준비 상태](https://github.com/jaehojung1879-netizen/Investment/blob/3b3edb13164ad38f8393c87432bb166f75068291/research/kr_event_correction_v2/readiness-v2.json) · [승인 패킷](https://github.com/jaehojung1879-netizen/Investment/blob/3b3edb13164ad38f8393c87432bb166f75068291/docs/integration-20261110/APPROVAL-PACKET.md)",
+  "ci": {
+   "status": "fulfilled",
+   "value": {
+    "content": [
+     {
+      "type": "text",
+      "text": "Action completed."
+     }
+    ],
+    "structuredContent": {
+     "workflow_runs": [
+      {
+       "id": 42786379740,
+       "name": "Tests",
+       "status": "completed",
+       "conclusion": "failure",
+       "run_number": 928,
+       "jobs_url": "https://api.github.com/repos/jaehojung1879-netizen/Investment/actions/runs/42786379740/jobs",
+       "logs_url": "https://api.github.com/repos/jaehojung1879-netizen/Investment/actions/runs/42786379740/logs",
+       "workflow_id": 344619441
+      }
+     ]
+    },
+    "isError": false
+   }
+  }
+ },
+ {
+  "number": 321,
+  "head": "cd2892eb6d6623c2527eeda690959d18839acc4d",
+  "headRef": "fix/ci-pages-maintenance-v2",
+  "base": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+  "baseRef": "main",
+  "state": "open",
+  "merged": false,
+  "body": "통합 정비 상태 (2026-11-10): #315의 모든 변경이 이 HEAD cd2892eb에 포함됨을 확인하여 base를 main으로 전환했고 #315는 대체 댓글 후 종료했습니다. 원격 브랜치·Git 조상 관계는 보존합니다. #328에 통합 등록부가 있습니다. 아래의 'base=fix/pages-state-api' 설명은 이전 작성 시점 기록입니다. 코드·워크플로·승인·잠금·main은 이번 정리에서 변경하지 않았으며 후속 병합은 ancestry를 보존하는 plain merge로 검토해야 합니다.\n\nTests와 Pages의 일반 설치에서 threadpoolctl 3.8.0이 선택되어, 봉인 환경의 `PINNED_DEPENDENCY_VERSION_REQUIRED`가 기존 단일 스레드 검사를 가로막았습니다. 두 설치에 원 등록의 threadpoolctl 3.7.0 / joblib 1.6.0 제약만 공통 적용합니다. 종료된 Atlas 연구의 PR 진단은 실행 전 감사 대신 별도 읽기 전용 provenance 검사로 연결합니다.\n\n이 PR은 **#315 `23522002dcd2d9e0e16dfb9d325a235aef664f0c` 위에 쌓인 Draft**이며 대상은 `fix/pages-state-api`입니다. 기존 #315 브랜치, #314 및 연구 PR은 수정하지 않았습니다. main에 직접 적용할 수 있는 독립 패치가 아니며 #315의 Git Data API publisher를 그대로 재사용합니다.\n\n- Owner가 채팅에서 A/B 구현·검증을 명시 승인했습니다. [Issue #292 범위](https://github.com/jaehojung1879-netizen/Investment/issues/292#issuecomment-6699773509). 병합·배포·전향 writer 활성화 승인은 포함하지 않습니다.\n- 원 `requirements*`, 등록 spec/sidecar, 결과·원천·보호 해시, v1 유지보수 기록, 소비된 잠금, formal authorization 및 수치 준비/감사/실행 함수는 보존합니다.\n- 새 v2는 원 Pages/Tests/verifier 바이트를 Git에서 검증하고 승인된 진단 블록·설치 행만 별도로 허용합니다. Tests에서 수치 테스트/기대 오류를 바꾸지 않고 workflow assertion만 갱신했습니다. 범위 확대·pytest 생략·CPU/버전/권한 변경은 부정 테스트로 거절합니다.\n- 읽기 전용 진단은 등록 의존성 158개·보호 파일 235개와 실제 main/잠금 refs를 확인합니다. 수치 라이브러리·가격/라벨/모델은 호출하지 않습니다. 외부 outcome 아카이브를 읽지 않으며 원 결과 경로 부재를 성공한 연구로 해석하지 않습니다. `newExecutionPreflight=NOT_RUN`, `formalExecutionAuthorized=false`를 명시합니다. 원 `AUDIT_REQUIRES_UNAUTHORIZED_UNCONSUMED_STUDY` 가드는 유지됩니다.\n- 기존 publisher의 동시 ledger append/중복/충돌/ENOSPC 회귀를 유지합니다. 정기 ledger/replay 전체 checkout의 디스크 부담은 해결하지 않습니다.\n\n검증 대상 HEAD: `cd2892eb6d6623c2527eeda690959d18839acc4d`\n\n| 검증 | 현재 결과 |\n|---|---|\n| 초기5a7169f6 보호 계약/소비 가드/publisher/A/B 회귀 | 221 passed, 1 existing skipped; 최종 전체 결과와 구분 |\n| 최종 cd2892eb 두 실제 실패/Finnhub 보호 포함 회귀 | 192 passed |\n| 초기5a7169f6 provenance/CLI 회귀 | 51 passed; 최종192/전체6521에 포함 |\n| Ruff / compileall / 295개 pipeline 모듈·패키지 import | PASS |\n| 격리 합성 seed validation / production 거절 | PASS / 거절 확인 |\n| Tests·Pages fresh pip dry-run | 원 등록 주요 직접·간접 13개 버전 일치; 실제 설치 결과로 과장하지 않음 |\n| 실제 GitHub 읽기 전용 provenance | PASS: 158/235, main37f8cbf6, 잠금09ba076f; outcome·ref write 모두 0 |\n| 정확 HEAD 전체 로컬 pytest | **6521 passed, 3 existing skipped, 4 existing xfailed**, Python3.11.17 |\n| 정확 HEAD 자동 Actions Tests | **SUCCESS, 6521 passed**, Python3.11.18 — [42369756685](https://github.com/jaehojung1879-netizen/Investment/actions/runs/42369756685) |\n| 정확 HEAD Pages matrix-diagnostic | **SUCCESS**, Python3.11.16 — [42369756681](https://github.com/jaehojung1879-netizen/Investment/actions/runs/42369756681) |\n| 실제 production 배포·상태 쓰기 | NOT_RUN |\n\n첫 후보5a7169f6의 Pages 진단42354950304는 SUCCESS, Tests42354950322는 **6513 passed / 2 failed**였습니다. 두 실패는 Finnhub 브랜치 범위 검사에서 승인된 Tests 설치 행도 금지하던 문제였습니다. 동일 v2 exact-hash 검증을 통과한 Tests만 허용하고, 원 모든 이웃 보호 경로와 미승인 workflow 변형은 계속 거절하는 회귀를 추가했습니다. 원 source/feature/probe hash 검사는 그대로입니다. v2 record/workflow/운영 코드 hash는 이 테스트 연결 수정으로 바뀌지 않았습니다. 초기 로컬 전체 실행은69%에서 최종 결과 없이 중단됐으며 성공으로 취급하지 않습니다. 새 정확 HEAD 전체 로컬/자동 Tests는 각각6521 passed로 완료됐습니다.\n\nv2 record SHA256 `e849e42235e6e38cf2dd141504daecc4e118392af0bccc855e56f1a304d7a082`.\nPages SHA256 `112196a5a53123eae00d8f3ba5d6c15cd109263cbd43ecd1c26869c19bfd0371`.\nTests SHA256 `91e4f2dd587f6cc1a7a1cd0c41f04dcd03c97a4b2af0b6f904fdb1ad2b947124`.\n원 봉인 prefix 5,992 bytes / `048356c7b43e499b32660ce40c0b1dde9db7e43b33a58fd36df8a4ea51e17b30`와 승인된 현행 prefix 5,970 bytes / `06ef04856344a6d076f1012f7bea697cff21e8da3705471b64d24b8802a88cb6`를 각각 검증합니다.\n\n재현: `pip install -c constraints/ci-registered-numerics-v1.txt -r requirements.txt -r requirements-dev.txt`; `OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 python -m pytest -q`; `python scripts/audit_closed_atlas_provenance.py --expected-main \"$(git rev-parse origin/main)\" --work /tmp/closed-atlas-review-unique`.\n\n독립 비저자 검토와 Owner의 최종 병합/배포 판단이 남습니다. 이 계보의 historical Git 검증에는 원 main37f8cbf6와 #315 부모23522002 객체가 필요합니다. 후속 병합은 23522002의 ancestry를 보존하는 plain merge를 사용해야 하며, squash/브랜치 삭제 후 필요한 객체가 checkout에서 사라지는 방식은 승인 범위가 아닙니다. 실제 Pages 배포 이후 상태 게시 성공은 정상 병합·배포 후 별도로 확인해야 합니다. 현재 원장/운영 writer는 활성화하지 않았습니다.\n\n\n로컬 운영 통합 확인: 기존 #306→#314→#299→#307 후보5fd9c281에 이 #315+#321 계보를 plain merge한 detached2554fea472c25f41029dad132715d51ffaffa3d2/tree2ab2630c5aaadb2bfbae1945fe9d1b496cd4abf0는 충돌 없이 **6669 passed**, 기존3 skipped/4 xfailed입니다. 이 PR에 Portfolio D 코드를 추가하거나 기존 브랜치를 수정한 것은 아니며, 로컬 결과를 통합 원격 CI로 부르지 않습니다.\n\n기존 일일 브리프 CLI를 실제 source73b3907a663ebe300a435d0d57db4b2eee9e5ea4/보고시각2026-11-07T11:56:38.246236+00:00에서 두 번 실행해 바이트 동일성을 확인했습니다. 읽은24개 blob/574953 bytes의 Git SHA1·SHA256도 일치합니다. KR0/069500.KS100%, US0/SPY100%, Portfolio D shadow NOT_STARTED/성과UNKNOWN이며 실제 계좌·기존 별도 paper 연구와 구분됩니다. 일일 브리프는 현재 수동 읽기 전용 CLI이며 Pages 자동 전달은 연결하지 않았습니다. 실제 ETF 시세UNKNOWN·실제 첫 shadow 기록 미관측·운영 활성화 미승인 상태를 숨기지 않습니다.\n\n최종 상태: **A/B READY_FOR_INDEPENDENT_REVIEW**, Draft 유지. 전체 운영 출시는 독립 감사, #314 CANCELLED/통합 원격 CI 확인, Owner의 병합·배포·flagless writer 활성화 결정 및 실제 정상 배포/상태 게시 관측이 남습니다. 원 main과 기존10개 PR HEAD는 그대로이며 수동 dispatch/rerun, main merge, production 쓰기, 역사 outcome 실행0입니다.\n",
+  "ci": {
+   "status": "fulfilled",
+   "value": {
+    "content": [
+     {
+      "type": "text",
+      "text": "Action completed."
+     }
+    ],
+    "structuredContent": {
+     "workflow_runs": [
+      {
+       "id": 42369756685,
+       "name": "Tests",
+       "status": "completed",
+       "conclusion": "success",
+       "run_number": 889,
+       "jobs_url": "https://api.github.com/repos/jaehojung1879-netizen/Investment/actions/runs/42369756685/jobs",
+       "logs_url": "https://api.github.com/repos/jaehojung1879-netizen/Investment/actions/runs/42369756685/logs",
+       "workflow_id": 344619441
+      },
+      {
+       "id": 42369756681,
+       "name": "Build insight data and deploy Pages",
+       "status": "completed",
+       "conclusion": "success",
+       "run_number": 640,
+       "jobs_url": "https://api.github.com/repos/jaehojung1879-netizen/Investment/actions/runs/42369756681/jobs",
+       "logs_url": "https://api.github.com/repos/jaehojung1879-netizen/Investment/actions/runs/42369756681/logs",
+       "workflow_id": 303486290
+      }
+     ]
+    },
+    "isError": false
+   }
+  }
+ }
+]

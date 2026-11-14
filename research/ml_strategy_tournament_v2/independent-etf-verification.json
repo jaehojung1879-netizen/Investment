@@ -1,0 +1,15 @@
+{
+ "status": "PASS",
+ "runId": "f4d38bd9d11a51168d4299013f64b64af6eef8bdf6225f5b8640da567cf7204a",
+ "sessions": 2619,
+ "reference": "Independent raw issuer quote + ex-date entitlement + actual-pay-date cash + fixed ETF rebalance; no v2 engine/helper imported",
+ "maxAbsNavDifferenceKrw": 4.76837158203125e-07,
+ "maxAbsShareQuantityDifference": 3.637978807091713e-12,
+ "maxAbsCashDifferenceKrw": 2.3283064365386963e-09,
+ "maxAbsReceivableDifferenceKrw": 2.3283064365386963e-09,
+ "referenceGrossEntitlementsKrw": 35882575.23844685,
+ "referenceReinvestmentFeesKrw": 8968.401709188052,
+ "actualNotionalFeeDifferenceKrw": 3.6288838600739837e-09,
+ "sourceScope": "Same cited market observations; independent accounting arithmetic, not a second independent market-data vendor",
+ "sourceSha256": "a891c4570b8353296bd08fd65c1c00097103558191a85550b8df8efdebb8989d"
+}

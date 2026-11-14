@@ -1,0 +1,74 @@
+"""Independent single-ETF cash reference; never imports the v2 accounting engine."""
+from pathlib import Path
+import gzip, hashlib, json
+import pandas as pd
+import xlrd
+
+root = Path.cwd()
+v2 = root / 'research/ml_strategy_tournament_v2'
+runid = json.loads((v2 / 'replay-verification.json').read_text())['runId']
+rundir = v2 / 'results' / runid
+account = [json.loads(x) for x in gzip.decompress((rundir / 'RULE_ETF_ONLY-A_VERIFIED_CASH-account.jsonl.gz').read_bytes()).splitlines()]
+assets = [json.loads(x) for x in gzip.decompress((rundir / 'RULE_ETF_ONLY-A_VERIFIED_CASH-assets.jsonl.gz').read_bytes()).splitlines()]
+assert len(account) == len(assets) == 2619
+trades = [json.loads(x) for x in gzip.decompress((rundir / 'RULE_ETF_ONLY-A_VERIFIED_CASH-trades.jsonl.gz').read_bytes()).splitlines()]
+book = xlrd.open_workbook(root / 'docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-standard.xls').sheet_by_index(0)
+assert book.cell_value(3,4) == '거래량'
+volumes = {pd.to_datetime(str(book.cell_value(i,0)),format='%Y%m%d').strftime('%Y-%m-%d'):float(book.cell_value(i,4)) for i in range(4,book.nrows)}
+assert all(volumes[a['date']] > 0 and a['tradable'] for a in assets)
+assert all(volumes[t['date']] > 0 for t in trades)
+prices = {pd.to_datetime(str(book.cell_value(i,0)),format='%Y%m%d').strftime('%Y-%m-%d'):float(book.cell_value(i,1)) for i in range(4,book.nrows)}
+divs = json.loads((v2 / 'vendor/069500-official-distributions-328.json').read_text())
+record_to_ex = {r['recordDate']:r['exDate'] for r in json.loads((root / 'docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json').read_text())['distributions']}
+entitlements = {}
+for r in divs:
+ rec = pd.to_datetime(r['basicD'],format='%Y%m%d').strftime('%Y-%m-%d')
+ if rec in record_to_ex:
+  entitlements[record_to_ex[rec]] = (float(r['dividA']),pd.to_datetime(r['payD'],format='%Y%m%d').strftime('%Y-%m-%d'))
+decisions = set(r['date'] for r in json.loads((rundir / 'decisions.json').read_text())['RULE_ETF_ONLY'])
+capital = 100000000.
+quantity = capital / prices[account[0]['date']]
+cash = 0.
+claims = []
+nav_gap = q_gap = cash_gap = receivable_gap = 0.
+fees = dividends = 0.
+for a, asset in zip(account, assets):
+ day = a['date']
+ assert asset['date']==day and asset['ticker']=='069500.KS'
+ still = []
+ for pay, value in claims:
+  if pay<=day:cash += value
+  else:still.append((pay,value))
+ claims = still
+ if day in entitlements:
+  dps,pay = entitlements[day]
+  value = quantity*dps
+  dividends += value
+  if pay<=day:cash += value
+  else:claims.append((pay,value))
+ if day in decisions and cash>0:
+  # Only buying ETF with settled cash: stock and allocation helpers are absent.
+  bought_notional = cash/1.00025
+  quantity += bought_notional/prices[day]
+  fees += cash-bought_notional
+  cash = 0.
+ receivable = sum(value for pay,value in claims)
+ nav = quantity*prices[day] + cash + receivable
+ nav_gap=max(nav_gap,abs(nav-a['nav']))
+ q_gap=max(q_gap,abs(quantity-asset['quantity']))
+ cash_gap=max(cash_gap,abs(cash-a['cash']))
+ receivable_gap=max(receivable_gap,abs(receivable-a['cashReceivable']))
+trade_fees=sum(abs(r['notional'])*.00025 for r in trades)
+assert nav_gap<1e-5 and cash_gap<1e-6 and receivable_gap<1e-6
+assert abs(fees-trade_fees)<1e-6
+result={'status':'PASS','runId':runid,'sessions':len(account),'reference':'Independent raw issuer quote + ex-date entitlement + actual-pay-date cash + fixed ETF rebalance; no v2 engine/helper imported','maxAbsNavDifferenceKrw':nav_gap,'maxAbsShareQuantityDifference':q_gap,'maxAbsCashDifferenceKrw':cash_gap,'maxAbsReceivableDifferenceKrw':receivable_gap,'referenceGrossEntitlementsKrw':dividends,'referenceReinvestmentFeesKrw':fees,'actualNotionalFeeDifferenceKrw':fees-trade_fees,'sourceScope':'Same cited market observations; independent accounting arithmetic, not a second independent market-data vendor','sourceSha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
+(v2 / 'independent-etf-verification.json').write_text(json.dumps(result,indent=1)+'\n')
+tradability={'status':'PASS','sessions':len(assets),'allDatedTradabilityFlagsMatchOfficialVolume':True,'zeroVolumeSessions':[],'mismatches':[],
+ 'filledReinvestmentTrades':len(trades),'minimumOfficialDailyVolume':min(volumes[a['date']] for a in assets),
+ 'sourcePath':'docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-standard.xls',
+ 'sourceSha256':hashlib.sha256((root/'docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-standard.xls').read_bytes()).hexdigest(),
+ 'engineScope':'ETF fallback value 1 is only a Boolean tradable marker; every flag in this frozen interval is verified against the actual official dated volume. 1 is not observed volume.',
+ 'extensionLimit':'New intervals must revalidate actual dated ETF tradability; price presence alone is insufficient.',
+ 'verificationScriptSha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
+(v2 / 'etf-tradability-verification.json').write_text(json.dumps(tradability,indent=1)+'\n')
+print(json.dumps(result,indent=1))

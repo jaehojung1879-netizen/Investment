@@ -1,0 +1,48 @@
+{
+ "studyId": "ml-strategy-tournament-v2-integrity-repair",
+ "purpose": "REPAIR_FOUR_EXISTING_CANDIDATES_NO_TOURNAMENT_NO_NEW_WINNER",
+ "v1Head": "17404f86535f0b8a8992da451dc7667f00539dd6",
+ "auditHead": "8657acd5dd840617fc25a6a0cce467294edf72bf",
+ "shareholderSourceHead": "3b3edb13164ad38f8393c87432bb166f75068291",
+ "ciDependencyHead": "cd2892eb6d6623c2527eeda690959d18839acc4d",
+ "rawSourceCommit": "4ea107ed0cde289f0a049a65ff13d2441a786710",
+ "v1ConfigSha256": "982e116804a5ce35820201037a44e6fc4684ef9725f356e25fefdf1c84080a65",
+ "candidates": [
+  {
+   "id": "RULE_INDUSTRY_MOMENTUM",
+   "view": "gated"
+  },
+  {
+   "id": "XGB_CI_RANK_h1",
+   "view": "forced"
+  },
+  {
+   "id": "LGBM_CIM_RANK_h3",
+   "view": "gated"
+  },
+  {
+   "id": "RULE_ETF_ONLY",
+   "view": "gated"
+  }
+ ],
+ "start": "2016-01-11",
+ "end": "2026-09-14",
+ "initialCapitalKrw": 100000000.0,
+ "shareUnits": "FRACTIONAL_RESEARCH_ACCOUNT_NOT_EXCHANGE_LOT_EXECUTION",
+ "initialState": "PREOWNED_ETF_AT_FIRST_CLOSE_AS_V1_NO_INITIAL_EXTERNAL_ETF_PURCHASE_FEE",
+ "cashInterest": "ZERO_AS_V1",
+ "taxInvestor": "GROSS_DISTRIBUTIONS_NO_PERSONAL_WITHHOLDING_AS_V1",
+ "rebalance": "V1_RECORDED_POST_TRADE_WEIGHTS_NORMALIZED_ONLY_FOR_1E_MINUS_6_ROUNDING",
+ "receivables": "EX_DATE_ENTITLEMENT_NOT_SPENDABLE_BEFORE_CITED_PAYMENT_DATE",
+ "stockDividends": "ENTITLEMENT_AT_EX_DATE_TRADABLE_SHARES_ONLY_AT_CITED_DELIVERY_DATE",
+ "unknownSources": "SOURCE_BLOCKED_NO_ZERO_NO_LAST_PRICE_TERMINATION_NO_RATIO_GUESSES",
+ "refit": {
+  "horizon": 126,
+  "allowNewCandidates": false,
+  "allowHyperparameterChanges": false,
+  "authorization": null,
+  "featureCoverageThreshold": 0.2,
+  "featureSelection": "MATURED_TRAIN_ROWS_ONLY_PER_FOLD"
+ },
+ "v1PublishedMetadataConfigSha256": "f990880562cd8ffb0c240ea2eb5742a40edb0a13dd27c46877310176fa0306bd"
+}

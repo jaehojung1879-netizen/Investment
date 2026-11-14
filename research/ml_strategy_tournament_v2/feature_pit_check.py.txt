@@ -1,0 +1,37 @@
+"""Synthetic counterexample; column selection only. No estimator is fitted."""
+from pathlib import Path
+import hashlib,json
+import sys
+sys.path.insert(0,str(Path.cwd()))
+import numpy as np
+import pandas as pd
+from research.ml_strategy_tournament_v1 import tournament as V1
+from research.ml_strategy_tournament_v2 import refit as V2
+
+frame=pd.DataFrame({
+ 'date':pd.to_datetime(['2019-01-04','2019-02-01','2019-03-01','2020-01-03','2020-02-07']),
+ 'ticker':['AAA.KS']*5,'y126':[.1]*5,
+ 'exit126':pd.to_datetime(['2019-09-01','2019-10-01','2019-11-01','2020-08-01','2020-09-01']),
+ 'A07_momentum12_1':[.2]*5,'A09_industryRelativeMomentum126':[.1]*5,
+ 'H01_industryRelMom126':[.3]*5,'B01_bookToMarket':[np.nan]*5,
+ 'MKT_trend126':[1.,2.,3.,100.,200.]})
+future=frame.iloc[[4]*20].copy()
+future['date']=pd.bdate_range('2025-01-03',periods=20)
+future['exit126']=pd.Timestamp('2025-12-31')
+future['B01_bookToMarket']=100.
+expanded=pd.concat([frame,future],ignore_index=True)
+old_before,_=V1.feature_layers(frame);old_after,_=V1.feature_layers(expanded)
+*_,before=V2.fold_inputs(frame,2020)
+*_,after=V2.fold_inputs(expanded,2020)
+assert 'B01_bookToMarket' not in old_before['company']
+assert 'B01_bookToMarket' in old_after['company']
+assert before==after and 'B01_bookToMarket' not in before['layers']['company']
+result={'scope':'SYNTHETIC_FEATURE_SELECTION_ONLY_NO_FIT_NO_RETURN_CLAIM',
+ 'v1Status':'FAIL','v2Status':'PASS','pastRows':5,'appendedFutureRows':20,
+ 'fullSampleB01CoverageBefore':float(frame.B01_bookToMarket.notna().mean()),
+ 'fullSampleB01CoverageAfter':float(expanded.B01_bookToMarket.notna().mean()),
+ 'v1LayersBefore':old_before,'v1LayersAfter':old_after,
+ 'v2MaturedTrainRows':before['trainRows'],'v2PastFoldReceiptUnchanged':before==after,
+ 'v2PastFoldReceipt':before,'sourceSha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
+Path('research/ml_strategy_tournament_v2/feature-pit-verification.json').write_text(json.dumps(result,indent=1)+'\n')
+print(json.dumps({k:v for k,v in result.items() if k not in ('v1LayersBefore','v1LayersAfter','v2PastFoldReceipt')},indent=1))
