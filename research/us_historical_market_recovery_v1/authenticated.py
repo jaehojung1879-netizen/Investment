@@ -48,6 +48,7 @@ def acquire(url, key, provider):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--market-recovery", action="store_true")
+    parser.add_argument("--supplement", action="store_true", help="Only action histories and verified-rename quote supplements")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args(argv)
     requests = json.loads((HERE / "inputs/requests.json").read_bytes())
@@ -65,7 +66,7 @@ def main(argv=None):
                                                "to": int(datetime.fromisoformat(end).replace(tzinfo=timezone.utc).timestamp())})
             url = "https://finnhub.io/api/v1/stock/" + endpoint + "?" + parse.urlencode(query)
         else:
-            url = "https://financialmodelingprep.com/stable/historical-price-eod/full?" + parse.urlencode(
+            url = "https://financialmodelingprep.com/stable/" + endpoint + "?" + parse.urlencode(
                 {"symbol": ticker, "from": start, "to": end})
         key = os.environ.get("FINNHUB_API_KEY" if provider == "FINNHUB" else "FMP_API_KEY", "")
         if not key:
@@ -89,7 +90,7 @@ def main(argv=None):
 
     # A missing entitlement is checked separately for every endpoint, not inferred
     # from the working fundamentals key or from a rejected candle call.
-    for endpoint in ("candle", "dividend", "split", "profile2"):
+    for endpoint in (() if args.supplement else ("candle", "dividend", "split", "profile2")):
         status = record("FINNHUB", endpoint, "AAPL", "2013-01-01", AS_OF, True)
         if status != 200:
             for r in requests:
@@ -102,14 +103,26 @@ def main(argv=None):
             if status in {401, 403, 429, "NO_KEY", "TRANSPORT_ERROR"}:
                 break
 
-    status = record("FMP", "historical-price-eod/full", "AAPL", "2013-01-01", AS_OF, True)
-    if status == 200:
-        for r in requests:
-            status = record("FMP", "historical-price-eod/full", r["audit_identifier"],
-                            r["requested_window_start_252_session_warmup"], min(AS_OF, r["requested_window_end_252_session_followup"]))
-            # 402 is a symbol-specific scope refusal and is retained per security.
-            if status in {401, 429, "NO_KEY", "TRANSPORT_ERROR"} or isinstance(status, int) and status >= 500:
-                break
+    if args.supplement:
+        for ticker in ("COR", "BALL", "LUMN", "META"):
+            record("FMP", "historical-price-eod/full", ticker, "2011-12-29", AS_OF)
+        for endpoint in ("dividends", "splits"):
+            status = record("FMP", endpoint, "AAPL", "2011-12-29", AS_OF, True)
+            if status != 200:
+                continue
+            for ticker in ("ATVI", "MRO", "TWTR", "VIAC", "WBA", "COR", "BALL", "LUMN", "META"):
+                status = record("FMP", endpoint, ticker, "2011-12-29", AS_OF)
+                if status in {401, 429, "NO_KEY", "TRANSPORT_ERROR"}:
+                    break
+    else:
+        status = record("FMP", "historical-price-eod/full", "AAPL", "2013-01-01", AS_OF, True)
+        if status == 200:
+            for r in requests:
+                status = record("FMP", "historical-price-eod/full", r["audit_identifier"],
+                                r["requested_window_start_252_session_warmup"], min(AS_OF, r["requested_window_end_252_session_followup"]))
+                # 402 is a symbol-specific scope refusal and is retained per security.
+                if status in {401, 429, "NO_KEY", "TRANSPORT_ERROR"} or isinstance(status, int) and status >= 500:
+                    break
     plaintext = gzip.compress(json.dumps(responses, sort_keys=True, separators=(",", ":")).encode(), mtime=0)
     with tempfile.TemporaryDirectory() as work:
         src, dest = Path(work) / "responses.gz", Path(work) / "responses.cms"
