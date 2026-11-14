@@ -52,6 +52,17 @@ C = RUN.C
 C.ROOT = ROOT                     # the only runtime patch: the vendored file sits two levels deeper than the original
 T = _load("amd_tournament", HERE / "vendor/ml_strategy_tournament_v1/tournament.py")
 M = _load("amd_mechanism", HERE / "mechanism.py")
+MAIN_MERGE_IMPACT = {
+    "question": "Do the US data-recovery merges #336/#337/#339/#340/#342 (#341 inside #342) change any number of this KR study?",
+    "oldMain": "056c3b5b (#333 merge)", "newMain": "4f4497bc (#342 merge)",
+    "changedPaths": 115, "changedUnderPipelineDataDocsAuditsKrResearchSpecs": 0,
+    "changedAreas": ["research/us_historical_market_recovery_v1", "research/us_sec_fundamentals_v1", "research/cross_market_foundation_v1",
+                     "audits/desk_preflight_20261111", "docs/us-readiness", "docs (US/terminal notes)", "scripts (US probes/builders)", "tests (US)"],
+    "pinnedDataUnchanged": "signal-history 4ea107ed (KR replay-v16, Phase B matrix 32e49b57, input identity 3e4d7aa3) is read by commit hash",
+    "byteIdenticalRerun": "the same analyze.py run in a worktree at 056c3b5 and on the merged tree produced identical SHA-256 for every output file",
+    "verdict": "NO_IMPACT_NOTHING_RECOMPUTED_FOR_THE_MERGE",
+    "usItemsChecked": {"SEC_TOTAL_ASSETS_AND_ISSUER_MIX_QUARANTINE": "US accounting input only; not read", "DEPARTED_PRICE_AND_CORPORATE_ACTION_RECOVERY": "US prices only; not read",
+                       "QQQ_DISTRIBUTION_CORRECTION": "US ETF only; not read", "SP500_NASDAQ100_MEMBERSHIP_DATES": "US membership only; not read"}}
 SLEEVES = list(C.CHOICE)
 RISKY = list(C.RISKY)
 SMS = "SLEEVE_MOMENTUM_SWITCH"
@@ -268,6 +279,8 @@ def mechanics_events(ctx, legs, per_rows, name, phase, threshold=0.002):
         carried = set()
         for j in range(k - 1, -1, -1):                     # a name stays in the engine's book while it is untradable at every later execution
             for t in prev.get(j, ()):
+                if t in ctx.pp.terminal and ctx.pp.terminal[t] < e:
+                    continue                                # already written off by the engine in an earlier period
                 if all(not ctx.px.tradable[ctx.px.pos[execs[m]], ctx.px.col[t]] for m in range(j + 1, k + 1)):
                     carried.add(t)
         locked = sorted(carried)
@@ -953,6 +966,7 @@ def write_outputs(I, H1, sens, legs, per, F, ind_stats, within, entry, s2_rows, 
            "pit": {"featureSource": "Phase B matrix digest " + I["ident"].get("matrixDigest", ""), "beta": "F03_beta252 at the signal date (trailing 252 sessions, ends at signal date)",
                    "industry": "PIT industry label on the signal date; basket = cap-weighted quality-eligible members on the signal date, market cap from the PIT universe snapshot the membership used (pitSnapshotDate < signal date)",
                    "forwardReturns": "read only for attribution after the decision; never fed back into a choice"},
+           "mainMergeImpact": MAIN_MERGE_IMPACT,
            "tests": "tests/test_alpha_mechanism_decomposition_v1.py", "runtimeSeconds": round(secs, 1), "outputSha256": files}
     (res / "verification.json").write_text(json.dumps(clean(ver), indent=1, ensure_ascii=False) + "\n")
     print(json.dumps({"written": list(files), "seconds": round(secs, 1)}))

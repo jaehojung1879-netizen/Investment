@@ -2647,10 +2647,16 @@
      "execution": "2019-02-11",
      "periodEnd": "2019-03-11",
      "mechanics": -0.044657,
-     "kind": "DRIFT_OR_NETTING",
-     "lockedNames": [],
-     "terminalNames": [],
-     "untradableSessionsInPeriod": {},
+     "kind": "TERMINAL_WRITE_OFF_AT_ZERO_UNRESOLVED_CONSIDERATION",
+     "lockedNames": [
+      "000030.KS"
+     ],
+     "terminalNames": [
+      "000030.KS"
+     ],
+     "untradableSessionsInPeriod": {
+      "000030.KS": 20
+     },
      "sessionsInPeriod": 19
     },
     {
@@ -2723,10 +2729,16 @@
      "execution": "2019-02-11",
      "periodEnd": "2019-03-11",
      "mechanics": -0.189098,
-     "kind": "DRIFT_OR_NETTING",
-     "lockedNames": [],
-     "terminalNames": [],
-     "untradableSessionsInPeriod": {},
+     "kind": "TERMINAL_WRITE_OFF_AT_ZERO_UNRESOLVED_CONSIDERATION",
+     "lockedNames": [
+      "000030.KS"
+     ],
+     "terminalNames": [
+      "000030.KS"
+     ],
+     "untradableSessionsInPeriod": {
+      "000030.KS": 20
+     },
      "sessionsInPeriod": 19
     }
    ]
