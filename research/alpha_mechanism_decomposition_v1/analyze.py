@@ -100,7 +100,7 @@ def load(scratch):
     df, closes, vols, sessions, macro, vix, fx, rf, ident = RUN.load(s)
     blob = pickle.loads((s / "dataset.pkl").read_bytes())
     raw_closes = blob["closes"]                                  # before the #330 final-session correction (tournament v1 basis)
-    rows = pickle.loads((s / "matrix.pkl").read_bytes())["matrix"].rows[["date", "ticker", "pitSnapshotDate"]].copy()
+    rows = pickle.loads((s / "matrix.pkl").read_bytes())["matrix"].rows[["date", "ticker", "pitSnapshotDate", "b08State"]].copy()
     rows["date"] = pd.to_datetime(rows["date"])
     df = df.merge(rows, on=["date", "ticker"], how="left", validate="one_to_one")
     caps = {}
@@ -555,6 +555,136 @@ def variant_table(ctx, R, phase, variants, bench_books_key):
     return rows, pd.concat(legs_out), daily
 
 
+def account_ledger(px, schedule, start, end, cost_mult=1.0):
+    """One self-financing account through the frozen engine, plus the KRW traded and cost at every scheduled execution.
+
+    C.simulate reports turnover and cost only as running totals, each normalised by the account's PRE-trade NAV. Running it to every
+    execution date and differencing those totals gives, per trade date t: d_turn = traded_t / (2 nav_pre_t) and d_cost = cost_t / nav_pre_t,
+    so nav_pre_t = nav_post_t / (1 - d_cost) and traded_t = 2 d_turn nav_pre_t. The engine is called, never re-implemented; the reconstructed
+    totals are asserted equal to the engine's own."""
+    full = C.simulate(px, schedule, start, end, cost_mult=cost_mult)
+    nav = full["nav"]
+    rows, prev_turn, prev_cost = [], 0.0, 0.0
+    for d in sorted(t for t in schedule if start <= t <= end):
+        part = C.simulate(px, schedule, start, d, cost_mult=cost_mult)
+        dt, dc = part["turnover"] - prev_turn, part["costs"] - prev_cost
+        prev_turn, prev_cost = part["turnover"], part["costs"]
+        pre = float(nav.loc[d]) / (1.0 - dc) if dc < 1 else float("nan")
+        rows.append({"date": d, "tradedKrw": 2.0 * dt * pre, "costKrw": dc * pre, "navPre": pre})
+    led = pd.DataFrame(rows)
+    if abs(prev_turn - full["turnover"]) > 1e-9 or abs(prev_cost - full["costs"]) > 1e-9:
+        raise AssertionError("ACCOUNT_LEDGER_DOES_NOT_REPRODUCE_ENGINE_TOTALS")
+    return nav, led, full
+
+
+def multi_account(px, schedules, start, end, rf, bench, cost_mult=1.0):
+    """Equal initial capital in every account (each starts fully in 069500 at `start`, the engine's own initial state) and trades only on its
+    own schedule. The combined book is the SUM of account NAVs — no implicit re-balancing between accounts."""
+    navs, leds = [], []
+    for sched in schedules:
+        nav, led, _ = account_ledger(px, sched, start, end, cost_mult)
+        navs.append(nav)
+        leds.append(led)
+    total = sum(navs)
+    traded = pd.concat(leds).groupby("date")[["tradedKrw", "costKrw"]].sum()
+    pre_total = (total.reindex(traded.index) + traded["costKrw"])          # combined pre-trade NAV on each trade date
+    m = C.metrics(total / total.iloc[0], bench.reindex(total.index) / bench.reindex(total.index).iloc[0], rf)
+    yrs = m["years"]
+    return {"nav": total / total.iloc[0], "accounts": len(schedules), "start": str(start.date()), "end": str(end.date()),
+            "cagr": m["cagr"], "etfCagr": m["etfCagr"], "excessCagr": m["excessCagr"], "sharpe": m["sharpe"], "mdd": m["mdd"], "vol": m["vol"],
+            "trackingError": m["trackingError"], "informationRatio": m["informationRatio"],
+            "oneWayTurnoverPerYear": float((traded["tradedKrw"] / pre_total).sum() / 2 / yrs),
+            "costPerYear": float((traded["costKrw"] / pre_total).sum() / yrs), "tradeDates": int(len(traded))}
+
+
+def four_account(I, ctx, phases, policy_books_by_phase, cost_mult=1.0):
+    """policy_books_by_phase: {phase: {signal date: book}}. Common start = earliest phase execution; same end, bench, costs."""
+    sess = I["sessions"]
+    start = min(phases[p]["start"] for p in phases)
+    end = phases[0]["end"]
+    bench = pd.Series(ctx.px.etf, index=sess)
+    scheds = [books_to_schedule(policy_books_by_phase[p], sess) for p in sorted(policy_books_by_phase)]
+    return multi_account(ctx.px, scheds, start, end, I["rf"], bench, cost_mult)
+
+
+def summarise_accounts(res, bench_daily=None, other=None):
+    out = {k: (r6(v) if isinstance(v, float) else v) for k, v in res.items() if k != "nav"}
+    r = res["nav"].pct_change().dropna()
+    if other is not None:
+        out["vsOtherDailyBootstrap"] = C.block_bootstrap(r - other["nav"].pct_change().reindex(r.index))
+    if bench_daily is not None:
+        out["vsEtfDailyBootstrap"] = C.block_bootstrap(r - bench_daily.reindex(r.index))
+    return out
+
+
+# =========================================================================== #
+# kr-four-book-prospective-record-v1: conditional history of the four frozen books + first-observation preview
+# =========================================================================== #
+def four_book_history(I, ctx, phases):
+    """The four spec.json books on 2018-2026, four summed accounts, same engine, costs and calendar. CONDITIONAL_EXPOSED_HISTORY: computed only
+    after spec.json was committed (c5a7e67); B1/B2 are asserted identical to the books measured earlier, B3 is a first look at a new hypothesis."""
+    REC = _load("kr_four_book_recorder", HERE / "prospective/recorder.py")
+    by_phase = {b: {} for b in REC.BOOKS}
+    legs = []
+    for p, R in phases.items():
+        for b in REC.BOOKS:
+            by_phase[b][p] = {}
+        for d in sorted(R["weights"][SMS]):
+            out = REC.decide(ctx.by[d])
+            ref_s2 = {t: float(v) for t, v in R["books"]["S2_VALUE_CONFIRMED"][d].items() if v > 1e-12}
+            ref_ind = {t: float(v) for t, v in industry_book(ctx.by[d], R["books"]["S1_INDUSTRY_MOMENTUM"][d]).items() if v > 1e-12}
+            if any(abs(out["B1_S2_ORIGINAL"]["weights"].get(t, 0) - ref_s2.get(t, 0)) > 1e-12 for t in set(ref_s2) | set(out["B1_S2_ORIGINAL"]["weights"])) or \
+               any(abs(out["B2_H01_CAP_INDUSTRY_BASKET"]["weights"].get(t, 0) - ref_ind.get(t, 0)) > 1e-12 for t in set(ref_ind) | set(out["B2_H01_CAP_INDUSTRY_BASKET"]["weights"])):
+                raise AssertionError("RECORDER_BOOK_DIFFERS_FROM_THE_MEASURED_BOOK " + str(d.date()))
+            for b in REC.BOOKS:
+                by_phase[b][p][d] = out[b]["weights"]
+        for b in REC.BOOKS:
+            lg = attribute_books(ctx, by_phase[b][p], R["end"], b)
+            lg["policy"], lg["phase"] = b, p
+            legs.append(lg)
+    legs = pd.concat(legs)
+    res = {b: four_account(I, ctx, phases, by_phase[b]) for b in REC.BOOKS}
+    bd = res["B0_069500_ONLY"]["nav"].pct_change()
+    out = {"label": "CONDITIONAL_EXPOSED_HISTORY_NOT_PROSPECTIVE", "returnBasis": RETURN_BASIS, "specCommit": "c5a7e67",
+           "method": "four equal accounts, each on its own 4-week phase, NAVs summed; frozen engine and costs", "books": {}}
+    for b in REC.BOOKS:
+        out["books"][b] = summarise_accounts(res[b], None if b == "B0_069500_ONLY" else bd)
+        lb = legs[legs["policy"] == b]
+        st = lb[~lb["asset"].isin([M.ETF, M.CASH])]
+        out["books"][b]["meanStockNames"] = r6(st.groupby(["phase", "period"])["asset"].nunique().reindex(
+            lb.groupby(["phase", "period"]).size().index, fill_value=0).mean(), 3)
+        out["books"][b]["fallbackOnlyShareOfDecisions"] = r6(float((lb.groupby(["phase", "period"]).apply(
+            lambda g: set(g["asset"]) <= {M.ETF}, include_groups=False)).mean()), 4)
+        yrs = (len(ctx.I["sessions"][(ctx.I["sessions"] >= phases[0]["start"]) & (ctx.I["sessions"] <= phases[0]["end"])]) - 1) / 252
+        out["books"][b]["decompositionAveragedOverPhases"] = {t: r6(lb[t].sum() / 4 / yrs) for t in M.TERMS}
+    nav_r = {b: res[b]["nav"].pct_change().dropna() for b in REC.BOOKS}
+    out["pairs"] = {f"{a}-{c}": C.block_bootstrap(nav_r[a] - nav_r[c].reindex(nav_r[a].index))
+                    for a, c in (("B1_S2_ORIGINAL", "B0_069500_ONLY"), ("B2_H01_CAP_INDUSTRY_BASKET", "B0_069500_ONLY"),
+                                 ("B3_H01_INDUSTRIES_S2_SELECTION", "B0_069500_ONLY"), ("B3_H01_INDUSTRIES_S2_SELECTION", "B1_S2_ORIGINAL"),
+                                 ("B3_H01_INDUSTRIES_S2_SELECTION", "B2_H01_CAP_INDUSTRY_BASKET"))}
+    flags = held_window_flags(ctx, legs.assign(policy=legs["policy"]))
+    out["unverifiedCorporateActionWindows"] = {b: [{**f, "execution": str(f["execution"].date()), "periodEnd": str(f["periodEnd"].date())}
+                                                   for f in flags if b in f["policies"]] for b in REC.BOOKS}
+    yearly = {}
+    for b in REC.BOOKS:
+        nv = res[b]["nav"]
+        yearly[b] = {int(y): r6(g.iloc[-1] / (nv.iloc[nv.index.get_loc(g.index[0]) - 1] if nv.index.get_loc(g.index[0]) else nv.iloc[0]) - 1)
+                     for y, g in nv.groupby(nv.index.year)}
+    out["calendarYearReturns"] = yearly
+    return out
+
+
+def first_observation_preview(I, ctx):
+    REC = _load("kr_four_book_recorder", HERE / "prospective/recorder.py")
+    d = max(ctx.by)
+    e = M.next_session(I["sessions"], d)
+    rec = REC.build_preview_receipt(g=ctx.by[d], signal_date=d, execution_date=e,
+                                    data_identity={"signalHistoryCommit": "4ea107ed0cde289f0a049a65ff13d2441a786710",
+                                                   "inputIdentitySha256": I["ident"].get("identity"), "matrixDigest": I["ident"].get("matrixDigest")},
+                                    clock_utc="2026-11-14T00:00:00Z")
+    return rec
+
+
 def paired(daily, a, b):
     d = (daily[a] - daily[b]).dropna()
     return C.block_bootstrap(d)
@@ -813,6 +943,29 @@ def main(argv=None):
                                                "same rule, POST_HOC", "cagr": r6(m_t["cagr"]), "excessCagr": r6(m_t["excessCagr"]), "sharpe": r6(m_t["sharpe"], 4),
                                        "mdd": r6(m_t["mdd"], 4), "vsFourTrancheEW4": C.block_bootstrap(tranche - tranche_ew),
                                        "vsETF": C.block_bootstrap(tranche - R0["bench"].pct_change().reindex(tranche.index))}
+    # 4-ACCOUNT VERSION (supersedes the daily-average tranche above for every reported 4-phase number). Each account starts with the same
+    # capital in 069500 at the earliest phase execution and trades only on its own dates; the NAVs are summed.
+    acc = {}
+    for pol in (SMS, "STATIC_EW4"):
+        acc[pol] = four_account(I, ctx, phases, {p: {d: policy_book(phases[p], pol, d) for d in phases[p]["weights"][pol]} for p in phases})
+    etf_only = four_account(I, ctx, phases, {p: {d: {M.ETF: 1.0} for d in phases[p]["weights"][SMS]} for p in phases})
+    bd = etf_only["nav"].pct_change()
+    sens["fourAccountSMS"] = {
+        "method": "FOUR_EQUAL_ACCOUNTS_SUMMED_NAV — each account trades only on its own 4-week phase; no daily re-balancing between accounts",
+        "SLEEVE_MOMENTUM_SWITCH": summarise_accounts(acc[SMS], bd, acc["STATIC_EW4"]),
+        "STATIC_EW4": summarise_accounts(acc["STATIC_EW4"], bd),
+        "S0_ETF": summarise_accounts(etf_only),
+        "previousDailyAverageMethod": {"cagr": sens["fourTrancheStaggeredSMS"]["cagr"], "start": str(tranche.index[0].date()),
+                                       "note": "mean of the four phase books' daily returns from the LATEST phase start (implies daily re-balancing to 25% each)"}}
+    sens["fourAccountSMS"]["SLEEVE_MOMENTUM_SWITCH"]["cagrChangeVsPreviousMethod"] = r6(acc[SMS]["cagr"] - m_t["cagr"])
+    # the same two methods on the identical window, so the change can be split into window vs construction
+    common = tranche.index[tranche.index >= pd.Timestamp(sens["fourAccountSMS"]["previousDailyAverageMethod"]["start"])]
+    nav_acc = acc[SMS]["nav"].reindex(common)
+    yrs_c = (len(common) - 1) / 252
+    sens["fourAccountSMS"]["sameWindowComparison"] = {
+        "window": [str(common[0].date()), str(common[-1].date())],
+        "fourAccountCagr": r6((nav_acc.iloc[-1] / nav_acc.iloc[0]) ** (1 / yrs_c) - 1),
+        "dailyAverageCagr": r6((1 + tranche.loc[common[1]:]).prod() ** (1 / yrs_c) - 1)}
     print("sensitivities done", flush=True)
 
     # ---- industry momentum diagnostics ---------------------------------------------------------------------------------- #
@@ -851,6 +1004,12 @@ def main(argv=None):
     print("bridge done", flush=True)
     H4 = h4(ctx, R0)
     print("h4 done", flush=True)
+    FB = four_book_history(I, ctx, phases)
+    preview = first_observation_preview(I, ctx)
+    (HERE / "prospective").mkdir(exist_ok=True)
+    (HERE / "prospective/historical-conditional-comparison.json").write_text(json.dumps(clean(FB), indent=1, ensure_ascii=False) + "\n")
+    (HERE / "prospective/first-observation-preview.json").write_text(json.dumps(preview, indent=1, ensure_ascii=False) + "\n")
+    print("four books done", flush=True)
 
     # ---- outputs ---------------------------------------------------------------------------------------------------------- #
     legs = pd.concat(legs_all + [legs_e.assign(policy=lambda x: x["policy"] + "@EXCL_DEFENSE_ELECTRONICS")])
@@ -944,6 +1103,9 @@ def write_outputs(I, H1, sens, legs, per, F, ind_stats, within, entry, s2_rows, 
     files = {n: hashlib.sha256((HERE / n).read_bytes()).hexdigest() for n in ("mechanism-attribution.csv", "s2-ablation.csv",
                                                                               "industry-momentum-diagnostics.csv", "source-readiness.json")}
     files["results/summary.json"] = hashlib.sha256((res / "summary.json").read_bytes()).hexdigest()
+    for extra in ("prospective/spec.json", "prospective/historical-conditional-comparison.json", "prospective/first-observation-preview.json"):
+        if (HERE / extra).exists():
+            files[extra] = hashlib.sha256((HERE / extra).read_bytes()).hexdigest()
     ver = {"studyId": "alpha-mechanism-decomposition-v1", "evidenceClass": EVIDENCE, "returnBasis": RETURN_BASIS,
            "inputs": I["ident"], "reproduction": {"status": status, "worstAbsCagrDiff": f"{worst:.3e}", "cagrPhase0": repro, "cagrByPhase": phase_repro,
                                                   "reference": ref["source"]},

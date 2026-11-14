@@ -5639,6 +5639,95 @@
     ],
     "twoSidedP": 0.287
    }
+  },
+  "fourAccountSMS": {
+   "method": "FOUR_EQUAL_ACCOUNTS_SUMMED_NAV — each account trades only on its own 4-week phase; no daily re-balancing between accounts",
+   "SLEEVE_MOMENTUM_SWITCH": {
+    "accounts": 4,
+    "start": "2018-01-08",
+    "end": "2026-09-14",
+    "cagr": 0.242366,
+    "etfCagr": 0.169576,
+    "excessCagr": 0.072791,
+    "sharpe": 0.772825,
+    "mdd": -0.462051,
+    "vol": 0.320798,
+    "trackingError": 0.202637,
+    "informationRatio": 0.366997,
+    "oneWayTurnoverPerYear": 6.470289,
+    "costPerYear": 0.019487,
+    "tradeDates": 454,
+    "vsOtherDailyBootstrap": {
+     "annualisedMeanDiff": 0.089278,
+     "ci95": [
+      0.022135,
+      0.163519
+     ],
+     "twoSidedP": 0.013
+    },
+    "vsEtfDailyBootstrap": {
+     "annualisedMeanDiff": 0.074367,
+     "ci95": [
+      -0.044581,
+      0.206469
+     ],
+     "twoSidedP": 0.241
+    },
+    "cagrChangeVsPreviousMethod": 0.013258
+   },
+   "STATIC_EW4": {
+    "accounts": 4,
+    "start": "2018-01-08",
+    "end": "2026-09-14",
+    "cagr": 0.160988,
+    "etfCagr": 0.169576,
+    "excessCagr": -0.008588,
+    "sharpe": 0.650663,
+    "mdd": -0.492591,
+    "vol": 0.243818,
+    "trackingError": 0.122351,
+    "informationRatio": -0.121866,
+    "oneWayTurnoverPerYear": 3.730735,
+    "costPerYear": 0.01208,
+    "tradeDates": 454,
+    "vsEtfDailyBootstrap": {
+     "annualisedMeanDiff": -0.014911,
+     "ci95": [
+      -0.117835,
+      0.080366
+     ],
+     "twoSidedP": 0.786
+    }
+   },
+   "S0_ETF": {
+    "accounts": 4,
+    "start": "2018-01-08",
+    "end": "2026-09-14",
+    "cagr": 0.169576,
+    "etfCagr": 0.169576,
+    "excessCagr": 0.0,
+    "sharpe": 0.633386,
+    "mdd": -0.408055,
+    "vol": 0.274009,
+    "trackingError": 0.0,
+    "informationRatio": 0.068306,
+    "oneWayTurnoverPerYear": 0.0,
+    "costPerYear": 0.0,
+    "tradeDates": 454
+   },
+   "previousDailyAverageMethod": {
+    "cagr": 0.229108,
+    "start": "2018-01-30",
+    "note": "mean of the four phase books' daily returns from the LATEST phase start (implies daily re-balancing to 25% each)"
+   },
+   "sameWindowComparison": {
+    "window": [
+     "2018-01-30",
+     "2026-09-14"
+    ],
+    "fourAccountCagr": 0.237652,
+    "dailyAverageCagr": 0.229108
+   }
   }
  },
  "industryMomentum": {

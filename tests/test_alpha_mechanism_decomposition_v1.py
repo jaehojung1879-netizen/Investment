@@ -170,3 +170,71 @@ def test_us_rerun_blocker_names_every_required_private_file():
     assert b["status"].startswith("NOT_RUN")
     assert len(b["requiredToRerun"]["privateRootFiles_verifyREQUIRED"]) == 15
     assert set(b["requiredToRerun"]["pinnedPublicPricePackets"]) == {"public-para-price-packet.json", "public-wbd-kvue-price-packet.json"}
+
+
+def _analyze():
+    return _load("amd_analyze_for_tests", D / "analyze.py")
+
+
+def _engine_market(n=160, seed=5):
+    A = _analyze()
+    rng = np.random.default_rng(seed)
+    sessions = pd.bdate_range("2021-01-04", periods=n)
+    tick = [M.ETF, "AAA.KS", "BBB.KS", "CCC.KS"]
+    closes = pd.DataFrame(100 * np.cumprod(1 + rng.normal(0.0004, 0.02, (n, 4)), axis=0), index=sessions, columns=tick)
+    vols = pd.DataFrame(1e6, index=sessions, columns=tick)
+    rf = pd.Series(0.0001, index=sessions)
+    return A, A.C.Prices(closes, vols, sessions, rf), sessions, rf, closes[M.ETF]
+
+
+def _schedule(sessions, offset, names):
+    return {sessions[i]: {names[(k + offset) % len(names)]: 0.5, M.ETF: 0.5} for k, i in enumerate(range(offset * 5 + 1, len(sessions) - 1, 20))}
+
+
+def test_account_ledger_reproduces_the_engine_totals_exactly():
+    A, px, sessions, rf, bench = _engine_market()
+    sched = _schedule(sessions, 0, ["AAA.KS", "BBB.KS", "CCC.KS"])
+    nav, led, full = A.account_ledger(px, sched, sessions[0], sessions[-1])
+    assert (nav == full["nav"]).all()
+    assert abs(led["tradedKrw"].div(led["navPre"]).sum() / 2 - full["turnover"]) < 1e-12
+    assert abs(led["costKrw"].div(led["navPre"]).sum() - full["costs"]) < 1e-12
+    assert (led["tradedKrw"] > 0).all()
+
+
+def test_four_identical_accounts_equal_one_account_and_the_sum_is_not_a_daily_rebalance():
+    A, px, sessions, rf, bench = _engine_market()
+    one = _schedule(sessions, 0, ["AAA.KS", "BBB.KS", "CCC.KS"])
+    same = A.multi_account(px, [one] * 4, sessions[0], sessions[-1], rf, bench)
+    nav1, _, full = A.account_ledger(px, one, sessions[0], sessions[-1])
+    assert np.allclose(same["nav"].to_numpy(), (nav1 / nav1.iloc[0]).to_numpy(), atol=1e-12)
+    assert abs(same["oneWayTurnoverPerYear"] - full["turnover"] / ((len(nav1) - 1) / 252)) < 1e-9
+    staggered = [_schedule(sessions, k, ["AAA.KS", "BBB.KS", "CCC.KS"]) for k in range(4)]
+    res = A.multi_account(px, staggered, sessions[0], sessions[-1], rf, bench)
+    navs = [A.account_ledger(px, s, sessions[0], sessions[-1])[0] for s in staggered]
+    assert np.allclose(res["nav"].to_numpy(), (sum(navs) / sum(navs).iloc[0]).to_numpy(), atol=1e-12)
+    daily_avg = (1 + pd.concat([n.pct_change() for n in navs], axis=1).dropna().mean(axis=1)).cumprod()
+    assert not np.allclose(daily_avg.to_numpy(), res["nav"].reindex(daily_avg.index).to_numpy() / res["nav"].reindex(daily_avg.index).iloc[0])
+
+
+def test_four_account_result_is_published_with_both_methods():
+    path = D / "results" / "summary.json"
+    if not path.exists():
+        pytest.skip("results not generated")
+    f = json.loads(path.read_text())["h1Sensitivities"]["fourAccountSMS"]
+    assert f["method"].startswith("FOUR_EQUAL_ACCOUNTS_SUMMED_NAV")
+    for k in ("SLEEVE_MOMENTUM_SWITCH", "STATIC_EW4", "S0_ETF"):
+        assert f[k]["start"] == f["S0_ETF"]["start"] and f[k]["end"] == f["S0_ETF"]["end"]
+    assert f["S0_ETF"]["oneWayTurnoverPerYear"] == 0.0
+    assert abs(f["SLEEVE_MOMENTUM_SWITCH"]["cagr"] - f["previousDailyAverageMethod"]["cagr"] - f["SLEEVE_MOMENTUM_SWITCH"]["cagrChangeVsPreviousMethod"]) < 1e-6
+
+
+def test_four_book_history_is_labelled_conditional_and_separate_from_prospective():
+    path = D / "prospective" / "historical-conditional-comparison.json"
+    if not path.exists():
+        pytest.skip("results not generated")
+    h = json.loads(path.read_text())
+    assert h["label"] == "CONDITIONAL_EXPOSED_HISTORY_NOT_PROSPECTIVE" and h["returnBasis"].startswith("CONDITIONAL")
+    p = json.loads((D / "prospective" / "first-observation-preview.json").read_text())
+    assert p["evidenceClass"] == "NOT_PROSPECTIVE_EVIDENCE" and p["pathway"].startswith("REPLAY_PREVIEW")
+    for b, v in p["books"].items():
+        assert v["stockNames"] <= (10 ** 6 if b.startswith("B2") else 5)

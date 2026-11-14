@@ -1,0 +1,2212 @@
+{
+ "schemaVersion": 1,
+ "studyId": "kr-four-book-prospective-record-v1",
+ "pathway": "REPLAY_PREVIEW_NOT_PROSPECTIVE_EVIDENCE",
+ "specSha256": "24339c090e659fa9aa76988e262a06e1d6a9a8ca3e2b0080a49e26a4c686e26b",
+ "codeIdentity": {
+  "research/alpha_mechanism_decomposition_v1/prospective/recorder.py": "95a1564ca3c14df1079d6202636d50284f64cd688fda0e14965f353a16c430a5",
+  "research/alpha_mechanism_decomposition_v1/mechanism.py": "02c3abe77ecbf854f97d92f18e6d9ace564a4fb3e8ca910d79a25f3d4a646ec3",
+  "research/alpha_mechanism_decomposition_v1/analyze.py": "ef2fff0ca556d38a9b487822dd48c2584389ad0fd486b3ef07a8732fa67fe40b",
+  "research/alpha_mechanism_decomposition_v1/vendor/adaptive_cocktail_v1/cocktail.py": "a8bbeed1876cf4ab5ad120d9fe892d31a195590d98353622aa2528656c1f3027",
+  "pipeline/prospective_receipt_core.py": "0f5344b09e28a4b9e9df5839bb6fc11f8ace70a4c71c01c6915ae753857ef90f"
+ },
+ "signalDate": "2026-09-11",
+ "executionDate": "2026-09-14",
+ "createdAtUtc": "2026-11-14T00:00:00+00:00",
+ "dataSnapshotIdentity": {
+  "signalHistoryCommit": "4ea107ed0cde289f0a049a65ff13d2441a786710",
+  "inputIdentitySha256": "3e4d7aa35e2c4b273e4ecef0e2e8ea7a8a27077f0de14bb3d5ea6a696a97f1a5",
+  "matrixDigest": "32e49b57a7541eea66f76373baef50c6302a394247b313f6099f718d46d54b0c"
+ },
+ "universeRows": 120,
+ "qualityEligible": 112,
+ "books": {
+  "B0_069500_ONLY": {
+   "weights": {
+    "069500.KS": 1.0
+   },
+   "stockNames": 0,
+   "fallbackWeight": 1.0,
+   "state": "FALLBACK_ONLY_069500",
+   "selection": {
+    "rule": "069500.KS 100%"
+   }
+  },
+  "B1_S2_ORIGINAL": {
+   "weights": {
+    "000990.KS": 0.2,
+    "002380.KS": 0.2,
+    "034730.KS": 0.2,
+    "042660.KS": 0.2,
+    "267270.KS": 0.2
+   },
+   "stockNames": 5,
+   "fallbackWeight": 0.0,
+   "state": "HOLDS_STOCKS",
+   "selection": {
+    "selected": [
+     {
+      "ticker": "034730.KS",
+      "industry": "FINANCIALS",
+      "b08State": "CHEAP_CONFIRMED",
+      "valuePercentileWithinIndustry": 0.9513,
+      "industryH01Rank": 3,
+      "rank": 1,
+      "weight": 0.2
+     },
+     {
+      "ticker": "002380.KS",
+      "industry": "CHEMICALS",
+      "b08State": "CHEAP_CONFIRMED",
+      "valuePercentileWithinIndustry": 0.9375,
+      "industryH01Rank": 4,
+      "rank": 2,
+      "weight": 0.2
+     },
+     {
+      "ticker": "267270.KS",
+      "industry": "CAPITAL_GOODS_DEFENSE",
+      "b08State": "CHEAP_CONFIRMED",
+      "valuePercentileWithinIndustry": 0.9183,
+      "industryH01Rank": 6,
+      "rank": 3,
+      "weight": 0.2
+     },
+     {
+      "ticker": "042660.KS",
+      "industry": "CAPITAL_GOODS_DEFENSE",
+      "b08State": "CHEAP_CONFIRMED",
+      "valuePercentileWithinIndustry": 0.883,
+      "industryH01Rank": 6,
+      "rank": 4,
+      "weight": 0.2
+     },
+     {
+      "ticker": "000990.KS",
+      "industry": "ELECTRONICS_ELECTRICAL",
+      "b08State": "CHEAP_CONFIRMED",
+      "valuePercentileWithinIndustry": 0.8421,
+      "industryH01Rank": 1,
+      "rank": 5,
+      "weight": 0.2
+     }
+    ],
+    "eligibleRanked": 38,
+    "excludedCounts": {
+     "NOT_CONFIRMED": 45,
+     "OUTRANKED": 33,
+     "QUALITY": 8,
+     "S2_INELIGIBLE": 25,
+     "S2_MISSING_VALUE_INPUT": 3,
+     "WITHHELD_UNRESOLVED_CORPORATE_ACTION_BASIS": 1
+    },
+    "nextOutranked": [
+     {
+      "ticker": "066570.KS",
+      "industry": "ELECTRONICS_ELECTRICAL",
+      "b08State": "CHEAP_CONFIRMED",
+      "valuePercentileWithinIndustry": 0.8421,
+      "industryH01Rank": 1,
+      "reason": "OUTRANKED:rank_6"
+     },
+     {
+      "ticker": "267250.KS",
+      "industry": "FINANCIALS",
+      "b08State": "CHEAP_CONFIRMED",
+      "valuePercentileWithinIndustry": 0.8379,
+      "industryH01Rank": 3,
+      "reason": "OUTRANKED:rank_7"
+     },
+     {
+      "ticker": "005930.KS",
+      "industry": "ELECTRONICS_ELECTRICAL",
+      "b08State": "CHEAP_CONFIRMED",
+      "valuePercentileWithinIndustry": 0.8158,
+      "industryH01Rank": 1,
+      "reason": "OUTRANKED:rank_8"
+     },
+     {
+      "ticker": "032640.KS",
+      "industry": "COMMUNICATION_MEDIA_SOFTWARE",
+      "b08State": "CHEAP_CONFIRMED",
+      "valuePercentileWithinIndustry": 0.7727,
+      "industryH01Rank": 5,
+      "reason": "OUTRANKED:rank_9"
+     },
+     {
+      "ticker": "036570.KS",
+      "industry": "COMMUNICATION_MEDIA_SOFTWARE",
+      "b08State": "CHEAP_CONFIRMED",
+      "valuePercentileWithinIndustry": 0.7727,
+      "industryH01Rank": 5,
+      "reason": "OUTRANKED:rank_10"
+     }
+    ],
+    "excluded": {
+     "NOT_CONFIRMED": [
+      {
+       "ticker": "000720.KS",
+       "industry": "CONSTRUCTION_ENGINEERING",
+       "b08State": "CHEAP_UNCONFIRMED",
+       "valuePercentileWithinIndustry": 0.8,
+       "industryH01Rank": 2,
+       "reason": "NOT_CONFIRMED:CHEAP_UNCONFIRMED"
+      },
+      {
+       "ticker": "001040.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5003,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "001440.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3684,
+       "industryH01Rank": 1,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "003550.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.4868,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "005940.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5089,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "006260.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.246,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "006400.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.6053,
+       "industryH01Rank": 1,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "007660.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3947,
+       "industryH01Rank": 1,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "009830.KS",
+       "industry": "CHEMICALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5,
+       "industryH01Rank": 4,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "010120.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.2368,
+       "industryH01Rank": 1,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "011070.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "CHEAP_UNCONFIRMED",
+       "valuePercentileWithinIndustry": 0.7895,
+       "industryH01Rank": 1,
+       "reason": "NOT_CONFIRMED:CHEAP_UNCONFIRMED"
+      },
+      {
+       "ticker": "011790.KS",
+       "industry": "CHEMICALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.25,
+       "industryH01Rank": 4,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "012450.KS",
+       "industry": "CAPITAL_GOODS_DEFENSE",
+       "b08State": "CHEAP_UNCONFIRMED",
+       "valuePercentileWithinIndustry": 0.7965,
+       "industryH01Rank": 6,
+       "reason": "NOT_CONFIRMED:CHEAP_UNCONFIRMED"
+      },
+      {
+       "ticker": "016360.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5433,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "017670.KS",
+       "industry": "COMMUNICATION_MEDIA_SOFTWARE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.4091,
+       "industryH01Rank": 5,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "018260.KS",
+       "industry": "COMMUNICATION_MEDIA_SOFTWARE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3636,
+       "industryH01Rank": 5,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "024110.KS",
+       "industry": "FINANCIALS",
+       "b08State": "CHEAP_UNCONFIRMED",
+       "valuePercentileWithinIndustry": 0.7196,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:CHEAP_UNCONFIRMED"
+      },
+      {
+       "ticker": "028050.KS",
+       "industry": "CONSTRUCTION_ENGINEERING",
+       "b08State": "CHEAP_UNCONFIRMED",
+       "valuePercentileWithinIndustry": 0.7,
+       "industryH01Rank": 2,
+       "reason": "NOT_CONFIRMED:CHEAP_UNCONFIRMED"
+      },
+      {
+       "ticker": "030200.KS",
+       "industry": "COMMUNICATION_MEDIA_SOFTWARE",
+       "b08State": "CHEAP_UNCONFIRMED",
+       "valuePercentileWithinIndustry": 0.9091,
+       "industryH01Rank": 5,
+       "reason": "NOT_CONFIRMED:CHEAP_UNCONFIRMED"
+      },
+      {
+       "ticker": "032830.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5019,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "034220.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5,
+       "industryH01Rank": 1,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "035720.KS",
+       "industry": "COMMUNICATION_MEDIA_SOFTWARE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.4545,
+       "industryH01Rank": 5,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "039490.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5777,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "047040.KS",
+       "industry": "CONSTRUCTION_ENGINEERING",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.4,
+       "industryH01Rank": 2,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "047810.KS",
+       "industry": "CAPITAL_GOODS_DEFENSE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.399,
+       "industryH01Rank": 6,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "051900.KS",
+       "industry": "CHEMICALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5,
+       "industryH01Rank": 4,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "051910.KS",
+       "industry": "CHEMICALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5,
+       "industryH01Rank": 4,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "052690.KS",
+       "industry": "CONSTRUCTION_ENGINEERING",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3,
+       "industryH01Rank": 2,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "062040.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.4474,
+       "industryH01Rank": 1,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "064400.KS",
+       "industry": "COMMUNICATION_MEDIA_SOFTWARE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3636,
+       "industryH01Rank": 5,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "066970.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.2105,
+       "industryH01Rank": 1,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "071050.KS",
+       "industry": "FINANCIALS",
+       "b08State": "CHEAP_UNCONFIRMED",
+       "valuePercentileWithinIndustry": 0.7406,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:CHEAP_UNCONFIRMED"
+      },
+      {
+       "ticker": "079550.KS",
+       "industry": "CAPITAL_GOODS_DEFENSE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3638,
+       "industryH01Rank": 6,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "088350.KS",
+       "industry": "FINANCIALS",
+       "b08State": "CHEAP_UNCONFIRMED",
+       "valuePercentileWithinIndustry": 0.9008,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:CHEAP_UNCONFIRMED"
+      },
+      {
+       "ticker": "138040.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.2481,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "138930.KS",
+       "industry": "FINANCIALS",
+       "b08State": "CHEAP_UNCONFIRMED",
+       "valuePercentileWithinIndustry": 0.7191,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:CHEAP_UNCONFIRMED"
+      },
+      {
+       "ticker": "161890.KS",
+       "industry": "CHEMICALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5,
+       "industryH01Rank": 4,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "175330.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.4105,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "180640.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.0492,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "272210.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.4474,
+       "industryH01Rank": 1,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "352820.KS",
+       "industry": "COMMUNICATION_MEDIA_SOFTWARE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.1364,
+       "industryH01Rank": 5,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "373220.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3947,
+       "industryH01Rank": 1,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "377300.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.0497,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "402340.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.4153,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "454910.KS",
+       "industry": "CAPITAL_GOODS_DEFENSE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.117,
+       "industryH01Rank": 6,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      }
+     ],
+     "OUTRANKED": [
+      {
+       "ticker": "000660.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "CHEAP_CONFIRMED",
+       "valuePercentileWithinIndustry": 0.7105,
+       "industryH01Rank": 1,
+       "reason": "OUTRANKED:rank_14"
+      },
+      {
+       "ticker": "000810.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3745,
+       "industryH01Rank": 3,
+       "reason": "OUTRANKED:rank_28"
+      },
+      {
+       "ticker": "001450.KS",
+       "industry": "FINANCIALS",
+       "b08State": "CHEAP_CONFIRMED",
+       "valuePercentileWithinIndustry": 0.7562,
+       "industryH01Rank": 3,
+       "reason": "OUTRANKED:rank_12"
+      },
+      {
+       "ticker": "003670.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3684,
+       "industryH01Rank": 1,
+       "reason": "OUTRANKED:rank_29"
+      },
+      {
+       "ticker": "005830.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.4761,
+       "industryH01Rank": 3,
+       "reason": "OUTRANKED:rank_22"
+      },
+      {
+       "ticker": "005930.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "CHEAP_CONFIRMED",
+       "valuePercentileWithinIndustry": 0.8158,
+       "industryH01Rank": 1,
+       "reason": "OUTRANKED:rank_8"
+      },
+      {
+       "ticker": "009150.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.2632,
+       "industryH01Rank": 1,
+       "reason": "OUTRANKED:rank_34"
+      },
+      {
+       "ticker": "009540.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.4298,
+       "industryH01Rank": 3,
+       "reason": "OUTRANKED:rank_24"
+      },
+      {
+       "ticker": "010140.KS",
+       "industry": "CAPITAL_GOODS_DEFENSE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.6362,
+       "industryH01Rank": 6,
+       "reason": "OUTRANKED:rank_16"
+      },
+      {
+       "ticker": "032640.KS",
+       "industry": "COMMUNICATION_MEDIA_SOFTWARE",
+       "b08State": "CHEAP_CONFIRMED",
+       "valuePercentileWithinIndustry": 0.7727,
+       "industryH01Rank": 5,
+       "reason": "OUTRANKED:rank_9"
+      },
+      {
+       "ticker": "034020.KS",
+       "industry": "CAPITAL_GOODS_DEFENSE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3926,
+       "industryH01Rank": 6,
+       "reason": "OUTRANKED:rank_27"
+      },
+      {
+       "ticker": "035420.KS",
+       "industry": "COMMUNICATION_MEDIA_SOFTWARE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.6364,
+       "industryH01Rank": 5,
+       "reason": "OUTRANKED:rank_15"
+      },
+      {
+       "ticker": "036570.KS",
+       "industry": "COMMUNICATION_MEDIA_SOFTWARE",
+       "b08State": "CHEAP_CONFIRMED",
+       "valuePercentileWithinIndustry": 0.7727,
+       "industryH01Rank": 5,
+       "reason": "OUTRANKED:rank_10"
+      },
+      {
+       "ticker": "042700.KS",
+       "industry": "CAPITAL_GOODS_DEFENSE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.2035,
+       "industryH01Rank": 6,
+       "reason": "OUTRANKED:rank_35"
+      },
+      {
+       "ticker": "055550.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.4083,
+       "industryH01Rank": 3,
+       "reason": "OUTRANKED:rank_25"
+      },
+      {
+       "ticker": "064350.KS",
+       "industry": "CAPITAL_GOODS_DEFENSE",
+       "b08State": "CHEAP_CONFIRMED",
+       "valuePercentileWithinIndustry": 0.7228,
+       "industryH01Rank": 6,
+       "reason": "OUTRANKED:rank_13"
+      },
+      {
+       "ticker": "066570.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "CHEAP_CONFIRMED",
+       "valuePercentileWithinIndustry": 0.8421,
+       "industryH01Rank": 1,
+       "reason": "OUTRANKED:rank_6"
+      },
+      {
+       "ticker": "078930.KS",
+       "industry": "FINANCIALS",
+       "b08State": "CHEAP_CONFIRMED",
+       "valuePercentileWithinIndustry": 0.7707,
+       "industryH01Rank": 3,
+       "reason": "OUTRANKED:rank_11"
+      },
+      {
+       "ticker": "086790.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.4734,
+       "industryH01Rank": 3,
+       "reason": "OUTRANKED:rank_23"
+      },
+      {
+       "ticker": "090430.KS",
+       "industry": "CHEMICALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5,
+       "industryH01Rank": 4,
+       "reason": "OUTRANKED:rank_21"
+      },
+      {
+       "ticker": "105560.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.2949,
+       "industryH01Rank": 3,
+       "reason": "OUTRANKED:rank_33"
+      },
+      {
+       "ticker": "241560.KS",
+       "industry": "CAPITAL_GOODS_DEFENSE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.0817,
+       "industryH01Rank": 6,
+       "reason": "OUTRANKED:rank_38"
+      },
+      {
+       "ticker": "259960.KS",
+       "industry": "COMMUNICATION_MEDIA_SOFTWARE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5909,
+       "industryH01Rank": 5,
+       "reason": "OUTRANKED:rank_17"
+      },
+      {
+       "ticker": "267250.KS",
+       "industry": "FINANCIALS",
+       "b08State": "CHEAP_CONFIRMED",
+       "valuePercentileWithinIndustry": 0.8379,
+       "industryH01Rank": 3,
+       "reason": "OUTRANKED:rank_7"
+      },
+      {
+       "ticker": "267260.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3947,
+       "industryH01Rank": 1,
+       "reason": "OUTRANKED:rank_26"
+      },
+      {
+       "ticker": "278470.KS",
+       "industry": "CHEMICALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3125,
+       "industryH01Rank": 4,
+       "reason": "OUTRANKED:rank_31"
+      },
+      {
+       "ticker": "298040.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3421,
+       "industryH01Rank": 1,
+       "reason": "OUTRANKED:rank_30"
+      },
+      {
+       "ticker": "307950.KS",
+       "industry": "COMMUNICATION_MEDIA_SOFTWARE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.0909,
+       "industryH01Rank": 5,
+       "reason": "OUTRANKED:rank_37"
+      },
+      {
+       "ticker": "316140.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5723,
+       "industryH01Rank": 3,
+       "reason": "OUTRANKED:rank_18"
+      },
+      {
+       "ticker": "323410.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.1476,
+       "industryH01Rank": 3,
+       "reason": "OUTRANKED:rank_36"
+      },
+      {
+       "ticker": "329180.KS",
+       "industry": "CAPITAL_GOODS_DEFENSE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5625,
+       "industryH01Rank": 6,
+       "reason": "OUTRANKED:rank_19"
+      },
+      {
+       "ticker": "353200.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5263,
+       "industryH01Rank": 1,
+       "reason": "OUTRANKED:rank_20"
+      },
+      {
+       "ticker": "443060.KS",
+       "industry": "CONSTRUCTION_ENGINEERING",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3,
+       "industryH01Rank": 2,
+       "reason": "OUTRANKED:rank_32"
+      }
+     ],
+     "QUALITY": [
+      {
+       "ticker": "000150.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": 1,
+       "reason": "QUALITY:MEDIAN_TRADED_VALUE_BELOW_5BN_KRW"
+      },
+      {
+       "ticker": "000500.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": 1,
+       "reason": "QUALITY:MEDIAN_TRADED_VALUE_BELOW_5BN_KRW"
+      },
+      {
+       "ticker": "000880.KS",
+       "industry": "CHEMICALS",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": 4,
+       "reason": "QUALITY:FEWER_THAN_20_POSITIVE_VOLUME_SESSIONS+SUSPENSION_OR_STALE_QUOTE_RISK+MEDIAN_TRADED_VALUE_BELOW_5BN_KRW"
+      },
+      {
+       "ticker": "005385.KS",
+       "industry": null,
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "QUALITY:PREFERRED_SHARE"
+      },
+      {
+       "ticker": "005387.KS",
+       "industry": null,
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "QUALITY:PREFERRED_SHARE"
+      },
+      {
+       "ticker": "005935.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": 1,
+       "reason": "QUALITY:PREFERRED_SHARE"
+      },
+      {
+       "ticker": "010060.KS",
+       "industry": "FINANCIALS",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": 3,
+       "reason": "QUALITY:MEDIAN_TRADED_VALUE_BELOW_5BN_KRW"
+      },
+      {
+       "ticker": "029780.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5551,
+       "industryH01Rank": 3,
+       "reason": "QUALITY:MEDIAN_TRADED_VALUE_BELOW_5BN_KRW"
+      }
+     ],
+     "S2_INELIGIBLE": [
+      {
+       "ticker": "000100.KS",
+       "industry": "HEALTHCARE",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "000270.KS",
+       "industry": "AUTOS",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "003230.KS",
+       "industry": "FOOD_BEVERAGE_TOBACCO",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "003490.KS",
+       "industry": "TRANSPORT_LOGISTICS",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "004020.KS",
+       "industry": "BASIC_MATERIALS",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "004170.KS",
+       "industry": "CONSUMER_RETAIL_SERVICES",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "005380.KS",
+       "industry": "AUTOS",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "005490.KS",
+       "industry": "BASIC_MATERIALS",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "010130.KS",
+       "industry": "BASIC_MATERIALS",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "010950.KS",
+       "industry": "ENERGY_UTILITIES",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "011200.KS",
+       "industry": "TRANSPORT_LOGISTICS",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "012330.KS",
+       "industry": "AUTOS",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "015760.KS",
+       "industry": "ENERGY_UTILITIES",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "021240.KS",
+       "industry": "CONSUMER_RETAIL_SERVICES",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "028260.KS",
+       "industry": "CONSUMER_RETAIL_SERVICES",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "033780.KS",
+       "industry": "FOOD_BEVERAGE_TOBACCO",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "047050.KS",
+       "industry": "CONSUMER_RETAIL_SERVICES",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "068270.KS",
+       "industry": "HEALTHCARE",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "086280.KS",
+       "industry": "TRANSPORT_LOGISTICS",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "096770.KS",
+       "industry": "ENERGY_UTILITIES",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "128940.KS",
+       "industry": "HEALTHCARE",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "161390.KS",
+       "industry": "BASIC_MATERIALS",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "207940.KS",
+       "industry": "HEALTHCARE",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "271560.KS",
+       "industry": "FOOD_BEVERAGE_TOBACCO",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "326030.KS",
+       "industry": "HOLDINGS_BUSINESS_SERVICES",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      }
+     ],
+     "S2_MISSING_VALUE_INPUT": [
+      {
+       "ticker": "0126Z0.KS",
+       "industry": "FINANCIALS",
+       "b08State": "MISSING_VALUE_INPUT",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": 3,
+       "reason": "S2_MISSING_VALUE_INPUT"
+      },
+      {
+       "ticker": "082740.KS",
+       "industry": "CAPITAL_GOODS_DEFENSE",
+       "b08State": "MISSING_VALUE_INPUT",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": 6,
+       "reason": "S2_MISSING_VALUE_INPUT"
+      },
+      {
+       "ticker": "088980.KS",
+       "industry": "FINANCIALS",
+       "b08State": "MISSING_VALUE_INPUT",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": 3,
+       "reason": "S2_MISSING_VALUE_INPUT"
+      }
+     ],
+     "WITHHELD_UNRESOLVED_CORPORATE_ACTION_BASIS": [
+      {
+       "ticker": "006800.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.4954,
+       "industryH01Rank": 3,
+       "reason": "WITHHELD_UNRESOLVED_CORPORATE_ACTION_BASIS"
+      }
+     ]
+    }
+   },
+   "withheldWouldHavePicked": []
+  },
+  "B2_H01_CAP_INDUSTRY_BASKET": {
+   "weights": {
+    "000660.KS": 0.385988468151218,
+    "000990.KS": 0.001281765993142888,
+    "001440.KS": 0.0017525321034297095,
+    "003670.KS": 0.005310606919126498,
+    "005930.KS": 0.4762354343745537,
+    "006400.KS": 0.014311034330638586,
+    "007660.KS": 0.0025454604475968275,
+    "009150.KS": 0.033336628691328855,
+    "010120.KS": 0.009573842134155982,
+    "011070.KS": 0.004358116911237327,
+    "034220.KS": 0.001448170415728892,
+    "062040.KS": 0.001870680832305969,
+    "066570.KS": 0.010497886514266386,
+    "066970.KS": 0.0016659663994313847,
+    "267260.KS": 0.008651646843574579,
+    "272210.KS": 0.0041627748684441605,
+    "298040.KS": 0.00848627300828145,
+    "353200.KS": 0.0017196983542185824,
+    "373220.KS": 0.026803012707320214
+   },
+   "stockNames": 19,
+   "fallbackWeight": 0.0,
+   "state": "HOLDS_STOCKS",
+   "selection": {
+    "s1Picks": [
+     {
+      "ticker": "009150.KS",
+      "industry": "ELECTRONICS_ELECTRICAL",
+      "industryH01Rank": 1
+     },
+     {
+      "ticker": "011070.KS",
+      "industry": "ELECTRONICS_ELECTRICAL",
+      "industryH01Rank": 1
+     },
+     {
+      "ticker": "000660.KS",
+      "industry": "ELECTRONICS_ELECTRICAL",
+      "industryH01Rank": 1
+     },
+     {
+      "ticker": "066570.KS",
+      "industry": "ELECTRONICS_ELECTRICAL",
+      "industryH01Rank": 1
+     },
+     {
+      "ticker": "353200.KS",
+      "industry": "ELECTRONICS_ELECTRICAL",
+      "industryH01Rank": 1
+     }
+    ],
+    "industries": [
+     "ELECTRONICS_ELECTRICAL"
+    ],
+    "basketMembers": {
+     "ELECTRONICS_ELECTRICAL": [
+      "000660.KS",
+      "000990.KS",
+      "001440.KS",
+      "003670.KS",
+      "005930.KS",
+      "006400.KS",
+      "007660.KS",
+      "009150.KS",
+      "010120.KS",
+      "011070.KS",
+      "034220.KS",
+      "062040.KS",
+      "066570.KS",
+      "066970.KS",
+      "267260.KS",
+      "272210.KS",
+      "298040.KS",
+      "353200.KS",
+      "373220.KS"
+     ]
+    }
+   }
+  },
+  "B3_H01_INDUSTRIES_S2_SELECTION": {
+   "weights": {
+    "000660.KS": 0.2,
+    "000990.KS": 0.2,
+    "005930.KS": 0.2,
+    "066570.KS": 0.2,
+    "353200.KS": 0.2
+   },
+   "stockNames": 5,
+   "fallbackWeight": 0.0,
+   "state": "HOLDS_STOCKS",
+   "selection": {
+    "selected": [
+     {
+      "ticker": "000990.KS",
+      "industry": "ELECTRONICS_ELECTRICAL",
+      "b08State": "CHEAP_CONFIRMED",
+      "valuePercentileWithinIndustry": 0.8421,
+      "industryH01Rank": 1,
+      "rank": 1,
+      "weight": 0.2
+     },
+     {
+      "ticker": "066570.KS",
+      "industry": "ELECTRONICS_ELECTRICAL",
+      "b08State": "CHEAP_CONFIRMED",
+      "valuePercentileWithinIndustry": 0.8421,
+      "industryH01Rank": 1,
+      "rank": 2,
+      "weight": 0.2
+     },
+     {
+      "ticker": "005930.KS",
+      "industry": "ELECTRONICS_ELECTRICAL",
+      "b08State": "CHEAP_CONFIRMED",
+      "valuePercentileWithinIndustry": 0.8158,
+      "industryH01Rank": 1,
+      "rank": 3,
+      "weight": 0.2
+     },
+     {
+      "ticker": "000660.KS",
+      "industry": "ELECTRONICS_ELECTRICAL",
+      "b08State": "CHEAP_CONFIRMED",
+      "valuePercentileWithinIndustry": 0.7105,
+      "industryH01Rank": 1,
+      "rank": 4,
+      "weight": 0.2
+     },
+     {
+      "ticker": "353200.KS",
+      "industry": "ELECTRONICS_ELECTRICAL",
+      "b08State": "NOT_CHEAP",
+      "valuePercentileWithinIndustry": 0.5263,
+      "industryH01Rank": 1,
+      "rank": 5,
+      "weight": 0.2
+     }
+    ],
+    "eligibleRanked": 9,
+    "excludedCounts": {
+     "NOT_CONFIRMED": 45,
+     "OUTRANKED": 4,
+     "OUTSIDE_H01_INDUSTRIES": 29,
+     "QUALITY": 8,
+     "S2_INELIGIBLE": 25,
+     "S2_MISSING_VALUE_INPUT": 3,
+     "WITHHELD_UNRESOLVED_CORPORATE_ACTION_BASIS": 1
+    },
+    "nextOutranked": [
+     {
+      "ticker": "267260.KS",
+      "industry": "ELECTRONICS_ELECTRICAL",
+      "b08State": "NOT_CHEAP",
+      "valuePercentileWithinIndustry": 0.3947,
+      "industryH01Rank": 1,
+      "reason": "OUTRANKED:rank_6"
+     },
+     {
+      "ticker": "003670.KS",
+      "industry": "ELECTRONICS_ELECTRICAL",
+      "b08State": "NOT_CHEAP",
+      "valuePercentileWithinIndustry": 0.3684,
+      "industryH01Rank": 1,
+      "reason": "OUTRANKED:rank_7"
+     },
+     {
+      "ticker": "298040.KS",
+      "industry": "ELECTRONICS_ELECTRICAL",
+      "b08State": "NOT_CHEAP",
+      "valuePercentileWithinIndustry": 0.3421,
+      "industryH01Rank": 1,
+      "reason": "OUTRANKED:rank_8"
+     },
+     {
+      "ticker": "009150.KS",
+      "industry": "ELECTRONICS_ELECTRICAL",
+      "b08State": "NOT_CHEAP",
+      "valuePercentileWithinIndustry": 0.2632,
+      "industryH01Rank": 1,
+      "reason": "OUTRANKED:rank_9"
+     }
+    ],
+    "excluded": {
+     "NOT_CONFIRMED": [
+      {
+       "ticker": "000720.KS",
+       "industry": "CONSTRUCTION_ENGINEERING",
+       "b08State": "CHEAP_UNCONFIRMED",
+       "valuePercentileWithinIndustry": 0.8,
+       "industryH01Rank": 2,
+       "reason": "NOT_CONFIRMED:CHEAP_UNCONFIRMED"
+      },
+      {
+       "ticker": "001040.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5003,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "001440.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3684,
+       "industryH01Rank": 1,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "003550.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.4868,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "005940.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5089,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "006260.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.246,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "006400.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.6053,
+       "industryH01Rank": 1,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "007660.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3947,
+       "industryH01Rank": 1,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "009830.KS",
+       "industry": "CHEMICALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5,
+       "industryH01Rank": 4,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "010120.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.2368,
+       "industryH01Rank": 1,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "011070.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "CHEAP_UNCONFIRMED",
+       "valuePercentileWithinIndustry": 0.7895,
+       "industryH01Rank": 1,
+       "reason": "NOT_CONFIRMED:CHEAP_UNCONFIRMED"
+      },
+      {
+       "ticker": "011790.KS",
+       "industry": "CHEMICALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.25,
+       "industryH01Rank": 4,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "012450.KS",
+       "industry": "CAPITAL_GOODS_DEFENSE",
+       "b08State": "CHEAP_UNCONFIRMED",
+       "valuePercentileWithinIndustry": 0.7965,
+       "industryH01Rank": 6,
+       "reason": "NOT_CONFIRMED:CHEAP_UNCONFIRMED"
+      },
+      {
+       "ticker": "016360.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5433,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "017670.KS",
+       "industry": "COMMUNICATION_MEDIA_SOFTWARE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.4091,
+       "industryH01Rank": 5,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "018260.KS",
+       "industry": "COMMUNICATION_MEDIA_SOFTWARE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3636,
+       "industryH01Rank": 5,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "024110.KS",
+       "industry": "FINANCIALS",
+       "b08State": "CHEAP_UNCONFIRMED",
+       "valuePercentileWithinIndustry": 0.7196,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:CHEAP_UNCONFIRMED"
+      },
+      {
+       "ticker": "028050.KS",
+       "industry": "CONSTRUCTION_ENGINEERING",
+       "b08State": "CHEAP_UNCONFIRMED",
+       "valuePercentileWithinIndustry": 0.7,
+       "industryH01Rank": 2,
+       "reason": "NOT_CONFIRMED:CHEAP_UNCONFIRMED"
+      },
+      {
+       "ticker": "030200.KS",
+       "industry": "COMMUNICATION_MEDIA_SOFTWARE",
+       "b08State": "CHEAP_UNCONFIRMED",
+       "valuePercentileWithinIndustry": 0.9091,
+       "industryH01Rank": 5,
+       "reason": "NOT_CONFIRMED:CHEAP_UNCONFIRMED"
+      },
+      {
+       "ticker": "032830.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5019,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "034220.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5,
+       "industryH01Rank": 1,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "035720.KS",
+       "industry": "COMMUNICATION_MEDIA_SOFTWARE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.4545,
+       "industryH01Rank": 5,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "039490.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5777,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "047040.KS",
+       "industry": "CONSTRUCTION_ENGINEERING",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.4,
+       "industryH01Rank": 2,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "047810.KS",
+       "industry": "CAPITAL_GOODS_DEFENSE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.399,
+       "industryH01Rank": 6,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "051900.KS",
+       "industry": "CHEMICALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5,
+       "industryH01Rank": 4,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "051910.KS",
+       "industry": "CHEMICALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5,
+       "industryH01Rank": 4,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "052690.KS",
+       "industry": "CONSTRUCTION_ENGINEERING",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3,
+       "industryH01Rank": 2,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "062040.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.4474,
+       "industryH01Rank": 1,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "064400.KS",
+       "industry": "COMMUNICATION_MEDIA_SOFTWARE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3636,
+       "industryH01Rank": 5,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "066970.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.2105,
+       "industryH01Rank": 1,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "071050.KS",
+       "industry": "FINANCIALS",
+       "b08State": "CHEAP_UNCONFIRMED",
+       "valuePercentileWithinIndustry": 0.7406,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:CHEAP_UNCONFIRMED"
+      },
+      {
+       "ticker": "079550.KS",
+       "industry": "CAPITAL_GOODS_DEFENSE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3638,
+       "industryH01Rank": 6,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "088350.KS",
+       "industry": "FINANCIALS",
+       "b08State": "CHEAP_UNCONFIRMED",
+       "valuePercentileWithinIndustry": 0.9008,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:CHEAP_UNCONFIRMED"
+      },
+      {
+       "ticker": "138040.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.2481,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "138930.KS",
+       "industry": "FINANCIALS",
+       "b08State": "CHEAP_UNCONFIRMED",
+       "valuePercentileWithinIndustry": 0.7191,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:CHEAP_UNCONFIRMED"
+      },
+      {
+       "ticker": "161890.KS",
+       "industry": "CHEMICALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5,
+       "industryH01Rank": 4,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "175330.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.4105,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "180640.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.0492,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "272210.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.4474,
+       "industryH01Rank": 1,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "352820.KS",
+       "industry": "COMMUNICATION_MEDIA_SOFTWARE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.1364,
+       "industryH01Rank": 5,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "373220.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3947,
+       "industryH01Rank": 1,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "377300.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.0497,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "402340.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.4153,
+       "industryH01Rank": 3,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      },
+      {
+       "ticker": "454910.KS",
+       "industry": "CAPITAL_GOODS_DEFENSE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.117,
+       "industryH01Rank": 6,
+       "reason": "NOT_CONFIRMED:NOT_CHEAP"
+      }
+     ],
+     "OUTRANKED": [
+      {
+       "ticker": "003670.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3684,
+       "industryH01Rank": 1,
+       "reason": "OUTRANKED:rank_7"
+      },
+      {
+       "ticker": "009150.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.2632,
+       "industryH01Rank": 1,
+       "reason": "OUTRANKED:rank_9"
+      },
+      {
+       "ticker": "267260.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3947,
+       "industryH01Rank": 1,
+       "reason": "OUTRANKED:rank_6"
+      },
+      {
+       "ticker": "298040.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3421,
+       "industryH01Rank": 1,
+       "reason": "OUTRANKED:rank_8"
+      }
+     ],
+     "OUTSIDE_H01_INDUSTRIES": [
+      {
+       "ticker": "000810.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3745,
+       "industryH01Rank": 3,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "001450.KS",
+       "industry": "FINANCIALS",
+       "b08State": "CHEAP_CONFIRMED",
+       "valuePercentileWithinIndustry": 0.7562,
+       "industryH01Rank": 3,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "002380.KS",
+       "industry": "CHEMICALS",
+       "b08State": "CHEAP_CONFIRMED",
+       "valuePercentileWithinIndustry": 0.9375,
+       "industryH01Rank": 4,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "005830.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.4761,
+       "industryH01Rank": 3,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "009540.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.4298,
+       "industryH01Rank": 3,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "010140.KS",
+       "industry": "CAPITAL_GOODS_DEFENSE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.6362,
+       "industryH01Rank": 6,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "032640.KS",
+       "industry": "COMMUNICATION_MEDIA_SOFTWARE",
+       "b08State": "CHEAP_CONFIRMED",
+       "valuePercentileWithinIndustry": 0.7727,
+       "industryH01Rank": 5,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "034020.KS",
+       "industry": "CAPITAL_GOODS_DEFENSE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3926,
+       "industryH01Rank": 6,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "034730.KS",
+       "industry": "FINANCIALS",
+       "b08State": "CHEAP_CONFIRMED",
+       "valuePercentileWithinIndustry": 0.9513,
+       "industryH01Rank": 3,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "035420.KS",
+       "industry": "COMMUNICATION_MEDIA_SOFTWARE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.6364,
+       "industryH01Rank": 5,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "036570.KS",
+       "industry": "COMMUNICATION_MEDIA_SOFTWARE",
+       "b08State": "CHEAP_CONFIRMED",
+       "valuePercentileWithinIndustry": 0.7727,
+       "industryH01Rank": 5,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "042660.KS",
+       "industry": "CAPITAL_GOODS_DEFENSE",
+       "b08State": "CHEAP_CONFIRMED",
+       "valuePercentileWithinIndustry": 0.883,
+       "industryH01Rank": 6,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "042700.KS",
+       "industry": "CAPITAL_GOODS_DEFENSE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.2035,
+       "industryH01Rank": 6,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "055550.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.4083,
+       "industryH01Rank": 3,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "064350.KS",
+       "industry": "CAPITAL_GOODS_DEFENSE",
+       "b08State": "CHEAP_CONFIRMED",
+       "valuePercentileWithinIndustry": 0.7228,
+       "industryH01Rank": 6,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "078930.KS",
+       "industry": "FINANCIALS",
+       "b08State": "CHEAP_CONFIRMED",
+       "valuePercentileWithinIndustry": 0.7707,
+       "industryH01Rank": 3,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "086790.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.4734,
+       "industryH01Rank": 3,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "090430.KS",
+       "industry": "CHEMICALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5,
+       "industryH01Rank": 4,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "105560.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.2949,
+       "industryH01Rank": 3,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "241560.KS",
+       "industry": "CAPITAL_GOODS_DEFENSE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.0817,
+       "industryH01Rank": 6,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "259960.KS",
+       "industry": "COMMUNICATION_MEDIA_SOFTWARE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5909,
+       "industryH01Rank": 5,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "267250.KS",
+       "industry": "FINANCIALS",
+       "b08State": "CHEAP_CONFIRMED",
+       "valuePercentileWithinIndustry": 0.8379,
+       "industryH01Rank": 3,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "267270.KS",
+       "industry": "CAPITAL_GOODS_DEFENSE",
+       "b08State": "CHEAP_CONFIRMED",
+       "valuePercentileWithinIndustry": 0.9183,
+       "industryH01Rank": 6,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "278470.KS",
+       "industry": "CHEMICALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3125,
+       "industryH01Rank": 4,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "307950.KS",
+       "industry": "COMMUNICATION_MEDIA_SOFTWARE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.0909,
+       "industryH01Rank": 5,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "316140.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5723,
+       "industryH01Rank": 3,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "323410.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.1476,
+       "industryH01Rank": 3,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "329180.KS",
+       "industry": "CAPITAL_GOODS_DEFENSE",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5625,
+       "industryH01Rank": 6,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      },
+      {
+       "ticker": "443060.KS",
+       "industry": "CONSTRUCTION_ENGINEERING",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.3,
+       "industryH01Rank": 2,
+       "reason": "OUTSIDE_H01_INDUSTRIES"
+      }
+     ],
+     "QUALITY": [
+      {
+       "ticker": "000150.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": 1,
+       "reason": "QUALITY:MEDIAN_TRADED_VALUE_BELOW_5BN_KRW"
+      },
+      {
+       "ticker": "000500.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": 1,
+       "reason": "QUALITY:MEDIAN_TRADED_VALUE_BELOW_5BN_KRW"
+      },
+      {
+       "ticker": "000880.KS",
+       "industry": "CHEMICALS",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": 4,
+       "reason": "QUALITY:FEWER_THAN_20_POSITIVE_VOLUME_SESSIONS+SUSPENSION_OR_STALE_QUOTE_RISK+MEDIAN_TRADED_VALUE_BELOW_5BN_KRW"
+      },
+      {
+       "ticker": "005385.KS",
+       "industry": null,
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "QUALITY:PREFERRED_SHARE"
+      },
+      {
+       "ticker": "005387.KS",
+       "industry": null,
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "QUALITY:PREFERRED_SHARE"
+      },
+      {
+       "ticker": "005935.KS",
+       "industry": "ELECTRONICS_ELECTRICAL",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": 1,
+       "reason": "QUALITY:PREFERRED_SHARE"
+      },
+      {
+       "ticker": "010060.KS",
+       "industry": "FINANCIALS",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": 3,
+       "reason": "QUALITY:MEDIAN_TRADED_VALUE_BELOW_5BN_KRW"
+      },
+      {
+       "ticker": "029780.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.5551,
+       "industryH01Rank": 3,
+       "reason": "QUALITY:MEDIAN_TRADED_VALUE_BELOW_5BN_KRW"
+      }
+     ],
+     "S2_INELIGIBLE": [
+      {
+       "ticker": "000100.KS",
+       "industry": "HEALTHCARE",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "000270.KS",
+       "industry": "AUTOS",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "003230.KS",
+       "industry": "FOOD_BEVERAGE_TOBACCO",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "003490.KS",
+       "industry": "TRANSPORT_LOGISTICS",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "004020.KS",
+       "industry": "BASIC_MATERIALS",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "004170.KS",
+       "industry": "CONSUMER_RETAIL_SERVICES",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "005380.KS",
+       "industry": "AUTOS",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "005490.KS",
+       "industry": "BASIC_MATERIALS",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "010130.KS",
+       "industry": "BASIC_MATERIALS",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "010950.KS",
+       "industry": "ENERGY_UTILITIES",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "011200.KS",
+       "industry": "TRANSPORT_LOGISTICS",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "012330.KS",
+       "industry": "AUTOS",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "015760.KS",
+       "industry": "ENERGY_UTILITIES",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "021240.KS",
+       "industry": "CONSUMER_RETAIL_SERVICES",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "028260.KS",
+       "industry": "CONSUMER_RETAIL_SERVICES",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "033780.KS",
+       "industry": "FOOD_BEVERAGE_TOBACCO",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "047050.KS",
+       "industry": "CONSUMER_RETAIL_SERVICES",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "068270.KS",
+       "industry": "HEALTHCARE",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "086280.KS",
+       "industry": "TRANSPORT_LOGISTICS",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "096770.KS",
+       "industry": "ENERGY_UTILITIES",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "128940.KS",
+       "industry": "HEALTHCARE",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "161390.KS",
+       "industry": "BASIC_MATERIALS",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "207940.KS",
+       "industry": "HEALTHCARE",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "271560.KS",
+       "industry": "FOOD_BEVERAGE_TOBACCO",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      },
+      {
+       "ticker": "326030.KS",
+       "industry": "HOLDINGS_BUSINESS_SERVICES",
+       "b08State": "INELIGIBLE",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": null,
+       "reason": "S2_INELIGIBLE"
+      }
+     ],
+     "S2_MISSING_VALUE_INPUT": [
+      {
+       "ticker": "0126Z0.KS",
+       "industry": "FINANCIALS",
+       "b08State": "MISSING_VALUE_INPUT",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": 3,
+       "reason": "S2_MISSING_VALUE_INPUT"
+      },
+      {
+       "ticker": "082740.KS",
+       "industry": "CAPITAL_GOODS_DEFENSE",
+       "b08State": "MISSING_VALUE_INPUT",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": 6,
+       "reason": "S2_MISSING_VALUE_INPUT"
+      },
+      {
+       "ticker": "088980.KS",
+       "industry": "FINANCIALS",
+       "b08State": "MISSING_VALUE_INPUT",
+       "valuePercentileWithinIndustry": null,
+       "industryH01Rank": 3,
+       "reason": "S2_MISSING_VALUE_INPUT"
+      }
+     ],
+     "WITHHELD_UNRESOLVED_CORPORATE_ACTION_BASIS": [
+      {
+       "ticker": "006800.KS",
+       "industry": "FINANCIALS",
+       "b08State": "NOT_CHEAP",
+       "valuePercentileWithinIndustry": 0.4954,
+       "industryH01Rank": 3,
+       "reason": "WITHHELD_UNRESOLVED_CORPORATE_ACTION_BASIS"
+      }
+     ]
+    }
+   },
+   "withheldWouldHavePicked": []
+  }
+ },
+ "costsAssumed": "adaptive-cocktail-v1 schedule: stocks 1.5 bp commission + 4 bp half-spread + dated sell tax; 069500.KS 2.5 bp; charged on traded value inside the frozen self-financing engine",
+ "benchmark": "069500.KS",
+ "researchOnly": true,
+ "productionEffect": "NONE",
+ "evidenceClass": "NOT_PROSPECTIVE_EVIDENCE",
+ "receiptSha256": "3f6ac707b1d3cb6488a2d8cb7fc377b925f8d216935852c9ad77b93201c01dc9"
+}

@@ -85,6 +85,11 @@ def industry_book(g, base):
     return out
 
 
+def _rank(ind_rank, industry):
+    v = ind_rank.get(industry, np.nan) if isinstance(industry, str) else np.nan
+    return None if pd.isna(v) else int(v)
+
+
 def quality_failures(row):
     """Every guard of the frozen quality mask that this row fails, in the mask's own order."""
     out = []
@@ -131,7 +136,7 @@ def decide(g):
     out["B3_H01_INDUSTRIES_S2_SELECTION"]["withheldWouldHavePicked"] = s3_would
     out["B2_H01_CAP_INDUSTRY_BASKET"]["selection"] = {
         "s1Picks": [{"ticker": t, "industry": g.loc[g["ticker"] == t, "industry"].iloc[0],
-                     "industryH01Rank": int(ind_rank.get(g.loc[g["ticker"] == t, "industry"].iloc[0], np.nan))} for t in s1_picks],
+                     "industryH01Rank": _rank(ind_rank, g.loc[g["ticker"] == t, "industry"].iloc[0])} for t in s1_picks],
         "industries": industries,
         "basketMembers": {ind: sorted(t for t in M.industry_basket(g, ind) if t not in C.WITHHELD) for ind in industries}}
     out["B0_069500_ONLY"]["selection"] = {"rule": "069500.KS 100%"}
@@ -148,9 +153,10 @@ def _s2_selection(g, picks, industries, ind_rank):
     sel, excl = [], {}
     for _, r in g.sort_values("ticker").iterrows():
         t = r["ticker"]
-        base = {"ticker": t, "industry": r["industry"], "b08State": r["b08State"],
+        base = {"ticker": t, "industry": r["industry"] if isinstance(r["industry"], str) else None,
+                "b08State": r["b08State"] if isinstance(r["b08State"], str) else None,
                 "valuePercentileWithinIndustry": None if pd.isna(r["B08_valueBusinessConfirmation"]) else round(float(r["B08_valueBusinessConfirmation"]), 4),
-                "industryH01Rank": None if r["industry"] not in ind_rank.index else int(ind_rank[r["industry"]])}
+                "industryH01Rank": _rank(ind_rank, r["industry"])}
         if t in picks:
             sel.append({**base, "rank": rank[t], "weight": 0.2})
             continue
@@ -160,9 +166,9 @@ def _s2_selection(g, picks, industries, ind_rank):
         elif t in C.WITHHELD:
             reason = "WITHHELD_UNRESOLVED_CORPORATE_ACTION_BASIS"
         elif pd.isna(r["B08_valueBusinessConfirmation"]):
-            reason = "S2_" + str(r["b08State"] or "UNMEASURED")
+            reason = "S2_" + (r["b08State"] if isinstance(r["b08State"], str) else "UNMEASURED")
         elif r["b08Confirmed"] != 1:
-            reason = "NOT_CONFIRMED:" + str(r["b08State"])
+            reason = "NOT_CONFIRMED:" + (r["b08State"] if isinstance(r["b08State"], str) else "UNMEASURED")
         elif industries is not None and r["industry"] not in industries:
             reason = "OUTSIDE_H01_INDUSTRIES"
         else:
