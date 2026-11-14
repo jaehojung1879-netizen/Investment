@@ -1,5 +1,9 @@
 # 미국 이중 벤치마크 기반 — us-dual-benchmark-foundation-v1 (SPY + QQQ)
 
+> **2026-11-14 QQQ 분배금 정정.** 원천 스냅샷에서 2020-09-21 배당락의 주당 0.38824달러가 누락됐다. [정정 비교](us-readiness/us-qqq-distribution-correction-v1.json)는 기존 시장 종가에 이 분배금을 한 번 적용한다. 같은 기간의 USD QQQ CAGR은 19.838%에서 19.851%로 수정됐다. 아래 수치와 기존 비교 JSON은 당시 기록이다.
+
+SEC 공시 101건에서 두 펀드의 보유내역 79개 펀드-기준일을 확인했다(SPY 43개, QQQ 36개). [보유내역 원천 감사](us-readiness/us-etf-sec-holdings-cross-check-v1.json)에 공시일·기준일·접수번호가 있다. 이는 시점별 나스닥100과 S&P 500 복원에 쓸 교차 근거다.
+
 **증거 등급:** ETF 비교는 `DESCRIPTIVE_ETF_COMPARISON_NOT_ALPHA`(기술 통계), 데이터·멤버십·커버리지 감사는
 `OUTCOME_BLIND`(종목 수익률·라벨·모델 출력을 읽지 않음). **새 알파 연구는 실행하지 않았다.**
 `weekly-passive-first-v1`, 주간 영수증, `config.json`의 공식 벤치마크(`benchmarks.US = SPY`)는 바뀌지 않는다.
