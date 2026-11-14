@@ -49,6 +49,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--market-recovery", action="store_true")
     parser.add_argument("--supplement", action="store_true", help="Only action histories and verified-rename quote supplements")
+    parser.add_argument("--last-gaps", action="store_true", help="Bounded FMP fallback for KVUE/WBD and Class B successor PARA")
     parser.add_argument("--transfer-cert", type=Path, default=HERE / "inputs/transfer-cert.pem")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args(argv)
@@ -91,7 +92,7 @@ def main(argv=None):
 
     # A missing entitlement is checked separately for every endpoint, not inferred
     # from the working fundamentals key or from a rejected candle call.
-    for endpoint in (() if args.supplement else ("candle", "dividend", "split", "profile2")):
+    for endpoint in (() if args.supplement or args.last_gaps else ("candle", "dividend", "split", "profile2")):
         status = record("FINNHUB", endpoint, "AAPL", "2013-01-01", AS_OF, True)
         if status != 200:
             for r in requests:
@@ -104,7 +105,18 @@ def main(argv=None):
             if status in {401, 403, 429, "NO_KEY", "TRANSPORT_ERROR"}:
                 break
 
-    if args.supplement:
+    if args.last_gaps:
+        for endpoint in ("historical-price-eod/full", "dividends", "splits"):
+            status = record("FMP", endpoint, "AAPL", "2011-12-29", AS_OF, True)
+            if status in {401, 403, 429, "NO_KEY", "TRANSPORT_ERROR"}:
+                break
+            if status != 200:
+                continue
+            for ticker in ("KVUE", "WBD", "PARA"):
+                status = record("FMP", endpoint, ticker, "2011-12-29", AS_OF)
+                if status in {401, 403, 429, "NO_KEY", "TRANSPORT_ERROR"}:
+                    return 1  # no incomplete transfer is represented as success
+    elif args.supplement:
         for ticker in ("COR", "BALL", "LUMN", "META"):
             record("FMP", "historical-price-eod/full", ticker, "2011-12-29", AS_OF)
         for endpoint in ("dividends", "splits"):
