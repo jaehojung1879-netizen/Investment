@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from bisect import bisect_left, bisect_right
+from decimal import Decimal, ROUND_HALF_UP
 import math
 
 import numpy as np
@@ -45,6 +46,25 @@ def whole_window_source(preferred, fallback, entry, end):
     return fallback
 
 
+def required_old_quote_end(entry, end, terminal):
+    if terminal and entry <= terminal["date"] <= end:
+        return terminal["last_trading_date"]
+    return end
+
+
+def fractional_stock_terms(quantity, ratio, cash_per_successor_share):
+    """Split one documented whole-share holding into successor stock and cash."""
+    if not isinstance(quantity, int) or isinstance(quantity, bool) or quantity <= 0:
+        raise Unresolved("FRACTIONAL_SETTLEMENT_POSITION_QUANTITY_UNVERIFIED")
+    if not positive(ratio) or not positive(cash_per_successor_share):
+        raise Unresolved("FRACTIONAL_SETTLEMENT_RATE_UNVERIFIED")
+    entitlement = Decimal(quantity) * Decimal(str(ratio))
+    whole = int(entitlement)
+    cash = ((entitlement - whole) * Decimal(str(cash_per_successor_share))).quantize(
+        Decimal("0.01"), rounding=ROUND_HALF_UP)
+    return whole, cash
+
+
 def frame_series(ticker, frame, *, source, receipt, basis, adjusted=None):
     """Reuse the registered forward adjustment once, preserving missing sessions."""
     if basis != "SPLIT_ADJUSTED_DIVIDEND_UNADJUSTED":
@@ -73,7 +93,8 @@ def frame_series(ticker, frame, *, source, receipt, basis, adjusted=None):
                   set(frame.index[good].strftime("%Y-%m-%d")), source, receipt), check
 
 
-def holding(series, entry, end, calendar, *, terminal=None, successors=None, cvr=None, require_admission=True):
+def holding(series, entry, end, calendar, *, terminal=None, successors=None, cvr=None,
+            terminal_position_shares=None, require_admission=True):
     """One fixed gross-TR label; never fills an unknown exit or an absent quote."""
     if require_admission and not (series.identity_verified and series.actions_verified):
         raise Unresolved("SECURITY_OR_ACTION_ADMISSION_UNRESOLVED")
@@ -108,9 +129,21 @@ def holding(series, entry, end, calendar, *, terminal=None, successors=None, cvr
             return -1.0
         raise Unresolved("TERMINAL_CONSIDERATION_MISSING")
     value = shares * float(cash or 0)
+    stock_per_old_share = ratio or 0
     if ratio:
         if terminal.get("cash_in_lieu_required") and not terminal.get("fractional_reference_shares_authorized"):
-            raise Unresolved("FRACTIONAL_SHARE_SETTLEMENT_UNRESOLVED")
+            if terminal_position_shares is None:
+                raise Unresolved("FRACTIONAL_SHARE_SETTLEMENT_UNRESOLVED")
+            if not terminal.get("cash_in_lieu_citation"):
+                raise Unresolved("FRACTIONAL_SETTLEMENT_RATE_UNVERIFIED")
+            whole, cash_in_lieu = fractional_stock_terms(
+                terminal_position_shares, ratio, terminal.get("cash_in_lieu_price"))
+            known_on = terminal.get("cash_in_lieu_known_on")
+            if cash_in_lieu and (not isinstance(known_on, str) or not terminal["date"] <= known_on <= end):
+                raise Unresolved("FRACTIONAL_SETTLEMENT_RATE_NOT_KNOWN_AT_HORIZON")
+            stock_per_old_share = whole / terminal_position_shares
+            value += shares * float(cash_in_lieu) / terminal_position_shares
+    if stock_per_old_share:
         successor = (successors or {}).get(terminal.get("successor"))
         first = terminal["date"]
         if successor is None or not (successor.identity_verified and successor.actions_verified):
@@ -118,7 +151,7 @@ def holding(series, entry, end, calendar, *, terminal=None, successors=None, cvr
         days = calendar[bisect_left(calendar, first):bisect_right(calendar, end)]
         if any(d not in successor.good_days for d in days):
             raise Unresolved("SUCCESSOR_PRICE_PATH_GAP")
-        value += shares * ratio * float(successor.raw_close.at[first]) * float(successor.tr.at[end] / successor.tr.at[first])
+        value += shares * stock_per_old_share * float(successor.raw_close.at[first]) * float(successor.tr.at[end] / successor.tr.at[first])
     if terminal.get("cvr"):
         value += shares * cvr[end]
     return value - 1

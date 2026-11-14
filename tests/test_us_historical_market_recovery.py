@@ -3,8 +3,11 @@ import pandas as pd
 import pytest
 import hashlib
 import json
+from decimal import Decimal
 
-from research.us_historical_market_recovery_v1.engine import Series, Unresolved, frame_series, holding, ranges, whole_window_source
+from research.us_historical_market_recovery_v1.engine import (
+    Series, Unresolved, fractional_stock_terms, frame_series, holding, ranges, required_old_quote_end, whole_window_source,
+)
 from research.us_historical_market_recovery_v1.collect import private_root
 
 
@@ -18,6 +21,54 @@ def test_cash_merger_uses_cited_consideration_and_keeps_cash():
     series = source(days[:2], [100, 110])
     terminal = {"date": days[2], "last_trading_date": days[1], "cash": 120, "verified": True, "citation": "synthetic"}
     assert holding(series, days[0], days[-1], days, terminal=terminal) == pytest.approx(.2)
+
+
+def test_whole_publisher_can_end_at_last_trade_for_terminal_holding():
+    days = ["2020-01-02", "2020-01-03", "2020-01-06", "2020-01-07"]
+    old = source(days[:1], [100])
+    extension = source(days[:2], [100, 110])
+    terminal = {"date": days[2], "last_trading_date": days[1], "cash": 120,
+                "verified": True, "citation": "synthetic"}
+    quote_end = required_old_quote_end(days[0], days[-1], terminal)
+    assert whole_window_source(extension, old, days[0], quote_end) is extension
+    assert required_old_quote_end(days[0], days[1], terminal) == days[1]
+    assert holding(extension, days[0], days[-1], days, terminal=terminal) == pytest.approx(.2)
+
+
+def test_fractional_payment_uses_documented_position_and_stock_carries_forward():
+    assert fractional_stock_terms(100, .255, 113.1311) == (25, Decimal("56.57"))
+    assert fractional_stock_terms(200, .255, 113.1311) == (51, Decimal("0.00"))
+    days = ["2020-01-02", "2020-01-03", "2020-01-06"]
+    original = source(days[:1], [100])
+    successor = source(days[1:], [110, 120])
+    terminal = {"date": days[1], "last_trading_date": days[0], "shares": .255,
+                "successor": "NEW", "verified": True, "citation": "synthetic",
+                "cash_in_lieu_required": True, "cash_in_lieu_price": 113.1311,
+                "cash_in_lieu_citation": "synthetic settlement", "cash_in_lieu_known_on": days[1]}
+    kwargs = {"terminal": terminal, "successors": {"NEW": successor}}
+    with pytest.raises(Unresolved, match="FRACTIONAL_SHARE_SETTLEMENT_UNRESOLVED"):
+        holding(original, days[0], days[-1], days, **kwargs)
+    value = holding(original, days[0], days[-1], days, terminal_position_shares=100, **kwargs)
+    assert value == pytest.approx((25 * 120 + 56.57) / (100 * 100) - 1)
+    single = holding(original, days[0], days[-1], days, terminal=terminal, terminal_position_shares=1)
+    assert single == pytest.approx(28.85 / 100 - 1)
+    with pytest.raises(Unresolved, match="FRACTIONAL_SETTLEMENT_POSITION_QUANTITY_UNVERIFIED"):
+        holding(original, days[0], days[-1], days, terminal_position_shares=1.5, **kwargs)
+    terminal["cash_in_lieu_known_on"] = "2020-01-07"
+    with pytest.raises(Unresolved, match="FRACTIONAL_SETTLEMENT_RATE_NOT_KNOWN_AT_HORIZON"):
+        holding(original, days[0], days[-1], days, terminal_position_shares=100, **kwargs)
+
+
+def test_reused_para_provider_identity_is_refused_even_with_matching_symbol(tmp_path):
+    from research.us_historical_market_recovery_v1.audit import chart_series, check_paramount_class_b_chart
+    metadata = {"symbol": "PARA", "longName": "Parabolic Technologies, Inc.", "instrumentType": "EQUITY"}
+    raw = json.dumps({"chart": {"result": [{"meta": metadata}]}}).encode()
+    (tmp_path / "reused.json").write_bytes(raw)
+    record = {"ticker": "PARA", "audit_identifier": "VIAC", "object": "reused.json",
+              "sha256": hashlib.sha256(raw).hexdigest()}
+    with pytest.raises(Unresolved, match="PARA_VENDOR_ISSUER_MISMATCH_OR_UNVERIFIED"):
+        chart_series(record, tmp_path)
+    check_paramount_class_b_chart(record, dict(metadata, longName="Paramount Global"))
 
 
 def test_unknown_terminal_is_not_last_close_or_zero():

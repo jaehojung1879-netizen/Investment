@@ -21,12 +21,18 @@ import pandas as pd
 from pipeline import price_adjustment as PA, replay_calendar as RC
 from pipeline.us_departed_price_recovery import parse_csv
 from research.us_historical_market_recovery_v1.collect import AS_OF, private_root
-from research.us_historical_market_recovery_v1.engine import Series, Unresolved, frame_series, holding, positive, ranges, whole_window_source
+from research.us_historical_market_recovery_v1.engine import (
+    Series, Unresolved, frame_series, holding, positive, ranges, required_old_quote_end, whole_window_source,
+)
 
 ROOT = Path(__file__).resolve().parents[2]
 ALIASES = {"ABC": ("COR", "1140859", "2023-08-30"), "BLL": ("BALL", "9389", "2022-05-10"),
            "CTL": ("LUMN", "18926", "2020-09-18"), "FB": ("META", "1326801", "2022-06-09")}
 IDENTITY_DOC = {"ABC": "ATTACHED_ABC", "BLL": "BLL_EFFECTIVE", "CTL": "CTL_EFFECTIVE", "FB": "FB_META"}
+PARAMOUNT_CLASS_B_ISSUER_NAMES = {"Paramount Global", "ViacomCBS Inc.", "ViacomCBS Inc"}
+# The pinned replay and the supplemental download both have unproven PARA
+# lineage. Keep the original replay for the before comparison only.
+QUARANTINED_BASELINE = {"PARA"}
 
 
 def canonical(value):
@@ -47,11 +53,24 @@ def write_private(path, value):
     Path(path).write_bytes(gzip.compress(raw, mtime=0) if str(path).endswith(".gz") else raw)
 
 
+def check_paramount_class_b_chart(record, metadata):
+    """Require explicit source identity for the reused PARA ticker."""
+    if record.get("ticker") != "PARA":
+        return
+    names = {metadata[key].strip() for key in ("longName", "shortName")
+             if isinstance(metadata.get(key), str) and metadata[key].strip()}
+    if not names or not names <= PARAMOUNT_CLASS_B_ISSUER_NAMES:
+        raise Unresolved("PARA_VENDOR_ISSUER_MISMATCH_OR_UNVERIFIED")
+    if metadata.get("symbol") != "PARA" or metadata.get("instrumentType") != "EQUITY":
+        raise Unresolved("PARA_VENDOR_SECURITY_TYPE_OR_SYMBOL_UNVERIFIED")
+
+
 def chart_series(record, private, *, from_day=None):
     raw = (private / record["object"]).read_bytes()
     if digest(raw) != record["sha256"]:
         raise Unresolved("CHART_CHECKSUM_MISMATCH")
     chart = json.loads(raw)["chart"]["result"][0]
+    check_paramount_class_b_chart(record, chart.get("meta", {}))
     if chart.get("meta", {}).get("currency") != "USD":
         raise Unresolved("QUOTE_CURRENCY_NOT_VERIFIED_USD")
     days = pd.to_datetime([datetime.fromtimestamp(t, timezone.utc).strftime("%Y-%m-%d") for t in chart["timestamp"]])
@@ -232,6 +251,9 @@ def main(argv=None):
             s = new_sources[ticker]
             terminal["last_trading_date"] = max(d for d in s.good_days if d <= terminal["date"])
             terminal["citation"] = source_receipts[ticker]["identity_citation"]
+    settlement = read(Path(__file__).with_name("inputs") / "terminal-followup.json")
+    terminals["MRO"].update(settlement["MRO"])
+    terminals.update({ticker: settlement[ticker] for ticker in ("KVUE", "WBD")})
     # A whole publisher series per security. No old/new level concatenation.
     baseline = {}
     for ticker, rows in original.items():
@@ -283,7 +305,7 @@ def main(argv=None):
     helper_pins = verify_input_helpers()
     original_cohorts = read(private / "original-input-eligible-cohorts.json")
     repaired_file = private / "repaired-input-eligible-cohorts.json"
-    frame = pd.DataFrame({t: s.tr for t, s in baseline.items()})
+    frame = pd.DataFrame({t: s.tr for t, s in baseline.items() if t not in QUARANTINED_BASELINE})
     fixed_sessions = RC.sessions("2011-01-03", "2026-09-14", "US")
     frame = frame.reindex(fixed_sessions)
     for ticker, source in new_sources.items():
@@ -293,6 +315,7 @@ def main(argv=None):
                         "authenticated-responses.json.gz", "supplement-responses.json.gz", "new_charts.json")]
     dependency_files += [ROOT / n for n in ("scripts/run_us_decision_pilot.py", "pipeline/us_decision_pilot.py",
                          "research/us_historical_market_recovery_v1/audit.py", "research/us_historical_market_recovery_v1/engine.py")]
+    dependency_files.append(Path(__file__).with_name("inputs") / "terminal-followup.json")
     cache_key = digest(canonical([digest(p.read_bytes()) for p in dependency_files]))
     repaired = read(repaired_file) if repaired_file.exists() else {}
     if repaired.get("input_cache_key") != cache_key:
@@ -317,27 +340,33 @@ def main(argv=None):
             for phase, members in (("before", old_cohorts), ("after", new_cohorts)):
                 status, value, benchmark_value = None, None, None
                 missing_security, missing_benchmark = [], []
-                if ticker not in members.get(day, set()):
+                if phase == "after" and ticker in QUARANTINED_BASELINE:
+                    status = "PRICE_SECURITY_IDENTITY_QUARANTINED" if end <= AS_OF else "NOT_MATURED"
+                elif ticker not in members.get(day, set()):
                     status = "INPUT_NOT_ELIGIBLE"
                 elif end > AS_OF:
                     status = "NOT_MATURED"
                 else:
-                    source = whole_window_source(label_followups.get(ticker), new_sources.get(ticker, baseline.get(ticker)), entry, end) if phase == "after" else baseline.get(ticker)
+                    terminal = terminals.get(ticker) if phase == "after" else None
+                    quote_end = required_old_quote_end(entry, end, terminal)
+                    source = baseline.get(ticker)
                     if phase == "after":
-                        source = whole_window_source(alternate_series.get(ticker), source, entry, end)
+                        source = whole_window_source(label_followups.get(ticker), new_sources.get(ticker, source),
+                                                     entry, quote_end)
+                        source = whole_window_source(alternate_series.get(ticker), source, entry, quote_end)
                     if source is None:
                         status = "PRICE_SOURCE_MISSING"
                     else:
                         try:
-                            value = holding(source, entry, end, calendar,
-                                            terminal=terminals.get(ticker) if phase == "after" else None)
+                            if terminal and entry <= terminal["date"] <= end and source is baseline.get(ticker):
+                                raise Unresolved("TERMINAL_RAW_CLOSE_UNVERIFIED")
+                            value = holding(source, entry, end, calendar, terminal=terminal,
+                                            successors=label_followups if phase == "after" else None)
                             benchmark_value = holding(spy if phase == "after" else baseline["SPY"], entry, end, calendar)
                             status = "COMPLETE_ORIGINAL_RESEARCH_CONTRACT"
                         except Unresolved as exc:
                             status = str(exc)
                             window = calendar[entry_pos:entry_pos + horizon + 1]
-                            terminal = terminals.get(ticker) if phase == "after" else None
-                            quote_end = terminal["last_trading_date"] if terminal and entry <= terminal["date"] <= end else end
                             missing_security = [d for d in window if d <= quote_end and d not in source.good_days]
                             benchmark = spy if phase == "after" else baseline["SPY"]
                             missing_benchmark = [d for d in window if d not in benchmark.good_days]
