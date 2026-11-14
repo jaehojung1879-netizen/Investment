@@ -2,6 +2,8 @@
 
 실행 기준: 2026-11-14 KST, 관측 종료 2026-11-13 미국 거래일. 실제 자료 수집과 검증을 수행한 독립 개발 입력이다. 새 모델·전략 평가, 기존 연구 재실행, 정식 데이터 편입 승인은 수행하지 않았다.
 
+**정정 상태:** 아래 수치와 `results/`의 집계는 #337 커밋 `bab11f48`의 보관본이다. PARA 신원 충돌이 발견되어 현재 연구 적격성이나 보유 경로 수에 사용하지 않는다. [정정 내역과 재실행 범위](FOLLOWUP-2026-11-14.md)를 참조한다.
+
 <!-- numerical-results -->
 212개 중 **14개**에 새 가격 응답 또는 공식 사건 원문을 추가 확보했다(가격/행동 패킷 9개, 신규 사건 원문만 추가한 5개). 기존 파일 재확보 409개는 신규 수에서 제외했다.
 
@@ -40,7 +42,7 @@
 
 계정 수집 실행: [대조군/기존 probe](https://github.com/jaehojung1879-netizen/Investment/actions/runs/43538004827), [212개](https://github.com/jaehojung1879-netizen/Investment/actions/runs/43539000217), [배당·분할 보충](https://github.com/jaehojung1879-netizen/Investment/actions/runs/43540781549). 모두 completed/success다. skipped 작업은 성공으로 세지 않는다. 새 결제는 없었다.
 
-마지막 대체 수집 [실행](https://github.com/jaehojung1879-netizen/Investment/actions/runs/43546636111)은 **failure**다. FMP의 KVUE·WBD·PARA 가격은 모두 402였고, 이후 PARA 배당 429에서 계정 요청을 중단했다. 이 실행에서 새 대상 가격은 확보하지 못했고 원응답 전송도 완료하지 못해 로그 상태 영수증만 보존했다. 이를 성공으로 집계하지 않았다. 공개 Yahoo에서 PARA의 2021-02-12~2023-12-27 723행과 행동 자료는 별도로 확보해 VIAC의 동일 Class B 후속 자료로 검증했다. FMP VIAC와 이어 붙이지 않고 각 보유 전체를 덮는 원천만 사용한다. [추가 조회 기록](results/supplemental-source-attempts.json)
+마지막 대체 수집 [실행](https://github.com/jaehojung1879-netizen/Investment/actions/runs/43546636111)은 **failure**다. FMP의 KVUE·WBD·PARA 가격은 모두 402였고, 이후 PARA 배당 429에서 계정 요청을 중단했다. 이 실행에서 새 대상 가격은 확보하지 못했고 원응답 전송도 완료하지 못해 로그 상태 영수증만 보존했다. 공개 Yahoo의 PARA 응답 723행은 공급원 메타데이터에 Parabolic Technologies로 표시되어 Paramount Class B 검증에서 거부했다. [추가 조회 기록](results/supplemental-source-attempts.json)
 
 ## 기업행동과 식별 보류
 
@@ -57,6 +59,8 @@
 | XOM | 수집 212개 밖의 대조 사례. 같은 티커라도 2026-07-01 CIK34088→2115436의 1:1 재편 근거를 보존 |
 
 전체 212개 식별 원장은 [security-lineage.json](results/security-lineage.json), 공식 원문 영수증은 [public-source-receipts.json](results/public-source-receipts.json)이다. CIK는 발행사 ID이며 주식 클래스의 영구 증권 ID를 대신하지 않는다. 미분류 사건 194개를 모두 합병·상장폐지로 단정하지 않았다.
+
+[후속 SEC·S&P 공개 근거 원장](inputs/departed-public-evidence.json)은 같은 212개 식별자를 포함한다. 공식 원문을 연결한 149개 중 115개에서 Form 25의 발행사와 증권 종류를 확인했고, 26개에서 S&P 편출 공지를 확인했다. 일부 종목이 두 집계에 모두 포함된다. 편출일, 거래 정지일, 합병 효력일과 가격 자료의 적격성은 별도 확인 항목이다.
 
 확인된 은행 관리 공백 3개는 사건 효력년 2023년에 집중된다. 첨부 역사 종목-주에서 2022년 신호가 2023년 은행 사건을 가로지르는 후보는 H126 28건, H252 80건이다. 2018~2020년 혼합 합병 및 2021~2022년 주식 합병의 교차 구간도 별도 집계했다. 이 표는 회계·산업·증권 적격을 모두 통과한 H 분모가 아닌 누락 진단이다. 194개 미분류 때문에 전체 모집단의 연도 편향이 해소됐다고 결론 내릴 수 없다. [연도별 근거](results/missingness-by-year.json)
 
