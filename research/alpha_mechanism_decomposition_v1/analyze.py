@@ -197,7 +197,7 @@ def term_by(legs, years, col):
 def h1(ctx, R, phase):
     sess, end, start, bench = ctx.I["sessions"], R["end"], R["start"], R["bench"]
     years = (len(sess[(sess >= start) & (sess <= end)]) - 1) / 252
-    out, legs_all, per_all = {}, [], []
+    out, legs_all, per_all, mech_events = {}, [], [], []
     chosen = {d: max(w, key=w.get) for d, w in R["weights"][SMS].items()}
     sleeve_legs = {}
     for name in [SMS, "STATIC_EW4"] + SLEEVES:
@@ -206,6 +206,7 @@ def h1(ctx, R, phase):
                                                     extra=(lambda d: {"sleeve": chosen[d]}) if name == SMS else None)
         legs["policy"], legs["phase"] = name, phase
         per_rows["policy"], per_rows["phase"] = name, phase
+        mech_events += mechanics_events(ctx, legs, per_rows, name, phase)
         legs_all.append(legs)
         per_all.append(per_rows)
         s["byYear"] = term_by(legs.assign(y=legs["execution"].dt.year), 1.0, "y")
@@ -246,7 +247,33 @@ def h1(ctx, R, phase):
                                                      "COST", "compoundingNet")},
         "persistence": sleeve_persistence(gross, ch, R, sess),
         "byChosenSleeve": {k: {t: r6(sum(pr[k].at[p, t] for p in ch.index[ch == k]) / years) for t in list(M.TERMS) + ["excess"]} for k in SLEEVES}}
+    out["_mechanicsEvents"] = mech_events
     return out, pd.concat(legs_all), pd.concat(per_all)
+
+
+def mechanics_events(ctx, legs, per_rows, name, phase, threshold=0.002):
+    """Name every period where the frozen engine's gross return departs from the buy-and-hold target book by more than `threshold`.
+    The engine keeps a name it cannot trade at the execution close (zero volume / no close) and writes a terminated name off at ZERO;
+    the target book does neither. The names responsible are the previous period's stock legs that were untradable at this execution
+    session or whose terminal session falls inside this period."""
+    out = []
+    sess = ctx.I["sessions"]
+    prev = {k: set(g["asset"]) - {M.ETF, M.CASH} for k, g in legs.groupby("period")}
+    for _, r in per_rows.iterrows():
+        if not np.isfinite(r["MECHANICS"]) or abs(r["MECHANICS"]) <= threshold:
+            continue
+        k, e, x = int(r["period"]), r["execution"], r["periodEnd"]
+        i = ctx.px.pos[e]
+        locked = sorted(t for t in prev.get(k - 1, ()) if not ctx.px.tradable[i, ctx.px.col[t]])
+        term = sorted(t for t in prev.get(k - 1, ()) | prev.get(k, set()) if t in ctx.pp.terminal and e < ctx.pp.terminal[t] <= x
+                      or (t in ctx.pp.terminal and ctx.pp.terminal[t] < x and t in locked))
+        untradable_days = {t: int((~ctx.px.tradable[i:ctx.px.pos[x] + 1, ctx.px.col[t]]).sum()) for t in locked}
+        kind = ("TERMINAL_WRITE_OFF_AT_ZERO_UNRESOLVED_CONSIDERATION" if term else
+                "LOCKED_UNTRADABLE_AT_REBALANCE" if locked else "DRIFT_OR_NETTING")
+        out.append({"policy": name, "phase": phase, "execution": str(e.date()), "periodEnd": str(x.date()), "mechanics": r6(r["MECHANICS"]),
+                    "kind": kind, "lockedNames": locked, "terminalNames": term, "untradableSessionsInPeriod": untradable_days,
+                    "sessionsInPeriod": int(len(sess[(sess > e) & (sess <= x)]))})
+    return out
 
 
 def sleeve_persistence(gross, ch, R, sess):
@@ -415,6 +442,9 @@ def bridge(ctx, I):
             yearly[int(y)] = r6(gg.iloc[-1] / (nav.iloc[i0 - 1] if i0 else nav.iloc[0]) - 1)
         results[(gate, start16, phase0, cengine, corrected, withheld)] = {"cagr": cg, "etfCagr": bc, "excess": cg - bc, "start": str(start.date()),
                                                                          "yearly": yearly}
+        if not cengine:
+            # the tournament's own metric annualises nav_end / 1.0 (the pre-trade NAV), i.e. it includes the first purchase cost
+            results[(gate, start16, phase0, cengine, corrected, withheld)]["cagrTournamentConvention"] = float(nav.iloc[-1]) ** (252 / (len(nav) - 1)) - 1
     factors = ["gate", "start2016", "phase0", "cocktailEngine", "correctedFinalQuotes", "withhold006800"]
     origin = (1, 1, 0, 0, 0, 0)
     target = (0, 0, 1, 1, 1, 1)
@@ -441,6 +471,9 @@ def bridge(ctx, I):
         cur = cur | {i}
         path.append({"step": f, "cagrBefore": r6(before), "cagrAfter": r6(val(cur, "cagr")), "delta": r6(val(cur, "cagr") - before)})
     return {"tournamentPhase": t_phase, "origin": dict(zip(factors, origin)), "target": dict(zip(factors, target)),
+            "originReproduction": {"publishedGated": 0.232735, "publishedForced": 0.230184,
+                                   "reproducedGatedTournamentConvention": r6(results[origin]["cagrTournamentConvention"]),
+                                   "reproducedForcedTournamentConvention": r6(results[(0,) + origin[1:]]["cagrTournamentConvention"])},
             "originCagr": r6(results[origin]["cagr"]), "targetCagr": r6(results[target]["cagr"]),
             "originExcess": r6(results[origin]["excess"]), "targetExcess": r6(results[target]["excess"]),
             "shapley": shap, "sequentialPath": path,
@@ -891,6 +924,7 @@ def write_outputs(I, H1, sens, legs, per, F, ind_stats, within, entry, s2_rows, 
                             "KR_STATE_MACRO_INPUTS": "CONDITIONAL — repository lag rules, FRED values not vintage-certified",
                             "TERMINAL_CONSIDERATION": "NOT_EXERCISED — zero terminal hits on every decomposed 2018-2026 path"},
                  "vendorEventFlagsRead": int(len(events)),
+                 "engineResidualEvents": [e for p in H1 for e in H1[p]["_mechanicsEvents"]],
                  "minimumRecoveryTargets": ready,
                  "note": "A vendor dividend/split flag inside a held window is the minimum set of (ticker, date) events whose official cash/share package must be "
                          "verified to certify that leg; the flag list is not a completeness certificate (unflagged actions may exist)."}
