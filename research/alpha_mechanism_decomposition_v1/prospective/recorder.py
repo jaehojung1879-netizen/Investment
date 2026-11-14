@@ -111,7 +111,7 @@ def decide(g):
     missing = [c for c in REQUIRED_COLUMNS if c not in g.columns]
     if missing:
         raise ValueError("MISSING_COLUMNS: " + ",".join(missing))
-    g = g.reset_index(drop=True).copy()
+    g = g.sort_values("ticker", kind="mergesort").reset_index(drop=True).copy()   # canonical row order: sums are bit-for-bit order invariant
     g["_q"] = C.quality_mask(g).to_numpy()
     if any(bool(not quality_failures(r)) != bool(q) for (_, r), q in zip(g.iterrows(), g["_q"])):
         raise AssertionError("QUALITY_REASONS_DISAGREE_WITH_THE_FROZEN_MASK")

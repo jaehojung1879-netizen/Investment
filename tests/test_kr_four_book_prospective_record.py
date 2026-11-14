@@ -85,10 +85,12 @@ def test_exclusion_reasons_name_the_first_failing_gate_and_match_the_frozen_mask
     assert {x["reason"].split("_")[0] for x in ex["OUTRANKED"]} == {"OUTRANKED:rank"}
 
 
-def test_decision_is_input_order_invariant():
+def test_decision_is_input_order_invariant_bit_for_bit():
     g = cross_section()
-    a, b = R.decide(g), R.decide(g.sample(frac=1.0, random_state=3))
-    assert {k: v["weights"] for k, v in a.items()} == {k: v["weights"] for k, v in b.items()}
+    a = R.decide(g)
+    for seed in range(25):
+        b = R.decide(g.sample(frac=1.0, random_state=seed))
+        assert {k: v["weights"] for k, v in a.items()} == {k: v["weights"] for k, v in b.items()}, seed
 
 
 def test_live_receipt_is_refused_while_not_authorized():
