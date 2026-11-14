@@ -49,6 +49,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--market-recovery", action="store_true")
     parser.add_argument("--supplement", action="store_true", help="Only action histories and verified-rename quote supplements")
+    parser.add_argument("--transfer-cert", type=Path, default=HERE / "inputs/transfer-cert.pem")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args(argv)
     requests = json.loads((HERE / "inputs/requests.json").read_bytes())
@@ -128,7 +129,7 @@ def main(argv=None):
         src, dest = Path(work) / "responses.gz", Path(work) / "responses.cms"
         src.write_bytes(plaintext)
         subprocess.run(["openssl", "cms", "-encrypt", "-binary", "-aes-256-gcm", "-in", str(src),
-                        "-outform", "DER", "-out", str(dest), str(HERE / "inputs/transfer-cert.pem")], check=True,
+                        "-outform", "DER", "-out", str(dest), str(args.transfer_cert)], check=True,
                        capture_output=True)
         encrypted = dest.read_bytes()
     out = {"schema": "PRIVATE_MARKET_RECOVERY_TRANSFER_V1", "requests": summary,

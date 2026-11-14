@@ -1,0 +1,311 @@
+{
+  "main": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+  "pr336": {
+    "head": "148993572a625b914bbe6cd79610db7bf618f4b1",
+    "branch": "codex/us-sec-fundamentals-input-v1",
+    "state": "open"
+  },
+  "open_pr_heads": [
+    {
+      "number": 336,
+      "title": "research: connect 619 SEC total assets facts to US profitability inputs",
+      "branch": "codex/us-sec-fundamentals-input-v1",
+      "head": "148993572a625b914bbe6cd79610db7bf618f4b1",
+      "draft": false
+    },
+    {
+      "number": 334,
+      "title": "feat: 연구 판단 데스크 + Evidence-First v2 — 데이터 정합성·전향 4개 비교군·#335 결함 관문",
+      "branch": "claude/decision-desk-v1-1zc092",
+      "head": "c8ee6f72f8e42ba545682d3287b0d51488bf38a3",
+      "draft": false
+    },
+    {
+      "number": 332,
+      "title": "fix(research): ML Tournament v2 integrity repair and fixed-path cash results",
+      "branch": "codex/ml-tournament-v2-integrity-repair-20261110",
+      "head": "0f39c2fef93a9cf924f45ae87662de41090f2528",
+      "draft": true
+    },
+    {
+      "number": 331,
+      "title": "research: US dynamic macro & multi-asset v1 (Track A measured, Track B source re-audit)",
+      "branch": "claude/us-macro-multi-asset-v1-1zc092",
+      "head": "49c3aa891b1e85520c2a90d0d062678a738a87cf",
+      "draft": true
+    },
+    {
+      "number": 329,
+      "title": "research: KR ML 전략 토너먼트 v1 + Adaptive Macro×Industry Cocktail v1 — 상태 기반 전략 선택은 예측력·경제성 없음, 전략 모멘텀만 위상 의존 후보",
+      "branch": "claude/ml-tournament-audit-vddc20",
+      "head": "0a1f494171576af6928fe531145a8c8f050253fd",
+      "draft": true
+    },
+    {
+      "number": 328,
+      "title": "fix(research): KR 주주수익 원천 v2·전향 기록기 인수 및 PR 정리",
+      "branch": "codex/investment-integration-20261110",
+      "head": "3b3edb13164ad38f8393c87432bb166f75068291",
+      "draft": true
+    },
+    {
+      "number": 326,
+      "title": "DO NOT MERGE — branch-only C2 one-shot via the Probes dispatcher (not run)",
+      "branch": "claude/c2-attribution-actions-route",
+      "head": "ba414836a3d75d128032e54bcaa8d27ed19d5adf",
+      "draft": true
+    },
+    {
+      "number": 325,
+      "title": "research(C2): fixed-exposure attribution — Codex F1–F6 applied, packet rev2, READY_FOR_INDEPENDENT_REAUDIT (NOT EXECUTED)",
+      "branch": "claude/optimistic-cray-wnegq7",
+      "head": "9dc2928d3c2110a90ea911a74372cd75372a5d2e",
+      "draft": true
+    },
+    {
+      "number": 324,
+      "title": "fix: recover KRX collection integrity and qualify A1/B1 economic inputs",
+      "branch": "research/a1b1-economic-inputs-v1",
+      "head": "d96c11bbc53a59edc53891fae1281edbc48837b2",
+      "draft": true
+    },
+    {
+      "number": 319,
+      "title": "research: next alpha research direction v1 — priority decisions and outcome-free power gates",
+      "branch": "research/next-alpha-research-direction-v1",
+      "head": "a5bca7c164251d1b3d0dc00a3c0a74f11199fb3b",
+      "draft": true
+    },
+    {
+      "number": 318,
+      "title": "research: master integration preflight and synthetic receipt readiness",
+      "branch": "research/master-integration-preflight-v1",
+      "head": "9d2c93a0e9a9d4e9b505c7add50a4dc6332d4234",
+      "draft": true
+    },
+    {
+      "number": 316,
+      "title": "research: master research program v1 + alpha evidence sprint v2 — NO_EVIDENCE (KR 0 / US 0), outcome-blind",
+      "branch": "claude/alpha-mechanism-sprint-v1-shxr6w",
+      "head": "75aab7bc7096b551543bc1582c1e7fd288e94e59",
+      "draft": true
+    },
+    {
+      "number": 314,
+      "title": "feat(report): 일일 브리프에 검증된 보유 판단·ETF 대비 전향 경로 연결 + #306 초과수익 기준일 결함 수정",
+      "branch": "claude/portfolio-d-daily-report-practical-v1",
+      "head": "26a40921aced2e377287955819d111a809c0da31",
+      "draft": true
+    },
+    {
+      "number": 307,
+      "title": "Report: connect pinned saved portfolio performance",
+      "branch": "codex/stored-performance-report-v1",
+      "head": "03a72544c513bed7d094d2ffb37239ce459ee133",
+      "draft": true
+    }
+  ],
+  "checks": {
+    "be46343031c3ec77a19f79ae102eecf6c3695be7": [
+      {
+        "name": "egress-summary",
+        "head_sha": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+        "status": "completed",
+        "conclusion": "skipped",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43538004827/job/132271595771"
+      },
+      {
+        "name": "ecos-market-context",
+        "head_sha": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+        "status": "completed",
+        "conclusion": "skipped",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43538004827/job/132271595164"
+      },
+      {
+        "name": "egress-fan-out",
+        "head_sha": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+        "status": "completed",
+        "conclusion": "skipped",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43538004827/job/132271594420"
+      },
+      {
+        "name": "krx-industry-openapi",
+        "head_sha": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+        "status": "completed",
+        "conclusion": "skipped",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43538004827/job/132271594184"
+      },
+      {
+        "name": "kr-model-raw-replay",
+        "head_sha": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+        "status": "completed",
+        "conclusion": "skipped",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43538004827/job/132271593756"
+      },
+      {
+        "name": "probe",
+        "head_sha": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43538004827/job/132271592558"
+      },
+      {
+        "name": "matrix-diagnostic",
+        "head_sha": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+        "status": "completed",
+        "conclusion": "skipped",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43462065614/job/132011268323"
+      },
+      {
+        "name": "matrix-formal-owner-only",
+        "head_sha": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+        "status": "completed",
+        "conclusion": "skipped",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43462065614/job/132011268159"
+      },
+      {
+        "name": "build-and-deploy",
+        "head_sha": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43462065614/job/132011265873"
+      },
+      {
+        "name": "us-finnhub-bs-probe",
+        "head_sha": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+        "status": "completed",
+        "conclusion": "skipped",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43417686249/job/131859615625"
+      },
+      {
+        "name": "kr-raw",
+        "head_sha": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+        "status": "completed",
+        "conclusion": "skipped",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43417686249/job/131859615142"
+      },
+      {
+        "name": "us-total-assets-source-probe",
+        "head_sha": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+        "status": "completed",
+        "conclusion": "skipped",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43417686249/job/131859614740"
+      },
+      {
+        "name": "kr",
+        "head_sha": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43417686249/job/131859613766"
+      },
+      {
+        "name": "us",
+        "head_sha": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43417686249/job/131859613385"
+      },
+      {
+        "name": "matrix-formal-owner-only",
+        "head_sha": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+        "status": "completed",
+        "conclusion": "skipped",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43411218515/job/131837865886"
+      },
+      {
+        "name": "matrix-diagnostic",
+        "head_sha": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+        "status": "completed",
+        "conclusion": "skipped",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43411218515/job/131837824608"
+      },
+      {
+        "name": "build-and-deploy",
+        "head_sha": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43411218515/job/131837822834"
+      },
+      {
+        "name": "replay",
+        "head_sha": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43405145233/job/131817540656"
+      },
+      {
+        "name": "append-ledger",
+        "head_sha": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43378616220/job/131730890998"
+      },
+      {
+        "name": "matrix-formal-owner-only",
+        "head_sha": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+        "status": "completed",
+        "conclusion": "skipped",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43358796217/job/131667113977"
+      },
+      {
+        "name": "matrix-diagnostic",
+        "head_sha": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+        "status": "completed",
+        "conclusion": "skipped",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43358796217/job/131667113735"
+      },
+      {
+        "name": "build-and-deploy",
+        "head_sha": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43358796217/job/131667112150"
+      },
+      {
+        "name": "matrix-formal-owner-only",
+        "head_sha": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+        "status": "completed",
+        "conclusion": "skipped",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43338734067/job/131601439774"
+      },
+      {
+        "name": "matrix-diagnostic",
+        "head_sha": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+        "status": "completed",
+        "conclusion": "skipped",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43338734067/job/131601439187"
+      },
+      {
+        "name": "pytest",
+        "head_sha": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43338734123/job/131601437648"
+      },
+      {
+        "name": "build-and-deploy",
+        "head_sha": "be46343031c3ec77a19f79ae102eecf6c3695be7",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43338734067/job/131601437348"
+      }
+    ],
+    "148993572a625b914bbe6cd79610db7bf618f4b1": [
+      {
+        "name": "collect",
+        "head_sha": "148993572a625b914bbe6cd79610db7bf618f4b1",
+        "status": "completed",
+        "conclusion": "skipped",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43525737501/job/132230900214"
+      },
+      {
+        "name": "pytest",
+        "head_sha": "148993572a625b914bbe6cd79610db7bf618f4b1",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/43525737587/job/132230897741"
+      }
+    ]
+  },
+  "scope": "READ_ONLY_OBSERVATION_NO_EXISTING_BRANCH_MUTATION"
+}

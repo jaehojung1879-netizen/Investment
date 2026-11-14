@@ -8,6 +8,7 @@ from __future__ import annotations
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
+import gzip
 import hashlib
 import json
 from pathlib import Path
@@ -32,7 +33,7 @@ def sha(raw):
 
 def private_root(path):
     path = Path(path).resolve()
-    if path.is_relative_to(ROOT) or any((p / ".git").exists() for p in (path, *path.parents)):
+    if path.is_relative_to(ROOT) or any((p / ".git" / "HEAD").is_file() or (p / ".git").is_file() for p in (path, *path.parents)):
         raise ValueError("RAW_DATA_MUST_STAY_OUTSIDE_GIT_CHECKOUTS")
     path.mkdir(parents=True, exist_ok=True, mode=0o700)
     path.chmod(0o700)
@@ -123,6 +124,7 @@ def main(argv=None):
     parser.add_argument("--input", type=Path, required=True)
     parser.add_argument("--private-root", type=Path, required=True)
     parser.add_argument("--existing-audit", type=Path, required=True)
+    parser.add_argument("--label-followup", action="store_true", help="Fetch whole series for mature gaps; input eligibility stays fixed")
     args = parser.parse_args(argv)
     rows = json.loads(args.input.read_bytes())
     if len(rows) != 212 or len({r["audit_identifier"] for r in rows}) != 212:
@@ -132,6 +134,19 @@ def main(argv=None):
     candidates = [{"source": r["source"], "ticker": r["ticker"], "url": r["url"], "expected_sha256": r["sha256"]}
                   for r in old["acquisition"] if r["ticker"] in cohort and r.get("status") == 200]
     collector = Collector(args.private_root)
+    if args.label_followup:
+        ticker_file = collector.root / "mature-gap-tickers.json"
+        if not ticker_file.exists():
+            labels = json.loads(gzip.decompress((collector.root / "holding-returns.json.gz").read_bytes()))
+            tickers = sorted({r["ticker"] for r in labels if r["phase"] == "after" and r["status"] == "PRICE_PATH_GAP"})
+            ticker_file.write_bytes(canonical(tickers))
+        tickers = json.loads(ticker_file.read_bytes())
+        allowed = set(json.loads(gzip.decompress((collector.root / "baseline-bars.json.gz").read_bytes()))) | set(ALIASES)
+        if not set(tickers).issubset(allowed):
+            raise ValueError("FOLLOWUP_OUTSIDE_ORIGINAL_INPUT_UNIVERSE")
+        collector.run([chart_request(ALIASES.get(t, t), "2011-01-03", AS_OF, audit_identifier=t) for t in tickers],
+                      "label_followup_charts", workers=2)
+        return
     # Old candidates remain old baseline evidence, even when their bytes had to be reacquired.
     collector.run(candidates, "baseline_reacquisition", workers=3)
     charts = []
