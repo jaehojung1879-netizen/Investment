@@ -11,7 +11,7 @@
  },
  "reproduction": {
   "status": "REPRODUCED",
-  "worstAbsCagrDiff": 0.0,
+  "worstAbsCagrDiff": "4.920e-07",
   "cagrPhase0": {
    "S0_ETF": {
     "published": 0.169576,
@@ -174,12 +174,13 @@
   }
  },
  "accounting": {
-  "attributionIdentityMaxResidual": 0.0,
-  "identityTolerance": 0.0,
-  "netGapClosureMaxResidual": 0.0,
+  "attributionIdentityMaxResidual": "5.551e-17",
+  "identityTolerance": "1e-10",
+  "netGapClosureMaxResidual": "3.643e-17",
   "nanReturnLegs": 0,
   "mechanicsResidualAbsMaxPerPeriod": 0.195068,
-  "periodTerminalWriteOffs": []
+  "targetBookTerminalWriteOffs": [],
+  "engineResidualNote": "engine-vs-target-book residuals are classified event by event in source-readiness.json engineResidualEvents"
  },
  "pit": {
   "featureSource": "Phase B matrix digest 32e49b57a7541eea66f76373baef50c6302a394247b313f6099f718d46d54b0c",
@@ -214,12 +215,12 @@
   }
  },
  "tests": "tests/test_alpha_mechanism_decomposition_v1.py",
- "runtimeSeconds": 122.3,
+ "runtimeSeconds": 113.3,
  "outputSha256": {
   "mechanism-attribution.csv": "a3fb0715c4c8e55867e877516c413c2bc74945ed58624ee3969f906ba5c05439",
   "s2-ablation.csv": "402be4f6a5337b73f13c522ffd7f4ff8dd331b6fedcfb3f9bc1333267a25129c",
   "industry-momentum-diagnostics.csv": "114e2733028ec3f6cbb0902ce1b511407813016b180ae593201733ac9d3559e5",
-  "source-readiness.json": "fe5a522d403a929e2a656a44beead3fe3ee8b095c9c6a378f04f59643a0f92b9",
+  "source-readiness.json": "a0f9f93712d6da7cfda5e2448f22e32a01b9c57a33b50aa55b00b4a37182b5db",
   "results/summary.json": "7913000d44125d612568dc75644077c07714c4c77b34a57345604c889df65e58"
  }
 }

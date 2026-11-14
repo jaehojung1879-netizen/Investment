@@ -8,7 +8,7 @@
   "KR_STATE_MACRO_INPUTS": "CONDITIONAL — repository lag rules, FRED values not vintage-certified",
   "TERMINAL_CONSIDERATION": "NOT_EXERCISED — zero terminal hits on every decomposed 2018-2026 path"
  },
- "vendorEventFlagsRead": 0,
+ "krVendorEventFlags": "NONE_IN_REPLAY_V16 — the corporate-events component lists US tickers only; KR checks below are model-free price/volume flags",
  "engineResidualEvents": [
   {
    "policy": "STATIC_EW4",
@@ -458,9 +458,196 @@
      "weight": 0.2
     }
    ],
-   "vendorFlaggedEventsInsideHeldWindows": 0,
-   "distinctTickersWithFlaggedEvents": 0,
-   "flaggedEvents": []
+   "heldWindowsWithIntegrityFlags": 11,
+   "heldWindowsWithAboveLimitMove": 2,
+   "distinctTickersFlagged": 4,
+   "flaggedWindows": [
+    {
+     "ticker": "006740.KS",
+     "execution": "2023-10-04",
+     "periodEnd": "2023-10-30",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM",
+      "SLEEVE_MOMENTUM_SWITCH"
+     ],
+     "phases": [
+      3
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 5,
+     "firstZeroVolume": "2023-10-19",
+     "maxLegAbsAlpha": 0.149502
+    },
+    {
+     "ticker": "010120.KS",
+     "execution": "2026-03-30",
+     "periodEnd": "2026-04-27",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM",
+      "SLEEVE_MOMENTUM_SWITCH"
+     ],
+     "phases": [
+      1
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 3,
+     "firstZeroVolume": "2026-04-08",
+     "maxLegAbsAlpha": 0.057729
+    },
+    {
+     "ticker": "006740.KS",
+     "execution": "2023-09-25",
+     "periodEnd": "2023-10-23",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM",
+      "SLEEVE_MOMENTUM_SWITCH"
+     ],
+     "phases": [
+      2
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 3,
+     "firstZeroVolume": "2023-10-19",
+     "maxLegAbsAlpha": 0.057292
+    },
+    {
+     "ticker": "019170.KS",
+     "execution": "2020-07-13",
+     "periodEnd": "2020-08-10",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM"
+     ],
+     "phases": [
+      3
+     ],
+     "aboveLimitMoves": [
+      [
+       "2020-07-20",
+       0.3
+      ],
+      [
+       "2020-07-27",
+       -0.3
+      ]
+     ],
+     "zeroVolumeSessions": 2,
+     "firstZeroVolume": "2020-07-21",
+     "maxLegAbsAlpha": 0.042552
+    },
+    {
+     "ticker": "019170.KS",
+     "execution": "2020-07-20",
+     "periodEnd": "2020-08-18",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM",
+      "SLEEVE_MOMENTUM_SWITCH"
+     ],
+     "phases": [
+      0
+     ],
+     "aboveLimitMoves": [
+      [
+       "2020-07-27",
+       -0.3
+      ]
+     ],
+     "zeroVolumeSessions": 2,
+     "firstZeroVolume": "2020-07-21",
+     "maxLegAbsAlpha": 0.03135
+    },
+    {
+     "ticker": "010120.KS",
+     "execution": "2026-03-16",
+     "periodEnd": "2026-04-13",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM"
+     ],
+     "phases": [
+      3
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 3,
+     "firstZeroVolume": "2026-04-08",
+     "maxLegAbsAlpha": 0.028652
+    },
+    {
+     "ticker": "010120.KS",
+     "execution": "2026-03-23",
+     "periodEnd": "2026-04-20",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM"
+     ],
+     "phases": [
+      0
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 3,
+     "firstZeroVolume": "2026-04-08",
+     "maxLegAbsAlpha": 0.020548
+    },
+    {
+     "ticker": "012450.KS",
+     "execution": "2024-08-26",
+     "periodEnd": "2024-09-23",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM",
+      "SLEEVE_MOMENTUM_SWITCH"
+     ],
+     "phases": [
+      2
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 15,
+     "firstZeroVolume": "2024-08-29",
+     "maxLegAbsAlpha": 0.015518
+    },
+    {
+     "ticker": "012450.KS",
+     "execution": "2024-08-05",
+     "periodEnd": "2024-09-02",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM"
+     ],
+     "phases": [
+      3
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 3,
+     "firstZeroVolume": "2024-08-29",
+     "maxLegAbsAlpha": 0.006977
+    },
+    {
+     "ticker": "012450.KS",
+     "execution": "2024-08-12",
+     "periodEnd": "2024-09-09",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM"
+     ],
+     "phases": [
+      0
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 8,
+     "firstZeroVolume": "2024-08-29",
+     "maxLegAbsAlpha": 0.005637
+    },
+    {
+     "ticker": "012450.KS",
+     "execution": "2024-08-19",
+     "periodEnd": "2024-09-19",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM",
+      "SLEEVE_MOMENTUM_SWITCH"
+     ],
+     "phases": [
+      1
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 13,
+     "firstZeroVolume": "2024-08-29",
+     "maxLegAbsAlpha": 7e-05
+    }
+   ]
   },
   "S2_VALUE_CONFIRMED": {
    "stockLegs": 2227,
@@ -548,9 +735,71 @@
      "weight": 0.2
     }
    ],
-   "vendorFlaggedEventsInsideHeldWindows": 0,
-   "distinctTickersWithFlaggedEvents": 0,
-   "flaggedEvents": []
+   "heldWindowsWithIntegrityFlags": 4,
+   "heldWindowsWithAboveLimitMove": 0,
+   "distinctTickersFlagged": 1,
+   "flaggedWindows": [
+    {
+     "ticker": "010060.KS",
+     "execution": "2023-04-03",
+     "periodEnd": "2023-05-02",
+     "policies": [
+      "S2_VALUE_CONFIRMED"
+     ],
+     "phases": [
+      1
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 3,
+     "firstZeroVolume": "2023-04-27",
+     "maxLegAbsAlpha": 0.029689
+    },
+    {
+     "ticker": "010060.KS",
+     "execution": "2023-04-10",
+     "periodEnd": "2023-05-08",
+     "policies": [
+      "S2_VALUE_CONFIRMED"
+     ],
+     "phases": [
+      2
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 6,
+     "firstZeroVolume": "2023-04-27",
+     "maxLegAbsAlpha": 0.029553
+    },
+    {
+     "ticker": "010060.KS",
+     "execution": "2023-04-17",
+     "periodEnd": "2023-05-15",
+     "policies": [
+      "S2_VALUE_CONFIRMED"
+     ],
+     "phases": [
+      3
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 11,
+     "firstZeroVolume": "2023-04-27",
+     "maxLegAbsAlpha": 0.013498
+    },
+    {
+     "ticker": "010060.KS",
+     "execution": "2023-04-24",
+     "periodEnd": "2023-05-22",
+     "policies": [
+      "S2_VALUE_CONFIRMED"
+     ],
+     "phases": [
+      0
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 16,
+     "firstZeroVolume": "2023-04-27",
+     "maxLegAbsAlpha": 0.005761
+    }
+   ]
   },
   "SLEEVE_MOMENTUM_SWITCH": {
    "stockLegs": 1915,
@@ -638,10 +887,113 @@
      "weight": 0.2
     }
    ],
-   "vendorFlaggedEventsInsideHeldWindows": 0,
-   "distinctTickersWithFlaggedEvents": 0,
-   "flaggedEvents": []
+   "heldWindowsWithIntegrityFlags": 6,
+   "heldWindowsWithAboveLimitMove": 1,
+   "distinctTickersFlagged": 4,
+   "flaggedWindows": [
+    {
+     "ticker": "006740.KS",
+     "execution": "2023-10-04",
+     "periodEnd": "2023-10-30",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM",
+      "SLEEVE_MOMENTUM_SWITCH"
+     ],
+     "phases": [
+      3
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 5,
+     "firstZeroVolume": "2023-10-19",
+     "maxLegAbsAlpha": 0.149502
+    },
+    {
+     "ticker": "010120.KS",
+     "execution": "2026-03-30",
+     "periodEnd": "2026-04-27",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM",
+      "SLEEVE_MOMENTUM_SWITCH"
+     ],
+     "phases": [
+      1
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 3,
+     "firstZeroVolume": "2026-04-08",
+     "maxLegAbsAlpha": 0.057729
+    },
+    {
+     "ticker": "006740.KS",
+     "execution": "2023-09-25",
+     "periodEnd": "2023-10-23",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM",
+      "SLEEVE_MOMENTUM_SWITCH"
+     ],
+     "phases": [
+      2
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 3,
+     "firstZeroVolume": "2023-10-19",
+     "maxLegAbsAlpha": 0.057292
+    },
+    {
+     "ticker": "019170.KS",
+     "execution": "2020-07-20",
+     "periodEnd": "2020-08-18",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM",
+      "SLEEVE_MOMENTUM_SWITCH"
+     ],
+     "phases": [
+      0
+     ],
+     "aboveLimitMoves": [
+      [
+       "2020-07-27",
+       -0.3
+      ]
+     ],
+     "zeroVolumeSessions": 2,
+     "firstZeroVolume": "2020-07-21",
+     "maxLegAbsAlpha": 0.03135
+    },
+    {
+     "ticker": "012450.KS",
+     "execution": "2024-08-26",
+     "periodEnd": "2024-09-23",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM",
+      "SLEEVE_MOMENTUM_SWITCH"
+     ],
+     "phases": [
+      2
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 15,
+     "firstZeroVolume": "2024-08-29",
+     "maxLegAbsAlpha": 0.015518
+    },
+    {
+     "ticker": "012450.KS",
+     "execution": "2024-08-19",
+     "periodEnd": "2024-09-19",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM",
+      "SLEEVE_MOMENTUM_SWITCH"
+     ],
+     "phases": [
+      1
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 13,
+     "firstZeroVolume": "2024-08-29",
+     "maxLegAbsAlpha": 7e-05
+    }
+   ]
   }
  },
- "note": "A vendor dividend/split flag inside a held window is the minimum set of (ticker, date) events whose official cash/share package must be verified to certify that leg; the flag list is not a completeness certificate (unflagged actions may exist)."
+ "note": "A flagged held window is the minimum set of (ticker, window) whose official cash/share/terminal package must be verified before that leg can be certified; an unflagged window is NOT certified either (ordinary cash dividends move a price by less than the limit)."
 }

@@ -141,3 +141,32 @@ def test_published_outputs_exist_and_carry_their_evidence_class():
     assert v["reproduction"]["status"] in ("REPRODUCED", "REPRODUCED_WITHIN_TOLERANCE")
     for name in ("mechanism-attribution.csv", "s2-ablation.csv", "industry-momentum-diagnostics.csv"):
         assert (D / name).exists()
+
+
+def test_engine_residual_events_are_named_and_classified():
+    path = D / "source-readiness.json"
+    if not path.exists():
+        pytest.skip("results not generated")
+    r = json.loads(path.read_text())
+    kinds = {e["kind"] for e in r["engineResidualEvents"]}
+    assert kinds <= {"TERMINAL_WRITE_OFF_AT_ZERO_UNRESOLVED_CONSIDERATION", "LOCKED_UNTRADABLE_AT_REBALANCE", "DRIFT_OR_NETTING"}
+    big = [e for e in r["engineResidualEvents"] if abs(e["mechanics"]) > 0.02]
+    assert big and all(e["kind"] != "DRIFT_OR_NETTING" for e in big)          # every material residual has a named cause
+    assert r["returnBasis"].startswith("CONDITIONAL")
+
+
+def test_main_merge_impact_is_recorded_as_no_impact():
+    path = D / "results" / "verification.json"
+    if not path.exists():
+        pytest.skip("results not generated")
+    v = json.loads(path.read_text())
+    assert v["mainMergeImpact"]["verdict"] == "NO_IMPACT_NOTHING_RECOMPUTED_FOR_THE_MERGE"
+    assert v["mainMergeImpact"]["changedUnderPipelineDataDocsAuditsKrResearchSpecs"] == 0
+    assert float(v["accounting"]["attributionIdentityMaxResidual"]) <= 1e-10
+
+
+def test_us_rerun_blocker_names_every_required_private_file():
+    b = json.loads((D / "us-rerun-blocker.json").read_text())
+    assert b["status"].startswith("NOT_RUN")
+    assert len(b["requiredToRerun"]["privateRootFiles_verifyREQUIRED"]) == 15
+    assert set(b["requiredToRerun"]["pinnedPublicPricePackets"]) == {"public-para-price-packet.json", "public-wbd-kvue-price-packet.json"}

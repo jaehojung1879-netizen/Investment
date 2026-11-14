@@ -700,46 +700,35 @@ def h4(ctx, R):
 # =========================================================================== #
 # Source readiness (what would have to be certified to turn the conditional numbers into shareholder returns)
 # =========================================================================== #
-def vendor_events(scratch):
-    """Vendor dividend / split flags from the same replay-v16 price objects the closes came from (flags, not certified events)."""
-    sys.path.insert(0, str(ROOT))
-    from pipeline import kr_model_portfolio_execution as X
-    from pipeline import kr_model_raw_snapshot as K
-    _, _, _, prices = X.load_sources(Path(scratch) / "raw", K.frozen_spec())
-    ev = []
-    for t, f in prices.items():
-        cols = {c.lower().replace(" ", ""): c for c in f.columns}
-        dcol, scol = cols.get("dividends"), cols.get("stocksplits")
-        if dcol is None and scol is None:
-            continue
-        g = f.copy()
-        g.index = pd.to_datetime(g.index)
-        m = pd.Series(False, index=g.index)
-        if dcol:
-            m |= g[dcol].fillna(0) != 0
-        if scol:
-            m |= (g[scol].fillna(0) != 0) & (g[scol].fillna(0) != 1)
-        for d, r in g[m].iterrows():
-            ev.append({"ticker": t, "date": d, "dividend": float(r[dcol]) if dcol else 0.0, "split": float(r[scol]) if scol else 0.0})
-    return pd.DataFrame(ev)
+def held_window_flags(ctx, legs):
+    """Model-free integrity flags inside every held stock window (execution, period end]:
+    ABOVE_DAILY_LIMIT_MOVE — a close-to-close move beyond the KRX +/-30% limit, which only a corporate action, a relisting or a basis break
+    can produce; ZERO_VOLUME_SESSION — a suspended session the engine carries at the last close.
+    replay-v16's corporate-events component is US-only (checked), so the KR price panel carries no vendor dividend/split flag to read."""
+    closes = ctx.I["closes"].reindex(ctx.I["sessions"])
+    vols = ctx.I["vols"].reindex(ctx.I["sessions"])
+    out = []
+    stock = legs[~legs["asset"].isin([M.ETF, M.CASH])]
+    for (t, e, x), g in stock.groupby(["asset", "execution", "periodEnd"]):
+        c = closes.loc[e:x, t]
+        v = vols.loc[e:x, t].iloc[1:]
+        r = c.ffill().pct_change().iloc[1:]
+        big = r[r.abs() > 0.30]
+        zero = v[(v.fillna(0) <= 0) | c.iloc[1:].isna()]
+        if len(big) or len(zero):
+            out.append({"ticker": t, "execution": e, "periodEnd": x, "policies": sorted(set(g["policy"])), "phases": sorted(set(int(p) for p in g["phase"])),
+                        "aboveLimitMoves": [(str(d.date()), round(float(val), 4)) for d, val in big.items()],
+                        "zeroVolumeSessions": int(len(zero)), "firstZeroVolume": str(zero.index[0].date()) if len(zero) else None,
+                        "maxLegAbsAlpha": r6(float((g["INDUSTRY_ALPHA"] + g["SELECTION_ALPHA"]).abs().max()))})
+    return out
 
 
-def source_readiness(legs, events):
+def source_readiness(legs, flags):
     out = {}
     for pol, g in legs.groupby("policy"):
         stock = g[~g["asset"].isin([M.ETF, M.CASH])].reset_index(drop=True)
         stock["alpha"] = stock["INDUSTRY_ALPHA"] + stock["SELECTION_ALPHA"]
-        hits = []
-        if not events.empty:
-            ev = events.set_index("ticker")
-            for _, r in stock.iterrows():
-                if r["asset"] in ev.index:
-                    e = ev.loc[[r["asset"]]]
-                    inside = e[(e["date"] > r["execution"]) & (e["date"] <= r["periodEnd"])]
-                    for _, z in inside.iterrows():
-                        hits.append({"ticker": r["asset"], "eventDate": str(z["date"].date()), "dividend": z["dividend"], "split": z["split"],
-                                     "phase": int(r["phase"]), "execution": str(r["execution"].date()), "weight": r6(r["weight"], 4),
-                                     "legExcess": r6(r["excess"]), "legAlpha": r6(r["alpha"])})
+        hits = [f for f in flags if pol in f["policies"]]
         tot = stock["alpha"].abs().sum()
         ranked = stock.reindex(stock["alpha"].abs().sort_values(ascending=False).index)
         cum = ranked["alpha"].abs().cumsum() / tot if tot > 0 else ranked["alpha"] * 0
@@ -748,9 +737,11 @@ def source_readiness(legs, events):
                     "legsCarrying50pctOfAbsAlpha": k50,
                     "top10Legs": [{"ticker": r["asset"], "phase": int(r["phase"]), "execution": str(r["execution"].date()), "industry": r["industry"],
                                    "alpha": r6(r["alpha"]), "weight": r6(r["weight"], 4)} for _, r in ranked.head(10).iterrows()],
-                    "vendorFlaggedEventsInsideHeldWindows": len(hits),
-                    "distinctTickersWithFlaggedEvents": len({h["ticker"] for h in hits}),
-                    "flaggedEvents": sorted(hits, key=lambda h: -abs(h["legAlpha"] or 0))[:60]}
+                    "heldWindowsWithIntegrityFlags": len(hits),
+                    "heldWindowsWithAboveLimitMove": sum(1 for h in hits if h["aboveLimitMoves"]),
+                    "distinctTickersFlagged": len({h["ticker"] for h in hits}),
+                    "flaggedWindows": [{**h, "execution": str(h["execution"].date()), "periodEnd": str(h["periodEnd"].date())}
+                                       for h in sorted(hits, key=lambda h: -(h["maxLegAbsAlpha"] or 0))[:60]]}
     return out
 
 
@@ -864,23 +855,20 @@ def main(argv=None):
     # ---- outputs ---------------------------------------------------------------------------------------------------------- #
     legs = pd.concat(legs_all + [legs_e.assign(policy=lambda x: x["policy"] + "@EXCL_DEFENSE_ELECTRONICS")])
     per = pd.concat(per_all)
-    try:
-        events = vendor_events(a.scratch)
-    except Exception as exc:  # noqa: BLE001 — the readiness file says the flags could not be read; nothing else depends on them
-        events = pd.DataFrame()
-        print("vendor events unavailable:", exc)
+    pol = legs[legs["policy"].isin([SMS, "S1_INDUSTRY_MOMENTUM", "S2_VALUE_CONFIRMED"])]
+    flags = held_window_flags(ctx, pol)
     I["terminalHits"] = sorted(set(map(tuple, ctx.pp.hits)))
     pd.to_pickle(dict(H1=H1, sens=sens, legs=legs, per=per, F=F, ind_stats=ind_stats, within=within, entry=entry, s2_rows=s2_rows, s2_pairs=s2_pairs,
-                      s2_extra=s2_extra, s1_rows=s1_rows, s1_pairs=s1_pairs, br=br, H4=H4, events=events), Path(a.scratch) / "amd-partial.pkl")
-    ready = source_readiness(legs[legs["policy"].isin([SMS, "S1_INDUSTRY_MOMENTUM", "S2_VALUE_CONFIRMED"])], events)
+                      s2_extra=s2_extra, s1_rows=s1_rows, s1_pairs=s1_pairs, br=br, H4=H4), Path(a.scratch) / "amd-partial.pkl")
+    ready = source_readiness(pol, flags)
     kw = dict(I={k: v for k, v in I.items() if k in ("ident", "terminalHits")}, H1=H1, sens=sens, legs=legs, per=per, F=F, ind_stats=ind_stats,
               within=within, entry=entry, s2_rows=s2_rows, s2_pairs=s2_pairs, s2_extra=s2_extra, s1_rows=s1_rows, s1_pairs=s1_pairs, br=br, H4=H4,
-              var_legs=pd.concat(var_legs), ready=ready, events=events, status=status, repro=repro, phase_repro=phase_repro, worst=worst, ref=ref, secs=time.time() - t0)
+              var_legs=pd.concat(var_legs), ready=ready, status=status, repro=repro, phase_repro=phase_repro, worst=worst, ref=ref, secs=time.time() - t0)
     pd.to_pickle(kw, state)
     write_outputs(**kw)
 
 
-def write_outputs(I, H1, sens, legs, per, F, ind_stats, within, entry, s2_rows, s2_pairs, s2_extra, s1_rows, s1_pairs, br, H4, var_legs, ready, events,
+def write_outputs(I, H1, sens, legs, per, F, ind_stats, within, entry, s2_rows, s2_pairs, s2_extra, s1_rows, s1_pairs, br, H4, var_legs, ready,
                   status, repro, phase_repro, worst, ref, secs):
     res = HERE / "results"
     res.mkdir(exist_ok=True)
@@ -941,11 +929,11 @@ def write_outputs(I, H1, sens, legs, per, F, ind_stats, within, entry, s2_rows, 
                                                        "event; every stock number in this study is a conditional decomposition",
                             "KR_STATE_MACRO_INPUTS": "CONDITIONAL — repository lag rules, FRED values not vintage-certified",
                             "TERMINAL_CONSIDERATION": "NOT_EXERCISED — zero terminal hits on every decomposed 2018-2026 path"},
-                 "vendorEventFlagsRead": int(len(events)),
+                 "krVendorEventFlags": "NONE_IN_REPLAY_V16 — the corporate-events component lists US tickers only; KR checks below are model-free price/volume flags",
                  "engineResidualEvents": [e for p in H1 for e in H1[p]["_mechanicsEvents"]],
                  "minimumRecoveryTargets": ready,
-                 "note": "A vendor dividend/split flag inside a held window is the minimum set of (ticker, date) events whose official cash/share package must be "
-                         "verified to certify that leg; the flag list is not a completeness certificate (unflagged actions may exist)."}
+                 "note": "A flagged held window is the minimum set of (ticker, window) whose official cash/share/terminal package must be verified before that "
+                         "leg can be certified; an unflagged window is NOT certified either (ordinary cash dividends move a price by less than the limit)."}
     (HERE / "source-readiness.json").write_text(json.dumps(clean(readiness), indent=1, ensure_ascii=False) + "\n")
     closure = []
     for p in H1:
@@ -957,12 +945,13 @@ def write_outputs(I, H1, sens, legs, per, F, ind_stats, within, entry, s2_rows, 
                                                                               "industry-momentum-diagnostics.csv", "source-readiness.json")}
     files["results/summary.json"] = hashlib.sha256((res / "summary.json").read_bytes()).hexdigest()
     ver = {"studyId": "alpha-mechanism-decomposition-v1", "evidenceClass": EVIDENCE, "returnBasis": RETURN_BASIS,
-           "inputs": I["ident"], "reproduction": {"status": status, "worstAbsCagrDiff": worst, "cagrPhase0": repro, "cagrByPhase": phase_repro,
+           "inputs": I["ident"], "reproduction": {"status": status, "worstAbsCagrDiff": f"{worst:.3e}", "cagrPhase0": repro, "cagrByPhase": phase_repro,
                                                   "reference": ref["source"]},
-           "accounting": {"attributionIdentityMaxResidual": float(legs["residual"].abs().max()), "identityTolerance": M.IDENTITY_TOL,
-                          "netGapClosureMaxResidual": max(closure), "nanReturnLegs": int(legs["R"].isna().sum()),
+           "accounting": {"attributionIdentityMaxResidual": f"{float(legs['residual'].abs().max()):.3e}", "identityTolerance": f"{M.IDENTITY_TOL:.0e}",
+                          "netGapClosureMaxResidual": f"{max(closure):.3e}", "nanReturnLegs": int(legs["R"].isna().sum()),
                           "mechanicsResidualAbsMaxPerPeriod": float(per["MECHANICS"].abs().max()),
-                          "periodTerminalWriteOffs": I.get("terminalHits")},
+                          "targetBookTerminalWriteOffs": I.get("terminalHits"),
+                          "engineResidualNote": "engine-vs-target-book residuals are classified event by event in source-readiness.json engineResidualEvents"},
            "pit": {"featureSource": "Phase B matrix digest " + I["ident"].get("matrixDigest", ""), "beta": "F03_beta252 at the signal date (trailing 252 sessions, ends at signal date)",
                    "industry": "PIT industry label on the signal date; basket = cap-weighted quality-eligible members on the signal date, market cap from the PIT universe snapshot the membership used (pitSnapshotDate < signal date)",
                    "forwardReturns": "read only for attribution after the decision; never fed back into a choice"},
