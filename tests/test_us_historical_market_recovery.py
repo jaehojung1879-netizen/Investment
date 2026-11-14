@@ -102,6 +102,39 @@ def test_recovery_rejects_accounting_calculated_from_a_different_issuer(tmp_path
     assert accounting_conflicts(frame, records, pilot, root=tmp_path) == [["2020-01-03", "SYN"]]
 
 
+def test_recovery_index_guard_respects_session_timing_and_later_episodes(tmp_path):
+    from types import SimpleNamespace
+
+    from research.us_historical_market_recovery_v1.audit import membership_conflicts
+
+    def put(name, rows):
+        (tmp_path / name).write_text(json.dumps(rows))
+
+    put("members.json", {"snapshots": [
+        {"date": "2020-01-02", "members": ["AT_OPEN", "AFTER_CLOSE"]},
+        {"date": "2020-01-09", "members": []},
+        {"date": "2020-01-14", "members": ["AFTER_CLOSE"]},
+    ]})
+    put("identity.json", {"regions": {"US": {"identity": {"malformed": {}, "renames": {}}}}})
+    put("departed-public-evidence.json", {"rows": [
+        {"audit_identifier": "AT_OPEN", "index_removals": [{"date": "2020-01-03", "timing": "before_open"}]},
+    ]})
+    put("departed-public-evidence-supplement.json", {"rows": [
+        {"audit_identifier": "AFTER_CLOSE", "index_timing_evidence": {
+            "reported_change_date": "2020-01-03", "reported_timing": "after_close",
+        }},
+    ]})
+    frames = {pd.Timestamp(day): pd.DataFrame(index=tickers) for day, tickers in (
+        ("2020-01-03", ["AT_OPEN", "AFTER_CLOSE"]),
+        ("2020-01-06", ["AT_OPEN", "AFTER_CLOSE"]),
+        ("2020-01-17", ["AFTER_CLOSE"]),
+    )}
+    pilot = SimpleNamespace(MEMBERSHIP="members.json", IDENTITY="identity.json")
+    assert membership_conflicts(frames, pilot, root=tmp_path, inputs=tmp_path) == [
+        ["2020-01-03", "AT_OPEN"], ["2020-01-06", "AFTER_CLOSE"], ["2020-01-06", "AT_OPEN"],
+    ]
+
+
 def test_unknown_terminal_is_not_last_close_or_zero():
     days = ["2020-01-02", "2020-01-03", "2020-01-06"]
     series = source(days[:2], [100, 110])
