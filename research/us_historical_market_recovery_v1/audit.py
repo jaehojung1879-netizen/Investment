@@ -18,7 +18,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from pipeline import price_adjustment as PA, replay_calendar as RC
+from pipeline import price_adjustment as PA, replay_calendar as RC, us_decision_pilot as PILOT
 from pipeline.us_departed_price_recovery import parse_csv
 from research.us_historical_market_recovery_v1.collect import AS_OF, private_root
 from research.us_historical_market_recovery_v1.engine import (
@@ -63,6 +63,51 @@ def check_paramount_class_b_chart(record, metadata):
         raise Unresolved("PARA_VENDOR_ISSUER_MISMATCH_OR_UNVERIFIED")
     if metadata.get("symbol") != "PARA" or metadata.get("instrumentType") != "EQUITY":
         raise Unresolved("PARA_VENDOR_SECURITY_TYPE_OR_SYMBOL_UNVERIFIED")
+
+
+def accounting_conflicts(frames, filings, pilot, *, root=ROOT):
+    """Find eligible rows whose inputs depend on another issuer's filings."""
+    from pipeline import regional_alpha_features as RAF, us_capital_allocation_coverage as C
+
+    membership = RAF.MembershipSnapshots(read(root / pilot.MEMBERSHIP)["snapshots"])
+    sectors = C.SectorBook(read(root / pilot.SECTORS)["snapshots"])
+    identity = read(root / pilot.IDENTITY)["regions"]["US"]["identity"]
+    malformed = {t.upper(): v["resolvedTo"] for t, v in identity["malformed"].items() if v.get("resolvedTo")}
+    renames = {t: row["pricedBy"] for t, row in identity["renames"].items() if row.get("pricedBy")}
+    caches = {}
+    for ticker, records in filings.items():
+        by_cik = defaultdict(list)
+        unidentified = False
+        for row in records:
+            cik = str(row.get("cik") or "")
+            if cik.isdigit():
+                by_cik[str(int(cik))].append(row)
+            else:
+                unidentified = True
+        if len(by_cik) > 1 or unidentified:
+            caches[ticker] = {cik: pilot.AccountingCache(rows) for cik, rows in by_cik.items()}
+
+    conflicts = []
+    for day, frame in sorted(frames.items()):
+        date = day.date().isoformat()
+        snap = membership.on(date)
+        if snap is None:
+            continue
+        symbols = {}
+        for symbol in snap["members"]:
+            normalized = malformed.get(symbol.upper(), symbol)
+            symbols.setdefault(renames.get(normalized, normalized), symbol)
+        for ticker in frame.index.intersection(caches):
+            symbol = symbols.get(ticker)
+            cik = sectors.cik(snap, symbol) if symbol else None
+            issuer_cache = caches[ticker].get(str(int(cik))) if cik else None
+            if issuer_cache is None:
+                conflicts.append([date, ticker])
+                continue
+            values, _ = issuer_cache.at(date)
+            if any(values.get(f) != frame.at[ticker, f] for f in PILOT.ACCOUNTING):
+                conflicts.append([date, ticker])
+    return sorted(conflicts)
 
 
 def chart_series(record, private, *, from_day=None):
@@ -324,13 +369,25 @@ def main(argv=None):
             if old in new_sources and old not in filings and new in filings:
                 filings[old] = filings[new]  # immutable records; actual CIK checks remain in the original helper
         frames, annual, weeks = P.build_signals(frame, filings)
-        repaired = {"cohorts": [{"signal": str(d.date()), "tickers": sorted(f.index.tolist())} for d, f in sorted(frames.items())],
+        conflicts = accounting_conflicts(frames, filings, P)
+        blocked = defaultdict(set)
+        for day, ticker in conflicts:
+            blocked[day].add(ticker)
+        cohorts = []
+        for day, frame_at_day in sorted(frames.items()):
+            text = day.date().isoformat()
+            tickers = sorted(set(frame_at_day.index) - blocked[text])
+            if len(tickers) >= PILOT.MIN_NAMES:
+                cohorts.append({"signal": text, "tickers": tickers})
+        repaired = {"cohorts": cohorts, "accounting_issuer_conflicts": conflicts,
+                    "issuer_conflict_scope": "ORIGINAL_DATED_CIK_SINGLE_ISSUER_RECHECK",
                     "annual": annual, "weeks": weeks, "input_cache_key": cache_key}
         write_private(repaired_file, repaired)
     old_cohorts = {r["signal"]: set(r["tickers"]) for r in original_cohorts["cohorts"]}
     new_cohorts = {r["signal"]: set(r["tickers"]) for r in repaired["cohorts"]}
+    issuer_conflicts = {tuple(row) for row in repaired["accounting_issuer_conflicts"]}
     cohort = {(day, ticker) for day in old_cohorts.keys() | new_cohorts.keys()
-              for ticker in old_cohorts.get(day, set()) | new_cohorts.get(day, set())}
+              for ticker in old_cohorts.get(day, set()) | new_cohorts.get(day, set())} | issuer_conflicts
     horizon_counts, private_labels = {}, []
     for horizon in (126, 252):
         counts, annual = {"before": Counter(), "after": Counter()}, defaultdict(lambda: {"before": Counter(), "after": Counter()})
@@ -342,6 +399,8 @@ def main(argv=None):
                 missing_security, missing_benchmark = [], []
                 if phase == "after" and ticker in QUARANTINED_BASELINE:
                     status = "PRICE_SECURITY_IDENTITY_QUARANTINED" if end <= AS_OF else "NOT_MATURED"
+                elif phase == "after" and (day, ticker) in issuer_conflicts:
+                    status = "ACCOUNTING_ISSUER_CONFLICT" if end <= AS_OF else "NOT_MATURED"
                 elif ticker not in members.get(day, set()):
                     status = "INPUT_NOT_ELIGIBLE"
                 elif end > AS_OF:
@@ -475,6 +534,7 @@ def main(argv=None):
               "baseline_reacquired_files": len(existing_rows), "baseline_bytes_match": all(r.get("matches_existing_bytes") for r in existing_rows),
               "original_input_eligible_records": sum(len(r["tickers"]) for r in original_cohorts["cohorts"]),
               "repaired_input_eligible_records": sum(len(r["tickers"]) for r in repaired["cohorts"]),
+              "accounting_issuer_conflict_records": len(issuer_conflicts),
               "horizons": horizon_counts, "spy_official_reconciliation": spy_report,
               "source_receipts": source_receipts, "price_basis_diagnostics": diagnostics,
               "old_new_close_reconciliation": quote_reconciliation,
@@ -488,6 +548,7 @@ def main(argv=None):
               "inventory": inventory,
               "limitations": ["Development data reconstruction, not a new alpha test, investment nomination, or actual broker execution",
                               "Original surviving-stock labels retain the original replay-v16 vendor-basis and observed-membership limitations",
+                              "The single-issuer guard blocks mismatched accounting rows; it does not establish a permanent traded security ID",
                               "SEC name candidates and current Finnhub profiles are never permanent historical security IDs",
                               "Mixed-consideration fractional settlement and unresolved CVRs/DAP rights are never filled with zero",
                               "Price/action payloads and numerical security-level returns are private; public output is metadata only"]}

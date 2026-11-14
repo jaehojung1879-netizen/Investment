@@ -71,6 +71,37 @@ def test_reused_para_provider_identity_is_refused_even_with_matching_symbol(tmp_
     check_paramount_class_b_chart(record, dict(metadata, longName="Paramount Global"))
 
 
+def test_recovery_rejects_accounting_calculated_from_a_different_issuer(tmp_path):
+    from types import SimpleNamespace
+
+    from pipeline.us_decision_pilot import ACCOUNTING
+    from research.us_historical_market_recovery_v1.audit import accounting_conflicts
+
+    snap = {"date": "2020-01-02", "sourceCommit": "test", "members": ["SYN"],
+            "publishedAt": "2020-01-02T14:00:00Z"}
+    (tmp_path / "members.json").write_text(json.dumps({"snapshots": [snap]}))
+    sectors = {**snap, "rows": {"SYN": {"cik": "123", "sector": "Industrials"}}}
+    (tmp_path / "sectors.json").write_text(json.dumps({"snapshots": [sectors]}))
+    identity = {"regions": {"US": {"identity": {"malformed": {}, "renames": {}}}}}
+    (tmp_path / "identity.json").write_text(json.dumps(identity))
+    values = dict.fromkeys(ACCOUNTING, 1.0)
+    frame = {pd.Timestamp("2020-01-03"): pd.DataFrame([values], index=["SYN"])}
+    records = {"SYN": [{"cik": "000123", "factors": values}, {"cik": "456", "factors": values}]}
+
+    class Cache:
+        def __init__(self, rows):
+            self.row = rows[0]
+
+        def at(self, day):
+            return self.row["factors"], {self.row["cik"]}
+
+    pilot = SimpleNamespace(MEMBERSHIP="members.json", SECTORS="sectors.json",
+                            IDENTITY="identity.json", AccountingCache=Cache)
+    assert accounting_conflicts(frame, records, pilot, root=tmp_path) == []
+    records["SYN"][0]["factors"] = {**values, "assetGrowthPct": None}
+    assert accounting_conflicts(frame, records, pilot, root=tmp_path) == [["2020-01-03", "SYN"]]
+
+
 def test_unknown_terminal_is_not_last_close_or_zero():
     days = ["2020-01-02", "2020-01-03", "2020-01-06"]
     series = source(days[:2], [100, 110])
