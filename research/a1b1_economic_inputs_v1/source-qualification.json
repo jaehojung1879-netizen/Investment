@@ -1,0 +1,63 @@
+{
+  "scope": "OUTCOME_FREE_SOURCE_QUALIFICATION_NOT_EXECUTION_APPROVAL",
+  "officialExDatePayloads": [
+    {
+      "file": "seibro-dividend-ex-202603.xml",
+      "sha256": "355a6fc64e00ed835919989b2f3157f616ab7fe7929748c47991d4644c37e639",
+      "cashExDates": 212,
+      "url": "https://seibro.or.kr/websquare/engine/proworks/callServletService.jsp",
+      "action": "termByImptSkedulList",
+      "task": "ksd.safe.bip.cnts.Company.process.EntrSkedulPTask",
+      "DT_TPCD": "03",
+      "RGT_RACD": "103",
+      "LIST_TPCD": "11",
+      "ISSUCO_CUSTNO": "",
+      "queryMonth": "202603",
+      "transportStatus": "NOT_RETAINED_SOURCE_XML_SUCCESS_COUNT_VERIFIED"
+    },
+    {
+      "file": "seibro-dividend-ex-202606.xml",
+      "sha256": "8b6ef254a41d187104cf870471fb0711558a4b6c03a72622080ed84df1c08f64",
+      "cashExDates": 33,
+      "url": "https://seibro.or.kr/websquare/engine/proworks/callServletService.jsp",
+      "action": "termByImptSkedulList",
+      "task": "ksd.safe.bip.cnts.Company.process.EntrSkedulPTask",
+      "DT_TPCD": "03",
+      "RGT_RACD": "103",
+      "LIST_TPCD": "11",
+      "ISSUCO_CUSTNO": "",
+      "queryMonth": "202606",
+      "transportStatus": "NOT_RETAINED_SOURCE_XML_SUCCESS_COUNT_VERIFIED"
+    },
+    {
+      "file": "seibro-dividend-ex-202609.xml",
+      "sha256": "dca9a4edfdd0e1d39e9225ea0489e0a245eaa4a5f4d9a2e34d207d6e49e0e1ee",
+      "cashExDates": 24,
+      "url": "https://seibro.or.kr/websquare/engine/proworks/callServletService.jsp",
+      "action": "termByImptSkedulList",
+      "task": "ksd.safe.bip.cnts.Company.process.EntrSkedulPTask",
+      "DT_TPCD": "03",
+      "RGT_RACD": "103",
+      "LIST_TPCD": "11",
+      "ISSUCO_CUSTNO": "",
+      "queryMonth": "202609",
+      "transportStatus": "NOT_RETAINED_SOURCE_XML_SUCCESS_COUNT_VERIFIED"
+    }
+  ],
+  "sourceQueryVintage": "2026-11-08 KST; current revised source, historical publication unknown",
+  "dividendDecisionsCommit": "9a47f478a407fae5324e8ae04e75199c16b56023",
+  "dividendDecisionsSha256": "845173bcf42f57a63b53d357c146bfbcd1abc7a7138d1b9ffd9843d465cb78e2",
+  "directIssuerDates": 269,
+  "issuerOriginalJoinCandidates": 140,
+  "previouslyNoCandidate": 116,
+  "fullyQualifiedEconomicEventIncrease": 0,
+  "rights": "Public query access observed; bulk redistribution rights not established",
+  "shareClass": "Unresolved: 5-digit issuer code is not a security ID",
+  "priceRepair": "SOURCE_BLOCKED pending credential and official KRX response",
+  "inheritedEconomicSources": {
+    "commit": "e218c15578756b3557dfc13874f930d226de9fc6",
+    "sourcePath": "research/c2_economic_source_v1/source-qualification.json",
+    "usage": "Read-only 153130 distributions and official issuer source evidence; no C2 development"
+  },
+  "historicalOutcomeAuthorized": false
+}

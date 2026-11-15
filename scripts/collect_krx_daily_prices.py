@@ -15,9 +15,9 @@ in 2014 is in the 2013 responses like any other. Its rows carry
 `TDD_OPNPRC/HGPRC/LWPRC/CLSPRC`, `ACC_TRDVOL` and `LIST_SHRS`.
 
 WHAT IT COSTS. One call per weekday. 2013-01-01 to today is about 3,570
-weekdays, roughly 24 minutes at the default pacing, and the days the exchange
-was shut answer with no rows and are marked done — a fact about the calendar,
-which will not change on a retry. Weekends are never asked at all.
+weekdays, roughly 24 minutes at the default pacing. Empty responses are only
+completed when the independent exchange calendar also says closed. An open
+session without persisted bars remains retryable. Weekends are not requested.
 
 WHAT IT WRITES, AND THE ONE POLICY IT APPLIES. Raw as-traded bars under
 `<store>/krx-prices-YYYY.jsonl.gz`, one row per issue per session, carrying
@@ -43,9 +43,12 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import hashlib
 import json
+import math
 import os
 import sys
+import tempfile
 import time
 from pathlib import Path
 
@@ -55,11 +58,55 @@ sys.path.insert(0, str(ROOT))
 from pipeline import historical_store as HS  # noqa: E402
 from pipeline import krx_prices as KP  # noqa: E402
 from pipeline import krx_universe as KU  # noqa: E402
+from pipeline import replay_calendar as RC  # noqa: E402
 
 from collect_krx_universe_snapshots import (AUTH_HEADER, DEFAULT_BASE,  # noqa: E402,F401
                                             ENDPOINT, Refused, call)
 
 DONE_NAME = "krx-prices-done.json"
+RECEIPTS_NAME = "krx-prices-collection-receipts.json"
+
+
+def _atomic_bytes(path: Path, payload: bytes) -> bool:
+    """A disk/write failure preserves the previous complete file."""
+    if path.exists() and path.read_bytes() == payload:
+        return False
+    descriptor, name = tempfile.mkstemp(prefix='.' + path.name + '.', dir=path.parent)
+    try:
+        with os.fdopen(descriptor, 'wb') as output:
+            output.write(payload)
+            output.flush()
+            os.fsync(output.fileno())
+        os.replace(name, path)
+    finally:
+        Path(name).unlink(missing_ok=True)
+    return True
+
+
+def _digest(value) -> str:
+    return hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True,
+                                     separators=(',', ':'), allow_nan=False).encode()).hexdigest()
+
+
+def _merged_rows(prior, fresh):
+    """Never replace an existing observation with an undocumented revision."""
+    indexed = {}
+    for row in prior + fresh:
+        key = row['id']
+        if key in indexed:
+            if indexed[key] != row:
+                raise ValueError('EXISTING_PRICE_REVISION:' + key)
+            continue
+        indexed[key] = row
+    return sorted(indexed.values(), key=lambda r: (r['date'], r['region'], r['ticker'], r['id']))
+
+
+def _valid_bar(row):
+    close, volume = row.get('close'), row.get('volume')
+    return (not isinstance(close, bool) and isinstance(close, (int, float))
+            and math.isfinite(close) and close > 0
+            and not isinstance(volume, bool) and isinstance(volume, (int, float))
+            and math.isfinite(volume) and volume >= 0 and volume == int(volume))
 
 
 def universe_tickers(store: Path) -> set[str]:
@@ -90,8 +137,7 @@ def load_done(store: Path) -> set[str]:
 
 
 def save_done(store: Path, done: set[str]) -> None:
-    (store / DONE_NAME).write_text(
-        json.dumps(sorted(done), indent=0) + "\n", encoding="utf-8")
+    _atomic_bytes(store / DONE_NAME, (json.dumps(sorted(done), indent=0) + "\n").encode())
 
 
 def collect(store: Path, targets: list[str], *, auth_key: str, base: str,
@@ -99,8 +145,7 @@ def collect(store: Path, targets: list[str], *, auth_key: str, base: str,
             pace: float, log=print) -> dict:
     store.mkdir(parents=True, exist_ok=True)
     done = load_done(store)
-    pending = [d for d in targets if d not in done]
-
+    initial_done = set(done)
     shards: dict[int, list[dict]] = {}
     for path in sorted(store.glob("krx-prices-*.jsonl.gz")):
         try:
@@ -108,6 +153,15 @@ def collect(store: Path, targets: list[str], *, auth_key: str, base: str,
         except ValueError:
             continue
         shards[year] = HS.read_jsonl(path)
+
+    persisted_dates = {r['date'] for rows in shards.values() for r in rows if _valid_bar(r)}
+    is_session = {day: bool(len(RC.sessions(day, day, 'KR'))) for day in targets}
+    # Legacy "done" cannot certify an open exchange day with no stored bars.
+    inconsistent = {day for day in targets if day in done and is_session[day]
+                    and day not in persisted_dates}
+    pending = [d for d in targets if d not in done or d in inconsistent]
+    receipts_path = store / RECEIPTS_NAME
+    receipts = json.loads(receipts_path.read_text()) if receipts_path.exists() else {}
 
     log(f"수집 대상 {len(targets)}거래일(후보) · 이미 완료 "
         f"{len(targets) - len(pending)}일 · 남은 {len(pending)}일")
@@ -121,13 +175,16 @@ def collect(store: Path, targets: list[str], *, auth_key: str, base: str,
     closed: list[str] = []
     bars_written = 0
     stopped: str | None = None
+    budget_exhausted = False
 
     for requested in pending:
         if calls >= max_calls:
             stopped = f"콜 예산 {max_calls} 소진"
+            budget_exhausted = True
             break
         if (time.monotonic() - started) / 60.0 >= max_minutes:
             stopped = f"시간 예산 {max_minutes}분 소진"
+            budget_exhausted = True
             break
         if pace and calls:
             time.sleep(pace)
@@ -148,15 +205,54 @@ def collect(store: Path, targets: list[str], *, auth_key: str, base: str,
             stopped = f"{requested}: {error}"
             break
         if not bars:
+            raw_rows = next(payload[k] for k in KP.ROWS_KEYS if k in payload)
+            if raw_rows or is_session[requested]:
+                stopped = requested + ': EMPTY_OR_INVALID_RESPONSE_ON_EXPECTED_SESSION'
+                log(stopped)
+                break
             closed.append(requested)
             done.add(requested)
+            receipts[requested] = {'status': 'CALENDAR_CLOSED_EMPTY_RESPONSE',
+                                   'calendarVersion': RC.CALENDAR_VERSION,
+                                   'canonicalResponseSha256': _digest(payload)}
             continue
 
         served = KU.served_date(payload, requested)
+        raw_rows = next(payload[k] for k in KP.ROWS_KEYS if k in payload)
+        raw_dates = {KU._first(row, KU.DATE_KEYS) for row in raw_rows if isinstance(row, dict)}
+        if (not is_session[requested] or served != requested
+                or (raw_dates != {requested.replace('-', '')}
+                    and raw_dates != {requested})):
+            stopped = requested + ': RESPONSE_SESSION_MISMATCH_OR_DATE_ABSENT'
+            log(stopped)
+            break
+        # The shared parser is intentionally permissive for general consumers.
+        # Completion must additionally account for every selected source issue.
+        selected = [r for r in raw_rows if isinstance(r, dict)
+                    and (keep is None or KU.to_pipeline_ticker(KU._first(r, KU.CODE_KEYS) or '') in keep)]
+        codes = [KU._first(r, KU.CODE_KEYS) for r in selected]
+        parsed_codes = {b['code'] for b in bars
+                        if keep is None or KU.to_pipeline_ticker(b['code']) in keep}
+        if (len(raw_rows) != sum(isinstance(r, dict) for r in raw_rows)
+                or len(codes) != len(set(codes)) or set(codes) != parsed_codes):
+            stopped = requested + ': SELECTED_SOURCE_ROWS_DROPPED_OR_DUPLICATED'
+            log(stopped)
+            break
         rows = KP.bar_rows(served, bars, keep)
+        if not rows or not all(_valid_bar(row) for row in rows):
+            stopped = requested + ': EMPTY_FILTER_OR_INVALID_PRICE_VOLUME'
+            log(stopped)
+            break
         fresh.setdefault(KP.shard_year(served), []).extend(rows)
         bars_written += len(rows)
         done.add(requested)
+        receipts[requested] = {'status': 'SESSION_ROWS_VALIDATED', 'servedDate': served,
+                               'calendarVersion': RC.CALENDAR_VERSION,
+                               'canonicalResponseSha256': _digest(payload),
+                               'keptRows': len(rows),
+                               'keptRecordsSha256': _digest(sorted(rows, key=lambda r: r['id'])),
+                               'keepSetSha256': _digest(sorted(keep)) if keep is not None else None,
+                               'responseDigestBasis': 'CANONICAL_PARSED_JSON_NOT_ORIGINAL_HTTP_BYTES'}
         sessions.append(served)
         if len(sessions) % 250 == 0 or len(sessions) == 1:
             log(f"  {served}: {len(rows)}종목 "
@@ -164,20 +260,27 @@ def collect(store: Path, targets: list[str], *, auth_key: str, base: str,
 
     written: list[str] = []
     for year, rows in sorted(fresh.items()):
-        merged = shards.get(year, []) + rows
+        merged = _merged_rows(shards.get(year, []), rows)
         path = store / f"krx-prices-{year}.jsonl.gz"
-        if HS.write_shard(path, merged):
+        if _atomic_bytes(path, HS.encode(merged)):
             written.append(path.name)
-    save_done(store, done)
+    # Persist evidence and done last. An interrupted write must not certify
+    # data which never reached a complete atomic shard replacement.
+    if receipts:
+        _atomic_bytes(receipts_path, (json.dumps(receipts, sort_keys=True, indent=1) + '\n').encode())
+    if done != initial_done:
+        save_done(store, done)
 
-    remaining = len([d for d in targets if d not in done])
+    remaining = len([d for d in targets if d not in done
+                     or d in inconsistent and d not in sessions])
     log(f"\n{len(sessions)}세션 · {bars_written}행 · {calls}콜 · 휴장 "
         f"{len(closed)}일 · 샤드 {len(written)}개 기록 · 남은 {remaining}일")
     if stopped:
         log(f"중단: {stopped}")
     return {"sessions": sessions, "bars": bars_written, "calls": calls,
             "closed": closed, "written": written, "remaining": remaining,
-            "stopped": stopped}
+            "stopped": stopped, "legacyDoneWithoutBars": sorted(inconsistent),
+            "sourceFailure": bool(stopped) and not budget_exhausted}
 
 
 def main(argv=None) -> int:
@@ -218,7 +321,7 @@ def main(argv=None) -> int:
     result = collect(Path(args.store), targets, auth_key=auth_key,
                      base=args.base, keep=keep, max_calls=args.max_calls,
                      max_minutes=args.max_minutes, pace=args.pace)
-    return 1 if result["stopped"] and not result["sessions"] else 0
+    return 1 if result["sourceFailure"] else 0
 
 
 if __name__ == "__main__":

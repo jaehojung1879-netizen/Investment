@@ -56,6 +56,7 @@ sys.path.insert(0, str(ROOT))
 
 from pipeline import historical_store as HS  # noqa: E402
 from pipeline import krx_universe as KU  # noqa: E402
+from pipeline import replay_calendar as RC  # noqa: E402
 
 # The service root and the one endpoint probes run #4 proved. Both overridable,
 # because a wrong base is the single thing that would make a working endpoint
@@ -68,6 +69,7 @@ ENDPOINT = "sto/stk_bydd_trd"
 AUTH_HEADER = "AUTH_KEY"
 
 DONE_NAME = "krx-universe-done.json"
+RECEIPTS_NAME = "krx-universe-collection-receipts.json"
 
 # A requested date that falls on a market holiday is answered with no rows.
 # Rather than dropping that month, step forward a few days to the next open
@@ -153,12 +155,40 @@ def pending_dates(targets: list[str], done: dict[str, int], top: int) -> list[st
     return [date for date in targets if done.get(date, 0) < top]
 
 
+def calendar_session(day: str) -> bool:
+    """The pinned XKRX calendar (the same one the price collector checks against)."""
+    return bool(len(RC.sessions(day, day, "KR")))
+
+
+def kst_today() -> str:
+    return (dt.datetime.now(dt.timezone.utc) + dt.timedelta(hours=9)).date().isoformat()
+
+
+def window(requested: str) -> list[str]:
+    start = dt.date.fromisoformat(requested)
+    return [(start + dt.timedelta(days=k)).isoformat() for k in range(HOLIDAY_STEPS + 1)]
+
+
+def legacy_done_without_rows(done: dict, shards: dict, is_session, today: str) -> set[str]:
+    """Done markers no stored snapshot supports: their look-ahead window holds a published
+    calendar session, yet no row is dated inside that window. Retried, never trusted."""
+    dates = {r["date"] for rows in shards.values() for r in rows}
+    out = set()
+    for requested in done:
+        days = window(requested)
+        published = [d for d in days if d < today and is_session(d)]
+        if published and not any(d in dates for d in days):
+            out.add(requested)
+    return out
+
+
 def collect(store: Path, targets: list[str], *, auth_key: str, base: str,
             top: int, max_calls: int, max_minutes: float, pace: float,
-            log=print) -> dict:
+            log=print, is_session=None, today: str | None = None) -> dict:
     store.mkdir(parents=True, exist_ok=True)
+    is_session = is_session or calendar_session
+    today = today or kst_today()
     done = load_done(store)
-    pending = pending_dates(targets, done, top)
 
     shards: dict[int, list[dict]] = {}
     for path in sorted(store.glob("krx-universe-*.jsonl.gz")):
@@ -167,6 +197,19 @@ def collect(store: Path, targets: list[str], *, auth_key: str, base: str,
         except ValueError:
             continue
         shards[year] = HS.read_jsonl(path)
+    # A legacy marker written for an empty answer on an open session (2026-10-01) or before the
+    # next session was published (2026-11-01) is not evidence of anything: retry it.
+    inconsistent = legacy_done_without_rows({d: v for d, v in done.items() if d in set(targets)},
+                                            shards, is_session, today)
+    for requested in inconsistent:
+        done.pop(requested, None)
+    pending = pending_dates(targets, done, top)
+    receipts_path = store / RECEIPTS_NAME
+    try:
+        receipts = json.loads(receipts_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        receipts = {}
+    deferred: list[str] = []
 
     log(f"수집 대상 {len(targets)}일 · 이미 완료 {len(targets) - len(pending)}일 "
         f"· 남은 {len(pending)}일")
@@ -189,6 +232,7 @@ def collect(store: Path, targets: list[str], *, auth_key: str, base: str,
 
         rows: list[dict] = []
         served = requested
+        unpublished = False
         # Walk forward over closed sessions. Each step is a call and is charged
         # to the budget, because a holiday costs the quota exactly as a trading
         # day does.
@@ -197,6 +241,11 @@ def collect(store: Path, targets: list[str], *, auth_key: str, base: str,
                 break
             probe = (dt.date.fromisoformat(requested)
                      + dt.timedelta(days=offset)).isoformat()
+            if probe >= today:
+                # Not published yet: a session that has not closed (or closed today) cannot be
+                # read as a holiday. The date stays pending; a later run asks again.
+                unpublished = True
+                break
             if pace and calls:
                 time.sleep(pace)
             try:
@@ -217,20 +266,44 @@ def collect(store: Path, targets: list[str], *, auth_key: str, base: str,
                 break
             if issues:
                 served = KU.served_date(payload, probe)
+                # KRX may answer a closed day with the nearest open session; that is accepted only if
+                # the served day is a calendar session inside this window and already published.
+                if served != probe and not (served in window(requested) and served < today
+                                            and is_session(served) and not is_session(probe)):
+                    stopped = f"{probe}: RESPONSE_DATE_MISMATCH served={served}"
+                    break
                 rows = KU.snapshot_rows(served, KU.rank_issues(issues, top))
+                break
+            if is_session(probe):
+                # An empty answer for an open session is a source failure, not a closed market.
+                stopped = f"{probe}: EMPTY_RESPONSE_ON_EXPECTED_SESSION"
                 break
             holidays.append(probe)
         if stopped:
+            log(f"  중단: {stopped}")
             break
+        if not rows and unpublished:
+            deferred.append(requested)
+            log(f"  {requested}: 아직 공개되지 않은 날짜 — 다음 실행에서 다시 요청")
+            continue
         if not rows:
-            log(f"  {requested}: {HOLIDAY_STEPS}일을 내다봐도 거래일이 없음 — 건너뜀")
-            # Marked done: the exchange was shut, which is a fact about the
-            # calendar and will not change on a retry.
+            if calls >= max_calls:
+                stopped = f"콜 예산 {max_calls} 소진"
+                break
+            # Done only when every day of the window is closed by the pinned calendar: a fact about
+            # the calendar that will not change on a retry.
+            log(f"  {requested}: {HOLIDAY_STEPS}일 모두 달력상 휴장 — 완료")
             done[requested] = top
+            receipts[requested] = {"status": "CALENDAR_CLOSED_WINDOW", "servedDate": None,
+                                   "calendarVersion": RC.CALENDAR_VERSION,
+                                   "collectedAtUtc": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")}
             continue
 
         fresh.setdefault(KU.shard_year(served), []).extend(rows)
         done[requested] = top
+        receipts[requested] = {"status": "SNAPSHOT_ROWS_STORED", "servedDate": served, "rows": len(rows),
+                               "calendarVersion": RC.CALENDAR_VERSION,
+                               "collectedAtUtc": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")}
         collected.append(served)
         if len(collected) % 12 == 0 or len(collected) == 1:
             log(f"  {served}: {len(rows)}종목 (누적 {len(collected)}일, {calls}콜)")
@@ -243,6 +316,9 @@ def collect(store: Path, targets: list[str], *, auth_key: str, base: str,
         # re-committed, so a re-run that collects nothing new is a no-op diff.
         if HS.write_shard(path, merged):
             written.append(path.name)
+    # Evidence and done are written after the shards: an interrupted run never certifies rows it lost.
+    if receipts:
+        receipts_path.write_text(json.dumps(receipts, sort_keys=True, indent=1) + "\n", encoding="utf-8")
     save_done(store, done)
 
     remaining = len(pending_dates(targets, done, top))
@@ -251,7 +327,8 @@ def collect(store: Path, targets: list[str], *, auth_key: str, base: str,
     if stopped:
         log(f"중단: {stopped}")
     return {"collected": collected, "calls": calls, "holidays": holidays,
-            "written": written, "remaining": remaining, "stopped": stopped}
+            "written": written, "remaining": remaining, "stopped": stopped,
+            "deferred": deferred, "legacyDoneWithoutRows": sorted(inconsistent)}
 
 
 def main(argv=None) -> int:
