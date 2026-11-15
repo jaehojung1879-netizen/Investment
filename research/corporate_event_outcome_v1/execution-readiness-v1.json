@@ -1,0 +1,1338 @@
+{
+ "computability": {
+  "betaMatchedSelection": "NOT_EXECUTED / SOURCE_BLOCKED (cash leg, total return)",
+  "eligibleEventCountsMaturityIndustryDistribution": "COMPUTED_OUTCOME_FREE",
+  "etfExcessReturn": "NOT_EXECUTED (needs authorization) / SOURCE_BLOCKED (total-return basis)",
+  "h126AndH252": "NOT_EXECUTED",
+  "industryAdjusted": "NOT_EXECUTED / SOURCE_BLOCKED outside Top120",
+  "intervalsEffectiveNPower": "NOT_EXECUTED (sigma, design effect need a price read)",
+  "matchedPeerControl": "NOT_EXECUTED / SOURCE_BLOCKED (PIT B/M)",
+  "mdeOnMaturedN": "COMPUTED_CONDITIONAL_ON_UNMEASURED_SIGMA",
+  "netOfCostExcess1x2x3x": "NOT_EXECUTED / SOURCE_BLOCKED",
+  "portfolio0to5": "NOT_REACHED (requires DEVELOPMENT_SUPPORT first)"
+ },
+ "contract": "OUTCOME_FREE_EXECUTION_READINESS_V1",
+ "exDateRuleCheck": {
+  "disagreeWithMarketRule": 0,
+  "evidenceReproduced": true,
+  "filingStatedCandidates": 593,
+  "priorBuildRecordedFact": "the first build was one session late on 397 of 593 stated-rule candidates (non-session record dates); corrected in this change",
+  "publicEvidence": [
+   {
+    "lastSession": "2023-12-28",
+    "marketRule": "2023-12-27",
+    "recordDate": "2023-12-31",
+    "reportedExDate": "2023-12-27",
+    "source": "https://www.khan.co.kr/article/202312141411001",
+    "year": 2023
+   },
+   {
+    "lastSession": "2023-12-28",
+    "marketRule": "2023-12-27",
+    "recordDate": "2023-12-31",
+    "reportedExDate": "2023-12-27",
+    "source": "https://www.newsis.com/view/NISX20231226_0002570439",
+    "year": 2023
+   },
+   {
+    "lastSession": "2022-12-29",
+    "marketRule": "2022-12-28",
+    "recordDate": "2022-12-31",
+    "reportedExDate": "2022-12-28",
+    "source": "https://www.fnnews.com/news/202212151630345260",
+    "year": 2022
+   }
+  ],
+  "sealed": false,
+  "tier": "MARKET_T_PLUS_2_LAST_SESSION_RULE_CANDIDATE_UNSEALED"
+ },
+ "inherited": {
+  "registeredSpecSha256": "1692b5b3131a76ab6dd8a5198ef0fd262fffa4ec7cf0925444cf344aacbd61d4",
+  "status": "INHERITED_VALUES_MATCH"
+ },
+ "outcomesRead": 0,
+ "pinnedLargestPitIndustryForRemovalCheck": {
+  "A1": "FINANCIALS",
+  "A2": "FINANCIALS",
+  "B1": "CAPITAL_GOODS_DEFENSE"
+ },
+ "powerOnMaturedN": {
+  "formula": "MDE=(z_{1-.05/6}+z_.80)*sigma*sqrt(D/N)",
+  "meePp": {
+   "H126": 3.0,
+   "H252": 4.0
+  },
+  "rows": [
+   {
+    "N": 265,
+    "designEffect": 1.0,
+    "gate": "POWER_PASS",
+    "mdePp": 2.98,
+    "set": "A1_H126",
+    "sigmaPct": 15.0
+   },
+   {
+    "N": 265,
+    "designEffect": 2.0,
+    "gate": "POWER_MARGINAL",
+    "mdePp": 4.22,
+    "set": "A1_H126",
+    "sigmaPct": 15.0
+   },
+   {
+    "N": 265,
+    "designEffect": 4.0,
+    "gate": "POWER_MARGINAL",
+    "mdePp": 5.96,
+    "set": "A1_H126",
+    "sigmaPct": 15.0
+   },
+   {
+    "N": 265,
+    "designEffect": 1.0,
+    "gate": "POWER_MARGINAL",
+    "mdePp": 3.98,
+    "set": "A1_H126",
+    "sigmaPct": 20.0
+   },
+   {
+    "N": 265,
+    "designEffect": 2.0,
+    "gate": "POWER_MARGINAL",
+    "mdePp": 5.62,
+    "set": "A1_H126",
+    "sigmaPct": 20.0
+   },
+   {
+    "N": 265,
+    "designEffect": 4.0,
+    "gate": "POWER_NO_GO",
+    "mdePp": 7.95,
+    "set": "A1_H126",
+    "sigmaPct": 20.0
+   },
+   {
+    "N": 265,
+    "designEffect": 1.0,
+    "gate": "POWER_MARGINAL",
+    "mdePp": 4.97,
+    "set": "A1_H126",
+    "sigmaPct": 25.0
+   },
+   {
+    "N": 265,
+    "designEffect": 2.0,
+    "gate": "POWER_NO_GO",
+    "mdePp": 7.03,
+    "set": "A1_H126",
+    "sigmaPct": 25.0
+   },
+   {
+    "N": 265,
+    "designEffect": 4.0,
+    "gate": "POWER_NO_GO",
+    "mdePp": 9.94,
+    "set": "A1_H126",
+    "sigmaPct": 25.0
+   },
+   {
+    "N": 265,
+    "designEffect": 1.0,
+    "gate": "POWER_MARGINAL",
+    "mdePp": 5.96,
+    "set": "A1_H126",
+    "sigmaPct": 30.0
+   },
+   {
+    "N": 265,
+    "designEffect": 2.0,
+    "gate": "POWER_NO_GO",
+    "mdePp": 8.43,
+    "set": "A1_H126",
+    "sigmaPct": 30.0
+   },
+   {
+    "N": 265,
+    "designEffect": 4.0,
+    "gate": "POWER_NO_GO",
+    "mdePp": 11.93,
+    "set": "A1_H126",
+    "sigmaPct": 30.0
+   },
+   {
+    "N": 164,
+    "designEffect": 1.0,
+    "gate": "POWER_MARGINAL",
+    "mdePp": 5.05,
+    "set": "A1_H252",
+    "sigmaPct": 20.0
+   },
+   {
+    "N": 164,
+    "designEffect": 2.0,
+    "gate": "POWER_MARGINAL",
+    "mdePp": 7.15,
+    "set": "A1_H252",
+    "sigmaPct": 20.0
+   },
+   {
+    "N": 164,
+    "designEffect": 4.0,
+    "gate": "POWER_NO_GO",
+    "mdePp": 10.11,
+    "set": "A1_H252",
+    "sigmaPct": 20.0
+   },
+   {
+    "N": 164,
+    "designEffect": 1.0,
+    "gate": "POWER_MARGINAL",
+    "mdePp": 7.07,
+    "set": "A1_H252",
+    "sigmaPct": 28.0
+   },
+   {
+    "N": 164,
+    "designEffect": 2.0,
+    "gate": "POWER_NO_GO",
+    "mdePp": 10.0,
+    "set": "A1_H252",
+    "sigmaPct": 28.0
+   },
+   {
+    "N": 164,
+    "designEffect": 4.0,
+    "gate": "POWER_NO_GO",
+    "mdePp": 14.15,
+    "set": "A1_H252",
+    "sigmaPct": 28.0
+   },
+   {
+    "N": 164,
+    "designEffect": 1.0,
+    "gate": "POWER_NO_GO",
+    "mdePp": 8.84,
+    "set": "A1_H252",
+    "sigmaPct": 35.0
+   },
+   {
+    "N": 164,
+    "designEffect": 2.0,
+    "gate": "POWER_NO_GO",
+    "mdePp": 12.51,
+    "set": "A1_H252",
+    "sigmaPct": 35.0
+   },
+   {
+    "N": 164,
+    "designEffect": 4.0,
+    "gate": "POWER_NO_GO",
+    "mdePp": 17.69,
+    "set": "A1_H252",
+    "sigmaPct": 35.0
+   },
+   {
+    "N": 164,
+    "designEffect": 1.0,
+    "gate": "POWER_NO_GO",
+    "mdePp": 10.61,
+    "set": "A1_H252",
+    "sigmaPct": 42.0
+   },
+   {
+    "N": 164,
+    "designEffect": 2.0,
+    "gate": "POWER_NO_GO",
+    "mdePp": 15.01,
+    "set": "A1_H252",
+    "sigmaPct": 42.0
+   },
+   {
+    "N": 164,
+    "designEffect": 4.0,
+    "gate": "POWER_NO_GO",
+    "mdePp": 21.22,
+    "set": "A1_H252",
+    "sigmaPct": 42.0
+   },
+   {
+    "N": 441,
+    "designEffect": 1.0,
+    "gate": "POWER_PASS",
+    "mdePp": 2.31,
+    "set": "B1_H126",
+    "sigmaPct": 15.0
+   },
+   {
+    "N": 441,
+    "designEffect": 2.0,
+    "gate": "POWER_MARGINAL",
+    "mdePp": 3.27,
+    "set": "B1_H126",
+    "sigmaPct": 15.0
+   },
+   {
+    "N": 441,
+    "designEffect": 4.0,
+    "gate": "POWER_MARGINAL",
+    "mdePp": 4.62,
+    "set": "B1_H126",
+    "sigmaPct": 15.0
+   },
+   {
+    "N": 441,
+    "designEffect": 1.0,
+    "gate": "POWER_MARGINAL",
+    "mdePp": 3.08,
+    "set": "B1_H126",
+    "sigmaPct": 20.0
+   },
+   {
+    "N": 441,
+    "designEffect": 2.0,
+    "gate": "POWER_MARGINAL",
+    "mdePp": 4.36,
+    "set": "B1_H126",
+    "sigmaPct": 20.0
+   },
+   {
+    "N": 441,
+    "designEffect": 4.0,
+    "gate": "POWER_NO_GO",
+    "mdePp": 6.16,
+    "set": "B1_H126",
+    "sigmaPct": 20.0
+   },
+   {
+    "N": 441,
+    "designEffect": 1.0,
+    "gate": "POWER_MARGINAL",
+    "mdePp": 3.85,
+    "set": "B1_H126",
+    "sigmaPct": 25.0
+   },
+   {
+    "N": 441,
+    "designEffect": 2.0,
+    "gate": "POWER_MARGINAL",
+    "mdePp": 5.45,
+    "set": "B1_H126",
+    "sigmaPct": 25.0
+   },
+   {
+    "N": 441,
+    "designEffect": 4.0,
+    "gate": "POWER_NO_GO",
+    "mdePp": 7.7,
+    "set": "B1_H126",
+    "sigmaPct": 25.0
+   },
+   {
+    "N": 441,
+    "designEffect": 1.0,
+    "gate": "POWER_MARGINAL",
+    "mdePp": 4.62,
+    "set": "B1_H126",
+    "sigmaPct": 30.0
+   },
+   {
+    "N": 441,
+    "designEffect": 2.0,
+    "gate": "POWER_NO_GO",
+    "mdePp": 6.54,
+    "set": "B1_H126",
+    "sigmaPct": 30.0
+   },
+   {
+    "N": 441,
+    "designEffect": 4.0,
+    "gate": "POWER_NO_GO",
+    "mdePp": 9.24,
+    "set": "B1_H126",
+    "sigmaPct": 30.0
+   },
+   {
+    "N": 312,
+    "designEffect": 1.0,
+    "gate": "POWER_PASS",
+    "mdePp": 3.66,
+    "set": "B1_H252",
+    "sigmaPct": 20.0
+   },
+   {
+    "N": 312,
+    "designEffect": 2.0,
+    "gate": "POWER_MARGINAL",
+    "mdePp": 5.18,
+    "set": "B1_H252",
+    "sigmaPct": 20.0
+   },
+   {
+    "N": 312,
+    "designEffect": 4.0,
+    "gate": "POWER_MARGINAL",
+    "mdePp": 7.33,
+    "set": "B1_H252",
+    "sigmaPct": 20.0
+   },
+   {
+    "N": 312,
+    "designEffect": 1.0,
+    "gate": "POWER_MARGINAL",
+    "mdePp": 5.13,
+    "set": "B1_H252",
+    "sigmaPct": 28.0
+   },
+   {
+    "N": 312,
+    "designEffect": 2.0,
+    "gate": "POWER_MARGINAL",
+    "mdePp": 7.25,
+    "set": "B1_H252",
+    "sigmaPct": 28.0
+   },
+   {
+    "N": 312,
+    "designEffect": 4.0,
+    "gate": "POWER_NO_GO",
+    "mdePp": 10.26,
+    "set": "B1_H252",
+    "sigmaPct": 28.0
+   },
+   {
+    "N": 312,
+    "designEffect": 1.0,
+    "gate": "POWER_MARGINAL",
+    "mdePp": 6.41,
+    "set": "B1_H252",
+    "sigmaPct": 35.0
+   },
+   {
+    "N": 312,
+    "designEffect": 2.0,
+    "gate": "POWER_NO_GO",
+    "mdePp": 9.07,
+    "set": "B1_H252",
+    "sigmaPct": 35.0
+   },
+   {
+    "N": 312,
+    "designEffect": 4.0,
+    "gate": "POWER_NO_GO",
+    "mdePp": 12.82,
+    "set": "B1_H252",
+    "sigmaPct": 35.0
+   },
+   {
+    "N": 312,
+    "designEffect": 1.0,
+    "gate": "POWER_MARGINAL",
+    "mdePp": 7.69,
+    "set": "B1_H252",
+    "sigmaPct": 42.0
+   },
+   {
+    "N": 312,
+    "designEffect": 2.0,
+    "gate": "POWER_NO_GO",
+    "mdePp": 10.88,
+    "set": "B1_H252",
+    "sigmaPct": 42.0
+   },
+   {
+    "N": 312,
+    "designEffect": 4.0,
+    "gate": "POWER_NO_GO",
+    "mdePp": 15.39,
+    "set": "B1_H252",
+    "sigmaPct": 42.0
+   }
+  ],
+  "status": "CONDITIONAL_ON_UNMEASURED_SIGMA_AND_DESIGN_EFFECT",
+  "valueUpSplit": [
+   {
+    "N": 0,
+    "designEffect": 2.0,
+    "gate": "NO_EVENTS",
+    "mdePp": null,
+    "part": "preValueUp",
+    "set": "A1_H126",
+    "sigmaPct": 20.0
+   },
+   {
+    "N": 0,
+    "designEffect": 2.0,
+    "gate": "NO_EVENTS",
+    "mdePp": null,
+    "part": "postValueUp",
+    "set": "A1_H126",
+    "sigmaPct": 20.0
+   },
+   {
+    "N": 0,
+    "designEffect": 2.0,
+    "gate": "NO_EVENTS",
+    "mdePp": null,
+    "part": "preValueUp",
+    "set": "A1_H252",
+    "sigmaPct": 28.0
+   },
+   {
+    "N": 0,
+    "designEffect": 2.0,
+    "gate": "NO_EVENTS",
+    "mdePp": null,
+    "part": "postValueUp",
+    "set": "A1_H252",
+    "sigmaPct": 28.0
+   },
+   {
+    "N": 0,
+    "designEffect": 2.0,
+    "gate": "NO_EVENTS",
+    "mdePp": null,
+    "part": "preValueUp",
+    "set": "B1_H126",
+    "sigmaPct": 20.0
+   },
+   {
+    "N": 0,
+    "designEffect": 2.0,
+    "gate": "NO_EVENTS",
+    "mdePp": null,
+    "part": "postValueUp",
+    "set": "B1_H126",
+    "sigmaPct": 20.0
+   },
+   {
+    "N": 0,
+    "designEffect": 2.0,
+    "gate": "NO_EVENTS",
+    "mdePp": null,
+    "part": "preValueUp",
+    "set": "B1_H252",
+    "sigmaPct": 28.0
+   },
+   {
+    "N": 0,
+    "designEffect": 2.0,
+    "gate": "NO_EVENTS",
+    "mdePp": null,
+    "part": "postValueUp",
+    "set": "B1_H252",
+    "sigmaPct": 28.0
+   }
+  ]
+ },
+ "priceValuesRead": 0,
+ "sets": {
+  "A1_H126": {
+   "bookEquityAtSignal": {
+    "coverage": 0.8731,
+    "missing": {
+     "NO_ANNUAL_REPORT_VISIBLE_AT_SIGNAL": 41
+    },
+    "usable": 282
+   },
+   "byEntryYear": {
+    "2013": 1,
+    "2015": 3,
+    "2016": 3,
+    "2017": 6,
+    "2018": 11,
+    "2019": 5,
+    "2020": 15,
+    "2021": 9,
+    "2022": 16,
+    "2023": 36,
+    "2024": 49,
+    "2025": 66,
+    "2026": 103
+   },
+   "calendarSpanMatured": {
+    "effectivePrimaryBlocks": 13.13,
+    "end": "2026-10-27",
+    "sessions": 3310,
+    "start": "2013-04-29"
+   },
+   "dividendWindowExposureMatured": {
+    "ALL_IN_WINDOW_FILING_STATED_RULE": 20,
+    "NO_PARSED_RECORD_DATE_IN_WINDOW": 97,
+    "RECORD_DATE_ONLY_EX_DATE_RULE_REQUIRED": 148
+   },
+   "dividendWindowIfMarketRuleSealed": {
+    "ALL_IN_WINDOW_DIVIDENDS_DATED_AND_SIZED": 165,
+    "IN_WINDOW_DIVIDEND_WITHOUT_COMMON_DPS": 4,
+    "NO_EX_DATE_IN_WINDOW": 96
+   },
+   "entries2025_2026": 169,
+   "independentEvents": 323,
+   "issuerConcentration": {
+    "hhi": 0.0114,
+    "maxEventsOneIssuer": 9,
+    "top10Share": 0.2229
+   },
+   "issuers": 145,
+   "maturedByLedgerEnd": 265,
+   "maturedWindowCrossesKnownLedgerGap": 12,
+   "pendingMaturity": 58,
+   "pitIndustry": {
+    "byValueUp": {
+     "post": {
+      "AUTOS": 9,
+      "BASIC_MATERIALS": 7,
+      "CAPITAL_GOODS_DEFENSE": 12,
+      "CHEMICALS": 13,
+      "COMMUNICATION_MEDIA_SOFTWARE": 20,
+      "CONSTRUCTION_ENGINEERING": 4,
+      "CONSUMER_RETAIL_SERVICES": 20,
+      "ELECTRONICS_ELECTRICAL": 17,
+      "FINANCIALS": 71,
+      "FOOD_BEVERAGE_TOBACCO": 4,
+      "HEALTHCARE": 10,
+      "HOLDINGS_BUSINESS_SERVICES": 3,
+      "TRANSPORT_LOGISTICS": 2,
+      "UNLABELLED": 10
+     },
+     "pre": {
+      "AUTOS": 11,
+      "BASIC_MATERIALS": 7,
+      "CAPITAL_GOODS_DEFENSE": 13,
+      "CHEMICALS": 14,
+      "COMMUNICATION_MEDIA_SOFTWARE": 13,
+      "CONSTRUCTION_ENGINEERING": 1,
+      "CONSUMER_RETAIL_SERVICES": 9,
+      "ELECTRONICS_ELECTRICAL": 8,
+      "ENERGY_UTILITIES": 3,
+      "FINANCIALS": 33,
+      "FOOD_BEVERAGE_TOBACCO": 1,
+      "HEALTHCARE": 2,
+      "HOLDINGS_BUSINESS_SERVICES": 4,
+      "UNLABELLED": 2
+     }
+    },
+    "coverage": 0.9628,
+    "distribution": {
+     "AUTOS": 20,
+     "BASIC_MATERIALS": 14,
+     "CAPITAL_GOODS_DEFENSE": 25,
+     "CHEMICALS": 27,
+     "COMMUNICATION_MEDIA_SOFTWARE": 33,
+     "CONSTRUCTION_ENGINEERING": 5,
+     "CONSUMER_RETAIL_SERVICES": 29,
+     "ELECTRONICS_ELECTRICAL": 25,
+     "ENERGY_UTILITIES": 3,
+     "FINANCIALS": 104,
+     "FOOD_BEVERAGE_TOBACCO": 5,
+     "HEALTHCARE": 12,
+     "HOLDINGS_BUSINESS_SERVICES": 7,
+     "TRANSPORT_LOGISTICS": 2,
+     "UNLABELLED": 12
+    },
+    "labelTiers": "PIT_V4 = sealed v4 intervals; NOT_PIT_EXTENSION = current DART KSIC learned map (leave-one-out agreement in industry-extension-v1.json)",
+    "labelled": 311,
+    "largestIndustry": "FINANCIALS",
+    "largestIndustryShareOfLabelled": 0.3344,
+    "pitV4Only": {
+     "coverage": 0.7802,
+     "labelled": 252
+    },
+    "status": {
+     "LABELLED_NOT_PIT_EXTENSION": 59,
+     "LABELLED_PIT_V4": 252,
+     "OUTSIDE_TOP120_PIT_INDUSTRY_UNIVERSE": 11,
+     "PIT_INDUSTRY_UNKNOWN": 1
+    }
+   },
+   "priceWindowAdmission": {
+    "ENDS_BEFORE_MATURITY_TERMINAL_ECONOMICS_REQUIRED": 7,
+    "ENTRY_NOT_TRADED": 1,
+    "FULL_WINDOW_TRADED": 238,
+    "PENDING_MATURITY_OR_LEDGER_END": 58,
+    "SUSPENSION_OR_GAP_IN_WINDOW": 19
+   },
+   "terminalSplit": {
+    "LEDGER_SESSION_GAP_NOT_TERMINAL": 2,
+    "TERMINAL_NO_BAR_AT_OR_AFTER_WINDOW_END": 5
+   },
+   "valueUp": {
+    "post": 202,
+    "pre": 121
+   }
+  },
+  "A1_H252": {
+   "bookEquityAtSignal": {
+    "coverage": 0.877,
+    "missing": {
+     "NO_ANNUAL_REPORT_VISIBLE_AT_SIGNAL": 31
+    },
+    "usable": 221
+   },
+   "byEntryYear": {
+    "2013": 1,
+    "2015": 3,
+    "2016": 2,
+    "2017": 4,
+    "2018": 10,
+    "2019": 5,
+    "2020": 12,
+    "2021": 6,
+    "2022": 14,
+    "2023": 31,
+    "2024": 36,
+    "2025": 48,
+    "2026": 80
+   },
+   "calendarSpanMatured": {
+    "effectivePrimaryBlocks": 6.54,
+    "end": "2026-10-02",
+    "sessions": 3295,
+    "start": "2013-04-29"
+   },
+   "dividendWindowExposureMatured": {
+    "ALL_IN_WINDOW_FILING_STATED_RULE": 14,
+    "NO_PARSED_RECORD_DATE_IN_WINDOW": 17,
+    "RECORD_DATE_ONLY_EX_DATE_RULE_REQUIRED": 133
+   },
+   "dividendWindowIfMarketRuleSealed": {
+    "ALL_IN_WINDOW_DIVIDENDS_DATED_AND_SIZED": 143,
+    "IN_WINDOW_DIVIDEND_WITHOUT_COMMON_DPS": 4,
+    "NO_EX_DATE_IN_WINDOW": 17
+   },
+   "entries2025_2026": 128,
+   "independentEvents": 252,
+   "issuerConcentration": {
+    "hhi": 0.0102,
+    "maxEventsOneIssuer": 7,
+    "top10Share": 0.2024
+   },
+   "issuers": 145,
+   "maturedByLedgerEnd": 164,
+   "maturedWindowCrossesKnownLedgerGap": 2,
+   "pendingMaturity": 88,
+   "pitIndustry": {
+    "byValueUp": {
+     "post": {
+      "AUTOS": 7,
+      "BASIC_MATERIALS": 4,
+      "CAPITAL_GOODS_DEFENSE": 9,
+      "CHEMICALS": 9,
+      "COMMUNICATION_MEDIA_SOFTWARE": 14,
+      "CONSTRUCTION_ENGINEERING": 3,
+      "CONSUMER_RETAIL_SERVICES": 16,
+      "ELECTRONICS_ELECTRICAL": 15,
+      "FINANCIALS": 52,
+      "FOOD_BEVERAGE_TOBACCO": 3,
+      "HEALTHCARE": 9,
+      "HOLDINGS_BUSINESS_SERVICES": 2,
+      "TRANSPORT_LOGISTICS": 2,
+      "UNLABELLED": 8
+     },
+     "pre": {
+      "AUTOS": 8,
+      "BASIC_MATERIALS": 7,
+      "CAPITAL_GOODS_DEFENSE": 11,
+      "CHEMICALS": 11,
+      "COMMUNICATION_MEDIA_SOFTWARE": 11,
+      "CONSTRUCTION_ENGINEERING": 1,
+      "CONSUMER_RETAIL_SERVICES": 7,
+      "ELECTRONICS_ELECTRICAL": 6,
+      "ENERGY_UTILITIES": 3,
+      "FINANCIALS": 26,
+      "FOOD_BEVERAGE_TOBACCO": 1,
+      "HEALTHCARE": 2,
+      "HOLDINGS_BUSINESS_SERVICES": 3,
+      "UNLABELLED": 2
+     }
+    },
+    "coverage": 0.9603,
+    "distribution": {
+     "AUTOS": 15,
+     "BASIC_MATERIALS": 11,
+     "CAPITAL_GOODS_DEFENSE": 20,
+     "CHEMICALS": 20,
+     "COMMUNICATION_MEDIA_SOFTWARE": 25,
+     "CONSTRUCTION_ENGINEERING": 4,
+     "CONSUMER_RETAIL_SERVICES": 23,
+     "ELECTRONICS_ELECTRICAL": 21,
+     "ENERGY_UTILITIES": 3,
+     "FINANCIALS": 78,
+     "FOOD_BEVERAGE_TOBACCO": 4,
+     "HEALTHCARE": 11,
+     "HOLDINGS_BUSINESS_SERVICES": 5,
+     "TRANSPORT_LOGISTICS": 2,
+     "UNLABELLED": 10
+    },
+    "labelTiers": "PIT_V4 = sealed v4 intervals; NOT_PIT_EXTENSION = current DART KSIC learned map (leave-one-out agreement in industry-extension-v1.json)",
+    "labelled": 242,
+    "largestIndustry": "FINANCIALS",
+    "largestIndustryShareOfLabelled": 0.3223,
+    "pitV4Only": {
+     "coverage": 0.75,
+     "labelled": 189
+    },
+    "status": {
+     "LABELLED_NOT_PIT_EXTENSION": 53,
+     "LABELLED_PIT_V4": 189,
+     "OUTSIDE_TOP120_PIT_INDUSTRY_UNIVERSE": 9,
+     "PIT_INDUSTRY_UNKNOWN": 1
+    }
+   },
+   "priceWindowAdmission": {
+    "ENDS_BEFORE_MATURITY_TERMINAL_ECONOMICS_REQUIRED": 4,
+    "ENTRY_NOT_TRADED": 2,
+    "FULL_WINDOW_TRADED": 146,
+    "PENDING_MATURITY_OR_LEDGER_END": 88,
+    "SUSPENSION_OR_GAP_IN_WINDOW": 12
+   },
+   "terminalSplit": {
+    "TERMINAL_NO_BAR_AT_OR_AFTER_WINDOW_END": 4
+   },
+   "valueUp": {
+    "post": 153,
+    "pre": 99
+   }
+  },
+  "A2_H126": {
+   "bookEquityAtSignal": {
+    "coverage": 0.6743,
+    "missing": {
+     "NO_ANNUAL_REPORT_VISIBLE_AT_SIGNAL": 170
+    },
+    "usable": 352
+   },
+   "byEntryYear": {
+    "2013": 12,
+    "2014": 49,
+    "2015": 26,
+    "2016": 34,
+    "2017": 19,
+    "2018": 28,
+    "2019": 27,
+    "2020": 64,
+    "2021": 37,
+    "2022": 49,
+    "2023": 51,
+    "2024": 50,
+    "2025": 40,
+    "2026": 36
+   },
+   "calendarSpanMatured": {
+    "effectivePrimaryBlocks": 13.31,
+    "end": "2026-10-02",
+    "sessions": 3355,
+    "start": "2013-01-31"
+   },
+   "dividendWindowExposureMatured": {
+    "ALL_IN_WINDOW_FILING_STATED_RULE": 28,
+    "NO_PARSED_RECORD_DATE_IN_WINDOW": 224,
+    "RECORD_DATE_ONLY_EX_DATE_RULE_REQUIRED": 250
+   },
+   "dividendWindowIfMarketRuleSealed": {
+    "ALL_IN_WINDOW_DIVIDENDS_DATED_AND_SIZED": 273,
+    "IN_WINDOW_DIVIDEND_WITHOUT_COMMON_DPS": 5,
+    "NO_EX_DATE_IN_WINDOW": 224
+   },
+   "entries2025_2026": 76,
+   "independentEvents": 522,
+   "issuerConcentration": {
+    "hhi": 0.0082,
+    "maxEventsOneIssuer": 11,
+    "top10Share": 0.1648
+   },
+   "issuers": 203,
+   "maturedByLedgerEnd": 502,
+   "maturedWindowCrossesKnownLedgerGap": 3,
+   "pendingMaturity": 20,
+   "pitIndustry": {
+    "byValueUp": {
+     "post": {
+      "AUTOS": 4,
+      "BASIC_MATERIALS": 3,
+      "CAPITAL_GOODS_DEFENSE": 6,
+      "CHEMICALS": 16,
+      "COMMUNICATION_MEDIA_SOFTWARE": 11,
+      "CONSTRUCTION_ENGINEERING": 5,
+      "CONSUMER_RETAIL_SERVICES": 16,
+      "ELECTRONICS_ELECTRICAL": 8,
+      "FINANCIALS": 33,
+      "HEALTHCARE": 7,
+      "HOLDINGS_BUSINESS_SERVICES": 2,
+      "TRANSPORT_LOGISTICS": 1,
+      "UNLABELLED": 4
+     },
+     "pre": {
+      "AUTOS": 26,
+      "BASIC_MATERIALS": 16,
+      "CAPITAL_GOODS_DEFENSE": 18,
+      "CHEMICALS": 41,
+      "COMMUNICATION_MEDIA_SOFTWARE": 34,
+      "CONSTRUCTION_ENGINEERING": 6,
+      "CONSUMER_RETAIL_SERVICES": 46,
+      "ELECTRONICS_ELECTRICAL": 25,
+      "ENERGY_UTILITIES": 9,
+      "FINANCIALS": 102,
+      "FOOD_BEVERAGE_TOBACCO": 8,
+      "HEALTHCARE": 33,
+      "HOLDINGS_BUSINESS_SERVICES": 12,
+      "TRANSPORT_LOGISTICS": 7,
+      "UNLABELLED": 23
+     }
+    },
+    "coverage": 0.9483,
+    "distribution": {
+     "AUTOS": 30,
+     "BASIC_MATERIALS": 19,
+     "CAPITAL_GOODS_DEFENSE": 24,
+     "CHEMICALS": 57,
+     "COMMUNICATION_MEDIA_SOFTWARE": 45,
+     "CONSTRUCTION_ENGINEERING": 11,
+     "CONSUMER_RETAIL_SERVICES": 62,
+     "ELECTRONICS_ELECTRICAL": 33,
+     "ENERGY_UTILITIES": 9,
+     "FINANCIALS": 135,
+     "FOOD_BEVERAGE_TOBACCO": 8,
+     "HEALTHCARE": 40,
+     "HOLDINGS_BUSINESS_SERVICES": 14,
+     "TRANSPORT_LOGISTICS": 8,
+     "UNLABELLED": 27
+    },
+    "labelTiers": "PIT_V4 = sealed v4 intervals; NOT_PIT_EXTENSION = current DART KSIC learned map (leave-one-out agreement in industry-extension-v1.json)",
+    "labelled": 495,
+    "largestIndustry": "FINANCIALS",
+    "largestIndustryShareOfLabelled": 0.2727,
+    "pitV4Only": {
+     "coverage": 0.6226,
+     "labelled": 325
+    },
+    "status": {
+     "LABELLED_NOT_PIT_EXTENSION": 170,
+     "LABELLED_PIT_V4": 325,
+     "OUTSIDE_TOP120_PIT_INDUSTRY_UNIVERSE": 23,
+     "PIT_INDUSTRY_UNKNOWN": 4
+    }
+   },
+   "priceWindowAdmission": {
+    "ENDS_BEFORE_MATURITY_TERMINAL_ECONOMICS_REQUIRED": 5,
+    "FULL_WINDOW_TRADED": 482,
+    "PENDING_MATURITY_OR_LEDGER_END": 20,
+    "SUSPENSION_OR_GAP_IN_WINDOW": 15
+   },
+   "terminalSplit": {
+    "LEDGER_SESSION_GAP_NOT_TERMINAL": 2,
+    "TERMINAL_NO_BAR_AT_OR_AFTER_WINDOW_END": 3
+   },
+   "valueUp": {
+    "post": 116,
+    "pre": 406
+   }
+  },
+  "A2_H252": {
+   "bookEquityAtSignal": {
+    "coverage": 0.6635,
+    "missing": {
+     "NO_ANNUAL_REPORT_VISIBLE_AT_SIGNAL": 140
+    },
+    "usable": 276
+   },
+   "byEntryYear": {
+    "2013": 12,
+    "2014": 43,
+    "2015": 19,
+    "2016": 32,
+    "2017": 17,
+    "2018": 24,
+    "2019": 22,
+    "2020": 53,
+    "2021": 27,
+    "2022": 41,
+    "2023": 37,
+    "2024": 35,
+    "2025": 29,
+    "2026": 25
+   },
+   "calendarSpanMatured": {
+    "effectivePrimaryBlocks": 6.69,
+    "end": "2026-10-29",
+    "sessions": 3372,
+    "start": "2013-01-31"
+   },
+   "dividendWindowExposureMatured": {
+    "ALL_IN_WINDOW_FILING_STATED_RULE": 21,
+    "NO_PARSED_RECORD_DATE_IN_WINDOW": 35,
+    "RECORD_DATE_ONLY_EX_DATE_RULE_REQUIRED": 332
+   },
+   "dividendWindowIfMarketRuleSealed": {
+    "ALL_IN_WINDOW_DIVIDENDS_DATED_AND_SIZED": 346,
+    "IN_WINDOW_DIVIDEND_WITHOUT_COMMON_DPS": 7,
+    "NO_EX_DATE_IN_WINDOW": 35
+   },
+   "entries2025_2026": 54,
+   "independentEvents": 416,
+   "issuerConcentration": {
+    "hhi": 0.0074,
+    "maxEventsOneIssuer": 8,
+    "top10Share": 0.149
+   },
+   "issuers": 203,
+   "maturedByLedgerEnd": 388,
+   "maturedWindowCrossesKnownLedgerGap": 1,
+   "pendingMaturity": 28,
+   "pitIndustry": {
+    "byValueUp": {
+     "post": {
+      "AUTOS": 3,
+      "BASIC_MATERIALS": 3,
+      "CAPITAL_GOODS_DEFENSE": 3,
+      "CHEMICALS": 12,
+      "COMMUNICATION_MEDIA_SOFTWARE": 8,
+      "CONSTRUCTION_ENGINEERING": 2,
+      "CONSUMER_RETAIL_SERVICES": 12,
+      "ELECTRONICS_ELECTRICAL": 6,
+      "FINANCIALS": 24,
+      "HEALTHCARE": 5,
+      "HOLDINGS_BUSINESS_SERVICES": 1,
+      "TRANSPORT_LOGISTICS": 1,
+      "UNLABELLED": 3
+     },
+     "pre": {
+      "AUTOS": 21,
+      "BASIC_MATERIALS": 15,
+      "CAPITAL_GOODS_DEFENSE": 16,
+      "CHEMICALS": 31,
+      "COMMUNICATION_MEDIA_SOFTWARE": 27,
+      "CONSTRUCTION_ENGINEERING": 5,
+      "CONSUMER_RETAIL_SERVICES": 38,
+      "ELECTRONICS_ELECTRICAL": 18,
+      "ENERGY_UTILITIES": 9,
+      "FINANCIALS": 82,
+      "FOOD_BEVERAGE_TOBACCO": 7,
+      "HEALTHCARE": 28,
+      "HOLDINGS_BUSINESS_SERVICES": 9,
+      "TRANSPORT_LOGISTICS": 7,
+      "UNLABELLED": 20
+     }
+    },
+    "coverage": 0.9447,
+    "distribution": {
+     "AUTOS": 24,
+     "BASIC_MATERIALS": 18,
+     "CAPITAL_GOODS_DEFENSE": 19,
+     "CHEMICALS": 43,
+     "COMMUNICATION_MEDIA_SOFTWARE": 35,
+     "CONSTRUCTION_ENGINEERING": 7,
+     "CONSUMER_RETAIL_SERVICES": 50,
+     "ELECTRONICS_ELECTRICAL": 24,
+     "ENERGY_UTILITIES": 9,
+     "FINANCIALS": 106,
+     "FOOD_BEVERAGE_TOBACCO": 7,
+     "HEALTHCARE": 33,
+     "HOLDINGS_BUSINESS_SERVICES": 10,
+     "TRANSPORT_LOGISTICS": 8,
+     "UNLABELLED": 23
+    },
+    "labelTiers": "PIT_V4 = sealed v4 intervals; NOT_PIT_EXTENSION = current DART KSIC learned map (leave-one-out agreement in industry-extension-v1.json)",
+    "labelled": 393,
+    "largestIndustry": "FINANCIALS",
+    "largestIndustryShareOfLabelled": 0.2697,
+    "pitV4Only": {
+     "coverage": 0.6226,
+     "labelled": 259
+    },
+    "status": {
+     "LABELLED_NOT_PIT_EXTENSION": 134,
+     "LABELLED_PIT_V4": 259,
+     "OUTSIDE_TOP120_PIT_INDUSTRY_UNIVERSE": 19,
+     "PIT_INDUSTRY_UNKNOWN": 4
+    }
+   },
+   "priceWindowAdmission": {
+    "ENDS_BEFORE_MATURITY_TERMINAL_ECONOMICS_REQUIRED": 5,
+    "FULL_WINDOW_TRADED": 360,
+    "PENDING_MATURITY_OR_LEDGER_END": 28,
+    "SUSPENSION_OR_GAP_IN_WINDOW": 23
+   },
+   "terminalSplit": {
+    "TERMINAL_NO_BAR_AT_OR_AFTER_WINDOW_END": 5
+   },
+   "valueUp": {
+    "post": 83,
+    "pre": 333
+   }
+  },
+  "B1_H126": {
+   "bookEquityAtSignal": {
+    "coverage": 0.75,
+    "missing": {
+     "NON_POSITIVE_EQUITY": 7,
+     "NO_ANNUAL_REPORT_VISIBLE_AT_SIGNAL": 109
+    },
+    "usable": 348
+   },
+   "byEntryYear": {
+    "2013": 31,
+    "2014": 25,
+    "2015": 27,
+    "2016": 21,
+    "2017": 17,
+    "2018": 33,
+    "2019": 32,
+    "2020": 37,
+    "2021": 35,
+    "2022": 41,
+    "2023": 33,
+    "2024": 39,
+    "2025": 53,
+    "2026": 40
+   },
+   "calendarSpanMatured": {
+    "effectivePrimaryBlocks": 13.44,
+    "end": "2026-10-27",
+    "sessions": 3387,
+    "start": "2013-01-08"
+   },
+   "dividendWindowExposureMatured": {
+    "ALL_IN_WINDOW_FILING_STATED_RULE": 31,
+    "NO_PARSED_RECORD_DATE_IN_WINDOW": 300,
+    "RECORD_DATE_ONLY_EX_DATE_RULE_REQUIRED": 110
+   },
+   "dividendWindowIfMarketRuleSealed": {
+    "ALL_IN_WINDOW_DIVIDENDS_DATED_AND_SIZED": 134,
+    "IN_WINDOW_DIVIDEND_WITHOUT_COMMON_DPS": 1,
+    "NO_EX_DATE_IN_WINDOW": 306
+   },
+   "entries2025_2026": 93,
+   "independentEvents": 464,
+   "issuerConcentration": {
+    "hhi": 0.016,
+    "maxEventsOneIssuer": 16,
+    "top10Share": 0.278
+   },
+   "issuers": 117,
+   "maturedByLedgerEnd": 441,
+   "maturedWindowCrossesKnownLedgerGap": 7,
+   "pendingMaturity": 23,
+   "pitIndustry": {
+    "byValueUp": {
+     "post": {
+      "AUTOS": 3,
+      "BASIC_MATERIALS": 4,
+      "CAPITAL_GOODS_DEFENSE": 43,
+      "CHEMICALS": 6,
+      "CONSTRUCTION_ENGINEERING": 25,
+      "ELECTRONICS_ELECTRICAL": 25,
+      "ENERGY_UTILITIES": 3,
+      "HEALTHCARE": 7,
+      "HOLDINGS_BUSINESS_SERVICES": 5,
+      "TRANSPORT_LOGISTICS": 4,
+      "UNLABELLED": 2
+     },
+     "pre": {
+      "AUTOS": 4,
+      "BASIC_MATERIALS": 14,
+      "CAPITAL_GOODS_DEFENSE": 96,
+      "CHEMICALS": 14,
+      "COMMUNICATION_MEDIA_SOFTWARE": 1,
+      "CONSTRUCTION_ENGINEERING": 80,
+      "CONSUMER_RETAIL_SERVICES": 9,
+      "ELECTRONICS_ELECTRICAL": 16,
+      "ENERGY_UTILITIES": 15,
+      "FOOD_BEVERAGE_TOBACCO": 1,
+      "HEALTHCARE": 43,
+      "HOLDINGS_BUSINESS_SERVICES": 6,
+      "TRANSPORT_LOGISTICS": 17,
+      "UNLABELLED": 21
+     }
+    },
+    "coverage": 0.9504,
+    "distribution": {
+     "AUTOS": 7,
+     "BASIC_MATERIALS": 18,
+     "CAPITAL_GOODS_DEFENSE": 139,
+     "CHEMICALS": 20,
+     "COMMUNICATION_MEDIA_SOFTWARE": 1,
+     "CONSTRUCTION_ENGINEERING": 105,
+     "CONSUMER_RETAIL_SERVICES": 9,
+     "ELECTRONICS_ELECTRICAL": 41,
+     "ENERGY_UTILITIES": 18,
+     "FOOD_BEVERAGE_TOBACCO": 1,
+     "HEALTHCARE": 50,
+     "HOLDINGS_BUSINESS_SERVICES": 11,
+     "TRANSPORT_LOGISTICS": 21,
+     "UNLABELLED": 23
+    },
+    "labelTiers": "PIT_V4 = sealed v4 intervals; NOT_PIT_EXTENSION = current DART KSIC learned map (leave-one-out agreement in industry-extension-v1.json)",
+    "labelled": 441,
+    "largestIndustry": "CAPITAL_GOODS_DEFENSE",
+    "largestIndustryShareOfLabelled": 0.3152,
+    "pitV4Only": {
+     "coverage": 0.7155,
+     "labelled": 332
+    },
+    "status": {
+     "LABELLED_NOT_PIT_EXTENSION": 109,
+     "LABELLED_PIT_V4": 332,
+     "OUTSIDE_TOP120_PIT_INDUSTRY_UNIVERSE": 23
+    }
+   },
+   "priceWindowAdmission": {
+    "ENDS_BEFORE_MATURITY_TERMINAL_ECONOMICS_REQUIRED": 3,
+    "ENTRY_NOT_TRADED": 1,
+    "FULL_WINDOW_TRADED": 420,
+    "PENDING_MATURITY_OR_LEDGER_END": 23,
+    "SUSPENSION_OR_GAP_IN_WINDOW": 17
+   },
+   "terminalSplit": {
+    "LEDGER_SESSION_GAP_NOT_TERMINAL": 1,
+    "TERMINAL_NO_BAR_AT_OR_AFTER_WINDOW_END": 2
+   },
+   "valueUp": {
+    "post": 127,
+    "pre": 337
+   }
+  },
+  "B1_H252": {
+   "bookEquityAtSignal": {
+    "coverage": 0.7312,
+    "missing": {
+     "NON_POSITIVE_EQUITY": 6,
+     "NO_ANNUAL_REPORT_VISIBLE_AT_SIGNAL": 87
+    },
+    "usable": 253
+   },
+   "byEntryYear": {
+    "2013": 26,
+    "2014": 20,
+    "2015": 20,
+    "2016": 16,
+    "2017": 13,
+    "2018": 26,
+    "2019": 23,
+    "2020": 25,
+    "2021": 27,
+    "2022": 28,
+    "2023": 24,
+    "2024": 32,
+    "2025": 37,
+    "2026": 29
+   },
+   "calendarSpanMatured": {
+    "effectivePrimaryBlocks": 6.72,
+    "end": "2026-10-28",
+    "sessions": 3388,
+    "start": "2013-01-08"
+   },
+   "dividendWindowExposureMatured": {
+    "ALL_IN_WINDOW_FILING_STATED_RULE": 27,
+    "NO_PARSED_RECORD_DATE_IN_WINDOW": 134,
+    "RECORD_DATE_ONLY_EX_DATE_RULE_REQUIRED": 151
+   },
+   "dividendWindowIfMarketRuleSealed": {
+    "ALL_IN_WINDOW_DIVIDENDS_DATED_AND_SIZED": 176,
+    "IN_WINDOW_DIVIDEND_WITHOUT_COMMON_DPS": 2,
+    "NO_EX_DATE_IN_WINDOW": 134
+   },
+   "entries2025_2026": 66,
+   "independentEvents": 346,
+   "issuerConcentration": {
+    "hhi": 0.014,
+    "maxEventsOneIssuer": 11,
+    "top10Share": 0.2486
+   },
+   "issuers": 117,
+   "maturedByLedgerEnd": 312,
+   "maturedWindowCrossesKnownLedgerGap": 8,
+   "pendingMaturity": 34,
+   "pitIndustry": {
+    "byValueUp": {
+     "post": {
+      "AUTOS": 2,
+      "BASIC_MATERIALS": 4,
+      "CAPITAL_GOODS_DEFENSE": 28,
+      "CHEMICALS": 6,
+      "CONSTRUCTION_ENGINEERING": 19,
+      "ELECTRONICS_ELECTRICAL": 20,
+      "ENERGY_UTILITIES": 2,
+      "HEALTHCARE": 5,
+      "HOLDINGS_BUSINESS_SERVICES": 3,
+      "TRANSPORT_LOGISTICS": 4,
+      "UNLABELLED": 2
+     },
+     "pre": {
+      "AUTOS": 4,
+      "BASIC_MATERIALS": 10,
+      "CAPITAL_GOODS_DEFENSE": 66,
+      "CHEMICALS": 12,
+      "COMMUNICATION_MEDIA_SOFTWARE": 1,
+      "CONSTRUCTION_ENGINEERING": 62,
+      "CONSUMER_RETAIL_SERVICES": 8,
+      "ELECTRONICS_ELECTRICAL": 11,
+      "ENERGY_UTILITIES": 11,
+      "FOOD_BEVERAGE_TOBACCO": 1,
+      "HEALTHCARE": 36,
+      "HOLDINGS_BUSINESS_SERVICES": 4,
+      "TRANSPORT_LOGISTICS": 11,
+      "UNLABELLED": 14
+     }
+    },
+    "coverage": 0.9538,
+    "distribution": {
+     "AUTOS": 6,
+     "BASIC_MATERIALS": 14,
+     "CAPITAL_GOODS_DEFENSE": 94,
+     "CHEMICALS": 18,
+     "COMMUNICATION_MEDIA_SOFTWARE": 1,
+     "CONSTRUCTION_ENGINEERING": 81,
+     "CONSUMER_RETAIL_SERVICES": 8,
+     "ELECTRONICS_ELECTRICAL": 31,
+     "ENERGY_UTILITIES": 13,
+     "FOOD_BEVERAGE_TOBACCO": 1,
+     "HEALTHCARE": 41,
+     "HOLDINGS_BUSINESS_SERVICES": 7,
+     "TRANSPORT_LOGISTICS": 15,
+     "UNLABELLED": 16
+    },
+    "labelTiers": "PIT_V4 = sealed v4 intervals; NOT_PIT_EXTENSION = current DART KSIC learned map (leave-one-out agreement in industry-extension-v1.json)",
+    "labelled": 330,
+    "largestIndustry": "CAPITAL_GOODS_DEFENSE",
+    "largestIndustryShareOfLabelled": 0.2848,
+    "pitV4Only": {
+     "coverage": 0.6936,
+     "labelled": 240
+    },
+    "status": {
+     "LABELLED_NOT_PIT_EXTENSION": 90,
+     "LABELLED_PIT_V4": 240,
+     "OUTSIDE_TOP120_PIT_INDUSTRY_UNIVERSE": 16
+    }
+   },
+   "priceWindowAdmission": {
+    "ENDS_BEFORE_MATURITY_TERMINAL_ECONOMICS_REQUIRED": 4,
+    "ENTRY_NOT_TRADED": 1,
+    "FULL_WINDOW_TRADED": 290,
+    "PENDING_MATURITY_OR_LEDGER_END": 34,
+    "SUSPENSION_OR_GAP_IN_WINDOW": 17
+   },
+   "terminalSplit": {
+    "LEDGER_SESSION_GAP_NOT_TERMINAL": 1,
+    "TERMINAL_NO_BAR_AT_OR_AFTER_WINDOW_END": 3
+   },
+   "valueUp": {
+    "post": 95,
+    "pre": 251
+   }
+  }
+ },
+ "sourceStatus": {
+  "benchmarkTotalReturn069500": "SOURCE_BLOCKED for an investability claim: replay-v16 series is reproducible but BENCHMARK_EXTERNAL_RECONCILIATION_UNRESOLVED (AGENTS v2.47)",
+  "cohortAndCalendar": "ADMITTED (frozen cohort-events-v1 sha pinned by the registered spec; pinned XKRX calendar)",
+  "investableKrwCash": "SOURCE_BLOCKED: BOK policy rate is a quote, not a payoff; 153130 is a bond-ETF twin candidate, not risk-free cash (#292 Owner review B)",
+  "investorCostTaxContract": "MODEL_COST_ONLY: dated KR tariff from pipeline/benchmark_alpha.py; investor account/tax contract (#317) not fixed",
+  "ledgerSessionGaps": "SOURCE_DEFECT: 2026-09-15/16 and 2026-10-01 missing for every ticker while krx-prices-done.json marks them complete",
+  "matchingCharacteristics": "PARTIAL: annual total equity collected for 601 issuers (equity-facts-v1, receipt-dated); market cap, momentum, 21d return and beta need signal-date prices (read at execution); not admitted until a non-author audit",
+  "pitIndustryOutsideTop120": "SOURCE_BLOCKED: v4 PIT labels cover the Top120 universe only; B1 final support needs an industry-matched check",
+  "stockTotalReturn": "SOURCE_BLOCKED: KRX bars carry no dividends; DART record dates parsed for 4,732 decisions but the ex-date rule is an unsealed Owner decision (AGENTS v2.28)",
+  "terminalConsideration": "SOURCE_BLOCKED for the held terminations listed in terminalSplit"
+ },
+ "studyId": "kr-corporate-information-events-v1"
+}

@@ -1,0 +1,291 @@
+{
+ "contract": "B1_UNBOUNDED_EVENT_SOURCES_V1",
+ "dpsMissingInWindowCashDividend": {
+  "classShareDpsKrw": 1356.0,
+  "commonDpsKrw": 0.0,
+  "eventEntry": "2018-07-27",
+  "exDate": "2018-12-27",
+  "rceptNo": "20190213800934",
+  "recordedBodySha256": "c579a6c2b8806af40ee271daa9317afa9d0ac2810e458d089c9afb44b576ec37",
+  "status": "COMMON_ZERO_STATED_CLASS_SHARE_ONLY",
+  "ticker": "034020.KS",
+  "zipSha256": "48ee076983ac51be8244b7c1a3f9110b312981f18cce1029d72262faf56d33a8"
+ },
+ "events": [
+  {
+   "entry": "2015-11-25",
+   "issuerFilingsListed": 46,
+   "kind": "TERMINAL",
+   "name": "포스코플랜텍",
+   "note": "the issuer filed only impairment / delisting-risk notices; no merger, exchange, tender or liquidation-distribution decision exists. Holders kept unlisted shares after the liquidation-trading period. No term can be cited, so no upper bound exists from DART",
+   "sources": [],
+   "status": "NO_CONSIDERATION_FILED",
+   "terminalKeywordFilings": [
+    {
+     "date": "20160128",
+     "rceptNo": "20160128800671",
+     "title": "투자유의안내(상장폐지우려)"
+    }
+   ],
+   "ticker": "051310.KS"
+  },
+  {
+   "amendment": {
+    "note": "the 2016-12-14 correction body is not served; the ratio is taken from the original decision and the correction's content is UNVERIFIED",
+    "rceptNo": "20161214000402",
+    "status": "DOCUMENT_XML_STATUS_014_FILE_NOT_SERVED"
+   },
+   "entry": "2016-10-24",
+   "kind": "TERMINAL_MERGER",
+   "name": "LG생명과학",
+   "record": {
+    "actionType": "MERGER_STOCK",
+    "amendmentHistory": [],
+    "cashInLieuRule": null,
+    "cashPerOldShare": null,
+    "considerationComponents": [],
+    "decisionDate": "2016-09-12",
+    "effectiveDate": "2017-01-01",
+    "evidenceStatus": "SEALED_FROM_DART_RECEIPT",
+    "finalTermsReceiptNumber": "20160912000005",
+    "fractionalShareTreatment": null,
+    "lastTradingDate": null,
+    "oldIssuerCorpCode": "00423609",
+    "oldSecurity": "068870.KS",
+    "sourceReceiptDate": "2016-09-12",
+    "sourceReceiptNumber": "20160912000005",
+    "sourceReceiptNumbers": [
+     "20160912000005"
+    ],
+    "sources": [
+     "20160912000005"
+    ],
+    "successorIssuerCorpCode": null,
+    "successorSecurity": "051910.KS",
+    "successorSharesPerOldShare": 0.2606772,
+    "unresolvedFields": [
+     "fractionalShareTreatment",
+     "cashInLieuRule"
+    ]
+   },
+   "sources": [
+    {
+     "bodySha256": "eb2014d7926f091040785ef3a1d313ff2eaea66b2763f28e3bf07a934daf850f",
+     "rceptNo": "20160912000005",
+     "receiptDate": "2016-09-12",
+     "zipSha256": "5cbfdac135b6b225719ee4163e2fe8db6c436f94e31543d15f1cbd09270c92a2"
+    }
+   ],
+   "status": "TERMINAL_CONSIDERATION_CITED",
+   "terms": {
+    "mergerDate": "2017-01-01",
+    "newShareListingDate": "2017-01-17",
+    "ratioText": "보통주 1 : 0.2606772, 우선주 1 : 0.2534945 ((주)엘지화학 : (주)엘지생명과학)",
+    "successorSharesPerOldShare": 0.2606772
+   },
+   "ticker": "068870.KS"
+  },
+  {
+   "entry": "2016-12-08",
+   "kind": "BONUS_ISSUE",
+   "name": "SK디앤디",
+   "sources": [
+    {
+     "bodySha256": "29bc3581c199ad11e5ef15a0b7b353fdb84aa38b0ae16178d40e68dad5c54612",
+     "rceptNo": "20170324000647",
+     "receiptDate": "2017-03-24",
+     "zipSha256": "2ef8361e5996c31d8dd459b19611b06eab3d391393dcdcc561759e47c5b5436c"
+    }
+   ],
+   "status": "TERMS_CITED_EXACT_ADJUSTMENT",
+   "terms": {
+    "newShareListingDate": "2017-04-28",
+    "newSharesPerOldShare": 0.5,
+    "recordDate": "2017-04-10"
+   },
+   "ticker": "210980.KS"
+  },
+  {
+   "considerationComponents": [
+    {
+     "cashAmount": null,
+     "sharesPerOldShare": 0.7696261,
+     "sourceReceiptDate": "2024-01-05",
+     "sourceReceiptNumber": "20240105000589",
+     "successorIssuerCorpCode": null,
+     "successorSecurity": "210980.KS",
+     "type": "SUCCESSOR_SHARES"
+    },
+    {
+     "cashAmount": null,
+     "sharesPerOldShare": 1.1518695,
+     "sourceReceiptDate": "2024-01-05",
+     "sourceReceiptNumber": "20240105000589",
+     "successorIssuerCorpCode": null,
+     "successorSecurity": "475150.KS",
+     "type": "SUCCESSOR_SHARES"
+    }
+   ],
+   "entry": "2023-12-21",
+   "kind": "SPIN_OFF",
+   "name": "SK디앤디",
+   "sources": [
+    {
+     "bodySha256": "e876850fad71dac8190fc2cbb66509c1bb311296c233770482b15078723cd1b8",
+     "rceptNo": "20240105000589",
+     "receiptDate": "2024-01-05",
+     "zipSha256": "abe84ebfba9dd283c3b3f0b03cd6b813e7910598a2526f95b449e70e1a5a84c7"
+    }
+   ],
+   "status": "TERMS_CITED_EXACT_ADJUSTMENT",
+   "terms": {
+    "capitalReductionPct": 23.03739,
+    "newCompanySharesPerOldShare": 1.1518695,
+    "parRatio": 5.0,
+    "recordDate": "2024-02-29",
+    "retainedSharesPerOldShare": 0.7696261,
+    "spinOffRatio": 0.2303739,
+    "splitDate": "2024-03-01"
+   },
+   "ticker": "210980.KS"
+  },
+  {
+   "considerationComponents": [
+    {
+     "cashAmount": null,
+     "sharesPerOldShare": 0.6503913,
+     "sourceReceiptDate": "2025-08-22",
+     "sourceReceiptNumber": "20250822000109",
+     "successorIssuerCorpCode": null,
+     "successorSecurity": "207940.KS",
+     "type": "SUCCESSOR_SHARES"
+    },
+    {
+     "cashAmount": null,
+     "sharesPerOldShare": 0.3496087,
+     "sourceReceiptDate": "2025-08-22",
+     "sourceReceiptNumber": "20250822000109",
+     "successorIssuerCorpCode": null,
+     "successorSecurity": "0126Z0.KS",
+     "type": "SUCCESSOR_SHARES"
+    }
+   ],
+   "entry": "2025-09-11",
+   "kind": "SPIN_OFF",
+   "name": "삼성바이오로직스",
+   "sources": [
+    {
+     "bodySha256": "7ea2d3efc48797304255f8b4fa212fc50dcfb6eeaa158ee8bd079c8b7fef72f1",
+     "rceptNo": "20250822000109",
+     "receiptDate": "2025-08-22",
+     "zipSha256": "b2c9298086f120150d1af1d963f989d3ce2f6977544a5805906594977ea55421"
+    }
+   ],
+   "status": "TERMS_CITED_EXACT_ADJUSTMENT",
+   "terms": {
+    "capitalReductionPct": 34.96087,
+    "newCompanySharesPerOldShare": 0.3496087,
+    "parRatio": 1.0,
+    "recordDate": "2025-10-31",
+    "retainedSharesPerOldShare": 0.6503913,
+    "spinOffRatio": 0.3496087,
+    "splitDate": "2025-11-01"
+   },
+   "ticker": "207940.KS"
+  },
+  {
+   "bodyMatchesPR320Receipt": true,
+   "entry": "2018-06-26",
+   "kind": "STOCK_DIVIDEND",
+   "name": "셀트리온",
+   "sources": [
+    {
+     "bodySha256": "62fb033ebaf5e3b69b8b593a3b44da91b6081791da0d57102d6b6392c9b65392",
+     "rceptNo": "20181219800660",
+     "receiptDate": "2018-12-19",
+     "zipSha256": "8eaf12c11e4021e532a05c6221c2c0bae520d54709019643a9896bc9c12411d3"
+    }
+   ],
+   "status": "TERMS_CITED_EXACT_ADJUSTMENT",
+   "terms": {
+    "fractionalShares": "CASH_AT_PRIOR_DAY_CLOSE_STATED",
+    "newSharesPerOldShare": 0.02,
+    "recordDate": "2018-12-31"
+   },
+   "ticker": "068270.KS"
+  },
+  {
+   "bodyMatchesPR320Receipt": true,
+   "entry": "2019-09-27",
+   "kind": "STOCK_DIVIDEND",
+   "name": "셀트리온",
+   "sources": [
+    {
+     "bodySha256": "ac7535444b78db7ac3524e0988147739f0e37a7741bd0aa9b4853100b630924a",
+     "rceptNo": "20191218800434",
+     "receiptDate": "2019-12-18",
+     "zipSha256": "29e420a7f475f6b5b35141b63ed9ceb210f45a48672930b35e896da4173e54d9"
+    }
+   ],
+   "status": "TERMS_CITED_EXACT_ADJUSTMENT",
+   "terms": {
+    "fractionalShares": "CASH_AT_PRIOR_DAY_CLOSE_STATED",
+    "newSharesPerOldShare": 0.05,
+    "recordDate": "2019-12-31"
+   },
+   "ticker": "068270.KS"
+  },
+  {
+   "bodyMatchesPR320Receipt": true,
+   "entry": "2022-10-04",
+   "kind": "STOCK_DIVIDEND",
+   "name": "셀트리온",
+   "sources": [
+    {
+     "bodySha256": "4d9fc4b48d331cc99ca0ef5fd4cc89871f20b588eca1384666db28fc60502445",
+     "rceptNo": "20221216801362",
+     "receiptDate": "2022-12-16",
+     "zipSha256": "7f24ad3291062bb6d2d777aed52eef1af88d0aa1ece3ad30f1e9f1ab21964046"
+    }
+   ],
+   "status": "TERMS_CITED_EXACT_ADJUSTMENT",
+   "terms": {
+    "fractionalShares": "CASH_AT_PRIOR_DAY_CLOSE_STATED",
+    "newSharesPerOldShare": 0.04,
+    "recordDate": "2022-12-31"
+   },
+   "ticker": "068270.KS"
+  }
+ ],
+ "population": "b1-admission-status-v2.json eventsWithUnboundedUpside_B1_H126 (8 matured B1 H126 events)",
+ "priceValuesRead": 0,
+ "readsReturns": false,
+ "signalHistoryRef": "42ae81caeea6aa8607058ec0bf35c3b09d7e41b5",
+ "successorBarPresence": {
+  "0126Z0.KS": {
+   "bars": 228,
+   "first": "2025-11-24",
+   "last": "2026-10-30",
+   "name": "삼성에피스홀딩스"
+  },
+  "051910.KS": {
+   "bars": 2654,
+   "first": "2016-01-04",
+   "last": "2026-10-30",
+   "name": "LG화학"
+  },
+  "475150.KS": {
+   "bars": 628,
+   "first": "2024-03-29",
+   "last": "2026-10-30",
+   "name": "SK이터닉스"
+  }
+ },
+ "summary": {
+  "events": 8,
+  "stillUnbounded": [
+   "포스코플랜텍"
+  ],
+  "termsCitedFromDart": 7
+ }
+}

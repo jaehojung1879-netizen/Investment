@@ -1,0 +1,129 @@
+{
+ "asOf": "2026-11-08",
+ "components": {
+  "benchmarkTotalReturn069500": {
+   "exploratory": "ASSEMBLED",
+   "formal": "SOURCE_AVAILABLE_PENDING_NON_AUTHOR_AUDIT",
+   "sha256": "b03e7c42a9d08334ec54d0c8c3fd58c51da0e51d9134d0c2b4cefa276395b39f",
+   "why": "existing audited official recipe (reconciliation PASS 2013-2026) extended to 2026-11-06 with byte-identical overlap; 46/46 distribution amounts match"
+  },
+  "investableKrwCash": {
+   "exploratory": "ASSEMBLED_3_SCENARIOS",
+   "formal": "SOURCE_BLOCKED",
+   "sha256": "51ac68433c217122a1eb6a0775937c9b88f80425067c5a35dce0edc167a4aad9",
+   "why": "no investable KRW payoff; Owner approved 0% / BOK / BOK+100bp as SENSITIVITY only. BOK file verified through 2026-09-07; 35 later sessions carry the last verified rate"
+  },
+  "investorCostTaxContract": {
+   "exploratory": "FIXED",
+   "formal": "OWNER_FIXED_2026_11_08",
+   "why": "pre-investor-tax, after commission + half spread + dated transaction tax (contract.COSTS); never described as after-tax or executed performance"
+  },
+  "matchingCharacteristics": {
+   "exploratory": "SUBSAMPLE_2016_PLUS_ONLY_NOT_ASSEMBLED",
+   "formal": "SOURCE_BLOCKED",
+   "why": "total equity visible at signal for 75.0% of B1 H126 events; FY2012-2014 not served by DART so 2013-2015 B1 events (83) cannot be matched; peer cross-section needs PIT universe + execution-time prices"
+  },
+  "pitIndustry": {
+   "exploratory": "PIT_SUBSAMPLE_ONLY",
+   "formal": "SOURCE_BLOCKED",
+   "why": "registered requirement is PIT labels for all cohort issuers; v4 PIT covers 71.6% of B1 H126 events (332/464). Non-PIT extension: diagnostics only (Owner decision 5)"
+  },
+  "stockTotalReturn": {
+   "exploratory": "ASSEMBLED",
+   "formal": "SOURCE_BLOCKED",
+   "sha256": "1498e944c0189b890e2ad846a2ab5f131a7fff8864096f0919a578476f4a7001",
+   "why": "ex-date rule approved conditionally; in-window cash dividends B1 H126: 0 officially verified, 37 issuer-stated rule (= market rule), 104 market-rule computed; 7 amounts from corrections; 1 common DPS missing; 8 B1 H126 events carry an unmodelled/unconfirmed action or terminal (see eventsWithUnboundedUpside)"
+  },
+  "terminalConsideration": {
+   "exploratory": "DOWNSIDE_STRESS_ONLY_NO_UPPER_BOUND",
+   "formal": "SOURCE_BLOCKED",
+   "sha256": "c7f97a81e51db88eef51fb66167942ed06f7f790dd2bbfdf1776cf62215daad9",
+   "why": "포스코플랜텍 (last bar 2016-04-14, 33 H126 sessions after; liquidation-trading moves) and LG생명과학 (last bar 2017-01-16, 67 sessions after): no cited consideration"
+  },
+  "tradability": {
+   "exploratory": "ASSEMBLED",
+   "formal": "SOURCE_AVAILABLE_PENDING_NON_AUTHOR_AUDIT",
+   "sha256": "906179455c6ce13f93f521297aa7c06eb900bedcc1a2668a52ff610c3ef8a501",
+   "why": "KRX volume presence; 1,664 recovered rows verified against receipts"
+  }
+ },
+ "contract": "B1_SOURCE_ADMISSION_STATUS_V2",
+ "eventsWithUnboundedUpside_B1_H126": [
+  {
+   "entry": "2015-11-25",
+   "kind": "TERMINAL (liquidation trading 2016-04, last bar 04-14)",
+   "name": "포스코플랜텍",
+   "ticker": "051310.KS"
+  },
+  {
+   "entry": "2016-10-24",
+   "kind": "TERMINAL (last bar 2017-01-16)",
+   "name": "LG생명과학",
+   "ticker": "068870.KS"
+  },
+  {
+   "entry": "2016-12-08",
+   "kind": "UNCONFIRMED_ACTION 2017-04-07 -35.2%, shares unchanged",
+   "name": "SK디앤디",
+   "ticker": "210980.KS"
+  },
+  {
+   "entry": "2023-12-21",
+   "kind": "UNCONFIRMED_ACTION 2024-03-29, shares changed",
+   "name": "SK디앤디",
+   "ticker": "210980.KS"
+  },
+  {
+   "entry": "2025-09-11",
+   "kind": "UNCONFIRMED_ACTION 2025-11-24, shares changed",
+   "name": "삼성바이오로직스",
+   "ticker": "207940.KS"
+  },
+  {
+   "entry": "2018-06-26",
+   "kind": "STOCK_DIVIDEND 2018 (ratio not parsed)",
+   "name": "셀트리온",
+   "ticker": "068270.KS"
+  },
+  {
+   "entry": "2019-09-27",
+   "kind": "STOCK_DIVIDEND 2019 (ratio not parsed)",
+   "name": "셀트리온",
+   "ticker": "068270.KS"
+  },
+  {
+   "entry": "2022-10-04",
+   "kind": "STOCK_DIVIDEND 2022 (ratio not parsed)",
+   "name": "셀트리온",
+   "ticker": "068270.KS"
+  }
+ ],
+ "formalAdmittableAfterAuditOnly": [
+  "benchmarkTotalReturn069500",
+  "tradability",
+  "investorCostTaxContract"
+ ],
+ "formalBlocked": [
+  "stockTotalReturn",
+  "investableKrwCash",
+  "terminalConsideration",
+  "pitIndustry",
+  "matchingCharacteristics"
+ ],
+ "formalPathRule": "inputs.py REQUIRED is unchanged; a component is formally ADMITTED only with its registered basis and a non-author audit",
+ "harnessChangesRequiredForExploratoryPath": [
+  "decide on all three cash scenarios; any disagreement -> INCONCLUSIVE (Owner decision 2)",
+  "label paths with downside-only treatment as LOWER_BOUND; REJECT/FAIL_COST from a LOWER_BOUND path -> INCONCLUSIVE; SUPPORT allowed",
+  "industry-removal and industry-matched checks on PIT-labelled events only; non-PIT labels diagnostics only",
+  "DEFECT FOUND IN #322 HARNESS: study._matched reads peerReturns/eventReturn from the characteristics INPUT, i.e. an outcome inside an input file; must compute both from admitted levels inside the authorized execution (also needs peer TR levels and the PIT universe cross-section)",
+  "result class and wording: EXPLORATORY, pre-investor-tax, model costs, sensitivity cash; never after-tax or executed performance"
+ ],
+ "ownerMethodology": "Issue #292 / PR #322, 2026-11-08: methodology approval only; not an outcome-execution or seal-change approval",
+ "population": {
+  "B1_H126_matured": 441,
+  "betaWindowUnder200Pairs_notInvestableByRegisteredRule": 43,
+  "note": "registered rule (>=200 pre-signal pairs) removes these from the funded book before any outcome; mostly 2013 signals (ledger starts 2013-01-02) and new listings"
+ },
+ "returnsComputed": 0,
+ "unboundedUpsideConsequence": "as-traded / -100% treatment is a LOWER bound for these 8 windows; with no admissible upper bound (Owner decision 3) a REJECT_ECONOMIC_EFFECT cannot be shown robust, so the exploratory path can reach DEVELOPMENT_SUPPORT or INCONCLUSIVE but not REJECT"
+}

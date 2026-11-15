@@ -1,0 +1,63 @@
+{
+  "officialScriptUrl": "https://www.samsungfund.com/assets/js/product.js?v=20261103070445",
+  "scriptSha256": "6f6917af0f8d48b98f0d615b56a0aa257467b8f517b10257c8bbfb4855a57a7e",
+  "endpoint": "https://www.samsungfund.com/api/v1/kodex/distribution.do",
+  "parameters": {
+    "ordrColm": "PAY_D",
+    "period": "0",
+    "ordrSort": "DESC",
+    "srchVal": "153130"
+  },
+  "pagesAccepted": [
+    1,
+    2
+  ],
+  "extraProbePage3": "EMPTY_WITH_TOTAL_0_AFTER_DECLARED_22_ALREADY_COMPLETE",
+  "receipts": [
+    {
+      "capture": "distribution-all.json",
+      "sha256": "ae6d2994cfa8cf58fb52dc7d5b47cf7d14e976fba7e0aeaecade7c1f1c9f66d4",
+      "bytes": 10289,
+      "capturedAtUtc": "2026-11-07T01:51:54.805466+00:00",
+      "rowCount": 12,
+      "declaredCount": 22,
+      "acceptedForPagination": true,
+      "url": "https://www.samsungfund.com/api/v1/kodex/distribution.do?pageNo=1&ordrColm=PAY_D&period=0&ordrSort=DESC&srchVal=153130",
+      "fieldProjectionSha256": "19be8a3bc702ac15fbb0b5311c87c55569eee05fe9b9dff93ba8e5583824c3cf"
+    },
+    {
+      "capture": "distribution-page-2.json",
+      "sha256": "5b7a27d520eb2d1e9469267fce217104dd25e50d35f654296c0e980f14104683",
+      "bytes": 8593,
+      "capturedAtUtc": "2026-11-07T01:52:21.004161+00:00",
+      "rowCount": 10,
+      "declaredCount": 22,
+      "acceptedForPagination": true,
+      "url": "https://www.samsungfund.com/api/v1/kodex/distribution.do?pageNo=2&ordrColm=PAY_D&period=0&ordrSort=DESC&srchVal=153130",
+      "fieldProjectionSha256": "91c89fd3cbfc88add330eecd34025f97c039cf6ebe792231ed27bae2efadc329"
+    },
+    {
+      "capture": "distribution-page-3.json",
+      "sha256": "3d4e3bbbfca0e16aed0ca0d7aa60d98abcf84b0de0f191168e0168145ebb6f27",
+      "bytes": 29,
+      "capturedAtUtc": "2026-11-07T01:52:22.118253+00:00",
+      "rowCount": 0,
+      "declaredCount": 0,
+      "acceptedForPagination": false,
+      "url": "https://www.samsungfund.com/api/v1/kodex/distribution.do?pageNo=3&ordrColm=PAY_D&period=0&ordrSort=DESC&srchVal=153130"
+    },
+    {
+      "capture": "divid-info.json",
+      "sha256": "c259194fa2f6808dcd31b42456b5895fd68a56a36b984f4d1b17846bb5f70db3",
+      "bytes": 3128,
+      "capturedAtUtc": "2026-11-07T01:50:32.897080+00:00",
+      "rowCount": 15,
+      "declaredCount": null,
+      "acceptedForPagination": false,
+      "url": "https://www.samsungfund.com/api/v1/kodex/divid-info.do?id=2ETF35"
+    }
+  ],
+  "rawResponsesGitPreserved": false,
+  "outcomeExecutionAuthorized": false,
+  "sourceDiscovery": "Exact URL and period=0 option observed in official JavaScript, not a guessed data selector."
+}

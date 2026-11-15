@@ -1,0 +1,6 @@
+# Separate correction runtime; never modifies a sealed study's requirements.
+-r ../../requirements.txt
+-r ../../requirements-dev.txt
+xlrd==2.0.2
+threadpoolctl==3.7.0
+joblib==1.6.0

@@ -1,0 +1,347 @@
+{
+ "benchmark": {
+  "distributionsApplied": 47,
+  "exDateRule": "issuer_distributions: session before record date"
+ },
+ "cash": {
+  "basis": "BOK_POLICY_RATE_PROXY_SENSITIVITY_NOT_INVESTABLE",
+  "sessionsAfterVerified": 35,
+  "verifiedThrough": "2026-09-07"
+ },
+ "contract": "B1_INPUT_ASSEMBLY_V1",
+ "dividendFlags": {
+  "AMOUNT_FROM_CORRECTION": 35,
+  "COMMON_DPS_NOT_PARSED": 8,
+  "STOCK_DIVIDEND_NOT_MODELLED": 31
+ },
+ "generatedFileSha256": {
+  "benchmarkTotalReturn069500": "b03e7c42a9d08334ec54d0c8c3fd58c51da0e51d9134d0c2b4cefa276395b39f",
+  "cashScenarios": "51ac68433c217122a1eb6a0775937c9b88f80425067c5a35dce0edc167a4aad9",
+  "stockTotalReturn": "1498e944c0189b890e2ad846a2ab5f131a7fff8864096f0919a578476f4a7001",
+  "terminalStress": "c7f97a81e51db88eef51fb66167942ed06f7f790dd2bbfdf1776cf62215daad9",
+  "tradability": "906179455c6ce13f93f521297aa7c06eb900bedcc1a2668a52ff610c3ef8a501"
+ },
+ "ledgerEnd": "2026-10-30",
+ "ownerDecisions": "2026-11-08 Issue #292 / PR #322: ex-date rule (conditional), cash scenarios (sensitivity), terminal partial identification (downside only), pre-tax after costs, non-PIT industry diagnostic only",
+ "priceLedger": {
+  "shardSha256": {
+   "krx-prices-2013.jsonl.gz": "2bce090e2005b0bfcbf8f89738bfc5047f4e025f866d09ec571902cde7fc189a",
+   "krx-prices-2014.jsonl.gz": "41e5057ad9648139c73728133d4e33fa5a41fed5a03e7b8862bcd425f8312217",
+   "krx-prices-2015.jsonl.gz": "12f38a419c642ff369d5b5c3219930bb308dd06784ba3ee8b0428e5ca4893f1b",
+   "krx-prices-2016.jsonl.gz": "3a5869f1c08f46eb81080da949040dc67cb56c2792b3e5645182a90ae7201e93",
+   "krx-prices-2017.jsonl.gz": "0116c32a63e2043d37ff05cb9e382570dc1c4d1bdbd40f252ef912725e4e8593",
+   "krx-prices-2018.jsonl.gz": "138e0a6d733ea94ce1334ec55dc040307f6b998f2e4c99b3b4b06e298c5f4717",
+   "krx-prices-2019.jsonl.gz": "8a9da28c176559f56645437b66b8fe1da78ed46b371cfc4f3b42a3e1743c09e6",
+   "krx-prices-2020.jsonl.gz": "e0c375dd826dc017ecef45bc88162e152bf68de8a194e0e0b67893bad1713164",
+   "krx-prices-2021.jsonl.gz": "29279d2360f230dcc6fe63b463a97281144061f7d0cee883759c82fadd2fbee1",
+   "krx-prices-2022.jsonl.gz": "986bc9255a1eb35584bd3dfd306d5489fdab2a6b73c96e99652f9f458c281684",
+   "krx-prices-2023.jsonl.gz": "c0291e6ae19e7cbfe5855f864f04618b46e933f9383e489b0a7753fdb66fe416",
+   "krx-prices-2024.jsonl.gz": "fb3ee2c5435130ff8fceca0ba66f32ce8a815a6ce3bb855b9c08cbfe34fc2808",
+   "krx-prices-2025.jsonl.gz": "d0bef0689a9181276eef7335d8323cfeaf1a166dc545a4b523f1f45508885773",
+   "krx-prices-2026.jsonl.gz": "eb3e1df90a4358c1b485233521367ed48120afcf3cc43c1c52edc464939209df"
+  },
+  "signalHistory": "bad42157bf6dc3c82f2b5e10c7427f677fda0be6"
+ },
+ "returnsComputed": 0,
+ "terminalStress": {
+  "011160.KS": {
+   "basis": "DOWNSIDE_STRESS_ONLY_NOT_A_CONSIDERATION",
+   "date": "2020-03-24",
+   "multiple": 0.0
+  },
+  "051310.KS": {
+   "basis": "DOWNSIDE_STRESS_ONLY_NOT_A_CONSIDERATION",
+   "date": "2016-04-15",
+   "multiple": 0.0
+  },
+  "068870.KS": {
+   "basis": "DOWNSIDE_STRESS_ONLY_NOT_A_CONSIDERATION",
+   "date": "2017-01-17",
+   "multiple": 0.0
+  }
+ },
+ "tickers": 117,
+ "unconfirmedCorporateActions": {
+  "000880.KS": [
+   {
+    "date": "2026-08-25",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   }
+  ],
+  "001440.KS": [
+   {
+    "date": "2015-02-17",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   },
+   {
+    "date": "2015-12-08",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": false
+   }
+  ],
+  "001470.KS": [
+   {
+    "date": "2016-05-13",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   },
+   {
+    "date": "2026-09-01",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   }
+  ],
+  "001520.KS": [
+   {
+    "date": "2014-06-20",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   }
+  ],
+  "002210.KS": [
+   {
+    "date": "2025-06-24",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": false
+   },
+   {
+    "date": "2026-07-30",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": false
+   }
+  ],
+  "002780.KS": [
+   {
+    "date": "2017-05-02",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": false
+   }
+  ],
+  "003280.KS": [
+   {
+    "date": "2021-07-08",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   },
+   {
+    "date": "2021-09-15",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": false
+   }
+  ],
+  "005880.KS": [
+   {
+    "date": "2013-05-09",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   }
+  ],
+  "007460.KS": [
+   {
+    "date": "2026-05-08",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   }
+  ],
+  "009410.KS": [
+   {
+    "date": "2020-09-22",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   },
+   {
+    "date": "2024-07-12",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   }
+  ],
+  "010060.KS": [
+   {
+    "date": "2023-05-30",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   }
+  ],
+  "011000.KS": [
+   {
+    "date": "2026-07-21",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   }
+  ],
+  "011200.KS": [
+   {
+    "date": "2016-05-09",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   }
+  ],
+  "025620.KS": [
+   {
+    "date": "2014-12-29",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   }
+  ],
+  "028670.KS": [
+   {
+    "date": "2014-01-24",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   },
+   {
+    "date": "2015-07-27",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   }
+  ],
+  "042660.KS": [
+   {
+    "date": "2017-01-16",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   }
+  ],
+  "042700.KS": [
+   {
+    "date": "2017-05-11",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   }
+  ],
+  "051310.KS": [
+   {
+    "date": "2016-04-05",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": false
+   },
+   {
+    "date": "2016-04-11",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": false
+   },
+   {
+    "date": "2016-04-12",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": false
+   }
+  ],
+  "071970.KS": [
+   {
+    "date": "2015-03-30",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   },
+   {
+    "date": "2017-03-30",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   },
+   {
+    "date": "2017-05-25",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": false
+   },
+   {
+    "date": "2018-12-27",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   }
+  ],
+  "074610.KS": [
+   {
+    "date": "2013-01-10",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   },
+   {
+    "date": "2025-12-29",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   }
+  ],
+  "077970.KS": [
+   {
+    "date": "2015-03-30",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   }
+  ],
+  "082740.KS": [
+   {
+    "date": "2018-06-19",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   }
+  ],
+  "097230.KS": [
+   {
+    "date": "2019-04-23",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": false
+   }
+  ],
+  "207940.KS": [
+   {
+    "date": "2025-11-24",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   }
+  ],
+  "210980.KS": [
+   {
+    "date": "2017-04-07",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": false
+   },
+   {
+    "date": "2024-03-29",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": true
+   }
+  ],
+  "484870.KS": [
+   {
+    "date": "2026-06-26",
+    "move": "BEYOND_DAILY_LIMIT_UNCONFIRMED_ACTION",
+    "sharesChanged": false
+   }
+  ]
+ },
+ "windows": {
+  "B1_H126": {
+   "betaWindowShort": 43,
+   "holdingWindowLevelGap_TERMINAL_OR_MISSING": 2,
+   "holdingWindowStockDividendNotModelled": 3,
+   "holdingWindowUnconfirmedCorporateAction": 4,
+   "inWindowCashDividendTiers": {
+    "FILING_STATED_RULE_EQUALS_MARKET_RULE": 37,
+    "MARKET_RULE_COMPUTED_NOT_OFFICIALLY_VERIFIED": 104,
+    "corrected": 7,
+    "dpsMissing": 1
+   },
+   "independent": 464,
+   "matured": 441,
+   "notMaturedByLedgerEnd": 23,
+   "terminalStressApplies": 2
+  },
+  "B1_H252": {
+   "betaWindowShort": 40,
+   "holdingWindowLevelGap_TERMINAL_OR_MISSING": 3,
+   "holdingWindowStockDividendNotModelled": 7,
+   "holdingWindowUnconfirmedCorporateAction": 3,
+   "inWindowCashDividendTiers": {
+    "FILING_STATED_RULE_EQUALS_MARKET_RULE": 38,
+    "MARKET_RULE_COMPUTED_NOT_OFFICIALLY_VERIFIED": 158,
+    "corrected": 9,
+    "dpsMissing": 2
+   },
+   "independent": 346,
+   "matured": 312,
+   "notMaturedByLedgerEnd": 34,
+   "terminalStressApplies": 3
+  }
+ }
+}

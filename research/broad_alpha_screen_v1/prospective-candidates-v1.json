@@ -1,0 +1,38 @@
+{
+ "id": "broad-alpha-screen-v1-prospective-candidates",
+ "status": "DEFINITIONS_FROZEN_NOT_RECORDING",
+ "frozenAtUtc": "2026-11-10",
+ "reason": "KR history is spent on these definitions; only receipts written after this date are untouched evidence",
+ "registeredResultSha256": "1332f3be7476a6c73ff4b9386e517467ebe73a30f29e2d676e74b57228bb4cf4",
+ "postOutcomeResultSha256": "37948e97288a9b98510d1c830c4e941d2d9f8c4deb5db65bc5fcd3e036c6f2e1",
+ "candidates": {
+  "F1_DIVIDEND_INCREASE_LONG": {
+   "definition": "hypotheses.dividend_events K7: year-end common cash DPS >= +25% vs the same stock previous year-end DPS, listed shares within +/-10%, PIT KOSPI Top300 at receipt",
+   "entry": "close of the second session after the receipt day",
+   "horizons": [
+    "H126",
+    "H252"
+   ],
+   "benchmark": "069500.KS total return, funded beta-matched control",
+   "historicalReading": "H126 +3.51pp [-0.84, +8.15], descriptive component, CI contains zero",
+   "use": "candidate long signal; no position until prospective evidence"
+  },
+  "F2_DILUTION_AVOID": {
+   "definition": "hypotheses.title_events K4+K5 pooled per issuer: rights issue / CB / EB / BW decision (original version, issuer itself, PIT Top300)",
+   "entry": "same",
+   "horizons": [
+    "H126",
+    "H252"
+   ],
+   "benchmark": "same",
+   "historicalReading": "H252 -13.60pp simultaneous [-24.82, -4.32] (registered, descriptive); H126 -8.40pp [-15.26, -1.22] (POST_OUTCOME)",
+   "use": "exclusion rule for any 0-5 name book: no entry within 252 sessions of such a decision; never a short"
+  }
+ },
+ "notAuthorized": [
+  "live receipt writer",
+  "scheduled task",
+  "any change to the registered kr-corporate-information-events-v1 receipts",
+  "any position"
+ ]
+}

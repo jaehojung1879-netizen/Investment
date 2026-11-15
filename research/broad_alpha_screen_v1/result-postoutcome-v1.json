@@ -1,0 +1,4732 @@
+{
+ "benchmark": "069500.KS",
+ "cannot": "rescue, reclassify or reopen the registered verdicts; NOT_CONFIRMATORY",
+ "contractSha256": "edc691a3e7483c8a902db9ae11bc220946dff62e7071846a5effd027f938635f",
+ "costs": {
+  "cashBps": 0.0,
+  "etfCommissionBps": 1.5,
+  "etfHalfSpreadBps": 4.0,
+  "etfSellTaxBps": 0.0,
+  "sellTaxSchedule": [
+   [
+    "1900-01-01",
+    30.0
+   ],
+   [
+    "2019-06-03",
+    25.0
+   ],
+   [
+    "2021-01-01",
+    23.0
+   ],
+   [
+    "2023-01-01",
+    20.0
+   ],
+   [
+    "2024-01-01",
+    18.0
+   ],
+   [
+    "2025-01-01",
+    15.0
+   ],
+   [
+    "2026-01-01",
+    20.0
+   ]
+  ],
+  "source": "pipeline/benchmark_alpha.py REALISTIC_COSTS[KR] (dated sell-tax schedule)",
+  "status": "MODEL_COST_NO_REAL_FILLS",
+  "stockCommissionBps": 1.5,
+  "stockHalfSpreadBps": 4.0
+ },
+ "evidenceClass": "EXPLORATORY_POST_OUTCOME",
+ "familySize": 3,
+ "holm": {
+  "pValues": {
+   "K3_SUPPLY_GE_10PCT": 0.5738,
+   "P1_CAPITAL_RETURN": 0.9465,
+   "P2_DILUTION": 0.005
+  },
+  "reject": {
+   "K3_SUPPLY_GE_10PCT": false,
+   "P1_CAPITAL_RETURN": false,
+   "P2_DILUTION": true
+  }
+ },
+ "hypotheses": {
+  "K1_CANCELLATION": {
+   "H126": {
+    "blockSensitivityCi95": {
+     "126": [
+      -0.051962412882886465,
+      0.05098222426760223
+     ],
+     "504": [
+      -0.05404211674024422,
+      0.03281523455709156
+     ]
+    },
+    "bookTotalReturnAnnualized": 0.07869603796603886,
+    "calendar": [
+     "2015-04-22",
+     "2026-10-27"
+    ],
+    "cashSensitivity": {
+     "BOK_POLICY_RATE_PLUS_100BP": -0.01509314262861462,
+     "ZERO": -0.012408260454112863
+    },
+    "checks": {
+     "excluding2025_2026": -0.005212323059431162,
+     "excludingLargestIndustry:FINANCIALS": -0.021006075426267302,
+     "postValueUp": -0.028207019771911705,
+     "preValueUp": -0.01578051076285423
+    },
+    "ci95": [
+     -0.05473330023899775,
+     0.044697549535961625
+    ],
+    "ciSimultaneous": [
+     -0.0647714574474316,
+     0.05612859615944114
+    ],
+    "controlTotalReturnAnnualized": 0.12575336791340863,
+    "downsideStressDelta": -0.025100427869925668,
+    "downsideStressEvents": 5,
+    "effectiveBlocks": 11.206349206349206,
+    "etfTotalReturnAnnualized": 0.13468790687774068,
+    "eventByEntryYear": {
+     "2015": {
+      "mean": 0.018432883271776057,
+      "n": 3
+     },
+     "2016": {
+      "mean": -0.01675465724014691,
+      "n": 3
+     },
+     "2017": {
+      "mean": -0.04418670623204011,
+      "n": 5
+     },
+     "2018": {
+      "mean": -0.0566656506289549,
+      "n": 11
+     },
+     "2019": {
+      "mean": -0.10000393731213202,
+      "n": 5
+     },
+     "2020": {
+      "mean": 0.307525039359395,
+      "n": 14
+     },
+     "2021": {
+      "mean": 0.024655475667454657,
+      "n": 8
+     },
+     "2022": {
+      "mean": 0.03864297733372832,
+      "n": 15
+     },
+     "2023": {
+      "mean": 0.02522872814735174,
+      "n": 32
+     },
+     "2024": {
+      "mean": 0.04660249175850554,
+      "n": 48
+     },
+     "2025": {
+      "mean": -0.15461275530303195,
+      "n": 65
+     },
+     "2026": {
+      "mean": -0.14566323897913525,
+      "n": 43
+     }
+    },
+    "eventByIndustryNotPit": {
+     "AUTOS": {
+      "mean": -0.08307624530462192,
+      "n": 15
+     },
+     "BASIC_MATERIALS": {
+      "mean": -0.09902647576107527,
+      "n": 12
+     },
+     "CAPITAL_GOODS_DEFENSE": {
+      "mean": 0.058523564524292776,
+      "n": 18
+     },
+     "CHEMICALS": {
+      "mean": 0.07100680677636612,
+      "n": 18
+     },
+     "COMMUNICATION_MEDIA_SOFTWARE": {
+      "mean": -0.09405789860217206,
+      "n": 26
+     },
+     "CONSTRUCTION_ENGINEERING": {
+      "mean": 0.36142295559776466,
+      "n": 2
+     },
+     "CONSUMER_RETAIL_SERVICES": {
+      "mean": -0.1353775124984207,
+      "n": 26
+     },
+     "ELECTRONICS_ELECTRICAL": {
+      "mean": -0.08276662514234386,
+      "n": 24
+     },
+     "ENERGY_UTILITIES": {
+      "mean": -0.1265822789296287,
+      "n": 1
+     },
+     "FINANCIALS": {
+      "mean": 0.007740606385670125,
+      "n": 84
+     },
+     "FOOD_BEVERAGE_TOBACCO": {
+      "mean": 0.06178159358926566,
+      "n": 4
+     },
+     "HEALTHCARE": {
+      "mean": -0.09375032042324694,
+      "n": 10
+     },
+     "HOLDINGS_BUSINESS_SERVICES": {
+      "mean": -0.18318103564281943,
+      "n": 3
+     },
+     "TRANSPORT_LOGISTICS": {
+      "mean": -0.8108422567501425,
+      "n": 1
+     },
+     "UNLABELLED": {
+      "mean": -0.083398640453738,
+      "n": 8
+     }
+    },
+    "eventLevel": {
+     "entryWeeks": 148,
+     "hitRate": 0.42063492063492064,
+     "issuers": 111,
+     "mean": -0.03780202835652285,
+     "median": -0.053048949356285624,
+     "n": 252,
+     "reason": null,
+     "se": 0.027369250082836943,
+     "unresolved": 0
+    },
+    "expectedSign": 1,
+    "exposureTerm": -0.011633065416370898,
+    "hacSe": 0.027691010727195646,
+    "issuers": 111,
+    "maxFiveNames": {
+     "selectionDelta": -0.012915482919688578,
+     "shareOfSessionsWithAName": 0.958075100255195,
+     "simpleEtfExcess": -0.03355150896729334,
+     "slots": 73
+    },
+    "pBootstrapTwoSided": 0.5794,
+    "selectionByCalendarYear": {
+     "2015": 0.09092681116674395,
+     "2016": 0.04211294363340756,
+     "2017": -0.056845281347159826,
+     "2018": -0.30062318316197156,
+     "2019": -0.1947964221210552,
+     "2020": -0.07750689777514974,
+     "2021": 0.2064933498878868,
+     "2022": -0.0632547074512484,
+     "2023": 0.06404004320782264,
+     "2024": 0.18464769637807388,
+     "2025": -0.09439276358192583,
+     "2026": -0.12011395602715347
+    },
+    "selectionDelta": {
+     "cost0x": -0.007970275606337637,
+     "cost1x": -0.014246939895948255,
+     "cost2x": -0.02052360418555912,
+     "cost3x": -0.026800268475169788
+    },
+    "sessions": 2824,
+    "simpleEtfExcess": -0.025880005312319154,
+    "simultaneousLevel": 0.9833333333333333,
+    "slots": 252,
+    "states": {
+     "ENTRY_NOT_TRADABLE": 1,
+     "INSUFFICIENT_PRE_SIGNAL_PAIRS": 2,
+     "NEGATIVE_BETA_NOT_INVESTABLE": 1,
+     "NOT_MATURED": 58,
+     "PRICED": 252,
+     "TERMINAL_UNRESOLVED": 5,
+     "UNCONFIRMED_CORPORATE_ACTION_IN_WINDOW": 4
+    },
+    "turnoverOneWay": {
+     "book": 47.23271593387712,
+     "control": 12.226517177880005
+    }
+   },
+   "H252": {
+    "blockSensitivityCi95": {
+     "252": [
+      -0.058648650689785066,
+      0.1496336750333778
+     ],
+     "756": [
+      -0.05092052833957179,
+      0.12628309236438318
+     ]
+    },
+    "bookTotalReturnAnnualized": 0.1634315405598854,
+    "calendar": [
+     "2015-04-22",
+     "2026-10-02"
+    ],
+    "cashSensitivity": {
+     "BOK_POLICY_RATE_PLUS_100BP": 0.03296127025957119,
+     "ZERO": 0.037651883413541906
+    },
+    "checks": {
+     "excluding2025_2026": 0.05231348810223193,
+     "excludingLargestIndustry:FINANCIALS": 0.02047859029372427,
+     "postValueUp": 0.03305778150497602,
+     "preValueUp": 0.05510799807810178
+    },
+    "ci95": [
+     -0.05942807624372571,
+     0.1199554091272342
+    ],
+    "ciSimultaneous": [
+     -0.07616902556009618,
+     0.13688210353562436
+    ],
+    "controlTotalReturnAnnualized": 0.1336215603248445,
+    "downsideStressDelta": 0.01868051247153754,
+    "downsideStressEvents": 4,
+    "effectiveBlocks": 5.573412698412699,
+    "etfTotalReturnAnnualized": 0.15927822110053702,
+    "eventByEntryYear": {
+     "2015": {
+      "mean": 0.09578033273135407,
+      "n": 3
+     },
+     "2016": {
+      "mean": -0.13363117246298106,
+      "n": 2
+     },
+     "2017": {
+      "mean": -0.22557403330350878,
+      "n": 2
+     },
+     "2018": {
+      "mean": -0.06799393799439687,
+      "n": 10
+     },
+     "2019": {
+      "mean": -0.23245700063231958,
+      "n": 5
+     },
+     "2020": {
+      "mean": 0.3849084416107281,
+      "n": 11
+     },
+     "2021": {
+      "mean": 0.0469487438737997,
+      "n": 5
+     },
+     "2022": {
+      "mean": 0.2523628430020063,
+      "n": 13
+     },
+     "2023": {
+      "mean": 0.23913488171515476,
+      "n": 26
+     },
+     "2024": {
+      "mean": 0.3465207356444481,
+      "n": 35
+     },
+     "2025": {
+      "mean": -0.5094252038561768,
+      "n": 39
+     }
+    },
+    "eventByIndustryNotPit": {
+     "AUTOS": {
+      "mean": -0.0022036538431377995,
+      "n": 11
+     },
+     "BASIC_MATERIALS": {
+      "mean": 0.11308690153396617,
+      "n": 7
+     },
+     "CAPITAL_GOODS_DEFENSE": {
+      "mean": 0.11554021085366806,
+      "n": 12
+     },
+     "CHEMICALS": {
+      "mean": 0.34846745146240404,
+      "n": 12
+     },
+     "COMMUNICATION_MEDIA_SOFTWARE": {
+      "mean": -0.07475165719948529,
+      "n": 15
+     },
+     "CONSTRUCTION_ENGINEERING": {
+      "mean": 0.016025733718448176,
+      "n": 1
+     },
+     "CONSUMER_RETAIL_SERVICES": {
+      "mean": 0.04150630982794009,
+      "n": 15
+     },
+     "ELECTRONICS_ELECTRICAL": {
+      "mean": -0.16686671518774282,
+      "n": 15
+     },
+     "ENERGY_UTILITIES": {
+      "mean": 0.04909907171577177,
+      "n": 1
+     },
+     "FINANCIALS": {
+      "mean": 0.18263209790423351,
+      "n": 48
+     },
+     "FOOD_BEVERAGE_TOBACCO": {
+      "mean": 0.08720431888873459,
+      "n": 2
+     },
+     "HEALTHCARE": {
+      "mean": -0.8713286016205725,
+      "n": 6
+     },
+     "HOLDINGS_BUSINESS_SERVICES": {
+      "mean": 0.10964990497879573,
+      "n": 2
+     },
+     "TRANSPORT_LOGISTICS": {
+      "mean": -1.0672713128444546,
+      "n": 1
+     },
+     "UNLABELLED": {
+      "mean": -0.7698002321479925,
+      "n": 3
+     }
+    },
+    "eventLevel": {
+     "entryWeeks": 109,
+     "hitRate": 0.4768211920529801,
+     "issuers": 91,
+     "mean": 0.026187479877002734,
+     "median": -0.016670612962409792,
+     "n": 151,
+     "reason": null,
+     "se": 0.0732882957152452,
+     "unresolved": 0
+    },
+    "expectedSign": 1,
+    "exposureTerm": -0.034734455359501405,
+    "hacSe": 0.0536683885578722,
+    "issuers": 91,
+    "maxFiveNames": {
+     "selectionDelta": 0.007907961780018808,
+     "shareOfSessionsWithAName": 1.0,
+     "simpleEtfExcess": -0.04165150026666074,
+     "slots": 41
+    },
+    "pBootstrapTwoSided": 0.4589,
+    "selectionByCalendarYear": {
+     "2015": 0.1005402057952568,
+     "2016": 0.07837866929786386,
+     "2017": -0.07766466321744381,
+     "2018": -0.1449174969993755,
+     "2019": -0.09308288381917307,
+     "2020": 0.03266420423294725,
+     "2021": 0.20840727301410455,
+     "2022": -0.01489478509396136,
+     "2023": 0.13476012672602333,
+     "2024": 0.35329527528224725,
+     "2025": -0.06651407599046444,
+     "2026": -0.12594235372591966
+    },
+    "selectionDelta": {
+     "cost0x": 0.041251701973865885,
+     "cost1x": 0.034541627933973126,
+     "cost2x": 0.027831553894080176,
+     "cost3x": 0.021121479854187313
+    },
+    "sessions": 2809,
+    "simpleEtfExcess": -0.00019282742552828675,
+    "simultaneousLevel": 0.9833333333333333,
+    "slots": 151,
+    "states": {
+     "ENTRY_NOT_TRADABLE": 2,
+     "INSUFFICIENT_PRE_SIGNAL_PAIRS": 2,
+     "NEGATIVE_BETA_NOT_INVESTABLE": 1,
+     "NOT_MATURED": 88,
+     "PRICED": 151,
+     "TERMINAL_UNRESOLVED": 4,
+     "UNCONFIRMED_CORPORATE_ACTION_IN_WINDOW": 4
+    },
+    "turnoverOneWay": {
+     "book": 25.014667238401717,
+     "control": 6.966709666653976
+    }
+   }
+  },
+  "K2_BUYBACK_NO_CANCEL": {
+   "H126": {
+    "blockSensitivityCi95": {
+     "126": [
+      -0.028314611745589347,
+      0.04515843017749248
+     ],
+     "504": [
+      -0.032789151671006524,
+      0.0448046739173423
+     ]
+    },
+    "bookTotalReturnAnnualized": 0.10440162615085802,
+    "calendar": [
+     "2013-10-29",
+     "2026-10-02"
+    ],
+    "cashSensitivity": {
+     "BOK_POLICY_RATE_PLUS_100BP": 7.063946164319088e-06,
+     "ZERO": 0.004281489284244457
+    },
+    "checks": {
+     "excluding2025_2026": -0.0006785111389266407,
+     "excludingLargestIndustry:FINANCIALS": -0.014473692379161868,
+     "postValueUp": 0.0023603217152486622,
+     "preValueUp": -0.00016978900862798285
+    },
+    "ci95": [
+     -0.03238128707840545,
+     0.04557258005801916
+    ],
+    "ciSimultaneous": [
+     -0.04114218822997751,
+     0.05395575324440946
+    ],
+    "controlTotalReturnAnnualized": 0.10840450500387044,
+    "downsideStressDelta": -0.0003734260527175789,
+    "downsideStressEvents": 1,
+    "effectiveBlocks": 12.591269841269842,
+    "etfTotalReturnAnnualized": 0.1410164854985605,
+    "eventByEntryYear": {
+     "2013": {
+      "mean": 0.11178482792166378,
+      "n": 3
+     },
+     "2014": {
+      "mean": 0.06467993093915439,
+      "n": 45
+     },
+     "2015": {
+      "mean": -0.08896088197606157,
+      "n": 23
+     },
+     "2016": {
+      "mean": -0.047964350832466626,
+      "n": 31
+     },
+     "2017": {
+      "mean": 0.022069164523146053,
+      "n": 17
+     },
+     "2018": {
+      "mean": -0.015580400324924052,
+      "n": 25
+     },
+     "2019": {
+      "mean": -0.10245096465347846,
+      "n": 26
+     },
+     "2020": {
+      "mean": -0.00351990777141349,
+      "n": 62
+     },
+     "2021": {
+      "mean": 0.12098796853901729,
+      "n": 36
+     },
+     "2022": {
+      "mean": -0.0017844101396000337,
+      "n": 49
+     },
+     "2023": {
+      "mean": 0.08016480727982872,
+      "n": 49
+     },
+     "2024": {
+      "mean": 0.03727877388576928,
+      "n": 48
+     },
+     "2025": {
+      "mean": 0.05469093841996595,
+      "n": 40
+     },
+     "2026": {
+      "mean": -0.009565126614254519,
+      "n": 15
+     }
+    },
+    "eventByIndustryNotPit": {
+     "AUTOS": {
+      "mean": -0.05454054608822337,
+      "n": 30
+     },
+     "BASIC_MATERIALS": {
+      "mean": 0.005309033715031917,
+      "n": 18
+     },
+     "CAPITAL_GOODS_DEFENSE": {
+      "mean": 0.14962288163338405,
+      "n": 21
+     },
+     "CHEMICALS": {
+      "mean": 0.03883138377250169,
+      "n": 47
+     },
+     "COMMUNICATION_MEDIA_SOFTWARE": {
+      "mean": -0.040629451336684115,
+      "n": 38
+     },
+     "CONSTRUCTION_ENGINEERING": {
+      "mean": -0.30167419454016564,
+      "n": 9
+     },
+     "CONSUMER_RETAIL_SERVICES": {
+      "mean": 0.05880237979616566,
+      "n": 54
+     },
+     "ELECTRONICS_ELECTRICAL": {
+      "mean": 0.0066616737861424375,
+      "n": 34
+     },
+     "ENERGY_UTILITIES": {
+      "mean": 0.2610354439256104,
+      "n": 8
+     },
+     "FINANCIALS": {
+      "mean": 0.06554215562049255,
+      "n": 129
+     },
+     "FOOD_BEVERAGE_TOBACCO": {
+      "mean": 0.08806544115196467,
+      "n": 8
+     },
+     "HEALTHCARE": {
+      "mean": -0.06056399700248836,
+      "n": 33
+     },
+     "HOLDINGS_BUSINESS_SERVICES": {
+      "mean": -0.04663976994168143,
+      "n": 10
+     },
+     "TRANSPORT_LOGISTICS": {
+      "mean": -0.2001473033069706,
+      "n": 6
+     },
+     "UNLABELLED": {
+      "mean": -0.054365886463386366,
+      "n": 24
+     }
+    },
+    "eventLevel": {
+     "entryWeeks": 305,
+     "hitRate": 0.43710021321961623,
+     "issuers": 191,
+     "mean": 0.018862283053520116,
+     "median": -0.02801026495575809,
+     "n": 469,
+     "reason": null,
+     "se": 0.022010052691267552,
+     "unresolved": 0
+    },
+    "expectedSign": 1,
+    "exposureTerm": -0.022412723353043965,
+    "hacSe": 0.019382414363211472,
+    "issuers": 191,
+    "maxFiveNames": {
+     "selectionDelta": 0.01523170567871112,
+     "shareOfSessionsWithAName": 1.0,
+     "simpleEtfExcess": -0.01486444562256162,
+     "slots": 112
+    },
+    "pBootstrapTwoSided": 0.9425,
+    "selectionByCalendarYear": {
+     "2013": 0.09019146544080148,
+     "2014": 0.0979827185728771,
+     "2015": -0.05766381073324789,
+     "2016": -0.19537206157536013,
+     "2017": 0.0642477540398314,
+     "2018": -0.0694758033231162,
+     "2019": -0.08955748142734299,
+     "2020": -0.13748985685878856,
+     "2021": 0.08857366906411768,
+     "2022": 0.03907099144358517,
+     "2023": 0.07659820814296492,
+     "2024": 0.2106908894894437,
+     "2025": 0.04776021399376873,
+     "2026": -0.12838044169151497
+    },
+    "selectionDelta": {
+     "cost0x": 0.008598375405865024,
+     "cost1x": 0.0014762790030981561,
+     "cost2x": -0.0056458173996684685,
+     "cost3x": -0.01276791380243527
+    },
+    "sessions": 3173,
+    "simpleEtfExcess": -0.02093644434994581,
+    "simultaneousLevel": 0.9833333333333333,
+    "slots": 469,
+    "states": {
+     "INSUFFICIENT_PRE_SIGNAL_PAIRS": 22,
+     "NEGATIVE_BETA_NOT_INVESTABLE": 7,
+     "NOT_MATURED": 20,
+     "PRICED": 469,
+     "TERMINAL_UNRESOLVED": 1,
+     "UNCONFIRMED_CORPORATE_ACTION_IN_WINDOW": 3
+    },
+    "turnoverOneWay": {
+     "book": 54.15093418908134,
+     "control": 13.227113066322518
+    }
+   },
+   "H252": {
+    "blockSensitivityCi95": {
+     "252": [
+      -0.04182449743033841,
+      0.11029162847060701
+     ],
+     "756": [
+      -0.026772524947129478,
+      0.0757188015957237
+     ]
+    },
+    "bookTotalReturnAnnualized": 0.12333743126801866,
+    "calendar": [
+     "2013-10-29",
+     "2026-10-29"
+    ],
+    "cashSensitivity": {
+     "BOK_POLICY_RATE_PLUS_100BP": 0.013813218059175231,
+     "ZERO": 0.02193479356307166
+    },
+    "checks": {
+     "excluding2025_2026": 0.016169529873883207,
+     "excludingLargestIndustry:FINANCIALS": -0.02158975237732755,
+     "postValueUp": -0.03707307255330973,
+     "preValueUp": 0.04645561081164799
+    },
+    "ci95": [
+     -0.03650078096753415,
+     0.08206612984337282
+    ],
+    "ciSimultaneous": [
+     -0.04810393729273715,
+     0.09395222845902265
+    ],
+    "controlTotalReturnAnnualized": 0.10897785227588819,
+    "downsideStressDelta": 0.007646535468688802,
+    "downsideStressEvents": 3,
+    "effectiveBlocks": 6.329365079365079,
+    "etfTotalReturnAnnualized": 0.12506080758717775,
+    "eventByEntryYear": {
+     "2013": {
+      "mean": 0.3527470127128014,
+      "n": 3
+     },
+     "2014": {
+      "mean": 0.12127128300501008,
+      "n": 40
+     },
+     "2015": {
+      "mean": -0.08516944483063027,
+      "n": 16
+     },
+     "2016": {
+      "mean": -0.11440502052102884,
+      "n": 29
+     },
+     "2017": {
+      "mean": 0.005516237909798486,
+      "n": 15
+     },
+     "2018": {
+      "mean": 0.008827756548739948,
+      "n": 21
+     },
+     "2019": {
+      "mean": -0.1465529066710591,
+      "n": 21
+     },
+     "2020": {
+      "mean": 0.11399638165568007,
+      "n": 50
+     },
+     "2021": {
+      "mean": 0.17782071863742238,
+      "n": 26
+     },
+     "2022": {
+      "mean": -0.029537625175284847,
+      "n": 40
+     },
+     "2023": {
+      "mean": 0.15825266343272953,
+      "n": 35
+     },
+     "2024": {
+      "mean": 0.10006375887763581,
+      "n": 33
+     },
+     "2025": {
+      "mean": -0.550307777019711,
+      "n": 26
+     }
+    },
+    "eventByIndustryNotPit": {
+     "AUTOS": {
+      "mean": -0.06178619256983341,
+      "n": 23
+     },
+     "BASIC_MATERIALS": {
+      "mean": 0.04382078295382369,
+      "n": 17
+     },
+     "CAPITAL_GOODS_DEFENSE": {
+      "mean": 0.23686850549537264,
+      "n": 15
+     },
+     "CHEMICALS": {
+      "mean": -0.11414977596939996,
+      "n": 33
+     },
+     "COMMUNICATION_MEDIA_SOFTWARE": {
+      "mean": -0.09454861038537192,
+      "n": 29
+     },
+     "CONSTRUCTION_ENGINEERING": {
+      "mean": -0.3709054090998463,
+      "n": 6
+     },
+     "CONSUMER_RETAIL_SERVICES": {
+      "mean": 0.061485091616206175,
+      "n": 41
+     },
+     "ELECTRONICS_ELECTRICAL": {
+      "mean": 0.03445574303977902,
+      "n": 23
+     },
+     "ENERGY_UTILITIES": {
+      "mean": 0.14639607872545135,
+      "n": 8
+     },
+     "FINANCIALS": {
+      "mean": 0.11076907804770363,
+      "n": 93
+     },
+     "FOOD_BEVERAGE_TOBACCO": {
+      "mean": 0.024302590413882608,
+      "n": 7
+     },
+     "HEALTHCARE": {
+      "mean": -0.1860415937314602,
+      "n": 27
+     },
+     "HOLDINGS_BUSINESS_SERVICES": {
+      "mean": 0.030259149863484405,
+      "n": 7
+     },
+     "TRANSPORT_LOGISTICS": {
+      "mean": -0.24033459798766862,
+      "n": 6
+     },
+     "UNLABELLED": {
+      "mean": -0.037586505775106256,
+      "n": 20
+     }
+    },
+    "eventLevel": {
+     "entryWeeks": 250,
+     "hitRate": 0.4676056338028169,
+     "issuers": 181,
+     "mean": 0.0058978841773458714,
+     "median": -0.029524557144666286,
+     "n": 355,
+     "reason": null,
+     "se": 0.03315130937994737,
+     "unresolved": 0
+    },
+    "expectedSign": 1,
+    "exposureTerm": -0.029613644174900332,
+    "hacSe": 0.041893075122393875,
+    "issuers": 181,
+    "maxFiveNames": {
+     "selectionDelta": -0.010986126039738451,
+     "shareOfSessionsWithAName": 1.0,
+     "simpleEtfExcess": -0.035148304741468454,
+     "slots": 58
+    },
+    "pBootstrapTwoSided": 0.6028,
+    "selectionByCalendarYear": {
+     "2013": 0.09019146544080148,
+     "2014": 0.15906386120999616,
+     "2015": 0.021597135246450017,
+     "2016": -0.05563090791000369,
+     "2017": -0.04582854753917598,
+     "2018": 0.017011056987934037,
+     "2019": -0.07127334101819016,
+     "2020": -0.11773426779770846,
+     "2021": 0.18860660515812855,
+     "2022": 0.07539242598444795,
+     "2023": 0.00382326174816372,
+     "2024": 0.16456604604043223,
+     "2025": -0.03438253225036414,
+     "2026": -0.18550760362940033
+    },
+    "selectionDelta": {
+     "cost0x": 0.024809184131610824,
+     "cost1x": 0.016581019979066105,
+     "cost2x": 0.008352855826521795,
+     "cost3x": 0.00012469167397683646
+    },
+    "sessions": 3190,
+    "simpleEtfExcess": -0.013032624195834229,
+    "simultaneousLevel": 0.9833333333333333,
+    "slots": 355,
+    "states": {
+     "INSUFFICIENT_PRE_SIGNAL_PAIRS": 20,
+     "NEGATIVE_BETA_NOT_INVESTABLE": 6,
+     "NOT_MATURED": 28,
+     "PRICED": 355,
+     "TERMINAL_UNRESOLVED": 3,
+     "UNCONFIRMED_CORPORATE_ACTION_IN_WINDOW": 4
+    },
+    "turnoverOneWay": {
+     "book": 31.859196622416853,
+     "control": 8.081100986256672
+    }
+   }
+  },
+  "K3_SUPPLY_GE_10PCT": {
+   "H126": {
+    "blockSensitivityCi95": {
+     "126": [
+      -0.07789625076185798,
+      0.04157060139711454
+     ],
+     "504": [
+      -0.07446981370505808,
+      0.01979366275250779
+     ]
+    },
+    "bookTotalReturnAnnualized": 0.05117099526716262,
+    "calendar": [
+     "2013-11-28",
+     "2026-10-27"
+    ],
+    "cashSensitivity": {
+     "BOK_POLICY_RATE_PLUS_100BP": -0.017938539028440118,
+     "ZERO": -0.015812540401125015
+    },
+    "checks": {
+     "excluding2025_2026": 0.003937071489256769,
+     "excludingLargestIndustry:CAPITAL_GOODS_DEFENSE": -0.030211361440382906,
+     "postValueUp": -0.015021300505996676,
+     "preValueUp": -0.0024634834731694483
+    },
+    "ci95": [
+     -0.08232191222906947,
+     0.031398572236623866
+    ],
+    "ciSimultaneous": [
+     -0.09442695493970804,
+     0.04600220443938257
+    ],
+    "controlTotalReturnAnnualized": 0.10870710339449552,
+    "downsideStressDelta": -0.02262529408390341,
+    "downsideStressEvents": 2,
+    "effectiveBlocks": 12.563492063492063,
+    "etfTotalReturnAnnualized": 0.1207455296114468,
+    "eventByEntryYear": {
+     "2013": {
+      "mean": -0.07971090164274978,
+      "n": 6
+     },
+     "2014": {
+      "mean": 0.06141360099167564,
+      "n": 23
+     },
+     "2015": {
+      "mean": -0.1109797363471716,
+      "n": 22
+     },
+     "2016": {
+      "mean": -0.06124708024516301,
+      "n": 19
+     },
+     "2017": {
+      "mean": -0.09227301588792178,
+      "n": 16
+     },
+     "2018": {
+      "mean": -0.039803098285643164,
+      "n": 29
+     },
+     "2019": {
+      "mean": -0.08667753007413467,
+      "n": 30
+     },
+     "2020": {
+      "mean": -0.05195662939695246,
+      "n": 35
+     },
+     "2021": {
+      "mean": 0.13577053349688753,
+      "n": 34
+     },
+     "2022": {
+      "mean": 0.010980588691701921,
+      "n": 40
+     },
+     "2023": {
+      "mean": 0.05801077070099951,
+      "n": 32
+     },
+     "2024": {
+      "mean": 0.22699497463818719,
+      "n": 37
+     },
+     "2025": {
+      "mean": -0.2623064877604062,
+      "n": 49
+     },
+     "2026": {
+      "mean": -0.38353084678968113,
+      "n": 16
+     }
+    },
+    "eventByIndustryNotPit": {
+     "AUTOS": {
+      "mean": 0.3330740627572848,
+      "n": 6
+     },
+     "BASIC_MATERIALS": {
+      "mean": -0.18263005019672443,
+      "n": 11
+     },
+     "CAPITAL_GOODS_DEFENSE": {
+      "mean": 0.00766460986024651,
+      "n": 122
+     },
+     "CHEMICALS": {
+      "mean": 0.028488866482499552,
+      "n": 20
+     },
+     "COMMUNICATION_MEDIA_SOFTWARE": {
+      "mean": -0.034865000364737386,
+      "n": 1
+     },
+     "CONSTRUCTION_ENGINEERING": {
+      "mean": -0.09013316646602622,
+      "n": 80
+     },
+     "CONSUMER_RETAIL_SERVICES": {
+      "mean": -0.1411545956329673,
+      "n": 6
+     },
+     "ELECTRONICS_ELECTRICAL": {
+      "mean": -0.10206456474838173,
+      "n": 43
+     },
+     "ENERGY_UTILITIES": {
+      "mean": -0.032693895875017955,
+      "n": 17
+     },
+     "FINANCIALS": {
+      "mean": -0.02128216940765291,
+      "n": 6
+     },
+     "FOOD_BEVERAGE_TOBACCO": {
+      "mean": -0.047643913159620244,
+      "n": 1
+     },
+     "HEALTHCARE": {
+      "mean": -0.005044447049943172,
+      "n": 32
+     },
+     "HOLDINGS_BUSINESS_SERVICES": {
+      "mean": -0.21441305827569823,
+      "n": 9
+     },
+     "TRANSPORT_LOGISTICS": {
+      "mean": 0.027410457331357663,
+      "n": 18
+     },
+     "UNLABELLED": {
+      "mean": -0.005229063062382959,
+      "n": 16
+     }
+    },
+    "eventLevel": {
+     "entryWeeks": 265,
+     "hitRate": 0.38917525773195877,
+     "issuers": 108,
+     "mean": -0.03453453192071971,
+     "median": -0.07855847440596114,
+     "n": 388,
+     "reason": null,
+     "se": 0.022767565466780524,
+     "unresolved": 0
+    },
+    "expectedSign": 1,
+    "exposureTerm": -0.010640663256495517,
+    "hacSe": 0.03020369154599827,
+    "issuers": 108,
+    "maxFiveNames": {
+     "selectionDelta": -0.023358582888760828,
+     "shareOfSessionsWithAName": 0.9984202211690363,
+     "simpleEtfExcess": -0.034193162728870456,
+     "slots": 110
+    },
+    "pBootstrapTwoSided": 0.5738,
+    "selectionByCalendarYear": {
+     "2013": -0.0563060067327511,
+     "2014": 0.023594997541245166,
+     "2015": 0.03863837326556685,
+     "2016": -0.12695255130118854,
+     "2017": -0.22296354894477588,
+     "2018": 0.07745352754850499,
+     "2019": -0.22469759937640776,
+     "2020": -0.07494030982144662,
+     "2021": 0.06644943804878434,
+     "2022": 0.10782397188117798,
+     "2023": -0.03278957012923922,
+     "2024": 0.29383298419559,
+     "2025": -0.016765323030517587,
+     "2026": -0.28535478171120987
+    },
+    "selectionDelta": {
+     "cost0x": -0.010469524400862532,
+     "cost1x": -0.017231530707327882,
+     "cost2x": -0.023993537013793375,
+     "cost3x": -0.03075554332025869
+    },
+    "sessions": 3166,
+    "simpleEtfExcess": -0.0278721939638234,
+    "simultaneousLevel": 0.9833333333333333,
+    "slots": 388,
+    "states": {
+     "ENTRY_NOT_TRADABLE": 1,
+     "INSUFFICIENT_PRE_SIGNAL_PAIRS": 42,
+     "NEGATIVE_BETA_NOT_INVESTABLE": 4,
+     "NOT_MATURED": 23,
+     "PRICED": 388,
+     "TERMINAL_UNRESOLVED": 2,
+     "UNCONFIRMED_CORPORATE_ACTION_IN_WINDOW": 4
+    },
+    "turnoverOneWay": {
+     "book": 52.28764590463052,
+     "control": 9.650738639093225
+    }
+   },
+   "H252": {
+    "blockSensitivityCi95": {
+     "252": [
+      -0.2151779432991462,
+      0.028981518539766805
+     ],
+     "756": [
+      -0.18075578025738404,
+      -0.0021516157937968923
+     ]
+    },
+    "bookTotalReturnAnnualized": 0.0218215200698344,
+    "calendar": [
+     "2013-11-28",
+     "2026-10-28"
+    ],
+    "cashSensitivity": {
+     "BOK_POLICY_RATE_PLUS_100BP": -0.05920943411921198,
+     "ZERO": -0.05503600446352919
+    },
+    "checks": {
+     "excluding2025_2026": -0.020713245644860323,
+     "excludingLargestIndustry:CAPITAL_GOODS_DEFENSE": -0.09253864758812978,
+     "postValueUp": -0.06533274902353656,
+     "preValueUp": -0.017613114996386427
+    },
+    "ci95": [
+     -0.19595700063430135,
+     -0.003138846565263819
+    ],
+    "ciSimultaneous": [
+     -0.21746753895521942,
+     0.017539141891805225
+    ],
+    "controlTotalReturnAnnualized": 0.11754868088915771,
+    "downsideStressDelta": -0.06560447478088016,
+    "downsideStressEvents": 2,
+    "effectiveBlocks": 6.283730158730159,
+    "etfTotalReturnAnnualized": 0.12724533841836183,
+    "eventByEntryYear": {
+     "2013": {
+      "mean": -0.31377276021788897,
+      "n": 3
+     },
+     "2014": {
+      "mean": 0.019524104158361342,
+      "n": 18
+     },
+     "2015": {
+      "mean": -0.160563318598482,
+      "n": 16
+     },
+     "2016": {
+      "mean": -0.14913777480124552,
+      "n": 14
+     },
+     "2017": {
+      "mean": -0.08219818854334658,
+      "n": 12
+     },
+     "2018": {
+      "mean": -0.17966704734797218,
+      "n": 22
+     },
+     "2019": {
+      "mean": -0.14818548604092158,
+      "n": 21
+     },
+     "2020": {
+      "mean": 0.04917759358960709,
+      "n": 23
+     },
+     "2021": {
+      "mean": 0.27717000700026256,
+      "n": 26
+     },
+     "2022": {
+      "mean": 0.08475436558594428,
+      "n": 27
+     },
+     "2023": {
+      "mean": 0.0897019414332254,
+      "n": 23
+     },
+     "2024": {
+      "mean": 0.37240936754458126,
+      "n": 30
+     },
+     "2025": {
+      "mean": -0.8100650138684774,
+      "n": 29
+     }
+    },
+    "eventByIndustryNotPit": {
+     "AUTOS": {
+      "mean": -0.10508482831548778,
+      "n": 5
+     },
+     "BASIC_MATERIALS": {
+      "mean": -0.4809133145752483,
+      "n": 9
+     },
+     "CAPITAL_GOODS_DEFENSE": {
+      "mean": 0.1373118732745963,
+      "n": 75
+     },
+     "CHEMICALS": {
+      "mean": -0.10945576436112321,
+      "n": 18
+     },
+     "COMMUNICATION_MEDIA_SOFTWARE": {
+      "mean": -0.4344627327248114,
+      "n": 1
+     },
+     "CONSTRUCTION_ENGINEERING": {
+      "mean": -0.1110691099920753,
+      "n": 56
+     },
+     "CONSUMER_RETAIL_SERVICES": {
+      "mean": -0.08295696981934704,
+      "n": 5
+     },
+     "ELECTRONICS_ELECTRICAL": {
+      "mean": 0.010524349755087516,
+      "n": 27
+     },
+     "ENERGY_UTILITIES": {
+      "mean": -0.3111058159954386,
+      "n": 12
+     },
+     "FINANCIALS": {
+      "mean": -0.0774853852770494,
+      "n": 4
+     },
+     "FOOD_BEVERAGE_TOBACCO": {
+      "mean": -0.12006947954184,
+      "n": 1
+     },
+     "HEALTHCARE": {
+      "mean": -0.09475765360114793,
+      "n": 25
+     },
+     "HOLDINGS_BUSINESS_SERVICES": {
+      "mean": -0.46268495682487404,
+      "n": 5
+     },
+     "TRANSPORT_LOGISTICS": {
+      "mean": 0.04512715747856592,
+      "n": 12
+     },
+     "UNLABELLED": {
+      "mean": -0.14598036649677837,
+      "n": 9
+     }
+    },
+    "eventLevel": {
+     "entryWeeks": 203,
+     "hitRate": 0.3560606060606061,
+     "issuers": 103,
+     "mean": -0.04897106772396648,
+     "median": -0.15117678699711823,
+     "n": 264,
+     "reason": null,
+     "se": 0.04943940126897924,
+     "unresolved": 0
+    },
+    "expectedSign": 1,
+    "exposureTerm": -0.018196395159690685,
+    "hacSe": 0.06799876702224056,
+    "issuers": 103,
+    "maxFiveNames": {
+     "selectionDelta": -0.023351978144704442,
+     "shareOfSessionsWithAName": 1.0,
+     "simpleEtfExcess": -0.03911292670822335,
+     "slots": 57
+    },
+    "pBootstrapTwoSided": 0.4162,
+    "selectionByCalendarYear": {
+     "2013": -0.05333448527763851,
+     "2014": -0.2777492010633067,
+     "2015": 0.23859732146506707,
+     "2016": -0.03464634649624965,
+     "2017": -0.20720913492346238,
+     "2018": 0.0021346514519219317,
+     "2019": -0.2734693295066558,
+     "2020": -0.0259751866359057,
+     "2021": 0.13107364675330035,
+     "2022": 0.07986612878676858,
+     "2023": -0.05169094849456557,
+     "2024": 0.23756068252710305,
+     "2025": -0.013673035512181242,
+     "2026": -0.4776837814611852
+    },
+    "selectionDelta": {
+     "cost0x": -0.05014744104404238,
+     "cost1x": -0.057784070929435244,
+     "cost2x": -0.06542070081482818,
+     "cost3x": -0.07305733070022087
+    },
+    "sessions": 3167,
+    "simpleEtfExcess": -0.07598046608912593,
+    "simultaneousLevel": 0.9833333333333333,
+    "slots": 264,
+    "states": {
+     "ENTRY_NOT_TRADABLE": 1,
+     "INSUFFICIENT_PRE_SIGNAL_PAIRS": 39,
+     "NEGATIVE_BETA_NOT_INVESTABLE": 3,
+     "NOT_MATURED": 34,
+     "PRICED": 264,
+     "TERMINAL_UNRESOLVED": 2,
+     "UNCONFIRMED_CORPORATE_ACTION_IN_WINDOW": 3
+    },
+    "turnoverOneWay": {
+     "book": 30.18155171301285,
+     "control": 5.3328472167914365
+    }
+   }
+  },
+  "K4_RIGHTS_ISSUE": {
+   "H126": {
+    "blockSensitivityCi95": {
+     "126": [
+      -0.1297289265698671,
+      -0.016814000776778932
+     ],
+     "504": [
+      -0.12980172572233054,
+      -0.043490277706786734
+     ]
+    },
+    "bookTotalReturnAnnualized": -0.04858078849211911,
+    "calendar": [
+     "2013-10-30",
+     "2026-10-02"
+    ],
+    "cashSensitivity": {
+     "BOK_POLICY_RATE_PLUS_100BP": -0.07803541772945116,
+     "ZERO": -0.0752726432676599
+    },
+    "checks": {
+     "excluding2025_2026": -0.05591396773716294,
+     "excludingLargestIndustry:FINANCIALS": -0.088571561304043,
+     "postValueUp": -0.21077047137984228,
+     "preValueUp": -0.04656054931068846
+    },
+    "ci95": [
+     -0.1334037990174588,
+     -0.025887717190989788
+    ],
+    "ciSimultaneous": [
+     -0.14078050708233322,
+     -0.009712044341422666
+    ],
+    "controlTotalReturnAnnualized": 0.125608930073418,
+    "downsideStressDelta": -0.08567724196549427,
+    "downsideStressEvents": 1,
+    "effectiveBlocks": 12.587301587301587,
+    "etfTotalReturnAnnualized": 0.14071214237439733,
+    "eventByEntryYear": {
+     "2013": {
+      "mean": -0.1314374879618691,
+      "n": 5
+     },
+     "2014": {
+      "mean": 0.0017493371895326993,
+      "n": 19
+     },
+     "2015": {
+      "mean": -0.13235033492777604,
+      "n": 17
+     },
+     "2016": {
+      "mean": -0.1326281065648311,
+      "n": 16
+     },
+     "2017": {
+      "mean": 0.016799494217935515,
+      "n": 13
+     },
+     "2018": {
+      "mean": 0.010047800033428811,
+      "n": 18
+     },
+     "2019": {
+      "mean": -0.053522083277090536,
+      "n": 18
+     },
+     "2020": {
+      "mean": -0.14593688235477567,
+      "n": 24
+     },
+     "2021": {
+      "mean": 0.06797957007844214,
+      "n": 18
+     },
+     "2022": {
+      "mean": -0.08642124379222618,
+      "n": 11
+     },
+     "2023": {
+      "mean": 0.02855112364894296,
+      "n": 13
+     },
+     "2024": {
+      "mean": -0.14793574646118104,
+      "n": 14
+     },
+     "2025": {
+      "mean": -0.4088448592800268,
+      "n": 13
+     },
+     "2026": {
+      "mean": -0.4149673094649898,
+      "n": 3
+     }
+    },
+    "eventByIndustryNotPit": {
+     "AUTOS": {
+      "mean": -0.2746814697524264,
+      "n": 2
+     },
+     "BASIC_MATERIALS": {
+      "mean": -0.13212882545749033,
+      "n": 8
+     },
+     "CAPITAL_GOODS_DEFENSE": {
+      "mean": -0.012497114292594725,
+      "n": 20
+     },
+     "CHEMICALS": {
+      "mean": -0.17779606543501436,
+      "n": 17
+     },
+     "COMMUNICATION_MEDIA_SOFTWARE": {
+      "mean": -0.03689761339206196,
+      "n": 9
+     },
+     "CONSTRUCTION_ENGINEERING": {
+      "mean": -0.3063554090107187,
+      "n": 10
+     },
+     "CONSUMER_RETAIL_SERVICES": {
+      "mean": -0.17225042889039568,
+      "n": 4
+     },
+     "ELECTRONICS_ELECTRICAL": {
+      "mean": -0.08628838223526929,
+      "n": 20
+     },
+     "ENERGY_UTILITIES": {
+      "mean": -0.2096538794003886,
+      "n": 1
+     },
+     "FINANCIALS": {
+      "mean": -0.03283578326312349,
+      "n": 53
+     },
+     "FOOD_BEVERAGE_TOBACCO": {
+      "mean": -0.06251651070493014,
+      "n": 5
+     },
+     "HEALTHCARE": {
+      "mean": -0.16111594763855858,
+      "n": 8
+     },
+     "TRANSPORT_LOGISTICS": {
+      "mean": -0.08642698893219791,
+      "n": 27
+     },
+     "UNLABELLED": {
+      "mean": -0.026397027998898807,
+      "n": 18
+     }
+    },
+    "eventLevel": {
+     "entryWeeks": 171,
+     "hitRate": 0.3069306930693069,
+     "issuers": 124,
+     "mean": -0.08440300319031288,
+     "median": -0.08599329171171477,
+     "n": 202,
+     "reason": null,
+     "se": 0.02037079683765912,
+     "unresolved": 0
+    },
+    "expectedSign": -1,
+    "exposureTerm": -0.009979583821773831,
+    "hacSe": 0.02954575036295813,
+    "issuers": 124,
+    "maxFiveNames": {
+     "selectionDelta": -0.09010613047031227,
+     "shareOfSessionsWithAName": 1.0,
+     "simpleEtfExcess": -0.10083204872182963,
+     "slots": 104
+    },
+    "pBootstrapTwoSided": 0.0056,
+    "selectionByCalendarYear": {
+     "2013": -0.14548200051615245,
+     "2014": 0.034905425854134475,
+     "2015": -0.34931831383115697,
+     "2016": -0.1490970433070492,
+     "2017": -0.11303320031987318,
+     "2018": -0.039126645035593044,
+     "2019": 0.03230504947308144,
+     "2020": -0.2668345803597387,
+     "2021": 0.03376379255711748,
+     "2022": -0.0012627984116098112,
+     "2023": -0.18872654054726046,
+     "2024": 0.08539000352744064,
+     "2025": -0.46603736102189375,
+     "2026": -0.4087886699848897
+    },
+    "selectionDelta": {
+     "cost0x": -0.07085395660104289,
+     "cost1x": -0.07711513339292365,
+     "cost2x": -0.0833763101848043,
+     "cost3x": -0.08963748697668514
+    },
+    "sessions": 3172,
+    "simpleEtfExcess": -0.0870947172146975,
+    "simultaneousLevel": 0.9833333333333333,
+    "slots": 202,
+    "states": {
+     "ENTRY_NOT_TRADABLE": 6,
+     "INSUFFICIENT_PRE_SIGNAL_PAIRS": 21,
+     "NEGATIVE_BETA_NOT_INVESTABLE": 9,
+     "NOT_MATURED": 7,
+     "PRICED": 202,
+     "TERMINAL_UNRESOLVED": 1,
+     "UNCONFIRMED_CORPORATE_ACTION_IN_WINDOW": 1
+    },
+    "turnoverOneWay": {
+     "book": 48.41295739793672,
+     "control": 11.029206505438829
+    }
+   },
+   "H252": {
+    "blockSensitivityCi95": {
+     "252": [
+      -0.2896938692672071,
+      -0.09122100406569081
+     ],
+     "756": [
+      -0.2730337381098782,
+      -0.13039648092037281
+     ]
+    },
+    "bookTotalReturnAnnualized": -0.050544319247959324,
+    "calendar": [
+     "2013-10-30",
+     "2026-10-01"
+    ],
+    "cashSensitivity": {
+     "BOK_POLICY_RATE_PLUS_100BP": -0.15662197582499282,
+     "ZERO": -0.15098097592113224
+    },
+    "checks": {
+     "excluding2025_2026": -0.09730773977199367,
+     "excludingLargestIndustry:FINANCIALS": -0.1471390005820186,
+     "postValueUp": -0.4641509382484744,
+     "preValueUp": -0.08905158996478571
+    },
+    "ci95": [
+     -0.2716816369245371,
+     -0.12227964394563609
+    ],
+    "ciSimultaneous": [
+     -0.2837952056965365,
+     -0.09465179467274236
+    ],
+    "controlTotalReturnAnnualized": 0.12150839798321456,
+    "downsideStressDelta": -0.16050077208818256,
+    "downsideStressEvents": 1,
+    "effectiveBlocks": 6.291666666666667,
+    "etfTotalReturnAnnualized": 0.1403216719678404,
+    "eventByEntryYear": {
+     "2013": {
+      "mean": -0.28822522420392965,
+      "n": 3
+     },
+     "2014": {
+      "mean": 0.020638679743334512,
+      "n": 16
+     },
+     "2015": {
+      "mean": -0.20892830638181684,
+      "n": 14
+     },
+     "2016": {
+      "mean": -0.24022942538001976,
+      "n": 17
+     },
+     "2017": {
+      "mean": 0.0738370264187703,
+      "n": 11
+     },
+     "2018": {
+      "mean": -0.10770455913879076,
+      "n": 16
+     },
+     "2019": {
+      "mean": -0.0429606465130509,
+      "n": 16
+     },
+     "2020": {
+      "mean": -0.1314861154539982,
+      "n": 21
+     },
+     "2021": {
+      "mean": 0.007276568952136346,
+      "n": 16
+     },
+     "2022": {
+      "mean": -0.18206181648320446,
+      "n": 11
+     },
+     "2023": {
+      "mean": -0.07077530103387301,
+      "n": 12
+     },
+     "2024": {
+      "mean": -0.15807281671428938,
+      "n": 14
+     },
+     "2025": {
+      "mean": -1.0846777625958026,
+      "n": 11
+     }
+    },
+    "eventByIndustryNotPit": {
+     "AUTOS": {
+      "mean": -0.5239584039906441,
+      "n": 2
+     },
+     "BASIC_MATERIALS": {
+      "mean": -0.19495300042794317,
+      "n": 8
+     },
+     "CAPITAL_GOODS_DEFENSE": {
+      "mean": -0.006751897012573289,
+      "n": 16
+     },
+     "CHEMICALS": {
+      "mean": -0.22248171949471124,
+      "n": 14
+     },
+     "COMMUNICATION_MEDIA_SOFTWARE": {
+      "mean": 0.012527057036058664,
+      "n": 8
+     },
+     "CONSTRUCTION_ENGINEERING": {
+      "mean": -0.3839908821060232,
+      "n": 8
+     },
+     "CONSUMER_RETAIL_SERVICES": {
+      "mean": -0.18633768386119062,
+      "n": 3
+     },
+     "ELECTRONICS_ELECTRICAL": {
+      "mean": -0.29419108045850356,
+      "n": 19
+     },
+     "ENERGY_UTILITIES": {
+      "mean": -0.46488267624092416,
+      "n": 1
+     },
+     "FINANCIALS": {
+      "mean": -0.07540693676231591,
+      "n": 50
+     },
+     "FOOD_BEVERAGE_TOBACCO": {
+      "mean": -0.06912715932155869,
+      "n": 4
+     },
+     "HEALTHCARE": {
+      "mean": -0.4076549738896073,
+      "n": 8
+     },
+     "TRANSPORT_LOGISTICS": {
+      "mean": -0.12347384875949957,
+      "n": 19
+     },
+     "UNLABELLED": {
+      "mean": -0.20629892046363688,
+      "n": 18
+     }
+    },
+    "eventLevel": {
+     "entryWeeks": 154,
+     "hitRate": 0.28651685393258425,
+     "issuers": 121,
+     "mean": -0.16170242165686846,
+     "median": -0.17476178382284047,
+     "n": 178,
+     "reason": null,
+     "se": 0.03748703957249211,
+     "unresolved": 0
+    },
+    "expectedSign": -1,
+    "exposureTerm": -0.02618199713267439,
+    "hacSe": 0.06361277911949649,
+    "issuers": 121,
+    "maxFiveNames": {
+     "selectionDelta": -0.026174779107670233,
+     "shareOfSessionsWithAName": 1.0,
+     "simpleEtfExcess": -0.07482391518514447,
+     "slots": 57
+    },
+    "pBootstrapTwoSided": 0.0003,
+    "selectionByCalendarYear": {
+     "2013": -0.11186186634593087,
+     "2014": -0.061236880865773724,
+     "2015": -0.046721111254258596,
+     "2016": -0.15634049655222837,
+     "2017": -0.05683609504846421,
+     "2018": -0.013940363399443045,
+     "2019": -0.12793697264531234,
+     "2020": -0.09546586729442086,
+     "2021": 0.061470660596020577,
+     "2022": -0.05129555308819167,
+     "2023": -0.22382170272680413,
+     "2024": -0.02518232672863374,
+     "2025": -0.3314196780107157,
+     "2026": -0.7067194919730745
+    },
+    "selectionDelta": {
+     "cost0x": -0.14770973735940174,
+     "cost1x": -0.15475293340428328,
+     "cost2x": -0.16179612944916508,
+     "cost3x": -0.16883932549404665
+    },
+    "sessions": 3171,
+    "simpleEtfExcess": -0.18093493053695764,
+    "simultaneousLevel": 0.9833333333333333,
+    "slots": 178,
+    "states": {
+     "ENTRY_NOT_TRADABLE": 4,
+     "INSUFFICIENT_PRE_SIGNAL_PAIRS": 21,
+     "NEGATIVE_BETA_NOT_INVESTABLE": 8,
+     "NOT_MATURED": 10,
+     "PRICED": 178,
+     "TERMINAL_UNRESOLVED": 1,
+     "UNCONFIRMED_CORPORATE_ACTION_IN_WINDOW": 3
+    },
+    "turnoverOneWay": {
+     "book": 27.892668077780083,
+     "control": 6.506866339244231
+    }
+   }
+  },
+  "K5_EQUITY_LINKED_DEBT": {
+   "H126": {
+    "blockSensitivityCi95": {
+     "126": [
+      -0.17655338448925095,
+      -0.0041224157063653784
+     ],
+     "504": [
+      -0.1837172923717178,
+      -0.02538892265238075
+     ]
+    },
+    "bookTotalReturnAnnualized": -0.09560518413487507,
+    "calendar": [
+     "2014-02-25",
+     "2026-10-26"
+    ],
+    "cashSensitivity": {
+     "BOK_POLICY_RATE_PLUS_100BP": -0.09128090778000077,
+     "ZERO": -0.08886371966399842
+    },
+    "checks": {
+     "excluding2025_2026": -0.08292947385026136,
+     "excludingLargestIndustry:TRANSPORT_LOGISTICS": -0.08678819027351356,
+     "postValueUp": -0.16286098205953162,
+     "preValueUp": -0.0767855339346849
+    },
+    "ci95": [
+     -0.18333327188206747,
+     -0.009451728085475144
+    ],
+    "ciSimultaneous": [
+     -0.20340841709722318,
+     0.009687603951607456
+    ],
+    "controlTotalReturnAnnualized": 0.12321711081711295,
+    "downsideStressDelta": -0.09052632224923671,
+    "downsideStressEvents": 0,
+    "effectiveBlocks": 12.329365079365079,
+    "etfTotalReturnAnnualized": 0.12401258894060008,
+    "eventByEntryYear": {
+     "2014": {
+      "mean": 0.16080193683629676,
+      "n": 10
+     },
+     "2015": {
+      "mean": -0.20409117149170644,
+      "n": 8
+     },
+     "2016": {
+      "mean": -0.1892544246475558,
+      "n": 9
+     },
+     "2017": {
+      "mean": 0.01367929988224099,
+      "n": 7
+     },
+     "2018": {
+      "mean": -0.06581690416857038,
+      "n": 15
+     },
+     "2019": {
+      "mean": -0.29462750418435385,
+      "n": 6
+     },
+     "2020": {
+      "mean": 0.12689146717909058,
+      "n": 13
+     },
+     "2021": {
+      "mean": 0.09305342435651,
+      "n": 9
+     },
+     "2022": {
+      "mean": -0.10023215046917688,
+      "n": 6
+     },
+     "2023": {
+      "mean": -0.25049706176787145,
+      "n": 6
+     },
+     "2024": {
+      "mean": -0.1464645013344346,
+      "n": 13
+     },
+     "2025": {
+      "mean": -0.43835726800828945,
+      "n": 18
+     },
+     "2026": {
+      "mean": -0.3153671897576532,
+      "n": 5
+     }
+    },
+    "eventByIndustryNotPit": {
+     "AUTOS": {
+      "mean": -0.35570861096451317,
+      "n": 2
+     },
+     "BASIC_MATERIALS": {
+      "mean": 0.2172658771595525,
+      "n": 4
+     },
+     "CAPITAL_GOODS_DEFENSE": {
+      "mean": 0.002117912453297991,
+      "n": 12
+     },
+     "CHEMICALS": {
+      "mean": -0.2038562353272829,
+      "n": 9
+     },
+     "COMMUNICATION_MEDIA_SOFTWARE": {
+      "mean": -0.10842508561422108,
+      "n": 7
+     },
+     "CONSTRUCTION_ENGINEERING": {
+      "mean": 0.07432964229226062,
+      "n": 5
+     },
+     "CONSUMER_RETAIL_SERVICES": {
+      "mean": -0.1520778096075402,
+      "n": 10
+     },
+     "ELECTRONICS_ELECTRICAL": {
+      "mean": -0.294846745353327,
+      "n": 12
+     },
+     "ENERGY_UTILITIES": {
+      "mean": -0.16083780073376125,
+      "n": 4
+     },
+     "FINANCIALS": {
+      "mean": -0.08444095085626072,
+      "n": 18
+     },
+     "FOOD_BEVERAGE_TOBACCO": {
+      "mean": -0.09169658633705707,
+      "n": 2
+     },
+     "HEALTHCARE": {
+      "mean": -0.3577876026747046,
+      "n": 12
+     },
+     "TRANSPORT_LOGISTICS": {
+      "mean": 0.007846676267451351,
+      "n": 22
+     },
+     "UNLABELLED": {
+      "mean": -0.30174280497393213,
+      "n": 6
+     }
+    },
+    "eventLevel": {
+     "entryWeeks": 116,
+     "hitRate": 0.296,
+     "issuers": 85,
+     "mean": -0.12300699188022661,
+     "median": -0.11768117604928141,
+     "n": 125,
+     "reason": null,
+     "se": 0.03998069753806117,
+     "unresolved": 0
+    },
+    "expectedSign": -1,
+    "exposureTerm": -0.00654479397387597,
+    "hacSe": 0.04294096968710995,
+    "issuers": 85,
+    "maxFiveNames": {
+     "selectionDelta": -0.06054343561859423,
+     "shareOfSessionsWithAName": 0.9909851899549259,
+     "simpleEtfExcess": -0.06771717122171349,
+     "slots": 89
+    },
+    "pBootstrapTwoSided": 0.0436,
+    "selectionByCalendarYear": {
+     "2014": 0.02733025581375481,
+     "2015": -0.25115781184722874,
+     "2016": -0.39105345630117383,
+     "2017": -0.05522809634795345,
+     "2018": 0.10523147519387355,
+     "2019": -0.5143121203036635,
+     "2020": -0.37946017713274305,
+     "2021": 0.6607525394270677,
+     "2022": -0.02075037671122215,
+     "2023": -0.3911454051816893,
+     "2024": -0.2696573114529659,
+     "2025": -0.2775464177846423,
+     "2026": -0.47526724997759184
+    },
+    "selectionDelta": {
+     "cost0x": -0.08412176259491362,
+     "cost1x": -0.09052632224923671,
+     "cost2x": -0.09693088190355986,
+     "cost3x": -0.1033354415578829
+    },
+    "sessions": 3107,
+    "simpleEtfExcess": -0.0970711162231127,
+    "simultaneousLevel": 0.9833333333333333,
+    "slots": 125,
+    "states": {
+     "ENTRY_NOT_TRADABLE": 1,
+     "INSUFFICIENT_PRE_SIGNAL_PAIRS": 7,
+     "NEGATIVE_BETA_NOT_INVESTABLE": 1,
+     "NOT_MATURED": 7,
+     "PRICED": 125
+    },
+    "turnoverOneWay": {
+     "book": 49.96798196743058,
+     "control": 11.345234068520483
+    }
+   },
+   "H252": {
+    "blockSensitivityCi95": {
+     "252": [
+      -0.2583405178841765,
+      -0.00203059600717287
+     ],
+     "756": [
+      -0.23905746707898964,
+      -0.021901092168935203
+     ]
+    },
+    "bookTotalReturnAnnualized": -0.045706469390468074,
+    "calendar": [
+     "2014-05-02",
+     "2026-10-22"
+    ],
+    "cashSensitivity": {
+     "BOK_POLICY_RATE_PLUS_100BP": -0.14620658485438556,
+     "ZERO": -0.14159063813539832
+    },
+    "checks": {
+     "excluding2025_2026": -0.12418839227719448,
+     "excludingLargestIndustry:TRANSPORT_LOGISTICS": -0.14950320621805774,
+     "postValueUp": -0.1769683985807396,
+     "preValueUp": -0.1332307374601035
+    },
+    "ci95": [
+     -0.2515188720586096,
+     -0.01124425146884039
+    ],
+    "ciSimultaneous": [
+     -0.2812744982935537,
+     0.012473130109161224
+    ],
+    "controlTotalReturnAnnualized": 0.12640905825374227,
+    "downsideStressDelta": -0.1447712605663251,
+    "downsideStressEvents": 0,
+    "effectiveBlocks": 6.067460317460317,
+    "etfTotalReturnAnnualized": 0.12725349886106252,
+    "eventByEntryYear": {
+     "2014": {
+      "mean": 0.3756584917818425,
+      "n": 9
+     },
+     "2015": {
+      "mean": -0.20922915260452135,
+      "n": 5
+     },
+     "2016": {
+      "mean": -0.36743265244976164,
+      "n": 5
+     },
+     "2017": {
+      "mean": -0.0174783251863975,
+      "n": 7
+     },
+     "2018": {
+      "mean": -0.20262631255864952,
+      "n": 14
+     },
+     "2019": {
+      "mean": -0.3112917221410355,
+      "n": 5
+     },
+     "2020": {
+      "mean": -0.02826031937958534,
+      "n": 12
+     },
+     "2021": {
+      "mean": 0.0886492368159997,
+      "n": 8
+     },
+     "2022": {
+      "mean": -0.24546192692128868,
+      "n": 6
+     },
+     "2023": {
+      "mean": -0.41159491734830767,
+      "n": 5
+     },
+     "2024": {
+      "mean": -0.10482409469518712,
+      "n": 12
+     },
+     "2025": {
+      "mean": -1.073757073826779,
+      "n": 12
+     }
+    },
+    "eventByIndustryNotPit": {
+     "AUTOS": {
+      "mean": -1.1452582952347368,
+      "n": 2
+     },
+     "BASIC_MATERIALS": {
+      "mean": 0.5304558320615492,
+      "n": 4
+     },
+     "CAPITAL_GOODS_DEFENSE": {
+      "mean": 0.050493860541026996,
+      "n": 11
+     },
+     "CHEMICALS": {
+      "mean": -0.5213020396385075,
+      "n": 6
+     },
+     "COMMUNICATION_MEDIA_SOFTWARE": {
+      "mean": -0.13602101950025833,
+      "n": 5
+     },
+     "CONSTRUCTION_ENGINEERING": {
+      "mean": -0.092478084905214,
+      "n": 4
+     },
+     "CONSUMER_RETAIL_SERVICES": {
+      "mean": -0.24868886444327376,
+      "n": 8
+     },
+     "ELECTRONICS_ELECTRICAL": {
+      "mean": -0.4666000823483821,
+      "n": 12
+     },
+     "ENERGY_UTILITIES": {
+      "mean": -0.5669633699678194,
+      "n": 4
+     },
+     "FINANCIALS": {
+      "mean": -0.15789499088313613,
+      "n": 14
+     },
+     "FOOD_BEVERAGE_TOBACCO": {
+      "mean": -0.1756384927319018,
+      "n": 2
+     },
+     "HEALTHCARE": {
+      "mean": -0.2850206046102925,
+      "n": 10
+     },
+     "TRANSPORT_LOGISTICS": {
+      "mean": -0.0972045159815921,
+      "n": 14
+     },
+     "UNLABELLED": {
+      "mean": -0.22526899703240663,
+      "n": 4
+     }
+    },
+    "eventLevel": {
+     "entryWeeks": 92,
+     "hitRate": 0.28,
+     "issuers": 77,
+     "mean": -0.21321607970625775,
+     "median": -0.22522038305302527,
+     "n": 100,
+     "reason": null,
+     "se": 0.06864651241369574,
+     "unresolved": 0
+    },
+    "expectedSign": -1,
+    "exposureTerm": -0.010948237277973113,
+    "hacSe": 0.06928790281494734,
+    "issuers": 77,
+    "maxFiveNames": {
+     "selectionDelta": -0.22967269744278876,
+     "shareOfSessionsWithAName": 0.9953145917001339,
+     "simpleEtfExcess": -0.23636102882187554,
+     "slots": 48
+    },
+    "pBootstrapTwoSided": 0.0209,
+    "selectionByCalendarYear": {
+     "2014": 0.13635802016647602,
+     "2015": 0.006432290327656687,
+     "2016": -0.2573954444686761,
+     "2017": -0.16024625445454532,
+     "2018": 0.0021962353315386762,
+     "2019": -0.24990383425652196,
+     "2020": -0.3279337528433012,
+     "2021": 0.2957864521123458,
+     "2022": 0.043227110363043386,
+     "2023": -0.4152794743595528,
+     "2024": -0.38073055705063785,
+     "2025": -0.12589292137196273,
+     "2026": -0.3234056266856328
+    },
+    "selectionDelta": {
+     "cost0x": -0.13749449120297286,
+     "cost1x": -0.1447712605663251,
+     "cost2x": -0.1520480299296773,
+     "cost3x": -0.15932479929302948
+    },
+    "sessions": 3058,
+    "simpleEtfExcess": -0.1557194978442982,
+    "simultaneousLevel": 0.9833333333333333,
+    "slots": 100,
+    "states": {
+     "ENTRY_NOT_TRADABLE": 1,
+     "INSUFFICIENT_PRE_SIGNAL_PAIRS": 7,
+     "NEGATIVE_BETA_NOT_INVESTABLE": 1,
+     "NOT_MATURED": 17,
+     "PRICED": 100,
+     "UNCONFIRMED_CORPORATE_ACTION_IN_WINDOW": 3
+    },
+    "turnoverOneWay": {
+     "book": 27.920213852335884,
+     "control": 6.384318020460025
+    }
+   }
+  },
+  "K6_SUPPLY_TERMINATION": {
+   "H126": {
+    "blockSensitivityCi95": {
+     "126": [
+      -0.04708624375611658,
+      0.10499595581694704
+     ],
+     "504": [
+      -0.05247712473758796,
+      0.05044363468895663
+     ]
+    },
+    "bookTotalReturnAnnualized": 0.1704059337103634,
+    "calendar": [
+     "2013-12-18",
+     "2026-10-28"
+    ],
+    "cashSensitivity": {
+     "BOK_POLICY_RATE_PLUS_100BP": 0.02969361521394263,
+     "ZERO": 0.03005552922269735
+    },
+    "checks": {
+     "excluding2025_2026": 0.06668749686083189,
+     "excludingLargestIndustry:CONSTRUCTION_ENGINEERING": 0.02663307109465041,
+     "postValueUp": -0.09440221248717162,
+     "preValueUp": 0.06950754771682369
+    },
+    "ci95": [
+     -0.05311758567822399,
+     0.08334448066589947
+    ],
+    "ciSimultaneous": [
+     -0.0672523177412492,
+     0.09883747808715714
+    ],
+    "controlTotalReturnAnnualized": 0.12848968754021306,
+    "downsideStressDelta": 0.02374794443729909,
+    "downsideStressEvents": 1,
+    "effectiveBlocks": 12.511904761904763,
+    "etfTotalReturnAnnualized": 0.13091319770689647,
+    "eventByEntryYear": {
+     "2013": {
+      "mean": -0.13278511208428417,
+      "n": 2
+     },
+     "2014": {
+      "mean": 0.09891805886418797,
+      "n": 4
+     },
+     "2015": {
+      "mean": -0.0030463575899409723,
+      "n": 9
+     },
+     "2016": {
+      "mean": 0.03699802229540334,
+      "n": 9
+     },
+     "2017": {
+      "mean": 0.11267265811391022,
+      "n": 5
+     },
+     "2018": {
+      "mean": 0.1135071841231361,
+      "n": 6
+     },
+     "2019": {
+      "mean": -0.03278131074733005,
+      "n": 9
+     },
+     "2020": {
+      "mean": 0.4163973536377401,
+      "n": 2
+     },
+     "2021": {
+      "mean": 0.24794783119436317,
+      "n": 3
+     },
+     "2022": {
+      "mean": 0.0012155908580888505,
+      "n": 7
+     },
+     "2023": {
+      "mean": -0.03397259951364289,
+      "n": 11
+     },
+     "2024": {
+      "mean": 0.19539917240204271,
+      "n": 11
+     },
+     "2025": {
+      "mean": -0.023072463580931204,
+      "n": 9
+     },
+     "2026": {
+      "mean": -0.4061662679562462,
+      "n": 8
+     }
+    },
+    "eventByIndustryNotPit": {
+     "AUTOS": {
+      "mean": 0.020326884626756136,
+      "n": 1
+     },
+     "BASIC_MATERIALS": {
+      "mean": -0.03923572498705682,
+      "n": 6
+     },
+     "CAPITAL_GOODS_DEFENSE": {
+      "mean": 0.07266014900644172,
+      "n": 27
+     },
+     "CHEMICALS": {
+      "mean": 0.04190747024137445,
+      "n": 4
+     },
+     "CONSTRUCTION_ENGINEERING": {
+      "mean": 0.014198484754630536,
+      "n": 32
+     },
+     "CONSUMER_RETAIL_SERVICES": {
+      "mean": 0.009052845783766084,
+      "n": 2
+     },
+     "ELECTRONICS_ELECTRICAL": {
+      "mean": -0.18368051607704314,
+      "n": 8
+     },
+     "FINANCIALS": {
+      "mean": 0.07165443694049363,
+      "n": 9
+     },
+     "HEALTHCARE": {
+      "mean": -0.045561755238110846,
+      "n": 6
+     }
+    },
+    "eventLevel": {
+     "entryWeeks": 85,
+     "hitRate": 0.49473684210526314,
+     "issuers": 41,
+     "mean": 0.013567356999778749,
+     "median": -0.006763102313464442,
+     "n": 95,
+     "reason": null,
+     "se": 0.04339925317409753,
+     "unresolved": 0
+    },
+    "expectedSign": -1,
+    "exposureTerm": -0.005278647985544148,
+    "hacSe": 0.039047899495012854,
+    "issuers": 41,
+    "maxFiveNames": {
+     "selectionDelta": 0.041556194746189254,
+     "shareOfSessionsWithAName": 0.9053405820275024,
+     "simpleEtfExcess": 0.03384640831387123,
+     "slots": 75
+    },
+    "pBootstrapTwoSided": 0.4867,
+    "selectionByCalendarYear": {
+     "2013": 0.001257647775284032,
+     "2014": -0.10050301906188364,
+     "2015": 0.027143880447778268,
+     "2016": 0.06411411728549121,
+     "2017": 0.2708429921330806,
+     "2018": 0.3956438525175383,
+     "2019": 0.06126282113371151,
+     "2020": -0.15423970233376083,
+     "2021": 0.2831742811351574,
+     "2022": 0.21977850036989077,
+     "2023": -0.011880780914414801,
+     "2024": 0.25419407339833344,
+     "2025": 0.1681431585066413,
+     "2026": -0.73550850533649
+    },
+    "selectionDelta": {
+     "cost0x": 0.03562406408523523,
+     "cost1x": 0.02970863874059659,
+     "cost2x": 0.0237932133959579,
+     "cost3x": 0.017877788051319347
+    },
+    "sessions": 3153,
+    "simpleEtfExcess": 0.024429990755052443,
+    "simultaneousLevel": 0.9833333333333333,
+    "slots": 95,
+    "states": {
+     "ENTRY_NOT_TRADABLE": 1,
+     "INSUFFICIENT_PRE_SIGNAL_PAIRS": 4,
+     "NEGATIVE_BETA_NOT_INVESTABLE": 2,
+     "NOT_MATURED": 3,
+     "PRICED": 95,
+     "TERMINAL_UNRESOLVED": 1
+    },
+    "turnoverOneWay": {
+     "book": 48.266425116677404,
+     "control": 6.887333397156977
+    }
+   },
+   "H252": {
+    "blockSensitivityCi95": {
+     "252": [
+      -0.18685143403548293,
+      0.12437910254556672
+     ],
+     "756": [
+      -0.13897650599646522,
+      0.0597724558498968
+     ]
+    },
+    "bookTotalReturnAnnualized": 0.08738504133243863,
+    "calendar": [
+     "2013-12-18",
+     "2026-08-27"
+    ],
+    "cashSensitivity": {
+     "BOK_POLICY_RATE_PLUS_100BP": -0.0034301544520803804,
+     "ZERO": -0.002586049691793544
+    },
+    "checks": {
+     "excluding2025_2026": 0.017577706624829104,
+     "excludingLargestIndustry:CONSTRUCTION_ENGINEERING": 0.04109394882452171,
+     "postValueUp": -0.1406262012168336,
+     "preValueUp": 0.021202024256644386
+    },
+    "ci95": [
+     -0.1531697727718221,
+     0.06598899074692793
+    ],
+    "ciSimultaneous": [
+     -0.1814678549348089,
+     0.0876952880334478
+    ],
+    "controlTotalReturnAnnualized": 0.14420507302271712,
+    "downsideStressDelta": -0.028833375609472023,
+    "downsideStressEvents": 2,
+    "effectiveBlocks": 6.176587301587301,
+    "etfTotalReturnAnnualized": 0.14486055753746374,
+    "eventByEntryYear": {
+     "2013": {
+      "mean": -0.3411280927556076,
+      "n": 1
+     },
+     "2014": {
+      "mean": 0.009155506471023403,
+      "n": 3
+     },
+     "2015": {
+      "mean": -0.09878800345288193,
+      "n": 8
+     },
+     "2016": {
+      "mean": -0.19177640347867975,
+      "n": 7
+     },
+     "2017": {
+      "mean": 0.07897028598402908,
+      "n": 5
+     },
+     "2018": {
+      "mean": 0.009757723058041057,
+      "n": 5
+     },
+     "2019": {
+      "mean": -0.1743371157925028,
+      "n": 7
+     },
+     "2020": {
+      "mean": 0.17145532966448174,
+      "n": 2
+     },
+     "2021": {
+      "mean": 0.01240612187259732,
+      "n": 2
+     },
+     "2022": {
+      "mean": -0.028013702361961584,
+      "n": 6
+     },
+     "2023": {
+      "mean": -0.022680206284470417,
+      "n": 10
+     },
+     "2024": {
+      "mean": 0.05578271048210251,
+      "n": 9
+     },
+     "2025": {
+      "mean": -0.3634031447812209,
+      "n": 6
+     }
+    },
+    "eventByIndustryNotPit": {
+     "AUTOS": {
+      "mean": -0.1926764424217755,
+      "n": 1
+     },
+     "BASIC_MATERIALS": {
+      "mean": -0.13481498737312553,
+      "n": 4
+     },
+     "CAPITAL_GOODS_DEFENSE": {
+      "mean": -0.10680026750641546,
+      "n": 22
+     },
+     "CHEMICALS": {
+      "mean": -0.15918282683820345,
+      "n": 4
+     },
+     "CONSTRUCTION_ENGINEERING": {
+      "mean": -0.09119104838936319,
+      "n": 24
+     },
+     "CONSUMER_RETAIL_SERVICES": {
+      "mean": -0.19721142312238826,
+      "n": 1
+     },
+     "ELECTRONICS_ELECTRICAL": {
+      "mean": 0.3473108609874883,
+      "n": 5
+     },
+     "FINANCIALS": {
+      "mean": -0.14190174147403284,
+      "n": 6
+     },
+     "HEALTHCARE": {
+      "mean": 0.07256756845946322,
+      "n": 4
+     }
+    },
+    "eventLevel": {
+     "entryWeeks": 64,
+     "hitRate": 0.352112676056338,
+     "issuers": 38,
+     "mean": -0.06941769068935547,
+     "median": -0.09181732204909698,
+     "n": 71,
+     "reason": null,
+     "se": 0.07229333097401841,
+     "unresolved": 0
+    },
+    "expectedSign": -1,
+    "exposureTerm": -0.004413670592435106,
+    "hacSe": 0.08619696392465483,
+    "issuers": 38,
+    "maxFiveNames": {
+     "selectionDelta": 0.03674504670734001,
+     "shareOfSessionsWithAName": 0.9899154196486663,
+     "simpleEtfExcess": 0.02635544079406283,
+     "slots": 44
+    },
+    "pBootstrapTwoSided": 0.9571,
+    "selectionByCalendarYear": {
+     "2013": -0.021607934913746685,
+     "2014": -0.02737217288955074,
+     "2015": 0.017896890034952873,
+     "2016": -0.03184445842003725,
+     "2017": 0.24584638276452841,
+     "2018": 0.22220500605684257,
+     "2019": -0.02043385353243965,
+     "2020": -0.23558380771934528,
+     "2021": 0.0625002023128659,
+     "2022": 0.035485962057347664,
+     "2023": 0.10285148037252456,
+     "2024": 0.03330419117527539,
+     "2025": 0.08884368896382056,
+     "2026": -0.5136823969645309
+    },
+    "selectionDelta": {
+     "cost0x": 0.003079029654270905,
+     "cost1x": -0.003366812340756866,
+     "cost2x": -0.009812654335784377,
+     "cost3x": -0.01625849633081213
+    },
+    "sessions": 3113,
+    "simpleEtfExcess": -0.0077804829331919725,
+    "simultaneousLevel": 0.9833333333333333,
+    "slots": 71,
+    "states": {
+     "INSUFFICIENT_PRE_SIGNAL_PAIRS": 4,
+     "NEGATIVE_BETA_NOT_INVESTABLE": 2,
+     "NOT_MATURED": 11,
+     "PRICED": 71,
+     "TERMINAL_UNRESOLVED": 2
+    },
+    "turnoverOneWay": {
+     "book": 26.044306652009737,
+     "control": 3.521591077342895
+    }
+   }
+  },
+  "K7_DIVIDEND_INCREASE": {
+   "H126": {
+    "blockSensitivityCi95": {
+     "126": [
+      -0.010812268217497164,
+      0.08232579895141028
+     ],
+     "504": [
+      0.0032970891160885533,
+      0.09276682616330628
+     ]
+    },
+    "bookTotalReturnAnnualized": 0.21517039256681936,
+    "calendar": [
+     "2014-12-16",
+     "2026-09-17"
+    ],
+    "cashSensitivity": {
+     "BOK_POLICY_RATE_PLUS_100BP": 0.03437011730595927,
+     "ZERO": 0.03638235221283675
+    },
+    "checks": {
+     "excluding2025_2026": 0.02610944657158224,
+     "excludingLargestIndustry:FINANCIALS": 0.04248027473718444,
+     "postValueUp": 0.10223954052834001,
+     "preValueUp": 0.022643515748326973
+    },
+    "ci95": [
+     -0.008387798786289223,
+     0.08150944278474465
+    ],
+    "ciSimultaneous": [
+     -0.020383578053680577,
+     0.08974831182928768
+    ],
+    "controlTotalReturnAnnualized": 0.1475279207814595,
+    "downsideStressDelta": 0.03276017674904981,
+    "downsideStressEvents": 2,
+    "effectiveBlocks": 11.448412698412698,
+    "etfTotalReturnAnnualized": 0.1597975981402524,
+    "eventByEntryYear": {
+     "2014": {
+      "mean": 0.0728198797579761,
+      "n": 2
+     },
+     "2015": {
+      "mean": 0.16398654296280185,
+      "n": 39
+     },
+     "2016": {
+      "mean": -0.0789599648587578,
+      "n": 48
+     },
+     "2017": {
+      "mean": 0.026703721708245004,
+      "n": 38
+     },
+     "2018": {
+      "mean": -0.02761429214503473,
+      "n": 42
+     },
+     "2019": {
+      "mean": -0.04371932256875329,
+      "n": 21
+     },
+     "2020": {
+      "mean": 0.06222504202250755,
+      "n": 27
+     },
+     "2021": {
+      "mean": 0.09822089408547618,
+      "n": 38
+     },
+     "2022": {
+      "mean": 0.020621687810302436,
+      "n": 55
+     },
+     "2023": {
+      "mean": -0.035799483466898444,
+      "n": 28
+     },
+     "2024": {
+      "mean": 0.15727281665982007,
+      "n": 37
+     },
+     "2025": {
+      "mean": 0.15609636333311103,
+      "n": 35
+     },
+     "2026": {
+      "mean": -0.1086664813112089,
+      "n": 40
+     }
+    },
+    "eventByIndustryNotPit": {
+     "AUTOS": {
+      "mean": 0.039292901742042995,
+      "n": 22
+     },
+     "BASIC_MATERIALS": {
+      "mean": 0.009390908131039759,
+      "n": 23
+     },
+     "CAPITAL_GOODS_DEFENSE": {
+      "mean": 0.08637682972926544,
+      "n": 22
+     },
+     "CHEMICALS": {
+      "mean": -0.028179401108882937,
+      "n": 35
+     },
+     "COMMUNICATION_MEDIA_SOFTWARE": {
+      "mean": -0.026721811625819766,
+      "n": 23
+     },
+     "CONSTRUCTION_ENGINEERING": {
+      "mean": -0.0923218077005532,
+      "n": 13
+     },
+     "CONSUMER_RETAIL_SERVICES": {
+      "mean": 0.08705049529791062,
+      "n": 40
+     },
+     "ELECTRONICS_ELECTRICAL": {
+      "mean": 0.13581212074903126,
+      "n": 52
+     },
+     "ENERGY_UTILITIES": {
+      "mean": 0.1645628020252008,
+      "n": 4
+     },
+     "FINANCIALS": {
+      "mean": 0.03454953800817449,
+      "n": 166
+     },
+     "FOOD_BEVERAGE_TOBACCO": {
+      "mean": -0.06192084294423413,
+      "n": 6
+     },
+     "HEALTHCARE": {
+      "mean": -0.04633260755491137,
+      "n": 16
+     },
+     "HOLDINGS_BUSINESS_SERVICES": {
+      "mean": -0.06480649934389995,
+      "n": 7
+     },
+     "TRANSPORT_LOGISTICS": {
+      "mean": -0.09708595089769809,
+      "n": 10
+     },
+     "UNLABELLED": {
+      "mean": -0.03746150116093388,
+      "n": 11
+     }
+    },
+    "eventLevel": {
+     "entryWeeks": 106,
+     "hitRate": 0.43777777777777777,
+     "issuers": 182,
+     "mean": 0.03148434907932451,
+     "median": -0.031780863200085496,
+     "n": 450,
+     "reason": null,
+     "se": 0.02091821823432398,
+     "unresolved": 0
+    },
+    "expectedSign": 1,
+    "exposureTerm": -0.011046953840905122,
+    "hacSe": 0.02410736296576618,
+    "issuers": 182,
+    "maxFiveNames": {
+     "selectionDelta": 0.03487223295952938,
+     "shareOfSessionsWithAName": 0.6186974789915967,
+     "simpleEtfExcess": 0.02508528231814637,
+     "slots": 60
+    },
+    "pBootstrapTwoSided": 0.1366,
+    "selectionByCalendarYear": {
+     "2014": 0.018931078014955416,
+     "2015": 0.2660996171558332,
+     "2016": 0.0001563222485224669,
+     "2017": -0.05415294148663696,
+     "2018": -0.12064606669445244,
+     "2019": -0.07580467407549862,
+     "2020": 0.16744328309852408,
+     "2021": -0.05950691438489819,
+     "2022": 0.08087656955562872,
+     "2023": 0.09254270384185459,
+     "2024": 0.09431981285921553,
+     "2025": 0.45478944275151867,
+     "2026": -0.06213483353128069
+    },
+    "selectionDelta": {
+     "cost0x": 0.04692838322147153,
+     "cost1x": 0.035066581739519584,
+     "cost2x": 0.023204780257567684,
+     "cost3x": 0.011342978775615851
+    },
+    "sessions": 2885,
+    "simpleEtfExcess": 0.024019627898614466,
+    "simultaneousLevel": 0.9833333333333333,
+    "slots": 450,
+    "states": {
+     "NEGATIVE_BETA_NOT_INVESTABLE": 5,
+     "NOT_MATURED": 1,
+     "PRICED": 450,
+     "TERMINAL_UNRESOLVED": 2,
+     "UNCONFIRMED_CORPORATE_ACTION_IN_WINDOW": 2
+    },
+    "turnoverOneWay": {
+     "book": 92.04563592840654,
+     "control": 18.164699557125207
+    }
+   },
+   "H252": {
+    "blockSensitivityCi95": {
+     "252": [
+      -0.0022950431050455097,
+      0.22744714803595092
+     ],
+     "756": [
+      -0.009724553022909664,
+      0.23416144872544187
+     ]
+    },
+    "bookTotalReturnAnnualized": 0.23915972358925042,
+    "calendar": [
+     "2014-12-16",
+     "2026-03-30"
+    ],
+    "cashSensitivity": {
+     "BOK_POLICY_RATE_PLUS_100BP": 0.12351904898056591,
+     "ZERO": 0.1294567944220543
+    },
+    "checks": {
+     "excluding2025_2026": 0.11330272029933819,
+     "excludingLargestIndustry:FINANCIALS": 0.1393152867424977,
+     "postValueUp": 0.07222845291683594,
+     "preValueUp": 0.13235953183309856
+    },
+    "ci95": [
+     -0.006033988612185266,
+     0.23213798708319344
+    ],
+    "ciSimultaneous": [
+     -0.030597654552438784,
+     0.25780224381218514
+    ],
+    "controlTotalReturnAnnualized": 0.11807060549531179,
+    "downsideStressDelta": 0.12108179493179493,
+    "downsideStressEvents": 1,
+    "effectiveBlocks": 5.492063492063492,
+    "etfTotalReturnAnnualized": 0.13490166324106334,
+    "eventByEntryYear": {
+     "2014": {
+      "mean": 0.0687600656997448,
+      "n": 2
+     },
+     "2015": {
+      "mean": 0.06806561010311692,
+      "n": 38
+     },
+     "2016": {
+      "mean": -0.1033964121708215,
+      "n": 33
+     },
+     "2017": {
+      "mean": 0.035773665878164954,
+      "n": 31
+     },
+     "2018": {
+      "mean": -0.033580721782093974,
+      "n": 32
+     },
+     "2019": {
+      "mean": 0.2535930422487278,
+      "n": 15
+     },
+     "2020": {
+      "mean": 0.1318088963255805,
+      "n": 24
+     },
+     "2021": {
+      "mean": 0.33773114294697926,
+      "n": 34
+     },
+     "2022": {
+      "mean": 0.2528953339453613,
+      "n": 41
+     },
+     "2023": {
+      "mean": 0.05193953600643004,
+      "n": 18
+     },
+     "2024": {
+      "mean": 0.26367144226530326,
+      "n": 31
+     },
+     "2025": {
+      "mean": 0.32209361914077306,
+      "n": 28
+     }
+    },
+    "eventByIndustryNotPit": {
+     "AUTOS": {
+      "mean": 0.1101258540375352,
+      "n": 17
+     },
+     "BASIC_MATERIALS": {
+      "mean": 0.08746117554184402,
+      "n": 18
+     },
+     "CAPITAL_GOODS_DEFENSE": {
+      "mean": 0.0840387904069474,
+      "n": 16
+     },
+     "CHEMICALS": {
+      "mean": -0.11534530358680914,
+      "n": 26
+     },
+     "COMMUNICATION_MEDIA_SOFTWARE": {
+      "mean": 0.053477792881657556,
+      "n": 16
+     },
+     "CONSTRUCTION_ENGINEERING": {
+      "mean": -0.1857140840471635,
+      "n": 9
+     },
+     "CONSUMER_RETAIL_SERVICES": {
+      "mean": 0.21324373287818937,
+      "n": 29
+     },
+     "ELECTRONICS_ELECTRICAL": {
+      "mean": 0.30759548396202957,
+      "n": 34
+     },
+     "ENERGY_UTILITIES": {
+      "mean": 0.22423536043733353,
+      "n": 4
+     },
+     "FINANCIALS": {
+      "mean": 0.21848300407994403,
+      "n": 121
+     },
+     "FOOD_BEVERAGE_TOBACCO": {
+      "mean": -0.19138202057145087,
+      "n": 4
+     },
+     "HEALTHCARE": {
+      "mean": 0.30375582017745284,
+      "n": 14
+     },
+     "HOLDINGS_BUSINESS_SERVICES": {
+      "mean": -0.19231431247982428,
+      "n": 5
+     },
+     "TRANSPORT_LOGISTICS": {
+      "mean": -0.13963160046883646,
+      "n": 6
+     },
+     "UNLABELLED": {
+      "mean": -0.043392073656530805,
+      "n": 8
+     }
+    },
+    "eventLevel": {
+     "entryWeeks": 91,
+     "hitRate": 0.4831804281345566,
+     "issuers": 170,
+     "mean": 0.1415674515310724,
+     "median": -0.010756540195389519,
+     "n": 327,
+     "reason": null,
+     "se": 0.05215159764235657,
+     "unresolved": 0
+    },
+    "expectedSign": 1,
+    "exposureTerm": -0.023787608719511244,
+    "hacSe": 0.05718778807956672,
+    "issuers": 170,
+    "maxFiveNames": {
+     "selectionDelta": -0.018465991108182114,
+     "shareOfSessionsWithAName": 1.0,
+     "simpleEtfExcess": -0.058556182145899874,
+     "slots": 46
+    },
+    "pBootstrapTwoSided": 0.0442,
+    "selectionByCalendarYear": {
+     "2014": 0.018931078014955416,
+     "2015": 0.09600137048795032,
+     "2016": -0.08860862148266357,
+     "2017": -0.006932596508522404,
+     "2018": -0.022260928371588218,
+     "2019": -0.09592249569892097,
+     "2020": 0.6359577123977994,
+     "2021": 0.2520825230603252,
+     "2022": 0.3097897612640813,
+     "2023": -0.006344862448952049,
+     "2024": 0.19946000523346907,
+     "2025": 0.12255211197052673,
+     "2026": -0.036738491993076106
+    },
+    "selectionDelta": {
+     "cost0x": 0.13247071510335404,
+     "cost1x": 0.12545071337181965,
+     "cost2x": 0.11843071164028535,
+     "cost3x": 0.11141070990875065
+    },
+    "sessions": 2768,
+    "simpleEtfExcess": 0.10166310465230842,
+    "simultaneousLevel": 0.9833333333333333,
+    "slots": 327,
+    "states": {
+     "NEGATIVE_BETA_NOT_INVESTABLE": 5,
+     "NOT_MATURED": 34,
+     "PRICED": 327,
+     "TERMINAL_UNRESOLVED": 1,
+     "UNCONFIRMED_CORPORATE_ACTION_IN_WINDOW": 5
+    },
+    "turnoverOneWay": {
+     "book": 23.902133750065556,
+     "control": 5.472945758669878
+    }
+   }
+  },
+  "K8_DIVIDEND_CUT": {
+   "H126": {
+    "blockSensitivityCi95": {
+     "126": [
+      -2.891615144071245,
+      5.657339268606902
+     ],
+     "504": [
+      -2.8873483391122305,
+      5.643444964678796
+     ]
+    },
+    "bookTotalReturnAnnualized": 0.48599739049466906,
+    "calendar": [
+     "2015-01-27",
+     "2026-09-18"
+    ],
+    "cashSensitivity": {
+     "BOK_POLICY_RATE_PLUS_100BP": 2.786565558803914,
+     "ZERO": 2.790883345930707
+    },
+    "checks": {
+     "excluding2025_2026": 3.1203489386938212,
+     "excludingLargestIndustry:FINANCIALS": 5.183478607342535,
+     "postValueUp": -0.014552895317312657,
+     "preValueUp": 3.3868998905803793
+    },
+    "ci95": [
+     -2.8996925063619914,
+     5.640225168329102
+    ],
+    "ciSimultaneous": [
+     -5.698553906735349,
+     5.651993732947597
+    ],
+    "controlTotalReturnAnnualized": 0.12795231881844793,
+    "downsideStressDelta": 2.7829318299241534,
+    "downsideStressEvents": 3,
+    "effectiveBlocks": 11.345238095238095,
+    "etfTotalReturnAnnualized": 0.16013623907622243,
+    "eventByEntryYear": {
+     "2015": {
+      "mean": -0.006075720155965871,
+      "n": 13
+     },
+     "2016": {
+      "mean": -0.07740723397392973,
+      "n": 9
+     },
+     "2017": {
+      "mean": -0.0024607539427685798,
+      "n": 18
+     },
+     "2018": {
+      "mean": -0.16229033851028424,
+      "n": 12
+     },
+     "2019": {
+      "mean": 57.5538572508448,
+      "n": 22
+     },
+     "2020": {
+      "mean": -0.05778450084781463,
+      "n": 26
+     },
+     "2021": {
+      "mean": 0.05959420317960933,
+      "n": 19
+     },
+     "2022": {
+      "mean": -0.025546655541931577,
+      "n": 16
+     },
+     "2023": {
+      "mean": -0.08355707032517982,
+      "n": 29
+     },
+     "2024": {
+      "mean": 0.10695888143125545,
+      "n": 28
+     },
+     "2025": {
+      "mean": 0.2786096099619377,
+      "n": 14
+     },
+     "2026": {
+      "mean": -0.24792265063448038,
+      "n": 16
+     }
+    },
+    "eventByIndustryNotPit": {
+     "AUTOS": {
+      "mean": -0.16518788221965253,
+      "n": 11
+     },
+     "BASIC_MATERIALS": {
+      "mean": -0.05977224995221975,
+      "n": 20
+     },
+     "CAPITAL_GOODS_DEFENSE": {
+      "mean": 115.50788031349839,
+      "n": 11
+     },
+     "CHEMICALS": {
+      "mean": -0.09083832231735983,
+      "n": 26
+     },
+     "COMMUNICATION_MEDIA_SOFTWARE": {
+      "mean": -0.14063930451011175,
+      "n": 5
+     },
+     "CONSTRUCTION_ENGINEERING": {
+      "mean": -0.151705282204055,
+      "n": 7
+     },
+     "CONSUMER_RETAIL_SERVICES": {
+      "mean": 0.2857000784163664,
+      "n": 12
+     },
+     "ELECTRONICS_ELECTRICAL": {
+      "mean": 0.03582972965213344,
+      "n": 16
+     },
+     "ENERGY_UTILITIES": {
+      "mean": -0.06722627406732701,
+      "n": 9
+     },
+     "FINANCIALS": {
+      "mean": -0.007293732920317103,
+      "n": 87
+     },
+     "FOOD_BEVERAGE_TOBACCO": {
+      "mean": -0.1199549483803608,
+      "n": 1
+     },
+     "HEALTHCARE": {
+      "mean": -0.17940427665152597,
+      "n": 10
+     },
+     "HOLDINGS_BUSINESS_SERVICES": {
+      "mean": -0.17369148459387362,
+      "n": 1
+     },
+     "TRANSPORT_LOGISTICS": {
+      "mean": -0.18213269640434904,
+      "n": 1
+     },
+     "UNLABELLED": {
+      "mean": -0.15909216365929138,
+      "n": 5
+     }
+    },
+    "eventLevel": {
+     "entryWeeks": 90,
+     "hitRate": 0.38288288288288286,
+     "issuers": 127,
+     "mean": 5.689838038456569,
+     "median": -0.07029750753963604,
+     "n": 222,
+     "reason": null,
+     "se": 5.612244198827288,
+     "unresolved": 0
+    },
+    "expectedSign": -1,
+    "exposureTerm": -0.0203923598510453,
+    "hacSe": 2.7610189310894944,
+    "issuers": 127,
+    "maxFiveNames": {
+     "selectionDelta": -0.061341600809074165,
+     "shareOfSessionsWithAName": 0.618509360649947,
+     "simpleEtfExcess": -0.07944293643171446,
+     "slots": 60
+    },
+    "pBootstrapTwoSided": 0.5663,
+    "selectionByCalendarYear": {
+     "2015": 0.04763359502926534,
+     "2016": -0.1838576491022873,
+     "2017": -0.2255635412606889,
+     "2018": -0.2782304719654285,
+     "2019": 64.06125308958478,
+     "2020": 0.14012851109914382,
+     "2021": -0.20433561898841301,
+     "2022": -0.01111638588937347,
+     "2023": -0.12458664526258412,
+     "2024": 0.0544157895174191,
+     "2025": 0.4024208090191298,
+     "2026": -0.415102808727296
+    },
+    "selectionDelta": {
+     "cost0x": 2.7981221165059385,
+     "cost1x": 2.7880886298722483,
+     "cost2x": 2.778055143238557,
+     "cost3x": 2.7680216566048665
+    },
+    "sessions": 2859,
+    "simpleEtfExcess": 2.767696270021201,
+    "simultaneousLevel": 0.9833333333333333,
+    "slots": 222,
+    "states": {
+     "NEGATIVE_BETA_NOT_INVESTABLE": 4,
+     "PRICED": 222,
+     "TERMINAL_UNRESOLVED": 3
+    },
+    "turnoverOneWay": {
+     "book": 79.18404639663947,
+     "control": 18.047715909188298
+    }
+   },
+   "H252": {
+    "blockSensitivityCi95": {
+     "252": [
+      -116.70578018940469,
+      233.48863909167903
+     ],
+     "756": [
+      -116.53915682778475,
+      233.48076990961408
+     ]
+    },
+    "bookTotalReturnAnnualized": 2.364657610301521,
+    "calendar": [
+     "2015-01-27",
+     "2026-03-27"
+    ],
+    "cashSensitivity": {
+     "BOK_POLICY_RATE_PLUS_100BP": 116.76061795686928,
+     "ZERO": 116.77486971326675
+    },
+    "checks": {
+     "excluding2025_2026": 119.46231169649637,
+     "excludingLargestIndustry:FINANCIALS": 122.82826262350844,
+     "postValueUp": 0.8089629353889496,
+     "preValueUp": 128.75759057145768
+    },
+    "ci95": [
+     -116.61281692512374,
+     233.49787412679106
+    ],
+    "ciSimultaneous": [
+     -226.74675797288856,
+     233.53029538200028
+    ],
+    "controlTotalReturnAnnualized": 0.11332076439361916,
+    "downsideStressDelta": 116.74998070469492,
+    "downsideStressEvents": 3,
+    "effectiveBlocks": 5.436507936507937,
+    "etfTotalReturnAnnualized": 0.13553120335764057,
+    "eventByEntryYear": {
+     "2015": {
+      "mean": 0.039931179272257505,
+      "n": 13
+     },
+     "2016": {
+      "mean": -0.07353999456182653,
+      "n": 9
+     },
+     "2017": {
+      "mean": 0.04070264259489941,
+      "n": 17
+     },
+     "2018": {
+      "mean": -0.12666208258171396,
+      "n": 12
+     },
+     "2019": {
+      "mean": 61737.401332977184,
+      "n": 20
+     },
+     "2020": {
+      "mean": -0.024014101607607377,
+      "n": 21
+     },
+     "2021": {
+      "mean": 0.12126582207453425,
+      "n": 18
+     },
+     "2022": {
+      "mean": 0.33294924566615897,
+      "n": 14
+     },
+     "2023": {
+      "mean": 0.031908008586225396,
+      "n": 27
+     },
+     "2024": {
+      "mean": 0.8564988128427129,
+      "n": 22
+     },
+     "2025": {
+      "mean": 0.21869235561084832,
+      "n": 12
+     }
+    },
+    "eventByIndustryNotPit": {
+     "AUTOS": {
+      "mean": -0.05642792593597082,
+      "n": 9
+     },
+     "BASIC_MATERIALS": {
+      "mean": -0.008394684202101241,
+      "n": 14
+     },
+     "CAPITAL_GOODS_DEFENSE": {
+      "mean": 112250.60366285482,
+      "n": 11
+     },
+     "CHEMICALS": {
+      "mean": -0.12343903804187795,
+      "n": 20
+     },
+     "COMMUNICATION_MEDIA_SOFTWARE": {
+      "mean": 0.0005165037338856759,
+      "n": 5
+     },
+     "CONSTRUCTION_ENGINEERING": {
+      "mean": 0.00553072028233792,
+      "n": 5
+     },
+     "CONSUMER_RETAIL_SERVICES": {
+      "mean": 0.6184630699153872,
+      "n": 10
+     },
+     "ELECTRONICS_ELECTRICAL": {
+      "mean": -0.045716196485026526,
+      "n": 15
+     },
+     "ENERGY_UTILITIES": {
+      "mean": 0.034274145326933514,
+      "n": 8
+     },
+     "FINANCIALS": {
+      "mean": 0.18830123466243795,
+      "n": 72
+     },
+     "FOOD_BEVERAGE_TOBACCO": {
+      "mean": -0.7190891880865019,
+      "n": 1
+     },
+     "HEALTHCARE": {
+      "mean": 0.5836816013046183,
+      "n": 8
+     },
+     "HOLDINGS_BUSINESS_SERVICES": {
+      "mean": -0.06853947069139021,
+      "n": 1
+     },
+     "TRANSPORT_LOGISTICS": {
+      "mean": -0.07913916555330847,
+      "n": 1
+     },
+     "UNLABELLED": {
+      "mean": -0.19706866112378746,
+      "n": 5
+     }
+    },
+    "eventLevel": {
+     "entryWeeks": 82,
+     "hitRate": 0.42702702702702705,
+     "issuers": 124,
+     "mean": 6674.463375574815,
+     "median": -0.04763467111034081,
+     "n": 185,
+     "reason": null,
+     "se": 6497.167353959466,
+     "unresolved": 0
+    },
+    "expectedSign": -1,
+    "exposureTerm": -0.028143527238524254,
+    "hacSe": 107.76012859157983,
+    "issuers": 124,
+    "maxFiveNames": {
+     "selectionDelta": 0.10471228313198155,
+     "shareOfSessionsWithAName": 0.9244249726177437,
+     "simpleEtfExcess": 0.05805712909421802,
+     "slots": 44
+    },
+    "pBootstrapTwoSided": 0.1494,
+    "selectionByCalendarYear": {
+     "2015": 0.0845704024676156,
+     "2016": -0.058581952590710085,
+     "2017": 0.014914337322769256,
+     "2018": -0.14160880422442623,
+     "2019": 1268.5881291368103,
+     "2020": -0.13162877715001975,
+     "2021": 0.07896804527727352,
+     "2022": 0.31188829771778925,
+     "2023": -0.09339893050998171,
+     "2024": 0.7974310082533964,
+     "2025": 0.20371946364785198,
+     "2026": -0.05764087155354536
+    },
+    "selectionDelta": {
+     "cost0x": 116.77261558948094,
+     "cost1x": 116.76583352612334,
+     "cost2x": 116.75905146276577,
+     "cost3x": 116.75226939940819
+    },
+    "sessions": 2740,
+    "simpleEtfExcess": 116.7376899988848,
+    "simultaneousLevel": 0.9833333333333333,
+    "slots": 185,
+    "states": {
+     "NEGATIVE_BETA_NOT_INVESTABLE": 4,
+     "NOT_MATURED": 15,
+     "PRICED": 185,
+     "TERMINAL_UNRESOLVED": 3
+    },
+    "turnoverOneWay": {
+     "book": 23.196651522542098,
+     "control": 4.55973921688726
+    }
+   }
+  },
+  "K9_BLOCK_HOLDER_INCREASE": {
+   "H126": {
+    "blockSensitivityCi95": {
+     "126": [
+      -0.06357539828417329,
+      0.25026321656148554
+     ],
+     "504": [
+      0.004822246312061181,
+      0.004822246312061181
+     ]
+    },
+    "bookTotalReturnAnnualized": 0.46428205637914455,
+    "calendar": [
+     "2024-09-26",
+     "2026-10-22"
+    ],
+    "cashSensitivity": {
+     "BOK_POLICY_RATE_PLUS_100BP": 0.0036534128509369992,
+     "ZERO": 0.008093902216106823
+    },
+    "checks": {
+     "excluding2025_2026": 0.2043093204895018,
+     "excludingLargestIndustry:FINANCIALS": 0.010625626557206459,
+     "postValueUp": 0.004822246312061181,
+     "preValueUp": null
+    },
+    "ci95": [
+     -0.026404612585220342,
+     0.228565844061788
+    ],
+    "ciSimultaneous": [
+     -0.040353065897874144,
+     0.2454011390091527
+    ],
+    "controlTotalReturnAnnualized": 0.43659285351654864,
+    "downsideStressDelta": 0.0008167441247118794,
+    "downsideStressEvents": 1,
+    "effectiveBlocks": 1.992063492063492,
+    "etfTotalReturnAnnualized": 0.5862241446478842,
+    "eventByEntryYear": {
+     "2024": {
+      "mean": 0.16153999503168978,
+      "n": 37
+     },
+     "2025": {
+      "mean": -0.07850896666014025,
+      "n": 133
+     },
+     "2026": {
+      "mean": -0.1849099846415566,
+      "n": 53
+     }
+    },
+    "eventByIndustryNotPit": {
+     "AUTOS": {
+      "mean": -0.44522431411872465,
+      "n": 6
+     },
+     "BASIC_MATERIALS": {
+      "mean": -0.023669926860887515,
+      "n": 10
+     },
+     "CAPITAL_GOODS_DEFENSE": {
+      "mean": 0.1072107146043664,
+      "n": 21
+     },
+     "CHEMICALS": {
+      "mean": -0.18714124082746658,
+      "n": 33
+     },
+     "COMMUNICATION_MEDIA_SOFTWARE": {
+      "mean": -0.05656428567256685,
+      "n": 16
+     },
+     "CONSTRUCTION_ENGINEERING": {
+      "mean": -0.15363474133688207,
+      "n": 13
+     },
+     "CONSUMER_RETAIL_SERVICES": {
+      "mean": 0.179263343684002,
+      "n": 24
+     },
+     "ELECTRONICS_ELECTRICAL": {
+      "mean": -0.03133802217010898,
+      "n": 24
+     },
+     "ENERGY_UTILITIES": {
+      "mean": -0.023736039959691712,
+      "n": 5
+     },
+     "FINANCIALS": {
+      "mean": -0.07534142261987674,
+      "n": 46
+     },
+     "FOOD_BEVERAGE_TOBACCO": {
+      "mean": -0.06687845209224311,
+      "n": 9
+     },
+     "HEALTHCARE": {
+      "mean": -0.3382039065809179,
+      "n": 6
+     },
+     "HOLDINGS_BUSINESS_SERVICES": {
+      "mean": -0.3986174314101788,
+      "n": 2
+     },
+     "TRANSPORT_LOGISTICS": {
+      "mean": -0.17598023855671396,
+      "n": 7
+     },
+     "UNLABELLED": {
+      "mean": 0.16402333146023862,
+      "n": 1
+     }
+    },
+    "eventLevel": {
+     "entryWeeks": 59,
+     "hitRate": 0.336322869955157,
+     "issuers": 155,
+     "mean": -0.06396834948712392,
+     "median": -0.15469827822050664,
+     "n": 223,
+     "reason": null,
+     "se": 0.04276424686667792,
+     "unresolved": 0
+    },
+    "expectedSign": 1,
+    "exposureTerm": -0.07512351218714196,
+    "hacSe": 0.09543102652086292,
+    "issuers": 155,
+    "maxFiveNames": {
+     "selectionDelta": -0.15156975001881628,
+     "shareOfSessionsWithAName": 0.9729064039408867,
+     "simpleEtfExcess": -0.2604035351362085,
+     "slots": 15
+    },
+    "pBootstrapTwoSided": 0.966,
+    "selectionByCalendarYear": {
+     "2024": 0.18766397396188306,
+     "2025": -0.018246456957190293,
+     "2026": -0.15020507534870298
+    },
+    "selectionDelta": {
+     "cost0x": 0.013053692958497605,
+     "cost1x": 0.004822246312061181,
+     "cost2x": -0.0034092003343748232,
+     "cost3x": -0.011640646980811664
+    },
+    "sessions": 502,
+    "simpleEtfExcess": -0.07030126587508077,
+    "simultaneousLevel": 0.9833333333333333,
+    "slots": 223,
+    "states": {
+     "INSUFFICIENT_PRE_SIGNAL_PAIRS": 7,
+     "NOT_MATURED": 53,
+     "PRICED": 223,
+     "TERMINAL_UNRESOLVED": 1,
+     "UNCONFIRMED_CORPORATE_ACTION_IN_WINDOW": 1
+    },
+    "turnoverOneWay": {
+     "book": 12.689010510190208,
+     "control": 2.3044510247607466
+    }
+   },
+   "H252": {
+    "blockSensitivityCi95": {
+     "252": [
+      -0.21689804490115672,
+      0.3573213941257836
+     ],
+     "756": [
+      -0.08151418202046634,
+      -0.08151418202046634
+     ]
+    },
+    "bookTotalReturnAnnualized": 0.3646886900020605,
+    "calendar": [
+     "2024-09-26",
+     "2026-10-26"
+    ],
+    "cashSensitivity": {
+     "BOK_POLICY_RATE_PLUS_100BP": -0.08365393464469845,
+     "ZERO": -0.07548780565903851
+    },
+    "checks": {
+     "excluding2025_2026": 0.08369682669839307,
+     "excludingLargestIndustry:FINANCIALS": -0.08846278718962584,
+     "postValueUp": -0.08151418202046634,
+     "preValueUp": null
+    },
+    "ci95": [
+     -0.08151418202046634,
+     -0.08151418202046634
+    ],
+    "ciSimultaneous": [
+     -0.08151418202046634,
+     -0.08151418202046634
+    ],
+    "controlTotalReturnAnnualized": 0.4536504096002123,
+    "downsideStressDelta": -0.08151418202046634,
+    "downsideStressEvents": 0,
+    "effectiveBlocks": 1.0,
+    "etfTotalReturnAnnualized": 0.578466085433283,
+    "eventByEntryYear": {
+     "2024": {
+      "mean": 0.09754138763300096,
+      "n": 37
+     },
+     "2025": {
+      "mean": -0.49068496662108035,
+      "n": 102
+     }
+    },
+    "eventByIndustryNotPit": {
+     "AUTOS": {
+      "mean": -0.8979637635633353,
+      "n": 2
+     },
+     "BASIC_MATERIALS": {
+      "mean": -0.5327283047996095,
+      "n": 7
+     },
+     "CAPITAL_GOODS_DEFENSE": {
+      "mean": 0.07062277440879179,
+      "n": 14
+     },
+     "CHEMICALS": {
+      "mean": -0.820205558974504,
+      "n": 20
+     },
+     "COMMUNICATION_MEDIA_SOFTWARE": {
+      "mean": -0.4832283407805504,
+      "n": 13
+     },
+     "CONSTRUCTION_ENGINEERING": {
+      "mean": -0.4510717589787777,
+      "n": 8
+     },
+     "CONSUMER_RETAIL_SERVICES": {
+      "mean": 0.02619397739782617,
+      "n": 14
+     },
+     "ELECTRONICS_ELECTRICAL": {
+      "mean": -0.14253349134484294,
+      "n": 15
+     },
+     "ENERGY_UTILITIES": {
+      "mean": -0.8252926793583881,
+      "n": 2
+     },
+     "FINANCIALS": {
+      "mean": -0.13222540456379808,
+      "n": 27
+     },
+     "FOOD_BEVERAGE_TOBACCO": {
+      "mean": -0.2017247689727196,
+      "n": 5
+     },
+     "HEALTHCARE": {
+      "mean": -0.892427295826284,
+      "n": 4
+     },
+     "HOLDINGS_BUSINESS_SERVICES": {
+      "mean": -0.7165177909849187,
+      "n": 2
+     },
+     "TRANSPORT_LOGISTICS": {
+      "mean": -0.5366885339325591,
+      "n": 5
+     },
+     "UNLABELLED": {
+      "mean": 0.07689449588293518,
+      "n": 1
+     }
+    },
+    "eventLevel": {
+     "entryWeeks": 36,
+     "hitRate": 0.302158273381295,
+     "issuers": 139,
+     "mean": -0.33410672843833916,
+     "median": -0.4673556001416197,
+     "n": 139,
+     "reason": null,
+     "se": 0.09397716133450683,
+     "unresolved": 0
+    },
+    "expectedSign": 1,
+    "exposureTerm": -0.12761374760605115,
+    "hacSe": 0.2152690501424371,
+    "issuers": 139,
+    "maxFiveNames": {
+     "selectionDelta": 0.047174014382454665,
+     "shareOfSessionsWithAName": 1.0,
+     "simpleEtfExcess": -0.11465662083454345,
+     "slots": 5
+    },
+    "pBootstrapTwoSided": 0.0001,
+    "selectionByCalendarYear": {
+     "2024": 0.18766397396188306,
+     "2025": -0.026506548307033362,
+     "2026": -0.3241857896957824
+    },
+    "selectionDelta": {
+     "cost0x": -0.06916700860971603,
+     "cost1x": -0.08151418202046634,
+     "cost2x": -0.09386135543121593,
+     "cost3x": -0.10620852884196552
+    },
+    "sessions": 504,
+    "simpleEtfExcess": -0.2091279296265175,
+    "simultaneousLevel": 0.9833333333333333,
+    "slots": 139,
+    "states": {
+     "INSUFFICIENT_PRE_SIGNAL_PAIRS": 5,
+     "NOT_MATURED": 86,
+     "PRICED": 139
+    },
+    "turnoverOneWay": {
+     "book": 9.807026497326223,
+     "control": 3.017930666882439
+    }
+   }
+  },
+  "P1_CAPITAL_RETURN": {
+   "H126": {
+    "blockSensitivityCi95": {
+     "126": [
+      -0.02492052729848427,
+      0.047782064937449964
+     ],
+     "504": [
+      -0.028200965754087908,
+      0.03694068293170124
+     ]
+    },
+    "bookTotalReturnAnnualized": 0.10853737229340954,
+    "calendar": [
+     "2013-10-29",
+     "2026-10-27"
+    ],
+    "cashSensitivity": {
+     "BOK_POLICY_RATE_PLUS_100BP": 7.286024092373355e-05,
+     "ZERO": 0.0039909804991415665
+    },
+    "checks": {
+     "excluding2025_2026": 0.004610581814577834,
+     "excludingLargestIndustry:FINANCIALS": -0.00282637849466776,
+     "postValueUp": -0.0027052059844519757,
+     "preValueUp": 0.003202083734002132
+    },
+    "ci95": [
+     -0.0294190918039861,
+     0.04730328087985102
+    ],
+    "ciSimultaneous": [
+     -0.036468255550342894,
+     0.057170960760547146
+    ],
+    "controlTotalReturnAnnualized": 0.10925802341777735,
+    "downsideStressDelta": -0.005692002625166489,
+    "downsideStressEvents": 7,
+    "effectiveBlocks": 12.65079365079365,
+    "etfTotalReturnAnnualized": 0.119634457152616,
+    "eventByEntryYear": {
+     "2013": {
+      "mean": 0.11178482792166378,
+      "n": 3
+     },
+     "2014": {
+      "mean": 0.06552394774647692,
+      "n": 46
+     },
+     "2015": {
+      "mean": 0.06777521984213403,
+      "n": 60
+     },
+     "2016": {
+      "mean": -0.07334944832263914,
+      "n": 76
+     },
+     "2017": {
+      "mean": 0.02176037780055237,
+      "n": 54
+     },
+     "2018": {
+      "mean": -0.02338507432466351,
+      "n": 69
+     },
+     "2019": {
+      "mean": -0.06925522429004999,
+      "n": 49
+     },
+     "2020": {
+      "mean": 0.03932048393959632,
+      "n": 95
+     },
+     "2021": {
+      "mean": 0.09197516141732832,
+      "n": 71
+     },
+     "2022": {
+      "mean": 0.025319091349088354,
+      "n": 99
+     },
+     "2023": {
+      "mean": 0.013993048373281436,
+      "n": 86
+     },
+     "2024": {
+      "mean": 0.07505882355158557,
+      "n": 100
+     },
+     "2025": {
+      "mean": -0.07460137045228196,
+      "n": 104
+     },
+     "2026": {
+      "mean": -0.12908734593057478,
+      "n": 70
+     }
+    },
+    "eventByIndustryNotPit": {
+     "AUTOS": {
+      "mean": -0.020249391273082736,
+      "n": 54
+     },
+     "BASIC_MATERIALS": {
+      "mean": -0.025675866161188946,
+      "n": 49
+     },
+     "CAPITAL_GOODS_DEFENSE": {
+      "mean": 0.13404194420758553,
+      "n": 48
+     },
+     "CHEMICALS": {
+      "mean": -0.013955160228598034,
+      "n": 85
+     },
+     "COMMUNICATION_MEDIA_SOFTWARE": {
+      "mean": -0.0380488876816957,
+      "n": 73
+     },
+     "CONSTRUCTION_ENGINEERING": {
+      "mean": -0.12869186777871813,
+      "n": 23
+     },
+     "CONSUMER_RETAIL_SERVICES": {
+      "mean": 0.0003882882870210531,
+      "n": 102
+     },
+     "ELECTRONICS_ELECTRICAL": {
+      "mean": 0.036131805601703135,
+      "n": 94
+     },
+     "ENERGY_UTILITIES": {
+      "mean": 0.20153480619815828,
+      "n": 13
+     },
+     "FINANCIALS": {
+      "mean": 0.023933279107477154,
+      "n": 304
+     },
+     "FOOD_BEVERAGE_TOBACCO": {
+      "mean": 0.03222915810596529,
+      "n": 18
+     },
+     "HEALTHCARE": {
+      "mean": -0.06945386378183695,
+      "n": 52
+     },
+     "HOLDINGS_BUSINESS_SERVICES": {
+      "mean": -0.03831598990224132,
+      "n": 15
+     },
+     "TRANSPORT_LOGISTICS": {
+      "mean": -0.14381706921605725,
+      "n": 15
+     },
+     "UNLABELLED": {
+      "mean": -0.054882571446380236,
+      "n": 37
+     }
+    },
+    "eventLevel": {
+     "entryWeeks": 374,
+     "hitRate": 0.4317718940936864,
+     "issuers": 255,
+     "mean": 0.002745718668290125,
+     "median": -0.034517102519581566,
+     "n": 982,
+     "reason": null,
+     "se": 0.014537177608651905,
+     "unresolved": 0
+    },
+    "expectedSign": 1,
+    "exposureTerm": -0.01219064813624935,
+    "hacSe": 0.01956502150216113,
+    "issuers": 255,
+    "maxFiveNames": {
+     "selectionDelta": 0.04513323368124652,
+     "shareOfSessionsWithAName": 1.0,
+     "simpleEtfExcess": 0.019141822045355528,
+     "slots": 118
+    },
+    "pBootstrapTwoSided": 0.9465,
+    "selectionByCalendarYear": {
+     "2013": 0.09019146544080148,
+     "2014": 0.09863131326331664,
+     "2015": 0.05168366201287966,
+     "2016": -0.18936437332855527,
+     "2017": 0.025582206475615488,
+     "2018": -0.08205708797253597,
+     "2019": -0.08794224477654533,
+     "2020": -0.0458353672330879,
+     "2021": 0.05817896903874409,
+     "2022": 0.04635523209214032,
+     "2023": 0.029425230059305196,
+     "2024": 0.24124769306373384,
+     "2025": -0.0661797059281205,
+     "2026": -0.13499738758858915
+    },
+    "selectionDelta": {
+     "cost0x": 0.009691582160262625,
+     "cost1x": 0.0013801349378942682,
+     "cost2x": -0.006931312284474145,
+     "cost3x": -0.015242759506842264
+    },
+    "sessions": 3188,
+    "simpleEtfExcess": -0.010810513198355081,
+    "simultaneousLevel": 0.9833333333333333,
+    "slots": 982,
+    "states": {
+     "ENTRY_NOT_TRADABLE": 1,
+     "INSUFFICIENT_PRE_SIGNAL_PAIRS": 23,
+     "NEGATIVE_BETA_NOT_INVESTABLE": 12,
+     "NOT_MATURED": 62,
+     "PRICED": 982,
+     "TERMINAL_UNRESOLVED": 7,
+     "UNCONFIRMED_CORPORATE_ACTION_IN_WINDOW": 7
+    },
+    "turnoverOneWay": {
+     "book": 63.255789343291895,
+     "control": 14.49400769833451
+    }
+   },
+   "H252": {
+    "blockSensitivityCi95": {
+     "252": [
+      0.014640590893245277,
+      0.15550750394243312
+     ],
+     "756": [
+      0.009691294362529487,
+      0.14063098459846657
+     ]
+    },
+    "bookTotalReturnAnnualized": 0.19804602037278896,
+    "calendar": [
+     "2013-10-29",
+     "2026-10-02"
+    ],
+    "cashSensitivity": {
+     "BOK_POLICY_RATE_PLUS_100BP": 0.06660052859002191,
+     "ZERO": 0.07359026134067512
+    },
+    "checks": {
+     "excluding2025_2026": 0.06568475201704499,
+     "excludingLargestIndustry:FINANCIALS": 0.05641923015410339,
+     "postValueUp": 0.0024838155286905027,
+     "preValueUp": 0.08967007023394383
+    },
+    "ci95": [
+     0.013558746197492463,
+     0.13682850050213458
+    ],
+    "ciSimultaneous": [
+     0.0018672937364060628,
+     0.15041523758266018
+    ],
+    "controlTotalReturnAnnualized": 0.12204475625206235,
+    "downsideStressDelta": 0.059133562710231256,
+    "downsideStressEvents": 6,
+    "effectiveBlocks": 6.295634920634921,
+    "etfTotalReturnAnnualized": 0.1410164854985605,
+    "eventByEntryYear": {
+     "2013": {
+      "mean": 0.3527470127128014,
+      "n": 3
+     },
+     "2014": {
+      "mean": 0.12383365918610076,
+      "n": 41
+     },
+     "2015": {
+      "mean": 0.02500673526471973,
+      "n": 47
+     },
+     "2016": {
+      "mean": -0.1233055968224134,
+      "n": 54
+     },
+     "2017": {
+      "mean": 0.021190190618520236,
+      "n": 41
+     },
+     "2018": {
+      "mean": -0.00483743711743396,
+      "n": 52
+     },
+     "2019": {
+      "mean": 0.027511813968165384,
+      "n": 37
+     },
+     "2020": {
+      "mean": 0.14426128528929066,
+      "n": 71
+     },
+     "2021": {
+      "mean": 0.21628907977488823,
+      "n": 55
+     },
+     "2022": {
+      "mean": 0.13576225387466787,
+      "n": 76
+     },
+     "2023": {
+      "mean": 0.12087981746406047,
+      "n": 61
+     },
+     "2024": {
+      "mean": 0.22988600086910732,
+      "n": 61
+     },
+     "2025": {
+      "mean": -0.3984556351415285,
+      "n": 68
+     }
+    },
+    "eventByIndustryNotPit": {
+     "AUTOS": {
+      "mean": 0.06784248605710953,
+      "n": 38
+     },
+     "BASIC_MATERIALS": {
+      "mean": 0.07760877515267439,
+      "n": 39
+     },
+     "CAPITAL_GOODS_DEFENSE": {
+      "mean": 0.12099445449097675,
+      "n": 33
+     },
+     "CHEMICALS": {
+      "mean": -0.1281903515477894,
+      "n": 59
+     },
+     "COMMUNICATION_MEDIA_SOFTWARE": {
+      "mean": -0.050418961568836046,
+      "n": 47
+     },
+     "CONSTRUCTION_ENGINEERING": {
+      "mean": -0.2597906140682366,
+      "n": 15
+     },
+     "CONSUMER_RETAIL_SERVICES": {
+      "mean": 0.025594644398110006,
+      "n": 70
+     },
+     "ELECTRONICS_ELECTRICAL": {
+      "mean": 0.1463599177259082,
+      "n": 60
+     },
+     "ENERGY_UTILITIES": {
+      "mean": 0.19177663288856114,
+      "n": 12
+     },
+     "FINANCIALS": {
+      "mean": 0.15491128382445413,
+      "n": 195
+     },
+     "FOOD_BEVERAGE_TOBACCO": {
+      "mean": -0.008524764148519548,
+      "n": 12
+     },
+     "HEALTHCARE": {
+      "mean": -0.1050855550903211,
+      "n": 39
+     },
+     "HOLDINGS_BUSINESS_SERVICES": {
+      "mean": -0.05455430872981613,
+      "n": 11
+     },
+     "TRANSPORT_LOGISTICS": {
+      "mean": -0.2501074919118898,
+      "n": 11
+     },
+     "UNLABELLED": {
+      "mean": -0.08663776067426042,
+      "n": 26
+     }
+    },
+    "eventLevel": {
+     "entryWeeks": 298,
+     "hitRate": 0.46326836581709147,
+     "issuers": 241,
+     "mean": 0.04354653262699769,
+     "median": -0.02947062927729771,
+     "n": 667,
+     "reason": null,
+     "se": 0.0318396340757904,
+     "unresolved": 0
+    },
+    "expectedSign": 1,
+    "exposureTerm": -0.028757298049639907,
+    "hacSe": 0.038400377812703064,
+    "issuers": 241,
+    "maxFiveNames": {
+     "selectionDelta": 0.03694933568253653,
+     "shareOfSessionsWithAName": 1.0,
+     "simpleEtfExcess": 0.0037942179342158977,
+     "slots": 60
+    },
+    "pBootstrapTwoSided": 0.0302,
+    "selectionByCalendarYear": {
+     "2013": 0.09019146544080148,
+     "2014": 0.16004478321514204,
+     "2015": 0.08887376627769195,
+     "2016": -0.07865797946357478,
+     "2017": -0.03311522952147106,
+     "2018": 0.031036835887562564,
+     "2019": -0.07240428815036482,
+     "2020": 0.18563626586216864,
+     "2021": 0.20375250048635507,
+     "2022": 0.1982885303787515,
+     "2023": -0.00740458628833629,
+     "2024": 0.2378283142564751,
+     "2025": -0.04040443365307933,
+     "2026": -0.09568204255079604
+    },
+    "selectionDelta": {
+     "cost0x": 0.07722730276511736,
+     "cost1x": 0.06893537451896822,
+     "cost2x": 0.060643446272820006,
+     "cost3x": 0.052351518026670416
+    },
+    "sessions": 3173,
+    "simpleEtfExcess": 0.04017807646932831,
+    "simultaneousLevel": 0.9833333333333333,
+    "slots": 667,
+    "states": {
+     "ENTRY_NOT_TRADABLE": 2,
+     "INSUFFICIENT_PRE_SIGNAL_PAIRS": 21,
+     "NEGATIVE_BETA_NOT_INVESTABLE": 10,
+     "NOT_MATURED": 106,
+     "PRICED": 667,
+     "TERMINAL_UNRESOLVED": 6,
+     "UNCONFIRMED_CORPORATE_ACTION_IN_WINDOW": 10
+    },
+    "turnoverOneWay": {
+     "book": 32.06812494067714,
+     "control": 6.805749610890186
+    }
+   }
+  },
+  "P2_DILUTION": {
+   "H126": {
+    "blockSensitivityCi95": {
+     "126": [
+      -0.1365260933273275,
+      -0.02355759106158898
+     ],
+     "504": [
+      -0.13948538408574682,
+      -0.04731784793861967
+     ]
+    },
+    "bookTotalReturnAnnualized": -0.07066908927639481,
+    "calendar": [
+     "2013-10-30",
+     "2026-10-26"
+    ],
+    "cashSensitivity": {
+     "BOK_POLICY_RATE_PLUS_100BP": -0.08488004101669283,
+     "ZERO": -0.0820332935461292
+    },
+    "checks": {
+     "excluding2025_2026": -0.07295268220870907,
+     "excludingLargestIndustry:FINANCIALS": -0.10131420526947368,
+     "postValueUp": -0.19387767363541317,
+     "preValueUp": -0.06027644528222482
+    },
+    "ci95": [
+     -0.14268331223186173,
+     -0.029976878649815766
+    ],
+    "ciSimultaneous": [
+     -0.15260732612495614,
+     -0.012221085793999178
+    ],
+    "controlTotalReturnAnnualized": 0.11145569862456717,
+    "downsideStressDelta": -0.0881420574970985,
+    "downsideStressEvents": 1,
+    "effectiveBlocks": 12.642857142857142,
+    "etfTotalReturnAnnualized": 0.11642759105395495,
+    "eventByEntryYear": {
+     "2013": {
+      "mean": -0.1314374879618691,
+      "n": 5
+     },
+     "2014": {
+      "mean": 0.059294406016518836,
+      "n": 27
+     },
+     "2015": {
+      "mean": -0.14889966291950896,
+      "n": 24
+     },
+     "2016": {
+      "mean": -0.17393142131400346,
+      "n": 25
+     },
+     "2017": {
+      "mean": 0.021314289393375457,
+      "n": 19
+     },
+     "2018": {
+      "mean": -0.03360692804650652,
+      "n": 31
+     },
+     "2019": {
+      "mean": -0.13242294395447649,
+      "n": 24
+     },
+     "2020": {
+      "mean": 0.005367688572072443,
+      "n": 31
+     },
+     "2021": {
+      "mean": 0.06762743333385465,
+      "n": 25
+     },
+     "2022": {
+      "mean": -0.08917877578371344,
+      "n": 16
+     },
+     "2023": {
+      "mean": -0.05956935595636688,
+      "n": 19
+     },
+     "2024": {
+      "mean": -0.14227160859456478,
+      "n": 26
+     },
+     "2025": {
+      "mean": -0.4259810966061148,
+      "n": 31
+     },
+     "2026": {
+      "mean": -0.35271723464790444,
+      "n": 8
+     }
+    },
+    "eventByIndustryNotPit": {
+     "AUTOS": {
+      "mean": -0.3151950403584698,
+      "n": 4
+     },
+     "BASIC_MATERIALS": {
+      "mean": -0.015663924585142708,
+      "n": 12
+     },
+     "CAPITAL_GOODS_DEFENSE": {
+      "mean": -0.015689961149493524,
+      "n": 31
+     },
+     "CHEMICALS": {
+      "mean": -0.18681689347464575,
+      "n": 26
+     },
+     "COMMUNICATION_MEDIA_SOFTWARE": {
+      "mean": -0.09811158423319635,
+      "n": 14
+     },
+     "CONSTRUCTION_ENGINEERING": {
+      "mean": -0.18666045429997719,
+      "n": 14
+     },
+     "CONSUMER_RETAIL_SERVICES": {
+      "mean": -0.15784141511692748,
+      "n": 14
+     },
+     "ELECTRONICS_ELECTRICAL": {
+      "mean": -0.16188291109871483,
+      "n": 30
+     },
+     "ENERGY_UTILITIES": {
+      "mean": -0.17060101646708672,
+      "n": 5
+     },
+     "FINANCIALS": {
+      "mean": -0.041660799972673905,
+      "n": 69
+     },
+     "FOOD_BEVERAGE_TOBACCO": {
+      "mean": -0.07085367517125211,
+      "n": 7
+     },
+     "HEALTHCARE": {
+      "mean": -0.27911894066024623,
+      "n": 20
+     },
+     "TRANSPORT_LOGISTICS": {
+      "mean": -0.03131483946456002,
+      "n": 41
+     },
+     "UNLABELLED": {
+      "mean": -0.09523347224265714,
+      "n": 24
+     }
+    },
+    "eventLevel": {
+     "entryWeeks": 256,
+     "hitRate": 0.3022508038585209,
+     "issuers": 171,
+     "mean": -0.10038880237369098,
+     "median": -0.09431433694146352,
+     "n": 311,
+     "reason": null,
+     "se": 0.020986515700336942,
+     "unresolved": 0
+    },
+    "expectedSign": -1,
+    "exposureTerm": -0.0077793103491560845,
+    "hacSe": 0.029347844839121784,
+    "issuers": 171,
+    "maxFiveNames": {
+     "selectionDelta": -0.10118879121139394,
+     "shareOfSessionsWithAName": 1.0,
+     "simpleEtfExcess": -0.10588610521260067,
+     "slots": 112
+    },
+    "pBootstrapTwoSided": 0.005,
+    "selectionByCalendarYear": {
+     "2013": -0.14548200051615245,
+     "2014": 0.04603711973269753,
+     "2015": -0.24168690582411456,
+     "2016": -0.25396781323028816,
+     "2017": -0.08410618040720974,
+     "2018": -0.025989959202269763,
+     "2019": -0.21203609082469477,
+     "2020": -0.23529724434835497,
+     "2021": 0.22060469187361897,
+     "2022": -0.01376426932842112,
+     "2023": -0.2947103420751743,
+     "2024": -0.0857339348090832,
+     "2025": -0.37959535143048384,
+     "2026": -0.4173662952989817
+    },
+    "selectionDelta": {
+     "cost0x": -0.07744670689681729,
+     "cost1x": -0.08396419225888352,
+     "cost2x": -0.09048167762094955,
+     "cost3x": -0.09699916298301571
+    },
+    "sessions": 3186,
+    "simpleEtfExcess": -0.09174350260803961,
+    "simultaneousLevel": 0.9833333333333333,
+    "slots": 311,
+    "states": {
+     "ENTRY_NOT_TRADABLE": 6,
+     "INSUFFICIENT_PRE_SIGNAL_PAIRS": 28,
+     "NEGATIVE_BETA_NOT_INVESTABLE": 9,
+     "NOT_MATURED": 14,
+     "PRICED": 311,
+     "TERMINAL_UNRESOLVED": 1
+    },
+    "turnoverOneWay": {
+     "book": 50.92462838839048,
+     "control": 11.703358378981301
+    }
+   },
+   "H252": {
+    "blockSensitivityCi95": {
+     "252": [
+      -0.24555032525185178,
+      -0.04368153199368566
+     ],
+     "756": [
+      -0.23108581544510268,
+      -0.0676357020503868
+     ]
+    },
+    "bookTotalReturnAnnualized": -0.04014876090558228,
+    "calendar": [
+     "2013-10-30",
+     "2026-10-22"
+    ],
+    "cashSensitivity": {
+     "BOK_POLICY_RATE_PLUS_100BP": -0.13772015580570096,
+     "ZERO": -0.1324916167031767
+    },
+    "checks": {
+     "excluding2025_2026": -0.12327988523554323,
+     "excludingLargestIndustry:FINANCIALS": -0.1437824186792547,
+     "postValueUp": -0.29469682994419655,
+     "preValueUp": -0.11832240302137385
+    },
+    "ci95": [
+     -0.2319551765695967,
+     -0.06505506596994474
+    ],
+    "ciSimultaneous": [
+     -0.24822193832383396,
+     -0.04317136494936489
+    ],
+    "controlTotalReturnAnnualized": 0.11090821317434862,
+    "downsideStressDelta": -0.1396256291068005,
+    "downsideStressEvents": 1,
+    "effectiveBlocks": 6.317460317460317,
+    "etfTotalReturnAnnualized": 0.11704790482369765,
+    "eventByEntryYear": {
+     "2013": {
+      "mean": -0.28822522420392965,
+      "n": 3
+     },
+     "2014": {
+      "mean": 0.17125536815662942,
+      "n": 21
+     },
+     "2015": {
+      "mean": -0.23281975152955411,
+      "n": 18
+     },
+     "2016": {
+      "mean": -0.27124597409322904,
+      "n": 21
+     },
+     "2017": {
+      "mean": 0.04183331655448163,
+      "n": 17
+     },
+     "2018": {
+      "mean": -0.17007406197783853,
+      "n": 28
+     },
+     "2019": {
+      "mean": -0.09607715800165884,
+      "n": 20
+     },
+     "2020": {
+      "mean": -0.06175497637333808,
+      "n": 27
+     },
+     "2021": {
+      "mean": 0.02715955139202542,
+      "n": 22
+     },
+     "2022": {
+      "mean": -0.18413773731079652,
+      "n": 15
+     },
+     "2023": {
+      "mean": -0.19218267406544168,
+      "n": 16
+     },
+     "2024": {
+      "mean": -0.13298400272332492,
+      "n": 24
+     },
+     "2025": {
+      "mean": -1.0789800119337034,
+      "n": 23
+     }
+    },
+    "eventByIndustryNotPit": {
+     "AUTOS": {
+      "mean": -0.9494883465345011,
+      "n": 3
+     },
+     "BASIC_MATERIALS": {
+      "mean": 0.046849943735220945,
+      "n": 12
+     },
+     "CAPITAL_GOODS_DEFENSE": {
+      "mean": -0.004259502206659871,
+      "n": 25
+     },
+     "CHEMICALS": {
+      "mean": -0.31212781553785013,
+      "n": 20
+     },
+     "COMMUNICATION_MEDIA_SOFTWARE": {
+      "mean": -0.11894310551930651,
+      "n": 11
+     },
+     "CONSTRUCTION_ENGINEERING": {
+      "mean": -0.29244921442888233,
+      "n": 11
+     },
+     "CONSUMER_RETAIL_SERVICES": {
+      "mean": -0.23168399701179657,
+      "n": 11
+     },
+     "ELECTRONICS_ELECTRICAL": {
+      "mean": -0.3795106130276344,
+      "n": 27
+     },
+     "ENERGY_UTILITIES": {
+      "mean": -0.6236308227100285,
+      "n": 4
+     },
+     "FINANCIALS": {
+      "mean": -0.10166509016355794,
+      "n": 61
+     },
+     "FOOD_BEVERAGE_TOBACCO": {
+      "mean": -0.10463093712500642,
+      "n": 6
+     },
+     "HEALTHCARE": {
+      "mean": -0.3395247687344324,
+      "n": 18
+     },
+     "TRANSPORT_LOGISTICS": {
+      "mean": -0.07847547701495827,
+      "n": 25
+     },
+     "UNLABELLED": {
+      "mean": -0.22331219331557778,
+      "n": 21
+     }
+    },
+    "eventLevel": {
+     "entryWeeks": 216,
+     "hitRate": 0.2784313725490196,
+     "issuers": 165,
+     "mean": -0.1884027602148956,
+     "median": -0.1892110164819154,
+     "n": 255,
+     "reason": null,
+     "se": 0.037587363247290485,
+     "unresolved": 0
+    },
+    "expectedSign": -1,
+    "exposureTerm": -0.015827487775905678,
+    "hacSe": 0.05299560275238771,
+    "issuers": 165,
+    "maxFiveNames": {
+     "selectionDelta": -0.163588525816913,
+     "shareOfSessionsWithAName": 1.0,
+     "simpleEtfExcess": -0.17204482285584943,
+     "slots": 57
+    },
+    "pBootstrapTwoSided": 0.0026,
+    "selectionByCalendarYear": {
+     "2013": -0.11186186634593087,
+     "2014": -0.05574547565153343,
+     "2015": 0.025311488839979024,
+     "2016": -0.1894061449818807,
+     "2017": -0.10719066203940675,
+     "2018": -0.0447775752629761,
+     "2019": -0.20551751378035588,
+     "2020": -0.1546968468419413,
+     "2021": 0.17304008972665108,
+     "2022": -0.048605654192305336,
+     "2023": -0.2754510283781181,
+     "2024": -0.13731737200848293,
+     "2025": -0.24188116561831552,
+     "2026": -0.344392874808344
+    },
+    "selectionDelta": {
+     "cost0x": -0.12839405190129236,
+     "cost1x": -0.13601134910126447,
+     "cost2x": -0.14362864630123695,
+     "cost3x": -0.1512459435012088
+    },
+    "sessions": 3184,
+    "simpleEtfExcess": -0.15183883687717015,
+    "simultaneousLevel": 0.9833333333333333,
+    "slots": 255,
+    "states": {
+     "ENTRY_NOT_TRADABLE": 4,
+     "INSUFFICIENT_PRE_SIGNAL_PAIRS": 28,
+     "NEGATIVE_BETA_NOT_INVESTABLE": 6,
+     "NOT_MATURED": 26,
+     "PRICED": 255,
+     "TERMINAL_UNRESOLVED": 1,
+     "UNCONFIRMED_CORPORATE_ACTION_IN_WINDOW": 5
+    },
+    "turnoverOneWay": {
+     "book": 30.27968578949364,
+     "control": 7.013950604848668
+    }
+   }
+  }
+ },
+ "onlyChange": "suspended-at-exit names whose prices end before they trade again are unresolved terminals",
+ "ownerInstruction": "하고싶은거 다 해봐 (Owner, session conversation 2026-11-10, after the two pending decisions were listed)",
+ "primaryHorizon": "H126",
+ "promotionEligible": false,
+ "registeredResultSha256": "1332f3be7476a6c73ff4b9386e517467ebe73a30f29e2d676e74b57228bb4cf4",
+ "studyId": "broad-alpha-screen-v1-postoutcome",
+ "verdicts": {
+  "K1_CANCELLATION": {
+   "reasons": [],
+   "verdict": "SECONDARY_DESCRIPTIVE_NO_VERDICT"
+  },
+  "K2_BUYBACK_NO_CANCEL": {
+   "reasons": [],
+   "verdict": "SECONDARY_DESCRIPTIVE_NO_VERDICT"
+  },
+  "K3_SUPPLY_GE_10PCT": {
+   "gates": {
+    "blockLengthsAgree": true,
+    "cashScenariosSameSign": false,
+    "cost2xKeepsSign": false,
+    "downsideStressKeepsSign": false,
+    "everyCheckMeasuredAndSameSign": false,
+    "holm": false,
+    "pointAtLeastMee": false,
+    "simultaneousExcludesZero": 0.0
+   },
+   "reasons": [
+    "cashScenariosSameSign",
+    "cost2xKeepsSign",
+    "downsideStressKeepsSign",
+    "everyCheckMeasuredAndSameSign",
+    "holm",
+    "pointAtLeastMee",
+    "simultaneousExcludesZero"
+   ],
+   "verdict": "INCONCLUSIVE"
+  },
+  "K4_RIGHTS_ISSUE": {
+   "reasons": [],
+   "verdict": "SECONDARY_DESCRIPTIVE_NO_VERDICT"
+  },
+  "K5_EQUITY_LINKED_DEBT": {
+   "reasons": [],
+   "verdict": "SECONDARY_DESCRIPTIVE_NO_VERDICT"
+  },
+  "K6_SUPPLY_TERMINATION": {
+   "reasons": [],
+   "verdict": "SECONDARY_DESCRIPTIVE_NO_VERDICT"
+  },
+  "K7_DIVIDEND_INCREASE": {
+   "reasons": [],
+   "verdict": "SECONDARY_DESCRIPTIVE_NO_VERDICT"
+  },
+  "K8_DIVIDEND_CUT": {
+   "reasons": [],
+   "verdict": "SECONDARY_DESCRIPTIVE_NO_VERDICT"
+  },
+  "K9_BLOCK_HOLDER_INCREASE": {
+   "reasons": [
+    "effectiveBlocks=2.0"
+   ],
+   "verdict": "DESCRIPTIVE_ONLY_TOO_FEW_TIME_BLOCKS"
+  },
+  "P1_CAPITAL_RETURN": {
+   "gates": {
+    "blockLengthsAgree": true,
+    "cashScenariosSameSign": true,
+    "cost2xKeepsSign": false,
+    "downsideStressKeepsSign": false,
+    "everyCheckMeasuredAndSameSign": false,
+    "holm": false,
+    "pointAtLeastMee": false,
+    "simultaneousExcludesZero": 0.0
+   },
+   "reasons": [
+    "cost2xKeepsSign",
+    "downsideStressKeepsSign",
+    "everyCheckMeasuredAndSameSign",
+    "holm",
+    "pointAtLeastMee",
+    "simultaneousExcludesZero"
+   ],
+   "verdict": "INCONCLUSIVE"
+  },
+  "P2_DILUTION": {
+   "gates": {
+    "blockLengthsAgree": true,
+    "cashScenariosSameSign": true,
+    "cost2xKeepsSign": true,
+    "downsideStressKeepsSign": true,
+    "everyCheckMeasuredAndSameSign": true,
+    "holm": true,
+    "pointAtLeastMee": true,
+    "simultaneousExcludesZero": 1.0
+   },
+   "reasons": [],
+   "verdict": "EXPLORATORY_SUPPORT_NOT_VERIFIED"
+  }
+ }
+}

@@ -1,0 +1,166 @@
+{
+ "codeSha256": {
+  "pipeline/benchmark_alpha.py": "9a2aeaeaf9fb92831a44df499e0a2dc420bd3dde45943a93e83281a7ac3445cf",
+  "pipeline/kr_alpha_atlas_bars.py": "7e9cf779edc2ef9b319c9caf1a6ab582ed3cef8fcc79d76f8ba7b8989699859c",
+  "pipeline/kr_alpha_atlas_benchmark_audit.py": "6f3b3b9c8e54447eeb506c075558c307c204ef0644a55a5158ac703e8dd5c8a8",
+  "pipeline/krx_prices.py": "d9b5ce5eecb3c820d41c6d709d57c7a2567bb4b047c4357569ac6b1959f5dd7e",
+  "research/broad_alpha_screen_v1/hypotheses.py": "2dac11a7ae18c8320486baf4d45ec2d2eb05eda1a8cb2af8ccc9162b7806b439",
+  "research/broad_alpha_screen_v1/screen.py": "055239615d7a5036e7370939c1f5d92c4c64c8fd3c0ab950694acc162c7fe624",
+  "research/corporate_event_outcome_v1/b1_inputs.py": "ce77ad4fb106dd7bbbc0683c257cf07f41b6696dd9c11bde7c78016486dce888",
+  "research/corporate_event_outcome_v1/contract.py": "d79dddceaae798d79f36a42f764acdaab557dc701175b3a655ea0308b1ad80b5",
+  "research/corporate_event_outcome_v1/engine.py": "551932b0ffa60d0c2ad4defe888d5448125975bbaabb17a4ee08920d233d4c67",
+  "research/corporate_event_outcome_v1/inference.py": "1dc73cc75436115d062343515d817ab1046fafb137d804020b6ba8e68d75ca17"
+ },
+ "evidenceClass": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+ "fixedBeforeOutcome": {
+  "bootstrap": {
+   "block": {
+    "H126": 252,
+    "H252": 504
+   },
+   "draws": 9999,
+   "seed": 319320,
+   "sensitivityBlocks": {
+    "H126": [
+     126,
+     504
+    ],
+    "H252": [
+     252,
+     756
+    ]
+   }
+  },
+  "cashSensitivity": [
+   "ZERO",
+   "BOK_POLICY_RATE_PLUS_100BP"
+  ],
+  "costMultipliers": [
+   1,
+   2,
+   3
+  ],
+  "dividendChangeThreshold": 0.25,
+  "estimand": "delta_H = H x mean daily (book - funded beta-matched control), net of dated costs (engine.simulate)",
+  "fwer": 0.05,
+  "horizons": [
+   "H126",
+   "H252"
+  ],
+  "maxNames": 5,
+  "meeDelta": {
+   "H126": 0.03,
+   "H252": 0.04
+  },
+  "minEffectiveBlocks": 4.0,
+  "multiplicity": "Holm over the 3 primary hypotheses at H126; components, H252 and every split are descriptive",
+  "oneShot": "one execution; no hypothesis, threshold, horizon or definition changes afterwards",
+  "ownershipMinIncreasePp": 1.0,
+  "primaryCash": "BOK_POLICY_RATE",
+  "primaryFamily": [
+   "P1_CAPITAL_RETURN",
+   "P2_DILUTION",
+   "K3_SUPPLY_GE_10PCT"
+  ],
+  "primaryHorizon": "H126",
+  "terminal": "EXCLUDE_UNRESOLVED primary + DOWNSIDE_STRESS(-100%) bound; never filled",
+  "verdicts": [
+   "SECONDARY_DESCRIPTIVE_NO_VERDICT",
+   "SOURCE_BLOCKED",
+   "DESCRIPTIVE_ONLY_TOO_FEW_TIME_BLOCKS",
+   "EXPLORATORY_REJECT_ECONOMIC_EFFECT",
+   "INCONCLUSIVE",
+   "EXPLORATORY_SUPPORT_NOT_VERIFIED"
+  ]
+ },
+ "hypotheses": {
+  "K1_CANCELLATION": {
+   "expectedSign": 1,
+   "mechanism": "자사주 소각·소각 목적 취득 (cohort A1)",
+   "sourceGrade": "BODY_PARSED_DATE_ONLY_CONSERVATIVE"
+  },
+  "K2_BUYBACK_NO_CANCEL": {
+   "expectedSign": 1,
+   "mechanism": "비소각 자사주 취득·신탁 (cohort A2)",
+   "sourceGrade": "BODY_PARSED_DATE_ONLY_CONSERVATIVE"
+  },
+  "K3_SUPPLY_GE_10PCT": {
+   "expectedSign": 1,
+   "mechanism": "매출 10% 이상 단일판매·공급계약 (cohort B1)",
+   "sourceGrade": "BODY_PARSED_DATE_ONLY_CONSERVATIVE"
+  },
+  "K4_RIGHTS_ISSUE": {
+   "expectedSign": -1,
+   "mechanism": "유상증자 결정 (주식수 희석)",
+   "sourceGrade": "TITLE_LEVEL_TERMS_UNPARSED"
+  },
+  "K5_EQUITY_LINKED_DEBT": {
+   "expectedSign": -1,
+   "mechanism": "CB·EB·BW 발행 결정 (잠재 희석)",
+   "sourceGrade": "TITLE_LEVEL_TERMS_UNPARSED"
+  },
+  "K6_SUPPLY_TERMINATION": {
+   "expectedSign": -1,
+   "mechanism": "단일판매·공급계약 해지",
+   "sourceGrade": "TITLE_LEVEL_TERMS_UNPARSED"
+  },
+  "K7_DIVIDEND_INCREASE": {
+   "expectedSign": 1,
+   "mechanism": "결산 현금배당 주당 25% 이상 증액",
+   "sourceGrade": "BODY_PARSED_DPS"
+  },
+  "K8_DIVIDEND_CUT": {
+   "expectedSign": -1,
+   "mechanism": "결산 현금배당 주당 25% 이상 감액",
+   "sourceGrade": "BODY_PARSED_DPS"
+  },
+  "K9_BLOCK_HOLDER_INCREASE": {
+   "expectedSign": 1,
+   "mechanism": "5% 대량보유 1%p 이상 증가 보고",
+   "sourceGrade": "DART_MAJORSTOCK_2024_09_ONWARD"
+  },
+  "P1_CAPITAL_RETURN": {
+   "expectedSign": 1,
+   "mechanism": "주주환원 결정 통합: 소각 + 자사주 취득·신탁 + 배당 증액",
+   "sourceGrade": "POOLED:K1_CANCELLATION+K2_BUYBACK_NO_CANCEL+K7_DIVIDEND_INCREASE"
+  },
+  "P2_DILUTION": {
+   "expectedSign": -1,
+   "mechanism": "희석 결정 통합: 유상증자 + CB·EB·BW",
+   "sourceGrade": "POOLED:K4_RIGHTS_ISSUE+K5_EQUITY_LINKED_DEBT"
+  }
+ },
+ "inputs": {
+  "eventsSha256": "ad2c3e7e30f32860f8755ec3c167f29ed820ca451f3edd8e62db104b0f3ede3f",
+  "priceShardSha256": {
+   "krx-prices-2013.jsonl.gz": "2bce090e2005b0bfcbf8f89738bfc5047f4e025f866d09ec571902cde7fc189a",
+   "krx-prices-2014.jsonl.gz": "41e5057ad9648139c73728133d4e33fa5a41fed5a03e7b8862bcd425f8312217",
+   "krx-prices-2015.jsonl.gz": "12f38a419c642ff369d5b5c3219930bb308dd06784ba3ee8b0428e5ca4893f1b",
+   "krx-prices-2016.jsonl.gz": "3a5869f1c08f46eb81080da949040dc67cb56c2792b3e5645182a90ae7201e93",
+   "krx-prices-2017.jsonl.gz": "0116c32a63e2043d37ff05cb9e382570dc1c4d1bdbd40f252ef912725e4e8593",
+   "krx-prices-2018.jsonl.gz": "138e0a6d733ea94ce1334ec55dc040307f6b998f2e4c99b3b4b06e298c5f4717",
+   "krx-prices-2019.jsonl.gz": "8a9da28c176559f56645437b66b8fe1da78ed46b371cfc4f3b42a3e1743c09e6",
+   "krx-prices-2020.jsonl.gz": "e0c375dd826dc017ecef45bc88162e152bf68de8a194e0e0b67893bad1713164",
+   "krx-prices-2021.jsonl.gz": "29279d2360f230dcc6fe63b463a97281144061f7d0cee883759c82fadd2fbee1",
+   "krx-prices-2022.jsonl.gz": "986bc9255a1eb35584bd3dfd306d5489fdab2a6b73c96e99652f9f458c281684",
+   "krx-prices-2023.jsonl.gz": "c0291e6ae19e7cbfe5855f864f04618b46e933f9383e489b0a7753fdb66fe416",
+   "krx-prices-2024.jsonl.gz": "fb3ee2c5435130ff8fceca0ba66f32ce8a815a6ce3bb855b9c08cbfe34fc2808",
+   "krx-prices-2025.jsonl.gz": "d0bef0689a9181276eef7335d8323cfeaf1a166dc545a4b523f1f45508885773",
+   "krx-prices-2026.jsonl.gz": "eb3e1df90a4358c1b485233521367ed48120afcf3cc43c1c52edc464939209df"
+  },
+  "signalHistoryCommit": "c430e98a40b6b4b023e3007ccb396e594bf0fccb"
+ },
+ "knownLimits": [
+  "KR history is outcome-exposed: nothing here is out-of-sample or VERIFIED",
+  "DATE_ONLY_CONSERVATIVE timing; K4-K6 are title-level (terms unparsed)",
+  "stock total return uses the conditional ex-date market rule (not officially sealed)",
+  "cash is a BOK policy-rate proxy, not an investable payoff",
+  "universe is PIT KOSPI Top300 only; industry labels outside Top120 are not PIT (diagnostic)",
+  "events with unresolved terminal economics are excluded from the primary path and bounded at -100%",
+  "model costs, no real fills; pre-investor-tax"
+ ],
+ "promotionEligible": false,
+ "question": "KR 기업 공시 사건 메커니즘(1차 3개, 구성요소 9개)이 069500.KS 대비 자금 일치 베타조정 6~12개월 선택 수익을 내는가",
+ "status": "PREPARED_NOT_EXECUTED",
+ "studyId": "broad-alpha-screen-v1"
+}

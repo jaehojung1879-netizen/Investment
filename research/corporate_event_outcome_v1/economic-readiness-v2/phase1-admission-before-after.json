@@ -1,0 +1,349 @@
+{
+ "cohortBytesSha256": "d6cb1591381768ffa4ac8feb5d2a1772c6e5c4112d2b37ba6e4cedc11672ae82",
+ "cohortSha": "9a47f478a407fae5324e8ae04e75199c16b56023",
+ "fullyQualifiedEconomicEventIncrease": 0,
+ "ledgerEnd": "2026-10-30",
+ "ledgerSha": "73b3907a663ebe300a435d0d57db4b2eee9e5ea4",
+ "outcomeExecutionAuthorized": false,
+ "qualificationNote": "Presence alone cannot establish dividends/actions/cash/tax eligibility",
+ "repairedSource": {
+  "path": "ledger/prices/kr/krx-prices-2026.jsonl.gz",
+  "sha256": "eb3e1df90a4358c1b485233521367ed48120afcf3cc43c1c52edc464939209df",
+  "signalHistory": "bad42157bf6dc3c82f2b5e10c7427f677fda0be6"
+ },
+ "repairedSourceProvided": true,
+ "scope": "SOURCE_PRESENCE_ONLY_NO_RETURN_NAV_LABEL",
+ "sources": [
+  {
+   "afterSha256": "2bce090e2005b0bfcbf8f89738bfc5047f4e025f866d09ec571902cde7fc189a",
+   "beforeSha256": "2bce090e2005b0bfcbf8f89738bfc5047f4e025f866d09ec571902cde7fc189a",
+   "path": "ledger/prices/kr/krx-prices-2013.jsonl.gz"
+  },
+  {
+   "afterSha256": "41e5057ad9648139c73728133d4e33fa5a41fed5a03e7b8862bcd425f8312217",
+   "beforeSha256": "41e5057ad9648139c73728133d4e33fa5a41fed5a03e7b8862bcd425f8312217",
+   "path": "ledger/prices/kr/krx-prices-2014.jsonl.gz"
+  },
+  {
+   "afterSha256": "12f38a419c642ff369d5b5c3219930bb308dd06784ba3ee8b0428e5ca4893f1b",
+   "beforeSha256": "12f38a419c642ff369d5b5c3219930bb308dd06784ba3ee8b0428e5ca4893f1b",
+   "path": "ledger/prices/kr/krx-prices-2015.jsonl.gz"
+  },
+  {
+   "afterSha256": "3a5869f1c08f46eb81080da949040dc67cb56c2792b3e5645182a90ae7201e93",
+   "beforeSha256": "3a5869f1c08f46eb81080da949040dc67cb56c2792b3e5645182a90ae7201e93",
+   "path": "ledger/prices/kr/krx-prices-2016.jsonl.gz"
+  },
+  {
+   "afterSha256": "0116c32a63e2043d37ff05cb9e382570dc1c4d1bdbd40f252ef912725e4e8593",
+   "beforeSha256": "0116c32a63e2043d37ff05cb9e382570dc1c4d1bdbd40f252ef912725e4e8593",
+   "path": "ledger/prices/kr/krx-prices-2017.jsonl.gz"
+  },
+  {
+   "afterSha256": "138e0a6d733ea94ce1334ec55dc040307f6b998f2e4c99b3b4b06e298c5f4717",
+   "beforeSha256": "138e0a6d733ea94ce1334ec55dc040307f6b998f2e4c99b3b4b06e298c5f4717",
+   "path": "ledger/prices/kr/krx-prices-2018.jsonl.gz"
+  },
+  {
+   "afterSha256": "8a9da28c176559f56645437b66b8fe1da78ed46b371cfc4f3b42a3e1743c09e6",
+   "beforeSha256": "8a9da28c176559f56645437b66b8fe1da78ed46b371cfc4f3b42a3e1743c09e6",
+   "path": "ledger/prices/kr/krx-prices-2019.jsonl.gz"
+  },
+  {
+   "afterSha256": "e0c375dd826dc017ecef45bc88162e152bf68de8a194e0e0b67893bad1713164",
+   "beforeSha256": "e0c375dd826dc017ecef45bc88162e152bf68de8a194e0e0b67893bad1713164",
+   "path": "ledger/prices/kr/krx-prices-2020.jsonl.gz"
+  },
+  {
+   "afterSha256": "29279d2360f230dcc6fe63b463a97281144061f7d0cee883759c82fadd2fbee1",
+   "beforeSha256": "29279d2360f230dcc6fe63b463a97281144061f7d0cee883759c82fadd2fbee1",
+   "path": "ledger/prices/kr/krx-prices-2021.jsonl.gz"
+  },
+  {
+   "afterSha256": "986bc9255a1eb35584bd3dfd306d5489fdab2a6b73c96e99652f9f458c281684",
+   "beforeSha256": "986bc9255a1eb35584bd3dfd306d5489fdab2a6b73c96e99652f9f458c281684",
+   "path": "ledger/prices/kr/krx-prices-2022.jsonl.gz"
+  },
+  {
+   "afterSha256": "c0291e6ae19e7cbfe5855f864f04618b46e933f9383e489b0a7753fdb66fe416",
+   "beforeSha256": "c0291e6ae19e7cbfe5855f864f04618b46e933f9383e489b0a7753fdb66fe416",
+   "path": "ledger/prices/kr/krx-prices-2023.jsonl.gz"
+  },
+  {
+   "afterSha256": "fb3ee2c5435130ff8fceca0ba66f32ce8a815a6ce3bb855b9c08cbfe34fc2808",
+   "beforeSha256": "fb3ee2c5435130ff8fceca0ba66f32ce8a815a6ce3bb855b9c08cbfe34fc2808",
+   "path": "ledger/prices/kr/krx-prices-2024.jsonl.gz"
+  },
+  {
+   "afterSha256": "d0bef0689a9181276eef7335d8323cfeaf1a166dc545a4b523f1f45508885773",
+   "beforeSha256": "d0bef0689a9181276eef7335d8323cfeaf1a166dc545a4b523f1f45508885773",
+   "path": "ledger/prices/kr/krx-prices-2025.jsonl.gz"
+  },
+  {
+   "afterSha256": "eb3e1df90a4358c1b485233521367ed48120afcf3cc43c1c52edc464939209df",
+   "beforeSha256": "12dd6562642434077d3799fdc84cef1587a4401fa5c41c690757c210f287721f",
+   "path": "ledger/prices/kr/krx-prices-2026.jsonl.gz"
+  }
+ ],
+ "tool": {
+  "branch": "research/a1b1-economic-inputs-v1",
+  "commit": "96f6a2fac0443b90057d7c1fedbe37afdf26a2bd",
+  "module": "research.a1b1_economic_inputs_v1.admission (Codex, reused unchanged)"
+ },
+ "windowAdmission": {
+  "A1_H126": {
+   "N": 323,
+   "after": {
+    "ENDS_BEFORE_MATURITY_TERMINAL_ECONOMICS_REQUIRED": 5,
+    "ENTRY_NOT_TRADED": 1,
+    "FULL_WINDOW_TRADED": 250,
+    "PENDING_MATURITY_OR_LEDGER_END": 58,
+    "SUSPENSION_OR_GAP_IN_WINDOW": 9
+   },
+   "before": {
+    "ENDS_BEFORE_MATURITY_TERMINAL_ECONOMICS_REQUIRED": 7,
+    "ENTRY_NOT_TRADED": 1,
+    "FULL_WINDOW_TRADED": 238,
+    "PENDING_MATURITY_OR_LEDGER_END": 58,
+    "SUSPENSION_OR_GAP_IN_WINDOW": 19
+   },
+   "changes": [
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "ENDS_BEFORE_MATURITY_TERMINAL_ECONOMICS_REQUIRED",
+     "receipt": "20260311800895",
+     "ticker": "005180.KS"
+    },
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "ENDS_BEFORE_MATURITY_TERMINAL_ECONOMICS_REQUIRED",
+     "receipt": "20260312800896",
+     "ticker": "003690.KS"
+    },
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "SUSPENSION_OR_GAP_IN_WINDOW",
+     "receipt": "20260320800971",
+     "ticker": "007810.KS"
+    },
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "SUSPENSION_OR_GAP_IN_WINDOW",
+     "receipt": "20260320801306",
+     "ticker": "000810.KS"
+    },
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "SUSPENSION_OR_GAP_IN_WINDOW",
+     "receipt": "20260320801742",
+     "ticker": "001450.KS"
+    },
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "SUSPENSION_OR_GAP_IN_WINDOW",
+     "receipt": "20260324800413",
+     "ticker": "068270.KS"
+    },
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "SUSPENSION_OR_GAP_IN_WINDOW",
+     "receipt": "20260324801066",
+     "ticker": "003540.KS"
+    },
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "SUSPENSION_OR_GAP_IN_WINDOW",
+     "receipt": "20260324801397",
+     "ticker": "281820.KS"
+    },
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "SUSPENSION_OR_GAP_IN_WINDOW",
+     "receipt": "20260326801675",
+     "ticker": "001740.KS"
+    },
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "SUSPENSION_OR_GAP_IN_WINDOW",
+     "receipt": "20260326802981",
+     "ticker": "023590.KS"
+    },
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "SUSPENSION_OR_GAP_IN_WINDOW",
+     "receipt": "20260331800004",
+     "ticker": "005930.KS"
+    },
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "SUSPENSION_OR_GAP_IN_WINDOW",
+     "receipt": "20260416800490",
+     "ticker": "033780.KS"
+    }
+   ],
+   "newFullWindows": 12
+  },
+  "A1_H252": {
+   "N": 252,
+   "after": {
+    "ENDS_BEFORE_MATURITY_TERMINAL_ECONOMICS_REQUIRED": 4,
+    "ENTRY_NOT_TRADED": 2,
+    "FULL_WINDOW_TRADED": 148,
+    "PENDING_MATURITY_OR_LEDGER_END": 88,
+    "SUSPENSION_OR_GAP_IN_WINDOW": 10
+   },
+   "before": {
+    "ENDS_BEFORE_MATURITY_TERMINAL_ECONOMICS_REQUIRED": 4,
+    "ENTRY_NOT_TRADED": 2,
+    "FULL_WINDOW_TRADED": 146,
+    "PENDING_MATURITY_OR_LEDGER_END": 88,
+    "SUSPENSION_OR_GAP_IN_WINDOW": 12
+   },
+   "changes": [
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "SUSPENSION_OR_GAP_IN_WINDOW",
+     "receipt": "20250915800392",
+     "ticker": "000990.KS"
+    },
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "SUSPENSION_OR_GAP_IN_WINDOW",
+     "receipt": "20250915800482",
+     "ticker": "090460.KS"
+    }
+   ],
+   "newFullWindows": 2
+  },
+  "B1_H126": {
+   "N": 464,
+   "after": {
+    "ENDS_BEFORE_MATURITY_TERMINAL_ECONOMICS_REQUIRED": 2,
+    "ENTRY_NOT_TRADED": 1,
+    "FULL_WINDOW_TRADED": 427,
+    "PENDING_MATURITY_OR_LEDGER_END": 23,
+    "SUSPENSION_OR_GAP_IN_WINDOW": 11
+   },
+   "before": {
+    "ENDS_BEFORE_MATURITY_TERMINAL_ECONOMICS_REQUIRED": 3,
+    "ENTRY_NOT_TRADED": 1,
+    "FULL_WINDOW_TRADED": 420,
+    "PENDING_MATURITY_OR_LEDGER_END": 23,
+    "SUSPENSION_OR_GAP_IN_WINDOW": 17
+   },
+   "changes": [
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "ENDS_BEFORE_MATURITY_TERMINAL_ECONOMICS_REQUIRED",
+     "receipt": "20260312800227",
+     "ticker": "017960.KS"
+    },
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "SUSPENSION_OR_GAP_IN_WINDOW",
+     "receipt": "20260323800077",
+     "ticker": "003570.KS"
+    },
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "SUSPENSION_OR_GAP_IN_WINDOW",
+     "receipt": "20260324800257",
+     "ticker": "066970.KS"
+    },
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "SUSPENSION_OR_GAP_IN_WINDOW",
+     "receipt": "20260331801669",
+     "ticker": "322000.KS"
+    },
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "SUSPENSION_OR_GAP_IN_WINDOW",
+     "receipt": "20260410800253",
+     "ticker": "097230.KS"
+    },
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "SUSPENSION_OR_GAP_IN_WINDOW",
+     "receipt": "20260416800003",
+     "ticker": "439260.KS"
+    },
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "SUSPENSION_OR_GAP_IN_WINDOW",
+     "receipt": "20260416800364",
+     "ticker": "047040.KS"
+    }
+   ],
+   "newFullWindows": 7
+  },
+  "B1_H252": {
+   "N": 346,
+   "after": {
+    "ENDS_BEFORE_MATURITY_TERMINAL_ECONOMICS_REQUIRED": 3,
+    "ENTRY_NOT_TRADED": 1,
+    "FULL_WINDOW_TRADED": 298,
+    "PENDING_MATURITY_OR_LEDGER_END": 34,
+    "SUSPENSION_OR_GAP_IN_WINDOW": 10
+   },
+   "before": {
+    "ENDS_BEFORE_MATURITY_TERMINAL_ECONOMICS_REQUIRED": 4,
+    "ENTRY_NOT_TRADED": 1,
+    "FULL_WINDOW_TRADED": 290,
+    "PENDING_MATURITY_OR_LEDGER_END": 34,
+    "SUSPENSION_OR_GAP_IN_WINDOW": 17
+   },
+   "changes": [
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "SUSPENSION_OR_GAP_IN_WINDOW",
+     "receipt": "20250909800046",
+     "ticker": "097230.KS"
+    },
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "ENDS_BEFORE_MATURITY_TERMINAL_ECONOMICS_REQUIRED",
+     "receipt": "20250912800120",
+     "ticker": "103140.KS"
+    },
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "SUSPENSION_OR_GAP_IN_WINDOW",
+     "receipt": "20250915800004",
+     "ticker": "000720.KS"
+    },
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "SUSPENSION_OR_GAP_IN_WINDOW",
+     "receipt": "20250917800008",
+     "ticker": "042660.KS"
+    },
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "SUSPENSION_OR_GAP_IN_WINDOW",
+     "receipt": "20250922800050",
+     "ticker": "439260.KS"
+    },
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "SUSPENSION_OR_GAP_IN_WINDOW",
+     "receipt": "20251002800710",
+     "ticker": "272210.KS"
+    },
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "SUSPENSION_OR_GAP_IN_WINDOW",
+     "receipt": "20251013800098",
+     "ticker": "071970.KS"
+    },
+    {
+     "after": "FULL_WINDOW_TRADED",
+     "before": "SUSPENSION_OR_GAP_IN_WINDOW",
+     "receipt": "20251014800279",
+     "ticker": "003670.KS"
+    }
+   ],
+   "newFullWindows": 8
+  }
+ }
+}

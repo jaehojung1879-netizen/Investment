@@ -1,0 +1,94 @@
+{
+  "observedAtUtc": "2026-11-10 08:46:30 UTC",
+  "main": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+  "initialOpenCount": 17,
+  "openCount": 16,
+  "openNumbers": [
+    299,
+    306,
+    307,
+    314,
+    316,
+    317,
+    318,
+    319,
+    320,
+    321,
+    322,
+    324,
+    325,
+    326,
+    327,
+    328
+  ],
+  "checkedPrs": [
+    {
+      "number": 315,
+      "state": "closed",
+      "base": "main",
+      "head": "23522002dcd2d9e0e16dfb9d325a235aef664f0c",
+      "draft": true
+    },
+    {
+      "number": 321,
+      "state": "open",
+      "base": "main",
+      "head": "cd2892eb6d6623c2527eeda690959d18839acc4d",
+      "draft": true
+    },
+    {
+      "number": 323,
+      "state": "closed",
+      "base": "main",
+      "head": "4349aa26fd4595980ea7408da0bd910f3001c96f",
+      "draft": true
+    },
+    {
+      "number": 325,
+      "state": "open",
+      "base": "claude/alpha-mechanism-sprint-v1-shxr6w",
+      "head": "9dc2928d3c2110a90ea911a74372cd75372a5d2e",
+      "draft": true
+    },
+    {
+      "number": 326,
+      "state": "open",
+      "base": "main",
+      "head": "ba414836a3d75d128032e54bcaa8d27ed19d5adf",
+      "draft": true
+    },
+    {
+      "number": 327,
+      "state": "open",
+      "base": "claude/inspiring-planck-lm1z5k",
+      "head": "1e0289d09ba30bf2e26ec9cfb7e118f33a6a8a87",
+      "draft": true
+    },
+    {
+      "number": 328,
+      "state": "open",
+      "base": "claude/trusting-tesla-ob0jym",
+      "head": "8d9e24c5592927365f744df11122a06bf61f0b9d",
+      "draft": true
+    }
+  ],
+  "actions": [
+    {
+      "pr": 315,
+      "action": "CLOSED_REPLACED_BY_321",
+      "comment": "https://github.com/jaehojung1879-netizen/Investment/pull/315#issuecomment-6762744948"
+    },
+    {
+      "pr": 323,
+      "action": "CLOSED_EXACT_DOCUMENTS_PRESERVED_IN_328",
+      "comment": "https://github.com/jaehojung1879-netizen/Investment/pull/323#issuecomment-6762738233"
+    },
+    {
+      "pr": 321,
+      "action": "BASE_RETARGETED_TO_MAIN_HEAD_UNCHANGED"
+    }
+  ],
+  "branchesDeleted": false,
+  "mergesPerformed": false,
+  "liveOrHistoricalExecution": false
+}

@@ -1,0 +1,188 @@
+{
+ "contract": "HISTORICAL_EXECUTION_APPROVAL_PACKET_V1",
+ "engineeringChoicesForOwnerReview": [
+  "Calendar = union over A1/B1/A2 of first entry session .. last H-exit session per horizon (one joint calendar so the bootstrap is synchronized); a session outside a book's own span, or with an empty book, holds 069500.KS 100% in BOTH books (D_t = 0) and stays in the mean (total-capital basis).",
+  "Rebalance only at the close of a session where the active slot set changes; otherwise drift.",
+  "Equal target capital per active slot; slot = q stock + (1-q) cash vs q*beta ETF + (1-q*beta) cash, q = 1/max(1,beta) fixed at entry.",
+  "A name not tradable (zero volume) on a rebalance close keeps its drifted weight; the rest of the book is rescaled around it. An event whose entry session is not tradable is a pre-trade eligibility failure (not held), counted.",
+  "Costs: stock buy = commission + half spread, sell adds the dated transaction tax; ETF each way = commission + half spread, no tax; cash free. 2x/3x scale every friction and the tax.",
+  "A held name with no level and no admitted terminal consideration makes the path incomplete (paired outcome None -> SOURCE_BLOCKED); it is never zero-filled or last-priced.",
+  "Beta: OLS of stock on 069500.KS daily total returns over the 252 returns ending at the SIGNAL session, >= 200 joint pairs; beta < 0 or unestimable -> not investable, counted.",
+  "Bootstrap: synchronized (non-circular) moving blocks over the joint calendar, basic CI on the centred mean, two-sided p = (1 + #|m*-m| >= |m|)/(B+1).",
+  "Dependence check: UNCERTAIN_DEPENDENCE when the sign of the simultaneous lower bound differs between the primary bootstrap, Bartlett HAC normal interval and either sensitivity block.",
+  "Regime checks (point estimates on event subsets): pre/post Value-up by entry date, and the book without entries in 2025-01-01..2026-12-31. Industry check: the book without the PIT research industry holding the most events (pinned outcome-free in the readiness file).",
+  "Matched check: 3 nearest non-event peers on standardized log mcap, B/M, 12-1 momentum, 21-session return, beta, exact PIT industry first (B1 mandatory). Measured iff a two-way (issuer x entry-week) clustered SE exists."
+ ],
+ "evidenceSha256": {
+  "research/corporate_event_outcome_v1/economic-readiness-v2/b1-admission-status-v2.json": "cfacd2dac885e90fe5cf077379b6807884bb662639a8ffd202f3e3e4a4df99ab",
+  "research/corporate_event_outcome_v1/economic-readiness-v2/b1-input-assembly.json": "22781490ac02de36f8f2932c23b804b9986fc3e47b91914b5089d43bedf75a9e",
+  "research/corporate_event_outcome_v1/economic-readiness-v2/benchmark-extension-check.json": "3310abeac179d43214e43f16505c3662f66a8bc45c6827c95d63bc48cfc461f1",
+  "research/corporate_event_outcome_v1/economic-readiness-v2/benchmark/069500-official-distributions.json": "5b39892e69c7ff50b63945793d5b72debd829ea417dbea7f01e8f3c31188e65f",
+  "research/corporate_event_outcome_v1/economic-readiness-v2/benchmark/issuer-standard-20261107.xls": "f9310afe3b7b5e0243433de4a55f05a740fa705f46f49de0a3da1134c58a8936",
+  "research/corporate_event_outcome_v1/economic-readiness-v2/phase1-admission-before-after.json": "05904fc0ac8e83f5de529f0b811b971360f38a291ad19df3bd561aa23d8fa1c0",
+  "research/corporate_event_outcome_v1/economic-readiness-v2/phase1-admission-classified.json": "f85aff207031258d0065ceebe9edf54f1bb6365090cc40246dbe7cc5e8d855fa",
+  "research/corporate_event_outcome_v1/economic-readiness-v2/power-second-moment.json": "05891b09487226fedd9f18ca2139b1fef509c0b4e5d5182bc0b1aa72cab0076b"
+ },
+ "frozenParameters": {
+  "benchmark": "069500.KS",
+  "beta": {
+   "minPairs": 200,
+   "windowReturns": 252
+  },
+  "bootstrap": {
+   "block": {
+    "H126": 252,
+    "H252": 504
+   },
+   "draws": 9999,
+   "seed": 319320,
+   "sensitivityBlocks": {
+    "H126": [
+     126,
+     504
+    ],
+    "H252": [
+     252,
+     756
+    ]
+   }
+  },
+  "costMultipliers": [
+   1.0,
+   2.0,
+   3.0
+  ],
+  "costs": {
+   "cashBps": 0.0,
+   "etfCommissionBps": 1.5,
+   "etfHalfSpreadBps": 4.0,
+   "etfSellTaxBps": 0.0,
+   "sellTaxSchedule": [
+    [
+     "1900-01-01",
+     30.0
+    ],
+    [
+     "2019-06-03",
+     25.0
+    ],
+    [
+     "2021-01-01",
+     23.0
+    ],
+    [
+     "2023-01-01",
+     20.0
+    ],
+    [
+     "2024-01-01",
+     18.0
+    ],
+    [
+     "2025-01-01",
+     15.0
+    ],
+    [
+     "2026-01-01",
+     20.0
+    ]
+   ],
+   "source": "pipeline/benchmark_alpha.py REALISTIC_COSTS[KR] (dated sell-tax schedule)",
+   "status": "MODEL_COST_NO_REAL_FILLS",
+   "stockCommissionBps": 1.5,
+   "stockHalfSpreadBps": 4.0
+  },
+  "familySlots": [
+   "A1_CAPITAL_ALLOCATION_CANCELLATION",
+   "B1_LARGE_SUPPLY_CONTRACT",
+   "H3_INSIDER_NOT_RUN_P_EQUALS_1"
+  ],
+  "fwer": 0.05,
+  "hacLag": {
+   "H126": 125,
+   "H252": 251
+  },
+  "horizons": {
+   "H126": 126,
+   "H252": 252
+  },
+  "meeDelta": {
+   "H126": 0.03,
+   "H252": 0.04
+  },
+  "primaryHorizon": "H126",
+  "recentConcentration": [
+   "2025-01-01",
+   "2026-12-31"
+  ],
+  "simultaneousLevel": 0.9833333333333333,
+  "valueUp": "2024-02-26"
+ },
+ "harnessCodeSha256": {
+  "research/corporate_event_outcome_v1/__init__.py": "c85846551c1e88cd2f74adaa9884643f23598d992e28c9983ec3ebc246a00d8c",
+  "research/corporate_event_outcome_v1/b1_inputs.py": "ce77ad4fb106dd7bbbc0683c257cf07f41b6696dd9c11bde7c78016486dce888",
+  "research/corporate_event_outcome_v1/contract.py": "d79dddceaae798d79f36a42f764acdaab557dc701175b3a655ea0308b1ad80b5",
+  "research/corporate_event_outcome_v1/decision.py": "ffc4ccb069fc4c07f1786d70087a076bb3d651583ee454a9570c6d38676561af",
+  "research/corporate_event_outcome_v1/engine.py": "551932b0ffa60d0c2ad4defe888d5448125975bbaabb17a4ee08920d233d4c67",
+  "research/corporate_event_outcome_v1/ex_date.py": "d73fd730fec0918f2b5308182692bc7e95022ab0e614912f2497579d8b97bd57",
+  "research/corporate_event_outcome_v1/inference.py": "1dc73cc75436115d062343515d817ab1046fafb137d804020b6ba8e68d75ca17",
+  "research/corporate_event_outcome_v1/inputs.py": "4d2226f95630854dd19a9bb1a0f37ea1a8c5325048b827bc50381adcd1a3049e",
+  "research/corporate_event_outcome_v1/power_calibration.py": "7dfffb65277485ebfef8a968918a83f6992d3b5eadc143a9f14e3d157442eacd",
+  "research/corporate_event_outcome_v1/readiness.py": "ef456b478fd2ce7ea32478de7215228cd65a5a4b4f5930e401e145a2f360b090",
+  "research/corporate_event_outcome_v1/run.py": "13e14c4ecdcb08211d52522b6c536245ef5c91c310c99126fff804425bd8810b",
+  "research/corporate_event_outcome_v1/study.py": "a65a8f3e796519a92862eaa86c704b6c6469050c040ace171e8f6ad281799eda"
+ },
+ "inputAdmission": {
+  "blocked": [
+   "benchmarkTotalReturn069500:NOT_SUPPLIED",
+   "investableKrwCash:NOT_SUPPLIED",
+   "investorCostTaxContract:NOT_SUPPLIED",
+   "matchingCharacteristics:NOT_SUPPLIED",
+   "pitIndustry:NOT_SUPPLIED",
+   "stockTotalReturn:NOT_SUPPLIED",
+   "terminalConsideration:NOT_SUPPLIED",
+   "tradability:NOT_SUPPLIED"
+  ],
+  "components": {
+   "benchmarkTotalReturn069500": "SOURCE_BLOCKED:NOT_SUPPLIED",
+   "investableKrwCash": "SOURCE_BLOCKED:NOT_SUPPLIED",
+   "investorCostTaxContract": "SOURCE_BLOCKED:NOT_SUPPLIED",
+   "matchingCharacteristics": "SOURCE_BLOCKED:NOT_SUPPLIED",
+   "pitIndustry": "SOURCE_BLOCKED:NOT_SUPPLIED",
+   "stockTotalReturn": "SOURCE_BLOCKED:NOT_SUPPLIED",
+   "terminalConsideration": "SOURCE_BLOCKED:NOT_SUPPLIED",
+   "tradability": "SOURCE_BLOCKED:NOT_SUPPLIED"
+  },
+  "required": {
+   "benchmarkTotalReturn069500": "unresolved accrual anomaly (AGENTS v2.46/v2.47)",
+   "investableKrwCash": "funded control needs a payoff, not a quote (#317 build_cash_input_contract)",
+   "investorCostTaxContract": "one investor account/tax contract shared with #317",
+   "matchingCharacteristics": "log mcap, B/M, 12-1 momentum, 21d return, beta for 3-peer match",
+   "pitIndustry": "B1 final support requires the industry-matched check",
+   "stockTotalReturn": "KRX bars carry no dividends; A1 matured windows with a record date: see readiness",
+   "terminalConsideration": "held names delisted inside a window",
+   "tradability": "entry/rebalance tradability"
+  }
+ },
+ "outcomesReadToBuildThisPacket": 0,
+ "pinnedLargestPitIndustryForRemovalCheck": {
+  "A1": "FINANCIALS",
+  "A2": "FINANCIALS",
+  "B1": "CAPITAL_GOODS_DEFENSE"
+ },
+ "preconditions": [
+  "every inputAdmission component ADMITTED by a separate source PR with a non-author audit",
+  "non-author independent review of this harness at these exact hashes",
+  "formal run from merged main through a workflow holding a durable one-shot lock ref",
+  "Owner authorization file pinning registeredSpec.sha256 and this packet SHA256 with the phrase"
+ ],
+ "prospectiveAuthorizationSha256": "c7191d7542a4e3b0d832e63625201585998632ef680d1976c0e2f0faab115d1e",
+ "readinessSha256": "052a3b481ad1ab5573f1b49259f56b1ed8fd168a89ff641497455e187f5b3ede",
+ "registeredSpec": {
+  "path": "research/corporate_event_readiness_v1/cohort/kr-corporate-information-events-v1-candidate.json",
+  "sha256": "1692b5b3131a76ab6dd8a5198ef0fd262fffa4ec7cf0925444cf344aacbd61d4"
+ },
+ "scope": "ONE historical execution of B1 only (H126 primary, H252 descriptive) over the frozen cohort-events-v1. A1 is NOT RUN: its pre-outcome second-moment MDE (7.64pp) exceeds 2x MEE, the Owner contract NO_GO gate; its Holm slot keeps p = 1 like H3 (A2 comparator dropped with it). No re-run, no threshold, window, cost or universe change; result class EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+ "status": "PREPARED_BLOCKED_BY_SOURCE",
+ "studyId": "kr-corporate-information-events-v1"
+}

@@ -1,0 +1,48 @@
+{
+ "contract": "BENCHMARK_069500_OFFICIAL_SOURCE_EXTENSION_V1",
+ "distributions": {
+  "amountMismatches": [],
+  "auditRecords": 46,
+  "newSinceAudit": [
+   "2026-10-30"
+  ],
+  "officialApi": {
+   "first": "2003-04-30",
+   "last": "2026-10-30",
+   "path": "research/corporate_event_outcome_v1/economic-readiness-v2/benchmark/069500-official-distributions.json",
+   "rows": 68,
+   "url": "https://www.samsungfund.com/api/v1/kodex/distribution.do?srchVal=069500 (pages 1-7)"
+  },
+  "overlapRecordDates": 46
+ },
+ "existingAudit": {
+  "aggregateStatus": "PASS",
+  "correctedSeriesEnd": "2026-09-14",
+  "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json"
+ },
+ "implication": "The stored replay-v16 069500 series over-accrues about 2.4pp/yr versus official distributions (AGENTS v2.46/2.47). Used as the control leg it would bias delta126 by roughly q*beta*1.2pp against the event book. The official issuer close + official distributions (existing audited recipe, reconciliation PASS 2013-2026) is the admissible basis; this file extends its source to 2026-11-06 with byte-identical overlap.",
+ "issuerStandard": {
+  "new": {
+   "capturedOnUtc": "2026-11-08",
+   "last": "2026-11-06",
+   "path": "research/corporate_event_outcome_v1/economic-readiness-v2/benchmark/issuer-standard-20261107.xls",
+   "sessions": 5939,
+   "sha256": "f9310afe3b7b5e0243433de4a55f05a740fa705f46f49de0a3da1134c58a8936",
+   "url": "https://www.samsungfund.com/excel_standar.do?fId=2ETF01&gijunYMD=20261107"
+  },
+  "old": {
+   "last": "2026-10-07",
+   "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-standard.xls",
+   "sessions": 5918,
+   "sha256": "cbdd7a0ce340228ddcfc714de637c512f73c2d691d84ae59a28cfb406d8437b9"
+  },
+  "overlapMarketCloseIdentical": true,
+  "overlapNavIdentical": true,
+  "overlapSessions": 5918,
+  "registeredSessions2012to20261106": 3647,
+  "registeredSessionsMissing": 0
+ },
+ "officialDistributionYield2017to2024PctPerYear": 2.087,
+ "returnsComputed": 0,
+ "storedReplaySeriesAccrualOverKs200PctPerYear": 4.53
+}

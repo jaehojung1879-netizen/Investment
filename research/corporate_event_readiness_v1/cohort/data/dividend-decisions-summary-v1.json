@@ -1,0 +1,39 @@
+{
+ "amendments": 279,
+ "apiCalls": 0,
+ "byRecordYear": {
+  "2012": 213,
+  "2013": 269,
+  "2014": 261,
+  "2015": 279,
+  "2016": 284,
+  "2017": 319,
+  "2018": 346,
+  "2019": 338,
+  "2020": 320,
+  "2021": 349,
+  "2022": 391,
+  "2023": 362,
+  "2024": 333,
+  "2025": 418,
+  "2026": 321,
+  "NONE": 12
+ },
+ "exDateMarketRuleCandidates": 4803,
+ "exDateRuleRevision": "ex-date counted from the last session ON OR BEFORE the record date; the first build counted sessions strictly before it and was one session late on non-session record dates (397 of 593 stated-rule rows). Re-derived offline from the stored record dates; no other field changed.",
+ "exDateSemanticsResolved": "BLOCKED: neither tier is DIRECT (AGENTS v2.28); the market rule is an unsealed candidate; Owner decision",
+ "exDateTier": {
+  "FILING_STATED_RELATIVE_RULE_PLUS_PINNED_CALENDAR": 593,
+  "NO_RECORD_DATE": 12,
+  "NO_STATED_RULE": 4210
+ },
+ "filings": 5094,
+ "issuers": 318,
+ "issuersWithParsedOriginal": 287,
+ "originals": 4815,
+ "parseStatus": {
+  "GAPS": 83,
+  "PARSED": 4732
+ },
+ "scope": "OUTCOME_FREE_DIVIDEND_SOURCE_BUILD"
+}

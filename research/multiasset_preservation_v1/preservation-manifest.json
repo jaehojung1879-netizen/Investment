@@ -1,0 +1,149 @@
+{
+  "requestedCodexB12StrategyResult": {
+    "status": "SOURCE_BLOCKED_ORIGINAL_FILES_ABSENT",
+    "checkedPaths": [
+      {
+        "path": "/workspace/multi-asset-b/report.md",
+        "exists": false,
+        "sha256": null
+      },
+      {
+        "path": "/workspace/multi-asset-b/all-metrics.csv",
+        "exists": false,
+        "sha256": null
+      },
+      {
+        "path": "/workspace/multi-asset-b-results.tar.gz",
+        "exists": false,
+        "sha256": null
+      }
+    ],
+    "independentlyReproduced": false,
+    "navVerified": false,
+    "sixOrTwelveMonthWindowsVerified": false,
+    "recoveryPeriodsVerified": false,
+    "supplierRedistributionRightsVerified": false,
+    "newCalculations": 0
+  },
+  "separateLegacyCodexAArchive": {
+    "status": "EXACT_BYTE_PARTIAL_PRESERVATION_NOT_CODEX_B_12_STRATEGIES",
+    "archive": "legacy-codex-a-code-and-summaries.tar.gz",
+    "sha256": "01cfadf540ee172529cdd84ae5da27f75b4d7b644654220bb2e829d73bcb437b",
+    "files": [
+      {
+        "path": "legacy_codex_a/REPORT-ko.md",
+        "bytes": 21811,
+        "sha256": "ca828edc3c3b3f72b135266e41e59f4d51a0e68d93fa25ed9cf3956b9bb339f1"
+      },
+      {
+        "path": "legacy_codex_a/FILE-MANIFEST.json",
+        "bytes": 14493,
+        "sha256": "13611b8e4777294b9a149c14b01b52b9110aee8be4144a5d7201fbd6bdb04574"
+      },
+      {
+        "path": "legacy_codex_a/family.json",
+        "bytes": 1299,
+        "sha256": "5a8f0bc14a2b80f70cb9d3fc5c96eacb61209703e5769d45d4c3f3b9b9215f39"
+      },
+      {
+        "path": "legacy_codex_a/analyze.py",
+        "bytes": 16696,
+        "sha256": "cc559cbd6512c9c253e4591a118eac713e6756b2d749fadd16e8eb6dd9f247b8"
+      },
+      {
+        "path": "legacy_codex_a/verify_results.py",
+        "bytes": 2524,
+        "sha256": "f8ee7a1a6bee92333d01c83b60c2d527987333597cba23f8fe98796994cde617"
+      },
+      {
+        "path": "legacy_codex_a/audit_sources.py",
+        "bytes": 3404,
+        "sha256": "96aaf55a80b622919b271cc828bc995eb725454df14935055f41517f46e6505e"
+      },
+      {
+        "path": "legacy_codex_a/fetch_academic.py",
+        "bytes": 954,
+        "sha256": "02f96b34850231383c19e4897e4b976665120bc493d6044a5cf5c70b6f668e0d"
+      },
+      {
+        "path": "legacy_codex_a/fetch_public.py",
+        "bytes": 2040,
+        "sha256": "9b133685f81eeaea304d952bdd4854818e45fbebf8e484d6107d9209948c0742"
+      },
+      {
+        "path": "legacy_codex_a/replicate_mm17.py",
+        "bytes": 1554,
+        "sha256": "f14609de00d31f6e0f73e8437e50bcb1bfcfa36b1112e1e421a7132df78c7e67"
+      },
+      {
+        "path": "legacy_codex_a/outputs/c2-analysis.json",
+        "bytes": 9363,
+        "sha256": "f46ab80d65335857adc1b72e02983011d99b3a56a89895e07007f7b6fc554696"
+      },
+      {
+        "path": "legacy_codex_a/outputs/academic-factors.json",
+        "bytes": 31455,
+        "sha256": "feff23c7255b30779002748db51e0855555b943b959f82ce955fb07a74ce5ae4"
+      },
+      {
+        "path": "legacy_codex_a/outputs/mm17-original-sample.json",
+        "bytes": 1737,
+        "sha256": "50d93a4068363ad296bdd712c31d33071c6952ae6dadeb3aeaa275788a58ca1e"
+      },
+      {
+        "path": "legacy_codex_a/outputs/validation.json",
+        "bytes": 2563,
+        "sha256": "b74bf7fc9c31ee2d5ed0f3be17e3aaa4262ff4ae0007ade83fd790332a0797bc"
+      },
+      {
+        "path": "legacy_codex_a/outputs/source-admission.json",
+        "bytes": 3700,
+        "sha256": "9213e94054f3d9780715ed6e223abedbc0b04af08dade56190e89e0518f0a670"
+      },
+      {
+        "path": "legacy_codex_a/outputs/runtime.json",
+        "bytes": 321,
+        "sha256": "b2b9edd4ec8599c5793240544134c915823bccbdcfdc17d00adae83fe58a1f5c"
+      },
+      {
+        "path": "legacy_codex_a/outputs/methodology-correction.json",
+        "bytes": 696,
+        "sha256": "b8fa2f2013890a9668f1d23a33618e1d91dfe3fff888272bffc7b03c9245b002"
+      },
+      {
+        "path": "legacy_codex_a/us_etf_calculation_v1/REPORT-ko.md",
+        "bytes": 7840,
+        "sha256": "23ab9a5cc040c1df963b25ee09bae5834ef5f4726315fc33dfa25955124448aa"
+      },
+      {
+        "path": "legacy_codex_a/us_etf_calculation_v1/calculate.py",
+        "bytes": 8444,
+        "sha256": "b60fa3160ea836d45bd81a58c2758a6065c13131b1d12aaf56ed528aac97aba3"
+      },
+      {
+        "path": "legacy_codex_a/us_etf_calculation_v1/verify.py",
+        "bytes": 2612,
+        "sha256": "410f8ae86db7dd6e9d17b85f119635957f2d0ca8da7b215a45e84860cacace22"
+      },
+      {
+        "path": "legacy_codex_a/us_etf_calculation_v1/results.json",
+        "bytes": 14561,
+        "sha256": "47ec5baeff061fee98428697f860b78f459448aafb877abbd67fd58fadb0b6dc"
+      },
+      {
+        "path": "legacy_codex_a/us_etf_calculation_v1/MANIFEST.json",
+        "bytes": 7937,
+        "sha256": "34275b109f16f43496317c489ce62caacfae6b7be3cc3340b14d68b1977bbe59"
+      },
+      {
+        "path": "legacy_codex_a/us_etf_calculation_v1/verification.json",
+        "bytes": 370,
+        "sha256": "1a37ffcfbb064cb68ec09476bed30c4f76eb4bffe7a0c97802629e4fede53057"
+      }
+    ],
+    "rawVendorFilesIncluded": false,
+    "dailyPriceOrNavFilesIncluded": false,
+    "fullOriginalInputsIncluded": false,
+    "recalculated": false
+  }
+}
