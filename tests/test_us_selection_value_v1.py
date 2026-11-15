@@ -151,3 +151,26 @@ def test_entry_exit_windows_split_on_the_actual_sessions():
     assert FU.in_window("EXIT_BY_2022", "2022-05-27", e, x) and not FU.in_window("ENTRY_FROM_2023", "2022-05-27", e, x)
     assert not FU.in_window("EXIT_BY_2022", "2022-08-05", e, pd.Timestamp("2023-02-03"))
     assert FU.in_window("ENTRY_FROM_2023", "2022-12-30", pd.Timestamp("2023-01-03"), x)
+
+
+def _sg1_module():
+    spec = importlib.util.spec_from_file_location("sg1_rc_test", ROOT / "research/alpha_mechanism_decomposition_v1/kr_followup/sg1_random_control.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def test_sg1_random_control_matches_count_pool_and_is_reproducible():
+    R = _sg1_module()
+    ETF = R.M.ETF
+    d0, d1, d2 = pd.Timestamp("2020-06-05"), pd.Timestamp("2022-01-07"), pd.Timestamp("2022-01-14")
+    s2 = {d: {**{t: 0.2 for t in ("A.KS", "B.KS", "C.KS", "D.KS", "E.KS")}, ETF: 0.0} for d in (d0, d1, d2)}
+    sg1 = {d0: R.book_of(["A.KS"]), d1: R.book_of(["B.KS", "C.KS"]), d2: R.book_of([])}
+    base = {"dates": [d0, d1, d2], "s2": s2, "sg1": sg1, "eligible": {d: ["A.KS", "B.KS", "C.KS", "D.KS", "E.KS", "F.KS"] for d in (d0, d1, d2)}}
+    a = R.random_books(base, "POOL_S2_PICKS", 3)
+    assert a == R.random_books(base, "POOL_S2_PICKS", 3)                       # reproducible
+    assert a[d0] == sg1[d0]                                                    # before the warm-up start: SG1 itself
+    assert len(R.stocks(a[d1])) == 2 and set(R.stocks(a[d1])) <= set(R.stocks(s2[d1]))
+    assert a[d1][ETF] == pytest.approx(0.6) and a[d2] == {ETF: 1.0}           # same per-name and ETF weights; 0 names -> ETF 100%
+    b = R.random_books(base, "POOL_S2_ELIGIBLE", 3)
+    assert set(R.stocks(b[d1])) <= set(base["eligible"][d1])
