@@ -1,0 +1,63 @@
+{
+ "lastReportDate": "2026-07-31",
+ "inSampleSeries": 919,
+ "stoppedFilingMergedLiquidatedOrReregistered": 136,
+ "stoppedByYearOfLastFiling": {
+  "2019": 1,
+  "2020": 18,
+  "2021": 25,
+  "2022": 16,
+  "2023": 15,
+  "2024": 24,
+  "2025": 37
+ },
+ "stillFilingButLeftScreens": 228,
+ "presentToEnd": 555,
+ "note": "a series that stops filing stays in every signal date while it filed; nothing after its last filing is used or imputed",
+ "lagOver75DaysShare": 0.007004085716668057,
+ "lagOver120DaysFilings": 67,
+ "examples": [
+  {
+   "series": "Growth Fund of America",
+   "seriesId": "S000009228",
+   "registrantCik": "0000044201",
+   "accession": "0001193125-26-323081",
+   "reportDate": "2026-05-31",
+   "publicDate": "2026-07-29",
+   "lagDays": 59,
+   "netAssetsBn": 360.9,
+   "equityHoldings": 230,
+   "activeShareVsSp500": 0.494,
+   "linkedValueShare": 0.898,
+   "sp500ValueShare": 0.828
+  },
+  {
+   "series": "T. Rowe Price Blue Chip Growth Fund, Inc.",
+   "seriesId": "S000002069",
+   "registrantCik": "0000902259",
+   "accession": "0001099263-26-009584",
+   "reportDate": "2026-06-30",
+   "publicDate": "2026-08-27",
+   "lagDays": 58,
+   "netAssetsBn": 64.6,
+   "equityHoldings": 57,
+   "activeShareVsSp500": 0.524,
+   "linkedValueShare": 0.88,
+   "sp500ValueShare": 0.818
+  },
+  {
+   "series": "VIP Contrafund Portfolio",
+   "seriesId": "S000007724",
+   "registrantCik": "0000831016",
+   "accession": "0001752724-23-189196",
+   "reportDate": "2023-06-30",
+   "publicDate": "2023-08-24",
+   "lagDays": 55,
+   "netAssetsBn": 19.5,
+   "equityHoldings": 234,
+   "activeShareVsSp500": 0.463,
+   "linkedValueShare": 0.843,
+   "sp500ValueShare": 0.711
+  }
+ ]
+}
