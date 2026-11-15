@@ -1,6 +1,6 @@
 {
   "contract": "DART_RAW_FILINGS_V1",
-  "updatedAt": "2026-11-14T10:56:43Z",
+  "updatedAt": "2026-11-15T11:31:17Z",
   "universeSize": 119,
   "years": [
     2015,
@@ -20,13 +20,12 @@
     "awaitingDeadline": 265
   },
   "thisRun": {
-    "calls": 198,
-    "recordsWritten": 1,
-    "shardsChanged": 1,
+    "calls": 197,
+    "recordsWritten": 0,
+    "shardsChanged": 0,
     "stopReason": "WORK_LIST_EXHAUSTED",
     "statuses": {
-      "013": 197,
-      "000": 1
+      "013": 197
     },
     "refused": {
       "NO_CORP_CODE": 144,
@@ -37,23 +36,7 @@
       "005387.KS",
       "005935.KS"
     ],
-    "fsDiv": {
-      "CFS": 1
-    },
-    "amountFieldsSeen": {
-      "3분기|BS|thstrm_amount": 70,
-      "3분기|BS|frmtrm_amount": 70,
-      "3분기|BS|bfefrmtrm_amount": 3,
-      "3분기|IS|thstrm_amount": 19,
-      "3분기|IS|thstrm_add_amount": 19,
-      "3분기|IS|frmtrm_add_amount": 19,
-      "3분기|CIS|thstrm_amount": 13,
-      "3분기|CIS|thstrm_add_amount": 13,
-      "3분기|CIS|frmtrm_add_amount": 13,
-      "3분기|CF|thstrm_amount": 46,
-      "3분기|CF|frmtrm_amount": 52,
-      "3분기|SCE|thstrm_amount": 55,
-      "3분기|SCE|frmtrm_amount": 1
-    }
+    "fsDiv": {},
+    "amountFieldsSeen": {}
   }
 }
