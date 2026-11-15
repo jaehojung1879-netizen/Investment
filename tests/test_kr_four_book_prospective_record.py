@@ -138,3 +138,43 @@ def test_spec_freezes_the_rules_and_names_the_live_input_blocker():
                                    "cashTarget": "NONE (the fallback is the ETF, never cash)"}
     assert set(s["books"]) == set(R.BOOKS)
     assert "COMMIT_IS_NOT_THE_PINNED_SOURCE_COMMIT" in s["liveInputBlocker"]
+
+
+def test_first_live_week_is_strictly_after_the_merge_kst_date():
+    s = R.first_live_signal_session("2026-11-20T03:00:00Z")          # 12:00 KST on a Friday
+    assert s > pd.Timestamp("2026-11-20") and R.CORE.is_weekly_decision_session(s)
+    s2 = R.first_live_signal_session("2026-11-19T16:00:00Z")         # 01:00 KST Friday 2026-11-20: that Friday is the merge's KST date
+    assert s2 > pd.Timestamp("2026-11-20")
+
+
+W = _load("kr_four_book_weekly", D / "kr_followup" / "weekly_records.py")
+
+
+def _px(n=60, seed=4):
+    rng = np.random.default_rng(seed)
+    idx = pd.bdate_range("2026-09-14", periods=n)
+    tick = [R.ETF, "000001.KS", "000002.KS", "000003.KS"]
+    closes = pd.DataFrame(100 * np.cumprod(1 + rng.normal(0, 0.01, (n, 4)), axis=0), index=idx, columns=tick)
+    return idx, closes, R.C.Prices(closes, pd.DataFrame(1.0, index=idx, columns=tick), idx, pd.Series(0.0, index=idx))
+
+
+def test_receipts_map_to_four_phase_accounts_in_signal_order():
+    rs = [{"signalDate": f"2026-10-{d:02d}", "executionDate": f"2026-10-{d + 1:02d}", "receiptSha256": str(d),
+           "books": {"B1_S2_ORIGINAL": {"weights": {R.ETF: 1.0}}}} for d in (2, 9, 16, 23, 28, 6, 13)]
+    scheds, links = W.schedules_from_receipts(rs, "B1_S2_ORIGINAL")
+    order = sorted(r["signalDate"] for r in rs)
+    assert [len(s) for s in scheds] == [2, 2, 2, 1]
+    assert sorted(links[0].values()) == sorted([order[0][-2:].lstrip("0"), order[4][-2:].lstrip("0")])
+
+
+def test_independent_nav_and_cost_check_passes_the_engine_and_catches_a_tampered_nav():
+    idx, closes, px = _px()
+    sched = {idx[1]: {"000001.KS": 0.4, "000002.KS": 0.4, R.ETF: 0.2}, idx[25]: {"000003.KS": 0.6, R.ETF: 0.4}}
+    sim = R.C.simulate(px, sched, idx[0], idx[-1], record=True)
+    acct = {"sim": sim, "schedule": sched}
+    ok = W.verify_account(acct, px, closes)
+    assert ok["pass"] and ok["trades"] == 2
+    bad = dict(sim)
+    bad["nav"] = sim["nav"].copy()
+    bad["nav"].iloc[10] *= 1.001
+    assert not W.verify_account({"sim": bad, "schedule": sched}, px, closes)["pass"]

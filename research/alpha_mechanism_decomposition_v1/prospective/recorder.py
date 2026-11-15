@@ -244,3 +244,15 @@ def book_outcome(receipt, book, *, horizon, name_outcomes, now_utc, pathway):
                                     now_utc=now_utc, weights_field=("books", book, "weights"))
     rec["book"] = book
     return rec
+
+
+def first_live_signal_session(merged_at_utc, horizon_days=21):
+    """The first weekly decision session a LIVE receipt may carry once the authorizing change has merged at `merged_at_utc`: the first weekly decision
+    session on or after the first KR session strictly after the merge's KST calendar date (prospective_receipt_core rules). Its receipt must still be
+    written after that session's 18:00 KST final close and before the next session opens (check_timing)."""
+    day = CORE.first_prospective_session(merged_at_utc)
+    for back in range(horizon_days):
+        cand = day + pd.Timedelta(days=back)
+        if CORE.is_weekly_decision_session(cand):
+            return cand
+    raise ValueError("NO_WEEKLY_DECISION_SESSION_WITHIN_%d_DAYS" % horizon_days)
