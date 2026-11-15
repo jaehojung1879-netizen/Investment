@@ -52,7 +52,7 @@ EXCLUDED_SECTORS = ("Financials", "Real Estate")
 
 def ny_date(ts):
     # Yahoo daily bars carry the session open in UTC; NY open is 13:30/14:30 UTC, so the UTC calendar date is the session date
-    return dt.datetime.utcfromtimestamp(int(ts)).date()
+    return dt.datetime.fromtimestamp(int(ts), dt.timezone.utc).date()
 
 
 class AsTraded:
@@ -118,13 +118,50 @@ class Cache(PILOT.AccountingCache):
                     extra[field + "TTM"], _ = FD.trailing_twelve_months(by_key, year, stage, field)
                     extra[field + "TTMPrior"], _ = FD.trailing_twelve_months(by_key, year - 1, stage, field)
                 current = by_key[key]
-                extra["equity"] = FD.amount(current, "bs", FD.EQUITY, FF.resolve_units(current))
+                resolved = FF.resolve_units(current)
+                extra["equity"] = FD.amount(current, "bs", FD.EQUITY, resolved)
+                extra["_impliedShares"] = implied_shares(current, resolved)
+                extra["_currentVisibleDay"] = CP.visible_day(current).isoformat()
             self.cache[key2] = extra
         extra = dict(self.cache[key2])
         if values.get("reportAgeDays") is None or not 0 <= values["reportAgeDays"] <= 180:
             extra = {k: None for k in extra}
+        implied = extra.pop("_impliedShares", None)
+        visible = extra.pop("_currentVisibleDay", None)
         values.update(extra)
+        values.setdefault("sharesBasis", None)
+        if not values.get("sharesForProxy") and implied:
+            # CORRECTION F2 (2026-11-15, after the first evaluation; an input defect found by audit, not by a return):
+            # filings that state no share count (GOOGL, XOM ...) get net income / diluted EPS from the SAME filing
+            values.update(sharesForProxy=implied, sharesBasis="NET_INCOME_OVER_DILUTED_EPS_SAME_FILING", sharesVisibleDay=visible)
         return values, ciks
+
+
+def implied_shares(record, resolved):
+    """Net income / diluted EPS of one filing (same period, same statement). None unless both are stated, EPS is at least
+    one cent in size and the two have the same sign. A proxy share count, labelled as such wherever it is used."""
+    ni = FD.amount(record, FD.FLOWS["netIncome"][0], FD.FLOWS["netIncome"][1], resolved)
+    eps = None
+    for row in record.get("statements", {}).get("ic", []):
+        if row.get("concept", "").split("_", 1)[-1] == "EarningsPerShareDiluted" and isinstance(row.get("value"), (int, float)):
+            eps = float(row["value"])
+            break
+    if ni is None or eps is None or abs(eps) < 0.01 or ni == 0 or (ni > 0) != (eps > 0):
+        return None
+    return float(ni / eps)
+
+
+def verified_class_links(close):
+    """CORRECTION F1: symbol -> successor for the class links Codex verified with an official SEC citation and the same CIK
+    (research/us_historical_market_recovery_v1/results/security-lineage.json); used only where the successor is priced."""
+    d = json.loads((ROOT / "research/us_historical_market_recovery_v1/results/security-lineage.json").read_text())
+    out = {}
+    for x in d["collection_security_links"]:
+        link = x.get("class_link") or {}
+        succ = link.get("successor_symbol")
+        if succ and link.get("identity_citation") and succ in close.columns:
+            out[x["audit_identifier"]] = succ
+    return out
 
 
 def weekly_signal_dates(close):
@@ -146,6 +183,9 @@ def build(private: Path):
     ambiguous = {t for t, c in categories.items() if c == "TICKER_REUSE_DIFFERENT_ISSUER"} | set(identity["panelPostdatesMembership"])
     malformed = {k.upper(): v["resolvedTo"] for k, v in identity["malformed"].items() if v.get("resolvedTo")}
     renames = {t: r["pricedBy"] for t, r in identity["renames"].items() if r.get("pricedBy")}
+    links = verified_class_links(close)
+    for old, succ in links.items():
+        renames.setdefault(old, succ)
     caches = {t: Cache(rows) for t, rows in raw.items()}
     momentum, vol = PILOT.price_matrix_features(close)
     traded = AsTraded(S, close)
@@ -162,7 +202,9 @@ def build(private: Path):
             c["memberDates"] += 1
             normalized = malformed.get(symbol.upper(), symbol)
             ticker = renames.get(normalized, normalized)
-            if normalized in ambiguous or ticker in seen:
+            # a verified class link (same CIK, official citation) maps the OLD symbol to its successor's panel; the reuse hold
+            # concerns today's holder of the old symbol, whose panel is never read for it
+            if (normalized in ambiguous and normalized not in links) or ticker in seen:
                 c["IDENTITY_HOLD"] += 1
                 continue
             seen.add(ticker)
@@ -199,7 +241,7 @@ def build(private: Path):
             if rec["identity"] in ("MEMBERSHIP_CIK", "PIT_SINGLE_CIK"):
                 keep = list(UP.ACCOUNTING) + ["netIncomeTTM", "operatingCashFlowTTM", "operatingCashFlowTTMPrior", "revenueTTM",
                                               "revenueTTMPrior", "capexTTM", "capexTTMPrior", "equity", "sharesForProxy",
-                                              "sharesVisibleDay", "reportEnd", "reportAgeDays"]
+                                              "sharesBasis", "sharesVisibleDay", "reportEnd", "reportAgeDays"]
                 rec.update({k: values.get(k) for k in keep})
                 px = traded.close_on(ticker, day)
                 rec["asTradedStatus"] = traded.status.get(ticker)

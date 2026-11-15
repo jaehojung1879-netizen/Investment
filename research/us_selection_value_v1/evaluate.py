@@ -31,7 +31,7 @@ SELL = BUY + POL["sellTaxBps"] / 1e4
 HS = (126, 252)
 STRATS = ("PRICE", "SECTOR_MOMENTUM_BASKET", "WITHIN_SECTOR_VALUE", "CASH_PROFITABILITY", "VALUE_CONFIRMED", "PRICE_CONFIRMED", "B2_MULTIFACTOR")
 BOOKS = ("TOP5", "TOP_QUINTILE")
-PERIODS = {k: tuple(v) for k, v in SPEC["periods"].items()}
+PERIODS = {**{k: tuple(v) for k, v in SPEC["periods"].items()}, "ALL": ("2013-01-01", "2026-12-31")}   # ALL: the whole window, added for the report
 REQ = ["momentum252", "vol252", *UP.ACCOUNTING, "netIncomeTTM", "operatingCashFlowTTM", "operatingCashFlowTTMPrior", "marketCap", "equity"]
 QQQ_FIX = ("2020-09-21", 0.38824)
 
@@ -361,7 +361,7 @@ def ai_capex(close, sections):
                 rr = close.iloc[z][names] / close.iloc[e][names] - 1
                 if rr.isna().any() or not names:
                     continue
-                per = [k for k, (a, b) in PERIODS.items() if a <= str(r["day"].date()) <= b and k != "exclude2023Plus"]
+                per = [k for k, (a, b) in PERIODS.items() if a <= str(r["day"].date()) <= b and k not in ("exclude2023Plus", "ALL")]
                 for p in per + ["ALL"]:
                     acc[(basket, r["regime"], p)].append(net(float(rr.mean())) - spy)
         out[str(H)] = {f"{b}|{reg}|{p}": {"cohorts": len(v), "meanNetExcessSPY": float(np.mean(v)), "winRate": float(np.mean(np.array(v) > 0))}
