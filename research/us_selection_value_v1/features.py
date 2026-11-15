@@ -149,7 +149,6 @@ def build(private: Path):
     caches = {t: Cache(rows) for t, rows in raw.items()}
     momentum, vol = PILOT.price_matrix_features(close)
     traded = AsTraded(S, close)
-    dollar_vol = None  # replay volume is adjusted inversely to price; close x volume is kept only as a diagnostic
     rows, funnel, cikval = [], defaultdict(Counter), Counter()
     for day in weekly_signal_dates(close):
         text = str(day.date())
