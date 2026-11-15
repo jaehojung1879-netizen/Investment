@@ -1,0 +1,84 @@
+{
+  "frozenBeforeAnyPathValued": true,
+  "note": "Comparison definition fixed before the first real path of this study was valued. Code corrections after the freeze that leave this definition unchanged are disclosed in the result.",
+  "spec": {
+    "budget": "max(minCashPct, macro regime cash floor) from kelly_portfolio._regime_adjustment, identical per block for both rungs; the withheld budget goes to the residual asset",
+    "evidenceClass": "HISTORICAL_DEVELOPMENT_OUTCOME_EXPOSED",
+    "execution": "block anchor session close, signal = last weekly signal strictly before the anchor",
+    "forbidden": [
+      "choosing N, window, sector or threshold from these results",
+      "calling any of this out-of-sample",
+      "promotion",
+      "production change",
+      "transferring the sealed +1.385pp cash-residual number to an ETF-residual strategy"
+    ],
+    "heldFixed": [
+      "maxNamesPerSector=2",
+      "maxPositionWeight=0.30",
+      "minCashPct=15 plus macro regime floor",
+      "convictionTiltRange=1.0",
+      "21-session blocks on the common KRX/NYSE schedule",
+      "expanding bucket calibration (horizon 126, prior strength 30, min 20 dates, gross)",
+      "realistic dated cost schedule (benchmark_alpha.REALISTIC_COSTS, ETF legs without sell tax)"
+    ],
+    "horizons": {
+      "H126": 126,
+      "H252": 252
+    },
+    "initialState": "100% regional ETF; the ETF-only path never trades",
+    "legacyConstraintsNotInherited": {
+      "maxNamesPerRegion": 3,
+      "minNames": 3
+    },
+    "liveValidated": false,
+    "missingData": "a block that cannot be valued stops that path (INPUT_UNAVAILABLE) at that block; no name is dropped and no return is filled with zero; unmatured horizons are PENDING, not zero",
+    "pairedInference": {
+      "blockLengthBlocks": 6,
+      "bootstrap": "circular block",
+      "draws": 2000,
+      "level": 0.95,
+      "seed": 20261101,
+      "statistic": "per-block log NAV growth difference, annualized"
+    },
+    "primaryHorizon": "H126",
+    "primaryNameCount": 5,
+    "primaryNameCountLabel": "LEGACY_TARGET_SCENARIO_NOT_AN_OPTIMUM",
+    "productionChanged": false,
+    "promotionEligible": false,
+    "question": "Economic difference between entry state inside the selection rank and entry state applied to the weight after selection, with identical sample, region, execution session, residual asset and costs.",
+    "regions": {
+      "KR": {
+        "currency": "KRW",
+        "etf": "069500.KS"
+      },
+      "US": {
+        "currency": "USD",
+        "etf": "SPY"
+      }
+    },
+    "residuals": {
+      "primary": "ETF",
+      "secondary": "CASH (KRW policy-rate accrual), reported apart"
+    },
+    "rungs": {
+      "ENTRY_AT_WEIGHT": "entry_selection_separation.entry_weighted_scores, multiplier applied to held weight",
+      "ENTRY_IN_RANK": "alpha_reliability.reliability_scores (multiplier inside the score)"
+    },
+    "scenarioNameCounts": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      10
+    ],
+    "selectionFunction": "kelly_portfolio.select_portfolio_by_scores",
+    "separateComparison": {
+      "US": "QQQ"
+    },
+    "sizingFunction": "kelly_portfolio.baseline_weights",
+    "studyId": "entry-state-role-etf-residual-v1"
+  },
+  "specSha256": "7e304b56ce2a42ba117d073b5b1180cde44fec492f411cc5d233c3c8b2eaa790"
+}

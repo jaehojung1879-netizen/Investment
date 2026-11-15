@@ -1,0 +1,1817 @@
+{
+  "codeHead": "61d57508a4670bbd1bb6a9f35d3d10fd664a95c1",
+  "codeSha256": {
+    "pipeline/entry_state_shadow_ledger.py": "8c8a558dfaeb54c4b0800bc1867ad581782a5710adb9f07d58ece6ccb1c662ca",
+    "research/economic_path_readout_v1/core.py": "bac61a6d3fda211b1c1c708fdf3e20059187f956f02d9cd1b25b109b1242fabe",
+    "scripts/entry_state_shadow_observation.mjs": "0cb6d4d5c350d717387f3f59e8a4d4dedae34f833345a7e68076bf9cd2aaa20d",
+    "scripts/record_entry_state_shadow.py": "293496c8df84570368a1ce2f6ca71081ebba7c399a53da36d4c88ed21cb1fc47",
+    "scripts/run_entry_state_shadow_readout_connection.py": "727edaf021d855dbb660ce5c5043e2560d99a8f89d5b3d3c2f013f01827e9773"
+  },
+  "connection": "entry-state-shadow -> economic-path-readout-v1",
+  "historical": {
+    "evidenceClass": "HISTORICAL_DEVELOPMENT",
+    "fileCommittedAt": "0900e74f1a946f6c064148e5c1fce65e211ba965",
+    "fileSha256": {
+      "nav-daily.csv.gz": "7eed201076321e5a2bdf9288763bacc18e8f450ddf60976721d55b0f06abb37d",
+      "result.json": "a62babd0645f8e6b2c9d4bb03c82a247761afb9281dac8c88f4fda0e92607524",
+      "spec.json": "6b0254d7b7f08e0b7322b9e4531923f1c6593f64dde403f0e433931199d08751"
+    },
+    "notes": [
+      "Not a rename of the #305 fixed-head claude-connection.json (head d3783d00, KR in-rank only); a separate read at this head, adding the at-weight rung, US vs SPY and QQQ separately.",
+      "The grid is KRX-union-NYSE observations, so the readout reports H126/H252 UNAVAILABLE."
+    ],
+    "pairs": {
+      "KR:N5:AT_WEIGHT vs 069500.KS": {
+        "benchmark": {
+          "cagrPct": 14.865975842669998,
+          "cumulativeReturnPct": 566.28919549,
+          "from": "2013-01-07",
+          "observations": 3547,
+          "observedMddPct": -40.68818239069625,
+          "through": "2026-09-14"
+        },
+        "cagrGapPp": 0.461962389189031,
+        "candidate": {
+          "cagrPct": 15.32793823185903,
+          "cumulativeReturnPct": 603.90775407,
+          "from": "2013-01-07",
+          "observations": 3547,
+          "observedMddPct": -30.96247343491767,
+          "through": "2026-09-14"
+        },
+        "costBasisMatches": true,
+        "dailyMdd": "UNAVAILABLE",
+        "economicBasisMatches": true,
+        "excessLabel": "STORED_NET_NAV_DIFFERENCE_NOT_CERTIFIED_INVESTABLE_ALPHA",
+        "investmentConclusion": "INSUFFICIENT_SOURCE_EVIDENCE_NO_PROMOTION",
+        "observedPathVerdict": "OBSERVED_DOMINATES",
+        "pairedCalendar": {
+          "reason": "NO_VERIFIED_SESSION_CALENDAR",
+          "verified": false
+        },
+        "windows": {
+          "CALENDAR_12M": {
+            "meanExcessPp": -0.8334679578783046,
+            "measured": 3290,
+            "statusCounts": {
+              "IMMATURE_AT_AS_OF": 222,
+              "MATURE_TARGET_NO_STORED_ENDPOINT": 35,
+              "MEASURED": 3290
+            }
+          },
+          "CALENDAR_6M": {
+            "meanExcessPp": -0.4049197994275132,
+            "measured": 3417,
+            "statusCounts": {
+              "IMMATURE_AT_AS_OF": 95,
+              "MATURE_TARGET_NO_STORED_ENDPOINT": 35,
+              "MEASURED": 3417
+            }
+          },
+          "H126": {
+            "reason": "REQUIRES_VERIFIED_COMPLETE_DAILY_SESSION_PATH",
+            "status": "UNAVAILABLE"
+          },
+          "H252": {
+            "reason": "REQUIRES_VERIFIED_COMPLETE_DAILY_SESSION_PATH",
+            "status": "UNAVAILABLE"
+          }
+        }
+      },
+      "KR:N5:IN_RANK vs 069500.KS": {
+        "benchmark": {
+          "cagrPct": 14.865975842669998,
+          "cumulativeReturnPct": 566.28919549,
+          "from": "2013-01-07",
+          "observations": 3547,
+          "observedMddPct": -40.68818239069625,
+          "through": "2026-09-14"
+        },
+        "cagrGapPp": -1.5257417461957523,
+        "candidate": {
+          "cagrPct": 13.340234096474246,
+          "cumulativeReturnPct": 454.87520408,
+          "from": "2013-01-07",
+          "observations": 3547,
+          "observedMddPct": -32.11069279417783,
+          "through": "2026-09-14"
+        },
+        "costBasisMatches": true,
+        "dailyMdd": "UNAVAILABLE",
+        "economicBasisMatches": true,
+        "excessLabel": "STORED_NET_NAV_DIFFERENCE_NOT_CERTIFIED_INVESTABLE_ALPHA",
+        "investmentConclusion": "INSUFFICIENT_SOURCE_EVIDENCE_NO_PROMOTION",
+        "observedPathVerdict": "RISK_RETURN_TRADE_OFF",
+        "pairedCalendar": {
+          "reason": "NO_VERIFIED_SESSION_CALENDAR",
+          "verified": false
+        },
+        "windows": {
+          "CALENDAR_12M": {
+            "meanExcessPp": -2.3135952302065634,
+            "measured": 3290,
+            "statusCounts": {
+              "IMMATURE_AT_AS_OF": 222,
+              "MATURE_TARGET_NO_STORED_ENDPOINT": 35,
+              "MEASURED": 3290
+            }
+          },
+          "CALENDAR_6M": {
+            "meanExcessPp": -1.3148300953694854,
+            "measured": 3417,
+            "statusCounts": {
+              "IMMATURE_AT_AS_OF": 95,
+              "MATURE_TARGET_NO_STORED_ENDPOINT": 35,
+              "MEASURED": 3417
+            }
+          },
+          "H126": {
+            "reason": "REQUIRES_VERIFIED_COMPLETE_DAILY_SESSION_PATH",
+            "status": "UNAVAILABLE"
+          },
+          "H252": {
+            "reason": "REQUIRES_VERIFIED_COMPLETE_DAILY_SESSION_PATH",
+            "status": "UNAVAILABLE"
+          }
+        }
+      },
+      "US:N5:AT_WEIGHT vs QQQ (separate)": {
+        "benchmark": {
+          "cagrPct": 19.837880703470702,
+          "cumulativeReturnPct": 1089.8345982651722,
+          "from": "2013-01-07",
+          "observations": 3547,
+          "observedMddPct": -35.11872756937679,
+          "through": "2026-09-14"
+        },
+        "cagrGapPp": -3.655629108711402,
+        "candidate": {
+          "cagrPct": 16.1822515947593,
+          "cumulativeReturnPct": 678.71174917,
+          "from": "2013-01-07",
+          "observations": 3547,
+          "observedMddPct": -34.58456339126763,
+          "through": "2026-09-14"
+        },
+        "costBasisMatches": true,
+        "dailyMdd": "UNAVAILABLE",
+        "economicBasisMatches": true,
+        "excessLabel": "STORED_NET_NAV_DIFFERENCE_NOT_CERTIFIED_INVESTABLE_ALPHA",
+        "investmentConclusion": "INSUFFICIENT_SOURCE_EVIDENCE_NO_PROMOTION",
+        "observedPathVerdict": "RISK_RETURN_TRADE_OFF",
+        "pairedCalendar": {
+          "reason": "NO_VERIFIED_SESSION_CALENDAR",
+          "verified": false
+        },
+        "windows": {
+          "CALENDAR_12M": {
+            "meanExcessPp": -5.168826038933117,
+            "measured": 3290,
+            "statusCounts": {
+              "IMMATURE_AT_AS_OF": 222,
+              "MATURE_TARGET_NO_STORED_ENDPOINT": 35,
+              "MEASURED": 3290
+            }
+          },
+          "CALENDAR_6M": {
+            "meanExcessPp": -2.2039426739264982,
+            "measured": 3417,
+            "statusCounts": {
+              "IMMATURE_AT_AS_OF": 95,
+              "MATURE_TARGET_NO_STORED_ENDPOINT": 35,
+              "MEASURED": 3417
+            }
+          },
+          "H126": {
+            "reason": "REQUIRES_VERIFIED_COMPLETE_DAILY_SESSION_PATH",
+            "status": "UNAVAILABLE"
+          },
+          "H252": {
+            "reason": "REQUIRES_VERIFIED_COMPLETE_DAILY_SESSION_PATH",
+            "status": "UNAVAILABLE"
+          }
+        }
+      },
+      "US:N5:AT_WEIGHT vs SPY": {
+        "benchmark": {
+          "cagrPct": 14.740211316069862,
+          "cumulativeReturnPct": 556.37559933,
+          "from": "2013-01-07",
+          "observations": 3547,
+          "observedMddPct": -33.71726392328198,
+          "through": "2026-09-14"
+        },
+        "cagrGapPp": 1.4420402786894382,
+        "candidate": {
+          "cagrPct": 16.1822515947593,
+          "cumulativeReturnPct": 678.71174917,
+          "from": "2013-01-07",
+          "observations": 3547,
+          "observedMddPct": -34.58456339126763,
+          "through": "2026-09-14"
+        },
+        "costBasisMatches": true,
+        "dailyMdd": "UNAVAILABLE",
+        "economicBasisMatches": true,
+        "excessLabel": "STORED_NET_NAV_DIFFERENCE_NOT_CERTIFIED_INVESTABLE_ALPHA",
+        "investmentConclusion": "INSUFFICIENT_SOURCE_EVIDENCE_NO_PROMOTION",
+        "observedPathVerdict": "RISK_RETURN_TRADE_OFF",
+        "pairedCalendar": {
+          "reason": "NO_VERIFIED_SESSION_CALENDAR",
+          "verified": false
+        },
+        "windows": {
+          "CALENDAR_12M": {
+            "meanExcessPp": 1.031446565107146,
+            "measured": 3290,
+            "statusCounts": {
+              "IMMATURE_AT_AS_OF": 222,
+              "MATURE_TARGET_NO_STORED_ENDPOINT": 35,
+              "MEASURED": 3290
+            }
+          },
+          "CALENDAR_6M": {
+            "meanExcessPp": 0.6473862283230998,
+            "measured": 3417,
+            "statusCounts": {
+              "IMMATURE_AT_AS_OF": 95,
+              "MATURE_TARGET_NO_STORED_ENDPOINT": 35,
+              "MEASURED": 3417
+            }
+          },
+          "H126": {
+            "reason": "REQUIRES_VERIFIED_COMPLETE_DAILY_SESSION_PATH",
+            "status": "UNAVAILABLE"
+          },
+          "H252": {
+            "reason": "REQUIRES_VERIFIED_COMPLETE_DAILY_SESSION_PATH",
+            "status": "UNAVAILABLE"
+          }
+        }
+      },
+      "US:N5:IN_RANK vs SPY": {
+        "benchmark": {
+          "cagrPct": 14.740211316069862,
+          "cumulativeReturnPct": 556.37559933,
+          "from": "2013-01-07",
+          "observations": 3547,
+          "observedMddPct": -33.71726392328198,
+          "through": "2026-09-14"
+        },
+        "cagrGapPp": 2.7764045478472905,
+        "candidate": {
+          "cagrPct": 17.516615863917153,
+          "cumulativeReturnPct": 810.42180687,
+          "from": "2013-01-07",
+          "observations": 3547,
+          "observedMddPct": -38.53775884290568,
+          "through": "2026-09-14"
+        },
+        "costBasisMatches": true,
+        "dailyMdd": "UNAVAILABLE",
+        "economicBasisMatches": true,
+        "excessLabel": "STORED_NET_NAV_DIFFERENCE_NOT_CERTIFIED_INVESTABLE_ALPHA",
+        "investmentConclusion": "INSUFFICIENT_SOURCE_EVIDENCE_NO_PROMOTION",
+        "observedPathVerdict": "RISK_RETURN_TRADE_OFF",
+        "pairedCalendar": {
+          "reason": "NO_VERIFIED_SESSION_CALENDAR",
+          "verified": false
+        },
+        "windows": {
+          "CALENDAR_12M": {
+            "meanExcessPp": 1.8402735688478367,
+            "measured": 3290,
+            "statusCounts": {
+              "IMMATURE_AT_AS_OF": 222,
+              "MATURE_TARGET_NO_STORED_ENDPOINT": 35,
+              "MEASURED": 3290
+            }
+          },
+          "CALENDAR_6M": {
+            "meanExcessPp": 1.5505260024345682,
+            "measured": 3417,
+            "statusCounts": {
+              "IMMATURE_AT_AS_OF": 95,
+              "MATURE_TARGET_NO_STORED_ENDPOINT": 35,
+              "MEASURED": 3417
+            }
+          },
+          "H126": {
+            "reason": "REQUIRES_VERIFIED_COMPLETE_DAILY_SESSION_PATH",
+            "status": "UNAVAILABLE"
+          },
+          "H252": {
+            "reason": "REQUIRES_VERIFIED_COMPLETE_DAILY_SESSION_PATH",
+            "status": "UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "readAtHead": "61d57508a4670bbd1bb6a9f35d3d10fd664a95c1",
+    "selection": "the frozen primary N=5 (legacy target, not an optimum) for both rungs; no other N read"
+  },
+  "liveValidated": false,
+  "ordersPlaced": 0,
+  "productionChanged": false,
+  "promotionEligible": false,
+  "realInput": {
+    "accounting": {
+      "fillsAppended": 0,
+      "navRowsAppended": 0,
+      "strategies": {
+        "KR:CURRENT_POLICY": "ADVANCED",
+        "KR:ETF_ONLY": "ADVANCED",
+        "KR:LEGACY_CONTROL_MAXREGION3": "ADVANCED",
+        "KR:N0:AT_WEIGHT": "ADVANCED",
+        "KR:N0:IN_RANK": "ADVANCED",
+        "KR:N10:AT_WEIGHT": "ADVANCED",
+        "KR:N10:IN_RANK": "ADVANCED",
+        "KR:N1:AT_WEIGHT": "ADVANCED",
+        "KR:N1:IN_RANK": "ADVANCED",
+        "KR:N2:AT_WEIGHT": "ADVANCED",
+        "KR:N2:IN_RANK": "ADVANCED",
+        "KR:N3:AT_WEIGHT": "ADVANCED",
+        "KR:N3:IN_RANK": "ADVANCED",
+        "KR:N4:AT_WEIGHT": "ADVANCED",
+        "KR:N4:IN_RANK": "ADVANCED",
+        "KR:N5:AT_WEIGHT": "ADVANCED",
+        "KR:N5:IN_RANK": "ADVANCED",
+        "US:CURRENT_POLICY": "ADVANCED",
+        "US:ETF_ONLY": "ADVANCED",
+        "US:LEGACY_CONTROL_MAXREGION3": "ADVANCED",
+        "US:N0:AT_WEIGHT": "ADVANCED",
+        "US:N0:IN_RANK": "ADVANCED",
+        "US:N10:AT_WEIGHT": "ADVANCED",
+        "US:N10:IN_RANK": "ADVANCED",
+        "US:N1:AT_WEIGHT": "ADVANCED",
+        "US:N1:IN_RANK": "ADVANCED",
+        "US:N2:AT_WEIGHT": "ADVANCED",
+        "US:N2:IN_RANK": "ADVANCED",
+        "US:N3:AT_WEIGHT": "ADVANCED",
+        "US:N3:IN_RANK": "ADVANCED",
+        "US:N4:AT_WEIGHT": "ADVANCED",
+        "US:N4:IN_RANK": "ADVANCED",
+        "US:N5:AT_WEIGHT": "ADVANCED",
+        "US:N5:IN_RANK": "ADVANCED",
+        "US:SEPARATE_COMPARISON:QQQ": "ADVANCED"
+      }
+    },
+    "decisionReport": {
+      "alreadyPresent": 0,
+      "appended": 35,
+      "conflictsRefused": []
+    },
+    "evidenceClass": "PROSPECTIVE_PAPER_SHAPE_REAL_INPUT_NOT_A_SIGNAL_HISTORY_RECEIPT",
+    "executionSessions": [
+      [
+        "KR",
+        "2026-11-02"
+      ],
+      [
+        "US",
+        "2026-11-02"
+      ]
+    ],
+    "exitCode": 0,
+    "ledgerFileSha256": {
+      "decisions.jsonl": "fba45fea9eab2086e3e2b11b397dab8f488a9a523221ca0c104220f816988d16"
+    },
+    "originQuoteCheck": {
+      "001450.KS": {
+        "origin": "2026-10-30",
+        "originQuoteServed": true,
+        "publishedThrough": "2026-10-30"
+      },
+      "002380.KS": {
+        "origin": "2026-10-30",
+        "originQuoteServed": true,
+        "publishedThrough": "2026-10-30"
+      },
+      "005935.KS": {
+        "origin": "2026-10-30",
+        "originQuoteServed": true,
+        "publishedThrough": "2026-10-30"
+      },
+      "021240.KS": {
+        "origin": "2026-10-30",
+        "originQuoteServed": true,
+        "publishedThrough": "2026-10-30"
+      },
+      "028670.KS": {
+        "origin": "2026-10-30",
+        "originQuoteServed": true,
+        "publishedThrough": "2026-10-30"
+      },
+      "034730.KS": {
+        "origin": "2026-10-30",
+        "originQuoteServed": true,
+        "publishedThrough": "2026-10-30"
+      },
+      "069500.KS": {
+        "origin": "2026-10-30",
+        "originQuoteServed": true,
+        "publishedThrough": "2026-10-30"
+      },
+      "ALL": {
+        "origin": "2026-10-30",
+        "originQuoteServed": true,
+        "publishedThrough": "2026-10-30"
+      },
+      "HLT": {
+        "origin": "2026-10-30",
+        "originQuoteServed": true,
+        "publishedThrough": "2026-10-30"
+      },
+      "KIM": {
+        "origin": "2026-10-30",
+        "originQuoteServed": true,
+        "publishedThrough": "2026-10-30"
+      },
+      "MAR": {
+        "origin": "2026-10-30",
+        "originQuoteServed": true,
+        "publishedThrough": "2026-10-30"
+      },
+      "QQQ": {
+        "origin": "2026-10-30",
+        "originQuoteServed": true,
+        "publishedThrough": "2026-10-30"
+      },
+      "SPG": {
+        "origin": "2026-10-30",
+        "originQuoteServed": true,
+        "publishedThrough": "2026-10-30"
+      },
+      "SPY": {
+        "origin": "2026-10-30",
+        "originQuoteServed": true,
+        "publishedThrough": "2026-10-30"
+      },
+      "TRV": {
+        "origin": "2026-10-30",
+        "originQuoteServed": true,
+        "publishedThrough": "2026-10-30"
+      }
+    },
+    "readout": {
+      "reason": "NO_NAV_ROWS_YET: KR:CURRENT_POLICY",
+      "status": "NOT_YET_POSSIBLE"
+    },
+    "recordedAtUtc": "2026-11-01T05:44:12Z",
+    "signalHistoryCommit": "f9be595fdc172ecb4fe72a4f1a66e359695b4a5f",
+    "sourcePins": {
+      "config.json": {
+        "commit": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+        "sha256": "d1169e1e4a84ded1385e11e591ea01a4b383e7a625960ece9278a0bde3c15273"
+      },
+      "ledger/research-strategies/current-champion-decisions-v1/latest.json": {
+        "blob": "d08c3799f9a85c1d23a21c1d8e841827cc9a08b9",
+        "sha256": "4e1ab55ebbb0b342faf8004374c3025abbcd1367938809a1f8fabb5e260a464f"
+      },
+      "ledger/weekly-decisions/latest.json": {
+        "blob": "47a249d9508f97b759812d7c87fcf7f1cb52a50f",
+        "sha256": "f4c48085fb47def9e66614c1287101c8065a5773763543def4799f633d84fa87"
+      }
+    },
+    "statusReport": {
+      "asOfUtc": "2026-11-01T05:44:12Z",
+      "costBasis": "NET_ALREADY_CHARGED",
+      "evidenceClass": "PROSPECTIVE_PAPER",
+      "limits": [
+        "vendor adjusted-close ratios are not certified corporate-action or shareholder-return accounting",
+        "units are valuation-index units, not broker shares; no order was placed",
+        "excessVsEtfPct is a NAV ratio since each strategy's own start, not a validated alpha"
+      ],
+      "returnBasis": "VENDOR_ADJUSTED_CLOSE_FIXED_ORIGIN_RATIO_V1_PREFIX_CHECKED",
+      "strategies": {
+        "KR:CURRENT_POLICY": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": null,
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "PASSIVE_NO_DEFENSIBLE_EDGE",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 1.0,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "CURRENT_RESEARCH_POLICY",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "KR",
+          "selected": null,
+          "stockCount": 0,
+          "targetWeights": {
+            "069500.KS": 1.0
+          }
+        },
+        "KR:ETF_ONLY": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": null,
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "PASSIVE",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 1.0,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "PASSIVE_REFERENCE",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "KR",
+          "selected": null,
+          "stockCount": 0,
+          "targetWeights": {
+            "069500.KS": 1.0
+          }
+        },
+        "KR:LEGACY_CONTROL_MAXREGION3": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": null,
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "SAME_AS_PUBLISHED",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 0.431452,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "LEGACY_COMPARATOR",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "KR",
+          "selected": [
+            "028670.KS",
+            "002380.KS",
+            "034730.KS"
+          ],
+          "stockCount": 3,
+          "targetWeights": {
+            "002380.KS": 0.187666,
+            "028670.KS": 0.3,
+            "034730.KS": 0.080882,
+            "069500.KS": 0.431452
+          }
+        },
+        "KR:N0:AT_WEIGHT": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": {
+            "BELOW_TARGET_COUNT_CUTOFF": 6,
+            "INELIGIBLE": 5,
+            "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF": 1
+          },
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "SOURCE_PINNED_COUNTERFACTUAL",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 1.0,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "KR",
+          "selected": [],
+          "stockCount": 0,
+          "targetWeights": {
+            "069500.KS": 1.0
+          }
+        },
+        "KR:N0:IN_RANK": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": {
+            "BELOW_TARGET_COUNT_CUTOFF": 6,
+            "INELIGIBLE": 5,
+            "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF": 1
+          },
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "SOURCE_PINNED_COUNTERFACTUAL",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 1.0,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "KR",
+          "selected": [],
+          "stockCount": 0,
+          "targetWeights": {
+            "069500.KS": 1.0
+          }
+        },
+        "KR:N10:AT_WEIGHT": {
+          "action": "HOLD_PREVIOUS_BOOK_NO_TRADE",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": null,
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "INSUFFICIENT_ELIGIBLE_NAMES",
+          "etfNavSameDate": null,
+          "etfResidualWeight": null,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "HOLD_PREVIOUS_BOOK_NO_TRADE",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "KR",
+          "selected": null,
+          "stockCount": null,
+          "targetWeights": null
+        },
+        "KR:N10:IN_RANK": {
+          "action": "HOLD_PREVIOUS_BOOK_NO_TRADE",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": null,
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "INSUFFICIENT_ELIGIBLE_NAMES",
+          "etfNavSameDate": null,
+          "etfResidualWeight": null,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "HOLD_PREVIOUS_BOOK_NO_TRADE",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "KR",
+          "selected": null,
+          "stockCount": null,
+          "targetWeights": null
+        },
+        "KR:N1:AT_WEIGHT": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": {
+            "BELOW_TARGET_COUNT_CUTOFF": 5,
+            "INELIGIBLE": 5,
+            "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF": 1,
+            "SELECTED": 1
+          },
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "SOURCE_PINNED_COUNTERFACTUAL",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 0.925,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "KR",
+          "selected": [
+            "021240.KS"
+          ],
+          "stockCount": 1,
+          "targetWeights": {
+            "021240.KS": 0.075,
+            "069500.KS": 0.925
+          }
+        },
+        "KR:N1:IN_RANK": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": {
+            "BELOW_TARGET_COUNT_CUTOFF": 5,
+            "INELIGIBLE": 5,
+            "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF": 1,
+            "SELECTED": 1
+          },
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "SOURCE_PINNED_COUNTERFACTUAL",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 0.7,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "KR",
+          "selected": [
+            "028670.KS"
+          ],
+          "stockCount": 1,
+          "targetWeights": {
+            "028670.KS": 0.3,
+            "069500.KS": 0.7
+          }
+        },
+        "KR:N2:AT_WEIGHT": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": {
+            "BELOW_TARGET_COUNT_CUTOFF": 4,
+            "INELIGIBLE": 5,
+            "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF": 1,
+            "SELECTED": 2
+          },
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "SOURCE_PINNED_COUNTERFACTUAL",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 0.891985,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "KR",
+          "selected": [
+            "021240.KS",
+            "001450.KS"
+          ],
+          "stockCount": 2,
+          "targetWeights": {
+            "001450.KS": 0.033015,
+            "021240.KS": 0.075,
+            "069500.KS": 0.891985
+          }
+        },
+        "KR:N2:IN_RANK": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": {
+            "BELOW_TARGET_COUNT_CUTOFF": 4,
+            "INELIGIBLE": 5,
+            "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF": 1,
+            "SELECTED": 2
+          },
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "SOURCE_PINNED_COUNTERFACTUAL",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 0.567618,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "KR",
+          "selected": [
+            "028670.KS",
+            "002380.KS"
+          ],
+          "stockCount": 2,
+          "targetWeights": {
+            "002380.KS": 0.132382,
+            "028670.KS": 0.3,
+            "069500.KS": 0.567618
+          }
+        },
+        "KR:N3:AT_WEIGHT": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": {
+            "BELOW_TARGET_COUNT_CUTOFF": 3,
+            "INELIGIBLE": 5,
+            "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF": 1,
+            "SELECTED": 3
+          },
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "SOURCE_PINNED_COUNTERFACTUAL",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 0.837997,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "KR",
+          "selected": [
+            "021240.KS",
+            "001450.KS",
+            "028670.KS"
+          ],
+          "stockCount": 3,
+          "targetWeights": {
+            "001450.KS": 0.046881,
+            "021240.KS": 0.075,
+            "028670.KS": 0.040122,
+            "069500.KS": 0.837997
+          }
+        },
+        "KR:N3:IN_RANK": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": {
+            "BELOW_TARGET_COUNT_CUTOFF": 3,
+            "INELIGIBLE": 5,
+            "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF": 1,
+            "SELECTED": 3
+          },
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "SOURCE_PINNED_COUNTERFACTUAL",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 0.431452,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "KR",
+          "selected": [
+            "028670.KS",
+            "002380.KS",
+            "034730.KS"
+          ],
+          "stockCount": 3,
+          "targetWeights": {
+            "002380.KS": 0.187666,
+            "028670.KS": 0.3,
+            "034730.KS": 0.080882,
+            "069500.KS": 0.431452
+          }
+        },
+        "KR:N4:AT_WEIGHT": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": {
+            "BELOW_TARGET_COUNT_CUTOFF": 2,
+            "INELIGIBLE": 5,
+            "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF": 1,
+            "SELECTED": 4
+          },
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "SOURCE_PINNED_COUNTERFACTUAL",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 0.809777,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "KR",
+          "selected": [
+            "021240.KS",
+            "001450.KS",
+            "028670.KS",
+            "002380.KS"
+          ],
+          "stockCount": 4,
+          "targetWeights": {
+            "001450.KS": 0.043587,
+            "002380.KS": 0.027155,
+            "021240.KS": 0.066191,
+            "028670.KS": 0.05329,
+            "069500.KS": 0.809777
+          }
+        },
+        "KR:N4:IN_RANK": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": {
+            "BELOW_TARGET_COUNT_CUTOFF": 2,
+            "INELIGIBLE": 5,
+            "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF": 1,
+            "SELECTED": 4
+          },
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "SOURCE_PINNED_COUNTERFACTUAL",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 0.400001,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "KR",
+          "selected": [
+            "028670.KS",
+            "002380.KS",
+            "034730.KS",
+            "021240.KS"
+          ],
+          "stockCount": 4,
+          "targetWeights": {
+            "002380.KS": 0.156822,
+            "021240.KS": 0.109215,
+            "028670.KS": 0.237407,
+            "034730.KS": 0.096555,
+            "069500.KS": 0.400001
+          }
+        },
+        "KR:N5:AT_WEIGHT": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": {
+            "BELOW_TARGET_COUNT_CUTOFF": 1,
+            "INELIGIBLE": 5,
+            "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF": 1,
+            "SELECTED": 5
+          },
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "SOURCE_PINNED_COUNTERFACTUAL",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 0.795706,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "KR",
+          "selected": [
+            "021240.KS",
+            "001450.KS",
+            "028670.KS",
+            "002380.KS",
+            "034730.KS"
+          ],
+          "stockCount": 5,
+          "targetWeights": {
+            "001450.KS": 0.039591,
+            "002380.KS": 0.034532,
+            "021240.KS": 0.056114,
+            "028670.KS": 0.054213,
+            "034730.KS": 0.019844,
+            "069500.KS": 0.795706
+          }
+        },
+        "KR:N5:IN_RANK": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": {
+            "BELOW_TARGET_COUNT_CUTOFF": 1,
+            "INELIGIBLE": 5,
+            "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF": 1,
+            "SELECTED": 5
+          },
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "SOURCE_PINNED_COUNTERFACTUAL",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 0.399999,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "KR",
+          "selected": [
+            "028670.KS",
+            "002380.KS",
+            "034730.KS",
+            "021240.KS",
+            "005935.KS"
+          ],
+          "stockCount": 5,
+          "targetWeights": {
+            "002380.KS": 0.135306,
+            "005935.KS": 0.048286,
+            "021240.KS": 0.131924,
+            "028670.KS": 0.19118,
+            "034730.KS": 0.093305,
+            "069500.KS": 0.399999
+          }
+        },
+        "US:CURRENT_POLICY": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": null,
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "PASSIVE_NO_DEFENSIBLE_EDGE",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 1.0,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "CURRENT_RESEARCH_POLICY",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "US",
+          "selected": null,
+          "stockCount": 0,
+          "targetWeights": {
+            "SPY": 1.0
+          }
+        },
+        "US:ETF_ONLY": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": null,
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "PASSIVE",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 1.0,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "PASSIVE_REFERENCE",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "US",
+          "selected": null,
+          "stockCount": 0,
+          "targetWeights": {
+            "SPY": 1.0
+          }
+        },
+        "US:LEGACY_CONTROL_MAXREGION3": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": null,
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "SAME_AS_PUBLISHED",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 0.433366,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "LEGACY_COMPARATOR",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "US",
+          "selected": [
+            "TRV",
+            "HLT",
+            "MAR"
+          ],
+          "stockCount": 3,
+          "targetWeights": {
+            "HLT": 0.184682,
+            "MAR": 0.081952,
+            "SPY": 0.433366,
+            "TRV": 0.3
+          }
+        },
+        "US:N0:AT_WEIGHT": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": {
+            "BELOW_TARGET_COUNT_CUTOFF": 11,
+            "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF": 1
+          },
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "SOURCE_PINNED_COUNTERFACTUAL",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 1.0,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "US",
+          "selected": [],
+          "stockCount": 0,
+          "targetWeights": {
+            "SPY": 1.0
+          }
+        },
+        "US:N0:IN_RANK": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": {
+            "BELOW_TARGET_COUNT_CUTOFF": 11,
+            "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF": 1
+          },
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "SOURCE_PINNED_COUNTERFACTUAL",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 1.0,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "US",
+          "selected": [],
+          "stockCount": 0,
+          "targetWeights": {
+            "SPY": 1.0
+          }
+        },
+        "US:N10:AT_WEIGHT": {
+          "action": "HOLD_PREVIOUS_BOOK_NO_TRADE",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": null,
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "INSUFFICIENT_ELIGIBLE_NAMES",
+          "etfNavSameDate": null,
+          "etfResidualWeight": null,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "HOLD_PREVIOUS_BOOK_NO_TRADE",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "US",
+          "selected": null,
+          "stockCount": null,
+          "targetWeights": null
+        },
+        "US:N10:IN_RANK": {
+          "action": "HOLD_PREVIOUS_BOOK_NO_TRADE",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": null,
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "INSUFFICIENT_ELIGIBLE_NAMES",
+          "etfNavSameDate": null,
+          "etfResidualWeight": null,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "HOLD_PREVIOUS_BOOK_NO_TRADE",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "US",
+          "selected": null,
+          "stockCount": null,
+          "targetWeights": null
+        },
+        "US:N1:AT_WEIGHT": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": {
+            "BELOW_TARGET_COUNT_CUTOFF": 10,
+            "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF": 1,
+            "SELECTED": 1
+          },
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "SOURCE_PINNED_COUNTERFACTUAL",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 0.85,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "US",
+          "selected": [
+            "SPG"
+          ],
+          "stockCount": 1,
+          "targetWeights": {
+            "SPG": 0.15,
+            "SPY": 0.85
+          }
+        },
+        "US:N1:IN_RANK": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": {
+            "BELOW_TARGET_COUNT_CUTOFF": 10,
+            "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF": 1,
+            "SELECTED": 1
+          },
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "SOURCE_PINNED_COUNTERFACTUAL",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 0.7,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "US",
+          "selected": [
+            "TRV"
+          ],
+          "stockCount": 1,
+          "targetWeights": {
+            "SPY": 0.7,
+            "TRV": 0.3
+          }
+        },
+        "US:N2:AT_WEIGHT": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": {
+            "BELOW_TARGET_COUNT_CUTOFF": 9,
+            "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF": 1,
+            "SELECTED": 2
+          },
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "SOURCE_PINNED_COUNTERFACTUAL",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 0.813832,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "US",
+          "selected": [
+            "SPG",
+            "KIM"
+          ],
+          "stockCount": 2,
+          "targetWeights": {
+            "KIM": 0.038831,
+            "SPG": 0.147337,
+            "SPY": 0.813832
+          }
+        },
+        "US:N2:IN_RANK": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": {
+            "BELOW_TARGET_COUNT_CUTOFF": 9,
+            "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF": 1,
+            "SELECTED": 2
+          },
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "SOURCE_PINNED_COUNTERFACTUAL",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 0.569853,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "US",
+          "selected": [
+            "TRV",
+            "HLT"
+          ],
+          "stockCount": 2,
+          "targetWeights": {
+            "HLT": 0.130147,
+            "SPY": 0.569853,
+            "TRV": 0.3
+          }
+        },
+        "US:N3:AT_WEIGHT": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": {
+            "BELOW_TARGET_COUNT_CUTOFF": 8,
+            "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF": 1,
+            "SELECTED": 3
+          },
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "SOURCE_PINNED_COUNTERFACTUAL",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 0.725251,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "US",
+          "selected": [
+            "SPG",
+            "KIM",
+            "TRV"
+          ],
+          "stockCount": 3,
+          "targetWeights": {
+            "KIM": 0.046931,
+            "SPG": 0.131138,
+            "SPY": 0.725251,
+            "TRV": 0.09668
+          }
+        },
+        "US:N3:IN_RANK": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": {
+            "BELOW_TARGET_COUNT_CUTOFF": 8,
+            "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF": 1,
+            "SELECTED": 3
+          },
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "SOURCE_PINNED_COUNTERFACTUAL",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 0.433366,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "US",
+          "selected": [
+            "TRV",
+            "HLT",
+            "MAR"
+          ],
+          "stockCount": 3,
+          "targetWeights": {
+            "HLT": 0.184682,
+            "MAR": 0.081952,
+            "SPY": 0.433366,
+            "TRV": 0.3
+          }
+        },
+        "US:N4:AT_WEIGHT": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": {
+            "BELOW_TARGET_COUNT_CUTOFF": 6,
+            "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF": 1,
+            "SECTOR_NAME_LIMIT": 1,
+            "SELECTED": 4
+          },
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "SOURCE_PINNED_COUNTERFACTUAL",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 0.654222,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "US",
+          "selected": [
+            "SPG",
+            "KIM",
+            "TRV",
+            "HLT"
+          ],
+          "stockCount": 4,
+          "targetWeights": {
+            "HLT": 0.061816,
+            "KIM": 0.047121,
+            "SPG": 0.112859,
+            "SPY": 0.654222,
+            "TRV": 0.123982
+          }
+        },
+        "US:N4:IN_RANK": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": {
+            "BELOW_TARGET_COUNT_CUTOFF": 6,
+            "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF": 1,
+            "SECTOR_NAME_LIMIT": 1,
+            "SELECTED": 4
+          },
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "SOURCE_PINNED_COUNTERFACTUAL",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 0.399999,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "US",
+          "selected": [
+            "TRV",
+            "HLT",
+            "MAR",
+            "SPG"
+          ],
+          "stockCount": 4,
+          "targetWeights": {
+            "HLT": 0.162041,
+            "MAR": 0.102722,
+            "SPG": 0.084526,
+            "SPY": 0.399999,
+            "TRV": 0.250712
+          }
+        },
+        "US:N5:AT_WEIGHT": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": {
+            "BELOW_TARGET_COUNT_CUTOFF": 5,
+            "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF": 1,
+            "SECTOR_NAME_LIMIT": 1,
+            "SELECTED": 5
+          },
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "SOURCE_PINNED_COUNTERFACTUAL",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 0.641463,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "US",
+          "selected": [
+            "SPG",
+            "KIM",
+            "TRV",
+            "HLT",
+            "ALL"
+          ],
+          "stockCount": 5,
+          "targetWeights": {
+            "ALL": 0.021258,
+            "HLT": 0.077249,
+            "KIM": 0.04206,
+            "SPG": 0.094023,
+            "SPY": 0.641463,
+            "TRV": 0.123947
+          }
+        },
+        "US:N5:IN_RANK": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": {
+            "BELOW_TARGET_COUNT_CUTOFF": 5,
+            "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF": 1,
+            "SECTOR_NAME_LIMIT": 1,
+            "SELECTED": 5
+          },
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "SOURCE_PINNED_COUNTERFACTUAL",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 0.4,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "RESEARCH_SCENARIO",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "US",
+          "selected": [
+            "TRV",
+            "HLT",
+            "MAR",
+            "SPG",
+            "ALL"
+          ],
+          "stockCount": 5,
+          "targetWeights": {
+            "ALL": 0.047013,
+            "HLT": 0.142363,
+            "MAR": 0.101078,
+            "SPG": 0.103965,
+            "SPY": 0.4,
+            "TRV": 0.205581
+          }
+        },
+        "US:SEPARATE_COMPARISON:QQQ": {
+          "action": "TARGET",
+          "asOfDate": "2026-10-30",
+          "candidateAuditCounts": null,
+          "chargedCostPctOfNav": 0.0,
+          "decisionStatus": "PASSIVE",
+          "etfNavSameDate": null,
+          "etfResidualWeight": 0.0,
+          "excessVsEtfPct": null,
+          "executionSession": "2026-11-02",
+          "fillState": "PENDING_EXECUTION_SESSION",
+          "fills": 0,
+          "kind": "SEPARATE_COMPARISON",
+          "lastFillSession": null,
+          "maturity": {
+            "H126": "PENDING_NO_FILL_YET",
+            "H252": "PENDING_NO_FILL_YET"
+          },
+          "nav": null,
+          "navDate": null,
+          "recordedAtUtc": "2026-11-01T05:44:12Z",
+          "region": "US",
+          "selected": null,
+          "stockCount": 1,
+          "targetWeights": {
+            "QQQ": 1.0
+          }
+        }
+      }
+    }
+  },
+  "synthetic": {
+    "evidenceClass": "SYNTHETIC",
+    "firstRun": {
+      "fillsAppended": 5,
+      "navRowsAppended": 50,
+      "strategies": {
+        "KR:CURRENT_POLICY": "ADVANCED",
+        "KR:ETF_ONLY": "ADVANCED",
+        "KR:LEGACY_CONTROL_MAXREGION3": "ADVANCED",
+        "KR:N10:AT_WEIGHT": "ADVANCED",
+        "KR:N10:IN_RANK": "ADVANCED",
+        "KR:N1:AT_WEIGHT": "ADVANCED",
+        "KR:N1:IN_RANK": "ADVANCED"
+      }
+    },
+    "readout": {
+      "benchmark": {
+        "cagrPct": 343.9096363156558,
+        "cumulativeReturnPct": 4.591057914506447,
+        "from": "2026-11-02",
+        "observations": 10,
+        "observedMddPct": 0.0,
+        "through": "2026-11-13"
+      },
+      "cagrGapPp": 253.612061849788,
+      "candidate": {
+        "cagrPct": 597.5216981654438,
+        "cumulativeReturnPct": 6.024298720685328,
+        "from": "2026-11-02",
+        "observations": 10,
+        "observedMddPct": 0.0,
+        "through": "2026-11-13"
+      },
+      "costBasisMatches": true,
+      "dailyMdd": "AVAILABLE_OBSERVED_DAILY",
+      "economicBasisMatches": true,
+      "excessLabel": "STORED_NET_NAV_DIFFERENCE_NOT_CERTIFIED_INVESTABLE_ALPHA",
+      "investmentConclusion": "INSUFFICIENT_SOURCE_EVIDENCE_NO_PROMOTION",
+      "observedPathVerdict": "RISK_RETURN_TRADE_OFF",
+      "pairedCalendar": {
+        "missingDates": [],
+        "packageVersion": "4.11.1",
+        "policy": "XKRX",
+        "scope": "SESSION_SCHEDULE_ONLY_NOT_SOURCE_OR_TOTAL_RETURN_ADMISSION",
+        "unexpectedDates": [],
+        "verified": true
+      },
+      "windows": {
+        "CALENDAR_12M": {
+          "meanExcessPp": null,
+          "measured": 0,
+          "statusCounts": {
+            "IMMATURE_AT_AS_OF": 10
+          }
+        },
+        "CALENDAR_6M": {
+          "meanExcessPp": null,
+          "measured": 0,
+          "statusCounts": {
+            "IMMATURE_AT_AS_OF": 10
+          }
+        },
+        "H126": {
+          "meanExcessPp": null,
+          "measured": 0,
+          "statusCounts": {
+            "BEYOND_STORED_PATH_MATURITY_UNKNOWN": 10
+          }
+        },
+        "H252": {
+          "meanExcessPp": null,
+          "measured": 0,
+          "statusCounts": {
+            "BEYOND_STORED_PATH_MATURITY_UNKNOWN": 10
+          }
+        }
+      }
+    },
+    "rerun": {
+      "fillsAppended": 0,
+      "navRowsAppended": 0,
+      "strategies": {
+        "KR:CURRENT_POLICY": "ADVANCED",
+        "KR:ETF_ONLY": "ADVANCED",
+        "KR:LEGACY_CONTROL_MAXREGION3": "ADVANCED",
+        "KR:N10:AT_WEIGHT": "ADVANCED",
+        "KR:N10:IN_RANK": "ADVANCED",
+        "KR:N1:AT_WEIGHT": "ADVANCED",
+        "KR:N1:IN_RANK": "ADVANCED"
+      }
+    }
+  },
+  "version": "readout-connection-v2"
+}
