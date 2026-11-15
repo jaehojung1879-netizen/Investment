@@ -1,0 +1,85 @@
+{
+ "sourceRelease": "GCAP Public Security-Level Data on U.S. Fund Holdings (Cavani, Maggiori, Schreger 2025), N-PORT public flat files",
+ "reportDates": [
+  "2019-09-30",
+  "2026-07-31"
+ ],
+ "amendmentsIgnored": 18471,
+ "originalFilingsAllFunds": 330954,
+ "screens": {
+  "passiveNameFilings": 117480,
+  "nonPassiveBelowMinNav": 55534,
+  "screenedEquityFilings": 124036,
+  "screenedEquitySeries": 6210,
+  "qualifyingFilings": 15058,
+  "cloneFilingsDropped": 3065,
+  "inSampleFilings": 11993,
+  "inSampleSeries": 919,
+  "inSampleRegistrants": 405
+ },
+ "byReportYear": {
+  "2019": {
+   "series": 321,
+   "filings": 476,
+   "medianNetAssetsBn": 1.202,
+   "medianActiveShare": 0.704
+  },
+  "2020": {
+   "series": 529,
+   "filings": 1625,
+   "medianNetAssetsBn": 1.026,
+   "medianActiveShare": 0.678
+  },
+  "2021": {
+   "series": 509,
+   "filings": 1591,
+   "medianNetAssetsBn": 1.044,
+   "medianActiveShare": 0.692
+  },
+  "2022": {
+   "series": 583,
+   "filings": 1896,
+   "medianNetAssetsBn": 0.982,
+   "medianActiveShare": 0.693
+  },
+  "2023": {
+   "series": 599,
+   "filings": 1888,
+   "medianNetAssetsBn": 0.971,
+   "medianActiveShare": 0.679
+  },
+  "2024": {
+   "series": 550,
+   "filings": 1810,
+   "medianNetAssetsBn": 1.151,
+   "medianActiveShare": 0.64
+  },
+  "2025": {
+   "series": 529,
+   "filings": 1640,
+   "medianNetAssetsBn": 1.166,
+   "medianActiveShare": 0.622
+  },
+  "2026": {
+   "series": 555,
+   "filings": 1067,
+   "medianNetAssetsBn": 1.301,
+   "medianActiveShare": 0.624
+  }
+ },
+ "disclosureLagDays": {
+  "p10": 51.0,
+  "median": 56.0,
+  "p90": 60.0,
+  "max": 826
+ },
+ "publicDateConfirmedShare": 1.0,
+ "benchmarkLinkShare": 1.0,
+ "linkRates": {
+  "tickerOrCusipValueShare": 0.9280376040275204,
+  "viaCusipValueShare": 0.8272979530263648,
+  "pricedAtPublicDateHoldingShare": 0.7734157308479649
+ },
+ "seriesEndedBeforeLastQuarter": 364,
+ "seriesInSample": 919
+}
