@@ -87,6 +87,12 @@ class AsTraded:
             self.series[t], self.splits[t], self.status[t] = s, splits, "VERIFIED"
 
     def close_on(self, t, day):
+        extra = getattr(self, "extra", {})
+        if t in extra:
+            # RESTORED departed issuer (source A, back-adjusted): an adjusted-close PROXY, used only to admit the name to the
+            # universe filter; no rule under test ranks on market cap
+            v = extra[t].get(day)
+            return float(v) if v is not None and v == v and v > 0 else None
         s = self.series.get(t)
         if s is None or day not in s.index:
             return None
@@ -171,10 +177,15 @@ def weekly_signal_dates(close):
     return [d for d in grid if str(d.date()) <= cutoff and d in close.index]
 
 
-def build(private: Path):
+def build(private: Path, restored: bool = False):
     S = private
     pk = pickle.load(open(S / "close.pkl", "rb"))
     close = pk["close"]
+    extra = {}
+    if restored:
+        rp = pickle.load(open(S / "restored.pkl", "rb"))["panel"]
+        close = pd.concat([close, rp[[c for c in rp.columns if c not in close.columns]]], axis=1)
+        extra = {t: rp[t].dropna().to_dict() for t in rp.columns}
     raw = pickle.load(open(S / "filings.pkl", "rb"))["raw"]
     membership = RAF.MembershipSnapshots(json.loads(gzip.decompress((ROOT / PILOT.MEMBERSHIP).read_bytes()))["snapshots"])
     sectors = CA.SectorBook(json.loads(gzip.decompress((ROOT / PILOT.SECTORS).read_bytes()))["snapshots"])
@@ -189,6 +200,9 @@ def build(private: Path):
     caches = {t: Cache(rows) for t, rows in raw.items()}
     momentum, vol = PILOT.price_matrix_features(close)
     traded = AsTraded(S, close)
+    traded.extra = extra
+    for t in extra:
+        traded.status[t] = "SOURCE_A_ADJUSTED_CLOSE_PROXY"
     rows, funnel, cikval = [], defaultdict(Counter), Counter()
     for day in weekly_signal_dates(close):
         text = str(day.date())
@@ -259,12 +273,14 @@ def build(private: Path):
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--private", required=True)
+    ap.add_argument("--restored", action="store_true", help="add the source-A departed issuers (restore_departed.py) -> features-restored.pkl")
     a = ap.parse_args(argv)
     S = Path(a.private)
-    df, funnel, cikval, at_status, at_by = build(S)
-    df.to_pickle(S / "features.pkl")
+    df, funnel, cikval, at_status, at_by = build(S, restored=a.restored)
+    suffix = "-restored" if a.restored else ""
+    df.to_pickle(S / f"features{suffix}.pkl")
     json.dump({"funnel": funnel, "cikRuleValidation": cikval, "asTradedStatus": at_status, "asTradedByTicker": at_by},
-              open(S / "features-meta.json", "w"))
+              open(S / f"features{suffix}-meta.json", "w"))
     print(json.dumps({"rows": len(df), "cikRuleValidation": cikval, "asTradedStatus": at_status}))
 
 
