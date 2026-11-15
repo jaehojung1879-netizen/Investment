@@ -127,8 +127,11 @@ def ledger(I2, ctx2, books, dates, every, cost_mult=1.0):
     return A.multi_account(ctx2.px, scheds, start, end, I2["rf"], bench, cost_mult)
 
 
-def window(nav, etf, turnover=None, cost=None):
-    n, b = nav.loc[TEST_START:], etf.loc[TEST_START:]
+def window(nav, etf, turnover=None, cost=None, start=None):
+    # the benchmark is rebased on the SAME first session as the book (a book that starts later than `start` must not be
+    # compared with a benchmark rebased earlier; #345's ledgers start in 2020 so their windows are unchanged by this)
+    n = nav.loc[(start or TEST_START):]
+    b = etf.loc[n.index[0]:n.index[-1]]
     n, b = n / n.iloc[0], b / b.iloc[0]
     yrs = (len(n) - 1) / 252
     r, rb = n.pct_change().dropna(), b.pct_change().dropna()
