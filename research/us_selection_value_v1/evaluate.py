@@ -164,7 +164,7 @@ def summarise(rows, H):
     if not rows:
         return {"cohorts": 0}
     ex = np.array([r["netExcessSPY"] for r in rows])
-    block = max(1, round(H / 5 / 5))   # H sessions ~ H/5 weeks; block of a fifth of that
+    block = int(round(H / 5))          # spec.json: moving block of H/5 WEEKS (25 for H126, 50 for H252); corrected 2026-11-15 from round(H/25)
     out = {"cohorts": len(rows), "first": rows[0]["date"], "last": rows[-1]["date"],
            "nonOverlapping": greedy_nonoverlap([pd.Timestamp(r["date"]) for r in rows], H / 5),
            "meanNetExcessSPY": float(ex.mean()), "medianNetExcessSPY": float(np.median(ex)), "winRateSPY": float((ex > 0).mean()),
@@ -401,7 +401,7 @@ def main(argv=None):
                              if da[d]["peerSelection"] is not None and db[d]["peerSelection"] is not None]
                     res["pairedPriceVsFinancial"][f"{label}|{b}|{H}|{pname}"] = {
                         "commonCohorts": len(common_d), "meanDiffNetExcess": float(np.mean(diff)) if diff else None,
-                        "ci": block_ci(diff, max(1, round(H / 25))), "meanDiffPeerSelection": float(np.mean(pdiff)) if pdiff else None}
+                        "ci": block_ci(diff, int(round(H / 5))), "meanDiffPeerSelection": float(np.mean(pdiff)) if pdiff else None}
     # yearly by signal year
     yearly = {}
     for (s, b, H), rows in per.items():

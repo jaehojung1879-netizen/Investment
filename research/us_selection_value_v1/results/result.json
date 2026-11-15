@@ -1015,6 +1015,7 @@
  "benchmarkAdjustments": {
   "qqqDistributionFactor": 1.0014547907486921
  },
+ "blockLengthCorrection": "intervals recomputed at the spec block H/5 weeks by followup.py; *_oldBlock keeps the round(H/25) values",
  "cikRuleValidation": {
   "multi": 13122,
   "single": 73997,
@@ -1978,10 +1979,18 @@
  "fixedHolding": {
   "B2_MULTIFACTOR|TOP5|126|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.024758606791717958,
+    0.017266947015381735
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.018432927194383542,
     0.008905481531945841
    ],
    "ciMeanPeerSelection": [
+    -0.020261362307921006,
+    0.01701782354376251
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.01644510810976965,
     0.008266107786624528
    ],
@@ -2008,10 +2017,18 @@
   },
   "B2_MULTIFACTOR|TOP5|126|P1": {
    "ciMeanNetExcessSPY": [
+    -0.02784300196990761,
+    0.0340659794843659
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.012154035356153383,
     0.024458984058785115
    ],
    "ciMeanPeerSelection": [
+    -0.03310115630606707,
+    0.017101789724668085
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.01998654071811712,
     0.010043149192806173
    ],
@@ -2038,10 +2055,18 @@
   },
   "B2_MULTIFACTOR|TOP5|126|P2": {
    "ciMeanNetExcessSPY": [
+    -0.017410944035279124,
+    0.0408001232740562
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     6.777823729738407e-05,
     0.03328793102788265
    ],
    "ciMeanPeerSelection": [
+    -0.021521408794276546,
+    0.0616347499813767
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     0.0026170758842797167,
     0.044322479038499576
    ],
@@ -2068,10 +2093,18 @@
   },
   "B2_MULTIFACTOR|TOP5|126|P3": {
    "ciMeanNetExcessSPY": [
+    -0.08084971621428218,
+    -0.009605776607795637
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.07880245772419746,
     -0.019091954089953966
    ],
    "ciMeanPeerSelection": [
+    -0.0591916181039306,
+    -0.0035288488048487447
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.06174515018384387,
     -0.008035653325708145
    ],
@@ -2098,10 +2131,18 @@
   },
   "B2_MULTIFACTOR|TOP5|126|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.014443718790115629,
+    0.03282884366541507
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.002076127699607249,
     0.02376098581790369
    ],
    "ciMeanPeerSelection": [
+    -0.01861730867744779,
+    0.025305300099306444
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.007231163530615378,
     0.017379240120880438
    ],
@@ -2128,10 +2169,18 @@
   },
   "B2_MULTIFACTOR|TOP5|252|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.04437391007384908,
+    0.026401185641650747
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.030194519175855784,
     0.014080086240378235
    ],
    "ciMeanPeerSelection": [
+    -0.03505890453274309,
+    0.025323897875608233
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.026831256875260612,
     0.017530047752608354
    ],
@@ -2158,10 +2207,18 @@
   },
   "B2_MULTIFACTOR|TOP5|252|P1": {
    "ciMeanNetExcessSPY": [
+    -0.05033828962493533,
+    0.04516932451172412
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.02038874856798159,
     0.04182819192048374
    ],
    "ciMeanPeerSelection": [
+    -0.06641790518202628,
+    0.010831784215123558
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.04270045350399821,
     0.008895483238108085
    ],
@@ -2188,10 +2245,18 @@
   },
   "B2_MULTIFACTOR|TOP5|252|P2": {
    "ciMeanNetExcessSPY": [
+    -0.037060351247252446,
+    0.05090869642922348
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.019143514634567163,
     0.04112892869515947
    ],
    "ciMeanPeerSelection": [
+    -0.02984030584030001,
+    0.07375223248959585
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.010109409516677048,
     0.06556084603430629
    ],
@@ -2218,10 +2283,18 @@
   },
   "B2_MULTIFACTOR|TOP5|252|P3": {
    "ciMeanNetExcessSPY": [
+    -0.13007328152754838,
+    -0.04411953246888655
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.11499232057789349,
     -0.040269540760598646
    ],
    "ciMeanPeerSelection": [
+    -0.06429172299189397,
+    0.010435047483625762
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.07414772568646107,
     0.029772270629346446
    ],
@@ -2248,10 +2321,18 @@
   },
   "B2_MULTIFACTOR|TOP5|252|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.030110243970418876,
+    0.04273675512781204
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.010449234958275782,
     0.035163143264961026
    ],
    "ciMeanPeerSelection": [
+    -0.044637449663467735,
+    0.027323721553793562
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.02387184916964618,
     0.02210110661046012
    ],
@@ -2278,10 +2359,18 @@
   },
   "B2_MULTIFACTOR|TOP_QUINTILE|126|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.013091559838879998,
+    0.005965359926467389
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.0084372990645405,
     0.0026588129975918797
    ],
    "ciMeanPeerSelection": [
+    -0.01065360459482411,
+    0.0026507166759413064
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.008365958379324061,
     4.170320775273754e-05
    ],
@@ -2308,10 +2397,18 @@
   },
   "B2_MULTIFACTOR|TOP_QUINTILE|126|P1": {
    "ciMeanNetExcessSPY": [
+    -0.004147129416597117,
+    0.012681766215592038
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.0008696248424236487,
     0.010118259459650638
    ],
    "ciMeanPeerSelection": [
+    -0.011729616355290308,
+    0.0019462565659060784
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.008368336900244609,
     0.0008062041951971775
    ],
@@ -2338,10 +2435,18 @@
   },
   "B2_MULTIFACTOR|TOP_QUINTILE|126|P2": {
    "ciMeanNetExcessSPY": [
+    -0.010357710099399696,
+    0.020184697068446476
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.004601094066771432,
     0.017776936289805544
    ],
    "ciMeanPeerSelection": [
+    -0.028465938540177434,
+    0.01920586611738577
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.01488484724852223,
     0.01124948273746046
    ],
@@ -2368,10 +2473,18 @@
   },
   "B2_MULTIFACTOR|TOP_QUINTILE|126|P3": {
    "ciMeanNetExcessSPY": [
+    -0.04491765338392321,
+    -0.006809224116956598
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.036061647634466946,
     -0.014083638161413363
    ],
    "ciMeanPeerSelection": [
+    -0.014490382130304012,
+    -0.0011265294165564773
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.01498587768564059,
     -0.0025239631287280223
    ],
@@ -2398,10 +2511,18 @@
   },
   "B2_MULTIFACTOR|TOP_QUINTILE|126|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.002354824851850481,
+    0.013624589790664962
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -4.4356475613099394e-05,
     0.01059158511521127
    ],
    "ciMeanPeerSelection": [
+    -0.012051070302876993,
+    0.005590868272666624
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.008132440590796059,
     0.002457267819112782
    ],
@@ -2428,10 +2549,18 @@
   },
   "B2_MULTIFACTOR|TOP_QUINTILE|252|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.03146085352980479,
+    0.020814427323233183
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.01713132060867582,
     0.008808738772316065
    ],
    "ciMeanPeerSelection": [
+    -0.013781776025580915,
+    0.010988593370951677
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.010612295323133427,
     0.005393911488266888
    ],
@@ -2458,10 +2587,18 @@
   },
   "B2_MULTIFACTOR|TOP_QUINTILE|252|P1": {
    "ciMeanNetExcessSPY": [
+    0.0008060306929121838,
+    0.03460878781836672
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     0.007779567138782827,
     0.02992619974365972
    ],
    "ciMeanPeerSelection": [
+    -0.020466237355854823,
+    0.013211911323213685
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.011196982492339231,
     0.00824938942953546
    ],
@@ -2488,10 +2625,18 @@
   },
   "B2_MULTIFACTOR|TOP_QUINTILE|252|P2": {
    "ciMeanNetExcessSPY": [
+    -0.010622538050651095,
+    0.02481504510682957
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.002868735932333484,
     0.02858099282994373
    ],
    "ciMeanPeerSelection": [
+    -0.002665029572242536,
+    0.03032885405465114
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.009815885472308303,
     0.02986951988859931
    ],
@@ -2518,10 +2663,18 @@
   },
   "B2_MULTIFACTOR|TOP_QUINTILE|252|P3": {
    "ciMeanNetExcessSPY": [
+    -0.10798304507522634,
+    -0.06250487851600461
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.0930626117231312,
     -0.05320604728917283
    ],
    "ciMeanPeerSelection": [
+    -0.031941101827936684,
+    -0.016169595740116203
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.03135287737294092,
     -0.014558807221698479
    ],
@@ -2548,10 +2701,18 @@
   },
   "B2_MULTIFACTOR|TOP_QUINTILE|252|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    0.004149322177495575,
+    0.03362674798131852
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     0.009214672745172618,
     0.02797004181429197
    ],
    "ciMeanPeerSelection": [
+    -0.012657774458369417,
+    0.01567489398516388
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.006471403699530422,
     0.0123534190602608
    ],
@@ -2578,10 +2739,18 @@
   },
   "CASH_PROFITABILITY|TOP5|126|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.05624954267318038,
+    -0.0005009393864107586
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.04203171705362868,
     -0.011875235325420444
    ],
    "ciMeanPeerSelection": [
+    -0.03440374485677362,
+    0.010991162576031556
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.021993675179081542,
     0.004290824214843137
    ],
@@ -2608,10 +2777,18 @@
   },
   "CASH_PROFITABILITY|TOP5|126|P1": {
    "ciMeanNetExcessSPY": [
+    -0.06787873980032111,
+    0.0044709117456855135
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.05325947670450584,
     -0.016657601875628324
    ],
    "ciMeanPeerSelection": [
+    -0.05352308381273879,
+    0.017868404269996044
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.035771978745134665,
     0.002972080008148733
    ],
@@ -2638,10 +2815,18 @@
   },
   "CASH_PROFITABILITY|TOP5|126|P2": {
    "ciMeanNetExcessSPY": [
+    -0.012435353197421496,
+    0.07651574045509836
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     0.0054882433943453926,
     0.056959956133832215
    ],
    "ciMeanPeerSelection": [
+    -0.016626216604448355,
+    0.03493284221310763
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.0026645378170185112,
     0.03597403398528867
    ],
@@ -2668,10 +2853,18 @@
   },
   "CASH_PROFITABILITY|TOP5|126|P3": {
    "ciMeanNetExcessSPY": [
+    -0.12216481896067612,
+    -0.03184086695757311
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.09535741798312784,
     -0.04035596742789772
    ],
    "ciMeanPeerSelection": [
+    -0.07025034536857307,
+    -0.0030732144708818954
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.04791643039497289,
     0.001592791174362425
    ],
@@ -2698,10 +2891,18 @@
   },
   "CASH_PROFITABILITY|TOP5|126|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.04579351518332163,
+    0.016912383088278662
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.02938870972888288,
     0.003210601318410531
    ],
    "ciMeanPeerSelection": [
+    -0.03245566856606221,
+    0.01730925203641945
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.018509180980303994,
     0.010586572943290188
    ],
@@ -2728,10 +2929,18 @@
   },
   "CASH_PROFITABILITY|TOP5|252|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.09267488518007613,
+    0.01612362311000504
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.07479557009277461,
     -0.014241443487120392
    ],
    "ciMeanPeerSelection": [
+    -0.044051778988283476,
+    0.028394247262127775
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.03897177105685907,
     0.012478515463899206
    ],
@@ -2758,10 +2967,18 @@
   },
   "CASH_PROFITABILITY|TOP5|252|P1": {
    "ciMeanNetExcessSPY": [
+    -0.10456352219510884,
+    -0.008810876340913447
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.09140223483912045,
     -0.031911451961453605
    ],
    "ciMeanPeerSelection": [
+    -0.07036397557887583,
+    0.00813933214939089
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.05636754840838277,
     0.0031812832594336313
    ],
@@ -2788,10 +3005,18 @@
   },
   "CASH_PROFITABILITY|TOP5|252|P2": {
    "ciMeanNetExcessSPY": [
+    0.04155114395779803,
+    0.12656997195590874
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     0.04708212478985194,
     0.14192791069181993
    ],
    "ciMeanPeerSelection": [
+    -0.01767936753840182,
+    0.05481893866016726
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.00018542627464245842,
     0.09734138149721634
    ],
@@ -2818,10 +3043,18 @@
   },
   "CASH_PROFITABILITY|TOP5|252|P3": {
    "ciMeanNetExcessSPY": [
+    -0.21203209683654037,
+    -0.1399861588538744
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.20999009947136332,
     -0.12458445382207921
    ],
    "ciMeanPeerSelection": [
+    -0.10217573892356517,
+    -0.03126631909054265
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.11547385992762778,
     -0.022476510534903772
    ],
@@ -2848,10 +3081,18 @@
   },
   "CASH_PROFITABILITY|TOP5|252|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.06274433133483164,
+    0.042100913755347795
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.04016480617722688,
     0.024495366405365697
    ],
    "ciMeanPeerSelection": [
+    -0.04380436908549755,
+    0.028890427961672682
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.026975223611587322,
     0.02879368217695995
    ],
@@ -2878,10 +3119,18 @@
   },
   "CASH_PROFITABILITY|TOP_QUINTILE|126|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.014054841753207103,
+    0.00845247564720385
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.008492312865246337,
     0.0034120089044887758
    ],
    "ciMeanPeerSelection": [
+    -0.003886996737327487,
+    0.013035146355625518
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.0005081745671272827,
     0.009011959893243538
    ],
@@ -2908,10 +3157,18 @@
   },
   "CASH_PROFITABILITY|TOP_QUINTILE|126|P1": {
    "ciMeanNetExcessSPY": [
+    -0.013978553596639774,
+    0.010709323818315169
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.008577595391901975,
     0.004834161927032409
    ],
    "ciMeanPeerSelection": [
+    -0.009469556995553987,
+    0.009879008114521675
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.003756032619204996,
     0.008576387801080453
    ],
@@ -2938,10 +3195,18 @@
   },
   "CASH_PROFITABILITY|TOP_QUINTILE|126|P2": {
    "ciMeanNetExcessSPY": [
+    0.00967514874386568,
+    0.033313567278622426
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     0.016480994961101312,
     0.033141434034227125
    ],
    "ciMeanPeerSelection": [
+    -0.011615626860274538,
+    0.02281457885641253
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     0.0001570715969455057,
     0.024219161329758113
    ],
@@ -2968,10 +3233,18 @@
   },
   "CASH_PROFITABILITY|TOP_QUINTILE|126|P3": {
    "ciMeanNetExcessSPY": [
+    -0.04700935299783755,
+    -0.013478936300831109
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.039566114624162534,
     -0.018600118739161925
    ],
    "ciMeanPeerSelection": [
+    -0.013280182448151023,
+    0.007780726307890279
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.009924594793151952,
     0.004854768887617882
    ],
@@ -2998,10 +3271,18 @@
   },
   "CASH_PROFITABILITY|TOP_QUINTILE|126|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.0043507053714481525,
+    0.016486782422103965
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     0.001079936465166342,
     0.01249898583126977
    ],
    "ciMeanPeerSelection": [
+    -0.004754194337701972,
+    0.015845822764741464
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     0.00022192291990542546,
     0.012065826623997704
    ],
@@ -3028,10 +3309,18 @@
   },
   "CASH_PROFITABILITY|TOP_QUINTILE|252|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.03511041440455907,
+    0.014478363162703976
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.023069690143601034,
     0.002015558056638704
    ],
    "ciMeanPeerSelection": [
+    -0.010694602177237177,
+    0.020535427057164202
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.006195040943644469,
     0.012801121413310834
    ],
@@ -3058,10 +3347,18 @@
   },
   "CASH_PROFITABILITY|TOP_QUINTILE|252|P1": {
    "ciMeanNetExcessSPY": [
+    -0.026111330250264245,
+    0.016622730662474314
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.019029712518465906,
     0.00759976858258919
    ],
    "ciMeanPeerSelection": [
+    -0.027699509519645116,
+    0.018174854150226818
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.014508343094559433,
     0.013519821366613232
    ],
@@ -3088,10 +3385,18 @@
   },
   "CASH_PROFITABILITY|TOP_QUINTILE|252|P2": {
    "ciMeanNetExcessSPY": [
+    0.02411162990114905,
+    0.044986315914560045
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     0.028730105176249757,
     0.04817597543391506
    ],
    "ciMeanPeerSelection": [
+    -0.00043346493130500663,
+    0.02811997238947311
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     0.0022816039535829744,
     0.03445315752363839
    ],
@@ -3118,10 +3423,18 @@
   },
   "CASH_PROFITABILITY|TOP_QUINTILE|252|P3": {
    "ciMeanNetExcessSPY": [
+    -0.10574942427234495,
+    -0.06023426078376187
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.0944932212819445,
     -0.05576156728453606
    ],
    "ciMeanPeerSelection": [
+    -0.01834939441856587,
+    -0.005712513669140731
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.023569455282988462,
     -0.0013981677629600472
    ],
@@ -3148,10 +3461,18 @@
   },
   "CASH_PROFITABILITY|TOP_QUINTILE|252|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.011554487718359844,
+    0.027583161753708247
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.0018112043328057561,
     0.020288378049236028
    ],
    "ciMeanPeerSelection": [
+    -0.01424947814864616,
+    0.023597837127047928
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.004920493616504379,
     0.018810165963529645
    ],
@@ -3178,10 +3499,18 @@
   },
   "PRICE_CONFIRMED|TOP5|126|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.031897373939576854,
+    0.01425213433669557
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.022704176500071886,
     0.005054227987480377
    ],
    "ciMeanPeerSelection": [
+    -0.022142652277424884,
+    0.01667774101279367
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.013657463303165198,
     0.010532988910501261
    ],
@@ -3208,10 +3537,18 @@
   },
   "PRICE_CONFIRMED|TOP5|126|P1": {
    "ciMeanNetExcessSPY": [
+    -0.0007345540427706768,
+    0.04627508407544108
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     0.008477608981742843,
     0.036649637249078035
    ],
    "ciMeanPeerSelection": [
+    -0.009802539279729346,
+    0.03615463968741924
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     0.0016826381337513388,
     0.027028566139030055
    ],
@@ -3238,10 +3575,18 @@
   },
   "PRICE_CONFIRMED|TOP5|126|P2": {
    "ciMeanNetExcessSPY": [
+    -0.09756005657169954,
+    0.022096358692619396
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.07322612537192486,
     -0.005328240491505721
    ],
    "ciMeanPeerSelection": [
+    -0.0945828279710328,
+    0.011650125530361297
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.07057133602865118,
     -0.008019442298973167
    ],
@@ -3268,10 +3613,18 @@
   },
   "PRICE_CONFIRMED|TOP5|126|P3": {
    "ciMeanNetExcessSPY": [
+    -0.06735520939586324,
+    0.0075108112273371075
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.05884952805924407,
     -0.008831224331928355
    ],
    "ciMeanPeerSelection": [
+    -0.024978557684272783,
+    0.03884660352411366
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.015464449459576332,
     0.026170975944110726
    ],
@@ -3298,10 +3651,18 @@
   },
   "PRICE_CONFIRMED|TOP5|126|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.026428815716128776,
+    0.027883441495598214
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.015013560558799403,
     0.01739994836845266
    ],
    "ciMeanPeerSelection": [
+    -0.029309401427399927,
+    0.020428215602389818
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.018779040469611104,
     0.010979642171694537
    ],
@@ -3328,10 +3689,18 @@
   },
   "PRICE_CONFIRMED|TOP5|252|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.07812935434394055,
+    0.023394542303700937
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.057046364939210815,
     0.0033294280153751367
    ],
    "ciMeanPeerSelection": [
+    -0.04471378834212521,
+    0.0398129729200776
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.02792789153570118,
     0.024685227180595234
    ],
@@ -3358,10 +3727,18 @@
   },
   "PRICE_CONFIRMED|TOP5|252|P1": {
    "ciMeanNetExcessSPY": [
+    -0.009355592355660034,
+    0.08818798206404024
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     0.00807381402416452,
     0.0690476375246122
    ],
    "ciMeanPeerSelection": [
+    -0.021063108110618966,
+    0.07537773409009496
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     0.0008027496988156007,
     0.058582808856805224
    ],
@@ -3388,10 +3765,18 @@
   },
   "PRICE_CONFIRMED|TOP5|252|P2": {
    "ciMeanNetExcessSPY": [
+    -0.13853458716043757,
+    -0.016193704646088023
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.15820925149029472,
     -0.04651333030284524
    ],
    "ciMeanPeerSelection": [
+    -0.11299872119504291,
+    -0.01929763071028196
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.12911452067292417,
     -0.03133200616036405
    ],
@@ -3418,10 +3803,18 @@
   },
   "PRICE_CONFIRMED|TOP5|252|P3": {
    "ciMeanNetExcessSPY": [
+    -0.11145429361583381,
+    0.02743902560100288
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.12747101180596734,
     -0.019021719132550637
    ],
    "ciMeanPeerSelection": [
+    -0.041349055438856655,
+    0.1272815426851837
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.0429029663813809,
     0.08139541798693135
    ],
@@ -3448,10 +3841,18 @@
   },
   "PRICE_CONFIRMED|TOP5|252|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.070127766957393,
+    0.044104221481982474
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.045108419594587605,
     0.021229747115959503
    ],
    "ciMeanPeerSelection": [
+    -0.06032376060163844,
+    0.03340493830035029
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.037137856206238974,
     0.020895271459937474
    ],
@@ -3478,10 +3879,18 @@
   },
   "PRICE_CONFIRMED|TOP_QUINTILE|126|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.02329720166458926,
+    0.014986016095182493
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.013933618877860694,
     0.006277155349684424
    ],
    "ciMeanPeerSelection": [
+    -0.010339684862101668,
+    0.017845246490956913
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.00360582678430274,
     0.012017123323858726
    ],
@@ -3508,10 +3917,18 @@
   },
   "PRICE_CONFIRMED|TOP_QUINTILE|126|P1": {
    "ciMeanNetExcessSPY": [
+    0.008130003899233452,
+    0.04573279052144125
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     0.01662672556706726,
     0.03686798243667478
    ],
    "ciMeanPeerSelection": [
+    0.0047481661792425954,
+    0.03688708464974064
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     0.012335052946240682,
     0.02979669712350295
    ],
@@ -3538,10 +3955,18 @@
   },
   "PRICE_CONFIRMED|TOP_QUINTILE|126|P2": {
    "ciMeanNetExcessSPY": [
+    -0.061170756951725885,
+    0.012483674943568347
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.051244962795264526,
     -0.009702343498765798
    ],
    "ciMeanPeerSelection": [
+    -0.05356864913101024,
+    0.007662314493366246
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.03988738602564664,
     -0.006685525813459332
    ],
@@ -3568,10 +3993,18 @@
   },
   "PRICE_CONFIRMED|TOP_QUINTILE|126|P3": {
    "ciMeanNetExcessSPY": [
+    -0.06265400965055035,
+    -0.0009196140709380768
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.05275590378484231,
     -0.014305900684937619
    ],
    "ciMeanPeerSelection": [
+    -0.03106244722630056,
+    0.02822638008425285
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.01519128364018114,
     0.01397123532284076
    ],
@@ -3598,10 +4031,18 @@
   },
   "PRICE_CONFIRMED|TOP_QUINTILE|126|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.013043763315848965,
+    0.02942232397049065
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.004037542652113291,
     0.019008752211451513
    ],
    "ciMeanPeerSelection": [
+    -0.010660329130435974,
+    0.023066215220396775
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.003076975716698591,
     0.015263852818481837
    ],
@@ -3628,10 +4069,18 @@
   },
   "PRICE_CONFIRMED|TOP_QUINTILE|252|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.0517621159200634,
+    0.030822340744809194
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.03578976493574301,
     0.01164975119439272
    ],
    "ciMeanPeerSelection": [
+    -0.02041649314101322,
+    0.043857833205662014
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.009182928764382066,
     0.029658239292721333
    ],
@@ -3658,10 +4107,18 @@
   },
   "PRICE_CONFIRMED|TOP_QUINTILE|252|P1": {
    "ciMeanNetExcessSPY": [
+    0.00729365381307155,
+    0.0816511148465944
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     0.022581080374611172,
     0.06619321638961038
    ],
    "ciMeanPeerSelection": [
+    0.003251075326511477,
+    0.07301449329308507
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     0.01901438818967995,
     0.05978640507436425
    ],
@@ -3688,10 +4145,18 @@
   },
   "PRICE_CONFIRMED|TOP_QUINTILE|252|P2": {
    "ciMeanNetExcessSPY": [
+    -0.09719730303712813,
+    0.0029905180865399013
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.1120126157612913,
     -0.02668925979764185
    ],
    "ciMeanPeerSelection": [
+    -0.06134337071126439,
+    0.0003471637765414045
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.07398788047453658,
     -0.014504320747200037
    ],
@@ -3718,10 +4183,18 @@
   },
   "PRICE_CONFIRMED|TOP_QUINTILE|252|P3": {
    "ciMeanNetExcessSPY": [
+    -0.10811532692418402,
+    0.014627289572953459
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.10473509730366691,
     -0.02121925438641309
    ],
    "ciMeanPeerSelection": [
+    -0.05251286148385406,
+    0.09482536466648207
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.04243678380812004,
     0.0552503470261534
    ],
@@ -3748,10 +4221,18 @@
   },
   "PRICE_CONFIRMED|TOP_QUINTILE|252|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.040909849866525044,
+    0.050291567381804465
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.02179372584641824,
     0.029535420657891165
    ],
    "ciMeanPeerSelection": [
+    -0.029743775130879332,
+    0.04333022537481783
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.011685225454397692,
     0.0296761154421334
    ],
@@ -3778,10 +4259,18 @@
   },
   "PRICE|TOP5|126|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.040517822242846516,
+    0.00706945574814474
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.030722394690634817,
     -0.0027426852130963734
    ],
    "ciMeanPeerSelection": [
+    -0.02565273337756698,
+    0.0145739918757476
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.016766437612665233,
     0.007409748158167437
    ],
@@ -3808,10 +4297,18 @@
   },
   "PRICE|TOP5|126|P1": {
    "ciMeanNetExcessSPY": [
+    -0.006581914548926108,
+    0.037072597024562955
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     0.003361690653665819,
     0.029295551219460557
    ],
    "ciMeanPeerSelection": [
+    -0.01181556342215953,
+    0.034794293275511284
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     0.0019839382925742276,
     0.027773379221779998
    ],
@@ -3838,10 +4335,18 @@
   },
   "PRICE|TOP5|126|P2": {
    "ciMeanNetExcessSPY": [
+    -0.09686044039956918,
+    0.0216337824982333
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.07403003125710524,
     -0.007481038315878633
    ],
    "ciMeanPeerSelection": [
+    -0.09207264064145973,
+    0.013976392975666867
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.06698604477898121,
     -0.00614815903301673
    ],
@@ -3868,10 +4373,18 @@
   },
   "PRICE|TOP5|126|P3": {
    "ciMeanNetExcessSPY": [
+    -0.08107390550206124,
+    -0.0023540743821981475
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.07923858588321354,
     -0.02100388442274484
    ],
    "ciMeanPeerSelection": [
+    -0.03400622136045027,
+    0.029569798306674257
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.030482356060923217,
     0.017285015672295265
    ],
@@ -3898,10 +4411,18 @@
   },
   "PRICE|TOP5|126|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.028587240343893216,
+    0.021868743250543485
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.0189764961121453,
     0.012044868793023827
    ],
    "ciMeanPeerSelection": [
+    -0.027381672791203297,
+    0.022546249962409882
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.018193283327439348,
     0.011587777086358777
    ],
@@ -3928,10 +4449,18 @@
   },
   "PRICE|TOP5|252|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.08927469919751943,
+    0.016176669429654844
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.06340487776670682,
     -0.0008043209375696261
    ],
    "ciMeanPeerSelection": [
+    -0.04272836343006972,
+    0.03648565661772913
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.02817893015782849,
     0.025333130434202406
    ],
@@ -3958,10 +4487,18 @@
   },
   "PRICE|TOP5|252|P1": {
    "ciMeanNetExcessSPY": [
+    -0.0012292480850385286,
+    0.07590742099274331
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     0.011255692297864646,
     0.06520427745869259
    ],
    "ciMeanPeerSelection": [
+    -0.017539390406677378,
+    0.07615203092586278
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     0.010910954840943659,
     0.06710536930693611
    ],
@@ -3988,10 +4525,18 @@
   },
   "PRICE|TOP5|252|P2": {
    "ciMeanNetExcessSPY": [
+    -0.14015275433664903,
+    -0.013707855099392086
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.1577071177586238,
     -0.04595000867647629
    ],
    "ciMeanPeerSelection": [
+    -0.10888421238759517,
+    -0.01506117158202024
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.12188019191800754,
     -0.031089687403721058
    ],
@@ -4018,10 +4563,18 @@
   },
   "PRICE|TOP5|252|P3": {
    "ciMeanNetExcessSPY": [
+    -0.13117866103388492,
+    0.017419257542413708
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.15934452395420606,
     -0.027011086797899233
    ],
    "ciMeanPeerSelection": [
+    -0.05263891982096577,
+    0.1140265246532915
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.0627470335626888,
     0.06266028921751553
    ],
@@ -4048,10 +4601,18 @@
   },
   "PRICE|TOP5|252|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.06280111180708793,
+    0.03835093924680249
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.04354928798751325,
     0.020428249140984334
    ],
    "ciMeanPeerSelection": [
+    -0.04766223747018325,
+    0.039110382296681734
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.028943377990429998,
     0.029569878687975115
    ],
@@ -4078,10 +4639,18 @@
   },
   "PRICE|TOP_QUINTILE|126|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.026000567627495013,
+    0.006208663957814323
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.018990998124214394,
     -0.0009289805121168087
    ],
    "ciMeanPeerSelection": [
+    -0.010787034873834091,
+    0.011106116371906831
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.00548308988159484,
     0.006667070227262165
    ],
@@ -4108,10 +4677,18 @@
   },
   "PRICE|TOP_QUINTILE|126|P1": {
    "ciMeanNetExcessSPY": [
+    -0.0010907515288235746,
+    0.030115235618395925
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     0.005991435800563716,
     0.022676120783020712
    ],
    "ciMeanPeerSelection": [
+    0.0013371707243210892,
+    0.025927186350752605
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     0.00739582100683122,
     0.02046596967344847
    ],
@@ -4138,10 +4715,18 @@
   },
   "PRICE|TOP_QUINTILE|126|P2": {
    "ciMeanNetExcessSPY": [
+    -0.054111089555367385,
+    0.015609302814947086
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.041769193928953195,
     -0.0056815265444574905
    ],
    "ciMeanPeerSelection": [
+    -0.048342732574753765,
+    0.006514591800131355
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.03427936356783772,
     -0.005338494563950906
    ],
@@ -4168,10 +4753,18 @@
   },
   "PRICE|TOP_QUINTILE|126|P3": {
    "ciMeanNetExcessSPY": [
+    -0.061296254486791324,
+    -0.011120646341430966
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.056481453073110414,
     -0.02037930909104831
    ],
    "ciMeanPeerSelection": [
+    -0.02253641849933458,
+    0.013440534027602338
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.015406528072380736,
     0.005680334230016575
    ],
@@ -4198,10 +4791,18 @@
   },
   "PRICE|TOP_QUINTILE|126|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.015015456858958515,
+    0.01973403676745841
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.00793913033349339,
     0.010735838919726194
    ],
    "ciMeanPeerSelection": [
+    -0.01078125585154684,
+    0.01656525673306662
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.004482744703659092,
     0.010110821898637145
    ],
@@ -4228,10 +4829,18 @@
   },
   "PRICE|TOP_QUINTILE|252|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.05580289151781305,
+    0.016040828342513875
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.041030219555771866,
     -1.5633471067823435e-05
    ],
    "ciMeanPeerSelection": [
+    -0.019800330721072033,
+    0.028058178324395982
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.011408999724902112,
     0.017917754011692287
    ],
@@ -4258,10 +4867,18 @@
   },
   "PRICE|TOP_QUINTILE|252|P1": {
    "ciMeanNetExcessSPY": [
+    0.002677686754513658,
+    0.056283847883091674
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     0.013066229116457773,
     0.04788836061503673
    ],
    "ciMeanPeerSelection": [
+    -0.000659977869450441,
+    0.0565202284860032
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     0.014362416929271942,
     0.04559240640454019
    ],
@@ -4288,10 +4905,18 @@
   },
   "PRICE|TOP_QUINTILE|252|P2": {
    "ciMeanNetExcessSPY": [
+    -0.08571494180641201,
+    0.009149209269305607
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.09871016718276478,
     -0.020173863506974508
    ],
    "ciMeanPeerSelection": [
+    -0.05133533266524897,
+    0.00025794751356690397
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.06335862673924379,
     -0.012907309360228401
    ],
@@ -4318,10 +4943,18 @@
   },
   "PRICE|TOP_QUINTILE|252|P3": {
    "ciMeanNetExcessSPY": [
+    -0.09477946136191517,
+    -0.023919646763654483
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.10982296457808642,
     -0.04645113101708526
    ],
    "ciMeanPeerSelection": [
+    -0.034301416176940866,
+    0.051612119071915666
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.04118673724852143,
     0.027093781894441685
    ],
@@ -4348,10 +4981,18 @@
   },
   "PRICE|TOP_QUINTILE|252|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.03794881417419966,
+    0.03470939435558516
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.02345627917148689,
     0.019735227139176973
    ],
    "ciMeanPeerSelection": [
+    -0.024644293108925425,
+    0.03266310331398361
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.010446845965130654,
     0.021998899574727858
    ],
@@ -4378,10 +5019,18 @@
   },
   "SECTOR_MOMENTUM_BASKET|TOP5|126|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.031632071657845685,
+    0.05038757982725609
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.018174350608548984,
     0.027898773175569783
    ],
    "ciMeanPeerSelection": [
+    -5.318326384934018e-19,
+    2.615534041761026e-19
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -4.728488330386229e-19,
     2.3880489551733765e-19
    ],
@@ -4408,10 +5057,18 @@
   },
   "SECTOR_MOMENTUM_BASKET|TOP5|126|P1": {
    "ciMeanNetExcessSPY": [
+    -0.05255326986243864,
+    0.01873572814595492
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.04222082165495904,
     0.003988933134915876
    ],
    "ciMeanPeerSelection": [
+    -6.93413034715136e-19,
+    2.5927570423764563e-19
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -5.565915989337939e-19,
     2.9138073752000873e-19
    ],
@@ -4438,10 +5095,18 @@
   },
   "SECTOR_MOMENTUM_BASKET|TOP5|126|P2": {
    "ciMeanNetExcessSPY": [
+    -0.015674245637519166,
+    0.2327966360096486
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     0.011075094779730022,
     0.15238579709576353
    ],
    "ciMeanPeerSelection": [
+    -5.193551673123059e-19,
+    1.5121115468160536e-18
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -4.641338678842035e-19,
     1.3586206986294496e-18
    ],
@@ -4468,10 +5133,18 @@
   },
   "SECTOR_MOMENTUM_BASKET|TOP5|126|P3": {
    "ciMeanNetExcessSPY": [
+    -0.05826990435981379,
+    0.0007428129579835995
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.046062443813178144,
     -0.0002643574707512143
    ],
    "ciMeanPeerSelection": [
+    -1.2599735910035127e-18,
+    -7.737951410055992e-20
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -1.2402558877637523e-18,
     1.3604709893466452e-19
    ],
@@ -4498,10 +5171,18 @@
   },
   "SECTOR_MOMENTUM_BASKET|TOP5|126|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.028787224651290844,
+    0.0784361261783677
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.012549152369647265,
     0.04502594186573146
    ],
    "ciMeanPeerSelection": [
+    -4.142617287022364e-19,
+    5.495160132314873e-19
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -4.006602228222016e-19,
     4.710434823418969e-19
    ],
@@ -4528,10 +5209,18 @@
   },
   "SECTOR_MOMENTUM_BASKET|TOP5|252|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.036010260284520396,
+    0.08506079899480834
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.03431538927148298,
     0.05042513603628968
    ],
    "ciMeanPeerSelection": [
+    -7.4336431626434055e-19,
+    7.037904417885442e-19
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -6.068915621108434e-19,
     7.652336469277737e-19
    ],
@@ -4558,10 +5247,18 @@
   },
   "SECTOR_MOMENTUM_BASKET|TOP5|252|P1": {
    "ciMeanNetExcessSPY": [
+    -0.03866757164255985,
+    0.0430584693513545
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.04810771636759439,
     0.02072268213045386
    ],
    "ciMeanPeerSelection": [
+    -2.0838284073838813e-19,
+    9.421554694218961e-19
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -3.0725146467550617e-19,
     1.1584590207231979e-18
    ],
@@ -4588,10 +5285,18 @@
   },
   "SECTOR_MOMENTUM_BASKET|TOP5|252|P2": {
    "ciMeanNetExcessSPY": [
+    -0.0202492539816621,
+    0.34195310540485235
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.006081600743961616,
     0.25087772382421564
    ],
    "ciMeanPeerSelection": [
+    -3.070102495244744e-18,
+    9.327978386090927e-19
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -2.859892676141693e-18,
     3.9598551833314174e-19
    ],
@@ -4618,10 +5323,18 @@
   },
   "SECTOR_MOMENTUM_BASKET|TOP5|252|P3": {
    "ciMeanNetExcessSPY": [
+    -0.08001089346558583,
+    -0.031901609345010164
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.11007223866540117,
     -0.035060197213235986
    ],
    "ciMeanPeerSelection": [
+    6.598500944208e-20,
+    1.755000672198069e-18
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -1.0711065763620087e-18,
     1.6483645199470082e-18
    ],
@@ -4648,10 +5361,18 @@
   },
   "SECTOR_MOMENTUM_BASKET|TOP5|252|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.025406128797650022,
+    0.12313261733239436
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.016424013564516723,
     0.08385596496407155
    ],
    "ciMeanPeerSelection": [
+    -1.1160140430551057e-18,
+    6.320387079196114e-19
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -8.348900144584039e-19,
     7.851591226370545e-19
    ],
@@ -4678,10 +5399,18 @@
   },
   "SECTOR_MOMENTUM_BASKET|TOP_QUINTILE|126|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.031632071657845685,
+    0.05038757982725609
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.018174350608548984,
     0.027898773175569783
    ],
    "ciMeanPeerSelection": [
+    -5.318326384934018e-19,
+    2.615534041761026e-19
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -4.728488330386229e-19,
     2.3880489551733765e-19
    ],
@@ -4708,10 +5437,18 @@
   },
   "SECTOR_MOMENTUM_BASKET|TOP_QUINTILE|126|P1": {
    "ciMeanNetExcessSPY": [
+    -0.05255326986243864,
+    0.01873572814595492
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.04222082165495904,
     0.003988933134915876
    ],
    "ciMeanPeerSelection": [
+    -6.93413034715136e-19,
+    2.5927570423764563e-19
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -5.565915989337939e-19,
     2.9138073752000873e-19
    ],
@@ -4738,10 +5475,18 @@
   },
   "SECTOR_MOMENTUM_BASKET|TOP_QUINTILE|126|P2": {
    "ciMeanNetExcessSPY": [
+    -0.015674245637519166,
+    0.2327966360096486
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     0.011075094779730022,
     0.15238579709576353
    ],
    "ciMeanPeerSelection": [
+    -5.193551673123059e-19,
+    1.5121115468160536e-18
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -4.641338678842035e-19,
     1.3586206986294496e-18
    ],
@@ -4768,10 +5513,18 @@
   },
   "SECTOR_MOMENTUM_BASKET|TOP_QUINTILE|126|P3": {
    "ciMeanNetExcessSPY": [
+    -0.05826990435981379,
+    0.0007428129579835995
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.046062443813178144,
     -0.0002643574707512143
    ],
    "ciMeanPeerSelection": [
+    -1.2599735910035127e-18,
+    -7.737951410055992e-20
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -1.2402558877637523e-18,
     1.3604709893466452e-19
    ],
@@ -4798,10 +5551,18 @@
   },
   "SECTOR_MOMENTUM_BASKET|TOP_QUINTILE|126|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.028787224651290844,
+    0.0784361261783677
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.012549152369647265,
     0.04502594186573146
    ],
    "ciMeanPeerSelection": [
+    -4.142617287022364e-19,
+    5.495160132314873e-19
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -4.006602228222016e-19,
     4.710434823418969e-19
    ],
@@ -4828,10 +5589,18 @@
   },
   "SECTOR_MOMENTUM_BASKET|TOP_QUINTILE|252|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.036010260284520396,
+    0.08506079899480834
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.03431538927148298,
     0.05042513603628968
    ],
    "ciMeanPeerSelection": [
+    -7.4336431626434055e-19,
+    7.037904417885442e-19
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -6.068915621108434e-19,
     7.652336469277737e-19
    ],
@@ -4858,10 +5627,18 @@
   },
   "SECTOR_MOMENTUM_BASKET|TOP_QUINTILE|252|P1": {
    "ciMeanNetExcessSPY": [
+    -0.03866757164255985,
+    0.0430584693513545
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.04810771636759439,
     0.02072268213045386
    ],
    "ciMeanPeerSelection": [
+    -2.0838284073838813e-19,
+    9.421554694218961e-19
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -3.0725146467550617e-19,
     1.1584590207231979e-18
    ],
@@ -4888,10 +5665,18 @@
   },
   "SECTOR_MOMENTUM_BASKET|TOP_QUINTILE|252|P2": {
    "ciMeanNetExcessSPY": [
+    -0.0202492539816621,
+    0.34195310540485235
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.006081600743961616,
     0.25087772382421564
    ],
    "ciMeanPeerSelection": [
+    -3.070102495244744e-18,
+    9.327978386090927e-19
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -2.859892676141693e-18,
     3.9598551833314174e-19
    ],
@@ -4918,10 +5703,18 @@
   },
   "SECTOR_MOMENTUM_BASKET|TOP_QUINTILE|252|P3": {
    "ciMeanNetExcessSPY": [
+    -0.08001089346558583,
+    -0.031901609345010164
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.11007223866540117,
     -0.035060197213235986
    ],
    "ciMeanPeerSelection": [
+    6.598500944208e-20,
+    1.755000672198069e-18
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -1.0711065763620087e-18,
     1.6483645199470082e-18
    ],
@@ -4948,10 +5741,18 @@
   },
   "SECTOR_MOMENTUM_BASKET|TOP_QUINTILE|252|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.025406128797650022,
+    0.12313261733239436
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.016424013564516723,
     0.08385596496407155
    ],
    "ciMeanPeerSelection": [
+    -1.1160140430551057e-18,
+    6.320387079196114e-19
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -8.348900144584039e-19,
     7.851591226370545e-19
    ],
@@ -4978,10 +5779,18 @@
   },
   "VALUE_CONFIRMED|TOP5|126|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.038683260687005915,
+    0.022386071511089865
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.02637384437066639,
     0.009279303464924114
    ],
    "ciMeanPeerSelection": [
+    -0.021552079505557445,
+    0.032520485650828886
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.009767269513614837,
     0.022939096438814876
    ],
@@ -5008,10 +5817,18 @@
   },
   "VALUE_CONFIRMED|TOP5|126|P1": {
    "ciMeanNetExcessSPY": [
+    -0.041553737323107895,
+    0.006232289930684353
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.046167743001616135,
     -0.007696979321133408
    ],
    "ciMeanPeerSelection": [
+    -0.0297661878507868,
+    0.02590477587915906
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.02766046553122265,
     0.010123177560997907
    ],
@@ -5038,10 +5855,18 @@
   },
   "VALUE_CONFIRMED|TOP5|126|P2": {
    "ciMeanNetExcessSPY": [
+    0.009773996794329168,
+    0.10764450483853658
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     0.003939270720782405,
     0.085701783260806
    ],
    "ciMeanPeerSelection": [
+    -0.011224600948382676,
+    0.06245088216180159
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.01947828999532966,
     0.05359320616399176
    ],
@@ -5068,10 +5893,18 @@
   },
   "VALUE_CONFIRMED|TOP5|126|P3": {
    "ciMeanNetExcessSPY": [
+    -0.0653751606683629,
+    0.054492337556377286
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.048651740450510676,
     0.017771056233235685
    ],
    "ciMeanPeerSelection": [
+    -0.020451365124597966,
+    0.09559681052053523
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.0043264115996604745,
     0.061653148937118735
    ],
@@ -5098,10 +5931,18 @@
   },
   "VALUE_CONFIRMED|TOP5|126|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.045944498443429516,
+    0.028744786207063285
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.026216316353646112,
     0.016675263023250148
    ],
    "ciMeanPeerSelection": [
+    -0.03756110377709874,
+    0.023878869615777128
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.020138101608017035,
     0.01600755560981888
    ],
@@ -5128,10 +5969,18 @@
   },
   "VALUE_CONFIRMED|TOP5|252|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.061833010449196,
+    0.015810183238559726
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.05090845237458277,
     0.01582691262075838
    ],
    "ciMeanPeerSelection": [
+    -0.02897982009102965,
+    0.05193412650976834
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.01604433992776477,
     0.04916102504016797
    ],
@@ -5158,10 +6007,18 @@
   },
   "VALUE_CONFIRMED|TOP5|252|P1": {
    "ciMeanNetExcessSPY": [
+    -0.0960076731607971,
+    -0.0062452054105691214
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.09400450417228629,
     -0.0345347415729341
    ],
    "ciMeanPeerSelection": [
+    -0.07653638044177331,
+    0.026056883313681983
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.06212518517075049,
     0.006071470329201117
    ],
@@ -5188,10 +6045,18 @@
   },
   "VALUE_CONFIRMED|TOP5|252|P2": {
    "ciMeanNetExcessSPY": [
+    0.017374354646543237,
+    0.09687823846803026
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     0.022309286052059823,
     0.13110424814585936
    ],
    "ciMeanPeerSelection": [
+    -0.01915420884869937,
+    0.06810369169983559
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.007878020478817515,
     0.0907697391297655
    ],
@@ -5218,10 +6083,18 @@
   },
   "VALUE_CONFIRMED|TOP5|252|P3": {
    "ciMeanNetExcessSPY": [
+    -0.06486021661653497,
+    0.060983952246299274
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.07401707854678773,
     0.09849737636571937
    ],
    "ciMeanPeerSelection": [
+    0.039990012134280044,
+    0.1531108382719287
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     0.02579433045970436,
     0.18779890633930207
    ],
@@ -5248,10 +6121,18 @@
   },
   "VALUE_CONFIRMED|TOP5|252|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.06796131335901194,
+    0.024898050280951167
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.05528973876505132,
     0.011660198526620376
    ],
    "ciMeanPeerSelection": [
+    -0.05454413115807724,
+    0.024098568957543892
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.039065786766842046,
     0.02128196032706747
    ],
@@ -5278,10 +6159,18 @@
   },
   "VALUE_CONFIRMED|TOP_QUINTILE|126|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.02531488443534563,
+    0.003927736183941622
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.020282280117610938,
     -0.002548355044299215
    ],
    "ciMeanPeerSelection": [
+    -0.01258863960934492,
+    0.01242213046971043
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.007389263928514804,
     0.006944780631025938
    ],
@@ -5308,10 +6197,18 @@
   },
   "VALUE_CONFIRMED|TOP_QUINTILE|126|P1": {
    "ciMeanNetExcessSPY": [
+    -0.03136492092907674,
+    0.000835176559832331
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.02947301452925992,
     -0.007899413515354295
    ],
    "ciMeanPeerSelection": [
+    -0.027587927626514137,
+    0.0018494160884369296
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.023610123822468163,
     -0.004793225419140153
    ],
@@ -5338,10 +6235,18 @@
   },
   "VALUE_CONFIRMED|TOP_QUINTILE|126|P2": {
    "ciMeanNetExcessSPY": [
+    -0.009300877333530248,
+    0.04265768532006773
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.0065538048744295755,
     0.0326487790232341
    ],
    "ciMeanPeerSelection": [
+    -0.011530887536233691,
+    0.02241803203345056
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.009007588899571069,
     0.015348908673919293
    ],
@@ -5368,10 +6273,18 @@
   },
   "VALUE_CONFIRMED|TOP_QUINTILE|126|P3": {
    "ciMeanNetExcessSPY": [
+    -0.04064801318090729,
+    0.0175860202615056
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.03362026201611191,
     -9.142408202920848e-05
    ],
    "ciMeanPeerSelection": [
+    -0.0003995888046862341,
+    0.05209643081258004
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     0.008906109345835609,
     0.03517609597379117
    ],
@@ -5398,10 +6311,18 @@
   },
   "VALUE_CONFIRMED|TOP_QUINTILE|126|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.027152298933635893,
+    0.00849633143656422
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.02000768290391887,
     0.0011742081442485612
    ],
    "ciMeanPeerSelection": [
+    -0.0215173883385143,
+    0.0032293715872477842
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.01602079054909255,
     -0.0005339419803604232
    ],
@@ -5428,10 +6349,18 @@
   },
   "VALUE_CONFIRMED|TOP_QUINTILE|252|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.05998740045836717,
+    0.005718174914189549
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.045064943704023,
     0.004923265755300741
    ],
    "ciMeanPeerSelection": [
+    -0.035173165392379926,
+    0.02043080456863229
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.018403474288343137,
     0.020994406965132825
    ],
@@ -5458,10 +6387,18 @@
   },
   "VALUE_CONFIRMED|TOP_QUINTILE|252|P1": {
    "ciMeanNetExcessSPY": [
+    -0.07445991566971438,
+    -0.0073899797300786205
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.07053783029010889,
     -0.028371116920933113
    ],
    "ciMeanPeerSelection": [
+    -0.06091154576147177,
+    -0.005190444271748988
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.054099697710650735,
     -0.020079988131113818
    ],
@@ -5488,10 +6425,18 @@
   },
   "VALUE_CONFIRMED|TOP_QUINTILE|252|P2": {
    "ciMeanNetExcessSPY": [
+    0.0049389448810133645,
+    0.07142514112194329
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.0022547663382950288,
     0.08954807786593058
    ],
    "ciMeanPeerSelection": [
+    0.01649832208272889,
+    0.038977411004304734
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     0.009530115584279604,
     0.04110020460524105
    ],
@@ -5518,10 +6463,18 @@
   },
   "VALUE_CONFIRMED|TOP_QUINTILE|252|P3": {
    "ciMeanNetExcessSPY": [
+    -0.09827405109075511,
+    0.04174638070034636
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.07435309753039579,
     0.05193584755830412
    ],
    "ciMeanPeerSelection": [
+    -0.020743029430016678,
+    0.10718131624341184
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     0.005053272084206223,
     0.12235314465549008
    ],
@@ -5548,10 +6501,18 @@
   },
   "VALUE_CONFIRMED|TOP_QUINTILE|252|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.05680588414852335,
+    0.015976368106640187
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.04557106571445673,
     0.0049613341852757595
    ],
    "ciMeanPeerSelection": [
+    -0.0460911249842537,
+    0.006405582358144808
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.03436125436179574,
     -0.0027047107926218153
    ],
@@ -5578,10 +6539,18 @@
   },
   "WITHIN_SECTOR_VALUE|TOP5|126|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.04778101316565402,
+    0.018060361799734047
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.035697616785529344,
     0.0018364156754747932
    ],
    "ciMeanPeerSelection": [
+    -0.021748451483666196,
+    0.030107632462891745
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.012958745444759355,
     0.019385120886514857
    ],
@@ -5608,10 +6577,18 @@
   },
   "WITHIN_SECTOR_VALUE|TOP5|126|P1": {
    "ciMeanNetExcessSPY": [
+    -0.06545627065164938,
+    0.00043560181938068026
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.0677556230377296,
     -0.02141982854137294
    ],
    "ciMeanPeerSelection": [
+    -0.04661412227788407,
+    0.012575207670830474
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.041680652333589856,
     -0.0013610049840145255
    ],
@@ -5638,10 +6615,18 @@
   },
   "WITHIN_SECTOR_VALUE|TOP5|126|P2": {
    "ciMeanNetExcessSPY": [
+    0.007853742870748016,
+    0.11436477823708141
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     0.00023247348127782507,
     0.08715969750257997
    ],
    "ciMeanPeerSelection": [
+    -0.005989984940470091,
+    0.06229127395062006
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.015064905150038091,
     0.054539773305199254
    ],
@@ -5668,10 +6653,18 @@
   },
   "WITHIN_SECTOR_VALUE|TOP5|126|P3": {
    "ciMeanNetExcessSPY": [
+    -0.047732057564891184,
+    0.033963734486076265
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.04531469970848858,
     0.013122792895166109
    ],
    "ciMeanPeerSelection": [
+    0.0030310194581517212,
+    0.0920579851890447
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     0.008194499078068221,
     0.0693332837168431
    ],
@@ -5698,10 +6691,18 @@
   },
   "WITHIN_SECTOR_VALUE|TOP5|126|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.0607380373191275,
+    0.02426036049199166
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.04183775736608661,
     0.006898691758599319
    ],
    "ciMeanPeerSelection": [
+    -0.042685308036844,
+    0.018267876294036832
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.026569841497464077,
     0.00982219202605037
    ],
@@ -5728,10 +6729,18 @@
   },
   "WITHIN_SECTOR_VALUE|TOP5|252|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.08658566804703538,
+    0.021768910799925878
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.07098382915523338,
     0.0131398351388056
    ],
    "ciMeanPeerSelection": [
+    -0.052476145388357584,
+    0.04411562489566843
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.0346473262691412,
     0.03910197215257935
    ],
@@ -5758,10 +6767,18 @@
   },
   "WITHIN_SECTOR_VALUE|TOP5|252|P1": {
    "ciMeanNetExcessSPY": [
+    -0.11711128622311512,
+    -0.01038507891148638
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.12793634302524667,
     -0.03531186738820771
    ],
    "ciMeanPeerSelection": [
+    -0.08820093945985338,
+    0.009881329121162612
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.08598387536636715,
     0.00019707886397743693
    ],
@@ -5788,10 +6805,18 @@
   },
   "WITHIN_SECTOR_VALUE|TOP5|252|P2": {
    "ciMeanNetExcessSPY": [
+    0.027370664032385274,
+    0.1561373340994899
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     0.017439283108170833,
     0.15633393444652302
    ],
    "ciMeanPeerSelection": [
+    -0.006063725404524672,
+    0.06258687966297384
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.0157842174751807,
     0.06713649870324147
    ],
@@ -5818,10 +6843,18 @@
   },
   "WITHIN_SECTOR_VALUE|TOP5|252|P3": {
    "ciMeanNetExcessSPY": [
+    -0.08036178005063528,
+    0.06176048458431949
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.10782530719425792,
     0.07988525794481433
    ],
    "ciMeanPeerSelection": [
+    0.03407067456757086,
+    0.18154873022414839
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     0.0005127025247830469,
     0.20245699046778987
    ],
@@ -5848,10 +6881,18 @@
   },
   "WITHIN_SECTOR_VALUE|TOP5|252|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.08923406543389742,
+    0.039828434253735445
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.07511393123783171,
     0.013783169419472939
    ],
    "ciMeanPeerSelection": [
+    -0.06526405440359495,
+    0.014948513507752736
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.05994361823537225,
     0.007881618567428627
    ],
@@ -5878,10 +6919,18 @@
   },
   "WITHIN_SECTOR_VALUE|TOP_QUINTILE|126|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.03307215852429606,
+    0.005738302494138549
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.025574114993424577,
     -0.003809205796915344
    ],
    "ciMeanPeerSelection": [
+    -0.015452201539232484,
+    0.007587682312814185
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.010297219908574608,
     0.002361549601217975
    ],
@@ -5908,10 +6957,18 @@
   },
   "WITHIN_SECTOR_VALUE|TOP_QUINTILE|126|P1": {
    "ciMeanNetExcessSPY": [
+    -0.03791820536105703,
+    0.003148961957974808
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.0338147930116467,
     -0.0092171193821163
    ],
    "ciMeanPeerSelection": [
+    -0.029058759193929674,
+    0.0011555190453998569
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.02452500109471527,
     -0.006743802423012095
    ],
@@ -5938,10 +6995,18 @@
   },
   "WITHIN_SECTOR_VALUE|TOP_QUINTILE|126|P2": {
    "ciMeanNetExcessSPY": [
+    0.0011058408958155336,
+    0.07451186241151904
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     0.0043495447971076675,
     0.052711900658217514
    ],
    "ciMeanPeerSelection": [
+    -0.0012358207606730136,
+    0.028705216045793683
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.004243610477368643,
     0.020961333037946697
    ],
@@ -5968,10 +7033,18 @@
   },
   "WITHIN_SECTOR_VALUE|TOP_QUINTILE|126|P3": {
    "ciMeanNetExcessSPY": [
+    -0.06010903726522661,
+    -0.0028576546871239934
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.05360530320336659,
     -0.020644116399304507
    ],
    "ciMeanPeerSelection": [
+    -0.008922298269265376,
+    0.03217074867285067
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.0033967033812421455,
     0.018483082726814874
    ],
@@ -5998,10 +7071,18 @@
   },
   "WITHIN_SECTOR_VALUE|TOP_QUINTILE|126|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.029788675048179503,
+    0.017591019674392614
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.018984122915476454,
     0.006616955799806815
    ],
    "ciMeanPeerSelection": [
+    -0.021916570785087044,
+    0.005198011582650897
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.015239941820073542,
     -2.1002588093416613e-05
    ],
@@ -6028,10 +7109,18 @@
   },
   "WITHIN_SECTOR_VALUE|TOP_QUINTILE|252|ALL": {
    "ciMeanNetExcessSPY": [
+    -0.0672121002513255,
+    0.01651453972830544
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.04572362967600044,
     0.0057908247591487525
    ],
    "ciMeanPeerSelection": [
+    -0.03155229241367958,
+    0.016400442500474496
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.01654172402744429,
     0.015776821230450398
    ],
@@ -6058,10 +7147,18 @@
   },
   "WITHIN_SECTOR_VALUE|TOP_QUINTILE|252|P1": {
    "ciMeanNetExcessSPY": [
+    -0.07724515120956195,
+    0.007422699848834649
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.06373247583162556,
     -0.016806054789125502
    ],
    "ciMeanPeerSelection": [
+    -0.058936415658655344,
+    0.0012328932851424605
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.04621202556489239,
     -0.01289509976523477
    ],
@@ -6088,10 +7185,18 @@
   },
   "WITHIN_SECTOR_VALUE|TOP_QUINTILE|252|P2": {
    "ciMeanNetExcessSPY": [
+    0.026965589035873642,
+    0.10850642786096974
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     0.01885463997991999,
     0.12090536364433704
    ],
    "ciMeanPeerSelection": [
+    0.02163884077258937,
+    0.050921112690851665
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     0.016242745268827193,
     0.050842332636912714
    ],
@@ -6118,10 +7223,18 @@
   },
   "WITHIN_SECTOR_VALUE|TOP_QUINTILE|252|P3": {
    "ciMeanNetExcessSPY": [
+    -0.13014736698188223,
+    -0.01688232638912888
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.1114812500799316,
     -0.00670333201653639
    ],
    "ciMeanPeerSelection": [
+    -0.02603371363266973,
+    0.065284697952406
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.011276106436810807,
     0.07659060021139345
    ],
@@ -6148,10 +7261,18 @@
   },
   "WITHIN_SECTOR_VALUE|TOP_QUINTILE|252|exclude2023Plus": {
    "ciMeanNetExcessSPY": [
+    -0.05045153126646609,
+    0.04143152267762981
+   ],
+   "ciMeanNetExcessSPY_oldBlock": [
     -0.034224355618297134,
     0.022960929606164724
    ],
    "ciMeanPeerSelection": [
+    -0.03856014043834565,
+    0.017359243758302455
+   ],
+   "ciMeanPeerSelection_oldBlock": [
     -0.02500748709480795,
     0.0054261866455104476
    ],
@@ -9530,6 +10651,10 @@
  "pairedPriceVsFinancial": {
   "B2_MULTIFACTOR-PRICE|TOP5|126|ALL": {
    "ci": [
+    -0.014422378401275613,
+    0.03958721461785132
+   ],
+   "ci_oldBlock": [
     -0.004228962533951321,
     0.02688847474279366
    ],
@@ -9539,6 +10664,10 @@
   },
   "B2_MULTIFACTOR-PRICE|TOP5|126|P1": {
    "ci": [
+    -0.0393077012888677,
+    0.015070634096368158
+   ],
+   "ci_oldBlock": [
     -0.02716880164104318,
     0.007525009679531281
    ],
@@ -9548,6 +10677,10 @@
   },
   "B2_MULTIFACTOR-PRICE|TOP5|126|P2": {
    "ci": [
+    0.0050605408793906225,
+    0.09183023672763155
+   ],
+   "ci_oldBlock": [
     0.02683608717211925,
     0.08649338848356153
    ],
@@ -9557,6 +10690,10 @@
   },
   "B2_MULTIFACTOR-PRICE|TOP5|126|P3": {
    "ci": [
+    -0.06465121169089998,
+    0.050723001646919855
+   ],
+   "ci_oldBlock": [
     -0.03837969395316591,
     0.036432518144529046
    ],
@@ -9566,6 +10703,10 @@
   },
   "B2_MULTIFACTOR-PRICE|TOP5|126|exclude2023Plus": {
    "ci": [
+    -0.01594634693688386,
+    0.03962441179486951
+   ],
+   "ci_oldBlock": [
     -0.0024976234242768784,
     0.031218060165007333
    ],
@@ -9575,6 +10716,10 @@
   },
   "B2_MULTIFACTOR-PRICE|TOP5|252|ALL": {
    "ci": [
+    -0.0315237231818592,
+    0.08546500473692639
+   ],
+   "ci_oldBlock": [
     -0.010602977810810184,
     0.05980313701517642
    ],
@@ -9584,6 +10729,10 @@
   },
   "B2_MULTIFACTOR-PRICE|TOP5|252|P1": {
    "ci": [
+    -0.07952970556183853,
+    0.017494041826192765
+   ],
+   "ci_oldBlock": [
     -0.06528674327856251,
     0.011347023213484431
    ],
@@ -9593,6 +10742,10 @@
   },
   "B2_MULTIFACTOR-PRICE|TOP5|252|P2": {
    "ci": [
+    0.0513409332824827,
+    0.12707151928321092
+   ],
+   "ci_oldBlock": [
     0.05446195567767418,
     0.17081907278561334
    ],
@@ -9602,6 +10755,10 @@
   },
   "B2_MULTIFACTOR-PRICE|TOP5|252|P3": {
    "ci": [
+    -0.1470107038211792,
+    0.07794130093872018
+   ],
+   "ci_oldBlock": [
     -0.07393073574891022,
     0.09846004032749463
    ],
@@ -9611,6 +10768,10 @@
   },
   "B2_MULTIFACTOR-PRICE|TOP5|252|exclude2023Plus": {
    "ci": [
+    -0.03701584312131723,
+    0.08176312768634081
+   ],
+   "ci_oldBlock": [
     -0.011874402510471145,
     0.06035543373929991
    ],
@@ -9620,6 +10781,10 @@
   },
   "B2_MULTIFACTOR-PRICE|TOP_QUINTILE|126|ALL": {
    "ci": [
+    -0.00912503720174515,
+    0.022872740009074043
+   ],
+   "ci_oldBlock": [
     -0.0017988609468575895,
     0.014973051693111382
    ],
@@ -9629,6 +10794,10 @@
   },
   "B2_MULTIFACTOR-PRICE|TOP_QUINTILE|126|P1": {
    "ci": [
+    -0.026799555408180745,
+    0.00579726900226139
+   ],
+   "ci_oldBlock": [
     -0.0193281698932513,
     -0.0003455585525998889
    ],
@@ -9638,6 +10807,10 @@
   },
   "B2_MULTIFACTOR-PRICE|TOP_QUINTILE|126|P2": {
    "ci": [
+    -0.010411702257233802,
+    0.056361022798789205
+   ],
+   "ci_oldBlock": [
     0.013195537475045389,
     0.04804347388402334
    ],
@@ -9647,6 +10820,10 @@
   },
   "B2_MULTIFACTOR-PRICE|TOP_QUINTILE|126|P3": {
    "ci": [
+    -0.023765107648246932,
+    0.038874870915163985
+   ],
+   "ci_oldBlock": [
     -0.005366686701306939,
     0.029528672535514125
    ],
@@ -9656,6 +10833,10 @@
   },
   "B2_MULTIFACTOR-PRICE|TOP_QUINTILE|126|exclude2023Plus": {
    "ci": [
+    -0.01441357959801375,
+    0.021542984861676932
+   ],
+   "ci_oldBlock": [
     -0.005280194034794766,
     0.013304962308884585
    ],
@@ -9665,6 +10846,10 @@
   },
   "B2_MULTIFACTOR-PRICE|TOP_QUINTILE|252|ALL": {
    "ci": [
+    -0.01951988403398594,
+    0.05454075975644373
+   ],
+   "ci_oldBlock": [
     -0.00448466825331522,
     0.037406361058319716
    ],
@@ -9674,6 +10859,10 @@
   },
   "B2_MULTIFACTOR-PRICE|TOP_QUINTILE|252|P1": {
    "ci": [
+    -0.04341352875069382,
+    0.012293249500614641
+   ],
+   "ci_oldBlock": [
     -0.030470051980437705,
     0.0071931813753241805
    ],
@@ -9683,6 +10872,10 @@
   },
   "B2_MULTIFACTOR-PRICE|TOP_QUINTILE|252|P2": {
    "ci": [
+    -0.012366489778469476,
+    0.10679763956450335
+   ],
+   "ci_oldBlock": [
     0.027423016207529235,
     0.11782586959515585
    ],
@@ -9692,6 +10885,10 @@
   },
   "B2_MULTIFACTOR-PRICE|TOP_QUINTILE|252|P3": {
    "ci": [
+    -0.08273320534354775,
+    0.03146116784086981
+   ],
+   "ci_oldBlock": [
     -0.041816624128257554,
     0.05163579064231908
    ],
@@ -9701,6 +10898,10 @@
   },
   "B2_MULTIFACTOR-PRICE|TOP_QUINTILE|252|exclude2023Plus": {
    "ci": [
+    -0.019350256585399052,
+    0.062296771486514246
+   ],
+   "ci_oldBlock": [
     -0.003024020129934374,
     0.04217595851681967
    ],
@@ -9710,6 +10911,10 @@
   },
   "PRICE_CONFIRMED-PRICE|TOP5|126|ALL": {
    "ci": [
+    0.0015304051103820534,
+    0.014960697699235508
+   ],
+   "ci_oldBlock": [
     0.003667445813879538,
     0.012734757451624399
    ],
@@ -9719,6 +10924,10 @@
   },
   "PRICE_CONFIRMED-PRICE|TOP5|126|P1": {
    "ci": [
+    0.0003185214617975494,
+    0.015013472175058782
+   ],
+   "ci_oldBlock": [
     0.0004585779539919927,
     0.012070859651701881
    ],
@@ -9728,6 +10937,10 @@
   },
   "PRICE_CONFIRMED-PRICE|TOP5|126|P2": {
    "ci": [
+    -0.00585628060882877,
+    0.005761830900010274
+   ],
+   "ci_oldBlock": [
     -0.0048628555076919815,
     0.007093678911919855
    ],
@@ -9737,6 +10950,10 @@
   },
   "PRICE_CONFIRMED-PRICE|TOP5|126|P3": {
    "ci": [
+    0.0027073660969022025,
+    0.02638116563080208
+   ],
+   "ci_oldBlock": [
     0.005716281273165628,
     0.030210820876241194
    ],
@@ -9746,6 +10963,10 @@
   },
   "PRICE_CONFIRMED-PRICE|TOP5|126|exclude2023Plus": {
    "ci": [
+    -0.0020762585340571896,
+    0.010003241754940837
+   ],
+   "ci_oldBlock": [
     0.00012554970732160146,
     0.008929828818179131
    ],
@@ -9755,6 +10976,10 @@
   },
   "PRICE_CONFIRMED-PRICE|TOP5|252|ALL": {
    "ci": [
+    -0.0067936562958876585,
+    0.023197792582524628
+   ],
+   "ci_oldBlock": [
     -0.003965385590409737,
     0.01681770070262736
    ],
@@ -9764,6 +10989,10 @@
   },
   "PRICE_CONFIRMED-PRICE|TOP5|252|P1": {
    "ci": [
+    -0.012699569332638277,
+    0.021546197089294224
+   ],
+   "ci_oldBlock": [
     -0.011486190251414674,
     0.012640536036877079
    ],
@@ -9773,6 +11002,10 @@
   },
   "PRICE_CONFIRMED-PRICE|TOP5|252|P2": {
    "ci": [
+    -0.016093899758004536,
+    0.006644964826348347
+   ],
+   "ci_oldBlock": [
     -0.013616174277791881,
     0.008167143268925607
    ],
@@ -9782,6 +11015,10 @@
   },
   "PRICE_CONFIRMED-PRICE|TOP5|252|P3": {
    "ci": [
+    -0.003452682654743733,
+    0.03978415367790013
+   ],
+   "ci_oldBlock": [
     -0.004864031731815641,
     0.053042306482444235
    ],
@@ -9791,6 +11028,10 @@
   },
   "PRICE_CONFIRMED-PRICE|TOP5|252|exclude2023Plus": {
    "ci": [
+    -0.012911156258339742,
+    0.01254475894675887
+   ],
+   "ci_oldBlock": [
     -0.009499543161741505,
     0.008008002009778173
    ],
@@ -9800,6 +11041,10 @@
   },
   "PRICE_CONFIRMED-PRICE|TOP_QUINTILE|126|ALL": {
    "ci": [
+    0.0003740778984833471,
+    0.011179617750811003
+   ],
+   "ci_oldBlock": [
     0.0025217208290127554,
     0.008955747928470726
    ],
@@ -9809,6 +11054,10 @@
   },
   "PRICE_CONFIRMED-PRICE|TOP_QUINTILE|126|P1": {
    "ci": [
+    0.006862688467047862,
+    0.01860474884839095
+   ],
+   "ci_oldBlock": [
     0.009107272722488673,
     0.01606458843389333
    ],
@@ -9818,6 +11067,10 @@
   },
   "PRICE_CONFIRMED-PRICE|TOP_QUINTILE|126|P2": {
    "ci": [
+    -0.010484213190523995,
+    0.0005557977374066343
+   ],
+   "ci_oldBlock": [
     -0.012372918916125698,
     -0.001075426627284017
    ],
@@ -9827,6 +11080,10 @@
   },
   "PRICE_CONFIRMED-PRICE|TOP_QUINTILE|126|P3": {
    "ci": [
+    -0.008423899534507605,
+    0.018677832838141943
+   ],
+   "ci_oldBlock": [
     -0.0017848741416108657,
     0.011816909583586551
    ],
@@ -9836,6 +11093,10 @@
   },
   "PRICE_CONFIRMED-PRICE|TOP_QUINTILE|126|exclude2023Plus": {
    "ci": [
+    0.00033354813176086234,
+    0.01180978039400879
+   ],
+   "ci_oldBlock": [
     0.0025221737193552364,
     0.009550081002131892
    ],
@@ -9845,6 +11106,10 @@
   },
   "PRICE_CONFIRMED-PRICE|TOP_QUINTILE|252|ALL": {
    "ci": [
+    -0.00211616160521708,
+    0.022938298080888746
+   ],
+   "ci_oldBlock": [
     0.0013244319073752956,
     0.01624389755947096
    ],
@@ -9854,6 +11119,10 @@
   },
   "PRICE_CONFIRMED-PRICE|TOP_QUINTILE|252|P1": {
    "ci": [
+    0.002291484326304555,
+    0.027741247909866252
+   ],
+   "ci_oldBlock": [
     0.0066143899644788085,
     0.022199105940428947
    ],
@@ -9863,6 +11132,10 @@
   },
   "PRICE_CONFIRMED-PRICE|TOP_QUINTILE|252|P2": {
    "ci": [
+    -0.013720982470996488,
+    -0.0030733312312296534
+   ],
+   "ci_oldBlock": [
     -0.01971143481909982,
     -9.794337036022135e-05
    ],
@@ -9872,6 +11145,10 @@
   },
   "PRICE_CONFIRMED-PRICE|TOP_QUINTILE|252|P3": {
    "ci": [
+    -0.01938740524207927,
+    0.049684845082131515
+   ],
+   "ci_oldBlock": [
     -0.005826958431172296,
     0.03491839910852075
    ],
@@ -9881,6 +11158,10 @@
   },
   "PRICE_CONFIRMED-PRICE|TOP_QUINTILE|252|exclude2023Plus": {
    "ci": [
+    -0.0053518123132093014,
+    0.01751258587470874
+   ],
+   "ci_oldBlock": [
     -0.0011769245796610652,
     0.012563940037608396
    ],
@@ -9890,6 +11171,10 @@
   },
   "VALUE_CONFIRMED-WITHIN_SECTOR_VALUE|TOP5|126|ALL": {
    "ci": [
+    -0.013336833764658398,
+    0.027072704139499526
+   ],
+   "ci_oldBlock": [
     -0.00435384965552492,
     0.021746782220861356
    ],
@@ -9899,6 +11184,10 @@
   },
   "VALUE_CONFIRMED-WITHIN_SECTOR_VALUE|TOP5|126|P1": {
    "ci": [
+    -0.01478822736667812,
+    0.044228311914509606
+   ],
+   "ci_oldBlock": [
     -0.0012169232874374466,
     0.03581610751671419
    ],
@@ -9908,6 +11197,10 @@
   },
   "VALUE_CONFIRMED-WITHIN_SECTOR_VALUE|TOP5|126|P2": {
    "ci": [
+    -0.0542019156315833,
+    0.04394453985439564
+   ],
+   "ci_oldBlock": [
     -0.027944133803557723,
     0.0293740235135744
    ],
@@ -9917,6 +11210,10 @@
   },
   "VALUE_CONFIRMED-WITHIN_SECTOR_VALUE|TOP5|126|P3": {
    "ci": [
+    -0.04015973805143051,
+    0.0333381920999543
+   ],
+   "ci_oldBlock": [
     -0.027732639587301468,
     0.0286992041416816
    ],
@@ -9926,6 +11223,10 @@
   },
   "VALUE_CONFIRMED-WITHIN_SECTOR_VALUE|TOP5|126|exclude2023Plus": {
    "ci": [
+    -0.01626623801075365,
+    0.034255480573856634
+   ],
+   "ci_oldBlock": [
     -0.004071686924884503,
     0.02670840490249737
    ],
@@ -9935,6 +11236,10 @@
   },
   "VALUE_CONFIRMED-WITHIN_SECTOR_VALUE|TOP5|252|ALL": {
    "ci": [
+    -0.018891989862290112,
+    0.04347491709158595
+   ],
+   "ci_oldBlock": [
     -0.014391577308798352,
     0.03710426467432474
    ],
@@ -9944,6 +11249,10 @@
   },
   "VALUE_CONFIRMED-WITHIN_SECTOR_VALUE|TOP5|252|P1": {
    "ci": [
+    -0.015075911688830006,
+    0.05627187998747286
+   ],
+   "ci_oldBlock": [
     -0.015329177517960355,
     0.05213388036502923
    ],
@@ -9953,6 +11262,10 @@
   },
   "VALUE_CONFIRMED-WITHIN_SECTOR_VALUE|TOP5|252|P2": {
    "ci": [
+    -0.09921234796368056,
+    0.03082250546905714
+   ],
+   "ci_oldBlock": [
     -0.07321487884605792,
     0.05116286330012327
    ],
@@ -9962,6 +11275,10 @@
   },
   "VALUE_CONFIRMED-WITHIN_SECTOR_VALUE|TOP5|252|P3": {
    "ci": [
+    -0.028533568611271536,
+    0.025360147718806247
+   ],
+   "ci_oldBlock": [
     -0.029460544299403327,
     0.06918232355645976
    ],
@@ -9971,6 +11288,10 @@
   },
   "VALUE_CONFIRMED-WITHIN_SECTOR_VALUE|TOP5|252|exclude2023Plus": {
    "ci": [
+    -0.029809994940839586,
+    0.03923540539108381
+   ],
+   "ci_oldBlock": [
     -0.023686772243663418,
     0.03598129012899661
    ],
@@ -9980,6 +11301,10 @@
   },
   "VALUE_CONFIRMED-WITHIN_SECTOR_VALUE|TOP_QUINTILE|126|ALL": {
    "ci": [
+    -0.00518845531434096,
+    0.011587706314490387
+   ],
+   "ci_oldBlock": [
     -0.0013685504000158812,
     0.00779041551033056
    ],
@@ -9989,6 +11314,10 @@
   },
   "VALUE_CONFIRMED-WITHIN_SECTOR_VALUE|TOP_QUINTILE|126|P1": {
    "ci": [
+    -0.00743018318581378,
+    0.01273666235851133
+   ],
+   "ci_oldBlock": [
     -0.0030870129654248777,
     0.0088269638194556
    ],
@@ -9998,6 +11327,10 @@
   },
   "VALUE_CONFIRMED-WITHIN_SECTOR_VALUE|TOP_QUINTILE|126|P2": {
    "ci": [
+    -0.03448980024288481,
+    -0.006067103132984576
+   ],
+   "ci_oldBlock": [
     -0.02438312054105453,
     -0.006569668608706758
    ],
@@ -10007,6 +11340,10 @@
   },
   "VALUE_CONFIRMED-WITHIN_SECTOR_VALUE|TOP_QUINTILE|126|P3": {
    "ci": [
+    0.016029337462167108,
+    0.027680731483666697
+   ],
+   "ci_oldBlock": [
     0.014604578167355883,
     0.027117731059001574
    ],
@@ -10016,6 +11353,10 @@
   },
   "VALUE_CONFIRMED-WITHIN_SECTOR_VALUE|TOP_QUINTILE|126|exclude2023Plus": {
    "ci": [
+    -0.01254936756150046,
+    0.005524197260982109
+   ],
+   "ci_oldBlock": [
     -0.008474561730118298,
     0.0018979174940248675
    ],
@@ -10025,6 +11366,10 @@
   },
   "VALUE_CONFIRMED-WITHIN_SECTOR_VALUE|TOP_QUINTILE|252|ALL": {
    "ci": [
+    -0.01739955112986769,
+    0.015047513328012182
+   ],
+   "ci_oldBlock": [
     -0.01093840390277989,
     0.00983790688402445
    ],
@@ -10034,6 +11379,10 @@
   },
   "VALUE_CONFIRMED-WITHIN_SECTOR_VALUE|TOP_QUINTILE|252|P1": {
    "ci": [
+    -0.023523128685520846,
+    0.007064355039439044
+   ],
+   "ci_oldBlock": [
     -0.019871803581696563,
     0.0031632810069733186
    ],
@@ -10043,6 +11392,10 @@
   },
   "VALUE_CONFIRMED-WITHIN_SECTOR_VALUE|TOP_QUINTILE|252|P2": {
    "ci": [
+    -0.03822414967344339,
+    -0.020415437227351983
+   ],
+   "ci_oldBlock": [
     -0.03867824157682893,
     -0.01755177264662916
    ],
@@ -10052,6 +11405,10 @@
   },
   "VALUE_CONFIRMED-WITHIN_SECTOR_VALUE|TOP_QUINTILE|252|P3": {
    "ci": [
+    0.028028719756058185,
+    0.059187226505480146
+   ],
+   "ci_oldBlock": [
     0.030654778431004344,
     0.06474161047811598
    ],
@@ -10061,6 +11418,10 @@
   },
   "VALUE_CONFIRMED-WITHIN_SECTOR_VALUE|TOP_QUINTILE|252|exclude2023Plus": {
    "ci": [
+    -0.028224799470157297,
+    -0.0023039454374945935
+   ],
+   "ci_oldBlock": [
     -0.024336753172310002,
     -0.006159668027670336
    ],

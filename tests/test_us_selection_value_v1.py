@@ -132,3 +132,22 @@ def test_oci_correction_sets_the_relisting_return_and_leaves_later_returns():
     later = fixed["010060.KS"].pct_change().iloc[3:]
     pd.testing.assert_series_equal(later, closes["010060.KS"].pct_change().iloc[3:])
     assert (fixed["069500.KS"] == 1.0).all()
+
+
+def test_block_length_follows_the_spec_h_over_five_weeks():
+    from research.us_selection_value_v1 import followup as FU
+    assert FU.spec_block(126) == 25 and FU.spec_block(252) == 50
+    rows = [{"date": f"2020-01-{i % 28 + 1:02d}", "names": 5, "gross": 0.0, "net": 0.0, "spyNet": 0.0, "netExcessSPY": 0.01 * (i % 3 - 1),
+             "netExcessQQQ": 0.0, "largeCapAndUniverse": 0.0, "sectorAllocation": 0.0, "withinSectorSelection": 0.0, "costs": 0.0,
+             "peerSelection": 0.0, "overlap": None} for i in range(40)]
+    # 40 cohorts < 2 x 25-week blocks: the spec block cannot form an interval (the old 5-week block could)
+    assert EV.summarise(rows, 126)["ciMeanNetExcessSPY"] is None
+    assert EV.block_ci([r["netExcessSPY"] for r in rows], 5) is not None
+
+
+def test_entry_exit_windows_split_on_the_actual_sessions():
+    from research.us_selection_value_v1 import followup as FU
+    e, x = pd.Timestamp("2022-06-01"), pd.Timestamp("2022-12-30")
+    assert FU.in_window("EXIT_BY_2022", "2022-05-27", e, x) and not FU.in_window("ENTRY_FROM_2023", "2022-05-27", e, x)
+    assert not FU.in_window("EXIT_BY_2022", "2022-08-05", e, pd.Timestamp("2023-02-03"))
+    assert FU.in_window("ENTRY_FROM_2023", "2022-12-30", pd.Timestamp("2023-01-03"), x)
