@@ -1,0 +1,84 @@
+{
+  "base_main": "4f4497bcc9e7f9369bf5529225585ad39b0d7725",
+  "budget": "No new paid subscription; no parameter search; no main merge/deploy/writer",
+  "capitalization": {
+    "age_limit_note": "Conservative source-age gate fixed during input-only validation, before any TopK forward-label access; no universe deletion, it marks ranks blocked.",
+    "classes": "No summing duplicate company-level provider caps for two listed classes; distinct class shares/prices or documented equivalent-share convention required",
+    "fallback": "Most recently publicly available actual common shares outstanding x signal-date as-traded USD close, labelled reported-total-cap estimate; no weighted-average EPS shares, book equity or par value",
+    "input_price_basis": "Reuse corrected raw_close or invert original registered split/dividend recipe; validate scale; unknown basis blocks rank",
+    "max_reported_share_age_days": 550,
+    "primary": "Index-provider float-adjusted company capitalization",
+    "unquoted_common_classes": "Economic-equivalent listed-price estimate; BRK A=1500 B, ERIE B=150 A; Alphabet B=one A while quoted A and C valued separately; Fox and News classes valued separately. Accenture X and Charter voting-only B are not common economic units. Unreconciled Up-C LLC economic interests block ranks.",
+    "visibility": "Filing date strictly before signal; reported share end-date <=signal; retain filing/period age; quotes on signal date only"
+  },
+  "costs": {
+    "buy_bps": 8.0,
+    "cash_rate": 0,
+    "sell_bps": 8.3,
+    "source": "existing US decision pilot realistic costs; self financing; SPY same costs"
+  },
+  "entry": "First US session after signal at close",
+  "evidence_class": "EXPLORATORY_CORRECTED_INPUT_REUSE_OUTCOMES_PREVIOUSLY_EXPOSED_NO_OOS_CLAIM",
+  "exit": "entry session index + H at close; maturity as-of 2026-11-13",
+  "extension_years": [
+    2018,
+    2020,
+    2022
+  ],
+  "financial_controls": "Reproduce original factor rule and dated single-CIK inputs with SEC asset overlay on corrected financial pool only; no production or old evaluation executor",
+  "freeze_state": "FIXED_BEFORE_TOPK_RANKS_AND_FORWARD_PERFORMANCE",
+  "holding_rules": [
+    "Dividend reinvestment on the registered total-return basis; never apply dividends to TR twice",
+    "Known cash terminal proceeds stay zero-interest USD; verified stock successor stays invested under documented contract",
+    "Unresolved fractional settlement or rights remains unavailable; no invented share count, no replacement of selected security"
+  ],
+  "horizons": [
+    126,
+    252
+  ],
+  "id": "US_TOPK_COMPANY_MARKET_CAP_V1",
+  "k": [
+    100,
+    10,
+    5
+  ],
+  "metrics": [
+    "mean/median/win rate/p10 of net portfolio minus net SPY fixed-horizon USD total return",
+    "same-date market-cap versus equal weight difference",
+    "signal-year results",
+    "company and sector concentration top1/top5/HHI/effective count",
+    "weekly-rebalanced segment NAV, drawdown, turnover and costs"
+  ],
+  "nav": {
+    "continuity": "Maximal consecutive verified rank and price-path segments; no stitching or restart to hide missingness; segments shown separately; data-gap endpoint right-censored, not synthetic liquidation",
+    "frequency": "weekly rebalance on each verified signal next-session close; distinguish from independent H126/H252 fixed-holding cohorts"
+  },
+  "overlap": {
+    "bootstrap": "Moving-block mean CI with block lengths ceil(H/5)=26/51 weeks, within consecutive supported runs, 2000 draws seed340253; show sparse effective nonoverlapping blocks; no iid significance claims",
+    "weekly_cohorts_are_overlapping": true
+  },
+  "pre_outcome_input_validation": [
+    "All ranks frozen again before first forward-label access after correcting the loader so a short followup raw-price window augments rather than deletes earlier original raw quotes.",
+    "Normalize dated membership share-class hyphen vs dot when joining SEC CIK/sector metadata. Never change constituent list or use future membership to replace an unpriced security.",
+    "Unobserved official index events and index IWF remain unavailable. The observed-snapshot total-cap estimate is a separate diagnostic."
+  ],
+  "publication": "Aggregate research tables and metadata; raw market payloads, per-security future returns and ranking files remain outside git",
+  "rank_freeze": "Persist every selected company/security, weight, all-universe cap evidence and K-specific boundary status privately, hash ranking files before opening forward holding-return data or evaluating a path",
+  "scope": "OWNER_REQUESTED_NEW_ANALYSIS_US_ONLY",
+  "signal_grid": "Last US session of each complete week, 2013-01-04 through 2026-09-11; cutoff inherited from price source, no outcome-based date selection",
+  "universe": {
+    "company_group": "Dated issuer CIK and attested successor identity; multi-class company counted once",
+    "held_security": "Lexicographically first current S&P listed common class within the verified company; rank/weight by company cap; unlisted common classes included only under documented economic-equivalence total-cap convention",
+    "missing_boundary": "For each K separately, block if any missing member or company/class cap without a defensible upper bound can reach the K cutoff; publish uncertainty, never assign zero",
+    "primary": "All companies in the S&P500 dated membership strictly before signal; include Financials, Real Estate and unclassified sectors; no four-factor requirement",
+    "qualifications": [
+      "Official dated full-index float-cap rank only if membership, company/class mapping and index float capitalization are verified",
+      "Observed-snapshot reported-total-cap results must be separately labelled; do not call them index float capitalization",
+      "Corrected-financial-pool results labelled with that entire pool; incomplete cap coverage blocks K, no survivors-only re-ranking"
+    ]
+  },
+  "weights": [
+    "equal_company",
+    "company_market_cap"
+  ]
+}
