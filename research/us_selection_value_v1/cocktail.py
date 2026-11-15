@@ -132,6 +132,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--private", required=True)
     ap.add_argument("--out", required=True)
+    ap.add_argument("--skip-ledgers", action="store_true", help="fixed holding and diagnostics only -> cocktail-fixed.json")
     a = ap.parse_args(argv)
     P, OUT = Path(a.private), Path(a.out)
     close, _, qqq, _ = EV.load(P)
@@ -212,6 +213,9 @@ def main(argv=None):
                 for w, g in (("FULL", dg), ("EXIT_BY_2022", dg[dg["exit"] <= EXIT_2022]), ("ENTRY_FROM_2023", dg[dg["entry"] >= ENTRY_2023])) if len(g)}
         out["fixed"][str(H)] = cell
         print(H, {n: (round(c["COCKTAIL"]["vsSPY"]["mean"], 4), round(c["COCKTAIL_CONFIRMED"]["vsSPY"]["mean"], 4)) for n, c in cell.items() if isinstance(c, dict) and "COCKTAIL" in c}, flush=True)
+    if a.skip_ledgers:
+        (OUT / "cocktail-fixed.json").write_text(json.dumps(out, indent=1, sort_keys=True, default=str) + "\n")
+        return
     full_start, full_end = min(orig), close.index[-1]
     for every in (4, 26, 52):
         for s in ("COCKTAIL", "COCKTAIL_CONFIRMED", "PRICE", "SECTOR_MOMENTUM_BASKET", "WITHIN_SECTOR_VALUE", "CASH_PROFITABILITY"):
