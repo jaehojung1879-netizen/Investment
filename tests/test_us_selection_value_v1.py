@@ -33,7 +33,8 @@ def test_spec_is_frozen_and_lists_every_strategy():
     spec = json.loads((ROOT / "research/us_selection_value_v1/spec.json").read_text())
     assert set(spec["strategies"]) == set(EV.STRATS)
     assert spec["costs"].startswith("pipeline.benchmark_alpha.REALISTIC_COSTS")
-    assert set(EV.PERIODS) == {"P1", "P2", "P3", "exclude2023Plus"}
+    assert {k: list(v) for k, v in EV.PERIODS.items() if k != "ALL"} == spec["periods"]   # the frozen periods, unchanged
+    assert set(EV.PERIODS) - set(spec["periods"]) == {"ALL"}                               # the whole window is the only addition
 
 
 def test_books_respect_size_sector_cap_and_ticker_ties():
