@@ -74,6 +74,78 @@ def main():
                 out.append(f"| {KO[s]}{' (2023 제외)' if p != 'ALL' else ''} | {b} | {pct(x['meanNetExcessSPY'])} | {pct(x['mean_largeCapAndUniverse'])} | "
                            f"{pct(x['mean_sectorAllocation'])} | {pct(x['mean_withinSectorSelection'])} | {pct(x['mean_costs'])} | "
                            f"{pct(x['mean_peerSelection'])} | {ci(x.get('ciMeanPeerSelection'))} |")
+    # rebalancing NAV
+    nav = r["nav"]
+    out.append("\n**4계좌 리밸런싱 NAV (4주 보유, 계좌별 위상) — SPY 대비 CAGR 차이(%p) / IR / MDD(장부·SPY) / 편도 회전·연 비용**\n")
+    out.append("| 전략 | 책 | 2013–19 | 2020–22 | 2023– | 2023 제외 | 전체 |")
+    out.append("|---|---|---|---|---|---|---|")
+    for b in ("TOP5", "TOP_QUINTILE"):
+        for s in STRATS:
+            if s == "SECTOR_MOMENTUM_BASKET" and b == "TOP_QUINTILE":
+                continue
+            cells = []
+            for p in PERIODS:
+                x = nav.get(f"{s}|{b}|{p}")
+                if not x:
+                    cells.append("—")
+                elif "status" in x:
+                    cells.append(x["status"])
+                else:
+                    cells.append(f"{pct(x['cagrMinusSpy'], 1)} / {x['infoRatio']:+.2f} / {x['mdd'] * 100:.0f}·{x['spyMdd'] * 100:.0f} / {x['oneWayTurnoverPerYear']:.1f}·{x['costPerYear'] * 100:.2f}")
+            out.append(f"| {KO[s]} | {b} | " + " | ".join(cells) + " |")
+    # paired price vs financial
+    out.append("\n**가격 신호에 재무 정보를 더한 효과 — 양쪽 모두 계산된 같은 코호트의 짝 차이(SPY 대비 순초과, %p) [블록 95%] / 동업종·동규모 대비 선택 차이**\n")
+    out.append("| 비교 | 책 | H | 2013–19 | 2020–22 | 2023– | 2023 제외 | 전체 |")
+    out.append("|---|---|---|---|---|---|---|---|")
+    pv = r["pairedPriceVsFinancial"]
+    for lab in ("B2_MULTIFACTOR-PRICE", "PRICE_CONFIRMED-PRICE", "VALUE_CONFIRMED-WITHIN_SECTOR_VALUE"):
+        for b in ("TOP5", "TOP_QUINTILE"):
+            for H in ("126", "252"):
+                cells = []
+                for p in PERIODS:
+                    x = pv.get(f"{lab}|{b}|{H}|{p}", {})
+                    cells.append(f"{pct(x.get('meanDiffNetExcess'))} {ci(x.get('ci'))} / {pct(x.get('meanDiffPeerSelection'))}" if x.get("commonCohorts") else "—")
+                out.append(f"| {lab} | {b} | {H} | " + " | ".join(cells) + " |")
+    # Top-K control
+    out.append("\n**대형주 집중 대조군 — 시총 대용 Top K (전체 가격 보유 구성원, 금융 포함), SPY 대비 순초과(%p), 코호트**\n")
+    out.append("| H | 묶음 | 2013–19 | 2020–22 | 2023– | 2023 제외 | 전체 |")
+    out.append("|---|---|---|---|---|---|---|")
+    for H, d in r["topKControl"].items():
+        for k in sorted(d, key=lambda z: (int(z.split("_")[0][3:]), z)):
+            out.append(f"| {H} | {k} | " + " | ".join(f"{pct(d[k][p]['meanNetExcessSPY'])} ({d[k][p]['cohorts']})" if p in d[k] else "—" for p in PERIODS) + " |")
+    # AI capex
+    out.append("\n**AI CAPEX 조건부 가설 — 국면(지출 상위 10개사 capex 증가율 vs 과거 중앙값)별 SPY 대비 순초과(%p), 코호트**\n")
+    out.append("| H | 바스켓 | 국면 | 2013–19 | 2020–22 | 2023– | 전체 |")
+    out.append("|---|---|---|---|---|---|---|")
+    for H, d in r["aiCapex"].items():
+        for bk in ("spenders", "itProxy"):
+            for reg in ("HIGH", "LOW"):
+                cells = []
+                for p in ("P1", "P2", "P3", "ALL"):
+                    x = d.get(f"{bk}|{reg}|{p}")
+                    cells.append(f"{pct(x['meanNetExcessSPY'])} ({x['cohorts']})" if x else "—")
+                out.append(f"| {H} | {'투자 집행사 상위 10' if bk == 'spenders' else 'IT 업종(공급사 대용)'} | {reg} | " + " | ".join(cells) + " |")
+    # dependence
+    out.append("\n**의존도 — 상위 기여 5종목 제외 시 평균, 한 해 제외 시 부호가 뒤집히는 신호 연도, 결측 코호트를 관측 최악/최선으로 채운 범위 (H126, %p)**\n")
+    out.append("| 전략 | 책 | 평균 | 상위5 제외 | 상위 기여 종목 | 부호 뒤집는 연도 | 결측 코호트 | 최악~최선 |")
+    out.append("|---|---|---:|---:|---|---|---:|---|")
+    for b in ("TOP5", "TOP_QUINTILE"):
+        for s in STRATS:
+            d = r["dependence"].get(f"{s}|{b}|126")
+            m = r["missingCohortBounds"].get(f"{s}|{b}|126")
+            if not d:
+                continue
+            out.append(f"| {KO[s]} | {b} | {pct(d['mean'])} | {pct(d['meanWithoutTopContributors'])} | {', '.join(d['topContributors'])} | "
+                       f"{', '.join(d['yearsWhoseRemovalFlipsSign']) or '없음'} | {m['missingCohorts']} | {pct(m['worstFill'])} ~ {pct(m['bestFill'])} |")
+    # year sample
+    out.append("\n**연도별 표본 — 신호 주차, 30종목 이상 적격 주차, 공통 유니버스 평균 종목 수, 주당 주요 제외 사유**\n")
+    out.append("| 연도 | 신호 주 | 적격 주 | 공통 유니버스 평균 | 가격 패널 없음(이탈 종목)/주 | CIK 모호/주 | 회계 불완전·기타 |")
+    out.append("|---|---:|---:|---:|---:|---:|---|")
+    for y, c in sorted(r["yearSample"].items()):
+        x = r["exclusionReasonsByYear"].get(y, {})
+        w = c.get("signalWeeks", 1)
+        out.append(f"| {y} | {w} | {c.get('eligibleWeeks', 0)} | {c.get('commonUniverseRows', 0) / w:.0f} | {x.get('NO_PRICE_PANEL', 0) / w:.0f} | "
+                   f"{x.get('CIK_AMBIGUOUS_EXCLUDED', 0) / w:.0f} | identity hold {x.get('IDENTITY_HOLD', 0) / w:.0f} |")
     (RES / "tables-ko.md").write_text("\n".join(out) + "\n")
     print("ok")
 
