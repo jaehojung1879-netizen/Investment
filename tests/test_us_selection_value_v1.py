@@ -174,3 +174,26 @@ def test_sg1_random_control_matches_count_pool_and_is_reproducible():
     assert a[d1][ETF] == pytest.approx(0.6) and a[d2] == {ETF: 1.0}           # same per-name and ETF weights; 0 names -> ETF 100%
     b = R.random_books(base, "POOL_S2_ELIGIBLE", 3)
     assert set(R.stocks(b[d1])) <= set(base["eligible"][d1])
+
+
+def test_cocktail_sums_overlapping_sleeves_and_parks_an_empty_sleeve_in_spy(monkeypatch):
+    from research.us_selection_value_v1 import cocktail as CK
+    picks = {"PRICE": ["A", "B"], "SECTOR_MOMENTUM_BASKET": ["A", "C", "D", "E"], "WITHIN_SECTOR_VALUE": [], "CASH_PROFITABILITY": ["B"]}
+    monkeypatch.setattr(CK, "sleeve_names", lambda x, s: picks[s])
+    w, member = CK.book(None, "COCKTAIL")
+    assert w["A"] == pytest.approx(0.25 / 2 + 0.25 / 4) and w["B"] == pytest.approx(0.25 / 2 + 0.25)
+    assert w["SPY"] == pytest.approx(0.25) and sum(w.values()) == pytest.approx(1.0)
+    assert member["A"] == {"PRICE", "SECTOR_MOMENTUM_BASKET"}
+    picks["PRICE_CONFIRMED"] = ["Z"]
+    w2, _ = CK.book(None, "COCKTAIL_CONFIRMED")
+    assert "Z" in w2 and w2["B"] == pytest.approx(0.25)                      # only the price sleeve changes
+
+
+def test_kr_buckets_split_the_two_names_from_their_industry():
+    spec = importlib.util.spec_from_file_location("s2d_test", ROOT / "research/alpha_mechanism_decomposition_v1/kr_followup/s2_decomposition.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    assert mod.bucket("005930.KS", "ELECTRONICS_ELECTRICAL") == "SAMSUNG_HYNIX"
+    assert mod.bucket("000660.KS", None) == "SAMSUNG_HYNIX"
+    assert mod.bucket("000990.KS", "ELECTRONICS_ELECTRICAL") == "OTHER_ELECTRONICS"
+    assert mod.bucket("005380.KS", "AUTOS") == "REST"
