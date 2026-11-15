@@ -225,6 +225,9 @@ def ledgers(I2, ctx2, base, paths):
     sess = I2["sessions"]
     etf = pd.Series(ctx2.px.etf, index=sess)
     out = {}
+    fresh_first = M.next_session(sess, [d for d in dates if d >= RC.TEST_START][0])
+    eval_start = M.next_session(sess, fresh_first)          # both modes are read from the same session, after the fresh book's first fill
+    out["evaluationStart"] = str(eval_start.date())
     for every in (26, 52):
         for mode, start_dec in (("INHERITED", RC.WARMUP_START), ("FRESH", RC.TEST_START)):
             use = [d for d in dates if d >= start_dec]
@@ -234,11 +237,11 @@ def ledgers(I2, ctx2, base, paths):
                 start = M.next_session(sess, use[0])
                 end = I2["closes"][M.ETF].last_valid_index()
                 res = A.multi_account(ctx2.px, scheds, start, end, I2["rf"], etf, 1.0)
-                w = RC.window(res["nav"], etf)
+                w = RC.window(res["nav"], etf, start=eval_start)
                 w.update(oneWayTurnoverPerYear=res["oneWayTurnoverPerYear"], costPerYear=res["costPerYear"])
                 firsts = sorted(min(s) for s in scheds if s)
                 w["fillUp"] = {"firstEntry": str(firsts[0].date()), "allAccountsInvestedBy": str(firsts[-1].date())} if mode == "FRESH" else None
-                nav = res["nav"].loc[RC.TEST_START:]
+                nav = res["nav"].loc[eval_start:]
                 b = etf.loc[nav.index]
                 yearly = {}
                 for y, gidx in nav.groupby(nav.index.year).groups.items():
