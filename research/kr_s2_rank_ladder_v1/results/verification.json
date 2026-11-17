@@ -1,0 +1,83 @@
+{
+ "H126_S2_mean": {
+  "actual": -0.015770938144577407,
+  "reference": -0.015770938144577407,
+  "gap": 0.0
+ },
+ "H126_telescopeMaxAbs": 6.900119364772195e-12,
+ "H126_controlDecompositionMaxAbs": 7.0000671925640745e-12,
+ "H252_S2_mean": {
+  "actual": 0.009343853489273593,
+  "reference": 0.009343853489273584,
+  "gap": 8.673617379884035e-18
+ },
+ "H252_telescopeMaxAbs": 8.857137245854574e-12,
+ "H252_controlDecompositionMaxAbs": 1.000044491661356e-11,
+ "shortfallDates": [
+  "2018-01-05",
+  "2018-01-12",
+  "2018-01-19",
+  "2018-01-26",
+  "2018-02-02",
+  "2018-02-09",
+  "2018-02-14",
+  "2018-02-23",
+  "2018-03-02",
+  "2018-03-09",
+  "2018-03-16",
+  "2018-03-23",
+  "2018-03-30"
+ ],
+ "actualCountDistribution": {
+  "2": 12,
+  "3": 1,
+  "5": 441
+ },
+ "pastOnlyDecisionCounts": {
+  "0": 373,
+  "5": 81
+ },
+ "sourceMatrixDigestMatchesPublished": true,
+ "existingProspectiveFilesByteUnchanged": true,
+ "L26_N0_cagr_gap": 0.0,
+ "L26_N0_excess_gap": 0.0,
+ "L26_N0_mdd_gap": 0.0,
+ "L26_N0_oneWayTurnoverPerYear_gap": 0.0,
+ "L26_N0_costPerYear_gap": 0.0,
+ "L26_N5_cagr_gap": 0.0,
+ "L26_N5_excess_gap": 0.0,
+ "L26_N5_mdd_gap": 0.0,
+ "L26_N5_oneWayTurnoverPerYear_gap": 0.0,
+ "L26_N5_costPerYear_gap": 0.0,
+ "L52_N0_cagr_gap": 0.0,
+ "L52_N0_excess_gap": 0.0,
+ "L52_N0_mdd_gap": 0.0,
+ "L52_N0_oneWayTurnoverPerYear_gap": 0.0,
+ "L52_N0_costPerYear_gap": 0.0,
+ "L52_N5_cagr_gap": 0.0,
+ "L52_N5_excess_gap": 0.0,
+ "L52_N5_mdd_gap": 0.0,
+ "L52_N5_oneWayTurnoverPerYear_gap": 0.0,
+ "L52_N5_costPerYear_gap": 0.0,
+ "resultSha256": {
+  "cohorts-126.csv": "ebf76dad179cf49ef838ad5382d3e4ad6e967b8372deae519a0a7de3babb6ed8",
+  "cohorts-252.csv": "ecf306a17eeda900d66b68a368826a66a709314f1a43f2e4cb3a457e7bb24419",
+  "concentration-diagnostic.json": "43c264457af16dbeaa637e5cec3adf59258dfac46597cc0e96ebdce8b7b1af22",
+  "daily-adjacent-L26.csv": "fdca9ec8ca4321582980a64d6d60d9418743ba389c8036218a50a8313873fb68",
+  "daily-adjacent-L52.csv": "e1f8008b2dca0a0a420069d726cc6857fcde7f9e1e85452ad94d89572e33257a",
+  "daily-nav-L26.csv": "5d82d1023cff6d5e1589a81ab8a94570956befa7d7bbb89b1739bf2d52993525",
+  "daily-nav-L52.csv": "61e395ff98ac6e0bb75b73e86854a9d58b332b56f4d4850e6c9595aa70795c09",
+  "decisions.csv": "b933c6f5593209f5822d88a7aa635136a74c5e04e92ea9b87f32dc0706c0bf85",
+  "eligible-ranks.csv": "62a10e407a92d484573933a94a24270805198a87ba6f5f45fcabbf8b26cf5bee",
+  "excluded-cohorts.csv": "571cbcc158729d17a999ab14d04d17d4bf2d966dac3dd3fd137ea7dd10274e54",
+  "fixed.json": "834b73ca22f3e00ed73e3f904f7685db80d62c0260d443cce2a7253f0abdecd6",
+  "inputs.json": "3b19550da1c03a476487aa534ca7bf77ad3cea915cf733262d9fe456e364387c",
+  "leadership.json": "b8d3ee0408a2bcdabdeadf336e577c77fe096e6d53a30781ff9cde16adcca7e7",
+  "ledgers.json": "9e06678f459ec2bc1dd0612707bef44d1534dcaf8004495d2f8fffc588fc8b61",
+  "past-only-decisions.csv": "7a5a9be69e43eda80bab91770c45cb3f6af7464f2570034827a0c91b4fe09b16",
+  "past-only.json": "90a6b01bcf5e0d631407734636b6bf8b6f128d513a77acf19fede344cd90a35e",
+  "prospective-status.json": "05c3704edb02a84ad9d8c2e0b1d5f84a8ec95910c1350b1c50cbdc3e67c1d9db",
+  "rank-ticker-contributions-126.csv": "5bf0a3b0a2d4b08b640e2b28aecd287a9e3648e011caa68a9550c548787fd062",
+  "rank-ticker-contributions-252.csv": "07f054f2313a563e5f7927c42831f4dd37f7e3efb2c584d1d7d37de35e3bc0bc"
+ }
+}

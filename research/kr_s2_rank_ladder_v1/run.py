@@ -289,6 +289,8 @@ def main():
                                     "sourceCommit": "4ea107ed0cde289f0a049a65ff13d2441a786710", "identity": I["ident"],
                                     "decisionCount": len(base["dates"]), "first": str(base["dates"][0].date()), "last": str(base["dates"][-1].date()),
                                     "randomSeed": SEED, "randomLedgerPaths": PATHS,
+                                    "preregistrationCommit": "7a6ec28",
+                                    "codeSha256": {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(HERE.glob("*.py"))},
                                     "scratchFiles": {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in Path(args.scratch).glob("*.pkl")},
                                     "pythonNumpyPandas": [__import__("sys").version, np.__version__, pd.__version__]})
     if args.stage in ("all", "fixed"):

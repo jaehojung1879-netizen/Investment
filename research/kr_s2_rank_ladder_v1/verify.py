@@ -1,6 +1,7 @@
 """Reconcile the new ladder's own endpoints with the pinned published S2."""
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 import numpy as np
@@ -40,6 +41,12 @@ def main():
     checks['pastOnlyDecisionCounts'] = {str(k): int(n) for k, n in log.k.value_counts().sort_index().items()}
     checks['sourceMatrixDigestMatchesPublished'] = json.loads((out / 'inputs.json').read_text())['identity']['matrixDigest'] == '32e49b57a7541eea66f76373baef50c6302a394247b313f6099f718d46d54b0c'
     assert checks['sourceMatrixDigestMatchesPublished']
+    status = json.loads((out / 'prospective-status.json').read_text())
+    for path, digest in status['existingFilesSha256'].items():
+        original = subprocess.check_output(['git', 'show', '3a3e9d8e60c90bf6707072efca9d1dabf3cb79ac:' + path], cwd=ROOT)
+        assert hashlib.sha256(original).hexdigest() == digest
+        assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == digest
+    checks['existingProspectiveFilesByteUnchanged'] = True
     if (out / 'ledgers.json').exists():
         led = json.loads((out / 'ledgers.json').read_text())
         ref = json.loads((ROOT / 'research/followup_round8_v1/results/kr-switch-ledgers.json').read_text())
