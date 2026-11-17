@@ -15,7 +15,7 @@
 ## 가격·ETF 총수익
 
 - `$S/dataset.pkl`: 같은 #329의 `prepare_dataset.py`가 검증된 raw와 matrix를 합쳐 생성. 주식은 replay-v16 조건부 조정 가격, 거래량·KR 세션을 함께 보존한다. replay manifest `f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2`, 가격 객체는 `ledger/replay-inputs/objects/<decompressed SHA256>.json.gz`다.
-- **069500 입력은 replay의 원 ETF 가격이 아니다.** 생성기가 `docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json`의 `correctedBenchmarkQuotes`를 사용한다. 원 replay는 `069500.KS@replay-v16` 별도 열로 남는다. 기준 보고서의 KODEX 200 총수익은 이 정정 시계열이다. 본 연구도 그대로 사용하며 외부 독립 인증 완료라고 재명명하지 않는다.
+- **069500 입력은 replay의 원 ETF 가격이 아니다.** 생성기가 `docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json`의 `correctedBenchmarkQuotes`를 사용한다. 원 replay는 `069500.KS@replay-v16` 별도 열로 남는다. 기준 보고서의 KODEX 200 총수익은 이 정정 시계열이다. 본 연구도 그대로 사용한다. 원 출처는 삼성자산운용 공식 시장가격(`issuer-standard.xls`)과 공식 현금 분배 기록·보관 PDF다. 수익 정의는 `(P_t + D_t) / P_{t-1}`의 배당락일 종가 재투자이며 투자자 분배금 세전이다. 같은 공식 현금을 사용한 Naver 가격 기반 재구성과 연간 대조는 `aggregateStatus=PASS`다. 현금 분배 자체를 독립적으로 두 번 관측한 검증은 아니며, NAV 수익이나 KOSPI200 지수 수익도 아니다.
 - `analyze.load`가 `docs/audits/kr-alpha-atlas-phase-c-integrity/corrected-inputs.json:finalSessionQuotes`를 적용한다.
 - `sg1_random_control.setup` → `oci_corrected_nav.corrected_closes`가 `kr_followup/010060-corporate-action-reconciliation.json`의 양쪽 후속 증권 경제수익을 반영한다. 재상장 후 새 OCI를 구 OCI에 무비용 재투자한 근사이며 이후 각각의 후속 종목을 추적하는 장부는 아니다.
 - `$S/macro_panel.pkl`, `$S/vix_fx.pkl`: #329 `load_sources.py`가 같은 고정 replay manifest의 macro/vix/fx 객체를 검증해 생성. 원 setup가 위상 계산 중 읽기 때문에 필요하다. 이번 종목 수 규칙에 새로운 미국 거시 신호를 추가하지 않는다.

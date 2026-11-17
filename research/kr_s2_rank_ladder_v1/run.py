@@ -134,6 +134,7 @@ def fixed(I, ctx, base, books, matched, out):
                 complete = all(t is not None and returns[t] is not None for t in peers)
                 row[f"M{k}_net"] = sum(.2 * returns[t][1] for t in peers) + (1 - .2 * n) * etf[1] if etf and complete else np.nan
                 if k:
+                    row[f"rank{k}Ticker"] = picks[k-1] if len(picks) >= k else None
                     row[f"delta{k}"] = row[f"N{k}_net"] - row[f"N{k-1}_net"]
                     row[f"rank{k}Present"] = len(picks) >= k
                     row[f"selection{k}"] = row[f"N{k}_net"] - row[f"R{k}_net"]
@@ -163,6 +164,7 @@ def fixed(I, ctx, base, books, matched, out):
                     val["increment"] = stats(df[f"delta{k}"], mask, block)
                     val["presentOnlyIncrement"] = stats(df[f"delta{k}"], mask & df[f"rank{k}Present"], block)
                     val["incrementNetOfRandom"] = stats(df[f"delta{k}"] - (df[f"R{k}_net"] - df[f"R{k-1}_net"]), mask, block)
+                    val["incrementNetOfMatched"] = stats(df[f"delta{k}"] - (df[f"M{k}_net"] - df[f"M{k-1}_net"]), mask, block)
                 cell[str(k)] = val
             result[name] = cell
         adjusted = CM.holm({str(k): result["FULL"][str(k)]["increment"]["pOneSidedApprox"] for k in range(1, 6)})
@@ -202,6 +204,36 @@ def past_only(base, frames, books, out):
     return policy
 
 
+def turnover_diagnostic(px, schedules, start, end):
+    """Membership replacement and drift resets, separately from frozen engine total turnover.
+
+    Reset is descriptive L1 distance on retained assets from the pre-trade marked weights to the
+    recorded post-trade weights (the engine rounds its audit weights to 6 decimals).
+    This is not a second turnover/cost implementation or an additive cost attribution.
+    """
+    departed = held = 0
+    resets = []
+    for schedule in schedules:
+        r = C.simulate(px, schedule, start, end, record=True)
+        prev_date, prev = start, {M.ETF: 1.}
+        for row in r["holdings"]:
+            d = pd.Timestamp(row["date"])
+            post = row["weights"]
+            oldnames = {t for t, w in prev.items() if t not in (M.ETF, M.CASH) and w > 1e-5}
+            newnames = {t for t, w in post.items() if t not in (M.ETF, M.CASH) and w > 1e-5}
+            held += len(oldnames)
+            departed += len(oldnames - newnames)
+            values = {t: w * px.price(t, px.pos[d]) / px.price(t, px.pos[prev_date]) for t, w in prev.items() if t != M.CASH}
+            total = sum(values.values())
+            common = set(values) & set(post)
+            resets.append(sum(abs(post[t] - values[t] / total) for t in common) if total else 0.)
+            prev, prev_date = post, d
+    return {"departedStockNames": departed, "priorStockNameOccurrences": held,
+            "nameReplacementShare": departed / held if held else None,
+            "meanRetainedAssetL1ResetApprox": float(np.mean(resets)) if resets else None,
+            "note": "6-decimal recorded weights; resets are descriptive, not additive turnover attribution"}
+
+
 def ledgers(I, ctx, base, books, random, policy, out):
     sess, dates = I["sessions"], base["dates"]
     start = M.next_session(sess, dates[0])
@@ -220,6 +252,8 @@ def ledgers(I, ctx, base, books, random, policy, out):
             navs[name] = r["nav"]
             m = RC.window(r["nav"], etf, start=start)
             m.update(oneWayTurnoverPerYear=r["oneWayTurnoverPerYear"], costPerYear=r["costPerYear"])
+            if name.startswith("N") or name == "PAST_ONLY":
+                m["turnoverDiagnostic"] = turnover_diagnostic(ctx.px, scheds, start, end)
             metrics[f"L{every}|{name}"] = m
             print("ledger", every, name, round(m["excess"] * 100, 4), flush=True)
         nav = pd.DataFrame(navs)

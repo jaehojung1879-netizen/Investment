@@ -24,3 +24,4 @@ if [[ ! -f "$S/macro_panel.pkl" || ! -f "$S/vix_fx.pkl" ]]; then
 fi
 "$PYTHON" -m research.kr_s2_rank_ladder_v1.run --scratch "$S" --stage all
 "$PYTHON" -m research.kr_s2_rank_ladder_v1.tables
+"$PYTHON" -m research.kr_s2_rank_ladder_v1.verify
