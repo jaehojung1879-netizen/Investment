@@ -79,6 +79,8 @@ def test_nav_gap_split_and_unresolved_prices_are_not_dropped():
     n = pd.Series(np.exp(np.arange(300) * 0.0003), index=dates)
     b = pd.Series(np.exp(np.arange(300) * 0.0002), index=dates)
     out = C.nav_window(n, b)
+    assert out["cagr"] == pytest.approx((n.iloc[-1] / n.iloc[0]) ** (252 / 299) - 1)
+    assert out["annualization"] == "252_SESSIONS_FROZEN_ENGINE"
     assert out["annualArithmeticDailyGap"] + out["compoundingRemainder"] == pytest.approx(out["cagrGap"])
     assert out["mdd"] == 0
     n.iloc[40] = np.nan

@@ -198,8 +198,9 @@ def nav_window(nav, benchmark):
     pair.index = pd.DatetimeIndex(pair.index)
     if not pair.index.is_monotonic_increasing or pair.index.has_duplicates:
         raise ValueError("NAV dates must be strictly chronological")
-    years = (pair.index[-1] - pair.index[0]).days / 365.25
-    if years <= 0:
+    calendar_years = (pair.index[-1] - pair.index[0]).days / 365.25
+    years = (len(pair) - 1) / 252
+    if calendar_years <= 0:
         raise ValueError("NAV window has no elapsed calendar time")
     growth = pair.iloc[-1] / pair.iloc[0]
     cg = growth ** (1 / years) - 1
@@ -208,6 +209,7 @@ def nav_window(nav, benchmark):
     gap = float(cg.iloc[0] - cg.iloc[1])
     return {"n": len(pair), "start": pair.index[0].date().isoformat(),
             "end": pair.index[-1].date().isoformat(), "years": years,
+            "calendarYears": calendar_years, "annualization": "252_SESSIONS_FROZEN_ENGINE",
             "cagr": float(cg.iloc[0]), "etfCagr": float(cg.iloc[1]), "cagrGap": gap, "excess": gap,
             "mdd": float(mdd.iloc[0]), "etfMdd": float(mdd.iloc[1]),
             "annualArithmeticDailyGap": arithmetic, "compoundingRemainder": gap - arithmetic}
