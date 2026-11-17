@@ -1,6 +1,6 @@
 {
   "contract": "DART_RAW_FILINGS_V1",
-  "updatedAt": "2026-11-16T12:03:15Z",
+  "updatedAt": "2026-11-17T12:28:17Z",
   "universeSize": 119,
   "years": [
     2015,
@@ -8,11 +8,11 @@
   ],
   "firstServedYear": 2015,
   "progress": {
-    "collected": 4709,
+    "collected": 4747,
     "absent": 1487,
-    "pending": 298,
-    "total": 6494,
-    "completePct": 95.41
+    "pending": 261,
+    "total": 6495,
+    "completePct": 95.98
   },
   "absences": {
     "recorded": 1752,
@@ -20,17 +20,17 @@
     "awaitingDeadline": 265
   },
   "thisRun": {
-    "calls": 197,
-    "recordsWritten": 43,
+    "calls": 155,
+    "recordsWritten": 38,
     "shardsChanged": 1,
     "stopReason": "WORK_LIST_EXHAUSTED",
     "statuses": {
-      "013": 154,
-      "000": 43
+      "013": 117,
+      "000": 38
     },
     "refused": {
       "NO_CORP_CODE": 144,
-      "EMPTY_RESPONSE": 154
+      "EMPTY_RESPONSE": 117
     },
     "noCorpCodeTickers": [
       "005385.KS",
@@ -38,23 +38,23 @@
       "005935.KS"
     ],
     "fsDiv": {
-      "CFS": 43
+      "CFS": 38
     },
     "amountFieldsSeen": {
-      "3분기|BS|thstrm_amount": 2154,
-      "3분기|BS|frmtrm_amount": 2154,
-      "3분기|IS|thstrm_amount": 219,
-      "3분기|IS|thstrm_add_amount": 219,
-      "3분기|IS|frmtrm_add_amount": 219,
-      "3분기|CIS|thstrm_amount": 1223,
-      "3분기|CIS|thstrm_add_amount": 1222,
-      "3분기|CIS|frmtrm_add_amount": 1223,
-      "3분기|CF|thstrm_amount": 2153,
-      "3분기|CF|frmtrm_amount": 2150,
-      "3분기|SCE|thstrm_amount": 4509,
-      "3분기|SCE|frmtrm_amount": 58,
-      "3분기|BS|bfefrmtrm_amount": 59,
-      "3분기|SCE|bfefrmtrm_amount": 7
+      "3분기|BS|thstrm_amount": 1848,
+      "3분기|BS|frmtrm_amount": 1848,
+      "3분기|BS|bfefrmtrm_amount": 95,
+      "3분기|CIS|thstrm_amount": 1119,
+      "3분기|CIS|thstrm_add_amount": 1119,
+      "3분기|CIS|frmtrm_add_amount": 1121,
+      "3분기|CF|thstrm_amount": 2019,
+      "3분기|CF|frmtrm_amount": 2026,
+      "3분기|SCE|thstrm_amount": 4246,
+      "3분기|SCE|frmtrm_amount": 43,
+      "3분기|IS|thstrm_amount": 220,
+      "3분기|IS|thstrm_add_amount": 220,
+      "3분기|IS|frmtrm_add_amount": 220,
+      "3분기|SCE|bfefrmtrm_amount": 3
     }
   }
 }
