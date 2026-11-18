@@ -58,3 +58,11 @@ python -m research.kr_us_strategy_batch_v1.us_prepare --private /workspace/batch
 재생성은 원 `research.followup_round8_v1.us_audit` 경로를 따른다. 원 입력은 `nport/x/funds.parquet`, `nport/x/ec-*.parquet`, 기존 `nport/{filings.parquet,sample-holdings.parquet,bench.pkl}`, 위 `us/` 캐시다. 추출 원본은 GCAP 공개 N-PORT ZIP(Google Drive ID `1dGUfDFPqreYzJClEs46JWBivEJXhyNM7`, 7,402,820,315바이트, 2019Q3~2026Q3 분기 파일 29개)이다. 현재 공간에 전체 ZIP을 받지 않았으며 추가 데이터를 구매하지 않는다.
 
 기존 `research/followup_round8_v1/results/us-{audit,eval}.json`과 `research/active_fund_disclosure_v1/results/us-*.json`의 집계는 참고 결과로 재사용할 수 있다. 날짜별 픽·보유·수익 원본이 없어 새 공통 날짜·시총 범위 매칭·노출 비중 비교를 이 JSON에서 복원할 수는 없다.
+
+원 입력이 모두 있는 경우 C2 재생성 명령은 다음과 같다. 출력은 기존 연구 폴더 밖으로 지정한다. 이번 작업에서는 원 parquet와 C2가 없어 이 단계를 실행하지 않았다.
+
+```bash
+python -m research.followup_round8_v1.us_audit --private /workspace/batch-inputs --out /workspace/batch-inputs/nport-regeneration-results
+```
+
+이 경로는 `/workspace/batch-inputs/nport/round8/C2.pkl`을 만든다. 현재 batch는 미확보 OW/OW_RESID 슬롯을 유지하며 새 후보를 대신 넣지 않는다.

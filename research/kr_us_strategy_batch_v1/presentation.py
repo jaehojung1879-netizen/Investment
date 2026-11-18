@@ -107,6 +107,31 @@ def qqq_table():
         ["구성", "n6/12", "6개월 vsQQQ", "12개월 vsQQQ", "L26 CAGR차%p", "L52 CAGR차%p"], rows) + ["", "전체 후보 보조 결과: [qqq-secondary.json](results/US/qqq-secondary.json).", ""]
 
 
+def conditional_headline(summaries):
+    lines = []
+    kr = summaries.get("KR", {})
+    if kr:
+        v = [kr["selection"][str(h)]["CONFIRM_NEUTRAL"]["own"] for h in (126, 252)]
+        common = [kr["selection"][str(h)]["S2"]["common"]["n"] for h in (126, 252)]
+        lines += [f"한국 사업확인 NEUTRAL의 신호별 own 매칭 표본은 {R.effect(v[0])}/{R.effect(v[1])}%p였다. 한국7신호 공통은 {common[0]}/{common[1]}주다. 날짜가 다른 own 결과로 신호 간 우열을 정하지 않는다.", ""]
+    path = R.OUT / "matched-common-diagnostics.json"
+    if path.exists():
+        data = json.loads(path.read_text())
+        for market, selector in (("KR", "CONFIRM_NEUTRAL"), ("US", "PRICE_CONFIRMED")):
+            by = data["markets"].get(market)
+            if by:
+                cells = [by[str(h)]["selectors"][selector]["subsetCommon"] for h in (126, 252)]
+                lines += [f"사후 보조 공통 표본 {market} {cells[0]['selection']['n']}/{cells[1]['selection']['n']}주에서 {selector} 선택력은 {R.effect(cells[0]['selection'])}/{R.effect(cells[1]['selection'])}%p, 같은 날짜 ETF 대비 전체 효과는 {R.pct(cells[0]['total']['mean'])}/{R.pct(cells[1]['total']['mean'])}%p였다. 가용성 진단이며 원 핵심 검정을 대체하지 않는다.", ""]
+    examples = []
+    for config in ("KR:K2", "KR:INDUSTRY_MOMENTUM:SLOT20:K5", "US:SECTOR_MOMENTUM:Q100", "US:U1:Q100"):
+        a, b = (R.fixed_cell(summaries, h, config) for h in (126, 252))
+        if a.get("mean") is not None and b.get("mean") is not None:
+            examples.append(f"{config} {R.pct(a['mean'])}/{R.pct(b['mean'])}%p")
+    if examples:
+        lines += ["다른 ETF 대비 과거 점추정: " + "; ".join(examples) + ". 불확실성·위험은 아래의 전체 표와 함께 판단한다.", ""]
+    return lines
+
+
 def write(summaries, coverage, core, broad, evidence):
     passing = lambda rows: [r for r in rows if r["horizon"] == 126 and r["mean"] is not None and r["mean"] > 0 and r["pHolm"] < .05]
     cp, bp = passing(core), passing(broad)
@@ -129,12 +154,14 @@ def write(summaries, coverage, core, broad, evidence):
              "## 첫 장: 숫자로 보는 답", ""]
     lines += R.table(["시장", "동일 업종·시총 선택력 — 신호별 own 매칭 표본", "주요 구성의 ETF 대비 — 가격 공통 표본", "고정 주도주를 ETF로 돌리면 — 후보 own 표본"], headline)
     lines += ["", f"사전 고정 선택력19개 중 Holm 통과 **{len(sp)}개**이며 **{selection_missing}개는 공통 표본 부족/매칭 불가로 검정 자체가 미측정**이다. 이는 선택력 부재의 증거와 다르다. 전체 핵심41개 중 **{len(cp)}개** 통과({core_missing}개 미측정), 별도 broad ETF115개 중 **{len(bp)}개** 통과다(주 검정6개월). 미확보·표본 부족 가설도 p=1로 가족에 남겼다.", "",
-              "한국 사업확인 NEUTRAL의 신호별 own 매칭 표본은 +0.95[+0.20,+1.82]/+2.36[+0.19,+5.48]%p였다. 산업모멘텀은 +1.22[+0.04,+3.44]/+8.04%p지만12개월49주로 구간 미측정이다. 날짜가 다른 이 결과를 신호 간 우열로 바꾸지 않는다. 한국7신호 공통은33/24주, 미국10신호 공통은0주여서 주 선택력 추론에는 자료가 부족하다. 보조 공통 표본을 별도로 공개했다.", "",
-              "사후 보조 공통 표본에서는 미국 단일7신호141/133주 중 가격+사업확인 선택력 +0.73[+0.29,+1.17]/+0.54[−0.44,+1.30]%p였다. 하지만 같은 날짜 ETF 대비 전체 효과는+0.10/−0.15%p였다. 한국 complete4신호162/148주 중 사업확인 NEUTRAL은+0.87[+0.17,+1.57]/+1.45[−0.07,+3.25]%p였다. 이 표본 변경은 사후 가용성 진단으로 표시하며 원 핵심 검정은 대체하지 않는다.", "",
-              "다른 양의 ETF 대비 점추정은 한국 K2 +0.99/+1.65%p, 산업모멘텀 SLOT5 +2.50/+0.31%p, 미국 산업 바구니 주식100% +0.33/+0.33%p와 U1 주식100% +0.24/+0.92%p다. 해당6·12개월 구간은 모두0을 포함한다. 양의 과거 평균과 재현 가능한 판단 규칙의 개선 증거를 구분한다.", "",
               f"L26·L52 모두 CAGR이 높고 MDD도 엄격히 얕은 서술적 구성은 {len(improved)}개다: " + (", ".join(f"`{k}`" for k in improved) if improved else "없음") + ". 이는 고정보유 검정 통과와 별개이며 운영 승격을 뜻하지 않는다.", "",
               "**한국에서 판단일에 0~5개를 정할 근거가 충분하다고 결론내리지 않는다.** 0개는 KODEX200 100%다. 만기가 끝난 자료만 쓰는 연간 선택 규칙의 실제 선택과 성과를 아래에 공개한다. 개수·가중치를 이 결과에 맞춰 고치지 않았다.", "",
               "## 1. 같은 업종·시총 종목보다 나았나", ""]
+    insert = lines.index("## 1. 같은 업종·시총 종목보다 나았나")
+    lines[insert:insert] = conditional_headline(summaries)
+    pending = {m: x for m, x in R.market_progress(summaries).items() if x["status"] not in ("COMPLETE", "COMPLETE_WITH_NOT_ESTIMABLE_BOOKS")}
+    if pending:
+        lines[6:6] = ["**중간 산출 상태:** " + json.dumps(pending, ensure_ascii=False) + ". 미완료 운용 수치는 미측정으로 표시한다.", ""]
     top_nav = []
     for config in ("KR:S2:FIXED20:K5", "KR:K2", "US:U1:Q020", "US:U1:Q100"):
         market = config.split(":")[0]
@@ -177,7 +204,7 @@ def write(summaries, coverage, core, broad, evidence):
     sh = ["구성", "개월", "주도주/서명합%", "주도주 비중→ETF", "보유창 제외 n:초과", "사후 최대 이름", "그 이름→ETF", "사후 최대 진입년", "그 해 제외"]
     lines += R.table(sh, R.sensitivity_rows(summaries, "KR", ["KR:S2:SLOT20:K5", "KR:S2:FIXED20:K5", "KR:K2", "KR:INDUSTRY_MOMENTUM:SLOT20:K5"])) + [""]
     lines += R.table(sh, R.sensitivity_rows(summaries, "US", ["US:PRICE_CONFIRMED:Q100", "US:COCKTAIL:Q100", "US:U1:Q100"])) + ["",
-              "모두 사후 민감도다. 표본은 후보 own 가격 해결 날짜여서 앞의70/30구성 공통 표와 다르다. 고정 주도주는 한국 삼성전자·SK하이닉스, 미국 AAPL/MSFT/NVDA/AMZN/GOOGL/GOOG/META/AVGO/TSLA다. 이름별 w×(자산 순수익−ETF 순수익)의 합이 전체 순초과와 일치한다. 전체 서명합이 음수면 비율도 음수, 상쇄가 크면100%를 넘는다. 최대 구간은 해당 후보의 합산 순초과 기여가 가장 큰 진입 calendar-year다. 겹친 주간 창의 합이며 독립 사건 수가 아니다. 전체 이름·년 기여 원본과 모든 후보 민감도는 TABLES/results에 있다.", "",
+              "모두 사후 민감도다. 표본은 후보 own 가격 해결 날짜여서 앞의70/30구성 공통 표와 다르다. 고정 주도주는 한국 삼성전자·SK하이닉스, 미국 AAPL/MSFT/NVDA/AMZN/GOOGL/GOOG/META/AVGO/TSLA다. 이름별 w×(자산 순수익−ETF 순수익)의 합이 전체 순초과와 일치한다. 전체 서명합이 음수면 비율도 음수, 상쇄가 크면100%를 넘는다. 분모는 전체 책의 ETF 순초과 합이며, 이전 연구의5위 추가 슬롯 기여 중 약79%와는 분모가 다르다. 최대 구간은 해당 후보의 합산 순초과 기여가 가장 큰 진입 calendar-year다. 겹친 주간 창의 합이며 독립 사건 수가 아니다. 전체 이름·년 기여 원본과 모든 후보 민감도는 TABLES/results에 있다.", "",
               "### 업종·대형주 직접 비중", ""]
     eh = ["구성", "판단주", "평균 이름수", "평균ETF%", "주도주 직접%", "후보 cap top5 직접%", "평균 직접 업종 상위3"]
     lines += R.table(eh, exposures("KR", ["KR:S2:SLOT20:K5", "KR:S2:FIXED20:K5", "KR:INDUSTRY_MOMENTUM:SLOT20:K5", "KR:K2"])) + [""]

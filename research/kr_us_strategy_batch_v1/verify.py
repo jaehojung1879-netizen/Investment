@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import hashlib
+import gzip
 import json
 import subprocess
 
@@ -87,6 +88,22 @@ def kr_checks(summary):
         result[str(h)] = {"originalDates": len(f), "matureWeeks": int(f.mature.sum()),
                           "portfolioCommonWeeks": int(mask.sum())}
     result["maxSelectionReplacementIdentityError"] = max_error
+    with gzip.open(OUT / "KR/books.json.gz", "rt") as f:
+        books = json.load(f)
+    with gzip.open(OUT / "KR/matched-books.json.gz", "rt") as f:
+        peers = json.load(f)
+    for selector, by in peers.items():
+        targets = books[f"KR:{selector}:FIXED20:K5"]
+        for date, control in by.items():
+            if control is None:
+                continue
+            target = targets[date]
+            etf = "069500.KS"
+            assert abs(sum(control.values()) - 1) < 1e-12
+            assert control.get(etf, 0) == target.get(etf, 0)
+            assert not ((set(control) - {etf}) & (set(target) - {etf}))
+            assert sorted(w for t, w in control.items() if t != etf) == sorted(w for t, w in target.items() if t != etf)
+    result["savedMatchedBooksPreserveEveryWeightAndETF"] = True
     return result
 
 
@@ -160,15 +177,17 @@ def main():
     result = {"designCommittedBeforeNewOutcomes": "e6786ee", "contractHashes": contract,
               "fixedCoreFamilySize": 41, "fixedBroadFamilySize": 115, "holmRecomputed": True,
               "artifactManifestVerified": True, "prospectiveFilesByteUnchanged": True, "markets": {}}
-    repair = load(OUT / "us-ctva-repair-receipt.json")
-    assert repair["authorizationCommit"] == "4710738"
-    assert repair["admissionOverrides"] == [] and repair["pricesReplaced"] is False
-    assert repair["sourceSha256"] == "c8f9f48f042a7d9c9843ee7777c73d26852987880c9c30aad910966f99956fa5"
-    result["ctvaInputRepairBeforeOutcomeInterpretation"] = "4710738"
-    bridge = load(OUT / "us-source-bridge.json")
-    assert bridge["changedTickers"] == ["CTVA"]
-    assert max(abs(v["captureMinusPublished"]) for v in bridge["bridge"].values()) < 1e-12
-    result["usOriginalBaselineRecoveredBeforeSourceRepair"] = True
+    if (OUT / "us-ctva-repair-receipt.json").exists():
+        repair = load(OUT / "us-ctva-repair-receipt.json")
+        assert repair["authorizationCommit"] == "4710738"
+        assert repair["admissionOverrides"] == [] and repair["pricesReplaced"] is False
+        assert repair["sourceSha256"] == "c8f9f48f042a7d9c9843ee7777c73d26852987880c9c30aad910966f99956fa5"
+        result["ctvaInputRepairBeforeOutcomeInterpretation"] = "4710738"
+    if (OUT / "us-source-bridge.json").exists():
+        bridge = load(OUT / "us-source-bridge.json")
+        assert bridge["changedTickers"] == ["CTVA"]
+        assert max(abs(v["captureMinusPublished"]) for v in bridge["bridge"].values()) < 1e-12
+        result["usOriginalBaselineRecoveredBeforeSourceRepair"] = True
     diagnostic = load(OUT / "matched-common-diagnostics.json")
     assert diagnostic["coreFamilyUnchanged"] == 41
     for by in diagnostic["markets"].values():

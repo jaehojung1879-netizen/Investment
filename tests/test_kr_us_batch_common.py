@@ -107,3 +107,7 @@ def test_integrated_families_do_not_shrink_when_a_market_is_unavailable(tmp_path
     assert next(r for r in core if r["id"] == claim and r["horizon"] == 126)["pHolm"] == pytest.approx(0.041)
     assert next(r for r in broad if r["id"] == "KR:S2:SLOT20:K5" and r["horizon"] == 126)["pHolm"] == pytest.approx(0.115)
     assert all(r["pUsedInFamily"] == 1 for r in core if r["market"] == "US")
+    progress = R.market_progress(summaries)
+    assert progress["KR"]["status"] == "FIXED_COMPLETE_LEDGERS_PENDING"
+    assert progress["US"]["status"] == "UNAVAILABLE"
+    assert progress["KR"]["expectedBooksPerCadenceIncludingETF"] == 2

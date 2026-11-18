@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from datetime import datetime, timezone
 from pathlib import Path
 import subprocess
 
@@ -25,7 +26,10 @@ def dump(path, value):
 
 
 def pct(x, signed=True):
-    return "미측정" if x is None else f"{x * 100:{'+' if signed else ''}.2f}"
+    if x is None:
+        return "미측정"
+    x = 0.0 if abs(x) < 1e-12 else x
+    return f"{x * 100:{'+' if signed else ''}.2f}"
 
 
 def number(x):
@@ -229,6 +233,26 @@ def ledger_evidence(summaries):
     return evidence
 
 
+def market_progress(summaries):
+    result = {}
+    for market in ("KR", "US"):
+        s = summaries.get(market)
+        if s is None:
+            result[market] = {"status": "UNAVAILABLE", "available": False}
+            continue
+        fixed = s["fixed"]["126"]
+        ids = [k for k in REG["broadEtfClaims"] if k.startswith(market + ":") and "common" in fixed.get(k, {})]
+        expected = len(ids) + 1
+        attempted = {c: len(s.get("ledgers", {}).get(c, {})) for c in ("L26", "L52")}
+        measured = {c: sum("full" in x for x in s.get("ledgers", {}).get(c, {}).values()) for c in attempted}
+        complete = all(n == expected for n in attempted.values())
+        result[market] = {"available": True, "expectedBooksPerCadenceIncludingETF": expected,
+                          "attempted": attempted, "measured": measured,
+                          "status": "COMPLETE" if complete and measured == attempted else (
+                              "COMPLETE_WITH_NOT_ESTIMABLE_BOOKS" if complete else "FIXED_COMPLETE_LEDGERS_PENDING")}
+    return result
+
+
 def ledger_detail_rows(summaries, market):
     rows = []
     for cadence, by in summaries.get(market, {}).get("ledgers", {}).items():
@@ -281,6 +305,31 @@ def manifest():
     dump(OUT / "artifact-manifest.json", files)
 
 
+def provenance(summaries):
+    changed = subprocess.check_output(["git", "diff", "--name-only", REG["baseCommit"]], cwd=ROOT, text=True).splitlines()
+    assert all(p.startswith(("research/kr_us_strategy_batch_v1/", "tests/test_kr_us_batch_")) for p in changed)
+    code = [*HERE.glob("*.py"), *HERE.glob("*.sh"), HERE / "registry.json", HERE / "DESIGN-ko.md", HERE / "INPUT-REPAIR-ko.md"]
+    anchors = ["pipeline/us_decision_pilot.py", "research/us_selection_value_v1/features.py",
+               "research/us_selection_value_v1/evaluate.py", "research/us_selection_value_v1/cocktail.py",
+               "research/us_selection_value_v1/fetch_as_traded.py", "research/followup_round8_v1/kr_switch.py",
+               "research/kr_s2_rank_ladder_v1/run.py", "research/alpha_search_round6_v1/kr.py",
+               "research/alpha_search_round6_v1/us.py"]
+    value = {"generatedAtUTC": datetime.now(timezone.utc).isoformat(),
+             "codeGitHead": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+             "sourceBase": REG["baseCommit"], "designCommit": "e6786ee", "inputRepairCommit": "4710738",
+             "codeSha256": {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in code},
+             "reusedSourceCodeSha256": {p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest() for p in anchors},
+             "priorResearchAndProductionTrackedFilesUnchanged": True,
+             "marketProgress": market_progress(summaries),
+             "dataPurchasePerformed": False, "operationalPromotion": False,
+             "krInputIdentity": summaries.get("KR", {}).get("inputs", {}).get("identity"),
+             "usInputVintage": summaries.get("US", {}).get("inputPreparation", {}).get("status"),
+             "commands": {"all": "bash research/kr_us_strategy_batch_v1/reproduce.sh all",
+                          "existingInputs": "bash research/kr_us_strategy_batch_v1/reproduce.sh compute",
+                          "tablesAndVerification": "bash research/kr_us_strategy_batch_v1/reproduce.sh report"}}
+    dump(OUT / "provenance.json", value)
+
+
 def main():
     OUT.mkdir(exist_ok=True)
     summaries = {m: json.loads((OUT / m / "summary.json").read_text()) for m in ("KR", "US") if (OUT / m / "summary.json").exists()}
@@ -291,7 +340,7 @@ def main():
     status = prospective()
     evidence = ledger_evidence(summaries)
     combined = {"designCommit": "e6786ee", "sourceBase": REG["baseCommit"], "label": REG["label"],
-                "markets": {m: {"available": m in summaries} for m in ("KR", "US")},
+                "markets": market_progress(summaries),
                 "core": core, "broad": broad, "matchingCoverage": coverage,
                 "prospective": status, "ledgerEvidence": evidence, "coreFamilySize": 41, "broadFamilySize": 115}
     dump(OUT / "integrated.json", combined)
@@ -300,6 +349,7 @@ def main():
     supplement.run()
     from research.kr_us_strategy_batch_v1 import presentation
     presentation.write(summaries, coverage, core, broad, evidence)
+    provenance(summaries)
     manifest()
     head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     print(json.dumps({"completedMarkets": list(summaries), "coreRows": len(core), "broadRows": len(broad), "codeHead": head}))
