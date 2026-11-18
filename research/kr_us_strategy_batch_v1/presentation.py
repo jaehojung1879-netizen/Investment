@@ -98,7 +98,7 @@ def qqq_table():
         return []
     data = json.loads(path.read_text())
     rows = []
-    for config in ["US:SPY", *R.US_PRIMARY]:
+    for config in ["US:SPY", *R.US_REPORT_ROWS]:
         a, b = (data["fixed"][str(h)].get(config, R.empty()) for h in (126, 252))
         c, d = (data["ledgers"].get(i, {}).get(config, {}) for i in ("L26", "L52"))
         rows.append([config, f"{a.get('n', 0)}/{b.get('n', 0)}", R.effect(a), R.effect(b),
@@ -204,8 +204,8 @@ def write(summaries, coverage, core, broad, evidence):
               "## 2. 0~5개와 ETF 대체 효과", ""]
     headers = ["구성", "공통 n6/12", "6개월 순초과", "12개월 순초과", "L26 CAGR%", "L26 CAGR차%p", "L26 MDD%", "L52 CAGR차%p", "L52 MDD%", "L26 회전/년"]
     lines += s2_shortfalls()
-    lines += R.table(headers, R.configuration_rows(summaries, "KR", R.KR_PRIMARY)) + [""]
-    lines += R.table(headers, R.configuration_rows(summaries, "US", R.US_PRIMARY)) + [""]
+    lines += R.table(headers, R.configuration_rows(summaries, "KR", R.KR_REPORT_ROWS)) + [""]
+    lines += R.table(headers, R.configuration_rows(summaries, "US", R.US_REPORT_ROWS)) + [""]
     lines += qqq_table()
     lines += ["",
               "한국 SLOT20은 이름당20%·잔여ETF, FIXED20은 실제 m개 이름에 총20%/m·ETF80%다. 적격0개는ETF100%다. 고정보유 FIXED20 순초과=SLOT20 순초과/m을 검산했다. 같은 이름의 노출을 축소하는 효과와 이름 수를 늘리는 분산 효과를 구분하고 NAV는 실제 계정으로 다시 계산했다. 미국은 기존 stock sleeve의 상대 비중을 보존해 주식20/50/100%·잔여SPY를 비교했다. 원 native 칵테일/U1도 별도 표기했다.", "",
