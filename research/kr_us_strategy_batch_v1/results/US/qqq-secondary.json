@@ -1,0 +1,1978 @@
+{
+ "benchmarkAdjustments": {
+  "qqqDistributionFactor": 1.0014547907486921
+ },
+ "fixed": {
+  "126": {
+   "US:CASH_PROFITABILITY:Q020": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.05485585080802271,
+     -0.012178615407314125
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.034202679534908714,
+    "n": 630,
+    "pOneSided": 0.9997500624843789,
+    "pOneSidedApprox": 0.9997500624843789
+   },
+   "US:CASH_PROFITABILITY:Q050": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.0678560349658015,
+     -0.014502204320911073
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.04236736186186578,
+    "n": 630,
+    "pOneSided": 0.9987503124218945,
+    "pOneSidedApprox": 0.9987503124218945
+   },
+   "US:CASH_PROFITABILITY:Q100": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.09242489955923651,
+     -0.017573839071139182
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.05597516574012743,
+    "n": 630,
+    "pOneSided": 0.9967508122969257,
+    "pOneSidedApprox": 0.9967508122969257
+   },
+   "US:COCKTAIL:Q020": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.053641343607972604,
+     -0.009018967437015683
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.031699231267354626,
+    "n": 630,
+    "pOneSided": 0.9982504373906523,
+    "pOneSidedApprox": 0.9982504373906523
+   },
+   "US:COCKTAIL:Q050": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.0622624419333551,
+     -0.007496193227968687
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.03610874119298055,
+    "n": 630,
+    "pOneSided": 0.9935016245938515,
+    "pOneSidedApprox": 0.9935016245938515
+   },
+   "US:COCKTAIL:Q100": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.07816789117590411,
+     -0.004500247109686604
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.043457924402356976,
+    "n": 630,
+    "pOneSided": 0.9845038740314921,
+    "pOneSidedApprox": 0.9845038740314921
+   },
+   "US:CONFIRM_NEUTRAL:Q020": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.05100808592930505,
+     -0.012483673636324818
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.031539042380042605,
+    "n": 630,
+    "pOneSided": 0.9997500624843789,
+    "pOneSidedApprox": 0.9997500624843789
+   },
+   "US:CONFIRM_NEUTRAL:Q050": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.0559678154907963,
+     -0.015846957678532118
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.035708268974700516,
+    "n": 630,
+    "pOneSided": 1.0,
+    "pOneSidedApprox": 1.0
+   },
+   "US:CONFIRM_NEUTRAL:Q100": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.0650190827308734,
+     -0.02131063357372025
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.04265697996579689,
+    "n": 630,
+    "pOneSided": 1.0,
+    "pOneSidedApprox": 1.0
+   },
+   "US:NATIVE_COCKTAIL": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.07816789117590411,
+     -0.004500247109686604
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.043457924402356976,
+    "n": 630,
+    "pOneSided": 0.9845038740314921,
+    "pOneSidedApprox": 0.9845038740314921
+   },
+   "US:NATIVE_U1": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.04866833518517757,
+     0.0006957678006908939
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.026389324308235984,
+    "n": 630,
+    "pOneSided": 0.9720069982504373,
+    "pOneSidedApprox": 0.9720069982504373
+   },
+   "US:PRICE:Q020": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.05297831982481772,
+     -0.011501662473268467
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.0321150511703157,
+    "n": 630,
+    "pOneSided": 0.9995001249687578,
+    "pOneSidedApprox": 0.9995001249687578
+   },
+   "US:PRICE:Q050": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.06290606900377323,
+     -0.013053291822088326
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.03714829095038323,
+    "n": 630,
+    "pOneSided": 0.9992501874531368,
+    "pOneSidedApprox": 0.9992501874531368
+   },
+   "US:PRICE:Q100": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.08166654488362965,
+     -0.013355207479738332
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.04553702391716232,
+    "n": 630,
+    "pOneSided": 0.9980004998750313,
+    "pOneSidedApprox": 0.9980004998750313
+   },
+   "US:PRICE_CONFIRMED:Q020": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.05158791415492715,
+     -0.01033529290967951
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.030548276011307003,
+    "n": 630,
+    "pOneSided": 0.9992501874531368,
+    "pOneSidedApprox": 0.9992501874531368
+   },
+   "US:PRICE_CONFIRMED:Q050": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.05838325197193667,
+     -0.009581958516660629
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.03323135305286152,
+    "n": 630,
+    "pOneSided": 0.9977505623594102,
+    "pOneSidedApprox": 0.9977505623594102
+   },
+   "US:PRICE_CONFIRMED:Q100": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.07253887864723063,
+     -0.0058253632838548295
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.03770314812211891,
+    "n": 630,
+    "pOneSided": 0.9902524368907774,
+    "pOneSidedApprox": 0.9902524368907774
+   },
+   "US:QUALITY_NEUTRAL:Q020": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.04935638138465855,
+     -0.009948459642897683
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.029741103405915757,
+    "n": 630,
+    "pOneSided": 0.9990002499375156,
+    "pOneSidedApprox": 0.9990002499375156
+   },
+   "US:QUALITY_NEUTRAL:Q050": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.05210738575342073,
+     -0.009559239952389087
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.03121342153938339,
+    "n": 630,
+    "pOneSided": 0.9977505623594102,
+    "pOneSidedApprox": 0.9977505623594102
+   },
+   "US:QUALITY_NEUTRAL:Q100": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.05830759683312339,
+     -0.007825654322769316
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.03366728509516267,
+    "n": 630,
+    "pOneSided": 0.9952511872031992,
+    "pOneSidedApprox": 0.9952511872031992
+   },
+   "US:SECTOR_MOMENTUM:Q020": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.05108394847471423,
+     -0.00246856690810463
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.02809618797882977,
+    "n": 630,
+    "pOneSided": 0.9830042489377656,
+    "pOneSidedApprox": 0.9830042489377656
+   },
+   "US:SECTOR_MOMENTUM:Q050": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.05733693448521218,
+     0.010399138680824368
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.02710113297166836,
+    "n": 630,
+    "pOneSided": 0.9255186203449137,
+    "pOneSidedApprox": 0.9255186203449137
+   },
+   "US:SECTOR_MOMENTUM:Q100": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.07059209667674679,
+     0.034415986679078366
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.025442707959732587,
+    "n": 630,
+    "pOneSided": 0.8185453636590853,
+    "pOneSidedApprox": 0.8185453636590853
+   },
+   "US:SPY": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.04777475317710506,
+     -0.009517439198819842
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.02875955798360413,
+    "n": 630,
+    "pOneSided": 0.9995001249687578,
+    "pOneSidedApprox": 0.9995001249687578
+   },
+   "US:U1:Q020": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.0478646688157202,
+     -0.007824641979031972
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.028285511248530442,
+    "n": 630,
+    "pOneSided": 0.9987503124218945,
+    "pOneSidedApprox": 0.9987503124218945
+   },
+   "US:U1:Q050": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.04800133236703596,
+     -0.0047983366335896515
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.02757444114592005,
+    "n": 630,
+    "pOneSided": 0.9925018745313672,
+    "pOneSidedApprox": 0.9925018745313672
+   },
+   "US:U1:Q100": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.04866833518517758,
+     0.000695767800690891
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.026389324308235984,
+    "n": 630,
+    "pOneSided": 0.9720069982504373,
+    "pOneSidedApprox": 0.9720069982504373
+   },
+   "US:VALUE:Q020": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.05652784317454228,
+     -0.008866386042624535
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.03238300638536433,
+    "n": 630,
+    "pOneSided": 0.9970007498125468,
+    "pOneSidedApprox": 0.9970007498125468
+   },
+   "US:VALUE:Q050": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.07121755978524649,
+     -0.005792307735367139
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.03781817898800483,
+    "n": 630,
+    "pOneSided": 0.9882529367658085,
+    "pOneSidedApprox": 0.9882529367658085
+   },
+   "US:VALUE:Q100": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.09581074543122112,
+     0.00024469267277754767
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.046876799992405516,
+    "n": 630,
+    "pOneSided": 0.9740064983754061,
+    "pOneSidedApprox": 0.9740064983754061
+   },
+   "US:VALUE_CONFIRMED:Q020": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.05463977391657611,
+     -0.008940330478729334
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.031030014869493607,
+    "n": 630,
+    "pOneSided": 0.9967508122969257,
+    "pOneSidedApprox": 0.9967508122969257
+   },
+   "US:VALUE_CONFIRMED:Q050": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.06608224217931008,
+     -0.005665260287877619
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.03443570019832803,
+    "n": 630,
+    "pOneSided": 0.9917520619845038,
+    "pOneSidedApprox": 0.9917520619845038
+   },
+   "US:VALUE_CONFIRMED:Q100": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.08653853075999816,
+     0.002650330249743274
+    ],
+    "independentBlocksApprox": 25.2,
+    "mean": -0.04011184241305192,
+    "n": 630,
+    "pOneSided": 0.9667583104223944,
+    "pOneSidedApprox": 0.9667583104223944
+   },
+   "US:WF_ALL_LCB": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.061744358582972905,
+     -0.011373394424842117
+    ],
+    "independentBlocksApprox": 19.16,
+    "mean": -0.03583427548377649,
+    "n": 479,
+    "pOneSided": 0.9982504373906523,
+    "pOneSidedApprox": 0.9982504373906523
+   },
+   "US:WF_PC_LCB": {
+    "blockWeeks": 25,
+    "ci": [
+     -0.061744358582972905,
+     -0.011373394424842117
+    ],
+    "independentBlocksApprox": 19.16,
+    "mean": -0.03583427548377649,
+    "n": 479,
+    "pOneSided": 0.9982504373906523,
+    "pOneSidedApprox": 0.9982504373906523
+   }
+  },
+  "252": {
+   "US:CASH_PROFITABILITY:Q020": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.11400085099808349,
+     -0.02352422770016584
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.07004422994240259,
+    "n": 604,
+    "pOneSided": 0.9987503124218945,
+    "pOneSidedApprox": 0.9987503124218945
+   },
+   "US:CASH_PROFITABILITY:Q050": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.13634216955036021,
+     -0.026433341875314226
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.08350118452857963,
+    "n": 604,
+    "pOneSided": 0.9975006248437891,
+    "pOneSidedApprox": 0.9975006248437891
+   },
+   "US:CASH_PROFITABILITY:Q100": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.1794128679576611,
+     -0.026754339236669943
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.10592944217220787,
+    "n": 604,
+    "pOneSided": 0.9960009997500625,
+    "pOneSidedApprox": 0.9960009997500625
+   },
+   "US:COCKTAIL:Q020": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.11139924331908968,
+     -0.019407879223660496
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.06618078101148973,
+    "n": 604,
+    "pOneSided": 0.9982504373906523,
+    "pOneSidedApprox": 0.9982504373906523
+   },
+   "US:COCKTAIL:Q050": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.12594344767387336,
+     -0.017598252951843755
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.07384256220129749,
+    "n": 604,
+    "pOneSided": 0.9952511872031992,
+    "pOneSidedApprox": 0.9952511872031992
+   },
+   "US:COCKTAIL:Q100": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.15320616871512774,
+     -0.013201706097978813
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.08661219751764364,
+    "n": 604,
+    "pOneSided": 0.9887528117970508,
+    "pOneSidedApprox": 0.9887528117970508
+   },
+   "US:CONFIRM_NEUTRAL:Q020": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.10681746954778182,
+     -0.02237630124717152
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.06389121853578013,
+    "n": 604,
+    "pOneSided": 0.9990002499375156,
+    "pOneSidedApprox": 0.9990002499375156
+   },
+   "US:CONFIRM_NEUTRAL:Q050": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.11422972245046617,
+     -0.02563187123691033
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.06811865601202349,
+    "n": 604,
+    "pOneSided": 0.9992501874531368,
+    "pOneSidedApprox": 0.9992501874531368
+   },
+   "US:CONFIRM_NEUTRAL:Q100": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.12776140084892398,
+     -0.03025845127142956
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.07516438513909562,
+    "n": 604,
+    "pOneSided": 0.9995001249687578,
+    "pOneSidedApprox": 0.9995001249687578
+   },
+   "US:NATIVE_COCKTAIL": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.15320616871512774,
+     -0.013201706097978813
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.08661219751764364,
+    "n": 604,
+    "pOneSided": 0.9887528117970508,
+    "pOneSidedApprox": 0.9887528117970508
+   },
+   "US:NATIVE_U1": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.0934654778480804,
+     -0.00283484171582473
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.05189652331124069,
+    "n": 604,
+    "pOneSided": 0.981254686328418,
+    "pOneSidedApprox": 0.981254686328418
+   },
+   "US:PRICE:Q020": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.11377839722883136,
+     -0.02464252970508813
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.0674183200193924,
+    "n": 604,
+    "pOneSided": 0.9995001249687578,
+    "pOneSidedApprox": 0.9995001249687578
+   },
+   "US:PRICE:Q050": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.13595346009676,
+     -0.028576662635492123
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.0769364097210541,
+    "n": 604,
+    "pOneSided": 0.9997500624843789,
+    "pOneSidedApprox": 0.9997500624843789
+   },
+   "US:PRICE:Q100": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.17793107825661134,
+     -0.02777343976473245
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.09279989255715687,
+    "n": 604,
+    "pOneSided": 0.9975006248437891,
+    "pOneSidedApprox": 0.9975006248437891
+   },
+   "US:PRICE_CONFIRMED:Q020": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.11336971265733889,
+     -0.024342159550930293
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.0663129687531261,
+    "n": 604,
+    "pOneSided": 0.9995001249687578,
+    "pOneSidedApprox": 0.9995001249687578
+   },
+   "US:PRICE_CONFIRMED:Q050": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.1332438662797065,
+     -0.02614189219226568
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.0741730315553884,
+    "n": 604,
+    "pOneSided": 0.9992501874531368,
+    "pOneSidedApprox": 0.9992501874531368
+   },
+   "US:PRICE_CONFIRMED:Q100": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.16919863580449565,
+     -0.022180739742762703
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.08727313622582544,
+    "n": 604,
+    "pOneSided": 0.9955011247188202,
+    "pOneSidedApprox": 0.9955011247188202
+   },
+   "US:QUALITY_NEUTRAL:Q020": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.10574577745730739,
+     -0.021794235085484923
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.06364092659269174,
+    "n": 604,
+    "pOneSided": 0.9990002499375156,
+    "pOneSidedApprox": 0.9990002499375156
+   },
+   "US:QUALITY_NEUTRAL:Q050": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.11388957087944632,
+     -0.022728188948684586
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.06749292615430251,
+    "n": 604,
+    "pOneSided": 0.9990002499375156,
+    "pOneSidedApprox": 0.9990002499375156
+   },
+   "US:QUALITY_NEUTRAL:Q100": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.129905744346602,
+     -0.021687942927201467
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.07391292542365364,
+    "n": 604,
+    "pOneSided": 0.9975006248437891,
+    "pOneSidedApprox": 0.9975006248437891
+   },
+   "US:SECTOR_MOMENTUM:Q020": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.106043144463495,
+     -0.009812365342177873
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.06041067751818001,
+    "n": 604,
+    "pOneSided": 0.9905023744063984,
+    "pOneSidedApprox": 0.9905023744063984
+   },
+   "US:SECTOR_MOMENTUM:Q050": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.11464643288984866,
+     0.00875846412406012
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.0594173034680231,
+    "n": 604,
+    "pOneSided": 0.9547613096725819,
+    "pOneSidedApprox": 0.9547613096725819
+   },
+   "US:SECTOR_MOMENTUM:Q100": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.13254078152705812,
+     0.04468483481267306
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.05776168005109483,
+    "n": 604,
+    "pOneSided": 0.8692826793301675,
+    "pOneSidedApprox": 0.8692826793301675
+   },
+   "US:SPY": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.10209087708860147,
+     -0.01999881102094281
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.06107292688495136,
+    "n": 604,
+    "pOneSided": 0.9987503124218945,
+    "pOneSidedApprox": 0.9987503124218945
+   },
+   "US:U1:Q020": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.09951727556426426,
+     -0.016879495347286957
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.05923764617020918,
+    "n": 604,
+    "pOneSided": 0.9980004998750313,
+    "pOneSidedApprox": 0.9980004998750313
+   },
+   "US:U1:Q050": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.09610986561392527,
+     -0.012066722640980326
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.056484725098096024,
+    "n": 604,
+    "pOneSided": 0.9945013746563359,
+    "pOneSidedApprox": 0.9945013746563359
+   },
+   "US:U1:Q100": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.0934654778480804,
+     -0.0028348417158247288
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.051896523311240686,
+    "n": 604,
+    "pOneSided": 0.981254686328418,
+    "pOneSidedApprox": 0.981254686328418
+   },
+   "US:VALUE:Q020": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.11387692387637349,
+     -0.017438049883937257
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.066849896565984,
+    "n": 604,
+    "pOneSided": 0.9980004998750313,
+    "pOneSidedApprox": 0.9980004998750313
+   },
+   "US:VALUE:Q050": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.13520037699391277,
+     -0.011059032726549154
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.07551535108753317,
+    "n": 604,
+    "pOneSided": 0.989502624343914,
+    "pOneSidedApprox": 0.989502624343914
+   },
+   "US:VALUE:Q100": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.17198146367804468,
+     0.0013400595153547684
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.08995777529011496,
+    "n": 604,
+    "pOneSided": 0.9717570607348163,
+    "pOneSidedApprox": 0.9717570607348163
+   },
+   "US:VALUE_CONFIRMED:Q020": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.11028100754398383,
+     -0.019211225755770417
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.06555994013902122,
+    "n": 604,
+    "pOneSided": 0.9985003749062734,
+    "pOneSidedApprox": 0.9985003749062734
+   },
+   "US:VALUE_CONFIRMED:Q050": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.12459110755960524,
+     -0.01634319814171646
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.07229046002012622,
+    "n": 604,
+    "pOneSided": 0.9960009997500625,
+    "pOneSidedApprox": 0.9960009997500625
+   },
+   "US:VALUE_CONFIRMED:Q100": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.15095712079796725,
+     -0.007688420570119002
+    ],
+    "independentBlocksApprox": 12.08,
+    "mean": -0.08350799315530108,
+    "n": 604,
+    "pOneSided": 0.9847538115471132,
+    "pOneSidedApprox": 0.9847538115471132
+   },
+   "US:WF_ALL_LCB": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.1325475907319702,
+     -0.02043050743156168
+    ],
+    "independentBlocksApprox": 9.06,
+    "mean": -0.07428702164600594,
+    "n": 453,
+    "pOneSided": 0.9975006248437891,
+    "pOneSidedApprox": 0.9975006248437891
+   },
+   "US:WF_PC_LCB": {
+    "blockWeeks": 50,
+    "ci": [
+     -0.1325475907319702,
+     -0.02043050743156168
+    ],
+    "independentBlocksApprox": 9.06,
+    "mean": -0.07428702164600594,
+    "n": 453,
+    "pOneSided": 0.9975006248437891,
+    "pOneSidedApprox": 0.9975006248437891
+   }
+  }
+ },
+ "ledgers": {
+  "L26": {
+   "US:CASH_PROFITABILITY:Q020": {
+    "annualArithmeticDailyGap": -0.062279212194798206,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.12585874179690193,
+    "cagrGap": -0.062206710840378765,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 7.250135441944083e-05,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.062206710840378765,
+    "mdd": -0.35616039526588994,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:CASH_PROFITABILITY:Q050": {
+    "annualArithmeticDailyGap": -0.07942731955224804,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.10588705329935522,
+    "cagrGap": -0.08217839933792548,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.0027510797856774433,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.08217839933792548,
+    "mdd": -0.3933782158911555,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:CASH_PROFITABILITY:Q100": {
+    "annualArithmeticDailyGap": -0.10804226647809127,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.07000409275962127,
+    "cagrGap": -0.11806135987765942,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.01001909339956815,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.11806135987765942,
+    "mdd": -0.5187881050357159,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:COCKTAIL:Q020": {
+    "annualArithmeticDailyGap": -0.056778085402726955,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.1323276687401449,
+    "cagrGap": -0.055737783897135795,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0010403015055911596,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.055737783897135795,
+    "mdd": -0.34854054529783807,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:COCKTAIL:Q050": {
+    "annualArithmeticDailyGap": -0.06579798888666123,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.1223838884855688,
+    "cagrGap": -0.06568156415171189,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.00011642473494934136,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.06568156415171189,
+    "mdd": -0.36577706344605543,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:COCKTAIL:Q100": {
+    "annualArithmeticDailyGap": -0.08107569434526037,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.10423043036337076,
+    "cagrGap": -0.08383502227390993,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.002759327928649566,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.08383502227390993,
+    "mdd": -0.3986939928894837,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:CONFIRM_NEUTRAL:Q020": {
+    "annualArithmeticDailyGap": -0.05703143210816384,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.1315222422182658,
+    "cagrGap": -0.05654321041901489,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0004882216891489502,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.05654321041901489,
+    "mdd": -0.3433994860658668,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:CONFIRM_NEUTRAL:Q050": {
+    "annualArithmeticDailyGap": -0.06648627391210818,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.12070807686770113,
+    "cagrGap": -0.06735737576957956,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.0008711018574713847,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.06735737576957956,
+    "mdd": -0.35259370573370086,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:CONFIRM_NEUTRAL:Q100": {
+    "annualArithmeticDailyGap": -0.08274573653159112,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.10178253409627525,
+    "cagrGap": -0.08628291854100545,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.0035371820094143303,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.08628291854100545,
+    "mdd": -0.3718445263727441,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:NATIVE_COCKTAIL": {
+    "annualArithmeticDailyGap": -0.08107569434526037,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.10423043036337076,
+    "cagrGap": -0.08383502227390993,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.002759327928649566,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.08383502227390993,
+    "mdd": -0.3986939928894837,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:NATIVE_U1": {
+    "annualArithmeticDailyGap": -0.04663189737699679,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.14188684410181152,
+    "cagrGap": -0.04617860853546918,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.00045328884152761456,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.04617860853546918,
+    "mdd": -0.3538371403538024,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:PRICE:Q020": {
+    "annualArithmeticDailyGap": -0.058661884188414726,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.1312088196343315,
+    "cagrGap": -0.056856633002949186,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0018052511854655395,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.056856633002949186,
+    "mdd": -0.3276123161253184,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:PRICE:Q050": {
+    "annualArithmeticDailyGap": -0.07039300286039017,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.11923838287896293,
+    "cagrGap": -0.06882706975831776,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0015659331020724115,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.06882706975831776,
+    "mdd": -0.31324525388301194,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:PRICE:Q100": {
+    "annualArithmeticDailyGap": -0.09001639694023968,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.09661063681092585,
+    "cagrGap": -0.09145481582635484,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.0014384188861151642,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.09145481582635484,
+    "mdd": -0.289470375032726,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:PRICE_CONFIRMED:Q020": {
+    "annualArithmeticDailyGap": -0.05615362276891166,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.13394608592522883,
+    "cagrGap": -0.054119366712051864,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.002034256056859793,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.054119366712051864,
+    "mdd": -0.32998788438197013,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:PRICE_CONFIRMED:Q050": {
+    "annualArithmeticDailyGap": -0.06411889499470408,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.12611092515970013,
+    "cagrGap": -0.06195452747758057,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.002164367517123511,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.06195452747758057,
+    "mdd": -0.3191116744341176,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:PRICE_CONFIRMED:Q100": {
+    "annualArithmeticDailyGap": -0.07742051399720759,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.11044981952099575,
+    "cagrGap": -0.07761563311628494,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.0001951191190773527,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.07761563311628494,
+    "mdd": -0.3011873838221987,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:QUALITY_NEUTRAL:Q020": {
+    "annualArithmeticDailyGap": -0.05401322456286206,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.13492756619520052,
+    "cagrGap": -0.05313788644208017,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0008753381207818878,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.05313788644208017,
+    "mdd": -0.34345234610045383,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:QUALITY_NEUTRAL:Q050": {
+    "annualArithmeticDailyGap": -0.05894619041798131,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.12904828164084625,
+    "cagrGap": -0.05901717099643444,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -7.098057845313088e-05,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.05901717099643444,
+    "mdd": -0.35400415956602116,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:QUALITY_NEUTRAL:Q100": {
+    "annualArithmeticDailyGap": -0.06761636085608655,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.11796540053497262,
+    "cagrGap": -0.07010005210230807,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.0024836912462215255,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.07010005210230807,
+    "mdd": -0.37629665706818805,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:SECTOR_MOMENTUM:Q020": {
+    "annualArithmeticDailyGap": -0.048423608836884825,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.14134533973853936,
+    "cagrGap": -0.04672011289874134,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0017034959381434858,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.04672011289874134,
+    "mdd": -0.33536213706286755,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:SECTOR_MOMENTUM:Q050": {
+    "annualArithmeticDailyGap": -0.04534648502084519,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.1431432954202141,
+    "cagrGap": -0.044922157217066605,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0004243278037785875,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.044922157217066605,
+    "mdd": -0.33278871253228204,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:SECTOR_MOMENTUM:Q100": {
+    "annualArithmeticDailyGap": -0.04089407527889472,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.14106790674984682,
+    "cagrGap": -0.04699754588743388,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.006103470608539156,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.04699754588743388,
+    "mdd": -0.3289293599665756,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:SPY": {
+    "annualArithmeticDailyGap": -0.05083199798216538,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.13853278087166498,
+    "cagrGap": -0.04953267176561571,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0012993262165496705,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.04953267176561571,
+    "mdd": -0.3371726392350439,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:U1:Q020": {
+    "annualArithmeticDailyGap": -0.050032775456414415,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.13937571024037543,
+    "cagrGap": -0.04868974239690527,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.001343033059509148,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.04868974239690527,
+    "mdd": -0.340527560560701,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:U1:Q050": {
+    "annualArithmeticDailyGap": -0.04879632675446338,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.14047675806283477,
+    "cagrGap": -0.04758869457444592,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0012076321800174594,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.04758869457444592,
+    "mdd": -0.3455386760019381,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:U1:Q100": {
+    "annualArithmeticDailyGap": -0.04663189737699645,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.14188684410181152,
+    "cagrGap": -0.04617860853546918,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.00045328884152727456,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.04617860853546918,
+    "mdd": -0.3538371403538023,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:VALUE:Q020": {
+    "annualArithmeticDailyGap": -0.057755096320922905,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.12985615560296626,
+    "cagrGap": -0.05820929703431443,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.00045420071339152823,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.05820929703431443,
+    "mdd": -0.3763452571493766,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:VALUE:Q050": {
+    "annualArithmeticDailyGap": -0.06755149826426357,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.11543718297720473,
+    "cagrGap": -0.07262826966007596,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.0050767713958123906,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.07262826966007596,
+    "mdd": -0.4471997232478825,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:VALUE:Q100": {
+    "annualArithmeticDailyGap": -0.08213074156942118,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.08731706015620411,
+    "cagrGap": -0.10074839248107659,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.018617650911655403,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.10074839248107659,
+    "mdd": -0.5655753588741423,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:VALUE_CONFIRMED:Q020": {
+    "annualArithmeticDailyGap": -0.055795212419035574,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.13198124094443053,
+    "cagrGap": -0.05608421169285016,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.0002889992738145872,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.05608421169285016,
+    "mdd": -0.3699186131288107,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:VALUE_CONFIRMED:Q050": {
+    "annualArithmeticDailyGap": -0.06277732004198688,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.12081362108993465,
+    "cagrGap": -0.06725183154734604,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.004474511505359158,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.06725183154734604,
+    "mdd": -0.43187795962742626,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:VALUE_CONFIRMED:Q100": {
+    "annualArithmeticDailyGap": -0.0729068910410343,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.0983079547772161,
+    "cagrGap": -0.0897574978600646,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.016850606819030292,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.0897574978600646,
+    "mdd": -0.5416353317585125,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:WF_ALL_LCB": {
+    "annualArithmeticDailyGap": -0.05905384804632721,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.12960801675397482,
+    "cagrGap": -0.058457435883305875,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.000596412163021337,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.058457435883305875,
+    "mdd": -0.3294911418082018,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:WF_PC_LCB": {
+    "annualArithmeticDailyGap": -0.05905384804632721,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.12960801675397482,
+    "cagrGap": -0.058457435883305875,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.000596412163021337,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.058457435883305875,
+    "mdd": -0.3294911418082018,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   }
+  },
+  "L52": {
+   "US:CASH_PROFITABILITY:Q020": {
+    "annualArithmeticDailyGap": -0.058822863176597524,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.12984077587926945,
+    "cagrGap": -0.05822467675801124,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0005981864185862842,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.05822467675801124,
+    "mdd": -0.3515500651386154,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:CASH_PROFITABILITY:Q050": {
+    "annualArithmeticDailyGap": -0.0704911797477347,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.1162655595721338,
+    "cagrGap": -0.07179989306514689,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.0013087133174121968,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.07179989306514689,
+    "mdd": -0.3792677898360344,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:CASH_PROFITABILITY:Q100": {
+    "annualArithmeticDailyGap": -0.08925905655042377,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.0918593329470585,
+    "cagrGap": -0.09620611969022219,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.006947063139798426,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.09620611969022219,
+    "mdd": -0.4403070740801308,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:COCKTAIL:Q020": {
+    "annualArithmeticDailyGap": -0.0553282332277549,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.1339688887106656,
+    "cagrGap": -0.054096563926615104,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0012316693011397983,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.054096563926615104,
+    "mdd": -0.34480854222618296,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:COCKTAIL:Q050": {
+    "annualArithmeticDailyGap": -0.06193243340922167,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.12681787866277627,
+    "cagrGap": -0.06124757397450442,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0006848594347172512,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.06124757397450442,
+    "mdd": -0.3566197997993197,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:COCKTAIL:Q100": {
+    "annualArithmeticDailyGap": -0.07261321379147988,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.11405630737490324,
+    "cagrGap": -0.07400914526237745,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.001395931470897574,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.07400914526237745,
+    "mdd": -0.37769153548343126,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:CONFIRM_NEUTRAL:Q020": {
+    "annualArithmeticDailyGap": -0.05386687278582963,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.13511605004378224,
+    "cagrGap": -0.05294940259349845,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0009174701923311754,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.05294940259349845,
+    "mdd": -0.34429666126159164,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:CONFIRM_NEUTRAL:Q050": {
+    "annualArithmeticDailyGap": -0.05854799208426683,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.12965988810012408,
+    "cagrGap": -0.05840556453715662,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.00014242754711021183,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.05840556453715662,
+    "mdd": -0.35568013124019005,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:CONFIRM_NEUTRAL:Q100": {
+    "annualArithmeticDailyGap": -0.06659612527511106,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.11976694382355912,
+    "cagrGap": -0.06829850881372157,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.0017023835386105052,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.06829850881372157,
+    "mdd": -0.37830351433757614,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:NATIVE_COCKTAIL": {
+    "annualArithmeticDailyGap": -0.07261321379147988,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.11405630737490324,
+    "cagrGap": -0.07400914526237745,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.001395931470897574,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.07400914526237745,
+    "mdd": -0.37769153548343126,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:NATIVE_U1": {
+    "annualArithmeticDailyGap": -0.04304895412541339,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.14624708332736902,
+    "cagrGap": -0.041818369309911674,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0012305848155017146,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.041818369309911674,
+    "mdd": -0.3412712909803244,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:PRICE:Q020": {
+    "annualArithmeticDailyGap": -0.05749582482585121,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.13242232731873127,
+    "cagrGap": -0.055643125318549425,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0018526995073017832,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.055643125318549425,
+    "mdd": -0.3275735752314405,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:PRICE:Q050": {
+    "annualArithmeticDailyGap": -0.06759939831066078,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.12230341937956135,
+    "cagrGap": -0.06576203325771934,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0018373650529414365,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.06576203325771934,
+    "mdd": -0.3131199114303532,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:PRICE:Q100": {
+    "annualArithmeticDailyGap": -0.08487506513692261,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.10274414348883432,
+    "cagrGap": -0.08532130914844638,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.00044624401152376647,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.08532130914844638,
+    "mdd": -0.28902998154545523,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:PRICE_CONFIRMED:Q020": {
+    "annualArithmeticDailyGap": -0.0567192476436124,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.13320288247743783,
+    "cagrGap": -0.05486257015984286,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0018566774837695393,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.05486257015984286,
+    "mdd": -0.3307033300564265,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:PRICE_CONFIRMED:Q050": {
+    "annualArithmeticDailyGap": -0.06558375880129873,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.12440665758443958,
+    "cagrGap": -0.06365879505284111,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.001924963748457617,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.06365879505284111,
+    "mdd": -0.32082655079390165,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:PRICE_CONFIRMED:Q100": {
+    "annualArithmeticDailyGap": -0.08045478035796162,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.10758285525829447,
+    "cagrGap": -0.08048259737898622,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -2.7817021024598154e-05,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.08048259737898622,
+    "mdd": -0.30468263762217007,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:QUALITY_NEUTRAL:Q020": {
+    "annualArithmeticDailyGap": -0.053676330424091076,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.13538391738767963,
+    "cagrGap": -0.052681535249601064,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0009947951744900124,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.052681535249601064,
+    "mdd": -0.34367282852607417,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:QUALITY_NEUTRAL:Q050": {
+    "annualArithmeticDailyGap": -0.05802969718720409,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.13031002657712953,
+    "cagrGap": -0.05775542606015116,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0002742711270529302,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.05775542606015116,
+    "mdd": -0.35462325968111263,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:QUALITY_NEUTRAL:Q100": {
+    "annualArithmeticDailyGap": -0.06566914186638528,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.12072250919920924,
+    "cagrGap": -0.06734294343807146,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.0016738015716861732,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.06734294343807146,
+    "mdd": -0.37673516487553627,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:SECTOR_MOMENTUM:Q020": {
+    "annualArithmeticDailyGap": -0.048845612562299516,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.14085487447620104,
+    "cagrGap": -0.04721057816107965,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0016350344012198634,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.04721057816107965,
+    "mdd": -0.33603335435846327,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:SECTOR_MOMENTUM:Q050": {
+    "annualArithmeticDailyGap": -0.045917617057747516,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.14293150195337412,
+    "cagrGap": -0.045133950683906576,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0007836663738409397,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.045133950683906576,
+    "mdd": -0.33431755598884094,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:SECTOR_MOMENTUM:Q100": {
+    "annualArithmeticDailyGap": -0.04136290217169278,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.14296382405022223,
+    "cagrGap": -0.04510162858705846,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.003738726415365684,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.04510162858705846,
+    "mdd": -0.33141970327982495,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:SPY": {
+    "annualArithmeticDailyGap": -0.050831997982164964,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.13853278087166476,
+    "cagrGap": -0.04953267176561593,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0012993262165490321,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.04953267176561593,
+    "mdd": -0.3371726392350447,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:U1:Q020": {
+    "annualArithmeticDailyGap": -0.04937016766825781,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.1401380698785788,
+    "cagrGap": -0.0479273827587019,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0014427849095559123,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.0479273827587019,
+    "mdd": -0.33792044934049437,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:U1:Q050": {
+    "annualArithmeticDailyGap": -0.04708748748123862,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.14248716601654432,
+    "cagrGap": -0.045578286620736375,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.001509200860502248,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.045578286620736375,
+    "mdd": -0.33910901078457245,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:U1:Q100": {
+    "annualArithmeticDailyGap": -0.04304895412541357,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.14624708332736902,
+    "cagrGap": -0.041818369309911674,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.001230584815501895,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.041818369309911674,
+    "mdd": -0.3412712909803245,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:VALUE:Q020": {
+    "annualArithmeticDailyGap": -0.05622940346065362,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.13187028277401303,
+    "cagrGap": -0.05619516986326767,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 3.4233597385947834e-05,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.05619516986326767,
+    "mdd": -0.3646768993724653,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:VALUE:Q050": {
+    "annualArithmeticDailyGap": -0.06397427061078756,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.12059496434005501,
+    "cagrGap": -0.06747048829722568,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.0034962176864381245,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.06747048829722568,
+    "mdd": -0.4168657022907589,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:VALUE:Q100": {
+    "annualArithmeticDailyGap": -0.0754691319672977,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.098366327922639,
+    "cagrGap": -0.0896991247146417,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.014229992747344003,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.0896991247146417,
+    "mdd": -0.5149820707452823,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:VALUE_CONFIRMED:Q020": {
+    "annualArithmeticDailyGap": -0.055118295652182014,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.1330643133197531,
+    "cagrGap": -0.05500113931752759,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.00011715633465442243,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.05500113931752759,
+    "mdd": -0.36276682203275057,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:VALUE_CONFIRMED:Q050": {
+    "annualArithmeticDailyGap": -0.060895397540020796,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.12414520236146154,
+    "cagrGap": -0.06392025027581916,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.0030248527357983612,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.06392025027581916,
+    "mdd": -0.4049259581823935,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:VALUE_CONFIRMED:Q100": {
+    "annualArithmeticDailyGap": -0.06848718196255787,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.10736756107767986,
+    "cagrGap": -0.08069789155960083,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": -0.012210709597042957,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.08069789155960083,
+    "mdd": -0.4852272041896687,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:WF_ALL_LCB": {
+    "annualArithmeticDailyGap": -0.05670186795432673,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.13219920368973814,
+    "cagrGap": -0.05586624894754255,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0008356190067841801,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.05586624894754255,
+    "mdd": -0.3333286520335047,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "US:WF_PC_LCB": {
+    "annualArithmeticDailyGap": -0.05670186795432673,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.13219920368973814,
+    "cagrGap": -0.05586624894754255,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0008356190067841801,
+    "end": "2026-09-14",
+    "etfCagr": 0.1880654526372807,
+    "etfMdd": -0.3511872756972917,
+    "excess": -0.05586624894754255,
+    "mdd": -0.3333286520335047,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   }
+  }
+ },
+ "role": "SECONDARY_NOT_IN_PRIMARY_SPY_CLAIM_FAMILIES"
+}

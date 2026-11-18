@@ -1,0 +1,40 @@
+{
+ "admissionOverrides": [],
+ "archive": "/workspace/batch-inputs/us/pre-ctva-split-fix",
+ "archivedFiles": {
+  "CTVA.json.gz": {
+   "sha256": "5e2af612f3a28fefe4fed9b2a613cef9e5b13df1be4994719d59da72d8badcba"
+  },
+  "feature-generator-receipt.json": {
+   "bytes": 581,
+   "sha256": "58742edd402d2c537de838fa5c9a62dedd5bcf43f4e277a3feae0975efcfe240"
+  },
+  "features-meta.json": {
+   "bytes": 154842,
+   "sha256": "413abf66f01757adc73b09aeed20e2733503bd48617f779ccb6ae0548544d93b"
+  },
+  "features.pkl": {
+   "bytes": 60827102,
+   "sha256": "408c2f6e454370bfc643a3f1c9ec10c8727dd3cb79327fea781d84e8eb7f332c"
+  },
+  "input-preparation-summary.json": {
+   "bytes": 64937,
+   "sha256": "52b5672e95a780e675180f775c86518c015b74bc39b8c4e5e7dd81ad0bcc2b27"
+  },
+  "sealed-raw-comparison.json": {
+   "bytes": 324395,
+   "sha256": "346ab2a7dac20bba7b932c3d3de0df200ddc440453d681214c808393fca800b4"
+  }
+ },
+ "authorizationCommit": "4710738",
+ "event": {
+  "date": 1790861400,
+  "denominator": 1000.0,
+  "numerator": 6665.0,
+  "splitRatio": "6665:1000"
+ },
+ "observedAtUTC": "2026-11-18T12:35:18.429818+00:00",
+ "pricesReplaced": false,
+ "repairedParsedRecordSha256": "8c30df63a0acb4fb5ad9dfb60dd937ebf93b3194bf01b4315ad63eaf52134eee",
+ "sourceSha256": "c8f9f48f042a7d9c9843ee7777c73d26852987880c9c30aad910966f99956fa5"
+}
