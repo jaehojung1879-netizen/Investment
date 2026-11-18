@@ -93,3 +93,17 @@ def test_holm_keeps_unavailable_slots_and_hash_is_reproducible():
     assert adjusted == {"a": 0.03, "c": 0.08, "b": 1.0}
     tickers = ["1", "2", "3", "4", "5"]
     assert C.neutral_order(tickers, "2020-01-03", "KR") == C.neutral_order(tickers[::-1], "2020-01-03", "KR")
+
+
+def test_integrated_families_do_not_shrink_when_a_market_is_unavailable(tmp_path, monkeypatch):
+    from research.kr_us_strategy_batch_v1 import report as R
+    monkeypatch.setattr(R, "OUT", tmp_path)
+    sample = {"n": 110, "mean": 0.02, "ci": [0.01, 0.03], "pOneSidedApprox": 0.001}
+    claim = "ETF:KR:S2:SLOT20:K5"
+    summaries = {"KR": {"coreComparisons": {"126": {claim: sample}},
+                         "fixed": {"126": {"KR:S2:SLOT20:K5": {"common": sample}}}}}
+    core, broad = R.make_families(summaries)
+    assert len(core) == 82 and len(broad) == 230
+    assert next(r for r in core if r["id"] == claim and r["horizon"] == 126)["pHolm"] == pytest.approx(0.041)
+    assert next(r for r in broad if r["id"] == "KR:S2:SLOT20:K5" and r["horizon"] == 126)["pHolm"] == pytest.approx(0.115)
+    assert all(r["pUsedInFamily"] == 1 for r in core if r["market"] == "US")
