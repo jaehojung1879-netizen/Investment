@@ -129,6 +129,10 @@ def conditional_headline(summaries):
             examples.append(f"{config} {R.pct(a['mean'])}/{R.pct(b['mean'])}%p")
     if examples:
         lines += ["다른 ETF 대비 과거 점추정: " + "; ".join(examples) + ". 불확실성·위험은 아래의 전체 표와 함께 판단한다.", ""]
+    sector = summaries.get("US", {}).get("sensitivity", {})
+    if sector:
+        a, b = [sector[str(h)]["US:SECTOR_MOMENTUM:Q100"] for h in (126, 252)]
+        lines += [f"미국 산업 바구니 주식100%는 사후 최대 기여 진입년 {a['postHocMaximumEntryYear']}/{b['postHocMaximumEntryYear']}을 제외하면 {R.effect(a['excludeMaximumEntryYear'])}/{R.effect(b['excludeMaximumEntryYear'])}%p였다(n={a['excludeMaximumEntryYear']['n']}/{b['excludeMaximumEntryYear']['n']}). 이 구성은 업종 전체를 담으므로 이번 같은 업종 peer 대조로 업종 안 종목 선택력을 측정할 수 없다.", ""]
     return lines
 
 
@@ -147,6 +151,12 @@ def write(summaries, coverage, core, broad, evidence):
         headline.append([market, f"{selector}: {R.effect(s[0].get('own'))} / {R.effect(s[1].get('own'))}",
                          f"{config}: {R.effect(a)} / {R.effect(b)}",
                          f"주도주 비중→ETF: {R.effect(sa['group'])} / {R.effect(sb['group'])}"])
+    if "US" in summaries:
+        a, b = (R.fixed_cell(summaries, h, "US:SECTOR_MOMENTUM:Q100") for h in (126, 252))
+        sa, sb = (R.sensitivity_cell(summaries, "US", h, "US:SECTOR_MOMENTUM:Q100") for h in (126, 252))
+        headline.append(["US 산업 바구니", "업종 전체 보유로 미보유 same-sector peer 없음",
+                         f"주식100%: {R.effect(a)} / {R.effect(b)}",
+                         f"주도주 직접 비중→ETF: {R.effect(sa['group'])} / {R.effect(sb['group'])}"])
     lines = ["# 한국·미국 투자전략 일괄 비교", "",
              "2026-11-18 KST · 한국 #349 `d9ac3ed5` · 기존 #348 `3a3e9d8e` · 성과 전 설계 `e6786ee` · 미국 입력 정정 `4710738`.", "",
              "**이미 반복해서 살펴본 과거 자료의 검증이며 전향 성과가 아니다.** 수익 차이는 %p/보유기간이다. 첫 표의 순서는 6개월 / 12개월, 대괄호는 명목 95% paired 이동 블록 구간이다.", "",
@@ -154,7 +164,7 @@ def write(summaries, coverage, core, broad, evidence):
              "## 첫 장: 숫자로 보는 답", ""]
     lines += R.table(["시장", "동일 업종·시총 선택력 — 신호별 own 매칭 표본", "주요 구성의 ETF 대비 — 가격 공통 표본", "고정 주도주를 ETF로 돌리면 — 후보 own 표본"], headline)
     lines += ["", f"사전 고정 선택력19개 중 Holm 통과 **{len(sp)}개**이며 **{selection_missing}개는 공통 표본 부족/매칭 불가로 검정 자체가 미측정**이다. 이는 선택력 부재의 증거와 다르다. 전체 핵심41개 중 **{len(cp)}개** 통과({core_missing}개 미측정), 별도 broad ETF115개 중 **{len(bp)}개** 통과다(주 검정6개월). 미확보·표본 부족 가설도 p=1로 가족에 남겼다.", "",
-              f"L26·L52 모두 CAGR이 높고 MDD도 엄격히 얕은 서술적 구성은 {len(improved)}개다: " + (", ".join(f"`{k}`" for k in improved) if improved else "없음") + ". 이는 고정보유 검정 통과와 별개이며 운영 승격을 뜻하지 않는다.", "",
+              f"L26·L52 모두 CAGR이 높고 MDD도 엄격히 얕은 서술적 구성은 {len(improved)}개다: " + (", ".join(f"`{k}`" for k in improved) if improved else "없음") + ". 같은 신호의 다른 비중을 독립된 재현 증거로 세지 않는다. 이는 고정보유 검정 통과와 별개이며 운영 승격을 뜻하지 않는다.", "",
               "**한국에서 판단일에 0~5개를 정할 근거가 충분하다고 결론내리지 않는다.** 0개는 KODEX200 100%다. 만기가 끝난 자료만 쓰는 연간 선택 규칙의 실제 선택과 성과를 아래에 공개한다. 개수·가중치를 이 결과에 맞춰 고치지 않았다.", "",
               "## 1. 같은 업종·시총 종목보다 나았나", ""]
     insert = lines.index("## 1. 같은 업종·시총 종목보다 나았나")
@@ -163,7 +173,8 @@ def write(summaries, coverage, core, broad, evidence):
     if pending:
         lines[6:6] = ["**중간 산출 상태:** " + json.dumps(pending, ensure_ascii=False) + ". 미완료 운용 수치는 미측정으로 표시한다.", ""]
     top_nav = []
-    for config in ("KR:S2:FIXED20:K5", "KR:K2", "US:U1:Q020", "US:U1:Q100"):
+    for config in ("KR:S2:FIXED20:K5", "KR:K2", "US:U1:Q020", "US:U1:Q100",
+                   "US:SECTOR_MOMENTUM:Q020", "US:SECTOR_MOMENTUM:Q050", "US:SECTOR_MOMENTUM:Q100"):
         market = config.split(":")[0]
         a, b = (R.ledger_cell(summaries, market, c, config) for c in ("L26", "L52"))
         top_nav.append([config, R.pct(a.get("cagrGap")), R.pct(a.get("mdd")),
@@ -203,15 +214,15 @@ def write(summaries, coverage, core, broad, evidence):
               "## 3. 주도주·특정 구간을 빼면", ""]
     sh = ["구성", "개월", "주도주/서명합%", "주도주 비중→ETF", "보유창 제외 n:초과", "사후 최대 이름", "그 이름→ETF", "사후 최대 진입년", "그 해 제외"]
     lines += R.table(sh, R.sensitivity_rows(summaries, "KR", ["KR:S2:SLOT20:K5", "KR:S2:FIXED20:K5", "KR:K2", "KR:INDUSTRY_MOMENTUM:SLOT20:K5"])) + [""]
-    lines += R.table(sh, R.sensitivity_rows(summaries, "US", ["US:PRICE_CONFIRMED:Q100", "US:COCKTAIL:Q100", "US:U1:Q100"])) + ["",
+    lines += R.table(sh, R.sensitivity_rows(summaries, "US", ["US:PRICE_CONFIRMED:Q100", "US:COCKTAIL:Q100", "US:U1:Q100", "US:SECTOR_MOMENTUM:Q100"])) + ["",
               "모두 사후 민감도다. 표본은 후보 own 가격 해결 날짜여서 앞의70/30구성 공통 표와 다르다. 고정 주도주는 한국 삼성전자·SK하이닉스, 미국 AAPL/MSFT/NVDA/AMZN/GOOGL/GOOG/META/AVGO/TSLA다. 이름별 w×(자산 순수익−ETF 순수익)의 합이 전체 순초과와 일치한다. 전체 서명합이 음수면 비율도 음수, 상쇄가 크면100%를 넘는다. 분모는 전체 책의 ETF 순초과 합이며, 이전 연구의5위 추가 슬롯 기여 중 약79%와는 분모가 다르다. 최대 구간은 해당 후보의 합산 순초과 기여가 가장 큰 진입 calendar-year다. 겹친 주간 창의 합이며 독립 사건 수가 아니다. 전체 이름·년 기여 원본과 모든 후보 민감도는 TABLES/results에 있다.", "",
               "### 업종·대형주 직접 비중", ""]
     eh = ["구성", "판단주", "평균 이름수", "평균ETF%", "주도주 직접%", "후보 cap top5 직접%", "평균 직접 업종 상위3"]
     lines += R.table(eh, exposures("KR", ["KR:S2:SLOT20:K5", "KR:S2:FIXED20:K5", "KR:INDUSTRY_MOMENTUM:SLOT20:K5", "KR:K2"])) + [""]
-    lines += R.table(eh, exposures("US", ["US:PRICE_CONFIRMED:Q100", "US:COCKTAIL:Q100", "US:U1:Q100"])) + ["",
+    lines += R.table(eh, exposures("US", ["US:PRICE_CONFIRMED:Q100", "US:COCKTAIL:Q100", "US:U1:Q100", "US:SECTOR_MOMENTUM:Q100"])) + ["",
               "직접 선택 주식만의 비중이다. ETF를 look-through한 전체 경제적 노출이 아니다. cap top5는 KR Top120/US common 후보 안의 판단일 시총 상위5 proxy다.", "",
               "### 고정 시기·원 반도체 주도기", ""]
-    lines += R.table(["구성", "개월", "구간", "n", "순초과"], periods(summaries, "KR", ["KR:S2:SLOT20:K5", "KR:INDUSTRY_MOMENTUM:SLOT20:K5"]) + periods(summaries, "US", ["US:PRICE_CONFIRMED:Q100", "US:COCKTAIL:Q100", "US:U1:Q100"])) + ["",
+    lines += R.table(["구성", "개월", "구간", "n", "순초과"], periods(summaries, "KR", ["KR:S2:SLOT20:K5", "KR:INDUSTRY_MOMENTUM:SLOT20:K5"]) + periods(summaries, "US", ["US:PRICE_CONFIRMED:Q100", "US:COCKTAIL:Q100", "US:U1:Q100", "US:SECTOR_MOMENTUM:Q100"])) + ["",
               "한국 to2021/from2022는 판단일, 미국 ENTRY_FROM_2023/EXIT_BY_2022는 진입/청산 기준이다. 한국 원 SEMI_LED 보유 창 라벨은 미래 수익으로 나눈 사후 진단이며 unknown은 나머지로 채우지 않는다. 주도기·최대 기여 이름·년을 선택 규칙의 입력으로 쓰지 않았다.", "",
               "## 4. 판단일에 만기가 끝난 자료로 고르면", ""]
     lines += R.table(["규칙", "post n6/12", "6개월", "12개월", "L26 post CAGR차", "L26 post MDD", "L52 post CAGR차", "L52 post MDD", "연도별 선택"], R.policies_rows(summaries)) + ["",

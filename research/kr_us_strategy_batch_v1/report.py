@@ -17,7 +17,7 @@ OUT = HERE / "results"
 REG = json.loads((HERE / "registry.json").read_text())
 KR_PRIMARY = [f"KR:S2:SLOT20:K{k}" for k in range(1, 6)] + [
     f"KR:S2:FIXED20:K{k}" for k in range(1, 6)] + ["KR:K2", "KR:MIX_PRE", "KR:MIX_EXP"]
-US_PRIMARY = [f"US:{s}:Q{q}" for s in ("PRICE_CONFIRMED", "COCKTAIL", "U1")
+US_PRIMARY = [f"US:{s}:Q{q}" for s in ("PRICE_CONFIRMED", "COCKTAIL", "U1", "SECTOR_MOMENTUM")
               for q in ("020", "050", "100")] + ["US:NATIVE_COCKTAIL", "US:NATIVE_U1"]
 
 
