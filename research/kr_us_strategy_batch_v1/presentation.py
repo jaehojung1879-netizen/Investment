@@ -194,7 +194,7 @@ def write(summaries, coverage, core, broad, evidence):
     for market in ("KR", "US"):
         lines += [f"### {market}", ""]
         lines += R.table(["신호", "own n6/12", "선택력6개월", "선택력12개월", "전체 매칭률%", "공통 n6/12", "공통6개월", "공통12개월"], R.selection_rows(summaries, coverage, market)) + [""]
-    lines += ["주식20%·잔여ETF에서 동일 판단일·실제 이름 수·각 leg 비중을 고정했다. 원 품질/common 후보에서 같은 업종과 시총비[0.5,2]를 먼저 요구하고 |log 시총비| 최소, tie ticker로 고른다. 기존 보유·이미 사용한 peer는 제외한다. 한 leg라도 실패하면 책 전체 비교는 미측정이며 ETF/자기 자신으로 구제하지 않는다. 전체 매칭률 분모는 미만기 주도 포함한 비어 있지 않은 판단일이다. 실패 사유·가중 coverage는 [integrated.json](results/integrated.json)과 matching-audit에 있다.", "",
+    lines += ["주식20%·잔여ETF에서 동일 판단일·실제 이름 수·각 leg 비중을 고정했다. 업종은 한국 기존 industry 그룹·미국 기존 GICS sector 분류를 사용했다. 원 품질/common 후보에서 같은 업종과 시총비[0.5,2]를 먼저 요구하고 |log 시총비| 최소, tie ticker로 고른다. 기존 보유·이미 사용한 peer는 제외한다. 한 leg라도 실패하면 책 전체 비교는 미측정이며 ETF/자기 자신으로 구제하지 않는다. 전체 매칭률 분모는 미만기 주도 포함한 비어 있지 않은 판단일이다. 실패 사유·가중 coverage는 [integrated.json](results/integrated.json)과 matching-audit에 있다.", "",
               "own끼리는 날짜가 달라 이 숫자만으로 신호 순위를 정할 수 없다. 공통은 준비된 모든 신호가 매칭된 날짜다. 6/12개월은 각각50/100주 미만이면 구간·p를 계산하지 않는다. N-PORT 미확보 둘은 교집합에서 제외하되 검정 가족의 p=1 슬롯은 유지한다.", ""]
     diagnostic = matched_subset_table()
     lines += diagnostic
@@ -224,7 +224,7 @@ def write(summaries, coverage, core, broad, evidence):
     sh = ["구성", "개월", "주도주/서명합%", "주도주 비중→ETF", "보유창 제외 n:초과", "사후 최대 이름", "그 이름→ETF", "사후 최대 진입년", "그 해 제외"]
     lines += R.table(sh, R.sensitivity_rows(summaries, "KR", ["KR:S2:SLOT20:K5", "KR:S2:FIXED20:K5", "KR:K2", "KR:INDUSTRY_MOMENTUM:SLOT20:K5"])) + [""]
     lines += R.table(sh, R.sensitivity_rows(summaries, "US", ["US:PRICE_CONFIRMED:Q100", "US:COCKTAIL:Q100", "US:U1:Q100", "US:SECTOR_MOMENTUM:Q100"])) + ["",
-              "모두 사후 민감도다. 표본은 후보 own 가격 해결 날짜여서 앞의70/30구성 공통 표와 다르다. 고정 주도주는 한국 삼성전자·SK하이닉스, 미국 AAPL/MSFT/NVDA/AMZN/GOOGL/GOOG/META/AVGO/TSLA다. 이름별 w×(자산 순수익−ETF 순수익)의 합이 전체 순초과와 일치한다. 전체 서명합이 음수면 비율도 음수, 상쇄가 크면100%를 넘는다. 분모는 전체 책의 ETF 순초과 합이며, 이전 연구의5위 추가 슬롯 기여 중 약79%와는 분모가 다르다. 최대 구간은 해당 후보의 합산 순초과 기여가 가장 큰 진입 calendar-year다. 겹친 주간 창의 합이며 독립 사건 수가 아니다. 전체 이름·년 기여 원본과 모든 후보 민감도는 TABLES/results에 있다.", "",
+              "모두 사후 민감도다. 표본은 후보 own 가격 해결 날짜여서 앞의70/30구성 공통 표와 다르다. 고정 주도주는 한국 삼성전자·SK하이닉스, 미국 AAPL/MSFT/NVDA/AMZN/GOOGL/GOOG/META/AVGO/TSLA다. 이름별 w×(자산 순수익−ETF 순수익)의 합이 전체 순초과와 일치한다. 전체 서명합이 음수면 비율도 음수, 상쇄가 크면100%를 넘는다. 분모는 전체 책의 고정보유 코호트 ETF 순초과 합이며 운용 CAGR의 분해는 아니다. 이전 연구의5위 추가 슬롯 기여 중 약79%와도 분모가 다르다. 최대 구간은 해당 후보의 합산 순초과 기여가 가장 큰 진입 calendar-year다. 겹친 주간 창의 합이며 독립 사건 수가 아니다. 전체 이름·년 기여 원본과 모든 후보 민감도는 TABLES/results에 있다.", "",
               "### 업종·대형주 직접 비중", ""]
     eh = ["구성", "판단주", "평균 이름수", "평균ETF%", "주도주 직접%", "후보 cap top5 직접%", "평균 직접 업종 상위3"]
     lines += R.table(eh, exposures("KR", ["KR:S2:SLOT20:K5", "KR:S2:FIXED20:K5", "KR:INDUSTRY_MOMENTUM:SLOT20:K5", "KR:K2"])) + [""]
