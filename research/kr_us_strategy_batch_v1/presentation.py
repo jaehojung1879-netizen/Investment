@@ -160,6 +160,7 @@ def write(summaries, coverage, core, broad, evidence):
     lines = ["# 한국·미국 투자전략 일괄 비교", "",
              "2026-11-18 KST · 한국 #349 `d9ac3ed5` · 기존 #348 `3a3e9d8e` · 성과 전 설계 `e6786ee` · 미국 입력 정정 `4710738`.", "",
              "**이미 반복해서 살펴본 과거 자료의 검증이며 전향 성과가 아니다.** 수익 차이는 %p/보유기간이다. 첫 표의 순서는 6개월 / 12개월, 대괄호는 명목 95% paired 이동 블록 구간이다.", "",
+             "판단일은 한국2018-01-05~2026-09-11(454주), 미국2014-02-14~2026-08-21(654주), 가격 종료는2026-09-14다. 다음 세션 종가에 체결하고126/252세션을6/12개월로 부른다. 시장별 평가 기간이 다르다.", "",
              "원 판단일 가시성 규칙을 재사용했지만 구성·업종 스냅숏, 시총 대용치, 기업행위 및 빈티지 한계를 상속한다. 완전한 PIT 확인이나 실운용 검증을 마친 자료로 부르지 않는다.", "",
              "## 첫 장: 숫자로 보는 답", ""]
     lines += R.table(["시장", "동일 업종·시총 선택력 — 신호별 own 매칭 표본", "주요 구성의 ETF 대비 — 가격 공통 표본", "고정 주도주를 ETF로 돌리면 — 후보 own 표본"], headline)
@@ -182,6 +183,14 @@ def write(summaries, coverage, core, broad, evidence):
                         R.pct(a.get("annualArithmeticDailyGap")), R.pct(a.get("compoundingRemainder"))])
     insert = lines.index("## 1. 같은 업종·시총 종목보다 나았나")
     lines[insert:insert] = R.table(["운용 구성", "L26 CAGR차%p/년", "L26 MDD%", "L52 CAGR차%p/년", "L52 MDD%", "L26 산술차%p", "L26 복리잔여%p"], top_nav) + ["", "원 장부의 평균 수익과 복리 경로 차이를 분리했다. 예를 들어 S2 총20%·5이름의 양의 CAGR 차이에서 산술차는 음수다. 아래의 고정보유 검정·주도주 민감도와 함께 판단해야 한다.", ""]
+    baselines = []
+    for market, config in (("KR", "KR:ETF"), ("US", "US:SPY")):
+        b = R.ledger_cell(summaries, market, "L26", config)
+        if b:
+            baselines.append(f"{market} ETF CAGR {R.pct(b.get('cagr'))}%/년·MDD {R.pct(b.get('mdd'))}%")
+    if baselines:
+        at = lines.index("## 1. 같은 업종·시총 종목보다 나았나")
+        lines[at:at] = ["비교 기준: " + "; ".join(baselines) + ".", ""]
     for market in ("KR", "US"):
         lines += [f"### {market}", ""]
         lines += R.table(["신호", "own n6/12", "선택력6개월", "선택력12개월", "전체 매칭률%", "공통 n6/12", "공통6개월", "공통12개월"], R.selection_rows(summaries, coverage, market)) + [""]
