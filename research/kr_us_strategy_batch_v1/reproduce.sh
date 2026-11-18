@@ -37,6 +37,8 @@ if [[ "$STAGE" == all || "$STAGE" == compute ]]; then
       > "$OUT/validation/us-source-bridge.log" 2>&1
     "$PYTHON" -m research.kr_us_strategy_batch_v1.us_qqq --private "$US_INPUTS" \
       > "$OUT/validation/us-qqq.log" 2>&1
+    "$PYTHON" -m research.kr_us_strategy_batch_v1.us_attribution_export --private "$US_INPUTS" \
+      > "$OUT/validation/us-pername-export.log" 2>&1
   fi
   "$PYTHON" -c 'import json,sys; from pathlib import Path; Path(sys.argv[1]).write_text(json.dumps({"KR":int(sys.argv[2]),"US":int(sys.argv[3])},indent=1)+"\n")' \
     "$OUT/results/run-exit-codes.json" "$kr_run_status" "$us_run_status"

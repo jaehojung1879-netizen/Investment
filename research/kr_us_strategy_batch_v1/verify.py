@@ -122,7 +122,15 @@ def us_checks(summary):
             assert s["n"] == int((mask & f[key].notna()).sum())
             if s["mean"] is not None:
                 assert abs(s["mean"] - f.loc[mask, key].mean()) < 1e-10
+        at = pd.read_csv(OUT / "US" / f"pername-cohort-{h}.csv.gz",
+                         usecols=["date", "config", "netContribution"], parse_dates=["date"])
+        sums = at.groupby(["date", "config"]).netContribution.sum().unstack("config")
+        f.index = pd.to_datetime(f.index)
+        expected = f.reindex(index=sums.index, columns=sums.columns)
+        error = float((sums - expected).abs().max().max())
+        assert error < 1e-10
         result[str(h)] = {"originalDates": len(f), "portfolioCommonWeeks": int(mask.sum())}
+        result[str(h)]["maxDateNameContributionSumError"] = error
     return result
 
 
