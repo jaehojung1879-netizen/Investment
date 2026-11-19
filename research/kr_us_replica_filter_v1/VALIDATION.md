@@ -11,7 +11,7 @@
 |병렬 재실행|KR=0, US=0. 한국 요약과 미국 원본 27개 파일의 SHA가 사전 실행과 일치. Optional 입력 상태 필드를 제외한 미국 요약 수치·범위도 일치. [로그](validation/reproduce.log)|
 |대상 테스트|6개 통과. [로그](validation/targeted.log)|
 |정적 검사와 seed|저장소 Ruff, Python compileall, Bash 구문 검사 통과. 임시 경로의 합성 seed 생성과 `pipeline.validate --allow-seed` 통과. [seed 로그](validation/seed.log)|
-|저장소 전체 테스트|재실행과 병행 중|
+|저장소 전체 테스트|4개 워커에서 6,834 통과, 4 건너뜀, 4 예상 실패. 1,635.00초. 별도 대상 테스트 6건의 집계는 위 행에 표시. [전체 로그](validation/full-pytest.log)|
 
 [수치 검산](results/verification.json) · [한국 원본 대조](results/KR/verification.json) · [미국 원본 대조](results/US/summary.json)
 
