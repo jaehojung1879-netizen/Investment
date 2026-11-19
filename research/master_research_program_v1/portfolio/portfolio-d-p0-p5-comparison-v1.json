@@ -1,0 +1,61 @@
+{
+ "studyId": "portfolio-d-p0-p5-comparison-v1",
+ "status": "PREREGISTERED_PROSPECTIVE_ONLY_NOT_RECORDING",
+ "authorizes": "NOTHING. No receipt is written by this file; recording starts only after the owner merges a writer and an input is ADMITTED or explicitly labelled research-only.",
+ "formalises": "hierarchical-vs-direct-selection-comparison-v1 (docs/research-program/07-market-industry-stock-portfolio-hierarchy-ko.md §7, PROPOSED). §7.1 arms, §7.2 shared sample/cost rules and §7.3 estimators are adopted unchanged; this file freezes the numbers §7 left to registration.",
+ "historicalEvidence": "KR history for this comparison is EXHAUSTED (integrated v1 compared A=S vs D=I+S on the same engine; AGENTS v2.47). US history needs I-2/I-3 and the #287 stock foundation. This contract is prospective-only.",
+ "arms": [
+  {"id": "P0", "definition": "regional ETF 100% (KR 069500.KS, US SPY); QQQ is a secondary US comparison row, never an arm", "inputs": []},
+  {"id": "P1", "definition": "direct stock selection by market-relative stock score s_M", "inputs": ["stockScore"]},
+  {"id": "P2", "definition": "top industries by s_I, signal-date fixed cap-weighted industry baskets", "inputs": ["industryScore"]},
+  {"id": "P3", "definition": "industries by s_I, then names by within-industry s_S|I", "inputs": ["industryScore", "withinIndustryScore"]},
+  {"id": "P4", "definition": "within-industry s_S|I with industry weights matched to P0", "inputs": ["withinIndustryScore"]},
+  {"id": "P5", "definition": "rank on s_I + s_S|I in pre-fixed common units", "inputs": ["industryScore", "withinIndustryScore"]}
+ ],
+ "sharedRules": {
+  "informationTime": "signal = last KRX/NYSE session of the week per weekly_decision; execution next session close; a receipt is valid only inside prospective_receipt_core.check_timing",
+  "eligibleSet": "one (date, security) mask fixed before outcomes for all arms; common population restricted to industry-classified securities (the unclassified share is reported separately)",
+  "returnBasis": "shareholder total return under the alpha-opportunity-model-v4 label-eligibility contract; unresolved terminal consideration => that arm's block None (NOT_EVALUABLE_BLOCKED_PATH), other arms unaffected",
+  "costs": "pipeline.weekly_decision.trade_cost_fraction(region, date, side, is_benchmark) at 1x, 2x, 3x on the drifted prior book; the ETF residual leg is charged like every other leg",
+  "nameCountPolicy": "Portfolio D: 0..5 names endogenous; 0 names => ETF 100%; residual weight => ETF, never cash; prior fixed 3/5/10-name books are controls only",
+  "concentration": "max 2 names per sector (weekly_decision.MAX_NAMES_PER_SECTOR), per-name cap weekly_decision.NAME_WEIGHT",
+  "riskBudget": "identical for all arms: no leverage, no shorting, equity notional 100% (stocks + ETF)",
+  "rebalance": "21-session blocks on the shared calendar",
+  "horizons": ["H126", "H252"],
+  "engine": "research/master_research_program_v1/portfolio/comparison.py arm_path (label-blind)"
+ },
+ "nameCountPolicy": {"min": 0, "max": 5, "zeroNames": "ETF_100"},
+ "marketMultiplier": {"inPrimary": false, "increment": "comparison.multiplier_increment on the finished arm, reported separately; never selects an arm"},
+ "comparisonFamily": {
+  "pairs": [["P1", "P0"], ["P2", "P0"], ["P3", "P1"], ["P3", "P4"], ["P4", "P0"], ["P5", "P1"]],
+  "statistic": "per-block paired net-return difference",
+  "inference": "Newey-West, lag 5 (H126) / 11 (H252); two-sided normal p",
+  "multiplicity": "Holm across the six pairs at 0.05; an unavailable pair is a p=1 slot"
+ },
+ "decision": {
+  "axes": {"predictive": "rankWeightedSpread lower bound > 0 for P3/P5 scores over P1 (§7.3)",
+           "economic": "P3-P1 Holm-separated with positive mean AND P3-P0 point estimate > 0 at 2x cost",
+           "decompositionArithmeticLed": "selection_value.decompose_edge arithmetic term > compounding term",
+           "notIndustryConcentration": "P3-P4 does not explain most of P3-P1",
+           "stable": "same sign in both halves, KR and US, and by market state"},
+  "verdicts": ["HIERARCHY_ADDS_VALUE", "PREDICTIVE_ONLY_NOT_ECONOMIC", "INDUSTRY_TILT_NOT_HIERARCHY",
+               "SIMPLER_STRUCTURE_RETAINED", "BLOCKED_NO_QUALIFIED_INPUT", "NOT_EVALUABLE"],
+  "default": "the simpler structure (P1, else P0) carries no burden; the complex arm must pass all five axes",
+  "promotionGate": "G6: only an arm whose inputs are ADMITTED and whose verdict passes may feed Portfolio D; otherwise P0"
+ },
+ "powerAndAccrual": {
+  "blocksPerYear": 12,
+  "nonOverlappingH126PerYear": 2,
+  "mdeRule": "MDE = (z_0.975 + z_0.80) * sigma_diff / sqrt(N_eff); with N_eff = 2/yr of non-overlapping H126 blocks, two years give N_eff = 4 and MDE ~ 1.4 sigma_diff: the first read is a feasibility read, not a verdict",
+  "firstVerdictNotBefore": "N_eff >= 8 non-overlapping H126 windows (about 4 years of receipts); earlier reads are descriptive",
+  "sigmaSource": "not estimated (would read outcomes)"
+ },
+ "inputEligibility": {
+  "asOf": "2026-11-04",
+  "stockScore": {"KR": "UNVALIDATED (Phase C/D 0 passes; challengers #277/#278 prospective, not matured)", "US": "SOURCE_BLOCKED (#287 rights/identity/return basis)"},
+  "industryScore": {"KR": "UNVALIDATED (industry anatomy descriptive; KR membership foundation v4 DATA_FOUNDATION_INSUFFICIENT for terminated names)", "US": "SOURCE_BLOCKED for history; sector-level PIT foundation see market_industry lane"},
+  "withinIndustryScore": {"KR": "UNVALIDATED", "US": "SOURCE_BLOCKED"},
+  "consequence": "every arm except P0 is RESEARCH_PAPER_ONLY (KR P1) or BLOCKED_NO_QUALIFIED_INPUT; production stays P0: KR 0 names / 069500.KS 100%, US 0 names / SPY 100%"
+ },
+ "noRescue": "Pairs, lags, alpha, cost model, name policy, horizons and axes are frozen here; changing any after a read is a new registration."
+}

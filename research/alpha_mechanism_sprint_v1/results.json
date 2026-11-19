@@ -1,0 +1,1073 @@
+{
+ "candidateScreen": {
+  "candidates": {
+   "A_earnings_information": {
+    "governance": "KR historical outcome evaluation closed by Phase D; new axis allowed only as an independent new preregistration plus point-in-time records",
+    "newObservation": "DART 영업(잠정)실적(공정공시): preliminary quarterly revenue / operating income / net income and their year-over-year change, receipt-dated, filed before the formal periodic report",
+    "overlapWithPrior": "Phase C accounting family and fundamental acceleration used the same accounting lines but only from the formal filing receipt date; J01_periodicFilingEvent was BLOCKED. No study read the preliminary filing.",
+    "selected": true,
+    "usAlternative": "SOURCE_BLOCKED: 8-K Item 2.02 behind the SEC egress block; 10-Q acceptedDate based 'PEAD' is on the stop list (docs/research-program/05 section 4); Finnhub key absent in this environment (HTTP 401)"
+   },
+   "B_industry_lead_lag_diffusion": {
+    "governance": "KR history closed; a lagged leader-to-laggard return feature is a price-only re-representation of the same OHLCV information set",
+    "newObservation": null,
+    "overlapWithPrior": "KR: X3 (industry leadership x stock strength), A09 industry-relative momentum, A10 residual momentum, H01/H03/H07 industry leadership and persistence all in the closed Phase C; A05/A08/A10 rank correlation about 0.99",
+    "reason": "NOT_NEW_INFORMATION_AND_US_SOURCE_BLOCKED",
+    "selected": false,
+    "usAlternative": "PR #290: US 2023-03-07 Sector column is 502 rows / 123 sub-industries (mixed level); no point-in-time industry history; current GICS may not be back-applied"
+   },
+   "C_investor_flow": {
+    "newObservation": "KRX investor-type net trading (foreign/institution) would be new",
+    "overlapWithPrior": "X4/G01 SOURCE_BLOCKED in Phase C",
+    "reason": "SOURCE_BLOCKED_AND_IMMATURE",
+    "secondarySource": "DART large-holding (5%) events: 2,496 events, first 2024-09-24 (prospective-only; no-rows is not proof of no filing)",
+    "selected": false,
+    "source": "ledger/kr-investor-flow/manifest.json: 0 calls, 0 records, stopReason REFUSED: HTTP 400 LOGOUT, 426,377 pairs remaining; re-probe is a single Probes dropdown run by policy"
+   }
+  },
+  "environmentProbes": {
+   "data.krx.co.kr": 200,
+   "finnhub.io (no key in environment)": 401,
+   "kind.krx.co.kr": 403,
+   "measuredAt": "2026-11-01",
+   "note": "HTTP status of a plain request from this session's sandbox; not a vendor verdict beyond this environment",
+   "opendart.fss.or.kr list.json with DART_API_KEY": "000 정상 (served)",
+   "query1.finance.yahoo.com": 429,
+   "www.sec.gov": 403
+  },
+  "note": "Hand-compiled from committed sources and PR bodies at main@37f8cbf6; every number is quoted from the cited source, none was recomputed here. null means not stated in the source.",
+  "priorResearch": [
+   {
+    "economic": null,
+    "source": "AGENTS.md v2.21 four-factor-signal-attribution-audit",
+    "statistical": "no sleeve clears raw p<0.05 pooled; all four sign-unstable KR vs US",
+    "status": "CLOSED_NO_EVIDENCE",
+    "topic": "12-1/6M momentum, value, quality, lowvol sleeves (KR+US pooled 126D Rank IC)"
+   },
+   {
+    "economic": "Level 4 NOT_TRIGGERED",
+    "source": "docs/kr-alpha-research-final-development-assessment.md",
+    "statistical": "BY/Holm passes 0; B4 MSE worse than B0 at every horizon",
+    "status": "CLOSED_PHASE_D",
+    "topic": "106 registered features / 38 Phase C candidates / X1-X6 interactions (KR)"
+   },
+   {
+    "economic": null,
+    "source": "AGENTS.md v2.22",
+    "statistical": "pooled 126D IC -0.0026 / incremental -0.0009, CI contain 0",
+    "status": "CASE_D_NO_DISCOVERY_EVIDENCE",
+    "topic": "Fundamental acceleration (DART/XBRL filing-to-filing change)"
+   },
+   {
+    "economic": "hurdle +2.157pp arithmetic selection, mechanism attributed to signal noise",
+    "source": "AGENTS.md v2.12",
+    "statistical": "no rung separates from control; hurdle lower bound +0.122pp, no multiplicity correction",
+    "status": "CONTAINS_ZERO",
+    "topic": "Signal smoothing (persistence k), switch hurdle"
+   },
+   {
+    "economic": null,
+    "source": "AGENTS.md v2.15",
+    "statistical": "paired -0.317pp, 95% CI [-2.133,+1.425]",
+    "status": "CONTAINS_ZERO",
+    "topic": "Dynamic breadth 3-10 names"
+   },
+   {
+    "economic": "#306 descriptive CAGR gaps KR -1.526/+0.462pp, US +2.776/+1.442pp vs ETF",
+    "source": "AGENTS.md v2.17; PR #304/#306",
+    "statistical": "paired +2.069pp, 95% CI [-1.881,+6.061]",
+    "status": "CONTAINS_ZERO_PROSPECTIVE_SHADOW_ONLY",
+    "topic": "Selection vs entry-state separation"
+   },
+   {
+    "economic": "KR: NO_CANDIDATE_NOMINATED_CONTROL_RETAINED (drawdown vs return trade-off)",
+    "source": "AGENTS.md v2.44; docs/research-program/05",
+    "statistical": null,
+    "status": "SEALED",
+    "topic": "Market-state exposure (C0-C3) KR and US replication"
+   },
+   {
+    "economic": "D +15.01%/yr vs passive +20.24%/yr; 98.2% of gross after 2024, 59.5% one industry",
+    "source": "AGENTS.md v2.45-v2.47",
+    "statistical": "INDUSTRY_LAYER_DEVELOPMENT_SUPPORTED, NO_UNAMBIGUOUS_FINAL_ARCHITECTURE",
+    "status": "REGIME_AND_INDUSTRY_CONCENTRATED",
+    "topic": "Industry + stock integrated portfolio (D)"
+   },
+   {
+    "economic": "NO STABLE ADDED ALPHA",
+    "source": "PR #286",
+    "statistical": "intraday vs momentum H126 +1.99pp, year-block CI [-8.41,+16.69]",
+    "status": "OPEN_DRAFT_NO_EVIDENCE",
+    "topic": "Overnight/intraday decomposition (KR)"
+   },
+   {
+    "economic": null,
+    "source": "AGENTS.md v2.24; docs/us-capital-allocation-alpha-v1.md",
+    "statistical": "regional-alpha-model-v1 NO_MODEL_EVIDENCE; #245 NOT BEATEN",
+    "status": "CLOSED_OR_PROSPECTIVE_ONLY",
+    "topic": "US stock selection (31-feature model, #245, capital allocation)"
+   }
+  ]
+ },
+ "contentConfirmed": {
+  "coverage": {
+   "byQuarterEndMonth": {
+    "12": {
+     "coveragePct": 67.88,
+     "leadCalendarDaysMedian": 47.0,
+     "leadSessionsMedian": 31.0,
+     "leadSessionsP25": 25.0,
+     "leadSessionsP75": 38.0,
+     "memberIssuerQuarters": 1516,
+     "sameDayOrLeadLe5Sessions": 1,
+     "withFormal": 1495,
+     "withPnlChange": 1315,
+     "withPrelimAny": 1034,
+     "withPrelimNotAfterFormal": 1029
+    },
+    "3": {
+     "coveragePct": 83.48,
+     "leadCalendarDaysMedian": 16.0,
+     "leadSessionsMedian": 9.0,
+     "leadSessionsP25": 4.0,
+     "leadSessionsP75": 12.0,
+     "memberIssuerQuarters": 1634,
+     "sameDayOrLeadLe5Sessions": 410,
+     "withFormal": 1613,
+     "withPnlChange": 11,
+     "withPrelimAny": 1371,
+     "withPrelimNotAfterFormal": 1364
+    },
+    "6": {
+     "coveragePct": 82.93,
+     "leadCalendarDaysMedian": 16.0,
+     "leadSessionsMedian": 11.0,
+     "leadSessionsP25": 5.0,
+     "leadSessionsP75": 14.0,
+     "memberIssuerQuarters": 1634,
+     "sameDayOrLeadLe5Sessions": 345,
+     "withFormal": 1612,
+     "withPnlChange": 0,
+     "withPrelimAny": 1363,
+     "withPrelimNotAfterFormal": 1355
+    },
+    "9": {
+     "coveragePct": 83.63,
+     "leadCalendarDaysMedian": 15.0,
+     "leadSessionsMedian": 11.0,
+     "leadSessionsP25": 6.0,
+     "leadSessionsP75": 13.0,
+     "memberIssuerQuarters": 1515,
+     "sameDayOrLeadLe5Sessions": 314,
+     "withFormal": 1497,
+     "withPnlChange": 0,
+     "withPrelimAny": 1272,
+     "withPrelimNotAfterFormal": 1267
+    }
+   },
+   "byYear": {
+    "2013": {
+     "coveragePct": 73.5,
+     "leadCalendarDaysMedian": 20.0,
+     "leadSessionsMedian": 13.0,
+     "leadSessionsP25": 9.0,
+     "leadSessionsP75": 20.25,
+     "memberIssuerQuarters": 468,
+     "sameDayOrLeadLe5Sessions": 58,
+     "withFormal": 460,
+     "withPnlChange": 107,
+     "withPrelimAny": 352,
+     "withPrelimNotAfterFormal": 344
+    },
+    "2014": {
+     "coveragePct": 76.92,
+     "leadCalendarDaysMedian": 20.0,
+     "leadSessionsMedian": 12.5,
+     "leadSessionsP25": 9.0,
+     "leadSessionsP75": 22.0,
+     "memberIssuerQuarters": 468,
+     "sameDayOrLeadLe5Sessions": 68,
+     "withFormal": 460,
+     "withPnlChange": 92,
+     "withPrelimAny": 363,
+     "withPrelimNotAfterFormal": 360
+    },
+    "2015": {
+     "coveragePct": 74.51,
+     "leadCalendarDaysMedian": 19.0,
+     "leadSessionsMedian": 12.0,
+     "leadSessionsP25": 9.0,
+     "leadSessionsP75": 17.0,
+     "memberIssuerQuarters": 463,
+     "sameDayOrLeadLe5Sessions": 59,
+     "withFormal": 457,
+     "withPnlChange": 95,
+     "withPrelimAny": 347,
+     "withPrelimNotAfterFormal": 345
+    },
+    "2016": {
+     "coveragePct": 72.84,
+     "leadCalendarDaysMedian": 19.0,
+     "leadSessionsMedian": 12.0,
+     "leadSessionsP25": 9.0,
+     "leadSessionsP75": 18.0,
+     "memberIssuerQuarters": 464,
+     "sameDayOrLeadLe5Sessions": 55,
+     "withFormal": 458,
+     "withPnlChange": 93,
+     "withPrelimAny": 339,
+     "withPrelimNotAfterFormal": 338
+    },
+    "2017": {
+     "coveragePct": 76.51,
+     "leadCalendarDaysMedian": 18.0,
+     "leadSessionsMedian": 11.0,
+     "leadSessionsP25": 7.0,
+     "leadSessionsP75": 16.5,
+     "memberIssuerQuarters": 464,
+     "sameDayOrLeadLe5Sessions": 74,
+     "withFormal": 458,
+     "withPnlChange": 101,
+     "withPrelimAny": 356,
+     "withPrelimNotAfterFormal": 355
+    },
+    "2018": {
+     "coveragePct": 81.2,
+     "leadCalendarDaysMedian": 18.0,
+     "leadSessionsMedian": 12.0,
+     "leadSessionsP25": 5.0,
+     "leadSessionsP75": 16.0,
+     "memberIssuerQuarters": 468,
+     "sameDayOrLeadLe5Sessions": 99,
+     "withFormal": 463,
+     "withPnlChange": 103,
+     "withPrelimAny": 380,
+     "withPrelimNotAfterFormal": 380
+    },
+    "2019": {
+     "coveragePct": 81.51,
+     "leadCalendarDaysMedian": 19.0,
+     "leadSessionsMedian": 12.0,
+     "leadSessionsP25": 6.0,
+     "leadSessionsP75": 16.5,
+     "memberIssuerQuarters": 465,
+     "sameDayOrLeadLe5Sessions": 93,
+     "withFormal": 458,
+     "withPnlChange": 98,
+     "withPrelimAny": 379,
+     "withPrelimNotAfterFormal": 379
+    },
+    "2020": {
+     "coveragePct": 78.23,
+     "leadCalendarDaysMedian": 17.0,
+     "leadSessionsMedian": 11.0,
+     "leadSessionsP25": 6.0,
+     "leadSessionsP75": 17.0,
+     "memberIssuerQuarters": 464,
+     "sameDayOrLeadLe5Sessions": 86,
+     "withFormal": 460,
+     "withPnlChange": 105,
+     "withPrelimAny": 364,
+     "withPrelimNotAfterFormal": 363
+    },
+    "2021": {
+     "coveragePct": 81.84,
+     "leadCalendarDaysMedian": 18.0,
+     "leadSessionsMedian": 12.0,
+     "leadSessionsP25": 6.5,
+     "leadSessionsP75": 16.0,
+     "memberIssuerQuarters": 468,
+     "sameDayOrLeadLe5Sessions": 76,
+     "withFormal": 464,
+     "withPnlChange": 109,
+     "withPrelimAny": 383,
+     "withPrelimNotAfterFormal": 383
+    },
+    "2022": {
+     "coveragePct": 83.86,
+     "leadCalendarDaysMedian": 18.0,
+     "leadSessionsMedian": 11.0,
+     "leadSessionsP25": 6.0,
+     "leadSessionsP75": 16.0,
+     "memberIssuerQuarters": 471,
+     "sameDayOrLeadLe5Sessions": 96,
+     "withFormal": 465,
+     "withPnlChange": 107,
+     "withPrelimAny": 397,
+     "withPrelimNotAfterFormal": 395
+    },
+    "2023": {
+     "coveragePct": 81.55,
+     "leadCalendarDaysMedian": 18.0,
+     "leadSessionsMedian": 11.0,
+     "leadSessionsP25": 5.0,
+     "leadSessionsP75": 14.0,
+     "memberIssuerQuarters": 466,
+     "sameDayOrLeadLe5Sessions": 99,
+     "withFormal": 460,
+     "withPnlChange": 105,
+     "withPrelimAny": 381,
+     "withPrelimNotAfterFormal": 380
+    },
+    "2024": {
+     "coveragePct": 84.83,
+     "leadCalendarDaysMedian": 18.0,
+     "leadSessionsMedian": 11.0,
+     "leadSessionsP25": 6.0,
+     "leadSessionsP75": 16.0,
+     "memberIssuerQuarters": 468,
+     "sameDayOrLeadLe5Sessions": 90,
+     "withFormal": 463,
+     "withPnlChange": 106,
+     "withPrelimAny": 398,
+     "withPrelimNotAfterFormal": 397
+    },
+    "2025": {
+     "coveragePct": 83.55,
+     "leadCalendarDaysMedian": 16.0,
+     "leadSessionsMedian": 11.0,
+     "leadSessionsP25": 6.0,
+     "leadSessionsP75": 16.5,
+     "memberIssuerQuarters": 468,
+     "sameDayOrLeadLe5Sessions": 81,
+     "withFormal": 462,
+     "withPnlChange": 105,
+     "withPrelimAny": 393,
+     "withPrelimNotAfterFormal": 391
+    },
+    "2026": {
+     "coveragePct": 87.61,
+     "leadCalendarDaysMedian": 15.0,
+     "leadSessionsMedian": 10.0,
+     "leadSessionsP25": 6.0,
+     "leadSessionsP75": 13.0,
+     "memberIssuerQuarters": 234,
+     "sameDayOrLeadLe5Sessions": 36,
+     "withFormal": 229,
+     "withPnlChange": 0,
+     "withPrelimAny": 208,
+     "withPrelimNotAfterFormal": 205
+    }
+   },
+   "overall": {
+    "coveragePct": 79.62,
+    "leadCalendarDaysMedian": 18.0,
+    "leadSessionsMedian": 12.0,
+    "leadSessionsP25": 7.0,
+    "leadSessionsP75": 17.0,
+    "memberIssuerQuarters": 6299,
+    "sameDayOrLeadLe5Sessions": 1070,
+    "withFormal": 6217,
+    "withPnlChange": 1326,
+    "withPrelimAny": 5040,
+    "withPrelimNotAfterFormal": 5015
+   }
+  },
+  "documentsFetched": 6446,
+  "documentsServedZip": 6446,
+  "earningsStatedDocuments": 5630,
+  "parseRateAllDocuments": {
+   "allThreeCurrentAndPriorYear": 5424,
+   "n": 5630,
+   "pct": 96.34,
+   "revenueOrOperatingCurrent": 5630
+  },
+  "parseRateHoldoutExcludingDevelopmentSample": {
+   "allThreeCurrentAndPriorYear": 5204,
+   "n": 5404,
+   "pct": 96.3,
+   "revenueOrOperatingCurrent": 5404
+  },
+  "periodKindCounts": {
+   "ANNUAL": 14,
+   "HALF": 22,
+   "MONTH": 465,
+   "QUARTER": 5596,
+   "UNREAD": 349
+  },
+  "phaseCAccountingVisibilityLag": {
+   "leadSessionsMedian": 12.0,
+   "leadSessionsP25": 7.0,
+   "leadSessionsP75": 22.0,
+   "leadSessionsP90": 38.0,
+   "n": 3836,
+   "unitsWithoutStoreRecord": 1179
+  },
+  "prelimVsFormal": {
+   "absRelDiff": {
+    "operatingIncome": {
+     "medianAbsRelDiff": 3.030780300556765e-06,
+     "n": 2385,
+     "p90AbsRelDiff": 0.0010801696843052025,
+     "within0_5PctShare": 93.71,
+     "within1PctShare": 95.09,
+     "within5PctShare": 96.81
+    },
+    "revenue": {
+     "medianAbsRelDiff": 2.925064757869562e-07,
+     "n": 2078,
+     "p90AbsRelDiff": 4.629425905208282e-05,
+     "within0_5PctShare": 96.82,
+     "within1PctShare": 97.5,
+     "within5PctShare": 98.36
+    }
+   },
+   "basis": {
+    "COMPARED": 2532,
+    "CONSOLIDATION_BASIS_DIFFERS": 479,
+    "NO_FORMAL_RECORD": 966,
+    "PRELIM_NOT_STANDALONE_QUARTER": 9,
+    "Q4_NOT_COMPARED": 1029
+   }
+  },
+  "receiptQuarterVsStatedQuarterAgreement": {
+   "agree": 5615,
+   "n": 5630,
+   "pct": 99.73
+  },
+  "redundancyWithVisibleFormalGrowth": {
+   "operatingIncomeYoY": {
+    "maxSpearman": 0.7988894764674775,
+    "meanSpearman": 0.4919,
+    "medianSpearman": 0.4990429376385178,
+    "minSpearman": 0.2948051948051948,
+    "quartersWithAtLeast20Names": 28,
+    "redundancyCeiling": 0.7
+   },
+   "pairsByReason": {
+    "FORMAL_NOT_YET_VISIBLE": 50,
+    "NO_FORMAL_PAIR": 1173,
+    "PRELIM_NOT_STANDALONE_QUARTER": 35,
+    "Q1_PREVIOUS_IS_FY_NOT_COMPARED": 1364,
+    "USED": 2393
+   },
+   "reading": "prelim YoY of quarter q against formal YoY of quarter q-1 visible at the prelim receipt date; positive-denominator pairs only",
+   "revenueYoY": {
+    "maxSpearman": 0.8223675385647217,
+    "meanSpearman": 0.642,
+    "medianSpearman": 0.6504834512215458,
+    "minSpearman": 0.3468711814264583,
+    "quartersWithAtLeast20Names": 28,
+    "redundancyCeiling": 0.7
+   }
+  },
+  "uncollectedIssuerQuartersByYear": {},
+  "yoyChangeAvailability": {
+   "confirmedUnits": 5015,
+   "operatingIncomeYoYPct": 99.2,
+   "operatingIncomeYoYStated": 4975,
+   "revenueYoYPct": 99.38,
+   "revenueYoYStated": 4984
+  }
+ },
+ "coverage": {
+  "byQuarterEndMonth": {
+   "12": {
+    "coveragePct": 73.94,
+    "leadCalendarDaysMedian": 48.0,
+    "leadSessionsMedian": 32.0,
+    "leadSessionsP25": 26.0,
+    "leadSessionsP75": 39.0,
+    "memberIssuerQuarters": 1516,
+    "sameDayOrLeadLe5Sessions": 1,
+    "withFormal": 1495,
+    "withPnlChange": 1315,
+    "withPrelimAny": 1127,
+    "withPrelimNotAfterFormal": 1121
+   },
+   "3": {
+    "coveragePct": 85.5,
+    "leadCalendarDaysMedian": 16.0,
+    "leadSessionsMedian": 9.0,
+    "leadSessionsP25": 5.0,
+    "leadSessionsP75": 12.0,
+    "memberIssuerQuarters": 1634,
+    "sameDayOrLeadLe5Sessions": 379,
+    "withFormal": 1613,
+    "withPnlChange": 11,
+    "withPrelimAny": 1402,
+    "withPrelimNotAfterFormal": 1397
+   },
+   "6": {
+    "coveragePct": 85.31,
+    "leadCalendarDaysMedian": 17.0,
+    "leadSessionsMedian": 12.0,
+    "leadSessionsP25": 6.0,
+    "leadSessionsP75": 15.0,
+    "memberIssuerQuarters": 1634,
+    "sameDayOrLeadLe5Sessions": 317,
+    "withFormal": 1612,
+    "withPnlChange": 0,
+    "withPrelimAny": 1400,
+    "withPrelimNotAfterFormal": 1394
+   },
+   "9": {
+    "coveragePct": 85.68,
+    "leadCalendarDaysMedian": 15.0,
+    "leadSessionsMedian": 11.0,
+    "leadSessionsP25": 6.0,
+    "leadSessionsP75": 14.0,
+    "memberIssuerQuarters": 1515,
+    "sameDayOrLeadLe5Sessions": 288,
+    "withFormal": 1497,
+    "withPnlChange": 0,
+    "withPrelimAny": 1302,
+    "withPrelimNotAfterFormal": 1298
+   }
+  },
+  "byYear": {
+   "2013": {
+    "coveragePct": 82.48,
+    "leadCalendarDaysMedian": 20.0,
+    "leadSessionsMedian": 14.0,
+    "leadSessionsP25": 9.0,
+    "leadSessionsP75": 25.0,
+    "memberIssuerQuarters": 468,
+    "sameDayOrLeadLe5Sessions": 59,
+    "withFormal": 460,
+    "withPnlChange": 107,
+    "withPrelimAny": 389,
+    "withPrelimNotAfterFormal": 386
+   },
+   "2014": {
+    "coveragePct": 82.69,
+    "leadCalendarDaysMedian": 21.0,
+    "leadSessionsMedian": 14.0,
+    "leadSessionsP25": 9.0,
+    "leadSessionsP75": 24.0,
+    "memberIssuerQuarters": 468,
+    "sameDayOrLeadLe5Sessions": 62,
+    "withFormal": 460,
+    "withPnlChange": 92,
+    "withPrelimAny": 390,
+    "withPrelimNotAfterFormal": 387
+   },
+   "2015": {
+    "coveragePct": 78.83,
+    "leadCalendarDaysMedian": 19.0,
+    "leadSessionsMedian": 13.0,
+    "leadSessionsP25": 9.0,
+    "leadSessionsP75": 22.0,
+    "memberIssuerQuarters": 463,
+    "sameDayOrLeadLe5Sessions": 52,
+    "withFormal": 457,
+    "withPnlChange": 95,
+    "withPrelimAny": 366,
+    "withPrelimNotAfterFormal": 365
+   },
+   "2016": {
+    "coveragePct": 77.59,
+    "leadCalendarDaysMedian": 19.0,
+    "leadSessionsMedian": 12.5,
+    "leadSessionsP25": 9.0,
+    "leadSessionsP75": 26.0,
+    "memberIssuerQuarters": 464,
+    "sameDayOrLeadLe5Sessions": 46,
+    "withFormal": 458,
+    "withPnlChange": 93,
+    "withPrelimAny": 361,
+    "withPrelimNotAfterFormal": 360
+   },
+   "2017": {
+    "coveragePct": 81.47,
+    "leadCalendarDaysMedian": 18.0,
+    "leadSessionsMedian": 12.0,
+    "leadSessionsP25": 8.0,
+    "leadSessionsP75": 24.0,
+    "memberIssuerQuarters": 464,
+    "sameDayOrLeadLe5Sessions": 64,
+    "withFormal": 458,
+    "withPnlChange": 101,
+    "withPrelimAny": 380,
+    "withPrelimNotAfterFormal": 378
+   },
+   "2018": {
+    "coveragePct": 82.26,
+    "leadCalendarDaysMedian": 19.0,
+    "leadSessionsMedian": 12.0,
+    "leadSessionsP25": 7.0,
+    "leadSessionsP75": 25.0,
+    "memberIssuerQuarters": 468,
+    "sameDayOrLeadLe5Sessions": 90,
+    "withFormal": 463,
+    "withPnlChange": 103,
+    "withPrelimAny": 385,
+    "withPrelimNotAfterFormal": 385
+   },
+   "2019": {
+    "coveragePct": 82.37,
+    "leadCalendarDaysMedian": 20.0,
+    "leadSessionsMedian": 13.0,
+    "leadSessionsP25": 7.5,
+    "leadSessionsP75": 26.0,
+    "memberIssuerQuarters": 465,
+    "sameDayOrLeadLe5Sessions": 84,
+    "withFormal": 458,
+    "withPnlChange": 98,
+    "withPrelimAny": 384,
+    "withPrelimNotAfterFormal": 383
+   },
+   "2020": {
+    "coveragePct": 79.31,
+    "leadCalendarDaysMedian": 18.0,
+    "leadSessionsMedian": 12.0,
+    "leadSessionsP25": 6.0,
+    "leadSessionsP75": 22.0,
+    "memberIssuerQuarters": 464,
+    "sameDayOrLeadLe5Sessions": 75,
+    "withFormal": 460,
+    "withPnlChange": 105,
+    "withPrelimAny": 369,
+    "withPrelimNotAfterFormal": 368
+   },
+   "2021": {
+    "coveragePct": 82.69,
+    "leadCalendarDaysMedian": 19.0,
+    "leadSessionsMedian": 12.0,
+    "leadSessionsP25": 7.0,
+    "leadSessionsP75": 20.5,
+    "memberIssuerQuarters": 468,
+    "sameDayOrLeadLe5Sessions": 67,
+    "withFormal": 464,
+    "withPnlChange": 109,
+    "withPrelimAny": 387,
+    "withPrelimNotAfterFormal": 387
+   },
+   "2022": {
+    "coveragePct": 86.41,
+    "leadCalendarDaysMedian": 18.0,
+    "leadSessionsMedian": 12.0,
+    "leadSessionsP25": 7.0,
+    "leadSessionsP75": 20.0,
+    "memberIssuerQuarters": 471,
+    "sameDayOrLeadLe5Sessions": 89,
+    "withFormal": 465,
+    "withPnlChange": 107,
+    "withPrelimAny": 409,
+    "withPrelimNotAfterFormal": 407
+   },
+   "2023": {
+    "coveragePct": 83.26,
+    "leadCalendarDaysMedian": 18.0,
+    "leadSessionsMedian": 11.0,
+    "leadSessionsP25": 6.0,
+    "leadSessionsP75": 18.25,
+    "memberIssuerQuarters": 466,
+    "sameDayOrLeadLe5Sessions": 96,
+    "withFormal": 460,
+    "withPnlChange": 105,
+    "withPrelimAny": 389,
+    "withPrelimNotAfterFormal": 388
+   },
+   "2024": {
+    "coveragePct": 86.75,
+    "leadCalendarDaysMedian": 19.0,
+    "leadSessionsMedian": 12.0,
+    "leadSessionsP25": 7.0,
+    "leadSessionsP75": 21.75,
+    "memberIssuerQuarters": 468,
+    "sameDayOrLeadLe5Sessions": 87,
+    "withFormal": 463,
+    "withPnlChange": 106,
+    "withPrelimAny": 407,
+    "withPrelimNotAfterFormal": 406
+   },
+   "2025": {
+    "coveragePct": 85.47,
+    "leadCalendarDaysMedian": 16.0,
+    "leadSessionsMedian": 11.0,
+    "leadSessionsP25": 7.0,
+    "leadSessionsP75": 21.0,
+    "memberIssuerQuarters": 468,
+    "sameDayOrLeadLe5Sessions": 78,
+    "withFormal": 462,
+    "withPnlChange": 105,
+    "withPrelimAny": 402,
+    "withPrelimNotAfterFormal": 400
+   },
+   "2026": {
+    "coveragePct": 89.74,
+    "leadCalendarDaysMedian": 15.0,
+    "leadSessionsMedian": 10.0,
+    "leadSessionsP25": 6.25,
+    "leadSessionsP75": 14.0,
+    "memberIssuerQuarters": 234,
+    "sameDayOrLeadLe5Sessions": 36,
+    "withFormal": 229,
+    "withPnlChange": 0,
+    "withPrelimAny": 213,
+    "withPrelimNotAfterFormal": 210
+   }
+  },
+  "overall": {
+   "coveragePct": 82.71,
+   "leadCalendarDaysMedian": 19.0,
+   "leadSessionsMedian": 12.0,
+   "leadSessionsP25": 8.0,
+   "leadSessionsP75": 22.0,
+   "memberIssuerQuarters": 6299,
+   "sameDayOrLeadLe5Sessions": 985,
+   "withFormal": 6217,
+   "withPnlChange": 1326,
+   "withPrelimAny": 5231,
+   "withPrelimNotAfterFormal": 5210
+  }
+ },
+ "disclosureInventory": {
+  "amendmentRowsByFamily": {
+   "FORMAL": 2128,
+   "GUIDANCE": 150,
+   "PNL_CHANGE": 805,
+   "PRELIM": 610
+  },
+  "amendmentSharePctByFamily": {
+   "FORMAL": 14.73,
+   "GUIDANCE": 17.4,
+   "PNL_CHANGE": 19.57,
+   "PRELIM": 4.75
+  },
+  "rowsByFamily": {
+   "FORMAL": 14442,
+   "GUIDANCE": 862,
+   "PNL_CHANGE": 4113,
+   "PRELIM": 12847
+  }
+ },
+ "documentSample": {
+  "consolidatedShare": 0.0,
+  "parseRateAllThreePct": 79.37,
+  "parsedAllThreeItems": 200,
+  "parsedCurrentAndPriorYear": {
+   "netIncome": 200,
+   "operatingIncome": 206,
+   "revenue": 208
+  },
+  "periodLabelParsed": 55,
+  "prelimVsFormalAbsRelDiff": {
+   "operatingIncome": {
+    "medianAbsRelDiff": 4.9939730899509716e-05,
+    "n": 2,
+    "within1PctShare": 100.0,
+    "within5PctShare": 100.0
+   },
+   "revenue": {
+    "medianAbsRelDiff": 2.76555922094401e-06,
+    "n": 2,
+    "within1PctShare": 100.0,
+    "within5PctShare": 100.0
+   }
+  },
+  "prelimVsFormalBasis": {
+   "COMPARED": 17,
+   "CONSOLIDATION_BASIS_DIFFERS": 134,
+   "NO_FORMAL_RECORD": 52
+  },
+  "quarterAssignmentAgreement": 52,
+  "quarterAssignmentAgreementPct": 94.55,
+  "sampleSize": 252,
+  "servedZip": 252,
+  "unitsSeen": {
+   "백만원": 202,
+   "억원": 44,
+   "조원": 6
+  }
+ },
+ "evidenceClass": "OUTCOME_BLIND_SOURCE_ELIGIBILITY",
+ "gates": {
+  "G1_coverage": {
+   "nameOnlyValue": 82.71,
+   "pass": true,
+   "threshold": ">= 60",
+   "value": 79.62
+  },
+  "G2_clockTime": {
+   "pass": false,
+   "value": false
+  },
+  "G3_leadSessionsMedian": {
+   "pass": true,
+   "threshold": "> 5",
+   "value": 12.0
+  },
+  "G4_parseRate": {
+   "pass": true,
+   "threshold": ">= 90",
+   "value": 96.3
+  },
+  "G4_quarterAssignment": {
+   "pass": true,
+   "threshold": ">= 95",
+   "value": 99.73
+  },
+  "G5_identity": {
+   "pass": true,
+   "value": "254 issuers collected 254, unresolved securities 6"
+  },
+  "G6_revenueWithin1PctShare": {
+   "pass": null,
+   "reading": "report only",
+   "value": 97.5
+  },
+  "basis": "CONTENT_CONFIRMED",
+  "verdict": "ELIGIBLE_FOR_PROSPECTIVE_REGISTRATION_ONLY"
+ },
+ "investorFlowManifest": {
+  "contract": "KR_INVESTOR_FLOW_RAW_V1",
+  "dateRange": [
+   "2013-01-01",
+   "2026-09-24"
+  ],
+  "remainingPairs": 426377,
+  "thisRun": {
+   "calls": 0,
+   "emptyResponses": 0,
+   "recordsWritten": 0,
+   "shardsChanged": 0,
+   "stopReason": "REFUSED: HTTP 400: b'LOGOUT'"
+  },
+  "universeSize": 119,
+  "updatedAt": "2026-09-24T06:23:26Z"
+ },
+ "labelsBuilt": 0,
+ "minimumEffectiveSample": {
+  "H126": {
+   "byRho": {
+    "0.00": {
+     "byTargetSpread": {
+      "0.02": {
+       "independentCohortsNeeded": 91.3,
+       "yearsNeeded": 45.7
+      },
+      "0.04": {
+       "independentCohortsNeeded": 22.8,
+       "yearsNeeded": 11.4
+      },
+      "0.06": {
+       "independentCohortsNeeded": 10.1,
+       "yearsNeeded": 5.1
+      }
+     },
+     "mdeOneCohort": 0.1911,
+     "mdeOverHistory13y": 0.0375
+    },
+    "0.05": {
+     "byTargetSpread": {
+      "0.02": {
+       "independentCohortsNeeded": 269.3,
+       "yearsNeeded": 134.7
+      },
+      "0.04": {
+       "independentCohortsNeeded": 67.3,
+       "yearsNeeded": 33.7
+      },
+      "0.06": {
+       "independentCohortsNeeded": 29.9,
+       "yearsNeeded": 15.0
+      }
+     },
+     "mdeOneCohort": 0.3282,
+     "mdeOverHistory13y": 0.0644
+    }
+   },
+   "nPerTercile": 40,
+   "nonOverlappingCohortsPerYear": 2,
+   "rhoIsAssumptionNotMeasured": true,
+   "sigma": 0.3051,
+   "sigmaSource": "Phase C B0 H126 MSE 0.093059 (docs/kr-alpha-research-final-development-assessment.md section 3)"
+  },
+  "H252": {
+   "byRho": {
+    "0.00": {
+     "byTargetSpread": {
+      "0.02": {
+       "independentCohortsNeeded": 340.1,
+       "yearsNeeded": 340.1
+      },
+      "0.04": {
+       "independentCohortsNeeded": 85.0,
+       "yearsNeeded": 85.0
+      },
+      "0.06": {
+       "independentCohortsNeeded": 37.8,
+       "yearsNeeded": 37.8
+      }
+     },
+     "mdeOneCohort": 0.3688,
+     "mdeOverHistory13y": 0.1023
+    },
+    "0.05": {
+     "byTargetSpread": {
+      "0.02": {
+       "independentCohortsNeeded": 1003.3,
+       "yearsNeeded": 1003.3
+      },
+      "0.04": {
+       "independentCohortsNeeded": 250.8,
+       "yearsNeeded": 250.8
+      },
+      "0.06": {
+       "independentCohortsNeeded": 111.5,
+       "yearsNeeded": 111.5
+      }
+     },
+     "mdeOneCohort": 0.6335,
+     "mdeOverHistory13y": 0.1757
+    }
+   },
+   "nPerTercile": 40,
+   "nonOverlappingCohortsPerYear": 1,
+   "rhoIsAssumptionNotMeasured": true,
+   "sigma": 0.5888,
+   "sigmaSource": "Phase C B0 H252 MSE 0.346663 (docs/kr-alpha-research-final-development-assessment.md section 3)"
+  }
+ },
+ "modelsFit": 0,
+ "ownershipEventsMaturity": {
+  "distinctMonthsMaturedH252": 14,
+  "events": 2496,
+  "first": "2024-09-24",
+  "h126EntryCutoff": "2026-04-23",
+  "h252EntryCutoff": "2025-10-20",
+  "last": "2026-09-23",
+  "lastSession": "2026-10-30",
+  "maturedH126": 1974,
+  "maturedH252": 1310
+ },
+ "phaseCAccountingVisibilityLag": {
+  "leadSessionsMedian": 13.0,
+  "leadSessionsP25": 8.0,
+  "leadSessionsP75": 25.0,
+  "leadSessionsP90": 40.0,
+  "n": 3907,
+  "unitsWithoutStoreRecord": 1303
+ },
+ "population": {
+  "collectLastRun": {
+   "calls": 1433,
+   "stopReason": "WORK_LIST_EXHAUSTED",
+   "tasksComplete": 508,
+   "tasksTotal": 508
+  },
+  "collectionErrors": {},
+  "dartIssuers": 254,
+  "everTop120Codes": 260,
+  "issuersCollected": 254,
+  "quarters": [
+   "2013-03-31",
+   "2026-06-30"
+  ],
+  "snapshotDates": 164,
+  "uncollectedIssuerQuartersByYear": {},
+  "unresolvedMemberSecurityQuartersByYear": {
+   "2013": 12,
+   "2014": 12,
+   "2015": 17,
+   "2016": 16,
+   "2017": 16,
+   "2018": 12,
+   "2019": 15,
+   "2020": 16,
+   "2021": 12,
+   "2022": 9,
+   "2023": 14,
+   "2024": 12,
+   "2025": 12,
+   "2026": 6
+  },
+  "unresolvedSecurities": [
+   "005385.KS",
+   "005387.KS",
+   "005935.KS",
+   "051905.KS",
+   "051915.KS",
+   "090435.KS"
+  ]
+ },
+ "provenance": {
+  "collectedOn": "2026-11-01",
+  "dartEndpoints": [
+   "list.json (pblntf_ty I and A, 2012-10-01..2026-10-31)",
+   "document.xml"
+  ],
+  "mainCommit": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+  "parserRevisions": [
+   {
+    "allThreeCurrentAndPriorYearPct": 79.37,
+    "defect": "decoded only one header-label style; first 400 characters were CSS so consolidation was never detected",
+    "measuredOn": "252-document seeded development sample",
+    "version": "v1"
+   },
+   {
+    "allThreeCurrentAndPriorYearPct": 88.15,
+    "defect": "1,850 tables with no recognised period label, 1,580 of them stating numbers (date-range, 'N/4분기', 'FY', 'YYYY-NQ' labels)",
+    "measuredOn": "6,446 member-unit documents",
+    "version": "v2"
+   },
+   {
+    "allThreeCurrentAndPriorYearPct": 96.3,
+    "defect": "fixed: ordered period-token scan; 2025+ seven-column layout with 흑자적자전환여부 (491 documents) read prior year from the fifth column",
+    "disclosure": "v2->v3 revisions were made after reading population failure modes; no price, return or label was read. Parsed values are cross-checked independently against the formal filing (contentConfirmed.prelimVsFormal).",
+    "measuredOn": "6,446 member-unit documents (holdout excludes the 252 development documents)",
+    "version": "v3"
+   }
+  ],
+  "signalHistoryCommit": "5d187ec16dca29c68161060f4002227297ebd632",
+  "signalHistoryPaths": [
+   "ledger/universe/kr/krx-universe-*.jsonl.gz",
+   "ledger/dart-ownership-events/collection-universe.json",
+   "ledger/fundamentals/kr-candidate-merged/dart-*.jsonl.gz",
+   "ledger/dart-ownership-events/dart-ownership-*.jsonl.gz",
+   "ledger/kr-investor-flow/manifest.json"
+  ]
+ },
+ "returnsRead": 0,
+ "sourceHashes": {
+  "collectionUniverse": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
+  "dartListCombinedSha256": "1c9d19d709f1d63d2964ef76636907076cc6cc6c57c3f1d59af6b12770e729ca",
+  "dartListFiles": 508,
+  "documentParses": "6cf752ac64d533516444eeb5aed3827b25c2ff71ef5668f6fc4fcac8c913936f",
+  "documentSample": "f517c0a984780e82a9139506510ce445d2f61b1563391ea6c6c87b781debc971",
+  "investorFlowManifest": "45a302053d4f6a476b8068c20c9eb2d9d19e412ee10c5886294547c4a6d20ec0",
+  "mergedStore": {
+   "dart-2015.jsonl.gz": "a7eeaf2d25dde7e7574f6991f4075962cc3fbeaaeec09fa0b86f7399571f6168",
+   "dart-2016.jsonl.gz": "a1032ae814df1a0fb10f7edc92881e2c2b44d3064e089d0210cfdbdf1ee3d0c6",
+   "dart-2017.jsonl.gz": "06a9acd533536e3aeddbbf31c9429c5aaf22db2e52d9eb515aa7fab3a1a3749a",
+   "dart-2018.jsonl.gz": "98278a45385b4b895055f3f5b35fa6c87d4f64ed8da97f69e1822f908ada89d3",
+   "dart-2019.jsonl.gz": "7d1f9decc7d8d683cde70db6a01578ae1bc68532a42535657e6575a2eb05e206",
+   "dart-2020.jsonl.gz": "073c38aae8c455c40b74cf962d89dac5dea5ae49131d1ccdac37f2fefe5527fe",
+   "dart-2021.jsonl.gz": "aca2af6575e8fa2a0f04c2213856e3746f999334ad50b6c480dece23dbaf81cb",
+   "dart-2022.jsonl.gz": "05d8e984985a5b2d2ad6a55782885f73aebef953e4d49f70a3ceef9c525c1080",
+   "dart-2023.jsonl.gz": "8c4752b966d7dd5ae6d4b594236bb924068c13446c85069c170eb159b23dcd78",
+   "dart-2024.jsonl.gz": "0e3f4ea1ad049861e98fcbf5d95e28eb91388b7b2205992dd6a03748ebd540c4",
+   "dart-2025.jsonl.gz": "312b0a559e60c554fe9a823207d8c1e986b7cccd8675e0ce11aff0c85483f215",
+   "dart-2026.jsonl.gz": "713ec8bc535bec018748e098f7a1b5737450d5e4c56ed2a0899510b7b3588c1c"
+  },
+  "ownershipShards": {
+   "dart-ownership-2024.jsonl.gz": "75f8bba6fc1638f76f8b6441b5654a8d4673ff960e13c8a78c5d0a9c0b721c94",
+   "dart-ownership-2025.jsonl.gz": "c30c7e9636bf64afa98ceb27369ba7e95845bfbd7448757a459d71cf76bca879",
+   "dart-ownership-2026.jsonl.gz": "37cfcf15ef1e3714c6ceee0813a86cc60651b9101b185c2af058db04e979ea4c"
+  },
+  "universeShards": {
+   "krx-universe-2013.jsonl.gz": "f7e7ecee7541480d3b8ee620c0fd6210a91d6e00b112fd2c41d0e9a8c816fdd2",
+   "krx-universe-2014.jsonl.gz": "03323a8b8b332823000bc881a0972ae2e9727681eab00a518c9ccdb80e65853a",
+   "krx-universe-2015.jsonl.gz": "b656c614a6ebe6ef4b32b26192f306ad6e15102697ae4167ae8534b640a882f2",
+   "krx-universe-2016.jsonl.gz": "bd80f18a025e7b50ee16373ac878e336b50b5a2f5ddd7ca9534527897a8d3e00",
+   "krx-universe-2017.jsonl.gz": "66dc58623f541f06d5e9bed7e90dfe54b080258048e1cd71262f90a8bd010679",
+   "krx-universe-2018.jsonl.gz": "d3def14c97af01bc0aa8292946525e65cc84f95af476f9f842105b3e855f0df1",
+   "krx-universe-2019.jsonl.gz": "b21f475aa8a8f93a7ef7129ac6acd6716e5496d6444372a1edc092849ebf387b",
+   "krx-universe-2020.jsonl.gz": "203e93b8341dd103edb1fc4e14788c9d6653b22370bbf86579b45bd9a11c0ecc",
+   "krx-universe-2021.jsonl.gz": "1a4d9840f2720f9a535e357674ac400296bfe4b1809589a80150a0a4c2b65d2f",
+   "krx-universe-2022.jsonl.gz": "10b50960277a30a7abff18ce49bb8dcef55d81eb2cfe11cdb29d6c998a48a3e2",
+   "krx-universe-2023.jsonl.gz": "0b32a51e604a8b3bead773ff643dd1b1fed27b324c5b0ce777fcd9aaa2ea0c7d",
+   "krx-universe-2024.jsonl.gz": "d80c25e887badc8ab92ebe314f54900c11862aeda75d742935ec33340133cd32",
+   "krx-universe-2025.jsonl.gz": "014672bd80e9cc9f7ce56983ca7ccf42d61ff2e5cbe861c5f28a8aa83d7039f5",
+   "krx-universe-2026.jsonl.gz": "ca6cb363fb42b70ca614a683d6c160f4af907bed3518bf478dc815cad8026032"
+  }
+ },
+ "studyId": "alpha-mechanism-sprint-v1",
+ "timingPrecision": {
+  "clockTimeAvailable": false,
+  "evidence": "list.json has no time field; document.xml body and dart.fss.or.kr viewer page carry no receipt time; KIND (kind.krx.co.kr) answered HTTP 403 from this environment",
+  "source": "DART list.json rcept_dt (YYYYMMDD) and rcept_no (date + daily serial)"
+ }
+}

@@ -1,0 +1,1042 @@
+{
+ "schema": "US_SECTOR_FOUNDATION_V1",
+ "lane": "master_research_program_v1/market_industry",
+ "outcomeFree": true,
+ "pricesRead": 0,
+ "returnsRead": 0,
+ "labelsRead": 0,
+ "inputs": {
+  "research_specs/alpha-opportunity-model-v1-us-membership.json.gz": {
+   "sha256": "397b27270255d7a14a36d075a3e2889129d9351d817420614c8ccd289d74c30f",
+   "ref": "research_specs/alpha-opportunity-model-v1-us-membership.json.gz@37f8cbf6"
+  },
+  "data/research/us-capital-allocation-alpha-v1/sp500-snapshot-sectors.json.gz": {
+   "sha256": "f49c15a0ebcd371c9a407118abb6ef350bba2060227ca40d61ba210fc4f81a74",
+   "ref": "data/research/us-capital-allocation-alpha-v1/sp500-snapshot-sectors.json.gz@37f8cbf6",
+   "schema": "US_SP500_SNAPSHOT_SECTORS_V1",
+   "label": "DATASET_PUBLISHED_SECTOR_AT_SNAPSHOT_NOT_AN_INDEX_PROVIDER_FILE",
+   "acquisitionFailures": 0
+  },
+  "research_specs/alpha-opportunity-model-v3-us-identity-evidence.json.gz": {
+   "sha256": "b10f9ca163ce2b20fb408be7d70dfb107875c7fcccccec49eb17fd96f2ebf220"
+  },
+  "docs/results/alpha-opportunity-model-v3-survivorship-audit.json": {
+   "sha256": "f0d9ed09880ffb75c6cc698dbb001e6f6879dee1991ede6ff6d365cc50f22902"
+  }
+ },
+ "rawCsvHashCheck": {
+  "snapshotsMatchingPinnedRawCsvSha256": 195,
+  "snapshots": 195
+ },
+ "pitRule": "latest snapshot whose publishedAt <= as-of; a date-only as-of is 00:00 UTC, so a same-day publication is visible next day; a later snapshot is never consulted",
+ "sectorColumnNames": {
+  "Sector": 64,
+  "GICS Sector": 131
+ },
+ "snapshotGaps": {
+  "distinctSnapshotDates": 191,
+  "snapshots": 195,
+  "first": "2012-12-27",
+  "last": "2026-09-05",
+  "gapDays": {
+   "min": 1,
+   "median": 6.0,
+   "p90": 49,
+   "max": 769
+  },
+  "maxGap": {
+   "from": "2018-04-02",
+   "to": "2020-05-10",
+   "days": 769
+  },
+  "gapsOver90Days": [
+   {
+    "from": "2013-10-05",
+    "to": "2014-01-19",
+    "days": 106
+   },
+   {
+    "from": "2014-07-28",
+    "to": "2014-12-07",
+    "days": 132
+   },
+   {
+    "from": "2014-12-07",
+    "to": "2015-07-09",
+    "days": 214
+   },
+   {
+    "from": "2015-09-22",
+    "to": "2016-02-23",
+    "days": 154
+   },
+   {
+    "from": "2016-02-23",
+    "to": "2016-06-12",
+    "days": 110
+   },
+   {
+    "from": "2016-07-06",
+    "to": "2017-03-08",
+    "days": 245
+   },
+   {
+    "from": "2017-03-08",
+    "to": "2018-04-02",
+    "days": 390
+   },
+   {
+    "from": "2018-04-02",
+    "to": "2020-05-10",
+    "days": 769
+   },
+   {
+    "from": "2020-08-22",
+    "to": "2021-02-11",
+    "days": 173
+   },
+   {
+    "from": "2021-10-06",
+    "to": "2022-12-24",
+    "days": 444
+   },
+   {
+    "from": "2025-08-12",
+    "to": "2026-03-04",
+    "days": 204
+   }
+  ]
+ },
+ "subIndustryColumnSnapshots": [
+  "2023-03-07"
+ ],
+ "rawLabels": {
+  "observedDistinct": 139,
+  "sectorLevelOrRecognised": [
+   {
+    "raw": "<blank>",
+    "firstSnapshot": "2013-05-05",
+    "lastSnapshot": "2014-02-25",
+    "rows": 19,
+    "canonical": null,
+    "reason": "BLANK_SECTOR_CELL"
+   },
+   {
+    "raw": "Airlines",
+    "firstSnapshot": "2021-03-11",
+    "lastSnapshot": "2023-03-07",
+    "rows": 6,
+    "canonical": null,
+    "reason": "NOT_A_GICS_SECTOR_NAME_NOT_GUESSED"
+   },
+   {
+    "raw": "Communication Services",
+    "firstSnapshot": "2020-05-10",
+    "lastSnapshot": "2026-09-05",
+    "rows": 3976,
+    "canonical": "Communication Services",
+    "reason": "OFFICIAL_SECTOR_NAME"
+   },
+   {
+    "raw": "Consumer Discretionary",
+    "firstSnapshot": "2012-12-27",
+    "lastSnapshot": "2026-09-05",
+    "rows": 11136,
+    "canonical": "Consumer Discretionary",
+    "reason": "OFFICIAL_SECTOR_NAME"
+   },
+   {
+    "raw": "Consumer Staples",
+    "firstSnapshot": "2012-12-27",
+    "lastSnapshot": "2026-09-05",
+    "rows": 7067,
+    "canonical": "Consumer Staples",
+    "reason": "OFFICIAL_SECTOR_NAME"
+   },
+   {
+    "raw": "Energy",
+    "firstSnapshot": "2012-12-27",
+    "lastSnapshot": "2026-09-05",
+    "rows": 4812,
+    "canonical": "Energy",
+    "reason": "OFFICIAL_SECTOR_NAME"
+   },
+   {
+    "raw": "Financials",
+    "firstSnapshot": "2012-12-27",
+    "lastSnapshot": "2026-09-05",
+    "rows": 14060,
+    "canonical": "Financials",
+    "reason": "OFFICIAL_SECTOR_NAME"
+   },
+   {
+    "raw": "Health Care",
+    "firstSnapshot": "2012-12-27",
+    "lastSnapshot": "2026-09-05",
+    "rows": 11954,
+    "canonical": "Health Care",
+    "reason": "OFFICIAL_SECTOR_NAME"
+   },
+   {
+    "raw": "Industrials",
+    "firstSnapshot": "2012-12-27",
+    "lastSnapshot": "2026-09-05",
+    "rows": 14568,
+    "canonical": "Industrials",
+    "reason": "OFFICIAL_SECTOR_NAME"
+   },
+   {
+    "raw": "Industries",
+    "firstSnapshot": "2013-10-05",
+    "lastSnapshot": "2014-12-07",
+    "rows": 7,
+    "canonical": null,
+    "reason": "NOT_A_GICS_SECTOR_NAME_NOT_GUESSED"
+   },
+   {
+    "raw": "Information Technology",
+    "firstSnapshot": "2012-12-27",
+    "lastSnapshot": "2026-09-05",
+    "rows": 13350,
+    "canonical": "Information Technology",
+    "reason": "OFFICIAL_SECTOR_NAME"
+   },
+   {
+    "raw": "Materials",
+    "firstSnapshot": "2012-12-27",
+    "lastSnapshot": "2026-09-05",
+    "rows": 5386,
+    "canonical": "Materials",
+    "reason": "OFFICIAL_SECTOR_NAME"
+   },
+   {
+    "raw": "Real Estate",
+    "firstSnapshot": "2017-03-08",
+    "lastSnapshot": "2026-09-05",
+    "rows": 5260,
+    "canonical": "Real Estate",
+    "reason": "OFFICIAL_SECTOR_NAME"
+   },
+   {
+    "raw": "Technology",
+    "firstSnapshot": "2020-07-17",
+    "lastSnapshot": "2020-07-26",
+    "rows": 4,
+    "canonical": null,
+    "reason": "NOT_A_GICS_SECTOR_NAME_NOT_GUESSED"
+   },
+   {
+    "raw": "Telecommunication Services",
+    "firstSnapshot": "2014-12-07",
+    "lastSnapshot": "2018-04-02",
+    "rows": 24,
+    "canonical": "Telecommunication Services",
+    "reason": "OFFICIAL_SECTOR_NAME"
+   },
+   {
+    "raw": "Telecommunications Services",
+    "firstSnapshot": "2012-12-27",
+    "lastSnapshot": "2017-03-08",
+    "rows": 118,
+    "canonical": "Telecommunication Services",
+    "reason": "SPELLING_VARIANT_OF_OFFICIAL_SECTOR_NAME"
+   },
+   {
+    "raw": "Utilities",
+    "firstSnapshot": "2012-12-27",
+    "lastSnapshot": "2026-09-05",
+    "rows": 5850,
+    "canonical": "Utilities",
+    "reason": "OFFICIAL_SECTOR_NAME"
+   }
+  ],
+  "notSectorLevelDistinct": 122
+ },
+ "normalisationTable": {
+  "spellingVariants": {
+   "Telecommunications Services": "Telecommunication Services"
+  },
+  "notGuessed": {
+   "Industries": "NOT_A_GICS_SECTOR_NAME_NOT_GUESSED",
+   "Technology": "NOT_A_GICS_SECTOR_NAME_NOT_GUESSED",
+   "Airlines": "NOT_A_GICS_SECTOR_NAME_NOT_GUESSED"
+  },
+  "reclassificationsKeptDistinct": [
+   "Telecommunication Services (last 2018-04-02) vs Communication Services (first 2020-05-10)",
+   "Financials/Real Estate split visible from 2017-03-08",
+   "IT -> Financials (V, MA, PYPL, FIS) and Consumer Discretionary -> Consumer Staples (DG, DLTR, TGT) visible from 2023-04-13"
+  ]
+ },
+ "perYear": {
+  "2012": {
+   "snapshots": 1,
+   "uniqueMembers": 500,
+   "memberDates": 500,
+   "membersPerSnapshot": {
+    "min": 500,
+    "max": 500
+   },
+   "pctWithSectorAsPublished": 100.0,
+   "pctWithSectorIncludingCarry": 100.0,
+   "pctWithCik": 0.0,
+   "joinBasis": {
+    "EXACT_SYMBOL": 498,
+    "PUNCTUATION_VARIANT_-_TO_.": 2
+   },
+   "sectorsPresent": 10,
+   "namesPerSector": {
+    "minAcrossSnapshotsAndSectors": 8,
+    "medianOfSectorMedians": 47.5,
+    "perSectorMedian": {
+     "Consumer Discretionary": 83,
+     "Consumer Staples": 40,
+     "Energy": 43,
+     "Financials": 82,
+     "Health Care": 52,
+     "Industrials": 61,
+     "Information Technology": 69,
+     "Materials": 29,
+     "Telecommunication Services": 8,
+     "Utilities": 33
+    }
+   }
+  },
+  "2013": {
+   "snapshots": 7,
+   "uniqueMembers": 523,
+   "memberDates": 3500,
+   "membersPerSnapshot": {
+    "min": 500,
+    "max": 500
+   },
+   "pctWithSectorAsPublished": 99.486,
+   "pctWithSectorIncludingCarry": 99.486,
+   "pctWithCik": 0.0,
+   "joinBasis": {
+    "EXACT_SYMBOL": 3494,
+    "PUNCTUATION_VARIANT_-_TO_.": 6
+   },
+   "sectorsPresent": 10,
+   "namesPerSector": {
+    "minAcrossSnapshotsAndSectors": 6,
+    "medianOfSectorMedians": 47.0,
+    "perSectorMedian": {
+     "Consumer Discretionary": 85,
+     "Consumer Staples": 39,
+     "Energy": 41,
+     "Financials": 82,
+     "Health Care": 53,
+     "Industrials": 61,
+     "Information Technology": 68,
+     "Materials": 28,
+     "Telecommunication Services": 7,
+     "Utilities": 33
+    }
+   }
+  },
+  "2014": {
+   "snapshots": 7,
+   "uniqueMembers": 513,
+   "memberDates": 3498,
+   "membersPerSnapshot": {
+    "min": 496,
+    "max": 501
+   },
+   "pctWithSectorAsPublished": 99.771,
+   "pctWithSectorIncludingCarry": 99.771,
+   "pctWithCik": 0.0,
+   "joinBasis": {
+    "EXACT_SYMBOL": 3498
+   },
+   "sectorsPresent": 10,
+   "namesPerSector": {
+    "minAcrossSnapshotsAndSectors": 5,
+    "medianOfSectorMedians": 48.5,
+    "perSectorMedian": {
+     "Consumer Discretionary": 85,
+     "Consumer Staples": 40,
+     "Energy": 42,
+     "Financials": 82,
+     "Health Care": 55,
+     "Industrials": 64,
+     "Information Technology": 64,
+     "Materials": 28,
+     "Telecommunication Services": 6,
+     "Utilities": 33
+    }
+   }
+  },
+  "2015": {
+   "snapshots": 2,
+   "uniqueMembers": 518,
+   "memberDates": 990,
+   "membersPerSnapshot": {
+    "min": 494,
+    "max": 496
+   },
+   "pctWithSectorAsPublished": 100.0,
+   "pctWithSectorIncludingCarry": 100.0,
+   "pctWithCik": 0.0,
+   "joinBasis": {
+    "EXACT_SYMBOL": 990
+   },
+   "sectorsPresent": 10,
+   "namesPerSector": {
+    "minAcrossSnapshotsAndSectors": 5,
+    "medianOfSectorMedians": 48.5,
+    "perSectorMedian": {
+     "Consumer Discretionary": 83.0,
+     "Consumer Staples": 38.5,
+     "Energy": 42.0,
+     "Financials": 85.5,
+     "Health Care": 55.0,
+     "Industrials": 63.0,
+     "Information Technology": 65.0,
+     "Materials": 28.5,
+     "Telecommunication Services": 5.0,
+     "Utilities": 29.5
+    }
+   }
+  },
+  "2016": {
+   "snapshots": 5,
+   "uniqueMembers": 522,
+   "memberDates": 2520,
+   "membersPerSnapshot": {
+    "min": 504,
+    "max": 504
+   },
+   "pctWithSectorAsPublished": 100.0,
+   "pctWithSectorIncludingCarry": 100.0,
+   "pctWithCik": 0.0,
+   "joinBasis": {
+    "EXACT_SYMBOL": 2520
+   },
+   "sectorsPresent": 10,
+   "namesPerSector": {
+    "minAcrossSnapshotsAndSectors": 5,
+    "medianOfSectorMedians": 47.0,
+    "perSectorMedian": {
+     "Consumer Discretionary": 85,
+     "Consumer Staples": 36,
+     "Energy": 38,
+     "Financials": 92,
+     "Health Care": 56,
+     "Industrials": 70,
+     "Information Technology": 67,
+     "Materials": 27,
+     "Telecommunication Services": 5,
+     "Utilities": 29
+    }
+   }
+  },
+  "2017": {
+   "snapshots": 1,
+   "uniqueMembers": 505,
+   "memberDates": 505,
+   "membersPerSnapshot": {
+    "min": 505,
+    "max": 505
+   },
+   "pctWithSectorAsPublished": 100.0,
+   "pctWithSectorIncludingCarry": 100.0,
+   "pctWithCik": 0.0,
+   "joinBasis": {
+    "EXACT_SYMBOL": 503,
+    "PUNCTUATION_VARIANT_-_TO_.": 2
+   },
+   "sectorsPresent": 11,
+   "namesPerSector": {
+    "minAcrossSnapshotsAndSectors": 5,
+    "medianOfSectorMedians": 37,
+    "perSectorMedian": {
+     "Consumer Discretionary": 86,
+     "Consumer Staples": 37,
+     "Energy": 35,
+     "Financials": 65,
+     "Health Care": 60,
+     "Industrials": 66,
+     "Information Technology": 68,
+     "Materials": 25,
+     "Real Estate": 30,
+     "Telecommunication Services": 5,
+     "Utilities": 28
+    }
+   }
+  },
+  "2018": {
+   "snapshots": 1,
+   "uniqueMembers": 505,
+   "memberDates": 505,
+   "membersPerSnapshot": {
+    "min": 505,
+    "max": 505
+   },
+   "pctWithSectorAsPublished": 100.0,
+   "pctWithSectorIncludingCarry": 100.0,
+   "pctWithCik": 0.0,
+   "joinBasis": {
+    "EXACT_SYMBOL": 503,
+    "PUNCTUATION_VARIANT_-_TO_.": 2
+   },
+   "sectorsPresent": 11,
+   "namesPerSector": {
+    "minAcrossSnapshotsAndSectors": 3,
+    "medianOfSectorMedians": 34,
+    "perSectorMedian": {
+     "Consumer Discretionary": 82,
+     "Consumer Staples": 34,
+     "Energy": 31,
+     "Financials": 69,
+     "Health Care": 61,
+     "Industrials": 67,
+     "Information Technology": 72,
+     "Materials": 25,
+     "Real Estate": 33,
+     "Telecommunication Services": 3,
+     "Utilities": 28
+    }
+   }
+  },
+  "2020": {
+   "snapshots": 10,
+   "uniqueMembers": 511,
+   "memberDates": 5050,
+   "membersPerSnapshot": {
+    "min": 505,
+    "max": 505
+   },
+   "pctWithSectorAsPublished": 99.921,
+   "pctWithSectorIncludingCarry": 99.921,
+   "pctWithCik": 0.0,
+   "joinBasis": {
+    "EXACT_SYMBOL": 5030,
+    "PUNCTUATION_VARIANT_-_TO_.": 20
+   },
+   "sectorsPresent": 11,
+   "namesPerSector": {
+    "minAcrossSnapshotsAndSectors": 26,
+    "medianOfSectorMedians": 33.0,
+    "perSectorMedian": {
+     "Communication Services": 26.0,
+     "Consumer Discretionary": 61.0,
+     "Consumer Staples": 33.0,
+     "Energy": 26.0,
+     "Financials": 66.0,
+     "Health Care": 62.0,
+     "Industrials": 73.0,
+     "Information Technology": 71.0,
+     "Materials": 28.0,
+     "Real Estate": 31.0,
+     "Utilities": 28.0
+    }
+   }
+  },
+  "2021": {
+   "snapshots": 28,
+   "uniqueMembers": 521,
+   "memberDates": 14140,
+   "membersPerSnapshot": {
+    "min": 505,
+    "max": 505
+   },
+   "pctWithSectorAsPublished": 99.993,
+   "pctWithSectorIncludingCarry": 99.993,
+   "pctWithCik": 0.0,
+   "joinBasis": {
+    "EXACT_SYMBOL": 14085,
+    "PUNCTUATION_VARIANT_-_TO_.": 55
+   },
+   "sectorsPresent": 11,
+   "namesPerSector": {
+    "minAcrossSnapshotsAndSectors": 21,
+    "medianOfSectorMedians": 32.0,
+    "perSectorMedian": {
+     "Communication Services": 26.0,
+     "Consumer Discretionary": 63.0,
+     "Consumer Staples": 32.0,
+     "Energy": 23.0,
+     "Financials": 65.0,
+     "Health Care": 63.0,
+     "Industrials": 74.0,
+     "Information Technology": 74.0,
+     "Materials": 28.0,
+     "Real Estate": 29.0,
+     "Utilities": 28.0
+    }
+   }
+  },
+  "2022": {
+   "snapshots": 1,
+   "uniqueMembers": 503,
+   "memberDates": 503,
+   "membersPerSnapshot": {
+    "min": 503,
+    "max": 503
+   },
+   "pctWithSectorAsPublished": 100.0,
+   "pctWithSectorIncludingCarry": 100.0,
+   "pctWithCik": 0.0,
+   "joinBasis": {
+    "EXACT_SYMBOL": 501,
+    "PUNCTUATION_VARIANT_-_TO_.": 2
+   },
+   "sectorsPresent": 11,
+   "namesPerSector": {
+    "minAcrossSnapshotsAndSectors": 23,
+    "medianOfSectorMedians": 33,
+    "perSectorMedian": {
+     "Communication Services": 25,
+     "Consumer Discretionary": 56,
+     "Consumer Staples": 33,
+     "Energy": 23,
+     "Financials": 67,
+     "Health Care": 63,
+     "Industrials": 70,
+     "Information Technology": 76,
+     "Materials": 29,
+     "Real Estate": 31,
+     "Utilities": 30
+    }
+   }
+  },
+  "2023": {
+   "snapshots": 41,
+   "uniqueMembers": 522,
+   "memberDates": 20619,
+   "membersPerSnapshot": {
+    "min": 502,
+    "max": 503
+   },
+   "pctWithSectorAsPublished": 97.565,
+   "pctWithSectorIncludingCarry": 99.995,
+   "pctWithCik": 97.565,
+   "joinBasis": {
+    "EXACT_SYMBOL": 20539,
+    "PUNCTUATION_VARIANT_-_TO_.": 80
+   },
+   "sectorsPresent": 11,
+   "namesPerSector": {
+    "minAcrossSnapshotsAndSectors": 22,
+    "medianOfSectorMedians": 38,
+    "perSectorMedian": {
+     "Communication Services": 23,
+     "Consumer Discretionary": 53,
+     "Consumer Staples": 38,
+     "Energy": 23,
+     "Financials": 72,
+     "Health Care": 65,
+     "Industrials": 74,
+     "Information Technology": 66,
+     "Materials": 29,
+     "Real Estate": 30,
+     "Utilities": 30
+    }
+   }
+  },
+  "2024": {
+   "snapshots": 52,
+   "uniqueMembers": 523,
+   "memberDates": 26152,
+   "membersPerSnapshot": {
+    "min": 502,
+    "max": 504
+   },
+   "pctWithSectorAsPublished": 100.0,
+   "pctWithSectorIncludingCarry": 100.0,
+   "pctWithCik": 100.0,
+   "joinBasis": {
+    "EXACT_SYMBOL": 26048,
+    "PUNCTUATION_VARIANT_-_TO_.": 104
+   },
+   "sectorsPresent": 11,
+   "namesPerSector": {
+    "minAcrossSnapshotsAndSectors": 21,
+    "medianOfSectorMedians": 38.0,
+    "perSectorMedian": {
+     "Communication Services": 22.0,
+     "Consumer Discretionary": 52.0,
+     "Consumer Staples": 38.0,
+     "Energy": 22.0,
+     "Financials": 71.0,
+     "Health Care": 63.0,
+     "Industrials": 78.0,
+     "Information Technology": 67.0,
+     "Materials": 28.0,
+     "Real Estate": 31.0,
+     "Utilities": 31.0
+    }
+   }
+  },
+  "2025": {
+   "snapshots": 15,
+   "uniqueMembers": 512,
+   "memberDates": 7542,
+   "membersPerSnapshot": {
+    "min": 502,
+    "max": 503
+   },
+   "pctWithSectorAsPublished": 100.0,
+   "pctWithSectorIncludingCarry": 100.0,
+   "pctWithCik": 100.0,
+   "joinBasis": {
+    "EXACT_SYMBOL": 7512,
+    "PUNCTUATION_VARIANT_-_TO_.": 30
+   },
+   "sectorsPresent": 11,
+   "namesPerSector": {
+    "minAcrossSnapshotsAndSectors": 22,
+    "medianOfSectorMedians": 38,
+    "perSectorMedian": {
+     "Communication Services": 23,
+     "Consumer Discretionary": 51,
+     "Consumer Staples": 38,
+     "Energy": 23,
+     "Financials": 73,
+     "Health Care": 60,
+     "Industrials": 78,
+     "Information Technology": 69,
+     "Materials": 26,
+     "Real Estate": 31,
+     "Utilities": 31
+    }
+   }
+  },
+  "2026": {
+   "snapshots": 24,
+   "uniqueMembers": 518,
+   "memberDates": 12070,
+   "membersPerSnapshot": {
+    "min": 502,
+    "max": 503
+   },
+   "pctWithSectorAsPublished": 100.0,
+   "pctWithSectorIncludingCarry": 100.0,
+   "pctWithCik": 95.816,
+   "joinBasis": {
+    "EXACT_SYMBOL": 12022,
+    "PUNCTUATION_VARIANT_-_TO_.": 48
+   },
+   "sectorsPresent": 11,
+   "namesPerSector": {
+    "minAcrossSnapshotsAndSectors": 21,
+    "medianOfSectorMedians": 35.0,
+    "perSectorMedian": {
+     "Communication Services": 23.0,
+     "Consumer Discretionary": 47.0,
+     "Consumer Staples": 35.0,
+     "Energy": 21.0,
+     "Financials": 76.0,
+     "Health Care": 59.0,
+     "Industrials": 80.0,
+     "Information Technology": 73.0,
+     "Materials": 26.0,
+     "Real Estate": 31.0,
+     "Utilities": 31.0
+    }
+   }
+  }
+ },
+ "perYearNote": "perYear counts SNAPSHOTS dated in the year (2019 has none); pitWeekly is the as-of view a weekly study would read",
+ "pitWeekly": {
+  "2013": {
+   "weeklyDates": 52,
+   "distinctSnapshotsUsed": 6,
+   "uniqueMembers": 523,
+   "pctMemberDatesWithSector": 99.823,
+   "memberDatesSectorCarried": 0,
+   "stalenessDays": {
+    "median": 33.0,
+    "max": 83
+   },
+   "minNamesPerSectorOnAnyDate": 6
+  },
+  "2014": {
+   "weeklyDates": 52,
+   "distinctSnapshotsUsed": 6,
+   "uniqueMembers": 522,
+   "pctMemberDatesWithSector": 99.781,
+   "memberDatesSectorCarried": 0,
+   "stalenessDays": {
+    "median": 41.0,
+    "max": 130
+   },
+   "minNamesPerSectorOnAnyDate": 5
+  },
+  "2015": {
+   "weeklyDates": 52,
+   "distinctSnapshotsUsed": 3,
+   "uniqueMembers": 518,
+   "pctMemberDatesWithSector": 100.0,
+   "memberDatesSectorCarried": 0,
+   "stalenessDays": {
+    "median": 67.0,
+    "max": 208
+   },
+   "minNamesPerSectorOnAnyDate": 5
+  },
+  "2016": {
+   "weeklyDates": 53,
+   "distinctSnapshotsUsed": 5,
+   "uniqueMembers": 540,
+   "pctMemberDatesWithSector": 100.0,
+   "memberDatesSectorCarried": 0,
+   "stalenessDays": {
+    "median": 80,
+    "max": 177
+   },
+   "minNamesPerSectorOnAnyDate": 5
+  },
+  "2017": {
+   "weeklyDates": 52,
+   "distinctSnapshotsUsed": 2,
+   "uniqueMembers": 516,
+   "pctMemberDatesWithSector": 100.0,
+   "memberDatesSectorCarried": 0,
+   "stalenessDays": {
+    "median": 180.5,
+    "max": 296
+   },
+   "minNamesPerSectorOnAnyDate": 5
+  },
+  "2018": {
+   "weeklyDates": 52,
+   "distinctSnapshotsUsed": 2,
+   "uniqueMembers": 540,
+   "pctMemberDatesWithSector": 100.0,
+   "memberDatesSectorCarried": 0,
+   "stalenessDays": {
+    "median": 182.5,
+    "max": 387
+   },
+   "minNamesPerSectorOnAnyDate": 3
+  },
+  "2019": {
+   "weeklyDates": 52,
+   "distinctSnapshotsUsed": 1,
+   "uniqueMembers": 505,
+   "pctMemberDatesWithSector": 100.0,
+   "memberDatesSectorCarried": 0,
+   "stalenessDays": {
+    "median": 455.5,
+    "max": 634
+   },
+   "minNamesPerSectorOnAnyDate": 3
+  },
+  "2020": {
+   "weeklyDates": 52,
+   "distinctSnapshotsUsed": 8,
+   "uniqueMembers": 565,
+   "pctMemberDatesWithSector": 99.996,
+   "memberDatesSectorCarried": 0,
+   "stalenessDays": {
+    "median": 79.5,
+    "max": 767
+   },
+   "minNamesPerSectorOnAnyDate": 3
+  },
+  "2021": {
+   "weeklyDates": 53,
+   "distinctSnapshotsUsed": 21,
+   "uniqueMembers": 531,
+   "pctMemberDatesWithSector": 99.996,
+   "memberDatesSectorCarried": 0,
+   "stalenessDays": {
+    "median": 10,
+    "max": 167
+   },
+   "minNamesPerSectorOnAnyDate": 21
+  },
+  "2022": {
+   "weeklyDates": 52,
+   "distinctSnapshotsUsed": 2,
+   "uniqueMembers": 531,
+   "pctMemberDatesWithSector": 100.0,
+   "memberDatesSectorCarried": 0,
+   "stalenessDays": {
+    "median": 264.5,
+    "max": 443
+   },
+   "minNamesPerSectorOnAnyDate": 21
+  },
+  "2023": {
+   "weeklyDates": 52,
+   "distinctSnapshotsUsed": 27,
+   "uniqueMembers": 522,
+   "pctMemberDatesWithSector": 99.981,
+   "memberDatesSectorCarried": 2505,
+   "stalenessDays": {
+    "median": 7.5,
+    "max": 69
+   },
+   "minNamesPerSectorOnAnyDate": 22
+  },
+  "2024": {
+   "weeklyDates": 52,
+   "distinctSnapshotsUsed": 34,
+   "uniqueMembers": 521,
+   "pctMemberDatesWithSector": 100.0,
+   "memberDatesSectorCarried": 0,
+   "stalenessDays": {
+    "median": 4.0,
+    "max": 26
+   },
+   "minNamesPerSectorOnAnyDate": 22
+  },
+  "2025": {
+   "weeklyDates": 52,
+   "distinctSnapshotsUsed": 9,
+   "uniqueMembers": 512,
+   "pctMemberDatesWithSector": 100.0,
+   "memberDatesSectorCarried": 0,
+   "stalenessDays": {
+    "median": 34.0,
+    "max": 136
+   },
+   "minNamesPerSectorOnAnyDate": 22
+  },
+  "2026": {
+   "weeklyDates": 37,
+   "distinctSnapshotsUsed": 18,
+   "uniqueMembers": 531,
+   "pctMemberDatesWithSector": 100.0,
+   "memberDatesSectorCarried": 0,
+   "stalenessDays": {
+    "median": 9,
+    "max": 199
+   },
+   "minNamesPerSectorOnAnyDate": 21
+  }
+ },
+ "cikAnomaliesSince2023_04_13": [
+  {
+   "snapshot": "2026-08-12",
+   "hasCikColumn": true,
+   "rowsWithoutCik": 2
+  },
+  {
+   "snapshot": "2026-08-19",
+   "hasCikColumn": true,
+   "rowsWithoutCik": 503
+  }
+ ],
+ "sectorChanges": {
+  "changeEvents": 98,
+  "distinctSymbols": 79,
+  "topTransitions": [
+   {
+    "transition": "Financials -> Real Estate",
+    "events": 26
+   },
+   {
+    "transition": "Consumer Discretionary -> Communication Services",
+    "events": 12
+   },
+   {
+    "transition": "Industrials -> Information Technology",
+    "events": 8
+   },
+   {
+    "transition": "Information Technology -> Communication Services",
+    "events": 8
+   },
+   {
+    "transition": "Information Technology -> Industrials",
+    "events": 7
+   },
+   {
+    "transition": "Consumer Discretionary -> Industrials",
+    "events": 6
+   },
+   {
+    "transition": "Industrials -> Consumer Discretionary",
+    "events": 4
+   },
+   {
+    "transition": "Financials -> Industrials",
+    "events": 3
+   },
+   {
+    "transition": "Telecommunication Services -> Communication Services",
+    "events": 3
+   },
+   {
+    "transition": "Utilities -> Energy",
+    "events": 3
+   },
+   {
+    "transition": "Industrials -> Financials",
+    "events": 2
+   },
+   {
+    "transition": "Industrials -> Real Estate",
+    "events": 2
+   }
+  ],
+  "snapshotsWithMostChanges": [
+   {
+    "snapshot": "2017-03-08",
+    "events": 35
+   },
+   {
+    "snapshot": "2020-05-10",
+    "events": 27
+   },
+   {
+    "snapshot": "2014-12-07",
+    "events": 15
+   },
+   {
+    "snapshot": "2016-02-23",
+    "events": 11
+   },
+   {
+    "snapshot": "2023-09-27",
+    "events": 3
+   },
+   {
+    "snapshot": "2022-12-24",
+    "events": 2
+   }
+  ],
+  "basis": "canonical sector as published in both consecutive snapshots; spelling variants normalised; unusable labels skipped"
+ },
+ "departedIdentities": {
+  "source": "docs/results/alpha-opportunity-model-v3-survivorship-audit.json@37f8cbf6",
+  "set": "regions.US._sets.noPanel",
+  "departedIdentitiesWithoutPanel": 212,
+  "ofWhichReusedSymbols": 29,
+  "sectorRule": "sector at the last snapshot of the symbol's first membership spell (carry from earlier snapshots only)",
+  "bySector": {
+   "Consumer Discretionary": 36,
+   "Health Care": 30,
+   "Energy": 29,
+   "Information Technology": 26,
+   "Industrials": 20,
+   "Financials": 19,
+   "Consumer Staples": 16,
+   "Materials": 12,
+   "Communication Services": 10,
+   "Utilities": 6,
+   "Telecommunication Services": 5,
+   "Real Estate": 3
+  },
+  "sectorBasis": {
+   "AS_PUBLISHED": 210,
+   "CARRIED_FROM_EARLIER_SNAPSHOT": 2
+  },
+  "unresolved": [],
+  "caveat": "sector labels from the pre-2018 / pre-2020-05-10 taxonomy apply to names that departed before the restructure"
+ },
+ "comparisonWithDocs": {
+  "doc": "docs/research-program/07-market-industry-stock-portfolio-hierarchy-ko.md@37f8cbf6 sec 2.2 (US 산업: 없음)",
+  "nowReady": "SECTOR-level (11-12 GICS sector names as published by the dataset) PIT membership for S&P 500 members on every date from 2012-12-28, at dataset-snapshot granularity, research-only (dataset label, not an index-provider file)",
+  "stillBlocked": [
+   "sub-industry / industry-group history (only the malformed 2023-03-07 snapshot carries sub-industry names)",
+   "official GICS history (license unverified; not acquired)",
+   "prices for 212 departed identities without a panel (survivorship audit) -> historical US industry baskets are survivor-conditioned; US industry evidence is PROSPECTIVE_ONLY",
+   "staleness: the dataset is updated irregularly; the 769-day gap 2018-04-02 -> 2020-05-10 means the 2018 Communication Services restructure enters the PIT table only on 2020-05-10",
+   "dataset license/terms not verified for anything beyond internal research"
+  ]
+ }
+}

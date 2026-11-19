@@ -1,0 +1,110 @@
+{
+ "entries": [
+  {
+   "prerequisitesAndBlockers": [
+    "no ADMITTED stock or industry input exists (all arms except P0 are research-only or blocked)",
+    "owner approval of a receipt writer"
+   ],
+   "evidenceRefs": [
+    "research/master_research_program_v1/portfolio/portfolio-d-p0-p5-comparison-v1.json",
+    "docs/research-program/07-market-industry-stock-portfolio-hierarchy-ko.md@37f8cbf6"
+   ],
+   "researchId": "P-P0-P5-COMPARISON",
+   "region": "COMMON",
+   "track": "PORTFOLIO",
+   "title": "Portfolio D P0..P5 prospective comparison (hierarchical vs direct)",
+   "economicMechanism": "Tests whether industry information, stock information or their combination earns ETF-relative net return after identical costs, name policy and risk budget; the complex arm carries the burden of proof.",
+   "overlapWithExisting": "Formalises hierarchical-vs-direct-selection-comparison-v1 (doc 07 §7, PROPOSED); KR historical version exhausted by kr-integrated-alpha-portfolio-v1 (AGENTS v2.47)",
+   "pitSourceAndRights": "Prospective receipts via pipeline/prospective_receipt_core (write-once, digest); inputs per arm listed in the contract",
+   "h126h252Feasibility": "PROSPECTIVE_ONLY: first verdict needs >= 8 non-overlapping H126 windows (~4 years)",
+   "effectiveSampleAndMde": "~2 non-overlapping H126 per year; MDE = 2.80*sigma_diff/sqrt(N_eff); sigma_diff UNKNOWN (outcome)",
+   "transactionCostMeasurable": "YES: dated weekly_decision.trade_cost_fraction at 1x/2x/3x",
+   "expectedEconomicImportance": "HIGH: it is the only route by which any signal reaches Portfolio D",
+   "evidenceClass": "PREPARED_NOT_EXECUTED",
+   "progressStatus": "ACTIVE",
+   "highestGatePassed": "G1",
+   "failedGate": null,
+   "nextExecutionUnit": "owner decides whether to start research-only P0..P5 receipts with UNVALIDATED inputs flagged non-displayable",
+   "ownerApprovalRequired": true,
+   "priority": {
+    "tier": "P1",
+    "netReturnRelevance": 3,
+    "mechanism": 2,
+    "independence": 2,
+    "sourceObtainable": 2,
+    "timeToDecision": 1,
+    "krUsExtensible": 3
+   }
+  },
+  {
+   "prerequisitesAndBlockers": [
+    "AUTHORIZATION-c2.json (owner)",
+    "CD91 ECOS item validation (optional; band otherwise)"
+   ],
+   "evidenceRefs": [
+    "research/alpha_evidence_sprint_v2/c2-fixed-exposure-attribution-v1.json@86c5983f",
+    "research/master_research_program_v1/portfolio/c2-remaining-sources.md"
+   ],
+   "researchId": "P-C2-FIXED-EXPOSURE",
+   "region": "KR",
+   "track": "PORTFOLIO",
+   "title": "C2 fixed-exposure attribution (selection vs exposure vs compounding)",
+   "economicMechanism": "Separates whether the saved C2 CAGR lead is stock selection or a low-beta/compounding effect, using an ex-ante beta-matched ETF+cash twin.",
+   "overlapWithExisting": "Proposed by #309, named the key gap by #311; not a new strategy",
+   "pitSourceAndRights": "Saved standalone ledger + replay-v16 prices + Phase C corrected ETF; investable KRW cash SOURCE_BLOCKED (CD91 item not validated in ECOS config)",
+   "h126h252Feasibility": "FEASIBLE on exposed history after owner approval (Phase D exception)",
+   "effectiveSampleAndMde": "155 blocks, ~25 non-overlapping H126 / 12 H252 windows; MDE UNKNOWN (outcome)",
+   "transactionCostMeasurable": "YES",
+   "expectedEconomicImportance": "MEDIUM: decides whether C2 is worth a prospective test at all",
+   "evidenceClass": "PREPARED_NOT_EXECUTED",
+   "progressStatus": "ACTIVE",
+   "highestGatePassed": "G1",
+   "failedGate": null,
+   "nextExecutionUnit": "owner authorization or ECOS CD91 validation probe",
+   "ownerApprovalRequired": true,
+   "priority": {
+    "tier": "P1",
+    "netReturnRelevance": 2,
+    "mechanism": 2,
+    "independence": 1,
+    "sourceObtainable": 3,
+    "timeToDecision": 3,
+    "krUsExtensible": 1
+   }
+  },
+  {
+   "prerequisitesAndBlockers": [
+    "prospective market-state receipts recording"
+   ],
+   "evidenceRefs": [
+    "research/master_research_program_v1/portfolio/comparison.py"
+   ],
+   "researchId": "P-MARKET-MULTIPLIER-INCREMENT",
+   "region": "COMMON",
+   "track": "PORTFOLIO",
+   "title": "Market risk multiplier as a separate increment on the finished arm",
+   "economicMechanism": "Measures whether the market layer adds value beyond the chosen book, separately from selection, so exposure reduction is not credited as alpha.",
+   "overlapWithExisting": "Market C0/C1 sealed tables (kr-market-risk-model-v1); timing-vs-level decomposition in the market_industry lane",
+   "pitSourceAndRights": "Prospective market-state receipts (B-H1 / C tracks)",
+   "h126h252Feasibility": "PROSPECTIVE_ONLY",
+   "effectiveSampleAndMde": "UNKNOWN until receipts accrue",
+   "transactionCostMeasurable": "PARTIAL: increment excludes the scale-change trade cost (stated simplification)",
+   "expectedEconomicImportance": "MEDIUM",
+   "evidenceClass": "PREPARED_NOT_EXECUTED",
+   "progressStatus": "ACTIVE",
+   "highestGatePassed": "G0",
+   "failedGate": null,
+   "nextExecutionUnit": "join with market timing contract receipts once recording",
+   "ownerApprovalRequired": false,
+   "priority": {
+    "tier": "P2",
+    "netReturnRelevance": 2,
+    "mechanism": 2,
+    "independence": 2,
+    "sourceObtainable": 2,
+    "timeToDecision": 1,
+    "krUsExtensible": 3
+   }
+  }
+ ]
+}

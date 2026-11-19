@@ -1,0 +1,21 @@
+{
+ "interfaceId": "portfolio-d-research-status-to-daily-brief-v1",
+ "status": "INTERFACE_CONTRACT_ONLY",
+ "doesNotModify": ["PR #314 pipeline/daily_decision_report.py", "PR #306 entry-state shadow ledger", "PR #299 four-track report", "PR #307 stored performance report"],
+ "purpose": "How a future, separately reviewed adapter may surface P0..P5 research status in the read-only daily brief without ever displaying an unvalidated stock selection.",
+ "inputRecord": {
+  "region": "KR | US",
+  "asOfSignalDate": "ISO date of the latest completed week-end session",
+  "productionArm": "always P0 unless an arm reaches G6 (ADMITTED inputs AND a passing verdict in portfolio-d-p0-p5-comparison-v1)",
+  "arms": "[{arm, armStatus: ADMITTED|RESEARCH_PAPER_ONLY|BLOCKED_NO_QUALIFIED_INPUT, receiptSha256|null, displayableToReport: bool}]",
+  "evidence": "{verifiedAccount: null, prospectivePaper: {maturedBlocks, firstVerdictNotBefore}, historicalDevelopment: 'never shown in the brief'}"
+ },
+ "displayRules": [
+  "If productionArm is P0: print 'KR 0개 · 069500.KS 100%' or 'US 0개 · SPY 100%'. QQQ may appear only as a labelled secondary comparison row.",
+  "Never print a ticker or a weight from an arm whose displayableToReport is false.",
+  "A research arm may be listed only as '<arm>: 연구 기록 중 · 미검증' with its receipt count, never with names.",
+  "Verified real-account performance is '없음' (never 0%); prospective paper and historical development performance are separate rows and are never summed.",
+  "An arm with fewer matured non-overlapping H126 blocks than firstVerdictNotBefore is labelled '판정 전' (descriptive only)."
+ ],
+ "validation": "comparison.arm_receipt sets displayableToReport from armStatus; an adapter must refuse any record where displayableToReport is false but targets contain a non-ETF ticker it was asked to display."
+}

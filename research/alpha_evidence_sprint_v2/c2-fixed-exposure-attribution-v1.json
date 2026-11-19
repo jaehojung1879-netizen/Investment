@@ -1,0 +1,71 @@
+{
+ "studyId": "c2-fixed-exposure-attribution-v1",
+ "status": "PREREGISTERED_NOT_EXECUTED_OWNER_EXACT_HASH_APPROVAL_REQUIRED",
+ "evidenceClassIfExecuted": "POST_OUTCOME_EXPOSED_DESCRIPTIVE_ATTRIBUTION_OF_FIXED_SAVED_PATH",
+ "promotionEligible": false,
+ "question": "Does the saved KR C2 path (sealed CHAMPION stock weights + residual 069500.KS) keep a positive arithmetic stock-selection term after its market exposure is matched by a tradable ETF + KRW-cash twin whose exposure was knowable at each rebalance?",
+ "origin": "Proposed by portfolio-edge-forensics-v1 (#309, research/portfolio_edge_forensics_v1/REPORT.md @ 84fe989f) and named the single largest evidence gap by market-industry-alpha-decomposition-v1 (#311 @ e130c64f). This file freezes its contract; it does not reuse #311's full-sample beta 0.63.",
+ "fixed": {
+  "selectionsDatesWeights": "UNCHANGED: 155 blocks, 3 names each, weights exactly as docs/results/regional-standalone-paths.json.gz regional.KR[i].weights",
+  "residual": "1 - sum(stock weights) in 069500.KS",
+  "noNewArm": true,
+  "noThresholdSearch": true,
+  "noNameCount": true
+ },
+ "pinnedInputs": {
+  "replayInputManifestSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+  "files": [
+   {"path": "docs/results/regional-standalone-paths.json.gz", "sha256": "7a09751f99f5d892821cac6bbb4f28359049d58364cb40db1814fac4f93210cb"},
+   {"path": "docs/weekly-decision/weekly-passive-first-v1-replay-corrected-benchmark.json", "sha256": "901b3aee7d3bc06eed3fd2bd14b07a0d4ca4da23745b861a877203c48772b8d2"},
+   {"path": "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json", "sha256": "58580c4370ec2c5afa124f849afbc4fa7b5c879012e75ebbd48ee7c7a0e659a9"},
+   {"path": "data/bok-policy-rates.json", "sha256": "a7edf0e532c7b54da9d962ebf12ff2552c90c783439fef99d7c761c5b9ea69ff"},
+   {"path": "docs/results/kr-termination-inventory.json", "sha256": "b58ecb2c4500302c40784613318c8451beee663ece5ee76ada26873a4292f93f"}
+  ]
+ },
+ "definitions": {
+  "perNameBlockGrowth": "G_j = terminalWeight_j * (1 + grossReturn) / w_j from the saved buy-and-hold row; the identity sum_j w_j G_j + cash * riskFreeGrowth = 1 + grossReturn must hold to 1e-7 or the block is SAVED_ROW_IDENTITY_FAILED (never renormalised).",
+  "etfBlockGrowth": "Close(endDate) / Close(date) of the pinned Phase C corrected gross ETF total-return series.",
+  "exAnteBeta": "Per name, OLS slope of daily KR-session stock returns on corrected-ETF returns over the 252 returns (253 closes) ending at the last KR session <= signalDate; only jointly finite pairs; >= 200 pairs or the name is BETA_UNAVAILABLE and the block is not attributed. Sleeve beta b = weight-average over held names. No shrinkage in the primary; no full-sample beta anywhere.",
+  "control": "(e + s*b) in ETF and s*(1-b) in KRW cash; if e + s*b > 1 it is capped at 1 (LEVERAGE_REQUIRED_CAPPED_AT_ETF_100) and if < 0 floored at 0; every clip is counted.",
+  "selection": "C2 gross - control gross = s*(R_S - b*R_E - (1-b)*R_F) when unclipped.",
+  "exposure": "control gross - ETF gross = s*(b-1)*(R_E-R_F) when unclipped.",
+  "costs": "weekly_decision.trade_cost_fraction('KR', date, side, is_benchmark): commission + half-spread per leg, dated sell tax for stocks, ETF sell tax for the 069500.KS leg; charged on the drifted prior book exactly as the replay's account() does; the control's cash leg is free; multipliers 1x/2x/3x on both C2 and control.",
+  "turnover": "one-way, split into names REPLACED and weights RETARGETED (AGENTS.md v2.11).",
+  "horizons": "H126 = every run of 6 consecutive 21-session blocks, H252 = 12; overlapping windows are descriptive; non-overlapping counts are 25 (H126) and 12 (H252).",
+  "compounding": "annual log-growth gap = arithmetic active + Jensen term (exact identity, as #309).",
+  "drawdown": "MDD on block-end net NAV (daily MDD is not reconstructed by this study)."
+ },
+ "cashScenarios": {
+  "INVESTABLE_KRW_CASH": "SOURCE_BLOCKED: no pinned investable KRW cash/deposit/MMF/CD91/KOFR full-span series exists in this repository; never substituted",
+  "registeredBand": ["ZERO", "BOK_POLICY_PROXY", "BOK_POLICY_PLUS_100BP"],
+  "rule": "a verdict needs all three to agree; the band brackets, it does not measure, an investable cash return"
+ },
+ "inference": {
+  "series": "per-block SELECTION, annualised by blocks per year",
+  "estimator": "mean with Bartlett Newey-West SE, lag 5 (126 sessions); 95% normal interval",
+  "multiplicity": "one primary statistic, three cash scenarios required to agree (conjunction, no correction needed for a PASS); no other test is confirmatory",
+  "independence": "one historical KR sample already exposed to outcomes; at most 25 non-overlapping H126 windows"
+ },
+ "decisionRule": {
+  "SELECTION_SURVIVES_FIXED_EXPOSURE": "all three cash scenarios: 95% lower bound > 0 at cost 1x AND net C2-minus-control arithmetic active > 0 at cost 2x",
+  "SELECTION_NEGATIVE_AFTER_FIXED_EXPOSURE": "all three upper bounds < 0",
+  "NO_SELECTION_EVIDENCE_CI_CONTAINS_ZERO": "otherwise",
+  "SOURCE_OR_SAMPLE_INSUFFICIENT": "any scenario without an interval, or > 10% of blocks unattributable",
+  "consequence": "No outcome promotes C2 or changes the production ETF default. SURVIVES keeps C2 as a research control worth a prospective test; NO_EVIDENCE/NEGATIVE records that C2's saved CAGR lead is not stock selection after matched exposure."
+ },
+ "knownLimitations": [
+  "stock returns are as-traded close with forward-accumulated Yahoo distributions only where served; 5 held names carry zero dividend events (000030, 000060, 002550, 047040, 207940; evidence/c2-price-coverage.json), 3 of them later terminated but every holding ended 1.5+ years before delisting, so no terminal consideration is needed",
+  "the corrected ETF series starts 2012-01-02: only 251 quotes precede the first anchor, so the earliest beta windows have <= 250 ETF returns (above the 200-pair floor; counted, not filled from the replay-v16 series, which double-applies distributions, nor from a price-only Yahoo series)",
+  "the ETF leg is the Phase C reconciled gross total return (before investor tax); its external accrual anomaly (AGENTS v2.46/v2.47) is carried, not repaired",
+  "industry allocation vs selection (Brinson) is NOT computable: no official KODEX200 constituent/sector weight history is in the repository",
+  "realised fills do not exist: C2 is a target-weight replay, so execution slippage beyond the dated cost schedule is not measured"
+ ],
+ "independentAuditCriteria": [
+  "re-derive G_j from three saved rows by hand and confirm the buy-and-hold identity",
+  "confirm no index after signalDate is read in the beta window (window_closes uses bisect_right on the signal date)",
+  "confirm selection + exposure == C2 - ETF on every attributed block (asserted in code)",
+  "confirm costs match replay account() on a block where control == C2 (all-ETF)",
+  "confirm verdict thresholds are read from this file's decisionRule and not changed after execution"
+ ],
+ "executionPlan": "Owner commits research/alpha_evidence_sprint_v2/AUTHORIZATION-c2.json with phrase 'APPROVE KR_PHASE_D_EXCEPTION c2-fixed-exposure-attribution-v1 <sha256 of this file>' and the sha256 of c2_attribution.py and c2_attribution_run.py; then `python research/alpha_evidence_sprint_v2/c2_attribution_run.py execute <replay-v16 ledger dir> --out <new file>` runs once. Any later code change voids the authorization."
+}

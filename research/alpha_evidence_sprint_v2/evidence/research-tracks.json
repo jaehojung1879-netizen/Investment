@@ -1,0 +1,88 @@
+{
+  "asOf": "2026-11-03",
+  "repo": "jaehojung1879-netizen/Investment",
+  "mainCommit": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+  "classDefinitions": {
+    "COMPLETE": "executed to a registered verdict that supports the hypothesis (none qualify for alpha)",
+    "EMPIRICAL_FAIL": "executed on real data; registered/pre-specified decision negative, no nomination, or contains zero",
+    "PARTIAL": "design/contract/prospective recording exists, or executed only descriptively/outcome-blind; no return verdict yet",
+    "SOURCE_BLOCKED": "cannot execute because data source, rights, identity, return basis, power or owner authorization is missing"
+  },
+  "laneSource": "Issue #292 (Control Tower) lane table: Market B+C=#289, Industry=#290, Stock-KR=#286, Stock-US=#287, Portfolio=#283/#280",
+  "lanes": [
+    {
+      "lane": "A_MARKET (Study B + C exposure overlay)",
+      "overallClass": "EMPIRICAL_FAIL",
+      "overallNote": "Both one-shot C ladders executed and retained the control; all follow-ons are design-only, prospective, or source-blocked.",
+      "items": [
+        {"id": "kr-market-risk-model-v1 (C1-KR, C0..C3)", "class": "EMPIRICAL_FAIL", "evidence": "docs/results/kr-market-risk-model-v1-result.json @37f8cbf6: decision.developmentNomination = \"NO_CANDIDATE_NOMINATED_CONTROL_RETAINED\"; netAnnualizedReturn C0 0.0673 / C1 0.0714 / passive 0.0973; MDD C0 -0.4087 / C1 -0.3682 / passive -0.5292"},
+        {"id": "kr-market-risk-model-v1 C2_PREEMPTIVE_HIERARCHICAL (Market C2)", "class": "EMPIRICAL_FAIL", "evidence": "same file: steps.C2.dominatedBy = [C0, C1, C3], returnNonInferiorVersusControl=false, survives=false; C2 net 0.0592, MDD -0.4087"},
+        {"id": "rp1-c1-us-exposure-ladder-replication-v1 (C1-US, PR #288)", "class": "EMPIRICAL_FAIL", "evidence": "docs/research-program/results/rp1-c1-us-exposure-formal-20261024/README.md @37f8cbf6: \"Frozen decision: NO_CANDIDATE_NOMINATED_CONTROL_RETAINED; interpretation REPLICATED_CONTROL_RETAINED\"; passive 8.82%/-56.78%, C0 7.77%/-42.33%, C1 7.98%/-43.43%, C2 7.41%/-39.27%"},
+        {"id": "C1c asymmetric exit x fast re-entry (PR #289)", "class": "PARTIAL", "evidence": "research/c1c-asymmetric-exit-reentry-design-v1 @92d78cd5 docs/research-program/c1c-asymmetric-exit-reentry-proposal-v1-ko.md: \"DESIGN_PROPOSAL_ONLY / OUTCOME_EXPOSED / NOT_APPROVED / NO_EXECUTION\"; audit docs/research-program/audits/pr289-market-c1c-independent-audit-ko.md @37f8cbf6: \"DESIGN_NOT_READY_FOR_OWNER_APPROVAL\""},
+        {"id": "rp1-b-h1-state-v1 (Track B prospective state receipts) + outcome contract draft (PR #301)", "class": "PARTIAL", "evidence": "docs/research-program/rp1-b-h1-prospective-state-v1-ko.md @37f8cbf6: \"PREREGISTERED_PROSPECTIVE_STATE_RECORD ... H63 성과 평가는 BLOCKED_OUTCOME_CONTRACT_NOT_REGISTERED\"; #301 @c9eaa036 docs/research-program/rp1-b-h1-outcome-v1-owner-review.md: \"OWNER_REVIEW_DRAFT_NOT_REGISTERED\"; first LIVE signal 2026-10-30, H63 maturity 2027-02-02"},
+        {"id": "EXP-C-RECOVERY-01/02 (PRs #312, #313)", "class": "SOURCE_BLOCKED", "evidence": "#312 @3b75bb02 research/exp_c_recovery_oracle_v1/README.md: \"SEALED_EVIDENCE_REVIEW + UNREGISTERED_DESIGN; NEW OUTCOME EVALUATION BLOCKED\"; #313 @bd635edc research/exp_c_recovery_validation_v1/RESULTS.md: \"NOT_EXECUTED ... C — execution unavailable on checked source-access paths; recommend historical closure\""}
+      ]
+    },
+    {
+      "lane": "B_INDUSTRY",
+      "overallClass": "PARTIAL",
+      "overallNote": "Only descriptive (outcome-exposed) industry anatomy exists; next study is design-only; US has no dated industry membership; KR membership foundation INSUFFICIENT_V4.",
+      "items": [
+        {"id": "industry-alpha-kr/us-next-v1 (PR #290)", "class": "PARTIAL", "evidence": "research/industry-alpha-next-v1 @a72311c0 research/industry_alpha_next_v1/README.md: \"DESIGN_DRAFT / EXECUTION_DISABLED / NOT READY FOR MERGE\"; approval-packet.md: \"PREPARED_NOT_AUTHORIZED\""},
+        {"id": "kr-industry-membership-foundation-v1..v4", "class": "SOURCE_BLOCKED", "evidence": "docs/research-program/07-market-industry-stock-portfolio-hierarchy-ko.md @37f8cbf6 §2.2: \"DATA_FOUNDATION_INSUFFICIENT_V4. 분류 95.295%, 종결 22종목 0%\"; US industry: \"없음\""},
+        {"id": "kr-industry-opportunity-anatomy-v1", "class": "PARTIAL", "evidence": "docs/results/kr-industry-opportunity-anatomy-v1-report.md @37f8cbf6: \"Status: EXPLORATORY_DEVELOPMENT_ON_PARTIALLY_RECONSTRUCTED_KR_HISTORY ... Not confirmatory\" (descriptive ICs only)"},
+        {"id": "industry-ocfyield-conditional-v1 (PR #300)", "class": "SOURCE_BLOCKED", "evidence": "claude/investment-alpha-research-wmsedu @e580cde9 research/industry_ocfyield_conditional_v1/README.md: \"결과 없는 검정력 게이트: NO_GO\"; power 23.0% at rho=0.10 (needs 80%); only 193/610 dates meet 8-industry minimum (power/sample block, no outcome read)"},
+        {"id": "M3 backlog -> shipments v1 (PR #302)", "class": "EMPIRICAL_FAIL", "evidence": "codex/m3-business-forecast-v1 @06d55d7f research/m3_backlog_v1/REPORT.md: \"M3 backlog → shipments v1: REJECTED (exploratory)\"; skill -0.741581%, interval [-2.103096%, -0.048090%]"},
+        {"id": "industry-information-transfer-v1 H1 (PR #310)", "class": "PARTIAL", "evidence": "claude/industry-information-transfer-v1 @50055560 research/industry_information_transfer_v1/REPORT.md: \"H1 = KEEP ... 펀더멘털 정보 전이에 대한 판정이며 수익 주장은 아니다\"; \"H2 = DATA_BLOCKED\""}
+      ]
+    },
+    {
+      "lane": "C_STOCK_KR",
+      "overallClass": "EMPIRICAL_FAIL",
+      "overallNote": "KR historical stock-selection research closed by Phase D (0 nominations); later exploratory branches found no stable added alpha; preliminary-earnings source eligible only prospectively.",
+      "items": [
+        {"id": "kr-alpha-atlas-phase-c-v1 / Phase D", "class": "EMPIRICAL_FAIL", "evidence": "docs/kr-alpha-research-final-development-assessment.md @37f8cbf6: \"BY / Holm 보정 후 개발 증거 통과 0\", \"prospectiveNominations []\", \"Level 4 ... NOT_TRIGGERED\"; 34 NO_DEVELOPMENT_EVIDENCE, 4 BLOCKED"},
+        {"id": "historical-alpha-discovery-v1 intraday/overnight momentum (PR #286)", "class": "EMPIRICAL_FAIL", "evidence": "codex/historical-alpha-discovery-v1 @97aa2cfe research/historical_alpha_discovery_v1/README.md: \"결과: 안정적인 추가 알파를 발견하지 못했다\"; H126 intraday-minus-momentum +1.99%p, CI −8.41 ~ +16.69%p"},
+        {"id": "c2_aggregate_evidence_v1 (CHAMPION C2, in PR #286)", "class": "PARTIAL", "evidence": "same branch research/c2_aggregate_evidence_v1/result-v2.json: verdict \"INCONCLUSIVE\", validatedAlpha false, promotionEligible false, 3x-cost edgeUpperPp -1.470084"},
+        {"id": "entry-state-role-etf-residual-v1 (PR #304)", "class": "EMPIRICAL_FAIL", "evidence": "research/entry-state-shadow-first-observation-v1 @38926172 research/entry_state_role_etf_residual_v1/REPORT.md: \"KR primary contrast ... +1.739pp/yr, 95% CI [-2.779, +6.659], CONTAINS_ZERO\""},
+        {"id": "alpha-mechanism-sprint-v1 (PR #308, KR preliminary earnings)", "class": "PARTIAL", "evidence": "claude/alpha-mechanism-sprint-v1-shxr6w @f48b6f29 research/alpha_mechanism_sprint_v1/REPORT.md: \"ELIGIBLE_FOR_PROSPECTIVE_REGISTRATION_ONLY\"; \"6~12개월 종목선택 후보로서는 종료를 권고한다\"; returns read 0"},
+        {"id": "kr-alpha-discovery-tournament-v1", "class": "SOURCE_BLOCKED", "evidence": "docs/results/kr-alpha-discovery-tournament-v1-result.json @37f8cbf6: verdict \"BLOCKED_BY_DATA_INTEGRITY\""},
+        {"id": "kr-model-overlay-portfolio-v1", "class": "EMPIRICAL_FAIL", "evidence": "docs/results/kr-model-overlay-portfolio-v1-result.json @37f8cbf6: \"DEVELOPMENT_REJECT\""},
+        {"id": "alpha-opportunity-model-v5 (KR)", "class": "EMPIRICAL_FAIL", "evidence": "docs/results/alpha-opportunity-model-v5-result.json @37f8cbf6: overallStatus \"INCONCLUSIVE\" (claims 21/126 INCONCLUSIVE, economicTier NOT_EVALUATED)"},
+        {"id": "rp1-kr-a0-measurability-v1 (Study A KR)", "class": "PARTIAL", "evidence": "docs/research-program/results/rp1-kr-a0-measurability-v1.json @37f8cbf6: a1Admission \"GOVERNANCE_CLOSED\", A-H1/H2/H3 verdict \"PROSPECTIVE_ONLY\", mde \"MDE_UNRESOLVED\""}
+      ]
+    },
+    {
+      "lane": "C_STOCK_US",
+      "overallClass": "SOURCE_BLOCKED",
+      "overallNote": "US historical stock research cannot execute (rights / identity / return basis / survivorship); prior US model closed with no evidence.",
+      "items": [
+        {"id": "WID historical execution recovery (PR #287)", "class": "SOURCE_BLOCKED", "evidence": "codex/historical-execution-recovery-v1 @9a10baef docs/winner-inflection-discovery/blocker-review-v3/README-ko.md: rights \"BLOCKED\", identity \"BLOCKED\", returnBasis \"BLOCKED\"; \"현재 NOT APPROVED FOR EXECUTION\""},
+        {"id": "rp1-a0-measurability-v1 (Study A US, PR #260)", "class": "SOURCE_BLOCKED", "evidence": "docs/research-program/results/rp1-a0-measurability-v1.json @37f8cbf6: a1Admission \"NO_GO\", hypotheses verdict \"PROSPECTIVE_ONLY\", MDE_UNRESOLVED (H3 measurability 1.030% per README)"},
+        {"id": "regional-alpha-model-v1 (US+KR, 31 features)", "class": "EMPIRICAL_FAIL", "evidence": "AGENTS.md v2.24 @37f8cbf6: \"{\\\"US\\\": \\\"NO_MODEL_EVIDENCE\\\", \\\"KR\\\": \\\"NO_MODEL_EVIDENCE\\\"}\" (Actions run 35826122755)"},
+        {"id": "entry-state-role-etf-residual-v1 US leg (PR #304)", "class": "EMPIRICAL_FAIL", "evidence": "@38926172 REPORT.md: \"US primary contrast ... -1.142pp/yr, 95% CI [-6.462, +3.178], CONTAINS_ZERO\" (survivorship-biased US panel per AGENTS v2.27)"}
+      ]
+    },
+    {
+      "lane": "D_PORTFOLIO",
+      "overallClass": "PARTIAL",
+      "overallNote": "Composition contracts merged but inactive; no validated selection input; the one historical integrated portfolio trailed passive; CHAMPION-C2 forensics inconclusive.",
+      "items": [
+        {"id": "rp1_d_composition_contract / D v2 endogenous breadth (PRs #265, #280, #283 merged)", "class": "PARTIAL", "evidence": "docs/research-program/README.md @37f8cbf6: \"지금은 결합 검증 BLOCKED_NO_VALIDATED_SELECTION_INPUT\"; docs/research-program/rp1-d-v2-endogenous-breadth-ko.md: \"PREREGISTERED_DESIGN_INACTIVE_NO_ALLOCATION\""},
+        {"id": "kr-integrated-alpha-portfolio-v1", "class": "EMPIRICAL_FAIL", "evidence": "AGENTS.md v2.47 @37f8cbf6: \"INDUSTRY_LAYER_DEVELOPMENT_SUPPORTED, NO_UNAMBIGUOUS_FINAL_ARCHITECTURE, MARKET_LAYER_PARETO_TRADE_OFF\"; \"D did not beat the passive path over the full window (+15.01% vs +20.24% a year, drawdown -57.86% vs -40.69%)\""},
+        {"id": "economic-path-readout-v1 (PR #305)", "class": "PARTIAL", "evidence": "codex/economic-path-readout-v1 @e46024ca research/economic_path_readout_v1/README.md: \"모든 투자 적격/승격 판정은 INSUFFICIENT_SOURCE_EVIDENCE_NO_PROMOTION\"; KR C2-P0 +1.8181pp CAGR, US C2-P0 -3.7187pp"},
+        {"id": "portfolio-edge-forensics-v1 (PR #309)", "class": "PARTIAL", "evidence": "codex/portfolio-edge-forensics-v1 @84fe989f research/portfolio_edge_forensics_v1/REPORT.md: \"결론: INCONCLUSIVE — ... 종목선정 알파는 식별하지 못했다\"; top-3 years supply 234.2% of log excess"},
+        {"id": "market-industry-alpha-decomposition-v1 (PR #311)", "class": "SOURCE_BLOCKED", "evidence": "codex/market-industry-alpha-decomposition-v1 @e130c64f REPORT.md: Q1 \"BLOCKED — 반도체 귀속\", Q2 \"INCONCLUSIVE — 베타·복리\" (beta 0.6300 [0.5097,0.7503]), Q4 \"BLOCKED — 가장 큰 단일 증거 공백\""},
+        {"id": "independent_audit_c2_marketc_v1 (PR #300)", "class": "PARTIAL", "evidence": "@e580cde9 research/independent_audit_c2_marketc_v1/README.md: \"판정은 C2 선택 효과에 대해 INCONCLUSIVE\" (beta 0.582 ± 0.079)"}
+      ]
+    }
+  ],
+  "mechanismHypothesisFamilies": {
+    "source": "PR #308 @f48b6f29 REPORT.md §2 and PR #310 @50055560 REPORT.md",
+    "families": [
+      {"family": "A_EARNINGS_INFORMATION (KR DART preliminary earnings)", "class": "PARTIAL", "evidence": "#308: \"ELIGIBLE_FOR_PROSPECTIVE_REGISTRATION_ONLY\"; coverage 79.62%, lead median 12 KRX days, content 97.5% within 1% of formal; H126 4%p detection needs 11.4~33.7 years; #310 H2 \"DATA_BLOCKED\" (Phase D exception not approved; returns read 0)"},
+      {"family": "B_INDUSTRY_DIFFUSION (leader -> laggard)", "class": "PARTIAL", "evidence": "#308: price-based diffusion \"제외: 새 정보 아님, US 원천 차단\" (A05/A08/A10 rho≈0.99); #310 disclosure-based H1 \"KEEP\" on revenue-forecast MSE (Δ +0.001328, p 0.0085) but \"금융업이 89%\", ex financials+energy −0.000075; no return test"},
+      {"family": "C_INVESTOR_FLOW (foreign/institutional, ownership)", "class": "SOURCE_BLOCKED", "evidence": "#308: \"KRX 수집 manifest: 호출 0, 기록 0, REFUSED: HTTP 400 LOGOUT ... DART 대량보유 ... 첫 건이 2024-09-24\" -> \"제외: 원천 차단·성숙 표본 부족\"; Phase C X4 \"SOURCE_BLOCKED\""}
+    ]
+  }
+}

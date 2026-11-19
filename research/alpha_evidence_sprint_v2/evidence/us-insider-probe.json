@@ -1,0 +1,28 @@
+{
+ "evidenceClass": "OUTCOME_BLIND_SOURCE_PROBE",
+ "membershipSource": {
+  "path": "data/research/us-capital-allocation-alpha-v1/sp500-snapshot-sectors.json.gz",
+  "sha256": "f49c15a0ebcd371c9a407118abb6ef350bba2060227ca40d61ba210fc4f81a74"
+ },
+ "pricesRead": 0,
+ "probe": "us-insider-form4-source-eligibility-v1",
+ "quarters": {
+  "2013q1": {
+   "amendmentRows": 6,
+   "bytes": 14032058,
+   "filingLagDays": {
+    "median": 2,
+    "negative": 0,
+    "p10": 0.0,
+    "p90": 7.0
+   },
+   "form4Submissions": 62402,
+   "nonMemberPurchaseRows": 6293,
+   "sha256": "795607b5f0c1510ffa086ca86f3f45abb54a432f49038f4ace16d8aa6ac12756",
+   "sp500IssuersWithPurchase": 82,
+   "sp500OpenMarketPurchaseRows": 261,
+   "status": "SERVED_EARLIER_LOCAL_COPY"
+  }
+ },
+ "returnsRead": 0
+}
