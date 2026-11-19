@@ -7,26 +7,26 @@
     "plumbingComponentsIgnored": [
       "daily-session"
     ],
-    "excludedPriorModelOutcomes": 9877,
-    "excludedPriorModelPortfolioOutcomes": 14
+    "excludedPriorModelOutcomes": 9863,
+    "excludedPriorModelPortfolioOutcomes": 9
   },
   "validationStatus": {
-    "paperDays": 89,
-    "trackingDays": 89,
+    "paperDays": 90,
+    "trackingDays": 90,
     "maturedObservationDays": 0,
     "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
     "generationIsolated": true,
     "excludedPriorModelSignals": 9957,
-    "excludedPriorModelOutcomes": 9877,
-    "signalsRecorded": 38537,
-    "uniqueDates": 68,
+    "excludedPriorModelOutcomes": 9863,
+    "signalsRecorded": 39144,
+    "uniqueDates": 69,
     "maturedUniqueDates": 0,
     "firstSignalDate": "2026-07-17",
-    "lastSignalDate": "2026-11-18",
+    "lastSignalDate": "2026-11-19",
     "maturedSignals": 0,
     "maturedByHorizon": {
-      "21": 25522,
-      "63": 2095,
+      "21": 26097,
+      "63": 2698,
       "126": 0,
       "252": 0
     },
@@ -45,20 +45,20 @@
   },
   "horizons": {
     "21": {
-      "n": 1729,
+      "n": 1726,
       "horizon": 21,
-      "rankIC": 0.054,
-      "rankICMedian": 0.004,
-      "rankICHitRatio": 0.6,
+      "rankIC": 0.056,
+      "rankICMedian": 0.007,
+      "rankICHitRatio": 0.8,
       "crossSections": 5,
       "eligibleDates": 4,
       "regionIC": {
         "US": {
-          "mean": 0.044,
-          "median": 0.004,
-          "hitRatio": 0.667,
+          "mean": 0.048,
+          "median": 0.007,
+          "hitRatio": 1.0,
           "nDates": 3,
-          "nSignals": 1492
+          "nSignals": 1489
         },
         "KR": {
           "mean": 0.068,
@@ -68,15 +68,15 @@
           "nSignals": 236
         }
       },
-      "meanExcess": 0.0088,
-      "meanExcessAfterCost": 0.0078,
-      "positiveHitRate": 0.475,
-      "mdd": -0.03,
-      "cvar95": -0.0345,
+      "meanExcess": 0.0092,
+      "meanExcessAfterCost": 0.0082,
+      "positiveHitRate": 0.477,
+      "mdd": -0.0297,
+      "cvar95": -0.0339,
       "byView": {
         "POSITIVE": {
-          "n": 602,
-          "meanFwd": -0.0148
+          "n": 599,
+          "meanFwd": -0.0139
         },
         "NEUTRAL": {
           "n": 553,
