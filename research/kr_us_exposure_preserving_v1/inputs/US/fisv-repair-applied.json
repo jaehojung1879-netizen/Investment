@@ -1,0 +1,47 @@
+{
+ "status": "APPLIED_TO_NEW_COPY_ONLY",
+ "ticker": "FISV",
+ "date": "2025-11-12",
+ "originalValue": null,
+ "proposedForwardTotalReturnClose": 257.5199890136719,
+ "cachedYahooClose": 64.37999725341797,
+ "sourceCommit": "704d7db6d5b00def771aba5d2665d0846d6bc776",
+ "replayManifestSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+ "sourceYahooResponseSha256": "b525ca5ecee2c73f59c504cc6424e3ac23ac8e40b1dcc0442e3ea43a4d76bb91",
+ "sourceYahooReceipt": "/workspace/batch-inputs/us/yahoo-raw/FISV.receipt.json",
+ "sealedFISVEvents": [
+  {
+   "date": "2013-12-17",
+   "dividend": 0.0,
+   "split": 2.0,
+   "ticker": "FISV"
+  },
+  {
+   "date": "2018-03-20",
+   "dividend": 0.0,
+   "split": 2.0,
+   "ticker": "FISV"
+  }
+ ],
+ "sealedCorporateEventObjectRefs": [
+  "b409de131ffefeba9eb375e0d3fb438f7b1b9ef59b2374eebb5975a20006597a",
+  "d4e828ff922c63fa7a2c4a01f6e7e104a13816789d9cc1834038b06376acaff4"
+ ],
+ "originalFunction": "pipeline.price_adjustment.to_total_return",
+ "originalFunctionModuleSha256": "ebdde717be22277315186d5f302642cbc8a057fedee84192b7af14b15c405892",
+ "overlapNonNullOriginalClosesCompared": 3943,
+ "maximumAbsoluteRelativeErrorAcrossComparedExistingCloses": 0.0,
+ "originalNonNullClosesOutsideCachedYahooRange": 3,
+ "outsideRangeOriginalClosesUntouched": true,
+ "allOtherCellsIncludingOtherTickersUnchanged": true,
+ "changedCellCountInProposedCopy": 1,
+ "originalClosePklSha256": "17b4dbcc534caa31302a8e7d29fcdc9b036a77f9072f2898063ccbd4e74b6c7e",
+ "originalClosePklModified": false,
+ "featuresModified": false,
+ "noPerformanceComputed": true,
+ "authorizationCommit": "ec9a221",
+ "repairedClosePklPath": "/workspace/exposure-inputs/us/close-repaired.pkl",
+ "repairedClosePklSha256": "9b8ad2a6b2b0bbc201bc7e5578bedfb1fb4a28e7e1f2ff50ed91a6628bc5c8e5",
+ "originalClosePklSha256After": "17b4dbcc534caa31302a8e7d29fcdc9b036a77f9072f2898063ccbd4e74b6c7e",
+ "featuresSha256BeforeAndAfter": "b009224445241f90ebeb83800041223f6005d2068a4c442db383009629b74ea9"
+}

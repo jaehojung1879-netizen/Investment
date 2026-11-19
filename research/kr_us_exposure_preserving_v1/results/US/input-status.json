@@ -1,0 +1,64 @@
+{
+ "designCommit": "e3e572f",
+ "fundDisclosure": {
+  "requiredFile": "/workspace/batch-inputs/nport/round8/C2.pkl",
+  "status": "MISSING_OPTIONAL_C2"
+ },
+ "priceRepair": {
+  "allOtherCellsIncludingOtherTickersUnchanged": true,
+  "authorizationCommit": "ec9a221",
+  "cachedYahooClose": 64.37999725341797,
+  "changedCellCountInProposedCopy": 1,
+  "date": "2025-11-12",
+  "featuresModified": false,
+  "featuresSha256BeforeAndAfter": "b009224445241f90ebeb83800041223f6005d2068a4c442db383009629b74ea9",
+  "maximumAbsoluteRelativeErrorAcrossComparedExistingCloses": 0.0,
+  "noPerformanceComputed": true,
+  "originalClosePklModified": false,
+  "originalClosePklSha256": "17b4dbcc534caa31302a8e7d29fcdc9b036a77f9072f2898063ccbd4e74b6c7e",
+  "originalClosePklSha256After": "17b4dbcc534caa31302a8e7d29fcdc9b036a77f9072f2898063ccbd4e74b6c7e",
+  "originalFunction": "pipeline.price_adjustment.to_total_return",
+  "originalFunctionModuleSha256": "ebdde717be22277315186d5f302642cbc8a057fedee84192b7af14b15c405892",
+  "originalNonNullClosesOutsideCachedYahooRange": 3,
+  "originalValue": null,
+  "outsideRangeOriginalClosesUntouched": true,
+  "overlapNonNullOriginalClosesCompared": 3943,
+  "proposedForwardTotalReturnClose": 257.5199890136719,
+  "repairedClosePklPath": "/workspace/exposure-inputs/us/close-repaired.pkl",
+  "repairedClosePklSha256": "9b8ad2a6b2b0bbc201bc7e5578bedfb1fb4a28e7e1f2ff50ed91a6628bc5c8e5",
+  "replayManifestSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+  "sealedCorporateEventObjectRefs": [
+   "b409de131ffefeba9eb375e0d3fb438f7b1b9ef59b2374eebb5975a20006597a",
+   "d4e828ff922c63fa7a2c4a01f6e7e104a13816789d9cc1834038b06376acaff4"
+  ],
+  "sealedFISVEvents": [
+   {
+    "date": "2013-12-17",
+    "dividend": 0.0,
+    "split": 2.0,
+    "ticker": "FISV"
+   },
+   {
+    "date": "2018-03-20",
+    "dividend": 0.0,
+    "split": 2.0,
+    "ticker": "FISV"
+   }
+  ],
+  "sourceCommit": "704d7db6d5b00def771aba5d2665d0846d6bc776",
+  "sourceYahooReceipt": "/workspace/batch-inputs/us/yahoo-raw/FISV.receipt.json",
+  "sourceYahooResponseSha256": "b525ca5ecee2c73f59c504cc6424e3ac23ac8e40b1dcc0442e3ea43a4d76bb91",
+  "status": "APPLIED_TO_NEW_COPY_ONLY",
+  "ticker": "FISV"
+ },
+ "priorBooksReused": "/workspace/Investment/research/kr_us_strategy_batch_v1/results/US/books.csv.gz",
+ "qqq": {
+  "qqqDistributionFactor": 1.0014547907486921
+ },
+ "signalDates": [
+  "2014-02-14",
+  "2026-08-21",
+  654
+ ],
+ "unchangedFeatureSha256": "b009224445241f90ebeb83800041223f6005d2068a4c442db383009629b74ea9"
+}

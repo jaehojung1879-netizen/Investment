@@ -1,0 +1,466 @@
+{
+ "maximumReconciliationError": 2.2534057952938724e-15,
+ "netCostMethod": "Constant original buy/sell costs are linear across fixed funded weights; overlap trades once. NAV attribution is not claimed.",
+ "summary": {
+  "COCKTAIL": {
+   "NATIVE": {
+    "126": {
+     "CASH_PROFITABILITY": {
+      "blockWeeks": 25,
+      "ci": [
+       -0.01360719144060705,
+       -2.938144335469479e-06
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": -0.00680390193913084,
+      "n": 630,
+      "pOneSided": 0.9750062484378905,
+      "pOneSidedApprox": 0.9750062484378905
+     },
+     "PRICE": {
+      "blockWeeks": 25,
+      "ci": [
+       -0.010784746800876202,
+       0.0013299372720213913
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": -0.004194366483389563,
+      "n": 630,
+      "pOneSided": 0.9295176205948513,
+      "pOneSidedApprox": 0.9295176205948513
+     },
+     "SECTOR_MOMENTUM_BASKET": {
+      "blockWeeks": 25,
+      "ci": [
+       -0.00784750824065126,
+       0.012545751043914248
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": 0.0008292125059678851,
+      "n": 630,
+      "pOneSided": 0.443139215196201,
+      "pOneSidedApprox": 0.443139215196201
+     },
+     "WITHIN_SECTOR_VALUE": {
+      "blockWeeks": 25,
+      "ci": [
+       -0.012716264482874922,
+       0.003742656533764442
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": -0.004529310502200364,
+      "n": 630,
+      "pOneSided": 0.8405398650337416,
+      "pOneSidedApprox": 0.8405398650337416
+     }
+    },
+    "252": {
+     "CASH_PROFITABILITY": {
+      "blockWeeks": 50,
+      "ci": [
+       -0.02458048063145913,
+       0.0021961467934039428
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": -0.011214128821814148,
+      "n": 604,
+      "pOneSided": 0.9450137465633591,
+      "pOneSidedApprox": 0.9450137465633591
+     },
+     "PRICE": {
+      "blockWeeks": 50,
+      "ci": [
+       -0.02349732351701804,
+       0.0032281183112185014
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": -0.007931741418051388,
+      "n": 604,
+      "pOneSided": 0.9302674331417146,
+      "pOneSidedApprox": 0.9302674331417146
+     },
+     "SECTOR_MOMENTUM_BASKET": {
+      "blockWeeks": 50,
+      "ci": [
+       -0.01131799256003571,
+       0.01879330774190779
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": 0.0008278117084641323,
+      "n": 604,
+      "pOneSided": 0.4438890277430642,
+      "pOneSidedApprox": 0.4438890277430642
+     },
+     "WITHIN_SECTOR_VALUE": {
+      "blockWeeks": 50,
+      "ci": [
+       -0.019811674329366594,
+       0.007880718984309589
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": -0.007221212101290916,
+      "n": 604,
+      "pOneSided": 0.8155461134716321,
+      "pOneSidedApprox": 0.8155461134716321
+     }
+    }
+   },
+   "Q020": {
+    "126": {
+     "CASH_PROFITABILITY": {
+      "blockWeeks": 25,
+      "ci": [
+       -0.0027214382881214118,
+       -5.876288670938486e-07
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": -0.001360780387826168,
+      "n": 630,
+      "pOneSided": 0.9750062484378905,
+      "pOneSidedApprox": 0.9750062484378905
+     },
+     "PRICE": {
+      "blockWeeks": 25,
+      "ci": [
+       -0.0021569493601752408,
+       0.0002659874544042784
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": -0.0008388732966779129,
+      "n": 630,
+      "pOneSided": 0.9295176205948513,
+      "pOneSidedApprox": 0.9295176205948513
+     },
+     "SECTOR_MOMENTUM_BASKET": {
+      "blockWeeks": 25,
+      "ci": [
+       -0.0015695016481302524,
+       0.0025091502087828494
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": 0.0001658425011935772,
+      "n": 630,
+      "pOneSided": 0.443139215196201,
+      "pOneSidedApprox": 0.443139215196201
+     },
+     "WITHIN_SECTOR_VALUE": {
+      "blockWeeks": 25,
+      "ci": [
+       -0.0025432528965749854,
+       0.0007485313067528885
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": -0.0009058621004400726,
+      "n": 630,
+      "pOneSided": 0.8405398650337416,
+      "pOneSidedApprox": 0.8405398650337416
+     }
+    },
+    "252": {
+     "CASH_PROFITABILITY": {
+      "blockWeeks": 50,
+      "ci": [
+       -0.004916096126291827,
+       0.0004392293586807888
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": -0.0022428257643628303,
+      "n": 604,
+      "pOneSided": 0.9450137465633591,
+      "pOneSidedApprox": 0.9450137465633591
+     },
+     "PRICE": {
+      "blockWeeks": 50,
+      "ci": [
+       -0.004699464703403609,
+       0.0006456236622437006
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": -0.0015863482836102779,
+      "n": 604,
+      "pOneSided": 0.9302674331417146,
+      "pOneSidedApprox": 0.9302674331417146
+     },
+     "SECTOR_MOMENTUM_BASKET": {
+      "blockWeeks": 50,
+      "ci": [
+       -0.0022635985120071423,
+       0.003758661548381557
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": 0.00016556234169282699,
+      "n": 604,
+      "pOneSided": 0.4438890277430642,
+      "pOneSidedApprox": 0.4438890277430642
+     },
+     "WITHIN_SECTOR_VALUE": {
+      "blockWeeks": 50,
+      "ci": [
+       -0.003962334865873318,
+       0.0015761437968619181
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": -0.0014442424202581834,
+      "n": 604,
+      "pOneSided": 0.8155461134716321,
+      "pOneSidedApprox": 0.8155461134716321
+     }
+    }
+   }
+  },
+  "U1": {
+   "NATIVE": {
+    "126": {
+     "CAP_TOP5": {
+      "blockWeeks": 25,
+      "ci": [
+       0.0054520076211409755,
+       0.02241089409231303
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": 0.013111753318488037,
+      "n": 630,
+      "pOneSided": 0.0004998750312421895,
+      "pOneSidedApprox": 0.0004998750312421895
+     },
+     "CASH_PROFITABILITY": {
+      "blockWeeks": 25,
+      "ci": [
+       -0.009383262946826895,
+       -0.00011620031164412562
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": -0.004753115685018325,
+      "n": 630,
+      "pOneSided": 0.9787553111722069,
+      "pOneSidedApprox": 0.9787553111722069
+     },
+     "PRICE": {
+      "blockWeeks": 25,
+      "ci": [
+       -0.007169092179096756,
+       0.0012896459255279794
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": -0.0026098194211849426,
+      "n": 630,
+      "pOneSided": 0.9015246188452887,
+      "pOneSidedApprox": 0.9015246188452887
+     },
+     "SECTOR_MOMENTUM_BASKET": {
+      "blockWeeks": 25,
+      "ci": [
+       -0.005790204677709043,
+       0.008103030008141063
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": 0.00017027821504009023,
+      "n": 630,
+      "pOneSided": 0.48137965508622843,
+      "pOneSidedApprox": 0.48137965508622843
+     },
+     "WITHIN_SECTOR_VALUE": {
+      "blockWeeks": 25,
+      "ci": [
+       -0.009286084010300177,
+       0.002256776075253014
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": -0.00354886275195675,
+      "n": 630,
+      "pOneSided": 0.8675331167208198,
+      "pOneSidedApprox": 0.8675331167208198
+     }
+    },
+    "252": {
+     "CAP_TOP5": {
+      "blockWeeks": 50,
+      "ci": [
+       0.012487182922517411,
+       0.047311256576689976
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": 0.027393393909237184,
+      "n": 604,
+      "pOneSided": 0.0004998750312421895,
+      "pOneSidedApprox": 0.0004998750312421895
+     },
+     "CASH_PROFITABILITY": {
+      "blockWeeks": 50,
+      "ci": [
+       -0.016603794992744125,
+       0.0012456967626993513
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": -0.007819856416316188,
+      "n": 604,
+      "pOneSided": 0.9522619345163709,
+      "pOneSidedApprox": 0.9522619345163709
+     },
+     "PRICE": {
+      "blockWeeks": 50,
+      "ci": [
+       -0.015714712121657804,
+       0.002938615697408897
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": -0.004812423392350754,
+      "n": 604,
+      "pOneSided": 0.910272431892027,
+      "pOneSidedApprox": 0.910272431892027
+     },
+     "SECTOR_MOMENTUM_BASKET": {
+      "blockWeeks": 50,
+      "ci": [
+       -0.0077426002993713095,
+       0.012390186429397517
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": 0.00030470953771667285,
+      "n": 604,
+      "pOneSided": 0.44938765308672834,
+      "pOneSidedApprox": 0.44938765308672834
+     },
+     "WITHIN_SECTOR_VALUE": {
+      "blockWeeks": 50,
+      "ci": [
+       -0.01475945234380165,
+       0.004686395368566327
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": -0.0058894200645762725,
+      "n": 604,
+      "pOneSided": 0.849787553111722,
+      "pOneSidedApprox": 0.849787553111722
+     }
+    }
+   },
+   "Q020": {
+    "126": {
+     "CAP_TOP5": {
+      "blockWeeks": 25,
+      "ci": [
+       0.0010904015242281947,
+       0.0044821788184626074
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": 0.0026223506636976076,
+      "n": 630,
+      "pOneSided": 0.0004998750312421895,
+      "pOneSidedApprox": 0.0004998750312421895
+     },
+     "CASH_PROFITABILITY": {
+      "blockWeeks": 25,
+      "ci": [
+       -0.0018766525893653785,
+       -2.3240062328825296e-05
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": -0.0009506231370036649,
+      "n": 630,
+      "pOneSided": 0.9787553111722069,
+      "pOneSidedApprox": 0.9787553111722069
+     },
+     "PRICE": {
+      "blockWeeks": 25,
+      "ci": [
+       -0.001433818435819351,
+       0.0002579291851055956
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": -0.0005219638842369885,
+      "n": 630,
+      "pOneSided": 0.9015246188452887,
+      "pOneSidedApprox": 0.9015246188452887
+     },
+     "SECTOR_MOMENTUM_BASKET": {
+      "blockWeeks": 25,
+      "ci": [
+       -0.0011580409355418087,
+       0.001620606001628213
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": 3.4055643008018025e-05,
+      "n": 630,
+      "pOneSided": 0.48137965508622843,
+      "pOneSidedApprox": 0.48137965508622843
+     },
+     "WITHIN_SECTOR_VALUE": {
+      "blockWeeks": 25,
+      "ci": [
+       -0.0018572168020600357,
+       0.00045135521505060283
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": -0.0007097725503913503,
+      "n": 630,
+      "pOneSided": 0.8675331167208198,
+      "pOneSidedApprox": 0.8675331167208198
+     }
+    },
+    "252": {
+     "CAP_TOP5": {
+      "blockWeeks": 50,
+      "ci": [
+       0.002497436584503482,
+       0.009462251315337998
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": 0.005478678781847438,
+      "n": 604,
+      "pOneSided": 0.0004998750312421895,
+      "pOneSidedApprox": 0.0004998750312421895
+     },
+     "CASH_PROFITABILITY": {
+      "blockWeeks": 50,
+      "ci": [
+       -0.003320758998548825,
+       0.0002491393525398699
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": -0.001563971283263238,
+      "n": 604,
+      "pOneSided": 0.9522619345163709,
+      "pOneSidedApprox": 0.9522619345163709
+     },
+     "PRICE": {
+      "blockWeeks": 50,
+      "ci": [
+       -0.0031429424243315605,
+       0.0005877231394817795
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": -0.0009624846784701509,
+      "n": 604,
+      "pOneSided": 0.910272431892027,
+      "pOneSidedApprox": 0.910272431892027
+     },
+     "SECTOR_MOMENTUM_BASKET": {
+      "blockWeeks": 50,
+      "ci": [
+       -0.0015485200598742625,
+       0.002478037285879504
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": 6.0941907543334786e-05,
+      "n": 604,
+      "pOneSided": 0.44938765308672834,
+      "pOneSidedApprox": 0.44938765308672834
+     },
+     "WITHIN_SECTOR_VALUE": {
+      "blockWeeks": 50,
+      "ci": [
+       -0.0029518904687603304,
+       0.0009372790737132654
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": -0.0011778840129152545,
+      "n": 604,
+      "pOneSided": 0.849787553111722,
+      "pOneSidedApprox": 0.849787553111722
+     }
+    }
+   }
+  }
+ }
+}

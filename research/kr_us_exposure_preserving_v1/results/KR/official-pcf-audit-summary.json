@@ -1,0 +1,16 @@
+{
+ "snapshots": 24,
+ "eligibleDecisionDates": 58,
+ "totalDecisionDates": 454,
+ "maximumAgeCalendarDays": 120,
+ "exposureRows": 1575,
+ "status": "OFFICIAL_PORTFOLIO_DEPOSIT_FILE_NOT_VERIFIED_FUND_HOLDINGS",
+ "actualFundHoldingsVerified": false,
+ "originalReleaseVintageVerified": false,
+ "sourceManifestSHA256": "89cb4ecc8c8b402931730a6a346e70d606a88895a5862f31f14ff2770492502e",
+ "limitations": [
+  "PCF can omit suspended Samsung and substitute cash, observed2018-05-03",
+  "Some stock codes lack original total-return and/or reconstructed industry lineage",
+  "Later-retrieved issuer history does not establish its original release timestamp or vintage"
+ ]
+}
