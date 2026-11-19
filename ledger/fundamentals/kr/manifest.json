@@ -1,6 +1,6 @@
 {
   "contract": "DART_RAW_FILINGS_V1",
-  "updatedAt": "2026-11-18T12:19:42Z",
+  "updatedAt": "2026-11-19T12:12:59Z",
   "universeSize": 119,
   "years": [
     2015,
@@ -20,13 +20,12 @@
     "awaitingDeadline": 265
   },
   "thisRun": {
-    "calls": 118,
-    "recordsWritten": 1,
-    "shardsChanged": 1,
+    "calls": 117,
+    "recordsWritten": 0,
+    "shardsChanged": 0,
     "stopReason": "WORK_LIST_EXHAUSTED",
     "statuses": {
-      "013": 117,
-      "000": 1
+      "013": 117
     },
     "refused": {
       "NO_CORP_CODE": 144,
@@ -37,19 +36,7 @@
       "005387.KS",
       "005935.KS"
     ],
-    "fsDiv": {
-      "CFS": 1
-    },
-    "amountFieldsSeen": {
-      "3분기|BS|thstrm_amount": 51,
-      "3분기|BS|frmtrm_amount": 52,
-      "3분기|CIS|thstrm_amount": 32,
-      "3분기|CIS|thstrm_add_amount": 31,
-      "3분기|CIS|frmtrm_add_amount": 31,
-      "3분기|CF|thstrm_amount": 94,
-      "3분기|CF|frmtrm_amount": 100,
-      "3분기|SCE|thstrm_amount": 53,
-      "3분기|SCE|frmtrm_amount": 1
-    }
+    "fsDiv": {},
+    "amountFieldsSeen": {}
   }
 }
