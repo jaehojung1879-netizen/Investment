@@ -7,7 +7,7 @@
 - 한국 장부는 기존 엔진을 호출했다. 전 기간 직접복제는 미해결 보유 종료 때문에 수익·낙폭을 미측정으로 표시했다. 2026년 보조 창은 해당 연도 첫 판단일부터 새 계정으로 실행했다. 미국 장부는 기존 거래비용 해법을 호출하고 보유 구간을 벡터화했다. 원 엔진과 겹치는 가격·거래·NAV 검산 최대 오차 2.00e-15. [한국 장부](results/KR/funded-ledgers.json) · [미국 장부](results/US/funded-ledgers.json)
 - 통합 검산은 설계 바이트, 기존 전향 6개 파일의 SHA, 실제 명목 조달 예산, 정확 일치한 업종·대형주 노출, 각 날짜의 ETF 대비 차이 분해를 확인했다. [검산](results/verification.json) · [원본·코드 SHA](results/manifest.json)
 - `ruff check .`, `python -m compileall -q pipeline research/kr_us_exposure_preserving_v1`, Bash 구문 검사, seed 생성, `pipeline.validate --allow-seed` 통과. 관련 테스트 21개 통과. [관련 테스트](validation/targeted.log)
-- 전체 pytest 상태는 [로그](validation/pytest.log)에 기록한다.
+- 전체 pytest는 4개 워커에서 **6,831 passed, 4 skipped, 4 xfailed**였다. 실행 시간 1,352.04초. [전체 로그](validation/pytest.log)
 
 ## 재실행
 
