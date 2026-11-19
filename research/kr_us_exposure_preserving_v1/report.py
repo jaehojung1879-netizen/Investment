@@ -190,6 +190,20 @@ def nav_lines(market, folder, names):
                 local.append([cadence,name,fmt(old),fmt(new),new.get("targetNontradable","—")])
         lines += ["2026-01-05 체결부터 다시 시작한 짧은 창의 동일 기간 비교. L52는 52계정 중 아직 배치 차례가 오지 않은 계정도 ETF를 보유한다. 전 기간 성과를 대체하지 않으며, 원 엔진은 거래 불능 보유분을 잠근다.",""]
         lines += table(["장부","신호","기존 CAGR/MDD/편도회전율","복제교체 CAGR/MDD/편도회전율","체결 불가 목표 수"],local)
+    diagnostics = []
+    for label, by in v.items():
+        if not isinstance(by,dict):
+            continue
+        for name, m in by.items():
+            if m.get("status") != "MEASURED" or name.endswith(":ORIGINAL"):
+                continue
+            turn = m.get("turnoverDiagnostic",{})
+            drop = m.get("nameExitShare",turn.get("nameReplacementShare"))
+            reset = m.get("meanRetainedResetL1",turn.get("meanRetainedAssetL1ResetApprox"))
+            diagnostics.append([label,name,pct(m["cagrGap"]),pct(m["annualArithmeticDailyGap"]),
+                                pct(m["compoundingRemainder"]),pct(m["costPerYear"]),pct(drop),pct(reset)])
+    lines += ["CAGR 차이는 일별 산술 수익 차이의 연율과 복리 잔여로 나눴다. 한국 비용은 당시 장부가액 비율이며 미국은 각 계정의 초기자본 대비 거래비용이다. 이름 이탈과 유지 비중 재설정은 각각의 진단으로 기록했다.",""]
+    lines += table(["장부","구성","CAGR차 %p","산술차 연율 %p","복리 잔여 %p","비용/년 %","이름 이탈%","유지자산 L1 재설정%"],diagnostics)
     return lines
 
 
@@ -389,7 +403,7 @@ def main():
     positives = [row for row in primary if row["status"] == "양의 우위"]
     lines = ["# 한·미 종목 선택력과 지수 노출 유지","",
              "PR #350 `36ac329` 기준. 비교 규칙은 새 계산 전에 `e3e572f`로 고정했다. 모든 수치는 기존에 살펴본 과거에서 재평가했다.","",
-             "아래는 6개월 / 12개월 비용 차감 차이(%p)다. 대괄호는 명목 95% 이동블록 구간이다. 선택력에는 각 신호의 유효 매칭 날짜, 운용 비교에는 해당 신호의 기존·복제교체·복제 기준·ETF가 모두 관측된 날짜를 썼다.",""]
+             "아래는 6개월 / 12개월 비용 차감 차이(%p)다. 대괄호는 명목 95% 이동블록 구간이다. 표는 주식 명목 20%를 비교하며 한국 주 신호는 기존 최대 5종목이다. 선택력에는 각 신호의 유효 매칭 날짜, 운용 비교에는 해당 신호의 기존·복제교체·복제 기준·ETF가 모두 관측된 날짜를 썼다.",""]
     lines += table(["시장","신호","선택/업종 배분","기존 방식−ETF","노출 유지 모사−ETF",
                     "주도주 기여 제외","반도체 주도기/2021 제외"],first)
     lines += [f"6개월 주 가설 44개 중 Holm 5%의 양의 우위는 {len(positives)}개, 검정 미측정은 {sum(x['status']=='미측정' for x in primary)}개였다. "
