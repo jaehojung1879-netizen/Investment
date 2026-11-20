@@ -1,0 +1,45 @@
+{
+  "US": {
+    "126": {
+      "weeklyRows": 654,
+      "selectionChecked": 628,
+      "selectionMaxError": 1.1102230246251565e-16,
+      "adjustedSelectionChecked": 579,
+      "adjustedSelectionMaxError": 1.0408340855860843e-16
+    },
+    "252": {
+      "weeklyRows": 654,
+      "selectionChecked": 602,
+      "selectionMaxError": 1.1102230246251565e-16,
+      "adjustedSelectionChecked": 558,
+      "adjustedSelectionMaxError": 1.1102230246251565e-16
+    },
+    "feedTimes": {
+      "selectedIssuerWeeks": 80,
+      "availabilityBeforeDecisionClose": true
+    }
+  },
+  "KR": {
+    "126": {
+      "weeklyRows": 454,
+      "selectionChecked": 1,
+      "selectionMaxError": 1.0000680839006293e-14,
+      "adjustedSelectionChecked": 0,
+      "adjustedSelectionMaxError": null
+    },
+    "252": {
+      "weeklyRows": 454,
+      "selectionChecked": 1,
+      "selectionMaxError": 8.673617379884035e-19,
+      "adjustedSelectionChecked": 0,
+      "adjustedSelectionMaxError": null
+    }
+  },
+  "WAT": {
+    "exactSharePriceProduct": true,
+    "uniqueIssuerWeek": true,
+    "affectedRows": 943,
+    "affectedTickers": 14,
+    "publicBeforeActualSessionClose": true
+  }
+}

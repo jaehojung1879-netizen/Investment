@@ -1,0 +1,32 @@
+{
+  "status": "PREPARED_NOT_AUTHORIZED",
+  "liveReceiptWrittenByThisStudy": false,
+  "prospectiveObservationsAdded": 0,
+  "existingPreviewRecords": 7,
+  "existingPreviewDateRange": [
+    "2026-09-11",
+    "2026-10-23"
+  ],
+  "previewIsProspectiveEvidence": false,
+  "reason": "recorder.REGISTERED_AUTHORIZATION=None; no backdating; latest extension is not verified current live input",
+  "existingFilesSha256": {
+    "research/alpha_mechanism_decomposition_v1/prospective/recorder.py": "89136ed90b760973c1baf0ec54b4312bdcd55a78e042d1dbb27c21fa5a130ba1",
+    "research/alpha_mechanism_decomposition_v1/prospective/spec.json": "24339c090e659fa9aa76988e262a06e1d6a9a8ca3e2b0080a49e26a4c686e26b",
+    "research/alpha_mechanism_decomposition_v1/kr_followup/preview-receipts.jsonl": "b08cb89d81c5c9df88e12ef188cb8ae92d32e4631007c229f1761347babf36c4",
+    "research/alpha_mechanism_decomposition_v1/kr_followup/weekly_records.py": "aeafafbfa05ba1a223f66cec3e68312f62b6b38b8bc43dd6807e57e7c7cf39ee",
+    "research/alpha_mechanism_decomposition_v1/kr_followup/latest_inputs.py": "940e360441ba4cc9c4abf8a9a3fec2ec17f162577f22ef1cac5cdcbc5c790e9f",
+    "research/alpha_mechanism_decomposition_v1/kr_followup/latest-disclosure-check.json": "c4b744182af9f0959971ffcbd76a70a0d7b4b155f2eb06f2f4814c7a309ac9b5"
+  },
+  "checkedOnKST": "2026-11-20",
+  "comparisonBase": "e950496ecc7ba73532b4a4dce7bc578294ba9e8c",
+  "existingFilesByteUnchanged": true,
+  "newLiveReceipts": 0,
+  "currentInputBlockers": [
+    "Latest loader carries old fundamentals/industry without post-pin DART filings",
+    "Benchmark extension is VENDOR_YAHOO_UNVERIFIED",
+    "Stock extension lacks post-2026-09-14 distributions",
+    "Registered live recorder authorization remains None; past write windows cannot be backdated"
+  ],
+  "parallelPath": "latest_inputs.py -> weekly_records.py -> prospective/recorder.py",
+  "consultedKST": "2026-11-20"
+}
