@@ -1,0 +1,3468 @@
+{
+ "amountToleranceForOfficialBulkRounding": "0.005 in price and quantity",
+ "defaultAvailabilityUnchanged": true,
+ "outcomesRead": 0,
+ "receipts": [
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000008411-14-000111",
+   "bulkFootnoteSha256": "0654fa5975000332eff6640294f58be3fd582896a7babe8b8e2e2623a83403f2",
+   "bulkNormalizedAmounts": {
+    "price": "35.32",
+    "quantity": "2500.0"
+   },
+   "bulkStatus": "CONFIRMED_OPEN_MARKET",
+   "issuerCIK": "8411",
+   "matchedFootnoteSha256": "0654fa5975000332eff6640294f58be3fd582896a7babe8b8e2e2623a83403f2",
+   "openMarketFootnoteConfirmedInOriginal": true,
+   "original": {
+    "acceptedAt": "2014-11-17T16:18:51+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4",
+    "issuerCIK": "8411",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "Purchased shares in the open market.",
+      "price": "35.3208",
+      "quantity": "2500",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2014-11-13"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 4642,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:25.607799+00:00",
+    "sha256": "81f72cc83b2dc9560d530dc3472141f4043d7da0099587fbdb73428a9e4bc0ce",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/8411/000000841114000111/0000008411-14-000111.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "401f248c1d7a5c6f3798917b393d9d1fd3b5aa664370597295df1dcfc7c55cc5"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": false
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000008411-14-000154",
+   "bulkFootnoteSha256": "0654fa5975000332eff6640294f58be3fd582896a7babe8b8e2e2623a83403f2",
+   "bulkNormalizedAmounts": {
+    "price": "29.27",
+    "quantity": "2700.0"
+   },
+   "bulkStatus": "CONFIRMED_OPEN_MARKET",
+   "issuerCIK": "8411",
+   "matchedFootnoteSha256": "0654fa5975000332eff6640294f58be3fd582896a7babe8b8e2e2623a83403f2",
+   "openMarketFootnoteConfirmedInOriginal": true,
+   "original": {
+    "acceptedAt": "2014-12-22T17:22:18+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4",
+    "issuerCIK": "8411",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "Purchased shares in the open market.",
+      "price": "29.269",
+      "quantity": "2300",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2014-12-22"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "Purchased shares in the open market.",
+      "price": "29.274",
+      "quantity": "2700",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2014-12-22"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 5939,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:29.965129+00:00",
+    "sha256": "0823be8c46a29f55f49a9c5d65198022c0f21cf2e0a826fb010077a00db45b97",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/8411/000000841114000154/0000008411-14-000154.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "7e7146b274918aa2cf6a25fab5df9828544f1493f94ecc5d369a79d9a1d016b0"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": false
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000020740-14-000032",
+   "bulkFootnoteSha256": "6c7f7b351464ee2a6c6e7e5fb4a79a0764564c1b89ec49fb52d223a4d5b44fbd",
+   "bulkNormalizedAmounts": {
+    "price": "57.17",
+    "quantity": "1925.0"
+   },
+   "bulkStatus": "INDETERMINATE_ACQUISITION",
+   "issuerCIK": "20740",
+   "matchedFootnoteSha256": "6c7f7b351464ee2a6c6e7e5fb4a79a0764564c1b89ec49fb52d223a4d5b44fbd",
+   "openMarketFootnoteConfirmedInOriginal": false,
+   "original": {
+    "acceptedAt": "2014-03-28T12:49:31+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4/A",
+    "issuerCIK": "20740",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "J",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "Granted pursuant to Director's Stock Compensation Plan",
+      "price": "57.17",
+      "quantity": "1925",
+      "securityTitle": "Common Stock Par Value $1.00",
+      "transactionDate": "2014-03-25"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "M",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "31.96",
+      "quantity": "7500",
+      "securityTitle": "Common Stock Par Value $1.00",
+      "transactionDate": "2014-03-26"
+     },
+     {
+      "acquiredDisposed": "D",
+      "code": "S",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "57",
+      "quantity": "7500",
+      "securityTitle": "Common Stock Par Value $1.00",
+      "transactionDate": "2014-03-26"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 9599,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:30.683838+00:00",
+    "sha256": "0b6e781094191c6c61cc55b4ecebc2ce3170223e6293d78819bfb11a7f19a6f2",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/20740/000002074014000032/0000020740-14-000032.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "1f25bb5299792a9b4f1dc057af64dec3fd6caa4a1d8ed607b7092cfc732fd5fd"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000074260-14-000085",
+   "bulkFootnoteSha256": "5a054b8b3c5b447413d3dcdd3803754de1f1034f620c16607da48d1efeead42d",
+   "bulkNormalizedAmounts": {
+    "price": "",
+    "quantity": ""
+   },
+   "bulkStatus": "INDETERMINATE_P",
+   "issuerCIK": "74260",
+   "matchedFootnoteSha256": null,
+   "openMarketFootnoteConfirmedInOriginal": false,
+   "original": {
+    "acceptedAt": "2014-12-17T16:53:45+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4/A",
+    "issuerCIK": "74260",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "No transactions to report related to this direct ownership of 336,067 shares.",
+      "price": "0",
+      "quantity": "0",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2014-12-01"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F2",
+       "F5"
+      ],
+      "footnotes": "No transactions to report related to this indirect ownership of 307,908 shares.\nCorrection of a transcription error.",
+      "price": "0",
+      "quantity": "0",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2014-12-01"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F3"
+      ],
+      "footnotes": "No transactions to report related to this indirect ownership of 93,682 shares.",
+      "price": "0",
+      "quantity": "0",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2014-12-01"
+     },
+     {
+      "acquiredDisposed": "D",
+      "code": "P",
+      "footnoteIds": [
+       "F4"
+      ],
+      "footnotes": "This was a non-discretionary disposition caused by the provisions of the Internal Revenue Code that requires a minimum annual distribution form a 401-K account. While the number of Old Republic shares held by the Trustee did not change, the equivalent number of Old Republic shares held in Mr. Dew's account were reduced by this distribution.",
+      "price": "0",
+      "quantity": "969",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2014-12-01"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 10175,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:31.232296+00:00",
+    "sha256": "83f37dad8662b9daeb824e953f87bcdf04e3e1e4c3e3cf3c0c5ebabdb9f13f1e",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/74260/000007426014000085/0000074260-14-000085.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "2247687a82fbef53fcefe0291dc87e1468f7c47808838ac64dff7d10c2a3cd5f"
+   },
+   "uniqueEconomicRowMatch": false,
+   "uniqueExactAmountMatch": false
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000008411-15-000088",
+   "bulkFootnoteSha256": "0654fa5975000332eff6640294f58be3fd582896a7babe8b8e2e2623a83403f2",
+   "bulkNormalizedAmounts": {
+    "price": "16.86",
+    "quantity": "3100.0"
+   },
+   "bulkStatus": "CONFIRMED_OPEN_MARKET",
+   "issuerCIK": "8411",
+   "matchedFootnoteSha256": "0654fa5975000332eff6640294f58be3fd582896a7babe8b8e2e2623a83403f2",
+   "openMarketFootnoteConfirmedInOriginal": true,
+   "original": {
+    "acceptedAt": "2015-09-08T19:13:00+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4",
+    "issuerCIK": "8411",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "Purchased shares in the open market.",
+      "price": "16.854",
+      "quantity": "1800",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2015-09-04"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "Purchased shares in the open market.",
+      "price": "16.855",
+      "quantity": "100",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2015-09-04"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "Purchased shares in the open market.",
+      "price": "16.857",
+      "quantity": "3100",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2015-09-04"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 7345,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:33.951684+00:00",
+    "sha256": "fbae38e0f8356cdcbc437d1c2a730947933c4585061b1ee0b3511f6685ac963b",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/8411/000000841115000088/0000008411-15-000088.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "6b1e09cfb2ea2520dddd4fb7ecca1d28aaeda8e2b9cd1b1ec97fcf3634e57054"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": false
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000101199-15-000303",
+   "bulkFootnoteSha256": "13674799e7dfeb22599da8f1a6ea0afb50b043ce43e4bebda153dedbb91566ee",
+   "bulkNormalizedAmounts": {
+    "price": "32.95",
+    "quantity": "500.0"
+   },
+   "bulkStatus": "CONFIRMED_OPEN_MARKET",
+   "issuerCIK": "101199",
+   "matchedFootnoteSha256": "13674799e7dfeb22599da8f1a6ea0afb50b043ce43e4bebda153dedbb91566ee",
+   "openMarketFootnoteConfirmedInOriginal": true,
+   "original": {
+    "acceptedAt": "2015-09-21T11:58:29+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4",
+    "issuerCIK": "101199",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "Shares purchased on the open market",
+      "price": "32.95",
+      "quantity": "500",
+      "securityTitle": "Common",
+      "transactionDate": "2015-09-18"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 4647,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:36.226797+00:00",
+    "sha256": "e228184e009708473432f444a5595e04cbbabf875983676d1e257343a9682a1f",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/101199/000010119915000303/0000101199-15-000303.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "73a85d01669692467556f6904e41378df965c0bfcaaed69065b6f9ef8aec446b"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000002230-15-000058",
+   "bulkFootnoteSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "bulkNormalizedAmounts": {
+    "price": "14.13",
+    "quantity": "2000.0"
+   },
+   "bulkStatus": "INDETERMINATE_P",
+   "issuerCIK": "2230",
+   "matchedFootnoteSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "openMarketFootnoteConfirmedInOriginal": false,
+   "original": {
+    "acceptedAt": "2015-07-27T14:35:45+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4/A",
+    "issuerCIK": "2230",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "14.13",
+      "quantity": "2000",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2015-04-22"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "G",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "These shares were owned by the undersigned's spouse and included in the number of shares previously reported for the undersigned.  The undersigned had reported that he disclaimed beneficial ownership of them.  With this transaction, these shares are now owned directly by the undersigned.",
+      "price": "0",
+      "quantity": "2875.226",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2015-04-22"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 6651,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:36.648412+00:00",
+    "sha256": "91cd4ab4f78717db69a87c8eb5be0b5eb4ab37985c981612bbd378f58ef48bef",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/2230/000000223015000058/0000002230-15-000058.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "4ebdcadb6518c2ef968e87b5c25786c742fe5e181246742933f1d4bd481a5137"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000003545-15-000005",
+   "bulkFootnoteSha256": "4748c9e0b9ba8e3bce6e4f9c9e389dad9c3184a44c8bf71c20e509c5509224c4",
+   "bulkNormalizedAmounts": {
+    "price": "49.94",
+    "quantity": "4894.0"
+   },
+   "bulkStatus": "INDETERMINATE_P",
+   "issuerCIK": "3545",
+   "matchedFootnoteSha256": "4748c9e0b9ba8e3bce6e4f9c9e389dad9c3184a44c8bf71c20e509c5509224c4",
+   "openMarketFootnoteConfirmedInOriginal": false,
+   "original": {
+    "acceptedAt": "2015-01-06T16:10:04+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4/A",
+    "issuerCIK": "3545",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "On January 2, 2015, Delta Offshore Master II, LTD (the \"Fund\") purchased 4,894 shares of the Company's Common Stock.  Trafelet Brokaw Capital Management, L.P. (\"TBCM\") serves as investment manager to the Fund and, in such capacity, exercises voting and investment control over securities held for the accounts of the Fund.  Trafelet & Company, LLC (\"TC\") serves as the general partner of TBCM.  Mr. Trafelet is the managing member of TC and may be deemed to have indirect beneficial ownership of the shares reported herein.  Mr. Trafelet disclaims beneficial ownership for the Company's Common Stock held by the Fund except to the extent of his pecuniary interest therein.",
+      "price": "49.9398",
+      "quantity": "4894",
+      "securityTitle": "Alico, Inc., Common Stock, Par Value $1.00",
+      "transactionDate": "2015-01-02"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "A",
+      "footnoteIds": [
+       "F2"
+      ],
+      "footnotes": "These shares were issued under the 2013 Incentive Equity Plan.",
+      "price": "50.03",
+      "quantity": "562",
+      "securityTitle": "Alico, Inc., Common Stock, Par Value $1.00",
+      "transactionDate": "2015-01-05"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 10032,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:37.108846+00:00",
+    "sha256": "e700f721b91b446848c182232c747219e0aa1a19477b9776ebe9e02d42368349",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/3545/000000354515000005/0000003545-15-000005.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "a820ee032e9beccba83be96f71f659594b31269540e98622aae5e66158a4d6a2"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": false
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000008411-16-000168",
+   "bulkFootnoteSha256": "0654fa5975000332eff6640294f58be3fd582896a7babe8b8e2e2623a83403f2",
+   "bulkNormalizedAmounts": {
+    "price": "7.31",
+    "quantity": "10000.0"
+   },
+   "bulkStatus": "CONFIRMED_OPEN_MARKET",
+   "issuerCIK": "8411",
+   "matchedFootnoteSha256": "0654fa5975000332eff6640294f58be3fd582896a7babe8b8e2e2623a83403f2",
+   "openMarketFootnoteConfirmedInOriginal": true,
+   "original": {
+    "acceptedAt": "2016-02-05T16:48:01+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4",
+    "issuerCIK": "8411",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "Purchased shares in the open market.",
+      "price": "7.31",
+      "quantity": "10000",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2016-02-05"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 4531,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:37.653933+00:00",
+    "sha256": "5117e7f08fedd48396d9b30b598af05d9adedb311944d6a7121aea8a66f301d3",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/8411/000000841116000168/0000008411-16-000168.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "6a4f5f46e42383a3f7b11736a4476faa05eff6aa8198ac613d27dc14649d2b49"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000029332-16-000163",
+   "bulkFootnoteSha256": "d31fc39d91853ed3db4927fd333d8e0d63ddc852bd0ecf9c6af77fe2c0978d45",
+   "bulkNormalizedAmounts": {
+    "price": "4.28",
+    "quantity": "970.0"
+   },
+   "bulkStatus": "CONFIRMED_OPEN_MARKET",
+   "issuerCIK": "29332",
+   "matchedFootnoteSha256": "d31fc39d91853ed3db4927fd333d8e0d63ddc852bd0ecf9c6af77fe2c0978d45",
+   "openMarketFootnoteConfirmedInOriginal": true,
+   "original": {
+    "acceptedAt": "2016-04-04T18:13:01+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4",
+    "issuerCIK": "29332",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "Open market purchase pursuant to a 10b5-1 trading plan adopted by the Reporting Person in accordance with Rule 10b5-1 of the Securities Exchange Act of 1934, as amended.",
+      "price": "4.28",
+      "quantity": "970",
+      "securityTitle": "Common Stock, $3 par value",
+      "transactionDate": "2016-04-01"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 4759,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:38.262248+00:00",
+    "sha256": "f50bd254003af079c34fef2fa6b8e4b65688fe8dc369bd2e90e343d941c8c725",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/29332/000002933216000163/0000029332-16-000163.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "57862691541600d85d8c2797c2e70e334e22326c50a2e96282aa67dea5713cd1"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000008947-16-000198",
+   "bulkFootnoteSha256": "7a73d311b3a4644d8f804d8cd8ed7dc43d7fc0bf94105c70692b0d2f2b83efdf",
+   "bulkNormalizedAmounts": {
+    "price": "43.75",
+    "quantity": "485.0"
+   },
+   "bulkStatus": "EXCLUDED_PLAN_PURCHASE",
+   "issuerCIK": "8947",
+   "matchedFootnoteSha256": "7a73d311b3a4644d8f804d8cd8ed7dc43d7fc0bf94105c70692b0d2f2b83efdf",
+   "openMarketFootnoteConfirmedInOriginal": false,
+   "original": {
+    "acceptedAt": "2016-04-29T20:43:54+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4/A",
+    "issuerCIK": "8947",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1",
+       "F2"
+      ],
+      "footnotes": "Amended to reflect a correction in the calculation of the number of shares purchased pursuant to the Issuer's Employee Stock Purchase Plan (\"ESPP\").\nAmended to reflect the correct number of shares beneficially owned by the reporting person following the ESPP transaction on 03/07/2016.",
+      "price": "43.75",
+      "quantity": "485",
+      "securityTitle": "COMMON STOCK",
+      "transactionDate": "2016-03-07"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 5144,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:38.758226+00:00",
+    "sha256": "c2812f1b07dacfc885bf157eb2e6938f8576483f7a507f69af77b7628e6703bc",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/8947/000000894716000198/0000008947-16-000198.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "c9cc48a64f848917e968daed7b9d2655f5fb9147c413efe9bdf597bfb83149eb"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000014272-16-000375",
+   "bulkFootnoteSha256": "87c9ef5e30b03e0d99bfcd3ab315fb28c7aacd9d7d6272fb621c08c484d35796",
+   "bulkNormalizedAmounts": {
+    "price": "",
+    "quantity": "966.0"
+   },
+   "bulkStatus": "INDETERMINATE_ACQUISITION",
+   "issuerCIK": "14272",
+   "matchedFootnoteSha256": null,
+   "openMarketFootnoteConfirmedInOriginal": false,
+   "original": {
+    "acceptedAt": "2016-03-23T20:03:11+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4/A",
+    "issuerCIK": "14272",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "M",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "Represents vesting of one-quarter of market share units granted on March 10, 2013.",
+      "price": "0",
+      "quantity": "6410",
+      "securityTitle": "Common Stock, $0.10 par value",
+      "transactionDate": "2016-03-10"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "J",
+      "footnoteIds": [
+       "F2"
+      ],
+      "footnotes": "Adjustment reflects additional shares acquired upon the vesting of market share units due to the performance factor.",
+      "price": "0",
+      "quantity": "4412",
+      "securityTitle": "Common Stock, $0.10 par value",
+      "transactionDate": "2016-03-10"
+     },
+     {
+      "acquiredDisposed": "D",
+      "code": "F",
+      "footnoteIds": [
+       "F3"
+      ],
+      "footnotes": "Shares withheld for payment of taxes upon vesting of awards.",
+      "price": "64.94",
+      "quantity": "4873",
+      "securityTitle": "Common Stock, $0.10 par value",
+      "transactionDate": "2016-03-10"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "M",
+      "footnoteIds": [
+       "F4"
+      ],
+      "footnotes": "Represents vesting of one-quarter of market share units granted on March 10, 2014.",
+      "price": "0",
+      "quantity": "6829",
+      "securityTitle": "Common Stock, $0.10 par value",
+      "transactionDate": "2016-03-10"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "J",
+      "footnoteIds": [
+       "F2"
+      ],
+      "footnotes": "Adjustment reflects additional shares acquired upon the vesting of market share units due to the performance factor.",
+      "price": "0",
+      "quantity": "966",
+      "securityTitle": "Common Stock, $0.10 par value",
+      "transactionDate": "2016-03-10"
+     },
+     {
+      "acquiredDisposed": "D",
+      "code": "F",
+      "footnoteIds": [
+       "F3"
+      ],
+      "footnotes": "Shares withheld for payment of taxes upon vesting of awards.",
+      "price": "64.94",
+      "quantity": "3510",
+      "securityTitle": "Common Stock, $0.10 par value",
+      "transactionDate": "2016-03-10"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "M",
+      "footnoteIds": [
+       "F5",
+       "F6"
+      ],
+      "footnotes": "Represents vesting of one-quarter of market share units granted on March 10, 2015.\nDue to a software error, this Form 4 is being amended to report in Column 5 the correct number of securities beneficially owned following the reported transactions.",
+      "price": "0",
+      "quantity": "5889",
+      "securityTitle": "Common Stock, $0.10 par value",
+      "transactionDate": "2016-03-10"
+     },
+     {
+      "acquiredDisposed": "D",
+      "code": "J",
+      "footnoteIds": [
+       "F6",
+       "F7"
+      ],
+      "footnotes": "Due to a software error, this Form 4 is being amended to report in Column 5 the correct number of securities beneficially owned following the reported transactions.\nRepresents a downward adjustment to the number of shares acquired upon the vesting of market share units due to the performance factor.",
+      "price": "0",
+      "quantity": "92",
+      "securityTitle": "Common Stock, $0.10 par value",
+      "transactionDate": "2016-03-10"
+     },
+     {
+      "acquiredDisposed": "D",
+      "code": "F",
+      "footnoteIds": [
+       "F3",
+       "F6"
+      ],
+      "footnotes": "Shares withheld for payment of taxes upon vesting of awards.\nDue to a software error, this Form 4 is being amended to report in Column 5 the correct number of securities beneficially owned following the reported transactions.",
+      "price": "64.94",
+      "quantity": "2610",
+      "securityTitle": "Common Stock, $0.10 par value",
+      "transactionDate": "2016-03-10"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "M",
+      "footnoteIds": [
+       "F6",
+       "F8"
+      ],
+      "footnotes": "Due to a software error, this Form 4 is being amended to report in Column 5 the correct number of securities beneficially owned following the reported transactions.\nRepresents distribution of performance shares earned under the 2013-2015 Long-Term Performance Award.",
+      "price": "0",
+      "quantity": "56490.344",
+      "securityTitle": "Common Stock, $0.10 par value",
+      "transactionDate": "2016-03-10"
+     },
+     {
+      "acquiredDisposed": "D",
+      "code": "F",
+      "footnoteIds": [
+       "F3",
+       "F6"
+      ],
+      "footnotes": "Shares withheld for payment of taxes upon vesting of awards.\nDue to a software error, this Form 4 is being amended to report in Column 5 the correct number of securities beneficially owned following the reported transactions.",
+      "price": "64.94",
+      "quantity": "25434",
+      "securityTitle": "Common Stock, $0.10 par value",
+      "transactionDate": "2016-03-10"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 38291,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:39.375222+00:00",
+    "sha256": "30455a5e3cb3148f97f22b02b39eb8326fefe2d9110b3127f302ec9ed5075379",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427216000375/0000014272-16-000375.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "b1b3f28f2437c459b9f9f319d4735065f52465414639bb7fcdf63be321f51da8"
+   },
+   "uniqueEconomicRowMatch": false,
+   "uniqueExactAmountMatch": false
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000029332-17-000002",
+   "bulkFootnoteSha256": "d31fc39d91853ed3db4927fd333d8e0d63ddc852bd0ecf9c6af77fe2c0978d45",
+   "bulkNormalizedAmounts": {
+    "price": "3.78",
+    "quantity": "1095.0"
+   },
+   "bulkStatus": "CONFIRMED_OPEN_MARKET",
+   "issuerCIK": "29332",
+   "matchedFootnoteSha256": "d31fc39d91853ed3db4927fd333d8e0d63ddc852bd0ecf9c6af77fe2c0978d45",
+   "openMarketFootnoteConfirmedInOriginal": true,
+   "original": {
+    "acceptedAt": "2017-01-03T21:29:26+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4",
+    "issuerCIK": "29332",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "Open market purchase pursuant to a 10b5-1 trading plan adopted by the Reporting Person in accordance with Rule 10b5-1 of the Securities Exchange Act of 1934, as amended.",
+      "price": "3.78",
+      "quantity": "1095",
+      "securityTitle": "Common Stock, $3 par value",
+      "transactionDate": "2017-01-03"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 4757,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:40.423109+00:00",
+    "sha256": "a24529d586f73861ea6d3502c3fd88490a611b3ab17d535e7e9de3668dcb6dc9",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/29332/000002933217000002/0000029332-17-000002.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "bf60909ca9bcffd73787adc21d0e4457bb99e8142151efa3a537ae4b612ebf5e"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000029332-17-000006",
+   "bulkFootnoteSha256": "d31fc39d91853ed3db4927fd333d8e0d63ddc852bd0ecf9c6af77fe2c0978d45",
+   "bulkNormalizedAmounts": {
+    "price": "3.5",
+    "quantity": "1182.0"
+   },
+   "bulkStatus": "CONFIRMED_OPEN_MARKET",
+   "issuerCIK": "29332",
+   "matchedFootnoteSha256": "d31fc39d91853ed3db4927fd333d8e0d63ddc852bd0ecf9c6af77fe2c0978d45",
+   "openMarketFootnoteConfirmedInOriginal": true,
+   "original": {
+    "acceptedAt": "2017-02-02T15:55:07+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4",
+    "issuerCIK": "29332",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "Open market purchase pursuant to a 10b5-1 trading plan adopted by the Reporting Person in accordance with Rule 10b5-1 of the Securities Exchange Act of 1934, as amended.",
+      "price": "3.50",
+      "quantity": "1182",
+      "securityTitle": "Common Stock, $3 par value",
+      "transactionDate": "2017-02-01"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 4757,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:40.850224+00:00",
+    "sha256": "bff557832ca1c15fc29e8466ff5be0a6601627e6b4f4c4c725818e0ee052f3a7",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/29332/000002933217000006/0000029332-17-000006.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "a585916acb2fa011c654df45a22d435f2aae62a7d30a1149cc60b78276d0e3ca"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000002230-17-000006",
+   "bulkFootnoteSha256": "c37461c832815e04ca8107eea9003dd6c8d76ee87a62e5fbfb216242914a3579",
+   "bulkNormalizedAmounts": {
+    "price": "",
+    "quantity": ""
+   },
+   "bulkStatus": "INDETERMINATE_ACQUISITION",
+   "issuerCIK": "2230",
+   "matchedFootnoteSha256": null,
+   "openMarketFootnoteConfirmedInOriginal": false,
+   "original": {
+    "acceptedAt": "2017-01-11T18:18:08+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4/A",
+    "issuerCIK": "2230",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "J",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "This amendment to Form 4 is being filed to correct an inadvertent disclosure on the original filing that was made this date.  The original filing reported the surrender of 3,307 shares by the undersigned to satisfy withholding taxes on shares that vested on January 9, 2017.  No such surrender of shares was made and such withholding taxes are being paid in cash by the undersigned.",
+      "price": "0",
+      "quantity": "0",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2017-01-09"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 5836,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:41.271611+00:00",
+    "sha256": "e8b872e785fd1185306c5ead0d55abac762a2560e80214c417dc14bf98c129c6",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/2230/000000223017000006/0000002230-17-000006.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "76f1c3926533f0fde22d5e8b20843057dce2c7babfcf33773198e8e3ed8166eb"
+   },
+   "uniqueEconomicRowMatch": false,
+   "uniqueExactAmountMatch": false
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000002230-17-000022",
+   "bulkFootnoteSha256": "be4798ad729fbf3a0c8e31926d85bdc1b27222255f8bc4a4eabba4b7abf332ad",
+   "bulkNormalizedAmounts": {
+    "price": "",
+    "quantity": "608.75"
+   },
+   "bulkStatus": "INDETERMINATE_ACQUISITION",
+   "issuerCIK": "2230",
+   "matchedFootnoteSha256": null,
+   "openMarketFootnoteConfirmedInOriginal": false,
+   "original": {
+    "acceptedAt": "2017-02-06T20:49:02+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4/A",
+    "issuerCIK": "2230",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "J",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "This information for the reporting person was erroneously reported on a Form 4, instead of a Form 5, on February 1, 2017.  A Form 5 was subsequently filed in its place on February 1, 2017 to report the year-end holdings.  The same information previously reported on the Form 4 has been entered into Table 1 of this Form 4A to satisfy the system's requirements.  This is not new or revised information.",
+      "price": "0",
+      "quantity": "608.754",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2016-12-31"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 5337,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:41.888614+00:00",
+    "sha256": "d9421d329d0ccecb36fe0b57f593e1ea2c07aad33591370c3bd4b5c5358ae27b",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/2230/000000223017000022/0000002230-17-000022.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "e6e95d24f328866d055fc6b2978390c1dca5f8230991b06fa9840a68c09115cd"
+   },
+   "uniqueEconomicRowMatch": false,
+   "uniqueExactAmountMatch": false
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000034563-18-000018",
+   "bulkFootnoteSha256": "71caec519f51b8570239b9de048ad36c3a42966c66a4590dfd63c27d25bb0d78",
+   "bulkNormalizedAmounts": {
+    "price": "30.12",
+    "quantity": "500.0"
+   },
+   "bulkStatus": "CONFIRMED_OPEN_MARKET",
+   "issuerCIK": "34563",
+   "matchedFootnoteSha256": "71caec519f51b8570239b9de048ad36c3a42966c66a4590dfd63c27d25bb0d78",
+   "openMarketFootnoteConfirmedInOriginal": true,
+   "original": {
+    "acceptedAt": "2018-02-15T21:35:42+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4",
+    "issuerCIK": "34563",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "Open market purchase. This transaction was executed in multiple trades ranging from $30.295 to $30.345 per share. The price reported above is the weighted average purchase price. The Reporting Person hereby undertakes to provide upon request by the SEC, the issuer, or a security holder of the issuer, full information regarding the number of shares and prices at which the transaction was effected.",
+      "price": "30.3256",
+      "quantity": "1000",
+      "securityTitle": "Common Stock, $1.00 par value",
+      "transactionDate": "2018-02-13"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F2"
+      ],
+      "footnotes": "Open market purchase. This transaction was executed in a single trade at a price of $30.12 per share.",
+      "price": "30.12",
+      "quantity": "500",
+      "securityTitle": "Common Stock, $1.00 par value",
+      "transactionDate": "2018-02-14"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 7273,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:42.427640+00:00",
+    "sha256": "4bede2c341bb66fe351cefe42ae2222e47d969e8a0120d886f1aa12021d9f51e",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/34563/000003456318000018/0000034563-18-000018.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "98a9850eda45f09fcc071199abe14475412a750f53df07964a523dacb72fd5af"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000046080-18-000139",
+   "bulkFootnoteSha256": "9b6de8b131714b7ac487af576d5c0d147b5e55bd1cd172e17baa6f7d4d81b909",
+   "bulkNormalizedAmounts": {
+    "price": "91.8",
+    "quantity": "11000.0"
+   },
+   "bulkStatus": "CONFIRMED_OPEN_MARKET",
+   "issuerCIK": "46080",
+   "matchedFootnoteSha256": "9b6de8b131714b7ac487af576d5c0d147b5e55bd1cd172e17baa6f7d4d81b909",
+   "openMarketFootnoteConfirmedInOriginal": true,
+   "original": {
+    "acceptedAt": "2018-10-31T18:55:32+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4",
+    "issuerCIK": "46080",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1",
+       "F2",
+       "F3"
+      ],
+      "footnotes": "This was an open market purchase of 11,000 shares by The Brian D. Goldner Trust.\nThe price reported in Column 4 is a weighted average purchase price.  The shares were purchased in multiple transactions at prices ranging from $91.34 to $92.00, inclusive.  The reporting person undertakes to provide to Hasbro, Inc., any security holder of Hasbro, Inc. or the staff of the Securities and Exchange Commission, upon request, full information regarding the number of shares purchased at each separate price within the ranges set forth in this footnote (2.\nMr. Goldner disclaims beneficial ownership of all of these shares except to the extent of this proportionate pecuniary interest therein.",
+      "price": "91.7998",
+      "quantity": "11000",
+      "securityTitle": "Common Stock (Par Value $.50 per share)",
+      "transactionDate": "2018-10-29"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 9986,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:42.844119+00:00",
+    "sha256": "72c4ecf67dceeb9a7bc6750b94f049b3b7e4b93335f0ad75d431f92021d98dfa",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/46080/000004608018000139/0000046080-18-000139.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "b45d8b528be42880371504669dfb09089a08e00a4a7c507970828c5196273f36"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": false
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000002230-18-000026",
+   "bulkFootnoteSha256": "2e96492a65b799e16147289d346c062c9e956bb5d785993a468fc02a5288c8b9",
+   "bulkNormalizedAmounts": {
+    "price": "",
+    "quantity": "44.59"
+   },
+   "bulkStatus": "INDETERMINATE_ACQUISITION",
+   "issuerCIK": "2230",
+   "matchedFootnoteSha256": null,
+   "openMarketFootnoteConfirmedInOriginal": false,
+   "original": {
+    "acceptedAt": "2018-06-01T20:41:47+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4/A",
+    "issuerCIK": "2230",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "J",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "These shares were acquired in exempt transactions as a result of dividend reinvestment.  The Issuer's stock traded in a range of $14.30 - $16.11 during the first quarter of 2018.",
+      "price": "0",
+      "quantity": "44.594",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2018-03-01"
+     },
+     {
+      "acquiredDisposed": "D",
+      "code": "S",
+      "footnoteIds": [
+       "F2",
+       "F3",
+       "F4"
+      ],
+      "footnotes": "The reported price in Column 4 is a weighted average price.  These shares were sold in multiple transactions at prices ranging from $15.14 - $15.19.  The reporting person undertakes to provide the Issuer, any security holder of the Issuer, or the staff of the Issuer, or the staff of the Securities and Exchange Commission, upon request, full information regarding the number of shares sold at each separate price within the range set forth in this footnote.\nShares held of record by Craig Robert Smith, MD, Trustee of the Craig Robert Smith MD REV Trust DTD 3/8/11.\nIncludes shares formerly held directly at the transfer agent that were transferred to the Craig Robert Smith MD REV Trust DTD 3/8/11 (revocable Trust) on May 15, 2018.  Effective with the sale that occurred on May 30, 2018 and that was reported on May 31, 2018, Dr. Smith beneficially owns 22,802 total shares indirectly in the revocable Trust, 6,666 shares directly in a tax-deferred individual retirement account (IRA),and a 0.833 fractional share interest at the transfer agent, for a total of 29,468.833 shares.",
+      "price": "15.151",
+      "quantity": "6666",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2018-05-30"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 9146,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:43.263779+00:00",
+    "sha256": "bcbee0ba4875874d03d13f1e44c25e707729c937cdb2a56490ab32fb09a1b103",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/2230/000000223018000026/0000002230-18-000026.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "5523e7c95102ccdf2d4ba9271c7b3987baf3ad38828f0b0691f519e4ba148c86"
+   },
+   "uniqueEconomicRowMatch": false,
+   "uniqueExactAmountMatch": false
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000002230-18-000031",
+   "bulkFootnoteSha256": "24103287502912deaccfcf8fc2de7b222a186cf92cd84da73b7e99f6e1056efd",
+   "bulkNormalizedAmounts": {
+    "price": "",
+    "quantity": "14.78"
+   },
+   "bulkStatus": "INDETERMINATE_ACQUISITION",
+   "issuerCIK": "2230",
+   "matchedFootnoteSha256": null,
+   "openMarketFootnoteConfirmedInOriginal": false,
+   "original": {
+    "acceptedAt": "2018-07-30T13:57:55+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4/A",
+    "issuerCIK": "2230",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "J",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "These shares were acquired in exempt transactions as a result of dividend reinvestment during January 1 - June 1, 2018.  The Issuer's stock traded in a range of $14.30 - $16.11 during January 1 - June 1, 2018.",
+      "price": "0",
+      "quantity": "14.782",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2018-07-26"
+     },
+     {
+      "acquiredDisposed": "D",
+      "code": "S",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "16.084",
+      "quantity": "2329.448",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2018-07-26"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 7164,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:44.324990+00:00",
+    "sha256": "cdd78be900574a284b3e324aa0ff2e74dd5014afb001001e813f5833255e5241",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/2230/000000223018000031/0000002230-18-000031.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "8012fe8dab2d72c584b35e1204898660b108e1b1d765c3424633695431c7d045"
+   },
+   "uniqueEconomicRowMatch": false,
+   "uniqueExactAmountMatch": false
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000784199-19-000162",
+   "bulkFootnoteSha256": "e6b13b860cbbbc9071a69737699c273b6398a32d26c366a7f6cd930abc8bd792",
+   "bulkNormalizedAmounts": {
+    "price": "23.47",
+    "quantity": "5000.0"
+   },
+   "bulkStatus": "CONFIRMED_OPEN_MARKET",
+   "issuerCIK": "784199",
+   "matchedFootnoteSha256": "e6b13b860cbbbc9071a69737699c273b6398a32d26c366a7f6cd930abc8bd792",
+   "openMarketFootnoteConfirmedInOriginal": true,
+   "original": {
+    "acceptedAt": "2019-11-13T21:14:21+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4",
+    "issuerCIK": "784199",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "Reflects open market purchase by reporting person.",
+      "price": "23.471",
+      "quantity": "5000",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2019-11-13"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 4523,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:44.774849+00:00",
+    "sha256": "3f3927c7e794008bc7e11034ea99695a5b102fb1fea1c5209854fb3552e6b883",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/784199/000078419919000162/0000784199-19-000162.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "0d80d9aa1e0a8876a1a6b9f50bf57a0bd4aeb0b83783f46ff6af5aa8535323c6"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": false
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000899243-19-000799",
+   "bulkFootnoteSha256": "112df1b29545d6a14841b35b3710091b4577bec23aec8c7337f693a64170e104",
+   "bulkNormalizedAmounts": {
+    "price": "39.84",
+    "quantity": "900.0"
+   },
+   "bulkStatus": "CONFIRMED_OPEN_MARKET",
+   "issuerCIK": "1552451",
+   "matchedFootnoteSha256": "112df1b29545d6a14841b35b3710091b4577bec23aec8c7337f693a64170e104",
+   "openMarketFootnoteConfirmedInOriginal": true,
+   "original": {
+    "acceptedAt": "2019-01-09T00:12:28+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4",
+    "issuerCIK": "1552451",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "These shares were acquired through an open market purchase.",
+      "price": "39.835",
+      "quantity": "900",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2019-01-04"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "These shares were acquired through an open market purchase.",
+      "price": "39.8722",
+      "quantity": "1600",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2019-01-04"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 9794,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:45.229385+00:00",
+    "sha256": "28b217ab55a0130e7840e4aacb7ebc6b5422fc2b5ce22357f601aed78f35c3fe",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/1552451/000089924319000799/0000899243-19-000799.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "d48c53c42a5811574a887b7024392007159c9d775c418cfd2707ebe858d9fe93"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": false
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000014272-19-000044",
+   "bulkFootnoteSha256": "c289425f114f4438124752789af0ea2540918122946ed1970ba4d90af3b49267",
+   "bulkNormalizedAmounts": {
+    "price": "52.4",
+    "quantity": "9540.0"
+   },
+   "bulkStatus": "INDETERMINATE_P",
+   "issuerCIK": "14272",
+   "matchedFootnoteSha256": "c289425f114f4438124752789af0ea2540918122946ed1970ba4d90af3b49267",
+   "openMarketFootnoteConfirmedInOriginal": false,
+   "original": {
+    "acceptedAt": "2019-02-13T21:43:23+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4/A",
+    "issuerCIK": "14272",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1",
+       "F2"
+      ],
+      "footnotes": "The price reported reflects the weighted average sales price. The shares were sold in multiple transactions at prices ranging from $52.39 to $52.40, inclusive. The reporting person undertakes to provide to the SEC staff, the issuer, or a security holder of the issuer, upon request, full information regarding the number of shares sold at each separate price.\nDue to a software error, this Form 4 is being amended to report in Column 4 and Column 5 the correct amount of securities acquired and the correct number of securities beneficially owned following the reported transaction, respectively.",
+      "price": "52.40",
+      "quantity": "9540",
+      "securityTitle": "Common Stock, $0.10 par value",
+      "transactionDate": "2018-04-30"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 5432,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:48.087271+00:00",
+    "sha256": "3deee8a40d786082d18ee3caf89a9eb99b4312e8a25306d0075efc499a597c7c",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427219000044/0000014272-19-000044.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "a9a31a21922caf1d770a56713acd19f1ddef2b8909759ee190156f55530e8567"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000059478-19-000026",
+   "bulkFootnoteSha256": "f734b18356427f28076a72a70735746972782dbe344cd3face7a777f8a0696a6",
+   "bulkNormalizedAmounts": {
+    "price": "95.22",
+    "quantity": "1568.0"
+   },
+   "bulkStatus": "INDETERMINATE_P",
+   "issuerCIK": "59478",
+   "matchedFootnoteSha256": "f734b18356427f28076a72a70735746972782dbe344cd3face7a777f8a0696a6",
+   "openMarketFootnoteConfirmedInOriginal": false,
+   "original": {
+    "acceptedAt": "2019-02-01T20:02:23+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4/A",
+    "issuerCIK": "59478",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1",
+       "F2"
+      ],
+      "footnotes": "The total represents a correction in the number of shares reported as purchased on the original Form 4.\nThe total represents the correct number of securities beneficially owned following the reported transaction. Beneficial share totals were incorrectly reported on two Forms 4 filed by the reporting person after his original Form 4 was filed.",
+      "price": "95.22",
+      "quantity": "1568",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2018-07-26"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 4900,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:48.536498+00:00",
+    "sha256": "31acf81df44d08fd51e07ada196010d0c988443e1aae30939a526a9cf4ec40bc",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/59478/000005947819000026/0000059478-19-000026.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "37a528f958453c42a38dfb7f2380b518e7feb7beb44bfc9445014c24c4770f8f"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000719135-20-000045",
+   "bulkFootnoteSha256": "da606b034e0d2f6b500c4f11fda71e8bd46cf1b1de68f9da35bb0886055f4a41",
+   "bulkNormalizedAmounts": {
+    "price": "3.3",
+    "quantity": "28250.0"
+   },
+   "bulkStatus": "CONFIRMED_OPEN_MARKET",
+   "issuerCIK": "719135",
+   "matchedFootnoteSha256": "da606b034e0d2f6b500c4f11fda71e8bd46cf1b1de68f9da35bb0886055f4a41",
+   "openMarketFootnoteConfirmedInOriginal": true,
+   "original": {
+    "acceptedAt": "2020-05-14T17:27:16+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4",
+    "issuerCIK": "719135",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "Average price of shares purchased on the open market on May 13, 2020, ranging from $3.06 to $3.33 per share.",
+      "price": "3.299",
+      "quantity": "28250",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2020-05-13"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 4844,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:49.023707+00:00",
+    "sha256": "eb31a77cfdef7725637e7d1a5e4ee8888fca2c1d27ac07400ddfbf42651da1ae",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/719135/000071913520000045/0000719135-20-000045.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "32916ae9bb80e0b018f1709f7e94db2b9cba1d9930c46fca7c85b8eccc372a1e"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": false
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000813298-20-000010",
+   "bulkFootnoteSha256": "678e4d67f0916a470bb5f6d665615a9dec41e3e2e90cbcebd777808c396975f0",
+   "bulkNormalizedAmounts": {
+    "price": "1.13",
+    "quantity": "175000.0"
+   },
+   "bulkStatus": "CONFIRMED_OPEN_MARKET",
+   "issuerCIK": "813298",
+   "matchedFootnoteSha256": "678e4d67f0916a470bb5f6d665615a9dec41e3e2e90cbcebd777808c396975f0",
+   "openMarketFootnoteConfirmedInOriginal": true,
+   "original": {
+    "acceptedAt": "2020-01-17T21:01:45+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4",
+    "issuerCIK": "813298",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1",
+       "F2"
+      ],
+      "footnotes": "The price reported in Column 4 is a weighted average price. These shares were purchased in multiple transactions at prices ranging from $1.10 to $1.16, inclusive. The Reporting Person undertakes to provide to the Issuer, any security holder of the Issuer, or the staff of the Securities and Exchange Commission, upon request, full information regarding the number of shares purchased at each separate price within the ranges set forth in footnote (1) to this Form 4.\nThese shares of common stock were purchased by Red Mountain Capital Partners LLC (\"RMCP LLC\") on the open market on January 15th and 16th, 2020.  7,522,354 of these shares are held directly by Red Mountain Partners, L.P. (\"RMP\") and the remaining 862,523 shares are held directly by RMCP LLC. This Form 4 is jointly filed by (i) RMP, (ii) RMCP GP LLC (\"RMCP GP\"), (iii) RMCP LLC, (iv) Red Mountain Capital Management, Inc. (\"RMCM\"), and (v) Mr. Mesdag. RMCP GP is the general partner of RMP. RMCP LLC is the managing member of RMCP GP. RMCM is the managing member of RMCP LLC. Mr. Mesdag is the president, sole executive officer, sole director and sole shareholder of RMCM. Each of Mr. Mesdag, RMCM, RMCP LLC, and RMCP GP, by virtue of their direct or indirect control of RMP, may be deemed to beneficially own some or all of the securities reported as being held by RMP. Each of Mr. Mesdag and RMCM, by virtue of their direct or indirect control of RMCP LLC, may be deemed to beneficially own some or all of the securities reported as being held by RMCP LLC.  Each of the reporting persons hereunder disclaims beneficial ownership of the reported securities except to the extent of its or his pecuniary interest therein. This Form 4 shall not be deemed to be an admission that any reporting person hereunder is the beneficial owner of any of the reported securities for purposes of Section 16 of the Securities Exchange Act of 1934, as amended, or for any other purpose.",
+      "price": "1.1341",
+      "quantity": "175000",
+      "securityTitle": "Common Stock, $0.01 par value",
+      "transactionDate": "2020-01-15"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F2",
+       "F3"
+      ],
+      "footnotes": "These shares of common stock were purchased by Red Mountain Capital Partners LLC (\"RMCP LLC\") on the open market on January 15th and 16th, 2020.  7,522,354 of these shares are held directly by Red Mountain Partners, L.P. (\"RMP\") and the remaining 862,523 shares are held directly by RMCP LLC. This Form 4 is jointly filed by (i) RMP, (ii) RMCP GP LLC (\"RMCP GP\"), (iii) RMCP LLC, (iv) Red Mountain Capital Management, Inc. (\"RMCM\"), and (v) Mr. Mesdag. RMCP GP is the general partner of RMP. RMCP LLC is the managing member of RMCP GP. RMCM is the managing member of RMCP LLC. Mr. Mesdag is the president, sole executive officer, sole director and sole shareholder of RMCM. Each of Mr. Mesdag, RMCM, RMCP LLC, and RMCP GP, by virtue of their direct or indirect control of RMP, may be deemed to beneficially own some or all of the securities reported as being held by RMP. Each of Mr. Mesdag and RMCM, by virtue of their direct or indirect control of RMCP LLC, may be deemed to beneficially own some or all of the securities reported as being held by RMCP LLC.  Each of the reporting persons hereunder disclaims beneficial ownership of the reported securities except to the extent of its or his pecuniary interest therein. This Form 4 shall not be deemed to be an admission that any reporting person hereunder is the beneficial owner of any of the reported securities for purposes of Section 16 of the Securities Exchange Act of 1934, as amended, or for any other purpose.\nThe price reported in Column 4 is a weighted average price. These shares were purchased in multiple transactions at prices ranging from $1.18 to $1.25, inclusive. The Reporting Person undertakes to provide to the Issuer, any security holder of the Issuer, or the staff of the Securities and Exchange Commission, upon request, full information regarding the number of shares purchased at each separate price within the ranges set forth in footnote (3) to this Form 4.",
+      "price": "1.1938",
+      "quantity": "150000",
+      "securityTitle": "Common Stock, $0.01 par value",
+      "transactionDate": "2020-01-16"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 14794,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:49.488363+00:00",
+    "sha256": "1795754c5b5f5563f3853f3d607c17e9f36d419a7bc9457c31b1ce1477f445e5",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/813298/000081329820000010/0000813298-20-000010.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "7311937de1685e83cf1a589d19c4a552ff8d68dd29b58b5394c56b036c0e4a27"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": false
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000002178-20-000094",
+   "bulkFootnoteSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "bulkNormalizedAmounts": {
+    "price": "26.5",
+    "quantity": "100.0"
+   },
+   "bulkStatus": "INDETERMINATE_P",
+   "issuerCIK": "2178",
+   "matchedFootnoteSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "openMarketFootnoteConfirmedInOriginal": false,
+   "original": {
+    "acceptedAt": "2020-05-27T22:57:27+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4/A",
+    "issuerCIK": "2178",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "26.50",
+      "quantity": "100",
+      "securityTitle": "Common stock",
+      "transactionDate": "2020-05-22"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "This Form 4 is being amended to add an additional purchase of AE common stock that occurred on May 21, 2020 that had been inadvertently omitted from the Form 4 filed on May 26, 2020.",
+      "price": "27.06",
+      "quantity": "100",
+      "securityTitle": "Common stock",
+      "transactionDate": "2020-05-21"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 6350,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:50.423250+00:00",
+    "sha256": "9818dc657cda875d9a0fc8de517c82f6dca49e8ea0677398453ac17c32715340",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/2178/000000217820000094/0000002178-20-000094.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "fb82e16ab11546458bb319af7290357d3839f724b337981dfdf5cdc189fd6118"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000009015-20-000017",
+   "bulkFootnoteSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "bulkNormalizedAmounts": {
+    "price": "6.68",
+    "quantity": "2000.0"
+   },
+   "bulkStatus": "INDETERMINATE_P",
+   "issuerCIK": "1379785",
+   "matchedFootnoteSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "openMarketFootnoteConfirmedInOriginal": false,
+   "original": {
+    "acceptedAt": "2020-05-27T23:27:44+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4/A",
+    "issuerCIK": "1379785",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "6.69",
+      "quantity": "300",
+      "securityTitle": "Common Shares",
+      "transactionDate": "2020-05-06"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "6.73",
+      "quantity": "100",
+      "securityTitle": "Common Shares",
+      "transactionDate": "2020-05-06"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "6.735",
+      "quantity": "100",
+      "securityTitle": "Common Shares",
+      "transactionDate": "2020-05-06"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "6.755",
+      "quantity": "500",
+      "securityTitle": "Common Shares",
+      "transactionDate": "2020-05-06"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "6.775",
+      "quantity": "450",
+      "securityTitle": "Common Shares",
+      "transactionDate": "2020-05-06"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "6.78",
+      "quantity": "800",
+      "securityTitle": "Common Shares",
+      "transactionDate": "2020-05-06"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "6.8434",
+      "quantity": "500",
+      "securityTitle": "Common Shares",
+      "transactionDate": "2020-05-06"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "6.73",
+      "quantity": "300",
+      "securityTitle": "Common Shares",
+      "transactionDate": "2020-05-08"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "6.7399",
+      "quantity": "1000",
+      "securityTitle": "Common Shares",
+      "transactionDate": "2020-05-08"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "6.74",
+      "quantity": "1000",
+      "securityTitle": "Common Shares",
+      "transactionDate": "2020-05-08"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "6.745",
+      "quantity": "500",
+      "securityTitle": "Common Shares",
+      "transactionDate": "2020-05-08"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "6.7469",
+      "quantity": "200",
+      "securityTitle": "Common Shares",
+      "transactionDate": "2020-05-08"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "6.7485",
+      "quantity": "1500",
+      "securityTitle": "Common Shares",
+      "transactionDate": "2020-05-08"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "6.75",
+      "quantity": "1500",
+      "securityTitle": "Common Shares",
+      "transactionDate": "2020-05-08"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "6.76",
+      "quantity": "500",
+      "securityTitle": "Common Shares",
+      "transactionDate": "2020-05-08"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "6.68",
+      "quantity": "2000",
+      "securityTitle": "Common Shares",
+      "transactionDate": "2020-05-12"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "6.59",
+      "quantity": "1000",
+      "securityTitle": "Common Shares",
+      "transactionDate": "2020-05-13"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "6.61",
+      "quantity": "1000",
+      "securityTitle": "Common Shares",
+      "transactionDate": "2020-05-13"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "6.34",
+      "quantity": "1000",
+      "securityTitle": "Common Shares",
+      "transactionDate": "2020-05-14"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "6.44",
+      "quantity": "1000",
+      "securityTitle": "Common Shares",
+      "transactionDate": "2020-05-14"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 32666,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:52.466458+00:00",
+    "sha256": "57ad754627cedc4750fe7ed8c23bd5c195c1effc27462b92d4b2e0f20d95b6fc",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/1379785/000000901520000017/0000009015-20-000017.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "e6e7cb5d24c72dd131d1539784bebbf5a465f74c3170fca1c7d67d2232b8afa9"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000004281-21-000054",
+   "bulkFootnoteSha256": "a67bb79a509cee7292850c6ed10a46655244c3fe53931a27d2a19be917f4f49d",
+   "bulkNormalizedAmounts": {
+    "price": "22.25",
+    "quantity": "5000.0"
+   },
+   "bulkStatus": "CONFIRMED_OPEN_MARKET",
+   "issuerCIK": "1790982",
+   "matchedFootnoteSha256": "a67bb79a509cee7292850c6ed10a46655244c3fe53931a27d2a19be917f4f49d",
+   "openMarketFootnoteConfirmedInOriginal": true,
+   "original": {
+    "acceptedAt": "2021-03-02T01:08:23+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4",
+    "issuerCIK": "1790982",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "Mr. Asmussen purchased these shares on the open market.",
+      "price": "22.25",
+      "quantity": "5000",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2021-02-26"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 4600,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:53.119791+00:00",
+    "sha256": "05769ec16d007c74e31e1375bf69a82a7261b3c72cda9421ddf7f9d3a55da8d9",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/1790982/000000428121000054/0000004281-21-000054.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "5f7a3d42ab03c3312b5a749cd3698b2b433984aad958f91d84b5cb2f471ecb76"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000004281-21-000056",
+   "bulkFootnoteSha256": "00494a24f2811ea42ad096e80af3de2e8f189a7d969c4ece63073c31a9bfad6c",
+   "bulkNormalizedAmounts": {
+    "price": "22.34",
+    "quantity": "4400.0"
+   },
+   "bulkStatus": "CONFIRMED_OPEN_MARKET",
+   "issuerCIK": "1790982",
+   "matchedFootnoteSha256": "00494a24f2811ea42ad096e80af3de2e8f189a7d969c4ece63073c31a9bfad6c",
+   "openMarketFootnoteConfirmedInOriginal": true,
+   "original": {
+    "acceptedAt": "2021-03-02T01:11:14+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4",
+    "issuerCIK": "1790982",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1",
+       "F2"
+      ],
+      "footnotes": "Mr. Henderson purchased these shares on the open market.\nThe price reported is an average weighted price. These shares were purchased in multiple transactions,  with prices ranging from $22.33 to $22.35, inclusive.",
+      "price": "22.3413",
+      "quantity": "4400",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2021-02-26"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 4921,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:53.696446+00:00",
+    "sha256": "06d267c2ec8575cde9fa21bb12294b78969ebec6c07297d9dda7bc165db947ec",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/1790982/000000428121000056/0000004281-21-000056.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "e239d4625683441daaaa40c7c62ab815f741ec584db7f9c66b964b18fa73fe9b"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": false
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000063754-21-000024",
+   "bulkFootnoteSha256": "826c80d53ff4a7701bc0cdebf3d7bd84a4be4173a1fbdb4a4c78828cc2517ba9",
+   "bulkNormalizedAmounts": {
+    "price": "",
+    "quantity": "1339.0"
+   },
+   "bulkStatus": "INDETERMINATE_ACQUISITION",
+   "issuerCIK": "63754",
+   "matchedFootnoteSha256": null,
+   "openMarketFootnoteConfirmedInOriginal": false,
+   "original": {
+    "acceptedAt": "2021-02-02T18:24:56+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4/A",
+    "issuerCIK": "63754",
+    "transactions": [
+     {
+      "acquiredDisposed": "D",
+      "code": "J",
+      "footnoteIds": [
+       "F1",
+       "F2"
+      ],
+      "footnotes": "Exchange of shares of Common Stock - Voting for shares of Common Stock - Non Voting on a one for one basis.\nDue to an administrative error, the Reporting Person's previous Form 4 filed on October 19, 2020 incorrectly reported the Reporting Person's direct holdings of Common Stock - Voting as 46,170,700 when it should have been reported as 44,803.04.",
+      "price": null,
+      "quantity": "1339",
+      "securityTitle": "Common Stock - Voting",
+      "transactionDate": "2020-10-15"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "J",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "Exchange of shares of Common Stock - Voting for shares of Common Stock - Non Voting on a one for one basis.",
+      "price": null,
+      "quantity": "1339",
+      "securityTitle": "Common Stock - Non Voting",
+      "transactionDate": "2020-10-15"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 8104,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:54.133965+00:00",
+    "sha256": "11ce60890f4738eb058c438a39348c261c3a5b3bef244520b79c67cbdea0ff55",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/63754/000006375421000024/0000063754-21-000024.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "9ecd3ee5ea93d040b8807605d245c0fc910f7280663239d765234f3ff7327f2f"
+   },
+   "uniqueEconomicRowMatch": false,
+   "uniqueExactAmountMatch": false
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000072333-21-000230",
+   "bulkFootnoteSha256": "4ab761f37c8f07f657690b57b6ef69970e1df381cbfce6e6815baf18a9c1d92e",
+   "bulkNormalizedAmounts": {
+    "price": "34.08",
+    "quantity": "588.0"
+   },
+   "bulkStatus": "INDETERMINATE_ACQUISITION",
+   "issuerCIK": "72333",
+   "matchedFootnoteSha256": "4ab761f37c8f07f657690b57b6ef69970e1df381cbfce6e6815baf18a9c1d92e",
+   "openMarketFootnoteConfirmedInOriginal": false,
+   "original": {
+    "acceptedAt": "2021-10-15T22:56:52+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4/A",
+    "issuerCIK": "72333",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "J",
+      "footnoteIds": [
+       "F1",
+       "F2"
+      ],
+      "footnotes": "Shares purchased under Employee Stock Purchase Plan, exempt pursuant to Rule 16b-3(c) and voluntarily reported.\nReflects an amended amount to correct a clerical error.",
+      "price": "34.08",
+      "quantity": "588",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2021-03-31"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "J",
+      "footnoteIds": [
+       "F1",
+       "F2"
+      ],
+      "footnotes": "Shares purchased under Employee Stock Purchase Plan, exempt pursuant to Rule 16b-3(c) and voluntarily reported.\nReflects an amended amount to correct a clerical error.",
+      "price": "23.805",
+      "quantity": "478",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2021-09-30"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 7069,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:55.038455+00:00",
+    "sha256": "9fedf70c4e98f1d230288bcdce6584b3b4e5c716415ef8220bf7df061ec03aab",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/72333/000007233321000230/0000072333-21-000230.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "71c68f1481c21d325263e626f4a58f0420049054cbaa93f33ce4a565b898797d"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000034903-22-000048",
+   "bulkFootnoteSha256": "e1815dc797dcca7e27155320f3b8b8b13d56965be9a679416f4c9b64f8129748",
+   "bulkNormalizedAmounts": {
+    "price": "94.82",
+    "quantity": "265.0"
+   },
+   "bulkStatus": "CONFIRMED_OPEN_MARKET",
+   "issuerCIK": "34903",
+   "matchedFootnoteSha256": "e1815dc797dcca7e27155320f3b8b8b13d56965be9a679416f4c9b64f8129748",
+   "openMarketFootnoteConfirmedInOriginal": true,
+   "original": {
+    "acceptedAt": "2022-06-22T20:06:37+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4",
+    "issuerCIK": "34903",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "Open market purchase.",
+      "price": "95.87",
+      "quantity": "10300",
+      "securityTitle": "Common Shares of Beneficial Interest",
+      "transactionDate": "2022-06-21"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "Open market purchase.",
+      "price": "94.815",
+      "quantity": "265",
+      "securityTitle": "Common Shares of Beneficial Interest",
+      "transactionDate": "2022-06-21"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 5952,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:55.466527+00:00",
+    "sha256": "ef5469420478e9ed7c2fde944dadc25203ae388586d5a9be4156a28a24b53fc9",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/34903/000003490322000048/0000034903-22-000048.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "36aef5b76ac39d4209fe33ec4ff15838e6ce5f4e6aaf827685f2e0ea98c72ca2"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": false
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000071829-22-000047",
+   "bulkFootnoteSha256": "6dbae71a4786bf3a61aba7016ffc510a00de0549432a888d644d54fa573571f8",
+   "bulkNormalizedAmounts": {
+    "price": "3.45",
+    "quantity": "42000.0"
+   },
+   "bulkStatus": "CONFIRMED_OPEN_MARKET",
+   "issuerCIK": "71829",
+   "matchedFootnoteSha256": "6dbae71a4786bf3a61aba7016ffc510a00de0549432a888d644d54fa573571f8",
+   "openMarketFootnoteConfirmedInOriginal": true,
+   "original": {
+    "acceptedAt": "2022-05-10T21:39:47+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4",
+    "issuerCIK": "71829",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "The price reported is a weighted average price. These shares were purchased in multiple transactions in the open market at prices ranging from $3.65 to $3.74, inclusive. The reporting person undertakes to provide to Newpark Resources, Inc., any security holder of Newpark Resources, Inc., or the staff of the Securities and Exchange Commission, upon request, full information regarding the number of shares purchased at each separate price within the range set forth in footnote (1) to this Form 4.",
+      "price": "3.7072",
+      "quantity": "26450",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2022-05-06"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F2"
+      ],
+      "footnotes": "The price reported is a weighted average price. These shares were purchased in multiple transactions in the open market at prices ranging from $3.40 to $3.55, inclusive. The reporting person undertakes to provide to Newpark Resources, Inc., any security holder of Newpark Resources, Inc., or the staff of the Securities and Exchange Commission, upon request, full information regarding the number of shares purchased at each separate price within the range set forth in footnote (2) to this Form 4.",
+      "price": "3.4529",
+      "quantity": "42000",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2022-05-09"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 9797,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:55.889283+00:00",
+    "sha256": "b4796eee74fdf5a8ea35959eda46d9e4657694c818dbb327a4ca62888f025ee6",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/71829/000007182922000047/0000071829-22-000047.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "47769547072e98bad39868f1ce967c995914c7e0fa44203e77ccd84e8da2739a"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": false
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000024090-22-000048",
+   "bulkFootnoteSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "bulkNormalizedAmounts": {
+    "price": "3.47",
+    "quantity": "34500.0"
+   },
+   "bulkStatus": "INDETERMINATE_P",
+   "issuerCIK": "24090",
+   "matchedFootnoteSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "openMarketFootnoteConfirmedInOriginal": false,
+   "original": {
+    "acceptedAt": "2022-06-06T16:30:47+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4/A",
+    "issuerCIK": "24090",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "L",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "These shares were purchased through the Citizens, Inc. Stock Investment Plan as part of regular monthly payroll deduction.",
+      "price": "4.36",
+      "quantity": "228.3394",
+      "securityTitle": "Citizens, Inc. Class A Common Stock",
+      "transactionDate": "2022-04-01"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "L",
+      "footnoteIds": [
+       "F1",
+       "F2"
+      ],
+      "footnotes": "These shares were purchased through the Citizens, Inc. Stock Investment Plan as part of regular monthly payroll deduction.\nThe amount was reported incorrectly and has been updated to the correct amount.",
+      "price": "2.97",
+      "quantity": "669.8374",
+      "securityTitle": "Citizens, Inc. Class A Common Stock",
+      "transactionDate": "2022-04-29"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "3.47",
+      "quantity": "34500",
+      "securityTitle": "Citizens, Inc. Class A Common Stock",
+      "transactionDate": "2022-05-24"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 7830,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:56.459580+00:00",
+    "sha256": "5c7912206a6ea4bcf431496fc06bbf121758aa56cd9dd50dc459e02d030976f3",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/24090/000002409022000048/0000024090-22-000048.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "e06c5335edc6dc13677bcb1275b71a2369d4bf24a59222fba3aaaaf4b41dd63a"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000040417-22-000024",
+   "bulkFootnoteSha256": "6c0630ec25a8000f1bce8709c3b4985ab1fb480387f9a166b0d908adcef68b3f",
+   "bulkNormalizedAmounts": {
+    "price": "26.0",
+    "quantity": "5000.0"
+   },
+   "bulkStatus": "EXCLUDED_NON_COMMON",
+   "issuerCIK": "40417",
+   "matchedFootnoteSha256": "6c0630ec25a8000f1bce8709c3b4985ab1fb480387f9a166b0d908adcef68b3f",
+   "openMarketFootnoteConfirmedInOriginal": false,
+   "original": {
+    "acceptedAt": "2022-05-19T19:37:15+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4/A",
+    "issuerCIK": "40417",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "Shares held by Hudson Partnership of which Spencer Davidson is the General Partner.",
+      "price": "26",
+      "quantity": "5000",
+      "securityTitle": "5.95% Preferred Stock",
+      "transactionDate": "2022-05-06"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 8394,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:57.029703+00:00",
+    "sha256": "ddd35ba216f44bc99eb25bc5874be61ab24c18e800b8df034a71942b9aacb803",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/40417/000004041722000024/0000040417-22-000024.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "5811ae599443e031c7d690508e5e9761306fbe8efd3f32d3c1c0cc4ec484f265"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000071829-23-000130",
+   "bulkFootnoteSha256": "f85ee0b67e4501687663673aa5e9b1e3f3bc3535806fd94792608e5414cc4211",
+   "bulkNormalizedAmounts": {
+    "price": "5.27",
+    "quantity": "8000.0"
+   },
+   "bulkStatus": "CONFIRMED_OPEN_MARKET",
+   "issuerCIK": "71829",
+   "matchedFootnoteSha256": "f85ee0b67e4501687663673aa5e9b1e3f3bc3535806fd94792608e5414cc4211",
+   "openMarketFootnoteConfirmedInOriginal": true,
+   "original": {
+    "acceptedAt": "2023-08-17T22:25:04+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4",
+    "issuerCIK": "71829",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "The price reported is a weighted average price. These shares were purchased in multiple transactions in the open market at prices ranging from $5.27 to $5.28, inclusive. The reporting person undertakes to provide to Newpark Resources, Inc., any security holder of Newpark Resources, Inc., or the staff of the Securities and Exchange Commission, upon request, full information regarding the number of shares purchased at each separate price within the range set forth in footnote (1) to this Form 4.",
+      "price": "5.2725",
+      "quantity": "8000",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2023-08-16"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 4996,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:57.750337+00:00",
+    "sha256": "f8c4b06b44a6154486356d641d609f0f68b018c3f99de6b17bb207bfbfc007bb",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/71829/000007182923000130/0000071829-23-000130.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "44d57bdd9918fbc4a19310337f664e62fb8722d722ededdbdf9c59d123f82300"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": false
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000899140-23-000656",
+   "bulkFootnoteSha256": "3aa742ad8b9f9f290bf211f19cdd272de0c30cb19c9268a97909294cb9a16850",
+   "bulkNormalizedAmounts": {
+    "price": "12.34",
+    "quantity": "290000.0"
+   },
+   "bulkStatus": "CONFIRMED_OPEN_MARKET",
+   "issuerCIK": "1080014",
+   "matchedFootnoteSha256": "3aa742ad8b9f9f290bf211f19cdd272de0c30cb19c9268a97909294cb9a16850",
+   "openMarketFootnoteConfirmedInOriginal": true,
+   "original": {
+    "acceptedAt": "2023-05-16T01:09:44+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4",
+    "issuerCIK": "1080014",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1",
+       "F2",
+       "F3"
+      ],
+      "footnotes": "On May 11, 2023, the Reporting Persons acquired 290,000 shares of Common Stock at a weighted average price of $12.3359 per share. The shares were purchased in multiple open market transactions at prices ranging from $12.25 to $12.43.  The Reporting Persons undertake to provide, upon request, full information regarding the number of shares purchased at each separate price within the range set forth in this footnote to this Form 4.\nSarissa Capital Management LP (\"Sarissa Capital\") is the investment advisor to Sarissa Capital Offshore Master Fund LP, Sarissa Capital Catapult Fund LLC, Sarissa Capital Hawkeye Fund LP and Sarissa Capital Master Fund II LP (collectively, the \"Sarissa Funds\") and may be deemed to beneficially own the shares of Common Stock directly beneficially owned by the Sarissa Funds by virtue of the authority granted to it to vote and to dispose of the securities held by them, including the shares of Common Stock. Alexander J. Denner, Ph.D., a citizen of the United States of America (\"Dr. Denner\"), is the Chief Investment Officer and ultimate general partner of Sarissa Capital and is the ultimate general partner, or controls the managing member, of each of the Sarissa Funds; accordingly, Dr. Denner may be deemed to beneficially own the shares of Common Stock directly held by the Sarissa Funds by virtue of such positions.\nEach of Dr. Denner, Sarissa Capital and each of the Sarissa Funds disclaims beneficial ownership of the shares of Common Stock reported herein except, in each case, to the extent of their pecuniary interest therein.",
+      "price": "12.3359",
+      "quantity": "290000",
+      "securityTitle": "Common Stock, par value $0.01 per share",
+      "transactionDate": "2023-05-11"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 7920,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:58.314943+00:00",
+    "sha256": "4c1987992d4d54f12fc5e430df97ccaee87b3535a109e2c5044a9000b8f70c38",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/1080014/000089914023000656/0000899140-23-000656.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "1d99e57e148e4b15497df77afafdb9526a65403439e15795a128014150e25bbf"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": false
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000009984-23-000149",
+   "bulkFootnoteSha256": "916443d9d2f19ac4a26e2766991de25d6219124b593a915eca2d69839005fefb",
+   "bulkNormalizedAmounts": {
+    "price": "38.0",
+    "quantity": "3330.0"
+   },
+   "bulkStatus": "INDETERMINATE_P",
+   "issuerCIK": "9984",
+   "matchedFootnoteSha256": "916443d9d2f19ac4a26e2766991de25d6219124b593a915eca2d69839005fefb",
+   "openMarketFootnoteConfirmedInOriginal": false,
+   "original": {
+    "acceptedAt": "2023-08-10T18:48:54+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4/A",
+    "issuerCIK": "9984",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1",
+       "F2",
+       "F3"
+      ],
+      "footnotes": "The price reported in Column 4 is an exact price.\nIncludes a balance of 578 Restricted Stock Units granted 2/11/2022, which are subject to forfeiture if certain events occur and payable in shares of common stock on or as soon as practicable following the applicable vesting date.\nThis amended Form 4 is being filed to correct the number of shares held by the reporting person. The Form 4 filed on November 8, 2022 inadvertently underreported a holding of 30 shares which are held directly by the reporting person. Those 30 shares have been included in this amended Form 4.",
+      "price": "38",
+      "quantity": "3330",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2022-11-07"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 16789,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:58.769950+00:00",
+    "sha256": "c89fd564743cafd73f15ed1963d6c51b8f2627a3b4c93f9e2d870afb8e9add3e",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/9984/000000998423000149/0000009984-23-000149.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "51debb5bb06956b12669df98b5c36776ef4461cf3e90236fd5a0f02dad2ffb0a"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000028823-23-000143",
+   "bulkFootnoteSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "bulkNormalizedAmounts": {
+    "price": "23.69",
+    "quantity": "100.0"
+   },
+   "bulkStatus": "INDETERMINATE_P",
+   "issuerCIK": "28823",
+   "matchedFootnoteSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "openMarketFootnoteConfirmedInOriginal": false,
+   "original": {
+    "acceptedAt": "2023-08-17T20:13:27+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4/A",
+    "issuerCIK": "28823",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "23.69",
+      "quantity": "100",
+      "securityTitle": "Common Shares",
+      "transactionDate": "2023-08-14"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 4643,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:59.303951+00:00",
+    "sha256": "33ff84e15570844b85aee7073eb4ed5de0721583989f7f793bc53a9745310b16",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/28823/000002882323000143/0000028823-23-000143.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "9e92d444d8ecac199868e6e986521a1b50e63993b0f6176756fecfe05fe21a68"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000004127-24-000021",
+   "bulkFootnoteSha256": "4068286b5f7b6ce94b7168e17352e41b6c3a023291e0a3c5a4016e0e954c4eb4",
+   "bulkNormalizedAmounts": {
+    "price": "90.0",
+    "quantity": "11142.0"
+   },
+   "bulkStatus": "CONFIRMED_OPEN_MARKET",
+   "issuerCIK": "4127",
+   "matchedFootnoteSha256": "4068286b5f7b6ce94b7168e17352e41b6c3a023291e0a3c5a4016e0e954c4eb4",
+   "openMarketFootnoteConfirmedInOriginal": true,
+   "original": {
+    "acceptedAt": "2024-05-02T20:03:26+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4",
+    "issuerCIK": "4127",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "The price reported in column 4 is a weighted average price. These shares were purchased in multiple open market transactions at prices ranging from $89.91 to $90.04.",
+      "price": "90",
+      "quantity": "11142",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2024-05-02"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 6533,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:07:59.862832+00:00",
+    "sha256": "6a9812f281cf8a3f2fea8e5d32dca3b74298e962a573965e7268f09e79febd6a",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/4127/000000412724000021/0000004127-24-000021.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "342e81153251953b72fac2b0121d02c2de5378ff809dd785fc0df3d3b5fb86f4"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000812011-24-000064",
+   "bulkFootnoteSha256": "46402321433ade6592db4bc2c918fe5142e52ab0672cd8405da3851728c23492",
+   "bulkNormalizedAmounts": {
+    "price": "176.2",
+    "quantity": "575.0"
+   },
+   "bulkStatus": "CONFIRMED_OPEN_MARKET",
+   "issuerCIK": "812011",
+   "matchedFootnoteSha256": "46402321433ade6592db4bc2c918fe5142e52ab0672cd8405da3851728c23492",
+   "openMarketFootnoteConfirmedInOriginal": true,
+   "original": {
+    "acceptedAt": "2024-06-10T22:21:53+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4",
+    "issuerCIK": "812011",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "All shares were acquired at the reported price in multiple open-market transactions.",
+      "price": "176.20",
+      "quantity": "575",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2024-06-10"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 362745,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:08:00.347776+00:00",
+    "sha256": "fbc07ac55e79c30e7751b7884884264ad7c0fd8ac1d570fa61b7fb40b625abbd",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/812011/000081201124000064/0000812011-24-000064.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "30a88543ad95c29e934d8208144bf208060cefaa5e21e0c9c27e73ed1ae1a57a"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000006845-24-000184",
+   "bulkFootnoteSha256": "96e7861fa9418bc63026877805db02f62d38f646d1fb3a13111249b59c39f99b",
+   "bulkNormalizedAmounts": {
+    "price": "18.75",
+    "quantity": "24000.0"
+   },
+   "bulkStatus": "INDETERMINATE_P",
+   "issuerCIK": "6845",
+   "matchedFootnoteSha256": "96e7861fa9418bc63026877805db02f62d38f646d1fb3a13111249b59c39f99b",
+   "openMarketFootnoteConfirmedInOriginal": false,
+   "original": {
+    "acceptedAt": "2024-06-21T20:45:42+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4/A",
+    "issuerCIK": "6845",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F2"
+      ],
+      "footnotes": "The price reported is the weighted average purchase price for the transactions reported. The prices paid ranged from $18.71 to $18.80. The Reporting Person will provide to the issuer, a security holder of the issuer, or the SEC staff, upon request, full information regarding the number of shares purchased at each price within the range.",
+      "price": "18.7489",
+      "quantity": "24000",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2020-04-14"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F3"
+      ],
+      "footnotes": "The price reported is the weighted average purchase price for the transactions reported. The prices paid ranged from $18.6845 to $18.7543. The Reporting Person will provide to the issuer, a security holder of the issuer, or the SEC staff, upon request, full information regarding the number of shares purchased at each price within the range.",
+      "price": "18.7329",
+      "quantity": "2600",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2020-04-14"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 7975,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:08:00.983450+00:00",
+    "sha256": "167de9f3aefcc982cc8490034593b89ae285f1aacdf909691072ddada60703f9",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/6845/000000684524000184/0000006845-24-000184.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "36b38f3464c5b2c860573344d991741ee541fc75a4ded975ffeb07f7b1253b18"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": false
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000008947-24-000200",
+   "bulkFootnoteSha256": "d2a76bbbcde3738d9c5ba7e6a8beb32189f6e8cddef5b3bb1d2b2d85c9a22733",
+   "bulkNormalizedAmounts": {
+    "price": "34.17",
+    "quantity": "469.0"
+   },
+   "bulkStatus": "INDETERMINATE_ACQUISITION",
+   "issuerCIK": "8947",
+   "matchedFootnoteSha256": "d2a76bbbcde3738d9c5ba7e6a8beb32189f6e8cddef5b3bb1d2b2d85c9a22733",
+   "openMarketFootnoteConfirmedInOriginal": false,
+   "original": {
+    "acceptedAt": "2024-08-29T01:45:24+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4/A",
+    "issuerCIK": "8947",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "J",
+      "footnoteIds": [
+       "F1",
+       "F2"
+      ],
+      "footnotes": "This amended Form 4 is being filed to correct the transaction codes in Column 3.\nThe reporting person is voluntarily reporting the purchase of the Issuers common stock pursuant to AZZ Inc.s 2018 Employee Stock Purchase Plan (ESPP), for the ESPP purchase period of January 1, 2024 through June 30, 2024. This transaction is exempt from Rule 16b-3(c). In accordance with the ESPP, the shares were purchased based upon 85% of the closing stock price of the Issuers common stock on the Enrollment Date (as defined in the ESPP).",
+      "price": "34.17",
+      "quantity": "469",
+      "securityTitle": "COMMON STOCK",
+      "transactionDate": "2024-06-30"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 5484,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:08:01.400435+00:00",
+    "sha256": "014ec8907e5505b75b9a3caccc6312a268300806e2c37264fe6dea5886462827",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/8947/000000894724000200/0000008947-24-000200.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "6c156dab3f35ef61ce5cd5949ffcfe79094f44e54a1c7f5f55da7b8838e43773"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000004127-25-000028",
+   "bulkFootnoteSha256": "dc11fa3c4470706c39271b807498c712c000e33fa892888c1dffd095850d9103",
+   "bulkNormalizedAmounts": {
+    "price": "66.13",
+    "quantity": "10000.0"
+   },
+   "bulkStatus": "CONFIRMED_OPEN_MARKET",
+   "issuerCIK": "4127",
+   "matchedFootnoteSha256": "dc11fa3c4470706c39271b807498c712c000e33fa892888c1dffd095850d9103",
+   "openMarketFootnoteConfirmedInOriginal": true,
+   "original": {
+    "acceptedAt": "2025-02-27T23:50:48+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4",
+    "issuerCIK": "4127",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "The price reported in column 4 is a weighted average price. These shares were purchased in multiple open market transactions at prices ranging from $66.10 to $66.15.",
+      "price": "66.13",
+      "quantity": "10000",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2025-02-25"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 4915,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:08:05.337474+00:00",
+    "sha256": "a8cbdc659a6196a7bb87e58db082d805397a1f655f2dc3831836ebc1eeaeff7b",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/4127/000000412725000028/0000004127-25-000028.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "f608db2e79e1cf24928c2efcbfa2a10b3c28e9546bba786d16a608fef7461c73"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000071829-25-000014",
+   "bulkFootnoteSha256": "22f42d8a64d3c728c0ed6b993d1f0d4a5bca623078a15d63084cd04a1b7e8ead",
+   "bulkNormalizedAmounts": {
+    "price": "5.38",
+    "quantity": "10000.0"
+   },
+   "bulkStatus": "CONFIRMED_OPEN_MARKET",
+   "issuerCIK": "71829",
+   "matchedFootnoteSha256": "22f42d8a64d3c728c0ed6b993d1f0d4a5bca623078a15d63084cd04a1b7e8ead",
+   "openMarketFootnoteConfirmedInOriginal": true,
+   "original": {
+    "acceptedAt": "2025-03-06T22:31:58+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4",
+    "issuerCIK": "71829",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "The price reported is a weighted average price. These shares were purchased in multiple transactions in the open market at prices ranging from $5.35 to $5.40, inclusive. The reporting person undertakes to provide to NPK International Inc., any security holder of NPK International Inc., or the staff of the Securities and Exchange Commission, upon request, full information regarding the number of shares purchased at each separate price within the range set forth in footnote (1) to this Form 4.",
+      "price": "5.38",
+      "quantity": "10000",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2025-03-05"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 5197,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:08:05.775275+00:00",
+    "sha256": "0bcf28b90aef8743c6471e4053a60019ef99bff3efa2df21e0afb776c5b230d2",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/71829/000007182925000014/0000071829-25-000014.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "be36f4b7eb9cd67802ee88411b2c8b058b7b871eb665d5b850d57e095e6b6961"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000025475-25-000024",
+   "bulkFootnoteSha256": "6cca549af487760f1f46499ab7abef56de7c4a81d1585457ee200048e08f1102",
+   "bulkNormalizedAmounts": {
+    "price": "7.25",
+    "quantity": "2868.0"
+   },
+   "bulkStatus": "INDETERMINATE_ACQUISITION",
+   "issuerCIK": "25475",
+   "matchedFootnoteSha256": "6cca549af487760f1f46499ab7abef56de7c4a81d1585457ee200048e08f1102",
+   "openMarketFootnoteConfirmedInOriginal": false,
+   "original": {
+    "acceptedAt": "2025-12-17T20:11:02+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4/A",
+    "issuerCIK": "25475",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "J",
+      "footnoteIds": [
+       "F1",
+       "F2"
+      ],
+      "footnotes": "Shares acquired through qualified Crawford & Company Employee Stock Purchase Plan.\nNumber of shares beneficially owned by Reporting Person as of 12/16/2025.",
+      "price": "7.25",
+      "quantity": "2868",
+      "securityTitle": "Class A Common Stock",
+      "transactionDate": "2025-07-01"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 4922,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:08:06.244614+00:00",
+    "sha256": "7adda8af310bc8f056301fabe3a5dc07bdbae563ceb39a6a3236dd0ee6c9e328",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/25475/000002547525000024/0000025475-25-000024.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "133c809321b8d86ebbc3ea9069e6e58cba92ff2c02ce7d7c18425ab3faa3b733"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000070858-25-000376",
+   "bulkFootnoteSha256": "60a3df7630abb32c5908e836f0fdd1245c9ce7de272c5397eadbd06e5a014ea9",
+   "bulkNormalizedAmounts": {
+    "price": "12.64",
+    "quantity": "4780.0"
+   },
+   "bulkStatus": "INDETERMINATE_P",
+   "issuerCIK": "1232860",
+   "matchedFootnoteSha256": "60a3df7630abb32c5908e836f0fdd1245c9ce7de272c5397eadbd06e5a014ea9",
+   "openMarketFootnoteConfirmedInOriginal": false,
+   "original": {
+    "acceptedAt": "2025-10-06T19:28:30+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4/A",
+    "issuerCIK": "1232860",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1",
+       "F2",
+       "F3"
+      ],
+      "footnotes": "This statement is jointly filed by Bank of America Corporation and Merrill Lynch, Pierce, Fenner & Smith Incorporated (\"Merrill Lynch\") (collectively, the \"Reporting Persons\") to amend the two lines of transaction information disclosed in Table 1 by the Reporting Persons on September 29, 2025. The amendment reflects the correct Title of Security for each trade and the correct Date of Earliest Transaction Required to be Reported. Bank of America Corporation holds an indirect interest in the securities listed in this Report by virtue of its 100% ownership of its subsidiary Merrill Lynch. Each Reporting Person disclaims beneficial ownership of the securities reported herein except to the extent of its pecuniary interest therein, if any, and this report shall not be deemed an admission that any such Reporting Person is the beneficial owner of, or has any pecuniary interest in, such securities for purposes of Securities Exchange Act of 1934 (the \"Exchange Act\"), or for any other purpose.\nEach Reporting Person declares that neither the filing of this statement nor anything herein shall be construed as an admission that such person is, for the purposes of Section 13(d) of the Exchange Act or any other purpose, (i) acting (or has agreed or is agreeing to act together with any other person) as a partnership, limited partnership, syndicate or other group for the purpose of acquiring, holding or disposing of securities of the Issuer or otherwise with respect to the Issuer or any securities of the Issuer or (ii) a member of any group with respect to the Issuer or any securities of the Issuer.\n3. Without conceding its status as a greater than 10% beneficial owner or that the reported transactions are subject to disclosure under Section 16(a) of the Exchange Act or short-swing profit recovery under Section 16(b) of the Exchange Act, the amount of profit potentially recoverable by the Issuer from the reported transactions in the event that the Reporting Persons were greater than 10% beneficial owners and the transactions were subject to Section 16(b) will be remitted to the Issuer.",
+      "price": "12.64",
+      "quantity": "4780",
+      "securityTitle": "COMMON STOCK",
+      "transactionDate": "2025-09-25"
+     },
+     {
+      "acquiredDisposed": "D",
+      "code": "S",
+      "footnoteIds": [
+       "F1",
+       "F2",
+       "F3"
+      ],
+      "footnotes": "This statement is jointly filed by Bank of America Corporation and Merrill Lynch, Pierce, Fenner & Smith Incorporated (\"Merrill Lynch\") (collectively, the \"Reporting Persons\") to amend the two lines of transaction information disclosed in Table 1 by the Reporting Persons on September 29, 2025. The amendment reflects the correct Title of Security for each trade and the correct Date of Earliest Transaction Required to be Reported. Bank of America Corporation holds an indirect interest in the securities listed in this Report by virtue of its 100% ownership of its subsidiary Merrill Lynch. Each Reporting Person disclaims beneficial ownership of the securities reported herein except to the extent of its pecuniary interest therein, if any, and this report shall not be deemed an admission that any such Reporting Person is the beneficial owner of, or has any pecuniary interest in, such securities for purposes of Securities Exchange Act of 1934 (the \"Exchange Act\"), or for any other purpose.\nEach Reporting Person declares that neither the filing of this statement nor anything herein shall be construed as an admission that such person is, for the purposes of Section 13(d) of the Exchange Act or any other purpose, (i) acting (or has agreed or is agreeing to act together with any other person) as a partnership, limited partnership, syndicate or other group for the purpose of acquiring, holding or disposing of securities of the Issuer or otherwise with respect to the Issuer or any securities of the Issuer or (ii) a member of any group with respect to the Issuer or any securities of the Issuer.\n3. Without conceding its status as a greater than 10% beneficial owner or that the reported transactions are subject to disclosure under Section 16(a) of the Exchange Act or short-swing profit recovery under Section 16(b) of the Exchange Act, the amount of profit potentially recoverable by the Issuer from the reported transactions in the event that the Reporting Persons were greater than 10% beneficial owners and the transactions were subject to Section 16(b) will be remitted to the Issuer.",
+      "price": "12.68",
+      "quantity": "4780",
+      "securityTitle": "COMMON STOCK",
+      "transactionDate": "2025-09-25"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 13031,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:08:06.709520+00:00",
+    "sha256": "79812b7ce6f513a74855d62d3d73b691c512904ebf51f85b1df554b363aca92f",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/1232860/000007085825000376/0000070858-25-000376.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "66ed3431bc9d661988425230dedde49772c0ddfe93149d5d2881be5c8ca73475"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000034782-26-000016",
+   "bulkFootnoteSha256": "74467ea4741d290924ef33bc5a560dff60cc8ea7ef2cee8c9e4ea346ad2d9ee5",
+   "bulkNormalizedAmounts": {
+    "price": "48.72",
+    "quantity": "36.38"
+   },
+   "bulkStatus": "CONFIRMED_OPEN_MARKET",
+   "issuerCIK": "34782",
+   "matchedFootnoteSha256": "74467ea4741d290924ef33bc5a560dff60cc8ea7ef2cee8c9e4ea346ad2d9ee5",
+   "openMarketFootnoteConfirmedInOriginal": true,
+   "original": {
+    "acceptedAt": "2026-03-10T21:32:53+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4",
+    "issuerCIK": "34782",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1",
+       "F2",
+       "F3"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.\nTransaction price information is unavailable for certain historical open market transactions reported on this Form 4.\nThe reporting person conducted a reconciliation of historical brokerage activity and determined that beneficial ownership had been understated by 189 shares in prior filings, beginning with the ownership baseline established at the time of the reporting person's initial Form 3. No transaction occurred in connection with the adjustment. The ownership amount reported herein reflects the reporting person's correct beneficial ownership.",
+      "price": "0",
+      "quantity": "0.538",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2018-08-15"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1",
+       "F2"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.\nTransaction price information is unavailable for certain historical open market transactions reported on this Form 4.",
+      "price": "0",
+      "quantity": "0.64",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2018-11-15"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1",
+       "F2"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.\nTransaction price information is unavailable for certain historical open market transactions reported on this Form 4.",
+      "price": "0",
+      "quantity": "0.712",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2019-02-14"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1",
+       "F2"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.\nTransaction price information is unavailable for certain historical open market transactions reported on this Form 4.",
+      "price": "0",
+      "quantity": "0.716",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2019-05-15"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1",
+       "F2"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.\nTransaction price information is unavailable for certain historical open market transactions reported on this Form 4.",
+      "price": "0",
+      "quantity": "0.741",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2019-08-15"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1",
+       "F2"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.\nTransaction price information is unavailable for certain historical open market transactions reported on this Form 4.",
+      "price": "0",
+      "quantity": "0.705",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2019-11-15"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1",
+       "F2"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.\nTransaction price information is unavailable for certain historical open market transactions reported on this Form 4.",
+      "price": "0",
+      "quantity": "0.761",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2020-02-14"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1",
+       "F2"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.\nTransaction price information is unavailable for certain historical open market transactions reported on this Form 4.",
+      "price": "0",
+      "quantity": "1.906",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2020-05-15"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1",
+       "F2"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.\nTransaction price information is unavailable for certain historical open market transactions reported on this Form 4.",
+      "price": "0",
+      "quantity": "0.963",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2020-08-14"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1",
+       "F2"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.\nTransaction price information is unavailable for certain historical open market transactions reported on this Form 4.",
+      "price": "0",
+      "quantity": "0.982",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2020-11-13"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1",
+       "F2"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.\nTransaction price information is unavailable for certain historical open market transactions reported on this Form 4.",
+      "price": "0",
+      "quantity": "42.33",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2021-02-12"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.",
+      "price": "48.06",
+      "quantity": "29.635",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2021-05-14"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.",
+      "price": "47.56",
+      "quantity": "35.226",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2021-08-13"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.",
+      "price": "50.84",
+      "quantity": "34.653",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2021-11-12"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.",
+      "price": "48.72",
+      "quantity": "36.376",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2022-02-16"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.",
+      "price": "44.35",
+      "quantity": "40.221",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2022-05-13"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.",
+      "price": "48.50",
+      "quantity": "38.23",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2022-08-12"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.",
+      "price": "57.58",
+      "quantity": "32.41",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2022-11-10"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.",
+      "price": "49.55",
+      "quantity": "39.168",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2023-02-16"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.",
+      "price": "40.98",
+      "quantity": "47.669",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2023-05-12"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.",
+      "price": "48.21",
+      "quantity": "53.488",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2023-08-11"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.",
+      "price": "47.21",
+      "quantity": "58.411",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2023-11-15"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.",
+      "price": "49.50",
+      "quantity": "56.107",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2024-02-15"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.",
+      "price": "52.43",
+      "quantity": "53.336",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2024-05-15"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.",
+      "price": "57.02",
+      "quantity": "52.27",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2024-08-15"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.",
+      "price": "66.53",
+      "quantity": "46.431",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2024-11-15"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.",
+      "price": "66.41",
+      "quantity": "46.773",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2025-02-14"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.",
+      "price": "62.42",
+      "quantity": "52.806",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2025-05-15"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.",
+      "price": "61.31",
+      "quantity": "54.09",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2025-08-15"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "This Form 4 reports previously unreported open-market purchases of the issuer's common stock made using cash dividends received by the reporting person. Fractional shares were credited by the reporting person's brokerage account.",
+      "price": "61.71",
+      "quantity": "56.92",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2025-11-14"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 64627,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:08:07.320933+00:00",
+    "sha256": "8ae8c8ed1193a2e0f81e43db2e80b712396f9eedff48bfebed18d2135e04fc93",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/34782/000003478226000016/0000034782-26-000016.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "9f8a82f4e522128f808b75e9693ad0a4cbcde8b397dc06e0befb61d5f7bb410e"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": false
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000902664-26-003270",
+   "bulkFootnoteSha256": "121b7b30a7fa49c91b41c67244579d017fa7cda465996f6ce44929cce7058213",
+   "bulkNormalizedAmounts": {
+    "price": "18.25",
+    "quantity": "7905.0"
+   },
+   "bulkStatus": "CONFIRMED_OPEN_MARKET",
+   "issuerCIK": "1853921",
+   "matchedFootnoteSha256": "121b7b30a7fa49c91b41c67244579d017fa7cda465996f6ce44929cce7058213",
+   "openMarketFootnoteConfirmedInOriginal": true,
+   "original": {
+    "acceptedAt": "2026-07-29T01:30:16+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4",
+    "issuerCIK": "1853921",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1",
+       "F4",
+       "F5",
+       "F6"
+      ],
+      "footnotes": "The shares reported on this line were purchased from underwriters in the Issuer's initial public offering (the \"IPO\") at the initial public offering price of $15.00 per share. Of such shares, 2,066,666 shares were purchased on behalf of Avoro Life Sciences Fund LLC (\"Avoro Life Sciences\") and 266,667 shares were purchased on behalf of Avoro Ventures Fund L.P. (\"Avoro Ventures Fund\" and, together with Avoro Life Sciences, the \"Funds\").\nThe securities reported herein are held directly by Avoro Life Sciences and Avoro Ventures Fund. Avoro Capital Advisors LLC (\"Avoro Capital Advisors\") serves as investment adviser to Avoro Life Sciences, and Avoro Ventures LLC (\"Avoro Ventures\") serves as investment adviser to Avoro Ventures Fund. Dr. Aghazadeh serves as the portfolio manager and controlling person of Avoro Capital Advisors and Avoro Ventures. By virtue of these relationships, each of the Reporting Persons may be deemed to beneficially own the securities held by the Funds.\nEach Reporting Person disclaims beneficial ownership of the securities reported herein except to the extent of its or his pecuniary interest therein, if any, and this report shall not be deemed an admission that any Reporting Person is the beneficial owner of such securities for purposes of Section 16 of the Securities Exchange Act of 1934, as amended, or for any other purpose. The shares reported herein are held on behalf of the Funds and other managed accounts, within the meaning of Rule 16a-1(a)(2).\nThe amount reported in Column 5 includes 697,650 shares of Common Stock issuable upon conversion of shares of the Issuer's Series B Preferred Stock held by the Funds, which shares were reported on an as-converted basis in the Reporting Persons' Form 3 filed on July 23, 2026. Each share of Series B Preferred Stock was convertible into Common Stock on a one-for-0.1689 basis at the option of the holder and converted automatically into Common Stock, without the payment of any consideration, upon the closing of the IPO on July 27, 2026. No transaction is reported in Table I or Table II with respect to the conversion.",
+      "price": "15.00",
+      "quantity": "2333333",
+      "securityTitle": "Common Stock, par value $0.0001 per share",
+      "transactionDate": "2026-07-24"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F2",
+       "F4",
+       "F5",
+       "F6"
+      ],
+      "footnotes": "The shares reported on these lines were purchased on behalf of Avoro Life Sciences in open market transactions on the dates provided in Column 2.\nThe securities reported herein are held directly by Avoro Life Sciences and Avoro Ventures Fund. Avoro Capital Advisors LLC (\"Avoro Capital Advisors\") serves as investment adviser to Avoro Life Sciences, and Avoro Ventures LLC (\"Avoro Ventures\") serves as investment adviser to Avoro Ventures Fund. Dr. Aghazadeh serves as the portfolio manager and controlling person of Avoro Capital Advisors and Avoro Ventures. By virtue of these relationships, each of the Reporting Persons may be deemed to beneficially own the securities held by the Funds.\nEach Reporting Person disclaims beneficial ownership of the securities reported herein except to the extent of its or his pecuniary interest therein, if any, and this report shall not be deemed an admission that any Reporting Person is the beneficial owner of such securities for purposes of Section 16 of the Securities Exchange Act of 1934, as amended, or for any other purpose. The shares reported herein are held on behalf of the Funds and other managed accounts, within the meaning of Rule 16a-1(a)(2).\nThe amount reported in Column 5 includes 697,650 shares of Common Stock issuable upon conversion of shares of the Issuer's Series B Preferred Stock held by the Funds, which shares were reported on an as-converted basis in the Reporting Persons' Form 3 filed on July 23, 2026. Each share of Series B Preferred Stock was convertible into Common Stock on a one-for-0.1689 basis at the option of the holder and converted automatically into Common Stock, without the payment of any consideration, upon the closing of the IPO on July 27, 2026. No transaction is reported in Table I or Table II with respect to the conversion.",
+      "price": "22.31",
+      "quantity": "50000",
+      "securityTitle": "Common Stock, par value $0.0001 per share",
+      "transactionDate": "2026-07-24"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F2",
+       "F3",
+       "F4",
+       "F5",
+       "F6"
+      ],
+      "footnotes": "The shares reported on these lines were purchased on behalf of Avoro Life Sciences in open market transactions on the dates provided in Column 2.\nOf the 3,088,888 shares reported in Column 5, 2,598,973 shares are held by Avoro Life Sciences and 489,915 shares are held by Avoro Ventures Fund.\nThe securities reported herein are held directly by Avoro Life Sciences and Avoro Ventures Fund. Avoro Capital Advisors LLC (\"Avoro Capital Advisors\") serves as investment adviser to Avoro Life Sciences, and Avoro Ventures LLC (\"Avoro Ventures\") serves as investment adviser to Avoro Ventures Fund. Dr. Aghazadeh serves as the portfolio manager and controlling person of Avoro Capital Advisors and Avoro Ventures. By virtue of these relationships, each of the Reporting Persons may be deemed to beneficially own the securities held by the Funds.\nEach Reporting Person disclaims beneficial ownership of the securities reported herein except to the extent of its or his pecuniary interest therein, if any, and this report shall not be deemed an admission that any Reporting Person is the beneficial owner of such securities for purposes of Section 16 of the Securities Exchange Act of 1934, as amended, or for any other purpose. The shares reported herein are held on behalf of the Funds and other managed accounts, within the meaning of Rule 16a-1(a)(2).\nThe amount reported in Column 5 includes 697,650 shares of Common Stock issuable upon conversion of shares of the Issuer's Series B Preferred Stock held by the Funds, which shares were reported on an as-converted basis in the Reporting Persons' Form 3 filed on July 23, 2026. Each share of Series B Preferred Stock was convertible into Common Stock on a one-for-0.1689 basis at the option of the holder and converted automatically into Common Stock, without the payment of any consideration, upon the closing of the IPO on July 27, 2026. No transaction is reported in Table I or Table II with respect to the conversion.",
+      "price": "18.25",
+      "quantity": "7905",
+      "securityTitle": "Common Stock, par value $0.0001 per share",
+      "transactionDate": "2026-07-28"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 15322,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:08:07.736918+00:00",
+    "sha256": "3d58f868d044af22f37b0024bb4440edef349abff898f105b4b24d5ff72802a2",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/1853921/000090266426003270/0000902664-26-003270.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "b21d01314cb03222cfa7058bd92f26068ad24a9410bc1d4de94fb2f64546fadb"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000070858-26-000255",
+   "bulkFootnoteSha256": "dabb73995dce67fd2a757fa3337895f3bedbd788781f89ea04e621dde2915fb8",
+   "bulkNormalizedAmounts": {
+    "price": "",
+    "quantity": ""
+   },
+   "bulkStatus": "INDETERMINATE_ACQUISITION",
+   "issuerCIK": "70858",
+   "matchedFootnoteSha256": null,
+   "openMarketFootnoteConfirmedInOriginal": false,
+   "original": {
+    "acceptedAt": "2026-05-04T23:09:38+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4/A",
+    "issuerCIK": "70858",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "J",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "See \"Remarks\".",
+      "price": "0",
+      "quantity": "0",
+      "securityTitle": "Invesco Advantage Municipal Income Trust II [VKI]",
+      "transactionDate": "2026-04-30"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 10146,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:08:08.138351+00:00",
+    "sha256": "18f97f6b3e9c644323fdc9cf98dffe7a61ebcb0f98d1b03ff860f5545b2f41bf",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000255/0000070858-26-000255.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "9ce10a3c5720c699f08728b246064240ba7b82a172207bd6a8ebca693c559104"
+   },
+   "uniqueEconomicRowMatch": false,
+   "uniqueExactAmountMatch": false
+  },
+  {
+   "acceptanceNotUsedToAdvanceDefaultAvailability": true,
+   "accession": "0000203596-26-000076",
+   "bulkFootnoteSha256": "18a90dcab4c41111785ce4aeac94095a92e2c600f9dc226705c7f0ae3af28f75",
+   "bulkNormalizedAmounts": {
+    "price": "34.52",
+    "quantity": "200.0"
+   },
+   "bulkStatus": "INDETERMINATE_P",
+   "issuerCIK": "203596",
+   "matchedFootnoteSha256": "18a90dcab4c41111785ce4aeac94095a92e2c600f9dc226705c7f0ae3af28f75",
+   "openMarketFootnoteConfirmedInOriginal": false,
+   "original": {
+    "acceptedAt": "2026-04-30T18:35:21+00:00",
+    "acceptedAtBasis": "EDGAR_SEC_HEADER_ACCEPTANCE_NOT_DISSEMINATION",
+    "documentType": "4/A",
+    "issuerCIK": "203596",
+    "transactions": [
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [
+       "F1"
+      ],
+      "footnotes": "This amendment is being filed to correct the price of the purchase of 200 shares which was inaccurately reported on the original Form 4 as $34.68.",
+      "price": "34.52",
+      "quantity": "200",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2026-04-27"
+     },
+     {
+      "acquiredDisposed": "A",
+      "code": "P",
+      "footnoteIds": [],
+      "footnotes": "",
+      "price": "34.51",
+      "quantity": "800",
+      "securityTitle": "Common Stock",
+      "transactionDate": "2026-04-27"
+     }
+    ]
+   },
+   "source": {
+    "bodyBlockMarker": null,
+    "bytes": 6043,
+    "contentEncoding": "gzip",
+    "contentType": "text/plain",
+    "observedAtUTC": "2026-11-20T09:08:08.662538+00:00",
+    "sha256": "5844eb828d7e32174a29f64cef39529237bdf259430afe31364725e5277a23f5",
+    "status": 200,
+    "url": "https://www.sec.gov/Archives/edgar/data/203596/000020359626000076/0000203596-26-000076.txt",
+    "userAgentSource": "scripts/probe_us_pit_fundamentals.py:SEC_HEADERS",
+    "wireSha256": "5c84ec26c52a243432761222038e8414695f49c1bb622e3d2109e72520b62900"
+   },
+   "uniqueEconomicRowMatch": true,
+   "uniqueExactAmountMatch": true
+  }
+ ],
+ "selection": "First accession(s) by filing year, separately confirmed open-market and amendments; source-only, not chosen by a return."
+}

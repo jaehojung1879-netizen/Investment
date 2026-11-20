@@ -1,0 +1,2977 @@
+{
+ "market": "KR",
+ "source": "DART_D002_PUBLIC_SEARCH_AND_VIEWER",
+ "decisionWeeks": 454,
+ "coveredStudyWeeks": 0,
+ "officialListCoveredWeeks": 138,
+ "weights": {
+  "0": 0,
+  "1": 0,
+  "2": 0,
+  "3": 0,
+  "4": 0,
+  "5": 0
+ },
+ "conditionalWeights": {
+  "0": 0,
+  "1": 0,
+  "2": 0,
+  "3": 0,
+  "4": 0,
+  "5": 1
+ },
+ "coverage": {
+  "sourceRange": [
+   "2023-01",
+   "2025-08"
+  ],
+  "completeListMonths": 32,
+  "officialListReceipts": 32986,
+  "scopedReceipts": 6574,
+  "scopedReceiptStatuses": {
+   "PARSED": 96,
+   "DETAIL_UNAVAILABLE": 2,
+   "MAIN_UNAVAILABLE": 221,
+   "DOC_NOT_COLLECTED": 6255
+  },
+  "sourceRows": {
+   "EXCLUDED_NONBUY": 438,
+   "UNKNOWN_TRANSACTION_TYPE": 48,
+   "EXCLUDED_NONCOMMON": 28,
+   "UNKNOWN_BUY_ECONOMICS": 5,
+   "EXCLUDED_NONMARKET_ACQUISITION": 2,
+   "CLEAN_FIRST_DISCLOSURE": 398
+  },
+  "listedPublicDateDiffersFromReceiptPrefix": 52
+ },
+ "horizons": {
+  "126": {
+   "own": {
+    "total": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "totalGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "partialAdjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etfNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "strategyNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "peerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedPeerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "active": {
+    "total": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "totalGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "partialAdjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etfNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "strategyNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "peerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedPeerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "paired": {
+    "total": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "totalGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "partialAdjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etfNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "strategyNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "peerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedPeerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "adjusted": {
+    "total": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "totalGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "partialAdjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etfNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "strategyNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "peerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedPeerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "bothMatches": {
+    "total": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "totalGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "partialAdjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etfNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "strategyNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "peerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedPeerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "conditionalOwn": {
+    "total": {
+     "n": 1,
+     "mean": -0.010119042920824432,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selection": {
+     "n": 1,
+     "mean": 0.011875510537511968,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacement": {
+     "n": 1,
+     "mean": -0.0219945534583364,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "totalGross": {
+     "n": 1,
+     "mean": -0.009572899432255207,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selectionGross": {
+     "n": 1,
+     "mean": 0.011905870507305596,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacementGross": {
+     "n": 1,
+     "mean": -0.021478769939560802,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "partialAdjustedSelection": {
+     "n": 1,
+     "mean": 0.0018367688959452216,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etfNet": {
+     "n": 1,
+     "mean": 0.10937335549118377,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "strategyNet": {
+     "n": 1,
+     "mean": 0.09925431257035933,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "peerNet": {
+     "n": 1,
+     "mean": 0.08737880203284737,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedPeerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "conditionalActive": {
+    "total": {
+     "n": 1,
+     "mean": -0.010119042920824432,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selection": {
+     "n": 1,
+     "mean": 0.011875510537511968,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacement": {
+     "n": 1,
+     "mean": -0.0219945534583364,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "totalGross": {
+     "n": 1,
+     "mean": -0.009572899432255207,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selectionGross": {
+     "n": 1,
+     "mean": 0.011905870507305596,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacementGross": {
+     "n": 1,
+     "mean": -0.021478769939560802,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "partialAdjustedSelection": {
+     "n": 1,
+     "mean": 0.0018367688959452216,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etfNet": {
+     "n": 1,
+     "mean": 0.10937335549118377,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "strategyNet": {
+     "n": 1,
+     "mean": 0.09925431257035933,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "peerNet": {
+     "n": 1,
+     "mean": 0.08737880203284737,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedPeerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "conditionalPaired": {
+    "total": {
+     "n": 1,
+     "mean": -0.010119042920824432,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selection": {
+     "n": 1,
+     "mean": 0.011875510537511968,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacement": {
+     "n": 1,
+     "mean": -0.0219945534583364,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "totalGross": {
+     "n": 1,
+     "mean": -0.009572899432255207,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selectionGross": {
+     "n": 1,
+     "mean": 0.011905870507305596,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacementGross": {
+     "n": 1,
+     "mean": -0.021478769939560802,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "partialAdjustedSelection": {
+     "n": 1,
+     "mean": 0.0018367688959452216,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etfNet": {
+     "n": 1,
+     "mean": 0.10937335549118377,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "strategyNet": {
+     "n": 1,
+     "mean": 0.09925431257035933,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "peerNet": {
+     "n": 1,
+     "mean": 0.08737880203284737,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.04,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedPeerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "conditionalAdjusted": {
+    "total": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "totalGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "partialAdjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etfNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "strategyNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "peerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedPeerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "conditionalBothMatches": {
+    "total": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "totalGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "partialAdjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etfNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "strategyNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "peerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedPeerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 25,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "coverage": {
+    "matureWeeks": 427,
+    "strictMatureWeeks": 0,
+    "completeWeekPriceUnresolved": 0,
+    "strictActiveWeeks": 0,
+    "strictActiveMatchedWeeks": 0,
+    "conditionalActiveWeeks": 1,
+    "conditionalActiveMatchedWeeks": 1,
+    "conditionalActiveAdjustedWeeks": 0,
+    "tradeStatus": {
+     "NO_CLASSIFIED_SIGNAL_OR_SOURCE_GAP": 453,
+     "OBSERVED": 1
+    },
+    "entryExitPriceFailures": 0
+   },
+   "sensitivity": {
+    "strictTotal": {
+     "topName": null,
+     "topYear": null
+    },
+    "strictSelection": {
+     "topName": null,
+     "topYear": null
+    },
+    "conditionalTotal": {
+     "topName": "000270.KS",
+     "topYear": 2023,
+     "entryYearContribution": {
+      "2023": -0.010119042920824432
+     },
+     "excludeTopNameDates": {
+      "n": 0,
+      "mean": null,
+      "blockWeeks": 25,
+      "independentBlocksApprox": 0.0,
+      "ci": null,
+      "pOneSided": null,
+      "pOneSidedApprox": null
+     },
+     "excludeTopEntryYear": {
+      "n": 0,
+      "mean": null,
+      "blockWeeks": 25,
+      "independentBlocksApprox": 0.0,
+      "ci": null,
+      "pOneSided": null,
+      "pOneSidedApprox": null
+     }
+    },
+    "conditionalSelection": {
+     "topName": "000270.KS",
+     "topYear": 2023,
+     "entryYearContribution": {
+      "2023": 0.011875510537511966
+     },
+     "excludeTopNameDates": {
+      "n": 0,
+      "mean": null,
+      "blockWeeks": 25,
+      "independentBlocksApprox": 0.0,
+      "ci": null,
+      "pOneSided": null,
+      "pOneSidedApprox": null
+     },
+     "excludeTopEntryYear": {
+      "n": 0,
+      "mean": null,
+      "blockWeeks": 25,
+      "independentBlocksApprox": 0.0,
+      "ci": null,
+      "pOneSided": null,
+      "pOneSidedApprox": null
+     }
+    }
+   }
+  },
+  "252": {
+   "own": {
+    "total": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "totalGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "partialAdjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etfNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "strategyNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "peerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedPeerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "active": {
+    "total": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "totalGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "partialAdjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etfNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "strategyNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "peerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedPeerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "paired": {
+    "total": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "totalGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "partialAdjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etfNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "strategyNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "peerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedPeerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "adjusted": {
+    "total": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "totalGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "partialAdjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etfNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "strategyNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "peerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedPeerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "bothMatches": {
+    "total": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "totalGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "partialAdjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etfNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "strategyNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "peerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedPeerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "conditionalOwn": {
+    "total": {
+     "n": 1,
+     "mean": -0.0027015266843536004,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selection": {
+     "n": 1,
+     "mean": 0.006044018476506369,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacement": {
+     "n": 1,
+     "mean": -0.00874554516085997,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "totalGross": {
+     "n": 1,
+     "mean": -0.0021952072016504206,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selectionGross": {
+     "n": 1,
+     "mean": 0.006058255376641476,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacementGross": {
+     "n": 1,
+     "mean": -0.008253462578291897,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "partialAdjustedSelection": {
+     "n": 1,
+     "mean": -0.018135829171611443,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etfNet": {
+     "n": 1,
+     "mean": 0.07442940493369168,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "strategyNet": {
+     "n": 1,
+     "mean": 0.07172787824933809,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "peerNet": {
+     "n": 1,
+     "mean": 0.06568385977283171,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedPeerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "conditionalActive": {
+    "total": {
+     "n": 1,
+     "mean": -0.0027015266843536004,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selection": {
+     "n": 1,
+     "mean": 0.006044018476506369,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacement": {
+     "n": 1,
+     "mean": -0.00874554516085997,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "totalGross": {
+     "n": 1,
+     "mean": -0.0021952072016504206,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selectionGross": {
+     "n": 1,
+     "mean": 0.006058255376641476,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacementGross": {
+     "n": 1,
+     "mean": -0.008253462578291897,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "partialAdjustedSelection": {
+     "n": 1,
+     "mean": -0.018135829171611443,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etfNet": {
+     "n": 1,
+     "mean": 0.07442940493369168,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "strategyNet": {
+     "n": 1,
+     "mean": 0.07172787824933809,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "peerNet": {
+     "n": 1,
+     "mean": 0.06568385977283171,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedPeerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "conditionalPaired": {
+    "total": {
+     "n": 1,
+     "mean": -0.0027015266843536004,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selection": {
+     "n": 1,
+     "mean": 0.006044018476506369,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacement": {
+     "n": 1,
+     "mean": -0.00874554516085997,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "totalGross": {
+     "n": 1,
+     "mean": -0.0021952072016504206,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selectionGross": {
+     "n": 1,
+     "mean": 0.006058255376641476,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacementGross": {
+     "n": 1,
+     "mean": -0.008253462578291897,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "partialAdjustedSelection": {
+     "n": 1,
+     "mean": -0.018135829171611443,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etfNet": {
+     "n": 1,
+     "mean": 0.07442940493369168,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "strategyNet": {
+     "n": 1,
+     "mean": 0.07172787824933809,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "peerNet": {
+     "n": 1,
+     "mean": 0.06568385977283171,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.02,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedPeerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "conditionalAdjusted": {
+    "total": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "totalGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "partialAdjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etfNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "strategyNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "peerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedPeerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "conditionalBothMatches": {
+    "total": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "totalGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelectionGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacementGross": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "partialAdjustedSelection": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etfNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "strategyNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "peerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedPeerNet": {
+     "n": 0,
+     "mean": null,
+     "blockWeeks": 50,
+     "independentBlocksApprox": 0.0,
+     "ci": null,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "coverage": {
+    "matureWeeks": 400,
+    "strictMatureWeeks": 0,
+    "completeWeekPriceUnresolved": 0,
+    "strictActiveWeeks": 0,
+    "strictActiveMatchedWeeks": 0,
+    "conditionalActiveWeeks": 1,
+    "conditionalActiveMatchedWeeks": 1,
+    "conditionalActiveAdjustedWeeks": 0,
+    "tradeStatus": {
+     "NO_CLASSIFIED_SIGNAL_OR_SOURCE_GAP": 453,
+     "OBSERVED": 1
+    },
+    "entryExitPriceFailures": 0
+   },
+   "sensitivity": {
+    "strictTotal": {
+     "topName": null,
+     "topYear": null
+    },
+    "strictSelection": {
+     "topName": null,
+     "topYear": null
+    },
+    "conditionalTotal": {
+     "topName": "000270.KS",
+     "topYear": 2023,
+     "entryYearContribution": {
+      "2023": -0.0027015266843535973
+     },
+     "excludeTopNameDates": {
+      "n": 0,
+      "mean": null,
+      "blockWeeks": 50,
+      "independentBlocksApprox": 0.0,
+      "ci": null,
+      "pOneSided": null,
+      "pOneSidedApprox": null
+     },
+     "excludeTopEntryYear": {
+      "n": 0,
+      "mean": null,
+      "blockWeeks": 50,
+      "independentBlocksApprox": 0.0,
+      "ci": null,
+      "pOneSided": null,
+      "pOneSidedApprox": null
+     }
+    },
+    "conditionalSelection": {
+     "topName": "000270.KS",
+     "topYear": 2023,
+     "entryYearContribution": {
+      "2023": 0.006044018476506368
+     },
+     "excludeTopNameDates": {
+      "n": 0,
+      "mean": null,
+      "blockWeeks": 50,
+      "independentBlocksApprox": 0.0,
+      "ci": null,
+      "pOneSided": null,
+      "pOneSidedApprox": null
+     },
+     "excludeTopEntryYear": {
+      "n": 0,
+      "mean": null,
+      "blockWeeks": 50,
+      "independentBlocksApprox": 0.0,
+      "ci": null,
+      "pOneSided": null,
+      "pOneSidedApprox": null
+     }
+    }
+   }
+  }
+ },
+ "ledgers": {
+  "strategyOnly": {
+   "continuousObservedWeeks": 0,
+   "26": {
+    "status": "INSUFFICIENT_CONTIGUOUS_DISCLOSURE_WEEKS",
+    "required": 26
+   },
+   "52": {
+    "status": "INSUFFICIENT_CONTIGUOUS_DISCLOSURE_WEEKS",
+    "required": 52
+   }
+  },
+  "paired": {
+   "continuousObservedWeeks": 0,
+   "26": {
+    "status": "INSUFFICIENT_CONTIGUOUS_DISCLOSURE_WEEKS",
+    "required": 26
+   },
+   "52": {
+    "status": "INSUFFICIENT_CONTIGUOUS_DISCLOSURE_WEEKS",
+    "required": 52
+   }
+  }
+ },
+ "priceVerification": {
+  "126": {
+   "threePartMaxError": 0.0,
+   "oldEtfNetMaxError": 1.8376966615107904e-13
+  },
+  "252": {
+   "threePartMaxError": 4.336808689942018e-19,
+   "oldEtfNetMaxError": 8.31279489688086e-15
+  }
+ }
+}
