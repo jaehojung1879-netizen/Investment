@@ -58,6 +58,36 @@ def audit(private: Path, work: Path) -> dict:
             "correctedCopySha256": sha(out), "correctedCopyLocation": "outside git (private scratch)"}
 
 
+def compare() -> dict:
+    """#354 US claims and ledgers: committed result vs the #353-corrected re-run."""
+    orig_dir = ROOT / "research/kr_us_earnings_expectations_v1/results"
+    corr_dir = HERE / "results" / "354-us-corrected"
+    out = {}
+    for name in ("us-events.json", "us-books.json"):
+        o, c = json.loads((orig_dir / name).read_text()), json.loads((corr_dir / name).read_text())
+        if name == "us-events.json":
+            for k, path in (("E_A", ("E_A_persistence", "all")), ("E_B_strict126", ("E_B_drift", "strict126", "topMinusBottom")),
+                            ("E_H3", ("E_H3_divergence", "lowEarMinusHighEar"))):
+                a, b = o, c
+                for p in path:
+                    a, b = a[p], b[p]
+                out[k] = {"original": a.get("mean"), "corrected": b.get("mean"), "originalCi": a.get("ci"), "correctedCi": b.get("ci")}
+        else:
+            for k in ("E_H1", "E_H2"):
+                a, b = o["fixed"]["126"]["FULL"]["pairs"][k], c["fixed"]["126"]["FULL"]["pairs"][k]
+                out[k] = {"original": a.get("mean"), "corrected": b.get("mean"), "originalCi": a.get("ci"), "correctedCi": b.get("ci")}
+            a, b = o["E_IND"]["topMinusBottom"], c["E_IND"]["topMinusBottom"]
+            out["E_IND"] = {"original": a.get("mean"), "corrected": b.get("mean"), "originalCi": a.get("ci"), "correctedCi": b.get("ci")}
+            for k, v in o["fixed"]["126"]["FULL"]["vsETF"].items():
+                out[f"sixMonthVsSpy|{k}"] = {"original": v.get("mean"), "corrected": c["fixed"]["126"]["FULL"]["vsETF"][k].get("mean")}
+            for k, v in o["ledgers"].items():
+                w = c["ledgers"].get(k, {})
+                out[f"ledger|{k}"] = {"originalExcess": v.get("excess"), "correctedExcess": w.get("excess"),
+                                      "originalMdd": v.get("mdd"), "correctedMdd": w.get("mdd")}
+    (HERE / "results" / "lineage-353-354-impact.json").write_text(json.dumps(out, indent=1, sort_keys=True) + "\n")
+    return out
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--private", required=True)
