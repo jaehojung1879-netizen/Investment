@@ -1,0 +1,64 @@
+{
+  "schema": "MASTER_INTEGRATION_SOURCE_AUDIT_V1",
+  "base": "37f8cbf6b1c066f6b3c65235953648d17ebf2f69",
+  "changedPaths": {
+    "316": 595,
+    "317": 34,
+    "directOverlap": []
+  },
+  "inheritedRaw": {
+    "parentCommit": "f48b6f29993cf572d191f9724d19d2543f375f6c",
+    "commit": "75aab7bc7096b551543bc1582c1e7fd288e94e59",
+    "prefix": "research/alpha_mechanism_sprint_v1/data/",
+    "paths": 513,
+    "bytes": 3674375,
+    "byteSizeBasis": "GITHUB_GIT_TREE_METADATA_NOT_PAYLOAD_VERIFICATION",
+    "payloadBytesVerified": false,
+    "samePathModeBlobAsParent": true,
+    "uniqueBlobs": 513,
+    "blobOverlapWithMain": 0,
+    "blobOverlapWith317": 0,
+    "payloadsFetchedOrCopied": 0,
+    "rightsAdmission": "UNVERIFIED",
+    "necessity": "Not needed by this metadata-only prototype. Static path absence is not proof that every upstream helper can run without these data.",
+    "disposition": "Preserve exact parent source commitments; use small explicit hash-linked reads after rights/need review. No source deletion, rewrite, squash or bulk recommit."
+  },
+  "interfacePins": {
+    "316-contract": {
+      "commit": "75aab7bc7096b551543bc1582c1e7fd288e94e59",
+      "path": "research/master_research_program_v1/portfolio/portfolio-d-p0-p5-comparison-v1.json",
+      "bytes": 5841,
+      "sha256": "eecdb60753efa8e9600a3d0595109914a56851be236ebfb037d6ca102db3021c",
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/75aab7bc7096b551543bc1582c1e7fd288e94e59/research/master_research_program_v1/portfolio/portfolio-d-p0-p5-comparison-v1.json"
+    },
+    "316-comparison": {
+      "commit": "75aab7bc7096b551543bc1582c1e7fd288e94e59",
+      "path": "research/master_research_program_v1/portfolio/comparison.py",
+      "bytes": 8601,
+      "sha256": "7ccbbd0b3da286bdcfa0ae1ac3889023763bc82ed42e1d1dc6498e5986d2a881",
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/75aab7bc7096b551543bc1582c1e7fd288e94e59/research/master_research_program_v1/portfolio/comparison.py"
+    },
+    "316-sector": {
+      "commit": "75aab7bc7096b551543bc1582c1e7fd288e94e59",
+      "path": "research/master_research_program_v1/market_industry/us_sector_membership.py",
+      "bytes": 9730,
+      "sha256": "1bfb9dc54c4c3dbc721beb2ff9330e980f968d4fd4554798b1a7a197c9b571d9",
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/75aab7bc7096b551543bc1582c1e7fd288e94e59/research/master_research_program_v1/market_industry/us_sector_membership.py"
+    },
+    "317-comparison": {
+      "commit": "a3ee7a716e56c97c99b02537ac060aca01bdb038",
+      "path": "research/cross_market_foundation_v1/comparison.py",
+      "bytes": 22875,
+      "sha256": "a4a27e8511d2a3bd23d390652b2318bb11ea616161d4088389246e5a668c97fa",
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/a3ee7a716e56c97c99b02537ac060aca01bdb038/research/cross_market_foundation_v1/comparison.py"
+    },
+    "317-industry": {
+      "commit": "a3ee7a716e56c97c99b02537ac060aca01bdb038",
+      "path": "research/cross_market_foundation_v1/industry.py",
+      "bytes": 23018,
+      "sha256": "1b8a6bc641c8d7456bb390899903f83716f4cbe69467ba86083f4ef88a3aef57",
+      "url": "https://github.com/jaehojung1879-netizen/Investment/blob/a3ee7a716e56c97c99b02537ac060aca01bdb038/research/cross_market_foundation_v1/industry.py"
+    }
+  },
+  "newHistoricalExecution": false
+}

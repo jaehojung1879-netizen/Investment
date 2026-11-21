@@ -1,0 +1,23 @@
+{
+  "recordedAt": "2026-11-05T11:17:04.590401+00:00",
+  "scopeTests": {
+    "passed": 54,
+    "failed": 0,
+    "command": "python -m pytest -q tests/test_master_integration_*.py"
+  },
+  "ruff": "PASS",
+  "compile": "PASS",
+  "productionWorkflowChanged": false,
+  "newValuationEngine": false,
+  "productionWrites": 0,
+  "realReceiptsCreated": 0,
+  "fullSuite": "IN_PROGRESS_AT_CAPTURE; exact final CI and local completion evidence reported on Draft PR",
+  "codeSha256": {
+    "__init__.py": "f5e723d223dc6b1f310e1a6990c3900d8249f1b67a2f5489227aecdc0de1007d",
+    "adapters.py": "401ed3b6dea7159b320a5e5450092e1e8deea9b17d397fce88eaffe81e5768b8",
+    "audit_sources.py": "f2da8fef8d392b61406e78ce15142da7d5a1c998d6a0eb225bc7dffadf4fa392",
+    "preflight.py": "62d1e803e1178949777a7f04caa67d01f0cd8e14623cd3cf6b2a8316c7ee1b12",
+    "receipt.py": "f3453f659c1e76a4e14a2c9dc9a3a755f31c8fd1a1ed0e56d252399f0f573ad9"
+  },
+  "sourceRefOnlyRequery": "UNCHANGED; first provenance retained, byte/vintage revisions conflict"
+}

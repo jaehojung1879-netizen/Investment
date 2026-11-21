@@ -1,0 +1,138 @@
+{
+  "schema": "MASTER_RESEARCH_OBSERVATION_PREFLIGHT_V1",
+  "status": "BLOCKED",
+  "contractStatus": "PREPARED",
+  "sourceCommit": "5ad82b5bbfdbb624cd24c05d06b2ca277e4c2b05",
+  "observedAtUtc": "2026-11-05T10:52:15.255479+00:00",
+  "sources": {
+    "champion": {
+      "path": "ledger/research-strategies/current-champion-decisions-v1/latest.json",
+      "commit": "5ad82b5bbfdbb624cd24c05d06b2ca277e4c2b05",
+      "blob": "3ea23567a00cd1fa2acdc6c99bcb91e78d6a9405",
+      "bytes": 1190,
+      "sha256": "c8770f815d8cc9d3296b87955706859c9b89b180811439b609095b72aa3a59e2",
+      "status": "VERIFIED_LOCAL_BYTES"
+    },
+    "weekly": {
+      "path": "ledger/weekly-decisions/latest.json",
+      "commit": "5ad82b5bbfdbb624cd24c05d06b2ca277e4c2b05",
+      "blob": "59ded6858a873b70201f61c997eb2ae007016e2b",
+      "bytes": 271827,
+      "sha256": "8494e291ca4d0110ed7dad5603f52692c876fd7db5da965102cc24b9ed0f5d9b",
+      "status": "VERIFIED_LOCAL_BYTES"
+    },
+    "weeklyReceipts": {
+      "path": "ledger/weekly-decisions/receipts.jsonl",
+      "commit": "5ad82b5bbfdbb624cd24c05d06b2ca277e4c2b05",
+      "blob": "decf8e20efd00d3143c92f7e0885f628cd04771b",
+      "bytes": 137898,
+      "sha256": "4c2585db365aad1115a471824019397ddf814d20eb16a6ba0069f936c3e2d9a3",
+      "status": "VERIFIED_LOCAL_BYTES"
+    },
+    "productionStore": {
+      "path": "ledger/research-strategies/entry-state-shadow-ledger-v1/decisions.jsonl",
+      "commit": "5ad82b5bbfdbb624cd24c05d06b2ca277e4c2b05",
+      "status": "ABSENT_IN_COMMIT"
+    }
+  },
+  "generationTimes": {
+    "champion": "2026-11-01T06:09:25.612109+00:00",
+    "weekly": "2026-11-05T06:49:31.439574+00:00"
+  },
+  "sameGeneration": false,
+  "verifiedStoredWeeklyReceipts": [
+    {
+      "region": "KR",
+      "signalDate": "2026-10-08",
+      "receiptId": "weekly-passive-first-v1|KR|2026-10-08",
+      "digest": "6c82d4c73d63a46b7ff852c3d375ad2195dfdb765f28c60c55da9f536b3666be",
+      "byteSha256": "d7ea0b3b499b3f09f1af78eba232934e7b76f8267a78eb25199b77ca18fefb07",
+      "readOnly": true,
+      "sourceAdmission": "NOT_INFERRED_FROM_RECEIPT",
+      "activationEnabled": false
+    },
+    {
+      "region": "US",
+      "signalDate": "2026-10-09",
+      "receiptId": "weekly-passive-first-v1|US|2026-10-09",
+      "digest": "782f71e9d33269e84ff3f767184bd55b9b4abdef60e12fc974b336910364549e",
+      "byteSha256": "c537c9342c5492dc68f34f84444a8b1765a11d07bc80315f0f79482cf2079438",
+      "readOnly": true,
+      "sourceAdmission": "NOT_INFERRED_FROM_RECEIPT",
+      "activationEnabled": false
+    },
+    {
+      "region": "US",
+      "signalDate": "2026-10-16",
+      "receiptId": "weekly-passive-first-v1|US|2026-10-16",
+      "digest": "0103d2d30cdde25d300eb70e276ba84bbda31da4b713446aed1eabe054607b33",
+      "byteSha256": "e97b8ae522a5c91621ac0b7d8c9ada8cc92ab3d4411ba71dcc1d942cce994840",
+      "readOnly": true,
+      "sourceAdmission": "NOT_INFERRED_FROM_RECEIPT",
+      "activationEnabled": false
+    },
+    {
+      "region": "KR",
+      "signalDate": "2026-10-23",
+      "receiptId": "weekly-passive-first-v1|KR|2026-10-23",
+      "digest": "bc9ee08a395f2889c778ebd23c206c166177a9c02e2811f37013b151247c8da9",
+      "byteSha256": "aef7b4b29a180ee59b0ba099390e6b63e6eb84f49b6c8dd64324b82ad6d39981",
+      "readOnly": true,
+      "sourceAdmission": "NOT_INFERRED_FROM_RECEIPT",
+      "activationEnabled": false
+    },
+    {
+      "region": "US",
+      "signalDate": "2026-10-23",
+      "receiptId": "weekly-passive-first-v1|US|2026-10-23",
+      "digest": "1bee8b3ec58a569c6ba021bb2ed99674a7e84301d975d74fabeb7a6732bf9f3d",
+      "byteSha256": "867c6af8e651326264858330e159dcf83483d8ea007b38bf8572f2be2acd13d2",
+      "readOnly": true,
+      "sourceAdmission": "NOT_INFERRED_FROM_RECEIPT",
+      "activationEnabled": false
+    },
+    {
+      "region": "KR",
+      "signalDate": "2026-10-30",
+      "receiptId": "weekly-passive-first-v1|KR|2026-10-30",
+      "digest": "c969fce48e4c682f4fe18c5e74a2eb68e146d5caf87a3bb085a80080d54dd579",
+      "byteSha256": "f60ee54357b1d1d58da12120e79e777d7c2e5940a16c49ffc2e2345fd6f107bd",
+      "readOnly": true,
+      "sourceAdmission": "NOT_INFERRED_FROM_RECEIPT",
+      "activationEnabled": false
+    },
+    {
+      "region": "US",
+      "signalDate": "2026-10-30",
+      "receiptId": "weekly-passive-first-v1|US|2026-10-30",
+      "digest": "67e6e5f977979fdd56bcf9553fd2ba77f3536a7390edbd912675e18e251bd48b",
+      "byteSha256": "aedf63f0ae293a7e4ad390e466fcba6e733f3ed59ed1a8cc364243948ce8ff53",
+      "readOnly": true,
+      "sourceAdmission": "NOT_INFERRED_FROM_RECEIPT",
+      "activationEnabled": false
+    }
+  ],
+  "rejectedStoredWeeklyReceipts": [
+    {
+      "line": 3,
+      "sha256": "f5cef9cb978e04181a7cc41235253daa7aa6b4e3fc98200a5c1e819eb08b82ff",
+      "reason": "OPERATIONAL_FINAL_SESSION_UNVERIFIED"
+    }
+  ],
+  "productionStoreStatus": "ABSENT",
+  "firstRealReceiptVerified": false,
+  "blockers": [
+    "DIFFERENT_GENERATION_CANNOT_PAIR",
+    "HISTORICAL_OPERATIONAL_RECEIPT_REQUIRES_REVIEW_NOT_REWRITE",
+    "NO_QUALIFIED_P1_P5_INPUT_REGISTRY",
+    "OPERATIONAL_RECEIPT_CODEC_AND_FINAL_SESSION_ADMISSION_REQUIRED",
+    "OWNER_PRODUCTION_RELEASE_NOT_AUTHORIZED_BY_THIS_PREFLIGHT",
+    "SOURCE_RIGHTS_PIT_AND_SHAREHOLDER_RETURN_ADMISSION_REQUIRED"
+  ],
+  "activationEnabled": false,
+  "productionWrites": 0,
+  "receiptWrites": 0,
+  "priceReads": 0,
+  "performance": null,
+  "interpretation": "Byte verification and negative gates only; no operational or investment admission."
+}
