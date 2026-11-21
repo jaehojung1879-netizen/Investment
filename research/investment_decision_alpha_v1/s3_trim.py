@@ -34,7 +34,7 @@ def simulate(px, spy, w0, trims):
     spy_units = (1 - EV.BUY) * (1 - sum(w0)) / spy[0]
     for t in sorted(trims):
         for i, f in trims[t].items():
-            moved = units[i] * f * px[t]
+            moved = units[i] * f * px[t, i]
             units[i] *= (1 - f)
             spy_units += moved * (1 - EV.SELL) * (1 - EV.BUY) / spy[t]
     final = float((units * px[-1]).sum() * (1 - EV.SELL) + spy_units * spy[-1] * (1 - EV.SELL))

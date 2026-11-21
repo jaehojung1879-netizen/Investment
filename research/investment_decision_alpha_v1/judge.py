@@ -83,8 +83,17 @@ def main():
             s2[f"T1-{m.upper()}-{b}"] = (c["all"], [c["BEFORE_2023"], c["FROM_2023"]], None, True)
     if s2:
         res["S2"] = family(s2)
+    s3 = load("s3-trim.json")
+    if s3:
+        # the decision itself (trim vs hold) is the one S3 claim; random and proportional trims are its controls
+        c = s3["trimMinusHold"]
+        claims = {"T2-US-BASE-trimVsHold": (c["all"], [c["BEFORE_2023"], c["FROM_2023"]], None, True)}
+        res["S3"] = family(claims)
+        res["S3_controls"] = {k: {"mean": s3[k]["all"]["mean"], "ci": s3[k]["all"].get("ci"),
+                                  "halves": [s3[k]["BEFORE_2023"]["mean"], s3[k]["FROM_2023"]["mean"]]}
+                              for k in ("trimMinusRandom", "trimMinusProp", "randomMinusHold", "trimmedNameAfterMinusSpy")}
     (R / "judgement.json").write_text(json.dumps(res, indent=1, sort_keys=True) + "\n")
-    for fam, v in res.items():
+    for fam, v in ((f, x) for f, x in res.items() if not f.endswith("_controls")):
         for k, c in v.items():
             print(fam, k, c["verdict"], round((c["mean"] or 0) * 100, 3), c["ci"], "holm", round(c["holmP"], 4), c["halves"])
 

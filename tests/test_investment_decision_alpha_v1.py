@@ -68,3 +68,14 @@ def test_turning_points_alternate_and_need_the_full_move():
     # the series start counts as a trough once the price has risen 30% from it
     assert [t["type"] for t in tp] == ["TROUGH", "PEAK", "TROUGH"]
     assert [t["price"] for t in tp] == [100, 150, 90]
+
+
+def test_trim_moves_only_the_trimmed_name_and_avoids_its_later_fall():
+    from research.investment_decision_alpha_v1 import s3_trim as S3
+    px = np.array([[100.0, 100.0], [100.0, 100.0], [200.0, 50.0]])
+    spy = np.array([10.0, 10.0, 10.0])
+    hold = S3.simulate(px, spy, [0.5, 0.5], {})
+    trim_loser = S3.simulate(px, spy, [0.5, 0.5], {1: {1: 1.0}})
+    trim_winner = S3.simulate(px, spy, [0.5, 0.5], {1: {0: 1.0}})
+    assert trim_loser > hold > trim_winner
+    assert np.isfinite(trim_loser)
