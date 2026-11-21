@@ -38,10 +38,10 @@
 | 분기 사건 / 종목 | 33,606 / 775 | 8,213 / 245 |
 | SUE 계산 가능 | 26,258 (2014–2026) | 6,181 (2018Q1–2026Q2) |
 | 정기보고서 공개 지연(분기말 기준 중앙값) | 35일 | 45일 |
-| 발표 연결률(SUE 사건 중) | 97.9% | `results/kr-events.json`의 `coverage.announceMatchShareOfSueEvents` |
-| 발표 지연(분기말 기준 중앙값) | 29일 | 같은 파일의 `coverage.announceLagDaysMedian` |
-| 정기보고서 − 발표(중앙값) | 1일 | 같은 파일의 `coverage.filingAfterAnnounceDaysMedian` |
-| 판단일 유니버스 중 신선 SUE 보유 비율(중앙값) | 97.8% | 같은 파일의 `coverage.universeFreshSueShare` |
+| 발표 연결률(SUE 사건 중) | 97.9% | 71.0%(2018 64.8% → 2026 76.0%) |
+| 발표 지연(분기말 기준 중앙값) | 29일 | 31일 |
+| 정기보고서 − 발표(중앙값) | 1일 | 18일 |
+| 판단일 유니버스 중 신선 SUE 보유 비율(중앙값) | 97.8% | 66.7%(첫 SUE 이후 70.3%) |
 
 - 미국 8-K 수집: data.sec.gov 제출 목록 782개 발행사, Item 2.02 제출 57,892건, 실패 0건
-- 한국 잠정실적 수집: DART `list.json`, 연도별·전 페이지. 호출 수와 오류는 `results/kr-events.json`에 기록한다
+- 한국 잠정실적 수집: DART `list.json`, 연도별·전 페이지, 250개 사, 호출 3,031회, 오류 0건, 잠정실적 공시 11,200건
