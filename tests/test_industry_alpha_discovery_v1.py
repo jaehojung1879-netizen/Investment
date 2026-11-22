@@ -247,3 +247,13 @@ def test_protocol_data_identity_matches_committed_inputs():
     for rel, h in p["dataIdentity"].items():
         if rel.startswith("data/"):
             assert hashlib.sha256((HERE / rel).read_bytes()).hexdigest() == h, rel
+
+
+def test_posthoc_fixed_tilt_resets_to_target_at_every_decision():
+    from research.industry_alpha_discovery_v1 import posthoc as PH
+    mkt = _market(7)
+    idx = list(range(300, len(mkt.sessions) - 1, 21))      # decisions to the end: the last state never dominates
+    _, w = PH.sleeve_path(mkt, ["005930.KS", "000660.KS"], idx, [.15] * len(idx), 300)
+    assert abs(w - .15) < .02                 # reset monthly: the average sleeve weight stays near the target
+    _, w_on_off = PH.sleeve_path(mkt, ["005930.KS"], idx, [.30 if k % 2 else 0.0 for k in range(len(idx))], 300)
+    assert .10 < w_on_off < .20
