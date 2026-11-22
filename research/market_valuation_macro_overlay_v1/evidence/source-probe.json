@@ -1,0 +1,776 @@
+{
+ "ecos": {
+  "ecosApiKeyPresent": false,
+  "homepage": {
+   "bytes": 7710,
+   "lastModified": "Tue, 22 Sep 2026 01:00:39 GMT",
+   "seconds": 0.73,
+   "sha256": "f60b426ddfbd5f1e4abea70b5dd0af27baf774d7af6927e9104a969c0b41bca1",
+   "status": 200,
+   "url": "https://ecos.bok.or.kr/"
+  },
+  "status": "KEY_ABSENT_NO_DATA_REQUEST"
+ },
+ "factset": {
+  "earningsInsightSlugsByYear": {
+   "2012": 1,
+   "2017": 32
+  },
+  "firstRefusedPage": {
+   "page": 72,
+   "status": 404
+  },
+  "listingPagesServed": 71,
+  "samplePost": {
+   "bytes": 77958,
+   "forwardPeSentences": [
+    "As of today, the forward 12-month P/E ratio for the S&P 500 stands at 17.6, based on yesterday’s closing price (2347",
+    "6 P/E ratio compare to historical averages? What is driving the increase in the P/E ratio? The current forward 12-month P/E ratio of 17.6 is now above the four most recent historical averages: five-year (15",
+    "The Drivers of Change Back on December 31, 2016, the forward 12-month P/E ratio was 16.9"
+   ],
+   "lastModified": "Fri, 20 Nov 2026 20:09:03 GMT",
+   "seconds": 0.09,
+   "sha256": "8a78cb0e45b89b7223deb386f21165102245e75e2d715305637464160b768b10",
+   "status": 200,
+   "url": "https://insight.factset.com/earningsinsight_02.17.17"
+  },
+  "slugsByYear": {
+   "2002": 2,
+   "2006": 2,
+   "2008": 4,
+   "2009": 2,
+   "2010": 2,
+   "2011": 5,
+   "2012": 2,
+   "2014": 1,
+   "2016": 2,
+   "2017": 38,
+   "2018": 21,
+   "2019": 40,
+   "2020": 39,
+   "2021": 39,
+   "2022": 33,
+   "2023": 35,
+   "2024": 23,
+   "2025": 35,
+   "2026": 30,
+   "UNDATED_SLUG": 481
+  },
+  "uniquePostSlugs": 836
+ },
+ "fred": {
+  "current": {
+   "AAA10Y": {
+    "bytes": 181321,
+    "firstObservation": "1983-01-03",
+    "lastModified": "Fri, 20 Nov 2026 22:03:33 GMT",
+    "lastObservation": "2026-11-19",
+    "rows": 11449,
+    "seconds": 0.43,
+    "sha256": "1bd1e6c38a14981d351e5333f2794330c794043f1b131ecf2f8e98ab69c0d896",
+    "status": 200,
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=AAA10Y",
+    "valued": 10968
+   },
+   "BAA": {
+    "bytes": 20885,
+    "firstObservation": "1919-01-01",
+    "lastModified": "Mon, 02 Nov 2026 16:31:35 GMT",
+    "lastObservation": "2026-10-01",
+    "rows": 1294,
+    "seconds": 0.23,
+    "sha256": "0d7a21abcb6af2a2d7ac83fb6a8941a5e3ad8ddcec913dcff1b7d9d50eed6404",
+    "status": 200,
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=BAA",
+    "valued": 1294
+   },
+   "BAA10Y": {
+    "bytes": 168900,
+    "firstObservation": "1986-01-02",
+    "lastModified": "Fri, 20 Nov 2026 22:03:38 GMT",
+    "lastObservation": "2026-11-19",
+    "rows": 10666,
+    "seconds": 0.18,
+    "sha256": "babe889a737d771051dec754a2abaea9710512d302f14d982e7e9d2b3da27535",
+    "status": 200,
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=BAA10Y",
+    "valued": 10221
+   },
+   "BAMLC0A0CM": {
+    "bytes": 12696,
+    "firstObservation": "2023-11-21",
+    "lastModified": "Fri, 20 Nov 2026 14:19:44 GMT",
+    "lastObservation": "2026-11-19",
+    "rows": 794,
+    "seconds": 0.1,
+    "sha256": "23d21a683d464a9489a06e1676cb0b940068a81425d03e5ef771d8cb5c20703d",
+    "status": 200,
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=BAMLC0A0CM",
+    "valued": 785
+   },
+   "BAMLH0A0HYM2": {
+    "bytes": 12702,
+    "firstObservation": "2023-11-21",
+    "lastModified": "Fri, 20 Nov 2026 14:23:49 GMT",
+    "lastObservation": "2026-11-19",
+    "rows": 794,
+    "seconds": 0.1,
+    "sha256": "bc168c032a4ee7fea9f80c6f834f505e79626c05aefe3b6d0101de7922019a5b",
+    "status": 200,
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=BAMLH0A0HYM2",
+    "valued": 786
+   },
+   "DBAA": {
+    "bytes": 170127,
+    "firstObservation": "1986-01-02",
+    "lastModified": "Fri, 20 Nov 2026 16:33:23 GMT",
+    "lastObservation": "2026-11-19",
+    "rows": 10666,
+    "seconds": 0.39,
+    "sha256": "dc705a71643fbcccb85f47a55206d5819d4c7facfd75c05c5e78ea59be04a3bf",
+    "status": 200,
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DBAA",
+    "valued": 10257
+   },
+   "DGS3MO": {
+    "bytes": 187195,
+    "firstObservation": "1981-09-01",
+    "lastModified": "Fri, 20 Nov 2026 21:16:37 GMT",
+    "lastObservation": "2026-11-19",
+    "rows": 11798,
+    "seconds": 0.43,
+    "sha256": "67198750a4744d78e7582c401235dedce814cb639ab2799ba2ab68574441cba1",
+    "status": 200,
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS3MO",
+    "valued": 11304
+   },
+   "GS10": {
+    "bytes": 14222,
+    "firstObservation": "1953-04-01",
+    "lastModified": "Mon, 02 Nov 2026 21:16:29 GMT",
+    "lastObservation": "2026-10-01",
+    "rows": 883,
+    "seconds": 0.3,
+    "sha256": "018e609eb98c52ec8d2cf0ea9f8e1450c24974c31cca455cc19717a77703af78",
+    "status": 200,
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=GS10",
+    "valued": 883
+   },
+   "NFCI": {
+    "bytes": 51636,
+    "firstObservation": "1971-01-08",
+    "lastModified": "Wed, 18 Nov 2026 13:35:29 GMT",
+    "lastObservation": "2026-11-13",
+    "rows": 2915,
+    "seconds": 0.24,
+    "sha256": "2b6b662286637b8b48fe52140fc132298ea34495969596d72eaf112472ba7407",
+    "status": 200,
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=NFCI",
+    "valued": 2915
+   },
+   "TB3MS": {
+    "bytes": 17881,
+    "firstObservation": "1934-01-01",
+    "lastModified": "Mon, 02 Nov 2026 21:16:31 GMT",
+    "lastObservation": "2026-10-01",
+    "rows": 1114,
+    "seconds": 0.12,
+    "sha256": "33fae406051a658c316580f8e8b5e461157e6663bc03b35648cc7cd3e89ee26b",
+    "status": 200,
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=TB3MS",
+    "valued": 1114
+   }
+  },
+  "revisionsEarlyVintageVsCurrent": [
+   {
+    "compared": 1032,
+    "differing": 0,
+    "earlyVintage": "2005-01-03",
+    "examples": [],
+    "series": "BAA"
+   },
+   {
+    "compared": 621,
+    "differing": 0,
+    "earlyVintage": "2005-01-03",
+    "examples": [],
+    "series": "GS10"
+   },
+   {
+    "compared": 1108,
+    "differing": 0,
+    "earlyVintage": "2011-06-01",
+    "examples": [],
+    "series": "BAA"
+   },
+   {
+    "compared": 697,
+    "differing": 0,
+    "earlyVintage": "2011-06-01",
+    "examples": [],
+    "series": "GS10"
+   },
+   {
+    "compared": 2003,
+    "differing": 1995,
+    "earlyVintage": "2011-06-01",
+    "examples": [
+     {
+      "current": -0.135,
+      "date": "1973-01-05",
+      "early": -0.45
+     },
+     {
+      "current": -0.033,
+      "date": "1973-01-12",
+      "early": -0.39
+     },
+     {
+      "current": 0.097,
+      "date": "1973-01-19",
+      "early": -0.31
+     },
+     {
+      "current": 0.25,
+      "date": "1973-01-26",
+      "early": -0.17
+     },
+     {
+      "current": 0.419,
+      "date": "1973-02-02",
+      "early": 0.02
+     }
+    ],
+    "series": "NFCI"
+   },
+   {
+    "compared": 852,
+    "differing": 2,
+    "earlyVintage": "2005-01-03",
+    "examples": [
+     {
+      "current": 1.72,
+      "date": "2002-02-01",
+      "early": 1.73
+     },
+     {
+      "current": 1.71,
+      "date": "2002-04-01",
+      "early": 1.72
+     }
+    ],
+    "series": "TB3MS"
+   }
+  ],
+  "vintages": {
+   "BAA": [
+    {
+     "bytes": 0,
+     "error": "HTTP_ERROR",
+     "requested": "1995-01-03",
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "status": 404,
+     "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAA&vintage_date=1995-01-03"
+    },
+    {
+     "daysFromLastObservationToVintage": 63,
+     "firstObservation": "1919-01-01",
+     "lastObservation": "1999-11-01",
+     "requested": "2000-01-03",
+     "rows": 971,
+     "servedVintage": "2000-01-03",
+     "status": "VINTAGE_SERVED",
+     "valued": 971
+    },
+    {
+     "daysFromLastObservationToVintage": 33,
+     "firstObservation": "1919-01-01",
+     "lastObservation": "2004-12-01",
+     "requested": "2005-01-03",
+     "rows": 1032,
+     "servedVintage": "2005-01-03",
+     "status": "VINTAGE_SERVED",
+     "valued": 1032
+    },
+    {
+     "daysFromLastObservationToVintage": 61,
+     "firstObservation": "1919-01-01",
+     "lastObservation": "2011-04-01",
+     "requested": "2011-06-01",
+     "rows": 1108,
+     "servedVintage": "2011-06-01",
+     "status": "VINTAGE_SERVED",
+     "valued": 1108
+    },
+    {
+     "daysFromLastObservationToVintage": 61,
+     "firstObservation": "1919-01-01",
+     "lastObservation": "2016-04-01",
+     "requested": "2016-06-01",
+     "rows": 1168,
+     "servedVintage": "2016-06-01",
+     "status": "VINTAGE_SERVED",
+     "valued": 1168
+    }
+   ],
+   "BAA10Y": [
+    {
+     "bytes": 0,
+     "error": "HTTP_ERROR",
+     "requested": "2011-06-01",
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "status": 404,
+     "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAA10Y&vintage_date=2011-06-01"
+    },
+    {
+     "bytes": 0,
+     "error": "HTTP_ERROR",
+     "requested": "2013-01-02",
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "status": 404,
+     "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAA10Y&vintage_date=2013-01-02"
+    },
+    {
+     "bytes": 0,
+     "error": "HTTP_ERROR",
+     "requested": "2014-01-02",
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "status": 404,
+     "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAA10Y&vintage_date=2014-01-02"
+    },
+    {
+     "daysFromLastObservationToVintage": 3,
+     "firstObservation": "1986-01-02",
+     "lastObservation": "2014-05-30",
+     "requested": "2014-06-02",
+     "rows": 7412,
+     "servedVintage": "2014-06-02",
+     "status": "VINTAGE_SERVED",
+     "valued": 7107
+    },
+    {
+     "daysFromLastObservationToVintage": 1,
+     "firstObservation": "1986-01-02",
+     "lastObservation": "2016-05-31",
+     "requested": "2016-06-01",
+     "rows": 7934,
+     "servedVintage": "2016-06-01",
+     "status": "VINTAGE_SERVED",
+     "valued": 7608
+    }
+   ],
+   "BAMLH0A0HYM2": [
+    {
+     "bytes": 0,
+     "error": "HTTP_ERROR",
+     "requested": "2016-06-01",
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "status": 404,
+     "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&vintage_date=2016-06-01"
+    },
+    {
+     "bytes": 0,
+     "error": "HTTP_ERROR",
+     "requested": "2022-06-01",
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "status": 404,
+     "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&vintage_date=2022-06-01"
+    }
+   ],
+   "DBAA": [
+    {
+     "firstObservation": "1986-01-02",
+     "lastObservation": "2026-11-19",
+     "requested": "2011-06-01",
+     "rows": 10666,
+     "servedVintage": "2026-11-21",
+     "status": "NO_VINTAGE_AT_DATE_CURRENT_SERVED",
+     "valued": 10257
+    },
+    {
+     "daysFromLastObservationToVintage": 1,
+     "firstObservation": "1986-01-02",
+     "lastObservation": "2016-05-31",
+     "requested": "2016-06-01",
+     "rows": 7934,
+     "servedVintage": "2016-06-01",
+     "status": "VINTAGE_SERVED",
+     "valued": 7640
+    }
+   ],
+   "GS10": [
+    {
+     "bytes": 0,
+     "error": "HTTP_ERROR",
+     "requested": "1995-01-03",
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "status": 404,
+     "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=GS10&vintage_date=1995-01-03"
+    },
+    {
+     "daysFromLastObservationToVintage": 63,
+     "firstObservation": "1953-04-01",
+     "lastObservation": "1999-11-01",
+     "requested": "2000-01-03",
+     "rows": 560,
+     "servedVintage": "2000-01-03",
+     "status": "VINTAGE_SERVED",
+     "valued": 560
+    },
+    {
+     "daysFromLastObservationToVintage": 33,
+     "firstObservation": "1953-04-01",
+     "lastObservation": "2004-12-01",
+     "requested": "2005-01-03",
+     "rows": 621,
+     "servedVintage": "2005-01-03",
+     "status": "VINTAGE_SERVED",
+     "valued": 621
+    },
+    {
+     "daysFromLastObservationToVintage": 61,
+     "firstObservation": "1953-04-01",
+     "lastObservation": "2011-04-01",
+     "requested": "2011-06-01",
+     "rows": 697,
+     "servedVintage": "2011-06-01",
+     "status": "VINTAGE_SERVED",
+     "valued": 697
+    },
+    {
+     "daysFromLastObservationToVintage": 61,
+     "firstObservation": "1953-04-01",
+     "lastObservation": "2016-04-01",
+     "requested": "2016-06-01",
+     "rows": 757,
+     "servedVintage": "2016-06-01",
+     "status": "VINTAGE_SERVED",
+     "valued": 757
+    }
+   ],
+   "NFCI": [
+    {
+     "bytes": 0,
+     "error": "HTTP_ERROR",
+     "requested": "2005-01-03",
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "status": 404,
+     "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=NFCI&vintage_date=2005-01-03"
+    },
+    {
+     "daysFromLastObservationToVintage": 12,
+     "firstObservation": "1973-01-05",
+     "lastObservation": "2011-05-20",
+     "requested": "2011-06-01",
+     "rows": 2003,
+     "servedVintage": "2011-06-01",
+     "status": "VINTAGE_SERVED",
+     "valued": 2003
+    },
+    {
+     "daysFromLastObservationToVintage": 12,
+     "firstObservation": "1973-01-05",
+     "lastObservation": "2016-05-20",
+     "requested": "2016-06-01",
+     "rows": 2264,
+     "servedVintage": "2016-06-01",
+     "status": "VINTAGE_SERVED",
+     "valued": 2264
+    }
+   ],
+   "TB3MS": [
+    {
+     "daysFromLastObservationToVintage": 33,
+     "firstObservation": "1934-01-01",
+     "lastObservation": "2004-12-01",
+     "requested": "2005-01-03",
+     "rows": 852,
+     "servedVintage": "2005-01-03",
+     "status": "VINTAGE_SERVED",
+     "valued": 852
+    },
+    {
+     "daysFromLastObservationToVintage": 61,
+     "firstObservation": "1934-01-01",
+     "lastObservation": "2011-04-01",
+     "requested": "2011-06-01",
+     "rows": 928,
+     "servedVintage": "2011-06-01",
+     "status": "VINTAGE_SERVED",
+     "valued": 928
+    },
+    {
+     "daysFromLastObservationToVintage": 61,
+     "firstObservation": "1934-01-01",
+     "lastObservation": "2016-04-01",
+     "requested": "2016-06-01",
+     "rows": 988,
+     "servedVintage": "2016-06-01",
+     "status": "VINTAGE_SERVED",
+     "valued": 988
+    }
+   ]
+  }
+ },
+ "krx": {
+  "request": {
+   "bld": "dbms/MDC/STAT/standard/MDCSTAT00702",
+   "csvxls_isNo": "false",
+   "endDd": "20240131",
+   "indIdx": "1",
+   "indIdx2": "028",
+   "strtDd": "20240102"
+  },
+  "response": {
+   "bodyHead": "LOGOUT",
+   "bytes": 6,
+   "error": "HTTP_ERROR",
+   "sha256": "377b375adcc04b5ba5998c978372401a4c6327ccc218e17e383f72861085cb95",
+   "status": 400,
+   "url": "https://data.krx.co.kr/comm/bldAttendant/getJsonData.cmd"
+  }
+ },
+ "notes": "Valuation, macro and coverage metadata only; no forward return, NAV or portfolio value computed.",
+ "outcomeReads": 0,
+ "probedAt": "2026-11-22T00:06:25+00:00",
+ "repositoryInputs": {
+  "BOK_POLICY_RATES": {
+   "bytes": 2635,
+   "keys": {
+    "basis": "str",
+    "events": "list",
+    "source": "str",
+    "verifiedThrough": "str"
+   },
+   "path": "data/bok-policy-rates.json",
+   "sha256": "a7edf0e532c7b54da9d962ebf12ff2552c90c783439fef99d7c761c5b9ea69ff"
+  },
+  "KODEX200_ISSUER_STANDARD_XLS": {
+   "bytes": 1202176,
+   "path": "docs/audits/kr-alpha-atlas-phase-c-integrity/sources/issuer-standard.xls",
+   "sha256": "cbdd7a0ce340228ddcfc714de637c512f73c2d691d84ae59a28cfb406d8437b9"
+  },
+  "POLICY_RATE_PROXIES": {
+   "bytes": 127215,
+   "keys": {
+    "krwPolicyRatePct": {
+     "entries": 61,
+     "first": "1999-05-07",
+     "last": "2026-08-28"
+    },
+    "krwSource": "list",
+    "usdFedFundsPct": {
+     "entries": 5736,
+     "first": "2011-01-01",
+     "last": "2026-09-14"
+    },
+    "usdSource": "str"
+   },
+   "path": "data/research/us-dual-benchmark-v1/rates.json",
+   "sha256": "7e06146de422661d52534d9322e38be04a25177b119ff3da710f96ae2769db4a"
+  },
+  "SPY_QQQ_TOTAL_RETURN": {
+   "bytes": 132931,
+   "columns": [
+    "ticker",
+    "date",
+    "totalReturnClose",
+    "rawClose",
+    "dividend",
+    "split",
+    "usdKrw"
+   ],
+   "coverageByTicker": {
+    "QQQ": {
+     "first": "2011-01-03",
+     "last": "2026-09-14",
+     "rows": 3947
+    },
+    "SPY": {
+     "first": "2011-01-03",
+     "last": "2026-09-14",
+     "rows": 3947
+    }
+   },
+   "note": "ticker and date columns only; price columns were not parsed",
+   "path": "data/research/us-dual-benchmark-v1/spy-qqq-total-return.csv.gz",
+   "sha256": "a82c64b96ef56e672373240d0b6df317dadbdee8c845bfaa9725b16bb9625b50"
+  }
+ },
+ "shiller": {
+  "revisionDiagnostic": {
+   "columns": {
+    "CAPE": {
+     "differences": [
+      {
+       "month": "2023-03",
+       "new": 27.93813125399791,
+       "old": 27.953041469070055,
+       "relativeChange": -0.0005334022449272115
+      },
+      {
+       "month": "2023-04",
+       "new": 28.764841267615378,
+       "old": 28.76468407710037,
+       "relativeChange": 5.464705073298342e-06
+      },
+      {
+       "month": "2023-05",
+       "new": 28.762051343131237,
+       "old": 28.761805827303075,
+       "relativeChange": 8.536175705940865e-06
+      },
+      {
+       "month": "2023-06",
+       "new": 29.9400316459875,
+       "old": 29.939593027231528,
+       "relativeChange": 1.4650124187485987e-05
+      },
+      {
+       "month": "2023-07",
+       "new": 30.89165981365993,
+       "old": 30.8909260883331,
+       "relativeChange": 2.3752131118817964e-05
+      },
+      {
+       "month": "2023-08",
+       "new": 30.3047482453652,
+       "old": 30.469742507138623,
+       "relativeChange": -0.005415019891775154
+      },
+      {
+       "month": "2023-09",
+       "new": 29.799681861350244,
+       "old": 30.810960610791547,
+       "relativeChange": -0.03282204544726535
+      }
+     ],
+     "differingMonths": 7
+    },
+    "CPI": {
+     "differences": [
+      {
+       "month": "2023-03",
+       "new": 301.836,
+       "old": 301.67499999999995,
+       "relativeChange": 0.0005336869147263056
+      },
+      {
+       "month": "2023-08",
+       "new": 307.026,
+       "old": 305.98199999999997,
+       "relativeChange": 0.003411965409730114
+      },
+      {
+       "month": "2023-09",
+       "new": 307.789,
+       "old": 306.12749999999994,
+       "relativeChange": 0.00542747711329445
+      }
+     ],
+     "differingMonths": 3
+    },
+    "D": {
+     "differences": [],
+     "differingMonths": 0
+    },
+    "E": {
+     "differences": [
+      {
+       "month": "2023-04",
+       "new": 177.11666666666665,
+       "old": 177.17,
+       "relativeChange": -0.00030102914338399095
+      },
+      {
+       "month": "2023-05",
+       "new": 179.06333333333333,
+       "old": 179.17,
+       "relativeChange": -0.0005953377611578664
+      },
+      {
+       "month": "2023-06",
+       "new": 181.01,
+       "old": 181.17,
+       "relativeChange": -0.0008831484241320119
+      }
+     ],
+     "differingMonths": 3
+    },
+    "P": {
+     "differences": [
+      {
+       "month": "2023-09",
+       "new": 4409.094999999999,
+       "old": 4515.77,
+       "relativeChange": -0.02362277086742706
+      }
+     ],
+     "differingMonths": 1
+    }
+   },
+   "commonMonths": 1833,
+   "newer": "SHILLERDATA_HOSTED_ASSET",
+   "older": "YALE_ECON_PAGE_COPY"
+  },
+  "shillerdataHome": {
+   "bytes": 0,
+   "error": "URLError: <urlopen error [Errno 104] Connection reset by peer>",
+   "status": null,
+   "url": "https://shillerdata.com/"
+  },
+  "vintages": {
+   "SHILLERDATA_HOSTED_ASSET": {
+    "bytes": 1623552,
+    "lastModified": "Wed, 04 Sep 2024 23:44:52 GMT",
+    "lastModifiedDate": "2024-09-04",
+    "monthsFromLastEarningsMonthEndToLastModified": 2.17,
+    "seconds": 0.27,
+    "sha256": "59532175bd1b95cee294de96fe05856cfb109663e235b5c2e5a496b258ba00c3",
+    "status": 200,
+    "summary": {
+     "firstCapeMonth": "1881-01",
+     "firstMonth": "1871-01",
+     "lastCapeMonth": "2024-09",
+     "lastDividendMonth": "2024-06",
+     "lastEarningsMonth": "2024-06",
+     "lastPriceMonth": "2024-09",
+     "months": 1845,
+     "nonPositiveEarningsMonths": 0
+    },
+    "url": "https://img1.wsimg.com/blobby/go/e5e77e0b-59d1-44d9-ab25-4763ac982e53/downloads/ie_data.xls"
+   },
+   "YALE_ECON_PAGE_COPY": {
+    "bytes": 1628672,
+    "lastModified": "Tue, 17 Oct 2023 03:27:29 GMT",
+    "lastModifiedDate": "2023-10-17",
+    "monthsFromLastEarningsMonthEndToLastModified": 3.58,
+    "seconds": 0.61,
+    "sha256": "0df9392b7dacf91f756e92c8db508ad903c4588b43f3253680eec3dd8b40db68",
+    "status": 200,
+    "summary": {
+     "firstCapeMonth": "1881-01",
+     "firstMonth": "1871-01",
+     "lastCapeMonth": "2023-09",
+     "lastDividendMonth": "2023-06",
+     "lastEarningsMonth": "2023-06",
+     "lastPriceMonth": "2023-09",
+     "months": 1833,
+     "nonPositiveEarningsMonths": 0
+    },
+    "url": "http://www.econ.yale.edu/~shiller/data/ie_data.xls"
+   }
+  }
+ },
+ "spDji": {
+  "epsWorkbook": {
+   "bytes": 2011,
+   "error": "HTTP_ERROR",
+   "sha256": "0e1371d4226023ded052cd3a1847cfbce72157d4c19796bb0d6de0abfb1c952d",
+   "status": 403,
+   "url": "https://www.spglobal.com/spdji/en/documents/additional-material/sp-500-eps-est.xlsx"
+  }
+ },
+ "stage": "PHASE_0_SOURCE_PROBE",
+ "study": "market-valuation-macro-overlay-v1"
+}

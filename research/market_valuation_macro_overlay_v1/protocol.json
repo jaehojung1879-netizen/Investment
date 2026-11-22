@@ -1,0 +1,471 @@
+{
+ "studyId": "market-valuation-macro-overlay-v1",
+ "shortName": "MVMA-v1",
+ "protocolVersion": 1,
+ "stage": "PHASE_1_PREREGISTRATION_OUTCOME_FREE",
+ "status": "PREREGISTERED_NOT_AUTHORIZED",
+ "evidenceClassification": "EXPLORATORY_ON_OUTCOME_EXPOSED_HISTORY",
+ "developmentStatement": "Every US date in the evaluation window (2012-01 to 2024-08) is outcome-exposed: SPY over this span and the valuation-return literature were known to the authors before this protocol was written. Nothing this protocol can produce from that history is confirmatory. Only the prospective record (Phase 3) can confirm.",
+ "firewall": {
+  "outcomeExecutionAuthorized": false,
+  "executionAuthorizationFile": null,
+  "promotionEligible": false,
+  "productionChange": false,
+  "liveValidated": false,
+  "modelSelectionAfterOutcomeAllowed": false,
+  "thresholdChangeAfterOutcomeAllowed": false,
+  "rerunAfterSubstantiveResultAllowed": false
+ },
+ "governance": {
+  "krPhaseD": "Korean historical exploration is closed (docs/kr-alpha-research-final-development-assessment.md). A Korean historical outcome test of this protocol needs a separate, explicit owner exception before any KR outcome is read; without it every KR cell is NOT_RUN and only source building and prospective recording are allowed.",
+  "usExposure": "US history is outcome-exposed and is never described as a confirmatory sample.",
+  "sealedStudies": "No sealed study, spec, result, lock or prospective ledger is modified by this protocol."
+ },
+ "markets": {
+  "US": {
+   "equityEtf": "SPY",
+   "equityReturnSource": {
+    "path": "data/research/us-dual-benchmark-v1/spy-qqq-total-return.csv.gz",
+    "column": "totalReturnClose",
+    "basis": "USD total return, SSGA-reconciled distributions (#341)"
+   },
+   "cashAsset": {
+    "primary": "BIL_TOTAL_RETURN",
+    "status": "INPUTS_PRESERVED_RECONSTRUCTION_IN_PHASE_2",
+    "inputs": [
+     "data/research/mvma-v1/raw/yahoo-BIL-chart-20261110.json.gz (raw close; #331 branch object, reused byte-identically)",
+     "data/research/mvma-v1/ssga-BIL-distributions.csv (issuer distributions, SSGA historical workbook)"
+    ],
+    "rule": "BIL total return = raw close plus ISSUER distributions (dividend + capital gains) reinvested at the ex-date close. Vendor distribution events are never used where they disagree with or omit issuer events. No synthetic pre-inception history (inception 2007-05-30; the window starts 2012). A reference rate (TB3MS / DGS3MO accrual) is a labelled sensitivity only: REFERENCE_RATE_NOT_INVESTABLE."
+   },
+   "status": "ELIGIBLE_EXPLORATORY_INPUTS_PRESERVED"
+  },
+  "KR": {
+   "equityEtf": "069500.KS",
+   "equityReturnSource": {
+    "status": "OFFICIAL_ISSUER_RECONCILIATION_REQUIRED",
+    "rule": "Issuer NAV / distribution reconciled series only; replay-v16 069500 carries an unexplained accrual (v2.46-v2.47) and is not used."
+   },
+   "cashAsset": {
+    "status": "NO_INVESTABLE_SERIES_REGISTERED",
+    "rule": "KOFR exists only from 2021-11-26; CD91 is not among the ECOS probe's reviewed semantic names, so no item is selected by guess. BOK policy-rate results are labelled BOK_POLICY_RATE_PROXY and never called realised performance."
+   },
+   "status": "NOT_RUN_PHASE_D_GOVERNANCE",
+   "statusNote": "Korean historical outcome tests need an explicit owner exception (Phase D). Source builds below are for the prospective record and for that exception, and are not blocked by a missing local credential."
+  }
+ },
+ "calendar": {
+  "decisionFrequency": "MONTHLY",
+  "decisionDate": "last exchange session of each calendar month in the ETF's own market",
+  "signalInformation": "values with effectiveAt <= decision date only",
+  "execution": "close of the next exchange session after the decision date",
+  "returnMeasurement": "from execution close to the next execution close; forward horizons measured from the execution close",
+  "missingSignal": "a policy holds its previous target unless every completion of its missing inputs gives the same weight; before its first determinable target it holds 0.8",
+  "evaluationWindowUS": {
+   "firstDecision": "2012-01-31",
+   "lastDecision": "2024-08-30",
+   "months": 152,
+   "reason": "First month-end at which every input of every registered US policy is determinable (D1 needs 252 SPY sessions; the repository SPY file starts 2011-01-03). Last month whose average price is complete in the pinned Shiller vintage (its 2024-09 row is a partial month). Fixed here, before any outcome."
+  }
+ },
+ "signals": {
+  "PE_HISTORY_MONTHS": 60,
+  "PE_HISTORY_MIN_VALID": 54,
+  "VALUATION_CHEAP": "PE(t) < mean of the PE values recorded at the 60 PRIOR decision dates (>= 54 measured); PE with non-positive earnings is missing",
+  "EARNINGS_CHANGE_MONTHS": 3,
+  "EARNINGS_STABLE": "EPS(t) >= EPS(t-3 decision dates), both as recorded at their own decision dates",
+  "CREDIT_HISTORY_MONTHS": 60,
+  "CREDIT_HISTORY_MIN_VALID": 54,
+  "CREDIT_PERCENTILE": 75.0,
+  "CREDIT_PERCENTILE_METHOD": "type 7 linear interpolation over the 60 PRIOR decision-date values",
+  "CREDIT_WIDENING_MONTHS": 3,
+  "CREDIT_STRESS": "spread(t) > P75 of prior 60 AND spread(t) > spread(t-3)",
+  "DRAWDOWN_WINDOW_SESSIONS": 252,
+  "DRAWDOWN_TRIGGER": -0.2,
+  "DEEP_DRAWDOWN": "raw close(t) / max raw close over the 252 sessions ending at t (inclusive) - 1 <= -0.20; any missing session -> missing"
+ },
+ "signalSources": {
+  "US_TRAILING_PE": {
+   "status": "REVISED_HISTORY_SINGLE_VINTAGE_FIXED_LAG",
+   "source": "Shiller ie_data.xls, shillerdata.com hosted asset, Last-Modified 2024-09-04",
+   "sha256": "59532175bd1b95cee294de96fe05856cfb109663e235b5c2e5a496b258ba00c3",
+   "price": "column P: monthly average of daily S&P Composite closes for month M (complete at the end of M); the file's final row is a partial month and is never used",
+   "earnings": "column E read ONLY at quarter-end months (Mar/Jun/Sep/Dec); at the end of decision month M the usable quarter is the latest quarter-end q <= M - 4 months",
+   "earningsLagMonths": 4,
+   "lagRationale": "The two reachable vintages show their last earnings month 2.17 and 3.58 months before their Last-Modified dates; intra-quarter months are interpolated towards the NEXT quarter-end value and so are never read. 4 > 3.58. This is a conservative lag on a single revised vintage, NOT a verified publication date.",
+   "revisionEvidence": "Between the 2023-10-17 and 2024-09-04 vintages, E differs only for 2023-04..2023-06 (<= 0.09%), D never, P only on the older file's partial final month.",
+   "pe": "P(M) / E(q)",
+   "preserved": [
+    "data/research/mvma-v1/raw/shiller-ie_data-20240904.xls.gz",
+    "data/research/mvma-v1/shiller-monthly-20240904.csv"
+   ]
+  },
+  "US_TRAILING_EPS_FOR_STABILITY": {
+   "status": "SAME_SOURCE_AS_US_TRAILING_PE",
+   "series": "E(q) as used in US_TRAILING_PE"
+  },
+  "US_FORWARD_PE_AND_EPS": {
+   "status": "SOURCE_BLOCKED",
+   "reason": "No repository secret or preserved artifact carries a dated forward-EPS ledger (FMP / Finnhub / SimFin / Polygon / AlphaVantage keys serve company statements, not an index consensus ledger). FactSet Insight posts quote the forward 12-month P/E in text, but the public archive holds 32 'earningsinsight' posts for 2017 and one for 2012 among 836 listed slugs, extraction is unvalidated and redistribution rights are unverified. A forward variant needs its own source build and preregistration; current-vintage estimates are never backfilled."
+  },
+  "US_CREDIT_SPREAD": {
+   "status": "PIT_EXACT_VIA_ALFRED_VINTAGES_COLLECTED",
+   "definition": "BAA (Moody's seasoned Baa, monthly) minus GS10 (monthly). For decision session d each leg is the latest observation in the ALFRED vintage in force on the calendar day BEFORE d (an H.15 release on d lands after the 16:00 close). The two legs must carry the same observation month, else the spread is missing.",
+   "rejectedAlternatives": {
+    "BAMLH0A0HYM2 / BAMLC0A0CM": "FRED now serves only the last three years (first observation 2023-11-21); not a historical source.",
+    "BAA10Y": "No ALFRED vintage before 2014-06; robustness only from 2019 onwards, never substituted.",
+    "DBAA": "Not in ALFRED (current vintage served for any date)."
+   },
+   "missing": "a missing vintage or observation makes the spread missing; it is never replaced by VIX, a rate or another spread",
+   "ledger": [
+    "data/research/mvma-v1/alfred-BAA-asof-decisions.csv",
+    "data/research/mvma-v1/alfred-GS10-asof-decisions.csv"
+   ],
+   "route": "public alfredgraph.csv (no credential); the Actions FRED_API_KEY route serves the same vintages and is not needed"
+  },
+  "US_DRAWDOWN_CLOSE": {
+   "status": "REPOSITORY_INPUT",
+   "source": "data/research/us-dual-benchmark-v1/spy-qqq-total-return.csv.gz column rawClose",
+   "note": "raw price close for the signal, total-return close for the outcome; never mixed"
+  },
+  "KR_PE": {
+   "status": "TWO_ROUTES_NOT_YET_BUILT",
+   "officialIndexPer": "KRX Data Marketplace MDCSTAT00702 (KOSPI 200 PER/PBR/dividend yield). Answered HTTP 400 LOGOUT here; the same portal answered LOGOUT on Actions for investor flow (v2.25). The subscribed KRX Open API (KRX_API_KEY) serves idx/kospi_dd_trd and idx/krx_dd_trd, whose published field list carries index levels, volume, value and market cap but no PER; to be confirmed from a served row before this is called a coverage limit.",
+   "bottomUpRoute": "Aggregate PER of the PIT Top-120 from repository-preserved inputs: KRX daily MKTCAP (KRX_API_KEY universe snapshots on signal-history) over DART TTM net income (DART key, kr-candidate-merged store). Differs from KRX's official index PER (constituents, float, treatment of losses) and is registered as its own definition; DART coverage starts 2015 and covers 126 of 260 ever-Top-120 tickers."
+  },
+  "KR_FORWARD_EPS": {
+   "status": "SOURCE_BLOCKED",
+   "reason": "No repository secret reaches a Korean consensus ledger; FnGuide/FnSpace is ToS-blocked (challenger-2 feasibility). DART serves filed results, not forecasts."
+  },
+  "KR_CREDIT_SPREAD": {
+   "status": "SOURCE_VALIDATION_DISPATCH_REQUIRED",
+   "evidence": "Actions run 37080934658 (probes.yml ecos-market-context, secrets.ECOS) validated KTB 3Y 817Y002/010200000 (daily, 1998-11-13..) and listed CorpBond 3Y AA- 817Y002/010300000 (daily, 1995-01-03..) and BBB- 010320000 (2000-09-30..) as AMBIGUOUS only because two ratings exist.",
+   "registeredChoice": "AA- (investment-grade, longest history), chosen here before any value is read.",
+   "nextDispatch": {
+    "workflow": "probes.yml",
+    "ref": "main",
+    "inputs": {
+     "probe": "ecos-market-context",
+     "args": "{\"CorpBond_3Y\":{\"seriesId\":\"817Y002\",\"cycle\":\"D\",\"itemCode\":\"010300000\",\"semanticName\":\"CorpBond_3Y\",\"expectedTableName\":\"1.3.2.1. 시장금리(일별)\",\"expectedItemNames\":[\"회사채(3년, AA-)\"],\"expectedUnit\":\"연%\"}}"
+    }
+   },
+   "valueCollection": "The probe saves no values by design. Daily values need a reviewed collector step calling pipeline/ecos_macro.py with secrets.ECOS; none exists today and no new workflow is created in this PR.",
+   "vintage": "ECOS history is REVISED_HISTORY with no release-vintage endpoint; market yields are observed, but publishedAt stays null."
+  }
+ },
+ "policies": {
+  "B0": {
+   "kind": "STATIC",
+   "weight": 1.0
+  },
+  "B1": {
+   "kind": "STATIC",
+   "weight": 0.8
+  },
+  "B2": {
+   "kind": "STATIC",
+   "weight": 0.6
+  },
+  "V1": {
+   "kind": "DYNAMIC",
+   "inputs": [
+    "cheap"
+   ],
+   "rule": "cheap -> 1.0 else 0.6"
+  },
+  "M1T": {
+   "kind": "DYNAMIC",
+   "inputs": [
+    "earningsStable",
+    "creditStress"
+   ],
+   "earnings": "TRAILING",
+   "rule": "not stable AND stress -> 0.6; stable AND not stress -> 1.0; else 0.8"
+  },
+  "VM1T": {
+   "kind": "DYNAMIC",
+   "inputs": [
+    "cheap",
+    "earningsStable",
+    "creditStress"
+   ],
+   "earnings": "TRAILING",
+   "rule": "priority 1: not stable AND stress -> 0.6; priority 2: cheap AND stable AND not stress -> 1.0; else 0.8"
+  },
+  "M1F": {
+   "kind": "DYNAMIC",
+   "earnings": "FORWARD",
+   "status": "SOURCE_BLOCKED"
+  },
+  "VM1F": {
+   "kind": "DYNAMIC",
+   "earnings": "FORWARD",
+   "status": "SOURCE_BLOCKED"
+  },
+  "D1": {
+   "kind": "DYNAMIC",
+   "inputs": [
+    "deepDrawdown"
+   ],
+   "rule": "deep drawdown -> 1.0 else 0.8"
+  }
+ },
+ "preOutcomeDecisions": [
+  {
+   "id": "TRAILING_SUBSTITUTE_REGISTERED_SEPARATELY",
+   "decision": "The proposal's VM1/M1 need forward EPS, which is SOURCE_BLOCKED. They stay registered as VM1F/M1F with status SOURCE_BLOCKED. VM1T/M1T are SEPARATE policies using trailing reported EPS, registered here before any outcome, and are never reported under the VM1/M1 names.",
+   "ownerMayVetoBeforePhase2": true
+  },
+  {
+   "id": "H1_TRAILING_IS_THE_PRIMARY_VALUATION_CLAIM",
+   "decision": "Forward and trailing PER are never pooled. With forward PER blocked, the primary valuation claim is H1-US-TRAILING."
+  },
+  {
+   "id": "WINDOW_FIXED_BEFORE_OUTCOMES",
+   "decision": "US window 2012-01-31..2024-08-30 (152 decisions) from input availability alone."
+  },
+  {
+   "id": "PRE_SIGNAL_WEIGHT_0_8",
+   "decision": "Before its first determinable target a dynamic policy holds 0.8, the middle registered weight."
+  },
+  {
+   "id": "MIN_VALID_54_OF_60",
+   "decision": "A 60-month history statistic needs at least 54 measured values (90%)."
+  }
+ ],
+ "hypotheses": [
+  {
+   "id": "H1-US-TRAILING",
+   "market": "US",
+   "claim": "Mean 12-month SPY-minus-cash total-return excess after VALUATION_CHEAP (trailing PE) decisions exceeds the mean after not-cheap decisions",
+   "horizonMonths": 12,
+   "statistic": "difference of conditional means of forward 12M excess",
+   "sign": "POSITIVE",
+   "status": "ELIGIBLE_EXPLORATORY_PENDING_DATA_BUILD",
+   "holmFamily": "PRIMARY"
+  },
+  {
+   "id": "H2-US-VM1T",
+   "market": "US",
+   "claim": "VM1T's cost-net TIMING term (#316 decomposition) is positive",
+   "horizon": "monthly rebalancing, annualised",
+   "statistic": "mean monthly TIMING - COST x 12",
+   "sign": "POSITIVE",
+   "status": "ELIGIBLE_EXPLORATORY_PENDING_DATA_BUILD",
+   "holmFamily": "PRIMARY"
+  },
+  {
+   "id": "H1-US-FORWARD",
+   "market": "US",
+   "status": "SOURCE_BLOCKED",
+   "holmFamily": "NOT_IN_FAMILY"
+  },
+  {
+   "id": "H2-US-VM1F",
+   "market": "US",
+   "status": "SOURCE_BLOCKED",
+   "holmFamily": "NOT_IN_FAMILY"
+  },
+  {
+   "id": "H1-KR-TRAILING",
+   "market": "KR",
+   "status": "NOT_RUN",
+   "holmFamily": "NOT_IN_FAMILY"
+  },
+  {
+   "id": "H1-KR-FORWARD",
+   "market": "KR",
+   "status": "NOT_RUN",
+   "holmFamily": "NOT_IN_FAMILY"
+  },
+  {
+   "id": "H2-KR-VM1T",
+   "market": "KR",
+   "status": "NOT_RUN",
+   "holmFamily": "NOT_IN_FAMILY"
+  },
+  {
+   "id": "H2-KR-VM1F",
+   "market": "KR",
+   "status": "NOT_RUN",
+   "holmFamily": "NOT_IN_FAMILY"
+  }
+ ],
+ "inference": {
+  "multipleTesting": {
+   "method": "HOLM",
+   "alpha": 0.05,
+   "family": "hypotheses with holmFamily PRIMARY at Phase 2 execution; an unavailable cell is reported NOT_RUN or SOURCE_BLOCKED and is never counted as a failure"
+  },
+  "hac": {
+   "estimator": "Newey-West Bartlett",
+   "lag12M": 11,
+   "lag6M": 5,
+   "lagMonthlyPolicy": 0
+  },
+  "bootstrap": {
+   "method": "moving block",
+   "blockMonthsPrimary": 12,
+   "blockMonthsSensitivity": [
+    6,
+    18,
+    24
+   ],
+   "replicates": 10000,
+   "seed": 20261122
+  },
+  "minIndependentBlocks": 10,
+  "independentBlockRule": "fewer than 10 non-overlapping 12-month blocks -> no strong statistical conclusion; the US window holds 12 (152 months)",
+  "secondary": [
+   "6-month horizon",
+   "V1, M1T, D1, B1, B2 comparisons",
+   "2x2 state table",
+   "trend x valuation table",
+   "robustness list",
+   "state cells below MIN_STATE_CELL_DECISIONS are descriptive only"
+  ]
+ },
+ "attribution": {
+  "method": "LEVEL / TIMING / COST exact decomposition",
+  "implementation": {
+   "module": "research/master_research_program_v1/market_industry/market_timing.py",
+   "sourcePr": 316,
+   "sourceCommit": "75aab7bc7096b551543bc1582c1e7fd288e94e59",
+   "gitBlob": "dabc7ee0027527a467d07d8138dedf816d713258",
+   "rule": "Imported if #316 is merged before Phase 2; otherwise that exact blob is vendored and its git blob hash is checked before use. Never re-derived."
+  },
+  "comparisons": [
+   "VM1T - B0",
+   "VM1T - B1",
+   "VM1T - exposure-matched static (descriptive counterfactual)",
+   "VM1T - V1",
+   "VM1T - M1T"
+  ],
+  "residual": "compounded NAV difference minus the arithmetic decomposition is reported as drift / rebalance residual"
+ },
+ "costs": {
+  "US": {
+   "oneWayBps": 2.0,
+   "basis": "SPY / BIL half-spread plus fees, conservative; no tax"
+  },
+  "KR": {
+   "oneWayBps": 5.5,
+   "basis": "1.5bp commission + 4bp half-spread; domestic equity ETF sale is exempt from securities transaction tax"
+  },
+  "stress": [
+   1,
+   2,
+   3
+  ],
+  "executionDelaySensitivitySessions": 1
+ },
+ "economicThresholds": {
+  "level2MinAnnualTimingPp": 1.0,
+  "level3AlphaPath": "cost-net CAGR above B0 AND above the exposure-matched static, with prospective confirmation",
+  "level3RiskPath": "lower MDD and worst-12M than B0 and than a static of equal volatility, with the return given up quantified; never called alpha"
+ },
+ "dca": {
+  "contribution": "1 unit on the first decision date of every month, identical for every DCA rule",
+  "DCA-A": "invest the whole contribution at execution",
+  "DCA-B": "not cheap: invest 50%, park 50% in cash; cheap: invest the contribution and all parked cash",
+  "DCA-C": "not deep drawdown: invest 50%, park 50%; deep drawdown: invest the contribution and all parked cash",
+  "parkedFraction": 0.5,
+  "terminal": "parked cash at the end is valued at cash, never force-invested",
+  "metrics": [
+   "terminal value",
+   "total contributed",
+   "XIRR",
+   "time-weighted return",
+   "average cash wait",
+   "deployment ratio",
+   "cash opportunity cost",
+   "worst start cohort",
+   "MDD under identical flows"
+  ],
+  "neverComparedWith": "the overlay policies in one table"
+ },
+ "robustness": [
+  "2008 crisis (outside US window; descriptive only if a longer verified SPY series is built)",
+  "2020",
+  "2022",
+  "2026 drawdown (after the window; prospective only)",
+  "drop best year",
+  "drop worst year",
+  "drop 2020-03..2020-12",
+  "median instead of mean for PE5",
+  "cost x2 x3",
+  "one-session execution delay",
+  "US mega-cap concentration",
+  "USD vs KRW reporting (causal FX only)"
+ ],
+ "stopConditions": [
+  "benchmark total return not reproducible",
+  "a revised value enters a decision outside its registered lag rule",
+  "fewer than 10 independent 12-month blocks",
+  "threshold-only re-search on the same history",
+  "signal redundant with the existing trend / risk overlay",
+  "predictive power without cost-net portfolio improvement (record, then stop the policy path)"
+ ],
+ "prospectiveRecord": {
+  "status": "NOT_STARTED_SOURCE_BLOCKED",
+  "blocker": "No live trailing-PE source: Shiller's maintained file (shillerdata.com) reset the connection here and the reachable copies end 2024-09; S&P DJI's EPS workbook answered 403 here. Both are to be re-measured from an Actions runner before this is called an access block; a live receipt also needs a separate authorization.",
+  "fields": [
+   "decisionDate",
+   "pe",
+   "pe5",
+   "discount",
+   "eps",
+   "eps3mAgo",
+   "creditSpread",
+   "trendState",
+   "drawdown",
+   "sourceHashes",
+   "effectiveAt",
+   "policyTargets",
+   "benchmarkSource"
+  ],
+  "outcomes": "6M and 12M outcomes stored separately after maturity; append-only"
+ },
+ "sourceAcquisitionPolicy": {
+  "order": [
+   "1 REPOSITORY_PRESERVED_RAW",
+   "2 EXISTING_ACTIONS_ARTIFACT_OR_BRANCH_OBJECT",
+   "3 EXISTING_WORKFLOW_DISPATCH_WITH_REPOSITORY_SECRET",
+   "4 SOURCE_BLOCKED only after authentication, access or the source's own coverage is shown to refuse"
+  ],
+  "rule": "A credential absent from the development container is never a reason for SOURCE_BLOCKED. Secrets are read only by reviewed workflows on main; they are never printed, copied, committed or handed to unreviewed PR code.",
+  "dispatchFromThisSession": "workflow_dispatch answers 403 Resource not accessible by integration for this session's token; a run that needs a secret is reported with its exact path and inputs for the owner to dispatch."
+ },
+ "preOutcomeReadiness": {
+  "source": "research/market_valuation_macro_overlay_v1/evidence/us-signal-readiness.json (states and targets only; no return read)",
+  "cellRule": "A state cell (2x2 table, trend x valuation table) with fewer than 12 decision dates is DESCRIPTIVE_ONLY: no interval, no test, no ranking.",
+  "MIN_STATE_CELL_DECISIONS": 12,
+  "facts": {
+   "cheap": "81 of 152 decisions",
+   "earningsStable": "99 of 152",
+   "creditStress": "15 true, 130 false, 7 missing (BAA vintages stuck at 2016-09 for the 2016-11..2017-02 decisions; the 3-month widening then needs three more months)",
+   "deepDrawdown": "3 of 152 (2020-03, 2022-06, 2022-09)",
+   "stateTable2x2": {
+    "CHEAP_GOOD": 55,
+    "CHEAP_MIXED": 25,
+    "CHEAP_BAD": 1,
+    "NOT_CHEAP_GOOD": 30,
+    "NOT_CHEAP_MIXED": 27,
+    "NOT_CHEAP_BAD": 7,
+    "UNDETERMINED": 7
+   },
+   "meanTargets": {
+    "V1": 0.8132,
+    "M1T": 0.9105,
+    "VM1T": 0.8618,
+    "D1": 0.8039
+   },
+   "creditTiming": "Monthly-average BAA is published early in the following month, so at the 2020-03-31 decision the latest spread is February's and CREDIT_STRESS reads false. This is the registered PIT behaviour, not a defect to tune."
+  },
+  "consequences": [
+   "The proposal's central A-versus-B comparison (cheap with good versus cheap with deteriorating earnings and credit) is NOT_EVALUABLE in the US window: CHEAP_BAD has 1 decision and NOT_CHEAP_BAD 7. Both are reported descriptively only.",
+   "D1 differs from B1 on 3 decisions; D1 is a near-copy of B1 here and its comparison is reported descriptively only.",
+   "VM1T reaches 0.6 on 8 decisions; its exposure variation is mostly 0.8 versus 1.0, driven by the CHEAP_GOOD state."
+  ]
+ }
+}

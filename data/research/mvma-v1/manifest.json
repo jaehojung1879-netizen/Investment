@@ -1,0 +1,203 @@
+{
+ "alfred": {
+  "BAA": {
+   "current": {
+    "firstObservation": "1919-01-01",
+    "httpStatus": 200,
+    "lastObservation": "2026-10-01",
+    "retrievedAt": "2026-11-22T00:13:15+00:00",
+    "rows": 1294,
+    "stored": {
+     "bytes": 5382,
+     "path": "data/research/mvma-v1/raw/fred-BAA-current.csv.gz",
+     "sha256": "f56d417b876e9ea61d223d8e44c572edfdbe98913087472cbf70143e3949b098"
+    },
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=BAA",
+    "valued": 1294
+   },
+   "decisions": 212,
+   "evidenceClass": "PIT_EXACT_ALFRED_VINTAGE",
+   "maxDaysDecisionMinusObservationMonthStart": 180,
+   "missing": 0,
+   "revisedSinceVintage": 1,
+   "vintageLedger": {
+    "bytes": 36380,
+    "path": "data/research/mvma-v1/alfred-BAA-asof-decisions.csv",
+    "sha256": "e8f6732bee50a100fca18ae6f2ff9b17292149d24d919f3a87f38353f6e9a060"
+   },
+   "vintageServed": 212
+  },
+  "GS10": {
+   "current": {
+    "firstObservation": "1953-04-01",
+    "httpStatus": 200,
+    "lastObservation": "2026-10-01",
+    "retrievedAt": "2026-11-22T00:13:41+00:00",
+    "rows": 883,
+    "stored": {
+     "bytes": 3739,
+     "path": "data/research/mvma-v1/raw/fred-GS10-current.csv.gz",
+     "sha256": "4d5bdf7114f0cda2d9aa05f0ca31e778474149c784163a0ec2a2f467f8198218"
+    },
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=GS10",
+    "valued": 883
+   },
+   "decisions": 212,
+   "evidenceClass": "PIT_EXACT_ALFRED_VINTAGE",
+   "maxDaysDecisionMinusObservationMonthStart": 61,
+   "missing": 0,
+   "revisedSinceVintage": 0,
+   "vintageLedger": {
+    "bytes": 36365,
+    "path": "data/research/mvma-v1/alfred-GS10-asof-decisions.csv",
+    "sha256": "505c009bbc8eee8a9d14c26bb00b0fc2d4305d0926184f0146ef54174ccfaca8"
+   },
+   "vintageServed": 212
+  }
+ },
+ "bil": {
+  "originalFetchedAtUtc": "2026-11-10T22:32:51+00:00",
+  "originalUrl": "https://query2.finance.yahoo.com/v8/finance/chart/BIL?period1=0&period2=1794268800&interval=1d&events=div%2Csplit&includeAdjustedClose=true",
+  "sessions": 4894,
+  "sourceCommit": "49c3aa891b1e85520c2a90d0d062678a738a87cf",
+  "sourcePath": "research/us_macro_cocktail_v1/data/raw/yahoo_BIL.json.gz",
+  "sourcePr": 331,
+  "status": "REUSED_BYTE_IDENTICAL",
+  "stored": {
+   "bytes": 64304,
+   "path": "data/research/mvma-v1/raw/yahoo-BIL-chart-20261110.json.gz",
+   "sha256": "6cf14182abc6cf7213a25cb8b93ed467e52cb58266e10cddbe69a0995fd17363"
+  },
+  "uncompressedSha256": "5d0b7e05ad87d644e0264080c0e1fe08b3e3920190c83a4575c871d2327bfb3e",
+  "yahooSplits": [
+   {
+    "date": "2017-11-30",
+    "denominator": 2.0,
+    "numerator": 1.0
+   }
+  ]
+ },
+ "bilDistributionReconciliation": {
+  "amountConflicts": 1,
+  "conflicts": [
+   {
+    "exDate": "2022-03-01",
+    "issuer": 0.0,
+    "vendorAsOfEvent": 0.022
+   }
+  ],
+  "issuerEvents": 233,
+  "issuerPaidEventsMissingAtVendor": [
+   "2026-11-02"
+  ],
+  "issuerZeroAmountRowsWithoutVendorEvent": 104,
+  "matchedDates": 128,
+  "splitsApplied": [
+   "2017-11-30 1.0:2.0"
+  ],
+  "toleranceAbs": 0.002,
+  "vendorEvents": 128,
+  "vendorOnly": [],
+  "verdict": "USE_ISSUER_DISTRIBUTIONS"
+ },
+ "builtAt": "2026-11-22T00:13:13+00:00",
+ "calendar": "xkrx-xnys-4.11.1-v2-kr-2026-closures",
+ "decisionDates": {
+  "count": 212,
+  "first": "2007-01-31",
+  "last": "2024-08-30"
+ },
+ "outcomeReads": 0,
+ "secretsUsed": [],
+ "shiller": {
+  "SHILLERDATA_HOSTED_ASSET": {
+   "evidenceClass": "REVISED_HISTORY_SINGLE_VINTAGE",
+   "extracted": {
+    "bytes": 102917,
+    "path": "data/research/mvma-v1/shiller-monthly-20240904.csv",
+    "sha256": "bdfb4619fdab35eadca6ad6a1f1a4e9712610099dee7972062aa2902a1b2ebff"
+   },
+   "httpStatus": 200,
+   "lastModified": "Wed, 04 Sep 2024 23:44:52 GMT",
+   "lastModifiedDate": "2024-09-04",
+   "note": "Final row is a partial month (the file labels it e.g. 'Sept price'); flagged partialMonth=1 and never used. Columns 5-11 and 13+ (real / total-return paths) are not extracted.",
+   "original": {
+    "bytes": 1623552,
+    "sha256": "59532175bd1b95cee294de96fe05856cfb109663e235b5c2e5a496b258ba00c3"
+   },
+   "retrievedAt": "2026-11-22T00:13:14+00:00",
+   "source": "SHILLERDATA_HOSTED_ASSET",
+   "stored": {
+    "bytes": 660149,
+    "path": "data/research/mvma-v1/raw/shiller-ie_data-20240904.xls.gz",
+    "sha256": "8d37cbe70d2658b15141e7de1718615d9e07b556e02978ccb8f7708dd867921e"
+   },
+   "summary": {
+    "firstCapeMonth": "1881-01",
+    "firstMonth": "1871-01",
+    "lastCapeMonth": "2024-09",
+    "lastDividendMonth": "2024-06",
+    "lastEarningsMonth": "2024-06",
+    "lastPriceMonth": "2024-09",
+    "months": 1845,
+    "nonPositiveEarningsMonths": 0
+   },
+   "url": "https://img1.wsimg.com/blobby/go/e5e77e0b-59d1-44d9-ab25-4763ac982e53/downloads/ie_data.xls"
+  },
+  "YALE_ECON_PAGE_COPY": {
+   "evidenceClass": "REVISED_HISTORY_SINGLE_VINTAGE",
+   "extracted": {
+    "bytes": 101885,
+    "path": "data/research/mvma-v1/shiller-monthly-20231017.csv",
+    "sha256": "1a19c3164eee789a33891907b82bcc7c5217f54713afb224be754a0ffaeb2571"
+   },
+   "httpStatus": 200,
+   "lastModified": "Tue, 17 Oct 2023 03:27:29 GMT",
+   "lastModifiedDate": "2023-10-17",
+   "note": "Final row is a partial month (the file labels it e.g. 'Sept price'); flagged partialMonth=1 and never used. Columns 5-11 and 13+ (real / total-return paths) are not extracted.",
+   "original": {
+    "bytes": 1628672,
+    "sha256": "0df9392b7dacf91f756e92c8db508ad903c4588b43f3253680eec3dd8b40db68"
+   },
+   "retrievedAt": "2026-11-22T00:13:13+00:00",
+   "source": "YALE_ECON_PAGE_COPY",
+   "stored": {
+    "bytes": 653129,
+    "path": "data/research/mvma-v1/raw/shiller-ie_data-20231017.xls.gz",
+    "sha256": "efe8906784ffeb88e0620fd560043d2c1b7f530a6b5bef3cf91206b6827401ec"
+   },
+   "summary": {
+    "firstCapeMonth": "1881-01",
+    "firstMonth": "1871-01",
+    "lastCapeMonth": "2023-09",
+    "lastDividendMonth": "2023-06",
+    "lastEarningsMonth": "2023-06",
+    "lastPriceMonth": "2023-09",
+    "months": 1833,
+    "nonPositiveEarningsMonths": 0
+   },
+   "url": "http://www.econ.yale.edu/~shiller/data/ie_data.xls"
+  }
+ },
+ "ssga": {
+  "bilEventCount": 233,
+  "bilEvents": {
+   "bytes": 11192,
+   "path": "data/research/mvma-v1/ssga-BIL-distributions.csv",
+   "sha256": "bbb93b4aa75aa9e70c73d84728ede6a097102dc6d97e756e26b1825f7e765838"
+  },
+  "bilFirstExDate": "2007-07-02",
+  "bilLastExDate": "2026-11-02",
+  "httpStatus": 200,
+  "lastModified": "Fri, 20 Nov 2026 05:18:04 GMT",
+  "retrievedAt": "2026-11-22T00:14:08+00:00",
+  "stored": {
+   "bytes": 584303,
+   "path": "data/research/mvma-v1/raw/ssga-spdr-historical-distributions-20261122.xlsx",
+   "sha256": "0008b3cc16472d89944e1cf36dced2ec5df5430e07c8731fcf1e38f3dd67774c"
+  },
+  "url": "https://www.ssga.com/library-content/products/fund-data/etfs/us/spdr-etf-historical-distributions.xlsx"
+ },
+ "stage": "US_INPUT_BUILD",
+ "study": "market-valuation-macro-overlay-v1"
+}
