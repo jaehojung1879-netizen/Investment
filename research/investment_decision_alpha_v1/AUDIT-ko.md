@@ -1,5 +1,7 @@
 # PR #355 감사 보고서
 
+> **2026-11-22 정정:** §3(S2) 수치와 §4(S3)의 비례 대조, §6의 2·11·13·15번 상태는 [`CORRECTIONS-2026-11-22-ko.md`](CORRECTIONS-2026-11-22-ko.md)가 대체한다.
+
 - **대상**: PR #355 HEAD `6a335a0e`(CI pytest 성공, run 44884523013), 기준 #354 `a45f1276`
 - **감사 계산**: [`audit_diagnostics.py`](audit_diagnostics.py) → [`results/audit-diagnostics.json`](results/audit-diagnostics.json)
   - 같은 입력을 읽는 진단이다. 새 매매 규칙도, 새 성과 주장도 없다.

@@ -8,6 +8,11 @@ current value moved to SPY (once per name). Controls on the same book:
   HOLD  never trims;
   RAND  trims the same number of not-yet-trimmed names at the same checks, chosen at random (200 draws);
   PROP  trims every name by the same fraction so that the total value moved equals TRIM's at each check.
+
+Version 2 (2026-11-22, Codex audit): version 1 sized PROP from the untrimmed path's values, so after the first trim the
+value PROP moved no longer equalled the value TRIM moved. Version 2 measures the value TRIM actually moved at each check
+on TRIM's own path and moves exactly that value on PROP's own path (asserted to 1e-12). Version 1 output is kept and its
+PROP comparison is marked INVALIDATED; RAND is unchanged and remains count-matched, not value-matched.
 """
 from __future__ import annotations
 
@@ -41,6 +46,35 @@ def simulate(px, spy, w0, trims):
     return final - 1
 
 
+def moved_values(px, w0, trims):
+    """Value (before costs) each check moves to SPY on the TRIM path itself."""
+    units = (1 - EV.BUY) * np.asarray(w0, float) / px[0]
+    out = {}
+    for t in sorted(trims):
+        v = 0.0
+        for i, f in trims[t].items():
+            v += units[i] * f * px[t, i]
+            units[i] *= (1 - f)
+        out[t] = v
+    return out
+
+
+def simulate_value_matched(px, spy, w0, targets):
+    """Move `targets[t]` of value at check t, spread pro rata over every name, measured on this path. Returns
+    (net return, value actually moved per check)."""
+    units = (1 - EV.BUY) * np.asarray(w0, float) / px[0]
+    spy_units = (1 - EV.BUY) * (1 - sum(w0)) / spy[0]
+    moved = {}
+    for t in sorted(targets):
+        held = float((units * px[t]).sum())
+        f = min(1.0, targets[t] / held) if held > 0 else 0.0
+        moved[t] = f * held
+        units = units * (1 - f)
+        spy_units += moved[t] * (1 - EV.SELL) * (1 - EV.BUY) / spy[t]
+    final = float((units * px[-1]).sum() * (1 - EV.SELL) + spy_units * spy[-1] * (1 - EV.SELL))
+    return final - 1, moved
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--private", required=True)
@@ -55,7 +89,7 @@ def main(argv=None):
     boom = {d: {t for m in s.loc[s["BOOM"], "members"] for t in m} for d, s in st.items()}
     secs = RCMP.sections_of(feats)
     idx = close.index
-    rows, rng_all = [], []
+    rows, rng_all, gap_max = [], [], 0.0
     for d in sorted(secs):
         if d not in st:
             continue
@@ -80,15 +114,12 @@ def main(argv=None):
             schedule.append((t, len(hit)))
         r_trim = simulate(px, spy, w0, trims)
         r_hold = simulate(px, spy, w0, {})
-        # proportional: same value moved at each check, spread over all names (values measured on the untrimmed path)
-        prop = {}
-        for t, k in schedule:
-            if k == 0:
-                continue
-            vals = px[t] * np.asarray(w0) / px[0]
-            target = sum(0.5 * vals[i] for i in trims[t])
-            prop[t] = {i: min(1.0, target / vals.sum()) for i in range(len(names))}
-        r_prop = simulate(px, spy, w0, prop) if prop else r_hold
+        # proportional (v2): the value TRIM actually moved at each check, moved pro rata on PROP's own path
+        targets = moved_values(px, w0, trims)
+        r_prop, got = simulate_value_matched(px, spy, w0, targets) if targets else (r_hold, {})
+        for t, v in targets.items():
+            assert abs(got[t] - v) <= 1e-12 or v >= sum(w0), "PROP_VALUE_MISMATCH"
+            gap_max = max(gap_max, abs(got[t] - v))
         rng = np.random.default_rng([SEED, int(d.strftime("%Y%m%d"))])
         rand = []
         for _ in range(DRAWS):
@@ -108,7 +139,8 @@ def main(argv=None):
     df = pd.DataFrame(rows).set_index("date")
     act = df[df["nTrims"] > 0]
     block = max(1, round(H / 5))
-    out = {"studyId": "investment-decision-alpha-v1/S3", "label": "EXPLORATORY_ON_OUTCOME_EXPOSED_HISTORY", "books": int(len(df)),
+    out = {"studyId": "investment-decision-alpha-v1/S3", "version": 2, "propValueMatchMaxAbsGap": gap_max,
+           "supersedes": "s3-trim.json (trimMinusProp INVALIDATED: value mismatch after repeated trims)", "label": "EXPLORATORY_ON_OUTCOME_EXPOSED_HISTORY", "books": int(len(df)),
            "booksWithAnyTrim": int(len(act)), "meanTrimsPerBook": float(df["nTrims"].mean())}
     for lab, s in (("trimMinusHold", act["trim"] - act["hold"]), ("trimMinusRandom", act["trim"] - act["randMean"]),
                    ("trimMinusProp", act["trim"] - act["prop"]), ("randomMinusHold", act["randMean"] - act["hold"]),
@@ -119,7 +151,7 @@ def main(argv=None):
     trim_rank = [float((np.array(r) < t).mean()) for r, t in zip(rng_all, df["trim"]) if True]
     out["trimPercentileWithinRandom"] = {"mean": float(np.mean([x for x, n in zip(trim_rank, df["nTrims"]) if n > 0]))}
     out["holdMinusSpy"] = CM.boot((df["hold"] - df["spy"]).values, block)
-    (Path(a.out) / "s3-trim.json").write_text(json.dumps(out, indent=1, sort_keys=True, default=str) + "\n")
+    (Path(a.out) / "s3-trim-v2.json").write_text(json.dumps(out, indent=1, sort_keys=True, default=str) + "\n")
     print(json.dumps({k: (v["all"]["mean"], v["all"].get("ci")) if isinstance(v, dict) and "all" in v else v for k, v in out.items()}, default=str))
 
 
