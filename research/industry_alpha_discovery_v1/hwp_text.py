@@ -14,7 +14,6 @@ import zipfile
 import zlib
 from pathlib import Path
 
-import olefile
 
 PARA_TEXT = 67
 # Control chars that carry 7 extra UTF-16 units of payload (inline and extended controls).
@@ -57,6 +56,8 @@ def section_lines(data: bytes) -> list[str]:
 
 
 def hwp_lines(path: Path) -> list[str]:
+    import olefile  # only needed to read real .hwp files (collection); not a CI dependency
+
     ole = olefile.OleFileIO(str(path))
     header = ole.openstream("FileHeader").read()
     compressed = bool(header[36] & 1)

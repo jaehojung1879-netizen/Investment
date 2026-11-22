@@ -15,7 +15,7 @@
 | 파일 | 역할 | 가격을 읽는가 |
 |---|---|---|
 | `collect_releases.py` | KDI 경제정보센터 목록에서 산업부 월간·관세청 속보·산업활동동향 첨부(PDF·HWP·HWPX)를 내려받는다 | 아니오 |
-| `hwp_text.py` | HWP5(OLE+zlib 레코드)·HWPX(zip XML) 문단 텍스트 추출. 외부 변환기 없음 | 아니오 |
+| `hwp_text.py` | HWP5(OLE+zlib 레코드)·HWPX(zip XML) 문단 텍스트 추출. 외부 변환기 없음. 실제 .hwp 읽기에만 `olefile`(수집 전용, CI 의존성 아님) | 아니오 |
 | `parse_motie_hwp.py` | HWP 품목표: 머리글의 월 라벨 → 열, 금액 다음 증감률 | 아니오 |
 | `parse_all.py` | 모든 보도자료 → `data/*.csv`, `parse-log.json` | 아니오 |
 | `signals.py` | 시점 기준(as-of) G3·가속도, 개정 반전, 속보 서프라이즈 | 아니오 |
