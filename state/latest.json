@@ -2,7 +2,7 @@
   "schemaVersion": "2.7.0",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
   "buildCommitSha": "4f4497bcc9e7",
-  "generatedAt": "2026-11-21T04:44:39.801011+00:00",
+  "generatedAt": "2026-11-22T12:16:48.079958+00:00",
   "marketAsOf": "2026-11-20",
   "macroRegime": "Reflation",
   "holdingsByRegion": {
@@ -16,23 +16,23 @@
       "MO",
       "PSX",
       "HST",
-      "EG",
       "HLT",
+      "EG",
       "MAR"
     ],
     "KR": [
-      "078930.KS",
       "005935.KS",
-      "000660.KS",
       "032640.KS",
+      "000660.KS",
+      "078930.KS",
+      "034730.KS",
       "005490.KS",
+      "021240.KS",
       "005930.KS",
       "011200.KS",
       "012750.KS",
-      "021240.KS",
-      "030200.KS",
-      "034730.KS",
-      "402340.KS"
+      "028050.KS",
+      "035250.KS"
     ]
   },
   "modelPortfolioWeights": {
@@ -52,26 +52,26 @@
     "MO": "ACCUMULATE_GRADUALLY",
     "PSX": "WATCH",
     "HST": "ACCUMULATE_GRADUALLY",
-    "EG": "WAIT_FOR_PULLBACK",
     "HLT": "WATCH",
+    "EG": "WAIT_FOR_PULLBACK",
     "MAR": "WATCH",
     "KIM": "WAIT_FOR_PULLBACK",
     "CSX": "WATCH",
     "VLO": "WATCH",
-    "078930.KS": "AVOID",
     "005935.KS": "AVOID",
-    "000660.KS": "AVOID",
     "032640.KS": "WAIT_FOR_PULLBACK",
+    "000660.KS": "AVOID",
+    "078930.KS": "AVOID",
+    "034730.KS": "AVOID",
     "005490.KS": "AVOID",
+    "021240.KS": "WAIT_FOR_PULLBACK",
     "005930.KS": "AVOID",
     "011200.KS": "WATCH",
     "012750.KS": "WAIT_FOR_PULLBACK",
-    "021240.KS": "WAIT_FOR_PULLBACK",
-    "030200.KS": "AVOID",
-    "034730.KS": "AVOID",
+    "028050.KS": "WAIT_FOR_PULLBACK",
+    "035250.KS": "AVOID",
     "402340.KS": "AVOID",
     "068270.KS": "WAIT_FOR_PULLBACK",
-    "009540.KS": "AVOID",
     "036460.KS": "ACCUMULATE_GRADUALLY"
   },
   "opportunityTiersByTicker": {
@@ -95,12 +95,12 @@
   "warningTiersByTicker": {
     "005935.KS": "CRITICAL_WARNING",
     "034730.KS": "CRITICAL_WARNING",
-    "402340.KS": "ELEVATED_WARNING",
+    "028050.KS": "ELEVATED_WARNING",
     "078930.KS": "CRITICAL_WARNING",
     "005930.KS": "WATCH",
     "021240.KS": "WATCH",
-    "030200.KS": "WATCH",
     "011200.KS": "WATCH",
+    "012750.KS": "WATCH",
     "HST": "WATCH",
     "SWK": "WATCH",
     "PSX": "ELEVATED_WARNING",
@@ -115,7 +115,7 @@
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-11-21T04:44:39.801011+00:00",
+    "validatedAt": "2026-11-22T12:16:48.079958+00:00",
     "errors": []
   }
 }
