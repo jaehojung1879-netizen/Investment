@@ -43,3 +43,19 @@ H1 저평가 후 12개월 초과수익 차이 **+5.23%p**는 Holm p=0.184로 **�
 단위는 매월 1 단위씩 152회 납입한 총 152 단위 계정이다. **해당 숫자는 사후 비용 보정 비교 결과로, 봉인된 연구 성과 파일을 대체하거나 새로운 검정 결과로 해석하지 않는다.** 개선 효과가 아닌 오차 크기를 측정하기 위한 감사이다.
 
 CI는 `tests/test_mvma_v1_targeted_audit.py`에서 미보정 원장 일치, 보정 수치, 통일된 위험관리 비교, COST 잔차를 고정한다. 원본 `run_dca`의 별도 합성 실패 사례는 수정 전까지 `strict xfail`로 유지한다.
+
+
+## 3차 추가 독립 감사 — 결과·사전등록 충실성 (새로운 연구 실행 없음)
+
+`python -m research.market_valuation_macro_overlay_v1.audit_358_ledger_invariants`는 원본을 변경하지 않는 기계적 진단만 수행한다. 실행기와 `analyze`는 호출하지 않는다. 새 파일 `tests/test_mvma_v1_ledger_invariants.py`에서 고의적인 원장 변조를 넣으면 감사가 거부하는지도 테스트한다.
+
+| 추가 항목 | 독립 확인 | 판정 |
+|---|---|---|
+| 7개 전략 최종가치·CAGR | 152개월 순수익을 복리 연결, 정확한 체결시작·종료일 4,626일로 CAGR 환산. 원장 ↔ 결과 JSON 차이는 부동소수점 반올림 이내 | **PASS** |
+| H1 12개월 선행수익 원장 | 평가창 원장만으로 양 끝이 모두 기록된 **141건**의 SPY−BIL 12개월 총수익을 직접 재구성. 모두 기존 `forward12MExcess`와 일치 | **PASS (141건)**; 마지막 11건은 평가창 이후 월별 수익이 필요해 이 파일 단독으로 미확인 |
+| H2 비용차감 TIMING의 HAC 민감도 | 152개 `targetVM1T`와 월별 SPY−BIL에서 #316 목표변경 비용을 직접 복원. **사전등록 HAC lag=0의 평균·SE·p와 일치**. 사후 진단으로 lag 1,3,6,12에서도 통계적 유의성 없음. 모두 원 H2 판정 `NOT_SUPPORTED` 유지 | **PASS**; 다른 lag는 사후 민감도, 새로운 검정이나 사전등록 변경 아님 |
+| DCA 사전등록 지표 완결성 | `protocol.json`의 `dca.metrics`는 9개이나 저장된 각 DCA 결과에는 4개만 대응하는 필드가 존재 | **REPORT_INCOMPLETE**; H1/H2와 무관 |
+
+**미보고 DCA 지표 5개:** `time-weighted return`, `average cash wait`, `cash opportunity cost`, `worst start cohort`, `MDD under identical flows`. 저장된 `averageParkedShare`는 평균 현금 대기 **기간**과 다른 개념이다. 보고서에 없는 값들을 추정해 몰래 채우지 않았다. 해당 지표는 측정 정의를 별도로 확정하고, 봉인된 #358 산출물이 아닌 **새 버전의 별도 서술 결과**로 처리해야 한다.
+
+**결론:** 새로 찾은 것은 DCA 기술·보고 범위의 불완전성이고, 일차 통계 가설 H1/H2의 새로운 코드 오류는 발견되지 않았다. 봉인 결과 수정/원샷 재실행은 정당화되지 않는다.
