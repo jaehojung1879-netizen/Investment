@@ -55,11 +55,15 @@ def test_waiting_misses_the_pre_announcement_rise_and_pays_the_etf_round_trip():
     assert r["P1"] < r["P0"] and r["P1c"] > r["P1"]
 
 
-def test_no_announcement_within_window_means_no_wait():
+def test_no_announcement_within_window_still_waits_until_the_cap():
+    # v2 (Codex audit): whether an announcement will arrive is unknown on the entry day, so the buyer waits
+    # until the first reaction day or entry + WAIT_MAX, never "knows" to skip the wait.
     close = _panel(np.linspace(100, 120, 200), np.full(200, 50.0))
     df = S2.evaluate([(close.index[0], "S", 1)], close, "ETF", {"S": np.array([150])}, lambda *a: 0.0, 120)
     r = df.iloc[0]
-    assert not r["waited"] and r["P1"] == r["P0"]
+    assert not r["waited"]                     # no announcement before the cap
+    expected = close["S"].iloc[1 + 120] / close["S"].iloc[1 + S2.WAIT_MAX] - 1
+    assert np.isclose(r["P1"], expected) and r["P1"] < r["P0"]
 
 
 def test_turning_points_alternate_and_need_the_full_move():
@@ -79,3 +83,22 @@ def test_trim_moves_only_the_trimmed_name_and_avoids_its_later_fall():
     trim_winner = S3.simulate(px, spy, [0.5, 0.5], {1: {0: 1.0}})
     assert trim_loser > hold > trim_winner
     assert np.isfinite(trim_loser)
+
+
+def test_proportional_control_moves_exactly_the_value_the_signal_trim_moved_on_repeated_trims():
+    # v2 (Codex audit): after a first trim the untrimmed path's values no longer describe either book
+    from research.investment_decision_alpha_v1 import s3_trim as S3
+    px = np.array([[100.0, 100.0, 100.0], [130.0, 80.0, 100.0], [160.0, 60.0, 90.0], [150.0, 70.0, 95.0]])
+    spy = np.array([10.0, 10.5, 11.0, 11.5])
+    w0 = [0.3, 0.3, 0.3]
+    trims = {1: {0: 0.5}, 2: {1: 0.5, 2: 0.5}}
+    targets = S3.moved_values(px, w0, trims)
+    _, got = S3.simulate_value_matched(px, spy, w0, targets)
+    for t in targets:
+        assert np.isclose(got[t], targets[t], rtol=0, atol=1e-12)
+    # the version-1 rule (fractions from the untrimmed path) does not match at the second check
+    vals = px[2] * np.asarray(w0) / px[0]
+    v1_fraction = (0.5 * vals[1] + 0.5 * vals[2]) / vals.sum()
+    units_after_first = (1 - S3.EV.BUY) * np.asarray(w0) / px[0] * (1 - targets[1] / ((1 - S3.EV.BUY) * (np.asarray(w0) / px[0] * px[1]).sum()))
+    v1_moved = v1_fraction * float((units_after_first * px[2]).sum())
+    assert not np.isclose(v1_moved, targets[2], atol=1e-6)

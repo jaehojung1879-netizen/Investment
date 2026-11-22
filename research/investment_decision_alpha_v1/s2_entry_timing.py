@@ -7,7 +7,10 @@ A purchase event is a name that enters a book at decision date d (absent from th
 P0 buys at the close of the session after d. P1 parks the same money in the ETF and buys at the close of the first
 announcement reaction day after entry (US: 8-K Item 2.02 reaction session; KR: session after the preliminary-earnings
 receipt date). P2 waits five more sessions. P1c parks in cash. Every policy is valued at T = entry + H sessions.
-No announcement within 63 sessions of entry means no wait (P1 = P2 = P0), and the share of such events is reported.
+Version 2 (2026-11-22, Codex audit): version 1 decided whether to wait by looking up whether an announcement would
+occur within the next 63 sessions, which a buyer cannot know on the entry day. Version 2 always waits: the purchase
+happens at the first reaction day after entry or at entry + 63 sessions, whichever comes first (P2 adds five sessions
+only when an announcement arrived). Version 1 outputs are kept unchanged and marked INVALIDATED.
 """
 from __future__ import annotations
 
@@ -77,12 +80,13 @@ def evaluate(events, close, etf, react, cost, H):
             continue
         r = react.get(t, np.array([], int))
         nxt = r[r > ent_pos]
-        b1 = int(nxt[0]) if len(nxt) and nxt[0] - ent_pos <= WAIT_MAX else None
+        announced = bool(len(nxt)) and nxt[0] - ent_pos <= WAIT_MAX
+        b1 = int(nxt[0]) if announced else ent_pos + WAIT_MAX          # v2: the cap is a rule, not a forecast
         cb, cs = cost(t, "buy", sess[ent_pos]), cost(t, "sell", sess[z])
         eb = cost(etf, "buy", sess[ent_pos])
         p0 = (1 - cb) * (sz / s0) * (1 - cs) - 1
-        rec = {"date": d, "ticker": t, "unresolved": False, "waited": b1 is not None, "P0": p0}
-        for name, b in (("P1", b1), ("P2", None if b1 is None else b1 + 5)):
+        rec = {"date": d, "ticker": t, "unresolved": False, "waited": announced, "P0": p0}
+        for name, b in (("P1", b1), ("P2", b1 + 5 if announced else b1)):
             if b is None or b >= z:
                 rec[name], rec[name + "c"] = p0, p0
                 continue
@@ -153,7 +157,7 @@ def main(argv=None):
         def entry_pos(d):
             return close.index.get_loc(M.next_session(mk.sess, d))
     react = reaction_days(ev, close.index, a.market)
-    res = {"studyId": "investment-decision-alpha-v1/S2", "market": a.market.upper(), "label": "EXPLORATORY_ON_OUTCOME_EXPOSED_HISTORY",
+    res = {"studyId": "investment-decision-alpha-v1/S2", "version": 2, "supersedes": f"s2-entry-timing-{a.market}.json (INVALIDATED: future announcement lookup)", "market": a.market.upper(), "label": "EXPLORATORY_ON_OUTCOME_EXPOSED_HISTORY",
            "tickersWithAnnouncements": len(react)}
     frames = {}
     for bname, bk in use.items():
@@ -166,8 +170,8 @@ def main(argv=None):
             print(a.market, bname, H, "events", len(df), "waited", round(res[f"{bname}|{H}"]["waitedShare"], 3),
                   "D1", round(c["mean"] * 100, 3), c.get("ci"), flush=True)
     out = Path(a.out)
-    (out / f"s2-entry-timing-{a.market}.json").write_text(json.dumps(res, indent=1, sort_keys=True, default=str) + "\n")
-    pd.to_pickle(frames, P / f"s2-frames-{a.market}.pkl")
+    (out / f"s2-entry-timing-{a.market}-v2.json").write_text(json.dumps(res, indent=1, sort_keys=True, default=str) + "\n")
+    pd.to_pickle(frames, P / f"s2-frames-{a.market}-v2.pkl")
 
 
 if __name__ == "__main__":

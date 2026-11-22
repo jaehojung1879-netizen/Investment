@@ -59,9 +59,14 @@ def family(claims):
     return out
 
 
-def main():
+def main(argv=None):
+    """--corrected: read the 2026-11-22 corrected outputs (S1 on US input v3, S2 v2, S3 v2) into judgement-corrected.json;
+    the original judgement.json is left as it was."""
+    import sys
+    corrected = "--corrected" in (argv if argv is not None else sys.argv[1:])
+    suffix = {"s1": "-v3input", "s2": "-v2", "s3": "-v2"} if corrected else {"s1": "", "s2": "", "s3": ""}
     res = {}
-    s1 = load("s1-industry-cycle.json")
+    s1 = load(f"s1-industry-cycle{suffix['s1']}.json")
     if s1:
         a = s1["IC_A"]["dProf"]
         c = s1["126"]
@@ -75,7 +80,7 @@ def main():
         res["S1"] = family(claims)
     s2 = {}
     for m, books in (("us", ("BASE", "U1", "SUE_TOP")), ("kr", ("S2",))):
-        x = load(f"s2-entry-timing-{m}.json")
+        x = load(f"s2-entry-timing-{m}{suffix['s2']}.json")
         if not x:
             continue
         for b in books:
@@ -83,7 +88,7 @@ def main():
             s2[f"T1-{m.upper()}-{b}"] = (c["all"], [c["BEFORE_2023"], c["FROM_2023"]], None, True)
     if s2:
         res["S2"] = family(s2)
-    s3 = load("s3-trim.json")
+    s3 = load(f"s3-trim{suffix['s3']}.json")
     if s3:
         # the decision itself (trim vs hold) is the one S3 claim; random and proportional trims are its controls
         c = s3["trimMinusHold"]
@@ -92,7 +97,7 @@ def main():
         res["S3_controls"] = {k: {"mean": s3[k]["all"]["mean"], "ci": s3[k]["all"].get("ci"),
                                   "halves": [s3[k]["BEFORE_2023"]["mean"], s3[k]["FROM_2023"]["mean"]]}
                               for k in ("trimMinusRandom", "trimMinusProp", "randomMinusHold", "trimmedNameAfterMinusSpy")}
-    (R / "judgement.json").write_text(json.dumps(res, indent=1, sort_keys=True) + "\n")
+    (R / ("judgement-corrected.json" if corrected else "judgement.json")).write_text(json.dumps(res, indent=1, sort_keys=True) + "\n")
     for fam, v in ((f, x) for f, x in res.items() if not f.endswith("_controls")):
         for k, c in v.items():
             print(fam, k, c["verdict"], round((c["mean"] or 0) * 100, 3), c["ci"], "holm", round(c["holmP"], 4), c["halves"])
