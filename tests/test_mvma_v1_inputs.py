@@ -116,7 +116,7 @@ import hashlib  # noqa: E402
 import json  # noqa: E402
 
 REPO = Path(__file__).resolve().parents[1]
-DATA = REPO / "data/research/mvma-v1"
+DATA = REPO / "research/market_valuation_macro_overlay_v1/data"
 EVIDENCE = REPO / "research/market_valuation_macro_overlay_v1/evidence"
 
 

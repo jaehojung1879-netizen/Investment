@@ -3,7 +3,7 @@
 기준 `main` `4f4497b`. 수집·측정 시각 2026-11-22 (UTC). 수익률·NAV·성과는 계산하지 않았다.
 
 - 원천 실측: [`evidence/source-probe.json`](evidence/source-probe.json) (`source_probe.py`)
-- 보존 입력: [`data/research/mvma-v1/manifest.json`](../../data/research/mvma-v1/manifest.json) (`collect_inputs.py`)
+- 보존 입력: [`data/manifest.json`](data/manifest.json) (`collect_inputs.py`)
 - 판단일 신호 원장·준비도: [`evidence/us-signal-readiness.json`](evidence/us-signal-readiness.json) / `.csv` (`build_signals.py`)
 
 ## 0. 원천 확보 원칙

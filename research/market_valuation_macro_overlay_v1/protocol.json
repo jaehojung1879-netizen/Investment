@@ -33,8 +33,8 @@
     "primary": "BIL_TOTAL_RETURN",
     "status": "INPUTS_PRESERVED_RECONSTRUCTION_IN_PHASE_2",
     "inputs": [
-     "data/research/mvma-v1/raw/yahoo-BIL-chart-20261110.json.gz (raw close; #331 branch object, reused byte-identically)",
-     "data/research/mvma-v1/ssga-BIL-distributions.csv (issuer distributions, SSGA historical workbook)"
+     "research/market_valuation_macro_overlay_v1/data/raw/yahoo-BIL-chart-20261110.json.gz (raw close; #331 branch object, reused byte-identically)",
+     "research/market_valuation_macro_overlay_v1/data/ssga-BIL-distributions.csv (issuer distributions, SSGA historical workbook)"
     ],
     "rule": "BIL total return = raw close plus ISSUER distributions (dividend + capital gains) reinvested at the ex-date close. Vendor distribution events are never used where they disagree with or omit issuer events. No synthetic pre-inception history (inception 2007-05-30; the window starts 2012). A reference rate (TB3MS / DGS3MO accrual) is a labelled sensitivity only: REFERENCE_RATE_NOT_INVESTABLE."
    },
@@ -96,8 +96,8 @@
    "revisionEvidence": "Between the 2023-10-17 and 2024-09-04 vintages, E differs only for 2023-04..2023-06 (<= 0.09%), D never, P only on the older file's partial final month.",
    "pe": "P(M) / E(q)",
    "preserved": [
-    "data/research/mvma-v1/raw/shiller-ie_data-20240904.xls.gz",
-    "data/research/mvma-v1/shiller-monthly-20240904.csv"
+    "research/market_valuation_macro_overlay_v1/data/raw/shiller-ie_data-20240904.xls.gz",
+    "research/market_valuation_macro_overlay_v1/data/shiller-monthly-20240904.csv"
    ]
   },
   "US_TRAILING_EPS_FOR_STABILITY": {
@@ -118,8 +118,8 @@
    },
    "missing": "a missing vintage or observation makes the spread missing; it is never replaced by VIX, a rate or another spread",
    "ledger": [
-    "data/research/mvma-v1/alfred-BAA-asof-decisions.csv",
-    "data/research/mvma-v1/alfred-GS10-asof-decisions.csv"
+    "research/market_valuation_macro_overlay_v1/data/alfred-BAA-asof-decisions.csv",
+    "research/market_valuation_macro_overlay_v1/data/alfred-GS10-asof-decisions.csv"
    ],
    "route": "public alfredgraph.csv (no credential); the Actions FRED_API_KEY route serves the same vintages and is not needed"
   },

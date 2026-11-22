@@ -7,7 +7,7 @@ often each state occurs: the same outcome-free readiness the sealed market-risk 
 
 Usage::
 
-    python -m research.market_valuation_macro_overlay_v1.build_signals --data-dir data/research/mvma-v1 \
+    python -m research.market_valuation_macro_overlay_v1.build_signals --data-dir research/market_valuation_macro_overlay_v1/data \
         --out research/market_valuation_macro_overlay_v1/evidence/us-signal-readiness.json
 """
 from __future__ import annotations
@@ -146,7 +146,7 @@ def build(data_dir: Path, spy_path: Path = SPY_FILE) -> dict:
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--data-dir", default=str(REPO / "data/research/mvma-v1"))
+    parser.add_argument("--data-dir", default=str(REPO / "research/market_valuation_macro_overlay_v1/data"))
     parser.add_argument("--out", required=True)
     args = parser.parse_args(argv)
     report = build(Path(args.data_dir))

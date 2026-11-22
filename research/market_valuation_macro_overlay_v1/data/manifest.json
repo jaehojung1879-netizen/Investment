@@ -9,7 +9,7 @@
     "rows": 1294,
     "stored": {
      "bytes": 5382,
-     "path": "data/research/mvma-v1/raw/fred-BAA-current.csv.gz",
+     "path": "research/market_valuation_macro_overlay_v1/data/raw/fred-BAA-current.csv.gz",
      "sha256": "f56d417b876e9ea61d223d8e44c572edfdbe98913087472cbf70143e3949b098"
     },
     "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=BAA",
@@ -22,7 +22,7 @@
    "revisedSinceVintage": 1,
    "vintageLedger": {
     "bytes": 36380,
-    "path": "data/research/mvma-v1/alfred-BAA-asof-decisions.csv",
+    "path": "research/market_valuation_macro_overlay_v1/data/alfred-BAA-asof-decisions.csv",
     "sha256": "e8f6732bee50a100fca18ae6f2ff9b17292149d24d919f3a87f38353f6e9a060"
    },
    "vintageServed": 212
@@ -36,7 +36,7 @@
     "rows": 883,
     "stored": {
      "bytes": 3739,
-     "path": "data/research/mvma-v1/raw/fred-GS10-current.csv.gz",
+     "path": "research/market_valuation_macro_overlay_v1/data/raw/fred-GS10-current.csv.gz",
      "sha256": "4d5bdf7114f0cda2d9aa05f0ca31e778474149c784163a0ec2a2f467f8198218"
     },
     "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=GS10",
@@ -49,7 +49,7 @@
    "revisedSinceVintage": 0,
    "vintageLedger": {
     "bytes": 36365,
-    "path": "data/research/mvma-v1/alfred-GS10-asof-decisions.csv",
+    "path": "research/market_valuation_macro_overlay_v1/data/alfred-GS10-asof-decisions.csv",
     "sha256": "505c009bbc8eee8a9d14c26bb00b0fc2d4305d0926184f0146ef54174ccfaca8"
    },
    "vintageServed": 212
@@ -65,7 +65,7 @@
   "status": "REUSED_BYTE_IDENTICAL",
   "stored": {
    "bytes": 64304,
-   "path": "data/research/mvma-v1/raw/yahoo-BIL-chart-20261110.json.gz",
+   "path": "research/market_valuation_macro_overlay_v1/data/raw/yahoo-BIL-chart-20261110.json.gz",
    "sha256": "6cf14182abc6cf7213a25cb8b93ed467e52cb58266e10cddbe69a0995fd17363"
   },
   "uncompressedSha256": "5d0b7e05ad87d644e0264080c0e1fe08b3e3920190c83a4575c871d2327bfb3e",
@@ -114,7 +114,7 @@
    "evidenceClass": "REVISED_HISTORY_SINGLE_VINTAGE",
    "extracted": {
     "bytes": 102917,
-    "path": "data/research/mvma-v1/shiller-monthly-20240904.csv",
+    "path": "research/market_valuation_macro_overlay_v1/data/shiller-monthly-20240904.csv",
     "sha256": "bdfb4619fdab35eadca6ad6a1f1a4e9712610099dee7972062aa2902a1b2ebff"
    },
    "httpStatus": 200,
@@ -129,7 +129,7 @@
    "source": "SHILLERDATA_HOSTED_ASSET",
    "stored": {
     "bytes": 660149,
-    "path": "data/research/mvma-v1/raw/shiller-ie_data-20240904.xls.gz",
+    "path": "research/market_valuation_macro_overlay_v1/data/raw/shiller-ie_data-20240904.xls.gz",
     "sha256": "8d37cbe70d2658b15141e7de1718615d9e07b556e02978ccb8f7708dd867921e"
    },
    "summary": {
@@ -148,7 +148,7 @@
    "evidenceClass": "REVISED_HISTORY_SINGLE_VINTAGE",
    "extracted": {
     "bytes": 101885,
-    "path": "data/research/mvma-v1/shiller-monthly-20231017.csv",
+    "path": "research/market_valuation_macro_overlay_v1/data/shiller-monthly-20231017.csv",
     "sha256": "1a19c3164eee789a33891907b82bcc7c5217f54713afb224be754a0ffaeb2571"
    },
    "httpStatus": 200,
@@ -163,7 +163,7 @@
    "source": "YALE_ECON_PAGE_COPY",
    "stored": {
     "bytes": 653129,
-    "path": "data/research/mvma-v1/raw/shiller-ie_data-20231017.xls.gz",
+    "path": "research/market_valuation_macro_overlay_v1/data/raw/shiller-ie_data-20231017.xls.gz",
     "sha256": "efe8906784ffeb88e0620fd560043d2c1b7f530a6b5bef3cf91206b6827401ec"
    },
    "summary": {
@@ -183,7 +183,7 @@
   "bilEventCount": 233,
   "bilEvents": {
    "bytes": 11192,
-   "path": "data/research/mvma-v1/ssga-BIL-distributions.csv",
+   "path": "research/market_valuation_macro_overlay_v1/data/ssga-BIL-distributions.csv",
    "sha256": "bbb93b4aa75aa9e70c73d84728ede6a097102dc6d97e756e26b1825f7e765838"
   },
   "bilFirstExDate": "2007-07-02",
@@ -193,7 +193,7 @@
   "retrievedAt": "2026-11-22T00:14:08+00:00",
   "stored": {
    "bytes": 584303,
-   "path": "data/research/mvma-v1/raw/ssga-spdr-historical-distributions-20261122.xlsx",
+   "path": "research/market_valuation_macro_overlay_v1/data/raw/ssga-spdr-historical-distributions-20261122.xlsx",
    "sha256": "0008b3cc16472d89944e1cf36dced2ec5df5430e07c8731fcf1e38f3dd67774c"
   },
   "url": "https://www.ssga.com/library-content/products/fund-data/etfs/us/spdr-etf-historical-distributions.xlsx"

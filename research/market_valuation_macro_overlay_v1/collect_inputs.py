@@ -17,7 +17,7 @@ in the user's priority order (repository -> existing artifact / branch -> public
 
 Usage::
 
-    python -m research.market_valuation_macro_overlay_v1.collect_inputs --out-dir data/research/mvma-v1
+    python -m research.market_valuation_macro_overlay_v1.collect_inputs --out-dir research/market_valuation_macro_overlay_v1/data
 """
 from __future__ import annotations
 
@@ -327,7 +327,7 @@ def reconcile_preserved(out: Path) -> dict:
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--out-dir", default=str(REPO / "data" / "research" / "mvma-v1"))
+    parser.add_argument("--out-dir", default=str(Path(__file__).resolve().parent / "data"))
     parser.add_argument("--sleep", type=float, default=0.2)
     parser.add_argument("--reconcile-only", action="store_true",
                         help="recompute the BIL lineage check from preserved files; no network")

@@ -29,7 +29,7 @@ python -m research.market_valuation_macro_overlay_v1.source_probe --out research
 ```
 
 ```bash
-python -m research.market_valuation_macro_overlay_v1.collect_inputs --out-dir data/research/mvma-v1
+python -m research.market_valuation_macro_overlay_v1.collect_inputs --out-dir research/market_valuation_macro_overlay_v1/data
 ```
 
 ```bash
