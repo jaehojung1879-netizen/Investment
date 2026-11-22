@@ -60,3 +60,41 @@ def test_dca_parking_pays_both_spy_and_bil_entry_costs():
     # Correct: 2 contributions * (0.5 SPY buy + 0.5 BIL buy) * 10bp = 0.002.
     # Current sealed code charges only the 0.5 SPY purchase: 0.001.
     assert outcome["costPaid"] == pytest.approx(0.002)
+
+
+def test_posthoc_dca_fee_correction_matches_sealed_results_before_adjustment():
+    """An isolated audit recovers every sealed DCA metric before changing BIL entry fees."""
+    from research.market_valuation_macro_overlay_v1 import audit_358_posthoc as AUD
+
+    out = AUD.audit()
+    assert out["primaryHypothesesReexecuted"] is False
+    assert out["resultFilesModified"] is False
+    assert out["months"] == 152
+    assert out["dca"]["DCA-A"]["deltaTerminal"] == pytest.approx(0.0, abs=1e-12)
+    assert out["dca"]["DCA-A"]["deltaXirrPp"] == pytest.approx(0.0, abs=1e-12)
+
+    b, c = out["dca"]["DCA-B"], out["dca"]["DCA-C"]
+    assert b["withBilEntryFee"]["terminalValue"] == pytest.approx(383.860322517858, abs=1e-6)
+    assert c["withBilEntryFee"]["terminalValue"] == pytest.approx(360.805132024698, abs=1e-6)
+    assert b["deltaXirrPp"] == pytest.approx(-0.000508810013, abs=1e-7)
+    assert c["deltaXirrPp"] == pytest.approx(-0.001259668248, abs=1e-7)
+    for rule in ("DCA-B", "DCA-C"):
+        assert out["dca"][rule]["withBilEntryFee"]["costPaid"] > out["dca"][rule]["sealed"]["costPaid"]
+        assert out["dca"][rule]["deltaTerminal"] < 0
+
+
+def test_posthoc_matched_risk_uses_net_static_and_one_common_frequency():
+    from research.market_valuation_macro_overlay_v1 import audit_358_posthoc as AUD
+
+    risk = AUD.audit()["risk"]
+    assert risk["vmMddMonthly"] == pytest.approx(-0.202992168878, abs=1e-10)
+    assert risk["equalVolStaticMddMonthlyNet"] == pytest.approx(-0.207128873467, abs=1e-10)
+    assert risk["equalVolStaticWorst12Net"] == pytest.approx(-0.163465632754, abs=1e-10)
+    assert risk["checks"] == {
+        "vmMddShallowerThanB0Monthly": True,
+        "vmMddShallowerThanEqualVolMonthlyNet": True,
+        "vmWorst12BetterThanB0": True,
+        "vmWorst12BetterThanEqualVolMonthlyNet": False,
+    }
+    assert risk["allRiskCriteriaMet"] is False
+    assert risk["sealedRiskVerdict"] == "NOT_MET"
