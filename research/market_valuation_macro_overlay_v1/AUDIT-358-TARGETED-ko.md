@@ -59,3 +59,12 @@ CI는 `tests/test_mvma_v1_targeted_audit.py`에서 미보정 원장 일치, 보�
 **미보고 DCA 지표 5개:** `time-weighted return`, `average cash wait`, `cash opportunity cost`, `worst start cohort`, `MDD under identical flows`. 저장된 `averageParkedShare`는 평균 현금 대기 **기간**과 다른 개념이다. 보고서에 없는 값들을 추정해 몰래 채우지 않았다. 해당 지표는 측정 정의를 별도로 확정하고, 봉인된 #358 산출물이 아닌 **새 버전의 별도 서술 결과**로 처리해야 한다.
 
 **결론:** 새로 찾은 것은 DCA 기술·보고 범위의 불완전성이고, 일차 통계 가설 H1/H2의 새로운 코드 오류는 발견되지 않았다. 봉인 결과 수정/원샷 재실행은 정당화되지 않는다.
+
+
+## 원샷 실행 거부 장치의 부분 산출물 예외 (추가 코드 위험)
+
+`execute_phase2.main`은 `MONTHLY.write_text(monthly_csv(primary))` **다음에** `RESULT.write_text(...)`를 호출한다. 그러나 `verify_authorization`은 `RESULT.exists()`만 검사하여 재실행을 차단한다. **월별 CSV를 쓴 뒤 결과 JSON을 쓰기 전에 프로세스가 중단되면**, 이미 미래 수익·정책별 NAV가 출력된 상태임에도 `RESULT`이 없어 두 번째 실행 요청을 거부하지 않는 제어 흐름이 발생할 수 있다.
+
+- **판정:** `ONE_SHOT_PARTIAL_OUTPUT_GATE` 코드 결함(중간 수준의 봉인 거버넌스 위험). `tests/test_mvma_v1_targeted_audit.py`의 `strict xfail` 합성 테스트로 재현 경로를 고정한다.
+- **현재 결과 영향:** #358에 저장된 `MONTHLY`와 `RESULT` 두 파일이 모두 존재하므로 지금 즉시 동일 명령을 실행하면 `RESULT.exists()`가 차단한다. **과거에 실제 재실행이 있었다는 증거는 아니며**, H1/H2 값이나 현재 보관된 결과를 무효화하지 않는다.
+- **나중에 승인된 실행 엔진의 최소 보완:** 진입 시 `RESULT`뿐 아니라 `MONTHLY` 및 실행 완료/실행 시작 마커의 존재도 차단 조건으로 검사하고, 출력은 임시 파일에 쓴 뒤 원자적으로 봉인하는 방식을 검토. 이 감사에서는 기존 실행 코드·원장·인증 파일을 수정하지 않았다.
