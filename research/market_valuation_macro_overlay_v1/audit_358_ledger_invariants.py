@@ -58,7 +58,16 @@ def audit(monthly_path: Path = HERE / "results/phase2-us-monthly.csv",
     if not n == p["periods"] == spec["calendar"]["evaluationWindowUS"]["months"] == 152:
         raise AssertionError("WINDOW_INCONSISTENT")
 
+    checked_fields = ("spyReturn", "bilReturn", "forward12MExcess", "targetVM1T") + tuple(
+        "net" + policy for policy in POLICIES
+    )
     for i, row in enumerate(rows):
+        for field in checked_fields:
+            value = float(row[field])
+            if not math.isfinite(value):
+                raise AssertionError(f"NON_FINITE_LEDGER_VALUE_{i}_{field}")
+        if not 0.0 <= float(row["targetVM1T"]) <= 1.0:
+            raise AssertionError(f"TARGET_OUT_OF_RANGE_{i}")
         if not (row["decisionDate"] < row["execStart"] < row["execEnd"]):
             raise AssertionError(f"EXECUTION_DATE_ORDER_{i}")
         if i and row["execStart"] != rows[i - 1]["execEnd"]:
