@@ -1,0 +1,834 @@
+{
+ "authorization": "MVMA-V1-PHASE2-US-20261122",
+ "bilTotalReturn": {
+  "distributionsInSpan": 96,
+  "first": "2011-12-01",
+  "last": "2026-09-14",
+  "sessions": 3716,
+  "splits": [
+   {
+    "date": "2017-11-30",
+    "denominator": 2.0,
+    "numerator": 1.0
+   }
+  ]
+ },
+ "comparisons": {
+  "D1-B1": {
+   "annualMeanNetDifference": 0.0042738161161240355,
+   "pTwoSided": 0.11601121133482678,
+   "role": "DESCRIPTIVE_NOT_IN_HOLM_FAMILY",
+   "seAnnual": 0.002719164884898557
+  },
+  "V1-B0": {
+   "annualMeanNetDifference": -0.01662926066723556,
+   "pTwoSided": 0.1462895351967469,
+   "role": "DESCRIPTIVE_NOT_IN_HOLM_FAMILY",
+   "seAnnual": 0.011446642917387874
+  },
+  "VM1T-B0": {
+   "annualMeanNetDifference": -0.01824307138262999,
+   "pTwoSided": 0.014221209042513902,
+   "role": "DESCRIPTIVE_NOT_IN_HOLM_FAMILY",
+   "seAnnual": 0.007441210767420569
+  },
+  "VM1T-B1": {
+   "annualMeanNetDifference": 0.008663558583848322,
+   "pTwoSided": 0.09461370678709163,
+   "role": "DESCRIPTIVE_NOT_IN_HOLM_FAMILY",
+   "seAnnual": 0.005182958779704554
+  },
+  "VM1T-M1T": {
+   "annualMeanNetDifference": -0.005892924250116286,
+   "pTwoSided": 0.059899718991048484,
+   "role": "DESCRIPTIVE_NOT_IN_HOLM_FAMILY",
+   "seAnnual": 0.0031319835663220982
+  },
+  "VM1T-V1": {
+   "annualMeanNetDifference": -0.0016138107153944327,
+   "pTwoSided": 0.8217972613181821,
+   "role": "DESCRIPTIVE_NOT_IN_HOLM_FAMILY",
+   "seAnnual": 0.007165041268414647
+  }
+ },
+ "dca": {
+  "DCA-A": {
+   "averageParkedShare": 0.0,
+   "contributed": 152.0,
+   "costPaid": 0.030399999999999927,
+   "deploymentRatioAtEnd": 1.0,
+   "parkedAtEnd": 0.0,
+   "rule": "DCA-A",
+   "terminalValue": 396.6890094020169,
+   "xirr": 0.14167059236952972
+  },
+  "DCA-B": {
+   "averageParkedShare": 0.03872709916149458,
+   "contributed": 152.0,
+   "costPaid": 0.036865450395408284,
+   "deploymentRatioAtEnd": 0.9947330107405185,
+   "parkedAtEnd": 2.0218607561333406,
+   "rule": "DCA-B",
+   "terminalValue": 383.87409894439867,
+   "xirr": 0.1370193670746992
+  },
+  "DCA-C": {
+   "averageParkedShare": 0.2884854283307014,
+   "contributed": 152.0,
+   "costPaid": 0.041516090857035164,
+   "deploymentRatioAtEnd": 0.9664413431075206,
+   "parkedAtEnd": 12.109207423610307,
+   "rule": "DCA-C",
+   "terminalValue": 360.8370699223071,
+   "xirr": 0.12822883607354674
+  },
+  "contributionDates": [
+   "2012-02-01",
+   "2024-09-03"
+  ],
+  "role": "SEPARATE_DESCRIPTIVE_STUDY_NOT_IN_HOLM_FAMILY",
+  "valuationDate": "2024-10-01"
+ },
+ "evidenceClass": "EXPLORATORY_ON_OUTCOME_EXPOSED_HISTORY",
+ "primary": {
+  "H1": {
+   "H12M": {
+    "bootstrap": {
+     "block": 12,
+     "ci95": [
+      -0.014688812333368264,
+      0.11867586035351757
+     ],
+     "replicates": 10000,
+     "valid": 10000
+    },
+    "bootstrapBlockSensitivity": {
+     "18": [
+      -0.01559781422484849,
+      0.10794417150460042
+     ],
+     "24": [
+      -0.023332007644821656,
+      0.1017152263137755
+     ],
+     "6": [
+      -0.016204362807984693,
+      0.12120866717832389
+     ]
+    },
+    "difference": 0.05226982725534832,
+    "hac": {
+     "intercept": 0.10727194628927907,
+     "lag": 11,
+     "n": 152,
+     "pTwoSided": 0.09201967126439174,
+     "se": 0.03102363642592404,
+     "slope": 0.05226982725534832,
+     "t": 1.6848388286187652
+    },
+    "meanCheap": 0.15954177354462737,
+    "meanNotCheap": 0.10727194628927905,
+    "nCheap": 81,
+    "nNotCheap": 71,
+    "spyTotalReturnMeanCheap": 0.17576402976300382,
+    "spyTotalReturnMeanNotCheap": 0.11742465708809811
+   },
+   "H6M": {
+    "bootstrap": {
+     "block": 12,
+     "ci95": [
+      -0.02437978147848366,
+      0.05022555171786162
+     ],
+     "replicates": 10000,
+     "valid": 10000
+    },
+    "difference": 0.012411679498832318,
+    "hac": {
+     "intercept": 0.059211934332230466,
+     "lag": 5,
+     "n": 152,
+     "pTwoSided": 0.5193502676212288,
+     "se": 0.01926240712423403,
+     "slope": 0.012411679498832318,
+     "t": 0.6443472728399134
+    },
+    "meanCheap": 0.07162361383106276,
+    "meanNotCheap": 0.05921193433223047,
+    "nCheap": 81,
+    "nNotCheap": 71,
+    "spyTotalReturnMeanCheap": 0.07936406574151787,
+    "spyTotalReturnMeanNotCheap": 0.063682381626803
+   }
+  },
+  "H2": {
+   "annualTimingNetOfCost": 0.0003425399656706876,
+   "bootstrapBlockSensitivity": {
+    "18": [
+     -0.009660213601713449,
+     0.00813286115929512
+    ],
+    "24": [
+     -0.009978603004520973,
+     0.00825541831499071
+    ],
+    "6": [
+     -0.008391842180528396,
+     0.008385009924711665
+    ]
+   },
+   "bootstrapCi95Annual": [
+    -0.009234162240292923,
+    0.008199176441967503
+   ],
+   "hacLag": 0,
+   "pTwoSided": 0.9387543035977153,
+   "seAnnual": 0.004458087386657933,
+   "t": 0.07683563285363892
+  },
+  "costStress": 1.0,
+  "decomposition": {
+   "D1": {
+    "annualActiveGross": -0.022569092974618267,
+    "annualActiveNet": -0.022606987711460372,
+    "annualCost": 3.789473684210525e-05,
+    "annualLevel": -0.02634895609764759,
+    "annualTiming": 0.0037798631230293294,
+    "annualTimingNetOfCost": 0.003741968386187224,
+    "averageExposure": 0.8039473684210525,
+    "exposureChanges": 6,
+    "exposureMatchedStatic": {
+     "gross": {
+      "annualVolatility": 0.1233151042932978,
+      "cagr": 0.11791694149862342,
+      "maxDrawdown": -0.27480446757940036,
+      "sharpe": 0.8750773572238184,
+      "sortino": 1.3316384282193927,
+      "terminalValue": 4.103186043410972,
+      "worst12Months": -0.150525742380191,
+      "worstMonth": -0.15961666219690185
+     },
+     "net": {
+      "annualVolatility": 0.12331520327778756,
+      "cagr": 0.11788721422522697,
+      "maxDrawdown": -0.274806735313206,
+      "sharpe": 0.874859940216628,
+      "sortino": 1.3312043135054208,
+      "terminalValue": 4.101804340112503,
+      "worst12Months": -0.1505625779192058,
+      "worstMonth": -0.15962931004969183
+     }
+    },
+    "maxDrawdownMonthly": {
+     "etf": -0.23785689625605055,
+     "overlayGross": -0.191135820784069,
+     "overlayNet": -0.191135820784069,
+     "staticControl": -0.19206593693308494
+    },
+    "navCagrNetMinusStaticNet": 0.0038459488630500083,
+    "timingNetSeAnnual": 0.0026751630791209177
+   },
+   "M1T": {
+    "annualActiveGross": -0.01224344016054499,
+    "annualActiveNet": -0.012338177002650252,
+    "annualCost": 9.473684210526313e-05,
+    "annualLevel": -0.012025026943892878,
+    "annualTiming": -0.00021841321665211228,
+    "annualTimingNetOfCost": -0.0003131500587573754,
+    "averageExposure": 0.9105263157894735,
+    "exposureChanges": 15,
+    "exposureMatchedStatic": {
+     "gross": {
+      "annualVolatility": 0.13967115467748015,
+      "cagr": 0.13143492819115576,
+      "maxDrawdown": -0.30895638062170216,
+      "sharpe": 0.8750773572238175,
+      "sortino": 1.3316384282193914,
+      "terminalValue": 4.777873185888617,
+      "worst12Months": -0.1719808618102021,
+      "worstMonth": -0.1809976587409362
+     },
+     "net": {
+      "annualVolatility": 0.1396712061605514,
+      "cagr": 0.13141937921761393,
+      "maxDrawdown": -0.30895750349776785,
+      "sharpe": 0.8749781335898741,
+      "sortino": 1.3314403003067665,
+      "terminalValue": 4.777041637829573,
+      "worst12Months": -0.17199947309652175,
+      "worstMonth": -0.1810041961299771
+     }
+    },
+    "maxDrawdownMonthly": {
+     "etf": -0.23785689625605055,
+     "overlayGross": -0.21147864392437388,
+     "overlayNet": -0.2115455245476876,
+     "staticControl": -0.21705742547459972
+    },
+    "navCagrNetMinusStaticNet": 0.0001123661137689691,
+    "timingNetSeAnnual": 0.00484491843699786
+   },
+   "V1": {
+    "annualActiveGross": -0.016499010087689118,
+    "annualActiveNet": -0.016612694298215436,
+    "annualCost": 0.0001136842105263158,
+    "annualLevel": -0.02511108567695273,
+    "annualTiming": 0.00861207558926361,
+    "annualTimingNetOfCost": 0.008498391378737294,
+    "averageExposure": 0.8131578947368421,
+    "exposureChanges": 9,
+    "exposureMatchedStatic": {
+     "gross": {
+      "annualVolatility": 0.12472845851804691,
+      "cagr": 0.11909159396821312,
+      "maxDrawdown": -0.2777792841275555,
+      "sharpe": 0.8750773572238196,
+      "sortino": 1.3316384282193947,
+      "terminalValue": 4.158127465874988,
+      "worst12Months": -0.15238483883417542,
+      "worstMonth": -0.161464402638979
+     },
+     "net": {
+      "annualVolatility": 0.12472855399177185,
+      "cagr": 0.1190629090968216,
+      "maxDrawdown": -0.2777814621115482,
+      "sharpe": 0.8748701544808651,
+      "sortino": 1.3312247066322949,
+      "terminalValue": 4.1567777711581,
+      "worst12Months": -0.15242027687310455,
+      "worstMonth": -0.1614765943916282
+     }
+    },
+    "maxDrawdownMonthly": {
+     "etf": -0.23785689625605055,
+     "overlayGross": -0.20670785094359967,
+     "overlayNet": -0.20684155825256034,
+     "staticControl": -0.19423495605992303
+    },
+    "navCagrNetMinusStaticNet": 0.00870329083895749,
+    "timingNetSeAnnual": 0.008777955730212996
+   },
+   "VM1T": {
+    "annualActiveGross": -0.018118147923699476,
+    "annualActiveNet": -0.018225516344752106,
+    "annualCost": 0.00010736842105263156,
+    "annualLevel": -0.018568056310422795,
+    "annualTiming": 0.00044990838672331955,
+    "annualTimingNetOfCost": 0.00034253996567068794,
+    "averageExposure": 0.8618421052631579,
+    "exposureChanges": 17,
+    "exposureMatchedStatic": {
+     "gross": {
+      "annualVolatility": 0.13219948214509483,
+      "cagr": 0.12528048643986023,
+      "maxDrawdown": -0.29342957006318593,
+      "sharpe": 0.8750773572238167,
+      "sortino": 1.3316384282193896,
+      "terminalValue": 4.458955519367471,
+      "worst12Months": -0.1621962230282007,
+      "worstMonth": -0.1712310306899575
+     },
+     "net": {
+      "annualVolatility": 0.13219955719332396,
+      "cagr": 0.12525788329034548,
+      "maxDrawdown": -0.2934312440206698,
+      "sharpe": 0.8749241440937945,
+      "sortino": 1.3313325013704451,
+      "terminalValue": 4.457821277084363,
+      "worst12Months": -0.1622237099554188,
+      "worstMonth": -0.1712405854530331
+     }
+    },
+    "maxDrawdownMonthly": {
+     "etf": -0.23785689625605055,
+     "overlayGross": -0.2028579255727354,
+     "overlayNet": -0.2029927097901486,
+     "staticControl": -0.20567066158625924
+    },
+    "navCagrNetMinusStaticNet": 0.0002666883653323904,
+    "timingNetSeAnnual": 0.004458087386657933
+   }
+  },
+  "executionDelaySessions": 1,
+  "firstExecution": "2012-02-01",
+  "holm": {
+   "adjusted": {
+    "H1-US-TRAILING": 0.18403934252878348,
+    "H2-US-VM1T": 0.9387543035977153
+   },
+   "alpha": 0.05
+  },
+  "lastExecution": "2024-10-01",
+  "periods": 152,
+  "policies": {
+   "B0": {
+    "annualTurnover": 0.0,
+    "averageTarget": 1.0,
+    "costPaid": 0.0,
+    "gross": {
+     "annualVolatility": 0.15340425303209948,
+     "cagr": 0.14265205449586493,
+     "maxDrawdown": -0.33717263923504415,
+     "sharpe": 0.8750773572238167,
+     "sortino": 1.33163842821939,
+     "terminalValue": 5.413748976152675,
+     "worst12Months": -0.18988889256287422,
+     "worstMonth": -0.19894713732111335
+    },
+    "net": {
+     "annualVolatility": 0.15340425303209948,
+     "cagr": 0.14265205449586493,
+     "maxDrawdown": -0.33717263923504415,
+     "sharpe": 0.8750773572238167,
+     "sortino": 1.33163842821939,
+     "terminalValue": 5.413748976152675,
+     "worst12Months": -0.18988889256287422,
+     "worstMonth": -0.19894713732111335
+    },
+    "turnoverOneWaySum": 0.0
+   },
+   "B1": {
+    "annualTurnover": 0.06747870142079172,
+    "averageTarget": 0.7999999999999999,
+    "costPaid": 0.0007554993285375476,
+    "gross": {
+     "annualVolatility": 0.12270938972992895,
+     "cagr": 0.11741315603221247,
+     "maxDrawdown": -0.27352818376723675,
+     "sharpe": 0.8750773572238184,
+     "sortino": 1.3316384282193934,
+     "terminalValue": 4.079828266237123,
+     "worst12Months": -0.14972871223416206,
+     "worstMonth": -0.15882477343601165
+    },
+    "net": {
+     "annualVolatility": 0.12270949018457941,
+     "cagr": 0.11738299248571393,
+     "maxDrawdown": -0.27353048940136604,
+     "sharpe": 0.8748555626735305,
+     "sortino": 1.3311955736398968,
+     "terminalValue": 4.078433640962663,
+     "worst12Months": -0.1497661361460082,
+     "worstMonth": -0.158837612592455
+    },
+    "turnoverOneWaySum": 0.8547302179966951
+   },
+   "B2": {
+    "annualTurnover": 0.10128283365058505,
+    "averageTarget": 0.6,
+    "costPaid": 0.0009388880138587469,
+    "gross": {
+     "annualVolatility": 0.09202908662564788,
+     "cagr": 0.0916169997168228,
+     "maxDrawdown": -0.20778357095332545,
+     "sharpe": 0.8750773572238175,
+     "sortino": 1.3316384282193912,
+     "terminalValue": 3.0350899161429945,
+     "worst12Months": -0.10914912593679793,
+     "worstMonth": -0.11870240955091005
+    },
+    "net": {
+     "annualVolatility": 0.09202923445659587,
+     "cagr": 0.09157277088096838,
+     "maxDrawdown": -0.20778730535162704,
+     "sharpe": 0.8746337661517795,
+     "sortino": 1.3307527899058011,
+     "terminalValue": 3.033532805210687,
+     "worst12Months": -0.10920764402958139,
+     "worstMonth": -0.11872166828557484
+    },
+    "turnoverOneWaySum": 1.2829158929074105
+   },
+   "D1": {
+    "annualTurnover": 0.1590469129175217,
+    "averageTarget": 0.8039473684210525,
+    "costPaid": 0.002008084784418906,
+    "gross": {
+     "annualVolatility": 0.12586248278482892,
+     "cagr": 0.12180453828019289,
+     "maxDrawdown": -0.27352818376723675,
+     "sharpe": 0.8872589300774754,
+     "sortino": 1.3850236504226288,
+     "terminalValue": 4.287618212252579,
+     "worst12Months": -0.12962255193221173,
+     "worstMonth": -0.15882477343601165
+    },
+    "net": {
+     "annualVolatility": 0.12586316670180497,
+     "cagr": 0.12173316308827697,
+     "maxDrawdown": -0.27353048940136604,
+     "sharpe": 0.8867484562459738,
+     "sortino": 1.3838018440816535,
+     "terminalValue": 4.284164386326456,
+     "worst12Months": -0.12993278921706775,
+     "worstMonth": -0.1589049066105801
+    },
+    "turnoverOneWaySum": 2.0145942302886084
+   },
+   "M1T": {
+    "annualTurnover": 0.26416851140854675,
+    "averageTarget": 0.9105263157894735,
+    "costPaid": 0.0028408238649995842,
+    "gross": {
+     "annualVolatility": 0.1369567485396788,
+     "cagr": 0.13165133495047332,
+     "maxDrawdown": -0.27352818376723687,
+     "sharpe": 0.8910066171592756,
+     "sortino": 1.3665035097715321,
+     "terminalValue": 4.789460314270021,
+     "worst12Months": -0.18209066550913766,
+     "worstMonth": -0.15882477343601165
+    },
+    "net": {
+     "annualVolatility": 0.13695681593050568,
+     "cagr": 0.1315317453313829,
+     "maxDrawdown": -0.2735304894013658,
+     "sharpe": 0.890228909840441,
+     "sortino": 1.3651670021638878,
+     "terminalValue": 4.7830538980037565,
+     "worst12Months": -0.1821688574999223,
+     "worstMonth": -0.15883761259245488
+    },
+    "turnoverOneWaySum": 3.346134477841592
+   },
+   "V1": {
+    "annualTurnover": 0.32502761001037817,
+    "averageTarget": 0.8131578947368421,
+    "costPaid": 0.004909708985214327,
+    "gross": {
+     "annualVolatility": 0.13091548757307872,
+     "cagr": 0.12791285811923947,
+     "maxDrawdown": -0.22845460289474695,
+     "sharpe": 0.9002428536274708,
+     "sortino": 1.4476933864956336,
+     "terminalValue": 4.592882923778536,
+     "worst12Months": -0.1721753845216797,
+     "worstMonth": -0.11870240955090994
+    },
+    "net": {
+     "annualVolatility": 0.13092154612395063,
+     "cagr": 0.1277661999357791,
+     "maxDrawdown": -0.2285820123817811,
+     "sharpe": 0.899201025066679,
+     "sortino": 1.445506927255292,
+     "terminalValue": 4.585325005487325,
+     "worst12Months": -0.17231208770208606,
+     "worstMonth": -0.11886267590004662
+    },
+    "turnoverOneWaySum": 4.11701639346479
+   },
+   "VM1T": {
+    "annualTurnover": 0.3087329353855679,
+    "averageTarget": 0.8618421052631579,
+    "costPaid": 0.003580466352981689,
+    "gross": {
+     "annualVolatility": 0.13314980465743387,
+     "cagr": 0.12566359480766698,
+     "maxDrawdown": -0.27352818376723675,
+     "sharpe": 0.8725473131264315,
+     "sortino": 1.336313861199323,
+     "terminalValue": 4.478220651227359,
+     "worst12Months": -0.17314865530802703,
+     "worstMonth": -0.15882477343601165
+    },
+    "net": {
+     "annualVolatility": 0.13314746325470947,
+     "cagr": 0.12552457165567787,
+     "maxDrawdown": -0.27353048940136593,
+     "sharpe": 0.8716235562820547,
+     "sortino": 1.3346420023080667,
+     "terminalValue": 4.4712208359013195,
+     "worst12Months": -0.1732967051069776,
+     "worstMonth": -0.15883761259245488
+    },
+    "turnoverOneWaySum": 3.910617181550527
+   }
+  }
+ },
+ "productionChange": false,
+ "promotionEligible": false,
+ "protocolSha256": "07e60dc03990bbbf319951a371fa61a3cd9e1e592e9fc6b4a9a7a9823d4a5df8",
+ "robustness": {
+  "costStress": {
+   "x2": {
+    "VM1TAnnualTimingNetOfCost": 0.00023517154461805644,
+    "netCagr": {
+     "B0": 0.14265205449586493,
+     "B1": 0.11735282963699412,
+     "B2": 0.09152854358382578,
+     "D1": 0.12166178857891241,
+     "M1T": 0.13141215964226083,
+     "V1": 0.1276195393404469,
+     "VM1T": 0.12538555579048927
+    }
+   },
+   "x3": {
+    "VM1TAnnualTimingNetOfCost": 0.0001278031235654248,
+    "netCagr": {
+     "B0": 0.14265205449586493,
+     "B1": 0.11732266748603859,
+     "B2": 0.0914843178253486,
+     "D1": 0.12159041475190557,
+     "M1T": 0.13129257788314153,
+     "V1": 0.127472876332122,
+     "VM1T": 0.1252465472120592
+    }
+   }
+  },
+  "dropYears": {
+   "H1": {
+    "dropBestYear": {
+     "difference": 0.05955429160959041,
+     "n": 140,
+     "pTwoSided": 0.08299178092468329,
+     "se": 0.03435326146999204,
+     "year": 2020
+    },
+    "dropCovid2020": {
+     "difference": 0.05498550860108173,
+     "n": 142,
+     "pTwoSided": 0.09954149415793369,
+     "se": 0.03338361880095643
+    },
+    "dropWorstYear": {
+     "difference": 0.023910996701387896,
+     "n": 140,
+     "pTwoSided": 0.5056208285973538,
+     "se": 0.035920092405902694,
+     "year": 2021
+    }
+   },
+   "H2": {
+    "dropBestYear": {
+     "annual": -0.001930517702468544,
+     "year": 2019
+    },
+    "dropCovid2020": {
+     "annual": 0.0027790329441640185
+    },
+    "dropWorstYear": {
+     "annual": 0.0028691826616099535,
+     "year": 2016
+    }
+   }
+  },
+  "executionDelay": {
+   "plusOneSession": {
+    "VM1TAnnualTimingNetOfCost": 0.0004086319422253197,
+    "netCagr": {
+     "B0": 0.1425472267875798,
+     "B1": 0.117085796024603,
+     "B2": 0.09120646251449505,
+     "D1": 0.11999639910267268,
+     "M1T": 0.1311016229389408,
+     "V1": 0.1271597931025903,
+     "VM1T": 0.12532635148017235
+    }
+   }
+  },
+  "notComputed": {
+   "2000 and 2008 crises": "outside the registered window (2012-01..2024-08); no change of window",
+   "2026 drawdown": "after the window; prospective only",
+   "mega-cap concentration, USD vs KRW": "no registered measure; left to a separate study",
+   "trend x valuation table": "no trend rule is registered in protocol.json; building one after outcomes is forbidden"
+  },
+  "pe5Median": {
+   "H1": {
+    "difference": 0.07105760684960019,
+    "n": 152,
+    "pTwoSided": 0.04075293757640513,
+    "se": 0.0347294208020428
+   },
+   "VM1TAnnualTimingNetOfCost": 0.0004010447199765831,
+   "agreementWithMean": 0.743421052631579,
+   "cheapDecisions": 44
+  }
+ },
+ "stage": "PHASE_2_US_EXPLORATORY_EXECUTION",
+ "study": "market-valuation-macro-overlay-v1",
+ "tables": {
+  "byYear": {
+   "2012": {
+    "D1NetTiming": -0.0006518505327175058,
+    "M1TNetTiming": -0.009122579237126869,
+    "V1NetTiming": 0.030854258548629828,
+    "VM1TMinusB0Net": -0.023916201650967084,
+    "VM1TNetTiming": -0.0010830893336106697,
+    "cheapShare": 1.0,
+    "months": 12,
+    "spyMinusBil": 0.16744539538847236
+   },
+   "2013": {
+    "D1NetTiming": -0.0006652603422630023,
+    "M1TNetTiming": 0.00489766424530509,
+    "V1NetTiming": 0.031488989533783346,
+    "VM1TMinusB0Net": -0.011663727365193388,
+    "VM1TNetTiming": 0.01310254179988242,
+    "cheapShare": 1.0,
+    "months": 12,
+    "spyMinusBil": 0.175523073391197
+   },
+   "2014": {
+    "D1NetTiming": -0.0006842386362461505,
+    "M1TNetTiming": 0.015509409088246714,
+    "V1NetTiming": 0.032387295448985734,
+    "VM1TMinusB0Net": 4.440892098500626e-16,
+    "VM1TNetTiming": 0.023948352268616215,
+    "cheapShare": 1.0,
+    "months": 12,
+    "spyMinusBil": 0.18285451788151708
+   },
+   "2015": {
+    "D1NetTiming": 3.306090971210099e-05,
+    "M1TNetTiming": 0.025688102414246978,
+    "V1NetTiming": 0.01161278330966153,
+    "VM1TMinusB0Net": 0.025411647604434484,
+    "VM1TNetTiming": 0.02039945246143763,
+    "cheapShare": 0.16666666666666666,
+    "months": 12,
+    "spyMinusBil": -0.019854432939106825
+   },
+   "2016": {
+    "D1NetTiming": -0.0007292952613472795,
+    "M1TNetTiming": -0.021709437997373283,
+    "V1NetTiming": -0.039381944112754634,
+    "VM1TMinusB0Net": -0.06189765248478252,
+    "VM1TNetTiming": -0.029134958153620754,
+    "cheapShare": 0.0,
+    "months": 12,
+    "spyMinusBil": 0.19884416442130814
+   },
+   "2017": {
+    "D1NetTiming": -0.000902077871227902,
+    "M1TNetTiming": 0.020447098414499952,
+    "V1NetTiming": -0.04871220504630861,
+    "VM1TMinusB0Net": -0.05460322403079809,
+    "VM1TNetTiming": -0.01413255331590433,
+    "cheapShare": 0.0,
+    "months": 12,
+    "spyMinusBil": 0.25346621840804495
+   },
+   "2018": {
+    "D1NetTiming": 0.0001041638080960342,
+    "M1TNetTiming": -0.002361046316843538,
+    "V1NetTiming": -0.0038462695912020763,
+    "VM1TMinusB0Net": 0.002690146476717392,
+    "VM1TNetTiming": -0.003103657954022806,
+    "cheapShare": 0.16666666666666666,
+    "months": 12,
+    "spyMinusBil": -0.04067485857020425
+   },
+   "2019": {
+    "D1NetTiming": -0.0007510478692273633,
+    "M1TNetTiming": 0.0170237517024876,
+    "V1NetTiming": 0.03669934048543584,
+    "VM1TMinusB0Net": 0.0007045437765951235,
+    "VM1TNetTiming": 0.026861546093961713,
+    "cheapShare": 0.9166666666666666,
+    "months": 12,
+    "spyMinusBil": 0.20315589503914877
+   },
+   "2020": {
+    "D1NetTiming": 0.02882484952197817,
+    "M1TNetTiming": -0.023647017763796702,
+    "V1NetTiming": 0.07790575100164192,
+    "VM1TMinusB0Net": -0.02915616721092773,
+    "VM1TNetTiming": -0.013186307558314828,
+    "cheapShare": 0.3333333333333333,
+    "months": 12,
+    "spyMinusBil": 0.1797469783915988
+   },
+   "2021": {
+    "D1NetTiming": -0.0008248671944317912,
+    "M1TNetTiming": -0.013557418744096512,
+    "V1NetTiming": -0.04454282849931847,
+    "VM1TMinusB0Net": -0.0462576539440096,
+    "VM1TNetTiming": -0.012922919379431883,
+    "cheapShare": 0.0,
+    "months": 12,
+    "spyMinusBil": 0.2210583624093193
+   },
+   "2022": {
+    "D1NetTiming": 0.024749403699365624,
+    "M1TNetTiming": -0.015148255937600056,
+    "V1NetTiming": -0.014255781660637361,
+    "VM1TMinusB0Net": -0.004319042757799263,
+    "VM1TNetTiming": -0.018901100454808372,
+    "cheapShare": 1.0,
+    "months": 12,
+    "spyMinusBil": -0.09520038405623199
+   },
+   "2023": {
+    "D1NetTiming": -0.0005899602870451487,
+    "M1TNetTiming": -0.005372989834441132,
+    "V1NetTiming": 0.027924786920138132,
+    "VM1TMinusB0Net": -0.02091667959085952,
+    "VM1TNetTiming": 0.001903187039115968,
+    "cheapShare": 1.0,
+    "months": 12,
+    "spyMinusBil": 0.1575565246646906
+   },
+   "2024": {
+    "D1NetTiming": -0.0005146137196076105,
+    "M1TNetTiming": 0.003386152555565002,
+    "V1NetTiming": 0.009512114459283877,
+    "VM1TMinusB0Net": -0.007703699813935705,
+    "VM1TNetTiming": 0.01058834605186176,
+    "cheapShare": 0.25,
+    "months": 8,
+    "spyMinusBil": 0.13828252277401742
+   }
+  },
+  "stateTable2x2": {
+   "CHEAP_BAD": {
+    "meanForward12MExcess": 0.20845971925827844,
+    "n": 1,
+    "status": "DESCRIPTIVE_ONLY_BELOW_MIN_CELL"
+   },
+   "CHEAP_GOOD": {
+    "meanForward12MExcess": 0.11764598455296477,
+    "n": 55,
+    "status": "DESCRIPTIVE"
+   },
+   "CHEAP_MIXED": {
+    "meanForward12MExcess": 0.24975579149773902,
+    "n": 25,
+    "status": "DESCRIPTIVE"
+   },
+   "NOT_CHEAP_BAD": {
+    "meanForward12MExcess": 0.14171869533334827,
+    "n": 7,
+    "status": "DESCRIPTIVE_ONLY_BELOW_MIN_CELL"
+   },
+   "NOT_CHEAP_GOOD": {
+    "meanForward12MExcess": 0.038280362910382774,
+    "n": 30,
+    "status": "DESCRIPTIVE"
+   },
+   "NOT_CHEAP_MIXED": {
+    "meanForward12MExcess": 0.15919727064358558,
+    "n": 27,
+    "status": "DESCRIPTIVE"
+   },
+   "UNDETERMINED": {
+    "meanForward12MExcess": 0.16822001778815454,
+    "n": 7,
+    "status": "DESCRIPTIVE_ONLY_BELOW_MIN_CELL"
+   }
+  }
+ },
+ "verdicts": {
+  "H1-US-TRAILING": "NOT_SUPPORTED",
+  "H2-US-VM1T": "NOT_SUPPORTED",
+  "equalVolatilityStaticMaxDrawdownMonthly": -0.20711813834102133,
+  "equalVolatilityStaticWeight": 0.8680192163385891,
+  "equalVolatilityStaticWorst12Months": -0.16343922146682988,
+  "evidenceClass": "EXPLORATORY_ON_OUTCOME_EXPOSED_HISTORY",
+  "level1MarketPredictability": "NOT_MET",
+  "level2PureTiming": "NOT_MET",
+  "level3AlphaPath": "NOT_MET",
+  "level3RiskPath": "NOT_MET",
+  "note": "Nothing here is promoted: every US date in the window is outcome-exposed and only the prospective record can confirm.",
+  "promotionEligible": false
+ }
+}

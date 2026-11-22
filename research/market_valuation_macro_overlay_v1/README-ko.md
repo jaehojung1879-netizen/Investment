@@ -1,7 +1,7 @@
 # MVMA-v1 · 시장 밸류에이션 × 기업이익 × 거시환경 ETF 비중 조절 연구
 
 **단계:** 첫 번째 PR — 데이터 적격성, 입력 보존, 사전등록. **수익률·NAV·성과는 계산하지 않았다.**
-**상태:** `PREREGISTERED_NOT_AUTHORIZED` · `EXPLORATORY_ON_OUTCOME_EXPOSED_HISTORY`
+**상태:** 사전등록 사양은 그대로(`protocol.json`, 변경 없음). Phase 2는 별도 승인 파일 [`authorization-phase2.json`](authorization-phase2.json)로 실행. `EXPLORATORY_ON_OUTCOME_EXPOSED_HISTORY`, 승격 불가.
 
 ## 질문
 
