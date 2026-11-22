@@ -66,3 +66,17 @@ def test_ledger_audit_refuses_tampered_forward_12m_excess(tmp_path):
     altered = _alter_value(tmp_path, "forward12MExcess", 0.01)
     with pytest.raises(AssertionError, match="FORWARD_12M_MISMATCH_0"):
         A.audit(monthly_path=altered)
+
+
+def test_ledger_audit_fails_closed_on_nonfinite_numeric_input(tmp_path):
+    with (A.HERE / "results/phase2-us-monthly.csv").open(newline="") as f:
+        reader = csv.DictReader(f)
+        fields, rows = reader.fieldnames, list(reader)
+    rows[0]["netB1"] = "NaN"
+    corrupt = tmp_path / "nan-monthly.csv"
+    with corrupt.open("w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=fields)
+        writer.writeheader()
+        writer.writerows(rows)
+    with pytest.raises(AssertionError, match="NON_FINITE_LEDGER_VALUE_0_netB1"):
+        A.audit(monthly_path=corrupt)
