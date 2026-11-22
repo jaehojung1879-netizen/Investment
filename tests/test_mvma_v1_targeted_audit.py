@@ -98,3 +98,12 @@ def test_posthoc_matched_risk_uses_net_static_and_one_common_frequency():
     }
     assert risk["allRiskCriteriaMet"] is False
     assert risk["sealedRiskVerdict"] == "NOT_MET"
+
+
+def test_posthoc_cost_definition_gap_is_reported_not_attributed_to_timing():
+    from research.market_valuation_macro_overlay_v1 import audit_358_posthoc as AUD
+
+    a = AUD.audit()["attribution"]
+    assert a["costDefinitionsDiffer"] is True
+    assert a["driftAndResetResidualAnnualPp"] == pytest.approx(-0.001755503788, abs=1e-9)
+    assert abs(a["driftAndResetResidualAnnualPp"]) < 0.01
