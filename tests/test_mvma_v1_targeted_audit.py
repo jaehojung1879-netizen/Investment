@@ -1,0 +1,62 @@
+"""Read-only targeted audit of MVMA PR #358; never invokes the sealed one-shot runner.
+
+Two narrow regressions are documented here:
+* Level-3 risk uses mixed daily/monthly drawdown units in the sealed verdict,
+  but the all-conditions verdict remains NOT_MET when units are made comparable.
+* The separately reported DCA parking path omits the BIL entry trade cost.
+"""
+from __future__ import annotations
+
+import csv
+import json
+from pathlib import Path
+
+import numpy as np
+import pytest
+
+from research.market_valuation_macro_overlay_v1 import phase2 as P2
+from research.market_valuation_macro_overlay_v1.vendor import market_timing_pr316 as MT
+
+ROOT = Path(__file__).resolve().parents[1]
+MVMA = ROOT / "research/market_valuation_macro_overlay_v1"
+
+
+def test_level3_drawdown_frequency_mismatch_does_not_flip_verdict():
+    """A daily-vs-monthly comparison fails where the comparable monthly check passes."""
+    result = json.loads((MVMA / "results/phase2-us-result.json").read_text())
+    with (MVMA / "results/phase2-us-monthly.csv").open(newline="") as handle:
+        months = list(csv.DictReader(handle))
+    assert len(months) == result["primary"]["periods"] == 152
+
+    vm_monthly = np.array([float(r["netVM1T"]) for r in months])
+    b0_monthly = np.array([float(r["netB0"]) for r in months])
+    vm_mdd_monthly = MT.max_drawdown(vm_monthly)
+    equal_vol_mdd_monthly = result["verdicts"]["equalVolatilityStaticMaxDrawdownMonthly"]
+    vm_mdd_daily = result["primary"]["policies"]["VM1T"]["net"]["maxDrawdown"]
+
+    # The sealed verdict compares vm_mdd_daily against equal_vol_mdd_monthly.
+    assert vm_mdd_daily < equal_vol_mdd_monthly < vm_mdd_monthly
+    assert vm_mdd_monthly > MT.max_drawdown(b0_monthly)
+
+    # On the common monthly unit the MDD hurdle passes, but worst-12M still fails.
+    vm_worst12 = result["primary"]["policies"]["VM1T"]["net"]["worst12Months"]
+    static_worst12 = result["verdicts"]["equalVolatilityStaticWorst12Months"]
+    assert vm_worst12 < static_worst12
+    assert result["verdicts"]["level3RiskPath"] == "NOT_MET"
+    assert result["verdicts"]["promotionEligible"] is False
+
+
+@pytest.mark.xfail(
+    reason="KNOWN_DCA_COST_GAP: parking 50% in BIL omits its entry one-way cost",
+    strict=True,
+)
+def test_dca_parking_pays_both_spy_and_bil_entry_costs():
+    """Minimal counterexample: flat markets, two 1-unit contributions, 10bp per buy leg."""
+    dates = ["2024-01-02", "2024-02-01", "2024-03-01"]
+    flat = dict.fromkeys(dates, 1.0)
+    one_way = 0.001
+    outcome = P2.run_dca("DCA-B", [False, False], dates, flat, flat, one_way, 0.5)
+
+    # Correct: 2 contributions * (0.5 SPY buy + 0.5 BIL buy) * 10bp = 0.002.
+    # Current sealed code charges only the 0.5 SPY purchase: 0.001.
+    assert outcome["costPaid"] == pytest.approx(0.002)
