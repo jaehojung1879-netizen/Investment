@@ -122,11 +122,19 @@ def audit(monthly_path: Path = HERE / "results/phase2-us-monthly.csv",
                      "deltaTerminal": corrected["terminalValue"] - old["terminalValue"],
                      "deltaXirrPp": 100 * (corrected["xirr"] - old["xirr"])}
     risk = compare_risk_units(rows, result, one_way)
+    # #316 COST charges target changes; the sealed NAV also charges monthly drift resets.
+    # Expose rather than conceal the resulting gap in annualised arithmetic active return.
+    decomposition_active = result["primary"]["decomposition"]["VM1T"]["annualActiveNet"]
+    realized_active = result["comparisons"]["VM1T-B0"]["annualMeanNetDifference"]
+    attribution = {"decompositionAnnualActiveNet": decomposition_active,
+                   "realizedAnnualActiveNetVsB0": realized_active,
+                   "driftAndResetResidualAnnualPp": 100 * (realized_active - decomposition_active),
+                   "costDefinitionsDiffer": True}
     if risk["allRiskCriteriaMet"] or risk["sealedRiskVerdict"] != "NOT_MET":
         raise AssertionError("RISK_VERDICT_CHANGED_OR_UNEXPECTED")
     return {"stage": "POSTHOC_AUDIT_ONLY_DO_NOT_OVERWRITE_SEALED_RESULT",
             "source": "committed phase2-us-monthly.csv and phase2-us-result.json",
-            "months": len(rows), "dca": dca, "risk": risk,
+            "months": len(rows), "dca": dca, "risk": risk, "attribution": attribution,
             "primaryHypothesesReexecuted": False, "resultFilesModified": False}
 
 
