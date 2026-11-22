@@ -107,3 +107,23 @@ def test_posthoc_cost_definition_gap_is_reported_not_attributed_to_timing():
     assert a["costDefinitionsDiffer"] is True
     assert a["driftAndResetResidualAnnualPp"] == pytest.approx(-0.001755503788, abs=1e-9)
     assert abs(a["driftAndResetResidualAnnualPp"]) < 0.01
+
+
+@pytest.mark.xfail(
+    reason="KNOWN_PARTIAL_OUTPUT_GATE: MONTHLY may exist after a crash while RESULT is absent",
+    strict=True,
+)
+def test_one_shot_gate_refuses_partial_monthly_output_before_result(tmp_path, monkeypatch):
+    """The executor writes MONTHLY before RESULT, but only RESULT is checked before run."""
+    from research.market_valuation_macro_overlay_v1 import execute_phase2 as EX
+
+    orphan = tmp_path / "phase2-us-monthly.csv"
+    orphan.write_text("decisionDate,forward12MExcess\\n2024-08-30,0.1\\n")
+    monkeypatch.setattr(EX, "MONTHLY", orphan)
+    monkeypatch.setattr(EX, "RESULT", tmp_path / "phase2-us-result.json")
+    monkeypatch.setattr(EX, "AUTHORIZATION", tmp_path / "missing-authorization.json")
+
+    # Must refuse on the substantive MONTHLY output BEFORE reading authorization.
+    # Sealed implementation currently only checks RESULT, so this is expected to fail.
+    with pytest.raises(EX.ExecutionRefused, match="ONE_SHOT_ALREADY_SPENT"):
+        EX.verify_authorization()
