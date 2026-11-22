@@ -1,0 +1,189 @@
+{
+ "targetWindow": {
+  "first": "2013-02",
+  "last": "2026-10",
+  "months": 165,
+  "note": "2013-02..2026-10 inclusive is 165 months (the 166 in the Codex note is an off-by-one)"
+ },
+ "MOTIE": {
+  "releasesInArchive": 134,
+  "parsed": 134,
+  "semiFirstRelease": 134,
+  "missingFromArchive": [
+   "2013-05",
+   "2013-12",
+   "2014-05",
+   "2014-06",
+   "2014-10",
+   "2014-12",
+   "2015-12",
+   "2016-09",
+   "2016-10",
+   "2016-12",
+   "2017-05",
+   "2017-12",
+   "2018-01",
+   "2018-07",
+   "2018-12",
+   "2019-07",
+   "2019-12",
+   "2020-12",
+   "2021-02",
+   "2021-06",
+   "2021-09",
+   "2021-12",
+   "2022-04",
+   "2022-12",
+   "2023-02",
+   "2023-06",
+   "2023-09",
+   "2024-05",
+   "2024-06",
+   "2024-12",
+   "2025-12"
+  ],
+  "inArchiveNotParsed": [],
+  "formats": {
+   "hwp": 92,
+   "pdf": 40,
+   "hwpx": 3
+  },
+  "semiValueMonthsAnyVintage": 162,
+  "publicationLagDays": {
+   "count": 135.0,
+   "mean": 1.037037037037037,
+   "std": 0.22551458262433932,
+   "min": 1.0,
+   "25%": 1.0,
+   "50%": 1.0,
+   "75%": 1.0,
+   "max": 3.0
+  }
+ },
+ "semiRevisions": {
+  "pairs": 130,
+  "medianAbsPct": 0.02322751194865358,
+  "maxAbsPct": 1.512788521522146,
+  "largest": [
+   {
+    "valueMonth": "2017-01",
+    "first": 6412.0,
+    "latest": 6315.0,
+    "latestPublished": "2017-12-01",
+    "revPct": -1.512788521522146
+   },
+   {
+    "valueMonth": "2013-01",
+    "first": 4005.0,
+    "latest": 4036.0,
+    "latestPublished": "2013-07-01",
+    "revPct": 0.7740324594257109
+   },
+   {
+    "valueMonth": "2015-09",
+    "first": 5892.0,
+    "latest": 5855.0,
+    "latestPublished": "2016-09-01",
+    "revPct": -0.6279701289884643
+   },
+   {
+    "valueMonth": "2015-08",
+    "first": 5486.0,
+    "latest": 5452.0,
+    "latestPublished": "2016-09-01",
+    "revPct": -0.6197593875319041
+   },
+   {
+    "valueMonth": "2015-10",
+    "first": 5531.0,
+    "latest": 5499.0,
+    "latestPublished": "2016-09-01",
+    "revPct": -0.5785572229253244
+   }
+  ],
+  "g3SignFlips": 0,
+  "accelSignFlips": 0,
+  "accelCompared": 135,
+  "flipMonths": []
+ },
+ "crossCheckWith356": {
+  "overlapCells": 82,
+  "identical": 82
+ },
+ "H2signals": {
+  "releases": 135,
+  "g3Computable": 128,
+  "accelComputable": 119,
+  "first": "2013-07-01",
+  "shareAccelPositive": 0.5546218487394958,
+  "AUTO": 119,
+  "PETRO": 119,
+  "SHIP": 118
+ },
+ "FLASH": {
+  "releasesInArchive": 92,
+  "byFamily": {
+   "FLASH10": 49,
+   "FLASH20": 43
+  },
+  "parsedWithSemi": 92,
+  "first": "2021-05-21",
+  "last": "2026-11-11",
+  "byYear": {
+   "2021": 5,
+   "2022": 4,
+   "2023": 18,
+   "2024": 23,
+   "2025": 23,
+   "2026": 19
+  },
+  "statedReleaseTimes": {
+   "09:00": 81,
+   "not stated": 11
+  },
+  "olderFlashes": "not on the KDI archive before 2021-05; korea.kr press-release search returned none"
+ },
+ "IIP": {
+  "releasesInArchive": 151,
+  "statuses": {
+   "HWP_NOT_PARSED": 99,
+   "PARSED": 50,
+   "UNPARSED": 2
+  },
+  "formats": {
+   "hwp": 95,
+   "pdf": 52,
+   "hwpx": 4
+  },
+  "semiParsedMonths": 50,
+  "first": "2013-03",
+  "hwpNote": "HWP releases store their tables as embedded objects (body text is a single line); not readable"
+ },
+ "power": {
+  "H1": {
+   "H21": {
+    "n": 92,
+    "independent": 43.80952380952381,
+    "mdeSigma": 0.8465440598752875
+   },
+   "H126": {
+    "n": 92,
+    "independent": 7.301587301587301,
+    "mdeSigma": 2.073600991478545
+   }
+  },
+  "H2": {
+   "H126": {
+    "n": 119,
+    "independent": 19.833333333333332,
+    "mdeSigma": 1.258160300351799
+   },
+   "H252": {
+    "n": 119,
+    "independent": 9.916666666666666,
+    "mdeSigma": 1.7793073603969207
+   }
+  },
+  "note": "minimum detectable ON-OFF difference at 80% power, alpha .05 two-sided, equal split; multiply by the outcome's standard deviation (only known after Stage C) to read it in percentage points"
+ }
+}
