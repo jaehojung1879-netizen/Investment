@@ -40,12 +40,18 @@ def build() -> dict:
         "target": "126-session first -15% passage, full-recovery episode end, risk set, right censoring (Stage 1)",
         "models": {"M0": "Jeffreys base rate", "M1": "gap200, vol63", "M2": "M1 + WIDEN_3M_ABOVE_EXPANDING_P80",
                    "M3": "M1 + CREDIT_WIDEN_3M_Z (continuous, expanding z, no threshold)",
-                   "M4": "M1 + VIX close/100 at the decision close (equivalent to implied-minus-realised with vol63)",
+                   "M4": "M1 + VIX close/100 at the decision close: implied 30-day vol given trailing realised vol; NOT a "
+                         "variance-risk-premium test (no variance units, no forward realised variance)",
                    "M5": "M1 + VIX/VIX3M - 1 (term structure; sample B)"},
         "samples": ready["structure"],
-        "sampleBNote": "sample B (VIX3M from 2007-12-04) fails the outcome-free structure gate: its first FAST-normal "
-                       "risk-set month-end is 2012-08 and only 2 episodes can be evaluated in real time. M5 will be "
-                       "reported DATA_INSUFFICIENT; it is not replaced by another variable.",
+        "sampleBNote": "sample B fails the outcome-free structure gate. Data/history constraint: VIX3M starts "
+                       "2007-12-04 and 2008-01..2012-08 is inside an episode, so its first FAST-normal risk-set "
+                       "month-end is 2012-08 and it holds 4 episodes with positive rows (2018-12, 2020-03, 2022-05, "
+                       "2025-04). Design constraint: real-time training needs >= 2 matured episodes from the same "
+                       "sample, leaving 2 to evaluate. M5 is reported DATA_INSUFFICIENT; not replaced.",
+        "redundancyInterpretation": "R^2 of a candidate on gap/vol measures LINEAR OVERLAP only. Variation not "
+                                    "explained by gap/vol may be noise and is not predictive information; whether "
+                                    "any of it predicts the label is what the experiment measures.",
         "redundancyNoLabels": ready["redundancyNoLabels"],
         "estimation": "yearly walk-forward on matured labels, ridge 1.0 on standardised inputs, evaluation from the "
                       "first year with >= 20 training rows and >= 2 training episodes (stage2_design, unchanged)",

@@ -12,9 +12,16 @@ Models (each is M1 plus at most one candidate; no composite):
     M2  M1 + WIDEN_3M_ABOVE_EXPANDING_P80                (P1 flag, unchanged)
     M3  M1 + CREDIT_WIDEN_3M_Z  -- the same 3-month as-of BAA-GS10 change as the flag, standardised by the
          expanding mean/sd of all strictly earlier defined changes (>= 12), NOT thresholded (credit family)
-    M4  M1 + VIX close / 100 at the decision close (option family; with vol63 already in M1, a linear VIX term is
-         equivalent to the implied-minus-realised gap)
-    M5  M1 + VIX / VIX3M - 1 at the decision close (option family, term structure; VIX3M exists from 2007-12-04)
+    M4  M1 + VIX close / 100 at the decision close (option family): option-implied 30-day volatility given the
+         trailing 63-session realised volatility. This is NOT a variance-risk-premium measure: a variance risk
+         premium compares implied VARIANCE with the expected (forward) realised variance over the same 30 days,
+         while M4 enters implied VOLATILITY and BACKWARD 63-session realised volatility as two free linear terms.
+         M4 asks only whether the VIX level adds to M1.
+    M5  M1 + VIX / VIX3M - 1 at the decision close (option family, term structure; VIX3M exists from 2007-12-04).
+         Sample B holds only 4 episodes with positive rows (2018-12, 2020-03, 2022-05, 2025-04): the source starts
+         2007-12 and 2008-01..2012-08 is inside an episode (DATA/HISTORY constraint). The real-time rule that
+         training needs >= 2 matured episodes from the SAME sample then leaves 2 to evaluate (DESIGN constraint),
+         which fails the structure gate, so M5 is reported DATA_INSUFFICIENT.
 
 Samples (all models within a sample share rows, refit dates and training sets):
 

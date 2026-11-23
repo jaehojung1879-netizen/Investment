@@ -7,7 +7,6 @@ from __future__ import annotations
 
 import json
 import sys
-import time
 from pathlib import Path
 
 import numpy as np
@@ -27,7 +26,7 @@ def redundancy(rows: list[dict]) -> dict:
     for i, a in enumerate(feats):
         for b in feats[i + 1:]:
             out["pairs"][f"{a}~{b}"] = float(np.corrcoef(X[a], X[b])[0, 1])
-    # share of vix variation not explained linearly by (gap, vol): the room M4 has beyond M1
+    # linear overlap with (gap, vol) only; the unexplained share is NOT evidence of predictive information
     A = np.column_stack([np.ones(len(keep)), X["gap"], X["vol"]])
     for f in ("vix", "credit_z", "flag"):
         res = X[f] - A @ np.linalg.lstsq(A, X[f], rcond=None)[0]
@@ -36,13 +35,10 @@ def redundancy(rows: list[dict]) -> dict:
 
 
 def main() -> int:
-    t0 = time.time()
     pres = EP.rows("presence")
     struct = {s: E.structure(E.Panel(E.sample_rows(pres["rows"], s)), pres["refits"]) for s in E.SAMPLES}
-    t1 = time.time()
     red = redundancy(EP.rows("signal")["rows"])      # values without any label
     report = {"stage": "EXP1_READINESS", "signalLabelJoins": 0, "structure": struct, "redundancyNoLabels": red,
-              "secondsToBuildPanels": round(t1 - t0, 2),
               "inputsManifest": json.loads((HERE / "data" / "exp1-inputs-manifest.json").read_text())}
     (HERE / "evidence" / "exp1-readiness.json").write_text(json.dumps(report, indent=1, sort_keys=True) + "\n")
     print(json.dumps({"structure": struct, "redundancy": red}, indent=1))

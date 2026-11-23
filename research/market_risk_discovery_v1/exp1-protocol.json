@@ -139,7 +139,7 @@
   "M1": "gap200, vol63",
   "M2": "M1 + WIDEN_3M_ABOVE_EXPANDING_P80",
   "M3": "M1 + CREDIT_WIDEN_3M_Z (continuous, expanding z, no threshold)",
-  "M4": "M1 + VIX close/100 at the decision close (equivalent to implied-minus-realised with vol63)",
+  "M4": "M1 + VIX close/100 at the decision close: implied 30-day vol given trailing realised vol; NOT a variance-risk-premium test (no variance units, no forward realised variance)",
   "M5": "M1 + VIX/VIX3M - 1 (term structure; sample B)"
  },
  "noPValues": "no p-value, rotation or CRT is computed or reported; #366 showed none is valid for this sample",
@@ -155,7 +155,7 @@
   "code": {
    "research/market_risk_discovery_v1/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
    "research/market_risk_discovery_v1/baseline_census.py": "8e3dcc4abe9e0431e8210eb0ba47354e7bcfccfc80d4987aaa988ab7d1702de7",
-   "research/market_risk_discovery_v1/exp1_design.py": "f9381210d2af99c814112e4cd555e48c001ed744331a06125b5a161fb23814a0",
+   "research/market_risk_discovery_v1/exp1_design.py": "12306482da7f6d38085162405df43f4497e63df4c6664c2b68bf459fa4a28c00",
    "research/market_risk_discovery_v1/exp1_execute.py": "4f323d59a778623a331dba90b1233f974f1fb86f75df1252517936c0827396c7",
    "research/market_risk_discovery_v1/exp1_inputs.py": "c2e0ed4f84f36cbe26a15336e7845c766f13e28f0325f1e9ccbfaf2133edf786",
    "research/market_risk_discovery_v1/exp1_panels.py": "965da202812330f43ee794ae6280d2b424ceab77174e5b20387100cd9b0a2513",
@@ -168,7 +168,7 @@
    "research/market_valuation_macro_overlay_v1/source_probe.py": "6ef0e0d70930a527f32bab3232d610348913d3b78c1435e892b7533d2f70dee6"
   },
   "evidence": {
-   "research/market_risk_discovery_v1/evidence/exp1-readiness.json": "f783b6a14b5f57cb0893ea46cc654745d71c535a3937bf7b47d6c299bd2d107c"
+   "research/market_risk_discovery_v1/evidence/exp1-readiness.json": "9c00ddc9957dda50a2acbda6dc03704a9c6da03319b388f90ca068194302b5d1"
   },
   "inputs": {
    "research/market_risk_discovery_v1/data/alfred-BAA-asof-month-ends.csv": "19b3b3dfdce8f1fb6ea0cc9e5b576616d114604b0a49bfbf00f517482c2d81a5",
@@ -182,6 +182,7 @@
  },
  "promotionEligible": false,
  "question": "Added one family at a time to gap200/vol63 at FAST-normal month-ends, which real-time information made the 126-session first -15% SPY total-return passage more or less predictable, 2001-2026?",
+ "redundancyInterpretation": "R^2 of a candidate on gap/vol measures LINEAR OVERLAP only. Variation not explained by gap/vol may be noise and is not predictive information; whether any of it predicts the label is what the experiment measures.",
  "redundancyNoLabels": {
   "credit_z_R2_on_gap_vol": 0.005611973177255591,
   "flag_R2_on_gap_vol": 0.1748791617566542,
@@ -200,7 +201,7 @@
   "rows": 155,
   "vix_R2_on_gap_vol": 0.449411183704194
  },
- "sampleBNote": "sample B (VIX3M from 2007-12-04) fails the outcome-free structure gate: its first FAST-normal risk-set month-end is 2012-08 and only 2 episodes can be evaluated in real time. M5 will be reported DATA_INSUFFICIENT; it is not replaced by another variable.",
+ "sampleBNote": "sample B fails the outcome-free structure gate. Data/history constraint: VIX3M starts 2007-12-04 and 2008-01..2012-08 is inside an episode, so its first FAST-normal risk-set month-end is 2012-08 and it holds 4 episodes with positive rows (2018-12, 2020-03, 2022-05, 2025-04). Design constraint: real-time training needs >= 2 matured episodes from the same sample, leaving 2 to evaluate. M5 is reported DATA_INSUFFICIENT; not replaced.",
  "samples": {
   "A": {
    "evaluationEpisodes": [
