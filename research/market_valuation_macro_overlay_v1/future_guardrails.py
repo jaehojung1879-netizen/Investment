@@ -7,7 +7,6 @@ inside the original one-shot experiment.
 """
 from __future__ import annotations
 
-import math
 from pathlib import Path
 
 from . import phase2 as P2
@@ -54,8 +53,10 @@ def corrected_dca(rule: str, triggers: list[bool], execs: list[str],
     """
     if rule not in ("DCA-A", "DCA-B", "DCA-C"):
         raise ValueError("UNKNOWN_DCA_RULE")
-    if len(execs) != len(triggers) + 1:
+    if not triggers or len(execs) != len(triggers) + 1:
         raise ValueError("EXECUTION_TRIGGER_LENGTH_MISMATCH")
+    if any(trigger is not True and trigger is not False for trigger in triggers):
+        raise ValueError("UNRESOLVED_DCA_TRIGGER")
     if not (0.0 <= parked_fraction <= 1.0 and 0.0 <= one_way < 1.0):
         raise ValueError("INVALID_DCA_COST_OR_PARKING")
     equity = cash = 0.0
