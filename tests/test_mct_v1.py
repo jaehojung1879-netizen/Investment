@@ -9,9 +9,23 @@ import pytest
 from research.market_causal_transmission_v1 import execute as EX
 from research.market_causal_transmission_v1 import models as M
 from research.market_causal_transmission_v1 import panel as P
+from research.market_causal_transmission_v1 import spf_reader as SR
 from research.market_causal_transmission_v1 import transmission as T
 
 SPEC = json.loads(EX.PROTOCOL.read_text())
+
+
+@pytest.fixture(autouse=True)
+def _stdlib_spf(monkeypatch):
+    """CI does not install openpyxl. The signal tests read the same preserved SPF bytes through the stdlib reader,
+    whose output test_stdlib_spf_reader_equals_the_executed_parse pins to the openpyxl parse the study used."""
+    monkeypatch.setattr(P, "load_spf", SR.load_spf_stdlib)
+
+
+def test_stdlib_spf_reader_equals_the_executed_parse():
+    fixture = json.loads((P.HERE / "evidence" / "spf-level-parsed.json").read_text())
+    assert SR.load_spf_stdlib() == fixture
+    assert len(fixture) == 233 and fixture[0]["year"] == 1968
 
 
 def _synthetic(n=420, seed=3):
