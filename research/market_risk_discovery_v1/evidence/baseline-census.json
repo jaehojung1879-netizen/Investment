@@ -1,0 +1,132 @@
+{
+ "candidateCreditFlags": {
+  "MVMA_CREDIT_STRESS": {
+   "alarmShare": 0.03731343283582089,
+   "definedMonths": 134,
+   "fastNormalRiskMonths": 173,
+   "firstDefined": "2006-10"
+  },
+  "WIDEN_3M_ABOVE_EXPANDING_P80": {
+   "alarmShare": 0.1032258064516129,
+   "definedMonths": 155,
+   "fastNormalRiskMonths": 173,
+   "firstDefined": "1998-03"
+  },
+  "WIDEN_3M_GT0": {
+   "alarmShare": 0.3475609756097561,
+   "definedMonths": 164,
+   "fastNormalRiskMonths": 173,
+   "firstDefined": "1997-03"
+  },
+  "WIDEN_6M_GT0": {
+   "alarmShare": 0.35,
+   "definedMonths": 160,
+   "fastNormalRiskMonths": 173,
+   "firstDefined": "1997-06"
+  }
+ },
+ "credit": {
+  "alarmShareAmongThem": 0.03731343283582089,
+  "fastNormalRiskMonthsWithStressDefined": 134,
+  "firstMonth": "1996-12",
+  "lastMonth": "2026-10",
+  "missingMonths": [
+   "2016-11",
+   "2016-12",
+   "2017-01",
+   "2017-02"
+  ],
+  "mvmaCreditStressFirstDefined": "2001-12"
+ },
+ "creditLabelReads": 0,
+ "eligibleEpisodes": 7,
+ "episodes": [
+  {
+   "eligibleForP1": true,
+   "fastNormalMonthEnds": [
+    "1998-03-31",
+    "1998-04-30",
+    "1998-05-29",
+    "1998-06-30",
+    "1998-07-31"
+   ],
+   "riskMonthEndsInWindow": 5,
+   "start": "1998-08-31"
+  },
+  {
+   "eligibleForP1": true,
+   "fastNormalMonthEnds": [
+    "2000-07-31",
+    "2000-08-31"
+   ],
+   "riskMonthEndsInWindow": 6,
+   "start": "2000-12-20"
+  },
+  {
+   "eligibleForP1": true,
+   "fastNormalMonthEnds": [
+    "2007-07-31",
+    "2007-08-31",
+    "2007-09-28",
+    "2007-10-31",
+    "2007-11-30"
+   ],
+   "riskMonthEndsInWindow": 6,
+   "start": "2008-01-18"
+  },
+  {
+   "eligibleForP1": true,
+   "fastNormalMonthEnds": [
+    "2018-06-29",
+    "2018-07-31",
+    "2018-08-31",
+    "2018-09-28"
+   ],
+   "riskMonthEndsInWindow": 6,
+   "start": "2018-12-20"
+  },
+  {
+   "eligibleForP1": true,
+   "fastNormalMonthEnds": [
+    "2019-09-30",
+    "2019-10-31",
+    "2019-11-29",
+    "2019-12-31",
+    "2020-01-31"
+   ],
+   "riskMonthEndsInWindow": 6,
+   "start": "2020-03-09"
+  },
+  {
+   "eligibleForP1": true,
+   "fastNormalMonthEnds": [
+    "2021-11-30",
+    "2021-12-31",
+    "2022-01-31",
+    "2022-03-31"
+   ],
+   "riskMonthEndsInWindow": 6,
+   "start": "2022-05-09"
+  },
+  {
+   "eligibleForP1": true,
+   "fastNormalMonthEnds": [
+    "2024-10-31",
+    "2024-11-29",
+    "2024-12-31",
+    "2025-01-31",
+    "2025-02-28"
+   ],
+   "riskMonthEndsInWindow": 6,
+   "start": "2025-04-04"
+  }
+ ],
+ "fastDefinition": "count of {SPY close < 200-session mean, 63-session realised vol > 25% annualised}",
+ "labelled": 194,
+ "labelledFastNormal": 167,
+ "labelledFastNormalPositive": 30,
+ "labelledPositive": 41,
+ "riskMonthsCovered": 201,
+ "riskSetMonthEnds1997": 201,
+ "stage": "STAGE_1_BASELINE_CENSUS"
+}
