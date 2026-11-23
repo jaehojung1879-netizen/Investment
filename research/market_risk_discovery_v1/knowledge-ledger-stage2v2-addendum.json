@@ -1,0 +1,16 @@
+{
+ "asOf": "2026-11-23",
+ "appendsTo": "research/market_risk_discovery_v1/knowledge-ledger-stage2.json (PR #365, unchanged)",
+ "entries": [
+  {"id": "P1-INFERENCE-NOT-IDENTIFIED", "tier": "STRUCTURAL_OR_SOURCE_FACT",
+   "evidence": ["Stage 2 v2 NULL-VALIDATION", "independent audit of PR #365"],
+   "statement": "On the US 1997-2026 sample (5 real-time evaluation episodes, a persistent binary credit flag tied to price features), neither the circular-rotation null nor a model-X conditional randomization test with an estimated generator gives a valid p-value for 'credit adds information given price features': in synthetic null worlds they over-reject (rotation 21% under nonlinear misspecification; CRT 6.8-8.3% even when the generator passes label-free checks)."},
+  {"id": "STAGE2-V1-READY-WITHDRAWN", "tier": "STRUCTURAL_OR_SOURCE_FACT", "evidence": ["Stage 2 v2 AUDIT-REMEDIATION"],
+   "statement": "The PR #365 READY_FOR_STAGE_3 decision and its synthetic size/power figures are withdrawn as validity evidence: they were measured in worlds where the credit flag was independent of the price features."},
+  {"id": "CREDIT-FLAG-X-DEPENDENCE", "tier": "STRUCTURAL_OR_SOURCE_FACT", "evidence": ["Stage 2 v2 generator selection (label-free)"],
+   "statement": "The real WIDEN_3M_ABOVE_EXPANDING_P80 flag correlates with gap200 (-0.39) and vol63 (+0.50); it is on in 9.4% of FAST-normal months and 41-51% of stressed months. A linear logistic generator with two flag lags reproduces 22 label-free path statistics."}
+ ],
+ "hypothesesToConfirmIndependently": [
+  {"id": "P1", "status": "NOT_READY_FOR_INFERENTIAL_STAGE_3; PROSPECTIVE_PENDING; a historical descriptive M1/M2 comparison would need a separate owner decision and is not evidence of conditional independence"}
+ ]
+}

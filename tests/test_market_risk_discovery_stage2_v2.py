@@ -242,3 +242,24 @@ def test_v2_protocol_verifies_and_records_its_lineage():
 def test_no_v2_authorization_marker_or_result_is_committed():
     for p in (X.AUTHORIZATION, X.MARKER, X.RESULT, X.FAILURE):
         assert not p.exists()
+
+
+def test_not_ready_protocol_refuses_execution_before_any_authorization_is_read(tmp_path, monkeypatch):
+    spec = json.loads(X.PROTOCOL.read_text())
+    if spec["decision"] == "READY_FOR_STAGE_3":
+        pytest.skip("protocol is ready; refusal path not applicable")
+    monkeypatch.setattr(X, "AUTHORIZATION", tmp_path / "authorization.json")
+    (tmp_path / "authorization.json").write_text("{}")
+    with pytest.raises(X.ExecutionRefused, match="PROTOCOL_NOT_READY:NOT_READY_FOR_INFERENTIAL_STAGE_3"):
+        X.verify(require_authorization=True)
+    with pytest.raises(X.ExecutionRefused, match="PROTOCOL_NOT_READY"):
+        X.execute(compute=lambda: pytest.fail("computed despite NOT_READY"))
+
+
+def test_decision_is_the_pre_fixed_rule_applied_to_the_pinned_evidence():
+    from research.market_risk_discovery_v1 import stage2v2_protocol as B
+    spec = json.loads(X.PROTOCOL.read_text())
+    sel = json.loads((HERE / "evidence" / "stage2v2-generator-selection.json").read_text())
+    nul = json.loads((HERE / "evidence" / "stage2v2-null-validation.json").read_text())
+    dec = B.decide(sel, nul)
+    assert spec["decision"] == dec["decision"] and spec["decisionReasons"] == dec["reasons"]

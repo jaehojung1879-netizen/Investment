@@ -49,17 +49,23 @@ def size_ok(cell: dict) -> bool:
 
 
 def decide(selection: dict, nulls: dict) -> dict:
-    reasons = []
+    """An environment in which the gate rejected EVERY world (n = 0 adequate worlds) has no CRT size to bound: the
+    gate, not the CRT, decided there. That is recorded as a note, not as a failure. (First build of this file mislabelled
+    S2 this way as over-rejection; corrected after the first build, with no effect on the decision.)"""
+    reasons, notes = [], []
     if not selection["chosen"]["adequacy"]["adequate"]:
         reasons.append("REAL_GENERATOR_INADEQUATE")
     for e in NULLS:
         env = nulls["environments"][e]
         if not size_ok(env["v2SupportVerdict"]):
             reasons.append(f"{e}_GATED_VERDICT_OVER_REJECTS")
-        if not size_ok(env["crtRejectGivenAdequate"]):
+        cell = env["crtRejectGivenAdequate"]
+        if cell["n"] == 0:
+            notes.append(f"{e}_GATE_REJECTED_EVERY_WORLD_NO_CRT_SIZE_TO_BOUND")
+        elif not size_ok(cell):
             reasons.append(f"{e}_CRT_OVER_REJECTS_GIVEN_ADEQUATE")
     return {"decision": "READY_FOR_STAGE_3" if not reasons else "NOT_READY_FOR_INFERENTIAL_STAGE_3",
-            "reasons": reasons}
+            "reasons": reasons, "notes": notes}
 
 
 def build() -> dict:
@@ -75,7 +81,7 @@ def build() -> dict:
                                  "not exclusive; B2 scope unchecked"},
         "evidenceClass": "EXPLORATORY_ON_OUTCOME_EXPOSED_HISTORY", "promotionEligible": False,
         "creditLabelJoinsWhileWritingThis": 0, "stage3Executed": False,
-        "decision": dec["decision"], "decisionReasons": dec["reasons"],
+        "decision": dec["decision"], "decisionReasons": dec["reasons"], "decisionNotes": dec["notes"],
         "decisionRule": __doc__.split("    READY_FOR_STAGE_3 iff")[1].split("    python -m")[0].strip(),
         "hypothesis": {
             "id": "P1",
