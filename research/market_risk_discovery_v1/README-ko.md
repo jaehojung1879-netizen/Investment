@@ -1,6 +1,13 @@
 # Market Risk Discovery v1
 
-현재 단계는 **Stage 2 v2: 독립 감사 대응 완료, `NOT_READY_FOR_INFERENTIAL_STAGE_3`(결과 미조회)**다. Stage 3 추론 실행은 하지 않으며 P1은 전향 기록 대상이다.
+현재 단계는 **실험 1(역사 예측 비교) 실행 승인 대기**다(미실행, 결과 미조회). P1 Stage 3 추론은 `NOT_READY_FOR_INFERENTIAL_STAGE_3`로 닫혀 있다.
+
+## 실험 1 (조기경보 재설계)
+
+- 증거 지도: [MARKET-RISK-EVIDENCE-MAP-ko.md](MARKET-RISK-EVIDENCE-MAP-ko.md)
+- 재설계: [MARKET-RISK-REDESIGN-ko.md](MARKET-RISK-REDESIGN-ko.md)
+- 실험 계획·승인 패킷: [HISTORICAL-EXPERIMENT-PLAN-ko.md](HISTORICAL-EXPERIMENT-PLAN-ko.md), 사양 [`exp1-protocol.json`](exp1-protocol.json)
+- 검증: `python -m research.market_risk_discovery_v1.exp1_execute --verify-only`
 
 ## Stage 2 v2 (독립 감사 대응)
 

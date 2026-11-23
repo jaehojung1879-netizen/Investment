@@ -1,0 +1,252 @@
+{
+ "authorization": {
+  "authenticity": "UNAUTHENTICATED_FILE_RECORD_OF_OWNER_APPROVAL",
+  "execute": "python -m research.market_risk_discovery_v1.exp1_execute --execute",
+  "file": "research/market_risk_discovery_v1/authorization-exp1.json",
+  "keys": [
+   "approvalQuote",
+   "approvedAtUtc",
+   "approvedBy",
+   "authenticity",
+   "pins",
+   "protocolSha256",
+   "scope"
+  ],
+  "requiredQuote": "실험 1 역사 예측 비교를 1회 실행하는 것을 승인한다. exp1-protocol sha256:{sha}",
+  "scope": {
+   "action": "EXECUTE_ONCE_HISTORICAL_EXPLORATORY_NO_INFERENCE",
+   "excludes": [
+    "INVESTMENT_SIMULATION",
+    "MERGE",
+    "OTHER_STUDIES",
+    "P1_STAGE3_INFERENCE",
+    "PRODUCTION_CHANGE",
+    "PROTOCOL_CHANGE",
+    "RERUN",
+    "STRATEGY_PROMOTION"
+   ],
+   "experiment": "EXP1_HISTORICAL_FORECAST_COMPARISON",
+   "maxExecutions": 1,
+   "models": [
+    "M0",
+    "M1",
+    "M2",
+    "M3",
+    "M4",
+    "M5"
+   ],
+   "protocolFile": "research/market_risk_discovery_v1/exp1-protocol.json",
+   "protocolSha256": "<this protocol's sha256>",
+   "study": "market-risk-discovery-v1"
+  },
+  "verify": "python -m research.market_risk_discovery_v1.exp1_execute --verify-only"
+ },
+ "estimation": "yearly walk-forward on matured labels, ridge 1.0 on standardised inputs, evaluation from the first year with >= 20 training rows and >= 2 training episodes (stage2_design, unchanged)",
+ "evidenceClass": "EXPLORATORY_ON_OUTCOME_EXPOSED_HISTORY",
+ "executed": false,
+ "experiment": "EXP1_HISTORICAL_FORECAST_COMPARISON",
+ "frozenConstants": {
+  "CALIBRATION_EDGES": [
+   0.0,
+   0.05,
+   0.1,
+   0.2,
+   0.4,
+   1.0
+  ],
+  "FIRST_DECISION": "1997-01-31",
+  "HORIZON": 126,
+  "MAX_STALE_DAYS": 5,
+  "MIN_EVAL_EPISODES": 3,
+  "MIN_EVAL_ROWS": 100,
+  "MIN_HISTORY": 12,
+  "MIN_TRAIN_EPISODES": 2,
+  "MIN_TRAIN_ROWS": 20,
+  "MODELS": {
+   "M0": [],
+   "M1": [
+    "gap",
+    "vol"
+   ],
+   "M2": [
+    "gap",
+    "vol",
+    "flag"
+   ],
+   "M3": [
+    "gap",
+    "vol",
+    "credit_z"
+   ],
+   "M4": [
+    "gap",
+    "vol",
+    "vix"
+   ],
+   "M5": [
+    "gap",
+    "vol",
+    "vix_slope"
+   ]
+  },
+  "P80": 0.8,
+  "PERIOD_SPLIT_YEAR": 2013,
+  "P_CLIP": 1e-06,
+  "RIDGE_LAMBDA": 1.0,
+  "SAMPLES": {
+   "A": {
+    "models": [
+     "M0",
+     "M1",
+     "M2",
+     "M3",
+     "M4"
+    ],
+    "requires": [
+     "gap",
+     "vol",
+     "flag",
+     "credit_z",
+     "vix"
+    ]
+   },
+   "B": {
+    "models": [
+     "M0",
+     "M1",
+     "M2",
+     "M3",
+     "M4",
+     "M5"
+    ],
+    "requires": [
+     "gap",
+     "vol",
+     "flag",
+     "credit_z",
+     "vix",
+     "vix_slope"
+    ]
+   }
+  },
+  "WARNING_MULTIPLE": 2.0,
+  "WIDEN_LAG": 3
+ },
+ "inferentialClaim": null,
+ "investment": "NOT part of this run. If a candidate shows forecastImprovementObserved, the pre-specified rule in HISTORICAL-EXPERIMENT-PLAN-ko.md section 7 may be proposed for a separate approval.",
+ "models": {
+  "M0": "Jeffreys base rate",
+  "M1": "gap200, vol63",
+  "M2": "M1 + WIDEN_3M_ABOVE_EXPANDING_P80",
+  "M3": "M1 + CREDIT_WIDEN_3M_Z (continuous, expanding z, no threshold)",
+  "M4": "M1 + VIX close/100 at the decision close (equivalent to implied-minus-realised with vol63)",
+  "M5": "M1 + VIX/VIX3M - 1 (term structure; sample B)"
+ },
+ "noPValues": "no p-value, rotation or CRT is computed or reported; #366 showed none is valid for this sample",
+ "outputs": [
+  "Brier, Brier skill vs M0, log loss, calibration bins per model",
+  "per evaluation episode: opportunities, warned, first warning, lead sessions; missed episodes",
+  "warning rate, warning rate on negative rows, false-alarm rows and spells",
+  "Brier and dBrier vs M1 for 2001-2012 and 2013-2026",
+  "dBrier vs M1 with each evaluation episode's positive rows excluded (evaluation side, no refit)",
+  "forecastImprovementObserved = dBrier>0 overall, in both periods and under every exclusion (descriptive flag that gates whether an investment step may be PROPOSED; it runs nothing)"
+ ],
+ "pins": {
+  "code": {
+   "research/market_risk_discovery_v1/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "research/market_risk_discovery_v1/baseline_census.py": "8e3dcc4abe9e0431e8210eb0ba47354e7bcfccfc80d4987aaa988ab7d1702de7",
+   "research/market_risk_discovery_v1/exp1_design.py": "f9381210d2af99c814112e4cd555e48c001ed744331a06125b5a161fb23814a0",
+   "research/market_risk_discovery_v1/exp1_execute.py": "4f323d59a778623a331dba90b1233f974f1fb86f75df1252517936c0827396c7",
+   "research/market_risk_discovery_v1/exp1_inputs.py": "c2e0ed4f84f36cbe26a15336e7845c766f13e28f0325f1e9ccbfaf2133edf786",
+   "research/market_risk_discovery_v1/exp1_panels.py": "965da202812330f43ee794ae6280d2b424ceab77174e5b20387100cd9b0a2513",
+   "research/market_risk_discovery_v1/label_census.py": "75dad4a82ca0252481fd642671684e92d04c7fd66609bdb4c59173761eb77785",
+   "research/market_risk_discovery_v1/panels.py": "8e9fd6be074561f185a53ce60899c941028ef38348ef763637f090edc20fa6b3",
+   "research/market_risk_discovery_v1/stage2_design.py": "766e8a478c1888d010cd4110be41f632fe7941a47ab2a488981b59bb23d96e43",
+   "research/market_risk_discovery_v1/stage3_execute_v2.py": "b9fb0b54f89b375d6e517c74a102df8723c330765b8165e46ffb39b26f6ee323",
+   "research/market_valuation_macro_overlay_v1/__init__.py": "cb394b2e2cc431f86a3613f5ef5ce5aca117673f2417792658a23f575339fc3f",
+   "research/market_valuation_macro_overlay_v1/features.py": "c6cfb872efec3552d7bf40debc8323543c458044d4396e05103b867d785b6648",
+   "research/market_valuation_macro_overlay_v1/source_probe.py": "6ef0e0d70930a527f32bab3232d610348913d3b78c1435e892b7533d2f70dee6"
+  },
+  "evidence": {
+   "research/market_risk_discovery_v1/evidence/exp1-readiness.json": "f783b6a14b5f57cb0893ea46cc654745d71c535a3937bf7b47d6c299bd2d107c"
+  },
+  "inputs": {
+   "research/market_risk_discovery_v1/data/alfred-BAA-asof-month-ends.csv": "19b3b3dfdce8f1fb6ea0cc9e5b576616d114604b0a49bfbf00f517482c2d81a5",
+   "research/market_risk_discovery_v1/data/alfred-GS10-asof-month-ends.csv": "9854692e71eb2de370f1fa16495c3a137c094975e779861d2215efd9647c5f49",
+   "research/market_risk_discovery_v1/data/exp1-inputs-manifest.json": "aeeb3ba7276ed19ef99753e66523d4582d935eb3434331265d713413ab68d3d0",
+   "research/market_risk_discovery_v1/data/raw/fred-VIXCLS.csv.gz": "b9b1fbbd2ef0faada7c518da1c2055fae5f56f4dd7976711b7a6dd12b577f964",
+   "research/market_risk_discovery_v1/data/raw/fred-VXVCLS.csv.gz": "2b65b69268f970e2fba0a9da70d07b3b63d05264f17e82f127166e7eb9176dd9",
+   "research/market_risk_discovery_v1/data/raw/yahoo-SPY-chart-20261110.json.gz": "5a4920f340161f9be7fec0472df581b09964428cb95d433f18b2d29d131301b4",
+   "research/market_risk_discovery_v1/data/ssga-SPY-distributions.csv": "1f850a7f368908610bdc339239baa72bb154b6cddc6d52d7f8d9657994c6d112"
+  }
+ },
+ "promotionEligible": false,
+ "question": "Added one family at a time to gap200/vol63 at FAST-normal month-ends, which real-time information made the 126-session first -15% SPY total-return passage more or less predictable, 2001-2026?",
+ "redundancyNoLabels": {
+  "credit_z_R2_on_gap_vol": 0.005611973177255591,
+  "flag_R2_on_gap_vol": 0.1748791617566542,
+  "pairs": {
+   "credit_z~vix": -0.13200592868008348,
+   "flag~credit_z": 0.6511947297363129,
+   "flag~vix": 0.1697275747220005,
+   "gap~credit_z": -0.0747055830689151,
+   "gap~flag": -0.1605603734169652,
+   "gap~vix": 0.023832868692089313,
+   "gap~vol": -0.09264138833753435,
+   "vol~credit_z": 0.0013726256631782672,
+   "vol~flag": 0.3993480622408297,
+   "vol~vix": 0.6648685580907547
+  },
+  "rows": 155,
+  "vix_R2_on_gap_vol": 0.449411183704194
+ },
+ "sampleBNote": "sample B (VIX3M from 2007-12-04) fails the outcome-free structure gate: its first FAST-normal risk-set month-end is 2012-08 and only 2 episodes can be evaluated in real time. M5 will be reported DATA_INSUFFICIENT; it is not replaced by another variable.",
+ "samples": {
+  "A": {
+   "evaluationEpisodes": [
+    "2008-01-18",
+    "2018-12-20",
+    "2020-03-09",
+    "2022-05-09",
+    "2025-04-04"
+   ],
+   "evaluationPositiveRows": 23,
+   "evaluationRows": 128,
+   "firstRow": "1998-03-31",
+   "independentEvaluationEpisodes": 5,
+   "pass": true,
+   "reasons": [],
+   "rows": 155,
+   "start": 2001,
+   "trainingEpisodesAtStart": [
+    "1998-08-31",
+    "2000-12-20"
+   ]
+  },
+  "B": {
+   "evaluationEpisodes": [
+    "2022-05-09",
+    "2025-04-04"
+   ],
+   "evaluationPositiveRows": 9,
+   "evaluationRows": 38,
+   "firstRow": "2012-08-31",
+   "independentEvaluationEpisodes": 2,
+   "pass": false,
+   "reasons": [
+    "FEW_EVALUATION_EPISODES",
+    "FEW_EVALUATION_ROWS"
+   ],
+   "rows": 120,
+   "start": 2021,
+   "trainingEpisodesAtStart": [
+    "2018-12-20",
+    "2020-03-09"
+   ]
+  }
+ },
+ "signalLabelJoinsWhileWritingThis": 0,
+ "study": "market-risk-discovery-v1",
+ "target": "126-session first -15% passage, full-recovery episode end, risk set, right censoring (Stage 1)",
+ "warning": "p_model >= 2 x p_M0 at the same decision"
+}
