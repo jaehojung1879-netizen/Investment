@@ -199,33 +199,23 @@ def test_only_the_stage3_harness_asks_for_real_flags():
             if isinstance(node, ast.Call) and getattr(node.func, "attr", "") == "common_rows":
                 arg = node.args[0].value if node.args and isinstance(node.args[0], ast.Constant) else None
                 if arg == "real":
-                    assert path.name == "stage3_execute.py", path
+                    assert path.name in ("stage3_execute.py", "stage3_execute_v2.py"), path
 
 
-def test_protocol_pins_and_constants_verify_without_authorization():
-    out = X.verify(require_authorization=False)
-    assert out["protocolSha256"] == (HERE / "protocol-stage2.sha256").read_text().split()[0]
+def test_v1_protocol_hash_file_still_matches_its_json():
+    """The v1 protocol is kept as the historical record of what was preregistered at 87c824c3."""
+    import hashlib
+    assert hashlib.sha256((HERE / "protocol-stage2.json").read_bytes()).hexdigest() == \
+        (HERE / "protocol-stage2.sha256").read_text().split()[0]
 
 
-def test_harness_refuses_without_authorization_and_twice(tmp_path, monkeypatch):
-    monkeypatch.setattr(X, "AUTHORIZATION", tmp_path / "none.json")
-    monkeypatch.setattr(X, "MARKER", tmp_path / "marker.json")
-    monkeypatch.setattr(X, "RESULT", tmp_path / "result.json")
-    with pytest.raises(X.ExecutionRefused, match="NO_AUTHORIZATION_FILE"):
-        X.verify()
-    (tmp_path / "marker.json").write_text("{}")
-    with pytest.raises(X.ExecutionRefused, match="ONE_SHOT_ALREADY_SPENT"):
-        X.verify(require_authorization=False)
-
-
-def test_harness_refuses_an_authorization_for_other_pins(tmp_path, monkeypatch):
-    monkeypatch.setattr(X, "MARKER", tmp_path / "marker.json")
-    monkeypatch.setattr(X, "RESULT", tmp_path / "result.json")
-    auth = tmp_path / "auth.json"
-    auth.write_text(json.dumps({"protocolSha256": "0" * 64}))
-    monkeypatch.setattr(X, "AUTHORIZATION", auth)
-    with pytest.raises(X.ExecutionRefused, match="AUTHORIZATION_PINS_ANOTHER_PROTOCOL"):
-        X.verify()
+def test_v1_harness_is_permanently_superseded(tmp_path, monkeypatch):
+    """Independent audit A1/B1: the v1 harness refuses every call, with or without an authorization file."""
+    for require in (True, False):
+        with pytest.raises(X.ExecutionRefused, match="SUPERSEDED_BY_PROTOCOL_V2"):
+            X.verify(require_authorization=require)
+    with pytest.raises(X.ExecutionRefused, match="SUPERSEDED_BY_PROTOCOL_V2"):
+        X.execute()
 
 
 def test_no_result_or_marker_or_authorization_is_committed():

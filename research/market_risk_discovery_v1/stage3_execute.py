@@ -48,8 +48,13 @@ def frozen_constants() -> dict:
             "WIDEN_LAG": P.WIDEN_LAG, "FIRST_DECISION": P.FIRST_DECISION}
 
 
+SUPERSEDED = ("SUPERSEDED_BY_PROTOCOL_V2: the v1 rotation null does not test the registered conditional null and the "
+              "v1 marker is not an exclusive claim (independent audit A1/B1); use stage3_execute_v2")
+
+
 def verify(require_authorization: bool = True) -> dict:
-    """Every pin, in order. Raises ExecutionRefused naming the first failure."""
+    """Every pin, in order. Raises ExecutionRefused naming the first failure. Permanently refused since v2."""
+    raise ExecutionRefused(SUPERSEDED)
     if MARKER.exists() or RESULT.exists():
         raise ExecutionRefused("ONE_SHOT_ALREADY_SPENT")
     if not PROTOCOL.exists() or not PROTOCOL_SHA.exists():
@@ -90,7 +95,7 @@ def _atomic_write(path: Path, text: str) -> None:
 
 
 def execute() -> dict:
-    checked = verify(require_authorization=True)
+    checked = verify(require_authorization=True)  # always raises SUPERSEDED
     head = subprocess.run(["git", "-C", str(REPO), "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     marker = {"study": "market-risk-discovery-v1", "stage": "STAGE_3_P1", "protocolSha256": checked["protocolSha256"],
               "gitHead": head, "startedAtUtc": dt.datetime.now(dt.timezone.utc).isoformat(),
