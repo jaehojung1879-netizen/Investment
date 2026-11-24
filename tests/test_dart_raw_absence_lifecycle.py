@@ -7,7 +7,8 @@ from pipeline import dart_raw_statements as RS
 from scripts import collect_dart_raw_statements as collect
 
 KEY = RS.record_id("000001.KS", 2026, "11014")
-ATTEMPTS = [{"fsDiv": "CFS", "status": "013"}, {"fsDiv": "OFS", "status": "013"}]
+ATTEMPTS = [{"fsDiv": "CFS", "status": "013", "rows": 0},
+            {"fsDiv": "OFS", "status": "013", "rows": 0}]
 
 
 def row(checked):
@@ -83,3 +84,31 @@ def test_historical_backfill_order_stays_unchanged():
     pending = [("A.KS", 2016, "11013"), ("A.KS", 2016, "11011"),
                ("B.KS", 2016, "11014")]
     assert collect.prioritize_refresh(pending, {}, {}, "2026-11-25") == pending
+
+
+def test_two_013_labels_with_nonzero_rows_do_not_settle():
+    entry = row("2027-01-14T00:00:00Z")
+    entry["attempts"] = [dict(ATTEMPTS[0], rows=1), ATTEMPTS[1]]
+    assert collect.confirmed_absences({KEY: entry}, "2027-01-14") == set()
+
+
+@pytest.mark.parametrize("payload", [
+    {"status": "013", "list": [{"unexpected": "row"}]},
+    {"status": "013", "list": "malformed"},
+    {"status": "000", "list": []},
+    {"status": "000", "list": [None]},
+    {"status": "100"},
+    [],
+])
+def test_cfs_failure_never_falls_through_to_ofs(monkeypatch, payload):
+    seen = []
+
+    def fake(path, params):
+        seen.append(params["fs_div"])
+        return payload
+
+    monkeypatch.setattr(collect, "call_json", fake)
+    rows, basis, attempts, stop = collect.fetch_statement("k", "c", 2026, "11014", collect.Budget(2, 10))
+    assert rows == [] and basis is None and stop is None
+    assert seen == ["CFS"]
+    assert not collect.genuine_negative(attempts)

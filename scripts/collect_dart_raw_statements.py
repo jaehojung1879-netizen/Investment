@@ -145,15 +145,32 @@ class Budget:
         self.calls += 1
 
 
+def genuine_negative(attempts: list[dict]) -> bool:
+    """A negative needs the two actual empty responses, not merely status labels."""
+    return (RS.absence_evidence(attempts) == RS.SOURCE_ABSENCE
+            and all(a.get("rows") == 0 and a.get("payloadValid", True) is True
+                    for a in attempts))
+
+
 def fetch_statement(key, corp, year, code, budget) -> tuple[list[dict], str | None, list[dict], str | None]:
-    """(rows, fsDiv, attempts, stop) for one filing; CFS first, OFS only if CFS served nothing."""
+    """CFS first; OFS only after a genuine empty CFS 013."""
     attempts = []
     for fs_div in RS.FS_ORDER:
         budget.spend()
         payload = call_json("fnlttSinglAcntAll.json", {
             "crtfc_key": key, "corp_code": corp, "bsns_year": str(year),
             "reprt_code": code, "fs_div": fs_div})
-        attempts.append(RS.attempt(fs_div, payload))
+        if not isinstance(payload, dict):
+            attempts.append({"fsDiv": fs_div, "status": None, "message": "INVALID_PAYLOAD",
+                             "rows": None, "payloadValid": False})
+            return [], None, attempts, None
+        rows = payload.get("list")
+        valid_rows = rows is None or (isinstance(rows, list) and all(isinstance(x, dict) for x in rows))
+        if valid_rows:
+            attempts.append(RS.attempt(fs_div, payload))
+        else:
+            attempts.append({"fsDiv": fs_div, "status": str(payload.get("status")),
+                             "message": "INVALID_LIST_PAYLOAD", "rows": None, "payloadValid": False})
         status = str(payload.get("status"))
         if status in DF.FATAL_STATUSES:
             return [], None, attempts, f"REFUSED:DART {DF.describe_status(status)}"
@@ -161,9 +178,11 @@ def fetch_statement(key, corp, year, code, budget) -> tuple[list[dict], str | No
             return [], None, attempts, "DAILY_QUOTA"
         if status in RS.RUN_STOPPING_STATUSES:
             return [], None, attempts, f"REFUSED:DART {DF.describe_status(status)}"
-        rows = payload.get("list") or []
-        if status == "000" and rows:
+        if status == "000" and valid_rows and rows:
             return rows, fs_div, attempts, None
+        if status != "013" or not valid_rows or rows not in (None, []):
+            attempts[-1]["payloadValid"] = False if status in {"000", "013"} else valid_rows
+            return [], None, attempts, None
         time.sleep(PACE_SECONDS)
     return [], None, attempts, None
 
@@ -188,7 +207,7 @@ def confirmed_absences(absent: dict, today: str) -> set[str]:
         attempts = row.get("attempts")
         if not isinstance(attempts, list) or not all(isinstance(a, dict) for a in attempts):
             continue
-        if RS.absence_evidence(attempts) != RS.SOURCE_ABSENCE:
+        if not genuine_negative(attempts):
             continue
         try:
             stamp = datetime.fromisoformat(str(row["checkedAt"]).replace("Z", "+00:00"))
@@ -294,7 +313,7 @@ def collect(store: Path, key: str, universe: dict, years, budget: Budget,
             # that the filing does not exist. Anything else -- 100, 800, 900,
             # 021, 014, a 000 with no rows, an unknown code -- is kept with its
             # statuses and retried, never settled.
-            if RS.absence_evidence(attempts) == RS.SOURCE_ABSENCE:
+            if genuine_negative(attempts):
                 absent[rid] = RS.absence_record(ticker=ticker, fiscal_year=year, report_code=code,
                                                 attempts=attempts, checked_at=checked_at)
                 unresolved.pop(rid, None)
