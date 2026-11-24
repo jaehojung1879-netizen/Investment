@@ -3,12 +3,19 @@ from __future__ import annotations
 
 import json
 import struct
+import sys
+import types
 import zlib
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 import pytest
+
+try:  # the authorized hwp_text.py imports olefile at module top; it is a collection-only dependency
+    import olefile  # noqa: F401
+except ModuleNotFoundError:  # no test here reads a real .hwp, so an empty stand-in keeps the sealed bytes importable
+    sys.modules.setdefault("olefile", types.ModuleType("olefile"))
 
 from research.industry_alpha_discovery_v1 import engine as E
 from research.industry_alpha_discovery_v1 import execute as X
@@ -257,3 +264,10 @@ def test_posthoc_fixed_tilt_resets_to_target_at_every_decision():
     assert abs(w - .15) < .02                 # reset monthly: the average sleeve weight stays near the target
     _, w_on_off = PH.sleeve_path(mkt, ["005930.KS"], idx, [.30 if k % 2 else 0.0 for k in range(len(idx))], 300)
     assert .10 < w_on_off < .20
+
+
+def test_authorized_code_and_inputs_are_the_executed_bytes():
+    # authorization.json pins every code and input file as executed (7ff5bf4 -> 79fdd66). A later edit to any of
+    # them must surface here as FILE_CHANGED; with the bytes intact the check reaches the one-shot guard instead.
+    with pytest.raises(SystemExit, match="^ALREADY_EXECUTED"):
+        X.check_authorization()
