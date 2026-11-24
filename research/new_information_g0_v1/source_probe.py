@@ -122,6 +122,30 @@ def scan_original_zip(binary: bytes) -> dict:
     }
 
 
+
+def choose_stratified_receipts(rows: list[dict], limit: int) -> list[str]:
+    """Round-robin across filing months, then by receipt; no outcome access."""
+    groups: dict[str, list[str]] = {}
+    for record in rows:
+        groups.setdefault(record["rcept_dt"][:6], []).append(record["rcept_no"])
+    groups = {month: sorted(set(ids)) for month, ids in groups.items()}
+    chosen: list[str] = []
+    used: set[str] = set()
+    while len(chosen) < limit:
+        advanced = False
+        for month in sorted(groups):
+            while groups[month] and groups[month][0] in used:
+                groups[month].pop(0)
+            if groups[month] and len(chosen) < limit:
+                receipt = groups[month].pop(0)
+                chosen.append(receipt)
+                used.add(receipt)
+                advanced = True
+        if not advanced:
+            break
+    return chosen
+
+
 def offline(path: Path) -> dict:
     obj = json.loads(path.read_text(encoding="utf-8"))
     if isinstance(obj, list):
@@ -159,7 +183,7 @@ def live(*, key: str, documents_per_detail: int) -> dict:
             detail=detail,
         )
         # Only fingerprint a small deterministic set; never save personal names.
-        samples = sorted({r["rcept_no"] for r in all_rows})[:documents_per_detail]
+        samples = choose_stratified_receipts(all_rows, documents_per_detail)
         docs = []
         for receipt in samples:
             info = scan_original_zip(request_bytes("document.xml", {
