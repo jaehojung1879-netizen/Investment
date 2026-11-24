@@ -23,94 +23,90 @@
   },
   "conceptsBySection": {
     "bs": 0,
-    "ic": 40,
-    "cf": 50
+    "ic": 51,
+    "cf": 74
   },
   "conceptsBySectionCollapsed": {
     "bs": 0,
-    "ic": 40,
-    "cf": 50
+    "ic": 51,
+    "cf": 74
   },
   "topConcepts": {
     "bs": [],
     "ic": [
-      "us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax",
+      "us-gaap_RevenueFromContractWithCustomerIncludingAssessedTax",
+      "us-gaap_CostOfGoodsAndServicesSold",
       "us-gaap_GrossProfit",
-      "us-gaap_OperatingExpenses",
       "us-gaap_OperatingIncomeLoss",
-      "us-gaap_NonoperatingIncomeExpense",
+      "us-gaap_InvestmentIncomeInterest",
+      "us-gaap_InterestExpenseNonoperating",
+      "us-gaap_OtherNonoperatingIncomeExpense",
       "us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
       "us-gaap_IncomeTaxExpenseBenefit",
+      "us-gaap_ProfitLoss",
       "us-gaap_NetIncomeLoss",
-      "us-gaap_EarningsPerShareBasic",
-      "us-gaap_EarningsPerShareDiluted",
-      "us-gaap_WeightedAverageNumberOfSharesOutstandingBasic",
-      "us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding"
+      "us-gaap_EarningsPerShareBasic"
     ],
     "cf": [
-      "us-gaap_NetIncomeLoss",
-      "us-gaap_DepreciationDepletionAndAmortization",
+      "us-gaap_ProfitLoss",
       "us-gaap_ShareBasedCompensation",
-      "us-gaap_IncreaseDecreaseInAccountsPayableAndAccruedLiabilities",
-      "us-gaap_IncreaseDecreaseInDeferredRevenue",
-      "us-gaap_IncreaseDecreaseInAccruedIncomeTaxesPayable",
+      "us-gaap_IncreaseDecreaseInPrepaidDeferredExpenseAndOtherAssets",
+      "us-gaap_IncreaseDecreaseInAccountsPayable",
       "us-gaap_NetCashProvidedByUsedInOperatingActivities",
-      "us-gaap_PaymentsToAcquireBusinessesNetOfCashAcquired",
-      "us-gaap_PaymentsForProceedsFromOtherInvestingActivities",
+      "us-gaap_PaymentsToAcquirePropertyPlantAndEquipment",
       "us-gaap_NetCashProvidedByUsedInInvestingActivities",
-      "us-gaap_ProceedsFromIssuanceOfCommonStock",
-      "us-gaap_ProceedsFromPaymentsForOtherFinancingActivities"
+      "us-gaap_PaymentsForRepurchaseOfCommonStock",
+      "us-gaap_ProceedsFromMinorityShareholders",
+      "us-gaap_NetCashProvidedByUsedInFinancingActivities",
+      "us-gaap_EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+      "us-gaap_CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect"
     ]
   },
   "topConceptsCollapsed": {
     "bs": [],
     "ic": [
-      "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "RevenueFromContractWithCustomerIncludingAssessedTax",
+      "CostOfGoodsAndServicesSold",
       "GrossProfit",
-      "OperatingExpenses",
       "OperatingIncomeLoss",
-      "NonoperatingIncomeExpense",
+      "InvestmentIncomeInterest",
+      "InterestExpenseNonoperating",
+      "OtherNonoperatingIncomeExpense",
       "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
       "IncomeTaxExpenseBenefit",
+      "ProfitLoss",
       "NetIncomeLoss",
-      "EarningsPerShareBasic",
-      "EarningsPerShareDiluted",
-      "WeightedAverageNumberOfSharesOutstandingBasic",
-      "WeightedAverageNumberOfDilutedSharesOutstanding"
+      "EarningsPerShareBasic"
     ],
     "cf": [
-      "NetIncomeLoss",
-      "DepreciationDepletionAndAmortization",
+      "ProfitLoss",
       "ShareBasedCompensation",
-      "IncreaseDecreaseInAccountsPayableAndAccruedLiabilities",
-      "IncreaseDecreaseInDeferredRevenue",
-      "IncreaseDecreaseInAccruedIncomeTaxesPayable",
+      "IncreaseDecreaseInPrepaidDeferredExpenseAndOtherAssets",
+      "IncreaseDecreaseInAccountsPayable",
       "NetCashProvidedByUsedInOperatingActivities",
-      "PaymentsToAcquireBusinessesNetOfCashAcquired",
-      "PaymentsForProceedsFromOtherInvestingActivities",
+      "PaymentsToAcquirePropertyPlantAndEquipment",
       "NetCashProvidedByUsedInInvestingActivities",
-      "ProceedsFromIssuanceOfCommonStock",
-      "ProceedsFromPaymentsForOtherFinancingActivities"
+      "PaymentsForRepurchaseOfCommonStock",
+      "ProceedsFromMinorityShareholders",
+      "NetCashProvidedByUsedInFinancingActivities",
+      "EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+      "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect"
     ]
   },
   "units": {
-    "u_usd": 63,
-    "usd": 45,
-    "u_unitedstatesofamericadollarsshare": 2,
-    "u_shares": 2,
-    "shares": 2,
-    "usd/share": 2
+    "usd": 143,
+    "usd/share": 8,
+    "shares": 2
   },
   "unitClasses": {
-    "currency": 108,
-    "shares": 4,
-    "unclassified": 2,
-    "perShare": 2
+    "currency": 143,
+    "perShare": 8,
+    "shares": 2
   },
   "unitClassesResolved": {
-    "currency": 108,
-    "perShare": 4,
-    "shares": 4
+    "currency": 143,
+    "perShare": 8,
+    "shares": 2
   },
   "unclassifiedUnits": {}
 }
