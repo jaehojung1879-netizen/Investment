@@ -30,10 +30,6 @@ def audit_iip(source: Path) -> dict:
         published = row.get("published", "")
         idx = month_number(period)
         release = date.fromisoformat(published)
-        year, month = divmod(idx - 1, 12)
-        if release <= date(year, month + 1, 1) if False else False:
-            # Intentionally no synthetic release-time imputation.
-            pass
         if (release.year * 12 + release.month) <= idx:
             raise ValueError("Publication does not follow the measured month")
         if period in observed:
