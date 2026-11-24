@@ -83,3 +83,12 @@ def test_offline_has_no_network_and_does_not_claim_population(tmp_path):
     with patch.object(g0, "request_bytes", side_effect=AssertionError):
         assert g0.main(["--offline-list", str(fixture),
                         "--output", str(tmp_path / "out.json")]) == 0
+
+def test_stratified_originals_cover_filing_regimes():
+    records = [
+        {**row(f"{year}0501000001"), "rcept_dt": f"{year}0501"}
+        for year in ("2019", "2020", "2022", "2024", "2026")
+    ]
+    chosen = g0.choose_stratified_receipts(records, 5)
+    assert len(chosen) == 5
+    assert {r[:4] for r in chosen} == {"2019", "2020", "2022", "2024", "2026"}
