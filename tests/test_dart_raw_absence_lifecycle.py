@@ -65,3 +65,21 @@ def test_served_and_unresolved_supersede_active_absence_without_double_counting(
     assert set(absent) == {"still_absent"}
     assert set(unresolved) == {"failed", "only_unresolved"}
     assert not set(absent) & set(unresolved)
+
+
+def test_recent_year_refresh_prioritizes_due_q3_before_future_annual():
+    pending = [("A.KS", 2026, "11012"), ("A.KS", 2026, "11014"),
+               ("A.KS", 2026, "11011"), ("B.KS", 2026, "11014"),
+               ("B.KS", 2026, "11011")]
+    absent = {RS.record_id("A.KS", 2026, "11014"): row("2026-11-24T00:00:00Z"),
+              RS.record_id("B.KS", 2026, "11014"): row("2026-09-28T00:00:00Z")}
+    ordered = collect.prioritize_refresh(pending, absent, {}, "2026-11-25")
+    assert ordered[:3] == [("B.KS", 2026, "11014"), ("A.KS", 2026, "11014"),
+                           ("A.KS", 2026, "11012")]
+    assert [x[2] for x in ordered[3:]] == ["11011", "11011"]
+
+
+def test_historical_backfill_order_stays_unchanged():
+    pending = [("A.KS", 2016, "11013"), ("A.KS", 2016, "11011"),
+               ("B.KS", 2016, "11014")]
+    assert collect.prioritize_refresh(pending, {}, {}, "2026-11-25") == pending

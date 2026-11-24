@@ -212,6 +212,29 @@ def reconcile_active_statuses(absent: dict, unresolved: dict, served_ids: set[st
         absent.pop(key, None)
 
 
+def prioritize_refresh(pending, absent: dict, unresolved: dict, today: str):
+    """For a recent-year slice, due reports first, then least recently checked.
+
+    Retain the caller's explicit year priority and historical backfill order.
+    The current/previous fiscal years are the rolling refresh horizon; a
+    pre-deadline annual report must not consume the Q3 collection budget.
+    """
+    current_year = int(today[:4])
+
+    def priority(item):
+        ticker, year, code = item
+        due = DF.filing_deadline(year, code) or "9999-12-31"
+        rid = RS.record_id(ticker, year, code)
+        row = unresolved.get(rid, absent.get(rid, {}))
+        checked = str(row.get("checkedAt") or "")
+        return (due > today, -int(due.replace("-", "")), checked, ticker, code)
+
+    # The input to this helper is a single fiscal year's work list.
+    if pending and pending[0][1] >= current_year - 1:
+        return sorted(pending, key=priority)
+    return pending
+
+
 def collect(store: Path, key: str, universe: dict, years, budget: Budget,
             directory_fn=corp_directory) -> dict:
     store.mkdir(parents=True, exist_ok=True)
@@ -230,7 +253,8 @@ def collect(store: Path, key: str, universe: dict, years, budget: Budget,
     pending = []
     settled = confirmed_absences(absent, today)
     for year in years:
-        pending += RS.work_list(resolved, [year], year_codes(year), done, settled)
+        year_pending = RS.work_list(resolved, [year], year_codes(year), done, settled)
+        pending += prioritize_refresh(year_pending, absent, unresolved, today)
 
     collected_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     fresh: dict[int, list[dict]] = {}
@@ -249,6 +273,7 @@ def collect(store: Path, key: str, universe: dict, years, budget: Budget,
         except Refused as exc:
             stop_reason = f"REFUSED:{exc}"
             break
+        checked_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
         for a in attempts:
             statuses[f"{a['fsDiv']}={a['status']}"] += 1
         rid = RS.record_id(ticker, year, code)
@@ -257,7 +282,7 @@ def collect(store: Path, key: str, universe: dict, years, budget: Budget,
             # store show exactly what DART said; nothing about it is settled.
             absent.pop(rid, None)
             unresolved[rid] = RS.unresolved_record(ticker=ticker, fiscal_year=year, report_code=code,
-                                                   attempts=attempts, checked_at=collected_at)
+                                                   attempts=attempts, checked_at=checked_at)
             stop_reason = stop if stop.startswith("REFUSED:") else "CALL_BUDGET_SPENT"
             break
         record, reason = RS.build_raw_record(
@@ -271,13 +296,13 @@ def collect(store: Path, key: str, universe: dict, years, budget: Budget,
             # statuses and retried, never settled.
             if RS.absence_evidence(attempts) == RS.SOURCE_ABSENCE:
                 absent[rid] = RS.absence_record(ticker=ticker, fiscal_year=year, report_code=code,
-                                                attempts=attempts, checked_at=collected_at)
+                                                attempts=attempts, checked_at=checked_at)
                 unresolved.pop(rid, None)
             else:
                 absent.pop(rid, None)
                 unresolved[rid] = RS.unresolved_record(ticker=ticker, fiscal_year=year,
                                                        report_code=code, attempts=attempts,
-                                                       checked_at=collected_at)
+                                                       checked_at=checked_at)
             continue
         absent.pop(rid, None)
         unresolved.pop(rid, None)
@@ -296,7 +321,8 @@ def collect(store: Path, key: str, universe: dict, years, budget: Budget,
                                encoding="utf-8")
     all_records = [r for rows in shards.values() for r in rows] + [r for rows in fresh.values() for r in rows]
     remaining = []
-    settled = confirmed_absences(absent, today)
+    report_day = time.strftime("%Y-%m-%d", time.gmtime())
+    settled = confirmed_absences(absent, report_day)
     served_ids = {r["id"] for r in all_records}
     for year in years:
         remaining += RS.work_list(resolved, [year], year_codes(year), served_ids, settled)
