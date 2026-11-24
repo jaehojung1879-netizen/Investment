@@ -12,6 +12,7 @@ import os
 from pathlib import Path
 import sys
 import time
+import urllib.error
 
 from pipeline.institutional_13f import merge_snapshots
 from scripts.publish_state import APIError, GitHub
@@ -72,22 +73,40 @@ def publish(api, incoming, registry, attempts=5, pause=time.sleep):
     raise ValueError("no publication attempts configured")
 
 
-def main():
-    site = json.loads(Path("data/site-data.json").read_text(encoding="utf-8"))
+def publish_disclosures(site, root, env):
     disclosure = site.get("institutionalHoldings13F") or {}
     live = [m for m in disclosure.get("managers", []) if m.get("status") == "AVAILABLE"
             and m.get("sourceMode") == "LIVE_SEC"]
     if not live:
         print("::warning::SEC 13F: no live disclosures; existing official cache preserved.")
-        return 0
+        return "no-live-data"
     if disclosure.get("overdueOrMissingCount", 0):
         print("::warning::SEC 13F: some managers have no confirmed due-quarter disclosure.")
-    cache = json.loads(Path("data/institutional_13f_cache.json").read_text(encoding="utf-8"))
-    registry = json.loads(Path("data/institutional_managers.json").read_text(encoding="utf-8"))
-    api = GitHub(os.environ.get("GITHUB_REPOSITORY", ""), os.environ.get("GH_TOKEN", ""))
-    print(f"SEC 13F cache {publish(api, cache, registry)}")
-    return 0
+    cache = json.loads((root / "data/institutional_13f_cache.json").read_text(encoding="utf-8"))
+    registry = json.loads((root / "data/institutional_managers.json").read_text(encoding="utf-8"))
+    api = GitHub(env.get("GITHUB_REPOSITORY", ""), env.get("GH_TOKEN", ""))
+    result = publish(api, cache, registry)
+    print(f"SEC 13F cache {result}")
+    return result
 
 
-if __name__ == "__main__":
-    sys.exit(main())
+def preserve_after_pages(site, artifact, destination, root, env=None):
+    """Only the existing post-deployment main Pages command may write the cache."""
+    env = os.environ if env is None else env
+    if not (
+        env.get("GITHUB_ACTIONS") == "true"
+        and env.get("GITHUB_WORKFLOW") == "Build insight data and deploy Pages"
+        and env.get("GITHUB_JOB") == "build-and-deploy"
+        and env.get("GITHUB_REF") == "refs/heads/main"
+        and env.get("GITHUB_EVENT_NAME") in {"schedule", "push", "workflow_dispatch", "workflow_run"}
+        and Path(artifact).resolve() == root / "data/site-data.json"
+        and Path(destination).resolve() == root / ".state/latest.next.json"
+    ):
+        return "not-pages-production"
+    try:
+        return publish_disclosures(site, root, env)
+    except (APIError, ValueError, KeyError, TypeError, OSError, AttributeError, urllib.error.URLError) as exc:
+        # The official cache is ancillary. Never prevent the original model
+        # state publication, and never log credentials or response bodies.
+        print(f"::warning::SEC 13F cache publication failed: {type(exc).__name__}", file=sys.stderr)
+        return "publication-failed"

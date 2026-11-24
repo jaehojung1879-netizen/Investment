@@ -52,3 +52,43 @@ def test_publication_preserves_newer_remote_and_retries_ref_race():
     api = API()
     assert publish(api, incoming, registry, pause=lambda _: None) == "unchanged"
     assert api.attempts == 1
+
+
+def test_hook_is_restricted_to_existing_post_deploy_command(tmp_path, monkeypatch):
+    from scripts import publish_13f_cache as P
+
+    calls = []
+    monkeypatch.setattr(P, "publish_disclosures",
+                        lambda *args: calls.append(args) or "published")
+    root = tmp_path.resolve()
+    artifact = root / "data/site-data.json"
+    destination = root / ".state/latest.next.json"
+    env = {"GITHUB_ACTIONS": "true",
+           "GITHUB_WORKFLOW": "Build insight data and deploy Pages",
+           "GITHUB_JOB": "build-and-deploy",
+           "GITHUB_REF": "refs/heads/main",
+           "GITHUB_EVENT_NAME": "schedule"}
+    for key in env:
+        assert P.preserve_after_pages({}, artifact, destination, root,
+                                      {**env, key: "wrong"}) == "not-pages-production"
+    assert P.preserve_after_pages({}, artifact, root / "other.json", root, env) == "not-pages-production"
+    assert P.preserve_after_pages({}, artifact, destination, root, env) == "published"
+    assert len(calls) == 1
+
+
+def test_hook_failure_does_not_block_original_state_publication(tmp_path, monkeypatch, capsys):
+    from scripts import publish_13f_cache as P
+
+    def fail(*args):
+        raise APIError(403)
+
+    monkeypatch.setattr(P, "publish_disclosures", fail)
+    root = tmp_path.resolve()
+    env = {"GITHUB_ACTIONS": "true",
+           "GITHUB_WORKFLOW": "Build insight data and deploy Pages",
+           "GITHUB_JOB": "build-and-deploy", "GITHUB_REF": "refs/heads/main",
+           "GITHUB_EVENT_NAME": "push"}
+    result = P.preserve_after_pages({}, root / "data/site-data.json",
+                                    root / ".state/latest.next.json", root, env)
+    assert result == "publication-failed"
+    assert "SEC 13F cache publication failed" in capsys.readouterr().err

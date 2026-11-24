@@ -297,8 +297,3 @@ jobs:
         run: |
           python scripts/update_state.py data/site-data.json .state/latest.next.json
           python scripts/publish_state.py .state/latest.next.json
-
-      - name: Preserve verified SEC 13F disclosures
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: python -m scripts.publish_13f_cache
