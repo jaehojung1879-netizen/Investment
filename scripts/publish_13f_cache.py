@@ -33,10 +33,10 @@ def publish(api, incoming, registry, attempts=5, pause=time.sleep):
             state = next((x for x in root["tree"] if x["path"] == "state"), None)
             if state:
                 if state["type"] != "tree":
-                    raise ValueError("state is not a directory")
+                    raise ValueError("state is not a directory") from None
                 subtree = api.request("GET", f"/git/trees/{state['sha']}")
                 if any(x["path"] == "institutional_13f_cache.json" for x in subtree["tree"]):
-                    raise ValueError("existing 13F cache cannot be read")
+                    raise ValueError("existing 13F cache cannot be read") from None
             previous = {}
         else:
             if content.get("type") != "file" or content.get("encoding") != "base64":
