@@ -1,6 +1,7 @@
 """Synthetic-only tests. No external API, securities prices, or outcomes."""
 from __future__ import annotations
 
+import gzip
 import io
 import json
 import zipfile
@@ -92,3 +93,16 @@ def test_stratified_originals_cover_filing_regimes():
     chosen = g0.choose_stratified_receipts(records, 5)
     assert len(chosen) == 5
     assert {r[:4] for r in chosen} == {"2019", "2020", "2022", "2024", "2026"}
+
+def test_offline_gzip_matches_existing_source_cache_format(tmp_path):
+    fixture = tmp_path / "original-list-response.json.gz"
+    raw = json.dumps({"status": "000", "list": [
+        row("20260501000001"),
+        row("20260502000002", "[기재정정] 주식등의대량보유상황보고서"),
+    ]}, ensure_ascii=False).encode("utf-8")
+    fixture.write_bytes(gzip.compress(raw, mtime=0))
+    with patch.object(g0, "request_bytes", side_effect=AssertionError):
+        data = g0.offline(fixture)
+    assert data["sampled_receipts"] == 2
+    assert data["correction_receipts"] == 1
+    assert data["event_count"] is None
