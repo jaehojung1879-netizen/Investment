@@ -1,6 +1,6 @@
 # Market Risk Discovery v1
 
-현재 단계는 **실험 1(역사 예측 비교) 실행 승인 대기**다(미실행, 결과 미조회). P1 Stage 3 추론은 `NOT_READY_FOR_INFERENTIAL_STAGE_3`로 닫혀 있다.
+현재 단계는 **실험 1 종료**다(2026-11-24 승인 후 1회 실행). 결과는 [REPORT-EXP1-ko.md](REPORT-EXP1-ko.md)에 있다. 어떤 후보도 기저율과 M1을 이기지 못했다. P1 Stage 3 추론은 `NOT_READY_FOR_INFERENTIAL_STAGE_3`로 닫혀 있다.
 
 ## 실험 1 (조기경보 재설계)
 

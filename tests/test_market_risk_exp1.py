@@ -127,13 +127,20 @@ def test_only_the_harness_asks_for_real_rows():
                 assert path.name == "exp1_execute.py", path
 
 
-def test_protocol_verifies_and_nothing_was_executed():
-    out = X.verify(require_authorization=False)
+def test_the_one_authorized_run_happened_once_and_cannot_repeat():
+    """State after the owner-approved run: the marker and result exist, the result carries the approved protocol
+    hash, the authorization still matches the protocol, and any further run is refused before computing."""
+    psha = X.PROTOCOL_SHA.read_text().split()[0]
     spec = json.loads(X.PROTOCOL.read_text())
-    assert out["protocolSha256"] == X.PROTOCOL_SHA.read_text().split()[0]
-    assert spec["executed"] is False and spec["signalLabelJoinsWhileWritingThis"] == 0
-    for p in (X.AUTHORIZATION, X.MARKER, X.RESULT, X.FAILURE):
-        assert not p.exists()
+    assert psha == X.sha(X.PROTOCOL) == "816e1644895bd86062226b5c58aaa52b7758569e51a368a43d9caede8314b04c"
+    X.check_authorization(json.loads(X.AUTHORIZATION.read_text()), psha, spec["pins"])
+    res = json.loads(X.RESULT.read_text())
+    assert res["marker"]["protocolSha256"] == psha and res["inferentialClaim"] is None
+    assert json.loads(X.MARKER.read_text())["protocolSha256"] == psha and not X.FAILURE.exists()
+    with pytest.raises(X.ExecutionRefused, match="ONE_SHOT_ALREADY_SPENT"):
+        X.verify(require_authorization=True)
+    with pytest.raises(X.ExecutionRefused, match="ONE_SHOT_ALREADY_SPENT"):
+        X.execute(compute=lambda: pytest.fail("recomputed"))
 
 
 def _contender(tmp: str, barrier, queue):
