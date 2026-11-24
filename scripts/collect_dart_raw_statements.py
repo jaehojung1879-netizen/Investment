@@ -46,6 +46,7 @@ import time
 import urllib.error
 import urllib.request
 from collections import Counter
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -172,6 +173,45 @@ def resolve_all(universe: dict, directory: list[dict]) -> dict[str, dict]:
             for ticker, name in universe.items()}
 
 
+def confirmed_absences(absent: dict, today: str) -> set[str]:
+    """Settle only an actual negative observation made AFTER the grace period.
+
+    The older, frozen RS.settled checks the current date instead of the
+    observation date. Keep that historical function and its callers intact;
+    this collection-only gate uses the same deadline policy on checkedAt.
+    """
+    now = date.fromisoformat(today)
+    settled = set()
+    for key, row in absent.items():
+        if not isinstance(row, dict):
+            continue
+        attempts = row.get("attempts")
+        if not isinstance(attempts, list) or not all(isinstance(a, dict) for a in attempts):
+            continue
+        if RS.absence_evidence(attempts) != RS.SOURCE_ABSENCE:
+            continue
+        try:
+            stamp = datetime.fromisoformat(str(row["checkedAt"]).replace("Z", "+00:00"))
+            if stamp.tzinfo is None:
+                continue
+            checked = stamp.astimezone(timezone.utc).date()
+            year, code = int(row["fiscalYear"]), str(row["reportCode"])
+        except (KeyError, TypeError, ValueError, OverflowError):
+            continue
+        if checked <= now and DF.absence_is_settled(year, code, checked.isoformat()):
+            settled.add(key)
+    return settled
+
+
+def reconcile_active_statuses(absent: dict, unresolved: dict, served_ids: set[str]) -> None:
+    """Only the current status is counted; earlier observations remain in Git."""
+    for key in served_ids:
+        absent.pop(key, None)
+        unresolved.pop(key, None)
+    for key in unresolved:
+        absent.pop(key, None)
+
+
 def collect(store: Path, key: str, universe: dict, years, budget: Budget,
             directory_fn=corp_directory) -> dict:
     store.mkdir(parents=True, exist_ok=True)
@@ -184,11 +224,13 @@ def collect(store: Path, key: str, universe: dict, years, budget: Budget,
     unresolved_path = store / "unresolved.json"
     unresolved = (json.loads(unresolved_path.read_text(encoding="utf-8"))
                   if unresolved_path.exists() else {})
+    reconcile_active_statuses(absent, unresolved, done)
     today = time.strftime("%Y-%m-%d", time.gmtime())
     resolved = {t: i for t, i in identities.items() if i["status"] == KCA.RESOLVED}
     pending = []
+    settled = confirmed_absences(absent, today)
     for year in years:
-        pending += RS.work_list(resolved, [year], year_codes(year), done, RS.settled(absent, today))
+        pending += RS.work_list(resolved, [year], year_codes(year), done, settled)
 
     collected_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     fresh: dict[int, list[dict]] = {}
@@ -213,6 +255,7 @@ def collect(store: Path, key: str, universe: dict, years, budget: Budget,
         if stop:
             # The filing's answers are kept as UNRESOLVED so the log and the
             # store show exactly what DART said; nothing about it is settled.
+            absent.pop(rid, None)
             unresolved[rid] = RS.unresolved_record(ticker=ticker, fiscal_year=year, report_code=code,
                                                    attempts=attempts, checked_at=collected_at)
             stop_reason = stop if stop.startswith("REFUSED:") else "CALL_BUDGET_SPENT"
@@ -231,10 +274,12 @@ def collect(store: Path, key: str, universe: dict, years, budget: Budget,
                                                 attempts=attempts, checked_at=collected_at)
                 unresolved.pop(rid, None)
             else:
+                absent.pop(rid, None)
                 unresolved[rid] = RS.unresolved_record(ticker=ticker, fiscal_year=year,
                                                        report_code=code, attempts=attempts,
                                                        checked_at=collected_at)
             continue
+        absent.pop(rid, None)
         unresolved.pop(rid, None)
         fresh.setdefault(year, []).append(record)
         written += 1
@@ -251,9 +296,10 @@ def collect(store: Path, key: str, universe: dict, years, budget: Budget,
                                encoding="utf-8")
     all_records = [r for rows in shards.values() for r in rows] + [r for rows in fresh.values() for r in rows]
     remaining = []
+    settled = confirmed_absences(absent, today)
+    served_ids = {r["id"] for r in all_records}
     for year in years:
-        remaining += RS.work_list(resolved, [year], year_codes(year),
-                                  {r["id"] for r in all_records}, RS.settled(absent, today))
+        remaining += RS.work_list(resolved, [year], year_codes(year), served_ids, settled)
     outcome = CO.run_outcome(stop_reason=stop_reason, calls=budget.calls, written=written)
     manifest = {
         "contract": RS.CONTRACT, "updatedAt": collected_at,
