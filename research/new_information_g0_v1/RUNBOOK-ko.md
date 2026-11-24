@@ -34,6 +34,8 @@ python -m research.new_information_g0_v1.source_probe --live --documents-per-det
 
 # 데이터가 없는/offline 환경의 파서 검사는 합성/fixture에서만.
 python -m research.new_information_g0_v1.source_probe --offline-list /tmp/synthetic-dart-list.json
+# 기존 #320 DartClient 의 실제 gzip 캐시 JSON도 직접 재사용 가능(비밀키·네트워크 불필요):
+python -m research.new_information_g0_v1.source_probe --offline-list /private/dart-cache/raw/<SHA256>.gz
 ```
 
 공개 리포트에는 응답 목록의 페이지가 미완료인 경우를 명시. 응답이 100건으로 잘리면 **모집단 건수라고 주장하지 않는다**. 원문에 보유목적 단어가 포함됐다는 것은 자동 판정이 아니며, 현재/직전 원문 비교와 신고인 연결이 필수다.
