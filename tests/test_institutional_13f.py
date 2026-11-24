@@ -117,3 +117,76 @@ def test_build_uses_dated_official_cache_without_calling_it_live(tmp_path, monke
     assert got["availableCount"] == 1 and got["liveCount"] == 0 and got["cachedCount"] == 1
     assert got["managers"][0]["status"] == "CACHED_OFFICIAL"
     assert got["managers"][0]["sourceMode"] == "CACHED_SEC"
+
+
+def test_expected_report_uses_deadline_not_newest_cached_quarter():
+    from datetime import date
+
+    assert F13.expected_report_date(date(2026, 11, 16)) == "2026-06-30"
+    assert F13.expected_report_date(date(2026, 11, 17)) == "2026-09-30"
+    assert F13.expected_report_date(date(2027, 2, 16)) == "2026-09-30"
+    assert F13.expected_report_date(date(2027, 2, 17)) == "2026-12-31"
+
+
+def test_wrong_xml_and_empty_table_refused():
+    import pytest
+
+    for raw in (b"<html/>", b"<informationTable/>"):
+        with pytest.raises(ValueError):
+            F13.parse_information_table(raw)
+
+
+def test_merge_never_replaces_newer_report_with_older_poll():
+    manager = {"id": "test", "cik": "0000000001"}
+    def snapshot(report, filing):
+        return {**manager, "reportDate": report, "filingDate": filing,
+                "filingUrl": "https://www.sec.gov/Archives/edgar/test.xml",
+                "positionCount": 1, "totalValueUsd": 100,
+                "topHoldings": [{"issuer": "TEST"}]}
+    old = snapshot("2026-06-30", "2026-08-14")
+    new = snapshot("2026-09-30", "2026-11-13")
+    assert F13.merge_snapshots({"test": new}, {"test": old}, [manager]) == {"test": new}
+    assert F13.merge_snapshots({"test": old}, {"test": new}, [manager]) == {"test": new}
+
+
+def test_nonconsecutive_report_has_no_quarter_comparison(monkeypatch):
+    submissions = {"filings": {"recent": {
+        "form": ["13F-HR", "13F-HR"],
+        "accessionNumber": ["0000000001-26-000002", "0000000001-26-000001"],
+        "filingDate": ["2026-11-13", "2026-05-15"],
+        "reportDate": ["2026-09-30", "2026-03-31"],
+        "primaryDocument": ["primary_doc.xml", "primary_doc.xml"],
+    }}}
+    monkeypatch.setattr(F13.time, "sleep", lambda _: None)
+    got = F13._build_manager(
+        {"id": "test", "cik": "0000000001"},
+        fetch_json=lambda url: submissions if "submissions" in url else
+        {"directory": {"item": [{"name": "infotable.xml"}]}},
+        fetch_bytes=lambda _: _xml([("TEST", "000000001", 100, 10, None)]),
+    )
+    assert got["changes"] is None
+
+
+def test_new_holdings_amendment_is_not_a_replacement(monkeypatch):
+    submissions = {"filings": {"recent": {
+        "form": ["13F-HR/A", "13F-HR"],
+        "accessionNumber": ["0000000001-26-000002", "0000000001-26-000001"],
+        "filingDate": ["2026-11-18", "2026-11-13"],
+        "reportDate": ["2026-09-30", "2026-09-30"],
+        "primaryDocument": ["primary_doc.xml", "primary_doc.xml"],
+    }}}
+    def fetch_bytes(url):
+        if url.endswith("primary_doc.xml"):
+            return b"<edgarSubmission><amendmentType>NEW HOLDINGS</amendmentType></edgarSubmission>"
+        if "000000000126000002" in url:
+            return _xml([("BETA", "000000002", 50, 5, None)])
+        return _xml([("ALPHA", "000000001", 100, 10, None)])
+    monkeypatch.setattr(F13.time, "sleep", lambda _: None)
+    got = F13._build_manager(
+        {"id": "test", "cik": "0000000001"},
+        fetch_json=lambda url: submissions if "submissions" in url else
+        {"directory": {"item": [{"name": "infotable.xml"}]}},
+        fetch_bytes=fetch_bytes,
+    )
+    assert got["totalValueUsd"] == 150
+    assert got["positionCount"] == 2
