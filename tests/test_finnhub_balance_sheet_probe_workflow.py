@@ -63,26 +63,29 @@ def job_if(name: str) -> str:
     return re.search(r"^    if: (.*)$", job_block(name), re.M).group(1)
 
 
-def gh_if(expression: str, event: str, inputs: dict, ref: str) -> bool:
+def gh_if(expression: str, event: str, inputs: dict, ref: str, schedule: str = "40 3 * * *") -> bool:
     """A faithful-enough evaluator of the only expression forms these `if:` lines use."""
     py = expression.replace("&&", " and ").replace("||", " or ")
     py = re.sub(r"!\s*startsWith\(\s*inputs\.(\w+)\s*,\s*'([^']*)'\s*\)", r"(not str(I.get('\1','')).startswith('\2'))", py)
     py = re.sub(r"startsWith\(\s*inputs\.(\w+)\s*,\s*'([^']*)'\s*\)", r"str(I.get('\1','')).startswith('\2')", py)
     py = re.sub(r"inputs\.(\w+)", r"I.get('\1','')", py)
-    py = py.replace("github.event_name", "E").replace("github.ref", "R")
-    return bool(eval(py, {"I": inputs, "E": event, "R": ref}))      # noqa: S307 - the expression is this repository's own
+    py = py.replace("github.event.schedule", "S").replace("github.event_name", "E").replace("github.ref", "R")
+    return bool(eval(py, {"I": inputs, "E": event, "R": ref, "S": schedule}))      # noqa: S307 - the expression is this repository's own
 
 
 JOBS = ("kr", "us", "kr-raw", "us-finnhub-bs-probe", "us-total-assets-source-probe")
 DISPATCH_DEFAULTS = {"target": "auto", "region": "both", "max_calls": "", "max_minutes": ""}
 
 
-def runs(event, ref="refs/heads/main", **inputs):
+def runs(event, ref="refs/heads/main", schedule="40 3 * * *", **inputs):
     given = {} if event == "schedule" else {**DISPATCH_DEFAULTS, **inputs}
-    return {j for j in JOBS if gh_if(job_if(j), event, given, ref)}
+    return {j for j in JOBS if gh_if(job_if(j), event, given, ref, schedule)}
 
 
 def test_the_probe_job_is_selected_only_by_its_own_region_and_never_starts_a_collector():
+    assert runs("schedule", schedule="17 19 * * 2") == {"kr-raw"}
+    assert runs("schedule", schedule="17 19 * * 2", ref="refs/heads/other") == set()
+    assert runs("schedule", schedule="unknown") == set()
     assert runs("schedule") == {"kr", "us"}                                                        # the nightly run is unchanged
     assert runs("workflow_dispatch") == {"kr", "us"}                                                # default dispatch is unchanged
     assert runs("workflow_dispatch", region="us") == {"us"} and runs("workflow_dispatch", region="kr") == {"kr"}
@@ -100,9 +103,15 @@ def test_the_probe_job_may_run_from_any_ref_because_the_key_decision_is_made_ins
 
 
 def test_the_collectors_conditions_are_byte_identical_to_the_ones_other_tests_pin():
-    assert job_if("kr") == "github.event_name == 'schedule' || ((inputs.region == 'both' || inputs.region == 'kr') && !startsWith(inputs.target, 'raw-'))"
-    assert job_if("us") == "github.event_name == 'schedule' || ((inputs.region == 'both' || inputs.region == 'us') && !startsWith(inputs.target, 'raw-'))"
-    assert job_if("kr-raw") == "github.event_name == 'workflow_dispatch' && startsWith(inputs.target, 'raw-')"
+    for region in ("kr", "us"):
+        assert job_if(region) == (
+            "(github.event_name != 'schedule' || github.event.schedule == '40 3 * * *') && "
+            f"(github.event_name == 'schedule' || ((inputs.region == 'both' || inputs.region == '{region}') "
+            "&& !startsWith(inputs.target, 'raw-')))")
+    assert job_if("kr-raw") == (
+        "(github.event_name == 'schedule' && github.event.schedule == '17 19 * * 2' "
+        "&& github.ref == 'refs/heads/main') || "
+        "(github.event_name == 'workflow_dispatch' && startsWith(inputs.target, 'raw-'))")
     text = workflow_text()
     assert 'options: ["both", "kr", "us", "finnhub-bs-probe", "total-assets-source-probe"]' in text and "cron: \"40 3 * * *\"" in text
 
@@ -178,7 +187,15 @@ def test_everything_outside_the_probe_job_is_byte_identical_to_main():
         pytest.skip("no git history available")
     if "us-finnhub-bs-probe" not in main_text:
         pytest.skip("the probe job is not on main yet")
-    assert _without_probe_job(workflow_text()) == _without_probe_job(main_text)
+    # The separately approved weekly route is an exact operational variant,
+    # not a general waiver of the original probe isolation assertion.
+    from pipeline.dart_weekly_workflow_maintenance import original_for_census, variant
+    original = original_for_census(ROOT)
+    candidate = workflow_text()
+    assert candidate.encode() == variant(original)
+    if main_text.encode() == original:
+        main_text = variant(original).decode()
+    assert _without_probe_job(candidate) == _without_probe_job(main_text)
 
 
 def test_sealed_and_neighbouring_files_are_untouched_by_this_change():
