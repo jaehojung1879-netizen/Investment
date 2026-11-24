@@ -2,7 +2,7 @@
 
 ## 보안·권한 경계
 - 본 브랜치는 main, 보호된 GitHub Actions, 배포/전향 기록을 변경하지 않는다.
-- OpenDART 키는 환경변수 OPENDART_API_KEY에서만 읽는다. 프롬프트·Issue·PR·공개 로그에 키, 키 포함 URL을 게시하지 말 것.
+- OpenDART 키는 환경변수 DART_API_KEY에서만 읽는다. 프롬프트·Issue·PR·공개 로그에 키, 키 포함 URL을 게시하지 말 것.
 - 오리지널 ZIP에 이름/연락처가 포함될 수 있으므로 문서 바이트, 실명, 원문 텍스트를 repository에 커밋하지 않는다. 필요한 경우 안전한 외부 비공개 증거 패킷에 보관한다.
 - 대량 수집·유료 구매·시장 성과 계산·서버 스케줄 등록 없음.
 
@@ -12,6 +12,14 @@
 python -m pytest -q tests/test_new_information_g0_v1.py tests/test_new_information_g0_iip.py
 python -m ruff check research/new_information_g0_v1 tests/test_new_information_g0_v1.py tests/test_new_information_g0_iip.py
 ```
+
+## 기존 원천 라이브러리와의 통합 필수 확인
+
+- 기존 #320 정확 HEAD `9a47f478`에는 `research/corporate_event_readiness_v1/cohort/dart_client.py`가 이미 존재한다. 기존 운영 키 이름은 `DART_API_KEY`이다.
+- #373 `source_probe.py`의 간단한 직접 HTTP 경로는 **단일 한도 확인용 격리 진단**이며 #320의 SHA 기반 원문 캐시, status 014 처리, 재시도/원천 권리 계보를 대체하지 않는다.
+- 본 소표본의 실제 원천 admission을 확장하기 전에 #320의 검증된 `DartClient` 및 raw response cache를 **그대로 재사용하는 어댑터 방식으로 통합할 것**. 새로운 상용 수집기나 중복 캐시 체계로 발전시키지 말 것.
+- #320은 아직 별도 Draft 브랜치이므로 #373 main 기반 PR에서 해당 모듈을 이미 import 가능하다고 전제하지 않는다. 저장소 레인 소유자가 integration 결정.
+- #320의 `filing-samples.json` 13건은 자사주·계약 등 I형 공시 샘플이며 5% 목적 변경 검증 사례는 **0건**이다. #373이 원문 PIT 검증을 마쳤다는 주장을 금지.
 
 ## 1. DART 메타데이터/원문 원천 시험
 
