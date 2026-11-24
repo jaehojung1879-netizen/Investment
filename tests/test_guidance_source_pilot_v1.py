@@ -37,4 +37,6 @@ def test_no_bridge_after_missing():
 def test_target_and_basis_separate():
     rows = sample()
     rows[3]["target"] = "FY2026"
-    assert revisions(rows)[4]["midpoint_change"] is None
+    result = next(r for r in revisions(rows) if r["target"] == "FY2026")
+    assert result["midpoint_change"] is None
+    assert result["prior_accession"] is None
