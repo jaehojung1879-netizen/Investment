@@ -116,5 +116,16 @@
    "status": "NOT_AFFECTED"
   }
  ],
- "openItem": "PR-STACK-343-356-ko.md (in #355) recommended a one-line conditional notice on the #346-#348 reports. It was never added. Those reports are left byte-unchanged here (some study reports are pinned by manifests); this file and REPORT-ko.md carry the notice instead."
+ "openItem": "PR-STACK-343-356-ko.md (in #355) recommended a one-line conditional notice on the #346-#348 reports. It was never added. Those reports are left byte-unchanged here (some study reports are pinned by manifests); this file and REPORT-ko.md carry the notice instead.",
+ "announcementClockWarning": {
+  "source": "#354 comment 7141284361 (owner account, 2026-11-24) citing #375 commit b9848cdc research/us_nonreliance_source_pilot_v1/CATALOG-AUDIT.md; repeated on #376 comment 7147007870",
+  "mechanism": "research/kr_us_earnings_expectations_v1/events.py attach_us_announcements takes the earliest 8-K acceptance after periodEnd and on or before filingDate (cand[0]) with no release-type check (verified in code at this head).",
+  "counterexample": "ADT 2023-07-10 accession 0001703056-23-000140 (prior-period restatement / potential impairment) would be chosen over the Q2 release 2023-08-08 accession 0001703056-23-000155 (29 days earlier), per the cited audit; not re-derived here.",
+  "consumers": [
+   "#354 kr_us_earnings_expectations_v1/analysis.py (US ANNOUNCE readings)",
+   "#355 investment_decision_alpha_v1/s2_entry_timing.py (US announce-wait entry)"
+  ],
+  "notImplicated": "strict periodic-filing-date path, per the cited audit",
+  "status": "ANNOUNCE_DEPENDENT_US_READINGS_ISOLATED_PENDING_SOURCE_ONLY_RELEASE_TYPE_VALIDATION; impact on admitted events not measured; no rerun, no sealed file changed"
+ }
 }
