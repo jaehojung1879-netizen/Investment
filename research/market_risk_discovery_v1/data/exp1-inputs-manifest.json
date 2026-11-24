@@ -1,0 +1,31 @@
+{
+ "retrievedAtUtc": "2026-11-23T23:02:40+00:00",
+ "series": {
+  "VIXCLS": {
+   "description": "CBOE Volatility Index (VIX), daily close",
+   "first": "1990-01-02",
+   "last": "2026-11-20",
+   "observations": 9322,
+   "sha256Raw": "6723d7bcb16781b5b12245327306f37242b01227da1ffac095634004645d18d1",
+   "stored": "data/raw/fred-VIXCLS.csv.gz",
+   "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=VIXCLS"
+  },
+  "VXVCLS": {
+   "description": "CBOE S&P 500 3-Month Volatility Index (VIX3M), daily close",
+   "first": "2007-12-04",
+   "last": "2026-11-20",
+   "observations": 4772,
+   "sha256Raw": "333c57dd0c046d9e96c4c63ab1a4d00542a5c0c39c4ea0f016fa50acefe2abdb",
+   "stored": "data/raw/fred-VXVCLS.csv.gz",
+   "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=VXVCLS"
+  }
+ },
+ "vixRevisionCheckAgainst198": {
+  "differingDays": 0,
+  "examples": [],
+  "file": "data/kr-market-risk-anatomy-v1/sources/FRED_VIXCLS/normalized.csv",
+  "first": "1990-01-02",
+  "last": "2026-10-01",
+  "overlapDays": 9286
+ }
+}

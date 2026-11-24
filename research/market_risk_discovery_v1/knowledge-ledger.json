@@ -1,0 +1,168 @@
+{
+ "asOf": "2026-11-23",
+ "program": "Investment market risk discovery",
+ "statusVocabulary": [
+  "VERIFIED",
+  "NOT_SUPPORTED",
+  "UNMEASURED",
+  "SOURCE_BLOCKED",
+  "UNDERPOWERED",
+  "PROSPECTIVE_PENDING"
+ ],
+ "economicFacts": [
+  {
+   "fact": "Lowering average equity exposure lowers drawdown and CAGR together; in every US/KR overlay measured so far the return gap to passive is almost all LEVEL, not TIMING.",
+   "evidence": [
+    "#199/#200",
+    "rp1-c1",
+    "#331",
+    "#358",
+    "#361"
+   ],
+   "status": "VERIFIED",
+   "class": "EXPLORATORY_ON_OUTCOME_EXPOSED_HISTORY"
+  },
+  {
+   "fact": "The equity effect of FOMC shocks is priced within the shock month; MP vs information origin does not change 1-12 month subsequent returns.",
+   "evidence": [
+    "#361 H1"
+   ],
+   "status": "VERIFIED",
+   "class": "EXPLORATORY"
+  },
+  {
+   "fact": "Information-type FOMC shocks are followed by persistently higher real yields and lower breakevens (6-12 months), not by EBP moves.",
+   "evidence": [
+    "#361 H1 channels"
+   ],
+   "status": "VERIFIED",
+   "class": "EXPLORATORY, no multiplicity correction"
+  },
+  {
+   "fact": "The relation between credit stress and 12-month large losses flipped around 1990 (0-15% loss frequency 1970-89 vs 12-69% 1990-2024).",
+   "evidence": [
+    "#361 H2 cells"
+   ],
+   "status": "VERIFIED",
+   "class": "DESCRIPTIVE"
+  },
+  {
+   "fact": "Trend/volatility information modestly beats the base rate for 6-month loss probability (+4.6% Brier skill, 1990-2024).",
+   "evidence": [
+    "#361 H2"
+   ],
+   "status": "VERIFIED",
+   "class": "EXPLORATORY"
+  },
+  {
+   "fact": "Fast volatility is the clearest descriptive link to near-term KR downside; curve re-steepening after inversion matters more than inversion.",
+   "evidence": [
+    "#198"
+   ],
+   "status": "VERIFIED",
+   "class": "DESCRIPTIVE"
+  },
+  {
+   "fact": "The existing FAST trend/volatility model was 'normal' at some month-end in the 126 sessions before each of the 7 US -15% first passages since 1993.",
+   "evidence": [
+    "Stage 1 baseline census"
+   ],
+   "status": "VERIFIED",
+   "class": "BASELINE_COVERAGE (no credit read)"
+  },
+  {
+   "fact": "Real-time BAA and GS10 vintages exist from 1996-12-03; month-end as-of credit is available 1996-12..2026-10 with a ~2-month observation lag.",
+   "evidence": [
+    "Stage 1 source audit"
+   ],
+   "status": "VERIFIED",
+   "class": "SOURCE"
+  }
+ ],
+ "failedClaims": [
+  {
+   "claim": "Trailing PE below its 5-year mean raises 12-month SPY excess return (2012-2024)",
+   "evidence": "#358 H1",
+   "status": "NOT_SUPPORTED",
+   "cause": "+5.23pp, Holm p 0.184; fragile to dropping 2021; sample without crises"
+  },
+  {
+   "claim": "PE x earnings x credit timing (VM1T) adds pure timing",
+   "evidence": "#358 H2",
+   "status": "NOT_SUPPORTED",
+   "cause": "net timing +0.03pp/yr; gap to SPY is LEVEL"
+  },
+  {
+   "claim": "MP vs CBI shock origin predicts subsequent returns",
+   "evidence": "#361 H1-P",
+   "status": "NOT_SUPPORTED",
+   "cause": "market prices shocks within the month"
+  },
+  {
+   "claim": "Valuation x SPF profit cut x credit separates 12M large losses better than valuation",
+   "evidence": "#361 H2-P",
+   "status": "NOT_SUPPORTED",
+   "cause": "regime instability; triple cell had 4 training months; extra variables worsen OOS"
+  },
+  {
+   "claim": "Loss forecasts improve allocation timing",
+   "evidence": "#361 H3-P",
+   "status": "NOT_SUPPORTED",
+   "cause": "no forecast improvement to transmit"
+  },
+  {
+   "claim": "KR exposure ladders C1-C3 beat C0/passive",
+   "evidence": "#200",
+   "status": "NOT_SUPPORTED",
+   "cause": "return cost of de-risking exceeds drawdown value"
+  },
+  {
+   "claim": "US dynamic multi-asset rules beat static mix",
+   "evidence": "#331/#333",
+   "status": "NOT_SUPPORTED",
+   "cause": "2008-only defence; worse after 2016"
+  }
+ ],
+ "openCompetingExplanations": [
+  "Credit stress is coincident with, not ahead of, equity breaks (both respond to the same news); P1 tests the lead directly.",
+  "Any credit lead is regime-specific (post-1990 credit-driven crises) and will not persist (Goyal-Welch instability).",
+  "Drawdown onsets are dominated by fast exogenous shocks (2020, 2025) that no monthly macro signal can lead.",
+  "Monthly-average credit with a ~2-month publication lag is too slow for 126-session onsets; daily PIT credit is unavailable before 2014."
+ ],
+ "incrementalValueOverBaseline": {
+  "valuation/earnings/credit over trend-vol (12M loss)": "NEGATIVE (Brier +0.0043, p 0.033, #361)",
+  "credit-change over FAST-normal states (first passage)": "UNMEASURED (P1, Stage 2 pending)"
+ },
+ "hypothesesToConfirmIndependently": [
+  {
+   "id": "P1",
+   "statement": "Credit widening adds early-warning information for 126-session -15% first passage while FAST is normal",
+   "status": "UNDERPOWERED (7 episodes) -> eligible for preregistration; historical result DEVELOPMENT only; PROSPECTIVE_PENDING",
+   "requires": "owner execution approval after Stage 2"
+  },
+  {
+   "id": "P2",
+   "statement": "Credit-market overheating builds vulnerability over 1-2 years",
+   "status": "UNMEASURED / SOURCE_BLOCKED (real-time overheating proxies)",
+   "requires": "independent source and annual-horizon design"
+  },
+  {
+   "id": "P3",
+   "statement": "Vulnerability converting to credit stress changes realisation probability",
+   "status": "UNDERPOWERED (interaction on 7 episodes)",
+   "requires": "longer or cross-market sample"
+  },
+  {
+   "id": "KR-P1",
+   "statement": "P1 for KOSPI 200 / KODEX 200",
+   "status": "SOURCE_BLOCKED pending ECOS AA- validation; Phase D exception required",
+   "requires": "owner dispatch and Phase D exception"
+  },
+  {
+   "id": "MCT-channel",
+   "statement": "Information-shock real-yield path has bond-allocation value",
+   "status": "UNMEASURED",
+   "requires": "separate preregistration"
+  }
+ ]
+}
