@@ -7,6 +7,7 @@ or results containing investor names. This probe does NOT infer purpose changes.
 from __future__ import annotations
 
 import argparse
+import gzip
 import hashlib
 import io
 import json
@@ -147,7 +148,10 @@ def choose_stratified_receipts(rows: list[dict], limit: int) -> list[str]:
 
 
 def offline(path: Path) -> dict:
-    obj = json.loads(path.read_text(encoding="utf-8"))
+    raw = path.read_bytes()
+    if path.suffix == ".gz":
+        raw = gzip.decompress(raw)
+    obj = json.loads(raw.decode("utf-8"))
     if isinstance(obj, list):
         pages = obj
     else:
