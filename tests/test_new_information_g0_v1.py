@@ -68,7 +68,7 @@ def test_live_is_small_and_outcome_blind():
         raise AssertionError("No docs requested")
     with patch.object(g0, "request_bytes", side_effect=fake_request):
         result = g0.live(key="a"*40, documents_per_detail=0)
-    assert calls == ["list.json"]*8
+    assert calls == ["list.json"]*10
     assert result["no_price_or_outcome_access"] is True
     assert result["results"]["insider"]["purpose_change_count"] is None
     assert result["results"]["ownership_purpose"]["sampled_receipts"] == 1
