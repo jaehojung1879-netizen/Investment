@@ -46,7 +46,7 @@ import time
 import urllib.error
 import urllib.request
 from collections import Counter
-from datetime import date, datetime, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -180,7 +180,7 @@ def confirmed_absences(absent: dict, today: str) -> set[str]:
     observation date. Keep that historical function and its callers intact;
     this collection-only gate uses the same deadline policy on checkedAt.
     """
-    now = date.fromisoformat(today)
+    now = datetime.strptime(today, "%Y-%m-%d").date()
     settled = set()
     for key, row in absent.items():
         if not isinstance(row, dict):
