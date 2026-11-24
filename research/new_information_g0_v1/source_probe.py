@@ -38,7 +38,7 @@ def request_bytes(endpoint: str, params: dict[str, str]) -> bytes:
     try:
         with urllib.request.urlopen(url, timeout=25) as response:
             data = response.read(MAX_RESPONSE_BYTES + 1)
-    except Exception as exc:
+    except Exception:
         raise RuntimeError("OpenDART request failed; URL/key withheld") from None
     if len(data) > MAX_RESPONSE_BYTES:
         raise ValueError("Exceeded response size bound")
