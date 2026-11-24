@@ -1,6 +1,6 @@
 """Outcome-blind OpenDART feasibility sampler. No portfolio or return inputs.
 
-Live mode requires --live and an externally supplied OPENDART_API_KEY.
+Live mode requires --live and the canonical DART_API_KEY from the existing DART source lane.
 Only explicitly bounded date windows are queried. Never commit raw disclosures
 or results containing investor names. This probe does NOT infer purpose changes.
 """
@@ -215,9 +215,9 @@ def main(argv: list[str] | None = None) -> int:
     if not 0 <= args.documents_per_detail <= 6:
         p.error("--documents-per-detail must be 0..6")
     if args.live:
-        key = os.environ.get("OPENDART_API_KEY", "")
+        key = os.environ.get("DART_API_KEY", "")
         if not re.fullmatch(r"[A-Za-z0-9]{40}", key):
-            p.error("Provide OPENDART_API_KEY through environment (never CLI)")
+            p.error("Provide existing DART_API_KEY through environment (never CLI)")
         output = live(key=key, documents_per_detail=args.documents_per_detail)
     else:
         if args.documents_per_detail:
