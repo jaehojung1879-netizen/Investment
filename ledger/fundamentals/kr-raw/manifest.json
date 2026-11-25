@@ -1,6 +1,6 @@
 {
   "contract": "DART_RAW_STATEMENT_ROWS_V1",
-  "updatedAt": "2026-09-28T12:25:09Z",
+  "updatedAt": "2026-11-25T23:48:02Z",
   "pitUniverseTickers": 260,
   "resolvedIssuers": 254,
   "unresolvedIssuers": [
@@ -16,26 +16,15 @@
     "UNRESOLVED": 6
   },
   "years": [
-    2015,
-    2016,
-    2024,
-    2025,
-    2023,
-    2017,
-    2018,
-    2019,
-    2020,
-    2021,
-    2022,
     2026
   ],
-  "storedFilings": 8826,
-  "recordedAbsences": 2604,
-  "unresolvedFilings": 0,
+  "storedFilings": 9067,
+  "recordedAbsences": 2362,
+  "unresolvedFilings": 1,
   "sourceAbsenceStatuses": [
     "013"
   ],
-  "remaining": 521,
+  "remaining": 267,
   "datasetComplete": false,
   "statusTable": [
     {
@@ -904,7 +893,14 @@
       "reportCode": "11011",
       "result": "ABSENT",
       "detail": "CFS=013/OFS=013",
-      "filings": 254
+      "filings": 253
+    },
+    {
+      "fiscalYear": 2026,
+      "reportCode": "11011",
+      "result": "UNRESOLVED",
+      "detail": "CFS=013",
+      "filings": 1
     },
     {
       "fiscalYear": 2026,
@@ -953,17 +949,38 @@
       "reportCode": "11014",
       "result": "ABSENT",
       "detail": "CFS=013/OFS=013",
-      "filings": 254
+      "filings": 13
+    },
+    {
+      "fiscalYear": 2026,
+      "reportCode": "11014",
+      "result": "SERVED",
+      "detail": "CFS",
+      "filings": 235
+    },
+    {
+      "fiscalYear": 2026,
+      "reportCode": "11014",
+      "result": "SERVED",
+      "detail": "OFS",
+      "filings": 6
     }
   ],
   "thisRun": {
-    "calls": 1042,
-    "written": 0,
-    "stopReason": "WORK_LIST_EXHAUSTED",
-    "outcome": "EMPTY_BUT_VALID",
+    "calls": 600,
+    "written": 241,
+    "stopReason": "CALL_BUDGET_SPENT",
+    "outcome": "SERVED",
     "attemptStatuses": {
-      "CFS=013": 521,
-      "OFS=013": 521
-    }
+      "CFS=000": 235,
+      "CFS=013": 183,
+      "OFS=013": 176,
+      "OFS=000": 6
+    },
+    "invalidActiveRows": {
+      "absent": 0,
+      "unresolved": 0
+    },
+    "receiptRejections": {}
   }
 }
