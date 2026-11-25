@@ -1,9 +1,14 @@
 """Outcome-free regression tests for the raw collector's active absence state."""
 from __future__ import annotations
 
+import json
+from datetime import datetime, timezone
+
 import pytest
 
+from pipeline import dart_canonical_accounts as CA
 from pipeline import dart_raw_statements as RS
+from pipeline import historical_store as HS
 from scripts import collect_dart_raw_statements as collect
 
 KEY = RS.record_id("000001.KS", 2026, "11014")
@@ -112,3 +117,134 @@ def test_cfs_failure_never_falls_through_to_ofs(monkeypatch, payload):
     assert rows == [] and basis is None and stop is None
     assert seen == ["CFS"]
     assert not collect.genuine_negative(attempts)
+
+
+@pytest.fixture
+def raw_q3(tmp_path, monkeypatch):
+    class CollectionClock(datetime):
+        current = datetime(2026, 11, 26, tzinfo=timezone.utc)
+
+        @classmethod
+        def now(cls, tz=None):
+            return cls.current.astimezone(tz)
+
+    monkeypatch.setattr(collect, "datetime", CollectionClock)
+    monkeypatch.setattr(collect, "year_codes", lambda _: ("11014",))
+    monkeypatch.setattr(collect, "PACE_SECONDS", 0)
+    directory = [{"corpCode": f"{i:08}", "corpName": f"Issuer {i}", "stockCode": f"{i:06}"}
+                 for i in range(1, 4)]
+
+    def run(answer, max_calls, *, issuers=1):
+        calls = []
+
+        def fake(path, params):
+            assert path == "fnlttSinglAcntAll.json"
+            calls.append((params["corp_code"], params["fs_div"]))
+            return answer(calls[-1])
+
+        monkeypatch.setattr(collect, "call_json", fake)
+        universe = {f"{x['stockCode']}.KS": x["corpName"] for x in directory[:issuers]}
+        manifest = collect.collect(tmp_path, "mock-key", universe, [2026], collect.Budget(max_calls, 10),
+                                   directory_fn=lambda _: directory)
+        return manifest, calls
+
+    return run, CollectionClock
+
+
+def asset(receipt="20261113000001"):
+    return {"rcept_no": receipt, "sj_div": "BS", "account_nm": "자산총계",
+            "account_id": "ifrs-full_Assets", "thstrm_amount": "100"}
+
+
+def test_collect_filters_bad_rows_from_both_ledgers_without_stopping(raw_q3, tmp_path):
+    run, _ = raw_q3
+    bad = RS.record_id("000002.KS", 2026, "11014")
+    other_bad = RS.record_id("000003.KS", 2026, "11014")
+    (tmp_path / "absent.json").write_text(json.dumps({KEY: None}), encoding="utf-8")
+    (tmp_path / "unresolved.json").write_text(json.dumps({bad: None, other_bad: {
+        "ticker": "000003.KS", "fiscalYear": 2026, "reportCode": "11014",
+        "attempts": [{"fsDiv": ["CFS"], "status": "013"}], "checkedAt": {"bad": "timestamp"},
+    }}), encoding="utf-8")
+
+    manifest, calls = run(lambda _: {"status": "000", "list": [asset()]}, 3, issuers=3)
+
+    assert calls == [("00000001", "CFS"), ("00000002", "CFS"), ("00000003", "CFS")]
+    assert manifest["thisRun"]["invalidActiveRows"] == {"absent": 1, "unresolved": 2}
+    assert manifest["thisRun"]["written"] == 3
+    assert manifest["datasetComplete"]
+    assert json.loads((tmp_path / "absent.json").read_text()) == {}
+    assert json.loads((tmp_path / "unresolved.json").read_text()) == {}
+
+
+@pytest.mark.parametrize("ofs_served", [False, True])
+def test_collect_resumes_ofs_with_a_one_call_budget(raw_q3, tmp_path, ofs_served):
+    run, _ = raw_q3
+    first, calls = run(lambda _: {"status": "013"}, 1, issuers=2)
+    assert calls == [("00000001", "CFS")]
+    assert first["thisRun"]["stopReason"] == "CALL_BUDGET_SPENT"
+    assert first["thisRun"]["attemptStatuses"] == {"CFS=013": 1}
+    assert first["recordedAbsences"] == 0
+    partial = json.loads((tmp_path / "unresolved.json").read_text())[KEY]
+    assert partial["evidence"] == RS.NOT_ESTABLISHED
+
+    answer = {"status": "000", "list": [asset()]} if ofs_served else {"status": "013"}
+    second, calls = run(lambda _: answer, 1, issuers=2)
+    assert calls == [("00000001", "OFS")]
+    assert second["thisRun"]["calls"] == 1
+    assert second["thisRun"]["attemptStatuses"] == {f"OFS={answer['status']}": 1}
+    assert second["unresolvedFilings"] == 0
+    assert second["thisRun"]["written"] == int(ofs_served)
+    assert second["recordedAbsences"] == int(not ofs_served)
+    if ofs_served:
+        stored, = HS.read_jsonl(tmp_path / "raw-2026.jsonl.gz")
+        assert stored["id"] == KEY and stored["fsDiv"] == "OFS"
+        assert [a["status"] for a in stored["attempts"]] == ["013", "000"]
+
+
+def test_collect_resumed_absence_cannot_settle_using_only_the_later_observation(raw_q3, tmp_path):
+    run, clock = raw_q3
+    clock.current = datetime(2027, 1, 13, 23, 59, 59, tzinfo=timezone.utc)
+    run(lambda _: {"status": "013"}, 1)
+    clock.current = datetime(2027, 1, 14, tzinfo=timezone.utc)
+    manifest, calls = run(lambda _: {"status": "013"}, 1)
+    assert calls == [("00000001", "OFS")]
+    assert manifest["recordedAbsences"] == 1 and manifest["remaining"] == 1
+    absent = json.loads((tmp_path / "absent.json").read_text())
+    assert collect.confirmed_absences(absent, "2027-01-14") == set()
+
+
+def test_collect_restarts_with_cfs_if_the_checkpoint_has_expired(raw_q3):
+    run, clock = raw_q3
+    run(lambda _: {"status": "013"}, 1)
+    clock.current = datetime(2026, 12, 5, tzinfo=timezone.utc)
+    manifest, calls = run(lambda _: {"status": "000", "list": [asset()]}, 1)
+    assert calls == [("00000001", "CFS")]
+    assert manifest["thisRun"]["written"] == 1 and manifest["unresolvedFilings"] == 0
+
+
+@pytest.mark.parametrize("receipt,reason", [
+    ("20261120000001", "MIXED_RECEIPT_NUMBERS"),
+    ("20261113000002", "MIXED_RECEIPT_NUMBERS"),
+    ("20261131000001", "INVALID_RECEIPT_NUMBER"),
+    ("20261113", "INVALID_RECEIPT_NUMBER"),
+    (None, "INVALID_RECEIPT_NUMBER"),
+])
+def test_collect_quarantines_mixed_or_incomplete_receipts_before_canonical_input(raw_q3, tmp_path,
+                                                                                 receipt, reason):
+    run, _ = raw_q3
+
+    def answer(call):
+        rows = [asset(), asset(receipt)] if call[0] == "00000001" else [asset()]
+        return {"status": "000", "list": rows}
+
+    manifest, calls = run(answer, 2, issuers=2)
+    assert calls == [("00000001", "CFS"), ("00000002", "CFS")]
+    assert manifest["thisRun"]["receiptRejections"] == {reason: 1}
+    assert manifest["recordedAbsences"] == 0 and manifest["thisRun"]["written"] == 1
+    unresolved = json.loads((tmp_path / "unresolved.json").read_text())
+    assert unresolved[KEY]["reason"] == reason
+    assert unresolved[KEY]["attempts"][0]["status"] == "000"
+    stored, = HS.read_jsonl(tmp_path / "raw-2026.jsonl.gz")
+    canonical, error = CA.canonical_record(stored)
+    assert error == "" and canonical["availableFrom"] == "2026-11-13"
+    assert stored["ticker"] == "000002.KS" and stored["rows"] == [asset()]
