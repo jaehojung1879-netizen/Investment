@@ -11,6 +11,8 @@ Replay v7의 고정 평가 달력과 성과 정의는 [v7 평가 문서](docs/re
 확인된 Actions 실패와 benchmark lineage/가격 기준 수정은
 [v10 Actions 복구 문서](docs/replay-v10-actions-repair.md)에 정리했습니다.
 
+[Evidence Registry · 연구 증거 원장](research/next_alpha_program_v1/EVIDENCE-MAP-ko.md)은 연구별 원천, PIT, 정정, 증거 등급, 전향 상태와 재실험 제한의 공통 진입점입니다.
+
 ## 주간 투자 판단 (weekly-passive-first-v1) — 사이트 첫 화면
 
 매주 한국(`069500.KS` KODEX 200)과 미국(`SPY`)을 **각각 독립적으로** 판단합니다: 비용을 넘는 방어 가능한 우위가
