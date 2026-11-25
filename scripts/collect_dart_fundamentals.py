@@ -42,6 +42,7 @@ import urllib.request
 import zipfile
 import xml.etree.ElementTree as ET
 from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -126,27 +127,79 @@ def load_existing(store: Path) -> tuple[set[str], dict[int, list[dict]]]:
     return ids, shards
 
 
-def fetch_one(key: str, corp: str, year: int, code: str) -> tuple[list[dict], str, str]:
-    """Statement rows for one filing, consolidated where it exists.
+def fetch_statement_evidence(key: str, corp: str, year: int, code: str):
+    """Return rows, basis, actual disposition and safe per-division evidence.
 
-    A company with no subsidiaries files no consolidated statement, and DART
-    answers 013 rather than an error. Falling back to the separate statement is
-    the only way to cover those names — and which one answered is returned, so
-    the record can say so instead of leaving two definitions mixed in one book.
+    Only a genuine CFS 013 permits OFS fallback. A transport or protocol
+    error is not evidence of missing consolidated statements.
     """
+    attempts = []
     for fs_div in (DF.FS_CONSOLIDATED, DF.FS_SEPARATE):
-        payload, error = call("fnlttSinglAcntAll.json", {
+        payload, _ = call("fnlttSinglAcntAll.json", {
             "crtfc_key": key, "corp_code": corp, "bsns_year": str(year),
             "reprt_code": code, "fs_div": fs_div})
-        if payload is None:
-            return [], fs_div, error or "REQUEST_FAILED"
-        status = str(payload.get("status"))
-        if status in DF.FATAL_STATUSES or status == DF.QUOTA_STATUS:
-            return [], fs_div, status
-        rows = payload.get("list") or []
-        if status == "000" and rows:
-            return rows, fs_div, "000"
-    return [], DF.FS_SEPARATE, "013"
+        if not isinstance(payload, dict):
+            attempts.append({"fsDiv": fs_div, "status": "REQUEST_FAILED"})
+            return [], fs_div, "REQUEST_FAILED", attempts
+        raw_status = payload.get("status")
+        status = str(raw_status) if raw_status is not None else "MISSING_STATUS"
+        # Only known protocol codes are recorded; never persist arbitrary
+        # response bodies, exception strings, URLs or the API key.
+        if status not in DF.STATUS_MEANING:
+            status = "UNKNOWN_STATUS"
+        rows = payload.get("list")
+        attempts.append({"fsDiv": fs_div, "status": status})
+        if status == "000":
+            if isinstance(rows, list) and rows and all(isinstance(x, dict) for x in rows):
+                return rows, fs_div, status, attempts
+            return [], fs_div, "INVALID_SUCCESS_PAYLOAD", attempts
+        if status != "013":
+            return [], fs_div, status, attempts
+        if rows not in (None, []):
+            return [], fs_div, "CONTRADICTORY_ABSENCE_PAYLOAD", attempts
+    return [], DF.FS_SEPARATE, "013", attempts
+
+
+def fetch_one(key: str, corp: str, year: int, code: str) -> tuple[list[dict], str, str]:
+    """Compatibility view; the collection path also retains the attempts."""
+    rows, basis, status, _ = fetch_statement_evidence(key, corp, year, code)
+    return rows, basis, status
+
+
+def confirmed_absences(absent: dict, today: str) -> set[str]:
+    """Legacy collapsed 013 is unverified; require two fresh genuine negatives."""
+    now = datetime.strptime(today, "%Y-%m-%d").date()
+    confirmed = set()
+    for rid, row in absent.items():
+        if not isinstance(row, dict) or row.get("status") != "013":
+            continue
+        if row.get("attempts") != [
+            {"fsDiv": "CFS", "status": "013"},
+            {"fsDiv": "OFS", "status": "013"},
+        ]:
+            continue
+        try:
+            stamp = datetime.fromisoformat(str(row["checkedAt"]).replace("Z", "+00:00"))
+            if stamp.tzinfo is None:
+                continue
+            checked = stamp.astimezone(timezone.utc).date()
+            year, code = int(row["fiscalYear"]), str(row["reportCode"])
+        except (KeyError, TypeError, ValueError, OverflowError):
+            continue
+        if checked <= now and DF.absence_is_settled(year, code, checked.isoformat()):
+            confirmed.add(rid)
+    return confirmed
+
+
+def prioritize_due(pending, today: str):
+    """Refresh newest due reports first; legacy rechecks must not starve Q3."""
+    def priority(item):
+        ticker, year, code = item
+        due = DF.filing_deadline(year, code)
+        if due and due <= today:
+            return (0, -int(due.replace("-", "")), ticker, code)
+        return (1, year, ticker, code)
+    return sorted(pending, key=priority)
 
 
 def fetch_shares(key: str, corp: str, year: int, code: str) -> tuple[float | None, str]:
@@ -285,13 +338,18 @@ def main(argv=None) -> int:
     existing_ids, shards = load_existing(store)
     absent = load_absent(store)
     today = time.strftime("%Y-%m-%d", time.gmtime())
-    settled = DF.settled_absences(absent, today)
-    pending = DF.work_list(kr, years, existing_ids, absent_ids=settled)
-    before = DF.progress(len(existing_ids), len(pending), len(settled))
+    # Recovered filings supersede old active absences. Historical commits
+    # preserve the previous observations without counting the same key twice.
+    for rid in existing_ids:
+        absent.pop(rid, None)
+    scope_ids = {DF.record_id(t, y, c) for t, y, c in DF.work_list(kr, years, set())}
+    settled = confirmed_absences(absent, today)
+    pending = prioritize_due(DF.work_list(kr, years, existing_ids, absent_ids=settled), today)
+    before = DF.progress(len(existing_ids & scope_ids), len(pending), len(settled & scope_ids))
     print(f"진행률 {before['collected']:,} 수집 + {before['absent']:,} 부재확정 "
           f"/ {before['total']:,} ({before['completePct']}%) · 남음 {before['pending']:,}")
     if len(absent) > len(settled):
-        print(f"  부재 {len(absent) - len(settled):,}건은 마감 전이라 다시 확인합니다")
+        print(f"  부재 {len(absent) - len(settled):,}건은 미확정이라 다시 확인합니다")
     print(f"  이번 예산 {args.max_calls}콜 / {args.max_minutes}분\n")
 
     deadline = run_deadline
@@ -300,6 +358,7 @@ def main(argv=None) -> int:
     calls = 0
     refused: Counter = Counter()
     statuses: Counter = Counter()
+    attempt_statuses: Counter = Counter()
     fs_used: Counter = Counter()
     fields_seen: Counter = Counter()
     stop_reason = "WORK_LIST_EXHAUSTED"
@@ -322,9 +381,12 @@ def main(argv=None) -> int:
             no_corp_code_tickers.add(ticker)
             continue
 
-        rows, fs_div, status = fetch_one(key, corp, year, code)
+        rows, fs_div, status, attempts = fetch_statement_evidence(key, corp, year, code)
         calls += 1
         statuses[status] += 1
+        for attempt in attempts:
+            attempt_statuses[f"{attempt['fsDiv']}={attempt['status']}"] += 1
+        rid = DF.record_id(ticker, year, code)
         if status in DF.FATAL_STATUSES:
             print(f"중단: {DF.describe_status(status)} — 재시도해도 같습니다.")
             stop_reason = f"FATAL_{status}"
@@ -332,6 +394,10 @@ def main(argv=None) -> int:
         if status == DF.QUOTA_STATUS:
             print(f"중단: {DF.describe_status(status)} — 다음 실행이 이어받습니다.")
             stop_reason = "DAILY_QUOTA"
+            break
+
+        if status in {"800", "021"}:
+            stop_reason = f"SOURCE_STOP_{status}"
             break
 
         # Split by report code and statement, because the pooled count cannot
@@ -351,17 +417,18 @@ def main(argv=None) -> int:
             fs_div=fs_div, collected_at=collected_at)
         if record is None:
             refused[reason] += 1
-            # Remember that DART answered "no such filing". Without this the
-            # work list never shrinks by an absence and every future run
-            # re-asks the same thousand filings that do not exist — which is
-            # what the first two runs did, 950 calls of 1,500 apiece.
-            if reason == "EMPTY_RESPONSE":
-                absent[DF.record_id(ticker, year, code)] = {
+            if reason == "EMPTY_RESPONSE" and status == "013":
+                absent[rid] = {
                     "fiscalYear": year, "reportCode": code, "ticker": ticker,
-                    "status": status, "checkedAt": collected_at,
+                    "status": status, "attempts": attempts,
+                    "checkedAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                     "dueBy": DF.filing_deadline(year, code),
                 }
+            elif status != "013":
+                # Latest attempt was unresolved, not a confirmed negative.
+                absent.pop(rid, None)
             continue
+        absent.pop(rid, None)
         fs_used[fs_div] += 1
         fresh.setdefault(year, []).append(record)
         time.sleep(PACE_SECONDS)
@@ -385,9 +452,10 @@ def main(argv=None) -> int:
         encoding="utf-8")
 
     total_ids = existing_ids | {r["id"] for rows in fresh.values() for r in rows}
-    settled_after = DF.settled_absences(absent, today)
+    report_day = time.strftime("%Y-%m-%d", time.gmtime())
+    settled_after = confirmed_absences(absent, report_day)
     remaining = DF.work_list(kr, years, total_ids, absent_ids=settled_after)
-    after = DF.progress(len(total_ids), len(remaining), len(settled_after))
+    after = DF.progress(len(total_ids & scope_ids), len(remaining), len(settled_after & scope_ids))
 
     manifest = {
         "contract": "DART_RAW_FILINGS_V1",
@@ -396,15 +464,19 @@ def main(argv=None) -> int:
         "years": [years[0], years[-1]] if years else None,
         "firstServedYear": DF.FIRST_SERVED_YEAR,
         "progress": after,
+        "progressScope": "CURRENT_UNIVERSE_AND_REQUESTED_YEARS",
+        "storedFilingsAll": len(total_ids),
         "absences": {
             "recorded": len(absent),
             "settled": len(settled_after),
             "awaitingDeadline": len(absent) - len(settled_after),
+            "unconfirmedIncludesLegacyAndPreGrace": True,
         },
         "thisRun": {
             "calls": calls, "recordsWritten": written, "shardsChanged": changed,
             "stopReason": stop_reason,
-            "statuses": dict(statuses), "refused": dict(refused),
+            "statuses": dict(statuses), "attemptStatuses": dict(attempt_statuses),
+            "refused": dict(refused),
             # The tickers behind `refused["NO_CORP_CODE"]`, so the number is
             # something a person can act on rather than only watch.
             "noCorpCodeTickers": sorted(no_corp_code_tickers),
@@ -446,7 +518,8 @@ def main(argv=None) -> int:
     # for want of a share count — so the remainder of this run goes there.
     if args.target == "auto":
         left = args.max_calls - calls
-        if left > 0 and time.time() < run_deadline:
+        if (left > 0 and time.time() < run_deadline
+                and not stop_reason.startswith(("FATAL_", "SOURCE_STOP_", "DAILY_QUOTA"))):
             print(f"\n남은 예산 {left}콜을 주식수 수집에 씁니다.\n")
             return collect_shares(key, codes, store, left, run_deadline)
         print("\n예산을 다 썼습니다. 다음 실행이 주식수를 이어받습니다.")
