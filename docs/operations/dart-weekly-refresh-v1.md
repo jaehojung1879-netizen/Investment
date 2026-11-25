@@ -1,7 +1,7 @@
-# DART weekly operational refresh v1 — proposed, not activated
+# DART weekly operational refresh v1
 
-Owner conditional approval recorded in #292 comment 7141424919. This is a
-separate operational proposal, not an amendment to any historical strategy.
+Owner conditional approval for this operational refresh is recorded in #292
+comment 7141424919.
 The existing workflow runs a second cron at 19:17 UTC Tuesday (04:17 KST
 Wednesday). The original 03:40 UTC daily KR/US jobs and the manual raw routes
 retain their trigger. No additional writer, same concurrency group. Schedule
@@ -25,12 +25,10 @@ review must verify the narrow compatibility addition; all native CI must pass.
 The original v2 spec's manual-only statement is the registration-time fact,
 not an edit to its scientific method.
 
-Activation gates: #377 and #379 exact-head Tests success, independent approval
-and merge; this proposal's own independent review and full native CI success;
-then owner-authorized operational merge. Verify first actual raw and canonical
-commit, Q3 served count, newest availableFrom and next v2 receipt freshness;
-a green run is not sufficient. This proposal does not refresh the sealed
-universe with new issuers, does not change receipt rules and does not claim
-PIT restatement recovery. GitHub cron can be delayed and concurrency can
-replace a pending run; monitor actual persisted outputs. No live execution
-or automatic merge is part of this candidate.
+Merging this change into main enables the schedule. Before merging, confirm
+that #377 and #379 passed exact-head Tests and independent review and that this
+workflow passed the same checks against the merged main. Verify the first raw
+and canonical commit, Q3 served count, newest availableFrom and next v2 receipt
+freshness in the stored data. The weekly run uses the sealed universe and the
+registered receipt rules. GitHub cron can be delayed and concurrency can
+replace a pending run.
