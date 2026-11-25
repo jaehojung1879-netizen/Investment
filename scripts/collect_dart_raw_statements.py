@@ -46,6 +46,7 @@ import time
 import urllib.error
 import urllib.request
 from collections import Counter
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -62,6 +63,8 @@ from pipeline import kr_corporate_action_events as KCA  # noqa: E402
 
 BASE = "https://opendart.fss.or.kr/api"
 PACE_SECONDS = 0.2
+# Allow the next weekly run to resume a split CFS/OFS request, with one day for runner delay.
+OFS_RESUME_WINDOW = timedelta(days=8)
 # Gate years first (2016 and 2025) with the priors they need, then the rest.
 DEFAULT_YEARS = (2015, 2016, 2024, 2025, 2023, 2017, 2018, 2019, 2020, 2021, 2022, 2026)
 CODES = ("11013", "11012", "11014", "11011")
@@ -144,15 +147,49 @@ class Budget:
         self.calls += 1
 
 
-def fetch_statement(key, corp, year, code, budget) -> tuple[list[dict], str | None, list[dict], str | None]:
-    """(rows, fsDiv, attempts, stop) for one filing; CFS first, OFS only if CFS served nothing."""
-    attempts = []
-    for fs_div in RS.FS_ORDER:
+def genuine_negative(attempts: list[dict]) -> bool:
+    """A negative needs the two actual empty responses, not merely status labels."""
+    return (valid_attempts(attempts)
+            and RS.absence_evidence(attempts) == RS.SOURCE_ABSENCE
+            and all(empty_013(a) for a in attempts))
+
+
+def empty_013(attempt: dict) -> bool:
+    return (attempt.get("status") == "013" and type(attempt.get("rows")) is int
+            and attempt["rows"] == 0 and attempt.get("payloadValid", True) is True)
+
+
+def valid_attempts(attempts) -> bool:
+    return isinstance(attempts, list) and all(
+        isinstance(a, dict) and a.get("fsDiv") in RS.FS_ORDER
+        and "status" in a and (a["status"] is None or isinstance(a["status"], str))
+        for a in attempts
+    )
+
+
+def fetch_statement(key, corp, year, code, budget, *, attempts: list[dict] | None = None
+                    ) -> tuple[list[dict], str | None, list[dict], str | None]:
+    """CFS first; OFS only after a genuine empty CFS 013."""
+    if attempts is None:
+        attempts = []
+    # The collector may supply its validated CFS observation from a previous slice.
+    # Appending in place also retains completed responses if the next request cannot start.
+    for fs_div in RS.FS_ORDER[len(attempts):]:
         budget.spend()
         payload = call_json("fnlttSinglAcntAll.json", {
             "crtfc_key": key, "corp_code": corp, "bsns_year": str(year),
             "reprt_code": code, "fs_div": fs_div})
-        attempts.append(RS.attempt(fs_div, payload))
+        if not isinstance(payload, dict):
+            attempts.append({"fsDiv": fs_div, "status": None, "message": "INVALID_PAYLOAD",
+                             "rows": None, "payloadValid": False})
+            return [], None, attempts, None
+        rows = payload.get("list")
+        valid_rows = rows is None or (isinstance(rows, list) and all(isinstance(x, dict) for x in rows))
+        if valid_rows:
+            attempts.append(RS.attempt(fs_div, payload))
+        else:
+            attempts.append({"fsDiv": fs_div, "status": str(payload.get("status")),
+                             "message": "INVALID_LIST_PAYLOAD", "rows": None, "payloadValid": False})
         status = str(payload.get("status"))
         if status in DF.FATAL_STATUSES:
             return [], None, attempts, f"REFUSED:DART {DF.describe_status(status)}"
@@ -160,9 +197,12 @@ def fetch_statement(key, corp, year, code, budget) -> tuple[list[dict], str | No
             return [], None, attempts, "DAILY_QUOTA"
         if status in RS.RUN_STOPPING_STATUSES:
             return [], None, attempts, f"REFUSED:DART {DF.describe_status(status)}"
-        rows = payload.get("list") or []
-        if status == "000" and rows:
+        if status == "000" and valid_rows and rows:
             return rows, fs_div, attempts, None
+        if status != "013" or not valid_rows or rows not in (None, []):
+            attempts[-1]["payloadValid"] = False if status in {"000", "013"} else valid_rows
+            return [], None, attempts, None
+        attempts[-1]["observedAt"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
         time.sleep(PACE_SECONDS)
     return [], None, attempts, None
 
@@ -170,6 +210,127 @@ def fetch_statement(key, corp, year, code, budget) -> tuple[list[dict], str | No
 def resolve_all(universe: dict, directory: list[dict]) -> dict[str, dict]:
     return {ticker: KCA.resolve_historical_dart_identity(ticker.split(".")[0], name, directory)
             for ticker, name in universe.items()}
+
+
+def load_active_rows(path: Path) -> tuple[dict, set[str], int]:
+    """Exclude malformed entries before invoking the sealed store helpers."""
+    if not path.exists():
+        return {}, set(), 0
+    raw = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(raw, dict):
+        return {}, set(), 1
+    valid = {}
+    for key, row in raw.items():
+        if not isinstance(row, dict):
+            continue
+        ticker, year, code = row.get("ticker"), row.get("fiscalYear"), row.get("reportCode")
+        attempts = row.get("attempts")
+        if (isinstance(ticker, str) and type(year) is int and DF.FIRST_SERVED_YEAR <= year <= 9998
+                and code in CODES and key == RS.record_id(ticker, year, code)
+                and (attempts is None or valid_attempts(attempts))):
+            valid[key] = row
+    rejected = raw.keys() - valid.keys()
+    return valid, rejected, len(rejected)
+
+
+def observation_time(value) -> datetime | None:
+    if not isinstance(value, str):
+        return None
+    try:
+        stamp = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        return stamp.astimezone(timezone.utc) if stamp.tzinfo is not None else None
+    except (ValueError, OverflowError):
+        return None
+
+
+def pending_ofs_attempt(row: dict, corp_code: str, now: datetime) -> dict | None:
+    if row.get("pendingOfsCorpCode") != corp_code:
+        return None
+    attempts = row.get("attempts") or []
+    if len(attempts) != 1 or attempts[0]["fsDiv"] != RS.FS_ORDER[0] or not empty_013(attempts[0]):
+        return None
+    observed = observation_time(attempts[0].get("observedAt"))
+    if observed is None or not timedelta(0) <= now - observed <= OFS_RESUME_WINDOW:
+        return None
+    return attempts[0]
+
+
+def receipt_issue(rows: list[dict]) -> str | None:
+    """Admit only complete rows from one real receipt into the canonical input."""
+    receipts = set()
+    for row in rows:
+        number = row.get("rcept_no")
+        if not isinstance(number, str) or len(number) != 14 or not number.isascii() or not number.isdecimal():
+            return "INVALID_RECEIPT_NUMBER"
+        receipts.add(number)
+    for number in receipts:
+        try:
+            datetime.strptime(number[:8], "%Y%m%d")
+        except ValueError:
+            return "INVALID_RECEIPT_NUMBER"
+    return "MIXED_RECEIPT_NUMBERS" if len(receipts) > 1 else None
+
+
+def confirmed_absences(absent: dict, today: str) -> set[str]:
+    """Settle only an actual negative observation made AFTER the grace period.
+
+    The older, frozen RS.settled checks the current date instead of the
+    observation date. Keep that historical function and its callers intact;
+    this collection-only gate uses the same deadline policy on checkedAt.
+    """
+    now = datetime.strptime(today, "%Y-%m-%d").date()
+    settled = set()
+    for key, row in absent.items():
+        if not isinstance(row, dict):
+            continue
+        attempts = row.get("attempts")
+        if not genuine_negative(attempts):
+            continue
+        stamps = [observation_time(row.get("checkedAt"))]
+        stamps.extend(observation_time(a["observedAt"]) for a in attempts if "observedAt" in a)
+        if any(stamp is None or stamp.date() > now for stamp in stamps):
+            continue
+        try:
+            checked = min(stamp.date() for stamp in stamps)
+            year, code = int(row["fiscalYear"]), str(row["reportCode"])
+            if DF.absence_is_settled(year, code, checked.isoformat()):
+                settled.add(key)
+        except (KeyError, TypeError, ValueError, OverflowError):
+            continue
+    return settled
+
+
+def reconcile_active_statuses(absent: dict, unresolved: dict, served_ids: set[str]) -> None:
+    """Only the current status is counted; earlier observations remain in Git."""
+    for key in served_ids:
+        absent.pop(key, None)
+        unresolved.pop(key, None)
+    for key in unresolved:
+        absent.pop(key, None)
+
+
+def prioritize_refresh(pending, absent: dict, unresolved: dict, today: str):
+    """For a recent-year slice, due reports first, then least recently checked.
+
+    Retain the caller's explicit year priority and historical backfill order.
+    The current/previous fiscal years are the rolling refresh horizon; a
+    pre-deadline annual report must not consume the Q3 collection budget.
+    """
+    current_year = int(today[:4])
+
+    def priority(item):
+        ticker, year, code = item
+        due = DF.filing_deadline(year, code) or "9999-12-31"
+        rid = RS.record_id(ticker, year, code)
+        row = unresolved.get(rid, absent.get(rid, {}))
+        stamp = observation_time(row.get("checkedAt"))
+        checked = stamp.isoformat() if stamp and stamp.date().isoformat() <= today else ""
+        return (due > today, -int(due.replace("-", "")), checked, ticker, code)
+
+    # The input to this helper is a single fiscal year's work list.
+    if pending and pending[0][1] >= current_year - 1:
+        return sorted(pending, key=priority)
+    return pending
 
 
 def collect(store: Path, key: str, universe: dict, years, budget: Budget,
@@ -180,61 +341,99 @@ def collect(store: Path, key: str, universe: dict, years, budget: Budget,
               for p in sorted(store.glob("raw-*.jsonl.gz"))}
     done = {r["id"] for rows in shards.values() for r in rows}
     absent_path = store / "absent.json"
-    absent = json.loads(absent_path.read_text(encoding="utf-8")) if absent_path.exists() else {}
+    absent, _, invalid_absent = load_active_rows(absent_path)
     unresolved_path = store / "unresolved.json"
-    unresolved = (json.loads(unresolved_path.read_text(encoding="utf-8"))
-                  if unresolved_path.exists() else {})
-    today = time.strftime("%Y-%m-%d", time.gmtime())
+    unresolved, rejected, invalid_unresolved = load_active_rows(unresolved_path)
+    reconcile_active_statuses(absent, unresolved, done)
+    for rid in rejected:
+        # A corrupt unresolved entry must not revive a superseded absence.
+        absent.pop(rid, None)
+    started_at = datetime.now(timezone.utc)
+    today = started_at.date().isoformat()
     resolved = {t: i for t, i in identities.items() if i["status"] == KCA.RESOLVED}
     pending = []
+    settled = confirmed_absences(absent, today)
     for year in years:
-        pending += RS.work_list(resolved, [year], year_codes(year), done, RS.settled(absent, today))
+        year_pending = RS.work_list(resolved, [year], year_codes(year), done, settled)
+        pending += prioritize_refresh(year_pending, absent, unresolved, today)
 
-    collected_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    # Resume an interrupted fallback before opening new requests. Keep the existing
+    # year and period order for all other work.
+    resumes = {}
+    for ticker, year, code in pending:
+        rid = RS.record_id(ticker, year, code)
+        attempt = pending_ofs_attempt(unresolved.get(rid, {}), resolved[ticker]["corpCode"], started_at)
+        if attempt is not None:
+            resumes[rid] = attempt
+    pending.sort(key=lambda item: RS.record_id(*item) not in resumes)
+
+    collected_at = started_at.strftime("%Y-%m-%dT%H:%M:%SZ")
     fresh: dict[int, list[dict]] = {}
     statuses: Counter = Counter()
+    receipt_issues: Counter = Counter()
     stop_reason, written = "WORK_LIST_EXHAUSTED", 0
     for ticker, year, code in pending:
         identity = resolved[ticker]
-        try:
-            rows, fs_div, attempts, stop = fetch_statement(key, identity["corpCode"], year, code, budget)
-        except CallBudgetExhausted:
-            stop_reason = "CALL_BUDGET_SPENT"
-            break
-        except TimeoutError:
-            stop_reason = "TIME_BUDGET_SPENT"
-            break
-        except Refused as exc:
-            stop_reason = f"REFUSED:{exc}"
-            break
-        for a in attempts:
-            statuses[f"{a['fsDiv']}={a['status']}"] += 1
         rid = RS.record_id(ticker, year, code)
+        attempts = [resumes[rid]] if rid in resumes else []
+        reused = len(attempts)
+        try:
+            rows, fs_div, attempts, stop = fetch_statement(
+                key, identity["corpCode"], year, code, budget, attempts=attempts)
+        except (CallBudgetExhausted, TimeoutError, Refused) as exc:
+            if isinstance(exc, CallBudgetExhausted):
+                stop = "CALL_BUDGET_SPENT"
+            elif isinstance(exc, TimeoutError):
+                stop = "TIME_BUDGET_SPENT"
+            else:
+                stop = f"REFUSED:{exc}"
+            if len(attempts) > reused:
+                # Only a genuine CFS 013 can reach the second request.
+                absent.pop(rid, None)
+                unresolved[rid] = RS.unresolved_record(
+                    ticker=ticker, fiscal_year=year, report_code=code, attempts=attempts,
+                    checked_at=attempts[0]["observedAt"])
+                unresolved[rid]["pendingOfsCorpCode"] = identity["corpCode"]
+                statuses[f"{attempts[0]['fsDiv']}={attempts[0]['status']}"] += 1
+            stop_reason = stop
+            break
+        checked_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        for a in attempts[reused:]:
+            statuses[f"{a['fsDiv']}={a['status']}"] += 1
         if stop:
             # The filing's answers are kept as UNRESOLVED so the log and the
             # store show exactly what DART said; nothing about it is settled.
+            absent.pop(rid, None)
             unresolved[rid] = RS.unresolved_record(ticker=ticker, fiscal_year=year, report_code=code,
-                                                   attempts=attempts, checked_at=collected_at)
+                                                   attempts=attempts, checked_at=checked_at)
             stop_reason = stop if stop.startswith("REFUSED:") else "CALL_BUDGET_SPENT"
             break
-        record, reason = RS.build_raw_record(
-            ticker=ticker, stock_code=ticker.split(".")[0], corp_code=identity["corpCode"],
-            fiscal_year=year, report_code=code, fs_div=fs_div or RS.FS_ORDER[-1], rows=rows,
-            attempts=attempts, collected_at=collected_at, identity_basis=identity["basis"])
+        issue = receipt_issue(rows)
+        record = None
+        if issue is None and rows:
+            record, _ = RS.build_raw_record(
+                ticker=ticker, stock_code=ticker.split(".")[0], corp_code=identity["corpCode"],
+                fiscal_year=year, report_code=code, fs_div=fs_div, rows=rows,
+                attempts=attempts, collected_at=collected_at, identity_basis=identity["basis"])
         if record is None:
             # Only DART's own "no data" on every statement division is evidence
             # that the filing does not exist. Anything else -- 100, 800, 900,
             # 021, 014, a 000 with no rows, an unknown code -- is kept with its
             # statuses and retried, never settled.
-            if RS.absence_evidence(attempts) == RS.SOURCE_ABSENCE:
+            if genuine_negative(attempts):
                 absent[rid] = RS.absence_record(ticker=ticker, fiscal_year=year, report_code=code,
-                                                attempts=attempts, checked_at=collected_at)
+                                                attempts=attempts, checked_at=checked_at)
                 unresolved.pop(rid, None)
             else:
+                absent.pop(rid, None)
                 unresolved[rid] = RS.unresolved_record(ticker=ticker, fiscal_year=year,
                                                        report_code=code, attempts=attempts,
-                                                       checked_at=collected_at)
+                                                       checked_at=checked_at)
+                if issue is not None:
+                    unresolved[rid]["reason"] = issue
+                    receipt_issues[issue] += 1
             continue
+        absent.pop(rid, None)
         unresolved.pop(rid, None)
         fresh.setdefault(year, []).append(record)
         written += 1
@@ -251,9 +450,11 @@ def collect(store: Path, key: str, universe: dict, years, budget: Budget,
                                encoding="utf-8")
     all_records = [r for rows in shards.values() for r in rows] + [r for rows in fresh.values() for r in rows]
     remaining = []
+    report_day = datetime.now(timezone.utc).date().isoformat()
+    settled = confirmed_absences(absent, report_day)
+    served_ids = {r["id"] for r in all_records}
     for year in years:
-        remaining += RS.work_list(resolved, [year], year_codes(year),
-                                  {r["id"] for r in all_records}, RS.settled(absent, today))
+        remaining += RS.work_list(resolved, [year], year_codes(year), served_ids, settled)
     outcome = CO.run_outcome(stop_reason=stop_reason, calls=budget.calls, written=written)
     manifest = {
         "contract": RS.CONTRACT, "updatedAt": collected_at,
@@ -267,7 +468,9 @@ def collect(store: Path, key: str, universe: dict, years, budget: Budget,
         "remaining": len(remaining), "datasetComplete": not remaining,
         "statusTable": RS.status_table(all_records, absent, unresolved),
         "thisRun": {"calls": budget.calls, "written": written, "stopReason": stop_reason,
-                    "outcome": outcome, "attemptStatuses": dict(statuses)},
+                    "outcome": outcome, "attemptStatuses": dict(statuses),
+                    "invalidActiveRows": {"absent": invalid_absent, "unresolved": invalid_unresolved},
+                    "receiptRejections": dict(receipt_issues)},
     }
     (store / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
                                          encoding="utf-8")
