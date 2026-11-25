@@ -4,7 +4,7 @@ import re
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ('workflow-inventory.md','workflow-inventory-addendum.md',
-        'workflow-inventory-phase-c-amendment.md','workflow-inventory-phase-c-price-repair.md')
+        'workflow-inventory-phase-c-amendment.md','workflow-inventory-phase-c-price-repair.md','workflow-inventory-prospective-ops.md')
 NAME = re.compile(r'[A-Za-z0-9][\w.-]*\.ya?ml')
 
 

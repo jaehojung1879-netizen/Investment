@@ -3238,3 +3238,16 @@
 - SELECT BEFORE OUTCOME VALIDITY. Forecasts include unpriceable names. All statistical comparisons use the same validity mask and publish common IDs/counts. Missing terminal consideration never becomes zero, last-price exit or a missing row removed from only one strategy. A selected unpriceable name or required industry peer blocks the paired portfolio comparison. Existing v4 security-level basis eligibility applies symmetrically from each name's own evidence.
 - THE PROXY AND BENCHMARK ARE NOT SWITCHED. Trading value stays `PROXY_ASTRADED_CLOSE_X_VOLUME`; the original preserved snapshot and separately identified proxy view cannot be relabelled or mixed. Benchmark stays 069500.KS. Its unresolved authoritative reconciliation blocks investability claims and positive final nomination, without erasing unaffected within-date information. X4 investor flows cannot be substituted with an OHLCV proxy.
 - SUPPORT IS A COMPLETE DECISION CHAIN. Date-balanced calibrated H21/H126 SN intervals, explicitly asymptotic SN p-values, family BY .10, 30-cell Holm .05 and six-interaction Holm .05 are frozen. Every unavailable hypothesis remains a p=1 slot. Nomination additionally requires the primary calibrated interval above zero, stability, matched incremental information and both realistic long-only fallback economics. Zero nominations closes the program as valid evidence; Phase D must close KR history rather than chase another backtest.
+
+## Prospective operations invariants (v2.56)
+
+- A WORKFLOW THAT SUCCEEDED IS NOT A RECEIPT THAT EXISTS. `pipeline/prospective_ops.py` derives every study's operating state from the receipts alone; a writer
+  run's outcome can only ADD `EXECUTION_FAILED`, never `HEALTHY`, and a post-write `verify-receipt` demands exactly one valid remote row for the session.
+- A MISSED WINDOW IS `MISSED_NOT_OBSERVED`. It is never back-filled, re-dated, read as zero events, or counted toward an independent sample;
+  `continuityBaselineSession` only separates historic holes from new ones in the alert and can never reduce `missedRecords`.
+- REGISTERING A STUDY STARTS NOTHING. `automation.enabled` needs owner approval hashes, a pinned code commit and a single-writer attestation, or
+  `validate_registry` refuses; the writer guard fails closed on any missing evidence, including a legacy Claude trigger not attested DISABLED.
+- THE REGISTERED CODE RUNS UNEDITED. The Actions writer checks out the pinned commit in its own worktree; spec, authorization and code hashes are read, never changed.
+- `kr-corporate-information-events-v1` has 3 receipts (2026-11-09/11/12) and a standing Claude trigger (`trig_013qoRYz…`) that failed every weekday since 2026-11-13
+  with an empty working directory; the original `trig_01XwJ7…` was already disabled. Until the owner disables the former and commits the attestation, no Actions
+  receipt is written.
