@@ -1,0 +1,261 @@
+{
+"filings": 641,
+"tuples": 10,
+"issuersWithTuples": 2,
+"keys": 6,
+"linkedRevisions": 4,
+"classes": {
+"MAINTAIN": 2,
+"LOWER": 1,
+"RAISE": 1
+},
+"byMetric": {
+"capex": 4
+},
+"issuersWithLinked": 1,
+"issuerFilingPairs": 4,
+"obs": [
+{
+"cik": "723125",
+"issuer": "MU",
+"accession": "0000723125-19-000068",
+"accepted_at": "2019-09-26T20:00:32+00:00",
+"status": "NUMERIC",
+"target": "FY2020",
+"metric": "capex",
+"basis": "unstated",
+"unit": "USD_billion",
+"low": "7.0",
+"high": "8.0"
+},
+{
+"cik": "1326801",
+"issuer": "META",
+"accession": "0001326801-20-000073",
+"accepted_at": "2020-07-30T23:18:23+00:00",
+"status": "NUMERIC",
+"target": "FY2020",
+"metric": "capex",
+"basis": "unstated",
+"unit": "USD_billion",
+"low": "14.0",
+"high": "16.0"
+},
+{
+"cik": "1326801",
+"issuer": "META",
+"accession": "0001326801-20-000081",
+"accepted_at": "2020-10-29T20:07:58+00:00",
+"status": "NUMERIC",
+"target": "FY2021",
+"metric": "capex",
+"basis": "unstated",
+"unit": "USD_billion",
+"low": "21.0",
+"high": "23.0"
+},
+{
+"cik": "1326801",
+"issuer": "META",
+"accession": "0001326801-21-000011",
+"accepted_at": "2021-01-27T21:08:08+00:00",
+"status": "NUMERIC",
+"target": "FY2021",
+"metric": "capex",
+"basis": "unstated",
+"unit": "USD_billion",
+"low": "21.0",
+"high": "23.0"
+},
+{
+"cik": "1326801",
+"issuer": "META",
+"accession": "0001326801-21-000047",
+"accepted_at": "2021-07-28T20:08:06+00:00",
+"status": "NUMERIC",
+"target": "FY2021",
+"metric": "capex",
+"basis": "unstated",
+"unit": "USD_billion",
+"low": "19.0",
+"high": "21.0"
+},
+{
+"cik": "1326801",
+"issuer": "META",
+"accession": "0001326801-23-000100",
+"accepted_at": "2023-10-25T20:20:51+00:00",
+"status": "NUMERIC",
+"target": "FY2024",
+"metric": "capex",
+"basis": "unstated",
+"unit": "USD_billion",
+"low": "30.0",
+"high": "35.0"
+},
+{
+"cik": "1326801",
+"issuer": "META",
+"accession": "0001326801-24-000010",
+"accepted_at": "2024-02-01T21:10:29+00:00",
+"status": "NUMERIC",
+"target": "FY2024",
+"metric": "capex",
+"basis": "unstated",
+"unit": "USD_billion",
+"low": "30.0",
+"high": "37.0"
+},
+{
+"cik": "1326801",
+"issuer": "META",
+"accession": "0001326801-25-000014",
+"accepted_at": "2025-01-29T21:47:14+00:00",
+"status": "NUMERIC",
+"target": "FY2025",
+"metric": "capex",
+"basis": "unstated",
+"unit": "USD_billion",
+"low": "60.0",
+"high": "65.0"
+},
+{
+"cik": "1326801",
+"issuer": "META",
+"accession": "0001326801-25-000014",
+"accepted_at": "2025-01-29T21:47:14+00:00",
+"status": "NUMERIC",
+"target": "FY2025",
+"metric": "revenue",
+"basis": "unstated",
+"unit": "USD_billion",
+"low": "39.5",
+"high": "41.8"
+},
+{
+"cik": "1326801",
+"issuer": "META",
+"accession": "0001326801-25-000050",
+"accepted_at": "2025-04-30T20:16:00+00:00",
+"status": "NUMERIC",
+"target": "FY2025",
+"metric": "capex",
+"basis": "unstated",
+"unit": "USD_billion",
+"low": "60.0",
+"high": "65.0"
+}
+],
+"revisions": [
+{
+"issuer": "MU",
+"accession": "0000723125-19-000068",
+"target": "FY2020",
+"metric": "capex",
+"basis": "unstated",
+"unit": "USD_billion",
+"status": "NUMERIC",
+"midpoint_change": null,
+"prior_accession": null
+},
+{
+"issuer": "META",
+"accession": "0001326801-20-000073",
+"target": "FY2020",
+"metric": "capex",
+"basis": "unstated",
+"unit": "USD_billion",
+"status": "NUMERIC",
+"midpoint_change": null,
+"prior_accession": null
+},
+{
+"issuer": "META",
+"accession": "0001326801-20-000081",
+"target": "FY2021",
+"metric": "capex",
+"basis": "unstated",
+"unit": "USD_billion",
+"status": "NUMERIC",
+"midpoint_change": null,
+"prior_accession": null
+},
+{
+"issuer": "META",
+"accession": "0001326801-21-000011",
+"target": "FY2021",
+"metric": "capex",
+"basis": "unstated",
+"unit": "USD_billion",
+"status": "NUMERIC",
+"midpoint_change": "0.0",
+"prior_accession": "0001326801-20-000081"
+},
+{
+"issuer": "META",
+"accession": "0001326801-21-000047",
+"target": "FY2021",
+"metric": "capex",
+"basis": "unstated",
+"unit": "USD_billion",
+"status": "NUMERIC",
+"midpoint_change": "-2.0",
+"prior_accession": "0001326801-21-000011"
+},
+{
+"issuer": "META",
+"accession": "0001326801-23-000100",
+"target": "FY2024",
+"metric": "capex",
+"basis": "unstated",
+"unit": "USD_billion",
+"status": "NUMERIC",
+"midpoint_change": null,
+"prior_accession": null
+},
+{
+"issuer": "META",
+"accession": "0001326801-24-000010",
+"target": "FY2024",
+"metric": "capex",
+"basis": "unstated",
+"unit": "USD_billion",
+"status": "NUMERIC",
+"midpoint_change": "1.0",
+"prior_accession": "0001326801-23-000100"
+},
+{
+"issuer": "META",
+"accession": "0001326801-25-000014",
+"target": "FY2025",
+"metric": "capex",
+"basis": "unstated",
+"unit": "USD_billion",
+"status": "NUMERIC",
+"midpoint_change": null,
+"prior_accession": null
+},
+{
+"issuer": "META",
+"accession": "0001326801-25-000014",
+"target": "FY2025",
+"metric": "revenue",
+"basis": "unstated",
+"unit": "USD_billion",
+"status": "NUMERIC",
+"midpoint_change": null,
+"prior_accession": null
+},
+{
+"issuer": "META",
+"accession": "0001326801-25-000050",
+"target": "FY2025",
+"metric": "capex",
+"basis": "unstated",
+"unit": "USD_billion",
+"status": "NUMERIC",
+"midpoint_change": "0.0",
+"prior_accession": "0001326801-25-000014"
+}
+]
+}
