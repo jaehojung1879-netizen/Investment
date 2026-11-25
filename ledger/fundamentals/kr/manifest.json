@@ -1,6 +1,6 @@
 {
   "contract": "DART_RAW_FILINGS_V1",
-  "updatedAt": "2026-11-24T14:17:55Z",
+  "updatedAt": "2026-11-25T13:34:41Z",
   "universeSize": 119,
   "years": [
     2015,
@@ -8,35 +8,56 @@
   ],
   "firstServedYear": 2015,
   "progress": {
-    "collected": 4792,
-    "absent": 1490,
+    "collected": 4095,
+    "absent": 1356,
     "pending": 261,
-    "total": 6543,
-    "completePct": 96.01
+    "total": 5712,
+    "completePct": 95.43
   },
+  "progressScope": "CURRENT_UNIVERSE_AND_REQUESTED_YEARS",
+  "storedFilingsAll": 4793,
   "absences": {
-    "recorded": 1756,
-    "settled": 1490,
-    "awaitingDeadline": 266
+    "recorded": 1639,
+    "settled": 1356,
+    "awaitingDeadline": 283,
+    "unconfirmedIncludesLegacyAndPreGrace": true
   },
   "thisRun": {
-    "calls": 117,
-    "recordsWritten": 0,
-    "shardsChanged": 0,
+    "calls": 1474,
+    "recordsWritten": 1,
+    "shardsChanged": 1,
     "stopReason": "WORK_LIST_EXHAUSTED",
     "statuses": {
-      "013": 117
+      "013": 1473,
+      "000": 1
+    },
+    "attemptStatuses": {
+      "CFS=013": 1473,
+      "OFS=013": 1473,
+      "CFS=000": 1
     },
     "refused": {
       "NO_CORP_CODE": 144,
-      "EMPTY_RESPONSE": 117
+      "EMPTY_RESPONSE": 1473
     },
     "noCorpCodeTickers": [
       "005385.KS",
       "005387.KS",
       "005935.KS"
     ],
-    "fsDiv": {},
-    "amountFieldsSeen": {}
+    "fsDiv": {
+      "CFS": 1
+    },
+    "amountFieldsSeen": {
+      "3분기|BS|thstrm_amount": 51,
+      "3분기|BS|frmtrm_amount": 51,
+      "3분기|CIS|thstrm_amount": 27,
+      "3분기|CIS|thstrm_add_amount": 27,
+      "3분기|CIS|frmtrm_add_amount": 27,
+      "3분기|CF|thstrm_amount": 42,
+      "3분기|CF|frmtrm_amount": 42,
+      "3분기|SCE|thstrm_amount": 96,
+      "3분기|SCE|frmtrm_amount": 1
+    }
   }
 }
