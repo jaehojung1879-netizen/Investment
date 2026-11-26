@@ -1,0 +1,29 @@
+{
+  "label": "ORIGINAL_MEMBERSHIP_NAME_DATES_NOT_FUND_DOLLAR_WEIGHTS",
+  "decisionWeeks": 654,
+  "listedMemberDates": 329017,
+  "memberCountCoverage": {
+    "min": 0.544,
+    "median": 0.7128712871287128,
+    "max": 0.950199203187251
+  },
+  "medianMemberCount": 504.0,
+  "medianProxyCount": 360.0,
+  "reasonCounts": {
+    "IN_REPLICA": 242280,
+    "NO_DECISION_QUOTE": 44288,
+    "NO_FEATURE_ROW_DESPITE_QUOTE": 1334,
+    "NO_POSITIVE_CAP_PROXY": 15492,
+    "ORIGINAL_IDENTITY_RULE": 25623
+  },
+  "quotableMissingIsNotProofOfFreeFloatWeights": true,
+  "noOutcomesRead": true,
+  "inputSHA256": {
+    "/workspace/batch-inputs/us/features.pkl": "b009224445241f90ebeb83800041223f6005d2068a4c442db383009629b74ea9",
+    "/workspace/batch-inputs/us/close.pkl": "17b4dbcc534caa31302a8e7d29fcdc9b036a77f9072f2898063ccbd4e74b6c7e",
+    "/workspace/Investment/research/kr_us_exposure_preserving_v1/results/US/funding-book-schedules.json.gz": "efd56df053fc68cedfdaf6fbb8ac14201d60d5aefeec12d2570c5da272a1f31e",
+    "/workspace/Investment/research_specs/alpha-opportunity-model-v1-us-membership.json.gz": "397b27270255d7a14a36d075a3e2889129d9351d817420614c8ccd289d74c30f",
+    "/workspace/Investment/data/research/us-capital-allocation-alpha-v1/sp500-snapshot-sectors.json.gz": "f49c15a0ebcd371c9a407118abb6ef350bba2060227ca40d61ba210fc4f81a74",
+    "/workspace/Investment/docs/results/alpha-opportunity-model-v3-survivorship-audit.json": "f0d9ed09880ffb75c6cc698dbb001e6f6879dee1991ede6ff6d365cc50f22902"
+  }
+}

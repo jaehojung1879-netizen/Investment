@@ -1,0 +1,131 @@
+{
+ "corrections": {
+  "353": {
+   "rows": 943,
+   "tickers": 14,
+   "file": "research/kr_us_public_buys_v1/results/WAT/corrected-caps.csv",
+   "sha256": "908763982557908c2d1b8fb51f1c831a724a40f41c046b3e2a82421be889d07d",
+   "byTicker": {
+    "AXP": 3,
+    "CHD": 28,
+    "COP": 360,
+    "DLR": 17,
+    "EOG": 13,
+    "GRMN": 141,
+    "KMI": 13,
+    "KO": 55,
+    "L": 69,
+    "MCD": 131,
+    "PCAR": 36,
+    "TER": 39,
+    "WAT": 26,
+    "WELL": 12
+   }
+  },
+  "CTVA": {
+   "split": "2026-10-01, 6665:1000",
+   "rowsRepaired": 329,
+   "receipt": "research/kr_us_strategy_batch_v1/results/us-ctva-repair-receipt.json",
+   "receiptSha256": "db249e46f8b162abf1ba61c2fe5ac5a29979cd06915d2dc58a7091c2fa113678",
+   "rawProbeSha256": "c8f9f48f042a7d9c9843ee7777c73d26852987880c9c30aad910966f99956fa5 (outside git)"
+  }
+ },
+ "studies": [
+  {
+   "pr": "#343",
+   "study": "us_selection_value_v1",
+   "usInput": "Claude lineage features.pkl sha256 49062dba... (2026-11-15 Yahoo capture)",
+   "marketCapUse": "Top-K universe, cap weights, capTercile controls",
+   "status": "CONDITIONAL_ON_PRE_CORRECTION_US_INPUT_NOT_RERUN"
+  },
+  {
+   "pr": "#345",
+   "study": "selection_effect_followup_v1",
+   "usInput": "restored-departure sample; cap = source-A adjusted close x filed shares",
+   "marketCapUse": "universe filter only (REPORT-ko.md line 164)",
+   "status": "CONDITIONAL_ON_PRE_CORRECTION_US_INPUT_NOT_RERUN"
+  },
+  {
+   "pr": "#346",
+   "study": "alpha_search_round6_v1 / s2_decomposition_us_cocktail_v1",
+   "usInput": "same as #343",
+   "marketCapUse": "cap-weighted US cocktail and cap-weighted vs equal-weight gate",
+   "status": "CONDITIONAL_ON_PRE_CORRECTION_US_INPUT_NOT_RERUN"
+  },
+  {
+   "pr": "#347",
+   "study": "active_fund_disclosure_v1 (evaluate_us.py, posthoc.py)",
+   "usInput": "same as #343",
+   "marketCapUse": "nearest-cap matching, top-10 by cap, CAP_FILTER",
+   "status": "CONDITIONAL_ON_PRE_CORRECTION_US_INPUT_NOT_RERUN"
+  },
+  {
+   "pr": "#348",
+   "study": "followup_round8_v1 (US disclosure effect)",
+   "usInput": "same as #343 via EV/R6",
+   "marketCapUse": "sector/size controls",
+   "status": "CONDITIONAL_ON_PRE_CORRECTION_US_INPUT_NOT_RERUN"
+  },
+  {
+   "pr": "#350-#352",
+   "study": "kr_us_strategy_batch_v1, kr_us_exposure_preserving_v1, kr_us_replica_filter_v1",
+   "usInput": "Codex lineage (2026-11-17 recapture, CTVA split repaired per kr_us_strategy_batch_v1/INPUT-REPAIR-ko.md)",
+   "marketCapUse": "replica weights, U1 cocktail",
+   "status": "CTVA_REPAIRED; 943-ROW EFFECT MEASURED BY #353 (US-WAT-ko.md): #352 verdict unchanged"
+  },
+  {
+   "pr": "#353",
+   "study": "kr_us_public_buys_v1",
+   "usInput": "source of the correction",
+   "marketCapUse": "-",
+   "status": "CORRECTION_SOURCE: 943 rows / 14 tickers, results/WAT/corrected-caps.csv sha256 90876398...; 29 input flags left UNRESOLVED and published"
+  },
+  {
+   "pr": "#354",
+   "study": "kr_us_earnings_expectations_v1",
+   "usInput": "Claude lineage (pre-correction)",
+   "marketCapUse": "sector x cap-tercile cells",
+   "status": "RERUN_ON_V3_IN_#355: US E_H1 NOT_SUPPORTED -> DIRECTIONAL_ONLY (results/354-us-v3/)"
+  },
+  {
+   "pr": "#355",
+   "study": "investment_decision_alpha_v1",
+   "usInput": "lineage v3 = 49062dba + 943 corrections + CTVA x6665/1000 on 329 rows (v3 sha256 d5802c9c..., outside git)",
+   "marketCapUse": "S1-S3",
+   "status": "CORRECTED_INPUT; v1 outputs kept and marked superseded by -v2 files"
+  },
+  {
+   "pr": "#344",
+   "study": "us_topk_market_cap_v1",
+   "usInput": "separate lineage: MARKET_PRIVATE (incl. #340 packets, 2026-11-14 capture) inverted through 2026-09-11 + SEC companyfacts dei/us-gaap actual share counts",
+   "marketCapUse": "Top-K ranks and cap weights",
+   "status": "NOT_VERIFIABLE_HERE: private inputs absent. (1) The capture post-dates the CTVA 6665:1000 split (2026-10-01); whether the registered event recipe carries it cannot be read from committed files. (2) #353 found dei/iXBRL scale-6 tags (EIX) and EPS-share substitutions in the same SEC source family; #344 records no cross-check against the 14 corrected tickers (COP, GRMN, KO, MCD, WAT and EIX appear in its committed rank-gap file for 2013-2023, so they enter ranks afterwards). Its Top-K figures stay conditional until that comparison is run with the private inputs."
+  },
+  {
+   "pr": "ladder, #349, #356, #360",
+   "study": "KR studies / industry release data",
+   "usInput": "none",
+   "marketCapUse": "KR PIT Top120 only",
+   "status": "NOT_AFFECTED"
+  },
+  {
+   "pr": "#357-#369, #359, #364",
+   "study": "mvma, market causal transmission, pre-break onset, market risk discovery, track B",
+   "usInput": "SPY / BIL / Shiller / FRED / ALFRED only",
+   "marketCapUse": "none",
+   "status": "NOT_AFFECTED"
+  }
+ ],
+ "openItem": "PR-STACK-343-356-ko.md (in #355) recommended a one-line conditional notice on the #346-#348 reports. It was never added. Those reports are left byte-unchanged here (some study reports are pinned by manifests); this file and REPORT-ko.md carry the notice instead.",
+ "announcementClockWarning": {
+  "source": "#354 comment 7141284361 (owner account, 2026-11-24) citing #375 commit b9848cdc research/us_nonreliance_source_pilot_v1/CATALOG-AUDIT.md; repeated on #376 comment 7147007870",
+  "mechanism": "research/kr_us_earnings_expectations_v1/events.py attach_us_announcements takes the earliest 8-K acceptance after periodEnd and on or before filingDate (cand[0]) with no release-type check (verified in code at this head).",
+  "counterexample": "ADT 2023-07-10 accession 0001703056-23-000140 (prior-period restatement / potential impairment) would be chosen over the Q2 release 2023-08-08 accession 0001703056-23-000155 (29 days earlier), per the cited audit; not re-derived here.",
+  "consumers": [
+   "#354 kr_us_earnings_expectations_v1/analysis.py (US ANNOUNCE readings)",
+   "#355 investment_decision_alpha_v1/s2_entry_timing.py (US announce-wait entry)"
+  ],
+  "notImplicated": "strict periodic-filing-date path, per the cited audit",
+  "status": "ANNOUNCE_DEPENDENT_US_READINGS_ISOLATED_PENDING_SOURCE_ONLY_RELEASE_TYPE_VALIDATION; impact on admitted events not measured; no rerun, no sealed file changed"
+ }
+}

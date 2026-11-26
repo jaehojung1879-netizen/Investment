@@ -1,0 +1,880 @@
+[
+ {
+  "candidateFits": [
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": null,
+    "id": "US:PRICE_CONFIRMED:Q020",
+    "lcb": null,
+    "meanCohortMdd": null,
+    "riskGuard": false,
+    "stats": {
+     "ci": null,
+     "mean": null,
+     "n": 0,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": null,
+    "id": "US:PRICE_CONFIRMED:Q050",
+    "lcb": null,
+    "meanCohortMdd": null,
+    "riskGuard": false,
+    "stats": {
+     "ci": null,
+     "mean": null,
+     "n": 0,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": null,
+    "id": "US:PRICE_CONFIRMED:Q100",
+    "lcb": null,
+    "meanCohortMdd": null,
+    "riskGuard": false,
+    "stats": {
+     "ci": null,
+     "mean": null,
+     "n": 0,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   }
+  ],
+  "chosen": "ETF",
+  "fitDate": "2014-02-14T00:00:00",
+  "maxTrainExit": null,
+  "nTrain": 0,
+  "reason": "INSUFFICIENT_MATURED_COMMON",
+  "sufficient": false,
+  "year": 2014
+ },
+ {
+  "candidateFits": [
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.058970520057328724,
+    "id": "US:PRICE_CONFIRMED:Q020",
+    "lcb": null,
+    "meanCohortMdd": -0.056282292453928906,
+    "riskGuard": true,
+    "stats": {
+     "ci": null,
+     "mean": null,
+     "n": 20,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.058970520057328724,
+    "id": "US:PRICE_CONFIRMED:Q050",
+    "lcb": null,
+    "meanCohortMdd": -0.05418634958405055,
+    "riskGuard": true,
+    "stats": {
+     "ci": null,
+     "mean": null,
+     "n": 20,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.058970520057328724,
+    "id": "US:PRICE_CONFIRMED:Q100",
+    "lcb": null,
+    "meanCohortMdd": -0.05381379651767668,
+    "riskGuard": true,
+    "stats": {
+     "ci": null,
+     "mean": null,
+     "n": 20,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   }
+  ],
+  "chosen": "ETF",
+  "fitDate": "2015-01-02T00:00:00",
+  "maxTrainExit": "2014-12-29T00:00:00",
+  "nTrain": 20,
+  "reason": "INSUFFICIENT_MATURED_COMMON",
+  "sufficient": false,
+  "year": 2015
+ },
+ {
+  "candidateFits": [
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.07293109287834927,
+    "id": "US:PRICE_CONFIRMED:Q020",
+    "lcb": null,
+    "meanCohortMdd": -0.06884251090606874,
+    "riskGuard": true,
+    "stats": {
+     "ci": null,
+     "mean": null,
+     "n": 73,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.07293109287834927,
+    "id": "US:PRICE_CONFIRMED:Q050",
+    "lcb": null,
+    "meanCohortMdd": -0.06595604851531266,
+    "riskGuard": true,
+    "stats": {
+     "ci": null,
+     "mean": null,
+     "n": 73,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.07293109287834927,
+    "id": "US:PRICE_CONFIRMED:Q100",
+    "lcb": null,
+    "meanCohortMdd": -0.06970048272092312,
+    "riskGuard": true,
+    "stats": {
+     "ci": null,
+     "mean": null,
+     "n": 73,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   }
+  ],
+  "chosen": "ETF",
+  "fitDate": "2016-01-08T00:00:00",
+  "maxTrainExit": "2016-01-04T00:00:00",
+  "nTrain": 73,
+  "reason": "INSUFFICIENT_MATURED_COMMON",
+  "sufficient": false,
+  "year": 2016
+ },
+ {
+  "candidateFits": [
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.0794603557189311,
+    "id": "US:PRICE_CONFIRMED:Q020",
+    "lcb": -0.004108365690985139,
+    "meanCohortMdd": -0.07370733973168221,
+    "riskGuard": true,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.004108365690985139,
+      0.01517527442435618
+     ],
+     "independentBlocksApprox": 5.0,
+     "mean": 0.007419378532250556,
+     "n": 125,
+     "pOneSided": 0.07921784908498371,
+     "pOneSidedApprox": 0.07921784908498371
+    }
+   },
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.0794603557189311,
+    "id": "US:PRICE_CONFIRMED:Q050",
+    "lcb": -0.010270914227463113,
+    "meanCohortMdd": -0.07165492235538208,
+    "riskGuard": true,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.010270914227463113,
+      0.03793818606089027
+     ],
+     "independentBlocksApprox": 5.0,
+     "mean": 0.018548446330626186,
+     "n": 125,
+     "pOneSided": 0.07921784908498371,
+     "pOneSidedApprox": 0.07921784908498371
+    }
+   },
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.0794603557189311,
+    "id": "US:PRICE_CONFIRMED:Q100",
+    "lcb": -0.020541828454926286,
+    "meanCohortMdd": -0.08183501779580751,
+    "riskGuard": false,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.020541828454926286,
+      0.07587637212178057
+     ],
+     "independentBlocksApprox": 5.0,
+     "mean": 0.03709689266125234,
+     "n": 125,
+     "pOneSided": 0.07921784908498371,
+     "pOneSidedApprox": 0.07921784908498371
+    }
+   }
+  ],
+  "chosen": "ETF",
+  "fitDate": "2017-01-06T00:00:00",
+  "maxTrainExit": "2017-01-03T00:00:00",
+  "nTrain": 125,
+  "reason": "NO_ELIGIBLE_CANDIDATE",
+  "sufficient": true,
+  "year": 2017
+ },
+ {
+  "candidateFits": [
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.06451468016126084,
+    "id": "US:PRICE_CONFIRMED:Q020",
+    "lcb": -0.002492590466550482,
+    "meanCohortMdd": -0.06052614991578435,
+    "riskGuard": true,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.002492590466550482,
+      0.012540341511241027
+     ],
+     "independentBlocksApprox": 7.08,
+     "mean": 0.005482664574404908,
+     "n": 177,
+     "pOneSided": 0.08275,
+     "pOneSidedApprox": 0.08275
+    }
+   },
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.06451468016126084,
+    "id": "US:PRICE_CONFIRMED:Q050",
+    "lcb": -0.006231476166376435,
+    "meanCohortMdd": -0.05999297723608805,
+    "riskGuard": true,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.006231476166376435,
+      0.031350853778102344
+     ],
+     "independentBlocksApprox": 7.08,
+     "mean": 0.013706661436012062,
+     "n": 177,
+     "pOneSided": 0.08275,
+     "pOneSidedApprox": 0.08275
+    }
+   },
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.06451468016126084,
+    "id": "US:PRICE_CONFIRMED:Q100",
+    "lcb": -0.012462952332752903,
+    "meanCohortMdd": -0.07051291946442113,
+    "riskGuard": false,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.012462952332752903,
+      0.06270170755620469
+     ],
+     "independentBlocksApprox": 7.08,
+     "mean": 0.027413322872024127,
+     "n": 177,
+     "pOneSided": 0.08275,
+     "pOneSidedApprox": 0.08275
+    }
+   }
+  ],
+  "chosen": "ETF",
+  "fitDate": "2018-01-05T00:00:00",
+  "maxTrainExit": "2018-01-02T00:00:00",
+  "nTrain": 177,
+  "reason": "NO_ELIGIBLE_CANDIDATE",
+  "sufficient": true,
+  "year": 2018
+ },
+ {
+  "candidateFits": [
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.06992713102750397,
+    "id": "US:PRICE_CONFIRMED:Q020",
+    "lcb": -0.0007587634635442281,
+    "meanCohortMdd": -0.06684812933892857,
+    "riskGuard": true,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.0007587634635442281,
+      0.01125232828778427
+     ],
+     "independentBlocksApprox": 9.16,
+     "mean": 0.0056453071067591246,
+     "n": 229,
+     "pOneSided": 0.03649087728067983,
+     "pOneSidedApprox": 0.03649087728067983
+    }
+   },
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.06992713102750397,
+    "id": "US:PRICE_CONFIRMED:Q050",
+    "lcb": -0.0018969086588607766,
+    "meanCohortMdd": -0.0666553956073763,
+    "riskGuard": true,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.0018969086588607766,
+      0.028130820719460485
+     ],
+     "independentBlocksApprox": 9.16,
+     "mean": 0.014113267766897612,
+     "n": 229,
+     "pOneSided": 0.03649087728067983,
+     "pOneSidedApprox": 0.03649087728067983
+    }
+   },
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.06992713102750397,
+    "id": "US:PRICE_CONFIRMED:Q100",
+    "lcb": -0.003793817317721579,
+    "meanCohortMdd": -0.07571131629596309,
+    "riskGuard": false,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.003793817317721579,
+      0.05626164143892098
+     ],
+     "independentBlocksApprox": 9.16,
+     "mean": 0.028226535533795224,
+     "n": 229,
+     "pOneSided": 0.03649087728067983,
+     "pOneSidedApprox": 0.03649087728067983
+    }
+   }
+  ],
+  "chosen": "ETF",
+  "fitDate": "2019-01-04T00:00:00",
+  "maxTrainExit": "2019-01-02T00:00:00",
+  "nTrain": 229,
+  "reason": "NO_ELIGIBLE_CANDIDATE",
+  "sufficient": true,
+  "year": 2019
+ },
+ {
+  "candidateFits": [
+   {
+    "eligible": true,
+    "etfMeanCohortMdd": -0.07818625883862489,
+    "id": "US:PRICE_CONFIRMED:Q020",
+    "lcb": 0.00037837805621492206,
+    "meanCohortMdd": -0.07404154636306685,
+    "riskGuard": true,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      0.00037837805621492206,
+      0.010098735528377312
+     ],
+     "independentBlocksApprox": 11.24,
+     "mean": 0.005581715865407451,
+     "n": 281,
+     "pOneSided": 0.016745813546613347,
+     "pOneSidedApprox": 0.016745813546613347
+    }
+   },
+   {
+    "eligible": true,
+    "etfMeanCohortMdd": -0.07818625883862489,
+    "id": "US:PRICE_CONFIRMED:Q050",
+    "lcb": 0.0009459451405370656,
+    "meanCohortMdd": -0.0721721956421369,
+    "riskGuard": true,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      0.0009459451405370656,
+      0.02524683882094309
+     ],
+     "independentBlocksApprox": 11.24,
+     "mean": 0.013954289663518419,
+     "n": 281,
+     "pOneSided": 0.016745813546613347,
+     "pOneSidedApprox": 0.016745813546613347
+    }
+   },
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.07818625883862489,
+    "id": "US:PRICE_CONFIRMED:Q100",
+    "lcb": 0.001891890281074133,
+    "meanCohortMdd": -0.08075622414925039,
+    "riskGuard": false,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      0.001891890281074133,
+      0.0504936776418862
+     ],
+     "independentBlocksApprox": 11.24,
+     "mean": 0.02790857932703684,
+     "n": 281,
+     "pOneSided": 0.016745813546613347,
+     "pOneSidedApprox": 0.016745813546613347
+    }
+   }
+  ],
+  "chosen": "US:PRICE_CONFIRMED:Q050",
+  "fitDate": "2020-01-03T00:00:00",
+  "maxTrainExit": "2019-12-30T00:00:00",
+  "nTrain": 281,
+  "reason": "POSITIVE_LCB_AND_RISK_GUARD",
+  "sufficient": true,
+  "year": 2020
+ },
+ {
+  "candidateFits": [
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.09836599161573242,
+    "id": "US:PRICE_CONFIRMED:Q020",
+    "lcb": -0.0026031216504167672,
+    "meanCohortMdd": -0.09400538494184996,
+    "riskGuard": true,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.0026031216504167672,
+      0.007733172836296369
+     ],
+     "independentBlocksApprox": 13.36,
+     "mean": 0.002998514826093863,
+     "n": 334,
+     "pOneSided": 0.14021494626343414,
+     "pOneSidedApprox": 0.14021494626343414
+    }
+   },
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.09836599161573242,
+    "id": "US:PRICE_CONFIRMED:Q050",
+    "lcb": -0.006507804126042128,
+    "meanCohortMdd": -0.0912974662662145,
+    "riskGuard": true,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.006507804126042128,
+      0.019332932090740742
+     ],
+     "independentBlocksApprox": 13.36,
+     "mean": 0.007496287065234449,
+     "n": 334,
+     "pOneSided": 0.14021494626343414,
+     "pOneSidedApprox": 0.14021494626343414
+    }
+   },
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.09836599161573242,
+    "id": "US:PRICE_CONFIRMED:Q100",
+    "lcb": -0.01301560825208427,
+    "meanCohortMdd": -0.09819480260414844,
+    "riskGuard": true,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.01301560825208427,
+      0.03866586418148147
+     ],
+     "independentBlocksApprox": 13.36,
+     "mean": 0.014992574130468894,
+     "n": 334,
+     "pOneSided": 0.14021494626343414,
+     "pOneSidedApprox": 0.14021494626343414
+    }
+   }
+  ],
+  "chosen": "ETF",
+  "fitDate": "2021-01-08T00:00:00",
+  "maxTrainExit": "2021-01-04T00:00:00",
+  "nTrain": 334,
+  "reason": "NO_ELIGIBLE_CANDIDATE",
+  "sufficient": true,
+  "year": 2021
+ },
+ {
+  "candidateFits": [
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.09261660866172608,
+    "id": "US:PRICE_CONFIRMED:Q020",
+    "lcb": -0.005872855028738908,
+    "meanCohortMdd": -0.08967138117049628,
+    "riskGuard": true,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.005872855028738908,
+      0.0062705979478588645
+     ],
+     "independentBlocksApprox": 15.44,
+     "mean": 0.0008536402573598988,
+     "n": 386,
+     "pOneSided": 0.4026493376655836,
+     "pOneSidedApprox": 0.4026493376655836
+    }
+   },
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.09261660866172608,
+    "id": "US:PRICE_CONFIRMED:Q050",
+    "lcb": -0.014682137571847435,
+    "meanCohortMdd": -0.08878234299643332,
+    "riskGuard": true,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.014682137571847435,
+      0.015676494869647017
+     ],
+     "independentBlocksApprox": 15.44,
+     "mean": 0.002134100643399547,
+     "n": 386,
+     "pOneSided": 0.4026493376655836,
+     "pOneSidedApprox": 0.4026493376655836
+    }
+   },
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.09261660866172608,
+    "id": "US:PRICE_CONFIRMED:Q100",
+    "lcb": -0.02936427514369487,
+    "meanCohortMdd": -0.09906887910600917,
+    "riskGuard": false,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.02936427514369487,
+      0.03135298973929401
+     ],
+     "independentBlocksApprox": 15.44,
+     "mean": 0.004268201286799097,
+     "n": 386,
+     "pOneSided": 0.4026493376655836,
+     "pOneSidedApprox": 0.4026493376655836
+    }
+   }
+  ],
+  "chosen": "ETF",
+  "fitDate": "2022-01-07T00:00:00",
+  "maxTrainExit": "2022-01-03T00:00:00",
+  "nTrain": 386,
+  "reason": "NO_ELIGIBLE_CANDIDATE",
+  "sufficient": true,
+  "year": 2022
+ },
+ {
+  "candidateFits": [
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.10117620074982675,
+    "id": "US:PRICE_CONFIRMED:Q020",
+    "lcb": -0.0054802537063310345,
+    "meanCohortMdd": -0.09814689979653314,
+    "riskGuard": true,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.0054802537063310345,
+      0.006102137661494545
+     ],
+     "independentBlocksApprox": 17.52,
+     "mean": 0.0007551002226167254,
+     "n": 438,
+     "pOneSided": 0.4123969007748063,
+     "pOneSidedApprox": 0.4123969007748063
+    }
+   },
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.10117620074982675,
+    "id": "US:PRICE_CONFIRMED:Q050",
+    "lcb": -0.013700634265827781,
+    "meanCohortMdd": -0.09735665276858053,
+    "riskGuard": true,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.013700634265827781,
+      0.015255344153736167
+     ],
+     "independentBlocksApprox": 17.52,
+     "mean": 0.0018877505565416163,
+     "n": 438,
+     "pOneSided": 0.4123969007748063,
+     "pOneSidedApprox": 0.4123969007748063
+    }
+   },
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.10117620074982675,
+    "id": "US:PRICE_CONFIRMED:Q100",
+    "lcb": -0.02740126853165556,
+    "meanCohortMdd": -0.10837241100797836,
+    "riskGuard": false,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.02740126853165556,
+      0.03051068830747234
+     ],
+     "independentBlocksApprox": 17.52,
+     "mean": 0.0037755011130832365,
+     "n": 438,
+     "pOneSided": 0.4123969007748063,
+     "pOneSidedApprox": 0.4123969007748063
+    }
+   }
+  ],
+  "chosen": "ETF",
+  "fitDate": "2023-01-06T00:00:00",
+  "maxTrainExit": "2023-01-03T00:00:00",
+  "nTrain": 438,
+  "reason": "NO_ELIGIBLE_CANDIDATE",
+  "sufficient": true,
+  "year": 2023
+ },
+ {
+  "candidateFits": [
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.10023374618735006,
+    "id": "US:PRICE_CONFIRMED:Q020",
+    "lcb": -0.007075334255251511,
+    "meanCohortMdd": -0.0967103010198042,
+    "riskGuard": true,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.007075334255251511,
+      0.004210499356160115
+     ],
+     "independentBlocksApprox": 19.6,
+     "mean": -0.0009711198583279654,
+     "n": 490,
+     "pOneSided": 0.6558360409897526,
+     "pOneSidedApprox": 0.6558360409897526
+    }
+   },
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.10023374618735006,
+    "id": "US:PRICE_CONFIRMED:Q050",
+    "lcb": -0.017688335638128973,
+    "meanCohortMdd": -0.09561024370535233,
+    "riskGuard": true,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.017688335638128973,
+      0.010526248390400077
+     ],
+     "independentBlocksApprox": 19.6,
+     "mean": -0.0024277996458201227,
+     "n": 490,
+     "pOneSided": 0.6558360409897526,
+     "pOneSidedApprox": 0.6558360409897526
+    }
+   },
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.10023374618735006,
+    "id": "US:PRICE_CONFIRMED:Q100",
+    "lcb": -0.03537667127625793,
+    "meanCohortMdd": -0.1071674965179622,
+    "riskGuard": false,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.03537667127625793,
+      0.02105249678080017
+     ],
+     "independentBlocksApprox": 19.6,
+     "mean": -0.004855599291640237,
+     "n": 490,
+     "pOneSided": 0.6558360409897526,
+     "pOneSidedApprox": 0.6558360409897526
+    }
+   }
+  ],
+  "chosen": "ETF",
+  "fitDate": "2024-01-05T00:00:00",
+  "maxTrainExit": "2024-01-02T00:00:00",
+  "nTrain": 490,
+  "reason": "NO_ELIGIBLE_CANDIDATE",
+  "sufficient": true,
+  "year": 2024
+ },
+ {
+  "candidateFits": [
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.09777278092457398,
+    "id": "US:PRICE_CONFIRMED:Q020",
+    "lcb": -0.006031594044582843,
+    "meanCohortMdd": -0.09420086798097362,
+    "riskGuard": true,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.006031594044582843,
+      0.004135162105606792
+     ],
+     "independentBlocksApprox": 21.68,
+     "mean": -0.0006218611352222248,
+     "n": 542,
+     "pOneSided": 0.614846288427893,
+     "pOneSidedApprox": 0.614846288427893
+    }
+   },
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.09777278092457398,
+    "id": "US:PRICE_CONFIRMED:Q050",
+    "lcb": -0.01507898511145732,
+    "meanCohortMdd": -0.09273134454195515,
+    "riskGuard": true,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.01507898511145732,
+      0.010337905264016768
+     ],
+     "independentBlocksApprox": 21.68,
+     "mean": -0.001554652838055771,
+     "n": 542,
+     "pOneSided": 0.614846288427893,
+     "pOneSidedApprox": 0.614846288427893
+    }
+   },
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.09777278092457398,
+    "id": "US:PRICE_CONFIRMED:Q100",
+    "lcb": -0.030157970222914658,
+    "meanCohortMdd": -0.10308557906078587,
+    "riskGuard": false,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.030157970222914658,
+      0.020675810528033554
+     ],
+     "independentBlocksApprox": 21.68,
+     "mean": -0.00310930567611154,
+     "n": 542,
+     "pOneSided": 0.614846288427893,
+     "pOneSidedApprox": 0.614846288427893
+    }
+   }
+  ],
+  "chosen": "ETF",
+  "fitDate": "2025-01-03T00:00:00",
+  "maxTrainExit": "2024-12-30T00:00:00",
+  "nTrain": 542,
+  "reason": "NO_ELIGIBLE_CANDIDATE",
+  "sufficient": true,
+  "year": 2025
+ },
+ {
+  "candidateFits": [
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.09947191103438527,
+    "id": "US:PRICE_CONFIRMED:Q020",
+    "lcb": -0.006865709278898255,
+    "meanCohortMdd": -0.09512643241798661,
+    "riskGuard": true,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.006865709278898255,
+      0.0029814940451482227
+     ],
+     "independentBlocksApprox": 23.76,
+     "mean": -0.0015375294533794856,
+     "n": 594,
+     "pOneSided": 0.7555611097225694,
+     "pOneSidedApprox": 0.7555611097225694
+    }
+   },
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.09947191103438527,
+    "id": "US:PRICE_CONFIRMED:Q050",
+    "lcb": -0.017164273197245842,
+    "meanCohortMdd": -0.09266067660879912,
+    "riskGuard": true,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.017164273197245842,
+      0.007453735112870365
+     ],
+     "independentBlocksApprox": 23.76,
+     "mean": -0.0038438236334489206,
+     "n": 594,
+     "pOneSided": 0.7555611097225694,
+     "pOneSidedApprox": 0.7555611097225694
+    }
+   },
+   {
+    "eligible": false,
+    "etfMeanCohortMdd": -0.09947191103438527,
+    "id": "US:PRICE_CONFIRMED:Q100",
+    "lcb": -0.034328546394491684,
+    "meanCohortMdd": -0.10207630023289503,
+    "riskGuard": false,
+    "stats": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.034328546394491684,
+      0.01490747022574072
+     ],
+     "independentBlocksApprox": 23.76,
+     "mean": -0.0076876472668978395,
+     "n": 594,
+     "pOneSided": 0.7555611097225694,
+     "pOneSidedApprox": 0.7555611097225694
+    }
+   }
+  ],
+  "chosen": "ETF",
+  "fitDate": "2026-01-02T00:00:00",
+  "maxTrainExit": "2025-12-29T00:00:00",
+  "nTrain": 594,
+  "reason": "NO_ELIGIBLE_CANDIDATE",
+  "sufficient": true,
+  "year": 2026
+ }
+]

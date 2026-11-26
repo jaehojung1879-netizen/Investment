@@ -1,0 +1,5664 @@
+{
+ "schema": "KR_PROXY_INPUT_HOLDING_SUPPORT_AUDIT_V1",
+ "performanceCalculated": false,
+ "priceIdentity": {
+  "finalSessionQuotesApplied": 235,
+  "identity": "3e4d7aa35e2c4b273e4ecef0e2e8ea7a8a27077f0de14bb3d5ea6a696a97f1a5",
+  "matrixDigest": "32e49b57a7541eea66f76373baef50c6302a394247b313f6099f718d46d54b0c",
+  "mcapCoverage": 1.0,
+  "universeShards": 14
+ },
+ "definition": "All positive-cap PIT Top120 names; frozen next-session L26/L52 schedules; support-only frozen tradability/locking; no units/prices/returns/NAV/cost computed; removed terminal support after recording hazard to continue auditing",
+ "start": "2018-01-08",
+ "end": "2026-09-14",
+ "byL": {
+  "26": {
+   "terminalHeldEvents": 156,
+   "lastTerminalEvent": {
+    "L": 26,
+    "account": 25,
+    "date": "2025-12-15",
+    "ticker": "010620.KS",
+    "lastQuote": "2025-12-12",
+    "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+   },
+   "targetNontradableEvents": 116,
+   "lastTargetNontradable": {
+    "L": 26,
+    "account": 8,
+    "date": "2026-08-24",
+    "ticker": "000880.KS",
+    "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+    "finiteRawQuote": true
+   }
+  },
+  "52": {
+   "terminalHeldEvents": 312,
+   "lastTerminalEvent": {
+    "L": 52,
+    "account": 51,
+    "date": "2025-12-15",
+    "ticker": "010620.KS",
+    "lastQuote": "2025-12-12",
+    "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+   },
+   "targetNontradableEvents": 116,
+   "lastTargetNontradable": {
+    "L": 52,
+    "account": 34,
+    "date": "2026-08-24",
+    "ticker": "000880.KS",
+    "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+    "finiteRawQuote": true
+   }
+  }
+ },
+ "lastQuoteHazardSession": "2025-12-15",
+ "NAV_COVERAGE_SUFFIX_DECISION": "2026-01-02",
+ "strictLastQuoteOrTargetTradeHazardSession": "2026-08-24",
+ "STRICT_NAV_COVERAGE_SUFFIX_DECISION": null,
+ "terminalEvents": [
+  {
+   "L": 26,
+   "account": 0,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 1,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 2,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 3,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 4,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 5,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 6,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 7,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 8,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 9,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 10,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 11,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 12,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 13,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 14,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 15,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 16,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 17,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 18,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 19,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 20,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 21,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 22,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 23,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 24,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 25,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 0,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 1,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 2,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 3,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 4,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 5,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 6,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 7,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 8,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 9,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 10,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 11,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 12,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 13,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 14,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 15,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 16,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 17,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 18,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 19,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 20,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 21,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 22,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 23,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 24,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 25,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 0,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 1,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 2,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 3,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 4,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 5,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 6,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 7,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 8,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 9,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 10,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 11,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 12,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 13,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 14,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 15,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 16,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 17,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 18,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 19,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 20,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 21,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 22,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 23,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 24,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 25,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 0,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 1,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 2,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 3,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 4,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 5,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 6,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 7,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 8,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 9,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 10,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 11,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 12,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 13,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 14,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 15,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 16,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 17,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 18,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 19,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 20,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 21,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 22,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 23,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 24,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 25,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 0,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 1,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 2,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 3,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 4,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 5,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 6,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 7,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 8,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 9,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 10,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 11,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 12,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 13,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 14,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 15,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 16,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 17,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 18,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 19,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 20,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 21,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 22,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 23,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 24,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 25,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 0,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 1,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 2,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 3,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 4,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 5,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 6,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 7,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 8,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 9,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 10,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 11,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 12,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 13,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 14,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 15,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 16,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 17,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 18,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 19,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 20,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 21,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 22,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 23,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 24,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 26,
+   "account": 25,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 0,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 1,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 2,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 3,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 4,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 5,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 6,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 7,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 8,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 9,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 10,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 11,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 12,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 13,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 14,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 15,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 16,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 17,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 18,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 19,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 20,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 21,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 22,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 23,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 24,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 25,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 26,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 27,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 28,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 29,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 30,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 31,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 32,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 33,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 34,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 35,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 36,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 37,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 38,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 39,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 40,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 41,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 42,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 43,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 44,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 45,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 46,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 47,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 48,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 49,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 50,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 51,
+   "date": "2019-02-13",
+   "ticker": "000030.KS",
+   "lastQuote": "2019-02-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 0,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 1,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 2,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 3,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 4,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 5,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 6,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 7,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 8,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 9,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 10,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 11,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 12,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 13,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 14,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 15,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 16,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 17,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 18,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 19,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 20,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 21,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 22,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 23,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 24,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 25,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 26,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 27,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 28,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 29,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 30,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 31,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 32,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 33,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 34,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 35,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 36,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 37,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 38,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 39,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 40,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 41,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 42,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 43,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 44,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 45,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 46,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 47,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 48,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 49,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 50,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 51,
+   "date": "2020-02-14",
+   "ticker": "079440.KS",
+   "lastQuote": "2020-02-13",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 0,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 1,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 2,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 3,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 4,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 5,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 6,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 7,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 8,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 9,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 10,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 11,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 12,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 13,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 14,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 15,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 16,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 17,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 18,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 19,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 20,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 21,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 22,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 23,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 24,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 25,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 26,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 27,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 28,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 29,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 30,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 31,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 32,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 33,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 34,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 35,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 36,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 37,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 38,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 39,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 40,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 41,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 42,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 43,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 44,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 45,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 46,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 47,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 48,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 49,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 50,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 51,
+   "date": "2023-02-21",
+   "ticker": "000060.KS",
+   "lastQuote": "2023-02-20",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 0,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 1,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 2,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 3,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 4,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 5,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 6,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 7,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 8,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 9,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 10,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 11,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 12,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 13,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 14,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 15,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 16,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 17,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 18,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 19,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 20,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 21,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 22,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 23,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 24,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 25,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 26,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 27,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 28,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 29,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 30,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 31,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 32,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 33,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 34,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 35,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 36,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 37,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 38,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 39,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 40,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 41,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 42,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 43,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 44,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 45,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 46,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 47,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 48,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 49,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 50,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 51,
+   "date": "2023-04-25",
+   "ticker": "008560.KS",
+   "lastQuote": "2023-04-24",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 0,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 1,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 2,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 3,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 4,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 5,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 6,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 7,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 8,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 9,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 10,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 11,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 12,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 13,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 14,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 15,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 16,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 17,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 18,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 19,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 20,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 21,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 22,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 23,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 24,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 25,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 26,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 27,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 28,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 29,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 30,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 31,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 32,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 33,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 34,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 35,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 36,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 37,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 38,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 39,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 40,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 41,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 42,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 43,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 44,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 45,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 46,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 47,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 48,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 49,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 50,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 51,
+   "date": "2024-07-09",
+   "ticker": "003410.KS",
+   "lastQuote": "2024-07-08",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 0,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 1,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 2,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 3,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 4,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 5,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 6,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 7,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 8,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 9,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 10,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 11,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 12,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 13,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 14,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 15,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 16,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 17,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 18,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 19,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 20,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 21,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 22,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 23,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 24,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 25,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 26,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 27,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 28,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 29,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 30,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 31,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 32,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 33,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 34,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 35,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 36,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 37,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 38,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 39,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 40,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 41,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 42,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 43,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 44,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 45,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 46,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 47,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 48,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 49,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 50,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  },
+  {
+   "L": 52,
+   "account": 51,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "lastQuote": "2025-12-12",
+   "state": "UNRESOLVED_TERMINAL_WHILE_HELD"
+  }
+ ],
+ "targetNontradableEvents": [
+  {
+   "L": 26,
+   "account": 16,
+   "date": "2018-04-30",
+   "ticker": "005930.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 16,
+   "date": "2018-04-30",
+   "ticker": "005935.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 16,
+   "date": "2018-04-30",
+   "ticker": "012630.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 17,
+   "date": "2018-05-08",
+   "ticker": "012630.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 18,
+   "date": "2018-05-14",
+   "ticker": "012630.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 19,
+   "date": "2018-05-21",
+   "ticker": "012630.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 20,
+   "date": "2018-05-28",
+   "ticker": "012630.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 21,
+   "date": "2018-06-04",
+   "ticker": "004800.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 21,
+   "date": "2018-06-04",
+   "ticker": "012630.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 22,
+   "date": "2018-06-11",
+   "ticker": "004800.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 22,
+   "date": "2018-06-11",
+   "ticker": "012630.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 23,
+   "date": "2018-06-18",
+   "ticker": "004800.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 24,
+   "date": "2018-06-25",
+   "ticker": "004800.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 25,
+   "date": "2018-07-02",
+   "ticker": "004800.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 0,
+   "date": "2018-07-09",
+   "ticker": "003410.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 0,
+   "date": "2018-07-09",
+   "ticker": "004800.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 13,
+   "date": "2018-10-08",
+   "ticker": "035420.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 19,
+   "date": "2018-11-19",
+   "ticker": "207940.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 20,
+   "date": "2018-11-26",
+   "ticker": "207940.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 21,
+   "date": "2018-12-03",
+   "ticker": "207940.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 22,
+   "date": "2018-12-10",
+   "ticker": "207940.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 1,
+   "date": "2019-01-14",
+   "ticker": "000030.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 2,
+   "date": "2019-01-21",
+   "ticker": "000030.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 3,
+   "date": "2019-01-28",
+   "ticker": "000030.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 4,
+   "date": "2019-02-07",
+   "ticker": "000030.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 5,
+   "date": "2019-02-11",
+   "ticker": "000030.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 6,
+   "date": "2019-02-18",
+   "ticker": "000030.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 26,
+   "account": 7,
+   "date": "2019-02-25",
+   "ticker": "000030.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 26,
+   "account": 8,
+   "date": "2019-03-04",
+   "ticker": "000030.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 26,
+   "account": 12,
+   "date": "2019-09-30",
+   "ticker": "000150.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 13,
+   "date": "2019-10-07",
+   "ticker": "000150.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 14,
+   "date": "2019-10-14",
+   "ticker": "000150.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 25,
+   "date": "2019-12-30",
+   "ticker": "002380.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 0,
+   "date": "2020-01-06",
+   "ticker": "002380.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 1,
+   "date": "2020-01-13",
+   "ticker": "002380.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 2,
+   "date": "2020-01-20",
+   "ticker": "002380.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 3,
+   "date": "2020-01-28",
+   "ticker": "079440.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 4,
+   "date": "2020-02-03",
+   "ticker": "079440.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 5,
+   "date": "2020-02-10",
+   "ticker": "079440.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 6,
+   "date": "2020-02-17",
+   "ticker": "079440.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 26,
+   "account": 7,
+   "date": "2020-02-24",
+   "ticker": "079440.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 26,
+   "account": 8,
+   "date": "2020-03-02",
+   "ticker": "079440.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 26,
+   "account": 13,
+   "date": "2020-04-06",
+   "ticker": "000100.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 19,
+   "date": "2020-11-16",
+   "ticker": "003410.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 20,
+   "date": "2020-11-23",
+   "ticker": "003410.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 21,
+   "date": "2020-11-30",
+   "ticker": "003410.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 0,
+   "date": "2021-01-04",
+   "ticker": "000210.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 1,
+   "date": "2021-01-11",
+   "ticker": "000210.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 2,
+   "date": "2021-01-18",
+   "ticker": "000210.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 9,
+   "date": "2021-03-08",
+   "ticker": "011790.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 10,
+   "date": "2021-03-15",
+   "ticker": "011790.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 11,
+   "date": "2021-03-22",
+   "ticker": "011790.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 14,
+   "date": "2021-04-12",
+   "ticker": "035720.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 14,
+   "date": "2021-04-12",
+   "ticker": "267250.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 17,
+   "date": "2021-05-03",
+   "ticker": "003550.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 18,
+   "date": "2021-05-10",
+   "ticker": "003550.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 18,
+   "date": "2021-05-10",
+   "ticker": "007700.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 19,
+   "date": "2021-05-17",
+   "ticker": "003550.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 19,
+   "date": "2021-05-17",
+   "ticker": "007700.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 20,
+   "date": "2021-05-24",
+   "ticker": "003550.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 0,
+   "date": "2021-07-05",
+   "ticker": "042670.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 1,
+   "date": "2021-07-12",
+   "ticker": "042670.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 2,
+   "date": "2021-07-19",
+   "ticker": "042670.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 3,
+   "date": "2021-07-26",
+   "ticker": "010140.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 4,
+   "date": "2021-08-02",
+   "ticker": "010140.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 5,
+   "date": "2021-08-09",
+   "ticker": "010140.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 17,
+   "date": "2021-11-01",
+   "ticker": "017670.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 18,
+   "date": "2021-11-08",
+   "ticker": "017670.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 19,
+   "date": "2021-11-15",
+   "ticker": "017670.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 20,
+   "date": "2021-11-22",
+   "ticker": "017670.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 14,
+   "date": "2022-04-11",
+   "ticker": "383220.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 4,
+   "date": "2023-01-30",
+   "ticker": "000060.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 5,
+   "date": "2023-02-06",
+   "ticker": "000060.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 6,
+   "date": "2023-02-13",
+   "ticker": "000060.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 7,
+   "date": "2023-02-20",
+   "ticker": "000060.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 8,
+   "date": "2023-02-27",
+   "ticker": "000060.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 26,
+   "account": 8,
+   "date": "2023-02-27",
+   "ticker": "009830.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 9,
+   "date": "2023-03-06",
+   "ticker": "009830.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 10,
+   "date": "2023-03-13",
+   "ticker": "009830.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 11,
+   "date": "2023-03-20",
+   "ticker": "009830.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 12,
+   "date": "2023-03-27",
+   "ticker": "009830.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 13,
+   "date": "2023-04-03",
+   "ticker": "008560.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 14,
+   "date": "2023-04-10",
+   "ticker": "008560.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 15,
+   "date": "2023-04-17",
+   "ticker": "008560.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 16,
+   "date": "2023-04-24",
+   "ticker": "008560.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 17,
+   "date": "2023-05-02",
+   "ticker": "008560.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 26,
+   "account": 17,
+   "date": "2023-05-02",
+   "ticker": "010060.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 18,
+   "date": "2023-05-08",
+   "ticker": "010060.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 19,
+   "date": "2023-05-15",
+   "ticker": "010060.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 20,
+   "date": "2023-05-22",
+   "ticker": "010060.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 25,
+   "date": "2024-06-24",
+   "ticker": "003410.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 0,
+   "date": "2024-07-01",
+   "ticker": "003410.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 1,
+   "date": "2024-07-08",
+   "ticker": "003410.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 2,
+   "date": "2024-07-15",
+   "ticker": "003410.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 26,
+   "account": 3,
+   "date": "2024-07-22",
+   "ticker": "003410.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 26,
+   "account": 4,
+   "date": "2024-07-29",
+   "ticker": "003410.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 26,
+   "account": 9,
+   "date": "2024-09-02",
+   "ticker": "012450.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 10,
+   "date": "2024-09-09",
+   "ticker": "012450.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 11,
+   "date": "2024-09-19",
+   "ticker": "012450.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 12,
+   "date": "2024-09-23",
+   "ticker": "012450.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 23,
+   "date": "2024-12-09",
+   "ticker": "007070.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 24,
+   "date": "2024-12-16",
+   "ticker": "007070.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 18,
+   "date": "2025-11-03",
+   "ticker": "207940.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 19,
+   "date": "2025-11-10",
+   "ticker": "207940.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 20,
+   "date": "2025-11-17",
+   "ticker": "207940.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 22,
+   "date": "2025-12-01",
+   "ticker": "010620.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 23,
+   "date": "2025-12-08",
+   "ticker": "010620.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 24,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 26,
+   "account": 25,
+   "date": "2025-12-22",
+   "ticker": "010620.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 26,
+   "account": 0,
+   "date": "2025-12-29",
+   "ticker": "010620.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 26,
+   "account": 1,
+   "date": "2026-01-05",
+   "ticker": "010620.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 26,
+   "account": 19,
+   "date": "2026-05-11",
+   "ticker": "000500.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 5,
+   "date": "2026-08-03",
+   "ticker": "000880.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 6,
+   "date": "2026-08-10",
+   "ticker": "000880.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 7,
+   "date": "2026-08-18",
+   "ticker": "000880.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 26,
+   "account": 8,
+   "date": "2026-08-24",
+   "ticker": "000880.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 16,
+   "date": "2018-04-30",
+   "ticker": "005930.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 16,
+   "date": "2018-04-30",
+   "ticker": "005935.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 16,
+   "date": "2018-04-30",
+   "ticker": "012630.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 17,
+   "date": "2018-05-08",
+   "ticker": "012630.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 18,
+   "date": "2018-05-14",
+   "ticker": "012630.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 19,
+   "date": "2018-05-21",
+   "ticker": "012630.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 20,
+   "date": "2018-05-28",
+   "ticker": "012630.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 21,
+   "date": "2018-06-04",
+   "ticker": "004800.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 21,
+   "date": "2018-06-04",
+   "ticker": "012630.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 22,
+   "date": "2018-06-11",
+   "ticker": "004800.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 22,
+   "date": "2018-06-11",
+   "ticker": "012630.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 23,
+   "date": "2018-06-18",
+   "ticker": "004800.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 24,
+   "date": "2018-06-25",
+   "ticker": "004800.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 25,
+   "date": "2018-07-02",
+   "ticker": "004800.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 26,
+   "date": "2018-07-09",
+   "ticker": "003410.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 26,
+   "date": "2018-07-09",
+   "ticker": "004800.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 39,
+   "date": "2018-10-08",
+   "ticker": "035420.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 45,
+   "date": "2018-11-19",
+   "ticker": "207940.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 46,
+   "date": "2018-11-26",
+   "ticker": "207940.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 47,
+   "date": "2018-12-03",
+   "ticker": "207940.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 48,
+   "date": "2018-12-10",
+   "ticker": "207940.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 1,
+   "date": "2019-01-14",
+   "ticker": "000030.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 2,
+   "date": "2019-01-21",
+   "ticker": "000030.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 3,
+   "date": "2019-01-28",
+   "ticker": "000030.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 4,
+   "date": "2019-02-07",
+   "ticker": "000030.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 5,
+   "date": "2019-02-11",
+   "ticker": "000030.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 6,
+   "date": "2019-02-18",
+   "ticker": "000030.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 52,
+   "account": 7,
+   "date": "2019-02-25",
+   "ticker": "000030.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 52,
+   "account": 8,
+   "date": "2019-03-04",
+   "ticker": "000030.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 52,
+   "account": 38,
+   "date": "2019-09-30",
+   "ticker": "000150.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 39,
+   "date": "2019-10-07",
+   "ticker": "000150.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 40,
+   "date": "2019-10-14",
+   "ticker": "000150.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 51,
+   "date": "2019-12-30",
+   "ticker": "002380.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 0,
+   "date": "2020-01-06",
+   "ticker": "002380.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 1,
+   "date": "2020-01-13",
+   "ticker": "002380.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 2,
+   "date": "2020-01-20",
+   "ticker": "002380.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 3,
+   "date": "2020-01-28",
+   "ticker": "079440.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 4,
+   "date": "2020-02-03",
+   "ticker": "079440.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 5,
+   "date": "2020-02-10",
+   "ticker": "079440.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 6,
+   "date": "2020-02-17",
+   "ticker": "079440.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 52,
+   "account": 7,
+   "date": "2020-02-24",
+   "ticker": "079440.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 52,
+   "account": 8,
+   "date": "2020-03-02",
+   "ticker": "079440.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 52,
+   "account": 13,
+   "date": "2020-04-06",
+   "ticker": "000100.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 45,
+   "date": "2020-11-16",
+   "ticker": "003410.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 46,
+   "date": "2020-11-23",
+   "ticker": "003410.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 47,
+   "date": "2020-11-30",
+   "ticker": "003410.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 0,
+   "date": "2021-01-04",
+   "ticker": "000210.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 1,
+   "date": "2021-01-11",
+   "ticker": "000210.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 2,
+   "date": "2021-01-18",
+   "ticker": "000210.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 9,
+   "date": "2021-03-08",
+   "ticker": "011790.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 10,
+   "date": "2021-03-15",
+   "ticker": "011790.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 11,
+   "date": "2021-03-22",
+   "ticker": "011790.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 14,
+   "date": "2021-04-12",
+   "ticker": "035720.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 14,
+   "date": "2021-04-12",
+   "ticker": "267250.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 17,
+   "date": "2021-05-03",
+   "ticker": "003550.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 18,
+   "date": "2021-05-10",
+   "ticker": "003550.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 18,
+   "date": "2021-05-10",
+   "ticker": "007700.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 19,
+   "date": "2021-05-17",
+   "ticker": "003550.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 19,
+   "date": "2021-05-17",
+   "ticker": "007700.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 20,
+   "date": "2021-05-24",
+   "ticker": "003550.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 26,
+   "date": "2021-07-05",
+   "ticker": "042670.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 27,
+   "date": "2021-07-12",
+   "ticker": "042670.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 28,
+   "date": "2021-07-19",
+   "ticker": "042670.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 29,
+   "date": "2021-07-26",
+   "ticker": "010140.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 30,
+   "date": "2021-08-02",
+   "ticker": "010140.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 31,
+   "date": "2021-08-09",
+   "ticker": "010140.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 43,
+   "date": "2021-11-01",
+   "ticker": "017670.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 44,
+   "date": "2021-11-08",
+   "ticker": "017670.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 45,
+   "date": "2021-11-15",
+   "ticker": "017670.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 46,
+   "date": "2021-11-22",
+   "ticker": "017670.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 14,
+   "date": "2022-04-11",
+   "ticker": "383220.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 4,
+   "date": "2023-01-30",
+   "ticker": "000060.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 5,
+   "date": "2023-02-06",
+   "ticker": "000060.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 6,
+   "date": "2023-02-13",
+   "ticker": "000060.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 7,
+   "date": "2023-02-20",
+   "ticker": "000060.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 8,
+   "date": "2023-02-27",
+   "ticker": "000060.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 52,
+   "account": 8,
+   "date": "2023-02-27",
+   "ticker": "009830.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 9,
+   "date": "2023-03-06",
+   "ticker": "009830.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 10,
+   "date": "2023-03-13",
+   "ticker": "009830.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 11,
+   "date": "2023-03-20",
+   "ticker": "009830.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 12,
+   "date": "2023-03-27",
+   "ticker": "009830.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 13,
+   "date": "2023-04-03",
+   "ticker": "008560.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 14,
+   "date": "2023-04-10",
+   "ticker": "008560.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 15,
+   "date": "2023-04-17",
+   "ticker": "008560.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 16,
+   "date": "2023-04-24",
+   "ticker": "008560.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 17,
+   "date": "2023-05-02",
+   "ticker": "008560.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 52,
+   "account": 17,
+   "date": "2023-05-02",
+   "ticker": "010060.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 18,
+   "date": "2023-05-08",
+   "ticker": "010060.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 19,
+   "date": "2023-05-15",
+   "ticker": "010060.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 20,
+   "date": "2023-05-22",
+   "ticker": "010060.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 25,
+   "date": "2024-06-24",
+   "ticker": "003410.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 26,
+   "date": "2024-07-01",
+   "ticker": "003410.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 27,
+   "date": "2024-07-08",
+   "ticker": "003410.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 28,
+   "date": "2024-07-15",
+   "ticker": "003410.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 52,
+   "account": 29,
+   "date": "2024-07-22",
+   "ticker": "003410.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 52,
+   "account": 30,
+   "date": "2024-07-29",
+   "ticker": "003410.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 52,
+   "account": 35,
+   "date": "2024-09-02",
+   "ticker": "012450.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 36,
+   "date": "2024-09-09",
+   "ticker": "012450.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 37,
+   "date": "2024-09-19",
+   "ticker": "012450.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 38,
+   "date": "2024-09-23",
+   "ticker": "012450.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 49,
+   "date": "2024-12-09",
+   "ticker": "007070.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 50,
+   "date": "2024-12-16",
+   "ticker": "007070.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 44,
+   "date": "2025-11-03",
+   "ticker": "207940.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 45,
+   "date": "2025-11-10",
+   "ticker": "207940.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 46,
+   "date": "2025-11-17",
+   "ticker": "207940.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 48,
+   "date": "2025-12-01",
+   "ticker": "010620.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 49,
+   "date": "2025-12-08",
+   "ticker": "010620.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 50,
+   "date": "2025-12-15",
+   "ticker": "010620.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 52,
+   "account": 51,
+   "date": "2025-12-22",
+   "ticker": "010620.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 52,
+   "account": 0,
+   "date": "2025-12-29",
+   "ticker": "010620.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 52,
+   "account": 1,
+   "date": "2026-01-05",
+   "ticker": "010620.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": false
+  },
+  {
+   "L": 52,
+   "account": 19,
+   "date": "2026-05-11",
+   "ticker": "000500.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 31,
+   "date": "2026-08-03",
+   "ticker": "000880.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 32,
+   "date": "2026-08-10",
+   "ticker": "000880.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 33,
+   "date": "2026-08-18",
+   "ticker": "000880.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  },
+  {
+   "L": 52,
+   "account": 34,
+   "date": "2026-08-24",
+   "ticker": "000880.KS",
+   "state": "TARGET_NOT_TRADABLE_AT_EXECUTION",
+   "finiteRawQuote": true
+  }
+ ]
+}

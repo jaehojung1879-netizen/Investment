@@ -1,0 +1,240 @@
+{
+ "label": "POST_HOC_EXPLORATORY_SEPARATE_HYPOTHESIS",
+ "rule": "ZG1 trailing-252-session S2 net excess over 069500 <= 0 -> 0 names",
+ "decisions": {
+  "total": 454,
+  "zeroNames": 208,
+  "abstain": 0
+ },
+ "byYearZeroShare": {
+  "2018": 0.4038,
+  "2019": 0.1154,
+  "2020": 1.0,
+  "2021": 0.4231,
+  "2022": 0.0192,
+  "2023": 0.6731,
+  "2024": 0.5385,
+  "2025": 0.25,
+  "2026": 0.7838
+ },
+ "runs": {
+  "OCI_CORRECTED": {
+   "S2": {
+    "accounts": 4,
+    "start": "2018-01-08",
+    "end": "2026-09-14",
+    "cagr": 0.196523,
+    "etfCagr": 0.169576,
+    "excessCagr": 0.026947,
+    "sharpe": 0.746855,
+    "mdd": -0.479937,
+    "vol": 0.257408,
+    "trackingError": 0.19951,
+    "informationRatio": 0.093696,
+    "oneWayTurnoverPerYear": 4.149154,
+    "costPerYear": 0.013377,
+    "tradeDates": 454,
+    "vsEtfDailyBootstrap": {
+     "annualisedMeanDiff": 0.01869322033102783,
+     "ci95": [
+      -0.08785202658976125,
+      0.12528880899053232
+     ],
+     "twoSidedP": 0.711
+    }
+   },
+   "S2_ZERO_GATE": {
+    "accounts": 4,
+    "start": "2018-01-08",
+    "end": "2026-09-14",
+    "cagr": 0.158342,
+    "etfCagr": 0.169576,
+    "excessCagr": -0.011234,
+    "sharpe": 0.60451,
+    "mdd": -0.402228,
+    "vol": 0.269294,
+    "trackingError": 0.098045,
+    "informationRatio": -0.109774,
+    "oneWayTurnoverPerYear": 3.721733,
+    "costPerYear": 0.009676,
+    "tradeDates": 454,
+    "vsEtfDailyBootstrap": {
+     "annualisedMeanDiff": -0.01076282397743329,
+     "ci95": [
+      -0.06409272992337975,
+      0.037069617703581956
+     ],
+     "twoSidedP": 0.661
+    }
+   },
+   "ETF_ONLY": {
+    "accounts": 4,
+    "start": "2018-01-08",
+    "end": "2026-09-14",
+    "cagr": 0.169576,
+    "etfCagr": 0.169576,
+    "excessCagr": 0.0,
+    "sharpe": 0.633386,
+    "mdd": -0.408055,
+    "vol": 0.274009,
+    "trackingError": 0.0,
+    "informationRatio": 0.068306,
+    "oneWayTurnoverPerYear": 0.0,
+    "costPerYear": 0.0,
+    "tradeDates": 454
+   },
+   "gateMinusS2": {
+    "annualisedMeanDiff": -0.02945604430846112,
+    "ci95": [
+     -0.10921906526266079,
+     0.047481279809684744
+    ],
+    "twoSidedP": 0.43
+   },
+   "calendarYearReturns": {
+    "S2": {
+     "2018": -0.064089,
+     "2019": 0.025317,
+     "2020": 0.059898,
+     "2021": 0.28118,
+     "2022": -0.187823,
+     "2023": 0.110238,
+     "2024": -0.062362,
+     "2025": 0.972347,
+     "2026": 1.09684
+    },
+    "S2_ZERO_GATE": {
+     "2018": -0.123393,
+     "2019": 0.054137,
+     "2020": 0.355328,
+     "2021": 0.084969,
+     "2022": -0.192604,
+     "2023": 0.169505,
+     "2024": -0.157244,
+     "2025": 0.87037,
+     "2026": 0.712739
+    },
+    "ETF_ONLY": {
+     "2018": -0.190376,
+     "2019": 0.143994,
+     "2020": 0.355328,
+     "2021": 0.029991,
+     "2022": -0.241499,
+     "2023": 0.248424,
+     "2024": -0.093715,
+     "2025": 0.942069,
+     "2026": 0.744093
+    }
+   }
+  },
+  "REPLAY_V16_UNCORRECTED": {
+   "S2": {
+    "accounts": 4,
+    "start": "2018-01-08",
+    "end": "2026-09-14",
+    "cagr": 0.19888,
+    "etfCagr": 0.169576,
+    "excessCagr": 0.029304,
+    "sharpe": 0.754932,
+    "mdd": -0.479937,
+    "vol": 0.257185,
+    "trackingError": 0.199109,
+    "informationRatio": 0.10348,
+    "oneWayTurnoverPerYear": 4.150232,
+    "costPerYear": 0.01338,
+    "tradeDates": 454,
+    "vsEtfDailyBootstrap": {
+     "annualisedMeanDiff": 0.02060382550799471,
+     "ci95": [
+      -0.0865181616480403,
+      0.12611653494237468
+     ],
+     "twoSidedP": 0.685
+    }
+   },
+   "S2_ZERO_GATE": {
+    "accounts": 4,
+    "start": "2018-01-08",
+    "end": "2026-09-14",
+    "cagr": 0.159505,
+    "etfCagr": 0.169576,
+    "excessCagr": -0.010071,
+    "sharpe": 0.608248,
+    "mdd": -0.402278,
+    "vol": 0.269283,
+    "trackingError": 0.097783,
+    "informationRatio": -0.099841,
+    "oneWayTurnoverPerYear": 3.720489,
+    "costPerYear": 0.009676,
+    "tradeDates": 454,
+    "vsEtfDailyBootstrap": {
+     "annualisedMeanDiff": -0.009762691739117431,
+     "ci95": [
+      -0.06250952380034176,
+      0.03769353589791755
+     ],
+     "twoSidedP": 0.694
+    }
+   },
+   "ETF_ONLY": {
+    "accounts": 4,
+    "start": "2018-01-08",
+    "end": "2026-09-14",
+    "cagr": 0.169576,
+    "etfCagr": 0.169576,
+    "excessCagr": 0.0,
+    "sharpe": 0.633386,
+    "mdd": -0.408055,
+    "vol": 0.274009,
+    "trackingError": 0.0,
+    "informationRatio": 0.068306,
+    "oneWayTurnoverPerYear": 0.0,
+    "costPerYear": 0.0,
+    "tradeDates": 454
+   },
+   "gateMinusS2": {
+    "annualisedMeanDiff": -0.030366517247112142,
+    "ci95": [
+     -0.110074062812441,
+     0.04653646269151697
+    ],
+    "twoSidedP": 0.413
+   },
+   "calendarYearReturns": {
+    "S2": {
+     "2018": -0.064089,
+     "2019": 0.025317,
+     "2020": 0.059898,
+     "2021": 0.28118,
+     "2022": -0.187823,
+     "2023": 0.128972,
+     "2024": -0.062366,
+     "2025": 0.972359,
+     "2026": 1.096633
+    },
+    "S2_ZERO_GATE": {
+     "2018": -0.123393,
+     "2019": 0.054137,
+     "2020": 0.355328,
+     "2021": 0.084969,
+     "2022": -0.192604,
+     "2023": 0.179852,
+     "2024": -0.15733,
+     "2025": 0.871262,
+     "2026": 0.711537
+    },
+    "ETF_ONLY": {
+     "2018": -0.190376,
+     "2019": 0.143994,
+     "2020": 0.355328,
+     "2021": 0.029991,
+     "2022": -0.241499,
+     "2023": 0.248424,
+     "2024": -0.093715,
+     "2025": 0.942069,
+     "2026": 0.744093
+    }
+   }
+  }
+ }
+}

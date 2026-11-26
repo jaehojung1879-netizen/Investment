@@ -1,0 +1,190 @@
+{
+ "full": {
+  "dailyLabelled": 5053,
+  "dailyPositive": 882,
+  "dailyRiskSet": 5179,
+  "episodes": [
+   {
+    "priorPeak": "1998-07-17",
+    "recovered": "1998-11-23",
+    "sessionsPeakToStart": 31,
+    "start": "1998-08-31",
+    "trough": "1998-08-31",
+    "troughDrawdown": -0.19030047443331577
+   },
+   {
+    "priorPeak": "2000-03-24",
+    "recovered": "2006-10-26",
+    "sessionsPeakToStart": 188,
+    "start": "2000-12-20",
+    "trough": "2002-10-09",
+    "troughDrawdown": -0.4750257117040466
+   },
+   {
+    "priorPeak": "2007-10-09",
+    "recovered": "2012-08-16",
+    "sessionsPeakToStart": 70,
+    "start": "2008-01-18",
+    "trough": "2009-03-09",
+    "troughDrawdown": -0.5520110475101658
+   },
+   {
+    "priorPeak": "2018-09-20",
+    "recovered": "2019-04-12",
+    "sessionsPeakToStart": 63,
+    "start": "2018-12-20",
+    "trough": "2018-12-24",
+    "troughDrawdown": -0.19338744091609994
+   },
+   {
+    "priorPeak": "2020-02-19",
+    "recovered": "2020-08-10",
+    "sessionsPeakToStart": 13,
+    "start": "2020-03-09",
+    "trough": "2020-03-23",
+    "troughDrawdown": -0.336999406658571
+   },
+   {
+    "priorPeak": "2022-01-03",
+    "recovered": "2023-12-13",
+    "sessionsPeakToStart": 87,
+    "start": "2022-05-09",
+    "trough": "2022-10-12",
+    "troughDrawdown": -0.2449719156533825
+   },
+   {
+    "priorPeak": "2025-02-19",
+    "recovered": "2025-06-26",
+    "sessionsPeakToStart": 32,
+    "start": "2025-04-04",
+    "trough": "2025-04-08",
+    "troughDrawdown": -0.18755385510342293
+   }
+  ],
+  "independentEpisodes": 7,
+  "monthEndCensored": 7,
+  "monthEndLabelled": 242,
+  "monthEndPositive": 41,
+  "monthEndRiskSet": 249,
+  "unusedDailyRiskSessions": 126,
+  "window": [
+   "1993-01-29",
+   "2026-11-09"
+  ]
+ },
+ "label": {
+  "episodeEnd": "full recovery of the start peak",
+  "horizonSessions": 126,
+  "threshold": -0.15
+ },
+ "pitCreditWindow": {
+  "dailyLabelled": 4040,
+  "dailyPositive": 882,
+  "dailyRiskSet": 4166,
+  "episodes": [
+   {
+    "priorPeak": "1998-07-17",
+    "recovered": "1998-11-23",
+    "sessionsPeakToStart": 31,
+    "start": "1998-08-31",
+    "trough": "1998-08-31",
+    "troughDrawdown": -0.19030047443331577
+   },
+   {
+    "priorPeak": "2000-03-24",
+    "recovered": "2006-10-26",
+    "sessionsPeakToStart": 188,
+    "start": "2000-12-20",
+    "trough": "2002-10-09",
+    "troughDrawdown": -0.4750257117040466
+   },
+   {
+    "priorPeak": "2007-10-09",
+    "recovered": "2012-08-16",
+    "sessionsPeakToStart": 70,
+    "start": "2008-01-18",
+    "trough": "2009-03-09",
+    "troughDrawdown": -0.5520110475101658
+   },
+   {
+    "priorPeak": "2018-09-20",
+    "recovered": "2019-04-12",
+    "sessionsPeakToStart": 63,
+    "start": "2018-12-20",
+    "trough": "2018-12-24",
+    "troughDrawdown": -0.19338744091609994
+   },
+   {
+    "priorPeak": "2020-02-19",
+    "recovered": "2020-08-10",
+    "sessionsPeakToStart": 13,
+    "start": "2020-03-09",
+    "trough": "2020-03-23",
+    "troughDrawdown": -0.336999406658571
+   },
+   {
+    "priorPeak": "2022-01-03",
+    "recovered": "2023-12-13",
+    "sessionsPeakToStart": 87,
+    "start": "2022-05-09",
+    "trough": "2022-10-12",
+    "troughDrawdown": -0.2449719156533825
+   },
+   {
+    "priorPeak": "2025-02-19",
+    "recovered": "2025-06-26",
+    "sessionsPeakToStart": 32,
+    "start": "2025-04-04",
+    "trough": "2025-04-08",
+    "troughDrawdown": -0.18755385510342293
+   }
+  ],
+  "independentEpisodes": 7,
+  "monthEndCensored": 7,
+  "monthEndLabelled": 194,
+  "monthEndPositive": 41,
+  "monthEndRiskSet": 201,
+  "unusedDailyRiskSessions": 126,
+  "window": [
+   "1997-01-31",
+   "2026-11-09"
+  ]
+ },
+ "power": {
+  "budget_0.1": {
+   "alarmBudget": 0.1,
+   "criticalHits": 3,
+   "episodes": 7,
+   "power": {
+    "0.5": 0.7734375,
+    "0.7": 0.9712045,
+    "0.9": 0.9998235
+   },
+   "sizeAtCritical": 0.02569150000000001
+  },
+  "budget_0.2": {
+   "alarmBudget": 0.2,
+   "criticalHits": 4,
+   "episodes": 7,
+   "power": {
+    "0.5": 0.5,
+    "0.7": 0.873964,
+    "0.9": 0.9972719999999999
+   },
+   "sizeAtCritical": 0.03334400000000001
+  },
+  "budget_0.3": {
+   "alarmBudget": 0.3,
+   "criticalHits": 5,
+   "episodes": 7,
+   "power": {
+    "0.5": 0.2265625,
+    "0.7": 0.6470695,
+    "0.9": 0.9743085
+   },
+   "sizeAtCritical": 0.02879549999999999
+  }
+ },
+ "signalReads": 0,
+ "stage": "STAGE_1_LABEL_CENSUS"
+}

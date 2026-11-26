@@ -1,0 +1,488 @@
+{
+ "events": {
+  "2008_credit": {
+   "anchor": "2007-08-09",
+   "cause": "credit/funding: BNP Paribas froze three funds citing subprime valuation (2007-08-09)",
+   "exAnte": {
+    "breakeven10y": [
+     "2007-08-08",
+     2.26
+    ],
+    "creditSpreadAsOfPriorMonthEnd": {
+     "baaMinusGs10": 1.6000000000000005,
+     "decisionMonth": "2007-07"
+    },
+    "drawdownFromPeak": -0.03379122490275199,
+    "priceDate": "2007-08-08",
+    "realYield10y": [
+     "2007-08-08",
+     2.58
+    ],
+    "spf": {
+     "preCurrentQuarter": 1215.0,
+     "preForecastOfTarget": 1283.5,
+     "preReleaseApprox": "2007-05-15",
+     "preSurvey": "2007Q2",
+     "targetQuarter": "2008Q2"
+    },
+    "vix": [
+     "2007-08-08",
+     21.45
+    ],
+    "vix3m": null,
+    "vixOverVix3m": null
+   },
+   "exPost": {
+    "breakevenChange": {
+     "12m": -0.02,
+     "1m": -0.07,
+     "3m": 0.19,
+     "6m": 0.01
+    },
+    "creditSpreadMonthEnds": {
+     "2007-07": 1.6000000000000005,
+     "2007-08": 1.6500000000000004,
+     "2007-09": 1.9800000000000004,
+     "2007-10": 2.0700000000000003,
+     "2007-11": 1.9500000000000002,
+     "2007-12": 2.25,
+     "2008-01": 2.5500000000000007,
+     "2008-02": 2.8,
+     "2008-03": 3.08,
+     "2008-04": 3.38,
+     "2008-05": 3.2899999999999996,
+     "2008-06": 3.05,
+     "2008-07": 2.9700000000000006,
+     "2008-08": 3.1500000000000004
+    },
+    "jkShocks": [
+     {
+      "CBI_pm": 0.0,
+      "MP_pm": 0.01206259,
+      "month": "2007-06"
+     },
+     {
+      "CBI_pm": 0.0,
+      "MP_pm": 0.0,
+      "month": "2007-07"
+     },
+     {
+      "CBI_pm": -0.02445092,
+      "MP_pm": -0.01962905,
+      "month": "2007-08"
+     },
+     {
+      "CBI_pm": -0.0,
+      "MP_pm": -0.20509211,
+      "month": "2007-09"
+     },
+     {
+      "CBI_pm": 0.0,
+      "MP_pm": 0.05345248,
+      "month": "2007-10"
+     },
+     {
+      "CBI_pm": 0.0,
+      "MP_pm": 0.0,
+      "month": "2007-11"
+     },
+     {
+      "CBI_pm": 0.0,
+      "MP_pm": 0.0378258,
+      "month": "2007-12"
+     },
+     {
+      "CBI_pm": -0.0,
+      "MP_pm": -0.12098093,
+      "month": "2008-01"
+     },
+     {
+      "CBI_pm": 0.0,
+      "MP_pm": 0.0,
+      "month": "2008-02"
+     }
+    ],
+    "maxDrawdownWithin12m": -0.17628654560561152,
+    "realYieldChange": {
+     "12m": -0.9,
+     "1m": -0.39,
+     "3m": -0.65,
+     "6m": -1.11
+    },
+    "shillerEarnings": {
+     "+12m": 47.75666666666667,
+     "+24m": 10.863333333333333,
+     "+6m": 62.32,
+     "base": 82.81333333333333
+    },
+    "spfSameTargetRevisions": [
+     {
+      "aheadQuarters": 3,
+      "forecastOfTarget": 1171.95,
+      "releaseApprox": "2007-08-15",
+      "revisionVsPre": -0.08691079080638875,
+      "survey": "2007Q3"
+     },
+     {
+      "aheadQuarters": 2,
+      "forecastOfTarget": null,
+      "releaseApprox": "2007-11-15",
+      "revisionVsPre": null,
+      "survey": "2007Q4"
+     },
+     {
+      "aheadQuarters": 1,
+      "forecastOfTarget": 1209.81,
+      "releaseApprox": "2008-02-15",
+      "revisionVsPre": -0.057413322945072065,
+      "survey": "2008Q1"
+     },
+     {
+      "aheadQuarters": 0,
+      "forecastOfTarget": 1135.1796,
+      "releaseApprox": "2008-05-15",
+      "revisionVsPre": -0.11555932995714846,
+      "survey": "2008Q2"
+     }
+    ],
+    "spyTotalReturn": {
+     "12m": {
+      "date": "2008-08-07",
+      "value": -0.13530168237484108
+     },
+     "1m": {
+      "date": "2007-09-07",
+      "value": -0.025095070819498133
+     },
+     "3m": {
+      "date": "2007-11-06",
+      "value": 0.01975037323172768
+     },
+     "6m": {
+      "date": "2008-02-07",
+      "value": -0.09719157139507262
+     }
+    },
+    "vix": {
+     "12m": 21.15,
+     "1m": 26.23,
+     "3m": 21.39,
+     "6m": 27.66
+    }
+   },
+   "firstReaction": "2007-08-09",
+   "minus15": "2008-01-18"
+  },
+  "2020_pandemic": {
+   "anchor": "2020-02-24",
+   "cause": "exogenous real shock: COVID-19 spread outside China; liquidity stress in March",
+   "exAnte": {
+    "breakeven10y": [
+     "2020-02-21",
+     1.61
+    ],
+    "creditSpreadAsOfPriorMonthEnd": {
+     "baaMinusGs10": 2.0199999999999996,
+     "decisionMonth": "2020-01"
+    },
+    "drawdownFromPeak": -0.014364205840768918,
+    "priceDate": "2020-02-21",
+    "realYield10y": [
+     "2020-02-21",
+     -0.15
+    ],
+    "spf": {
+     "preCurrentQuarter": 1885.6,
+     "preForecastOfTarget": 1927.5827,
+     "preReleaseApprox": "2020-02-15",
+     "preSurvey": "2020Q1",
+     "targetQuarter": "2021Q1"
+    },
+    "vix": [
+     "2020-02-21",
+     17.08
+    ],
+    "vix3m": [
+     "2020-02-21",
+     17.61
+    ],
+    "vixOverVix3m": 0.9699034639409426
+   },
+   "exPost": {
+    "breakevenChange": {
+     "12m": 0.55,
+     "1m": -0.81,
+     "3m": -0.47,
+     "6m": 0.01
+    },
+    "creditSpreadMonthEnds": {
+     "2020-01": 2.0199999999999996,
+     "2020-02": 2.01,
+     "2020-03": 2.11,
+     "2020-04": 3.42,
+     "2020-05": 3.4699999999999998,
+     "2020-06": 3.2800000000000002,
+     "2020-07": 2.91,
+     "2020-08": 2.69,
+     "2020-09": 2.62,
+     "2020-10": 2.6799999999999997,
+     "2020-11": 2.65,
+     "2020-12": 2.4299999999999997,
+     "2021-01": 2.23,
+     "2021-02": 2.16,
+     "2021-03": 2.16
+    },
+    "jkShocks": [
+     {
+      "CBI_pm": -0.0,
+      "MP_pm": -0.00362073,
+      "month": "2019-12"
+     },
+     {
+      "CBI_pm": 0.00889675,
+      "MP_pm": 0.0,
+      "month": "2020-01"
+     },
+     {
+      "CBI_pm": 0.0,
+      "MP_pm": 0.0,
+      "month": "2020-02"
+     },
+     {
+      "CBI_pm": -0.0,
+      "MP_pm": -0.16491989,
+      "month": "2020-03"
+     },
+     {
+      "CBI_pm": -0.01422855,
+      "MP_pm": -0.0,
+      "month": "2020-04"
+     },
+     {
+      "CBI_pm": 0.0,
+      "MP_pm": 0.0,
+      "month": "2020-05"
+     },
+     {
+      "CBI_pm": -0.0,
+      "MP_pm": -0.00227921,
+      "month": "2020-06"
+     },
+     {
+      "CBI_pm": -0.0,
+      "MP_pm": -0.0041468,
+      "month": "2020-07"
+     },
+     {
+      "CBI_pm": 0.0,
+      "MP_pm": 0.0,
+      "month": "2020-08"
+     }
+    ],
+    "maxDrawdownWithin12m": -0.3273371388597113,
+    "realYieldChange": {
+     "12m": -0.64,
+     "1m": 0.11,
+     "3m": -0.31,
+     "6m": -0.82
+    },
+    "shillerEarnings": {
+     "+12m": 116.84333333333332,
+     "+24m": 197.89666666666665,
+     "+6m": 98.55666666666667,
+     "base": 131.75666666666666
+    },
+    "spfSameTargetRevisions": [
+     {
+      "aheadQuarters": 3,
+      "forecastOfTarget": 1808.3748,
+      "releaseApprox": "2020-05-15",
+      "revisionVsPre": -0.0618432091136738,
+      "survey": "2020Q2"
+     },
+     {
+      "aheadQuarters": 2,
+      "forecastOfTarget": null,
+      "releaseApprox": "2020-08-15",
+      "revisionVsPre": null,
+      "survey": "2020Q3"
+     },
+     {
+      "aheadQuarters": 1,
+      "forecastOfTarget": 1747.7616,
+      "releaseApprox": "2020-11-15",
+      "revisionVsPre": -0.09328839691287949,
+      "survey": "2020Q4"
+     },
+     {
+      "aheadQuarters": 0,
+      "forecastOfTarget": 1988.6095,
+      "releaseApprox": "2021-02-15",
+      "revisionVsPre": 0.03165975706256341,
+      "survey": "2021Q1"
+     }
+    ],
+    "spyTotalReturn": {
+     "12m": {
+      "date": "2021-02-22",
+      "value": 0.18266843118094633
+     },
+     "1m": {
+      "date": "2020-03-23",
+      "value": -0.3273371388597113
+     },
+     "3m": {
+      "date": "2020-05-21",
+      "value": -0.11031697469104251
+     },
+     "6m": {
+      "date": "2020-08-20",
+      "value": 0.025143182612165083
+     }
+    },
+    "vix": {
+     "12m": 23.45,
+     "1m": 61.59,
+     "3m": 29.53,
+     "6m": 22.72
+    }
+   },
+   "firstReaction": "2020-02-24",
+   "minus15": "2020-03-09"
+  },
+  "2025_tariff": {
+   "anchor": "2025-04-02",
+   "cause": "trade policy: broad US tariff announcement after the close on 2025-04-02",
+   "exAnte": {
+    "breakeven10y": [
+     "2025-04-02",
+     2.32
+    ],
+    "creditSpreadAsOfPriorMonthEnd": {
+     "baaMinusGs10": 1.4699999999999998,
+     "decisionMonth": "2025-03"
+    },
+    "drawdownFromPeak": -0.07621232791639143,
+    "priceDate": "2025-04-02",
+    "realYield10y": [
+     "2025-04-02",
+     1.88
+    ],
+    "spf": {
+     "preCurrentQuarter": 3184.3121,
+     "preForecastOfTarget": 3282.9509,
+     "preReleaseApprox": "2025-02-15",
+     "preSurvey": "2025Q1",
+     "targetQuarter": "2026Q1"
+    },
+    "vix": [
+     "2025-04-02",
+     21.51
+    ],
+    "vix3m": [
+     "2025-04-02",
+     21.45
+    ],
+    "vixOverVix3m": 1.002797202797203
+   },
+   "exPost": {
+    "breakevenChange": {
+     "12m": 0.04,
+     "1m": -0.05,
+     "3m": 0.01,
+     "6m": 0.02
+    },
+    "creditSpreadMonthEnds": {
+     "2025-03": 1.4699999999999998,
+     "2025-04": 1.6499999999999995,
+     "2025-05": 1.8999999999999995,
+     "2025-06": 1.87,
+     "2025-07": 1.7700000000000005,
+     "2025-08": 1.71,
+     "2025-09": 1.7400000000000002,
+     "2025-10": 1.71,
+     "2025-11": 1.6800000000000006,
+     "2025-12": 1.7700000000000005,
+     "2026-01": 1.7600000000000007,
+     "2026-02": 1.67,
+     "2026-03": 1.6799999999999997,
+     "2026-04": 1.79
+    },
+    "jkShocks": "NOT_AVAILABLE (series ends 2024-01)",
+    "maxDrawdownWithin12m": -0.12052718449457123,
+    "realYieldChange": {
+     "12m": 0.1,
+     "1m": 0.18,
+     "3m": 0.14,
+     "6m": -0.12
+    },
+    "shillerEarnings": {
+     "+12m": null,
+     "+24m": null,
+     "+6m": null,
+     "base": null
+    },
+    "spfSameTargetRevisions": [
+     {
+      "aheadQuarters": 3,
+      "forecastOfTarget": 3267.3209,
+      "releaseApprox": "2025-05-15",
+      "revisionVsPre": -0.004760960634531464,
+      "survey": "2025Q2"
+     },
+     {
+      "aheadQuarters": 2,
+      "forecastOfTarget": null,
+      "releaseApprox": "2025-08-15",
+      "revisionVsPre": null,
+      "survey": "2025Q3"
+     },
+     {
+      "aheadQuarters": 1,
+      "forecastOfTarget": 3367.9841,
+      "releaseApprox": "2025-11-15",
+      "revisionVsPre": 0.025901453475895897,
+      "survey": "2025Q4"
+     },
+     {
+      "aheadQuarters": 0,
+      "forecastOfTarget": 3527.5957,
+      "releaseApprox": "2026-02-15",
+      "revisionVsPre": 0.07451978645187785,
+      "survey": "2026Q1"
+     }
+    ],
+    "spyTotalReturn": {
+     "12m": {
+      "date": "2026-04-06",
+      "value": 0.18062875741348772
+     },
+     "1m": {
+      "date": "2025-05-02",
+      "value": 0.0039679553547720126
+     },
+     "3m": {
+      "date": "2025-07-03",
+      "value": 0.11102027703730943
+     },
+     "6m": {
+      "date": "2025-10-02",
+      "value": 0.19226061031303354
+     }
+    },
+    "vix": {
+     "12m": 24.17,
+     "1m": 22.68,
+     "3m": 16.38,
+     "6m": 16.63
+    }
+   },
+   "firstReaction": "2025-04-03",
+   "minus15": "2025-04-04"
+  }
+ },
+ "evidenceClass": "DESCRIPTIVE_CASE_STUDY_ON_EXPOSED_HISTORY",
+ "noInvestmentComputation": true,
+ "noStatistics": true,
+ "study": "track-b-pilot"
+}

@@ -1,0 +1,45 @@
+{
+  "source": "DART official public website",
+  "probeDateUTC": "2026-11-19",
+  "authenticatedOpenDartKeyAvailable": false,
+  "listProbe": {
+    "url": "https://dart.fss.or.kr/dsab001/searchCorp.ax?currentPage=1&maxResults=100&sort=date&series=desc&pageGubun=corp&startDate=20250101&endDate=20250131&publicType=D002",
+    "sha256": "ec493b16f48e734c948e32cd85f6497c64336ca5ca7083fa973fcff65e0b09fa",
+    "bytes": 116821
+  },
+  "mainProbe": {
+    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260911000220",
+    "sha256": "66940a7a5cb71348685d75f4e85d62c2cd6f08b04401e80ac1f64f8c20d74b79",
+    "bytes": 38665
+  },
+  "detailProbe": {
+    "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260911000220&dcmNo=11576223&eleId=4&offset=11217&length=19578&dtd=dart4.xsd",
+    "sha256": "f852697a6aca6bf6191eb8936dbf67afe57416c503d3e352354d664c582faccb",
+    "bytes": 11351
+  },
+  "bodyNoteObservation": "The D002 detailed change date footnote identifies the settlement date for securities-exchange trades.",
+  "detailRecovery": {
+    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20230105000331",
+    "UTC": "2026-11-19T22:23:03Z",
+    "status": 503,
+    "responseServer": "envoy",
+    "bodySHA256": "9deff96f9b5925fa5081257849ace321304b382d64cfb67d90a21a3c7cbf2925"
+  },
+  "listBoundaryRecovery": {
+    "url": "https://dart.fss.or.kr/dsab001/searchCorp.ax?maxResults=100&sort=date&series=desc&pageGubun=corp&publicType=D002&startDate=20221229&endDate=20221231&currentPage=1",
+    "UTC": "2026-11-19T22:24:11Z",
+    "status": 503,
+    "responseServer": "envoy",
+    "bodySHA256": "9deff96f9b5925fa5081257849ace321304b382d64cfb67d90a21a3c7cbf2925"
+  },
+  "separateLargeHoldings": {
+    "pinnedCommit": "4ea107ed0cde289f0a049a65ff13d2441a786710",
+    "sourcePath": "ledger/dart-ownership-events/manifest.json",
+    "sourceSHA256": "21a60bf1a95d251b542cb4d27b10b3664169162ef7878a463715693b50415c42",
+    "endpoint": "majorstock.json",
+    "receiptRows": 2496,
+    "first": "2024-09-24",
+    "last": "2026-09-23",
+    "issuersQueried": 254
+  }
+}

@@ -1,0 +1,162 @@
+{
+ "label": "DECISION_DATE_DISCLOSURE_CHECK",
+ "endpoint": "OpenDART list.json pblntf_ty=A",
+ "decisions": {
+  "2026-09-11": {
+   "members": 120,
+   "states": {
+    "MATCH": 115,
+    "STORE_BEHIND": 1,
+    "NO_CORP_CODE_IN_STORE": 4
+   },
+   "storeBehind": [
+    {
+     "ticker": "000270.KS",
+     "store": [
+      2026,
+      3
+     ],
+     "dart": [
+      2026,
+      6
+     ],
+     "heldInBook": false
+    }
+   ],
+   "storeAhead": [],
+   "heldNamesChecked": [
+    "000660.KS",
+    "000990.KS",
+    "002380.KS",
+    "005930.KS",
+    "034730.KS",
+    "042660.KS",
+    "066570.KS",
+    "267270.KS",
+    "353200.KS"
+   ]
+  },
+  "2026-09-18": {
+   "members": 120,
+   "states": {
+    "MATCH": 116,
+    "NO_CORP_CODE_IN_STORE": 4
+   },
+   "storeBehind": [],
+   "storeAhead": [],
+   "heldNamesChecked": [
+    "000660.KS",
+    "000990.KS",
+    "002380.KS",
+    "005930.KS",
+    "034730.KS",
+    "042660.KS",
+    "066570.KS",
+    "267250.KS",
+    "267270.KS",
+    "353200.KS"
+   ]
+  },
+  "2026-09-23": {
+   "members": 120,
+   "states": {
+    "MATCH": 116,
+    "NO_CORP_CODE_IN_STORE": 4
+   },
+   "storeBehind": [],
+   "storeAhead": [],
+   "heldNamesChecked": [
+    "000660.KS",
+    "000990.KS",
+    "002380.KS",
+    "005930.KS",
+    "034730.KS",
+    "042660.KS",
+    "066570.KS",
+    "267250.KS",
+    "267270.KS",
+    "353200.KS"
+   ]
+  },
+  "2026-10-02": {
+   "members": 120,
+   "states": {
+    "MATCH": 116,
+    "NO_CORP_CODE_IN_STORE": 4
+   },
+   "storeBehind": [],
+   "storeAhead": [],
+   "heldNamesChecked": [
+    "000660.KS",
+    "000990.KS",
+    "002380.KS",
+    "005930.KS",
+    "034730.KS",
+    "066570.KS",
+    "267250.KS",
+    "267260.KS",
+    "267270.KS"
+   ]
+  },
+  "2026-10-08": {
+   "members": 120,
+   "states": {
+    "MATCH": 116,
+    "NO_CORP_CODE_IN_STORE": 4
+   },
+   "storeBehind": [],
+   "storeAhead": [],
+   "heldNamesChecked": [
+    "000660.KS",
+    "000990.KS",
+    "002380.KS",
+    "005930.KS",
+    "034730.KS",
+    "066570.KS",
+    "267250.KS",
+    "267260.KS",
+    "267270.KS"
+   ]
+  },
+  "2026-10-16": {
+   "members": 120,
+   "states": {
+    "MATCH": 116,
+    "NO_CORP_CODE_IN_STORE": 4
+   },
+   "storeBehind": [],
+   "storeAhead": [],
+   "heldNamesChecked": [
+    "000660.KS",
+    "000990.KS",
+    "002380.KS",
+    "005930.KS",
+    "034730.KS",
+    "066570.KS",
+    "267250.KS",
+    "267260.KS",
+    "267270.KS"
+   ]
+  },
+  "2026-10-23": {
+   "members": 120,
+   "states": {
+    "MATCH": 116,
+    "NO_CORP_CODE_IN_STORE": 4
+   },
+   "storeBehind": [],
+   "storeAhead": [],
+   "heldNamesChecked": [
+    "000660.KS",
+    "000990.KS",
+    "002380.KS",
+    "005930.KS",
+    "034730.KS",
+    "066570.KS",
+    "267250.KS",
+    "267260.KS",
+    "267270.KS"
+   ]
+  }
+ }
+}

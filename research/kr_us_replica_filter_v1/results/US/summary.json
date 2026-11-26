@@ -1,0 +1,1957 @@
+{
+ "buy": 0.0008,
+ "firstDecisionDate": "2014-02-14",
+ "historyReused": true,
+ "horizons": {
+  "126": {
+   "baseline": {
+    "cohortFirst": "2014-02-18",
+    "cohortLast": "2026-09-08",
+    "dateTiming": {
+     "decisionCloseMinusNextCloseNet": {
+      "blockWeeks": 25,
+      "ci": [
+       -0.00024304201298186911,
+       4.902057407434882e-05
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": -9.254261732431071e-05,
+      "n": 630,
+      "pOneSided": 0.9015246188452887,
+      "pOneSidedApprox": 0.9015246188452887
+     },
+     "decisionCloseNetExcess": {
+      "blockWeeks": 25,
+      "ci": [
+       0.0027322719547213372,
+       0.008094512495272831
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": 0.005205557245704991,
+      "n": 630,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "netExcess": {
+      "blockWeeks": 25,
+      "ci": [
+       0.0027908326319846135,
+       0.008239724152996352
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": 0.005298099863029301,
+      "n": 630,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     }
+    },
+    "maxPriorActiveBridgeError": 1.0408340855860843e-16,
+    "maxPriorParityError": 3.5908775952719907e-16,
+    "maxYahooBasisIdentityError": 2.168404344971009e-19,
+    "netExcessVsQQQ": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.040712293342594796,
+      -0.00594918895540763
+     ],
+     "independentBlocksApprox": 25.2,
+     "mean": -0.023461458120574825,
+     "n": 630,
+     "pOneSided": 0.9977505623594102,
+     "pOneSidedApprox": 0.9977505623594102
+    },
+    "netGross": {
+     "costNetMinusGross": {
+      "blockWeeks": 25,
+      "ci": [
+       -1.3447189181977953e-05,
+       -4.554625091893268e-06
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": -8.64647284791039e-06,
+      "n": 630,
+      "pOneSided": 1.0,
+      "pOneSidedApprox": 1.0
+     },
+     "grossB": {
+      "blockWeeks": 25,
+      "ci": [
+       0.04839715356291377,
+       0.1015780943570434
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": 0.07562971576309008,
+      "n": 630,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "grossExcess": {
+      "blockWeeks": 25,
+      "ci": [
+       0.0027953872570765062,
+       0.00825317134217833
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": 0.005306746335877212,
+      "n": 630,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "grossSPY": {
+      "blockWeeks": 25,
+      "ci": [
+       0.043320164771841536,
+       0.09575676788395676
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": 0.07032296942721286,
+      "n": 630,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "netB": {
+      "blockWeeks": 25,
+      "ci": [
+       0.046688962338316174,
+       0.09978325351109606
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": 0.0738771535445275,
+      "n": 630,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "netExcess": {
+      "blockWeeks": 25,
+      "ci": [
+       0.0027908326319846135,
+       0.008239724152996352
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": 0.005298099863029301,
+      "n": 630,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "netSPY": {
+      "blockWeeks": 25,
+      "ci": [
+       0.04162024566785282,
+       0.09397141193479977
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": 0.06857905368149819,
+      "n": 630,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "originalPriceConfirmedActive": {
+      "blockWeeks": 25,
+      "ci": [
+       -0.0030964179359289647,
+       0.0035774062241284038
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": 0.0004144492167379646,
+      "n": 630,
+      "pOneSided": 0.4363909022744314,
+      "pOneSidedApprox": 0.4363909022744314
+     },
+     "originalPriceConfirmedFunded": {
+      "blockWeeks": 25,
+      "ci": [
+       0.0014969364460832514,
+       0.009459357689909695
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": 0.005712549079767247,
+      "n": 630,
+      "pOneSided": 0.0032491877030742314,
+      "pOneSidedApprox": 0.0032491877030742314
+     }
+    },
+    "spyOnlySealedMinusYahooAdjusted": {
+     "blockWeeks": 25,
+     "ci": [
+      -2.050512303670995e-08,
+      1.3791890747898458e-08
+     ],
+     "independentBlocksApprox": 25.2,
+     "mean": -1.292121267830173e-09,
+     "n": 630,
+     "pOneSided": 0.6660834791302175,
+     "pOneSidedApprox": 0.6660834791302175
+    },
+    "statusCounts": {
+     "MEASURED": 630,
+     "UNMATURED": 24
+    },
+    "yahooMissingBookWeights": null,
+    "yahooMissingFullBookDates": 0,
+    "yahooMissingNamesByWeek": {},
+    "yahooPaths": {
+     "grossExcess": {
+      "blockWeeks": 25,
+      "ci": [
+       0.0027953872570765062,
+       0.00825317134217833
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": 0.005306746335877212,
+      "n": 630,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "grossMinusYahooAdjusted": {
+      "blockWeeks": 25,
+      "ci": [
+       -0.00011922176024684798,
+       -1.800070453008969e-06
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": -4.4150032905692964e-05,
+      "n": 630,
+      "pOneSided": 1.0,
+      "pOneSidedApprox": 1.0
+     },
+     "grossMinusYahooRaw": {
+      "blockWeeks": 25,
+      "ci": [
+       7.383920643453094e-05,
+       0.0006985231330952932
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": 0.000400061488912166,
+      "n": 630,
+      "pOneSided": 0.007248187953011747,
+      "pOneSidedApprox": 0.007248187953011747
+     },
+     "sealedMinusYahooAdjustedB": {
+      "blockWeeks": 25,
+      "ci": [
+       -0.0001192210745418805,
+       -1.8084795828433242e-06
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": -4.4151325026960795e-05,
+      "n": 630,
+      "pOneSided": 1.0,
+      "pOneSidedApprox": 1.0
+     },
+     "sealedMinusYahooAdjustedSPY": {
+      "blockWeeks": 25,
+      "ci": [
+       -2.050512303670995e-08,
+       1.3791890747898458e-08
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": -1.292121267830173e-09,
+      "n": 630,
+      "pOneSided": 0.6660834791302175,
+      "pOneSidedApprox": 0.6660834791302175
+     },
+     "yahooAdjustedExcess": {
+      "blockWeeks": 25,
+      "ci": [
+       0.0028495999073513906,
+       0.008309438982972232
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": 0.005350896368782905,
+      "n": 630,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "yahooDistributionB": {
+      "blockWeeks": 25,
+      "ci": [
+       0.008544205335294028,
+       0.010205532485853465
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": 0.009386307962916628,
+      "n": 630,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "yahooDistributionGap": {
+      "blockWeeks": 25,
+      "ci": [
+       8.507278352352246e-05,
+       0.0007925303515614929
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": 0.000444211521817859,
+      "n": 630,
+      "pOneSided": 0.005998500374906273,
+      "pOneSidedApprox": 0.005998500374906273
+     },
+     "yahooDistributionSPY": {
+      "blockWeeks": 25,
+      "ci": [
+       0.008269209186818218,
+       0.009574773232652182
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": 0.008942096441098769,
+      "n": 630,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "yahooPriceOnlyExcess": {
+      "blockWeeks": 25,
+      "ci": [
+       0.002340854727327722,
+       0.007966699521602059
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": 0.004906684846965046,
+      "n": 630,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     }
+    }
+   },
+   "bridge": {
+    "allBaseline": {
+     "blockWeeks": 25,
+     "ci": [
+      0.0027908326319846135,
+      0.008239724152996352
+     ],
+     "independentBlocksApprox": 25.2,
+     "mean": 0.005298099863029301,
+     "n": 630,
+     "pOneSided": 0.00024993751562109475,
+     "pOneSidedApprox": 0.00024993751562109475
+    },
+    "endpointObserved": {
+     "availableReportNetWeight": {
+      "max": 0.9654524002541506,
+      "median": 0.9345165549608803,
+      "min": 0.8771873192759793
+     },
+     "commonMegaProxyWeight": {
+      "max": 0.40865980489633646,
+      "median": 0.3165769051246995,
+      "min": 0.21473912506148118
+     },
+     "commonMegaReportedWeight": {
+      "max": 0.38904919618486566,
+      "median": 0.2831194519420049,
+      "min": 0.19414055513670003
+     },
+     "commonNames": {
+      "max": 441.0,
+      "median": 357.0,
+      "min": 304.0
+     },
+     "commonSectorL1": {
+      "max": 0.18168988495276153,
+      "median": 0.08528946855497167,
+      "min": 0.05053014088128579
+     },
+     "commonSectorMegaCellL1": {
+      "max": 0.20290199538288334,
+      "median": 0.09919986689827981,
+      "min": 0.05692390958983695
+     },
+     "commonTickerL1": {
+      "max": 0.26283521700755696,
+      "median": 0.16864217889047228,
+      "min": 0.11750378525277588
+     },
+     "components": {
+      "megaWithinSectorWeight": {
+       "blockWeeks": 25,
+       "ci": [
+        7.140234726190814e-05,
+        0.002232514115185359
+       ],
+       "independentBlocksApprox": 13.16,
+       "mean": 0.0011191378100742697,
+       "n": 329,
+       "pOneSided": 0.01799550112471882,
+       "pOneSidedApprox": 0.01799550112471882
+      },
+      "proxyNetExcess": {
+       "blockWeeks": 25,
+       "ci": [
+        0.0001366523001456499,
+        0.0077124867715231
+       ],
+       "independentBlocksApprox": 13.16,
+       "mean": 0.003638689105337847,
+       "n": 329,
+       "pOneSided": 0.019995001249687578,
+       "pOneSidedApprox": 0.019995001249687578
+      },
+      "proxyOutsideCommon": {
+       "blockWeeks": 25,
+       "ci": [
+        -0.001978542447139443,
+        0.0007688410709374607
+       ],
+       "independentBlocksApprox": 13.16,
+       "mean": -0.0006975253980723001,
+       "n": 329,
+       "pOneSided": 0.8492876780804799,
+       "pOneSidedApprox": 0.8492876780804799
+      },
+      "reportNamesOutsideProxy": {
+       "blockWeeks": 25,
+       "ci": [
+        -0.0017885320912652267,
+        0.004631244232388448
+       ],
+       "independentBlocksApprox": 13.16,
+       "mean": 0.0012185460653613394,
+       "n": 329,
+       "pOneSided": 0.23944013996500874,
+       "pOneSidedApprox": 0.23944013996500874
+      },
+      "reportResidual": {
+       "blockWeeks": 25,
+       "ci": [
+        -0.003179363979394961,
+        0.004306016583231588
+       ],
+       "independentBlocksApprox": 13.16,
+       "mean": 0.0005250696852450038,
+       "n": 329,
+       "pOneSided": 0.3896525868532867,
+       "pOneSidedApprox": 0.3896525868532867
+      },
+      "sectorAndMegaWeight": {
+       "blockWeeks": 25,
+       "ci": [
+        -0.001093819397545623,
+        0.004532119595958374
+       ],
+       "independentBlocksApprox": 13.16,
+       "mean": 0.0016077123189558384,
+       "n": 329,
+       "pOneSided": 0.12371907023244189,
+       "pOneSidedApprox": 0.12371907023244189
+      },
+      "sectorWeightOnly": {
+       "blockWeeks": 25,
+       "ci": [
+        -0.0017414611286065578,
+        0.0027193245900597124
+       ],
+       "independentBlocksApprox": 13.16,
+       "mean": 0.0004885745088815687,
+       "n": 329,
+       "pOneSided": 0.3279180204948763,
+       "pOneSidedApprox": 0.3279180204948763
+      },
+      "withinCellWeight": {
+       "blockWeeks": 25,
+       "ci": [
+        -0.0009403379416382518,
+        0.0031533582832500547
+       ],
+       "independentBlocksApprox": 13.16,
+       "mean": 0.0009848864338479657,
+       "n": 329,
+       "pOneSided": 0.17495626093476632,
+       "pOneSidedApprox": 0.17495626093476632
+      }
+     },
+     "endpointMissingReportNetWeight": {
+      "max": 0.0,
+      "median": 0.0,
+      "min": 0.0
+     },
+     "endpointMissingReportNetWeightOnAffectedWeeks": null,
+     "first": "2019-11-22",
+     "fullOriginalSampleAttribution": {
+      "bridgeN": 329,
+      "components": {
+       "proxyOutsideCommon": -0.0003642632634377567,
+       "reportNamesOutsideProxy": 0.0006363518341331439,
+       "reportResidual": 0.00027420305785016866,
+       "sectorAndMegaWeight": 0.00083958309989916,
+       "withinCellWeight": 0.0005143295821206043
+      },
+      "n": 630,
+      "outsideBridge": {
+       "blockWeeks": 25,
+       "ci": [
+        0.004078682639453813,
+        0.011429741661148065
+       ],
+       "independentBlocksApprox": 12.04,
+       "mean": 0.007111874412133921,
+       "n": 301,
+       "pOneSided": 0.00024993751562109475,
+       "pOneSidedApprox": 0.00024993751562109475
+      },
+      "outsideBridgeContributionToFullMean": 0.0033978955524639845
+     },
+     "last": "2026-03-06",
+     "maxSectorSumError": 1.734723475976807e-18,
+     "maxSumError": 3.469446951953614e-18,
+     "missingEndpointTickersByWeek": {},
+     "observedReportNamesOutsideB": {
+      "max": 82.0,
+      "median": 63.0,
+      "min": 18.0
+     },
+     "statusCounts": {
+      "MEASURED": 329,
+      "NO_PUBLISHED_REPORT": 301,
+      "UNMATURED": 24
+     }
+    },
+    "strict": {
+     "availableReportNetWeight": {
+      "max": 0.9654524002541506,
+      "median": 0.9345165549608803,
+      "min": 0.8771873192759793
+     },
+     "commonMegaProxyWeight": {
+      "max": 0.40865980489633646,
+      "median": 0.3165769051246995,
+      "min": 0.21473912506148118
+     },
+     "commonMegaReportedWeight": {
+      "max": 0.38904919618486566,
+      "median": 0.2831194519420049,
+      "min": 0.19414055513670003
+     },
+     "commonNames": {
+      "max": 441.0,
+      "median": 357.0,
+      "min": 304.0
+     },
+     "commonSectorL1": {
+      "max": 0.18168988495276153,
+      "median": 0.08528946855497167,
+      "min": 0.05053014088128579
+     },
+     "commonSectorMegaCellL1": {
+      "max": 0.20290199538288334,
+      "median": 0.09919986689827981,
+      "min": 0.05692390958983695
+     },
+     "commonTickerL1": {
+      "max": 0.26283521700755696,
+      "median": 0.16864217889047228,
+      "min": 0.11750378525277588
+     },
+     "components": {
+      "megaWithinSectorWeight": {
+       "blockWeeks": 25,
+       "ci": [
+        7.140234726190814e-05,
+        0.002232514115185359
+       ],
+       "independentBlocksApprox": 13.16,
+       "mean": 0.0011191378100742697,
+       "n": 329,
+       "pOneSided": 0.01799550112471882,
+       "pOneSidedApprox": 0.01799550112471882
+      },
+      "proxyNetExcess": {
+       "blockWeeks": 25,
+       "ci": [
+        0.0001366523001456499,
+        0.0077124867715231
+       ],
+       "independentBlocksApprox": 13.16,
+       "mean": 0.003638689105337847,
+       "n": 329,
+       "pOneSided": 0.019995001249687578,
+       "pOneSidedApprox": 0.019995001249687578
+      },
+      "proxyOutsideCommon": {
+       "blockWeeks": 25,
+       "ci": [
+        -0.001978542447139443,
+        0.0007688410709374607
+       ],
+       "independentBlocksApprox": 13.16,
+       "mean": -0.0006975253980723001,
+       "n": 329,
+       "pOneSided": 0.8492876780804799,
+       "pOneSidedApprox": 0.8492876780804799
+      },
+      "reportNamesOutsideProxy": {
+       "blockWeeks": 25,
+       "ci": [
+        -0.0017885320912652267,
+        0.004631244232388448
+       ],
+       "independentBlocksApprox": 13.16,
+       "mean": 0.0012185460653613394,
+       "n": 329,
+       "pOneSided": 0.23944013996500874,
+       "pOneSidedApprox": 0.23944013996500874
+      },
+      "reportResidual": {
+       "blockWeeks": 25,
+       "ci": [
+        -0.003179363979394961,
+        0.004306016583231588
+       ],
+       "independentBlocksApprox": 13.16,
+       "mean": 0.0005250696852450038,
+       "n": 329,
+       "pOneSided": 0.3896525868532867,
+       "pOneSidedApprox": 0.3896525868532867
+      },
+      "sectorAndMegaWeight": {
+       "blockWeeks": 25,
+       "ci": [
+        -0.001093819397545623,
+        0.004532119595958374
+       ],
+       "independentBlocksApprox": 13.16,
+       "mean": 0.0016077123189558384,
+       "n": 329,
+       "pOneSided": 0.12371907023244189,
+       "pOneSidedApprox": 0.12371907023244189
+      },
+      "sectorWeightOnly": {
+       "blockWeeks": 25,
+       "ci": [
+        -0.0017414611286065578,
+        0.0027193245900597124
+       ],
+       "independentBlocksApprox": 13.16,
+       "mean": 0.0004885745088815687,
+       "n": 329,
+       "pOneSided": 0.3279180204948763,
+       "pOneSidedApprox": 0.3279180204948763
+      },
+      "withinCellWeight": {
+       "blockWeeks": 25,
+       "ci": [
+        -0.0009403379416382518,
+        0.0031533582832500547
+       ],
+       "independentBlocksApprox": 13.16,
+       "mean": 0.0009848864338479657,
+       "n": 329,
+       "pOneSided": 0.17495626093476632,
+       "pOneSidedApprox": 0.17495626093476632
+      }
+     },
+     "endpointMissingReportNetWeight": {
+      "max": 0.0,
+      "median": 0.0,
+      "min": 0.0
+     },
+     "endpointMissingReportNetWeightOnAffectedWeeks": null,
+     "first": "2019-11-22",
+     "fullOriginalSampleAttribution": {
+      "bridgeN": 329,
+      "components": {
+       "proxyOutsideCommon": -0.0003642632634377567,
+       "reportNamesOutsideProxy": 0.0006363518341331439,
+       "reportResidual": 0.00027420305785016866,
+       "sectorAndMegaWeight": 0.00083958309989916,
+       "withinCellWeight": 0.0005143295821206043
+      },
+      "n": 630,
+      "outsideBridge": {
+       "blockWeeks": 25,
+       "ci": [
+        0.004078682639453813,
+        0.011429741661148065
+       ],
+       "independentBlocksApprox": 12.04,
+       "mean": 0.007111874412133921,
+       "n": 301,
+       "pOneSided": 0.00024993751562109475,
+       "pOneSidedApprox": 0.00024993751562109475
+      },
+      "outsideBridgeContributionToFullMean": 0.0033978955524639845
+     },
+     "last": "2026-03-06",
+     "maxSectorSumError": 1.734723475976807e-18,
+     "maxSumError": 3.469446951953614e-18,
+     "missingEndpointTickersByWeek": {},
+     "observedReportNamesOutsideB": {
+      "max": 82.0,
+      "median": 63.0,
+      "min": 18.0
+     },
+     "statusCounts": {
+      "MEASURED": 329,
+      "NO_PUBLISHED_REPORT": 301,
+      "UNMATURED": 24
+     }
+    },
+    "withMinusAllMean": -0.0016594107576914604,
+    "withPublishedReport": {
+     "blockWeeks": 25,
+     "ci": [
+      0.00013665230014565534,
+      0.007712486771523087
+     ],
+     "independentBlocksApprox": 13.16,
+     "mean": 0.003638689105337841,
+     "n": 329,
+     "pOneSided": 0.019995001249687578,
+     "pOneSidedApprox": 0.019995001249687578
+    },
+    "withoutPublishedReport": {
+     "blockWeeks": 25,
+     "ci": [
+      0.004078682639453813,
+      0.011429741661148065
+     ],
+     "independentBlocksApprox": 12.04,
+     "mean": 0.007111874412133921,
+     "n": 301,
+     "pOneSided": 0.00024993751562109475,
+     "pOneSidedApprox": 0.00024993751562109475
+    }
+   },
+   "sensitivity": {
+    "maxEntryYear": 2017,
+    "maxEntryYearContributionToFullMean": 0.00146663064159011,
+    "maxTicker": "NVDA",
+    "maxTickerHoldingWeeks": 601,
+    "scenarios": {
+     "entry2021Only": {
+      "blockWeeks": 25,
+      "ci": [
+       -0.005635648587371644,
+       0.008483771815200523
+      ],
+      "independentBlocksApprox": 2.08,
+      "mean": 0.0032069042221670196,
+      "n": 52,
+      "pOneSided": 0.20299586776859505,
+      "pOneSidedApprox": 0.20299586776859505
+     },
+     "maxEntryYearOnly": {
+      "blockWeeks": 25,
+      "ci": [
+       0.008320317514626812,
+       0.024418213484427454
+      ],
+      "independentBlocksApprox": 2.08,
+      "mean": 0.017768794311572488,
+      "n": 52,
+      "pOneSided": 0.00025713551041398817,
+      "pOneSidedApprox": 0.00025713551041398817
+     },
+     "maxTickerActiveContribution": {
+      "blockWeeks": 25,
+      "ci": [
+       0.0015902506371305353,
+       0.006658584500886997
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": 0.003837025176090001,
+      "n": 630,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "megaContribution": {
+      "blockWeeks": 25,
+      "ci": [
+       0.006442109284713306,
+       0.021765096766517684
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": 0.01373115483698645,
+      "n": 630,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "no2021Entry": {
+      "blockWeeks": 25,
+      "ci": [
+       0.0028501582131010366,
+       0.008622624496009739
+      ],
+      "independentBlocksApprox": 23.12,
+      "mean": 0.0054862351109961505,
+      "n": 578,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "noMaxEntryYear": {
+      "blockWeeks": 25,
+      "ci": [
+       0.0019188903826393667,
+       0.006876895617392943
+      ],
+      "independentBlocksApprox": 23.12,
+      "mean": 0.004176168874579049,
+      "n": 578,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "noMaxTickerContribution": {
+      "blockWeeks": 25,
+      "ci": [
+       -0.002249057366769931,
+       0.004954641937624455
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": 0.0014610746869393007,
+      "n": 630,
+      "pOneSided": 0.2041989502624344,
+      "pOneSidedApprox": 0.2041989502624344
+     },
+     "noMegaContribution": {
+      "blockWeeks": 25,
+      "ci": [
+       -0.015049972413893815,
+       -0.0022506741516015952
+      ],
+      "independentBlocksApprox": 25.2,
+      "mean": -0.008433054973957148,
+      "n": 630,
+      "pOneSided": 0.9975006248437891,
+      "pOneSidedApprox": 0.9975006248437891
+     }
+    }
+   }
+  },
+  "252": {
+   "baseline": {
+    "cohortFirst": "2014-02-18",
+    "cohortLast": "2026-09-09",
+    "dateTiming": {
+     "decisionCloseMinusNextCloseNet": {
+      "blockWeeks": 50,
+      "ci": [
+       -0.0003183175394171799,
+       -3.968174617052088e-06
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": -0.00014536156906001544,
+      "n": 604,
+      "pOneSided": 0.9772556860784803,
+      "pOneSidedApprox": 0.9772556860784803
+     },
+     "decisionCloseNetExcess": {
+      "blockWeeks": 50,
+      "ci": [
+       0.004435010880730284,
+       0.01703932109883656
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": 0.010148030861117808,
+      "n": 604,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "netExcess": {
+      "blockWeeks": 50,
+      "ci": [
+       0.004562350599115623,
+       0.017187930254172066
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": 0.010293392430177826,
+      "n": 604,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     }
+    },
+    "maxPriorActiveBridgeError": 1.0538445116559103e-16,
+    "maxPriorParityError": 3.7470027081099033e-16,
+    "maxYahooBasisIdentityError": 0.0,
+    "netExcessVsQQQ": {
+     "blockWeeks": 50,
+     "ci": [
+      -0.08783227545231496,
+      -0.013331812016680827
+     ],
+     "independentBlocksApprox": 12.08,
+     "mean": -0.05077953445477353,
+     "n": 604,
+     "pOneSided": 0.9982504373906523,
+     "pOneSidedApprox": 0.9982504373906523
+    },
+    "netGross": {
+     "costNetMinusGross": {
+      "blockWeeks": 50,
+      "ci": [
+       -2.8050617409359082e-05,
+       -7.445733677682419e-06
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": -1.679876568229143e-05,
+      "n": 604,
+      "pOneSided": 1.0,
+      "pOneSidedApprox": 1.0
+     },
+     "grossB": {
+      "blockWeeks": 50,
+      "ci": [
+       0.09957951906828756,
+       0.21250336246754195
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": 0.1550101266814186,
+      "n": 604,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "grossExcess": {
+      "blockWeeks": 50,
+      "ci": [
+       0.004569796332793306,
+       0.017215980871581424
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": 0.010310191195860116,
+      "n": 604,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "grossSPY": {
+      "blockWeeks": 50,
+      "ci": [
+       0.09129132599854677,
+       0.20143298619449454
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": 0.14469993548555846,
+      "n": 604,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "netB": {
+      "blockWeeks": 50,
+      "ci": [
+       0.0977879345730069,
+       0.21052778708895248
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": 0.15312822710165197,
+      "n": 604,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "netExcess": {
+      "blockWeeks": 50,
+      "ci": [
+       0.004562350599115623,
+       0.017187930254172066
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": 0.010293392430177826,
+      "n": 604,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "netSPY": {
+      "blockWeeks": 50,
+      "ci": [
+       0.08951324575460957,
+       0.1994754481785003
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": 0.14283483467147412,
+      "n": 604,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "originalPriceConfirmedActive": {
+      "blockWeeks": 50,
+      "ci": [
+       -0.009233021981684048,
+       0.004922346962803392
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": -0.001143720498323201,
+      "n": 604,
+      "pOneSided": 0.7383154211447138,
+      "pOneSidedApprox": 0.7383154211447138
+     },
+     "originalPriceConfirmedFunded": {
+      "blockWeeks": 50,
+      "ci": [
+       -0.0007234799420748174,
+       0.01714831346418985
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": 0.009149671931854588,
+      "n": 604,
+      "pOneSided": 0.03724068982754311,
+      "pOneSidedApprox": 0.03724068982754311
+     }
+    },
+    "spyOnlySealedMinusYahooAdjusted": {
+     "blockWeeks": 50,
+     "ci": [
+      -2.3619601469429283e-08,
+      2.2640956087241118e-08
+     ],
+     "independentBlocksApprox": 12.08,
+     "mean": 1.1523226008417686e-09,
+     "n": 604,
+     "pOneSided": 0.5316170957260685,
+     "pOneSidedApprox": 0.5316170957260685
+    },
+    "statusCounts": {
+     "MEASURED": 604,
+     "UNMATURED": 50
+    },
+    "yahooMissingBookWeights": null,
+    "yahooMissingFullBookDates": 0,
+    "yahooMissingNamesByWeek": {},
+    "yahooPaths": {
+     "grossExcess": {
+      "blockWeeks": 50,
+      "ci": [
+       0.004569796332793306,
+       0.017215980871581424
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": 0.010310191195860116,
+      "n": 604,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "grossMinusYahooAdjusted": {
+      "blockWeeks": 50,
+      "ci": [
+       -0.00024730509673212005,
+       -1.4747144179601787e-06
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": -9.285722228780392e-05,
+      "n": 604,
+      "pOneSided": 0.9995001249687578,
+      "pOneSidedApprox": 0.9995001249687578
+     },
+     "grossMinusYahooRaw": {
+      "blockWeeks": 50,
+      "ci": [
+       -0.00011961522166637232,
+       0.0016220887315868922
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": 0.0007974425158253289,
+      "n": 604,
+      "pOneSided": 0.05023744063984004,
+      "pOneSidedApprox": 0.05023744063984004
+     },
+     "sealedMinusYahooAdjustedB": {
+      "blockWeeks": 50,
+      "ci": [
+       -0.0002472933143472121,
+       -1.4807701160687538e-06
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": -9.285606996520309e-05,
+      "n": 604,
+      "pOneSided": 1.0,
+      "pOneSidedApprox": 1.0
+     },
+     "sealedMinusYahooAdjustedSPY": {
+      "blockWeeks": 50,
+      "ci": [
+       -2.3619601469429283e-08,
+       2.2640956087241118e-08
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": 1.1523226008417686e-09,
+      "n": 604,
+      "pOneSided": 0.5316170957260685,
+      "pOneSidedApprox": 0.5316170957260685
+     },
+     "yahooAdjustedExcess": {
+      "blockWeeks": 50,
+      "ci": [
+       0.004609276071465099,
+       0.017300230459914277
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": 0.010403048418147919,
+      "n": 604,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "yahooDistributionB": {
+      "blockWeeks": 50,
+      "ci": [
+       0.017579835129865173,
+       0.022168776673551674
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": 0.01997612883349517,
+      "n": 604,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "yahooDistributionGap": {
+      "blockWeeks": 50,
+      "ci": [
+       -8.91509932802033e-05,
+       0.001828143203461126
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": 0.000890299738113133,
+      "n": 604,
+      "pOneSided": 0.04123969007748063,
+      "pOneSidedApprox": 0.04123969007748063
+     },
+     "yahooDistributionSPY": {
+      "blockWeeks": 50,
+      "ci": [
+       0.01713403382069556,
+       0.02076648225084744
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": 0.01908582909538204,
+      "n": 604,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "yahooPriceOnlyExcess": {
+      "blockWeeks": 50,
+      "ci": [
+       0.0037748642592383224,
+       0.016592307850698308
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": 0.009512748680034787,
+      "n": 604,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     }
+    }
+   },
+   "bridge": {
+    "allBaseline": {
+     "blockWeeks": 50,
+     "ci": [
+      0.004562350599115623,
+      0.017187930254172066
+     ],
+     "independentBlocksApprox": 12.08,
+     "mean": 0.010293392430177826,
+     "n": 604,
+     "pOneSided": 0.00024993751562109475,
+     "pOneSidedApprox": 0.00024993751562109475
+    },
+    "endpointObserved": {
+     "availableReportNetWeight": {
+      "max": 0.9606797920783327,
+      "median": 0.9303964691028089,
+      "min": 0.8771873192759793
+     },
+     "commonMegaProxyWeight": {
+      "max": 0.38976725816071417,
+      "median": 0.3121025619057864,
+      "min": 0.21473912506148118
+     },
+     "commonMegaReportedWeight": {
+      "max": 0.3682468375529393,
+      "median": 0.28015346258479107,
+      "min": 0.19414055513670003
+     },
+     "commonNames": {
+      "max": 438.0,
+      "median": 355.0,
+      "min": 304.0
+     },
+     "commonSectorL1": {
+      "max": 0.18168988495276153,
+      "median": 0.08507819786250809,
+      "min": 0.05053014088128579
+     },
+     "commonSectorMegaCellL1": {
+      "max": 0.20290199538288334,
+      "median": 0.09907312697430183,
+      "min": 0.05692390958983695
+     },
+     "commonTickerL1": {
+      "max": 0.26283521700755696,
+      "median": 0.16864217889047228,
+      "min": 0.11750378525277588
+     },
+     "components": {
+      "megaWithinSectorWeight": {
+       "blockWeeks": 50,
+       "ci": [
+        -0.0003417430715381664,
+        0.003301734399028003
+       ],
+       "independentBlocksApprox": 6.06,
+       "mean": 0.001462136126317577,
+       "n": 303,
+       "pOneSided": 0.04948762809297676,
+       "pOneSidedApprox": 0.04948762809297676
+      },
+      "proxyNetExcess": {
+       "blockWeeks": 50,
+       "ci": [
+        -0.0011097063140385747,
+        0.010448576839560231
+       ],
+       "independentBlocksApprox": 6.06,
+       "mean": 0.004061847908416076,
+       "n": 303,
+       "pOneSided": 0.07223194201449637,
+       "pOneSidedApprox": 0.07223194201449637
+      },
+      "proxyOutsideCommon": {
+       "blockWeeks": 50,
+       "ci": [
+        -0.0022650287148297307,
+        0.0016449873122767924
+       ],
+       "independentBlocksApprox": 6.06,
+       "mean": -0.0005700771524558744,
+       "n": 303,
+       "pOneSided": 0.7350662334416396,
+       "pOneSidedApprox": 0.7350662334416396
+      },
+      "reportNamesOutsideProxy": {
+       "blockWeeks": 50,
+       "ci": [
+        -0.006915219589384593,
+        0.004786317336192692
+       ],
+       "independentBlocksApprox": 6.06,
+       "mean": -0.0012958594967048158,
+       "n": 303,
+       "pOneSided": 0.6803299175206199,
+       "pOneSidedApprox": 0.6803299175206199
+      },
+      "reportResidual": {
+       "blockWeeks": 50,
+       "ci": [
+        -0.0018868769480370562,
+        0.008831777666933072
+       ],
+       "independentBlocksApprox": 6.06,
+       "mean": 0.0038321368985251986,
+       "n": 303,
+       "pOneSided": 0.08072981754561359,
+       "pOneSidedApprox": 0.08072981754561359
+      },
+      "sectorAndMegaWeight": {
+       "blockWeeks": 50,
+       "ci": [
+        -0.002910740070633037,
+        0.008000780844738922
+       ],
+       "independentBlocksApprox": 6.06,
+       "mean": 0.002552875962216096,
+       "n": 303,
+       "pOneSided": 0.16070982254436392,
+       "pOneSidedApprox": 0.16070982254436392
+      },
+      "sectorWeightOnly": {
+       "blockWeeks": 50,
+       "ci": [
+        -0.003193949283986097,
+        0.005458394771399126
+       ],
+       "independentBlocksApprox": 6.06,
+       "mean": 0.0010907398358985193,
+       "n": 303,
+       "pOneSided": 0.298175456135966,
+       "pOneSidedApprox": 0.298175456135966
+      },
+      "withinCellWeight": {
+       "blockWeeks": 50,
+       "ci": [
+        -0.003720984941763132,
+        0.002326092317991752
+       ],
+       "independentBlocksApprox": 6.06,
+       "mean": -0.000457228303164528,
+       "n": 303,
+       "pOneSided": 0.5933516620844789,
+       "pOneSidedApprox": 0.5933516620844789
+      }
+     },
+     "endpointMissingReportNetWeight": {
+      "max": 0.0,
+      "median": 0.0,
+      "min": 0.0
+     },
+     "endpointMissingReportNetWeightOnAffectedWeeks": null,
+     "first": "2019-11-22",
+     "fullOriginalSampleAttribution": {
+      "bridgeN": 303,
+      "components": {
+       "proxyOutsideCommon": -0.00028598241257306285,
+       "reportNamesOutsideProxy": -0.0006500752110952967,
+       "reportResidual": 0.0019224130467767138,
+       "sectorAndMegaWeight": 0.0012806645969395316,
+       "withinCellWeight": -0.00022937115208419202
+      },
+      "n": 604,
+      "outsideBridge": {
+       "blockWeeks": 50,
+       "ci": [
+        0.008826716655163075,
+        0.027734421049823852
+       ],
+       "independentBlocksApprox": 6.02,
+       "mean": 0.016566342563379834,
+       "n": 301,
+       "pOneSided": 0.00024993751562109475,
+       "pOneSidedApprox": 0.00024993751562109475
+      },
+      "outsideBridgeContributionToFullMean": 0.008255743562214122
+     },
+     "last": "2025-09-05",
+     "maxSectorSumError": 2.168404344971009e-19,
+     "maxSumError": 8.673617379884035e-19,
+     "missingEndpointTickersByWeek": {},
+     "observedReportNamesOutsideB": {
+      "max": 82.0,
+      "median": 66.0,
+      "min": 18.0
+     },
+     "statusCounts": {
+      "MEASURED": 303,
+      "NO_PUBLISHED_REPORT": 301,
+      "UNMATURED": 50
+     }
+    },
+    "strict": {
+     "availableReportNetWeight": {
+      "max": 0.9606797920783327,
+      "median": 0.9303964691028089,
+      "min": 0.8771873192759793
+     },
+     "commonMegaProxyWeight": {
+      "max": 0.38976725816071417,
+      "median": 0.3121025619057864,
+      "min": 0.21473912506148118
+     },
+     "commonMegaReportedWeight": {
+      "max": 0.3682468375529393,
+      "median": 0.28015346258479107,
+      "min": 0.19414055513670003
+     },
+     "commonNames": {
+      "max": 438.0,
+      "median": 355.0,
+      "min": 304.0
+     },
+     "commonSectorL1": {
+      "max": 0.18168988495276153,
+      "median": 0.08507819786250809,
+      "min": 0.05053014088128579
+     },
+     "commonSectorMegaCellL1": {
+      "max": 0.20290199538288334,
+      "median": 0.09907312697430183,
+      "min": 0.05692390958983695
+     },
+     "commonTickerL1": {
+      "max": 0.26283521700755696,
+      "median": 0.16864217889047228,
+      "min": 0.11750378525277588
+     },
+     "components": {
+      "megaWithinSectorWeight": {
+       "blockWeeks": 50,
+       "ci": [
+        -0.0003417430715381664,
+        0.003301734399028003
+       ],
+       "independentBlocksApprox": 6.06,
+       "mean": 0.001462136126317577,
+       "n": 303,
+       "pOneSided": 0.04948762809297676,
+       "pOneSidedApprox": 0.04948762809297676
+      },
+      "proxyNetExcess": {
+       "blockWeeks": 50,
+       "ci": [
+        -0.0011097063140385747,
+        0.010448576839560231
+       ],
+       "independentBlocksApprox": 6.06,
+       "mean": 0.004061847908416076,
+       "n": 303,
+       "pOneSided": 0.07223194201449637,
+       "pOneSidedApprox": 0.07223194201449637
+      },
+      "proxyOutsideCommon": {
+       "blockWeeks": 50,
+       "ci": [
+        -0.0022650287148297307,
+        0.0016449873122767924
+       ],
+       "independentBlocksApprox": 6.06,
+       "mean": -0.0005700771524558744,
+       "n": 303,
+       "pOneSided": 0.7350662334416396,
+       "pOneSidedApprox": 0.7350662334416396
+      },
+      "reportNamesOutsideProxy": {
+       "blockWeeks": 50,
+       "ci": [
+        -0.006915219589384593,
+        0.004786317336192692
+       ],
+       "independentBlocksApprox": 6.06,
+       "mean": -0.0012958594967048158,
+       "n": 303,
+       "pOneSided": 0.6803299175206199,
+       "pOneSidedApprox": 0.6803299175206199
+      },
+      "reportResidual": {
+       "blockWeeks": 50,
+       "ci": [
+        -0.0018868769480370562,
+        0.008831777666933072
+       ],
+       "independentBlocksApprox": 6.06,
+       "mean": 0.0038321368985251986,
+       "n": 303,
+       "pOneSided": 0.08072981754561359,
+       "pOneSidedApprox": 0.08072981754561359
+      },
+      "sectorAndMegaWeight": {
+       "blockWeeks": 50,
+       "ci": [
+        -0.002910740070633037,
+        0.008000780844738922
+       ],
+       "independentBlocksApprox": 6.06,
+       "mean": 0.002552875962216096,
+       "n": 303,
+       "pOneSided": 0.16070982254436392,
+       "pOneSidedApprox": 0.16070982254436392
+      },
+      "sectorWeightOnly": {
+       "blockWeeks": 50,
+       "ci": [
+        -0.003193949283986097,
+        0.005458394771399126
+       ],
+       "independentBlocksApprox": 6.06,
+       "mean": 0.0010907398358985193,
+       "n": 303,
+       "pOneSided": 0.298175456135966,
+       "pOneSidedApprox": 0.298175456135966
+      },
+      "withinCellWeight": {
+       "blockWeeks": 50,
+       "ci": [
+        -0.003720984941763132,
+        0.002326092317991752
+       ],
+       "independentBlocksApprox": 6.06,
+       "mean": -0.000457228303164528,
+       "n": 303,
+       "pOneSided": 0.5933516620844789,
+       "pOneSidedApprox": 0.5933516620844789
+      }
+     },
+     "endpointMissingReportNetWeight": {
+      "max": 0.0,
+      "median": 0.0,
+      "min": 0.0
+     },
+     "endpointMissingReportNetWeightOnAffectedWeeks": null,
+     "first": "2019-11-22",
+     "fullOriginalSampleAttribution": {
+      "bridgeN": 303,
+      "components": {
+       "proxyOutsideCommon": -0.00028598241257306285,
+       "reportNamesOutsideProxy": -0.0006500752110952967,
+       "reportResidual": 0.0019224130467767138,
+       "sectorAndMegaWeight": 0.0012806645969395316,
+       "withinCellWeight": -0.00022937115208419202
+      },
+      "n": 604,
+      "outsideBridge": {
+       "blockWeeks": 50,
+       "ci": [
+        0.008826716655163075,
+        0.027734421049823852
+       ],
+       "independentBlocksApprox": 6.02,
+       "mean": 0.016566342563379834,
+       "n": 301,
+       "pOneSided": 0.00024993751562109475,
+       "pOneSidedApprox": 0.00024993751562109475
+      },
+      "outsideBridgeContributionToFullMean": 0.008255743562214122
+     },
+     "last": "2025-09-05",
+     "maxSectorSumError": 2.168404344971009e-19,
+     "maxSumError": 8.673617379884035e-19,
+     "missingEndpointTickersByWeek": {},
+     "observedReportNamesOutsideB": {
+      "max": 82.0,
+      "median": 66.0,
+      "min": 18.0
+     },
+     "statusCounts": {
+      "MEASURED": 303,
+      "NO_PUBLISHED_REPORT": 301,
+      "UNMATURED": 50
+     }
+    },
+    "withMinusAllMean": -0.0062315445217617366,
+    "withPublishedReport": {
+     "blockWeeks": 50,
+     "ci": [
+      -0.0011097063140385669,
+      0.010448576839560244
+     ],
+     "independentBlocksApprox": 6.06,
+     "mean": 0.004061847908416089,
+     "n": 303,
+     "pOneSided": 0.07223194201449637,
+     "pOneSidedApprox": 0.07223194201449637
+    },
+    "withoutPublishedReport": {
+     "blockWeeks": 50,
+     "ci": [
+      0.008826716655163075,
+      0.027734421049823852
+     ],
+     "independentBlocksApprox": 6.02,
+     "mean": 0.016566342563379834,
+     "n": 301,
+     "pOneSided": 0.00024993751562109475,
+     "pOneSidedApprox": 0.00024993751562109475
+    }
+   },
+   "sensitivity": {
+    "maxEntryYear": 2017,
+    "maxEntryYearContributionToFullMean": 0.002821816321808925,
+    "maxTicker": "NVDA",
+    "maxTickerHoldingWeeks": 575,
+    "scenarios": {
+     "entry2021Only": {
+      "blockWeeks": 50,
+      "ci": null,
+      "independentBlocksApprox": 1.04,
+      "mean": -0.00043119205529107847,
+      "n": 52,
+      "pOneSided": null,
+      "pOneSidedApprox": null
+     },
+     "maxEntryYearOnly": {
+      "blockWeeks": 50,
+      "ci": null,
+      "independentBlocksApprox": 1.04,
+      "mean": 0.03277648189178059,
+      "n": 52,
+      "pOneSided": null,
+      "pOneSidedApprox": null
+     },
+     "maxTickerActiveContribution": {
+      "blockWeeks": 50,
+      "ci": [
+       0.003014692701676141,
+       0.01514656094458922
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": 0.008168110345624868,
+      "n": 604,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "megaContribution": {
+      "blockWeeks": 50,
+      "ci": [
+       0.016251705526949378,
+       0.044294741535096015
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": 0.02946724647587101,
+      "n": 604,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "no2021Entry": {
+      "blockWeeks": 50,
+      "ci": [
+       0.0052417441741822455,
+       0.01831475543767606
+      ],
+      "independentBlocksApprox": 11.04,
+      "mean": 0.011303679374461126,
+      "n": 552,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "noMaxEntryYear": {
+      "blockWeeks": 50,
+      "ci": [
+       0.0032452960032930155,
+       0.014160214733377807
+      ],
+      "independentBlocksApprox": 11.04,
+      "mean": 0.008175420234519592,
+      "n": 552,
+      "pOneSided": 0.00024993751562109475,
+      "pOneSidedApprox": 0.00024993751562109475
+     },
+     "noMaxTickerContribution": {
+      "blockWeeks": 50,
+      "ci": [
+       -0.007375911366439122,
+       0.011463478619640009
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": 0.0021252820845529554,
+      "n": 604,
+      "pOneSided": 0.3339165208697826,
+      "pOneSidedApprox": 0.3339165208697826
+     },
+     "noMegaContribution": {
+      "blockWeeks": 50,
+      "ci": [
+       -0.032183032199475284,
+       -0.007079049981899346
+      ],
+      "independentBlocksApprox": 12.08,
+      "mean": -0.01917385404569319,
+      "n": 604,
+      "pOneSided": 0.9985003749062734,
+      "pOneSidedApprox": 0.9985003749062734
+     }
+    }
+   }
+  }
+ },
+ "inputSha256": {
+  "adapter": "9e0fec42d83bb3205a4e0a3bb4881b70bc016e799a160e55da5399bf31d55291",
+  "features": "b009224445241f90ebeb83800041223f6005d2068a4c442db383009629b74ea9",
+  "originalClose": "17b4dbcc534caa31302a8e7d29fcdc9b036a77f9072f2898063ccbd4e74b6c7e",
+  "repairedClose": "9b8ad2a6b2b0bbc201bc7e5578bedfb1fb4a28e7e1f2ff50ed91a6628bc5c8e5"
+ },
+ "lastDecisionDate": "2026-08-21",
+ "ledgers": {
+  "L26": {
+   "initialFeeSPY": 0.0008,
+   "originalPassive": {
+    "annualArithmeticDailyGap": 0.010760666685166557,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.15030684872933042,
+    "cagrGap": 0.011774067857664772,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0010134011724982142,
+    "costPerYear": 0.0007608495455034751,
+    "end": "2026-09-14",
+    "etfCagr": 0.13853278087166565,
+    "etfMdd": -0.3371726392350439,
+    "excess": 0.011774067857664772,
+    "mdd": -0.32476876926522646,
+    "meanRetainedResetL1": 0.06925964615011064,
+    "n": 3163,
+    "nameExitShare": 0.034534325659038745,
+    "namesExited": 7944,
+    "oneWayTurnoverPerYear": 0.2534434661100201,
+    "qqqComparison": {
+     "annualArithmeticDailyGap": -0.04007133129699737,
+     "annualization": "252_SESSIONS_FROZEN_ENGINE",
+     "cagr": 0.15030684872933042,
+     "cagrGap": -0.03775860390794983,
+     "calendarYears": 12.580424366872005,
+     "compoundingRemainder": 0.0023127273890475447,
+     "end": "2026-09-14",
+     "etfCagr": 0.18806545263728025,
+     "etfMdd": -0.351187275697292,
+     "excess": -0.03775860390794983,
+     "mdd": -0.32476876926522646,
+     "n": 3163,
+     "start": "2014-02-14",
+     "years": 12.547619047619047
+    },
+    "start": "2014-02-14",
+    "status": "MEASURED",
+    "years": 12.547619047619047
+   },
+   "prefixBeforeAbnormalWATFill": {
+    "annualArithmeticDailyGap": 0.00963331670525794,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.1500018989724592,
+    "cagrGap": 0.01047228223346064,
+    "calendarYears": 12.24640657084189,
+    "compoundingRemainder": 0.0008389655282026991,
+    "end": "2026-05-15",
+    "etfCagr": 0.13952961673899855,
+    "etfMdd": -0.3371726392350439,
+    "excess": 0.01047228223346064,
+    "mdd": -0.32476876926522646,
+    "n": 3081,
+    "start": "2014-02-14",
+    "years": 12.222222222222221
+   },
+   "priorNAVSha256": "cdbb164f12ddba72f8042d5910df0d6063e650819d2ee85a61225fbe862ba4c3",
+   "recheckMaxError": 1.682681771697503e-16,
+   "spy": {
+    "annualArithmeticDailyGap": 0.0,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.13853278087166565,
+    "cagrGap": 0.0,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0,
+    "end": "2026-09-14",
+    "etfCagr": 0.13853278087166565,
+    "etfMdd": -0.3371726392350439,
+    "excess": 0.0,
+    "mdd": -0.3371726392350439,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "spyAnnualOneWayTurnoverAfterInitialBuy": 0.0,
+   "spyAnnualOneWayTurnoverIncludingInitialBuy": 0.03984819734345351
+  },
+  "L52": {
+   "initialFeeSPY": 0.0008,
+   "originalPassive": {
+    "annualArithmeticDailyGap": 0.008999114583767958,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.14834834687718956,
+    "cagrGap": 0.009815566005523912,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0008164514217559541,
+    "costPerYear": 0.0005293346351708343,
+    "end": "2026-09-14",
+    "etfCagr": 0.13853278087166565,
+    "etfMdd": -0.3371726392350439,
+    "excess": 0.009815566005523912,
+    "mdd": -0.32533459377943696,
+    "meanRetainedResetL1": 0.07403515935381993,
+    "n": 3163,
+    "nameExitShare": 0.03774355491515157,
+    "namesExited": 8225,
+    "oneWayTurnoverPerYear": 0.19168751099259068,
+    "qqqComparison": {
+     "annualArithmeticDailyGap": -0.04183288339839597,
+     "annualization": "252_SESSIONS_FROZEN_ENGINE",
+     "cagr": 0.14834834687718956,
+     "cagrGap": -0.03971710576009069,
+     "calendarYears": 12.580424366872005,
+     "compoundingRemainder": 0.002115777638305283,
+     "end": "2026-09-14",
+     "etfCagr": 0.18806545263728025,
+     "etfMdd": -0.351187275697292,
+     "excess": -0.03971710576009069,
+     "mdd": -0.32533459377943696,
+     "n": 3163,
+     "start": "2014-02-14",
+     "years": 12.547619047619047
+    },
+    "start": "2014-02-14",
+    "status": "MEASURED",
+    "years": 12.547619047619047
+   },
+   "prefixBeforeAbnormalWATFill": {
+    "annualArithmeticDailyGap": 0.008346556583261135,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.14857571968531813,
+    "cagrGap": 0.009046102946319579,
+    "calendarYears": 12.24640657084189,
+    "compoundingRemainder": 0.0006995463630584432,
+    "end": "2026-05-15",
+    "etfCagr": 0.13952961673899855,
+    "etfMdd": -0.3371726392350439,
+    "excess": 0.009046102946319579,
+    "mdd": -0.3253345937794371,
+    "n": 3081,
+    "start": "2014-02-14",
+    "years": 12.222222222222221
+   },
+   "priorNAVSha256": "a6dfbb09e4e0efa8782a0cbfc98bc5a28c792f2574c37fdb351127809e5fec52",
+   "recheckMaxError": 2.1163626406917047e-16,
+   "spy": {
+    "annualArithmeticDailyGap": 0.0,
+    "annualization": "252_SESSIONS_FROZEN_ENGINE",
+    "cagr": 0.13853278087166565,
+    "cagrGap": 0.0,
+    "calendarYears": 12.580424366872005,
+    "compoundingRemainder": 0.0,
+    "end": "2026-09-14",
+    "etfCagr": 0.13853278087166565,
+    "etfMdd": -0.3371726392350439,
+    "excess": 0.0,
+    "mdd": -0.3371726392350439,
+    "n": 3163,
+    "start": "2014-02-14",
+    "years": 12.547619047619047
+   },
+   "spyAnnualOneWayTurnoverAfterInitialBuy": 0.0,
+   "spyAnnualOneWayTurnoverIncludingInitialBuy": 0.03984819734345351
+  }
+ },
+ "market": "US",
+ "netAffineFactor": 0.998370664,
+ "reportCoverage": {
+  "completeReplicaWeeks": 0,
+  "decisionWeeks": 353,
+  "firstAvailable": "2019-11-22",
+  "lastAvailable": "2026-08-21",
+  "mappingIsPITProved": false,
+  "ranges": {
+   "commonNames": {
+    "max": 442.0,
+    "median": 364.0,
+    "min": 304.0
+   },
+   "coverageMegaWeightProxyCommon": {
+    "max": 0.40865980489633646,
+    "median": 0.3161531386339833,
+    "min": 0.21473912506148118
+   },
+   "coverageMegaWeightReportCommon": {
+    "max": 0.38904919618486566,
+    "median": 0.2837318182754562,
+    "min": 0.19414055513670003
+   },
+   "coverageSectorCellL1": {
+    "max": 0.6405092520252741,
+    "median": 0.1006290442544601,
+    "min": 0.05692390958983695
+   },
+   "coverageSectorL1": {
+    "max": 0.6405092520252741,
+    "median": 0.08730734134731571,
+    "min": 0.05053014088128579
+   },
+   "knownEquityNetWeight": {
+    "max": 0.9654524002541505,
+    "median": 0.938105497989757,
+    "min": 0.8771873192759791
+   },
+   "knownNames": {
+    "max": 465.0,
+    "median": 440.0,
+    "min": 369.0
+   },
+   "knownWithFeatureIdentityNetWeight": {
+    "max": 0.9429347693082828,
+    "median": 0.8530058129474705,
+    "min": 0.787789786616081
+   },
+   "mappedNoDecisionPriceNetWeight": {
+    "max": 0.006572387830288,
+    "median": 0.0034443112391012998,
+    "min": 0.00041338278295987034
+   },
+   "mappedPricedNoSectorNetWeight": {
+    "max": 0.027865967793792603,
+    "median": 0.0012376227738247483,
+    "min": 0.0
+   },
+   "netAssetsLessReportedLinesFraction": {
+    "max": 0.0005811888610777194,
+    "median": 0.0001552580896519995,
+    "min": -0.00020737987906360722
+   },
+   "proxyMegaWeight": {
+    "max": 0.3965716130563175,
+    "median": 0.30263043605752754,
+    "min": 0.2060050428134449
+   },
+   "proxyNoMappedReportLineWeight": {
+    "max": 0.07077731234678056,
+    "median": 0.03939227003171054,
+    "min": 0.021249123692529237
+   },
+   "proxyOutsideCommonWeight": {
+    "max": 0.07077731234678056,
+    "median": 0.03939227003171054,
+    "min": 0.021249123692529237
+   },
+   "publicationAgeDays": {
+    "max": 102.0,
+    "median": 46.0,
+    "min": 1.0
+   },
+   "reportAgeDays": {
+    "max": 151.0,
+    "median": 103.0,
+    "min": 51.0
+   },
+   "reportEquityNetWeight": {
+    "max": 1.000207379879039,
+    "median": 0.9998447419103234,
+    "min": 0.9994188111388963
+   },
+   "reportKnownMegaNetWeight": {
+    "max": 0.376527389608299,
+    "median": 0.2719956215440077,
+    "min": 0.1664913239257872
+   },
+   "reportNamesOutsideProxy": {
+    "max": 82.0,
+    "median": 60.0,
+    "min": 18.0
+   },
+   "reportNamesOutsideProxyNetWeight": {
+    "max": 0.19771875337025763,
+    "median": 0.11048262042971972,
+    "min": 0.030560910034665836
+   },
+   "reportedNonEquityNetWeight": {
+    "max": 0.0,
+    "median": 0.0,
+    "min": 0.0
+   },
+   "unmappedNetWeight": {
+    "max": 0.09409569300612891,
+    "median": 0.058490803652842795,
+    "min": 0.0340703268391237
+   }
+  },
+  "sourceReports": 28,
+  "usableDistinctReports": 27
+ },
+ "sell": 0.00083,
+ "spyPriceSource": {
+  "bundleDistributionsRecorded": 0,
+  "bundleRawEqualsTR": true,
+  "sealedComparisonMaxRelError": 4.0545344859310717e-13,
+  "separateYahooAdjAndSplitOnlyPriceUsedAsDiagnostic": true
+ },
+ "watTailDiagnostic": {
+  "filingReceipts": [
+   {
+    "accession": "0001193125-26-219487",
+    "dilutedEps": -0.87,
+    "netIncome": -72000000.0,
+    "netIncomeDividedByEps": 82758620.68965517,
+    "periodEnd": "2026-04-04",
+    "reportedDilutedSharesField": 82139000000.0,
+    "reportedSharesToImpliedRatio": 992.5129166666667,
+    "visibleFrom": "2026-05-12"
+   },
+   {
+    "accession": "0001193125-26-344691",
+    "dilutedEps": -2.31,
+    "netIncome": -208000000.0,
+    "netIncomeDividedByEps": 90043290.04329003,
+    "periodEnd": "2026-07-04",
+    "reportedDilutedSharesField": 90041000000.0,
+    "reportedSharesToImpliedRatio": 999.9745673076924,
+    "visibleFrom": "2026-08-11"
+   }
+  ],
+  "filingsSha256": "f0b1254ac5e73558c9af52939534b9c6ba5d181508c6eda9a3efc28ebd3c602f",
+  "firstDecision": "2026-05-15",
+  "firstExecution": "2026-05-18",
+  "label": "POST_HOC_SOURCE_DIAGNOSTIC_ORIGINAL_WEIGHTS_UNCHANGED",
+  "missingSourceFiles": [],
+  "sourceStatus": "CACHED_REPORT_ROWS_CROSS_CHECKED",
+  "weeks": 15,
+  "weightRange": {
+   "max": 0.35149458932918803,
+   "median": 0.3157066102872685,
+   "min": 0.2881941713561672
+  }
+ },
+ "weeklyAxis": 654
+}

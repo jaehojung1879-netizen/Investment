@@ -1,0 +1,36 @@
+/workspace/Investment/research/kr_us_strategy_batch_v1/us_bridge.py:45: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  public = pd.read_csv(us.HERE / "results/US/books.csv.gz", parse_dates=["date"])
+{
+ "126|COCKTAIL": {
+  "n": 630,
+  "published": -0.014543248314032864,
+  "archivedUncorrectedCapture": -0.014543248314032857,
+  "repairedCapture": -0.014698366418752851,
+  "captureMinusPublished": 6.938893903907228e-18,
+  "ctvaRepairEffect": -0.00015511810471999406
+ },
+ "126|U1": {
+  "n": 630,
+  "published": 0.002470400670862943,
+  "archivedUncorrectedCapture": 0.0024704006708629375,
+  "repairedCapture": 0.0023702336753681466,
+  "captureMinusPublished": -5.637851296924623e-18,
+  "ctvaRepairEffect": -0.00010016699549479082
+ },
+ "252|COCKTAIL": {
+  "n": 604,
+  "published": -0.025935772301855606,
+  "archivedUncorrectedCapture": -0.025935772301855602,
+  "repairedCapture": -0.025539270632692273,
+  "captureMinusPublished": 3.469446951953614e-18,
+  "ctvaRepairEffect": 0.0003965016691633294
+ },
+ "252|U1": {
+  "n": 604,
+  "published": 0.008906292628838637,
+  "archivedUncorrectedCapture": 0.00890629262883864,
+  "repairedCapture": 0.009176403573710674,
+  "captureMinusPublished": 3.469446951953614e-18,
+  "ctvaRepairEffect": 0.00027011094487203353
+ }
+}

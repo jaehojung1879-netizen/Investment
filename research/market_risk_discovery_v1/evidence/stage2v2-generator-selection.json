@@ -1,0 +1,312 @@
+{
+ "candidates": {
+  "linear_logvol_ridge1": {
+   "adequate": true,
+   "inSampleOutside95": 0,
+   "inSampleOutside995": 0,
+   "outOfTimeOutside95": 0
+  },
+  "linear_ridge0.1": {
+   "adequate": true,
+   "inSampleOutside95": 0,
+   "inSampleOutside995": 0,
+   "outOfTimeOutside95": 0
+  },
+  "linear_ridge1 (CHOSEN)": {
+   "adequate": true,
+   "inSampleOutside95": 0,
+   "inSampleOutside995": 0,
+   "outOfTimeOutside95": 0
+  },
+  "quadratic_interaction_fast_ridge1": {
+   "adequate": false,
+   "inSampleOutside95": 0,
+   "inSampleOutside995": 0,
+   "outOfTimeOutside95": 3
+  },
+  "quadratic_interaction_fast_ridge10": {
+   "adequate": false,
+   "inSampleOutside95": 2,
+   "inSampleOutside995": 0,
+   "outOfTimeOutside95": 1
+  }
+ },
+ "chosen": {
+  "adequacy": {
+   "adequate": true,
+   "checks": {
+    "corrGap": {
+     "band95": [
+      -0.5132389125813858,
+      -0.16797303044487055
+     ],
+     "band995": [
+      -0.577755342347602,
+      -0.09802965466567673
+     ],
+     "observed": -0.386645443447643,
+     "outside95": false,
+     "outside995": false
+    },
+    "corrVol": {
+     "band95": [
+      0.35369850015142756,
+      0.6007231232836715
+     ],
+     "band995": [
+      0.27420343945813597,
+      0.6257931204130961
+     ],
+     "observed": 0.5043214718704169,
+     "outside95": false,
+     "outside995": false
+    },
+    "lag1": {
+     "band95": [
+      0.3273552157908551,
+      0.6425665841526284
+     ],
+     "band995": [
+      0.26084032418701103,
+      0.6771875122967911
+     ],
+     "observed": 0.5458190798691811,
+     "outside95": false,
+     "outside995": false
+    },
+    "meanSpell": {
+     "band95": [
+      1.8052777777777778,
+      3.5
+     ],
+     "band995": [
+      1.6158510638297874,
+      4.075750000000016
+     ],
+     "observed": 2.72,
+     "outside95": false,
+     "outside995": false
+    },
+    "rate": {
+     "band95": [
+      0.13353115727002968,
+      0.27002967359050445
+     ],
+     "band995": [
+      0.10829376854599407,
+      0.311602373887241
+     ],
+     "observed": 0.20178041543026706,
+     "outside95": false,
+     "outside995": false
+    },
+    "rate1998_2006": {
+     "band95": [
+      0.12216981132075475,
+      0.3490566037735849
+     ],
+     "band995": [
+      0.08014150943396225,
+      0.41509433962264153
+     ],
+     "observed": 0.24528301886792453,
+     "outside95": false,
+     "outside995": false
+    },
+    "rate2007_2016": {
+     "band95": [
+      0.11864406779661017,
+      0.3050847457627119
+     ],
+     "band995": [
+      0.09322033898305085,
+      0.34754237288135775
+     ],
+     "observed": 0.23728813559322035,
+     "outside95": false,
+     "outside995": false
+    },
+    "rate2017_2026": {
+     "band95": [
+      0.07964601769911504,
+      0.2743362831858407
+     ],
+     "band995": [
+      0.05747787610619469,
+      0.3230530973451337
+     ],
+     "observed": 0.12389380530973451,
+     "outside95": false,
+     "outside995": false
+    },
+    "rateCommonSample": {
+     "band95": [
+      0.04516129032258064,
+      0.1870967741935484
+     ],
+     "band995": [
+      0.03225806451612903,
+      0.22906451612903297
+     ],
+     "observed": 0.1032258064516129,
+     "outside95": false,
+     "outside995": false
+    },
+    "rateVolTercile1": {
+     "band95": [
+      0.017699115044247787,
+      0.1415929203539823
+     ],
+     "band995": [
+      0.008849557522123894,
+      0.168141592920354
+     ],
+     "observed": 0.04424778761061947,
+     "outside95": false,
+     "outside995": false
+    },
+    "rateVolTercile2": {
+     "band95": [
+      0.044642857142857144,
+      0.21428571428571427
+     ],
+     "band995": [
+      0.03571428571428571,
+      0.263437500000001
+     ],
+     "observed": 0.07142857142857142,
+     "outside95": false,
+     "outside995": false
+    },
+    "rateVolTercile3": {
+     "band95": [
+      0.26785714285714285,
+      0.5714285714285714
+     ],
+     "band995": [
+      0.20084821428571428,
+      0.6205803571428581
+     ],
+     "observed": 0.49107142857142855,
+     "outside95": false,
+     "outside995": false
+    }
+   },
+   "coefficientNames": [
+    "intercept",
+    "C_lag1",
+    "C_lag2",
+    "x0",
+    "x1"
+   ],
+   "coefficients": [
+    -2.3141211632069356,
+    1.9986089598716812,
+    0.01798768218986641,
+    -0.22220105719047442,
+    1.0309446244571423
+   ],
+   "draws": 999,
+   "outOfTime": {
+    "fitFirstTestSecond": {
+     "corrGap": {
+      "band95": [
+       -0.4866617865077845,
+       -0.006952537271806055
+      ],
+      "observed": -0.32628737796207335,
+      "outside95": false
+     },
+     "corrVol": {
+      "band95": [
+       0.14401519887322575,
+       0.6167431590427669
+      ],
+      "observed": 0.4905342179245339,
+      "outside95": false
+     },
+     "lag1": {
+      "band95": [
+       0.1703480924533564,
+       0.6599875930521107
+      ],
+      "observed": 0.424657534246575,
+      "outside95": false
+     },
+     "rate": {
+      "band95": [
+       0.0650887573964497,
+       0.27248520710059143
+      ],
+      "observed": 0.1301775147928994,
+      "outside95": false
+     },
+     "rateCommonSample": {
+      "band95": [
+       0.016666666666666666,
+       0.21666666666666667
+      ],
+      "observed": 0.058333333333333334,
+      "outside95": false
+     }
+    },
+    "fitSecondTestFirst": {
+     "corrGap": {
+      "band95": [
+       -0.5747177205665522,
+       -0.10601738596017563
+      ],
+      "observed": -0.37632927753247175,
+      "outside95": false
+     },
+     "corrVol": {
+      "band95": [
+       0.2694673393603136,
+       0.6074554159743903
+      ],
+      "observed": 0.4792319652397245,
+      "outside95": false
+     },
+     "lag1": {
+      "band95": [
+       0.2188645267703532,
+       0.6578408581868809
+      ],
+      "observed": 0.5922715912105876,
+      "outside95": false
+     },
+     "rate": {
+      "band95": [
+       0.13690476190476192,
+       0.375
+      ],
+      "observed": 0.27380952380952384,
+      "outside95": false
+     },
+     "rateCommonSample": {
+      "band95": [
+       0.05714285714285714,
+       0.37142857142857144
+      ],
+      "observed": 0.2571428571428571,
+      "outside95": false
+     }
+    }
+   },
+   "outOfTimeOutside95": 0,
+   "outside95": 0,
+   "outside995": 0,
+   "seed": 20261126
+  },
+  "name": "linear_ridge1 (CHOSEN)"
+ },
+ "labelReads": 0,
+ "rule": "ADEQUATE iff 0 of 12 in-sample statistics outside the 99.5% band, <= 1 outside the 95% band, and <= 1 of 10 out-of-time statistics outside the 95% band; bands include coefficient uncertainty (Laplace)",
+ "summary": {
+  "linear_logvol_ridge1": true,
+  "linear_ridge0.1": true,
+  "linear_ridge1 (CHOSEN)": true,
+  "quadratic_interaction_fast_ridge1": false,
+  "quadratic_interaction_fast_ridge10": false
+ }
+}

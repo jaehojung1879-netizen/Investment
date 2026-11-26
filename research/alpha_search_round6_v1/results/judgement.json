@@ -1,0 +1,114 @@
+{
+ "claims": {
+  "K1_TOP5_CAP_NEUTRAL": {
+   "checks": {
+    "bothHalvesPositive": false,
+    "exSemiLedPositive": true,
+    "fullPositive": true,
+    "l26DrawdownWithinBand": true,
+    "l26ExcessPositive": true,
+    "significantAfterHolm": false
+   },
+   "etfMdd": -0.4080550032017798,
+   "exSemiLed": 0.0052571076767691585,
+   "full": 0.009042453628225007,
+   "halves": [
+    -0.01059542349088366,
+    0.027869592701131936
+   ],
+   "holmP": 0.8687828042989253,
+   "l26Excess": 0.02408372901241962,
+   "l26Mdd": -0.4181145072676372,
+   "p": 0.21719570107473132,
+   "verdict": "NOT_SUPPORTED"
+  },
+  "K2_CAP_OVER_EQUAL_GATE": {
+   "checks": {
+    "bothHalvesPositive": true,
+    "exSemiLedPositive": true,
+    "fullPositive": true,
+    "l26DrawdownWithinBand": true,
+    "l26ExcessPositive": true,
+    "significantAfterHolm": false
+   },
+   "etfMdd": -0.4080550032017798,
+   "exSemiLed": 0.024232220540071243,
+   "full": 0.010416497397413115,
+   "halves": [
+    0.004297344079653532,
+    0.016283025119485376
+   ],
+   "holmP": 0.849787553111722,
+   "l26Excess": 0.020690987680285433,
+   "l26Mdd": -0.4080550032017799,
+   "p": 0.1699575106223444,
+   "verdict": "DIRECTIONAL_ONLY"
+  },
+  "U1_TOP5_CAP_NEUTRAL": {
+   "checks": {
+    "bothHalvesPositive": false,
+    "fullPositive": true,
+    "l26DrawdownWithinBand": true,
+    "l26ExcessPositive": true,
+    "significantAfterHolm": false
+   },
+   "etfMdd": -0.33717263923504404,
+   "exSemiLed": "NA",
+   "full": 0.002470400670862943,
+   "halves": [
+    0.004627169255916518,
+    -0.005466550337087294
+   ],
+   "holmP": 0.8687828042989253,
+   "l26Excess": 0.003337414369857905,
+   "l26Mdd": -0.3538371403538024,
+   "p": 0.25743564108972755,
+   "verdict": "NOT_SUPPORTED"
+  },
+  "U2_CAP_OVER_EQUAL_GATE": {
+   "checks": {
+    "bothHalvesPositive": false,
+    "fullPositive": false,
+    "l26DrawdownWithinBand": true,
+    "l26ExcessPositive": false,
+    "significantAfterHolm": false
+   },
+   "etfMdd": -0.33717263923504404,
+   "exSemiLed": "NA",
+   "full": -0.005941293018772491,
+   "halves": [
+    -0.005991809709013081,
+    -0.01235071331822812
+   ],
+   "holmP": 1.0,
+   "l26Excess": -0.016128008215037903,
+   "l26Mdd": -0.3371726392350439,
+   "p": 0.8235441139715072,
+   "verdict": "NOT_SUPPORTED"
+  },
+  "U3_SECTOR_DISPERSION_TILT": {
+   "checks": {
+    "bothHalvesPositive": false,
+    "fullPositive": false,
+    "l26DrawdownWithinBand": false,
+    "l26ExcessPositive": false,
+    "significantAfterHolm": false
+   },
+   "etfMdd": -0.33717263923504404,
+   "exSemiLed": "NA",
+   "full": -0.011679098567836855,
+   "halves": [
+    -0.0027539584219771433,
+    -0.04162021213182588
+   ],
+   "holmP": 1.0,
+   "l26Excess": -0.02709849698514133,
+   "l26Mdd": -0.3824650587666648,
+   "p": 0.8067983004248938,
+   "verdict": "NOT_SUPPORTED"
+  }
+ },
+ "familySize": 5,
+ "label": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_HISTORY",
+ "studyId": "alpha-search-round6-v1"
+}

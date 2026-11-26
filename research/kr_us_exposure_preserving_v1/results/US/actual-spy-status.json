@@ -1,0 +1,90 @@
+{
+ "fullReplicaWeeks": 0,
+ "limitation": "Current CUSIP map is conditional, not dated identity proof; unknown tail retained; lagged public report is not current holdings; no tail return or full exposure invented.",
+ "sourceCoverage": {
+  "coverage": {
+   "equityNetWeight": {
+    "max": 1.0002073798790643,
+    "median": 0.9998447419103484,
+    "min": 0.9994188111389226
+   },
+   "mappedNetWeight": {
+    "max": 0.9658657830371327,
+    "median": 0.9412269558737161,
+    "min": 0.9059340921250055
+   },
+   "megaKnownNetWeight": {
+    "max": 0.37652738960829957,
+    "median": 0.27199562154400825,
+    "min": 0.16649132392578764
+   },
+   "priceAtDecisionNetWeight": {
+    "max": 0.9654524002541728,
+    "median": 0.9381054980627188,
+    "min": 0.8993617042947167
+   },
+   "pricedAndSectorAndIdentityKnownNetWeight": {
+    "max": 0.9429347693083049,
+    "median": 0.8530058129474898,
+    "min": 0.7877897866160968
+   },
+   "pricedAndSectorKnownNetWeight": {
+    "max": 0.9654524002541728,
+    "median": 0.9381054979897785,
+    "min": 0.8771873192759971
+   },
+   "sameDecisionSectorKnownNetWeight": {
+    "max": 0.9657942183499426,
+    "median": 0.9406259398665817,
+    "min": 0.8810460764839949
+   },
+   "sameDecisionVerifiedIdentityNetWeight": {
+    "max": 0.9429347693083049,
+    "median": 0.8530058129474898,
+    "min": 0.7877897866160968
+   },
+   "unknownSectorNetWeight": {
+    "max": 0.11912269109685275,
+    "median": 0.058961872227729153,
+    "min": 0.034141891526315575
+   },
+   "unmappedNetWeight": {
+    "max": 0.09409569300613406,
+    "median": 0.05849080365284583,
+    "min": 0.0340703268391255
+   }
+  },
+  "decisionWeeks": 654,
+  "firstAvailableDecision": "2019-11-22",
+  "fullReplicaObservableAtDecisionWeeks": 0,
+  "inputSha256": {
+   "/workspace/Investment/data/research/us-capital-allocation-alpha-v1/sp500-snapshot-sectors.json.gz": "f49c15a0ebcd371c9a407118abb6ef350bba2060227ca40d61ba210fc4f81a74",
+   "/workspace/Investment/docs/results/alpha-opportunity-model-v3-survivorship-audit.json": "f0d9ed09880ffb75c6cc698dbb001e6f6879dee1991ede6ff6d365cc50f22902",
+   "/workspace/Investment/docs/us-readiness/us-etf-sec-holdings-cross-check-v1.json": "7e94c642351d366002ebe2c8307977eaff9c290f87882856ae53c4df8ea45113",
+   "/workspace/Investment/research/us_rank_independent_check_v1/inputs/openfigi-cusip-map.json": "0137e06a3e94880638739024c762665dc6ca4ea4242cdcd551ecb7c9910acc0f",
+   "/workspace/Investment/research_specs/alpha-opportunity-model-v1-us-membership.json.gz": "397b27270255d7a14a36d075a3e2889129d9351d817420614c8ccd289d74c30f",
+   "/workspace/batch-inputs/us/close.pkl": "17b4dbcc534caa31302a8e7d29fcdc9b036a77f9072f2898063ccbd4e74b6c7e",
+   "/workspace/batch-inputs/us/features.pkl": "b009224445241f90ebeb83800041223f6005d2068a4c442db383009629b74ea9"
+  },
+  "lastAvailableDecision": "2026-08-21",
+  "mappingLimitation": "Existing current-composite CUSIP map only; no new dated identity assertion; exact same-decision features give conditional coverage only",
+  "noFuturePublication": true,
+  "preparationScriptSha256": "9fa69ed0172ff728808868c311a1d72591f78eebd5aafc9223ddd84a5e630384",
+  "publicReportAgeDays": {
+   "max": 151,
+   "median": 103.0,
+   "min": 51
+  },
+  "purpose": "INPUT_AVAILABILITY_ONLY_NO_PERFORMANCE",
+  "rawReportsVerified": 28,
+  "reportAsOfRange": [
+   "2019-09-30",
+   "2026-06-30"
+  ],
+  "reports": 28,
+  "sectorSource": "Original dated MembershipSnapshots + SectorBook with existing verified price-series renames, no financial-completeness exclusion",
+  "weeksWithPriorPublicReport": 353
+ },
+ "status": "PARTIAL_LAGGED_REPORTED_EXPOSURE_ONLY_FULL_ACTUAL_REPLICA_BLOCKED",
+ "weeks": 353
+}
