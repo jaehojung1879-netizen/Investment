@@ -1,0 +1,85 @@
+{
+ "decisionDates": {
+  "count": 212,
+  "first": "2007-01-31",
+  "last": "2024-08-30"
+ },
+ "inputDeterminability": {
+  "cheap": {
+   "False": 71,
+   "True": 81
+  },
+  "creditStress": {
+   "False": 130,
+   "MISSING": 7,
+   "True": 15
+  },
+  "deepDrawdown": {
+   "False": 149,
+   "True": 3
+  },
+  "earningsStable": {
+   "False": 53,
+   "True": 99
+  }
+ },
+ "note": "States and targets only. No return, NAV or performance was computed; a state frequency is not evidence.",
+ "outcomeReads": 0,
+ "policies": {
+  "D1": {
+   "firstDetermined": 0,
+   "holds": 0,
+   "meanTarget": 0.8039,
+   "targetCounts": {
+    "0.8": 149,
+    "1.0": 3
+   }
+  },
+  "M1T": {
+   "firstDetermined": 0,
+   "holds": 7,
+   "meanTarget": 0.9105,
+   "targetCounts": {
+    "0.6": 8,
+    "0.8": 52,
+    "1.0": 92
+   }
+  },
+  "V1": {
+   "firstDetermined": 0,
+   "holds": 0,
+   "meanTarget": 0.8132,
+   "targetCounts": {
+    "0.6": 71,
+    "1.0": 81
+   }
+  },
+  "VM1T": {
+   "firstDetermined": 0,
+   "holds": 0,
+   "meanTarget": 0.8618,
+   "targetCounts": {
+    "0.6": 8,
+    "0.8": 89,
+    "1.0": 55
+   }
+  }
+ },
+ "spreadObservationMonthMismatches": 4,
+ "stage": "US_SIGNAL_READINESS_OUTCOME_FREE",
+ "stateTable2x2": {
+  "CHEAP_BAD": 1,
+  "CHEAP_GOOD": 55,
+  "CHEAP_MIXED": 25,
+  "NOT_CHEAP_BAD": 7,
+  "NOT_CHEAP_GOOD": 30,
+  "NOT_CHEAP_MIXED": 27,
+  "UNDETERMINED": 7
+ },
+ "study": "market-valuation-macro-overlay-v1",
+ "window": {
+  "count": 152,
+  "first": "2012-01-31",
+  "last": "2024-08-30"
+ }
+}

@@ -1,0 +1,80 @@
+{
+ "generatedAtUTC": "2026-11-18T13:39:01.690266+00:00",
+ "codeGitHead": "eae6a4b6468da9840151715be7dd53ebe1686589",
+ "sourceBase": "d9ac3ed53e522e51d93b496bf4c26b63b61e3207",
+ "designCommit": "e6786ee",
+ "inputRepairCommit": "4710738",
+ "codeSha256": {
+  "research/kr_us_strategy_batch_v1/us_prepare.py": "12c06de5b615fa10f81739060d5db66229d98f6d01b71beb5ba1fb20af9f144b",
+  "research/kr_us_strategy_batch_v1/report.py": "36266238337122dd3376ccd7151a7b7044aaa218f2231426df58cbab5f3cbc70",
+  "research/kr_us_strategy_batch_v1/verify.py": "e0fede66c6adb5e632ac9ec541364cfc5245c7befb7b878dd0637cf928ccf65d",
+  "research/kr_us_strategy_batch_v1/kr.py": "2a16eeb206f1c58719d4eb3f462ffa0b555b68d3d786d0b459abed6a2e1946ea",
+  "research/kr_us_strategy_batch_v1/us_attribution_export.py": "72d3b539e4356c59e36b84cbd0db1d4fbe600a345d7c2cf85f7dfb9c3cda15b5",
+  "research/kr_us_strategy_batch_v1/us_bridge.py": "b011afb0596bbfcad162c3b743c63c99fb102d968defbe43c00808d834bc5da3",
+  "research/kr_us_strategy_batch_v1/us_qqq.py": "5f018dc4a7732da7e9b35b209bd636affc14dd058656e08d962481752c4083ff",
+  "research/kr_us_strategy_batch_v1/supplement.py": "2907fa5213c3f4f2bafa3b95d48755bb6697cbbdea79633a5421b414887b9e6f",
+  "research/kr_us_strategy_batch_v1/presentation.py": "b1981a02b70733dcefd13f90b9000e59ae78de0c3d9e4b7403bc0724b9552065",
+  "research/kr_us_strategy_batch_v1/common.py": "34506d5634ea1e61b31258211c2aad189d25699506cdcc1d9eb7d44cf6f9b228",
+  "research/kr_us_strategy_batch_v1/us.py": "79fd802c70865f6bd2fec2e6346f4afe3e76e76c100ae1df56a31ac23d1892ae",
+  "research/kr_us_strategy_batch_v1/prepare_kr.sh": "53d689bf8b4cdbbe89e21b8ed60b9a64a40ae6a5a44f3cfae85895eb547d20b3",
+  "research/kr_us_strategy_batch_v1/reproduce.sh": "9ba07cda5874152a7ca322d88747460091fd993ba52d238ba51c1a852a6e59ad",
+  "research/kr_us_strategy_batch_v1/registry.json": "45f9c43a9c18d8331dbdd99184ee4d3560af4ee764c4014848262897690bbb78",
+  "research/kr_us_strategy_batch_v1/DESIGN-ko.md": "4428e71793a52b7193b4f2ba53c6c4ec7d30cab5492f3a187695bed00e498b1e",
+  "research/kr_us_strategy_batch_v1/INPUT-REPAIR-ko.md": "8b68592dd16ab1a4339851d8dbfb87c66756e69c6ba9e288dfaafc9bfb563fdc"
+ },
+ "reusedSourceCodeSha256": {
+  "pipeline/us_decision_pilot.py": "a82e5d362d6c7bc2f9a3fd24e4abf5502691866729e82fdcf0e0a144d65ed9e8",
+  "research/us_selection_value_v1/features.py": "81eaaf8b614557410bcc5050ea61fed518bebbcf4d7d34a4bed06b0fe8fbc015",
+  "research/us_selection_value_v1/evaluate.py": "690fdd6ef65287f6445af2018558c764cab5aee34252ea9e7cef3be76cb7ff27",
+  "research/us_selection_value_v1/cocktail.py": "49a706036f5ff444fbc9857b04394f224cd4f8024e52073b6ddb2e3ea3fed0de",
+  "research/us_selection_value_v1/fetch_as_traded.py": "7f7b200ddf0b9c666e82e0a2017d39672827ad376a1b5749a20bf744aeea1bd4",
+  "research/followup_round8_v1/kr_switch.py": "0bbde9178af7952ed92e22be448d52d3d7f2353b6af23c455aa18cc7991fc7be",
+  "research/kr_s2_rank_ladder_v1/run.py": "7acb702b9e470daf71d33e5fcdddc0ca3ef48f683918566d5459beabbf66295a",
+  "research/alpha_search_round6_v1/kr.py": "0f03e06d738714c1935fbbf5874be0d290eefccfed66ab899d66006c45eaadb7",
+  "research/alpha_search_round6_v1/us.py": "728e773095205c8ba6394c9427b5a29e5cf2c206e550c481aedcbda7a107317c"
+ },
+ "priorResearchAndProductionTrackedFilesUnchanged": true,
+ "marketProgress": {
+  "KR": {
+   "available": true,
+   "expectedBooksPerCadenceIncludingETF": 76,
+   "attempted": {
+    "L26": 76,
+    "L52": 76
+   },
+   "measured": {
+    "L26": 76,
+    "L52": 76
+   },
+   "status": "COMPLETE"
+  },
+  "US": {
+   "available": true,
+   "expectedBooksPerCadenceIncludingETF": 35,
+   "attempted": {
+    "L26": 35,
+    "L52": 35
+   },
+   "measured": {
+    "L26": 35,
+    "L52": 35
+   },
+   "status": "COMPLETE"
+  }
+ },
+ "dataPurchasePerformed": false,
+ "operationalPromotion": false,
+ "krInputIdentity": {
+  "finalSessionQuotesApplied": 235,
+  "identity": "3e4d7aa35e2c4b273e4ecef0e2e8ea7a8a27077f0de14bb3d5ea6a696a97f1a5",
+  "matrixDigest": "32e49b57a7541eea66f76373baef50c6302a394247b313f6099f718d46d54b0c",
+  "mcapCoverage": 1.0,
+  "universeShards": 14
+ },
+ "usInputVintage": "US_INPUTS_PREPARED_NEW_CAPTURE",
+ "commands": {
+  "all": "bash research/kr_us_strategy_batch_v1/reproduce.sh all",
+  "existingInputs": "bash research/kr_us_strategy_batch_v1/reproduce.sh compute",
+  "tablesAndVerification": "bash research/kr_us_strategy_batch_v1/reproduce.sh report"
+ }
+}

@@ -1,0 +1,62 @@
+{
+ "approvalQuote": "실험 1 역사 예측 비교를 1회 실행하는 것을 승인한다. exp1-protocol sha256:816e1644895bd86062226b5c58aaa52b7758569e51a368a43d9caede8314b04c\n\n승인된 범위 내에서 검증 후 실행하고, 결과를 긍정·부정 구분 없이 모두 보존·보고하라. ... 기존 #366 추론 검정, 투자 시뮬레이션, 변수 추가, 재실행, PR 병합은 승인하지 않는다.",
+ "approvedAtUtc": "2026-11-24T00:51:05+00:00",
+ "approvedBy": "jaehojung1879-netizen (repository owner, via Claude Code session chat)",
+ "authenticity": "UNAUTHENTICATED_FILE_RECORD_OF_OWNER_APPROVAL",
+ "pins": {
+  "code": {
+   "research/market_risk_discovery_v1/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "research/market_risk_discovery_v1/baseline_census.py": "8e3dcc4abe9e0431e8210eb0ba47354e7bcfccfc80d4987aaa988ab7d1702de7",
+   "research/market_risk_discovery_v1/exp1_design.py": "12306482da7f6d38085162405df43f4497e63df4c6664c2b68bf459fa4a28c00",
+   "research/market_risk_discovery_v1/exp1_execute.py": "4f323d59a778623a331dba90b1233f974f1fb86f75df1252517936c0827396c7",
+   "research/market_risk_discovery_v1/exp1_inputs.py": "c2e0ed4f84f36cbe26a15336e7845c766f13e28f0325f1e9ccbfaf2133edf786",
+   "research/market_risk_discovery_v1/exp1_panels.py": "965da202812330f43ee794ae6280d2b424ceab77174e5b20387100cd9b0a2513",
+   "research/market_risk_discovery_v1/label_census.py": "75dad4a82ca0252481fd642671684e92d04c7fd66609bdb4c59173761eb77785",
+   "research/market_risk_discovery_v1/panels.py": "8e9fd6be074561f185a53ce60899c941028ef38348ef763637f090edc20fa6b3",
+   "research/market_risk_discovery_v1/stage2_design.py": "766e8a478c1888d010cd4110be41f632fe7941a47ab2a488981b59bb23d96e43",
+   "research/market_risk_discovery_v1/stage3_execute_v2.py": "b9fb0b54f89b375d6e517c74a102df8723c330765b8165e46ffb39b26f6ee323",
+   "research/market_valuation_macro_overlay_v1/__init__.py": "cb394b2e2cc431f86a3613f5ef5ce5aca117673f2417792658a23f575339fc3f",
+   "research/market_valuation_macro_overlay_v1/features.py": "c6cfb872efec3552d7bf40debc8323543c458044d4396e05103b867d785b6648",
+   "research/market_valuation_macro_overlay_v1/source_probe.py": "6ef0e0d70930a527f32bab3232d610348913d3b78c1435e892b7533d2f70dee6"
+  },
+  "evidence": {
+   "research/market_risk_discovery_v1/evidence/exp1-readiness.json": "9c00ddc9957dda50a2acbda6dc03704a9c6da03319b388f90ca068194302b5d1"
+  },
+  "inputs": {
+   "research/market_risk_discovery_v1/data/alfred-BAA-asof-month-ends.csv": "19b3b3dfdce8f1fb6ea0cc9e5b576616d114604b0a49bfbf00f517482c2d81a5",
+   "research/market_risk_discovery_v1/data/alfred-GS10-asof-month-ends.csv": "9854692e71eb2de370f1fa16495c3a137c094975e779861d2215efd9647c5f49",
+   "research/market_risk_discovery_v1/data/exp1-inputs-manifest.json": "aeeb3ba7276ed19ef99753e66523d4582d935eb3434331265d713413ab68d3d0",
+   "research/market_risk_discovery_v1/data/raw/fred-VIXCLS.csv.gz": "b9b1fbbd2ef0faada7c518da1c2055fae5f56f4dd7976711b7a6dd12b577f964",
+   "research/market_risk_discovery_v1/data/raw/fred-VXVCLS.csv.gz": "2b65b69268f970e2fba0a9da70d07b3b63d05264f17e82f127166e7eb9176dd9",
+   "research/market_risk_discovery_v1/data/raw/yahoo-SPY-chart-20261110.json.gz": "5a4920f340161f9be7fec0472df581b09964428cb95d433f18b2d29d131301b4",
+   "research/market_risk_discovery_v1/data/ssga-SPY-distributions.csv": "1f850a7f368908610bdc339239baa72bb154b6cddc6d52d7f8d9657994c6d112"
+  }
+ },
+ "protocolSha256": "816e1644895bd86062226b5c58aaa52b7758569e51a368a43d9caede8314b04c",
+ "scope": {
+  "action": "EXECUTE_ONCE_HISTORICAL_EXPLORATORY_NO_INFERENCE",
+  "excludes": [
+   "INVESTMENT_SIMULATION",
+   "MERGE",
+   "OTHER_STUDIES",
+   "P1_STAGE3_INFERENCE",
+   "PRODUCTION_CHANGE",
+   "PROTOCOL_CHANGE",
+   "RERUN",
+   "STRATEGY_PROMOTION"
+  ],
+  "experiment": "EXP1_HISTORICAL_FORECAST_COMPARISON",
+  "maxExecutions": 1,
+  "models": [
+   "M0",
+   "M1",
+   "M2",
+   "M3",
+   "M4",
+   "M5"
+  ],
+  "protocolFile": "research/market_risk_discovery_v1/exp1-protocol.json",
+  "protocolSha256": "816e1644895bd86062226b5c58aaa52b7758569e51a368a43d9caede8314b04c",
+  "study": "market-risk-discovery-v1"
+ }
+}

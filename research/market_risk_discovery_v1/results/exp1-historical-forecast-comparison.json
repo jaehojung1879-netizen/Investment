@@ -1,0 +1,594 @@
+{
+ "evidenceClass": "EXPLORATORY_ON_OUTCOME_EXPOSED_HISTORY",
+ "experiment": "EXP1_HISTORICAL_FORECAST_COMPARISON",
+ "finishedAtUtc": "2026-11-24T00:51:26.024043+00:00",
+ "inferentialClaim": null,
+ "marker": {
+  "experiment": "EXP1",
+  "gitHead": "e434b1fefd9cad36f9ebfbc897eb825704de6d19",
+  "pid": 192,
+  "protocolSha256": "816e1644895bd86062226b5c58aaa52b7758569e51a368a43d9caede8314b04c",
+  "signalLabelJoinsBeforeThisMarker": 0,
+  "startedAtUtc": "2026-11-24T00:51:25.303928+00:00",
+  "study": "market-risk-discovery-v1"
+ },
+ "promotionEligible": false,
+ "samples": {
+  "A": {
+   "models": {
+    "M0": {
+     "brier": 0.16187525735749383,
+     "brierByPeriod": {
+      "before": 0.20109429287559272,
+      "from": 0.1550389117167243
+     },
+     "brierSkillVsM0": 0.0,
+     "calibration": {
+      "bins": [
+       {
+        "meanP": null,
+        "n": 0,
+        "observed": null,
+        "range": [
+         0.0,
+         0.05
+        ]
+       },
+       {
+        "meanP": null,
+        "n": 0,
+        "observed": null,
+        "range": [
+         0.05,
+         0.1
+        ]
+       },
+       {
+        "meanP": 0.16515823553899706,
+        "n": 48,
+        "observed": 0.2708333333333333,
+        "range": [
+         0.1,
+         0.2
+        ]
+       },
+       {
+        "meanP": 0.26702548227389455,
+        "n": 80,
+        "observed": 0.125,
+        "range": [
+         0.2,
+         0.4
+        ]
+       },
+       {
+        "meanP": null,
+        "n": 0,
+        "observed": null,
+        "range": [
+         0.4,
+         1.0
+        ]
+       }
+      ],
+      "meanP": 0.22882526474830794,
+      "observed": 0.1796875
+     },
+     "logLoss": 0.5112931775383132
+    },
+    "M1": {
+     "brier": 0.21319545192054776,
+     "brierByPeriod": {
+      "before": 0.5495043337879109,
+      "from": 0.15457280278770458
+     },
+     "brierSkillVsM0": -0.3170354469288392,
+     "calibration": {
+      "bins": [
+       {
+        "meanP": 0.04478581214536309,
+        "n": 3,
+        "observed": 0.0,
+        "range": [
+         0.0,
+         0.05
+        ]
+       },
+       {
+        "meanP": 0.07269218277773581,
+        "n": 14,
+        "observed": 0.42857142857142855,
+        "range": [
+         0.05,
+         0.1
+        ]
+       },
+       {
+        "meanP": 0.1611849282772898,
+        "n": 54,
+        "observed": 0.12962962962962962,
+        "range": [
+         0.1,
+         0.2
+        ]
+       },
+       {
+        "meanP": 0.26354989881681573,
+        "n": 43,
+        "observed": 0.20930232558139536,
+        "range": [
+         0.2,
+         0.4
+        ]
+       },
+       {
+        "meanP": 0.7611952611858659,
+        "n": 14,
+        "observed": 0.07142857142857142,
+        "range": [
+         0.4,
+         1.0
+        ]
+       }
+      ],
+      "meanP": 0.24879229240643158,
+      "observed": 0.1796875
+     },
+     "dBrierVsM1": 0.0,
+     "dBrierVsM1ByPeriod": {
+      "before": 0.0,
+      "from": 0.0
+     },
+     "dBrierVsM1EpisodeExclusion": {
+      "2008-01-18": 0.0,
+      "2018-12-20": 0.0,
+      "2020-03-09": 0.0,
+      "2022-05-09": 0.0,
+      "2025-04-04": 0.0
+     },
+     "logLoss": 0.6899312899516168,
+     "warnings": {
+      "episodes": {
+       "2008-01-18": {
+        "firstWarning": "2007-07-31",
+        "leadSessions": 119,
+        "opportunities": 5,
+        "warned": true
+       },
+       "2018-12-20": {
+        "firstWarning": null,
+        "leadSessions": null,
+        "opportunities": 4,
+        "warned": false
+       },
+       "2020-03-09": {
+        "firstWarning": null,
+        "leadSessions": null,
+        "opportunities": 5,
+        "warned": false
+       },
+       "2022-05-09": {
+        "firstWarning": null,
+        "leadSessions": null,
+        "opportunities": 4,
+        "warned": false
+       },
+       "2025-04-04": {
+        "firstWarning": null,
+        "leadSessions": null,
+        "opportunities": 5,
+        "warned": false
+       }
+      },
+      "falseAlarmRows": 11,
+      "falseAlarmSpells": 3,
+      "missedEpisodes": [
+       "2018-12-20",
+       "2020-03-09",
+       "2022-05-09",
+       "2025-04-04"
+      ],
+      "rate": 0.09375,
+      "rateOnNegativeRows": 0.10476190476190476
+     }
+    },
+    "M2": {
+     "brier": 0.21798711012520422,
+     "brierByPeriod": {
+      "before": 0.4923395871020825,
+      "from": 0.17016420129437224
+     },
+     "brierSkillVsM0": -0.3466363771937673,
+     "calibration": {
+      "bins": [
+       {
+        "meanP": null,
+        "n": 0,
+        "observed": null,
+        "range": [
+         0.0,
+         0.05
+        ]
+       },
+       {
+        "meanP": 0.07159892544311072,
+        "n": 21,
+        "observed": 0.2857142857142857,
+        "range": [
+         0.05,
+         0.1
+        ]
+       },
+       {
+        "meanP": 0.14734550385317596,
+        "n": 66,
+        "observed": 0.16666666666666666,
+        "range": [
+         0.1,
+         0.2
+        ]
+       },
+       {
+        "meanP": 0.26075529303793593,
+        "n": 22,
+        "observed": 0.045454545454545456,
+        "range": [
+         0.2,
+         0.4
+        ]
+       },
+       {
+        "meanP": 0.7609149769044417,
+        "n": 19,
+        "observed": 0.2631578947368421,
+        "range": [
+         0.4,
+         1.0
+        ]
+       }
+      ],
+      "meanP": 0.2454873570049525,
+      "observed": 0.1796875
+     },
+     "dBrierVsM1": -0.004791658204656499,
+     "dBrierVsM1ByPeriod": {
+      "before": 0.05716474668582846,
+      "from": -0.015591398506667634
+     },
+     "dBrierVsM1EpisodeExclusion": {
+      "2008-01-18": -0.011045020288160595,
+      "2018-12-20": -0.004507096145484253,
+      "2020-03-09": -0.003218695490280453,
+      "2022-05-09": -0.004863208255686972,
+      "2025-04-04": -0.003170101008655386
+     },
+     "forecastImprovementObserved": false,
+     "logLoss": 0.7013132815444096,
+     "warnings": {
+      "episodes": {
+       "2008-01-18": {
+        "firstWarning": "2007-07-31",
+        "leadSessions": 119,
+        "opportunities": 5,
+        "warned": true
+       },
+       "2018-12-20": {
+        "firstWarning": null,
+        "leadSessions": null,
+        "opportunities": 4,
+        "warned": false
+       },
+       "2020-03-09": {
+        "firstWarning": null,
+        "leadSessions": null,
+        "opportunities": 5,
+        "warned": false
+       },
+       "2022-05-09": {
+        "firstWarning": "2022-03-31",
+        "leadSessions": 26,
+        "opportunities": 4,
+        "warned": true
+       },
+       "2025-04-04": {
+        "firstWarning": null,
+        "leadSessions": null,
+        "opportunities": 5,
+        "warned": false
+       }
+      },
+      "falseAlarmRows": 14,
+      "falseAlarmSpells": 3,
+      "missedEpisodes": [
+       "2018-12-20",
+       "2020-03-09",
+       "2025-04-04"
+      ],
+      "rate": 0.125,
+      "rateOnNegativeRows": 0.13333333333333333
+     }
+    },
+    "M3": {
+     "brier": 0.21186708030439685,
+     "brierByPeriod": {
+      "before": 0.49335534260385383,
+      "from": 0.16280031898614286
+     },
+     "brierSkillVsM0": -0.3088293032733127,
+     "calibration": {
+      "bins": [
+       {
+        "meanP": 0.03478019988158529,
+        "n": 10,
+        "observed": 0.0,
+        "range": [
+         0.0,
+         0.05
+        ]
+       },
+       {
+        "meanP": 0.07155226117773243,
+        "n": 20,
+        "observed": 0.3,
+        "range": [
+         0.05,
+         0.1
+        ]
+       },
+       {
+        "meanP": 0.14112657628814212,
+        "n": 46,
+        "observed": 0.1956521739130435,
+        "range": [
+         0.1,
+         0.2
+        ]
+       },
+       {
+        "meanP": 0.27109075133212057,
+        "n": 34,
+        "observed": 0.11764705882352941,
+        "range": [
+         0.2,
+         0.4
+        ]
+       },
+       {
+        "meanP": 0.7412976672140075,
+        "n": 18,
+        "observed": 0.2222222222222222,
+        "range": [
+         0.4,
+         1.0
+        ]
+       }
+      ],
+      "meanP": 0.24086807255288492,
+      "observed": 0.1796875
+     },
+     "dBrierVsM1": 0.0013283716161508888,
+     "dBrierVsM1ByPeriod": {
+      "before": 0.056148991184057036,
+      "from": -0.008227516198438254
+     },
+     "dBrierVsM1EpisodeExclusion": {
+      "2008-01-18": -0.005633052744486062,
+      "2018-12-20": 0.00023489222580774452,
+      "2020-03-09": 0.003590303922785037,
+      "2022-05-09": 0.0019199721308810892,
+      "2025-04-04": 0.002923825133056594
+     },
+     "forecastImprovementObserved": false,
+     "logLoss": 0.6833392859656169,
+     "warnings": {
+      "episodes": {
+       "2008-01-18": {
+        "firstWarning": "2007-07-31",
+        "leadSessions": 119,
+        "opportunities": 5,
+        "warned": true
+       },
+       "2018-12-20": {
+        "firstWarning": null,
+        "leadSessions": null,
+        "opportunities": 4,
+        "warned": false
+       },
+       "2020-03-09": {
+        "firstWarning": null,
+        "leadSessions": null,
+        "opportunities": 5,
+        "warned": false
+       },
+       "2022-05-09": {
+        "firstWarning": "2022-03-31",
+        "leadSessions": 26,
+        "opportunities": 4,
+        "warned": true
+       },
+       "2025-04-04": {
+        "firstWarning": null,
+        "leadSessions": null,
+        "opportunities": 5,
+        "warned": false
+       }
+      },
+      "falseAlarmRows": 14,
+      "falseAlarmSpells": 4,
+      "missedEpisodes": [
+       "2018-12-20",
+       "2020-03-09",
+       "2025-04-04"
+      ],
+      "rate": 0.125,
+      "rateOnNegativeRows": 0.13333333333333333
+     }
+    },
+    "M4": {
+     "brier": 0.2210697543844407,
+     "brierByPeriod": {
+      "before": 0.5836167762246551,
+      "from": 0.15787348452238503
+     },
+     "brierSkillVsM0": -0.36567970913688574,
+     "calibration": {
+      "bins": [
+       {
+        "meanP": 0.0361168388895739,
+        "n": 11,
+        "observed": 0.2727272727272727,
+        "range": [
+         0.0,
+         0.05
+        ]
+       },
+       {
+        "meanP": 0.07706161258955693,
+        "n": 14,
+        "observed": 0.21428571428571427,
+        "range": [
+         0.05,
+         0.1
+        ]
+       },
+       {
+        "meanP": 0.14253662901728675,
+        "n": 50,
+        "observed": 0.12,
+        "range": [
+         0.1,
+         0.2
+        ]
+       },
+       {
+        "meanP": 0.2672265036952688,
+        "n": 33,
+        "observed": 0.21212121212121213,
+        "range": [
+         0.2,
+         0.4
+        ]
+       },
+       {
+        "meanP": 0.7665511614550212,
+        "n": 20,
+        "observed": 0.2,
+        "range": [
+         0.4,
+         1.0
+        ]
+       }
+      ],
+      "meanP": 0.2558787273902167,
+      "observed": 0.1796875
+     },
+     "dBrierVsM1": -0.007874302463893002,
+     "dBrierVsM1ByPeriod": {
+      "before": -0.03411244243674425,
+      "from": -0.003300681734680399
+     },
+     "dBrierVsM1EpisodeExclusion": {
+      "2008-01-18": -0.014539576993044371,
+      "2018-12-20": -0.007525607500689513,
+      "2020-03-09": -0.0064882203844417495,
+      "2022-05-09": -0.011634076435252171,
+      "2025-04-04": -0.008610120753064316
+     },
+     "forecastImprovementObserved": false,
+     "logLoss": 0.9323363951867814,
+     "warnings": {
+      "episodes": {
+       "2008-01-18": {
+        "firstWarning": "2007-09-28",
+        "leadSessions": 77,
+        "opportunities": 5,
+        "warned": true
+       },
+       "2018-12-20": {
+        "firstWarning": null,
+        "leadSessions": null,
+        "opportunities": 4,
+        "warned": false
+       },
+       "2020-03-09": {
+        "firstWarning": null,
+        "leadSessions": null,
+        "opportunities": 5,
+        "warned": false
+       },
+       "2022-05-09": {
+        "firstWarning": "2021-11-30",
+        "leadSessions": 110,
+        "opportunities": 4,
+        "warned": true
+       },
+       "2025-04-04": {
+        "firstWarning": null,
+        "leadSessions": null,
+        "opportunities": 5,
+        "warned": false
+       }
+      },
+      "falseAlarmRows": 14,
+      "falseAlarmSpells": 4,
+      "missedEpisodes": [
+       "2018-12-20",
+       "2020-03-09",
+       "2025-04-04"
+      ],
+      "rate": 0.1328125,
+      "rateOnNegativeRows": 0.13333333333333333
+     }
+    }
+   },
+   "note": "descriptive only: positive rows are not independent crises; episode exclusion removes an episode's positive rows on the evaluation side without refitting; no p-values",
+   "status": "COMPUTED",
+   "structure": {
+    "evaluationEpisodes": [
+     "2008-01-18",
+     "2018-12-20",
+     "2020-03-09",
+     "2022-05-09",
+     "2025-04-04"
+    ],
+    "evaluationPositiveRows": 23,
+    "evaluationRows": 128,
+    "firstRow": "1998-03-31",
+    "independentEvaluationEpisodes": 5,
+    "pass": true,
+    "reasons": [],
+    "rows": 155,
+    "start": 2001,
+    "trainingEpisodesAtStart": [
+     "1998-08-31",
+     "2000-12-20"
+    ]
+   }
+  },
+  "B": {
+   "status": "DATA_INSUFFICIENT",
+   "structure": {
+    "evaluationEpisodes": [
+     "2022-05-09",
+     "2025-04-04"
+    ],
+    "evaluationPositiveRows": 9,
+    "evaluationRows": 38,
+    "firstRow": "2012-08-31",
+    "independentEvaluationEpisodes": 2,
+    "pass": false,
+    "reasons": [
+     "FEW_EVALUATION_EPISODES",
+     "FEW_EVALUATION_ROWS"
+    ],
+    "rows": 120,
+    "start": 2021,
+    "trainingEpisodesAtStart": [
+     "2018-12-20",
+     "2020-03-09"
+    ]
+   }
+  }
+ },
+ "study": "market-risk-discovery-v1"
+}

@@ -1,0 +1,1618 @@
+{
+ "capOverlaySHA256": "908763982557908c2d1b8fb51f1c831a724a40f41c046b3e2a82421be889d07d",
+ "coverageIntervals": [
+  {
+   "from": "2014-01-01",
+   "through": "2026-09-29"
+  }
+ ],
+ "coveredStudyWeeks": 653,
+ "horizons": {
+  "126": {
+   "ETFSensitivity": {
+    "maxName": "CNX",
+    "maxYear": 2016,
+    "minusNameContribution": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.0025148497521619707,
+      0.00010777294826552265
+     ],
+     "independentBlocksApprox": 25.16,
+     "mean": -0.001201783962522913,
+     "n": 629,
+     "pOneSided": 0.9662584353911522,
+     "pOneSidedApprox": 0.9662584353911522
+    },
+    "noNameDates": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.0024304990829777354,
+      0.00014304601840756624
+     ],
+     "independentBlocksApprox": 24.92,
+     "mean": -0.0011467144594530523,
+     "n": 623,
+     "pOneSided": 0.9610097475631092,
+     "pOneSidedApprox": 0.9610097475631092
+    },
+    "noYear": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.0029760537494048036,
+      0.0001290357336478167
+     ],
+     "independentBlocksApprox": 23.08,
+     "mean": -0.0014424275911441155,
+     "n": 577,
+     "pOneSided": 0.9635091227193202,
+     "pOneSidedApprox": 0.9635091227193202
+    }
+   },
+   "active": {
+    "adjusted": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": 0.05197583127202463,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": -0.016606944348320343,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": 0.011563858306932405,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etf": {
+     "blockWeeks": 25,
+     "ci": [
+      0.04823028707975705,
+      0.12796267714407733
+     ],
+     "independentBlocksApprox": 2.72,
+     "mean": 0.08352701871214237,
+     "n": 68,
+     "pOneSided": 0.00024993751562109475,
+     "pOneSidedApprox": 0.00024993751562109475
+    },
+    "peer": {
+     "blockWeeks": 25,
+     "ci": [
+      0.03907426354863616,
+      0.1223381920489502
+     ],
+     "independentBlocksApprox": 2.68,
+     "mean": 0.0774272835848121,
+     "n": 67,
+     "pOneSided": 0.00024993751562109475,
+     "pOneSidedApprox": 0.00024993751562109475
+    },
+    "qqq": {
+     "blockWeeks": 25,
+     "ci": [
+      0.05907368162299634,
+      0.19051875173780022
+     ],
+     "independentBlocksApprox": 2.72,
+     "mean": 0.11644653686055803,
+     "n": 68,
+     "pOneSided": 0.00024993751562109475,
+     "pOneSidedApprox": 0.00024993751562109475
+    },
+    "replacement": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.01625752482676962,
+      0.004713021291976367
+     ],
+     "independentBlocksApprox": 2.68,
+     "mean": -0.006544831664965755,
+     "n": 67,
+     "pOneSided": 0.876030992251937,
+     "pOneSidedApprox": 0.876030992251937
+    },
+    "selected": {
+     "blockWeeks": 25,
+     "ci": [
+      0.036744246164161345,
+      0.12499206313833951
+     ],
+     "independentBlocksApprox": 2.72,
+     "mean": 0.07871044441530595,
+     "n": 68,
+     "pOneSided": 0.0004998750312421895,
+     "pOneSidedApprox": 0.0004998750312421895
+    },
+    "selection": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.014424493369311597,
+      0.023271005091071852
+     ],
+     "independentBlocksApprox": 2.68,
+     "mean": 0.003423942194387715,
+     "n": 67,
+     "pOneSided": 0.4031492126968258,
+     "pOneSidedApprox": 0.4031492126968258
+    },
+    "total": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.023754034438664775,
+      0.017818028315624002
+     ],
+     "independentBlocksApprox": 2.72,
+     "mean": -0.0048165742968364275,
+     "n": 68,
+     "pOneSided": 0.6960759810047488,
+     "pOneSidedApprox": 0.6960759810047488
+    },
+    "vsQQQ": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.08247595687114789,
+      0.0029366451821413453
+     ],
+     "independentBlocksApprox": 2.72,
+     "mean": -0.03773609244525209,
+     "n": 68,
+     "pOneSided": 0.9650087478130467,
+     "pOneSidedApprox": 0.9650087478130467
+    }
+   },
+   "adjusted": {
+    "adjusted": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": 0.05197583127202463,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": -0.016606944348320343,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": 0.011563858306932405,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etf": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": 0.06858277562034498,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "peer": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": 0.06787673161975681,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "qqq": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": 0.09486569606051347,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacement": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": -0.0007060440005881752,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selected": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": 0.06353968957895705,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selection": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": -0.0043370420407997596,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "total": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": -0.005043086041387935,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "vsQQQ": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": -0.031326006481556416,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "adjustedMinusBase": {
+    "blockWeeks": 25,
+    "ci": null,
+    "independentBlocksApprox": 0.72,
+    "mean": 0.015900900347732165,
+    "n": 18,
+    "pOneSided": null,
+    "pOneSidedApprox": null
+   },
+   "bothMatches": {
+    "adjusted": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": 0.05197583127202463,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": -0.016606944348320343,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": 0.011563858306932405,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etf": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": 0.06858277562034498,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "peer": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": 0.06787673161975681,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "qqq": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": 0.09486569606051347,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacement": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": -0.0007060440005881752,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selected": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": 0.06353968957895705,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selection": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": -0.0043370420407997596,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "total": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": -0.005043086041387935,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "vsQQQ": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": -0.031326006481556416,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "own": {
+    "adjusted": {
+     "blockWeeks": 25,
+     "ci": [
+      0.0390860739605309,
+      0.09162526498635633
+     ],
+     "independentBlocksApprox": 23.16,
+     "mean": 0.06628877036853002,
+     "n": 579,
+     "pOneSided": 0.00024993751562109475,
+     "pOneSidedApprox": 0.00024993751562109475
+    },
+    "adjustedReplacement": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.001646152251294622,
+      0.00044302409837737117
+     ],
+     "independentBlocksApprox": 23.16,
+     "mean": -0.0005162780626420831,
+     "n": 579,
+     "pOneSided": 0.8477880529867533,
+     "pOneSidedApprox": 0.8477880529867533
+    },
+    "adjustedSelection": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.0007938983607892541,
+      0.0016662974955514206
+     ],
+     "independentBlocksApprox": 23.16,
+     "mean": 0.00035949818570774327,
+     "n": 579,
+     "pOneSided": 0.28367908022994254,
+     "pOneSidedApprox": 0.28367908022994254
+    },
+    "etf": {
+     "blockWeeks": 25,
+     "ci": [
+      0.04162024566785282,
+      0.09399367377691449
+     ],
+     "independentBlocksApprox": 25.16,
+     "mean": 0.06856195604595884,
+     "n": 629,
+     "pOneSided": 0.00024993751562109475,
+     "pOneSidedApprox": 0.00024993751562109475
+    },
+    "peer": {
+     "blockWeeks": 25,
+     "ci": [
+      0.04098387053350149,
+      0.0934242043889304
+     ],
+     "independentBlocksApprox": 25.12,
+     "mean": 0.067887358408702,
+     "n": 628,
+     "pOneSided": 0.00024993751562109475,
+     "pOneSidedApprox": 0.00024993751562109475
+    },
+    "qqq": {
+     "blockWeeks": 25,
+     "ci": [
+      0.0591942701911225,
+      0.1325050118519382
+     ],
+     "independentBlocksApprox": 25.16,
+     "mean": 0.09734121773223897,
+     "n": 629,
+     "pOneSided": 0.00024993751562109475,
+     "pOneSidedApprox": 0.00024993751562109475
+    },
+    "replacement": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.0019149272127313855,
+      0.0004652061977821713
+     ],
+     "independentBlocksApprox": 25.12,
+     "mean": -0.0006982543336826523,
+     "n": 628,
+     "pOneSided": 0.876030992251937,
+     "pOneSidedApprox": 0.876030992251937
+    },
+    "selected": {
+     "blockWeeks": 25,
+     "ci": [
+      0.04148600414030963,
+      0.0933325269669966
+     ],
+     "independentBlocksApprox": 25.16,
+     "mean": 0.06804124531116572,
+     "n": 629,
+     "pOneSided": 0.00024993751562109475,
+     "pOneSidedApprox": 0.00024993751562109475
+    },
+    "selection": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.001448693413901265,
+      0.0026854807244661777
+     ],
+     "independentBlocksApprox": 25.12,
+     "mean": 0.00036529319589805227,
+     "n": 628,
+     "pOneSided": 0.4031492126968258,
+     "pOneSidedApprox": 0.4031492126968258
+    },
+    "total": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.002540474435055772,
+      0.001957016206659027
+     ],
+     "independentBlocksApprox": 25.16,
+     "mean": -0.0005207107347931274,
+     "n": 629,
+     "pOneSided": 0.6960759810047488,
+     "pOneSidedApprox": 0.6960759810047488
+    },
+    "vsQQQ": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.04906246943353666,
+      -0.009445541095694378
+     ],
+     "independentBlocksApprox": 25.16,
+     "mean": -0.02929997242107325,
+     "n": 629,
+     "pOneSided": 0.9990002499375156,
+     "pOneSidedApprox": 0.9990002499375156
+    }
+   },
+   "paired": {
+    "adjusted": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": 0.05197583127202463,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": -0.016606944348320343,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "blockWeeks": 25,
+     "ci": null,
+     "independentBlocksApprox": 0.72,
+     "mean": 0.011563858306932405,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etf": {
+     "blockWeeks": 25,
+     "ci": [
+      0.04816582718659056,
+      0.1289713208549575
+     ],
+     "independentBlocksApprox": 2.68,
+     "mean": 0.08397211524977785,
+     "n": 67,
+     "pOneSided": 0.00024993751562109475,
+     "pOneSidedApprox": 0.00024993751562109475
+    },
+    "peer": {
+     "blockWeeks": 25,
+     "ci": [
+      0.03907426354863616,
+      0.1223381920489502
+     ],
+     "independentBlocksApprox": 2.68,
+     "mean": 0.0774272835848121,
+     "n": 67,
+     "pOneSided": 0.00024993751562109475,
+     "pOneSidedApprox": 0.00024993751562109475
+    },
+    "qqq": {
+     "blockWeeks": 25,
+     "ci": [
+      0.05912412810795435,
+      0.1923995942620741
+     ],
+     "independentBlocksApprox": 2.68,
+     "mean": 0.11744226623417889,
+     "n": 67,
+     "pOneSided": 0.00024993751562109475,
+     "pOneSidedApprox": 0.00024993751562109475
+    },
+    "replacement": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.01625752482676962,
+      0.004713021291976367
+     ],
+     "independentBlocksApprox": 2.68,
+     "mean": -0.006544831664965755,
+     "n": 67,
+     "pOneSided": 0.876030992251937,
+     "pOneSidedApprox": 0.876030992251937
+    },
+    "selected": {
+     "blockWeeks": 25,
+     "ci": [
+      0.038336194964481714,
+      0.1277076805006037
+     ],
+     "independentBlocksApprox": 2.68,
+     "mean": 0.08085122577919983,
+     "n": 67,
+     "pOneSided": 0.0004998750312421895,
+     "pOneSidedApprox": 0.0004998750312421895
+    },
+    "selection": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.014424493369311597,
+      0.023271005091071852
+     ],
+     "independentBlocksApprox": 2.68,
+     "mean": 0.003423942194387715,
+     "n": 67,
+     "pOneSided": 0.4031492126968258,
+     "pOneSidedApprox": 0.4031492126968258
+    },
+    "total": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.021895466599404178,
+      0.01943806040669268
+     ],
+     "independentBlocksApprox": 2.68,
+     "mean": -0.003120889470578042,
+     "n": 67,
+     "pOneSided": 0.6400899775056236,
+     "pOneSidedApprox": 0.6400899775056236
+    },
+    "vsQQQ": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.08198696046489135,
+      0.004585323342936765
+     ],
+     "independentBlocksApprox": 2.68,
+     "mean": -0.036591040454979094,
+     "n": 67,
+     "pOneSided": 0.9615096225943515,
+     "pOneSidedApprox": 0.9615096225943515
+    }
+   },
+   "selectionSensitivity": {
+    "maxName": "CNX",
+    "maxYear": 2016,
+    "minusNameContribution": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.015332551601369792,
+      0.00616475128105625
+     ],
+     "independentBlocksApprox": 2.68,
+     "mean": -0.004640210817472136,
+     "n": 67,
+     "pOneSided": 0.7988002999250188,
+     "pOneSidedApprox": 0.7988002999250188
+    },
+    "noNameDates": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.016157187569994933,
+      0.006636889978311645
+     ],
+     "independentBlocksApprox": 2.44,
+     "mean": -0.004740469976623074,
+     "n": 61,
+     "pOneSided": 0.7900524868782804,
+     "pOneSidedApprox": 0.7900524868782804
+    },
+    "noYear": {
+     "blockWeeks": 25,
+     "ci": [
+      -0.01558032690205715,
+      0.01472612339741523
+     ],
+     "independentBlocksApprox": 2.52,
+     "mean": -0.0002876103308052539,
+     "n": 63,
+     "pOneSided": 0.5388652836790803,
+     "pOneSidedApprox": 0.5388652836790803
+    }
+   },
+   "statuses": {
+    "MEASURED": 629,
+    "NOT_MATURE": 24,
+    "SOURCE_WINDOW_UNAVAILABLE": 1
+   },
+   "zeroStockMature": 561
+  },
+  "252": {
+   "ETFSensitivity": {
+    "maxName": "CNX",
+    "maxYear": 2020,
+    "minusNameContribution": {
+     "blockWeeks": 50,
+     "ci": [
+      -0.003855076770890507,
+      0.002512725195401136
+     ],
+     "independentBlocksApprox": 12.06,
+     "mean": -0.000980841577380912,
+     "n": 603,
+     "pOneSided": 0.7455636090977256,
+     "pOneSidedApprox": 0.7455636090977256
+    },
+    "noNameDates": {
+     "blockWeeks": 50,
+     "ci": [
+      -0.003612752681815522,
+      0.002637488253892133
+     ],
+     "independentBlocksApprox": 11.94,
+     "mean": -0.0008150477762056727,
+     "n": 597,
+     "pOneSided": 0.7205698575356161,
+     "pOneSidedApprox": 0.7205698575356161
+    },
+    "noYear": {
+     "blockWeeks": 50,
+     "ci": [
+      -0.003865649724132151,
+      0.0019996456346212054
+     ],
+     "independentBlocksApprox": 11.02,
+     "mean": -0.0011689410504699732,
+     "n": 551,
+     "pOneSided": 0.7955511122219445,
+     "pOneSidedApprox": 0.7955511122219445
+    }
+   },
+   "active": {
+    "adjusted": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": 0.12028517961527647,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": -0.010878579888734018,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": 0.003842509933472833,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etf": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 1.26,
+     "mean": 0.16596269845252926,
+     "n": 63,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "peer": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 1.24,
+     "mean": 0.1633329827803353,
+     "n": 62,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "qqq": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 1.26,
+     "mean": 0.23056854639887628,
+     "n": 63,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacement": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 1.24,
+     "mean": -0.0053758359625145835,
+     "n": 62,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selected": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 1.26,
+     "mean": 0.16832344172550312,
+     "n": 63,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selection": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 1.24,
+     "mean": 0.008905913907697344,
+     "n": 62,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "total": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 1.26,
+     "mean": 0.002360743272973914,
+     "n": 63,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "vsQQQ": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 1.26,
+     "mean": -0.06224510467337319,
+     "n": 63,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "adjusted": {
+    "adjusted": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": 0.12028517961527647,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": -0.010878579888734018,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": 0.003842509933472833,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etf": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": 0.1311637595040105,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "peer": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": 0.12280854236776514,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "qqq": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": 0.1779416331677914,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacement": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": -0.008355217136245333,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selected": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": 0.12412768954874931,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selection": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": 0.0013191471809841525,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "total": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": -0.007036069955261182,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "vsQQQ": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": -0.0538139436190421,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "adjustedMinusBase": {
+    "blockWeeks": 50,
+    "ci": null,
+    "independentBlocksApprox": 0.36,
+    "mean": 0.002523362752488682,
+    "n": 18,
+    "pOneSided": null,
+    "pOneSidedApprox": null
+   },
+   "bothMatches": {
+    "adjusted": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": 0.12028517961527647,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": -0.010878579888734018,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": 0.003842509933472833,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etf": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": 0.1311637595040105,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "peer": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": 0.12280854236776514,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "qqq": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": 0.1779416331677914,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacement": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": -0.008355217136245333,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selected": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": 0.12412768954874931,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selection": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": 0.0013191471809841525,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "total": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": -0.007036069955261182,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "vsQQQ": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": -0.0538139436190421,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "own": {
+    "adjusted": {
+     "blockWeeks": 50,
+     "ci": [
+      0.08493286811759311,
+      0.19638805434008627
+     ],
+     "independentBlocksApprox": 11.16,
+     "mean": 0.13946381491062096,
+     "n": 558,
+     "pOneSided": 0.00024993751562109475,
+     "pOneSidedApprox": 0.00024993751562109475
+    },
+    "adjustedReplacement": {
+     "blockWeeks": 50,
+     "ci": [
+      -0.0020129722727212722,
+      0.0013214778327643208
+     ],
+     "independentBlocksApprox": 11.16,
+     "mean": -0.00035092193189464584,
+     "n": 558,
+     "pOneSided": 0.6698325418645339,
+     "pOneSidedApprox": 0.6698325418645339
+    },
+    "adjustedSelection": {
+     "blockWeeks": 50,
+     "ci": [
+      -0.002125352855466925,
+      0.0024493010640243658
+     ],
+     "independentBlocksApprox": 11.16,
+     "mean": 0.00012395193333783358,
+     "n": 558,
+     "pOneSided": 0.45313671582104476,
+     "pOneSidedApprox": 0.45313671582104476
+    },
+    "etf": {
+     "blockWeeks": 50,
+     "ci": [
+      0.08951324575460957,
+      0.1994754481785003
+     ],
+     "independentBlocksApprox": 12.06,
+     "mean": 0.14280485155814407,
+     "n": 603,
+     "pOneSided": 0.00024993751562109475,
+     "pOneSidedApprox": 0.00024993751562109475
+    },
+    "peer": {
+     "blockWeeks": 50,
+     "ci": [
+      0.08959072202961924,
+      0.19923027747580338
+     ],
+     "independentBlocksApprox": 12.04,
+     "mean": 0.1424955488694889,
+     "n": 602,
+     "pOneSided": 0.00024993751562109475,
+     "pOneSidedApprox": 0.00024993751562109475
+    },
+    "qqq": {
+     "blockWeeks": 50,
+     "ci": [
+      0.12096699675284048,
+      0.28443042799432044
+     ],
+     "independentBlocksApprox": 12.06,
+     "mean": 0.20390827739629566,
+     "n": 603,
+     "pOneSided": 0.00024993751562109475,
+     "pOneSidedApprox": 0.00024993751562109475
+    },
+    "replacement": {
+     "blockWeeks": 50,
+     "ci": [
+      -0.0023002515095134923,
+      0.00105707113239261
+     ],
+     "independentBlocksApprox": 12.04,
+     "mean": -0.0005536575243785785,
+     "n": 602,
+     "pOneSided": 0.7375656085978506,
+     "pOneSidedApprox": 0.7375656085978506
+    },
+    "selected": {
+     "blockWeeks": 50,
+     "ci": [
+      0.08893731194390146,
+      0.20134560093002607
+     ],
+     "independentBlocksApprox": 12.06,
+     "mean": 0.14305149637770848,
+     "n": 603,
+     "pOneSided": 0.00024993751562109475,
+     "pOneSidedApprox": 0.00024993751562109475
+    },
+    "selection": {
+     "blockWeeks": 50,
+     "ci": [
+      -0.0023825667074112832,
+      0.004332006990933531
+     ],
+     "independentBlocksApprox": 12.04,
+     "mean": 0.0009172203692312879,
+     "n": 602,
+     "pOneSided": 0.2889277680579855,
+     "pOneSidedApprox": 0.2889277680579855
+    },
+    "total": {
+     "blockWeeks": 50,
+     "ci": [
+      -0.003041365322894441,
+      0.004222466972895661
+     ],
+     "independentBlocksApprox": 12.06,
+     "mean": 0.00024664481956443874,
+     "n": 603,
+     "pOneSided": 0.47188202949262686,
+     "pOneSidedApprox": 0.47188202949262686
+    },
+    "vsQQQ": {
+     "blockWeeks": 50,
+     "ci": [
+      -0.10150048288568296,
+      -0.019607134035203776
+     ],
+     "independentBlocksApprox": 12.06,
+     "mean": -0.06085678101858716,
+     "n": 603,
+     "pOneSided": 0.9987503124218945,
+     "pOneSidedApprox": 0.9987503124218945
+    }
+   },
+   "paired": {
+    "adjusted": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": 0.12028517961527647,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedReplacement": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": -0.010878579888734018,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "adjustedSelection": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 0.36,
+     "mean": 0.003842509933472833,
+     "n": 18,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "etf": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 1.24,
+     "mean": 0.1687088187428499,
+     "n": 62,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "peer": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 1.24,
+     "mean": 0.1633329827803353,
+     "n": 62,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "qqq": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 1.24,
+     "mean": 0.23180577956896165,
+     "n": 62,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "replacement": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 1.24,
+     "mean": -0.0053758359625145835,
+     "n": 62,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selected": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 1.24,
+     "mean": 0.1722388966880326,
+     "n": 62,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "selection": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 1.24,
+     "mean": 0.008905913907697344,
+     "n": 62,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "total": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 1.24,
+     "mean": 0.0035300779451827627,
+     "n": 62,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "vsQQQ": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 1.24,
+     "mean": -0.05956688288092899,
+     "n": 62,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "selectionSensitivity": {
+    "maxName": "CNX",
+    "maxYear": 2020,
+    "minusNameContribution": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 1.24,
+     "mean": -0.003626139533292756,
+     "n": 62,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "noNameDates": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 1.12,
+     "mean": -0.0026078077458300724,
+     "n": 56,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    },
+    "noYear": {
+     "blockWeeks": 50,
+     "ci": null,
+     "independentBlocksApprox": 1.1,
+     "mean": -0.0007006429433955034,
+     "n": 55,
+     "pOneSided": null,
+     "pOneSidedApprox": null
+    }
+   },
+   "statuses": {
+    "MEASURED": 603,
+    "NOT_MATURE": 50,
+    "SOURCE_WINDOW_UNAVAILABLE": 1
+   },
+   "zeroStockMature": 540
+  }
+ },
+ "ledgers": {
+  "2014-02-21_to_2026-08-21": {
+   "L26": {
+    "SPY": {
+     "annualArithmeticDailyGap": 0.0,
+     "annualization": "252_SESSIONS_FROZEN_ENGINE",
+     "cagr": 0.13839009935728663,
+     "cagrGap": 0.0,
+     "calendarYears": 12.56125941136208,
+     "compoundingRemainder": 0.0,
+     "end": "2026-09-14",
+     "etfCagr": 0.13839009935728663,
+     "etfMdd": -0.33717263923504404,
+     "excess": 0.0,
+     "mdd": -0.33717263923504404,
+     "n": 3159,
+     "oneWayTurnoverPerYear": 0.039866776623033444,
+     "start": "2014-02-21",
+     "years": 12.531746031746032
+    },
+    "pairedControl": {
+     "annualArithmeticDailyGap": -0.0010695552420617491,
+     "annualization": "252_SESSIONS_FROZEN_ENGINE",
+     "bookCostPerYear": 0.00036635741533951017,
+     "cagr": 0.1369509833796656,
+     "cagrGap": -0.0014391159776210305,
+     "calendarYears": 12.56125941136208,
+     "compoundingRemainder": -0.00036956073555928135,
+     "end": "2026-09-14",
+     "etfCagr": 0.13839009935728663,
+     "etfMdd": -0.33717263923504404,
+     "excess": -0.0014391159776210305,
+     "mdd": -0.34510857200761746,
+     "meanRetainedResetL1": 0.035179923945867234,
+     "n": 3159,
+     "nameExitShare": 1.0,
+     "oneWayTurnoverPerYear": 0.11749482549453616,
+     "qqqComparison": {
+      "annualArithmeticDailyGap": -0.05211469958747152,
+      "annualization": "252_SESSIONS_FROZEN_ENGINE",
+      "cagr": 0.1369509833796656,
+      "cagrGap": -0.0512058656289871,
+      "calendarYears": 12.56125941136208,
+      "compoundingRemainder": 0.0009088339584844216,
+      "end": "2026-09-14",
+      "etfCagr": 0.1881568490086527,
+      "etfMdd": -0.3511872756972919,
+      "excess": -0.0512058656289871,
+      "mdd": -0.34510857200761746,
+      "n": 3159,
+      "start": "2014-02-21",
+      "years": 12.531746031746032
+     },
+     "start": "2014-02-21",
+     "status": "MEASURED",
+     "years": 12.531746031746032
+    },
+    "pairedSelected": {
+     "annualArithmeticDailyGap": -0.0006637678295397807,
+     "annualization": "252_SESSIONS_FROZEN_ENGINE",
+     "bookCostPerYear": 0.0003610508620153253,
+     "cagr": 0.13737992425137957,
+     "cagrGap": -0.001010175105907063,
+     "calendarYears": 12.56125941136208,
+     "compoundingRemainder": -0.0003464072763672822,
+     "end": "2026-09-14",
+     "etfCagr": 0.13839009935728663,
+     "etfMdd": -0.33717263923504404,
+     "excess": -0.001010175105907063,
+     "mdd": -0.34134552703444576,
+     "meanRetainedResetL1": 0.0357129962753036,
+     "n": 3159,
+     "nameExitShare": 0.9733333333333334,
+     "oneWayTurnoverPerYear": 0.1173350979449994,
+     "qqqComparison": {
+      "annualArithmeticDailyGap": -0.05170891217494956,
+      "annualization": "252_SESSIONS_FROZEN_ENGINE",
+      "cagr": 0.13737992425137957,
+      "cagrGap": -0.050776924757273134,
+      "calendarYears": 12.56125941136208,
+      "compoundingRemainder": 0.0009319874176764234,
+      "end": "2026-09-14",
+      "etfCagr": 0.1881568490086527,
+      "etfMdd": -0.3511872756972919,
+      "excess": -0.050776924757273134,
+      "mdd": -0.34134552703444576,
+      "n": 3159,
+      "start": "2014-02-21",
+      "years": 12.531746031746032
+     },
+     "start": "2014-02-21",
+     "status": "MEASURED",
+     "years": 12.531746031746032
+    },
+    "selected": {
+     "annualArithmeticDailyGap": -0.0010268372689980854,
+     "annualization": "252_SESSIONS_FROZEN_ENGINE",
+     "bookCostPerYear": 0.0003613698200730067,
+     "cagr": 0.1369632405951544,
+     "cagrGap": -0.0014268587621322215,
+     "calendarYears": 12.56125941136208,
+     "compoundingRemainder": -0.00040002149313413614,
+     "end": "2026-09-14",
+     "etfCagr": 0.13839009935728663,
+     "etfMdd": -0.33717263923504404,
+     "excess": -0.0014268587621322215,
+     "mdd": -0.34136442142822565,
+     "meanRetainedResetL1": 0.035579678970081144,
+     "n": 3159,
+     "nameExitShare": 0.9736842105263158,
+     "oneWayTurnoverPerYear": 0.1176683818625303,
+     "qqqComparison": {
+      "annualArithmeticDailyGap": -0.05207198161440786,
+      "annualization": "252_SESSIONS_FROZEN_ENGINE",
+      "cagr": 0.1369632405951544,
+      "cagrGap": -0.05119360841349829,
+      "calendarYears": 12.56125941136208,
+      "compoundingRemainder": 0.0008783732009095685,
+      "end": "2026-09-14",
+      "etfCagr": 0.1881568490086527,
+      "etfMdd": -0.3511872756972919,
+      "excess": -0.05119360841349829,
+      "mdd": -0.34136442142822565,
+      "n": 3159,
+      "start": "2014-02-21",
+      "years": 12.531746031746032
+     },
+     "start": "2014-02-21",
+     "status": "MEASURED",
+     "years": 12.531746031746032
+    }
+   },
+   "L52": {
+    "SPY": {
+     "annualArithmeticDailyGap": 0.0,
+     "annualization": "252_SESSIONS_FROZEN_ENGINE",
+     "cagr": 0.13839009935728663,
+     "cagrGap": 0.0,
+     "calendarYears": 12.56125941136208,
+     "compoundingRemainder": 0.0,
+     "end": "2026-09-14",
+     "etfCagr": 0.13839009935728663,
+     "etfMdd": -0.33717263923504404,
+     "excess": 0.0,
+     "mdd": -0.33717263923504404,
+     "n": 3159,
+     "oneWayTurnoverPerYear": 0.039866776623033444,
+     "start": "2014-02-21",
+     "years": 12.531746031746032
+    },
+    "pairedControl": {
+     "annualArithmeticDailyGap": -3.212838616602752e-05,
+     "annualization": "252_SESSIONS_FROZEN_ENGINE",
+     "bookCostPerYear": 0.00021021757430580255,
+     "cagr": 0.13821053558029606,
+     "cagrGap": -0.00017956377699057668,
+     "calendarYears": 12.56125941136208,
+     "compoundingRemainder": -0.00014743539082454917,
+     "end": "2026-09-14",
+     "etfCagr": 0.13839009935728663,
+     "etfMdd": -0.33717263923504404,
+     "excess": -0.00017956377699057668,
+     "mdd": -0.34217527028048156,
+     "meanRetainedResetL1": 0.03130634730669331,
+     "n": 3159,
+     "nameExitShare": 1.0,
+     "oneWayTurnoverPerYear": 0.07672557165735554,
+     "qqqComparison": {
+      "annualArithmeticDailyGap": -0.0510772727315758,
+      "annualization": "252_SESSIONS_FROZEN_ENGINE",
+      "cagr": 0.13821053558029606,
+      "cagrGap": -0.04994631342835665,
+      "calendarYears": 12.56125941136208,
+      "compoundingRemainder": 0.001130959303219152,
+      "end": "2026-09-14",
+      "etfCagr": 0.1881568490086527,
+      "etfMdd": -0.3511872756972919,
+      "excess": -0.04994631342835665,
+      "mdd": -0.34217527028048156,
+      "n": 3159,
+      "start": "2014-02-21",
+      "years": 12.531746031746032
+     },
+     "start": "2014-02-21",
+     "status": "MEASURED",
+     "years": 12.531746031746032
+    },
+    "pairedSelected": {
+     "annualArithmeticDailyGap": 0.00046546804978142385,
+     "annualization": "252_SESSIONS_FROZEN_ENGINE",
+     "bookCostPerYear": 0.00021178324268239615,
+     "cagr": 0.13867176303828432,
+     "cagrGap": 0.00028166368099769024,
+     "calendarYears": 12.56125941136208,
+     "compoundingRemainder": -0.00018380436878373362,
+     "end": "2026-09-14",
+     "etfCagr": 0.13839009935728663,
+     "etfMdd": -0.33717263923504404,
+     "excess": 0.00028166368099769024,
+     "mdd": -0.3427096331926014,
+     "meanRetainedResetL1": 0.0323910690231693,
+     "n": 3159,
+     "nameExitShare": 0.9577464788732394,
+     "oneWayTurnoverPerYear": 0.07660376456850587,
+     "qqqComparison": {
+      "annualArithmeticDailyGap": -0.050579676295628345,
+      "annualization": "252_SESSIONS_FROZEN_ENGINE",
+      "cagr": 0.13867176303828432,
+      "cagrGap": -0.04948508597036838,
+      "calendarYears": 12.56125941136208,
+      "compoundingRemainder": 0.0010945903252599642,
+      "end": "2026-09-14",
+      "etfCagr": 0.1881568490086527,
+      "etfMdd": -0.3511872756972919,
+      "excess": -0.04948508597036838,
+      "mdd": -0.3427096331926014,
+      "n": 3159,
+      "start": "2014-02-21",
+      "years": 12.531746031746032
+     },
+     "start": "2014-02-21",
+     "status": "MEASURED",
+     "years": 12.531746031746032
+    },
+    "selected": {
+     "annualArithmeticDailyGap": 0.0003691959645400422,
+     "annualization": "252_SESSIONS_FROZEN_ENGINE",
+     "bookCostPerYear": 0.00021325591446134506,
+     "cagr": 0.1385613370527765,
+     "cagrGap": 0.00017123769548987866,
+     "calendarYears": 12.56125941136208,
+     "compoundingRemainder": -0.00019795826905016353,
+     "end": "2026-09-14",
+     "etfCagr": 0.13839009935728663,
+     "etfMdd": -0.33717263923504404,
+     "excess": 0.00017123769548987866,
+     "mdd": -0.34251715620842926,
+     "meanRetainedResetL1": 0.03288306968321413,
+     "n": 3159,
+     "nameExitShare": 0.9583333333333334,
+     "oneWayTurnoverPerYear": 0.07713525646941263,
+     "qqqComparison": {
+      "annualArithmeticDailyGap": -0.05067594838086973,
+      "annualization": "252_SESSIONS_FROZEN_ENGINE",
+      "cagr": 0.1385613370527765,
+      "cagrGap": -0.04959551195587619,
+      "calendarYears": 12.56125941136208,
+      "compoundingRemainder": 0.0010804364249935375,
+      "end": "2026-09-14",
+      "etfCagr": 0.1881568490086527,
+      "etfMdd": -0.3511872756972919,
+      "excess": -0.04959551195587619,
+      "mdd": -0.34251715620842926,
+      "n": 3159,
+      "start": "2014-02-21",
+      "years": 12.531746031746032
+     },
+     "start": "2014-02-21",
+     "status": "MEASURED",
+     "years": 12.531746031746032
+    }
+   },
+   "shortWindow": false,
+   "weeks": 653,
+   "windowEnd": "2026-09-14"
+  }
+ },
+ "matchLegReasons": {
+  "MATCHED": 101,
+  "NO_CAP_PEER": 2,
+  "NO_SIGNAL_SIMILAR_PEER": 57
+ },
+ "originalInputSHA256": {
+  "adapter": "9e0fec42d83bb3205a4e0a3bb4881b70bc016e799a160e55da5399bf31d55291",
+  "features": "b009224445241f90ebeb83800041223f6005d2068a4c442db383009629b74ea9",
+  "originalClose": "17b4dbcc534caa31302a8e7d29fcdc9b036a77f9072f2898063ccbd4e74b6c7e",
+  "repairedClose": "9b8ad2a6b2b0bbc201bc7e5578bedfb1fb4a28e7e1f2ff50ed91a6628bc5c8e5"
+ },
+ "sourceStatuses": {
+  "CONFIRMED_OPEN_MARKET": 6627,
+  "EXCLUDED_DISPOSITION": 1141,
+  "EXCLUDED_DUPLICATE_RESTATEMENT": 87,
+  "EXCLUDED_NON_COMMON": 11155,
+  "EXCLUDED_PLAN_PURCHASE": 14957,
+  "EXCLUDED_PRIVATE": 6893,
+  "INDETERMINATE_ACQUISITION": 78572,
+  "INDETERMINATE_LATER_IDENTICAL_ECONOMICS": 12,
+  "INDETERMINATE_P": 361633
+ },
+ "status": "MEASURED",
+ "weights": {
+  "0": 582,
+  "1": 64,
+  "2": 5,
+  "3": 2
+ },
+ "wholeWeeklyAxis": 654
+}

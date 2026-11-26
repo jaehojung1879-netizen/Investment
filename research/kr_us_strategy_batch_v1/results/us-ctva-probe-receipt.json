@@ -1,0 +1,23 @@
+{
+ "url": "https://query1.finance.yahoo.com/v8/finance/chart/CTVA?period1=1788220800&period2=1794953578&interval=1d&events=div%2Csplit",
+ "observedAtUTC": "2026-11-17T22:12:58.243512+00:00",
+ "sha256": "c8f9f48f042a7d9c9843ee7777c73d26852987880c9c30aad910966f99956fa5",
+ "rawFile": "/workspace/batch-inputs/us/ctva-postcutoff-event-probe.response.json.gz",
+ "events": {
+  "dividends": {
+   "1788269400": {
+    "amount": 0.027007,
+    "date": 1788269400
+   }
+  },
+  "splits": {
+   "1790861400": {
+    "date": 1790861400,
+    "numerator": 6665.0,
+    "denominator": 1000.0,
+    "splitRatio": "6665:1000"
+   }
+  }
+ },
+ "purpose": "INPUT_ONLY_POSTCUTOFF_SPLIT_BASIS_DIAGNOSTIC_NO_ADMISSION_CHANGE"
+}

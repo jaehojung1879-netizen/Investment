@@ -1,0 +1,45 @@
+{
+ "authorizationId": "INDUSTRY-ALPHA-DISCOVERY-V1-STAGE-C-20261122",
+ "grantedBy": "repository owner, in the Claude Code session that produced this branch",
+ "grantedAt": "2026-11-22",
+ "ownerInstruction": "실행 적격하고 승인 요건을 만족한 가설에 한해 최초 1회 탐색적 수익률 검정을 수행한다. ... 분석·설계만 반복하지 말고, 사용 가능한 데이터와 승인 범위 내에서 실제 검증까지 진행하라. 기존 봉인된 연구의 재실행과 운영 정책 변경은 승인하지 않는다.",
+ "protocolSha256": "578319ed6e25837d2d46b5032ffd576867863bfa81859870d4816ca6276a6b68",
+ "protocolCommit": "cec7b94",
+ "codeSha256": {
+  "research/industry_alpha_discovery_v1/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "research/industry_alpha_discovery_v1/collect_releases.py": "47a3063fce77ee1c483fee89174c7ae49bb3d81d0036971d95d41dcf1521a81a",
+  "research/industry_alpha_discovery_v1/eligibility.py": "2ec36d026a46984b8d8000927b61dc6a6945e50730061b79285350777ba57d5d",
+  "research/industry_alpha_discovery_v1/engine.py": "d2e9e86f8863a732afd23a43bd8bbca902fe57f5e55f9b0425c0fea2aeaa8cfe",
+  "research/industry_alpha_discovery_v1/execute.py": "4ae27d6cae6fa45952a423e50f1e7481a1c36c3ea0262973e57a3159f6ae2567",
+  "research/industry_alpha_discovery_v1/fetch_prices.py": "f43481aa327884832e9e9a9e7660bb56bbba5d860e850722f16acba24d903cbd",
+  "research/industry_alpha_discovery_v1/hwp_text.py": "b0379c09b6c1adcb6218a8a11133aa457e5f43e88159001e4b9f817855240ccb",
+  "research/industry_alpha_discovery_v1/parse_all.py": "0aba892bebf4cb623970d86e1d5a798ce954e23422e113d639de619baac4bbfe",
+  "research/industry_alpha_discovery_v1/parse_motie_hwp.py": "4151c0dc533c76f672096d5554a27d1bac460b21afd6ec54e14c859b04dd3ed2",
+  "research/industry_alpha_discovery_v1/signals.py": "6ff614cdfbca51eeb610170328477adfdec30932b575d63b7dde55830524f06d"
+ },
+ "inputSha256": {
+  "research/industry_alpha_discovery_v1/data/motie-items-by-release.csv": "6688a19b6c0c395f9cdea01afc7cfab7d60c6f1f559ab48cb0aca18d5be3987a",
+  "research/industry_alpha_discovery_v1/data/customs-flash-items.csv": "cd0aa061add82d17e16fc4bfbba2ae7c4a96429cef7364b7bbd1467d4b2ad79e",
+  "research/industry_alpha_discovery_v1/data/iip-industry-yoy.csv": "67a415822770a7967f6b57ba452b6292d7ae0b2a67c9d049c12ff4e9ec0dbee8",
+  "research/industry_alpha_discovery_v1/data/price-manifest.json": "5f87330440d82564aeb8ec63953a5c35fcea080e53e7dfc7978cfc392a78af51",
+  "research/investment_decision_alpha_v1/results/kr-semis-case-quarters.csv": "d9d7658e5b137a838eb2b4e887d8eba002ee1b50eccec76bd246e9ea4dde7566"
+ },
+ "scope": {
+  "runs": 1,
+  "evidenceClass": "EXPLORATORY_ON_OUTCOME_EXPOSED_KR_HISTORY",
+  "hypotheses": [
+   "H1",
+   "H2 (SEMI primary; AUTO, PETRO, SHIP secondary)",
+   "H3 (gate: NOT_ESTIMABLE below 60 months)"
+  ],
+  "notAuthorized": [
+   "strategy deployment",
+   "any operating weight or production change",
+   "merge to main",
+   "re-running any sealed study",
+   "any change of definition, window, threshold, tilt or horizon",
+   "a second run after this one"
+  ]
+ },
+ "priceInputs": "Yahoo adjclose CSVs outside git; their SHA-256 are in data/price-manifest.json and are re-checked by the run log below"
+}

@@ -1,0 +1,240 @@
+"""alpha-mechanism-decomposition-v1: synthetic tests for the attribution identity, the nulls and the matched controls.
+
+No real price, label or outcome is read here."""
+from __future__ import annotations
+
+import importlib.util
+import json
+import sys
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+import pytest
+
+ROOT = Path(__file__).resolve().parents[1]
+D = ROOT / "research" / "alpha_mechanism_decomposition_v1"
+
+
+def _load(name, path):
+    spec = importlib.util.spec_from_file_location(name, path)
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules[name] = mod
+    spec.loader.exec_module(mod)
+    return mod
+
+
+M = _load("amd_mechanism", D / "mechanism.py")
+
+
+def _market(seed=3, n=60):
+    rng = np.random.default_rng(seed)
+    sessions = pd.bdate_range("2020-01-01", periods=n)
+    tick = [M.ETF, "A", "B", "C", "D"]
+    rets = rng.normal(0.0005, 0.02, (n, len(tick)))
+    closes = pd.DataFrame(100 * np.cumprod(1 + rets, axis=0), index=sessions, columns=tick)
+    rf = pd.Series(0.0001, index=sessions)
+    cs = pd.DataFrame({"ticker": ["A", "B", "C", "D"], "industry": ["X", "X", "Y", "Y"], "_q": [True, True, True, False],
+                       "_mcap": [3.0, 1.0, 2.0, 5.0], "F03_beta252": [1.2, 0.8, np.nan, 1.0]})
+    return sessions, closes, rf, cs
+
+
+def test_three_term_identity_holds_for_every_leg_type():
+    sessions, closes, rf, cs = _market()
+    pp = M.PeriodPrices(closes, sessions, rf)
+    e, x = sessions[5], sessions[25]
+    rows = M.attribute_book({"A": 0.3, "C": 0.3, M.ETF: 0.2, M.CASH: 0.2}, cs, pp, e, x)
+    r_m = closes.at[x, M.ETF] / closes.at[e, M.ETF] - 1
+    total = sum(r["weight"] * (r["R"] - r_m) for r in rows)
+    assert abs(total - sum(r["MARKET_BETA"] + r["INDUSTRY_ALPHA"] + r["SELECTION_ALPHA"] for r in rows)) < 1e-12
+    etf = [r for r in rows if r["asset"] == M.ETF][0]
+    assert etf["MARKET_BETA"] == etf["INDUSTRY_ALPHA"] == etf["SELECTION_ALPHA"] == 0.0
+    cash = [r for r in rows if r["asset"] == M.CASH][0]
+    assert abs(cash["MARKET_BETA"] - 0.2 * (-1) * (r_m - cash["R_f"])) < 1e-12 and cash["INDUSTRY_ALPHA"] == 0 and cash["SELECTION_ALPHA"] == 0
+
+
+def test_industry_basket_is_cap_weighted_over_eligible_members_only():
+    _, _, _, cs = _market()
+    assert M.industry_basket(cs, "X") == {"A": 0.75, "B": 0.25}
+    assert M.industry_basket(cs, "Y") == {"C": 1.0}            # D is not quality-eligible
+    assert M.industry_basket(cs, "X", equal=True) == {"A": 0.5, "B": 0.5}
+
+
+def test_sole_member_of_its_industry_has_zero_selection():
+    sessions, closes, rf, cs = _market()
+    pp = M.PeriodPrices(closes, sessions, rf)
+    rows = M.attribute_book({"C": 1.0}, cs, pp, sessions[1], sessions[30])
+    assert abs(rows[0]["SELECTION_ALPHA"]) < 1e-12           # C's missing beta falls back to its basket's, and the basket is C
+
+
+def test_missing_beta_falls_back_and_industry_beta_renormalises():
+    betas = pd.Series({"A": 1.2, "B": np.nan})
+    assert M.industry_beta({"A": 0.75, "B": 0.25}, betas) == pytest.approx(1.2)
+    assert M.industry_beta({"B": 1.0}, betas) == 1.0
+
+
+def test_terminal_name_is_written_off_and_recorded():
+    sessions, closes, rf, cs = _market()
+    closes.loc[sessions[20]:, "A"] = np.nan
+    pp = M.PeriodPrices(closes, sessions, rf, terminal={"A": sessions[19]})
+    assert pp.ret("A", sessions[5], sessions[30]) == -1.0 and pp.hits
+
+
+def test_summary_compounding_closes_the_gap():
+    sessions, closes, rf, cs = _market(n=120)
+    pp = M.PeriodPrices(closes, sessions, rf)
+    legs = []
+    per = M.periods([sessions[i] for i in (0, 20, 40, 60, 80, 100)], sessions, sessions[-1])
+    for k, (d, e, x) in enumerate(per):
+        for r in M.attribute_book({"A": 0.5, "C": 0.5}, cs, pp, e, x):
+            legs.append({**r, "period": k})
+    s = M.summarise(pd.DataFrame(legs), 1.0, "T")
+    assert abs(s["geometricGap"] - s["arithmeticExcess"] - s["compounding"]) < 1e-12
+    assert abs(s["arithmeticExcess"] - (s["MARKET_BETA"] + s["INDUSTRY_ALPHA"] + s["SELECTION_ALPHA"])) < 1e-12
+
+
+def test_choice_value_is_zero_on_average_under_uniform_choice():
+    rng = np.random.default_rng(1)
+    R = pd.DataFrame(rng.normal(0, 0.05, (400, 4)), columns=list("abcd"))
+    v = [M.choice_value(R, pd.Series(rng.choice(list("abcd"), 400), index=R.index)).mean() for _ in range(200)]
+    assert abs(np.mean(v)) < 0.002
+
+
+def test_permutation_null_detects_a_planted_oracle_and_not_noise():
+    rng = np.random.default_rng(2)
+    R = pd.DataFrame(rng.normal(0.005, 0.05, (100, 4)), columns=list("abcd"))
+    oracle = R.idxmax(axis=1)
+    noise = pd.Series(rng.choice(list("abcd"), 100), index=R.index)
+    assert M.permutation_null(R, oracle, 8.0, draws=500)["uniform"]["pValue"] < 0.01
+    assert M.permutation_null(R, noise, 8.0, draws=500)["uniform"]["pValue"] > 0.01
+
+
+def test_matched_controls_stay_in_industry_and_are_used_once():
+    cs = pd.DataFrame({"ticker": list("ABCDEF"), "industry": list("XXXXYY"), "_q": [True] * 6,
+                       "size": [1, 2, 3, 4, 5, 6], "mom": [1, 2, 3, 4, 5, 6]})
+    out = M.matched_controls(cs, ["B", "C", "E"], ["size", "mom"])
+    assert out["B"] in {"A", "D"} and out["C"] in {"A", "D"} and out["B"] != out["C"]
+    assert out["E"] == "F"
+    assert M.matched_controls(cs, ["F", "E"], ["size"])["E"] is None
+
+
+def test_block_bootstrap_and_holm():
+    rng = np.random.default_rng(4)
+    assert M.block_bootstrap_mean(rng.normal(0.01, 0.01, 300), 5, reps=500)["ci95"][0] > 0
+    assert list(M.holm([0.01, 0.04, 0.03])) == pytest.approx([0.03, 0.06, 0.06])
+
+
+def test_vendored_files_are_byte_identical_to_their_recorded_sources():
+    import hashlib
+    prov = json.loads((D / "vendor" / "PROVENANCE.json").read_text())
+    for rel, meta in prov["files"].items():
+        raw = (D / "vendor" / rel).read_bytes()
+        sha1 = hashlib.sha1(b"blob %d\0" % len(raw) + raw).hexdigest()
+        assert sha1 == meta["gitBlobSha1"], rel
+
+
+def test_published_outputs_exist_and_carry_their_evidence_class():
+    if not (D / "results" / "verification.json").exists():
+        pytest.skip("results not generated")
+    v = json.loads((D / "results" / "verification.json").read_text())
+    assert v["evidenceClass"] == "POST_HOC_EXPLORATORY_DECOMPOSITION_ON_OUTCOME_EXPOSED_KR_HISTORY"
+    assert v["reproduction"]["status"] in ("REPRODUCED", "REPRODUCED_WITHIN_TOLERANCE")
+    for name in ("mechanism-attribution.csv", "s2-ablation.csv", "industry-momentum-diagnostics.csv"):
+        assert (D / name).exists()
+
+
+def test_engine_residual_events_are_named_and_classified():
+    path = D / "source-readiness.json"
+    if not path.exists():
+        pytest.skip("results not generated")
+    r = json.loads(path.read_text())
+    kinds = {e["kind"] for e in r["engineResidualEvents"]}
+    assert kinds <= {"TERMINAL_WRITE_OFF_AT_ZERO_UNRESOLVED_CONSIDERATION", "LOCKED_UNTRADABLE_AT_REBALANCE", "DRIFT_OR_NETTING"}
+    big = [e for e in r["engineResidualEvents"] if abs(e["mechanics"]) > 0.02]
+    assert big and all(e["kind"] != "DRIFT_OR_NETTING" for e in big)          # every material residual has a named cause
+    assert r["returnBasis"].startswith("CONDITIONAL")
+
+
+def test_main_merge_impact_is_recorded_as_no_impact():
+    path = D / "results" / "verification.json"
+    if not path.exists():
+        pytest.skip("results not generated")
+    v = json.loads(path.read_text())
+    assert v["mainMergeImpact"]["verdict"] == "NO_IMPACT_NOTHING_RECOMPUTED_FOR_THE_MERGE"
+    assert v["mainMergeImpact"]["changedUnderPipelineDataDocsAuditsKrResearchSpecs"] == 0
+    assert float(v["accounting"]["attributionIdentityMaxResidual"]) <= 1e-10
+
+
+def test_us_rerun_blocker_names_every_required_private_file():
+    b = json.loads((D / "us-rerun-blocker.json").read_text())
+    assert b["status"].startswith("NOT_RUN")
+    assert len(b["requiredToRerun"]["privateRootFiles_verifyREQUIRED"]) == 15
+    assert set(b["requiredToRerun"]["pinnedPublicPricePackets"]) == {"public-para-price-packet.json", "public-wbd-kvue-price-packet.json"}
+
+
+def _analyze():
+    return _load("amd_analyze_for_tests", D / "analyze.py")
+
+
+def _engine_market(n=160, seed=5):
+    A = _analyze()
+    rng = np.random.default_rng(seed)
+    sessions = pd.bdate_range("2021-01-04", periods=n)
+    tick = [M.ETF, "AAA.KS", "BBB.KS", "CCC.KS"]
+    closes = pd.DataFrame(100 * np.cumprod(1 + rng.normal(0.0004, 0.02, (n, 4)), axis=0), index=sessions, columns=tick)
+    vols = pd.DataFrame(1e6, index=sessions, columns=tick)
+    rf = pd.Series(0.0001, index=sessions)
+    return A, A.C.Prices(closes, vols, sessions, rf), sessions, rf, closes[M.ETF]
+
+
+def _schedule(sessions, offset, names):
+    return {sessions[i]: {names[(k + offset) % len(names)]: 0.5, M.ETF: 0.5} for k, i in enumerate(range(offset * 5 + 1, len(sessions) - 1, 20))}
+
+
+def test_account_ledger_reproduces_the_engine_totals_exactly():
+    A, px, sessions, rf, bench = _engine_market()
+    sched = _schedule(sessions, 0, ["AAA.KS", "BBB.KS", "CCC.KS"])
+    nav, led, full = A.account_ledger(px, sched, sessions[0], sessions[-1])
+    assert (nav == full["nav"]).all()
+    assert abs(led["tradedKrw"].div(led["navPre"]).sum() / 2 - full["turnover"]) < 1e-12
+    assert abs(led["costKrw"].div(led["navPre"]).sum() - full["costs"]) < 1e-12
+    assert (led["tradedKrw"] > 0).all()
+
+
+def test_four_identical_accounts_equal_one_account_and_the_sum_is_not_a_daily_rebalance():
+    A, px, sessions, rf, bench = _engine_market()
+    one = _schedule(sessions, 0, ["AAA.KS", "BBB.KS", "CCC.KS"])
+    same = A.multi_account(px, [one] * 4, sessions[0], sessions[-1], rf, bench)
+    nav1, _, full = A.account_ledger(px, one, sessions[0], sessions[-1])
+    assert np.allclose(same["nav"].to_numpy(), (nav1 / nav1.iloc[0]).to_numpy(), atol=1e-12)
+    assert abs(same["oneWayTurnoverPerYear"] - full["turnover"] / ((len(nav1) - 1) / 252)) < 1e-9
+    staggered = [_schedule(sessions, k, ["AAA.KS", "BBB.KS", "CCC.KS"]) for k in range(4)]
+    res = A.multi_account(px, staggered, sessions[0], sessions[-1], rf, bench)
+    navs = [A.account_ledger(px, s, sessions[0], sessions[-1])[0] for s in staggered]
+    assert np.allclose(res["nav"].to_numpy(), (sum(navs) / sum(navs).iloc[0]).to_numpy(), atol=1e-12)
+    daily_avg = (1 + pd.concat([n.pct_change() for n in navs], axis=1).dropna().mean(axis=1)).cumprod()
+    assert not np.allclose(daily_avg.to_numpy(), res["nav"].reindex(daily_avg.index).to_numpy() / res["nav"].reindex(daily_avg.index).iloc[0])
+
+
+def test_four_account_result_is_published_with_both_methods():
+    path = D / "results" / "summary.json"
+    if not path.exists():
+        pytest.skip("results not generated")
+    f = json.loads(path.read_text())["h1Sensitivities"]["fourAccountSMS"]
+    assert f["method"].startswith("FOUR_EQUAL_ACCOUNTS_SUMMED_NAV")
+    for k in ("SLEEVE_MOMENTUM_SWITCH", "STATIC_EW4", "S0_ETF"):
+        assert f[k]["start"] == f["S0_ETF"]["start"] and f[k]["end"] == f["S0_ETF"]["end"]
+    assert f["S0_ETF"]["oneWayTurnoverPerYear"] == 0.0
+    assert abs(f["SLEEVE_MOMENTUM_SWITCH"]["cagr"] - f["previousDailyAverageMethod"]["cagr"] - f["SLEEVE_MOMENTUM_SWITCH"]["cagrChangeVsPreviousMethod"]) < 1e-6
+
+
+def test_four_book_history_is_labelled_conditional_and_separate_from_prospective():
+    path = D / "prospective" / "historical-conditional-comparison.json"
+    if not path.exists():
+        pytest.skip("results not generated")
+    h = json.loads(path.read_text())
+    assert h["label"] == "CONDITIONAL_EXPOSED_HISTORY_NOT_PROSPECTIVE" and h["returnBasis"].startswith("CONDITIONAL")
+    p = json.loads((D / "prospective" / "first-observation-preview.json").read_text())
+    assert p["evidenceClass"] == "NOT_PROSPECTIVE_EVIDENCE" and p["pathway"].startswith("REPLAY_PREVIEW")
+    for b, v in p["books"].items():
+        assert v["stockNames"] <= (10 ** 6 if b.startswith("B2") else 5)

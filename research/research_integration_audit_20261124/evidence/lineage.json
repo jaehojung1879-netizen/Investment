@@ -1,0 +1,103 @@
+{
+ "mainSha": "4f4497bcc9e7f9369bf5529225585ad39b0d7725",
+ "stacks": {
+  "A": {
+   "order": [
+    "#343",
+    "#345",
+    "#346",
+    "#347",
+    "#348",
+    "research/kr-s2-rank-ladder-afb3ea3 (no PR)",
+    "#349",
+    "#350",
+    "#351",
+    "#352",
+    "#353",
+    "#354",
+    "#355",
+    "#356",
+    "#360"
+   ],
+   "linear": true,
+   "rootOnMain": true,
+   "headSha": "5d41c439b81c59fef922e8e7fe1b26959b082aac"
+  },
+  "B": {
+   "order": [
+    "#357",
+    "#358",
+    "#361",
+    "#362",
+    "#363",
+    "#365",
+    "#366",
+    "#367",
+    "#368",
+    "#369"
+   ],
+   "linear": true,
+   "rootOnMain": true,
+   "headSha": "ef0514a569504bdab16496065e105cc9fd548fee",
+   "siblingsOn358": {
+    "#359": "12564d3990618777ab28b5d16f51e6fcc1f4b5f1",
+    "#364": "3da2c94880e1abafbd25bd7efc78f79768673c5b"
+   }
+  },
+  "independent": {
+   "#344": "4d13a440d96f9e732d03ec1707507435f69275be",
+   "#370": "d00ac5717fe560e2fa0bfe778cff16f039a55c0e",
+   "#372": "60ade4b49dd8963649ccbd9bdfb635ac15489cd7",
+   "#373": "7e84face41b3d1798f44311560e883d0adc44a03"
+  }
+ },
+ "behindMain": "0 for every PR head: main has not moved since 4f4497bc (#342, 2026-11-14)",
+ "existingMainFilesChangedBy": {
+  "stackA": [],
+  "stackB": [],
+  "#359": [],
+  "#364": [],
+  "#344": [],
+  "#370": [
+   ".github/workflows/pages.yml",
+   "app.js",
+   "pipeline/institutional_13f.py",
+   "tests/test_institutional_13f.py"
+  ],
+  "#372": [],
+  "#373": []
+ },
+ "integrationBranch": {
+  "ref": "claude/loving-mendel-g0j796",
+  "composition": [
+   "fast-forward main -> #360 head (stack A including the ladder branch)",
+   "merge #369 head (stack B)",
+   "merge #359 head",
+   "merge #364 head",
+   "repair commit: hwp_text.py restored to authorized bytes",
+   "this audit record"
+  ],
+  "textualConflicts": 0,
+  "everyPrHeadIsAncestor": true,
+  "treeBeforeAudit": "5a70fcd53f0cfd0a345cdde501c67a5f55710de5",
+  "mergeTreeAgainstOtherOpenPrs": {
+   "#344": {
+    "exitCode": 0,
+    "conflicts": []
+   },
+   "#370": {
+    "exitCode": 0,
+    "conflicts": []
+   },
+   "#372": {
+    "exitCode": 0,
+    "conflicts": []
+   },
+   "#373": {
+    "exitCode": 0,
+    "conflicts": []
+   }
+  }
+ },
+ "sharedPathsAcrossGroups": "Only research/market_valuation_macro_overlay_v1/** and its tests, which #359, #364 and #361-#369 all inherit from #357/#358. #359 and #364 add new files only; no file is edited by two groups."
+}

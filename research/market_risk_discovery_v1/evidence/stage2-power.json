@@ -1,0 +1,96 @@
+{
+ "byDelta": {
+  "0.0": {
+   "bootstrapLowerBoundPositiveRate": 0.035,
+   "leaveOneEpisodeOutAllPositiveRate": 0.145,
+   "meanEpisodeHitShare": 0.22200000000000003,
+   "meanEvalFlagRate": 0.09578125,
+   "medianDBrier": -0.003646681907221714,
+   "medianRelativeRisk": 0.8342008868324657,
+   "positiveDBrierRate": 0.215,
+   "relativeRiskIQR": [
+    0.0,
+    1.659076593600403
+   ],
+   "rotationAndBootstrapRate": 0.01,
+   "rotationAndLoeoRate": 0.045,
+   "rotationRejectRate": 0.055,
+   "supportVerdictRate": 0.045
+  },
+  "0.5": {
+   "bootstrapLowerBoundPositiveRate": 0.02,
+   "leaveOneEpisodeOutAllPositiveRate": 0.155,
+   "meanEpisodeHitShare": 0.413,
+   "meanEvalFlagRate": 0.1082421875,
+   "medianDBrier": -0.003986820558570376,
+   "medianRelativeRisk": 2.0925925925925926,
+   "positiveDBrierRate": 0.315,
+   "relativeRiskIQR": [
+    1.2659017713365537,
+    3.1221719457013575
+   ],
+   "rotationAndBootstrapRate": 0.01,
+   "rotationAndLoeoRate": 0.07,
+   "rotationRejectRate": 0.115,
+   "supportVerdictRate": 0.07
+  },
+  "1.0": {
+   "bootstrapLowerBoundPositiveRate": 0.105,
+   "leaveOneEpisodeOutAllPositiveRate": 0.405,
+   "meanEpisodeHitShare": 0.5969999999999999,
+   "meanEvalFlagRate": 0.1216796875,
+   "medianDBrier": 0.005775480367828482,
+   "medianRelativeRisk": 3.711666666666667,
+   "positiveDBrierRate": 0.6,
+   "relativeRiskIQR": [
+    2.4672574157868277,
+    5.569294131794132
+   ],
+   "rotationAndBootstrapRate": 0.1,
+   "rotationAndLoeoRate": 0.37,
+   "rotationRejectRate": 0.48,
+   "supportVerdictRate": 0.37
+  },
+  "1.5": {
+   "bootstrapLowerBoundPositiveRate": 0.35,
+   "leaveOneEpisodeOutAllPositiveRate": 0.725,
+   "meanEpisodeHitShare": 0.778,
+   "meanEvalFlagRate": 0.142578125,
+   "medianDBrier": 0.02959093047600354,
+   "medianRelativeRisk": 6.623809523809524,
+   "positiveDBrierRate": 0.88,
+   "relativeRiskIQR": [
+    4.717948717948718,
+    8.883116883116884
+   ],
+   "rotationAndBootstrapRate": 0.345,
+   "rotationAndLoeoRate": 0.72,
+   "rotationRejectRate": 0.82,
+   "supportVerdictRate": 0.72
+  },
+  "2.5": {
+   "bootstrapLowerBoundPositiveRate": 0.765,
+   "leaveOneEpisodeOutAllPositiveRate": 0.995,
+   "meanEpisodeHitShare": 0.9520000000000001,
+   "meanEvalFlagRate": 0.178359375,
+   "medianDBrier": 0.09483295512241655,
+   "medianRelativeRisk": 19.505000000000003,
+   "positiveDBrierRate": 1.0,
+   "relativeRiskIQR": [
+    12.268995098039216,
+    32.12121212121212
+   ],
+   "rotationAndBootstrapRate": 0.765,
+   "rotationAndLoeoRate": 0.995,
+   "rotationRejectRate": 0.995,
+   "supportVerdictRate": 0.995
+  }
+ },
+ "design": "stage2_design.primary + bootstrap + LOEO + verdict, synthetic credit and price features",
+ "flagRate": 0.2,
+ "flagRateInCommonSampleAtDelta0": 0.10154838709677418,
+ "gammaFast": 1.1,
+ "phi": 0.8,
+ "reps": 200,
+ "seed": 20261124
+}

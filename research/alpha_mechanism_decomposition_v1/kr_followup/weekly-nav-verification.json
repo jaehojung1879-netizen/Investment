@@ -1,0 +1,537 @@
+{
+ "label": "VERIFICATION_RUN_NOT_EVIDENCE",
+ "window": [
+  "2026-09-14",
+  "2026-10-30"
+ ],
+ "receipts": 7,
+ "signalDates": [
+  "2026-09-11",
+  "2026-09-18",
+  "2026-09-23",
+  "2026-10-02",
+  "2026-10-08",
+  "2026-10-16",
+  "2026-10-23"
+ ],
+ "missingPriceTickers": [],
+ "books": {
+  "B0_069500_ONLY": {
+   "fourAccountReturn": -0.13860165069727737,
+   "costs": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "accountChecks": [
+    {
+     "markToMarketMaxRelErr": 0.0,
+     "costMaxAbsErr": 0.0,
+     "scheduleMatchesReceipts": true,
+     "trades": 2,
+     "roundingBound": 5.009999999999999e-07,
+     "pass": true
+    },
+    {
+     "markToMarketMaxRelErr": 0.0,
+     "costMaxAbsErr": 0.0,
+     "scheduleMatchesReceipts": true,
+     "trades": 2,
+     "roundingBound": 5.009999999999999e-07,
+     "pass": true
+    },
+    {
+     "markToMarketMaxRelErr": 0.0,
+     "costMaxAbsErr": 0.0,
+     "scheduleMatchesReceipts": true,
+     "trades": 2,
+     "roundingBound": 5.009999999999999e-07,
+     "pass": true
+    },
+    {
+     "markToMarketMaxRelErr": 0.0,
+     "costMaxAbsErr": 0.0,
+     "scheduleMatchesReceipts": true,
+     "trades": 1,
+     "roundingBound": 5.009999999999999e-07,
+     "pass": true
+    }
+   ],
+   "allChecksPass": true,
+   "receiptLinks": [
+    {
+     "2026-09-14": "522c80af9f8077ff0a1570ecfca9d2d4a15defd5bb85504bdfc6d21400e404d9",
+     "2026-10-12": "91d69713c5c720c875bfd532f3df779a48510ad61ce097f2c2073e42f03bafc5"
+    },
+    {
+     "2026-09-21": "597cda503c3287f887c7904e639fb0815b33a6e7a99138c370d45dec4f9df7b0",
+     "2026-10-19": "9bc69b83c2e99a9a091346ea0b29d1f13439161474e3b20b32b7d2882fe628cf"
+    },
+    {
+     "2026-09-28": "5223b246940146b8540bed0021fbb73a46cfacb8444f92c3bdb0d7a9c4fc027d",
+     "2026-10-26": "fbaec35eb61aeb42ebbcc41609f5c609440aac9ff556cbd439f684fd52ac54cb"
+    },
+    {
+     "2026-10-06": "0b6272c604127ea5b2a3ed9d8e0fff6ff032ed61de7e7858d534b136a11b533c"
+    }
+   ]
+  },
+  "B1_S2_ORIGINAL": {
+   "fourAccountReturn": -0.23617506811586386,
+   "costs": [
+    0.0021661807100482426,
+    0.0015257365115927766,
+    0.0015420745151557994,
+    0.0007995602418669731
+   ],
+   "accountChecks": [
+    {
+     "markToMarketMaxRelErr": 0.0,
+     "costMaxAbsErr": 3.835376496766189e-17,
+     "scheduleMatchesReceipts": true,
+     "trades": 2,
+     "roundingBound": 2.501e-06,
+     "pass": true
+    },
+    {
+     "markToMarketMaxRelErr": 0.0,
+     "costMaxAbsErr": 5.293945472950698e-17,
+     "scheduleMatchesReceipts": true,
+     "trades": 2,
+     "roundingBound": 2.501e-06,
+     "pass": true
+    },
+    {
+     "markToMarketMaxRelErr": 0.0,
+     "costMaxAbsErr": 1.419629953044877e-17,
+     "scheduleMatchesReceipts": true,
+     "trades": 2,
+     "roundingBound": 2.501e-06,
+     "pass": true
+    },
+    {
+     "markToMarketMaxRelErr": 0.0,
+     "costMaxAbsErr": 0.0,
+     "scheduleMatchesReceipts": true,
+     "trades": 1,
+     "roundingBound": 2.501e-06,
+     "pass": true
+    }
+   ],
+   "allChecksPass": true,
+   "receiptLinks": [
+    {
+     "2026-09-14": "522c80af9f8077ff0a1570ecfca9d2d4a15defd5bb85504bdfc6d21400e404d9",
+     "2026-10-12": "91d69713c5c720c875bfd532f3df779a48510ad61ce097f2c2073e42f03bafc5"
+    },
+    {
+     "2026-09-21": "597cda503c3287f887c7904e639fb0815b33a6e7a99138c370d45dec4f9df7b0",
+     "2026-10-19": "9bc69b83c2e99a9a091346ea0b29d1f13439161474e3b20b32b7d2882fe628cf"
+    },
+    {
+     "2026-09-28": "5223b246940146b8540bed0021fbb73a46cfacb8444f92c3bdb0d7a9c4fc027d",
+     "2026-10-26": "fbaec35eb61aeb42ebbcc41609f5c609440aac9ff556cbd439f684fd52ac54cb"
+    },
+    {
+     "2026-10-06": "0b6272c604127ea5b2a3ed9d8e0fff6ff032ed61de7e7858d534b136a11b533c"
+    }
+   ]
+  },
+  "B2_H01_CAP_INDUSTRY_BASKET": {
+   "fourAccountReturn": -0.14411233383779543,
+   "costs": [
+    0.0008855454958152764,
+    0.0009717686382621081,
+    0.0009125010885781572,
+    0.0007995602418669732
+   ],
+   "accountChecks": [
+    {
+     "markToMarketMaxRelErr": 2.1727210375299677e-06,
+     "costMaxAbsErr": 1.1883815655033477e-06,
+     "scheduleMatchesReceipts": true,
+     "trades": 2,
+     "roundingBound": 1.0501e-05,
+     "pass": true
+    },
+    {
+     "markToMarketMaxRelErr": 1.993907352115798e-06,
+     "costMaxAbsErr": 1.5192315663529886e-06,
+     "scheduleMatchesReceipts": true,
+     "trades": 2,
+     "roundingBound": 1.0501e-05,
+     "pass": true
+    },
+    {
+     "markToMarketMaxRelErr": 1.977132798147707e-06,
+     "costMaxAbsErr": 1.0797902763013854e-06,
+     "scheduleMatchesReceipts": true,
+     "trades": 2,
+     "roundingBound": 1.0501e-05,
+     "pass": true
+    },
+    {
+     "markToMarketMaxRelErr": 2.2055654831376614e-06,
+     "costMaxAbsErr": 0.0,
+     "scheduleMatchesReceipts": true,
+     "trades": 1,
+     "roundingBound": 1.0501e-05,
+     "pass": true
+    }
+   ],
+   "allChecksPass": true,
+   "receiptLinks": [
+    {
+     "2026-09-14": "522c80af9f8077ff0a1570ecfca9d2d4a15defd5bb85504bdfc6d21400e404d9",
+     "2026-10-12": "91d69713c5c720c875bfd532f3df779a48510ad61ce097f2c2073e42f03bafc5"
+    },
+    {
+     "2026-09-21": "597cda503c3287f887c7904e639fb0815b33a6e7a99138c370d45dec4f9df7b0",
+     "2026-10-19": "9bc69b83c2e99a9a091346ea0b29d1f13439161474e3b20b32b7d2882fe628cf"
+    },
+    {
+     "2026-09-28": "5223b246940146b8540bed0021fbb73a46cfacb8444f92c3bdb0d7a9c4fc027d",
+     "2026-10-26": "fbaec35eb61aeb42ebbcc41609f5c609440aac9ff556cbd439f684fd52ac54cb"
+    },
+    {
+     "2026-10-06": "0b6272c604127ea5b2a3ed9d8e0fff6ff032ed61de7e7858d534b136a11b533c"
+    }
+   ]
+  },
+  "B3_H01_INDUSTRIES_S2_SELECTION": {
+   "fourAccountReturn": -0.16082269882242506,
+   "costs": [
+    0.0016779747656366626,
+    0.0017151643150771412,
+    0.0015639276411062051,
+    0.0007995602418669731
+   ],
+   "accountChecks": [
+    {
+     "markToMarketMaxRelErr": 0.0,
+     "costMaxAbsErr": 9.817578800440718e-17,
+     "scheduleMatchesReceipts": true,
+     "trades": 2,
+     "roundingBound": 2.501e-06,
+     "pass": true
+    },
+    {
+     "markToMarketMaxRelErr": 0.0,
+     "costMaxAbsErr": 5.5309588540054154e-17,
+     "scheduleMatchesReceipts": true,
+     "trades": 2,
+     "roundingBound": 2.501e-06,
+     "pass": true
+    },
+    {
+     "markToMarketMaxRelErr": 0.0,
+     "costMaxAbsErr": 1.8554944611910486e-17,
+     "scheduleMatchesReceipts": true,
+     "trades": 2,
+     "roundingBound": 2.501e-06,
+     "pass": true
+    },
+    {
+     "markToMarketMaxRelErr": 0.0,
+     "costMaxAbsErr": 0.0,
+     "scheduleMatchesReceipts": true,
+     "trades": 1,
+     "roundingBound": 2.501e-06,
+     "pass": true
+    }
+   ],
+   "allChecksPass": true,
+   "receiptLinks": [
+    {
+     "2026-09-14": "522c80af9f8077ff0a1570ecfca9d2d4a15defd5bb85504bdfc6d21400e404d9",
+     "2026-10-12": "91d69713c5c720c875bfd532f3df779a48510ad61ce097f2c2073e42f03bafc5"
+    },
+    {
+     "2026-09-21": "597cda503c3287f887c7904e639fb0815b33a6e7a99138c370d45dec4f9df7b0",
+     "2026-10-19": "9bc69b83c2e99a9a091346ea0b29d1f13439161474e3b20b32b7d2882fe628cf"
+    },
+    {
+     "2026-09-28": "5223b246940146b8540bed0021fbb73a46cfacb8444f92c3bdb0d7a9c4fc027d",
+     "2026-10-26": "fbaec35eb61aeb42ebbcc41609f5c609440aac9ff556cbd439f684fd52ac54cb"
+    },
+    {
+     "2026-10-06": "0b6272c604127ea5b2a3ed9d8e0fff6ff032ed61de7e7858d534b136a11b533c"
+    }
+   ]
+  }
+ },
+ "previewLedger": {
+  "path": "research/alpha_mechanism_decomposition_v1/kr_followup/preview-receipts.jsonl",
+  "rows": 7
+ },
+ "inputs": {
+  "krxBars2026": {
+   "path": "ledger/prices/kr/krx-prices-2026.jsonl.gz",
+   "tipGitBlobSha1": "073db9bbf4cf22744efca898f95ed679d33a7614",
+   "pinnedRowsIdenticalAtTip": 96022,
+   "rowsAppended": 16622,
+   "lastDate": "2026-10-30"
+  },
+  "universe2026": {
+   "path": "ledger/universe/kr/krx-universe-2026.jsonl.gz",
+   "pinnedRowsIdenticalAtTip": 2700,
+   "rowsAppended": 600,
+   "snapshotsAppended": [
+    "2026-10-01",
+    "2026-11-02"
+   ]
+  },
+  "benchmark": {
+   "source": "VENDOR_YAHOO_UNVERIFIED (069500.KS Close)",
+   "chainedAt": "2026-09-14",
+   "lastDate": "2026-11-13",
+   "sessionsAppended": 40
+  },
+  "pricePanel": {
+   "rule": "AS_TRADED_NO_DISTRIBUTIONS",
+   "sessionsAppendedAcrossTickers": 7140,
+   "tickersWithoutExtension": []
+  }
+ },
+ "firstObservation": {
+  "2026-09-11": {
+   "B0_069500_ONLY": {
+    "stockNames": 0,
+    "state": "FALLBACK_ONLY_069500",
+    "selected": []
+   },
+   "B1_S2_ORIGINAL": {
+    "stockNames": 5,
+    "state": "HOLDS_STOCKS",
+    "selected": [
+     "034730.KS",
+     "002380.KS",
+     "267270.KS",
+     "042660.KS",
+     "000990.KS"
+    ]
+   },
+   "B2_H01_CAP_INDUSTRY_BASKET": {
+    "stockNames": 19,
+    "state": "HOLDS_STOCKS",
+    "selected": []
+   },
+   "B3_H01_INDUSTRIES_S2_SELECTION": {
+    "stockNames": 5,
+    "state": "HOLDS_STOCKS",
+    "selected": [
+     "000990.KS",
+     "066570.KS",
+     "005930.KS",
+     "000660.KS",
+     "353200.KS"
+    ]
+   }
+  },
+  "2026-09-18": {
+   "B0_069500_ONLY": {
+    "stockNames": 0,
+    "state": "FALLBACK_ONLY_069500",
+    "selected": []
+   },
+   "B1_S2_ORIGINAL": {
+    "stockNames": 5,
+    "state": "HOLDS_STOCKS",
+    "selected": [
+     "034730.KS",
+     "002380.KS",
+     "267270.KS",
+     "042660.KS",
+     "267250.KS"
+    ]
+   },
+   "B2_H01_CAP_INDUSTRY_BASKET": {
+    "stockNames": 19,
+    "state": "HOLDS_STOCKS",
+    "selected": []
+   },
+   "B3_H01_INDUSTRIES_S2_SELECTION": {
+    "stockNames": 5,
+    "state": "HOLDS_STOCKS",
+    "selected": [
+     "066570.KS",
+     "000990.KS",
+     "005930.KS",
+     "000660.KS",
+     "353200.KS"
+    ]
+   }
+  },
+  "2026-09-23": {
+   "B0_069500_ONLY": {
+    "stockNames": 0,
+    "state": "FALLBACK_ONLY_069500",
+    "selected": []
+   },
+   "B1_S2_ORIGINAL": {
+    "stockNames": 5,
+    "state": "HOLDS_STOCKS",
+    "selected": [
+     "034730.KS",
+     "267270.KS",
+     "042660.KS",
+     "002380.KS",
+     "267250.KS"
+    ]
+   },
+   "B2_H01_CAP_INDUSTRY_BASKET": {
+    "stockNames": 19,
+    "state": "HOLDS_STOCKS",
+    "selected": []
+   },
+   "B3_H01_INDUSTRIES_S2_SELECTION": {
+    "stockNames": 5,
+    "state": "HOLDS_STOCKS",
+    "selected": [
+     "066570.KS",
+     "000990.KS",
+     "005930.KS",
+     "000660.KS",
+     "353200.KS"
+    ]
+   }
+  },
+  "2026-10-02": {
+   "B0_069500_ONLY": {
+    "stockNames": 0,
+    "state": "FALLBACK_ONLY_069500",
+    "selected": []
+   },
+   "B1_S2_ORIGINAL": {
+    "stockNames": 5,
+    "state": "HOLDS_STOCKS",
+    "selected": [
+     "034730.KS",
+     "002380.KS",
+     "267270.KS",
+     "267250.KS",
+     "066570.KS"
+    ]
+   },
+   "B2_H01_CAP_INDUSTRY_BASKET": {
+    "stockNames": 21,
+    "state": "HOLDS_STOCKS",
+    "selected": []
+   },
+   "B3_H01_INDUSTRIES_S2_SELECTION": {
+    "stockNames": 5,
+    "state": "HOLDS_STOCKS",
+    "selected": [
+     "066570.KS",
+     "005930.KS",
+     "000990.KS",
+     "000660.KS",
+     "267260.KS"
+    ]
+   }
+  },
+  "2026-10-08": {
+   "B0_069500_ONLY": {
+    "stockNames": 0,
+    "state": "FALLBACK_ONLY_069500",
+    "selected": []
+   },
+   "B1_S2_ORIGINAL": {
+    "stockNames": 5,
+    "state": "HOLDS_STOCKS",
+    "selected": [
+     "034730.KS",
+     "002380.KS",
+     "267250.KS",
+     "267270.KS",
+     "066570.KS"
+    ]
+   },
+   "B2_H01_CAP_INDUSTRY_BASKET": {
+    "stockNames": 21,
+    "state": "HOLDS_STOCKS",
+    "selected": []
+   },
+   "B3_H01_INDUSTRIES_S2_SELECTION": {
+    "stockNames": 5,
+    "state": "HOLDS_STOCKS",
+    "selected": [
+     "066570.KS",
+     "005930.KS",
+     "000990.KS",
+     "000660.KS",
+     "267260.KS"
+    ]
+   }
+  },
+  "2026-10-16": {
+   "B0_069500_ONLY": {
+    "stockNames": 0,
+    "state": "FALLBACK_ONLY_069500",
+    "selected": []
+   },
+   "B1_S2_ORIGINAL": {
+    "stockNames": 5,
+    "state": "HOLDS_STOCKS",
+    "selected": [
+     "034730.KS",
+     "002380.KS",
+     "267270.KS",
+     "267250.KS",
+     "066570.KS"
+    ]
+   },
+   "B2_H01_CAP_INDUSTRY_BASKET": {
+    "stockNames": 21,
+    "state": "HOLDS_STOCKS",
+    "selected": []
+   },
+   "B3_H01_INDUSTRIES_S2_SELECTION": {
+    "stockNames": 5,
+    "state": "HOLDS_STOCKS",
+    "selected": [
+     "066570.KS",
+     "005930.KS",
+     "000990.KS",
+     "000660.KS",
+     "267260.KS"
+    ]
+   }
+  },
+  "2026-10-23": {
+   "B0_069500_ONLY": {
+    "stockNames": 0,
+    "state": "FALLBACK_ONLY_069500",
+    "selected": []
+   },
+   "B1_S2_ORIGINAL": {
+    "stockNames": 5,
+    "state": "HOLDS_STOCKS",
+    "selected": [
+     "034730.KS",
+     "002380.KS",
+     "267270.KS",
+     "267250.KS",
+     "066570.KS"
+    ]
+   },
+   "B2_H01_CAP_INDUSTRY_BASKET": {
+    "stockNames": 21,
+    "state": "HOLDS_STOCKS",
+    "selected": []
+   },
+   "B3_H01_INDUSTRIES_S2_SELECTION": {
+    "stockNames": 5,
+    "state": "HOLDS_STOCKS",
+    "selected": [
+     "066570.KS",
+     "005930.KS",
+     "000990.KS",
+     "000660.KS",
+     "267260.KS"
+    ]
+   }
+  }
+ }
+}

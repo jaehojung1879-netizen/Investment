@@ -1,0 +1,226 @@
+{
+ "label": "CONDITIONAL_EXPOSED_HISTORY_CORPORATE_ACTION_CORRECTION",
+ "security": "010060.KS",
+ "method": "four equal accounts on their own 4-week phases, NAVs summed (analyze.four_account); only the 010060.KS close path differs",
+ "heldIntoTheHalt": {
+  "B0_069500_ONLY": [],
+  "B1_S2_ORIGINAL": [
+   {
+    "phase": 0,
+    "signal": "2023-04-21",
+    "weight": 0.2
+   },
+   {
+    "phase": 1,
+    "signal": "2023-03-31",
+    "weight": 0.2
+   },
+   {
+    "phase": 2,
+    "signal": "2023-04-07",
+    "weight": 0.2
+   },
+   {
+    "phase": 3,
+    "signal": "2023-04-14",
+    "weight": 0.2
+   }
+  ],
+  "B2_H01_CAP_INDUSTRY_BASKET": [],
+  "B3_H01_INDUSTRIES_S2_SELECTION": [],
+  "SLEEVE_MOMENTUM_SWITCH": [],
+  "STATIC_EW4": [
+   {
+    "phase": 0,
+    "signal": "2023-04-21",
+    "weight": 0.05
+   },
+   {
+    "phase": 1,
+    "signal": "2023-03-31",
+    "weight": 0.05
+   },
+   {
+    "phase": 2,
+    "signal": "2023-04-07",
+    "weight": 0.05
+   },
+   {
+    "phase": 3,
+    "signal": "2023-04-14",
+    "weight": 0.05
+   }
+  ],
+  "ETF_ONLY": []
+ },
+ "runs": {
+  "BEFORE_REPLAY_V16": {
+   "B0_069500_ONLY": {
+    "cagr": 0.1695759776499448,
+    "excessCagrVsEtf": 0.0,
+    "mdd": -0.4080550032017797,
+    "sharpe": 0.6333856815544535,
+    "endNav": 3.7583938333345865,
+    "start": "2018-01-08",
+    "end": "2026-09-14"
+   },
+   "B1_S2_ORIGINAL": {
+    "cagr": 0.198880039223005,
+    "excessCagrVsEtf": 0.029304061573060203,
+    "mdd": -0.4799370188124725,
+    "sharpe": 0.7549320757957421,
+    "endNav": 4.6327885143430665,
+    "start": "2018-01-08",
+    "end": "2026-09-14"
+   },
+   "B2_H01_CAP_INDUSTRY_BASKET": {
+    "cagr": 0.18118753822477274,
+    "excessCagrVsEtf": 0.011611560574827928,
+    "mdd": -0.5240211036567899,
+    "sharpe": 0.5777202795422542,
+    "endNav": 4.085700469443496,
+    "start": "2018-01-08",
+    "end": "2026-09-14"
+   },
+   "B3_H01_INDUSTRIES_S2_SELECTION": {
+    "cagr": 0.1990008908385661,
+    "excessCagrVsEtf": 0.029424913188621282,
+    "mdd": -0.494106273380568,
+    "sharpe": 0.6640808155044934,
+    "endNav": 4.636737280362098,
+    "start": "2018-01-08",
+    "end": "2026-09-14"
+   },
+   "SLEEVE_MOMENTUM_SWITCH": {
+    "cagr": 0.24236649638512775,
+    "excessCagrVsEtf": 0.07279051873518294,
+    "mdd": -0.46205135167187095,
+    "sharpe": 0.7728250284637378,
+    "endNav": 6.260869205732771,
+    "start": "2018-01-08",
+    "end": "2026-09-14"
+   },
+   "STATIC_EW4": {
+    "cagr": 0.1609881052476676,
+    "excessCagrVsEtf": -0.008587872402277208,
+    "mdd": -0.4925905081663313,
+    "sharpe": 0.650663148276495,
+    "endNav": 3.5314170579856397,
+    "start": "2018-01-08",
+    "end": "2026-09-14"
+   },
+   "ETF_ONLY": {
+    "cagr": 0.1695759776499448,
+    "excessCagrVsEtf": 0.0,
+    "mdd": -0.4080550032017797,
+    "sharpe": 0.6333856815544535,
+    "endNav": 3.7583938333345865,
+    "start": "2018-01-08",
+    "end": "2026-09-14"
+   }
+  },
+  "AFTER_ECONOMIC_CORRECTION": {
+   "B0_069500_ONLY": {
+    "cagr": 0.1695759776499448,
+    "excessCagrVsEtf": 0.0,
+    "mdd": -0.4080550032017797,
+    "sharpe": 0.6333856815544535,
+    "endNav": 3.7583938333345865,
+    "start": "2018-01-08",
+    "end": "2026-09-14"
+   },
+   "B1_S2_ORIGINAL": {
+    "cagr": 0.1965227368373621,
+    "excessCagrVsEtf": 0.02694675918741729,
+    "mdd": -0.4799370188124725,
+    "sharpe": 0.7468552120597972,
+    "endNav": 4.556355499192538,
+    "start": "2018-01-08",
+    "end": "2026-09-14"
+   },
+   "B2_H01_CAP_INDUSTRY_BASKET": {
+    "cagr": 0.18118753822477274,
+    "excessCagrVsEtf": 0.011611560574827928,
+    "mdd": -0.5240211036567899,
+    "sharpe": 0.5777202795422542,
+    "endNav": 4.085700469443496,
+    "start": "2018-01-08",
+    "end": "2026-09-14"
+   },
+   "B3_H01_INDUSTRIES_S2_SELECTION": {
+    "cagr": 0.1990008908385661,
+    "excessCagrVsEtf": 0.029424913188621282,
+    "mdd": -0.494106273380568,
+    "sharpe": 0.6640808155044934,
+    "endNav": 4.636737280362098,
+    "start": "2018-01-08",
+    "end": "2026-09-14"
+   },
+   "SLEEVE_MOMENTUM_SWITCH": {
+    "cagr": 0.24236649638512775,
+    "excessCagrVsEtf": 0.07279051873518294,
+    "mdd": -0.46205135167187095,
+    "sharpe": 0.7728250284637378,
+    "endNav": 6.260869205732771,
+    "start": "2018-01-08",
+    "end": "2026-09-14"
+   },
+   "STATIC_EW4": {
+    "cagr": 0.16041361835792567,
+    "excessCagrVsEtf": -0.00916235929201914,
+    "mdd": -0.4925905081663313,
+    "sharpe": 0.6486050545757125,
+    "endNav": 3.5166742645576896,
+    "start": "2018-01-08",
+    "end": "2026-09-14"
+   },
+   "ETF_ONLY": {
+    "cagr": 0.1695759776499448,
+    "excessCagrVsEtf": 0.0,
+    "mdd": -0.4080550032017797,
+    "sharpe": 0.6333856815544535,
+    "endNav": 3.7583938333345865,
+    "start": "2018-01-08",
+    "end": "2026-09-14"
+   }
+  }
+ },
+ "closeMultiplierFromRelisting": 0.9167488550285662,
+ "change": {
+  "B0_069500_ONLY": {
+   "cagr": 0.0,
+   "excessCagrVsEtf": 0.0,
+   "endNav": 0.0
+  },
+  "B1_S2_ORIGINAL": {
+   "cagr": -0.002357302385642912,
+   "excessCagrVsEtf": -0.002357302385642912,
+   "endNav": -0.07643301515052858
+  },
+  "B2_H01_CAP_INDUSTRY_BASKET": {
+   "cagr": 0.0,
+   "excessCagrVsEtf": 0.0,
+   "endNav": 0.0
+  },
+  "B3_H01_INDUSTRIES_S2_SELECTION": {
+   "cagr": 0.0,
+   "excessCagrVsEtf": 0.0,
+   "endNav": 0.0
+  },
+  "SLEEVE_MOMENTUM_SWITCH": {
+   "cagr": 0.0,
+   "excessCagrVsEtf": 0.0,
+   "endNav": 0.0
+  },
+  "STATIC_EW4": {
+   "cagr": -0.000574486889741932,
+   "excessCagrVsEtf": -0.000574486889741932,
+   "endNav": -0.01474279342795004
+  },
+  "ETF_ONLY": {
+   "cagr": 0.0,
+   "excessCagrVsEtf": 0.0,
+   "endNav": 0.0
+  }
+ }
+}
