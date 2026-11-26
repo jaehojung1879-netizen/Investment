@@ -1,0 +1,146 @@
+{
+ "security": "010060.KS",
+ "successors": {
+  "010060.KS": "OCI Holdings (surviving, after the split)",
+  "456040.KS": "OCI (new, split off)"
+ },
+ "status": "RECONCILED_FROM_EXCHANGE_SHARE_COUNTS",
+ "ratioSource": "EXCHANGE_SHARE_COUNT_DERIVED (KRX listed shares before and after; their sum equals the old count exactly). DART split filing not read: no key here",
+ "sources": {
+  "krxBars": {
+   "path": "ledger/prices/kr/krx-prices-2023.jsonl.gz",
+   "gitBlobSha1": "4c50fd23448aef8f3a8bd71badda84534701c4bd"
+  },
+  "replay": {
+   "manifestSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+   "objects": [
+    "c35940499443a37811a7dd320d4213fb1f9d8662a4226b5e882ab11295951b10",
+    "5ca82a6820fb65c8ca33e2cc93e0c035880dbdffc49ed19bb493fecab65bf091",
+    "82563fa21c75ccdc4f5783ba64b6c869be5b5e6559644085d324018ed69a3a43"
+   ]
+  },
+  "signalHistoryCommit": "4ea107ed0cde289f0a049a65ff13d2441a786710"
+ },
+ "timeline": {
+  "lastTradeBeforeHalt": "2023-04-26",
+  "haltedSessions": 20,
+  "haltFirst": "2023-04-27",
+  "haltLast": "2023-05-26",
+  "relisting": "2023-05-30"
+ },
+ "shares": {
+  "oldListed": 23849371.0,
+  "survivingListedAfter": 16412642.0,
+  "newListed": 7436729.0,
+  "survivingPerOld": 0.6881792396118119,
+  "newPerOld": 0.311820760388188
+ },
+ "prices": {
+  "lastCloseBeforeHalt": 119800.0,
+  "relistingClose": {
+   "010060.KS": 82400.0,
+   "456040.KS": 123000.0
+  },
+  "relistingOpen": {
+   "010060.KS": 95200.0,
+   "456040.KS": 141200.0
+  }
+ },
+ "holderReturnLastTradeToRelistingClose": {
+  "economicBothSecurities": -0.20651149522737544,
+  "economicAtRelistingOpen": -0.08561139417481933,
+  "replayV16Conditional": -0.134453781512605,
+  "asTradedSurvivingOnly": -0.3121869782971619,
+  "replayMinusEconomic": 0.07205771371477043
+ },
+ "vendorAdjustmentImpliedByReplay": {
+  "priceFactorOnPreEventHistory": 0.7946577629382303,
+  "volumeFactorOnPreEventHistory": 1.2584030581069183,
+  "reading": "the replay vendor treated the split-off like a share split (pre-event prices x0.7947, volumes x1.2584) instead of crediting the 456040 shares; the holder return across the event is overstated"
+ },
+ "studyImpact": {
+  "heldAcrossTheEvent": [
+   {
+    "policy": "S2_VALUE_CONFIRMED",
+    "phase": 0,
+    "execution": "2023-04-24",
+    "periodEnd": "2023-05-22",
+    "weight": 0.2,
+    "periodReturnOverstatement": 0.014411542742954087
+   },
+   {
+    "policy": "S2_VALUE_CONFIRMED",
+    "phase": 1,
+    "execution": "2023-04-03",
+    "periodEnd": "2023-05-02",
+    "weight": 0.2,
+    "periodReturnOverstatement": 0.014411542742954087
+   },
+   {
+    "policy": "S2_VALUE_CONFIRMED",
+    "phase": 2,
+    "execution": "2023-04-10",
+    "periodEnd": "2023-05-08",
+    "weight": 0.2,
+    "periodReturnOverstatement": 0.014411542742954087
+   },
+   {
+    "policy": "S2_VALUE_CONFIRMED",
+    "phase": 3,
+    "execution": "2023-04-17",
+    "periodEnd": "2023-05-15",
+    "weight": 0.2,
+    "periodReturnOverstatement": 0.014411542742954087
+   },
+   {
+    "policy": "S2_VALUE_CONFIRMED@EXCL_DEFENSE_ELECTRONICS",
+    "phase": 0,
+    "execution": "2023-04-24",
+    "periodEnd": "2023-05-22",
+    "weight": 0.2,
+    "periodReturnOverstatement": 0.014411542742954087
+   },
+   {
+    "policy": "STATIC_EW4",
+    "phase": 0,
+    "execution": "2023-04-24",
+    "periodEnd": "2023-05-22",
+    "weight": 0.05,
+    "periodReturnOverstatement": 0.0036028856857385216
+   },
+   {
+    "policy": "STATIC_EW4",
+    "phase": 1,
+    "execution": "2023-04-03",
+    "periodEnd": "2023-05-02",
+    "weight": 0.05,
+    "periodReturnOverstatement": 0.0036028856857385216
+   },
+   {
+    "policy": "STATIC_EW4",
+    "phase": 2,
+    "execution": "2023-04-10",
+    "periodEnd": "2023-05-08",
+    "weight": 0.05,
+    "periodReturnOverstatement": 0.0036028856857385216
+   },
+   {
+    "policy": "STATIC_EW4",
+    "phase": 3,
+    "execution": "2023-04-17",
+    "periodEnd": "2023-05-15",
+    "weight": 0.05,
+    "periodReturnOverstatement": 0.0036028856857385216
+   },
+   {
+    "policy": "STATIC_EW4@EXCL_DEFENSE_ELECTRONICS",
+    "phase": 0,
+    "execution": "2023-04-24",
+    "periodEnd": "2023-05-22",
+    "weight": 0.05,
+    "periodReturnOverstatement": 0.0036028856857385216
+   }
+  ],
+  "note": "legs that held the name into the halt; the frozen engine LOCKED those units through every rebalance inside the halt and released them at the relisting session (engine residual events in source-readiness.json), so each book bore weight x (replay - economic) across the event"
+ }
+}

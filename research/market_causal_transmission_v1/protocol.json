@@ -1,0 +1,220 @@
+{
+ "studyId": "market-causal-transmission-v1",
+ "shortName": "MCT-v1",
+ "protocolVersion": 1,
+ "stage": "STAGE_B_FROZEN_BEFORE_OUTCOMES",
+ "evidenceClassification": "EXPLORATORY_ON_OUTCOME_EXPOSED_HISTORY",
+ "developmentStatement": "1990-2024 US history, including 2000-02, 2008-09, 2020 and 2022, was known to the authors and to the literature before this protocol. It is a development and stress sample, not independent confirmation. Only prospective records can confirm.",
+ "firewall": {
+  "promotionEligible": false,
+  "productionChange": false,
+  "liveValidated": false,
+  "thresholdChangeAfterOutcomeAllowed": false,
+  "rerunAfterSubstantiveResultAllowed": false
+ },
+ "market": "US (Fama-French Mkt-RF + RF as the investable-market proxy; SPY total return exists only from 2011 in this repository). Korea: source eligibility only, NOT_RUN (Phase D governance).",
+ "primaryFamily": {
+  "members": [
+   "H1-P",
+   "H2-P",
+   "H3-P"
+  ],
+  "method": "HOLM",
+  "alpha": 0.05,
+  "sidedness": "two-sided"
+ },
+ "H1": {
+  "question": "Do FOMC monetary-policy (MP) and central-bank-information (CBI) shocks transmit differently to subsequent equity returns, profit expectations, real yields and risk premia, and is any post-event response predictable?",
+  "mechanism": "MP: tighter discount rate / risk-bearing capacity -> lower subsequent prices, higher real yields and EBP. CBI: the Fed reveals better growth news -> upward profit-expectation revisions, rates up without a risk-premium rise.",
+  "sample": {
+   "first": "1990-02",
+   "last": "2024-01",
+   "months": 408
+  },
+  "shocks": [
+   "MP_pm",
+   "CBI_pm"
+  ],
+  "shockScaling": "divided by the SD over non-zero months",
+  "controls": [
+   "market excess return t-1",
+   "cumulative market excess t-12..t-1",
+   "change in GS10 at t-1"
+  ],
+  "hacLag": "h (overlapping h-month outcomes)",
+  "explanationOutcome": "market excess return of the shock month t (partly an identity of the JK sign classification)",
+  "predictionOutcomes": "cumulative market excess return t+1..t+h, h in {1,3,6,12}",
+  "channelOutcomes": [
+   "SPF fixed-target profit-growth revision at the first survey taken after t",
+   "sum of the next four SPF revisions",
+   "change in DFII10 (2003-)",
+   "change in T10YIE (2003-)",
+   "change in GZ EBP",
+   "log Shiller E(t+12)/E(t)"
+  ],
+  "H1-P": "h = 12 prediction outcome: beta_MP - beta_CBI != 0",
+  "falsification": "H1-P not rejected -> shock origin carries no post-event equity information at the investment horizon; channel results are then reported as mechanism evidence only",
+  "descriptive": [
+   "Bauer-Swanson MPS vs MPS_ORTH 12-month prediction response (MPS_ORTH uses full-sample coefficients: not real time)",
+   "channel responses at every horizon"
+  ],
+  "investmentTranslation": "Run only if H1-P survives Holm; otherwise NOT_RUN_PREDICTION_NOT_SUPPORTED. No rule is specified for it here, so none can be fitted to a result."
+ },
+ "H2": {
+  "question": "Does high valuation x profit-expectation cut x credit stress separate future large losses better than valuation alone?",
+  "signals": {
+   "HIGH_PE": "MVMA-v1 frozen rule: PE(M) above the mean of 60 prior recorded PE (>=54 valid); Shiller, 4-month quarter-end earnings lag",
+   "HIGH_CAPE": "CAPE(M) above the mean of 120 prior recorded CAPE (>=108 valid)",
+   "EARN_DOWN": "latest SPF survey usable at M (from the end of the survey quarter's last month) with fixed-target growth revision log(CPROF5_s/CPROF2_s) - log(CPROF6_{s-1}/CPROF3_{s-1}) < 0",
+   "CREDIT_STRESS": "MVMA-v1 frozen rule on BAA-GS10: ALFRED as-of 2007-01..2024-08, current vintage lag 1 month earlier",
+   "TREND_DOWN": "market TR index below its 10-month mean at M",
+   "VOL_HIGH": "6-month realised vol above the expanding median of its own history (>=60)"
+  },
+  "earningsSubstitutionDisclosure": "S&P 500 consensus EPS history is SOURCE_BLOCKED. SPF median nominal corporate-profit forecasts are an explicit, pre-specified macro-profit expectation, NOT an S&P EPS forecast.",
+  "liquidityDisclosure": "NFCI/ANFCI are not point-in-time before 2011 and FCI-G was unreachable: the liquidity leg is BLOCKED and not substituted. 'Credit' is BAA-GS10 only.",
+  "outcome": {
+   "LOSS_h": "forward h-month market excess return (compounded market minus compounded risk-free) <= -0.10",
+   "primaryHorizon": 12,
+   "secondaryHorizon": 6
+  },
+  "sample": {
+   "trainingStart": "1970-01",
+   "evaluation": [
+    "1990-01",
+    "2024-08"
+   ],
+   "evaluationMonths": 416
+  },
+  "walkForward": "at month t fit on rows s >= 1970-01 with s + h <= t (outcome matured); refit every month; no random split",
+  "models": {
+   "M0": {
+    "kind": "BASE"
+   },
+   "M_PE": {
+    "kind": "CELLS",
+    "inputs": [
+     "highPe"
+    ]
+   },
+   "M_CAPE": {
+    "kind": "CELLS",
+    "inputs": [
+     "highCape"
+    ]
+   },
+   "M_EARN": {
+    "kind": "CELLS",
+    "inputs": [
+     "earnDown"
+    ]
+   },
+   "M_CREDIT": {
+    "kind": "CELLS",
+    "inputs": [
+     "creditStress"
+    ]
+   },
+   "M_VULN8": {
+    "kind": "CELLS",
+    "inputs": [
+     "highPe",
+     "earnDown",
+     "creditStress"
+    ]
+   },
+   "M_ADD": {
+    "kind": "LOGIT",
+    "inputs": [
+     "highPe",
+     "earnDown",
+     "creditStress"
+    ]
+   },
+   "M_TV": {
+    "kind": "CELLS",
+    "inputs": [
+     "trendDown",
+     "volHigh"
+    ]
+   },
+   "M_TV_LOGIT": {
+    "kind": "LOGIT",
+    "inputs": [
+     "trendDown",
+     "volHigh"
+    ]
+   },
+   "M_TV_PLUS": {
+    "kind": "LOGIT",
+    "inputs": [
+     "trendDown",
+     "volHigh",
+     "highPe",
+     "earnDown",
+     "creditStress"
+    ]
+   }
+  },
+  "cellShrinkageStrength": 24,
+  "logitL2": 1.0,
+  "missingInputRule": "a model whose input is missing at t forecasts the base rate (counted)",
+  "H2-P": "h = 12: mean Brier loss differential Brier(M_PE) - Brier(M_VULN8) over 1990-01..2024-08 != 0 (HAC lag 11)",
+  "falsification": "H2-P not rejected, or rejected with M_VULN8 worse -> the interaction does not separate tail risk better than valuation alone",
+  "secondary": [
+   "M_VULN8 vs M0, M_EARN, M_CREDIT, M_ADD, M_CAPE (Brier, HAC lag 11)",
+   "h = 6 (lag 5)",
+   "incremental information: Brier(M_TV_LOGIT) - Brier(M_TV_PLUS)",
+   "conditional loss distribution by the 8 cells (mean, 10th percentile, loss frequency): descriptive",
+   "AUC, log loss, calibration: descriptive",
+   "sub-periods 1990-2007 / 2008-2024"
+  ]
+ },
+ "H3": {
+  "question": "Does a better loss forecast improve cost-net ETF allocation once exposure and risk are controlled?",
+  "rule": "exposure_t from the h = 12 forecast p_t and the base-rate forecast b_t: p < b -> 1.0; b <= p < 2b -> 0.8; p >= 2b -> 0.6; missing -> hold (start 0.8)",
+  "policies": {
+   "B0": "market 100%",
+   "HIST_MEAN": "M0 forecast through the same map (p = b) -> constant 0.8",
+   "VULN": "M_VULN8 through the map",
+   "TV": "M_TV (existing trend/volatility information) through the map",
+   "PE": "M_PE through the map"
+  },
+  "returns": "weight set at the end of t, earned over month t+1 (market vs risk-free), 1990-02..2024-09",
+  "costs": "2bp one-way on both legs per unit of exposure change (decomposition COST); stress x2, x3",
+  "decomposition": "#316 market_timing.decompose (vendored blob dabc7ee0 from MVMA-v1)",
+  "H3-P": "VULN cost-net TIMING (vs its exposure-matched static) != 0, annualised, HAC lag 0",
+  "controls": [
+   "B0",
+   "HIST_MEAN",
+   "TV",
+   "PE",
+   "exposure-matched static",
+   "equal-volatility static"
+  ],
+  "falsification": "H3-P not rejected -> a forecast improvement, if any, does not transmit to allocation value"
+ },
+ "robustness": [
+  "loss threshold -0.15 at h = 12",
+  "shrinkage strength 12 and 48",
+  "all signals lagged one extra month",
+  "exclude 2008-09",
+  "exclude 2020"
+ ],
+ "harness": {
+  "oneShot": "results/EXECUTION-STARTED.json is written before the first outcome read; its presence or any result refuses a second run",
+  "atomicOutput": "a single results JSON written via temp file and rename after all computation",
+  "lessonsFrom359": [
+   "marker before any output",
+   "every registered metric present or explicitly null"
+  ]
+ },
+ "notRun": [
+  "Korea (Phase D)",
+  "Engstrom-Sharpe NTFS (GSW curve unreachable)",
+  "FCI-G (unreachable)",
+  "NFCI/ANFCI before 2011 (not PIT)",
+  "S&P consensus EPS (SOURCE_BLOCKED)",
+  "Campbell-Shiller VAR decomposition (proxy channels only)",
+  "free-form nonlinear ML (sample of ~4 recessions; Welch-Goyal / Gu-Kelly-Xiu)"
+ ]
+}

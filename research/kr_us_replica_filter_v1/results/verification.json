@@ -1,0 +1,81 @@
+{
+  "base": "0eceb6f135dd3bd08f35950997d36129bfe67f65",
+  "designCommit": "47548b1",
+  "designSHA256": "8243649469d4bab5e219166c423f603c8b8db06b2c965f3a1cf247a3311a2a08",
+  "priorTrackedFilesByteUnchanged": true,
+  "sourceSHA256": {
+    "research/kr_us_exposure_preserving_v1/REPORT-ko.md": "2279364e59aca8f1a0fede090dfb8187ac44d9f5cb491bc09e38c159226cd413",
+    "research/kr_us_exposure_preserving_v1/TABLES-ko.md": "af936fa9897417274bdaaeea103e946741f8d09aa09a195820b292ca08439819",
+    "research/kr_us_exposure_preserving_v1/results/manifest.json": "03680e948416a057e8fb0d87a5b35a24d87a66f9feec96a82a069bdda30ff9b7",
+    "research/kr_us_exposure_preserving_v1/results/KR/summary.json": "f8b939a54989082e3d9fcc77d5a3605d6ee49de2e34bc5944f61cfeba22e707f",
+    "research/kr_us_exposure_preserving_v1/results/US/summary.json": "93793f689bf1ab3c832c16770e8d44e814b2f06ea5fd7950b7aee5f3631e01ff",
+    "research/kr_us_exposure_preserving_v1/results/US/funded-ledgers.json": "5172b8e29b65dfc55e0c131414aa2cbf21c76837725638574926171f9ddb9043",
+    "research/kr_us_exposure_preserving_v1/inputs/US/spy-source-manifest.json": "1c63af0cbd37091236985141348c73371b65ddce71c581d5eea2ea9a662268bf"
+  },
+  "prospectiveFilesVerified": 6,
+  "markets": {
+    "US": {
+      "summarySHA256": "081216968feeb38f4427163e1a2d24b633379be207884eea40009f4f9bab7698",
+      "checks": {
+        "publishedReportWeeks": 353,
+        "publishedWeightPartitionMaxError": 6.661338147750939e-16,
+        "126": {
+          "cohortWeeks": 630,
+          "priorMaxError": 3.0010716134398763e-16,
+          "netGrossMaxError": 4.354155924701786e-16,
+          "fundedPriorMaxError": 1.0408340855860844e-16,
+          "priceDistributionMaxError": 1.7715874086324983e-16,
+          "tickerSumMaxError": 8.997576989022704e-15,
+          "strict": {
+            "weeks": 329,
+            "componentMaxError": 4.0028744208164824e-16,
+            "sameDatesMaxError": 3.0010716134398763e-16
+          },
+          "endpointObserved": {
+            "weeks": 329,
+            "componentMaxError": 4.0028744208164824e-16,
+            "sameDatesMaxError": 3.0010716134398763e-16
+          }
+        },
+        "252": {
+          "cohortWeeks": 604,
+          "priorMaxError": 3.0184188481996443e-16,
+          "netGrossMaxError": 4.185020385794047e-16,
+          "fundedPriorMaxError": 1.0538445116559103e-16,
+          "priceDistributionMaxError": 2.0036056147532122e-16,
+          "tickerSumMaxError": 9.74957961585865e-15,
+          "strict": {
+            "weeks": 303,
+            "componentMaxError": 3.0531133177191805e-16,
+            "sameDatesMaxError": 3.0184188481996443e-16
+          },
+          "endpointObserved": {
+            "weeks": 303,
+            "componentMaxError": 3.0531133177191805e-16,
+            "sameDatesMaxError": 3.0184188481996443e-16
+          }
+        }
+      }
+    },
+    "KR": {
+      "summarySHA256": "f0b52b1e906905150247e5de8c134a0eaf8b0e96ef79995cadabadac3f7ec00f",
+      "checks": {
+        "fixedPairs": 20841,
+        "126": {
+          "rows": 4540,
+          "matchedRows": 929,
+          "decompositionMaxError": 9.997558336749535e-14,
+          "assetPayoffRows": 19785,
+          "grossCostNetMaxError": 9.541256673628595e-13
+        },
+        "252": {
+          "rows": 4540,
+          "matchedRows": 841,
+          "decompositionMaxError": 1.000310945187266e-13,
+          "assetPayoffRows": 17948,
+          "grossCostNetMaxError": 4.8405723873656825e-12
+        }
+      }
+    }
+  }
+}

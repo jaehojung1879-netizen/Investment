@@ -1,0 +1,59 @@
+{
+ "correctedTickerCount": 14,
+ "correctionsByTicker": {
+  "AXP": 3,
+  "CHD": 28,
+  "COP": 360,
+  "DLR": 17,
+  "EOG": 13,
+  "GRMN": 141,
+  "KMI": 13,
+  "KO": 55,
+  "L": 69,
+  "MCD": 131,
+  "PCAR": 36,
+  "TER": 39,
+  "WAT": 26,
+  "WELL": 12
+ },
+ "dateTickerCorrections": 943,
+ "resolutionRows": [
+  {
+   "field": "asTradedClose",
+   "resolution": "AS_TRADED_PRICE_BASIS_MATCHES_SPLIT",
+   "rows": 17
+  },
+  {
+   "field": "asTradedClose",
+   "resolution": "UNRESOLVED_SEPARATE_SOURCE_OR_CLASS_REQUIRED",
+   "rows": 3
+  },
+  {
+   "field": "marketCap",
+   "resolution": "UNRESOLVED_SEPARATE_SOURCE_OR_CLASS_REQUIRED",
+   "rows": 11
+  },
+  {
+   "field": "marketCap",
+   "resolution": "VERIFIED_COVER_APPLIES_TO_AT_LEAST_ONE_SIDE",
+   "rows": 35
+  },
+  {
+   "field": "sharesForProxy",
+   "resolution": "CHANGE_MATCHES_SPLIT_FACTOR_PRIOR_91D",
+   "rows": 16
+  },
+  {
+   "field": "sharesForProxy",
+   "resolution": "UNRESOLVED_SEPARATE_SOURCE_OR_CLASS_REQUIRED",
+   "rows": 15
+  },
+  {
+   "field": "sharesForProxy",
+   "resolution": "VERIFIED_COVER_APPLIES_TO_AT_LEAST_ONE_SIDE",
+   "rows": 35
+  }
+ ],
+ "separatelyUnresolvedPostMergerWeeks": 2,
+ "unresolvedInputFlags": 29
+}

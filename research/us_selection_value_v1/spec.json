@@ -1,0 +1,65 @@
+{
+  "studyId": "us-selection-value-v1",
+  "evidenceClass": "POST_HOC_EXPLORATORY_ON_OUTCOME_EXPOSED_US_HISTORY",
+  "question": "When names are chosen only from information knowable at the signal close, do 6- and 12-month net-of-cost, benchmark-relative, risk-adjusted results improve?",
+  "frozenBefore": "every forward price read by evaluate.py; features.py reads only values knowable at the signal close",
+  "exposureStatement": "The pilot (2023-04..2026-09) results, #329/#343 Korean results and #344 Top-K results were seen before this design. This is exploratory measurement on exposed history, never confirmation, promotion or a production change.",
+  "inputs": {
+    "prices": "replay-v16 at signal-history 704d7db6 via scripts/run_us_decision_pilot.load_prices (forward total-return index, through 2026-09-14)",
+    "filings": "ledger/fundamentals/us at 704d7db6 via load_filings (Finnhub financials-reported, visibility max(availableFrom, acceptedDate) strictly before the signal date)",
+    "membership": "research_specs/alpha-opportunity-model-v1-us-membership.json.gz (observation dates, not effective dates)",
+    "sectors": "data/research/us-capital-allocation-alpha-v1/sp500-snapshot-sectors.json.gz",
+    "benchmarks": {"primary": "SPY total return (replay close)", "secondary": "QQQ total return (replay close, +0.38824 USD 2020-09-21 distribution applied once per docs/us-readiness/us-qqq-distribution-correction-v1.json)"},
+    "asTraded": "Yahoo split-adjusted close x later split ratios, outside git; identity-checked against the replay series"
+  },
+  "signal": {"dates": "last US session of each completed week 2013-01..2026-09-14", "entry": "next US session close", "exitFixedHolding": "entry index + H sessions, H in {126, 252}"},
+  "universe": {
+    "member": "S&P 500 member on the latest membership snapshot on or before the signal date; pilot identity holds (ticker reuse, malformed symbols, renames) inherited",
+    "common": "non-Financials, non-Real-Estate, priced with 253 exact sessions, identity admitted (MEMBERSHIP_CIK where the snapshot carries a CIK, else PIT_SINGLE_CIK), the pilot's four accounting fields fresh (report age <= 180 days), net income TTM, OCF TTM, prior-year OCF TTM and market cap proxy present",
+    "minimumNames": 30,
+    "survivorship": "names the replay never priced (departed issuers) are absent; SPY-relative results before 2023 are survivor-conditioned (biased upward); peer-relative selection compares names inside the same survivor-conditioned universe"
+  },
+  "strategies": {
+    "PRICE": "pilot B1: mean rank of 252-session momentum and low 252-session volatility",
+    "SECTOR_MOMENTUM_BASKET": "sector with the highest equal-weight mean 252-session momentum of its common-universe members; hold all its common-universe members equally",
+    "WITHIN_SECTOR_VALUE": "mean of within-sector percentile ranks of earnings yield (net income TTM / market cap) and book yield (equity / market cap; negative equity ranks lowest by value)",
+    "CASH_PROFITABILITY": "within-sector percentile rank of cash operating profitability (OCF TTM / assets)",
+    "VALUE_CONFIRMED": "WITHIN_SECTOR_VALUE among names with net income TTM > 0, OCF TTM > 0 and OCF TTM > prior-year OCF TTM (Korean S2 three signs); others ineligible",
+    "PRICE_CONFIRMED": "PRICE among the same confirmed names (adds the confirmation filter to the price signal)",
+    "B2_MULTIFACTOR": "pilot B2: equal weight of price, cash, accrual, investment and leverage families"
+  },
+  "books": {
+    "TOP5": "top 5 by score, at most 2 per sector, equal weight (SECTOR_MOMENTUM_BASKET: the basket itself)",
+    "TOP_QUINTILE": "top ceil(N/5) by score, equal weight (the pilot's broad book)",
+    "ties": "score descending then ticker ascending"
+  },
+  "costs": "pipeline.benchmark_alpha.REALISTIC_COSTS['US']: buy 8.0 bp, sell 8.3 bp; the same rates are charged to SPY and QQQ at entry and exit",
+  "fixedHolding": {
+    "return": "equal-weight mean of name returns entry->exit minus buy and sell cost",
+    "missingExit": "a held name without an exit close leaves that cohort UNRESOLVED for that strategy; no substitution, no zero, no last price",
+    "attribution": {
+      "largeCapAndUniverse": "R(common universe EW) - R(SPY)",
+      "sectorAllocation": "sum_s (w_book,s - w_universe,s) x (R_universe,s - R_universe)",
+      "withinSectorSelection": "sum_s w_book,s x (R_book,s - R_universe,s)",
+      "costs": "net - gross",
+      "peerSelection": "mean over held names of r_i - R(same sector, same within-sector market-cap tercile, common universe, EW)"
+    },
+    "statistics": "mean, median, win rate, 10th percentile; moving-block bootstrap of the weekly cohort series (block H/5 weeks, 2000 draws, seed 20261115); greedy non-overlapping cohort count reported"
+  },
+  "rebalancingNav": "four equal-capital accounts, account k trades on signal weeks k, k+4, ... (entry next session), summed NAV, costs via pipeline.us_decision_pilot.simulate; CAGR, volatility, tracking error and information ratio vs SPY, MDD, turnover, yearly contribution",
+  "periods": {"P1": ["2013-01-01", "2019-12-31"], "P2": ["2020-01-01", "2022-12-31"], "P3": ["2023-01-01", "2026-09-14"], "exclude2023Plus": ["2013-01-01", "2022-12-31"]},
+  "priceVsFinancial": "B2_MULTIFACTOR - PRICE, VALUE_CONFIRMED - WITHIN_SECTOR_VALUE and PRICE_CONFIRMED - PRICE, paired on cohorts where both are resolved",
+  "concentrationControls": {
+    "TOPK_CAP": "Top 5/10/100 by market cap proxy among all priced members with a cap (financials included), cap- and equal-weighted, fixed holding vs SPY",
+    "officialTop10Index": "S&P 500 Top 10 index levels: SOURCE_BLOCKED in this environment (HTTP 403); research/us_rank_independent_check_v1/crosscheck.external_index_segments splits back-test and live when a person supplies the export"
+  },
+  "aiCapex": {
+    "status": "CONDITIONAL_HYPOTHESIS_DESCRIPTIVE",
+    "spenders": "the 10 largest capex TTM spenders in Information Technology, Communication Services and Consumer Discretionary on the signal date (filing-visible)",
+    "spenderCapexGrowth": "sum capex TTM / sum prior-year capex TTM - 1 over those spenders",
+    "regime": "HIGH when that growth exceeds its own expanding median over earlier signal dates (minimum 52)",
+    "suppliers": "no point-in-time supplier relationship or sub-industry field exists here; the Information Technology sector basket (common universe) is used as a labelled PROXY, not as identified suppliers",
+    "readings": "spender basket and IT-proxy basket fixed-holding excess vs SPY by regime"
+  },
+  "forbidden": ["choosing a strategy, period, book or threshold after reading a result", "imputing a missing price or accounting field", "pooling SPY-relative results across the survivorship break without the label"]
+}

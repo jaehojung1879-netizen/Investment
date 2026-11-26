@@ -1,0 +1,37 @@
+{
+ "full-suite-initial.log.gz": {
+  "uncompressedSha256": "8cf557ac709e9e2f4543856f0773063362f186d762d83123dabbb34d05021c80",
+  "source": "/workspace/s2-pytest-thread1.log",
+  "lastLine": "80 failed, 6682 passed, 7 skipped, 4 xfailed, 318 warnings, 44 errors in 1285.49s (0:21:25)"
+ },
+ "failed-retry-124.log.gz": {
+  "uncompressedSha256": "dfe2f1c3160ac4fb3f524921da62a6e799ca20f3d9c418456b9a1753dd1ab465",
+  "source": "/workspace/s2-pytest-retry.log",
+  "lastLine": "41 failed, 83 passed in 683.10s (0:11:23)"
+ },
+ "failed-retry-41.log.gz": {
+  "uncompressedSha256": "df4b862c066e8b25cc44c2f33f5e8a375839bf943455ce258978e192bff07ecf",
+  "source": "/workspace/s2-pytest-retry-final.log",
+  "lastLine": "3 failed, 38 passed in 67.47s (0:01:07)"
+ },
+ "failed-retry-3.log.gz": {
+  "uncompressedSha256": "84efffbb32cd48520f89f8c3ef7f7f79af1a3e99aabf03995e981624e7fb8ee7",
+  "source": "/workspace/s2-pytest-final-three.log",
+  "lastLine": "3 passed in 1.66s"
+ },
+ "baseline-initial.log.gz": {
+  "uncompressedSha256": "61e69483f47362c72330013ee9fbbc156e283953a9afef04c22f52fa4689f9c3",
+  "source": "/workspace/s2-baseline-representative.log",
+  "lastLine": "2 failed, 1 error in 14.09s"
+ },
+ "baseline-missing-object.log.gz": {
+  "uncompressedSha256": "561ebcf8f2bdcff870acd9ff34a780fc72255881211ec6f76f34ad141095d097",
+  "source": "/workspace/s2-baseline-remaining.log",
+  "lastLine": "1 failed in 0.10s"
+ },
+ "focused-29.log.gz": {
+  "uncompressedSha256": "90667c12a1443cf0984db27987714a8d4bdfe002c84c3a75e2efaea214440eb5",
+  "source": "/workspace/s2-focused-final.log",
+  "lastLine": "29 passed in 1.29s"
+ }
+}

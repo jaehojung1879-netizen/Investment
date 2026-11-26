@@ -1,0 +1,15 @@
+{
+ "decisionDate": "2018-06-08",
+ "requestedGijunYMD": "20180607",
+ "url": "https://www.samsungfund.com/api/v1/kodex/product-pdf/2ETF01.do?gijunYMD=2018.06.07",
+ "observedAtUTC": "2026-11-18T22:16:59.604204+00:00",
+ "releaseVisibility": "RETRIEVED_HISTORY_RELEASE_TIMESTAMP_UNVERIFIED",
+ "rule": "LAST_KR_SESSION_STRICTLY_BEFORE_DECISION",
+ "performanceCalculated": false,
+ "status": "RATE_LIMITED_RETRY_DEFERRED",
+ "error": "<HTTPError 429: 'Too Many Requests'>",
+ "attempt": 1,
+ "httpStatus": 429,
+ "retryAfter": null,
+ "errorResponseDate": "Wed, 18 Nov 2026 22:16:59 GMT"
+}

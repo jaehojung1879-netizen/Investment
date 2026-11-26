@@ -1,0 +1,87 @@
+{
+ "ic4Decomposition": {
+  "byPeriod": {
+   "BEFORE_2023": {
+    "addedMinusSpy": 5.768210121815394e-06,
+    "dates": 316,
+    "removedMinusSpy": 0.021576285695255534
+   },
+   "FROM_2023": {
+    "addedMinusSpy": -0.03205137968661036,
+    "dates": 87,
+    "removedMinusSpy": -0.0481181243695356
+   }
+  },
+  "datesChanged": 403,
+  "forward126MinusSpy": {
+   "added": -0.006914757514482896,
+   "removed": 0.006530594192434622
+  },
+  "meanNamesSwapped": 1.749379652605459,
+  "momentum252": {
+   "added": 0.3633443802862892,
+   "removed": 0.4453527731487783
+  },
+  "priceScorePercentile": {
+   "added": 0.9484225252566018,
+   "removed": 0.9815364650760191
+  },
+  "removedSectorShare": {
+   "Consumer Discretionary": 0.058,
+   "Consumer Staples": 0.125,
+   "Health Care": 0.142,
+   "Industrials": 0.268,
+   "Information Technology": 0.288,
+   "Utilities": 0.078
+  }
+ },
+ "label": "AUDIT_DIAGNOSTIC_NOT_A_NEW_CLAIM",
+ "pitCorrections": {
+  "acceptedBeforeDecisionClose": 943,
+  "byTicker": {
+   "AXP": 3,
+   "CHD": 28,
+   "COP": 360,
+   "DLR": 17,
+   "EOG": 13,
+   "GRMN": 141,
+   "KMI": 13,
+   "KO": 55,
+   "L": 69,
+   "MCD": 131,
+   "PCAR": 36,
+   "TER": 39,
+   "WAT": 26,
+   "WELL": 12
+  },
+  "ratioCorrectedOverOriginal": {
+   "above100": 917,
+   "below0.01": 15
+  },
+  "rows": 943,
+  "shareAsOfToDecisionDays": {
+   "max": 277,
+   "median": 67.0
+  },
+  "violations": 0
+ },
+ "s3Checks": {
+  "independentBlocks": {
+   "trimMinusHold": {
+    "all": 11.5,
+    "from2023": 2.5,
+    "from2023n": 123
+   },
+   "trimMinusRandom": {
+    "all": 11.5,
+    "from2023": 2.5,
+    "from2023n": 123
+   }
+  },
+  "momentumPercentileAtTrim": {
+   "nTrimmed": 1351,
+   "otherHeld": 0.7784079366297356,
+   "trimmed": 0.8328202879965355
+  }
+ }
+}

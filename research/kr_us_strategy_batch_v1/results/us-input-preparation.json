@@ -1,0 +1,3883 @@
+{
+ "admissionOverrides": [],
+ "capture": {
+  "firstObservedAtUTC": "2026-11-17T21:51:55.531599+00:00",
+  "lastObservedAtUTC": "2026-11-17T21:58:41.252919+00:00",
+  "statusCounts": {
+   "200": 635
+  },
+  "tickers": 635
+ },
+ "captureIntegrity": {
+  "originalFetcherSourceSha256": "7f7b200ddf0b9c666e82e0a2017d39672827ad376a1b5749a20bf744aeea1bd4",
+  "servedHTTPBodyHashesVerified": 635
+ },
+ "cikRuleValidation": {
+  "multi": 13122,
+  "single": 73997,
+  "single_agrees": 73415,
+  "single_disagrees": 582
+ },
+ "currentAsTradedStatus": {
+  "AS_TRADED_OVERLAP_TOO_SHORT": 12,
+  "AS_TRADED_SERIES_MISMATCH": 8,
+  "NOT_SERVED": 8,
+  "VERIFIED": 607
+ },
+ "files": {
+  "close.pkl": {
+   "bytes": 20112807,
+   "sha256": "17b4dbcc534caa31302a8e7d29fcdc9b036a77f9072f2898063ccbd4e74b6c7e"
+  },
+  "core-input-receipt.json": {
+   "bytes": 27625,
+   "sha256": "ca54f872214985eefbfa74595f045dcc82c317b972d1683503ab07c1153c0738"
+  },
+  "ctva-postcutoff-event-probe.receipt.json": {
+   "bytes": 696,
+   "sha256": "7a73398aab58b2b6512a782cc778ca872afec768b6ba860695b1d192af450d2e"
+  },
+  "ctva-postcutoff-event-probe.response.json.gz": {
+   "bytes": 2607,
+   "sha256": "d74acbe8649bfcbc20f981a7784c21ec27cf393296a175d5234e563fc4859b91"
+  },
+  "ctva-split-repair-receipt.json": {
+   "bytes": 1311,
+   "sha256": "db249e46f8b162abf1ba61c2fe5ac5a29979cd06915d2dc58a7091c2fa113678"
+  },
+  "feature-generator-receipt.json": {
+   "bytes": 581,
+   "sha256": "ebfd3917c2361417aed7ac2503314810003e6ddfa3e52a855b4a50f3bca51909"
+  },
+  "features-meta.json": {
+   "bytes": 154842,
+   "sha256": "413abf66f01757adc73b09aeed20e2733503bd48617f779ccb6ae0548544d93b"
+  },
+  "features.pkl": {
+   "bytes": 60827102,
+   "sha256": "b009224445241f90ebeb83800041223f6005d2068a4c442db383009629b74ea9"
+  },
+  "filings.pkl": {
+   "bytes": 426892840,
+   "sha256": "f0b1254ac5e73558c9af52939534b9c6ba5d181508c6eda9a3efc28ebd3c602f"
+  },
+  "sealed-raw-comparison.json": {
+   "bytes": 324491,
+   "sha256": "743d901fcb40077ddb8f9377cbf3ebba5dad7138a8ee55618618eab2bc6c149e"
+  },
+  "tickers.txt": {
+   "bytes": 2655,
+   "sha256": "ae3ed55fd573171c173d9ac1f540553e4ca8b8efcd32a2f13580a0d7ea06e3b4"
+  },
+  "yahoo-capture-manifest.json": {
+   "bytes": 434999,
+   "sha256": "06c9aa67c89c97cb2d668ec42bbd610ad26cc3866fff2f3f15148506f7b4ce4b"
+  }
+ },
+ "inputRepair": {
+  "admissionOverrides": [],
+  "archive": "/workspace/batch-inputs/us/pre-ctva-split-fix",
+  "archivedFiles": {
+   "CTVA.json.gz": {
+    "sha256": "5e2af612f3a28fefe4fed9b2a613cef9e5b13df1be4994719d59da72d8badcba"
+   },
+   "feature-generator-receipt.json": {
+    "bytes": 581,
+    "sha256": "58742edd402d2c537de838fa5c9a62dedd5bcf43f4e277a3feae0975efcfe240"
+   },
+   "features-meta.json": {
+    "bytes": 154842,
+    "sha256": "413abf66f01757adc73b09aeed20e2733503bd48617f779ccb6ae0548544d93b"
+   },
+   "features.pkl": {
+    "bytes": 60827102,
+    "sha256": "408c2f6e454370bfc643a3f1c9ec10c8727dd3cb79327fea781d84e8eb7f332c"
+   },
+   "input-preparation-summary.json": {
+    "bytes": 64937,
+    "sha256": "52b5672e95a780e675180f775c86518c015b74bc39b8c4e5e7dd81ad0bcc2b27"
+   },
+   "sealed-raw-comparison.json": {
+    "bytes": 324395,
+    "sha256": "346ab2a7dac20bba7b932c3d3de0df200ddc440453d681214c808393fca800b4"
+   }
+  },
+  "authorizationCommit": "4710738",
+  "event": {
+   "date": 1790861400,
+   "denominator": 1000.0,
+   "numerator": 6665.0,
+   "splitRatio": "6665:1000"
+  },
+  "observedAtUTC": "2026-11-18T12:35:18.429818+00:00",
+  "pricesReplaced": false,
+  "repairedParsedRecordSha256": "8c30df63a0acb4fb5ad9dfb60dd937ebf93b3194bf01b4315ad63eaf52134eee",
+  "sourceSha256": "c8f9f48f042a7d9c9843ee7777c73d26852987880c9c30aad910966f99956fa5"
+ },
+ "manifestSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+ "nport": {
+  "existingAggregateReferences": [
+   "research/followup_round8_v1/results/us-eval.json",
+   "research/followup_round8_v1/results/us-audit.json"
+  ],
+  "minimumRequiredFile": "/workspace/batch-inputs/nport/round8/C2.pkl",
+  "noAdditionalPurchase": true,
+  "status": "BLOCKED_OPTIONAL_C2_INPUT_ABSENT"
+ },
+ "originalAsTradedStatus": {
+  "AS_TRADED_OVERLAP_TOO_SHORT": 13,
+  "AS_TRADED_SERIES_MISMATCH": 8,
+  "NOT_SERVED": 7,
+  "VERIFIED": 607
+ },
+ "originalCikRuleValidation": {
+  "multi": 13122,
+  "single": 73997,
+  "single_agrees": 73415,
+  "single_disagrees": 582
+ },
+ "originalPrivateCacheRecovered": false,
+ "performanceCalculated": false,
+ "privateDirectory": "/workspace/batch-inputs/us",
+ "rawInverseComparison": {
+  "comparedTickers": 627,
+  "doesNotOverrideAdmission": true,
+  "priceOutliers": {
+   "CTVA": {
+    "firstComparedSession": "2019-05-24",
+    "freshSplitCount": 1,
+    "freshZeroVolumeSessions": 0,
+    "lastComparedSession": "2026-09-09",
+    "priceComparedSessions": 1833,
+    "priceMaximumAbsoluteRelativeError": 1.9574178866665903e-07,
+    "priceMedianAbsoluteRelativeError": 3.8537305679930967e-08,
+    "sealedEventAbsent": false,
+    "sealedEventSessions": 29,
+    "sealedMissingCloseSessions": 0,
+    "state": "COMPARED",
+    "volumeComparedSessions": 1833,
+    "volumeMaximumAbsoluteRelativeError": 9.23565702464213e-05
+   },
+   "SPY": {
+    "firstComparedSession": "2011-01-03",
+    "freshSplitCount": 0,
+    "freshZeroVolumeSessions": 0,
+    "lastComparedSession": "2026-09-09",
+    "priceComparedSessions": 3944,
+    "priceMaximumAbsoluteRelativeError": 0.31414103511855207,
+    "priceMedianAbsoluteRelativeError": 0.16877880341447038,
+    "sealedEventAbsent": true,
+    "sealedEventSessions": 0,
+    "sealedMissingCloseSessions": 0,
+    "state": "COMPARED",
+    "volumeComparedSessions": 0,
+    "volumeMaximumAbsoluteRelativeError": null
+   }
+  },
+  "privateDetailFile": "/workspace/batch-inputs/us/sealed-raw-comparison.json",
+  "tickersMaximumErrorBelow1eMinus8": 625,
+  "volumeOutliers": {
+   "CTVA": {
+    "firstComparedSession": "2019-05-24",
+    "freshSplitCount": 1,
+    "freshZeroVolumeSessions": 0,
+    "lastComparedSession": "2026-09-09",
+    "priceComparedSessions": 1833,
+    "priceMaximumAbsoluteRelativeError": 1.9574178866665903e-07,
+    "priceMedianAbsoluteRelativeError": 3.8537305679930967e-08,
+    "sealedEventAbsent": false,
+    "sealedEventSessions": 29,
+    "sealedMissingCloseSessions": 0,
+    "state": "COMPARED",
+    "volumeComparedSessions": 1833,
+    "volumeMaximumAbsoluteRelativeError": 9.23565702464213e-05
+   },
+   "FISV": {
+    "firstComparedSession": "2011-01-03",
+    "freshSplitCount": 2,
+    "freshZeroVolumeSessions": 0,
+    "lastComparedSession": "2026-09-09",
+    "priceComparedSessions": 3943,
+    "priceMaximumAbsoluteRelativeError": 0.0,
+    "priceMedianAbsoluteRelativeError": 0.0,
+    "sealedEventAbsent": false,
+    "sealedEventSessions": 2,
+    "sealedMissingCloseSessions": 0,
+    "state": "COMPARED",
+    "volumeComparedSessions": 3943,
+    "volumeMaximumAbsoluteRelativeError": 0.0018385083939980174
+   }
+  }
+ },
+ "sourceCommit": "704d7db6d5b00def771aba5d2665d0846d6bc776",
+ "status": "US_INPUTS_PREPARED_NEW_CAPTURE",
+ "statusCountsMatch": false,
+ "study": "kr_us_strategy_batch_v1",
+ "vintage": "FRESH_YAHOO_CAPTURE_2026_11_17_NOT_ORIGINAL_PRIVATE_CACHE",
+ "weeklyUniverse": [
+  {
+   "commonUniverse": 0,
+   "date": "2013-01-04",
+   "pricedMembers": 335
+  },
+  {
+   "commonUniverse": 0,
+   "date": "2013-01-11",
+   "pricedMembers": 335
+  },
+  {
+   "commonUniverse": 0,
+   "date": "2013-01-18",
+   "pricedMembers": 335
+  },
+  {
+   "commonUniverse": 0,
+   "date": "2013-01-25",
+   "pricedMembers": 335
+  },
+  {
+   "commonUniverse": 0,
+   "date": "2013-02-01",
+   "pricedMembers": 335
+  },
+  {
+   "commonUniverse": 0,
+   "date": "2013-02-08",
+   "pricedMembers": 335
+  },
+  {
+   "commonUniverse": 0,
+   "date": "2013-02-15",
+   "pricedMembers": 335
+  },
+  {
+   "commonUniverse": 0,
+   "date": "2013-02-22",
+   "pricedMembers": 335
+  },
+  {
+   "commonUniverse": 0,
+   "date": "2013-03-01",
+   "pricedMembers": 335
+  },
+  {
+   "commonUniverse": 0,
+   "date": "2013-03-08",
+   "pricedMembers": 335
+  },
+  {
+   "commonUniverse": 2,
+   "date": "2013-03-15",
+   "pricedMembers": 335
+  },
+  {
+   "commonUniverse": 3,
+   "date": "2013-03-22",
+   "pricedMembers": 335
+  },
+  {
+   "commonUniverse": 5,
+   "date": "2013-03-28",
+   "pricedMembers": 335
+  },
+  {
+   "commonUniverse": 11,
+   "date": "2013-04-05",
+   "pricedMembers": 335
+  },
+  {
+   "commonUniverse": 11,
+   "date": "2013-04-12",
+   "pricedMembers": 335
+  },
+  {
+   "commonUniverse": 10,
+   "date": "2013-04-19",
+   "pricedMembers": 336
+  },
+  {
+   "commonUniverse": 10,
+   "date": "2013-04-26",
+   "pricedMembers": 336
+  },
+  {
+   "commonUniverse": 11,
+   "date": "2013-05-03",
+   "pricedMembers": 336
+  },
+  {
+   "commonUniverse": 14,
+   "date": "2013-05-10",
+   "pricedMembers": 344
+  },
+  {
+   "commonUniverse": 14,
+   "date": "2013-05-17",
+   "pricedMembers": 344
+  },
+  {
+   "commonUniverse": 14,
+   "date": "2013-05-24",
+   "pricedMembers": 344
+  },
+  {
+   "commonUniverse": 14,
+   "date": "2013-05-31",
+   "pricedMembers": 344
+  },
+  {
+   "commonUniverse": 12,
+   "date": "2013-06-07",
+   "pricedMembers": 344
+  },
+  {
+   "commonUniverse": 5,
+   "date": "2013-06-14",
+   "pricedMembers": 346
+  },
+  {
+   "commonUniverse": 6,
+   "date": "2013-06-21",
+   "pricedMembers": 346
+  },
+  {
+   "commonUniverse": 8,
+   "date": "2013-06-28",
+   "pricedMembers": 346
+  },
+  {
+   "commonUniverse": 8,
+   "date": "2013-07-05",
+   "pricedMembers": 346
+  },
+  {
+   "commonUniverse": 7,
+   "date": "2013-07-12",
+   "pricedMembers": 346
+  },
+  {
+   "commonUniverse": 9,
+   "date": "2013-07-19",
+   "pricedMembers": 346
+  },
+  {
+   "commonUniverse": 9,
+   "date": "2013-07-26",
+   "pricedMembers": 346
+  },
+  {
+   "commonUniverse": 11,
+   "date": "2013-08-02",
+   "pricedMembers": 346
+  },
+  {
+   "commonUniverse": 13,
+   "date": "2013-08-09",
+   "pricedMembers": 345
+  },
+  {
+   "commonUniverse": 12,
+   "date": "2013-08-16",
+   "pricedMembers": 345
+  },
+  {
+   "commonUniverse": 14,
+   "date": "2013-08-23",
+   "pricedMembers": 345
+  },
+  {
+   "commonUniverse": 15,
+   "date": "2013-08-30",
+   "pricedMembers": 345
+  },
+  {
+   "commonUniverse": 14,
+   "date": "2013-09-06",
+   "pricedMembers": 345
+  },
+  {
+   "commonUniverse": 15,
+   "date": "2013-09-13",
+   "pricedMembers": 345
+  },
+  {
+   "commonUniverse": 14,
+   "date": "2013-09-20",
+   "pricedMembers": 345
+  },
+  {
+   "commonUniverse": 15,
+   "date": "2013-09-27",
+   "pricedMembers": 345
+  },
+  {
+   "commonUniverse": 14,
+   "date": "2013-10-04",
+   "pricedMembers": 345
+  },
+  {
+   "commonUniverse": 13,
+   "date": "2013-10-11",
+   "pricedMembers": 347
+  },
+  {
+   "commonUniverse": 14,
+   "date": "2013-10-18",
+   "pricedMembers": 347
+  },
+  {
+   "commonUniverse": 13,
+   "date": "2013-10-25",
+   "pricedMembers": 347
+  },
+  {
+   "commonUniverse": 13,
+   "date": "2013-11-01",
+   "pricedMembers": 347
+  },
+  {
+   "commonUniverse": 10,
+   "date": "2013-11-08",
+   "pricedMembers": 347
+  },
+  {
+   "commonUniverse": 10,
+   "date": "2013-11-15",
+   "pricedMembers": 347
+  },
+  {
+   "commonUniverse": 14,
+   "date": "2013-11-22",
+   "pricedMembers": 347
+  },
+  {
+   "commonUniverse": 19,
+   "date": "2013-11-29",
+   "pricedMembers": 347
+  },
+  {
+   "commonUniverse": 19,
+   "date": "2013-12-06",
+   "pricedMembers": 347
+  },
+  {
+   "commonUniverse": 19,
+   "date": "2013-12-13",
+   "pricedMembers": 347
+  },
+  {
+   "commonUniverse": 20,
+   "date": "2013-12-20",
+   "pricedMembers": 347
+  },
+  {
+   "commonUniverse": 19,
+   "date": "2013-12-27",
+   "pricedMembers": 347
+  },
+  {
+   "commonUniverse": 20,
+   "date": "2014-01-03",
+   "pricedMembers": 348
+  },
+  {
+   "commonUniverse": 18,
+   "date": "2014-01-10",
+   "pricedMembers": 348
+  },
+  {
+   "commonUniverse": 18,
+   "date": "2014-01-17",
+   "pricedMembers": 348
+  },
+  {
+   "commonUniverse": 18,
+   "date": "2014-01-24",
+   "pricedMembers": 350
+  },
+  {
+   "commonUniverse": 15,
+   "date": "2014-01-31",
+   "pricedMembers": 350
+  },
+  {
+   "commonUniverse": 23,
+   "date": "2014-02-07",
+   "pricedMembers": 351
+  },
+  {
+   "commonUniverse": 42,
+   "date": "2014-02-14",
+   "pricedMembers": 351
+  },
+  {
+   "commonUniverse": 78,
+   "date": "2014-02-21",
+   "pricedMembers": 351
+  },
+  {
+   "commonUniverse": 133,
+   "date": "2014-02-28",
+   "pricedMembers": 352
+  },
+  {
+   "commonUniverse": 150,
+   "date": "2014-03-07",
+   "pricedMembers": 352
+  },
+  {
+   "commonUniverse": 151,
+   "date": "2014-03-14",
+   "pricedMembers": 352
+  },
+  {
+   "commonUniverse": 156,
+   "date": "2014-03-21",
+   "pricedMembers": 352
+  },
+  {
+   "commonUniverse": 160,
+   "date": "2014-03-28",
+   "pricedMembers": 352
+  },
+  {
+   "commonUniverse": 163,
+   "date": "2014-04-04",
+   "pricedMembers": 352
+  },
+  {
+   "commonUniverse": 165,
+   "date": "2014-04-11",
+   "pricedMembers": 352
+  },
+  {
+   "commonUniverse": 165,
+   "date": "2014-04-17",
+   "pricedMembers": 352
+  },
+  {
+   "commonUniverse": 167,
+   "date": "2014-04-25",
+   "pricedMembers": 352
+  },
+  {
+   "commonUniverse": 163,
+   "date": "2014-05-02",
+   "pricedMembers": 353
+  },
+  {
+   "commonUniverse": 168,
+   "date": "2014-05-09",
+   "pricedMembers": 353
+  },
+  {
+   "commonUniverse": 169,
+   "date": "2014-05-16",
+   "pricedMembers": 353
+  },
+  {
+   "commonUniverse": 168,
+   "date": "2014-05-23",
+   "pricedMembers": 353
+  },
+  {
+   "commonUniverse": 168,
+   "date": "2014-05-30",
+   "pricedMembers": 353
+  },
+  {
+   "commonUniverse": 169,
+   "date": "2014-06-06",
+   "pricedMembers": 353
+  },
+  {
+   "commonUniverse": 164,
+   "date": "2014-06-13",
+   "pricedMembers": 353
+  },
+  {
+   "commonUniverse": 165,
+   "date": "2014-06-20",
+   "pricedMembers": 354
+  },
+  {
+   "commonUniverse": 165,
+   "date": "2014-06-27",
+   "pricedMembers": 354
+  },
+  {
+   "commonUniverse": 160,
+   "date": "2014-07-03",
+   "pricedMembers": 354
+  },
+  {
+   "commonUniverse": 160,
+   "date": "2014-07-11",
+   "pricedMembers": 354
+  },
+  {
+   "commonUniverse": 160,
+   "date": "2014-07-18",
+   "pricedMembers": 354
+  },
+  {
+   "commonUniverse": 165,
+   "date": "2014-07-25",
+   "pricedMembers": 354
+  },
+  {
+   "commonUniverse": 162,
+   "date": "2014-08-01",
+   "pricedMembers": 355
+  },
+  {
+   "commonUniverse": 164,
+   "date": "2014-08-08",
+   "pricedMembers": 355
+  },
+  {
+   "commonUniverse": 164,
+   "date": "2014-08-15",
+   "pricedMembers": 355
+  },
+  {
+   "commonUniverse": 164,
+   "date": "2014-08-22",
+   "pricedMembers": 355
+  },
+  {
+   "commonUniverse": 163,
+   "date": "2014-08-29",
+   "pricedMembers": 355
+  },
+  {
+   "commonUniverse": 162,
+   "date": "2014-09-05",
+   "pricedMembers": 355
+  },
+  {
+   "commonUniverse": 165,
+   "date": "2014-09-12",
+   "pricedMembers": 355
+  },
+  {
+   "commonUniverse": 164,
+   "date": "2014-09-19",
+   "pricedMembers": 355
+  },
+  {
+   "commonUniverse": 163,
+   "date": "2014-09-26",
+   "pricedMembers": 355
+  },
+  {
+   "commonUniverse": 163,
+   "date": "2014-10-03",
+   "pricedMembers": 355
+  },
+  {
+   "commonUniverse": 164,
+   "date": "2014-10-10",
+   "pricedMembers": 355
+  },
+  {
+   "commonUniverse": 163,
+   "date": "2014-10-17",
+   "pricedMembers": 355
+  },
+  {
+   "commonUniverse": 163,
+   "date": "2014-10-24",
+   "pricedMembers": 355
+  },
+  {
+   "commonUniverse": 169,
+   "date": "2014-10-31",
+   "pricedMembers": 355
+  },
+  {
+   "commonUniverse": 168,
+   "date": "2014-11-07",
+   "pricedMembers": 355
+  },
+  {
+   "commonUniverse": 168,
+   "date": "2014-11-14",
+   "pricedMembers": 355
+  },
+  {
+   "commonUniverse": 168,
+   "date": "2014-11-21",
+   "pricedMembers": 356
+  },
+  {
+   "commonUniverse": 168,
+   "date": "2014-11-28",
+   "pricedMembers": 356
+  },
+  {
+   "commonUniverse": 168,
+   "date": "2014-12-05",
+   "pricedMembers": 356
+  },
+  {
+   "commonUniverse": 169,
+   "date": "2014-12-12",
+   "pricedMembers": 356
+  },
+  {
+   "commonUniverse": 170,
+   "date": "2014-12-19",
+   "pricedMembers": 356
+  },
+  {
+   "commonUniverse": 171,
+   "date": "2014-12-26",
+   "pricedMembers": 356
+  },
+  {
+   "commonUniverse": 170,
+   "date": "2015-01-02",
+   "pricedMembers": 356
+  },
+  {
+   "commonUniverse": 170,
+   "date": "2015-01-09",
+   "pricedMembers": 356
+  },
+  {
+   "commonUniverse": 171,
+   "date": "2015-01-16",
+   "pricedMembers": 356
+  },
+  {
+   "commonUniverse": 171,
+   "date": "2015-01-23",
+   "pricedMembers": 356
+  },
+  {
+   "commonUniverse": 173,
+   "date": "2015-01-30",
+   "pricedMembers": 356
+  },
+  {
+   "commonUniverse": 173,
+   "date": "2015-02-06",
+   "pricedMembers": 356
+  },
+  {
+   "commonUniverse": 175,
+   "date": "2015-02-13",
+   "pricedMembers": 356
+  },
+  {
+   "commonUniverse": 178,
+   "date": "2015-02-20",
+   "pricedMembers": 356
+  },
+  {
+   "commonUniverse": 186,
+   "date": "2015-02-27",
+   "pricedMembers": 356
+  },
+  {
+   "commonUniverse": 192,
+   "date": "2015-03-06",
+   "pricedMembers": 356
+  },
+  {
+   "commonUniverse": 193,
+   "date": "2015-03-13",
+   "pricedMembers": 356
+  },
+  {
+   "commonUniverse": 193,
+   "date": "2015-03-20",
+   "pricedMembers": 356
+  },
+  {
+   "commonUniverse": 193,
+   "date": "2015-03-27",
+   "pricedMembers": 356
+  },
+  {
+   "commonUniverse": 195,
+   "date": "2015-04-02",
+   "pricedMembers": 356
+  },
+  {
+   "commonUniverse": 193,
+   "date": "2015-04-10",
+   "pricedMembers": 356
+  },
+  {
+   "commonUniverse": 193,
+   "date": "2015-04-17",
+   "pricedMembers": 356
+  },
+  {
+   "commonUniverse": 191,
+   "date": "2015-04-24",
+   "pricedMembers": 357
+  },
+  {
+   "commonUniverse": 183,
+   "date": "2015-05-01",
+   "pricedMembers": 357
+  },
+  {
+   "commonUniverse": 179,
+   "date": "2015-05-08",
+   "pricedMembers": 357
+  },
+  {
+   "commonUniverse": 175,
+   "date": "2015-05-15",
+   "pricedMembers": 357
+  },
+  {
+   "commonUniverse": 174,
+   "date": "2015-05-22",
+   "pricedMembers": 357
+  },
+  {
+   "commonUniverse": 174,
+   "date": "2015-05-29",
+   "pricedMembers": 357
+  },
+  {
+   "commonUniverse": 172,
+   "date": "2015-06-05",
+   "pricedMembers": 357
+  },
+  {
+   "commonUniverse": 170,
+   "date": "2015-06-12",
+   "pricedMembers": 357
+  },
+  {
+   "commonUniverse": 168,
+   "date": "2015-06-19",
+   "pricedMembers": 357
+  },
+  {
+   "commonUniverse": 168,
+   "date": "2015-06-26",
+   "pricedMembers": 357
+  },
+  {
+   "commonUniverse": 166,
+   "date": "2015-07-02",
+   "pricedMembers": 357
+  },
+  {
+   "commonUniverse": 167,
+   "date": "2015-07-10",
+   "pricedMembers": 357
+  },
+  {
+   "commonUniverse": 166,
+   "date": "2015-07-17",
+   "pricedMembers": 357
+  },
+  {
+   "commonUniverse": 166,
+   "date": "2015-07-24",
+   "pricedMembers": 357
+  },
+  {
+   "commonUniverse": 171,
+   "date": "2015-07-31",
+   "pricedMembers": 357
+  },
+  {
+   "commonUniverse": 173,
+   "date": "2015-08-07",
+   "pricedMembers": 357
+  },
+  {
+   "commonUniverse": 175,
+   "date": "2015-08-14",
+   "pricedMembers": 357
+  },
+  {
+   "commonUniverse": 175,
+   "date": "2015-08-21",
+   "pricedMembers": 357
+  },
+  {
+   "commonUniverse": 175,
+   "date": "2015-08-28",
+   "pricedMembers": 357
+  },
+  {
+   "commonUniverse": 177,
+   "date": "2015-09-04",
+   "pricedMembers": 357
+  },
+  {
+   "commonUniverse": 179,
+   "date": "2015-09-11",
+   "pricedMembers": 357
+  },
+  {
+   "commonUniverse": 179,
+   "date": "2015-09-18",
+   "pricedMembers": 357
+  },
+  {
+   "commonUniverse": 180,
+   "date": "2015-09-25",
+   "pricedMembers": 365
+  },
+  {
+   "commonUniverse": 180,
+   "date": "2015-10-02",
+   "pricedMembers": 365
+  },
+  {
+   "commonUniverse": 181,
+   "date": "2015-10-09",
+   "pricedMembers": 365
+  },
+  {
+   "commonUniverse": 180,
+   "date": "2015-10-16",
+   "pricedMembers": 365
+  },
+  {
+   "commonUniverse": 182,
+   "date": "2015-10-23",
+   "pricedMembers": 365
+  },
+  {
+   "commonUniverse": 188,
+   "date": "2015-10-30",
+   "pricedMembers": 365
+  },
+  {
+   "commonUniverse": 188,
+   "date": "2015-11-06",
+   "pricedMembers": 365
+  },
+  {
+   "commonUniverse": 186,
+   "date": "2015-11-13",
+   "pricedMembers": 365
+  },
+  {
+   "commonUniverse": 187,
+   "date": "2015-11-20",
+   "pricedMembers": 365
+  },
+  {
+   "commonUniverse": 187,
+   "date": "2015-11-27",
+   "pricedMembers": 365
+  },
+  {
+   "commonUniverse": 188,
+   "date": "2015-12-04",
+   "pricedMembers": 365
+  },
+  {
+   "commonUniverse": 188,
+   "date": "2015-12-11",
+   "pricedMembers": 365
+  },
+  {
+   "commonUniverse": 190,
+   "date": "2015-12-18",
+   "pricedMembers": 365
+  },
+  {
+   "commonUniverse": 190,
+   "date": "2015-12-24",
+   "pricedMembers": 365
+  },
+  {
+   "commonUniverse": 190,
+   "date": "2015-12-31",
+   "pricedMembers": 365
+  },
+  {
+   "commonUniverse": 190,
+   "date": "2016-01-08",
+   "pricedMembers": 366
+  },
+  {
+   "commonUniverse": 191,
+   "date": "2016-01-15",
+   "pricedMembers": 366
+  },
+  {
+   "commonUniverse": 191,
+   "date": "2016-01-22",
+   "pricedMembers": 366
+  },
+  {
+   "commonUniverse": 191,
+   "date": "2016-01-29",
+   "pricedMembers": 366
+  },
+  {
+   "commonUniverse": 189,
+   "date": "2016-02-05",
+   "pricedMembers": 366
+  },
+  {
+   "commonUniverse": 188,
+   "date": "2016-02-12",
+   "pricedMembers": 366
+  },
+  {
+   "commonUniverse": 194,
+   "date": "2016-02-19",
+   "pricedMembers": 366
+  },
+  {
+   "commonUniverse": 202,
+   "date": "2016-02-26",
+   "pricedMembers": 379
+  },
+  {
+   "commonUniverse": 203,
+   "date": "2016-03-04",
+   "pricedMembers": 379
+  },
+  {
+   "commonUniverse": 204,
+   "date": "2016-03-11",
+   "pricedMembers": 379
+  },
+  {
+   "commonUniverse": 204,
+   "date": "2016-03-18",
+   "pricedMembers": 379
+  },
+  {
+   "commonUniverse": 204,
+   "date": "2016-03-24",
+   "pricedMembers": 379
+  },
+  {
+   "commonUniverse": 205,
+   "date": "2016-04-01",
+   "pricedMembers": 379
+  },
+  {
+   "commonUniverse": 204,
+   "date": "2016-04-08",
+   "pricedMembers": 379
+  },
+  {
+   "commonUniverse": 204,
+   "date": "2016-04-15",
+   "pricedMembers": 379
+  },
+  {
+   "commonUniverse": 204,
+   "date": "2016-04-22",
+   "pricedMembers": 379
+  },
+  {
+   "commonUniverse": 200,
+   "date": "2016-04-29",
+   "pricedMembers": 379
+  },
+  {
+   "commonUniverse": 193,
+   "date": "2016-05-06",
+   "pricedMembers": 379
+  },
+  {
+   "commonUniverse": 189,
+   "date": "2016-05-13",
+   "pricedMembers": 379
+  },
+  {
+   "commonUniverse": 188,
+   "date": "2016-05-20",
+   "pricedMembers": 379
+  },
+  {
+   "commonUniverse": 188,
+   "date": "2016-05-27",
+   "pricedMembers": 379
+  },
+  {
+   "commonUniverse": 187,
+   "date": "2016-06-03",
+   "pricedMembers": 379
+  },
+  {
+   "commonUniverse": 185,
+   "date": "2016-06-10",
+   "pricedMembers": 379
+  },
+  {
+   "commonUniverse": 188,
+   "date": "2016-06-17",
+   "pricedMembers": 388
+  },
+  {
+   "commonUniverse": 187,
+   "date": "2016-06-24",
+   "pricedMembers": 388
+  },
+  {
+   "commonUniverse": 186,
+   "date": "2016-07-01",
+   "pricedMembers": 388
+  },
+  {
+   "commonUniverse": 187,
+   "date": "2016-07-08",
+   "pricedMembers": 392
+  },
+  {
+   "commonUniverse": 187,
+   "date": "2016-07-15",
+   "pricedMembers": 392
+  },
+  {
+   "commonUniverse": 187,
+   "date": "2016-07-22",
+   "pricedMembers": 392
+  },
+  {
+   "commonUniverse": 193,
+   "date": "2016-07-29",
+   "pricedMembers": 392
+  },
+  {
+   "commonUniverse": 195,
+   "date": "2016-08-05",
+   "pricedMembers": 392
+  },
+  {
+   "commonUniverse": 197,
+   "date": "2016-08-12",
+   "pricedMembers": 392
+  },
+  {
+   "commonUniverse": 196,
+   "date": "2016-08-19",
+   "pricedMembers": 392
+  },
+  {
+   "commonUniverse": 196,
+   "date": "2016-08-26",
+   "pricedMembers": 392
+  },
+  {
+   "commonUniverse": 197,
+   "date": "2016-09-02",
+   "pricedMembers": 392
+  },
+  {
+   "commonUniverse": 198,
+   "date": "2016-09-09",
+   "pricedMembers": 392
+  },
+  {
+   "commonUniverse": 198,
+   "date": "2016-09-16",
+   "pricedMembers": 392
+  },
+  {
+   "commonUniverse": 197,
+   "date": "2016-09-23",
+   "pricedMembers": 392
+  },
+  {
+   "commonUniverse": 197,
+   "date": "2016-09-30",
+   "pricedMembers": 392
+  },
+  {
+   "commonUniverse": 194,
+   "date": "2016-10-07",
+   "pricedMembers": 392
+  },
+  {
+   "commonUniverse": 194,
+   "date": "2016-10-14",
+   "pricedMembers": 392
+  },
+  {
+   "commonUniverse": 195,
+   "date": "2016-10-21",
+   "pricedMembers": 393
+  },
+  {
+   "commonUniverse": 197,
+   "date": "2016-10-28",
+   "pricedMembers": 393
+  },
+  {
+   "commonUniverse": 203,
+   "date": "2016-11-04",
+   "pricedMembers": 393
+  },
+  {
+   "commonUniverse": 206,
+   "date": "2016-11-11",
+   "pricedMembers": 393
+  },
+  {
+   "commonUniverse": 206,
+   "date": "2016-11-18",
+   "pricedMembers": 393
+  },
+  {
+   "commonUniverse": 207,
+   "date": "2016-11-25",
+   "pricedMembers": 393
+  },
+  {
+   "commonUniverse": 207,
+   "date": "2016-12-02",
+   "pricedMembers": 393
+  },
+  {
+   "commonUniverse": 208,
+   "date": "2016-12-09",
+   "pricedMembers": 393
+  },
+  {
+   "commonUniverse": 209,
+   "date": "2016-12-16",
+   "pricedMembers": 393
+  },
+  {
+   "commonUniverse": 210,
+   "date": "2016-12-23",
+   "pricedMembers": 393
+  },
+  {
+   "commonUniverse": 209,
+   "date": "2016-12-30",
+   "pricedMembers": 393
+  },
+  {
+   "commonUniverse": 209,
+   "date": "2017-01-06",
+   "pricedMembers": 393
+  },
+  {
+   "commonUniverse": 209,
+   "date": "2017-01-13",
+   "pricedMembers": 393
+  },
+  {
+   "commonUniverse": 209,
+   "date": "2017-01-20",
+   "pricedMembers": 393
+  },
+  {
+   "commonUniverse": 208,
+   "date": "2017-01-27",
+   "pricedMembers": 393
+  },
+  {
+   "commonUniverse": 208,
+   "date": "2017-02-03",
+   "pricedMembers": 393
+  },
+  {
+   "commonUniverse": 207,
+   "date": "2017-02-10",
+   "pricedMembers": 393
+  },
+  {
+   "commonUniverse": 209,
+   "date": "2017-02-17",
+   "pricedMembers": 393
+  },
+  {
+   "commonUniverse": 212,
+   "date": "2017-02-24",
+   "pricedMembers": 393
+  },
+  {
+   "commonUniverse": 215,
+   "date": "2017-03-03",
+   "pricedMembers": 393
+  },
+  {
+   "commonUniverse": 216,
+   "date": "2017-03-10",
+   "pricedMembers": 400
+  },
+  {
+   "commonUniverse": 216,
+   "date": "2017-03-17",
+   "pricedMembers": 400
+  },
+  {
+   "commonUniverse": 216,
+   "date": "2017-03-24",
+   "pricedMembers": 401
+  },
+  {
+   "commonUniverse": 216,
+   "date": "2017-03-31",
+   "pricedMembers": 401
+  },
+  {
+   "commonUniverse": 217,
+   "date": "2017-04-07",
+   "pricedMembers": 401
+  },
+  {
+   "commonUniverse": 217,
+   "date": "2017-04-13",
+   "pricedMembers": 401
+  },
+  {
+   "commonUniverse": 217,
+   "date": "2017-04-21",
+   "pricedMembers": 401
+  },
+  {
+   "commonUniverse": 215,
+   "date": "2017-04-28",
+   "pricedMembers": 401
+  },
+  {
+   "commonUniverse": 209,
+   "date": "2017-05-05",
+   "pricedMembers": 401
+  },
+  {
+   "commonUniverse": 203,
+   "date": "2017-05-12",
+   "pricedMembers": 401
+  },
+  {
+   "commonUniverse": 202,
+   "date": "2017-05-19",
+   "pricedMembers": 401
+  },
+  {
+   "commonUniverse": 202,
+   "date": "2017-05-26",
+   "pricedMembers": 401
+  },
+  {
+   "commonUniverse": 202,
+   "date": "2017-06-02",
+   "pricedMembers": 401
+  },
+  {
+   "commonUniverse": 198,
+   "date": "2017-06-09",
+   "pricedMembers": 401
+  },
+  {
+   "commonUniverse": 198,
+   "date": "2017-06-16",
+   "pricedMembers": 401
+  },
+  {
+   "commonUniverse": 199,
+   "date": "2017-06-23",
+   "pricedMembers": 401
+  },
+  {
+   "commonUniverse": 199,
+   "date": "2017-06-30",
+   "pricedMembers": 401
+  },
+  {
+   "commonUniverse": 199,
+   "date": "2017-07-07",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 199,
+   "date": "2017-07-14",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 199,
+   "date": "2017-07-21",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 200,
+   "date": "2017-07-28",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 202,
+   "date": "2017-08-04",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 208,
+   "date": "2017-08-11",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 208,
+   "date": "2017-08-18",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 209,
+   "date": "2017-08-25",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 210,
+   "date": "2017-09-01",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 210,
+   "date": "2017-09-08",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 209,
+   "date": "2017-09-15",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 208,
+   "date": "2017-09-22",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 208,
+   "date": "2017-09-29",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 207,
+   "date": "2017-10-06",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 207,
+   "date": "2017-10-13",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 207,
+   "date": "2017-10-20",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 210,
+   "date": "2017-10-27",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 214,
+   "date": "2017-11-03",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 214,
+   "date": "2017-11-10",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 214,
+   "date": "2017-11-17",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 214,
+   "date": "2017-11-24",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 214,
+   "date": "2017-12-01",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 215,
+   "date": "2017-12-08",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 215,
+   "date": "2017-12-15",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 217,
+   "date": "2017-12-22",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 217,
+   "date": "2017-12-29",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 217,
+   "date": "2018-01-05",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 217,
+   "date": "2018-01-12",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 217,
+   "date": "2018-01-19",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 218,
+   "date": "2018-01-26",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 218,
+   "date": "2018-02-02",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 214,
+   "date": "2018-02-09",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 215,
+   "date": "2018-02-16",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 216,
+   "date": "2018-02-23",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 216,
+   "date": "2018-03-02",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 217,
+   "date": "2018-03-09",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 217,
+   "date": "2018-03-16",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 215,
+   "date": "2018-03-23",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 215,
+   "date": "2018-03-29",
+   "pricedMembers": 402
+  },
+  {
+   "commonUniverse": 228,
+   "date": "2018-04-06",
+   "pricedMembers": 417
+  },
+  {
+   "commonUniverse": 228,
+   "date": "2018-04-13",
+   "pricedMembers": 417
+  },
+  {
+   "commonUniverse": 228,
+   "date": "2018-04-20",
+   "pricedMembers": 417
+  },
+  {
+   "commonUniverse": 221,
+   "date": "2018-04-27",
+   "pricedMembers": 417
+  },
+  {
+   "commonUniverse": 221,
+   "date": "2018-05-04",
+   "pricedMembers": 417
+  },
+  {
+   "commonUniverse": 217,
+   "date": "2018-05-11",
+   "pricedMembers": 417
+  },
+  {
+   "commonUniverse": 217,
+   "date": "2018-05-18",
+   "pricedMembers": 418
+  },
+  {
+   "commonUniverse": 217,
+   "date": "2018-05-25",
+   "pricedMembers": 418
+  },
+  {
+   "commonUniverse": 217,
+   "date": "2018-06-01",
+   "pricedMembers": 418
+  },
+  {
+   "commonUniverse": 215,
+   "date": "2018-06-08",
+   "pricedMembers": 418
+  },
+  {
+   "commonUniverse": 213,
+   "date": "2018-06-15",
+   "pricedMembers": 418
+  },
+  {
+   "commonUniverse": 213,
+   "date": "2018-06-22",
+   "pricedMembers": 418
+  },
+  {
+   "commonUniverse": 212,
+   "date": "2018-06-29",
+   "pricedMembers": 418
+  },
+  {
+   "commonUniverse": 212,
+   "date": "2018-07-06",
+   "pricedMembers": 418
+  },
+  {
+   "commonUniverse": 212,
+   "date": "2018-07-13",
+   "pricedMembers": 418
+  },
+  {
+   "commonUniverse": 213,
+   "date": "2018-07-20",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 217,
+   "date": "2018-07-27",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 220,
+   "date": "2018-08-03",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 221,
+   "date": "2018-08-10",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 222,
+   "date": "2018-08-17",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 222,
+   "date": "2018-08-24",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 222,
+   "date": "2018-08-31",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 223,
+   "date": "2018-09-07",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 224,
+   "date": "2018-09-14",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 223,
+   "date": "2018-09-21",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 221,
+   "date": "2018-09-28",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 220,
+   "date": "2018-10-05",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 220,
+   "date": "2018-10-12",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 220,
+   "date": "2018-10-19",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 222,
+   "date": "2018-10-26",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 224,
+   "date": "2018-11-02",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 224,
+   "date": "2018-11-09",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 223,
+   "date": "2018-11-16",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 222,
+   "date": "2018-11-23",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 222,
+   "date": "2018-11-30",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 223,
+   "date": "2018-12-07",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 224,
+   "date": "2018-12-14",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 225,
+   "date": "2018-12-21",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 225,
+   "date": "2018-12-28",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 225,
+   "date": "2019-01-04",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 225,
+   "date": "2019-01-11",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 225,
+   "date": "2019-01-18",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 225,
+   "date": "2019-01-25",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 224,
+   "date": "2019-02-01",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 222,
+   "date": "2019-02-08",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 227,
+   "date": "2019-02-15",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 230,
+   "date": "2019-02-22",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 232,
+   "date": "2019-03-01",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 233,
+   "date": "2019-03-08",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 234,
+   "date": "2019-03-15",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 234,
+   "date": "2019-03-22",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 232,
+   "date": "2019-03-29",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 233,
+   "date": "2019-04-05",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 233,
+   "date": "2019-04-12",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 233,
+   "date": "2019-04-18",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 229,
+   "date": "2019-04-26",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 230,
+   "date": "2019-05-03",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 233,
+   "date": "2019-05-10",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 232,
+   "date": "2019-05-17",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 231,
+   "date": "2019-05-24",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 231,
+   "date": "2019-05-31",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 227,
+   "date": "2019-06-07",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 229,
+   "date": "2019-06-14",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 229,
+   "date": "2019-06-21",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 228,
+   "date": "2019-06-28",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 225,
+   "date": "2019-07-05",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 225,
+   "date": "2019-07-12",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 226,
+   "date": "2019-07-19",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 224,
+   "date": "2019-07-26",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 225,
+   "date": "2019-08-02",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 224,
+   "date": "2019-08-09",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 225,
+   "date": "2019-08-16",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 225,
+   "date": "2019-08-23",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 225,
+   "date": "2019-08-30",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 227,
+   "date": "2019-09-06",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 227,
+   "date": "2019-09-13",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 227,
+   "date": "2019-09-20",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 227,
+   "date": "2019-09-27",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 227,
+   "date": "2019-10-04",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 227,
+   "date": "2019-10-11",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 228,
+   "date": "2019-10-18",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 230,
+   "date": "2019-10-25",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 230,
+   "date": "2019-11-01",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 232,
+   "date": "2019-11-08",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 233,
+   "date": "2019-11-15",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 233,
+   "date": "2019-11-22",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 233,
+   "date": "2019-11-29",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 233,
+   "date": "2019-12-06",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 233,
+   "date": "2019-12-13",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 233,
+   "date": "2019-12-20",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 233,
+   "date": "2019-12-27",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 232,
+   "date": "2020-01-03",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 232,
+   "date": "2020-01-10",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 232,
+   "date": "2020-01-17",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 232,
+   "date": "2020-01-24",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 232,
+   "date": "2020-01-31",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 230,
+   "date": "2020-02-07",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 231,
+   "date": "2020-02-14",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 231,
+   "date": "2020-02-21",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 231,
+   "date": "2020-02-28",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 231,
+   "date": "2020-03-06",
+   "pricedMembers": 419
+  },
+  {
+   "commonUniverse": 232,
+   "date": "2020-03-13",
+   "pricedMembers": 421
+  },
+  {
+   "commonUniverse": 234,
+   "date": "2020-03-20",
+   "pricedMembers": 421
+  },
+  {
+   "commonUniverse": 235,
+   "date": "2020-03-27",
+   "pricedMembers": 421
+  },
+  {
+   "commonUniverse": 234,
+   "date": "2020-04-03",
+   "pricedMembers": 421
+  },
+  {
+   "commonUniverse": 234,
+   "date": "2020-04-09",
+   "pricedMembers": 421
+  },
+  {
+   "commonUniverse": 234,
+   "date": "2020-04-17",
+   "pricedMembers": 421
+  },
+  {
+   "commonUniverse": 233,
+   "date": "2020-04-24",
+   "pricedMembers": 421
+  },
+  {
+   "commonUniverse": 232,
+   "date": "2020-05-01",
+   "pricedMembers": 421
+  },
+  {
+   "commonUniverse": 223,
+   "date": "2020-05-08",
+   "pricedMembers": 421
+  },
+  {
+   "commonUniverse": 239,
+   "date": "2020-05-15",
+   "pricedMembers": 448
+  },
+  {
+   "commonUniverse": 239,
+   "date": "2020-05-22",
+   "pricedMembers": 448
+  },
+  {
+   "commonUniverse": 239,
+   "date": "2020-05-29",
+   "pricedMembers": 450
+  },
+  {
+   "commonUniverse": 238,
+   "date": "2020-06-05",
+   "pricedMembers": 450
+  },
+  {
+   "commonUniverse": 237,
+   "date": "2020-06-12",
+   "pricedMembers": 450
+  },
+  {
+   "commonUniverse": 237,
+   "date": "2020-06-19",
+   "pricedMembers": 450
+  },
+  {
+   "commonUniverse": 237,
+   "date": "2020-06-26",
+   "pricedMembers": 450
+  },
+  {
+   "commonUniverse": 233,
+   "date": "2020-07-02",
+   "pricedMembers": 450
+  },
+  {
+   "commonUniverse": 233,
+   "date": "2020-07-10",
+   "pricedMembers": 450
+  },
+  {
+   "commonUniverse": 233,
+   "date": "2020-07-17",
+   "pricedMembers": 450
+  },
+  {
+   "commonUniverse": 234,
+   "date": "2020-07-24",
+   "pricedMembers": 451
+  },
+  {
+   "commonUniverse": 237,
+   "date": "2020-07-31",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 239,
+   "date": "2020-08-07",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 242,
+   "date": "2020-08-14",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 242,
+   "date": "2020-08-21",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 243,
+   "date": "2020-08-28",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 243,
+   "date": "2020-09-04",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 244,
+   "date": "2020-09-11",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 244,
+   "date": "2020-09-18",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 244,
+   "date": "2020-09-25",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 242,
+   "date": "2020-10-02",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 241,
+   "date": "2020-10-09",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 241,
+   "date": "2020-10-16",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 242,
+   "date": "2020-10-23",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 246,
+   "date": "2020-10-30",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 250,
+   "date": "2020-11-06",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 252,
+   "date": "2020-11-13",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 252,
+   "date": "2020-11-20",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 253,
+   "date": "2020-11-27",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 252,
+   "date": "2020-12-04",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 252,
+   "date": "2020-12-11",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 251,
+   "date": "2020-12-18",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 251,
+   "date": "2020-12-24",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 251,
+   "date": "2020-12-31",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 251,
+   "date": "2021-01-08",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 251,
+   "date": "2021-01-15",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 251,
+   "date": "2021-01-22",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 251,
+   "date": "2021-01-29",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 250,
+   "date": "2021-02-05",
+   "pricedMembers": 452
+  },
+  {
+   "commonUniverse": 259,
+   "date": "2021-02-12",
+   "pricedMembers": 455
+  },
+  {
+   "commonUniverse": 257,
+   "date": "2021-02-19",
+   "pricedMembers": 455
+  },
+  {
+   "commonUniverse": 263,
+   "date": "2021-02-26",
+   "pricedMembers": 455
+  },
+  {
+   "commonUniverse": 262,
+   "date": "2021-03-05",
+   "pricedMembers": 455
+  },
+  {
+   "commonUniverse": 262,
+   "date": "2021-03-12",
+   "pricedMembers": 454
+  },
+  {
+   "commonUniverse": 263,
+   "date": "2021-03-19",
+   "pricedMembers": 457
+  },
+  {
+   "commonUniverse": 266,
+   "date": "2021-03-26",
+   "pricedMembers": 458
+  },
+  {
+   "commonUniverse": 265,
+   "date": "2021-04-01",
+   "pricedMembers": 458
+  },
+  {
+   "commonUniverse": 265,
+   "date": "2021-04-09",
+   "pricedMembers": 458
+  },
+  {
+   "commonUniverse": 265,
+   "date": "2021-04-16",
+   "pricedMembers": 458
+  },
+  {
+   "commonUniverse": 264,
+   "date": "2021-04-23",
+   "pricedMembers": 458
+  },
+  {
+   "commonUniverse": 258,
+   "date": "2021-04-30",
+   "pricedMembers": 459
+  },
+  {
+   "commonUniverse": 258,
+   "date": "2021-05-07",
+   "pricedMembers": 459
+  },
+  {
+   "commonUniverse": 255,
+   "date": "2021-05-14",
+   "pricedMembers": 459
+  },
+  {
+   "commonUniverse": 256,
+   "date": "2021-05-21",
+   "pricedMembers": 460
+  },
+  {
+   "commonUniverse": 255,
+   "date": "2021-05-28",
+   "pricedMembers": 460
+  },
+  {
+   "commonUniverse": 255,
+   "date": "2021-06-04",
+   "pricedMembers": 460
+  },
+  {
+   "commonUniverse": 255,
+   "date": "2021-06-11",
+   "pricedMembers": 460
+  },
+  {
+   "commonUniverse": 255,
+   "date": "2021-06-18",
+   "pricedMembers": 460
+  },
+  {
+   "commonUniverse": 256,
+   "date": "2021-06-25",
+   "pricedMembers": 460
+  },
+  {
+   "commonUniverse": 253,
+   "date": "2021-07-02",
+   "pricedMembers": 460
+  },
+  {
+   "commonUniverse": 253,
+   "date": "2021-07-09",
+   "pricedMembers": 460
+  },
+  {
+   "commonUniverse": 253,
+   "date": "2021-07-16",
+   "pricedMembers": 460
+  },
+  {
+   "commonUniverse": 255,
+   "date": "2021-07-23",
+   "pricedMembers": 461
+  },
+  {
+   "commonUniverse": 259,
+   "date": "2021-07-30",
+   "pricedMembers": 461
+  },
+  {
+   "commonUniverse": 260,
+   "date": "2021-08-06",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 263,
+   "date": "2021-08-13",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 263,
+   "date": "2021-08-20",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 262,
+   "date": "2021-08-27",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 263,
+   "date": "2021-09-03",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 263,
+   "date": "2021-09-10",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 262,
+   "date": "2021-09-17",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 261,
+   "date": "2021-09-24",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 260,
+   "date": "2021-10-01",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 259,
+   "date": "2021-10-08",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 258,
+   "date": "2021-10-15",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 260,
+   "date": "2021-10-22",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 260,
+   "date": "2021-10-29",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 264,
+   "date": "2021-11-05",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 262,
+   "date": "2021-11-12",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 261,
+   "date": "2021-11-19",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 262,
+   "date": "2021-11-26",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 262,
+   "date": "2021-12-03",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 262,
+   "date": "2021-12-10",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 261,
+   "date": "2021-12-17",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 261,
+   "date": "2021-12-23",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 259,
+   "date": "2021-12-31",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 259,
+   "date": "2022-01-07",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 259,
+   "date": "2022-01-14",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 259,
+   "date": "2022-01-21",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 259,
+   "date": "2022-01-28",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 260,
+   "date": "2022-02-04",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 264,
+   "date": "2022-02-11",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 271,
+   "date": "2022-02-18",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 271,
+   "date": "2022-02-25",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 271,
+   "date": "2022-03-04",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 271,
+   "date": "2022-03-11",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 272,
+   "date": "2022-03-18",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 271,
+   "date": "2022-03-25",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 269,
+   "date": "2022-04-01",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 269,
+   "date": "2022-04-08",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 268,
+   "date": "2022-04-14",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 268,
+   "date": "2022-04-22",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 261,
+   "date": "2022-04-29",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 256,
+   "date": "2022-05-06",
+   "pricedMembers": 462
+  },
+  {
+   "commonUniverse": 255,
+   "date": "2022-05-13",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 255,
+   "date": "2022-05-20",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 255,
+   "date": "2022-05-27",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 253,
+   "date": "2022-06-03",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 251,
+   "date": "2022-06-10",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 250,
+   "date": "2022-06-17",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 249,
+   "date": "2022-06-24",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 239,
+   "date": "2022-07-01",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 239,
+   "date": "2022-07-08",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 239,
+   "date": "2022-07-15",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 238,
+   "date": "2022-07-22",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 246,
+   "date": "2022-07-29",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 248,
+   "date": "2022-08-05",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 251,
+   "date": "2022-08-12",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 251,
+   "date": "2022-08-19",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 251,
+   "date": "2022-08-26",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 250,
+   "date": "2022-09-02",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 250,
+   "date": "2022-09-09",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 250,
+   "date": "2022-09-16",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 250,
+   "date": "2022-09-23",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 250,
+   "date": "2022-09-30",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 249,
+   "date": "2022-10-07",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 249,
+   "date": "2022-10-14",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 249,
+   "date": "2022-10-21",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 253,
+   "date": "2022-10-28",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 253,
+   "date": "2022-11-04",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 254,
+   "date": "2022-11-11",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 254,
+   "date": "2022-11-18",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 256,
+   "date": "2022-11-25",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 256,
+   "date": "2022-12-02",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 257,
+   "date": "2022-12-09",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 257,
+   "date": "2022-12-16",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 257,
+   "date": "2022-12-23",
+   "pricedMembers": 463
+  },
+  {
+   "commonUniverse": 260,
+   "date": "2022-12-30",
+   "pricedMembers": 478
+  },
+  {
+   "commonUniverse": 260,
+   "date": "2023-01-06",
+   "pricedMembers": 478
+  },
+  {
+   "commonUniverse": 260,
+   "date": "2023-01-13",
+   "pricedMembers": 478
+  },
+  {
+   "commonUniverse": 260,
+   "date": "2023-01-20",
+   "pricedMembers": 479
+  },
+  {
+   "commonUniverse": 259,
+   "date": "2023-01-27",
+   "pricedMembers": 479
+  },
+  {
+   "commonUniverse": 258,
+   "date": "2023-02-03",
+   "pricedMembers": 479
+  },
+  {
+   "commonUniverse": 261,
+   "date": "2023-02-10",
+   "pricedMembers": 479
+  },
+  {
+   "commonUniverse": 266,
+   "date": "2023-02-17",
+   "pricedMembers": 479
+  },
+  {
+   "commonUniverse": 269,
+   "date": "2023-02-24",
+   "pricedMembers": 479
+  },
+  {
+   "commonUniverse": 270,
+   "date": "2023-03-03",
+   "pricedMembers": 479
+  },
+  {
+   "commonUniverse": 270,
+   "date": "2023-03-10",
+   "pricedMembers": 477
+  },
+  {
+   "commonUniverse": 270,
+   "date": "2023-03-17",
+   "pricedMembers": 477
+  },
+  {
+   "commonUniverse": 270,
+   "date": "2023-03-24",
+   "pricedMembers": 477
+  },
+  {
+   "commonUniverse": 266,
+   "date": "2023-03-31",
+   "pricedMembers": 477
+  },
+  {
+   "commonUniverse": 266,
+   "date": "2023-04-06",
+   "pricedMembers": 477
+  },
+  {
+   "commonUniverse": 295,
+   "date": "2023-04-14",
+   "pricedMembers": 480
+  },
+  {
+   "commonUniverse": 295,
+   "date": "2023-04-21",
+   "pricedMembers": 480
+  },
+  {
+   "commonUniverse": 290,
+   "date": "2023-04-28",
+   "pricedMembers": 480
+  },
+  {
+   "commonUniverse": 280,
+   "date": "2023-05-05",
+   "pricedMembers": 481
+  },
+  {
+   "commonUniverse": 277,
+   "date": "2023-05-12",
+   "pricedMembers": 481
+  },
+  {
+   "commonUniverse": 277,
+   "date": "2023-05-19",
+   "pricedMembers": 481
+  },
+  {
+   "commonUniverse": 277,
+   "date": "2023-05-26",
+   "pricedMembers": 481
+  },
+  {
+   "commonUniverse": 278,
+   "date": "2023-06-02",
+   "pricedMembers": 481
+  },
+  {
+   "commonUniverse": 277,
+   "date": "2023-06-09",
+   "pricedMembers": 481
+  },
+  {
+   "commonUniverse": 277,
+   "date": "2023-06-16",
+   "pricedMembers": 481
+  },
+  {
+   "commonUniverse": 277,
+   "date": "2023-06-23",
+   "pricedMembers": 482
+  },
+  {
+   "commonUniverse": 247,
+   "date": "2023-06-30",
+   "pricedMembers": 482
+  },
+  {
+   "commonUniverse": 246,
+   "date": "2023-07-07",
+   "pricedMembers": 482
+  },
+  {
+   "commonUniverse": 246,
+   "date": "2023-07-14",
+   "pricedMembers": 482
+  },
+  {
+   "commonUniverse": 248,
+   "date": "2023-07-21",
+   "pricedMembers": 482
+  },
+  {
+   "commonUniverse": 260,
+   "date": "2023-07-28",
+   "pricedMembers": 482
+  },
+  {
+   "commonUniverse": 267,
+   "date": "2023-08-04",
+   "pricedMembers": 482
+  },
+  {
+   "commonUniverse": 282,
+   "date": "2023-08-11",
+   "pricedMembers": 482
+  },
+  {
+   "commonUniverse": 281,
+   "date": "2023-08-18",
+   "pricedMembers": 482
+  },
+  {
+   "commonUniverse": 280,
+   "date": "2023-08-25",
+   "pricedMembers": 482
+  },
+  {
+   "commonUniverse": 280,
+   "date": "2023-09-01",
+   "pricedMembers": 481
+  },
+  {
+   "commonUniverse": 282,
+   "date": "2023-09-08",
+   "pricedMembers": 481
+  },
+  {
+   "commonUniverse": 282,
+   "date": "2023-09-15",
+   "pricedMembers": 481
+  },
+  {
+   "commonUniverse": 283,
+   "date": "2023-09-22",
+   "pricedMembers": 481
+  },
+  {
+   "commonUniverse": 283,
+   "date": "2023-09-29",
+   "pricedMembers": 481
+  },
+  {
+   "commonUniverse": 282,
+   "date": "2023-10-06",
+   "pricedMembers": 481
+  },
+  {
+   "commonUniverse": 281,
+   "date": "2023-10-13",
+   "pricedMembers": 480
+  },
+  {
+   "commonUniverse": 283,
+   "date": "2023-10-20",
+   "pricedMembers": 481
+  },
+  {
+   "commonUniverse": 282,
+   "date": "2023-10-27",
+   "pricedMembers": 481
+  },
+  {
+   "commonUniverse": 279,
+   "date": "2023-11-03",
+   "pricedMembers": 481
+  },
+  {
+   "commonUniverse": 278,
+   "date": "2023-11-10",
+   "pricedMembers": 481
+  },
+  {
+   "commonUniverse": 278,
+   "date": "2023-11-17",
+   "pricedMembers": 481
+  },
+  {
+   "commonUniverse": 276,
+   "date": "2023-11-24",
+   "pricedMembers": 481
+  },
+  {
+   "commonUniverse": 276,
+   "date": "2023-12-01",
+   "pricedMembers": 481
+  },
+  {
+   "commonUniverse": 276,
+   "date": "2023-12-08",
+   "pricedMembers": 481
+  },
+  {
+   "commonUniverse": 276,
+   "date": "2023-12-15",
+   "pricedMembers": 481
+  },
+  {
+   "commonUniverse": 278,
+   "date": "2023-12-22",
+   "pricedMembers": 483
+  },
+  {
+   "commonUniverse": 278,
+   "date": "2023-12-29",
+   "pricedMembers": 483
+  },
+  {
+   "commonUniverse": 278,
+   "date": "2024-01-05",
+   "pricedMembers": 483
+  },
+  {
+   "commonUniverse": 278,
+   "date": "2024-01-12",
+   "pricedMembers": 483
+  },
+  {
+   "commonUniverse": 278,
+   "date": "2024-01-19",
+   "pricedMembers": 483
+  },
+  {
+   "commonUniverse": 280,
+   "date": "2024-01-26",
+   "pricedMembers": 483
+  },
+  {
+   "commonUniverse": 281,
+   "date": "2024-02-02",
+   "pricedMembers": 483
+  },
+  {
+   "commonUniverse": 282,
+   "date": "2024-02-09",
+   "pricedMembers": 483
+  },
+  {
+   "commonUniverse": 287,
+   "date": "2024-02-16",
+   "pricedMembers": 483
+  },
+  {
+   "commonUniverse": 293,
+   "date": "2024-02-23",
+   "pricedMembers": 483
+  },
+  {
+   "commonUniverse": 297,
+   "date": "2024-03-01",
+   "pricedMembers": 483
+  },
+  {
+   "commonUniverse": 298,
+   "date": "2024-03-08",
+   "pricedMembers": 483
+  },
+  {
+   "commonUniverse": 299,
+   "date": "2024-03-15",
+   "pricedMembers": 483
+  },
+  {
+   "commonUniverse": 301,
+   "date": "2024-03-22",
+   "pricedMembers": 483
+  },
+  {
+   "commonUniverse": 298,
+   "date": "2024-03-28",
+   "pricedMembers": 484
+  },
+  {
+   "commonUniverse": 276,
+   "date": "2024-04-05",
+   "pricedMembers": 482
+  },
+  {
+   "commonUniverse": 276,
+   "date": "2024-04-12",
+   "pricedMembers": 482
+  },
+  {
+   "commonUniverse": 274,
+   "date": "2024-04-19",
+   "pricedMembers": 482
+  },
+  {
+   "commonUniverse": 265,
+   "date": "2024-04-26",
+   "pricedMembers": 482
+  },
+  {
+   "commonUniverse": 251,
+   "date": "2024-05-03",
+   "pricedMembers": 482
+  },
+  {
+   "commonUniverse": 239,
+   "date": "2024-05-10",
+   "pricedMembers": 484
+  },
+  {
+   "commonUniverse": 239,
+   "date": "2024-05-17",
+   "pricedMembers": 484
+  },
+  {
+   "commonUniverse": 239,
+   "date": "2024-05-24",
+   "pricedMembers": 484
+  },
+  {
+   "commonUniverse": 236,
+   "date": "2024-05-31",
+   "pricedMembers": 484
+  },
+  {
+   "commonUniverse": 232,
+   "date": "2024-06-07",
+   "pricedMembers": 484
+  },
+  {
+   "commonUniverse": 231,
+   "date": "2024-06-14",
+   "pricedMembers": 484
+  },
+  {
+   "commonUniverse": 231,
+   "date": "2024-06-21",
+   "pricedMembers": 484
+  },
+  {
+   "commonUniverse": 228,
+   "date": "2024-06-28",
+   "pricedMembers": 485
+  },
+  {
+   "commonUniverse": 225,
+   "date": "2024-07-05",
+   "pricedMembers": 485
+  },
+  {
+   "commonUniverse": 226,
+   "date": "2024-07-12",
+   "pricedMembers": 485
+  },
+  {
+   "commonUniverse": 228,
+   "date": "2024-07-19",
+   "pricedMembers": 486
+  },
+  {
+   "commonUniverse": 236,
+   "date": "2024-07-26",
+   "pricedMembers": 486
+  },
+  {
+   "commonUniverse": 245,
+   "date": "2024-08-02",
+   "pricedMembers": 486
+  },
+  {
+   "commonUniverse": 259,
+   "date": "2024-08-09",
+   "pricedMembers": 486
+  },
+  {
+   "commonUniverse": 260,
+   "date": "2024-08-16",
+   "pricedMembers": 486
+  },
+  {
+   "commonUniverse": 259,
+   "date": "2024-08-23",
+   "pricedMembers": 486
+  },
+  {
+   "commonUniverse": 261,
+   "date": "2024-08-30",
+   "pricedMembers": 486
+  },
+  {
+   "commonUniverse": 263,
+   "date": "2024-09-06",
+   "pricedMembers": 486
+  },
+  {
+   "commonUniverse": 264,
+   "date": "2024-09-13",
+   "pricedMembers": 486
+  },
+  {
+   "commonUniverse": 262,
+   "date": "2024-09-20",
+   "pricedMembers": 486
+  },
+  {
+   "commonUniverse": 261,
+   "date": "2024-09-27",
+   "pricedMembers": 486
+  },
+  {
+   "commonUniverse": 243,
+   "date": "2024-10-04",
+   "pricedMembers": 486
+  },
+  {
+   "commonUniverse": 245,
+   "date": "2024-10-11",
+   "pricedMembers": 486
+  },
+  {
+   "commonUniverse": 245,
+   "date": "2024-10-18",
+   "pricedMembers": 486
+  },
+  {
+   "commonUniverse": 250,
+   "date": "2024-10-25",
+   "pricedMembers": 486
+  },
+  {
+   "commonUniverse": 259,
+   "date": "2024-11-01",
+   "pricedMembers": 486
+  },
+  {
+   "commonUniverse": 269,
+   "date": "2024-11-08",
+   "pricedMembers": 486
+  },
+  {
+   "commonUniverse": 273,
+   "date": "2024-11-15",
+   "pricedMembers": 486
+  },
+  {
+   "commonUniverse": 274,
+   "date": "2024-11-22",
+   "pricedMembers": 486
+  },
+  {
+   "commonUniverse": 276,
+   "date": "2024-11-29",
+   "pricedMembers": 487
+  },
+  {
+   "commonUniverse": 275,
+   "date": "2024-12-06",
+   "pricedMembers": 487
+  },
+  {
+   "commonUniverse": 274,
+   "date": "2024-12-13",
+   "pricedMembers": 487
+  },
+  {
+   "commonUniverse": 273,
+   "date": "2024-12-20",
+   "pricedMembers": 487
+  },
+  {
+   "commonUniverse": 274,
+   "date": "2024-12-27",
+   "pricedMembers": 488
+  },
+  {
+   "commonUniverse": 269,
+   "date": "2025-01-03",
+   "pricedMembers": 489
+  },
+  {
+   "commonUniverse": 269,
+   "date": "2025-01-10",
+   "pricedMembers": 489
+  },
+  {
+   "commonUniverse": 270,
+   "date": "2025-01-17",
+   "pricedMembers": 489
+  },
+  {
+   "commonUniverse": 271,
+   "date": "2025-01-24",
+   "pricedMembers": 489
+  },
+  {
+   "commonUniverse": 270,
+   "date": "2025-01-31",
+   "pricedMembers": 489
+  },
+  {
+   "commonUniverse": 267,
+   "date": "2025-02-07",
+   "pricedMembers": 489
+  },
+  {
+   "commonUniverse": 274,
+   "date": "2025-02-14",
+   "pricedMembers": 489
+  },
+  {
+   "commonUniverse": 281,
+   "date": "2025-02-21",
+   "pricedMembers": 489
+  },
+  {
+   "commonUniverse": 288,
+   "date": "2025-02-28",
+   "pricedMembers": 489
+  },
+  {
+   "commonUniverse": 289,
+   "date": "2025-03-07",
+   "pricedMembers": 489
+  },
+  {
+   "commonUniverse": 291,
+   "date": "2025-03-14",
+   "pricedMembers": 489
+  },
+  {
+   "commonUniverse": 291,
+   "date": "2025-03-21",
+   "pricedMembers": 489
+  },
+  {
+   "commonUniverse": 289,
+   "date": "2025-03-28",
+   "pricedMembers": 490
+  },
+  {
+   "commonUniverse": 288,
+   "date": "2025-04-04",
+   "pricedMembers": 491
+  },
+  {
+   "commonUniverse": 287,
+   "date": "2025-04-11",
+   "pricedMembers": 491
+  },
+  {
+   "commonUniverse": 286,
+   "date": "2025-04-17",
+   "pricedMembers": 491
+  },
+  {
+   "commonUniverse": 280,
+   "date": "2025-04-25",
+   "pricedMembers": 491
+  },
+  {
+   "commonUniverse": 270,
+   "date": "2025-05-02",
+   "pricedMembers": 491
+  },
+  {
+   "commonUniverse": 255,
+   "date": "2025-05-09",
+   "pricedMembers": 491
+  },
+  {
+   "commonUniverse": 252,
+   "date": "2025-05-16",
+   "pricedMembers": 491
+  },
+  {
+   "commonUniverse": 252,
+   "date": "2025-05-23",
+   "pricedMembers": 492
+  },
+  {
+   "commonUniverse": 252,
+   "date": "2025-05-30",
+   "pricedMembers": 492
+  },
+  {
+   "commonUniverse": 248,
+   "date": "2025-06-06",
+   "pricedMembers": 492
+  },
+  {
+   "commonUniverse": 247,
+   "date": "2025-06-13",
+   "pricedMembers": 492
+  },
+  {
+   "commonUniverse": 247,
+   "date": "2025-06-20",
+   "pricedMembers": 492
+  },
+  {
+   "commonUniverse": 244,
+   "date": "2025-06-27",
+   "pricedMembers": 492
+  },
+  {
+   "commonUniverse": 241,
+   "date": "2025-07-03",
+   "pricedMembers": 492
+  },
+  {
+   "commonUniverse": 242,
+   "date": "2025-07-11",
+   "pricedMembers": 492
+  },
+  {
+   "commonUniverse": 246,
+   "date": "2025-07-18",
+   "pricedMembers": 493
+  },
+  {
+   "commonUniverse": 248,
+   "date": "2025-07-25",
+   "pricedMembers": 495
+  },
+  {
+   "commonUniverse": 251,
+   "date": "2025-08-01",
+   "pricedMembers": 495
+  },
+  {
+   "commonUniverse": 256,
+   "date": "2025-08-08",
+   "pricedMembers": 495
+  },
+  {
+   "commonUniverse": 256,
+   "date": "2025-08-15",
+   "pricedMembers": 495
+  },
+  {
+   "commonUniverse": 255,
+   "date": "2025-08-22",
+   "pricedMembers": 495
+  },
+  {
+   "commonUniverse": 254,
+   "date": "2025-08-29",
+   "pricedMembers": 495
+  },
+  {
+   "commonUniverse": 257,
+   "date": "2025-09-05",
+   "pricedMembers": 495
+  },
+  {
+   "commonUniverse": 258,
+   "date": "2025-09-12",
+   "pricedMembers": 495
+  },
+  {
+   "commonUniverse": 259,
+   "date": "2025-09-19",
+   "pricedMembers": 495
+  },
+  {
+   "commonUniverse": 260,
+   "date": "2025-09-26",
+   "pricedMembers": 495
+  },
+  {
+   "commonUniverse": 260,
+   "date": "2025-10-03",
+   "pricedMembers": 495
+  },
+  {
+   "commonUniverse": 262,
+   "date": "2025-10-10",
+   "pricedMembers": 495
+  },
+  {
+   "commonUniverse": 262,
+   "date": "2025-10-17",
+   "pricedMembers": 495
+  },
+  {
+   "commonUniverse": 267,
+   "date": "2025-10-24",
+   "pricedMembers": 495
+  },
+  {
+   "commonUniverse": 271,
+   "date": "2025-10-31",
+   "pricedMembers": 495
+  },
+  {
+   "commonUniverse": 279,
+   "date": "2025-11-07",
+   "pricedMembers": 495
+  },
+  {
+   "commonUniverse": 282,
+   "date": "2025-11-14",
+   "pricedMembers": 494
+  },
+  {
+   "commonUniverse": 281,
+   "date": "2025-11-21",
+   "pricedMembers": 494
+  },
+  {
+   "commonUniverse": 283,
+   "date": "2025-11-28",
+   "pricedMembers": 494
+  },
+  {
+   "commonUniverse": 283,
+   "date": "2025-12-05",
+   "pricedMembers": 494
+  },
+  {
+   "commonUniverse": 283,
+   "date": "2025-12-12",
+   "pricedMembers": 494
+  },
+  {
+   "commonUniverse": 282,
+   "date": "2025-12-19",
+   "pricedMembers": 494
+  },
+  {
+   "commonUniverse": 282,
+   "date": "2025-12-26",
+   "pricedMembers": 494
+  },
+  {
+   "commonUniverse": 282,
+   "date": "2026-01-02",
+   "pricedMembers": 494
+  },
+  {
+   "commonUniverse": 281,
+   "date": "2026-01-09",
+   "pricedMembers": 494
+  },
+  {
+   "commonUniverse": 280,
+   "date": "2026-01-16",
+   "pricedMembers": 494
+  },
+  {
+   "commonUniverse": 280,
+   "date": "2026-01-23",
+   "pricedMembers": 494
+  },
+  {
+   "commonUniverse": 282,
+   "date": "2026-01-30",
+   "pricedMembers": 494
+  },
+  {
+   "commonUniverse": 284,
+   "date": "2026-02-06",
+   "pricedMembers": 494
+  },
+  {
+   "commonUniverse": 289,
+   "date": "2026-02-13",
+   "pricedMembers": 494
+  },
+  {
+   "commonUniverse": 305,
+   "date": "2026-02-20",
+   "pricedMembers": 494
+  },
+  {
+   "commonUniverse": 313,
+   "date": "2026-02-27",
+   "pricedMembers": 494
+  },
+  {
+   "commonUniverse": 318,
+   "date": "2026-03-06",
+   "pricedMembers": 497
+  },
+  {
+   "commonUniverse": 319,
+   "date": "2026-03-13",
+   "pricedMembers": 497
+  },
+  {
+   "commonUniverse": 318,
+   "date": "2026-03-20",
+   "pricedMembers": 497
+  },
+  {
+   "commonUniverse": 317,
+   "date": "2026-03-27",
+   "pricedMembers": 497
+  },
+  {
+   "commonUniverse": 317,
+   "date": "2026-04-02",
+   "pricedMembers": 497
+  },
+  {
+   "commonUniverse": 317,
+   "date": "2026-04-10",
+   "pricedMembers": 497
+  },
+  {
+   "commonUniverse": 317,
+   "date": "2026-04-17",
+   "pricedMembers": 498
+  },
+  {
+   "commonUniverse": 315,
+   "date": "2026-04-24",
+   "pricedMembers": 498
+  },
+  {
+   "commonUniverse": 303,
+   "date": "2026-05-01",
+   "pricedMembers": 498
+  },
+  {
+   "commonUniverse": 292,
+   "date": "2026-05-08",
+   "pricedMembers": 498
+  },
+  {
+   "commonUniverse": 290,
+   "date": "2026-05-15",
+   "pricedMembers": 499
+  },
+  {
+   "commonUniverse": 290,
+   "date": "2026-05-22",
+   "pricedMembers": 499
+  },
+  {
+   "commonUniverse": 289,
+   "date": "2026-05-29",
+   "pricedMembers": 499
+  },
+  {
+   "commonUniverse": 289,
+   "date": "2026-06-05",
+   "pricedMembers": 499
+  },
+  {
+   "commonUniverse": 288,
+   "date": "2026-06-12",
+   "pricedMembers": 498
+  },
+  {
+   "commonUniverse": 288,
+   "date": "2026-06-18",
+   "pricedMembers": 498
+  },
+  {
+   "commonUniverse": 286,
+   "date": "2026-06-26",
+   "pricedMembers": 498
+  },
+  {
+   "commonUniverse": 281,
+   "date": "2026-07-02",
+   "pricedMembers": 497
+  },
+  {
+   "commonUniverse": 280,
+   "date": "2026-07-10",
+   "pricedMembers": 497
+  },
+  {
+   "commonUniverse": 275,
+   "date": "2026-07-17",
+   "pricedMembers": 497
+  },
+  {
+   "commonUniverse": 243,
+   "date": "2026-07-24",
+   "pricedMembers": 497
+  },
+  {
+   "commonUniverse": 167,
+   "date": "2026-07-31",
+   "pricedMembers": 497
+  },
+  {
+   "commonUniverse": 63,
+   "date": "2026-08-07",
+   "pricedMembers": 497
+  },
+  {
+   "commonUniverse": 49,
+   "date": "2026-08-14",
+   "pricedMembers": 498
+  },
+  {
+   "commonUniverse": 41,
+   "date": "2026-08-21",
+   "pricedMembers": 499
+  },
+  {
+   "commonUniverse": 29,
+   "date": "2026-08-28",
+   "pricedMembers": 499
+  },
+  {
+   "commonUniverse": 14,
+   "date": "2026-09-04",
+   "pricedMembers": 499
+  },
+  {
+   "commonUniverse": 0,
+   "date": "2026-09-11",
+   "pricedMembers": 499
+  }
+ ],
+ "yearSample": {
+  "2013": {
+   "commonUniverseRows": 503,
+   "pricedMemberRows": 17790,
+   "signalWeeks": 52,
+   "weeksBelowMinimum": 52
+  },
+  "2014": {
+   "commonUniverseRows": 7429,
+   "eligibleWeeks": 46,
+   "pricedMemberRows": 18376,
+   "signalWeeks": 52,
+   "weeksBelowMinimum": 6
+  },
+  "2015": {
+   "commonUniverseRows": 9527,
+   "eligibleWeeks": 53,
+   "pricedMemberRows": 19025,
+   "signalWeeks": 53
+  },
+  "2016": {
+   "commonUniverseRows": 10229,
+   "eligibleWeeks": 52,
+   "pricedMemberRows": 19993,
+   "signalWeeks": 52
+  },
+  "2017": {
+   "commonUniverseRows": 10862,
+   "eligibleWeeks": 52,
+   "pricedMemberRows": 20804,
+   "signalWeeks": 52
+  },
+  "2018": {
+   "commonUniverseRows": 11405,
+   "eligibleWeeks": 52,
+   "pricedMemberRows": 21546,
+   "signalWeeks": 52
+  },
+  "2019": {
+   "commonUniverseRows": 11903,
+   "eligibleWeeks": 52,
+   "pricedMemberRows": 21788,
+   "signalWeeks": 52
+  },
+  "2020": {
+   "commonUniverseRows": 12658,
+   "eligibleWeeks": 53,
+   "pricedMemberRows": 23322,
+   "signalWeeks": 53
+  },
+  "2021": {
+   "commonUniverseRows": 13469,
+   "eligibleWeeks": 52,
+   "pricedMemberRows": 23887,
+   "signalWeeks": 52
+  },
+  "2022": {
+   "commonUniverseRows": 13302,
+   "eligibleWeeks": 52,
+   "pricedMemberRows": 24073,
+   "signalWeeks": 52
+  },
+  "2023": {
+   "commonUniverseRows": 14195,
+   "eligibleWeeks": 52,
+   "pricedMemberRows": 24982,
+   "signalWeeks": 52
+  },
+  "2024": {
+   "commonUniverseRows": 13646,
+   "eligibleWeeks": 52,
+   "pricedMemberRows": 25203,
+   "signalWeeks": 52
+  },
+  "2025": {
+   "commonUniverseRows": 13887,
+   "eligibleWeeks": 52,
+   "pricedMemberRows": 25602,
+   "signalWeeks": 52
+  },
+  "2026": {
+   "commonUniverseRows": 9191,
+   "eligibleWeeks": 34,
+   "pricedMemberRows": 18386,
+   "signalWeeks": 37,
+   "weeksBelowMinimum": 3
+  }
+ },
+ "yearSampleDifferences": []
+}
