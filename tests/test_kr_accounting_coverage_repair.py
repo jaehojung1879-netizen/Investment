@@ -483,13 +483,16 @@ def test_rebuild_publishes_what_the_element_rule_admitted(tmp_path):
     assert "assetGrowthPct" not in fields  # no prior-year filing: coverage is not invented
 
 
-def test_raw_collection_job_is_dispatch_only_and_never_writes_the_sealed_store():
+def test_raw_collection_job_is_manual_or_weekly_and_never_writes_the_sealed_store():
     workflow = (ROOT / ".github/workflows/fundamentals.yml").read_text(encoding="utf-8")
     job = workflow.split("\n  kr-raw:\n", 1)[1]
-    assert "if: github.event_name == 'workflow_dispatch' && startsWith(inputs.target, 'raw-')" in job
+    assert "(github.event_name == 'workflow_dispatch' && startsWith(inputs.target, 'raw-'))" in job
+    assert "github.event.schedule == '17 19 * * 2' && github.ref == 'refs/heads/main'" in job
     assert "SEALED_SIGNAL_HISTORY_COMMIT: 4ea107ed0cde289f0a049a65ff13d2441a786710" in job
     assert "--universe-dir sealed-work/ledger/universe/kr" in job
-    assert "for path in ledger/fundamentals/kr-raw ledger/fundamentals/kr-canonical-v2" in job
+    assert "paths=(ledger/fundamentals/kr-raw ledger/fundamentals/kr-canonical-v2)" in job
+    assert 'if [ "$EVENT_NAME" != schedule ]; then' in job
+    assert 'for path in "${paths[@]}"; do' in job
     assert "ledger/fundamentals/kr-xbrl-original ledger/fundamentals/kr-candidate-merged" in job
     assert 'if [ -e "$path" ]; then' in job and 'git add "$path"' in job
     assert "git add ledger/fundamentals\n" not in job and "git add ledger/fundamentals/kr\n" not in job
@@ -499,7 +502,7 @@ def test_raw_collection_job_is_dispatch_only_and_never_writes_the_sealed_store()
     # Every step that tees a collector or audit keeps its exit status.
     for step in job.split("      - name: ")[1:]:
         if "| tee" in step:
-            assert "set -o pipefail" in step, step.splitlines()[0]
+            assert "set -o pipefail" in step or "set -euo pipefail" in step, step.splitlines()[0]
 
 
 def test_commit_step_never_crashes_when_one_candidate_path_is_missing(tmp_path):

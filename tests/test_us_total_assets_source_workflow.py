@@ -63,7 +63,9 @@ def selects(region: str, *, target="auto", event="workflow_dispatch") -> set[str
             chosen.add("kr")
         if region in ("both", "us") and not target.startswith("raw-"):
             chosen.add("us")
-        assert all(f"if: {expr}" in text() for expr in from_text.values())
+        assert all(
+            f"if: (github.event_name != 'schedule' || github.event.schedule == '40 3 * * *') && ({expr})"
+            in text() for expr in from_text.values())
         if region == "total-assets-source-probe" and target == "auto":
             assert "    if: github.event_name == 'workflow_dispatch' && inputs.region == 'total-assets-source-probe' && inputs.target == 'auto'" in job_block()
             chosen.add(JOB)
