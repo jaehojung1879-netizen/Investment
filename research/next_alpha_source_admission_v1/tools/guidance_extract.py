@@ -30,7 +30,7 @@ METRICS = [
     ("operating_income", r"operating (income|profit|earnings)|income from operations"),
     ("capex", r"capital expenditures?|\bcapex\b|capital spending|purchases? of property(,)? (plant )?and equipment|property and equipment, net of proceeds"),
     ("tax_rate", r"(effective |adjusted effective |operating )?tax rate"),
-    ("net_income", r"net (income|earnings)(?! per)(?! margin)"),
+    ("net_income", r"net (income|earnings)(?! per)(?! margin)(?! before)"),
     ("revenue", r"\b(net |total )?(revenues?|net sales|sales)\b"),
 ]
 NUM = r"\(?-?\$?\s?\(?\d[\d,]*(?:\.\d+)?\)?"
@@ -57,7 +57,7 @@ COL_ACTUAL = re.compile(r"(?i)\b(actual|ytd|year to date|results|six months|nine
 
 def _num(s):
     s = s.replace("$", "").replace(",", "").replace(" ", "")
-    neg = s.startswith("(") and s.endswith(")") or s.startswith("-") or s.startswith("(-")
+    neg = s.startswith("(") or s.startswith("-")
     s = s.strip("()-")
     try:
         v = float(s)
@@ -108,6 +108,8 @@ DOC_DEFAULT_ALL = False   # set per document when the release declares every gui
 
 
 def unit_for(metric, is_pct, value_text):
+    if metric == "revenue" and is_pct:
+        return "revenue_growth", "pct"
     if metric == "gross_margin" and not is_pct and "$" in value_text:
         return "gross_profit", "USD_million"
     if metric in ("eps",):
@@ -194,6 +196,10 @@ def _values(seg, metric, allow_bare=False):
 def _sentence_tuples(sent, ctx):
     """Pair each metric mention with the value expressions that follow it, until the next metric."""
     out = []
+    sent = re.sub(r"(?<=[a-z\)])\d{1,2}(?=[\s,.;:])", "", sent)   # footnote markers: "income1 per share"
+    m = re.search(r"(?i)for ([A-Z][\w&' .-]{1,40}),\s+the company expects", sent)
+    if m:
+        ctx["segment_scope"] = m.group(1).strip().lower() not in ctx.get("entity", "")
     low = sent.lower()
     spans = []
     for name, pat in METRICS:
@@ -234,6 +240,8 @@ def _sentence_tuples(sent, ctx):
         frm = re.search(r"(?i)\bfrom\b", seg)
         for j, (lo, hi, pct, st, txt) in enumerate(vals):
             before = seg[max(0, st - 70):st]
+            if re.match(r"(?i)\s*(gw|mw|gwh|units|shares|tons|barrels|boe|mboed|bpd|homes|stores|locations|customers|employees)\b", seg[st + len(txt):st + len(txt) + 12]):
+                continue
             kind = "CURRENT"
             if PRIOR_CUE.search(before):
                 kind = "PRIOR"
@@ -298,6 +306,12 @@ def _row_tuples(cells, ctx):
         return [(tgt, metric, basis_label, unit, lo * ctx.get("table_scale", 1.0) if unit == "USD_million" and "billion" not in lo_c[2].lower() and "$" not in lo_c[2] else lo,
                  hi * ctx.get("table_scale", 1.0) if unit == "USD_million" and "billion" not in hi_c[2].lower() and "$" not in hi_c[2] else hi, "CURRENT")]
     last_val = None
+    if roles and len(vals_cells) > len(roles):
+        roles = [None] * (len(vals_cells) - len(roles)) + list(roles)   # header shorter than the row: align right
+    if roles and roles[-1] == "CURRENT" and ctx.get("range_cols") and len(singles) >= 3 and len(numeric) == len(singles):
+        lo, hi = sorted((singles[-2][1][0], singles[-1][1][0]))
+        metric, unit = unit_for(name, singles[-1][1][2], singles[-1][2])
+        return [(tgt, metric, basis_label, unit, lo, hi, "CURRENT")]
     for ci, v, c in numeric:
         role = roles[ci] if roles and ci < len(roles) else ("CURRENT" if len(numeric) == 1 else None)
         if role in (None, "ACTUAL"):
@@ -316,6 +330,8 @@ def _row_tuples(cells, ctx):
         lo, hi, pct, _, txt = v
         last_val = v
         metric, unit = unit_for(name, pct, txt)
+        if unit == "pct" and metric in ("operating_income", "net_income", "capex", "opex", "ebitda", "free_cash_flow", "eps"):
+            continue
         if unit == "USD_million" and "$" not in txt and not re.search(r"(?i)billion|million", txt):
             lo = lo * ctx.get("table_scale", 1.0)
             hi = hi * ctx.get("table_scale", 1.0) if hi is not None else None
@@ -379,6 +395,7 @@ def extract(raw: bytes):
     global DOC_DEFAULT_ALL
     bl = B.blocks(raw)
     ctx = doc_context(bl)
+    ctx["entity"] = " ".join(v for _, v in bl[:6]).lower()[:600]
     full = " ".join(v for _, v in bl)
     DOC_DEFAULT_ALL = bool(DOC_NONGAAP.search(full))
     if DOC_DEFAULT_ALL:
@@ -389,8 +406,10 @@ def extract(raw: bytes):
         if B.BOILER.search(v):
             continue
         short = len(v) < 90
+        if re.search(r"(?i)^for (the company|capri holdings|\w+ holdings|total company)\b", v):
+            ctx["segment_scope"] = False
         if (short and HEADING.search(v) and "|" not in v and not re.search(r"\d", re.sub(r"\b(19|20)\d\d\b|\bfy\s?\d\d\b|\b[1-4]q\s?\d\d\b", "", v, flags=re.I))
-                and not re.search(r"(?i)\b(reports?|announces?|results|today|said|delivered|exceeded|achieved|press release|conference call|webcast)\b", v)):
+                and not re.search(r"(?i)\b(reports?|announces?|results|today|said|delivered|exceeded|achieved|press release|conference call|webcast|provides?|raises?|raised|issues?|updates?|updated|reaffirms?|increases?|lowers?|initiates?|narrows?)\b", v)):
             ctx["in_outlook"] = True
             ttl = 30
             t = target_of(v, ctx)
@@ -436,7 +455,10 @@ def extract(raw: bytes):
                     if roles and roles[0] is not None:
                         ctx["col_roles"] = roles
                 ctx["range_cols"] = bool(re.search(r"(?i)\brange\b|\blow\b.*\bhigh\b", v)) or ctx.get("range_cols", False)
-                t = target_of(v, ctx)
+                cur_cells = [c for c, r in zip(cells, _header_roles(cells)) if r == "CURRENT"]
+                t = target_of(" ".join(cur_cells), ctx) if cur_cells else target_of(v, ctx)
+                if t and cur_cells and len(cells) > 1:
+                    ctx["section_target"] = t
                 if t and HEADING.search(v):
                     ctx["section_target"] = t
                     ctx["in_outlook"] = True
@@ -459,7 +481,13 @@ def extract(raw: bytes):
                 continue
             if re.search(r"(?i)does not (include|reflect|assume)|\bexclud(es|ing) the (impact|effect)|not included in", sent):
                 continue
-            for tup in _sentence_tuples(sent, ctx):
+            if ctx.get("in_outlook") and not FWD.search(sent) and ctx.get("report_q") and re.search(
+                    r"(?i)\b(%s)[- ](fiscal[- ])?quarter\b" % {1: "first", 2: "second", 3: "third", 4: "fourth"}[ctx["report_q"]], sent):
+                continue   # a results bullet about the quarter just reported
+            tups = _sentence_tuples(sent, ctx)
+            if ctx.get("segment_scope"):
+                continue
+            for tup in tups:
                 out.append((i, *tup))
     # The same figure stated once with an explicit basis and once without: keep the explicit one.
     explicit = {(t, m, u, round(lo, 6), None if hi is None else round(hi, 6), kd)
