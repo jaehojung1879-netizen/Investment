@@ -231,7 +231,7 @@ def test_collector_records_real_statuses_resolves_delisted_issuers_and_keeps_row
     unresolved = json.loads((tmp_path / "store/unresolved.json").read_text())
     q1 = RS.record_id("000001.KS", 2025, "11013")
     assert q1 not in absent and absent == {}
-    assert [a["status"] for a in unresolved[q1]["attempts"]] == ["100", "100"]
+    assert [a["status"] for a in unresolved[q1]["attempts"]] == ["100"]
     assert unresolved[q1]["evidence"] == RS.NOT_ESTABLISHED
     assert manifest["unresolvedFilings"] == 3 and not manifest["datasetComplete"]
     # Second run: stored filings are not fetched again; the 100s are retried.
@@ -274,12 +274,12 @@ def test_non_absence_statuses_are_never_settled_and_are_retried(tmp_path, monkey
     assert json.loads((store / "absent.json").read_text()) == {}
     unresolved = json.loads((store / "unresolved.json").read_text())
     assert len(unresolved) == 8 and manifest["unresolvedFilings"] == 8
-    assert all([a["status"] for a in r["attempts"]] == [status, status] for r in unresolved.values())
+    assert all([a["status"] for a in r["attempts"]] == [status] for r in unresolved.values())
     assert not manifest["datasetComplete"]
     calls.clear()
     COLLECT.collect(store, "k", _universe(tmp_path), [2025], COLLECT.Budget(1000, 10),
                     directory_fn=lambda _: DIRECTORY)
-    assert len(calls) == 16  # every unresolved filing asked again, both divisions
+    assert len(calls) == 8  # every unresolved filing retried; non-013 CFS blocks OFS
 
 
 @pytest.mark.parametrize("status", ["800", "021"])
@@ -1198,3 +1198,16 @@ def test_merge_works_with_no_xbrl_dir_at_all(tmp_path):
 def test_xbrl_repair_code_never_names_an_outcome_function(path):
     text = (ROOT / path).read_text(encoding="utf-8")
     assert not [name for name in OUTCOME_NAMES if name in text]
+
+
+def test_contradictory_013_cannot_create_active_absence(tmp_path, monkeypatch):
+    calls = _scripted(monkeypatch, lambda p: {"status": "013", "list": QUARTER_ROWS})
+    store = tmp_path / "store"
+    manifest = COLLECT.collect(store, "k", _universe(tmp_path), [2025],
+                               COLLECT.Budget(1000, 10), directory_fn=lambda _: DIRECTORY)
+    assert len(calls) == 8
+    assert json.loads((store / "absent.json").read_text()) == {}
+    unresolved = json.loads((store / "unresolved.json").read_text())
+    assert len(unresolved) == 8 and manifest["unresolvedFilings"] == 8
+    assert all(r["attempts"][0]["status"] == "013" and r["attempts"][0]["rows"] > 0
+               and r["attempts"][0]["payloadValid"] is False for r in unresolved.values())

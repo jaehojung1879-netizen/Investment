@@ -1,4 +1,4 @@
-"""Write a production state snapshot after validation and deployment succeed."""
+"""Write validated production state; preserve independent 13F disclosure cache on Pages."""
 from __future__ import annotations
 
 import json
@@ -10,6 +10,7 @@ sys.path.insert(0, str(ROOT))
 
 from pipeline.state import snapshot_from_payload  # noqa: E402
 from pipeline.validate import validate  # noqa: E402
+from scripts.publish_13f_cache import preserve_after_pages  # noqa: E402
 
 
 def main(argv=None) -> int:
@@ -27,6 +28,10 @@ def main(argv=None) -> int:
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(json.dumps(snapshot, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"wrote validated state: {destination}")
+    # This entry point runs after successful Pages deployment. The 13F hook
+    # is explicitly restricted to the main-branch Pages job, and its failure
+    # cannot block the separate, existing production-state publisher.
+    preserve_after_pages(payload, artifact, destination, ROOT)
     return 0
 
 
