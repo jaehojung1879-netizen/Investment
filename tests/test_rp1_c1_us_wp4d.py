@@ -80,12 +80,16 @@ def test_no_new_workflow_file_and_the_census_and_its_pinned_layers_are_untouched
     assert not touched & protected
     changed_workflows = [p for p in touched if p.startswith(".github/workflows/") and p != X.HOST_WORKFLOW]
     from pipeline.prospective_workflow_maintenance import WORKFLOW, verify_install
+    permitted = {ATLAS.PAGES_WORKFLOW, ".github/workflows/tests.yml"}
+    weekly_workflow = ".github/workflows/fundamentals.yml"
+    assert set(changed_workflows) <= permitted | {weekly_workflow, WORKFLOW}
     if WORKFLOW in changed_workflows:
         verify_install(ROOT)
-        changed_workflows.remove(WORKFLOW)
-    assert set(changed_workflows) <= {ATLAS.PAGES_WORKFLOW, ".github/workflows/tests.yml"}
-    if changed_workflows:
+    if set(changed_workflows) & permitted:
         assert ATLAS.pages_maintenance_admitted(ROOT)
+    if weekly_workflow in changed_workflows:
+        from pipeline.dart_weekly_workflow_maintenance import original_for_census
+        assert original_for_census(ROOT)
     assert not [p for p in touched if p.startswith(("research_specs/", "docs/results/", "ledger/", "data/"))]
 
 

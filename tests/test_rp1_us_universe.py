@@ -278,7 +278,9 @@ def test_sealed_directories_c1_files_and_workflow_census_unchanged():
             historical_tests = subprocess.check_output(
                 ["git", "show", record["referenceMain"] + ":.github/workflows/tests.yml"], cwd=ROOT)
             assert hashlib.sha256(historical_tests).hexdigest() == record["originalTestsSha256"]
+            from pipeline.dart_weekly_workflow_maintenance import original_for_census
             from pipeline.prospective_workflow_maintenance import WORKFLOW, verify_install
+            historical_fundamentals = original_for_census(ROOT)
             verify_install(ROOT)
             digest = hashlib.sha256()
             for path in sorted((ROOT / directory).rglob("*")):
@@ -289,7 +291,14 @@ def test_sealed_directories_c1_files_and_workflow_census_unchanged():
                     if path == ROOT / WORKFLOW:
                         continue
                     digest.update(name.encode())
-                    payload = historical if name == "pages.yml" else historical_tests if name == "tests.yml" else path.read_bytes()
+                    if name == "pages.yml":
+                        payload = historical
+                    elif name == "tests.yml":
+                        payload = historical_tests
+                    elif name == "fundamentals.yml":
+                        payload = historical_fundamentals
+                    else:
+                        payload = path.read_bytes()
                     digest.update(hashlib.sha256(payload).digest())
             assert digest.hexdigest() == expected
         else:

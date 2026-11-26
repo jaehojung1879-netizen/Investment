@@ -464,15 +464,16 @@ def test_install_binds_exact_live_workflow_and_additive_inventory(tmp_path):
 # ------------------------------------------------------------------------ push conflicts (real git, local bare remotes)
 @pytest.fixture(autouse=True)
 def git_identity(monkeypatch):
-    """A rebase needs a committer identity. A hosted runner has none, which is exactly why the template sets one before the writer runs."""
+    """Give literal registered Git functions a committer identity, even on hosted runners."""
     for key, value in (("GIT_AUTHOR_NAME", "t"), ("GIT_AUTHOR_EMAIL", "t@t"), ("GIT_COMMITTER_NAME", "t"), ("GIT_COMMITTER_EMAIL", "t@t")):
         monkeypatch.setenv(key, value)
 
 
-def test_template_sets_a_git_identity_before_the_registered_writer_runs():
-    code = re.sub(r"#.*", "", WORKFLOW)
-    assert code.index('git config user.name') < code.index("-m research.corporate_event_readiness_v1.cohort.live_run")
-    assert code.index('git config user.email') < code.index("-m research.corporate_event_readiness_v1.cohort.live_run")
+def test_workflow_sets_a_git_identity_before_the_registered_writer_runs():
+    live_step = WORKFLOW.split("name: Registered LIVE run", 1)[1].split("  monitor:", 1)[0]
+    invocation = live_step.index("-m research.corporate_event_readiness_v1.cohort.live_run")
+    assert live_step.index("GIT_COMMITTER_NAME:") < invocation
+    assert live_step.index("GIT_COMMITTER_EMAIL:") < invocation
 
 import ast  # noqa: E402
 import os  # noqa: E402
@@ -501,10 +502,6 @@ def _remote_with_ledger(tmp_path):
 def _clone(origin, path):
     subprocess.run(["git", "clone", "-q", str(origin), str(path)], check=True, capture_output=True)
     _g(path, "checkout", "-q", "signal-history")
-    # The real writer receives an explicit committer identity for its rebase,
-    # which creates a commit in addition to the first scoped git commit.
-    _g(path, "config", "user.name", "corporate-event-receipt-bot")
-    _g(path, "config", "user.email", "actions@github.com")
     return path
 
 

@@ -34,6 +34,8 @@ on:
   # matters because the mobile app cannot pass workflow inputs at all.
   schedule:
     - cron: "40 3 * * *"
+    # Weekly raw refresh: Wednesday 04:17 KST, same serialized writer.
+    - cron: "17 19 * * 2"
   workflow_dispatch:
     inputs:
       # Empty on purpose, and this is the whole point of them. A non-empty
@@ -91,7 +93,7 @@ concurrency:
 
 jobs:
   kr:
-    if: github.event_name == 'schedule' || ((inputs.region == 'both' || inputs.region == 'kr') && !startsWith(inputs.target, 'raw-'))
+    if: (github.event_name != 'schedule' || github.event.schedule == '40 3 * * *') && (github.event_name == 'schedule' || ((inputs.region == 'both' || inputs.region == 'kr') && !startsWith(inputs.target, 'raw-')))
     runs-on: ubuntu-latest
     timeout-minutes: 330
     steps:
@@ -170,7 +172,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
   us:
-    if: github.event_name == 'schedule' || ((inputs.region == 'both' || inputs.region == 'us') && !startsWith(inputs.target, 'raw-'))
+    if: (github.event_name != 'schedule' || github.event.schedule == '40 3 * * *') && (github.event_name == 'schedule' || ((inputs.region == 'both' || inputs.region == 'us') && !startsWith(inputs.target, 'raw-')))
     runs-on: ubuntu-latest
     timeout-minutes: 330
     steps:
@@ -629,7 +631,7 @@ jobs:
   # feature coverage against the sealed snapshot's own membership, prices
   # (backward tradability only) and denominator. Outcome-free throughout.
   kr-raw:
-    if: github.event_name == 'workflow_dispatch' && startsWith(inputs.target, 'raw-')
+    if: (github.event_name == 'schedule' && github.event.schedule == '17 19 * * 2' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && startsWith(inputs.target, 'raw-'))
     runs-on: ubuntu-latest
     timeout-minutes: 345
     env:
@@ -704,25 +706,44 @@ jobs:
           if-no-files-found: warn
 
       - name: Collect a slice of raw statement rows
-        if: inputs.target == 'raw-statements'
+        if: (github.event_name == 'schedule' && github.event.schedule == '17 19 * * 2' && github.ref == 'refs/heads/main') || inputs.target == 'raw-statements'
         env:
           DART_API_KEY: ${{ secrets.DART }}
+          EVENT_NAME: ${{ github.event_name }}
+          RAW_YEARS: ${{ inputs.raw_years || '2015,2016,2024,2025,2023,2017,2018,2019,2020,2021,2022,2026' }}
+          MAX_CALLS: ${{ inputs.max_calls || '1800' }}
+          MAX_MINUTES: ${{ inputs.max_minutes || '290' }}
         run: |
-          set -o pipefail
+          set -euo pipefail
+          if [ "$EVENT_NAME" = schedule ]; then
+            # Require both collector repairs before the scheduled route can write.
+            grep -q '^def prioritize_refresh(' scripts/collect_dart_raw_statements.py
+            grep -q '^def fetch_statement_evidence(' scripts/collect_dart_fundamentals.py
+            year="$(date -u +%Y)"
+            previous="$((year - 1))"
+            month="$(date -u +%m)"
+            case "$month" in
+              01|02|03|04) RAW_YEARS="$previous,$year" ;;
+              *) RAW_YEARS="$year,$previous" ;;
+            esac
+            MAX_CALLS=600
+            MAX_MINUTES=120
+          fi
           python scripts/collect_dart_raw_statements.py raw-work/ledger/fundamentals/kr-raw \
             --universe-dir sealed-work/ledger/universe/kr --mode collect \
-            --years "${{ inputs.raw_years || '2015,2016,2024,2025,2023,2017,2018,2019,2020,2021,2022,2026' }}" \
-            --max-calls "${{ inputs.max_calls || '1800' }}" \
-            --max-minutes "${{ inputs.max_minutes || '290' }}" | tee raw.log
+            --years "$RAW_YEARS" --max-calls "$MAX_CALLS" \
+            --max-minutes "$MAX_MINUTES" | tee raw.log
 
       - name: Rebuild canonical filings and audit the candidate's coverage
-        if: inputs.target == 'raw-statements'
+        if: (github.event_name == 'schedule' && github.event.schedule == '17 19 * * 2' && github.ref == 'refs/heads/main') || inputs.target == 'raw-statements'
+        env:
+          EVENT_NAME: ${{ github.event_name }}
         run: |
           set -o pipefail
           python scripts/build_kr_canonical_filings.py raw-work/ledger/fundamentals/kr-raw \
             raw-work/ledger/fundamentals/kr-canonical-v2 \
             --legacy-dir sealed-work/ledger/fundamentals/kr | tee canonical.log
-          if [ -d raw-work/ledger/fundamentals/kr-xbrl-original ]; then
+          if [ "$EVENT_NAME" != schedule ] && [ -d raw-work/ledger/fundamentals/kr-xbrl-original ]; then
             python scripts/merge_kr_candidate_snapshot.py raw-work/ledger/fundamentals/kr-candidate-merged \
               --canonical-dir raw-work/ledger/fundamentals/kr-canonical-v2 \
               --xbrl-dir raw-work/ledger/fundamentals/kr-xbrl-original | tee -a canonical.log
@@ -736,7 +757,9 @@ jobs:
             --output-dir "$AUDIT_DIR/coverage-audit" | tee audit.log
 
       - name: Commit & push to signal-history
-        if: inputs.target == 'raw-statements' || inputs.target == 'raw-xbrl-2015'
+        if: (github.event_name == 'schedule' && github.event.schedule == '17 19 * * 2' && github.ref == 'refs/heads/main') || inputs.target == 'raw-statements' || inputs.target == 'raw-xbrl-2015'
+        env:
+          EVENT_NAME: ${{ github.event_name }}
         run: |
           cd raw-work
           # `raw-xbrl-2015` alone never creates kr-canonical-v2 (that is
@@ -745,8 +768,11 @@ jobs:
           # any files"), not a no-op, and would abort the commit before
           # anything real gets pushed. Add only the paths this run actually
           # produced.
-          for path in ledger/fundamentals/kr-raw ledger/fundamentals/kr-canonical-v2 \
-                      ledger/fundamentals/kr-xbrl-original ledger/fundamentals/kr-candidate-merged; do
+          paths=(ledger/fundamentals/kr-raw ledger/fundamentals/kr-canonical-v2)
+          if [ "$EVENT_NAME" != schedule ]; then
+            paths+=(ledger/fundamentals/kr-xbrl-original ledger/fundamentals/kr-candidate-merged)
+          fi
+          for path in "${paths[@]}"; do
             if [ -e "$path" ]; then
               git add "$path"
             fi
