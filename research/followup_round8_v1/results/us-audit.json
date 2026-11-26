@@ -1,0 +1,38 @@
+{
+ "L1_benchmarkPublishedAfterFund": {
+  "inSampleFilings": 11993,
+  "ivvPublishedLater": 3065,
+  "share": 0.2555657466855666,
+  "medianDaysLaterWhenLater": 3.0,
+  "maxDaysLater": 37
+ },
+ "L2_cusipLinkLearnedLater": {
+  "filingsWithAnyFutureLearnedLink": 5218,
+  "filings": 11993,
+  "meanUsEquityValueShare": 0.006301222590628416,
+  "p90": 0.019994582610240483,
+  "max": 0.7266589657609775
+ },
+ "L3_cloneKeptPublishedLater": {
+  "sizeRuleDropsOnCorrectedQualifiers": 3121,
+  "ofWhichKeeperPublishedLater": 1068,
+  "pitRuleDrops": 3089
+ },
+ "C1": {
+  "filings": 11944,
+  "droppedNoPublishedBenchmark": 49
+ },
+ "C2": {
+  "qualifying": 14988,
+  "inSample": 11899,
+  "series": 967,
+  "noPublishedBenchmark": 719
+ },
+ "sampleOverlap": {
+  "O": 11993,
+  "C2": 11899,
+  "both": 11108,
+  "onlyO": 885,
+  "onlyC2": 791
+ }
+}

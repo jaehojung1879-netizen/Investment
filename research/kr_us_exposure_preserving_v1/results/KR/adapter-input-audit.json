@@ -1,0 +1,99 @@
+{
+ "sourceCommit": "36ac329261f8f9000935e524d8a28c2005524c10",
+ "designCommit": "e3e572f",
+ "designSHA256": "2a245bfef9872409209eca2f012ccb26992650e46268e2a579b518df46f14f14",
+ "adapterSHA256": "e128c8ebea19685feb93ae30942913a1107aa5508ead98bb3273d03cc60592bd",
+ "sourceFilesSHA256": {
+  "research/kr_us_strategy_batch_v1/results/KR/books.json.gz": "ac8383cfce1f1205b4599ae20f9c5e8ce8a50d93db2393372048ceb983a6a918",
+  "research/kr_us_strategy_batch_v1/results/KR/matched-books.json.gz": "ff3c9757b55968df5b434805c968d91cdacdbc00719afca0bc40cad5a4e804be",
+  "research/kr_us_strategy_batch_v1/results/KR/asset-payoffs.csv.gz": "21f207c54428a314b052d60100e8e11fed7a7359cfe2eea6b0c598657b9e2e5b",
+  "research/kr_us_strategy_batch_v1/results/KR/matching-audit.csv.gz": "bf7ace98e66b6dd21a34057f5feb5dc287123e4a40376fda190c46b2f7f77134",
+  "research/kr_us_strategy_batch_v1/results/KR/summary.json": "4ae0b1a289ddced6d5f3ac7ab18d94cceafba897fcc6303e507b5b797deeda29",
+  "research/kr_us_strategy_batch_v1/results/KR/cohorts-126.csv.gz": "a600c085a6b54f03e20535a85e45051b9f5f03a4d28c5595276a24ceb4052485",
+  "research/kr_us_strategy_batch_v1/results/KR/cohorts-252.csv.gz": "246c4ff975181b62e939292f57b6fcbd5e618d14cc5dce5f3adf2615d5c80444",
+  "research/kr_us_strategy_batch_v1/results/KR/matched-126.csv": "bada5f94cb155fea9ff2519f87e9365d84fdd32f2df336c7294c62326af86790",
+  "research/kr_us_strategy_batch_v1/results/KR/matched-252.csv": "d921ba6982ac8e20f0f7c7af87c729c660ee8ad29046a6244afafef580b10ca9",
+  "research/kr_us_strategy_batch_v1/kr.py": "2a16eeb206f1c58719d4eb3f462ffa0b555b68d3d786d0b459abed6a2e1946ea",
+  "research/kr_us_strategy_batch_v1/common.py": "34506d5634ea1e61b31258211c2aad189d25699506cdcc1d9eb7d44cf6f9b228"
+ },
+ "sourceIdentity": {
+  "finalSessionQuotesApplied": 235,
+  "identity": "3e4d7aa35e2c4b273e4ecef0e2e8ea7a8a27077f0de14bb3d5ea6a696a97f1a5",
+  "matrixDigest": "32e49b57a7541eea66f76373baef50c6302a394247b313f6099f718d46d54b0c",
+  "mcapCoverage": 1.0,
+  "universeShards": 14
+ },
+ "decisions": 454,
+ "configs": {
+  "S2_K1": "KR:S2:FIXED20:K1",
+  "S2_K2": "KR:S2:FIXED20:K2",
+  "S2_K3": "KR:S2:FIXED20:K3",
+  "S2_K4": "KR:S2:FIXED20:K4",
+  "S2": "KR:S2:FIXED20:K5",
+  "VALUE_ORIGINAL": "KR:VALUE_ORIGINAL:FIXED20:K5",
+  "VALUE_COMPLETE": "KR:VALUE_COMPLETE:FIXED20:K5",
+  "CONFIRM_NEUTRAL": "KR:CONFIRM_NEUTRAL:FIXED20:K5",
+  "FOUR_FACTOR": "KR:FOUR_FACTOR:FIXED20:K5"
+ },
+ "confirmationSeeds": [
+  20261119,
+  20261120,
+  20261121,
+  20261122,
+  20261123,
+  20261124,
+  20261125,
+  20261126
+ ],
+ "reproduction": {
+  "126": {
+   "additionalAssetDateRowsComputed": 36822,
+   "legacyMaxError": {
+    "S2_K1": 7.999823026239028e-12,
+    "S2_K2": 7.500000620552782e-12,
+    "S2_K3": 5.873301844872003e-12,
+    "S2_K4": 7.05502323228302e-12,
+    "S2": 5.800249169851668e-12,
+    "S2_selection": 3.9210301672198966e-13,
+    "VALUE_ORIGINAL": 6.552092202127824e-12,
+    "VALUE_ORIGINAL_selection": 5.999922780830502e-13,
+    "VALUE_COMPLETE": 6.4439564795293336e-12,
+    "VALUE_COMPLETE_selection": 5.999922780830502e-13,
+    "CONFIRM_NEUTRAL": 5.199840558134383e-12,
+    "CONFIRM_NEUTRAL_selection": 7.200351426206453e-13,
+    "FOUR_FACTOR": 6.355804771374096e-12,
+    "FOUR_FACTOR_selection": 4.798383912429927e-13
+   },
+   "passiveAllNamesFiniteDates": 269
+  },
+  "252": {
+   "additionalAssetDateRowsComputed": 34545,
+   "legacyMaxError": {
+    "S2_K1": 8.000267115448878e-12,
+    "S2_K2": 8.899991854605105e-12,
+    "S2_K3": 6.199929458716724e-12,
+    "S2_K4": 5.899947197463007e-12,
+    "S2": 7.960077041957447e-12,
+    "S2_selection": 9.99644811372491e-13,
+    "VALUE_ORIGINAL": 8.1601392309949e-12,
+    "VALUE_ORIGINAL_selection": 9.719447469080933e-13,
+    "VALUE_COMPLETE": 8.360201420032354e-12,
+    "VALUE_COMPLETE_selection": 9.719447469080933e-13,
+    "CONFIRM_NEUTRAL": 8.319567257331073e-12,
+    "CONFIRM_NEUTRAL_selection": 7.599892937193431e-13,
+    "FOUR_FACTOR": 8.091749492677991e-12,
+    "FOUR_FACTOR_selection": 1.9748647162032285e-12
+   },
+   "passiveAllNamesFiniteDates": 130
+  }
+ },
+ "runtime": {
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "numpy": "2.3.1",
+  "pandas": "2.3.0"
+ },
+ "navInputPath": "/workspace/exposure-inputs/kr/nav-input.pkl",
+ "proxyBasis": "POSITIVE_CAP_ALL_PIT_TOP120_NO_Q_FILTER",
+ "releaseVisibility": "Inherited reconstructed industry and fundamental visibility limits; history already exposed",
+ "actualFundHoldingsVerified": false
+}

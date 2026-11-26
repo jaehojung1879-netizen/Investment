@@ -1,0 +1,87 @@
+/workspace/Investment/research/kr_us_strategy_batch_v1/verify.py:112: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  b = pd.read_csv(OUT / "US" / "books.csv.gz")
+{
+ "designCommittedBeforeNewOutcomes": "e6786ee",
+ "contractHashes": {
+  "DESIGN-ko.md": "4428e71793a52b7193b4f2ba53c6c4ec7d30cab5492f3a187695bed00e498b1e",
+  "registry.json": "45f9c43a9c18d8331dbdd99184ee4d3560af4ee764c4014848262897690bbb78"
+ },
+ "fixedCoreFamilySize": 41,
+ "fixedBroadFamilySize": 115,
+ "holmRecomputed": true,
+ "artifactManifestVerified": true,
+ "prospectiveFilesByteUnchanged": true,
+ "markets": {
+  "KR": {
+   "policy": {
+    "policy-fits-WF_ALL_LCB.json": {
+     "annualFits": 9,
+     "strictMaturity": true
+    },
+    "policy-fits-WF_S2_LCB.json": {
+     "annualFits": 9,
+     "strictMaturity": true
+    }
+   },
+   "matching": {
+    "auditedLegs": 15742,
+    "matchedLegs": 13717,
+    "capCaliperAndOneToOne": true,
+    "excludeAllHeld": true
+   },
+   "126": {
+    "originalDates": 454,
+    "matureWeeks": 427,
+    "portfolioCommonWeeks": 421
+   },
+   "252": {
+    "originalDates": 454,
+    "matureWeeks": 400,
+    "portfolioCommonWeeks": 393
+   },
+   "maxSelectionReplacementIdentityError": 1.0000611450067254e-12,
+   "savedMatchedBooksPreserveEveryWeightAndETF": true,
+   "navs": {
+    "measuredNavsRecalculated": 152,
+    "maximumMetricErrorFromSavedNav": 3.2018832030189515e-12,
+    "cagrArithmeticCompoundingIdentity": true
+   }
+  },
+  "US": {
+   "policy": {
+    "WF_ALL_LCB-fits.json": {
+     "annualFits": 13,
+     "strictMaturity": true
+    },
+    "WF_PC_LCB-fits.json": {
+     "annualFits": 13,
+     "strictMaturity": true
+    }
+   },
+   "matching": {
+    "auditedLegs": 93829,
+    "matchedLegs": 37286,
+    "capCaliperAndOneToOne": true,
+    "excludeAllHeld": true
+   },
+   "126": {
+    "originalDates": 654,
+    "portfolioCommonWeeks": 630,
+    "maxDateNameContributionSumError": 3.9968028886505635e-15
+   },
+   "252": {
+    "originalDates": 654,
+    "portfolioCommonWeeks": 604,
+    "maxDateNameContributionSumError": 2.8171909249863347e-15
+   },
+   "navs": {
+    "measuredNavsRecalculated": 70,
+    "maximumMetricErrorFromSavedNav": 4.891920202254596e-16,
+    "cagrArithmeticCompoundingIdentity": true
+   }
+  }
+ },
+ "ctvaInputRepairBeforeOutcomeInterpretation": "4710738",
+ "usOriginalBaselineRecoveredBeforeSourceRepair": true,
+ "supplementIsPostHocDoesNotReplaceCore": true
+}

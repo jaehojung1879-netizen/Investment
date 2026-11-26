@@ -1,0 +1,1200 @@
+{
+ "studyId": "kr-us-strategy-batch-v1",
+ "label": "DEVELOPMENT_ON_REPEATEDLY_EXPOSED_HISTORY",
+ "baseCommit": "d9ac3ed53e522e51d93b496bf4c26b63b61e3207",
+ "authoredDateKST": "2026-11-18",
+ "krSelectors": [
+  "S2",
+  "VALUE_ORIGINAL",
+  "VALUE_COMPLETE",
+  "QUALITY_NEUTRAL",
+  "CONFIRM_NEUTRAL",
+  "INDUSTRY_MOMENTUM",
+  "FOUR_FACTOR"
+ ],
+ "usSelectors": [
+  "PRICE",
+  "PRICE_CONFIRMED",
+  "QUALITY_NEUTRAL",
+  "CONFIRM_NEUTRAL",
+  "VALUE",
+  "VALUE_CONFIRMED",
+  "CASH_PROFITABILITY",
+  "SECTOR_MOMENTUM",
+  "COCKTAIL",
+  "U1",
+  "OW",
+  "OW_RESID"
+ ],
+ "grid": {
+  "KR:S2:SLOT20:K1": {
+   "market": "KR",
+   "selector": "S2",
+   "style": "SLOT20",
+   "k": 1,
+   "q": 0.2
+  },
+  "KR:S2:SLOT20:K2": {
+   "market": "KR",
+   "selector": "S2",
+   "style": "SLOT20",
+   "k": 2,
+   "q": 0.4
+  },
+  "KR:S2:SLOT20:K3": {
+   "market": "KR",
+   "selector": "S2",
+   "style": "SLOT20",
+   "k": 3,
+   "q": 0.6000000000000001
+  },
+  "KR:S2:SLOT20:K4": {
+   "market": "KR",
+   "selector": "S2",
+   "style": "SLOT20",
+   "k": 4,
+   "q": 0.8
+  },
+  "KR:S2:SLOT20:K5": {
+   "market": "KR",
+   "selector": "S2",
+   "style": "SLOT20",
+   "k": 5,
+   "q": 1.0
+  },
+  "KR:S2:FIXED20:K1": {
+   "market": "KR",
+   "selector": "S2",
+   "style": "FIXED20",
+   "k": 1,
+   "q": 0.2
+  },
+  "KR:S2:FIXED20:K2": {
+   "market": "KR",
+   "selector": "S2",
+   "style": "FIXED20",
+   "k": 2,
+   "q": 0.2
+  },
+  "KR:S2:FIXED20:K3": {
+   "market": "KR",
+   "selector": "S2",
+   "style": "FIXED20",
+   "k": 3,
+   "q": 0.2
+  },
+  "KR:S2:FIXED20:K4": {
+   "market": "KR",
+   "selector": "S2",
+   "style": "FIXED20",
+   "k": 4,
+   "q": 0.2
+  },
+  "KR:S2:FIXED20:K5": {
+   "market": "KR",
+   "selector": "S2",
+   "style": "FIXED20",
+   "k": 5,
+   "q": 0.2
+  },
+  "KR:VALUE_ORIGINAL:SLOT20:K1": {
+   "market": "KR",
+   "selector": "VALUE_ORIGINAL",
+   "style": "SLOT20",
+   "k": 1,
+   "q": 0.2
+  },
+  "KR:VALUE_ORIGINAL:SLOT20:K2": {
+   "market": "KR",
+   "selector": "VALUE_ORIGINAL",
+   "style": "SLOT20",
+   "k": 2,
+   "q": 0.4
+  },
+  "KR:VALUE_ORIGINAL:SLOT20:K3": {
+   "market": "KR",
+   "selector": "VALUE_ORIGINAL",
+   "style": "SLOT20",
+   "k": 3,
+   "q": 0.6000000000000001
+  },
+  "KR:VALUE_ORIGINAL:SLOT20:K4": {
+   "market": "KR",
+   "selector": "VALUE_ORIGINAL",
+   "style": "SLOT20",
+   "k": 4,
+   "q": 0.8
+  },
+  "KR:VALUE_ORIGINAL:SLOT20:K5": {
+   "market": "KR",
+   "selector": "VALUE_ORIGINAL",
+   "style": "SLOT20",
+   "k": 5,
+   "q": 1.0
+  },
+  "KR:VALUE_ORIGINAL:FIXED20:K1": {
+   "market": "KR",
+   "selector": "VALUE_ORIGINAL",
+   "style": "FIXED20",
+   "k": 1,
+   "q": 0.2
+  },
+  "KR:VALUE_ORIGINAL:FIXED20:K2": {
+   "market": "KR",
+   "selector": "VALUE_ORIGINAL",
+   "style": "FIXED20",
+   "k": 2,
+   "q": 0.2
+  },
+  "KR:VALUE_ORIGINAL:FIXED20:K3": {
+   "market": "KR",
+   "selector": "VALUE_ORIGINAL",
+   "style": "FIXED20",
+   "k": 3,
+   "q": 0.2
+  },
+  "KR:VALUE_ORIGINAL:FIXED20:K4": {
+   "market": "KR",
+   "selector": "VALUE_ORIGINAL",
+   "style": "FIXED20",
+   "k": 4,
+   "q": 0.2
+  },
+  "KR:VALUE_ORIGINAL:FIXED20:K5": {
+   "market": "KR",
+   "selector": "VALUE_ORIGINAL",
+   "style": "FIXED20",
+   "k": 5,
+   "q": 0.2
+  },
+  "KR:VALUE_COMPLETE:SLOT20:K1": {
+   "market": "KR",
+   "selector": "VALUE_COMPLETE",
+   "style": "SLOT20",
+   "k": 1,
+   "q": 0.2
+  },
+  "KR:VALUE_COMPLETE:SLOT20:K2": {
+   "market": "KR",
+   "selector": "VALUE_COMPLETE",
+   "style": "SLOT20",
+   "k": 2,
+   "q": 0.4
+  },
+  "KR:VALUE_COMPLETE:SLOT20:K3": {
+   "market": "KR",
+   "selector": "VALUE_COMPLETE",
+   "style": "SLOT20",
+   "k": 3,
+   "q": 0.6000000000000001
+  },
+  "KR:VALUE_COMPLETE:SLOT20:K4": {
+   "market": "KR",
+   "selector": "VALUE_COMPLETE",
+   "style": "SLOT20",
+   "k": 4,
+   "q": 0.8
+  },
+  "KR:VALUE_COMPLETE:SLOT20:K5": {
+   "market": "KR",
+   "selector": "VALUE_COMPLETE",
+   "style": "SLOT20",
+   "k": 5,
+   "q": 1.0
+  },
+  "KR:VALUE_COMPLETE:FIXED20:K1": {
+   "market": "KR",
+   "selector": "VALUE_COMPLETE",
+   "style": "FIXED20",
+   "k": 1,
+   "q": 0.2
+  },
+  "KR:VALUE_COMPLETE:FIXED20:K2": {
+   "market": "KR",
+   "selector": "VALUE_COMPLETE",
+   "style": "FIXED20",
+   "k": 2,
+   "q": 0.2
+  },
+  "KR:VALUE_COMPLETE:FIXED20:K3": {
+   "market": "KR",
+   "selector": "VALUE_COMPLETE",
+   "style": "FIXED20",
+   "k": 3,
+   "q": 0.2
+  },
+  "KR:VALUE_COMPLETE:FIXED20:K4": {
+   "market": "KR",
+   "selector": "VALUE_COMPLETE",
+   "style": "FIXED20",
+   "k": 4,
+   "q": 0.2
+  },
+  "KR:VALUE_COMPLETE:FIXED20:K5": {
+   "market": "KR",
+   "selector": "VALUE_COMPLETE",
+   "style": "FIXED20",
+   "k": 5,
+   "q": 0.2
+  },
+  "KR:QUALITY_NEUTRAL:SLOT20:K1": {
+   "market": "KR",
+   "selector": "QUALITY_NEUTRAL",
+   "style": "SLOT20",
+   "k": 1,
+   "q": 0.2
+  },
+  "KR:QUALITY_NEUTRAL:SLOT20:K2": {
+   "market": "KR",
+   "selector": "QUALITY_NEUTRAL",
+   "style": "SLOT20",
+   "k": 2,
+   "q": 0.4
+  },
+  "KR:QUALITY_NEUTRAL:SLOT20:K3": {
+   "market": "KR",
+   "selector": "QUALITY_NEUTRAL",
+   "style": "SLOT20",
+   "k": 3,
+   "q": 0.6000000000000001
+  },
+  "KR:QUALITY_NEUTRAL:SLOT20:K4": {
+   "market": "KR",
+   "selector": "QUALITY_NEUTRAL",
+   "style": "SLOT20",
+   "k": 4,
+   "q": 0.8
+  },
+  "KR:QUALITY_NEUTRAL:SLOT20:K5": {
+   "market": "KR",
+   "selector": "QUALITY_NEUTRAL",
+   "style": "SLOT20",
+   "k": 5,
+   "q": 1.0
+  },
+  "KR:QUALITY_NEUTRAL:FIXED20:K1": {
+   "market": "KR",
+   "selector": "QUALITY_NEUTRAL",
+   "style": "FIXED20",
+   "k": 1,
+   "q": 0.2
+  },
+  "KR:QUALITY_NEUTRAL:FIXED20:K2": {
+   "market": "KR",
+   "selector": "QUALITY_NEUTRAL",
+   "style": "FIXED20",
+   "k": 2,
+   "q": 0.2
+  },
+  "KR:QUALITY_NEUTRAL:FIXED20:K3": {
+   "market": "KR",
+   "selector": "QUALITY_NEUTRAL",
+   "style": "FIXED20",
+   "k": 3,
+   "q": 0.2
+  },
+  "KR:QUALITY_NEUTRAL:FIXED20:K4": {
+   "market": "KR",
+   "selector": "QUALITY_NEUTRAL",
+   "style": "FIXED20",
+   "k": 4,
+   "q": 0.2
+  },
+  "KR:QUALITY_NEUTRAL:FIXED20:K5": {
+   "market": "KR",
+   "selector": "QUALITY_NEUTRAL",
+   "style": "FIXED20",
+   "k": 5,
+   "q": 0.2
+  },
+  "KR:CONFIRM_NEUTRAL:SLOT20:K1": {
+   "market": "KR",
+   "selector": "CONFIRM_NEUTRAL",
+   "style": "SLOT20",
+   "k": 1,
+   "q": 0.2
+  },
+  "KR:CONFIRM_NEUTRAL:SLOT20:K2": {
+   "market": "KR",
+   "selector": "CONFIRM_NEUTRAL",
+   "style": "SLOT20",
+   "k": 2,
+   "q": 0.4
+  },
+  "KR:CONFIRM_NEUTRAL:SLOT20:K3": {
+   "market": "KR",
+   "selector": "CONFIRM_NEUTRAL",
+   "style": "SLOT20",
+   "k": 3,
+   "q": 0.6000000000000001
+  },
+  "KR:CONFIRM_NEUTRAL:SLOT20:K4": {
+   "market": "KR",
+   "selector": "CONFIRM_NEUTRAL",
+   "style": "SLOT20",
+   "k": 4,
+   "q": 0.8
+  },
+  "KR:CONFIRM_NEUTRAL:SLOT20:K5": {
+   "market": "KR",
+   "selector": "CONFIRM_NEUTRAL",
+   "style": "SLOT20",
+   "k": 5,
+   "q": 1.0
+  },
+  "KR:CONFIRM_NEUTRAL:FIXED20:K1": {
+   "market": "KR",
+   "selector": "CONFIRM_NEUTRAL",
+   "style": "FIXED20",
+   "k": 1,
+   "q": 0.2
+  },
+  "KR:CONFIRM_NEUTRAL:FIXED20:K2": {
+   "market": "KR",
+   "selector": "CONFIRM_NEUTRAL",
+   "style": "FIXED20",
+   "k": 2,
+   "q": 0.2
+  },
+  "KR:CONFIRM_NEUTRAL:FIXED20:K3": {
+   "market": "KR",
+   "selector": "CONFIRM_NEUTRAL",
+   "style": "FIXED20",
+   "k": 3,
+   "q": 0.2
+  },
+  "KR:CONFIRM_NEUTRAL:FIXED20:K4": {
+   "market": "KR",
+   "selector": "CONFIRM_NEUTRAL",
+   "style": "FIXED20",
+   "k": 4,
+   "q": 0.2
+  },
+  "KR:CONFIRM_NEUTRAL:FIXED20:K5": {
+   "market": "KR",
+   "selector": "CONFIRM_NEUTRAL",
+   "style": "FIXED20",
+   "k": 5,
+   "q": 0.2
+  },
+  "KR:INDUSTRY_MOMENTUM:SLOT20:K1": {
+   "market": "KR",
+   "selector": "INDUSTRY_MOMENTUM",
+   "style": "SLOT20",
+   "k": 1,
+   "q": 0.2
+  },
+  "KR:INDUSTRY_MOMENTUM:SLOT20:K2": {
+   "market": "KR",
+   "selector": "INDUSTRY_MOMENTUM",
+   "style": "SLOT20",
+   "k": 2,
+   "q": 0.4
+  },
+  "KR:INDUSTRY_MOMENTUM:SLOT20:K3": {
+   "market": "KR",
+   "selector": "INDUSTRY_MOMENTUM",
+   "style": "SLOT20",
+   "k": 3,
+   "q": 0.6000000000000001
+  },
+  "KR:INDUSTRY_MOMENTUM:SLOT20:K4": {
+   "market": "KR",
+   "selector": "INDUSTRY_MOMENTUM",
+   "style": "SLOT20",
+   "k": 4,
+   "q": 0.8
+  },
+  "KR:INDUSTRY_MOMENTUM:SLOT20:K5": {
+   "market": "KR",
+   "selector": "INDUSTRY_MOMENTUM",
+   "style": "SLOT20",
+   "k": 5,
+   "q": 1.0
+  },
+  "KR:INDUSTRY_MOMENTUM:FIXED20:K1": {
+   "market": "KR",
+   "selector": "INDUSTRY_MOMENTUM",
+   "style": "FIXED20",
+   "k": 1,
+   "q": 0.2
+  },
+  "KR:INDUSTRY_MOMENTUM:FIXED20:K2": {
+   "market": "KR",
+   "selector": "INDUSTRY_MOMENTUM",
+   "style": "FIXED20",
+   "k": 2,
+   "q": 0.2
+  },
+  "KR:INDUSTRY_MOMENTUM:FIXED20:K3": {
+   "market": "KR",
+   "selector": "INDUSTRY_MOMENTUM",
+   "style": "FIXED20",
+   "k": 3,
+   "q": 0.2
+  },
+  "KR:INDUSTRY_MOMENTUM:FIXED20:K4": {
+   "market": "KR",
+   "selector": "INDUSTRY_MOMENTUM",
+   "style": "FIXED20",
+   "k": 4,
+   "q": 0.2
+  },
+  "KR:INDUSTRY_MOMENTUM:FIXED20:K5": {
+   "market": "KR",
+   "selector": "INDUSTRY_MOMENTUM",
+   "style": "FIXED20",
+   "k": 5,
+   "q": 0.2
+  },
+  "KR:FOUR_FACTOR:SLOT20:K1": {
+   "market": "KR",
+   "selector": "FOUR_FACTOR",
+   "style": "SLOT20",
+   "k": 1,
+   "q": 0.2
+  },
+  "KR:FOUR_FACTOR:SLOT20:K2": {
+   "market": "KR",
+   "selector": "FOUR_FACTOR",
+   "style": "SLOT20",
+   "k": 2,
+   "q": 0.4
+  },
+  "KR:FOUR_FACTOR:SLOT20:K3": {
+   "market": "KR",
+   "selector": "FOUR_FACTOR",
+   "style": "SLOT20",
+   "k": 3,
+   "q": 0.6000000000000001
+  },
+  "KR:FOUR_FACTOR:SLOT20:K4": {
+   "market": "KR",
+   "selector": "FOUR_FACTOR",
+   "style": "SLOT20",
+   "k": 4,
+   "q": 0.8
+  },
+  "KR:FOUR_FACTOR:SLOT20:K5": {
+   "market": "KR",
+   "selector": "FOUR_FACTOR",
+   "style": "SLOT20",
+   "k": 5,
+   "q": 1.0
+  },
+  "KR:FOUR_FACTOR:FIXED20:K1": {
+   "market": "KR",
+   "selector": "FOUR_FACTOR",
+   "style": "FIXED20",
+   "k": 1,
+   "q": 0.2
+  },
+  "KR:FOUR_FACTOR:FIXED20:K2": {
+   "market": "KR",
+   "selector": "FOUR_FACTOR",
+   "style": "FIXED20",
+   "k": 2,
+   "q": 0.2
+  },
+  "KR:FOUR_FACTOR:FIXED20:K3": {
+   "market": "KR",
+   "selector": "FOUR_FACTOR",
+   "style": "FIXED20",
+   "k": 3,
+   "q": 0.2
+  },
+  "KR:FOUR_FACTOR:FIXED20:K4": {
+   "market": "KR",
+   "selector": "FOUR_FACTOR",
+   "style": "FIXED20",
+   "k": 4,
+   "q": 0.2
+  },
+  "KR:FOUR_FACTOR:FIXED20:K5": {
+   "market": "KR",
+   "selector": "FOUR_FACTOR",
+   "style": "FIXED20",
+   "k": 5,
+   "q": 0.2
+  },
+  "US:PRICE:Q020": {
+   "market": "US",
+   "selector": "PRICE",
+   "q": 0.2,
+   "k": null
+  },
+  "US:PRICE:Q050": {
+   "market": "US",
+   "selector": "PRICE",
+   "q": 0.5,
+   "k": null
+  },
+  "US:PRICE:Q100": {
+   "market": "US",
+   "selector": "PRICE",
+   "q": 1.0,
+   "k": null
+  },
+  "US:PRICE_CONFIRMED:Q020": {
+   "market": "US",
+   "selector": "PRICE_CONFIRMED",
+   "q": 0.2,
+   "k": null
+  },
+  "US:PRICE_CONFIRMED:Q050": {
+   "market": "US",
+   "selector": "PRICE_CONFIRMED",
+   "q": 0.5,
+   "k": null
+  },
+  "US:PRICE_CONFIRMED:Q100": {
+   "market": "US",
+   "selector": "PRICE_CONFIRMED",
+   "q": 1.0,
+   "k": null
+  },
+  "US:QUALITY_NEUTRAL:Q020": {
+   "market": "US",
+   "selector": "QUALITY_NEUTRAL",
+   "q": 0.2,
+   "k": null
+  },
+  "US:QUALITY_NEUTRAL:Q050": {
+   "market": "US",
+   "selector": "QUALITY_NEUTRAL",
+   "q": 0.5,
+   "k": null
+  },
+  "US:QUALITY_NEUTRAL:Q100": {
+   "market": "US",
+   "selector": "QUALITY_NEUTRAL",
+   "q": 1.0,
+   "k": null
+  },
+  "US:CONFIRM_NEUTRAL:Q020": {
+   "market": "US",
+   "selector": "CONFIRM_NEUTRAL",
+   "q": 0.2,
+   "k": null
+  },
+  "US:CONFIRM_NEUTRAL:Q050": {
+   "market": "US",
+   "selector": "CONFIRM_NEUTRAL",
+   "q": 0.5,
+   "k": null
+  },
+  "US:CONFIRM_NEUTRAL:Q100": {
+   "market": "US",
+   "selector": "CONFIRM_NEUTRAL",
+   "q": 1.0,
+   "k": null
+  },
+  "US:VALUE:Q020": {
+   "market": "US",
+   "selector": "VALUE",
+   "q": 0.2,
+   "k": null
+  },
+  "US:VALUE:Q050": {
+   "market": "US",
+   "selector": "VALUE",
+   "q": 0.5,
+   "k": null
+  },
+  "US:VALUE:Q100": {
+   "market": "US",
+   "selector": "VALUE",
+   "q": 1.0,
+   "k": null
+  },
+  "US:VALUE_CONFIRMED:Q020": {
+   "market": "US",
+   "selector": "VALUE_CONFIRMED",
+   "q": 0.2,
+   "k": null
+  },
+  "US:VALUE_CONFIRMED:Q050": {
+   "market": "US",
+   "selector": "VALUE_CONFIRMED",
+   "q": 0.5,
+   "k": null
+  },
+  "US:VALUE_CONFIRMED:Q100": {
+   "market": "US",
+   "selector": "VALUE_CONFIRMED",
+   "q": 1.0,
+   "k": null
+  },
+  "US:CASH_PROFITABILITY:Q020": {
+   "market": "US",
+   "selector": "CASH_PROFITABILITY",
+   "q": 0.2,
+   "k": null
+  },
+  "US:CASH_PROFITABILITY:Q050": {
+   "market": "US",
+   "selector": "CASH_PROFITABILITY",
+   "q": 0.5,
+   "k": null
+  },
+  "US:CASH_PROFITABILITY:Q100": {
+   "market": "US",
+   "selector": "CASH_PROFITABILITY",
+   "q": 1.0,
+   "k": null
+  },
+  "US:SECTOR_MOMENTUM:Q020": {
+   "market": "US",
+   "selector": "SECTOR_MOMENTUM",
+   "q": 0.2,
+   "k": null
+  },
+  "US:SECTOR_MOMENTUM:Q050": {
+   "market": "US",
+   "selector": "SECTOR_MOMENTUM",
+   "q": 0.5,
+   "k": null
+  },
+  "US:SECTOR_MOMENTUM:Q100": {
+   "market": "US",
+   "selector": "SECTOR_MOMENTUM",
+   "q": 1.0,
+   "k": null
+  },
+  "US:COCKTAIL:Q020": {
+   "market": "US",
+   "selector": "COCKTAIL",
+   "q": 0.2,
+   "k": null
+  },
+  "US:COCKTAIL:Q050": {
+   "market": "US",
+   "selector": "COCKTAIL",
+   "q": 0.5,
+   "k": null
+  },
+  "US:COCKTAIL:Q100": {
+   "market": "US",
+   "selector": "COCKTAIL",
+   "q": 1.0,
+   "k": null
+  },
+  "US:U1:Q020": {
+   "market": "US",
+   "selector": "U1",
+   "q": 0.2,
+   "k": null
+  },
+  "US:U1:Q050": {
+   "market": "US",
+   "selector": "U1",
+   "q": 0.5,
+   "k": null
+  },
+  "US:U1:Q100": {
+   "market": "US",
+   "selector": "U1",
+   "q": 1.0,
+   "k": null
+  },
+  "US:OW:Q020": {
+   "market": "US",
+   "selector": "OW",
+   "q": 0.2,
+   "k": null
+  },
+  "US:OW:Q050": {
+   "market": "US",
+   "selector": "OW",
+   "q": 0.5,
+   "k": null
+  },
+  "US:OW:Q100": {
+   "market": "US",
+   "selector": "OW",
+   "q": 1.0,
+   "k": null
+  },
+  "US:OW_RESID:Q020": {
+   "market": "US",
+   "selector": "OW_RESID",
+   "q": 0.2,
+   "k": null
+  },
+  "US:OW_RESID:Q050": {
+   "market": "US",
+   "selector": "OW_RESID",
+   "q": 0.5,
+   "k": null
+  },
+  "US:OW_RESID:Q100": {
+   "market": "US",
+   "selector": "OW_RESID",
+   "q": 1.0,
+   "k": null
+  }
+ },
+ "anchors": [
+  "KR:K2",
+  "KR:MIX_PRE",
+  "KR:MIX_EXP",
+  "US:NATIVE_COCKTAIL",
+  "US:NATIVE_U1"
+ ],
+ "policies": [
+  "KR:WF_S2_LCB",
+  "KR:WF_ALL_LCB",
+  "US:WF_PC_LCB",
+  "US:WF_ALL_LCB"
+ ],
+ "coreClaims": [
+  {
+   "id": "SELECT:KR:S2",
+   "market": "KR",
+   "kind": "selection",
+   "selector": "S2",
+   "a": "KR:S2:FIXED20:K5",
+   "b": "MATCHED"
+  },
+  {
+   "id": "SELECT:KR:VALUE_ORIGINAL",
+   "market": "KR",
+   "kind": "selection",
+   "selector": "VALUE_ORIGINAL",
+   "a": "KR:VALUE_ORIGINAL:FIXED20:K5",
+   "b": "MATCHED"
+  },
+  {
+   "id": "SELECT:KR:VALUE_COMPLETE",
+   "market": "KR",
+   "kind": "selection",
+   "selector": "VALUE_COMPLETE",
+   "a": "KR:VALUE_COMPLETE:FIXED20:K5",
+   "b": "MATCHED"
+  },
+  {
+   "id": "SELECT:KR:QUALITY_NEUTRAL",
+   "market": "KR",
+   "kind": "selection",
+   "selector": "QUALITY_NEUTRAL",
+   "a": "KR:QUALITY_NEUTRAL:FIXED20:K5",
+   "b": "MATCHED"
+  },
+  {
+   "id": "SELECT:KR:CONFIRM_NEUTRAL",
+   "market": "KR",
+   "kind": "selection",
+   "selector": "CONFIRM_NEUTRAL",
+   "a": "KR:CONFIRM_NEUTRAL:FIXED20:K5",
+   "b": "MATCHED"
+  },
+  {
+   "id": "SELECT:KR:INDUSTRY_MOMENTUM",
+   "market": "KR",
+   "kind": "selection",
+   "selector": "INDUSTRY_MOMENTUM",
+   "a": "KR:INDUSTRY_MOMENTUM:FIXED20:K5",
+   "b": "MATCHED"
+  },
+  {
+   "id": "SELECT:KR:FOUR_FACTOR",
+   "market": "KR",
+   "kind": "selection",
+   "selector": "FOUR_FACTOR",
+   "a": "KR:FOUR_FACTOR:FIXED20:K5",
+   "b": "MATCHED"
+  },
+  {
+   "id": "SELECT:US:PRICE",
+   "market": "US",
+   "kind": "selection",
+   "selector": "PRICE",
+   "a": "US:PRICE:Q020",
+   "b": "MATCHED"
+  },
+  {
+   "id": "SELECT:US:PRICE_CONFIRMED",
+   "market": "US",
+   "kind": "selection",
+   "selector": "PRICE_CONFIRMED",
+   "a": "US:PRICE_CONFIRMED:Q020",
+   "b": "MATCHED"
+  },
+  {
+   "id": "SELECT:US:QUALITY_NEUTRAL",
+   "market": "US",
+   "kind": "selection",
+   "selector": "QUALITY_NEUTRAL",
+   "a": "US:QUALITY_NEUTRAL:Q020",
+   "b": "MATCHED"
+  },
+  {
+   "id": "SELECT:US:CONFIRM_NEUTRAL",
+   "market": "US",
+   "kind": "selection",
+   "selector": "CONFIRM_NEUTRAL",
+   "a": "US:CONFIRM_NEUTRAL:Q020",
+   "b": "MATCHED"
+  },
+  {
+   "id": "SELECT:US:VALUE",
+   "market": "US",
+   "kind": "selection",
+   "selector": "VALUE",
+   "a": "US:VALUE:Q020",
+   "b": "MATCHED"
+  },
+  {
+   "id": "SELECT:US:VALUE_CONFIRMED",
+   "market": "US",
+   "kind": "selection",
+   "selector": "VALUE_CONFIRMED",
+   "a": "US:VALUE_CONFIRMED:Q020",
+   "b": "MATCHED"
+  },
+  {
+   "id": "SELECT:US:CASH_PROFITABILITY",
+   "market": "US",
+   "kind": "selection",
+   "selector": "CASH_PROFITABILITY",
+   "a": "US:CASH_PROFITABILITY:Q020",
+   "b": "MATCHED"
+  },
+  {
+   "id": "SELECT:US:SECTOR_MOMENTUM",
+   "market": "US",
+   "kind": "selection",
+   "selector": "SECTOR_MOMENTUM",
+   "a": "US:SECTOR_MOMENTUM:Q020",
+   "b": "MATCHED"
+  },
+  {
+   "id": "SELECT:US:COCKTAIL",
+   "market": "US",
+   "kind": "selection",
+   "selector": "COCKTAIL",
+   "a": "US:COCKTAIL:Q020",
+   "b": "MATCHED"
+  },
+  {
+   "id": "SELECT:US:U1",
+   "market": "US",
+   "kind": "selection",
+   "selector": "U1",
+   "a": "US:U1:Q020",
+   "b": "MATCHED"
+  },
+  {
+   "id": "SELECT:US:OW",
+   "market": "US",
+   "kind": "selection",
+   "selector": "OW",
+   "a": "US:OW:Q020",
+   "b": "MATCHED"
+  },
+  {
+   "id": "SELECT:US:OW_RESID",
+   "market": "US",
+   "kind": "selection",
+   "selector": "OW_RESID",
+   "a": "US:OW_RESID:Q020",
+   "b": "MATCHED"
+  },
+  {
+   "id": "ETF:KR:S2:SLOT20:K5",
+   "market": "KR",
+   "kind": "etf",
+   "a": "KR:S2:SLOT20:K5",
+   "b": "ETF"
+  },
+  {
+   "id": "ETF:KR:S2:FIXED20:K5",
+   "market": "KR",
+   "kind": "etf",
+   "a": "KR:S2:FIXED20:K5",
+   "b": "ETF"
+  },
+  {
+   "id": "ETF:US:PRICE_CONFIRMED:Q020",
+   "market": "US",
+   "kind": "etf",
+   "a": "US:PRICE_CONFIRMED:Q020",
+   "b": "ETF"
+  },
+  {
+   "id": "ETF:US:PRICE_CONFIRMED:Q100",
+   "market": "US",
+   "kind": "etf",
+   "a": "US:PRICE_CONFIRMED:Q100",
+   "b": "ETF"
+  },
+  {
+   "id": "ETF:US:COCKTAIL:Q020",
+   "market": "US",
+   "kind": "etf",
+   "a": "US:COCKTAIL:Q020",
+   "b": "ETF"
+  },
+  {
+   "id": "ETF:US:COCKTAIL:Q100",
+   "market": "US",
+   "kind": "etf",
+   "a": "US:COCKTAIL:Q100",
+   "b": "ETF"
+  },
+  {
+   "id": "ETF:US:U1:Q020",
+   "market": "US",
+   "kind": "etf",
+   "a": "US:U1:Q020",
+   "b": "ETF"
+  },
+  {
+   "id": "ETF:US:U1:Q100",
+   "market": "US",
+   "kind": "etf",
+   "a": "US:U1:Q100",
+   "b": "ETF"
+  },
+  {
+   "id": "FACTOR:KR:CONFIRM_WITH_VALUE",
+   "market": "KR",
+   "kind": "factor",
+   "a": "KR:S2:FIXED20:K5",
+   "b": "KR:VALUE_COMPLETE:FIXED20:K5"
+  },
+  {
+   "id": "FACTOR:KR:VALUE_WITH_CONFIRM",
+   "market": "KR",
+   "kind": "factor",
+   "a": "KR:S2:FIXED20:K5",
+   "b": "KR:CONFIRM_NEUTRAL:FIXED20:K5"
+  },
+  {
+   "id": "FACTOR:KR:CONFIRM_WITH_NEUTRAL",
+   "market": "KR",
+   "kind": "factor",
+   "a": "KR:CONFIRM_NEUTRAL:FIXED20:K5",
+   "b": "KR:QUALITY_NEUTRAL:FIXED20:K5"
+  },
+  {
+   "id": "FACTOR:US:CONFIRM_WITH_PRICE",
+   "market": "US",
+   "kind": "factor",
+   "a": "US:PRICE_CONFIRMED:Q020",
+   "b": "US:PRICE:Q020"
+  },
+  {
+   "id": "FACTOR:US:CONFIRM_WITH_NEUTRAL",
+   "market": "US",
+   "kind": "factor",
+   "a": "US:CONFIRM_NEUTRAL:Q020",
+   "b": "US:QUALITY_NEUTRAL:Q020"
+  },
+  {
+   "id": "CONSTRUCT:KR:EXPOSURE",
+   "market": "KR",
+   "kind": "construction",
+   "a": "KR:S2:FIXED20:K5",
+   "b": "KR:S2:SLOT20:K5"
+  },
+  {
+   "id": "CONSTRUCT:KR:DIVERSIFICATION",
+   "market": "KR",
+   "kind": "construction",
+   "a": "KR:S2:FIXED20:K5",
+   "b": "KR:S2:FIXED20:K1"
+  },
+  {
+   "id": "CONSTRUCT:US:PRICE_CONFIRMED",
+   "market": "US",
+   "kind": "construction",
+   "a": "US:PRICE_CONFIRMED:Q020",
+   "b": "US:PRICE_CONFIRMED:Q100"
+  },
+  {
+   "id": "CONSTRUCT:US:COCKTAIL",
+   "market": "US",
+   "kind": "construction",
+   "a": "US:COCKTAIL:Q020",
+   "b": "US:COCKTAIL:Q100"
+  },
+  {
+   "id": "CONSTRUCT:US:U1",
+   "market": "US",
+   "kind": "construction",
+   "a": "US:U1:Q020",
+   "b": "US:U1:Q100"
+  },
+  {
+   "id": "POLICY:KR:WF_S2_LCB",
+   "market": "KR",
+   "kind": "policy",
+   "a": "KR:WF_S2_LCB",
+   "b": "ETF"
+  },
+  {
+   "id": "POLICY:KR:WF_ALL_LCB",
+   "market": "KR",
+   "kind": "policy",
+   "a": "KR:WF_ALL_LCB",
+   "b": "ETF"
+  },
+  {
+   "id": "POLICY:US:WF_PC_LCB",
+   "market": "US",
+   "kind": "policy",
+   "a": "US:WF_PC_LCB",
+   "b": "ETF"
+  },
+  {
+   "id": "POLICY:US:WF_ALL_LCB",
+   "market": "US",
+   "kind": "policy",
+   "a": "US:WF_ALL_LCB",
+   "b": "ETF"
+  }
+ ],
+ "coreFamilySize": 41,
+ "broadEtfClaims": [
+  "KR:S2:SLOT20:K1",
+  "KR:S2:SLOT20:K2",
+  "KR:S2:SLOT20:K3",
+  "KR:S2:SLOT20:K4",
+  "KR:S2:SLOT20:K5",
+  "KR:S2:FIXED20:K1",
+  "KR:S2:FIXED20:K2",
+  "KR:S2:FIXED20:K3",
+  "KR:S2:FIXED20:K4",
+  "KR:S2:FIXED20:K5",
+  "KR:VALUE_ORIGINAL:SLOT20:K1",
+  "KR:VALUE_ORIGINAL:SLOT20:K2",
+  "KR:VALUE_ORIGINAL:SLOT20:K3",
+  "KR:VALUE_ORIGINAL:SLOT20:K4",
+  "KR:VALUE_ORIGINAL:SLOT20:K5",
+  "KR:VALUE_ORIGINAL:FIXED20:K1",
+  "KR:VALUE_ORIGINAL:FIXED20:K2",
+  "KR:VALUE_ORIGINAL:FIXED20:K3",
+  "KR:VALUE_ORIGINAL:FIXED20:K4",
+  "KR:VALUE_ORIGINAL:FIXED20:K5",
+  "KR:VALUE_COMPLETE:SLOT20:K1",
+  "KR:VALUE_COMPLETE:SLOT20:K2",
+  "KR:VALUE_COMPLETE:SLOT20:K3",
+  "KR:VALUE_COMPLETE:SLOT20:K4",
+  "KR:VALUE_COMPLETE:SLOT20:K5",
+  "KR:VALUE_COMPLETE:FIXED20:K1",
+  "KR:VALUE_COMPLETE:FIXED20:K2",
+  "KR:VALUE_COMPLETE:FIXED20:K3",
+  "KR:VALUE_COMPLETE:FIXED20:K4",
+  "KR:VALUE_COMPLETE:FIXED20:K5",
+  "KR:QUALITY_NEUTRAL:SLOT20:K1",
+  "KR:QUALITY_NEUTRAL:SLOT20:K2",
+  "KR:QUALITY_NEUTRAL:SLOT20:K3",
+  "KR:QUALITY_NEUTRAL:SLOT20:K4",
+  "KR:QUALITY_NEUTRAL:SLOT20:K5",
+  "KR:QUALITY_NEUTRAL:FIXED20:K1",
+  "KR:QUALITY_NEUTRAL:FIXED20:K2",
+  "KR:QUALITY_NEUTRAL:FIXED20:K3",
+  "KR:QUALITY_NEUTRAL:FIXED20:K4",
+  "KR:QUALITY_NEUTRAL:FIXED20:K5",
+  "KR:CONFIRM_NEUTRAL:SLOT20:K1",
+  "KR:CONFIRM_NEUTRAL:SLOT20:K2",
+  "KR:CONFIRM_NEUTRAL:SLOT20:K3",
+  "KR:CONFIRM_NEUTRAL:SLOT20:K4",
+  "KR:CONFIRM_NEUTRAL:SLOT20:K5",
+  "KR:CONFIRM_NEUTRAL:FIXED20:K1",
+  "KR:CONFIRM_NEUTRAL:FIXED20:K2",
+  "KR:CONFIRM_NEUTRAL:FIXED20:K3",
+  "KR:CONFIRM_NEUTRAL:FIXED20:K4",
+  "KR:CONFIRM_NEUTRAL:FIXED20:K5",
+  "KR:INDUSTRY_MOMENTUM:SLOT20:K1",
+  "KR:INDUSTRY_MOMENTUM:SLOT20:K2",
+  "KR:INDUSTRY_MOMENTUM:SLOT20:K3",
+  "KR:INDUSTRY_MOMENTUM:SLOT20:K4",
+  "KR:INDUSTRY_MOMENTUM:SLOT20:K5",
+  "KR:INDUSTRY_MOMENTUM:FIXED20:K1",
+  "KR:INDUSTRY_MOMENTUM:FIXED20:K2",
+  "KR:INDUSTRY_MOMENTUM:FIXED20:K3",
+  "KR:INDUSTRY_MOMENTUM:FIXED20:K4",
+  "KR:INDUSTRY_MOMENTUM:FIXED20:K5",
+  "KR:FOUR_FACTOR:SLOT20:K1",
+  "KR:FOUR_FACTOR:SLOT20:K2",
+  "KR:FOUR_FACTOR:SLOT20:K3",
+  "KR:FOUR_FACTOR:SLOT20:K4",
+  "KR:FOUR_FACTOR:SLOT20:K5",
+  "KR:FOUR_FACTOR:FIXED20:K1",
+  "KR:FOUR_FACTOR:FIXED20:K2",
+  "KR:FOUR_FACTOR:FIXED20:K3",
+  "KR:FOUR_FACTOR:FIXED20:K4",
+  "KR:FOUR_FACTOR:FIXED20:K5",
+  "US:PRICE:Q020",
+  "US:PRICE:Q050",
+  "US:PRICE:Q100",
+  "US:PRICE_CONFIRMED:Q020",
+  "US:PRICE_CONFIRMED:Q050",
+  "US:PRICE_CONFIRMED:Q100",
+  "US:QUALITY_NEUTRAL:Q020",
+  "US:QUALITY_NEUTRAL:Q050",
+  "US:QUALITY_NEUTRAL:Q100",
+  "US:CONFIRM_NEUTRAL:Q020",
+  "US:CONFIRM_NEUTRAL:Q050",
+  "US:CONFIRM_NEUTRAL:Q100",
+  "US:VALUE:Q020",
+  "US:VALUE:Q050",
+  "US:VALUE:Q100",
+  "US:VALUE_CONFIRMED:Q020",
+  "US:VALUE_CONFIRMED:Q050",
+  "US:VALUE_CONFIRMED:Q100",
+  "US:CASH_PROFITABILITY:Q020",
+  "US:CASH_PROFITABILITY:Q050",
+  "US:CASH_PROFITABILITY:Q100",
+  "US:SECTOR_MOMENTUM:Q020",
+  "US:SECTOR_MOMENTUM:Q050",
+  "US:SECTOR_MOMENTUM:Q100",
+  "US:COCKTAIL:Q020",
+  "US:COCKTAIL:Q050",
+  "US:COCKTAIL:Q100",
+  "US:U1:Q020",
+  "US:U1:Q050",
+  "US:U1:Q100",
+  "US:OW:Q020",
+  "US:OW:Q050",
+  "US:OW:Q100",
+  "US:OW_RESID:Q020",
+  "US:OW_RESID:Q050",
+  "US:OW_RESID:Q100",
+  "KR:K2",
+  "KR:MIX_PRE",
+  "KR:MIX_EXP",
+  "US:NATIVE_COCKTAIL",
+  "US:NATIVE_U1",
+  "KR:WF_S2_LCB",
+  "KR:WF_ALL_LCB",
+  "US:WF_PC_LCB",
+  "US:WF_ALL_LCB"
+ ],
+ "broadFamilySize": 115,
+ "bootstrap": {
+  "draws": 4000,
+  "seed": 20261118,
+  "blockWeeks": {
+   "126": 25,
+   "252": 50
+  }
+ },
+ "matching": {
+  "capRatioMin": 0.5,
+  "capRatioMax": 2,
+  "distance": "abs(log(peerCap/heldCap))",
+  "replacement": false
+ },
+ "walkForward": {
+  "fit": "FIRST_DECISION_EACH_YEAR",
+  "horizon": 126,
+  "minMaturedCommon": 104,
+  "lastExit": "STRICTLY_BEFORE_FIT",
+  "score": "BOOTSTRAP_LOWER_95",
+  "riskGuard": "MEAN_MATURED_COHORT_MDD_NOT_WORSE_THAN_ETF",
+  "fallback": "ETF"
+ }
+}

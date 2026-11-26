@@ -1,0 +1,38 @@
+{
+ "sourceCommit": "0eceb6f135dd3bd08f35950997d36129bfe67f65",
+ "sourceIdentity": {
+  "finalSessionQuotesApplied": 235,
+  "identity": "3e4d7aa35e2c4b273e4ecef0e2e8ea7a8a27077f0de14bb3d5ea6a696a97f1a5",
+  "matrixDigest": "32e49b57a7541eea66f76373baef50c6302a394247b313f6099f718d46d54b0c",
+  "mcapCoverage": 1.0,
+  "universeShards": 14
+ },
+ "seedBooksChecked": 4086,
+ "checks": {
+  "126": {
+   "entryExitChecked": 454,
+   "etfMaxError": 4.9473758423346226e-12,
+   "legacyBookMaxError": 4.853673019056259e-12,
+   "assetMaxError": 4.988010005035903e-12,
+   "assetPayoffsChecked": 19785,
+   "decompositionMaxError": 1.3877787807814457e-17
+  },
+  "252": {
+   "entryExitChecked": 454,
+   "etfMaxError": 4.958922161790724e-12,
+   "legacyBookMaxError": 4.944933351680447e-12,
+   "assetMaxError": 4.163247524502367e-11,
+   "assetPayoffsChecked": 17948,
+   "decompositionMaxError": 1.3877787807814457e-17
+  }
+ },
+ "sourceFilesSHA256": {
+  "research/kr_us_strategy_batch_v1/results/KR/summary.json": "4ae0b1a289ddced6d5f3ac7ab18d94cceafba897fcc6303e507b5b797deeda29",
+  "research/kr_us_strategy_batch_v1/results/KR/books.json.gz": "ac8383cfce1f1205b4599ae20f9c5e8ce8a50d93db2393372048ceb983a6a918",
+  "research/kr_us_exposure_preserving_v1/results/KR/seed-books.json.gz": "227fc18c56501ef1ecb37b129327f0fceba352f75f4d7a48ed6322de538dc5a7",
+  "research/kr_us_strategy_batch_v1/results/KR/cohorts-126.csv.gz": "a600c085a6b54f03e20535a85e45051b9f5f03a4d28c5595276a24ceb4052485",
+  "research/kr_us_strategy_batch_v1/results/KR/cohorts-252.csv.gz": "246c4ff975181b62e939292f57b6fcbd5e618d14cc5dce5f3adf2615d5c80444",
+  "research/kr_us_exposure_preserving_v1/results/KR/asset-net-126.csv.gz": "f69f953bd246f2e45c579998a0350185767a72efe78d91c821175d5c69dcf72b",
+  "research/kr_us_exposure_preserving_v1/results/KR/asset-net-252.csv.gz": "1f7d45645e2669aca028c06c8c5635ae41898b7f847daf681ff141897dd1224f"
+ }
+}

@@ -1,0 +1,459 @@
+{
+ "scope": "PRs closed without merge, #259-#330 (no PR in #343-#373 is closed; #371 is an issue)",
+ "method": "refs/pull/N/head fetched; reachability from main, the integration HEAD and every remote branch (265 heads, 2026-11-24). Titles from the GitHub API; content was not re-read.",
+ "lost": [],
+ "pullRequests": [
+  {
+   "number": 330,
+   "title": "audit: ML 토너먼트 독립 검산 — 수익 경로 재현, 원천·회계 FAIL",
+   "headSha": "8657acd5dd840617fc25a6a0cce467294edf72bf",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "codex/ml-tournament-independent-audit-20261110",
+    "codex/ml-tournament-v2-integrity-repair-20261110"
+   ],
+   "openPrContainingHead": [
+    "#332 (open)"
+   ],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 6
+  },
+  {
+   "number": 327,
+   "title": "broad-alpha-screen-v1: KR 이벤트 11개 책 1회 실행 — 1차 지지 0건",
+   "headSha": "1e0289d09ba30bf2e26ec9cfb7e118f33a6a8a87",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "claude/trusting-tesla-ob0jym",
+    "codex/investment-integration-20261110"
+   ],
+   "openPrContainingHead": [
+    "#328 (open)"
+   ],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 3
+  },
+  {
+   "number": 326,
+   "title": "DO NOT MERGE — branch-only C2 one-shot (not run)",
+   "headSha": "ba414836a3d75d128032e54bcaa8d27ed19d5adf",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "claude/c2-attribution-actions-route"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 2
+  },
+  {
+   "number": 323,
+   "title": "docs: agent charter (AGENTS.md frozen)",
+   "headSha": "4349aa26fd4595980ea7408da0bd910f3001c96f",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "docs/compact-agents-charter-20261108"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 1
+  },
+  {
+   "number": 322,
+   "title": "KR A1/B1 outcome harness + approval packet (outcome-free, SOURCE_BLOCKED)",
+   "headSha": "f3b1aa9d75fc10677ce794c779ecb17d8fa240e0",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "claude/inspiring-planck-lm1z5k",
+    "claude/trusting-tesla-ob0jym",
+    "codex/investment-integration-20261110"
+   ],
+   "openPrContainingHead": [
+    "#328 (open)"
+   ],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 3
+  },
+  {
+   "number": 320,
+   "title": "corporate event parsers and source readiness (A-D)",
+   "headSha": "9a47f478a407fae5324e8ae04e75199c16b56023",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "claude/inspiring-planck-lm1z5k",
+    "claude/trusting-tesla-ob0jym",
+    "codex/investment-integration-20261110",
+    "research/corporate-event-readiness-v1"
+   ],
+   "openPrContainingHead": [
+    "#328 (open)"
+   ],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 3
+  },
+  {
+   "number": 319,
+   "title": "next alpha research direction v1 — priority decisions, power gates",
+   "headSha": "a5bca7c164251d1b3d0dc00a3c0a74f11199fb3b",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "research/next-alpha-research-direction-v1"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 2
+  },
+  {
+   "number": 313,
+   "title": "EXP-C-RECOVERY-02 (NOT_EXECUTED pending approval)",
+   "headSha": "bd635edcdfa6a03e8e20ba81899f6f11c84296dc",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "codex/exp-c-recovery-validation-v1"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 1
+  },
+  {
+   "number": 312,
+   "title": "EXP-C-RECOVERY-01 sealed recovery evidence",
+   "headSha": "3b75bb0280e96e0c9e3024290b06921fa38188c5",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "codex/exp-c-recovery-oracle-v1"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 1
+  },
+  {
+   "number": 311,
+   "title": "decompose saved market sensitivity and industry concentration",
+   "headSha": "e130c64fa0d998d9a8a34475838e6b9780fd9c9f",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "codex/market-industry-alpha-decomposition-v1"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 4
+  },
+  {
+   "number": 310,
+   "title": "industry-information-transfer-v1: H1 KEEP (financials-concentrated), H2 DATA_BLOCKED",
+   "headSha": "50055560dee54d746949d53e05cc18b5f00813f6",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "claude/industry-information-transfer-v1"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 7
+  },
+  {
+   "number": 309,
+   "title": "quantify fixed portfolio edge concentration",
+   "headSha": "84fe989f92d348e88243090bcad5d7a1fe891a02",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "codex/portfolio-edge-forensics-v1"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 4
+  },
+  {
+   "number": 308,
+   "title": "alpha-mechanism-sprint-v1: KR preliminary-earnings source eligible (outcome-blind)",
+   "headSha": "f48b6f29993cf572d191f9724d19d2543f375f6c",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "claude/alpha-mechanism-sprint-v1-shxr6w",
+    "claude/industry-information-transfer-v1",
+    "claude/optimistic-cray-wnegq7"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 3
+  },
+  {
+   "number": 306,
+   "title": "integration: entry-state shadow ledger -> economic-path readout",
+   "headSha": "49e35ace1cd3ca03599d8bfc3913a37ec164e5fb",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "claude/compassionate-galileo-yunri9",
+    "claude/portfolio-d-daily-report-practical-v1"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 7
+  },
+  {
+   "number": 305,
+   "title": "economic readout of saved NAVs",
+   "headSha": "e46024ca92be16b5ded9c459797a7027c1d81d23",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "claude/compassionate-galileo-yunri9",
+    "claude/portfolio-d-daily-report-practical-v1",
+    "codex/economic-path-readout-v1"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 2
+  },
+  {
+   "number": 304,
+   "title": "entry-state ETF-residual comparison + shadow ledger",
+   "headSha": "38926172b705ab998812709c91a7d805436cb617",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "claude/compassionate-galileo-yunri9",
+    "claude/portfolio-d-daily-report-practical-v1",
+    "research/entry-state-shadow-first-observation-v1"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 1
+  },
+  {
+   "number": 302,
+   "title": "M3: backlog forecast fails to improve persistence",
+   "headSha": "06d55d7fd61284ce1c4d278b22f7a08249ee296d",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "codex/m3-business-forecast-v1"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 1
+  },
+  {
+   "number": 301,
+   "title": "B-H1 outcome contract draft (blocked)",
+   "headSha": "c9eaa036eabd94da4bfa662fcf373604b8c73b1d",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "codex/b-h1-outcome-contract-owner-draft-v1"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 1
+  },
+  {
+   "number": 300,
+   "title": "OCF conditional power gate NO_GO + C2/Market C audit",
+   "headSha": "e580cde917673a0bd2d6a1ca21b010916721fa22",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "claude/investment-alpha-research-wmsedu"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 1
+  },
+  {
+   "number": 299,
+   "title": "four-track results in terminal (UI)",
+   "headSha": "4d7fbbd83afb82d3b83ebca81fc312e962bf41c9",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "codex/four-track-research-results",
+    "codex/stored-performance-report-v1"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 5
+  },
+  {
+   "number": 297,
+   "title": "governance docs",
+   "headSha": "d124a3be46539d2aacf8ad95319c5e398e87ac65",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "governance/agent-context-and-evidence-20261031"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 1
+  },
+  {
+   "number": 293,
+   "title": "WC68 DART XBRL collector",
+   "headSha": "ca0be4b83dc8523132e1355ca151087ef295e33b",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "research/wc68-github-actions-collector-v1"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 0
+  },
+  {
+   "number": 290,
+   "title": "Industry Alpha audit + next-study design (no execution)",
+   "headSha": "a72311c0d8873d33bd85577293fc1b00e179466c",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "research/industry-alpha-next-v1"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 11
+  },
+  {
+   "number": 289,
+   "title": "C1c design (no execution)",
+   "headSha": "92d78cd5ca4f74225a2c9456d4f296c082280098",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "research/c1c-asymmetric-exit-reentry-design-v1"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 3
+  },
+  {
+   "number": 287,
+   "title": "WID historical execution Git recovery",
+   "headSha": "9a10baef600078c132b6942e83f72b587cf0c581",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "codex/historical-execution-recovery-v1"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 6
+  },
+  {
+   "number": 286,
+   "title": "KR historical intraday alpha discovery",
+   "headSha": "97aa2cfe2cabace05796f9179f2711cf83698d42",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "codex/historical-alpha-discovery-v1"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 5
+  },
+  {
+   "number": 272,
+   "title": "Track D audit fixes on #265",
+   "headSha": "acc0bc92d4c650130adb84efbb62e363ef847ec2",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "claude/practical-knuth-h35aji"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 0
+  },
+  {
+   "number": 271,
+   "title": "Track B validator follow-up",
+   "headSha": "16b1acbbede4c9f9ba4a646a4171e86d7a2f0fda",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "claude/practical-knuth-fa90qy"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 0
+  },
+  {
+   "number": 270,
+   "title": "Track C receipt follow-up",
+   "headSha": "82bbce3dff039c45c92890b95b057f8c2019d04c",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "claude/practical-knuth-579ml4"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 0
+  },
+  {
+   "number": 269,
+   "title": "Track D input hardening",
+   "headSha": "21bd95d678747335c7541ecd450147c026c45c98",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "claude/practical-knuth-uwueuy"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 0
+  },
+  {
+   "number": 267,
+   "title": "merge-eligibility automation (disarmed)",
+   "headSha": "57494def458d3439ab91086f2e8400521dfabae2",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "automation/safe-engineering-merge-gate-v1"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 0
+  },
+  {
+   "number": 263,
+   "title": "KR collector fail-closed fix",
+   "headSha": "f996d81234532b11c31cac5bc27d238c8df2564e",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "claude/kr-collector-unpublished-session-guard"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 1
+  },
+  {
+   "number": 259,
+   "title": "Tiingo price recovery NO-GO record",
+   "headSha": "d9ff6dc056f5ed95b4c8b584ce63038b34f75186",
+   "merged": false,
+   "inMain": false,
+   "branchesContainingHead": [
+    "research/us-tiingo-price-recovery-pilot-v1"
+   ],
+   "openPrContainingHead": [],
+   "refsPullHeadRetained": true,
+   "citedInIntegrationTree": 2
+  }
+ ]
+}

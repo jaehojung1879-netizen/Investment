@@ -1,0 +1,501 @@
+{
+ "label": "INDEPENDENT_RECOMPUTE_OF_PR344_FROM_ORIGINAL_PILOT_INPUTS",
+ "pr344Ref": "4d13a440d96f9e732d03ec1707507435f69275be",
+ "window": [
+  "2023-04-14",
+  "2025-03-07"
+ ],
+ "meanPilotPoolSize": 293.61,
+ "comparison": {
+  "B2|126|2023": {
+   "thisRecompute": {
+    "cohorts": 38,
+    "meanNetExcessSPY": -0.01925660274905299
+   },
+   "pr344": {
+    "cohorts": 38,
+    "meanNetExcessSPY": -0.018301690780141017
+   },
+   "difference": -0.0009549119689119742,
+   "sameSign": true
+  },
+  "B2|126|2024": {
+   "thisRecompute": {
+    "cohorts": 52,
+    "meanNetExcessSPY": -0.048177491468316354
+   },
+   "pr344": {
+    "cohorts": 26,
+    "meanNetExcessSPY": -0.05422244420027514
+   },
+   "difference": 0.0060449527319587845,
+   "sameSign": true
+  },
+  "B2|126|2025": {
+   "thisRecompute": {
+    "cohorts": 10,
+    "meanNetExcessSPY": -0.03423209157180138
+   },
+   "pr344": {
+    "cohorts": 10,
+    "meanNetExcessSPY": -0.03404871158146348
+   },
+   "difference": -0.0001833799903379063,
+   "sameSign": true
+  },
+  "B2|126|ALL": {
+   "thisRecompute": {
+    "cohorts": 100,
+    "meanNetExcessSPY": -0.03579301376534477
+   },
+   "pr344": {
+    "cohorts": 74,
+    "meanNetExcessSPY": -0.033050471819826316
+   },
+   "difference": -0.0027425419455184563,
+   "sameSign": true
+  },
+  "B2|252|2023": {
+   "thisRecompute": {
+    "cohorts": 38,
+    "meanNetExcessSPY": -0.07977782110598627
+   },
+   "pr344": {
+    "cohorts": 38,
+    "meanNetExcessSPY": -0.07848753922325276
+   },
+   "difference": -0.0012902818827335155,
+   "sameSign": true
+  },
+  "B2|252|2024": {
+   "thisRecompute": {
+    "cohorts": 52,
+    "meanNetExcessSPY": -0.10156077362297924
+   },
+   "pr344": {
+    "cohorts": 13,
+    "meanNetExcessSPY": -0.10659393312528744
+   },
+   "difference": 0.00503315950230819,
+   "sameSign": true
+  },
+  "B2|252|2025": {
+   "thisRecompute": {
+    "cohorts": 10,
+    "meanNetExcessSPY": -0.01734862268086477
+   },
+   "pr344": {
+    "cohorts": 10,
+    "meanNetExcessSPY": -0.017200544377773387
+   },
+   "difference": -0.00014807830309138126,
+   "sameSign": true
+  },
+  "B2|252|ALL": {
+   "thisRecompute": {
+    "cohorts": 100,
+    "meanNetExcessSPY": -0.08486203657231046
+   },
+   "pr344": {
+    "cohorts": 61,
+    "meanNetExcessSPY": -0.07443037811295204
+   },
+   "difference": -0.010431658459358423,
+   "sameSign": true
+  },
+  "TOP10_cap|126|2023": {
+   "thisRecompute": {
+    "cohorts": 38,
+    "meanNetExcessSPY": 0.057325596772057105
+   },
+   "pr344": {
+    "cohorts": 38,
+    "meanNetExcessSPY": 0.08141555855360305
+   },
+   "difference": -0.024089961781545946,
+   "sameSign": true
+  },
+  "TOP10_cap|126|2024": {
+   "thisRecompute": {
+    "cohorts": 52,
+    "meanNetExcessSPY": 0.046269135687954356
+   },
+   "pr344": {
+    "cohorts": 52,
+    "meanNetExcessSPY": 0.05372472340901118
+   },
+   "difference": -0.007455587721056825,
+   "sameSign": true
+  },
+  "TOP10_cap|126|2025": {
+   "thisRecompute": {
+    "cohorts": 10,
+    "meanNetExcessSPY": 0.029381438410810867
+   },
+   "pr344": {
+    "cohorts": 10,
+    "meanNetExcessSPY": 0.029937783205717362
+   },
+   "difference": -0.0005563447949064951,
+   "sameSign": true
+  },
+  "TOP10_cap|126|ALL": {
+   "thisRecompute": {
+    "cohorts": 100,
+    "meanNetExcessSPY": 0.04878182117219905
+   },
+   "pr344": {
+    "cohorts": 100,
+    "meanNetExcessSPY": 0.06186854674362672
+   },
+   "difference": -0.01308672557142767,
+   "sameSign": true
+  },
+  "TOP10_cap|252|2023": {
+   "thisRecompute": {
+    "cohorts": 38,
+    "meanNetExcessSPY": 0.13344576585606213
+   },
+   "pr344": {
+    "cohorts": 38,
+    "meanNetExcessSPY": 0.1427607842068505
+   },
+   "difference": -0.009315018350788379,
+   "sameSign": true
+  },
+  "TOP10_cap|252|2024": {
+   "thisRecompute": {
+    "cohorts": 52,
+    "meanNetExcessSPY": 0.07857160644937772
+   },
+   "pr344": {
+    "cohorts": 52,
+    "meanNetExcessSPY": 0.09006790536659619
+   },
+   "difference": -0.01149629891721847,
+   "sameSign": true
+  },
+  "TOP10_cap|252|2025": {
+   "thisRecompute": {
+    "cohorts": 10,
+    "meanNetExcessSPY": 0.11464257839962251
+   },
+   "pr344": {
+    "cohorts": 10,
+    "meanNetExcessSPY": 0.11605781627712397
+   },
+   "difference": -0.0014152378775014601,
+   "sameSign": true
+  },
+  "TOP10_cap|252|ALL": {
+   "thisRecompute": {
+    "cohorts": 100,
+    "meanNetExcessSPY": 0.1030308842189423
+   },
+   "pr344": {
+    "cohorts": 100,
+    "meanNetExcessSPY": 0.11269019041694567
+   },
+   "difference": -0.00965930619800337,
+   "sameSign": true
+  },
+  "TOP10_equal|126|2023": {
+   "thisRecompute": {
+    "cohorts": 38,
+    "meanNetExcessSPY": 0.07103136962834017
+   },
+   "pr344": {
+    "cohorts": 38,
+    "meanNetExcessSPY": 0.07971193152992895
+   },
+   "difference": -0.00868056190158878,
+   "sameSign": true
+  },
+  "TOP10_equal|126|2024": {
+   "thisRecompute": {
+    "cohorts": 52,
+    "meanNetExcessSPY": 0.07148563604612831
+   },
+   "pr344": {
+    "cohorts": 52,
+    "meanNetExcessSPY": 0.07924962212320691
+   },
+   "difference": -0.007763986077078594,
+   "sameSign": true
+  },
+  "TOP10_equal|126|2025": {
+   "thisRecompute": {
+    "cohorts": 10,
+    "meanNetExcessSPY": -0.01163116340025334
+   },
+   "pr344": {
+    "cohorts": 10,
+    "meanNetExcessSPY": -0.006879916888026838
+   },
+   "difference": -0.004751246512226503,
+   "sameSign": true
+  },
+  "TOP10_equal|126|ALL": {
+   "thisRecompute": {
+    "cohorts": 100,
+    "meanNetExcessSPY": 0.06300133486273066
+   },
+   "pr344": {
+    "cohorts": 100,
+    "meanNetExcessSPY": 0.07081234579663791
+   },
+   "difference": -0.00781101093390725,
+   "sameSign": true
+  },
+  "TOP10_equal|252|2023": {
+   "thisRecompute": {
+    "cohorts": 38,
+    "meanNetExcessSPY": 0.16957677715016148
+   },
+   "pr344": {
+    "cohorts": 38,
+    "meanNetExcessSPY": 0.18531840356628737
+   },
+   "difference": -0.015741626416125892,
+   "sameSign": true
+  },
+  "TOP10_equal|252|2024": {
+   "thisRecompute": {
+    "cohorts": 52,
+    "meanNetExcessSPY": 0.1254214398036405
+   },
+   "pr344": {
+    "cohorts": 52,
+    "meanNetExcessSPY": 0.1433514694883731
+   },
+   "difference": -0.01793002968473259,
+   "sameSign": true
+  },
+  "TOP10_equal|252|2025": {
+   "thisRecompute": {
+    "cohorts": 10,
+    "meanNetExcessSPY": 0.09184003534193588
+   },
+   "pr344": {
+    "cohorts": 10,
+    "meanNetExcessSPY": 0.10061467359544604
+   },
+   "difference": -0.008774638253510159,
+   "sameSign": true
+  },
+  "TOP10_equal|252|ALL": {
+   "thisRecompute": {
+    "cohorts": 100,
+    "meanNetExcessSPY": 0.138842327549148
+   },
+   "pr344": {
+    "cohorts": 100,
+    "meanNetExcessSPY": 0.1550252248486878
+   },
+   "difference": -0.01618289729953981,
+   "sameSign": true
+  },
+  "TOP5_cap|126|2023": {
+   "thisRecompute": {
+    "cohorts": 38,
+    "meanNetExcessSPY": 0.0728757413907245
+   },
+   "pr344": {
+    "cohorts": 38,
+    "meanNetExcessSPY": 0.09819105745942446
+   },
+   "difference": -0.025315316068699953,
+   "sameSign": true
+  },
+  "TOP5_cap|126|2024": {
+   "thisRecompute": {
+    "cohorts": 52,
+    "meanNetExcessSPY": 0.03344016390839693
+   },
+   "pr344": {
+    "cohorts": 52,
+    "meanNetExcessSPY": 0.03334318066325479
+   },
+   "difference": 9.698324514213763e-05,
+   "sameSign": true
+  },
+  "TOP5_cap|126|2025": {
+   "thisRecompute": {
+    "cohorts": 10,
+    "meanNetExcessSPY": 0.049340375645515924
+   },
+   "pr344": {
+    "cohorts": 10,
+    "meanNetExcessSPY": 0.04865671569757697
+   },
+   "difference": 0.0006836599479389527,
+   "sameSign": true
+  },
+  "TOP5_cap|126|ALL": {
+   "thisRecompute": {
+    "cohorts": 100,
+    "meanNetExcessSPY": 0.0500157045253933
+   },
+   "pr344": {
+    "cohorts": 100,
+    "meanNetExcessSPY": 0.05951672734923148
+   },
+   "difference": -0.009501022823838183,
+   "sameSign": true
+  },
+  "TOP5_cap|252|2023": {
+   "thisRecompute": {
+    "cohorts": 38,
+    "meanNetExcessSPY": 0.15982797574804292
+   },
+   "pr344": {
+    "cohorts": 38,
+    "meanNetExcessSPY": 0.1355705891395964
+   },
+   "difference": 0.024257386608446507,
+   "sameSign": true
+  },
+  "TOP5_cap|252|2024": {
+   "thisRecompute": {
+    "cohorts": 52,
+    "meanNetExcessSPY": 0.05436491193444412
+   },
+   "pr344": {
+    "cohorts": 52,
+    "meanNetExcessSPY": 0.05527884359851165
+   },
+   "difference": -0.0009139316640675299,
+   "sameSign": true
+  },
+  "TOP5_cap|252|2025": {
+   "thisRecompute": {
+    "cohorts": 10,
+    "meanNetExcessSPY": 0.1145777667735938
+   },
+   "pr344": {
+    "cohorts": 10,
+    "meanNetExcessSPY": 0.1127100165240581
+   },
+   "difference": 0.001867750249535699,
+   "sameSign": true
+  },
+  "TOP5_cap|252|ALL": {
+   "thisRecompute": {
+    "cohorts": 100,
+    "meanNetExcessSPY": 0.10046216166752664
+   },
+   "pr344": {
+    "cohorts": 100,
+    "meanNetExcessSPY": 0.09153282419667852
+   },
+   "difference": 0.00892933747084812,
+   "sameSign": true
+  },
+  "TOP5_equal|126|2023": {
+   "thisRecompute": {
+    "cohorts": 38,
+    "meanNetExcessSPY": 0.13837018513900382
+   },
+   "pr344": {
+    "cohorts": 38,
+    "meanNetExcessSPY": 0.14423002540562088
+   },
+   "difference": -0.005859840266617067,
+   "sameSign": true
+  },
+  "TOP5_equal|126|2024": {
+   "thisRecompute": {
+    "cohorts": 52,
+    "meanNetExcessSPY": 0.054600455167081716
+   },
+   "pr344": {
+    "cohorts": 52,
+    "meanNetExcessSPY": 0.04117850347448832
+   },
+   "difference": 0.013421951692593394,
+   "sameSign": true
+  },
+  "TOP5_equal|126|2025": {
+   "thisRecompute": {
+    "cohorts": 10,
+    "meanNetExcessSPY": 0.04655919943197251
+   },
+   "pr344": {
+    "cohorts": 10,
+    "meanNetExcessSPY": 0.045391927695241495
+   },
+   "difference": 0.001167271736731014,
+   "sameSign": true
+  },
+  "TOP5_equal|126|ALL": {
+   "thisRecompute": {
+    "cohorts": 100,
+    "meanNetExcessSPY": 0.0856288269829012
+   },
+   "pr344": {
+    "cohorts": 100,
+    "meanNetExcessSPY": 0.080759424230394
+   },
+   "difference": 0.00486940275250719,
+   "sameSign": true
+  },
+  "TOP5_equal|252|2023": {
+   "thisRecompute": {
+    "cohorts": 38,
+    "meanNetExcessSPY": 0.3138489428787872
+   },
+   "pr344": {
+    "cohorts": 38,
+    "meanNetExcessSPY": 0.2226832099837627
+   },
+   "difference": 0.09116573289502447,
+   "sameSign": true
+  },
+  "TOP5_equal|252|2024": {
+   "thisRecompute": {
+    "cohorts": 52,
+    "meanNetExcessSPY": 0.09074152427024332
+   },
+   "pr344": {
+    "cohorts": 52,
+    "meanNetExcessSPY": 0.08220255912905766
+   },
+   "difference": 0.008538965141185656,
+   "sameSign": true
+  },
+  "TOP5_equal|252|2025": {
+   "thisRecompute": {
+    "cohorts": 10,
+    "meanNetExcessSPY": 0.10605938324015299
+   },
+   "pr344": {
+    "cohorts": 10,
+    "meanNetExcessSPY": 0.10328348365798842
+   },
+   "difference": 0.002775899582164565,
+   "sameSign": true
+  },
+  "TOP5_equal|252|ALL": {
+   "thisRecompute": {
+    "cohorts": 100,
+    "meanNetExcessSPY": 0.17705412923848093
+   },
+   "pr344": {
+    "cohorts": 100,
+    "meanNetExcessSPY": 0.13769329890673865
+   },
+   "difference": 0.039360830331742286,
+   "sameSign": true
+  }
+ },
+ "signAgreement": {
+  "agree": 40,
+  "disagree": 0
+ },
+ "basisDifferences": [
+  "#344 shares: SEC companyfacts outstanding; here: Finnhub weighted diluted (proxy)",
+  "#344 prices: corrected private paths (PARA, WBD/KVUE packets); here: replay-v16 as sealed",
+  "#344 pool: corrected single-CIK pool with 599 SEC asset fills and 171 mixed-CIK pairs removed; here: original pilot pool",
+  "#344 Top-K ranks companies (classes merged); here: tickers by proxy cap"
+ ]
+}

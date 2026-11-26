@@ -1,0 +1,696 @@
+{
+ "label": "CONDITIONAL_EXPOSED_HISTORY_NOT_PROSPECTIVE",
+ "returnBasis": "CONDITIONAL_REPLAY_V16_TOTAL_RETURN_INDEX_NOT_CERTIFIED_SHAREHOLDER_RETURN",
+ "specCommit": "c5a7e67",
+ "method": "four equal accounts, each on its own 4-week phase, NAVs summed; frozen engine and costs",
+ "books": {
+  "B0_069500_ONLY": {
+   "accounts": 4,
+   "start": "2018-01-08",
+   "end": "2026-09-14",
+   "cagr": 0.169576,
+   "etfCagr": 0.169576,
+   "excessCagr": 0.0,
+   "sharpe": 0.633386,
+   "mdd": -0.408055,
+   "vol": 0.274009,
+   "trackingError": 0.0,
+   "informationRatio": 0.068306,
+   "oneWayTurnoverPerYear": 0.0,
+   "costPerYear": 0.0,
+   "tradeDates": 454,
+   "meanStockNames": 0.0,
+   "fallbackOnlyShareOfDecisions": 1.0,
+   "decompositionAveragedOverPhases": {
+    "MARKET_BETA": 0.0,
+    "INDUSTRY_ALPHA": 0.0,
+    "SELECTION_ALPHA": 0.0
+   }
+  },
+  "B1_S2_ORIGINAL": {
+   "accounts": 4,
+   "start": "2018-01-08",
+   "end": "2026-09-14",
+   "cagr": 0.19888,
+   "etfCagr": 0.169576,
+   "excessCagr": 0.029304,
+   "sharpe": 0.754932,
+   "mdd": -0.479937,
+   "vol": 0.257185,
+   "trackingError": 0.199109,
+   "informationRatio": 0.10348,
+   "oneWayTurnoverPerYear": 4.150232,
+   "costPerYear": 0.01338,
+   "tradeDates": 454,
+   "vsEtfDailyBootstrap": {
+    "annualisedMeanDiff": 0.020604,
+    "ci95": [
+     -0.086518,
+     0.126117
+    ],
+    "twoSidedP": 0.685
+   },
+   "meanStockNames": 4.916,
+   "fallbackOnlyShareOfDecisions": 0.0,
+   "decompositionAveragedOverPhases": {
+    "MARKET_BETA": -0.015501,
+    "INDUSTRY_ALPHA": -0.070415,
+    "SELECTION_ALPHA": 0.125211
+   }
+  },
+  "B2_H01_CAP_INDUSTRY_BASKET": {
+   "accounts": 4,
+   "start": "2018-01-08",
+   "end": "2026-09-14",
+   "cagr": 0.181188,
+   "etfCagr": 0.169576,
+   "excessCagr": 0.011612,
+   "sharpe": 0.57772,
+   "mdd": -0.524021,
+   "vol": 0.372447,
+   "trackingError": 0.244874,
+   "informationRatio": 0.169951,
+   "oneWayTurnoverPerYear": 5.561092,
+   "costPerYear": 0.018539,
+   "tradeDates": 454,
+   "vsEtfDailyBootstrap": {
+    "annualisedMeanDiff": 0.041617,
+    "ci95": [
+     -0.133167,
+     0.228027
+    ],
+    "twoSidedP": 0.658
+   },
+   "meanStockNames": 9.468,
+   "fallbackOnlyShareOfDecisions": 0.0,
+   "decompositionAveragedOverPhases": {
+    "MARKET_BETA": -0.002846,
+    "INDUSTRY_ALPHA": 0.061952,
+    "SELECTION_ALPHA": -4.7e-05
+   }
+  },
+  "B3_H01_INDUSTRIES_S2_SELECTION": {
+   "accounts": 4,
+   "start": "2018-01-08",
+   "end": "2026-09-14",
+   "cagr": 0.199001,
+   "etfCagr": 0.169576,
+   "excessCagr": 0.029425,
+   "sharpe": 0.664081,
+   "mdd": -0.494106,
+   "vol": 0.31895,
+   "trackingError": 0.171612,
+   "informationRatio": 0.222915,
+   "oneWayTurnoverPerYear": 5.22273,
+   "costPerYear": 0.013634,
+   "tradeDates": 454,
+   "vsEtfDailyBootstrap": {
+    "annualisedMeanDiff": 0.038255,
+    "ci95": [
+     -0.070608,
+     0.156207
+    ],
+    "twoSidedP": 0.506
+   },
+   "meanStockNames": 3.035,
+   "fallbackOnlyShareOfDecisions": 0.0861,
+   "decompositionAveragedOverPhases": {
+    "MARKET_BETA": 0.000686,
+    "INDUSTRY_ALPHA": 0.004492,
+    "SELECTION_ALPHA": 0.047516
+   }
+  }
+ },
+ "pairs": {
+  "B1_S2_ORIGINAL-B0_069500_ONLY": {
+   "annualisedMeanDiff": 0.020604,
+   "ci95": [
+    -0.086518,
+    0.126117
+   ],
+   "twoSidedP": 0.685
+  },
+  "B2_H01_CAP_INDUSTRY_BASKET-B0_069500_ONLY": {
+   "annualisedMeanDiff": 0.041617,
+   "ci95": [
+    -0.133167,
+    0.228027
+   ],
+   "twoSidedP": 0.658
+  },
+  "B3_H01_INDUSTRIES_S2_SELECTION-B0_069500_ONLY": {
+   "annualisedMeanDiff": 0.038255,
+   "ci95": [
+    -0.070608,
+    0.156207
+   ],
+   "twoSidedP": 0.506
+  },
+  "B3_H01_INDUSTRIES_S2_SELECTION-B1_S2_ORIGINAL": {
+   "annualisedMeanDiff": 0.017651,
+   "ci95": [
+    -0.111604,
+    0.142206
+   ],
+   "twoSidedP": 0.777
+  },
+  "B3_H01_INDUSTRIES_S2_SELECTION-B2_H01_CAP_INDUSTRY_BASKET": {
+   "annualisedMeanDiff": -0.003362,
+   "ci95": [
+    -0.12992,
+    0.117963
+   ],
+   "twoSidedP": 0.999
+  }
+ },
+ "unverifiedCorporateActionWindows": {
+  "B0_069500_ONLY": [],
+  "B1_S2_ORIGINAL": [
+   {
+    "ticker": "010060.KS",
+    "execution": "2023-04-03",
+    "periodEnd": "2023-05-02",
+    "policies": [
+     "B1_S2_ORIGINAL"
+    ],
+    "phases": [
+     1
+    ],
+    "aboveLimitMoves": [],
+    "zeroVolumeSessions": 3,
+    "firstZeroVolume": "2023-04-27",
+    "maxLegAbsAlpha": 0.029689
+   },
+   {
+    "ticker": "010060.KS",
+    "execution": "2023-04-10",
+    "periodEnd": "2023-05-08",
+    "policies": [
+     "B1_S2_ORIGINAL"
+    ],
+    "phases": [
+     2
+    ],
+    "aboveLimitMoves": [],
+    "zeroVolumeSessions": 6,
+    "firstZeroVolume": "2023-04-27",
+    "maxLegAbsAlpha": 0.029553
+   },
+   {
+    "ticker": "010060.KS",
+    "execution": "2023-04-17",
+    "periodEnd": "2023-05-15",
+    "policies": [
+     "B1_S2_ORIGINAL"
+    ],
+    "phases": [
+     3
+    ],
+    "aboveLimitMoves": [],
+    "zeroVolumeSessions": 11,
+    "firstZeroVolume": "2023-04-27",
+    "maxLegAbsAlpha": 0.013498
+   },
+   {
+    "ticker": "010060.KS",
+    "execution": "2023-04-24",
+    "periodEnd": "2023-05-22",
+    "policies": [
+     "B1_S2_ORIGINAL"
+    ],
+    "phases": [
+     0
+    ],
+    "aboveLimitMoves": [],
+    "zeroVolumeSessions": 16,
+    "firstZeroVolume": "2023-04-27",
+    "maxLegAbsAlpha": 0.005761
+   }
+  ],
+  "B2_H01_CAP_INDUSTRY_BASKET": [
+   {
+    "ticker": "000150.KS",
+    "execution": "2026-07-06",
+    "periodEnd": "2026-08-03",
+    "policies": [
+     "B2_H01_CAP_INDUSTRY_BASKET",
+     "B3_H01_INDUSTRIES_S2_SELECTION"
+    ],
+    "phases": [
+     3
+    ],
+    "aboveLimitMoves": [
+     [
+      "2026-07-31",
+      0.3
+     ]
+    ],
+    "zeroVolumeSessions": 0,
+    "firstZeroVolume": null,
+    "maxLegAbsAlpha": 0.024216
+   },
+   {
+    "ticker": "000150.KS",
+    "execution": "2026-07-13",
+    "periodEnd": "2026-08-10",
+    "policies": [
+     "B2_H01_CAP_INDUSTRY_BASKET",
+     "B3_H01_INDUSTRIES_S2_SELECTION"
+    ],
+    "phases": [
+     0
+    ],
+    "aboveLimitMoves": [
+     [
+      "2026-07-31",
+      0.3
+     ]
+    ],
+    "zeroVolumeSessions": 0,
+    "firstZeroVolume": null,
+    "maxLegAbsAlpha": 0.018951
+   },
+   {
+    "ticker": "000150.KS",
+    "execution": "2026-07-20",
+    "periodEnd": "2026-08-18",
+    "policies": [
+     "B2_H01_CAP_INDUSTRY_BASKET",
+     "B3_H01_INDUSTRIES_S2_SELECTION"
+    ],
+    "phases": [
+     1
+    ],
+    "aboveLimitMoves": [
+     [
+      "2026-07-31",
+      0.3
+     ]
+    ],
+    "zeroVolumeSessions": 0,
+    "firstZeroVolume": null,
+    "maxLegAbsAlpha": 0.014379
+   },
+   {
+    "ticker": "000150.KS",
+    "execution": "2026-07-27",
+    "periodEnd": "2026-08-24",
+    "policies": [
+     "B2_H01_CAP_INDUSTRY_BASKET",
+     "B3_H01_INDUSTRIES_S2_SELECTION"
+    ],
+    "phases": [
+     2
+    ],
+    "aboveLimitMoves": [
+     [
+      "2026-07-31",
+      0.3
+     ]
+    ],
+    "zeroVolumeSessions": 0,
+    "firstZeroVolume": null,
+    "maxLegAbsAlpha": 0.015687
+   },
+   {
+    "ticker": "006740.KS",
+    "execution": "2023-09-25",
+    "periodEnd": "2023-10-23",
+    "policies": [
+     "B2_H01_CAP_INDUSTRY_BASKET",
+     "B3_H01_INDUSTRIES_S2_SELECTION"
+    ],
+    "phases": [
+     2
+    ],
+    "aboveLimitMoves": [],
+    "zeroVolumeSessions": 3,
+    "firstZeroVolume": "2023-10-19",
+    "maxLegAbsAlpha": 0.057292
+   },
+   {
+    "ticker": "006740.KS",
+    "execution": "2023-10-04",
+    "periodEnd": "2023-10-30",
+    "policies": [
+     "B2_H01_CAP_INDUSTRY_BASKET",
+     "B3_H01_INDUSTRIES_S2_SELECTION"
+    ],
+    "phases": [
+     3
+    ],
+    "aboveLimitMoves": [],
+    "zeroVolumeSessions": 5,
+    "firstZeroVolume": "2023-10-19",
+    "maxLegAbsAlpha": 0.149502
+   },
+   {
+    "ticker": "010120.KS",
+    "execution": "2026-03-16",
+    "periodEnd": "2026-04-13",
+    "policies": [
+     "B2_H01_CAP_INDUSTRY_BASKET"
+    ],
+    "phases": [
+     3
+    ],
+    "aboveLimitMoves": [],
+    "zeroVolumeSessions": 3,
+    "firstZeroVolume": "2026-04-08",
+    "maxLegAbsAlpha": 0.001426
+   },
+   {
+    "ticker": "010120.KS",
+    "execution": "2026-03-23",
+    "periodEnd": "2026-04-20",
+    "policies": [
+     "B2_H01_CAP_INDUSTRY_BASKET"
+    ],
+    "phases": [
+     0
+    ],
+    "aboveLimitMoves": [],
+    "zeroVolumeSessions": 3,
+    "firstZeroVolume": "2026-04-08",
+    "maxLegAbsAlpha": 0.001023
+   },
+   {
+    "ticker": "010120.KS",
+    "execution": "2026-03-30",
+    "periodEnd": "2026-04-27",
+    "policies": [
+     "B2_H01_CAP_INDUSTRY_BASKET"
+    ],
+    "phases": [
+     1
+    ],
+    "aboveLimitMoves": [],
+    "zeroVolumeSessions": 3,
+    "firstZeroVolume": "2026-04-08",
+    "maxLegAbsAlpha": 0.002874
+   },
+   {
+    "ticker": "012450.KS",
+    "execution": "2024-08-05",
+    "periodEnd": "2024-09-02",
+    "policies": [
+     "B2_H01_CAP_INDUSTRY_BASKET",
+     "B3_H01_INDUSTRIES_S2_SELECTION"
+    ],
+    "phases": [
+     3
+    ],
+    "aboveLimitMoves": [],
+    "zeroVolumeSessions": 3,
+    "firstZeroVolume": "2024-08-29",
+    "maxLegAbsAlpha": 0.006977
+   },
+   {
+    "ticker": "012450.KS",
+    "execution": "2024-08-12",
+    "periodEnd": "2024-09-09",
+    "policies": [
+     "B2_H01_CAP_INDUSTRY_BASKET",
+     "B3_H01_INDUSTRIES_S2_SELECTION"
+    ],
+    "phases": [
+     0
+    ],
+    "aboveLimitMoves": [],
+    "zeroVolumeSessions": 8,
+    "firstZeroVolume": "2024-08-29",
+    "maxLegAbsAlpha": 0.005637
+   },
+   {
+    "ticker": "012450.KS",
+    "execution": "2024-08-19",
+    "periodEnd": "2024-09-19",
+    "policies": [
+     "B2_H01_CAP_INDUSTRY_BASKET"
+    ],
+    "phases": [
+     1
+    ],
+    "aboveLimitMoves": [],
+    "zeroVolumeSessions": 13,
+    "firstZeroVolume": "2024-08-29",
+    "maxLegAbsAlpha": 5.2e-05
+   },
+   {
+    "ticker": "012450.KS",
+    "execution": "2024-08-26",
+    "periodEnd": "2024-09-23",
+    "policies": [
+     "B2_H01_CAP_INDUSTRY_BASKET"
+    ],
+    "phases": [
+     2
+    ],
+    "aboveLimitMoves": [],
+    "zeroVolumeSessions": 15,
+    "firstZeroVolume": "2024-08-29",
+    "maxLegAbsAlpha": 0.011529
+   },
+   {
+    "ticker": "019170.KS",
+    "execution": "2020-07-13",
+    "periodEnd": "2020-08-10",
+    "policies": [
+     "B2_H01_CAP_INDUSTRY_BASKET"
+    ],
+    "phases": [
+     3
+    ],
+    "aboveLimitMoves": [
+     [
+      "2020-07-20",
+      0.3
+     ],
+     [
+      "2020-07-27",
+      -0.3
+     ]
+    ],
+    "zeroVolumeSessions": 2,
+    "firstZeroVolume": "2020-07-21",
+    "maxLegAbsAlpha": 0.003242
+   },
+   {
+    "ticker": "019170.KS",
+    "execution": "2020-07-20",
+    "periodEnd": "2020-08-18",
+    "policies": [
+     "B2_H01_CAP_INDUSTRY_BASKET"
+    ],
+    "phases": [
+     0
+    ],
+    "aboveLimitMoves": [
+     [
+      "2020-07-27",
+      -0.3
+     ]
+    ],
+    "zeroVolumeSessions": 2,
+    "firstZeroVolume": "2020-07-21",
+    "maxLegAbsAlpha": 0.002388
+   }
+  ],
+  "B3_H01_INDUSTRIES_S2_SELECTION": [
+   {
+    "ticker": "000150.KS",
+    "execution": "2026-07-06",
+    "periodEnd": "2026-08-03",
+    "policies": [
+     "B2_H01_CAP_INDUSTRY_BASKET",
+     "B3_H01_INDUSTRIES_S2_SELECTION"
+    ],
+    "phases": [
+     3
+    ],
+    "aboveLimitMoves": [
+     [
+      "2026-07-31",
+      0.3
+     ]
+    ],
+    "zeroVolumeSessions": 0,
+    "firstZeroVolume": null,
+    "maxLegAbsAlpha": 0.024216
+   },
+   {
+    "ticker": "000150.KS",
+    "execution": "2026-07-13",
+    "periodEnd": "2026-08-10",
+    "policies": [
+     "B2_H01_CAP_INDUSTRY_BASKET",
+     "B3_H01_INDUSTRIES_S2_SELECTION"
+    ],
+    "phases": [
+     0
+    ],
+    "aboveLimitMoves": [
+     [
+      "2026-07-31",
+      0.3
+     ]
+    ],
+    "zeroVolumeSessions": 0,
+    "firstZeroVolume": null,
+    "maxLegAbsAlpha": 0.018951
+   },
+   {
+    "ticker": "000150.KS",
+    "execution": "2026-07-20",
+    "periodEnd": "2026-08-18",
+    "policies": [
+     "B2_H01_CAP_INDUSTRY_BASKET",
+     "B3_H01_INDUSTRIES_S2_SELECTION"
+    ],
+    "phases": [
+     1
+    ],
+    "aboveLimitMoves": [
+     [
+      "2026-07-31",
+      0.3
+     ]
+    ],
+    "zeroVolumeSessions": 0,
+    "firstZeroVolume": null,
+    "maxLegAbsAlpha": 0.014379
+   },
+   {
+    "ticker": "000150.KS",
+    "execution": "2026-07-27",
+    "periodEnd": "2026-08-24",
+    "policies": [
+     "B2_H01_CAP_INDUSTRY_BASKET",
+     "B3_H01_INDUSTRIES_S2_SELECTION"
+    ],
+    "phases": [
+     2
+    ],
+    "aboveLimitMoves": [
+     [
+      "2026-07-31",
+      0.3
+     ]
+    ],
+    "zeroVolumeSessions": 0,
+    "firstZeroVolume": null,
+    "maxLegAbsAlpha": 0.015687
+   },
+   {
+    "ticker": "006740.KS",
+    "execution": "2023-09-25",
+    "periodEnd": "2023-10-23",
+    "policies": [
+     "B2_H01_CAP_INDUSTRY_BASKET",
+     "B3_H01_INDUSTRIES_S2_SELECTION"
+    ],
+    "phases": [
+     2
+    ],
+    "aboveLimitMoves": [],
+    "zeroVolumeSessions": 3,
+    "firstZeroVolume": "2023-10-19",
+    "maxLegAbsAlpha": 0.057292
+   },
+   {
+    "ticker": "006740.KS",
+    "execution": "2023-10-04",
+    "periodEnd": "2023-10-30",
+    "policies": [
+     "B2_H01_CAP_INDUSTRY_BASKET",
+     "B3_H01_INDUSTRIES_S2_SELECTION"
+    ],
+    "phases": [
+     3
+    ],
+    "aboveLimitMoves": [],
+    "zeroVolumeSessions": 5,
+    "firstZeroVolume": "2023-10-19",
+    "maxLegAbsAlpha": 0.149502
+   },
+   {
+    "ticker": "012450.KS",
+    "execution": "2024-08-05",
+    "periodEnd": "2024-09-02",
+    "policies": [
+     "B2_H01_CAP_INDUSTRY_BASKET",
+     "B3_H01_INDUSTRIES_S2_SELECTION"
+    ],
+    "phases": [
+     3
+    ],
+    "aboveLimitMoves": [],
+    "zeroVolumeSessions": 3,
+    "firstZeroVolume": "2024-08-29",
+    "maxLegAbsAlpha": 0.006977
+   },
+   {
+    "ticker": "012450.KS",
+    "execution": "2024-08-12",
+    "periodEnd": "2024-09-09",
+    "policies": [
+     "B2_H01_CAP_INDUSTRY_BASKET",
+     "B3_H01_INDUSTRIES_S2_SELECTION"
+    ],
+    "phases": [
+     0
+    ],
+    "aboveLimitMoves": [],
+    "zeroVolumeSessions": 8,
+    "firstZeroVolume": "2024-08-29",
+    "maxLegAbsAlpha": 0.005637
+   }
+  ]
+ },
+ "calendarYearReturns": {
+  "B0_069500_ONLY": {
+   "2018": -0.190376,
+   "2019": 0.143994,
+   "2020": 0.355328,
+   "2021": 0.029991,
+   "2022": -0.241499,
+   "2023": 0.248424,
+   "2024": -0.093715,
+   "2025": 0.942069,
+   "2026": 0.744093
+  },
+  "B1_S2_ORIGINAL": {
+   "2018": -0.064089,
+   "2019": 0.025317,
+   "2020": 0.059898,
+   "2021": 0.28118,
+   "2022": -0.187823,
+   "2023": 0.128972,
+   "2024": -0.062366,
+   "2025": 0.972359,
+   "2026": 1.096633
+  },
+  "B2_H01_CAP_INDUSTRY_BASKET": {
+   "2018": -0.038414,
+   "2019": -0.033761,
+   "2020": 0.2664,
+   "2021": -0.018683,
+   "2022": -0.234765,
+   "2023": 0.361682,
+   "2024": -0.009625,
+   "2025": 1.811041,
+   "2026": 0.219766
+  },
+  "B3_H01_INDUSTRIES_S2_SELECTION": {
+   "2018": -0.178757,
+   "2019": 0.088032,
+   "2020": 0.224153,
+   "2021": 0.234428,
+   "2022": -0.221876,
+   "2023": 0.096971,
+   "2024": 0.160496,
+   "2025": 1.256285,
+   "2026": 0.536443
+  }
+ }
+}

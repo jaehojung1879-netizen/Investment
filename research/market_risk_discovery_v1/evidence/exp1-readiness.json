@@ -1,0 +1,97 @@
+{
+ "inputsManifest": {
+  "retrievedAtUtc": "2026-11-23T23:02:40+00:00",
+  "series": {
+   "VIXCLS": {
+    "description": "CBOE Volatility Index (VIX), daily close",
+    "first": "1990-01-02",
+    "last": "2026-11-20",
+    "observations": 9322,
+    "sha256Raw": "6723d7bcb16781b5b12245327306f37242b01227da1ffac095634004645d18d1",
+    "stored": "data/raw/fred-VIXCLS.csv.gz",
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=VIXCLS"
+   },
+   "VXVCLS": {
+    "description": "CBOE S&P 500 3-Month Volatility Index (VIX3M), daily close",
+    "first": "2007-12-04",
+    "last": "2026-11-20",
+    "observations": 4772,
+    "sha256Raw": "333c57dd0c046d9e96c4c63ab1a4d00542a5c0c39c4ea0f016fa50acefe2abdb",
+    "stored": "data/raw/fred-VXVCLS.csv.gz",
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=VXVCLS"
+   }
+  },
+  "vixRevisionCheckAgainst198": {
+   "differingDays": 0,
+   "examples": [],
+   "file": "data/kr-market-risk-anatomy-v1/sources/FRED_VIXCLS/normalized.csv",
+   "first": "1990-01-02",
+   "last": "2026-10-01",
+   "overlapDays": 9286
+  }
+ },
+ "redundancyNoLabels": {
+  "credit_z_R2_on_gap_vol": 0.005611973177255591,
+  "flag_R2_on_gap_vol": 0.1748791617566542,
+  "pairs": {
+   "credit_z~vix": -0.13200592868008348,
+   "flag~credit_z": 0.6511947297363129,
+   "flag~vix": 0.1697275747220005,
+   "gap~credit_z": -0.0747055830689151,
+   "gap~flag": -0.1605603734169652,
+   "gap~vix": 0.023832868692089313,
+   "gap~vol": -0.09264138833753435,
+   "vol~credit_z": 0.0013726256631782672,
+   "vol~flag": 0.3993480622408297,
+   "vol~vix": 0.6648685580907547
+  },
+  "rows": 155,
+  "vix_R2_on_gap_vol": 0.449411183704194
+ },
+ "signalLabelJoins": 0,
+ "stage": "EXP1_READINESS",
+ "structure": {
+  "A": {
+   "evaluationEpisodes": [
+    "2008-01-18",
+    "2018-12-20",
+    "2020-03-09",
+    "2022-05-09",
+    "2025-04-04"
+   ],
+   "evaluationPositiveRows": 23,
+   "evaluationRows": 128,
+   "firstRow": "1998-03-31",
+   "independentEvaluationEpisodes": 5,
+   "pass": true,
+   "reasons": [],
+   "rows": 155,
+   "start": 2001,
+   "trainingEpisodesAtStart": [
+    "1998-08-31",
+    "2000-12-20"
+   ]
+  },
+  "B": {
+   "evaluationEpisodes": [
+    "2022-05-09",
+    "2025-04-04"
+   ],
+   "evaluationPositiveRows": 9,
+   "evaluationRows": 38,
+   "firstRow": "2012-08-31",
+   "independentEvaluationEpisodes": 2,
+   "pass": false,
+   "reasons": [
+    "FEW_EVALUATION_EPISODES",
+    "FEW_EVALUATION_ROWS"
+   ],
+   "rows": 120,
+   "start": 2021,
+   "trainingEpisodesAtStart": [
+    "2018-12-20",
+    "2020-03-09"
+   ]
+  }
+ }
+}

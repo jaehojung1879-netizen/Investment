@@ -1,0 +1,360 @@
+{
+ "basis": {
+  "episodesPrice": [
+   "1998-08-31",
+   "2000-12-19",
+   "2008-01-18",
+   "2018-12-20",
+   "2020-03-09",
+   "2022-05-09",
+   "2025-04-04"
+  ],
+  "episodesTotalReturn": [
+   "1998-08-31",
+   "2000-12-20",
+   "2008-01-18",
+   "2018-12-20",
+   "2020-03-09",
+   "2022-05-09",
+   "2025-04-04"
+  ],
+  "fastPriceVsTotalReturn": {
+   "dates": [
+    "2002-03-28",
+    "2004-07-30",
+    "2004-08-31",
+    "2004-09-30",
+    "2005-04-29",
+    "2018-11-30"
+   ],
+   "monthEnds": 359,
+   "normalStateDisagreements": 6
+  }
+ },
+ "creditLabelJoins": 0,
+ "flagPersistence": {
+  "lag1Autocorrelation": 0.5458190798691811,
+  "maxSpell": 9,
+  "meanSpell": 2.72,
+  "months": 337,
+  "rate": 0.20178041543026706,
+  "spells": 25
+ },
+ "opportunityNull": {
+  "criticalHitsAt5pct": 5,
+  "evaluationEpisodeNullHitProbability": {
+   "2008-01-18": 0.36633663366336633,
+   "2018-12-20": 0.38848920863309355,
+   "2020-03-09": 0.36633663366336633,
+   "2022-05-09": 0.38848920863309355,
+   "2025-04-04": 0.36633663366336633
+  },
+  "flagRateOnFastNormalCommonSample": 0.1032258064516129,
+  "nullHitDistribution": [
+   0.09514457960299871,
+   0.2859059637445258,
+   0.34346818684633323,
+   0.20619901408565983,
+   0.06186234004029785,
+   0.007419915680184602
+  ],
+  "p0HitGivenOpportunities": {
+   "1": {
+    "independentBernoulli": 0.10322580645161294,
+    "p0": 0.0,
+    "startsObserved": 123
+   },
+   "2": {
+    "independentBernoulli": 0.19579604578564003,
+    "p0": 0.21578947368421053,
+    "startsObserved": 190
+   },
+   "3": {
+    "independentBernoulli": 0.2788106475109934,
+    "p0": 0.37282229965156793,
+    "startsObserved": 287
+   },
+   "4": {
+    "independentBernoulli": 0.35325600002598767,
+    "p0": 0.38848920863309355,
+    "startsObserved": 278
+   },
+   "5": {
+    "independentBernoulli": 0.420016670991047,
+    "p0": 0.36633663366336633,
+    "startsObserved": 505
+   },
+   "6": {
+    "independentBernoulli": 0.4798859178564874,
+    "p0": 0.15426781519185592,
+    "startsObserved": 1277
+   },
+   "7": {
+    "independentBernoulli": 0.5335751134325919,
+    "p0": 0.16216216216216217,
+    "startsObserved": 74
+   }
+  },
+  "stage1BinomialCriticalHitsAt5pct": 3,
+  "stage1BinomialP0_10Distribution": [
+   0.5904900000000001,
+   0.32805,
+   0.07290000000000002,
+   0.008100000000000001,
+   0.0004500000000000001,
+   1.0000000000000003e-05
+  ],
+  "tailProbabilityOfStage1CriticalUnderOpportunityNull": 0.2754812698061423
+ },
+ "stage": "STAGE_2_READINESS",
+ "structure": {
+  "allEpisodeOpportunities": {
+   "1998-08-31": 5,
+   "2000-12-20": 2,
+   "2008-01-18": 5,
+   "2018-12-20": 4,
+   "2020-03-09": 5,
+   "2022-05-09": 4,
+   "2025-04-04": 5
+  },
+  "byRefitYear": {
+   "1998": {
+    "evalEpisodesIfStartHere": 7,
+    "evalRowsIfStartHere": 149,
+    "trainEpisodes": 0,
+    "trainPositives": 0,
+    "trainRows": 0
+   },
+   "1999": {
+    "evalEpisodesIfStartHere": 6,
+    "evalRowsIfStartHere": 143,
+    "trainEpisodes": 1,
+    "trainPositives": 4,
+    "trainRows": 4
+   },
+   "2000": {
+    "evalEpisodesIfStartHere": 6,
+    "evalRowsIfStartHere": 132,
+    "trainEpisodes": 1,
+    "trainPositives": 5,
+    "trainRows": 13
+   },
+   "2001": {
+    "evalEpisodesIfStartHere": 5,
+    "evalRowsIfStartHere": 128,
+    "trainEpisodes": 2,
+    "trainPositives": 6,
+    "trainRows": 20
+   },
+   "2002": {
+    "evalEpisodesIfStartHere": 5,
+    "evalRowsIfStartHere": 128,
+    "trainEpisodes": 2,
+    "trainPositives": 7,
+    "trainRows": 21
+   },
+   "2003": {
+    "evalEpisodesIfStartHere": 5,
+    "evalRowsIfStartHere": 128,
+    "trainEpisodes": 2,
+    "trainPositives": 7,
+    "trainRows": 21
+   },
+   "2004": {
+    "evalEpisodesIfStartHere": 5,
+    "evalRowsIfStartHere": 128,
+    "trainEpisodes": 2,
+    "trainPositives": 7,
+    "trainRows": 21
+   },
+   "2005": {
+    "evalEpisodesIfStartHere": 5,
+    "evalRowsIfStartHere": 128,
+    "trainEpisodes": 2,
+    "trainPositives": 7,
+    "trainRows": 21
+   },
+   "2006": {
+    "evalEpisodesIfStartHere": 5,
+    "evalRowsIfStartHere": 128,
+    "trainEpisodes": 2,
+    "trainPositives": 7,
+    "trainRows": 21
+   },
+   "2007": {
+    "evalEpisodesIfStartHere": 5,
+    "evalRowsIfStartHere": 125,
+    "trainEpisodes": 2,
+    "trainPositives": 7,
+    "trainRows": 21
+   },
+   "2008": {
+    "evalEpisodesIfStartHere": 4,
+    "evalRowsIfStartHere": 114,
+    "trainEpisodes": 3,
+    "trainPositives": 8,
+    "trainRows": 31
+   },
+   "2009": {
+    "evalEpisodesIfStartHere": 4,
+    "evalRowsIfStartHere": 114,
+    "trainEpisodes": 3,
+    "trainPositives": 12,
+    "trainRows": 35
+   },
+   "2010": {
+    "evalEpisodesIfStartHere": 4,
+    "evalRowsIfStartHere": 114,
+    "trainEpisodes": 3,
+    "trainPositives": 12,
+    "trainRows": 35
+   },
+   "2011": {
+    "evalEpisodesIfStartHere": 4,
+    "evalRowsIfStartHere": 114,
+    "trainEpisodes": 3,
+    "trainPositives": 12,
+    "trainRows": 35
+   },
+   "2012": {
+    "evalEpisodesIfStartHere": 4,
+    "evalRowsIfStartHere": 114,
+    "trainEpisodes": 3,
+    "trainPositives": 12,
+    "trainRows": 35
+   },
+   "2013": {
+    "evalEpisodesIfStartHere": 4,
+    "evalRowsIfStartHere": 109,
+    "trainEpisodes": 3,
+    "trainPositives": 12,
+    "trainRows": 35
+   },
+   "2014": {
+    "evalEpisodesIfStartHere": 4,
+    "evalRowsIfStartHere": 97,
+    "trainEpisodes": 3,
+    "trainPositives": 12,
+    "trainRows": 47
+   },
+   "2015": {
+    "evalEpisodesIfStartHere": 4,
+    "evalRowsIfStartHere": 85,
+    "trainEpisodes": 3,
+    "trainPositives": 12,
+    "trainRows": 59
+   },
+   "2016": {
+    "evalEpisodesIfStartHere": 4,
+    "evalRowsIfStartHere": 76,
+    "trainEpisodes": 3,
+    "trainPositives": 12,
+    "trainRows": 70
+   },
+   "2017": {
+    "evalEpisodesIfStartHere": 4,
+    "evalRowsIfStartHere": 68,
+    "trainEpisodes": 3,
+    "trainPositives": 12,
+    "trainRows": 78
+   },
+   "2018": {
+    "evalEpisodesIfStartHere": 4,
+    "evalRowsIfStartHere": 61,
+    "trainEpisodes": 3,
+    "trainPositives": 12,
+    "trainRows": 83
+   },
+   "2019": {
+    "evalEpisodesIfStartHere": 3,
+    "evalRowsIfStartHere": 52,
+    "trainEpisodes": 4,
+    "trainPositives": 14,
+    "trainRows": 95
+   },
+   "2020": {
+    "evalEpisodesIfStartHere": 3,
+    "evalRowsIfStartHere": 44,
+    "trainEpisodes": 4,
+    "trainPositives": 16,
+    "trainRows": 100
+   },
+   "2021": {
+    "evalEpisodesIfStartHere": 2,
+    "evalRowsIfStartHere": 38,
+    "trainEpisodes": 5,
+    "trainPositives": 21,
+    "trainRows": 106
+   },
+   "2022": {
+    "evalEpisodesIfStartHere": 2,
+    "evalRowsIfStartHere": 26,
+    "trainEpisodes": 5,
+    "trainPositives": 21,
+    "trainRows": 118
+   },
+   "2023": {
+    "evalEpisodesIfStartHere": 1,
+    "evalRowsIfStartHere": 24,
+    "trainEpisodes": 6,
+    "trainPositives": 25,
+    "trainRows": 125
+   },
+   "2024": {
+    "evalEpisodesIfStartHere": 1,
+    "evalRowsIfStartHere": 23,
+    "trainEpisodes": 6,
+    "trainPositives": 25,
+    "trainRows": 125
+   },
+   "2025": {
+    "evalEpisodesIfStartHere": 1,
+    "evalRowsIfStartHere": 11,
+    "trainEpisodes": 6,
+    "trainPositives": 25,
+    "trainRows": 133
+   },
+   "2026": {
+    "evalEpisodesIfStartHere": 0,
+    "evalRowsIfStartHere": 3,
+    "trainEpisodes": 7,
+    "trainPositives": 30,
+    "trainRows": 141
+   }
+  },
+  "censoredRows": 6,
+  "commonSampleRows": 155,
+  "definedFlagMonths": 337,
+  "evaluationOpportunities": {
+   "2008-01-18": 5,
+   "2018-12-20": 4,
+   "2020-03-09": 5,
+   "2022-05-09": 4,
+   "2025-04-04": 5
+  },
+  "firstDefinedFlagSession": 1305,
+  "gate": {
+   "evaluationEpisodes": [
+    "2008-01-18",
+    "2018-12-20",
+    "2020-03-09",
+    "2022-05-09",
+    "2025-04-04"
+   ],
+   "evaluationPositives": 23,
+   "evaluationRows": 128,
+   "pass": true,
+   "reasons": [],
+   "rotations": 314,
+   "start": 2001,
+   "trainingEpisodesAtStart": [
+    "1998-08-31",
+    "2000-12-20"
+   ],
+   "trainingRowsAtStart": 20
+  },
+  "labelledRows": 149,
+  "lastSession": "2026-11-09",
+  "positives": 30
+ }
+}

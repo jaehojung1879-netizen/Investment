@@ -1,0 +1,1480 @@
+{
+ "source": {
+  "path": "research/adaptive_cocktail_v1/results/results.json",
+  "commit": "0a1f494171576af6928fe531145a8c8f050253fd",
+  "gitBlobSha1": "7efdbb1e934cd72c2a864298c24796dc27506735",
+  "note": "extract of the #329 published numbers this study must reproduce before any decomposition is read"
+ },
+ "window": {
+  "start": "2018-01-08",
+  "end": "2026-09-14",
+  "decisions": 114,
+  "sleeveHistoryStart": "2014-01-06"
+ },
+ "inputs": {
+  "finalSessionQuotesApplied": 235,
+  "identity": "3e4d7aa35e2c4b273e4ecef0e2e8ea7a8a27077f0de14bb3d5ea6a696a97f1a5",
+  "matrixDigest": "32e49b57a7541eea66f76373baef50c6302a394247b313f6099f718d46d54b0c"
+ },
+ "performance": {
+  "S0_ETF": {
+   "cagr": 0.169576,
+   "excessCagr": 0.0,
+   "sharpe": 0.633386,
+   "mdd": -0.408055,
+   "trackingError": 0.0,
+   "informationRatio": 0.238763,
+   "costPerYear": 0.0,
+   "turnoverPerYear": 0.0
+  },
+  "S1_INDUSTRY_MOMENTUM": {
+   "cagr": 0.075621,
+   "excessCagr": -0.093955,
+   "sharpe": 0.329844,
+   "mdd": -0.6321,
+   "trackingError": 0.300777,
+   "informationRatio": -0.137844,
+   "costPerYear": 0.023639,
+   "turnoverPerYear": 7.070258
+  },
+  "S2_VALUE_CONFIRMED": {
+   "cagr": 0.186286,
+   "excessCagr": 0.01671,
+   "sharpe": 0.701889,
+   "mdd": -0.492281,
+   "trackingError": 0.201001,
+   "informationRatio": 0.059246,
+   "costPerYear": 0.013842,
+   "turnoverPerYear": 4.280198
+  },
+  "S3_FOUR_FACTOR": {
+   "cagr": 0.087789,
+   "excessCagr": -0.081787,
+   "sharpe": 0.388159,
+   "mdd": -0.620827,
+   "trackingError": 0.21985,
+   "informationRatio": -0.372359,
+   "costPerYear": 0.014654,
+   "turnoverPerYear": 4.505228
+  },
+  "STATIC_EW4": {
+   "cagr": 0.145093,
+   "excessCagr": -0.024483,
+   "sharpe": 0.590701,
+   "mdd": -0.488553,
+   "trackingError": 0.12533,
+   "informationRatio": -0.224356,
+   "costPerYear": 0.012859,
+   "turnoverPerYear": 3.954322
+  },
+  "STATIC_50_ETF_50_S1": {
+   "cagr": 0.134791,
+   "excessCagr": -0.034785,
+   "sharpe": 0.497204,
+   "mdd": -0.502398,
+   "trackingError": 0.150043,
+   "informationRatio": -0.135318,
+   "costPerYear": 0.011837,
+   "turnoverPerYear": 3.646124
+  },
+  "A1_MOMENTUM_CRASH_GUARD": {
+   "cagr": 0.156259,
+   "excessCagr": -0.013317,
+   "sharpe": 0.547843,
+   "mdd": -0.557281,
+   "trackingError": 0.167584,
+   "informationRatio": 0.01598,
+   "costPerYear": 0.011087,
+   "turnoverPerYear": 4.295404
+  },
+  "A2_INVERSE_VOL_RISK_BUDGET": {
+   "cagr": 0.154435,
+   "excessCagr": -0.015141,
+   "sharpe": 0.637686,
+   "mdd": -0.480305,
+   "trackingError": 0.118927,
+   "informationRatio": -0.185451,
+   "costPerYear": 0.011651,
+   "turnoverPerYear": 3.620279
+  },
+  "SLEEVE_MOMENTUM_SWITCH": {
+   "cagr": 0.324456,
+   "excessCagr": 0.15488,
+   "sharpe": 0.93491,
+   "mdd": -0.408055,
+   "trackingError": 0.229242,
+   "informationRatio": 0.630649,
+   "costPerYear": 0.016785,
+   "turnoverPerYear": 5.503034
+  },
+  "B1_RIDGE_ALL_STATES": {
+   "cagr": 0.051576,
+   "excessCagr": -0.118,
+   "sharpe": 0.247107,
+   "mdd": -0.501572,
+   "trackingError": 0.140724,
+   "informationRatio": -0.721266,
+   "costPerYear": 0.011776,
+   "turnoverPerYear": 4.470431
+  },
+  "B2_LGBM_ALL_STATES": {
+   "cagr": 0.135155,
+   "excessCagr": -0.034421,
+   "sharpe": 0.512777,
+   "mdd": -0.408055,
+   "trackingError": 0.094206,
+   "informationRatio": -0.276042,
+   "costPerYear": 0.005238,
+   "turnoverPerYear": 2.497086
+  },
+  "B3_RIDGE_KR_ONLY": {
+   "cagr": 0.098844,
+   "excessCagr": -0.070732,
+   "sharpe": 0.403089,
+   "mdd": -0.408055,
+   "trackingError": 0.095375,
+   "informationRatio": -0.637836,
+   "costPerYear": 0.007824,
+   "turnoverPerYear": 3.242895
+  },
+  "TREND_200_CASH": {
+   "cagr": 0.169181,
+   "excessCagr": -0.000395,
+   "sharpe": 0.687757,
+   "mdd": -0.408055,
+   "trackingError": 0.134541,
+   "informationRatio": -0.069628,
+   "costPerYear": 0.000532,
+   "turnoverPerYear": 1.064656
+  },
+  "S4_RISK_MANAGED_ETF": {
+   "cagr": 0.137205,
+   "excessCagr": -0.032371,
+   "sharpe": 0.621689,
+   "mdd": -0.338894,
+   "trackingError": 0.080139,
+   "informationRatio": -0.543368,
+   "costPerYear": 0.000252,
+   "turnoverPerYear": 0.503526
+  },
+  "SX_XGB_SENSITIVITY": {
+   "cagr": 0.257479,
+   "excessCagr": 0.087903,
+   "sharpe": 0.944389,
+   "mdd": -0.385061,
+   "trackingError": 0.195481,
+   "informationRatio": 0.347324,
+   "costPerYear": 0.021748,
+   "turnoverPerYear": 6.546473
+  }
+ },
+ "yearly": {
+  "S0_ETF": {
+   "2018": {
+    "ret": -0.190376,
+    "etf": -0.190376,
+    "excess": 0.0
+   },
+   "2019": {
+    "ret": 0.143994,
+    "etf": 0.143994,
+    "excess": 0.0
+   },
+   "2020": {
+    "ret": 0.355328,
+    "etf": 0.355328,
+    "excess": 0.0
+   },
+   "2021": {
+    "ret": 0.029991,
+    "etf": 0.029991,
+    "excess": 0.0
+   },
+   "2022": {
+    "ret": -0.241499,
+    "etf": -0.241499,
+    "excess": -0.0
+   },
+   "2023": {
+    "ret": 0.248424,
+    "etf": 0.248424,
+    "excess": 0.0
+   },
+   "2024": {
+    "ret": -0.093715,
+    "etf": -0.093715,
+    "excess": -0.0
+   },
+   "2025": {
+    "ret": 0.942069,
+    "etf": 0.942069,
+    "excess": 0.0
+   },
+   "2026": {
+    "ret": 0.744093,
+    "etf": 0.744093,
+    "excess": 0.0
+   }
+  },
+  "S1_INDUSTRY_MOMENTUM": {
+   "2018": {
+    "ret": -0.163801,
+    "etf": -0.190376,
+    "excess": 0.026574
+   },
+   "2019": {
+    "ret": -0.153046,
+    "etf": 0.143994,
+    "excess": -0.29704
+   },
+   "2020": {
+    "ret": 0.168029,
+    "etf": 0.355328,
+    "excess": -0.187299
+   },
+   "2021": {
+    "ret": 0.081209,
+    "etf": 0.029991,
+    "excess": 0.051218
+   },
+   "2022": {
+    "ret": -0.417434,
+    "etf": -0.241499,
+    "excess": -0.175935
+   },
+   "2023": {
+    "ret": 0.599915,
+    "etf": 0.248424,
+    "excess": 0.351491
+   },
+   "2024": {
+    "ret": -0.021362,
+    "etf": -0.093715,
+    "excess": 0.072353
+   },
+   "2025": {
+    "ret": 1.394387,
+    "etf": 0.942069,
+    "excess": 0.452318
+   },
+   "2026": {
+    "ret": -0.052008,
+    "etf": 0.744093,
+    "excess": -0.796101
+   }
+  },
+  "S2_VALUE_CONFIRMED": {
+   "2018": {
+    "ret": 0.045123,
+    "etf": -0.190376,
+    "excess": 0.235499
+   },
+   "2019": {
+    "ret": 0.006237,
+    "etf": 0.143994,
+    "excess": -0.137757
+   },
+   "2020": {
+    "ret": 0.040707,
+    "etf": 0.355328,
+    "excess": -0.314621
+   },
+   "2021": {
+    "ret": 0.215317,
+    "etf": 0.029991,
+    "excess": 0.185326
+   },
+   "2022": {
+    "ret": -0.154356,
+    "etf": -0.241499,
+    "excess": 0.087143
+   },
+   "2023": {
+    "ret": 0.070867,
+    "etf": 0.248424,
+    "excess": -0.177557
+   },
+   "2024": {
+    "ret": -0.079104,
+    "etf": -0.093715,
+    "excess": 0.014611
+   },
+   "2025": {
+    "ret": 1.189232,
+    "etf": 0.942069,
+    "excess": 0.247163
+   },
+   "2026": {
+    "ret": 0.744877,
+    "etf": 0.744093,
+    "excess": 0.000784
+   }
+  },
+  "S3_FOUR_FACTOR": {
+   "2018": {
+    "ret": -0.258093,
+    "etf": -0.190376,
+    "excess": -0.067718
+   },
+   "2019": {
+    "ret": -0.035136,
+    "etf": 0.143994,
+    "excess": -0.179131
+   },
+   "2020": {
+    "ret": -0.198424,
+    "etf": 0.355328,
+    "excess": -0.553752
+   },
+   "2021": {
+    "ret": 0.165671,
+    "etf": 0.029991,
+    "excess": 0.135681
+   },
+   "2022": {
+    "ret": -0.087459,
+    "etf": -0.241499,
+    "excess": 0.154041
+   },
+   "2023": {
+    "ret": 0.120932,
+    "etf": 0.248424,
+    "excess": -0.127492
+   },
+   "2024": {
+    "ret": 0.272547,
+    "etf": -0.093715,
+    "excess": 0.366262
+   },
+   "2025": {
+    "ret": 0.640205,
+    "etf": 0.942069,
+    "excess": -0.301864
+   },
+   "2026": {
+    "ret": 0.426102,
+    "etf": 0.744093,
+    "excess": -0.317991
+   }
+  },
+  "STATIC_EW4": {
+   "2018": {
+    "ret": -0.144404,
+    "etf": -0.190376,
+    "excess": 0.045971
+   },
+   "2019": {
+    "ret": -0.008658,
+    "etf": 0.143994,
+    "excess": -0.152652
+   },
+   "2020": {
+    "ret": 0.086299,
+    "etf": 0.355328,
+    "excess": -0.269029
+   },
+   "2021": {
+    "ret": 0.129154,
+    "etf": 0.029991,
+    "excess": 0.099163
+   },
+   "2022": {
+    "ret": -0.229737,
+    "etf": -0.241499,
+    "excess": 0.011762
+   },
+   "2023": {
+    "ret": 0.257617,
+    "etf": 0.248424,
+    "excess": 0.009193
+   },
+   "2024": {
+    "ret": 0.025144,
+    "etf": -0.093715,
+    "excess": 0.11886
+   },
+   "2025": {
+    "ret": 1.068634,
+    "etf": 0.942069,
+    "excess": 0.126565
+   },
+   "2026": {
+    "ret": 0.470602,
+    "etf": 0.744093,
+    "excess": -0.273491
+   }
+  },
+  "SLEEVE_MOMENTUM_SWITCH": {
+   "2018": {
+    "ret": 0.01114,
+    "etf": -0.190376,
+    "excess": 0.201515
+   },
+   "2019": {
+    "ret": 0.04836,
+    "etf": 0.143994,
+    "excess": -0.095634
+   },
+   "2020": {
+    "ret": 0.343475,
+    "etf": 0.355328,
+    "excess": -0.011853
+   },
+   "2021": {
+    "ret": 0.036279,
+    "etf": 0.029991,
+    "excess": 0.006288
+   },
+   "2022": {
+    "ret": -0.176059,
+    "etf": -0.241499,
+    "excess": 0.06544
+   },
+   "2023": {
+    "ret": 0.530049,
+    "etf": 0.248424,
+    "excess": 0.281624
+   },
+   "2024": {
+    "ret": 0.157248,
+    "etf": -0.093715,
+    "excess": 0.250963
+   },
+   "2025": {
+    "ret": 1.819511,
+    "etf": 0.942069,
+    "excess": 0.877442
+   },
+   "2026": {
+    "ret": 0.771245,
+    "etf": 0.744093,
+    "excess": 0.027152
+   }
+  }
+ },
+ "decompositionVsStaticEW4": {
+  "A1_MOMENTUM_CRASH_GUARD": {
+   "grossCagrGap": 0.011166,
+   "arithmeticMeanDailyGapAnnualised": 0.030782,
+   "compoundingTerm": -0.019616,
+   "sleeveTimingEffectAnnualised": 0.032685,
+   "marketBetaOfDifference": 0.204,
+   "marketExposureContributionAnnualised": 0.03955,
+   "industryMomentumBetaOfDifference": 0.0282,
+   "industryExposureContributionAnnualised": -0.001244,
+   "regressionInterceptAnnualised": -0.007524,
+   "stockSelectionEffect": 0.0,
+   "costDifferencePerYear": -0.001772,
+   "note": "timing = sum((w_dyn - w_static) . sleeve daily returns) with target weights held between decisions; the rest of the gap is drift, netting of overlapping names and costs. Stock selection is identical by construction (same fixed sleeves)."
+  },
+  "A2_INVERSE_VOL_RISK_BUDGET": {
+   "grossCagrGap": 0.009341,
+   "arithmeticMeanDailyGapAnnualised": 0.006061,
+   "compoundingTerm": 0.003281,
+   "sleeveTimingEffectAnnualised": 0.006099,
+   "marketBetaOfDifference": -0.0197,
+   "marketExposureContributionAnnualised": -0.003825,
+   "industryMomentumBetaOfDifference": -0.0678,
+   "industryExposureContributionAnnualised": 0.002991,
+   "regressionInterceptAnnualised": 0.006895,
+   "stockSelectionEffect": 0.0,
+   "costDifferencePerYear": -0.001207,
+   "note": "timing = sum((w_dyn - w_static) . sleeve daily returns) with target weights held between decisions; the rest of the gap is drift, netting of overlapping names and costs. Stock selection is identical by construction (same fixed sleeves)."
+  },
+  "B1_RIDGE_ALL_STATES": {
+   "grossCagrGap": -0.093518,
+   "arithmeticMeanDailyGapAnnualised": -0.073346,
+   "compoundingTerm": -0.020171,
+   "sleeveTimingEffectAnnualised": -0.069219,
+   "marketBetaOfDifference": 0.1336,
+   "marketExposureContributionAnnualised": 0.025903,
+   "industryMomentumBetaOfDifference": -0.0485,
+   "industryExposureContributionAnnualised": 0.002139,
+   "regressionInterceptAnnualised": -0.101388,
+   "stockSelectionEffect": 0.0,
+   "costDifferencePerYear": -0.001083,
+   "note": "timing = sum((w_dyn - w_static) . sleeve daily returns) with target weights held between decisions; the rest of the gap is drift, netting of overlapping names and costs. Stock selection is identical by construction (same fixed sleeves)."
+  },
+  "B2_LGBM_ALL_STATES": {
+   "grossCagrGap": -0.009938,
+   "arithmeticMeanDailyGapAnnualised": 0.002113,
+   "compoundingTerm": -0.012051,
+   "sleeveTimingEffectAnnualised": 0.005335,
+   "marketBetaOfDifference": 0.1876,
+   "marketExposureContributionAnnualised": 0.036368,
+   "industryMomentumBetaOfDifference": -0.1636,
+   "industryExposureContributionAnnualised": 0.007212,
+   "regressionInterceptAnnualised": -0.041467,
+   "stockSelectionEffect": 0.0,
+   "costDifferencePerYear": -0.007621,
+   "note": "timing = sum((w_dyn - w_static) . sleeve daily returns) with target weights held between decisions; the rest of the gap is drift, netting of overlapping names and costs. Stock selection is identical by construction (same fixed sleeves)."
+  },
+  "B3_RIDGE_KR_ONLY": {
+   "grossCagrGap": -0.046249,
+   "arithmeticMeanDailyGapAnnualised": -0.032699,
+   "compoundingTerm": -0.01355,
+   "sleeveTimingEffectAnnualised": -0.029733,
+   "marketBetaOfDifference": 0.1567,
+   "marketExposureContributionAnnualised": 0.030379,
+   "industryMomentumBetaOfDifference": -0.1286,
+   "industryExposureContributionAnnualised": 0.00567,
+   "regressionInterceptAnnualised": -0.068748,
+   "stockSelectionEffect": 0.0,
+   "costDifferencePerYear": -0.005034,
+   "note": "timing = sum((w_dyn - w_static) . sleeve daily returns) with target weights held between decisions; the rest of the gap is drift, netting of overlapping names and costs. Stock selection is identical by construction (same fixed sleeves)."
+  },
+  "SLEEVE_MOMENTUM_SWITCH": {
+   "grossCagrGap": 0.179363,
+   "arithmeticMeanDailyGapAnnualised": 0.172609,
+   "compoundingTerm": 0.006754,
+   "sleeveTimingEffectAnnualised": 0.176293,
+   "marketBetaOfDifference": 0.1287,
+   "marketExposureContributionAnnualised": 0.024947,
+   "industryMomentumBetaOfDifference": 0.1931,
+   "industryExposureContributionAnnualised": -0.008511,
+   "regressionInterceptAnnualised": 0.156172,
+   "stockSelectionEffect": 0.0,
+   "costDifferencePerYear": 0.003927,
+   "note": "timing = sum((w_dyn - w_static) . sleeve daily returns) with target weights held between decisions; the rest of the gap is drift, netting of overlapping names and costs. Stock selection is identical by construction (same fixed sleeves)."
+  }
+ },
+ "inference": {
+  "A1_MOMENTUM_CRASH_GUARD": {
+   "vsStaticEW4": {
+    "annualisedMeanDiff": 0.03079657436777928,
+    "ci95": [
+     -0.08708658354179143,
+     0.15283456824903527
+    ],
+    "twoSidedP": 0.609,
+    "holmP": 1.0
+   },
+   "vsS0": {
+    "annualisedMeanDiff": 0.0026780021886849397,
+    "ci95": [
+     -0.12582053343986696,
+     0.13918047615820747
+    ],
+    "twoSidedP": 0.991
+   }
+  },
+  "A2_INVERSE_VOL_RISK_BUDGET": {
+   "vsStaticEW4": {
+    "annualisedMeanDiff": 0.00606346779313378,
+    "ci95": [
+     -0.011350921455906385,
+     0.023365292309791664
+    ],
+    "twoSidedP": 0.468,
+    "holmP": 1.0
+   },
+   "vsS0": {
+    "annualisedMeanDiff": -0.022055104385960558,
+    "ci95": [
+     -0.12041370851862594,
+     0.06664273060540084
+    ],
+    "twoSidedP": 0.666
+   }
+  },
+  "B1_RIDGE_ALL_STATES": {
+   "vsStaticEW4": {
+    "annualisedMeanDiff": -0.07338076852681542,
+    "ci95": [
+     -0.18164503341722357,
+     0.02707460309530018
+    ],
+    "twoSidedP": 0.151,
+    "holmP": 0.755
+   },
+   "vsS0": {
+    "annualisedMeanDiff": -0.10149934070590978,
+    "ci95": [
+     -0.24144445159852113,
+     0.007045580054649394
+    ],
+    "twoSidedP": 0.075
+   }
+  },
+  "B2_LGBM_ALL_STATES": {
+   "vsStaticEW4": {
+    "annualisedMeanDiff": 0.0021137226619739507,
+    "ci95": [
+     -0.08629679433584621,
+     0.09288888027820648
+    ],
+    "twoSidedP": 0.997,
+    "holmP": 1.0
+   },
+   "vsS0": {
+    "annualisedMeanDiff": -0.026004849517120388,
+    "ci95": [
+     -0.1062686296667062,
+     0.03638227192898675
+    ],
+    "twoSidedP": 0.448
+   }
+  },
+  "B3_RIDGE_KR_ONLY": {
+   "vsStaticEW4": {
+    "annualisedMeanDiff": -0.03271472264889343,
+    "ci95": [
+     -0.1159753071421993,
+     0.038126784261999704
+    ],
+    "twoSidedP": 0.403,
+    "holmP": 1.0
+   },
+   "vsS0": {
+    "annualisedMeanDiff": -0.060833294827987765,
+    "ci95": [
+     -0.1797465325179562,
+     0.03132463545680419
+    ],
+    "twoSidedP": 0.24
+   }
+  },
+  "SLEEVE_MOMENTUM_SWITCH": {
+   "vsStaticEW4": {
+    "annualisedMeanDiff": 0.1726895758487973,
+    "ci95": [
+     0.08460340837909187,
+     0.26237293258598754
+    ],
+    "twoSidedP": 0.0,
+    "holmP": 0.0
+   },
+   "vsS0": {
+    "annualisedMeanDiff": 0.144571003669703,
+    "ci95": [
+     0.018595487139458765,
+     0.28504844992629647
+    ],
+    "twoSidedP": 0.031
+   }
+  }
+ },
+ "postHoc": {
+  "cagrWithout2025": {
+   "S0_ETF": 0.092125,
+   "S1_INDUSTRY_MOMENTUM": -0.033717,
+   "S2_VALUE_CONFIRMED": 0.09214,
+   "S3_FOUR_FACTOR": 0.029309,
+   "STATIC_EW4": 0.057419,
+   "A1_MOMENTUM_CRASH_GUARD": 0.051595,
+   "A2_INVERSE_VOL_RISK_BUDGET": 0.067958,
+   "B1_RIDGE_ALL_STATES": 0.023352,
+   "B2_LGBM_ALL_STATES": 0.072763,
+   "B3_RIDGE_KR_ONLY": 0.060955,
+   "SLEEVE_MOMENTUM_SWITCH": 0.195621
+  },
+  "excludeDefenseAndElectronics": {
+   "S0_ETF": 0.169576,
+   "S1_INDUSTRY_MOMENTUM": -0.020866,
+   "S2_VALUE_CONFIRMED": 0.093789,
+   "S3_FOUR_FACTOR": 0.079882,
+   "STATIC_EW4": 0.091689,
+   "STATIC_50_ETF_50_S1": 0.080926,
+   "A1_MOMENTUM_CRASH_GUARD": 0.026482,
+   "A2_INVERSE_VOL_RISK_BUDGET": 0.092584,
+   "SLEEVE_MOMENTUM_SWITCH": 0.175493,
+   "B1_RIDGE_ALL_STATES": 0.088774,
+   "B2_LGBM_ALL_STATES": 0.099947,
+   "B3_RIDGE_KR_ONLY": 0.102596,
+   "TREND_200_CASH": 0.169181,
+   "S4_RISK_MANAGED_ETF": 0.137205
+  },
+  "costX2": {
+   "S0_ETF": 0.169576,
+   "S1_INDUSTRY_MOMENTUM": 0.050502,
+   "S2_VALUE_CONFIRMED": 0.169977,
+   "S3_FOUR_FACTOR": 0.072021,
+   "STATIC_EW4": 0.130495,
+   "STATIC_50_ETF_50_S1": 0.121466,
+   "A1_MOMENTUM_CRASH_GUARD": 0.143572,
+   "A2_INVERSE_VOL_RISK_BUDGET": 0.141088,
+   "SLEEVE_MOMENTUM_SWITCH": 0.302458,
+   "B1_RIDGE_ALL_STATES": 0.03929,
+   "B2_LGBM_ALL_STATES": 0.129214,
+   "B3_RIDGE_KR_ONLY": 0.090288,
+   "TREND_200_CASH": 0.168559,
+   "S4_RISK_MANAGED_ETF": 0.136919
+  },
+  "rebalancePhase": {
+   "note": "the same frozen rules on the other three 4-week phases; phase 0 is the frozen primary. Added after the S1 sleeve was found to differ from ml-strategy-tournament-v1 only by phase (see config postOutcomeAdditions)",
+   "byPhase": {
+    "0": {
+     "S0_ETF": {
+      "cagr": 0.169576,
+      "excessCagr": 0.0,
+      "sharpe": 0.633386,
+      "mdd": -0.408055
+     },
+     "S1_INDUSTRY_MOMENTUM": {
+      "cagr": 0.075621,
+      "excessCagr": -0.093955,
+      "sharpe": 0.329844,
+      "mdd": -0.6321
+     },
+     "S2_VALUE_CONFIRMED": {
+      "cagr": 0.186286,
+      "excessCagr": 0.01671,
+      "sharpe": 0.701889,
+      "mdd": -0.492281
+     },
+     "S3_FOUR_FACTOR": {
+      "cagr": 0.087789,
+      "excessCagr": -0.081787,
+      "sharpe": 0.388159,
+      "mdd": -0.620827
+     },
+     "STATIC_EW4": {
+      "cagr": 0.145093,
+      "excessCagr": -0.024483,
+      "sharpe": 0.590701,
+      "mdd": -0.488553
+     },
+     "STATIC_50_ETF_50_S1": {
+      "cagr": 0.134791,
+      "excessCagr": -0.034785,
+      "sharpe": 0.497204,
+      "mdd": -0.502398
+     },
+     "A1_MOMENTUM_CRASH_GUARD": {
+      "cagr": 0.156259,
+      "excessCagr": -0.013317,
+      "sharpe": 0.547843,
+      "mdd": -0.557281
+     },
+     "A2_INVERSE_VOL_RISK_BUDGET": {
+      "cagr": 0.154435,
+      "excessCagr": -0.015141,
+      "sharpe": 0.637686,
+      "mdd": -0.480305
+     },
+     "SLEEVE_MOMENTUM_SWITCH": {
+      "cagr": 0.324456,
+      "excessCagr": 0.15488,
+      "sharpe": 0.93491,
+      "mdd": -0.408055
+     },
+     "B1_RIDGE_ALL_STATES": {
+      "cagr": 0.051576,
+      "excessCagr": -0.118,
+      "sharpe": 0.247107,
+      "mdd": -0.501572
+     },
+     "B2_LGBM_ALL_STATES": {
+      "cagr": 0.135155,
+      "excessCagr": -0.034421,
+      "sharpe": 0.512777,
+      "mdd": -0.408055
+     },
+     "B3_RIDGE_KR_ONLY": {
+      "cagr": 0.098844,
+      "excessCagr": -0.070732,
+      "sharpe": 0.403089,
+      "mdd": -0.408055
+     },
+     "TREND_200_CASH": {
+      "cagr": 0.169181,
+      "excessCagr": -0.000395,
+      "sharpe": 0.687757,
+      "mdd": -0.408055
+     },
+     "S4_RISK_MANAGED_ETF": {
+      "cagr": 0.137205,
+      "excessCagr": -0.032371,
+      "sharpe": 0.621689,
+      "mdd": -0.338894
+     },
+     "SX_XGB_SENSITIVITY": {
+      "cagr": 0.257479,
+      "excessCagr": 0.087903,
+      "sharpe": 0.944389,
+      "mdd": -0.385061
+     },
+     "_window": {
+      "start": "2018-01-08",
+      "firstDecision": "2018-01-05"
+     }
+    },
+    "1": {
+     "S0_ETF": {
+      "cagr": 0.171613,
+      "excessCagr": 0.0,
+      "sharpe": 0.639296,
+      "mdd": -0.408055
+     },
+     "S1_INDUSTRY_MOMENTUM": {
+      "cagr": 0.197381,
+      "excessCagr": 0.025767,
+      "sharpe": 0.596406,
+      "mdd": -0.582756
+     },
+     "S2_VALUE_CONFIRMED": {
+      "cagr": 0.165828,
+      "excessCagr": -0.005785,
+      "sharpe": 0.63796,
+      "mdd": -0.491252
+     },
+     "S3_FOUR_FACTOR": {
+      "cagr": 0.050578,
+      "excessCagr": -0.121035,
+      "sharpe": 0.241827,
+      "mdd": -0.636914
+     },
+     "STATIC_EW4": {
+      "cagr": 0.164631,
+      "excessCagr": -0.006982,
+      "sharpe": 0.658801,
+      "mdd": -0.487183
+     },
+     "STATIC_50_ETF_50_S1": {
+      "cagr": 0.199198,
+      "excessCagr": 0.027584,
+      "sharpe": 0.671864,
+      "mdd": -0.477058
+     },
+     "A1_MOMENTUM_CRASH_GUARD": {
+      "cagr": 0.213066,
+      "excessCagr": 0.041452,
+      "sharpe": 0.696331,
+      "mdd": -0.548538
+     },
+     "A2_INVERSE_VOL_RISK_BUDGET": {
+      "cagr": 0.153245,
+      "excessCagr": -0.018368,
+      "sharpe": 0.636587,
+      "mdd": -0.497323
+     },
+     "SLEEVE_MOMENTUM_SWITCH": {
+      "cagr": 0.113127,
+      "excessCagr": -0.058486,
+      "sharpe": 0.423223,
+      "mdd": -0.509326
+     },
+     "B1_RIDGE_ALL_STATES": {
+      "cagr": 0.143518,
+      "excessCagr": -0.028095,
+      "sharpe": 0.525412,
+      "mdd": -0.545693
+     },
+     "B2_LGBM_ALL_STATES": {
+      "cagr": 0.189159,
+      "excessCagr": 0.017546,
+      "sharpe": 0.673183,
+      "mdd": -0.408172
+     },
+     "B3_RIDGE_KR_ONLY": {
+      "cagr": 0.125423,
+      "excessCagr": -0.046191,
+      "sharpe": 0.482399,
+      "mdd": -0.487297
+     },
+     "TREND_200_CASH": {
+      "cagr": 0.17199,
+      "excessCagr": 0.000377,
+      "sharpe": 0.680957,
+      "mdd": -0.408055
+     },
+     "S4_RISK_MANAGED_ETF": {
+      "cagr": 0.146555,
+      "excessCagr": -0.025059,
+      "sharpe": 0.6453,
+      "mdd": -0.394929
+     },
+     "_window": {
+      "start": "2018-01-15",
+      "firstDecision": "2018-01-12"
+     }
+    },
+    "2": {
+     "S0_ETF": {
+      "cagr": 0.172515,
+      "excessCagr": 0.0,
+      "sharpe": 0.641673,
+      "mdd": -0.408055
+     },
+     "S1_INDUSTRY_MOMENTUM": {
+      "cagr": 0.148841,
+      "excessCagr": -0.023674,
+      "sharpe": 0.492459,
+      "mdd": -0.670391
+     },
+     "S2_VALUE_CONFIRMED": {
+      "cagr": 0.241945,
+      "excessCagr": 0.06943,
+      "sharpe": 0.862201,
+      "mdd": -0.486029
+     },
+     "S3_FOUR_FACTOR": {
+      "cagr": 0.045783,
+      "excessCagr": -0.126732,
+      "sharpe": 0.223008,
+      "mdd": -0.667821
+     },
+     "STATIC_EW4": {
+      "cagr": 0.171415,
+      "excessCagr": -0.0011,
+      "sharpe": 0.676769,
+      "mdd": -0.519706
+     },
+     "STATIC_50_ETF_50_S1": {
+      "cagr": 0.178395,
+      "excessCagr": 0.00588,
+      "sharpe": 0.613889,
+      "mdd": -0.49663
+     },
+     "A1_MOMENTUM_CRASH_GUARD": {
+      "cagr": 0.120119,
+      "excessCagr": -0.052396,
+      "sharpe": 0.44948,
+      "mdd": -0.471534
+     },
+     "A2_INVERSE_VOL_RISK_BUDGET": {
+      "cagr": 0.166335,
+      "excessCagr": -0.00618,
+      "sharpe": 0.680303,
+      "mdd": -0.517981
+     },
+     "SLEEVE_MOMENTUM_SWITCH": {
+      "cagr": 0.238131,
+      "excessCagr": 0.065617,
+      "sharpe": 0.724397,
+      "mdd": -0.522211
+     },
+     "B1_RIDGE_ALL_STATES": {
+      "cagr": 0.108058,
+      "excessCagr": -0.064457,
+      "sharpe": 0.419732,
+      "mdd": -0.526448
+     },
+     "B2_LGBM_ALL_STATES": {
+      "cagr": 0.132792,
+      "excessCagr": -0.039723,
+      "sharpe": 0.502041,
+      "mdd": -0.408055
+     },
+     "B3_RIDGE_KR_ONLY": {
+      "cagr": 0.17828,
+      "excessCagr": 0.005765,
+      "sharpe": 0.627021,
+      "mdd": -0.424063
+     },
+     "TREND_200_CASH": {
+      "cagr": 0.162669,
+      "excessCagr": -0.009846,
+      "sharpe": 0.66002,
+      "mdd": -0.408055
+     },
+     "S4_RISK_MANAGED_ETF": {
+      "cagr": 0.145465,
+      "excessCagr": -0.02705,
+      "sharpe": 0.652048,
+      "mdd": -0.357736
+     },
+     "_window": {
+      "start": "2018-01-22",
+      "firstDecision": "2018-01-19"
+     }
+    },
+    "3": {
+     "S0_ETF": {
+      "cagr": 0.168278,
+      "excessCagr": 0.0,
+      "sharpe": 0.628084,
+      "mdd": -0.408055
+     },
+     "S1_INDUSTRY_MOMENTUM": {
+      "cagr": 0.117402,
+      "excessCagr": -0.050876,
+      "sharpe": 0.424392,
+      "mdd": -0.655963
+     },
+     "S2_VALUE_CONFIRMED": {
+      "cagr": 0.196614,
+      "excessCagr": 0.028337,
+      "sharpe": 0.734871,
+      "mdd": -0.489768
+     },
+     "S3_FOUR_FACTOR": {
+      "cagr": 0.10759,
+      "excessCagr": -0.060688,
+      "sharpe": 0.459571,
+      "mdd": -0.557739
+     },
+     "STATIC_EW4": {
+      "cagr": 0.165545,
+      "excessCagr": -0.002732,
+      "sharpe": 0.661991,
+      "mdd": -0.474924
+     },
+     "STATIC_50_ETF_50_S1": {
+      "cagr": 0.157921,
+      "excessCagr": -0.010357,
+      "sharpe": 0.558807,
+      "mdd": -0.483826
+     },
+     "A1_MOMENTUM_CRASH_GUARD": {
+      "cagr": 0.129509,
+      "excessCagr": -0.038769,
+      "sharpe": 0.472941,
+      "mdd": -0.546503
+     },
+     "A2_INVERSE_VOL_RISK_BUDGET": {
+      "cagr": 0.166423,
+      "excessCagr": -0.001855,
+      "sharpe": 0.683204,
+      "mdd": -0.475551
+     },
+     "SLEEVE_MOMENTUM_SWITCH": {
+      "cagr": 0.233349,
+      "excessCagr": 0.065071,
+      "sharpe": 0.715122,
+      "mdd": -0.540686
+     },
+     "B1_RIDGE_ALL_STATES": {
+      "cagr": 0.103672,
+      "excessCagr": -0.064606,
+      "sharpe": 0.414159,
+      "mdd": -0.440838
+     },
+     "B2_LGBM_ALL_STATES": {
+      "cagr": 0.113396,
+      "excessCagr": -0.054882,
+      "sharpe": 0.446018,
+      "mdd": -0.469535
+     },
+     "B3_RIDGE_KR_ONLY": {
+      "cagr": 0.113987,
+      "excessCagr": -0.054291,
+      "sharpe": 0.452675,
+      "mdd": -0.487364
+     },
+     "TREND_200_CASH": {
+      "cagr": 0.144906,
+      "excessCagr": -0.023372,
+      "sharpe": 0.588811,
+      "mdd": -0.408055
+     },
+     "S4_RISK_MANAGED_ETF": {
+      "cagr": 0.121142,
+      "excessCagr": -0.047136,
+      "sharpe": 0.549636,
+      "mdd": -0.39632
+     },
+     "_window": {
+      "start": "2018-01-29",
+      "firstDecision": "2018-01-26"
+     }
+    }
+   }
+  },
+  "label": "POST_HOC: diagnostics only; never used to choose a policy"
+ },
+ "behaviourOosForecast": {
+  "A1_MOMENTUM_CRASH_GUARD": null,
+  "A2_INVERSE_VOL_RISK_BUDGET": null,
+  "B1_RIDGE_ALL_STATES": {
+   "S1_INDUSTRY_MOMENTUM": {
+    "n": 111,
+    "oosR2VsExpandingMean": -0.8394,
+    "signHitRate": 0.532
+   },
+   "S2_VALUE_CONFIRMED": {
+    "n": 111,
+    "oosR2VsExpandingMean": -0.8036,
+    "signHitRate": 0.405
+   },
+   "S3_FOUR_FACTOR": {
+    "n": 111,
+    "oosR2VsExpandingMean": -0.54,
+    "signHitRate": 0.505
+   }
+  },
+  "B2_LGBM_ALL_STATES": {
+   "S1_INDUSTRY_MOMENTUM": {
+    "n": 111,
+    "oosR2VsExpandingMean": -0.2307,
+    "signHitRate": 0.468
+   },
+   "S2_VALUE_CONFIRMED": {
+    "n": 111,
+    "oosR2VsExpandingMean": -0.196,
+    "signHitRate": 0.405
+   },
+   "S3_FOUR_FACTOR": {
+    "n": 111,
+    "oosR2VsExpandingMean": -0.0477,
+    "signHitRate": 0.532
+   }
+  },
+  "B3_RIDGE_KR_ONLY": {
+   "S1_INDUSTRY_MOMENTUM": {
+    "n": 111,
+    "oosR2VsExpandingMean": -0.4711,
+    "signHitRate": 0.459
+   },
+   "S2_VALUE_CONFIRMED": {
+    "n": 111,
+    "oosR2VsExpandingMean": -0.36,
+    "signHitRate": 0.432
+   },
+   "S3_FOUR_FACTOR": {
+    "n": 111,
+    "oosR2VsExpandingMean": -0.3679,
+    "signHitRate": 0.459
+   }
+  },
+  "SLEEVE_MOMENTUM_SWITCH": null,
+  "STATIC_EW4": null
+ },
+ "q1Count": 228,
+ "q1RawP05": 12,
+ "q1ByQ10": 0,
+ "decisionLogSMS": {
+  "2018-01-05": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2018-02-02": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2018-03-02": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2018-03-30": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2018-04-27": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2018-05-25": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2018-06-22": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2018-07-20": {
+   "S2_VALUE_CONFIRMED": 1.0
+  },
+  "2018-08-17": {
+   "S2_VALUE_CONFIRMED": 1.0
+  },
+  "2018-09-14": {
+   "S2_VALUE_CONFIRMED": 1.0
+  },
+  "2018-10-12": {
+   "S2_VALUE_CONFIRMED": 1.0
+  },
+  "2018-11-09": {
+   "S2_VALUE_CONFIRMED": 1.0
+  },
+  "2018-12-07": {
+   "S2_VALUE_CONFIRMED": 1.0
+  },
+  "2019-01-04": {
+   "S2_VALUE_CONFIRMED": 1.0
+  },
+  "2019-02-01": {
+   "S2_VALUE_CONFIRMED": 1.0
+  },
+  "2019-02-28": {
+   "S2_VALUE_CONFIRMED": 1.0
+  },
+  "2019-03-29": {
+   "S2_VALUE_CONFIRMED": 1.0
+  },
+  "2019-04-26": {
+   "S2_VALUE_CONFIRMED": 1.0
+  },
+  "2019-05-24": {
+   "S2_VALUE_CONFIRMED": 1.0
+  },
+  "2019-06-21": {
+   "S2_VALUE_CONFIRMED": 1.0
+  },
+  "2019-07-19": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2019-08-16": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2019-09-11": {
+   "S0_ETF": 1.0
+  },
+  "2019-10-11": {
+   "S0_ETF": 1.0
+  },
+  "2019-11-08": {
+   "S0_ETF": 1.0
+  },
+  "2019-12-06": {
+   "S0_ETF": 1.0
+  },
+  "2020-01-03": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2020-01-31": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2020-02-28": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2020-03-27": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2020-04-24": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2020-05-22": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2020-06-19": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2020-07-17": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2020-08-14": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2020-09-11": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2020-10-08": {
+   "S0_ETF": 1.0
+  },
+  "2020-11-06": {
+   "S0_ETF": 1.0
+  },
+  "2020-12-04": {
+   "S0_ETF": 1.0
+  },
+  "2020-12-30": {
+   "S0_ETF": 1.0
+  },
+  "2021-01-29": {
+   "S0_ETF": 1.0
+  },
+  "2021-02-26": {
+   "S0_ETF": 1.0
+  },
+  "2021-03-26": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2021-04-23": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2021-05-21": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2021-06-18": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2021-07-16": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2021-08-13": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2021-09-10": {
+   "S2_VALUE_CONFIRMED": 1.0
+  },
+  "2021-10-08": {
+   "S2_VALUE_CONFIRMED": 1.0
+  },
+  "2021-11-05": {
+   "S2_VALUE_CONFIRMED": 1.0
+  },
+  "2021-12-03": {
+   "S2_VALUE_CONFIRMED": 1.0
+  },
+  "2021-12-30": {
+   "S2_VALUE_CONFIRMED": 1.0
+  },
+  "2022-01-28": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2022-02-25": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2022-03-25": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2022-04-22": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2022-05-20": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2022-06-17": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2022-07-15": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2022-08-12": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2022-09-08": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2022-10-07": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2022-11-04": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2022-12-02": {
+   "S2_VALUE_CONFIRMED": 1.0
+  },
+  "2022-12-29": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2023-01-27": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2023-02-24": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2023-03-24": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2023-04-21": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2023-05-19": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2023-06-16": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2023-07-14": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2023-08-11": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2023-09-08": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2023-10-06": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2023-11-03": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2023-12-01": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2023-12-28": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2024-01-26": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2024-02-23": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2024-03-22": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2024-04-19": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2024-05-17": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2024-06-14": {
+   "S2_VALUE_CONFIRMED": 1.0
+  },
+  "2024-07-12": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2024-08-09": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2024-09-06": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2024-10-04": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2024-11-01": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2024-11-29": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2024-12-27": {
+   "S3_FOUR_FACTOR": 1.0
+  },
+  "2025-01-24": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2025-02-21": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2025-03-21": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2025-04-18": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2025-05-16": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2025-06-13": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2025-07-11": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2025-08-08": {
+   "S1_INDUSTRY_MOMENTUM": 1.0
+  },
+  "2025-09-05": {
+   "S2_VALUE_CONFIRMED": 1.0
+  },
+  "2025-10-02": {
+   "S2_VALUE_CONFIRMED": 1.0
+  },
+  "2025-10-31": {
+   "S2_VALUE_CONFIRMED": 1.0
+  },
+  "2025-11-28": {
+   "S2_VALUE_CONFIRMED": 1.0
+  },
+  "2025-12-26": {
+   "S0_ETF": 1.0
+  },
+  "2026-01-23": {
+   "S0_ETF": 1.0
+  },
+  "2026-02-20": {
+   "S0_ETF": 1.0
+  },
+  "2026-03-20": {
+   "S0_ETF": 1.0
+  },
+  "2026-04-17": {
+   "S0_ETF": 1.0
+  },
+  "2026-05-15": {
+   "S0_ETF": 1.0
+  },
+  "2026-06-12": {
+   "S0_ETF": 1.0
+  },
+  "2026-07-10": {
+   "S0_ETF": 1.0
+  },
+  "2026-08-07": {
+   "S2_VALUE_CONFIRMED": 1.0
+  },
+  "2026-09-04": {
+   "S2_VALUE_CONFIRMED": 1.0
+  }
+ }
+}

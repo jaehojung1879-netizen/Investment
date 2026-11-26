@@ -1,0 +1,121 @@
+{
+ "alfred": {
+  "BAA": {
+   "currentRetrievedAt": "2026-11-23T04:00:23+00:00",
+   "currentSnapshotSha256": "0d7a21abcb6af2a2d7ac83fb6a8941a5e3ad8ddcec913dcff1b7d9d50eed6404",
+   "decisions": 359,
+   "first": "1996-12-31",
+   "firstVintage": "1996-12-03",
+   "last": "2026-10-30",
+   "ledger": {
+    "path": "research/market_risk_discovery_v1/data/alfred-BAA-asof-month-ends.csv",
+    "sha256": "19b3b3dfdce8f1fb6ea0cc9e5b576616d114604b0a49bfbf00f517482c2d81a5"
+   },
+   "missing": 0,
+   "observationLagDays": {
+    "max": 180,
+    "min": 55
+   },
+   "revisedSinceVintage": 1,
+   "served": 359
+  },
+  "GS10": {
+   "currentRetrievedAt": "2026-11-23T04:00:59+00:00",
+   "currentSnapshotSha256": "018e609eb98c52ec8d2cf0ea9f8e1450c24974c31cca455cc19717a77703af78",
+   "decisions": 359,
+   "first": "1996-12-31",
+   "firstVintage": "1996-12-03",
+   "last": "2026-10-30",
+   "ledger": {
+    "path": "research/market_risk_discovery_v1/data/alfred-GS10-asof-month-ends.csv",
+    "sha256": "9854692e71eb2de370f1fa16495c3a137c094975e779861d2215efd9647c5f49"
+   },
+   "missing": 0,
+   "observationLagDays": {
+    "max": 61,
+    "min": 55
+   },
+   "retriedAfterTransientFailure": [
+    "2012-07-31",
+    "2025-10-31",
+    "2026-03-31"
+   ],
+   "revisedSinceVintage": 0,
+   "served": 359
+  },
+  "legMonthMismatches": [
+   "2016-11-30",
+   "2016-12-30",
+   "2017-01-31",
+   "2017-02-28"
+  ]
+ },
+ "builtAt": "2026-11-23T03:59:38+00:00",
+ "signalOutcomeRelationsRead": 0,
+ "spy": {
+  "basis": "split-adjusted raw close plus SSGA issuer distributions reinvested at the ex-date close",
+  "distributions": {
+   "amountConflicts": [
+    {
+     "exDate": "1993-12-17",
+     "issuer": 0.287239,
+     "vendor": 0.317
+    },
+    {
+     "exDate": "1995-12-15",
+     "issuer": 0.372,
+     "vendor": 0.382
+    },
+    {
+     "exDate": "1996-12-20",
+     "issuer": 0.40681,
+     "vendor": 0.367
+    },
+    {
+     "exDate": "2021-12-17",
+     "issuer": 1.636431,
+     "vendor": 1.633
+    }
+   ],
+   "issuerEvents": 136,
+   "issuerExDatesOffSession": [],
+   "issuerOnly": [],
+   "matchedDates": 136,
+   "splits": null,
+   "vendorEvents": 136,
+   "vendorOnly": []
+  },
+  "sessions": {
+   "chartRows": 8503,
+   "first": "1993-01-29",
+   "last": "2026-11-09",
+   "missingXnysSessions": 0,
+   "rowsOffCalendar": 0,
+   "xnysSessions": 8503
+  },
+  "source": {
+   "commit": "49c3aa891b1e85520c2a90d0d062678a738a87cf",
+   "fetchedAtUtc": "2026-11-10T22:29:37+00:00",
+   "path": "research/us_macro_cocktail_v1/data/raw/yahoo_SPY.json.gz",
+   "pr": 331,
+   "stored": "data/raw/yahoo-SPY-chart-20261110.json.gz",
+   "uncompressedSha256": "381dd6ccb483fccdc90ad8f8ac0ca45cc2fe54de1d0174cae76aedb63adcc062"
+  },
+  "trReconciliationWithRepositoryLedger": {
+   "cumulativeRatio": 1.0007924080604367,
+   "dailyAbsDiffBp": {
+    "max": 2.5009115464502685,
+    "median": 8.26561041833429e-10,
+    "over1bp": 3,
+    "p99": 0.13342515906805721
+   },
+   "overlap": [
+    "2011-01-03",
+    "2026-09-14"
+   ],
+   "sessions": 3947
+  }
+ },
+ "stage": "STAGE_1_SOURCE_AUDIT",
+ "study": "market-risk-discovery-v1"
+}
