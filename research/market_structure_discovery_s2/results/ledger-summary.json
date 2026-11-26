@@ -1,0 +1,231 @@
+{
+ "kospi200": {
+  "index": "KOSPI200",
+  "fullReplicationFrom": "2018-01-12",
+  "snapshots": 183,
+  "memberCountRange": [
+   132,
+   201
+  ],
+  "adds": 2,
+  "drops": 4,
+  "addsRegular": 0,
+  "addsUnscheduled": 2,
+  "dropsRegular": 0,
+  "dropsUnscheduled": 4,
+  "distinctEventDates": 4,
+  "distinctRegularReviewDates": 0,
+  "addsByYear": {
+   "2018": 1,
+   "2022": 1
+  },
+  "unobservedGapsOver40Days": [
+   [
+    "2018-06-01",
+    "2022-01-07"
+   ]
+  ],
+  "pdfTemporaryExclusionRowsExcluded": 8,
+  "weightMoves": 10,
+  "weightMovesRegular": 0,
+  "pressureEvaluable": 4,
+  "pressurePerTrillionAumQuantiles": {
+   "p10": 0.08811063635550148,
+   "p50": 0.16719372084955858,
+   "p90": 0.3047789723843583
+  }
+ },
+ "kosdaq150": {
+  "index": "KOSDAQ150",
+  "fullReplicationFrom": "2015-10-02",
+  "snapshots": 214,
+  "memberCountRange": [
+   147,
+   152
+  ],
+  "adds": 77,
+  "drops": 73,
+  "addsRegular": 64,
+  "addsUnscheduled": 13,
+  "dropsRegular": 63,
+  "dropsUnscheduled": 10,
+  "distinctEventDates": 20,
+  "distinctRegularReviewDates": 5,
+  "addsByYear": {
+   "2015": 17,
+   "2016": 27,
+   "2017": 28,
+   "2019": 1,
+   "2023": 4
+  },
+  "unobservedGapsOver40Days": [
+   [
+    "2017-12-15",
+    "2018-06-12"
+   ],
+   [
+    "2018-06-14",
+    "2019-01-04"
+   ],
+   [
+    "2019-03-15",
+    "2023-01-06"
+   ]
+  ],
+  "pdfTemporaryExclusionRowsExcluded": 13,
+  "weightMoves": 83,
+  "weightMovesRegular": 45,
+  "pressureEvaluable": 0,
+  "pressurePerTrillionAumQuantiles": null
+ },
+ "sp500": {
+  "releasesParsed": 208,
+  "clausesUnparsed": 20,
+  "adds": 233,
+  "drops": 207,
+  "distinctEffectiveDates": 190,
+  "distinctAnnouncementDates": 178,
+  "addsAtQuarterlyRebalance": 60,
+  "announceToEffectiveDaysMedian": 7.0,
+  "announceToEffectiveDaysRange": [
+   0,
+   18
+  ],
+  "pinnedMembershipJoins2013to2026": 329,
+  "pinnedJoinsMatchedByParsedAdd": 122,
+  "coverageOfPinnedJoinsPct": 37.1
+ },
+ "kofia": {
+  "creditBalance": {
+   "statCode": "STATSCU0100000070BO",
+   "sha256": "ebce5e69898a293036344ff8056370ab1a543a9a3b6ad15c39a570db2988c00b",
+   "rows": 7246,
+   "firstNonZero": "19980701",
+   "last": "20261125"
+  },
+  "marketFunds": {
+   "statCode": "STATSCU0100000060BO",
+   "sha256": "e6eb31311c2fb965545c3036c642a8ed382729f758285355192ded62f25f7f80",
+   "rows": 7245,
+   "first": "19980618",
+   "last": "20261125"
+  },
+  "forcedSaleSpikeSessions": 135,
+  "forcedSaleIndependentEpisodes": 46,
+  "forcedSaleEpisodeStartDates": [
+   "20060414",
+   "20081013",
+   "20090714",
+   "20100520",
+   "20100816",
+   "20101117",
+   "20110211",
+   "20110502",
+   "20110805",
+   "20121012",
+   "20121114",
+   "20140508",
+   "20140923",
+   "20150312",
+   "20150424",
+   "20150709",
+   "20150824",
+   "20161014",
+   "20170209",
+   "20170622",
+   "20170925",
+   "20171120",
+   "20180112",
+   "20180601",
+   "20181015",
+   "20190809",
+   "20191001",
+   "20200225",
+   "20200615",
+   "20200820",
+   "20200923",
+   "20210113",
+   "20210311",
+   "20210514",
+   "20210813",
+   "20211006",
+   "20220927",
+   "20230331",
+   "20230626",
+   "20231018",
+   "20250704",
+   "20250929",
+   "20251106",
+   "20260209",
+   "20260511",
+   "20260709"
+  ],
+  "episodesByYear": {
+   "2006": 1,
+   "2008": 1,
+   "2009": 1,
+   "2010": 3,
+   "2011": 3,
+   "2012": 2,
+   "2014": 2,
+   "2015": 4,
+   "2016": 1,
+   "2017": 4,
+   "2018": 3,
+   "2019": 2,
+   "2020": 4,
+   "2021": 5,
+   "2022": 1,
+   "2023": 3,
+   "2025": 3,
+   "2026": 3
+  }
+ },
+ "fedZ1": {
+  "file": "data/fed_z1/F51_1_t.csv",
+  "sha256": "248c042f03760a82538174b106db0229dbede1d41cc1fd4aa23dd076f1b41f74",
+  "series": {
+   "mutualFunds": {
+    "code": "FA653064100.Q",
+    "present": true,
+    "firstNonZeroQuarter": "1946:Q4",
+    "lastQuarter": "2026:Q2",
+    "quarters": 303
+   },
+   "etfs": {
+    "code": "FA563064100.Q",
+    "present": true,
+    "firstNonZeroQuarter": "1993:Q1",
+    "lastQuarter": "2026:Q2",
+    "quarters": 134
+   },
+   "households": {
+    "code": "FA153064105.Q",
+    "present": true,
+    "firstNonZeroQuarter": "1951:Q4",
+    "lastQuarter": "2026:Q2",
+    "quarters": 299
+   },
+   "restOfWorld": {
+    "code": "FA263064105.Q",
+    "present": true,
+    "firstNonZeroQuarter": "1946:Q4",
+    "lastQuarter": "2026:Q2",
+    "quarters": 304
+   },
+   "pensionFunds": {
+    "code": "FA593064105.Q",
+    "present": false
+   },
+   "nonfinancialCorporateIssuance": {
+    "code": "FA103164105.Q",
+    "present": true,
+    "firstNonZeroQuarter": "1946:Q4",
+    "lastQuarter": "2026:Q2",
+    "quarters": 304
+   }
+  },
+  "vintageNote": "Z.1 revises history each release; this file is the 2026Q2 release as fetched, not a PIT vintage."
+ },
+ "pressureDenominatorSource": "signal-history ledger/prices/kr (KOSPI .KS only), sessions ending 20 before the event"
+}
