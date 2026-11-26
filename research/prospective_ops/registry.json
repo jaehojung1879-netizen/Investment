@@ -27,7 +27,7 @@
    "schedule": {
     "cron": "40 10 * * 1-5",
     "timezone": "UTC",
-    "description": "weekdays 19:40 KST (10:40 UTC), after the 18:00 KST final close; same-session retries 12:40 and 14:40 UTC; never a later session"
+    "description": "Weekdays 10:40 UTC; same-session retries 11:40, 13:00, 14:20 UTC"
    },
    "writer": {
     "description": "GitHub Actions prospective-ops.yml running the pinned registered live_run (not yet activated)",
@@ -52,9 +52,8 @@
     "enabled": false,
     "pinnedCodeCommit": "8aee189ff453d9bd624a67df5e1e5975bd7d211c",
     "singleWriterAttestation": "research/prospective_ops/attestations/kr-corporate-information-events-v1-single-writer.json",
-    "activationRequires": "owner-committed attestation that every legacyWriters id is DISABLED, then enabled=true and monitoring.continuityBaselineSession set to the last session before the first automated window",
+    "activationRequires": "owner GitHub endorsement of exact cutover bytes proving both legacy triggers disabled and drained; enable only on main after the preservation tag is available",
     "pinnedTreeSha": "b1cd5b1852c401a1a9c3a13fce8b1466a4f5e61e",
-    "attestationMaxAgeDays": 7,
     "preservation": {
      "status": "BRANCH_ONLY_NOT_DURABLE",
      "containedInBranches": [
@@ -66,7 +65,9 @@
      "tagsContaining": [],
      "requiredBeforeActivation": "an annotated tag on 8aee189 (or its merge into main); the guard refuses PINNED_CODE_NOT_DURABLY_REFERENCED until then",
      "observedAtUtc": "2026-11-26"
-    }
+    },
+    "preservationTag": "pinned/kr-corporate-information-events-v1/8aee189",
+    "cutoverApprovalCommentId": null
    },
    "monitoring": {
     "continuityBaselineSession": null,
@@ -87,7 +88,12 @@
      "session": "2026-11-12",
      "receiptSha256": "c7845e7bd2aaf5975c02075bcffbff239198323b15daa2bbc3866cb2ddc50119"
     }
-   ]
+   ],
+   "baselineLedger": {
+    "bytes": 10191,
+    "sha256": "7a584fed00ca3b152970f8a851c0d31f13e4eccfebfb42152ae7053d22664b82",
+    "sourceCommit": "251e6e7746e181308395856a4cb99d6252a4d6a8"
+   }
   },
   {
    "studyId": "kr-capital-event-prospective-v1",
@@ -135,7 +141,8 @@
    "monitoring": {
     "maxStaleCalendarDays": 9,
     "thresholdBasis": "observed weekly cadence, NOT a registered cadence; no completeness claim"
-   }
+   },
+   "outcomeStatusPath": "ledger/research-strategies/kr-selection-challenger-v1/publication-status.outcomes.json"
   },
   {
    "studyId": "kr-selection-challenger-v2-accounting",
@@ -159,7 +166,8 @@
    "monitoring": {
     "maxStaleCalendarDays": 9,
     "thresholdBasis": "observed weekly cadence, NOT a registered cadence; no completeness claim"
-   }
+   },
+   "outcomeStatusPath": "ledger/research-strategies/kr-selection-challenger-v2-accounting/publication-status.outcomes.json"
   },
   {
    "studyId": "rp1-b-h1-state-v1",
@@ -183,7 +191,8 @@
    "monitoring": {
     "maxStaleCalendarDays": 9,
     "thresholdBasis": "observed weekly cadence, NOT a registered cadence; no completeness claim"
-   }
+   },
+   "outcomeStatusPath": "ledger/research-strategies/rp1-b-h1-state-v1/publication-status.outcomes.json"
   },
   {
    "studyId": "current-champion-decisions-v1",
@@ -207,7 +216,11 @@
    "monitoring": {
     "maxStaleCalendarDays": 5,
     "thresholdBasis": "observed near-daily cadence, NOT a registered cadence; no completeness claim"
-   }
+   },
+   "observationKey": [
+    "asOfDate",
+    "region"
+   ]
   },
   {
    "studyId": "weekly-decisions",
@@ -231,7 +244,11 @@
    "monitoring": {
     "maxStaleCalendarDays": 9,
     "thresholdBasis": "observed weekly cadence, NOT a registered cadence; no completeness claim"
-   }
+   },
+   "observationKey": [
+    "asOfDate",
+    "region"
+   ]
   }
  ],
  "protectedPathPrefixes": [

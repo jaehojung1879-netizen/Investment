@@ -38,7 +38,17 @@ LEDGER_ROWS, LEDGER_EMPTY_VALID, LEDGER_ABSENT, LEDGER_READ_FAILED = "ROWS", "EM
 FRESHNESS_STATES = ("FRESH", "STALE", "UNKNOWN")
 COMPLETENESS_STATES = ("VERIFIED_COMPLETE", "INCOMPLETE", "NOT_ASSESSABLE")
 DEFAULT_DAILY_STALE_DAYS = 5
-DEFAULT_ATTESTATION_MAX_AGE_DAYS = 7
+CUTOVER_SCHEMA = "PROSPECTIVE_WRITER_CUTOVER_V1"
+CUTOVER_READBACK_MAX_AGE = timedelta(days=7)
+CORPORATE_STUDY = "kr-corporate-information-events-v1"
+CORPORATE_LEGACY_WRITERS = frozenset({
+    "trig_01XwJ7yivCe5uokkmUTk8MWE", "trig_013qoRYz6H9UwUosNzCWv69B",
+})
+SUCCESSOR = {
+    "repository": "jaehojung1879-netizen/Investment",
+    "workflow": ".github/workflows/prospective-ops.yml",
+    "ref": "refs/heads/main",
+}
 
 
 def coerce_read(read) -> dict:
@@ -196,7 +206,8 @@ def independent_observations(rows: list[dict], valid: set[str], sessions: Sequen
 def maturity_summary(kept: list[dict], as_of_session: str) -> dict:
     mature = [item for item in kept if item["maturitySession"] is not None and item["maturitySession"] <= as_of_session]
     upcoming = sorted(item["maturitySession"] for item in kept if item["maturitySession"] and item["maturitySession"] > as_of_session)
-    return {"independentObservations": len(kept), "evaluable": len(mature), "nextMaturity": upcoming[0] if upcoming else None}
+    return {"independentObservations": len(kept), "maturedSessions": len(mature), "evaluable": len(mature),
+            "nextMaturity": upcoming[0] if upcoming else None, "outcomesComputed": False}
 
 
 # ------------------------------------------------------------------------------- baseline immutability
@@ -287,7 +298,9 @@ def study_status(study: dict, read, sessions: Sequence[str], as_of: datetime, *,
     if kind == "OBSERVED_ONLY":
         stale_days = study["monitoring"]["maxStaleCalendarDays"]
         out["freshness"] = _freshness(out["lastRecordSession"], as_of, stale_days, study["monitoring"].get("thresholdBasis", "UNREGISTERED"), last_commit_utc)
-        out.update(validRecords=len(set(all_days)), scheduledRecords=None, missedRecords=None,
+        keys = study.get("observationKey", [date_field])
+        observed = {tuple(row[key] for key in keys) for row in rows if all(isinstance(row.get(key), str) and row[key] for key in keys)}
+        out.update(observedRecords=len(observed), validRecords=None, scheduledRecords=None, missedRecords=None,
                    completeness={"state": "NOT_ASSESSABLE", "basis": "NO_REGISTERED_CADENCE"})
         if baseline["state"] == "VIOLATED":
             out.update(operatingState="EXECUTION_FAILED", failureReason="BASELINE_RECEIPTS_ALTERED_OR_MISSING")
@@ -326,6 +339,10 @@ def study_status(study: dict, read, sessions: Sequence[str], as_of: datetime, *,
         as_of_session = max((s for s in sessions if _at(s, 0) <= as_of), default=sessions[0])
         for horizon in study["horizons"]:
             out["independentObservations"][f"H{horizon}"] = maturity_summary(independent_observations(rows, valid, sessions, horizon), as_of_session)
+    active_closed = [day for day in closed if not ledger_baseline or day > ledger_baseline]
+    out["operationalContinuity"] = {
+        "closedWindows": len(active_closed), "missedWindows": len(active_missed),
+    }
     if baseline["state"] == "VIOLATED":
         out.update(operatingState="EXECUTION_FAILED", failureReason="BASELINE_RECEIPTS_ALTERED_OR_MISSING")
     elif errors:
@@ -336,9 +353,9 @@ def study_status(study: dict, read, sessions: Sequence[str], as_of: datetime, *,
         out.update(operatingState="SOURCE_BLOCKED", failureReason=source_blocked_reason)
     elif active_missed:
         out.update(operatingState="MISSED", failureReason="CLOSED_WINDOW_WITHOUT_VALID_RECEIPT")
-    elif not automation.get("enabled"):
+    elif automation.get("enabled") is not True:
         out.update(operatingState="DISABLED", failureReason="WRITER_NOT_ACTIVATED")
-    elif completeness["state"] == "VERIFIED_COMPLETE" and out["freshness"]["state"] == "FRESH":
+    elif active_closed and out["freshness"]["state"] == "FRESH":
         out["operatingState"] = "HEALTHY"
     else:
         out.update(operatingState="PENDING", failureReason="NOT_YET_VERIFIED_COMPLETE_OR_FRESH")
@@ -367,6 +384,47 @@ def build_status(registry: dict, ledger_rows: dict, sessions: Sequence[str], as_
 
 
 # ------------------------------------------------------------------------------------------------- guard
+def cutover_refusals(study: dict, facts: dict) -> list[str]:
+    attestation = facts.get("attestation")
+    if not isinstance(attestation, dict) or attestation.get("studyId") != study["studyId"]:
+        return ["SINGLE_WRITER_ATTESTATION_MISSING"]
+    reasons = []
+    if (attestation.get("schema") != CUTOVER_SCHEMA or attestation.get("successor") != SUCCESSOR
+            or attestation.get("legacyRunsDrained") is not True or attestation.get("retiredPermanently") is not True
+            or attestation.get("pinnedCodeCommit") != study["automation"].get("pinnedCodeCommit")
+            or attestation.get("authorizationSha256") != study["approval"].get("authorizationSha256")):
+        reasons.append("SINGLE_WRITER_CUTOVER_SCOPE_MISMATCH")
+    try:
+        approved_at = facts["ownerApprovalAt"]
+        attested_at = parse_utc(attestation["attestedAtUtc"])
+        if not attested_at <= approved_at <= min(facts["asOf"], attested_at + CUTOVER_READBACK_MAX_AGE):
+            reasons.append("SINGLE_WRITER_APPROVAL_TIME_INVALID")
+    except (KeyError, TypeError, ValueError, AttributeError):
+        attested_at = None
+        reasons.append("SINGLE_WRITER_APPROVAL_TIME_INVALID")
+    legacy = {item["id"] for item in study.get("writer", {}).get("legacyWriters", [])}
+    if study["studyId"] == CORPORATE_STUDY and legacy != CORPORATE_LEGACY_WRITERS:
+        reasons.append("REGISTERED_LEGACY_WRITERS_CHANGED")
+        legacy = CORPORATE_LEGACY_WRITERS
+    readbacks = attestation.get("readbacks")
+    if not isinstance(readbacks, list) or not all(isinstance(item, dict) and isinstance(item.get("id"), str) for item in readbacks):
+        return reasons + ["LEGACY_WRITER_STATE_EVIDENCE_INVALID"]
+    by_id = {item["id"]: item for item in readbacks}
+    if len(by_id) != len(readbacks) or set(by_id) != legacy:
+        reasons.append("LEGACY_WRITER_READBACK_IDS_MISMATCH")
+    for trigger in sorted(legacy & set(by_id)):
+        item = by_id[trigger]
+        if item.get("enabled") is not False or item.get("source") != "CLAUDE_GET_TRIGGER_READBACK":
+            reasons.append(f"LEGACY_WRITER_NOT_VERIFIED_DISABLED:{trigger}")
+        try:
+            observed_at = parse_utc(item["readbackUtc"])
+            if attested_at is None or not attested_at - CUTOVER_READBACK_MAX_AGE <= observed_at <= attested_at:
+                reasons.append(f"LEGACY_WRITER_READBACK_OUTSIDE_CUTOVER_WINDOW:{trigger}")
+        except (KeyError, TypeError, ValueError, AttributeError):
+            reasons.append(f"LEGACY_WRITER_READBACK_TIMESTAMP_INVALID:{trigger}")
+    return reasons
+
+
 def guard_decision(study: dict, facts: dict) -> dict:
     """Pre-write decision from evidence the CLI gathered. Every refusal is a reason code; missing evidence refuses (fail closed). Never writes.
 
@@ -379,7 +437,7 @@ def guard_decision(study: dict, facts: dict) -> dict:
     approval = study["approval"]
     if approval.get("status") != APPROVED:  # only an owner-hashed authorization may drive an Actions writer
         reasons.append("STUDY_NOT_APPROVED")
-    if not automation.get("enabled"):
+    if automation.get("enabled") is not True:
         reasons.append("AUTOMATION_NOT_ENABLED_BY_OWNER")
     if not facts.get("pinnedCommitPresent"):
         reasons.append("PINNED_CODE_COMMIT_UNAVAILABLE")
@@ -398,25 +456,10 @@ def guard_decision(study: dict, facts: dict) -> dict:
     if (authorization is None or authorization.get("specSha256") != approval.get("specSha256")
             or authorization.get("studyId") != study["studyId"]):
         reasons.append("AUTHORIZATION_FIELDS_MISMATCH")
-    legacy = study.get("writer", {}).get("legacyWriters", [])
-    if legacy:
-        attestation = facts.get("attestation")
-        if attestation is None or attestation.get("studyId") != study["studyId"]:
-            reasons.append("SINGLE_WRITER_ATTESTATION_MISSING")
-        else:
-            states = attestation.get("legacyWriterStates", {})
-            evidence = {e.get("id"): e for e in attestation.get("evidence", []) if isinstance(e, dict)}
-            for item in legacy:
-                if states.get(item["id"]) != "DISABLED":
-                    reasons.append(f"LEGACY_WRITER_NOT_ATTESTED_DISABLED:{item['id']}")
-                if item["id"] not in evidence or not evidence[item["id"]].get("readbackUtc"):
-                    reasons.append(f"LEGACY_WRITER_STATE_EVIDENCE_MISSING:{item['id']}")
-            try:
-                age = facts["asOf"] - parse_utc(attestation["attestedAtUtc"])
-                if age > timedelta(days=automation.get("attestationMaxAgeDays", DEFAULT_ATTESTATION_MAX_AGE_DAYS)) or age < timedelta(0):
-                    reasons.append("SINGLE_WRITER_ATTESTATION_STALE_OR_FUTURE")
-            except (KeyError, TypeError, ValueError):
-                reasons.append("SINGLE_WRITER_ATTESTATION_TIMESTAMP_INVALID")
+    if study.get("writer", {}).get("legacyWriters") or study["studyId"] == CORPORATE_STUDY:
+        reasons.extend(cutover_refusals(study, facts))
+    if facts.get("baselineBytesMatch") is False or (study.get("baselineLedger") and facts.get("baselineBytesMatch") is not True):
+        reasons.append("BASELINE_LEDGER_BYTES_CHANGED")
     ledger = coerce_read(facts.get("ledger"))
     if ledger["state"] == LEDGER_READ_FAILED:
         reasons.append("LEDGER_READ_FAILED")
@@ -431,7 +474,7 @@ def guard_decision(study: dict, facts: dict) -> dict:
         reasons.append("REMOTE_LEDGER_INTEGRITY_ERRORS")
     return {"studyId": study["studyId"], "decision": "REFUSE" if reasons else "ALLOW_WRITE", "reasons": sorted(set(reasons)),
             "ledgerRead": ledger["state"],
-            "notAProof": "The single-writer attestation is an owner statement with trigger read-back evidence; no workflow can observe an external Claude trigger."}
+            "externalTriggerVerification": "OWNER_VERIFIED_CUTOVER; GitHub cannot independently poll external Claude triggers."}
 
 
 def verify_new_receipt(rows: list[dict], study: dict, session: str, windows: dict[str, datetime], as_of: datetime) -> dict:

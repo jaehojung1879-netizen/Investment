@@ -149,8 +149,15 @@ def test_committed_registry_is_valid_and_nothing_is_enabled():
 
 
 def facts(**over):
-    base = {"attestation": {"studyId": "s1", "attestedAtUtc": "2026-11-26T00:00:00Z", "legacyWriterStates": {"trig_x": "DISABLED"},
-                            "evidence": [{"id": "trig_x", "readbackUtc": "2026-11-26T00:00:00Z"}]},
+    base = {"attestation": {
+                "schema": ops.CUTOVER_SCHEMA, "studyId": "s1", "attestedAtUtc": "2026-11-26T00:00:00Z",
+                "successor": ops.SUCCESSOR, "pinnedCodeCommit": CODE, "authorizationSha256": AUTH,
+                "legacyRunsDrained": True, "retiredPermanently": True, "readbacks": [
+                    {"id": "trig_x", "enabled": False, "readbackUtc": "2026-11-26T00:00:00Z",
+                     "source": "CLAUDE_GET_TRIGGER_READBACK"},
+                ],
+            },
+            "ownerApprovalAt": at("2026-11-26T01:00:00Z"),
             "authorization": {"studyId": "s1", "specSha256": SPEC}, "authorizationBytesSha256": AUTH, "specBytesSha256": SPEC,
             "pinnedCommitPresent": True, "pinnedTreeSha": "d" * 40, "durablyReferenced": True,
             "ledger": [row(DAYS[0])], "integrityErrors": [], "asOf": at("2026-11-27T00:00:00Z")}
@@ -188,15 +195,39 @@ def test_guard_pinned_code_must_exist_match_its_tree_and_be_durably_referenced()
     assert "PINNED_CODE_NOT_DURABLY_REFERENCED" in reasons(facts(durablyReferenced=False))
 
 
-def test_guard_single_writer_attestation_needs_state_evidence_and_freshness():
+def test_guard_single_writer_requires_exact_readbacks_and_fresh_evidence_at_cutover():
     assert "SINGLE_WRITER_ATTESTATION_MISSING" in reasons(facts(attestation=None))
-    on = facts()["attestation"] | {"legacyWriterStates": {"trig_x": "ENABLED"}}
-    assert "LEGACY_WRITER_NOT_ATTESTED_DISABLED:trig_x" in reasons(facts(attestation=on))
-    no_evidence = facts()["attestation"] | {"evidence": []}
-    assert "LEGACY_WRITER_STATE_EVIDENCE_MISSING:trig_x" in reasons(facts(attestation=no_evidence))
-    assert "SINGLE_WRITER_ATTESTATION_STALE_OR_FUTURE" in reasons(facts(asOf=at("2026-12-20T00:00:00Z")))
-    assert "SINGLE_WRITER_ATTESTATION_STALE_OR_FUTURE" in reasons(facts(asOf=at("2026-11-25T00:00:00Z")))
-    assert "SINGLE_WRITER_ATTESTATION_TIMESTAMP_INVALID" in reasons(facts(attestation=facts()["attestation"] | {"attestedAtUtc": "garbage"}))
+    a = facts()["attestation"]
+    readback = a["readbacks"][0]
+    for value in (True, 0, "false", None):
+        changed = a | {"readbacks": [readback | {"enabled": value}]}
+        assert "LEGACY_WRITER_NOT_VERIFIED_DISABLED:trig_x" in reasons(facts(attestation=changed))
+    for entries in ([], [readback, readback], [readback | {"id": "wrong"}]):
+        assert "LEGACY_WRITER_READBACK_IDS_MISMATCH" in reasons(facts(attestation=a | {"readbacks": entries}))
+    for date in ("2026-11-18T00:00:00Z", "2026-11-26T00:00:01Z"):
+        changed = a | {"readbacks": [readback | {"readbackUtc": date}]}
+        assert "LEGACY_WRITER_READBACK_OUTSIDE_CUTOVER_WINDOW:trig_x" in reasons(facts(attestation=changed))
+    assert "SINGLE_WRITER_APPROVAL_TIME_INVALID" in reasons(facts(asOf=at("2026-11-25T00:00:00Z")))
+    assert "SINGLE_WRITER_APPROVAL_TIME_INVALID" in reasons(facts(ownerApprovalAt=None))
+    assert "SINGLE_WRITER_APPROVAL_TIME_INVALID" in reasons(facts(attestation=a | {"attestedAtUtc": "garbage"}))
+    assert "SINGLE_WRITER_CUTOVER_SCOPE_MISMATCH" in reasons(facts(attestation=a | {"legacyRunsDrained": False}))
+    assert reasons(facts(asOf=at("2027-04-20T00:00:00Z"))) == []
+
+
+def test_owner_approval_is_a_live_exact_byte_endorsement_on_the_control_issue():
+    import hashlib
+    raw = b'{"retiredPermanently": true}\n'
+    comment = {
+        "issue_url": "https://api.github.com/repos/jaehojung1879-netizen/Investment/issues/292",
+        "user": {"id": 238918679}, "author_association": "OWNER",
+        "body": f"{ops.CUTOVER_SCHEMA} sha256={hashlib.sha256(raw).hexdigest()}",
+        "updated_at": "2026-11-26T01:00:00Z",
+    }
+    assert cli.owner_approval_time(comment, raw) == at("2026-11-26T01:00:00Z")
+    assert cli.owner_approval_time(comment, raw + b" ") is None
+    assert cli.owner_approval_time(comment | {"user": {"id": 1}}, raw) is None
+    assert cli.owner_approval_time(comment | {"issue_url": comment["issue_url"] + "0"}, raw) is None
+    assert cli.owner_approval_time(comment | {"body": "revoked"}, raw) is None
 
 
 def test_guard_distinguishes_read_failure_absent_file_and_valid_empty_ledger():
@@ -383,8 +414,8 @@ def test_cli_reads_exact_git_objects_and_never_writes(tmp_path, monkeypatch):
     assert out["studies"][0]["missedRecords"] == 1 and (repo / "l.jsonl").read_bytes() == before
 
 
-TEMPLATE_PATH = ROOT / "research/prospective_ops/install/prospective-ops.yml"
-WORKFLOW = TEMPLATE_PATH.read_text()
+WORKFLOW_PATH = ROOT / ".github/workflows/prospective-ops.yml"
+WORKFLOW = WORKFLOW_PATH.read_text()
 
 
 def test_workflow_has_no_ai_and_guards_before_writing():
@@ -416,10 +447,18 @@ def test_status_clock_uses_utc_aware_timestamps():
         ops.parse_utc("2026-11-25T01:00:00")
 
 
-def test_workflow_is_a_template_outside_the_sealed_workflow_tree():
-    # Sealed studies pin the workflow census and the .github/workflows tree digest; installing is a separate owner-approved amendment.
-    assert not (ROOT / ".github/workflows/prospective-ops.yml").exists()
-    assert TEMPLATE_PATH.is_file() and "workflow_dispatch" in WORKFLOW
+def test_install_binds_exact_live_workflow_and_additive_inventory(tmp_path):
+    from pipeline import prospective_workflow_maintenance as maintenance
+
+    maintenance.verify_install(ROOT)
+    for path in maintenance.INSTALL_BYTES:
+        copy = tmp_path / path
+        copy.parent.mkdir(parents=True, exist_ok=True)
+        copy.write_bytes((ROOT / path).read_bytes())
+    maintenance.verify_install(tmp_path)
+    (tmp_path / maintenance.WORKFLOW).write_bytes(WORKFLOW_PATH.read_bytes() + b"\n")
+    with pytest.raises(ValueError, match="PROSPECTIVE_WORKFLOW_INSTALL_BYTES_CHANGED"):
+        maintenance.verify_install(tmp_path)
 
 
 # ------------------------------------------------------------------------ push conflicts (real git, local bare remotes)
@@ -450,6 +489,10 @@ def _remote_with_ledger(tmp_path):
 def _clone(origin, path):
     subprocess.run(["git", "clone", "-q", str(origin), str(path)], check=True, capture_output=True)
     _g(path, "checkout", "-q", "signal-history")
+    # The real writer receives an explicit committer identity for its rebase,
+    # which creates a commit in addition to the first scoped git commit.
+    _g(path, "config", "user.name", "corporate-event-receipt-bot")
+    _g(path, "config", "user.email", "actions@github.com")
     return path
 
 
@@ -557,4 +600,37 @@ def test_this_change_touches_no_protected_path():
     diff = subprocess.run(["git", "diff", "--name-only", "origin/main...HEAD"], cwd=ROOT, capture_output=True, text=True)
     if diff.returncode != 0:
         pytest.skip("no origin/main history available")
-    assert [p for p in diff.stdout.split() if p.startswith(prefixes)] == []
+    from pipeline.prospective_workflow_maintenance import WORKFLOW as installed_workflow, verify_install
+
+    verify_install(ROOT)
+    assert [p for p in diff.stdout.split() if p.startswith(prefixes) and p != installed_workflow] == []
+
+
+def test_observed_receipts_keep_both_regions_and_dont_claim_validity():
+    current = study(kind="OBSERVED_ONLY", dateField="asOfDate",
+                    observationKey=["asOfDate", "region"], monitoring={"maxStaleCalendarDays": 5})
+    rows = [{"asOfDate": DAYS[0], "region": region} for region in ("KR", "US", "US")]
+    result = status(rows, "2026-11-10T00:00:00Z", study=current)
+    assert result["observedRecords"] == 2
+    assert result["validRecords"] is None
+
+
+def test_metadata_only_evaluator_does_not_invent_a_result(monkeypatch):
+    current = study(outcomeStatusPath="outcome-status.json")
+    publication = {"studyId": "s1", "action": "outcomes", "status": "NOTHING_MATURED", "graded": 0, "value": 0.8}
+    monkeypatch.setattr(cli, "git_bytes", lambda *_args: (0, json.dumps(publication).encode()))
+    assert cli.outcome_publication("ledger", current) == {
+        "state": "NOTHING_MATURED", "source": "outcome-status.json", "attemptedAt": None, "graded": 0,
+    }
+    publication["studyId"] = "wrong"
+    assert cli.outcome_publication("ledger", current)["state"] == "EVALUATOR_STATUS_INVALID"
+
+
+def test_baseline_prefix_rejects_byte_changes_and_accepts_only_suffix_appends(monkeypatch):
+    import hashlib
+    baseline = b'{"a": 1}\n'
+    current = study(baselineLedger={"bytes": len(baseline), "sha256": hashlib.sha256(baseline).hexdigest()})
+    monkeypatch.setattr(cli, "git_bytes", lambda *_args: (0, baseline + b'{"b": 2}\n'))
+    assert cli.prefix_matches("ledger", current)
+    monkeypatch.setattr(cli, "git_bytes", lambda *_args: (0, b'{"a":1}\n'))
+    assert not cli.prefix_matches("ledger", current)

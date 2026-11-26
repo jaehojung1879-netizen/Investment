@@ -1,0 +1,201 @@
+name: Prospective ops
+
+# The registered writer can speak only for today's KST session after 18:00 KST.
+# Retries end before KST midnight. Missed sessions remain missed.
+on:
+  schedule:
+    - cron: "40 10 * * 1-5"
+    - cron: "40 11 * * 1-5"
+    - cron: "0 13 * * 1-5"
+    - cron: "20 14 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Run the read-only monitor or attempt the owner-authorized writer"
+        type: choice
+        options: [status-only, write]
+        default: status-only
+
+permissions:
+  contents: read
+
+concurrency:
+  group: prospective-ops
+  cancel-in-progress: false
+
+env:
+  STUDY: kr-corporate-information-events-v1
+  PINNED: 8aee189ff453d9bd624a67df5e1e5975bd7d211c
+
+jobs:
+  corporate-writer:
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || inputs.mode == 'write')
+    permissions:
+      contents: write
+      issues: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    outputs:
+      authorized: ${{ steps.guard.outputs.authorized }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - run: pip install -r requirements.txt
+
+      - name: Fetch immutable writer and current receipt branch
+        run: |
+          git fetch --no-tags --filter=blob:none origin "$PINNED"
+          git fetch --no-tags --filter=blob:none origin refs/heads/signal-history:refs/remotes/origin/signal-history
+
+      - name: Guard (fail closed)
+        id: guard
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          code=0
+          python scripts/prospective_ops.py guard --study "$STUDY" --ledger-ref origin/signal-history > guard.json || code=$?
+          cat guard.json >> "$GITHUB_STEP_SUMMARY"
+          test "$code" -eq 0 || test "$code" -eq 2
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          d = json.load(open("guard.json"))
+          print("allowed=" + str(d["decision"] == "ALLOW_WRITE").lower())
+          print("authorized=" + str(d["decision"] in ("ALLOW_WRITE", "ALREADY_RECORDED")).lower())
+          if d["decision"] == "REFUSE" and d["automationEnabled"]:
+              raise SystemExit("Enabled writer refused; see the guard summary")
+          PY
+
+      - name: Registered LIVE run on the pinned commit
+        if: steps.guard.outputs.allowed == 'true'
+        env:
+          DART_API_KEY: ${{ secrets.DART }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_COMMITTER_NAME: corporate-event-receipt-bot
+          GIT_COMMITTER_EMAIL: actions@github.com
+        run: |
+          set -euo pipefail
+          git worktree add --detach "$RUNNER_TEMP/pinned" "$PINNED"
+          pip install -r "$RUNNER_TEMP/pinned/requirements.txt"
+          git fetch --no-tags --filter=blob:none origin refs/heads/signal-history:refs/remotes/origin/signal-history
+          python scripts/prospective_ops.py guard --study "$STUDY" --ledger-ref origin/signal-history > final-guard.json
+          decision=$(python -c 'import json; print(json.load(open("final-guard.json"))["decision"])')
+          if [ "$decision" != "ALLOW_WRITE" ]; then
+            cat final-guard.json >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          expected=$(python -c 'import json; print(json.load(open("final-guard.json"))["session"])')
+          test -n "$DART_API_KEY"
+          (
+            cd "$RUNNER_TEMP/pinned"
+            python -m research.corporate_event_readiness_v1.cohort.live_run --workdir "$RUNNER_TEMP/work"
+          ) | tee "$RUNNER_TEMP/live_run.json"
+          session=$(python - "$RUNNER_TEMP/live_run.json" "$expected" <<'PY'
+          import json, sys
+          from pathlib import Path
+          d = json.loads(Path(sys.argv[1]).read_text().splitlines()[-1])
+          if d["status"] == "NO_RECEIPT_DUE":
+              raise SystemExit("Writer window ended before recording")
+          if d["status"] not in ("RECORDED", "ALREADY_RECORDED") or d.get("signalDate") != sys.argv[2]:
+              raise SystemExit("Unexpected writer result")
+          print(d["signalDate"])
+          PY
+          )
+          git fetch --no-tags --filter=blob:none origin refs/heads/signal-history:refs/remotes/origin/signal-history
+          python scripts/prospective_ops.py verify-receipt --study "$STUDY" --session "$session" --ledger-ref origin/signal-history
+
+  monitor:
+    needs: corporate-writer
+    if: always() && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - run: pip install -r requirements.txt
+
+      - name: Fetch observations and registered writer bytes
+        run: |
+          git fetch --no-tags --filter=blob:none origin refs/heads/signal-history:refs/remotes/origin/signal-history
+          git fetch --no-tags --filter=blob:none origin "$PINNED"
+
+      - name: Build read-only status from the current receipt branch
+        id: status
+        env:
+          WRITER_RESULT: ${{ needs.corporate-writer.result }}
+        run: |
+          set -euo pipefail
+          outcome=$(python -c 'import json,os; print(json.dumps({os.environ["STUDY"]:os.environ["WRITER_RESULT"]}))')
+          code=0
+          python scripts/prospective_ops.py status --ledger-ref origin/signal-history \
+            --as-of "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --writer-outcomes "$outcome" --out prospective-status.json > /dev/null || code=$?
+          test -s prospective-status.json
+          echo "alert_exit=$code" >> "$GITHUB_OUTPUT"
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          d = json.load(open("prospective-status.json"))
+          print("| Study | State | Closed | Valid | Missed | Latest |")
+          print("|---|---|---:|---:|---:|---|")
+          for s in d["studies"]:
+              print(f"| {s['studyId']} | {s['operatingState']} | {s['scheduledRecords']} | {s['validRecords']} | {s['missedRecords']} | {s['lastRecordSession']} |")
+          print("\nAlerts:", d["alerts"] or "none")
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: prospective-status
+          path: prospective-status.json
+          if-no-files-found: error
+
+      - name: Verify prior receipt and registered authorization bytes
+        run: python scripts/prospective_ops.py verify-immutability --study "$STUDY" --ledger-ref origin/signal-history
+
+      - name: Surface alerts in the workflow result
+        if: steps.status.outputs.alert_exit != '0'
+        run: exit 1
+
+  publish-status:
+    needs: [corporate-writer, monitor]
+    if: needs.corporate-writer.outputs.authorized == 'true' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          name: prospective-status
+
+      - name: Publish a status snapshot without changing any receipt
+        run: |
+          set -euo pipefail
+          git config user.name "prospective-ops-bot"
+          git config user.email "actions@github.com"
+          git fetch --no-tags --filter=blob:none origin refs/heads/signal-history:refs/remotes/origin/signal-history
+          git worktree add --detach ledger-work origin/signal-history
+          cd ledger-work
+          mkdir -p ledger/research-ops
+          cp ../prospective-status.json ledger/research-ops/prospective-status.json
+          git add ledger/research-ops/prospective-status.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "ledger: prospective ops status"
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:signal-history; then exit 0; fi
+            git fetch origin signal-history
+            git rebase origin/signal-history || { git rebase --abort; exit 1; }
+            sleep $((attempt * 3))
+          done
+          exit 1

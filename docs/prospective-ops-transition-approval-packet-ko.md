@@ -1,51 +1,52 @@
-# 운영 전환 승인 패킷 — kr-corporate-information-events-v1 (Claude trigger → GitHub Actions)
+# 기업 공시 전향 writer 인수 승인 패킷
 
-연구 사양(`specSha256 1692b5b3…d61d4`), AUTHORIZATION(`c7191d75…15d1e`), 기록기 코드(`8aee189f…d5e1e5975bd7d211c`)는 **변경 없음**. 바뀌는 것은 실행 환경뿐이다.
-이 패킷은 승인 요청이며, 소유자 조치 전에는 어떤 영수증도 새로 기록되지 않는다.
+설치와 writer 활성화는 별개다. #382의 설치에서는 `automation.enabled=false`를 유지한다. 설치 후 기본 수동 실행은 `status-only`이며 상태와 무결성을 읽기만 한다. GitHub Actions는 Claude 예약을 조회하거나 끌 권한이 없다.
 
-## 확인된 현황 (2026-11-25 조회)
+## 소유자의 전환 절차
 
-| 항목 | 값 |
-|---|---|
-| `trig_01XwJ7yivCe5uokkmUTk8MWE` | 조회 가능. `enabled=false`(2026-11-09 비활성). 삭제 아님 |
-| `trig_013qoRYz6H9UwUosNzCWv69B` (standing session) | **`enabled=true`, 평일 19:40 KST 실행 중, 매일 실패.** 세션 작업 디렉터리가 비어 있어(`not a git repository`) 단계 1~7을 실행할 수 없음. 이것이 모바일 실패 알림의 출처 |
-| `trig_01623WK1XcoLsTEkAQUkAmJ7` (capital-event) | 비활성, 미승인 연구 |
-| 이 세션에서 `trig_013qoRYz…` 비활성화 시도 | 권한 분류기가 거부 — **적용되지 않음**. 소유자가 직접 비활성화 필요 |
-| 유효 영수증 | 3건(11-09, 11-11, 11-12). 11-10, 11-13, 11-16~11-24 창 누락 (11-25 포함 시 9건, `MISSED_NOT_OBSERVED`) |
+1. 활성 Claude 예약 `trig_013qoRYz6H9UwUosNzCWv69B`를 그 예약을 소유한 Claude 세션(`cse_01UtFTvgwN2oL1NjAAMWvwBg`) 또는 소유자 예약 관리 화면에서 비활성화한다. `get_trigger`로 동일 ID의 `enabled: false`를 다시 읽는다. 기존에 중지된 `trig_01XwJ7yivCe5uokkmUTk8MWE`도 [원래 세션](https://claude.ai/code/session_01UtFTvhsc62UJBfDJZ6qQZv)에서 같은 상태를 조회한다. 두 예약에 진행 중인 writer 실행이 없거나 종료됐는지 확인한다.
+2. 두 결과의 정확한 ID, JSON 불리언 `enabled: false`, 실제 UTC 조회 시각과 실행 종료 확인을 전달한다. 비활성화 요청 자체, 실패 로그, 추정 시각은 증거로 사용하지 않는다. 레거시 writer를 영구 퇴역시킬 때만 전환을 승인한다.
+3. 담당자가 아래 형식의 정확 바이트 파일을 준비하면 소유자가 [#292](https://github.com/jaehojung1879-netizen/Investment/issues/292)에 `PROSPECTIVE_WRITER_CUTOVER_V1 sha256=<파일 SHA-256>` 한 줄을 게시한다. 가드는 GitHub에서 해당 댓글을 새로 가져와 이슈, 저장소 소유자의 계정 ID, 바이트 해시와 승인 시각을 확인한다. 7일 제한은 **최초 인수 때 증거의 시효**에만 적용한다. 승인된 전환의 정기 재서명은 필요 없다. 승인 철회 시 댓글의 승인 줄을 제거하고 다음 운영 PR에서 `automation.enabled=false`를 기록한다.
+4. 운영 담당자는 등록 고정 코드의 보존 태그를 확인한 뒤 정확한 승인 댓글 ID, 자동화 플래그 및 첫 운영 세션 직전의 모니터링 기준을 새 활성화 변경에 담는다. #382 자체로는 그 변경을 적용하지 않는다.
 
-## 왜 워크플로가 템플릿인가 (CI로 확인된 사실)
+등록 파일 위치는 `research/prospective_ops/attestations/kr-corporate-information-events-v1-single-writer.json`이다. 아래 값은 입력 형식이며 실제 readback으로 교체할 때까지 승인 효력이 없다.
 
-PR #382 첫 CI(run 45726849143)에서 `.github/workflows/prospective-ops.yml` 추가와 census 테스트 수정이 봉인 연구 테스트 25건을 실패시켰다
-(`test_rp1_c1_us_wp4d`, `test_rp1_us_universe`의 `.github/workflows` 트리 해시, `test_us_p4_execution`, `test_kr_alpha_atlas_*`의 `AMENDED_DEPENDENCY_CHANGED`,
-`test_closed_atlas_provenance` 등). 봉인 파일을 임의로 바꾸지 않기 위해 워크플로를 `research/prospective_ops/install/`의 템플릿으로 두었다.
-**설치(= `.github/workflows/`에 복사 + census 문서 등재)는 봉인 핀을 바꾸는 일이므로 소유자 승인 PR로 따로 한다.** 그 PR은 위 핀 테스트의 기대 해시 갱신을 포함해야 하며, 이 PR은 하지 않는다.
+```json
+{
+  "schema": "PROSPECTIVE_WRITER_CUTOVER_V1",
+  "studyId": "kr-corporate-information-events-v1",
+  "pinnedCodeCommit": "8aee189ff453d9bd624a67df5e1e5975bd7d211c",
+  "authorizationSha256": "c7191d7542a4e3b0d832e63625201585998632ef680d1976c0e2f0faab115d1e",
+  "successor": {
+    "repository": "jaehojung1879-netizen/Investment",
+    "workflow": ".github/workflows/prospective-ops.yml",
+    "ref": "refs/heads/main"
+  },
+  "attestedAtUtc": "<UTC>",
+  "legacyRunsDrained": true,
+  "retiredPermanently": true,
+  "readbacks": [
+    {"id": "trig_01XwJ7yivCe5uokkmUTk8MWE", "enabled": false, "readbackUtc": "<UTC>", "source": "CLAUDE_GET_TRIGGER_READBACK"},
+    {"id": "trig_013qoRYz6H9UwUosNzCWv69B", "enabled": false, "readbackUtc": "<UTC>", "source": "CLAUDE_GET_TRIGGER_READBACK"}
+  ]
+}
+```
 
-## 소유자 조치 (순서 고정)
+## 고정 코드 보존
 
-1. **PR 병합** (이 PR). 코드·레지스트리·템플릿만 들어가며 병합만으로 기록이 시작되지 않는다. 별도로 워크플로 설치 PR(봉인 핀 갱신 승인 포함)이 필요하다.
-2. **Claude trigger 비활성화**: claude.ai 예약 작업 목록 또는 Claude Code에서 `trig_013qoRYz6H9UwUosNzCWv69B`를 비활성화(삭제 불필요). 이후 `trig_01XwJ7…`, `trig_013q…` 모두 `enabled=false`를 `get_trigger`로 재확인.
-3. **attestation 커밋**: `research/prospective_ops/attestations/kr-corporate-information-events-v1-single-writer.json`
-   ```json
-   {"studyId":"kr-corporate-information-events-v1","attestedAtUtc":"<UTC, 7일 이내 유지>","attestedBy":"jaehojung1879-netizen",
-    "legacyWriterStates":{"trig_01XwJ7yivCe5uokkmUTk8MWE":"DISABLED","trig_013qoRYz6H9UwUosNzCWv69B":"DISABLED"},
-    "evidence":[{"id":"trig_01XwJ7yivCe5uokkmUTk8MWE","readbackUtc":"<get_trigger 재조회 시각>","enabled":false},
-                {"id":"trig_013qoRYz6H9UwUosNzCWv69B","readbackUtc":"<get_trigger 재조회 시각>","enabled":false}]}
-   ```
-4. **레지스트리 활성화 커밋**: `automation.enabled=true`, `monitoring.continuityBaselineSession`을 첫 자동 기록 직전 세션으로 설정(과거 누락은 `MISSED_NOT_OBSERVED`로 남고 N에 산입되지 않는다).
-5. **Actions 시크릿 확인**: 저장소 시크릿 `DART`(기존 `fundamentals.yml`이 사용)가 유효한지. 값은 노출 불필요.
-6. **검증 1회**: Actions → `Prospective ops` → Run workflow(`mode: write`)를 KR 세션 마감(18:00 KST) 이후 1회 실행. 요약에서 `RECORDED_AND_VERIFIED` 확인. 이후 2개 연속 세션 정상 기록 시 #378 종결 기준 충족.
+주석 태그 `pinned/kr-corporate-information-events-v1/8aee189`가 정확히 `8aee189ff453d9bd624a67df5e1e5975bd7d211c`를 가리키게 한다. 원격 태그 객체와 peel 대상, 등록 Git 트리 `b1cd5b1852c401a1a9c3a13fce8b1466a4f5e61e`를 대조한다. 같은 커밋이 main ancestry에 들어가도 보존 조건을 충족한다. 태그 발행을 위해 #322를 병합할 필요는 없다.
 
-## 추가 확인 사항 (독립 검토 반영)
+```bash
+git fetch --no-tags origin 8aee189ff453d9bd624a67df5e1e5975bd7d211c
+git tag -a pinned/kr-corporate-information-events-v1/8aee189 \
+  8aee189ff453d9bd624a67df5e1e5975bd7d211c -m 'Preserve the registered corporate prospective writer'
+git push origin refs/tags/pinned/kr-corporate-information-events-v1/8aee189
+git ls-remote origin 'refs/tags/pinned/kr-corporate-information-events-v1/8aee189*'
+```
 
-- **승인 무결성:** 가드는 승인 파일·사양 파일의 바이트 sha256(고정 커밋 기준)을 레지스트리 값(`c7191d75…`, `1692b5b3…`)과 대조한다. 필드 일치만으로는 통과하지 못한다.
-- **고정 코드 보존:** `8aee189`는 브랜치에만 있다. 활성화 전에 주석 태그(예: `pinned/kr-corporate-information-events-v1/8aee189`) 또는 #322 병합이 필요하다. 이 세션은 태그를 만들지 않았다(브랜치 외 ref 변경은 소유자 결정).
-- **상호배제:** Actions `concurrency`는 Claude trigger와의 상호배제를 보장하지 않는다. attestation은 소유자 진술이다. 같은 세션 이중 기록은 push 충돌로 막히는 것을 등록 writer의 실제 코드로 검증했다(설계서 3절).
-- **attestation 7일 만료:** 오래된 attestation은 가드가 거부한다.
+## 설치 및 인수 검증
 
-## 변경하지 않는 것
-
-기존 영수증, 등록 사양·승인 해시, 연구 코드, 투자 성과, production 추천·배분, 보호 워크플로, branch protection, 승인되지 않은 연구(`kr-capital-event-prospective-v1`은 UNAUTHORIZED로 표시만).
-
-## 롤백
-
-레지스트리 `automation.enabled=false`로 되돌리면 다음 실행부터 가드가 거부한다. 이미 쓰인 영수증은 append-only로 유지된다.
+- 병합 총괄이 정확한 최신 main의 native Tests와 별도 비작성자 검토를 확인한 후 설치를 병합한다.
+- 설치 직후 [Prospective ops](https://github.com/jaehojung1879-netizen/Investment/actions/workflows/prospective-ops.yml)에서 main / `status-only`로 상태 아티팩트와 기존 세 영수증의 무결성을 확인한다.
+- 활성화가 별도로 승인된 뒤 다음 두 적격 거래일에 원격 `signal-history`의 새 세션 영수증 각각 한 건, 원 파일 앞부분의 10,191바이트와 승인·사양 해시 보존을 검증한다. 같은 세션 재시도 결과가 이미 기록된 영수증을 확인해야 한다.
+- Claude 예약이 다시 켜졌거나 종료 증거가 무효라면 승인 댓글을 철회한다. Actions 직렬화와 Git 원격 충돌 검사는 외부 예약 관리 권한을 대체하지 않는다.
