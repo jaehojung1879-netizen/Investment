@@ -462,6 +462,18 @@ def test_install_binds_exact_live_workflow_and_additive_inventory(tmp_path):
 
 
 # ------------------------------------------------------------------------ push conflicts (real git, local bare remotes)
+@pytest.fixture(autouse=True)
+def git_identity(monkeypatch):
+    """A rebase needs a committer identity. A hosted runner has none, which is exactly why the template sets one before the writer runs."""
+    for key, value in (("GIT_AUTHOR_NAME", "t"), ("GIT_AUTHOR_EMAIL", "t@t"), ("GIT_COMMITTER_NAME", "t"), ("GIT_COMMITTER_EMAIL", "t@t")):
+        monkeypatch.setenv(key, value)
+
+
+def test_template_sets_a_git_identity_before_the_registered_writer_runs():
+    code = re.sub(r"#.*", "", WORKFLOW)
+    assert code.index('git config user.name') < code.index("-m research.corporate_event_readiness_v1.cohort.live_run")
+    assert code.index('git config user.email') < code.index("-m research.corporate_event_readiness_v1.cohort.live_run")
+
 import ast  # noqa: E402
 import os  # noqa: E402
 import stat  # noqa: E402
