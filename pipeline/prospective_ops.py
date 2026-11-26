@@ -456,8 +456,11 @@ def guard_decision(study: dict, facts: dict) -> dict:
     if (authorization is None or authorization.get("specSha256") != approval.get("specSha256")
             or authorization.get("studyId") != study["studyId"]):
         reasons.append("AUTHORIZATION_FIELDS_MISMATCH")
+    cutover_state = "NOT_REQUIRED"
     if study.get("writer", {}).get("legacyWriters") or study["studyId"] == CORPORATE_STUDY:
-        reasons.extend(cutover_refusals(study, facts))
+        cutover_errors = cutover_refusals(study, facts)
+        reasons.extend(cutover_errors)
+        cutover_state = "UNVERIFIED" if cutover_errors else "OWNER_APPROVED_READBACK"
     if facts.get("baselineBytesMatch") is False or (study.get("baselineLedger") and facts.get("baselineBytesMatch") is not True):
         reasons.append("BASELINE_LEDGER_BYTES_CHANGED")
     ledger = coerce_read(facts.get("ledger"))
@@ -474,7 +477,7 @@ def guard_decision(study: dict, facts: dict) -> dict:
         reasons.append("REMOTE_LEDGER_INTEGRITY_ERRORS")
     return {"studyId": study["studyId"], "decision": "REFUSE" if reasons else "ALLOW_WRITE", "reasons": sorted(set(reasons)),
             "ledgerRead": ledger["state"],
-            "externalTriggerVerification": "OWNER_VERIFIED_CUTOVER; GitHub cannot independently poll external Claude triggers."}
+            "cutoverEvidence": cutover_state}
 
 
 def verify_new_receipt(rows: list[dict], study: dict, session: str, windows: dict[str, datetime], as_of: datetime) -> dict:

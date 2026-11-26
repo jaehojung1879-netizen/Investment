@@ -40,7 +40,7 @@ import pytest
 
 
 @pytest.fixture(autouse=True)
-def prospective_workflow_inventory_input(request, monkeypatch):
+def prospective_workflow_inventory_input(request):
     """Give the preserved census tests the verified, additive inventory data.
 
     Both frozen census modules still enumerate the full live workflow
@@ -51,6 +51,7 @@ def prospective_workflow_inventory_input(request, monkeypatch):
         return
     from pipeline.prospective_workflow_maintenance import INVENTORY, verify_install
 
+    monkeypatch = request.getfixturevalue("monkeypatch")
     root = Path(__file__).resolve().parents[1]
     verify_install(root)
     if module.__name__ == "test_workflow_inventory":

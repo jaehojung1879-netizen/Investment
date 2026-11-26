@@ -196,7 +196,9 @@ def test_guard_pinned_code_must_exist_match_its_tree_and_be_durably_referenced()
 
 
 def test_guard_single_writer_requires_exact_readbacks_and_fresh_evidence_at_cutover():
-    assert "SINGLE_WRITER_ATTESTATION_MISSING" in reasons(facts(attestation=None))
+    missing = ops.guard_decision(enabled_study(), facts(attestation=None))
+    assert "SINGLE_WRITER_ATTESTATION_MISSING" in missing["reasons"]
+    assert missing["cutoverEvidence"] == "UNVERIFIED"
     a = facts()["attestation"]
     readback = a["readbacks"][0]
     for value in (True, 0, "false", None):
@@ -643,3 +645,15 @@ def test_baseline_prefix_rejects_byte_changes_and_accepts_only_suffix_appends(mo
     assert cli.prefix_matches("ledger", current)
     monkeypatch.setattr(cli, "git_bytes", lambda *_args: (0, b'{"a":1}\n'))
     assert not cli.prefix_matches("ledger", current)
+
+
+def test_identical_session_retry_leaves_exactly_one_remote_receipt(tmp_path):
+    origin = _remote_with_ledger(tmp_path)
+    first, retry = _clone(origin, tmp_path / "first"), _clone(origin, tmp_path / "retry")
+    original = (first / RECEIPTS).read_bytes()
+    receipt = (json.dumps(row(DAYS[1])) + "\n").encode()
+    for clone in (first, retry):
+        (clone / RECEIPTS).write_bytes(original + receipt)
+    assert _pinned_push_with_retry(first)(first, "first")
+    assert _pinned_push_with_retry(retry)(retry, "retry")
+    assert subprocess.check_output(["git", "show", f"signal-history:{RECEIPTS}"], cwd=origin) == original + receipt
