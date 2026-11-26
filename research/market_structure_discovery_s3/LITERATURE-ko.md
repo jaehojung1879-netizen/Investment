@@ -12,9 +12,9 @@
 | Cohen & Lou (2012), [Complicated Firms](https://www.sciencedirect.com/science/article/abs/pii/S0304405X11001899) | 단순 기업의 산업 정보가 복합 기업 가격에 지연해 반영되는 패턴을 보고했다. | S1의 산업·제품 노출을 이용해 복합 기업의 중요 사업부 신호만 검사한다. 산업 연결 자체의 내생성과 숨은 공통 위험이 남는다. |
 | Cohen, Malloy & Nguyen (2020), [Lazy Prices](https://www.nber.org/papers/w25084) | 정기공시 이전 버전 대비 텍스트 변경이 이후 기업·수익률 결과와 관련됐다고 보고했다. | 문자 편집량을 기준선으로 두고 실제 경제 정의와 수치가 달라진 경우의 증분을 본다. 표준문구와 회계 표현 변경 및 거래비용은 별개다. |
 | Sims (2003), [Rational Inattention](https://doi.org/10.1016/S0304-3932(03)00029-1) | 제한된 정보 처리 용량에서 정확한 정보를 단계적으로 선택하는 의사결정을 모형화했다. | 처리 가능한 문서 수보다 단위 검증 시간당 의사결정 오차 감소를 측정한다. 모형의 정보용량을 문서 길이로 대체하지 않는다. |
-| Bordalo et al. (2019), [Diagnostic Expectations and Stock Returns](https://doi.org/10.1111/jofi.12786) | 대표성이 높은 새 정보에 과도하게 가중하는 전망 모형과 장기 성장 기대·수익률 패턴을 연결했다. | 성장 전망 수정이 실현 현금흐름과 비대칭인지 살핀다. 자체 가이던스 및 역산 시나리오는 애널리스트 기대를 직접 관측하지 못한다. |
+| Bordalo et al. (2019), [Diagnostic Expectations and Stock Returns](https://doi.org/10.1111/jofi.12833) | 대표성이 높은 새 정보에 과도하게 가중하는 전망 모형과 장기 성장 기대·수익률 패턴을 연결했다. | 성장 전망 수정이 실현 현금흐름과 비대칭인지 살핀다. 자체 가이던스 및 역산 시나리오는 애널리스트 기대를 직접 관측하지 못한다. |
 | Martineau (2022), [Rest in Peace Post-Earnings Announcement Drift](https://cfr.ivo-welch.info/published/papers/martineau2021rest.pdf) | 현대 표본에서 규모·거래 환경에 따라 고전적 PEAD가 사라지거나 약해졌다는 반대 결과를 제시했다. | S3는 모든 실적 공시의 새로운 PEAD를 가정하지 않는다. 경제 정의가 복잡한 문서의 증분으로 국한한다. 동일 실험의 직접 재현 결과와는 구별된다. |
-| 2024 실험, [Earnings Autocorrelation and PEAD](https://www.cambridge.org/core/journals/journal-of-financial-and-quantitative-analysis/article/earnings-autocorrelation-and-the-postearningsannouncement-drift-experimental-evidence/61CD6A2065A4686418A3C47DEF3AC24B) | 실험에서 참가자가 실적 충격의 연속성을 충분히 반영하지 않는 경로를 시험했다. | 공시 처리가 느려서 생긴 반응과 실적 지속성을 잘못 파악해서 생긴 반응을 경쟁 설명으로 둔다. 실험 시장의 결과와 실제 시장의 크기는 직접 비교할 수 없다. |
+| Fink, Palan & Theissen (2023 온라인), [Earnings Autocorrelation and PEAD](https://www.cambridge.org/core/journals/journal-of-financial-and-quantitative-analysis/article/earnings-autocorrelation-and-the-postearningsannouncement-drift-experimental-evidence/61CD6A2065A4686418A3C47DEF3AC24B) | 실험에서 참가자가 실적 충격의 연속성을 충분히 반영하지 않는 경로를 시험했다. | 공시 처리가 느려서 생긴 반응과 실적 지속성을 잘못 파악해서 생긴 반응을 경쟁 설명으로 둔다. 실험 시장의 결과와 실제 시장의 크기는 직접 비교할 수 없다. |
 
 ## 전문가 판단, 진단, 과학적 추론
 
