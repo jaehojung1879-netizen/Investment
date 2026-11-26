@@ -47,3 +47,12 @@
 - 감시 대상 중 `OBSERVED_ONLY` 연구는 등록된 주기가 없어 완전성을 주장하지 않는다(최근 기록 경과일 기준 점검만).
 - 만기 달력은 `pipeline/replay_calendar.py`(버전 고정) 기준이며 미공시 휴장은 반영되지 않는다.
 - 고정 코드 커밋 `8aee189`는 병합되지 않은 브랜치 `research/corporate-event-readiness-v1`에 있다. 브랜치 삭제 시 체크아웃이 실패한다(가드가 `PINNED_CODE_COMMIT_UNAVAILABLE`로 거부). 병합 또는 태그로 보존할 것.
+
+## 6. 불변 조건 (AGENTS.md에는 추가하지 않음)
+
+`AGENTS.md`는 Phase C 봉인 사양이 해시로 고정한 파일이므로 수정하지 않는다. 운영 불변 조건은 이 문서에 둔다.
+
+- 워크플로 성공 ≠ 영수증 존재. 상태는 영수증으로만 산출하고, 기록기 실행 결과는 `EXECUTION_FAILED`를 더할 수만 있다.
+- 누락 창은 `MISSED_NOT_OBSERVED`. 소급 기록·날짜 변경·"이벤트 0건" 해석·독립 표본 산입을 하지 않는다. `continuityBaselineSession`은 알림 구분용이며 `missedRecords`를 줄이지 않는다.
+- 등록은 아무것도 시작하지 않는다. 활성화는 소유자 승인 해시, 고정 코드 커밋, 단일 writer attestation이 모두 있어야 한다.
+- 등록 코드는 수정 없이 고정 커밋에서 실행한다.
