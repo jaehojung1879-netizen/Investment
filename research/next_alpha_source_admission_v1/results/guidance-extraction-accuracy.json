@@ -281,7 +281,8 @@
   "goldHashes": {
    "dev": "2eabfab4753e31bf319870754dc3cd9d5fd113875669b22731d174b747c55c68",
    "test": "f900bcf11972f9be5f948974f652ecc8b6950c46530830df22a020c8ededbabb",
-   "test2": "43a56c880c49e63c10ee7784c8ad16c2d2a1fefa8a1f1bcf93dad7d9791779bb"
+   "test2": "43a56c880c49e63c10ee7784c8ad16c2d2a1fefa8a1f1bcf93dad7d9791779bb",
+   "test3": "a3d1159018c40cece0cfe21c1303a3c3ce6472a67961791ea8cbd87ff2fc2cf6"
   },
   "order": "gold dev+test frozen (commit 433908f) -> v2 tuned on dev only -> v2 frozen (e9e2575) -> test scored once -> v3 general fixes from test error classes -> test2 drawn and frozen (2586d91) -> v2 and v3 scored once on test2",
   "heldOut": "test (v2 only) and test2 (v2, v3); dev and test_seen_posthoc are optimistic",
@@ -300,5 +301,159 @@
    "FP_priorYearComparatorInOutlookSentence": "majority of 27 FPs (ANF, VRT)",
    "recallExcludingTransposedTables": 0.806
   }
+ },
+ "test3": {
+  "v1": {
+   "strict": {
+    "tp": 3,
+    "fp": 1,
+    "fn": 41,
+    "precision": 0.75,
+    "recall": 0.068,
+    "f1": 0.125,
+    "priorLeakedAsCurrent": 0,
+    "prior": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 7
+    }
+   },
+   "relaxed_basis": {
+    "tp": 3,
+    "fp": 1,
+    "fn": 41,
+    "precision": 0.75,
+    "recall": 0.068,
+    "f1": 0.125,
+    "priorLeakedAsCurrent": 0,
+    "prior": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 7
+    }
+   }
+  },
+  "v2frozen": {
+   "strict": {
+    "tp": 16,
+    "fp": 30,
+    "fn": 28,
+    "precision": 0.348,
+    "recall": 0.364,
+    "f1": 0.356,
+    "priorLeakedAsCurrent": 0,
+    "prior": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 7
+    }
+   },
+   "relaxed_basis": {
+    "tp": 17,
+    "fp": 29,
+    "fn": 27,
+    "precision": 0.37,
+    "recall": 0.386,
+    "f1": 0.378,
+    "priorLeakedAsCurrent": 0,
+    "prior": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 7
+    }
+   }
+  },
+  "v3": {
+   "strict": {
+    "tp": 16,
+    "fp": 23,
+    "fn": 28,
+    "precision": 0.41,
+    "recall": 0.364,
+    "f1": 0.386,
+    "priorLeakedAsCurrent": 0,
+    "prior": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 7
+    }
+   },
+   "relaxed_basis": {
+    "tp": 17,
+    "fp": 22,
+    "fn": 27,
+    "precision": 0.436,
+    "recall": 0.386,
+    "f1": 0.41,
+    "priorLeakedAsCurrent": 0,
+    "prior": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 7
+    }
+   }
+  },
+  "note": "key v3 here = guidance_extract.py at freeze e259dfb (= v4); scored once after gold-test3 was frozen (da01918)"
+ },
+ "v4_on_seen_sets": {
+  "dev": {
+   "tp": 51,
+   "fp": 1,
+   "fn": 2,
+   "precision": 0.981,
+   "recall": 0.962,
+   "f1": 0.971,
+   "priorLeakedAsCurrent": 0,
+   "prior": {
+    "tp": 8,
+    "fp": 2,
+    "fn": 0
+   }
+  },
+  "test": {
+   "tp": 50,
+   "fp": 29,
+   "fn": 11,
+   "precision": 0.633,
+   "recall": 0.82,
+   "f1": 0.714,
+   "priorLeakedAsCurrent": 0,
+   "prior": {
+    "tp": 10,
+    "fp": 2,
+    "fn": 0
+   }
+  },
+  "test2": {
+   "tp": 100,
+   "fp": 25,
+   "fn": 14,
+   "precision": 0.8,
+   "recall": 0.877,
+   "f1": 0.837,
+   "priorLeakedAsCurrent": 0,
+   "prior": {
+    "tp": 3,
+    "fp": 6,
+    "fn": 5
+   }
+  }
+ },
+ "heldOutSummary": {
+  "v2": {
+   "test": 0.609,
+   "test2": 0.694,
+   "test3": 0.356
+  },
+  "v4": {
+   "test3": 0.386
+  },
+  "test3ErrorClasses": [
+   "colon section heads without a forecast verb (\"For the full year 2022:\") -> wrong target year",
+   "slide-deck exhibits (EX-99.2) flattened to one paragraph",
+   "compound table cells (\"~0.1%~$278\")",
+   "comparator values introduced by \"versus\"/\"of $X in 2014\""
+  ],
+  "verdict": "NOT_CONVERGING: every new held-out set exposes new layouts; rule-based extraction does not reach the proposed gate (P>=0.90, R>=0.80)"
  }
 }
