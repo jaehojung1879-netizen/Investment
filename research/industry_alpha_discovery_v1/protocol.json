@@ -1,0 +1,269 @@
+{
+ "studyId": "industry-alpha-discovery-v1",
+ "evidenceClass": "EXPLORATORY_ON_OUTCOME_EXPOSED_KR_HISTORY",
+ "statement": "Every Korean price date in 2013-2026 is outcome-exposed. Nothing here can confirm a signal; a favourable result is a hypothesis for prospective receipts, an unfavourable one is reported as it is.",
+ "writtenBeforeAnyReturn": true,
+ "runs": 1,
+ "calendar": {
+  "sessions": "069500.KS Yahoo daily rows",
+  "start": "2013-01-02",
+  "dataCutoff": "2026-11-20"
+ },
+ "benchmark": {
+  "ticker": "069500.KS",
+  "series": "Yahoo adjclose (split and distribution adjusted)",
+  "name": "KODEX 200"
+ },
+ "baskets": {
+  "SEMI": [
+   "005930.KS",
+   "000660.KS"
+  ],
+  "AUTO": [
+   "005380.KS",
+   "000270.KS"
+  ],
+  "PETRO": [
+   "010950.KS",
+   "096770.KS"
+  ],
+  "SHIP": [
+   "009540.KS",
+   "010140.KS",
+   "042660.KS"
+  ],
+  "weighting": "equal weight at entry, buy-and-hold to exit",
+  "COMPUTER": "not tested separately: Korean computer exports are mostly SSD made by the same two memory makers, so it carries the SEMI information"
+ },
+ "entry": {
+  "primary": "close of the first session strictly after the publication date",
+  "sensitivity": "close of the publication date (customs flashes state 09:00 release; MOTIE monthly 09:00-11:00)",
+  "announcementReaction": "close of the session before publication to close of the publication session (descriptive; not a strategy)"
+ },
+ "horizonsSessions": [
+  1,
+  5,
+  21,
+  63,
+  126,
+  252
+ ],
+ "excess": "basket simple return minus benchmark simple return over the same entry->exit sessions",
+ "priceControls": {
+  "mom63": "basket minus benchmark return over sessions entry-64 .. entry-1",
+  "mom126": "basket minus benchmark return over sessions entry-127 .. entry-1"
+ },
+ "inference": {
+  "regression": "OLS with Newey-West (Bartlett) standard errors; lags = ceil(H / median spacing between consecutive observations in sessions)",
+  "bootstrap": "moving-block bootstrap of the ON-minus-OFF mean difference, block = HAC lag + 1 observations, 4000 draws, seed 20261122",
+  "pValues": "two-sided",
+  "primaryFamily": [
+   "H1-21",
+   "H1-126",
+   "H2-126",
+   "H2-252"
+  ],
+  "primaryCorrection": "Holm over the four primary tests, alpha 0.05",
+  "secondaryFamily": [
+   "H2X-AUTO-126",
+   "H2X-PETRO-126",
+   "H2X-SHIP-126",
+   "H3-SEMI-126",
+   "H3-SEMI-252"
+  ],
+  "secondaryCorrection": "Holm over the secondary family, alpha 0.05; descriptive items carry no verdict",
+  "minObservations": "a test with fewer than 24 observations, or fewer than 8 ON and 8 OFF, is NOT_ESTIMABLE; absence of a result is not evidence against the hypothesis",
+  "independentObservations": "reported for every test as n * median spacing / H (capped at n)"
+ },
+ "H1": {
+  "question": "Does the customs 10-/20-day export flash carry information about the semiconductor basket's excess return beyond prior public data and price momentum?",
+  "sample": "every FLASH10 / FLASH20 release on the KDI archive whose 주요품목 sentence states a semiconductor YoY rate and that has an earlier published semiconductor YoY reading",
+  "surprise": "flash semiconductor YoY (as published, not working-day adjusted) minus the latest semiconductor YoY published strictly earlier (MOTIE monthly first release of the previous month, or the same month's 10-day flash for a 20-day flash). A public-data expectation proxy, not a market consensus",
+  "regressors": [
+   "ON = 1[surprise > 0]",
+   "mom63",
+   "LVL = 1[flash YoY > 0]"
+  ],
+  "testedCoefficient": "ON",
+  "primaryHorizons": [
+   21,
+   126
+  ],
+  "expectedSign": "+",
+  "strategies": {
+   "tilt": 0.3,
+   "rule": "KODEX 200 100%; when ON, KODEX 200 70% + 30% equal-weight SEMI basket. 100% equity in both states. State re-decided at each event's entry close and held to the next event; the sleeve drifts between changes; dated costs on executed changes",
+   "B0": "KODEX 200 only",
+   "B1": "always ON",
+   "P": "ON iff mom63 > 0",
+   "X": "ON iff flash YoY > 0",
+   "S": "ON iff surprise > 0",
+   "SP": "ON iff surprise > 0 and mom63 > 0",
+   "keyComparisons": [
+    "S vs P",
+    "SP vs P",
+    "S vs X",
+    "S vs B1"
+   ]
+  },
+  "sensitivities": [
+   "Samsung only",
+   "SK Hynix only",
+   "091160.KS (KODEX 반도체) as the basket",
+   "same-day entry",
+   "working-day adjusted surprise where both day counts are stated (total-export day counts applied to the item)",
+   "10-day flashes only",
+   "20-day flashes only"
+  ]
+ },
+ "H2": {
+  "question": "Does a turn in the first-release monthly semiconductor export trend predict the semiconductor basket's 6-12 month excess return beyond price momentum?",
+  "sample": "every MOTIE monthly release (2013-2026, KDI archive, PDF or HWP) from which the semiconductor acceleration is computable as of its publication date",
+  "asOfValues": "a value month's as-of value is the latest value stated by a release published on or before the decision date; its year-ago base is that value divided by (1 + the YoY rate stated with it), or the year-ago value stated in the same release where the release states one",
+  "G3": "sum of as-of values of months m, m-1, m-2 over the sum of their year-ago bases, minus 1",
+  "accel": "G3(m) - G3(m-3), both as of the same decision date",
+  "regressors": [
+   "ON = 1[accel > 0]",
+   "mom126"
+  ],
+  "testedCoefficient": "ON",
+  "primaryHorizons": [
+   126,
+   252
+  ],
+  "expectedSign": "+",
+  "strategies": {
+   "tilt": 0.3,
+   "rule": "as H1, decided at each monthly release",
+   "B0": "KODEX 200 only",
+   "B1": "always ON",
+   "P": "ON iff mom126 > 0",
+   "X": "ON iff G3 > 0",
+   "A": "ON iff accel > 0",
+   "AP": "ON iff accel > 0 and mom126 > 0",
+   "keyComparisons": [
+    "A vs P",
+    "AP vs P",
+    "A vs X"
+   ]
+  },
+  "otherIndustries": {
+   "H2X-AUTO": {
+    "item": "자동차",
+    "basket": "AUTO",
+    "expectedSign": "+ (weak: FX and overseas production drive earnings)"
+   },
+   "H2X-PETRO": {
+    "item": "석유제품",
+    "basket": "PETRO",
+    "expectedSign": "none (export value mostly restates oil prices; margins drive earnings)"
+   },
+   "H2X-SHIP": {
+    "item": "선박/선박류",
+    "basket": "SHIP",
+    "expectedSign": "0 (negative control: exports record deliveries of orders booked 2-3 years earlier, after revenue was recognised)"
+   }
+  },
+  "revisionAnalysis": "G3 and accel recomputed on the latest stated values; count of sign flips and the dates of the largest semiconductor revisions",
+  "earningsLink": "descriptive: G3 / accel at each quarter-end month's release vs the Samsung+SK Hynix TTM operating income YoY that became public later (research/investment_decision_alpha_v1/results/kr-semis-case-quarters.csv)",
+  "pricedInDiagnostic": "R^2 of the monthly change in G3 on the SEMI basket's excess return over the 21 and 63 sessions ending the session before publication; reported, not used as a gate",
+  "itemAliases": {
+   "SEMI": [
+    "반도체"
+   ],
+   "AUTO": [
+    "자동차"
+   ],
+   "PETRO": [
+    "석유제품"
+   ],
+   "SHIP": [
+    "선박",
+    "선박류"
+   ]
+  }
+ },
+ "H3": {
+  "question": "Does the first-release semiconductor shipment-minus-inventory growth (inventory cycle) predict the semiconductor basket's excess return?",
+  "sample": "every 산업활동동향 release on the KDI archive whose 업종별 생산·출하·재고 table yields the 반도체 row (YoY columns) ",
+  "signal": "ISI = shipment YoY - inventory YoY (first release); ON = 1[ISI > 0]",
+  "states": {
+   "NORMALIZING": "shipment YoY > 0 and inventory YoY < 0",
+   "SUPPLY_EXPANSION": "production YoY > 0 and inventory YoY > 0",
+   "DEMAND_WEAKENING": "shipment YoY <= 0 and inventory YoY > 0",
+   "OTHER": "otherwise"
+  },
+  "regressors": [
+   "ON",
+   "mom126"
+  ],
+  "horizons": [
+   126,
+   252
+  ],
+  "family": "secondary",
+  "eligibility": "returns are computed only if at least 60 monthly releases are parsed; otherwise NOT_ESTIMABLE and only the data inventory is reported",
+  "otherIndustriesDescriptive": [
+   "자동차",
+   "석유정제",
+   "기타운송장비"
+  ]
+ },
+ "costs": {
+  "source": "research_specs/alpha-opportunity-model-v5.json carriedFromV3.transactionCosts (KR)",
+  "commissionBps": 1.5,
+  "spreadBps": 8.0,
+  "sellTaxSchedule": [
+   [
+    "1900-01-01",
+    30.0
+   ],
+   [
+    "2019-06-03",
+    25.0
+   ],
+   [
+    "2021-01-01",
+    23.0
+   ],
+   [
+    "2023-01-01",
+    20.0
+   ],
+   [
+    "2024-01-01",
+    18.0
+   ],
+   [
+    "2025-01-01",
+    15.0
+   ],
+   [
+    "2026-01-01",
+    20.0
+   ]
+  ],
+  "etf": "KODEX 200: commission + half spread, no transaction tax"
+ },
+ "forbidden": [
+  "choosing a threshold, window, tilt or horizon after seeing a return",
+  "a second run after this one",
+  "dropping an industry or a sensitivity from the report",
+  "calling the surprise a consensus surprise",
+  "promotion or any production change"
+ ],
+ "dataIdentity": {
+  "data/motie-items-by-release.csv": "6688a19b6c0c395f9cdea01afc7cfab7d60c6f1f559ab48cb0aca18d5be3987a",
+  "data/customs-flash-items.csv": "cd0aa061add82d17e16fc4bfbba2ae7c4a96429cef7364b7bbd1467d4b2ad79e",
+  "data/iip-industry-yoy.csv": "67a415822770a7967f6b57ba452b6292d7ae0b2a67c9d049c12ff4e9ec0dbee8",
+  "data/price-manifest.json": "5f87330440d82564aeb8ec63953a5c35fcea080e53e7dfc7978cfc392a78af51",
+  "data/eligibility.json": "c020d4142486d321ce223ef065a1d80bb25cd9d2a45e6247870c9fe36330af76",
+  "stageACommit": "db1bf22"
+ },
+ "knownBeforeOutcomes": {
+  "H1": "92 flash events 2021-05-21..2026-11-11; about 7 independent observations at 126 sessions (power: DATA-ELIGIBILITY-ko.md section 5)",
+  "H2": "119 monthly releases with a computable semiconductor acceleration from 2013-07; AUTO 119, PETRO 119, SHIP 118",
+  "H3": "50 parsed IIP months (2021-09..2026-09 plus 2013-03): below the 60-month gate fixed in this protocol before the parse count was known, so H3 is NOT_ESTIMABLE and its secondary slots are dropped from the Holm family rather than filled",
+  "revisions": "semiconductor first vs latest: median 0.023%, max 1.51%, zero sign flips in G3 or acceleration"
+ }
+}

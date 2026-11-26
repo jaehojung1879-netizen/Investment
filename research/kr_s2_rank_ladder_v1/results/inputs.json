@@ -1,0 +1,36 @@
+{
+ "label": "FOLLOW_UP_ON_OUTCOME_EXPOSED_HISTORY_NOT_PROSPECTIVE",
+ "baseCommit": "3a3e9d8e60c90bf6707072efca9d1dabf3cb79ac",
+ "sourceCommit": "4ea107ed0cde289f0a049a65ff13d2441a786710",
+ "identity": {
+  "finalSessionQuotesApplied": 235,
+  "identity": "3e4d7aa35e2c4b273e4ecef0e2e8ea7a8a27077f0de14bb3d5ea6a696a97f1a5",
+  "matrixDigest": "32e49b57a7541eea66f76373baef50c6302a394247b313f6099f718d46d54b0c",
+  "mcapCoverage": 1.0,
+  "universeShards": 14
+ },
+ "decisionCount": 454,
+ "first": "2018-01-05",
+ "last": "2026-09-11",
+ "randomSeed": 20261117,
+ "randomLedgerPaths": 5,
+ "preregistrationCommit": "7a6ec28",
+ "codeSha256": {
+  "plot.py": "1536d8389565d5dee9ca4dc1ea94ef01ab2b0dc750e7c316563b2629537eedac",
+  "run.py": "7acb702b9e470daf71d33e5fcdddc0ca3ef48f683918566d5459beabbf66295a",
+  "tables.py": "03aa88db4f7b354bad4c5e7e3bb914ea2f2dbe535cc0a262c81ad01029204af0",
+  "verify.py": "721f703fba154f950c225260f59c033b356ed25ca06fc3a7607329840d963077"
+ },
+ "scratchFiles": {
+  "macro_panel.pkl": "298fdcd5360d7bc9da7a6c750a23723e0385ce25f3107f79b3f4c397849641a5",
+  "sg1-random-setup.pkl": "bdcbb2d186dd935f7348458eabf92218ff22bc8fcb8144ebe4da03dd9428f78c",
+  "vix_fx.pkl": "c12e2eccfb6fa904733250f5eb0e2fd5f49ad62603de5ffbdc5631627da9587b",
+  "matrix.pkl": "8997b7160b27483ebb371e0dedf406158139da260ee0965c7038de2bf690f54c",
+  "dataset.pkl": "8d0877dae9a82d69045c1bff1bb2a8e592441747876d2ee0d1df27f343d6a1f3"
+ },
+ "pythonNumpyPandas": [
+  "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "2.3.1",
+  "2.3.0"
+ ]
+}

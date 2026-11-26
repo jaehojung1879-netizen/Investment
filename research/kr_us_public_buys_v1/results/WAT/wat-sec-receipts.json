@@ -1,0 +1,172 @@
+{
+  "ticker": "WAT",
+  "cik": "0001000697",
+  "shares": [
+    {
+      "shares": 98101871,
+      "shareAsOf": "2026-02-19",
+      "shareCik": "0001000697",
+      "scale": 0,
+      "unitRef": "Unit_shares",
+      "contextRef": "PAsOn02_19_2026",
+      "contextDimensions": [],
+      "decimals": "INF",
+      "concept": "dei:EntityCommonStockSharesOutstanding",
+      "ticker": "WAT",
+      "sourceId": "0001193125-26-062604",
+      "acceptedET": "2026-02-23T09:10:03-05:00",
+      "document": {
+        "url": "https://www.sec.gov/Archives/edgar/data/1000697/000119312526062604/d778470d10k.htm",
+        "sha256": "2aec8b929e6be5e3fe59db427910da24a8f0cd02c365eda5f5b5450a1cf8bf88",
+        "bytes": 3024803
+      },
+      "index": {
+        "url": "https://www.sec.gov/Archives/edgar/data/1000697/000119312526062604/0001193125-26-062604-index.htm",
+        "sha256": "8d4a57af4825a4a636c0cd89c3b387101d12dd3e0a743f648f1cd069be644781",
+        "bytes": 10922
+      },
+      "kind": "SEC_INLINE_10K_10Q_COVER_ENTITY_COMMON_SHARES"
+    },
+    {
+      "shares": 98185855,
+      "shareAsOf": "2026-05-06",
+      "shareCik": "0001000697",
+      "scale": 0,
+      "unitRef": "Unit_shares",
+      "contextRef": "PAsOn05_06_2026",
+      "contextDimensions": [],
+      "decimals": "INF",
+      "concept": "dei:EntityCommonStockSharesOutstanding",
+      "ticker": "WAT",
+      "sourceId": "0001193125-26-219487",
+      "acceptedET": "2026-05-12T16:16:20-04:00",
+      "document": {
+        "url": "https://www.sec.gov/Archives/edgar/data/1000697/000119312526219487/d435723d10q.htm",
+        "sha256": "003df08d0d7bbc6bb32d1a223bd9fedd73f122dad53e3c814dfd6552af107cec",
+        "bytes": 1820261
+      },
+      "index": {
+        "url": "https://www.sec.gov/Archives/edgar/data/1000697/000119312526219487/0001193125-26-219487-index.htm",
+        "sha256": "b0cfc8dc2048539e680f13b68bfc286b0a6f633fe228f29706b8fab4cdedd14b",
+        "bytes": 10599
+      },
+      "kind": "SEC_INLINE_10K_10Q_COVER_ENTITY_COMMON_SHARES"
+    },
+    {
+      "shares": 98248111,
+      "shareAsOf": "2026-08-07",
+      "shareCik": "0001000697",
+      "scale": 0,
+      "unitRef": "Unit_shares",
+      "contextRef": "PAsOn08_07_2026",
+      "contextDimensions": [],
+      "decimals": "INF",
+      "concept": "dei:EntityCommonStockSharesOutstanding",
+      "ticker": "WAT",
+      "sourceId": "0001193125-26-344691",
+      "acceptedET": "2026-08-11T16:16:07-04:00",
+      "document": {
+        "url": "https://www.sec.gov/Archives/edgar/data/1000697/000119312526344691/d170082d10q.htm",
+        "sha256": "9e86c6006c0a5c9e7b1cee2f55218e3037b4789e8a6ec090736293a1b03fb984",
+        "bytes": 2032401
+      },
+      "index": {
+        "url": "https://www.sec.gov/Archives/edgar/data/1000697/000119312526344691/0001193125-26-344691-index.htm",
+        "sha256": "d22395d083f7797fa6932dddfec0355a32362e548b6eb37ed1d36aec7398d11d",
+        "bytes": 9943
+      },
+      "kind": "SEC_INLINE_10K_10Q_COVER_ENTITY_COMMON_SHARES"
+    }
+  ],
+  "dilutedWeightedAverageTagScaleAudit": [
+    {
+      "contextRef": "P01_01_2026To04_04_2026",
+      "displayedDigits": 82139,
+      "unitRef": "Unit_shares",
+      "machineScale": 6,
+      "machineShares": 82139000000,
+      "sharesIfDisplayedInThousands": 82139000
+    },
+    {
+      "contextRef": "P01_01_2026To07_04_2026",
+      "displayedDigits": 90041,
+      "unitRef": "Unit_shares",
+      "machineScale": 6,
+      "machineShares": 90041000000,
+      "sharesIfDisplayedInThousands": 90041000
+    },
+    {
+      "contextRef": "P04_05_2026To07_04_2026",
+      "displayedDigits": 98204,
+      "unitRef": "Unit_shares",
+      "machineScale": 6,
+      "machineShares": 98204000000,
+      "sharesIfDisplayedInThousands": 98204000
+    }
+  ],
+  "issuance": {
+    "effectiveDate": "2026-02-09",
+    "acceptedET": "2026-02-09T16:16:29-05:00",
+    "sharesIssued": 38541852,
+    "type": "BDS_REVERSE_MORRIS_TRUST_NEW_COMMON_SHARES",
+    "totalOutstandingIn8K": null,
+    "sourceId": "0001193125-26-042819",
+    "document": {
+      "url": "https://www.sec.gov/Archives/edgar/data/1000697/000119312526042819/d23927d8k.htm",
+      "sha256": "889ccbc8f7f97486838e356a4aa42cd1f3b3a0c03885d867692551f7146d392e",
+      "bytes": 56733
+    },
+    "index": {
+      "url": "https://www.sec.gov/Archives/edgar/data/1000697/000119312526042819/0001193125-26-042819-index.htm",
+      "sha256": "58e0467d40876e2cbbeae2dc993fd554d068a275389e92cbbb5ab71597e28db6",
+      "bytes": 13841
+    },
+    "exactIssueQuantitySource": {
+      "url": "https://www.sec.gov/Archives/edgar/data/1000697/000119312526062604/d778470d10k.htm",
+      "sha256": "2aec8b929e6be5e3fe59db427910da24a8f0cd02c365eda5f5b5450a1cf8bf88",
+      "bytes": 3024803
+    }
+  },
+  "sourceReceipts": {
+    "2025cy-report": {
+      "url": "https://www.sec.gov/Archives/edgar/data/1000697/000119312526062604/d778470d10k.htm",
+      "sha256": "2aec8b929e6be5e3fe59db427910da24a8f0cd02c365eda5f5b5450a1cf8bf88",
+      "bytes": 3024803
+    },
+    "2025cy-index": {
+      "url": "https://www.sec.gov/Archives/edgar/data/1000697/000119312526062604/0001193125-26-062604-index.htm",
+      "sha256": "8d4a57af4825a4a636c0cd89c3b387101d12dd3e0a743f648f1cd069be644781",
+      "bytes": 10922
+    },
+    "2026q1-report": {
+      "url": "https://www.sec.gov/Archives/edgar/data/1000697/000119312526219487/d435723d10q.htm",
+      "sha256": "003df08d0d7bbc6bb32d1a223bd9fedd73f122dad53e3c814dfd6552af107cec",
+      "bytes": 1820261
+    },
+    "2026q1-index": {
+      "url": "https://www.sec.gov/Archives/edgar/data/1000697/000119312526219487/0001193125-26-219487-index.htm",
+      "sha256": "b0cfc8dc2048539e680f13b68bfc286b0a6f633fe228f29706b8fab4cdedd14b",
+      "bytes": 10599
+    },
+    "2026q2-report": {
+      "url": "https://www.sec.gov/Archives/edgar/data/1000697/000119312526344691/d170082d10q.htm",
+      "sha256": "9e86c6006c0a5c9e7b1cee2f55218e3037b4789e8a6ec090736293a1b03fb984",
+      "bytes": 2032401
+    },
+    "2026q2-index": {
+      "url": "https://www.sec.gov/Archives/edgar/data/1000697/000119312526344691/0001193125-26-344691-index.htm",
+      "sha256": "d22395d083f7797fa6932dddfec0355a32362e548b6eb37ed1d36aec7398d11d",
+      "bytes": 9943
+    },
+    "bds-close-8k": {
+      "url": "https://www.sec.gov/Archives/edgar/data/1000697/000119312526042819/d23927d8k.htm",
+      "sha256": "889ccbc8f7f97486838e356a4aa42cd1f3b3a0c03885d867692551f7146d392e",
+      "bytes": 56733
+    },
+    "bds-close-8k-index": {
+      "url": "https://www.sec.gov/Archives/edgar/data/1000697/000119312526042819/0001193125-26-042819-index.htm",
+      "sha256": "58e0467d40876e2cbbeae2dc993fd554d068a275389e92cbbb5ab71597e28db6",
+      "bytes": 13841
+    }
+  }
+}

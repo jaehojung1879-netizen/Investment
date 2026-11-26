@@ -1,0 +1,1148 @@
+{
+ "studyId": "us-rank-independent-check-v1",
+ "date": "2026-11-15",
+ "obtained": {
+  "spySecHoldingSnapshots": 11,
+  "years": {
+   "2018": "2 (N-30D semi-annual: 2018-03-31, 2018-09-30; no N-PORT exists before 2019-06)",
+   "2020": "4 (N-PORT-P quarter ends)",
+   "2022": "4 (N-PORT-P quarter ends)",
+   "recent": "1 (N-PORT-P 2026-06-30, filed 2026-08-28; the latest SPY holdings any outside reader can see)"
+  },
+  "methodologyEvidence": "SPY 485BPOS 2026-01-26 (SEC) text: float-adjusted capitalization weighted index of 500 companies; value = available float shares of each component security",
+  "officialIndexChanges": "27 manually reviewed S&P removal notices with effective dates and timing from #339 (departed-public-evidence.json)",
+  "tickerBridge": "OpenFIGI CUSIP map, US composite listing only, CURRENT ticker; 600 CUSIPs queried, 63 without a US listing line today"
+ },
+ "notObtained": {
+  "SP500_TOP10_INDEX_TOTAL_RETURN": {
+   "status": "SOURCE_BLOCKED",
+   "evidence": [
+    "https://www.spglobal.com/spdji/en/indices/equity/sp-500-top-10-index/ -> HTTP 403 (S&P error page)",
+    "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-500-top-10-index.pdf -> HTTP 403",
+    "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf -> HTTP 403",
+    "SEC EDGAR full-text search for \"S&P 500 Top 10 Index\" -> 0 filings"
+   ],
+   "toUnblock": "a person exports the index's level history (total return variant) from the S&P DJI page in a browser and supplies it with the page's stated Launch Date; crosscheck.external_index_segments then reports the back-tested and live segments separately"
+  },
+  "SP_US_INDICES_METHODOLOGY_PDF": {
+   "status": "SOURCE_BLOCKED",
+   "note": "share-class line rules quoted here come only from SPY's SEC prospectus and the observed holdings, not from the S&P methodology text"
+  },
+  "CODEX_US_RANK_RETURN_OUTPUTS": {
+   "status": "NOT_YET_PUBLISHED",
+   "checkedAt": "2026-11-15",
+   "note": "no open Codex PR or branch carries US top-K rank/weight/return outputs; crosscheck.run consumes them when they exist"
+  }
+ },
+ "snapshots": [
+  {
+   "form": "N-30D",
+   "holdingAsOf": "2018-03-31",
+   "publicFrom": "2018-05-29",
+   "lagDays": 59,
+   "verification": "EXACT_SHA256_MATCH_TO_342",
+   "equityLines": 505,
+   "companies": 500,
+   "top10": [
+    "Apple, Inc.",
+    "Microsoft Corp.",
+    "Alphabet, Inc. Class C(a)",
+    "Amazon.com, Inc.(a)",
+    "Berkshire Hathaway, Inc. Class B(a)",
+    "Facebook, Inc. Class A(a)",
+    "JPMorgan Chase & Co.",
+    "Johnson & Johnson",
+    "Exxon Mobil Corp.",
+    "Bank of America Corp."
+   ],
+   "boundaries": {
+    "5": {
+     "inside": "Berkshire Hathaway, Inc. Class B(a)",
+     "outside": "Facebook, Inc. Class A(a)",
+     "relativeGap": 0.00284,
+     "thin": true
+    },
+    "10": {
+     "inside": "Bank of America Corp.",
+     "outside": "Intel Corp.",
+     "relativeGap": 0.1506,
+     "thin": false
+    },
+    "100": {
+     "inside": "Twenty-First Century Fox, Inc. Class A",
+     "outside": "Duke Energy Corp.",
+     "relativeGap": 0.00258,
+     "thin": true
+    }
+   },
+   "lineLevelTopKDiffersFromCompanyLevel": {
+    "5": [
+     "Alphabet, Inc. Class C(a)",
+     "Facebook, Inc. Class A(a)"
+    ],
+    "10": [
+     "Alphabet, Inc. Class A(a)",
+     "Bank of America Corp."
+    ],
+    "100": [
+     "Alphabet, Inc. Class A(a)",
+     "Twenty-First Century Fox, Inc. Class A"
+    ]
+   },
+   "multiClassCompanies": [
+    [
+     "Alphabet, Inc. Class C(a)",
+     3
+    ],
+    [
+     "Twenty-First Century Fox, Inc. Class A",
+     100
+    ],
+    [
+     "Discovery Communications, Inc. Class C(a)",
+     430
+    ],
+    [
+     "News Corp. Class A",
+     462
+    ],
+    [
+     "Under Armour, Inc. Class A(a)",
+     488
+    ]
+   ],
+   "top100WithoutUsTicker": null,
+   "spyLinesWithoutUsTicker": null,
+   "repoMembersNotMatchedToSpy": null,
+   "spyTickersNotInRepoMembership": null,
+   "officialIndexChangesBetweenHoldingAndPublic": []
+  },
+  {
+   "form": "N-30D",
+   "holdingAsOf": "2018-09-30",
+   "publicFrom": "2018-11-27",
+   "lagDays": 58,
+   "verification": "HTML_BOT_SCRIPT_STRIPPED_CONTENT_CHECKED_BY_HOLDING_COUNT",
+   "equityLines": 506,
+   "companies": 501,
+   "top10": [
+    "Apple, Inc.",
+    "Microsoft Corp.",
+    "Amazon.com, Inc.(a)",
+    "Alphabet, Inc. Class C(a)",
+    "Berkshire Hathaway, Inc. Class B(a)",
+    "Facebook, Inc. Class A(a)",
+    "JPMorgan Chase & Co.",
+    "Johnson & Johnson",
+    "Exxon Mobil Corp.",
+    "Bank of America Corp."
+   ],
+   "boundaries": {
+    "5": {
+     "inside": "Berkshire Hathaway, Inc. Class B(a)",
+     "outside": "Facebook, Inc. Class A(a)",
+     "relativeGap": 0.04982,
+     "thin": false
+    },
+    "10": {
+     "inside": "Bank of America Corp.",
+     "outside": "Visa, Inc. Class A",
+     "relativeGap": 0.02555,
+     "thin": false
+    },
+    "100": {
+     "inside": "Charter Communications, Inc. Class A(a)",
+     "outside": "CME Group, Inc.",
+     "relativeGap": 0.00323,
+     "thin": true
+    }
+   },
+   "lineLevelTopKDiffersFromCompanyLevel": {
+    "5": [
+     "Alphabet, Inc. Class C(a)",
+     "Facebook, Inc. Class A(a)"
+    ],
+    "10": [
+     "Alphabet, Inc. Class A(a)",
+     "Bank of America Corp."
+    ],
+    "100": [
+     "Alphabet, Inc. Class A(a)",
+     "Twenty-First Century Fox, Inc. Class A"
+    ]
+   },
+   "multiClassCompanies": [
+    [
+     "Alphabet, Inc. Class C(a)",
+     4
+    ],
+    [
+     "Twenty-First Century Fox, Inc. Class A",
+     77
+    ],
+    [
+     "Discovery Communications, Inc. Class C(a)",
+     321
+    ],
+    [
+     "Under Armour, Inc. Class A(a)",
+     468
+    ],
+    [
+     "News Corp. Class A",
+     481
+    ]
+   ],
+   "top100WithoutUsTicker": null,
+   "spyLinesWithoutUsTicker": null,
+   "repoMembersNotMatchedToSpy": null,
+   "spyTickersNotInRepoMembership": null,
+   "officialIndexChangesBetweenHoldingAndPublic": [
+    {
+     "ticker": "ANDV",
+     "effective": "2018-10-01",
+     "timing": "before_open",
+     "url": "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20180925-786958/786958_rollininvandamotion.pdf"
+    },
+    {
+     "ticker": "EVHC",
+     "effective": "2018-10-11",
+     "timing": "before_open",
+     "url": "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20181004-794361/794361_pennchefftntasgnvbtx546vv.pdf"
+    }
+   ]
+  },
+  {
+   "form": "NPORT-P",
+   "holdingAsOf": "2020-03-31",
+   "publicFrom": "2020-06-01",
+   "lagDays": 62,
+   "verification": "EXACT_SHA256_MATCH_TO_342",
+   "equityLines": 505,
+   "companies": 500,
+   "top10": [
+    "MSFT",
+    "AAPL",
+    "AMZN",
+    "GOOGL",
+    "META",
+    "BRK/B",
+    "JNJ",
+    "JPM",
+    "V",
+    "PG"
+   ],
+   "boundaries": {
+    "5": {
+     "inside": "Facebook Inc",
+     "outside": "Berkshire Hathaway Inc",
+     "relativeGap": 0.10905,
+     "thin": false
+    },
+    "10": {
+     "inside": "Procter & Gamble Co/The",
+     "outside": "UnitedHealth Group Inc",
+     "relativeGap": 0.13864,
+     "thin": false
+    },
+    "100": {
+     "inside": "Chubb Ltd",
+     "outside": "Goldman Sachs Group Inc/The",
+     "relativeGap": 0.02625,
+     "thin": false
+    }
+   },
+   "lineLevelTopKDiffersFromCompanyLevel": {
+    "5": [
+     "Alphabet Inc",
+     "Berkshire Hathaway Inc"
+    ],
+    "10": [
+     "Procter & Gamble Co/The"
+    ],
+    "100": [
+     "Chubb Ltd"
+    ]
+   },
+   "multiClassCompanies": [
+    [
+     "Alphabet Inc",
+     4
+    ],
+    [
+     "Fox Corp",
+     315
+    ],
+    [
+     "Discovery Inc",
+     371
+    ],
+    [
+     "News Corp",
+     459
+    ],
+    [
+     "Under Armour Inc",
+     479
+    ]
+   ],
+   "top100WithoutUsTicker": [
+    "Medtronic PLC",
+    "Accenture PLC",
+    "Honeywell International Inc",
+    "Linde PLC",
+    "United Technologies Corp",
+    "General Electric Co",
+    "Allergan PLC",
+    "BlackRock Inc",
+    "Chubb Ltd"
+   ],
+   "spyLinesWithoutUsTicker": 87,
+   "repoMembersNotMatchedToSpy": 143,
+   "spyTickersNotInRepoMembership": [
+    "9990302D",
+    "ATO",
+    "BALL",
+    "BFH",
+    "BKR",
+    "BNY",
+    "BR",
+    "CDW",
+    "CE",
+    "COR",
+    "CPRT",
+    "CTRA",
+    "CTVA",
+    "DOC",
+    "ELV",
+    "EVRG",
+    "FANG",
+    "FBIN",
+    "FRCB",
+    "FTNT",
+    "GAP",
+    "GEN",
+    "GL",
+    "IEX",
+    "JKHY",
+    "KEYS",
+    "LDOS",
+    "LHX",
+    "LVS",
+    "LW",
+    "LYV",
+    "META",
+    "MKTX",
+    "MRSH",
+    "MSCI",
+    "MXIM",
+    "NOW",
+    "NVR",
+    "ODFL",
+    "PAYC",
+    "ROL",
+    "RVTY",
+    "TFC",
+    "TFX",
+    "TMUS",
+    "VMRK",
+    "WAB",
+    "WRB",
+    "ZBRA"
+   ],
+   "officialIndexChangesBetweenHoldingAndPublic": []
+  },
+  {
+   "form": "NPORT-P",
+   "holdingAsOf": "2020-06-30",
+   "publicFrom": "2020-08-27",
+   "lagDays": 58,
+   "verification": "EXACT_SHA256_MATCH_TO_342",
+   "equityLines": 505,
+   "companies": 500,
+   "top10": [
+    "MSFT",
+    "AAPL",
+    "AMZN",
+    "GOOGL",
+    "META",
+    "JNJ",
+    "BRK/B",
+    "V",
+    "PG",
+    "JPM"
+   ],
+   "boundaries": {
+    "5": {
+     "inside": "Facebook Inc",
+     "outside": "Johnson & Johnson",
+     "relativeGap": 0.32142,
+     "thin": false
+    },
+    "10": {
+     "inside": "JPMorgan Chase & Co",
+     "outside": "UnitedHealth Group Inc",
+     "relativeGap": 0.02399,
+     "thin": false
+    },
+    "100": {
+     "inside": "Morgan Stanley",
+     "outside": "Stryker Corp",
+     "relativeGap": 0.00296,
+     "thin": true
+    }
+   },
+   "lineLevelTopKDiffersFromCompanyLevel": {
+    "10": [
+     "JPMorgan Chase & Co"
+    ],
+    "100": [
+     "Morgan Stanley"
+    ]
+   },
+   "multiClassCompanies": [
+    [
+     "Alphabet Inc",
+     4
+    ],
+    [
+     "Fox Corp",
+     329
+    ],
+    [
+     "Discovery Inc",
+     404
+    ],
+    [
+     "News Corp",
+     462
+    ],
+    [
+     "Under Armour Inc",
+     492
+    ]
+   ],
+   "top100WithoutUsTicker": [
+    "Accenture PLC",
+    "Medtronic PLC",
+    "Linde PLC",
+    "Honeywell International Inc",
+    "BlackRock Inc",
+    "General Electric Co",
+    "Activision Blizzard Inc"
+   ],
+   "spyLinesWithoutUsTicker": 81,
+   "repoMembersNotMatchedToSpy": 106,
+   "spyTickersNotInRepoMembership": [
+    "9990302D",
+    "BALL",
+    "BIO",
+    "BNY",
+    "COR",
+    "CTRA",
+    "DOC",
+    "ELV",
+    "FBIN",
+    "FRCB",
+    "GAP",
+    "GEN",
+    "META",
+    "MRSH",
+    "RVTY",
+    "TDY",
+    "TYL",
+    "VMRK"
+   ],
+   "officialIndexChangesBetweenHoldingAndPublic": []
+  },
+  {
+   "form": "NPORT-P",
+   "holdingAsOf": "2020-09-30",
+   "publicFrom": "2020-11-19",
+   "lagDays": 50,
+   "verification": "EXACT_SHA256_MATCH_TO_342",
+   "equityLines": 505,
+   "companies": 500,
+   "top10": [
+    "AAPL",
+    "MSFT",
+    "AMZN",
+    "GOOGL",
+    "META",
+    "BRK/B",
+    "JNJ",
+    "PG",
+    "V",
+    "NVDA"
+   ],
+   "boundaries": {
+    "5": {
+     "inside": "Facebook Inc",
+     "outside": "Berkshire Hathaway Inc",
+     "relativeGap": 0.32968,
+     "thin": false
+    },
+    "10": {
+     "inside": "NVIDIA Corp",
+     "outside": "Home Depot Inc/The",
+     "relativeGap": 0.10472,
+     "thin": false
+    },
+    "100": {
+     "inside": "Automatic Data Processing Inc",
+     "outside": "CME Group Inc",
+     "relativeGap": 0.00693,
+     "thin": true
+    }
+   },
+   "lineLevelTopKDiffersFromCompanyLevel": {
+    "10": [
+     "NVIDIA Corp"
+    ],
+    "100": [
+     "Automatic Data Processing Inc"
+    ]
+   },
+   "multiClassCompanies": [
+    [
+     "Alphabet Inc",
+     4
+    ],
+    [
+     "Fox Corp",
+     330
+    ],
+    [
+     "Discovery Inc",
+     410
+    ],
+    [
+     "News Corp",
+     450
+    ],
+    [
+     "Under Armour Inc",
+     488
+    ]
+   ],
+   "top100WithoutUsTicker": [
+    "Accenture PLC",
+    "Medtronic PLC",
+    "Linde PLC",
+    "Honeywell International Inc",
+    "BlackRock Inc",
+    "Activision Blizzard Inc"
+   ],
+   "spyLinesWithoutUsTicker": 82,
+   "repoMembersNotMatchedToSpy": 105,
+   "spyTickersNotInRepoMembership": [
+    "9990302D",
+    "BALL",
+    "BNY",
+    "COR",
+    "CTRA",
+    "DOC",
+    "ELV",
+    "ETSY",
+    "FBIN",
+    "FRCB",
+    "GAP",
+    "GEN",
+    "META",
+    "MRSH",
+    "RVTY",
+    "VMRK"
+   ],
+   "officialIndexChangesBetweenHoldingAndPublic": []
+  },
+  {
+   "form": "NPORT-P",
+   "holdingAsOf": "2020-12-31",
+   "publicFrom": "2021-02-26",
+   "lagDays": 57,
+   "verification": "EXACT_SHA256_MATCH_TO_342",
+   "equityLines": 505,
+   "companies": 500,
+   "top10": [
+    "AAPL",
+    "MSFT",
+    "AMZN",
+    "GOOGL",
+    "META",
+    "TSLA",
+    "BRK/B",
+    "JNJ",
+    "JPM",
+    "V"
+   ],
+   "boundaries": {
+    "5": {
+     "inside": "Facebook Inc",
+     "outside": "Tesla Inc",
+     "relativeGap": 0.18509,
+     "thin": false
+    },
+    "10": {
+     "inside": "Visa Inc",
+     "outside": "Procter & Gamble Co/The",
+     "relativeGap": 0.06978,
+     "thin": false
+    },
+    "100": {
+     "inside": "Chubb Ltd",
+     "outside": "CSX Corp",
+     "relativeGap": 0.00106,
+     "thin": true
+    }
+   },
+   "lineLevelTopKDiffersFromCompanyLevel": {
+    "5": [
+     "Alphabet Inc",
+     "Tesla Inc"
+    ],
+    "10": [
+     "Visa Inc"
+    ],
+    "100": [
+     "Chubb Ltd"
+    ]
+   },
+   "multiClassCompanies": [
+    [
+     "Alphabet Inc",
+     4
+    ],
+    [
+     "Fox Corp",
+     377
+    ],
+    [
+     "Discovery Inc",
+     401
+    ],
+    [
+     "News Corp",
+     440
+    ],
+    [
+     "Under Armour Inc",
+     480
+    ]
+   ],
+   "top100WithoutUsTicker": [
+    "Accenture PLC",
+    "Medtronic PLC",
+    "Honeywell International Inc",
+    "Linde PLC",
+    "BlackRock Inc",
+    "General Electric Co",
+    "Activision Blizzard Inc",
+    "Chubb Ltd"
+   ],
+   "spyLinesWithoutUsTicker": 78,
+   "repoMembersNotMatchedToSpy": 105,
+   "spyTickersNotInRepoMembership": [
+    "9990302D",
+    "BALL",
+    "BNY",
+    "COR",
+    "CTRA",
+    "DOC",
+    "ELV",
+    "ETSY",
+    "FBIN",
+    "FRCB",
+    "GAP",
+    "GEN",
+    "META",
+    "MRSH",
+    "POOL",
+    "RVTY",
+    "TSLA",
+    "VMRK",
+    "VNT",
+    "VTRS"
+   ],
+   "officialIndexChangesBetweenHoldingAndPublic": []
+  },
+  {
+   "form": "NPORT-P",
+   "holdingAsOf": "2022-03-31",
+   "publicFrom": "2022-05-27",
+   "lagDays": 57,
+   "verification": "EXACT_SHA256_MATCH_TO_342",
+   "equityLines": 506,
+   "companies": 501,
+   "top10": [
+    "AAPL",
+    "MSFT",
+    "GOOGL",
+    "AMZN",
+    "TSLA",
+    "NVDA",
+    "BRK/B",
+    "META",
+    "UNH",
+    "JNJ"
+   ],
+   "boundaries": {
+    "5": {
+     "inside": "Tesla Inc",
+     "outside": "NVIDIA Corp",
+     "relativeGap": 0.24381,
+     "thin": false
+    },
+    "10": {
+     "inside": "Johnson & Johnson",
+     "outside": "JPMorgan Chase & Co",
+     "relativeGap": 0.13655,
+     "thin": false
+    },
+    "100": {
+     "inside": "Cigna Corp",
+     "outside": "Southern Co/The",
+     "relativeGap": 0.00688,
+     "thin": true
+    }
+   },
+   "lineLevelTopKDiffersFromCompanyLevel": {
+    "10": [
+     "Johnson & Johnson"
+    ],
+    "100": [
+     "Cigna Corp"
+    ]
+   },
+   "multiClassCompanies": [
+    [
+     "Alphabet Inc",
+     3
+    ],
+    [
+     "Fox Corp",
+     364
+    ],
+    [
+     "Discovery Inc",
+     451
+    ],
+    [
+     "News Corp",
+     452
+    ],
+    [
+     "Under Armour Inc",
+     497
+    ]
+   ],
+   "top100WithoutUsTicker": [
+    "Accenture PLC",
+    "Linde PLC",
+    "Medtronic PLC",
+    "Honeywell International Inc",
+    "BlackRock Inc",
+    "Chubb Ltd"
+   ],
+   "spyLinesWithoutUsTicker": 62,
+   "repoMembersNotMatchedToSpy": 87,
+   "spyTickersNotInRepoMembership": [
+    "BALL",
+    "BNY",
+    "CEG",
+    "COR",
+    "DOC",
+    "ELV",
+    "EPAM",
+    "FBIN",
+    "FDS",
+    "FRCB",
+    "GEN",
+    "META",
+    "MOH",
+    "MRSH",
+    "NDSN",
+    "RVTY",
+    "SBNY",
+    "SEDG",
+    "VMRK",
+    "VNT"
+   ],
+   "officialIndexChangesBetweenHoldingAndPublic": [
+    {
+     "ticker": "PBCT",
+     "effective": "2022-04-04",
+     "timing": "before_open",
+     "url": "https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20220329-451101/1451101_pbct5.pdf"
+    }
+   ]
+  },
+  {
+   "form": "NPORT-P",
+   "holdingAsOf": "2022-06-30",
+   "publicFrom": "2022-08-26",
+   "lagDays": 57,
+   "verification": "EXACT_SHA256_MATCH_TO_342",
+   "equityLines": 505,
+   "companies": 502,
+   "top10": [
+    "AAPL",
+    "MSFT",
+    "GOOGL",
+    "AMZN",
+    "TSLA",
+    "BRK/B",
+    "UNH",
+    "JNJ",
+    "NVDA",
+    "META"
+   ],
+   "boundaries": {
+    "5": {
+     "inside": "Tesla Inc",
+     "outside": "Berkshire Hathaway Inc",
+     "relativeGap": 0.12594,
+     "thin": false
+    },
+    "10": {
+     "inside": "Meta Platforms Inc",
+     "outside": "Exxon Mobil Corp",
+     "relativeGap": 0.02452,
+     "thin": false
+    },
+    "100": {
+     "inside": "Becton Dickinson and Co",
+     "outside": "General Electric Co",
+     "relativeGap": 0.00288,
+     "thin": true
+    }
+   },
+   "lineLevelTopKDiffersFromCompanyLevel": {
+    "5": [
+     "Tesla Inc"
+    ],
+    "10": [
+     "Meta Platforms Inc"
+    ],
+    "100": [
+     "Becton Dickinson and Co"
+    ]
+   },
+   "multiClassCompanies": [
+    [
+     "Alphabet Inc",
+     3
+    ],
+    [
+     "Fox Corp",
+     370
+    ],
+    [
+     "News Corp",
+     472
+    ]
+   ],
+   "top100WithoutUsTicker": [
+    "Accenture PLC",
+    "Linde PLC",
+    "Medtronic PLC",
+    "Honeywell International Inc",
+    "BlackRock Inc",
+    "Chubb Ltd"
+   ],
+   "spyLinesWithoutUsTicker": 59,
+   "repoMembersNotMatchedToSpy": 90,
+   "spyTickersNotInRepoMembership": [
+    "BALL",
+    "BNY",
+    "CEG",
+    "COR",
+    "CPT",
+    "DOC",
+    "ELV",
+    "EMBC",
+    "EPAM",
+    "FBIN",
+    "FDS",
+    "FRCB",
+    "GEN",
+    "KDP",
+    "META",
+    "MOH",
+    "MRSH",
+    "NDSN",
+    "ON",
+    "RVTY",
+    "SBNY",
+    "SEDG",
+    "VICI",
+    "VMRK",
+    "VNT"
+   ],
+   "officialIndexChangesBetweenHoldingAndPublic": []
+  },
+  {
+   "form": "NPORT-P",
+   "holdingAsOf": "2022-09-30",
+   "publicFrom": "2022-11-28",
+   "lagDays": 59,
+   "verification": "EXACT_SHA256_MATCH_TO_342",
+   "equityLines": 505,
+   "companies": 502,
+   "top10": [
+    "AAPL",
+    "MSFT",
+    "GOOGL",
+    "AMZN",
+    "TSLA",
+    "BRK/B",
+    "UNH",
+    "JNJ",
+    "XOM",
+    "META"
+   ],
+   "boundaries": {
+    "5": {
+     "inside": "Tesla Inc",
+     "outside": "Berkshire Hathaway Inc",
+     "relativeGap": 0.31836,
+     "thin": false
+    },
+    "10": {
+     "inside": "Meta Platforms Inc",
+     "outside": "JPMorgan Chase & Co",
+     "relativeGap": 0.00965,
+     "thin": true
+    },
+    "100": {
+     "inside": "Boeing Co/The",
+     "outside": "Intuitive Surgical Inc",
+     "relativeGap": 0.00762,
+     "thin": true
+    }
+   },
+   "lineLevelTopKDiffersFromCompanyLevel": {
+    "10": [
+     "Meta Platforms Inc"
+    ],
+    "100": [
+     "Boeing Co/The"
+    ]
+   },
+   "multiClassCompanies": [
+    [
+     "Alphabet Inc",
+     3
+    ],
+    [
+     "Fox Corp",
+     370
+    ],
+    [
+     "News Corp",
+     467
+    ]
+   ],
+   "top100WithoutUsTicker": [
+    "Accenture PLC",
+    "Linde PLC",
+    "Honeywell International Inc",
+    "Medtronic PLC",
+    "BlackRock Inc",
+    "Chubb Ltd"
+   ],
+   "spyLinesWithoutUsTicker": 58,
+   "repoMembersNotMatchedToSpy": 91,
+   "spyTickersNotInRepoMembership": [
+    "BALL",
+    "BNY",
+    "CEG",
+    "COR",
+    "CPT",
+    "CSGP",
+    "DOC",
+    "ELV",
+    "EMBC",
+    "EPAM",
+    "FBIN",
+    "FDS",
+    "FRCB",
+    "GEN",
+    "INVH",
+    "KDP",
+    "META",
+    "MOH",
+    "MRSH",
+    "NDSN",
+    "ON",
+    "RVTY",
+    "SBNY",
+    "SEDG",
+    "VICI",
+    "VMRK",
+    "VNT"
+   ],
+   "officialIndexChangesBetweenHoldingAndPublic": []
+  },
+  {
+   "form": "NPORT-P",
+   "holdingAsOf": "2022-12-31",
+   "publicFrom": "2023-02-28",
+   "lagDays": 59,
+   "verification": "EXACT_SHA256_MATCH_TO_342",
+   "equityLines": 504,
+   "companies": 501,
+   "top10": [
+    "AAPL",
+    "MSFT",
+    "GOOGL",
+    "AMZN",
+    "BRK/B",
+    "UNH",
+    "JNJ",
+    "XOM",
+    "JPM",
+    "NVDA"
+   ],
+   "boundaries": {
+    "5": {
+     "inside": "Berkshire Hathaway Inc",
+     "outside": "UnitedHealth Group Inc",
+     "relativeGap": 0.10993,
+     "thin": false
+    },
+    "10": {
+     "inside": "NVIDIA Corp",
+     "outside": "Procter & Gamble Co/The",
+     "relativeGap": 0.01411,
+     "thin": true
+    },
+    "100": {
+     "inside": "Progressive Corp/The",
+     "outside": "Schlumberger Ltd",
+     "relativeGap": 0.00111,
+     "thin": true
+    }
+   },
+   "lineLevelTopKDiffersFromCompanyLevel": {
+    "10": [
+     "NVIDIA Corp"
+    ],
+    "100": [
+     "Progressive Corp/The"
+    ]
+   },
+   "multiClassCompanies": [
+    [
+     "Alphabet Inc",
+     3
+    ],
+    [
+     "Fox Corp",
+     393
+    ],
+    [
+     "News Corp",
+     457
+    ]
+   ],
+   "top100WithoutUsTicker": [
+    "Accenture PLC",
+    "Linde PLC",
+    "Honeywell International Inc",
+    "BlackRock Inc",
+    "Medtronic PLC",
+    "Chubb Ltd"
+   ],
+   "spyLinesWithoutUsTicker": 55,
+   "repoMembersNotMatchedToSpy": 65,
+   "spyTickersNotInRepoMembership": [
+    "BNY",
+    "COR",
+    "DOC",
+    "FRCB",
+    "MRSH",
+    "RVTY",
+    "VMRK",
+    "VNT"
+   ],
+   "officialIndexChangesBetweenHoldingAndPublic": []
+  },
+  {
+   "form": "NPORT-P",
+   "holdingAsOf": "2026-06-30",
+   "publicFrom": "2026-08-28",
+   "lagDays": 59,
+   "verification": "EXACT_SHA256_MATCH_TO_342",
+   "equityLines": 503,
+   "companies": 500,
+   "top10": [
+    "NVDA",
+    "AAPL",
+    "GOOGL",
+    "MSFT",
+    "AMZN",
+    "AVGO",
+    "MU",
+    "META",
+    "TSLA",
+    "LLY"
+   ],
+   "boundaries": {
+    "5": {
+     "inside": "Amazon.com Inc",
+     "outside": "Broadcom Inc",
+     "relativeGap": 0.2334,
+     "thin": false
+    },
+    "10": {
+     "inside": "Eli Lilly & Co",
+     "outside": "Advanced Micro Devices Inc",
+     "relativeGap": 0.00167,
+     "thin": true
+    },
+    "100": {
+     "inside": "Stryker Corp",
+     "outside": "Trane Technologies PLC",
+     "relativeGap": 0.00054,
+     "thin": true
+    }
+   },
+   "lineLevelTopKDiffersFromCompanyLevel": {
+    "10": [
+     "Eli Lilly & Co"
+    ],
+    "100": [
+     "Stryker Corp"
+    ]
+   },
+   "multiClassCompanies": [
+    [
+     "Alphabet Inc",
+     3
+    ],
+    [
+     "Fox Corp",
+     408
+    ],
+    [
+     "News Corp",
+     450
+    ]
+   ],
+   "top100WithoutUsTicker": [
+    "Linde PLC",
+    "Seagate Technology Holdings PLC",
+    "Eaton Corp PLC",
+    "Chubb Ltd"
+   ],
+   "spyLinesWithoutUsTicker": 34,
+   "repoMembersNotMatchedToSpy": 37,
+   "spyTickersNotInRepoMembership": [
+    "HONA",
+    "SKYD",
+    "VMRK"
+   ],
+   "officialIndexChangesBetweenHoldingAndPublic": []
+  }
+ ]
+}

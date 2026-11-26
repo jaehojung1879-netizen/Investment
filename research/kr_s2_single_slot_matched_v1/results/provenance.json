@@ -1,0 +1,69 @@
+{
+ "baseCommit": "afb3ea39ef2033e696c4e26485b7e4ebb74134d8",
+ "oldArtifactSha256": {
+  "results/cohorts-126.csv": "ebf76dad179cf49ef838ad5382d3e4ad6e967b8372deae519a0a7de3babb6ed8",
+  "results/cohorts-252.csv": "ecf306a17eeda900d66b68a368826a66a709314f1a43f2e4cb3a457e7bb24419",
+  "results/concentration-diagnostic.json": "43c264457af16dbeaa637e5cec3adf59258dfac46597cc0e96ebdce8b7b1af22",
+  "results/daily-adjacent-L26.csv": "fdca9ec8ca4321582980a64d6d60d9418743ba389c8036218a50a8313873fb68",
+  "results/daily-adjacent-L52.csv": "e1f8008b2dca0a0a420069d726cc6857fcde7f9e1e85452ad94d89572e33257a",
+  "results/daily-nav-L26.csv": "5d82d1023cff6d5e1589a81ab8a94570956befa7d7bbb89b1739bf2d52993525",
+  "results/daily-nav-L52.csv": "61e395ff98ac6e0bb75b73e86854a9d58b332b56f4d4850e6c9595aa70795c09",
+  "results/decisions.csv": "b933c6f5593209f5822d88a7aa635136a74c5e04e92ea9b87f32dc0706c0bf85",
+  "results/eligible-ranks.csv": "62a10e407a92d484573933a94a24270805198a87ba6f5f45fcabbf8b26cf5bee",
+  "results/excluded-cohorts.csv": "571cbcc158729d17a999ab14d04d17d4bf2d966dac3dd3fd137ea7dd10274e54",
+  "results/fixed.json": "834b73ca22f3e00ed73e3f904f7685db80d62c0260d443cce2a7253f0abdecd6",
+  "results/inputs.json": "3b19550da1c03a476487aa534ca7bf77ad3cea915cf733262d9fe456e364387c",
+  "results/leadership.json": "b8d3ee0408a2bcdabdeadf336e577c77fe096e6d53a30781ff9cde16adcca7e7",
+  "results/ledgers.json": "9e06678f459ec2bc1dd0612707bef44d1534dcaf8004495d2f8fffc588fc8b61",
+  "results/past-only-decisions.csv": "7a5a9be69e43eda80bab91770c45cb3f6af7464f2570034827a0c91b4fe09b16",
+  "results/past-only.json": "90a6b01bcf5e0d631407734636b6bf8b6f128d513a77acf19fede344cd90a35e",
+  "results/prospective-status.json": "05c3704edb02a84ad9d8c2e0b1d5f84a8ec95910c1350b1c50cbdc3e67c1d9db",
+  "results/rank-ticker-contributions-126.csv": "5bf0a3b0a2d4b08b640e2b28aecd287a9e3648e011caa68a9550c548787fd062",
+  "results/rank-ticker-contributions-252.csv": "07f054f2313a563e5f7927c42831f4dd37f7e3efb2c584d1d7d37de35e3bc0bc",
+  "results/verification.json": "94ea06261b48e0d5f940ce2acfa8571bcc1c60cf8a70b340e11f4419ff2358a4",
+  "run.py": "7acb702b9e470daf71d33e5fcdddc0ca3ef48f683918566d5459beabbf66295a",
+  "REPORT-ko.md": "65b8dbdb06a536290fb54eab1d2aed7c7cfd56f0ebe317bb5b37263b6c3903e8",
+  "TABLES-ko.md": "cb51913e371d2a5843a538b002b29235cab37f6e5ecc4b1cce19bdd35045e4b3",
+  "reproduce.sh": "b8fce96c790de9f3874fff0258f82560e66f57c3c7c167020f4ec8e465b57933"
+ },
+ "referenceScratchSha256": {
+  "macro_panel.pkl": "298fdcd5360d7bc9da7a6c750a23723e0385ce25f3107f79b3f4c397849641a5",
+  "sg1-random-setup.pkl": "bdcbb2d186dd935f7348458eabf92218ff22bc8fcb8144ebe4da03dd9428f78c",
+  "vix_fx.pkl": "c12e2eccfb6fa904733250f5eb0e2fd5f49ad62603de5ffbdc5631627da9587b",
+  "matrix.pkl": "8997b7160b27483ebb371e0dedf406158139da260ee0965c7038de2bf690f54c",
+  "dataset.pkl": "8d0877dae9a82d69045c1bff1bb2a8e592441747876d2ee0d1df27f343d6a1f3"
+ },
+ "actualScratchSha256": {
+  "macro_panel.pkl": "298fdcd5360d7bc9da7a6c750a23723e0385ce25f3107f79b3f4c397849641a5",
+  "sg1-random-setup.pkl": "bdcbb2d186dd935f7348458eabf92218ff22bc8fcb8144ebe4da03dd9428f78c",
+  "vix_fx.pkl": "c12e2eccfb6fa904733250f5eb0e2fd5f49ad62603de5ffbdc5631627da9587b",
+  "matrix.pkl": "8997b7160b27483ebb371e0dedf406158139da260ee0965c7038de2bf690f54c",
+  "dataset.pkl": "8d0877dae9a82d69045c1bff1bb2a8e592441747876d2ee0d1df27f343d6a1f3"
+ },
+ "semanticInputIdentitiesVerified": true,
+ "designSha256": "600fb4fe32c8929622dc0318ed3cb369a664ef4b65bf0213db6e1c60a6e09ff9",
+ "analysisCodeSha256": "61e26533d886a2c5c4d077870c2317f209ebaa222378c0bf30505fa9e2142f07",
+ "comparisonType": "COSTED_FIXED_HOLDING_SINGLE_SLOT_REPLACEMENT",
+ "horizons": [
+  126,
+  252
+ ],
+ "blocksWeeks": [
+  25,
+  50
+ ],
+ "bootstrapDraws": 4000,
+ "seed": 20261117,
+ "sourceIdentity": {
+  "finalSessionQuotesApplied": 235,
+  "identity": "3e4d7aa35e2c4b273e4ecef0e2e8ea7a8a27077f0de14bb3d5ea6a696a97f1a5",
+  "matrixDigest": "32e49b57a7541eea66f76373baef50c6302a394247b313f6099f718d46d54b0c",
+  "mcapCoverage": 1.0,
+  "universeShards": 14
+ },
+ "pythonNumpyPandas": [
+  "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "2.3.1",
+  "2.3.0"
+ ]
+}

@@ -1,0 +1,999 @@
+{
+ "studyId": "alpha-mechanism-decomposition-v1",
+ "evidenceClass": "POST_HOC_EXPLORATORY_DECOMPOSITION_ON_OUTCOME_EXPOSED_KR_HISTORY",
+ "returnBasis": "CONDITIONAL_REPLAY_V16_TOTAL_RETURN_INDEX_NOT_CERTIFIED_SHAREHOLDER_RETURN",
+ "status": {
+  "KR_ETF_069500_CASH_ACCOUNT": "VERIFIED_IN_#332_FOR_2016-01-11..2026-09-14 (not recomputed here)",
+  "KR_STOCK_STRATEGY_PATHS": "CONDITIONAL — replay-v16 total-return index; #332 strict admission SOURCE_BLOCKED from the first unresolved event; every stock number in this study is a conditional decomposition",
+  "KR_STATE_MACRO_INPUTS": "CONDITIONAL — repository lag rules, FRED values not vintage-certified",
+  "TERMINAL_CONSIDERATION": "NOT_EXERCISED — zero terminal hits on every decomposed 2018-2026 path"
+ },
+ "krVendorEventFlags": "NONE_IN_REPLAY_V16 — the corporate-events component lists US tickers only; KR checks below are model-free price/volume flags",
+ "engineResidualEvents": [
+  {
+   "policy": "STATIC_EW4",
+   "phase": 0,
+   "execution": "2024-09-09",
+   "periodEnd": "2024-10-07",
+   "mechanics": 0.007266,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "012450.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "012450.KS": 11
+   },
+   "sessionsInPeriod": 15
+  },
+  {
+   "policy": "S1_INDUSTRY_MOMENTUM",
+   "phase": 0,
+   "execution": "2024-09-09",
+   "periodEnd": "2024-10-07",
+   "mechanics": 0.022619,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "012450.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "012450.KS": 11
+   },
+   "sessionsInPeriod": 15
+  },
+  {
+   "policy": "S2_VALUE_CONFIRMED",
+   "phase": 0,
+   "execution": "2023-05-22",
+   "periodEnd": "2023-06-19",
+   "mechanics": 0.011951,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "010060.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "010060.KS": 5
+   },
+   "sessionsInPeriod": 18
+  },
+  {
+   "policy": "SLEEVE_MOMENTUM_SWITCH",
+   "phase": 1,
+   "execution": "2024-09-19",
+   "periodEnd": "2024-10-14",
+   "mechanics": 0.048683,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "012450.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "012450.KS": 6
+   },
+   "sessionsInPeriod": 14
+  },
+  {
+   "policy": "STATIC_EW4",
+   "phase": 1,
+   "execution": "2019-02-11",
+   "periodEnd": "2019-03-11",
+   "mechanics": -0.044657,
+   "kind": "TERMINAL_WRITE_OFF_AT_ZERO_UNRESOLVED_CONSIDERATION",
+   "lockedNames": [
+    "000030.KS"
+   ],
+   "terminalNames": [
+    "000030.KS"
+   ],
+   "untradableSessionsInPeriod": {
+    "000030.KS": 20
+   },
+   "sessionsInPeriod": 19
+  },
+  {
+   "policy": "STATIC_EW4",
+   "phase": 1,
+   "execution": "2023-05-02",
+   "periodEnd": "2023-05-30",
+   "mechanics": -0.006683,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "010060.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "010060.KS": 18
+   },
+   "sessionsInPeriod": 18
+  },
+  {
+   "policy": "STATIC_EW4",
+   "phase": 1,
+   "execution": "2024-09-19",
+   "periodEnd": "2024-10-14",
+   "mechanics": 0.00918,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "012450.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "012450.KS": 6
+   },
+   "sessionsInPeriod": 14
+  },
+  {
+   "policy": "S1_INDUSTRY_MOMENTUM",
+   "phase": 1,
+   "execution": "2024-09-19",
+   "periodEnd": "2024-10-14",
+   "mechanics": 0.031965,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "012450.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "012450.KS": 6
+   },
+   "sessionsInPeriod": 14
+  },
+  {
+   "policy": "S2_VALUE_CONFIRMED",
+   "phase": 1,
+   "execution": "2023-05-02",
+   "periodEnd": "2023-05-30",
+   "mechanics": -0.019751,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "010060.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "010060.KS": 18
+   },
+   "sessionsInPeriod": 18
+  },
+  {
+   "policy": "S3_FOUR_FACTOR",
+   "phase": 1,
+   "execution": "2019-02-11",
+   "periodEnd": "2019-03-11",
+   "mechanics": -0.189098,
+   "kind": "TERMINAL_WRITE_OFF_AT_ZERO_UNRESOLVED_CONSIDERATION",
+   "lockedNames": [
+    "000030.KS"
+   ],
+   "terminalNames": [
+    "000030.KS"
+   ],
+   "untradableSessionsInPeriod": {
+    "000030.KS": 20
+   },
+   "sessionsInPeriod": 19
+  },
+  {
+   "policy": "SLEEVE_MOMENTUM_SWITCH",
+   "phase": 2,
+   "execution": "2023-10-23",
+   "periodEnd": "2023-11-20",
+   "mechanics": -0.161385,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "006740.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "006740.KS": 3
+   },
+   "sessionsInPeriod": 20
+  },
+  {
+   "policy": "SLEEVE_MOMENTUM_SWITCH",
+   "phase": 2,
+   "execution": "2024-09-23",
+   "periodEnd": "2024-10-21",
+   "mechanics": 0.052846,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "012450.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "012450.KS": 4
+   },
+   "sessionsInPeriod": 17
+  },
+  {
+   "policy": "STATIC_EW4",
+   "phase": 2,
+   "execution": "2019-01-21",
+   "periodEnd": "2019-02-18",
+   "mechanics": -0.045029,
+   "kind": "TERMINAL_WRITE_OFF_AT_ZERO_UNRESOLVED_CONSIDERATION",
+   "lockedNames": [
+    "000030.KS"
+   ],
+   "terminalNames": [
+    "000030.KS"
+   ],
+   "untradableSessionsInPeriod": {
+    "000030.KS": 18
+   },
+   "sessionsInPeriod": 17
+  },
+  {
+   "policy": "STATIC_EW4",
+   "phase": 2,
+   "execution": "2023-05-08",
+   "periodEnd": "2023-06-05",
+   "mechanics": -0.009003,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "010060.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "010060.KS": 15
+   },
+   "sessionsInPeriod": 19
+  },
+  {
+   "policy": "STATIC_EW4",
+   "phase": 2,
+   "execution": "2023-10-23",
+   "periodEnd": "2023-11-20",
+   "mechanics": -0.037456,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "006740.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "006740.KS": 3
+   },
+   "sessionsInPeriod": 20
+  },
+  {
+   "policy": "STATIC_EW4",
+   "phase": 2,
+   "execution": "2024-09-23",
+   "periodEnd": "2024-10-21",
+   "mechanics": 0.014102,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "012450.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "012450.KS": 4
+   },
+   "sessionsInPeriod": 17
+  },
+  {
+   "policy": "S1_INDUSTRY_MOMENTUM",
+   "phase": 2,
+   "execution": "2023-10-23",
+   "periodEnd": "2023-11-20",
+   "mechanics": -0.161385,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "006740.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "006740.KS": 3
+   },
+   "sessionsInPeriod": 20
+  },
+  {
+   "policy": "S1_INDUSTRY_MOMENTUM",
+   "phase": 2,
+   "execution": "2024-09-23",
+   "periodEnd": "2024-10-21",
+   "mechanics": 0.052846,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "012450.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "012450.KS": 4
+   },
+   "sessionsInPeriod": 17
+  },
+  {
+   "policy": "S2_VALUE_CONFIRMED",
+   "phase": 2,
+   "execution": "2023-05-08",
+   "periodEnd": "2023-06-05",
+   "mechanics": -0.033043,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "010060.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "010060.KS": 15
+   },
+   "sessionsInPeriod": 19
+  },
+  {
+   "policy": "S3_FOUR_FACTOR",
+   "phase": 2,
+   "execution": "2019-01-21",
+   "periodEnd": "2019-02-18",
+   "mechanics": -0.195068,
+   "kind": "TERMINAL_WRITE_OFF_AT_ZERO_UNRESOLVED_CONSIDERATION",
+   "lockedNames": [
+    "000030.KS"
+   ],
+   "terminalNames": [
+    "000030.KS"
+   ],
+   "untradableSessionsInPeriod": {
+    "000030.KS": 18
+   },
+   "sessionsInPeriod": 17
+  },
+  {
+   "policy": "S1_INDUSTRY_MOMENTUM",
+   "phase": 3,
+   "execution": "2024-09-02",
+   "periodEnd": "2024-09-30",
+   "mechanics": -0.007403,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "012450.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "012450.KS": 16
+   },
+   "sessionsInPeriod": 17
+  },
+  {
+   "policy": "S2_VALUE_CONFIRMED",
+   "phase": 3,
+   "execution": "2023-05-15",
+   "periodEnd": "2023-06-12",
+   "mechanics": -0.003817,
+   "kind": "LOCKED_UNTRADABLE_AT_REBALANCE",
+   "lockedNames": [
+    "010060.KS"
+   ],
+   "terminalNames": [],
+   "untradableSessionsInPeriod": {
+    "010060.KS": 10
+   },
+   "sessionsInPeriod": 18
+  }
+ ],
+ "minimumRecoveryTargets": {
+  "S1_INDUSTRY_MOMENTUM": {
+   "stockLegs": 2265,
+   "distinctTickers": 134,
+   "legsCarrying50pctOfAbsAlpha": 432,
+   "top10Legs": [
+    {
+     "ticker": "012450.KS",
+     "phase": 1,
+     "execution": "2025-02-03",
+     "industry": "CAPITAL_GOODS_DEFENSE",
+     "alpha": 0.152763,
+     "weight": 0.2
+    },
+    {
+     "ticker": "006740.KS",
+     "phase": 3,
+     "execution": "2023-10-04",
+     "industry": "BASIC_MATERIALS",
+     "alpha": -0.149502,
+     "weight": 0.2
+    },
+    {
+     "ticker": "064350.KS",
+     "phase": 0,
+     "execution": "2025-05-19",
+     "industry": "CAPITAL_GOODS_DEFENSE",
+     "alpha": 0.141876,
+     "weight": 0.2
+    },
+    {
+     "ticker": "012450.KS",
+     "phase": 2,
+     "execution": "2025-02-10",
+     "industry": "CAPITAL_GOODS_DEFENSE",
+     "alpha": 0.137341,
+     "weight": 0.2
+    },
+    {
+     "ticker": "042700.KS",
+     "phase": 0,
+     "execution": "2023-06-19",
+     "industry": "CAPITAL_GOODS_DEFENSE",
+     "alpha": 0.13527,
+     "weight": 0.2
+    },
+    {
+     "ticker": "047040.KS",
+     "phase": 2,
+     "execution": "2026-05-04",
+     "industry": "CONSTRUCTION_ENGINEERING",
+     "alpha": -0.134881,
+     "weight": 0.2
+    },
+    {
+     "ticker": "011200.KS",
+     "phase": 0,
+     "execution": "2021-03-02",
+     "industry": "TRANSPORT_LOGISTICS",
+     "alpha": 0.130871,
+     "weight": 0.2
+    },
+    {
+     "ticker": "012450.KS",
+     "phase": 0,
+     "execution": "2025-01-31",
+     "industry": "CAPITAL_GOODS_DEFENSE",
+     "alpha": 0.127088,
+     "weight": 0.2
+    },
+    {
+     "ticker": "052690.KS",
+     "phase": 2,
+     "execution": "2026-05-04",
+     "industry": "CONSTRUCTION_ENGINEERING",
+     "alpha": -0.122206,
+     "weight": 0.2
+    },
+    {
+     "ticker": "042700.KS",
+     "phase": 3,
+     "execution": "2023-07-10",
+     "industry": "CAPITAL_GOODS_DEFENSE",
+     "alpha": 0.119723,
+     "weight": 0.2
+    }
+   ],
+   "heldWindowsWithIntegrityFlags": 11,
+   "heldWindowsWithAboveLimitMove": 2,
+   "distinctTickersFlagged": 4,
+   "flaggedWindows": [
+    {
+     "ticker": "006740.KS",
+     "execution": "2023-10-04",
+     "periodEnd": "2023-10-30",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM",
+      "SLEEVE_MOMENTUM_SWITCH"
+     ],
+     "phases": [
+      3
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 5,
+     "firstZeroVolume": "2023-10-19",
+     "maxLegAbsAlpha": 0.149502
+    },
+    {
+     "ticker": "010120.KS",
+     "execution": "2026-03-30",
+     "periodEnd": "2026-04-27",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM",
+      "SLEEVE_MOMENTUM_SWITCH"
+     ],
+     "phases": [
+      1
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 3,
+     "firstZeroVolume": "2026-04-08",
+     "maxLegAbsAlpha": 0.057729
+    },
+    {
+     "ticker": "006740.KS",
+     "execution": "2023-09-25",
+     "periodEnd": "2023-10-23",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM",
+      "SLEEVE_MOMENTUM_SWITCH"
+     ],
+     "phases": [
+      2
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 3,
+     "firstZeroVolume": "2023-10-19",
+     "maxLegAbsAlpha": 0.057292
+    },
+    {
+     "ticker": "019170.KS",
+     "execution": "2020-07-13",
+     "periodEnd": "2020-08-10",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM"
+     ],
+     "phases": [
+      3
+     ],
+     "aboveLimitMoves": [
+      [
+       "2020-07-20",
+       0.3
+      ],
+      [
+       "2020-07-27",
+       -0.3
+      ]
+     ],
+     "zeroVolumeSessions": 2,
+     "firstZeroVolume": "2020-07-21",
+     "maxLegAbsAlpha": 0.042552
+    },
+    {
+     "ticker": "019170.KS",
+     "execution": "2020-07-20",
+     "periodEnd": "2020-08-18",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM",
+      "SLEEVE_MOMENTUM_SWITCH"
+     ],
+     "phases": [
+      0
+     ],
+     "aboveLimitMoves": [
+      [
+       "2020-07-27",
+       -0.3
+      ]
+     ],
+     "zeroVolumeSessions": 2,
+     "firstZeroVolume": "2020-07-21",
+     "maxLegAbsAlpha": 0.03135
+    },
+    {
+     "ticker": "010120.KS",
+     "execution": "2026-03-16",
+     "periodEnd": "2026-04-13",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM"
+     ],
+     "phases": [
+      3
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 3,
+     "firstZeroVolume": "2026-04-08",
+     "maxLegAbsAlpha": 0.028652
+    },
+    {
+     "ticker": "010120.KS",
+     "execution": "2026-03-23",
+     "periodEnd": "2026-04-20",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM"
+     ],
+     "phases": [
+      0
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 3,
+     "firstZeroVolume": "2026-04-08",
+     "maxLegAbsAlpha": 0.020548
+    },
+    {
+     "ticker": "012450.KS",
+     "execution": "2024-08-26",
+     "periodEnd": "2024-09-23",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM",
+      "SLEEVE_MOMENTUM_SWITCH"
+     ],
+     "phases": [
+      2
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 15,
+     "firstZeroVolume": "2024-08-29",
+     "maxLegAbsAlpha": 0.015518
+    },
+    {
+     "ticker": "012450.KS",
+     "execution": "2024-08-05",
+     "periodEnd": "2024-09-02",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM"
+     ],
+     "phases": [
+      3
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 3,
+     "firstZeroVolume": "2024-08-29",
+     "maxLegAbsAlpha": 0.006977
+    },
+    {
+     "ticker": "012450.KS",
+     "execution": "2024-08-12",
+     "periodEnd": "2024-09-09",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM"
+     ],
+     "phases": [
+      0
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 8,
+     "firstZeroVolume": "2024-08-29",
+     "maxLegAbsAlpha": 0.005637
+    },
+    {
+     "ticker": "012450.KS",
+     "execution": "2024-08-19",
+     "periodEnd": "2024-09-19",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM",
+      "SLEEVE_MOMENTUM_SWITCH"
+     ],
+     "phases": [
+      1
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 13,
+     "firstZeroVolume": "2024-08-29",
+     "maxLegAbsAlpha": 7e-05
+    }
+   ]
+  },
+  "S2_VALUE_CONFIRMED": {
+   "stockLegs": 2227,
+   "distinctTickers": 55,
+   "legsCarrying50pctOfAbsAlpha": 408,
+   "top10Legs": [
+    {
+     "ticker": "066570.KS",
+     "phase": 2,
+     "execution": "2026-05-04",
+     "industry": "ELECTRONICS_ELECTRICAL",
+     "alpha": 0.276894,
+     "weight": 0.2
+    },
+    {
+     "ticker": "066570.KS",
+     "phase": 3,
+     "execution": "2026-05-11",
+     "industry": "ELECTRONICS_ELECTRICAL",
+     "alpha": 0.144884,
+     "weight": 0.2
+    },
+    {
+     "ticker": "066570.KS",
+     "phase": 1,
+     "execution": "2026-04-27",
+     "industry": "ELECTRONICS_ELECTRICAL",
+     "alpha": 0.125065,
+     "weight": 0.2
+    },
+    {
+     "ticker": "011070.KS",
+     "phase": 0,
+     "execution": "2026-04-20",
+     "industry": "ELECTRONICS_ELECTRICAL",
+     "alpha": 0.124045,
+     "weight": 0.2
+    },
+    {
+     "ticker": "011780.KS",
+     "phase": 2,
+     "execution": "2021-01-18",
+     "industry": "CHEMICALS",
+     "alpha": 0.120191,
+     "weight": 0.2
+    },
+    {
+     "ticker": "267250.KS",
+     "phase": 0,
+     "execution": "2025-05-19",
+     "industry": "FINANCIALS",
+     "alpha": 0.114139,
+     "weight": 0.2
+    },
+    {
+     "ticker": "066570.KS",
+     "phase": 0,
+     "execution": "2026-04-20",
+     "industry": "ELECTRONICS_ELECTRICAL",
+     "alpha": 0.107084,
+     "weight": 0.2
+    },
+    {
+     "ticker": "011070.KS",
+     "phase": 3,
+     "execution": "2026-04-13",
+     "industry": "ELECTRONICS_ELECTRICAL",
+     "alpha": 0.106522,
+     "weight": 0.2
+    },
+    {
+     "ticker": "066570.KS",
+     "phase": 0,
+     "execution": "2020-12-07",
+     "industry": "ELECTRONICS_ELECTRICAL",
+     "alpha": 0.105683,
+     "weight": 0.2
+    },
+    {
+     "ticker": "002380.KS",
+     "phase": 1,
+     "execution": "2021-08-23",
+     "industry": "CHEMICALS",
+     "alpha": 0.103469,
+     "weight": 0.2
+    }
+   ],
+   "heldWindowsWithIntegrityFlags": 4,
+   "heldWindowsWithAboveLimitMove": 0,
+   "distinctTickersFlagged": 1,
+   "flaggedWindows": [
+    {
+     "ticker": "010060.KS",
+     "execution": "2023-04-03",
+     "periodEnd": "2023-05-02",
+     "policies": [
+      "S2_VALUE_CONFIRMED"
+     ],
+     "phases": [
+      1
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 3,
+     "firstZeroVolume": "2023-04-27",
+     "maxLegAbsAlpha": 0.029689
+    },
+    {
+     "ticker": "010060.KS",
+     "execution": "2023-04-10",
+     "periodEnd": "2023-05-08",
+     "policies": [
+      "S2_VALUE_CONFIRMED"
+     ],
+     "phases": [
+      2
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 6,
+     "firstZeroVolume": "2023-04-27",
+     "maxLegAbsAlpha": 0.029553
+    },
+    {
+     "ticker": "010060.KS",
+     "execution": "2023-04-17",
+     "periodEnd": "2023-05-15",
+     "policies": [
+      "S2_VALUE_CONFIRMED"
+     ],
+     "phases": [
+      3
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 11,
+     "firstZeroVolume": "2023-04-27",
+     "maxLegAbsAlpha": 0.013498
+    },
+    {
+     "ticker": "010060.KS",
+     "execution": "2023-04-24",
+     "periodEnd": "2023-05-22",
+     "policies": [
+      "S2_VALUE_CONFIRMED"
+     ],
+     "phases": [
+      0
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 16,
+     "firstZeroVolume": "2023-04-27",
+     "maxLegAbsAlpha": 0.005761
+    }
+   ]
+  },
+  "SLEEVE_MOMENTUM_SWITCH": {
+   "stockLegs": 1915,
+   "distinctTickers": 126,
+   "legsCarrying50pctOfAbsAlpha": 341,
+   "top10Legs": [
+    {
+     "ticker": "066570.KS",
+     "phase": 2,
+     "execution": "2026-05-04",
+     "industry": "ELECTRONICS_ELECTRICAL",
+     "alpha": 0.276894,
+     "weight": 0.2
+    },
+    {
+     "ticker": "006740.KS",
+     "phase": 3,
+     "execution": "2023-10-04",
+     "industry": "BASIC_MATERIALS",
+     "alpha": -0.149502,
+     "weight": 0.2
+    },
+    {
+     "ticker": "064350.KS",
+     "phase": 0,
+     "execution": "2025-05-19",
+     "industry": "CAPITAL_GOODS_DEFENSE",
+     "alpha": 0.141876,
+     "weight": 0.2
+    },
+    {
+     "ticker": "012450.KS",
+     "phase": 2,
+     "execution": "2025-02-10",
+     "industry": "CAPITAL_GOODS_DEFENSE",
+     "alpha": 0.137341,
+     "weight": 0.2
+    },
+    {
+     "ticker": "042700.KS",
+     "phase": 0,
+     "execution": "2023-06-19",
+     "industry": "CAPITAL_GOODS_DEFENSE",
+     "alpha": 0.13527,
+     "weight": 0.2
+    },
+    {
+     "ticker": "012450.KS",
+     "phase": 0,
+     "execution": "2025-01-31",
+     "industry": "CAPITAL_GOODS_DEFENSE",
+     "alpha": 0.127088,
+     "weight": 0.2
+    },
+    {
+     "ticker": "042700.KS",
+     "phase": 3,
+     "execution": "2023-07-10",
+     "industry": "CAPITAL_GOODS_DEFENSE",
+     "alpha": 0.119723,
+     "weight": 0.2
+    },
+    {
+     "ticker": "009150.KS",
+     "phase": 1,
+     "execution": "2026-03-30",
+     "industry": "ELECTRONICS_ELECTRICAL",
+     "alpha": 0.117217,
+     "weight": 0.2
+    },
+    {
+     "ticker": "006280.KS",
+     "phase": 1,
+     "execution": "2020-06-29",
+     "industry": "HEALTHCARE",
+     "alpha": 0.11192,
+     "weight": 0.2
+    },
+    {
+     "ticker": "006280.KS",
+     "phase": 2,
+     "execution": "2020-07-06",
+     "industry": "HEALTHCARE",
+     "alpha": 0.111295,
+     "weight": 0.2
+    }
+   ],
+   "heldWindowsWithIntegrityFlags": 6,
+   "heldWindowsWithAboveLimitMove": 1,
+   "distinctTickersFlagged": 4,
+   "flaggedWindows": [
+    {
+     "ticker": "006740.KS",
+     "execution": "2023-10-04",
+     "periodEnd": "2023-10-30",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM",
+      "SLEEVE_MOMENTUM_SWITCH"
+     ],
+     "phases": [
+      3
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 5,
+     "firstZeroVolume": "2023-10-19",
+     "maxLegAbsAlpha": 0.149502
+    },
+    {
+     "ticker": "010120.KS",
+     "execution": "2026-03-30",
+     "periodEnd": "2026-04-27",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM",
+      "SLEEVE_MOMENTUM_SWITCH"
+     ],
+     "phases": [
+      1
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 3,
+     "firstZeroVolume": "2026-04-08",
+     "maxLegAbsAlpha": 0.057729
+    },
+    {
+     "ticker": "006740.KS",
+     "execution": "2023-09-25",
+     "periodEnd": "2023-10-23",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM",
+      "SLEEVE_MOMENTUM_SWITCH"
+     ],
+     "phases": [
+      2
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 3,
+     "firstZeroVolume": "2023-10-19",
+     "maxLegAbsAlpha": 0.057292
+    },
+    {
+     "ticker": "019170.KS",
+     "execution": "2020-07-20",
+     "periodEnd": "2020-08-18",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM",
+      "SLEEVE_MOMENTUM_SWITCH"
+     ],
+     "phases": [
+      0
+     ],
+     "aboveLimitMoves": [
+      [
+       "2020-07-27",
+       -0.3
+      ]
+     ],
+     "zeroVolumeSessions": 2,
+     "firstZeroVolume": "2020-07-21",
+     "maxLegAbsAlpha": 0.03135
+    },
+    {
+     "ticker": "012450.KS",
+     "execution": "2024-08-26",
+     "periodEnd": "2024-09-23",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM",
+      "SLEEVE_MOMENTUM_SWITCH"
+     ],
+     "phases": [
+      2
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 15,
+     "firstZeroVolume": "2024-08-29",
+     "maxLegAbsAlpha": 0.015518
+    },
+    {
+     "ticker": "012450.KS",
+     "execution": "2024-08-19",
+     "periodEnd": "2024-09-19",
+     "policies": [
+      "S1_INDUSTRY_MOMENTUM",
+      "SLEEVE_MOMENTUM_SWITCH"
+     ],
+     "phases": [
+      1
+     ],
+     "aboveLimitMoves": [],
+     "zeroVolumeSessions": 13,
+     "firstZeroVolume": "2024-08-29",
+     "maxLegAbsAlpha": 7e-05
+    }
+   ]
+  }
+ },
+ "note": "A flagged held window is the minimum set of (ticker, window) whose official cash/share/terminal package must be verified before that leg can be certified; an unflagged window is NOT certified either (ordinary cash dividends move a price by less than the limit)."
+}

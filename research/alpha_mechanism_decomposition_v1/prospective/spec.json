@@ -1,0 +1,24 @@
+{
+ "studyId": "kr-four-book-prospective-record-v1",
+ "status": "PREPARED_NOT_AUTHORIZED",
+ "frozenBefore": "any historical number for book B3 was computed (B3 is a new hypothesis; B0-B2 were already measured in alpha-mechanism-decomposition-v1)",
+ "evidenceClassWhenAuthorized": "PROSPECTIVE_PAPER",
+ "purpose": "Record, without money, four long-only KR books on the same signal dates, execution sessions, costs and cash treatment, so the components alpha-mechanism-decomposition-v1 kept (S2 within-industry selection, H01 industry choice) are judged on data no study has seen.",
+ "universe": "PIT KR Top120 rows of the Phase B matrix (kr_alpha_atlas_matrix.build_matrix), quality mask of adaptive-cocktail-v1 (tradable at signal, not preferred, E04 >= 20 positive-volume sessions, E07 <= 0, E03 median traded value >= 5e9 KRW); 006800.KS withheld (unresolved corporate-action basis)",
+ "books": {
+  "B0_069500_ONLY": "069500.KS 100%",
+  "B1_S2_ORIGINAL": "adaptive-cocktail-v1 S2_VALUE_CONFIRMED sleeve unchanged: rank quality-eligible names with B08_valueBusinessConfirmation measured AND b08Confirmed == 1 (net income, OCF and OCF improvement all positive) by B08 (within-industry mean of book-to-market and earnings-yield percentiles), descending, ticker ascending on ties; hold the top 5 at 20% each; unused slots in 069500.KS",
+  "B2_H01_CAP_INDUSTRY_BASKET": "the adaptive-cocktail-v1 S1 book (rank(H01_industryRelMom126) + 0.01 rank(A09), top 5 quality-eligible names at 20%) with every name replaced by its PIT industry's cap-weighted basket of quality-eligible members (same 20% per original slot); unused slots in 069500.KS",
+  "B3_H01_INDUSTRIES_S2_SELECTION": "NEW HYPOTHESIS. Industries = the industries of the B2/S1 picks on that date. Inside those industries only, apply the B1 rule (confirmed, B08 descending, top 5 at 20%). Zero eligible names -> 069500.KS 100%; fewer than 5 -> unused slots in 069500.KS"
+ },
+ "zeroAndMaximum": {"minimumNames": 0, "maximumNames": 5, "weightPerName": 0.2, "fallback": "069500.KS", "cashTarget": "NONE (the fallback is the ETF, never cash)"},
+ "calendar": {"signal": "every KR weekly decision session (prospective_receipt_core.is_weekly_decision_session), after its 18:00 KST final close", "execution": "next KR session close",
+              "evaluationAccounts": "four equal accounts, each trading only on its own 4-week phase of the weekly signals, NAVs summed (the construction fixed in alpha-mechanism-decomposition-v1 for every 4-phase number); a receipt is written for every weekly session so all four accounts are reconstructible"},
+ "costs": "adaptive-cocktail-v1 schedule: stocks 1.5 bp commission + 4 bp half-spread + dated sell tax; 069500.KS 2.5 bp; charged on traded value inside the frozen self-financing engine",
+ "suspensionAndTermination": "frozen engine: an untradable held name keeps its units; a name without terminal consideration makes that book's prospective outcome UNRESOLVED (prospective_receipt_core.portfolio_outcome), never zero and never the last price",
+ "comparisons": ["B1 - B0", "B2 - B0", "B3 - B0", "B3 - B1", "B3 - B2"],
+ "horizons": {"primary": 126, "secondary": 252, "unit": "KR sessions after execution"},
+ "reporting": "prospective outcomes are reported only from receipts whose signal date is strictly after the authorizing merge; any historical number (2018-2026, replay-v16 conditional total-return index, corporate actions unverified) is reported in a separate table labelled CONDITIONAL_EXPOSED_HISTORY and is never pooled with prospective outcomes",
+ "noChangesAfterFirstReceipt": "No book definition, threshold, cost or horizon may change once the first live receipt exists; a change is a new studyId.",
+ "liveInputBlocker": "kr_alpha_atlas_inputs.load_inputs refuses any signal-history commit other than the pinned 4ea107ed (COMMIT_IS_NOT_THE_PINNED_SOURCE_COMMIT) and the replay-v16 price/benchmark panel ends 2026-09-14 (manifest f0781292 unchanged at signal-history 2edc9eff, 2026-11-14), so the live writer additionally needs a reviewed input loader for post-2026-09-14 KRX bars (available through 2026-10-30), universe snapshots, benchmark closes and DART filings."
+}

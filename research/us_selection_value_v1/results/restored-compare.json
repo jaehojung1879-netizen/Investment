@@ -1,0 +1,515 @@
+{
+ "fixed": {
+  "126": {
+   "RESTORED_MINUS_ORIGINAL|PRICE": {
+    "ci": [
+     -0.01638467584770334,
+     -0.0026751211670423955
+    ],
+    "mean": -0.00806814413291635,
+    "n": 184
+   },
+   "RESTORED_MINUS_ORIGINAL|PRICE_CONFIRMED": {
+    "ci": [
+     -0.005844465841468506,
+     0.0015729784308535113
+    ],
+    "mean": -0.0013662756083823013,
+    "n": 184
+   },
+   "blockWeeks": 25,
+   "datesWhereRestoredBookDiffers": {
+    "PRICE": 72,
+    "PRICE_CONFIRMED": 57
+   },
+   "firstLast": [
+    "2014-02-14",
+    "2017-08-18"
+   ],
+   "original|INCREMENT_CONFIRMED_MINUS_PRICE": {
+    "ci": [
+     -0.002027000031483003,
+     0.010959354588135416
+    ],
+    "mean": 0.005865179494556942,
+    "n": 184
+   },
+   "original|PRICE_CONFIRMED|vsQQQ": {
+    "ci": [
+     -0.037231748578034116,
+     0.03399704710122918
+    ],
+    "mean": 0.0014699334354287901,
+    "n": 184
+   },
+   "original|PRICE_CONFIRMED|vsSPY": {
+    "ci": [
+     -0.007565080030448584,
+     0.057981314331507154
+    ],
+    "mean": 0.02910531492484868,
+    "n": 184
+   },
+   "original|PRICE|vsQQQ": {
+    "ci": [
+     -0.040461343672679444,
+     0.031077754354549843
+    ],
+    "mean": -0.00439524605912815,
+    "n": 184
+   },
+   "original|PRICE|vsSPY": {
+    "ci": [
+     -0.010746873921714297,
+     0.05252838796589758
+    ],
+    "mean": 0.023240135430291745,
+    "n": 184
+   },
+   "pairedResolvedDates": 184,
+   "restoredNamesHeld": {
+    "PRICE": 41,
+    "PRICE_CONFIRMED": 26
+   },
+   "restoredResolvedOnly|PRICE_CONFIRMED|vsSPY": {
+    "ci": [
+     -0.008214572027970794,
+     0.0557054317000038
+    ],
+    "mean": 0.027739039316466384,
+    "n": 184
+   },
+   "restoredResolvedOnly|PRICE|vsSPY": {
+    "ci": [
+     -0.016832462352608525,
+     0.03909199252783339
+    ],
+    "mean": 0.015171991297375391,
+    "n": 184
+   },
+   "restored|INCREMENT_CONFIRMED_MINUS_PRICE": {
+    "ci": [
+     0.0025533235860983683,
+     0.021836276864406028
+    ],
+    "mean": 0.012567048019090993,
+    "n": 184
+   },
+   "restored|PRICE_CONFIRMED|vsQQQ": {
+    "ci": [
+     -0.03829344347189122,
+     0.031264358923374355
+    ],
+    "mean": 0.00010365782704649023,
+    "n": 184
+   },
+   "restored|PRICE_CONFIRMED|vsSPY": {
+    "ci": [
+     -0.008214572027970794,
+     0.0557054317000038
+    ],
+    "mean": 0.027739039316466384,
+    "n": 184
+   },
+   "restored|PRICE|vsQQQ": {
+    "ci": [
+     -0.04578467802708569,
+     0.01775175476734472
+    ],
+    "mean": -0.012463390192044503,
+    "n": 184
+   },
+   "restored|PRICE|vsSPY": {
+    "ci": [
+     -0.016832462352608525,
+     0.03909199252783339
+    ],
+    "mean": 0.015171991297375391,
+    "n": 184
+   },
+   "signalDates": 184,
+   "unresolvedCohorts": {}
+  },
+  "252": {
+   "RESTORED_MINUS_ORIGINAL|PRICE": {
+    "ci": [
+     -0.0263334557691388,
+     -0.005483095518775821
+    ],
+    "mean": -0.016755175414245944,
+    "n": 159
+   },
+   "RESTORED_MINUS_ORIGINAL|PRICE_CONFIRMED": {
+    "ci": [
+     -0.007547289883449998,
+     -3.7199940201774936e-05
+    ],
+    "mean": -0.003523103680157028,
+    "n": 159
+   },
+   "blockWeeks": 50,
+   "datesWhereRestoredBookDiffers": {
+    "PRICE": 68,
+    "PRICE_CONFIRMED": 54
+   },
+   "firstLast": [
+    "2014-02-14",
+    "2017-02-24"
+   ],
+   "original|INCREMENT_CONFIRMED_MINUS_PRICE": {
+    "ci": [
+     -0.016951901771642408,
+     0.001142054063934016
+    ],
+    "mean": -0.007303768542530074,
+    "n": 159
+   },
+   "original|PRICE_CONFIRMED|vsQQQ": {
+    "ci": [
+     -0.10750936596636052,
+     0.06363615531887143
+    ],
+    "mean": -0.013822234930723003,
+    "n": 159
+   },
+   "original|PRICE_CONFIRMED|vsSPY": {
+    "ci": [
+     -0.04579820513543862,
+     0.10868729200440236
+    ],
+    "mean": 0.04215217684554411,
+    "n": 159
+   },
+   "original|PRICE|vsQQQ": {
+    "ci": [
+     -0.09171874927116833,
+     0.0675128837583928
+    ],
+    "mean": -0.00651846638819293,
+    "n": 159
+   },
+   "original|PRICE|vsSPY": {
+    "ci": [
+     -0.030536626290062426,
+     0.10898312441935948
+    ],
+    "mean": 0.04945594538807419,
+    "n": 159
+   },
+   "pairedResolvedDates": 159,
+   "restoredNamesHeld": {
+    "PRICE": 41,
+    "PRICE_CONFIRMED": 26
+   },
+   "restoredResolvedOnly|PRICE_CONFIRMED|vsSPY": {
+    "ci": [
+     -0.046619053299121124,
+     0.1053602270632938
+    ],
+    "mean": 0.03862907316538707,
+    "n": 159
+   },
+   "restoredResolvedOnly|PRICE|vsSPY": {
+    "ci": [
+     -0.042045872253764986,
+     0.08887841057438327
+    ],
+    "mean": 0.032700769973828245,
+    "n": 159
+   },
+   "restored|INCREMENT_CONFIRMED_MINUS_PRICE": {
+    "ci": [
+     -0.006811505109658985,
+     0.017523640690238894
+    ],
+    "mean": 0.005928303191558841,
+    "n": 159
+   },
+   "restored|PRICE_CONFIRMED|vsQQQ": {
+    "ci": [
+     -0.10798939312715145,
+     0.05814581085924526
+    ],
+    "mean": -0.017345338610880032,
+    "n": 159
+   },
+   "restored|PRICE_CONFIRMED|vsSPY": {
+    "ci": [
+     -0.046619053299121124,
+     0.1053602270632938
+    ],
+    "mean": 0.03862907316538707,
+    "n": 159
+   },
+   "restored|PRICE|vsQQQ": {
+    "ci": [
+     -0.1022070023473554,
+     0.048597998853715754
+    ],
+    "mean": -0.02327364180243887,
+    "n": 159
+   },
+   "restored|PRICE|vsSPY": {
+    "ci": [
+     -0.042045872253764986,
+     0.08887841057438327
+    ],
+    "mean": 0.032700769973828245,
+    "n": 159
+   },
+   "signalDates": 159,
+   "unresolvedCohorts": {}
+  }
+ },
+ "label": "RESTORED_SAMPLE_COMPARISON_EXPLORATORY",
+ "ledgers": {
+  "original|PRICE_CONFIRMED|L26|FULL": {
+   "cagr": 0.11044981952099575,
+   "costPerYear": 0.006484105874653725,
+   "end": "2026-09-14",
+   "excess": -0.02826395013686933,
+   "infoRatio": -0.24488940600370798,
+   "mdd": -0.3011873838221987,
+   "oneWayTurnoverPerYear": 1.705914273744032,
+   "spyCagr": 0.13871376965786508,
+   "spyMdd": -0.33717263923504404,
+   "start": "2014-02-14",
+   "trackingError": 0.10922277913113136
+  },
+  "original|PRICE_CONFIRMED|L26|RESTORED_WINDOW": {
+   "cagr": 0.18753999540052146,
+   "costPerYear": 0.003793529949982517,
+   "end": "2018-02-27",
+   "excess": 0.06099534311772947,
+   "infoRatio": 0.8162268142972654,
+   "mdd": -0.11032397303069019,
+   "oneWayTurnoverPerYear": 1.6907237509302124,
+   "spyCagr": 0.126544652282792,
+   "spyMdd": -0.13022903952464193,
+   "start": "2014-02-14",
+   "trackingError": 0.06536983300709076
+  },
+  "original|PRICE_CONFIRMED|L4|FULL": {
+   "cagr": 0.09161077574579046,
+   "costPerYear": 0.01745568309980056,
+   "end": "2026-09-14",
+   "excess": -0.04710299391207462,
+   "infoRatio": -0.34153450362558074,
+   "mdd": -0.31124884595217106,
+   "oneWayTurnoverPerYear": 5.178677145461064,
+   "spyCagr": 0.13871376965786508,
+   "spyMdd": -0.33717263923504404,
+   "start": "2014-02-14",
+   "trackingError": 0.12705415887396976
+  },
+  "original|PRICE_CONFIRMED|L4|RESTORED_WINDOW": {
+   "cagr": 0.17109334314039004,
+   "costPerYear": 0.010979766695440254,
+   "end": "2018-02-27",
+   "excess": 0.04454869085759805,
+   "infoRatio": 0.5278532268018625,
+   "mdd": -0.13392808370484688,
+   "oneWayTurnoverPerYear": 5.166904587043349,
+   "spyCagr": 0.126544652282792,
+   "spyMdd": -0.13022903952464193,
+   "start": "2014-02-14",
+   "trackingError": 0.07526122431639623
+  },
+  "original|PRICE_CONFIRMED|L52|FULL": {
+   "cagr": 0.10758285525829447,
+   "costPerYear": 0.003623531542220235,
+   "end": "2026-09-14",
+   "excess": -0.03113091439957061,
+   "infoRatio": -0.3009148215693556,
+   "mdd": -0.30468263762216996,
+   "oneWayTurnoverPerYear": 0.9994646027044483,
+   "spyCagr": 0.13871376965786508,
+   "spyMdd": -0.33717263923504404,
+   "start": "2014-02-14",
+   "trackingError": 0.09897075760153788
+  },
+  "original|PRICE_CONFIRMED|L52|RESTORED_WINDOW": {
+   "cagr": 0.17369624300682363,
+   "costPerYear": 0.0023037659214321083,
+   "end": "2018-02-27",
+   "excess": 0.04715159072403163,
+   "infoRatio": 0.7322203828633982,
+   "mdd": -0.10213731219594946,
+   "oneWayTurnoverPerYear": 1.0773148051958328,
+   "spyCagr": 0.126544652282792,
+   "spyMdd": -0.13022903952464193,
+   "start": "2014-02-14",
+   "trackingError": 0.0562461243553471
+  },
+  "original|PRICE|L26|FULL": {
+   "cagr": 0.09661063681092585,
+   "costPerYear": 0.00582621569551635,
+   "end": "2026-09-14",
+   "excess": -0.04210313284693923,
+   "infoRatio": -0.3463800916953185,
+   "mdd": -0.2894703750327261,
+   "oneWayTurnoverPerYear": 1.6987418327495951,
+   "spyCagr": 0.13871376965786508,
+   "spyMdd": -0.33717263923504404,
+   "start": "2014-02-14",
+   "trackingError": 0.11358442759792363
+  },
+  "original|PRICE|L26|RESTORED_WINDOW": {
+   "cagr": 0.17463716933747775,
+   "costPerYear": 0.003840028567030735,
+   "end": "2018-02-27",
+   "excess": 0.04809251705468576,
+   "infoRatio": 0.6288161642570896,
+   "mdd": -0.10402951091437085,
+   "oneWayTurnoverPerYear": 1.7453813691666065,
+   "spyCagr": 0.126544652282792,
+   "spyMdd": -0.13022903952464193,
+   "start": "2014-02-14",
+   "trackingError": 0.06715563562094035
+  },
+  "original|PRICE|L4|FULL": {
+   "cagr": 0.0829323908952877,
+   "costPerYear": 0.015803385993972175,
+   "end": "2026-09-14",
+   "excess": -0.05578137876257738,
+   "infoRatio": -0.38826688492739486,
+   "mdd": -0.30263623122115824,
+   "oneWayTurnoverPerYear": 5.286751255547644,
+   "spyCagr": 0.13871376965786508,
+   "spyMdd": -0.33717263923504404,
+   "start": "2014-02-14",
+   "trackingError": 0.13248310292238813
+  },
+  "original|PRICE|L4|RESTORED_WINDOW": {
+   "cagr": 0.15904999198718062,
+   "costPerYear": 0.011456135455728909,
+   "end": "2018-02-27",
+   "excess": 0.032505339704388625,
+   "infoRatio": 0.3717546860283879,
+   "mdd": -0.12264092665314852,
+   "oneWayTurnoverPerYear": 5.531770283215534,
+   "spyCagr": 0.126544652282792,
+   "spyMdd": -0.13022903952464193,
+   "start": "2014-02-14",
+   "trackingError": 0.07852248582635371
+  },
+  "original|PRICE|L52|FULL": {
+   "cagr": 0.10274414348883432,
+   "costPerYear": 0.003585534044655803,
+   "end": "2026-09-14",
+   "excess": -0.035969626169030766,
+   "infoRatio": -0.3305544965661009,
+   "mdd": -0.28902998154545523,
+   "oneWayTurnoverPerYear": 1.0046688279743548,
+   "spyCagr": 0.13871376965786508,
+   "spyMdd": -0.33717263923504404,
+   "start": "2014-02-14",
+   "trackingError": 0.1034687260300895
+  },
+  "original|PRICE|L52|RESTORED_WINDOW": {
+   "cagr": 0.17305691960927994,
+   "costPerYear": 0.002314720585977247,
+   "end": "2018-02-27",
+   "excess": 0.046512267326487944,
+   "infoRatio": 0.6933822441486079,
+   "mdd": -0.1013171271826625,
+   "oneWayTurnoverPerYear": 1.07258647204527,
+   "spyCagr": 0.126544652282792,
+   "spyMdd": -0.13022903952464193,
+   "start": "2014-02-14",
+   "trackingError": 0.05819590413937943
+  },
+  "restored|PRICE_CONFIRMED|L26|RESTORED_WINDOW": {
+   "cagr": 0.1848372589466778,
+   "costPerYear": 0.0037988170837383725,
+   "end": "2018-02-27",
+   "excess": 0.058292606663885804,
+   "infoRatio": 0.770812643235846,
+   "mdd": -0.11013546735661561,
+   "oneWayTurnoverPerYear": 1.7004139817570758,
+   "spyCagr": 0.126544652282792,
+   "spyMdd": -0.13022903952464193,
+   "start": "2014-02-14",
+   "trackingError": 0.06622835544630094
+  },
+  "restored|PRICE_CONFIRMED|L4|RESTORED_WINDOW": {
+   "cagr": 0.16268562055462232,
+   "costPerYear": 0.0107607417929839,
+   "end": "2018-02-27",
+   "excess": 0.03614096827183033,
+   "infoRatio": 0.42654084372470297,
+   "mdd": -0.13291499385395933,
+   "oneWayTurnoverPerYear": 5.175382271322231,
+   "spyCagr": 0.126544652282792,
+   "spyMdd": -0.13022903952464193,
+   "start": "2014-02-14",
+   "trackingError": 0.0761223067536806
+  },
+  "restored|PRICE_CONFIRMED|L52|RESTORED_WINDOW": {
+   "cagr": 0.17001643789163645,
+   "costPerYear": 0.002291112533688538,
+   "end": "2018-02-27",
+   "excess": 0.04347178560884446,
+   "infoRatio": 0.6695566408649226,
+   "mdd": -0.1004741821081735,
+   "oneWayTurnoverPerYear": 1.0772836547615159,
+   "spyCagr": 0.126544652282792,
+   "spyMdd": -0.13022903952464193,
+   "start": "2014-02-14",
+   "trackingError": 0.05670572685693707
+  },
+  "restored|PRICE|L26|RESTORED_WINDOW": {
+   "cagr": 0.15920504382039247,
+   "costPerYear": 0.003721648527340076,
+   "end": "2018-02-27",
+   "excess": 0.032660391537600475,
+   "infoRatio": 0.429319065211705,
+   "mdd": -0.10782670344787726,
+   "oneWayTurnoverPerYear": 1.7550469232628896,
+   "spyCagr": 0.126544652282792,
+   "spyMdd": -0.13022903952464193,
+   "start": "2014-02-14",
+   "trackingError": 0.06755372684248534
+  },
+  "restored|PRICE|L4|RESTORED_WINDOW": {
+   "cagr": 0.1420561047067994,
+   "costPerYear": 0.011495722352139807,
+   "end": "2018-02-27",
+   "excess": 0.015511452424007421,
+   "infoRatio": 0.18132367383187226,
+   "mdd": -0.1278941394220342,
+   "oneWayTurnoverPerYear": 5.777604227778815,
+   "spyCagr": 0.126544652282792,
+   "spyMdd": -0.13022903952464193,
+   "start": "2014-02-14",
+   "trackingError": 0.07959539900045645
+  },
+  "restored|PRICE|L52|RESTORED_WINDOW": {
+   "cagr": 0.15955917255745589,
+   "costPerYear": 0.0022659976626617675,
+   "end": "2018-02-27",
+   "excess": 0.033014520274663894,
+   "infoRatio": 0.49227788828583796,
+   "mdd": -0.10377320800102419,
+   "oneWayTurnoverPerYear": 1.0773648660419677,
+   "spyCagr": 0.126544652282792,
+   "spyMdd": -0.13022903952464193,
+   "start": "2014-02-14",
+   "trackingError": 0.058383950208298195
+  }
+ },
+ "restoredInCommonUniverse": {
+  "2014": 20.3,
+  "2015": 12.0,
+  "2016": 10.6,
+  "2017": 9.6,
+  "2018": 0.0
+ },
+ "restoredTickers": 139,
+ "sourceReceipts": {
+  "of": 139,
+  "verified": 139
+ },
+ "studyId": "us-selection-value-v1",
+ "windowEnd": "2018-02-27"
+}

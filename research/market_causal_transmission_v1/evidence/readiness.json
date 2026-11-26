@@ -1,0 +1,117 @@
+{
+ "H1": {
+  "bothNonZero": 11,
+  "cbiNonZero": 99,
+  "controlsMissing": 0,
+  "first": "1990-02",
+  "last": "2024-01",
+  "months": 408,
+  "mpNonZero": 188,
+  "mpsAvailable": 407,
+  "scale": {
+   "CBI": 0.03191013405025848,
+   "MP": 0.08017595508693352,
+   "MPS": 0.06727024455937386,
+   "MPS_ORTH": 0.06197743940808224
+  }
+ },
+ "outOfSample": {
+  "first": "1990-01",
+  "last": "2024-08",
+  "months": 416,
+  "signals": {
+   "creditStress": {
+    "False": 340,
+    "None": 7,
+    "True": 69
+   },
+   "earnDown": {
+    "False": 194,
+    "True": 222
+   },
+   "highCape": {
+    "False": 147,
+    "True": 269
+   },
+   "highPe": {
+    "False": 217,
+    "True": 199
+   },
+   "trendDown": {
+    "False": 320,
+    "True": 96
+   },
+   "volHigh": {
+    "False": 202,
+    "True": 214
+   },
+   "vulnTriple": {
+    "False": 385,
+    "None": 7,
+    "True": 24
+   }
+  },
+  "vulnCells_PE_EARN_CREDIT": {
+   "000": 84,
+   "001": 13,
+   "010": 103,
+   "011": 17,
+   "100": 79,
+   "101": 15,
+   "110": 74,
+   "111": 24,
+   "MISSING": 7
+  }
+ },
+ "outcomeReads": 0,
+ "stage": "READINESS_OUTCOME_FREE",
+ "study": "market-causal-transmission-v1",
+ "training": {
+  "first": "1970-01",
+  "last": "1989-12",
+  "months": 240,
+  "signals": {
+   "creditStress": {
+    "False": 192,
+    "True": 48
+   },
+   "earnDown": {
+    "False": 127,
+    "None": 8,
+    "True": 105
+   },
+   "highCape": {
+    "False": 169,
+    "True": 71
+   },
+   "highPe": {
+    "False": 144,
+    "True": 96
+   },
+   "trendDown": {
+    "False": 170,
+    "True": 70
+   },
+   "volHigh": {
+    "False": 99,
+    "True": 141
+   },
+   "vulnTriple": {
+    "False": 228,
+    "None": 8,
+    "True": 4
+   }
+  },
+  "vulnCells_PE_EARN_CREDIT": {
+   "000": 54,
+   "001": 9,
+   "010": 53,
+   "011": 20,
+   "100": 53,
+   "101": 11,
+   "110": 28,
+   "111": 4,
+   "MISSING": 8
+  }
+ }
+}

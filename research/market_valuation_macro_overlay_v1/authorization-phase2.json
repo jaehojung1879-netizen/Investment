@@ -1,0 +1,70 @@
+{
+ "authorizationId": "MVMA-V1-PHASE2-US-20261122",
+ "codeSha256": {
+  "research/market_valuation_macro_overlay_v1/__init__.py": "cb394b2e2cc431f86a3613f5ef5ce5aca117673f2417792658a23f575339fc3f",
+  "research/market_valuation_macro_overlay_v1/bil_total_return.py": "ff51ed1a215b94652ec2bd4134c580007f25f8523bdf7c6e83fc923ac30670d4",
+  "research/market_valuation_macro_overlay_v1/build_signals.py": "c904c8ba53aa602a202f01c24afd6bb1d12960f22053c8d15dc30b6f33c07309",
+  "research/market_valuation_macro_overlay_v1/execute_phase2.py": "6964816e8b2d11ec23fbf4e2f48a7e4d0848eebfd964150440e8425299e0a266",
+  "research/market_valuation_macro_overlay_v1/features.py": "c6cfb872efec3552d7bf40debc8323543c458044d4396e05103b867d785b6648",
+  "research/market_valuation_macro_overlay_v1/phase2.py": "31c1c2ba46bdfd257239ef457cf81d529e01f73e245ca3ea93e3aeb66c2bbc1b",
+  "research/market_valuation_macro_overlay_v1/protocol.py": "c3cbfc89845b95e051323232f07f5676ad09be174b73c8c16a9e5bc9fb256404",
+  "research/market_valuation_macro_overlay_v1/signals.py": "a9059d4e39f7b85d84e51e6222bcfca0437647ade0aa68b1a0fb68ebe23b3ffa",
+  "research/market_valuation_macro_overlay_v1/vendor/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "research/market_valuation_macro_overlay_v1/vendor/market_timing_pr316.py": "48369a230087b31b4766d56e6b0df66a275417fd3ddb8f1d064e62ddb5ae7453"
+ },
+ "conventionsFixedBeforeExecution": [
+  "p-values are two-sided (the protocol fixes the expected sign but not sidedness); Holm over the PRIMARY family of two",
+  "costs: protocol one-way 2bp charged on both legs of every trade actually made (target changes and monthly drift resets); first build uncharged for every policy (#316 convention); the decomposition COST term charges target changes only, both legs",
+  "execution at the close of the session after each month-end decision; periods run execution to execution; the 152nd period ends at the execution after the 2024-09-30 decision",
+  "forward 6M/12M excess = SPY total return minus BIL total return from the decision's execution close to the execution close 6/12 decisions later",
+  "BIL total return = split-adjusted raw close plus issuer distributions restated per current share, reinvested at the ex-date close",
+  "LEVEL-3 risk path compares with a static mix of equal monthly volatility found by bisection"
+ ],
+ "grantedAt": "2026-11-22",
+ "grantedBy": "repository owner, in the Claude Code session that produced PR #357",
+ "inputSha256": {
+  "data/research/us-dual-benchmark-v1/spy-qqq-total-return.csv.gz": "a82c64b96ef56e672373240d0b6df317dadbdee8c845bfaa9725b16bb9625b50",
+  "pipeline/replay_calendar.py": "56116f837e8ae3b9ca43c27c87b3be8bcf608172a761879a6b1284a39c9a3ab2",
+  "research/market_valuation_macro_overlay_v1/data/alfred-BAA-asof-decisions.csv": "e8f6732bee50a100fca18ae6f2ff9b17292149d24d919f3a87f38353f6e9a060",
+  "research/market_valuation_macro_overlay_v1/data/alfred-GS10-asof-decisions.csv": "505c009bbc8eee8a9d14c26bb00b0fc2d4305d0926184f0146ef54174ccfaca8",
+  "research/market_valuation_macro_overlay_v1/data/raw/yahoo-BIL-chart-20261110.json.gz": "6cf14182abc6cf7213a25cb8b93ed467e52cb58266e10cddbe69a0995fd17363",
+  "research/market_valuation_macro_overlay_v1/data/shiller-monthly-20240904.csv": "bdfb4619fdab35eadca6ad6a1f1a4e9712610099dee7972062aa2902a1b2ebff",
+  "research/market_valuation_macro_overlay_v1/data/ssga-BIL-distributions.csv": "bbb93b4aa75aa9e70c73d84728ede6a097102dc6d97e756e26b1825f7e765838",
+  "research/market_valuation_macro_overlay_v1/evidence/us-signal-readiness.csv": "41b9746d89e09f92ea4fee0d6aa0da0e3056caefd31c56f2b0c79e2adaea9546",
+  "research/market_valuation_macro_overlay_v1/evidence/us-signal-readiness.json": "652921b732ff1553317c20b8d6e0562ac85edd6b4c6713aaa69d5b4f2ec79041",
+  "research/market_valuation_macro_overlay_v1/protocol.json": "07e60dc03990bbbf319951a371fa61a3cd9e1e592e9fc6b4a9a7a9823d4a5df8",
+  "research/market_valuation_macro_overlay_v1/protocol.sha256": "ce4905c8295aecd9231e4046e5ba5031675575afa40a68b67c7afa799faa81a5"
+ },
+ "ownerInstruction": "이번 메시지로 PR #357에 사전등록된 미국 H1-US-TRAILING, H2-US-VM1T의 최초 1회 탐색적 성과 계산을 승인한다. 승인은 연구 실행에 한정하며 실제 투자전략 배포, 운영 비중 변경, main 병합은 승인하지 않는다.",
+ "protocolHeadCommit": "37d1a87a62f51e44e6e6990176a45a79f3a2a07f",
+ "protocolNote": "protocol.json stays byte-identical to PR #357; its firewall fields remain false/null by design. This file, not an edit of the protocol, is the execution authorization.",
+ "protocolPr": 357,
+ "protocolSha256": "07e60dc03990bbbf319951a371fa61a3cd9e1e592e9fc6b4a9a7a9823d4a5df8",
+ "scope": {
+  "evidenceClass": "EXPLORATORY_ON_OUTCOME_EXPOSED_HISTORY",
+  "hypotheses": [
+   "H1-US-TRAILING",
+   "H2-US-VM1T"
+  ],
+  "market": "US",
+  "notAuthorized": [
+   "strategy deployment",
+   "change of any operating weight",
+   "merge to main",
+   "any change of window, threshold, signal, weight, hypothesis or test",
+   "a second run after a substantive result",
+   "Korean outcome tests (Phase D)",
+   "forward-EPS variants (SOURCE_BLOCKED)"
+  ],
+  "runs": 1,
+  "separateDescriptive": [
+   "DCA-A/B/C (protocol.dca), never mixed with H1/H2 verdicts",
+   "secondary and robustness items listed in protocol.inference.secondary and protocol.robustness"
+  ]
+ },
+ "vendoredDecomposition": {
+  "gitBlob": "dabc7ee0027527a467d07d8138dedf816d713258",
+  "sourceCommit": "75aab7bc7096b551543bc1582c1e7fd288e94e59",
+  "sourcePr": 316
+ }
+}

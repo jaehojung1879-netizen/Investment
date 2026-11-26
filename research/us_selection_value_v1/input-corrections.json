@@ -1,0 +1,14 @@
+{
+  "studyId": "us-selection-value-v1",
+  "note": "spec.json is unchanged. These are input-construction corrections found by auditing the first evaluation's universe (which names were present), not by reading any strategy return. The first evaluation is kept as results/result-before-input-fix.json and both are reported.",
+  "found": "On 2026-08-21 the common universe held 38 names and lacked AAPL, MSFT, AMZN, GOOGL, META; by year GOOGL and XOM were never present and META was absent before 2023. Three causes were traced; two are input defects and are corrected, one is the frozen rule working as specified.",
+  "corrections": {
+    "F1_VERIFIED_CLASS_LINKS": "The pilot identity map has no FB -> META link and holds FB as a reused ticker (today FB is another issuer), so META was absent before the 2022 rename. Codex's security lineage (research/us_historical_market_recovery_v1/results/security-lineage.json) verifies FB->META, ABC->COR, BLL->BALL and CTL->LUMN with an official SEC citation and the same CIK; those links are added where the successor is priced, and a verified link overrides the reuse hold because the old symbol is mapped to its successor panel and today's holder of the symbol is never read.",
+    "F2_IMPLIED_SHARE_COUNT": "Filings that state no share-count concept (GOOGL, XOM) had no market cap. Shares = net income / diluted EPS of the SAME filing (EPS at least one cent, same sign), labelled sharesBasis NET_INCOME_OVER_DILUTED_EPS_SAME_FILING."
+  },
+  "notCorrected": {
+    "FINNHUB_2026H2_BALANCE_SHEET_GAP": "Filings visible from about 2026-07-24 carry an empty balance sheet (AAPL 2026-06-27 10-Q: 0 rows), so the common universe falls from ~230 to 0 by 2026-09-11. It touches only signal dates whose H126/H252 exits are not matured and the last ~7 weeks of the rebalancing NAV (weeks below 30 names keep the previous book). The #336 SEC asset supplement fills total assets but not equity, so it is not applied here.",
+    "REORGANIZED_ISSUERS": "Issuers with several CIKs in their visible filing history before 2023 (AVGO: three) are CIK_AMBIGUOUS_EXCLUDED by the frozen single-CIK rule; 17-45 names a week. Listed as a recoverable field.",
+    "INCOMPLETE_ACCOUNTING_CHAINS": "JNJ (no operating-income line), UNH (prior-year OCF chain) and similar drop out of the common sample by the frozen rule, which requires every strategy's inputs."
+  }
+}

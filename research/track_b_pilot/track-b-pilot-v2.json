@@ -1,0 +1,213 @@
+{
+ "events": {
+  "2008_credit": {
+   "anchor": "2007-08-09",
+   "drawdown": {
+    "maxDrawdown12m": -0.2150047514013862,
+    "minReturnFromBase12m": -0.17628654560561152
+   },
+   "firstReaction": "2007-08-09",
+   "spf": {
+    "postSurveys": [
+     {
+      "aheadQuarters": 3,
+      "daysAnchorToRelease": 5,
+      "deadline": "2007-08-08",
+      "deadlineOnOrAfterAnchor": false,
+      "forecastOfTarget": 1171.95,
+      "release": "2007-08-14",
+      "revisionVsPre": -0.08691079080638875,
+      "survey": "2007Q3"
+     },
+     {
+      "aheadQuarters": 2,
+      "daysAnchorToRelease": 96,
+      "deadline": "2007-11-07",
+      "deadlineOnOrAfterAnchor": true,
+      "forecastOfTarget": 1200.1041,
+      "release": "2007-11-13",
+      "revisionVsPre": -0.06497537982080248,
+      "survey": "2007Q4"
+     },
+     {
+      "aheadQuarters": 1,
+      "daysAnchorToRelease": 187,
+      "deadline": "2008-02-07",
+      "deadlineOnOrAfterAnchor": true,
+      "forecastOfTarget": 1209.81,
+      "release": "2008-02-12",
+      "revisionVsPre": -0.057413322945072065,
+      "survey": "2008Q1"
+     },
+     {
+      "aheadQuarters": 0,
+      "daysAnchorToRelease": 278,
+      "deadline": "2008-05-08",
+      "deadlineOnOrAfterAnchor": true,
+      "forecastOfTarget": 1135.1796,
+      "release": "2008-05-13",
+      "revisionVsPre": -0.11555932995714846,
+      "survey": "2008Q2"
+     }
+    ],
+    "preDeadline": "2007-05-09",
+    "preForecastOfTarget": 1283.5,
+    "preRelease": "2007-05-14",
+    "preSurvey": "2007Q2",
+    "targetQuarter": "2008Q2"
+   },
+   "v1Values": {
+    "maxDrawdownWithin12m_wasMinReturnFromBase": -0.17628654560561152,
+    "spfPostRevisions": [
+     -0.08691079080638875,
+     null,
+     -0.057413322945072065,
+     -0.11555932995714846
+    ],
+    "spfPreSurvey": "2007Q2"
+   }
+  },
+  "2020_pandemic": {
+   "anchor": "2020-02-24",
+   "drawdown": {
+    "maxDrawdown12m": -0.3273371388597113,
+    "minReturnFromBase12m": -0.3273371388597113
+   },
+   "firstReaction": "2020-02-24",
+   "spf": {
+    "postSurveys": [
+     {
+      "aheadQuarters": 3,
+      "daysAnchorToRelease": 81,
+      "deadline": "2020-05-12",
+      "deadlineOnOrAfterAnchor": true,
+      "forecastOfTarget": 1808.3748,
+      "release": "2020-05-15",
+      "revisionVsPre": -0.0618432091136738,
+      "survey": "2020Q2"
+     },
+     {
+      "aheadQuarters": 2,
+      "daysAnchorToRelease": 172,
+      "deadline": "2020-08-12",
+      "deadlineOnOrAfterAnchor": true,
+      "forecastOfTarget": 1809.579,
+      "release": "2020-08-14",
+      "revisionVsPre": -0.061218488835783846,
+      "survey": "2020Q3"
+     },
+     {
+      "aheadQuarters": 1,
+      "daysAnchorToRelease": 266,
+      "deadline": "2020-11-10",
+      "deadlineOnOrAfterAnchor": true,
+      "forecastOfTarget": 1747.7616,
+      "release": "2020-11-16",
+      "revisionVsPre": -0.09328839691287949,
+      "survey": "2020Q4"
+     },
+     {
+      "aheadQuarters": 0,
+      "daysAnchorToRelease": 354,
+      "deadline": "2021-02-09",
+      "deadlineOnOrAfterAnchor": true,
+      "forecastOfTarget": 1988.6095,
+      "release": "2021-02-12",
+      "revisionVsPre": 0.03165975706256341,
+      "survey": "2021Q1"
+     }
+    ],
+    "preDeadline": "2020-02-11",
+    "preForecastOfTarget": 1927.5827,
+    "preRelease": "2020-02-14",
+    "preSurvey": "2020Q1",
+    "targetQuarter": "2021Q1"
+   },
+   "v1Values": {
+    "maxDrawdownWithin12m_wasMinReturnFromBase": -0.3273371388597113,
+    "spfPostRevisions": [
+     -0.0618432091136738,
+     null,
+     -0.09328839691287949,
+     0.03165975706256341
+    ],
+    "spfPreSurvey": "2020Q1"
+   }
+  },
+  "2025_tariff": {
+   "anchor": "2025-04-02",
+   "drawdown": {
+    "maxDrawdown12m": -0.12052718449457123,
+    "minReturnFromBase12m": -0.12052718449457123
+   },
+   "firstReaction": "2025-04-03",
+   "spf": {
+    "postSurveys": [
+     {
+      "aheadQuarters": 3,
+      "daysAnchorToRelease": 44,
+      "deadline": "2025-05-13",
+      "deadlineOnOrAfterAnchor": true,
+      "forecastOfTarget": 3267.3209,
+      "release": "2025-05-16",
+      "revisionVsPre": -0.004760960634531464,
+      "survey": "2025Q2"
+     },
+     {
+      "aheadQuarters": 2,
+      "daysAnchorToRelease": 135,
+      "deadline": "2025-08-12",
+      "deadlineOnOrAfterAnchor": true,
+      "forecastOfTarget": 3276.2912,
+      "release": "2025-08-15",
+      "revisionVsPre": -0.0020285713076000356,
+      "survey": "2025Q3"
+     },
+     {
+      "aheadQuarters": 1,
+      "daysAnchorToRelease": 229,
+      "deadline": "2025-11-11",
+      "deadlineOnOrAfterAnchor": true,
+      "forecastOfTarget": 3367.9841,
+      "release": "2025-11-17",
+      "revisionVsPre": 0.025901453475895897,
+      "survey": "2025Q4"
+     },
+     {
+      "aheadQuarters": 0,
+      "daysAnchorToRelease": 338,
+      "deadline": "2026-03-02",
+      "deadlineOnOrAfterAnchor": true,
+      "forecastOfTarget": 3527.5957,
+      "release": "2026-03-06",
+      "revisionVsPre": 0.07451978645187785,
+      "survey": "2026Q1"
+     }
+    ],
+    "preDeadline": "2025-02-11",
+    "preForecastOfTarget": 3282.9509,
+    "preRelease": "2025-02-14",
+    "preSurvey": "2025Q1",
+    "targetQuarter": "2026Q1"
+   },
+   "v1Values": {
+    "maxDrawdownWithin12m_wasMinReturnFromBase": -0.12052718449457123,
+    "spfPostRevisions": [
+     -0.004760960634531464,
+     null,
+     0.025901453475895897,
+     0.07451978645187785
+    ],
+    "spfPreSurvey": "2025Q1"
+   }
+  }
+ },
+ "spfReleaseSource": {
+  "file": "data/spf-release-dates-20261124.txt",
+  "sha256": "b5dd7c4c4b9114e455c3cce4aa55f6d90283e10b6fd34d781e46f2533812f390",
+  "url": "https://www.philadelphiafed.org/-/media/frbp/assets/surveys-and-data/survey-of-professional-forecasters/spf-release-dates.txt"
+ },
+ "study": "track-b-pilot",
+ "supersedes": "track-b-pilot.json (v1, kept unchanged)",
+ "version": 2
+}

@@ -1,0 +1,44 @@
+{
+ "accountingIdentities": {
+  "126": {
+   "F_minus_ETF_equals_active_plus_B_minus_ETF_maxError": 1.1102230246251565e-16,
+   "F_minus_legacy_maxError": 1.1102230246251565e-16,
+   "commonCohortsPerBook": 630
+  },
+  "252": {
+   "F_minus_ETF_equals_active_plus_B_minus_ETF_maxError": 1.1102230246251565e-16,
+   "F_minus_legacy_maxError": 1.1449174941446927e-16,
+   "commonCohortsPerBook": 604
+  }
+ },
+ "actualFullReplicaWeeks": 0,
+ "actualPartialConfigs": 16,
+ "actualPartialMaximumMegaSumError": 6.106226635438361e-16,
+ "actualPartialWeeks": 353,
+ "fundingBooksChecked": 7826,
+ "limitations": [
+  "Current CUSIP mapping is conditional, not dated identity proof",
+  "Proxy cap subset is not full actual SPY replication",
+  "Original feature freshness, issuer linkage and price-history admission limits retained",
+  "Past data already examined; no prospective validation claimed"
+ ],
+ "maximumComponentReconciliationError": 2.2534057952938724e-15,
+ "maximumWeightSumError": 2.220446049250313e-16,
+ "minimumLongOnlyWeight": 1.8913190599708253e-12,
+ "prior350MaximumEndpointError": 2.3869795029440866e-15,
+ "sourceAndCodeSha256": {
+  "inputs/US/fisv-reconstruction-comparison.csv.gz": "ee2ae6e8db5bf7a993ad15026f51ab1f86865fc74fd1a06178aa709e9b8a3778",
+  "inputs/US/fisv-repair-applied.json": "81480ab3840f9a07f69e2dd51d960b5159a6956ee65968ce27f6214ad8b37ca7",
+  "inputs/US/spy-coverage-summary.json": "4514b9af0550190e07749183730eed987237d13a50519c54d796448bff536336",
+  "inputs/US/spy-normalized-holdings.csv.gz": "49d6a75c5fc912c4462d7fe5bb4344cd5abd11461b9a1e1992c96d1559f7a020",
+  "inputs/US/spy-publication-by-decision.csv": "b85c560ee1a56954dc542073aeac720a585baa347b774f4c1a77133a96f7bfba",
+  "inputs/US/spy-reports.json": "b88e9cd8647e68f98e2406ee9a4ac4bf474ee4dc9fac35a219d4eef9fda660c8",
+  "inputs/US/spy-source-coverage-by-decision.csv": "1c37edbd0fa17fb77a8c8fb8441e1cec45c5d25f04c95036f1d0fb37ce1dcfec",
+  "inputs/US/spy-source-manifest.json": "1c63af0cbd37091236985141348c73371b65ddce71c581d5eea2ea9a662268bf",
+  "us.py": "4f1d983ecb3da6b18b376d624096d2c8322b467f664dde6d5efe6063bf810117",
+  "us_prepare.py": "214302b2edc002389835fee1b5cba4ab8442ded98a1be62f6701e05c80c68cea",
+  "us_repair_price.py": "5c9b0c9828a75c999056793166837d9b8497a38fed4e55e3c600273bee32f1fe",
+  "us_validate.py": "c138edee789e448effe92eb39c96b3f0e30fefc858c3f8d20a9b4533a7d2ac01"
+ },
+ "status": "VALIDATED_WITH_EXPLICIT_SOURCE_LIMITS"
+}

@@ -1,0 +1,45 @@
+{
+ "authorizationId": "MCT-V1-STAGE-C-20261123",
+ "grantedAt": "2026-11-23",
+ "grantedBy": "repository owner, in this Claude Code session",
+ "interpretation": "The owner's request authorizes one execution of the protocol frozen in commit 329605f5 (research only). It does not authorize deployment, an operating weight change, a merge to main, a re-run after a substantive result, or any change of rule, threshold, window or model after outcomes.",
+ "ownerInstruction": "Stage C: 필요한 실행 승인과 데이터가 확보되면 실제 분석을 수행한다. 한도·원천 문제로 불가능한 경우에만 정확한 장애를 보고한다. 기존 데이터로 할 수 있는 계산까지 설계 문서만 만들고 끝내지 않는다.",
+ "pinnedSha256": {
+  "research/market_causal_transmission_v1/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "research/market_causal_transmission_v1/data/manifest.json": "43f025baf1f1666c0d82eaf9c681c379c21054647ddebac854b3fbb6c6ab56e4",
+  "research/market_causal_transmission_v1/data/raw/bauer-swanson-mps.xlsx.gz": "781d9dc8c21fc9f5a0abcc16f3cc0c87a76eaccc43045b6fbf6751ad4d7273e7",
+  "research/market_causal_transmission_v1/data/raw/ff-research-data-factors.zip.gz": "0167bb094890c5a6f33f78ef63955e3da514e5ab3dbe9e238b3f77425d5e3d44",
+  "research/market_causal_transmission_v1/data/raw/fred-BAA.csv.gz": "f56d417b876e9ea61d223d8e44c572edfdbe98913087472cbf70143e3949b098",
+  "research/market_causal_transmission_v1/data/raw/fred-DFII10.csv.gz": "178c08b25e05bd467a571b2c5c1c8cee0df3b9c3a4c56b9fae0b2698c613d213",
+  "research/market_causal_transmission_v1/data/raw/fred-GS10.csv.gz": "4d5bdf7114f0cda2d9aa05f0ca31e778474149c784163a0ec2a2f467f8198218",
+  "research/market_causal_transmission_v1/data/raw/fred-T10YIE.csv.gz": "a72bcb36fb645d9fb6d9847c3df65ac0e867cbc7c271b5529d89f4bf67598b46",
+  "research/market_causal_transmission_v1/data/raw/gz-ebp.csv.gz": "01f26e844bdc255d3a3eb539ca9f7dd5badf2e7b7d8fbd5165df7afd1238cc29",
+  "research/market_causal_transmission_v1/data/raw/jk-shocks-events.csv.gz": "d4d13235889edcb491a5d13694698dd664cd8a8d5bd119e6d7ca772a98d88bd1",
+  "research/market_causal_transmission_v1/data/raw/jk-shocks-monthly.csv.gz": "c2b204e6726137d74be1ea914a56f11841e4741baa43bedf4b56b512a1c1ccf0",
+  "research/market_causal_transmission_v1/data/raw/spf-median-cprof-growth.xlsx.gz": "f0e53831c7d4dc7c1bb59c969f60e987a59e53287d807490ef178b6fca0835cc",
+  "research/market_causal_transmission_v1/data/raw/spf-median-cprof-level.xlsx.gz": "2b8e779a6b1ddd7556d419f01b6b0cdb051353315a940f5cacd548d65777b553",
+  "research/market_causal_transmission_v1/evidence/readiness.json": "9b462bb35abb09ee894f95ad2f48c92f9905e38d59953123f176fa2a6978030d",
+  "research/market_causal_transmission_v1/execute.py": "e494dedf64731d04fadd96c00ddd96cb92d448e3a9dc380c663698ba7b0f5830",
+  "research/market_causal_transmission_v1/models.py": "58215b9ba02148c106cb275b2c8a44e465ff2285f981ed51e2d5aa6cb485a0b2",
+  "research/market_causal_transmission_v1/panel.py": "8d311f35b0fcf75a090280fed172adb310f1efd69fc0696702a8c6c66b0c011e",
+  "research/market_causal_transmission_v1/protocol.json": "f67767c91cc6d2daa9c1090a2e303f1317db341010c7a0dbdd4e841241e6ed56",
+  "research/market_causal_transmission_v1/transmission.py": "aafae19d6b20327268051f995e11b92b7f25ef8a935a8db07bc9a0c97f805d83",
+  "research/market_valuation_macro_overlay_v1/data/alfred-BAA-asof-decisions.csv": "e8f6732bee50a100fca18ae6f2ff9b17292149d24d919f3a87f38353f6e9a060",
+  "research/market_valuation_macro_overlay_v1/data/alfred-GS10-asof-decisions.csv": "505c009bbc8eee8a9d14c26bb00b0fc2d4305d0926184f0146ef54174ccfaca8",
+  "research/market_valuation_macro_overlay_v1/data/shiller-monthly-20240904.csv": "bdfb4619fdab35eadca6ad6a1f1a4e9712610099dee7972062aa2902a1b2ebff",
+  "research/market_valuation_macro_overlay_v1/features.py": "c6cfb872efec3552d7bf40debc8323543c458044d4396e05103b867d785b6648",
+  "research/market_valuation_macro_overlay_v1/vendor/market_timing_pr316.py": "48369a230087b31b4766d56e6b0df66a275417fd3ddb8f1d064e62ddb5ae7453"
+ },
+ "protocolCommit": "329605f5",
+ "protocolSha256": "f67767c91cc6d2daa9c1090a2e303f1317db341010c7a0dbdd4e841241e6ed56",
+ "scope": {
+  "korea": "NOT_RUN (Phase D)",
+  "market": "US",
+  "primaryFamily": [
+   "H1-P",
+   "H2-P",
+   "H3-P"
+  ],
+  "runs": 1
+ }
+}

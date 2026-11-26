@@ -1,0 +1,136 @@
+{
+ "builtAt": "2026-11-23T02:51:21+00:00",
+ "outcomeReads": 0,
+ "reusedFromMvmaV1": {
+  "alfredBaaGs10": [
+   "research/market_valuation_macro_overlay_v1/data/alfred-BAA-asof-decisions.csv",
+   "research/market_valuation_macro_overlay_v1/data/alfred-GS10-asof-decisions.csv"
+  ],
+  "shiller": "research/market_valuation_macro_overlay_v1/data/shiller-monthly-20240904.csv"
+ },
+ "secretsUsed": [],
+ "sources": {
+  "BAUER_SWANSON_MPS": {
+   "httpStatus": 200,
+   "lastModified": "Fri, 20 Nov 2026 18:05:23 GMT",
+   "note": "Bauer-Swanson (2023) MPS (observable) and MPS_ORTH (orthogonalised on pre-FOMC data with full-sample coefficients: not real time).",
+   "originalBytes": 301655,
+   "originalSha256": "708606624de050cdaf6fd850a320b38d45099ab7c2398e01ba12dcece5743668",
+   "retrievedAt": "2026-11-23T02:51:21+00:00",
+   "stored": "research/market_causal_transmission_v1/data/raw/bauer-swanson-mps.xlsx.gz",
+   "storedSha256": "781d9dc8c21fc9f5a0abcc16f3cc0c87a76eaccc43045b6fbf6751ad4d7273e7",
+   "url": "https://www.frbsf.org/wp-content/uploads/monetary-policy-surprises-data.xlsx"
+  },
+  "FF_FACTORS_MONTHLY": {
+   "httpStatus": 200,
+   "lastModified": "Tue, 27 Oct 2026 15:18:47 GMT",
+   "note": "Fama-French Mkt-RF and RF (CRSP value-weighted market, month-end to month-end). OUTCOME.",
+   "originalBytes": 13078,
+   "originalSha256": "b03d39e4bb253dda0f14893db3b78e64b40b8d6549a0fc0fd4111dae84c98618",
+   "retrievedAt": "2026-11-23T02:51:22+00:00",
+   "stored": "research/market_causal_transmission_v1/data/raw/ff-research-data-factors.zip.gz",
+   "storedSha256": "0167bb094890c5a6f33f78ef63955e3da514e5ab3dbe9e238b3f77425d5e3d44",
+   "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
+  },
+  "FRED_BAA": {
+   "httpStatus": 200,
+   "lastModified": "Mon, 02 Nov 2026 16:31:35 GMT",
+   "note": "Moody's seasoned Baa, monthly average; 0 revisions across ALFRED vintages 2005/2011 (MVMA probe).",
+   "originalBytes": 20885,
+   "originalSha256": "0d7a21abcb6af2a2d7ac83fb6a8941a5e3ad8ddcec913dcff1b7d9d50eed6404",
+   "retrievedAt": "2026-11-23T02:51:22+00:00",
+   "stored": "research/market_causal_transmission_v1/data/raw/fred-BAA.csv.gz",
+   "storedSha256": "f56d417b876e9ea61d223d8e44c572edfdbe98913087472cbf70143e3949b098",
+   "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=BAA"
+  },
+  "FRED_DFII10": {
+   "httpStatus": 200,
+   "lastModified": "Fri, 20 Nov 2026 21:16:34 GMT",
+   "note": "10-year TIPS real yield, daily, 2003-; market observation. Outcome/mechanism.",
+   "originalBytes": 99651,
+   "originalSha256": "6f96017732b2c7f15899839a0ce9c8e05e0007517d1ca160dcc890bf8e64505e",
+   "retrievedAt": "2026-11-23T02:51:23+00:00",
+   "stored": "research/market_causal_transmission_v1/data/raw/fred-DFII10.csv.gz",
+   "storedSha256": "178c08b25e05bd467a571b2c5c1c8cee0df3b9c3a4c56b9fae0b2698c613d213",
+   "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10"
+  },
+  "FRED_GS10": {
+   "httpStatus": 200,
+   "lastModified": "Mon, 02 Nov 2026 21:16:29 GMT",
+   "note": "10-year Treasury, monthly average; 0 revisions across ALFRED vintages 2005/2011 (MVMA probe).",
+   "originalBytes": 14222,
+   "originalSha256": "018e609eb98c52ec8d2cf0ea9f8e1450c24974c31cca455cc19717a77703af78",
+   "retrievedAt": "2026-11-23T02:51:22+00:00",
+   "stored": "research/market_causal_transmission_v1/data/raw/fred-GS10.csv.gz",
+   "storedSha256": "4d5bdf7114f0cda2d9aa05f0ca31e778474149c784163a0ec2a2f467f8198218",
+   "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=GS10"
+  },
+  "FRED_T10YIE": {
+   "httpStatus": 200,
+   "lastModified": "Fri, 20 Nov 2026 22:03:35 GMT",
+   "note": "10-year breakeven inflation, daily, 2003-; market observation. Outcome/mechanism.",
+   "originalBytes": 98712,
+   "originalSha256": "203c8631d1edbf00325d6d191cbd3feb596ee92da7edd904a5fdc2fb20971f1f",
+   "retrievedAt": "2026-11-23T02:51:23+00:00",
+   "stored": "research/market_causal_transmission_v1/data/raw/fred-T10YIE.csv.gz",
+   "storedSha256": "a72bcb36fb645d9fb6d9847c3df65ac0e867cbc7c271b5529d89f4bf67598b46",
+   "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=T10YIE"
+  },
+  "GZ_EBP": {
+   "httpStatus": 200,
+   "lastModified": "Thu, 05 Nov 2026 15:00:13 GMT",
+   "note": "Gilchrist-Zakrajsek spread and excess bond premium; the EBP is a full-sample regression residual (REVISED_HISTORY), used as an outcome/mechanism measure only, never as a real-time signal.",
+   "originalBytes": 44669,
+   "originalSha256": "caa16e0619cb5399b9c8f44433868351f01973f9594c50a4f1f87dd0856542c5",
+   "retrievedAt": "2026-11-23T02:51:21+00:00",
+   "stored": "research/market_causal_transmission_v1/data/raw/gz-ebp.csv.gz",
+   "storedSha256": "01f26e844bdc255d3a3eb539ca9f7dd5badf2e7b7d8fbd5165df7afd1238cc29",
+   "url": "https://www.federalreserve.gov/econres/notes/feds-notes/ebp_csv.csv"
+  },
+  "JK_SHOCKS_EVENTS": {
+   "httpStatus": 200,
+   "lastModified": null,
+   "note": "Same, one row per FOMC event with its timestamp.",
+   "originalBytes": 22885,
+   "originalSha256": "8189cd5e14766d9a50b846d409afb728f430b0b47fa0d54f51451af76ab28ef0",
+   "retrievedAt": "2026-11-23T02:51:21+00:00",
+   "stored": "research/market_causal_transmission_v1/data/raw/jk-shocks-events.csv.gz",
+   "storedSha256": "d4d13235889edcb491a5d13694698dd664cd8a8d5bd119e6d7ca772a98d88bd1",
+   "url": "https://raw.githubusercontent.com/marekjarocinski/jkshocks_update_fed_202401/main/shocks_fed_jk_t.csv"
+  },
+  "JK_SHOCKS_MONTHLY": {
+   "httpStatus": 200,
+   "lastModified": null,
+   "note": "Jarocinski-Karadi (2020) FOMC shocks, 2024-01 update; MP_pm/CBI_pm are per-event sign classifications of 30-minute rate and S&P 500 surprises (observable right after the event); *_median use a full-sample rotation (not real time).",
+   "originalBytes": 20812,
+   "originalSha256": "00f997a96b9ede7edaadff9a397e17ea829c9b171d299130d62d0ff530e5ed2e",
+   "retrievedAt": "2026-11-23T02:51:21+00:00",
+   "stored": "research/market_causal_transmission_v1/data/raw/jk-shocks-monthly.csv.gz",
+   "storedSha256": "c2b204e6726137d74be1ea914a56f11841e4741baa43bedf4b56b512a1c1ccf0",
+   "url": "https://raw.githubusercontent.com/marekjarocinski/jkshocks_update_fed_202401/main/shocks_fed_jk_m.csv"
+  },
+  "SPF_CPROF_GROWTH": {
+   "httpStatus": 200,
+   "lastModified": null,
+   "note": "Same, median annualised growth.",
+   "originalBytes": 16552,
+   "originalSha256": "e2a88fd3ed509e3477f5a9db27fe8e2413515b1ea603e983d9a065bd779fac07",
+   "retrievedAt": "2026-11-23T02:51:22+00:00",
+   "stored": "research/market_causal_transmission_v1/data/raw/spf-median-cprof-growth.xlsx.gz",
+   "storedSha256": "f0e53831c7d4dc7c1bb59c969f60e987a59e53287d807490ef178b6fca0835cc",
+   "url": "https://www.philadelphiafed.org/-/media/frbp/assets/surveys-and-data/survey-of-professional-forecasters/data-files/files/median_cprof_growth.xlsx"
+  },
+  "SPF_CPROF_LEVEL": {
+   "httpStatus": 200,
+   "lastModified": null,
+   "note": "Survey of Professional Forecasters median nominal corporate profit forecasts; forecasts are never revised; release date approximated (see protocol).",
+   "originalBytes": 19356,
+   "originalSha256": "e524259a765b2085f66ab7a20e381ca18ee2fdd76547adb132058cb270613429",
+   "retrievedAt": "2026-11-23T02:51:22+00:00",
+   "stored": "research/market_causal_transmission_v1/data/raw/spf-median-cprof-level.xlsx.gz",
+   "storedSha256": "2b8e779a6b1ddd7556d419f01b6b0cdb051353315a940f5cacd548d65777b553",
+   "url": "https://www.philadelphiafed.org/-/media/frbp/assets/surveys-and-data/survey-of-professional-forecasters/data-files/files/median_cprof_level.xlsx"
+  }
+ },
+ "study": "market-causal-transmission-v1"
+}

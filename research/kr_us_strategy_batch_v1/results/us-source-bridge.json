@@ -1,0 +1,60 @@
+{
+ "bridge": {
+  "126|COCKTAIL": {
+   "archivedUncorrectedCapture": -0.014543248314032857,
+   "captureMinusPublished": 6.938893903907228e-18,
+   "ctvaRepairEffect": -0.00015511810471999406,
+   "n": 630,
+   "published": -0.014543248314032864,
+   "repairedCapture": -0.014698366418752851
+  },
+  "126|U1": {
+   "archivedUncorrectedCapture": 0.0024704006708629375,
+   "captureMinusPublished": -5.637851296924623e-18,
+   "ctvaRepairEffect": -0.00010016699549479082,
+   "n": 630,
+   "published": 0.002470400670862943,
+   "repairedCapture": 0.0023702336753681466
+  },
+  "252|COCKTAIL": {
+   "archivedUncorrectedCapture": -0.025935772301855602,
+   "captureMinusPublished": 3.469446951953614e-18,
+   "ctvaRepairEffect": 0.0003965016691633294,
+   "n": 604,
+   "published": -0.025935772301855606,
+   "repairedCapture": -0.025539270632692273
+  },
+  "252|U1": {
+   "archivedUncorrectedCapture": 0.00890629262883864,
+   "captureMinusPublished": 3.469446951953614e-18,
+   "ctvaRepairEffect": 0.00027011094487203353,
+   "n": 604,
+   "published": 0.008906292628838637,
+   "repairedCapture": 0.009176403573710674
+  }
+ },
+ "changedNumericFeatures": {
+  "asTradedClose": {
+   "maximumAbsoluteDifference": 75.85915482521057,
+   "rows": 328,
+   "tickers": [
+    "CTVA"
+   ]
+  },
+  "marketCap": {
+   "maximumAbsoluteDifference": 62852253376.43623,
+   "rows": 304,
+   "tickers": [
+    "CTVA"
+   ]
+  }
+ },
+ "changedTickers": [
+  "CTVA"
+ ],
+ "label": "SOURCE_REPRODUCTION_DIAGNOSTIC_INVALID_INPUT_NOT_A_STRATEGY_CANDIDATE",
+ "nativeBookChangedWeeks": {
+  "COCKTAIL": 112,
+  "U1": 143
+ }
+}
