@@ -54,7 +54,7 @@ def test_zero_event_receipt_is_a_valid_record():
 
 def test_enabled_study_with_every_window_recorded_is_healthy_and_disabled_one_is_not():
     rows = [row(d) for d in DAYS[:3]]
-    enabled = study(automation={"enabled": True, "pinnedCodeCommit": CODE, "singleWriterAttestation": "a"})
+    enabled = study(automation={"enabled": True, "pinnedCodeCommit": CODE, "pinnedTreeSha": "d" * 40, "singleWriterAttestation": "a"})
     assert status(rows, "2026-11-12T01:00:00Z", study=enabled)["operatingState"] == "HEALTHY"
     assert status(rows, "2026-11-12T01:00:00Z")["operatingState"] == "DISABLED"
 
@@ -78,7 +78,7 @@ def test_unauthorized_and_absent_ledger_and_failed_run():
 
 
 def test_a_successful_run_without_a_receipt_is_not_healthy():
-    enabled = study(automation={"enabled": True, "pinnedCodeCommit": CODE, "singleWriterAttestation": "a"})
+    enabled = study(automation={"enabled": True, "pinnedCodeCommit": CODE, "pinnedTreeSha": "d" * 40, "singleWriterAttestation": "a"})
     result = status([], "2026-11-11T01:00:00Z", study=enabled, writer_outcome="success")
     assert result["operatingState"] == "MISSED"
 
@@ -125,7 +125,8 @@ def test_weekly_kind_excludes_the_unfinished_week():
 def test_observed_only_makes_no_completeness_claim():
     s = study(kind="OBSERVED_ONLY", monitoring={"maxStaleCalendarDays": 5})
     fresh = ops.study_status(s, [{"signalDate": "2026-11-20"}], SESSIONS, at("2026-11-23T00:00:00Z"))
-    assert fresh["operatingState"] == "HEALTHY" and fresh["scheduledRecords"] is None and fresh["completenessClaim"].startswith("NONE")
+    assert fresh["operatingState"] == "PENDING" and fresh["scheduledRecords"] is None  # recent is not complete: never HEALTHY
+    assert fresh["freshness"]["state"] == "FRESH" and fresh["completeness"] == {"state": "NOT_ASSESSABLE", "basis": "NO_REGISTERED_CADENCE"}
     assert ops.study_status(s, [{"signalDate": "2026-11-01"}], SESSIONS, at("2026-11-23T00:00:00Z"))["operatingState"] == "MISSED"
 
 
@@ -147,19 +148,190 @@ def test_committed_registry_is_valid_and_nothing_is_enabled():
     assert corporate["automation"]["pinnedCodeCommit"] == "8aee189ff453d9bd624a67df5e1e5975bd7d211c"
 
 
-def test_guard_allows_only_with_every_condition_and_refuses_each_missing_one():
-    enabled = study(automation={"enabled": True, "pinnedCodeCommit": CODE, "singleWriterAttestation": "a"})
-    attest = {"studyId": "s1", "legacyWriterStates": {"trig_x": "DISABLED"}}
-    authz = {"studyId": "s1", "specSha256": SPEC}
-    assert ops.guard_decision(enabled, attest, authz, True, [])["decision"] == "ALLOW_WRITE"
-    assert "AUTOMATION_NOT_ENABLED_BY_OWNER" in ops.guard_decision(study(), attest, authz, True, [])["reasons"]
-    assert "SINGLE_WRITER_ATTESTATION_MISSING" in ops.guard_decision(enabled, None, authz, True, [])["reasons"]
-    still_on = {"studyId": "s1", "legacyWriterStates": {"trig_x": "ENABLED"}}
-    assert "LEGACY_WRITER_NOT_ATTESTED_DISABLED:trig_x" in ops.guard_decision(enabled, still_on, authz, True, [])["reasons"]
-    assert "PINNED_CODE_COMMIT_UNAVAILABLE" in ops.guard_decision(enabled, attest, authz, False, [])["reasons"]
-    assert "AUTHORIZATION_OR_SPEC_MISMATCH" in ops.guard_decision(enabled, attest, {"studyId": "s1", "specSha256": "d" * 64}, True, [])["reasons"]
-    assert "REMOTE_LEDGER_INTEGRITY_ERRORS" in ops.guard_decision(enabled, attest, authz, True, [{"line": 1}])["reasons"]
-    assert ops.guard_decision(enabled, attest, None, True, [])["decision"] == "REFUSE"
+def facts(**over):
+    base = {"attestation": {"studyId": "s1", "attestedAtUtc": "2026-11-26T00:00:00Z", "legacyWriterStates": {"trig_x": "DISABLED"},
+                            "evidence": [{"id": "trig_x", "readbackUtc": "2026-11-26T00:00:00Z"}]},
+            "authorization": {"studyId": "s1", "specSha256": SPEC}, "authorizationBytesSha256": AUTH, "specBytesSha256": SPEC,
+            "pinnedCommitPresent": True, "pinnedTreeSha": "d" * 40, "durablyReferenced": True,
+            "ledger": [row(DAYS[0])], "integrityErrors": [], "asOf": at("2026-11-27T00:00:00Z")}
+    base.update(over)
+    return base
+
+
+def enabled_study(**over):
+    automation = {"enabled": True, "pinnedCodeCommit": CODE, "pinnedTreeSha": "d" * 40, "singleWriterAttestation": "a"}
+    return study(automation=automation, **over)
+
+
+def reasons(f=None, s=None):
+    return ops.guard_decision(s or enabled_study(), f or facts())["reasons"]
+
+
+def test_guard_allows_only_with_every_condition():
+    assert ops.guard_decision(enabled_study(), facts())["decision"] == "ALLOW_WRITE"
+    assert "AUTOMATION_NOT_ENABLED_BY_OWNER" in reasons(s=study())
+
+
+def test_guard_checks_the_authorization_bytes_hash_not_just_its_fields():
+    # fields agree, but the file's bytes hash is not the registered one: refused (a re-written authorization cannot pass on its fields)
+    assert "AUTHORIZATION_BYTES_HASH_MISMATCH" in reasons(facts(authorizationBytesSha256="e" * 64))
+    assert "AUTHORIZATION_BYTES_HASH_MISMATCH" in reasons(facts(authorizationBytesSha256=None))
+    assert "SPEC_BYTES_HASH_MISMATCH" in reasons(facts(specBytesSha256="e" * 64))
+    # bytes hashes agree but the parsed fields do not
+    assert "AUTHORIZATION_FIELDS_MISMATCH" in reasons(facts(authorization={"studyId": "s1", "specSha256": "e" * 64}))
+    assert "AUTHORIZATION_FIELDS_MISMATCH" in reasons(facts(authorization=None))
+
+
+def test_guard_pinned_code_must_exist_match_its_tree_and_be_durably_referenced():
+    assert "PINNED_CODE_COMMIT_UNAVAILABLE" in reasons(facts(pinnedCommitPresent=False))
+    assert "PINNED_TREE_HASH_MISMATCH" in reasons(facts(pinnedTreeSha="e" * 40))
+    assert "PINNED_CODE_NOT_DURABLY_REFERENCED" in reasons(facts(durablyReferenced=False))
+
+
+def test_guard_single_writer_attestation_needs_state_evidence_and_freshness():
+    assert "SINGLE_WRITER_ATTESTATION_MISSING" in reasons(facts(attestation=None))
+    on = facts()["attestation"] | {"legacyWriterStates": {"trig_x": "ENABLED"}}
+    assert "LEGACY_WRITER_NOT_ATTESTED_DISABLED:trig_x" in reasons(facts(attestation=on))
+    no_evidence = facts()["attestation"] | {"evidence": []}
+    assert "LEGACY_WRITER_STATE_EVIDENCE_MISSING:trig_x" in reasons(facts(attestation=no_evidence))
+    assert "SINGLE_WRITER_ATTESTATION_STALE_OR_FUTURE" in reasons(facts(asOf=at("2026-12-20T00:00:00Z")))
+    assert "SINGLE_WRITER_ATTESTATION_STALE_OR_FUTURE" in reasons(facts(asOf=at("2026-11-25T00:00:00Z")))
+    assert "SINGLE_WRITER_ATTESTATION_TIMESTAMP_INVALID" in reasons(facts(attestation=facts()["attestation"] | {"attestedAtUtc": "garbage"}))
+
+
+def test_guard_distinguishes_read_failure_absent_file_and_valid_empty_ledger():
+    must = enabled_study(ledgerMustExist=True)
+    failed = {"state": ops.LEDGER_READ_FAILED, "rows": [], "detail": "REF_UNREACHABLE"}
+    absent = {"state": ops.LEDGER_ABSENT, "rows": [], "detail": None}
+    empty = {"state": ops.LEDGER_EMPTY_VALID, "rows": [], "detail": None}
+    assert "LEDGER_READ_FAILED" in reasons(facts(ledger=failed), must)
+    assert "LEDGER_FILE_ABSENT_FOR_STUDY_WITH_EXISTING_RECEIPTS" in reasons(facts(ledger=absent), must)
+    assert "LEDGER_EMPTY_FOR_STUDY_WITH_EXISTING_RECEIPTS" in reasons(facts(ledger=empty), must)
+    # a first-ever study (ledgerMustExist false) may start from a missing or empty ledger, but never from a failed read
+    first = enabled_study()
+    assert ops.guard_decision(first, facts(ledger=absent))["decision"] == "ALLOW_WRITE"
+    assert ops.guard_decision(first, facts(ledger=empty))["decision"] == "ALLOW_WRITE"
+    assert "LEDGER_READ_FAILED" in reasons(facts(ledger=failed), first)
+
+
+def test_guard_refuses_altered_baseline_receipts_and_integrity_errors():
+    base = enabled_study(baselineReceipts=[{"session": DAYS[0], "receiptSha256": row(DAYS[0])["receiptSha256"]}])
+    assert ops.guard_decision(base, facts())["decision"] == "ALLOW_WRITE"
+    altered = row(DAYS[0])
+    altered["eventCount"] = 9
+    assert "BASELINE_RECEIPTS_ALTERED_OR_MISSING" in reasons(facts(ledger=[altered]), base)
+    assert "BASELINE_RECEIPTS_ALTERED_OR_MISSING" in reasons(facts(ledger=[]), base)
+    assert "REMOTE_LEDGER_INTEGRITY_ERRORS" in reasons(facts(integrityErrors=[{"line": 1}]))
+
+
+def test_status_distinguishes_read_failure_absent_and_empty_ledgers():
+    must = study(ledgerMustExist=True)
+    now = "2026-11-10T01:00:00Z"
+    failed = status({"state": ops.LEDGER_READ_FAILED, "rows": [], "detail": "X"}, now, study=must)
+    assert failed["operatingState"] == "SOURCE_BLOCKED" and failed["failureReason"] == "LEDGER_READ_FAILED"
+    absent = status({"state": ops.LEDGER_ABSENT, "rows": []}, now, study=must)
+    assert absent["failureReason"] == "LEDGER_FILE_ABSENT_ON_REACHABLE_REF"
+    assert status(None, now)["failureReason"] == "LEDGER_NOT_YET_CREATED"
+    empty = status({"state": ops.LEDGER_EMPTY_VALID, "rows": []}, now)
+    assert empty["ledgerRead"] == "EMPTY_VALID" and empty["missedRecords"] == 1 and empty["operatingState"] == "MISSED"
+
+
+def test_unreadable_or_absent_ledger_of_an_approved_existing_study_alerts_even_when_disabled():
+    registry = {"schema": ops.REGISTRY_SCHEMA, "studies": [study(ledgerMustExist=True)]}
+    for state in (ops.LEDGER_READ_FAILED, ops.LEDGER_ABSENT):
+        out = ops.build_status(registry, {"s1": {"state": state, "rows": []}}, SESSIONS, at("2026-11-12T12:00:00Z"))
+        assert out["alerts"] == ["s1"]
+
+
+def test_altered_baseline_is_an_incident_even_when_no_writer_is_enabled():
+    base = study(baselineReceipts=[{"session": DAYS[0], "receiptSha256": row(DAYS[0])["receiptSha256"]}])
+    tampered = row(DAYS[0], events=[{"corp_code": "x"}])
+    out = ops.build_status({"schema": ops.REGISTRY_SCHEMA, "studies": [base]}, {"s1": [tampered]}, SESSIONS, at("2026-11-10T01:00:00Z"))
+    assert out["alerts"] == ["s1"] and out["studies"][0]["operatingState"] == "EXECUTION_FAILED"
+
+
+def test_freshness_and_completeness_are_separate_states():
+    # fresh but incomplete: the newest record is recent while an earlier window is missing
+    partial = status([row(DAYS[0]), row(DAYS[2])], "2026-11-12T12:00:00Z")
+    assert partial["freshness"]["state"] == "FRESH" and partial["completeness"]["state"] == "INCOMPLETE"
+    # stale and empty
+    assert status([], "2026-11-30T12:00:00Z")["freshness"]["state"] == "UNKNOWN"
+    old = status([row(DAYS[0])], "2026-12-30T12:00:00Z")
+    assert old["freshness"]["state"] == "STALE"
+    # complete and fresh, but disabled: completeness is verified without being called healthy
+    ok = status([row(DAYS[0]), row(DAYS[1])], "2026-11-11T01:00:00Z")
+    assert ok["completeness"]["state"] == "VERIFIED_COMPLETE" and ok["operatingState"] == "DISABLED"
+    live = status([row(DAYS[0]), row(DAYS[1])], "2026-11-11T01:00:00Z", study=enabled_study())
+    assert live["operatingState"] == "HEALTHY"
+
+
+def test_baseline_verification_detects_missing_altered_and_reordered_receipts():
+    a, b = row(DAYS[0]), row(DAYS[1])
+    s = study(baselineReceipts=[{"session": DAYS[0], "receiptSha256": a["receiptSha256"]}, {"session": DAYS[1], "receiptSha256": b["receiptSha256"]}])
+    assert ops.verify_baseline([a, b, row(DAYS[2])], s)["state"] == "INTACT"
+    assert ops.verify_baseline([b, a], s)["state"] == "VIOLATED"
+    assert ops.verify_baseline([a], s)["problems"][0]["reason"] == "RECEIPT_MISSING"
+    assert ops.verify_baseline([a, b], study())["state"] == "NOT_REGISTERED"
+
+
+def test_writer_session_same_day_retries_delay_and_boundaries():
+    sess = ["2026-11-12", "2026-11-13", "2026-11-16", "2026-11-17"]
+    # every scheduled time of one KST day speaks for the same session
+    assert {ops.writer_session(at(f"2026-11-12T{t}:00Z"), sess) for t in ("10:40", "11:40", "13:00", "14:20", "14:59")} == {"2026-11-12"}
+    assert ops.writer_session(at("2026-11-12T09:00:00Z"), sess) == "2026-11-12"   # 18:00 KST final close is inclusive
+    assert ops.writer_session(at("2026-11-12T08:59:59Z"), sess) is None          # not final yet
+    assert ops.writer_session(at("2026-11-12T15:00:00Z"), sess) is None            # KST midnight: the date is now the 13th and its close (09:00 UTC) has not come
+    assert ops.writer_session(at("2026-11-13T10:40:00Z"), sess) == "2026-11-13"
+    # a run delayed past KST midnight on Friday, or on the weekend, writes nothing: the session stays missed
+    assert ops.writer_session(at("2026-11-13T15:00:00Z"), sess) is None
+    assert ops.writer_session(at("2026-11-13T23:30:00Z"), sess) is None
+    assert ops.writer_session(at("2026-11-14T10:40:00Z"), sess) is None
+    assert ops.writer_session(at("2026-11-15T10:40:00Z"), sess) is None
+
+
+def test_receipt_window_outlives_the_writers_own_reach():
+    sess = ["2026-11-12", "2026-11-13", "2026-11-16", "2026-11-17"]
+    # Friday's receipt window stays open until Monday 00:00 UTC, but the registered writer cannot reach it after 15:00 UTC Friday
+    assert ops.window_session(at("2026-11-14T10:40:00Z"), sess) == "2026-11-13"
+    assert ops.window_session(at("2026-11-16T00:00:00Z"), sess) is None
+    assert ops.window_session(at("2026-11-12T08:59:59Z"), sess) is None
+    assert ops.window_session(at("2026-11-13T00:00:00Z"), sess) is None            # the next open ends Thursday's window (exclusive)
+
+
+def test_a_weekday_holiday_has_no_writer_session():
+    import pandas
+    from pipeline import replay_calendar as calendar
+    days = [d.strftime("%Y-%m-%d") for d in calendar.sessions("2026-12-01", "2027-01-15", "KR")]
+    holidays = sorted({d.strftime("%Y-%m-%d") for d in pandas.bdate_range("2026-12-01", "2027-01-14")} - set(days))
+    assert holidays, "expected at least one KR weekday closure in the window"
+    for holiday in holidays:
+        for t in ("10:40", "12:40", "14:20"):
+            assert ops.writer_session(at(f"{holiday}T{t}:00Z"), days) is None
+
+
+def test_template_schedule_times_are_inside_the_writers_reach():
+    cron = re.findall(r'cron: "(\d+) (\d+) \* \* 1-5"', WORKFLOW)
+    assert len(cron) >= 3
+    for minute, hour in cron:
+        utc = int(hour) * 60 + int(minute)
+        assert 9 * 60 <= utc < 15 * 60  # after the 18:00 KST close and before KST midnight, or the writer speaks for nothing
+
+
+def test_same_session_retry_after_success_is_a_duplicate_not_a_second_receipt():
+    once, again = row(DAYS[0]), row(DAYS[0], stamp=DAYS[0] + "T12:40:00Z")
+    result = status([once, again], "2026-11-10T01:00:00Z")
+    assert result["validRecords"] == 0 and "DUPLICATE_SESSION" in result["receiptErrors"][0]["reasons"]
+    windows = ops.session_windows(SESSIONS, DAYS[0])
+    assert ops.verify_new_receipt([once, again], study(), DAYS[0], windows, at("2026-11-10T01:00:00Z"))["result"] == "NOT_RECORDED"
+
+
+def test_delayed_receipt_outside_its_window_is_not_a_receipt():
+    late = row(DAYS[0], stamp="2026-11-10T00:00:00Z")  # exactly the next open
+    early = row(DAYS[0], stamp="2026-11-09T08:59:59Z")  # before the final close
+    on_time = row(DAYS[1], stamp="2026-11-10T09:00:00Z")  # exactly the close: valid
+    windows = ops.session_windows(SESSIONS, DAYS[0])
+    valid, errors = ops.verify_rows([late, early, on_time], study(), windows, at("2026-11-11T01:00:00Z"))
+    assert valid == {DAYS[1]} and {e["session"] for e in errors} == {DAYS[0]}
 
 
 def test_verify_new_receipt_requires_exactly_one_valid_row():
@@ -171,7 +343,7 @@ def test_verify_new_receipt_requires_exactly_one_valid_row():
 
 
 def test_build_status_alerts_only_for_enabled_studies():
-    enabled = study(studyId="e", automation={"enabled": True, "pinnedCodeCommit": CODE, "singleWriterAttestation": "a"})
+    enabled = study(studyId="e", automation={"enabled": True, "pinnedCodeCommit": CODE, "pinnedTreeSha": "d" * 40, "singleWriterAttestation": "a"})
     registry = {"schema": ops.REGISTRY_SCHEMA, "studies": [study(), enabled]}
     out = ops.build_status(registry, {"s1": [], "e": []}, SESSIONS, at("2026-11-12T12:00:00Z"))
     assert [s["operatingState"] for s in out["studies"]] == ["MISSED", "MISSED"] and out["alerts"] == ["e"]
@@ -193,7 +365,17 @@ def test_cli_reads_exact_git_objects_and_never_writes(tmp_path, monkeypatch):
     registry = tmp_path / "reg.json"
     registry.write_text(json.dumps(reg))
     monkeypatch.setattr(cli, "git", lambda *a, cwd=repo, check=True: subprocess.run(["git", *a], cwd=cwd, capture_output=True, text=True, check=check))
+    monkeypatch.setattr(cli, "git_bytes", lambda *a, cwd=repo: (lambda r: (r.returncode, r.stdout))(subprocess.run(["git", *a], cwd=cwd, capture_output=True)))
     assert len(cli.read_rows("led", "l.jsonl")) == 2 and cli.read_rows("led", "absent.jsonl") is None
+    assert cli.read_ledger("led", "l.jsonl")["state"] == "ROWS" and cli.read_ledger("led", "absent.jsonl")["state"] == "ABSENT"
+    assert cli.read_ledger("no-such-ref", "l.jsonl")["state"] == "READ_FAILED"   # unreachable ref is not "no rows"
+    (repo / "empty.jsonl").write_text("")
+    (repo / "bad.jsonl").write_text("{not json\n")
+    run("add", "."), run("commit", "-qm", "y")
+    assert cli.read_ledger("led", "empty.jsonl")["state"] == "EMPTY_VALID"
+    assert cli.read_ledger("led", "bad.jsonl")["state"] == "READ_FAILED"
+    with pytest.raises(RuntimeError):
+        cli.read_rows("no-such-ref", "l.jsonl")
     before = (repo / "l.jsonl").read_bytes()
     code = cli.main(["--registry", str(registry), "status", "--ledger-ref", "led", "--as-of", "2026-11-12T12:00:00Z", "--out", str(tmp_path / "o.json")])
     assert code == 0  # not enabled: a known state, not an alert
@@ -238,3 +420,141 @@ def test_workflow_is_a_template_outside_the_sealed_workflow_tree():
     # Sealed studies pin the workflow census and the .github/workflows tree digest; installing is a separate owner-approved amendment.
     assert not (ROOT / ".github/workflows/prospective-ops.yml").exists()
     assert TEMPLATE_PATH.is_file() and "workflow_dispatch" in WORKFLOW
+
+
+# ------------------------------------------------------------------------ push conflicts (real git, local bare remotes)
+import ast  # noqa: E402
+import os  # noqa: E402
+import stat  # noqa: E402
+
+PINNED = "8aee189ff453d9bd624a67df5e1e5975bd7d211c"
+RECEIPTS = "ledger/research-strategies/kr-corporate-information-events-v1/receipts.jsonl"
+
+
+def _g(cwd, *args):
+    return subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", *args], cwd=cwd, check=True, capture_output=True, text=True).stdout.strip()
+
+
+def _remote_with_ledger(tmp_path):
+    origin = tmp_path / "origin.git"
+    subprocess.run(["git", "init", "-q", "--bare", "-b", "signal-history", str(origin)], check=True)
+    seed = tmp_path / "seed"
+    subprocess.run(["git", "clone", "-q", str(origin), str(seed)], check=True, capture_output=True)
+    _g(seed, "checkout", "-q", "-b", "signal-history")
+    (seed / RECEIPTS).parent.mkdir(parents=True)
+    (seed / RECEIPTS).write_text(json.dumps(row(DAYS[0])) + "\n")
+    _g(seed, "add", "."), _g(seed, "commit", "-qm", "seed"), _g(seed, "push", "-q", "origin", "signal-history")
+    return origin
+
+
+def _clone(origin, path):
+    subprocess.run(["git", "clone", "-q", str(origin), str(path)], check=True, capture_output=True)
+    _g(path, "checkout", "-q", "signal-history")
+    return path
+
+
+def _pinned_push_with_retry(worktree):
+    """The registered writer's own push loop, taken byte-for-byte from the pinned commit (its module needs the whole repo to import)."""
+    shown = subprocess.run(["git", "show", f"{PINNED}:research/corporate_event_readiness_v1/cohort/live_run.py"], cwd=ROOT, capture_output=True, text=True)
+    if shown.returncode != 0:
+        pytest.skip("pinned commit 8aee189 not available in this checkout")
+    wanted = [n for n in ast.parse(shown.stdout).body if isinstance(n, ast.FunctionDef) and n.name in ("git", "push_with_retry")]
+    from pathlib import Path
+    namespace = {"Path": Path, "subprocess": subprocess, "time": type("T", (), {"sleep": staticmethod(lambda _s: None)}), "REPO": worktree, "LEDGER_RELATIVE": RECEIPTS}
+    exec(compile(ast.Module(body=wanted, type_ignores=[]), "pinned_live_run", "exec"), namespace)  # noqa: S102 - bytes of the registered commit
+    return namespace["push_with_retry"]
+
+
+def test_pinned_writer_push_survives_an_unrelated_remote_advance(tmp_path):
+    origin = _remote_with_ledger(tmp_path)
+    mine, other = _clone(origin, tmp_path / "mine"), _clone(origin, tmp_path / "other")
+    (other / "unrelated.txt").write_text("x")
+    _g(other, "add", "."), _g(other, "commit", "-qm", "other"), _g(other, "push", "-q", "origin", "signal-history")
+    with (mine / RECEIPTS).open("a") as handle:
+        handle.write(json.dumps(row(DAYS[1])) + "\n")
+    sha = _pinned_push_with_retry(mine)(mine, "receipt")
+    assert sha == _g(mine, "rev-parse", "HEAD")
+    remote = subprocess.run(["git", "show", f"signal-history:{RECEIPTS}"], cwd=origin, capture_output=True, text=True).stdout.splitlines()
+    assert [json.loads(line)["signalDate"] for line in remote] == [DAYS[0], DAYS[1]]
+
+
+def test_two_writers_for_the_same_session_cannot_both_land(tmp_path):
+    origin = _remote_with_ledger(tmp_path)
+    first, second = _clone(origin, tmp_path / "w1"), _clone(origin, tmp_path / "w2")
+    for clone, stamp in ((first, "10:40:00Z"), (second, "10:41:00Z")):
+        with (clone / RECEIPTS).open("a") as handle:
+            handle.write(json.dumps(row(DAYS[1], stamp=f"{DAYS[1]}T{stamp}")) + "\n")
+    push = _pinned_push_with_retry
+    assert push(first)(first, "w1")
+    with pytest.raises(RuntimeError, match="REBASE_ONTO_SIGNAL_HISTORY_FAILED"):
+        push(second)(second, "w2")
+    remote = subprocess.run(["git", "show", f"signal-history:{RECEIPTS}"], cwd=origin, capture_output=True, text=True).stdout.splitlines()
+    assert [json.loads(line)["signalDate"] for line in remote] == [DAYS[0], DAYS[1]]  # exactly one receipt per session on the remote
+
+
+def test_pinned_writer_gives_up_after_five_rejected_pushes_without_overwriting(tmp_path):
+    origin = _remote_with_ledger(tmp_path)
+    mine = _clone(origin, tmp_path / "mine")
+    hook = origin / "hooks" / "pre-receive"
+    hook.write_text("#!/bin/sh\nexit 1\n")
+    hook.chmod(hook.stat().st_mode | stat.S_IEXEC)
+    with (mine / RECEIPTS).open("a") as handle:
+        handle.write(json.dumps(row(DAYS[1])) + "\n")
+    with pytest.raises(RuntimeError, match="PUSH_FAILED_AFTER_5_ATTEMPTS"):
+        _pinned_push_with_retry(mine)(mine, "receipt")
+    assert len(subprocess.run(["git", "show", f"signal-history:{RECEIPTS}"], cwd=origin, capture_output=True, text=True).stdout.splitlines()) == 1
+
+
+def _template_publish_loop():
+    match = re.search(r"( *)for attempt in 1 2 3 4 5; do\n.*?\n\1done\n", WORKFLOW, re.S)
+    assert match, "publish retry loop not found in the template"
+    return "\n".join(line[len(match.group(1)):] for line in match.group(0).splitlines()) + "\n"
+
+
+def _run_publish_loop(worktree, tmp_path):
+    shim = tmp_path / "bin"
+    shim.mkdir(exist_ok=True)
+    (shim / "sleep").write_text("#!/bin/sh\nexit 0\n")
+    (shim / "sleep").chmod(0o755)
+    env = {**os.environ, "PATH": f"{shim}:{os.environ['PATH']}", "GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t", "GIT_COMMITTER_NAME": "t", "GIT_COMMITTER_EMAIL": "t@t"}
+    return subprocess.run(["bash", "-c", _template_publish_loop()], cwd=worktree, env=env, capture_output=True, text=True)
+
+
+def test_template_status_publish_rebases_over_other_pushes_and_fails_closed_on_real_conflict(tmp_path):
+    origin = _remote_with_ledger(tmp_path)
+    mine, other = _clone(origin, tmp_path / "mine"), _clone(origin, tmp_path / "other")
+    (other / "other.txt").write_text("x")
+    _g(other, "add", "."), _g(other, "commit", "-qm", "o"), _g(other, "push", "-q", "origin", "signal-history")
+    (mine / "ledger/research-ops").mkdir(parents=True)
+    (mine / "ledger/research-ops/prospective-status.json").write_text("{}")
+    _g(mine, "add", "."), _g(mine, "commit", "-qm", "status")
+    assert _run_publish_loop(mine, tmp_path).returncode == 0
+    # a genuine conflict (the other side edits the very same file) must fail, never overwrite
+    (other / "ledger/research-ops").mkdir(parents=True, exist_ok=True)
+    _g(other, "pull", "-q", "--rebase", "origin", "signal-history")
+    (other / "ledger/research-ops/prospective-status.json").write_text('{"a": 1}')
+    _g(other, "add", "."), _g(other, "commit", "-qm", "o2"), _g(other, "push", "-q", "origin", "signal-history")
+    (mine / "ledger/research-ops/prospective-status.json").write_text('{"b": 2}')
+    _g(mine, "add", "."), _g(mine, "commit", "-qm", "status2")
+    failed = _run_publish_loop(mine, tmp_path)
+    assert failed.returncode != 0
+    shown = subprocess.run(["git", "show", "signal-history:ledger/research-ops/prospective-status.json"], cwd=origin, capture_output=True, text=True).stdout
+    assert shown == '{"a": 1}'
+
+
+def test_committed_registry_pins_the_three_existing_receipts_and_the_registered_writer():
+    corporate = json.loads((ROOT / "research/prospective_ops/registry.json").read_text())["studies"][0]
+    assert [b["session"] for b in corporate["baselineReceipts"]] == ["2026-11-09", "2026-11-11", "2026-11-12"]
+    assert all(len(b["receiptSha256"]) == 64 for b in corporate["baselineReceipts"])
+    assert corporate["ledgerMustExist"] is True and corporate["automation"]["enabled"] is False
+    assert corporate["automation"]["pinnedTreeSha"] == "b1cd5b1852c401a1a9c3a13fce8b1466a4f5e61e"
+    assert corporate["automation"]["preservation"]["status"] == "BRANCH_ONLY_NOT_DURABLE"
+
+
+def test_this_change_touches_no_protected_path():
+    registry = json.loads((ROOT / "research/prospective_ops/registry.json").read_text())
+    prefixes = tuple(registry["protectedPathPrefixes"])
+    diff = subprocess.run(["git", "diff", "--name-only", "origin/main...HEAD"], cwd=ROOT, capture_output=True, text=True)
+    if diff.returncode != 0:
+        pytest.skip("no origin/main history available")
+    assert [p for p in diff.stdout.split() if p.startswith(prefixes)] == []

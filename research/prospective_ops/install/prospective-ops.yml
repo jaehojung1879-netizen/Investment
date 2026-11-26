@@ -9,14 +9,16 @@ name: Prospective ops
 # edited here: the writer runs the exact pinned commit in its own worktree.
 #
 # Window: a KR session's receipt is created after the 18:00 KST final close and before the next open. 10:40 UTC = 19:40 KST;
-# the 12:40 and 14:40 UTC runs retry the SAME session only (live_run speaks for today's KST date and is idempotent).
+# the later runs (11:40, 13:00, 14:20 UTC) retry the SAME session only. live_run speaks for the KST DATE of the run and only after 09:00 UTC,
+# so it can write only between 09:00 and 15:00 UTC on a session day; a run delayed past 15:00 UTC writes nothing and the session stays missed.
 # A missed session stays missed: nothing here back-fills or re-dates.
 
 on:
   schedule:
     - cron: "40 10 * * 1-5"
-    - cron: "40 12 * * 1-5"
-    - cron: "40 14 * * 1-5"
+    - cron: "40 11 * * 1-5"
+    - cron: "0 13 * * 1-5"
+    - cron: "20 14 * * 1-5"
   workflow_dispatch:
     inputs:
       mode:
@@ -129,6 +131,9 @@ jobs:
               print(f"| {s['studyId']} | {s['operatingState']} | {s['scheduledRecords']} | {s['validRecords']} | {s['missedRecords']} | {s['lastRecordSession']} | {s['failureReason']} |")
           print("\nAlerts (enabled studies only):", d["alerts"] or "none")
           PY
+
+      - name: Verify what must not change has not changed (baseline receipts, registered hashes, pinned tree)
+        run: python scripts/prospective_ops.py verify-immutability --study kr-corporate-information-events-v1 --ledger-ref origin/signal-history
 
       - uses: actions/upload-artifact@v4
         with:

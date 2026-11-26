@@ -16,7 +16,7 @@ import hashlib
 import json
 import re
 from collections.abc import Sequence
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 
 REGISTRY_SCHEMA = "PROSPECTIVE_OPS_REGISTRY_V1"
 STATUS_SCHEMA = "PROSPECTIVE_OPS_STATUS_V1"
@@ -30,6 +30,24 @@ HEX40 = re.compile(r"[0-9a-f]{40}")
 HEX64 = re.compile(r"[0-9a-f]{64}")
 # A session's receipt window: strictly after the 18:00 KST final close (09:00 UTC) and before the next session's open (00:00 UTC).
 FINAL_CLOSE_UTC_HOUR = 9
+
+
+# A ledger read has FOUR outcomes and they are never merged: rows present, a valid file with no rows, a file that is not there on a
+# reachable ref, and a read that failed (bad ref, git error, corrupt JSON). Only the first two are observations; the last two are not.
+LEDGER_ROWS, LEDGER_EMPTY_VALID, LEDGER_ABSENT, LEDGER_READ_FAILED = "ROWS", "EMPTY_VALID", "ABSENT", "READ_FAILED"
+FRESHNESS_STATES = ("FRESH", "STALE", "UNKNOWN")
+COMPLETENESS_STATES = ("VERIFIED_COMPLETE", "INCOMPLETE", "NOT_ASSESSABLE")
+DEFAULT_DAILY_STALE_DAYS = 5
+DEFAULT_ATTESTATION_MAX_AGE_DAYS = 7
+
+
+def coerce_read(read) -> dict:
+    """Accept a ledger read dict, a bare row list (tests) or None (legacy: file absent)."""
+    if isinstance(read, dict) and "state" in read:
+        return {"state": read["state"], "rows": read.get("rows") or [], "detail": read.get("detail")}
+    if read is None:
+        return {"state": LEDGER_ABSENT, "rows": [], "detail": None}
+    return {"state": LEDGER_ROWS if read else LEDGER_EMPTY_VALID, "rows": list(read), "detail": None}
 
 
 def canonical(value) -> bytes:
@@ -75,6 +93,8 @@ def validate_registry(registry: dict) -> list[str]:
                 if not HEX64.fullmatch(str(approval.get(key, ""))):
                     problems.append(f"{sid}: APPROVED_WITHOUT_{key}")
         if automation.get("enabled"):
+            if not HEX40.fullmatch(str(automation.get("pinnedTreeSha", ""))):
+                problems.append(f"{sid}: AUTOMATION_WITHOUT_PINNED_TREE_HASH")
             if not HEX40.fullmatch(str(automation.get("pinnedCodeCommit", ""))):
                 problems.append(f"{sid}: AUTOMATION_WITHOUT_PINNED_CODE")
             if not automation.get("singleWriterAttestation"):
@@ -179,59 +199,136 @@ def maturity_summary(kept: list[dict], as_of_session: str) -> dict:
     return {"independentObservations": len(kept), "evaluable": len(mature), "nextMaturity": upcoming[0] if upcoming else None}
 
 
+# ------------------------------------------------------------------------------- baseline immutability
+def verify_baseline(rows: list[dict], study: dict) -> dict:
+    """The receipts the owner saw on the day this system was built must still be there, byte-for-byte (by digest), in order, at the head."""
+    baseline = study.get("baselineReceipts")
+    if not baseline:
+        return {"state": "NOT_REGISTERED", "checked": 0, "problems": []}
+    date_field = study.get("dateField", "signalDate")
+    problems = []
+    for index, expected in enumerate(baseline):
+        if index >= len(rows):
+            problems.append({"index": index, "session": expected["session"], "reason": "RECEIPT_MISSING"})
+        elif rows[index].get(date_field) != expected["session"] or rows[index].get("receiptSha256") != expected["receiptSha256"]:
+            problems.append({"index": index, "session": expected["session"], "reason": "RECEIPT_ALTERED_OR_REORDERED"})
+        elif receipt_digest(rows[index]) != expected["receiptSha256"]:
+            problems.append({"index": index, "session": expected["session"], "reason": "STORED_DIGEST_DOES_NOT_MATCH_CONTENT"})
+    return {"state": "VIOLATED" if problems else "INTACT", "checked": len(baseline), "problems": problems}
+
+
+def window_session(now: datetime, sessions: Sequence[str]) -> str | None:
+    """The session whose RECEIPT WINDOW contains `now`: after its 18:00 KST final close and before the next session's open.
+
+    A weekend or holiday keeps the previous session's window open until the next open, so a receipt created then is still VALID. Whether the
+    registered writer would actually write then is a different rule: see `writer_session`.
+    """
+    for day, nxt in zip(sessions, sessions[1:]):
+        if _at(day, FINAL_CLOSE_UTC_HOUR) <= now < _at(nxt, 0):
+            return day
+    return None
+
+
+def writer_session(now: datetime, sessions: Sequence[str]) -> str | None:
+    """The session the registered writer (`live_run.todays_signal_session`) speaks for at `now`, or None (NO_RECEIPT_DUE).
+
+    It reads the KST DATE of now, requires that date to be a session and requires the 18:00 KST close (09:00 UTC) to have passed. So it can
+    only write between 09:00 UTC and 15:00 UTC (KST midnight) on a session day; a run delayed past 15:00 UTC, or on a weekend or holiday,
+    writes nothing and the session stays missed.
+    """
+    kst_day = (now + timedelta(hours=9)).date().isoformat()
+    if kst_day in set(sessions) and now >= _at(kst_day, FINAL_CLOSE_UTC_HOUR):
+        return kst_day
+    return None
+
+
 # ------------------------------------------------------------------------------------------------- status
-def study_status(study: dict, rows: list[dict] | None, sessions: Sequence[str], as_of: datetime, *, last_commit_utc: str | None = None,
+def _freshness(last_session: str | None, as_of: datetime, threshold_days: int, basis: str, last_commit_utc: str | None) -> dict:
+    age = (as_of.date() - date.fromisoformat(last_session)).days if last_session else None
+    state = "UNKNOWN" if age is None else ("FRESH" if age <= threshold_days else "STALE")
+    return {"state": state, "lastRecordSession": last_session, "ageCalendarDays": age, "thresholdCalendarDays": threshold_days,
+            "thresholdBasis": basis, "lastCommitUtc": last_commit_utc, "asOfUtc": as_of.isoformat(),
+            "meaning": "How recent the newest record is. Says nothing about whether earlier windows are all present."}
+
+
+def study_status(study: dict, read, sessions: Sequence[str], as_of: datetime, *, last_commit_utc: str | None = None,
                  writer_outcome: str | None = None, source_blocked_reason: str | None = None) -> dict:
-    """One row of the operations ledger. `rows is None` means the ledger is absent (never a zero-observation claim)."""
+    """One row of the operations ledger. `read` is a ledger read (see `coerce_read`); freshness and completeness are separate fields."""
     approval = study["approval"]
     automation = study.get("automation", {})
+    ledger = coerce_read(read)
+    rows = ledger["rows"]
     out: dict = {"studyId": study["studyId"], "approvalStatus": approval.get("status"), "automationEnabled": bool(automation.get("enabled")),
                  "kind": study["kind"], "writer": study.get("writer", {}).get("description"),
-                 "lastSuccessfulExecution": writer_outcome, "dataFreshness": None, "scheduledRecords": None, "validRecords": None,
+                 "lastSuccessfulExecution": writer_outcome, "ledgerRead": ledger["state"], "freshness": None,
+                 "completeness": {"state": "NOT_ASSESSABLE", "basis": "NOT_EVALUATED"}, "scheduledRecords": None, "validRecords": None,
                  "missedRecords": None, "lastRecordSession": None, "nextRun": study.get("schedule", {}).get("description"),
-                 "independentObservations": {}, "failureReason": None}
+                 "independentObservations": {}, "failureReason": None, "baselineImmutability": None}
     if approval.get("status") not in APPROVED_STATUSES:
         out.update(operatingState="UNAUTHORIZED", failureReason="NO_OWNER_AUTHORIZATION_FOR_RECORDING")
         return out
-    if rows is None:
-        out.update(operatingState="SOURCE_BLOCKED", failureReason="LEDGER_FILE_ABSENT_ON_REF")
+    if not study.get("ledgerPath"):
+        out.update(operatingState="SOURCE_BLOCKED", failureReason="NO_LEDGER_PATH_REGISTERED")
+        return out
+    if ledger["state"] == LEDGER_READ_FAILED:
+        out.update(operatingState="SOURCE_BLOCKED", failureReason="LEDGER_READ_FAILED", ledgerReadDetail=ledger["detail"])
+        return out
+    if ledger["state"] == LEDGER_ABSENT:
+        # A study that already has receipts must keep its file; its absence is a source problem, never "zero observations".
+        out.update(operatingState="SOURCE_BLOCKED",
+                   failureReason="LEDGER_FILE_ABSENT_ON_REACHABLE_REF" if study.get("ledgerMustExist") else "LEDGER_NOT_YET_CREATED")
         return out
     date_field = study.get("dateField", "signalDate")
     all_days = [row.get(date_field) for row in rows if row.get(date_field)]
     out["lastRecordSession"] = max(all_days) if all_days else None
-    out["dataFreshness"] = {"lastCommitUtc": last_commit_utc, "asOfUtc": as_of.isoformat()}
+    baseline = verify_baseline(rows, study)
+    out["baselineImmutability"] = baseline
     kind = study["kind"]
     if kind == "OBSERVED_ONLY":
         stale_days = study["monitoring"]["maxStaleCalendarDays"]
-        age = (as_of.date() - date.fromisoformat(out["lastRecordSession"])).days if out["lastRecordSession"] else None
+        out["freshness"] = _freshness(out["lastRecordSession"], as_of, stale_days, study["monitoring"].get("thresholdBasis", "UNREGISTERED"), last_commit_utc)
         out.update(validRecords=len(set(all_days)), scheduledRecords=None, missedRecords=None,
-                   completenessClaim="NONE_CADENCE_NOT_REGISTERED", ageCalendarDays=age)
-        out["operatingState"] = "HEALTHY" if age is not None and age <= stale_days else "MISSED"
-        if out["operatingState"] == "MISSED":
-            out["failureReason"] = "LAST_RECORD_OLDER_THAN_MONITORING_THRESHOLD"
+                   completeness={"state": "NOT_ASSESSABLE", "basis": "NO_REGISTERED_CADENCE"})
+        if baseline["state"] == "VIOLATED":
+            out.update(operatingState="EXECUTION_FAILED", failureReason="BASELINE_RECEIPTS_ALTERED_OR_MISSING")
+        elif out["freshness"]["state"] != "FRESH":
+            out.update(operatingState="MISSED", failureReason="LAST_RECORD_OLDER_THAN_MONITORING_THRESHOLD")
+        else:  # recent is not complete: this state is never HEALTHY
+            out.update(operatingState="PENDING", failureReason="COMPLETENESS_NOT_ASSESSABLE_NO_REGISTERED_CADENCE")
         return out
     first = study["firstEligibleSession"]
+    windows = session_windows(sessions, first)
     if kind == "SESSION_DAILY_KR":
-        windows = session_windows(sessions, first)
         expected = windows
     else:  # WEEKLY_LAST_KR_SESSION: window of a weekly signal is the same session window, expected set is the week-end sessions only
-        windows = session_windows(sessions, first)
         weekly = set(weekly_last_sessions(sessions, first))
         expected = {day: end for day, end in windows.items() if day in weekly}
     valid, errors = verify_rows(rows, study, windows, as_of, date_field)
     closed, missed, pending = classify_windows(expected, valid, as_of)
-    baseline = study.get("monitoring", {}).get("continuityBaselineSession")
-    historic = [day for day in missed if baseline and day <= baseline]
-    active_missed = [day for day in missed if not (baseline and day <= baseline)]
-    out.update(scheduledRecords=len(closed), validRecords=len(closed) - len(missed), missedRecords=len(missed),
+    cadence_days = study.get("monitoring", {}).get("maxStaleCalendarDays", DEFAULT_DAILY_STALE_DAYS if kind == "SESSION_DAILY_KR" else 9)
+    out["freshness"] = _freshness(out["lastRecordSession"], as_of, cadence_days, "REGISTERED_CADENCE:" + kind, last_commit_utc)
+    mon = study.get("monitoring", {})
+    ledger_baseline = mon.get("continuityBaselineSession")
+    historic = [day for day in missed if ledger_baseline and day <= ledger_baseline]
+    active_missed = [day for day in missed if not (ledger_baseline and day <= ledger_baseline)]
+    if errors or baseline["state"] == "VIOLATED":
+        completeness = {"state": "NOT_ASSESSABLE", "basis": "RECEIPT_INTEGRITY_ERRORS"}
+    elif missed:
+        completeness = {"state": "INCOMPLETE", "basis": "CLOSED_WINDOWS_WITHOUT_VALID_RECEIPT"}
+    elif closed:
+        completeness = {"state": "VERIFIED_COMPLETE", "basis": "EVERY_CLOSED_WINDOW_HAS_ONE_VALID_RECEIPT"}
+    else:
+        completeness = {"state": "NOT_ASSESSABLE", "basis": "NO_CLOSED_WINDOW_YET"}
+    out.update(scheduledRecords=len(closed), validRecords=len(closed) - len(missed), missedRecords=len(missed), completeness=completeness,
                missedSessions=missed, missedNotObservedBeforeBaseline=historic, pendingSessions=pending, receiptErrors=errors,
-               continuityBaselineSession=baseline)
-    # horizons / independence (only where the study registers an independence rule and receipts carry events)
+               continuityBaselineSession=ledger_baseline)
     if study.get("horizons") and any("events" in r for r in rows):
         as_of_session = max((s for s in sessions if _at(s, 0) <= as_of), default=sessions[0])
         for horizon in study["horizons"]:
             out["independentObservations"][f"H{horizon}"] = maturity_summary(independent_observations(rows, valid, sessions, horizon), as_of_session)
-    if errors:
+    if baseline["state"] == "VIOLATED":
+        out.update(operatingState="EXECUTION_FAILED", failureReason="BASELINE_RECEIPTS_ALTERED_OR_MISSING")
+    elif errors:
         out.update(operatingState="EXECUTION_FAILED", failureReason="RECEIPT_INTEGRITY_ERRORS:" + ",".join(sorted({r for e in errors for r in e["reasons"]})))
     elif writer_outcome == "failure":
         out.update(operatingState="EXECUTION_FAILED", failureReason="LATEST_WRITER_RUN_FAILED")
@@ -239,18 +336,16 @@ def study_status(study: dict, rows: list[dict] | None, sessions: Sequence[str], 
         out.update(operatingState="SOURCE_BLOCKED", failureReason=source_blocked_reason)
     elif active_missed:
         out.update(operatingState="MISSED", failureReason="CLOSED_WINDOW_WITHOUT_VALID_RECEIPT")
-    elif not automation.get("enabled") and not (rows and valid):
-        out.update(operatingState="DISABLED", failureReason="WRITER_NOT_ACTIVATED")
-    elif pending and not valid:
-        out["operatingState"] = "PENDING"
     elif not automation.get("enabled"):
         out.update(operatingState="DISABLED", failureReason="WRITER_NOT_ACTIVATED")
-    else:
+    elif completeness["state"] == "VERIFIED_COMPLETE" and out["freshness"]["state"] == "FRESH":
         out["operatingState"] = "HEALTHY"
+    else:
+        out.update(operatingState="PENDING", failureReason="NOT_YET_VERIFIED_COMPLETE_OR_FRESH")
     return out
 
 
-def build_status(registry: dict, ledger_rows: dict[str, list[dict] | None], sessions: Sequence[str], as_of: datetime, *,
+def build_status(registry: dict, ledger_rows: dict, sessions: Sequence[str], as_of: datetime, *,
                  commits: dict[str, str | None] | None = None, writer_outcomes: dict[str, str] | None = None) -> dict:
     problems = validate_registry(registry)
     if problems:
@@ -260,8 +355,11 @@ def build_status(registry: dict, ledger_rows: dict[str, list[dict] | None], sess
     studies = [study_status(s, ledger_rows.get(s["studyId"]), sessions, as_of, last_commit_utc=commits.get(s["studyId"]),
                             writer_outcome=writer_outcomes.get(s["studyId"])) for s in registry["studies"]]
     # An alert is only owed by a study the owner has enabled for automation: a disabled writer is a known state, not an incident.
+    # Exceptions that are incidents whether or not a writer is enabled: altered baseline receipts, and an approved study's ledger that cannot be read.
     alerts = [s["studyId"] for s, entry in zip(studies, registry["studies"])
-              if entry.get("automation", {}).get("enabled") and s["operatingState"] in ("MISSED", "EXECUTION_FAILED", "SOURCE_BLOCKED")]
+              if (entry.get("automation", {}).get("enabled") and s["operatingState"] in ("MISSED", "EXECUTION_FAILED", "SOURCE_BLOCKED"))
+              or (s.get("baselineImmutability") or {}).get("state") == "VIOLATED"
+              or (entry.get("ledgerMustExist") and s["ledgerRead"] in (LEDGER_READ_FAILED, LEDGER_ABSENT))]
     return {"schema": STATUS_SCHEMA, "asOfUtc": as_of.isoformat(), "studies": studies, "alerts": alerts,
             "notes": ["Status is derived from receipts only; a successful workflow run is not a receipt.",
                       "Missed windows are MISSED_NOT_OBSERVED and are never back-filled, re-dated or read as zero events.",
@@ -269,30 +367,71 @@ def build_status(registry: dict, ledger_rows: dict[str, list[dict] | None], sess
 
 
 # ------------------------------------------------------------------------------------------------- guard
-def guard_decision(study: dict, attestation: dict | None, authorization: dict | None, pinned_commit_present: bool,
-                   remote_errors: list[dict]) -> dict:
-    """Pre-write decision. Every refusal is a reason code; absence of evidence refuses (fail closed). Never writes."""
+def guard_decision(study: dict, facts: dict) -> dict:
+    """Pre-write decision from evidence the CLI gathered. Every refusal is a reason code; missing evidence refuses (fail closed). Never writes.
+
+    `facts` keys: attestation (parsed or None), authorization (parsed or None), authorizationBytesSha256, specBytesSha256, pinnedCommitPresent,
+    pinnedTreeSha, durablyReferenced, ledger (a ledger read), integrityErrors, asOf (datetime).
+    Hashes are of the BYTES at the pinned commit and are compared with the registry; a parsed field alone is never accepted.
+    """
     reasons: list[str] = []
     automation = study.get("automation", {})
-    if study["approval"].get("status") != APPROVED:  # only an owner-hashed authorization may drive an Actions writer
+    approval = study["approval"]
+    if approval.get("status") != APPROVED:  # only an owner-hashed authorization may drive an Actions writer
         reasons.append("STUDY_NOT_APPROVED")
     if not automation.get("enabled"):
         reasons.append("AUTOMATION_NOT_ENABLED_BY_OWNER")
-    if not pinned_commit_present:
+    if not facts.get("pinnedCommitPresent"):
         reasons.append("PINNED_CODE_COMMIT_UNAVAILABLE")
-    if authorization is None or authorization.get("specSha256") != study["approval"]["specSha256"] or authorization.get("studyId") != study["studyId"]:
-        reasons.append("AUTHORIZATION_OR_SPEC_MISMATCH")
+    else:
+        if automation.get("pinnedTreeSha") and facts.get("pinnedTreeSha") != automation["pinnedTreeSha"]:
+            reasons.append("PINNED_TREE_HASH_MISMATCH")
+        if not facts.get("durablyReferenced"):
+            reasons.append("PINNED_CODE_NOT_DURABLY_REFERENCED")
+    # The authorization and the spec are checked by the sha256 of their bytes at the pinned commit against the registered hashes; the
+    # parsed studyId/specSha256 fields only have to agree on top of that, they can never substitute for it.
+    authorization = facts.get("authorization")
+    if facts.get("authorizationBytesSha256") != approval.get("authorizationSha256"):
+        reasons.append("AUTHORIZATION_BYTES_HASH_MISMATCH")
+    if facts.get("specBytesSha256") != approval.get("specSha256"):
+        reasons.append("SPEC_BYTES_HASH_MISMATCH")
+    if (authorization is None or authorization.get("specSha256") != approval.get("specSha256")
+            or authorization.get("studyId") != study["studyId"]):
+        reasons.append("AUTHORIZATION_FIELDS_MISMATCH")
     legacy = study.get("writer", {}).get("legacyWriters", [])
     if legacy:
-        states = (attestation or {}).get("legacyWriterStates", {})
+        attestation = facts.get("attestation")
         if attestation is None or attestation.get("studyId") != study["studyId"]:
             reasons.append("SINGLE_WRITER_ATTESTATION_MISSING")
-        for item in legacy:
-            if states.get(item["id"]) != "DISABLED":
-                reasons.append(f"LEGACY_WRITER_NOT_ATTESTED_DISABLED:{item['id']}")
-    if remote_errors:
+        else:
+            states = attestation.get("legacyWriterStates", {})
+            evidence = {e.get("id"): e for e in attestation.get("evidence", []) if isinstance(e, dict)}
+            for item in legacy:
+                if states.get(item["id"]) != "DISABLED":
+                    reasons.append(f"LEGACY_WRITER_NOT_ATTESTED_DISABLED:{item['id']}")
+                if item["id"] not in evidence or not evidence[item["id"]].get("readbackUtc"):
+                    reasons.append(f"LEGACY_WRITER_STATE_EVIDENCE_MISSING:{item['id']}")
+            try:
+                age = facts["asOf"] - parse_utc(attestation["attestedAtUtc"])
+                if age > timedelta(days=automation.get("attestationMaxAgeDays", DEFAULT_ATTESTATION_MAX_AGE_DAYS)) or age < timedelta(0):
+                    reasons.append("SINGLE_WRITER_ATTESTATION_STALE_OR_FUTURE")
+            except (KeyError, TypeError, ValueError):
+                reasons.append("SINGLE_WRITER_ATTESTATION_TIMESTAMP_INVALID")
+    ledger = coerce_read(facts.get("ledger"))
+    if ledger["state"] == LEDGER_READ_FAILED:
+        reasons.append("LEDGER_READ_FAILED")
+    elif ledger["state"] == LEDGER_ABSENT and study.get("ledgerMustExist"):
+        reasons.append("LEDGER_FILE_ABSENT_FOR_STUDY_WITH_EXISTING_RECEIPTS")
+    elif ledger["state"] in (LEDGER_ROWS, LEDGER_EMPTY_VALID):
+        if verify_baseline(ledger["rows"], study)["state"] == "VIOLATED":
+            reasons.append("BASELINE_RECEIPTS_ALTERED_OR_MISSING")
+        if ledger["state"] == LEDGER_EMPTY_VALID and study.get("ledgerMustExist"):
+            reasons.append("LEDGER_EMPTY_FOR_STUDY_WITH_EXISTING_RECEIPTS")
+    if facts.get("integrityErrors"):
         reasons.append("REMOTE_LEDGER_INTEGRITY_ERRORS")
-    return {"studyId": study["studyId"], "decision": "REFUSE" if reasons else "ALLOW_WRITE", "reasons": sorted(set(reasons))}
+    return {"studyId": study["studyId"], "decision": "REFUSE" if reasons else "ALLOW_WRITE", "reasons": sorted(set(reasons)),
+            "ledgerRead": ledger["state"],
+            "notAProof": "The single-writer attestation is an owner statement with trigger read-back evidence; no workflow can observe an external Claude trigger."}
 
 
 def verify_new_receipt(rows: list[dict], study: dict, session: str, windows: dict[str, datetime], as_of: datetime) -> dict:
@@ -304,4 +443,4 @@ def verify_new_receipt(rows: list[dict], study: dict, session: str, windows: dic
             "result": "RECORDED_AND_VERIFIED" if ok else "NOT_RECORDED"}
 
 
-__all__ = ["APPROVED", "APPROVED_BY_MERGE", "STATES", "build_status", "guard_decision", "study_status", "validate_registry", "verify_new_receipt"]
+__all__ = ["APPROVED", "APPROVED_BY_MERGE", "window_session", "writer_session", "verify_baseline", "coerce_read", "STATES", "build_status", "guard_decision", "study_status", "validate_registry", "verify_new_receipt"]

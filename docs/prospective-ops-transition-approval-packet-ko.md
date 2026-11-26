@@ -26,11 +26,21 @@ PR #382 첫 CI(run 45726849143)에서 `.github/workflows/prospective-ops.yml` �
 2. **Claude trigger 비활성화**: claude.ai 예약 작업 목록 또는 Claude Code에서 `trig_013qoRYz6H9UwUosNzCWv69B`를 비활성화(삭제 불필요). 이후 `trig_01XwJ7…`, `trig_013q…` 모두 `enabled=false`를 `get_trigger`로 재확인.
 3. **attestation 커밋**: `research/prospective_ops/attestations/kr-corporate-information-events-v1-single-writer.json`
    ```json
-   {"studyId":"kr-corporate-information-events-v1","attestedAtUtc":"<UTC>","attestedBy":"jaehojung1879-netizen","legacyWriterStates":{"trig_01XwJ7yivCe5uokkmUTk8MWE":"DISABLED","trig_013qoRYz6H9UwUosNzCWv69B":"DISABLED"}}
+   {"studyId":"kr-corporate-information-events-v1","attestedAtUtc":"<UTC, 7일 이내 유지>","attestedBy":"jaehojung1879-netizen",
+    "legacyWriterStates":{"trig_01XwJ7yivCe5uokkmUTk8MWE":"DISABLED","trig_013qoRYz6H9UwUosNzCWv69B":"DISABLED"},
+    "evidence":[{"id":"trig_01XwJ7yivCe5uokkmUTk8MWE","readbackUtc":"<get_trigger 재조회 시각>","enabled":false},
+                {"id":"trig_013qoRYz6H9UwUosNzCWv69B","readbackUtc":"<get_trigger 재조회 시각>","enabled":false}]}
    ```
 4. **레지스트리 활성화 커밋**: `automation.enabled=true`, `monitoring.continuityBaselineSession`을 첫 자동 기록 직전 세션으로 설정(과거 누락은 `MISSED_NOT_OBSERVED`로 남고 N에 산입되지 않는다).
 5. **Actions 시크릿 확인**: 저장소 시크릿 `DART`(기존 `fundamentals.yml`이 사용)가 유효한지. 값은 노출 불필요.
 6. **검증 1회**: Actions → `Prospective ops` → Run workflow(`mode: write`)를 KR 세션 마감(18:00 KST) 이후 1회 실행. 요약에서 `RECORDED_AND_VERIFIED` 확인. 이후 2개 연속 세션 정상 기록 시 #378 종결 기준 충족.
+
+## 추가 확인 사항 (독립 검토 반영)
+
+- **승인 무결성:** 가드는 승인 파일·사양 파일의 바이트 sha256(고정 커밋 기준)을 레지스트리 값(`c7191d75…`, `1692b5b3…`)과 대조한다. 필드 일치만으로는 통과하지 못한다.
+- **고정 코드 보존:** `8aee189`는 브랜치에만 있다. 활성화 전에 주석 태그(예: `pinned/kr-corporate-information-events-v1/8aee189`) 또는 #322 병합이 필요하다. 이 세션은 태그를 만들지 않았다(브랜치 외 ref 변경은 소유자 결정).
+- **상호배제:** Actions `concurrency`는 Claude trigger와의 상호배제를 보장하지 않는다. attestation은 소유자 진술이다. 같은 세션 이중 기록은 push 충돌로 막히는 것을 등록 writer의 실제 코드로 검증했다(설계서 3절).
+- **attestation 7일 만료:** 오래된 attestation은 가드가 거부한다.
 
 ## 변경하지 않는 것
 
