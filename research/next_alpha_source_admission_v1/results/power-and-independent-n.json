@@ -1,0 +1,50 @@
+{
+ "A": {
+  "panelRaiseLowerReleaseEvents": 136,
+  "issuers": 22,
+  "calendarQuarters": 15,
+  "panelIssuerQuarters": 451,
+  "eventRatePerIssuerQuarter": 0.302,
+  "linkRecallHeldOut": 0.488,
+  "populationEstimate_2014_2026": 23636,
+  "mde": {
+   "rho0": 0.24,
+   "rho0.05": 0.285,
+   "rho0.2": 0.388
+  },
+  "mdeQuarterClusters": 0.723
+ },
+ "D": {
+  "episodesSince2014": 40,
+  "issuers": 39,
+  "calendarQuarters": 30,
+  "mde": {
+   "rho0": 0.443,
+   "rho0.05": 0.447,
+   "rho0.2": 0.457
+  }
+ },
+ "C": {
+  "purposeChangeRows": 61,
+  "NPS": 57,
+  "nonNPS": 4,
+  "managementInfluenceExits": 2,
+  "managementInfluenceEntries": 0,
+  "distinctActors": 5,
+  "mde": {
+   "n61_iid": 0.359,
+   "n18_months": 0.66,
+   "n5_actors": 1.253,
+   "n2_mgmtInfluence": null
+  }
+ },
+ "B": {
+  "downPhasesGe2Quarters": 2,
+  "priceUpturnsSince2014": 4,
+  "mde": {
+   "n4": 1.401,
+   "n2": null
+  }
+ },
+ "assumption": "MDE = (z0.975+z0.80)/sqrt(n_eff) in residual-SD units, two-sided 5%, power 80%; n_eff = N/(1+(m-1)rho) with m = events per calendar-quarter cluster; rho is an assumed intra-quarter correlation, not measured (measuring it needs outcomes)"
+}

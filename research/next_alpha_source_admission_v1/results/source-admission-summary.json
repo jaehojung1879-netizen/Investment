@@ -231,15 +231,17 @@
   },
   "purposeChangeRows": 61,
   "directions": {
-   "단순투자->일반투자": 25,
    "일반투자->단순투자": 32,
-   "UNSTATED": 4
+   "단순투자->일반투자": 25,
+   "경영권 영향->단순투자 (from original documents)": 2,
+   "일반투자->단순투자 (from original documents)": 1,
+   "unknown->단순투자 (no prior filing in ledger)": 1
   },
   "purposeChangeIssuers": 55,
   "distinctFilers": 5,
   "shareFromNationalPensionService": 0.934,
   "distinctMonths": 18,
-  "toOrFromManagementInfluence": 0,
+  "toOrFromManagementInfluence": 2,
   "probe373": {
    "head": "744badca6008ee3031942396c39b668fd71f6ca6",
    "calls": 20,
@@ -254,5 +256,22 @@
    "n18_months": 0.66,
    "n57_rows": 0.371
   }
- }
+ },
+ "corrections": [
+  {
+   "field": "D_itemm402 concentration",
+   "was": "README: 2004-08 = 64%",
+   "now": "2004-2008 = 153/219 = 69.9% (matches share2004_2008); 64.4% = 2004-2007 (141/219)"
+  },
+  {
+   "field": "C directions",
+   "was": "4 rows UNSTATED; toOrFromManagementInfluence 0",
+   "now": "resolved from original DART documents: 2 exits 경영권 영향->단순투자, 1 일반투자->단순투자, 1 unknown->단순투자; all 4 are non-NPS 약식 filings"
+  },
+  {
+   "field": "C probe",
+   "was": "#373 probe D001/D002 identical lists",
+   "now": "root cause: pblntf_ty sent with pblntf_detail_ty disables the detail filter; send pblntf_detail_ty alone"
+  }
+ ]
 }

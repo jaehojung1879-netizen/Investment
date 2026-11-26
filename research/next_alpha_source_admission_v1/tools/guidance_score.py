@@ -45,7 +45,8 @@ def v1_predict(raw):
 
 
 def score(split, version="v2", show=False):
-    import guidance_extract as E
+    import importlib
+    E = importlib.import_module("guidance_extract_v2" if version == "v2frozen" else "guidance_extract")
     docs = [d for d in json.load(open(G / "gold-docs.json")) if d["split"] == split]
     uni = json.load(open(G / "annotation-universe.json"))["universe"]
     gold = load_gold(split)
@@ -56,7 +57,7 @@ def score(split, version="v2", show=False):
         ptp = pfp = pfn = 0
         for d in docs:
             raw = open(f"{S}/{d['dir']}/raw/{d['sha256']}", "rb").read()
-            preds = E.extract(raw) if version == "v2" else v1_predict(raw)
+            preds = v1_predict(raw) if version == "v1" else E.extract(raw)
             allowed = set(uni[d["accession"]])
             preds = [p for p in preds if p["block"] is None or p["block"] in allowed]
             gd = [g for g in gold if g["accession"] == d["accession"]]

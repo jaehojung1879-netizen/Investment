@@ -37,3 +37,36 @@ def test_quarter_ranges_are_never_labelled_full_year_targets(monkeypatch):
     assert L.tuples(q) == []
     (t,) = L.tuples(fy)
     assert (t["target"], t["metric"], t["basis"], t["low"], t["high"]) == ("FY2023", "eps", "non_GAAP", "12.55", "12.75")
+
+
+def _x(body):
+    E = importlib.import_module("guidance_extract_v2")
+    return [(t["target"], t["metric"], t["basis"], t["unit"], t["low"], t["high"], t["kind"]) for t in E.extract(_html(body))]
+
+
+def test_v2_table_columns_assign_gaap_and_non_gaap():
+    out = _x("<p>Financial Guidance</p><table><tr><td>GAAP</td><td>Non-GAAP</td></tr>"
+             "<tr><td>2023 Operating Expenses</td><td>$3.675 - $3.725 billion</td><td>$3.04 - $3.09 billion</td></tr>"
+             "<tr><td>2023 Capital Expenditures</td><td>$450 - $500 million</td></tr></table>")
+    assert ("FY2023", "opex", "GAAP", "USD_million", 3675.0, 3725.0, "CURRENT") in out
+    assert ("FY2023", "opex", "non_GAAP", "USD_million", 3040.0, 3090.0, "CURRENT") in out
+    assert ("FY2023", "capex", "unstated", "USD_million", 450.0, 500.0, "CURRENT") in out
+
+
+def test_v2_from_to_revision_separates_prior_and_current():
+    out = _x("<p>Outlook for 2023</p><p>DTE Energy is revising 2023 operating EPS guidance from $6.09 - $6.40 to $5.65 - $5.85.</p>")
+    assert ("FY2023", "eps", "non_GAAP", "USD_per_share", 6.09, 6.40, "PRIOR") in out
+    assert ("FY2023", "eps", "non_GAAP", "USD_per_share", 5.65, 5.85, "CURRENT") in out
+
+
+def test_v2_results_table_rows_are_not_guidance():
+    out = _x("<p>2018 Financial Outlook</p><table><tr><td>September 30,</td><td>Reported</td></tr>"
+             "<tr><td>2018</td><td>2017</td></tr><tr><td>Revenues</td><td>$922</td><td>$828</td></tr></table>")
+    assert out == []
+
+
+def test_dart_detail_filter_fix_drops_publication_type():
+    sys.path.insert(0, str(TOOLS))
+    P = importlib.import_module("run_probe_cached")
+    assert P.fix_detail_filter({"pblntf_ty": "D", "pblntf_detail_ty": "D001", "bgn_de": "20240501"}) == {"pblntf_detail_ty": "D001", "bgn_de": "20240501"}
+    assert P.fix_detail_filter({"pblntf_ty": "D"}) == {"pblntf_ty": "D"}
