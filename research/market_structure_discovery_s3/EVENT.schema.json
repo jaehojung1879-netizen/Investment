@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Investment S3 Economic Event",
+  "description": "Source observation with separable mechanism and verification state. Null is missing or unscored; no neutral imputation.",
+  "type": "object",
+  "required": ["eventId", "sourceId", "publishedAt", "publishedAtPrecision", "observedAt", "entityId", "economicVariable", "previousKnownState", "newlyObservedState", "direction", "magnitude", "targetHorizon", "mechanism", "competingExplanations", "falsificationCriteria", "sourceEvidence", "uncertainty", "validationStatus", "inference", "outcome", "previousStateScope", "disclosureNoveltyStatus"],
+  "properties": {
+    "eventId": {"type":"string", "pattern":"^s3-[a-z0-9-]+$"},
+    "sourceId": {"type":"string", "minLength":1},
+    "publishedAt": {"oneOf":[{"type":"string","format":"date","pattern":"^\\d{4}-\\d{2}-\\d{2}$"},{"type":"string","format":"date-time","pattern":"T"},{"type":"null"}]},
+    "publishedAtPrecision": {"enum":["SECOND_SEC_ACCEPTANCE_PROXY","DATE_ONLY",null]},
+    "observedAt": {"type":"string","format":"date-time"},
+    "entityId": {"type":"string","pattern":"^(SEC:[0-9]{10}|DART:[0-9]{8})$"},
+    "economicVariable": {"type":"string","minLength":1},
+    "previousKnownState": {"$ref":"#/$defs/state"},
+    "newlyObservedState": {"$ref":"#/$defs/state"},
+    "direction": {"enum":["UP","DOWN","UNCHANGED",null]},
+    "magnitude": {"type":["object","null"],"required":["value","unit"],"properties":{"value":{"type":"number"},"unit":{"type":"string"}}},
+    "targetHorizon": {"type":["string","null"]},
+    "mechanism": {"type":["string","null"]},
+    "competingExplanations": {"type":"array","items":{"type":"string"}},
+    "falsificationCriteria": {"type":"array","items":{"type":"string"}},
+    "sourceEvidence": {
+      "type":"array","minItems":1,"items":{
+        "type":"object","required":["sourceId","locator"],
+        "properties":{"sourceId":{"type":"string"},"locator":{"type":"string"},"anchor":{"type":"string"},"tokens":{"type":"array","items":{"type":"string"}}}
+      }
+    },
+    "uncertainty": {"type":["string","null"]},
+    "validationStatus": {"enum":["OBSERVED_SOURCE_ONLY","OBSERVED_ISSUER_COPY_ONLY","ABSTAIN_MISSING_ITEM"]},
+    "inference": {"type":["object","null"],"required":["type","intermediateVariables"],"properties":{"type":{"enum":["HYPOTHESIS","ACCOUNTING_IDENTITY_AND_HYPOTHESIS"]},"intermediateVariables":{"type":"array","items":{"type":"string"}}}},
+    "outcome": {"type":["object","null"]},
+    "previousStateScope": {"const":"PRIOR_REFERENCED_RELEASE"},
+    "disclosureNoveltyStatus": {"const":"FIRST_PUBLICATION_UNVERIFIED"}
+  },
+  "$defs": {
+    "state": {
+      "type":["object","null"],"required":["value","unit","period"],
+      "properties":{"value":{"type":["number","string"]},"unit":{"type":"string"},"period":{"type":"string"}}
+    }
+  }
+}

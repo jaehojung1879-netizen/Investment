@@ -1,0 +1,62 @@
+{
+  "status": "ILLUSTRATIVE_NO_MARKET_PRICE",
+  "evRevenue": 2,
+  "explicitYears": 5,
+  "taxRate": 0.25,
+  "terminalGrowth": 0.025,
+  "terminalROIC": 0.12,
+  "incrementalSalesToCapital": 2,
+  "scenarios": [
+    {
+      "discountRate": 0.07,
+      "revenueGrowth": 0.02,
+      "requiredEBITMargin": 0.146924
+    },
+    {
+      "discountRate": 0.07,
+      "revenueGrowth": 0.06,
+      "requiredEBITMargin": 0.129158
+    },
+    {
+      "discountRate": 0.07,
+      "revenueGrowth": 0.1,
+      "requiredEBITMargin": 0.114608
+    },
+    {
+      "discountRate": 0.09,
+      "revenueGrowth": 0.02,
+      "requiredEBITMargin": 0.208089
+    },
+    {
+      "discountRate": 0.09,
+      "revenueGrowth": 0.06,
+      "requiredEBITMargin": 0.183721
+    },
+    {
+      "discountRate": 0.09,
+      "revenueGrowth": 0.1,
+      "requiredEBITMargin": 0.163575
+    },
+    {
+      "discountRate": 0.11,
+      "revenueGrowth": 0.02,
+      "requiredEBITMargin": 0.267426
+    },
+    {
+      "discountRate": 0.11,
+      "revenueGrowth": 0.06,
+      "requiredEBITMargin": 0.237027
+    },
+    {
+      "discountRate": 0.11,
+      "revenueGrowth": 0.1,
+      "requiredEBITMargin": 0.211684
+    }
+  ],
+  "wacc9Growth6TurnoverSensitivity": {
+    "1": 0.194954,
+    "2": 0.183721,
+    "4": 0.178105
+  },
+  "notes": "Margins, growth and discount rates are jointly unidentified. Fixed EBIT margin used in five forecast years and terminal year. Baseline is a unit-normalized assumption, not a current market observation."
+}

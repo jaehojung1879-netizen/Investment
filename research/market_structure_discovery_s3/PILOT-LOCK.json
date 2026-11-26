@@ -1,0 +1,34 @@
+{
+  "protocolId": "investment-s3-source-pilot-1",
+  "design": "Historical development evidence only. Freeze cohort and tasks before reading selected annual filings and expert releases.",
+  "repositoryInputs": {
+    "main": "3150c70017432e3b73321fbda47ebea226bf8d2b",
+    "pr383": "ab8d420bdf4d3b35a8f4840eb07f5dc28b6ae458"
+  },
+  "sec": {
+    "issuers": [
+      {"ticker":"MAS","cik":62996,"stratum":"manufacturing"},
+      {"ticker":"USB","cik":36104,"stratum":"bank"},
+      {"ticker":"COTY","cik":1024305,"stratum":"consumer goods"},
+      {"ticker":"DDOG","cik":1561550,"stratum":"enterprise software"},
+      {"ticker":"ABT","cik":1800,"stratum":"healthcare manufacturing"}
+    ],
+    "selection": "Five convenience strata from the already exposed #383 development issuer list; no outcome ordering. Use the original 10-K with fiscal report end in each of calendar 2023 and 2024, no substitution. Controls are Item 9 auditor disagreements status for every pair. For each pair, take one decision-relevant change from Item 1 or Item 7 if identifiable and retain nulls. Prefer measures with non-identical exposure at consolidated level. This discretionary slice has no document-wide recall estimand.",
+    "baselineA": "Unchanged #383 guidance_detect.py. For each selected CIK, earliest accessible by accession metadata among the existing dev-manifest EX-99 candidates; the earliest row stays in denominator if recovery fails. Document-level numeric company guidance flag against existing gold in scope. Report exact event slots as unsupported by the old detector's output contract.",
+    "baselineB": "SEC Companyfacts accession-specific prior/current consolidated net income (loss), matching report end and USD, annual duration 350 to 380 days. Sign of reported change only. Abstain on missing or conflicting facts.",
+    "ai": "One retained in-session Codex evidence-first pass. Read source excerpts, anchor every value, record Item 9 and consolidated net income in a common slot, surface one economic link per issuer if evidenced and give competing mechanism and resolution. Structural checks independently rerun against SEC index, HTML and Companyfacts. Same model, no blind people or external models, no model agreement estimate."
+  },
+  "dart": {
+    "issuer":"Samsung Electronics",
+    "corpCode":"00126380",
+    "fiscalYears":[2023,2024],
+    "selection":"Original annual reports. Public DART viewer first, same issuer IR copies as separately identified fallback; no OpenDART API call."
+  },
+  "expert": {
+    "institution":"U.S. Energy Information Administration",
+    "releases":["2024-06","2024-07","2024-08","2024-09"],
+    "scoreReleases":["2024-07","2024-08","2024-09"],
+    "task":"Annual 2024 US crude oil production forecast, prior STEO continuation and released 2023 annual level as baselines; retain also one qualitative path per scored release. Compare against contemporaneous 2025 Petroleum Supply Monthly vintage if recoverable, preserving revision status and shared target dependence."
+  },
+  "limits":"One pass per specified method. Keep failures. No market price or return access, executive API spend, restricted 37-company access, or historic outcomes execution. EIA economic production resolution is not an investment outcome."
+}
