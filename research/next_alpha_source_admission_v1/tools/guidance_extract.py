@@ -49,6 +49,7 @@ GAAP = re.compile(r"(?i)(?<!non-)(?<!non )\b(u\.s\. )?gaap\b|\breported\b")
 DOC_NONGAAP = re.compile(r"(?i)guidance (is )?(provided |presented )?(is )?on an? (adjusted, )?non-gaap basis|provided on a non-gaap basis only|following guidance is provided on an adjusted")
 QTR = re.compile(r"(?i)\b(first|second|third|fourth|1st|2nd|3rd|4th)[- ](fiscal[- ])?quarter(?: of)?(?: fiscal)?(?: year)?\s*(?:(20\d\d)|fy\s?'?(\d\d))?|\b([1-4])q\s?'?(\d\d)\b|\bq([1-4])\s?(?:fy)?\s?'?(20\d\d|\d\d)?\b")
 YEAR = re.compile(r"(?i)\b(?:(?:full|fiscal)[- ]year|fiscal(?: year)?|calendar(?: year)?|fy)\s*'?(20\d\d|\d\d)\b|\b(20\d\d)\s*(?:full[- ]year|fiscal[- ]year|outlook|guidance|financial (targets|guidance|outlook)|forecast)|\bfy\s?(20\d\d|\d\d)\b|\b(20\d\d)\b")
+COMPARATOR = re.compile(r"(?i)(\b(compared (to|with)|versus|vs\.?|relative to)\b[^.;$%]{0,60}|\bfrom\s*(approximately |about |~)?)$")
 HEADING = re.compile(r"(?i)\b(outlook|guidance|forecast|targets?)\b")
 COL_CURRENT = re.compile(r"(?i)\b(current|updated|revised|new|forecast|guidance|outlook|target|expected|projected|anticipated|april|july|october)\b")
 COL_PRIOR = re.compile(r"(?i)\b(prior|previous|original|initial|february|january)\b")
@@ -199,7 +200,8 @@ def _sentence_tuples(sent, ctx):
     sent = re.sub(r"(?<=[a-z\)])\d{1,2}(?=[\s,.;:])", "", sent)   # footnote markers: "income1 per share"
     m = re.search(r"(?i)for ([A-Z][\w&' .-]{1,40}),\s+the company expects", sent)
     if m:
-        ctx["segment_scope"] = m.group(1).strip().lower() not in ctx.get("entity", "")
+        g = m.group(1).strip().lower()
+        ctx["segment_scope"] = g not in ctx.get("entity", "") and not re.search(r"(?i)\b(fiscal|year|quarter|full|20\d\d|q[1-4])\b", g)
     low = sent.lower()
     spans = []
     for name, pat in METRICS:
@@ -245,6 +247,8 @@ def _sentence_tuples(sent, ctx):
             kind = "CURRENT"
             if PRIOR_CUE.search(before):
                 kind = "PRIOR"
+            elif COMPARATOR.search(before) and not (frm and j == 0 and len(vals) >= 2):
+                continue   # a reported baseline the forecast is compared against, not a forecast
             if frm and j == 0 and len(vals) >= 2 and frm.start() < st and re.search(r"(?i)\bto\b", seg[st + len(txt):vals[1][3]]):
                 kind = "PRIOR"
             if j > 0 and kind == "CURRENT" and vals[0] is not None and re.search(r"(?i)\b(representing|reflecting|implying|or)\b", seg[vals[j - 1][3]:st]):
@@ -406,6 +410,16 @@ def extract(raw: bytes):
         if B.BOILER.search(v):
             continue
         short = len(v) < 90
+        sm = re.search(r"(?i)^\W*for ([A-Z][\w&' .-]{1,40}),\s+the company (expects|anticipates)", v)
+        if sm:
+            g = sm.group(1).strip().lower()
+            ctx["segment_scope"] = g not in ctx.get("entity", "") and not re.search(r"(?i)\b(fiscal|year|quarter|full|20\d\d|q[1-4])\b", g)
+        if len(v) < 140 and v.rstrip().endswith(":") and re.search(r"(?i)\b(expects?|anticipates?|projects?|guidance|outlook)\b", v):
+            t = target_of(v, ctx)
+            if t:
+                ctx["section_target"] = t
+                ctx["in_outlook"] = True
+                ttl = 30
         if re.search(r"(?i)^for (the company|capri holdings|\w+ holdings|total company)\b", v):
             ctx["segment_scope"] = False
         if (short and HEADING.search(v) and "|" not in v and not re.search(r"\d", re.sub(r"\b(19|20)\d\d\b|\bfy\s?\d\d\b|\b[1-4]q\s?\d\d\b", "", v, flags=re.I))
@@ -436,12 +450,24 @@ def extract(raw: bytes):
                     ctx["in_outlook"] = True
                     ttl = 30
                     continue
+            elif len(cells) >= 2 and sum(metric_of(c)[0] is not None for c in cells) >= 2 and not re.search(r"\$\s?\d|\d\.\d|\d,\d|\d\s?%", v):
+                ctx["transposed"] = [metric_of(c)[0] for c in cells]   # columns are metrics, rows are bases
+                continue
             elif _is_header(cells):
                 # header row: column roles, scale, target
                 if re.search(r"(?i)in millions|\$ in millions|\(millions", v):
                     ctx["table_scale"] = 1.0
                 if re.search(r"(?i)in thousands", v):
                     ctx["table_scale"] = 0.001
+                metric_cols = [metric_of(c)[0] for c in cells]
+                if len(cells) >= 2 and sum(m is not None for m in metric_cols) >= 2:
+                    ctx["transposed"] = metric_cols      # columns are metrics, rows are bases (GAAP / adjusted)
+                    continue
+                ctx["transposed"] = None
+                if len(cells) == 1 and ctx.get("in_outlook"):
+                    tp = target_of(v, ctx)
+                    if tp and re.fullmatch(r"(?i)\s*((first|second|third|fourth) quarter|q[1-4]|full[- ]year|fiscal( year)?|fy)\s*'?\d{2,4}\s*", v):
+                        ctx["section_target"] = tp
                 roles = _header_roles(cells)
                 if len(cells) > 1 and all(r == "ACTUAL" for r in roles if r is not None) and any(roles):
                     ctx["in_outlook"] = False      # a results table: its columns are periods already reported
@@ -467,6 +493,20 @@ def extract(raw: bytes):
                         ctx["col_roles"] = None
                 continue
             else:
+                tcols = ctx.get("transposed")
+                if tcols and ctx.get("in_outlook") and ctx.get("section_target") and re.fullmatch(
+                        r"(?i)\s*(u\.s\. )?(gaap|non-gaap( adjusted)?|adjusted|reported|as reported)\s*", cells[0]):
+                    b = "non_GAAP" if re.search(r"(?i)non-gaap|adjusted", cells[0]) else "GAAP"
+                    for ci, c in enumerate(cells[1:]):
+                        m = tcols[ci] if ci < len(tcols) else None
+                        if m not in ("operating_income", "net_income", "eps", "revenue", "ebitda", "free_cash_flow"):
+                            continue
+                        vs = _values(c, m, allow_bare=True)
+                        if vs:
+                            lo, hi, pct, _, txt = vs[0]
+                            mm, unit = unit_for(m, pct, txt)
+                            out.append((i, ctx["section_target"], mm, b, unit, lo, hi, "CURRENT"))
+                    continue
                 if ctx.get("in_outlook") or FWD.search(cells[0]):
                     for tup in _row_tuples(cells, ctx):
                         out.append((i, *tup))
