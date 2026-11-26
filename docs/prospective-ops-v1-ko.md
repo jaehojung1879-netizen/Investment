@@ -9,7 +9,7 @@
 | 레지스트리 | `research/prospective_ops/registry.json` | 연구별 승인·주기·기록기·만기·감시 기준. **등록해도 기록기는 시작되지 않는다** |
 | 상태·가드·검증 | `pipeline/prospective_ops.py` | 영수증 기반 상태 산출, 쓰기 가드(fail-closed), 쓰기 후 원격 검증 |
 | CLI | `scripts/prospective_ops.py` | `status` / `guard` / `verify-receipt` (git 객체만 읽음, 원장 쓰기 없음) |
-| 워크플로 | `.github/workflows/prospective-ops.yml` | 평일 19:40 KST 기록(가드 통과 시) + 항상 감시 |
+| 워크플로 | `research/prospective_ops/install/prospective-ops.yml` (템플릿, 설치 전에는 실행되지 않음) | 평일 19:40 KST 기록(가드 통과 시) + 항상 감시 |
 | 연속성 감사 | `scripts/audit_corporate_receipt_continuity.py` | #374 코드를 그대로 재사용(cherry-pick). 상태 산출은 동일 규칙 |
 | 공시 기록기 | 등록 커밋 `8aee189`의 `live_run` | **수정 없이** 별도 worktree에서 실행 |
 

@@ -201,7 +201,8 @@ def test_cli_reads_exact_git_objects_and_never_writes(tmp_path, monkeypatch):
     assert out["studies"][0]["missedRecords"] == 1 and (repo / "l.jsonl").read_bytes() == before
 
 
-WORKFLOW = (ROOT / ".github/workflows/prospective-ops.yml").read_text()
+TEMPLATE_PATH = ROOT / "research/prospective_ops/install/prospective-ops.yml"
+WORKFLOW = TEMPLATE_PATH.read_text()
 
 
 def test_workflow_has_no_ai_and_guards_before_writing():
@@ -231,3 +232,9 @@ def test_status_clock_uses_utc_aware_timestamps():
     assert ops.parse_utc("2026-11-25T01:00:00Z").tzinfo == timezone.utc and isinstance(datetime.now(timezone.utc), datetime)
     with pytest.raises(ValueError):
         ops.parse_utc("2026-11-25T01:00:00")
+
+
+def test_workflow_is_a_template_outside_the_sealed_workflow_tree():
+    # Sealed studies pin the workflow census and the .github/workflows tree digest; installing is a separate owner-approved amendment.
+    assert not (ROOT / ".github/workflows/prospective-ops.yml").exists()
+    assert TEMPLATE_PATH.is_file() and "workflow_dispatch" in WORKFLOW

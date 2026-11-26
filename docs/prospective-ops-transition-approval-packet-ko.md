@@ -13,9 +13,16 @@
 | 이 세션에서 `trig_013qoRYz…` 비활성화 시도 | 권한 분류기가 거부 — **적용되지 않음**. 소유자가 직접 비활성화 필요 |
 | 유효 영수증 | 3건(11-09, 11-11, 11-12). 11-10, 11-13, 11-16~11-24 창 누락 (11-25 포함 시 9건, `MISSED_NOT_OBSERVED`) |
 
+## 왜 워크플로가 템플릿인가 (CI로 확인된 사실)
+
+PR #382 첫 CI(run 45726849143)에서 `.github/workflows/prospective-ops.yml` 추가와 census 테스트 수정이 봉인 연구 테스트 25건을 실패시켰다
+(`test_rp1_c1_us_wp4d`, `test_rp1_us_universe`의 `.github/workflows` 트리 해시, `test_us_p4_execution`, `test_kr_alpha_atlas_*`의 `AMENDED_DEPENDENCY_CHANGED`,
+`test_closed_atlas_provenance` 등). 봉인 파일을 임의로 바꾸지 않기 위해 워크플로를 `research/prospective_ops/install/`의 템플릿으로 두었다.
+**설치(= `.github/workflows/`에 복사 + census 문서 등재)는 봉인 핀을 바꾸는 일이므로 소유자 승인 PR로 따로 한다.** 그 PR은 위 핀 테스트의 기대 해시 갱신을 포함해야 하며, 이 PR은 하지 않는다.
+
 ## 소유자 조치 (순서 고정)
 
-1. **PR 병합** (이 PR). 워크플로는 기본 비활성 상태로 병합되므로 병합만으로 기록이 시작되지 않는다.
+1. **PR 병합** (이 PR). 코드·레지스트리·템플릿만 들어가며 병합만으로 기록이 시작되지 않는다. 별도로 워크플로 설치 PR(봉인 핀 갱신 승인 포함)이 필요하다.
 2. **Claude trigger 비활성화**: claude.ai 예약 작업 목록 또는 Claude Code에서 `trig_013qoRYz6H9UwUosNzCWv69B`를 비활성화(삭제 불필요). 이후 `trig_01XwJ7…`, `trig_013q…` 모두 `enabled=false`를 `get_trigger`로 재확인.
 3. **attestation 커밋**: `research/prospective_ops/attestations/kr-corporate-information-events-v1-single-writer.json`
    ```json

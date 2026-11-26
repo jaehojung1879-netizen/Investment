@@ -19,8 +19,6 @@ ADDENDUM = ROOT / "docs" / "workflow-inventory-addendum.md"
 # The addendum is itself frozen by Phase C v1. Preserve both old inventories;
 # register the new input-amendment workflow in a separate inventory layer.
 PHASE_C_INPUT_AMENDMENT = ROOT / "docs" / "workflow-inventory-phase-c-amendment.md"
-# prospective-ops-v1 adds one workflow; it is registered in its own additive layer.
-PROSPECTIVE_OPS = ROOT / "docs" / "workflow-inventory-prospective-ops.md"
 
 _YML_NAME = re.compile(r"[A-Za-z0-9][\w.-]*\.yml")
 
@@ -42,7 +40,7 @@ def test_the_inventory_doc_exists():
 
 
 def _all_docs() -> list[str]:
-    return [p.read_text(encoding="utf-8") for p in (DOC, ADDENDUM, PHASE_C_INPUT_AMENDMENT, PROSPECTIVE_OPS) if p.is_file()]
+    return [p.read_text(encoding="utf-8") for p in (DOC, ADDENDUM, PHASE_C_INPUT_AMENDMENT) if p.is_file()]
 
 
 def _active_named() -> set[str]:
