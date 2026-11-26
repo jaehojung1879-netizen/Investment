@@ -1,0 +1,260 @@
+{
+  "studyId": "s3-independent-economic-reasoning-v1",
+  "status": "DESIGN_ONLY",
+  "designDateKst": "2026-11-27",
+  "priorS3Commit": "f10fed32c1c77f5b591ba7936032fc07c43c986b",
+  "activation": {
+    "approvalRecord": null,
+    "independentCustodianAssigned": false,
+    "independentAnnotationStarted": false,
+    "sealedRoster": null,
+    "frozenModelOrPrompt": null,
+    "productionWriterEnabled": false
+  },
+  "cohort": {
+    "indexDocumentsTarget": 100,
+    "issuerClustersTarget": 100,
+    "indexDocumentsPerCluster": 1,
+    "originTargets": {
+      "SEC": 60,
+      "DART": 40
+    },
+    "sectorTargets": {
+      "manufacturing": 25,
+      "financial": 25,
+      "consumer": 25,
+      "technology": 25
+    },
+    "confirmedNoMaterialChangeTarget": 25,
+    "minimumNegativesForStandaloneSpecificity": 20,
+    "restrictedPr383CompaniesExcluded": 37,
+    "requireNoKnownPriorResearchExposure": true,
+    "keepUnreadableRowsInEnrollmentFlow": true,
+    "additionalSupportDocumentsCountAsIndexDocuments": false,
+    "independentAnnotators": 2,
+    "adjudicators": 1
+  },
+  "commonArms": {
+    "F": "FIXED_STRUCTURED_FINANCIAL_RULES",
+    "T": "FIXED_PREVIOUS_TREND_CONTINUATION",
+    "A": "EVIDENCE_FIRST_AI_SOURCE_REASONING"
+  },
+  "taskDefinitions": {
+    "T1": {
+      "name": "SOURCE_NUMBERS",
+      "scale": [
+        0,
+        1
+      ],
+      "required": [
+        "value",
+        "unit",
+        "period",
+        "sign",
+        "entityOrSegment",
+        "accountingBasis",
+        "sourceLocator"
+      ]
+    },
+    "T2": {
+      "name": "ARITHMETIC_DEPENDENCY",
+      "scale": [
+        0,
+        1
+      ],
+      "labels": [
+        "IDENTITY",
+        "LINK_NOT_ESTABLISHED",
+        "INSUFFICIENT_EVIDENCE"
+      ],
+      "required": [
+        "sourceDefinition",
+        "sameBasisComponentScope",
+        "formulaOrReasonForAbstention"
+      ]
+    },
+    "T3": {
+      "name": "BUSINESS_STRUCTURE_CHANGE",
+      "scale": [
+        0,
+        1
+      ],
+      "labels": [
+        "MATERIAL_CHANGE",
+        "NO_MATERIAL_CHANGE",
+        "INSUFFICIENT_EVIDENCE"
+      ],
+      "required": [
+        "priorState",
+        "newState",
+        "scopeConsistency",
+        "exposurePath",
+        "materialityRule",
+        "sourceLocators"
+      ]
+    },
+    "T4": {
+      "name": "COMPETING_HYPOTHESIS",
+      "scale": [
+        0,
+        1,
+        2
+      ],
+      "scoredHypothesisSlots": 1,
+      "requiredForTopScore": [
+        "evidenceCompatibleDistinctMechanism",
+        "differentObservablePrediction",
+        "publicVerificationRoute"
+      ]
+    },
+    "T5": {
+      "name": "FALSIFIABILITY",
+      "scale": [
+        0,
+        1,
+        2
+      ],
+      "scoredFalsifierSlots": 1,
+      "requiredForTopScore": [
+        "economicVariable",
+        "horizon",
+        "directionOrThreshold",
+        "resolver",
+        "withdrawalRule"
+      ]
+    },
+    "T6": {
+      "name": "FUTURE_ECONOMIC_TARGET",
+      "primaryMetric": "SCALED_ABSOLUTE_ERROR",
+      "secondaryMetrics": [
+        "rawMAE",
+        "balancedDirectionAccuracy",
+        "intervalCoverage",
+        "intervalWidth",
+        "BrierIfCommonProbabilityTask"
+      ]
+    }
+  },
+  "primaryComparisons": {
+    "G1": {
+      "unit": "ISSUER_CLUSTER",
+      "metric": "MEAN_STRICT_MATCH_RATE_OF_ADJUDICABLE_T2_T3_SLOTS_EQUAL_TASK_WEIGHTS",
+      "requiredBaselineComparisons": [
+        "A_MINUS_F",
+        "A_MINUS_T"
+      ],
+      "minimumPointGain": 0.1,
+      "bothPairedTwoSided95LowerBoundsMustExceed": 0,
+      "modelAbstentionOnAdjudicatedSlot": "INCORRECT",
+      "goldUnadjudicableSlot": "REPORT_AND_EXCLUDE_FROM_MATCH_DENOMINATOR"
+    },
+    "G2": {
+      "unit": "ISSUER_CLUSTER_X_ECONOMIC_VARIABLE_X_FIXED_TARGET_PERIOD",
+      "primaryTargetsPerIssuerCluster": 1,
+      "metric": "MEAN_SCALED_ABSOLUTE_ERROR",
+      "comparisonDifference": "PREDECLARED_BASELINE_LOSS_MINUS_AI_POLICY_LOSS",
+      "requiredBaselineComparisons": [
+        "F_VS_A",
+        "T_VS_A"
+      ],
+      "minimumRelativeMaeReduction": 0.1,
+      "bothPairedTwoSided95LowerBoundsMustExceed": 0,
+      "eligibleWithMissingT": false,
+      "missingAOrFPolicy": "FALL_BACK_TO_T_AND_RETAIN_ABSTENTION",
+      "minimumComparableTrailingQuarters": 8,
+      "scaling": "MEDIAN_ABSOLUTE_YEAR_OVER_YEAR_SAME_QUARTER_DIFFERENCE_WITH_REGISTERED_UNIT_FLOOR",
+      "duplicateRevisionsCountAsTargets": false,
+      "directIssuerNumericalTargetGuidancePolicy": "EXCLUDE_FROM_PRIMARY_OR_REGISTER_COMMON_INFORMATION_COHORT"
+    },
+    "dependencies": {
+      "resampling": "paired non-overlapping cohort-time blocks, keeping each one-row issuer cluster intact and sectors bundled within block",
+      "bootstrapReplicates": 9999,
+      "intervals": "2.5th and 97.5th empirical percentiles of paired block estimates",
+      "minimumTimeBlocksForBootstrapReporting": 12,
+      "inferenceWithTooFewIndependentBlocks": "DESCRIPTIVE_ONLY",
+      "independentNormalPairedMdeAt100Sd": 0.2829,
+      "independentNormalPairedMdeAt50Sd": 0.4042,
+      "blockKeys": {
+        "G1": "ORIGINAL_PUBLICATION_QUARTER",
+        "G2": "RESOLUTION_QUARTER"
+      }
+    }
+  },
+  "prospectiveReceiptFieldNames": {
+    "cohort": [
+      "targetId",
+      "entityId",
+      "issuerClusterId",
+      "taskSpecHash",
+      "rosterSealHash",
+      "sourceAccession",
+      "sourceDigest",
+      "sourceVintage",
+      "publishedAt",
+      "publishedAtPrecision",
+      "availabilityEvidence",
+      "availableAt",
+      "observedAt"
+    ],
+    "prediction": [
+      "arm",
+      "modelSnapshotOrRuleHash",
+      "promptHash",
+      "inputManifestHash",
+      "generatedAt",
+      "committedAt",
+      "value",
+      "direction",
+      "probabilityIfRequested",
+      "intervalIfRequested",
+      "baselineValue",
+      "targetPeriod",
+      "unit",
+      "accountingBasis",
+      "resolutionDefinition",
+      "resolutionDeadline",
+      "status"
+    ],
+    "resolution": [
+      "targetId",
+      "publishedAt",
+      "firstPublicEvidence",
+      "sourceDigest",
+      "sourceLocator",
+      "vintage",
+      "value",
+      "unit",
+      "status"
+    ],
+    "cost": [
+      "arm",
+      "reviewActiveSeconds",
+      "adjudicationActiveSeconds",
+      "sourcePreparationSeconds",
+      "modelWallSeconds",
+      "queueSeconds",
+      "cachedInputTokens",
+      "uncachedInputTokens",
+      "outputTokens",
+      "modelSnapshot",
+      "tariffVersion",
+      "attempts",
+      "failedAttempts",
+      "currency",
+      "measuredCost",
+      "costBasis"
+    ]
+  },
+  "resolutionStatuses": [
+    "PENDING",
+    "RESOLVED",
+    "SOURCE_UNAVAILABLE",
+    "DEFINITION_CHANGED",
+    "LATE_OR_LEAKED"
+  ],
+  "publishedVintageComparators": {
+    "unit": "INSTITUTION_X_VARIABLE_DEFINITION_X_GEOGRAPHY_X_TARGET_PERIOD",
+    "countRepeatedReleaseAsIndependentTarget": false,
+    "portfolioOrTradingMetrics": false
+  }
+}

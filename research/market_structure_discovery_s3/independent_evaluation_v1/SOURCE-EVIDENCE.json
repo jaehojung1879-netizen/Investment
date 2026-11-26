@@ -1,0 +1,369 @@
+{
+  "assessmentStatus": "SOURCE_FEASIBILITY_AND_DESIGN_REHEARSAL_ONLY",
+  "targetVintageCount": 4,
+  "uniqueExpertTargetKeys": 2,
+  "independenceOfExpertTargetsAssumed": false,
+  "expertTargetComparators": [
+    {
+      "targetId": "PHL-SPF:US:REAL_GDP_QOQ_SAAR:2024Q4",
+      "institution": "Federal Reserve Bank of Philadelphia Survey of Professional Forecasters",
+      "targetPeriod": "2024Q4",
+      "definition": "US real GDP quarterly percent change at annual rate, survey median",
+      "unit": "percent",
+      "vintages": [
+        {
+          "sourceId": "spf-q2-2024.pdf",
+          "publishedDate": "2024-05-10",
+          "forecast": 1.5,
+          "locator": "Median Forecasts, 2024:Q4 Real GDP New; confirmed in HTML"
+        },
+        {
+          "sourceId": "spf-q3-2024.pdf",
+          "publishedDate": "2024-08-09",
+          "forecast": 1.7,
+          "locator": "Median Forecasts, 2024:Q4 Real GDP New; confirmed in HTML"
+        }
+      ],
+      "resolver": {
+        "sourceId": "bea-2024q4-first.htm",
+        "publishedAt": "2025-01-30T08:30:00-05:00",
+        "vintage": "ADVANCE_ESTIMATE",
+        "value": 2.3,
+        "locator": "Headline, Q4 2024 Real GDP annual rate"
+      },
+      "clusterCaveat": "One US macro target; consecutive survey medians and respondents can share inputs. Do not infer individual skill or count revisions as independent."
+    },
+    {
+      "targetId": "USDA-WASDE:US:CORN_PRODUCTION:2024_CROP",
+      "institution": "USDA World Agricultural Outlook Board WASDE",
+      "targetPeriod": "2024 US corn crop, production entry for market year 2024/25",
+      "definition": "US corn for grain production, not yield or ending stocks",
+      "unit": "million bushels",
+      "vintages": [
+        {
+          "sourceId": "wasde-aug24.pdf",
+          "publishedDate": "2024-08-12",
+          "forecast": 15147,
+          "locator": "U.S. Feed Grain and Corn Supply and Use; Corn 2024/25 Projected Aug Production"
+        },
+        {
+          "sourceId": "wasde-sep24-archive.pdf",
+          "publishedDate": "2024-09-12",
+          "forecast": 15186,
+          "locator": "U.S. Feed Grain and Corn Supply and Use; Corn 2024/25 Projected Sep Production"
+        }
+      ],
+      "resolver": {
+        "sourceId": "nass-jan25-archive.pdf",
+        "publishedDate": "2025-01-10",
+        "vintage": "JANUARY_ANNUAL_SUMMARY_ESTIMATE",
+        "value": 14866.744,
+        "locator": "Corn for Grain Area/Yield/Production, United States 2024; 14,866,744 thousand bushels"
+      },
+      "clusterCaveat": "The NASS annual summary can be revised; WASDE and the comparator use related USDA survey data. This record does not treat the NASS estimate as an independent measurement process or final vintage."
+    }
+  ],
+  "usbRehearsal": {
+    "exerciseStatus": "UNSCORED_DESIGN_REHEARSAL_NOT_ADMITTED",
+    "evidenceClass": "DEVELOPMENT_ONLY_PREVIOUSLY_EXPOSED_ISSUER",
+    "targetId": "DEMO:SEC:0000036104:NIM_TCE:FY2026Q4",
+    "entityId": "SEC:0000036104",
+    "targetPeriodEnd": "2026-12-31",
+    "targetDefinition": "Consolidated U.S. Bancorp quarterly net interest margin on a taxable-equivalent basis, as reported for the three months ended 2026-12-31",
+    "unit": "percent",
+    "sourceAccession": "0000036104-26-000058",
+    "sourceId": "usb-2026q3.htm",
+    "secAcceptedAt": "2026-11-04T22:44:17Z",
+    "acceptanceBasis": "Index 17:44:17 New York time equals SEC Submissions UTC. Original dissemination time and first IR publication not independently established.",
+    "acceptedSourceConfirmation": "Most recent original 10-Q for this issuer in SEC submissions snapshot, not an exhaustive audit of other filing types.",
+    "demoScopeSha256": "fd165129ab7418f21380bbd54dacd80689f22b4d477887b53d51107bce5146a3",
+    "demoScopeFrozenAt": "2026-11-26T23:02:48Z",
+    "exerciseObservedAt": "2026-11-26T23:09:16+00:00",
+    "commonInput": {
+      "consolidatedQuarters": [
+        {
+          "period": "2025Q4",
+          "value": 2.77,
+          "sourceId": "usb-2025q4.htm"
+        },
+        {
+          "period": "2026Q1",
+          "value": 2.77,
+          "sourceId": "usb-2026q1.htm"
+        },
+        {
+          "period": "2026Q2",
+          "value": 2.79,
+          "sourceId": "usb-2026q2.htm"
+        },
+        {
+          "period": "2026Q3",
+          "value": 2.84,
+          "sourceId": "usb-2026q3.htm"
+        }
+      ],
+      "directionAnchor": 2.84,
+      "flatBandInclusivePercentagePoints": 0.02
+    },
+    "illustrativeResponses": [
+      {
+        "arm": "F",
+        "value": 2.78,
+        "direction": "DOWN",
+        "probability": null,
+        "basis": "median of four prior comparable quarterly percentage values"
+      },
+      {
+        "arm": "T",
+        "value": 2.89,
+        "direction": "UP",
+        "probability": null,
+        "basis": "2.84 + (2.84 - 2.79)"
+      },
+      {
+        "arm": "A",
+        "value": 2.85,
+        "direction": "FLAT",
+        "probability": null,
+        "basis": "judgmental 1 bp increment from 2.84; Q3 filing shows lower cost of interest-bearing deposits YoY alongside lower earning-asset yield; no calibrated forecast"
+      }
+    ],
+    "forwardEvidence": {
+      "observed": "Q3'26 vs Q3'25 earning asset yield 4.92% vs 5.03%; cost of interest-bearing deposits 2.22% vs 2.43%; NIM 2.84% vs 2.75%.",
+      "locator": "Consolidated Daily Average Balance Sheet and Related Yields and Rates for the Three Months Ended September 30 (taxable-equivalent table)",
+      "hypothesis": "Prior-quarter funding-cost benefit can persist but asset yields offset part of it.",
+      "competingHypothesis": "Deposit mix shifts to more expensive balances or earning-asset yields decline faster, erasing the funding advantage.",
+      "falsification": "Quarterly NIM below 2.82% disproves the stable-or-higher point-direction thesis. If funding costs rise versus Q3, reject persistence of the funding-cost channel even if NIM is stable. The point error is separate.",
+      "thresholdBasis": "Illustrative noncalibrated tolerance group; default record tested only for schema/logistics."
+    },
+    "resolution": {
+      "status": "PENDING",
+      "sourcePriority": [
+        "Earliest verifiable issuer Q4 results with identical quarterly consolidated taxable-equivalent NIM (official IR or SEC 8-K earnings exhibit)",
+        "Original SEC 10-K only if first matching disclosure contains a standalone Q4 measure"
+      ],
+      "deadlineLocalDate": "2027-03-31",
+      "marketTimezone": "America/New_York",
+      "firstPublicAt": null,
+      "value": null,
+      "checksOutstanding": [
+        "independent approval and timestamps",
+        "exhaustive equivalent prior-management-guidance check",
+        "minimum eight-quarter comparable series for primary scaling",
+        "independent custodian and reviewers"
+      ]
+    },
+    "ledgerReceiptId": null,
+    "registered": false,
+    "eligibleIndependentTargets": 0,
+    "modelCosts": {
+      "externalBilledApiCalls": 0,
+      "inSessionModelCost": null,
+      "reviewerActiveSeconds": null
+    }
+  },
+  "receipts": [
+    {
+      "sourceId": "spf-q2-2024.htm",
+      "url": "https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/spf-q2-2024",
+      "expectedType": "text/html",
+      "sha256": "49c23ce02a0b8739e599373ae8ab450abaadc7a4207dffe2ce34ff7c23f72084",
+      "bytes": 52891,
+      "http": 200,
+      "resolvedUrl": "https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/spf-q2-2024",
+      "contentType": "text/html",
+      "state": "FETCHED",
+      "observedAt": "2026-11-26T23:02:49+00:00"
+    },
+    {
+      "sourceId": "spf-q3-2024.htm",
+      "url": "https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/spf-q3-2024",
+      "expectedType": "text/html",
+      "sha256": "f81c9d02d79319db46bd7a650e464320fe97fba575c5b81093f32042aa2cec6e",
+      "bytes": 62418,
+      "http": 200,
+      "resolvedUrl": "https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/spf-q3-2024",
+      "contentType": "text/html",
+      "state": "FETCHED",
+      "observedAt": "2026-11-26T23:02:49+00:00"
+    },
+    {
+      "sourceId": "bea-2024q4-first.htm",
+      "url": "https://www.bea.gov/news/2025/gross-domestic-product-4th-quarter-and-year-2024-advance-estimate",
+      "expectedType": "text/html",
+      "sha256": "688a5a47ff78a03bbf764340578f72de9706e6d7820fa4b4af20a52a766ebec4",
+      "bytes": 48578,
+      "http": 200,
+      "resolvedUrl": "https://www.bea.gov/news/2025/gross-domestic-product-4th-quarter-and-year-2024-advance-estimate",
+      "contentType": "text/html",
+      "state": "FETCHED",
+      "observedAt": "2026-11-26T23:02:48+00:00"
+    },
+    {
+      "sourceId": "wasde-aug24.pdf",
+      "url": "https://esmis.nal.usda.gov/sites/default/release-files/3t945q76s/r781z751z/m613pp61v/wasde0824.pdf",
+      "expectedType": "application/pdf",
+      "sha256": "e33b5332b039004ab10174240a1a336f69fe2855f585dccd0a591294df8f718e",
+      "bytes": 840155,
+      "http": 200,
+      "resolvedUrl": "https://esmis.nal.usda.gov/sites/default/release-files/3t945q76s/r781z751z/m613pp61v/wasde0824.pdf",
+      "contentType": "application/pdf",
+      "state": "FETCHED",
+      "observedAt": "2026-11-26T23:02:48+00:00"
+    },
+    {
+      "sourceId": "wasde-sep24.pdf",
+      "url": "https://www.usda.gov/sites/default/files/documents/wasde0924.pdf",
+      "expectedType": "application/pdf",
+      "sha256": null,
+      "bytes": null,
+      "http": 404,
+      "state": "UNAVAILABLE",
+      "error": "HTTP Error 404: Not Found",
+      "observedAt": "2026-11-26T23:02:50+00:00"
+    },
+    {
+      "sourceId": "nass-jan25.pdf",
+      "url": "https://www.nass.usda.gov/Publications/Todays_Reports/reports/cropan25.pdf",
+      "expectedType": "application/pdf",
+      "sha256": null,
+      "bytes": null,
+      "http": 404,
+      "state": "UNAVAILABLE",
+      "error": "HTTP Error 404: Not Found",
+      "observedAt": "2026-11-26T23:02:49+00:00"
+    },
+    {
+      "sourceId": "usb-submissions.json",
+      "url": "https://data.sec.gov/submissions/CIK0000036104.json",
+      "expectedType": "application/json",
+      "sha256": "10701edf7453775280308aa4d5826c9271fad4d98157fc2a257ceae71cf0ddc8",
+      "bytes": 161435,
+      "http": 200,
+      "resolvedUrl": "https://data.sec.gov/submissions/CIK0000036104.json",
+      "contentType": "application/json",
+      "state": "FETCHED",
+      "observedAt": "2026-11-26T23:02:49+00:00"
+    },
+    {
+      "sourceId": "usb-2026q3-index.htm",
+      "url": "https://www.sec.gov/Archives/edgar/data/36104/000003610426000058/0000036104-26-000058-index.htm",
+      "expectedType": "text/html",
+      "sha256": "a7df73faf8383af3655ca92c020aaef655b40b7545b615cf96f726373474b876",
+      "bytes": 11256,
+      "http": 200,
+      "resolvedUrl": "https://www.sec.gov/Archives/edgar/data/36104/000003610426000058/0000036104-26-000058-index.htm",
+      "contentType": "text/html",
+      "state": "FETCHED",
+      "observedAt": "2026-11-26T23:02:49+00:00"
+    },
+    {
+      "sourceId": "usb-2026q3.htm",
+      "url": "https://www.sec.gov/Archives/edgar/data/36104/000003610426000058/usb-20260930.htm",
+      "expectedType": "text/html",
+      "sha256": "1587f6c244fcf1355257a47279b4e32e537b83e239d975954fbf31d295db7ceb",
+      "bytes": 5107550,
+      "http": 200,
+      "resolvedUrl": "https://www.sec.gov/Archives/edgar/data/36104/000003610426000058/usb-20260930.htm",
+      "contentType": "text/html",
+      "state": "FETCHED",
+      "observedAt": "2026-11-26T23:02:49+00:00"
+    },
+    {
+      "sourceId": "usb-2026q2.htm",
+      "url": "https://www.sec.gov/Archives/edgar/data/36104/000003610426000044/usb-20260630.htm",
+      "expectedType": "text/html",
+      "sha256": "7c4bad8f00456a84a42c1444b6a65fe36fb439ac261b3f9de9a680900dc5210f",
+      "bytes": 5088918,
+      "http": 200,
+      "resolvedUrl": "https://www.sec.gov/Archives/edgar/data/36104/000003610426000044/usb-20260630.htm",
+      "contentType": "text/html",
+      "state": "FETCHED",
+      "observedAt": "2026-11-26T23:02:49+00:00"
+    },
+    {
+      "sourceId": "usb-2025q4.htm",
+      "url": "https://www.sec.gov/Archives/edgar/data/36104/000003610426000005/a4q25earningsrelease.htm",
+      "expectedType": "text/html",
+      "sha256": "0cbc97a6eb3b84869fab3cd60bdb4cf693d63578df06544e54e8a66f7502c0d1",
+      "bytes": 1210661,
+      "http": 200,
+      "resolvedUrl": "https://www.sec.gov/Archives/edgar/data/36104/000003610426000005/a4q25earningsrelease.htm",
+      "contentType": "text/html",
+      "state": "FETCHED",
+      "observedAt": "2026-11-26T23:02:49+00:00"
+    },
+    {
+      "sourceId": "wasde-sep24-archive.pdf",
+      "url": "https://esmis.nal.usda.gov/sites/default/release-files/3t945q76s/rf5610383/t148h943n/wasde0924.pdf",
+      "expectedType": "application/pdf",
+      "sha256": "e65dd0e08b0b3efdfdd546751a2869275ed63fc4930244012f9e3355efce05a0",
+      "bytes": 847004,
+      "http": 200,
+      "resolvedUrl": "https://esmis.nal.usda.gov/sites/default/release-files/3t945q76s/rf5610383/t148h943n/wasde0924.pdf",
+      "contentType": "application/pdf",
+      "state": "FETCHED",
+      "observedAt": "2026-11-26T23:05:24+00:00"
+    },
+    {
+      "sourceId": "nass-jan25-archive.pdf",
+      "url": "https://release.nass.usda.gov/reports/cropan25.pdf",
+      "expectedType": "application/pdf",
+      "sha256": "0e3add3bc4c95c8ea5061d8e1e75d166e5d9a4a73dcf9204784be6697e94c0c9",
+      "bytes": 2358486,
+      "http": 200,
+      "resolvedUrl": "https://release.nass.usda.gov/reports/cropan25.pdf",
+      "contentType": "application/octet-stream",
+      "state": "FETCHED",
+      "observedAt": "2026-11-26T23:05:25+00:00"
+    },
+    {
+      "sourceId": "nass-jan25-release.htm",
+      "url": "https://www.nass.usda.gov/Newsroom/archive/2025/01-10-2025.php",
+      "expectedType": "text/html",
+      "sha256": "ba6dac2db7b395b4595e8cb88a44aa3538c34bab52a6af28027489785f801d61",
+      "bytes": 38078,
+      "http": 200,
+      "resolvedUrl": "https://www.nass.usda.gov/newsroom/archive/2025/01-10-2025",
+      "contentType": "text/html",
+      "state": "FETCHED",
+      "observedAt": "2026-11-26T23:05:25+00:00"
+    },
+    {
+      "sourceId": "spf-q2-2024.pdf",
+      "url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/survey-of-professional-forecasters/2024/spfQ224.pdf",
+      "expectedType": "application/pdf",
+      "sha256": "ca8c54e83e164b31a74f96c5a8c06b2142ce80e202bad0a6c958eb02d3fdbda5",
+      "bytes": 2248187,
+      "http": 200,
+      "resolvedUrl": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/survey-of-professional-forecasters/2024/spfQ224.pdf",
+      "contentType": "application/pdf",
+      "state": "FETCHED",
+      "observedAt": "2026-11-26T23:07:20+00:00"
+    },
+    {
+      "sourceId": "spf-q3-2024.pdf",
+      "url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/survey-of-professional-forecasters/2024/spfQ324.pdf",
+      "expectedType": "application/pdf",
+      "sha256": "4a325f5eb1179fa8f612b4c03a9093efe428aabd5d0084830c1ce547425b9a7e",
+      "bytes": 954805,
+      "http": 200,
+      "resolvedUrl": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/survey-of-professional-forecasters/2024/spfQ324.pdf",
+      "contentType": "application/pdf",
+      "state": "FETCHED",
+      "observedAt": "2026-11-26T23:07:20+00:00"
+    },
+    {
+      "sourceId": "usb-2026q1.htm",
+      "url": "https://www.sec.gov/Archives/edgar/data/36104/000003610426000024/usb-20260331.htm",
+      "expectedType": "text/html",
+      "sha256": "9cf0dda3cf4f89f04c4917d87627e95d80b8ecef53e537b35c8ada4f537efd1a",
+      "bytes": 3858658,
+      "http": 200,
+      "resolvedUrl": "https://www.sec.gov/Archives/edgar/data/36104/000003610426000024/usb-20260331.htm",
+      "contentType": "text/html",
+      "state": "FETCHED",
+      "observedAt": "2026-11-26T23:07:21+00:00"
+    }
+  ]
+}
