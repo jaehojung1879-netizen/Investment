@@ -142,15 +142,79 @@ def classify_windows(expected: dict[str, datetime], valid: set[str], as_of: date
 
 
 # ------------------------------------------------------------------------------------ receipt verification
+def _corporate_receipt_errors(row, study, day, previous_session, next_open):
+    """Check registered writer identity and actual source receipt structure."""
+    problems = []
+    if row.get("codeCommit") != study.get("automation", {}).get("pinnedCodeCommit") or not HEX40.fullmatch(str(row.get("codeCommit", ""))):
+        problems.append("PINNED_RECEIPT_CODE_MISMATCH")
+    sources, events = row.get("sources"), row.get("events")
+    valid_days = set()
+    queries = {(("pblntf_ty", "B"),), (("pblntf_detail_ty", "I001"),)}
+    if not isinstance(sources, list) or not sources:
+        problems.append("SOURCE_RECEIPTS_MISSING")
+    else:
+        seen = set()
+        try:
+            for source in sources:
+                source_day = source["day"]
+                if date.fromisoformat(source_day).isoformat() != source_day:
+                    raise ValueError("source day")
+                query = tuple(sorted(source["query"].items()))
+                pages = source["pageSha256"]
+                if (
+                    query not in queries or not isinstance(pages, list) or not pages
+                    or not all(isinstance(h, str) and HEX64.fullmatch(h) for h in pages)
+                    or (source_day, query) in seen
+                ):
+                    raise ValueError("source evidence")
+                seen.add((source_day, query))
+                valid_days.add(source_day)
+            end = date.fromisoformat(day)
+            start = date.fromisoformat(previous_session or min(valid_days))
+            n = (end - start).days
+            if n <= 0 or n > 366:
+                raise ValueError("source window")
+            expected = {(start + timedelta(days=i)).isoformat() for i in range(n)}
+            if seen != {(d, q) for d in expected for q in queries}:
+                raise ValueError("source coverage")
+        except (TypeError, ValueError, KeyError, AttributeError):
+            problems.append("SOURCE_RECEIPT_SCHEMA_OR_COVERAGE_INVALID")
+    if not isinstance(events, list) or type(row.get("eventCount")) is not int or row["eventCount"] != len(events):
+        problems.append("EVENT_COUNT_MISMATCH")
+    else:
+        for event in events:
+            if (
+                not isinstance(event, dict)
+                or not isinstance(event.get("corp_code"), str)
+                or not re.fullmatch(r"\d{8}", event["corp_code"])
+                or not isinstance(event.get("rcept_no"), str)
+                or not re.fullmatch(r"\d{14}", event["rcept_no"])
+                or event.get("hypothesis") not in ("A1", "B1")
+                or not isinstance(event.get("receiptDay"), str) or event["receiptDay"] not in valid_days
+                or next_open is None or event.get("entrySession") != next_open.date().isoformat()
+                or not isinstance(event.get("sourceBodySha256"), str)
+                or not HEX64.fullmatch(event["sourceBodySha256"])
+                or type(event.get("sameSessionFollowOn")) is not bool
+            ):
+                problems.append("EVENT_RECEIPT_SCHEMA_INVALID")
+                break
+    return problems
+
+
 def verify_rows(rows: list[dict], study: dict, windows: dict[str, datetime], as_of: datetime, date_field: str = "signalDate") -> tuple[set[str], list[dict]]:
     """Valid session set and structured errors. A row is valid only if registration, digest, mode and its own window all hold."""
     approval = study["approval"]
     errors: list[dict] = []
     valid: set[str] = set()
     seen: set[str] = set()
+    ordered = sorted(windows)
+    prior = dict(zip(ordered[1:], ordered))
     for number, row in enumerate(rows, 1):
         day = row.get(date_field)
         problems: list[str] = []
+        if not isinstance(day, str):
+            errors.append({"line": number, "session": None, "reasons": ["INVALID_SESSION"]})
+            continue
         if day in seen:
             problems.append("DUPLICATE_SESSION")
             valid.discard(day)
@@ -160,8 +224,13 @@ def verify_rows(rows: list[dict], study: dict, windows: dict[str, datetime], as_
                 or row.get("evidenceClass") != study.get("evidenceClass", "PROSPECTIVE_PAPER")
                 or row.get("mode") != study.get("recordMode", "LIVE")):
             problems.append("REGISTRATION_OR_MODE_MISMATCH")
-        if row.get("receiptSha256") != receipt_digest(row):
+        try:
+            if row.get("receiptSha256") != receipt_digest(row):
+                problems.append("DIGEST_MISMATCH")
+        except (ValueError, TypeError):
             problems.append("DIGEST_MISMATCH")
+        if study["studyId"] == CORPORATE_STUDY:
+            problems.extend(_corporate_receipt_errors(row, study, day, prior.get(day), windows.get(day)))
         events = row.get("events")
         if "events" in row and (not isinstance(events, list) or type(row.get("eventCount")) is not int or row["eventCount"] != len(events)):
             problems.append("EVENT_COUNT_MISMATCH")
@@ -376,7 +445,9 @@ def build_status(registry: dict, ledger_rows: dict, sessions: Sequence[str], as_
     alerts = [s["studyId"] for s, entry in zip(studies, registry["studies"])
               if (entry.get("automation", {}).get("enabled") and s["operatingState"] in ("MISSED", "EXECUTION_FAILED", "SOURCE_BLOCKED"))
               or (s.get("baselineImmutability") or {}).get("state") == "VIOLATED"
-              or (entry.get("ledgerMustExist") and s["ledgerRead"] in (LEDGER_READ_FAILED, LEDGER_ABSENT))]
+              or (entry.get("ledgerMustExist") and (
+                  s["ledgerRead"] in (LEDGER_READ_FAILED, LEDGER_ABSENT) or bool(s.get("receiptErrors"))
+              ))]
     return {"schema": STATUS_SCHEMA, "asOfUtc": as_of.isoformat(), "studies": studies, "alerts": alerts,
             "notes": ["Status is derived from receipts only; a successful workflow run is not a receipt.",
                       "Missed windows are MISSED_NOT_OBSERVED and are never back-filled, re-dated or read as zero events.",
@@ -484,8 +555,8 @@ def verify_new_receipt(rows: list[dict], study: dict, session: str, windows: dic
     """After a writer run: exactly one valid receipt for `session` must be on the remote ledger. A green job is not this."""
     matching = [r for r in rows if r.get(study.get("dateField", "signalDate")) == session]
     valid, errors = verify_rows(rows, study, windows, as_of, study.get("dateField", "signalDate"))
-    ok = len(matching) == 1 and session in valid
-    return {"session": session, "rowsForSession": len(matching), "valid": ok, "errors": [e for e in errors if e["session"] == session],
+    ok = len(matching) == 1 and session in valid and not errors
+    return {"session": session, "rowsForSession": len(matching), "valid": ok, "errors": errors,
             "result": "RECORDED_AND_VERIFIED" if ok else "NOT_RECORDED"}
 
 

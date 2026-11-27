@@ -7,7 +7,7 @@ from pathlib import Path
 WORKFLOW = ".github/workflows/prospective-ops.yml"
 INVENTORY = "docs/prospective-ops-workflow-inventory-ko.md"
 INSTALL_BYTES = {
-    WORKFLOW: "888ebca76c55fda7196b9326e8f550e210410a34e72267bf5c5a63a08683f6ae",
+    WORKFLOW: "74efcd301b6f5c85c9f0e7541d431710dafc4c06a27377ed454e6e25e2f4371b",
     INVENTORY: "4825faa520d502c864ee4cb0ee9ec4ee95ebef2abeba2aa5ba2cf2993a29b7ce",
 }
 

@@ -657,3 +657,99 @@ def test_identical_session_retry_leaves_exactly_one_remote_receipt(tmp_path):
     assert _pinned_push_with_retry(first)(first, "first")
     assert _pinned_push_with_retry(retry)(retry, "retry")
     assert subprocess.check_output(["git", "show", f"signal-history:{RECEIPTS}"], cwd=origin) == original + receipt
+
+
+def corporate_row(day, previous, next_session):
+    from datetime import date, timedelta
+
+    value = row(day)
+    value["studyId"] = ops.CORPORATE_STUDY
+    value["codeCommit"] = CODE
+    start = date.fromisoformat(previous)
+    n = (date.fromisoformat(day) - start).days
+    value["sources"] = [
+        {"day": (start + timedelta(days=i)).isoformat(), "query": query, "pageSha256": ["a" * 64]}
+        for i in range(n)
+        for query in ({"pblntf_ty": "B"}, {"pblntf_detail_ty": "I001"})
+    ]
+    value["events"] = [{
+        "corp_code": "00000001", "rcept_no": "20261106000001", "hypothesis": "A1",
+        "receiptDay": previous, "entrySession": next_session, "sourceBodySha256": "b" * 64",
+        "sameSessionFollowOn": False,
+    }]
+    value["eventCount"] = 1
+    value["receiptSha256"] = ops.receipt_digest(value)
+    return value
+
+
+def test_corporate_registered_writer_and_source_envelope():
+    current = study(studyId=ops.CORPORATE_STUDY)
+    windows = ops.session_windows(SESSIONS, DAYS[0])
+    value = corporate_row(DAYS[1], DAYS[0], DAYS[2])
+    valid, errors = ops.verify_rows([value], current, windows, at("2026-11-11T00:00:00Z"))
+    assert valid == {DAYS[1]} and errors == []
+    value["events"], value["eventCount"] = [], 0
+    value["receiptSha256"] = ops.receipt_digest(value)
+    assert ops.verify_rows([value], current, windows, at("2026-11-11T00:00:00Z")) == ({DAYS[1]}, [])
+
+
+@pytest.mark.parametrize("case,reason", [
+    ("wrong_code", "PINNED_RECEIPT_CODE_MISMATCH"),
+    ("missing_code", "PINNED_RECEIPT_CODE_MISMATCH"),
+    ("missing_events", "EVENT_COUNT_MISMATCH"),
+    ("missing_sources", "SOURCE_RECEIPTS_MISSING"),
+    ("source_query_gap", "SOURCE_RECEIPT_SCHEMA_OR_COVERAGE_INVALID"),
+    ("bad_page_hash", "SOURCE_RECEIPT_SCHEMA_OR_COVERAGE_INVALID"),
+    ("wrong_event_session", "EVENT_RECEIPT_SCHEMA_INVALID"),
+    ("missing_event_hash", "EVENT_RECEIPT_SCHEMA_INVALID"),
+])
+def test_corporate_self_consistent_digest_does_not_prove_provenance(case, reason):
+    current = study(studyId=ops.CORPORATE_STUDY)
+    value = corporate_row(DAYS[1], DAYS[0], DAYS[2])
+    if case == "wrong_code":
+        value["codeCommit"] = "0" * 40
+    elif case == "missing_code":
+        value.pop("codeCommit")
+    elif case == "missing_events":
+        value.pop("events")
+        value.pop("eventCount")
+    elif case == "missing_sources":
+        value.pop("sources")
+    elif case == "source_query_gap":
+        value["sources"].pop()
+    elif case == "bad_page_hash":
+        value["sources"][0]["pageSha256"] = ["bad"]
+    elif case == "wrong_event_session":
+        value["events"][0]["entrySession"] = DAYS[3]
+    elif case == "missing_event_hash":
+        value["events"][0].pop("sourceBodySha256")
+    value["receiptSha256"] = ops.receipt_digest(value)
+    windows = ops.session_windows(SESSIONS, DAYS[0])
+    valid, errors = ops.verify_rows([value], current, windows, at("2026-11-11T00:00:00Z"))
+    assert not valid and reason in errors[0]["reasons"]
+    assert not ops.verify_new_receipt([value], current, DAYS[1], windows, at("2026-11-11T00:00:00Z"))["valid"]
+
+
+def test_postwrite_verification_refuses_other_corrupt_rows():
+    windows = ops.session_windows(SESSIONS, DAYS[0])
+    bad = row(DAYS[0])
+    bad["receiptSha256"] = "0" * 64
+    result = ops.verify_new_receipt([bad, row(DAYS[1])], study(), DAYS[1], windows, at("2026-11-11T00:00:00Z"))
+    assert not result["valid"]
+    assert result["errors"][0]["session"] == DAYS[0]
+
+
+def test_alert_job_cannot_suppress_authorized_trustworthy_status_publication():
+    monitor = WORKFLOW.split("  monitor:", 1)[1].split("  surface-alerts:", 1)[0]
+    alert = WORKFLOW.split("  surface-alerts:", 1)[1].split("  publish-status:", 1)[0]
+    publish = WORKFLOW.split("  publish-status:", 1)[1]
+    assert 'test "$code" -eq 0 || test "$code" -eq 1' in monitor
+    assert "Verify prior receipt and registered authorization bytes" in monitor
+    assert "alert_exit:" in monitor and "run: exit 1" not in monitor
+    assert "needs: monitor" in alert and "needs.monitor.outputs.alert_exit == '1'" in alert
+    assert "run: exit 1" in alert
+    assert "needs: [corporate-writer, monitor]" in publish
+    assert "always() && !cancelled()" in publish
+    assert "needs.monitor.result == 'success'" in publish
+    assert "needs.corporate-writer.outputs.authorized == 'true'" in publish
+    assert "surface-alerts" not in publish

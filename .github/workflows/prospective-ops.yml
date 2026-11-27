@@ -115,6 +115,8 @@ jobs:
     if: always() && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    outputs:
+      alert_exit: ${{ steps.status.outputs.alert_exit }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -141,6 +143,7 @@ jobs:
           code=0
           python scripts/prospective_ops.py status --ledger-ref origin/signal-history \
             --as-of "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --writer-outcomes "$outcome" --out prospective-status.json > /dev/null || code=$?
+          test "$code" -eq 0 || test "$code" -eq 1
           test -s prospective-status.json
           echo "alert_exit=$code" >> "$GITHUB_OUTPUT"
           python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
@@ -162,13 +165,19 @@ jobs:
       - name: Verify prior receipt and registered authorization bytes
         run: python scripts/prospective_ops.py verify-immutability --study "$STUDY" --ledger-ref origin/signal-history
 
-      - name: Surface alerts in the workflow result
-        if: steps.status.outputs.alert_exit != '0'
-        run: exit 1
+  # Alerts make the run red independently of a trustworthy status publication.
+  # A broken monitor or failed immutability check must never publish.
+  surface-alerts:
+    needs: monitor
+    if: always() && !cancelled() && needs.monitor.result == 'success' && needs.monitor.outputs.alert_exit == '1' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - run: exit 1
 
   publish-status:
     needs: [corporate-writer, monitor]
-    if: needs.corporate-writer.outputs.authorized == 'true' && github.ref == 'refs/heads/main'
+    if: always() && !cancelled() && needs.monitor.result == 'success' && needs.corporate-writer.outputs.authorized == 'true' && github.ref == 'refs/heads/main'
     permissions:
       contents: write
     runs-on: ubuntu-latest
