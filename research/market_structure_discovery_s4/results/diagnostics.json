@@ -1,0 +1,1229 @@
+{
+  "candidate_storms": [
+    {
+      "atcf_id": "AL092012",
+      "landfall_utc": "2012-08-29T00:00:00Z",
+      "landfalls_in_box": 2,
+      "lat": 28.9,
+      "lon": -89.4,
+      "name": "ISAAC",
+      "wind_knots": 70
+    },
+    {
+      "atcf_id": "AL092017",
+      "landfall_utc": "2017-08-26T03:00:00Z",
+      "landfalls_in_box": 2,
+      "lat": 28.0,
+      "lon": -96.9,
+      "name": "HARVEY",
+      "wind_knots": 115
+    },
+    {
+      "atcf_id": "AL162017",
+      "landfall_utc": "2017-10-08T00:00:00Z",
+      "landfalls_in_box": 2,
+      "lat": 29.1,
+      "lon": -89.2,
+      "name": "NATE",
+      "wind_knots": 75
+    },
+    {
+      "atcf_id": "AL022019",
+      "landfall_utc": "2019-07-13T15:00:00Z",
+      "landfalls_in_box": 1,
+      "lat": 29.6,
+      "lon": -92.2,
+      "name": "BARRY",
+      "wind_knots": 65
+    },
+    {
+      "atcf_id": "AL082020",
+      "landfall_utc": "2020-07-25T22:00:00Z",
+      "landfalls_in_box": 2,
+      "lat": 26.8,
+      "lon": -97.3,
+      "name": "HANNA",
+      "wind_knots": 80
+    },
+    {
+      "atcf_id": "AL132020",
+      "landfall_utc": "2020-08-27T06:00:00Z",
+      "landfalls_in_box": 1,
+      "lat": 29.8,
+      "lon": -93.3,
+      "name": "LAURA",
+      "wind_knots": 130
+    },
+    {
+      "atcf_id": "AL192020",
+      "landfall_utc": "2020-09-16T09:45:00Z",
+      "landfalls_in_box": 1,
+      "lat": 30.3,
+      "lon": -87.7,
+      "name": "SALLY",
+      "wind_knots": 95
+    },
+    {
+      "atcf_id": "AL262020",
+      "landfall_utc": "2020-10-09T23:00:00Z",
+      "landfalls_in_box": 1,
+      "lat": 29.8,
+      "lon": -93.1,
+      "name": "DELTA",
+      "wind_knots": 85
+    },
+    {
+      "atcf_id": "AL282020",
+      "landfall_utc": "2020-10-28T21:00:00Z",
+      "landfalls_in_box": 1,
+      "lat": 29.2,
+      "lon": -90.6,
+      "name": "ZETA",
+      "wind_knots": 100
+    },
+    {
+      "atcf_id": "AL092021",
+      "landfall_utc": "2021-08-29T16:55:00Z",
+      "landfalls_in_box": 1,
+      "lat": 29.1,
+      "lon": -90.2,
+      "name": "IDA",
+      "wind_knots": 130
+    },
+    {
+      "atcf_id": "AL142021",
+      "landfall_utc": "2021-09-14T05:30:00Z",
+      "landfalls_in_box": 1,
+      "lat": 28.7,
+      "lon": -95.7,
+      "name": "NICHOLAS",
+      "wind_knots": 65
+    },
+    {
+      "atcf_id": "AL022024",
+      "landfall_utc": "2024-07-08T08:40:00Z",
+      "landfalls_in_box": 1,
+      "lat": 28.6,
+      "lon": -96.0,
+      "name": "BERYL",
+      "wind_knots": 80
+    },
+    {
+      "atcf_id": "AL062024",
+      "landfall_utc": "2024-09-11T22:00:00Z",
+      "landfalls_in_box": 1,
+      "lat": 29.3,
+      "lon": -91.3,
+      "name": "FRANCINE",
+      "wind_knots": 90
+    }
+  ],
+  "capacity_corroborated_cluster_count": 2,
+  "cluster_counts_by_max_gap_days": {
+    "14": 13,
+    "28": 9,
+    "42": 8,
+    "56": 7
+  },
+  "confirmed_causal_clusters": 0,
+  "descriptive_benchmark_mae_kbd": {
+    "last_minus_2": 823.7777777777778,
+    "ols_minus_9_to_2": 1023.1362433862432
+  },
+  "episodes": [
+    {
+      "atcf_ids": [
+        "AL092012"
+      ],
+      "delta_0_vs_previous_friday": {
+        "gross_padd2_kbd": -108.0,
+        "gross_padd3_kbd": -801.0,
+        "gross_padd4_kbd": 3.0,
+        "stock_padd1_kb": 379.0,
+        "stock_padd3_kb": -2411.0
+      },
+      "descriptive_base_t0_kbd": {
+        "last_minus_2": 7902.0,
+        "ols_minus_9_to_2": 7957.488095238095
+      },
+      "gross_padd2_kbd_change_pct": -3.018446,
+      "gross_padd3_kbd_change_pct": -10.043887,
+      "gross_padd4_kbd_change_pct": 0.524476,
+      "observed_gross_t0_kbd": 7174.0,
+      "physical_week_path": [
+        {
+          "date": "2012-08-17",
+          "gross_padd2_kbd": 3628.0,
+          "gross_padd3_kbd": 7902.0,
+          "gross_padd4_kbd": 609.0,
+          "offset": -2,
+          "stock_padd1_kb": 49575.0,
+          "stock_padd3_kb": 70171.0
+        },
+        {
+          "date": "2012-08-24",
+          "gross_padd2_kbd": 3578.0,
+          "gross_padd3_kbd": 7975.0,
+          "gross_padd4_kbd": 572.0,
+          "offset": -1,
+          "stock_padd1_kb": 49463.0,
+          "stock_padd3_kb": 68908.0
+        },
+        {
+          "date": "2012-08-31",
+          "gross_padd2_kbd": 3470.0,
+          "gross_padd3_kbd": 7174.0,
+          "gross_padd4_kbd": 575.0,
+          "offset": 0,
+          "stock_padd1_kb": 49842.0,
+          "stock_padd3_kb": 66497.0
+        },
+        {
+          "date": "2012-09-07",
+          "gross_padd2_kbd": 3473.0,
+          "gross_padd3_kbd": 6949.0,
+          "gross_padd4_kbd": 586.0,
+          "offset": 1,
+          "stock_padd1_kb": 50071.0,
+          "stock_padd3_kb": 65104.0
+        },
+        {
+          "date": "2012-09-14",
+          "gross_padd2_kbd": 3417.0,
+          "gross_padd3_kbd": 7688.0,
+          "gross_padd4_kbd": 573.0,
+          "offset": 2,
+          "stock_padd1_kb": 47768.0,
+          "stock_padd3_kb": 65571.0
+        },
+        {
+          "date": "2012-09-21",
+          "gross_padd2_kbd": 3257.0,
+          "gross_padd3_kbd": 7725.0,
+          "gross_padd4_kbd": 547.0,
+          "offset": 3,
+          "stock_padd1_kb": 46811.0,
+          "stock_padd3_kb": 67234.0
+        }
+      ],
+      "price_clock": {
+        "next_monday": "2012-09-10",
+        "strictly_following_monday": "2012-09-03",
+        "strictly_preceding_monday": "2012-08-27"
+      },
+      "price_usdgal": {
+        "retail_padd1_usdgal": [
+          3.75,
+          3.811,
+          3.827
+        ],
+        "retail_padd3_usdgal": [
+          3.582,
+          3.645,
+          3.641
+        ]
+      },
+      "recorded_padd3_gasoline_draw_kb": 2411.0,
+      "storm_names": [
+        "ISAAC"
+      ],
+      "week_0": "2012-08-31"
+    },
+    {
+      "atcf_ids": [
+        "AL092017"
+      ],
+      "delta_0_vs_previous_friday": {
+        "gross_padd2_kbd": -2.0,
+        "gross_padd3_kbd": -3180.0,
+        "gross_padd4_kbd": -2.0,
+        "stock_padd1_kb": -2230.0,
+        "stock_padd3_kb": -60.0
+      },
+      "descriptive_base_t0_kbd": {
+        "last_minus_2": 9293.0,
+        "ols_minus_9_to_2": 9415.047619047618
+      },
+      "gross_padd2_kbd_change_pct": -0.049188,
+      "gross_padd3_kbd_change_pct": -33.98162,
+      "gross_padd4_kbd_change_pct": -0.293255,
+      "observed_gross_t0_kbd": 6178.0,
+      "physical_week_path": [
+        {
+          "date": "2017-08-18",
+          "gross_padd2_kbd": 3941.0,
+          "gross_padd3_kbd": 9293.0,
+          "gross_padd4_kbd": 636.0,
+          "offset": -2,
+          "stock_padd1_kb": 63034.0,
+          "stock_padd3_kb": 81779.0
+        },
+        {
+          "date": "2017-08-25",
+          "gross_padd2_kbd": 4066.0,
+          "gross_padd3_kbd": 9358.0,
+          "gross_padd4_kbd": 682.0,
+          "offset": -1,
+          "stock_padd1_kb": 62718.0,
+          "stock_padd3_kb": 82411.0
+        },
+        {
+          "date": "2017-09-01",
+          "gross_padd2_kbd": 4064.0,
+          "gross_padd3_kbd": 6178.0,
+          "gross_padd4_kbd": 680.0,
+          "offset": 0,
+          "stock_padd1_kb": 60488.0,
+          "stock_padd3_kb": 82351.0
+        },
+        {
+          "date": "2017-09-08",
+          "gross_padd2_kbd": 3960.0,
+          "gross_padd3_kbd": 5915.0,
+          "gross_padd4_kbd": 686.0,
+          "offset": 1,
+          "stock_padd1_kb": 54833.0,
+          "stock_padd3_kb": 78701.0
+        },
+        {
+          "date": "2017-09-15",
+          "gross_padd2_kbd": 3820.0,
+          "gross_padd3_kbd": 7117.0,
+          "gross_padd4_kbd": 678.0,
+          "offset": 2,
+          "stock_padd1_kb": 53448.0,
+          "stock_padd3_kb": 76301.0
+        },
+        {
+          "date": "2017-09-22",
+          "gross_padd2_kbd": 3616.0,
+          "gross_padd3_kbd": 8283.0,
+          "gross_padd4_kbd": 678.0,
+          "offset": 3,
+          "stock_padd1_kb": 55808.0,
+          "stock_padd3_kb": 74214.0
+        }
+      ],
+      "price_clock": {
+        "next_monday": "2017-09-04",
+        "strictly_following_monday": "2017-08-28",
+        "strictly_preceding_monday": "2017-08-21"
+      },
+      "price_usdgal": {
+        "retail_padd1_usdgal": [
+          2.303,
+          2.337,
+          2.723
+        ],
+        "retail_padd3_usdgal": [
+          2.118,
+          2.156,
+          2.506
+        ]
+      },
+      "recorded_padd3_gasoline_draw_kb": 60.0,
+      "storm_names": [
+        "HARVEY"
+      ],
+      "week_0": "2017-09-01"
+    },
+    {
+      "atcf_ids": [
+        "AL162017"
+      ],
+      "delta_0_vs_previous_friday": {
+        "gross_padd2_kbd": -171.0,
+        "gross_padd3_kbd": -470.0,
+        "gross_padd4_kbd": -14.0,
+        "stock_padd1_kb": -298.0,
+        "stock_padd3_kb": 2982.0
+      },
+      "descriptive_base_t0_kbd": {
+        "last_minus_2": 8350.0,
+        "ols_minus_9_to_2": 6698.761904761905
+      },
+      "gross_padd2_kbd_change_pct": -4.822335,
+      "gross_padd3_kbd_change_pct": -5.446118,
+      "gross_padd4_kbd_change_pct": -2.086438,
+      "observed_gross_t0_kbd": 8160.0,
+      "physical_week_path": [
+        {
+          "date": "2017-09-29",
+          "gross_padd2_kbd": 3599.0,
+          "gross_padd3_kbd": 8350.0,
+          "gross_padd4_kbd": 675.0,
+          "offset": -2,
+          "stock_padd1_kb": 56936.0,
+          "stock_padd3_kb": 76092.0
+        },
+        {
+          "date": "2017-10-06",
+          "gross_padd2_kbd": 3546.0,
+          "gross_padd3_kbd": 8630.0,
+          "gross_padd4_kbd": 671.0,
+          "offset": -1,
+          "stock_padd1_kb": 58210.0,
+          "stock_padd3_kb": 77071.0
+        },
+        {
+          "date": "2017-10-13",
+          "gross_padd2_kbd": 3375.0,
+          "gross_padd3_kbd": 8160.0,
+          "gross_padd4_kbd": 657.0,
+          "offset": 0,
+          "stock_padd1_kb": 57912.0,
+          "stock_padd3_kb": 80053.0
+        },
+        {
+          "date": "2017-10-20",
+          "gross_padd2_kbd": 3417.0,
+          "gross_padd3_kbd": 8796.0,
+          "gross_padd4_kbd": 649.0,
+          "offset": 1,
+          "stock_padd1_kb": 56880.0,
+          "stock_padd3_kb": 77653.0
+        },
+        {
+          "date": "2017-10-27",
+          "gross_padd2_kbd": 3479.0,
+          "gross_padd3_kbd": 8819.0,
+          "gross_padd4_kbd": 598.0,
+          "offset": 2,
+          "stock_padd1_kb": 53990.0,
+          "stock_padd3_kb": 78803.0
+        },
+        {
+          "date": "2017-11-03",
+          "gross_padd2_kbd": 3391.0,
+          "gross_padd3_kbd": 8998.0,
+          "gross_padd4_kbd": 585.0,
+          "offset": 3,
+          "stock_padd1_kb": 52416.0,
+          "stock_padd3_kb": 77992.0
+        }
+      ],
+      "price_clock": {
+        "next_monday": "2017-10-16",
+        "strictly_following_monday": "2017-10-09",
+        "strictly_preceding_monday": "2017-10-02"
+      },
+      "price_usdgal": {
+        "retail_padd1_usdgal": [
+          2.592,
+          2.522,
+          2.47
+        ],
+        "retail_padd3_usdgal": [
+          2.381,
+          2.316,
+          2.262
+        ]
+      },
+      "recorded_padd3_gasoline_draw_kb": 0,
+      "storm_names": [
+        "NATE"
+      ],
+      "week_0": "2017-10-13"
+    },
+    {
+      "atcf_ids": [
+        "AL022019"
+      ],
+      "delta_0_vs_previous_friday": {
+        "gross_padd2_kbd": 67.0,
+        "gross_padd3_kbd": -423.0,
+        "gross_padd4_kbd": 22.0,
+        "stock_padd1_kb": 409.0,
+        "stock_padd3_kb": -822.0
+      },
+      "descriptive_base_t0_kbd": {
+        "last_minus_2": 9532.0,
+        "ols_minus_9_to_2": 9580.095238095239
+      },
+      "gross_padd2_kbd_change_pct": 1.652689,
+      "gross_padd3_kbd_change_pct": -4.491876,
+      "gross_padd4_kbd_change_pct": 3.206997,
+      "observed_gross_t0_kbd": 8994.0,
+      "physical_week_path": [
+        {
+          "date": "2019-07-05",
+          "gross_padd2_kbd": 4052.0,
+          "gross_padd3_kbd": 9532.0,
+          "gross_padd4_kbd": 671.0,
+          "offset": -2,
+          "stock_padd1_kb": 59271.0,
+          "stock_padd3_kb": 81746.0
+        },
+        {
+          "date": "2019-07-12",
+          "gross_padd2_kbd": 4054.0,
+          "gross_padd3_kbd": 9417.0,
+          "gross_padd4_kbd": 686.0,
+          "offset": -1,
+          "stock_padd1_kb": 59532.0,
+          "stock_padd3_kb": 83814.0
+        },
+        {
+          "date": "2019-07-19",
+          "gross_padd2_kbd": 4121.0,
+          "gross_padd3_kbd": 8994.0,
+          "gross_padd4_kbd": 708.0,
+          "offset": 0,
+          "stock_padd1_kb": 59941.0,
+          "stock_padd3_kb": 82992.0
+        },
+        {
+          "date": "2019-07-26",
+          "gross_padd2_kbd": 3939.0,
+          "gross_padd3_kbd": 9232.0,
+          "gross_padd4_kbd": 703.0,
+          "offset": 1,
+          "stock_padd1_kb": 59111.0,
+          "stock_padd3_kb": 83849.0
+        },
+        {
+          "date": "2019-08-02",
+          "gross_padd2_kbd": 4172.0,
+          "gross_padd3_kbd": 9553.0,
+          "gross_padd4_kbd": 707.0,
+          "offset": 2,
+          "stock_padd1_kb": 61048.0,
+          "stock_padd3_kb": 84758.0
+        },
+        {
+          "date": "2019-08-09",
+          "gross_padd2_kbd": 4107.0,
+          "gross_padd3_kbd": 9484.0,
+          "gross_padd4_kbd": 678.0,
+          "offset": 3,
+          "stock_padd1_kb": 61588.0,
+          "stock_padd3_kb": 84372.0
+        }
+      ],
+      "price_clock": {
+        "next_monday": "2019-07-22",
+        "strictly_following_monday": "2019-07-15",
+        "strictly_preceding_monday": "2019-07-08"
+      },
+      "price_usdgal": {
+        "retail_padd1_usdgal": [
+          2.661,
+          2.68,
+          2.672
+        ],
+        "retail_padd3_usdgal": [
+          2.418,
+          2.455,
+          2.463
+        ]
+      },
+      "recorded_padd3_gasoline_draw_kb": 822.0,
+      "storm_names": [
+        "BARRY"
+      ],
+      "week_0": "2019-07-19"
+    },
+    {
+      "atcf_ids": [
+        "AL082020"
+      ],
+      "delta_0_vs_previous_friday": {
+        "gross_padd2_kbd": -21.0,
+        "gross_padd3_kbd": -87.0,
+        "gross_padd4_kbd": -1.0,
+        "stock_padd1_kb": 499.0,
+        "stock_padd3_kb": 851.0
+      },
+      "descriptive_base_t0_kbd": {
+        "last_minus_2": 8121.0,
+        "ols_minus_9_to_2": 8240.047619047618
+      },
+      "gross_padd2_kbd_change_pct": -0.575974,
+      "gross_padd3_kbd_change_pct": -1.047436,
+      "gross_padd4_kbd_change_pct": -0.165289,
+      "observed_gross_t0_kbd": 8219.0,
+      "physical_week_path": [
+        {
+          "date": "2020-07-17",
+          "gross_padd2_kbd": 3610.0,
+          "gross_padd3_kbd": 8121.0,
+          "gross_padd4_kbd": 610.0,
+          "offset": -2,
+          "stock_padd1_kb": 67688.0,
+          "stock_padd3_kb": 89723.0
+        },
+        {
+          "date": "2020-07-24",
+          "gross_padd2_kbd": 3646.0,
+          "gross_padd3_kbd": 8306.0,
+          "gross_padd4_kbd": 605.0,
+          "offset": -1,
+          "stock_padd1_kb": 67999.0,
+          "stock_padd3_kb": 91045.0
+        },
+        {
+          "date": "2020-07-31",
+          "gross_padd2_kbd": 3625.0,
+          "gross_padd3_kbd": 8219.0,
+          "gross_padd4_kbd": 604.0,
+          "offset": 0,
+          "stock_padd1_kb": 68498.0,
+          "stock_padd3_kb": 91896.0
+        },
+        {
+          "date": "2020-08-07",
+          "gross_padd2_kbd": 3676.0,
+          "gross_padd3_kbd": 8087.0,
+          "gross_padd4_kbd": 602.0,
+          "offset": 1,
+          "stock_padd1_kb": 68255.0,
+          "stock_padd3_kb": 92884.0
+        },
+        {
+          "date": "2020-08-14",
+          "gross_padd2_kbd": 3626.0,
+          "gross_padd3_kbd": 8201.0,
+          "gross_padd4_kbd": 570.0,
+          "offset": 2,
+          "stock_padd1_kb": 68156.0,
+          "stock_padd3_kb": 89325.0
+        },
+        {
+          "date": "2020-08-21",
+          "gross_padd2_kbd": 3695.0,
+          "gross_padd3_kbd": 8355.0,
+          "gross_padd4_kbd": 596.0,
+          "offset": 3,
+          "stock_padd1_kb": 63717.0,
+          "stock_padd3_kb": 90046.0
+        }
+      ],
+      "price_clock": {
+        "next_monday": "2020-08-03",
+        "strictly_following_monday": "2020-07-27",
+        "strictly_preceding_monday": "2020-07-20"
+      },
+      "price_usdgal": {
+        "retail_padd1_usdgal": [
+          2.106,
+          2.093,
+          2.105
+        ],
+        "retail_padd3_usdgal": [
+          1.875,
+          1.856,
+          1.847
+        ]
+      },
+      "recorded_padd3_gasoline_draw_kb": 0,
+      "storm_names": [
+        "HANNA"
+      ],
+      "week_0": "2020-07-31"
+    },
+    {
+      "atcf_ids": [
+        "AL132020",
+        "AL192020",
+        "AL262020",
+        "AL282020"
+      ],
+      "delta_0_vs_previous_friday": {
+        "gross_padd2_kbd": 2.0,
+        "gross_padd3_kbd": -1011.0,
+        "gross_padd4_kbd": -1.0,
+        "stock_padd1_kb": -493.0,
+        "stock_padd3_kb": -2882.0
+      },
+      "descriptive_base_t0_kbd": {
+        "last_minus_2": 8201.0,
+        "ols_minus_9_to_2": 8342.166666666666
+      },
+      "gross_padd2_kbd_change_pct": 0.054127,
+      "gross_padd3_kbd_change_pct": -12.100539,
+      "gross_padd4_kbd_change_pct": -0.167785,
+      "observed_gross_t0_kbd": 7344.0,
+      "physical_week_path": [
+        {
+          "date": "2020-08-14",
+          "gross_padd2_kbd": 3626.0,
+          "gross_padd3_kbd": 8201.0,
+          "gross_padd4_kbd": 570.0,
+          "offset": -2,
+          "stock_padd1_kb": 68156.0,
+          "stock_padd3_kb": 89325.0
+        },
+        {
+          "date": "2020-08-21",
+          "gross_padd2_kbd": 3695.0,
+          "gross_padd3_kbd": 8355.0,
+          "gross_padd4_kbd": 596.0,
+          "offset": -1,
+          "stock_padd1_kb": 63717.0,
+          "stock_padd3_kb": 90046.0
+        },
+        {
+          "date": "2020-08-28",
+          "gross_padd2_kbd": 3697.0,
+          "gross_padd3_kbd": 7344.0,
+          "gross_padd4_kbd": 595.0,
+          "offset": 0,
+          "stock_padd1_kb": 63224.0,
+          "stock_padd3_kb": 87164.0
+        },
+        {
+          "date": "2020-09-04",
+          "gross_padd2_kbd": 3724.0,
+          "gross_padd3_kbd": 6377.0,
+          "gross_padd4_kbd": 603.0,
+          "offset": 1,
+          "stock_padd1_kb": 60427.0,
+          "stock_padd3_kb": 86554.0
+        },
+        {
+          "date": "2020-09-11",
+          "gross_padd2_kbd": 3572.0,
+          "gross_padd3_kbd": 7263.0,
+          "gross_padd4_kbd": 582.0,
+          "offset": 2,
+          "stock_padd1_kb": 62182.0,
+          "stock_padd3_kb": 84382.0
+        }
+      ],
+      "price_clock": {
+        "next_monday": "2020-09-07",
+        "strictly_following_monday": "2020-08-31",
+        "strictly_preceding_monday": "2020-08-24"
+      },
+      "price_usdgal": {
+        "retail_padd1_usdgal": [
+          2.096,
+          2.156,
+          2.168
+        ],
+        "retail_padd3_usdgal": [
+          1.866,
+          1.889,
+          1.89
+        ]
+      },
+      "recorded_padd3_gasoline_draw_kb": 2882.0,
+      "storm_names": [
+        "LAURA",
+        "SALLY",
+        "DELTA",
+        "ZETA"
+      ],
+      "week_0": "2020-08-28"
+    },
+    {
+      "atcf_ids": [
+        "AL092021",
+        "AL142021"
+      ],
+      "delta_0_vs_previous_friday": {
+        "gross_padd2_kbd": -228.0,
+        "gross_padd3_kbd": -1626.0,
+        "gross_padd4_kbd": -7.0,
+        "stock_padd1_kb": -3582.0,
+        "stock_padd3_kb": -3156.0
+      },
+      "descriptive_base_t0_kbd": {
+        "last_minus_2": 8945.0,
+        "ols_minus_9_to_2": 9123.059523809523
+      },
+      "gross_padd2_kbd_change_pct": -5.773614,
+      "gross_padd3_kbd_change_pct": -18.052626,
+      "gross_padd4_kbd_change_pct": -1.111111,
+      "observed_gross_t0_kbd": 7381.0,
+      "physical_week_path": [
+        {
+          "date": "2021-08-20",
+          "gross_padd2_kbd": 4050.0,
+          "gross_padd3_kbd": 8945.0,
+          "gross_padd4_kbd": 633.0,
+          "offset": -2,
+          "stock_padd1_kb": 56381.0,
+          "stock_padd3_kb": 84903.0
+        },
+        {
+          "date": "2021-08-27",
+          "gross_padd2_kbd": 3949.0,
+          "gross_padd3_kbd": 9007.0,
+          "gross_padd4_kbd": 630.0,
+          "offset": -1,
+          "stock_padd1_kb": 57662.0,
+          "stock_padd3_kb": 84961.0
+        },
+        {
+          "date": "2021-09-03",
+          "gross_padd2_kbd": 3721.0,
+          "gross_padd3_kbd": 7381.0,
+          "gross_padd4_kbd": 623.0,
+          "offset": 0,
+          "stock_padd1_kb": 54080.0,
+          "stock_padd3_kb": 81805.0
+        },
+        {
+          "date": "2021-09-10",
+          "gross_padd2_kbd": 4006.0,
+          "gross_padd3_kbd": 7113.0,
+          "gross_padd4_kbd": 631.0,
+          "offset": 1,
+          "stock_padd1_kb": 53797.0,
+          "stock_padd3_kb": 79996.0
+        }
+      ],
+      "price_clock": {
+        "next_monday": "2021-09-06",
+        "strictly_following_monday": "2021-08-30",
+        "strictly_preceding_monday": "2021-08-23"
+      },
+      "price_usdgal": {
+        "retail_padd1_usdgal": [
+          3.023,
+          3.02,
+          3.065
+        ],
+        "retail_padd3_usdgal": [
+          2.803,
+          2.774,
+          2.826
+        ]
+      },
+      "recorded_padd3_gasoline_draw_kb": 3156.0,
+      "storm_names": [
+        "IDA",
+        "NICHOLAS"
+      ],
+      "week_0": "2021-09-03"
+    },
+    {
+      "atcf_ids": [
+        "AL022024"
+      ],
+      "delta_0_vs_previous_friday": {
+        "gross_padd2_kbd": 61.0,
+        "gross_padd3_kbd": -430.0,
+        "gross_padd4_kbd": 20.0,
+        "stock_padd1_kb": -48.0,
+        "stock_padd3_kb": 2827.0
+      },
+      "descriptive_base_t0_kbd": {
+        "last_minus_2": 9523.0,
+        "ols_minus_9_to_2": 9536.607142857143
+      },
+      "gross_padd2_kbd_change_pct": 1.507289,
+      "gross_padd3_kbd_change_pct": -4.438481,
+      "gross_padd4_kbd_change_pct": 3.205128,
+      "observed_gross_t0_kbd": 9258.0,
+      "physical_week_path": [
+        {
+          "date": "2024-06-28",
+          "gross_padd2_kbd": 3954.0,
+          "gross_padd3_kbd": 9523.0,
+          "gross_padd4_kbd": 621.0,
+          "offset": -2,
+          "stock_padd1_kb": 56973.0,
+          "stock_padd3_kb": 86820.0
+        },
+        {
+          "date": "2024-07-05",
+          "gross_padd2_kbd": 4047.0,
+          "gross_padd3_kbd": 9688.0,
+          "gross_padd4_kbd": 624.0,
+          "offset": -1,
+          "stock_padd1_kb": 56466.0,
+          "stock_padd3_kb": 86062.0
+        },
+        {
+          "date": "2024-07-12",
+          "gross_padd2_kbd": 4108.0,
+          "gross_padd3_kbd": 9258.0,
+          "gross_padd4_kbd": 644.0,
+          "offset": 0,
+          "stock_padd1_kb": 56418.0,
+          "stock_padd3_kb": 88889.0
+        },
+        {
+          "date": "2024-07-19",
+          "gross_padd2_kbd": 3928.0,
+          "gross_padd3_kbd": 9141.0,
+          "gross_padd4_kbd": 613.0,
+          "offset": 1,
+          "stock_padd1_kb": 54859.0,
+          "stock_padd3_kb": 87058.0
+        },
+        {
+          "date": "2024-07-26",
+          "gross_padd2_kbd": 3706.0,
+          "gross_padd3_kbd": 9137.0,
+          "gross_padd4_kbd": 579.0,
+          "offset": 2,
+          "stock_padd1_kb": 56288.0,
+          "stock_padd3_kb": 83030.0
+        },
+        {
+          "date": "2024-08-02",
+          "gross_padd2_kbd": 3792.0,
+          "gross_padd3_kbd": 9108.0,
+          "gross_padd4_kbd": 613.0,
+          "offset": 3,
+          "stock_padd1_kb": 58004.0,
+          "stock_padd3_kb": 83228.0
+        }
+      ],
+      "price_clock": {
+        "next_monday": "2024-07-22",
+        "strictly_following_monday": "2024-07-15",
+        "strictly_preceding_monday": "2024-07-01"
+      },
+      "price_usdgal": {
+        "retail_padd1_usdgal": [
+          3.389,
+          3.466,
+          3.409
+        ],
+        "retail_padd3_usdgal": [
+          3.071,
+          3.11,
+          3.047
+        ]
+      },
+      "recorded_padd3_gasoline_draw_kb": 0,
+      "storm_names": [
+        "BERYL"
+      ],
+      "week_0": "2024-07-12"
+    },
+    {
+      "atcf_ids": [
+        "AL062024"
+      ],
+      "delta_0_vs_previous_friday": {
+        "gross_padd2_kbd": -22.0,
+        "gross_padd3_kbd": -103.0,
+        "gross_padd4_kbd": -53.0,
+        "stock_padd1_kb": -2632.0,
+        "stock_padd3_kb": 4268.0
+      },
+      "descriptive_base_t0_kbd": {
+        "last_minus_2": 9252.0,
+        "ols_minus_9_to_2": 9293.47619047619
+      },
+      "gross_padd2_kbd_change_pct": -0.543076,
+      "gross_padd3_kbd_change_pct": -1.108003,
+      "gross_padd4_kbd_change_pct": -8.320251,
+      "observed_gross_t0_kbd": 9193.0,
+      "physical_week_path": [
+        {
+          "date": "2024-08-30",
+          "gross_padd2_kbd": 4127.0,
+          "gross_padd3_kbd": 9252.0,
+          "gross_padd4_kbd": 656.0,
+          "offset": -2,
+          "stock_padd1_kb": 58208.0,
+          "stock_padd3_kb": 76952.0
+        },
+        {
+          "date": "2024-09-06",
+          "gross_padd2_kbd": 4051.0,
+          "gross_padd3_kbd": 9296.0,
+          "gross_padd4_kbd": 637.0,
+          "offset": -1,
+          "stock_padd1_kb": 60995.0,
+          "stock_padd3_kb": 78621.0
+        },
+        {
+          "date": "2024-09-13",
+          "gross_padd2_kbd": 4029.0,
+          "gross_padd3_kbd": 9193.0,
+          "gross_padd4_kbd": 584.0,
+          "offset": 0,
+          "stock_padd1_kb": 58363.0,
+          "stock_padd3_kb": 82889.0
+        },
+        {
+          "date": "2024-09-20",
+          "gross_padd2_kbd": 4013.0,
+          "gross_padd3_kbd": 8974.0,
+          "gross_padd4_kbd": 595.0,
+          "offset": 1,
+          "stock_padd1_kb": 60082.0,
+          "stock_padd3_kb": 81190.0
+        },
+        {
+          "date": "2024-09-27",
+          "gross_padd2_kbd": 3609.0,
+          "gross_padd3_kbd": 8850.0,
+          "gross_padd4_kbd": 572.0,
+          "offset": 2,
+          "stock_padd1_kb": 60988.0,
+          "stock_padd3_kb": 80586.0
+        },
+        {
+          "date": "2024-10-04",
+          "gross_padd2_kbd": 3567.0,
+          "gross_padd3_kbd": 8834.0,
+          "gross_padd4_kbd": 572.0,
+          "offset": 3,
+          "stock_padd1_kb": 59659.0,
+          "stock_padd3_kb": 76949.0
+        }
+      ],
+      "price_clock": {
+        "next_monday": "2024-09-23",
+        "strictly_following_monday": "2024-09-16",
+        "strictly_preceding_monday": "2024-09-09"
+      },
+      "price_usdgal": {
+        "retail_padd1_usdgal": [
+          3.149,
+          3.085,
+          3.052
+        ],
+        "retail_padd3_usdgal": [
+          2.8,
+          2.728,
+          2.733
+        ]
+      },
+      "recorded_padd3_gasoline_draw_kb": 0,
+      "storm_names": [
+        "FRANCINE"
+      ],
+      "week_0": "2024-09-13"
+    }
+  ],
+  "gross_input_first_release_spot_check": {
+    "compared": 12,
+    "comparisons": [
+      {
+        "archived_kbd": 4064,
+        "current_kbd": 4064.0,
+        "series": "gross_padd2_kbd",
+        "week_ending": "2017-09-01"
+      },
+      {
+        "archived_kbd": 4066,
+        "current_kbd": 4066.0,
+        "series": "gross_padd2_kbd",
+        "week_ending": "2017-08-25"
+      },
+      {
+        "archived_kbd": 6178,
+        "current_kbd": 6178.0,
+        "series": "gross_padd3_kbd",
+        "week_ending": "2017-09-01"
+      },
+      {
+        "archived_kbd": 9358,
+        "current_kbd": 9358.0,
+        "series": "gross_padd3_kbd",
+        "week_ending": "2017-08-25"
+      },
+      {
+        "archived_kbd": 680,
+        "current_kbd": 680.0,
+        "series": "gross_padd4_kbd",
+        "week_ending": "2017-09-01"
+      },
+      {
+        "archived_kbd": 682,
+        "current_kbd": 682.0,
+        "series": "gross_padd4_kbd",
+        "week_ending": "2017-08-25"
+      },
+      {
+        "archived_kbd": 3721,
+        "current_kbd": 3721.0,
+        "series": "gross_padd2_kbd",
+        "week_ending": "2021-09-03"
+      },
+      {
+        "archived_kbd": 3949,
+        "current_kbd": 3949.0,
+        "series": "gross_padd2_kbd",
+        "week_ending": "2021-08-27"
+      },
+      {
+        "archived_kbd": 7381,
+        "current_kbd": 7381.0,
+        "series": "gross_padd3_kbd",
+        "week_ending": "2021-09-03"
+      },
+      {
+        "archived_kbd": 9007,
+        "current_kbd": 9007.0,
+        "series": "gross_padd3_kbd",
+        "week_ending": "2021-08-27"
+      },
+      {
+        "archived_kbd": 623,
+        "current_kbd": 623.0,
+        "series": "gross_padd4_kbd",
+        "week_ending": "2021-09-03"
+      },
+      {
+        "archived_kbd": 630,
+        "current_kbd": 630.0,
+        "series": "gross_padd4_kbd",
+        "week_ending": "2021-08-27"
+      }
+    ],
+    "match": 12,
+    "weeks_with_first_release_table": 2
+  },
+  "matched_landfall_rows": 17,
+  "mathematical_examples": {
+    "capacity_equivalence_kbd": [
+      {
+        "available_capacity_kbd": 6178.0,
+        "desired_inputs_kbd": 7178.0
+      },
+      {
+        "available_capacity_kbd": 7178.0,
+        "desired_inputs_kbd": 6178.0
+      }
+    ],
+    "closed_loop_reduced_coefficients": [
+      0.8,
+      0.8
+    ],
+    "dcf": {
+      "example_fixed_r_9pct": {
+        "0.02": 0.2196078431372549,
+        "0.04": 0.1923076923076923,
+        "0.06": 0.1509433962264151
+      },
+      "margin_projection_baseline": [
+        0.050314465408805076,
+        0.2823529411764706
+      ],
+      "margin_projection_with_both_caps": [
+        0.1153846153846154,
+        0.18
+      ],
+      "margin_projection_with_growth_cap": [
+        0.1153846153846154,
+        0.2823529411764706
+      ],
+      "margin_required_at_nine_pct_discount_and_growth_cap": 0.1923076923076923,
+      "max_compatible_discount_rate_at_growth_cap": 0.08680000000000002
+    },
+    "inventory_equivalence_kb": [
+      {
+        "inflow": 0,
+        "outflow": 60.0
+      },
+      {
+        "inflow": 2000,
+        "outflow": 2060.0
+      }
+    ],
+    "observability_determinants": {
+      "distinct_decay_det": 0.1,
+      "same_decay_det": 0.0
+    }
+  },
+  "monthly_transport": {
+    "months_per_series": 192,
+    "padd3_to_padd1_receipts_kb": {
+      "2017-07": {
+        "blending_components": 54381.0,
+        "finished_gasoline": 5016.0
+      },
+      "2017-08": {
+        "blending_components": 54265.0,
+        "finished_gasoline": 6103.0
+      },
+      "2017-09": {
+        "blending_components": 46432.0,
+        "finished_gasoline": 4359.0
+      },
+      "2017-10": {
+        "blending_components": 54211.0,
+        "finished_gasoline": 6018.0
+      },
+      "2021-07": {
+        "blending_components": 58198.0,
+        "finished_gasoline": 2621.0
+      },
+      "2021-08": {
+        "blending_components": 57203.0,
+        "finished_gasoline": 1880.0
+      },
+      "2021-09": {
+        "blending_components": 54931.0,
+        "finished_gasoline": 2188.0
+      },
+      "2021-10": {
+        "blending_components": 55201.0,
+        "finished_gasoline": 2496.0
+      }
+    },
+    "source_series": [
+      "MBCMXP1P31",
+      "MGFMXP1P31"
+    ]
+  },
+  "noaa_archive_landfall_rows": 249,
+  "series": {
+    "gross_padd2_kbd": {
+      "end": "2025-12-26",
+      "missing_weeks_with_warmup": 0,
+      "series": "WGIRIP22",
+      "start": "2010-01-01",
+      "study_weeks": 835
+    },
+    "gross_padd3_kbd": {
+      "end": "2025-12-26",
+      "missing_weeks_with_warmup": 0,
+      "series": "WGIRIP32",
+      "start": "2010-01-01",
+      "study_weeks": 835
+    },
+    "gross_padd4_kbd": {
+      "end": "2025-12-26",
+      "missing_weeks_with_warmup": 0,
+      "series": "WGIRIP42",
+      "start": "2010-01-01",
+      "study_weeks": 835
+    },
+    "retail_padd1_usdgal": {
+      "end": "2025-12-29",
+      "missing_weeks_with_warmup": 0,
+      "series": "EMM_EPMR_PTE_R10_DPG",
+      "start": "2010-01-04",
+      "study_weeks": 835
+    },
+    "retail_padd3_usdgal": {
+      "end": "2025-12-29",
+      "missing_weeks_with_warmup": 0,
+      "series": "EMM_EPMR_PTE_R30_DPG",
+      "start": "2010-01-04",
+      "study_weeks": 835
+    },
+    "stock_padd1_kb": {
+      "end": "2025-12-26",
+      "missing_weeks_with_warmup": 0,
+      "series": "WGTSTP11",
+      "start": "2010-01-01",
+      "study_weeks": 835
+    },
+    "stock_padd3_kb": {
+      "end": "2025-12-26",
+      "missing_weeks_with_warmup": 0,
+      "series": "WGTSTP31",
+      "start": "2010-01-01",
+      "study_weeks": 835
+    }
+  },
+  "status": "EXPLORATORY_CURRENT_VINTAGE",
+  "storm_design_mde_sd_at_normal_80pct": {
+    "13": 0.7770198746208293,
+    "32": 0.4952549378926284,
+    "88": 0.29864996446556646,
+    "9": 0.9338616666666667
+  }
+}
