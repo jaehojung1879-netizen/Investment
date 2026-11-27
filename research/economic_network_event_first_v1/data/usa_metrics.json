@@ -1,0 +1,85 @@
+{
+  "by_awarding_agency": {
+    "DOE": {
+      "transactions": 635,
+      "distinct_awards": 554,
+      "distinct_nonblank_recipient_ueis": 274,
+      "modified_or_nonzero_number": 610,
+      "negative_obligation": 45,
+      "zero_obligation": 385,
+      "initial_report_present": 635,
+      "initial_report_after_action": 8,
+      "initial_report_before_action": 371,
+      "initial_report_median_lag_days": -1,
+      "action_types": {
+        "OTHER ADMINISTRATIVE ACTION": 182,
+        "CLOSE OUT": 160,
+        "SUPPLEMENTAL AGREEMENT FOR WORK WITHIN SCOPE": 53,
+        "EXERCISE AN OPTION": 53,
+        "FUNDING ONLY ACTION": 153,
+        "": 25,
+        "CHANGE ORDER": 6,
+        "TERMINATE FOR CONVENIENCE (COMPLETE OR PARTIAL)": 1,
+        "DEFINITIZE CHANGE ORDER": 2
+      }
+    },
+    "HHS": {
+      "transactions": 2583,
+      "distinct_awards": 2495,
+      "distinct_nonblank_recipient_ueis": 1177,
+      "modified_or_nonzero_number": 1892,
+      "negative_obligation": 491,
+      "zero_obligation": 881,
+      "initial_report_present": 2583,
+      "initial_report_after_action": 73,
+      "initial_report_before_action": 1385,
+      "initial_report_median_lag_days": -1,
+      "action_types": {
+        "OTHER ADMINISTRATIVE ACTION": 679,
+        "CLOSE OUT": 238,
+        "EXERCISE AN OPTION": 307,
+        "": 691,
+        "CHANGE ORDER": 44,
+        "SUPPLEMENTAL AGREEMENT FOR WORK WITHIN SCOPE": 318,
+        "FUNDING ONLY ACTION": 289,
+        "DEFINITIZE CHANGE ORDER": 3,
+        "ADDITIONAL WORK (NEW AGREEMENT, JUSTIFICATION REQUIRED)": 4,
+        "UNIQUE ENTITY ID OR LEGAL BUSINESS NAME CHANGE - NON-NOVATION": 2,
+        "REREPRESENTATION OF NON-NOVATED MERGER/ACQUISITION": 1,
+        "LEGAL CONTRACT CANCELLATION": 2,
+        "TERMINATE FOR CONVENIENCE (COMPLETE OR PARTIAL)": 3,
+        "NOVATION AGREEMENT": 2
+      }
+    },
+    "NASA": {
+      "transactions": 1273,
+      "distinct_awards": 1066,
+      "distinct_nonblank_recipient_ueis": 531,
+      "modified_or_nonzero_number": 1049,
+      "negative_obligation": 80,
+      "zero_obligation": 388,
+      "initial_report_present": 1273,
+      "initial_report_after_action": 299,
+      "initial_report_before_action": 404,
+      "initial_report_median_lag_days": 0,
+      "action_types": {
+        "SUPPLEMENTAL AGREEMENT FOR WORK WITHIN SCOPE": 221,
+        "FUNDING ONLY ACTION": 482,
+        "OTHER ADMINISTRATIVE ACTION": 276,
+        "": 224,
+        "CHANGE ORDER": 36,
+        "EXERCISE AN OPTION": 24,
+        "ADDITIONAL WORK (NEW AGREEMENT, JUSTIFICATION REQUIRED)": 6,
+        "UNIQUE ENTITY ID OR LEGAL BUSINESS NAME CHANGE - NON-NOVATION": 1,
+        "CLOSE OUT": 2,
+        "DEFINITIZE CHANGE ORDER": 1
+      }
+    }
+  },
+  "gross_transactions": 4491,
+  "unique_transaction_keys": 4491,
+  "unique_award_keys": 4115,
+  "termination_or_cancellation_candidate_awards": 6,
+  "example_award_transactions": 207,
+  "example_award_monies": "obligation only, not contractor revenue"
+}

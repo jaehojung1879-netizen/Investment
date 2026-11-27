@@ -1,0 +1,54 @@
+{
+  "source_counts": {
+    "device_enforcement_source_rows": 40625,
+    "device_enforcement_window_rows": 18893,
+    "drug_enforcement_source_rows": 18194,
+    "drug_enforcement_window_rows": 7718,
+    "food_enforcement_source_rows": 29634,
+    "food_enforcement_window_rows": 11031,
+    "device_recall_source_rows": 59705,
+    "device_recall_matched_product_keys": 18884,
+    "device_510k_source_rows": 176747,
+    "device_classification_source_rows": 7105,
+    "drug_shortages_source_rows": 1577
+  },
+  "skipped_missing_keys": {
+    "device": 1
+  },
+  "window": [
+    "2019-01-01",
+    "2025-12-31"
+  ],
+  "distinct_enforcement_product_keys": 37641,
+  "domains": {
+    "device": {
+      "events": 6464,
+      "class_i_events": 561,
+      "display_date_missing": 0,
+      "display_before_start": 0
+    },
+    "drug": {
+      "events": 2251,
+      "class_i_events": 314,
+      "display_date_missing": 0,
+      "display_before_start": 0
+    },
+    "food": {
+      "events": 3341,
+      "class_i_events": 1214,
+      "display_date_missing": 0,
+      "display_before_start": 0
+    }
+  },
+  "class_i_candidate_clusters": {
+    "30": 540,
+    "90": 521,
+    "180": 494
+  },
+  "class_i_has_device_post": 508,
+  "class_i_has_device_code": 559,
+  "class_i_has_pre_clearance_90d": 405,
+  "class_i_has_exact_firm_pre_clearance_90d": 185,
+  "class_i_exact_firm_candidate_90d_clusters": 160,
+  "shortage_candidate_listing_rows": 793
+}

@@ -149,3 +149,10 @@
 | #347 OW_BREADTH | 시총 필터와 같은 크기 |
 | S2의 변형(SG1, ZG1, S2_SUE, 단일 슬롯) | 같은 S2 후보군의 재선택 |
 | "고점 회피" 류의 가격 기반 규칙(이동평균, 변동성 임계) | 시장위험 노출 축소(A)와 같은 정보 |
+
+## 경제 네트워크와 사건 원천 · 2026-11-27
+
+| 연구 | 등급과 범위 | 공개시각·전향 상태·재실험 제한 |
+|---|---|---|
+| [S1 경제 네트워크 파일럿](../economic_network_event_first_v1/s1/REPORT-ko.md) | 원천/설계. SEC 사전 관계 23개, 산업 IO, 사업부 공급관계, 사건 경로. 고정자본 교체 지연·공통 병목을 후속 가설로 보존. [기존 원본 ZIP](../economic_network_event_first_v1/s1/Investment-network-pilot.zip) | 역사 원천 복원. 개정 IO·제3자 기업 매핑은 적격 미확정. 투자 성과·전향 기록 없음. |
+| [S2 사건 우선 조사](../economic_network_event_first_v1/REPORT-ko.md) | 원천/설계. FDA 의료기기·의약품·식품 공식 ID 12,056개. 의료기기 Class I 중 사전 EDGAR 법인 및 제품 허가 후보 군집 66개, 동일 법인 허가 45개. BLS 91개 에피소드, USAspending 4,491개 거래, SEC 실제 원문 7개. [자료·이용 조건](../economic_network_event_first_v1/README.md) | 후보 군집의 인과적 독립성과 최초 공개 미확정. 계약 의무액은 매출 추정에 사용하지 않음. 확증 적격 0, 전향 미개시, 결과 미조회. [#292 승인 경계](https://github.com/jaehojung1879-netizen/Investment/issues/292) 적용. |

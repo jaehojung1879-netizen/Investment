@@ -1,0 +1,4373 @@
+{
+  "source_observation_date_kst": "2026-11-27",
+  "raw_bundles_republished": false,
+  "sources": [
+    {
+      "archive_path": "fda_download.json",
+      "url": "https://api.fda.gov/download.json",
+      "index_last_updated": "2026-11-26",
+      "acquired": true,
+      "bytes": 602509,
+      "sha256": "f4373760de16ef8df41586dbe7dc4a2266401eb5f6c0c6b78941fb8188431bff"
+    },
+    {
+      "archive_path": "fda_device_enforcement_00.zip",
+      "url": "https://download.open.fda.gov/device/enforcement/device-enforcement-0001-of-0001.json.zip",
+      "export_date": "2026-11-25",
+      "provider_dataset_record_count": 40625,
+      "acquired": true,
+      "bytes": 96166466,
+      "sha256": "90db73f94713860dfc7c5b0396a45057d2f4f1a11e0aeb626cf68682562ab693"
+    },
+    {
+      "archive_path": "fda_device_recall_00.zip",
+      "url": "https://download.open.fda.gov/device/recall/device-recall-0001-of-0001.json.zip",
+      "export_date": "2026-11-25",
+      "provider_dataset_record_count": 59705,
+      "acquired": true,
+      "bytes": 290004947,
+      "sha256": "465e1fbd6234a3d82de132bf7c2c497b29d41e72f9b504ac893cc34f57f48c24"
+    },
+    {
+      "archive_path": "fda_device_510k_00.zip",
+      "url": "https://download.open.fda.gov/device/510k/device-510k-0001-of-0001.json.zip",
+      "export_date": "2026-11-24",
+      "provider_dataset_record_count": 176747,
+      "acquired": true,
+      "bytes": 250491429,
+      "sha256": "b599e89cda700bd96dc4317f345d0fe1860032002c791f154ac96f6bab594a55"
+    },
+    {
+      "archive_path": "fda_device_classification_00.zip",
+      "url": "https://download.open.fda.gov/device/classification/device-classification-0001-of-0001.json.zip",
+      "export_date": "2026-11-24",
+      "provider_dataset_record_count": 7105,
+      "acquired": true,
+      "bytes": 3287286,
+      "sha256": "3261ec3bcf13d663e7a3bb9022fbb8c60ff30ad36b363083ba2bf8918b0dc3a6"
+    },
+    {
+      "archive_path": "fda_device_registrationlisting_00.zip",
+      "url": "https://download.open.fda.gov/device/registrationlisting/device-registrationlisting-0001-of-0002.json.zip",
+      "export_date": "2026-11-24",
+      "provider_dataset_record_count": 338156,
+      "acquired": true,
+      "bytes": 64347364,
+      "sha256": "56b6240f61d05f984a5fde3704056001485981e2e4d11b2281992e32a4039db3"
+    },
+    {
+      "archive_path": "fda_device_registrationlisting_01.zip",
+      "url": "https://download.open.fda.gov/device/registrationlisting/device-registrationlisting-0002-of-0002.json.zip",
+      "export_date": "2026-11-24",
+      "provider_dataset_record_count": 338156,
+      "acquired": true,
+      "bytes": 22737893,
+      "sha256": "ebec4b69bf08a252ecf7e1394e1b0fd0b6d357e9ff1acf6bb8b74c9002a242a4"
+    },
+    {
+      "archive_path": "fda_drug_enforcement_00.zip",
+      "url": "https://download.open.fda.gov/drug/enforcement/drug-enforcement-0001-of-0001.json.zip",
+      "export_date": "2026-11-25",
+      "provider_dataset_record_count": 18194,
+      "acquired": true,
+      "bytes": 4117024,
+      "sha256": "93ba0d23b16fbcb8998fe639f58b216916afbc528b53d9d0070f628e21b5a0eb"
+    },
+    {
+      "archive_path": "fda_drug_shortages_00.zip",
+      "url": "https://download.open.fda.gov/drug/shortages/drug-shortages-0001-of-0001.json.zip",
+      "export_date": "2026-11-26",
+      "provider_dataset_record_count": 1577,
+      "acquired": true,
+      "bytes": 440045,
+      "sha256": "1a8ee1291ceb0920b38f2bc9e63eb3392fbfdaade37681a57742287eca6d7bcb"
+    },
+    {
+      "archive_path": "fda_food_enforcement_00.zip",
+      "url": "https://download.open.fda.gov/food/enforcement/food-enforcement-0001-of-0001.json.zip",
+      "export_date": "2026-11-25",
+      "provider_dataset_record_count": 29634,
+      "acquired": true,
+      "bytes": 5967122,
+      "sha256": "a34c5bee93c76189f538141de04e1b336e15c2eae800b3da8d670bb1dc86404e"
+    },
+    {
+      "archive_path": "fda_license.html",
+      "url": "https://open.fda.gov/license/",
+      "acquired": true,
+      "bytes": 123017,
+      "sha256": "c55d7c77694ba4c4014c2000f3f87cb0dd59a718ba52a61e4f1061577511cb3c"
+    },
+    {
+      "archive_path": "fda_dates.html",
+      "url": "https://open.fda.gov/apis/device/enforcement/searchable-fields/",
+      "acquired": true,
+      "bytes": 128942,
+      "sha256": "2e9b366c530c935aad082675ec98efbb87da082701a1ec97688aab3ba6314333"
+    },
+    {
+      "archive_path": "fda_device_enf.json",
+      "url": "https://api.fda.gov/device/enforcement.json?limit=2",
+      "acquired": true,
+      "bytes": 3933,
+      "sha256": "7c482cf03dd339ad33f45fdd519bd45938e1e2c056c15ebac6e6819904886de7"
+    },
+    {
+      "archive_path": "fda_device_recall.json",
+      "url": "https://api.fda.gov/device/recall.json?limit=2",
+      "acquired": true,
+      "bytes": 9426,
+      "sha256": "353d1dfba2a18fd6fd7376fcf6853b42a890ab867e32ccc1fd092b061b0e23c7"
+    },
+    {
+      "archive_path": "fda_drug_short.json",
+      "url": "https://api.fda.gov/drug/shortages.json?limit=2",
+      "acquired": true,
+      "bytes": 5811,
+      "sha256": "55c59fd13e8084a435e67b94e1e78c323efba185ded0b58ade919e7967711a4b"
+    },
+    {
+      "archive_path": "fda_recalls.html",
+      "url": "https://www.fda.gov/medical-devices/medical-device-safety/medical-device-recalls-and-early-alerts",
+      "acquired": true,
+      "bytes": 175727,
+      "sha256": "05fd716c935ee9372edc89bce4bab285c3a70204921babce8b6c25a88f202f37"
+    },
+    {
+      "archive_path": "fda_shortages.html",
+      "url": "https://www.fda.gov/medical-devices/medical-device-supply-chain-and-shortages/medical-device-shortages-list",
+      "acquired": true,
+      "bytes": 128967,
+      "sha256": "3ee6bc3a18341eb07641c07a37ee2a507705c2549f4f3754022f119da13f5de3"
+    },
+    {
+      "archive_path": "sec_master2024q4.idx",
+      "url": "https://www.sec.gov/Archives/edgar/full-index/2024/QTR4/master.idx",
+      "acquired": true,
+      "bytes": 25714856,
+      "sha256": "9c4f398db2fff61c98538b4f73694bcac51f1103be193d4e8d4430a14f69e1aa"
+    },
+    {
+      "archive_path": "oecd_terms.html",
+      "url": "https://www.oecd.org/en/about/terms-conditions.html",
+      "acquired": true,
+      "bytes": 1484601,
+      "sha256": "b7164365aa9df4ac52a3ddbb826587e4628669d1fa5aa4d96272fdcc0cd66207"
+    },
+    {
+      "archive_path": "bls_terms.html",
+      "url": "https://www.bls.gov/bls/linksite.htm",
+      "acquired": true,
+      "bytes": 46844,
+      "sha256": "4083120d2f633012b0822a57d324a69a35a9dfa2ae02b74376efea9234f6f835"
+    },
+    {
+      "archive_path": "sec_efts.json",
+      "url": "https://efts.sec.gov/LATEST/search-index?forms=8-K&startdt=2023-01-01&enddt=2025-12-31&q=%22production%20suspended%22",
+      "probe_status": "HTTP_500_ERROR_BODY_NOT_SOURCE_DATA",
+      "acquired": true,
+      "bytes": 36,
+      "sha256": "660f19c09a36ca1620054261590b73df388b95892469ff17c1caf4e50376aa02"
+    },
+    {
+      "archive_path": "fda_enforcement_definitions.html",
+      "url": "https://www.fda.gov/safety/enforcement-reports/enforcement-report-information-and-definitions",
+      "acquired": true,
+      "bytes": 40928,
+      "sha256": "e110b0eb77fdcbe2985944b66b2153f9eac77300d111493b877376c3802e0f5e"
+    },
+    {
+      "archive_path": "fda_history.html",
+      "url": "https://www.fda.gov/safety/enforcement-reports/enforcement-report-history-feature",
+      "acquired": true,
+      "bytes": 34931,
+      "sha256": "dae082b1e83aca9e2531798bbfe07f2199fdd8fcc87a3101bbedb226478dd233"
+    },
+    {
+      "archive_path": "fda_philips_20210614.html",
+      "url": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/philips-issues-recall-notification-mitigate-potential-health-risks-related-sound-abatement-foam",
+      "acquired": true,
+      "bytes": 47061,
+      "sha256": "fdb6559b87f462c3e906e69a33a366986ce64071bfac8dd0c09a9973216932fa"
+    },
+    {
+      "archive_path": "fda_philips_alternatives.html",
+      "url": "https://www.fda.gov/medical-devices/recalled-philips-ventilators-bipap-machines-and-cpap-machines/fda-activities-related-recalled-philips-ventilators-bipap-machines-and-cpap-machines",
+      "acquired": true,
+      "bytes": 80751,
+      "sha256": "a8d07c0bc3f5698d3c76884633ed978d716a920c15682edef85755e60f3a0451"
+    },
+    {
+      "archive_path": "fda_abbott_20220217.html",
+      "url": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/abbott-voluntarily-recalls-powder-formulas-manufactured-one-plant",
+      "acquired": true,
+      "bytes": 47393,
+      "sha256": "7592ec0ecd5782f4accff5e66fc4814f858edb47653f14670c2e50ecacffa0d7"
+    },
+    {
+      "archive_path": "fda_abbott_investigation.html",
+      "url": "https://www.fda.gov/food/outbreaks-foodborne-illness/fda-investigation-cronobacter-infections-powdered-infant-formula-february-2022",
+      "acquired": true,
+      "bytes": 84268,
+      "sha256": "967e194758e306e9e96f09adf0419ff6d8900be6233e49a00d4902438a1004c9"
+    },
+    {
+      "archive_path": "fda_abbott_substitutes.html",
+      "url": "https://www.fda.gov/food/infant-formula-guidance-documents-regulatory-information/enforcement-discretion-manufacturers-increase-infant-formula-supplies",
+      "acquired": false
+    },
+    {
+      "archive_path": "cdc_bd_20240710.html",
+      "url": "https://www.cdc.gov/locs/php/messages/2024/2024-07-10-impending-shortage-blood-culture-media-bottles.html",
+      "acquired": true,
+      "bytes": 47146,
+      "sha256": "b7f3f809a96dfbb7d7992585563c8a7444fdf6e2b65456cdfb6c554d46707bd0"
+    },
+    {
+      "archive_path": "bd_20240710.html",
+      "url": "https://news.bd.com/2024-07-10-BD-Statement-on-Supplier-Issue-Impacting-BD-BACTEC-TM-Blood-Culture-Vials",
+      "acquired": true,
+      "bytes": 140896,
+      "sha256": "8271c90915f037ed5e93e03782b3436f245239cd855caaa7fef78ba7f8598bf4"
+    },
+    {
+      "archive_path": "sec_mp_20250710.html",
+      "url": "https://www.sec.gov/Archives/edgar/data/1801368/000119312525157310/d43796d8k.htm",
+      "acquired": true,
+      "bytes": 99368,
+      "sha256": "40de7a205d84385576f984c4ac90a1c9ca4653f19497d0cb4599990bc4edb4ef"
+    },
+    {
+      "archive_path": "sec_mp_capacity.html",
+      "url": "https://www.sec.gov/Archives/edgar/data/1801368/000119312525157310/d43796dex991.htm",
+      "acquired": true,
+      "bytes": 22205,
+      "sha256": "decc68a832e2680ceeb824b3f6dda9a16a5da2fa44b22b619cdc1cb0deaee969"
+    },
+    {
+      "archive_path": "sec_celp_20251028.html",
+      "url": "https://www.sec.gov/Archives/edgar/data/1306830/000130683025000203/ce-20251028.htm",
+      "acquired": true,
+      "bytes": 40976,
+      "sha256": "ee6487f17221bbc6369ed16197a73d7e11aaf862e61223a0acdad7598e16374b"
+    },
+    {
+      "archive_path": "sec_culp_20240429.html",
+      "url": "https://www.sec.gov/Archives/edgar/data/723603/000095017024051289/culp-20240429.htm",
+      "acquired": true,
+      "bytes": 51957,
+      "sha256": "7bd4b5529c3f20435aaf938cae6a7114974651ea311b8340d0976c1f0e847209"
+    },
+    {
+      "archive_path": "sec_alcoa_20250929.html",
+      "url": "https://www.sec.gov/Archives/edgar/data/1675149/000119312525223652/aa-20250929.htm",
+      "acquired": true,
+      "bytes": 47421,
+      "sha256": "855dc93fa7cace03cc6eddbdfb9860414e167f25db9020f1a851c0cd384c8195"
+    },
+    {
+      "archive_path": "sec_rogers_20240606.html",
+      "url": "https://www.sec.gov/Archives/edgar/data/84748/000008474824000043/rog-20240606.htm",
+      "acquired": true,
+      "bytes": 31683,
+      "sha256": "e2775b672b51c6d28ee184d958c43f8f66ab7fe62dbfd8d5bd3b18ac1ab16e94"
+    },
+    {
+      "archive_path": "sec_revg_20240125.html",
+      "url": "https://www.sec.gov/Archives/edgar/data/1687221/000095017024009141/revg-20240125.htm",
+      "acquired": true,
+      "bytes": 63879,
+      "sha256": "f1e569b46d0f1e39a71e3873d3a9fc205e648b220b2857d2ac7bf2be91a35a30"
+    },
+    {
+      "archive_path": "sec_nsys_20240515.html",
+      "url": "https://www.sec.gov/Archives/edgar/data/722313/000143774924017204/nsys20240515_8k.htm",
+      "acquired": true,
+      "bytes": 27111,
+      "sha256": "a938eeaa37f2b04cb96c8e4e55478b6c02cacbbe8edd1644094c976a52f14144"
+    },
+    {
+      "archive_path": "sec_submissions_MP.json",
+      "url": "https://data.sec.gov/submissions/CIK0001801368.json",
+      "acquired": true,
+      "bytes": 87735,
+      "sha256": "932c51ee0d19a498e3d354bc4fe3f51f8c130d4f2acfb1d20ce2ba17f6dc10d3"
+    },
+    {
+      "archive_path": "sec_submissions_CE.json",
+      "url": "https://data.sec.gov/submissions/CIK0001306830.json",
+      "acquired": true,
+      "bytes": 166019,
+      "sha256": "631f5262985a0cf6b1e109a64a234abf04ac93734c629579df43de9e62b6eac9"
+    },
+    {
+      "archive_path": "sec_submissions_CULP.json",
+      "url": "https://data.sec.gov/submissions/CIK0000723603.json",
+      "acquired": true,
+      "bytes": 164378,
+      "sha256": "78cc62d1e25870e710efff2bf61c2f977ad38b33980531f1b1b3bc2a115790c5"
+    },
+    {
+      "archive_path": "sec_submissions_AA.json",
+      "url": "https://data.sec.gov/submissions/CIK0001675149.json",
+      "acquired": true,
+      "bytes": 136777,
+      "sha256": "a031c48c1b256f3ddb39acfa9278e1e3751f93b89c032044f1be30ea75e61fa8"
+    },
+    {
+      "archive_path": "sec_submissions_ROG.json",
+      "url": "https://data.sec.gov/submissions/CIK0000084748.json",
+      "acquired": true,
+      "bytes": 162592,
+      "sha256": "968495a764180139926d61878383d0fca884fafdfa32043f2287ffb9d642d5d7"
+    },
+    {
+      "archive_path": "sec_submissions_REVG.json",
+      "url": "https://data.sec.gov/submissions/CIK0001687221.json",
+      "acquired": true,
+      "bytes": 79132,
+      "sha256": "0e4aab68d301e22ea6da4087dfc6a4f31a2e06ef2132eaa7372a29537707fb4c"
+    },
+    {
+      "archive_path": "sec_submissions_NSYS.json",
+      "url": "https://data.sec.gov/submissions/CIK0000722313.json",
+      "acquired": true,
+      "bytes": 91442,
+      "sha256": "b7391730ece18ab538f1d10b33ea1038549e6ab58a8a339d1add50bdeec05b53"
+    },
+    {
+      "archive_path": "sec_submissions_PHG.json",
+      "url": "https://data.sec.gov/submissions/CIK0000313216.json",
+      "acquired": true,
+      "bytes": 140122,
+      "sha256": "e03f60afa3b1129409bf0237dde20f4c61ebefa95aecd5ea29c0c5f764cb968d"
+    },
+    {
+      "archive_path": "sec_submissions_ABT.json",
+      "url": "https://data.sec.gov/submissions/CIK0000001800.json",
+      "acquired": true,
+      "bytes": 155917,
+      "sha256": "c2d806e6f43e8785adcc3a4b14f16c69c93b7ef2f56a1a5f5745da949b171f2b"
+    },
+    {
+      "archive_path": "sec_submissions_BDX.json",
+      "url": "https://data.sec.gov/submissions/CIK0000010795.json",
+      "acquired": true,
+      "bytes": 168364,
+      "sha256": "26640a896334fe54762587ab990e85da823f46ba3861208a4e0a749b07d76413"
+    },
+    {
+      "archive_path": "sec_submissions_BAX.json",
+      "url": "https://data.sec.gov/submissions/CIK0000010456.json",
+      "acquired": true,
+      "bytes": 167420,
+      "sha256": "c7a423e2182c31a2d7d240a38132628c6f9d65d3963907f6a71196a380061740"
+    },
+    {
+      "archive_path": "sec_submissions_BA.json",
+      "url": "https://data.sec.gov/submissions/CIK0000012927.json",
+      "acquired": true,
+      "bytes": 146226,
+      "sha256": "2b8e9e8b5bb6b9e38ff8eca5f173e65566213658d7be0ef30b7cea64055b3dd5"
+    },
+    {
+      "archive_path": "sec_submissions_SPR.json",
+      "url": "https://data.sec.gov/submissions/CIK0001364885.json",
+      "acquired": true,
+      "bytes": 155348,
+      "sha256": "85a3f765b26664092387f00e09cb92c29d34257fb5530758acae69a5e0f0afc1"
+    },
+    {
+      "archive_path": "sec_submissions_RTX.json",
+      "url": "https://data.sec.gov/submissions/CIK0000101829.json",
+      "acquired": true,
+      "bytes": 149519,
+      "sha256": "02ce8c043d2b4b9300d9833e56b842eefe3e411588855c99ff2f9ec910cac88d"
+    },
+    {
+      "archive_path": "sec_submissions_TXT.json",
+      "url": "https://data.sec.gov/submissions/CIK0000217346.json",
+      "acquired": true,
+      "bytes": 162846,
+      "sha256": "415cebf773ad1ad5d470bb9926b31fc75aa4956aaf9e2972d0c53c44ea08774c"
+    },
+    {
+      "archive_path": "sec_submissions_WAB.json",
+      "url": "https://data.sec.gov/submissions/CIK0000943452.json",
+      "acquired": true,
+      "bytes": 160479,
+      "sha256": "66a3d1f5e34da53631ca076edf15854b46b5711c71ee5d1caadac6898f970d0e"
+    },
+    {
+      "archive_path": "sec_submissions_MDT.json",
+      "url": "https://data.sec.gov/submissions/CIK0001613103.json",
+      "acquired": true,
+      "bytes": 160280,
+      "sha256": "6a319e18a6afaee4a7b35cc69df35aede99aac4612ea269873b5d6b1681a41b4"
+    },
+    {
+      "archive_path": "sec_submissions_SYK.json",
+      "url": "https://data.sec.gov/submissions/CIK0000310764.json",
+      "acquired": true,
+      "bytes": 162154,
+      "sha256": "7a60fdecf39575033311e17aa404f02a1f9887e7292c03e94dd01a31480a5800"
+    },
+    {
+      "archive_path": "sec_submissions_ZBH.json",
+      "url": "https://data.sec.gov/submissions/CIK0001136869.json",
+      "acquired": true,
+      "bytes": 175742,
+      "sha256": "0e7c11a246a0c18f7a61fd33b655caa8a0d60a4da4ab81bf22c993e8185df384"
+    },
+    {
+      "archive_path": "sec_submissions_BSX.json",
+      "url": "https://data.sec.gov/submissions/CIK0000885725.json",
+      "acquired": true,
+      "bytes": 145835,
+      "sha256": "848f88ab69cd3ba60342a13dd92a79cce9f9ec911b14bc8a048b8f90d5341673"
+    },
+    {
+      "archive_path": "sec_submissions_GEHC.json",
+      "url": "https://data.sec.gov/submissions/CIK0001932393.json",
+      "acquired": true,
+      "bytes": 72998,
+      "sha256": "a98546675f9b4e8c518908ce0ec7691d80d3d61b3b55a21748a898542618ab1f"
+    },
+    {
+      "archive_path": "sec_submissions_TMO.json",
+      "url": "https://data.sec.gov/submissions/CIK0000097745.json",
+      "acquired": true,
+      "bytes": 157739,
+      "sha256": "382989b6f5a8d0351bc4abff8b7178db5ed51468410112e950f888d9e6453789"
+    },
+    {
+      "archive_path": "sec_submissions_JNJ.json",
+      "url": "https://data.sec.gov/submissions/CIK0000200406.json",
+      "acquired": true,
+      "bytes": 154240,
+      "sha256": "16dece1463edd2c75b4c75c06d0e2037cdfd38e0727aac7c4c1daed037cedf18"
+    },
+    {
+      "archive_path": "sec_submissions_PODD.json",
+      "url": "https://data.sec.gov/submissions/CIK0001145197.json",
+      "acquired": true,
+      "bytes": 159597,
+      "sha256": "c4f5c17f54c6b52da0d1b9185f6016d64e008865bbde8702a8175bc560dad6f0"
+    },
+    {
+      "archive_path": "sec_submissions_DXCM.json",
+      "url": "https://data.sec.gov/submissions/CIK0001093557.json",
+      "acquired": true,
+      "bytes": 159360,
+      "sha256": "2f10ae9da2f619935f42c25d8bd5a31eda1ae8ec0652b7595b6f923f3d96e0f7"
+    },
+    {
+      "archive_path": "sec_submissions_RMD.json",
+      "url": "https://data.sec.gov/submissions/CIK0000943819.json",
+      "acquired": true,
+      "bytes": 155915,
+      "sha256": "c10f93fe3597544c838dad044bcf33ba2d633b3c883dd5bd54b4ccbf252d7821"
+    },
+    {
+      "archive_path": "sec_submissions_FMS.json",
+      "url": "https://data.sec.gov/submissions/CIK0001333141.json",
+      "acquired": true,
+      "bytes": 99936,
+      "sha256": "e1ca7cd3c2c1e78da0f4b6a2e070b36d1d9bfcd248b0640be92a2b366a1790ca"
+    },
+    {
+      "archive_path": "sec_submissions_ICUI.json",
+      "url": "https://data.sec.gov/submissions/CIK0000883984.json",
+      "acquired": true,
+      "bytes": 161827,
+      "sha256": "f81759b3b02a5a4f82450bcc6c4397dd33c67ff7d0451bfb680539cf75aaa755"
+    },
+    {
+      "archive_path": "sec_submissions_TMDX.json",
+      "url": "https://data.sec.gov/submissions/CIK0001756262.json",
+      "acquired": true,
+      "bytes": 98475,
+      "sha256": "5a65639f531f263662115b13ae8174eace8160a62446236756bad2981fa23678"
+    },
+    {
+      "archive_path": "hvad_manufacturer.html",
+      "url": "https://news.medtronic.com/2021-06-03-Medtronic-to-Stop-Distribution-and-Sale-of-HVAD-TM-System",
+      "acquired": true,
+      "bytes": 88214,
+      "sha256": "592a9ae9f47022ba2bd1414862d7a5d4e7e277cfa89f583b7d09dcf85081b8e4"
+    },
+    {
+      "archive_path": "hvad_fda_recommendations.html",
+      "url": "https://www.fda.gov/medical-devices/cardiovascular-devices/recommendations-patients-and-health-care-providers-hvad-system",
+      "acquired": true,
+      "bytes": 45596,
+      "sha256": "314cffc9bb0be36a75f8910aa349c778b8b90a6f68bc4f6f43f3cf8b1e7ed1d5"
+    },
+    {
+      "archive_path": "textron_2024_notice.html",
+      "url": "https://media.txtav.com/241569-textron-aviation-news-update/",
+      "acquired": true,
+      "bytes": 99909,
+      "sha256": "db47a35df06da5199bde299301c11f6c05659f4b49d6278f912124d4d71fb761"
+    },
+    {
+      "archive_path": "pratt_2025_notice.html",
+      "url": "https://ctaflcio.org/press-room/strike-machinists-pratt-whitney-going-strike",
+      "acquired": true,
+      "bytes": 98682,
+      "sha256": "7faecbdcdd946b5c11b275a5d7d89fed725efb45f6122bad46aa9ab58e63676a"
+    },
+    {
+      "archive_path": "baxter_press_20240929.html",
+      "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828024041545/bax-20240929xex991.htm",
+      "acquired": true,
+      "bytes": 17714,
+      "sha256": "6c42c72dec1447d91986684495da3900750a2b86720cb4fb8230f40f28e999eb"
+    },
+    {
+      "archive_path": "baxter_cdc.html",
+      "url": "https://www.cdc.gov/healthcare-associated-infections/bulletins/shortage-of-iv-and-peritoneal-dialysis-solutions.html",
+      "acquired": true,
+      "bytes": 83721,
+      "sha256": "25a191a3dc8ab85824dd77e552c65e874c5abdd866e7b8171673cf899255a9d3"
+    },
+    {
+      "archive_path": "spirit_press.html",
+      "url": "https://www.prnewswire.com/news-releases/spirit-aerosystems-to-suspend-factory-operations-301857718.html",
+      "acquired": true,
+      "bytes": 170334,
+      "sha256": "904d80d45ae171f120eab22581c56a8028a1066b0da00295c590af7b5ab3483d"
+    },
+    {
+      "archive_path": "bls_root.html",
+      "url": "https://www.bls.gov/web/wkstp/monthly-listing.htm",
+      "acquired": true,
+      "bytes": 326954,
+      "sha256": "dae0e8a30611a3165d5cabdbbda8e6059912b62e3a0756ba115d573507fa291a"
+    },
+    {
+      "archive_path": "fed_uaw.html",
+      "url": "https://www.federalreserve.gov/econres/notes/feds-notes/tapping-the-brakes-the-effect-of-the-2023-united-auto-workers-strike-on-economic-activity-20240416.html",
+      "acquired": true,
+      "bytes": 107870,
+      "sha256": "fb16aae22ad3dc1e16fa4ab770042f774ad30d6b6bc1ce30ac3539d864d2e710"
+    },
+    {
+      "archive_path": "boeing_offer.html",
+      "url": "https://boeing.mediaroom.com/Boeing-Historic-Contract-Offer-and-Tentative-Agreement-with-IAM-Districts-751-W24",
+      "acquired": true,
+      "bytes": 131943,
+      "sha256": "d8cad3dff3ffcd103072523f66d42a15c647c4018fd89acb3def7d96a569e475"
+    },
+    {
+      "archive_path": "mp_government.html",
+      "url": "https://www.defense.gov/News/Releases/Release/Article/4241350/department-of-defense-partners-with-mp-materials-to-strengthen-us-rare-earth/",
+      "acquired": false
+    },
+    {
+      "archive_path": "usa_about_data.pdf",
+      "url": "https://www.usaspending.gov/data/about-the-data-download.pdf",
+      "acquired": true,
+      "bytes": 465759,
+      "sha256": "cb269d8863ff1c889d08c75562d206e903f71c50e1c8d289376671150a8cd4fc"
+    },
+    {
+      "archive_path": "alcoa_initial_curtailment.html",
+      "url": "https://investors.alcoa.com/press-releases/press-release-details/2024/Alcoa-announces-curtailment-of-Kwinana-Alumina-Refinery-in-Western-Australia/default.aspx",
+      "acquired": true,
+      "bytes": 184650,
+      "sha256": "7279a0ec759d9ca23148b1f373c361492b7e9ccf5ba64172ba134cc76785a6f0"
+    },
+    {
+      "archive_path": "philips_issuer_20210614.html",
+      "url": "https://www.philips.com/a-w/about/news/archive/standard/news/press/2021/20210614-philips-issues-recall-notification-to-mitigate-potential-health-risks-related-to-the-sound-abatement-foam-component-in-certain-sleep-and-respiratory-care-devices.html",
+      "acquired": true,
+      "bytes": 177375,
+      "sha256": "2e112d8d061068d2216cc19bdf5f3677603f7da8e9cc2e6bd0394808ffe015b9"
+    },
+    {
+      "archive_path": "hvad_pma.html",
+      "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P100047",
+      "acquired": true,
+      "bytes": 73479,
+      "sha256": "7cd628750f4cbb26931b5a10829f5cb7219bb269e8caa96b9a2b71f2994ed9d6"
+    },
+    {
+      "archive_path": "heartmate_3_pma.html",
+      "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P160054",
+      "acquired": true,
+      "bytes": 59090,
+      "sha256": "556de877064ca85205bb258f839fca1d74fe97b6743226eb2f2e9b289b5ffaac"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1800/000104746918000856/a2234264z10-k.htm",
+      "sec_acceptance_utc": "2018-02-16T21:04:37.000Z",
+      "accession": "0001047469-18-000856",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2130015,
+      "sha256": "2b72519f405b60d54ea4c5b290bfc21d1556f6e9b4a23d3e309735924cec5917"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1800/000104746918000856/a2234264zex-21.htm",
+      "sec_acceptance_utc": "2018-02-16T21:04:37.000Z",
+      "accession": "0001047469-18-000856",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 421933,
+      "sha256": "fa74e49a94f09a93fe6d3575ac9d55f6abd5d7180ff78a7eda5cf057d4774760"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1800/000104746919000624/a2237733z10-k.htm",
+      "sec_acceptance_utc": "2019-02-22T21:13:21.000Z",
+      "accession": "0001047469-19-000624",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2088172,
+      "sha256": "1fa9f9c6d8be00c1787880de49a0f9903039f3b16d860ac554998bd26348767d"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1800/000104746919000624/a2237733zex-21.htm",
+      "sec_acceptance_utc": "2019-02-22T21:13:21.000Z",
+      "accession": "0001047469-19-000624",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 412002,
+      "sha256": "83e683168728180af0bf67e2c2a6c01844da927495fb650abeec189cbda8ae6d"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1800/000110465920023904/abt-20191231x10k59d41b.htm",
+      "sec_acceptance_utc": "2020-02-21T21:28:23.000Z",
+      "accession": "0001104659-20-023904",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4430187,
+      "sha256": "edf9ccc97c52a770b4514a12b912ad74c44e47e9f194a50350a9ada620333a97"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1800/000110465920023904/ex-21.htm",
+      "sec_acceptance_utc": "2020-02-21T21:28:23.000Z",
+      "accession": "0001104659-20-023904",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 793369,
+      "sha256": "bb1f216d54462c7977cc8f651cffc38792c9dc7fe15f48c35c0f15c6e9ca526b"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1800/000110465921025751/abt-20201231x10k.htm",
+      "sec_acceptance_utc": "2021-02-19T21:10:04.000Z",
+      "accession": "0001104659-21-025751",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4280315,
+      "sha256": "da80ffa605719b1367acf7f7ab3fe9274e3136959cf18c3dcd77342c234c3c72"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1800/000110465921025751/abt-20201231xex21.htm",
+      "sec_acceptance_utc": "2021-02-19T21:10:04.000Z",
+      "accession": "0001104659-21-025751",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 570205,
+      "sha256": "18e6e0dbd6ef27d8b5df33ecd68881fa9d97fa032a4bb9c35ba80ba09c2157d4"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1800/000110465922025141/abt-20211231x10k.htm",
+      "sec_acceptance_utc": "2022-02-18T21:02:57.000Z",
+      "accession": "0001104659-22-025141",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4169905,
+      "sha256": "9487df05ac903b4d594b0d27c537e449fbd2e5df2c8f2c76e8b8c62d67b891a1"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1800/000110465922025141/abt-20211231xex21d1.htm",
+      "sec_acceptance_utc": "2022-02-18T21:02:57.000Z",
+      "accession": "0001104659-22-025141",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 374370,
+      "sha256": "cc5c27dc3154ea0f0a0b85e19782f9ce04adfe9011570be38b1b33c0499424e0"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1800/000162828023004026/abt-20221231.htm",
+      "sec_acceptance_utc": "2023-02-17T21:09:44.000Z",
+      "accession": "0001628280-23-004026",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3412309,
+      "sha256": "4f2b63c957064a3f24ac411c420e5f695feab4cd4164d3bd9a10361eba26f405"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1800/000162828024005348/abt-20231231.htm",
+      "sec_acceptance_utc": "2024-02-16T21:15:58.000Z",
+      "accession": "0001628280-24-005348",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2675121,
+      "sha256": "8971c3d5953f3c063307561d22af01915177641c5ef4d62702a469c2dced39d4"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1800/000162828024005348/exhibit21subsidiaries1.htm",
+      "sec_acceptance_utc": "2024-02-16T21:15:58.000Z",
+      "accession": "0001628280-24-005348",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 375897,
+      "sha256": "f317d1529910c0556070a6a967445e458993fca41d85a01d1300a5e343c59ddd"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1800/000162828025007110/abt-20241231.htm",
+      "sec_acceptance_utc": "2025-02-21T21:07:20.000Z",
+      "accession": "0001628280-25-007110",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2662699,
+      "sha256": "9410c38e0a1984d9e3acb8bc15fd06d287b6721248cc9da590b71de26e54775a"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1800/000162828025007110/subsidiariesofabbottlabora.htm",
+      "sec_acceptance_utc": "2025-02-21T21:07:20.000Z",
+      "accession": "0001628280-25-007110",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 392887,
+      "sha256": "80f80c372ff9abad6ae5756e1dc414cf5a48b5122b1ddea61c31540fe1a0bd51"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1606498/000160649818000016/hyh2017form10k.htm",
+      "sec_acceptance_utc": "2018-02-27T22:19:43.000Z",
+      "accession": "0001606498-18-000016",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2609911,
+      "sha256": "402a09ce5dd7ab434d3dc8585951bc803657875ea7a6c47f63f6655890f52887"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1606498/000160649818000016/hyh2017form10kex21.htm",
+      "sec_acceptance_utc": "2018-02-27T22:19:43.000Z",
+      "accession": "0001606498-18-000016",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 29654,
+      "sha256": "23f1bd88bdef538c131db380a9a5e2db9b474e60f7a74d7bc6f38a875e397d4f"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1606498/000160649819000018/avns2018form10k.htm",
+      "sec_acceptance_utc": "2019-02-26T22:07:40.000Z",
+      "accession": "0001606498-19-000018",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2552881,
+      "sha256": "2d7f153d12caaa61cd773f97460108b86d5a9870e6d4e01cf8c0873fc75458ac"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1606498/000160649819000018/hyh2018form10kex21.htm",
+      "sec_acceptance_utc": "2019-02-26T22:07:40.000Z",
+      "accession": "0001606498-19-000018",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 29201,
+      "sha256": "a48bb8da81081d408df8e5356ea49d8fc234f7b59947a0128407171a24966368"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1606498/000160649820000018/avns2019form10k.htm",
+      "sec_acceptance_utc": "2020-02-25T21:07:39.000Z",
+      "accession": "0001606498-20-000018",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3308334,
+      "sha256": "499b0ead7571e577ef6582b97ae78c7ef2dd297f457f9e82af0b410973880b7c"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1606498/000160649820000018/avns2019form10kex21.htm",
+      "sec_acceptance_utc": "2020-02-25T21:07:39.000Z",
+      "accession": "0001606498-20-000018",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 27714,
+      "sha256": "64350c3c2d1d2dc63cf1b09b1e9fe0f4cc97277a5f5149e9efc99be43f01c2d8"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1606498/000160649821000015/avns-20201231.htm",
+      "sec_acceptance_utc": "2021-02-19T21:24:19.000Z",
+      "accession": "0001606498-21-000015",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2216003,
+      "sha256": "bee648cc8c083d6a439a54b1f14d076de7eff7311602c4d0bf5f92c16bca4b13"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1606498/000119312514396347/d814206dex21.htm",
+      "sec_acceptance_utc": "2021-02-19T21:24:19.000Z",
+      "accession": "0001606498-21-000015",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 307723,
+      "sha256": "a16d121668ef03a03e961bc8a8279cea0410b4333480280b48143825753162d0"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1606498/000160649822000029/avns-20211231.htm",
+      "sec_acceptance_utc": "2022-02-23T21:30:01.000Z",
+      "accession": "0001606498-22-000029",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2052096,
+      "sha256": "936e871262626020ff4fece030243af157e6bf55aa912e3d0c48bd15228996f7"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1606498/000119312514396347/d814206dex21.htm",
+      "sec_acceptance_utc": "2022-02-23T21:30:01.000Z",
+      "accession": "0001606498-22-000029",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 307723,
+      "sha256": "a16d121668ef03a03e961bc8a8279cea0410b4333480280b48143825753162d0"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1606498/000160649823000020/avns-20221231.htm",
+      "sec_acceptance_utc": "2023-02-21T21:52:56.000Z",
+      "accession": "0001606498-23-000020",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2345714,
+      "sha256": "540746161f6737b674ad010ec534fca04e62ebad77aeee88655ea69d85247847"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1606498/000119312514396347/d814206dex21.htm",
+      "sec_acceptance_utc": "2023-02-21T21:52:56.000Z",
+      "accession": "0001606498-23-000020",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 307723,
+      "sha256": "a16d121668ef03a03e961bc8a8279cea0410b4333480280b48143825753162d0"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1606498/000160649824000018/avns-20231231.htm",
+      "sec_acceptance_utc": "2024-02-20T23:33:29.000Z",
+      "accession": "0001606498-24-000018",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 1821343,
+      "sha256": "f1ba46c509d110704e78d75cf01b17b77491b2344942b0fd45b3dce84973cbd7"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1606498/000119312514396347/d814206dex21.htm",
+      "sec_acceptance_utc": "2024-02-20T23:33:29.000Z",
+      "accession": "0001606498-24-000018",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 307723,
+      "sha256": "a16d121668ef03a03e961bc8a8279cea0410b4333480280b48143825753162d0"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1606498/000160649825000024/avns-20241231.htm",
+      "sec_acceptance_utc": "2025-02-26T21:55:47.000Z",
+      "accession": "0001606498-25-000024",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 1871690,
+      "sha256": "4221456694ca3e0c46b948c35beaf5f32fcaf6e23bb4276424153232b3629867"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1606498/000119312514396347/d814206dex21.htm",
+      "sec_acceptance_utc": "2025-02-26T21:55:47.000Z",
+      "accession": "0001606498-25-000024",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 307723,
+      "sha256": "a16d121668ef03a03e961bc8a8279cea0410b4333480280b48143825753162d0"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/10456/000156459018002954/bax-10k_20171231.htm",
+      "sec_acceptance_utc": "2018-02-23T11:04:09.000Z",
+      "accession": "0001564590-18-002954",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 6572931,
+      "sha256": "b04043b0b2063de84f4b13510ddbb6ca4fef848dd6750293070b1786a8dcd540"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/10456/000119312515246136/d57625dex21.htm",
+      "sec_acceptance_utc": "2018-02-23T11:04:09.000Z",
+      "accession": "0001564590-18-002954",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 379851,
+      "sha256": "d24e2e4a71f1f9fd11ca5305e4ad487f79f1cb7e79cdda37ad578af74d933b16"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/10456/000156459019003727/bax-10k_20181231.htm",
+      "sec_acceptance_utc": "2019-02-21T22:29:43.000Z",
+      "accession": "0001564590-19-003727",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 6604939,
+      "sha256": "0e1177c32ea75d60c4289db32166cb5489fc6542ee668dd769e8a907923f3145"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/10456/000119312515246136/d57625dex21.htm",
+      "sec_acceptance_utc": "2019-02-21T22:29:43.000Z",
+      "accession": "0001564590-19-003727",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 379851,
+      "sha256": "d24e2e4a71f1f9fd11ca5305e4ad487f79f1cb7e79cdda37ad578af74d933b16"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828020003693/bax-20191231.htm",
+      "sec_acceptance_utc": "2020-03-17T11:12:46.000Z",
+      "accession": "0001628280-20-003693",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 11769351,
+      "sha256": "e3ab759e4f66353273e3bec319267c64341e42af4feebfabb2b6579e957bff00"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/10456/000119312515246136/d57625dex21.htm",
+      "sec_acceptance_utc": "2020-03-17T11:12:46.000Z",
+      "accession": "0001628280-20-003693",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 379851,
+      "sha256": "d24e2e4a71f1f9fd11ca5305e4ad487f79f1cb7e79cdda37ad578af74d933b16"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828021001867/bax-20201231.htm",
+      "sec_acceptance_utc": "2021-02-11T13:12:00.000Z",
+      "accession": "0001628280-21-001867",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4123890,
+      "sha256": "d7c39322195bb17020a48badfd2fb48e5a070f910568e5a6e299197fc0ae02f2"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/10456/000119312515246136/d57625dex21.htm",
+      "sec_acceptance_utc": "2021-02-11T13:12:00.000Z",
+      "accession": "0001628280-21-001867",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 379851,
+      "sha256": "d24e2e4a71f1f9fd11ca5305e4ad487f79f1cb7e79cdda37ad578af74d933b16"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828022003432/bax-20211231.htm",
+      "sec_acceptance_utc": "2022-02-23T13:33:25.000Z",
+      "accession": "0001628280-22-003432",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4152350,
+      "sha256": "414f5e1520b2f279efba9d6ddd305d473d14b22de534ed0d74a8619ed7321cb8"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/10456/000119312515246136/d57625dex21.htm",
+      "sec_acceptance_utc": "2022-02-23T13:33:25.000Z",
+      "accession": "0001628280-22-003432",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 379851,
+      "sha256": "d24e2e4a71f1f9fd11ca5305e4ad487f79f1cb7e79cdda37ad578af74d933b16"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828023002864/bax-20221231.htm",
+      "sec_acceptance_utc": "2023-02-09T12:24:57.000Z",
+      "accession": "0001628280-23-002864",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4236637,
+      "sha256": "3b1670d7ccfcc6813edff72317ab29f60215906b73063f7cdce1f31fece60315"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/0000010456/000119312521263688/d222750dex21.htm",
+      "sec_acceptance_utc": "2023-02-09T12:24:57.000Z",
+      "accession": "0001628280-23-002864",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 514435,
+      "sha256": "97ecf205682d3936c557a0d15b0ac76a729b8432535a62fe88785668a640648c"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828024003932/bax-20231231.htm",
+      "sec_acceptance_utc": "2024-02-08T22:29:20.000Z",
+      "accession": "0001628280-24-003932",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3648604,
+      "sha256": "a5942276ee672aa6e4092e9e559b08c7551e43fb754d468698b1645a3f5538d0"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/0000010456/000119312521263688/d222750dex21.htm",
+      "sec_acceptance_utc": "2024-02-08T22:29:20.000Z",
+      "accession": "0001628280-24-003932",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 514435,
+      "sha256": "97ecf205682d3936c557a0d15b0ac76a729b8432535a62fe88785668a640648c"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828025007201/bax-20241231.htm",
+      "sec_acceptance_utc": "2025-02-21T22:15:03.000Z",
+      "accession": "0001628280-25-007201",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3618149,
+      "sha256": "880d8756d490ad3ba229992a983a5d9f09eec378fd30d07ceb2c8631c0fba0af"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/0000010456/000119312521263688/d222750dex21.htm",
+      "sec_acceptance_utc": "2025-02-21T22:15:03.000Z",
+      "accession": "0001628280-25-007201",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 514435,
+      "sha256": "97ecf205682d3936c557a0d15b0ac76a729b8432535a62fe88785668a640648c"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/10795/000001079518000036/bdx2018-09x3010xk.htm",
+      "sec_acceptance_utc": "2018-11-21T20:34:32.000Z",
+      "accession": "0000010795-18-000036",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2769325,
+      "sha256": "60886085fc8443eeb29419413a9d8b5587391f96b56cd1308e6f1c118e4e0f32"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/10795/000119312517133452/d346468dex21.htm",
+      "sec_acceptance_utc": "2018-11-21T20:34:32.000Z",
+      "accession": "0000010795-18-000036",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 604682,
+      "sha256": "ac68cc886c4cc5b26a392fcd8320b0bb3636c1c78001d54a6153225c1e3ab87c"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/10795/000001079519000044/bdx2019-09x3010xk.htm",
+      "sec_acceptance_utc": "2019-11-27T21:43:38.000Z",
+      "accession": "0000010795-19-000044",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4182867,
+      "sha256": "51bfb58d193ca8a98d4a5b63e6e257b0e75fbce4b20fd153e78e8bcae0e072f3"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/10795/000119312517133452/d346468dex21.htm",
+      "sec_acceptance_utc": "2019-11-27T21:43:38.000Z",
+      "accession": "0000010795-19-000044",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 604682,
+      "sha256": "ac68cc886c4cc5b26a392fcd8320b0bb3636c1c78001d54a6153225c1e3ab87c"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/10795/000001079520000055/bdx-20200930.htm",
+      "sec_acceptance_utc": "2020-11-25T19:21:41.000Z",
+      "accession": "0000010795-20-000055",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3848444,
+      "sha256": "87ee237a76e2b3a2b0fb4e3c0b7e46dbf1fff48b97645f0dafececcc4a6973e3"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/10795/000119312517133452/d346468dex21.htm",
+      "sec_acceptance_utc": "2020-11-25T19:21:41.000Z",
+      "accession": "0000010795-20-000055",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 604682,
+      "sha256": "ac68cc886c4cc5b26a392fcd8320b0bb3636c1c78001d54a6153225c1e3ab87c"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/10795/000001079521000091/bdx-20210930.htm",
+      "sec_acceptance_utc": "2021-11-24T19:57:19.000Z",
+      "accession": "0000010795-21-000091",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3798562,
+      "sha256": "f69ff06e1aad4036c21e710d2be59506ae23fc0a010833bf379622522cc0b487"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/10795/000001079521000091/a09-30x2021ex21nextgenfina.htm",
+      "sec_acceptance_utc": "2021-11-24T19:57:19.000Z",
+      "accession": "0000010795-21-000091",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 152283,
+      "sha256": "452592d00ccfdb8a119bf6eab04a713c744d54012783ade136a085f81c348d5b"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/10795/000162828022030686/bdx-20220930.htm",
+      "sec_acceptance_utc": "2022-11-22T21:58:28.000Z",
+      "accession": "0001628280-22-030686",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3851484,
+      "sha256": "780ddc0573f74c13715f4837aaae6c553a7cb3d475ab2c3e9c3955ab2131823c"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/10795/000162828022030686/a09-30x2022ex21.htm",
+      "sec_acceptance_utc": "2022-11-22T21:58:28.000Z",
+      "accession": "0001628280-22-030686",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 154036,
+      "sha256": "77ac4eb2d777eeeb42c5e4c82988c9542ef0aeeacbdf50e2b77598e549ac13d5"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/10795/000001079523000098/bdx-20230930.htm",
+      "sec_acceptance_utc": "2023-11-21T22:08:11.000Z",
+      "accession": "0000010795-23-000098",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2947575,
+      "sha256": "1ff2b54242167adede720c8a93eb77dc4fb5975ca780b7abace55f8633bc9506"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/10795/000001079523000098/a09-30x2023ex21.htm",
+      "sec_acceptance_utc": "2023-11-21T22:08:11.000Z",
+      "accession": "0000010795-23-000098",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 154475,
+      "sha256": "e84bd8fb08d068950157243f400b4153e5ad7138ef63e0509e5b08b877a0b6f8"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/10795/000001079524000084/bdx-20240930.htm",
+      "sec_acceptance_utc": "2024-11-27T18:36:08.000Z",
+      "accession": "0000010795-24-000084",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3034686,
+      "sha256": "34862b3d762ce064bb6679adb8b6f44975752e7c19324af6aa5163c9bf31f09c"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/10795/000001079524000084/exhibit21fy24q4formforwdesk.htm",
+      "sec_acceptance_utc": "2024-11-27T18:36:08.000Z",
+      "accession": "0000010795-24-000084",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 169570,
+      "sha256": "8537d114d4c8e1ed17a5f36cc5e68c62f04ae529f92c297bd83ff227f5abea40"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/10795/000001079525000099/bdx-20250930.htm",
+      "sec_acceptance_utc": "2025-11-25T21:27:14.000Z",
+      "accession": "0000010795-25-000099",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3059938,
+      "sha256": "0762fd90f119f2376a026de73185b7a5fda09e6cf7b23e28104b62e457828cae"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/10795/000119312525158797/d822749dex21.htm",
+      "sec_acceptance_utc": "2025-11-25T21:27:14.000Z",
+      "accession": "0000010795-25-000099",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 513031,
+      "sha256": "816a2388516a64313d154d45f6e446e09237324155a029f277d3c0ee7d87a237"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/885725/000088572518000010/a2017form10-k.htm",
+      "sec_acceptance_utc": "2018-02-20T11:20:01.000Z",
+      "accession": "0000885725-18-000010",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3311258,
+      "sha256": "0ec47173889d42bc6483ce8b963802e54208cf78bc373135a00cdf0931c72e1d"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/885725/000088572515000012/exhibit21-amsagreement.htm",
+      "sec_acceptance_utc": "2018-02-20T11:20:01.000Z",
+      "accession": "0000885725-18-000010",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 790037,
+      "sha256": "aa0d21ad86ffea76573c5cf1888af604ab21dbbdb4dedd4629a16e022a34b530"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/885725/000088572519000011/a2018form10-k.htm",
+      "sec_acceptance_utc": "2019-02-19T22:21:15.000Z",
+      "accession": "0000885725-19-000011",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3267047,
+      "sha256": "3702a17ced9dc4f1ce17e73eeb09c21dff2cf91e803bbb8bba812263f6132d53"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/885725/000088572515000012/exhibit21-amsagreement.htm",
+      "sec_acceptance_utc": "2019-02-19T22:21:15.000Z",
+      "accession": "0000885725-19-000011",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 790037,
+      "sha256": "aa0d21ad86ffea76573c5cf1888af604ab21dbbdb4dedd4629a16e022a34b530"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/885725/000088572520000012/a2019form10-k.htm",
+      "sec_acceptance_utc": "2020-02-25T21:58:01.000Z",
+      "accession": "0000885725-20-000012",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4711213,
+      "sha256": "4e3bea913c019f6e8aa36474c5421948dea76e0253d42891838d4ccc8dc47e38"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/885725/000088572515000012/exhibit21-amsagreement.htm",
+      "sec_acceptance_utc": "2020-02-25T21:58:01.000Z",
+      "accession": "0000885725-20-000012",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 790037,
+      "sha256": "aa0d21ad86ffea76573c5cf1888af604ab21dbbdb4dedd4629a16e022a34b530"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/885725/000088572521000008/bsx-20201231.htm",
+      "sec_acceptance_utc": "2021-02-23T21:21:50.000Z",
+      "accession": "0000885725-21-000008",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4642260,
+      "sha256": "38fcb89c731fcb24269af5e082455d879d834ae18ec77706446ad165e0298318"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/885725/000088572515000012/exhibit21-amsagreement.htm",
+      "sec_acceptance_utc": "2021-02-23T21:21:50.000Z",
+      "accession": "0000885725-21-000008",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 790037,
+      "sha256": "aa0d21ad86ffea76573c5cf1888af604ab21dbbdb4dedd4629a16e022a34b530"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/885725/000088572522000006/bsx-20211231.htm",
+      "sec_acceptance_utc": "2022-02-23T21:34:25.000Z",
+      "accession": "0000885725-22-000006",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4645620,
+      "sha256": "752a06cf4c358a00f6cd61164f3a502c62f362c0b7a0fabaf865459ef61efcd6"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/885725/000088572515000012/exhibit21-amsagreement.htm",
+      "sec_acceptance_utc": "2022-02-23T21:34:25.000Z",
+      "accession": "0000885725-22-000006",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 790037,
+      "sha256": "aa0d21ad86ffea76573c5cf1888af604ab21dbbdb4dedd4629a16e022a34b530"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/885725/000088572523000008/bsx-20221231.htm",
+      "sec_acceptance_utc": "2023-02-23T21:20:14.000Z",
+      "accession": "0000885725-23-000008",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4139195,
+      "sha256": "a91caa389377846a35b9df59358a0b7b35d14a31256e88d09ca65998138907a5"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/885725/000088572523000008/exhibit21-listofsubsidiari.htm",
+      "sec_acceptance_utc": "2023-02-23T21:20:14.000Z",
+      "accession": "0000885725-23-000008",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 24617,
+      "sha256": "9a30b73e151e6f7662aa75ca71b3c47bb884d33b4343d5bb51d7bf6837c03b91"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/885725/000088572524000017/bsx-20231231.htm",
+      "sec_acceptance_utc": "2024-02-20T21:23:27.000Z",
+      "accession": "0000885725-24-000017",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3255625,
+      "sha256": "9d1e1eb01ed7d9b9744048de45d825169409d593fecf26a0ff6a1b92a0007e04"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/885725/000088572524000017/exhibit21-listofsubsidiari.htm",
+      "sec_acceptance_utc": "2024-02-20T21:23:27.000Z",
+      "accession": "0000885725-24-000017",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 25774,
+      "sha256": "0dc6ab5e716207d413ba9a0751c606e4c5ca7102885d5f920deebd3f2becccf0"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/885725/000088572525000011/bsx-20241231.htm",
+      "sec_acceptance_utc": "2025-02-18T21:13:39.000Z",
+      "accession": "0000885725-25-000011",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3350818,
+      "sha256": "603c28b180abe0152a458709d773c464a1768a45399624617326af0ad4be973f"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/885725/000088572525000011/exhibit21-listofsubsidiari.htm",
+      "sec_acceptance_utc": "2025-02-18T21:13:39.000Z",
+      "accession": "0000885725-25-000011",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 26426,
+      "sha256": "a3f8e905aba54dd2e1845c66dc661fdf39493c07237ac55c963cd1f5c8d3fe73"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/721371/000072137118000077/a18q4_10kx063018xform10-k.htm",
+      "sec_acceptance_utc": "2018-08-22T20:23:32.000Z",
+      "accession": "0000721371-18-000077",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2862308,
+      "sha256": "4eadfb1137cf6167f2b0987a15be6bef0e49cc5196ef922a13635a7de1449b2c"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/721371/000119312517127390/d380332dex21.htm",
+      "sec_acceptance_utc": "2018-08-22T20:23:32.000Z",
+      "accession": "0000721371-18-000077",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 605894,
+      "sha256": "0770fe66a5e8a6084bf1d7e54afeb5854186c6982c39606d324b1167ee281bfd"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/721371/000072137119000090/a19q4_10kx063019xform10-k.htm",
+      "sec_acceptance_utc": "2019-08-20T20:30:26.000Z",
+      "accession": "0000721371-19-000090",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2775642,
+      "sha256": "95394f37ed9aca9a7051bc075d31ece91f586419efd49ebe9461a502dc08f991"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/721371/000119312517127390/d380332dex21.htm",
+      "sec_acceptance_utc": "2019-08-20T20:30:26.000Z",
+      "accession": "0000721371-19-000090",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 605894,
+      "sha256": "0770fe66a5e8a6084bf1d7e54afeb5854186c6982c39606d324b1167ee281bfd"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/721371/000072137120000089/a20q410k063020form10-k.htm",
+      "sec_acceptance_utc": "2020-08-13T14:04:19.000Z",
+      "accession": "0000721371-20-000089",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3569678,
+      "sha256": "85d3fb2f5239738ff0ca3129ff7e3622b16ac91f1c6d05813e983de7a950d815"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/721371/000119312517127390/d380332dex21.htm",
+      "sec_acceptance_utc": "2020-08-13T14:04:19.000Z",
+      "accession": "0000721371-20-000089",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 605894,
+      "sha256": "0770fe66a5e8a6084bf1d7e54afeb5854186c6982c39606d324b1167ee281bfd"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/721371/000072137121000080/cah-20210630.htm",
+      "sec_acceptance_utc": "2021-08-16T12:50:00.000Z",
+      "accession": "0000721371-21-000080",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3318467,
+      "sha256": "bdd98d26848ffaddd6723b65bcd7c2fd59ffbc28b05cfb50952def4bbc2d12f1"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/721371/000119312517127390/d380332dex21.htm",
+      "sec_acceptance_utc": "2021-08-16T12:50:00.000Z",
+      "accession": "0000721371-21-000080",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 605894,
+      "sha256": "0770fe66a5e8a6084bf1d7e54afeb5854186c6982c39606d324b1167ee281bfd"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/721371/000072137122000058/cah-20220630.htm",
+      "sec_acceptance_utc": "2022-08-11T20:17:06.000Z",
+      "accession": "0000721371-22-000058",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3286511,
+      "sha256": "a9b1676453f93168b990da9d89b3c458c1a3638ff58b10fd43f1c9ac8d011fb8"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/721371/000119312517127390/d380332dex21.htm",
+      "sec_acceptance_utc": "2022-08-11T20:17:06.000Z",
+      "accession": "0000721371-22-000058",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 605894,
+      "sha256": "0770fe66a5e8a6084bf1d7e54afeb5854186c6982c39606d324b1167ee281bfd"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/721371/000072137123000060/cah-20230630.htm",
+      "sec_acceptance_utc": "2023-08-15T12:50:31.000Z",
+      "accession": "0000721371-23-000060",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2603095,
+      "sha256": "d7781c53bc470a10a66e1a1d5ed9159393f272f0d7919312a9a4ba33bd850139"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/721371/000119312517127390/d380332dex21.htm",
+      "sec_acceptance_utc": "2023-08-15T12:50:31.000Z",
+      "accession": "0000721371-23-000060",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 605894,
+      "sha256": "0770fe66a5e8a6084bf1d7e54afeb5854186c6982c39606d324b1167ee281bfd"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/721371/000072137124000056/cah-20240630.htm",
+      "sec_acceptance_utc": "2024-08-14T12:47:07.000Z",
+      "accession": "0000721371-24-000056",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3373567,
+      "sha256": "3befb233d34c11f07635e9ed3cc86e49a95041db2d8ce8bbdc57ae6a3ccc9a66"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/721371/000072137124000056/a24q4_10kx63024xexhibit2111.htm",
+      "sec_acceptance_utc": "2024-08-14T12:47:07.000Z",
+      "accession": "0000721371-24-000056",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 78366,
+      "sha256": "4f9299e514bfefdddd20afd642451dca98384bf88afd4fc8e5cd1b232bb71abb"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/721371/000072137125000079/cah-20250630.htm",
+      "sec_acceptance_utc": "2025-08-12T12:58:00.000Z",
+      "accession": "0000721371-25-000079",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2833633,
+      "sha256": "4e8e7c5e2592ba40ab8bad709f158828399fb3ab6140f2d7cb4f03f98d440166"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/721371/000072137125000079/a25q4_10kx063025xexhibit211.htm",
+      "sec_acceptance_utc": "2025-08-12T12:58:00.000Z",
+      "accession": "0000721371-25-000079",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 78361,
+      "sha256": "ad0777a03c7647b0c0d38fa158961a0408f3dc8567bc30683efbbd8f0b85781b"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/313616/000031361618000038/dhr-20171231x10xk.htm",
+      "sec_acceptance_utc": "2018-02-20T23:34:14.000Z",
+      "accession": "0000313616-18-000038",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3240890,
+      "sha256": "d24dc66a5f8d591d1408fdade68faf35c84152a65e367a55404ff9a4b719f863"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/1659166/000119312516491973/d43850dex21.htm",
+      "sec_acceptance_utc": "2018-02-20T23:34:14.000Z",
+      "accession": "0000313616-18-000038",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 381202,
+      "sha256": "9f8089f2609bf8d3802712aadd477fe5a65ec7b3968518a7660c2a3dcac580d2"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/313616/000031361619000035/dhr-20181231x10xk.htm",
+      "sec_acceptance_utc": "2019-02-21T00:10:11.000Z",
+      "accession": "0000313616-19-000035",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3271845,
+      "sha256": "acc311f025e6ec77be12ff29c07fff78d905e2cb944e42c25f906bea62d7fab3"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/1659166/000119312516491973/d43850dex21.htm",
+      "sec_acceptance_utc": "2019-02-21T00:10:11.000Z",
+      "accession": "0000313616-19-000035",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 381202,
+      "sha256": "9f8089f2609bf8d3802712aadd477fe5a65ec7b3968518a7660c2a3dcac580d2"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/313616/000031361620000041/dhr-20191231x10xk.htm",
+      "sec_acceptance_utc": "2020-02-21T12:32:05.000Z",
+      "accession": "0000313616-20-000041",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4699856,
+      "sha256": "70461964364173c05c09b9f82128118135dd86510cc48f768b2386d910098e0d"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/313616/000119312519049954/d702051dex21.htm",
+      "sec_acceptance_utc": "2020-02-21T12:32:05.000Z",
+      "accession": "0000313616-20-000041",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 719891,
+      "sha256": "7a059f2b2e6e6dbc134778b1eb2131c2c70ce4674b87e7528e1bc6c44fa63d0c"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/313616/000031361621000045/dhr-20201231.htm",
+      "sec_acceptance_utc": "2021-02-25T00:13:25.000Z",
+      "accession": "0000313616-21-000045",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4302713,
+      "sha256": "65cb2b21df5ffda9fc9c4bf65d93a1ceaab709e84ab7102e1bc6a1f8078d6cd7"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/313616/000119312519049954/d702051dex21.htm",
+      "sec_acceptance_utc": "2021-02-25T00:13:25.000Z",
+      "accession": "0000313616-21-000045",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 719891,
+      "sha256": "7a059f2b2e6e6dbc134778b1eb2131c2c70ce4674b87e7528e1bc6c44fa63d0c"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/313616/000031361622000061/dhr-20211231.htm",
+      "sec_acceptance_utc": "2022-02-23T21:49:10.000Z",
+      "accession": "0000313616-22-000061",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4053830,
+      "sha256": "e7f187cbbec7a7357a4cc496817c2b257931aae3752a4ce6c5f8eb8969a10c39"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/313616/000031361623000087/dhr-20221231.htm",
+      "sec_acceptance_utc": "2023-02-22T21:40:48.000Z",
+      "accession": "0000313616-23-000087",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4086839,
+      "sha256": "c54d2503fb26f954407048d3c9f626a05a6c1407b4b9eca45bd6aeb40900fda5"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/313616/000031361624000052/dhr-20231231.htm",
+      "sec_acceptance_utc": "2024-02-21T21:38:09.000Z",
+      "accession": "0000313616-24-000052",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3046820,
+      "sha256": "98da6b81c6affd8f203c809c2fd7b3192f149db4f602f971b2c840b9c659f397"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/313616/000031361623000252/exhibit21-separationanddis.htm",
+      "sec_acceptance_utc": "2024-02-21T21:38:09.000Z",
+      "accession": "0000313616-24-000052",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 652941,
+      "sha256": "0244f45141045a4047eb6f2eac15aab8b7268bebf4e20c9912d3fc04b295b4e7"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/313616/000031361625000043/dhr-20241231.htm",
+      "sec_acceptance_utc": "2025-02-20T21:18:06.000Z",
+      "accession": "0000313616-25-000043",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2871441,
+      "sha256": "e8784f53ab5471833cabf5b05697985fc461ba976ef3cb875970b4f039dd72c3"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/313616/000031361623000252/exhibit21-separationanddis.htm",
+      "sec_acceptance_utc": "2025-02-20T21:18:06.000Z",
+      "accession": "0000313616-25-000043",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 652941,
+      "sha256": "0244f45141045a4047eb6f2eac15aab8b7268bebf4e20c9912d3fc04b295b4e7"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1093557/000109355718000018/dxcm-12312017x10k.htm",
+      "sec_acceptance_utc": "2018-02-27T22:22:24.000Z",
+      "accession": "0001093557-18-000018",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2067329,
+      "sha256": "324675653607c4e9a5118f4c21c932c17349b632c8d2f6dd1c3000c2e444fde1"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1093557/000109355718000018/dxcm12312017exhibit2101.htm",
+      "sec_acceptance_utc": "2018-02-27T22:22:24.000Z",
+      "accession": "0001093557-18-000018",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 10898,
+      "sha256": "d6d41d5469b514be0b8ce6890f6137aef5b2655f8c01b3f9139654ee24acaba9"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1093557/000109355719000041/dxcm-12312018x10k.htm",
+      "sec_acceptance_utc": "2019-02-21T22:12:49.000Z",
+      "accession": "0001093557-19-000041",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2545251,
+      "sha256": "9a33a98bb70e91da2dfa827957408023ad330df64d4977d764e559645d5b9acd"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1093557/000109355719000041/dxcm12312018exhibit2101.htm",
+      "sec_acceptance_utc": "2019-02-21T22:12:49.000Z",
+      "accession": "0001093557-19-000041",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 12669,
+      "sha256": "a0ab3659404f6b5a64a68e8b4d1e7ec039a1b961aa6dfd6ea71d7c5967801a8d"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1093557/000109355720000029/dxcm-12312019x10kasof1.htm",
+      "sec_acceptance_utc": "2020-02-13T22:17:25.000Z",
+      "accession": "0001093557-20-000029",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3218264,
+      "sha256": "cfad1be2f94551ab4e1100d92accf894082b96da01d4bf50ec8890e87301e1f8"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1093557/000109355720000029/dxcm12312019exhibit2101.htm",
+      "sec_acceptance_utc": "2020-02-13T22:17:25.000Z",
+      "accession": "0001093557-20-000029",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 13769,
+      "sha256": "bf446034e6d3228be0a51b60656529b534a7984e61749f037c4959e2feb018db"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1093557/000109355721000024/dxcm-20201231.htm",
+      "sec_acceptance_utc": "2021-02-11T22:18:05.000Z",
+      "accession": "0001093557-21-000024",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2876630,
+      "sha256": "9064dad0d0f9bd52571fa1f9d538d412d70f678466e54d21768d5513c90835f6"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1093557/000109355721000024/dxcm12312020exhibit2101.htm",
+      "sec_acceptance_utc": "2021-02-11T22:18:05.000Z",
+      "accession": "0001093557-21-000024",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 14328,
+      "sha256": "74608e8a51414f16ff6b0a9b84e8787e9f6aacda1ac971e13b1e2f62d639d063"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1093557/000109355722000014/dxcm-20211231.htm",
+      "sec_acceptance_utc": "2022-02-14T21:31:44.000Z",
+      "accession": "0001093557-22-000014",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2928402,
+      "sha256": "256f8f4b5ce590ce747a226721ad9cf092f7936c1530f7a0b47fac84ff49c05d"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1093557/000109355722000014/dxcm12312021ex2101_12312021.htm",
+      "sec_acceptance_utc": "2022-02-14T21:31:44.000Z",
+      "accession": "0001093557-22-000014",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 14555,
+      "sha256": "b1fe19c4cecba4027c01aa26ed25f9c3268e044664b76f2390d74d0a2c517c93"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1093557/000109355723000024/dxcm-20221231.htm",
+      "sec_acceptance_utc": "2023-02-09T22:06:55.000Z",
+      "accession": "0001093557-23-000024",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3272351,
+      "sha256": "f7361ab912cd0bab5c67d48c2b245947508bf21ffc1c88621f448fc323c2d27c"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1093557/000109355723000024/dxcm12312022ex2101_12312022.htm",
+      "sec_acceptance_utc": "2023-02-09T22:06:55.000Z",
+      "accession": "0001093557-23-000024",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 12563,
+      "sha256": "602f856125945eef9fa0c0049dd63042dc7fca6acad37cee55ce638b527ea648"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1093557/000109355724000021/dxcm-20231231.htm",
+      "sec_acceptance_utc": "2024-02-08T22:14:40.000Z",
+      "accession": "0001093557-24-000021",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2524533,
+      "sha256": "4a9c794aac3491daaff384a6df5d09e2db44539f98279f031abdec0b5f82f824"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1093557/000109355724000021/dxcm12312023ex2101_12312023.htm",
+      "sec_acceptance_utc": "2024-02-08T22:14:40.000Z",
+      "accession": "0001093557-24-000021",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 12485,
+      "sha256": "734b347d230825c6b55e4ae1275b19538367f978363e29577635e024878fca8b"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1093557/000109355725000036/dxcm-20241231.htm",
+      "sec_acceptance_utc": "2025-02-14T22:52:37.000Z",
+      "accession": "0001093557-25-000036",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2530574,
+      "sha256": "dcbfee97d78f281e0394f31ad9aa82e5fa890ff893f31e3b90ed19da31108342"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1093557/000109355725000036/dxcm12312024-exhibit211.htm",
+      "sec_acceptance_utc": "2025-02-14T22:52:37.000Z",
+      "accession": "0001093557-25-000036",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 5662,
+      "sha256": "fbf00d4338ea3732cbc1876a96db3451f6bfc6c80104146664f07cbb8aeb2cf9"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1099800/000109980018000007/ew10-kq42017.htm",
+      "sec_acceptance_utc": "2018-02-16T21:10:41.000Z",
+      "accession": "0001099800-18-000007",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2916387,
+      "sha256": "f503a8463fa99cc3e494ac3fe005fd6a9a771779abb2b3756fe2c873dfd49396"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1099800/000109980018000007/ex-21110xkq42017.htm",
+      "sec_acceptance_utc": "2018-02-16T21:10:41.000Z",
+      "accession": "0001099800-18-000007",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 123111,
+      "sha256": "fa964f07fcefbb6925bae4743f7050f8514b4b38df7fbb197c2085e14529e7e3"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1099800/000109980019000004/ew10-kq42018.htm",
+      "sec_acceptance_utc": "2019-02-15T21:22:49.000Z",
+      "accession": "0001099800-19-000004",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2954255,
+      "sha256": "7f80d5c53a36adae461a5e801df8fd59f26dd5eea9ea78057508a7d478f28749"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1099800/000109980019000004/ex-21110xkq42018.htm",
+      "sec_acceptance_utc": "2019-02-15T21:22:49.000Z",
+      "accession": "0001099800-19-000004",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 123140,
+      "sha256": "d41527f68565f8944b12f499156f6c52d8ba51fd274431ddbe03026a24cd6e8c"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1099800/000109980020000005/ew10-kq42019.htm",
+      "sec_acceptance_utc": "2020-02-14T21:13:26.000Z",
+      "accession": "0001099800-20-000005",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4084185,
+      "sha256": "bfd3f827173b2f9281036c72a8f817b8f74db66868b7bf775edc9ddee5681899"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1099800/000109980020000005/ex-21110xkq42019.htm",
+      "sec_acceptance_utc": "2020-02-14T21:13:26.000Z",
+      "accession": "0001099800-20-000005",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 15284,
+      "sha256": "fd74bc9dc94c6da9418b7e67f570365f89ba0c291a44e39a3363ac4d0d4a2448"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1099800/000109980021000007/ew-20201231.htm",
+      "sec_acceptance_utc": "2021-02-12T21:58:56.000Z",
+      "accession": "0001099800-21-000007",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3687761,
+      "sha256": "6b699e1e6c018f8c08b35eb9f8f714c01187ceeeeb1bcbbf147b626dc7e439e9"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1099800/000109980021000007/ex-21110xkq42020.htm",
+      "sec_acceptance_utc": "2021-02-12T21:58:56.000Z",
+      "accession": "0001099800-21-000007",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 12834,
+      "sha256": "8652fe0eeb89432edbe8f0bdba02bc8bc3efadd282ea224feebe7b07ea51f600"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1099800/000109980022000005/ew-20211231.htm",
+      "sec_acceptance_utc": "2022-02-14T21:15:49.000Z",
+      "accession": "0001099800-22-000005",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3494020,
+      "sha256": "04f71b9e8448297d553af98542c345bcbf3a7380762f1c26c9aa9a7a8e86f032"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1099800/000109980022000005/ex-21110xkq42021.htm",
+      "sec_acceptance_utc": "2022-02-14T21:15:49.000Z",
+      "accession": "0001099800-22-000005",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 10106,
+      "sha256": "447b6748230457a98ca873d51641f67f88906cba322af69ec372aaa0ef8c5991"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1099800/000109980023000005/ew-20221231.htm",
+      "sec_acceptance_utc": "2023-02-13T21:32:19.000Z",
+      "accession": "0001099800-23-000005",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3549787,
+      "sha256": "af50b85550021832d01d4033403cc0c9adce7d05925a35adc9024101158ed6b2"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1099800/000109980023000005/ex-21110xkq42022.htm",
+      "sec_acceptance_utc": "2023-02-13T21:32:19.000Z",
+      "accession": "0001099800-23-000005",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 8664,
+      "sha256": "0386daf0fc0898aa99e3f01b609c1a810e41bd819a8f70c9360291d79eefafd5"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1099800/000109980024000004/ew-20231231.htm",
+      "sec_acceptance_utc": "2024-02-12T21:47:29.000Z",
+      "accession": "0001099800-24-000004",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2807477,
+      "sha256": "1583e569003e95f24ca59de56955534721c982088664f21f5f453e96fe1675c4"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1099800/000109980024000004/ex-21110xkq42023.htm",
+      "sec_acceptance_utc": "2024-02-12T21:47:29.000Z",
+      "accession": "0001099800-24-000004",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 9777,
+      "sha256": "473d6070dbc4cd7c2dfba5eff09f3d3990d98d2ca56916476facaeb8ecc105b3"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1099800/000109980025000005/ew-20241231.htm",
+      "sec_acceptance_utc": "2025-02-28T21:50:53.000Z",
+      "accession": "0001099800-25-000005",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3193818,
+      "sha256": "16de36e270b8b94979cab34fdb40aac5147b7223f970023890d8834b9378829a"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1099800/000109980025000005/ex-21110xkq42024.htm",
+      "sec_acceptance_utc": "2025-02-28T21:50:53.000Z",
+      "accession": "0001099800-25-000005",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 9529,
+      "sha256": "e5c741de1e23e5f854bac632e5dbcc42a043543e2b19e2119503f38a30505d27"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1333141/000104746918001100/a2234582z20-f.htm",
+      "sec_acceptance_utc": "2018-02-27T16:53:43.000Z",
+      "accession": "0001047469-18-001100",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 5385313,
+      "sha256": "531f9e43f85ca5d4a3d8f7418892129048f80e5ab4c2a398596d06b95b6e296c"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1333141/000104746919000562/a2237687z20-f.htm",
+      "sec_acceptance_utc": "2019-02-20T19:02:19.000Z",
+      "accession": "0001047469-19-000562",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 5800224,
+      "sha256": "8d97fb767e6e922149865e418f1d5cdfcb370bbf2df77a783fef14e3d09eb27a"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/1333170/000119312517249856/d436075dex21.htm",
+      "sec_acceptance_utc": "2019-02-20T19:02:19.000Z",
+      "accession": "0001047469-19-000562",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 447134,
+      "sha256": "a691fd346a5f14bf06ef9003d140df69c11e292e650c25509827361965bef52c"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1333141/000104746920000960/a2240706z20-f.htm",
+      "sec_acceptance_utc": "2020-02-20T18:52:57.000Z",
+      "accession": "0001047469-20-000960",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 6026931,
+      "sha256": "7a5b94aca314730cfd84f103295a595dac757c219c827e37450fcdc496a48527"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1333141/000104746921000424/a2242850z20-f.htm",
+      "sec_acceptance_utc": "2021-02-23T18:51:32.000Z",
+      "accession": "0001047469-21-000424",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 6495311,
+      "sha256": "c3978fa21eee197e69a114eeaef24171d5c0088a5646202f9c40ce6e9588f5b6"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1333141/000110465922025549/fms-20211231x20f.htm",
+      "sec_acceptance_utc": "2022-02-22T18:17:08.000Z",
+      "accession": "0001104659-22-025549",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 12064135,
+      "sha256": "e6a7f46096d061e6bfdaaaa2a35e8dc4d1d037e4d7957f845ca60aeecf67301d"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1333141/000110465923024168/fms-20221231x20f.htm",
+      "sec_acceptance_utc": "2023-02-22T15:56:01.000Z",
+      "accession": "0001104659-23-024168",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 11335157,
+      "sha256": "4e92d7afc577fffbad33d60446bff3cf51532c1bcf39ea749203ea8a6e173819"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1333141/000110465924025293/fms-20231231x20f.htm",
+      "sec_acceptance_utc": "2024-02-20T15:02:35.000Z",
+      "accession": "0001104659-24-025293",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 12024107,
+      "sha256": "4a3785945e4c20b46a370035560a4d84d9466aa8ae6a1b9a29361a624f42f8b2"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1333141/000110465925016784/fms-20241231x20f.htm",
+      "sec_acceptance_utc": "2025-02-25T14:50:04.000Z",
+      "accession": "0001104659-25-016784",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 11932498,
+      "sha256": "251202d64405847dc818c810eeeb5fb046a7de1cc11b5de39c0e7e021dbba94a"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1932393/000193239323000025/gehc-20221231.htm",
+      "sec_acceptance_utc": "2023-02-15T13:46:32.000Z",
+      "accession": "0001932393-23-000025",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2201753,
+      "sha256": "2e587377b4b16bd6ad8e6b4c69bd8708ae268a98d5030e03ffc1855687a4df1d"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1932393/000119312523001161/d386556dex21.htm",
+      "sec_acceptance_utc": "2023-02-15T13:46:32.000Z",
+      "accession": "0001932393-23-000025",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 390346,
+      "sha256": "802ae444cce47fb589a33f0658cbfc8cc0dc7a485a619a9af5c8073121d18534"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1932393/000193239324000013/gehc-20231231.htm",
+      "sec_acceptance_utc": "2024-02-06T11:26:57.000Z",
+      "accession": "0001932393-24-000013",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3338344,
+      "sha256": "291ac202aad7170319131d00975bd9dd6b586b0e6904299efe28427783ae73bf"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1932393/000119312523001161/d386556dex21.htm",
+      "sec_acceptance_utc": "2024-02-06T11:26:57.000Z",
+      "accession": "0001932393-24-000013",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 390346,
+      "sha256": "802ae444cce47fb589a33f0658cbfc8cc0dc7a485a619a9af5c8073121d18534"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1932393/000193239325000005/gehc-20241231.htm",
+      "sec_acceptance_utc": "2025-02-13T11:26:45.000Z",
+      "accession": "0001932393-25-000005",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3478417,
+      "sha256": "ef9434619431147cf380399dedf70882bbd32cefab1794c092dc761c6d7a1c1b"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1932393/000119312523001161/d386556dex21.htm",
+      "sec_acceptance_utc": "2025-02-13T11:26:45.000Z",
+      "accession": "0001932393-25-000005",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 390346,
+      "sha256": "802ae444cce47fb589a33f0658cbfc8cc0dc7a485a619a9af5c8073121d18534"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/859737/000085973718000020/holx_q4-2018.htm",
+      "sec_acceptance_utc": "2018-11-20T13:00:52.000Z",
+      "accession": "0000859737-18-000020",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3710600,
+      "sha256": "1848680abb51a3b826cda42d1bf69bff4de9056be1039d8cd3d0089d9967ff68"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/859737/000119312516793341/d299707dex21.htm",
+      "sec_acceptance_utc": "2018-11-20T13:00:52.000Z",
+      "accession": "0000859737-18-000020",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 447935,
+      "sha256": "2b7f3ed6b4868455f3a6c473865a94236c3af062a79ba1e195d6d724cb85620f"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/859737/000085973719000026/holxq4-2019.htm",
+      "sec_acceptance_utc": "2019-11-27T12:48:06.000Z",
+      "accession": "0000859737-19-000026",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 5064587,
+      "sha256": "3d4467763a0f76ff300ccf8f48ac6867b945c8fad82446bfa326d70860fb7481"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/859737/000119312516793341/d299707dex21.htm",
+      "sec_acceptance_utc": "2019-11-27T12:48:06.000Z",
+      "accession": "0000859737-19-000026",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 447935,
+      "sha256": "2b7f3ed6b4868455f3a6c473865a94236c3af062a79ba1e195d6d724cb85620f"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/859737/000085973720000039/holx-20200926.htm",
+      "sec_acceptance_utc": "2020-11-17T13:20:30.000Z",
+      "accession": "0000859737-20-000039",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4460184,
+      "sha256": "043d16a2c0f73c8e2de39aaf3d77f76364d5fd214e561850cf2ddd2da88f800e"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/859737/000119312516793341/d299707dex21.htm",
+      "sec_acceptance_utc": "2020-11-17T13:20:30.000Z",
+      "accession": "0000859737-20-000039",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 447935,
+      "sha256": "2b7f3ed6b4868455f3a6c473865a94236c3af062a79ba1e195d6d724cb85620f"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/859737/000085973721000023/holx-20210925.htm",
+      "sec_acceptance_utc": "2021-11-16T13:36:50.000Z",
+      "accession": "0000859737-21-000023",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4217759,
+      "sha256": "0dab870c6ea874f503e59a057b6d87a9c2ab9287b3e2ba1164f2c45aebe3ec44"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/859737/000119312516793341/d299707dex21.htm",
+      "sec_acceptance_utc": "2021-11-16T13:36:50.000Z",
+      "accession": "0000859737-21-000023",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 447935,
+      "sha256": "2b7f3ed6b4868455f3a6c473865a94236c3af062a79ba1e195d6d724cb85620f"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/859737/000085973722000022/holx-20220924.htm",
+      "sec_acceptance_utc": "2022-11-15T13:26:06.000Z",
+      "accession": "0000859737-22-000022",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4000359,
+      "sha256": "00d41b513df77ac31ea458271503f3b85c543c0af6b015a3dfe677b43ed87747"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/859737/000119312516793341/d299707dex21.htm",
+      "sec_acceptance_utc": "2022-11-15T13:26:06.000Z",
+      "accession": "0000859737-22-000022",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 447935,
+      "sha256": "2b7f3ed6b4868455f3a6c473865a94236c3af062a79ba1e195d6d724cb85620f"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/859737/000085973723000023/holx-20230930.htm",
+      "sec_acceptance_utc": "2023-11-21T13:17:06.000Z",
+      "accession": "0000859737-23-000023",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3135516,
+      "sha256": "565be7d2befc92c182fbd45441e2ee6a2452edab59be2f9ac16f68ea2ed7b5fe"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/0000859737/000119312521110358/d75473dex21.htm",
+      "sec_acceptance_utc": "2023-11-21T13:17:06.000Z",
+      "accession": "0000859737-23-000023",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 411236,
+      "sha256": "e5830bfe0d063be8eb89addc6265463bbc18e076df0c74f6327e1db4cb27a509"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/859737/000085973724000024/holx-20240928.htm",
+      "sec_acceptance_utc": "2024-11-27T12:24:17.000Z",
+      "accession": "0000859737-24-000024",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3101826,
+      "sha256": "422be9928ff6398b0eb2b5885a3f22bd2c33d8d8c2d121cb06a6bad2dc92ce76"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/0000859737/000119312521110358/d75473dex21.htm",
+      "sec_acceptance_utc": "2024-11-27T12:24:17.000Z",
+      "accession": "0000859737-24-000024",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 411236,
+      "sha256": "e5830bfe0d063be8eb89addc6265463bbc18e076df0c74f6327e1db4cb27a509"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/859737/000085973725000072/holx-20250927.htm",
+      "sec_acceptance_utc": "2025-11-18T21:07:56.000Z",
+      "accession": "0000859737-25-000072",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3225428,
+      "sha256": "eb81c82d4a0b8aa7a5b39cf4473aabe9eb28997312d07951b650edc9a7c51a6f"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/0000859737/000119312521110358/d75473dex21.htm",
+      "sec_acceptance_utc": "2025-11-18T21:07:56.000Z",
+      "accession": "0000859737-25-000072",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 411236,
+      "sha256": "e5830bfe0d063be8eb89addc6265463bbc18e076df0c74f6327e1db4cb27a509"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/917520/000091752018000012/iart-20171231x10k.htm",
+      "sec_acceptance_utc": "2018-03-01T12:48:52.000Z",
+      "accession": "0000917520-18-000012",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3026388,
+      "sha256": "e762aab3a6693271d9d3d1a15808558597e2a37a08e9cbffeb8f6beea5aa473d"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/917520/000119312514383254/d802647dex21.htm",
+      "sec_acceptance_utc": "2018-03-01T12:48:52.000Z",
+      "accession": "0000917520-18-000012",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 373621,
+      "sha256": "922bf3c85eece5a85f00a4fb4f6b8777cf70f32bf98df049e6e271ac52b68875"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/917520/000091752019000013/iart-20181231x10k.htm",
+      "sec_acceptance_utc": "2019-02-26T21:32:40.000Z",
+      "accession": "0000917520-19-000013",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3097051,
+      "sha256": "7412c27d1ee4d18dc7d15e1a083b0f778e7ab006b06ce24ec01cea0e87039d3b"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/917520/000119312514383254/d802647dex21.htm",
+      "sec_acceptance_utc": "2019-02-26T21:32:40.000Z",
+      "accession": "0000917520-19-000013",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 373621,
+      "sha256": "922bf3c85eece5a85f00a4fb4f6b8777cf70f32bf98df049e6e271ac52b68875"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/917520/000091752020000010/iart-20191231x10k.htm",
+      "sec_acceptance_utc": "2020-02-20T22:47:03.000Z",
+      "accession": "0000917520-20-000010",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4137354,
+      "sha256": "96656903803df80b4443bcea51391a323b08d2da46a3dfc1ce581513cd98a157"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/917520/000119312514383254/d802647dex21.htm",
+      "sec_acceptance_utc": "2020-02-20T22:47:03.000Z",
+      "accession": "0000917520-20-000010",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 373621,
+      "sha256": "922bf3c85eece5a85f00a4fb4f6b8777cf70f32bf98df049e6e271ac52b68875"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/917520/000091752021000018/iart-20201231.htm",
+      "sec_acceptance_utc": "2021-02-23T22:22:40.000Z",
+      "accession": "0000917520-21-000018",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3644925,
+      "sha256": "b7a9b34350988757c5b7863af5803a7f2542d55371292c567b1e9e1cac01d15e"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/917520/000119312514383254/d802647dex21.htm",
+      "sec_acceptance_utc": "2021-02-23T22:22:40.000Z",
+      "accession": "0000917520-21-000018",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 373621,
+      "sha256": "922bf3c85eece5a85f00a4fb4f6b8777cf70f32bf98df049e6e271ac52b68875"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/917520/000091752022000010/iart-20211231.htm",
+      "sec_acceptance_utc": "2022-02-24T21:06:48.000Z",
+      "accession": "0000917520-22-000010",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3338553,
+      "sha256": "456a9d47e62d6920661ae79c7141742bc64591336a664fb4253d4056c3b11939"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/917520/000119312514383254/d802647dex21.htm",
+      "sec_acceptance_utc": "2022-02-24T21:06:48.000Z",
+      "accession": "0000917520-22-000010",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 373621,
+      "sha256": "922bf3c85eece5a85f00a4fb4f6b8777cf70f32bf98df049e6e271ac52b68875"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/917520/000091752023000015/iart-20221231.htm",
+      "sec_acceptance_utc": "2023-02-22T21:12:43.000Z",
+      "accession": "0000917520-23-000015",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3307295,
+      "sha256": "8f55279a1d09df60e59318710a06f9359508e47d3f9eef7629919681fa068819"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/917520/000091752024000022/iart-20231231.htm",
+      "sec_acceptance_utc": "2024-02-28T21:13:03.000Z",
+      "accession": "0000917520-24-000022",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2616790,
+      "sha256": "db14df46f1a1515605e64ce485085b3a4e889d3b3cf754b83c956b1f406d680c"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/917520/000091752025000017/iart-20241231.htm",
+      "sec_acceptance_utc": "2025-02-25T22:06:44.000Z",
+      "accession": "0000917520-25-000017",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2903229,
+      "sha256": "e36cc4fca628214c7f9a72c855946961b9b65d042b681aa8eb0eae30b7d06728"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/883984/000088398418000010/icui1231201710-k.htm",
+      "sec_acceptance_utc": "2018-03-16T21:20:37.000Z",
+      "accession": "0000883984-18-000010",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2683910,
+      "sha256": "f62e08ee3e4ff63a4f9cd1940c3753a19aa1f54712e052f4133f613deb90aee2"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/883984/000088398415000040/exhibit21stockpurchaseagre.htm",
+      "sec_acceptance_utc": "2018-03-16T21:20:37.000Z",
+      "accession": "0000883984-18-000010",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 746064,
+      "sha256": "3a4ca055e3e83416c894150c52a8893dcfa055af4acb0e11a92fabb05ab5d6d7"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/883984/000088398419000007/icui1231201810-k.htm",
+      "sec_acceptance_utc": "2019-03-01T22:28:27.000Z",
+      "accession": "0000883984-19-000007",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2792737,
+      "sha256": "cc28353b67fcf82a84b9f4817390c6bb913c988d285ca791c72d81ae474c5008"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/883984/000088398415000040/exhibit21stockpurchaseagre.htm",
+      "sec_acceptance_utc": "2019-03-01T22:28:27.000Z",
+      "accession": "0000883984-19-000007",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 746064,
+      "sha256": "3a4ca055e3e83416c894150c52a8893dcfa055af4acb0e11a92fabb05ab5d6d7"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/883984/000088398420000014/icui1231201910-k.htm",
+      "sec_acceptance_utc": "2020-03-02T13:35:55.000Z",
+      "accession": "0000883984-20-000014",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3431482,
+      "sha256": "239ea418960fdc9d44f57a5ef4aa659f9b0d3ba718860e861097edcc0ab56e74"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/883984/000088398417000004/exhibit21amendedandrestate.htm",
+      "sec_acceptance_utc": "2020-03-02T13:35:55.000Z",
+      "accession": "0000883984-20-000014",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 1517916,
+      "sha256": "e993b9d102363c4e2ec1e7ef87894bfc43d72fd66ba018fe3ca5ff3ea303bdf7"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/883984/000088398421000005/icui-20201231.htm",
+      "sec_acceptance_utc": "2021-02-26T21:59:32.000Z",
+      "accession": "0000883984-21-000005",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3119754,
+      "sha256": "efc2b34f8cfe433573dd5a681b76de028d2b8249d4a16389811aa28840c32d18"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/883984/000088398417000004/exhibit21amendedandrestate.htm",
+      "sec_acceptance_utc": "2021-02-26T21:59:32.000Z",
+      "accession": "0000883984-21-000005",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 1517916,
+      "sha256": "e993b9d102363c4e2ec1e7ef87894bfc43d72fd66ba018fe3ca5ff3ea303bdf7"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/883984/000088398422000014/icui-20211231.htm",
+      "sec_acceptance_utc": "2022-02-25T21:53:47.000Z",
+      "accession": "0000883984-22-000014",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3207165,
+      "sha256": "3eb2d44b0659ad02de2e702229c59bb9fbe9b3884ccbcbdc5d922b982d3fd694"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/0000883984/000119312521267387/d228927dex21.htm",
+      "sec_acceptance_utc": "2022-02-25T21:53:47.000Z",
+      "accession": "0000883984-22-000014",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 921228,
+      "sha256": "47bee2638aba91faace82593ec460542064921b4f1b45b1eb0ade8a41c40b465"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/883984/000088398423000009/icui-20221231.htm",
+      "sec_acceptance_utc": "2023-02-27T22:31:30.000Z",
+      "accession": "0000883984-23-000009",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3613053,
+      "sha256": "8826057705163046ba6f1c5d62faffcaf05bc9eb8519052ef3339bfd8cc09cb5"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/0000883984/000119312521267387/d228927dex21.htm",
+      "sec_acceptance_utc": "2023-02-27T22:31:30.000Z",
+      "accession": "0000883984-23-000009",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 921228,
+      "sha256": "47bee2638aba91faace82593ec460542064921b4f1b45b1eb0ade8a41c40b465"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/883984/000088398424000005/icui-20231231.htm",
+      "sec_acceptance_utc": "2024-02-27T22:05:29.000Z",
+      "accession": "0000883984-24-000005",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2904185,
+      "sha256": "e85fb5c82b8fc9ed5e0ffbecf970c3476e470536d1437be61b64b121a10f6835"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/0000883984/000119312521267387/d228927dex21.htm",
+      "sec_acceptance_utc": "2024-02-27T22:05:29.000Z",
+      "accession": "0000883984-24-000005",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 921228,
+      "sha256": "47bee2638aba91faace82593ec460542064921b4f1b45b1eb0ade8a41c40b465"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/883984/000088398425000007/icui-20241231.htm",
+      "sec_acceptance_utc": "2025-02-27T22:24:45.000Z",
+      "accession": "0000883984-25-000007",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2901133,
+      "sha256": "d0bbb60cd0ce4c502487a604e2cb3092cd4d321b9d0ef4a3b3c270ad210fef83"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/0000883984/000119312521267387/d228927dex21.htm",
+      "sec_acceptance_utc": "2025-02-27T22:24:45.000Z",
+      "accession": "0000883984-25-000007",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 921228,
+      "sha256": "47bee2638aba91faace82593ec460542064921b4f1b45b1eb0ade8a41c40b465"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/200406/000020040618000005/form10-k20171231.htm",
+      "sec_acceptance_utc": "2018-02-21T21:49:20.000Z",
+      "accession": "0000200406-18-000005",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3566637,
+      "sha256": "8502fef2a466d80b14b5a09535edc6d8841887dc154a72059f6eeb65b9b9c596"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/200406/000020040618000005/ex21-subsidiariesxform10xk.htm",
+      "sec_acceptance_utc": "2018-02-21T21:49:20.000Z",
+      "accession": "0000200406-18-000005",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 138157,
+      "sha256": "6f937ef925e62ad89c65d7f50a34ced5edf8cb2d609d9ae33bc4f30f0d07b457"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/200406/000020040619000009/form10-k20181230.htm",
+      "sec_acceptance_utc": "2019-02-20T21:40:34.000Z",
+      "accession": "0000200406-19-000009",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4463247,
+      "sha256": "49c1d727136010bac38a2d0999b9afec64bfb162afefb3af73bb6a135ebce525"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/200406/000020040619000009/ex21-subsidiariesxform10xk.htm",
+      "sec_acceptance_utc": "2019-02-20T21:40:34.000Z",
+      "accession": "0000200406-19-000009",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 139738,
+      "sha256": "c1c58ca7c77f2ef0910a4700874f38d6df94c1b0b768bbdb44b78794567a8e8c"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/200406/000020040620000010/form10-k20191229.htm",
+      "sec_acceptance_utc": "2020-02-18T21:34:21.000Z",
+      "accession": "0000200406-20-000010",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 6435531,
+      "sha256": "1a76bb8e216749839dc03c7105a6948848ac2f774db87e94aa3b98086afc9d94"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/200406/000020040620000010/ex21-subsidiariesxform.htm",
+      "sec_acceptance_utc": "2020-02-18T21:34:21.000Z",
+      "accession": "0000200406-20-000010",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 276626,
+      "sha256": "1dea8314c4923b77c626bd3aeff564116cfa15953ee27327937363e976a10a59"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/200406/000020040621000008/jnj-20210103.htm",
+      "sec_acceptance_utc": "2021-02-22T21:36:14.000Z",
+      "accession": "0000200406-21-000008",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 5402142,
+      "sha256": "2c9f9e85b303e64ce58310b19953a98765c198d2279e59c9cd8172a4c6483f5f"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/200406/000020040621000008/ex21-subsidiariesxform10xk.htm",
+      "sec_acceptance_utc": "2021-02-22T21:36:14.000Z",
+      "accession": "0000200406-21-000008",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 268773,
+      "sha256": "570b1791d4701ba24a25400110ccaf69ad1911dbb08afa65d7d0e5f213afb67e"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/200406/000020040622000022/jnj-20220102.htm",
+      "sec_acceptance_utc": "2022-02-17T21:06:50.000Z",
+      "accession": "0000200406-22-000022",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 5427279,
+      "sha256": "a6c3432958edc93d997f8d7c44bcbee9180e7496b367248ac3296c4fa3436303"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/200406/000020040622000022/ex21-subsidiariesxform10xk.htm",
+      "sec_acceptance_utc": "2022-02-17T21:06:50.000Z",
+      "accession": "0000200406-22-000022",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 273145,
+      "sha256": "691c10f6248b12ff293f5479039a925e567bda58c45ef5c11947469908338f54"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/200406/000020040623000016/jnj-20230101.htm",
+      "sec_acceptance_utc": "2023-02-16T21:01:53.000Z",
+      "accession": "0000200406-23-000016",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 5351234,
+      "sha256": "9679759aba95844e9ecbc06242896b4f8ce0fddf22ec422bbf8b9d66b8c50fad"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/200406/000119312522274491/d395813dex21.htm",
+      "sec_acceptance_utc": "2023-02-16T21:01:53.000Z",
+      "accession": "0000200406-23-000016",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 651903,
+      "sha256": "bf5b0160f778b72d5ca81b54e389d3032b40ef41d08a381117fa1e8aba5a8460"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/200406/000020040624000013/jnj-20231231.htm",
+      "sec_acceptance_utc": "2024-02-16T21:12:22.000Z",
+      "accession": "0000200406-24-000013",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3658184,
+      "sha256": "fdab2ecbbe76875a920673f2eaac14bb53822f110650593554d8ace531fd11d9"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/200406/000119312522274491/d395813dex21.htm",
+      "sec_acceptance_utc": "2024-02-16T21:12:22.000Z",
+      "accession": "0000200406-24-000013",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 651903,
+      "sha256": "bf5b0160f778b72d5ca81b54e389d3032b40ef41d08a381117fa1e8aba5a8460"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/200406/000020040625000038/jnj-20241229.htm",
+      "sec_acceptance_utc": "2025-02-13T21:07:39.000Z",
+      "accession": "0000200406-25-000038",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3662437,
+      "sha256": "4b7419da734967fc0960c5048e5eccd3d6a758f8078498b540c83113ed19b6ba"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/200406/000119312522274491/d395813dex21.htm",
+      "sec_acceptance_utc": "2025-02-13T21:07:39.000Z",
+      "accession": "0000200406-25-000038",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 651903,
+      "sha256": "bf5b0160f778b72d5ca81b54e389d3032b40ef41d08a381117fa1e8aba5a8460"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310318000024/mdt-2018427x10k.htm",
+      "sec_acceptance_utc": "2018-06-22T11:04:30.000Z",
+      "accession": "0001613103-18-000024",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 6248641,
+      "sha256": "cd1595902cb7b7adbeff790c1d4e9da329b6592723500a18872a38b946bd28c4"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310318000024/mdt-20180427xex21.htm",
+      "sec_acceptance_utc": "2018-06-22T11:04:30.000Z",
+      "accession": "0001613103-18-000024",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 234411,
+      "sha256": "8143468c16199259c0f8e68bc2e2b7dbe139804fe217860709c27bbaf23ba1a5"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310319000028/mdt-2019426x10k.htm",
+      "sec_acceptance_utc": "2019-06-21T10:53:12.000Z",
+      "accession": "0001613103-19-000028",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 8599280,
+      "sha256": "ec800ce5e1cdceb9bc356286dd5e4d3868cd3cc78a5d9a0d07e9d4bc1308d3f1"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310319000028/mdt-20190426xex21.htm",
+      "sec_acceptance_utc": "2019-06-21T10:53:12.000Z",
+      "accession": "0001613103-19-000028",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 225743,
+      "sha256": "9864092e790db249a9e1067d8da237aaaf63c34a8f64e2bdb96d88ea908e363a"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310320000021/mdt-20200424.htm",
+      "sec_acceptance_utc": "2020-06-19T20:28:08.000Z",
+      "accession": "0001613103-20-000021",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 6450095,
+      "sha256": "9475c397cd1fcd26da8c3265055bb75c8300282abf3f98f2e3b87ec0594f92ea"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310320000021/mdt-202010kxex21.htm",
+      "sec_acceptance_utc": "2020-06-19T20:28:08.000Z",
+      "accession": "0001613103-20-000021",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 316520,
+      "sha256": "0c881d8bca89c62541cdd453c707b1ff6a042646a595a8a03ae44b10ba79a001"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310321000027/mdt-20210430.htm",
+      "sec_acceptance_utc": "2021-06-25T20:51:46.000Z",
+      "accession": "0001613103-21-000027",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4886319,
+      "sha256": "f93a988c210f5ba0a17b17df1cfbfe48be181694d7d756357dd146806c79dd82"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310321000027/mdt-202110kxex21.htm",
+      "sec_acceptance_utc": "2021-06-25T20:51:46.000Z",
+      "accession": "0001613103-21-000027",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 205993,
+      "sha256": "09db48a6b1799b027a92f0b7d223253db169122c6f489da515ee33c5a5d08510"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310322000023/mdt-20220429.htm",
+      "sec_acceptance_utc": "2022-06-23T20:13:25.000Z",
+      "accession": "0001613103-22-000023",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4777658,
+      "sha256": "d56734f1cd06bb7e580fbf6adb1472fe4b419e400d9b72b67bb4153d2ac8c515"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310322000023/mdt-202210kxex21.htm",
+      "sec_acceptance_utc": "2022-06-23T20:13:25.000Z",
+      "accession": "0001613103-22-000023",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 192237,
+      "sha256": "072680c2b54bfae62b103bb0271c1464215d8e7f4774c0cde5034ea3b2a6bca7"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310323000040/mdt-20230428.htm",
+      "sec_acceptance_utc": "2023-06-22T20:32:12.000Z",
+      "accession": "0001613103-23-000040",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3906093,
+      "sha256": "cf32d95be6f36cf1cf5d2571d505f5ea26b3cc35b73940aaa82863fea3f7adc0"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310323000040/mdt-202310kxex21.htm",
+      "sec_acceptance_utc": "2023-06-22T20:32:12.000Z",
+      "accession": "0001613103-23-000040",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 180709,
+      "sha256": "a952eee1c826846954a90d661294ed756ed7abcef5e3eefabd3f3d6fe75eab30"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310324000072/mdt-20240426.htm",
+      "sec_acceptance_utc": "2024-06-20T20:16:51.000Z",
+      "accession": "0001613103-24-000072",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3688477,
+      "sha256": "a61f97bfa895c1705f5bd300cf2988ea01aaec8715a93c4684eb0e8cf7182fad"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310324000072/mdt-202410kxex21.htm",
+      "sec_acceptance_utc": "2024-06-20T20:16:51.000Z",
+      "accession": "0001613103-24-000072",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 182152,
+      "sha256": "6c3000777171fc8fe2c33ff5a84247cf956d5883b9cbfcafc848542d6dd34c47"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310325000091/mdt-20250425.htm",
+      "sec_acceptance_utc": "2025-06-20T10:46:20.000Z",
+      "accession": "0001613103-25-000091",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3752888,
+      "sha256": "9cc7537e80fa4460010cf385b6792df2a6cc803e1454b43605552c4915245709"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310325000091/mdt-202510kxex21.htm",
+      "sec_acceptance_utc": "2025-06-20T10:46:20.000Z",
+      "accession": "0001613103-25-000091",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 188228,
+      "sha256": "62e337802270599e745a33173c2c1639e8980e1c261fa255dbb37ad61fd6d744"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1484612/000156459021014563/om-10k_20201231.htm",
+      "sec_acceptance_utc": "2021-03-22T20:01:09.000Z",
+      "accession": "0001564590-21-014563",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4363605,
+      "sha256": "86e3453db691f853ac7b739d6f0ac0c54dcbeef853c48da8ecc66614c16a0678"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1484612/000095017022001769/om-20211231.htm",
+      "sec_acceptance_utc": "2022-02-23T21:01:39.000Z",
+      "accession": "0000950170-22-001769",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4276643,
+      "sha256": "41adc4dd0c0b94779bcbb9382dd76939e1f7ab7bacd505798aa29cee0a49ea62"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1484612/000095017023002648/om-20221231.htm",
+      "sec_acceptance_utc": "2023-02-13T22:19:57.000Z",
+      "accession": "0000950170-23-002648",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4544167,
+      "sha256": "8dd286793a4a78d18ac3b1d4b8dcc1db7802937337c78beef6f68bab83cf5397"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1484612/000095017024018093/om-20231231.htm",
+      "sec_acceptance_utc": "2024-02-21T22:15:51.000Z",
+      "accession": "0000950170-24-018093",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3062963,
+      "sha256": "682b73050abf90d118d5d1a81f97eb1ab05e22928c33c2619bbbd04d27b331c7"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1484612/000095017025030045/om-20241231.htm",
+      "sec_acceptance_utc": "2025-02-28T21:24:30.000Z",
+      "accession": "0000950170-25-030045",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3622818,
+      "sha256": "635483f58c687576c6b5354178080ea6e922569d36f9373733323aba2d14180a"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1321732/000132173218000038/pen-123117x10k.htm",
+      "sec_acceptance_utc": "2018-02-27T22:23:10.000Z",
+      "accession": "0001321732-18-000038",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2547818,
+      "sha256": "ba949813b4b4ff5247ab0969aab2288cc22f6992384caec3825c40bbc307d095"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1321732/000132173219000031/pen-123118x10k.htm",
+      "sec_acceptance_utc": "2019-02-26T22:27:42.000Z",
+      "accession": "0001321732-19-000031",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2834495,
+      "sha256": "4198c91c8391611f22906b20fa3123e05b2f21e70fdcb6b499c10737ee0a84bd"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1321732/000132173220000047/pen-20191231.htm",
+      "sec_acceptance_utc": "2020-02-25T22:33:11.000Z",
+      "accession": "0001321732-20-000047",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4275343,
+      "sha256": "bb2ae626b27e4ca784de42701244ab4ca9afff3ff080c49e36847af5842afbf4"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1321732/000162828021002867/pen-20201231.htm",
+      "sec_acceptance_utc": "2021-02-23T22:17:25.000Z",
+      "accession": "0001628280-21-002867",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3207572,
+      "sha256": "15cc4647efc3814e2ab63a0fdee6ada0eb4e6273a06bd01d97afb8ebad199f1e"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1321732/000162828021002867/a10kpen123120ex211.htm",
+      "sec_acceptance_utc": "2021-02-23T22:17:25.000Z",
+      "accession": "0001628280-21-002867",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 7389,
+      "sha256": "8293526973316a66e1d81ef52c1e76de37370ee1efb45c266f3279e19e8879a0"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1321732/000132173222000017/pen-20211231.htm",
+      "sec_acceptance_utc": "2022-02-22T21:47:02.000Z",
+      "accession": "0001321732-22-000017",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3173250,
+      "sha256": "a07e1ea1310ad54a39ae7c2f730969608b7a87a662cbc7c44b2779be8c25582f"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1321732/000132173222000017/a10kpen123121ex211.htm",
+      "sec_acceptance_utc": "2022-02-22T21:47:02.000Z",
+      "accession": "0001321732-22-000017",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 7788,
+      "sha256": "4377d5006dec5e412743517b17ac5393d0a25ca2f9de43e440cdd0a79de8d7ee"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1321732/000132173223000034/pen-20221231.htm",
+      "sec_acceptance_utc": "2023-02-23T21:45:50.000Z",
+      "accession": "0001321732-23-000034",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3077707,
+      "sha256": "6acf1fd88b1dce8bc301d45e21b84ffe1aa84011389b54669f9a17a27d856269"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1321732/000132173223000034/a10-kpen123122ex211.htm",
+      "sec_acceptance_utc": "2023-02-23T21:45:50.000Z",
+      "accession": "0001321732-23-000034",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 8277,
+      "sha256": "18af519c3b3246c874e0847595135e72aff1d577e2c56d0269432745d5889adb"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1321732/000132173224000025/pen-20231231.htm",
+      "sec_acceptance_utc": "2024-02-22T21:46:55.000Z",
+      "accession": "0001321732-24-000025",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2461567,
+      "sha256": "1d136f88df2205cb574b03611f976be192b33771a92d6e4fa5795fd6e4077a7c"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1321732/000132173224000025/a10-kpen123123ex211.htm",
+      "sec_acceptance_utc": "2024-02-22T21:46:55.000Z",
+      "accession": "0001321732-24-000025",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 8673,
+      "sha256": "c9a0d63a9c54758a2c7dfc95c19f64e784391dbe68200fe4826a65a1396e9569"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1321732/000132173225000012/pen-20241231.htm",
+      "sec_acceptance_utc": "2025-02-18T21:44:59.000Z",
+      "accession": "0001321732-25-000012",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2353073,
+      "sha256": "e06929aa0f28b696c20d0669e4fa678a99d732d01ccef81bdfcf699e21135129"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1321732/000132173225000012/a10-kpen123124ex211.htm",
+      "sec_acceptance_utc": "2025-02-18T21:44:59.000Z",
+      "accession": "0001321732-25-000012",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 10146,
+      "sha256": "6f37db91f6929a2c4719842925808b531be70c50e3d2eee2de60533338da39a1"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/313216/000031321618000007/phg-20171231.htm",
+      "sec_acceptance_utc": "2018-02-20T22:31:59.000Z",
+      "accession": "0000313216-18-000007",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 10455080,
+      "sha256": "c12d3cb4aa0b66a8aee171c692026f95c1dfa2a8b8befe8c645f16e5e9e775ab"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/313216/000031321619000007/phg-20181231.htm",
+      "sec_acceptance_utc": "2019-02-26T22:57:36.000Z",
+      "accession": "0000313216-19-000007",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 8878324,
+      "sha256": "741884f3084e6766e628ad3abaa71ab3f6515726a3d6eb920238716b0ab7e090"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/313216/000031321620000011/phg-20191231.htm",
+      "sec_acceptance_utc": "2020-02-25T11:31:13.000Z",
+      "accession": "0000313216-20-000011",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 7404601,
+      "sha256": "51c9fe9402cd348f5b72b608caf201eb4b655599f89284e3b5d36312e2fe5443"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/313216/000031321621000008/phg-20201231.htm",
+      "sec_acceptance_utc": "2021-02-23T20:43:49.000Z",
+      "accession": "0000313216-21-000008",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 5961989,
+      "sha256": "951ceeaf2c7b91de2255ca809916caf53fc327665604e9f33c685ef710c43915"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/313216/000031321622000008/phg-20211231.htm",
+      "sec_acceptance_utc": "2022-02-22T12:30:03.000Z",
+      "accession": "0000313216-22-000008",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 5623499,
+      "sha256": "3ade8c200ebf446fdf2d2d112bdc4b895b0c52e0d440195f80c18655050573f1"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/313216/000031321623000005/phg-20221231.htm",
+      "sec_acceptance_utc": "2023-02-21T11:51:00.000Z",
+      "accession": "0000313216-23-000005",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 5991412,
+      "sha256": "6a0fa2d81daaf49308b34ac9c202d9386e0af8b4b60897d56e97129f367fff8b"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/313216/000031321624000003/phg-20231231.htm",
+      "sec_acceptance_utc": "2024-02-20T11:58:28.000Z",
+      "accession": "0000313216-24-000003",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 6122896,
+      "sha256": "b60ee2bea267caf89032ecb505d209391ebee2f1275d2386d5e4bfa3ac24a1df"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/313216/000031321625000009/phg-20241231.htm",
+      "sec_acceptance_utc": "2025-02-21T13:15:26.000Z",
+      "accession": "0000313216-25-000009",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 7189023,
+      "sha256": "cf40f95a0b70206712e6056a8d241e2f8d3185fa6471e57899976767adae0f89"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1145197/000114519718000004/podd-2017x12x31_10xk.htm",
+      "sec_acceptance_utc": "2018-02-21T22:47:11.000Z",
+      "accession": "0001145197-18-000004",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2185247,
+      "sha256": "715dae86447e575dc715d0e97753fc213b75a868d58468eed6f9a8f9b9aff4b3"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1145197/000114519719000003/podd-2018x12x31_10xk.htm",
+      "sec_acceptance_utc": "2019-02-25T22:58:57.000Z",
+      "accession": "0001145197-19-000003",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2333756,
+      "sha256": "09c77def8757f6a27feeb273061690a422275e273b76e7a06c413a1fe79ccffc"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1145197/000114519720000004/podd-2019x12x3110xk.htm",
+      "sec_acceptance_utc": "2020-02-26T00:39:27.000Z",
+      "accession": "0001145197-20-000004",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2683196,
+      "sha256": "ff11ce25e64467ebd60be9791da2fa9aa4f8d02a151bf196aefd09e2624dc8a3"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1145197/000114519721000009/podd-20201231.htm",
+      "sec_acceptance_utc": "2021-02-23T22:55:47.000Z",
+      "accession": "0001145197-21-000009",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2320261,
+      "sha256": "b1a343a228ba0f3f1bad63140237a8648be57bbfe4e0c088d0879e1fdf69b0a7"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1145197/000114519722000012/podd-20211231.htm",
+      "sec_acceptance_utc": "2022-02-23T23:06:58.000Z",
+      "accession": "0001145197-22-000012",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2317917,
+      "sha256": "3a0522e8777f758c2c51fcf90c8480e65cfb0955809aed1f4566e921ba5451e8"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1145197/000114519723000020/podd-20221231.htm",
+      "sec_acceptance_utc": "2023-02-23T23:36:18.000Z",
+      "accession": "0001145197-23-000020",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2412071,
+      "sha256": "395c91ec271423f1af7322745614548c1a3ad9414be616df5b41fc15c8c6c7e0"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1145197/000114519724000011/podd-20231231.htm",
+      "sec_acceptance_utc": "2024-02-22T22:49:33.000Z",
+      "accession": "0001145197-24-000011",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2124596,
+      "sha256": "25f15da2b19a0563f604f8f363d6393925260dab8545098cfbdb4bf85b72251f"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1145197/000114519725000007/podd-20241231.htm",
+      "sec_acceptance_utc": "2025-02-20T22:36:54.000Z",
+      "accession": "0001145197-25-000007",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2128110,
+      "sha256": "7013b89b2fa65887117ab4aed92024221b5985e09d358365a97d42f4e94621b7"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/943819/000094381918000013/rmd-20180630x10k.htm",
+      "sec_acceptance_utc": "2018-08-17T20:26:51.000Z",
+      "accession": "0000943819-18-000013",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3123413,
+      "sha256": "4a72af64d2ab9142aaf8e486aa5250e5f21adaf9ed89d2e245c170b808f212a9"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/943819/000094381918000013/rmd-20180630xex21_1.htm",
+      "sec_acceptance_utc": "2018-08-17T20:26:51.000Z",
+      "accession": "0000943819-18-000013",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 67476,
+      "sha256": "78df89689f8c15820126ae61a7e2557a6ca11d3fcf800a5e1dd3c3e916e42d84"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/943819/000094381919000017/rmd-20190630x10k.htm",
+      "sec_acceptance_utc": "2019-08-07T22:56:46.000Z",
+      "accession": "0000943819-19-000017",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3396078,
+      "sha256": "7fe89b421666cb96cab8c126557230994cde7785499a6f82fbefd229f8039da8"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/943819/000119312518322531/d650415dex21.htm",
+      "sec_acceptance_utc": "2019-08-07T22:56:46.000Z",
+      "accession": "0000943819-19-000017",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 736465,
+      "sha256": "76a37295677d0ce940998e92a82877cf7709571ae7e4132df8d1cf1e7b592916"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/943819/000094381920000013/rmd-20200630x10k.htm",
+      "sec_acceptance_utc": "2020-08-13T01:23:23.000Z",
+      "accession": "0000943819-20-000013",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 6821996,
+      "sha256": "a2249032acc018df602443055ec00306553f9ae793d864021fe22a7be96dfd6f"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/943819/000119312518322531/d650415dex21.htm",
+      "sec_acceptance_utc": "2020-08-13T01:23:23.000Z",
+      "accession": "0000943819-20-000013",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 736465,
+      "sha256": "76a37295677d0ce940998e92a82877cf7709571ae7e4132df8d1cf1e7b592916"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/943819/000094381921000017/c819-20210630x10k.htm",
+      "sec_acceptance_utc": "2021-08-17T01:43:33.000Z",
+      "accession": "0000943819-21-000017",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 6789542,
+      "sha256": "0c2f65ef4e82570a1ba9736af81c7888722fc7e02d63bdb3ecfbac49dd392d17"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/943819/000119312518322531/d650415dex21.htm",
+      "sec_acceptance_utc": "2021-08-17T01:43:33.000Z",
+      "accession": "0000943819-21-000017",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 736465,
+      "sha256": "76a37295677d0ce940998e92a82877cf7709571ae7e4132df8d1cf1e7b592916"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/943819/000094381922000010/rmd-20220630.htm",
+      "sec_acceptance_utc": "2022-08-12T01:09:45.000Z",
+      "accession": "0000943819-22-000010",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2818571,
+      "sha256": "870c4292a7a52a2f92e37e0cb578b611244bcdb8868e277da5dc9d1db8a1d0d0"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/943819/000119312518322531/d650415dex21.htm",
+      "sec_acceptance_utc": "2022-08-12T01:09:45.000Z",
+      "accession": "0000943819-22-000010",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 736465,
+      "sha256": "76a37295677d0ce940998e92a82877cf7709571ae7e4132df8d1cf1e7b592916"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/943819/000094381923000011/rmd-20230630.htm",
+      "sec_acceptance_utc": "2023-08-11T00:15:16.000Z",
+      "accession": "0000943819-23-000011",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2408361,
+      "sha256": "8cf8938f0981d4c6670cf901643e12cca6621a3a110da784b6d7847c1f547f37"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/943819/000094381923000011/exhibit211-subsidiariesq4f.htm",
+      "sec_acceptance_utc": "2023-08-11T00:15:16.000Z",
+      "accession": "0000943819-23-000011",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 17538,
+      "sha256": "5ac8203b20c9d3dcc90921980a2a186e547d35b6554b8eda726754c2f19ad4c1"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/943819/000094381924000013/rmd-20240630.htm",
+      "sec_acceptance_utc": "2024-08-09T00:09:34.000Z",
+      "accession": "0000943819-24-000013",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2478016,
+      "sha256": "f699e77a6acb0311fa159bbe6709106dfc73e46c256124a58aa5e22f6f18ed0e"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/943819/000094381924000013/exhibit211-subsidiariesq4f.htm",
+      "sec_acceptance_utc": "2024-08-09T00:09:34.000Z",
+      "accession": "0000943819-24-000013",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 17539,
+      "sha256": "675eac8dbd89f5e473cad6e55d79bd3c454ba169a1fd65de6a4144dc3e9102ab"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/943819/000094381925000035/rmd-20250630.htm",
+      "sec_acceptance_utc": "2025-08-08T00:44:48.000Z",
+      "accession": "0000943819-25-000035",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2501215,
+      "sha256": "b9e9dd86f31a4c6fc7d62bd1bc1432dd3ada7455b3e9cde7fd001c55a2b9ceba"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/943819/000094381925000035/exhibit211-subsidiariesq4f.htm",
+      "sec_acceptance_utc": "2025-08-08T00:44:48.000Z",
+      "accession": "0000943819-25-000035",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 17186,
+      "sha256": "9c0f882df53370db95dd572a7bfea8df1593bec663606acb27e957ec8a12ed9f"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/101829/000010182918000005/a2017-12x31form10xk.htm",
+      "sec_acceptance_utc": "2018-02-09T00:27:18.000Z",
+      "accession": "0000101829-18-000005",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 511095,
+      "sha256": "3074ea78910a5af3d7b96f18ecd08bb32ef0c06d941ff1d345d04a1bf895baa1"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/101829/000119312517277881/d450418dex21.htm",
+      "sec_acceptance_utc": "2018-02-09T00:27:18.000Z",
+      "accession": "0000101829-18-000005",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 606374,
+      "sha256": "6cbf3020b9800e633d8f415048b520cfb4756627a3c65862019486210844a9a9"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/101829/000010182919000007/a2018-12x31form10xk.htm",
+      "sec_acceptance_utc": "2019-02-07T11:40:09.000Z",
+      "accession": "0000101829-19-000007",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 568465,
+      "sha256": "a28a2e382ea0faa480d266294a745822feb210af9a9be0e8dcfadb79832ce471"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/101829/000119312517277881/d450418dex21.htm",
+      "sec_acceptance_utc": "2019-02-07T11:40:09.000Z",
+      "accession": "0000101829-19-000007",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 606374,
+      "sha256": "6cbf3020b9800e633d8f415048b520cfb4756627a3c65862019486210844a9a9"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/101829/000010182920000013/utx-20191231_d2.htm",
+      "sec_acceptance_utc": "2020-02-06T11:55:54.000Z",
+      "accession": "0000101829-20-000013",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 696606,
+      "sha256": "112232c49823602d3d1cfefe2ea562de68eeba1ea300b11a6da34f2094e48015"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/101829/000119312517277881/d450418dex21.htm",
+      "sec_acceptance_utc": "2020-02-06T11:55:54.000Z",
+      "accession": "0000101829-20-000013",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 606374,
+      "sha256": "6cbf3020b9800e633d8f415048b520cfb4756627a3c65862019486210844a9a9"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/101829/000010182921000008/rtx-20201231.htm",
+      "sec_acceptance_utc": "2021-02-08T22:07:52.000Z",
+      "accession": "0000101829-21-000008",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 6396895,
+      "sha256": "effaa80de2eb03d27ef191e0b51f9b0917834f3a5a13b91670b23f37ade9e5a8"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/101829/000010182921000008/exhibit212020-12x3110xk.htm",
+      "sec_acceptance_utc": "2021-02-08T22:07:52.000Z",
+      "accession": "0000101829-21-000008",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 29813,
+      "sha256": "678bf3a4b767991c06985d42026b11fd7485861aaf251e026eb334df44097eff"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/101829/000010182922000005/rtx-20211231.htm",
+      "sec_acceptance_utc": "2022-02-11T21:18:55.000Z",
+      "accession": "0000101829-22-000005",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 5627253,
+      "sha256": "bc4fc3d39cb401f7b5ff6041e55fdd98edcd65bbd36f264e64c0c9753c4f01c1"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/101829/000010182922000005/exhibit212021-12x3110xk.htm",
+      "sec_acceptance_utc": "2022-02-11T21:18:55.000Z",
+      "accession": "0000101829-22-000005",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 29000,
+      "sha256": "8b5bdb8b218b9678ac183ef5340255edcbfe5a0c2d3c2707cb5bdf1f1849053a"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/101829/000010182923000009/rtx-20221231.htm",
+      "sec_acceptance_utc": "2023-02-06T22:32:52.000Z",
+      "accession": "0000101829-23-000009",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 5430905,
+      "sha256": "150b7bc057b2b3d82d67552da49cb32d532886153fefc1bb4d60ec2d5d2358f1"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/101829/000010182923000009/exhibit212022-12x3110xk.htm",
+      "sec_acceptance_utc": "2023-02-06T22:32:52.000Z",
+      "accession": "0000101829-23-000009",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 30469,
+      "sha256": "c4dab17b860f3d9ab7d32be13d461252e050c3ea4092d0b7e2dfc41c2af0ba95"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/101829/000010182924000008/rtx-20231231.htm",
+      "sec_acceptance_utc": "2024-02-05T21:17:23.000Z",
+      "accession": "0000101829-24-000008",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3876324,
+      "sha256": "b1f2aa522461455681e20bdf302b47d876a6d28aa01205ec0b071334c403b970"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/101829/000010182924000008/exhibit212023-12x3110xk.htm",
+      "sec_acceptance_utc": "2024-02-05T21:17:23.000Z",
+      "accession": "0000101829-24-000008",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 27937,
+      "sha256": "14d0baea671486b6e1b83daee887635ed68ecccc46426879450594579a2ae9e9"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/101829/000010182925000005/rtx-20241231.htm",
+      "sec_acceptance_utc": "2025-02-03T22:21:23.000Z",
+      "accession": "0000101829-25-000005",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3860993,
+      "sha256": "c4f79d749f5b0d42c1e1c1fe0ccce709a36c26210b47b1ca5d45403d4996b1c6"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/101829/000010182925000005/exhibit212024-12x3110xk.htm",
+      "sec_acceptance_utc": "2025-02-03T22:21:23.000Z",
+      "accession": "0000101829-25-000005",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 22642,
+      "sha256": "975930aa48c1a4cfea07932a7da4bf46af117c84408833cc987df1e9aafe2465"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/310764/000031076418000031/syk10k123117.htm",
+      "sec_acceptance_utc": "2018-02-08T21:54:05.000Z",
+      "accession": "0000310764-18-000031",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2341310,
+      "sha256": "341980047ef5d8a9df58ba3564aadbfc7ec0a5f11a1611e08bcb5f41c8f70fcb"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/310764/000031076416000252/sykexhibit2121616.htm",
+      "sec_acceptance_utc": "2018-02-08T21:54:05.000Z",
+      "accession": "0000310764-18-000031",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 946946,
+      "sha256": "38f939bf2b155243b8a7351198f75ef2187603ee3ecc35c45ad31870fcc92344"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/310764/000031076419000014/syk10k123118.htm",
+      "sec_acceptance_utc": "2019-02-07T14:31:07.000Z",
+      "accession": "0000310764-19-000014",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2564258,
+      "sha256": "47d7440e69b7674c85327b65f9ef95bc86c8cbc074646cb5053814eaca7ea4ce"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/310764/000031076416000252/sykexhibit2121616.htm",
+      "sec_acceptance_utc": "2019-02-07T14:31:07.000Z",
+      "accession": "0000310764-19-000014",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 946946,
+      "sha256": "38f939bf2b155243b8a7351198f75ef2187603ee3ecc35c45ad31870fcc92344"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/310764/000031076420000014/syk10k12312019.htm",
+      "sec_acceptance_utc": "2020-02-06T15:12:26.000Z",
+      "accession": "0000310764-20-000014",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3463419,
+      "sha256": "f3a8058a8a364ff82ddedb6e3d04c39cd16ff8160052308b3a6a6af26021c979"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/310764/000031076418000195/sykex21agreementandplanofm.htm",
+      "sec_acceptance_utc": "2020-02-06T15:12:26.000Z",
+      "accession": "0000310764-20-000014",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 754054,
+      "sha256": "7895b9d6e06736f35a2c06e8055fe9bb806b948a016cb7d48278037428149850"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/310764/000031076421000027/syk-20201231.htm",
+      "sec_acceptance_utc": "2021-02-11T16:17:32.000Z",
+      "accession": "0000310764-21-000027",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3378138,
+      "sha256": "4b91e89391c900a14e9a1fb4bf0712dad2fcced6a32336706dca6d875cf167c2"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/310764/000031076418000195/sykex21agreementandplanofm.htm",
+      "sec_acceptance_utc": "2021-02-11T16:17:32.000Z",
+      "accession": "0000310764-21-000027",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 754054,
+      "sha256": "7895b9d6e06736f35a2c06e8055fe9bb806b948a016cb7d48278037428149850"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/310764/000031076422000028/syk-20211231.htm",
+      "sec_acceptance_utc": "2022-02-11T18:02:17.000Z",
+      "accession": "0000310764-22-000028",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3226349,
+      "sha256": "1ac4b9ebcf62813588f0c1077c085717b1275f60af746f51a41706fe5d9ab3fc"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/310764/000031076418000195/sykex21agreementandplanofm.htm",
+      "sec_acceptance_utc": "2022-02-11T18:02:17.000Z",
+      "accession": "0000310764-22-000028",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 754054,
+      "sha256": "7895b9d6e06736f35a2c06e8055fe9bb806b948a016cb7d48278037428149850"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/310764/000031076423000017/syk-20221231.htm",
+      "sec_acceptance_utc": "2023-02-10T21:18:01.000Z",
+      "accession": "0000310764-23-000017",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3282488,
+      "sha256": "89b91f5b129504c9f4bea086ba5474f6e116754daab675981875443256e3a183"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/310764/000031076418000195/sykex21agreementandplanofm.htm",
+      "sec_acceptance_utc": "2023-02-10T21:18:01.000Z",
+      "accession": "0000310764-23-000017",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 754054,
+      "sha256": "7895b9d6e06736f35a2c06e8055fe9bb806b948a016cb7d48278037428149850"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/310764/000031076424000024/syk-20231231.htm",
+      "sec_acceptance_utc": "2024-02-14T15:55:50.000Z",
+      "accession": "0000310764-24-000024",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2662522,
+      "sha256": "599764606881987fd4d793eb191bd36d6105cfda3a202c98417ea02584ac5ba1"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/310764/000119312519285387/d818709dex21.htm",
+      "sec_acceptance_utc": "2024-02-14T15:55:50.000Z",
+      "accession": "0000310764-24-000024",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 558583,
+      "sha256": "4debd2b96ccda53397676e1d02bd87931cc7151408c8c3bf4c9dc55d7c23c942"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/310764/000031076425000023/syk-20241231.htm",
+      "sec_acceptance_utc": "2025-02-12T16:47:17.000Z",
+      "accession": "0000310764-25-000023",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2817250,
+      "sha256": "06795f27a23a0dbc92ac4b8b9816ac24a0a27d8f1bf0050800a3db48961453b7"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/310764/000119312519285387/d818709dex21.htm",
+      "sec_acceptance_utc": "2025-02-12T16:47:17.000Z",
+      "accession": "0000310764-25-000023",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 558583,
+      "sha256": "4debd2b96ccda53397676e1d02bd87931cc7151408c8c3bf4c9dc55d7c23c942"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/96943/000009694318000028/tfx-20171231x10k.htm",
+      "sec_acceptance_utc": "2018-02-22T20:03:06.000Z",
+      "accession": "0000096943-18-000028",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4085240,
+      "sha256": "1291f492b936911aaf1526b2864db74572c32f883067c78f77332e119ed62a18"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/96943/000009694318000028/exhibit21-subsidiaries2017.htm",
+      "sec_acceptance_utc": "2018-02-22T20:03:06.000Z",
+      "accession": "0000096943-18-000028",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 117018,
+      "sha256": "865edcefc21bf369e504de9b581434a481c9d59ab831d0b9d724dff8086f295a"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/96943/000009694319000021/tfx-20181231x10k.htm",
+      "sec_acceptance_utc": "2019-02-21T20:09:35.000Z",
+      "accession": "0000096943-19-000021",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4005170,
+      "sha256": "205e1e2c91be6bef85f65f4d1b1dfe4dcfaac6315feba4a848073850b37c7245"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/96943/000009694319000021/exhibit21-subsidiaries20181.htm",
+      "sec_acceptance_utc": "2019-02-21T20:09:35.000Z",
+      "accession": "0000096943-19-000021",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 104565,
+      "sha256": "ee97c87dea77a7a60a77cd490ed9efb3603de0ebd7267158adc4d86f6621c9a4"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/96943/000009694320000017/tfx-20191231.htm",
+      "sec_acceptance_utc": "2020-02-21T17:15:22.000Z",
+      "accession": "0000096943-20-000017",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 6244114,
+      "sha256": "d4638c0c5d983fa3e3afd69b49ec61ee3a209ae0841511e5cd025512a6d1c20b"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/96943/000009694320000017/exhibit21-subsidiaries.htm",
+      "sec_acceptance_utc": "2020-02-21T17:15:22.000Z",
+      "accession": "0000096943-20-000017",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 127126,
+      "sha256": "22a8cd36be92c15304c476c2cef65713ea773062c5162f7c835430d212bdb249"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/96943/000009694321000013/tfx-20201231.htm",
+      "sec_acceptance_utc": "2021-02-25T17:34:16.000Z",
+      "accession": "0000096943-21-000013",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3673610,
+      "sha256": "be952f5c90d6cc652e45ab71286b1ec0cec2ca244e3e37d021b1ff591c5ef5be"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/96943/000009694321000013/exhibit21-subsidiaries2020.htm",
+      "sec_acceptance_utc": "2021-02-25T17:34:16.000Z",
+      "accession": "0000096943-21-000013",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 83942,
+      "sha256": "4debf224a7ab2bbf6e6482104fa1385cab7379184ea61394d4e2e5ca79e62b18"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/96943/000009694322000016/tfx-20211231.htm",
+      "sec_acceptance_utc": "2022-03-01T15:58:40.000Z",
+      "accession": "0000096943-22-000016",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3394003,
+      "sha256": "3748e7265fa3af64712744ee87de2f826e6356f50974045c74509878627b11d0"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/96943/000009694322000016/exhibit21-subsidiaries2021.htm",
+      "sec_acceptance_utc": "2022-03-01T15:58:40.000Z",
+      "accession": "0000096943-22-000016",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 83863,
+      "sha256": "88d515e359fcdfdd82ada065bcac8ead5e96fdc1910d6aa1104e06e9a03551d1"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/96943/000009694323000024/tfx-20221231.htm",
+      "sec_acceptance_utc": "2023-02-23T18:28:21.000Z",
+      "accession": "0000096943-23-000024",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3312139,
+      "sha256": "2064b76a86886a92bf7f4c5e5e1452e266fb9028fc2869de622c3cbe79a23e15"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/96943/000009694323000024/exhibit21-subsidiarylist20.htm",
+      "sec_acceptance_utc": "2023-02-23T18:28:21.000Z",
+      "accession": "0000096943-23-000024",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 103957,
+      "sha256": "689c214c6b8b8323aa2a05c0179141a821f5c96234efcd953c3201dc7925b979"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/96943/000009694324000036/tfx-20231231.htm",
+      "sec_acceptance_utc": "2024-02-23T17:23:11.000Z",
+      "accession": "0000096943-24-000036",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2518020,
+      "sha256": "efdd38849180ac12ad4d2c2f35e2724241c96b84057692aa309f8359d6b88413"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/96943/000009694324000036/exhibit21sublistasof123120.htm",
+      "sec_acceptance_utc": "2024-02-23T17:23:11.000Z",
+      "accession": "0000096943-24-000036",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 95464,
+      "sha256": "e40f6b56fc21251dde95238e56c426a93bc75bda9297e6d79aa1f7be9918ada1"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/96943/000009694325000031/tfx-20241231.htm",
+      "sec_acceptance_utc": "2025-02-28T13:46:38.000Z",
+      "accession": "0000096943-25-000031",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2539985,
+      "sha256": "734d9efea2a118ea693c55a7276f693e376cda80c6063242f02019f630de9216"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/96943/000009694325000031/exhibit21sublistasof123120.htm",
+      "sec_acceptance_utc": "2025-02-28T13:46:38.000Z",
+      "accession": "0000096943-25-000031",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 91784,
+      "sha256": "2ba1513c417c297a2d3fa13fe7612af3bbe735f65e2e2cb0c340671d29badfc5"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1756262/000156459020011409/tmdx-10k_20191228.htm",
+      "sec_acceptance_utc": "2020-03-17T20:15:07.000Z",
+      "accession": "0001564590-20-011409",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3281258,
+      "sha256": "05c8d31acb0dbb23027d7a51a30250818c7b4753170393ad4050909f9dcda526"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/1756262/000119312519099213/d628655dex211.htm",
+      "sec_acceptance_utc": "2020-03-17T20:15:07.000Z",
+      "accession": "0001564590-20-011409",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 5363,
+      "sha256": "693a4427012c530618e18096e020adb1bd5021b8e2eba607fe1353ea3e12b0bb"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1756262/000156459021012527/tmdx-10k_20201231.htm",
+      "sec_acceptance_utc": "2021-03-11T21:19:02.000Z",
+      "accession": "0001564590-21-012527",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3299842,
+      "sha256": "9521bf42ae02b28504ab4b5b7cbaa0c79230222ce9b99573f9a2899b66ac502d"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/1756262/000119312519099213/d628655dex211.htm",
+      "sec_acceptance_utc": "2021-03-11T21:19:02.000Z",
+      "accession": "0001564590-21-012527",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 5363,
+      "sha256": "693a4427012c530618e18096e020adb1bd5021b8e2eba607fe1353ea3e12b0bb"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1756262/000156459022008045/tmdx-10k_20211231.htm",
+      "sec_acceptance_utc": "2022-03-01T21:16:41.000Z",
+      "accession": "0001564590-22-008045",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3111816,
+      "sha256": "385e5290cb3e61e8531f4a9c93b1eaeb9aeb2ee94519c1ca804f1a6a08b04000"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/1756262/000119312519099213/d628655dex211.htm",
+      "sec_acceptance_utc": "2022-03-01T21:16:41.000Z",
+      "accession": "0001564590-22-008045",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 5363,
+      "sha256": "693a4427012c530618e18096e020adb1bd5021b8e2eba607fe1353ea3e12b0bb"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1756262/000095017023004652/tmdx-20221231.htm",
+      "sec_acceptance_utc": "2023-02-27T21:17:00.000Z",
+      "accession": "0000950170-23-004652",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3823694,
+      "sha256": "36c671a1dbaab2891f18d01c578ba5d3ef959b7dc7a3bee9db84c10493428d59"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1756262/000119312519099213/d628655dex211.htm",
+      "sec_acceptance_utc": "2023-02-27T21:17:00.000Z",
+      "accession": "0000950170-23-004652",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 5363,
+      "sha256": "693a4427012c530618e18096e020adb1bd5021b8e2eba607fe1353ea3e12b0bb"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1756262/000095017024021155/tmdx-20231231.htm",
+      "sec_acceptance_utc": "2024-02-27T21:15:09.000Z",
+      "accession": "0000950170-24-021155",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2994528,
+      "sha256": "a196c7dbf78793a5b8a6fbd566ea0ea7f9d1a4dd1a9079c720cf219d4615368c"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1756262/000095017024021155/tmdx-ex21_1.htm",
+      "sec_acceptance_utc": "2024-02-27T21:15:09.000Z",
+      "accession": "0000950170-24-021155",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 10688,
+      "sha256": "3b486b24159bfa470f54e8a89e7152820ac7991c823eb30972f5a8c916f49066"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1756262/000095017025029104/tmdx-20241231.htm",
+      "sec_acceptance_utc": "2025-02-27T21:26:52.000Z",
+      "accession": "0000950170-25-029104",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3717698,
+      "sha256": "820a7505c57dd5ba922144da742bd3dd4278958d33d6c0c523ff053ea19a7a92"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1756262/000095017025029104/tmdx-ex21_1.htm",
+      "sec_acceptance_utc": "2025-02-27T21:26:52.000Z",
+      "accession": "0000950170-25-029104",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 12216,
+      "sha256": "0017048d42efb7c5eef05d0ca2f9b8392d3d97aa55c23e98cd0cd22d5e047edc"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/97745/000009774518000006/a201710k.htm",
+      "sec_acceptance_utc": "2018-02-28T14:19:05.000Z",
+      "accession": "0000097745-18-000006",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3989223,
+      "sha256": "2847a9934fb08da518f252568f10c67e678751b4a9acb1eb9a7b5dd33466d29d"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/97745/000009774518000006/tmo201710kex21.htm",
+      "sec_acceptance_utc": "2018-02-28T14:19:05.000Z",
+      "accession": "0000097745-18-000006",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 1176347,
+      "sha256": "fe9e07288d2b202e827280a3edb55070a4f3119c70e7d893633531e43333394e"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/97745/000009774519000007/a201810k.htm",
+      "sec_acceptance_utc": "2019-02-27T21:15:13.000Z",
+      "accession": "0000097745-19-000007",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 4102768,
+      "sha256": "b60e1b138a3aec0ffb59cb26ce3abb52cb20f685352b68114a16839b3c9c255c"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/97745/000009774519000007/tmo201810kex21.htm",
+      "sec_acceptance_utc": "2019-02-27T21:15:13.000Z",
+      "accession": "0000097745-19-000007",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 1201598,
+      "sha256": "6899dd8baefbe127578cd5e9d16d7e9b9416f0973cb324b82095bbe928401448"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/97745/000009774520000009/tmo-20191231.htm",
+      "sec_acceptance_utc": "2020-02-26T20:33:51.000Z",
+      "accession": "0000097745-20-000009",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 5584209,
+      "sha256": "687205ad0b1b38ac1b14eedcca4de17d386ddb37b61089d993bce509cc27fdbd"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/97745/000009774520000009/tmo201910kex21.htm",
+      "sec_acceptance_utc": "2020-02-26T20:33:51.000Z",
+      "accession": "0000097745-20-000009",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 1560608,
+      "sha256": "499184d78ef7e741e7878f7b7425acd942f9080b696eaf2e317164483583d3fd"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/97745/000009774521000011/tmo-20201231.htm",
+      "sec_acceptance_utc": "2021-02-24T22:36:20.000Z",
+      "accession": "0000097745-21-000011",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3740437,
+      "sha256": "a9cf036014330b87ac7b3db28906fc73734ca8c5edfd5f69d974c8192f258267"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/97745/000009774521000011/tmo202010kex21.htm",
+      "sec_acceptance_utc": "2021-02-24T22:36:20.000Z",
+      "accession": "0000097745-21-000011",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 1030437,
+      "sha256": "680895617a8a0db2ea3883edd53bae78d51c907146ff1832c9d7e7fb5f047acc"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/97745/000009774522000011/tmo-20211231.htm",
+      "sec_acceptance_utc": "2022-02-24T17:58:37.000Z",
+      "accession": "0000097745-22-000011",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3824127,
+      "sha256": "544b18675db8182ce823801c108d16d7390481c48182824d1e242690a5ceb178"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/97745/000009774522000011/tmo202110kex21.htm",
+      "sec_acceptance_utc": "2022-02-24T17:58:37.000Z",
+      "accession": "0000097745-22-000011",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 1210192,
+      "sha256": "da85afcdb03c34cfb2bbd6ca11d48c6c3ded3c99c68a51e6bd26864be5a0e5f7"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/97745/000009774523000008/tmo-20221231.htm",
+      "sec_acceptance_utc": "2023-02-23T17:54:52.000Z",
+      "accession": "0000097745-23-000008",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3845286,
+      "sha256": "9ddf06ce7b880301e067e69bb15556de3578b97b034cd99e4a6f309af165593b"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/97745/000009774523000008/q4202210-kex21sublist.htm",
+      "sec_acceptance_utc": "2023-02-23T17:54:52.000Z",
+      "accession": "0000097745-23-000008",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 1203010,
+      "sha256": "132b2b0c3ee8ce518246819b88857767df39900c9d79363e535091acdba0bbbf"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/97745/000009774524000007/tmo-20231231.htm",
+      "sec_acceptance_utc": "2024-02-22T18:06:42.000Z",
+      "accession": "0000097745-24-000007",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3013887,
+      "sha256": "f6448f62e83725f37c445f4e9c93d897f9351e3de4f8bc1e9d4e3ed31ad6bcac"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/97745/000009774524000007/q4202310-kex21.htm",
+      "sec_acceptance_utc": "2024-02-22T18:06:42.000Z",
+      "accession": "0000097745-24-000007",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 801332,
+      "sha256": "493055a55e3a0d6d45084ea369dab31fb59f03488d21b935868ec6b8f2dac769"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/97745/000009774525000010/tmo-20241231.htm",
+      "sec_acceptance_utc": "2025-02-20T18:33:52.000Z",
+      "accession": "0000097745-25-000010",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2986332,
+      "sha256": "186f37b2c38a342a35b15d0e12a0792aa747616f1495a34c0e7d8a035f1d3ccb"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/97745/000009774525000010/q4202410-kex21sublist.htm",
+      "sec_acceptance_utc": "2025-02-20T18:33:52.000Z",
+      "accession": "0000097745-25-000010",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 822442,
+      "sha256": "60f68362ae3aac01255b1d4bc170d5d61a39c7a2281a93f2db27e2f87433fd5d"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1438133/000156459018004141/tndm-10k_20171231.htm",
+      "sec_acceptance_utc": "2018-03-01T21:59:26.000Z",
+      "accession": "0001564590-18-004141",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3682874,
+      "sha256": "79c24fd6e7595b3354d44bb0554945375de12ae42e233862faf46c8c905c05d5"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1438133/000156459019004469/tndm-10k_20181231.htm",
+      "sec_acceptance_utc": "2019-02-26T21:17:01.000Z",
+      "accession": "0001564590-19-004469",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 3737559,
+      "sha256": "73d8a65dade5600c14d25c5c9b10cc3d0fce8633c83b1b4dbc5eda360d165fe4"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1438133/000143813320000014/tndm-20191231x10k.htm",
+      "sec_acceptance_utc": "2020-02-24T21:11:52.000Z",
+      "accession": "0001438133-20-000014",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2672518,
+      "sha256": "2f55e6eb7a755ef36a1848dd72f56fadefe4af0ecb4b56d44111a74ceb41364e"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1438133/000143813321000015/tndm-20201231.htm",
+      "sec_acceptance_utc": "2021-02-24T21:12:08.000Z",
+      "accession": "0001438133-21-000015",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2759657,
+      "sha256": "ccf3f29c2e31b0086ef028c1ae07fb05780c8c01966938215b40dfac777d9b2f"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1438133/000143813321000015/ex211subsidiariesoftheregi.htm",
+      "sec_acceptance_utc": "2021-02-24T21:12:08.000Z",
+      "accession": "0001438133-21-000015",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 2887,
+      "sha256": "f8f9b42db76f6987dcd1813e5d86a8b2b709461a19d7f057101323c2de46615a"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1438133/000143813322000021/tndm-20211231.htm",
+      "sec_acceptance_utc": "2022-02-22T21:11:09.000Z",
+      "accession": "0001438133-22-000021",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2768787,
+      "sha256": "04b795734af0289e84c6cdf78c8c1444b6b7248ec50025adc3ed031541855bca"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1438133/000143813322000021/ex211subsidiariesoftheregi.htm",
+      "sec_acceptance_utc": "2022-02-22T21:11:09.000Z",
+      "accession": "0001438133-22-000021",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 2910,
+      "sha256": "62f3e465dbe17295ba4e1dee4be85c82966cdb6902af659f61bbe4f2d55d6a0c"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1438133/000143813323000031/tndm-20221231.htm",
+      "sec_acceptance_utc": "2023-02-22T21:08:52.000Z",
+      "accession": "0001438133-23-000031",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2699121,
+      "sha256": "caf678c4b57be3eca42bf596a813669ee6ab9dba98234a6d4980257e19bd06bc"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1438133/000143813323000031/ex211subsidiariesoftheregi.htm",
+      "sec_acceptance_utc": "2023-02-22T21:08:52.000Z",
+      "accession": "0001438133-23-000031",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 4387,
+      "sha256": "3043b6518d912d597f6d815908f44c4800b0ae9733b273b2f8dba69017a86726"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1438133/000143813324000028/tndm-20231231.htm",
+      "sec_acceptance_utc": "2024-02-21T21:33:22.000Z",
+      "accession": "0001438133-24-000028",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2097122,
+      "sha256": "0fb997f6c4d48afbd36d8a955d9cd4dcd66f065d5dc97991f0969e99de6c04fd"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1438133/000143813324000028/ex211subsidiariesoftheregi.htm",
+      "sec_acceptance_utc": "2024-02-21T21:33:22.000Z",
+      "accession": "0001438133-24-000028",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 4224,
+      "sha256": "7ff598f58009241a3c131e3375da507f11304c25fdcd46863d389e96d4c806c1"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1438133/000143813325000036/tndm-20241231.htm",
+      "sec_acceptance_utc": "2025-02-26T21:09:22.000Z",
+      "accession": "0001438133-25-000036",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 2140463,
+      "sha256": "d800f19b99e4be7bffed3905a863344a97881f951287011ff44c9236edc38c35"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1438133/000143813325000036/ex211subsidiariesoftheregi.htm",
+      "sec_acceptance_utc": "2025-02-26T21:09:22.000Z",
+      "accession": "0001438133-25-000036",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 4997,
+      "sha256": "458c1eb9fc1a7dea8c8f3dbed4b0e07fe06e2d2ba01be4dbd1a6083ee0c83a0d"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1136869/000156459018003549/zbh-10k_20171231.htm",
+      "sec_acceptance_utc": "2018-02-27T22:18:20.000Z",
+      "accession": "0001564590-18-003549",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 6622285,
+      "sha256": "15899a6dcf5f1b0cd54a33bf4e5c685c39c13ed3ff4cefad11e58754de620f15"
+    },
+    {
+      "url": "http://www.sec.gov/Archives/edgar/data/1136869/000119312516615463/d206896dex21.htm",
+      "sec_acceptance_utc": "2018-02-27T22:18:20.000Z",
+      "accession": "0001564590-18-003549",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 443220,
+      "sha256": "16992d60c9004b73fe1c4865ca367a0a701cd6ed6fb14681321983849069073d"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1136869/000156459019004283/zbh-10k_20181231.htm",
+      "sec_acceptance_utc": "2019-02-26T14:17:03.000Z",
+      "accession": "0001564590-19-004283",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 6585462,
+      "sha256": "bf3c270e20ecd66743754232944e1dbfec6daafa4014fffbf6b207fafc9b54db"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1136869/000156459019004283/zbh-ex21_433.htm",
+      "sec_acceptance_utc": "2019-02-26T14:17:03.000Z",
+      "accession": "0001564590-19-004283",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 172100,
+      "sha256": "c4e1af18ff6ff300f10fded6de162d4546ac346558fb6fc7efb1e14ce2cdd679"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1136869/000156459020005657/zbh-10k_20191231.htm",
+      "sec_acceptance_utc": "2020-02-21T14:44:47.000Z",
+      "accession": "0001564590-20-005657",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 7197343,
+      "sha256": "123c3283b2d7af2e201b0838f5d3ee3a3c884ee67c8bf1b628f5d0498cad9711"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1136869/000156459020005657/zbh-ex21_561.htm",
+      "sec_acceptance_utc": "2020-02-21T14:44:47.000Z",
+      "accession": "0001564590-20-005657",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 169755,
+      "sha256": "a943e4cd198e775d9e6cbca2d3e400e680a3f5fb343d1121f60e6be1256f8ba6"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1136869/000156459021007163/zbh-10k_20201231.htm",
+      "sec_acceptance_utc": "2021-02-22T21:17:08.000Z",
+      "accession": "0001564590-21-007163",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 7328184,
+      "sha256": "8a543a913c12d62e57a94544c64fc649e442a97c25d065b4f9b0f230be9ee8d3"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1136869/000156459021007163/zbh-ex21_336.htm",
+      "sec_acceptance_utc": "2021-02-22T21:17:08.000Z",
+      "accession": "0001564590-21-007163",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 165292,
+      "sha256": "e346c78485bd782a5ca15a4563cccc106a4f5a379899b329d697bab1b64f049c"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1136869/000156459022007160/zbh-10k_20211231.htm",
+      "sec_acceptance_utc": "2022-02-25T21:07:32.000Z",
+      "accession": "0001564590-22-007160",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 7300754,
+      "sha256": "e86f16dbe69e68cd39de07aba31a2ab021290bec9846dfda085cad96264e3f51"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1136869/000156459022007160/zbh-ex21_6.htm",
+      "sec_acceptance_utc": "2022-02-25T21:07:32.000Z",
+      "accession": "0001564590-22-007160",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 168542,
+      "sha256": "cc05b3bd8e45907ccec07222da7d5d4d9217b12e9e7590db7608120a9eb7b692"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1136869/000095017023004264/zbh-20221231.htm",
+      "sec_acceptance_utc": "2023-02-24T14:46:33.000Z",
+      "accession": "0000950170-23-004264",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 7665511,
+      "sha256": "99e189df39d4bebf26bd5d8672b32d84ee4d13b6d2322c51fb1726b4520f3e7a"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1136869/000119312522061356/d650132dex21.htm",
+      "sec_acceptance_utc": "2023-02-24T14:46:33.000Z",
+      "accession": "0000950170-23-004264",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 427264,
+      "sha256": "50bbf7d5291c860d900c7fb0abb41c972bc2f59817157bfc84675f7e23f34267"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1136869/000095017024019353/zbh-20231231.htm",
+      "sec_acceptance_utc": "2024-02-23T21:06:31.000Z",
+      "accession": "0000950170-24-019353",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 5118009,
+      "sha256": "64ad507768d6ecc79b6c1973cd1c664e7cd072fcfe50e4bdc60f7e401871d3d9"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1136869/000119312522061356/d650132dex21.htm",
+      "sec_acceptance_utc": "2024-02-23T21:06:31.000Z",
+      "accession": "0000950170-24-019353",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 427264,
+      "sha256": "50bbf7d5291c860d900c7fb0abb41c972bc2f59817157bfc84675f7e23f34267"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1136869/000095017025026604/zbh-20241231.htm",
+      "sec_acceptance_utc": "2025-02-25T21:01:39.000Z",
+      "accession": "0000950170-25-026604",
+      "filing_role": "primary",
+      "acquired": true,
+      "bytes": 6242532,
+      "sha256": "66f323d36aaf7c1ce31b59fa3c9e64403c5de102df8cb55cf12cdb989ebf88f0"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1136869/000119312522061356/d650132dex21.htm",
+      "sec_acceptance_utc": "2025-02-25T21:01:39.000Z",
+      "accession": "0000950170-25-026604",
+      "filing_role": "subsidiaries",
+      "acquired": true,
+      "bytes": 427264,
+      "sha256": "50bbf7d5291c860d900c7fb0abb41c972bc2f59817157bfc84675f7e23f34267"
+    },
+    {
+      "archive_path": "usa_DOE_bulk_response.json",
+      "url": "https://api.usaspending.gov/api/v2/bulk_download/awards/",
+      "method": "POST",
+      "request_body": {
+        "filters": {
+          "prime_award_types": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "date_type": "action_date",
+          "date_range": {
+            "start_date": "2024-10-01",
+            "end_date": "2024-10-31"
+          },
+          "agencies": [
+            {
+              "type": "awarding",
+              "tier": "toptier",
+              "name": "Department of Energy"
+            }
+          ]
+        },
+        "file_format": "csv"
+      },
+      "acquired": true,
+      "bytes": 660,
+      "sha256": "5e566b1a9a0a92eb1bb2b371ed25bd996387671d5bd2dbec36d8a2ec094b0689"
+    },
+    {
+      "archive_path": "usa_DOE_bulk_status.json",
+      "url": "https://api.usaspending.gov/api/v2/download/status?file_name=All_PrimeTransactions_2026-11-26_H23M02S57149453.zip",
+      "download_name": "All_PrimeTransactions_2026-11-26_H23M02S57149453.zip",
+      "acquired": true,
+      "bytes": 307,
+      "sha256": "f1ffe65594e2e7837767765ab8920f843d055a9a39c84bb5666df495cba3826e"
+    },
+    {
+      "archive_path": "usa_DOE_bulk.zip",
+      "url": "https://files.usaspending.gov/generated_downloads/All_PrimeTransactions_2026-11-26_H23M02S57149453.zip",
+      "download_name": "All_PrimeTransactions_2026-11-26_H23M02S57149453.zip",
+      "request_body": {
+        "filters": {
+          "prime_award_types": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "date_type": "action_date",
+          "date_range": {
+            "start_date": "2024-10-01",
+            "end_date": "2024-10-31"
+          },
+          "agencies": [
+            {
+              "type": "awarding",
+              "tier": "toptier",
+              "name": "Department of Energy"
+            }
+          ]
+        },
+        "file_format": "csv"
+      },
+      "acquired": true,
+      "bytes": 327486,
+      "sha256": "843b91d5afa9e0a88738932b987d0243a98cce6fb966a119dbe60b3a29bf62e2"
+    },
+    {
+      "archive_path": "usa_HHS_bulk_response.json",
+      "url": "https://api.usaspending.gov/api/v2/bulk_download/awards/",
+      "method": "POST",
+      "request_body": {
+        "filters": {
+          "prime_award_types": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "date_type": "action_date",
+          "date_range": {
+            "start_date": "2024-10-01",
+            "end_date": "2024-10-31"
+          },
+          "agencies": [
+            {
+              "type": "awarding",
+              "tier": "toptier",
+              "name": "Department of Health and Human Services"
+            }
+          ]
+        },
+        "file_format": "csv"
+      },
+      "acquired": true,
+      "bytes": 679,
+      "sha256": "45e51f975d735b499adf6b88c0c980c5d3e0976c010f6e77d753d95aac0dcfe5"
+    },
+    {
+      "archive_path": "usa_HHS_bulk_status.json",
+      "url": "https://api.usaspending.gov/api/v2/download/status?file_name=All_PrimeTransactions_2026-11-26_H23M02S56918000.zip",
+      "download_name": "All_PrimeTransactions_2026-11-26_H23M02S56918000.zip",
+      "acquired": true,
+      "bytes": 309,
+      "sha256": "bf0b7f45f37fe7c8903efe77c39c73e4ba99bd0bbdce67076fc1ad861bcfb215"
+    },
+    {
+      "archive_path": "usa_HHS_bulk.zip",
+      "url": "https://files.usaspending.gov/generated_downloads/All_PrimeTransactions_2026-11-26_H23M02S56918000.zip",
+      "download_name": "All_PrimeTransactions_2026-11-26_H23M02S56918000.zip",
+      "request_body": {
+        "filters": {
+          "prime_award_types": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "date_type": "action_date",
+          "date_range": {
+            "start_date": "2024-10-01",
+            "end_date": "2024-10-31"
+          },
+          "agencies": [
+            {
+              "type": "awarding",
+              "tier": "toptier",
+              "name": "Department of Health and Human Services"
+            }
+          ]
+        },
+        "file_format": "csv"
+      },
+      "acquired": true,
+      "bytes": 1031107,
+      "sha256": "d2139cef68f5903c63a8030b1932e73663f215637d293859055ea2436ef8b967"
+    },
+    {
+      "archive_path": "usa_NASA_bulk_response.json",
+      "url": "https://api.usaspending.gov/api/v2/bulk_download/awards/",
+      "method": "POST",
+      "request_body": {
+        "filters": {
+          "prime_award_types": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "date_type": "action_date",
+          "date_range": {
+            "start_date": "2024-10-01",
+            "end_date": "2024-10-31"
+          },
+          "agencies": [
+            {
+              "type": "awarding",
+              "tier": "toptier",
+              "name": "National Aeronautics and Space Administration"
+            }
+          ]
+        },
+        "file_format": "csv"
+      },
+      "acquired": true,
+      "bytes": 685,
+      "sha256": "f799b71a5c00181cd2cb6b9fbee84c3b5a524ec29c7df9ca6a9f00e97370278b"
+    },
+    {
+      "archive_path": "usa_NASA_bulk_status.json",
+      "url": "https://api.usaspending.gov/api/v2/download/status?file_name=All_PrimeTransactions_2026-11-26_H23M02S57149795.zip",
+      "download_name": "All_PrimeTransactions_2026-11-26_H23M02S57149795.zip",
+      "acquired": true,
+      "bytes": 308,
+      "sha256": "8c5231986946613a35b77ea90bd6b400cef3c7dd832f9e7f21bce881a22b9b7f"
+    },
+    {
+      "archive_path": "usa_NASA_bulk.zip",
+      "url": "https://files.usaspending.gov/generated_downloads/All_PrimeTransactions_2026-11-26_H23M02S57149795.zip",
+      "download_name": "All_PrimeTransactions_2026-11-26_H23M02S57149795.zip",
+      "request_body": {
+        "filters": {
+          "prime_award_types": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "date_type": "action_date",
+          "date_range": {
+            "start_date": "2024-10-01",
+            "end_date": "2024-10-31"
+          },
+          "agencies": [
+            {
+              "type": "awarding",
+              "tier": "toptier",
+              "name": "National Aeronautics and Space Administration"
+            }
+          ]
+        },
+        "file_format": "csv"
+      },
+      "acquired": true,
+      "bytes": 541015,
+      "sha256": "bdabf9f07850269d33aade3fd77f35a2ce5c1d39aedae1f3609597897bdbe4f9"
+    },
+    {
+      "archive_path": "usa_example_tx.json",
+      "url": "https://api.usaspending.gov/api/v2/transactions/",
+      "method": "POST",
+      "request_body": {
+        "award_id": "CONT_AWD_N0001917C0015_9700_-NONE-_-NONE-",
+        "page": 1,
+        "limit": 5000,
+        "sort": "action_date",
+        "order": "asc"
+      },
+      "acquired": true,
+      "bytes": 86548,
+      "sha256": "3c92c01cc8bafa126d2f02e50037d4fcfbf4b1c452162db85033c5f4c82f5c67"
+    },
+    {
+      "archive_path": "usa_search_nasa.json",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_by_award/",
+      "method": "POST",
+      "request_body": {
+        "filters": {
+          "time_period": [
+            {
+              "start_date": "2024-10-01",
+              "end_date": "2024-10-31"
+            }
+          ],
+          "award_type_codes": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "agencies": [
+            {
+              "type": "awarding",
+              "tier": "toptier",
+              "name": "National Aeronautics and Space Administration"
+            }
+          ]
+        },
+        "fields": [
+          "Award ID",
+          "Recipient Name",
+          "Award Amount",
+          "Awarding Agency",
+          "Awarding Sub Agency",
+          "Start Date",
+          "End Date",
+          "Description",
+          "Award Type"
+        ],
+        "sort": "Award Amount",
+        "order": "desc",
+        "limit": 30,
+        "page": 1
+      },
+      "acquired": true,
+      "bytes": 48412,
+      "sha256": "b83ed5aca5cfffc067ef465f298b679bed81951b7751688ae16c9aea3eeee8c6"
+    },
+    {
+      "archive_path": "usa_award_example.json",
+      "url": "https://api.usaspending.gov/api/v2/awards/CONT_AWD_N0001917C0015_9700_-NONE-_-NONE-/",
+      "acquired": true,
+      "bytes": 6265,
+      "sha256": "f2870dadab22aa08ba2d16eba8dd8c85601a0a1d26537863dbb10e74cf4d6d6e"
+    }
+  ]
+}
