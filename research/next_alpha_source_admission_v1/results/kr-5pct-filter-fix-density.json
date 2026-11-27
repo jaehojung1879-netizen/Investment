@@ -1,0 +1,348 @@
+{
+ "filterDefect": {
+  "symptom": "#373 source_probe sends pblntf_ty=D and pblntf_detail_ty=D001/D002 together; DART then ignores the detail filter (D001 and D002 lists byte-identical, total 1,719 in 2024-05)",
+  "fix": "send pblntf_detail_ty alone (no pblntf_ty): 2024-05 returns 810 filings, 100/100 page-1 rows are 주식등의대량보유상황보고서",
+  "testCalls": 3
+ },
+ "density": {
+  "201905": {
+   "total": 760,
+   "page1Types": {
+    "일반": 78,
+    "약식": 22
+   },
+   "corrections_page1": 3
+  },
+  "202005": {
+   "total": 786,
+   "page1Types": {
+    "일반": 86,
+    "약식": 14
+   },
+   "corrections_page1": 3
+  },
+  "202209": {
+   "total": 675,
+   "page1Types": {
+    "일반": 84,
+    "약식": 16
+   },
+   "corrections_page1": 2
+  },
+  "202605": {
+   "total": 995,
+   "page1Types": {
+    "약식": 26,
+    "일반": 74
+   },
+   "corrections_page1": 3
+  },
+  "202405": {
+   "total": 810,
+   "page1Types": {
+    "일반": 86,
+    "약식": 14
+   }
+  }
+ },
+ "docSample2024_05_general10": [
+  {
+   "rcept_no": "20240531002955",
+   "purposeLabel": "일반투자",
+   "reasonMentionsPurposeChange": false
+  },
+  {
+   "rcept_no": "20240531002941",
+   "purposeLabel": "경영권 영향",
+   "reasonMentionsPurposeChange": false
+  },
+  {
+   "rcept_no": "20240531002924",
+   "purposeLabel": "경영권 영향",
+   "reasonMentionsPurposeChange": false
+  },
+  {
+   "rcept_no": "20240531002901",
+   "purposeLabel": "경영권 영향",
+   "reasonMentionsPurposeChange": false
+  },
+  {
+   "rcept_no": "20240531002817",
+   "purposeLabel": "경영권 영향",
+   "reasonMentionsPurposeChange": false
+  },
+  {
+   "rcept_no": "20240531002814",
+   "purposeLabel": "경영권 영향",
+   "reasonMentionsPurposeChange": false
+  },
+  {
+   "rcept_no": "20240531002794",
+   "purposeLabel": "경영권 영향",
+   "reasonMentionsPurposeChange": false
+  },
+  {
+   "rcept_no": "20240531002737",
+   "purposeLabel": "경영권 영향",
+   "reasonMentionsPurposeChange": false
+  },
+  {
+   "rcept_no": "20240531002729",
+   "purposeLabel": "경영권 영향",
+   "reasonMentionsPurposeChange": false
+  },
+  {
+   "rcept_no": "20240531002704",
+   "purposeLabel": "경영권 영향",
+   "reasonMentionsPurposeChange": false
+  }
+ ],
+ "unstated4Resolved": [
+  {
+   "receiptNo": "20251215000367",
+   "availableFrom": "2025-12-15",
+   "reportTypeRaw": "약식",
+   "filerIsNPS": false,
+   "reasonText": "보유주식 장외매매에 따른 변동 및 보유목적 변경",
+   "purposeAfter": "단순투자",
+   "purposeBeforeFromPriorFiling": "경영권 영향",
+   "priorReceiptNo": "20251126000447"
+  },
+  {
+   "receiptNo": "20260205000529",
+   "availableFrom": "2026-02-05",
+   "reportTypeRaw": "약식",
+   "filerIsNPS": false,
+   "reasonText": "1% 이상 변동 및 보유목적 변경",
+   "purposeAfter": "단순투자",
+   "purposeBeforeFromPriorFiling": "일반투자",
+   "priorReceiptNo": "20250314001157"
+  },
+  {
+   "receiptNo": "20260625000611",
+   "availableFrom": "2026-06-25",
+   "reportTypeRaw": "약식",
+   "filerIsNPS": false,
+   "reasonText": "CB 취득, 매도 및 보유목적 변경",
+   "purposeAfter": "단순투자",
+   "purposeBeforeFromPriorFiling": "경영권 영향",
+   "priorReceiptNo": "20260206002022"
+  },
+  {
+   "receiptNo": "20260512000304",
+   "availableFrom": "2026-05-12",
+   "reportTypeRaw": "약식",
+   "filerIsNPS": false,
+   "reasonText": "- 발행회사의 주식 장내 매도 - 주식 분할 - 발행주식의 총수 변동에 따른 보유비율 변동 - 보유목적 변경",
+   "purposeAfter": "단순투자",
+   "purposeBeforeFromPriorFiling": "NO_PRIOR_FILING_IN_LEDGER",
+   "priorReceiptNo": null
+  }
+ ],
+ "calls": [
+  {
+   "params": {
+    "bgn_de": "20240501",
+    "end_de": "20240531",
+    "page_no": "1",
+    "page_count": "100",
+    "last_reprt_at": "N",
+    "pblntf_detail_ty": "D001"
+   },
+   "sha256": "5fa146c0cc25155738973766f47f111a788870916d89aba04cc289649a540898"
+  },
+  {
+   "params": {
+    "bgn_de": "20240501",
+    "end_de": "20240531",
+    "page_no": "1",
+    "page_count": "100",
+    "last_reprt_at": "N",
+    "pblntf_ty": "D",
+    "pblntf_detail_ty": "D001"
+   },
+   "sha256": "1b4e1babc1b71b3906f4a96a2a2744ce2d9c3a9bb53aecd74a83e4fcccefd511"
+  },
+  {
+   "params": {
+    "bgn_de": "20240501",
+    "end_de": "20240531",
+    "page_no": "1",
+    "page_count": "100",
+    "last_reprt_at": "N",
+    "pblntf_ty": "D",
+    "pblntf_detail_ty": "d001"
+   },
+   "sha256": "1b4e1babc1b71b3906f4a96a2a2744ce2d9c3a9bb53aecd74a83e4fcccefd511"
+  },
+  {
+   "endpoint": "list.json",
+   "params": {
+    "bgn_de": "20190501",
+    "end_de": "20190531",
+    "pblntf_detail_ty": "D001",
+    "page_no": "1",
+    "page_count": "100",
+    "last_reprt_at": "N"
+   },
+   "sha256": "5e60f17ea8a20cdabc74f706ee80884da0daeaf9069dbb9211afb336c6fa785a"
+  },
+  {
+   "endpoint": "list.json",
+   "params": {
+    "bgn_de": "20200501",
+    "end_de": "20200531",
+    "pblntf_detail_ty": "D001",
+    "page_no": "1",
+    "page_count": "100",
+    "last_reprt_at": "N"
+   },
+   "sha256": "209b307b93fa0c7a9cdedfb4786b242f8a3e37759fe9d0e5188226ca1ab2c758"
+  },
+  {
+   "endpoint": "list.json",
+   "params": {
+    "bgn_de": "20220901",
+    "end_de": "20220930",
+    "pblntf_detail_ty": "D001",
+    "page_no": "1",
+    "page_count": "100",
+    "last_reprt_at": "N"
+   },
+   "sha256": "24084fd88f023e6693e1c9d0fd6dfcd3bda393e0aeba0381642594fc7ef7b1c1"
+  },
+  {
+   "endpoint": "list.json",
+   "params": {
+    "bgn_de": "20260501",
+    "end_de": "20260531",
+    "pblntf_detail_ty": "D001",
+    "page_no": "1",
+    "page_count": "100",
+    "last_reprt_at": "N"
+   },
+   "sha256": "0a2d9b9c7cc0c2e8fc1d0b7c69c9debe1027d8c2b672c23e81dc728b6cf56237"
+  },
+  {
+   "endpoint": "document.xml",
+   "params": {
+    "rcept_no": "20240531002955"
+   },
+   "sha256": "3f8fae664f37dfa94277a2fbf507ef53a9746e0f31cd30ba562a7cf3ac47ec8e"
+  },
+  {
+   "endpoint": "document.xml",
+   "params": {
+    "rcept_no": "20240531002941"
+   },
+   "sha256": "c2b56e31af0e922657ea73cd35983e44a8d2ef88aab05b9f5ecfd2f8ad9ba703"
+  },
+  {
+   "endpoint": "document.xml",
+   "params": {
+    "rcept_no": "20240531002924"
+   },
+   "sha256": "8943ee3ecdec298736b83d97e130a614f4f94b96a215a10da210009867ba71c9"
+  },
+  {
+   "endpoint": "document.xml",
+   "params": {
+    "rcept_no": "20240531002901"
+   },
+   "sha256": "12c2e6a03c1ef77ed2fe213a06eacbd7adc2ac667714ee9346e9cf13d5e53645"
+  },
+  {
+   "endpoint": "document.xml",
+   "params": {
+    "rcept_no": "20240531002817"
+   },
+   "sha256": "ce67bf7067cf64ddf404b424aa7d105c140db4d1d5254cfd4f2823308103ba7a"
+  },
+  {
+   "endpoint": "document.xml",
+   "params": {
+    "rcept_no": "20240531002814"
+   },
+   "sha256": "ee8371b356acd280c7e3ca2472990ed15dfd4b2f282314537991d2a1269e1c33"
+  },
+  {
+   "endpoint": "document.xml",
+   "params": {
+    "rcept_no": "20240531002794"
+   },
+   "sha256": "c0767da9e9c7c606d1bc0c43e183518bdbffc0ee0b451710b943a443fcff09f9"
+  },
+  {
+   "endpoint": "document.xml",
+   "params": {
+    "rcept_no": "20240531002737"
+   },
+   "sha256": "4c7143cc806e821491275936baf4646681d172b4913d678761b0de34b295a28d"
+  },
+  {
+   "endpoint": "document.xml",
+   "params": {
+    "rcept_no": "20240531002729"
+   },
+   "sha256": "ce3206cb3dd7169a7f4bbf0bfa46624bf596a744b800c4537a67e325df8f95eb"
+  },
+  {
+   "endpoint": "document.xml",
+   "params": {
+    "rcept_no": "20240531002704"
+   },
+   "sha256": "2ae18fa24c3a541d7263fa4b0e2a345f482db40e749aa79e09fc2879b60505fe"
+  },
+  {
+   "endpoint": "document.xml",
+   "params": {
+    "rcept_no": "20251215000367"
+   },
+   "sha256": "36d5a50c783f8c7975a7f3bc98160cb50c7ce76683b59c9a65809ed91b3e4fdd"
+  },
+  {
+   "endpoint": "document.xml",
+   "params": {
+    "rcept_no": "20251126000447"
+   },
+   "sha256": "568b2e898531beee9cf935559c88322b146951b59c3acbef6479a41d740cb133"
+  },
+  {
+   "endpoint": "document.xml",
+   "params": {
+    "rcept_no": "20260205000529"
+   },
+   "sha256": "0efbeaef6244d31012e7bb20a21b6c1aa4b8455d76939854ae60323484b73171"
+  },
+  {
+   "endpoint": "document.xml",
+   "params": {
+    "rcept_no": "20250314001157"
+   },
+   "sha256": "1bd5a49dd406bdc75a0baf798cef45ceb133e4809694f15524667de35202abee"
+  },
+  {
+   "endpoint": "document.xml",
+   "params": {
+    "rcept_no": "20260625000611"
+   },
+   "sha256": "bb6521112b93b9aa771171531382db03bd185eea4d8048384379ca1de1d080cc"
+  },
+  {
+   "endpoint": "document.xml",
+   "params": {
+    "rcept_no": "20260206002022"
+   },
+   "sha256": "ca728fe34ab088e0ab122ed80a7404424711d8f254db37f997441627cdbeb10e"
+  },
+  {
+   "endpoint": "document.xml",
+   "params": {
+    "rcept_no": "20260512000304"
+   },
+   "sha256": "5530005848a9a98348bbd8fbad7234ffc1babcfb2f579634fb9e3811658f7e1e"
+  }
+ ],
+ "callsThisFollowUp": 24,
+ "callsInPR383": 20
+}

@@ -1,0 +1,3477 @@
+{
+  "admission": {
+    "automaticPrecisionTarget": 0.95,
+    "automaticRecallTarget": 0.8,
+    "decision": "HOLD",
+    "registeredOutcomeStudy": false
+  },
+  "baselinePrHead": "fce9df5759a85ef97f50ef4f04dc533d1efc2eb3",
+  "evidenceClass": "SOURCE_ONLY",
+  "frozenCandidateCommit": "b00ee69b131d6230e80bf282dc4ab21a556b909d",
+  "inputSha256": {
+    "gold/guidance-pilot-annotations-v1.json": "68304eaca1774f1b6acb7b75515ca28348f3f0c959cf94acb372ce133b587dd3",
+    "gold/guidance-pilot-roster-v1.json": "e51ff071597449059f08bbedd4d0ebf01229640dca5a222572e20b5d52985c9b",
+    "gold/legacy-gold-source-audit-v1.json": "f99b15675e8542ffa49e4f0c6a2c9b1d3fe0fa562606ac6d7228a04c11f27ae0",
+    "gold/restricted-company-holdout-v1.json": "689ade2eb21d48c85b42796c3ef3451cf59b3c09eb5bcde7a2446f8153807d1f",
+    "gold/restricted-holdout-exposure-check-v1.json": "069279df7f1d15900987aa3d5b9ca72cf2ff771bdf63120d99699b8253fb6cc3",
+    "results/guidance-legacy-gold-source-recovery.json": "10f68b1b51946678c9ffd0848de361fae371ae5b729e5fe25bf703ffb1c2a1d7",
+    "results/guidance-pilot-source-recovery-v1.jsonl": "6e4163e0bd55778a01aeefd30d793c3309ebd6e605bf4d0995f2dcb58ba7ff2e",
+    "tools/guidance_evaluate_v4.py": "36d43eefe58b18095e990e1d23fc6924a5a74f07c808d347b179eb58571d556e",
+    "tools/guidance_extract_structured.py": "1bc4178c7bd9e23b21c035e09a9d900aeef086fe1e03892cebcde6cab0d7c67a",
+    "tools/guidance_extract_v2.py": "66893c4c8b30919aa6415d00d3134ef05aa838da4ab642f7e4fb923ccb9af16e",
+    "tools/guidance_extract_v3.py": "e6c4624a0222f0ca83ba729e6c84d769f69a3623e62102e62d10dac415bee2e6",
+    "tools/guidance_extract_v4.py": "9cd178e0ca2167d9fd24c02969c78ecea94cfea9327a35649241ab6d5c01311e"
+  },
+  "legacyComparisons": {
+    "dev": {
+      "allGoldCurrent": 53,
+      "ambiguousGoldLinkKeys": 0,
+      "comparisonClass": "LEGACY_GOLD_AGAINST_RECAPTURED_OFFICIAL_ARCHIVE_SCOPED_DIAGNOSTIC",
+      "domRowsForManualReview": 19,
+      "evaluatedDocuments": 24,
+      "evaluatedGoldCurrent": 53,
+      "goldDocuments": 24,
+      "historicalHttpBytesVerified": 0,
+      "linkIssuersOmittedForSourceGaps": [],
+      "methods": {
+        "automatic": {
+          "CURRENT": {
+            "f1": 0.2222222222222222,
+            "fn": 46,
+            "fp": 3,
+            "precision": 0.7,
+            "recall": 0.1320754716981132,
+            "tp": 7
+          },
+          "PRIOR": {
+            "f1": 0.36363636363636365,
+            "fn": 6,
+            "fp": 1,
+            "precision": 0.6666666666666666,
+            "recall": 0.25,
+            "tp": 2
+          },
+          "ambiguousPredictedKeys": 0,
+          "directionConfusions": {
+            "LOWER->LOWER": 1
+          },
+          "directionEndToEnd": {
+            "f1": 0.18181818181818182,
+            "fn": 9,
+            "fp": 0,
+            "precision": 1.0,
+            "recall": 0.1,
+            "tp": 1
+          },
+          "directionGivenMatchedLink": 1.0,
+          "issuerClusterBootstrapCurrent": {
+            "draws": 2000,
+            "f1": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.06896551724137931,
+                0.38461538461538464
+              ],
+              "point": 0.2222222222222222
+            },
+            "issuerClusters": 15,
+            "precision": {
+              "definedDraws": 1987,
+              "interval95": [
+                0.4,
+                1.0
+              ],
+              "point": 0.7
+            },
+            "recall": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.037037037037037035,
+                0.26
+              ],
+              "point": 0.1320754716981132
+            },
+            "seed": 383
+          },
+          "issuerConfusion": {
+            "1024305": {
+              "fn": 3,
+              "fp": 0,
+              "tp": 0
+            },
+            "1039684": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "1140536": {
+              "fn": 3,
+              "fp": 0,
+              "tp": 2
+            },
+            "1543151": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1561550": {
+              "fn": 6,
+              "fp": 0,
+              "tp": 0
+            },
+            "1571949": {
+              "fn": 15,
+              "fp": 0,
+              "tp": 0
+            },
+            "1800": {
+              "fn": 6,
+              "fp": 0,
+              "tp": 2
+            },
+            "36104": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "62996": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 1
+            },
+            "749251": {
+              "fn": 6,
+              "fp": 3,
+              "tp": 2
+            },
+            "797468": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "860730": {
+              "fn": 4,
+              "fp": 0,
+              "tp": 0
+            },
+            "906163": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "936340": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "936395": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            }
+          },
+          "links": {
+            "f1": 0.18181818181818182,
+            "fn": 9,
+            "fp": 0,
+            "precision": 1.0,
+            "recall": 0.1,
+            "tp": 1
+          },
+          "outsideLegacyAnnotationScope": 2,
+          "predictedLinksWithExplicitBasis": 1
+        },
+        "domTable": {
+          "CURRENT": {
+            "f1": 0.13333333333333333,
+            "fn": 49,
+            "fp": 3,
+            "precision": 0.5714285714285714,
+            "recall": 0.07547169811320754,
+            "tp": 4
+          },
+          "PRIOR": {
+            "f1": 0.36363636363636365,
+            "fn": 6,
+            "fp": 1,
+            "precision": 0.6666666666666666,
+            "recall": 0.25,
+            "tp": 2
+          },
+          "ambiguousPredictedKeys": 0,
+          "directionConfusions": {},
+          "directionEndToEnd": {
+            "f1": 0.0,
+            "fn": 10,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "tp": 0
+          },
+          "directionGivenMatchedLink": null,
+          "issuerClusterBootstrapCurrent": {
+            "draws": 2000,
+            "f1": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.0,
+                0.2962962962962963
+              ],
+              "point": 0.13333333333333333
+            },
+            "issuerClusters": 15,
+            "precision": {
+              "definedDraws": 1781,
+              "interval95": [
+                0.4,
+                1.0
+              ],
+              "point": 0.5714285714285714
+            },
+            "recall": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.0,
+                0.1951219512195122
+              ],
+              "point": 0.07547169811320754
+            },
+            "seed": 383
+          },
+          "issuerConfusion": {
+            "1024305": {
+              "fn": 3,
+              "fp": 0,
+              "tp": 0
+            },
+            "1039684": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "1140536": {
+              "fn": 3,
+              "fp": 0,
+              "tp": 2
+            },
+            "1543151": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1561550": {
+              "fn": 6,
+              "fp": 0,
+              "tp": 0
+            },
+            "1571949": {
+              "fn": 15,
+              "fp": 0,
+              "tp": 0
+            },
+            "1800": {
+              "fn": 8,
+              "fp": 0,
+              "tp": 0
+            },
+            "36104": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "62996": {
+              "fn": 2,
+              "fp": 0,
+              "tp": 0
+            },
+            "749251": {
+              "fn": 6,
+              "fp": 3,
+              "tp": 2
+            },
+            "797468": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "860730": {
+              "fn": 4,
+              "fp": 0,
+              "tp": 0
+            },
+            "906163": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "936340": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "936395": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            }
+          },
+          "links": {
+            "f1": 0.0,
+            "fn": 10,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "tp": 0
+          },
+          "outsideLegacyAnnotationScope": 2,
+          "predictedLinksWithExplicitBasis": 0
+        },
+        "hybrid": {
+          "CURRENT": {
+            "f1": 0.9433962264150944,
+            "fn": 3,
+            "fp": 3,
+            "precision": 0.9433962264150944,
+            "recall": 0.9433962264150944,
+            "tp": 50
+          },
+          "PRIOR": {
+            "f1": 0.8888888888888888,
+            "fn": 0,
+            "fp": 2,
+            "precision": 0.8,
+            "recall": 1.0,
+            "tp": 8
+          },
+          "ambiguousPredictedKeys": 3,
+          "directionConfusions": {
+            "LOWER->LOWER": 2,
+            "MAINTAIN->MAINTAIN": 5,
+            "RAISE->RAISE": 3
+          },
+          "directionEndToEnd": {
+            "f1": 1.0,
+            "fn": 0,
+            "fp": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 10
+          },
+          "directionGivenMatchedLink": 1.0,
+          "issuerClusterBootstrapCurrent": {
+            "draws": 2000,
+            "f1": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.84375,
+                1.0
+              ],
+              "point": 0.9433962264150944
+            },
+            "issuerClusters": 15,
+            "precision": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.8235294117647058,
+                1.0
+              ],
+              "point": 0.9433962264150944
+            },
+            "recall": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.8536585365853658,
+                1.0
+              ],
+              "point": 0.9433962264150944
+            },
+            "seed": 383
+          },
+          "issuerConfusion": {
+            "1024305": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 3
+            },
+            "1039684": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 1
+            },
+            "1140536": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 4
+            },
+            "1543151": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1561550": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 6
+            },
+            "1571949": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 15
+            },
+            "1800": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 8
+            },
+            "36104": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "62996": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 2
+            },
+            "749251": {
+              "fn": 2,
+              "fp": 3,
+              "tp": 6
+            },
+            "797468": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "860730": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 4
+            },
+            "906163": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "936340": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 1
+            },
+            "936395": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            }
+          },
+          "links": {
+            "f1": 1.0,
+            "fn": 0,
+            "fp": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 10
+          },
+          "outsideLegacyAnnotationScope": 2,
+          "predictedLinksWithExplicitBasis": 9
+        },
+        "legacyV4": {
+          "CURRENT": {
+            "f1": 0.9714285714285714,
+            "fn": 2,
+            "fp": 1,
+            "precision": 0.9807692307692307,
+            "recall": 0.9622641509433962,
+            "tp": 51
+          },
+          "PRIOR": {
+            "f1": 0.8888888888888888,
+            "fn": 0,
+            "fp": 2,
+            "precision": 0.8,
+            "recall": 1.0,
+            "tp": 8
+          },
+          "ambiguousPredictedKeys": 0,
+          "directionConfusions": {
+            "LOWER->LOWER": 2,
+            "MAINTAIN->MAINTAIN": 5,
+            "RAISE->RAISE": 3
+          },
+          "directionEndToEnd": {
+            "f1": 1.0,
+            "fn": 0,
+            "fp": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 10
+          },
+          "directionGivenMatchedLink": 1.0,
+          "issuerClusterBootstrapCurrent": {
+            "draws": 2000,
+            "f1": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.9230769230769231,
+                1.0
+              ],
+              "point": 0.9714285714285714
+            },
+            "issuerClusters": 15,
+            "precision": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.9318181818181818,
+                1.0
+              ],
+              "point": 0.9807692307692307
+            },
+            "recall": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.875,
+                1.0
+              ],
+              "point": 0.9622641509433962
+            },
+            "seed": 383
+          },
+          "issuerConfusion": {
+            "1024305": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 3
+            },
+            "1039684": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 1
+            },
+            "1140536": {
+              "fn": 0,
+              "fp": 1,
+              "tp": 5
+            },
+            "1543151": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1561550": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 6
+            },
+            "1571949": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 15
+            },
+            "1800": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 8
+            },
+            "36104": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "62996": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 2
+            },
+            "749251": {
+              "fn": 2,
+              "fp": 0,
+              "tp": 6
+            },
+            "797468": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "860730": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 4
+            },
+            "906163": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "936340": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 1
+            },
+            "936395": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            }
+          },
+          "links": {
+            "f1": 1.0,
+            "fn": 0,
+            "fp": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 10
+          },
+          "outsideLegacyAnnotationScope": 0,
+          "predictedLinksWithExplicitBasis": 9
+        },
+        "manualReviewCandidates": {
+          "CURRENT": {
+            "f1": 0.875,
+            "fn": 11,
+            "fp": 1,
+            "precision": 0.9767441860465116,
+            "recall": 0.7924528301886793,
+            "tp": 42
+          },
+          "PRIOR": {
+            "f1": 0.8,
+            "fn": 2,
+            "fp": 1,
+            "precision": 0.8571428571428571,
+            "recall": 0.75,
+            "tp": 6
+          },
+          "issuerConfusion": {
+            "1024305": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 3
+            },
+            "1039684": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 1
+            },
+            "1140536": {
+              "fn": 2,
+              "fp": 1,
+              "tp": 3
+            },
+            "1543151": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1561550": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 6
+            },
+            "1571949": {
+              "fn": 2,
+              "fp": 0,
+              "tp": 13
+            },
+            "1800": {
+              "fn": 2,
+              "fp": 0,
+              "tp": 6
+            },
+            "36104": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "62996": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 1
+            },
+            "749251": {
+              "fn": 4,
+              "fp": 0,
+              "tp": 4
+            },
+            "797468": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "860730": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 4
+            },
+            "906163": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "936340": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 1
+            },
+            "936395": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            }
+          },
+          "outsideLegacyAnnotationScope": 0
+        },
+        "v2": {
+          "CURRENT": {
+            "f1": 0.9807692307692307,
+            "fn": 2,
+            "fp": 0,
+            "precision": 1.0,
+            "recall": 0.9622641509433962,
+            "tp": 51
+          },
+          "PRIOR": {
+            "f1": 0.8888888888888888,
+            "fn": 0,
+            "fp": 2,
+            "precision": 0.8,
+            "recall": 1.0,
+            "tp": 8
+          },
+          "ambiguousPredictedKeys": 0,
+          "directionConfusions": {
+            "LOWER->LOWER": 2,
+            "MAINTAIN->MAINTAIN": 5,
+            "RAISE->RAISE": 3
+          },
+          "directionEndToEnd": {
+            "f1": 1.0,
+            "fn": 0,
+            "fp": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 10
+          },
+          "directionGivenMatchedLink": 1.0,
+          "issuerClusterBootstrapCurrent": {
+            "draws": 2000,
+            "f1": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.9333333333333333,
+                1.0
+              ],
+              "point": 0.9807692307692307
+            },
+            "issuerClusters": 15,
+            "precision": {
+              "definedDraws": 2000,
+              "interval95": [
+                1.0,
+                1.0
+              ],
+              "point": 1.0
+            },
+            "recall": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.875,
+                1.0
+              ],
+              "point": 0.9622641509433962
+            },
+            "seed": 383
+          },
+          "issuerConfusion": {
+            "1024305": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 3
+            },
+            "1039684": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 1
+            },
+            "1140536": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 5
+            },
+            "1543151": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1561550": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 6
+            },
+            "1571949": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 15
+            },
+            "1800": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 8
+            },
+            "36104": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "62996": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 2
+            },
+            "749251": {
+              "fn": 2,
+              "fp": 0,
+              "tp": 6
+            },
+            "797468": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "860730": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 4
+            },
+            "906163": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "936340": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 1
+            },
+            "936395": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            }
+          },
+          "links": {
+            "f1": 1.0,
+            "fn": 0,
+            "fp": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 10
+          },
+          "outsideLegacyAnnotationScope": 0,
+          "predictedLinksWithExplicitBasis": 9
+        },
+        "v3": {
+          "CURRENT": {
+            "f1": 0.9714285714285714,
+            "fn": 2,
+            "fp": 1,
+            "precision": 0.9807692307692307,
+            "recall": 0.9622641509433962,
+            "tp": 51
+          },
+          "PRIOR": {
+            "f1": 0.8888888888888888,
+            "fn": 0,
+            "fp": 2,
+            "precision": 0.8,
+            "recall": 1.0,
+            "tp": 8
+          },
+          "ambiguousPredictedKeys": 0,
+          "directionConfusions": {
+            "LOWER->LOWER": 2,
+            "MAINTAIN->MAINTAIN": 5,
+            "RAISE->RAISE": 3
+          },
+          "directionEndToEnd": {
+            "f1": 1.0,
+            "fn": 0,
+            "fp": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 10
+          },
+          "directionGivenMatchedLink": 1.0,
+          "issuerClusterBootstrapCurrent": {
+            "draws": 2000,
+            "f1": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.9230769230769231,
+                1.0
+              ],
+              "point": 0.9714285714285714
+            },
+            "issuerClusters": 15,
+            "precision": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.9318181818181818,
+                1.0
+              ],
+              "point": 0.9807692307692307
+            },
+            "recall": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.875,
+                1.0
+              ],
+              "point": 0.9622641509433962
+            },
+            "seed": 383
+          },
+          "issuerConfusion": {
+            "1024305": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 3
+            },
+            "1039684": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 1
+            },
+            "1140536": {
+              "fn": 0,
+              "fp": 1,
+              "tp": 5
+            },
+            "1543151": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1561550": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 6
+            },
+            "1571949": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 15
+            },
+            "1800": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 8
+            },
+            "36104": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "62996": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 2
+            },
+            "749251": {
+              "fn": 2,
+              "fp": 0,
+              "tp": 6
+            },
+            "797468": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "860730": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 4
+            },
+            "906163": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "936340": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 1
+            },
+            "936395": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            }
+          },
+          "links": {
+            "f1": 1.0,
+            "fn": 0,
+            "fp": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 10
+          },
+          "outsideLegacyAnnotationScope": 0,
+          "predictedLinksWithExplicitBasis": 9
+        }
+      },
+      "sourceOmissions": {},
+      "split": "dev",
+      "v2ToV3GoldHitsByMetric": {
+        "addedGoldHits": {},
+        "lostGoldHits": {}
+      }
+    },
+    "test": {
+      "allGoldCurrent": 61,
+      "ambiguousGoldLinkKeys": 0,
+      "comparisonClass": "LEGACY_GOLD_AGAINST_RECAPTURED_OFFICIAL_ARCHIVE_SCOPED_DIAGNOSTIC",
+      "domRowsForManualReview": 43,
+      "evaluatedDocuments": 24,
+      "evaluatedGoldCurrent": 61,
+      "goldDocuments": 24,
+      "historicalHttpBytesVerified": 0,
+      "linkIssuersOmittedForSourceGaps": [],
+      "methods": {
+        "automatic": {
+          "CURRENT": {
+            "f1": 0.41379310344827586,
+            "fn": 43,
+            "fp": 8,
+            "precision": 0.6923076923076923,
+            "recall": 0.29508196721311475,
+            "tp": 18
+          },
+          "PRIOR": {
+            "f1": 0.6666666666666666,
+            "fn": 4,
+            "fp": 2,
+            "precision": 0.75,
+            "recall": 0.6,
+            "tp": 6
+          },
+          "ambiguousPredictedKeys": 0,
+          "directionConfusions": {
+            "RAISE->RAISE": 3
+          },
+          "directionEndToEnd": {
+            "f1": 0.3,
+            "fn": 12,
+            "fp": 2,
+            "precision": 0.6,
+            "recall": 0.2,
+            "tp": 3
+          },
+          "directionGivenMatchedLink": 1.0,
+          "issuerClusterBootstrapCurrent": {
+            "draws": 2000,
+            "f1": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.14925373134328357,
+                0.5528455284552846
+              ],
+              "point": 0.41379310344827586
+            },
+            "issuerClusters": 15,
+            "precision": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.32,
+                0.9230769230769231
+              ],
+              "point": 0.6923076923076923
+            },
+            "recall": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.0967741935483871,
+                0.42857142857142855
+              ],
+              "point": 0.29508196721311475
+            },
+            "seed": 383
+          },
+          "issuerConfusion": {
+            "1015780": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1060391": {
+              "fn": 10,
+              "fp": 1,
+              "tp": 7
+            },
+            "1101215": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1170010": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1262039": {
+              "fn": 2,
+              "fp": 0,
+              "tp": 0
+            },
+            "1274494": {
+              "fn": 1,
+              "fp": 1,
+              "tp": 5
+            },
+            "1383312": {
+              "fn": 5,
+              "fp": 2,
+              "tp": 2
+            },
+            "1442145": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1530721": {
+              "fn": 6,
+              "fp": 0,
+              "tp": 1
+            },
+            "320193": {
+              "fn": 4,
+              "fp": 0,
+              "tp": 0
+            },
+            "42582": {
+              "fn": 3,
+              "fp": 0,
+              "tp": 0
+            },
+            "55067": {
+              "fn": 3,
+              "fp": 0,
+              "tp": 0
+            },
+            "898293": {
+              "fn": 5,
+              "fp": 0,
+              "tp": 3
+            },
+            "914208": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "922864": {
+              "fn": 4,
+              "fp": 4,
+              "tp": 0
+            }
+          },
+          "links": {
+            "f1": 0.3,
+            "fn": 12,
+            "fp": 2,
+            "precision": 0.6,
+            "recall": 0.2,
+            "tp": 3
+          },
+          "outsideLegacyAnnotationScope": 7,
+          "predictedLinksWithExplicitBasis": 2
+        },
+        "domTable": {
+          "CURRENT": {
+            "f1": 0.22784810126582278,
+            "fn": 52,
+            "fp": 9,
+            "precision": 0.5,
+            "recall": 0.14754098360655737,
+            "tp": 9
+          },
+          "PRIOR": {
+            "f1": 0.6666666666666666,
+            "fn": 4,
+            "fp": 2,
+            "precision": 0.75,
+            "recall": 0.6,
+            "tp": 6
+          },
+          "ambiguousPredictedKeys": 0,
+          "directionConfusions": {},
+          "directionEndToEnd": {
+            "f1": 0.0,
+            "fn": 15,
+            "fp": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "tp": 0
+          },
+          "directionGivenMatchedLink": null,
+          "issuerClusterBootstrapCurrent": {
+            "draws": 2000,
+            "f1": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.0,
+                0.48484848484848486
+              ],
+              "point": 0.22784810126582278
+            },
+            "issuerClusters": 15,
+            "precision": {
+              "definedDraws": 1995,
+              "interval95": [
+                0.0,
+                1.0
+              ],
+              "point": 0.5
+            },
+            "recall": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.0,
+                0.35714285714285715
+              ],
+              "point": 0.14754098360655737
+            },
+            "seed": 383
+          },
+          "issuerConfusion": {
+            "1015780": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1060391": {
+              "fn": 17,
+              "fp": 2,
+              "tp": 0
+            },
+            "1101215": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1170010": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1262039": {
+              "fn": 2,
+              "fp": 0,
+              "tp": 0
+            },
+            "1274494": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 5
+            },
+            "1383312": {
+              "fn": 5,
+              "fp": 3,
+              "tp": 2
+            },
+            "1442145": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1530721": {
+              "fn": 7,
+              "fp": 0,
+              "tp": 0
+            },
+            "320193": {
+              "fn": 4,
+              "fp": 0,
+              "tp": 0
+            },
+            "42582": {
+              "fn": 3,
+              "fp": 0,
+              "tp": 0
+            },
+            "55067": {
+              "fn": 3,
+              "fp": 0,
+              "tp": 0
+            },
+            "898293": {
+              "fn": 6,
+              "fp": 0,
+              "tp": 2
+            },
+            "914208": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "922864": {
+              "fn": 4,
+              "fp": 4,
+              "tp": 0
+            }
+          },
+          "links": {
+            "f1": 0.0,
+            "fn": 15,
+            "fp": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "tp": 0
+          },
+          "outsideLegacyAnnotationScope": 7,
+          "predictedLinksWithExplicitBasis": 0
+        },
+        "hybrid": {
+          "CURRENT": {
+            "f1": 0.5751633986928104,
+            "fn": 17,
+            "fp": 48,
+            "precision": 0.4782608695652174,
+            "recall": 0.7213114754098361,
+            "tp": 44
+          },
+          "PRIOR": {
+            "f1": 0.6086956521739131,
+            "fn": 3,
+            "fp": 6,
+            "precision": 0.5384615384615384,
+            "recall": 0.7,
+            "tp": 7
+          },
+          "ambiguousPredictedKeys": 10,
+          "directionConfusions": {
+            "RAISE->LOWER": 1,
+            "RAISE->RAISE": 4
+          },
+          "directionEndToEnd": {
+            "f1": 0.3333333333333333,
+            "fn": 11,
+            "fp": 5,
+            "precision": 0.4444444444444444,
+            "recall": 0.26666666666666666,
+            "tp": 4
+          },
+          "directionGivenMatchedLink": 0.8,
+          "issuerClusterBootstrapCurrent": {
+            "draws": 2000,
+            "f1": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.3619047619047619,
+                0.7292817679558011
+              ],
+              "point": 0.5751633986928104
+            },
+            "issuerClusters": 15,
+            "precision": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.27631578947368424,
+                0.6607142857142857
+              ],
+              "point": 0.4782608695652174
+            },
+            "recall": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.5106382978723404,
+                0.8536585365853658
+              ],
+              "point": 0.7213114754098361
+            },
+            "seed": 383
+          },
+          "issuerConfusion": {
+            "1015780": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1060391": {
+              "fn": 4,
+              "fp": 8,
+              "tp": 13
+            },
+            "1101215": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1170010": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1262039": {
+              "fn": 1,
+              "fp": 1,
+              "tp": 1
+            },
+            "1274494": {
+              "fn": 1,
+              "fp": 2,
+              "tp": 5
+            },
+            "1383312": {
+              "fn": 2,
+              "fp": 6,
+              "tp": 5
+            },
+            "1442145": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1530721": {
+              "fn": 0,
+              "fp": 9,
+              "tp": 7
+            },
+            "320193": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 4
+            },
+            "42582": {
+              "fn": 3,
+              "fp": 10,
+              "tp": 0
+            },
+            "55067": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 2
+            },
+            "898293": {
+              "fn": 1,
+              "fp": 2,
+              "tp": 7
+            },
+            "914208": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "922864": {
+              "fn": 4,
+              "fp": 10,
+              "tp": 0
+            }
+          },
+          "links": {
+            "f1": 0.4166666666666667,
+            "fn": 10,
+            "fp": 4,
+            "precision": 0.5555555555555556,
+            "recall": 0.3333333333333333,
+            "tp": 5
+          },
+          "outsideLegacyAnnotationScope": 10,
+          "predictedLinksWithExplicitBasis": 2
+        },
+        "legacyV4": {
+          "CURRENT": {
+            "f1": 0.7142857142857143,
+            "fn": 11,
+            "fp": 29,
+            "precision": 0.6329113924050633,
+            "recall": 0.819672131147541,
+            "tp": 50
+          },
+          "PRIOR": {
+            "f1": 0.9090909090909091,
+            "fn": 0,
+            "fp": 2,
+            "precision": 0.8333333333333334,
+            "recall": 1.0,
+            "tp": 10
+          },
+          "ambiguousPredictedKeys": 7,
+          "directionConfusions": {
+            "MAINTAIN->MAINTAIN": 1,
+            "RAISE->RAISE": 9
+          },
+          "directionEndToEnd": {
+            "f1": 0.7407407407407407,
+            "fn": 5,
+            "fp": 2,
+            "precision": 0.8333333333333334,
+            "recall": 0.6666666666666666,
+            "tp": 10
+          },
+          "directionGivenMatchedLink": 1.0,
+          "issuerClusterBootstrapCurrent": {
+            "draws": 2000,
+            "f1": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.4918032786885246,
+                0.8863636363636364
+              ],
+              "point": 0.7142857142857143
+            },
+            "issuerClusters": 15,
+            "precision": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.38461538461538464,
+                0.8648648648648649
+              ],
+              "point": 0.6329113924050633
+            },
+            "recall": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.6363636363636364,
+                0.9538461538461539
+              ],
+              "point": 0.819672131147541
+            },
+            "seed": 383
+          },
+          "issuerConfusion": {
+            "1015780": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1060391": {
+              "fn": 3,
+              "fp": 5,
+              "tp": 14
+            },
+            "1101215": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1170010": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1262039": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 2
+            },
+            "1274494": {
+              "fn": 0,
+              "fp": 1,
+              "tp": 6
+            },
+            "1383312": {
+              "fn": 2,
+              "fp": 3,
+              "tp": 5
+            },
+            "1442145": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1530721": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 7
+            },
+            "320193": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 4
+            },
+            "42582": {
+              "fn": 3,
+              "fp": 12,
+              "tp": 0
+            },
+            "55067": {
+              "fn": 3,
+              "fp": 0,
+              "tp": 0
+            },
+            "898293": {
+              "fn": 0,
+              "fp": 1,
+              "tp": 8
+            },
+            "914208": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "922864": {
+              "fn": 0,
+              "fp": 7,
+              "tp": 4
+            }
+          },
+          "links": {
+            "f1": 0.7407407407407407,
+            "fn": 5,
+            "fp": 2,
+            "precision": 0.8333333333333334,
+            "recall": 0.6666666666666666,
+            "tp": 10
+          },
+          "outsideLegacyAnnotationScope": 6,
+          "predictedLinksWithExplicitBasis": 4
+        },
+        "manualReviewCandidates": {
+          "CURRENT": {
+            "f1": 0.4429530201342282,
+            "fn": 28,
+            "fp": 55,
+            "precision": 0.375,
+            "recall": 0.5409836065573771,
+            "tp": 33
+          },
+          "PRIOR": {
+            "f1": 0.38095238095238093,
+            "fn": 6,
+            "fp": 7,
+            "precision": 0.36363636363636365,
+            "recall": 0.4,
+            "tp": 4
+          },
+          "issuerConfusion": {
+            "1015780": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1060391": {
+              "fn": 10,
+              "fp": 11,
+              "tp": 7
+            },
+            "1101215": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1170010": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1262039": {
+              "fn": 0,
+              "fp": 1,
+              "tp": 2
+            },
+            "1274494": {
+              "fn": 5,
+              "fp": 1,
+              "tp": 1
+            },
+            "1383312": {
+              "fn": 4,
+              "fp": 5,
+              "tp": 3
+            },
+            "1442145": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1530721": {
+              "fn": 1,
+              "fp": 9,
+              "tp": 6
+            },
+            "320193": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 4
+            },
+            "42582": {
+              "fn": 3,
+              "fp": 12,
+              "tp": 0
+            },
+            "55067": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 2
+            },
+            "898293": {
+              "fn": 4,
+              "fp": 3,
+              "tp": 4
+            },
+            "914208": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "922864": {
+              "fn": 0,
+              "fp": 13,
+              "tp": 4
+            }
+          },
+          "outsideLegacyAnnotationScope": 10
+        },
+        "v2": {
+          "CURRENT": {
+            "f1": 0.609271523178808,
+            "fn": 15,
+            "fp": 44,
+            "precision": 0.5111111111111111,
+            "recall": 0.7540983606557377,
+            "tp": 46
+          },
+          "PRIOR": {
+            "f1": 0.6086956521739131,
+            "fn": 3,
+            "fp": 6,
+            "precision": 0.5384615384615384,
+            "recall": 0.7,
+            "tp": 7
+          },
+          "ambiguousPredictedKeys": 9,
+          "directionConfusions": {
+            "RAISE->RAISE": 6
+          },
+          "directionEndToEnd": {
+            "f1": 0.5217391304347826,
+            "fn": 9,
+            "fp": 2,
+            "precision": 0.75,
+            "recall": 0.4,
+            "tp": 6
+          },
+          "directionGivenMatchedLink": 1.0,
+          "issuerClusterBootstrapCurrent": {
+            "draws": 2000,
+            "f1": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.3793103448275862,
+                0.7716535433070866
+              ],
+              "point": 0.609271523178808
+            },
+            "issuerClusters": 15,
+            "precision": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.2892561983471074,
+                0.7017543859649122
+              ],
+              "point": 0.5111111111111111
+            },
+            "recall": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.5306122448979592,
+                0.8823529411764706
+              ],
+              "point": 0.7540983606557377
+            },
+            "seed": 383
+          },
+          "issuerConfusion": {
+            "1015780": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1060391": {
+              "fn": 3,
+              "fp": 6,
+              "tp": 14
+            },
+            "1101215": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1170010": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1262039": {
+              "fn": 1,
+              "fp": 1,
+              "tp": 1
+            },
+            "1274494": {
+              "fn": 0,
+              "fp": 2,
+              "tp": 6
+            },
+            "1383312": {
+              "fn": 2,
+              "fp": 4,
+              "tp": 5
+            },
+            "1442145": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1530721": {
+              "fn": 0,
+              "fp": 9,
+              "tp": 7
+            },
+            "320193": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 4
+            },
+            "42582": {
+              "fn": 3,
+              "fp": 10,
+              "tp": 0
+            },
+            "55067": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 2
+            },
+            "898293": {
+              "fn": 1,
+              "fp": 2,
+              "tp": 7
+            },
+            "914208": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "922864": {
+              "fn": 4,
+              "fp": 10,
+              "tp": 0
+            }
+          },
+          "links": {
+            "f1": 0.5217391304347826,
+            "fn": 9,
+            "fp": 2,
+            "precision": 0.75,
+            "recall": 0.4,
+            "tp": 6
+          },
+          "outsideLegacyAnnotationScope": 9,
+          "predictedLinksWithExplicitBasis": 3
+        },
+        "v3": {
+          "CURRENT": {
+            "f1": 0.6330935251798561,
+            "fn": 17,
+            "fp": 34,
+            "precision": 0.5641025641025641,
+            "recall": 0.7213114754098361,
+            "tp": 44
+          },
+          "PRIOR": {
+            "f1": 0.5,
+            "fn": 6,
+            "fp": 2,
+            "precision": 0.6666666666666666,
+            "recall": 0.4,
+            "tp": 4
+          },
+          "ambiguousPredictedKeys": 10,
+          "directionConfusions": {
+            "MAINTAIN->MAINTAIN": 1,
+            "RAISE->RAISE": 9
+          },
+          "directionEndToEnd": {
+            "f1": 0.7407407407407407,
+            "fn": 5,
+            "fp": 2,
+            "precision": 0.8333333333333334,
+            "recall": 0.6666666666666666,
+            "tp": 10
+          },
+          "directionGivenMatchedLink": 1.0,
+          "issuerClusterBootstrapCurrent": {
+            "draws": 2000,
+            "f1": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.39473684210526316,
+                0.7927927927927928
+              ],
+              "point": 0.6330935251798561
+            },
+            "issuerClusters": 15,
+            "precision": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.32222222222222224,
+                0.7666666666666667
+              ],
+              "point": 0.5641025641025641
+            },
+            "recall": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.4489795918367347,
+                0.90625
+              ],
+              "point": 0.7213114754098361
+            },
+            "seed": 383
+          },
+          "issuerConfusion": {
+            "1015780": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1060391": {
+              "fn": 3,
+              "fp": 5,
+              "tp": 14
+            },
+            "1101215": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1170010": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1262039": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 2
+            },
+            "1274494": {
+              "fn": 6,
+              "fp": 1,
+              "tp": 0
+            },
+            "1383312": {
+              "fn": 2,
+              "fp": 3,
+              "tp": 5
+            },
+            "1442145": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "1530721": {
+              "fn": 0,
+              "fp": 7,
+              "tp": 7
+            },
+            "320193": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 4
+            },
+            "42582": {
+              "fn": 3,
+              "fp": 12,
+              "tp": 0
+            },
+            "55067": {
+              "fn": 3,
+              "fp": 0,
+              "tp": 0
+            },
+            "898293": {
+              "fn": 0,
+              "fp": 1,
+              "tp": 8
+            },
+            "914208": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 0
+            },
+            "922864": {
+              "fn": 0,
+              "fp": 5,
+              "tp": 4
+            }
+          },
+          "links": {
+            "f1": 0.7407407407407407,
+            "fn": 5,
+            "fp": 2,
+            "precision": 0.8333333333333334,
+            "recall": 0.6666666666666666,
+            "tp": 10
+          },
+          "outsideLegacyAnnotationScope": 6,
+          "predictedLinksWithExplicitBasis": 4
+        }
+      },
+      "sourceOmissions": {},
+      "split": "test",
+      "v2ToV3GoldHitsByMetric": {
+        "addedGoldHits": {
+          "eps": 5,
+          "revenue_growth": 1
+        },
+        "lostGoldHits": {
+          "capex": 1,
+          "eps": 1,
+          "gross_profit": 1,
+          "operating_income": 2,
+          "opex": 1,
+          "revenue": 2
+        }
+      }
+    },
+    "test2": {
+      "allGoldCurrent": 114,
+      "ambiguousGoldLinkKeys": 7,
+      "comparisonClass": "LEGACY_GOLD_AGAINST_RECAPTURED_OFFICIAL_ARCHIVE_SCOPED_DIAGNOSTIC",
+      "domRowsForManualReview": 45,
+      "evaluatedDocuments": 16,
+      "evaluatedGoldCurrent": 114,
+      "goldDocuments": 16,
+      "historicalHttpBytesVerified": 0,
+      "linkIssuersOmittedForSourceGaps": [],
+      "methods": {
+        "automatic": {
+          "CURRENT": {
+            "f1": 0.5632183908045977,
+            "fn": 65,
+            "fp": 11,
+            "precision": 0.8166666666666667,
+            "recall": 0.4298245614035088,
+            "tp": 49
+          },
+          "PRIOR": {
+            "f1": 0.2222222222222222,
+            "fn": 7,
+            "fp": 0,
+            "precision": 1.0,
+            "recall": 0.125,
+            "tp": 1
+          },
+          "ambiguousPredictedKeys": 0,
+          "directionConfusions": {
+            "MAINTAIN->MAINTAIN": 1,
+            "RAISE->RAISE": 16
+          },
+          "directionEndToEnd": {
+            "f1": 0.723404255319149,
+            "fn": 10,
+            "fp": 3,
+            "precision": 0.85,
+            "recall": 0.6296296296296297,
+            "tp": 17
+          },
+          "directionGivenMatchedLink": 1.0,
+          "issuerClusterBootstrapCurrent": {
+            "draws": 2000,
+            "f1": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.13333333333333333,
+                0.6949152542372882
+              ],
+              "point": 0.5632183908045977
+            },
+            "issuerClusters": 10,
+            "precision": {
+              "definedDraws": 1999,
+              "interval95": [
+                0.35294117647058826,
+                0.976303317535545
+              ],
+              "point": 0.8166666666666667
+            },
+            "recall": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.08163265306122448,
+                0.5559322033898305
+              ],
+              "point": 0.4298245614035088
+            },
+            "seed": 383
+          },
+          "issuerConfusion": {
+            "1018840": {
+              "fn": 14,
+              "fp": 4,
+              "tp": 4
+            },
+            "1327567": {
+              "fn": 7,
+              "fp": 0,
+              "tp": 0
+            },
+            "1674101": {
+              "fn": 27,
+              "fp": 1,
+              "tp": 41
+            },
+            "1679273": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "1730168": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 1
+            },
+            "34903": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "715957": {
+              "fn": 1,
+              "fp": 1,
+              "tp": 0
+            },
+            "811156": {
+              "fn": 4,
+              "fp": 0,
+              "tp": 0
+            },
+            "882095": {
+              "fn": 4,
+              "fp": 5,
+              "tp": 3
+            },
+            "940944": {
+              "fn": 5,
+              "fp": 0,
+              "tp": 0
+            }
+          },
+          "links": {
+            "f1": 0.723404255319149,
+            "fn": 10,
+            "fp": 3,
+            "precision": 0.85,
+            "recall": 0.6296296296296297,
+            "tp": 17
+          },
+          "outsideLegacyAnnotationScope": 2,
+          "predictedLinksWithExplicitBasis": 12
+        },
+        "domTable": {
+          "CURRENT": {
+            "f1": 0.5443786982248521,
+            "fn": 68,
+            "fp": 9,
+            "precision": 0.8363636363636363,
+            "recall": 0.40350877192982454,
+            "tp": 46
+          },
+          "PRIOR": {
+            "f1": 0.2222222222222222,
+            "fn": 7,
+            "fp": 0,
+            "precision": 1.0,
+            "recall": 0.125,
+            "tp": 1
+          },
+          "ambiguousPredictedKeys": 0,
+          "directionConfusions": {
+            "MAINTAIN->MAINTAIN": 1,
+            "RAISE->RAISE": 15
+          },
+          "directionEndToEnd": {
+            "f1": 0.6956521739130435,
+            "fn": 11,
+            "fp": 3,
+            "precision": 0.8421052631578947,
+            "recall": 0.5925925925925926,
+            "tp": 16
+          },
+          "directionGivenMatchedLink": 1.0,
+          "issuerClusterBootstrapCurrent": {
+            "draws": 2000,
+            "f1": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.03225806451612903,
+                0.7073170731707317
+              ],
+              "point": 0.5443786982248521
+            },
+            "issuerClusters": 10,
+            "precision": {
+              "definedDraws": 1954,
+              "interval95": [
+                0.2,
+                1.0
+              ],
+              "point": 0.8363636363636363
+            },
+            "recall": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.017543859649122806,
+                0.5625
+              ],
+              "point": 0.40350877192982454
+            },
+            "seed": 383
+          },
+          "issuerConfusion": {
+            "1018840": {
+              "fn": 17,
+              "fp": 4,
+              "tp": 1
+            },
+            "1327567": {
+              "fn": 7,
+              "fp": 0,
+              "tp": 0
+            },
+            "1674101": {
+              "fn": 26,
+              "fp": 0,
+              "tp": 42
+            },
+            "1679273": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "1730168": {
+              "fn": 2,
+              "fp": 0,
+              "tp": 0
+            },
+            "34903": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "715957": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "811156": {
+              "fn": 4,
+              "fp": 0,
+              "tp": 0
+            },
+            "882095": {
+              "fn": 4,
+              "fp": 5,
+              "tp": 3
+            },
+            "940944": {
+              "fn": 5,
+              "fp": 0,
+              "tp": 0
+            }
+          },
+          "links": {
+            "f1": 0.6956521739130435,
+            "fn": 11,
+            "fp": 3,
+            "precision": 0.8421052631578947,
+            "recall": 0.5925925925925926,
+            "tp": 16
+          },
+          "outsideLegacyAnnotationScope": 2,
+          "predictedLinksWithExplicitBasis": 12
+        },
+        "hybrid": {
+          "CURRENT": {
+            "f1": 0.6784140969162996,
+            "fn": 37,
+            "fp": 36,
+            "precision": 0.6814159292035398,
+            "recall": 0.6754385964912281,
+            "tp": 77
+          },
+          "PRIOR": {
+            "f1": 0.36363636363636365,
+            "fn": 6,
+            "fp": 1,
+            "precision": 0.6666666666666666,
+            "recall": 0.25,
+            "tp": 2
+          },
+          "ambiguousPredictedKeys": 9,
+          "directionConfusions": {
+            "MAINTAIN->MAINTAIN": 1,
+            "RAISE->RAISE": 14
+          },
+          "directionEndToEnd": {
+            "f1": 0.6521739130434783,
+            "fn": 12,
+            "fp": 4,
+            "precision": 0.7894736842105263,
+            "recall": 0.5555555555555556,
+            "tp": 15
+          },
+          "directionGivenMatchedLink": 1.0,
+          "issuerClusterBootstrapCurrent": {
+            "draws": 2000,
+            "f1": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.515625,
+                0.7577937649880095
+              ],
+              "point": 0.6784140969162996
+            },
+            "issuerClusters": 10,
+            "precision": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.45977011494252873,
+                0.8257575757575758
+              ],
+              "point": 0.6814159292035398
+            },
+            "recall": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.5357142857142857,
+                0.7575757575757576
+              ],
+              "point": 0.6754385964912281
+            },
+            "seed": 383
+          },
+          "issuerConfusion": {
+            "1018840": {
+              "fn": 5,
+              "fp": 16,
+              "tp": 13
+            },
+            "1327567": {
+              "fn": 4,
+              "fp": 0,
+              "tp": 3
+            },
+            "1674101": {
+              "fn": 21,
+              "fp": 11,
+              "tp": 47
+            },
+            "1679273": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "1730168": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 2
+            },
+            "34903": {
+              "fn": 0,
+              "fp": 1,
+              "tp": 1
+            },
+            "715957": {
+              "fn": 1,
+              "fp": 1,
+              "tp": 0
+            },
+            "811156": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 3
+            },
+            "882095": {
+              "fn": 4,
+              "fp": 6,
+              "tp": 3
+            },
+            "940944": {
+              "fn": 0,
+              "fp": 1,
+              "tp": 5
+            }
+          },
+          "links": {
+            "f1": 0.6521739130434783,
+            "fn": 12,
+            "fp": 4,
+            "precision": 0.7894736842105263,
+            "recall": 0.5555555555555556,
+            "tp": 15
+          },
+          "outsideLegacyAnnotationScope": 2,
+          "predictedLinksWithExplicitBasis": 8
+        },
+        "legacyV4": {
+          "CURRENT": {
+            "f1": 0.8368200836820083,
+            "fn": 14,
+            "fp": 25,
+            "precision": 0.8,
+            "recall": 0.8771929824561403,
+            "tp": 100
+          },
+          "PRIOR": {
+            "f1": 0.35294117647058826,
+            "fn": 5,
+            "fp": 6,
+            "precision": 0.3333333333333333,
+            "recall": 0.375,
+            "tp": 3
+          },
+          "ambiguousPredictedKeys": 15,
+          "directionConfusions": {
+            "MAINTAIN->MAINTAIN": 1,
+            "RAISE->RAISE": 14
+          },
+          "directionEndToEnd": {
+            "f1": 0.6666666666666666,
+            "fn": 12,
+            "fp": 3,
+            "precision": 0.8333333333333334,
+            "recall": 0.5555555555555556,
+            "tp": 15
+          },
+          "directionGivenMatchedLink": 1.0,
+          "issuerClusterBootstrapCurrent": {
+            "draws": 2000,
+            "f1": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.5555555555555556,
+                0.9155555555555556
+              ],
+              "point": 0.8368200836820083
+            },
+            "issuerClusters": 10,
+            "precision": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.5967741935483871,
+                0.8712871287128713
+              ],
+              "point": 0.8
+            },
+            "recall": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.48,
+                0.9774647887323944
+              ],
+              "point": 0.8771929824561403
+            },
+            "seed": 383
+          },
+          "issuerConfusion": {
+            "1018840": {
+              "fn": 3,
+              "fp": 10,
+              "tp": 15
+            },
+            "1327567": {
+              "fn": 2,
+              "fp": 0,
+              "tp": 5
+            },
+            "1674101": {
+              "fn": 0,
+              "fp": 10,
+              "tp": 68
+            },
+            "1679273": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 1
+            },
+            "1730168": {
+              "fn": 0,
+              "fp": 1,
+              "tp": 2
+            },
+            "34903": {
+              "fn": 0,
+              "fp": 1,
+              "tp": 1
+            },
+            "715957": {
+              "fn": 1,
+              "fp": 1,
+              "tp": 0
+            },
+            "811156": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 3
+            },
+            "882095": {
+              "fn": 7,
+              "fp": 1,
+              "tp": 0
+            },
+            "940944": {
+              "fn": 0,
+              "fp": 1,
+              "tp": 5
+            }
+          },
+          "links": {
+            "f1": 0.6666666666666666,
+            "fn": 12,
+            "fp": 3,
+            "precision": 0.8333333333333334,
+            "recall": 0.5555555555555556,
+            "tp": 15
+          },
+          "outsideLegacyAnnotationScope": 26,
+          "predictedLinksWithExplicitBasis": 8
+        },
+        "manualReviewCandidates": {
+          "CURRENT": {
+            "f1": 0.32748538011695905,
+            "fn": 86,
+            "fp": 29,
+            "precision": 0.49122807017543857,
+            "recall": 0.24561403508771928,
+            "tp": 28
+          },
+          "PRIOR": {
+            "f1": 0.23529411764705882,
+            "fn": 6,
+            "fp": 7,
+            "precision": 0.2222222222222222,
+            "recall": 0.25,
+            "tp": 2
+          },
+          "issuerConfusion": {
+            "1018840": {
+              "fn": 7,
+              "fp": 14,
+              "tp": 11
+            },
+            "1327567": {
+              "fn": 4,
+              "fp": 0,
+              "tp": 3
+            },
+            "1674101": {
+              "fn": 64,
+              "fp": 11,
+              "tp": 4
+            },
+            "1679273": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "1730168": {
+              "fn": 1,
+              "fp": 1,
+              "tp": 1
+            },
+            "34903": {
+              "fn": 0,
+              "fp": 1,
+              "tp": 1
+            },
+            "715957": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "811156": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 3
+            },
+            "882095": {
+              "fn": 7,
+              "fp": 1,
+              "tp": 0
+            },
+            "940944": {
+              "fn": 0,
+              "fp": 1,
+              "tp": 5
+            }
+          },
+          "outsideLegacyAnnotationScope": 0
+        },
+        "v2": {
+          "CURRENT": {
+            "f1": 0.6944444444444444,
+            "fn": 39,
+            "fp": 27,
+            "precision": 0.7352941176470589,
+            "recall": 0.6578947368421053,
+            "tp": 75
+          },
+          "PRIOR": {
+            "f1": 0.23529411764705882,
+            "fn": 6,
+            "fp": 7,
+            "precision": 0.2222222222222222,
+            "recall": 0.25,
+            "tp": 2
+          },
+          "ambiguousPredictedKeys": 9,
+          "directionConfusions": {
+            "MAINTAIN->MAINTAIN": 1,
+            "RAISE->RAISE": 14
+          },
+          "directionEndToEnd": {
+            "f1": 0.6666666666666666,
+            "fn": 12,
+            "fp": 3,
+            "precision": 0.8333333333333334,
+            "recall": 0.5555555555555556,
+            "tp": 15
+          },
+          "directionGivenMatchedLink": 1.0,
+          "issuerClusterBootstrapCurrent": {
+            "draws": 2000,
+            "f1": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.48148148148148145,
+                0.7582417582417582
+              ],
+              "point": 0.6944444444444444
+            },
+            "issuerClusters": 10,
+            "precision": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.5522388059701493,
+                0.8387096774193549
+              ],
+              "point": 0.7352941176470589
+            },
+            "recall": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.3877551020408163,
+                0.7739130434782608
+              ],
+              "point": 0.6578947368421053
+            },
+            "seed": 383
+          },
+          "issuerConfusion": {
+            "1018840": {
+              "fn": 4,
+              "fp": 12,
+              "tp": 14
+            },
+            "1327567": {
+              "fn": 4,
+              "fp": 0,
+              "tp": 3
+            },
+            "1674101": {
+              "fn": 21,
+              "fp": 11,
+              "tp": 47
+            },
+            "1679273": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "1730168": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 2
+            },
+            "34903": {
+              "fn": 0,
+              "fp": 1,
+              "tp": 1
+            },
+            "715957": {
+              "fn": 1,
+              "fp": 1,
+              "tp": 0
+            },
+            "811156": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 3
+            },
+            "882095": {
+              "fn": 7,
+              "fp": 1,
+              "tp": 0
+            },
+            "940944": {
+              "fn": 0,
+              "fp": 1,
+              "tp": 5
+            }
+          },
+          "links": {
+            "f1": 0.6666666666666666,
+            "fn": 12,
+            "fp": 3,
+            "precision": 0.8333333333333334,
+            "recall": 0.5555555555555556,
+            "tp": 15
+          },
+          "outsideLegacyAnnotationScope": 0,
+          "predictedLinksWithExplicitBasis": 8
+        },
+        "v3": {
+          "CURRENT": {
+            "f1": 0.6633663366336634,
+            "fn": 47,
+            "fp": 21,
+            "precision": 0.7613636363636364,
+            "recall": 0.5877192982456141,
+            "tp": 67
+          },
+          "PRIOR": {
+            "f1": 0.35294117647058826,
+            "fn": 5,
+            "fp": 6,
+            "precision": 0.3333333333333333,
+            "recall": 0.375,
+            "tp": 3
+          },
+          "ambiguousPredictedKeys": 9,
+          "directionConfusions": {
+            "MAINTAIN->MAINTAIN": 1,
+            "RAISE->RAISE": 13
+          },
+          "directionEndToEnd": {
+            "f1": 0.6511627906976745,
+            "fn": 13,
+            "fp": 2,
+            "precision": 0.875,
+            "recall": 0.5185185185185185,
+            "tp": 14
+          },
+          "directionGivenMatchedLink": 1.0,
+          "issuerClusterBootstrapCurrent": {
+            "draws": 2000,
+            "f1": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.34615384615384615,
+                0.7405159332321699
+              ],
+              "point": 0.6633663366336634
+            },
+            "issuerClusters": 10,
+            "precision": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.5625,
+                0.7989690721649485
+              ],
+              "point": 0.7613636363636364
+            },
+            "recall": {
+              "definedDraws": 2000,
+              "interval95": [
+                0.2459016393442623,
+                0.6982248520710059
+              ],
+              "point": 0.5877192982456141
+            },
+            "seed": 383
+          },
+          "issuerConfusion": {
+            "1018840": {
+              "fn": 9,
+              "fp": 4,
+              "tp": 9
+            },
+            "1327567": {
+              "fn": 7,
+              "fp": 0,
+              "tp": 0
+            },
+            "1674101": {
+              "fn": 21,
+              "fp": 12,
+              "tp": 47
+            },
+            "1679273": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "1730168": {
+              "fn": 0,
+              "fp": 1,
+              "tp": 2
+            },
+            "34903": {
+              "fn": 0,
+              "fp": 1,
+              "tp": 1
+            },
+            "715957": {
+              "fn": 1,
+              "fp": 1,
+              "tp": 0
+            },
+            "811156": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 3
+            },
+            "882095": {
+              "fn": 7,
+              "fp": 1,
+              "tp": 0
+            },
+            "940944": {
+              "fn": 0,
+              "fp": 1,
+              "tp": 5
+            }
+          },
+          "links": {
+            "f1": 0.6511627906976745,
+            "fn": 13,
+            "fp": 2,
+            "precision": 0.875,
+            "recall": 0.5185185185185185,
+            "tp": 14
+          },
+          "outsideLegacyAnnotationScope": 0,
+          "predictedLinksWithExplicitBasis": 8
+        }
+      },
+      "sourceOmissions": {},
+      "split": "test2",
+      "v2ToV3GoldHitsByMetric": {
+        "addedGoldHits": {
+          "revenue_growth": 1
+        },
+        "lostGoldHits": {
+          "capex": 1,
+          "eps": 1,
+          "fcf_margin": 1,
+          "operating_margin": 4,
+          "revenue": 1,
+          "tax_rate": 1
+        }
+      }
+    }
+  },
+  "pilot": {
+    "allGoldCurrent": 41,
+    "ambiguousGoldLinkKeys": 0,
+    "annotationSha256": "68304eaca1774f1b6acb7b75515ca28348f3f0c959cf94acb372ce133b587dd3",
+    "annotationStatus": {
+      "COMPLETE": 12
+    },
+    "automaticStrictFalsePositiveTypes": {
+      "BASIS_LABEL_ONLY": 2,
+      "HISTORICAL_TARGET": 1
+    },
+    "companyGroups": 3,
+    "comparisonClass": "RESTRICTED_BLIND_PILOT_FULL_DOCUMENT_DIAGNOSTIC",
+    "domRowsForManualReview": 14,
+    "evaluatedDocuments": 12,
+    "evaluatedGoldCurrent": 41,
+    "goldDocuments": 12,
+    "guidanceFreeDocuments": 0,
+    "historicalHttpBytesVerified": 0,
+    "linkIssuersOmittedForSourceGaps": [],
+    "methods": {
+      "automatic": {
+        "CURRENT": {
+          "f1": 0.0,
+          "fn": 41,
+          "fp": 3,
+          "precision": 0.0,
+          "recall": 0.0,
+          "tp": 0
+        },
+        "PRIOR": {
+          "f1": 0.0,
+          "fn": 4,
+          "fp": 0,
+          "precision": null,
+          "recall": 0.0,
+          "tp": 0
+        },
+        "ambiguousPredictedKeys": 0,
+        "directionConfusions": {},
+        "directionEndToEnd": {
+          "f1": 0.0,
+          "fn": 17,
+          "fp": 1,
+          "precision": 0.0,
+          "recall": 0.0,
+          "tp": 0
+        },
+        "directionGivenMatchedLink": null,
+        "issuerClusterBootstrapCurrent": {
+          "draws": 2000,
+          "f1": {
+            "definedDraws": 2000,
+            "interval95": [
+              0.0,
+              0.0
+            ],
+            "point": 0.0
+          },
+          "issuerClusters": 3,
+          "precision": {
+            "definedDraws": 1924,
+            "interval95": [
+              0.0,
+              0.0
+            ],
+            "point": 0.0
+          },
+          "recall": {
+            "definedDraws": 2000,
+            "interval95": [
+              0.0,
+              0.0
+            ],
+            "point": 0.0
+          },
+          "seed": 383
+        },
+        "issuerConfusion": {
+          "23082": {
+            "fn": 4,
+            "fp": 0,
+            "tp": 0
+          },
+          "316206": {
+            "fn": 28,
+            "fp": 1,
+            "tp": 0
+          },
+          "804212": {
+            "fn": 9,
+            "fp": 2,
+            "tp": 0
+          }
+        },
+        "links": {
+          "f1": 0.0,
+          "fn": 17,
+          "fp": 1,
+          "precision": 0.0,
+          "recall": 0.0,
+          "tp": 0
+        },
+        "outsideLegacyAnnotationScope": 0,
+        "predictedLinksWithExplicitBasis": 1
+      },
+      "domTable": {
+        "CURRENT": {
+          "f1": 0.0,
+          "fn": 41,
+          "fp": 2,
+          "precision": 0.0,
+          "recall": 0.0,
+          "tp": 0
+        },
+        "PRIOR": {
+          "f1": 0.0,
+          "fn": 4,
+          "fp": 0,
+          "precision": null,
+          "recall": 0.0,
+          "tp": 0
+        },
+        "ambiguousPredictedKeys": 0,
+        "directionConfusions": {},
+        "directionEndToEnd": {
+          "f1": 0.0,
+          "fn": 17,
+          "fp": 1,
+          "precision": 0.0,
+          "recall": 0.0,
+          "tp": 0
+        },
+        "directionGivenMatchedLink": null,
+        "issuerClusterBootstrapCurrent": {
+          "draws": 2000,
+          "f1": {
+            "definedDraws": 2000,
+            "interval95": [
+              0.0,
+              0.0
+            ],
+            "point": 0.0
+          },
+          "issuerClusters": 3,
+          "precision": {
+            "definedDraws": 1399,
+            "interval95": [
+              0.0,
+              0.0
+            ],
+            "point": 0.0
+          },
+          "recall": {
+            "definedDraws": 2000,
+            "interval95": [
+              0.0,
+              0.0
+            ],
+            "point": 0.0
+          },
+          "seed": 383
+        },
+        "issuerConfusion": {
+          "23082": {
+            "fn": 4,
+            "fp": 0,
+            "tp": 0
+          },
+          "316206": {
+            "fn": 28,
+            "fp": 0,
+            "tp": 0
+          },
+          "804212": {
+            "fn": 9,
+            "fp": 2,
+            "tp": 0
+          }
+        },
+        "links": {
+          "f1": 0.0,
+          "fn": 17,
+          "fp": 1,
+          "precision": 0.0,
+          "recall": 0.0,
+          "tp": 0
+        },
+        "outsideLegacyAnnotationScope": 0,
+        "predictedLinksWithExplicitBasis": 1
+      },
+      "hybrid": {
+        "CURRENT": {
+          "f1": 0.37735849056603776,
+          "fn": 21,
+          "fp": 45,
+          "precision": 0.3076923076923077,
+          "recall": 0.4878048780487805,
+          "tp": 20
+        },
+        "PRIOR": {
+          "f1": 0.0,
+          "fn": 4,
+          "fp": 0,
+          "precision": null,
+          "recall": 0.0,
+          "tp": 0
+        },
+        "ambiguousPredictedKeys": 12,
+        "directionConfusions": {
+          "LOWER->LOWER": 1,
+          "MAINTAIN->MAINTAIN": 7,
+          "RAISE->RAISE": 1
+        },
+        "directionEndToEnd": {
+          "f1": 0.6,
+          "fn": 8,
+          "fp": 4,
+          "precision": 0.6923076923076923,
+          "recall": 0.5294117647058824,
+          "tp": 9
+        },
+        "directionGivenMatchedLink": 1.0,
+        "issuerClusterBootstrapCurrent": {
+          "draws": 2000,
+          "f1": {
+            "definedDraws": 2000,
+            "interval95": [
+              0.2962962962962963,
+              1.0
+            ],
+            "point": 0.37735849056603776
+          },
+          "issuerClusters": 3,
+          "precision": {
+            "definedDraws": 2000,
+            "interval95": [
+              0.17777777777777778,
+              1.0
+            ],
+            "point": 0.3076923076923077
+          },
+          "recall": {
+            "definedDraws": 2000,
+            "interval95": [
+              0.2857142857142857,
+              1.0
+            ],
+            "point": 0.4878048780487805
+          },
+          "seed": 383
+        },
+        "issuerConfusion": {
+          "23082": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 4
+          },
+          "316206": {
+            "fn": 20,
+            "fp": 8,
+            "tp": 8
+          },
+          "804212": {
+            "fn": 1,
+            "fp": 37,
+            "tp": 8
+          }
+        },
+        "links": {
+          "f1": 0.6,
+          "fn": 8,
+          "fp": 4,
+          "precision": 0.6923076923076923,
+          "recall": 0.5294117647058824,
+          "tp": 9
+        },
+        "outsideLegacyAnnotationScope": 0,
+        "predictedLinksWithExplicitBasis": 3
+      },
+      "legacyV4": {
+        "CURRENT": {
+          "f1": 0.38095238095238093,
+          "fn": 21,
+          "fp": 44,
+          "precision": 0.3125,
+          "recall": 0.4878048780487805,
+          "tp": 20
+        },
+        "PRIOR": {
+          "f1": 0.0,
+          "fn": 4,
+          "fp": 0,
+          "precision": null,
+          "recall": 0.0,
+          "tp": 0
+        },
+        "ambiguousPredictedKeys": 12,
+        "directionConfusions": {
+          "LOWER->LOWER": 1,
+          "MAINTAIN->MAINTAIN": 7,
+          "RAISE->RAISE": 1
+        },
+        "directionEndToEnd": {
+          "f1": 0.6,
+          "fn": 8,
+          "fp": 4,
+          "precision": 0.6923076923076923,
+          "recall": 0.5294117647058824,
+          "tp": 9
+        },
+        "directionGivenMatchedLink": 1.0,
+        "issuerClusterBootstrapCurrent": {
+          "draws": 2000,
+          "f1": {
+            "definedDraws": 2000,
+            "interval95": [
+              0.3018867924528302,
+              1.0
+            ],
+            "point": 0.38095238095238093
+          },
+          "issuerClusters": 3,
+          "precision": {
+            "definedDraws": 2000,
+            "interval95": [
+              0.18181818181818182,
+              1.0
+            ],
+            "point": 0.3125
+          },
+          "recall": {
+            "definedDraws": 2000,
+            "interval95": [
+              0.2857142857142857,
+              1.0
+            ],
+            "point": 0.4878048780487805
+          },
+          "seed": 383
+        },
+        "issuerConfusion": {
+          "23082": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 4
+          },
+          "316206": {
+            "fn": 20,
+            "fp": 8,
+            "tp": 8
+          },
+          "804212": {
+            "fn": 1,
+            "fp": 36,
+            "tp": 8
+          }
+        },
+        "links": {
+          "f1": 0.6,
+          "fn": 8,
+          "fp": 4,
+          "precision": 0.6923076923076923,
+          "recall": 0.5294117647058824,
+          "tp": 9
+        },
+        "outsideLegacyAnnotationScope": 0,
+        "predictedLinksWithExplicitBasis": 3
+      },
+      "manualReviewCandidates": {
+        "CURRENT": {
+          "f1": 0.38461538461538464,
+          "fn": 21,
+          "fp": 43,
+          "precision": 0.31746031746031744,
+          "recall": 0.4878048780487805,
+          "tp": 20
+        },
+        "PRIOR": {
+          "f1": 0.0,
+          "fn": 4,
+          "fp": 0,
+          "precision": null,
+          "recall": 0.0,
+          "tp": 0
+        },
+        "issuerConfusion": {
+          "23082": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 4
+          },
+          "316206": {
+            "fn": 20,
+            "fp": 7,
+            "tp": 8
+          },
+          "804212": {
+            "fn": 1,
+            "fp": 36,
+            "tp": 8
+          }
+        },
+        "outsideLegacyAnnotationScope": 0
+      },
+      "v2": {
+        "CURRENT": {
+          "f1": 0.38461538461538464,
+          "fn": 21,
+          "fp": 43,
+          "precision": 0.31746031746031744,
+          "recall": 0.4878048780487805,
+          "tp": 20
+        },
+        "PRIOR": {
+          "f1": 0.0,
+          "fn": 4,
+          "fp": 0,
+          "precision": null,
+          "recall": 0.0,
+          "tp": 0
+        },
+        "ambiguousPredictedKeys": 12,
+        "directionConfusions": {
+          "LOWER->LOWER": 1,
+          "MAINTAIN->MAINTAIN": 7,
+          "RAISE->RAISE": 1
+        },
+        "directionEndToEnd": {
+          "f1": 0.6,
+          "fn": 8,
+          "fp": 4,
+          "precision": 0.6923076923076923,
+          "recall": 0.5294117647058824,
+          "tp": 9
+        },
+        "directionGivenMatchedLink": 1.0,
+        "issuerClusterBootstrapCurrent": {
+          "draws": 2000,
+          "f1": {
+            "definedDraws": 2000,
+            "interval95": [
+              0.3076923076923077,
+              1.0
+            ],
+            "point": 0.38461538461538464
+          },
+          "issuerClusters": 3,
+          "precision": {
+            "definedDraws": 2000,
+            "interval95": [
+              0.18604651162790697,
+              1.0
+            ],
+            "point": 0.31746031746031744
+          },
+          "recall": {
+            "definedDraws": 2000,
+            "interval95": [
+              0.2857142857142857,
+              1.0
+            ],
+            "point": 0.4878048780487805
+          },
+          "seed": 383
+        },
+        "issuerConfusion": {
+          "23082": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 4
+          },
+          "316206": {
+            "fn": 20,
+            "fp": 8,
+            "tp": 8
+          },
+          "804212": {
+            "fn": 1,
+            "fp": 35,
+            "tp": 8
+          }
+        },
+        "links": {
+          "f1": 0.6,
+          "fn": 8,
+          "fp": 4,
+          "precision": 0.6923076923076923,
+          "recall": 0.5294117647058824,
+          "tp": 9
+        },
+        "outsideLegacyAnnotationScope": 0,
+        "predictedLinksWithExplicitBasis": 3
+      },
+      "v3": {
+        "CURRENT": {
+          "f1": 0.4,
+          "fn": 26,
+          "fp": 19,
+          "precision": 0.4411764705882353,
+          "recall": 0.36585365853658536,
+          "tp": 15
+        },
+        "PRIOR": {
+          "f1": 0.0,
+          "fn": 4,
+          "fp": 0,
+          "precision": null,
+          "recall": 0.0,
+          "tp": 0
+        },
+        "ambiguousPredictedKeys": 1,
+        "directionConfusions": {
+          "LOWER->LOWER": 2,
+          "MAINTAIN->MAINTAIN": 7,
+          "RAISE->RAISE": 1
+        },
+        "directionEndToEnd": {
+          "f1": 0.625,
+          "fn": 7,
+          "fp": 5,
+          "precision": 0.6666666666666666,
+          "recall": 0.5882352941176471,
+          "tp": 10
+        },
+        "directionGivenMatchedLink": 1.0,
+        "issuerClusterBootstrapCurrent": {
+          "draws": 2000,
+          "f1": {
+            "definedDraws": 2000,
+            "interval95": [
+              0.2608695652173913,
+              1.0
+            ],
+            "point": 0.4
+          },
+          "issuerClusters": 3,
+          "precision": {
+            "definedDraws": 2000,
+            "interval95": [
+              0.21428571428571427,
+              1.0
+            ],
+            "point": 0.4411764705882353
+          },
+          "recall": {
+            "definedDraws": 2000,
+            "interval95": [
+              0.2857142857142857,
+              1.0
+            ],
+            "point": 0.36585365853658536
+          },
+          "seed": 383
+        },
+        "issuerConfusion": {
+          "23082": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 4
+          },
+          "316206": {
+            "fn": 20,
+            "fp": 8,
+            "tp": 8
+          },
+          "804212": {
+            "fn": 6,
+            "fp": 11,
+            "tp": 3
+          }
+        },
+        "links": {
+          "f1": 0.625,
+          "fn": 7,
+          "fp": 5,
+          "precision": 0.6666666666666666,
+          "recall": 0.5882352941176471,
+          "tp": 10
+        },
+        "outsideLegacyAnnotationScope": 0,
+        "predictedLinksWithExplicitBasis": 3
+      }
+    },
+    "pilotPlanSha256": "e51ff071597449059f08bbedd4d0ebf01229640dca5a222572e20b5d52985c9b",
+    "plannedDocuments": 12,
+    "sourceOmissions": {},
+    "status": "SCORED_SOURCE_ONLY",
+    "unopenedCompanyGroups": 37,
+    "v2ToV3GoldHitsByMetric": {
+      "addedGoldHits": {},
+      "lostGoldHits": {
+        "eps": 5
+      }
+    }
+  },
+  "test2CandidateReviewCeiling": {
+    "currentUniqueCandidates": 117,
+    "existingGoldCovered": 77,
+    "existingGoldTotal": 114,
+    "independentHumanReviewMeasured": false
+  }
+}

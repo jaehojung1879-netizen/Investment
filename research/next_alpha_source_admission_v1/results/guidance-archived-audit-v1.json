@@ -1,0 +1,693 @@
+{
+  "alphabetCikRollup": {
+    "crossCikLinkingPerformed": false,
+    "predecessor": "1288776",
+    "successor": "1652044"
+  },
+  "archivedInputSha256": {
+    "guidance-independence-events.json": "e7bc3d2602abc7d81a87202ef4b547d6084ddf553fef57483c8a9a954d9ab72f",
+    "guidance-links-panel.json": "97f9f8c280255d1aa17dd77a5be3a4805f8f9c08f3cc93e1a77cc3b1274c487b",
+    "guidance-links-semi.json": "f1af39454acf39916fc9319d4cb3c70dec48e2c6382fe2316821e94c0f36afb4",
+    "source-admission-summary.json": "fd7c01936e60ff8458981674497d28748eaeb7b0fb7b157eb959a2184c768758"
+  },
+  "catalog": {
+    "amendmentsExcluded": 218,
+    "calendarQuarters": 52,
+    "filingsByYear": {
+      "2014": 2779,
+      "2015": 2782,
+      "2016": 2732,
+      "2017": 2689,
+      "2018": 2687,
+      "2019": 2681,
+      "2020": 2782,
+      "2021": 2696,
+      "2022": 2688,
+      "2023": 2679,
+      "2024": 2695,
+      "2025": 2654,
+      "2026": 2546
+    },
+    "sha256": "4fa79370feec010ab340b2ad9087bad0e32a691f67ddf9aac27dee2849f0ce09",
+    "start": "2014-01-01",
+    "through": "2026-11-21",
+    "uniqueLegalIssuers": 750,
+    "uniqueNonAmendedFilings": 35090
+  },
+  "expansion": {
+    "archivedStratifiedSample": {
+      "exhibitFetched": 319,
+      "filings": 325,
+      "issuerSelfLabels": {
+        "INITIATE": 37,
+        "NARROW": 2,
+        "RAISE": 26,
+        "REAFFIRM": 34,
+        "UPDATE": 22,
+        "WITHDRAW": 2
+      },
+      "metrics": {
+        "capex": 50,
+        "eps": 142,
+        "free_cash_flow": 31,
+        "gross_margin": 19,
+        "operating_income": 87,
+        "opex": 11,
+        "revenue": 150,
+        "tax_rate": 43
+      },
+      "numericMetricGuidance": 206,
+      "perYear": 25,
+      "seed": 20261125,
+      "share": 0.646
+    },
+    "legacyRandomPanelReleaseRows": 464,
+    "populationRevisionEstimate": null,
+    "reason": "A calibrated population change rate requires historical source coverage, independent annotation, and adjustment for detector selection and unequal cluster sizes."
+  },
+  "informationOverlap": {
+    "randomPanel": {
+      "addedLogScaleMeasurementErrorStress90": {
+        "0.01": {
+          "addedIndependentGuideErrors": {
+            "quantiles": [
+              -0.362055,
+              -0.254094,
+              -0.112366
+            ],
+            "validReplicates": 500
+          },
+          "addedSharedActualError": {
+            "quantiles": [
+              -0.403727,
+              -0.277809,
+              -0.154094
+            ],
+            "validReplicates": 500
+          }
+        },
+        "0.03": {
+          "addedIndependentGuideErrors": {
+            "quantiles": [
+              -0.454602,
+              -0.208357,
+              0.079673
+            ],
+            "validReplicates": 500
+          },
+          "addedSharedActualError": {
+            "quantiles": [
+              -0.611575,
+              -0.404291,
+              -0.161999
+            ],
+            "validReplicates": 500
+          }
+        },
+        "0.05": {
+          "addedIndependentGuideErrors": {
+            "quantiles": [
+              -0.446753,
+              -0.160926,
+              0.180689
+            ],
+            "validReplicates": 500
+          },
+          "addedSharedActualError": {
+            "quantiles": [
+              -0.713326,
+              -0.522304,
+              -0.285093
+            ],
+            "validReplicates": 500
+          }
+        }
+      },
+      "calendarQuarterClusteredSpearman95": {
+        "clusters": {
+          "calendarQuarter": 12
+        },
+        "quantiles": [
+          -0.542591,
+          0.143468
+        ],
+        "validReplicates": 2000
+      },
+      "calendarQuarters": 12,
+      "crossedClusterSpearman95": {
+        "clusters": {
+          "calendarQuarter": 12,
+          "issuer": 4
+        },
+        "quantiles": [
+          -0.8,
+          0.331341
+        ],
+        "validReplicates": 1997
+      },
+      "events": 22,
+      "eventsByLegalIssuer": {
+        "1018840": 3,
+        "1385157": 7,
+        "1571996": 3,
+        "1674101": 9
+      },
+      "issuerCalendarQuarters": 22,
+      "issuerClusteredSpearman95": {
+        "clusters": {
+          "issuer": 4
+        },
+        "quantiles": [
+          -0.6,
+          -0.226886
+        ],
+        "validReplicates": 2000
+      },
+      "leaveOneIssuerOutSpearman": {
+        "1018840": -0.235088,
+        "1385157": -0.371429,
+        "1571996": -0.212281,
+        "1674101": -0.445055
+      },
+      "pearsonR2": 0.007222,
+      "sameTargetAnnualRevisionCoverage": {
+        "coTimedPairs": 5,
+        "inferenceEligible": false,
+        "legalIssuers": 2,
+        "nonzeroRevisions": 3
+      },
+      "sensitivityRemoveSharedActualFromGrowthProxySpearman": 0.282891,
+      "spearmanAfterIssuerAndCalendarSeasonAdjustment": -0.417413,
+      "spearmanAverageTies": -0.262564
+    },
+    "semiconductor": {
+      "addedLogScaleMeasurementErrorStress90": {
+        "0.01": {
+          "addedIndependentGuideErrors": {
+            "quantiles": [
+              0.069702,
+              0.119518,
+              0.163801
+            ],
+            "validReplicates": 500
+          },
+          "addedSharedActualError": {
+            "quantiles": [
+              0.023455,
+              0.074875,
+              0.118159
+            ],
+            "validReplicates": 500
+          }
+        },
+        "0.03": {
+          "addedIndependentGuideErrors": {
+            "quantiles": [
+              0.010608,
+              0.101092,
+              0.183531
+            ],
+            "validReplicates": 500
+          },
+          "addedSharedActualError": {
+            "quantiles": [
+              -0.195771,
+              -0.123423,
+              -0.04334
+            ],
+            "validReplicates": 500
+          }
+        },
+        "0.05": {
+          "addedIndependentGuideErrors": {
+            "quantiles": [
+              -0.028981,
+              0.079054,
+              0.184269
+            ],
+            "validReplicates": 500
+          },
+          "addedSharedActualError": {
+            "quantiles": [
+              -0.37465,
+              -0.302906,
+              -0.219928
+            ],
+            "validReplicates": 500
+          }
+        }
+      },
+      "calendarQuarterClusteredSpearman95": {
+        "clusters": {
+          "calendarQuarter": 51
+        },
+        "quantiles": [
+          -0.031287,
+          0.260085
+        ],
+        "validReplicates": 2000
+      },
+      "calendarQuarters": 51,
+      "crossedClusterSpearman95": {
+        "clusters": {
+          "calendarQuarter": 51,
+          "issuer": 7
+        },
+        "quantiles": [
+          -0.136714,
+          0.362606
+        ],
+        "validReplicates": 2000
+      },
+      "events": 195,
+      "eventsByLegalIssuer": {
+        "1018724": 46,
+        "1045810": 40,
+        "1137789": 22,
+        "1326801": 15,
+        "2488": 30,
+        "319201": 20,
+        "6951": 22
+      },
+      "issuerCalendarQuarters": 195,
+      "issuerClusteredSpearman95": {
+        "clusters": {
+          "issuer": 7
+        },
+        "quantiles": [
+          -0.065922,
+          0.253946
+        ],
+        "validReplicates": 2000
+      },
+      "leaveOneIssuerOutSpearman": {
+        "1018724": 0.206352,
+        "1045810": 0.089401,
+        "1137789": 0.079961,
+        "1326801": 0.112201,
+        "2488": 0.087567,
+        "319201": 0.124859,
+        "6951": 0.107354
+      },
+      "pearsonR2": 0.014696,
+      "sameTargetAnnualRevisionCoverage": {
+        "coTimedPairs": 2,
+        "inferenceEligible": false,
+        "legalIssuers": 1,
+        "nonzeroRevisions": 1
+      },
+      "sensitivityRemoveSharedActualFromGrowthProxySpearman": 0.442304,
+      "spearmanAfterIssuerAndCalendarSeasonAdjustment": 0.134357,
+      "spearmanAverageTies": 0.114202
+    }
+  },
+  "interpretation": {
+    "consensus": "The benchmark is the issuing company's previous guide. This archive supplies no analyst consensus.",
+    "gate": "Preregistration remains on hold until accession-level source coverage and independent extraction, direction and same-target link accuracy pass the admission criteria.",
+    "measurementError": "Stress cases add hypothetical normal errors on the log scale to existing observed ratios. These simulations characterize sensitivity. They supply no estimate of latent reliability.",
+    "mechanicalDependence": "Surprise is actual divided by the issuer's prior guide minus one. The adjacent-quarter proxy is next-quarter guide divided by the same actual minus one. Their denominators couple measurement error. The product sensitivity removes that actual algebraically and still compares different fiscal periods.",
+    "scope": "All link and event metrics are diagnostics on archived v2-derived observations. Independent episode validation requires source adjudication.",
+    "sector": "Revenue covers the reported company metric. Cloud-company capex covers the company guidance and can include spending unrelated to semiconductors. A consistent forward demand series is absent from the saved extract schema.",
+    "uncertainty": "Percentile intervals resample legal issuers or calendar quarters with 2000 replicates. The crossed sensitivity multiplies independently resampled issuer and quarter weights for each event. Few clusters, unequal cluster sizes, and variation across periods limit inference. Design-effect sample sizes are one-dimensional illustrative sensitivities to assumed exchangeable dependence."
+  },
+  "randomPanelLinks": {
+    "all": {
+      "acceptanceEventConcentrationByCalendarQuarter": {
+        "groups": 16,
+        "inverseConcentration": 13.847902,
+        "largestShare": 0.106742
+      },
+      "acceptanceEventConcentrationByCorporateGroup": {
+        "groups": 25,
+        "inverseConcentration": 18.904535,
+        "largestShare": 0.078652
+      },
+      "acceptanceEventConcentrationByLegalIssuer": {
+        "groups": 25,
+        "inverseConcentration": 18.904535,
+        "largestShare": 0.078652
+      },
+      "calendarQuarters": 16,
+      "currentFilings": 178,
+      "issuerAcceptanceEvents": 178,
+      "issuerCalendarQuarters": 177,
+      "linkConcentrationByLegalIssuer": {
+        "groups": 25,
+        "inverseConcentration": 13.061253,
+        "largestShare": 0.170103
+      },
+      "linkRows": 388,
+      "singleDimensionDesignEffectNByIssuerRho": {
+        "0.0": 178.0,
+        "0.05": 125.283,
+        "0.2": 66.34,
+        "1.0": 18.905
+      },
+      "singleDimensionDesignEffectNByQuarterRho": {
+        "0.0": 178.0,
+        "0.05": 111.76,
+        "0.2": 52.807,
+        "1.0": 13.848
+      }
+    },
+    "currentPriorFilingPairs": 204,
+    "directionRows": {
+      "LOWER": 83,
+      "MAINTAIN": 102,
+      "NARROW": 3,
+      "RAISE": 195,
+      "WIDEN": 5
+    },
+    "extremeRelativeMidpointChanges": {
+      "absAtLeast": 0.5,
+      "count": 45,
+      "tickers": {
+        "AIV": 2,
+        "ANF": 9,
+        "ARE": 8,
+        "FI": 2,
+        "GT": 1,
+        "HUM": 1,
+        "MKC": 1,
+        "RSG": 3,
+        "TDC": 7,
+        "VRT": 7,
+        "WAT": 3,
+        "WTW": 1
+      }
+    },
+    "metricRows": {
+      "capex": 25,
+      "ebitda": 18,
+      "eps": 124,
+      "eps_growth": 16,
+      "fcf_margin": 1,
+      "free_cash_flow": 17,
+      "net_income": 16,
+      "operating_income": 23,
+      "operating_margin": 40,
+      "opex": 10,
+      "revenue": 27,
+      "revenue_growth": 45,
+      "tax_rate": 26
+    },
+    "raiseLower": {
+      "acceptanceEventConcentrationByCalendarQuarter": {
+        "groups": 15,
+        "inverseConcentration": 12.844444,
+        "largestShare": 0.110294
+      },
+      "acceptanceEventConcentrationByCorporateGroup": {
+        "groups": 22,
+        "inverseConcentration": 14.89211,
+        "largestShare": 0.102941
+      },
+      "acceptanceEventConcentrationByLegalIssuer": {
+        "groups": 22,
+        "inverseConcentration": 14.89211,
+        "largestShare": 0.102941
+      },
+      "calendarQuarters": 15,
+      "currentFilings": 136,
+      "issuerAcceptanceEvents": 136,
+      "issuerCalendarQuarters": 135,
+      "linkConcentrationByLegalIssuer": {
+        "groups": 22,
+        "inverseConcentration": 10.680486,
+        "largestShare": 0.208633
+      },
+      "linkRows": 278,
+      "singleDimensionDesignEffectNByIssuerRho": {
+        "0.0": 136.0,
+        "0.05": 96.686,
+        "0.2": 51.781,
+        "1.0": 14.892
+      },
+      "singleDimensionDesignEffectNByQuarterRho": {
+        "0.0": 136.0,
+        "0.05": 91.928,
+        "0.2": 46.613,
+        "1.0": 12.844
+      }
+    },
+    "uniqueLinkKeys": 388
+  },
+  "semiconductorLinks": {
+    "all": {
+      "acceptanceEventConcentrationByCalendarQuarter": {
+        "groups": 47,
+        "inverseConcentration": 36.378788,
+        "largestShare": 0.05102
+      },
+      "acceptanceEventConcentrationByCorporateGroup": {
+        "groups": 9,
+        "inverseConcentration": 4.675755,
+        "largestShare": 0.357143
+      },
+      "acceptanceEventConcentrationByLegalIssuer": {
+        "groups": 10,
+        "inverseConcentration": 4.717092,
+        "largestShare": 0.357143
+      },
+      "calendarQuarters": 47,
+      "currentFilings": 98,
+      "issuerAcceptanceEvents": 98,
+      "issuerCalendarQuarters": 97,
+      "linkConcentrationByLegalIssuer": {
+        "groups": 10,
+        "inverseConcentration": 2.229997,
+        "largestShare": 0.652174
+      },
+      "linkRows": 230,
+      "singleDimensionDesignEffectNByIssuerRho": {
+        "0.0": 98.0,
+        "0.05": 49.277,
+        "0.2": 19.778,
+        "1.0": 4.717
+      },
+      "singleDimensionDesignEffectNByQuarterRho": {
+        "0.0": 98.0,
+        "0.05": 90.348,
+        "0.2": 73.201,
+        "1.0": 36.379
+      }
+    },
+    "currentPriorFilingPairs": 101,
+    "directionRows": {
+      "LOWER": 47,
+      "MAINTAIN": 81,
+      "RAISE": 102
+    },
+    "extremeRelativeMidpointChanges": {
+      "absAtLeast": 0.5,
+      "count": 25,
+      "tickers": {
+        "AMZN": 5,
+        "GOOGL": 1,
+        "KLAC": 2,
+        "LRCX": 17
+      }
+    },
+    "metricRows": {
+      "capex": 25,
+      "eps": 35,
+      "free_cash_flow": 1,
+      "gross_margin": 40,
+      "gross_profit": 9,
+      "net_income": 6,
+      "operating_income": 11,
+      "operating_margin": 29,
+      "revenue": 60,
+      "revenue_growth": 4,
+      "tax_rate": 10
+    },
+    "raiseLower": {
+      "acceptanceEventConcentrationByCalendarQuarter": {
+        "groups": 44,
+        "inverseConcentration": 34.042553,
+        "largestShare": 0.05
+      },
+      "acceptanceEventConcentrationByCorporateGroup": {
+        "groups": 9,
+        "inverseConcentration": 3.804994,
+        "largestShare": 0.4375
+      },
+      "acceptanceEventConcentrationByLegalIssuer": {
+        "groups": 9,
+        "inverseConcentration": 3.804994,
+        "largestShare": 0.4375
+      },
+      "calendarQuarters": 44,
+      "currentFilings": 80,
+      "issuerAcceptanceEvents": 80,
+      "issuerCalendarQuarters": 79,
+      "linkConcentrationByLegalIssuer": {
+        "groups": 9,
+        "inverseConcentration": 2.435121,
+        "largestShare": 0.61745
+      },
+      "linkRows": 149,
+      "singleDimensionDesignEffectNByIssuerRho": {
+        "0.0": 80.0,
+        "0.05": 39.975,
+        "0.2": 15.984,
+        "1.0": 3.805
+      },
+      "singleDimensionDesignEffectNByQuarterRho": {
+        "0.0": 80.0,
+        "0.05": 74.941,
+        "0.2": 62.992,
+        "1.0": 34.043
+      }
+    },
+    "uniqueLinkKeys": 230
+  },
+  "semiconductorRoles": {
+    "cloudCustomer": {
+      "allMetricCoverage": {
+        "issuerAcceptanceEvents": 37,
+        "legalIssuers": 4,
+        "linkRows": 44
+      },
+      "candidateCorporateGroups": 4,
+      "candidateLegalIssuers": [
+        "789019",
+        "1018724",
+        "1288776",
+        "1326801",
+        "1652044"
+      ],
+      "catalogFilings": 210,
+      "metricCoverage": {
+        "capex": {
+          "issuerAcceptanceEvents": 25,
+          "legalIssuers": 3,
+          "linkRows": 25
+        },
+        "demand": null,
+        "revenue": {
+          "issuerAcceptanceEvents": 2,
+          "legalIssuers": 2,
+          "linkRows": 2
+        },
+        "revenue_growth": {
+          "issuerAcceptanceEvents": 0,
+          "legalIssuers": 0,
+          "linkRows": 0
+        }
+      },
+      "publishedDetectionByTicker": {
+        "AMZN": {
+          "capexGuidance": 2,
+          "metricGuidance": 8,
+          "releases": 52
+        },
+        "GOOG": {
+          "capexGuidance": 0,
+          "metricGuidance": 0,
+          "releases": 8
+        },
+        "GOOGL": {
+          "capexGuidance": 4,
+          "metricGuidance": 5,
+          "releases": 46
+        },
+        "META": {
+          "capexGuidance": 27,
+          "metricGuidance": 27,
+          "releases": 52
+        },
+        "MSFT": {
+          "capexGuidance": 0,
+          "metricGuidance": 2,
+          "releases": 52
+        }
+      },
+      "reportedLegacySampleReleaseRows": 210,
+      "reportedNumericCapexDetectorHits": 33
+    },
+    "producerOrEquipment": {
+      "allMetricCoverage": {
+        "issuerAcceptanceEvents": 61,
+        "legalIssuers": 6,
+        "linkRows": 186
+      },
+      "candidateCorporateGroups": 8,
+      "candidateLegalIssuers": [
+        "2488",
+        "6951",
+        "106040",
+        "319201",
+        "707549",
+        "723125",
+        "1045810",
+        "1137789"
+      ],
+      "catalogFilings": 434,
+      "metricCoverage": {
+        "capex": {
+          "issuerAcceptanceEvents": 0,
+          "legalIssuers": 0,
+          "linkRows": 0
+        },
+        "demand": null,
+        "revenue": {
+          "issuerAcceptanceEvents": 41,
+          "legalIssuers": 4,
+          "linkRows": 58
+        },
+        "revenue_growth": {
+          "issuerAcceptanceEvents": 4,
+          "legalIssuers": 2,
+          "linkRows": 4
+        }
+      },
+      "publishedDetectionByTicker": {
+        "AMAT": {
+          "capexGuidance": 0,
+          "metricGuidance": 50,
+          "releases": 51
+        },
+        "AMD": {
+          "capexGuidance": 0,
+          "metricGuidance": 54,
+          "releases": 55
+        },
+        "KLAC": {
+          "capexGuidance": 1,
+          "metricGuidance": 34,
+          "releases": 53
+        },
+        "LRCX": {
+          "capexGuidance": 0,
+          "metricGuidance": 36,
+          "releases": 51
+        },
+        "MU": {
+          "capexGuidance": 1,
+          "metricGuidance": 30,
+          "releases": 52
+        },
+        "NVDA": {
+          "capexGuidance": 4,
+          "metricGuidance": 15,
+          "releases": 55
+        },
+        "STX": {
+          "capexGuidance": 0,
+          "metricGuidance": 36,
+          "releases": 61
+        },
+        "WDC": {
+          "capexGuidance": 0,
+          "metricGuidance": 31,
+          "releases": 53
+        }
+      },
+      "reportedLegacySampleReleaseRows": 431,
+      "reportedNumericCapexDetectorHits": 6
+    }
+  },
+  "sharedCurrentFilingsAcrossPanels": 0,
+  "status": "SOURCE_ONLY"
+}

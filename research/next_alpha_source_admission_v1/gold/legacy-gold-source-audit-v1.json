@@ -1,0 +1,352 @@
+{
+  "protocol": "GUIDANCE_LEGACY_GOLD_SOURCE_AUDIT_V1",
+  "baseHead": "33c3960894d9e2eb6e06320035c9581dafb4b6c0",
+  "archiveEvidence": "Official full submission exhibit sections. New archived bytes are hashed separately from the registered legacy HTTP transport bytes.",
+  "scope": "Targeted independent source inspection of seven legacy test2 disclosures across two issuers. The count is not an error-rate estimate for the entire gold set.",
+  "reviewedLegacyLabelsMutated": false,
+  "confirmedRepeatedRepresentations": 6,
+  "confirmedMetricTaxonomyCollisions": 1,
+  "v3CurrentRowsSuppressedByFiscalPhrase": 6,
+  "mechanisms": {
+    "v2": "Prior-year ANF operating-margin and sales comparators emitted as current predictions. The $935M and $1.06B comparators were also emitted in percent growth units.",
+    "v3": "A case-insensitive entity regex marks phrases such as “for fiscal 2024, the company expects” as segment guidance. The persistent scope flag drops later valid fiscal outlook bullets. Independent tracing confirmed that _sentence_tuples generated the six valid candidates before the caller suppressed them."
+  },
+  "findings": [
+    {
+      "accession": "0001628280-24-005765",
+      "issuer": "VRT",
+      "cik": 1674101,
+      "url": "https://www.sec.gov/Archives/edgar/data/1674101/000162828024005765/0001628280-24-005765.txt",
+      "archiveSha256": "1e49bc5fe0f1837e63f522b32e9c972e01ce7700a7d7c8b96ccafc4624469b83",
+      "sectionSha256": "7f7c529f41793e6d30f2fa973c7d98687319357078752f7973519515bfffef48",
+      "registeredHttpSha256": "86eeb182ac34740237435547fc5d75d6d2c6fbe3e8afdaf9489e217e415742f9",
+      "filename": "exhibit991vrt02212024.htm",
+      "finding": "DUPLICATE_GUIDANCE_REPRESENTATIONS",
+      "target": "Q1FY2024",
+      "evidence": {
+        "domTableOrdinalsZeroBased": {
+          "explicitGuidance": 0,
+          "gaapReconciliation": 17
+        },
+        "guidanceRows": [
+          "Adjusted operating profit",
+          "Adjusted diluted EPS"
+        ],
+        "reconciliationRow": "Non-GAAP adjusted"
+      },
+      "rows": [
+        {
+          "metric": "operating_income",
+          "basis": "non_GAAP",
+          "unit": "USD_million",
+          "primaryRange": [
+            200,
+            220
+          ],
+          "secondaryPoint": 209.7
+        },
+        {
+          "metric": "eps",
+          "basis": "non_GAAP",
+          "unit": "USD_per_share",
+          "primaryRange": [
+            0.32,
+            0.36
+          ],
+          "secondaryPoint": 0.34
+        }
+      ],
+      "decision": "Score each explicit range as one guidance observation. Keep the reconciliation point as supporting evidence rather than a second same-target observation. Reconciliation-only forecasts with a distinct metric or basis remain separately eligible."
+    },
+    {
+      "accession": "0001628280-24-017513",
+      "issuer": "VRT",
+      "cik": 1674101,
+      "url": "https://www.sec.gov/Archives/edgar/data/1674101/000162828024017513/0001628280-24-017513.txt",
+      "archiveSha256": "6ce6dccf69f5e8ca6591230c9142bae81c994a380d053c6b62a1160d2fe0b6d6",
+      "sectionSha256": "f712724f42895008c17cda87998c851250fddba5abd507a51e7d9fa29ec7c17e",
+      "registeredHttpSha256": "eb50c64e82e92732740d533c7f625761b2749a13d56172425d064787e1662adc",
+      "filename": "q12024exhibit991vrt042424.htm",
+      "finding": "DUPLICATE_GUIDANCE_REPRESENTATIONS",
+      "target": "Q2FY2024",
+      "evidence": {
+        "domTableOrdinalsZeroBased": {
+          "explicitGuidance": 0,
+          "gaapReconciliation": 14
+        },
+        "guidanceRows": [
+          "Adjusted operating profit",
+          "Adjusted diluted EPS"
+        ],
+        "reconciliationRow": "Non-GAAP adjusted"
+      },
+      "rows": [
+        {
+          "metric": "operating_income",
+          "basis": "non_GAAP",
+          "unit": "USD_million",
+          "primaryRange": [
+            315,
+            335
+          ],
+          "secondaryPoint": 325
+        },
+        {
+          "metric": "eps",
+          "basis": "non_GAAP",
+          "unit": "USD_per_share",
+          "primaryRange": [
+            0.53,
+            0.57
+          ],
+          "secondaryPoint": 0.55
+        }
+      ],
+      "decision": "Score each explicit range as one guidance observation. Keep the reconciliation point as supporting evidence rather than a second same-target observation. Reconciliation-only forecasts with a distinct metric or basis remain separately eligible."
+    },
+    {
+      "accession": "0001628280-24-043343",
+      "issuer": "VRT",
+      "cik": 1674101,
+      "url": "https://www.sec.gov/Archives/edgar/data/1674101/000162828024043343/0001628280-24-043343.txt",
+      "archiveSha256": "d358954eaf8d556591191ff3d57da3345a13a39a77fa0b98dac6ec2f7fe9513d",
+      "sectionSha256": "db38fdbdfac92072c6b52f757d699c57c4cc2c0ea01e964c48a4a71c0c7ad28c",
+      "registeredHttpSha256": "997177ce3478dbb784f3e8e2b4a20c5a7f59b3e928497cb12425f27bc0a6ae70",
+      "filename": "q32024exhibit991vrt102324.htm",
+      "finding": "DUPLICATE_GUIDANCE_REPRESENTATIONS",
+      "target": "Q4FY2024",
+      "evidence": {
+        "domTableOrdinalsZeroBased": {
+          "explicitGuidance": 0,
+          "gaapReconciliation": 18
+        },
+        "guidanceRows": [
+          "Adjusted operating profit",
+          "Adjusted diluted EPS"
+        ],
+        "reconciliationRow": "Non-GAAP adjusted"
+      },
+      "rows": [
+        {
+          "metric": "operating_income",
+          "basis": "non_GAAP",
+          "unit": "USD_million",
+          "primaryRange": [
+            427,
+            447
+          ],
+          "secondaryPoint": 437
+        },
+        {
+          "metric": "eps",
+          "basis": "non_GAAP",
+          "unit": "USD_per_share",
+          "primaryRange": [
+            0.8,
+            0.84
+          ],
+          "secondaryPoint": 0.82
+        }
+      ],
+      "decision": "Score each explicit range as one guidance observation. Keep the reconciliation point as supporting evidence rather than a second same-target observation. Reconciliation-only forecasts with a distinct metric or basis remain separately eligible."
+    },
+    {
+      "accession": "0001628280-24-005765",
+      "issuer": "VRT",
+      "cik": 1674101,
+      "url": "https://www.sec.gov/Archives/edgar/data/1674101/000162828024005765/0001628280-24-005765.txt",
+      "archiveSha256": "1e49bc5fe0f1837e63f522b32e9c972e01ce7700a7d7c8b96ccafc4624469b83",
+      "sectionSha256": "7f7c529f41793e6d30f2fa973c7d98687319357078752f7973519515bfffef48",
+      "registeredHttpSha256": "86eeb182ac34740237435547fc5d75d6d2c6fbe3e8afdaf9489e217e415742f9",
+      "filename": "exhibit991vrt02212024.htm",
+      "finding": "ORGANIC_AND_UNQUALIFIED_GROWTH_COLLISION",
+      "target": "FY2024",
+      "evidence": {
+        "locations": [
+          "Release headline notes",
+          "Full Year 2024 Guidance rows in DOM table 0"
+        ],
+        "headline": "Unqualified net sales growth of 10%",
+        "guidanceRow": "Organic net sales growth 9.0%–11.0%"
+      },
+      "decision": "Preserve both semantic measures separately. A stock of old rows sharing the normalized revenue_growth metric is not sufficient evidence that the organic rate equals the unqualified growth rate."
+    },
+    {
+      "accession": "0001018840-24-000012",
+      "issuer": "ANF",
+      "cik": 1018840,
+      "url": "https://www.sec.gov/Archives/edgar/data/1018840/000101884024000012/0001018840-24-000012.txt",
+      "archiveSha256": "75bb33e33b355306e06bd7034c9a14ea0fd37e010fece16dba3b51bac2e6fc5b",
+      "sectionSha256": "a036610a5f2ae8e353629348efe0b20bacea197d647c83d1b7b65edd6ef0438c",
+      "registeredHttpSha256": "1932aaa2df9e948b3117e42c2b5f6e56b003ae2b90c108a792ca0747c4035dff",
+      "filename": "q42023pressrelease.htm",
+      "finding": "OUTLOOK_SCOPE_AND_COMPARATOR_AUDIT",
+      "evidence": {
+        "section": "Fiscal 2024 Full Year Outlook and current quarter outlook",
+        "currentSuppressedByV3": [
+          {
+            "target": "FY2024",
+            "metric": "operating_margin",
+            "unit": "pct",
+            "low": 12,
+            "high": 12
+          },
+          {
+            "target": "FY2024",
+            "metric": "capex",
+            "unit": "USD_million",
+            "low": 170,
+            "high": 170
+          },
+          {
+            "target": "Q1FY2024",
+            "metric": "operating_margin",
+            "unit": "pct",
+            "low": 8,
+            "high": 10
+          },
+          {
+            "target": "Q1FY2024",
+            "metric": "tax_rate",
+            "unit": "pct",
+            "low": 10,
+            "high": 10
+          }
+        ],
+        "priorPeriodActualComparators": [
+          {
+            "period": "FY2023",
+            "marginPct": 11.4
+          },
+          {
+            "period": "Q1FY2023",
+            "marginPct": 4.6
+          }
+        ],
+        "sameTargetPriorGuidance": []
+      },
+      "decision": "A target-period introduction does not indicate subsidiary guidance. Previous-period actual financial results do not belong in a same-target forecast revision."
+    },
+    {
+      "accession": "0001018840-24-000035",
+      "issuer": "ANF",
+      "cik": 1018840,
+      "url": "https://www.sec.gov/Archives/edgar/data/1018840/000101884024000035/0001018840-24-000035.txt",
+      "archiveSha256": "1bed258744608e67dfbb5bc2ff53f4c850e00f8d21af5f2424177c025216b606",
+      "sectionSha256": "5abf33a8c296e3f081eba7fe8d14d01913ef086042a864ff12aa1cf335aaba2e",
+      "registeredHttpSha256": "5c6834e7e8c45f30cc3fb457aa14aab0368fab4cc366a6a02f24e91e31d5fc09",
+      "filename": "q12024pressrelease.htm",
+      "finding": "OUTLOOK_SCOPE_AND_COMPARATOR_AUDIT",
+      "evidence": {
+        "section": "Fiscal 2024 Full Year Outlook and current quarter outlook",
+        "currentSuppressedByV3": [
+          {
+            "target": "Q2FY2024",
+            "metric": "operating_margin",
+            "unit": "pct",
+            "low": 13,
+            "high": 14
+          }
+        ],
+        "priorPeriodActualComparators": [
+          {
+            "period": "Q2FY2023",
+            "marginPct": 9.6,
+            "salesUsdMillion": 935
+          }
+        ],
+        "sameTargetPriorGuidance": [
+          {
+            "target": "FY2024",
+            "metric": "revenue_growth",
+            "low": 4,
+            "high": 6
+          },
+          {
+            "target": "FY2024",
+            "metric": "operating_margin",
+            "low": 12,
+            "high": 12
+          }
+        ]
+      },
+      "decision": "A target-period introduction does not indicate subsidiary guidance. Previous-period actual financial results do not belong in a same-target forecast revision."
+    },
+    {
+      "accession": "0001018840-24-000066",
+      "issuer": "ANF",
+      "cik": 1018840,
+      "url": "https://www.sec.gov/Archives/edgar/data/1018840/000101884024000066/0001018840-24-000066.txt",
+      "archiveSha256": "d57cd0983b0cc5242994e3e6a8266d2903273beeab0061d6031e26641ba35bec",
+      "sectionSha256": "262130f06566e6db88dbe550e7e709e64118be933f464924366bcb15d9946e62",
+      "registeredHttpSha256": "f7d77eb81de91561e9c31fec0eb6b9202dd52e1b2ceec5881ddae0c830e5bd1d",
+      "filename": "q22024pressrelease.htm",
+      "finding": "OUTLOOK_SCOPE_AND_COMPARATOR_AUDIT",
+      "evidence": {
+        "section": "Fiscal 2024 Full Year Outlook and current quarter outlook",
+        "currentSuppressedByV3": [
+          {
+            "target": "Q3FY2024",
+            "metric": "operating_margin",
+            "unit": "pct",
+            "low": 13,
+            "high": 14
+          }
+        ],
+        "priorPeriodActualComparators": [
+          {
+            "period": "Q3FY2023",
+            "marginPct": 13.1,
+            "salesUsdMillion": 1060
+          }
+        ],
+        "sameTargetPriorGuidance": [
+          {
+            "target": "FY2024",
+            "metric": "revenue_growth",
+            "low": 10,
+            "high": 10
+          },
+          {
+            "target": "FY2024",
+            "metric": "operating_margin",
+            "low": 14,
+            "high": 14
+          }
+        ]
+      },
+      "decision": "A target-period introduction does not indicate subsidiary guidance. Previous-period actual financial results do not belong in a same-target forecast revision."
+    },
+    {
+      "accession": "0001018840-24-000083",
+      "issuer": "ANF",
+      "cik": 1018840,
+      "url": "https://www.sec.gov/Archives/edgar/data/1018840/000101884024000083/0001018840-24-000083.txt",
+      "archiveSha256": "093232aad734af3d59b21e2f0aa24d9e566da835988244481a85d33fa74ec132",
+      "sectionSha256": "9a6f6afa4c23f9fb0b44b0c372d63581778235b14f0cd0dfc66251b79074bd35",
+      "registeredHttpSha256": "32f31520c49f90a6881e0c252d78924d6a5ab17c5a49cbd5999865ed45e8f0c1",
+      "filename": "q32024pressrelease.htm",
+      "finding": "OUTLOOK_SCOPE_AND_COMPARATOR_AUDIT",
+      "evidence": {
+        "section": "Fiscal 2024 Full Year Outlook and current quarter outlook",
+        "currentSuppressedByV3": [],
+        "priorPeriodActualComparators": [],
+        "sameTargetPriorGuidance": [
+          {
+            "target": "FY2024",
+            "metric": "revenue_growth",
+            "low": 12,
+            "high": 13
+          },
+          {
+            "target": "FY2024",
+            "metric": "operating_margin",
+            "low": 14,
+            "high": 15
+          }
+        ]
+      },
+      "decision": "A target-period introduction does not indicate subsidiary guidance. Previous-period actual financial results do not belong in a same-target forecast revision."
+    }
+  ]
+}

@@ -67,6 +67,12 @@
 | #369 [Atlas 국면 의존성](../track_b_pilot/ATLAS-AUDIT-ko.md) | 두 약세장 제외·사건 가중·체류·다음 종가 검산 | 원 Atlas 바이트 고정, SPY·재구성 history, 소수 사건 | 신용·속도 차이 약화 또는 역전, 안정화 방향만 일부 유지. 운용 검증 없음 | 22일 이후 체류·두 사건 집중을 명시 | 서술·민감도 | 미개시 | 금지 |
 | #369 [Atlas 후속 강건성](../track_b_pilot/ATLAS-FOLLOWUP-ko.md) | 사건 제외, 깊이 단독 대조, 관찰 분류의 증분 확인 | 같은 보존 Atlas·사건 표본, 독립 표본 부족 | 독립 증거 부족, 투자 규칙 지명/비용 검증 없음 | 원 Atlas와 사후 규칙을 구분 | 서술·민감도 | 미개시 | 금지 |
 
+## 추가 원천 검증
+
+| 연구 | 원천과 변경 범위 | 증거 등급 | 전향 상태와 재실험 범위 |
+| --- | --- | --- | --- |
+| #383 [경영진 가이던스 원천 검증](../next_alpha_source_admission_v1/GUIDANCE-SOURCE-AUDIT-ko.md) | 공식 SEC 보관본, 독립 주석 감사, DOM 표 추출, [기업 단위 홀드아웃](../next_alpha_source_admission_v1/gold/restricted-company-holdout-v1.json) | SOURCE_ONLY · 추출 정확도와 독립 사건 수 미충족 | 전향 기록 미개시. 원문 추출·검증 범위. 시장 성과 실행 승인 없음 |
+
 ## 이전 증거 지도와 보존 연구
 
 아래 A/B/C/D/P/R 구분은 2026-11-21에 작성한 연구 우선순위다. #343~#369의 현재 판정과 후속 상태에는 위 등록 행과 정정 범위를 적용한다. 종료된 미병합 33건은 [보존 목록](../research_integration_audit_20261124/evidence/closed-pr-preservation.json)에서 원 HEAD와 참조를 찾는다. 이 연구들의 원 판정·승인·봉인 여부는 각각의 기록을 따른다.

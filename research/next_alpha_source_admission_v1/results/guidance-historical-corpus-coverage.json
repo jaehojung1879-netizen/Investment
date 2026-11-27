@@ -1,0 +1,125 @@
+{
+  "asOf": "2026-11-26",
+  "baselineCommit": "33c3960894d9e2eb6e06320035c9581dafb4b6c0",
+  "evidenceClass": "SOURCE_ONLY_NO_MARKET_OUTCOMES",
+  "population": {
+    "catalogCommit": "a45f12760a3d27ad09fcfdfb1266308ae59b9e1d",
+    "catalogGitBlob": "e755d3529b39c0b5dfce5e98932e9225dd978a45",
+    "dateWindow": [
+      "2014-01-01",
+      "2026-11-21"
+    ],
+    "distinctOriginal8KFilings": 35090,
+    "distinctAmended8KFilings": 218,
+    "distinctCiKs": 750,
+    "distinctCalendarQuarters": 52,
+    "scope": "Frozen Item 2.02 source catalog, with original filings deduplicated by CIK and accession."
+  },
+  "legacyFetchedSlots": {
+    "stratifiedWithFilenameAndSha": 319,
+    "randomPanelReported": 464,
+    "sum": 783,
+    "panelDistinctAccessionsIdentifiedFromDerivedLinksObservationsAndGold": 259,
+    "knownSharedAccessions": [
+      "0000063754-24-000024",
+      "0000798354-25-000102",
+      "0000950170-23-039093"
+    ],
+    "maximumDistinctAccessionsAcrossBothSamples": 780,
+    "exactUniqueCountEstablished": false,
+    "limitation": "The complete original panel and semiconductor exhibit manifests and raw caches are absent from the branch and its Actions artifacts. Derived accessions establish a lower bound on the sample overlap."
+  },
+  "stratifiedLegacyScreen": {
+    "sampled": 325,
+    "fetched": 319,
+    "legacyScreenPositive": 206,
+    "sourceDisposition": {
+      "FETCHED": 319,
+      "NO_EX99_IN_INDEX": 6
+    },
+    "observedDesignWeightedPositivity": 0.632365,
+    "designWeightedPositivityIfUnservedAllPositive": 0.651117,
+    "limitation": "These design-weighted bounds vary the labels for the six unserved sample entries. Legacy screen measurement error remains uncorrected.",
+    "byFilingYear": {
+      "2014": {
+        "population": 2779,
+        "sample": 25,
+        "fetched": 24,
+        "legacyScreenPositive": 17
+      },
+      "2015": {
+        "population": 2782,
+        "sample": 25,
+        "fetched": 25,
+        "legacyScreenPositive": 14
+      },
+      "2016": {
+        "population": 2732,
+        "sample": 25,
+        "fetched": 24,
+        "legacyScreenPositive": 13
+      },
+      "2017": {
+        "population": 2689,
+        "sample": 25,
+        "fetched": 25,
+        "legacyScreenPositive": 18
+      },
+      "2018": {
+        "population": 2687,
+        "sample": 25,
+        "fetched": 24,
+        "legacyScreenPositive": 16
+      },
+      "2019": {
+        "population": 2681,
+        "sample": 25,
+        "fetched": 25,
+        "legacyScreenPositive": 14
+      },
+      "2020": {
+        "population": 2782,
+        "sample": 25,
+        "fetched": 23,
+        "legacyScreenPositive": 8
+      },
+      "2021": {
+        "population": 2696,
+        "sample": 25,
+        "fetched": 25,
+        "legacyScreenPositive": 18
+      },
+      "2022": {
+        "population": 2688,
+        "sample": 25,
+        "fetched": 24,
+        "legacyScreenPositive": 14
+      },
+      "2023": {
+        "population": 2679,
+        "sample": 25,
+        "fetched": 25,
+        "legacyScreenPositive": 19
+      },
+      "2024": {
+        "population": 2695,
+        "sample": 25,
+        "fetched": 25,
+        "legacyScreenPositive": 16
+      },
+      "2025": {
+        "population": 2654,
+        "sample": 25,
+        "fetched": 25,
+        "legacyScreenPositive": 22
+      },
+      "2026": {
+        "population": 2546,
+        "sample": 25,
+        "fetched": 25,
+        "legacyScreenPositive": 17
+      }
+    }
+  },
+  "legacyGoldSourceRecoveryArtifact": "guidance-legacy-gold-source-recovery.json"
+}

@@ -1,0 +1,746 @@
+{
+  "documents": [
+    {
+      "acceptanceDateTime": "2016-05-24T21:12:45.000000+00:00",
+      "accession": "0000023082-16-000126",
+      "annotationStatus": "COMPLETE",
+      "archiveSha256": "06363db9286ecc5dfaa0b73efd5f58f9debcf6b0f397a3290721d789c24a5bd8",
+      "cik": 23082,
+      "facts": [
+        {
+          "basis": "non_GAAP",
+          "evidence": {
+            "domBlock": "T7R1",
+            "sourcePhrase": "EPS from Continuing Operations Target of $2.75 to $3.00"
+          },
+          "high": 3.0,
+          "kind": "CURRENT",
+          "low": 2.75,
+          "metric": "eps",
+          "semanticQualifier": "continuing_operations",
+          "target": "FY2017",
+          "unit": "USD_per_share"
+        }
+      ],
+      "sectionSha256": "1f63c4e70ac4e1c2a53b9f8071cd48a26de46c47b30d55d17894a2fdfeb3bc78"
+    },
+    {
+      "acceptanceDateTime": "2016-08-08T20:23:19.000000+00:00",
+      "accession": "0000023082-16-000178",
+      "annotationStatus": "COMPLETE",
+      "archiveSha256": "759f4affae931c53a44dfccd961b92044c33a383a4923b07cf75c8e02fb9c1c6",
+      "cik": 23082,
+      "facts": [
+        {
+          "basis": "non_GAAP",
+          "evidence": {
+            "domBlock": "T6R1",
+            "sourcePhrase": "EPS from Continuing Operations Target Remains $2.75 to $3.00"
+          },
+          "high": 3.0,
+          "kind": "CURRENT",
+          "low": 2.75,
+          "metric": "eps",
+          "semanticQualifier": "continuing_operations",
+          "target": "FY2017",
+          "unit": "USD_per_share"
+        }
+      ],
+      "sectionSha256": "62dc399962bfcaabb8abba4cca7682ddc57ea78e80dbc994a118d7894c130b17"
+    },
+    {
+      "acceptanceDateTime": "2016-11-03T20:21:10.000000+00:00",
+      "accession": "0000023082-16-000236",
+      "annotationStatus": "COMPLETE",
+      "archiveSha256": "bc60ff07a2f2b67ab3d86ec10ee1256947bc4d7f520397e1cf74f7d4814c2cf8",
+      "cik": 23082,
+      "facts": [
+        {
+          "basis": "non_GAAP",
+          "evidence": {
+            "domBlock": "T7R1",
+            "sourcePhrase": "EPS from Continuing Operations Target Remains $2.75 to $3.00"
+          },
+          "high": 3.0,
+          "kind": "CURRENT",
+          "low": 2.75,
+          "metric": "eps",
+          "semanticQualifier": "continuing_operations",
+          "target": "FY2017",
+          "unit": "USD_per_share"
+        }
+      ],
+      "sectionSha256": "449bb8b932955498885a425d8e3b011cd69b3d8d429d1ad1eded1f2245005900"
+    },
+    {
+      "acceptanceDateTime": "2017-02-02T21:20:15.000000+00:00",
+      "accession": "0000023082-17-000010",
+      "annotationStatus": "COMPLETE",
+      "archiveSha256": "a0d189bab2127aaafd8be16793247b5bb20160668dc67f2f237994a6ce753022",
+      "cik": 23082,
+      "facts": [
+        {
+          "basis": "non_GAAP",
+          "evidence": {
+            "domBlock": "T7R1",
+            "sourcePhrase": "EPS from Continuing Operations Target Remains $2.75 to $3.00"
+          },
+          "high": 3.0,
+          "kind": "CURRENT",
+          "low": 2.75,
+          "metric": "eps",
+          "semanticQualifier": "continuing_operations",
+          "target": "FY2017",
+          "unit": "USD_per_share"
+        }
+      ],
+      "sectionSha256": "10b327cb3fe5b68c8829c984560f04ee9998cc46ab221a1320978a7573337bdd"
+    },
+    {
+      "acceptanceDateTime": "2014-02-13T11:06:36.000000+00:00",
+      "accession": "0001193125-14-049382",
+      "annotationStatus": "COMPLETE",
+      "archiveSha256": "ca4d7948c8fa4a6866289bff196b70f7c4f29ee81bf335264f04cc5218a4bc93",
+      "cik": 316206,
+      "facts": [
+        {
+          "basis": "non_GAAP",
+          "evidence": {
+            "domBlock": "T25R0",
+            "sourcePhrase": "Adjusted EBITDA is expected to be approximately"
+          },
+          "high": 1225,
+          "kind": "CURRENT",
+          "low": 1200,
+          "metric": "ebitda",
+          "semanticQualifier": "consolidated_adjusted",
+          "target": "FY2014",
+          "unit": "USD_million"
+        },
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "T35R0",
+            "sourcePhrase": "effective tax rate is expected to be approximately 33%"
+          },
+          "high": 33,
+          "kind": "CURRENT",
+          "low": 33,
+          "metric": "tax_rate",
+          "semanticQualifier": "effective",
+          "target": "FY2014",
+          "unit": "pct"
+        },
+        {
+          "basis": "non_GAAP",
+          "evidence": {
+            "domBlock": "T36R0",
+            "sourcePhrase": "EPS before special items is expected to be approximately $2.69 to $2.78"
+          },
+          "high": 2.78,
+          "kind": "CURRENT",
+          "low": 2.69,
+          "metric": "eps",
+          "semanticQualifier": "continuing_operations_before_special_items",
+          "target": "FY2014",
+          "unit": "USD_per_share"
+        },
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "T37R0",
+            "sourcePhrase": "capital expenditures (excluding vacation ownership and residential inventory)"
+          },
+          "high": 200,
+          "kind": "CURRENT",
+          "low": 200,
+          "metric": "capex",
+          "semanticQualifier": "maintenance_renovation_and_technology_excluding_inventory",
+          "target": "FY2014",
+          "unit": "USD_million"
+        },
+        {
+          "basis": "non_GAAP",
+          "evidence": {
+            "domBlock": "T39R0",
+            "sourcePhrase": "Adjusted EBITDA is expected to be approximately"
+          },
+          "high": 270,
+          "kind": "CURRENT",
+          "low": 260,
+          "metric": "ebitda",
+          "semanticQualifier": "consolidated_adjusted",
+          "target": "Q1FY2014",
+          "unit": "USD_million"
+        },
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "T46R0",
+            "sourcePhrase": "effective tax rate for the quarter is expected to be approximately 33%"
+          },
+          "high": 33,
+          "kind": "CURRENT",
+          "low": 33,
+          "metric": "tax_rate",
+          "semanticQualifier": "effective",
+          "target": "Q1FY2014",
+          "unit": "pct"
+        },
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "T47R0",
+            "sourcePhrase": "EPS is expected to be approximately $0.53 to $0.56"
+          },
+          "high": 0.56,
+          "kind": "CURRENT",
+          "low": 0.53,
+          "metric": "eps",
+          "semanticQualifier": "continuing_operations",
+          "target": "Q1FY2014",
+          "unit": "USD_per_share"
+        }
+      ],
+      "sectionSha256": "5b695ef10522fcdbba7df99202b654b755a26960629e4fc74bb8f1efcb5e8c20"
+    },
+    {
+      "acceptanceDateTime": "2014-04-24T10:08:01.000000+00:00",
+      "accession": "0001193125-14-155715",
+      "annotationStatus": "COMPLETE",
+      "archiveSha256": "240b5df71c7b1c027b96f37e30baaf0e2a01e89edffca4bfab541fdb40f7d84d",
+      "cik": 316206,
+      "facts": [
+        {
+          "basis": "non_GAAP",
+          "evidence": {
+            "domBlock": "T13R0",
+            "sourcePhrase": "Adjusted EBITDA is expected to be approximately"
+          },
+          "high": 1230,
+          "kind": "CURRENT",
+          "low": 1210,
+          "metric": "ebitda",
+          "semanticQualifier": "consolidated_adjusted",
+          "target": "FY2014",
+          "unit": "USD_million"
+        },
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "T23R0",
+            "sourcePhrase": "effective tax rate is expected to be approximately 32.5%"
+          },
+          "high": 32.5,
+          "kind": "CURRENT",
+          "low": 32.5,
+          "metric": "tax_rate",
+          "semanticQualifier": "effective",
+          "target": "FY2014",
+          "unit": "pct"
+        },
+        {
+          "basis": "non_GAAP",
+          "evidence": {
+            "domBlock": "T24R0",
+            "sourcePhrase": "EPS before special items is expected to be approximately $2.76 to $2.83"
+          },
+          "high": 2.83,
+          "kind": "CURRENT",
+          "low": 2.76,
+          "metric": "eps",
+          "semanticQualifier": "continuing_operations_before_special_items",
+          "target": "FY2014",
+          "unit": "USD_per_share"
+        },
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "T25R0",
+            "sourcePhrase": "capital expenditures (excluding vacation ownership and residential inventory)"
+          },
+          "high": 200,
+          "kind": "CURRENT",
+          "low": 200,
+          "metric": "capex",
+          "semanticQualifier": "maintenance_renovation_and_technology_excluding_inventory",
+          "target": "FY2014",
+          "unit": "USD_million"
+        },
+        {
+          "basis": "non_GAAP",
+          "evidence": {
+            "domBlock": "T27R0",
+            "sourcePhrase": "Adjusted EBITDA is expected to be approximately"
+          },
+          "high": 320,
+          "kind": "CURRENT",
+          "low": 310,
+          "metric": "ebitda",
+          "semanticQualifier": "consolidated_adjusted",
+          "target": "Q2FY2014",
+          "unit": "USD_million"
+        },
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "T34R0",
+            "sourcePhrase": "effective tax rate for the quarter is expected to be approximately 32.5%"
+          },
+          "high": 32.5,
+          "kind": "CURRENT",
+          "low": 32.5,
+          "metric": "tax_rate",
+          "semanticQualifier": "effective",
+          "target": "Q2FY2014",
+          "unit": "pct"
+        },
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "P103",
+            "sourcePhrase": "EPS is expected to be approximately $0.72 to $0.76"
+          },
+          "high": 0.76,
+          "kind": "CURRENT",
+          "low": 0.72,
+          "metric": "eps",
+          "semanticQualifier": "continuing_operations",
+          "target": "Q2FY2014",
+          "unit": "USD_per_share"
+        }
+      ],
+      "sectionSha256": "582e1d701eeb64eb82859bb87b49789420dd65cd93668c0d47fcb0d3094cbb9d"
+    },
+    {
+      "acceptanceDateTime": "2014-07-24T10:09:31.000000+00:00",
+      "accession": "0001193125-14-277808",
+      "annotationStatus": "COMPLETE",
+      "archiveSha256": "b3c0b73350fe7e3b1b7206864daf0bae4218a83ca8e821f2a8ac359ae3947c05",
+      "cik": 316206,
+      "facts": [
+        {
+          "basis": "non_GAAP",
+          "evidence": {
+            "domBlock": "T14R0",
+            "sourcePhrase": "Adjusted EBITDA is expected to be approximately"
+          },
+          "high": 1235,
+          "kind": "CURRENT",
+          "low": 1215,
+          "metric": "ebitda",
+          "semanticQualifier": "consolidated_adjusted",
+          "target": "FY2014",
+          "unit": "USD_million"
+        },
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "T24R0",
+            "sourcePhrase": "effective tax rate is expected to be approximately 32.5%"
+          },
+          "high": 32.5,
+          "kind": "CURRENT",
+          "low": 32.5,
+          "metric": "tax_rate",
+          "semanticQualifier": "effective",
+          "target": "FY2014",
+          "unit": "pct"
+        },
+        {
+          "basis": "non_GAAP",
+          "evidence": {
+            "domBlock": "T25R0",
+            "sourcePhrase": "EPS before special items is expected to be approximately $2.78 to $2.85"
+          },
+          "high": 2.85,
+          "kind": "CURRENT",
+          "low": 2.78,
+          "metric": "eps",
+          "semanticQualifier": "continuing_operations_before_special_items",
+          "target": "FY2014",
+          "unit": "USD_per_share"
+        },
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "T26R0",
+            "sourcePhrase": "capital expenditures (excluding vacation ownership and residential inventory)"
+          },
+          "high": 200,
+          "kind": "CURRENT",
+          "low": 200,
+          "metric": "capex",
+          "semanticQualifier": "maintenance_renovation_and_technology_excluding_inventory",
+          "target": "FY2014",
+          "unit": "USD_million"
+        },
+        {
+          "basis": "non_GAAP",
+          "evidence": {
+            "domBlock": "T28R0",
+            "sourcePhrase": "Adjusted EBITDA is expected to be approximately"
+          },
+          "high": 295,
+          "kind": "CURRENT",
+          "low": 285,
+          "metric": "ebitda",
+          "semanticQualifier": "consolidated_adjusted",
+          "target": "Q3FY2014",
+          "unit": "USD_million"
+        },
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "T35R0",
+            "sourcePhrase": "effective tax rate for the quarter is expected to be approximately 33%"
+          },
+          "high": 33,
+          "kind": "CURRENT",
+          "low": 33,
+          "metric": "tax_rate",
+          "semanticQualifier": "effective",
+          "target": "Q3FY2014",
+          "unit": "pct"
+        },
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "T36R0",
+            "sourcePhrase": "EPS is expected to be approximately $0.62 to $0.65"
+          },
+          "high": 0.65,
+          "kind": "CURRENT",
+          "low": 0.62,
+          "metric": "eps",
+          "semanticQualifier": "continuing_operations",
+          "target": "Q3FY2014",
+          "unit": "USD_per_share"
+        }
+      ],
+      "sectionSha256": "00d60da40a7c9363cf6c61f6e8bad4c5d6636d960885998c8c893613ef3f9ab9"
+    },
+    {
+      "acceptanceDateTime": "2014-10-28T11:00:38.000000+00:00",
+      "accession": "0001193125-14-384063",
+      "annotationStatus": "COMPLETE",
+      "archiveSha256": "51974fc4a13f90b4af03296bb1f41b83ae25129a305f65a732bb5ca3de0134f7",
+      "cik": 316206,
+      "facts": [
+        {
+          "basis": "non_GAAP",
+          "evidence": {
+            "domBlock": "T16R0",
+            "sourcePhrase": "Adjusted EBITDA is expected to be approximately"
+          },
+          "high": 1225,
+          "kind": "CURRENT",
+          "low": 1215,
+          "metric": "ebitda",
+          "semanticQualifier": "consolidated_adjusted",
+          "target": "FY2014",
+          "unit": "USD_million"
+        },
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "T27R0",
+            "sourcePhrase": "effective tax rate is expected to be approximately 33%"
+          },
+          "high": 33,
+          "kind": "CURRENT",
+          "low": 33,
+          "metric": "tax_rate",
+          "semanticQualifier": "effective",
+          "target": "FY2014",
+          "unit": "pct"
+        },
+        {
+          "basis": "non_GAAP",
+          "evidence": {
+            "domBlock": "T28R0",
+            "sourcePhrase": "EPS before special items is expected to be approximately $2.79 to $2.83"
+          },
+          "high": 2.83,
+          "kind": "CURRENT",
+          "low": 2.79,
+          "metric": "eps",
+          "semanticQualifier": "continuing_operations_before_special_items",
+          "target": "FY2014",
+          "unit": "USD_per_share"
+        },
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "T29R0",
+            "sourcePhrase": "capital expenditures (excluding vacation ownership and residential inventory)"
+          },
+          "high": 200,
+          "kind": "CURRENT",
+          "low": 200,
+          "metric": "capex",
+          "semanticQualifier": "maintenance_renovation_and_technology_excluding_inventory",
+          "target": "FY2014",
+          "unit": "USD_million"
+        },
+        {
+          "basis": "non_GAAP",
+          "evidence": {
+            "domBlock": "T31R0",
+            "sourcePhrase": "Adjusted EBITDA is expected to be approximately"
+          },
+          "high": 320,
+          "kind": "CURRENT",
+          "low": 310,
+          "metric": "ebitda",
+          "semanticQualifier": "consolidated_adjusted",
+          "target": "Q4FY2014",
+          "unit": "USD_million"
+        },
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "T38R0",
+            "sourcePhrase": "effective tax rate for the quarter is expected to be approximately 32%"
+          },
+          "high": 32,
+          "kind": "CURRENT",
+          "low": 32,
+          "metric": "tax_rate",
+          "semanticQualifier": "effective",
+          "target": "Q4FY2014",
+          "unit": "pct"
+        },
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "T39R0",
+            "sourcePhrase": "EPS is expected to be approximately $0.73 to $0.77"
+          },
+          "high": 0.77,
+          "kind": "CURRENT",
+          "low": 0.73,
+          "metric": "eps",
+          "semanticQualifier": "continuing_operations",
+          "target": "Q4FY2014",
+          "unit": "USD_per_share"
+        }
+      ],
+      "sectionSha256": "833052d7fae8409c620f0fe1f1dc0347a9ac2f8714a5aa3956b3dedbcffa3817"
+    },
+    {
+      "acceptanceDateTime": "2014-10-23T11:35:41.000000+00:00",
+      "accession": "0001157523-14-004029",
+      "annotationStatus": "COMPLETE",
+      "archiveSha256": "8df90dfb32f2b20e120666c75b3ff7a1a83b52890de00dcac5fd2fc24a542490",
+      "cik": 804212,
+      "facts": [
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "P22",
+            "sourcePhrase": "earnings per diluted share in the range of $1.20 to $1.25"
+          },
+          "high": 1.25,
+          "kind": "CURRENT",
+          "low": 1.2,
+          "metric": "eps",
+          "target": "Q3FY2015",
+          "unit": "USD_per_share"
+        },
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "P22",
+            "sourcePhrase": "earnings per diluted share in the range of $5.00 to $5.10"
+          },
+          "high": 5.1,
+          "kind": "CURRENT",
+          "low": 5.0,
+          "metric": "eps",
+          "target": "FY2015",
+          "unit": "USD_per_share"
+        },
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "P23",
+            "sourcePhrase": "previous fiscal 2015 guidance range for earnings per diluted share was $5.00 to $5.20"
+          },
+          "high": 5.2,
+          "kind": "PRIOR",
+          "low": 5.0,
+          "metric": "eps",
+          "target": "FY2015",
+          "unit": "USD_per_share"
+        }
+      ],
+      "sectionSha256": "12ad56cb9378267a16574442945084a75dab927e176699aa88831b53a68b3ff6"
+    },
+    {
+      "acceptanceDateTime": "2015-02-03T12:35:31.000000+00:00",
+      "accession": "0001157523-15-000325",
+      "annotationStatus": "COMPLETE",
+      "archiveSha256": "711c5a8636d340f016206872c29c844abf749bce45b7778dcbbc81b348a5f941",
+      "cik": 804212,
+      "facts": [
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "P22",
+            "sourcePhrase": "earnings per diluted share in the range of $1.25 to $1.30"
+          },
+          "high": 1.3,
+          "kind": "CURRENT",
+          "low": 1.25,
+          "metric": "eps",
+          "target": "Q4FY2015",
+          "unit": "USD_per_share"
+        },
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "P22",
+            "sourcePhrase": "organic sales growth rate of 6% to 7%"
+          },
+          "high": 7,
+          "kind": "CURRENT",
+          "low": 6,
+          "metric": "revenue_growth",
+          "semanticQualifier": "organic",
+          "target": "Q4FY2015",
+          "unit": "pct"
+        },
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "P22",
+            "sourcePhrase": "range of $4.95 to $5.00"
+          },
+          "high": 5.0,
+          "kind": "CURRENT",
+          "low": 4.95,
+          "metric": "eps",
+          "target": "FY2015",
+          "unit": "USD_per_share"
+        },
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "P23",
+            "sourcePhrase": "$1.32 to $1.37 and $5.00 to $5.10"
+          },
+          "high": 1.37,
+          "kind": "PRIOR",
+          "low": 1.32,
+          "metric": "eps",
+          "target": "Q4FY2015",
+          "unit": "USD_per_share"
+        },
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "P23",
+            "sourcePhrase": "$1.32 to $1.37 and $5.00 to $5.10"
+          },
+          "high": 5.1,
+          "kind": "PRIOR",
+          "low": 5.0,
+          "metric": "eps",
+          "target": "FY2015",
+          "unit": "USD_per_share"
+        }
+      ],
+      "sectionSha256": "06463ad3b303670544495d5696949c0ac5a023b15701ae7a8c944e773f322e1b"
+    },
+    {
+      "acceptanceDateTime": "2015-04-30T11:35:14.000000+00:00",
+      "accession": "0001157523-15-001458",
+      "annotationStatus": "COMPLETE",
+      "archiveSha256": "85d1b1045ef39df16f216158d94665e66680a1c2a23ad6c69a0246ec067b892a",
+      "cik": 804212,
+      "facts": [
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "P34",
+            "sourcePhrase": "earnings per diluted share in the range of $1.14 to $1.18"
+          },
+          "high": 1.18,
+          "kind": "CURRENT",
+          "low": 1.14,
+          "metric": "eps",
+          "target": "Q1FY2016",
+          "unit": "USD_per_share"
+        },
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "P35",
+            "sourcePhrase": "share in the range of $4.85 to $5.15"
+          },
+          "high": 5.15,
+          "kind": "CURRENT",
+          "low": 4.85,
+          "metric": "eps",
+          "target": "FY2016",
+          "unit": "USD_per_share"
+        }
+      ],
+      "sectionSha256": "196288eda1c81043edf5874597b61b950bb08404fa179f2c6d8bf5e1889f1905"
+    },
+    {
+      "acceptanceDateTime": "2015-07-28T11:35:18.000000+00:00",
+      "accession": "0001157523-15-002534",
+      "annotationStatus": "COMPLETE",
+      "archiveSha256": "70acbc2e2efd280ebb9627c0c6bdc65b59031736ed0e44111acd7b9ce3f71c0d",
+      "cik": 804212,
+      "facts": [
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "P16",
+            "sourcePhrase": "earnings per diluted share in the range of $1.28 to $1.33"
+          },
+          "high": 1.33,
+          "kind": "CURRENT",
+          "low": 1.28,
+          "metric": "eps",
+          "target": "Q2FY2016",
+          "unit": "USD_per_share"
+        },
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "P17",
+            "sourcePhrase": "share in the range of $4.90 to $5.05"
+          },
+          "high": 5.05,
+          "kind": "CURRENT",
+          "low": 4.9,
+          "metric": "eps",
+          "target": "FY2016",
+          "unit": "USD_per_share"
+        },
+        {
+          "basis": "unstated",
+          "evidence": {
+            "domBlock": "P18",
+            "sourcePhrase": "previous full fiscal year 2016 earnings per diluted share guidance was $4.85 to $5.15"
+          },
+          "high": 5.15,
+          "kind": "PRIOR",
+          "low": 4.85,
+          "metric": "eps",
+          "target": "FY2016",
+          "unit": "USD_per_share"
+        }
+      ],
+      "sectionSha256": "7dabdb6925c426176b7388cfa58dadfbf51dd5db33c652a6b3014c2774810410"
+    }
+  ],
+  "method": "Independent manual source labeling over complete releases and all supported metric types. DOM coordinates identify current official accession bytes. The extractor and its outputs were not consulted.",
+  "protocol": "GUIDANCE_RESTRICTED_PILOT_FULL_DOCUMENT_MANUAL_V1",
+  "rosterSha256": "e51ff071597449059f08bbedd4d0ebf01229640dca5a222572e20b5d52985c9b",
+  "scoreScope": "Explicit company-level numerical forecasts for supported legacy metric families. Segment-specific KPIs, causal sensitivity effects, derived annual growth comparisons, financing and marketing statistics, past actuals, and non-numeric ranges are outside the score. Approximate issuer-provided levels remain point values. Unqualified accounting bases remain unstated. A same-target previous guide is labeled PRIOR only when published as a numerical prior forecast in the release."
+}

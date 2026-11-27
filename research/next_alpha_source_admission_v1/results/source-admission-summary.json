@@ -1,0 +1,277 @@
+{
+ "asOf": "2026-11-25",
+ "evidenceClass": "SOURCE_ADMISSION_ONLY_NO_PRICE_RETURN_IC_NAV_READ",
+ "mdeRule": "two-sided alpha 0.05, power 0.80, normal approx, units of residual SD (same formula as #373 power_gate.normalized_mde)",
+ "D_itemm402": {
+  "cohort": "#354 frozen Item 2.02 catalog CIKs (git blob e755d352...), 757 issuers; not a complete historical index universe",
+  "extractor": "#375 bulk_402.extract at 2c5336b5, unmodified",
+  "archiveSha256": "517817686cdd761bcb10f3fdab038096356fdb1bb2b4f986fd96f28f5ed33040",
+  "pagesFetched": 1869,
+  "retrievedAt": "2026-11-25T23:24:41Z",
+  "coverage": {
+   "DECLARED_PAGES_SCANNED": 757
+  },
+  "unique402Filings_2004_2026": 219,
+  "issuers_2004_2026": 151,
+  "without202": 121,
+  "amended8KA": 9,
+  "unique402Filings_2014_2026": 44,
+  "issuers_2014_2026": 39,
+  "byYear": {
+   "2004": 8,
+   "2005": 53,
+   "2006": 55,
+   "2007": 25,
+   "2008": 12,
+   "2009": 5,
+   "2010": 6,
+   "2011": 2,
+   "2012": 5,
+   "2013": 4,
+   "2014": 2,
+   "2015": 4,
+   "2016": 4,
+   "2017": 3,
+   "2018": 4,
+   "2019": 3,
+   "2020": 3,
+   "2021": 6,
+   "2022": 3,
+   "2023": 2,
+   "2024": 3,
+   "2025": 5,
+   "2026": 2
+  },
+  "episodes365d": 182,
+  "episodes365d_since2014": 40,
+  "share2004_2008": 0.699,
+  "affectedItemsAutomated_since2014": {
+   "balance_sheet_classification": 20,
+   "cash_flow_classification": 17,
+   "goodwill_impairment": 6,
+   "revenue_recognition": 9,
+   "derivatives_hedging": 4,
+   "income_tax": 10,
+   "net_income_eps": 17,
+   "reserves_accruals": 6,
+   "inventory_cogs": 3,
+   "stock_compensation_options": 3,
+   "warrants_spac": 7
+  },
+  "classifierValidation": "recall 5/5 against #375 manual cases (LNC,SWK,ANF,XRAY,AXON); 4 of 11 extra tags were false positives; over-inclusive",
+  "mde": {
+   "n40_since2014": 0.443,
+   "n182_all": 0.208
+  },
+  "docs": {
+   "fetched": 219
+  }
+ },
+ "A_guidance": {
+  "population": "#354 catalog 8-K Item 2.02, 2014-01-01..2026-11-21: 35,090 unique filings, 750 issuers",
+  "stratifiedSample": {
+   "seed": 20261125,
+   "perYear": 25,
+   "filings": 325,
+   "exhibitFetched": 319,
+   "numericMetricGuidance": 206,
+   "share": 0.646,
+   "metrics": {
+    "eps": 142,
+    "operating_income": 87,
+    "revenue": 150,
+    "gross_margin": 19,
+    "opex": 11,
+    "tax_rate": 43,
+    "capex": 50,
+    "free_cash_flow": 31
+   },
+   "issuerSelfLabels": {
+    "UPDATE": 22,
+    "REAFFIRM": 34,
+    "INITIATE": 37,
+    "RAISE": 26,
+    "NARROW": 2,
+    "WITHDRAW": 2
+   }
+  },
+  "detectorManualCheck": "14 cases read: 6 of 8 positives were metric guidance; 1 of 6 negatives was a missed bullet-list guidance (fixed by heading window)",
+  "randomPanel2022_2025": {
+   "issuers": 29,
+   "filings": 464,
+   "guidingIssuers": 26,
+   "guidingFilings": 349,
+   "issuerSelfLabels": {
+    "INITIATE": 41,
+    "RAISE": 37,
+    "REAFFIRM": 51,
+    "NARROW": 5,
+    "UPDATE": 34,
+    "WITHDRAW": 2
+   },
+   "fyTuplesExtracted": 53,
+   "sameTargetLinkedRevisions": 25,
+   "linkedIssuers": 6,
+   "classes": {
+    "RAISE": 13,
+    "MAINTAIN": 7,
+    "LOWER": 5
+   },
+   "linkerManualCheck": "Waters FY2022/FY2023 and Abbott FY2023 tuples read against source text: all correct; recall low (6 of 26 guiding issuers linked)"
+  },
+  "coTimedWithEarningsRelease": "all linked revisions sit inside Item 2.02 earnings releases (same acceptance timestamp as #354 surprise)",
+  "mde": {
+   "n52_quarters": 0.389,
+   "n150_issuerYears": 0.229
+  }
+ },
+ "B_semiconductor": {
+  "ecos": {
+   "series": "402Y014 30911AA D (export price USD), 403Y001 30911AA (value idx), 403Y002 30911AA (volume idx); 2013-01..2026-10, CURRENT REVISED VALUES (no vintages)",
+   "retrieved": "2026-11-25T23:26:38Z",
+   "pageSha256Count": 51,
+   "months": 166,
+   "value_yoy_variance_share_price": 0.877,
+   "value_yoy_variance_share_volume": 0.124,
+   "corr_price_volume_yoy": 0.101,
+   "identity_residual_sd": 0.0097,
+   "priceYoYUpturnsSince2014": [
+    "2017-02",
+    "2021-04",
+    "2024-01",
+    "2025-10"
+   ],
+   "dramFlashItemInBasicClassification": false
+  },
+  "secProducersCustomers2014_2026": {
+   "AMAT": {
+    "releases": 51,
+    "metricGuidance": 50,
+    "capexGuidance": 0
+   },
+   "AMD": {
+    "releases": 55,
+    "metricGuidance": 54,
+    "capexGuidance": 0
+   },
+   "AMZN": {
+    "releases": 52,
+    "metricGuidance": 8,
+    "capexGuidance": 2
+   },
+   "GOOG": {
+    "releases": 8,
+    "metricGuidance": 0,
+    "capexGuidance": 0
+   },
+   "GOOGL": {
+    "releases": 46,
+    "metricGuidance": 5,
+    "capexGuidance": 4
+   },
+   "KLAC": {
+    "releases": 53,
+    "metricGuidance": 34,
+    "capexGuidance": 1
+   },
+   "LRCX": {
+    "releases": 51,
+    "metricGuidance": 36,
+    "capexGuidance": 0
+   },
+   "META": {
+    "releases": 52,
+    "metricGuidance": 27,
+    "capexGuidance": 27
+   },
+   "MSFT": {
+    "releases": 52,
+    "metricGuidance": 2,
+    "capexGuidance": 0
+   },
+   "MU": {
+    "releases": 52,
+    "metricGuidance": 30,
+    "capexGuidance": 1
+   },
+   "NVDA": {
+    "releases": 55,
+    "metricGuidance": 15,
+    "capexGuidance": 4
+   },
+   "STX": {
+    "releases": 61,
+    "metricGuidance": 36,
+    "capexGuidance": 0
+   },
+   "WDC": {
+    "releases": 53,
+    "metricGuidance": 31,
+    "capexGuidance": 0
+   }
+  },
+  "fyCapexSameTargetLinks": 4,
+  "dramexchange": "front page: free daily spot session prices with timestamp (prospective only); contract-price history paid",
+  "iipAndBokVintages": "owned by #371 N2 session (comment 7140941218); not re-collected",
+  "mde": {
+   "n4_cycles": 1.401
+  }
+ },
+ "C_kr_ownership_purpose": {
+  "source": "existing signal-history ledger/dart-ownership-events (commit 5fd1984d, majorstock.json, 254 issuers, 0 new API calls)",
+  "window": [
+   "2024-09-24",
+   "2026-09-23"
+  ],
+  "rows": 2496,
+  "issuers": 228,
+  "reportTypeRaw": {
+   "일반": 1580,
+   "약식": 916
+  },
+  "purposeChangeRows": 61,
+  "directions": {
+   "일반투자->단순투자": 32,
+   "단순투자->일반투자": 25,
+   "경영권 영향->단순투자 (from original documents)": 2,
+   "일반투자->단순투자 (from original documents)": 1,
+   "unknown->단순투자 (no prior filing in ledger)": 1
+  },
+  "purposeChangeIssuers": 55,
+  "distinctFilers": 5,
+  "shareFromNationalPensionService": 0.934,
+  "distinctMonths": 18,
+  "toOrFromManagementInfluence": 2,
+  "probe373": {
+   "head": "744badca6008ee3031942396c39b668fd71f6ca6",
+   "calls": 20,
+   "listCalls": 10,
+   "documentCalls": 10,
+   "defect": "pblntf_detail_ty D001 and D002 returned byte-identical lists (detail filter not applied); 5 of 10 document fetches were duplicates; only 3 unique docs were 5% reports",
+   "totalReportedInWindows": 9231,
+   "purposeLabelInOriginalDoc": "2024 and 2026 general reports state '보유목적 경영권 영향'; 2022 report states the narrative without the category label"
+  },
+  "majorstockDepth": "endpoint returns ~2 years only (earliest 2024-09-24); full history needs list.json+document.xml beyond approved budget",
+  "mde": {
+   "n18_months": 0.66,
+   "n57_rows": 0.371
+  }
+ },
+ "corrections": [
+  {
+   "field": "D_itemm402 concentration",
+   "was": "README: 2004-08 = 64%",
+   "now": "2004-2008 = 153/219 = 69.9% (matches share2004_2008); 64.4% = 2004-2007 (141/219)"
+  },
+  {
+   "field": "C directions",
+   "was": "4 rows UNSTATED; toOrFromManagementInfluence 0",
+   "now": "resolved from original DART documents: 2 exits 경영권 영향->단순투자, 1 일반투자->단순투자, 1 unknown->단순투자; all 4 are non-NPS 약식 filings"
+  },
+  {
+   "field": "C probe",
+   "was": "#373 probe D001/D002 identical lists",
+   "now": "root cause: pblntf_ty sent with pblntf_detail_ty disables the detail filter; send pblntf_detail_ty alone"
+  }
+ ]
+}
