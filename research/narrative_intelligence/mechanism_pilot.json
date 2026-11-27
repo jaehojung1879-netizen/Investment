@@ -1,0 +1,330 @@
+{
+  "schema": "NARRATIVE_MECHANISM_PILOT_V1",
+  "as_of": "2026-11-28",
+  "classification": "EXPLORATORY_AUTHOR_VALIDATION_ONLY",
+  "raw_source_bytes_admitted": 0,
+  "releases": [
+    {
+      "id": "liv24d",
+      "publication": "2024-12-20",
+      "submission_end": "2024-12-06",
+      "url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/livingston-survey/2024/livdec24.pdf",
+      "access": "EXTRACTED_PDF_TEXT_SCREENSHOT_BLOCKED",
+      "population": 24,
+      "stock_n": 15,
+      "stocks": {
+        "2025-06-30": 6260,
+        "2025-12-31": 6489.9,
+        "2026-12-31": 6920.9
+      },
+      "gdp": {
+        "2025H1": 1.9,
+        "2025H2": 1.9
+      },
+      "cpi": {
+        "2025": 2.3,
+        "2026": 2.3
+      },
+      "unemployment": {
+        "2025-12-31": 4.3
+      },
+      "t_bill": {
+        "2025-12-31": 3.4,
+        "2026-12-31": 3.5
+      },
+      "t10": {
+        "2025-12-31": 4,
+        "2026-12-31": 4
+      },
+      "raw_sha256": null,
+      "locator": "Release narrative and Table One where available; GDP half-year annualized; CPI annual-average; unemployment monthly level; rates and SPX end-period levels; survey medians."
+    },
+    {
+      "id": "liv25j",
+      "publication": "2025-06-24",
+      "submission_end": "2025-05-29",
+      "url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/livingston-survey/2025/livjun25.pdf",
+      "access": "EXTRACTED_PDF_TEXT_AND_SCREENSHOT",
+      "population": 21,
+      "stock_n": 13,
+      "stocks": {
+        "2025-12-31": 5801.7,
+        "2026-06-30": 6027.3,
+        "2026-12-31": 6210.3
+      },
+      "gdp": {
+        "2025H1": 0.5,
+        "2025H2": 0.9,
+        "2026H1": 1.8
+      },
+      "cpi": {
+        "2025": 3,
+        "2026": 3
+      },
+      "unemployment": {
+        "2025-12-31": 4.6,
+        "2026-06-30": 4.7
+      },
+      "t_bill": {
+        "2025-12-31": 3.8,
+        "2026-12-31": 3.4
+      },
+      "t10": {
+        "2025-12-31": 4.1,
+        "2026-12-31": 4.1
+      },
+      "raw_sha256": null,
+      "locator": "Release narrative and Table One where available; GDP half-year annualized; CPI annual-average; unemployment monthly level; rates and SPX end-period levels; survey medians."
+    },
+    {
+      "id": "liv25d",
+      "publication": "2025-12-19",
+      "submission_end": "2025-12-05",
+      "url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/livingston-survey/2025/livdec25.pdf",
+      "access": "EXTRACTED_PDF_TEXT_SCREENSHOT_BLOCKED",
+      "population": 21,
+      "stock_n": 14,
+      "stocks": {
+        "2025-12-31": 6830,
+        "2026-06-30": 6909.9,
+        "2026-12-31": 6990,
+        "2027-12-31": 7285.9
+      },
+      "gdp": {
+        "2025H2": 2,
+        "2026H1": 2,
+        "2026H2": 1.9
+      },
+      "cpi": {
+        "2025": 2.8,
+        "2026": 2.8,
+        "2027": 2.4
+      },
+      "unemployment": {
+        "2025-12-31": 4.5,
+        "2026-06-30": 4.5,
+        "2026-12-31": 4.5
+      },
+      "t_bill": {
+        "2025-12-31": 3.69,
+        "2026-12-31": 3
+      },
+      "t10": {
+        "2025-12-31": 4.1,
+        "2026-12-31": 4
+      },
+      "raw_sha256": null,
+      "locator": "Release narrative and Table One where available; GDP half-year annualized; CPI annual-average; unemployment monthly level; rates and SPX end-period levels; survey medians."
+    },
+    {
+      "id": "liv26j",
+      "publication": "2026-06-24",
+      "submission_end": null,
+      "url": "https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/livingston-2026-06",
+      "access": "OPENED_HTML_SUMMARY_ONLY",
+      "population": 17,
+      "stock_n": null,
+      "stocks": {},
+      "gdp": {
+        "2026H1": 2,
+        "2026H2": 2,
+        "2027H1": 1.8
+      },
+      "cpi": {},
+      "unemployment": {},
+      "t_bill": {},
+      "t10": {},
+      "raw_sha256": null,
+      "locator": "Release narrative and Table One where available; GDP half-year annualized; CPI annual-average; unemployment monthly level; rates and SPX end-period levels; survey medians."
+    }
+  ],
+  "docs": [
+    {
+      "id": "fed25j",
+      "event": "2025-06-18",
+      "public": "2025-07-09",
+      "url": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20250618.htm",
+      "release_url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20250709a.htm",
+      "raw_sha256": null,
+      "access": "OFFICIAL_HTML_TEXT_OR_INDEXED_EXCERPT"
+    },
+    {
+      "id": "fed25d",
+      "event": "2025-12-10",
+      "public": "2025-12-30",
+      "url": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20251210.htm",
+      "release_url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20251230a.htm",
+      "raw_sha256": null,
+      "access": "OFFICIAL_HTML_TEXT_OR_INDEXED_EXCERPT"
+    },
+    {
+      "id": "fed26o",
+      "event": "2026-10-28",
+      "public": "2026-11-18",
+      "url": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20261028.htm",
+      "release_url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261118a.htm",
+      "raw_sha256": null,
+      "access": "OFFICIAL_HTML_TEXT_OR_INDEXED_EXCERPT"
+    }
+  ],
+  "claims": [
+    {
+      "id": "tariff_transitory",
+      "source": "fed25j",
+      "actor": "FOMC participants",
+      "scope": "A_FEW",
+      "type": "CONDITIONAL_EXPECTATION",
+      "subject": "tariffs",
+      "mechanism": "One-time price-level increase without lasting change to long-run inflation expectations.",
+      "locator": "Participants' Views on Current Conditions and the Economic Outlook, inflation paragraph",
+      "test": "Compare import prices, core goods and longer-run survey expectations after implementation; separate price level from persistent inflation."
+    },
+    {
+      "id": "tariff_persistent",
+      "source": "fed25j",
+      "actor": "FOMC participants",
+      "scope": "MOST",
+      "type": "RISK_SCENARIO",
+      "subject": "tariffs",
+      "mechanism": "Tariff effects could persist and potentially affect inflation expectations.",
+      "locator": "Same inflation paragraph",
+      "test": "Persistent core goods price growth after direct cost shock fades, conditional on other shocks."
+    },
+    {
+      "id": "labor_demand",
+      "source": "fed25j",
+      "actor": "FOMC participants",
+      "scope": "MOST",
+      "type": "CONDITIONAL_EXPECTATION",
+      "subject": "tariffs",
+      "mechanism": "Higher tariffs or policy uncertainty could weaken labor demand.",
+      "locator": "Labor market discussion",
+      "test": "Employment, hiring and vacancies relative to independent baseline; cannot isolate tariffs by temporal sequence alone."
+    },
+    {
+      "id": "tariff_wane",
+      "source": "fed25d",
+      "actor": "FOMC participants",
+      "scope": "MANY",
+      "type": "EXPECTATION",
+      "subject": "tariffs",
+      "mechanism": "Effects on core goods inflation expected to diminish; timing and degree of pass-through uncertain for some participants.",
+      "locator": "Inflation outlook",
+      "test": "Core goods inflation trajectory; comparison with prior tariff and import-cost changes."
+    },
+    {
+      "id": "tariff_observed",
+      "source": "fed25d",
+      "actor": "FOMC participants",
+      "scope": "MOST",
+      "type": "ATTRIBUTED_OBSERVATION",
+      "subject": "tariffs",
+      "mechanism": "Higher tariffs had raised core inflation through goods prices; not an independently established causal estimate.",
+      "locator": "Inflation discussion",
+      "test": "Independent price data and empirical attribution."
+    },
+    {
+      "id": "ai_credit",
+      "source": "fed26o",
+      "actor": "Federal Reserve staff",
+      "scope": "STAFF",
+      "type": "RISK_SCENARIO",
+      "subject": "AI financing",
+      "mechanism": "If AI investment returns disappoint, debt growth, leasing commitments and circular funding may amplify losses.",
+      "locator": "Staff Review and Policymakers' Discussion of Financial Stability",
+      "test": "Aggregate debt, lease obligations, actual cash flow/coverage and losses, with verified source and denominator; conditional risk not a prediction of crash."
+    },
+    {
+      "id": "forced_sales",
+      "source": "fed26o",
+      "actor": "Federal Reserve staff",
+      "scope": "STAFF",
+      "type": "RISK_SCENARIO",
+      "subject": "financial stability",
+      "mechanism": "Falling asset prices could induce deleveraging and redemption sales, worsening market functioning under severe scenarios.",
+      "locator": "Staff Review and Policymakers' Discussion of Financial Stability",
+      "test": "Measure fund flows, leverage and price impact on independent shocks; S2 overlap; no duplicate execution."
+    }
+  ],
+  "census": [
+    {
+      "name": "SPF individual",
+      "url": "https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/individual-forecasts",
+      "status": "SOURCE_BLOCKED",
+      "note": "Official 22.6 MB workbook link verified, web cannot render XLSX, container download failed. ID can represent firm or respondent; early ID reuse."
+    },
+    {
+      "name": "Livingston individual/dispersion",
+      "url": "https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/livingston-historical-data",
+      "status": "CATALOG_ONLY",
+      "note": "Official individual/median/dispersion catalog verified; no workbook bytes. Discontinued 1952–90 stock index not maintained; avoid common-base assumption."
+    },
+    {
+      "name": "Yale confidence",
+      "url": "https://som.yale.edu/centers/international-center-for-finance/data/stock-market-confidence-indices/united-states",
+      "status": "RIGHTS_RESTRICTED",
+      "note": "Raw monthly replaces six-month rolling view; redistribution requires permission. Do not store raw series in git."
+    },
+    {
+      "name": "AAII",
+      "url": "https://www.aaii.com/sentimentsurvey",
+      "status": "PARTIAL",
+      "note": "Methodology page opened, historical results endpoint 403. Voluntary member response, not population probability; date-specific indexed snippets not admitted."
+    },
+    {
+      "name": "Livingston releases",
+      "url": "https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/livingston-survey",
+      "status": "EXTRACTED_NOT_RAW",
+      "note": "Four consecutive releases 2024-12 to 2026-06; three stock tables; fourth only HTML summary. Not vintage-certified."
+    },
+    {
+      "name": "FOMC minutes",
+      "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
+      "status": "EXTRACTED_NOT_RAW",
+      "note": "Three author-selected mechanism examples, publication date distinct from meeting date. Not representative of all meetings."
+    },
+    {
+      "name": "GDELT",
+      "url": "https://www.gdeltproject.org/",
+      "status": "NOT_ATTEMPTED_THIS_BATCH",
+      "note": "Metadata is not full text or independent belief sample."
+    }
+  ],
+  "contrasts": [
+    {
+      "id": "tariff_persistence_disagreement",
+      "left": "tariff_transitory",
+      "right": "tariff_persistent",
+      "kind": "SAME_SOURCE_COMPETING_HYPOTHESES",
+      "note": "Do not convert verbal quantifiers to shares or treat risk concern as probability forecast."
+    },
+    {
+      "id": "tariff_time_change",
+      "left": "tariff_persistent",
+      "right": "tariff_wane",
+      "kind": "CROSS_RELEASE_DIFFERENT_MODALITY",
+      "note": "Risk of persistence and expectation of eventual waning may coexist; not a proven individual belief reversal."
+    }
+  ],
+  "prospective_candidates": [
+    {
+      "id": "AI_CREDIT_AMPLIFICATION",
+      "kind": "DESIGN_ONLY",
+      "source_claim": "ai_credit",
+      "condition": "AI investment cash returns disappoint",
+      "outcome": "Measured credit losses or coverage deterioration conditional on exposure",
+      "alternative": "Strong cash generation and refinancing capacity absorb financing costs",
+      "blocker": "No independent sector exposure ledger or specified denominator; overlaps S1/S2/S4."
+    },
+    {
+      "id": "TARIFF_PERSISTENCE",
+      "kind": "DESIGN_ONLY",
+      "source_claim": "tariff_persistent",
+      "condition": "Direct tariff shock passes through",
+      "outcome": "Core goods inflation remains elevated beyond direct price-level effect",
+      "alternative": "One-time level adjustment or offset by margins/productivity",
+      "blocker": "Need fixed shock timing, counterfactual, target threshold and as-of data."
+    }
+  ],
+  "investment_evaluation_authorized": false
+}
