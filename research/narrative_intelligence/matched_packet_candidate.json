@@ -1,0 +1,206 @@
+{
+  "schema": "NARRATIVE_MATCHED_INPUT_CANDIDATE_V1",
+  "status": "DESIGN_ONLY_NOT_A_FORECAST",
+  "as_of_date": "2026-11-28",
+  "source_limitation": "Q3 and Q4 original reports independently re-read in extracted text; screenshots both failed. Other sources indexed official excerpts, no raw hashes or PIT certificate. November Beige Book release date inferred from indexed publication time and needs independent explicit date verification before use.",
+  "numeric_facts": [
+    {
+      "id": "spf-q3-US_REAL_GDP",
+      "source": "https://www.philadelphiafed.org/-/media/frbp/assets/surveys-and-data/survey-of-professional-forecasters/2026/spfq326.pdf",
+      "publication": "2026-08-14",
+      "locator": "page 1; quarterly median, 2027 Q2",
+      "metric": "US_REAL_GDP",
+      "target": "2027Q2",
+      "unit": "percent_qoq_annualized",
+      "value": 2.1,
+      "access": "ORIGINAL_REPORT_PDF_TEXT_VISUAL_BLOCKED",
+      "raw_sha256": null
+    },
+    {
+      "id": "spf-q3-US_UNEMPLOYMENT_RATE",
+      "source": "https://www.philadelphiafed.org/-/media/frbp/assets/surveys-and-data/survey-of-professional-forecasters/2026/spfq326.pdf",
+      "publication": "2026-08-14",
+      "locator": "page 1; quarterly median, 2027 Q2",
+      "metric": "US_UNEMPLOYMENT_RATE",
+      "target": "2027Q2",
+      "unit": "percent_quarter_average",
+      "value": 4.3,
+      "access": "ORIGINAL_REPORT_PDF_TEXT_VISUAL_BLOCKED",
+      "raw_sha256": null
+    },
+    {
+      "id": "spf-q3-US_PAYROLL_GAINS",
+      "source": "https://www.philadelphiafed.org/-/media/frbp/assets/surveys-and-data/survey-of-professional-forecasters/2026/spfq326.pdf",
+      "publication": "2026-08-14",
+      "locator": "page 1; quarterly median, 2027 Q2",
+      "metric": "US_PAYROLL_GAINS",
+      "target": "2027Q2",
+      "unit": "thousand_per_month_quarterly",
+      "value": 80.4,
+      "access": "ORIGINAL_REPORT_PDF_TEXT_VISUAL_BLOCKED",
+      "raw_sha256": null
+    },
+    {
+      "id": "spf-q3-US_CPI",
+      "source": "https://www.philadelphiafed.org/-/media/frbp/assets/surveys-and-data/survey-of-professional-forecasters/2026/spfq326.pdf",
+      "publication": "2026-08-14",
+      "locator": "summary table; 2027 Q2",
+      "metric": "US_CPI",
+      "target": "2027Q2",
+      "unit": "percent_qoq_annualized",
+      "value": 2.3,
+      "access": "ORIGINAL_REPORT_PDF_TEXT_VISUAL_BLOCKED",
+      "raw_sha256": null
+    },
+    {
+      "id": "spf-q3-US_TREASURY_10Y",
+      "source": "https://www.philadelphiafed.org/-/media/frbp/assets/surveys-and-data/survey-of-professional-forecasters/2026/spfq326.pdf",
+      "publication": "2026-08-14",
+      "locator": "summary table; 2027 Q2",
+      "metric": "US_TREASURY_10Y",
+      "target": "2027Q2",
+      "unit": "percent_quarter_average",
+      "value": 4.4,
+      "access": "ORIGINAL_REPORT_PDF_TEXT_VISUAL_BLOCKED",
+      "raw_sha256": null
+    },
+    {
+      "id": "spf-q4-US_REAL_GDP",
+      "source": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/survey-of-professional-forecasters/2026/spfQ426.pdf?sc_lang=en",
+      "publication": "2026-11-16",
+      "locator": "page 1; quarterly median, 2027 Q2",
+      "metric": "US_REAL_GDP",
+      "target": "2027Q2",
+      "unit": "percent_qoq_annualized",
+      "value": 2.2,
+      "access": "ORIGINAL_REPORT_PDF_TEXT_VISUAL_BLOCKED",
+      "raw_sha256": null
+    },
+    {
+      "id": "spf-q4-US_UNEMPLOYMENT_RATE",
+      "source": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/survey-of-professional-forecasters/2026/spfQ426.pdf?sc_lang=en",
+      "publication": "2026-11-16",
+      "locator": "page 1; quarterly median, 2027 Q2",
+      "metric": "US_UNEMPLOYMENT_RATE",
+      "target": "2027Q2",
+      "unit": "percent_quarter_average",
+      "value": 4.2,
+      "access": "ORIGINAL_REPORT_PDF_TEXT_VISUAL_BLOCKED",
+      "raw_sha256": null
+    },
+    {
+      "id": "spf-q4-US_PAYROLL_GAINS",
+      "source": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/survey-of-professional-forecasters/2026/spfQ426.pdf?sc_lang=en",
+      "publication": "2026-11-16",
+      "locator": "page 1; quarterly median, 2027 Q2",
+      "metric": "US_PAYROLL_GAINS",
+      "target": "2027Q2",
+      "unit": "thousand_per_month_quarterly",
+      "value": 49.3,
+      "access": "ORIGINAL_REPORT_PDF_TEXT_VISUAL_BLOCKED",
+      "raw_sha256": null
+    },
+    {
+      "id": "spf-q4-US_CPI",
+      "source": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/survey-of-professional-forecasters/2026/spfQ426.pdf?sc_lang=en",
+      "publication": "2026-11-16",
+      "locator": "summary table; 2027 Q2",
+      "metric": "US_CPI",
+      "target": "2027Q2",
+      "unit": "percent_qoq_annualized",
+      "value": 2.4,
+      "access": "ORIGINAL_REPORT_PDF_TEXT_VISUAL_BLOCKED",
+      "raw_sha256": null
+    },
+    {
+      "id": "spf-q4-US_TREASURY_10Y",
+      "source": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/survey-of-professional-forecasters/2026/spfQ426.pdf?sc_lang=en",
+      "publication": "2026-11-16",
+      "locator": "summary table; 2027 Q2",
+      "metric": "US_TREASURY_10Y",
+      "target": "2027Q2",
+      "unit": "percent_quarter_average",
+      "value": 4.9,
+      "access": "ORIGINAL_REPORT_PDF_TEXT_VISUAL_BLOCKED",
+      "raw_sha256": null
+    }
+  ],
+  "mechanisms": [
+    {
+      "id": "fed-growth",
+      "source": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20261028.htm",
+      "publication": "2026-11-18",
+      "locator": "Staff Economic Outlook",
+      "actor": "Fed staff",
+      "modality": "BASELINE",
+      "paraphrase": "AI-related investment spending and financial conditions support growth above potential; uncertainty includes durability of investment and possible productivity gains.",
+      "alternative": "Investment spending weakens or financing tightens.",
+      "access": "INDEXED_OFFICIAL_TEXT_NOT_RAW_BYTES"
+    },
+    {
+      "id": "fed-risk",
+      "source": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20261028.htm",
+      "publication": "2026-11-18",
+      "locator": "Staff Review and Policymakers' Discussion of Financial Stability",
+      "actor": "Fed staff",
+      "modality": "CONDITIONAL_RISK",
+      "paraphrase": "Debt, leasing and circular financing can amplify losses if AI returns disappoint; robust bank and household balance sheets provide buffers.",
+      "alternative": "Cash generation and resilient balance sheets absorb shocks.",
+      "access": "INDEXED_OFFICIAL_TEXT_NOT_RAW_BYTES"
+    },
+    {
+      "id": "executive-ai",
+      "source": "https://www.atlantafed.org/research-and-data/publications/working-papers/2026/03/24/03-firm-data-on-ai",
+      "publication": "2026-03-24",
+      "locator": "Abstract",
+      "actor": "Cross-country executive survey",
+      "modality": "SELF_REPORTED_PAST_AND_FUTURE_EXPECTATION",
+      "paraphrase": "Executives reported little AI effect on jobs or productivity to date while anticipating future productivity gains and modest employment reductions.",
+      "alternative": "Survey perceptions may lag actual measured productivity; not a US-only sample.",
+      "access": "INDEXED_OFFICIAL_ABSTRACT_NOT_RAW_BYTES"
+    },
+    {
+      "id": "beigebook",
+      "source": "https://www.federalreserve.gov/monetarypolicy/beigebook202611-summary.htm",
+      "publication": "2026-11-25",
+      "locator": "National summary, labor market",
+      "actor": "District contact reports",
+      "modality": "ATTRIBUTED_OBSERVATION",
+      "paraphrase": "Employment increased slightly overall, and many firms described stable headcount and replacement hiring rather than expansion.",
+      "alternative": "Contact coverage is nonprobability and may differ from national payroll statistics.",
+      "access": "INDEXED_OFFICIAL_TEXT_NOT_RAW_BYTES"
+    }
+  ],
+  "baseline_id": "spf-q4-US_REAL_GDP",
+  "target": {
+    "id": "US_RGDP_2027Q2_SAAR",
+    "period": "2027Q2",
+    "target_end": "2027-06-30",
+    "unit": "percent_qoq_annualized",
+    "resolution": {
+      "agency": "BEA",
+      "vintage": "first official advance estimate for 2027 Q2",
+      "locator": "headline real GDP annualized change from preceding quarter; if absent remain unresolved",
+      "definition_reference": "https://www.bea.gov/news/gdp-release-additional-information"
+    },
+    "primary": true
+  },
+  "secondary_candidate": {
+    "id": "US_PAYROLL_GAINS_2027Q2",
+    "status": "BLOCKED_DEFINITION",
+    "note": "SPF quarterly average monthly change in payroll levels; verify official exact calculation and vintage before admitting. Not automatically equal to average of three first monthly changes."
+  },
+  "protocol": {
+    "A": "identical numeric_facts only",
+    "B": "identical numeric_facts plus mechanisms",
+    "control": "Separate independent contexts with same pinned model/prompt parameters; no access to other arm, no post-cutoff retrieval; numeric facts from text sources must be admitted to both if used; no historical claims about predictive skill.",
+    "blockers": [
+      "source bytes and publication clocks not certified",
+      "independent reviewer and exact prompt/model configuration missing",
+      "target census and analysis plan not approved"
+    ],
+    "actual_predictions": 0,
+    "forecast_registration_authorized": false,
+    "market_outcomes_read": false
+  }
+}
