@@ -175,6 +175,10 @@ def assess(*, model_version, as_of, macro, availability, expected_series, plan, 
                 or not set(columns + [target]) <= set(frame.columns)
             ):
                 raise ValueError("invalid feature frame")
+            # The legacy identity digest is order-insensitive; the live plan is not.
+            if columns != expected:
+                reasons.append(f"{slot}:ORDERED_FEATURE_PLAN_MISMATCH")
+                continue
             if (
                 not _finite_columns(frame, columns + [target])
                 or not len(frame) or _last_date(frame.index) > as_of

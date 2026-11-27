@@ -133,3 +133,18 @@ def test_gate_reconciles_actual_frame_not_just_claimed_metadata(case):
     result = assess(**data)
     assert result["decision"] == "HOLD"
     assert result["writerAuthorized"] is False
+
+def test_ordered_feature_plan_rejects_permutation_despite_legacy_digest():
+    data = inputs()
+    slot = "KR:B:20:screen"
+    frame, _ = data["observed"][slot]
+    frame = frame.assign(y=[4.0, 3.0, 2.0, 1.0])
+    data["plan"][slot]["columns"] = ["x", "y"]
+    assert fr.feature_set_digest(["x", "y"]) == fr.feature_set_digest(["y", "x"])
+    data["observed"][slot] = (frame, ["x", "y"])
+    assert assess(**data)["decision"] == "REGISTERED_INPUTS_OBSERVED"
+    data["observed"][slot] = (frame, ["y", "x"])
+    result = assess(**data)
+    assert result["decision"] == "HOLD"
+    assert f"{slot}:ORDERED_FEATURE_PLAN_MISMATCH" in result["reasons"]
+    assert result["writerAuthorized"] is False
