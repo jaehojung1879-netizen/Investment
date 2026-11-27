@@ -1,0 +1,20 @@
+# FRED live-only preflight candidate — #279
+
+Status: **INACTIVE / DEVELOPMENT ONLY**. Owner authorized development under the condition that original sealed bytes remain unchanged (#292 comment 7210648039). No production entry point, existing workflow, registered policy, historical dependency, or receipt is changed.
+
+The existing FRED resilience module has the bounded transport and feature-identity logic. This adapter supplies a missing operational boundary: use exactly one fetched frame for the model, count ALL planned ticker/horizon/path slots, reject a truncated source registry, missing training starts or policy, and emit a HOLD recommendation if any required input fails. A self-reported digest, fetched series count, or only the successful subset of model slots cannot make a whole run eligible. The positive status is not writer authorization.
+
+## Live wiring acceptance (not yet implemented)
+
+1. Freeze a per-slot feature/target/coverage plan before observing model outcomes. Distinct core/screen history windows and benchmark-specific columns require distinct specifications. No new policy numbers are selected here. Document actual release cadence and common coverage; owner must approve concrete values.
+2. A separately reviewed live-only entry point consumes fetch_once's exact macro object, derives the full slot census from the authorized live plan, and runs assess before publishing any affected short-term ML/regime output. A HOLD must prevent affected paper-signal records and prevent an artifact from labeling an unverified model as registered. Keep independent weekly ETF policy available through its own validated inputs. Do not monkeypatch the historical runner or reuse a different macro fetch after preflight.
+3. Establish an additive workflow/entry-point maintenance contract against the exact frozen historical Git blobs (including dependency and workflow pins), with an explicit migration review. Do not change historical expected digests or weaken their tests. Scope the live adapter to current main and the registered production artifact; no automatic activation from merging this candidate.
+4. Exercise normal, disabled, partial, complete outage, missing slots, freshness, invalid policy, and unchanged weekly path using synthetic tests and a later authorized network-only dry run. Verify current artifact metadata, no affected ledger record on HOLD, no old receipt or sealed file change. Actual deployment and full end-to-end review remain separate gates.
+
+The candidate tests use synthetic model frames and mock the provider; no price return data or outcome inspection. The tests are not an end-to-end live implementation or proof of actual FRED coverage. The existing inactive import census remains untouched. This adapter lives outside the sealed pipeline and scripts entry points. Native CI and independent review are required.
+
+## Post-CI author hardening
+
+The provider receipt is now reconciled against actual series first/last non-null date and count, actual finite numeric values, datetime ordering/uniqueness, and the recomputed ML-series overlap metadata. The approved per-slot plan must additionally supply minTrainingRows and latestFeatureDate (region-specific completed-session expectation). Unmeasured, stale or future feature frames cannot pass the preflight merely by reporting a plausible historical first training date. These are admissibility checks, not proof of release-time vintage or actual optimizer training. Thresholds and planned last sessions must be registered externally; no operational value is chosen by this PR.
+
+Ordered features are also compared directly with the authorized slot plan because the legacy feature-set digest sorts names. A same-set permutation is refused. This checks the caller-supplied observed order only; the future live adapter must still attest the exact optimizer and inference arrays, horizon and label maturity, independently defined slot census, and macro-to-model data lineage. The legacy digest and sealed code remain unchanged.
