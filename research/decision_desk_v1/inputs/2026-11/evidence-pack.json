@@ -1,0 +1,1347 @@
+{
+ "cohort": "2026-11",
+ "marketFetchedAtUtc": "2026-11-11T12:26:21+00:00",
+ "marketManifestSha256": "b5c57feaf1f12fc5fe3f89f1a88ee2b7583459a3088e4a41afa8900572b00aa8",
+ "receiptsBlob": "e32f67038e4cca56034d1bdb02c4e21f9471f133",
+ "receiptsSha256": "9a6c3d3eb2cd49db1b8ca8d2d6e22df5b08a15f6d65b0f200a4a320fa0212f82",
+ "regions": {
+  "KR": {
+   "asOfDate": "2026-11-06",
+   "calibrationOrdering": {
+    "established": false,
+    "meanRankIC": 0.01403,
+    "rankICTStat": 0.677,
+    "reason": "ORDERING_NOT_DISTINGUISHABLE_FROM_NOISE",
+    "topBucketSpreadPct": -0.471,
+    "topMinusBottomTStat": 1.422
+   },
+   "candidates": [
+    {
+     "alphaPercentile": 100,
+     "coverage": {
+      "dataCompleteness": 0.778,
+      "evidenceCoverage": 0.893,
+      "sleevesPresent": 4
+     },
+     "downsideVolPct": 50.6,
+     "edgeAvailable": false,
+     "edgePointEstimatePct": -0.492,
+     "edgeSupport": {
+      "reason": "ORDERING_NOT_ESTABLISHED",
+      "reasonKo": "알파 순위의 수익 정렬이 통계적으로 확인되지 않음",
+      "statisticallySupported": false
+     },
+     "eligible": false,
+     "entryState": "AVOID",
+     "exclusionCodes": [
+      "ORDERING_NOT_ESTABLISHED",
+      "ENTRY_OR_RESEARCH_STATE_BLOCKS_SIZING"
+     ],
+     "exclusionReasonsKo": [
+      "알파 순위의 수익 정렬이 통계적으로 확인되지 않음",
+      "진입/리서치 상태가 편입을 막음"
+     ],
+     "expectedNetAdvantagePct": null,
+     "factorPercentiles": {
+      "lowvol": 84,
+      "momentum": 95,
+      "quality": 90,
+      "value": 84
+     },
+     "gatesFailed": [
+      "G2_ENTRY",
+      "G3_FALLING_PRICE"
+     ],
+     "inModelHoldings": false,
+     "liquidityRisk": {
+      "beta": 0.31,
+      "cvar95Pct": 6.59,
+      "downsideVolPct": 50.6,
+      "liquidityKo": null,
+      "marketCap": 7280520593408.0,
+      "maxDD252Pct": -40.6,
+      "vol252Pct": 56.4
+     },
+     "name": "GS",
+     "priceMomentum": {
+      "aboveMA200": false,
+      "asOf": "2026-11-06",
+      "lastClose": 76900.0,
+      "mom12_1Pct": 120.9,
+      "mom63Pct": -22.2,
+      "pct52wHigh": 59.5
+     },
+     "rank": 1,
+     "rankChange": {
+      "available": true,
+      "labelKo": "순위 유지",
+      "previousRank": 1,
+      "priorAsOfDate": "2026-10-30"
+     },
+     "region": "KR",
+     "researchScore": 0.916,
+     "researchView": "POSITIVE",
+     "sector": "Industrials",
+     "sectorKo": "산업재",
+     "selected": false,
+     "source": "watchlist+candidates",
+     "strengthsKo": [
+      "모멘텀 95p",
+      "가치 84p",
+      "퀄리티 90p",
+      "저변동 84p"
+     ],
+     "thesisKo": "모멘텀·퀄리티 주도 · 섹터중립 알파 상위 1%",
+     "ticker": "078930.KS",
+     "valuationProfitability": {
+      "basisKo": "현재 스냅샷(시점 기준 아님)",
+      "debtToEquity": 39.427,
+      "fcfYield": 0.194,
+      "forwardPE": 5.976794,
+      "operatingMargin": 0.23166999,
+      "pointInTime": false,
+      "profitMargin": 0.08567,
+      "roe": 0.13332
+     },
+     "weaknessesKo": [
+      "200일선 아래",
+      "진입 상태 경고(회피)"
+     ]
+    },
+    {
+     "alphaPercentile": 99,
+     "coverage": {
+      "dataCompleteness": 0.778,
+      "evidenceCoverage": 0.893,
+      "sleevesPresent": 4
+     },
+     "downsideVolPct": 64.7,
+     "edgeAvailable": false,
+     "edgePointEstimatePct": -0.492,
+     "edgeSupport": {
+      "reason": "ORDERING_NOT_ESTABLISHED",
+      "reasonKo": "알파 순위의 수익 정렬이 통계적으로 확인되지 않음",
+      "statisticallySupported": false
+     },
+     "eligible": false,
+     "entryState": "AVOID",
+     "exclusionCodes": [
+      "ORDERING_NOT_ESTABLISHED",
+      "ENTRY_OR_RESEARCH_STATE_BLOCKS_SIZING"
+     ],
+     "exclusionReasonsKo": [
+      "알파 순위의 수익 정렬이 통계적으로 확인되지 않음",
+      "진입/리서치 상태가 편입을 막음"
+     ],
+     "expectedNetAdvantagePct": null,
+     "factorPercentiles": {
+      "lowvol": 60,
+      "momentum": 94,
+      "quality": 95,
+      "value": 89
+     },
+     "gatesFailed": [
+      "G2_ENTRY",
+      "G3_FALLING_PRICE",
+      "G4_RISK"
+     ],
+     "inModelHoldings": false,
+     "liquidityRisk": {
+      "beta": 0.76,
+      "cvar95Pct": 8.91,
+      "downsideVolPct": 64.7,
+      "liquidityKo": null,
+      "marketCap": 2695303790592.0,
+      "maxDD252Pct": -48.2,
+      "vol252Pct": 64.6
+     },
+     "name": "KCC",
+     "priceMomentum": {
+      "aboveMA200": false,
+      "asOf": "2026-11-06",
+      "lastClose": 366500.0,
+      "mom12_1Pct": 8.5,
+      "mom63Pct": -17.1,
+      "pct52wHigh": 54.1
+     },
+     "rank": 2,
+     "rankChange": {
+      "available": true,
+      "labelKo": "4위 → 2위",
+      "previousRank": 4,
+      "priorAsOfDate": "2026-10-30"
+     },
+     "region": "KR",
+     "researchScore": 0.891,
+     "researchView": "POSITIVE",
+     "sector": "Basic Materials",
+     "sectorKo": "Basic Materials",
+     "selected": false,
+     "source": "watchlist+candidates",
+     "strengthsKo": [
+      "모멘텀 94p",
+      "가치 89p",
+      "퀄리티 95p"
+     ],
+     "thesisKo": "퀄리티·모멘텀 주도 · 섹터중립 알파 상위 1%",
+     "ticker": "002380.KS",
+     "valuationProfitability": {
+      "basisKo": "현재 스냅샷(시점 기준 아님)",
+      "debtToEquity": 49.251,
+      "fcfYield": 0.0352,
+      "forwardPE": 9.5844555,
+      "operatingMargin": 0.07136,
+      "pointInTime": false,
+      "profitMargin": 0.55140996,
+      "roe": 0.40403
+     },
+     "weaknessesKo": [
+      "200일선 아래",
+      "진입 상태 경고(회피)"
+     ]
+    },
+    {
+     "alphaPercentile": 98,
+     "coverage": {
+      "dataCompleteness": 0.667,
+      "evidenceCoverage": 0.86,
+      "sleevesPresent": 4
+     },
+     "downsideVolPct": 91.7,
+     "edgeAvailable": false,
+     "edgePointEstimatePct": -0.492,
+     "edgeSupport": {
+      "reason": "ORDERING_NOT_ESTABLISHED",
+      "reasonKo": "알파 순위의 수익 정렬이 통계적으로 확인되지 않음",
+      "statisticallySupported": false
+     },
+     "eligible": false,
+     "entryState": "AVOID",
+     "exclusionCodes": [
+      "ORDERING_NOT_ESTABLISHED",
+      "ENTRY_OR_RESEARCH_STATE_BLOCKS_SIZING"
+     ],
+     "exclusionReasonsKo": [
+      "알파 순위의 수익 정렬이 통계적으로 확인되지 않음",
+      "진입/리서치 상태가 편입을 막음"
+     ],
+     "expectedNetAdvantagePct": null,
+     "factorPercentiles": {
+      "lowvol": 39,
+      "momentum": 64,
+      "quality": 99,
+      "value": 99
+     },
+     "gatesFailed": [
+      "G1_DATA",
+      "G2_ENTRY",
+      "G3_FALLING_PRICE",
+      "G4_RISK"
+     ],
+     "inModelHoldings": false,
+     "liquidityRisk": {
+      "beta": 1.4,
+      "cvar95Pct": 11.64,
+      "downsideVolPct": 91.7,
+      "liquidityKo": null,
+      "marketCap": 798256179183616.0,
+      "maxDD252Pct": -61.2,
+      "vol252Pct": 93.3
+     },
+     "name": "SK하이닉스",
+     "priceMomentum": {
+      "aboveMA200": false,
+      "asOf": "2026-11-06",
+      "lastClose": 1132000.0,
+      "mom12_1Pct": 223.6,
+      "mom63Pct": -20.4,
+      "pct52wHigh": 38.8
+     },
+     "rank": 3,
+     "rankChange": {
+      "available": true,
+      "labelKo": "신규 진입",
+      "previousRank": null,
+      "priorAsOfDate": "2026-10-30"
+     },
+     "region": "KR",
+     "researchScore": 0.855,
+     "researchView": "POSITIVE",
+     "sector": "Technology",
+     "sectorKo": "정보기술",
+     "selected": false,
+     "source": "watchlist+candidates",
+     "strengthsKo": [
+      "가치 99p",
+      "퀄리티 99p"
+     ],
+     "thesisKo": "밸류·퀄리티 주도 · 섹터중립 알파 상위 2%",
+     "ticker": "000660.KS",
+     "valuationProfitability": {
+      "basisKo": "현재 스냅샷(시점 기준 아님)",
+      "debtToEquity": 5.111,
+      "forwardPE": 2.1384792,
+      "operatingMargin": 0.79657,
+      "pointInTime": false,
+      "profitMargin": 0.70269996,
+      "roe": 0.92542
+     },
+     "weaknessesKo": [
+      "저변동 39p",
+      "200일선 아래",
+      "꼬리위험 CVaR 경고(11.6%)",
+      "진입 상태 경고(회피)"
+     ]
+    },
+    {
+     "alphaPercentile": 97,
+     "coverage": {
+      "dataCompleteness": 0.778,
+      "evidenceCoverage": 0.893,
+      "sleevesPresent": 4
+     },
+     "downsideVolPct": 72.1,
+     "edgeAvailable": false,
+     "edgePointEstimatePct": -0.492,
+     "edgeSupport": {
+      "reason": "ORDERING_NOT_ESTABLISHED",
+      "reasonKo": "알파 순위의 수익 정렬이 통계적으로 확인되지 않음",
+      "statisticallySupported": false
+     },
+     "eligible": false,
+     "entryState": "AVOID",
+     "exclusionCodes": [
+      "ORDERING_NOT_ESTABLISHED",
+      "ENTRY_OR_RESEARCH_STATE_BLOCKS_SIZING"
+     ],
+     "exclusionReasonsKo": [
+      "알파 순위의 수익 정렬이 통계적으로 확인되지 않음",
+      "진입/리서치 상태가 편입을 막음"
+     ],
+     "expectedNetAdvantagePct": null,
+     "factorPercentiles": {
+      "lowvol": 76,
+      "momentum": 66,
+      "quality": 93,
+      "value": 93
+     },
+     "gatesFailed": [
+      "G2_ENTRY",
+      "G3_FALLING_PRICE",
+      "G4_RISK"
+     ],
+     "inModelHoldings": false,
+     "liquidityRisk": {
+      "beta": 1.11,
+      "cvar95Pct": 9.09,
+      "downsideVolPct": 72.1,
+      "liquidityKo": null,
+      "marketCap": 991729691918336.0,
+      "maxDD252Pct": -35.6,
+      "vol252Pct": 75.6
+     },
+     "name": "삼성전자우",
+     "priceMomentum": {
+      "aboveMA200": false,
+      "asOf": "2026-11-06",
+      "lastClose": 150300.0,
+      "mom12_1Pct": 158.2,
+      "mom63Pct": -9.6,
+      "pct52wHigh": 65.5
+     },
+     "rank": 5,
+     "rankChange": {
+      "available": true,
+      "labelKo": "신규 진입",
+      "previousRank": null,
+      "priorAsOfDate": "2026-10-30"
+     },
+     "region": "KR",
+     "researchScore": 0.728,
+     "researchView": "POSITIVE",
+     "sector": "Technology",
+     "sectorKo": "정보기술",
+     "selected": false,
+     "source": "watchlist+candidates",
+     "strengthsKo": [
+      "가치 93p",
+      "퀄리티 93p",
+      "저변동 76p"
+     ],
+     "thesisKo": "밸류·퀄리티 주도 · 섹터중립 알파 상위 3%",
+     "ticker": "005935.KS",
+     "valuationProfitability": {
+      "basisKo": "현재 스냅샷(시점 기준 아님)",
+      "debtToEquity": 2.799,
+      "fcfYield": 0.0845,
+      "forwardPE": 2.161977,
+      "operatingMargin": 0.55044,
+      "pointInTime": false,
+      "profitMargin": 0.35823002,
+      "roe": 0.41577998
+     },
+     "weaknessesKo": [
+      "200일선 아래",
+      "진입 상태 경고(회피)"
+     ]
+    },
+    {
+     "alphaPercentile": 97,
+     "coverage": {
+      "dataCompleteness": 0.778,
+      "evidenceCoverage": 0.893,
+      "sleevesPresent": 4
+     },
+     "downsideVolPct": 39.1,
+     "edgeAvailable": false,
+     "edgePointEstimatePct": -0.492,
+     "edgeSupport": {
+      "reason": "ORDERING_NOT_ESTABLISHED",
+      "reasonKo": "알파 순위의 수익 정렬이 통계적으로 확인되지 않음",
+      "statisticallySupported": false
+     },
+     "eligible": false,
+     "entryState": "WAIT_FOR_PULLBACK",
+     "exclusionCodes": [
+      "ORDERING_NOT_ESTABLISHED"
+     ],
+     "exclusionReasonsKo": [
+      "알파 순위의 수익 정렬이 통계적으로 확인되지 않음"
+     ],
+     "expectedNetAdvantagePct": null,
+     "factorPercentiles": {
+      "lowvol": 98,
+      "momentum": 90,
+      "quality": 91,
+      "value": 37
+     },
+     "gatesFailed": [],
+     "inModelHoldings": false,
+     "liquidityRisk": {
+      "beta": 0.11,
+      "cvar95Pct": 5.51,
+      "downsideVolPct": 39.1,
+      "liquidityKo": null,
+      "marketCap": 7545871138816.0,
+      "maxDD252Pct": -23.0,
+      "vol252Pct": 39.9
+     },
+     "name": "코웨이",
+     "priceMomentum": {
+      "aboveMA200": true,
+      "asOf": "2026-11-06",
+      "lastClose": 107600.0,
+      "mom12_1Pct": 14.9,
+      "mom63Pct": 13.2,
+      "pct52wHigh": 98.0
+     },
+     "rank": 4,
+     "rankChange": {
+      "available": true,
+      "labelKo": "2위 → 4위",
+      "previousRank": 2,
+      "priorAsOfDate": "2026-10-30"
+     },
+     "region": "KR",
+     "researchScore": 0.768,
+     "researchView": "POSITIVE",
+     "sector": "Consumer Cyclical",
+     "sectorKo": "Consumer Cyclical",
+     "selected": false,
+     "source": "watchlist+candidates",
+     "strengthsKo": [
+      "모멘텀 90p",
+      "퀄리티 91p",
+      "저변동 98p",
+      "200일선 위"
+     ],
+     "thesisKo": "저변동·퀄리티 주도 · 섹터중립 알파 상위 3%",
+     "ticker": "021240.KS",
+     "valuationProfitability": {
+      "basisKo": "현재 스냅샷(시점 기준 아님)",
+      "debtToEquity": 69.925,
+      "fcfYield": 0.0505,
+      "forwardPE": 9.609357,
+      "operatingMargin": 0.17557,
+      "pointInTime": false,
+      "profitMargin": 0.12893,
+      "roe": 0.19315
+     },
+     "weaknessesKo": [
+      "가치 37p"
+     ]
+    },
+    {
+     "alphaPercentile": 96,
+     "downsideVolPct": 75.0,
+     "edgeAvailable": false,
+     "edgePointEstimatePct": -0.492,
+     "eligible": false,
+     "entryState": "AVOID",
+     "exclusionCodes": [
+      "ORDERING_NOT_ESTABLISHED",
+      "ENTRY_OR_RESEARCH_STATE_BLOCKS_SIZING"
+     ],
+     "expectedNetAdvantagePct": null,
+     "gatesFailed": [
+      "G1_DATA",
+      "G2_ENTRY",
+      "G4_RISK",
+      "G5_LEVERAGE"
+     ],
+     "name": "SK",
+     "sector": "Industrials",
+     "selected": false,
+     "source": "candidates",
+     "ticker": "034730.KS"
+    },
+    {
+     "alphaPercentile": 95,
+     "downsideVolPct": 101.8,
+     "edgeAvailable": false,
+     "edgePointEstimatePct": -0.492,
+     "eligible": false,
+     "entryState": "AVOID",
+     "exclusionCodes": [
+      "ORDERING_NOT_ESTABLISHED",
+      "ENTRY_OR_RESEARCH_STATE_BLOCKS_SIZING"
+     ],
+     "expectedNetAdvantagePct": null,
+     "gatesFailed": [
+      "G1_DATA",
+      "G2_ENTRY",
+      "G4_RISK"
+     ],
+     "name": "SK스퀘어",
+     "sector": "Financial Services",
+     "selected": false,
+     "source": "candidates",
+     "ticker": "402340.KS"
+    },
+    {
+     "alphaPercentile": 94,
+     "downsideVolPct": 75.9,
+     "edgeAvailable": false,
+     "edgePointEstimatePct": -1.993,
+     "eligible": false,
+     "entryState": "AVOID",
+     "exclusionCodes": [
+      "ORDERING_NOT_ESTABLISHED",
+      "ENTRY_OR_RESEARCH_STATE_BLOCKS_SIZING"
+     ],
+     "expectedNetAdvantagePct": null,
+     "gatesFailed": [
+      "G1_DATA",
+      "G2_ENTRY",
+      "G4_RISK",
+      "G5_LEVERAGE"
+     ],
+     "name": "삼성전자",
+     "sector": "Technology",
+     "selected": false,
+     "source": "candidates",
+     "ticker": "005930.KS"
+    },
+    {
+     "alphaPercentile": 93,
+     "downsideVolPct": 46.5,
+     "edgeAvailable": false,
+     "edgePointEstimatePct": -1.993,
+     "eligible": false,
+     "entryState": "WATCH",
+     "exclusionCodes": [
+      "ORDERING_NOT_ESTABLISHED"
+     ],
+     "expectedNetAdvantagePct": null,
+     "gatesFailed": [
+      "G1_DATA",
+      "G4_RISK",
+      "G5_LEVERAGE"
+     ],
+     "name": "한국타이어앤테크놀로지",
+     "sector": "Consumer Cyclical",
+     "selected": false,
+     "source": "candidates",
+     "ticker": "161390.KS"
+    },
+    {
+     "alphaPercentile": 92,
+     "downsideVolPct": 44.7,
+     "edgeAvailable": false,
+     "edgePointEstimatePct": -1.993,
+     "eligible": false,
+     "entryState": "WAIT_FOR_PULLBACK",
+     "exclusionCodes": [
+      "ORDERING_NOT_ESTABLISHED"
+     ],
+     "expectedNetAdvantagePct": null,
+     "gatesFailed": [
+      "G1_DATA",
+      "G4_RISK",
+      "G5_LEVERAGE"
+     ],
+     "name": "에스원",
+     "sector": "Industrials",
+     "selected": false,
+     "source": "candidates",
+     "ticker": "012750.KS"
+    },
+    {
+     "alphaPercentile": 92,
+     "downsideVolPct": 35.3,
+     "edgeAvailable": false,
+     "edgePointEstimatePct": -1.993,
+     "eligible": false,
+     "entryState": "WAIT_FOR_PULLBACK",
+     "exclusionCodes": [
+      "ORDERING_NOT_ESTABLISHED"
+     ],
+     "expectedNetAdvantagePct": null,
+     "gatesFailed": [
+      "G1_DATA",
+      "G4_RISK",
+      "G5_LEVERAGE"
+     ],
+     "name": "LG유플러스",
+     "sector": "Communication Services",
+     "selected": false,
+     "source": "candidates",
+     "ticker": "032640.KS"
+    },
+    {
+     "alphaPercentile": 91,
+     "downsideVolPct": 33.0,
+     "edgeAvailable": false,
+     "edgePointEstimatePct": -1.993,
+     "eligible": false,
+     "entryState": "WATCH",
+     "exclusionCodes": [
+      "ORDERING_NOT_ESTABLISHED"
+     ],
+     "expectedNetAdvantagePct": null,
+     "gatesFailed": [
+      "G1_DATA",
+      "G4_RISK"
+     ],
+     "name": "한국가스공사",
+     "sector": "Utilities",
+     "selected": false,
+     "source": "candidates",
+     "ticker": "036460.KS"
+    }
+   ],
+   "costs": {
+    "benchmarkRoundTripPct": 0.11,
+    "commissionBps": 1.5,
+    "sellTaxBps": 20.0,
+    "source": "pipeline/benchmark_alpha.py REALISTIC_COSTS (dated sell tax)",
+    "spreadBps": 8.0,
+    "stockRoundTripPct": 0.31,
+    "switchCostPct": 0.42
+   },
+   "freshness": {
+    "expectedSession": "2026-11-06",
+    "observedSession": "2026-11-06",
+    "reason": null,
+    "sessionEvidence": "^KS11",
+    "sourceDate": "2026-11-06",
+    "staleNames": [],
+    "status": "FRESH",
+    "weekEnd": true
+   },
+   "macro": {
+    "breakeven10": 2.24,
+    "curve10y3m": 0.6699999999999999,
+    "dBreakeven63": -0.019999999999999574,
+    "dY10_63": 0.14999999999999947,
+    "fredValuesDatedBefore": "2026-11-06",
+    "gldReturn126Pct": -14.120386737513435,
+    "iefReturn126Pct": -3.2645308593184152,
+    "usdkrwH10LastObservation": {
+     "date": "2026-11-05",
+     "note": "H.10 publishes weekly; an observation is usable only after its Monday release",
+     "value": 1352.95
+    },
+    "usdkrwVendorChange63Pct": -4.301817545409348,
+    "uupReturn126Pct": 6.547179949482462,
+    "vix": 28.18,
+    "y10": 4.84
+   },
+   "market": {
+    "aboveMA200": false,
+    "close": 5059.68994140625,
+    "drawdownFrom252HighPct": -44.48776900857885,
+    "index": "^KS11",
+    "lastSession": "2026-11-06",
+    "return252Pct": 25.152179132714213,
+    "return63Pct": -20.43199292336021,
+    "vol63Pct": 46.84897067547489
+   },
+   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+   "noTradeReason": "ORDERING_NOT_ESTABLISHED",
+   "productionStatus": "PASSIVE_NO_DEFENSIBLE_EDGE",
+   "productionWeights": {
+    "069500.KS": 1.0
+   },
+   "receiptDigest": "004ab3870da0b8e444d01362bc51d27c38967631168de8be434909c903a7b596",
+   "receiptGeneratedAt": "2026-11-07T06:09:57.794612+00:00",
+   "receiptId": "weekly-passive-first-v1|KR|2026-11-06",
+   "siteDataSha256": "7dcd84bccafdcd9f4f3f7aab08f97920c2550cadd196dbf4619b19a98ca5ff4d"
+  },
+  "US": {
+   "asOfDate": "2026-11-06",
+   "calibrationOrdering": {
+    "established": false,
+    "meanRankIC": 0.00485,
+    "rankICTStat": 0.165,
+    "reason": "ORDERING_NOT_DISTINGUISHABLE_FROM_NOISE",
+    "topBucketSpreadPct": 0.33,
+    "topMinusBottomTStat": 0.61
+   },
+   "candidates": [
+    {
+     "alphaPercentile": 100,
+     "coverage": {
+      "dataCompleteness": 1.0,
+      "evidenceCoverage": 0.96,
+      "sleevesPresent": 4
+     },
+     "downsideVolPct": 37.2,
+     "edgeAvailable": false,
+     "edgePointEstimatePct": 0.062,
+     "edgeSupport": {
+      "reason": "ORDERING_NOT_ESTABLISHED",
+      "reasonKo": "알파 순위의 수익 정렬이 통계적으로 확인되지 않음",
+      "statisticallySupported": false
+     },
+     "eligible": false,
+     "entryState": "WAIT_FOR_PULLBACK",
+     "exclusionCodes": [
+      "ORDERING_NOT_ESTABLISHED"
+     ],
+     "exclusionReasonsKo": [
+      "알파 순위의 수익 정렬이 통계적으로 확인되지 않음"
+     ],
+     "expectedNetAdvantagePct": null,
+     "factorPercentiles": {
+      "lowvol": 17,
+      "momentum": 100,
+      "quality": 61,
+      "value": 92
+     },
+     "gatesFailed": [],
+     "inModelHoldings": false,
+     "liquidityRisk": {
+      "beta": -0.26,
+      "cvar95Pct": 5.27,
+      "downsideVolPct": 37.2,
+      "liquidityKo": null,
+      "marketCap": 101490491392.0,
+      "maxDD252Pct": -23.1,
+      "vol252Pct": 37.3
+     },
+     "name": "Marathon Petroleum",
+     "priceMomentum": {
+      "aboveMA200": true,
+      "asOf": "2026-11-06",
+      "lastClose": 372.74,
+      "mom12_1Pct": 140.1,
+      "mom63Pct": 4.9,
+      "pct52wHigh": 76.9
+     },
+     "rank": 3,
+     "rankChange": {
+      "available": true,
+      "labelKo": "신규 진입",
+      "previousRank": null,
+      "priorAsOfDate": "2026-10-30"
+     },
+     "region": "US",
+     "researchScore": 0.736,
+     "researchView": "POSITIVE",
+     "sector": "Energy",
+     "sectorKo": "에너지",
+     "selected": false,
+     "source": "watchlist+candidates",
+     "strengthsKo": [
+      "모멘텀 100p",
+      "가치 92p",
+      "200일선 위"
+     ],
+     "thesisKo": "모멘텀·밸류 주도 · 섹터중립 알파 상위 1%",
+     "ticker": "MPC",
+     "valuationProfitability": {
+      "basisKo": "현재 스냅샷(시점 기준 아님)",
+      "debtToEquity": 115.416,
+      "fcfYield": 0.16,
+      "forwardPE": 5.9983616,
+      "operatingMargin": 0.17975001,
+      "pointInTime": false,
+      "priceToBook": 4.4165597,
+      "profitMargin": 0.08342,
+      "roe": 0.6046,
+      "trailingPE": 7.385377
+     },
+     "weaknessesKo": [
+      "저변동 17p"
+     ]
+    },
+    {
+     "alphaPercentile": 100,
+     "coverage": {
+      "dataCompleteness": 0.889,
+      "evidenceCoverage": 0.927,
+      "sleevesPresent": 4
+     },
+     "downsideVolPct": 17.6,
+     "edgeAvailable": false,
+     "edgePointEstimatePct": 0.062,
+     "edgeSupport": {
+      "reason": "ORDERING_NOT_ESTABLISHED",
+      "reasonKo": "알파 순위의 수익 정렬이 통계적으로 확인되지 않음",
+      "statisticallySupported": false
+     },
+     "eligible": false,
+     "entryState": "WAIT_FOR_PULLBACK",
+     "exclusionCodes": [
+      "ORDERING_NOT_ESTABLISHED"
+     ],
+     "exclusionReasonsKo": [
+      "알파 순위의 수익 정렬이 통계적으로 확인되지 않음"
+     ],
+     "expectedNetAdvantagePct": null,
+     "factorPercentiles": {
+      "lowvol": 86,
+      "momentum": 96,
+      "quality": 98,
+      "value": 54
+     },
+     "gatesFailed": [],
+     "inModelHoldings": false,
+     "liquidityRisk": {
+      "beta": 0.22,
+      "cvar95Pct": 2.38,
+      "downsideVolPct": 17.6,
+      "liquidityKo": null,
+      "marketCap": 86713597952.0,
+      "maxDD252Pct": -15.6,
+      "vol252Pct": 19.1
+     },
+     "name": "Simon Property Group",
+     "priceMomentum": {
+      "aboveMA200": true,
+      "asOf": "2026-11-06",
+      "lastClose": 228.42,
+      "mom12_1Pct": 15.4,
+      "mom63Pct": 4.2,
+      "pct52wHigh": 97.5
+     },
+     "rank": 2,
+     "rankChange": {
+      "available": true,
+      "labelKo": "순위 유지",
+      "previousRank": 2,
+      "priorAsOfDate": "2026-10-30"
+     },
+     "region": "US",
+     "researchScore": 0.76,
+     "researchView": "POSITIVE",
+     "sector": "Real Estate",
+     "sectorKo": "리츠·부동산",
+     "selected": false,
+     "source": "watchlist+candidates",
+     "strengthsKo": [
+      "모멘텀 96p",
+      "퀄리티 98p",
+      "저변동 86p",
+      "200일선 위"
+     ],
+     "thesisKo": "퀄리티·모멘텀 주도 · 섹터중립 알파 상위 1%",
+     "ticker": "SPG",
+     "valuationProfitability": {
+      "basisKo": "현재 스냅샷(시점 기준 아님)",
+      "debtToEquity": 567.117,
+      "forwardPE": 33.723442,
+      "operatingMargin": 0.44333,
+      "pointInTime": false,
+      "priceToBook": 19.377333,
+      "profitMargin": 0.6309,
+      "roe": 1.29347,
+      "trailingPE": 16.492418
+     },
+     "weaknessesKo": []
+    },
+    {
+     "alphaPercentile": 100,
+     "coverage": {
+      "dataCompleteness": 1.0,
+      "evidenceCoverage": 0.96,
+      "sleevesPresent": 4
+     },
+     "downsideVolPct": 18.1,
+     "edgeAvailable": false,
+     "edgePointEstimatePct": 0.062,
+     "edgeSupport": {
+      "reason": "ORDERING_NOT_ESTABLISHED",
+      "reasonKo": "알파 순위의 수익 정렬이 통계적으로 확인되지 않음",
+      "statisticallySupported": false
+     },
+     "eligible": false,
+     "entryState": "ACCUMULATE_GRADUALLY",
+     "exclusionCodes": [
+      "ORDERING_NOT_ESTABLISHED"
+     ],
+     "exclusionReasonsKo": [
+      "알파 순위의 수익 정렬이 통계적으로 확인되지 않음"
+     ],
+     "expectedNetAdvantagePct": null,
+     "factorPercentiles": {
+      "lowvol": 84,
+      "momentum": 98,
+      "quality": 44,
+      "value": 88
+     },
+     "gatesFailed": [],
+     "inModelHoldings": false,
+     "liquidityRisk": {
+      "beta": -0.06,
+      "cvar95Pct": 2.42,
+      "downsideVolPct": 18.1,
+      "liquidityKo": null,
+      "marketCap": 80976486400.0,
+      "maxDD252Pct": -9.9,
+      "vol252Pct": 20.8
+     },
+     "name": "Travelers Companies (The)",
+     "priceMomentum": {
+      "aboveMA200": true,
+      "asOf": "2026-11-06",
+      "lastClose": 395.2,
+      "mom12_1Pct": 35.5,
+      "mom63Pct": 7.2,
+      "pct52wHigh": 96.6
+     },
+     "rank": 1,
+     "rankChange": {
+      "available": true,
+      "labelKo": "4위 → 1위",
+      "previousRank": 4,
+      "priorAsOfDate": "2026-10-30"
+     },
+     "region": "US",
+     "researchScore": 0.762,
+     "researchView": "POSITIVE",
+     "sector": "Financial Services",
+     "sectorKo": "Financial Services",
+     "selected": false,
+     "source": "watchlist+candidates",
+     "strengthsKo": [
+      "모멘텀 98p",
+      "가치 88p",
+      "저변동 84p",
+      "200일선 위"
+     ],
+     "thesisKo": "모멘텀·밸류 주도 · 섹터중립 알파 상위 1%",
+     "ticker": "TRV",
+     "valuationProfitability": {
+      "basisKo": "현재 스냅샷(시점 기준 아님)",
+      "debtToEquity": 33.844,
+      "fcfYield": 0.1954,
+      "forwardPE": 12.703021,
+      "operatingMargin": 0.20037001,
+      "pointInTime": false,
+      "priceToBook": 2.7927752,
+      "profitMargin": 0.17031999,
+      "roe": 0.27497,
+      "trailingPE": 10.391797
+     },
+     "weaknessesKo": []
+    },
+    {
+     "alphaPercentile": 99,
+     "downsideVolPct": 32.3,
+     "edgeAvailable": false,
+     "edgePointEstimatePct": 0.062,
+     "eligible": false,
+     "entryState": "WATCH",
+     "exclusionCodes": [
+      "ORDERING_NOT_ESTABLISHED"
+     ],
+     "expectedNetAdvantagePct": null,
+     "gatesFailed": [
+      "G1_DATA",
+      "G4_RISK",
+      "G5_LEVERAGE"
+     ],
+     "name": "General Motors",
+     "sector": "Consumer Cyclical",
+     "selected": false,
+     "source": "candidates",
+     "ticker": "GM"
+    },
+    {
+     "alphaPercentile": 99,
+     "coverage": {
+      "dataCompleteness": 0.667,
+      "evidenceCoverage": 0.86,
+      "sleevesPresent": 4
+     },
+     "downsideVolPct": 25.8,
+     "edgeAvailable": false,
+     "edgePointEstimatePct": 0.062,
+     "edgeSupport": {
+      "reason": "ORDERING_NOT_ESTABLISHED",
+      "reasonKo": "알파 순위의 수익 정렬이 통계적으로 확인되지 않음",
+      "statisticallySupported": false
+     },
+     "eligible": false,
+     "entryState": "ACCUMULATE_GRADUALLY",
+     "exclusionCodes": [
+      "ORDERING_NOT_ESTABLISHED"
+     ],
+     "exclusionReasonsKo": [
+      "알파 순위의 수익 정렬이 통계적으로 확인되지 않음"
+     ],
+     "expectedNetAdvantagePct": null,
+     "factorPercentiles": {
+      "lowvol": 74,
+      "momentum": 83,
+      "quality": 99,
+      "value": 87
+     },
+     "gatesFailed": [
+      "G1_DATA",
+      "G5_LEVERAGE"
+     ],
+     "inModelHoldings": false,
+     "liquidityRisk": {
+      "beta": -0.48,
+      "cvar95Pct": 3.48,
+      "downsideVolPct": 25.8,
+      "liquidityKo": null,
+      "marketCap": 126620819456.0,
+      "maxDD252Pct": -14.6,
+      "vol252Pct": 25.4
+     },
+     "name": "Altria",
+     "priceMomentum": {
+      "aboveMA200": true,
+      "asOf": "2026-11-06",
+      "lastClose": 76.12,
+      "mom12_1Pct": 33.6,
+      "mom63Pct": 18.8,
+      "pct52wHigh": 97.6
+     },
+     "rank": 4,
+     "rankChange": {
+      "available": true,
+      "labelKo": "신규 진입",
+      "previousRank": null,
+      "priorAsOfDate": "2026-10-30"
+     },
+     "region": "US",
+     "researchScore": 0.72,
+     "researchView": "POSITIVE",
+     "sector": "Consumer Defensive",
+     "sectorKo": "Consumer Defensive",
+     "selected": false,
+     "source": "watchlist+candidates",
+     "strengthsKo": [
+      "모멘텀 83p",
+      "가치 87p",
+      "퀄리티 99p",
+      "저변동 74p",
+      "200일선 위"
+     ],
+     "thesisKo": "퀄리티·밸류 주도 · 섹터중립 알파 상위 1%",
+     "ticker": "MO",
+     "valuationProfitability": {
+      "basisKo": "현재 스냅샷(시점 기준 아님)",
+      "fcfYield": 0.0557,
+      "forwardPE": 12.8537445,
+      "operatingMargin": 0.61478,
+      "pointInTime": false,
+      "priceToBook": -56.933434,
+      "profitMargin": 0.39333,
+      "trailingPE": 15.694846
+     },
+     "weaknessesKo": []
+    },
+    {
+     "alphaPercentile": 99,
+     "downsideVolPct": 31.5,
+     "edgeAvailable": false,
+     "edgePointEstimatePct": 0.062,
+     "eligible": false,
+     "entryState": "WATCH",
+     "exclusionCodes": [
+      "ORDERING_NOT_ESTABLISHED"
+     ],
+     "expectedNetAdvantagePct": null,
+     "gatesFailed": [
+      "G1_DATA",
+      "G4_RISK",
+      "G5_LEVERAGE"
+     ],
+     "name": "Phillips 66",
+     "sector": "Energy",
+     "selected": false,
+     "source": "candidates",
+     "ticker": "PSX"
+    },
+    {
+     "alphaPercentile": 99,
+     "downsideVolPct": 31.4,
+     "edgeAvailable": false,
+     "edgePointEstimatePct": 0.062,
+     "eligible": false,
+     "entryState": "WAIT_FOR_PULLBACK",
+     "exclusionCodes": [
+      "ORDERING_NOT_ESTABLISHED"
+     ],
+     "expectedNetAdvantagePct": null,
+     "gatesFailed": [
+      "G1_DATA",
+      "G4_RISK",
+      "G5_LEVERAGE"
+     ],
+     "name": "Stanley Black & Decker",
+     "sector": "Industrials",
+     "selected": false,
+     "source": "candidates",
+     "ticker": "SWK"
+    },
+    {
+     "alphaPercentile": 99,
+     "coverage": {
+      "dataCompleteness": 0.667,
+      "evidenceCoverage": 0.86,
+      "sleevesPresent": 4
+     },
+     "downsideVolPct": 23.4,
+     "edgeAvailable": false,
+     "edgePointEstimatePct": 0.062,
+     "edgeSupport": {
+      "reason": "ORDERING_NOT_ESTABLISHED",
+      "reasonKo": "알파 순위의 수익 정렬이 통계적으로 확인되지 않음",
+      "statisticallySupported": false
+     },
+     "eligible": false,
+     "entryState": "WATCH",
+     "exclusionCodes": [
+      "ORDERING_NOT_ESTABLISHED"
+     ],
+     "exclusionReasonsKo": [
+      "알파 순위의 수익 정렬이 통계적으로 확인되지 않음"
+     ],
+     "expectedNetAdvantagePct": null,
+     "factorPercentiles": {
+      "lowvol": 97,
+      "momentum": 54,
+      "quality": 100,
+      "value": 63
+     },
+     "gatesFailed": [
+      "G1_DATA",
+      "G5_LEVERAGE"
+     ],
+     "inModelHoldings": false,
+     "liquidityRisk": {
+      "beta": 0.11,
+      "cvar95Pct": 3.24,
+      "downsideVolPct": 23.4,
+      "liquidityKo": null,
+      "marketCap": 43346661376.0,
+      "maxDD252Pct": -18.5,
+      "vol252Pct": 24.5
+     },
+     "name": "Yum! Brands",
+     "priceMomentum": {
+      "aboveMA200": true,
+      "asOf": "2026-11-06",
+      "lastClose": 161.14,
+      "mom12_1Pct": 0.0,
+      "mom63Pct": 7.4,
+      "pct52wHigh": 96.7
+     },
+     "rank": 5,
+     "rankChange": {
+      "available": true,
+      "labelKo": "신규 진입",
+      "previousRank": null,
+      "priorAsOfDate": "2026-10-30"
+     },
+     "region": "US",
+     "researchScore": 0.691,
+     "researchView": "POSITIVE",
+     "sector": "Consumer Cyclical",
+     "sectorKo": "Consumer Cyclical",
+     "selected": false,
+     "source": "watchlist+candidates",
+     "strengthsKo": [
+      "퀄리티 100p",
+      "저변동 97p",
+      "200일선 위"
+     ],
+     "thesisKo": "퀄리티·저변동 주도 · 섹터중립 알파 상위 1%",
+     "ticker": "YUM",
+     "valuationProfitability": {
+      "basisKo": "현재 스냅샷(시점 기준 아님)",
+      "fcfYield": 0.0304,
+      "forwardPE": 23.930521,
+      "operatingMargin": 0.32084,
+      "pointInTime": false,
+      "priceToBook": -7.0311546,
+      "profitMargin": 0.39138,
+      "trailingPE": 12.974235
+     },
+     "weaknessesKo": []
+    },
+    {
+     "alphaPercentile": 98,
+     "downsideVolPct": 21.5,
+     "edgeAvailable": false,
+     "edgePointEstimatePct": 0.062,
+     "eligible": false,
+     "entryState": "WAIT_FOR_PULLBACK",
+     "exclusionCodes": [
+      "ORDERING_NOT_ESTABLISHED"
+     ],
+     "expectedNetAdvantagePct": null,
+     "gatesFailed": [
+      "G1_DATA",
+      "G4_RISK",
+      "G5_LEVERAGE"
+     ],
+     "name": "Hilton Worldwide",
+     "sector": "Consumer Cyclical",
+     "selected": false,
+     "source": "candidates",
+     "ticker": "HLT"
+    },
+    {
+     "alphaPercentile": 98,
+     "downsideVolPct": 24.1,
+     "edgeAvailable": false,
+     "edgePointEstimatePct": 0.062,
+     "eligible": false,
+     "entryState": "WAIT_FOR_PULLBACK",
+     "exclusionCodes": [
+      "ORDERING_NOT_ESTABLISHED"
+     ],
+     "expectedNetAdvantagePct": null,
+     "gatesFailed": [
+      "G1_DATA",
+      "G4_RISK",
+      "G5_LEVERAGE"
+     ],
+     "name": "Marriott International",
+     "sector": "Consumer Cyclical",
+     "selected": false,
+     "source": "candidates",
+     "ticker": "MAR"
+    },
+    {
+     "alphaPercentile": 98,
+     "downsideVolPct": 76.3,
+     "edgeAvailable": false,
+     "edgePointEstimatePct": 0.062,
+     "eligible": false,
+     "entryState": "AVOID",
+     "exclusionCodes": [
+      "ORDERING_NOT_ESTABLISHED",
+      "ENTRY_OR_RESEARCH_STATE_BLOCKS_SIZING"
+     ],
+     "expectedNetAdvantagePct": null,
+     "gatesFailed": [
+      "G1_DATA",
+      "G2_ENTRY",
+      "G4_RISK",
+      "G5_LEVERAGE"
+     ],
+     "name": "Micron Technology",
+     "sector": "Technology",
+     "selected": false,
+     "source": "candidates",
+     "ticker": "MU"
+    },
+    {
+     "alphaPercentile": 98,
+     "downsideVolPct": 37.7,
+     "edgeAvailable": false,
+     "edgePointEstimatePct": 0.062,
+     "eligible": false,
+     "entryState": "WATCH",
+     "exclusionCodes": [
+      "ORDERING_NOT_ESTABLISHED"
+     ],
+     "expectedNetAdvantagePct": null,
+     "gatesFailed": [
+      "G1_DATA",
+      "G4_RISK",
+      "G5_LEVERAGE"
+     ],
+     "name": "Valero Energy",
+     "sector": "Energy",
+     "selected": false,
+     "source": "candidates",
+     "ticker": "VLO"
+    }
+   ],
+   "costs": {
+    "benchmarkRoundTripPct": 0.163,
+    "commissionBps": 5.0,
+    "sellTaxBps": 0.3,
+    "source": "pipeline/benchmark_alpha.py REALISTIC_COSTS (dated sell tax)",
+    "spreadBps": 6.0,
+    "stockRoundTripPct": 0.163,
+    "switchCostPct": 0.326
+   },
+   "freshness": {
+    "expectedSession": "2026-11-06",
+    "observedSession": "2026-11-06",
+    "reason": null,
+    "sessionEvidence": "^GSPC",
+    "sourceDate": "2026-11-06",
+    "staleNames": [],
+    "status": "FRESH",
+    "weekEnd": true
+   },
+   "macro": {
+    "breakeven10": 2.24,
+    "curve10y3m": 0.6699999999999999,
+    "dBreakeven63": -0.019999999999999574,
+    "dY10_63": 0.14999999999999947,
+    "fredValuesDatedBefore": "2026-11-06",
+    "gldReturn126Pct": -14.120386737513435,
+    "iefReturn126Pct": -3.2645308593184152,
+    "uupReturn126Pct": 6.547179949482462,
+    "vix": 28.18,
+    "y10": 4.84
+   },
+   "market": {
+    "aboveMA200": true,
+    "close": 735.2899780273438,
+    "drawdownFrom252HighPct": -5.621949623063327,
+    "index": "SPY",
+    "lastSession": "2026-11-06",
+    "qqqMinusSpy63Pp": -4.102885439270532,
+    "return252Pct": 8.517069494664264,
+    "return63Pct": -4.882093817734157,
+    "vol63Pct": 13.586846490272855
+   },
+   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+   "noTradeReason": "ORDERING_NOT_ESTABLISHED",
+   "productionStatus": "PASSIVE_NO_DEFENSIBLE_EDGE",
+   "productionWeights": {
+    "SPY": 1.0
+   },
+   "receiptDigest": "f6978bc667e6372c2788a7817f683d0e0f7d48002f36e7ca1ed51c19a8cf9cb7",
+   "receiptGeneratedAt": "2026-11-07T06:09:57.794612+00:00",
+   "receiptId": "weekly-passive-first-v1|US|2026-11-06",
+   "siteDataSha256": "7dcd84bccafdcd9f4f3f7aab08f97920c2550cadd196dbf4619b19a98ca5ff4d"
+  }
+ },
+ "schema": "DECISION_DESK_EVIDENCE_PACK_V1",
+ "signalHistoryCommit": "6398e94feddd4f552910d31b36bc8db0766576af"
+}

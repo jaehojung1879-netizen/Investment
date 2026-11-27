@@ -1,0 +1,54 @@
+{
+  "studyId": "decision-desk-v1",
+  "protocolVersion": 2,
+  "amends": {"path": "research/decision_desk_v1/protocol.json", "sha256": "15d46dfde547cd0650f060c4f36a06959ad827cc821f36da727de15f577647e2", "keptByteIdentical": true},
+  "appliesFrom": "cohort 2026-12",
+  "status": "SEALED_WHEN_COMMITTED (stage 1); every later stage cites this file's sha256",
+  "whyAmended": "The 2026-11 B2 evidence used observations that were not public at the information cutoff (H.10 FX released on the following Monday, H.15 rates released the next business day 16:15 ET, and for KR the US closes of the cutoff date itself). See audits/2026-11-pit-review.json.",
+  "doesNotAuthorize": ["any production change", "real-money trading", "signal-history writes without Owner approval", "rewriting any 2026-11 record"],
+  "inheritsFromV1": ["paths B0/B1/B2", "portfolio (0-5 names, 10% each, residual ETF)", "b2Gates G1-G6", "b2Layers and selectionRule", "b2Output fields and forbidden numeric claims", "horizons 126/252", "costs (receipt REALISTIC_COSTS, 2x stress)"],
+  "availability": {
+    "rule": "an observation enters the evidence packet only if its release time is at or before the region's informationCutoffUtc (the regional close of the receipt's asOfDate)",
+    "sources": {
+      "H10": "DEXKOUS: Monday 16:15 ET after the observation's week (next business day if a federal holiday); 2006-05-22..2009-01 unverified and excluded",
+      "H15": "DGS10, DGS3MO, T10YIE: next federal business day 16:15 ET",
+      "VIX": "VIXCLS: conservative H.15 rule (FRED posting time unverifiable)",
+      "EXCH": "KRX/NYSE closes: the session close",
+      "FX_VENDOR": "Yahoo FX daily bars: excluded (no verifiable close time)"
+    },
+    "eachObservationCarries": ["obsDate", "availableAtUtc", "rule"],
+    "verifiedSources": "availability.SOURCE_EVIDENCE"
+  },
+  "stages": {
+    "1_SEAL": "this protocol is committed unchanged; packet creation refuses an uncommitted or modified protocol",
+    "2_PACKET": "desk.py packet: first FINAL_WEEKLY receipt of month M per region, PIT-filtered market/macro, gates applied, execution schedule fixed; writes cohorts/M/evidence-packet.json and review-request.json (status AI_REVIEW_REQUIRED). Must be committed before any review",
+    "3_REVIEW": "each enabled reviewer writes cohorts/M/reviews/<reviewer>.json from the packet alone; a reviewer first commits cohorts/M/commitments/<reviewer>.sha256 (commit-reveal) so independence can be checked from git order",
+    "4_DECIDE": "desk.py decide: refuses unless packet and every review are committed unchanged and published before the registration deadline; writes B0, B1, B2 (primary reviewer) and BX:<reviewer> comparison records",
+    "5_PUBLISH": "the ledger lines must reach a public commit before the registration deadline; desk.py verify-publication records a PUBLICATION_VERIFIED annotation from git, never from the record's self-declared time",
+    "6_EVALUATE": "desk.py evaluate: after each horizon has closed, appends SCORED or SOURCE_BLOCKED outcomes"
+  },
+  "schedule": {
+    "reviewWindowHours": 48,
+    "plannedExecution": "the first regional session whose OPEN is at least reviewWindowHours after the packet's sealedAtUtc; fixed in the packet so every path and arm of the cohort executes on the same close",
+    "registrationDeadline": "that execution session's open (UTC); records published later are refused (REGISTRATION_CLOSED)",
+    "missedDeadline": "if no review is committed by the deadline the cohort records B0 and B1 only and B2 is NO_REVIEW (never back-filled)"
+  },
+  "reviewers": {
+    "registry": "reviewers.json",
+    "primaryB2": "claude",
+    "comparisonArms": "BX:<reviewer> for every ENABLED non-primary reviewer; arms never replace B2 and never promote",
+    "independence": "commit-reveal: all commitments for a cohort precede the first revealed review in git history, else the arm is INDEPENDENCE_NOT_VERIFIED and reported separately",
+    "noBackfill": "a judgment produced after a cohort's registration deadline (for example a stock idea proposed in conversation) is never registered as that cohort's signal"
+  },
+  "evaluation": {
+    "prices": "Yahoo chart API close (split-adjusted) plus dated cash distributions, frozen with SHA-256 per evaluation run",
+    "entry": "close of plannedExecution (closing auction, the executable reference)",
+    "exit": "close of the 126th / 252nd regional session after entry",
+    "totalReturn": "TR_end / TR_entry - 1 with distributions reinvested at the ex-date close",
+    "benchmark": "the region's ETF (069500.KS / SPY) on the same basis",
+    "costs": "receipt round-trip cost once per leg; 2x stress reported beside",
+    "sourceBlocked": ["a missing regional session close inside the window", "a zero-volume session (suspension)", "a split or consolidation inside the window not listed in verified-corporate-actions.json", "a close-to-close move beyond the daily limit (KR 30%, US 50%) without a verified event", "no close on the horizon end session (delisting or data end)"],
+    "neverZeroFilled": true,
+    "primaryComparison": "records annotated PIT_CONTAMINATED or INDEPENDENCE_NOT_VERIFIED are scored but reported outside the primary B0/B1/B2 comparison"
+  }
+}

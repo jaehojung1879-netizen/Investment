@@ -1,0 +1,86 @@
+{
+  "studyId": "decision-desk-v1",
+  "status": "PROTOCOL_FROZEN_BEFORE_THE_FIRST_RECORD",
+  "frozenAtUtc": "2026-11-11",
+  "purpose": "Turn existing research into dated, falsifiable KR/US research decisions (B0 ETF / B1 existing rule / B2 AI synthesis) and compare them prospectively on 126 and 252 sessions. Research and virtual portfolios only.",
+  "authorExposureDisclosure": "Before freezing these rules the author had seen the production weekly receipts' candidate names, alpha percentiles and entry states for KR 2026-11-06 and US 2026-11-10, and the first watchlist rows. No forward return of any candidate was looked up. The gates below were written to the existing research verdicts, not to those names.",
+  "doesNotAuthorize": [
+    "any production weight, risk limit or receipt change",
+    "real-money trading",
+    "writing to signal-history or any external store (dry-run only until the Owner approves activation)",
+    "promotion of any rejected model or exploratory strategy"
+  ],
+  "paths": {
+    "B0": {"name": "Regional ETF baseline", "KR": {"069500.KS": 1.0}, "US": {"SPY": 1.0}, "comparisonOnly": {"US": "QQQ (separate growth benchmark; never substituted for SPY)"}},
+    "B1": {"name": "Existing permitted rule", "definition": "the production weekly-passive-first-v1 receipt of the same cohort, copied byte-identically by digest; today it is 100% ETF in both regions because ordering is not established", "observationComparators": ["kr-selection-challenger-v2-accounting CH_VALUE_CONFIRMED book (prospective research, not B1)", "US macro cocktail S4/D1/D3/D6 (historical-only, not a current stock path)"]},
+    "B2": {"name": "AI synthesis (Claude, structured)", "definition": "an AI reads the cohort's production evidence pack and existing research verdicts and selects 0-5 names under the gates below; zero is an explicit choice"}
+  },
+  "cohort": {
+    "rule": "for each calendar month M and region R, the first production receipt with weekStatus FINAL_WEEKLY and asOfDate in M",
+    "informationCutoff": "the regional close of that receipt's asOfDate; only evidence that existed in the published receipt or in sources dated on/before the cutoff may be used",
+    "generatedAt": "wall-clock time the B2 review is written; must be after the receipt's generatedAt",
+    "publishedAt": "git commit time of the record on a public branch; must precede plannedExecution",
+    "plannedExecution": "regional close of the first session whose close is after publishedAt",
+    "lateRecord": "if publishedAt is after the next cohort's informationCutoff the record is LATE_NOT_PROSPECTIVE and is kept but never scored"
+  },
+  "portfolio": {
+    "maxNames": 5,
+    "minNames": 0,
+    "perNameWeight": 0.10,
+    "residual": "regional ETF (069500.KS / SPY); no cash",
+    "maxNamesPerSector": 2,
+    "noConvictionWeights": "weights are fixed by count; the AI does not size",
+    "holding": "each cohort is held unchanged to its horizon; cohorts overlap and are scored independently"
+  },
+  "costs": {
+    "source": "the cohort receipt's own costs block (pipeline/benchmark_alpha REALISTIC_COSTS, dated sell tax)",
+    "charge": "each stock leg pays stockRoundTripPct once; the ETF residual pays benchmarkRoundTripPct once; B0 pays benchmarkRoundTripPct",
+    "stress": 2.0
+  },
+  "horizons": {"h126": 126, "h252": 252, "unit": "regional exchange sessions after plannedExecution"},
+  "returns": {
+    "basis": "total return from split-adjusted close plus dated cash distributions",
+    "fillRule": "a horizon is filled only after its end session has closed and has been observed; before that it is PENDING",
+    "corporateActions": "a name with an unverifiable corporate action, suspension or delisting inside the horizon makes the cohort SOURCE_BLOCKED; never 0%, never last-price exit",
+    "currency": "local currency (KRW for KR, USD for US); KRW translation of US cohorts is reported separately with the H.10 release rule"
+  },
+  "b2Gates": {
+    "G1_DATA": "freshness.status == FRESH and coverage.dataCompleteness >= 0.75 and coverage.sleevesPresent >= 3",
+    "G2_ENTRY": "entryState != AVOID (the production entry layer)",
+    "G3_FALLING_PRICE": "not (priceMomentum.aboveMA200 == false and priceMomentum.mom63Pct < 0)",
+    "G4_RISK": "liquidityRisk.maxDD252Pct > -50 and liquidityRisk.vol252Pct < 60",
+    "G5_LEVERAGE": "valuationProfitability.debtToEquity < 200 unless sector is Financial Services / Real Estate / Utilities",
+    "G6_CONCENTRATION": "at most portfolio.maxNamesPerSector per sector and at most portfolio.maxNames in total",
+    "vetoIsFinal": "a gated name cannot be selected whatever the AI argues"
+  },
+  "b2Layers": {
+    "market": "regional index trend (200-day), 63-day volatility, concentration",
+    "industry": "sector of the name, sector representation among top candidates",
+    "company": "profitability (roe, operatingMargin), cash flow (fcfYield), leverage",
+    "price": "valuation (forward/trailing PE, fcfYield), 12-1 and 63-day momentum, 52-week-high distance",
+    "macro": "US 10y yield level/change, curve, dollar (UUP), gold, VIX; KR adds USD/KRW",
+    "research": "existing verdicts: four-factor alpha ordering NOT established (KR rank IC t 0.68, US t 0.17); momentum/industry momentum phase-dependent; value-confirmation exploratory; US dynamic ETF allocation not better than static",
+    "risk": "drawdown, volatility, sector concentration, event risk, trading cost",
+    "labels": "each layer is SUPPORTS / NEUTRAL / CONTRADICTS from the listed observations; interpretation text is kept separate from the observed numbers",
+    "selectionRule": "a name passing every gate needs >= 3 SUPPORTS layers and no CONTRADICTS in company, price or risk; a CONTRADICTS market layer caps the region at 2 names"
+  },
+  "b2Output": {
+    "perName": ["ticker", "name", "informationCutoff", "reasons (<= 3)", "thesis6m", "thesis12m", "catalysts", "risks", "invalidationConditions", "notVerified", "researchWeight", "whyVersusBenchmark"],
+    "forbidden": ["probability", "targetPrice", "expectedReturn", "confidencePct", "winRate"],
+    "forbiddenReason": "no calibrated statistical basis exists for an AI-stated probability or target; numbers of that kind are refused by the validator",
+    "knowledgeLimit": "the AI's background knowledge has a training cutoff before the decision date; any catalyst it names from memory is NOT_VERIFIED and labelled so"
+  },
+  "ledger": {
+    "schema": "RESEARCH_DECISION_RECORD_V1",
+    "fields": ["region", "path", "cohort", "signalAsOf", "informationCutoff", "generatedAt", "publishedAt", "modelVersion", "sourceHashes", "selectedTickers", "weights", "benchmark", "investmentThesis", "invalidationConditions", "plannedExecution", "horizon126", "horizon252", "subsequentReturns", "status", "missingDataReason", "prevDigest", "digest"],
+    "appendOnly": "records are never edited or deleted; outcomes are separate OUTCOME rows that reference a record digest",
+    "chain": "each record carries the previous record's digest; the verifier recomputes every digest and link",
+    "statuses": ["DRY_RUN_NOT_ACTIVATED", "RECORDED", "LATE_NOT_PROSPECTIVE", "PENDING", "SCORED", "SOURCE_BLOCKED"],
+    "activation": "OWNER_APPROVAL_REQUIRED; until then records are written only under research/decision_desk_v1/dry-run/"
+  },
+  "evaluationPlan": {
+    "primary": "per-cohort excess total return of B1 and B2 over B0 after costs at h126 and h252",
+    "honestPower": "6-12 months gives at most 6-12 overlapping monthly cohorts; results are reported as a record of behaviour and reliability, never as proof of alpha",
+    "failureAdmission": "a B2 name is judged wrong at the horizon if its cost-adjusted return trails the regional ETF, or earlier if a recorded invalidation condition is observed; both are logged, nothing is deleted"
+  }
+}

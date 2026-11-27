@@ -1,0 +1,369 @@
+{
+ "cohort": "2026-11",
+ "decisionImpact": {
+  "aiLabels": "The B2 market and macro layer labels and their interpretation text were written while reading v1 values, some of which were not public at the cutoff. Whether a blind review of the v2 values would have chosen different labels is unknowable now: any new review would be written after the outcome period began and would be post hoc.",
+  "classification": "B2 2026-11 KR and US: PIT_CONTAMINATED. B0 and B1 2026-11: PIT_CLEAN (no market or macro input).",
+  "contaminatedCitations": [
+   "US market interpretation: 'VIX is 28, so implied risk is well above realised' — VIX 28.18 is the 2026-11-05 print, public 2026-11-06 21:15 UTC; at the US cutoff the latest public VIX was 16.61 (2026-11-04).",
+   "TRV reason 2: 'diversifies the 90% SPY residual while VIX is 28' — same non-public VIX print.",
+   "TRV thesis6m: 'stays choppy (VIX near 28)' — same.",
+   "US/KR macro interpretation: '10y 4.84% (+15bp over 63 sessions)' — the 2026-11-05 H.15 print; the public value was 4.90% (+27bp).",
+   "KR macro interpretation: 'dollar strong (UUP +6.5% over 126 sessions), VIX 28' — UUP 11-06 close and VIX 11-05 were not public at the KR cutoff (06:30 UTC); public values were UUP +5.5% and VIX 16.61."
+  ],
+  "deterministicPart": "Gates G1-G6 and the B1 production weights read only the production receipt (published 2026-11-07, before both cutoffs were reviewed); they are unchanged. Re-running the gates on the v2 packet gives the same gate passers.",
+  "effect": "The six 2026-11 records stay byte-identical. An annotation row marks the two B2 records PIT_CONTAMINATED; they will be scored but reported outside the primary comparison. No record is re-generated and no weight changes.",
+  "selectionSensitivity": "KR 021240.KS had 2 SUPPORTS; a macro label of SUPPORTS would have made it selectable, so the KR 0-name decision depended on an AI label formed on contaminated macro inputs. US TRV had 3 SUPPORTS without the macro layer; its selection did not depend on macro."
+ },
+ "inputsSha256": {
+  "availabilityModule": "14d2ae085d9ee93afcb705c6a68cf871eb1d9b57c900d6d4c82cffe6fac537be",
+  "marketManifest": "b5c57feaf1f12fc5fe3f89f1a88ee2b7583459a3088e4a41afa8900572b00aa8",
+  "v1EvidencePack": "305d906a95c14ffde96e66e855ac2dc29848c2b98926f6d385fdb2bae258bfe0"
+ },
+ "regions": {
+  "KR": {
+   "after": {
+    "macro": {
+     "breakeven10": {
+      "availableAtUtc": "2026-11-05T21:15:00Z",
+      "obsDate": "2026-11-04",
+      "value": 2.26
+     },
+     "curve10y3m": 0.6900000000000004,
+     "dBreakeven63": 0.03999999999999959,
+     "dY10_63": 0.27000000000000046,
+     "excluded": {
+      "KRW=X": "FX_VENDOR: no verifiable bar close time"
+     },
+     "gldReturn126": {
+      "availableAtUtc": "2026-11-05T21:00:00Z",
+      "lastSession": "2026-11-05",
+      "pct": -13.016587146675674
+     },
+     "iefReturn126": {
+      "availableAtUtc": "2026-11-05T21:00:00Z",
+      "lastSession": "2026-11-05",
+      "pct": -2.8930396898491195
+     },
+     "usdkrwH10": {
+      "availableAtUtc": "2026-11-02T21:15:00Z",
+      "obsDate": "2026-10-30",
+      "value": 1333.99
+     },
+     "usdkrwH10Change63Pct": -7.1561305948594445,
+     "uupReturn126": {
+      "availableAtUtc": "2026-11-05T21:00:00Z",
+      "lastSession": "2026-11-05",
+      "pct": 5.508939209368147
+     },
+     "vix": {
+      "availableAtUtc": "2026-11-05T21:15:00Z",
+      "obsDate": "2026-11-04",
+      "value": 16.61
+     },
+     "y10": {
+      "availableAtUtc": "2026-11-05T21:15:00Z",
+      "obsDate": "2026-11-04",
+      "value": 4.9
+     }
+    },
+    "market": {
+     "aboveMA200": false,
+     "drawdownFrom252HighPct": -44.48776900857885,
+     "index": "^KS11",
+     "last": {
+      "availableAtUtc": "2026-11-06T06:30:00Z",
+      "obsDate": "2026-11-06",
+      "value": 5059.68994140625
+     },
+     "return252Pct": 25.152179132714213,
+     "return63Pct": -20.43199292336021,
+     "vol63Pct": 46.84897067547489
+    }
+   },
+   "before": {
+    "macro": {
+     "breakeven10": 2.24,
+     "curve10y3m": 0.6699999999999999,
+     "dBreakeven63": -0.019999999999999574,
+     "dY10_63": 0.14999999999999947,
+     "fredValuesDatedBefore": "2026-11-06",
+     "gldReturn126Pct": -14.120386737513435,
+     "iefReturn126Pct": -3.2645308593184152,
+     "usdkrwH10LastObservation": {
+      "date": "2026-11-05",
+      "note": "H.10 publishes weekly; an observation is usable only after its Monday release",
+      "value": 1352.95
+     },
+     "usdkrwVendorChange63Pct": -4.301817545409348,
+     "uupReturn126Pct": 6.547179949482462,
+     "vix": 28.18,
+     "y10": 4.84
+    },
+    "market": {
+     "aboveMA200": false,
+     "close": 5059.68994140625,
+     "drawdownFrom252HighPct": -44.48776900857885,
+     "index": "^KS11",
+     "lastSession": "2026-11-06",
+     "return252Pct": 25.152179132714213,
+     "return63Pct": -20.43199292336021,
+     "vol63Pct": 46.84897067547489
+    }
+   },
+   "informationCutoffUtc": "2026-11-06T06:30:00Z",
+   "notPublicAtCutoff": [
+    "FRED DGS10 2026-11-05",
+    "FRED DGS3MO 2026-11-05",
+    "FRED VIXCLS 2026-11-05",
+    "FRED T10YIE 2026-11-05",
+    "FRED DEXKOUS 2026-11-05",
+    "Yahoo GLD close 2026-11-06",
+    "Yahoo UUP close 2026-11-06",
+    "Yahoo IEF close 2026-11-06"
+   ],
+   "unverifiable": [
+    "Yahoo KRW=X daily bar"
+   ],
+   "v1Inputs": [
+    {
+     "input": "FRED DGS10",
+     "obsDate": "2026-11-05",
+     "publicAtCutoff": false,
+     "releasedUtc": "2026-11-06T21:15:00Z",
+     "value": 4.84
+    },
+    {
+     "input": "FRED DGS3MO",
+     "obsDate": "2026-11-05",
+     "publicAtCutoff": false,
+     "releasedUtc": "2026-11-06T21:15:00Z",
+     "value": 4.17
+    },
+    {
+     "input": "FRED VIXCLS",
+     "obsDate": "2026-11-05",
+     "publicAtCutoff": false,
+     "releasedUtc": "2026-11-06T21:15:00Z",
+     "value": 28.18
+    },
+    {
+     "input": "FRED T10YIE",
+     "obsDate": "2026-11-05",
+     "publicAtCutoff": false,
+     "releasedUtc": "2026-11-06T21:15:00Z",
+     "value": 2.24
+    },
+    {
+     "input": "FRED DEXKOUS",
+     "obsDate": "2026-11-05",
+     "publicAtCutoff": false,
+     "releasedUtc": "2026-11-09T21:15:00Z",
+     "value": 1352.95
+    },
+    {
+     "input": "Yahoo GLD close",
+     "obsDate": "2026-11-06",
+     "publicAtCutoff": false,
+     "releasedUtc": "2026-11-06T21:00:00Z",
+     "value": 372.5199890136719
+    },
+    {
+     "input": "Yahoo UUP close",
+     "obsDate": "2026-11-06",
+     "publicAtCutoff": false,
+     "releasedUtc": "2026-11-06T21:00:00Z",
+     "value": 29.1299991607666
+    },
+    {
+     "input": "Yahoo IEF close",
+     "obsDate": "2026-11-06",
+     "publicAtCutoff": false,
+     "releasedUtc": "2026-11-06T21:00:00Z",
+     "value": 91.86000061035156
+    },
+    {
+     "input": "Yahoo KRW=X daily bar",
+     "note": "bar close time unverifiable; excluded in v2",
+     "obsDate": "2026-11-06",
+     "publicAtCutoff": null,
+     "releasedUtc": null,
+     "value": 1356.3399658203125
+    },
+    {
+     "input": "Yahoo ^KS11 close",
+     "obsDate": "2026-11-06",
+     "publicAtCutoff": true,
+     "releasedUtc": "2026-11-06T06:30:00Z",
+     "value": 5059.68994140625
+    }
+   ]
+  },
+  "US": {
+   "after": {
+    "macro": {
+     "breakeven10": {
+      "availableAtUtc": "2026-11-05T21:15:00Z",
+      "obsDate": "2026-11-04",
+      "value": 2.26
+     },
+     "curve10y3m": 0.6900000000000004,
+     "dBreakeven63": 0.03999999999999959,
+     "dY10_63": 0.27000000000000046,
+     "excluded": {
+      "KRW=X": "FX_VENDOR: no verifiable bar close time"
+     },
+     "gldReturn126": {
+      "availableAtUtc": "2026-11-06T21:00:00Z",
+      "lastSession": "2026-11-06",
+      "pct": -14.120386737513435
+     },
+     "iefReturn126": {
+      "availableAtUtc": "2026-11-06T21:00:00Z",
+      "lastSession": "2026-11-06",
+      "pct": -3.2645308593184152
+     },
+     "uupReturn126": {
+      "availableAtUtc": "2026-11-06T21:00:00Z",
+      "lastSession": "2026-11-06",
+      "pct": 6.547179949482462
+     },
+     "vix": {
+      "availableAtUtc": "2026-11-05T21:15:00Z",
+      "obsDate": "2026-11-04",
+      "value": 16.61
+     },
+     "y10": {
+      "availableAtUtc": "2026-11-05T21:15:00Z",
+      "obsDate": "2026-11-04",
+      "value": 4.9
+     }
+    },
+    "market": {
+     "aboveMA200": true,
+     "drawdownFrom252HighPct": -5.621949623063327,
+     "index": "SPY",
+     "last": {
+      "availableAtUtc": "2026-11-06T21:00:00Z",
+      "obsDate": "2026-11-06",
+      "value": 735.2899780273438
+     },
+     "qqqMinusSpy63Pp": -4.102885439270532,
+     "return252Pct": 8.517069494664264,
+     "return63Pct": -4.882093817734157,
+     "vol63Pct": 13.586846490272855
+    }
+   },
+   "before": {
+    "macro": {
+     "breakeven10": 2.24,
+     "curve10y3m": 0.6699999999999999,
+     "dBreakeven63": -0.019999999999999574,
+     "dY10_63": 0.14999999999999947,
+     "fredValuesDatedBefore": "2026-11-06",
+     "gldReturn126Pct": -14.120386737513435,
+     "iefReturn126Pct": -3.2645308593184152,
+     "uupReturn126Pct": 6.547179949482462,
+     "vix": 28.18,
+     "y10": 4.84
+    },
+    "market": {
+     "aboveMA200": true,
+     "close": 735.2899780273438,
+     "drawdownFrom252HighPct": -5.621949623063327,
+     "index": "SPY",
+     "lastSession": "2026-11-06",
+     "qqqMinusSpy63Pp": -4.102885439270532,
+     "return252Pct": 8.517069494664264,
+     "return63Pct": -4.882093817734157,
+     "vol63Pct": 13.586846490272855
+    }
+   },
+   "informationCutoffUtc": "2026-11-06T21:00:00Z",
+   "notPublicAtCutoff": [
+    "FRED DGS10 2026-11-05",
+    "FRED DGS3MO 2026-11-05",
+    "FRED VIXCLS 2026-11-05",
+    "FRED T10YIE 2026-11-05"
+   ],
+   "unverifiable": [],
+   "v1Inputs": [
+    {
+     "input": "FRED DGS10",
+     "obsDate": "2026-11-05",
+     "publicAtCutoff": false,
+     "releasedUtc": "2026-11-06T21:15:00Z",
+     "value": 4.84
+    },
+    {
+     "input": "FRED DGS3MO",
+     "obsDate": "2026-11-05",
+     "publicAtCutoff": false,
+     "releasedUtc": "2026-11-06T21:15:00Z",
+     "value": 4.17
+    },
+    {
+     "input": "FRED VIXCLS",
+     "obsDate": "2026-11-05",
+     "publicAtCutoff": false,
+     "releasedUtc": "2026-11-06T21:15:00Z",
+     "value": 28.18
+    },
+    {
+     "input": "FRED T10YIE",
+     "obsDate": "2026-11-05",
+     "publicAtCutoff": false,
+     "releasedUtc": "2026-11-06T21:15:00Z",
+     "value": 2.24
+    },
+    {
+     "input": "Yahoo GLD close",
+     "obsDate": "2026-11-06",
+     "publicAtCutoff": true,
+     "releasedUtc": "2026-11-06T21:00:00Z",
+     "value": 372.5199890136719
+    },
+    {
+     "input": "Yahoo UUP close",
+     "obsDate": "2026-11-06",
+     "publicAtCutoff": true,
+     "releasedUtc": "2026-11-06T21:00:00Z",
+     "value": 29.1299991607666
+    },
+    {
+     "input": "Yahoo IEF close",
+     "obsDate": "2026-11-06",
+     "publicAtCutoff": true,
+     "releasedUtc": "2026-11-06T21:00:00Z",
+     "value": 91.86000061035156
+    },
+    {
+     "input": "Yahoo SPY close",
+     "obsDate": "2026-11-06",
+     "publicAtCutoff": true,
+     "releasedUtc": "2026-11-06T21:00:00Z",
+     "value": 735.2899780273438
+    },
+    {
+     "input": "Yahoo QQQ close",
+     "obsDate": "2026-11-06",
+     "publicAtCutoff": true,
+     "releasedUtc": "2026-11-06T21:00:00Z",
+     "value": 656.0999755859375
+    }
+   ]
+  }
+ },
+ "releaseRulesVerified": {
+  "H10": {
+   "quote": "On Mondays at 4:15 p.m. the Federal Reserve Board releases daily bilateral exchange rates and U.S. dollar indexes for the previous business week. If Monday falls on a Federal Holiday, the data will be released on the following business day.",
+   "retrievedUtc": "2026-11-11T22:23Z",
+   "url": "https://www.federalreserve.gov/releases/h10/"
+  },
+  "H15": {
+   "quote": "The release is posted daily Monday through Friday at 4:15pm. ... Release date: November 10, 2026 ... 2026 Nov 3 ... 2026 Nov 9",
+   "retrievedUtc": "2026-11-11T22:23Z",
+   "url": "https://www.federalreserve.gov/releases/h15/"
+  }
+ },
+ "schema": "PIT_REVIEW_V1"
+}

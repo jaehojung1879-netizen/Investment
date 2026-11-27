@@ -1,0 +1,17 @@
+{
+  "schema": "DECISION_DESK_REVIEWERS_V1",
+  "automation": "No AI provider is callable from this repository's CI: no ANTHROPIC/OPENAI credential exists in the workflows or requirements, and adding one is an Owner decision. Every review is therefore written by an agent session (MANUAL_AGENT_SESSION) from the committed packet alone and committed through commit-reveal. desk.py marks the cohort AI_REVIEW_REQUIRED until that happens.",
+  "reviewers": [
+    {"id": "claude", "role": "PRIMARY_B2", "provider": "Anthropic", "invocation": "MANUAL_AGENT_SESSION", "status": "ENABLED",
+     "note": "The 2026-11 B2 review (ai-reviews/2026-11.json) was written by this reviewer."},
+    {"id": "gpt", "role": "COMPARISON_ARM", "provider": "OpenAI", "invocation": "MANUAL_AGENT_SESSION_OR_API", "status": "PENDING_OWNER_APPROVAL",
+     "note": "Enable by setting status ENABLED in a committed change before a cohort's packet is sealed. Produces BX:gpt records; never replaces B2."},
+    {"id": "claude-independent", "role": "COMPARISON_ARM", "provider": "Anthropic", "invocation": "MANUAL_AGENT_SESSION", "status": "PENDING_OWNER_APPROVAL",
+     "note": "A second Claude session that has not seen the primary review; measures reviewer-to-reviewer variance."}
+  ],
+  "rules": {
+    "enableBeforeSeal": "a reviewer enabled after a cohort's packet was sealed does not take part in that cohort",
+    "sameInputs": "every reviewer of a cohort reads the same sealed packet; reading sources dated after the cutoff is forbidden and the review must say so in knowledgeLimit",
+    "noBackfill": "an idea produced outside the cohort window (for example in a chat) is never registered as a cohort signal"
+  }
+}

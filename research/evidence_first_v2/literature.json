@@ -1,0 +1,53 @@
+{
+  "schema": "LITERATURE_TABLE_V1",
+  "retrievedUtc": "2026-11-11",
+  "sourcePolicy": "Only what was read on the page listed is stated as the source's claim. Full texts behind paywalls (Wiley, Springer, SSRN) were not read; their abstracts were read via RePEc/IDEAS or NBER.",
+  "studies": [
+    {
+      "id": "FF5", "citation": "Fama & French (2015), five-factor model; Ken French Data Library 'Fama/French 5 Factors (2x3)'",
+      "url": "https://mba.tuck.dartmouth.edu/pages/faculty/Ken.French/Data_Library/f-f_5_factors_2x3.html",
+      "readFrom": "publisher data page (full text)",
+      "method": "Six value-weight 2x3 portfolios on size and B/M, size and operating profitability (OP), size and investment; formed end of June with accounting data for the fiscal year ending in t-1; NYSE breakpoints; all NYSE, AMEX and NASDAQ stocks. RMW = 1/2 (Small Robust + Big Robust) - 1/2 (Small Weak + Big Weak); HML and CMA analogous. Monthly data from July 1963.",
+      "originalStructure": "long-short, value-weighted, broadly diversified, annual rebalancing",
+      "applicability": {"US": "Directly measurable: the library's long-only sorted portfolios are survivorship-free (CRSP) and lagged; used for the academic-path test.", "KR": "Not covered by the library; Korea has no comparable survivorship-free public dataset in this repository."},
+      "overlapWithOurSignals": "value sleeve (B/P), quality sleeve (roe, margins, leverage) approximate HML and RMW; our sleeves are percentile composites, not 2x3 sorts"
+    },
+    {
+      "id": "JT1993", "citation": "Jegadeesh & Titman (1993), Journal of Finance 48(1), 65-91",
+      "url": "https://doi.org/10.1111/j.1540-6261.1993.tb04702.x",
+      "readFrom": "abstract via https://ideas.repec.org/a/bla/jfinan/v48y1993i1p65-91.html (Wiley returned 403)",
+      "method": "Strategies that buy past winners and sell past losers generate significant positive returns over three- to twelve-month holding periods; not explained by systematic risk or delayed reaction to common factors; part of the first-year abnormal return dissipates in the following two years (abstract).",
+      "originalStructure": "long-short winner/loser portfolios across many stocks (details beyond the abstract not read)",
+      "applicability": {"US": "Momentum is already in production's momentum sleeve; local rank IC -0.0015 (p 0.92). The library's big-winner portfolio is reported here as descriptive only.", "KR": "Already tested: momentum and industry momentum in KR ML tournaments; industry momentum is rebalance-phase dependent."},
+      "overlapWithOurSignals": "momentum sleeve (12-1 and 6-month returns), industry momentum rule, ML price features"
+    },
+    {
+      "id": "QMJ", "citation": "Asness, Frazzini & Pedersen (2019), Quality Minus Junk, Review of Accounting Studies 24(1)",
+      "url": "https://doi.org/10.1007/s11142-018-9470-2",
+      "readFrom": "abstract via https://ideas.repec.org/a/spr/reaccs/v24y2019i1d10.1007_s11142-018-9470-2.html (Springer and SSRN refused)",
+      "method": "Quality = characteristics investors should pay more for: profitability, growth and safety. High-quality stocks have higher prices but not by much and earn high risk-adjusted returns; a QMJ factor (long quality, short junk) earns significant risk-adjusted returns in the US and across 24 countries; the price of quality varies over time and a low price predicts high future QMJ returns (abstract).",
+      "originalStructure": "long-short factor; component measures and breakpoints not read",
+      "applicability": {"US": "Our quality sleeve covers profitability and leverage (safety) only partially; growth and payout components are not built.", "KR": "Same; KR quality coverage gaps (value/quality missing 54-55% in the attribution audit)."},
+      "overlapWithOurSignals": "quality sleeve; the four-factor attribution audit measured quality 126D rank IC -0.022 pooled"
+    },
+    {
+      "id": "NM2013", "citation": "Novy-Marx (2013), The Other Side of Value: The Gross Profitability Premium, JFE 108(1) 1-28 (NBER w15940)",
+      "url": "https://www.nber.org/papers/w15940",
+      "readFrom": "NBER abstract",
+      "method": "Profitability measured by gross profits-to-assets has roughly the same power as book-to-market in predicting the cross-section of average returns; profitable firms earn higher returns despite lower book-to-market and larger size; controlling for profitability raises value strategy performance, especially among the largest, most liquid stocks (abstract).",
+      "originalStructure": "cross-sectional sorts and regressions; long-short",
+      "applicability": {"US": "Gross profits / assets is not derived in our PIT store (no gross profit or total-assets field); ROE and operating margin are the available proxies. The library's OP sorts are the closest public long-only test.", "KR": "DART gross profit coverage not built; not measurable."},
+      "overlapWithOurSignals": "quality sleeve, S2 value-confirmation (cheap AND confirmed by profit/cash flow)"
+    },
+    {
+      "id": "NM2015", "citation": "Novy-Marx (2015), Backtesting Strategies Based on Multiple Signals (NBER w21329)",
+      "url": "https://www.nber.org/papers/w21329",
+      "readFrom": "NBER abstract",
+      "method": "Strategies that combine multiple signals suffer severe overfitting bias because each signal is signed to predict positive in-sample returns; combinations of random signals can look highly significant; appropriate critical values can be several times standard levels; combining the best k of n signals is almost as biased as picking the best of n^k (abstract).",
+      "originalStructure": "methodological",
+      "applicability": {"both": "Governs our rules: the B1 screen uses one signal, the academic-path test pre-registers one primary portfolio and a Bonferroni threshold, and no composite is fitted."},
+      "overlapWithOurSignals": "directly relevant to the four-factor composite, ML tournaments (141 models) and the cocktail policies"
+    }
+  ],
+  "timeSeriesVsCrossSection": "All five are cross-sectional (which stocks beat others), not forecasts of the market index. Market-timing evidence (C1 exposure, US cocktail) is a separate question and is graded separately."
+}
