@@ -674,7 +674,7 @@ def corporate_row(day, previous, next_session):
     ]
     value["events"] = [{
         "corp_code": "00000001", "rcept_no": "20261106000001", "hypothesis": "A1",
-        "receiptDay": previous, "entrySession": next_session, "sourceBodySha256": "b" * 64",
+        "receiptDay": previous, "entrySession": next_session, "sourceBodySha256": "b" * 64,
         "sameSessionFollowOn": False,
     }]
     value["eventCount"] = 1
