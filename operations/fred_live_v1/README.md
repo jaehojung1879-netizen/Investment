@@ -12,3 +12,7 @@ The existing FRED resilience module has the bounded transport and feature-identi
 4. Exercise normal, disabled, partial, complete outage, missing slots, freshness, invalid policy, and unchanged weekly path using synthetic tests and a later authorized network-only dry run. Verify current artifact metadata, no affected ledger record on HOLD, no old receipt or sealed file change. Actual deployment and full end-to-end review remain separate gates.
 
 The candidate tests use synthetic model frames and mock the provider; no price return data or outcome inspection. The tests are not an end-to-end live implementation or proof of actual FRED coverage. The existing inactive import census remains untouched. This adapter lives outside the sealed pipeline and scripts entry points. Native CI and independent review are required.
+
+## Post-CI author hardening
+
+The provider receipt is now reconciled against actual series first/last non-null date and count, actual finite numeric values, datetime ordering/uniqueness, and the recomputed ML-series overlap metadata. The approved per-slot plan must additionally supply minTrainingRows and latestFeatureDate (region-specific completed-session expectation). Unmeasured, stale or future feature frames cannot pass the preflight merely by reporting a plausible historical first training date. These are admissibility checks, not proof of release-time vintage or actual optimizer training. Thresholds and planned last sessions must be registered externally; no operational value is chosen by this PR.

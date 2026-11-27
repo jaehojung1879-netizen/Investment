@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from datetime import date
 
+import numpy as np
 import pandas as pd
 
 from pipeline import fred_resilience as fr
@@ -41,10 +42,68 @@ def _policy_valid(policy):
     )
 
 
+def _valid_index(frame):
+    return (
+        isinstance(frame.index, pd.DatetimeIndex)
+        and not frame.index.hasnans
+        and frame.index.is_unique
+        and frame.index.is_monotonic_increasing
+    )
+
+
+def _finite_columns(frame, columns):
+    for column in columns:
+        values = frame[column].dropna()
+        if not pd.api.types.is_numeric_dtype(values) or not np.isfinite(values.to_numpy(dtype=float)).all():
+            return False
+    return True
+
+
+def _last_date(index):
+    return index[-1].date().isoformat() if len(index) else None
+
+
+def _macro_evidence(macro, expected_series, availability, records, as_of):
+    if not isinstance(macro, pd.DataFrame) or not macro.columns.is_unique:
+        return ["MACRO_FRAME_INVALID"]
+    if not _valid_index(macro) or not _date(as_of):
+        return ["MACRO_FRAME_CLOCK_INVALID"]
+    if not set(expected_series) <= set(macro.columns):
+        return ["MACRO_FRAME_INCOMPLETE"]
+    if not _finite_columns(macro, list(expected_series)):
+        return ["MACRO_FRAME_NONFINITE_OR_NONNUMERIC"]
+    reasons = []
+    for name in expected_series:
+        actual = macro[name].dropna()
+        record = records.get(name)
+        if (
+            actual.empty or not isinstance(record, dict)
+            or record.get("firstValidDate") != actual.index[0].date().isoformat()
+            or record.get("lastValidDate") != _last_date(actual.index)
+            or type(record.get("validObservations")) is not int
+            or record.get("validObservations") != len(actual)
+        ):
+            reasons.append(f"{name}:MACRO_SERIES_RECEIPT_MISMATCH")
+        elif _last_date(actual.index) > as_of:
+            reasons.append(f"{name}:MACRO_SERIES_FUTURE")
+    if not reasons:
+        try:
+            recalculated = fr.availability(records, expected_series)
+            if (
+                availability.get("mlMacroSeries") != recalculated["mlMacroSeries"]
+                or availability.get("failedSeries") != recalculated["failedSeries"]
+            ):
+                reasons.append("MACRO_COVERAGE_RECEIPT_MISMATCH")
+        except (KeyError, TypeError, ValueError, AttributeError):
+            reasons.append("MACRO_COVERAGE_RECEIPT_INVALID")
+    return reasons
+
+
 def assess(*, model_version, as_of, macro, availability, expected_series, plan, observed):
     """Return metadata and a paper-recording recommendation, never permission.
 
-    plan: slot -> {"columns": list[str], "target": str, "coveragePolicy": dict}
+    plan: slot -> {"columns": list[str], "target": str, "coveragePolicy": dict,
+                   "minTrainingRows": int, "latestFeatureDate": str}
     observed: slot -> (actual feature frame, actual feature column names)
     Slot identity must include each planned ticker, horizon and path (e.g. core
     or screen). Missing/extra slots are not silently dropped. Plan authenticity,
@@ -79,8 +138,7 @@ def assess(*, model_version, as_of, macro, availability, expected_series, plan, 
         )
     ):
         reasons.append("SOURCE_PLAN_NOT_FULLY_OBSERVED")
-    if not isinstance(macro, pd.DataFrame) or not set(expected_series) <= set(macro.columns):
-        reasons.append("MACRO_FRAME_INCOMPLETE")
+    reasons.extend(_macro_evidence(macro, expected_series, availability, records, as_of))
     if not isinstance(plan, dict) or not plan:
         plan = {}
         reasons.append("MODEL_PLAN_UNSET")
@@ -95,11 +153,15 @@ def assess(*, model_version, as_of, macro, availability, expected_series, plan, 
             continue
         expected = spec.get("columns")
         target = spec.get("target")
+        minimum = spec.get("minTrainingRows")
+        last_expected = spec.get("latestFeatureDate")
         if (
             not isinstance(expected, list) or not expected
             or not all(isinstance(x, str) and x for x in expected)
             or len(set(expected)) != len(expected)
             or not isinstance(target, str) or not target or target in expected
+            or type(minimum) is not int or minimum <= 0
+            or not _date(last_expected) or not _date(as_of) or last_expected > as_of
         ):
             reasons.append(f"{slot}:FEATURE_PLAN_INVALID")
             continue
@@ -108,11 +170,23 @@ def assess(*, model_version, as_of, macro, availability, expected_series, plan, 
             columns = list(columns)
             if (
                 not isinstance(frame, pd.DataFrame)
-                or not frame.columns.is_unique or not frame.index.is_unique
+                or not frame.columns.is_unique or not _valid_index(frame)
                 or len(set(columns)) != len(columns)
                 or not set(columns + [target]) <= set(frame.columns)
             ):
                 raise ValueError("invalid feature frame")
+            if (
+                not _finite_columns(frame, columns + [target])
+                or not len(frame) or _last_date(frame.index) > as_of
+            ):
+                reasons.append(f"{slot}:MODEL_FRAME_NONFINITE_OR_FUTURE")
+                continue
+            if _last_date(frame.dropna(subset=columns).index) != last_expected:
+                reasons.append(f"{slot}:LATEST_FEATURE_SESSION_MISMATCH")
+                continue
+            if len(frame.dropna(subset=columns + [target])) < minimum:
+                reasons.append(f"{slot}:TRAINING_ROWS_BELOW_PLAN")
+                continue
             first = fr.training_start(frame, columns, target)
             if not _date(first):
                 reasons.append(f"{slot}:TRAINING_START_UNMEASURED")

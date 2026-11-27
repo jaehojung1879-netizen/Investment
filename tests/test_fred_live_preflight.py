@@ -3,19 +3,21 @@ import pandas as pd
 import pytest
 
 from operations.fred_live_v1.gate import assess, fetch_once
+from pipeline import fred_resilience as fr
 
 
 def inputs():
     days = pd.date_range("2026-01-01", periods=4)
     macro = pd.DataFrame({"Treasury_10Y": [3.0] * 4, "Yield_Curve": [0.5] * 4}, index=days)
     series = {"Treasury_10Y": "DGS10", "Yield_Curve": "T10Y2Y"}
-    avail = {
-        "status": "FULL", "dataDegraded": False, "requested": 2, "fetched": 2,
-        "series": {k: {"status": "OK", "seriesId": v} for k, v in series.items()},
-        "mlMacroSeries": {"missing": [], "overlapVerified": True,
-                          "allPresentThrough": "2026-01-04", "fetched": list(series)},
+    records = {
+        k: {"status": "OK", "seriesId": v, "firstValidDate": "2026-01-01",
+            "lastValidDate": "2026-01-04", "validObservations": 4}
+        for k, v in series.items()
     }
-    spec = {"columns": ["x"], "target": "target",
+    avail = fr.availability(records, series)
+    spec = {"columns": ["x"], "target": "target", "minTrainingRows": 3,
+            "latestFeatureDate": "2026-01-04",
             "coveragePolicy": {"maxStalenessDays": 7, "minOverlapObservations": 3,
                                "latestAllowedTrainingStart": "2026-01-02"}}
     frame = pd.DataFrame({"x": [1.0, 2.0, 3.0, 4.0], "target": [1.0, 0.0, 1.0, None]}, index=days)
@@ -90,3 +92,44 @@ def test_fetch_passes_exact_config_once(monkeypatch):
     result = fetch_once(cfg, timeout=10)
     assert result[0] is frame
     assert calls == [({"x": "X"}, "synthetic", "2010-01-01", {"timeout": 10})]
+
+
+@pytest.mark.parametrize("case", [
+    "all_nan", "wrong_span", "wrong_count", "false_overlap", "infinite_macro",
+    "future_macro", "future_feature", "infinite_feature", "stale_feature",
+    "training_rows", "missing_minimum", "non_datetime_index", "duplicate_dates",
+])
+def test_gate_reconciles_actual_frame_not_just_claimed_metadata(case):
+    data = inputs()
+    slot = "KR:B:20:screen"
+    frame, columns = data["observed"][slot]
+    if case == "all_nan":
+        data["macro"]["Treasury_10Y"] = float("nan")
+    elif case == "wrong_span":
+        data["availability"]["series"]["Treasury_10Y"]["lastValidDate"] = "2026-01-03"
+    elif case == "wrong_count":
+        data["availability"]["series"]["Treasury_10Y"]["validObservations"] = 3
+    elif case == "false_overlap":
+        data["availability"]["mlMacroSeries"]["allPresentThrough"] = "2026-01-03"
+    elif case == "infinite_macro":
+        data["macro"].iloc[-1, 0] = float("inf")
+    elif case == "future_macro":
+        data["macro"].index = pd.date_range("2026-01-02", periods=4)
+    elif case == "future_feature":
+        frame.index = pd.date_range("2026-01-02", periods=4)
+    elif case == "infinite_feature":
+        frame.iloc[0, 0] = float("inf")
+    elif case == "stale_feature":
+        frame.iloc[-1, 0] = None
+    elif case == "training_rows":
+        frame.iloc[0, 1] = None
+    elif case == "missing_minimum":
+        data["plan"][slot].pop("minTrainingRows")
+    elif case == "non_datetime_index":
+        frame.index = range(len(frame))
+    elif case == "duplicate_dates":
+        frame.index = pd.DatetimeIndex([frame.index[0]] * len(frame))
+    data["observed"][slot] = (frame, columns)
+    result = assess(**data)
+    assert result["decision"] == "HOLD"
+    assert result["writerAuthorized"] is False
