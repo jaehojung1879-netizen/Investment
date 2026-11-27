@@ -1,0 +1,983 @@
+{
+  "status": "AUTHOR_VALIDATION_ONLY",
+  "evidenceClass": "CURRENT_HISTORY_NOT_VERIFIED_PIT",
+  "cutoffUsReferenceSession": "2026-11-25",
+  "exchangeCalendar": {
+    "name": "XNYS",
+    "version": "4.11.1",
+    "purpose": "U.S. equity reference dates only; not verified as each publisher's calendar or release clock"
+  },
+  "attempts": {
+    "status": "ALL_PLANNED_DOWNLOADS_ADMITTED",
+    "admitted": 18,
+    "requested": 18,
+    "termNodesAdmitted": 5,
+    "cboeIndexReceipts": 10,
+    "attempts": [
+      {
+        "symbol": "VIX9D",
+        "url": "https://cdn-api.cboe.com/api/global/us_indices/daily_prices/VIX9D_History.csv",
+        "kind": "index",
+        "status": "ADMITTED_CURRENT_HISTORY"
+      },
+      {
+        "symbol": "VIX",
+        "url": "https://cdn-api.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv",
+        "kind": "index",
+        "status": "ADMITTED_CURRENT_HISTORY"
+      },
+      {
+        "symbol": "VIX",
+        "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=VIXCLS",
+        "kind": "index",
+        "status": "ADMITTED_CURRENT_HISTORY"
+      },
+      {
+        "symbol": "VIX3M",
+        "url": "https://cdn-api.cboe.com/api/global/us_indices/daily_prices/VIX3M_History.csv",
+        "kind": "index",
+        "status": "ADMITTED_CURRENT_HISTORY"
+      },
+      {
+        "symbol": "VIX3M",
+        "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=VXVCLS",
+        "kind": "index",
+        "status": "ADMITTED_CURRENT_HISTORY"
+      },
+      {
+        "symbol": "VIX6M",
+        "url": "https://cdn-api.cboe.com/api/global/us_indices/daily_prices/VIX6M_History.csv",
+        "kind": "index",
+        "status": "ADMITTED_CURRENT_HISTORY"
+      },
+      {
+        "symbol": "VIX1Y",
+        "url": "https://cdn-api.cboe.com/api/global/us_indices/daily_prices/VIX1Y_History.csv",
+        "kind": "index",
+        "status": "ADMITTED_CURRENT_HISTORY"
+      },
+      {
+        "symbol": "SKEW",
+        "url": "https://cdn-api.cboe.com/api/global/us_indices/daily_prices/SKEW_History.csv",
+        "kind": "index",
+        "status": "ADMITTED_CURRENT_HISTORY"
+      },
+      {
+        "symbol": "VVIX",
+        "url": "https://cdn-api.cboe.com/api/global/us_indices/daily_prices/VVIX_History.csv",
+        "kind": "index",
+        "status": "ADMITTED_CURRENT_HISTORY"
+      },
+      {
+        "symbol": "COR1M",
+        "url": "https://cdn-api.cboe.com/api/global/us_indices/daily_prices/COR1M_History.csv",
+        "kind": "index",
+        "status": "ADMITTED_CURRENT_HISTORY"
+      },
+      {
+        "symbol": "COR3M",
+        "url": "https://cdn-api.cboe.com/api/global/us_indices/daily_prices/COR3M_History.csv",
+        "kind": "index",
+        "status": "ADMITTED_CURRENT_HISTORY"
+      },
+      {
+        "symbol": "DSPX",
+        "url": "https://cdn-api.cboe.com/api/global/us_indices/daily_prices/DSPX_History.csv",
+        "kind": "index",
+        "status": "ADMITTED_CURRENT_HISTORY"
+      },
+      {
+        "symbol": "2026-09-16",
+        "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2026-09-16.csv",
+        "kind": "futures",
+        "status": "ADMITTED_CURRENT_HISTORY"
+      },
+      {
+        "symbol": "2026-10-21",
+        "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2026-10-21.csv",
+        "kind": "futures",
+        "status": "ADMITTED_CURRENT_HISTORY"
+      },
+      {
+        "symbol": "2026-11-18",
+        "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2026-11-18.csv",
+        "kind": "futures",
+        "status": "ADMITTED_CURRENT_HISTORY"
+      },
+      {
+        "symbol": "2026-12-16",
+        "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2026-12-16.csv",
+        "kind": "futures",
+        "status": "ADMITTED_CURRENT_HISTORY"
+      },
+      {
+        "symbol": "2027-01-20",
+        "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2027-01-20.csv",
+        "kind": "futures",
+        "status": "ADMITTED_CURRENT_HISTORY"
+      },
+      {
+        "symbol": "2027-02-17",
+        "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2027-02-17.csv",
+        "kind": "futures",
+        "status": "ADMITTED_CURRENT_HISTORY"
+      }
+    ],
+    "productionEffect": "NONE",
+    "investmentEvaluationAuthorized": false
+  },
+  "receipts": [
+    {
+      "symbol": "VIX9D",
+      "url": "https://cdn-api.cboe.com/api/global/us_indices/daily_prices/VIX9D_History.csv",
+      "kind": "index",
+      "sha256": "811902db689a781ccfce3dc2daf64517512cb2f0a6db5c46023ab7dc5a35cc75",
+      "retrievedAtUtc": "2026-11-27T14:49:44.199777+00:00",
+      "bytes": 203090,
+      "responseHeaders": {
+        "contentType": "text/csv",
+        "httpDate": "Fri, 27 Nov 2026 14:49:44 GMT",
+        "lastModified": "Wed, 25 Nov 2026 22:31:07 GMT",
+        "etag": "W/\"a00beb4c45b86c1d02c1e8e83a2e40b7\""
+      },
+      "unit": "ANNUALIZED_VOL_PERCENT",
+      "rawHeader": [
+        "DATE",
+        "OPEN",
+        "HIGH",
+        "LOW",
+        "CLOSE"
+      ],
+      "rawRows": 3998,
+      "rawFirst": "2011-01-04",
+      "rawLast": "2026-11-25",
+      "rawRowsAfterCutoff": 0,
+      "floor": "2014-01-01",
+      "excludedPreFloorRows": 753,
+      "nonmissingOnReference": 3245,
+      "referenceSessions": 3245,
+      "nonmissingOffReference": 0,
+      "absentOnReference": 0,
+      "explicitMissingOnReference": 0,
+      "firstOnReference": "2014-01-02",
+      "lastOnReference": "2026-11-25"
+    },
+    {
+      "symbol": "VIX",
+      "url": "https://cdn-api.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv",
+      "kind": "index",
+      "sha256": "195053f361a6b25aecd87059c39d011d7947ba88434d63a0703f8679d3080cf3",
+      "retrievedAtUtc": "2026-11-27T14:49:44.340179+00:00",
+      "bytes": 475318,
+      "responseHeaders": {
+        "contentType": "text/csv",
+        "httpDate": "Fri, 27 Nov 2026 14:49:44 GMT",
+        "lastModified": "Fri, 27 Nov 2026 11:30:40 GMT",
+        "etag": "W/\"c4fcc681f951e4f07a6261c4671071b2\""
+      },
+      "unit": "ANNUALIZED_VOL_PERCENT",
+      "rawHeader": [
+        "DATE",
+        "OPEN",
+        "HIGH",
+        "LOW",
+        "CLOSE"
+      ],
+      "rawRows": 9325,
+      "rawFirst": "1990-01-02",
+      "rawLast": "2026-11-26",
+      "rawRowsAfterCutoff": 1,
+      "floor": "2004-01-01",
+      "excludedPreFloorRows": 3528,
+      "nonmissingOnReference": 5762,
+      "referenceSessions": 5762,
+      "nonmissingOffReference": 34,
+      "absentOnReference": 0,
+      "explicitMissingOnReference": 0,
+      "firstOnReference": "2004-01-02",
+      "lastOnReference": "2026-11-25"
+    },
+    {
+      "symbol": "VIX",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=VIXCLS",
+      "kind": "index",
+      "sha256": "1ea185e0712568d3c83ba416aa5ce705d87c54db42a8ba5e278207db6d4b4da4",
+      "retrievedAtUtc": "2026-11-27T14:49:44.689092+00:00",
+      "bytes": 162122,
+      "responseHeaders": {
+        "contentType": "application/csv",
+        "httpDate": "Fri, 27 Nov 2026 14:49:44 GMT",
+        "lastModified": "Fri, 27 Nov 2026 14:38:37 GMT",
+        "etag": null
+      },
+      "unit": "ANNUALIZED_VOL_PERCENT",
+      "rawHeader": [
+        "observation_date",
+        "VIXCLS"
+      ],
+      "rawRows": 9628,
+      "rawFirst": "1990-01-02",
+      "rawLast": "2026-11-26",
+      "rawRowsAfterCutoff": 1,
+      "floor": "2004-01-01",
+      "excludedPreFloorRows": 3652,
+      "nonmissingOnReference": 5762,
+      "referenceSessions": 5762,
+      "nonmissingOffReference": 34,
+      "absentOnReference": 0,
+      "explicitMissingOnReference": 0,
+      "firstOnReference": "2004-01-02",
+      "lastOnReference": "2026-11-25"
+    },
+    {
+      "symbol": "VIX3M",
+      "url": "https://cdn-api.cboe.com/api/global/us_indices/daily_prices/VIX3M_History.csv",
+      "kind": "index",
+      "sha256": "a782b91d769435f87332b4764d6d305c9258bb65308af13069be52d4f3073d5d",
+      "retrievedAtUtc": "2026-11-27T14:49:44.807788+00:00",
+      "bytes": 220549,
+      "responseHeaders": {
+        "contentType": "text/csv",
+        "httpDate": "Fri, 27 Nov 2026 14:49:44 GMT",
+        "lastModified": "Wed, 25 Nov 2026 22:31:07 GMT",
+        "etag": "W/\"6e76f98faa82f9adeb1e4abc7c95f89b\""
+      },
+      "unit": "ANNUALIZED_VOL_PERCENT",
+      "rawHeader": [
+        "DATE",
+        "OPEN",
+        "HIGH",
+        "LOW",
+        "CLOSE"
+      ],
+      "rawRows": 4324,
+      "rawFirst": "2009-09-18",
+      "rawLast": "2026-11-25",
+      "rawRowsAfterCutoff": 0,
+      "floor": "2014-01-01",
+      "excludedPreFloorRows": 1079,
+      "nonmissingOnReference": 3245,
+      "referenceSessions": 3245,
+      "nonmissingOffReference": 0,
+      "absentOnReference": 0,
+      "explicitMissingOnReference": 0,
+      "firstOnReference": "2014-01-02",
+      "lastOnReference": "2026-11-25"
+    },
+    {
+      "symbol": "VIX3M",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=VXVCLS",
+      "kind": "index",
+      "sha256": "5a93d485b09a7c01af83b526708d8deb9dcbd11d5185f588fcdb4fd49cb3d31c",
+      "retrievedAtUtc": "2026-11-27T14:49:45.209531+00:00",
+      "bytes": 83323,
+      "responseHeaders": {
+        "contentType": "application/csv",
+        "httpDate": "Fri, 27 Nov 2026 14:49:45 GMT",
+        "lastModified": "Fri, 27 Nov 2026 14:38:38 GMT",
+        "etag": null
+      },
+      "unit": "ANNUALIZED_VOL_PERCENT",
+      "rawHeader": [
+        "observation_date",
+        "VXVCLS"
+      ],
+      "rawRows": 4952,
+      "rawFirst": "2007-12-04",
+      "rawLast": "2026-11-25",
+      "rawRowsAfterCutoff": 0,
+      "floor": "2014-01-01",
+      "excludedPreFloorRows": 1586,
+      "nonmissingOnReference": 3245,
+      "referenceSessions": 3245,
+      "nonmissingOffReference": 0,
+      "absentOnReference": 0,
+      "explicitMissingOnReference": 0,
+      "firstOnReference": "2014-01-02",
+      "lastOnReference": "2026-11-25"
+    },
+    {
+      "symbol": "VIX6M",
+      "url": "https://cdn-api.cboe.com/api/global/us_indices/daily_prices/VIX6M_History.csv",
+      "kind": "index",
+      "sha256": "ee8ec6bf8d05b83421da301689d051a51d8666416c027bb292c1bfd7f830d886",
+      "retrievedAtUtc": "2026-11-27T14:49:45.307505+00:00",
+      "bytes": 242581,
+      "responseHeaders": {
+        "contentType": "text/csv",
+        "httpDate": "Fri, 27 Nov 2026 14:49:45 GMT",
+        "lastModified": "Wed, 25 Nov 2026 22:31:07 GMT",
+        "etag": "W/\"239e1a708164e8cac3f7dba9823128be\""
+      },
+      "unit": "ANNUALIZED_VOL_PERCENT",
+      "rawHeader": [
+        "DATE",
+        "OPEN",
+        "HIGH",
+        "LOW",
+        "CLOSE"
+      ],
+      "rawRows": 4756,
+      "rawFirst": "2008-01-02",
+      "rawLast": "2026-11-25",
+      "rawRowsAfterCutoff": 0,
+      "floor": "2014-01-01",
+      "excludedPreFloorRows": 1511,
+      "nonmissingOnReference": 3245,
+      "referenceSessions": 3245,
+      "nonmissingOffReference": 0,
+      "absentOnReference": 0,
+      "explicitMissingOnReference": 0,
+      "firstOnReference": "2014-01-02",
+      "lastOnReference": "2026-11-25"
+    },
+    {
+      "symbol": "VIX1Y",
+      "url": "https://cdn-api.cboe.com/api/global/us_indices/daily_prices/VIX1Y_History.csv",
+      "kind": "index",
+      "sha256": "67202ea362bfa54170e935eccf416ffa46a20de45215a06cf99e534831fe4165",
+      "retrievedAtUtc": "2026-11-27T14:49:45.419079+00:00",
+      "bytes": 255076,
+      "responseHeaders": {
+        "contentType": "text/csv",
+        "httpDate": "Fri, 27 Nov 2026 14:49:45 GMT",
+        "lastModified": "Wed, 25 Nov 2026 22:31:07 GMT",
+        "etag": "W/\"8c6bfdce73d7a63b8e540b338ac8b7cc\""
+      },
+      "unit": "ANNUALIZED_VOL_PERCENT",
+      "rawHeader": [
+        "DATE",
+        "OPEN",
+        "HIGH",
+        "LOW",
+        "CLOSE"
+      ],
+      "rawRows": 5001,
+      "rawFirst": "2007-01-03",
+      "rawLast": "2026-11-25",
+      "rawRowsAfterCutoff": 0,
+      "floor": "2019-01-01",
+      "excludedPreFloorRows": 3014,
+      "nonmissingOnReference": 1987,
+      "referenceSessions": 1987,
+      "nonmissingOffReference": 0,
+      "absentOnReference": 0,
+      "explicitMissingOnReference": 0,
+      "firstOnReference": "2019-01-02",
+      "lastOnReference": "2026-11-25"
+    },
+    {
+      "symbol": "SKEW",
+      "url": "https://cdn-api.cboe.com/api/global/us_indices/daily_prices/SKEW_History.csv",
+      "kind": "index",
+      "sha256": "f9682f72a9f463b400b5895df66f2e348a80992610998b35ba0785ebd4bdea1d",
+      "retrievedAtUtc": "2026-11-27T14:49:45.538999+00:00",
+      "bytes": 204126,
+      "responseHeaders": {
+        "contentType": "text/csv",
+        "httpDate": "Fri, 27 Nov 2026 14:49:45 GMT",
+        "lastModified": "Thu, 26 Nov 2026 02:11:07 GMT",
+        "etag": "W/\"404e5d491f79be4440119418cda22d50\""
+      },
+      "unit": "TRANSFORMED_SKEW_INDEX_LEVEL",
+      "rawHeader": [
+        "DATE",
+        "SKEW"
+      ],
+      "rawRows": 9278,
+      "rawFirst": "1990-01-02",
+      "rawLast": "2026-11-25",
+      "rawRowsAfterCutoff": 0,
+      "floor": "2012-01-01",
+      "excludedPreFloorRows": 5535,
+      "nonmissingOnReference": 3743,
+      "referenceSessions": 3747,
+      "nonmissingOffReference": 0,
+      "absentOnReference": 4,
+      "explicitMissingOnReference": 0,
+      "firstOnReference": "2012-01-03",
+      "lastOnReference": "2026-11-25"
+    },
+    {
+      "symbol": "VVIX",
+      "url": "https://cdn-api.cboe.com/api/global/us_indices/daily_prices/VVIX_History.csv",
+      "kind": "index",
+      "sha256": "1e794537bf7dc6905c1b575fed87760da62571d4f0757deeeab1115a574b42a0",
+      "retrievedAtUtc": "2026-11-27T14:49:45.654691+00:00",
+      "bytes": 109715,
+      "responseHeaders": {
+        "contentType": "text/csv",
+        "httpDate": "Fri, 27 Nov 2026 14:49:45 GMT",
+        "lastModified": "Wed, 25 Nov 2026 22:31:07 GMT",
+        "etag": "W/\"24db358bcb225e9b9f4742571708267b\""
+      },
+      "unit": "ANNUALIZED_VIX_VOL_PERCENT",
+      "rawHeader": [
+        "DATE",
+        "VVIX"
+      ],
+      "rawRows": 5155,
+      "rawFirst": "2006-03-06",
+      "rawLast": "2026-11-25",
+      "rawRowsAfterCutoff": 0,
+      "floor": "2013-01-01",
+      "excludedPreFloorRows": 1659,
+      "nonmissingOnReference": 3496,
+      "referenceSessions": 3497,
+      "nonmissingOffReference": 0,
+      "absentOnReference": 1,
+      "explicitMissingOnReference": 0,
+      "firstOnReference": "2013-01-02",
+      "lastOnReference": "2026-11-25"
+    },
+    {
+      "symbol": "COR1M",
+      "url": "https://cdn-api.cboe.com/api/global/us_indices/daily_prices/COR1M_History.csv",
+      "kind": "index",
+      "sha256": "32ea98977375917126077ac804d8e97af99da2fd8f6b7fdc90c9072cd0c6e82a",
+      "retrievedAtUtc": "2026-11-27T14:49:45.811991+00:00",
+      "bytes": 267288,
+      "responseHeaders": {
+        "contentType": "text/csv",
+        "httpDate": "Fri, 27 Nov 2026 14:49:45 GMT",
+        "lastModified": "Wed, 25 Nov 2026 22:31:03 GMT",
+        "etag": "W/\"8d5b631d17aea16d04650667e11611a6\""
+      },
+      "unit": "CORRELATION_PERCENT",
+      "rawHeader": [
+        "DATE",
+        "OPEN",
+        "HIGH",
+        "LOW",
+        "CLOSE"
+      ],
+      "rawRows": 5258,
+      "rawFirst": "2006-01-03",
+      "rawLast": "2026-11-25",
+      "rawRowsAfterCutoff": 0,
+      "floor": "2023-01-01",
+      "excludedPreFloorRows": 4279,
+      "nonmissingOnReference": 979,
+      "referenceSessions": 979,
+      "nonmissingOffReference": 0,
+      "absentOnReference": 0,
+      "explicitMissingOnReference": 0,
+      "firstOnReference": "2023-01-03",
+      "lastOnReference": "2026-11-25"
+    },
+    {
+      "symbol": "COR3M",
+      "url": "https://cdn-api.cboe.com/api/global/us_indices/daily_prices/COR3M_History.csv",
+      "kind": "index",
+      "sha256": "024c16d9772e0efc5cd1d08a42d0968dcbd58ad3bae55f4f5d53baa803cb9bc4",
+      "retrievedAtUtc": "2026-11-27T14:49:45.927823+00:00",
+      "bytes": 267182,
+      "responseHeaders": {
+        "contentType": "text/csv",
+        "httpDate": "Fri, 27 Nov 2026 14:49:45 GMT",
+        "lastModified": "Wed, 25 Nov 2026 22:31:03 GMT",
+        "etag": "W/\"6b35e93bdd64eeb2a84acc6aaed574ff\""
+      },
+      "unit": "CORRELATION_PERCENT",
+      "rawHeader": [
+        "DATE",
+        "OPEN",
+        "HIGH",
+        "LOW",
+        "CLOSE"
+      ],
+      "rawRows": 5243,
+      "rawFirst": "2006-01-03",
+      "rawLast": "2026-11-25",
+      "rawRowsAfterCutoff": 0,
+      "floor": "2022-01-01",
+      "excludedPreFloorRows": 4013,
+      "nonmissingOnReference": 1230,
+      "referenceSessions": 1230,
+      "nonmissingOffReference": 0,
+      "absentOnReference": 0,
+      "explicitMissingOnReference": 0,
+      "firstOnReference": "2022-01-03",
+      "lastOnReference": "2026-11-25"
+    },
+    {
+      "symbol": "DSPX",
+      "url": "https://cdn-api.cboe.com/api/global/us_indices/daily_prices/DSPX_History.csv",
+      "kind": "index",
+      "sha256": "451e60ae0ddabf07e9ea53a1b4fbb7699a1e33540407ea8371e8bcccc104fff3",
+      "retrievedAtUtc": "2026-11-27T14:49:46.059626+00:00",
+      "bytes": 65716,
+      "responseHeaders": {
+        "contentType": "text/csv",
+        "httpDate": "Fri, 27 Nov 2026 14:49:46 GMT",
+        "lastModified": "Thu, 26 Nov 2026 02:21:04 GMT",
+        "etag": "W/\"2da45adebf647f9c86e4e431b501e394\""
+      },
+      "unit": "ANNUALIZED_DISPERSION_PERCENT",
+      "rawHeader": [
+        "DATE",
+        "DSPX"
+      ],
+      "rawRows": 3129,
+      "rawFirst": "2014-06-19",
+      "rawLast": "2026-11-25",
+      "rawRowsAfterCutoff": 0,
+      "floor": "2024-01-01",
+      "excludedPreFloorRows": 2400,
+      "nonmissingOnReference": 729,
+      "referenceSessions": 729,
+      "nonmissingOffReference": 0,
+      "absentOnReference": 0,
+      "explicitMissingOnReference": 0,
+      "firstOnReference": "2024-01-02",
+      "lastOnReference": "2026-11-25"
+    },
+    {
+      "symbol": "2026-09-16",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2026-09-16.csv",
+      "kind": "futures",
+      "sha256": "1424925c1dd61cda64f457df9d4778e5d7a39eec2411d1e60ee27856c787d36f",
+      "retrievedAtUtc": "2026-11-27T14:49:46.279869+00:00",
+      "bytes": 15688,
+      "responseHeaders": {
+        "contentType": "text/csv",
+        "httpDate": "Fri, 27 Nov 2026 14:49:46 GMT",
+        "lastModified": "Thu, 17 Sep 2026 05:06:43 GMT",
+        "etag": "\"223d2d8a8d60a0ee0ed5c18f448c89f9\""
+      },
+      "unit": {
+        "settlement_index_points": "INDEX_POINTS",
+        "total_volume_contracts": "CONTRACTS",
+        "open_interest_contracts": "CONTRACTS"
+      },
+      "rawRows": 184,
+      "rawFirst": "2025-12-22",
+      "rawLast": "2026-09-16",
+      "rawRowsAfterCutoff": 0,
+      "expirationRowInSnapshot": true,
+      "fieldsBeforeExpiry": {
+        "settlement_index_points": {
+          "nonmissingOnReference": 183,
+          "referenceSessions": 183,
+          "nonmissingOffReference": 0,
+          "absentOnReference": 0,
+          "explicitMissingOnReference": 0,
+          "firstOnReference": "2025-12-22",
+          "lastOnReference": "2026-09-15"
+        },
+        "total_volume_contracts": {
+          "nonmissingOnReference": 183,
+          "referenceSessions": 183,
+          "nonmissingOffReference": 0,
+          "absentOnReference": 0,
+          "explicitMissingOnReference": 0,
+          "firstOnReference": "2025-12-22",
+          "lastOnReference": "2026-09-15"
+        },
+        "open_interest_contracts": {
+          "nonmissingOnReference": 183,
+          "referenceSessions": 183,
+          "nonmissingOffReference": 0,
+          "absentOnReference": 0,
+          "explicitMissingOnReference": 0,
+          "firstOnReference": "2025-12-22",
+          "lastOnReference": "2026-09-15"
+        }
+      }
+    },
+    {
+      "symbol": "2026-10-21",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2026-10-21.csv",
+      "kind": "futures",
+      "sha256": "8890a16df39c2cd7b603857a2f89e213b4cfa0eb39b0085285a1bd611022bf06",
+      "retrievedAtUtc": "2026-11-27T14:49:46.480287+00:00",
+      "bytes": 15957,
+      "responseHeaders": {
+        "contentType": "text/csv",
+        "httpDate": "Fri, 27 Nov 2026 14:49:46 GMT",
+        "lastModified": "Thu, 22 Oct 2026 05:06:45 GMT",
+        "etag": "\"bc598cad6ba5c0911bfc781ae9ba57cf\""
+      },
+      "unit": {
+        "settlement_index_points": "INDEX_POINTS",
+        "total_volume_contracts": "CONTRACTS",
+        "open_interest_contracts": "CONTRACTS"
+      },
+      "rawRows": 187,
+      "rawFirst": "2026-01-26",
+      "rawLast": "2026-10-21",
+      "rawRowsAfterCutoff": 0,
+      "expirationRowInSnapshot": true,
+      "fieldsBeforeExpiry": {
+        "settlement_index_points": {
+          "nonmissingOnReference": 186,
+          "referenceSessions": 186,
+          "nonmissingOffReference": 0,
+          "absentOnReference": 0,
+          "explicitMissingOnReference": 0,
+          "firstOnReference": "2026-01-26",
+          "lastOnReference": "2026-10-20"
+        },
+        "total_volume_contracts": {
+          "nonmissingOnReference": 186,
+          "referenceSessions": 186,
+          "nonmissingOffReference": 0,
+          "absentOnReference": 0,
+          "explicitMissingOnReference": 0,
+          "firstOnReference": "2026-01-26",
+          "lastOnReference": "2026-10-20"
+        },
+        "open_interest_contracts": {
+          "nonmissingOnReference": 186,
+          "referenceSessions": 186,
+          "nonmissingOffReference": 0,
+          "absentOnReference": 0,
+          "explicitMissingOnReference": 0,
+          "firstOnReference": "2026-01-26",
+          "lastOnReference": "2026-10-20"
+        }
+      }
+    },
+    {
+      "symbol": "2026-11-18",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2026-11-18.csv",
+      "kind": "futures",
+      "sha256": "017683daecc39613182e5399aca9a8121111eabd95940cc91ed6fee231ba8d53",
+      "retrievedAtUtc": "2026-11-27T14:49:46.651982+00:00",
+      "bytes": 16022,
+      "responseHeaders": {
+        "contentType": "text/csv",
+        "httpDate": "Fri, 27 Nov 2026 14:49:46 GMT",
+        "lastModified": "Thu, 19 Nov 2026 06:06:45 GMT",
+        "etag": "\"dda7a683cdd21b1b0367dac9454a30a7\""
+      },
+      "unit": {
+        "settlement_index_points": "INDEX_POINTS",
+        "total_volume_contracts": "CONTRACTS",
+        "open_interest_contracts": "CONTRACTS"
+      },
+      "rawRows": 188,
+      "rawFirst": "2026-02-23",
+      "rawLast": "2026-11-18",
+      "rawRowsAfterCutoff": 0,
+      "expirationRowInSnapshot": true,
+      "fieldsBeforeExpiry": {
+        "settlement_index_points": {
+          "nonmissingOnReference": 187,
+          "referenceSessions": 187,
+          "nonmissingOffReference": 0,
+          "absentOnReference": 0,
+          "explicitMissingOnReference": 0,
+          "firstOnReference": "2026-02-23",
+          "lastOnReference": "2026-11-17"
+        },
+        "total_volume_contracts": {
+          "nonmissingOnReference": 187,
+          "referenceSessions": 187,
+          "nonmissingOffReference": 0,
+          "absentOnReference": 0,
+          "explicitMissingOnReference": 0,
+          "firstOnReference": "2026-02-23",
+          "lastOnReference": "2026-11-17"
+        },
+        "open_interest_contracts": {
+          "nonmissingOnReference": 187,
+          "referenceSessions": 187,
+          "nonmissingOffReference": 0,
+          "absentOnReference": 0,
+          "explicitMissingOnReference": 0,
+          "firstOnReference": "2026-02-23",
+          "lastOnReference": "2026-11-17"
+        }
+      }
+    },
+    {
+      "symbol": "2026-12-16",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2026-12-16.csv",
+      "kind": "futures",
+      "sha256": "284c5e196c867240684f2235904f3733ca50c8308e92d982b6b6d7a8c0dd05fb",
+      "retrievedAtUtc": "2026-11-27T14:49:46.829868+00:00",
+      "bytes": 14730,
+      "responseHeaders": {
+        "contentType": "text/csv",
+        "httpDate": "Fri, 27 Nov 2026 14:49:46 GMT",
+        "lastModified": "Thu, 26 Nov 2026 06:06:44 GMT",
+        "etag": "\"2e877e54b8539f6962b47130a3af8894\""
+      },
+      "unit": {
+        "settlement_index_points": "INDEX_POINTS",
+        "total_volume_contracts": "CONTRACTS",
+        "open_interest_contracts": "CONTRACTS"
+      },
+      "rawRows": 173,
+      "rawFirst": "2026-03-23",
+      "rawLast": "2026-11-25",
+      "rawRowsAfterCutoff": 0,
+      "expirationRowInSnapshot": false,
+      "fieldsBeforeExpiry": {
+        "settlement_index_points": {
+          "nonmissingOnReference": 173,
+          "referenceSessions": 173,
+          "nonmissingOffReference": 0,
+          "absentOnReference": 0,
+          "explicitMissingOnReference": 0,
+          "firstOnReference": "2026-03-23",
+          "lastOnReference": "2026-11-25"
+        },
+        "total_volume_contracts": {
+          "nonmissingOnReference": 173,
+          "referenceSessions": 173,
+          "nonmissingOffReference": 0,
+          "absentOnReference": 0,
+          "explicitMissingOnReference": 0,
+          "firstOnReference": "2026-03-23",
+          "lastOnReference": "2026-11-25"
+        },
+        "open_interest_contracts": {
+          "nonmissingOnReference": 173,
+          "referenceSessions": 173,
+          "nonmissingOffReference": 0,
+          "absentOnReference": 0,
+          "explicitMissingOnReference": 0,
+          "firstOnReference": "2026-03-23",
+          "lastOnReference": "2026-11-25"
+        }
+      }
+    },
+    {
+      "symbol": "2027-01-20",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2027-01-20.csv",
+      "kind": "futures",
+      "sha256": "80ea1633e9a67fe5a126e51c24b540118cd4f98da47554c3b11dfc84c1ad0288",
+      "retrievedAtUtc": "2026-11-27T14:49:47.037927+00:00",
+      "bytes": 12925,
+      "responseHeaders": {
+        "contentType": "text/csv",
+        "httpDate": "Fri, 27 Nov 2026 14:49:47 GMT",
+        "lastModified": "Thu, 26 Nov 2026 06:06:36 GMT",
+        "etag": "\"a2c2b28fd7acb6dd4af4860171d43b8d\""
+      },
+      "unit": {
+        "settlement_index_points": "INDEX_POINTS",
+        "total_volume_contracts": "CONTRACTS",
+        "open_interest_contracts": "CONTRACTS"
+      },
+      "rawRows": 154,
+      "rawFirst": "2026-04-20",
+      "rawLast": "2026-11-25",
+      "rawRowsAfterCutoff": 0,
+      "expirationRowInSnapshot": false,
+      "fieldsBeforeExpiry": {
+        "settlement_index_points": {
+          "nonmissingOnReference": 154,
+          "referenceSessions": 154,
+          "nonmissingOffReference": 0,
+          "absentOnReference": 0,
+          "explicitMissingOnReference": 0,
+          "firstOnReference": "2026-04-20",
+          "lastOnReference": "2026-11-25"
+        },
+        "total_volume_contracts": {
+          "nonmissingOnReference": 154,
+          "referenceSessions": 154,
+          "nonmissingOffReference": 0,
+          "absentOnReference": 0,
+          "explicitMissingOnReference": 0,
+          "firstOnReference": "2026-04-20",
+          "lastOnReference": "2026-11-25"
+        },
+        "open_interest_contracts": {
+          "nonmissingOnReference": 154,
+          "referenceSessions": 154,
+          "nonmissingOffReference": 0,
+          "absentOnReference": 0,
+          "explicitMissingOnReference": 0,
+          "firstOnReference": "2026-04-20",
+          "lastOnReference": "2026-11-25"
+        }
+      }
+    },
+    {
+      "symbol": "2027-02-17",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2027-02-17.csv",
+      "kind": "futures",
+      "sha256": "831babbdf44e0ff855075d17fce95464afdc448fbfbf613d4861bccd8cc67e98",
+      "retrievedAtUtc": "2026-11-27T14:49:47.232464+00:00",
+      "bytes": 10819,
+      "responseHeaders": {
+        "contentType": "text/csv",
+        "httpDate": "Fri, 27 Nov 2026 14:49:47 GMT",
+        "lastModified": "Thu, 26 Nov 2026 06:06:36 GMT",
+        "etag": "\"906398f4a3ea877ad9d8798e84be2b98\""
+      },
+      "unit": {
+        "settlement_index_points": "INDEX_POINTS",
+        "total_volume_contracts": "CONTRACTS",
+        "open_interest_contracts": "CONTRACTS"
+      },
+      "rawRows": 129,
+      "rawFirst": "2026-05-26",
+      "rawLast": "2026-11-25",
+      "rawRowsAfterCutoff": 0,
+      "expirationRowInSnapshot": false,
+      "fieldsBeforeExpiry": {
+        "settlement_index_points": {
+          "nonmissingOnReference": 129,
+          "referenceSessions": 129,
+          "nonmissingOffReference": 0,
+          "absentOnReference": 0,
+          "explicitMissingOnReference": 0,
+          "firstOnReference": "2026-05-26",
+          "lastOnReference": "2026-11-25"
+        },
+        "total_volume_contracts": {
+          "nonmissingOnReference": 129,
+          "referenceSessions": 129,
+          "nonmissingOffReference": 0,
+          "absentOnReference": 0,
+          "explicitMissingOnReference": 0,
+          "firstOnReference": "2026-05-26",
+          "lastOnReference": "2026-11-25"
+        },
+        "open_interest_contracts": {
+          "nonmissingOnReference": 129,
+          "referenceSessions": 129,
+          "nonmissingOffReference": 0,
+          "absentOnReference": 0,
+          "explicitMissingOnReference": 0,
+          "firstOnReference": "2026-05-26",
+          "lastOnReference": "2026-11-25"
+        }
+      }
+    }
+  ],
+  "fredReconciliation": {
+    "VIX": {
+      "samePublisherLineage": true,
+      "overlap": 5762,
+      "exactMatch": 5762,
+      "withinHalfHundredthVolPoint": 5762,
+      "maxAbsVolPoints": 0.0
+    },
+    "VIX3M": {
+      "samePublisherLineage": true,
+      "overlap": 3245,
+      "exactMatch": 3245,
+      "withinHalfHundredthVolPoint": 3245,
+      "maxAbsVolPoints": 0.0
+    }
+  },
+  "completeTermReferenceDates": 1987,
+  "commonFloorReferenceSessions": 1987,
+  "firstComplete": "2019-01-02",
+  "lastComplete": "2026-11-25",
+  "segments": {
+    "VIX9D": {
+      "endpointObserved": 3245,
+      "negativeSigned": 0,
+      "medianAnnualizedForwardDecimalVariance": 0.022260639999999995,
+      "medianTotalDecimalVarianceOnCompleteDates": 0.0006876739726027395
+    },
+    "VIX": {
+      "endpointObserved": 3245,
+      "negativeSigned": 0,
+      "medianAnnualizedForwardDecimalVariance": 0.02830724571428571,
+      "medianTotalDecimalVarianceOnCompleteDates": 0.0026630136986301365
+    },
+    "VIX3M": {
+      "endpointObserved": 3245,
+      "negativeSigned": 0,
+      "medianAnnualizedForwardDecimalVariance": 0.03820794238095238,
+      "medianTotalDecimalVarianceOnCompleteDates": 0.010707739726027395
+    },
+    "VIX6M": {
+      "endpointObserved": 3245,
+      "negativeSigned": 0,
+      "medianAnnualizedForwardDecimalVariance": 0.04536559648351647,
+      "medianTotalDecimalVarianceOnCompleteDates": 0.025181408219178084
+    },
+    "VIX1Y": {
+      "endpointObserved": 1987,
+      "negativeSigned": 0,
+      "medianAnnualizedForwardDecimalVariance": 0.059371962967033,
+      "medianTotalDecimalVarianceOnCompleteDates": 0.05495295468493151
+    }
+  },
+  "sampleAndPower": {
+    "confirmedIndependentOutcomeCount": 0,
+    "independenceOfPotentialWindows": "UNVERIFIED; excludes training, regime dependence and multiplicity",
+    "calendarDayWholeHorizon": {
+      "9": {
+        "potentialDisjointWindows": 304,
+        "mdeSdFor80PctPower": 0.16119325405940482,
+        "powerAt0_30Sd": 0.999431184753294,
+        "powerAt0_50Sd": 0.9999999999915165
+      },
+      "30": {
+        "potentialDisjointWindows": 94,
+        "mdeSdFor80PctPower": 0.2919880201031759,
+        "powerAt0_30Sd": 0.8208177456073997,
+        "powerAt0_50Sd": 0.9977238113661666
+      },
+      "93": {
+        "potentialDisjointWindows": 30,
+        "mdeSdFor80PctPower": 0.5292356151129529,
+        "powerAt0_30Sd": 0.3554627311655247,
+        "powerAt0_50Sd": 0.7539647157437906
+      },
+      "184": {
+        "potentialDisjointWindows": 15,
+        "mdeSdFor80PctPower": 0.778022569785358,
+        "powerAt0_30Sd": 0.19153134711883765,
+        "powerAt0_50Sd": 0.4379267106888163
+      },
+      "366": {
+        "potentialDisjointWindows": 7,
+        "mdeSdFor80PctPower": 1.272566655454448,
+        "powerAt0_30Sd": 0.10347232691451494,
+        "powerAt0_50Sd": 0.2013278028109127
+      }
+    },
+    "equitySessionHorizon": {
+      "126": {
+        "potentialDisjointWindows": 15,
+        "mdeSdFor80PctPower": 0.778022569785358,
+        "powerAt0_30Sd": 0.19153134711883765,
+        "powerAt0_50Sd": 0.4379267106888163
+      },
+      "252": {
+        "potentialDisjointWindows": 7,
+        "mdeSdFor80PctPower": 1.272566655454448,
+        "powerAt0_30Sd": 0.10347232691451494,
+        "powerAt0_50Sd": 0.2013278028109127
+      }
+    },
+    "twoNode93CalendarDaysByMethodStart": {
+      "2014-10-06": {
+        "pairedReferenceDates": 3054,
+        "potentialDisjointWindows": 47,
+        "mdeSdFor80PctPower": 0.41743536238267887,
+        "powerAt0_30Sd": 0.5214484129185231,
+        "powerAt0_50Sd": 0.9185617608292954
+      },
+      "2025-02-10": {
+        "pairedReferenceDates": 452,
+        "potentialDisjointWindows": 7,
+        "mdeSdFor80PctPower": 1.272566655454448,
+        "powerAt0_30Sd": 0.10347232691451494,
+        "powerAt0_50Sd": 0.2013278028109127
+      }
+    },
+    "optimisticNFor80PctPower": {
+      "0.3": 90,
+      "0.5": 34
+    }
+  },
+  "futures": {
+    "plannedStandardContracts": 6,
+    "admittedContracts": 6,
+    "referenceDaysWithAtLeast2PreExpirySettles": 212,
+    "referenceDaysWithAtLeast3PreExpirySettles": 193,
+    "preExpirySettlesOnCutoff": 3
+  }
+}

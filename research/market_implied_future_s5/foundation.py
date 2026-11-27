@@ -24,15 +24,22 @@ LIVE_FLOOR = {
 }
 CBOE = "https://cdn-api.cboe.com/api/global/us_indices/daily_prices/"
 FRED = "https://fred.stlouisfed.org/graph/fredgraph.csv?id="
-# Only the first two Cboe download paths were verified from the public catalog.
-# Remaining Cboe paths require source/format verification before admission.
-SOURCES = {
-    "VIX": {CBOE + "VIX_History.csv": ("DATE", "CLOSE"), FRED + "VIXCLS": ("observation_date", "VIXCLS")},
-    "VIX9D": {CBOE + "VIX9D_History.csv": ("DATE", "CLOSE")},
-    "VIX3M": {FRED + "VXVCLS": ("observation_date", "VXVCLS")},
-    "VIX6M": {},
-    "VIX1Y": {},
+ANCILLARY_FLOOR = {
+    "SKEW": date(2012, 1, 1), "VVIX": date(2013, 1, 1),
+    "COR1M": date(2023, 1, 1), "COR3M": date(2022, 1, 1), "DSPX": date(2024, 1, 1),
 }
+UNITS = {
+    **dict.fromkeys(TERMS, "ANNUALIZED_VOL_PERCENT"),
+    "SKEW": "TRANSFORMED_SKEW_INDEX_LEVEL", "VVIX": "ANNUALIZED_VIX_VOL_PERCENT",
+    "COR1M": "CORRELATION_PERCENT", "COR3M": "CORRELATION_PERCENT",
+    "DSPX": "ANNUALIZED_DISPERSION_PERCENT",
+}
+SOURCES = {
+    symbol: {CBOE + f"{symbol}_History.csv": ("DATE", symbol if symbol in {"SKEW", "VVIX", "DSPX"} else "CLOSE")}
+    for symbol in UNITS
+}
+SOURCES["VIX"][FRED + "VIXCLS"] = ("observation_date", "VIXCLS")
+SOURCES["VIX3M"][FRED + "VXVCLS"] = ("observation_date", "VXVCLS")
 MAX_BYTES = 16 * 1024 * 1024
 
 
@@ -62,7 +69,7 @@ def _vol(value):
 
 def admit(raw, *, symbol, url, sha256, retrieved_at, as_of):
     """Parse fixed source/date/value schema and preserve explicit missingness."""
-    if symbol not in TERMS or url not in SOURCES[symbol]:
+    if symbol not in SOURCES or url not in SOURCES[symbol]:
         raise ValueError("UNREGISTERED_SOURCE")
     if not isinstance(raw, bytes) or not 0 < len(raw) <= MAX_BYTES:
         raise ValueError("SOURCE_SIZE_INVALID")
@@ -85,8 +92,16 @@ def admit(raw, *, symbol, url, sha256, retrieved_at, as_of):
             raise ValueError("DUPLICATE_OR_FUTURE_DATE")
         seen.add(day)
         value = row[value_col].strip()
-        parsed = None if value in ("", ".") else _vol(float(value))
-        if day < LIVE_FLOOR[symbol]:
+        parsed = None if value in ("", ".") else float(value)
+        if parsed is not None:
+            if symbol.startswith("COR"):
+                if not -100 <= parsed <= 100:
+                    raise ValueError("CORRELATION_OUT_OF_RANGE")
+            elif not (symbol == "DSPX" and parsed == 0):
+                # Preserve the published pre-launch DSPX zero. It is never a term node.
+                _vol(parsed)
+        floor = LIVE_FLOOR[symbol] if symbol in TERMS else ANCILLARY_FLOOR[symbol]
+        if day < floor:
             excluded += 1
             continue
         rows[day.isoformat()] = parsed
@@ -94,7 +109,7 @@ def admit(raw, *, symbol, url, sha256, retrieved_at, as_of):
         raise ValueError("NO_LIVE_ERA_OBSERVATIONS")
     return {
         "symbol": symbol, "url": url, "sha256": sha256,
-        "retrievedAtUtc": observed.isoformat(), "unit": "ANNUALIZED_VOL_PERCENT",
+        "retrievedAtUtc": observed.isoformat(), "unit": UNITS[symbol],
         "evidenceClass": "CURRENT_HISTORY_NOT_VERIFIED_PIT",
         "excludedPreLiveEraRows": excluded, "rows": dict(sorted(rows.items())),
     }
@@ -138,6 +153,12 @@ def census(series):
     valid = {k: {d for d, v in s.items() if v is not None} for k, s in series.items()}
     union = set().union(*valid.values()) if valid else set()
     common = set.intersection(*valid.values()) if set(valid) == set(TERMS) else set()
+    negative = dict.fromkeys(TERMS, 0)
+    for day in union:
+        curve = term_curve({symbol: rows.get(day) for symbol, rows in series.items()})
+        for row in curve["segments"]:
+            if row["status"] == "NEGATIVE_FORWARD_PROXY":
+                negative[row["to"]] += 1
     return {
         "series": {
             k: {"nonmissing": len(valid.get(k, set())),
@@ -148,13 +169,7 @@ def census(series):
         },
         "observedUnionDays": len(union), "allFiveCommonDays": len(common),
         "firstCommon": min(common, default=None), "lastCommon": max(common, default=None),
-        "negativeForwardCounts": {
-            k: sum(
-                row["to"] == k and row["status"] == "NEGATIVE_FORWARD_PROXY"
-                for d in union
-                for row in term_curve({s: rows.get(d) for s, rows in series.items()})["segments"]
-            ) for k in TERMS
-        },
+        "negativeForwardCounts": negative,
     }
 
 
@@ -193,21 +208,27 @@ def main():
     args = parser.parse_args()
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
     clock = datetime.now(timezone.utc).isoformat()
-    sources, rows, failures = [], {}, {}
+    sources, rows, failures, identifiers = [], {}, {}, set()
     for entry in manifest:
+        if entry.get("kind", "index") != "index":
+            continue
         symbol = entry["symbol"]
-        if symbol in rows or symbol in failures:
-            raise ValueError("DUPLICATE_SYMBOL")
+        identifier = (symbol, entry["url"])
+        if identifier in identifiers:
+            raise ValueError("DUPLICATE_SOURCE")
+        identifiers.add(identifier)
         try:
             path = Path(entry["path"])
             if path.stat().st_size > MAX_BYTES:
                 raise ValueError("SOURCE_SIZE_INVALID")
             item = admit(path.read_bytes(), symbol=symbol, url=entry["url"], sha256=entry["sha256"],
                          retrieved_at=entry["retrievedAtUtc"], as_of=clock)
-            rows[symbol] = item.pop("rows")
+            observations = item.pop("rows")
+            if symbol in TERMS and (symbol not in rows or entry["url"].startswith(CBOE)):
+                rows[symbol] = observations
             sources.append(item)
         except (OSError, ValueError, KeyError, TypeError, AttributeError) as exc:
-            failures[symbol] = str(exc)
+            failures[" ".join(identifier)] = str(exc)
     result = {
         "schema": "S5_SOURCE_CENSUS_V1", "status": "SOURCE_ONLY",
         "productionEffect": "NONE", "asOfUtc": clock,
@@ -215,7 +236,7 @@ def main():
         "investmentEvaluationAuthorized": False,
     }
     print(json.dumps(result, indent=2, allow_nan=False))
-    return 0 if rows and not failures else 2
+    return 0 if set(rows) == set(TERMS) and not failures else 2
 
 
 if __name__ == "__main__":

@@ -93,3 +93,94 @@ def test_same_state_prices_opposite_physical_return():
     assert price == pytest.approx(98)
     assert sum(p * payoff for p, payoff in zip(p1, x)) > price
     assert sum(p * payoff for p, payoff in zip(p2, x)) < price
+
+
+def test_dispersion_zero_does_not_block_live_publisher_file():
+    raw = b"DATE,DSPX\n02/08/2018,0.000000\n01/02/2024,15.75\n"
+    data = load(raw, symbol="DSPX", url=s5.CBOE + "DSPX_History.csv")
+    assert data["excludedPreLiveEraRows"] == 1
+    assert data["rows"] == {"2024-01-02": 15.75}
+
+
+def test_futures_validate_contract_and_keep_reported_zero_counts():
+    from datetime import date
+
+    from research.market_implied_future_s5.futures import parse_contract
+
+    raw = (b"Trade Date,Futures,Settle,Total Volume,Open Interest\n"
+           b"2026-11-17,X (Nov 2026),0,0,0\n2026-11-18,X (Nov 2026),20.10,1,2\n")
+    parsed = parse_contract(raw, "2026-11-18", "2026-11-18T17:00:00Z")
+    assert parsed[date(2026, 11, 17)] == {"settlement_index_points": None, "total_volume_contracts": 0,
+                                        "open_interest_contracts": 0}
+    assert parsed[date(2026, 11, 18)]["settlement_index_points"] == 20.1
+    with pytest.raises(ValueError, match="DATE_OR_CONTRACT"):
+        parse_contract(raw, "2026-12-16", "2026-11-18T17:00:00Z")
+
+
+def test_snapshot_counts_missing_reference_days_without_using_union():
+    from datetime import date, timedelta
+
+    from research.market_implied_future_s5.snapshot import coverage, power_row, spaced_windows
+
+    first = date(2026, 11, 23)
+    second, third, fourth = (first + timedelta(days=i) for i in range(1, 4))
+    result = coverage({first: 20., second: None, fourth: 20.}, [first, second, third], first, fourth)
+    assert result["referenceSessions"] == 3
+    assert result["absentOnReference"] == result["explicitMissingOnReference"] == result["nonmissingOffReference"] == 1
+    assert spaced_windows([(first, third), (second, fourth)], third) == 1
+    assert power_row(0)["mdeSdFor80PctPower"] is None
+    assert power_row(7)["mdeSdFor80PctPower"] == pytest.approx(1.2725667)
+
+
+def test_response_receipt_rejects_doctored_bytes(tmp_path):
+    from datetime import datetime
+
+    from research.market_implied_future_s5.snapshot import bytes_from_receipt
+
+    f = tmp_path / "data.csv"
+    f.write_bytes(b"123")
+    row = {"path": "different-archive-path/data.csv", "bytes": 3,
+           "sha256": hashlib.sha256(b"124").hexdigest(), "retrievedAtUtc": "2026-11-24T18:00:00Z"}
+    with pytest.raises(ValueError, match="HASH"):
+        bytes_from_receipt(tmp_path, row, datetime.fromisoformat("2026-11-25T18:00:00+00:00"))
+
+
+def test_rate_limit_stops_requests_to_same_host(tmp_path):
+    from urllib.error import HTTPError
+
+    from research.market_implied_future_s5.acquire import acquire
+
+    class RateLimited:
+        def open(self, request, timeout):
+            raise HTTPError(request.full_url, 429, "Too Many Requests", None, None)
+
+    result = acquire(tmp_path / "raw", opener=RateLimited())
+    assert result["admitted"] == 0
+    assert sum(row["status"] == "HTTP_ERROR" for row in result["attempts"]) == 3
+    assert sum(row["status"] == "NOT_REQUESTED_AFTER_HOST_RATE_LIMIT" for row in result["attempts"]) == 15
+
+
+def test_state_prices_admit_exact_finite_quotes_and_reject_negative_butterfly():
+    from research.market_implied_future_s5.state_prices import state_model, synthetic_witnesses
+
+    result = state_model({("C", 100.): (10., 10.), ("P", 100.): (10., 10.), ("P", 80.): (0., 20.)},
+                         200, (1., 1.), (80., 100.))
+    assert result["riskNeutralTerminalForwardIndexPoints"] == pytest.approx([100., 100.])
+    lo, hi = result["riskNeutralPutSpreadExpectation"]
+    assert 0 <= lo < hi <= 1
+    assert synthetic_witnesses()["negativeButterfly"]["status"] == "NO_FEASIBLE_SINGLE_EXPIRY_MODEL"
+
+
+def test_expected_variance_requires_prior_observation_and_keeps_signed_difference():
+    from datetime import datetime, timedelta, timezone
+
+    from research.market_implied_future_s5.causal import ewma_expected_daily_variation, integrated_q_minus_expected_p
+
+    day = datetime(2026, 10, 1, tzinfo=timezone.utc)
+    rows = [((day + timedelta(days=i)).isoformat(), (day + timedelta(days=i, minutes=10)).isoformat(), .0002)
+            for i in range(22)]
+    decision = (day + timedelta(days=22)).isoformat()
+    assert ewma_expected_daily_variation(rows, decision_at=decision) == pytest.approx(.0002)
+    with pytest.raises(ValueError, match="CLOCK"):
+        ewma_expected_daily_variation([*rows, (decision, decision, .001)], decision_at=decision)
+    assert integrated_q_minus_expected_p(.003, .010, .0002, 40) == pytest.approx(-.001)

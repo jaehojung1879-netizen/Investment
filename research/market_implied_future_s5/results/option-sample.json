@@ -1,0 +1,95 @@
+{
+  "status": "AUTHOR_VALIDATION_ONLY",
+  "classification": "ACTUAL_PUBLIC_HISTORICAL_SAMPLE_SUBSET",
+  "sampleReceipt": {
+    "url": "https://datashop.cboe.com/download/sample/217",
+    "httpStatus": 200,
+    "responseHeaders": {
+      "Date": "Fri, 27 Nov 2026 14:51:45 GMT",
+      "Last-Modified": null,
+      "ETag": null,
+      "Content-Type": "application/x-zip-compressed"
+    },
+    "bytes": 2952557,
+    "sha256": "981be1aafe6970e798d5be42f049e6c5b6e507f01cb1509ab513e9bc2e08da24",
+    "retrievedAtUtc": "2026-11-27T14:51:45.316710+00:00"
+  },
+  "member": "UnderlyingOptionsEODCalcs_2023-08-25_cgi_or_historical.csv",
+  "quoteTime": "2023-08-25T15:45:00-04:00",
+  "expiry": "2023-09-25",
+  "product": "SPXW European cash-settled PM",
+  "quoteUnit": "SPX index points",
+  "eligibleQuotes": 236,
+  "uniqueStrikes": 118,
+  "zeroBidsRetained": 9,
+  "discountBoundsAssumed": [
+    0.994,
+    0.998
+  ],
+  "putSpreadStrikesIndexPoints": [
+    3950.0,
+    4050.0
+  ],
+  "capacities": [
+    {
+      "status": "NONEMPTY_SINGLE_EXPIRY_STATE_PRICE_SET",
+      "supportCapIndexPoints": 6600,
+      "piecewiseLinearKnots": 120,
+      "riskNeutralPutSpreadExpectation": [
+        0.025077630297126154,
+        0.02917151116676713
+      ],
+      "riskNeutralTerminalForwardIndexPoints": [
+        4428.113342898135,
+        4429.088098918083
+      ]
+    },
+    {
+      "status": "NONEMPTY_SINGLE_EXPIRY_STATE_PRICE_SET",
+      "supportCapIndexPoints": 8800,
+      "piecewiseLinearKnots": 120,
+      "riskNeutralPutSpreadExpectation": [
+        0.02507763029712616,
+        0.029171511166767132
+      ],
+      "riskNeutralTerminalForwardIndexPoints": [
+        4428.113342898137,
+        4429.088098918082
+      ]
+    }
+  ],
+  "synthetic": {
+    "sameQDifferentPhysicalP": {
+      "riskNeutralProbability": [
+        0.2,
+        0.6,
+        0.2
+      ],
+      "discountFactor": 0.98,
+      "physicalA": [
+        0.1,
+        0.6,
+        0.3
+      ],
+      "physicalB": [
+        0.35,
+        0.5,
+        0.15
+      ],
+      "sdfA": [
+        1.96,
+        0.98,
+        0.6533333333333334
+      ],
+      "sdfB": [
+        0.56,
+        1.176,
+        1.3066666666666669
+      ]
+    },
+    "negativeButterfly": {
+      "status": "NO_FEASIBLE_SINGLE_EXPIRY_MODEL",
+      "supportCapIndexPoints": 300
+    }
+  }
+}
