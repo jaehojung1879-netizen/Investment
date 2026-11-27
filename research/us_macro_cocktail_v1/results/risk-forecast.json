@@ -1,0 +1,341 @@
+{
+ "design": "walk-forward ridge(alpha=1) on [naive trailing estimate + 15 state variables]; correlations on Fisher-z, vols in logs",
+ "results": {
+  "corrSpyGld_h126": {
+   "all": {
+    "first": "2013-10-31",
+    "forecasts": 151,
+    "last": "2026-04-30",
+    "nwTStatModelBeatsNaive": 0.312432,
+    "oosR2ModelVsExpandingMean": -0.102432,
+    "oosR2ModelVsNaive": 0.059815,
+    "oosR2NaiveVsExpandingMean": -0.172569
+   },
+   "from2016": {
+    "first": "2016-01-29",
+    "forecasts": 124,
+    "last": "2026-04-30",
+    "nwTStatModelBeatsNaive": 0.826798,
+    "oosR2ModelVsExpandingMean": -0.198168,
+    "oosR2ModelVsNaive": 0.150443,
+    "oosR2NaiveVsExpandingMean": -0.410344
+   },
+   "inSampleR2SameFeaturesExPost": 0.474986,
+   "timing": "EX_ANTE"
+  },
+  "corrSpyGld_h21": {
+   "all": {
+    "first": "2013-05-31",
+    "forecasts": 161,
+    "last": "2026-09-30",
+    "nwTStatModelBeatsNaive": 1.737237,
+    "oosR2ModelVsExpandingMean": 0.167931,
+    "oosR2ModelVsNaive": 0.151056,
+    "oosR2NaiveVsExpandingMean": 0.019878
+   },
+   "from2016": {
+    "first": "2016-01-29",
+    "forecasts": 129,
+    "last": "2026-09-30",
+    "nwTStatModelBeatsNaive": 1.085292,
+    "oosR2ModelVsExpandingMean": 0.170776,
+    "oosR2ModelVsNaive": 0.109877,
+    "oosR2NaiveVsExpandingMean": 0.068417
+   },
+   "inSampleR2SameFeaturesExPost": 0.331693,
+   "timing": "EX_ANTE"
+  },
+  "corrSpyGld_h63": {
+   "all": {
+    "first": "2013-07-31",
+    "forecasts": 157,
+    "last": "2026-07-31",
+    "nwTStatModelBeatsNaive": 0.507134,
+    "oosR2ModelVsExpandingMean": 0.007814,
+    "oosR2ModelVsNaive": 0.074452,
+    "oosR2NaiveVsExpandingMean": -0.071998
+   },
+   "from2016": {
+    "first": "2016-01-29",
+    "forecasts": 127,
+    "last": "2026-07-31",
+    "nwTStatModelBeatsNaive": 0.668003,
+    "oosR2ModelVsExpandingMean": -0.049024,
+    "oosR2ModelVsNaive": 0.105205,
+    "oosR2NaiveVsExpandingMean": -0.172363
+   },
+   "inSampleR2SameFeaturesExPost": 0.364424,
+   "timing": "EX_ANTE"
+  },
+  "corrSpyIef_h126": {
+   "all": {
+    "first": "2013-10-31",
+    "forecasts": 151,
+    "last": "2026-04-30",
+    "nwTStatModelBeatsNaive": -1.883465,
+    "oosR2ModelVsExpandingMean": 0.002154,
+    "oosR2ModelVsNaive": -0.737639,
+    "oosR2NaiveVsExpandingMean": 0.425746
+   },
+   "from2016": {
+    "first": "2016-01-29",
+    "forecasts": 124,
+    "last": "2026-04-30",
+    "nwTStatModelBeatsNaive": -1.978698,
+    "oosR2ModelVsExpandingMean": 0.086133,
+    "oosR2ModelVsNaive": -0.854599,
+    "oosR2NaiveVsExpandingMean": 0.507243
+   },
+   "inSampleR2SameFeaturesExPost": 0.578256,
+   "signTest": {
+    "majorityClassBaseRate": 0.735099,
+    "modelSignHitRate": 0.715232,
+    "naiveSignHitRate": 0.715232,
+    "note": "overlapping 126-session windows on monthly decisions; hit rates are descriptive"
+   },
+   "timing": "EX_ANTE"
+  },
+  "corrSpyIef_h21": {
+   "all": {
+    "first": "2013-05-31",
+    "forecasts": 161,
+    "last": "2026-09-30",
+    "nwTStatModelBeatsNaive": 1.517596,
+    "oosR2ModelVsExpandingMean": 0.259637,
+    "oosR2ModelVsNaive": 0.157366,
+    "oosR2NaiveVsExpandingMean": 0.12137
+   },
+   "from2016": {
+    "first": "2016-01-29",
+    "forecasts": 129,
+    "last": "2026-09-30",
+    "nwTStatModelBeatsNaive": 2.285234,
+    "oosR2ModelVsExpandingMean": 0.326178,
+    "oosR2ModelVsNaive": 0.236149,
+    "oosR2NaiveVsExpandingMean": 0.117863
+   },
+   "inSampleR2SameFeaturesExPost": 0.40642,
+   "timing": "EX_ANTE"
+  },
+  "corrSpyIef_h63": {
+   "all": {
+    "first": "2013-07-31",
+    "forecasts": 157,
+    "last": "2026-07-31",
+    "nwTStatModelBeatsNaive": -1.797449,
+    "oosR2ModelVsExpandingMean": 0.14087,
+    "oosR2ModelVsNaive": -0.397936,
+    "oosR2NaiveVsExpandingMean": 0.38543
+   },
+   "from2016": {
+    "first": "2016-01-29",
+    "forecasts": 127,
+    "last": "2026-07-31",
+    "nwTStatModelBeatsNaive": -1.605242,
+    "oosR2ModelVsExpandingMean": 0.277874,
+    "oosR2ModelVsNaive": -0.383275,
+    "oosR2NaiveVsExpandingMean": 0.477959
+   },
+   "inSampleR2SameFeaturesExPost": 0.520801,
+   "timing": "EX_ANTE"
+  },
+  "corrSpyUup_h126": {
+   "all": {
+    "first": "2013-10-31",
+    "forecasts": 151,
+    "last": "2026-04-30",
+    "nwTStatModelBeatsNaive": 0.16301,
+    "oosR2ModelVsExpandingMean": 0.238023,
+    "oosR2ModelVsNaive": 0.033194,
+    "oosR2NaiveVsExpandingMean": 0.211862
+   },
+   "from2016": {
+    "first": "2016-01-29",
+    "forecasts": 124,
+    "last": "2026-04-30",
+    "nwTStatModelBeatsNaive": 0.43608,
+    "oosR2ModelVsExpandingMean": -0.124495,
+    "oosR2ModelVsNaive": 0.095765,
+    "oosR2NaiveVsExpandingMean": -0.243587
+   },
+   "inSampleR2SameFeaturesExPost": 0.609129,
+   "timing": "EX_ANTE"
+  },
+  "corrSpyUup_h21": {
+   "all": {
+    "first": "2013-05-31",
+    "forecasts": 161,
+    "last": "2026-09-30",
+    "nwTStatModelBeatsNaive": 1.311656,
+    "oosR2ModelVsExpandingMean": 0.211306,
+    "oosR2ModelVsNaive": 0.121768,
+    "oosR2NaiveVsExpandingMean": 0.101953
+   },
+   "from2016": {
+    "first": "2016-01-29",
+    "forecasts": 129,
+    "last": "2026-09-30",
+    "nwTStatModelBeatsNaive": 1.363071,
+    "oosR2ModelVsExpandingMean": 0.075487,
+    "oosR2ModelVsNaive": 0.150022,
+    "oosR2NaiveVsExpandingMean": -0.087691
+   },
+   "inSampleR2SameFeaturesExPost": 0.468789,
+   "timing": "EX_ANTE"
+  },
+  "corrSpyUup_h63": {
+   "all": {
+    "first": "2013-07-31",
+    "forecasts": 157,
+    "last": "2026-07-31",
+    "nwTStatModelBeatsNaive": -0.241092,
+    "oosR2ModelVsExpandingMean": 0.152145,
+    "oosR2ModelVsNaive": -0.035728,
+    "oosR2NaiveVsExpandingMean": 0.181392
+   },
+   "from2016": {
+    "first": "2016-01-29",
+    "forecasts": 127,
+    "last": "2026-07-31",
+    "nwTStatModelBeatsNaive": 0.154808,
+    "oosR2ModelVsExpandingMean": -0.115109,
+    "oosR2ModelVsNaive": 0.023041,
+    "oosR2NaiveVsExpandingMean": -0.141409
+   },
+   "inSampleR2SameFeaturesExPost": 0.540309,
+   "timing": "EX_ANTE"
+  },
+  "logVolS4_h126": {
+   "all": {
+    "first": "2013-10-31",
+    "forecasts": 151,
+    "last": "2026-04-30",
+    "nwTStatModelBeatsNaive": -1.362729,
+    "oosR2ModelVsExpandingMean": -0.544196,
+    "oosR2ModelVsNaive": -0.294565,
+    "oosR2NaiveVsExpandingMean": -0.19283
+   },
+   "from2016": {
+    "first": "2016-01-29",
+    "forecasts": 124,
+    "last": "2026-04-30",
+    "nwTStatModelBeatsNaive": -0.860965,
+    "oosR2ModelVsExpandingMean": -0.592036,
+    "oosR2ModelVsNaive": -0.180331,
+    "oosR2NaiveVsExpandingMean": -0.348805
+   },
+   "inSampleR2SameFeaturesExPost": 0.445324,
+   "timing": "EX_ANTE"
+  },
+  "logVolS4_h21": {
+   "all": {
+    "first": "2013-05-31",
+    "forecasts": 161,
+    "last": "2026-09-30",
+    "nwTStatModelBeatsNaive": 0.870034,
+    "oosR2ModelVsExpandingMean": 0.297929,
+    "oosR2ModelVsNaive": 0.086072,
+    "oosR2NaiveVsExpandingMean": 0.231809
+   },
+   "from2016": {
+    "first": "2016-01-29",
+    "forecasts": 129,
+    "last": "2026-09-30",
+    "nwTStatModelBeatsNaive": 1.330963,
+    "oosR2ModelVsExpandingMean": 0.349158,
+    "oosR2ModelVsNaive": 0.120794,
+    "oosR2NaiveVsExpandingMean": 0.259738
+   },
+   "inSampleR2SameFeaturesExPost": 0.536038,
+   "timing": "EX_ANTE"
+  },
+  "logVolS4_h63": {
+   "all": {
+    "first": "2013-07-31",
+    "forecasts": 157,
+    "last": "2026-07-31",
+    "nwTStatModelBeatsNaive": 0.034833,
+    "oosR2ModelVsExpandingMean": -0.109909,
+    "oosR2ModelVsNaive": 0.006689,
+    "oosR2NaiveVsExpandingMean": -0.117383
+   },
+   "from2016": {
+    "first": "2016-01-29",
+    "forecasts": 127,
+    "last": "2026-07-31",
+    "nwTStatModelBeatsNaive": 1.054239,
+    "oosR2ModelVsExpandingMean": -0.038253,
+    "oosR2ModelVsNaive": 0.170659,
+    "oosR2NaiveVsExpandingMean": -0.251902
+   },
+   "inSampleR2SameFeaturesExPost": 0.476235,
+   "timing": "EX_ANTE"
+  },
+  "logVolSpy_h126": {
+   "all": {
+    "first": "2013-10-31",
+    "forecasts": 151,
+    "last": "2026-04-30",
+    "nwTStatModelBeatsNaive": -1.536598,
+    "oosR2ModelVsExpandingMean": -0.703894,
+    "oosR2ModelVsNaive": -0.38347,
+    "oosR2NaiveVsExpandingMean": -0.231609
+   },
+   "from2016": {
+    "first": "2016-01-29",
+    "forecasts": 124,
+    "last": "2026-04-30",
+    "nwTStatModelBeatsNaive": -1.165985,
+    "oosR2ModelVsExpandingMean": -0.768207,
+    "oosR2ModelVsNaive": -0.293396,
+    "oosR2NaiveVsExpandingMean": -0.367104
+   },
+   "inSampleR2SameFeaturesExPost": 0.388229,
+   "timing": "EX_ANTE"
+  },
+  "logVolSpy_h21": {
+   "all": {
+    "first": "2013-05-31",
+    "forecasts": 161,
+    "last": "2026-09-30",
+    "nwTStatModelBeatsNaive": 1.618585,
+    "oosR2ModelVsExpandingMean": 0.251671,
+    "oosR2ModelVsNaive": 0.151591,
+    "oosR2NaiveVsExpandingMean": 0.117962
+   },
+   "from2016": {
+    "first": "2016-01-29",
+    "forecasts": 129,
+    "last": "2026-09-30",
+    "nwTStatModelBeatsNaive": 1.924581,
+    "oosR2ModelVsExpandingMean": 0.29043,
+    "oosR2ModelVsNaive": 0.175923,
+    "oosR2NaiveVsExpandingMean": 0.138952
+   },
+   "inSampleR2SameFeaturesExPost": 0.501386,
+   "timing": "EX_ANTE"
+  },
+  "logVolSpy_h63": {
+   "all": {
+    "first": "2013-07-31",
+    "forecasts": 157,
+    "last": "2026-07-31",
+    "nwTStatModelBeatsNaive": 0.071736,
+    "oosR2ModelVsExpandingMean": -0.144695,
+    "oosR2ModelVsNaive": 0.01263,
+    "oosR2NaiveVsExpandingMean": -0.159338
+   },
+   "from2016": {
+    "first": "2016-01-29",
+    "forecasts": 127,
+    "last": "2026-07-31",
+    "nwTStatModelBeatsNaive": 0.704467,
+    "oosR2ModelVsExpandingMean": -0.122709,
+    "oosR2ModelVsNaive": 0.123199,
+    "oosR2NaiveVsExpandingMean": -0.280461
+   },
+   "inSampleR2SameFeaturesExPost": 0.440393,
+   "timing": "EX_ANTE"
+  }
+ }
+}
