@@ -191,14 +191,50 @@ def confirmed_absences(absent: dict, today: str) -> set[str]:
     return confirmed
 
 
-def prioritize_due(pending, today: str):
-    """Refresh newest due reports first; legacy rechecks must not starve Q3."""
+RETRY_FILE = "retry-state.json"
+
+
+def load_retry_state(store: Path) -> dict[str, str]:
+    """Scheduling metadata only; never evidence that a filing is absent."""
+    path = store / RETRY_FILE
+    if not path.exists():
+        return {}
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    if not isinstance(raw, dict):
+        return {}
+    now = datetime.now(timezone.utc)
+    result = {}
+    for rid, stamp in raw.items():
+        if not isinstance(stamp, str):
+            continue
+        try:
+            checked = datetime.fromisoformat(stamp)
+            if checked.tzinfo is None or checked > now:
+                continue
+            result[rid] = checked.astimezone(timezone.utc).isoformat(timespec="microseconds")
+        except (TypeError, ValueError, OverflowError):
+            continue
+    return result
+
+
+def prioritize_due(pending, today: str, retry_state: dict[str, str] | None = None):
+    """Due first; untried newest reports, then least-recently tried reports.
+
+    The old ticker-first ties repeatedly consumed a short slice on the same
+    missing reports. The persisted scheduling clock is independent of the
+    absence evidence, including legacy negatives and transient failures.
+    """
+    retry_state = retry_state or {}
+
     def priority(item):
         ticker, year, code = item
-        due = DF.filing_deadline(year, code)
-        if due and due <= today:
-            return (0, -int(due.replace("-", "")), ticker, code)
-        return (1, year, ticker, code)
+        due = DF.filing_deadline(year, code) or "9999-12-31"
+        checked = retry_state.get(DF.record_id(ticker, year, code), "")
+        return (due > today, bool(checked), checked, -int(due.replace("-", "")), ticker, code)
+
     return sorted(pending, key=priority)
 
 
@@ -337,6 +373,7 @@ def main(argv=None) -> int:
 
     existing_ids, shards = load_existing(store)
     absent = load_absent(store)
+    retry_state = load_retry_state(store)
     today = time.strftime("%Y-%m-%d", time.gmtime())
     # Recovered filings supersede old active absences. Historical commits
     # preserve the previous observations without counting the same key twice.
@@ -344,7 +381,10 @@ def main(argv=None) -> int:
         absent.pop(rid, None)
     scope_ids = {DF.record_id(t, y, c) for t, y, c in DF.work_list(kr, years, set())}
     settled = confirmed_absences(absent, today)
-    pending = prioritize_due(DF.work_list(kr, years, existing_ids, absent_ids=settled), today)
+    for rid in existing_ids | settled:
+        retry_state.pop(rid, None)
+    pending = prioritize_due(
+        DF.work_list(kr, years, existing_ids, absent_ids=settled), today, retry_state)
     before = DF.progress(len(existing_ids & scope_ids), len(pending), len(settled & scope_ids))
     print(f"진행률 {before['collected']:,} 수집 + {before['absent']:,} 부재확정 "
           f"/ {before['total']:,} ({before['completePct']}%) · 남음 {before['pending']:,}")
@@ -387,6 +427,11 @@ def main(argv=None) -> int:
         for attempt in attempts:
             attempt_statuses[f"{attempt['fsDiv']}={attempt['status']}"] += 1
         rid = DF.record_id(ticker, year, code)
+        retry_state[rid] = datetime.now(timezone.utc).isoformat(timespec="microseconds")
+        # Even a run-stopping response supersedes an unconfirmed active
+        # negative. Its scheduling clock is retained, not a false absence.
+        if status != "013":
+            absent.pop(rid, None)
         if status in DF.FATAL_STATUSES:
             print(f"중단: {DF.describe_status(status)} — 재시도해도 같습니다.")
             stop_reason = f"FATAL_{status}"
@@ -429,6 +474,7 @@ def main(argv=None) -> int:
                 absent.pop(rid, None)
             continue
         absent.pop(rid, None)
+        retry_state.pop(rid, None)
         fs_used[fs_div] += 1
         fresh.setdefault(year, []).append(record)
         time.sleep(PACE_SECONDS)
@@ -454,6 +500,11 @@ def main(argv=None) -> int:
     total_ids = existing_ids | {r["id"] for rows in fresh.values() for r in rows}
     report_day = time.strftime("%Y-%m-%d", time.gmtime())
     settled_after = confirmed_absences(absent, report_day)
+    for rid in total_ids | settled_after:
+        retry_state.pop(rid, None)
+    (store / RETRY_FILE).write_text(
+        json.dumps(retry_state, ensure_ascii=False, indent=1, sort_keys=True) + "\n",
+        encoding="utf-8")
     remaining = DF.work_list(kr, years, total_ids, absent_ids=settled_after)
     after = DF.progress(len(total_ids & scope_ids), len(remaining), len(settled_after & scope_ids))
 
@@ -466,6 +517,8 @@ def main(argv=None) -> int:
         "progress": after,
         "progressScope": "CURRENT_UNIVERSE_AND_REQUESTED_YEARS",
         "storedFilingsAll": len(total_ids),
+        "retryScheduling": {"policy": "DUE_UNTRIED_THEN_OLDEST_ATTEMPT",
+                            "trackedPendingAll": len(retry_state)},
         "absences": {
             "recorded": len(absent),
             "settled": len(settled_after),

@@ -13,9 +13,10 @@ import hashlib
 import io
 import json
 import re
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from zipfile import ZipFile
+from zoneinfo import ZoneInfo
 
 from pipeline import institutional_13f as f13
 
@@ -26,8 +27,8 @@ URL = re.compile(
 ACCESSION = re.compile(r"\d{10}-\d{2}-\d{6}")
 TABLES = {
     "SUBMISSION": {"ACCESSION_NUMBER", "CIK", "FILING_DATE", "SUBMISSIONTYPE", "PERIODOFREPORT"},
-    "COVERPAGE": {"ACCESSION_NUMBER", "REPORTCALENDARORQUARTER", "AMENDMENTNO", "AMENDMENTTYPE"},
-    "SUMMARYPAGE": {"ACCESSION_NUMBER", "TABLEENTRYTOTAL", "TABLEVALUETOTAL"},
+    "COVERPAGE": {"ACCESSION_NUMBER", "REPORTCALENDARORQUARTER", "AMENDMENTNO", "AMENDMENTTYPE", "REPORTTYPE"},
+    "SUMMARYPAGE": {"ACCESSION_NUMBER", "TABLEENTRYTOTAL", "TABLEVALUETOTAL", "ISCONFIDENTIALOMITTED"},
     "INFOTABLE": {"ACCESSION_NUMBER", "INFOTABLE_SK", "NAMEOFISSUER", "TITLEOFCLASS",
                   "CUSIP", "VALUE", "SSHPRNAMT", "SSHPRNAMTTYPE", "PUTCALL"},
 }
@@ -76,13 +77,37 @@ def _unique(rows, wanted):
     return out
 
 
-def load_archive(path, source_url, sha256, ciks):
+def _utc(value):
+    if isinstance(value, str):
+        value = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    if not isinstance(value, datetime) or value.tzinfo is None or value.utcoffset() is None:
+        raise ValueError("OFFSET_AWARE_RECEIPT_TIME_REQUIRED")
+    return value.astimezone(timezone.utc)
+
+
+def _deadline(report):
+    # The existing dashboard uses the same weekend and Washington's
+    # Birthday adjustment for normal 13F filing deadlines.
+    deadline = report + timedelta(days=45)
+    while deadline.weekday() >= 5 or (
+        deadline.month == 2 and deadline.weekday() == 0 and 15 <= deadline.day <= 21
+    ):
+        deadline += timedelta(days=1)
+    return deadline
+
+
+def load_archive(path, source_url, sha256, ciks, *, retrieved_at, as_of):
     match = URL.fullmatch(source_url)
     if not match or not re.fullmatch(r"[0-9a-f]{64}", sha256) or digest(path) != sha256:
         raise ValueError("ARCHIVE_PROVENANCE_MISMATCH")
     first, last = [datetime.strptime(x, "%d%b%Y").date() for x in match.groups()]
     if first < date(2023, 1, 3) or first > last:
         raise ValueError("UNSUPPORTED_ARCHIVE_PERIOD")
+    received, clock = _utc(retrieved_at), _utc(as_of)
+    # A URL window is not an SEC acceptance-time census. Reject future
+    # receipts and windows that have not even ended in New York.
+    if received > clock or received.astimezone(ZoneInfo("America/New_York")).date() <= last:
+        raise ValueError("ARCHIVE_CLOCK_INVALID")
     filings = {}
     with ZipFile(path) as z:
         for row in _read_table(z, "SUBMISSION"):
@@ -127,6 +152,8 @@ def load_archive(path, source_url, sha256, ciks):
         for acc, filing in filings.items():
             if filing["SUBMISSIONTYPE"] not in ("13F-HR", "13F-HR/A"):
                 continue  # notices are retained as such, not empty holdings
+            if acc not in cover or acc not in summary:
+                raise ValueError("MISSING_COVER_OR_SUMMARY:" + acc)
             c, s = cover[acc], summary[acc]
             if _date(c["REPORTCALENDARORQUARTER"]) != filing["report"]:
                 raise ValueError("COVER_REPORT_MISMATCH")
@@ -137,6 +164,13 @@ def load_archive(path, source_url, sha256, ciks):
                 raise ValueError("VALUE_TOTAL_MISMATCH")
             filing["amendment"] = c["AMENDMENTTYPE"].upper()
             filing["number"] = _num(c["AMENDMENTNO"]) if c["AMENDMENTNO"] else 0
+            filing["reportType"] = c["REPORTTYPE"].strip().upper()
+            if filing["reportType"] not in ("13F HOLDINGS REPORT", "13F COMBINATION REPORT"):
+                raise ValueError("HOLDINGS_REPORT_TYPE_MISMATCH")
+            omitted = s["ISCONFIDENTIALOMITTED"].strip().upper()
+            filing["confidentialOmitted"] = (
+                True if omitted == "Y" else False if omitted == "N" else None
+            )
     return first, last, filings
 
 
@@ -163,25 +197,42 @@ def resolve_chain(filings):
         else:
             raise ValueError("INVALID_AMENDMENT_CHAIN")
         last_date = filing["filed"]
-    return chain[-1], f13._aggregate(rows), [f["ACCESSION_NUMBER"] for f in chain]
+    scope = sorted({
+        reason
+        for filing in chain
+        for reason, condition in (
+            ("COMBINATION_REPORT", filing.get("reportType") != "13F HOLDINGS REPORT"),
+            ("CONFIDENTIAL_SCOPE_NOT_CONFIRMED", filing.get("confidentialOmitted") is not False),
+        )
+        if condition
+    })
+    return chain[-1], f13._aggregate(rows), [f["ACCESSION_NUMBER"] for f in chain], scope
 
 
-def candidate(manifest, registry, target):
+def candidate(manifest, registry, target, *, as_of):
     """Two consecutive reported quarters; no inference beyond ZIP coverage."""
     report = date.fromisoformat(target)
     previous = date.fromisoformat(f13.prior_quarter(target))
     if report != date.fromisoformat(f13.prior_quarter((report + timedelta(days=1)).isoformat())):
         raise ValueError("NOT_QUARTER_END")
+    clock = _utc(as_of)
+    if clock.astimezone(ZoneInfo("America/New_York")).date() <= _deadline(report):
+        raise ValueError("TARGET_DEADLINE_NOT_PASSED")
+    if len({m["id"] for m in registry}) != len(registry) or len({int(m["cik"]) for m in registry}) != len(registry):
+        raise ValueError("DUPLICATE_MANAGER_REGISTRY")
     ciks = {int(m["cik"]) for m in registry}
     archives, seen = [], {}
     for item in manifest:
-        first, last, filings = load_archive(item["path"], item["url"], item["sha256"], ciks)
+        first, last, filings = load_archive(
+            item["path"], item["url"], item["sha256"], ciks,
+            retrieved_at=item.get("retrievedAtUtc"), as_of=clock,
+        )
         if set(seen) & set(filings):
             raise ValueError("DUPLICATE_ACCESSION_ACROSS_ARCHIVES")
         seen.update(filings)
         archives.append((first, last))
     archives.sort()
-    if not archives or archives[0][0] > previous or archives[-1][1] < report + timedelta(days=45):
+    if not archives or archives[0][0] > previous or archives[-1][1] < _deadline(report):
         raise ValueError("INSUFFICIENT_ARCHIVE_COVERAGE")
     if any(a[1] + timedelta(days=1) != b[0] for a, b in zip(archives, archives[1:])):
         raise ValueError("NONCONTIGUOUS_ARCHIVE_COVERAGE")
@@ -194,7 +245,8 @@ def candidate(manifest, registry, target):
             if cur is None:
                 raise ValueError("NO_TARGET_FILING_IN_ARCHIVES")
             prev = resolve_chain([f for f in filings if f["report"] == previous])
-            latest, current, chain = cur
+            latest, current, chain, scope = cur
+            comparison_scope = sorted(set(scope) | set(prev[3] if prev else ["PREVIOUS_REPORT_MISSING"]))
             total = sum(row["valueUsd"] for row in current)
             for row in current:
                 row["portfolioWeightPct"] = round(100 * row["valueUsd"] / total, 2) if total else 0.0
@@ -207,7 +259,10 @@ def candidate(manifest, registry, target):
                 "filingUrl": f"{f13.SEC_ARCHIVES}/{int(manager['cik'])}/{acc.replace('-', '')}/{acc}.txt",
                 "totalValueUsd": total, "positionCount": len(current),
                 "top5WeightPct": round(sum(x["portfolioWeightPct"] for x in current[:5]), 1),
-                "topHoldings": current[:10], "changes": f13._changes(current, prev[1]) if prev else None,
+                "topHoldings": current[:10],
+                "changes": f13._changes(current, prev[1]) if prev and not comparison_scope else None,
+                "comparisonStatus": "DISCLOSED_QUANTITIES_ONLY" if not comparison_scope else "WITHHELD_SCOPE_UNCERTAIN",
+                "scopeWarnings": comparison_scope,
                 "sourceAccessions": chain, "previousSourceAccessions": prev[2] if prev else [],
                 "archiveCoverageThrough": archives[-1][1].isoformat(),
             }
@@ -217,7 +272,9 @@ def candidate(manifest, registry, target):
         "schema": "SEC_13F_BULK_CANDIDATE_V1", "productionEffect": "NONE",
         "source": "SEC EDGAR Form 13F Data Sets", "reportDate": target,
         "coverageThrough": archives[-1][1].isoformat(),
-        "sources": [{k: item[k] for k in ("url", "sha256")} for item in manifest],
+        "coverageBasis": "ARCHIVE_FILENAME_WINDOWS_NOT_ACCEPTANCE_CENSUS",
+        "asOfUtc": clock.isoformat(),
+        "sources": [{k: item[k] for k in ("url", "sha256", "retrievedAtUtc")} for item in manifest],
         "candidateManagers": managers, "refusedManagers": refused,
         "publicationAuthorized": False,
     }
@@ -233,7 +290,10 @@ def main():
     if out.is_relative_to(f13.REPO_ROOT.resolve()) or out.exists():
         raise ValueError("OUTPUT_MUST_BE_NEW_FILE_OUTSIDE_REPOSITORY")
     registry = json.loads(f13.REGISTRY_PATH.read_text(encoding="utf-8"))
-    result = candidate(json.loads(args.manifest.read_text(encoding="utf-8")), registry, args.report)
+    result = candidate(
+        json.loads(args.manifest.read_text(encoding="utf-8")), registry, args.report,
+        as_of=datetime.now(timezone.utc),
+    )
     with out.open("x", encoding="utf-8") as stream:
         json.dump(result, stream, indent=2, ensure_ascii=False, allow_nan=False)
     print("CANDIDATE_ONLY", len(result["candidateManagers"]), "refused", len(result["refusedManagers"]))
