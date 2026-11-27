@@ -1,0 +1,333 @@
+{
+  "schema": "NARRATIVE_CENSUS_V1",
+  "classification": "EXPLORATORY_AUTHOR_VALIDATION_ONLY",
+  "as_of": "2026-11-28",
+  "calendar_url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
+  "calendar_scope": "All eight scheduled FOMC policy meetings in 2025; August notation vote excluded because it was not a regular meeting.",
+  "theme_selection": "Tariff inflation selected after prior pilot; contiguous census reduces within-year date selection, not a blind evaluation. Manual selective claim excerpts, not exhaustive semantic annotation. Nonappearance of theme is not absence of belief.",
+  "meetings": [
+    {
+      "id": "20250129",
+      "meeting_end": "2025-01-29",
+      "publication": "2025-02-19",
+      "url": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20250129.htm",
+      "access": "OFFICIAL_HTML_EXCERPTS_NOT_RAW_BYTES",
+      "raw_sha256": null,
+      "section": "Participants' Views on Current Conditions and the Economic Outlook",
+      "locator": "139–141",
+      "claims": [
+        {
+          "id": "20250129-1",
+          "theme": "PASS_THROUGH",
+          "modality": "CONTACT_REPORT",
+          "scope": "DISTRICT_CONTACTS",
+          "paraphrase": "Businesses expected to pass higher potential tariff-related input costs to buyers."
+        },
+        {
+          "id": "20250129-2",
+          "theme": "DISINFLATION",
+          "modality": "BASELINE",
+          "scope": "PARTICIPANTS",
+          "paraphrase": "Inflation was expected to move toward target under appropriate monetary policy; trade and immigration policy could impede progress."
+        }
+      ]
+    },
+    {
+      "id": "20250319",
+      "meeting_end": "2025-03-19",
+      "publication": "2025-04-09",
+      "url": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20250319.htm",
+      "access": "OFFICIAL_HTML_EXCERPTS_NOT_RAW_BYTES",
+      "raw_sha256": null,
+      "section": "Participants' Views on Current Conditions and the Economic Outlook",
+      "locator": "79–88, 102–105",
+      "claims": [
+        {
+          "id": "20250319-1",
+          "theme": "PERSISTENCE",
+          "modality": "RISK",
+          "scope": "PARTICIPANTS",
+          "paraphrase": "Size and persistence of tariff inflation were uncertain; intermediate inputs, supply-chain changes and expectations mattered."
+        },
+        {
+          "id": "20250319-2",
+          "theme": "COST_ABSORPTION",
+          "modality": "CONDITIONAL",
+          "scope": "A_COUPLE",
+          "paraphrase": "Household savings depletion could constrain willingness to accept higher prices."
+        },
+        {
+          "id": "20250319-3",
+          "theme": "PASS_THROUGH",
+          "modality": "CONTACT_REPORT",
+          "scope": "SEVERAL",
+          "paraphrase": "Contacts reported anticipated costs or willingness to raise consumer prices."
+        }
+      ]
+    },
+    {
+      "id": "20250507",
+      "meeting_end": "2025-05-07",
+      "publication": "2025-05-28",
+      "url": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20250507.htm",
+      "access": "OFFICIAL_HTML_EXCERPTS_NOT_RAW_BYTES",
+      "raw_sha256": null,
+      "section": "Participants' Views on Current Conditions and the Economic Outlook",
+      "locator": "87–93",
+      "claims": [
+        {
+          "id": "20250507-1",
+          "theme": "PASS_THROUGH",
+          "modality": "CONTACT_REPORT",
+          "scope": "MANY",
+          "paraphrase": "Business contacts or surveys indicated planned partial or full cost pass-through."
+        },
+        {
+          "id": "20250507-2",
+          "theme": "PERSISTENCE",
+          "modality": "RISK",
+          "scope": "SOME",
+          "paraphrase": "Tariffs on intermediate goods could prolong inflation."
+        },
+        {
+          "id": "20250507-3",
+          "theme": "PERSISTENCE",
+          "modality": "RISK",
+          "scope": "A_FEW",
+          "paraphrase": "Supply-chain disruption might prolong price pressures."
+        }
+      ]
+    },
+    {
+      "id": "20250618",
+      "meeting_end": "2025-06-18",
+      "publication": "2025-07-09",
+      "url": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20250618.htm",
+      "access": "OFFICIAL_HTML_EXCERPTS_NOT_RAW_BYTES",
+      "raw_sha256": null,
+      "section": "Participants' Views on Current Conditions and the Economic Outlook",
+      "locator": "80–87",
+      "claims": [
+        {
+          "id": "20250618-1",
+          "theme": "DELAY",
+          "modality": "CONDITIONAL",
+          "scope": "MANY",
+          "paraphrase": "Pre-tariff stocks and intermediate inputs could delay final-goods price increases."
+        },
+        {
+          "id": "20250618-2",
+          "theme": "COST_ABSORPTION",
+          "modality": "CONDITIONAL",
+          "scope": "SEVERAL",
+          "paraphrase": "Weak tolerance for price increases or pursuit of market share could limit pass-through."
+        },
+        {
+          "id": "20250618-3",
+          "theme": "ONE_TIME",
+          "modality": "EXPECTATION",
+          "scope": "A_FEW",
+          "paraphrase": "Expected a one-time price increase without a change in longer-run inflation expectations."
+        },
+        {
+          "id": "20250618-4",
+          "theme": "PERSISTENCE",
+          "modality": "RISK",
+          "scope": "MOST",
+          "paraphrase": "Noted possible longer-lasting inflation effects."
+        }
+      ]
+    },
+    {
+      "id": "20250730",
+      "meeting_end": "2025-07-30",
+      "publication": "2025-08-20",
+      "url": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20250730.htm",
+      "access": "OFFICIAL_HTML_EXCERPTS_NOT_RAW_BYTES",
+      "raw_sha256": null,
+      "section": "Participants' Views on Current Conditions and the Economic Outlook",
+      "locator": "73–82",
+      "claims": [
+        {
+          "id": "20250730-1",
+          "theme": "PASS_THROUGH",
+          "modality": "ATTRIBUTED_OBSERVATION",
+          "scope": "PARTICIPANTS",
+          "paraphrase": "Tariff effects appeared in rising goods inflation as services inflation slowed."
+        },
+        {
+          "id": "20250730-2",
+          "theme": "DELAY",
+          "modality": "CONDITIONAL",
+          "scope": "MANY",
+          "paraphrase": "Inventory buffers and gradual contract repricing could delay full effects."
+        },
+        {
+          "id": "20250730-3",
+          "theme": "COST_ABSORPTION",
+          "modality": "CONTACT_REPORT",
+          "scope": "A_FEW",
+          "paraphrase": "Contacts reported supplier changes, reduced margins and efficiency efforts to limit price increases."
+        },
+        {
+          "id": "20250730-4",
+          "theme": "ONE_TIME",
+          "modality": "EXPECTATION",
+          "scope": "A_FEW",
+          "paraphrase": "Expected a temporary price-level adjustment over a contained period."
+        },
+        {
+          "id": "20250730-5",
+          "theme": "PERSISTENCE",
+          "modality": "RISK",
+          "scope": "A_FEW",
+          "paraphrase": "Supply-chain disruption could prolong inflation."
+        }
+      ]
+    },
+    {
+      "id": "20250917",
+      "meeting_end": "2025-09-17",
+      "publication": "2025-10-08",
+      "url": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20250917.htm",
+      "access": "OFFICIAL_HTML_EXCERPTS_NOT_RAW_BYTES",
+      "raw_sha256": null,
+      "section": "Participants' Views on Current Conditions and the Economic Outlook",
+      "locator": "66–70",
+      "claims": [
+        {
+          "id": "20250917-1",
+          "theme": "MUTED_EFFECT",
+          "modality": "ATTRIBUTED_OBSERVATION",
+          "scope": "SOME",
+          "paraphrase": "Tariff inflation appeared weaker than expected earlier in the year."
+        },
+        {
+          "id": "20250917-2",
+          "theme": "DELAY",
+          "modality": "EXPECTATION",
+          "scope": "MOST",
+          "paraphrase": "Expected tariff effects to be realized by end-2026."
+        },
+        {
+          "id": "20250917-3",
+          "theme": "DISINFLATION",
+          "modality": "CONDITIONAL",
+          "scope": "A_COUPLE",
+          "paraphrase": "Continued productivity gains could reduce inflation pressure."
+        }
+      ]
+    },
+    {
+      "id": "20251029",
+      "meeting_end": "2025-10-29",
+      "publication": "2025-11-19",
+      "url": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20251029.htm",
+      "access": "OFFICIAL_HTML_EXCERPTS_NOT_RAW_BYTES",
+      "raw_sha256": null,
+      "section": "Participants' Views on Current Conditions and the Economic Outlook",
+      "locator": "89–93",
+      "claims": [
+        {
+          "id": "20251029-1",
+          "theme": "PASS_THROUGH",
+          "modality": "EXPECTATION",
+          "scope": "MANY",
+          "paraphrase": "Expected further core goods price increases over coming quarters partly from tariff transmission."
+        },
+        {
+          "id": "20251029-2",
+          "theme": "DELAY",
+          "modality": "CONTACT_REPORT",
+          "scope": "SEVERAL",
+          "paraphrase": "Businesses reportedly waited for policy clarity before adjusting prices."
+        },
+        {
+          "id": "20251029-3",
+          "theme": "COST_ABSORPTION",
+          "modality": "CONDITIONAL",
+          "scope": "A_FEW",
+          "paraphrase": "AI and automation productivity might preserve margins and limit consumer cost pass-through."
+        }
+      ]
+    },
+    {
+      "id": "20251210",
+      "meeting_end": "2025-12-10",
+      "publication": "2025-12-30",
+      "url": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20251210.htm",
+      "access": "OFFICIAL_HTML_EXCERPTS_NOT_RAW_BYTES",
+      "raw_sha256": null,
+      "section": "Participants' Views on Current Conditions and the Economic Outlook",
+      "locator": "87–91",
+      "claims": [
+        {
+          "id": "20251210-1",
+          "theme": "PASS_THROUGH",
+          "modality": "ATTRIBUTED_OBSERVATION",
+          "scope": "MOST",
+          "paraphrase": "Attributed higher core inflation to tariffs through goods prices."
+        },
+        {
+          "id": "20251210-2",
+          "theme": "WANING",
+          "modality": "EXPECTATION",
+          "scope": "MANY",
+          "paraphrase": "Expected tariff effects on goods inflation to diminish, timing and pass-through uncertain for some."
+        },
+        {
+          "id": "20251210-3",
+          "theme": "COST_ABSORPTION",
+          "modality": "CONTACT_REPORT",
+          "scope": "SOME",
+          "paraphrase": "Contacts reported non-tariff input costs; some participants noted demand limits or productivity as potential offsets."
+        }
+      ]
+    }
+  ],
+  "additional_livingston": [
+    {
+      "id": "liv23d",
+      "publication": "2023-12-15",
+      "url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/livingston-survey/2023/livdec23.pdf",
+      "access": "PDF_TEXT_SCREENSHOT_BLOCKED",
+      "raw_sha256": null,
+      "stock_n": 13,
+      "stocks": {
+        "2024-06-30": 4678,
+        "2024-12-31": 4833.5,
+        "2025-12-31": 5088.2
+      },
+      "locator": "p.2 Stock Prices; Table One. End-of-month labels standardized to calendar month end, not an actual trading date."
+    },
+    {
+      "id": "liv24j",
+      "publication": "2024-06-14",
+      "url": "https://www.philadelphiafed.org/-/media/frbp/assets/surveys-and-data/livingston-survey/2024/livjun24.pdf",
+      "access": "PDF_TEXT_COVER_VISUAL_CHECKED_STOCK_SCREENSHOT_BLOCKED",
+      "raw_sha256": null,
+      "stock_n": 13,
+      "stocks": {
+        "2024-12-31": 5440,
+        "2025-06-30": 5667.9,
+        "2025-12-31": 5824.6
+      },
+      "locator": "p.2 Financial Indicators; Table One; release date p.1 visual."
+    }
+  ],
+  "cross_strata": [
+    {
+      "id": "executive_ai_2026",
+      "publication": "2026-03-24",
+      "url": "https://www.atlantafed.org/research-and-data/publications/working-papers/2026/03/24/03-firm-data-on-ai",
+      "access": "INDEXED_OFFICIAL_ABSTRACT_NOT_RAW_BYTES",
+      "actor": "Survey of nearly 6000 executives in US, UK, Germany and Australia",
+      "observation": "More than 80% of firms reported no AI impact on employment or productivity over the preceding three years; firms anticipate gains in productivity and modest employment reductions over the next three years.",
+      "limit": "Retrospective self-report, not measured aggregate productivity or a US-only survey. Expectations differ in horizon and population from SPF GDP/payroll forecasts. No quantitative subtraction.",
+      "research_use": "Competing explanation for growth/jobs decoupling: realized productivity gains may lag adoption; test actual aggregate output per hour and sector mix independently."
+    }
+  ],
+  "raw_source_bytes_admitted": 0,
+  "market_outcomes_read": false,
+  "forecast_registration_authorized": false
+}

@@ -1,0 +1,131 @@
+{
+  "classification": "EXPLORATORY_AUTHOR_VALIDATION_ONLY",
+  "note": "Supplemental source inspection added after initial IMF pilot; no preselection or outcome-blind claim. Rolling 12m horizons differ across surveys. Prior survey dates are NOT the verified availability date: only later source publication date is known. No actual return join or alpha test.",
+  "sources": [
+    {
+      "id": "vg202401",
+      "url": "https://corporate.vanguard.com/content/corporatesite/us/en/corp/articles/investor-pulse-optimism-for-2024.html",
+      "publication_date": "2024-01-23",
+      "locator": "U.S. stock returns; methodology; Fear and Doubt Index",
+      "access": "OPENED_HTML_TEXT_NOT_RAW_BYTES",
+      "raw_sha256": null,
+      "actor": "Vanguard Investor Expectations Survey",
+      "population": "Approximately 2,000 randomly sampled personal and 401(k) investors; survey every other month since February 2017."
+    },
+    {
+      "id": "vg202311",
+      "url": "https://corporate.vanguard.com/content/corporatesite/us/en/corp/articles/investor-pulse-optimism-begins-fade.html",
+      "publication_date": "2023-11-09",
+      "locator": "U.S. stock returns; Fear and Doubt Index",
+      "access": "OPENED_HTML_TEXT_NOT_RAW_BYTES",
+      "raw_sha256": null,
+      "actor": "Vanguard Investor Expectations Survey"
+    },
+    {
+      "id": "vg202112",
+      "url": "https://corporate.vanguard.com/content/corporatesite/us/en/corp/who-we-are/pressroom/Press-release-Vanguard-Publishes-2022-Economic-and-Outlook-121321.html",
+      "publication_date": "2021-12-13",
+      "locator": "Policy accommodations; Economic outlook; Inflation; Capital markets outlook",
+      "access": "OPENED_HTML_TEXT_NOT_RAW_BYTES",
+      "raw_sha256": null,
+      "actor": "Vanguard investment research",
+      "paraphrase": "Expected less accommodative monetary policy, potentially more tightening than priced, roughly 4% US growth and slowing inflation in H2; long-term equity returns constrained by valuations."
+    },
+    {
+      "id": "vg202311outlook",
+      "url": "https://corporate.vanguard.com/content/corporatesite/us/en/corp/articles/vemo-2024-global-summary.html",
+      "publication_date": "2023-11-20",
+      "locator": "Global outlook summary; higher rates and equities",
+      "access": "INDEXED_OFFICIAL_TEXT_NOT_RAW_BYTES",
+      "raw_sha256": null,
+      "actor": "Vanguard investment research",
+      "paraphrase": "Expected persistent higher structural interest rates and lower long-term US equity returns. Acknowledged stronger 2023 growth than expected; 10y annualized US equity forecast range 4.2–6.2%, previously 4.4–6.4% heading into 2023. Long horizon, not a 2024 return target."
+    }
+  ],
+  "observations": [
+    {
+      "survey_month": "2021-12",
+      "value": 6,
+      "source": "vg202401",
+      "unit": "percent_expected_12_month_us_equity_return",
+      "available_date": "2024-01-23",
+      "method": "published_value",
+      "status": "REPORTED_SURVEY_NOT_VERIFIED_ORIGINAL_VINTAGE"
+    },
+    {
+      "survey_month": "2022-10",
+      "value": 0.6,
+      "source": "vg202311",
+      "unit": "percent_expected_12_month_us_equity_return",
+      "available_date": "2023-11-09",
+      "method": "published_value",
+      "status": "REPORTED_SURVEY_NOT_VERIFIED_ORIGINAL_VINTAGE"
+    },
+    {
+      "survey_month": "2022-12",
+      "value": 2.7,
+      "source": "vg202401",
+      "unit": "percent_expected_12_month_us_equity_return",
+      "available_date": "2024-01-23",
+      "method": "published_value",
+      "status": "REPORTED_SURVEY_NOT_VERIFIED_ORIGINAL_VINTAGE"
+    },
+    {
+      "survey_month": "2023-08",
+      "value": 5.5,
+      "source": "vg202311",
+      "unit": "percent_expected_12_month_us_equity_return",
+      "available_date": "2023-11-09",
+      "method": "derived_from_4.4_plus_1.1_pp_reported_difference",
+      "status": "REPORTED_SURVEY_NOT_VERIFIED_ORIGINAL_VINTAGE"
+    },
+    {
+      "survey_month": "2023-10",
+      "value": 4.4,
+      "source": "vg202311",
+      "unit": "percent_expected_12_month_us_equity_return",
+      "available_date": "2023-11-09",
+      "method": "published_value",
+      "status": "REPORTED_SURVEY_NOT_VERIFIED_ORIGINAL_VINTAGE"
+    },
+    {
+      "survey_month": "2023-12",
+      "value": 5.7,
+      "source": "vg202401",
+      "unit": "percent_expected_12_month_us_equity_return",
+      "available_date": "2024-01-23",
+      "method": "published_value",
+      "status": "REPORTED_SURVEY_NOT_VERIFIED_ORIGINAL_VINTAGE"
+    }
+  ],
+  "other_observations": [
+    {
+      "survey_month": "2023-12",
+      "metric": "expected_10y_annualized_stock_return",
+      "value": 7.2,
+      "unit": "percent",
+      "source": "vg202401"
+    },
+    {
+      "survey_month": "2023-12",
+      "metric": "probability_stock_market_decline_30pct_or_more_next_12m",
+      "value": 5.3,
+      "unit": "percent",
+      "source": "vg202401"
+    },
+    {
+      "survey_month": "2023-10",
+      "metric": "probability_stock_market_decline_30pct_or_more_next_12m",
+      "value": 6,
+      "unit": "percent",
+      "source": "vg202311"
+    }
+  ],
+  "interpretation": {
+    "observation": "Expected rolling one-year return fell 6.0→2.7 between Dec 2021 and Dec 2022, rebounded to 5.7 in Dec 2023; survey sample is not necessarily same respondents.",
+    "hypothesis": "Expectations may follow realized market direction, not lead it. Test lagged price baseline and within-person revision on independent source-admitted panel; cannot infer investor behavior or mispricing from aggregate beliefs alone.",
+    "noncomparability": "Calendar-year S&P TR is not exact survey-response-to-12-month return; do not calculate forecast errors before matching survey field dates, benchmark, dividends and original release clocks. Vanguard analysts' 10-year range differs from survey 12-month forecasts; compare only same horizon and definitions (investors 7.2 vs analysts 4.2–6.2 in late 2023, descriptive; not identical forecast statistics)."
+  },
+  "production_effect": "NONE",
+  "investment_evaluation_authorized": false
+}

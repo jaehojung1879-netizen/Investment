@@ -1,0 +1,295 @@
+{
+  "schema": "NARRATIVE_EVIDENCE_GATE_V1",
+  "status": "AUTHOR_RECHECK_NOT_INDEPENDENT_REVIEW",
+  "as_of_date": "2026-11-28",
+  "sources": [
+    {
+      "id": "job_calibration",
+      "url": "https://libertystreeteconomics.newyorkfed.org/2026/11/can-workers-predict-job-finding-and-job-loss/",
+      "published": "2026-11-16",
+      "access": "INDEXED_OFFICIAL_ARTICLE_TEXT_FULL_OPEN_CACHE_MISS",
+      "population": "SCE subjective job-finding beliefs and separate CPS flows",
+      "locator": "Expected versus realized three-month job-finding rates; subgroup gap chart and text",
+      "result_type": "EXTERNAL_PUBLISHED_ANALYSIS_NOT_REPRODUCED",
+      "raw_sha256": null
+    },
+    {
+      "id": "worker_ai",
+      "url": "https://libertystreeteconomics.newyorkfed.org/2026/04/use-of-gen-ai-in-the-workplace-and-the-value-of-access-to-training/",
+      "published": "2026-04-14",
+      "access": "OPENED_HTML_TEXT",
+      "population": "November 2025 SCE; all respondents or employed respondents or AI users depending on question",
+      "locator": "Who Is Using AI at Work?; Are Workers Ready?; Expectations About AI’s Effects",
+      "raw_sha256": null
+    },
+    {
+      "id": "firm_ai",
+      "url": "https://libertystreeteconomics.newyorkfed.org/2026/09/businesses-are-using-ai-to-transform-work-not-cut-jobs/",
+      "published": "2026-09-01",
+      "access": "INDEXED_OFFICIAL_ARTICLE_TEXT_FULL_OPEN_CACHE_MISS",
+      "population": "NY and northern NJ regional business surveys Aug 2024/25/26; adoption excludes search-only use; workforce actions among AI users",
+      "locator": "AI Adoption; Retraining Remains Common, Layoffs Limited",
+      "raw_sha256": null
+    },
+    {
+      "id": "small_ai",
+      "url": "https://libertystreeteconomics.newyorkfed.org/2026/10/ai-adoption-and-employment-expectations-evidence-from-a-survey-of-small-business-owners/",
+      "published": "2026-10-08",
+      "access": "INDEXED_OFFICIAL_ARTICLE_TEXT_FULL_OPEN_CACHE_MISS",
+      "population": "2025 Small Business Credit Survey, Sep-Nov 2025, 5248 employer firms in AI module, weighted",
+      "locator": "AI Adopters More Optimistic on Employment and Revenue Growth",
+      "raw_sha256": null
+    },
+    {
+      "id": "vacancies",
+      "url": "https://libertystreeteconomics.newyorkfed.org/2026/05/do-job-postings-show-early-labor-market-effects-of-ai/",
+      "published": "2026-05-14",
+      "access": "OPENED_HTML_TEXT",
+      "population": "US Lightcast postings by occupational AI exposure, event study relative to 2022Q3",
+      "locator": "Event study; Junior and Senior Positions; conclusion",
+      "raw_sha256": null
+    },
+    {
+      "id": "beige",
+      "url": "https://www.federalreserve.gov/monetarypolicy/beigebook202611-summary.htm",
+      "published": "2026-11-25",
+      "access": "INDEXED_OFFICIAL_TEXT_EXPLICIT_LAST_UPDATE_FULL_OPEN_CACHE_MISS",
+      "population": "District contact reports, qualitative nonprobability evidence",
+      "locator": "National Summary; Employment; Last Update",
+      "raw_sha256": null
+    },
+    {
+      "id": "spf_q3",
+      "url": "https://www.philadelphiafed.org/-/media/frbp/assets/surveys-and-data/survey-of-professional-forecasters/2026/spfq326.pdf",
+      "published": "2026-08-14",
+      "access": "PDF_EXTRACTED_TEXT_SCREENSHOT_CACHE_MISS",
+      "locator": "Page 1, summary table, Table Three",
+      "raw_sha256": null
+    },
+    {
+      "id": "spf_q4",
+      "url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/survey-of-professional-forecasters/2026/spfQ426.pdf?sc_lang=en",
+      "published": "2026-11-16",
+      "access": "PDF_EXTRACTED_TEXT_SCREENSHOT_CACHE_MISS",
+      "locator": "Summary table p8",
+      "raw_sha256": null
+    },
+    {
+      "id": "spf_q4_html",
+      "url": "https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/spf-q4-2026",
+      "published": "2026-11-16",
+      "access": "INDEXED_OFFICIAL_HTML_TEXT",
+      "locator": "Risk of a Negative Quarter, 2027Q2; median forecasts",
+      "raw_sha256": null
+    }
+  ],
+  "calibration_external": {
+    "source": "job_calibration",
+    "unit": "percentage_points",
+    "aggregate": [
+      {
+        "period": "2014–2019 per article prose",
+        "expected": 55.5,
+        "realized": 57.2,
+        "expected_minus_realized": -1.7
+      },
+      {
+        "period": "2022 onward per article prose",
+        "expected": 53,
+        "realized": 58.8,
+        "expected_minus_realized": -5.8
+      }
+    ],
+    "subgroups": [
+      {
+        "group": "age 30 or younger",
+        "before": 6.3,
+        "after": -3
+      },
+      {
+        "group": "age over 30",
+        "before": -5.4,
+        "after": -6.1
+      },
+      {
+        "group": "at least some college",
+        "before": -4.6,
+        "after": -4
+      },
+      {
+        "group": "high school or less",
+        "before": null,
+        "after": -7.5
+      }
+    ],
+    "subgroup_periods": [
+      "2014-01 through 2019-06",
+      "2022-01 through 2026-03"
+    ],
+    "limit": "Separate aggregate surveys; not matched individual outcomes. Reported job-loss comparison is a lower-bound CPS definition, not clean calibrated overprediction; 12m SCE probability converted to 3m in cited study. No new independent estimates."
+  },
+  "ai_observations": [
+    {
+      "source": "worker_ai",
+      "measure": "respondents expecting AI to raise unemployment in next 12 months",
+      "value": 62,
+      "unit": "percent of all respondents (approximate)",
+      "field": "2025-11",
+      "kind": "BELIEF"
+    },
+    {
+      "source": "worker_ai",
+      "measure": "respondents expecting AI to lower unemployment",
+      "value": 11.6,
+      "unit": "percent of all respondents (approximate)",
+      "field": "2025-11",
+      "kind": "BELIEF"
+    },
+    {
+      "source": "worker_ai",
+      "measure": "AI users reporting increased personal productivity",
+      "value": 66,
+      "unit": "percent of employed AI users (approximate)",
+      "field": "2025-11",
+      "kind": "SELF_REPORT"
+    },
+    {
+      "source": "firm_ai",
+      "measure": "service/manufacturing AI adoption",
+      "field": "2024-08,2025-08,2026-08",
+      "values": {
+        "services": [
+          25,
+          40,
+          61
+        ],
+        "manufacturing": [
+          16,
+          26,
+          51
+        ]
+      },
+      "unit": "percent of surveyed firms",
+      "kind": "SELF_REPORT"
+    },
+    {
+      "source": "firm_ai",
+      "measure": "service firms laid off workers in response to AI",
+      "field": "2026-08",
+      "value": 4,
+      "unit": "percent of AI-using service firms",
+      "kind": "SELF_REPORT_PAST_SIX_MONTHS"
+    },
+    {
+      "source": "firm_ai",
+      "measure": "service firms hired fewer workers due to AI",
+      "field": "2026-08",
+      "value": 15,
+      "unit": "percent of AI-using service firms (approximate)",
+      "kind": "SELF_REPORT_PAST_SIX_MONTHS"
+    },
+    {
+      "source": "firm_ai",
+      "measure": "service firms hired more workers due to AI",
+      "field": "2026-08",
+      "value": 13,
+      "unit": "percent of AI-using service firms (approximate)",
+      "kind": "SELF_REPORT_PAST_SIX_MONTHS"
+    },
+    {
+      "source": "small_ai",
+      "measure": "expected employment increase share minus decrease share",
+      "field": "2025-09 through 2025-11",
+      "values": {
+        "AI_users": 33,
+        "nonusers": 15
+      },
+      "unit": "percentage-point diffusion index",
+      "kind": "BELIEF_12M"
+    },
+    {
+      "source": "small_ai",
+      "measure": "expected revenue increase share minus decrease share",
+      "field": "2025-09 through 2025-11",
+      "values": {
+        "AI_users": 48,
+        "nonusers": 21
+      },
+      "unit": "percentage-point diffusion index",
+      "kind": "BELIEF_12M"
+    },
+    {
+      "source": "vacancies",
+      "measure": "relative decline in high-AI-exposure job postings began before ChatGPT; no distinct new break after release; no clear junior/senior divergence",
+      "kind": "PUBLISHED_EVENT_STUDY_NOT_REPRODUCED"
+    }
+  ],
+  "comparison_rule": "Do not subtract population belief shares from firm action shares, or diffusion index from actual employment growth. Different timing, estimands and populations. Adoption correlated with expectations, not causal estimate. Job postings differ from employment and hiring.",
+  "hypotheses": [
+    {
+      "id": "augmentation",
+      "claim": "Adoption primarily changes task productivity and skill demand before broad employment displacement.",
+      "counter": "Reduced hiring among adopters may foreshadow substitution; self-report not aggregate output.",
+      "tests": [
+        "output per hour by industry",
+        "hiring/attrition and occupational reallocation",
+        "AI usage intensity"
+      ],
+      "status": "DESIGN_ONLY"
+    },
+    {
+      "id": "substitution",
+      "claim": "Lower hiring and future displacement emerge as AI is integrated.",
+      "counter": "Some AI users expand hiring; vacancy trends predate release, no clean aggregate causal break.",
+      "tests": [
+        "vacancy trends with valid pre-trends",
+        "age and occupational transitions",
+        "actual employment exits"
+      ],
+      "status": "DESIGN_ONLY"
+    },
+    {
+      "id": "growth_selection",
+      "claim": "Growing firms adopt AI and expect expansion; correlation can arise without causal AI effect.",
+      "counter": "Reported adjusted revenue expectation differences persist after measured controls, but unobserved selection remains.",
+      "tests": [
+        "pre-adoption growth and independent adoption variation",
+        "actual future revenue/headcount"
+      ],
+      "status": "DESIGN_ONLY"
+    }
+  ],
+  "candidate_recheck": {
+    "prior_file": "matched_packet_candidate.json",
+    "matched_numeric_values": 10,
+    "total_numeric_values": 10,
+    "method": "Same-author cross-check Q3/Q4 original PDF text, Q4 HTML; no visual confirmation, no raw bytes. All existing numeric values match published rounded medians. Original payroll realization formula not certified.",
+    "beige_date": "Explicit Last Update Nov 25 2026 confirmed; exact public clock not certified.",
+    "point": {
+      "target": "2027Q2 US real GDP percent qoq annualized",
+      "baseline": 2.2,
+      "source": "spf_q4",
+      "loss": "absolute_error"
+    },
+    "secondary_binary": {
+      "target": "2027Q2 first BEA advance release displayed headline GDP SAAR strictly below zero",
+      "baseline": 0.209,
+      "source": "spf_q4_html",
+      "prior_baseline": 0.22,
+      "loss": "Brier",
+      "limit": "Same GDP outcome, not independent test. Survey event is negative GDP growth; near-zero rounding possible; exact threshold resolution must be approved."
+    },
+    "state": "CANDIDATE_ONLY_NO_FORECAST",
+    "actual_predictions": 0
+  },
+  "acquisition": {
+    "chart_data": "https://libertystreeteconomics.newyorkfed.org/wp-content/uploads/sites/2/2026/04/LSE_2026_Kosar_AI-training_charts_5467e5.xlsx",
+    "additional_data": "https://libertystreeteconomics.newyorkfed.org/wp-content/uploads/sites/2/2026/04/LSE_2026_Kosar_AI-training_additional_data.xlsx",
+    "web": "both unsupported XLSX",
+    "container": "chart URL urllib failed DNS Errno -3",
+    "original_bytes": 0
+  },
+  "forecast_registration_authorized": false,
+  "investment_evaluation_authorized": false,
+  "production_effect": "NONE"
+}

@@ -1,0 +1,545 @@
+{
+  "schema": "NARRATIVE_BELIEF_PILOT_V1",
+  "as_of_date": "2026-11-27",
+  "classification": "EXPLORATORY_AUTHOR_VALIDATION_ONLY",
+  "sources": [
+    {
+      "id": "imf22j",
+      "actor": "IMF",
+      "publication_date": "2022-01-25",
+      "url": "https://www.elibrary.imf.org/display/book/9781616358716/ch001.xml",
+      "locator": "Table 1 United States; advanced economies forecast revisions",
+      "paraphrase": "IMF staff institutional projection; US 2022 4.0; fiscal package removed from baseline, earlier monetary withdrawal, supply bottlenecks.",
+      "access": "INDEXED_OFFICIAL_TEXT_NOT_RAW_BYTES",
+      "raw_sha256": null
+    },
+    {
+      "id": "imf22u",
+      "actor": "IMF",
+      "publication_date": "2022-07-26",
+      "url": "https://www.imf.org/en/blogs/articles/2022/07/26/blog-weo-update-july-2022",
+      "locator": "US growth discussion; also July WEO table 1",
+      "paraphrase": "US 2022 2.3; weaker household purchasing power and monetary tightening.",
+      "access": "INDEXED_OFFICIAL_TEXT_NOT_RAW_BYTES",
+      "raw_sha256": null
+    },
+    {
+      "id": "imf23j",
+      "actor": "IMF",
+      "publication_date": "2023-01-31",
+      "url": "https://www.elibrary.imf.org/display/book/9798400232244/CH001.xml",
+      "locator": "Table 1; US growth paragraph",
+      "paraphrase": "US 2023 1.4, 2024 1.0; US demand supported by accumulated household savings and tight employment, growth projected to slow. Publication date Singapore; exact timestamp not in this ledger.",
+      "access": "INDEXED_OFFICIAL_TEXT_NOT_RAW_BYTES",
+      "raw_sha256": null
+    },
+    {
+      "id": "imf23u",
+      "actor": "IMF",
+      "publication_date": "2023-07-25",
+      "url": "https://www.elibrary.imf.org/display/book/9798400243165/CH001.xml",
+      "locator": "Table 1; advanced economies US paragraph",
+      "paraphrase": "US 2023 1.8; first-quarter consumption resilience, real incomes and vehicle purchases.",
+      "access": "INDEXED_OFFICIAL_TEXT_NOT_RAW_BYTES",
+      "raw_sha256": null
+    },
+    {
+      "id": "imf24j",
+      "actor": "IMF",
+      "publication_date": "2024-01-30",
+      "url": "https://www.elibrary.imf.org/display/book/9798400259708/CH001.xml",
+      "locator": "Table 1; advanced economies US paragraph",
+      "paraphrase": "US 2024 2.1; stronger 2023 statistical carryover, monetary/fiscal tightening and softer labor markets expected to constrain demand.",
+      "access": "INDEXED_OFFICIAL_TEXT_NOT_RAW_BYTES",
+      "raw_sha256": null
+    },
+    {
+      "id": "imf24u",
+      "actor": "IMF",
+      "publication_date": "2024-07-16",
+      "url": "https://www.elibrary.imf.org/display/book/9798400278235/CH001.xml",
+      "locator": "Table 1; US growth revision paragraph",
+      "paraphrase": "US 2024 2.6; April forecast was 2.7, reduction due to slower start; slowing employment/consumption and fiscal tightening in 2025.",
+      "access": "INDEXED_OFFICIAL_TEXT_NOT_RAW_BYTES",
+      "raw_sha256": null
+    },
+    {
+      "id": "spf26q4",
+      "actor": "Philadelphia Fed SPF",
+      "publication_date": "2026-11-16",
+      "url": "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/survey-of-professional-forecasters/2026/spfQ426.pdf?sc_lang=en",
+      "locator": "Page 1 Median Forecasts previous/new; inflation section",
+      "paraphrase": "32 forecasters. 2027 GDP 2.2 to 2.3, annual-average payroll gains 75.4 to 62.8 thousand/month; Q4 2026 CPI annualized 2.5 to 4.0; 2027 Q2 GDP 2.1 to 2.2 annualized, payroll 80.4 to 49.3 thousand/month. Prior values quoted in this later report, not independently admitted prior original.",
+      "access": "INDEXED_OFFICIAL_TEXT_NOT_RAW_BYTES",
+      "raw_sha256": null
+    },
+    {
+      "id": "spf26q3date",
+      "actor": "Philadelphia Fed SPF",
+      "publication_date": "2026-08-14",
+      "url": "https://www.philadelphiafed.org/-/media/frbp/assets/surveys-and-data/survey-of-professional-forecasters/2026/spfq326.pdf",
+      "locator": "Cover release date",
+      "paraphrase": "Prior survey release date verified in indexed official text only; actual previous values here sourced from Q4 report.",
+      "access": "INDEXED_OFFICIAL_TEXT_NOT_RAW_BYTES",
+      "raw_sha256": null
+    },
+    {
+      "id": "spf26risk",
+      "actor": "Philadelphia Fed SPF",
+      "publication_date": "2026-11-16",
+      "url": "https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/anxious-index",
+      "locator": "Q4 2026 survey example",
+      "paraphrase": "Mean probability of negative real GDP growth in 2027 Q1 is 17.4%; not annual recession probability.",
+      "access": "INDEXED_OFFICIAL_TEXT_NOT_RAW_BYTES",
+      "raw_sha256": null
+    },
+    {
+      "id": "bok26a",
+      "actor": "Bank of Korea",
+      "publication_date": "2026-08-27",
+      "url": "https://www.bok.or.kr/portal/bbs/B0000502/view.do?menuNo=201263&nttId=11064211",
+      "locator": "Economic outlook summary",
+      "paraphrase": "2027 Korean real GDP 2.9%, CPI 2.3%; semiconductor expansion, Middle East uncertainty.",
+      "access": "INDEXED_OFFICIAL_TEXT_NOT_RAW_BYTES",
+      "raw_sha256": null
+    },
+    {
+      "id": "bok26n",
+      "actor": "Bank of Korea",
+      "publication_date": "2026-11-26",
+      "url": "https://www.bok.or.kr/portal/bbs/B0000502/view.do?depth=201265&menuNo=201265&nttId=11067101&oldMenuNo=201150&programType=newsData&relate=Y",
+      "locator": "Economic outlook summary",
+      "paraphrase": "2027 Korean real GDP 4.1%, CPI 2.4%.",
+      "access": "INDEXED_OFFICIAL_TEXT_NOT_RAW_BYTES",
+      "raw_sha256": null
+    },
+    {
+      "id": "bok26press",
+      "actor": "Bank of Korea",
+      "publication_date": "2026-11-26",
+      "url": "https://www.bok.or.kr/portal/bbs/B0000169/view.do?menuNo=200059&nttId=11067131",
+      "locator": "Governor press conference, outlook",
+      "paraphrase": "GDP outlook 3.9/4.1% for 2026/2027; higher IT sector weight in chain-weighted GDP discussed; policy rate raised 25 bp. Same institution not independent confirmation.",
+      "access": "INDEXED_OFFICIAL_TEXT_NOT_RAW_BYTES",
+      "raw_sha256": null
+    },
+    {
+      "id": "bea22",
+      "actor": "BEA",
+      "publication_date": "2023-01-26",
+      "url": "https://www.bea.gov/news/2023/gross-domestic-product-fourth-quarter-and-year-2022-advance-estimate",
+      "locator": "Real GDP for 2022",
+      "paraphrase": "First annual estimate 2.1%.",
+      "access": "INDEXED_OFFICIAL_TEXT_NOT_RAW_BYTES",
+      "raw_sha256": null
+    },
+    {
+      "id": "bea23",
+      "actor": "BEA",
+      "publication_date": "2024-01-25",
+      "url": "https://www.bea.gov/news/2024/gross-domestic-product-fourth-quarter-and-year-2023-advance-estimate",
+      "locator": "Real GDP for 2023",
+      "paraphrase": "First annual estimate 2.5%.",
+      "access": "INDEXED_OFFICIAL_TEXT_NOT_RAW_BYTES",
+      "raw_sha256": null
+    },
+    {
+      "id": "bea24",
+      "actor": "BEA",
+      "publication_date": "2025-01-30",
+      "url": "https://www.bea.gov/news/2025/gross-domestic-product-4th-quarter-and-year-2024-advance-estimate",
+      "locator": "Real GDP for 2024",
+      "paraphrase": "First annual estimate 2.8%.",
+      "access": "INDEXED_OFFICIAL_TEXT_NOT_RAW_BYTES",
+      "raw_sha256": null
+    },
+    {
+      "id": "spx",
+      "actor": "S&P DJI",
+      "publication_date": null,
+      "url": "https://www.spglobal.com/spdji/en/commentary/article/us-equities-market-attributes",
+      "locator": "December 2025 market attributes, annual returns",
+      "paraphrase": "Calendar-year total returns 2022 -18.11%, 2023 26.29%, 2024 25.02%. Exact publication date not verified; date field is period lower bound, not release time. Descriptive only.",
+      "access": "INDEXED_OFFICIAL_TEXT_NOT_RAW_BYTES",
+      "raw_sha256": null
+    }
+  ],
+  "claims": [
+    {
+      "id": "imf22-jan",
+      "source": "imf22j",
+      "actor": "IMF",
+      "metric": "US_REAL_GDP",
+      "target": "2022",
+      "unit": "percent_annual_average_yoy",
+      "value": 4,
+      "mechanisms": [
+        "fiscal_support_removed",
+        "monetary_tightening",
+        "supply_constraint"
+      ],
+      "kind": "PUBLISHED_FORECAST"
+    },
+    {
+      "id": "imf22-jul",
+      "source": "imf22u",
+      "actor": "IMF",
+      "metric": "US_REAL_GDP",
+      "target": "2022",
+      "unit": "percent_annual_average_yoy",
+      "value": 2.3,
+      "mechanisms": [
+        "household_purchasing_power",
+        "monetary_tightening"
+      ],
+      "kind": "PUBLISHED_FORECAST"
+    },
+    {
+      "id": "imf23-jan",
+      "source": "imf23j",
+      "actor": "IMF",
+      "metric": "US_REAL_GDP",
+      "target": "2023",
+      "unit": "percent_annual_average_yoy",
+      "value": 1.4,
+      "mechanisms": [
+        "household_savings",
+        "tight_labor_market"
+      ],
+      "kind": "PUBLISHED_FORECAST"
+    },
+    {
+      "id": "imf23-jul",
+      "source": "imf23u",
+      "actor": "IMF",
+      "metric": "US_REAL_GDP",
+      "target": "2023",
+      "unit": "percent_annual_average_yoy",
+      "value": 1.8,
+      "mechanisms": [
+        "consumption_resilience",
+        "real_income",
+        "tight_labor_market",
+        "vehicle_purchases"
+      ],
+      "kind": "PUBLISHED_FORECAST"
+    },
+    {
+      "id": "imf24-jan",
+      "source": "imf24j",
+      "actor": "IMF",
+      "metric": "US_REAL_GDP",
+      "target": "2024",
+      "unit": "percent_annual_average_yoy",
+      "value": 2.1,
+      "mechanisms": [
+        "statistical_carryover",
+        "monetary_tightening",
+        "fiscal_tightening",
+        "labor_softening"
+      ],
+      "kind": "PUBLISHED_FORECAST"
+    },
+    {
+      "id": "imf24-jul",
+      "source": "imf24u",
+      "actor": "IMF",
+      "metric": "US_REAL_GDP",
+      "target": "2024",
+      "unit": "percent_annual_average_yoy",
+      "value": 2.6,
+      "mechanisms": [
+        "slower_than_expected_start_vs_april"
+      ],
+      "kind": "PUBLISHED_FORECAST"
+    },
+    {
+      "id": "spf-prev-gdp",
+      "source": "spf26q4",
+      "actor": "Philadelphia Fed SPF",
+      "metric": "US_REAL_GDP",
+      "target": "2027",
+      "unit": "percent_annual_average_yoy",
+      "value": 2.2,
+      "mechanisms": [],
+      "kind": "REPORTED_PRIOR_FORECAST",
+      "forecast_date": "2026-08-14",
+      "available_date": "2026-11-16"
+    },
+    {
+      "id": "spf-now-gdp",
+      "source": "spf26q4",
+      "actor": "Philadelphia Fed SPF",
+      "metric": "US_REAL_GDP",
+      "target": "2027",
+      "unit": "percent_annual_average_yoy",
+      "value": 2.3,
+      "mechanisms": [],
+      "kind": "PUBLISHED_FORECAST"
+    },
+    {
+      "id": "spf-prev-jobs",
+      "source": "spf26q4",
+      "actor": "Philadelphia Fed SPF",
+      "metric": "US_PAYROLL_GAINS",
+      "target": "2027",
+      "unit": "thousand_per_month_annual_average_level_change",
+      "value": 75.4,
+      "mechanisms": [],
+      "kind": "REPORTED_PRIOR_FORECAST",
+      "forecast_date": "2026-08-14",
+      "available_date": "2026-11-16"
+    },
+    {
+      "id": "spf-now-jobs",
+      "source": "spf26q4",
+      "actor": "Philadelphia Fed SPF",
+      "metric": "US_PAYROLL_GAINS",
+      "target": "2027",
+      "unit": "thousand_per_month_annual_average_level_change",
+      "value": 62.8,
+      "mechanisms": [],
+      "kind": "PUBLISHED_FORECAST"
+    },
+    {
+      "id": "spf-prev-q2gdp",
+      "source": "spf26q4",
+      "actor": "Philadelphia Fed SPF",
+      "metric": "US_REAL_GDP",
+      "target": "2027Q2",
+      "unit": "percent_qoq_annualized",
+      "value": 2.1,
+      "mechanisms": [],
+      "kind": "REPORTED_PRIOR_FORECAST",
+      "forecast_date": "2026-08-14",
+      "available_date": "2026-11-16"
+    },
+    {
+      "id": "spf-now-q2gdp",
+      "source": "spf26q4",
+      "actor": "Philadelphia Fed SPF",
+      "metric": "US_REAL_GDP",
+      "target": "2027Q2",
+      "unit": "percent_qoq_annualized",
+      "value": 2.2,
+      "mechanisms": [],
+      "kind": "PUBLISHED_FORECAST"
+    },
+    {
+      "id": "spf-prev-q2jobs",
+      "source": "spf26q4",
+      "actor": "Philadelphia Fed SPF",
+      "metric": "US_PAYROLL_GAINS",
+      "target": "2027Q2",
+      "unit": "thousand_per_month_quarterly",
+      "value": 80.4,
+      "mechanisms": [],
+      "kind": "REPORTED_PRIOR_FORECAST",
+      "forecast_date": "2026-08-14",
+      "available_date": "2026-11-16"
+    },
+    {
+      "id": "spf-now-q2jobs",
+      "source": "spf26q4",
+      "actor": "Philadelphia Fed SPF",
+      "metric": "US_PAYROLL_GAINS",
+      "target": "2027Q2",
+      "unit": "thousand_per_month_quarterly",
+      "value": 49.3,
+      "mechanisms": [],
+      "kind": "PUBLISHED_FORECAST"
+    },
+    {
+      "id": "spf-prev-cpi",
+      "source": "spf26q4",
+      "actor": "Philadelphia Fed SPF",
+      "metric": "US_CPI",
+      "target": "2026Q4",
+      "unit": "percent_qoq_annualized",
+      "value": 2.5,
+      "mechanisms": [],
+      "kind": "REPORTED_PRIOR_FORECAST",
+      "forecast_date": "2026-08-14",
+      "available_date": "2026-11-16"
+    },
+    {
+      "id": "spf-now-cpi",
+      "source": "spf26q4",
+      "actor": "Philadelphia Fed SPF",
+      "metric": "US_CPI",
+      "target": "2026Q4",
+      "unit": "percent_qoq_annualized",
+      "value": 4,
+      "mechanisms": [],
+      "kind": "PUBLISHED_FORECAST"
+    },
+    {
+      "id": "spf-risk",
+      "source": "spf26risk",
+      "actor": "Philadelphia Fed SPF",
+      "metric": "US_REAL_GDP_NEGATIVE",
+      "target": "2027Q1",
+      "unit": "probability_percent",
+      "value": 17.4,
+      "mechanisms": [],
+      "kind": "PUBLISHED_PROBABILITY"
+    },
+    {
+      "id": "bok-aug-KR_REAL_GDP",
+      "source": "bok26a",
+      "actor": "Bank of Korea",
+      "metric": "KR_REAL_GDP",
+      "target": "2027",
+      "unit": "percent_annual_average_yoy",
+      "value": 2.9,
+      "mechanisms": [
+        "semiconductor_expansion",
+        "geopolitical_uncertainty"
+      ],
+      "kind": "PUBLISHED_FORECAST"
+    },
+    {
+      "id": "bok-nov-KR_REAL_GDP",
+      "source": "bok26n",
+      "actor": "Bank of Korea",
+      "metric": "KR_REAL_GDP",
+      "target": "2027",
+      "unit": "percent_annual_average_yoy",
+      "value": 4.1,
+      "mechanisms": [
+        "it_weight_shift"
+      ],
+      "kind": "PUBLISHED_FORECAST",
+      "mechanism_source": "bok26press"
+    },
+    {
+      "id": "bok-aug-KR_CPI",
+      "source": "bok26a",
+      "actor": "Bank of Korea",
+      "metric": "KR_CPI",
+      "target": "2027",
+      "unit": "percent_annual_average_yoy",
+      "value": 2.3,
+      "mechanisms": [],
+      "kind": "PUBLISHED_FORECAST"
+    },
+    {
+      "id": "bok-nov-KR_CPI",
+      "source": "bok26n",
+      "actor": "Bank of Korea",
+      "metric": "KR_CPI",
+      "target": "2027",
+      "unit": "percent_annual_average_yoy",
+      "value": 2.4,
+      "mechanisms": [],
+      "kind": "PUBLISHED_FORECAST"
+    }
+  ],
+  "comparisons": [
+    [
+      "imf22-jan",
+      "imf22-jul"
+    ],
+    [
+      "imf23-jan",
+      "imf23-jul"
+    ],
+    [
+      "imf24-jan",
+      "imf24-jul"
+    ],
+    [
+      "spf-prev-gdp",
+      "spf-now-gdp"
+    ],
+    [
+      "spf-prev-jobs",
+      "spf-now-jobs"
+    ],
+    [
+      "spf-prev-q2gdp",
+      "spf-now-q2gdp"
+    ],
+    [
+      "spf-prev-q2jobs",
+      "spf-now-q2jobs"
+    ],
+    [
+      "spf-prev-cpi",
+      "spf-now-cpi"
+    ],
+    [
+      "bok-aug-KR_REAL_GDP",
+      "bok-nov-KR_REAL_GDP"
+    ],
+    [
+      "bok-aug-KR_CPI",
+      "bok-nov-KR_CPI"
+    ]
+  ],
+  "resolutions": [
+    {
+      "metric": "US_REAL_GDP",
+      "target": "2022",
+      "unit": "percent_annual_average_yoy",
+      "value": 2.1,
+      "source": "bea22"
+    },
+    {
+      "metric": "US_REAL_GDP",
+      "target": "2023",
+      "unit": "percent_annual_average_yoy",
+      "value": 2.5,
+      "source": "bea23"
+    },
+    {
+      "metric": "US_REAL_GDP",
+      "target": "2024",
+      "unit": "percent_annual_average_yoy",
+      "value": 2.8,
+      "source": "bea24"
+    }
+  ],
+  "market_context": [
+    {
+      "year": 2022,
+      "total_return_pct": -18.11,
+      "source": "spx"
+    },
+    {
+      "year": 2023,
+      "total_return_pct": 26.29,
+      "source": "spx"
+    },
+    {
+      "year": 2024,
+      "total_return_pct": 25.02,
+      "source": "spx"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "H-US-GROWTH-JOBS",
+      "status": "DESIGN_ONLY_NOT_FORECAST",
+      "claim": "Growth expectation strengthened slightly while employment growth was revised lower; a productivity/composition explanation competes with labor weakness, survey composition and measurement effects.",
+      "support": [
+        "spf-now-gdp",
+        "spf-now-jobs",
+        "spf-now-q2gdp",
+        "spf-now-q2jobs"
+      ],
+      "falsifier": "BEA advance 2027Q2 GDP and BLS payroll releases; productivity and hours data to distinguish mechanisms; fix measurement conventions before forecast registration."
+    },
+    {
+      "id": "H-KR-GROWTH-RATE",
+      "status": "DESIGN_ONLY_NOT_FORECAST",
+      "claim": "Korean expected growth and inflation both revised up; semiconductor concentration and tighter discount rates may offset earnings benefit. Not a valuation finding.",
+      "support": [
+        "bok-aug-KR_REAL_GDP",
+        "bok-nov-KR_REAL_GDP",
+        "bok-nov-KR_CPI"
+      ],
+      "falsifier": "BOK next forecast, BOK preliminary quarterly GDP and IT contribution, CPI, actual index earnings expectations and discount-rate changes; no security outcomes opened."
+    }
+  ]
+}
