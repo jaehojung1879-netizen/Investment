@@ -1,0 +1,195 @@
+{
+ "measuredOn": "2026-11-26",
+ "files": [
+  {
+   "path": "data/fed_z1/F51_1_t.csv",
+   "bytes": 54377,
+   "sha256": "248c042f03760a82538174b106db0229dbede1d41cc1fd4aa23dd076f1b41f74"
+  },
+  {
+   "path": "data/fed_z1/F51_1_t.txt",
+   "bytes": 7081,
+   "sha256": "559bdd94e55d7a2ec508fbd1ffaf967defe2dfdaebb1d45f49458b2d354b59ac"
+  },
+  {
+   "path": "data/kodex200_pdf.jsonl",
+   "bytes": 1589026,
+   "sha256": "d620e6208367866dcf4ebec5b0747ccbca11a6aa305eaf28cc723fc70e6ef0f6"
+  },
+  {
+   "path": "data/kofia_credit_balance.json",
+   "bytes": 1071029,
+   "sha256": "5fe376da2ae3771704a21e7d9757a4053801a37c40a1380fb40947b1902fffdc"
+  },
+  {
+   "path": "data/kofia_market_funds.json",
+   "bytes": 894809,
+   "sha256": "035674934d3c5cef74a3bd74c4e881943604b6786d71f869e082d3500908f1a5"
+  },
+  {
+   "path": "data/kosdaq150_pdf.jsonl",
+   "bytes": 1875521,
+   "sha256": "2998f0dd536f3fff01b5f82901d6e55fa8f47e5255c7dc876b49f01cd702c28f"
+  },
+  {
+   "path": "data/krx_portal_probe_2026-11-26.json",
+   "bytes": 584,
+   "sha256": "6b7ee86dbeb4fa2a7fc87ea796a614d4f74cefb58c5e0d062e0ab083b8280b72"
+  },
+  {
+   "path": "data/spdji_bodies.jsonl",
+   "bytes": 1972321,
+   "sha256": "ded7848766d6b70f8f82a41e26aa1a5646dd4c0f81e6a41fdfee802216cd6100"
+  },
+  {
+   "path": "data/spdji_listing_pages.jsonl",
+   "bytes": 2478,
+   "sha256": "ccf68c63346e88495542acf4bf6c87bfcefc7987eebb4e3cf403a5a66401ee1a"
+  },
+  {
+   "path": "data/spdji_releases.jsonl",
+   "bytes": 580512,
+   "sha256": "950dd26c082966828ec34a7c3e47e0f0a199c1517b19e5ec6e7cd938ec722a92"
+  },
+  {
+   "path": "data/wikipedia_sp500_raw.wiki",
+   "bytes": 86730,
+   "sha256": "c2d80d1e5c354011fd7be4e3ecfddf8551f486270e165de980e053fffcfb56dd"
+  }
+ ],
+ "access": [
+  {
+   "region": "KR",
+   "source": "KRX 정보데이터시스템 투자자별·지수구성·공매도 (MDCSTAT02302/00601/30001)",
+   "endpoint": "data.krx.co.kr/comm/bldAttendant/getJsonData.cmd",
+   "verdict": "BLOCKED_LOGIN_REQUIRED",
+   "evidence": "세션·Referer 포함 3건 모두 HTTP 400 'LOGOUT' (data/krx_portal_probe_2026-11-26.json). 로그인 우회 금지"
+  },
+  {
+   "region": "KR",
+   "source": "KRX 홈페이지·KIND 공지(지수 정기변경 보도자료)",
+   "endpoint": "www.krx.co.kr, kind.krx.co.kr",
+   "verdict": "BLOCKED",
+   "evidence": "www.krx.co.kr main.jsp -> AccessDenied.jsp, kind.krx.co.kr 403"
+  },
+  {
+   "region": "KR",
+   "source": "KODEX 200 / KOSDAQ 150 PDF (삼성자산운용 공개 API)",
+   "endpoint": "samsungfund.com/api/v1/kodex/product-pdf/{fId}.do?gijunYMD=",
+   "verdict": "PARTIAL_THEN_THROTTLED",
+   "evidence": "robots allow:/. 기준일별 과거 PDF 2010~ 응답. 약 550회 후 Cloudflare challenge(429, cf-mitigated) -> 수집 중단, 우회하지 않음"
+  },
+  {
+   "region": "KR",
+   "source": "TIGER ETF",
+   "endpoint": "tigeretf.com",
+   "verdict": "BLOCKED",
+   "evidence": "403"
+  },
+  {
+   "region": "KR",
+   "source": "ACE ETF PDF API",
+   "endpoint": "aceetf.co.kr /api/funds/{id}/pdf?std_dt=",
+   "verdict": "UNRESOLVED",
+   "evidence": "클라이언트 코드에 기준일 인자 존재, API 기본 호스트 미확인(빌드 설정 localhost)"
+  },
+  {
+   "region": "KR",
+   "source": "KOFIA FreeSIS 신용공여 잔고·증시자금(반대매매)",
+   "endpoint": "freesis.kofia.or.kr/meta/getMetaDataList.do",
+   "verdict": "SERVED",
+   "evidence": "STATSCU0100000070BO 7,246행, STATSCU0100000060BO 7,245행(1998~2026-11-25). 시장 전체 수준만"
+  },
+  {
+   "region": "KR",
+   "source": "KOFIA 전자공시 펀드 보유종목",
+   "endpoint": "dis.kofia.or.kr",
+   "verdict": "BLOCKED",
+   "evidence": "접속 실패(#347 선행 판단과 동일)"
+  },
+  {
+   "region": "KR",
+   "source": "국민연금 기금 포트폴리오",
+   "endpoint": "fund.nps.or.kr/main.do",
+   "verdict": "INTERMITTENT_CURRENT_ONLY",
+   "evidence": "최초 200, 이후 터널 종료 2회. 현재 스냅샷만(data/national_pension_cache.json 2026-05 잠정). 월별 과거 비중은 연차보고서 필요"
+  },
+  {
+   "region": "KR",
+   "source": "DART OpenAPI",
+   "endpoint": "opendart.fss.or.kr",
+   "verdict": "REACHABLE_NO_KEY_IN_SESSION",
+   "evidence": "200. 키 없음. 5% 대량보유는 #383 C에서 이미 수집·판정"
+  },
+  {
+   "region": "KR",
+   "source": "ECOS 한국은행",
+   "endpoint": "ecos.bok.or.kr",
+   "verdict": "REACHABLE_NO_KEY_IN_SESSION",
+   "evidence": "200. 자금순환표 미수집"
+  },
+  {
+   "region": "KR",
+   "source": "signal-history KRX 일별 원장(KOSPI)",
+   "endpoint": "signal-history@394fc9f6 ledger/prices/kr",
+   "verdict": "SERVED_READ_ONLY",
+   "evidence": "거래량·종가로 사건 20세션 이전 중앙 거래대금만 계산. KOSDAQ 미포함"
+  },
+  {
+   "region": "US",
+   "source": "SEC EDGAR (13F, N-PORT, Form 4)",
+   "endpoint": "www.sec.gov, data.sec.gov",
+   "verdict": "BLOCKED",
+   "evidence": "403 (기존 v2.9 판정과 동일)"
+  },
+  {
+   "region": "US",
+   "source": "GCAP N-PORT 보유 릴리스",
+   "endpoint": "Google Drive 1dGUfDF...(7.4GB, #347)",
+   "verdict": "NOT_FETCHED_THIS_SESSION",
+   "evidence": "#347이 이미 사용. 2019Q3~2026Q3. 재사용 가능하나 이 세션에서 내려받지 않음"
+  },
+  {
+   "region": "US",
+   "source": "S&P DJI 지수 변경 보도자료",
+   "endpoint": "prnewswire.com/news/s%26p-dow-jones-indices/",
+   "verdict": "SERVED",
+   "evidence": "1,333건 2012-07~2026-11, ET 공개시각. 본문 S&P 500 관련 선택분 수집"
+  },
+  {
+   "region": "US",
+   "source": "Wikipedia S&P 500 구성종목(Date added)",
+   "endpoint": "en.wikipedia.org (raw)",
+   "verdict": "SERVED",
+   "evidence": "현 구성종목 502개, 교차검증용. Historical components 페이지는 오류 응답"
+  },
+  {
+   "region": "US",
+   "source": "FINRA 공매도 잔고",
+   "endpoint": "cdn.finra.org",
+   "verdict": "BLOCKED",
+   "evidence": "403"
+  },
+  {
+   "region": "US",
+   "source": "Federal Reserve Z.1 F.223(부문별 주식 순매수)",
+   "endpoint": "federalreserve.gov/releases/z1/current/z1_csv_files.zip",
+   "verdict": "SERVED",
+   "evidence": "zip sha256 b63af975...; 분기, 개정 이력 미보존(빈티지 아님)"
+  },
+  {
+   "region": "US",
+   "source": "iShares / SSGA 보유·상장좌수",
+   "endpoint": "ishares.com, ssga.com",
+   "verdict": "NOT_TESTED_DEPTH",
+   "evidence": "301 리다이렉트. 현재 보유만 공개로 알려짐 -> 과거 흐름은 전향 수집 대상"
+  },
+  {
+   "region": "US",
+   "source": "MSCI index review",
+   "endpoint": "msci.com/index-review",
+   "verdict": "UNVERIFIED",
+   "evidence": "동적 페이지. 구성 변경 원장은 고객 자료"
+  }
+ ]
+}
