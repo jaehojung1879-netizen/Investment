@@ -1,0 +1,480 @@
+{
+  "evidence_status": "EXPLORATORY_AUTHOR_VALIDATION_ONLY",
+  "hydro": {
+    "comparable_historical_months": 10,
+    "eia_2025_total_net_mwh": 2735019,
+    "eia_2025_wing_net_mwh": {
+      "154": 1807912,
+      "8902": 927107
+    },
+    "eia_month_count": 12,
+    "eia_unique_wing_month_count": 24,
+    "historical_diagnostics": [
+      {
+        "conditional_ideal_water_to_power_upper_gwh": 284.9046944473702,
+        "eia_net_mwh_two_wings": 176306,
+        "gross_minus_net_gwh": 0.994,
+        "head_ceiling_ft": 590,
+        "month": "2025-01",
+        "power_release_kaf": 471.0,
+        "usbr_gross_gwh": 177.3,
+        "within_ideal_energy_upper": true
+      },
+      {
+        "conditional_ideal_water_to_power_upper_gwh": 310.2832674416216,
+        "eia_net_mwh_two_wings": 193632,
+        "gross_minus_net_gwh": 0.968,
+        "head_ceiling_ft": 590,
+        "month": "2025-02",
+        "power_release_kaf": 513.0,
+        "usbr_gross_gwh": 194.6,
+        "within_ideal_energy_upper": true
+      },
+      {
+        "conditional_ideal_water_to_power_upper_gwh": 470.409978000589,
+        "eia_net_mwh_two_wings": 293176,
+        "gross_minus_net_gwh": 1.024,
+        "head_ceiling_ft": 590,
+        "month": "2025-03",
+        "power_release_kaf": 778.0,
+        "usbr_gross_gwh": 294.2,
+        "within_ideal_energy_upper": true
+      },
+      {
+        "conditional_ideal_water_to_power_upper_gwh": 556.8179765286355,
+        "eia_net_mwh_two_wings": 345037,
+        "gross_minus_net_gwh": 1.063,
+        "head_ceiling_ft": 590,
+        "month": "2025-04",
+        "power_release_kaf": 921.0,
+        "usbr_gross_gwh": 346.1,
+        "within_ideal_energy_upper": true
+      },
+      {
+        "conditional_ideal_water_to_power_upper_gwh": 594.2815842820542,
+        "eia_net_mwh_two_wings": 363765,
+        "gross_minus_net_gwh": 1.135,
+        "head_ceiling_ft": 590,
+        "month": "2025-05",
+        "power_release_kaf": 983.0,
+        "usbr_gross_gwh": 364.9,
+        "within_ideal_energy_upper": true
+      },
+      {
+        "conditional_ideal_water_to_power_upper_gwh": 481.8907610217979,
+        "eia_net_mwh_two_wings": 290714,
+        "gross_minus_net_gwh": 1.286,
+        "head_ceiling_ft": 590,
+        "month": "2025-06",
+        "power_release_kaf": 797.0,
+        "usbr_gross_gwh": 292.0,
+        "within_ideal_energy_upper": true
+      },
+      {
+        "conditional_ideal_water_to_power_upper_gwh": 435.967628936962,
+        "eia_net_mwh_two_wings": 261396,
+        "gross_minus_net_gwh": 1.204,
+        "head_ceiling_ft": 590,
+        "month": "2025-07",
+        "power_release_kaf": 721.0,
+        "usbr_gross_gwh": 262.6,
+        "within_ideal_energy_upper": true
+      },
+      {
+        "conditional_ideal_water_to_power_upper_gwh": 379.7722173068339,
+        "eia_net_mwh_two_wings": 226048,
+        "gross_minus_net_gwh": 1.252,
+        "head_ceiling_ft": 590,
+        "month": "2025-08",
+        "power_release_kaf": 628.0,
+        "usbr_gross_gwh": 227.3,
+        "within_ideal_energy_upper": true
+      },
+      {
+        "conditional_ideal_water_to_power_upper_gwh": 275.8409183779947,
+        "eia_net_mwh_two_wings": 163616,
+        "gross_minus_net_gwh": 1.084,
+        "head_ceiling_ft": 590,
+        "month": "2025-09",
+        "power_release_kaf": 456.0,
+        "usbr_gross_gwh": 164.7,
+        "within_ideal_energy_upper": true
+      },
+      {
+        "conditional_ideal_water_to_power_upper_gwh": 293.36421877878735,
+        "eia_net_mwh_two_wings": 174643,
+        "gross_minus_net_gwh": 1.057,
+        "head_ceiling_ft": 590,
+        "month": "2025-10",
+        "power_release_kaf": 485.0,
+        "usbr_gross_gwh": 175.7,
+        "within_ideal_energy_upper": true
+      }
+    ],
+    "net_mwh_2025_monthly": {
+      "1": 176306,
+      "2": 193632,
+      "3": 293176,
+      "4": 345037,
+      "5": 363765,
+      "6": 290714,
+      "7": 261396,
+      "8": 226048,
+      "9": 163616,
+      "10": 174643,
+      "11": 150720,
+      "12": 95966
+    },
+    "plant_ids": {
+      "154": "NV",
+      "8902": "AZ"
+    },
+    "projections": {
+      "nov2026_minimum": {
+        "gross_exceeds_naive_capacity_times_hours": [
+          {
+            "capacity_times_hours_gwh": 232.7232,
+            "month": "2027-05",
+            "published_gross_gwh": 234.3
+          },
+          {
+            "capacity_times_hours_gwh": 219.24,
+            "month": "2027-06",
+            "published_gross_gwh": 220.2
+          }
+        ],
+        "max_27_arithmetic_residual_gwh": 0.1365,
+        "may_oct_capacity_mw_range_by_month": [
+          230.8,
+          312.8
+        ],
+        "may_oct_gross_projection_gwh": 1222.3,
+        "may_oct_power_release_kaf": 3653.0,
+        "path_quarterly_ideal_upper_gwh": [
+          1095.8105267874992,
+          1417.2724513813505,
+          1134.4826380168347,
+          856.5268385559857
+        ]
+      },
+      "nov2026_most_probable_7maf": {
+        "gross_exceeds_naive_capacity_times_hours": [],
+        "max_27_arithmetic_residual_gwh": 0.1957,
+        "may_oct_capacity_mw_range_by_month": [
+          321.1,
+          1192.9
+        ],
+        "may_oct_gross_projection_gwh": 1258.4,
+        "may_oct_power_release_kaf": 3677.0,
+        "path_quarterly_ideal_upper_gwh": [
+          1081.9127368144568,
+          1422.1064652850173,
+          1143.54641408621,
+          842.0247968449848
+        ]
+      }
+    },
+    "real_market_set": null,
+    "within_ideal_water_ceiling_count": 10
+  },
+  "physical_source_with_synthetic_cashflows": {
+    "conditional_on_two_published_paths": {
+      "nov2026_minimum": {
+        "classification": "MARKET_ABOVE_E_CONDITIONAL",
+        "conditional_gap": 241.53043720687901,
+        "value_inner_at_midpoints": [
+          635.1091058449632,
+          785.3420627283001
+        ],
+        "value_outer": [
+          12.522734149682009,
+          2458.469562793121
+        ],
+        "witness": null
+      },
+      "nov2026_most_probable_7maf": {
+        "classification": "MARKET_ABOVE_E_CONDITIONAL",
+        "conditional_gap": 242.31183185449026,
+        "value_inner_at_midpoints": [
+          635.1091058449632,
+          784.8582641586211
+        ],
+        "value_outer": [
+          12.522734149682009,
+          2457.6881681455097
+        ],
+        "witness": null
+      }
+    },
+    "hypothetical_ev_musd": [
+      2700,
+      2850
+    ],
+    "same_physical_paths_wider_monetary_assumptions": {
+      "nov2026_minimum": {
+        "classification": "OUTER_OVERLAP_UNRESOLVED",
+        "conditional_gap": null,
+        "value_inner_at_midpoints": [
+          884.2033976124716,
+          1034.8423100698442
+        ],
+        "value_outer": [
+          11.76197184467182,
+          3983.1277186076877
+        ],
+        "witness": null
+      },
+      "nov2026_most_probable_7maf": {
+        "classification": "OUTER_OVERLAP_UNRESOLVED",
+        "conditional_gap": null,
+        "value_inner_at_midpoints": [
+          884.2033976124716,
+          1034.357227030016
+        ],
+        "value_outer": [
+          11.76197184467182,
+          3982.3420281576364
+        ],
+        "witness": null
+      }
+    }
+  },
+  "s4a_closeout": {
+    "decision": "STOP_SOURCE_BLOCKED",
+    "document_packets_verified": 7,
+    "minimum_n_80pct": {
+      "0.3": 90,
+      "0.5": 34
+    },
+    "n9_paired_t_mde_sd": 1.066973,
+    "new_clusters_with_quantified_shutdown_nameplate": 3,
+    "new_documented_shutdown_clusters": 4,
+    "new_eligible_structural_clusters": 0,
+    "total_documented_shutdown_clusters": 6
+  },
+  "sector_census": {
+    "example_aspe_shortage_pct_generic_sterile_injectables": 63,
+    "faa_fleet_2024_and_2045_forecast": [
+      7387,
+      10607
+    ],
+    "marad_operating_fleet_vessels": 190,
+    "sector_counts": {
+      "device_pharma": {
+        "listed_issuer_eligible": false,
+        "observed_routes": 1,
+        "public_facility_physical_bridge": false,
+        "retrieved_routes": 2,
+        "reviewed_routes": 2
+      },
+      "refining_chemicals": {
+        "listed_issuer_eligible": false,
+        "observed_routes": 2,
+        "public_facility_physical_bridge": false,
+        "retrieved_routes": 2,
+        "reviewed_routes": 2
+      },
+      "semiconductor_memory": {
+        "listed_issuer_eligible": false,
+        "observed_routes": 2,
+        "public_facility_physical_bridge": false,
+        "retrieved_routes": 2,
+        "reviewed_routes": 2
+      },
+      "shipbuilding_aircraft": {
+        "listed_issuer_eligible": false,
+        "observed_routes": 2,
+        "public_facility_physical_bridge": false,
+        "retrieved_routes": 2,
+        "reviewed_routes": 2
+      },
+      "transformer_power_equipment": {
+        "listed_issuer_eligible": false,
+        "observed_routes": 2,
+        "public_facility_physical_bridge": false,
+        "retrieved_routes": 2,
+        "reviewed_routes": 2
+      },
+      "utility_generation": {
+        "listed_issuer_eligible": false,
+        "observed_routes": 2,
+        "public_facility_physical_bridge": true,
+        "retrieved_routes": 2,
+        "reviewed_routes": 2
+      }
+    },
+    "semiconductor_sep_2026": {
+      "capacity_index": 259.6,
+      "capacity_times_utilization": 198.594,
+      "production_index": 198.6,
+      "utilization_pct": 76.5
+    },
+    "transformer_2023_doe_lead_time_months": [
+      12,
+      30
+    ],
+    "transformer_shipments_2024_thousand_usd": 11994505,
+    "transformer_shipments_observations": 18,
+    "wapa_2026_final_base_charge_usd": 76174568,
+    "wapa_2027_public_proposal_base_charge_rounded_musd": 76.2
+  },
+  "synthetic": {
+    "absent_shared_bottleneck": {
+      "classification": "MARKET_ABOVE_E_CONDITIONAL",
+      "conditional_gap": 322.81874347730445,
+      "market_ev": [
+        6500,
+        6800
+      ],
+      "value_inner_at_midpoints": [
+        1784.1391149631907,
+        2488.1896354138207
+      ],
+      "value_outer": [
+        429.0787380208067,
+        6177.181256522696
+      ],
+      "witness": null
+    },
+    "high_ev_base": {
+      "classification": "MARKET_ABOVE_E_CONDITIONAL",
+      "conditional_gap": 571.0791462669449,
+      "market_ev": [
+        6500,
+        6800
+      ],
+      "value_inner_at_midpoints": [
+        1784.1391149631907,
+        2315.6446447845774
+      ],
+      "value_outer": [
+        429.0787380208067,
+        5928.920853733055
+      ],
+      "witness": null
+    },
+    "high_ev_wider_capital_structure": {
+      "classification": "OUTER_OVERLAP_UNRESOLVED",
+      "conditional_gap": null,
+      "market_ev": [
+        5800,
+        6900
+      ],
+      "value_inner_at_midpoints": [
+        1784.1391149631907,
+        2315.6446447845774
+      ],
+      "value_outer": [
+        429.0787380208067,
+        5928.920853733055
+      ],
+      "witness": null
+    },
+    "high_ev_wider_terminal": {
+      "classification": "OUTER_OVERLAP_UNRESOLVED",
+      "conditional_gap": null,
+      "market_ev": [
+        6500,
+        6800
+      ],
+      "value_inner_at_midpoints": [
+        2280.7049783606644,
+        2814.5805238662733
+      ],
+      "value_outer": [
+        257.88224328977736,
+        15007.747082610505
+      ],
+      "witness": null
+    },
+    "impossible_delivery_floor": {
+      "classification": "MODEL_CONFLICT",
+      "conditional_gap": null,
+      "market_ev": [
+        6500,
+        6800
+      ],
+      "value_outer": null
+    },
+    "low_ev": {
+      "classification": "MARKET_BELOW_E_CONDITIONAL",
+      "conditional_gap": 129.07873802080672,
+      "market_ev": [
+        200,
+        300
+      ],
+      "value_inner_at_midpoints": [
+        1784.1391149631907,
+        2315.6446447845774
+      ],
+      "value_outer": [
+        429.0787380208067,
+        5928.920853733055
+      ],
+      "witness": null
+    },
+    "overlap_with_witness": {
+      "classification": "OVERLAP_WITNESS_ABSTAIN",
+      "conditional_gap": null,
+      "market_ev": [
+        2019.8918798738841,
+        2079.891879873884
+      ],
+      "value_inner_at_midpoints": [
+        1784.1391149631907,
+        2315.6446447845774
+      ],
+      "value_outer": [
+        429.0787380208067,
+        5928.920853733055
+      ],
+      "witness": {
+        "ev": 2019.8918798738841,
+        "product_quarter_units": [
+          43.936072385312976,
+          40.38761989805598,
+          17.766235291792622,
+          33.290714923541984,
+          8.0,
+          9.7742262436285,
+          21.08491854676018,
+          26.629375558099234
+        ]
+      }
+    },
+    "relaxed_capacity_loses_gap": {
+      "classification": "OUTER_OVERLAP_UNRESOLVED",
+      "conditional_gap": null,
+      "market_ev": [
+        6000,
+        6050
+      ],
+      "value_inner_at_midpoints": [
+        1784.1391149631907,
+        2488.1896354138207
+      ],
+      "value_outer": [
+        429.0787380208067,
+        6177.181256522696
+      ],
+      "witness": null
+    },
+    "tight_capacity_changes_gap": {
+      "classification": "MARKET_ABOVE_E_CONDITIONAL",
+      "conditional_gap": 71.07914626694492,
+      "market_ev": [
+        6000,
+        6050
+      ],
+      "value_inner_at_midpoints": [
+        1784.1391149631907,
+        2315.6446447845774
+      ],
+      "value_outer": [
+        429.0787380208067,
+        5928.920853733055
+      ],
+      "witness": null
+    }
+  }
+}

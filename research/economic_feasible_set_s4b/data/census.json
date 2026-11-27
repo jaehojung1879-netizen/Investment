@@ -1,0 +1,58 @@
+{
+  "eligibility_definition": {
+    "retrieved": "Bytes received and checked as an official source or official statistical distribution.",
+    "number_or_record": "A numeric economic observation or published forecast was extracted. This includes sector aggregates.",
+    "physical_bridge": "Same public facility and product can be aligned between a source-based forward operating path and a separately published physical resolution. Underlying origin can overlap and is recorded.",
+    "listed_issuer_eligible": "Allowed issuer and segment matched to a time-stamped, product-level driver and resolution plus contractual and cash-flow boundaries and a complete EV bridge."
+  },
+  "sectors": {
+    "semiconductor_memory": {
+      "routes": [
+        {"name": "Fed G.17 production", "files": ["fed-ip.htm"], "number_or_record": true},
+        {"name": "Fed G.17 capacity and utilization", "files": ["fed-cap.htm", "fed-util.htm"], "number_or_record": true}
+      ],
+      "physical_bridge": false,
+      "listed_issuer_eligible": false
+    },
+    "transformer_power_equipment": {
+      "routes": [
+        {"name": "DOE distribution transformer lead times", "files": ["doe-transformer.htm"], "number_or_record": true},
+        {"name": "US Census annual NAICS 335311 shipments via FRED", "files": ["census-transformer.csv"], "number_or_record": true}
+      ],
+      "physical_bridge": false,
+      "listed_issuer_eligible": false
+    },
+    "shipbuilding_aircraft": {
+      "routes": [
+        {"name": "MARAD operating fleet", "files": ["marad-fleet.pdf"], "number_or_record": true},
+        {"name": "FAA commercial aircraft fleet path", "files": ["faa-forecast.pdf"], "number_or_record": true}
+      ],
+      "physical_bridge": false,
+      "listed_issuer_eligible": false
+    },
+    "device_pharma": {
+      "routes": [
+        {"name": "ASPE shortage whitepaper", "files": ["hhs-whitepaper.pdf"], "number_or_record": true},
+        {"name": "FDA 510(k) metadata and form", "files": ["openfda-510k.htm", "fda-pmn.htm"], "number_or_record": false}
+      ],
+      "physical_bridge": false,
+      "listed_issuer_eligible": false
+    },
+    "refining_chemicals": {
+      "routes": [
+        {"name": "EIA-820 refinery capacity", "files": ["eia-refinery.pdf"], "number_or_record": true},
+        {"name": "WPSR regional gross input", "files": ["eia-gross.xls"], "number_or_record": true}
+      ],
+      "physical_bridge": false,
+      "listed_issuer_eligible": false
+    },
+    "utility_generation": {
+      "routes": [
+        {"name": "Bureau of Reclamation physical operating paths", "files": ["NOV25.pdf", "NOV26_MIN.pdf", "NOV26-MP-7MAF.pdf", "powerfaq.html"], "number_or_record": true},
+        {"name": "EIA-923 net generation", "files": ["eia923-hoover-2025.csv"], "number_or_record": true}
+      ],
+      "physical_bridge": true,
+      "listed_issuer_eligible": false
+    }
+  }
+}

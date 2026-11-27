@@ -1,0 +1,22 @@
+{
+  "study_id": "s4b-hoover-seasonal-vintage-v1",
+  "status": "EXPLORATORY_DEVELOPMENT_LOCK",
+  "facility": "Hoover Dam – Lake Mead",
+  "origin_years": [2020, 2021, 2022, 2023, 2024, 2025],
+  "origin_month": 11,
+  "scenario": "USBR Most Probable Inflow",
+  "target_months": [5, 6, 7, 8, 9, 10],
+  "target_definition": "next calendar year's May through October cumulative gross energy (GWh, equivalent to million kWh)",
+  "resolver": "same six monthly USBR historical gross GWh in the following November's archive; calendar issue date verified; 2026 Most Probable 7 MAF existing archive used for historical rows only",
+  "comparators": {
+    "prior_season": "current issue's historical monthly gross energy for the same months one calendar year earlier",
+    "official": "same issue's Most Probable future gross energy",
+    "volume_scaled": "prior season total gross divided by that season's turbine power-release volume times projected target season's power-release volume",
+    "cap_only": "sum of each prior-season month clipped to target-month water energy at documented 590ft maximum head and 100% conversion, with +0.5 thousand acre-ft printing tolerance"
+  },
+  "primary_metric": "equal annual target block mean absolute error of the six-month total in GWh",
+  "diagnostics": "paired annual MAE differences, signed mean error, block wins and ties, availability, historical rounding differences, cap violations; year blocks may be serially related; no p-values",
+  "missing": "required source absent, status or definition ambiguous or month missing means ineligible; keep intended calendar without replacement",
+  "source_scope": "public federal facility only; no use of issuer data, securities prices or returns",
+  "known_exposure": "the preceding S4-B used some 2025 observations and 2026 archived source documents; no prospective or independent label"
+}
