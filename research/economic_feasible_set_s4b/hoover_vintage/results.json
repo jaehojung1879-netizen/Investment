@@ -1,0 +1,182 @@
+{
+  "annual_targets": [
+    {
+      "actual_gwh": 1858.2,
+      "error_gwh": {
+        "cap_only": 165.0,
+        "official": -63.6,
+        "prior_season": 165.0,
+        "volume_scaled": -17.893
+      },
+      "forecast_gwh": {
+        "cap_only": 2023.2,
+        "official": 1794.6,
+        "prior_season": 2023.2,
+        "volume_scaled": 1840.307
+      },
+      "issue_year": 2020,
+      "target_year": 2021,
+      "volume_scaled_error_arithmetic_gwh": {
+        "forecast_water_delta_at_prior_conversion": -69.86,
+        "remaining_actual_conversion_delta": 51.968
+      }
+    },
+    {
+      "actual_gwh": 1529.6,
+      "error_gwh": {
+        "cap_only": 328.6,
+        "official": 178.4,
+        "prior_season": 328.6,
+        "volume_scaled": 256.441
+      },
+      "forecast_gwh": {
+        "cap_only": 1858.2,
+        "official": 1708.0,
+        "prior_season": 1858.2,
+        "volume_scaled": 1786.041
+      },
+      "issue_year": 2021,
+      "target_year": 2022,
+      "volume_scaled_error_arithmetic_gwh": {
+        "forecast_water_delta_at_prior_conversion": 135.156,
+        "remaining_actual_conversion_delta": 121.285
+      }
+    },
+    {
+      "actual_gwh": 1495.9,
+      "error_gwh": {
+        "cap_only": 33.7,
+        "official": 103.8,
+        "prior_season": 33.7,
+        "volume_scaled": 175.906
+      },
+      "forecast_gwh": {
+        "cap_only": 1529.6,
+        "official": 1599.7,
+        "prior_season": 1529.6,
+        "volume_scaled": 1671.806
+      },
+      "issue_year": 2022,
+      "target_year": 2023,
+      "volume_scaled_error_arithmetic_gwh": {
+        "forecast_water_delta_at_prior_conversion": 235.595,
+        "remaining_actual_conversion_delta": -59.689
+      }
+    },
+    {
+      "actual_gwh": 1681.0,
+      "error_gwh": {
+        "cap_only": -185.1,
+        "official": -36.6,
+        "prior_season": -185.1,
+        "volume_scaled": -18.561
+      },
+      "forecast_gwh": {
+        "cap_only": 1495.9,
+        "official": 1644.4,
+        "prior_season": 1495.9,
+        "volume_scaled": 1662.439
+      },
+      "issue_year": 2023,
+      "target_year": 2024,
+      "volume_scaled_error_arithmetic_gwh": {
+        "forecast_water_delta_at_prior_conversion": 8.106,
+        "remaining_actual_conversion_delta": -26.667
+      }
+    },
+    {
+      "actual_gwh": 1487.2,
+      "error_gwh": {
+        "cap_only": 193.8,
+        "official": 125.7,
+        "prior_season": 193.8,
+        "volume_scaled": 159.356
+      },
+      "forecast_gwh": {
+        "cap_only": 1681.0,
+        "official": 1612.9,
+        "prior_season": 1681.0,
+        "volume_scaled": 1646.556
+      },
+      "issue_year": 2024,
+      "target_year": 2025,
+      "volume_scaled_error_arithmetic_gwh": {
+        "forecast_water_delta_at_prior_conversion": 122.799,
+        "remaining_actual_conversion_delta": 36.557
+      }
+    },
+    {
+      "actual_gwh": 1451.5,
+      "error_gwh": {
+        "cap_only": 35.7,
+        "official": 106.6,
+        "prior_season": 35.7,
+        "volume_scaled": 132.167
+      },
+      "forecast_gwh": {
+        "cap_only": 1487.2,
+        "official": 1558.1,
+        "prior_season": 1487.2,
+        "volume_scaled": 1583.667
+      },
+      "issue_year": 2025,
+      "target_year": 2026,
+      "volume_scaled_error_arithmetic_gwh": {
+        "forecast_water_delta_at_prior_conversion": 84.774,
+        "remaining_actual_conversion_delta": 47.393
+      }
+    }
+  ],
+  "design_sha256": "e7c7456899c8095198f2773c4e57abd4474382bf75689ee18935501776cd623d",
+  "intended_year_blocks": 6,
+  "matched_month_rows": 36,
+  "matched_year_blocks": 6,
+  "metrics": {
+    "cap_only": {
+      "mae_gwh": 156.983,
+      "mean_absolute_improvement_vs_prior_season_gwh": 0.0,
+      "mean_signed_error_gwh": 95.283,
+      "wins_ties_losses_vs_prior_season": [
+        0,
+        6,
+        0
+      ]
+    },
+    "official": {
+      "mae_gwh": 102.45,
+      "mean_absolute_improvement_vs_prior_season_gwh": 54.533,
+      "mean_signed_error_gwh": 69.05,
+      "wins_ties_losses_vs_prior_season": [
+        4,
+        0,
+        2
+      ]
+    },
+    "prior_season": {
+      "mae_gwh": 156.983,
+      "mean_absolute_improvement_vs_prior_season_gwh": 0.0,
+      "mean_signed_error_gwh": 95.283,
+      "wins_ties_losses_vs_prior_season": [
+        0,
+        6,
+        0
+      ]
+    },
+    "volume_scaled": {
+      "mae_gwh": 126.721,
+      "mean_absolute_improvement_vs_prior_season_gwh": 30.263,
+      "mean_signed_error_gwh": 114.569,
+      "wins_ties_losses_vs_prior_season": [
+        4,
+        0,
+        2
+      ]
+    }
+  },
+  "missing_target_blocks": [],
+  "months_actual_above_forecast_volume_cap": 0,
+  "months_actual_above_measured_volume_cap": 0,
+  "months_prior_season_clipped": 0,
+  "status": "EXPLORATORY_AUTHOR_VALIDATION_ONLY",
+  "target_is_public_single_basin": true
+}
