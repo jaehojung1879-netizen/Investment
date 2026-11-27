@@ -1,0 +1,7 @@
+{
+  "classification": "DRY_RUN_NOT_A_SIGNAL_HISTORY_RECEIPT",
+  "meaning": "What scripts/record_entry_state_shadow.py appends for the 2026-10-30 weekly observation (signal-history@187aeeda, config@37f8cbf6), recorded by the writer's clock on 2026-11-01T01:44:36Z (Sunday), before the 2026-11-02 KR and US opens. It is committed in a PR branch, not on signal-history, so it is not a live receipt and no fill, NAV or return exists. Live receipts start only after the hook is merged and the scheduled paper-ledger workflow runs on main.",
+  "offline": true,
+  "fills": 0,
+  "navRows": 0
+}

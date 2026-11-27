@@ -1,0 +1,2553 @@
+{
+  "schema": "ENTRY_STATE_SHADOW_CARDINALITY_V3",
+  "sourceCommit": "187aeeda839dd4863bf9432eabb1595581bc7782",
+  "sourceHashes": {
+    "championSha256": "4e1ab55ebbb0b342faf8004374c3025abbcd1367938809a1f8fabb5e260a464f",
+    "weeklySha256": "f4c48085fb47def9e66614c1287101c8065a5773763543def4799f633d84fa87",
+    "configSha256": "d1169e1e4a84ded1385e11e591ea01a4b383e7a625960ece9278a0bde3c15273",
+    "sourceVerification": "GIT_OBJECTS_AT_SOURCE_AND_CONFIG_COMMITS"
+  },
+  "sourceArtifactSha256": "893fea88cc42cae89e0ef3cef000faa96bd7d5c78afc0543f2103a8f28b989ae",
+  "sourceGeneratedAt": "2026-10-31T05:44:37.950407+00:00",
+  "classification": "HISTORICAL_SESSION_OBSERVED_BEFORE_NEXT_SESSION; NOT_PROSPECTIVE_OUTCOME",
+  "status": "READ_ONLY_RESEARCH_NO_ORDERS_NO_VALIDATED_ALPHA",
+  "residualConvention": "ETF_NOT_CASH; DIFFERENT_FROM_OLD_REPLAY_V16",
+  "stockCountPolicy": "Scenario grid 0,1,2,3,4,5,10; no count is a permanent maximum or a mandatory minimum; 0 stocks + 100% ETF is valid",
+  "rankAndCountAreSeparateVariables": true,
+  "portfolioDPolicy": {
+    "permanentCombinedMaximum": null,
+    "regionalScenariosAreNotSimultaneousCombinedAllocations": true,
+    "allocationAcrossKRAndUS": null,
+    "note": "Each region is a separate book against its own ETF. No combined KR+US count is fixed here; a combined count is a later, evidence-backed decision, never a sum of two regional ladders."
+  },
+  "regions": {
+    "KR": {
+      "status": "RESEARCH_SNAPSHOT_ONLY_NOT_LIVE_VALIDATED",
+      "asOfDate": "2026-10-30",
+      "sourceReceiptId": "current-champion-decisions-v1|KR|2026-10-30",
+      "consideredCount": 12,
+      "originallyEligibleCount": 6,
+      "rankedRowsRetained": 11,
+      "legacyControlOnly": {
+        "stockCount": 3,
+        "selected": [
+          "028670.KS",
+          "002380.KS",
+          "034730.KS"
+        ],
+        "stocks": {
+          "028670.KS": 0.3,
+          "002380.KS": 0.187666,
+          "034730.KS": 0.080882
+        },
+        "residual": 0.431452,
+        "residualAsset": "069500.KS",
+        "sameAsPublished": true,
+        "note": "Existing maxNamesPerRegion=3 is NOT a research cardinality recommendation"
+      },
+      "scenarioStockCounts": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        10
+      ],
+      "researchScenarios": [
+        {
+          "stockCount": 0,
+          "status": "SOURCE_PINNED_COUNTERFACTUAL",
+          "rankStateInSelection": {
+            "selected": [],
+            "stocks": {},
+            "residual": 1,
+            "residualAsset": "069500.KS",
+            "candidateAudit": [
+              {
+                "ticker": "000660.KS",
+                "sector": "Technology",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "001450.KS",
+                "sector": "Financial Services",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "002380.KS",
+                "sector": "Basic Materials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "005490.KS",
+                "sector": "Basic Materials",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "005935.KS",
+                "sector": "Technology",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "021240.KS",
+                "sector": "Consumer Cyclical",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "028670.KS",
+                "sector": "Industrials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "032640.KS",
+                "sector": "Communication Services",
+                "entryState": "AVOID",
+                "eligible": null,
+                "status": "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF"
+              },
+              {
+                "ticker": "034730.KS",
+                "sector": "Industrials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "078930.KS",
+                "sector": "Industrials",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "161390.KS",
+                "sector": "Consumer Cyclical",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "402340.KS",
+                "sector": "Technology",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              }
+            ]
+          },
+          "stateAtPositionWeight": {
+            "selected": [],
+            "stocks": {},
+            "residual": 1,
+            "residualAsset": "069500.KS",
+            "candidateAudit": [
+              {
+                "ticker": "000660.KS",
+                "sector": "Technology",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "001450.KS",
+                "sector": "Financial Services",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "002380.KS",
+                "sector": "Basic Materials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "005490.KS",
+                "sector": "Basic Materials",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "005935.KS",
+                "sector": "Technology",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "021240.KS",
+                "sector": "Consumer Cyclical",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "028670.KS",
+                "sector": "Industrials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "032640.KS",
+                "sector": "Communication Services",
+                "entryState": "AVOID",
+                "eligible": null,
+                "status": "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF"
+              },
+              {
+                "ticker": "034730.KS",
+                "sector": "Industrials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "078930.KS",
+                "sector": "Industrials",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "161390.KS",
+                "sector": "Consumer Cyclical",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "402340.KS",
+                "sector": "Technology",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              }
+            ]
+          }
+        },
+        {
+          "stockCount": 1,
+          "status": "SOURCE_PINNED_COUNTERFACTUAL",
+          "rankStateInSelection": {
+            "selected": [
+              "028670.KS"
+            ],
+            "stocks": {
+              "028670.KS": 0.3
+            },
+            "residual": 0.7,
+            "residualAsset": "069500.KS",
+            "candidateAudit": [
+              {
+                "ticker": "000660.KS",
+                "sector": "Technology",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "001450.KS",
+                "sector": "Financial Services",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "002380.KS",
+                "sector": "Basic Materials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "005490.KS",
+                "sector": "Basic Materials",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "005935.KS",
+                "sector": "Technology",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "021240.KS",
+                "sector": "Consumer Cyclical",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "028670.KS",
+                "sector": "Industrials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "032640.KS",
+                "sector": "Communication Services",
+                "entryState": "AVOID",
+                "eligible": null,
+                "status": "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF"
+              },
+              {
+                "ticker": "034730.KS",
+                "sector": "Industrials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "078930.KS",
+                "sector": "Industrials",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "161390.KS",
+                "sector": "Consumer Cyclical",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "402340.KS",
+                "sector": "Technology",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              }
+            ]
+          },
+          "stateAtPositionWeight": {
+            "selected": [
+              "021240.KS"
+            ],
+            "stocks": {
+              "021240.KS": 0.075
+            },
+            "residual": 0.925,
+            "residualAsset": "069500.KS",
+            "candidateAudit": [
+              {
+                "ticker": "000660.KS",
+                "sector": "Technology",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "001450.KS",
+                "sector": "Financial Services",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "002380.KS",
+                "sector": "Basic Materials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "005490.KS",
+                "sector": "Basic Materials",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "005935.KS",
+                "sector": "Technology",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "021240.KS",
+                "sector": "Consumer Cyclical",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "028670.KS",
+                "sector": "Industrials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "032640.KS",
+                "sector": "Communication Services",
+                "entryState": "AVOID",
+                "eligible": null,
+                "status": "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF"
+              },
+              {
+                "ticker": "034730.KS",
+                "sector": "Industrials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "078930.KS",
+                "sector": "Industrials",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "161390.KS",
+                "sector": "Consumer Cyclical",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "402340.KS",
+                "sector": "Technology",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              }
+            ]
+          }
+        },
+        {
+          "stockCount": 2,
+          "status": "SOURCE_PINNED_COUNTERFACTUAL",
+          "rankStateInSelection": {
+            "selected": [
+              "028670.KS",
+              "002380.KS"
+            ],
+            "stocks": {
+              "028670.KS": 0.3,
+              "002380.KS": 0.132382
+            },
+            "residual": 0.567618,
+            "residualAsset": "069500.KS",
+            "candidateAudit": [
+              {
+                "ticker": "000660.KS",
+                "sector": "Technology",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "001450.KS",
+                "sector": "Financial Services",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "002380.KS",
+                "sector": "Basic Materials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "005490.KS",
+                "sector": "Basic Materials",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "005935.KS",
+                "sector": "Technology",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "021240.KS",
+                "sector": "Consumer Cyclical",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "028670.KS",
+                "sector": "Industrials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "032640.KS",
+                "sector": "Communication Services",
+                "entryState": "AVOID",
+                "eligible": null,
+                "status": "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF"
+              },
+              {
+                "ticker": "034730.KS",
+                "sector": "Industrials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "078930.KS",
+                "sector": "Industrials",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "161390.KS",
+                "sector": "Consumer Cyclical",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "402340.KS",
+                "sector": "Technology",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              }
+            ]
+          },
+          "stateAtPositionWeight": {
+            "selected": [
+              "021240.KS",
+              "001450.KS"
+            ],
+            "stocks": {
+              "021240.KS": 0.075,
+              "001450.KS": 0.033015
+            },
+            "residual": 0.891985,
+            "residualAsset": "069500.KS",
+            "candidateAudit": [
+              {
+                "ticker": "000660.KS",
+                "sector": "Technology",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "001450.KS",
+                "sector": "Financial Services",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "002380.KS",
+                "sector": "Basic Materials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "005490.KS",
+                "sector": "Basic Materials",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "005935.KS",
+                "sector": "Technology",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "021240.KS",
+                "sector": "Consumer Cyclical",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "028670.KS",
+                "sector": "Industrials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "032640.KS",
+                "sector": "Communication Services",
+                "entryState": "AVOID",
+                "eligible": null,
+                "status": "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF"
+              },
+              {
+                "ticker": "034730.KS",
+                "sector": "Industrials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "078930.KS",
+                "sector": "Industrials",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "161390.KS",
+                "sector": "Consumer Cyclical",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "402340.KS",
+                "sector": "Technology",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              }
+            ]
+          }
+        },
+        {
+          "stockCount": 3,
+          "status": "SOURCE_PINNED_COUNTERFACTUAL",
+          "rankStateInSelection": {
+            "selected": [
+              "028670.KS",
+              "002380.KS",
+              "034730.KS"
+            ],
+            "stocks": {
+              "028670.KS": 0.3,
+              "002380.KS": 0.187666,
+              "034730.KS": 0.080882
+            },
+            "residual": 0.431452,
+            "residualAsset": "069500.KS",
+            "candidateAudit": [
+              {
+                "ticker": "000660.KS",
+                "sector": "Technology",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "001450.KS",
+                "sector": "Financial Services",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "002380.KS",
+                "sector": "Basic Materials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "005490.KS",
+                "sector": "Basic Materials",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "005935.KS",
+                "sector": "Technology",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "021240.KS",
+                "sector": "Consumer Cyclical",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "028670.KS",
+                "sector": "Industrials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "032640.KS",
+                "sector": "Communication Services",
+                "entryState": "AVOID",
+                "eligible": null,
+                "status": "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF"
+              },
+              {
+                "ticker": "034730.KS",
+                "sector": "Industrials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "078930.KS",
+                "sector": "Industrials",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "161390.KS",
+                "sector": "Consumer Cyclical",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "402340.KS",
+                "sector": "Technology",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              }
+            ]
+          },
+          "stateAtPositionWeight": {
+            "selected": [
+              "021240.KS",
+              "001450.KS",
+              "028670.KS"
+            ],
+            "stocks": {
+              "021240.KS": 0.075,
+              "001450.KS": 0.046881,
+              "028670.KS": 0.040122
+            },
+            "residual": 0.837997,
+            "residualAsset": "069500.KS",
+            "candidateAudit": [
+              {
+                "ticker": "000660.KS",
+                "sector": "Technology",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "001450.KS",
+                "sector": "Financial Services",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "002380.KS",
+                "sector": "Basic Materials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "005490.KS",
+                "sector": "Basic Materials",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "005935.KS",
+                "sector": "Technology",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "021240.KS",
+                "sector": "Consumer Cyclical",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "028670.KS",
+                "sector": "Industrials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "032640.KS",
+                "sector": "Communication Services",
+                "entryState": "AVOID",
+                "eligible": null,
+                "status": "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF"
+              },
+              {
+                "ticker": "034730.KS",
+                "sector": "Industrials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "078930.KS",
+                "sector": "Industrials",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "161390.KS",
+                "sector": "Consumer Cyclical",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "402340.KS",
+                "sector": "Technology",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              }
+            ]
+          }
+        },
+        {
+          "stockCount": 4,
+          "status": "SOURCE_PINNED_COUNTERFACTUAL",
+          "rankStateInSelection": {
+            "selected": [
+              "028670.KS",
+              "002380.KS",
+              "034730.KS",
+              "021240.KS"
+            ],
+            "stocks": {
+              "028670.KS": 0.237407,
+              "002380.KS": 0.156822,
+              "034730.KS": 0.096555,
+              "021240.KS": 0.109215
+            },
+            "residual": 0.400001,
+            "residualAsset": "069500.KS",
+            "candidateAudit": [
+              {
+                "ticker": "000660.KS",
+                "sector": "Technology",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "001450.KS",
+                "sector": "Financial Services",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "002380.KS",
+                "sector": "Basic Materials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "005490.KS",
+                "sector": "Basic Materials",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "005935.KS",
+                "sector": "Technology",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "021240.KS",
+                "sector": "Consumer Cyclical",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "028670.KS",
+                "sector": "Industrials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "032640.KS",
+                "sector": "Communication Services",
+                "entryState": "AVOID",
+                "eligible": null,
+                "status": "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF"
+              },
+              {
+                "ticker": "034730.KS",
+                "sector": "Industrials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "078930.KS",
+                "sector": "Industrials",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "161390.KS",
+                "sector": "Consumer Cyclical",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "402340.KS",
+                "sector": "Technology",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              }
+            ]
+          },
+          "stateAtPositionWeight": {
+            "selected": [
+              "021240.KS",
+              "001450.KS",
+              "028670.KS",
+              "002380.KS"
+            ],
+            "stocks": {
+              "021240.KS": 0.066191,
+              "001450.KS": 0.043587,
+              "028670.KS": 0.05329,
+              "002380.KS": 0.027155
+            },
+            "residual": 0.809777,
+            "residualAsset": "069500.KS",
+            "candidateAudit": [
+              {
+                "ticker": "000660.KS",
+                "sector": "Technology",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "001450.KS",
+                "sector": "Financial Services",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "002380.KS",
+                "sector": "Basic Materials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "005490.KS",
+                "sector": "Basic Materials",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "005935.KS",
+                "sector": "Technology",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "021240.KS",
+                "sector": "Consumer Cyclical",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "028670.KS",
+                "sector": "Industrials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "032640.KS",
+                "sector": "Communication Services",
+                "entryState": "AVOID",
+                "eligible": null,
+                "status": "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF"
+              },
+              {
+                "ticker": "034730.KS",
+                "sector": "Industrials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "078930.KS",
+                "sector": "Industrials",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "161390.KS",
+                "sector": "Consumer Cyclical",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "402340.KS",
+                "sector": "Technology",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              }
+            ]
+          }
+        },
+        {
+          "stockCount": 5,
+          "status": "SOURCE_PINNED_COUNTERFACTUAL",
+          "rankStateInSelection": {
+            "selected": [
+              "028670.KS",
+              "002380.KS",
+              "034730.KS",
+              "021240.KS",
+              "005935.KS"
+            ],
+            "stocks": {
+              "028670.KS": 0.19118,
+              "002380.KS": 0.135306,
+              "034730.KS": 0.093305,
+              "021240.KS": 0.131924,
+              "005935.KS": 0.048286
+            },
+            "residual": 0.399999,
+            "residualAsset": "069500.KS",
+            "candidateAudit": [
+              {
+                "ticker": "000660.KS",
+                "sector": "Technology",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "001450.KS",
+                "sector": "Financial Services",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "002380.KS",
+                "sector": "Basic Materials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "005490.KS",
+                "sector": "Basic Materials",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "005935.KS",
+                "sector": "Technology",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "021240.KS",
+                "sector": "Consumer Cyclical",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "028670.KS",
+                "sector": "Industrials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "032640.KS",
+                "sector": "Communication Services",
+                "entryState": "AVOID",
+                "eligible": null,
+                "status": "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF"
+              },
+              {
+                "ticker": "034730.KS",
+                "sector": "Industrials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "078930.KS",
+                "sector": "Industrials",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "161390.KS",
+                "sector": "Consumer Cyclical",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "402340.KS",
+                "sector": "Technology",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              }
+            ]
+          },
+          "stateAtPositionWeight": {
+            "selected": [
+              "021240.KS",
+              "001450.KS",
+              "028670.KS",
+              "002380.KS",
+              "034730.KS"
+            ],
+            "stocks": {
+              "021240.KS": 0.056114,
+              "001450.KS": 0.039591,
+              "028670.KS": 0.054213,
+              "002380.KS": 0.034532,
+              "034730.KS": 0.019844
+            },
+            "residual": 0.795706,
+            "residualAsset": "069500.KS",
+            "candidateAudit": [
+              {
+                "ticker": "000660.KS",
+                "sector": "Technology",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "001450.KS",
+                "sector": "Financial Services",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "002380.KS",
+                "sector": "Basic Materials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "005490.KS",
+                "sector": "Basic Materials",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "005935.KS",
+                "sector": "Technology",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "021240.KS",
+                "sector": "Consumer Cyclical",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "028670.KS",
+                "sector": "Industrials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "032640.KS",
+                "sector": "Communication Services",
+                "entryState": "AVOID",
+                "eligible": null,
+                "status": "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF"
+              },
+              {
+                "ticker": "034730.KS",
+                "sector": "Industrials",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "078930.KS",
+                "sector": "Industrials",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "161390.KS",
+                "sector": "Consumer Cyclical",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              },
+              {
+                "ticker": "402340.KS",
+                "sector": "Technology",
+                "entryState": "AVOID",
+                "eligible": false,
+                "status": "INELIGIBLE"
+              }
+            ]
+          }
+        },
+        {
+          "stockCount": 10,
+          "status": "INSUFFICIENT_ELIGIBLE_NAMES",
+          "rankStateInSelection": null,
+          "stateAtPositionWeight": null
+        }
+      ],
+      "currentPolicy": {
+        "status": "PASSIVE_NO_DEFENSIBLE_EDGE",
+        "stockCount": 0,
+        "holdings": {},
+        "benchmark": "069500.KS",
+        "benchmarkWeight": 1,
+        "basis": "PUBLISHED_WEEKLY_POLICY_NOT_COUNTERFACTUAL_BACKTEST_WINNER"
+      },
+      "cardinalityWinner": null,
+      "selectionCriterion": "Future evidence-backed positive NET excess after costs, risk & multiplicity; no chosen count from exposed history",
+      "costs": null,
+      "realizedReturn": null,
+      "expectedAlpha": null,
+      "nextEligibleExecution": null
+    },
+    "US": {
+      "status": "RESEARCH_SNAPSHOT_ONLY_NOT_LIVE_VALIDATED",
+      "asOfDate": "2026-10-30",
+      "sourceReceiptId": "current-champion-decisions-v1|US|2026-10-30",
+      "consideredCount": 12,
+      "originallyEligibleCount": 12,
+      "rankedRowsRetained": 11,
+      "legacyControlOnly": {
+        "stockCount": 3,
+        "selected": [
+          "TRV",
+          "HLT",
+          "MAR"
+        ],
+        "stocks": {
+          "TRV": 0.3,
+          "HLT": 0.184682,
+          "MAR": 0.081952
+        },
+        "residual": 0.433366,
+        "residualAsset": "SPY",
+        "sameAsPublished": true,
+        "note": "Existing maxNamesPerRegion=3 is NOT a research cardinality recommendation"
+      },
+      "scenarioStockCounts": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        10
+      ],
+      "researchScenarios": [
+        {
+          "stockCount": 0,
+          "status": "SOURCE_PINNED_COUNTERFACTUAL",
+          "rankStateInSelection": {
+            "selected": [],
+            "stocks": {},
+            "residual": 1,
+            "residualAsset": "SPY",
+            "candidateAudit": [
+              {
+                "ticker": "ALL",
+                "sector": "Financial Services",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "GM",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "HLT",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "HST",
+                "sector": "Real Estate",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "KIM",
+                "sector": "Real Estate",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MAR",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MO",
+                "sector": "Consumer Defensive",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MU",
+                "sector": "Technology",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "SPG",
+                "sector": "Real Estate",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "SWK",
+                "sector": "Industrials",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "TRV",
+                "sector": "Financial Services",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "VLO",
+                "sector": "Energy",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": null,
+                "status": "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF"
+              }
+            ]
+          },
+          "stateAtPositionWeight": {
+            "selected": [],
+            "stocks": {},
+            "residual": 1,
+            "residualAsset": "SPY",
+            "candidateAudit": [
+              {
+                "ticker": "ALL",
+                "sector": "Financial Services",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "GM",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "HLT",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "HST",
+                "sector": "Real Estate",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "KIM",
+                "sector": "Real Estate",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MAR",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MO",
+                "sector": "Consumer Defensive",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MU",
+                "sector": "Technology",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "SPG",
+                "sector": "Real Estate",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "SWK",
+                "sector": "Industrials",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "TRV",
+                "sector": "Financial Services",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "VLO",
+                "sector": "Energy",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": null,
+                "status": "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF"
+              }
+            ]
+          }
+        },
+        {
+          "stockCount": 1,
+          "status": "SOURCE_PINNED_COUNTERFACTUAL",
+          "rankStateInSelection": {
+            "selected": [
+              "TRV"
+            ],
+            "stocks": {
+              "TRV": 0.3
+            },
+            "residual": 0.7,
+            "residualAsset": "SPY",
+            "candidateAudit": [
+              {
+                "ticker": "ALL",
+                "sector": "Financial Services",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "GM",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "HLT",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "HST",
+                "sector": "Real Estate",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "KIM",
+                "sector": "Real Estate",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MAR",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MO",
+                "sector": "Consumer Defensive",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MU",
+                "sector": "Technology",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "SPG",
+                "sector": "Real Estate",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "SWK",
+                "sector": "Industrials",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "TRV",
+                "sector": "Financial Services",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "VLO",
+                "sector": "Energy",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": null,
+                "status": "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF"
+              }
+            ]
+          },
+          "stateAtPositionWeight": {
+            "selected": [
+              "SPG"
+            ],
+            "stocks": {
+              "SPG": 0.15
+            },
+            "residual": 0.85,
+            "residualAsset": "SPY",
+            "candidateAudit": [
+              {
+                "ticker": "ALL",
+                "sector": "Financial Services",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "GM",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "HLT",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "HST",
+                "sector": "Real Estate",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "KIM",
+                "sector": "Real Estate",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MAR",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MO",
+                "sector": "Consumer Defensive",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MU",
+                "sector": "Technology",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "SPG",
+                "sector": "Real Estate",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "SWK",
+                "sector": "Industrials",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "TRV",
+                "sector": "Financial Services",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "VLO",
+                "sector": "Energy",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": null,
+                "status": "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF"
+              }
+            ]
+          }
+        },
+        {
+          "stockCount": 2,
+          "status": "SOURCE_PINNED_COUNTERFACTUAL",
+          "rankStateInSelection": {
+            "selected": [
+              "TRV",
+              "HLT"
+            ],
+            "stocks": {
+              "TRV": 0.3,
+              "HLT": 0.130147
+            },
+            "residual": 0.569853,
+            "residualAsset": "SPY",
+            "candidateAudit": [
+              {
+                "ticker": "ALL",
+                "sector": "Financial Services",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "GM",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "HLT",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "HST",
+                "sector": "Real Estate",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "KIM",
+                "sector": "Real Estate",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MAR",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MO",
+                "sector": "Consumer Defensive",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MU",
+                "sector": "Technology",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "SPG",
+                "sector": "Real Estate",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "SWK",
+                "sector": "Industrials",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "TRV",
+                "sector": "Financial Services",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "VLO",
+                "sector": "Energy",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": null,
+                "status": "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF"
+              }
+            ]
+          },
+          "stateAtPositionWeight": {
+            "selected": [
+              "SPG",
+              "KIM"
+            ],
+            "stocks": {
+              "SPG": 0.147337,
+              "KIM": 0.038831
+            },
+            "residual": 0.813832,
+            "residualAsset": "SPY",
+            "candidateAudit": [
+              {
+                "ticker": "ALL",
+                "sector": "Financial Services",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "GM",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "HLT",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "HST",
+                "sector": "Real Estate",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "KIM",
+                "sector": "Real Estate",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "MAR",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MO",
+                "sector": "Consumer Defensive",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MU",
+                "sector": "Technology",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "SPG",
+                "sector": "Real Estate",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "SWK",
+                "sector": "Industrials",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "TRV",
+                "sector": "Financial Services",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "VLO",
+                "sector": "Energy",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": null,
+                "status": "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF"
+              }
+            ]
+          }
+        },
+        {
+          "stockCount": 3,
+          "status": "SOURCE_PINNED_COUNTERFACTUAL",
+          "rankStateInSelection": {
+            "selected": [
+              "TRV",
+              "HLT",
+              "MAR"
+            ],
+            "stocks": {
+              "TRV": 0.3,
+              "HLT": 0.184682,
+              "MAR": 0.081952
+            },
+            "residual": 0.433366,
+            "residualAsset": "SPY",
+            "candidateAudit": [
+              {
+                "ticker": "ALL",
+                "sector": "Financial Services",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "GM",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "HLT",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "HST",
+                "sector": "Real Estate",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "KIM",
+                "sector": "Real Estate",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MAR",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "MO",
+                "sector": "Consumer Defensive",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MU",
+                "sector": "Technology",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "SPG",
+                "sector": "Real Estate",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "SWK",
+                "sector": "Industrials",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "TRV",
+                "sector": "Financial Services",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "VLO",
+                "sector": "Energy",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": null,
+                "status": "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF"
+              }
+            ]
+          },
+          "stateAtPositionWeight": {
+            "selected": [
+              "SPG",
+              "KIM",
+              "TRV"
+            ],
+            "stocks": {
+              "SPG": 0.131138,
+              "KIM": 0.046931,
+              "TRV": 0.09668
+            },
+            "residual": 0.725251,
+            "residualAsset": "SPY",
+            "candidateAudit": [
+              {
+                "ticker": "ALL",
+                "sector": "Financial Services",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "GM",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "HLT",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "HST",
+                "sector": "Real Estate",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "KIM",
+                "sector": "Real Estate",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "MAR",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MO",
+                "sector": "Consumer Defensive",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MU",
+                "sector": "Technology",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "SPG",
+                "sector": "Real Estate",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "SWK",
+                "sector": "Industrials",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "TRV",
+                "sector": "Financial Services",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "VLO",
+                "sector": "Energy",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": null,
+                "status": "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF"
+              }
+            ]
+          }
+        },
+        {
+          "stockCount": 4,
+          "status": "SOURCE_PINNED_COUNTERFACTUAL",
+          "rankStateInSelection": {
+            "selected": [
+              "TRV",
+              "HLT",
+              "MAR",
+              "SPG"
+            ],
+            "stocks": {
+              "TRV": 0.250712,
+              "HLT": 0.162041,
+              "MAR": 0.102722,
+              "SPG": 0.084526
+            },
+            "residual": 0.399999,
+            "residualAsset": "SPY",
+            "candidateAudit": [
+              {
+                "ticker": "ALL",
+                "sector": "Financial Services",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "GM",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "SECTOR_NAME_LIMIT"
+              },
+              {
+                "ticker": "HLT",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "HST",
+                "sector": "Real Estate",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "KIM",
+                "sector": "Real Estate",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MAR",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "MO",
+                "sector": "Consumer Defensive",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MU",
+                "sector": "Technology",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "SPG",
+                "sector": "Real Estate",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "SWK",
+                "sector": "Industrials",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "TRV",
+                "sector": "Financial Services",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "VLO",
+                "sector": "Energy",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": null,
+                "status": "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF"
+              }
+            ]
+          },
+          "stateAtPositionWeight": {
+            "selected": [
+              "SPG",
+              "KIM",
+              "TRV",
+              "HLT"
+            ],
+            "stocks": {
+              "SPG": 0.112859,
+              "KIM": 0.047121,
+              "TRV": 0.123982,
+              "HLT": 0.061816
+            },
+            "residual": 0.654222,
+            "residualAsset": "SPY",
+            "candidateAudit": [
+              {
+                "ticker": "ALL",
+                "sector": "Financial Services",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "GM",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "HLT",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "HST",
+                "sector": "Real Estate",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "SECTOR_NAME_LIMIT"
+              },
+              {
+                "ticker": "KIM",
+                "sector": "Real Estate",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "MAR",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MO",
+                "sector": "Consumer Defensive",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MU",
+                "sector": "Technology",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "SPG",
+                "sector": "Real Estate",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "SWK",
+                "sector": "Industrials",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "TRV",
+                "sector": "Financial Services",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "VLO",
+                "sector": "Energy",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": null,
+                "status": "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF"
+              }
+            ]
+          }
+        },
+        {
+          "stockCount": 5,
+          "status": "SOURCE_PINNED_COUNTERFACTUAL",
+          "rankStateInSelection": {
+            "selected": [
+              "TRV",
+              "HLT",
+              "MAR",
+              "SPG",
+              "ALL"
+            ],
+            "stocks": {
+              "TRV": 0.205581,
+              "HLT": 0.142363,
+              "MAR": 0.101078,
+              "SPG": 0.103965,
+              "ALL": 0.047013
+            },
+            "residual": 0.4,
+            "residualAsset": "SPY",
+            "candidateAudit": [
+              {
+                "ticker": "ALL",
+                "sector": "Financial Services",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "GM",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "SECTOR_NAME_LIMIT"
+              },
+              {
+                "ticker": "HLT",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "HST",
+                "sector": "Real Estate",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "KIM",
+                "sector": "Real Estate",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MAR",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "MO",
+                "sector": "Consumer Defensive",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MU",
+                "sector": "Technology",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "SPG",
+                "sector": "Real Estate",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "SWK",
+                "sector": "Industrials",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "TRV",
+                "sector": "Financial Services",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "VLO",
+                "sector": "Energy",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": null,
+                "status": "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF"
+              }
+            ]
+          },
+          "stateAtPositionWeight": {
+            "selected": [
+              "SPG",
+              "KIM",
+              "TRV",
+              "HLT",
+              "ALL"
+            ],
+            "stocks": {
+              "SPG": 0.094023,
+              "KIM": 0.04206,
+              "TRV": 0.123947,
+              "HLT": 0.077249,
+              "ALL": 0.021258
+            },
+            "residual": 0.641463,
+            "residualAsset": "SPY",
+            "candidateAudit": [
+              {
+                "ticker": "ALL",
+                "sector": "Financial Services",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "GM",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "HLT",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "HST",
+                "sector": "Real Estate",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "SECTOR_NAME_LIMIT"
+              },
+              {
+                "ticker": "KIM",
+                "sector": "Real Estate",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "MAR",
+                "sector": "Consumer Cyclical",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MO",
+                "sector": "Consumer Defensive",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "MU",
+                "sector": "Technology",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "SPG",
+                "sector": "Real Estate",
+                "entryState": "WATCH",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "SWK",
+                "sector": "Industrials",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": true,
+                "status": "BELOW_TARGET_COUNT_CUTOFF"
+              },
+              {
+                "ticker": "TRV",
+                "sector": "Financial Services",
+                "entryState": "ACCUMULATE_GRADUALLY",
+                "eligible": true,
+                "status": "SELECTED"
+              },
+              {
+                "ticker": "VLO",
+                "sector": "Energy",
+                "entryState": "WAIT_FOR_PULLBACK",
+                "eligible": null,
+                "status": "NOT_IN_PUBLISHED_RANKING_BOUNDED_BELOW_CUTOFF"
+              }
+            ]
+          }
+        },
+        {
+          "stockCount": 10,
+          "status": "INSUFFICIENT_ELIGIBLE_NAMES",
+          "rankStateInSelection": null,
+          "stateAtPositionWeight": null
+        }
+      ],
+      "currentPolicy": {
+        "status": "PASSIVE_NO_DEFENSIBLE_EDGE",
+        "stockCount": 0,
+        "holdings": {},
+        "benchmark": "SPY",
+        "benchmarkWeight": 1,
+        "basis": "PUBLISHED_WEEKLY_POLICY_NOT_COUNTERFACTUAL_BACKTEST_WINNER"
+      },
+      "cardinalityWinner": null,
+      "selectionCriterion": "Future evidence-backed positive NET excess after costs, risk & multiplicity; no chosen count from exposed history",
+      "costs": null,
+      "realizedReturn": null,
+      "expectedAlpha": null,
+      "nextEligibleExecution": null
+    }
+  }
+}
