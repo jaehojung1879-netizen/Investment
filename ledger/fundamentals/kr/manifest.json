@@ -1,6 +1,6 @@
 {
   "contract": "DART_RAW_FILINGS_V1",
-  "updatedAt": "2026-11-26T13:10:05Z",
+  "updatedAt": "2026-11-27T13:11:12Z",
   "universeSize": 119,
   "years": [
     2015,
@@ -8,8 +8,8 @@
   ],
   "firstServedYear": 2015,
   "progress": {
-    "collected": 4095,
-    "absent": 1356,
+    "collected": 4060,
+    "absent": 1391,
     "pending": 261,
     "total": 5712,
     "completePct": 95.43
@@ -18,25 +18,25 @@
   "storedFilingsAll": 4793,
   "absences": {
     "recorded": 1639,
-    "settled": 1359,
-    "awaitingDeadline": 280,
+    "settled": 1397,
+    "awaitingDeadline": 242,
     "unconfirmedIncludesLegacyAndPreGrace": true
   },
   "thisRun": {
-    "calls": 120,
+    "calls": 155,
     "recordsWritten": 0,
     "shardsChanged": 0,
     "stopReason": "WORK_LIST_EXHAUSTED",
     "statuses": {
-      "013": 120
+      "013": 155
     },
     "attemptStatuses": {
-      "CFS=013": 120,
-      "OFS=013": 120
+      "CFS=013": 155,
+      "OFS=013": 155
     },
     "refused": {
       "NO_CORP_CODE": 144,
-      "EMPTY_RESPONSE": 120
+      "EMPTY_RESPONSE": 155
     },
     "noCorpCodeTickers": [
       "005385.KS",
