@@ -1,0 +1,48 @@
+{
+  "capacity_snapshots": [
+    {
+      "atcf_id": "AL092017",
+      "snapshot_utc": "2017-09-09T18:00:00Z",
+      "report_clock_utc": "2017-09-09T20:00:00Z",
+      "shut_refineries": 5,
+      "shut_nameplate_kbd": 1069.3,
+      "restarting_refineries": 6,
+      "location": "Gulf Coast",
+      "archive": "doe-harvey-24.pdf",
+      "section": "Petroleum Refineries"
+    },
+    {
+      "atcf_id": "AL092021",
+      "snapshot_utc": null,
+      "snapshot_local_date": "2021-09-02",
+      "report_clock_utc": "2021-09-02T14:00:00Z",
+      "shut_refineries": 7,
+      "shut_nameplate_kbd": 1700,
+      "restarting_refineries": 2,
+      "location": "Louisiana",
+      "archive": "doe-ida-5.pdf",
+      "section": "Petroleum Refineries",
+      "capacity_is_approximate": true
+    }
+  ],
+  "eia_first_reports": [
+    {
+      "archive": "wpsr-2017-09-07-table2.pdf",
+      "release_date": "2017-09-07",
+      "current_week": "2017-09-01",
+      "previous_week": "2017-08-25",
+      "gross_padd2_kbd": [4064, 4066],
+      "gross_padd3_kbd": [6178, 9358],
+      "gross_padd4_kbd": [680, 682]
+    },
+    {
+      "archive": "wpsr-2021-09-09-table2.pdf",
+      "release_date": "2021-09-09",
+      "current_week": "2021-09-03",
+      "previous_week": "2021-08-27",
+      "gross_padd2_kbd": [3721, 3949],
+      "gross_padd3_kbd": [7381, 9007],
+      "gross_padd4_kbd": [623, 630]
+    }
+  ]
+}
