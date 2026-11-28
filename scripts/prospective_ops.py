@@ -234,7 +234,7 @@ def cmd_guard(args):
     ledger = read_ledger(args.ledger_ref, study.get("ledgerPath"))
     sessions = sessions_through(as_of)
     windows = ops.session_windows(sessions, study["firstEligibleSession"])
-    valid, errors = ops.verify_rows(ledger["rows"], study, windows, as_of)
+    valid, errors = ops.verify_rows(ledger["rows"], study, windows, as_of, sessions=sessions)
     enabled = automation.get("enabled") is True
     on_current_main = (os.environ.get("GITHUB_REF") == ops.SUCCESSOR["ref"]
                        and os.environ.get("GITHUB_REPOSITORY") == ops.SUCCESSOR["repository"]
@@ -308,8 +308,9 @@ def cmd_verify(args):
         print(json.dumps({"session": args.session, "valid": False, "result": "LEDGER_READ_FAILED", "detail": read["detail"]}))
         return 3
     rows = read["rows"]
-    windows = ops.session_windows(sessions_through(as_of), study["firstEligibleSession"])
-    result = ops.verify_new_receipt(rows, study, args.session, windows, as_of)
+    sessions = sessions_through(as_of)
+    windows = ops.session_windows(sessions, study["firstEligibleSession"])
+    result = ops.verify_new_receipt(rows, study, args.session, windows, as_of, sessions=sessions)
     print(json.dumps(result, ensure_ascii=False))
     return 0 if result["valid"] else 3
 

@@ -147,6 +147,8 @@ def _corporate_receipt_errors(row, study, day, previous_session, next_open):
     problems = []
     if row.get("codeCommit") != study.get("automation", {}).get("pinnedCodeCommit") or not HEX40.fullmatch(str(row.get("codeCommit", ""))):
         problems.append("PINNED_RECEIPT_CODE_MISMATCH")
+    if previous_session is None:
+        problems.append("SOURCE_PREDECESSOR_UNVERIFIED")
     sources, events = row.get("sources"), row.get("events")
     valid_days = set()
     queries = {(("pblntf_ty", "B"),), (("pblntf_detail_ty", "I001"),)}
@@ -170,7 +172,7 @@ def _corporate_receipt_errors(row, study, day, previous_session, next_open):
                 seen.add((source_day, query))
                 valid_days.add(source_day)
             end = date.fromisoformat(day)
-            start = date.fromisoformat(previous_session or min(valid_days))
+            start = date.fromisoformat(previous_session)
             n = (end - start).days
             if n <= 0 or n > 366:
                 raise ValueError("source window")
@@ -201,14 +203,22 @@ def _corporate_receipt_errors(row, study, day, previous_session, next_open):
     return problems
 
 
-def verify_rows(rows: list[dict], study: dict, windows: dict[str, datetime], as_of: datetime, date_field: str = "signalDate") -> tuple[set[str], list[dict]]:
+def verify_rows(rows: list[dict], study: dict, windows: dict[str, datetime], as_of: datetime, date_field: str = "signalDate", *,
+                sessions: Sequence[str] | None = None) -> tuple[set[str], list[dict]]:
     """Valid session set and structured errors. A row is valid only if registration, digest, mode and its own window all hold."""
     approval = study["approval"]
     errors: list[dict] = []
     valid: set[str] = set()
     seen: set[str] = set()
-    ordered = sorted(windows)
-    prior = dict(zip(ordered[1:], ordered))
+    # A receipt cannot define its own first source day. Require the full
+    # calendar used to build the windows, including the predecessor of first.
+    prior = {}
+    if study["studyId"] == CORPORATE_STUDY and sessions is not None:
+        try:
+            if session_windows(sessions, study["firstEligibleSession"]) == windows:
+                prior = dict(zip(sessions[1:], sessions))
+        except (TypeError, ValueError, KeyError):
+            pass
     for number, row in enumerate(rows, 1):
         day = row.get(date_field)
         problems: list[str] = []
@@ -385,7 +395,7 @@ def study_status(study: dict, read, sessions: Sequence[str], as_of: datetime, *,
     else:  # WEEKLY_LAST_KR_SESSION: window of a weekly signal is the same session window, expected set is the week-end sessions only
         weekly = set(weekly_last_sessions(sessions, first))
         expected = {day: end for day, end in windows.items() if day in weekly}
-    valid, errors = verify_rows(rows, study, windows, as_of, date_field)
+    valid, errors = verify_rows(rows, study, windows, as_of, date_field, sessions=sessions)
     closed, missed, pending = classify_windows(expected, valid, as_of)
     cadence_days = study.get("monitoring", {}).get("maxStaleCalendarDays", DEFAULT_DAILY_STALE_DAYS if kind == "SESSION_DAILY_KR" else 9)
     out["freshness"] = _freshness(out["lastRecordSession"], as_of, cadence_days, "REGISTERED_CADENCE:" + kind, last_commit_utc)
@@ -551,10 +561,11 @@ def guard_decision(study: dict, facts: dict) -> dict:
             "cutoverEvidence": cutover_state}
 
 
-def verify_new_receipt(rows: list[dict], study: dict, session: str, windows: dict[str, datetime], as_of: datetime) -> dict:
+def verify_new_receipt(rows: list[dict], study: dict, session: str, windows: dict[str, datetime], as_of: datetime, *,
+                       sessions: Sequence[str] | None = None) -> dict:
     """After a writer run: exactly one valid receipt for `session` must be on the remote ledger. A green job is not this."""
     matching = [r for r in rows if r.get(study.get("dateField", "signalDate")) == session]
-    valid, errors = verify_rows(rows, study, windows, as_of, study.get("dateField", "signalDate"))
+    valid, errors = verify_rows(rows, study, windows, as_of, study.get("dateField", "signalDate"), sessions=sessions)
     ok = len(matching) == 1 and session in valid and not errors
     return {"session": session, "rowsForSession": len(matching), "valid": ok, "errors": errors,
             "result": "RECORDED_AND_VERIFIED" if ok else "NOT_RECORDED"}

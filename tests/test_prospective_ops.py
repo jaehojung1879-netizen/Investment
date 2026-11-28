@@ -686,11 +686,11 @@ def test_corporate_registered_writer_and_source_envelope():
     current = study(studyId=ops.CORPORATE_STUDY)
     windows = ops.session_windows(SESSIONS, DAYS[0])
     value = corporate_row(DAYS[1], DAYS[0], DAYS[2])
-    valid, errors = ops.verify_rows([value], current, windows, at("2026-11-11T00:00:00Z"))
+    valid, errors = ops.verify_rows([value], current, windows, at("2026-11-11T00:00:00Z"), sessions=SESSIONS)
     assert valid == {DAYS[1]} and errors == []
     value["events"], value["eventCount"] = [], 0
     value["receiptSha256"] = ops.receipt_digest(value)
-    assert ops.verify_rows([value], current, windows, at("2026-11-11T00:00:00Z")) == ({DAYS[1]}, [])
+    assert ops.verify_rows([value], current, windows, at("2026-11-11T00:00:00Z"), sessions=SESSIONS) == ({DAYS[1]}, [])
 
 
 @pytest.mark.parametrize("case,reason", [
@@ -725,9 +725,37 @@ def test_corporate_self_consistent_digest_does_not_prove_provenance(case, reason
         value["events"][0].pop("sourceBodySha256")
     value["receiptSha256"] = ops.receipt_digest(value)
     windows = ops.session_windows(SESSIONS, DAYS[0])
-    valid, errors = ops.verify_rows([value], current, windows, at("2026-11-11T00:00:00Z"))
+    valid, errors = ops.verify_rows([value], current, windows, at("2026-11-11T00:00:00Z"), sessions=SESSIONS)
     assert not valid and reason in errors[0]["reasons"]
-    assert not ops.verify_new_receipt([value], current, DAYS[1], windows, at("2026-11-11T00:00:00Z"))["valid"]
+    assert not ops.verify_new_receipt([value], current, DAYS[1], windows, at("2026-11-11T00:00:00Z"), sessions=SESSIONS)["valid"]
+
+
+def test_first_corporate_receipt_requires_full_calendar_predecessor():
+    current = study(studyId=ops.CORPORATE_STUDY)
+    full = ["2026-11-06", *SESSIONS]
+    windows = ops.session_windows(full, DAYS[0])
+    now = at("2026-11-10T00:00:00Z")
+    complete = corporate_row(DAYS[0], full[0], DAYS[1])
+    shortened = corporate_row(DAYS[0], "2026-11-08", DAYS[1])
+    assert len(complete["sources"]) == 6
+    assert ops.verify_rows([complete], current, windows, now, sessions=full) == ({DAYS[0]}, [])
+    assert ops.verify_new_receipt([complete], current, DAYS[0], windows, now, sessions=full)["valid"]
+    assert ops.study_status(current, [complete], full, now)["validRecords"] == 1
+    valid, errors = ops.verify_rows([shortened], current, windows, now, sessions=full)
+    assert not valid and "SOURCE_RECEIPT_SCHEMA_OR_COVERAGE_INVALID" in errors[0]["reasons"]
+    assert not ops.verify_new_receipt([shortened], current, DAYS[0], windows, now, sessions=full)["valid"]
+    assert ops.study_status(current, [shortened], full, now)["validRecords"] == 0
+
+
+@pytest.mark.parametrize("calendar", [None, SESSIONS, list(reversed(SESSIONS))])
+def test_first_corporate_receipt_refuses_missing_or_invalid_calendar(calendar):
+    current = study(studyId=ops.CORPORATE_STUDY)
+    windows = ops.session_windows(SESSIONS, DAYS[0])
+    now = at("2026-11-10T00:00:00Z")
+    value = corporate_row(DAYS[0], "2026-11-06", DAYS[1])
+    valid, errors = ops.verify_rows([value], current, windows, now, sessions=calendar)
+    assert not valid and "SOURCE_PREDECESSOR_UNVERIFIED" in errors[0]["reasons"]
+    assert not ops.verify_new_receipt([value], current, DAYS[0], windows, now, sessions=calendar)["valid"]
 
 
 def test_postwrite_verification_refuses_other_corrupt_rows():
