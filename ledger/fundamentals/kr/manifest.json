@@ -1,6 +1,6 @@
 {
   "contract": "DART_RAW_FILINGS_V1",
-  "updatedAt": "2026-11-27T13:11:12Z",
+  "updatedAt": "2026-11-28T12:24:22Z",
   "universeSize": 119,
   "years": [
     2015,
@@ -16,6 +16,10 @@
   },
   "progressScope": "CURRENT_UNIVERSE_AND_REQUESTED_YEARS",
   "storedFilingsAll": 4793,
+  "retryScheduling": {
+    "policy": "DUE_UNTRIED_THEN_OLDEST_ATTEMPT",
+    "trackedPendingAll": 117
+  },
   "absences": {
     "recorded": 1639,
     "settled": 1397,
@@ -23,20 +27,20 @@
     "unconfirmedIncludesLegacyAndPreGrace": true
   },
   "thisRun": {
-    "calls": 155,
+    "calls": 117,
     "recordsWritten": 0,
     "shardsChanged": 0,
     "stopReason": "WORK_LIST_EXHAUSTED",
     "statuses": {
-      "013": 155
+      "013": 117
     },
     "attemptStatuses": {
-      "CFS=013": 155,
-      "OFS=013": 155
+      "CFS=013": 117,
+      "OFS=013": 117
     },
     "refused": {
       "NO_CORP_CODE": 144,
-      "EMPTY_RESPONSE": 155
+      "EMPTY_RESPONSE": 117
     },
     "noCorpCodeTickers": [
       "005385.KS",
