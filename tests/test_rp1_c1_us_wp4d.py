@@ -79,9 +79,12 @@ def test_no_new_workflow_file_and_the_census_and_its_pinned_layers_are_untouched
                  "docs/workflow-inventory-addendum.md", "docs/workflow-inventory-phase-c-amendment.md", "docs/workflow-inventory-phase-c-price-repair.md"}
     assert not touched & protected
     changed_workflows = [p for p in touched if p.startswith(".github/workflows/") and p != X.HOST_WORKFLOW]
+    from pipeline.prospective_workflow_maintenance import WORKFLOW, verify_install
     permitted = {ATLAS.PAGES_WORKFLOW, ".github/workflows/tests.yml"}
     weekly_workflow = ".github/workflows/fundamentals.yml"
-    assert set(changed_workflows) <= permitted | {weekly_workflow}
+    assert set(changed_workflows) <= permitted | {weekly_workflow, WORKFLOW}
+    if WORKFLOW in changed_workflows:
+        verify_install(ROOT)
     if set(changed_workflows) & permitted:
         assert ATLAS.pages_maintenance_admitted(ROOT)
     if weekly_workflow in changed_workflows:

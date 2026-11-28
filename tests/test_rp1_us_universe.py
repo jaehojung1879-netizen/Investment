@@ -278,15 +278,18 @@ def test_sealed_directories_c1_files_and_workflow_census_unchanged():
             historical_tests = subprocess.check_output(
                 ["git", "show", record["referenceMain"] + ":.github/workflows/tests.yml"], cwd=ROOT)
             assert hashlib.sha256(historical_tests).hexdigest() == record["originalTestsSha256"]
-            # Operational weekly raw refresh is admitted only as an exact
-            # historical-byte variant; the original full workflow tree digest
-            # below must still match the frozen registered value.
             from pipeline.dart_weekly_workflow_maintenance import original_for_census
+            from pipeline.prospective_workflow_maintenance import WORKFLOW, verify_install
             historical_fundamentals = original_for_census(ROOT)
+            verify_install(ROOT)
             digest = hashlib.sha256()
             for path in sorted((ROOT / directory).rglob("*")):
                 if path.is_file():
                     name = str(path.relative_to(ROOT / directory))
+                    # The verified live addition was absent at registration. Every
+                    # remaining path contributes to the unchanged frozen digest.
+                    if path == ROOT / WORKFLOW:
+                        continue
                     digest.update(name.encode())
                     if name == "pages.yml":
                         payload = historical

@@ -1,0 +1,265 @@
+{
+ "schema": "PROSPECTIVE_OPS_REGISTRY_V1",
+ "asOfAuthoring": "2026-11-25",
+ "principle": "A study is recorded automatically only if approval.status is APPROVED_PROSPECTIVE_RECORDING with owner-hashed authorization AND automation.enabled is true AND its single-writer attestation exists. Registering a study here never starts a writer.",
+ "studies": [
+  {
+   "studyId": "kr-corporate-information-events-v1",
+   "kind": "SESSION_DAILY_KR",
+   "approval": {
+    "status": "APPROVED_PROSPECTIVE_RECORDING",
+    "authorizedAtUtc": "2026-11-07T20:51:42+00:00",
+    "authorizationSha256": "c7191d7542a4e3b0d832e63625201585998632ef680d1976c0e2f0faab115d1e",
+    "specSha256": "1692b5b3131a76ab6dd8a5198ef0fd262fffa4ec7cf0925444cf344aacbd61d4",
+    "scope": "PROSPECTIVE_RECORDING_ONLY; historical outcome execution NOT authorized"
+   },
+   "authorizationPath": "research/corporate_event_readiness_v1/cohort/AUTHORIZATION-prospective-recording.json",
+   "ledgerPath": "ledger/research-strategies/kr-corporate-information-events-v1/receipts.jsonl",
+   "dateField": "signalDate",
+   "evidenceClass": "PROSPECTIVE_PAPER",
+   "recordMode": "LIVE",
+   "firstEligibleSession": "2026-11-09",
+   "horizons": [
+    126,
+    252
+   ],
+   "independenceRule": "one event per issuer per hypothesis per horizon window from entry (spec independence)",
+   "schedule": {
+    "cron": "40 10 * * 1-5",
+    "timezone": "UTC",
+    "description": "Weekdays 10:40 UTC; same-session retries 11:40, 13:00, 14:20 UTC"
+   },
+   "writer": {
+    "description": "GitHub Actions prospective-ops.yml running the pinned registered live_run (not yet activated)",
+    "legacyWriters": [
+     {
+      "id": "trig_01XwJ7yivCe5uokkmUTk8MWE",
+      "kind": "CLAUDE_SCHEDULED_TRIGGER",
+      "observedState": "DISABLED",
+      "observedAtUtc": "2026-11-25",
+      "note": "enabled=false since 2026-11-09 (get_trigger readback)"
+     },
+     {
+      "id": "trig_013qoRYz6H9UwUosNzCWv69B",
+      "kind": "CLAUDE_SCHEDULED_TRIGGER",
+      "observedState": "ENABLED_FAILING",
+      "observedAtUtc": "2026-11-25",
+      "note": "standing session cse_01UtFTvgwN2oL1NjAAMWvwBg; working directory empty so no writer step can run; owner must disable"
+     }
+    ]
+   },
+   "automation": {
+    "enabled": false,
+    "pinnedCodeCommit": "8aee189ff453d9bd624a67df5e1e5975bd7d211c",
+    "singleWriterAttestation": "research/prospective_ops/attestations/kr-corporate-information-events-v1-single-writer.json",
+    "activationRequires": "owner GitHub endorsement of exact cutover bytes proving both legacy triggers disabled and drained; enable only on main after the preservation tag is available",
+    "pinnedTreeSha": "b1cd5b1852c401a1a9c3a13fce8b1466a4f5e61e",
+    "preservation": {
+     "status": "BRANCH_ONLY_NOT_DURABLE",
+     "containedInBranches": [
+      "research/corporate-event-readiness-v1",
+      "claude/trusting-tesla-ob0jym",
+      "claude/inspiring-planck-lm1z5k",
+      "codex/investment-integration-20261110"
+     ],
+     "tagsContaining": [],
+     "requiredBeforeActivation": "an annotated tag on 8aee189 (or its merge into main); the guard refuses PINNED_CODE_NOT_DURABLY_REFERENCED until then",
+     "observedAtUtc": "2026-11-26"
+    },
+    "preservationTag": "pinned/kr-corporate-information-events-v1/8aee189",
+    "cutoverApprovalCommentId": null
+   },
+   "monitoring": {
+    "continuityBaselineSession": null,
+    "baselineRule": "null = every closed window since firstEligibleSession is counted as missed; set only at activation, never to hide a miss"
+   },
+   "specPath": "research/corporate_event_readiness_v1/cohort/kr-corporate-information-events-v1-candidate.json",
+   "ledgerMustExist": true,
+   "baselineReceipts": [
+    {
+     "session": "2026-11-09",
+     "receiptSha256": "da743d0ea49a931cf8a096f873035392b28009786a5c67715354a6cc965b9b8d"
+    },
+    {
+     "session": "2026-11-11",
+     "receiptSha256": "bb83373496735a7028baad33cb4a47572d4c03e4fddee5c6cfe6007574bdeab5"
+    },
+    {
+     "session": "2026-11-12",
+     "receiptSha256": "c7845e7bd2aaf5975c02075bcffbff239198323b15daa2bbc3866cb2ddc50119"
+    }
+   ],
+   "baselineLedger": {
+    "bytes": 10191,
+    "sha256": "7a584fed00ca3b152970f8a851c0d31f13e4eccfebfb42152ae7053d22664b82",
+    "sourceCommit": "251e6e7746e181308395856a4cb99d6252a4d6a8"
+   }
+  },
+  {
+   "studyId": "kr-capital-event-prospective-v1",
+   "kind": "SESSION_DAILY_KR",
+   "approval": {
+    "status": "REGISTERED_NOT_AUTHORIZED",
+    "note": "REGISTERED_COMMIT was NOT_YET_AUTHORIZED in its (disabled) trigger prompt; no LIVE authorization exists in this repository"
+   },
+   "ledgerPath": null,
+   "firstEligibleSession": null,
+   "writer": {
+    "description": "none",
+    "legacyWriters": [
+     {
+      "id": "trig_01623WK1XcoLsTEkAQUkAmJ7",
+      "kind": "CLAUDE_SCHEDULED_TRIGGER",
+      "observedState": "DISABLED",
+      "observedAtUtc": "2026-11-25"
+     }
+    ]
+   },
+   "automation": {
+    "enabled": false
+   }
+  },
+  {
+   "studyId": "kr-selection-challenger-v1",
+   "kind": "OBSERVED_ONLY",
+   "approval": {
+    "status": "APPROVED_BY_MERGE_OF_REGISTERED_SPEC",
+    "basis": "authorization.basis MERGE_OF_THE_REGISTERED_SPEC (receipt field)"
+   },
+   "ledgerPath": "ledger/research-strategies/kr-selection-challenger-v1/receipts.jsonl",
+   "dateField": "signalDate",
+   "writer": {
+    "description": "ledger.yml daily 00:10 UTC via scripts/update_ledger.py hook (existing, unchanged)"
+   },
+   "schedule": {
+    "description": "ledger.yml 00:10 UTC daily; receipts observed weekly (Fridays)"
+   },
+   "automation": {
+    "enabled": false,
+    "note": "writer is the existing ledger workflow; this registry does not schedule it"
+   },
+   "monitoring": {
+    "maxStaleCalendarDays": 9,
+    "thresholdBasis": "observed weekly cadence, NOT a registered cadence; no completeness claim"
+   },
+   "outcomeStatusPath": "ledger/research-strategies/kr-selection-challenger-v1/publication-status.outcomes.json"
+  },
+  {
+   "studyId": "kr-selection-challenger-v2-accounting",
+   "kind": "OBSERVED_ONLY",
+   "approval": {
+    "status": "APPROVED_BY_MERGE_OF_REGISTERED_SPEC",
+    "basis": "same discipline as kr-selection-challenger-v1"
+   },
+   "ledgerPath": "ledger/research-strategies/kr-selection-challenger-v2-accounting/receipts.jsonl",
+   "dateField": "signalDate",
+   "writer": {
+    "description": "ledger.yml daily 00:10 UTC via scripts/update_ledger.py hook (existing, unchanged)"
+   },
+   "schedule": {
+    "description": "ledger.yml 00:10 UTC daily; receipts observed weekly (Fridays)"
+   },
+   "automation": {
+    "enabled": false,
+    "note": "writer is the existing ledger workflow"
+   },
+   "monitoring": {
+    "maxStaleCalendarDays": 9,
+    "thresholdBasis": "observed weekly cadence, NOT a registered cadence; no completeness claim"
+   },
+   "outcomeStatusPath": "ledger/research-strategies/kr-selection-challenger-v2-accounting/publication-status.outcomes.json"
+  },
+  {
+   "studyId": "rp1-b-h1-state-v1",
+   "kind": "OBSERVED_ONLY",
+   "approval": {
+    "status": "APPROVED_BY_MERGE_OF_REGISTERED_SPEC",
+    "basis": "docs/research-program/rp1-b-h1-prospective-state-v1-ko.md"
+   },
+   "ledgerPath": "ledger/research-strategies/rp1-b-h1-state-v1/receipts.jsonl",
+   "dateField": "signalDate",
+   "writer": {
+    "description": "ledger.yml daily 00:10 UTC via scripts/update_ledger.py hook (existing, unchanged)"
+   },
+   "schedule": {
+    "description": "ledger.yml 00:10 UTC daily; receipts observed weekly (Fridays)"
+   },
+   "automation": {
+    "enabled": false,
+    "note": "writer is the existing ledger workflow"
+   },
+   "monitoring": {
+    "maxStaleCalendarDays": 9,
+    "thresholdBasis": "observed weekly cadence, NOT a registered cadence; no completeness claim"
+   },
+   "outcomeStatusPath": "ledger/research-strategies/rp1-b-h1-state-v1/publication-status.outcomes.json"
+  },
+  {
+   "studyId": "current-champion-decisions-v1",
+   "kind": "OBSERVED_ONLY",
+   "approval": {
+    "status": "APPROVED_BY_MERGE_OF_REGISTERED_SPEC",
+    "basis": "pipeline/current_champion_decisions.py; evidenceClass PROSPECTIVE_RESEARCH_ONLY_CURRENT_CHAMPION_VARIANT"
+   },
+   "ledgerPath": "ledger/research-strategies/current-champion-decisions-v1/receipts.jsonl",
+   "dateField": "asOfDate",
+   "writer": {
+    "description": "ledger.yml daily 00:10 UTC (existing, unchanged)"
+   },
+   "schedule": {
+    "description": "ledger.yml 00:10 UTC daily"
+   },
+   "automation": {
+    "enabled": false,
+    "note": "writer is the existing ledger workflow"
+   },
+   "monitoring": {
+    "maxStaleCalendarDays": 5,
+    "thresholdBasis": "observed near-daily cadence, NOT a registered cadence; no completeness claim"
+   },
+   "observationKey": [
+    "asOfDate",
+    "region"
+   ]
+  },
+  {
+   "studyId": "weekly-decisions",
+   "kind": "OBSERVED_ONLY",
+   "approval": {
+    "status": "APPROVED_BY_MERGE_OF_REGISTERED_SPEC",
+    "basis": "weekly-passive-first-v1 (pipeline/weekly_publish.py)"
+   },
+   "ledgerPath": "ledger/weekly-decisions/receipts.jsonl",
+   "dateField": "asOfDate",
+   "writer": {
+    "description": "ledger.yml weekly_publish step (existing, unchanged)"
+   },
+   "schedule": {
+    "description": "ledger.yml 00:10 UTC daily; FINAL week-end receipts"
+   },
+   "automation": {
+    "enabled": false,
+    "note": "writer is the existing ledger workflow"
+   },
+   "monitoring": {
+    "maxStaleCalendarDays": 9,
+    "thresholdBasis": "observed weekly cadence, NOT a registered cadence; no completeness claim"
+   },
+   "observationKey": [
+    "asOfDate",
+    "region"
+   ]
+  }
+ ],
+ "protectedPathPrefixes": [
+  "research_specs/",
+  "docs/results/",
+  "ledger/",
+  ".github/workflows/",
+  "AGENTS.md",
+  "docs/workflow-inventory",
+  "tests/test_workflow_inventory.py",
+  "tests/test_kr_alpha_atlas_price_repair_workflow_inventory.py",
+  "research/corporate_event_readiness_v1/"
+ ]
+}
